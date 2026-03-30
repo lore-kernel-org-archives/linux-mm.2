@@ -4,137 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1709DFB3D15
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D698FB3D15
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C1B6B0099; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
+	id 9D04A6B0098; Mon, 30 Mar 2026 07:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FC886B009B; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
+	id 97F726B009B; Mon, 30 Mar 2026 07:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EBD66B009D; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
+	id 86F276B009D; Mon, 30 Mar 2026 07:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2148E6B0099
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB0F1160730
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:02:38 +0000 (UTC)
-X-FDA: 84602441196.01.68AF9F6
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B869C20018
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:02:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="B /8uwKI";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=GW7cqoMA;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774868557; a=rsa-sha256;
-	cv=none;
-	b=6uvDIT3zgEBWU1lYOx1LuJPFZZLdrpZfrkvh/s8UskY80Qb26Z8Xj74ef6uYns0q4/4BmD
-	LmeFaHBwk0JRGXJVKlc1A4m8wTjuFKOceMB7rp+2Kn0r3xvwQ178zr8OMaL8i8xhQyfz4i
-	AcHO5WMCLcfwB+LP3h4bMVo6KrvfgDY=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 712FC6B0098
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:06:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D7DEE0E51
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:06:03 +0000 (UTC)
+X-FDA: 84602449806.17.12A7B5B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5B3EF40014
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:06:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=j969veZd;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774868557;
+	s=arc-20220608; t=1774868761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m/UXREOxU=;
-	b=auDSQZsz3WILKEDyb7Sv+54rm9Rp/YFXZcdhiYomffF5tYsbOq66iEK9UeNbahlq7sGOX6
-	IAb8AxEPizN86Yp/+XMxSNXCHYaFdM19glKEjTcdpXAHheB7s2HZVZ8gb3ZV8q2kyiw43h
-	phhl3ZwGad0Qomn0sUqDfA2F24r1Ghw=
+	bh=3xJnFjBcu4R7jUYudnmBvBkJSJvG2IjBRLP7dVtDSPs=;
+	b=lBcpdCOCFmugTAwGXsh1uYag/f1nTFfxC1cio1sjBPdB1zx3nY6tryGwHNyWMkfsK9VrjQ
+	9b8OUXPaN1YUOr/C/kYBcS2kfhTBgFK1BO00mudQ3dZ/lymGXdvHPWUCFk9lZMcjzd0r/n
+	PrhwXU6CholXfWzY3kLucVGJB27O9lQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774868761; a=rsa-sha256;
+	cv=none;
+	b=2cOOnChCw2nnuznpQqEPTZEHWvczuS/2zu55a+MHRNTBjeJOAgqiyGfSs0kfTPbN02H+JO
+	q1vdw61UmzbPTQv7hoyonCHTsjuJmuxbQ2HQQqkxIV14oqiZ1Yp1LpXDLknfGHvrmbA45A
+	ffwscoD8buBBwrO+qOPSaa40zbqLhJI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="B /8uwKI";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=GW7cqoMA;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5A1057A0373;
-	Mon, 30 Mar 2026 07:02:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 30 Mar 2026 07:02:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1774868555; x=
-	1774954955; bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m/UXREOxU=; b=B
-	/8uwKIFVNngeNbOXk+XF89ixBFS+d4ZMeiPtTs226X1iogvmPMpKxQJnlfQy0CW9
-	E+GjAPbjpOVc24bRdldwDe0rgudDErEQ+JSfX9p8OkUEPw0fDv9ZdnOh9U2XWn2L
-	9jHxyaJ8UosG4nnVJleUOIpA5aPpMvCN8vIp18gXVfstGW2k6MihmUxqPK/z9pvK
-	pvTOhd6DO0rOkH2TCKB3J1mZVDI/qFjAnMD64QKxXQD02kggrWOTyHMXLutCOXcy
-	DDR9nu9eHcC0gN67PJvcoKhgyeg2dCLds/4xlXGCckQihkgP4fqjmtVB4liDoaF4
-	CavXSmlQ+EX5fOH9MHYQQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1774868555; x=1774954955; bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m
-	/UXREOxU=; b=GW7cqoMAoAOvE8FIV5i068p6BVR65CPHidEdAr6Brfl+F0p7Lbo
-	fAlTFdxqhqAy+OGfSzPXdlIlwXlmDZROaJZNdVSB/X3X0vHr3qmZozRBe6yJZ7xv
-	JEMXQYN6fT3UG/HHojFNlVlAUEUIV0RtW4bIPxkpFvvOGrayCCMMtxwH2vb9Dmjp
-	gtjw8M/BZDF6rCfRzFUS/UQqD44BhaqMuBKiV9fkZuBfaIl+OGcHeNqKCacEPb+r
-	o01bsBSf7FPj3oHOjrM9a8M47Gca5nNAEREkqPb4H5Mx/qXseYwv+oMlI+DRP+Nf
-	ddJsbQBYUqvFlCxVqHf1skQf38YqQFE+aPA==
-X-ME-Sender: <xms:SljKaXqkn5lN0T-bEP-BiyPpjZkC_-6v1Ov47hPcjrkWZT3pWWMPxQ>
-    <xme:SljKaQLivCKu2H3oTp8j8I6B7BfH1CEo_b7xecEhoTA5AAv2pzVqH5vJsUQYISwOq
-    Yf1-Iv-lCtjzrP08h9J89KYPXkKbHtsPt33jXd8-XtjuGDL-zrPEQ>
-X-ME-Received: <xmr:SljKabAiTgk7BSKaiZ8MxV7gPzLl3lT0un_TSG0UqD6cxGfpZfyX5G4UTO2NzA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
-    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptggrrhhgvghssegtlhhouhgufh
-    hlrghrvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
-    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
-    gtphhtthhopeifihhllhhirghmrdhkuhgthhgrrhhskhhisehorhgrtghlvgdrtghomhdp
-    rhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epkhgvrhhnvghlqdhtvggrmhestghlohhuughflhgrrhgvrdgtohhm
-X-ME-Proxy: <xmx:SljKaa4wFZV91l0PWEXN7tbF_OlkNNk_iFQqnmbX-F_jJs2L0UBZig>
-    <xmx:SljKafFLKRjRD5o-5Ps6-VkKMA5Jk8qiCSFPx5f4GtdC2btsDo8FRA>
-    <xmx:SljKadRZNKCeqSUbAQM9O81Z86DFmb_8Gb3RgmwlaQMMf7wLuiFgtQ>
-    <xmx:SljKaRe9G8Wos7j3YSupnHQH9M0zLZtLFenj_3n_FjPBdpRj2u3BCQ>
-    <xmx:S1jKaVIq5Sqk1U1NujGtHNPT7s8ys_eaRUqGBxgg9VZJ-DWvv6ye0_aw>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Mar 2026 07:02:33 -0400 (EDT)
-Date: Mon, 30 Mar 2026 11:02:31 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Chris Arges <carges@cloudflare.com>
-Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
-	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
- page cache lookups
-Message-ID: <acpX8iUEjNT6Kz25@thinkstation>
-References: <20260305183438.1062312-1-carges@cloudflare.com>
- <20260305183438.1062312-2-carges@cloudflare.com>
- <aanYdvdJVG6f5WL2@casper.infradead.org>
- <aarVMrFptdXhHsX1@thinkstation>
- <aasAo8qRCV9XSuax@casper.infradead.org>
- <aas06mfCrJuzZd0-@20HS2G4>
- <aas3E9P0BP03O8ma@thinkstation>
- <acFr4JJgaXsD9gtQ@20HS2G4>
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=j969veZd;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774868761; x=1806404761;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DriSC4j+6v0Vp09GpAv5avbyXZ+yyv/fxsbtJTwP3JM=;
+  b=j969veZdBhlaGEXgSuH+kyk3kWylNevd7LI1or1BdK4UR7ilUuPOeMwJ
+   RZEsX4JI+glZIgEvIEmnl7xuri01NKVl0zfsJkD14N72XxqKKMvwQbKhY
+   zYW8veNrTmCyWQj046tUeZaPi4gRjY9iUxMVQM6KveF2mJplloR0jhKA+
+   O5W4Sa2RV8lEKo8SrZCTiv4a1p44NqDYCURb+f0+jB0AX0UjgQuO2WWJ+
+   3WJeI4VGfMUY0pkJ0C3cadrxZyAL+G3ORyiegbMNDqDnSUEXIb5DDZNHl
+   1rAjB4mhadk78Ey0Xd4SwZZqefdWeSQMQaBgY8VD1PttTi+tKy6p06zin
+   w==;
+X-CSE-ConnectionGUID: 6anmV6k/RQq839pZe5drJQ==
+X-CSE-MsgGUID: AiiXl7hXTZiOH3gh0/LCQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="76049461"
+X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
+   d="scan'208";a="76049461"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 04:05:59 -0700
+X-CSE-ConnectionGUID: nVSPFUITTmOyaO7upa/Ddg==
+X-CSE-MsgGUID: xGUTSOsuTm2yOhiKpRKpVA==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 30 Mar 2026 04:05:55 -0700
+Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7ARM-000000000zs-4BDj;
+	Mon, 30 Mar 2026 11:05:52 +0000
+Date: Mon, 30 Mar 2026 19:05:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: mpenttil@redhat.com, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: Re: [PATCH v7 3/6] mm/hmm: do the plumbing for HMM to participate in
+ migration
+Message-ID: <202603301832.rpYcya7E-lkp@intel.com>
+References: <20260330043017.251808-4-mpenttil@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acFr4JJgaXsD9gtQ@20HS2G4>
+In-Reply-To: <20260330043017.251808-4-mpenttil@redhat.com>
+X-Rspamd-Queue-Id: 5B3EF40014
+X-Stat-Signature: ufsxwhh5uqmxkm97w674q7ikzdct7pgo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B869C20018
-X-Stat-Signature: euhytyiz4t17n3daetje8nhtrxw7ziy6
-X-HE-Tag: 1774868556-575544
-X-HE-Meta: U2FsdGVkX18lf0peI6kV2JLyDuoH7XfJfnBj96MUxR4Hsp95isHDYGLERLFI3MfyFEf3KCSXXmsf7sZhxOtA/HYIUmJVCwFLWGlU2hUS2kGKHJyQzHFEFyiUo5VhXM5odmKRl7+TG1b7D/H+vDM1iMb+8vI/avuBwcxBNLj/dICko+vNDBahIxo5uDye36rQusmpthFFmbRKoz5KBXnXh0hAoy7PJo+iWee5cQoLiM1Sc/AYDZ4IVVGySNjIc9ydoXjE4kAcw1WI9s3lxMCft1Ba6y5sn1ohCAzt9HBBiVGOl5qAzEyaSd4KApTrK5vytRt0Jwte0pYha4YofIOsQyPPj1MsRIbQ9Ut9qS7EJBSjQ7e/sc4zGMjjP6ZMqkLsBTZIjaHI5CKuHbC9q2Ci8AhWJAb8AIrnOsorpaC1OeJ7a8wJBeTUb+CDbTeY9/vGh001SLYGbGcOQFm3U9h/KHwncYRLQ05iTfssUDvD6ZUQlUcKyETmXHxerUZ6HYYBwbxeo5I594tmmPiXaZPI7MfOnXZH1Wj8bqCTvSU2tJdqdcQNirmS62YNED1v3gTpfOKYemUu53LurcYzAclYa8lUTouvk+2HNNNA9jqY/KVP+sP0+42/5P9Fe8OOhhLryETrHdBZaKaQbtAcgfhJNBO39SngFgKRu5tYs/k5wQWr2lKqKWyfDq5IdXJb7u/C4pMFnTAuxut/NTGQevSQS4VoHjZP7XXhlb6E4hcXVHWkQaYYMmU+StkoWITHeZmUjib97u3CDAcA3MMQMc7ScxQNLeFQ3lUC75Dp3ukKSwzbWnotXzd3WzAQC1YQIK0ft3kMZ7dQ1sNek0IcJnMFnKd3s6Ilix5PuXk/ENwcOeD/jJCwFnfbV/XmbVCrLOHBIkHSGsXo/FmIP0F6Tlosgp/8hhHYYKSGuizkyX/bU8h0H79rX8qRNsSxVJbA8xO10jtpcoVQAxUuGoFDaTm
- wCukhiS/
- AH1q0YmyT5QtkUXt0vHYRPM6AMX92XsVj27C+HIH7ic0gLdk+S13S1jha0WnoJu19UISzPtu2jWn00z6TkkHvvTLi4m9JOdWlJj9yDOiUCnLWJGE7a9qURvqeu9EyoJXCIGq9fbR/Xl6RkfKL6bvqaiyEAo4Yp6KKEx4mcY5aQdL6gHaadyCI+Iz/wooKv6HPf+ID8cnYUnsiUD/0MrBpCdY5outQFwN4m3s4VbmodnkGFbPTV42oRvuTbZUEVRWeQrMyCQZe6SbPvS4qFtjuTUvEQq/XXdlL03M5MDUGs285sYttFDH6LsKbnpdDW0R8Rggn2r2aTNsLBPwEcaDtCW6VVDbTq85wiVKugSBWDfnUBqIw6XDZr0TjjXAjWmbopDBN/bStayrMhGbT/eHnzzieIsRlwoDe2EkN0zomgHS9UOGUXJDIGtgDpg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774868760-844611
+X-HE-Meta: U2FsdGVkX1+yu3ve4E1ChGRVgvLfpR39oKa4QKgJWkJ6V98c/uyO93X7wLhcTyx0eVqWGwl9/pJczOk3l8AhPSX/sgPST5ytprJak4IK8rPD2RqDwY3NVTfiGDVbgak1AfkA2Y5kT3QTa/OE/NMdSiYlZZyYp0GJvlKt3XuMFEbFDbtfVwzYlDOWpza52DrwqIURKakOyg5uin4uhNZP1HmquOw+UDAxMLMQNHlwCDqf8jQol0zkSek37DRJbXp+RhIHxmIe6KQM2uSDAtHxuzxfsC8SRBqcrPiB7Cy2YKuUTNiDymQtk+QF6+AFLCXaRCPPyakdjmDcnrj9U9Yv1xDL/9AVwii46RjvDVTM4PE0BrDRiVwCxmJfK18OxAKmexd60n0Jg2nQ8AY2SFUBdud8LPEMk7ujd5Fij7IXlGJcZY3JjYP1TrL/GVVCFf/q7hFYYY1REGDByZ+2r9AGDvCsxYMUivjCE5cB/baqNATRXkZyVZxT4t2rVtoY986hefVZTT6jf4PSEOFvqYaHSdYrkYXxehcFVOgdWH3IRWYCdNAsXdxNeYwvDee09A0X0eDEgKls7LCT0CBaanmdT3RHbWDy5nIxx7mRpHz3QZz/ZEeyzkR29i11KV8c1y6rDe4s+3yLJCbSGrcV8TPy3TZtA2aL05oQJNIwGWqSlIPuMUHfzvgF5I1nFfmi5C86CY7Zi9sRZBIqWill2NKNtb5s0hcdDm02p2A1eDFFe6S5c1gICY+lZJ0oXntGx00FstBbEFtIyZ5P5ym9b5/0IopHuaQOmSqlkinG0rWA1OjVBI+w5bsyMtUNvcx5Ty8KVRzYRQczvzSEsg/ry31IDMqdVV2Wk74tGy4iFXocuJHiCn/lvDuy2g3VCB4gpZHtMUfptRp/st1S2C928rY/wCx6rC4n5lrp7wOQkA5ixbctVy4JfCQLeq7AtIf2bFQkHwUwyWV/ByuxYfaNu4R
+ B8wGr/eI
+ 7aoDXY217qa+THDw2I8AiLtRsfDDCMEACt8QRIbn+3BqJ8NIzVobegjM/yshbw4s4lhRCmKZ4Cu2Xqtv1hkEIiFt85ZNhXMid5s18bqvziG+3nXovEqfkvv6stfO6qd5FRh85nj9R+gCACg6KLstxc3XkQZaZVzr44DEGBibKGN6e4cKRbfMaA1iqb9Lv8E2yi7coMElJnJ5oKe1ANHp0RYw5RotlddPhOESrsxDpYP2AyCnbzF73+z1+OeqZtW68aNGnQ65VgvR9iu4NRk+ZqECESYAv2C2LXnXRwV97lJMP8QizJk4EL0Smq4ptgxoDj8KNW5WyrN6LHkuRh0Pr/TtW8L+wTl9Iz+RY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,74 +112,403 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 11:35:44AM -0500, Chris Arges wrote:
-> On 2026-03-06 20:21:59, Kiryl Shutsemau wrote:
-> > On Fri, Mar 06, 2026 at 02:11:22PM -0600, Chris Arges wrote:
-> > > On 2026-03-06 16:28:19, Matthew Wilcox wrote:
-> > > > On Fri, Mar 06, 2026 at 02:13:26PM +0000, Kiryl Shutsemau wrote:
-> > > > > On Thu, Mar 05, 2026 at 07:24:38PM +0000, Matthew Wilcox wrote:
-> > > > > > folio_split() needs to be sure that it's the only one holding a reference
-> > > > > > to the folio.  To that end, it calculates the expected refcount of the
-> > > > > > folio, and freezes it (sets the refcount to 0 if the refcount is the
-> > > > > > expected value).  Once filemap_get_entry() has incremented the refcount,
-> > > > > > freezing will fail.
-> > > > > > 
-> > > > > > But of course, we can race.  filemap_get_entry() can load a folio first,
-> > > > > > the entire folio_split can happen, then it calls folio_try_get() and
-> > > > > > succeeds, but it no longer covers the index we were looking for.  That's
-> > > > > > what the xas_reload() is trying to prevent -- if the index is for a
-> > > > > > folio which has changed, then the xas_reload() should come back with a
-> > > > > > different folio and we goto repeat.
-> > > > > > 
-> > > > > > So how did we get through this with a reference to the wrong folio?
-> > > > > 
-> > > > > What would xas_reload() return if we raced with split and index pointed
-> > > > > to a tail page before the split?
-> > > > > 
-> > > > > Wouldn't it return the folio that was a head and check will pass?
-> > > > 
-> > > > It's not supposed to return the head in this case.  But, check the code:
-> > > > 
-> > > >         if (!node)
-> > > >                 return xa_head(xas->xa);
-> > > >         if (IS_ENABLED(CONFIG_XARRAY_MULTI)) {
-> > > >                 offset = (xas->xa_index >> node->shift) & XA_CHUNK_MASK;
-> > > >                 entry = xa_entry(xas->xa, node, offset);
-> > > >                 if (!xa_is_sibling(entry))
-> > > >                         return entry;
-> > > >                 offset = xa_to_sibling(entry);
-> > > >         }
-> > > >         return xa_entry(xas->xa, node, offset);
-> > > > 
-> > > > (obviously CONFIG_XARRAY_MULTI is enabled)
-> > > >
-> > > Yes we have this CONFIG enabled.
-> > > 
-> > > Also FWIW, happy to run some additional experiments or more debugging. We _can_
-> > > reproduce this, as a machine hits this about every day on a sample of ~128
-> > > machines. We also do get crashdumps so we can poke around there as needed.
-> > > 
-> > > I was going to deploy this patch onto a subset of machines, but reading through
-> > > this thread I'm a bit concerned if a retry doesn't actually fix the problem,
-> > > then we will just loop on this condition and hang.
-> > 
-> > I would be useful to know if the condition is persistent or if retry
-> > "fixes" the problem.
-> 
-> I was able to deploy my patch into a set of machines and test from March 11th
-> until now. So far it seems like this patch addresses this issue. While removing
-> the BUG_ON means that we will no longer see the call trace messages, I looked
-> for any lockups that would be related folio/filesystem activities and did not
-> find any.
-> 
-> Let me know what else would be useful here, I am happy to re-propose my patch
-> without the RFC, unless more verification/analysis is needed.
+Hi,
 
-I wounder if 577a1f495fd7 ("mm/huge_memory: fix a folio_split() race
-condition with folio_try_get()") is relevant here.
+kernel test robot noticed the following build errors:
 
-Do you have it applied on the tree where the problem triggers?
+[auto build test ERROR on 7aaa8047eafd0bd628065b15757d9b48c5f9c07d]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-Kconfig-changes-for-migrate-on-fault-for-device-pages/20260330-124915
+base:   7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+patch link:    https://lore.kernel.org/r/20260330043017.251808-4-mpenttil%40redhat.com
+patch subject: [PATCH v7 3/6] mm/hmm: do the plumbing for HMM to participate in migration
+config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260330/202603301832.rpYcya7E-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 2cd67b8b69f78e3f95918204320c3075a74ba16c)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260330/202603301832.rpYcya7E-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603301832.rpYcya7E-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from fs/aio.c:40:
+>> include/linux/migrate.h:114:1: error: function definition is not allowed here
+     114 | {
+         | ^
+   include/linux/migrate.h:127:1: error: function definition is not allowed here
+     127 | {
+         | ^
+   include/linux/migrate.h:131:1: error: function definition is not allowed here
+     131 | {
+         | ^
+   In file included from fs/aio.c:41:
+   In file included from include/linux/ramfs.h:5:
+   In file included from include/linux/fs_parser.h:11:
+>> include/linux/fs_context.h:141:1: error: function definition is not allowed here
+     141 | {
+         | ^
+   In file included from fs/aio.c:41:
+   In file included from include/linux/ramfs.h:5:
+>> include/linux/fs_parser.h:75:1: error: function definition is not allowed here
+      75 | {
+         | ^
+   include/linux/fs_parser.h:95:1: error: function definition is not allowed here
+      95 | { return true; }
+         | ^
+   In file included from fs/aio.c:41:
+>> include/linux/ramfs.h:15:1: error: function definition is not allowed here
+      15 | {
+         | ^
+   In file included from fs/aio.c:49:
+>> fs/internal.h:113:1: error: function definition is not allowed here
+     113 | {
+         | ^
+   fs/internal.h:121:1: error: function definition is not allowed here
+     121 | {
+         | ^
+   fs/internal.h:150:1: error: function definition is not allowed here
+     150 | {
+         | ^
+   fs/internal.h:170:1: error: function definition is not allowed here
+     170 | {
+         | ^
+>> fs/internal.h:214:6: error: conflicting types for 'in_group_or_capable'
+     214 | bool in_group_or_capable(struct mnt_idmap *idmap,
+         |      ^
+   include/linux/fs.h:1842:6: note: previous declaration is here
+    1842 | bool in_group_or_capable(struct mnt_idmap *idmap,
+         |      ^
+   In file included from fs/aio.c:49:
+   fs/internal.h:313:1: error: function definition is not allowed here
+     313 | {
+         | ^
+   fs/internal.h:319:1: error: function definition is not allowed here
+     319 | {
+         | ^
+>> fs/internal.h:330:19: error: conflicting types for 'mnt_idmap_get'
+     330 | struct mnt_idmap *mnt_idmap_get(struct mnt_idmap *idmap);
+         |                   ^
+   include/linux/mnt_idmapping.h:124:19: note: previous declaration is here
+     124 | struct mnt_idmap *mnt_idmap_get(struct mnt_idmap *idmap);
+         |                   ^
+   In file included from fs/aio.c:49:
+>> fs/internal.h:331:6: error: conflicting types for 'mnt_idmap_put'
+     331 | void mnt_idmap_put(struct mnt_idmap *idmap);
+         |      ^
+   include/linux/mnt_idmapping.h:125:6: note: previous declaration is here
+     125 | void mnt_idmap_put(struct mnt_idmap *idmap);
+         |      ^
+   In file included from fs/aio.c:49:
+   fs/internal.h:352:1: error: function definition is not allowed here
+     352 | {
+         | ^
+>> fs/aio.c:245:1: error: function definition is not allowed here
+     245 | {
+         | ^
+>> fs/aio.c:257:37: error: variable has incomplete type 'const struct file_operations'
+     257 | static const struct file_operations aio_ring_fops;
+         |                                     ^
+   include/linux/fs_context.h:19:8: note: forward declaration of 'struct file_operations'
+      19 | struct file_operations;
+         |        ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   20 errors generated.
+--
+   In file included from mm/filemap.c:45:
+>> include/linux/migrate.h:114:1: error: function definition is not allowed here
+     114 | {
+         | ^
+   include/linux/migrate.h:127:1: error: function definition is not allowed here
+     127 | {
+         | ^
+   include/linux/migrate.h:131:1: error: function definition is not allowed here
+     131 | {
+         | ^
+   In file included from mm/filemap.c:46:
+>> include/linux/pipe_fs_i.h:162:1: error: function definition is not allowed here
+     162 | {
+         | ^
+   include/linux/pipe_fs_i.h:176:1: error: function definition is not allowed here
+     176 | {
+         | ^
+   include/linux/pipe_fs_i.h:186:1: error: function definition is not allowed here
+     186 | {
+         | ^
+   include/linux/pipe_fs_i.h:198:1: error: function definition is not allowed here
+     198 | {
+         | ^
+   include/linux/pipe_fs_i.h:207:1: error: function definition is not allowed here
+     207 | {
+         | ^
+   include/linux/pipe_fs_i.h:216:1: error: function definition is not allowed here
+     216 | {
+         | ^
+   include/linux/pipe_fs_i.h:225:1: error: function definition is not allowed here
+     225 | {
+         | ^
+   include/linux/pipe_fs_i.h:236:1: error: function definition is not allowed here
+     236 | {
+         | ^
+   include/linux/pipe_fs_i.h:245:1: error: function definition is not allowed here
+     245 | {
+         | ^
+   include/linux/pipe_fs_i.h:258:1: error: function definition is not allowed here
+     258 | {
+         | ^
+   include/linux/pipe_fs_i.h:269:1: error: function definition is not allowed here
+     269 | {
+         | ^
+   include/linux/pipe_fs_i.h:283:1: error: function definition is not allowed here
+     283 | {
+         | ^
+   include/linux/pipe_fs_i.h:296:1: error: function definition is not allowed here
+     296 | {
+         | ^
+   In file included from mm/filemap.c:47:
+>> include/linux/splice.h:94:1: error: function definition is not allowed here
+      94 | {
+         | ^
+   In file included from mm/filemap.c:48:
+>> include/linux/rcupdate_wait.h:63:1: error: function definition is not allowed here
+      63 | {
+         | ^
+   include/linux/rcupdate_wait.h:74:1: error: function definition is not allowed here
+      74 | {
+         | ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   20 errors generated.
+--
+   In file included from mm/folio-compat.c:8:
+>> include/linux/migrate.h:114:1: error: function definition is not allowed here
+     114 | {
+         | ^
+   include/linux/migrate.h:127:1: error: function definition is not allowed here
+     127 | {
+         | ^
+   include/linux/migrate.h:131:1: error: function definition is not allowed here
+     131 | {
+         | ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:18:
+>> include/linux/page_counter.h:58:1: error: function definition is not allowed here
+      58 | {
+         | ^
+   include/linux/page_counter.h:67:1: error: function definition is not allowed here
+      67 | {
+         | ^
+   include/linux/page_counter.h:82:1: error: function definition is not allowed here
+      82 | {
+         | ^
+   include/linux/page_counter.h:91:1: error: function definition is not allowed here
+      91 | {
+         | ^
+   include/linux/page_counter.h:109:39: error: function definition is not allowed here
+     109 |                                                      bool recursive_protection) {}
+         |                                                                                 ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:19:
+   In file included from include/linux/vmpressure.h:11:
+>> include/linux/eventfd.h:44:1: error: function definition is not allowed here
+      44 | {
+         | ^
+   include/linux/eventfd.h:88:1: error: function definition is not allowed here
+      88 | {
+         | ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:19:
+>> include/linux/vmpressure.h:48:58: error: function definition is not allowed here
+      48 |                               unsigned long scanned, unsigned long reclaimed) {}
+         |                                                                               ^
+   include/linux/vmpressure.h:50:18: error: function definition is not allowed here
+      50 |                                    int prio) {}
+         |                                              ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:23:
+   In file included from include/linux/writeback.h:11:
+>> include/linux/flex_proportions.h:64:1: error: function definition is not allowed here
+      64 | {
+         | ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:23:
+   In file included from include/linux/writeback.h:12:
+>> include/linux/backing-dev-defs.h:281:1: error: function definition is not allowed here
+     281 | {
+         | ^
+   include/linux/backing-dev-defs.h:286:1: error: function definition is not allowed here
+     286 | {
+         | ^
+   include/linux/backing-dev-defs.h:290:1: error: function definition is not allowed here
+     290 | {
+         | ^
+   include/linux/backing-dev-defs.h:294:1: error: function definition is not allowed here
+     294 | {
+         | ^
+   include/linux/backing-dev-defs.h:298:1: error: function definition is not allowed here
+     298 | {
+         | ^
+   In file included from mm/folio-compat.c:10:
+   In file included from include/linux/rmap.h:12:
+   In file included from include/linux/memcontrol.h:23:
+   In file included from include/linux/writeback.h:13:
+   In file included from include/linux/blk_types.h:10:
+>> include/linux/bvec.h:43:1: error: function definition is not allowed here
+      43 | {
+         | ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   20 errors generated.
+--
+   In file included from mm/vmscan.c:42:
+>> include/linux/migrate.h:114:1: error: function definition is not allowed here
+     114 | {
+         | ^
+   include/linux/migrate.h:127:1: error: function definition is not allowed here
+     127 | {
+         | ^
+   include/linux/migrate.h:131:1: error: function definition is not allowed here
+     131 | {
+         | ^
+   In file included from mm/vmscan.c:43:
+>> include/linux/delayacct.h:255:1: error: function definition is not allowed here
+     255 | {}
+         | ^
+   include/linux/delayacct.h:257:1: error: function definition is not allowed here
+     257 | {}
+         | ^
+   include/linux/delayacct.h:259:1: error: function definition is not allowed here
+     259 | {}
+         | ^
+   include/linux/delayacct.h:261:1: error: function definition is not allowed here
+     261 | {}
+         | ^
+   include/linux/delayacct.h:263:1: error: function definition is not allowed here
+     263 | {}
+         | ^
+   include/linux/delayacct.h:266:1: error: function definition is not allowed here
+     266 | { return 0; }
+         | ^
+   include/linux/delayacct.h:268:1: error: function definition is not allowed here
+     268 | { return 0; }
+         | ^
+   include/linux/delayacct.h:270:1: error: function definition is not allowed here
+     270 | { return 0; }
+         | ^
+   include/linux/delayacct.h:272:1: error: function definition is not allowed here
+     272 | {}
+         | ^
+   include/linux/delayacct.h:274:1: error: function definition is not allowed here
+     274 | {}
+         | ^
+   include/linux/delayacct.h:276:1: error: function definition is not allowed here
+     276 | {}
+         | ^
+   include/linux/delayacct.h:278:1: error: function definition is not allowed here
+     278 | {}
+         | ^
+   include/linux/delayacct.h:280:1: error: function definition is not allowed here
+     280 | {}
+         | ^
+   include/linux/delayacct.h:282:1: error: function definition is not allowed here
+     282 | {}
+         | ^
+   include/linux/delayacct.h:284:1: error: function definition is not allowed here
+     284 | {}
+         | ^
+   include/linux/delayacct.h:286:1: error: function definition is not allowed here
+     286 | {}
+         | ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   20 errors generated.
+--
+   In file included from mm/shmem.c:73:
+>> include/linux/migrate.h:114:1: error: function definition is not allowed here
+     114 | {
+         | ^
+   include/linux/migrate.h:127:1: error: function definition is not allowed here
+     127 | {
+         | ^
+   include/linux/migrate.h:131:1: error: function definition is not allowed here
+     131 | {
+         | ^
+   In file included from mm/shmem.c:77:
+   In file included from include/linux/syscalls.h:89:
+>> include/linux/sem.h:18:1: error: function definition is not allowed here
+      18 | {
+         | ^
+   include/linux/sem.h:23:1: error: function definition is not allowed here
+      23 | {
+         | ^
+   In file included from mm/shmem.c:77:
+   In file included from include/linux/syscalls.h:95:
+   In file included from include/trace/syscall.h:5:
+>> include/linux/tracepoint.h:49:1: error: function definition is not allowed here
+      49 | {
+         | ^
+   include/linux/tracepoint.h:75:1: error: function definition is not allowed here
+      75 | {
+         | ^
+   include/linux/tracepoint.h:80:1: error: function definition is not allowed here
+      80 | {
+         | ^
+   include/linux/tracepoint.h:85:1: error: function definition is not allowed here
+      85 | {
+         | ^
+   include/linux/tracepoint.h:92:1: error: function definition is not allowed here
+      92 | {
+         | ^
+   include/linux/tracepoint.h:99:1: error: function definition is not allowed here
+      99 | {
+         | ^
+   include/linux/tracepoint.h:127:1: error: function definition is not allowed here
+     127 | { }
+         | ^
+   include/linux/tracepoint.h:129:1: error: function definition is not allowed here
+     129 | {
+         | ^
+   include/linux/tracepoint.h:159:1: error: function definition is not allowed here
+     159 | {
+         | ^
+   In file included from mm/shmem.c:77:
+   In file included from include/linux/syscalls.h:95:
+   In file included from include/trace/syscall.h:7:
+   In file included from include/linux/trace_events.h:6:
+   In file included from include/linux/ring_buffer.h:7:
+>> include/linux/poll.h:43:1: error: function definition is not allowed here
+      43 | {
+         | ^
+   include/linux/poll.h:63:1: error: function definition is not allowed here
+      63 | {
+         | ^
+   include/linux/poll.h:68:1: error: function definition is not allowed here
+      68 | {
+         | ^
+   include/linux/poll.h:74:1: error: function definition is not allowed here
+      74 | {
+         | ^
+   include/linux/poll.h:79:1: error: function definition is not allowed here
+      79 | {
+         | ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   20 errors generated.
+..
+
+
+vim +114 include/linux/migrate.h
+
+   112	
+   113	static inline enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
+ > 114	{
+   115		return MIGRATE_VMA_SELECT_NONE;
+   116	}
+   117	
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
