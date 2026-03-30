@@ -4,89 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7674FB3CE2
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F240FB3CEB
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F61B6B0095; Mon, 30 Mar 2026 05:35:38 -0400 (EDT)
+	id CDCEC6B0092; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CD736B0096; Mon, 30 Mar 2026 05:35:38 -0400 (EDT)
+	id C8D9F6B0095; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1322F6B0098; Mon, 30 Mar 2026 05:35:38 -0400 (EDT)
+	id BA2D86B0096; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 068CB6B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:35:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E157BB4FF
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:35:37 +0000 (UTC)
-X-FDA: 84602221914.12.6C8464A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EC04D1C0003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:35:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QdciE/Iq";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A96B36B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 034711B89CE
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:47:42 +0000 (UTC)
+X-FDA: 84602252406.02.2E427B6
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DE8BD140007
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:47:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774864061; a=rsa-sha256;
+	cv=none;
+	b=4V4xYY+Kz/mJRJwvZG1oJIBywURZM84k7y7eXMCgY/WRMZQTMGyceSspNMgw1N+ubIZhZl
+	1D/DtyMvx7wv5c9rEvagZdSXKo7Fvqcgy2GB+NWm76XDRNL/eCFURYqReM/xqQcw8J/rX1
+	YkkM5J2UDf3KwxasJG0Iq23gE0kV1Hw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774863336;
+	s=arc-20220608; t=1774864061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xqxFktKd4m1zGsF/mrLF20s/UOZTrbps7tHG4RNCk8w=;
-	b=Si5PY0yLo//05JttjX9hbtM5IaTpI882Tp9gATteq1VmwtFfNhraUUgsfAXqaFu0wVZipv
-	1WPEcM/C7XkWDtKONtJObwX8/BZ3qqnSyJgxnW4GNbqbnISkybZWI3XWyRygGxCrmMKk+D
-	36YSnpqN+MlkdBzW8Gn9wSNPjr9jguA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QdciE/Iq";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774863336; a=rsa-sha256;
-	cv=none;
-	b=4aitfakkRdeeDp7zn/gkNgW2k3tXVruwUrBE7etQh5YCqizX1H70iGggJqGHYuT6n/JXmf
-	nyH+InWfeI37uoPod5TOC0PMYB04PErFtxzmLrNvcSuJ5ptCUE+glSwPH5iB6Cs44BljX/
-	ymPy/IhV/SU8jQbVUHtaB+bnGl0P38c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2E1640DDE;
-	Mon, 30 Mar 2026 09:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B859C4CEF7;
-	Mon, 30 Mar 2026 09:35:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774863334;
-	bh=xqxFktKd4m1zGsF/mrLF20s/UOZTrbps7tHG4RNCk8w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QdciE/IqKnCA9XD0OWM5s5YkhSm/y9muh8J8bUhJJQyJPjn6Ei5DHqTrU9pgNpQUo
-	 BfNxk9cw2nzYxKuVP+Km5hZisqvCvZZ4xwyWQKq+IpHN1HBf8K1J9BSG8d/DfnOq7u
-	 rjMpHYFiTt0LqBLVzp2BEqan6ullUds5FUpM2xCBazbmbzkJpfjSBPDP34upMYI0Qe
-	 aG7c9wmP4l9+sIDxDkWO4Bi6dhbInGy5BdUy+LtUpFCLdqKM1CkHHbLFKqWWQh9E46
-	 7Ciq7//L8TkmO1pIefcN6KhA0YMPqIzJRCFYZfHFLLlG0DL8aC0FYDOpMe7ywTvOVl
-	 oaxll3j2bzQjw==
-Date: Mon, 30 Mar 2026 10:35:29 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
-Message-ID: <7f8d9fb0-16c5-4071-b310-8881fe389648@lucifer.local>
-References: <20260326185629.355476-1-ljs@kernel.org>
- <20260330002340.GA116015@shakeel.butt@linux.dev>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UV9ftCmFwMfCiDo0LKD1r/tvPVIbv9rCYHK7wqvtSeQ=;
+	b=8pFP/t8s1mn5XIs26tLn68+0KMpRr07vl0oLj5x3lv0wBvPtI4RBdvpQusFnLbL/7BW5qL
+	8S2dxq1u6QzZeqlpywhVkg4w1gTjO+aNtCanc82S9g+IWPEB7KpsiptTJkumtJTOjAKPs6
+	fHi1TwUNDz8LHebU+FBRAM/hN59Sy5s=
+X-AuditID: a67dfc5b-c2dff70000001609-3c-69ca46b88de5
+From: Rakie Kim <rakie.kim@sk.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: akpm@linux-foundation.org,
+	gourry@gourry.net,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Rakie Kim <rakie.kim@sk.com>
+Subject: Re: [RFC PATCH 2/4] mm/memory-tiers: introduce socket-aware topology management for NUMA nodes
+Date: Mon, 30 Mar 2026 18:47:23 +0900
+Message-ID: <20260330094733.425-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <20260318122242.00004e0d@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330002340.GA116015@shakeel.butt@linux.dev>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPIsWRmVeSWpSXmKPExsXC9ZZnke4Ot1OZBmumG1rMWb+GzeLu4wts
+	FrtuhFhMn3qB0eLEzUY2i9U31zBaPN/6i9Hi593j7Bb7nz5nsVi18BqbxfGt89gttjc8YLc4
+	P+sUi8XlXXPYLO6t+c9qcXLWShaLb33SFvf7HCyOrN/OZDH50gI2i9mNfYwWtyYcY7JYvSbD
+	YvbRe+wOEh47Z91l91iwqdSju+0yu0fLkbesHov3vGTy2LSqk81j06dJ7B4nZvxm8dj50NKj
+	t/kdm8fHp7dYPKbOrvdYv+Uqi8eZBUfYPT5vkgvgj+KySUnNySxLLdK3S+DK2LTkFVPBa4WK
+	Sy/3sjQwrpLqYuTgkBAwkdjQG9bFyAlm3pk+iRUkzCagJHFsbwxIWETASOJVzwHGLkYuDmaB
+	zawSD8/3sYAkhAXSJaZdmwxmswioSmzdcxHM5hUwlviw7zMzxExNiXUbb4HFOQUMJb5PaGUC
+	sYUEeCRebdjPCFEvKHFy5hOwGmYBeYnmrbOZQZZJCPxklzh75A0jxCBJiYMrbrBMYOSfhaRn
+	FpKeBYxMqxiFMvPKchMzc0z0MirzMiv0kvNzNzECo3VZ7Z/oHYyfLgQfYhTgYFTi4TVgO5kp
+	xJpYVlyZe4hRgoNZSYS3e/qxTCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNT
+	UwtSi2CyTBycUg2MStJX9pgu6V+aqzP3iHP4sbqX9z8efCO6JF1M+zz3EXkWt/UKJ9tP9dze
+	v4t7U/OSM3nmoRvv/Q7Y+8bxxZMvfrtqajtSrpw4PJ3zwf9rXRHL0gW0M9L9FB/vtdh34tu5
+	C14zzwn+FGWXM5/DJnuJ12rddi6jGrNtp7/w8zi8VbAzKRXtUZTdpsRSnJFoqMVcVJwIAGld
+	VcLSAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrNIsWRmVeSWpSXmKPExsXCNUM9RneH26lMg9d7FC3mrF/DZnH38QU2
+	i103QizOTZnNZjF96gVGixM3G9ksVt9cw2jxfOsvRoufd4+zW3x+9prZYv/T5ywWqxZeY7M4
+	vnUeu8XhuSdZLbY3PGC3OD/rFIvF5V1z2CzurfnPanFy1koWi2990hb3+xwsDl17zmpxZP12
+	JovJlxawWcxu7GO0uDXhGJPF6jUZFr+3rQAKHb3H7iDrsXPWXXaPBZtKPbrbLrN7tBx5y+qx
+	eM9LJo9NqzrZPDZ9msTucWLGbxaPnQ8tPXqb37F5fHx6i8Xj220Pj8UvPjB5TJ1d77F+y1UW
+	jzMLjrAHCEZx2aSk5mSWpRbp2yVwZWxa8oqp4LVCxaWXe1kaGFdJdTFyckgImEjcmT6JtYuR
+	g4NNQEni2N4YkLCIgJHEq54DjF2MXBzMAptZJR6e72MBSQgLpEtMuzYZzGYRUJXYuucimM0r
+	YCzxYd9nZoiZmhLrNt4Ci3MKGEp8n9DKBGILCfBIvNqwnxGiXlDi5MwnYDXMAvISzVtnM09g
+	5JmFJDULSWoBI9MqRpHMvLLcxMwcU73i7IzKvMwKveT83E2MwChdVvtn4g7GL5fdDzEKcDAq
+	8fAasJ3MFGJNLCuuzD3EKMHBrCTC2z39WKYQb0piZVVqUX58UWlOavEhRmkOFiVxXq/w1AQh
+	gfTEktTs1NSC1CKYLBMHp1QDY+uube5+X0o21y7n/T7p65Oa1XuuiFu9s18rcrta+TaTvmma
+	6kffN193FCTvvWN7kWnupF9Rn8QlHOdf/vFszZVL/P8rnKR+9AotvKZ+atnU5wJed+Nl38nV
+	Pv/xIoSx6TET07qTnwKcjml65m/+csaeMe6TfddxvxrVyAMrb8ucvc1+dIXUES8lluKMREMt
+	5qLiRAAqZ2b+zgIAAA==
+X-CFilter-Loop: Reflected
+X-Stat-Signature: 7n4ec9epfsmicxz8c8ryf1h7b54q1d7n
+X-Rspamd-Queue-Id: DE8BD140007
 X-Rspam-User: 
-X-Stat-Signature: u6dqams4mxtfyt4efiekezazj99natgn
-X-Rspamd-Queue-Id: EC04D1C0003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774863335-780186
-X-HE-Meta: U2FsdGVkX1/ApGwI7D9pidTW6mk9dg6/sufZoKCGSnFoO4dF9Jg7moxM8Aw5kzXsuRvC+gdDamiiKzvNqo/hyW1gQgXWuaDw6dO5E63Pwyc1Ew7CqtjZGodWcjmQciqZVLSTgNA5kZ7P+bSbIKhVLxWsdJlFywZRme/1qKpQbDkhkZQgp7vxEDi56uSWi3sSuPXrnnJGxBuxzpv9YKm6O98vgmWJplHhH6gqGDmDS4W8vBf3n7i11gMCbDEp4Pn2fyG6xzQ3P3eItf6BBPdoiT3+XYrGfs9BkCPlCZvgbZ4usVT9l4tSb9oG14O56hqMzPsusz/wKwQhoDHgOxu8KWFkPCoO06dNz7dJKfQUXsO1msU8Cz9ZxYopYkYjA2OxpCe9IGvCFytY1O216ZoY2qwye4RNwTZugjo477lWv67rgSsONswR+rBrqF64WwBejLAEvKszoFVBovoVLE2Xx0Z2uoE2xIU/xX6mBRus5daxnjUNXV0ikEBIXfbsT8Ff4lVMtt4VJp4NKWCzMe4j71Lhdhmj/TUyghv2HD+V5a9SNiXkbhkVDJhLitQJfLKcYM+G4XEAp6H3WqQDoDr+ZWot/9IXfDI0ys6z5BgWQpQJs8MEyNYkO11iZbMhI0v1j4wbXxO6PULSp9ApiiLt+dj4zyWQVpUk6GNNNm4yHWu/qoPNgSpwdJZCVPi2YsdlAAx8bRRqqc/uevcO3YeM2tDodrrQIlmMPRlHnKujaw2ppMVrPGFek2uWZrE89oVaNairE+jm9ryU7S/gqnShL8kO5lkBGxFeg+vbfHQyg4CulB1ov+UHmPGdcQ4qpwfavqM6oxZ6DpybuR8ICTRaCfUaCF7kVXgkO63UJrdRTBs8fGON7jv7SiSBeODJrPtpn4bjpVs0Ytlsd+WFUwF+ooVYUqL93vTWom3PmiJ74/rNKg3yrvdZ0lUGAUYZvKNq1M3WJlNKg9WciYNp1GE
- +8MRkt4Y
- /5ATHTbh11GT/CRvirvLnUAEndwwEBFt7eEoVDFHo/gEOr92RUXjWYDFRk0Oo6PrIWyABNnxUVi7GBG+Blcee8mFlZLw6ufIj8B0JQUwhByiq2jiwX2a+1pikEUdJFhKykRyJqjX6NcrIBWbGbhZbXUj1JcKHhPePUTw5x0RVbq7Qhup/b3rFPn0D2rInQ1I1NEJqofTdOpnCIGnjxCopsF2vKNO14s5v4GEUZBYnW4L3ang=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774864058-184061
+X-HE-Meta: U2FsdGVkX1+D208bB7Z2EZAXX9Zs04VhU5wSEFR+Q5kEgNw2RDw1q9JmjOvli7+t0SjKEJe+OSuA3DWYCPaAg8I9qtf8n+ImLQcmx/WtcljNhwg3Kplj34CX5Mu4bSDw/xG7kK/niM/Mnxa6EXE+hcexE7YCez35DlHo1oyLs1Npc3HRJAyLvQ3YnZksfhC5TpXtk6y45N0Q3ozBVGHISYYhqCvOXIEgGsYpIBsLHl4WMHECm0RrVJGg93c25ynsz6P3qxdQgV094lfdzGKaGZqLk2IxYQjl+kskte8OLTFvyikSCK48nSgW+AHH+UNHTwv7aN3hyBj0ufEsLN7krVh+yS+Znx8zIs2JN/KwtiPaKP7PYrzoyq2P9VFRBiU5DWUV/sxyXu0FGlxsuZ+gKGnOFDE5g3dZ0S9v6lU9wUtimco8odeRFIlazDLTo+DWK20w1qYv99NHb2AAVdw+5oyypfmo2eWNcuuvypoILHjq/YpOve02WjvJua57RooRm7f5Qy+93tpbTy7R0zdXVISzoVOSoYFMkG6ulJlbgj9MgTtmNmzWjrKS1W8De3fVNYoB/wvm08tmhTAGdt61rqhKvdOu43UHC6JvYh23efAqO5+2DKjTP5OuDAJme3OqNaJ1sLWC7fLOcfTa1KJIxf4bPkQeh5KwBQ3E3RZtDSAr8Z4a6EhIWU5EdZkCeJ/Tejwhh6O8NkDmSbJtO15JoDXbvy2ORcLKEuMCrVf0oDQFkU7Qvbci54zVr0Udn5ApgRyIZZDpK/Xa8mBr7O5OYKPu69h28vpVQvKeBbniwolHxwH+W6nFF9NpNdWpVHrwHvJtVIBpgN9gtoxc1+AKnxsXa+y5WsDEZLctVSmekl14aSKy+zb+vzhi4ekPXSV1klGQcBzd4vPxlCmQ+QtKenL5tb6eep8zGRPPeD0Jm5ab0XlE7IxOX1HyUXuOAtGTkLRPS80ED5r8weHDlWZ
+ jWdu7G6W
+ 9dcoFh9h9EspL41mXFUGW4lD5wsFZH2oxsVPqesQhwPCwwReo7Wwa1xNqcsSPt7QlGX1N964uceQlABtdQ5fUiHbcb6yVq74UgPvc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +129,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 29, 2026 at 05:31:41PM -0700, Shakeel Butt wrote:
-> On Thu, Mar 26, 2026 at 06:56:29PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > We are moving to a far more proactive model of maintainership within mm and
-> > thus put a great deal of emphasis on sub-maintainers being active within
-> > the community both in terms of code contributions and review.
-> >
-> > The MGLRU has not had much activity since being added to the kernel and the
-> > current maintainers who kindly stepped up have unfortunately not been able
-> > to contribute a great deal to it for over a year, nor engage all that
-> > heavily in review.
-> >
-> > As a result, and within no negative connotations implied whatsoever, it
-> > seems appropriate to downgrade the current maintainers to reviewers.
-> >
-> > At this time nobody is quite exercising the maintainer role in this area of
-> > the kernel, but there is encouraging activity from a number of people who
-> > are trusted elsewhere in the kernel, and who have contributed relevant work
-> > or review.
-> >
-> > Therefore add further reviewers, and at this stage - to reflect the reality
-> > on the ground - we will not have any sub-maintainers listed at all.
-> >
-> > Each of the files listed are shared with other sections in MAINTAINERS, so
-> > this doesn't reduce sub-maintainer coverage.
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Wed, 18 Mar 2026 12:22:42 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+> On Mon, 16 Mar 2026 14:12:50 +0900
+> Rakie Kim <rakie.kim@sk.com> wrote:
+> 
+> > The existing NUMA distance model provides only relative latency values
+> > between nodes and lacks any notion of structural grouping such as socket
+> > or package boundaries. As a result, memory policies based solely on
+> > distance cannot differentiate between nodes that are physically local
+> > to the same socket and those that belong to different sockets. This
+> > often leads to inefficient cross-socket demotion and suboptimal memory
+> > placement.
+> > 
+> > This patch introduces a socket-aware topology management layer that
+> > groups NUMA nodes according to their physical package (socket)
+> > association. Each group forms a "memory package" that explicitly links
+> > CPU and memory-only nodes (such as CXL or HBM) under the same socket.
+> > This structure allows the kernel to interpret NUMA topology in a way
+> > that reflects real hardware locality rather than relying solely on
+> > flat distance values.
+> > 
+> > By maintaining socket-level grouping, the kernel can:
+> >  - Enforce demotion and promotion policies that stay within the same
+> >    socket.
+> >  - Avoid unintended cross-socket migrations that degrade performance.
+> >  - Provide a structural abstraction for future policy and tiering logic.
+> > 
+> > Unlike ACPI-provided distance tables, which offer static and symmetric
+> > relationships, this socket-aware model captures the true hardware
+> > hierarchy and provides a flexible foundation for systems where the
+> > distance matrix alone cannot accurately express socket boundaries or
+> > asymmetric topologies.
+> 
+> Careful with the generalities in here. There is no way to derive the
+> 'true' hierarchy. What this is doing is applying a particular set
+> of heuristics to the data that ACPI provided and attempting to use
+> that to derive relationships. In simple cases that might work fine.0
+> 
+> Doing so is OK in an RFC for discussion but this will need testing
+> against a wide range of topologies to at least ensure it fails gracefully.
+> Note we've had to paper over quite a few topology assumptions in the
+> kernel and this feels like another one that will bite us later.
+> 
+> I'd avoid the socket terminology as multiple NUMA nodes in sockets
+> have been a thing for many years. Today there can even be multiple
+> IO dies with a complex 'distance' relationship wrt to the CPUs
+> in that socket. Topologies of memory controllers in those
+> packages are another level of complexity.
+> 
+> 
+> Otherwise a few general things from a quick look. 
+> 
+> I'd avoid goto out; where out just returns.  That just makes code
+> flow more complex and often makes for longer code. When you have
+> an error and there is nothing to cleanup just return immediately.
+> 
+> guard() / scoped_guard() will help simplify some of the locking.
+> 
+> Thanks,
+> 
+> Jonathan
 >
-> Haha, I feel like I am shooting myself in the foot, but if I plan to
-> make drastic changes, then I need to step up and take some
-> responsibility for it.
->
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-It's much appreciated :)
+Hello Jonathan,
 
-Cheers, Lorenzo
+First of all, I sincerely apologize for the delayed response. I completely 
+missed this email while I was highly focused on debugging the HMAT and 
+CDAT latency issues in the other threads.
+
+You are absolutely right about the terminology and the architectural 
+assumptions. Given modern complex architectures with multiple NUMA nodes 
+and IO dies within a single physical package, relying on the term "socket" 
+is outdated and misleading. I completely agree that this is just another 
+heuristic, not the "true" hierarchy. 
+
+For the v2 patch, I will reword the commit messages to remove those 
+generalities and avoid using the strict "socket" terminology. I will 
+also make sure the logic is designed to fail gracefully and fall back 
+to the default behavior when it encounters complex topologies that it 
+cannot cleanly resolve.
+
+Thank you so much for the detailed code review as well. I will definitely 
+remove the unnecessary `goto out;` statements and replace them with 
+direct returns. I will also adopt `guard()` and `scoped_guard()` to 
+simplify the locking mechanics. 
+
+Thanks again for your time and the valuable feedback.
+
+Rakie Kim
 
