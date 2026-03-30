@@ -4,147 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909E710D14A2
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA5AC10D14A4
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 049156B009B; Mon, 30 Mar 2026 07:46:54 -0400 (EDT)
+	id EAFAC6B0092; Mon, 30 Mar 2026 07:56:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B346B009F; Mon, 30 Mar 2026 07:46:53 -0400 (EDT)
+	id E5FCA6B0095; Mon, 30 Mar 2026 07:56:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E512C6B00A1; Mon, 30 Mar 2026 07:46:53 -0400 (EDT)
+	id D4EA66B0096; Mon, 30 Mar 2026 07:56:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D24576B009B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:46:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99851160719
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:46:53 +0000 (UTC)
-X-FDA: 84602552706.06.E2578D3
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BEB8F80004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:46:51 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WM1QlRYN;
-	spf=pass (imf30.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8B16B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:56:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56D4813B275
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:56:37 +0000 (UTC)
+X-FDA: 84602577234.15.579941B
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4C6CF1A0002
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:56:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RQsmH6Uy;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774871795; a=rsa-sha256;
+	cv=none;
+	b=EoObPclexJO5nVuBRMpGbv/ZNKPxYCG0hZ1eDJzUD9I4sF6nzH1EIForfPS4rWas9w12fO
+	T6CkHVKwkZCBX+7gSdGwPm2CNfn8WjHKcQ9Khk7IzzNmLsGNCSCxg+lV/Ajz8G/fWQNnHH
+	uzoyWk6BR43nJezrsbZmlNxIVzG/IEQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774871211;
+	s=arc-20220608; t=1774871795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eML4waLa1Jl6y2CJpXYjrV0+SpUpnkgbYk+PFVbKujU=;
-	b=cVetGvcWJrYkWPO7P+9B1l4IPmTThBiJbSLOQTvDjjJd8SeJkMYSLdT0/daYm/tt0XMvmE
-	SwPAutwOk6LBST5k+bPl4OdugkTr8Gf1kKoowNLm/jYSCsauUbGSIQEz6u5rEpYTsB/7FC
-	P9PHz8MQQF+dYXrCfX6+IdFTC2l+BKs=
+	bh=MX3sNhAhPpZu7EQC0NlANj9qKvyIoy92fBnjmNHbYpo=;
+	b=gBDcgeLa47YXuXBvRpSvkrzmzRLSQgqoXM1h0cwljqdjFlvorbY3RDEcTCEPrtN0lBzuqE
+	wbmIc9V1IhF+CZwC5o5G9d+jGmzs4c30ZIBzI9KshjB2JY1hDq5kmAoPcciHm1/URbp4E5
+	gvc0SN3xw4CTIhvcwa2BKd9Oaf4H4pk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WM1QlRYN;
-	spf=pass (imf30.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774871211; a=rsa-sha256;
-	cv=none;
-	b=b8UW6qi0NjDhwu7x2QFfLz/PWM2pN0q8mc/ljKcIH5weAMaaVnNHf7ksCuL7Pv+WJSjl6e
-	Z8oI0w+JusWnv+yojSOXxJKxaKMdUiXaQ+DGPw3Z5bCBh9LmfiN2L29nN7PBP3WbYem5Os
-	BMhyj2LT8aH3eOVL5fIEQe2+pQ8kr3Q=
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2ba895adfeaso4550784eec.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:46:51 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=RQsmH6Uy;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-485358f43e7so4933735e9.2
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:56:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774871210; x=1775476010; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eML4waLa1Jl6y2CJpXYjrV0+SpUpnkgbYk+PFVbKujU=;
-        b=WM1QlRYN3rDHsEjoQM6mFu1+DABSu4m968Vi4+yMagmBftmV8rKVA7aqqUM2dAtSRY
-         lNjE8YcAi1WViU43MXk8W+YLwicGwFnsAqOI6Daut39b8hm4p1tCEKC+f037ld6z+EN4
-         XcL/DFi2vNxf2dNMJa3jnhD68gZPuF94zTpzSsIaoh9EhFWNCROepPs+CACytIUTJ7gc
-         2pBOBrwSLjLmG9K2o6dfCK6PlPTeGa+I7xhCW5opsan/5pLooplrPQTKFkp4MLeM1Tn5
-         GyZ5ACQ/U5ruF27bZDrJcMoamoqjh0dkXYq/oh/pu9OwQDd4Z7f7I95Td6b+We0V7/Pm
-         yMWw==
+        d=suse.com; s=google; t=1774871794; x=1775476594; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MX3sNhAhPpZu7EQC0NlANj9qKvyIoy92fBnjmNHbYpo=;
+        b=RQsmH6Uy/f75GLQfI5cSmcoyUNL8a9b8+bfqR4rm8DznBq1/Q44Awb27Knm7eDclAc
+         RZHq6z+GNWY2/TQ4jnCihxjmZNF8CWEXBh9x+MwlRyG0y1xwYdDX2wUeRwjwi4itCYaC
+         PlnhEmsUmEC71Waly56c3eGCdWznIqrFIyoGqifthBzFxnmA8g0dM0CfUXXOmPsZGg11
+         jxYKuaTmDnCo/N4ymrXdrx+Dk6X27SIvhT9GeO/ZST2X88CyCZGALmlVzNR281ELMB/V
+         9KUSLY+TBnM+oBSpp7m32ji1rUi4pBIURATJifi7G897NnaF8eG2G625CDG/P9mtK7NO
+         o8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774871210; x=1775476010;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eML4waLa1Jl6y2CJpXYjrV0+SpUpnkgbYk+PFVbKujU=;
-        b=jkBAqCPJfLgR5ZQOVvrBovL+bs1EdRxo0afwONFIK1mpIq2+HB/pMzBZeICJylmpGN
-         RynpHDApj6hHTifTCAWPjTuGTYTtmEjdKoFH+GAMqHr7niQo6Z5W2pK8Mt8oV3uJzYZv
-         7Hpjl3GAYLAWlgtTvjvKHPVpmS6LF5Vimmo3Hw8CCB9Ns3JDpcDycWtXZA8XYgPAN30V
-         /04Uyl5Lk5F9YVAD+chKXr8wf95zKWEjjQ7D04YzB7866nfy/rA6KwokJIfpXHWQmfwm
-         7to6bIGjvnpeLEWd2+my3ub8KDTWXMbpWD9b5IWyiGbUNsMk+RySf+wOZcK+DtPfa5QV
-         R3zw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPrDSRJOljKsGpcFwjam4AVvrYOHeXrMjD62aeHvIhZHYjKl5oFKjl45lq2bMkELrmHA8i8LDRvg==@kvack.org
-X-Gm-Message-State: AOJu0YxToWYe2QJvxsD4ZqmyHkOr98o8AUlXrZcn0ZHbeMvOjIE269IO
-	EOORXyC7syrjHpK53l636A+NvXHXoucpsUb1y9C5tRJYpRBhUTwAlVI4
-X-Gm-Gg: ATEYQzxWGd75n2c2p5aRDwarRZfoSJq4K7J2fu8NxUa3t+y/9ZsyaAIg6s9hVzjytN0
-	O+xmVCAE0NmNSazcEVuhJ5h3dJdoiRy91PvrK6Dqlaxzk6eNH5q1XVopbEyBHhn+6GqHLjqeexB
-	ph9s5dcufCpM9Zn+85K+OFc+Dr7xBFna+VO4QVUe9kpBjbCe72hUOv+vkFZ76bWnDEhVfhjkIhH
-	YbWuK151I2f2r+KuHncSnhYsgEpKDAQctIAyyppM1CEeh+inaJhICI3sio2UKd9mfvkhP1OrAPd
-	kmmGZMw1TBqZuDAMlY0gEWNT1GUJUKOdKW8Y0b1M+YLiG8a5G4vjZUuDN2s8Jdo0lnzwder1ncg
-	oa+uohiBQFLI7dziSt/tZnKpbsKAVauih4bTBvYhbaxCTwH5CI+g5mWZRKp2gTy0dqO81JTR6AB
-	Fhdi2stcZettUGGNvLn9EfY3zhTb0xO2L9jBA=
-X-Received: by 2002:a05:7300:fb8d:b0:2c5:3b87:2ffc with SMTP id 5a478bee46e88-2c53b8732c9mr2663188eec.7.1774871210414;
-        Mon, 30 Mar 2026 04:46:50 -0700 (PDT)
-Received: from localhost.localdomain ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c3bda147sm6869724eec.5.2026.03.30.04.46.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 04:46:50 -0700 (PDT)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: peterz@infradead.org
-Cc: longman@redhat.com,
-	cgroups@vger.kernel.org,
-	akpm@linux-foundation.org,
-	anna-maria@linutronix.de,
-	boqun.feng@gmail.com,
-	bsegall@google.com,
-	dietmar.eggemann@arm.com,
-	frederic@kernel.org,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	jiangshanlai@gmail.com,
-	joelagnelf@nvidia.com,
-	josh@joshtriplett.org,
-	juri.lelli@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	mathieu.desnoyers@efficios.com,
-	mgorman@suse.de,
-	mhocko@suse.com,
-	mingo@kernel.org,
-	mingo@redhat.com,
-	neeraj.upadhyay@kernel.org,
-	paulmck@kernel.org,
-	qiang.zhang@linux.dev,
-	rcu@vger.kernel.org,
-	realwujing@gmail.com,
-	rostedt@goodmis.org,
-	shuah@kernel.org,
-	surenb@google.com,
-	tglx@kernel.org,
-	tj@kernel.org,
-	urezki@gmail.com,
-	vbabka@suse.cz,
-	vincent.guittot@linaro.org,
-	vschneid@redhat.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH 13/15] sched/isolation: Implement sysfs interface for dynamic housekeeping
-Date: Mon, 30 Mar 2026 19:46:20 +0800
-Message-ID: <20260330114620.104027-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325140432.GE3738786@noisy.programming.kicks-ass.net>
-References: <20260325140432.GE3738786@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20251104; t=1774871794; x=1775476594;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MX3sNhAhPpZu7EQC0NlANj9qKvyIoy92fBnjmNHbYpo=;
+        b=T1Pbh1nEqopUkiJeQ5O/P0d2ibIPncvoieRwoArn2+K/+TK45Y45FfP93SF0NjpyB5
+         VRSaqsV+/SV0j8Zhww+q297m7jaUUPtXxU/++KQY5dOUS3wC2Knm4+5sTMynAWm3rMjs
+         rdTl7b7Se4IO794vq+7MDxyjGsinTt6USA/gE/TjKyeEtrGzGiOzYy2IR/nNP8jfg70C
+         z6WYvsgwGh/UU0QT30+V0FNK3TLgMzn1Uf6h0Qj2ryF/kOhGvM+M3GKUj8ZRD1hcg/Ik
+         XdPqdNffdX8ERLmSZmvw/IfihalaPIVZsTEwVs5JjExw9yMOK9MB0FANoYBw2Wrac5Z4
+         1cNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQoo0B6AOAHMf9qoz4rroZX+2OAdrCgcS+THNXSBZ1hlf/f5YMtUssUuEWeI/8AVQcJwfZ+5HyNw==@kvack.org
+X-Gm-Message-State: AOJu0YzYDhB8p6l94vjOvsylAZw/nhd3E2o47UueoprGAw/wEn7vXj74
+	1H84XTcCdDGHWCmxaOEaGIfmju38m88cc44ij+bUY1glwiwl3i8L62wyNZFuyy6ydtQ=
+X-Gm-Gg: ATEYQzzgIOBL2PRLuiHengr6BfSkkjoAFcd7gKtG+JrYenRvvdYederLV7gFHSJCGut
+	TewgWiUSUvDMwbVdvksyV+pw+ztmVOljFNrqM3WGAGzI/L6JLkh6r0W4kYxX0TYsQOBZVq9ZfAe
+	fk+0qFO9a7LeL2HwdA/2ojleS/fTGLPNZ2pU3yQrjl97uwvBoOPwZc6Qjkd0vLwyWUozrO85OSj
+	sFZarpKOBYDXtXatFLT8g2rtQptcnQkAj7Y3lDeN/yQODsZ+1iCoX5QXCdGhjClFCXEkeqNew6l
+	DYweZ68+6/dzJ3LrsZJBuuBtCA89M8PHKRpT0Plg6Rwm7OGuZ4tyVCu6f8/b4nroO+oBYL1fJJa
+	u5RhclYhtVqb15VAkOgEnT3TnFsh8h8XaCspHjLFSJYd56n6d2pd9NlnEAP6g2I/3iTBw9SujjS
+	CERUndnpd0rQ74uwA74MoiG0yHnPKQTsC8MqJsFdgvXyI1SDoAYAHH7v9FzIe7aRyh26gH
+X-Received: by 2002:a05:600c:c178:b0:486:fc61:541d with SMTP id 5b1f17b1804b1-48727ef6475mr106823855e9.2.1774871793473;
+        Mon, 30 Mar 2026 04:56:33 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48722d40741sm287373255e9.13.2026.03.30.04.56.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Mar 2026 04:56:33 -0700 (PDT)
+Message-ID: <f031418a-af79-41bb-96a9-2f88ea6ee3fd@suse.com>
+Date: Mon, 30 Mar 2026 13:56:32 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+Content-Language: en-US
+To: Herbert <objecting@objecting.org>, david@kernel.org
+Cc: krzk@kernel.org, ljs@kernel.org, hlcj1234567@gmail.com, sj@kernel.org,
+ akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ kees@kernel.org, gregkh@linuxfoundation.org, brauner@kernel.org
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+ <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
+ <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
+ <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+ <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
+ <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
+ <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
+ <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
+ <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
+ <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
+ <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
+ <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
+ <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org>
+ <25688dbc-cd11-4137-bad4-a215198feee6@kernel.org>
+ <19d3e3d3297.190bc89f62053.5899613485100180781@objecting.org>
+ <6f045727-91ff-45ea-842b-c78ea61ae4d1@kernel.org>
+ <19d3e5747e1.83b0f66f64051.6129386944586321569@objecting.org>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <19d3e5747e1.83b0f66f64051.6129386944586321569@objecting.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BEB8F80004
-X-Stat-Signature: 1dnhkpget9ujrqky8e18toqeii7a8skq
 X-Rspam-User: 
-X-HE-Tag: 1774871211-308789
-X-HE-Meta: U2FsdGVkX19dLtyI2gKZBfo1/Xs4b6sJO7+zlfrdyKuaP61f/qKBejpaCeHMW149MHjwc0vHwaPvnVLpV9ACvWJA6KYyDDKGD6sJ9+7C8Vib7zFTWrVHYBjz8v9QG3MsR5LAh8GMB5TEYV6H+dqZVP93lGky3icE52s8861mcOJHKfOxN5su8LrFbzjbpcQ7bPgADpNUoImzWXpETMDj/nKmDwI1IalCbTw6JTyVhX0F2dXB3D71bFfNYOCiINIekAiYPswmafm2ECKHuUzTSQ7BeY1in7EtzaQA/pIGSDB8JvFOpBDWeTTAh2SofOmawWbjqhv/bKI7+7tCvrbqElQ3WVY6CCBjOi3qMHiE09XtFej/5bHxdeVRKHQmcMGvwDtK981K7auSNvb3tLI/X4QHYGcGcwUoJap3OB7BPjHm1MZ85AG2O0byhwDYgPT/0fZMNf08HPTkTzzS9BwTx9HDqYxVAHrHqOkHZjNlhAk3dUiyAMrbV1i6psp10INO6G1HGI9Ft2p/WNFQ1k2lnoJtLV1Df6pLe1Abcr2i9sMP5l0+c6bJJg/FHR+xze1hGsermuo/BgfMwLCHtqEjuc4WPem/uazY5OP56nXu5hwogF8hnEo4nkvqSfgOHHpAXsKuUcuSMf5bVHxJKYtmmwZ/s0TPbR0Ty8yzpLt2A52CEe1T3fb2GA+YEKIsAolsUY+WT1E7MkhoQtcorZkpxh2vyzlayzSWOb8KwzgCFx+G5hmPZ+BLASbrFoAVVognRt+be71kQUX/7KQvyeIRwPuU2whUlQozA7alknyWJi3KJzB0ZJwjN4niVmyq8Zk+RtZtL7GADQp6Ozm0x4GNdMfXt2fbtHkUZhs0pijFTjCRypB06XY6655x6rGR3UgoS0QekQEI/d/e1vg+O/PTMDgoEnrEG1Pk/AzOJ8XrMZOaVTLJJhxKZzfH1JCt1UWeMCbIqkoaqh8J0sMszjN
- IXUV3/KW
- WFhgM9HYEyNd9CHTxbYO+TyBhN/FrmcjDaelcv0YExIKm10TqKFwJ5y14/sfeEFbeB2TlayDHjLYKKa7nBs0isR3w0sa05Oq9ShHU9CkaOhIXQLyQDuAzXrlCrJRxhk0fcNbynunlpMm/NsNlMmKQMQsC71o+9djX+uYZ0FJYuVVBoiV3pSNfUt0D0W5JdNIXtuvXgMHW1wvVGchktgHLp5p005XYMCpUwofF4K6Zm6+AKZ1mPbmE1yNYY5RUdBQ3YmHVUwvdpfBRAdkP5AzZMznAj0+4fcmxvqwKeXTAK055pUg1FZfyL11k4HFVeAwkLY7GY3evFFOlucP4s3ZxxjOzL5rCMIJM0ek9P3hP8Ayu+ZCdTVibhWXUzmr4SuO3dmIUtg09tc1sn5KcqdDmwc3JjYtrLkGH1Pgo3ImIJtn7RZEos8u7oB5KXTSg8IA7c71736oGiDMoU28=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4C6CF1A0002
+X-Stat-Signature: 94j5wt85yfea6bht6z5stgqcnxzhzqhi
+X-HE-Tag: 1774871795-18830
+X-HE-Meta: U2FsdGVkX19cUNYKWAwZOoTK1GT6s9pgU5mSy+P2KWG3eufprx77IuqjT2Ho7HC/L/ndPZwER/Xa9HU8005VLo7HINwDVi2dCCPh83dpU2tz97xrYbGiJJOd41shz7PEyM5NSD/viQ5CXmR1IPK94GZOEYdCpXlx3rhRyqlhtXZRmFPchS8t7fZKNV//VsWebh0iymtrb4O5Ba4GxSnasC21CCPE3nu2+EU8MFTfGXB2h1PcVaJvxAbFgGwBz5VLI7nYwXHXO+9F+VZ8NQxhiJc8JmRUi90Z3QKjyA5zxDCjr1yt/i5yl2OhRq8pjhb+tNZFG/HAkg7oNh0slesTb/FggaVriNQ5X29FFmDzJRKTD6buyvXoBzGFiXCAMTuneAnjD3t+MEnqVUPoycXKIDolEl30j9c/S0ePZiUcSoYcXzhXreF2JvzCR7w1+EmFkvYiZJs80XQ781zS+3u/VHfm3h3LAVZ5WUi9y8x+sEb8Dx6XDC57VnOyT9J+SpVY8026TRhwz1xqsvxHOYb7Un47yjkeLBHebu7b36jzuL+q9/m3vBYg7aFZgGwtijGqa1/IJej/b7nGYz4oosO/xaW+qmk4KkTAZ+XBxPNPILkxKeVrpzjgtVaDeHOT8RK+p0FTnyXPETkX45+YaD7sJUEfN2UrxGdh4zPwGOcAH5JjXw58iTPMC/1U59wWtuHShsep/BivPyokmuR4aVUgM34TSP8CObrof2wIpwqIenA79MjKspwMd+tf/oBbG1ZwsNH7HWbkoygzyOClhZwi9Fn5bAbqcMEsDqEm+pYPjQuPxyNJSfYu6QK+vz4EhDWbsvYv1SnU9VCHkzMP2zvOQsLmwrvSEkMb6L94lt5Q7R1LCV/n9x3hYxpV+9O30NwCoKWY/x3zT/h5xDvF3JIEp6pUOKLYdwpCdiLzo3M/zJVX29Z1kw1T3NEMoWRtLn8xFVmvvkRqeBOxoZK32M2
+ Mv1Chqxb
+ ob63o2VAoToyHoPMtSmBvirl8sTIMg7FjYFz5CeeMDGjHxJONP+veVdPvVyc3Mf34VDJm73ErpZ0rCdD4EM5BVXw37RvY12tMGBs6IlG6E+OY+IEQLst9dkeI6Ej5bhHC1VKOAA1uJcnsVh+PkmHLKLCa02VlUrlPu5mWADZLhBy/4TIKtUbBWujqBTvJMeMDbBh4/JSuvW6i/ro4dxfIdRhMRXUn4HeyhlnTMxy5JAk4mtmWZyNAy9jm46jy3N63EmIhsPyOym1Q3eGh1cJw6j991iM/oA33MbpkNdzLa5Qj9PQEBhJGwSrUoA+Pab8Q9lPYDJO3alKfxpzJLtcqgdO+P25wAkXabvYL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,32 +141,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 03:04:32PM +0100, Peter Zijlstra wrote:
-> Why? What was wrong with cpusets?
+On 3/30/26 12:43, Herbert wrote:
+>> >
+>> >
+>> > ? That was me learning the ropes, by making a patch to the QCOM subsystem
+>> >
+>> >
+>> > and it was a genuinely "ok" patch.
+>> >
+>> >
+>> > May you please tell me what I did wrong here.
+>> I thought you wanted to "take a couple months break"? And I suggested
+>> getting a mentor first.
+> 
+> Yeah, that again, was a bit stupid of me, but sorry for breaking my break, but I wanted to try doing a human patch, to see if I am capable 
+> 
+> 
+> 
+> 
+>> Anyhow, this mail was sent from "Herbert", which is quite ... confusing.
+> 
+>  
+> Changed, it was a display name for some reason.
 
-This is the central point of the architecture. The distinction I was 
-trying to address is:
-
-1. Task Isolation (Current CPUSets):
-   The `cpuset` subsystem (especially `cpuset.cpus.partition = isolated`) 
-   is excellent at managing task placement and load balancing. It 
-   ensures no user tasks are pushed to isolated CPUs.
-
-2. Kernel Overhead Isolation (Housekeeping):
-   Currently, `cpusets` do not manage kernel-internal overhead like RCU 
-   callbacks, timers, or unbound workqueues. These are managed by the 
-   global `housekeeping_cpumask`, which is settled at boot via 
-   `isolcpus`/`nohz_full` and is static.
-
-DHEI fills this second gap by making the housekeeping mask dynamic. 
-However, I agree that a parallel sysfs interface is redundant.
-
-In V13, I will move the control interface to `cpuset`. The root cpuset 
-will serve as the primary interface, allowing changes in the cpuset 
-partition state to automatically trigger the migration of kernel 
-housekeeping overhead. This achieves "Full Dynamic Isolation" (both tasks 
-and kernel overhead) through a single, unified interface.
-
-Best regards,
-Qiliang
+We've heard enough of your excuses that look less and less plausible. Just
+go away at this point, please.
 
