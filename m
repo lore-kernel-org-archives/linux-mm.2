@@ -4,99 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A20D1061B1B
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5FDC1061B1A
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:35:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98AA26B008C; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
+	id F31356B008C; Mon, 30 Mar 2026 14:35:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93B636B0095; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
+	id EE24B6B0095; Mon, 30 Mar 2026 14:35:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8513C6B0096; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
+	id E1F2B6B0096; Mon, 30 Mar 2026 14:35:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 77BDB6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D1D81A089B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:00 +0000 (UTC)
-X-FDA: 84603581160.03.D5568C0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D011B6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:35:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C4E51408C3
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:54 +0000 (UTC)
+X-FDA: 84603583428.14.8CF5A17
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BBB6D180008
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:34:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivqQcR2d;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7F91A8000B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O94QhzLl;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O94QhzLl;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774895752; a=rsa-sha256;
+	cv=none;
+	b=Bqi4feytK8ua9aGTjGku/2q2y3Hntbb/V+Ef+epKVdwKSCQmPn/ocRDcF19zho0i5mFdXf
+	n8hdv+JBoor+KSYBeZW9ID8H1nVy4aZBIhEx+zyc5PpP70iiLqmZkfGfETa/oqymIgYWFG
+	TX61IX1n3mCBe/GtQ/JU8Yp7F7Et8Hw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774895698;
+	s=arc-20220608; t=1774895752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0srGn2dABzRcKE8nwhfShv226eZoihYStg7rmxnUhdY=;
-	b=N/NQ6EOEAVXLOsQ2JPXuIGSWX3nAHBMVLgntK8HCdloRi9/muk0sA/RTD+vbFIzjR9d573
-	PaCNcKdwzhGTcwxxzcb9Myt8kzVwr+G/9mHpcNFrssdKowU4JAok/eY1gPJ+NWar4rO8IZ
-	1RQmwbzaZKsTaYsgju8UgiyWVmSY6D4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivqQcR2d;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774895698; a=rsa-sha256;
-	cv=none;
-	b=DHuOYs8ieoB50if1z3ynzEaMCNHXnfYzXawByrxUs+tXSeeAuD6920OkVAu8lmKm0MwYF9
-	K0zrgHbFYf1p58p3+dvwI7h7JT7bOPRGOPp5wPkBzBGH0EAeAh2snDYWOvhvI3++11jKum
-	s1joEd/bkd9iMyfUKSXsLf2Xz6qtKSY=
+	bh=ESqM96XkNcuOPEIpQKNFAlZgKh2C3ssPxIkldyFAy9Q=;
+	b=4QcLG3i2QayJS3QcYTxa3Xc3VTP3kv5UEj0tm33F1Sd36RwEYtOg9QrrPB1EmXQVTpcXDz
+	yA/oW19r5hCbZrb6H2BuONb6QJZ5GAAQMue4VIaQatEs4YhxVabDNDYCF29QtrP5G+nzgR
+	8wr+ZkwtSCz5kdtlReuSjJWsJyBCwrY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E78AF60121;
-	Mon, 30 Mar 2026 18:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4F7C4CEF7;
-	Mon, 30 Mar 2026 18:34:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 06F7A60132
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79472C2BCB6
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774895697;
-	bh=SRxxpeb3qYoWl6+GAc/aO0wc0VXuHzggDRH/rnKg21Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ivqQcR2dZy35lYabU0BBXKzj+XDUwkDqyBwMEtaqaUyM3k21UuHgbvPrCu7ZusHVr
-	 ytprZXkVMFgMLhdj/VGJQHTMTI2piW0GLLVtC7zskwte6Gqc6C/CnEF7tuvFbzhrBg
-	 xrQ1g0uibn4nPEwbmuA1ac4GkOIoIRESGZV7ygQIMR+2IGaHmvf4XdPXA9gbXaPbIn
-	 mwoAaZFuHHvrcSHkVwbeuDpNtuJe4fKFqLNzVJZnheiBaNnYd+kgSH6jIbHUfvZ9Jc
-	 HEN41kioO7XOqaqChUh0oT+h8cM3NYpOzyF82zaFJrB6WAlTFd+2ek6RAWvTp38BtX
-	 3Kykii1gy2Ebw==
-Date: Mon, 30 Mar 2026 08:34:56 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: peterz@infradead.org, longman@redhat.com, cgroups@vger.kernel.org,
-	akpm@linux-foundation.org, anna-maria@linutronix.de,
-	boqun.feng@gmail.com, bsegall@google.com, dietmar.eggemann@arm.com,
-	frederic@kernel.org, hannes@cmpxchg.org, jackmanb@google.com,
-	jiangshanlai@gmail.com, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, juri.lelli@redhat.com,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, mathieu.desnoyers@efficios.com, mgorman@suse.de,
-	mhocko@suse.com, mingo@kernel.org, mingo@redhat.com,
-	neeraj.upadhyay@kernel.org, paulmck@kernel.org,
-	qiang.zhang@linux.dev, rcu@vger.kernel.org, rostedt@goodmis.org,
-	shuah@kernel.org, surenb@google.com, tglx@kernel.org,
-	urezki@gmail.com, vbabka@suse.cz, vincent.guittot@linaro.org,
-	vschneid@redhat.com, ziy@nvidia.com
-Subject: Re: [PATCH 13/15] sched/isolation: Implement sysfs interface for
- dynamic housekeeping
-Message-ID: <acrCUEsH5wi2qAx_@slm.duckdns.org>
-References: <20260325140432.GE3738786@noisy.programming.kicks-ass.net>
- <20260330114620.104027-1-realwujing@gmail.com>
+	s=k20201202; t=1774895751;
+	bh=ESqM96XkNcuOPEIpQKNFAlZgKh2C3ssPxIkldyFAy9Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=O94QhzLlNazi/AlIoMclKwT0f5THTKxeP8igZtqxnPUgj+uYi9DYtZ/OYvVtWBYYf
+	 DX6BRDgaEv/p69Hw6H0Xm5vxxzr+Pif/QiFZ/h/efTGJ53tOUSuZRAkiRe9/R+jCwq
+	 ULMcjgOWcY9ljN3Fcmclys5kOql0l2zpuPyuzXSyhUl7I5muBplHcJLzWYlPg9IKOI
+	 +awyFsaXhvgUgggz9se/zOqgQvDqCpKVBVB8vQAGH6QlXvmgr2LDAvOVU22HX4ThEJ
+	 nfLDDDeA0FbSBchF1kFCexacRXHuOJUjGzuvDdTXXPtuIBdGBXpHEVcVi1VkDeQXmd
+	 9kMiPoYB8edBQ==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b982518b73fso787838066b.1
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:35:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWLfunaO9zN/y8AEMWtgY05+BqW9vxAgrNPHgCneeuBuqtSqga5GzdmB1VFplajCyH/k6CKRjNGEQ==@kvack.org
+X-Gm-Message-State: AOJu0YyRpxr5UugV18CAVNA801++hRwVHm1YoIIxL16RhCgAr6g2oVUa
+	s8Lm3O7MHiswzi+TeW5Jy3+0DWD32biGg7yqdZRh8htLNX2jKAXSGsQYvczw9fFPVfBsEee/7PG
+	qheT25iGRKdF40hlTZiILdb+FLdur9kM=
+X-Received: by 2002:a17:907:2d9f:b0:b88:5158:d10e with SMTP id
+ a640c23a62f3a-b9b503a35femr907996166b.21.1774895750115; Mon, 30 Mar 2026
+ 11:35:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330114620.104027-1-realwujing@gmail.com>
-X-Rspamd-Queue-Id: BBB6D180008
-X-Stat-Signature: 859ybh3r6agq1yax9ggnpjyi469afqkw
+References: <acpmkY6_gWLdtJCB@tiehlicka> <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
+ <acqG2Mr5ekCn2HD0@tiehlicka>
+In-Reply-To: <acqG2Mr5ekCn2HD0@tiehlicka>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 30 Mar 2026 11:35:38 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOKaPocJYMKL=A=6=qpWgwCa=fMC8EZsSW+632M1q1sZg@mail.gmail.com>
+X-Gm-Features: AQROBzBaAzAm2Me2kzCfvKE8aHVz1Ho01z18mV6apSHtbDPcXk8PmR1kLhDbgJs
+Message-ID: <CAO9r8zOKaPocJYMKL=A=6=qpWgwCa=fMC8EZsSW+632M1q1sZg@mail.gmail.com>
+Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+To: Michal Hocko <mhocko@suse.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7F91A8000B
+X-Stat-Signature: 8eu673rw9gsz8k98b74seui8ia1ob19k
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774895698-307222
-X-HE-Meta: U2FsdGVkX1+kVUdeQqWvUdRSDsYhBxTC6iwe27vsCeVXjtOtXpW3sEJP6VZHZPZz/bpJ5GrCyDpXN7o/Cs6qUdTxRuj8bGoIp/P6taRy5bEqJYGFFQURGVR1S4Tv3aNn6ajBst844RccLtkVz4u63vnnLCK47cJM6e2q/oUHNR4JZ6o2H3CMuIWb0ziYbc1SCavrg+B+0k+2WD98Qoly0wU/qDqqHfNaiRiWB8G7VGCqBwz2PAinegcCTkX6Iu8KBQvA0i6qD9GCzgzy20wi9wWXe2Ai/sX+Fv0SutmyJ2liDZVaxBxfJZgKe4Tz4XsAj/HbhI3hSGpkEttc5Vhb+WBEgybs4Jwx9yxPHLb0MHItjjmvJAWV4LjFEcFC7tvDTWVaEOQpKzcewBLn9eQTuNIeOX6EsJhi+id8DPcMQAFJ0sAjtWYLDfFVzJ8DZQjhg8lu72LicY1y4xku9j73hclli/3e6jsDUsQcUdMZ9pdXTLWdOzfeb73dEhMjI8ufc6dz6OtUERlmXfBJvhL+KvLhZwKG0tyi0IJbl74SRKptRWTNLRm/ksp6cvtp3xuxZcG5bLzIoe7xQ2C6sK+rt4kyFz591HdCwQKbhOtSmUTQcEWgolggEQJVA8uBDxnOI6lshUmmHhS3j1GNwe2esiF8LaR9m9ZzW5b1GN3uA/6D9v7bsGWs9E6/pGmRg25G7RsTvJ2uxDLKia6fvUdmymvbYuOhBVd2jx0HYPmvJOxRZslpgApxidNipKNiX1IQa7Z4Rz9AUMjBK3ygpvlkMjdWEPmE/QcC9EYSlaXVvCC7MZioLrF+ukrwKad3u0Fm3u9d2kMrHffTOZPmXwGkJuWDAklPaP5LCp2CnstmDrHh7Ja8vXvsQ9JzqO6+FG4UVuoQNcmoD7hvrEwPc8HSGx1a+xl8GoQRcjrvdhVD6LlOIXcBlSHDC/wX/3lajW4Yh1sByWfFWiVc2oebQZT
- 22X29VOn
- jojUSvBPnq5jNhszgXdQ1y6HU62B8n8mgdXSX1WalgzD1nMdWnMW8flhDVsKPf+4dRMFHwPVsxjFo2gm2cLS3GpNClPo9EQJHGd3/U87Pcv+S6hzUARq/99EVq9bFg6OHgtWgHjmcJXF/ACnjKVnPa1WqbppiMK8hmaAgTxOop2UPpvMeVveSQqsazIYhwo5AB2HbgJhkyXyfvCG/KPtGig1Z9i26F92fOU0doM37B33j1jT8hbLs0nw2/HiEozHnykFApJhLk9DSnr4a4YhRtldYdtjLiKclNXad
+X-HE-Tag: 1774895752-744853
+X-HE-Meta: U2FsdGVkX19ExSdZElCdcQ0aOSv5CYjh8uvf3g4g/6QxJG3hDcc0wULClYDTp1nqPa+p9/iRrxVXA0layJ0FHRcw2zdd2fXIIu4DuF6O94LyMXlseUu05qN7cJ6QgVWqsSp0zDoS3HggVsF15gi5aPrOMH8BqWswyxZlHYEchwjEz0GnC98Ou0pHNp2C2WD9YAfct2RQlVofulK9Hjq0xY1e5uQYSYGPO0hAhoaFUFJu36ZlPUd3AY3qiDJYDE3o0Ev5tg67mW7zM5+jwzENkc7O+lTzg/QhZ0ohXc5AwaE935cagIqIMcA9h9/SWMZOY9gEbg8FUWQFYRNOy9LDxBM2VbPwywdwQWG2omsyr+pkwDHyXx4/w0yWAjmQRcXtFgRTMqbDgLM5Ya7ddnIHj8A+VPX8WlI4yTFdao79s9k1bKKIceWprb/yqdUBuD56V6jP/ZzMOXXCjY+m9bJaSFuokg26UrExoCkFaFET0spkZm8kPjSaQuul+kHDSCG83CIbPWvsGjOt5iZ0UcnRlRu3fR2M2BDZ/4FihcRLZ+KsB0rM0BQyi31XHvjtZom14emn/uTlS+Mnm9c1zMCl9yADMFbfghhwailOM6WIMMNJqlH7yDd++AB4vlx9ueJXDDK2Q4ACMtGF+TB0FlCKPfOwaPZjglmZNkBbVL6STGm3nhKoVnuuBOH2556FeCbxw1grWnTix3rsRnm4tAmbRoujukmuU2orXtD/L4rtGLaNKfCGvEQlMSyPZXmVkD5d5e5Awdg3f/5QN2AvHU2wHqy5qHMJtRR4LjKdlE3U9Mjgtk0EZEQEWt3JQqdnqquTiGmf02bxxuqdc7JxhNqlGxCxbTokbodSEbdxlJcxb9REFk/bfzvcqcMCUk6R8j6bXZL2IhJc2guQ1FAMjyoru9/Hxy7OiYKCEAUFZYmbUsUes90TQGA8vfCdiWxPTGwOa8JFp7dyBBokfo4D61I
+ UFLRt6hS
+ guA2ks3wZKJEU7v8zaod4UZPfTLoz7/v7FLqSPVpNFZYguGNPowmBeL4DuKRMGFUzz4FidtdZo66quByHnAPTaDNtLkiVIC34yMgEP91YtGZYQ1rFK3t3Ix7mpWayfzPzo7ZYBVuclae79vvxKFFO0g+AwmNwsESa+76oRLapRrd+2MnEsFVm+vtOlM4hBubkzcNjgoJzaVfxkiJnPNqz/RQkxzRZiHFBDzjaHDgZSBeXqAeDwvAbsPC4J7Q8BhAMYVY8mI3CHVkY/DUINDQPDQIX7jBJ0tEy9sqFPmrCf3jPo59OaqwjhTBQWBUQcQFsZc5SM9NoKBZq9k5dOQLN/e9EGJHibkruCFGMyNbm5A3NcM9LIYAab2ktQTeuqEPvBlB6s4s7ESNgmcHbo2rB16iFMLDFMnYRqMRV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +108,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-cc'ing Waiman.
+On Mon, Mar 30, 2026 at 7:21=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
+>
+> On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
+> > On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote=
+:
+> >
+> > > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
+> > > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_=
+item
+> > > > to give visibility into per-node breakdowns for percpu allocations =
+and
+> > > > turn it into NR_PERCPU_B.
+> > >
+> > > Why do we need/want this?
+> >
+> > Hello Michal,
+> >
+> > Thank you for reviewing my patch! I hope you are doing well.
+> >
+> > You're right, I could have done a better job of motivating the patch.
+> > My intent with this patch is to give some more visibility into where
+> > memory is physically, once you know which memcg it is in.
+>
+> Please keep in mind that WHY is very often much more important than HOW
+> in the patch so you should always start with the intention and
+> justification.
+>
+> > Percpu memory could probably be seen as "trivial" when it comes to figu=
+ring
+> > out what node it is on, but I'm hoping to make similar transitions to t=
+he
+> > rest of enum memcg_stat_item as well (you can see my work for the zswap
+> > stats in [1]).
+> >
+> > When all of the memory is moved from being tracked per-memcg to per-lru=
+vec,
+> > then the final vision would be able to attribute node placement within
+> > each memcg, which can help with diagnosing things like asymmetric node
+> > pressure within a memcg, which is currently only partially accurate.
+> >
+> > Getting per-node breakdowns of percpu memory orthogonal to memcgs also
+> > seems like a win to me. While unlikely, I think that we can benefit fro=
+m
+> > some amount of visibility into whether percpu allocations are happening
+> > equally across all CPUs.
+> >
+> > What do you think? Thank you again, I hope you have a great day!
+>
+> I think that you should have started with this intended outcome first
+> rather than slicing it in pieces. Why do we want to shift to per-node
+> stats for other/all counters? What is the cost associated comparing to th=
+e
+> existing accounting (if any)? Please go into details on how do you plan
+> to use the data before we commit into a lot of code churn.
+>
+> TBH I do not see any fundamental reasons why this would be impossible
+> but I am not really sure this is worth the work and I also do not see
+> potential subtle issues that we might stumble over when getting there.
+> So I would appreciate if you could have a look into that deeper and
+> provide us with evaluation on how do you want to achieve your end goal
+> and what can we expect on the way. It is, of course, impossible to see
+> all potential problems without starting implementing the thing but a
+> high level evaluation would be really helpful.
 
-On Mon, Mar 30, 2026 at 07:46:20PM +0800, Qiliang Yuan wrote:
-> On Wed, Mar 25, 2026 at 03:04:32PM +0100, Peter Zijlstra wrote:
-> > Why? What was wrong with cpusets?
-> 
-> This is the central point of the architecture. The distinction I was 
-> trying to address is:
-> 
-> 1. Task Isolation (Current CPUSets):
->    The `cpuset` subsystem (especially `cpuset.cpus.partition = isolated`) 
->    is excellent at managing task placement and load balancing. It 
->    ensures no user tasks are pushed to isolated CPUs.
-> 
-> 2. Kernel Overhead Isolation (Housekeeping):
->    Currently, `cpusets` do not manage kernel-internal overhead like RCU 
->    callbacks, timers, or unbound workqueues. These are managed by the 
->    global `housekeeping_cpumask`, which is settled at boot via 
->    `isolcpus`/`nohz_full` and is static.
-> 
-> DHEI fills this second gap by making the housekeeping mask dynamic. 
-> However, I agree that a parallel sysfs interface is redundant.
-> 
-> In V13, I will move the control interface to `cpuset`. The root cpuset 
-> will serve as the primary interface, allowing changes in the cpuset 
-> partition state to automatically trigger the migration of kernel 
-> housekeeping overhead. This achieves "Full Dynamic Isolation" (both tasks 
-> and kernel overhead) through a single, unified interface.
-
-Please discuss with Frederic and Waiman first because they have been working
-towards making cpuset to cover what cpuisol does. I don't think we want two
-separate mechanisms for the same thing and don't see why this would need to
-be its own thing when it has to be coupled with task isolation anyway.
-
-Thanks.
-
--- 
-tejun
+You should probably also speak to extra memory overhead to move all
+these stats from per-memcg to per-lruvec.
 
