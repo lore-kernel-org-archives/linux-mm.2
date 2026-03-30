@@ -4,131 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D9F81061B0A
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2188E1061B13
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 16:05:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AB7D6B0095; Mon, 30 Mar 2026 11:31:33 -0400 (EDT)
+	id E723C6B008C; Mon, 30 Mar 2026 12:05:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9831D6B0096; Mon, 30 Mar 2026 11:31:33 -0400 (EDT)
+	id E23306B0095; Mon, 30 Mar 2026 12:05:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899446B0098; Mon, 30 Mar 2026 11:31:33 -0400 (EDT)
+	id CEB426B0096; Mon, 30 Mar 2026 12:05:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A7416B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:31:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B575B6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:05:58 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A3D71A05BC
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:31:33 +0000 (UTC)
-X-FDA: 84603118866.01.BD79FFB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DB46E180011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:31:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UllOtCx3;
-	spf=pass (imf16.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EAD014063B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:05:58 +0000 (UTC)
+X-FDA: 84603205596.01.93EB254
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2D880100014
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:05:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RBL8ficR;
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RBL8ficR;
+	spf=pass (imf05.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774886756; a=rsa-sha256;
+	cv=none;
+	b=HpKawzTxsGHgl2A/XKwFVEDYLQuywBZAPQsj3u9GNo/sy6zciJIckORNymNoSaD6QsaxJA
+	F1yNtgQ3iSzsVI7PoQnUqtMzZapVf1BjhzPfzQjy7apAsTdZ6qDGX+ZSo6tQ37ps+d0e4E
+	tYSkuNWyhrX98wgqSFsFMtjObMHPLAg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774884691;
+	s=arc-20220608; t=1774886756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGoi2KMPKpxvC5dFHJDLri0kSNHANukE6bgdOzbv8OI=;
-	b=0OQ5QMkJO1VjvG47HilpgCWHN0Az6AEuc7iiro705UEHf0gOSTKZbnss0vZc7KoOAc1fwM
-	6TMpI7awKR75sOeDU+ZKrC80euxDJSK6CwLnGp3tCzDEmkNjIg1cWokKLrbeNSvc/tbl2M
-	RuSOhjUnnDTljGak54oWS4jq3sASGig=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UllOtCx3;
-	spf=pass (imf16.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774884691; a=rsa-sha256;
-	cv=none;
-	b=l2Ep8q1JFOsI34+AoMLxcahn2YbaIoQcesyyxntGTKde+7Qzgbip7lMZ6g8mfznZNYKBfR
-	WN48aeja/LBml07Q3lGumCwvkAd7GTtpGRmOG1kwZRWubx7SQyOMirNF1rASypNyCMLaU6
-	fPMJRTLIMRLdhwn3UmBPd2Lfj4ByzgE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774884690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sGoi2KMPKpxvC5dFHJDLri0kSNHANukE6bgdOzbv8OI=;
-	b=UllOtCx3a4jh+Gt1KsocR62a17J68XEFQ2nDkVirH3GOsEmtoCSl7/3MiYPxcx4CunEafD
-	phwG3NNeZPzr4OsTdEhTx1SNxQClfbLTGdfSJ86vSy0HLHNTLPu5p2Ov8lr33FnCG/GoUG
-	+NVycMvRAy7zoRls8o/EDJrZD4pm+GM=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-37dnQzKmOdy4eLzTv8zrHg-1; Mon, 30 Mar 2026 11:31:27 -0400
-X-MC-Unique: 37dnQzKmOdy4eLzTv8zrHg-1
-X-Mimecast-MFC-AGG-ID: 37dnQzKmOdy4eLzTv8zrHg_1774884687
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd849cd562so1275096585a.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:31:27 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BG7PFkNFBpvP6Htxc+2d3T+e4s88j9TiPlIp0eqDnfk=;
+	b=xOhye6x4LSM41chasnBbCu7LPxWg9L9dP9nnn5oj4w5eoGei8SB2HCR/U+NOBt9Eu4MfUJ
+	Q2TYBuAFkP9nUr1Lu+nfxNIG4QKsYGafhLYCT7e5S9m80BOjRM6Ha454gL2D0VDfeSJIPA
+	1qaJ5L2DCVMVTncplL0KCBt7aYjj57w=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a27b5ad832so5334537e87.2
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:05:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774886754; x=1775491554; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BG7PFkNFBpvP6Htxc+2d3T+e4s88j9TiPlIp0eqDnfk=;
+        b=RBL8ficR4G/RaWdbKUS4vNqrmWqOnRVN1G1Z0Fc3LUHvjunnByl+86qsoDsIhpG+I5
+         nvHtDjvizgM1pr0ktbny0uk+JIafvdzuhqM4uz6rQAvfh/ZKuz1yRjDoqjjkMH0QtM8L
+         v0FApbXeMys0pqv7Lj3W3W9ieDVq31QVUrvT0+O0lNaKfjIjloanTGI0Q2rKzQx++Lv4
+         8Rvu832RK1PZxJV1x1wq8ZnVjgW4nZW21ezi6O4gM13x7qzRUuy+nxxAX8mRIJ8ZW5Fa
+         2h79izzz1KCopL6rDm8hjuIGWiPiakf4DAUZ84OF4HCsnun1piteG2PLzZvZmaDXoSq5
+         UvHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774884687; x=1775489487;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sGoi2KMPKpxvC5dFHJDLri0kSNHANukE6bgdOzbv8OI=;
-        b=Dl7OqaykhGj31kGChMQHJPckVlKMNUCv18w4R+bmvjajlvSngLNOVse/H9O3QaxJHc
-         48YDq5PaJRdqFPCSXEirUgIBdkjIfgOJYn+tdtpuZOCWOVeylIn7fNlhXQVF+u8xmSy7
-         sFXv/XmJgZUYJrn+IMbQ5vQSbLrqf1Kg3j70qhKzn0B9hAIbasMYaQCgbuILLPSRUm5L
-         CueK2vKNo+7uvh6xiC6g3S+x6UQnzIEG0xQiDekhK9+xeyb3PUIZhvQjCF0fcwZkt6+N
-         1eqFO5xN9+MPI6RUerjpXD9uxmlCOjFpYhxNBy6C3vhcLCmb6uk8yEvD4TJ20V6JrYy9
-         /Vnw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8mY4PykC9+46wYOVS8/aB6JrPPCNzVIn/qRp3+sG9+9eFYW8drMWkTuW/jDslpq8adTMTeULT5A==@kvack.org
-X-Gm-Message-State: AOJu0YxYk9dq0iT9uP9escdsIqNnf2i7/yAcIwWrucF0VqLdw4PbqRVY
-	VFEtkqJEpzyXyPSWGXfj6VJPMy+xWZU5kavO1fsgNk2K8MPveWXUYip5P0P9BBUoROV/OYilxIe
-	XXeuc74gZHCjh9mZOplKYKTbMFOBXGLQE3ZIdtGARC8eFRq5l2wc=
-X-Gm-Gg: ATEYQzyuKDTgPXLfkmQoqEMfV5Y2vodSiOu4+TCK95ahE7+s1XBcxBKrPEDXNSW1cxm
-	grFYlQ8A0/QEMmoXHBTS0ZEnXY6MWB7VjMjevDw95UAcUEKle+c8hhN70+I8BpB4vC1yhCAEaaa
-	7+HlD1Cc5yjNqepqErF4+0v1SiXey+7cWea1zhdyaIzjAnJH6ka2AJ4c17M6rLSbYrRgMdd6TiS
-	lmJAzCv7I7BXmRQV2AbwqPzENG363v38WXPTjdy+aicZg/Y7tq/PHU7/0lKgYsYJW7HZnMpvtVO
-	tFUvOhH0VXQLjW9a1BqQ3WR0Andsc6oFssYRlQC6IOOSMToEncnitzGRGXh6nriZBlXfLheHJ/Z
-	77ppbBiwc3x3dQP7FcwlONMbFfcKBhtJ2ll2WGi5wkHnXOG8=
-X-Received: by 2002:a05:620a:2911:b0:8cd:c03d:b6db with SMTP id af79cd13be357-8d01c8253b7mr1601952785a.52.1774884687209;
-        Mon, 30 Mar 2026 08:31:27 -0700 (PDT)
-X-Received: by 2002:a05:620a:2911:b0:8cd:c03d:b6db with SMTP id af79cd13be357-8d01c8253b7mr1601945285a.52.1774884686516;
-        Mon, 30 Mar 2026 08:31:26 -0700 (PDT)
-Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d028041852sm623948185a.30.2026.03.30.08.31.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 08:31:24 -0700 (PDT)
-Message-ID: <8cb2493e-d61e-40d7-8e39-762032f6cefa@redhat.com>
-Date: Mon, 30 Mar 2026 18:31:19 +0300
+        d=1e100.net; s=20251104; t=1774886754; x=1775491554;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BG7PFkNFBpvP6Htxc+2d3T+e4s88j9TiPlIp0eqDnfk=;
+        b=HGKkEwJkRtrpks7qOe1ZkIzokCxLxoZfCgPkg1gkA8Bqq78o0OOoWn6a1lT6JUpC5K
+         8l9W/xJLoy4/clf92/6NZvIgNSkuIKV+vuxCb5wRH0EBi2F+ayyH5a7WcffRVz12b4nm
+         mpBW1d3bFKaRrIz2veqmk+oqpkbDrzlev2nYOKa5aodOleTMqEQwlAlpuepVqhWQpXU1
+         yxGU1s96jph/QJbrvZpSae2qcUOLND8jHjjPzEfcSKvcKrwimNl/rIqKq/b0+M33DRUx
+         qHslPMUl9DTFe7CssKa8yBuPf882Y1Wj0OrXZlBJcpJcdfOtLPowdfbYDdVewnaInkBd
+         feFg==
+X-Gm-Message-State: AOJu0Yzt/OXFoB9fWc3krW5zU1LbaDuxzNSzmU5PxWmutL5nDAF9UTWH
+	KZTyCQE21fNOeDtZ/rzTYuxtWplZ9CPga1mSuvn4NcsxMIdurmzRgpdDmNOnvcJG
+X-Gm-Gg: ATEYQzwnlEczk2OvC/da17TRD1RCe7R6a/IwqRzULFAOaegbO3l3j0hbj2ThObO/BuD
+	3+uNJt9HxDZaHfRKZGKHlrWbheVHUL8OKQgjbmk1/+IDTbl3pZgKO5mf/nbvhQqV5ZfGVZURZJ9
+	BduUXZtXLewR5Y+SjexiUvqAcIxeBWlTorbzNyCi5P/xtlrgn0ElUVrA22+XArvpwEU0cIhA38z
+	xDTdUxBsQsDgDTmW8Lq/AV1wwmuZFzM3QoarUv/DCdDua1l7+/iuNbi6DCML1O/T0QO3jXc7/J3
+	AxsL/aJe3FVA614gXG7lnnp1ocF/TZfQ/U+kCHY9CVj4RXiV616W+S8WFJZWXJNPV1FMaQ6u7q4
+	3ccZGHl3GFc4XjRwAFrVkaC/d1xJpf47rn2zxooi1FxGBnx9xaBqeSlXediBTFfP1KkpPdudajf
+	OLPyZO3ECDYPBI2yo=
+X-Received: by 2002:a05:6512:3b12:b0:5a2:b86c:c5e with SMTP id 2adb3069b0e04-5a2b86c0cc5mr704730e87.8.1774886753847;
+        Mon, 30 Mar 2026 09:05:53 -0700 (PDT)
+Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b1456eb9sm1733066e87.69.2026.03.30.09.05.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 09:05:53 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	lirongqing <lirongqing@baidu.com>
+Subject: [PATCH] mm/vmalloc: Use dedicated unbound workqueue for vmap purge/drain
+Date: Mon, 30 Mar 2026 18:05:52 +0200
+Message-ID: <20260330160552.485430-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/6] mm:/Kconfig changes for migrate on fault for
- device pages
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260330115611.347988-1-mpenttil@redhat.com>
- <20260330115611.347988-2-mpenttil@redhat.com>
- <e2933d9d-1607-4be1-9868-e15dc7376106@kernel.org>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <e2933d9d-1607-4be1-9868-e15dc7376106@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: x3HtQebcVM-HNRCX4YtSHHoWr7FlSwjSIBWEATW5RCA_1774884687
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB46E180011
-X-Stat-Signature: cwsips8p3cm7dkpbxdqrdd86jijbmgbf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D880100014
+X-Stat-Signature: qs7p91j7bmicqemc6kggm6pfyipmq6ia
 X-Rspam-User: 
-X-HE-Tag: 1774884690-917
-X-HE-Meta: U2FsdGVkX18PflGvYjcjiHCnUjzZfw6RiTnsC4QvgyopEchPmaLblO8PDcnTPmOhepg5RAR4LNe9rMcO9mrB0jzI1nq/oZ4HojSshht1m7n9h5LHAM0By7IN++ilukICOUWruKlpP78AIzvUX83/h1oUfxZ7jL+4wZybbp2MlW1lzL3YF9TD44C/KCe3s0bkO+Jr2eUX47RbPZAUEn/rxopqo/ApllIQpWnjkVYUhIEi0OThj7ffeAqwnlBAepobZ/zL4Ywdv07UuzTbVc/hxDSjJu+AEVrOkhyyZvexnaUsefkhrLGAF40hFHAB6bJRX86cqD52eKv3QGF6OTYZ0yLj/dedlA4ZVxC5L2xG+8mR6AxBVBHkZV80nChWpdiIN82qBFwgBE2xmxR9tKNlz/6fZVEEC54pAE4SAHfr2zr+zCddeyOxdui47hOa3LJX4jkmmvGLv7CcPgXgDS9MlQKpADlcfGbc6UNjsJ+XWS0I4Uu5b7G33ryoAWcPVhP7tG5ThxNz+jONGqacmMFd49vp5iO7vhhJ6iotaruNM9TPNIyq4xYd7YyOTCGGJeA0UlLoxzlfM7VfTcEelwH9g2Ewww8LlEEvHIZGT2geEUVyMJpV0jt+Yk/e5T793pEKC1ic+fLSuE+7NRteOtJoQ8RCtYQ+BXcbps5lo/Ngtym77rGME2B8OZkwY1t/AEhO3GOA2NpcTwJvWcufgENoCBmzwXRkl25wGIic8tTu9XiuqUwmeIZ0BKFSb1yQqTEBEQNha3gicriyrgbusXox/odfuQry0AtRyiJKS+LvfyU2+1GY1St4KrflyAGs6RBhYlQ36ZbZHpcRqcqbwuajl3WasrKz5Y/snDs29txrvYC5K7K8WP+SA3XkNgYoZdnvn7SkrcGEjxEgdr5fmCUcaLtMuI/CrU0fmsv5a8gZj2QYiNR/wM5N5WqVt84InNNz2oIWYVB7hVAPBDwvGJa
- pw8h4ZO/
- 9ftIZWSXOq7UzftW9PLt2x/ufqi/H1c/0xXZ5gcvIA7ufRe35sCR3giv/d5KiEYNPSNnhrZtFFM0DdQBpLigTPlLi8pizP6Rle/bmd/XTc9Kd7v7DwEkx92kF9H3PMfbDVAzqIeeBUHYkcorPHA0vEOduD2evRyAOPwo+qNC0edw7qgfrCzjVDqbsHtFwUEf7sCXUSYRTARBEDuuh20xfxNdO5qRke8TSbxobBEW3hmKDqhUuIIHPk2GdjwFUtVllqGJ4pcN/FexBiOqcKxvbUEnTi4foKNj0P2pz/Y0KAbrn4mwDjwKxVAGJ2tCzmpDOwAFS2pBtwBZIJQcdLmDQJ+KlD0jq5R9OCP+ZqUK94UorevhF7Vao9+BrHFvEcvZlTqRT7yBYP7Zdb2K0UltqCVFiFsmf80KJ+21ne1sAqHRa7dy1vK4849Q7e4CaXPNJEEQ8+jq6qPdL6t28KW/e+eA0JkwqjnLxvChnQGd8elNOXYHjSHdzHOEbT1F3P2qUpbL8SutIxKw11irODkgtCH35XQ==
+X-HE-Tag: 1774886755-103313
+X-HE-Meta: U2FsdGVkX18PQ14oEyKbuQcFcKmWsfec2toBITMLdEuhhIXn/eB70hde9oCoIl8ox4SHg1HD5zTdyuP3ZbNuQi7lGN2ONkPj5h6bkIPPfGB8/XJx4w4m+MvUl4OgTj4+TxZw5zWOk7OFjPWjkDjJwZzXrwcR21lnaobR5hf7XRaKqireDxVz+s7ZKmiH0cBcjj/aIC7KD0Uc+GMKuh9EWPhwkUKF1FJzq1FNElWvEIaWPcQb4RdfYwfJcI4A7NTjGaz0J3LCxJ1B5ExzjgmZHeiiIjh4lvo4ZD7UBFpHc+bGUc3U1/InXRNiH+EiEl28/L6frRbJD6Lz0aomZKEP9K9YDO0CwZ0rYh4L5wfpIgmBHO+bUTMZWfqfTyVs9RDQnmOAwoClMlU0zPkIyF9hmSvoTNPJf72AAvOFp6uBGSH5MEgAkvndFqwAAeUF9jZRfczXF9MMGi9j3u02Y2MV5yH9smr0jA4urZr6G0hjkJjNg6SIT1XUcRYX/oDBr1xt1A9RorkgCNZbywxJ5Z6OBJHxFpnyRby9iHV1tF9HNAuJ+moPwxKFkkmEhN0GLIHKZqCN+5VxgebyrbZWmo8vBOB3EwXLeA4Vm248T/Ieo4An+rxloAAT21BKvSRSPQqD+ZAGRdTopiXfFKdQ7he0fb2J5jAajBleQfLqYNgOI806PAR8Q3f+spRM2+GT3M/sB2pOTf+yf6FolS4Sdchh2ZThPzADKHodRMv54Cg0pglcjSvVEop7d05fpfI89bwjs9DaMbBTRpW28QcxA6g5wZPgqwGNeuacO4U5nOmo2lYkP0gD9aF9oN6u4YxSkMqWrLX2xcGIsR+4XFgNvkPzNrG5WTLmMRpSEUUGXVK/VGpmIpgy0l+uxrZzUIxVkujv6i9CVgD6F/FnWoip+4BNcPMyN3+RHaGxONuLA4BXC8h5ltdgUWFe9g7Hc1x4KV9HxNei8u7KXCAGiJcu17G
+ gMDTOwlL
+ dz4Xw5PEh9Zy7LOf2WqcAVVMK6JOsx+oi9Q1flm4l0j1aL8+iPLoKTpG932aSSltZKD85dqaSC9LLqdjrXcAU+vZ+S//2YjUmxQ4iFSF83bkn1ytPjX2AA7di9kZmqs1EsIRDYiR532aWhANP7q90ka0PkwnbMs53UkSGa3dCWu3Vqf96DAIsd+tsmEQ7DO+zSfKbGBp9VOmVc9SAkWfCttJ41jDPRQC7I/7lE21yCgAQCAl1biivNSKAfpYiZeZg3mioTswckDUSQ7C6QIopOM+q4Zbf8tdx8ansrHVNFIdepvF0Mhl5m0SgKHOyNuzOeqNAfU+CEUnUy+QfSXb43/dWMxl26Hq0ZpO+LxmS6LSEVAC5c+npqseXuGY/P9zIYTn01lCtFm2ra56tURAruXnuov9RmvuSo+KMXtXDRrqV/nctSRYEINP9UFuxO2Hc6PVLOXR+h7VyNohc1Ops333qdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,43 +116,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+The drain_vmap_area_work() function can take >10ms to complete
+when there are many accumulated vmap areas in a system with a
+high CPU count, causing workqueue watchdog warnings when run
+via schedule_work():
 
-On 3/30/26 18:08, David Hildenbrand (Arm) wrote:
+[ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+[ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
 
-> On 3/30/26 13:56, mpenttil@redhat.com wrote:
->> From: Mika Penttilä <mpenttil@redhat.com>
-> Hi Mika,
->
-> nit: subject should be "mm/Kconfig:". It's also wrong on patch #6.
+Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
+run this background task on any available CPU, improving responsiveness.
+Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
 
-Ah yes will change..
+Also simplify purge helper scheduling by removing cpumask-based
+iteration in favour to iterating directly over vmap nodes with
+pending work.
 
->
-> But more general:
->
-> 1) I have two v7 submissions in my inbox. Which one is the right one?
+Cc: lirongqing <lirongqing@baidu.com>
+Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+---
+ mm/vmalloc.c | 63 ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 39 insertions(+), 24 deletions(-)
 
-Sorry about that..had a merge glitch so did a resend, this is the right one:
-https://lore.kernel.org/linux-mm/20260330115611.347988-1-mpenttil@redhat.com/
-
->
-> 2) I don't receive cover letters for the series. Please make sure that
-> you CC everybody on the cover letter.
-
-Yes I seem to have lost my CC section in couple past series.
-
->
-> I recommend "b4 prep" + "b4 send" for patch series management, that can
-> simplify both steps.
->
-> Regarding 2), if you prefer to do this manually, you best put all CC's
-> in the cover letter, specifying "--cc-cover" for git send-email.
->
-> This is also what "b4 prep --auto-to-cc" + "b4 send" will end up doing :)
->
-Thanks!
-
---Mika
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61caa55a4402..7c1ab4a57409 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -949,6 +949,7 @@ static struct vmap_node {
+ 	struct list_head purge_list;
+ 	struct work_struct purge_work;
+ 	unsigned long nr_purged;
++	bool work_queued;
+ } single;
+ 
+ /*
+@@ -1067,6 +1068,7 @@ static void reclaim_and_purge_vmap_areas(void);
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++static struct workqueue_struct *drain_vmap_wq;
+ 
+ static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+@@ -2335,6 +2337,19 @@ static void purge_vmap_node(struct work_struct *work)
+ 	reclaim_list_global(&local_list);
+ }
+ 
++static bool
++schedule_drain_vmap_work(struct work_struct *work)
++{
++	struct workqueue_struct *wq = READ_ONCE(drain_vmap_wq);
++
++	if (wq) {
++		queue_work(wq, work);
++		return true;
++	}
++
++	return false;
++}
++
+ /*
+  * Purges all lazily-freed vmap areas.
+  */
+@@ -2342,19 +2357,12 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		bool full_pool_decay)
+ {
+ 	unsigned long nr_purged_areas = 0;
++	unsigned int nr_purge_nodes = 0;
+ 	unsigned int nr_purge_helpers;
+-	static cpumask_t purge_nodes;
+-	unsigned int nr_purge_nodes;
+ 	struct vmap_node *vn;
+-	int i;
+ 
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
+-	/*
+-	 * Use cpumask to mark which node has to be processed.
+-	 */
+-	purge_nodes = CPU_MASK_NONE;
+-
+ 	for_each_vmap_node(vn) {
+ 		INIT_LIST_HEAD(&vn->purge_list);
+ 		vn->skip_populate = full_pool_decay;
+@@ -2374,10 +2382,9 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		end = max(end, list_last_entry(&vn->purge_list,
+ 			struct vmap_area, list)->va_end);
+ 
+-		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
++		nr_purge_nodes++;
+ 	}
+ 
+-	nr_purge_nodes = cpumask_weight(&purge_nodes);
+ 	if (nr_purge_nodes > 0) {
+ 		flush_tlb_kernel_range(start, end);
+ 
+@@ -2385,29 +2392,25 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+ 		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
++		for_each_vmap_node(vn) {
++			vn->work_queued = false;
++
++			if (list_empty(&vn->purge_list))
++				continue;
+ 
+ 			if (nr_purge_helpers > 0) {
+ 				INIT_WORK(&vn->purge_work, purge_vmap_node);
+-
+-				if (cpumask_test_cpu(i, cpu_online_mask))
+-					schedule_work_on(i, &vn->purge_work);
+-				else
+-					schedule_work(&vn->purge_work);
+-
++				vn->work_queued = schedule_drain_vmap_work(&vn->purge_work);
+ 				nr_purge_helpers--;
+ 			} else {
+-				vn->purge_work.func = NULL;
+ 				purge_vmap_node(&vn->purge_work);
+ 				nr_purged_areas += vn->nr_purged;
+ 			}
+ 		}
+ 
+-		for_each_cpu(i, &purge_nodes) {
+-			vn = &vmap_nodes[i];
+-
+-			if (vn->purge_work.func) {
++		/* Wait for completion if queued any. */
++		for_each_vmap_node(vn) {
++			if (vn->work_queued) {
+ 				flush_work(&vn->purge_work);
+ 				nr_purged_areas += vn->nr_purged;
+ 			}
+@@ -2471,7 +2474,7 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 
+ 	/* After this point, we may free va at any time */
+ 	if (unlikely(nr_lazy > nr_lazy_max))
+-		schedule_work(&drain_vmap_work);
++		schedule_drain_vmap_work(&drain_vmap_work);
+ }
+ 
+ /*
+@@ -5483,3 +5486,15 @@ void __init vmalloc_init(void)
+ 	vmap_node_shrinker->scan_objects = vmap_node_shrink_scan;
+ 	shrinker_register(vmap_node_shrinker);
+ }
++
++static int __init vmalloc_init_workqueue(void)
++{
++	struct workqueue_struct *wq;
++
++	wq = alloc_workqueue("vmap_drain", WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
++	WARN_ON(wq == NULL);
++	WRITE_ONCE(drain_vmap_wq, wq);
++
++	return 0;
++}
++early_initcall(vmalloc_init_workqueue);
+-- 
+2.47.3
 
 
