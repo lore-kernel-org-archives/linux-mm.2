@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D7C8FC97F3
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E8EF1061B09
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:15:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CE806B008C; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
+	id B68E76B0095; Mon, 30 Mar 2026 11:15:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A6446B0098; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
+	id B40486B0098; Mon, 30 Mar 2026 11:15:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BC396B0099; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
+	id A561A6B0099; Mon, 30 Mar 2026 11:15:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69FF06B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0683FC214C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:14:08 +0000 (UTC)
-X-FDA: 84603074976.14.1817344
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3F83140003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:14:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGgDu9yg;
-	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 94C546B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:15:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E15613B501
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:15:25 +0000 (UTC)
+X-FDA: 84603078210.12.34BFB27
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AE5ED100012
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:15:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dLIBAN74;
+	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883723; a=rsa-sha256;
+	cv=none;
+	b=0CtK1+VIZLIXWZEZkC0M0/xH8ev5rMRKlBNAcCHmiInj2gcfTIdW3ezF0LLqJgbX6/0XeF
+	H7i/FS2Vw3G9r2qyjHhniIOOul6Ij08LP++VlXZ/JEaWz3LYM9luJtHzUDs4knamt6lrox
+	fjQD3sy5vFJLSaFXZRVqtEMbOUkUabI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774883646;
+	s=arc-20220608; t=1774883723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
 	 references:dkim-signature; bh=xETw+8gpCdkjsgRzeD0pmJ+bgMxkAEpJAG9tRxYLZUM=;
-	b=I0YpYdnOL8P5jb64GgDqvVOWmVgjTmrmI+RzBiO/SzwPAnyjfbj4lwvmTGy9OvkaZgcG6w
-	JFPOMUltJ8bTZYZQY0GWiNV1QQ+NUE4l8RVkSHzNHYmLFoDQloDbOCVMJuPqdrOqKGp/du
-	VcACHgs53VYdznpwL5HYt00LBWR583g=
+	b=J7exJLv2lU20J9GtRUjyCbg7SyiXGxeV1SzbMN450T2Pkh5rHvjl4FinTCaj5CRRGyMIgW
+	XPpa/yPF9gmV0dOOojVlg/JBYEiR4S4FFCiO+z6zhlm5EyJKI+KT2Qm/gV0AwxE55kJWRo
+	Z9AEOvYbzq3RcsFi8pUOs3r5yZM0lww=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGgDu9yg;
-	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dLIBAN74;
+	spf=pass (imf14.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883646; a=rsa-sha256;
-	cv=none;
-	b=w128fwMFEwo3KjC5HSmA10C50mB0MAhkDdk8ndlrjihFo6nCJDrQPyLcYcU3XKaCS/9Ctc
-	79HAZS31iUYMfRMXjS0lPbF+PIOTfuZBsyMz5B6O5lJHi1iUOwu5xp+wAgwtVjh5Snfrgh
-	3RyQlRYgBD/f5tdCgVbgw2iIb96c6V4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774883645;
+	s=mimecast20190719; t=1774883723;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=xETw+8gpCdkjsgRzeD0pmJ+bgMxkAEpJAG9tRxYLZUM=;
-	b=DGgDu9yg+OPBKEn9VskrCaK0z2t5OH2boBrggh64U9T0VLTf5yBidogP/3kOPOc324AT6G
-	StuAFRevcIB3msNF7w2DvctIsQ+CrbA78P4W4ls5UAEqZcq69C0C1mms9jQFXom5pFn2Tj
-	Nd1BEcp+7VmCAaMN38qLruK/NQ96rX4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	b=dLIBAN74RJ2aJcWC3VITZK19X1c5jXphjftTi2B4wo5VfeL3NednR9DuglMi2zQMX6EcT4
+	+ONUeOFWECPdhvMER2lGzSMNrZafW13D1B+1faXXq8QSK0f0SQs6mBxzmK+LdFFI9uADhl
+	Ol+l3VhqrzPVhtmc0QKU7Wm1gSvi5NI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-zM3py8vJPpeXppRVtmLw2w-1; Mon,
- 30 Mar 2026 11:14:00 -0400
-X-MC-Unique: zM3py8vJPpeXppRVtmLw2w-1
-X-Mimecast-MFC-AGG-ID: zM3py8vJPpeXppRVtmLw2w_1774883637
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-dC5UyRSYMXuiPYXmccF87w-1; Mon,
+ 30 Mar 2026 11:15:19 -0400
+X-MC-Unique: dC5UyRSYMXuiPYXmccF87w-1
+X-Mimecast-MFC-AGG-ID: dC5UyRSYMXuiPYXmccF87w_1774883717
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A885E1956096;
-	Mon, 30 Mar 2026 15:13:56 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5476E18002E0;
+	Mon, 30 Mar 2026 15:15:16 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C4AAE30001A1;
-	Mon, 30 Mar 2026 15:13:47 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30B5219560B1;
+	Mon, 30 Mar 2026 15:15:07 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,22 +96,22 @@ Cc: linux-kselftest@vger.kernel.org,
 	lance.yang@linux.dev,
 	chuhu@redhat.com
 Subject: [PATCH v7 0/7] selftests/mm: skip several tests when thp is not available
-Date: Mon, 30 Mar 2026 23:13:36 +0800
-Message-ID: <20260330151343.670374-1-chuhu@redhat.com>
+Date: Mon, 30 Mar 2026 23:14:56 +0800
+Message-ID: <20260330151503.670415-1-chuhu@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: upk7oMxo3vUpZrr8aRUl6ifs8aRaCCQMn-kw7GQuekc_1774883637
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: nWZHnhds8D7hIXvOZNc16-4oNI-FBv5S1FppPR8lItg_1774883717
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 3F83140003
-X-Stat-Signature: rc9a93rwgschkc77piw5esaotu1rnreu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774883646-811408
-X-HE-Meta: U2FsdGVkX1+96ABRtBAYGQIKT4Cip66QWV2vHWP+nrn0fj5GyvDWxzjTH7Sl/QCbGQsFM2wIyEKkLkHW9rZUrrPGNkMq6Hs+0WSaWyVqN3826k4CWx5qumD6wYf5RuMfRyW+ubmE9vlfkTF8QApJKu6ZNvxxqUYQvYgYaUtOoWKi5TkBAadAvGyOCNBZFWKFFON2dwbh1x05fIomgwktN1FdqRkTDPXTjwaMBo3LEhh91uKk7n1FSt0mjai2/ikNavJh+xwHlzGcbA4X392yx8T6osaPy8Ku6K7VzYPX8hVnVR9+f5JsgI9lMzeJfbXHF1CekJeUb81Qv195cz+UVXiU1n43AHv4pbZeKNQEfS0lKxJitL0tRPV/HuMHW7jqdwmr6kSkiuHGJ+5C1QZoSCR/Svi8B25/ddEXYAcl3ce3uBOK3Pvj5X0kVq3KC9WgOKJQBzQMz+vYNvcU09RZnjp3bHPjlJJb4lUVlysBcuaMk9WItBHCPNsOg2sp7e4Kna8gIQBzjZLz5vBH/1kVeIIImrqAS4fkY0nXHPjM+BJsOYva5ZZtZ/dcVzWUlqiAdDTgf/o2qiwqyt3y/iNmQTC2uG9S22n55W2P1qRQJv92WU094VcD0zfmjW/Mihl0bdLZjUjp04DXEclKVIHNOIBXIRfPAIXNLuDc0Gxo1C1Pr7ReFWomHuP3OHR2UELsKsdNe7UA6yG9yOVdhiw+1W6fApusDkzp+Zjgi14X9jzW9iyNixIdgIOpJNGxKYiXNsVuBZjGc/zmgoh3AqUckJow+4eQzQCK7Mq5TGMI6Absmj9bxnAGvgsQfKqqkwgeMjgILhy1xMWdAPUGMbJVG0nbC5ffPnmRLcAQ3Gjr7bZ/2SlQeTBGUYJQaRzlJfw8NojuthE6gvXYDuxDAfNezZFHEqibu6dGHkYsBxzFloCkcWAw6T/GVW5iKDnFTSt7POBxF1LaLxg8x/ooMuc
- TyP9PBix
- yQRZfrVPjamVqd6ELf7m/rFaV8A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AE5ED100012
+X-Stat-Signature: rc9a93rwgschkc77piw5esaotu1rnreu
+X-HE-Tag: 1774883723-925744
+X-HE-Meta: U2FsdGVkX1+A4FF6tz2Rn2NE8rnowJTYISJCI7d0TAX4/ELciADTddFwSUuJJx5Oq8vb0WQCigzxO2ofFqc+AAwyfri0Vj0H3cMAiMM0MQbeZeAAH8UbSwqpHj3XEoNngLX1QuHO2gkCAfuo8Po0eETqTjEbWNa0trTb4IZkfiFiIJqGEZjX/gVczf/SIqD6+vLZvBFxQHgAawsD8feE1EQzzaWQjF/Q8g+lCrg0NwysrpoUlrhLQJJ7UtdNKrWsfs8dMyPGXlmKBz3sL/2ZUoqo6Bgu/surEuPHVjU7mruNeufdqObokyRS4aXCy3NDH6xXueWvwF5nBpCfokYw8YNQfBo5z+Xe4/1+n1NIrtFZcuVtBavot7kKxyHu1z8A0MJbAFplOIT6eoJaQ6Jq93cBXXgyaCewi18a3Z3UazpLnnwHRelOWcElPolPhq/oFMUzGurRC2MgpqTDvMMlxCyNX6ihDpk9Qog92cBJnQrQnrMMYTCsW3Avy9LE6Zyy5AIynZSD2kXWKg3K24Li7XC9YrqWIpPK6BVZQBMJ9cKwNAY2/ArHJVlQW/xxaGQHRizU8ax0Bgf20dqt07EfWxqHl7G03xFmLSjkYQoRjxSL7p6D0G8f2osTUdhK/WbZf0NjpZz+deKnPUiGLO9jh+ag+8KQDu+6JK9barEWLOHt4jrqcMPcB4ed61ZoOdLU57nxH+WJQo5fpknjvH5r/Y0nRnkQNw/9KrTmw6Zr1pqnu6OYReYx1dSNARxPo71j8YO3/Ju3PYpnYtEJkgfPZHck4bsb98OVteyeFKl4r4dguv+Go7+iMzcs2nnuqPllDMFRZVw0O4S5t+LRijTI2kzGh4WSUrwCwdOUYj+3RBVItsaI2doU27xoOYbomcKGZxqjyBhZx0p8cs1OgHn56GoIf6tGmf78LqNyny2onzAWBOCspcKlk0bveamMq7Ul6vsNOanKPR/W5/W8J/N
+ XMwHVaSg
+ tjC+1q234+M4L2xN3HIo7/Ml5tQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
