@@ -4,110 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4961FF60D9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA62EFF60D9
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE3EA6B008C; Tue, 31 Mar 2026 03:32:36 -0400 (EDT)
+	id 2F8C06B0095; Tue, 31 Mar 2026 03:33:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6CFD6B0095; Tue, 31 Mar 2026 03:32:36 -0400 (EDT)
+	id 282CB6B0096; Tue, 31 Mar 2026 03:33:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B476B0096; Tue, 31 Mar 2026 03:32:36 -0400 (EDT)
+	id 14A166B0098; Tue, 31 Mar 2026 03:33:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A16486B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:32:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41211E15B8
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:32:36 +0000 (UTC)
-X-FDA: 84605540712.14.9794979
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 755FE140005
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:32:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=imbJRG49;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 012B76B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:32:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92DB9C34CD
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:32:59 +0000 (UTC)
+X-FDA: 84605541678.26.4E6D1BC
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 75521C000D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:32:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OMQPtSrZ;
+	spf=pass (imf28.hostedemail.com: domain of wqu@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=wqu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774942354;
+	s=arc-20220608; t=1774942377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9lGLRyHekliNWF/e73UsyDVKIPVttJC0CnEap7PKUCs=;
-	b=AD4xaDb1FN7jgiePCcmg/3KyJhWa5ssnhcItxAknkvyXzPyZ9GHHFz4r95/uvh7I24mOlN
-	9/SPTfERc1zUETqLJegQ6lOG8d4/5Xke0Nh3zltrcSUvWi+tKnpEVYXb4ZVpe53nLXIP+P
-	HTht7zu18oQz7E5P8yZbo18GrHWmH6E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942354; a=rsa-sha256;
-	cv=none;
-	b=0Srr9KlkurUvNG2hB/BOzmOqji2SQ+TM3ZWG9JpyjDctQmlDUtAg18dyk+F3NqPb8QOM1r
-	c69KGZo17lxx+MKI1So5rbs9QYAvBQgVjHpRqQ6XkthBaRlB9DdEGRC9IGkPJeLehaou5Y
-	LxDdVsQN11uIFVl9qXXbf2wA39iwbUo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Hqg9/VRYKsGs0VxPUmWgIB7KUuouu96VXwQtxp13sng=;
+	b=FITW7bLXgU5J5RUksrX7SP5rZCc0dGK1JCsYRwqA1fD1fAQa2xjdb8Ty7JR8XnXd7DlxFf
+	p+Qqdv+JMTJRC661wTkJt37f4Px54aCwseIUZUMZhBY/KlzJJIdvZjzlXcojpb650yL1tw
+	Plq9J67E4LKvtlqJiE5mgLFqF5ZLx/w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=imbJRG49;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-358ed696623so2408067a91.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:32:34 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OMQPtSrZ;
+	spf=pass (imf28.hostedemail.com: domain of wqu@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=wqu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942377; a=rsa-sha256;
+	cv=none;
+	b=dL86RCockg9Db9Fhi57mvEA4m4Xo5967Mooudavl34Guhwe6RH80tHidBqTNtncvzP4iNH
+	8vTKGrvnSo/WtZPS5DoIuQ318jOYY++zRkFis58RYRrA7OGqppym3O5Dckt5gK769UJwyz
+	rVOmFyjHHXlClcOCMNI1turRDY/zReU=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fba7ce4cso53431415e9.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:32:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774942353; x=1775547153; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9lGLRyHekliNWF/e73UsyDVKIPVttJC0CnEap7PKUCs=;
-        b=imbJRG49VLe4p2zwTQKKS00mFSha1b2Er2JZ/nsguUDAMrUr/pbK1S00WB6kPSd2YW
-         pzE2GNJrstBkoaMY5XQ4AePeCdGbFaLpSO6N+3OwdmTQgBuSLvLaCdPZK21Rfgnio9IH
-         yEsfHLdA4m8r8btMpca34Z9DVowthr+9RsslfZsUyRZZUJngcjzhLNOnq0/sb6Ph/hfa
-         MSZc6TFDbX1KRTlMu41mEnfgkHc5C6Fc1iej+qwNAfpfD7l6F/G424QkU34JKzXSImtl
-         47COEm76ciLIrU2FCCNnhKdfGggoHmGaN2+JrQE9BxtBZxB+/Q4B/D/M5osW+RI03OvU
-         +ORw==
+        d=suse.com; s=google; t=1774942376; x=1775547176; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hqg9/VRYKsGs0VxPUmWgIB7KUuouu96VXwQtxp13sng=;
+        b=OMQPtSrZ20xQs+LcoDLtnUAjbx11g6oxrqbqu+CmCPLIwx6XPoan/d1kG1cM9Wx1Le
+         Q+PiS47CzxWPAoDs6mvgM8WSVbJeNxTHMCinjnm0c6HYGKaSQSM5xETl5uh0TW/GnTqx
+         T7oPkaSmgWerW6HLgoYq0PRcW9lDHYLTentYsdJN4d/lF3S1ncmFpDYX5uv2RAXPhfC2
+         dPpq1ORvrdCacbatkLJpK1+hGhRSCxEhHAdKE+t+dn3cEV7AyMfwmCAHYZFF/ILNA6x/
+         Xslhw8/JmwpIjjals0XXk5kR66mRyyDU/Gs0jporMvKpA2aM8KKz1Ypc32pA0Mjcj+qj
+         C4Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774942353; x=1775547153;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774942376; x=1775547176;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9lGLRyHekliNWF/e73UsyDVKIPVttJC0CnEap7PKUCs=;
-        b=WW1qWhxJ3qNVb37Hd8gywZbFVlNCTh3HxvMbNz/2Q4JUu7A+zI22oh3IDngZ6U2H9V
-         SKkUtvMtH8fmzNng6J1cLEsLZPiaWw1Tm44Va1puAKYSbGprbw9/b1pNUtGcbo2kkX+3
-         gxhwjN8uwRd/8CZ/x1i9yJkXCJdxQe2EEkRPfh5SzB85VGrqTifXm/XEbLSh+et0fbiX
-         9HSZT/cdWQcZajuSj0Zrcjdyc8GVsuNyiAT94mJgVkTrYXOqRAqhl9QirBOMUZEtUCDe
-         ttYQBnyVE/huNSNrppzkZxO9x6npRNrQjqi5hWDyw/yCjWgIyZpFD0PZ8P+OfjruldDG
-         kqKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGP4zBQm4b0fUS30CkQD4jz8WjCDshs/rfSmDtpURWjXGljvDoekuz5qwa99ziCHV34en1AqZVjw==@kvack.org
-X-Gm-Message-State: AOJu0YxFgX1hXKGInf8GeFMLFUnKtRayZIx3Dfxh4N0waYKmSuCLPT8Y
-	6DVL44pBcFq3Ak8UnSpFePaZfgJ6rEtr4Os0vbLQcfdNjOg8NAqJYKm4
-X-Gm-Gg: ATEYQzw6TAcQGHNRPaqHGIbmvgidVmI3Iuii/IDXcVvySLIP7rgbEkvEjMxFCw8Cgu8
-	Hgy8rqPvakBW9gwJGHIpYFyoi0ZGgj0MAETTNtgOB+ybEkLCn3SJ4Di9aBEjCD6n0I4S55pQ6L6
-	tU+qJmsat6h0CI+WrDq0+kOjTjYdADiLlnPO1HVqaAe/GUcwQTN+BFBkyme5VFe4NmdeETrSHfV
-	OqS4S82qQMV6Reu8hL+KD+Xw/91nwzLSxmN7HWKhZcJjmBCqb7XEBntJRnSCpnpYHFKVl6s8pGA
-	T+rZd5Sp0UqtxV7RRtzGvUS6EHNo4YGFNWyS8pVxLmc83rqQAffvJzWaqWa8xN48KmtcN5g/KMI
-	OHYEuHldI0cVubqF25JxZ2cVJGoTnZjov5cAoIm/c1tOEq4O9OK+F1O8Vle7QCfKbrsKaW49PCR
-	/ajj5Wp4bG6kNcvm0qd2jNd5dLAIjfVXUrpTH/gyXpslOx/GJ0a/4=
-X-Received: by 2002:a17:903:94d:b0:2b2:57df:264d with SMTP id d9443c01a7336-2b257df28acmr50704225ad.33.1774942353119;
-        Tue, 31 Mar 2026 00:32:33 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427acdb9sm105215045ad.68.2026.03.31.00.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 00:32:32 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH] mm/damon: validate min_region_size to be power of 2
-Date: Tue, 31 Mar 2026 15:32:31 +0800
-Message-ID: <20260331073231.30060-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=Hqg9/VRYKsGs0VxPUmWgIB7KUuouu96VXwQtxp13sng=;
+        b=cFOpvEz0VZy3UNkaCTV7IMG3GLey22aaxGyCXuvyaYNaXfS1lAPGVI7S9/4kkA/aBz
+         VcET9ss1osPyJzalBGJrqKyBX1qiJqhN36mjoNchE9kzeyF6wx4ab+r1+ZIAnt8zux1h
+         bGVjziNUbrIlW/l1vaNOUhNgqK2hFBMeBouuDGGT4UUjiO02No2+nMRyBM3pehz7K2im
+         37LfXjMWWy+oYjmvqhDGk6W7l4qACyItX4ezqK8eL/IMikUdz2iWzwqMv/AfTksGeiXQ
+         Y/4geOvihQHhIyligCgwO67tn6RRGCaonZWK0m+Xd1d5ZVhF7mwcwG3VFzpgMJJwRSJ5
+         mEZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXhTNkArji9dwB9Jy77JgdOubfiDhZfEZmiomH8gqa1h2SxeW3yX5B8bGtPzEecpC6yhfNsFz1Wsg==@kvack.org
+X-Gm-Message-State: AOJu0Ywc6iDK9oFZ+n2yBl/xTT4NbVSnfdTUrs01YhqZxV+udAf2L6ss
+	3w0SFhJsZfipuCLNiREGJpMv9y3yli5neDmAWO5z4EaSQDSlwyurqkPXC4FrAExGwdf3x5JWwIY
+	HyrmowGQ=
+X-Gm-Gg: ATEYQzxlFEZLGwTtn0MjjEoJmWuro2Y1ikm9wIQQ+kIUoswGOv6SG0jCVSZOE2gH37w
+	AMbJ8Epgu8nOGKhW5bkwiEz6ouL03yOuetvc4JAv0qXY1SGnCLkHz/p6KieuiuhoGyXestgkSl3
+	36/wGz/47GkFK1D5iyS17tA/d/s0DiOWyHlpsMVCGrBKO7pHpi+xRntf6qvsveFYH01GtQoB6fd
+	+26U+4BD3TOdfCcEYojUaHkvk73vJE+QbeZtEoxnlPbvQxXAO24b+Jkx07oTBQePCGJQ8Q5PdWY
+	UlCw4C7XGF+C6d9XhjRrdhgAOaPL8lG1cGtUC8+pZMiKVRWxNsWjvamRZR+9CU9piw1OyUI882M
+	DFHMRItVM2hpaSAcacHoxaxYkM4EImO5TQRhxVcSTgdx9CdioBqlrs4eBlYBIjblabCKsQyimpp
+	MN7Sh2rOJa5hJjOhtNd68Z5vF48Zke0T6VHdlQQIh3H4PlQSUDThCRXXT7v5BiQA==
+X-Received: by 2002:a05:600c:4f91:b0:485:3f30:6250 with SMTP id 5b1f17b1804b1-48727eda62emr245323725e9.20.1774942375743;
+        Tue, 31 Mar 2026 00:32:55 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc735sm9245251b3a.40.2026.03.31.00.32.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 00:32:54 -0700 (PDT)
+Message-ID: <a6b566e8-5808-4244-bcda-5612760bde3b@suse.com>
+Date: Tue, 31 Mar 2026 18:02:47 +1030
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] zram: do not forget to endio for partial discard requests
+To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>,
+ linux-block@vger.kernel.org, linux-mm@kvack.org,
+ Christoph Hellwig <hch@lst.de>
+References: <20260331071537.706139-1-senozhatsky@chromium.org>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <20260331071537.706139-1-senozhatsky@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 755FE140005
-X-Stat-Signature: w3mw6jhgngye3abcjzonjzhonhkk8ayg
+X-Rspamd-Queue-Id: 75521C000D
+X-Stat-Signature: akye9yrq3ba59xbhd3kp4arcgao3o4wc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774942354-233685
-X-HE-Meta: U2FsdGVkX197N2f90HKhxGYVejFITlzf+c1G4FUoB8Mhrjvfj932QPCVSBx2Kb+lwhjAqR1ABTNDjNWsoBHjCxfDrGFHQtlTMyFSGSqRBa8qz5nf2GGozuKTiqk14aBvqFwiDdzOXkWsOv3/LYQAY2SUKM6VeslSfDJNHJ6JPTafsGQi9aW/78Z/zJG01EeZVvJM9EZUuU8FG+/U/HceCw2+xgF9hjVk4JoCfKrtLQGol/lLB4HTfFAyZRom9B5W1w1+4IxQYd+AAzjjolD3B29MJwLcfrnRdtFL9ZF9hGEwUYNimriZCvSUiuFwtoOYp7U+JCGmhZKDV47evlO1t2l+4n6eCqyxQXVmbOXWbEwmDOe3JZvoC8PseK7/PDDzaD7QnveVOpH8+TpaRREK/+E11awdp1P5gPvMvFkMtraS3y4fL3dmf/35TGxKKE1A/peHFSTmcrAzIeZ8zPOx9ps4aHuK6TPGierPKX9oI7iYZPSsNDu37Qb4mMcpPweQAq8lzCBg2TLwsI8maC1gFOAfAlDcUGiIyR/+O3n/8z3hAvfqbMLSJopSBJFXVJYptosbSbegdTuo3Q3lomFlQj3HhPOP4isv3am9RZ5+gR53uVEm7X5d3+WqchJeb2SxvT9+fPlAy5sEr25xyVYVaHHjsi1LwBIOHs/z8kzOVQAY2AbbQddiy3Bi/QQSSYoGqGwAlIPYqP44LSnxu0wJJ8QlkrpoJD2wRsEywTGkDK80eNj+XMQlGbE5w1uYI81aFflEFsV7YrvBFehX93xREzZ+2ac+Te2LKH1gmPk/L3fxZEziwgdoISjRIYtlqW5eCJJufjWepzEIu2ijoS7r60j6sSEKR0B1Wj9XZu521Yp9ajLl0Llu/zzgktEJklW9SFUVbprHSRCy4MdagybBg8oqAamO2zMLMKFPo9m4udkV/KqzQT94JJpywmV4Yfm6m2jJxs+lxsMrk1wsXKu
- kDNHn4Es
- Kfii+a1xXLdYiH0HMy42qC6Oko4WNR7iPSZ2xqhyMgSd0NiVeitbye2Di1u/WKOUUjk/Kbpf+li3mvXnj+w0Ph3WhR29yMkeK+8PPWz84qzLdklQpIblfjgl3XjAcexMFuIZ3zVIa6RId7fcA4RYlcO/32r2jt7YGKS5mj2SP9yrnEwYGvxjtLorcN2N/VqXV4JwkfZIdiOYsTnKxPKz0S44bBA4qnyj9iD5wgilIgJ9/OYt8FzyaM7U0/Em/bbqngE8+CSZ9vstGA5MqVt7a40cfv4hcqE1VlolsAPgWvG9QYoyfHGH9UmvSpjCT7/ETGAdIzX/LbRSS2i9U8A0Lxgg0jH3YH1JxDpY78fWiE5k0ev/t/mop3FtGTubgZyPtrj1dcWC60pWV8mPbHk4xaTLDOBFlCVfflDlCLUNpBEu1lxWJz/zFHVAMmfMegBYbzkq+39uJBe1FNIefmnH64deWWA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774942377-370043
+X-HE-Meta: U2FsdGVkX1/V6/A/JgL8Pci7u6zeAYUrGEgKr8762rNrC/+mUHfqWsGMDT/jmxk74SAkYw6rdr6PktOPQNnxun5s4zUuXkxuWrk06M80P3fnSm5PpExZjpNkUqWViDRoyvgmt6ojjT1vKvGHCKDlhrg4g09W76VRnHxVuMT8GWj5UNnxZ8tjTKPn7e4Lgcu5SbD46PRfh0cqFa9AhinuPciAZ95geAMosjLDgpZEZy9Nehu2cQlQsDcEzqjjqsQ/yY0H35bH4jkVkBDyvXGWgssRmNOVa3ovfy3O1qKmXXCQPsXWc31cqT4jRg0bLYfdVIpVExs4NsaDuAHB3h3vHtEojEqo2hZky2qnyhnAnFkJ0qPcjJdK38W9ShTmJcuFBLB5Qfv2GToDHbekVmWCuSZgsUtLptUgbteCLZ8lgTU8duhXhRjUqMOprNkdFRLmgf1FSuY5Xtf9nt/Xzm50Wagmw4stYQeSNmS9AZqchIKWUOg/B9mxjCpIRZyMU2V0HRXezd74GFCxZKlyRRblLe6c82J87sRCpgyVj1pN4azxQFfW5QPv0QMO6uIHg3TylQTZR0MkBmRWMo/u/OJCJzzM7P6Y2Madf19ngk9M9UOfQuUlGyNND1zNGWnQ0sEXcCwEp7PC3bkLxWZS8QFEvyo2LFQnH4biO7OrA+fOSFCYTdp0c1wnQM+JsmZw85b9lZl3zdlP8FM7PlzFFNvdbjcScHghq4c//eI86ScymRcy0LkiGjkR78Kjy+Yfs42tSZrm8yeiqWIpbyuCeym36yZlDcZKlsdXyMox2TKltILephGT02o20y9e5o1Ae18auY7a3GlaRBSZqBir5ZzCsMWZ55D+bsYCEMTAzmqnP1sRGIShbDdZm1MIqHxmBil6CzRM0N9Pe9j+fY+9L5bDUgPGqwQjNN/uflj7sP+hlXOFx+SvyHvu6hXyDffJaOr/UB7azKsId9m4Nsu3QFv
+ w6Q01n7R
+ oJMBhqtP3Nuew9iagVUg0bBRK8sOVaCLcgJ7Y5DUtXdoHW/WdGKThh5OaBC8GLAzZUHrEc8eRkSAa8h+qwMQ66YkfDaWlb6wSM2OF6tKFUmEs8NNlK0NiXP1rjD8WlUzndjK31PLQ39ogonKQisF0CnXc+RToFIqcz2pGiKb7NtkWgXT+xDXNlUIBUwq/NleYRiiQk11rfFhuaRzXkdvv8ADJh6tFGYjAEJMRs6bXAgWz84HPSV0cY9Emr5LF28LL/j9sJDmqq418jMvWC3lEWCGzBMMZmXlyh/rzjutYEgmpCSLln/SKOP2/SkX7Z6+NMcFnsM9/gxZvCIQLuRuzfWCW7CXCfFe3VXl17YLXKVdBRBqWKw0xg4RjJhDDguBjWfmy/rujrouN8MnMRKK4ST+ykFpCN3iNjQ5QTc3dtIfw8Q9O7BX0E7gBZDSaMKaqJmlpQPtIltJTwHUTyUpMMWpD8reziBP9HfIbEfFBLWU1J9Vo+kk13lfUCfKZkwZhobRbO1xgRnDAE7M3nfJrJ2+X7jHn7DdknVW2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,53 +148,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-=======
-damon_commit_ctx() checks if 'min_region_sz' is a power of 2. But if it
-is not, kdamond will terminate unexpectedly due to the user's invalid
-input.
 
-Solution
-========
-Add the same check to damon_{lru_sort, reclaim}_apply_parameters(), but
-return -EINVAL immediately. This is to prevent user's invalid input
-causing kdamond to terminate unexpectedly.
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
- mm/damon/lru_sort.c | 3 +++
- mm/damon/reclaim.c  | 3 +++
- 2 files changed, 6 insertions(+)
+在 2026/3/31 17:45, Sergey Senozhatsky 写道:
+> As reported by Qu Wenruo, the following
+> 
+>   getconf PAGESIZE
+>   65536
+>   blkdiscard -p 4k /dev/zram0
+> 
+> takes literally forever to complete.  zram doesn't support
+> partial discards and just returns immediately w/o doing any
+> discard work in such cases.  The problem is that we forget
+> to endio on our way out, so blkdiscard sleeps forever in
+> submit_bio_wait().  Fix this by adding a missing bio_endio()
+> call.
+> 
+> Fixes: 0120dd6e4e202 ("zram: make zram_bio_discard more self-contained")
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Reported-by: Qu Wenruo <wqu@suse.com>
+> Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+> Cc: Christoph Hellwig <hch@lst.de>
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 554559d72976..205592194efd 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -294,6 +294,9 @@ static int damon_lru_sort_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
-+	if (!is_power_of_2(param_ctx->min_region_sz))
-+		return -EINVAL;
-+
- 	if (!damon_lru_sort_mon_attrs.sample_interval) {
- 		err = -EINVAL;
- 		goto out;
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..6e29d92670c4 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -204,6 +204,9 @@ static int damon_reclaim_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
-+	if (!is_power_of_2(param_ctx->min_region_sz))
-+		return -EINVAL;
-+
- 	if (!damon_reclaim_mon_attrs.aggr_interval) {
- 		err = -EINVAL;
- 		goto out;
--- 
-2.53.0
+Test-by: Qu Wenruo <wqu@suse.com>
+
+Now all discard related works like mkfs.btrfs and mounting btrfs with 
+async discard on zram devices works fine.
+
+Thanks a lot for such a quick debugging and fix!
+
+
+Although I'm still seeing not ideal performance if a btrfs with 4K block 
+size on that zram device.
+
+On a regular block device (LVM):
+
+  # mkfs.btrfs -f /dev/test/scratch1
+  # mount /dev/test/scratch1 /mnt/btrfs
+  # time sudo ./xfstests-dev/ltp/fsstress -d /mnt/btrfs/ -n 10000 \
+                                          -s 1774231493 -w
+
+  real	0m3.435s
+  user	0m0.005s
+  sys	0m0.009s
+
+On a zram block device: (mkfs.btrfs defaults to 4K block size)
+
+  # mkfs.btrfs -f /dev/zram0
+  # mount /dev/test/scratch1 /mnt/btrfs
+  # time sudo ./xfstests-dev/ltp/fsstress -d /mnt/btrfs/ -n 10000 \
+                                          -s 1774231493 -w
+
+  real	0m10.726s
+  user	0m0.005s
+  sys	0m0.009s
+
+Which is 3 times slower than regular block devices.
+
+And after that short fsstress run:
+
+  NAME       ALGORITHM DISKSIZE   DATA COMPR TOTAL STREAMS MOUNTPOINT
+  /dev/zram0 zstd            1G 271.2M   10M 20.4M
+
+I guess this time the overhead is just in the compression so that's 
+something expected?
+
+Thanks,
+Qu
+
+> ---
+>   drivers/block/zram/zram_drv.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> index dcea703a6766..b0637423953b 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -2683,8 +2683,10 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+>   	 * skipping this logical block is appropriate here.
+>   	 */
+>   	if (offset) {
+> -		if (n <= (PAGE_SIZE - offset))
+> +		if (n <= (PAGE_SIZE - offset)) {
+> +			bio_endio(bio);
+>   			return;
+> +		}
+>   
+>   		n -= (PAGE_SIZE - offset);
+>   		index++;
 
 
