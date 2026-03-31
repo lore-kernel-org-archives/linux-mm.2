@@ -4,133 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04CFFF60F0
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE03F109B48D
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:22:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 208BD6B0095; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
+	id 199286B008C; Tue, 31 Mar 2026 11:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0DB6B0096; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
+	id 14A126B0096; Tue, 31 Mar 2026 11:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F65B6B0098; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
+	id 05FF46B0098; Tue, 31 Mar 2026 11:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 000AD6B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:18:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F29CCE054C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:18:21 +0000 (UTC)
-X-FDA: 84606714402.27.D3F7445
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4CB611C0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:18:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Z17IberB;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EBD046B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:22:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A01FDC3D66
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:19 +0000 (UTC)
+X-FDA: 84606724398.17.2729CB6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E4D3814000D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=BhEkNpUP;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970538; a=rsa-sha256;
+	cv=none;
+	b=iHUYRPhamsDrMztNBhOssAagaf3HTUg4wvdeK88DF3QawPKzBgjiWgLUNXyH9WqGj6m7aM
+	fOYQeTGTXMHlN8nQNttostSZeQEQ04QBuy+2dwF2nNj3N/4lWh75ekAYWzQZaiOqL+w+Am
+	yMdBiTUzPKTO93XhuvZImDWgdgMCP+w=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=BhEkNpUP;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774970300;
+	s=arc-20220608; t=1774970538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HIf8gyFX80uSQKCoWkQ5ZPo573gaG6x/O65jKZB5gh4=;
-	b=eibKHKpD6XsFlr03Tj9Avjocxd1kBgMh5+hxGbxRQWZClirhpnHPol6xkbvPQxtAkVqzM1
-	Z/w/Du6g1fgFWpKuHfnK687xk8G+hSd70qEDf2MjOu8CuLTCz4WgcZzpFYjt2r3Vd/VRmv
-	aY458dN3O10r9CXysgyezniZYx/WJCA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970300; a=rsa-sha256;
-	cv=none;
-	b=LdjbROiLxlChW0mNsxvihk3p9zcskEJL5nwWZ0/UqGgjG3oo9+yIaD8IwiGHcioWmUH4To
-	qhIcWfPZSLVpcx2yWJan7e8/SzUlTlu4XuXMJepJ5R52KQ4K1Mr1SXqQVs3JzWz/lRbSVU
-	4wpyxvJ8e9ZM3hvGD8h8B0JWEXD41NU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Z17IberB;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF79F40E0140;
-	Tue, 31 Mar 2026 15:18:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id HEXG6Jv-8W3v; Tue, 31 Mar 2026 15:18:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774970291; bh=HIf8gyFX80uSQKCoWkQ5ZPo573gaG6x/O65jKZB5gh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z17IberBscI1nNIel2qnP2dKieE8Angtikowhd8wgkm/JnlHdoCe/RUlPPxw7dyJx
-	 nePrSWXtzHAKzAfvLyykWFfOEc4+/vPcMwM83zNC9iYPdYwn4J/G1gLIuV/RRyLo8O
-	 cXokxt/7rMbYC92jB+sn6IaCUTAlguzdNqi+suGBYj2LTjIp8LOIUEsS6VkHTlOttn
-	 +Kfl7I0KBTYO3CNKi3E+67jkSbrLY9DzBReN2pt5hfiaiyBZYJxvjw4VDgD6JuDiuu
-	 VX75wBEayTVozfxkP7Nz3nRP1pX2PzQGfdEoInEH4fKr77BsPqzflHTnYzZIAODdlr
-	 qVNW01sIg3kDzj4b31WUQHkNONc5uCS5QF/cCOR9E1xGCBQ5pBM5oyvujNB9IgQFDn
-	 wmBGHWcGc/hlxZcaU7CLUn/FMGLSPEvTifJrIBmTt7akASYYQqwSg5s07mxHhs/zLK
-	 Rmq2uPj6IJn3SpucLkPXnqOI76PIlYGzikph8+AyYo5mDGoA2gYBZ/PpdtT47R8AW8
-	 sWBNyZqnDW6r9nbzK/gx+wObyNPWhvBDnGmERN3AvphrNgw42Ydg5SnnXNxAEjMZ8T
-	 LZ2X+A5zyhTvQfE6EvlE6gWGyoNKcj1HPsOUcu3s+EiKCpirb5e2x8HPrCPioSkR/d
-	 pUSmm0Z9qeLeuqB79ERFpTCg=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9FCEF40E0032;
-	Tue, 31 Mar 2026 15:17:35 +0000 (UTC)
-Date: Tue, 31 Mar 2026 17:17:29 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: "rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v17 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20260331151714.GFacvleugPydw71hxQ@fat_crate.local>
-References: <20260311155518.1000-1-shiju.jose@huawei.com>
- <20260311155518.1000-2-shiju.jose@huawei.com>
- <20260312165247.GSabLvX5DjzhDtmyuh@fat_crate.local>
- <33a8a02f07184508bdff31e1053606a2@huawei.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dPsgYKX/sWzW9rQfgv3qneZB7goSNS3fM6ILxrY15r0=;
+	b=5tvkFgSEhqGoYtfRzBPVH9qHqDicxTJQ563TVQ1Hhr8fRlAYjYonsNrp7CzRmpkBDg7d0t
+	DOib0dzm4CQDg75n9InxnG94tgvz8a3eyuYAahBCtnru/aoDaIpGx1p0gKyZrcwWxjIEQT
+	cw4tKPvv6FX1SeiNz64qhVuCkdiH+o8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 086C32364;
+	Tue, 31 Mar 2026 08:22:11 -0700 (PDT)
+Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 71EB73F641;
+	Tue, 31 Mar 2026 08:22:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774970536; bh=76AReawEblF9zwLAiLT7vjcTU5NOi5gm84ErlbSFzuo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BhEkNpUP/+8uC6lI5Ab17iUM9+kpj5uey6UHxZP0PKUHKfHZtnCoHc6HYpk0mBube
+	 GIXymS/d4x/Nty4hMHA6KJ2e51fruiORAu5ewN+dUx0WKYIpYt3f91RxOn4bfZ97VO
+	 OIX4VkcwvPDNJqv6I8MdbYCDHtXck+Yjnlvqpa98=
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Ryan.Roberts@arm.com,
+	david.hildenbrand@arm.com
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: [PATCH v5 0/3] mm: Free contiguous order-0 pages efficiently
+Date: Tue, 31 Mar 2026 16:21:58 +0100
+Message-ID: <20260331152208.975266-1-usama.anjum@arm.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <33a8a02f07184508bdff31e1053606a2@huawei.com>
-X-Rspamd-Queue-Id: 4CB611C0002
-X-Stat-Signature: crmt86p4a3ufr1koroih75mefsh7p3hy
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E4D3814000D
+X-Stat-Signature: c8g7x93ngkfrh9zrtwrud4zc9tx683hf
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774970299-96788
-X-HE-Meta: U2FsdGVkX1+5Upp1m5ZR2vaa4PmPtJwKWgXSrErAdfPNz44VCD680qqoNoqNXv9Z6aHZd56Q2nSPA0Cw3DjdeuYDzMYPvDvwA/ry9a4epkIbGWK8t/glUBGWi4UM20ANnBYh3FOWEOxREUcf0RdyYjVzdqzTfGPZdF+caHm5zvY3l1gt1aRRfQvc6ktrAX2tmde4zoW9vIuBtr5A3iN3AlaTUoPDdGIGSuXyCweOaNNIEBs4kUdtEJMvbXxubzp+nwTR+1y3xDrHGmqLDIVvFtVd0B9eP+dr1N+VltQgRe1C9CDcAi9vnAFpRxZ8ZoKphzXoWKP464iTTH4/q6rL4s4279ZEZ75a2Nz5RfQtW5TxwUIjmClYzJiAQARkpb3e3IRN57GdyHykSJVv6rEbz3cTWqfvBOvEmqXDospjNvr+0kOCstsQGBew47ldzKdyHZ+ejH4OQcUfy1/TImfwlK75f/26eGT0KfnUyjqmn8ZhvSS0VSBzu/SbaULnXPRoU07TyqRYsyHoD4nugQMrtbXVKSd8GqGCbkYypUzXxbX5/6k3NXyqAgBNC1XOTRqaOaTmqfNySgDsdXddP7QWSqFs8PU0qWuaJiOHB6ZziYQZpDD8hBIWo7dP1b0kH/EhfqcQDnYTO5oDwDY+7WZeflDgKjGJrMRNyU49HBbNGtPC9FyM0H9av9Q5vPr3IlzJwd/SwJMVLcZEt7Vw+TdF8KK1uhKLHxDHaNRMI6I2mscBpiNjFj1usNdvnjyQqSAEfejhWXwj65G+g7mEmE7bqpda/PiGXSBOU2qeinLnzIJI9V4V8B6sEGLF/j0eriSWxXw7su2XCGT7KgaRiBHZPdjTcWZUBoptfqNF/os+Tp4zOVZpUPFsloEITbB+wis4X+yUdTpjWBvd8RxPp3jbQp1HoApQUyiKbSfDJLcgoe38gl31/J7HCVoNQAhqvwZVyu4Ks6ipYSX+UQHMekp
- dRvt1F4g
- aQ7/zKua2y1Q4gAK3qvgvcFnzUTV+4Tqamq4XfiUQaarMaX6jZipluFF6g2LchvwwW/p5t+gqwgg5sYPe+JnAOHuTcaQwhS+4+uRnQubLgb+8jQYRMsj9SQaLh5SxwTlyCr/9XVrdmkKMSnrCbnYuJOKzxScn3W3qtH1ziCl9EH5h1hyaJ3sIdGtXPKSJMsgTy2tlkNHjsxal+Agpckb0iNZr9xejbsIWhl1aAgsXckNzQ9exMKSeLM2QUuu04/ZkT5UmnrW0x2PgwoZtkK38NvlyKSCCnNr8bpNwO8UCXGLV/PVg4SQwIzC5omB3v/WT4GOy5WpDn8syxi9imPVMlJyBWT32734goyPOBVRt+qacWE1RYAtJex7rOg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774970537-822902
+X-HE-Meta: U2FsdGVkX1+6AF5awbqMpYU0pIUZ4/GATirKdGurganh5d6Tnvppp6z+6UobH8uY5rqwEG5gaNg5XZrKW6jC9goYI0PXhNFjpLkdT0DTo3aGU53r+TtuUruxluhzgp/M0s/YyH8ARtYCi8Za0jGGj6cuw17s9EcovKCT4hyaYIok6fGz3EFWZcILjjaRNxUvlMVg7rRBLCL15CyoUS0BRlCU95mtmliVZD6xicFMN8EJvqgM9I3uiOT+S+FrrkQuy/hJOuVzV/gxgINJJwjnSznvpVPikfQjapwvRxfHaL6cv05T5X1d5f/VS0vrH4AJRTUxiYrQUwIXYTYoufpTDeFTbE9O5IlJrNAUDgsgS0McxY9bG9edNMz+BeWVEd4DRa1lzif+9ZsC17kyyBds9r/W4k5vINMrZTSrrPxZJXb5olUX7+SWQ+iyIvvqdKeMdi+35syUPoNdzveWBzCGlYYwxyB4UceEnNAOcsucc5cuMaFLtC6JZm7UKNTiLqg0aBdSQqreb3JX5RcNwI7EIAoptSVThVGUCNFOwAn2c9hukPRGKBnmHFnYPeRaUvSr+7tUdpx3uyZ9UvSyOS97j2CLsftBbDWm/O72DHPgE1fb7OtIjzqQNuKluEVMEyD5+8o/fIeaP/5mE7IlxMdflQNGCRYHQYPvr0vRmukyQiJ9gAjNNiYAxUZPx1QouZYIWlHhK7zlpeAf9nbAYRNOSu3eRLJnLuGTFWrGXJh/2LHZn6oX0Kx7+V06vSuYBluAznIPfQtZfi2H/6lEHDMRLlrJnwh6slFit64jK4H940a2sBPadUgo8UoNGRKQnm0ovqLLAjo95dwKmGLovr2onANTlKXjDdIwotgvS55iN+QIWopdDMbJDYfpug3sY1KrjVQGblLf7NXqFvtix6nH3nICxuSe9ZZdgBCBvLUBcD/r3bEHvTdYpoJYGv0L+BRFQ9RBxSq/Znpr08AdI/y
+ uUPqDl2f
+ AXocmC2fxDIm7Fyt+d92TlAX+Z5FbJd4/8x8ex9ketVnNWaRTZLBtsu40I7EDTcRf5j+UOghCKhm8O0TW8rv2uMYuHq4euGTUbQFE40to+CHOHVk8nrYqfYSvMn4yU0XqEg+aZivxZup7n++9ObZlGsEwGtx301CgKpFhIP9d36QPiHgeFMKQX43ki+JXjS9czhLUtiR9sg7irzTVfVEphJVY5H5W4+ul1H53YkFL1nNGyWUveMDyjEJC0NAU/vFnbWGKWiJfyguZBFf1M0SNh+M+jXIblFxbak/qnXNk9B0iCto=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,20 +103,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16, 2026 at 02:27:40PM +0000, Shiju Jose wrote:
-> In v13, support for address range has removed for the code simplification
-> requested with the expectation that a firmware will do the full node demand
-> scrubbing and may enable these attributes in the follow-up patches.  I do
-> not mind adding support for address range now or else later after first
-> version of RAS2 code will be merged.
+Hi All,
 
-Right, that makese sense.
+A recent change to vmalloc caused some performance benchmark regressions (see
+[1]). I'm attempting to fix that (and at the same time significantly improve
+beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
 
-Thx.
+At the same time I observed that free_contig_range() was essentially doing the
+same thing as vfree() so I've fixed it there too. While at it, optimize the
+__free_contig_frozen_range() as well.
+
+Check that the contiguous range falls in the same section. If they aren't enabled,
+the if conditions get optimized out by the compiler as memdesc_section() returns 0.
+See num_pages_contiguous() for more details about it.
+
+[1] https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com
+
+v6.18      - Before the patch causing regression was added
+mm-new     - current latest code
+this series - v2 series of these patches
+
+(>0 is faster, <0 is slower, (R)/(I) = statistically significant
+Regression/Improvement)
+
+v6.18 vs mm-new
++-----------------+----------------------------------------------------------+-------------------+-------------+
+| Benchmark       | Result Class                                             |   v6.18    (base) |    mm-new   |
++=================+==========================================================+===================+=============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 | (R) -50.92% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 | (R) -11.96% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 | (R) -35.21% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 | (R) -36.45% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 | (R) -31.83% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 | (R) -38.62% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 | (R) -24.84% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 | (R) -37.83% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 | (R) -26.32% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 | (R) -37.76% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 | (R) -31.15% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |      -8.97% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |      -5.88% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |      -6.95% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 | (R) -40.19% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |      -2.10% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 | (R) -48.03% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 | (R) -40.48% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |       3.52% |
++-----------------+----------------------------------------------------------+-------------------+-------------+
+
+v6.18 vs mm-new with patches
++-----------------+----------------------------------------------------------+-------------------+--------------+
+| Benchmark       | Result Class                                             |   v6.18 (base)    |  this series |
++=================+==========================================================+===================+==============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 |      -14.02% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 |       -7.23% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 |       -1.57% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 |        1.57% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 |   (I) 15.75% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 |    (I) 9.05% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 |   (I) 38.45% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 |   (I) 12.56% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 |   (I) 38.61% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 |   (I) 13.43% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 |   (I) 49.21% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |       -8.47% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |       -8.17% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |       -5.54% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 |    (I) 4.63% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |        1.53% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 |       -0.00% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 |        1.22% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |    (I) 4.98% |
++-----------------+----------------------------------------------------------+-------------------+--------------+
+
+mm-new vs vmalloc_2 results are in 2/3 patch.
+
+So this series is mitigating the regression on average as results show -14% to 49% improvement.
+
+Thanks,
+Muhammad Usama Anjum
+
+---
+Changes since v4: (summary)
+- Patch 1: move can_free initialization inside the loop
+- Patch 1: Use pfn_to_page() for each pfn instead of page++
+- Patch 2: Use num_pages_contiguous() instead of raw loop
+
+Chagnes since v3: (summary)
+- Introduce __free_contig_range_common() in first patch  and use it in
+  3rd patch as well
+- Cosmetic changes related to comments and kerneldoc
+
+Changes since v2: (summary)
+- Patch 1 and 3:  Rework the loop to check for memory sections
+- Patch 2: Rework by removing the BUG on and add helper free_pages_bulk()
+
+Changes since v1:
+- Update description
+- Rebase on mm-new and rerun benchmarks/tests
+- Patch 1: move FPI_PREPARED check and add todo
+- Patch 2: Rework catering newer changes in vfree()
+- New Patch 3: optimizes __free_contig_frozen_range()
+
+Muhammad Usama Anjum (1):
+  mm/page_alloc: Optimize __free_contig_frozen_range()
+
+Ryan Roberts (2):
+  mm/page_alloc: Optimize free_contig_range()
+  vmalloc: Optimize vfree
+
+ include/linux/gfp.h |   4 ++
+ mm/page_alloc.c     | 141 ++++++++++++++++++++++++++++++++++++++++++--
+ mm/vmalloc.c        |  16 ++---
+ 3 files changed, 144 insertions(+), 17 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.47.3
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
