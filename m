@@ -4,80 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 252F810F9306
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 22:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F5B10F9302
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 22:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C0076B0092; Tue, 31 Mar 2026 18:24:37 -0400 (EDT)
+	id 531E86B0092; Tue, 31 Mar 2026 18:33:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 597996B0095; Tue, 31 Mar 2026 18:24:37 -0400 (EDT)
+	id 508986B0095; Tue, 31 Mar 2026 18:33:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D95A6B0096; Tue, 31 Mar 2026 18:24:37 -0400 (EDT)
+	id 41EC56B0096; Tue, 31 Mar 2026 18:33:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DCC16B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:24:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2B88E046D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:24:36 +0000 (UTC)
-X-FDA: 84607788552.25.BBC41BD
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1B29A12000B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:24:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=jnOfoCQ4;
-	spf=pass (imf29.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774995875;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FADB6B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:33:23 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 846A5B976C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:33:22 +0000 (UTC)
+X-FDA: 84607810644.24.1003645
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 87B7B4000A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:33:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WKz+f/03";
+	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774996400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Gk6gK2g/iUCDplXURqYnZlRZrUKX5MMD32teE9LYFVY=;
-	b=5XDO8vuKx2QcJy9+cJ5x7iuqniswRw2kkZJ/+aviXeXoR6KPYH44A0PzXTqgnFbY0crvjg
-	Epcvt9MK/k+oPMj677GlGPwuD4Z+ecVtIwu4DML25nNW542aRVKcJxXg5qP7XmPiK7Irlp
-	sWrxmdS+h6Go64I9taF6wu8YenJ98K8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774995875; a=rsa-sha256;
-	cv=none;
-	b=aM6X0kG2ZPOsVd5X4D5Veq5zhEccsDIJnr/S6Nqqq6CxF1h31hV00oG8egjKagkt8b+uEb
-	P634wV7Okhyd0fnatZtwsOH3NWxtVaoikeC+UG28r3RXH4hnTyX7Hezm3a+tHdleDV9shD
-	YHJ/wNtrO8JWx0xac/fmKdjhV/IdwgY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=jnOfoCQ4;
-	spf=pass (imf29.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-Received: from skinsburskii-cloud-desktop.internal.cloudapp.net (unknown [4.155.116.186])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CDA1120B710C;
-	Tue, 31 Mar 2026 15:24:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CDA1120B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774995873;
-	bh=Gk6gK2g/iUCDplXURqYnZlRZrUKX5MMD32teE9LYFVY=;
-	h=Subject:From:To:Cc:Date:From;
-	b=jnOfoCQ4KDTTeJ/mrmxhv1a/aDYF85mLq1D0RHXAv/zNXsJHUtociJ3WSdtkoz2Le
-	 xPOC2todCsYSOOwg0oUN5KZHkiPAwEHItUVOD336ISvWKQ/hQiIOTIR3txQBoeCfzb
-	 TbVuPwOhSuQE6DOoZCeFVrvHGGA8ELYMFYaIdCvc=
-Subject: [RFC PATCH] mm/hmm: Add userfaultfd support to fault handling
-From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-To: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Date: Tue, 31 Mar 2026 22:24:33 +0000
-Message-ID: 
- <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
-User-Agent: StGit/0.19
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mUF/EyEEtBiFVIoj5hOsVVw0hg+dvt/7DbWFSEMV0gI=;
+	b=JWFfu0BMB+bcOKeVctw1PtWV8lzP6u9FrC1ZKUClorZWLVc5tje3nAAFERWJYBPOxm6k1M
+	sxw+t/DVpiQgy5XhxOZJlqFohP0wQDAel0vqmS5NfFtbSXb/vX5BSiJaOGHVrYYX+X0uV6
+	EY9JGdM22RLNh7tMFLcyP/+vA5hxAec=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WKz+f/03";
+	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774996400; a=rsa-sha256;
+	cv=pass;
+	b=Hr3VOxCIrSsJ2QZoQ1msmWMNqBsT+I0mpPgipgkVA914GSLu1I7b070HyznbDouRqLBKMN
+	EKp64fkXE1t0it0dOORtC2idAYA0ft79acjDCMJcgpBUwwjgGw7RN06vUrZUVkkw3bL1Dm
+	TH1APVtOXuGMC4hvpbpV3d+T1nXbgUs=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8d1b746f522so21734085a.0
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:33:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774996399; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BmNOlxv9x8weK44VZA4+W7+Fju3lnW2U865QdrReZzTMNRB7lGuYR0qjE7RMrRJqvG
+         C3iMCTWD1tAidk5YS3C491qVwhxUaiF1pWAqJLNgVQHGzcvZ9UOhSf0UfWRgTYU0D/17
+         8UXoyuOS2nPFfRvlQhv4/FLiScDn1+AECshKdUW7I9PlAPv4lG8Lq07f5tFyly4dTQrl
+         Tg0NcelUOL5XwkK/jMmRGwiRblmlXpUPni42l0ISFIiVJ/libQ0ETqhbyKutNmz+Hdpi
+         x1G/iyrNxIKi9TCihC1hN7KUs12HiymnBPOjTqr46u2ewSQzrMcGEdEuM1qzyI+kVams
+         LHqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mUF/EyEEtBiFVIoj5hOsVVw0hg+dvt/7DbWFSEMV0gI=;
+        fh=/z35MN8gGSM1tjxSl3+CB96ZmeGP4ADvbevGeLovXhE=;
+        b=HMhwx/bCi+L0qnCG4+unRNv2r3oUKbu5R0rKJdSofnX9O4lLHAxvfJCin9gnSdcMTb
+         GIrRhyKwYqLFpFyCtnK7unPCBEPtFqnU7Klw3Hwnst8Ol4gIfL1QXgYOKs+OykZuwfAO
+         JTykhN7fTDlhrClExYP2++XiH4b0W0Em+U+jxpmRmKeLydWHBIYKgqTDbOjIlfVUD5UM
+         tpXsl9zVBBejImaSvbC2xvZbTxGjEGOrdRNUJ5ixOwG8UKbGF+1+XvmOFuS6ZbJm1YEm
+         D5f0p1NNK+MIsHGy+l8P9jx/deECogJSEau8sHw4tqG1LrbaStJLGZWQt5k7917D4+ev
+         pBjw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774996399; x=1775601199; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mUF/EyEEtBiFVIoj5hOsVVw0hg+dvt/7DbWFSEMV0gI=;
+        b=WKz+f/036J+YzWZBNXa334SxwgCl8olIGqqaRHiCEDKb74LKJBaA1rEHMcnYLAGYtV
+         N5ejTDf87AGJyY0n1TNBE5NFouoALV4phpRXHqkmNK0/+HhSX2Hgz+59Iny//5ylZylj
+         0IJvAZpoOmCDmz9b+iApUVEParYTmRXfR/O7q5NxkLt0Fd/fOCY3z4JO0piYoHYCGlWz
+         4s55/CaZCt+eTRmC+ZyTKuk9+p+ct4W6P361LYlIBfn4bhRrwQkqdEKzBc08opHSieDn
+         /QIZ6+Of4gGRSCkxpnB86EiRANoq2z24gbGX6JQzIZ1RofBWefQkc629gSFmGUijCCI9
+         NCjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774996399; x=1775601199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mUF/EyEEtBiFVIoj5hOsVVw0hg+dvt/7DbWFSEMV0gI=;
+        b=K4MNJaAV6NAz/AjwOEpT6ywVwRr3dlyfMBMttxHl8kHTFhmMNT1FMx/j7sO81NtBqp
+         GKfqaGgY4J8Fx3FHs2J+pC9y5Q0u4nz7HdmgM9B81zTC4jgpm/66PchmdoIeVbcpPKLg
+         JbcR1vchOcFfxpMFcZ0aJkXporOqCDEFvwusnQymhcOb6NWNaYJsS8sFgr752PWbRq0T
+         VEiOEbp6R69y+De4meaNQnuZ54WzIQd639HefHnKKzitudKgzbykTGnqgNFaM/j6WHxv
+         yJE92prVOoBytCe00j/JlmnI1RRul35mg0uGVD72638ysQ9WntbESPL6umkYPm15iBaY
+         G8yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkOXmtLxo+xjKy9hdlbs+kmlX3I+TXuPl5bQ1cHA9kCLcpuxASmZiICtZyB29dxbgZlnnzlhoeRQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxb7UkLDil5IkSScYN4rKEHRSmpY6ok3UXCXtx/tMAOGUBk9K0U
+	QwqjCmCAvSmc9q9U+10f/Jj7PQvE8jKHTPDU0S/m2zwDsZOydF+tLmVdootsJmPwdt5dmYuW2/Y
+	XPAAmIT/A86SCdPSTwXRaml3+Xiu2+Z0=
+X-Gm-Gg: ATEYQzzSZR8VifaG0SLkYkI0C0x5BdnQQVo+fva6dpbnoMPbesbSuE7wTuS7h4RMIu5
+	YxJKDyfmBm5bbci2LACXX7976FOS669oYAJXVeFddRGJRkgJVtixS4zw7+OYvZnXiBBKJgFws3H
+	ikmh/btIuew7gKBHaZKYdkASEOp4uqXtmKuov5jpcKiB9uEPutQx5XQ0y5x3+DsiQ3QSIdHWbDq
+	RgfpyXA5ZkapZ3lZUN8ZoYqG4CbDHwoe78eIM69ocxzEPgJ5i/RJELy9dScJu0R79IlJSZAWhKB
+	CLEQElnSCJxOcDOpgekpD4x9guM6wFzYOCFMQgqq+lty0nOX
+X-Received: by 2002:a05:620a:d95:b0:8c7:139a:bf48 with SMTP id
+ af79cd13be357-8d1b5bfe08amr225021585a.49.1774996398979; Tue, 31 Mar 2026
+ 15:33:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: aonq3mb8ejprtaszpoe3ecome54zx49y
-X-Rspamd-Queue-Id: 1B29A12000B
+References: <20260330071229.14614-1-devnexen@gmail.com>
+In-Reply-To: <20260330071229.14614-1-devnexen@gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 1 Apr 2026 06:33:06 +0800
+X-Gm-Features: AQROBzAHiYNy9wC1kS4pXtyBdUj5_lgQLgM5wa2Ct2-2DCuODjKUu4fttfgbgQ0
+Message-ID: <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
+To: David Carlier <devnexen@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 87B7B4000A
+X-Stat-Signature: xhhfuk9eib5pzh9dzajzp1zm8sgfgskr
 X-Rspam-User: 
-X-HE-Tag: 1774995874-979265
-X-HE-Meta: U2FsdGVkX1/HoLXKIcL2jatU3KjJy5U1+7ulKykgzVM9lmByPb/h/bXZQcBzwxrql8nO40Hpwz5rGDjRFZicEh4u0gIrInOIpf3Nkiyy8+vC7kdO1X7btqHjoZPb8giiBwm0iMpKsC4UlbKtbwmdl1ejYloZAxBtj487n0SHCIMMHXzCxFrVYIEDnLR5IxCsvuLmDnwygvSSIypN8wk5akWcF/fheNKHrP+HmxEZfmyS8wVOaLBUaJKqrC8clRGeUNLHuTfgO2yRtdiwu+G2lc+tKHxqKlRuHoQdMvruhq8+dskGgXnvtS++Ny14OC+cz+8azlUyiX7ylfV8110PY2zN1sPtPa3fMa23mUpDDIYdjA4Nbm0iOlKiua7avRyw6/BnKrFMylcMqMraeyFkNRxuOuT6IZ+5YLA8eLZIzmKKxwkONvfzY8gZG1vrNTHPM3QEjKh1dlAfDUkY15Yid9FUXwsWnGjBXiS3KzppdCvmR6BMC8Da6wa5zEixmfNPyMbzrd5XCUbZ4zxzdtHnRKQqdHD2VgyLW59zamm97M/zY8nFswzBwNU/V/7OPsnsy7H8O8sXhOP1MbIuYoq2TRVmljhqy6j7N6BxCtJsn+RoJOq2pm8Yw6DUNTBdTfN+KR5fCKcybjofiPu3ZAK6vucBVh8ODRWL7bh5oHZuy152gkyMTUIGFun6y61cuoBebtZ93BIddvdwj+Y7Da08a7fymG1Wjyr2KcgG2/X17iQhe7CZiIK7j0BkMS0r8Ap6Qc7kG/bb38czvIDB4oD3T7cK/p5s4j2gOG2sEs+Tz1DGVeCztx2lxHp7dzyMjly99Eh9Zp5b3vUOPH6qkv2P+pe+ZV3ys/kinlGVBnPJ98gSShuk4muYmbxEto6ySkSc4QABK0S7MZOeCGI9D+6CyuP1eUW6H/xsTbi5fX697kQxQyU5oaCNCLsMOk6ZlimuGylSpaH5QmFc8ksYR08
- cv2CHPxd
- FhlBE1DIWNH0dWHzuUworCmEDOXK5xYqALvZPOlUWDzUbycBSj9QqWMB7X9Crm3nM0Rqy4AOcM8jtWR6qUDqkCnMRNYyDtdz2dDV1qoiHlItcvts+aZMHpBCnR3XNo0ApAeUkIgwqQEFUtypV1G+sxE6t/1hXN3wDe5xlxxe70GTMQtnj0bUsE9Eun8SNtCp7AX+p8WpASR8q2v82bL2hfFN5iEPS0bmkkJMcvf7WOKM5o8lkE7sOJF8BZRLguA/WbZhd
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774996400-941158
+X-HE-Meta: U2FsdGVkX18NyqlO5WpGLLPdhRYaByei4nfWL23jXmYKoMR4yCs/dnfXn3NQ6OVHZqV0sJRRbxAK+qsSgBxKxoHfEUrn3VitUalItp7HnD8I8XkAxIKkKb3IrtLPeJY7GQ+NQxiIdgqP6L8nRPn2/CwALeu1qANfm7rD33+X/VWmgif/HF3tdmStVNf0kT7Bzd2sJeEUly8rWO4anCeI++dX5N52QMmpMAy1jjeAil/oO0h5CU1l3ac5y2RF7p01JTzYAJ/Dtd7SgdRW+EamN4sO231bM0y8aFnmTmByeKXTXU/TF4eApiRjOCXjBmKGx4JYb1zDZrSFynQSrGOD3jy6ZSfHcQyfRChxfAxzQZ0O7mDoAWKS1FkZZT1Qoe8HwDi1J4AMsvWV0VZZ6Wyz86K4VZIkw3n9NZm64N5lVqrfNjNxuTB/uMRaPkjdfPOm83ubZy2ZAPubPlNSqUiQZL9z09+trPshGV/j02TO18eXtlimXjvAOtymez9kIRDhxaFUbY9syC0a5bmoxXSHjfBiuYV5hVZpKPhPCbr9iexcgHaBe/azlEQtWtdRwM7nklJHxSiPPet4xuDY5nxhUIG3PlMufdZR+aqKggDo1NdlOP0op7X1Vr6joamb3ypCr6MD/LGFyif6aIpL/6o3Ok7O8/0l0bzWWr2IVh1zoXmwyiYqqXeH/j+5mKJHXaBF3OJAt5TmwT4zO+hAg5p/XSXvL3GRa09262JAS95shpK0PARpJ+6nTY8tq2qNVYWlwuJGhFU4P+UEptaaTLTeTBIOKqZ/h/cwjWudQKpkLQDUVk30aRgtVHBI/b1IxTD6qJBKyoAIf0wqTLmiJSg2UBHM9aaQIc/f6qOFQVDsO5JBoYmUOYR6QIEMDFSUc3Wtxh/rO5Jj4JtXgduXm+4xJBy3rxEdOdJXMFiuP7b4qiCaIIQAke30EPzVYPhCYNi9dTnTJaJZJzym37ut1W4
+ AgSdJ3f/
+ JhshBySCI871XzJxudTee/qUkOayDGTHKo41bNo3MaGqhywZk9MFq+FjT86TQdwaacxlxehfFA2VgSz18EaE0JDTRg1a8gCjbjdKdjZXj7Q6jLciCtxTuMlQ++pBAXtB1zgbERwVpZGiWunrGvQCHFlFuAqTeKH8PLXfXTLmR8suW20dYJpkY6zCQJw7EYPyoXKGtgW3RafoS0aoU0TiVX5OsyJrRSvUpsEjeDqkieJ+J5q4q1kKTTwnIDV6SS1Mlq9BTfVGYcVAivyfQD8ANGlmXT3usyTbUDovzySs0BzmIBNH3FRHwObSZG0T1/Ps51L31YovGa1YHVfM/oAbDjfOEPG1+0DQBKi39e/G1wib3ZFxSsrC2saSdS5M5/71GcaTuTC2Yjum/L0O5h4DS3eT8jDxsV6e2ETtmWLAgzFMgB/Py7xR2JqmJrwjULVYd5OZqaJ4d0c3I8BKH7sf+0d7XCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,82 +141,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for userfaultfd-enabled VMAs to the HMM framework.
+On Mon, Mar 30, 2026 at 3:12=E2=80=AFPM David Carlier <devnexen@gmail.com> =
+wrote:
+>
+> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
+> but sio->pages tracks the number of bvec entries (folios), not base
+> pages. For large folios this undercounts compared to the per-memcg path
+> which correctly uses folio_nr_pages(), and compared to the bdev read
+> paths which also use folio_nr_pages().
+>
+> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
+> count since sio->len is accumulated via folio_size(folio).
+>
+> Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-Extract fault handling logic into hmm_handle_mm_fault() to handle both
-regular and userfaultfd-backed mappings. The implementation follows
-fixup_user_fault() for handling VM_FAULT_RETRY and VM_FAULT_COMPLETED, with
-a key difference: instead of retrying or moving forward respectively,
-return -EBUSY after reacquiring mmap_read_lock. Since the lock was
-released, the VMA could have changed, so defer retry logic to the caller.
+The patch seems theoretically correct, but I=E2=80=99m wondering
+where we can swap in mTHP for filesystem-based swap=EF=BC=9F
 
-This approach is inefficient for userfaultfd-backed VMAs, as HMM can only
-populate one page at a time, but keeps the framework simple by avoiding
-complex retry logic within HMM itself.
+In both do_swap_page() and shmem_swapin_folio(), we check
+data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
+large folios. Am I missing something?
 
-Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
----
- mm/hmm.c |   40 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 4 deletions(-)
+> ---
+>  mm/page_io.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index 63b262f4c5a9..1389cd57ca88 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, lon=
+g ret)
+>                         folio_mark_uptodate(folio);
+>                         folio_unlock(folio);
+>                 }
+> -               count_vm_events(PSWPIN, sio->pages);
+> +               count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
+>         } else {
+>                 for (p =3D 0; p < sio->pages; p++) {
+>                         struct folio *folio =3D page_folio(sio->bvec[p].b=
+v_page);
+> --
+> 2.53.0
+>
 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index f6c4ddff4bd6..d04d68e21473 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -59,6 +59,35 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
- 	return 0;
- }
- 
-+static int hmm_handle_mm_fault(struct vm_area_struct *vma,
-+			       unsigned long addr,
-+			       unsigned int fault_flags)
-+{
-+	int ret;
-+
-+	if (userfaultfd_missing(vma)) {
-+		struct mm_struct *mm = vma->vm_mm;
-+
-+		fault_flags |= FAULT_FLAG_ALLOW_RETRY |
-+			       FAULT_FLAG_USER;
-+
-+		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-+
-+		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
-+			mmap_read_lock(mm);
-+			return -EBUSY;
-+		}
-+
-+		if (ret & VM_FAULT_ERROR)
-+			return vm_fault_to_errno(ret, 0);
-+	} else {
-+		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-+		if (ret & VM_FAULT_ERROR)
-+			return vm_fault_to_errno(ret, 0);
-+	}
-+	return 0;
-+}
-+
- /*
-  * hmm_vma_fault() - fault in a range lacking valid pmd or pte(s)
-  * @addr: range virtual start address (inclusive)
-@@ -86,10 +115,13 @@ static int hmm_vma_fault(unsigned long addr, unsigned long end,
- 		fault_flags |= FAULT_FLAG_WRITE;
- 	}
- 
--	for (; addr < end; addr += PAGE_SIZE)
--		if (handle_mm_fault(vma, addr, fault_flags, NULL) &
--		    VM_FAULT_ERROR)
--			return -EFAULT;
-+	for (; addr < end; addr += PAGE_SIZE) {
-+		int ret;
-+
-+		ret = hmm_handle_mm_fault(vma, addr, fault_flags);
-+		if (ret)
-+			return ret;
-+	}
- 	return -EBUSY;
- }
- 
-
-
+Thanks
+Barry
 
