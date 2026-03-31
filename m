@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A6CFF60C1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF969FF60C1
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9802E6B0098; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
+	id 1B7D96B0099; Tue, 31 Mar 2026 00:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90A056B0099; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
+	id 141DC6B009B; Tue, 31 Mar 2026 00:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1756B009B; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
+	id 030226B009D; Tue, 31 Mar 2026 00:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 64D126B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 232AEC3223
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:30 +0000 (UTC)
-X-FDA: 84605011260.17.1C77D39
+	by kanga.kvack.org (Postfix) with ESMTP id E2B746B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8359BC939
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:33 +0000 (UTC)
+X-FDA: 84605011386.15.E9163E4
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 49094180012
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aR3nwPCp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id BF40640006
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXMlbeVF;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774929748;
+	s=arc-20220608; t=1774929751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6DLWLzQsoTlruy6dZYJmzr//ur1QVX1gW6lYgZn98iI=;
-	b=0nYqGR/4OdNCHQy7lk0rd76bZscFSVxYlxjrjqTyslJp6FpZcY00lYO0aWlYulNd0mO7t7
-	yFaQc8XYNVusho0brCtUmcoF79er3SXoqfpyaSxNmOu91W/2KqQGObgrbTLgO+UoWmVO9B
-	kTYYt+xppra/0kOOIl7ImpAotJDX8zA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929748; a=rsa-sha256;
-	cv=none;
-	b=L5tQkrpDWC3ha9KkEhbhZo2e0AflrOTiEg/Kn1tRUoj7s38Qg6jwQofKGmD0Sejmd5CDVF
-	X/22t32AxeXYgPq9pax3t8grnhAoao9GxTbIh5BaJpYr38FKdaeLAxhhU3zVP5Bexcb0Ue
-	U6EjchUbLR1zVrtdK7WkO7MQPBmr2PU=
+	bh=xxDRoVyz2HRzp4YgRHoGs0Z0VHavzt0gkcpBjOPrbJI=;
+	b=kv0baoG4zrj00UcDpTpbp9Bd4hgw7gZzA9XwVQIjZdVnq6lIuR8F11J0H70EhNGTn16E/4
+	yGgfsEIo4MvRTMjPRv5yqMGHRsxshqQknxCDJL8/lzCEmZiW/m3yFgT/F3UYyao17IGVZF
+	HClwlIugnjRlz32FvkaW89GGCPqI9Lg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aR3nwPCp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXMlbeVF;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929751; a=rsa-sha256;
+	cv=none;
+	b=ZNaQ9pEfCCvixsn62adjwhKy7qL8SmQqduhSdxOet9KnOfObvXRltZCYzjQcBMXegBumvf
+	8FXBNsPOw6U/hDCSNXV7DtEfNSHm9Yl1ny9ysDUiGZwZbdrV5Y0xJVVauFiHv4EFyjIofB
+	O7Lf8xYKPS0NmnUyNOjdymuc2oVxkKc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774929747;
+	s=mimecast20190719; t=1774929751;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6DLWLzQsoTlruy6dZYJmzr//ur1QVX1gW6lYgZn98iI=;
-	b=aR3nwPCp2ZWg94QxRzqQQEhe1OrjREiBQ3ujPHWXGwEAtdhnD9444SINWMTVBONI75sybj
-	ZOw1dbk6JMqmVUNSY9S+cMXCgjkWob46xJO0wKFjHoflCKLoUzBLjhkDpt8IT9SwvjBCok
-	N8GFRL+lXinWC6VqD0Wha7l1lN6E818=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=xxDRoVyz2HRzp4YgRHoGs0Z0VHavzt0gkcpBjOPrbJI=;
+	b=BXMlbeVFR+YdwNkTCcDcYip0TnCzvI5etj91hcW0+hzRsTsczKUBkAPG/FVa6d/iHP0iAq
+	1MySJiueqf3UfGB3olaKICEoOQHTpI0BuAnAd7iwaLF7tFsm7QwbXt3laQvB7FCaQ536+D
+	xZi3obLFl+fAemvfaOfeCglfIVLnvWs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-kZ2gZjV7OFK3kiiuA2eVcw-1; Tue,
- 31 Mar 2026 00:02:20 -0400
-X-MC-Unique: kZ2gZjV7OFK3kiiuA2eVcw-1
-X-Mimecast-MFC-AGG-ID: kZ2gZjV7OFK3kiiuA2eVcw_1774929738
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-SmUw6YuZOKCNPKr_74qPSA-1; Tue,
+ 31 Mar 2026 00:02:26 -0400
+X-MC-Unique: SmUw6YuZOKCNPKr_74qPSA-1
+X-Mimecast-MFC-AGG-ID: SmUw6YuZOKCNPKr_74qPSA_1774929744
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63E2118002E8;
-	Tue, 31 Mar 2026 04:02:18 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E0E419560A7;
+	Tue, 31 Mar 2026 04:02:24 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.121])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 56EEC30001A1;
-	Tue, 31 Mar 2026 04:02:13 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 166BC30001A2;
+	Tue, 31 Mar 2026 04:02:18 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -88,25 +88,25 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] selftests/lib.mk: set PWD from CURDIR to avoid wrong extmod path
-Date: Tue, 31 Mar 2026 12:01:55 +0800
-Message-ID: <20260331040156.119158-3-liwang@redhat.com>
+Subject: [PATCH 4/4] selftests/mm: fix cow/gup_longterm link failures when liburing flags are missing
+Date: Tue, 31 Mar 2026 12:01:56 +0800
+Message-ID: <20260331040156.119158-4-liwang@redhat.com>
 In-Reply-To: <20260331040156.119158-1-liwang@redhat.com>
 References: <20260331040156.119158-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: Ji5aUdrxfN4L8Awi5rdwpigiSYxf3gDd3jssCGZzKmQ_1774929738
+X-Mimecast-MFC-PROC-ID: YfC_WdApSGTFiQHyqQqN_FP3cys5NgJHWzt2PY_YiaI_1774929744
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 49094180012
-X-Stat-Signature: rmow44umsf9nt8o54mdaydhimifj7te6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774929748-887046
-X-HE-Meta: U2FsdGVkX18lbUsoH/k1dH7geh9ncp6rz8LTFt8uroRqB0p30io0yZmE1pcgn28e+W2T4uz6x26R2AyrpFZ40PM3RIjdhRtgIGxZ92DbdTB1sjjxC6CZ+89W6ndHhpUesbuorUHPNVbzCNF13nINLRd1QtpJofRJpUHKlNgw7KKGV/7Z62odp7Xh2NlXsjhNs+XxaqiS0arWYuKAAkR7XaEiG7NIqi84v5piHgsQ8wJCsY/Vlw1ccbHz+iLLDu5/4ot06BAzVH2/sOtvjIvjMluW6l76029d0GTC+W6FB2Ydl0177YYdMsYXWgkieEuLBiwWTeyggdlzA4zwY6h4SoZ53C6YHkpjsXaXw5DJQHIB+6fBVvKjzvgj0xvZ+8t/xnKFNKZHO50ZLowVSeHBgsJplD2nl/YTFU9U5nYfiM8WEykajijs+SPuUiw8zjEgmTgDb3RTv0UKHXSdTxr37FdUXE5sSUy2fGDmC5KQZx0LjyVV8huRNA6MEjUgTfPUqTwY+spfoF5JDnOmLQihVVnr/hYq+FqUaNJkkBxrd7m+QzmWU+rfZKqLlVi5bIB3rtT9iLhy2umoATDSAgFcdlnltHjmBwNWTAAMSdpoPUkI56S+4lKntKKZQ+o5L+0fCBRYq0e4LQGe0wLZVIEn4xwJa8TugjfGSsA5oLIxKAGQML0YXlH/B6VAYiJOXYJtiaWRZIIOMRiAyx9+mCsDf9VQE8gFkKdk01d5NaSiJqJa7tM+iEE5VIU9A2kHJWjSEA+hNtXOCGPSN6w3pN1zWRXqJZGxivnqSpGm8ydJMN9REuz8UhvbKIrgBXCyIZd+xWZNpJzTItf+yYH8bskqhGAZlhNEWO1Sqe8jSreOouitxfp48oQ1oXVZFayxThzvuS/hZZCx2o8jOYO8HXZvSOo7sQ/FbUX2qlJiUxzOmfWe5GJGIgT0ifGpZj3A7w5q5FuXOlzE34Q+Cq4PaqR
- E81qLR7+
- 2189QqxkUAoIw0oXtEEUS5cqHH1Y90LZuK6yLKI0sRdIroH1tnxf7Xhew2moxsTbRCTsx/c0kjNwpPW5OO4eslJaEDf0SG4zydJRguxgISqke7gKkOQYLWwdNMEmXuL8fmTeSYhwVDn40iVS+euJ5CEWt9j6NW2UgxMnrGZN7z8hbl/oVl/77Vg7LqoigGqVZcn6wDzOWfLk4Kab5jCGX5R4RqdkxSBUytkeKPgS2g0/V9+DY30ptl4lnkti13pqRme0w+kWOLrAayF2/rXH4z5106mjOeffq7+YWMYjbGnDadrPEuaQns8VaZprAyX84Z08+4GcYg69e6pkDXjGWgzfF+lrEB2idnwrqmnGhNY4q2HAaPgZwZOaATV7nwmka9BfVT/lXAU2Md9B2rEUmLeQZaQ==
+X-Rspamd-Queue-Id: BF40640006
+X-Stat-Signature: 5inpsmfz3mn5pyjom57hrnkbtxro1hwj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774929751-169966
+X-HE-Meta: U2FsdGVkX18js/04M+njPmUIvzvRYwf4r/ZCHpA4kpi2y0bXNGaaQjoaVYuq9LpAjzC7JytL/+I3tdTd4+xglaGa7Rzb+Tt1lZT70xpzVsYCDnJAn9iGvtYAwmIfCUatLzz+bZRwRFsnRSdjYheWaasiFQTTu75AE1K+vJVsckTxHHxJVWTgzwfnepMlL24Q7HVTsTDMQdCBuarswO/FnR4yWZvuZ1pws43/oAhRJEfWAx5UM+o2rhhWCCe66+OdXL9+ea0MjX6DyNrRNsb2Zqvdw3M5ksuQVTtwivcFbFsI+0dT9fcyVBtKtXryZdKrR7K1NVqDnfzXppya0jOjKONl3Y8UHl4PGhigcfel2GS5zqOkS4N6j8TxxO/TIdX8WWCkPIxS6ZtDvydGzWsRNHXbP35LRT3sDXjEMQhInx38lE5csAs2HpJLssyWyAACQiA3vaDHLNHkzMdVjXFAGFdMlkF8FHXzVRHEWt7ARsEhYZ14Uw3jprPPJwHwBxQFLLGgXjQZTMAkPeGs1OqCCoY+Lo/MA3I48zYsezsORl4fikoTWATi+W3TAq/HJzDb26/9PxvMCQHy/1A8mjs8zHE2Ud5MxeQIfBM9U+QrlPSleXvrkuHXb3msZvqMZ+ICXYdetgvNQfArIQD6nUBzS69qI9bQTAgDGLNh1bwwEOAn+ejurBIPtxp/sIxBO4s55OZMfzDiNApBTyE/+HcNZmNEiUDa0gt3Emw2jvQfYqKctO7Xn5daAYOcKU4Znshk3LLDuep1BEf37ErTzSG1zVea/z9PDRkTkpcmKEAjXnpCBTP3lxGstjBUBUc6NDIJ3RpltToe0/7Q/CYed9oXPy92z3XIjS7v/X7fhVzsLaL/Zz693pyb+So+XB6eLGBC9ZNqk5Dyz5ibb2qyQpqAX0D4FFFDAWMnIwj6pfOi+455YG7eqopPFowSS+yv1R36dogTYBK/22AJi1zD0yL
+ ceag3TiD
+ iBr8a3WRk1L62WPv1/qzoNCPRdVKTh24wtlw0j62XqoOlrV0lorv4N2UC7vPHAoBx6GIK4blI55uqn5iV7gjPuyhg591BGKgHfT/XF6iM9PZ/Nr3oFobLiIeRzPMQPFhj3BO4fo9gRnNsUZqAaqJKlNnl6BaixxMpOeGU8K1aevDf2jLANEX6PAwa2aPpFdcP2U3QMbMBtuHTSOsxI153mbZup9GSRIUVQqGYtNSWLmVhl1MCDOOJW6tZC5Pqa1+8hRrDg/hY2W16+yaPoHrTb1MQR2vKS5dkfwCqsVI1bxmiyKyuX6X9S8bWInTN6Ok3UC/ZZTyNp9GNawOlrr2rFu7tCTwWidmaudCNtQ6gzHHV+2uZDeYPX9bu4WmirdvhmP38oUea5XnnBms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,44 +114,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When running selftests from the kernel top-level (e.g. make kselftest-all),
-sub-makes might still inherit the caller's PWD from the environment.
+mm selftests rely on IOURING_EXTRA_LIBS (typically from local_config.mk)
+to link io_uring-based tests (cow and gup_longterm). On some systems
+with liburing installed, IOURING_EXTRA_LIBS can still be empty, causing
+link failures with unresolved io_uring symbols.
 
-Some selftests use $(PWD) in recursive kbuild invocations, which can
-then incorrectly resolve to the kernel top directory instead of the
-current test directory.
+Add a fallback detection:
 
-In that case, kbuild may generate an external-module wrapper Makefile in
-the wrong location, potentially clobbering the top-level Makefile and
-causing recursive include failures ("Too many open files").
+  IOURING_EXTRA_LIBS := $(shell pkg-config --libs liburing)
 
-Export PWD := $(CURDIR) in selftests/lib.mk so $(PWD) always matches the
-actual current selftest directory.
+when IOURING_EXTRA_LIBS was not set by local_config.mk.
 
-Reported-by: Andrew Morton <akpm@linux-foundation.org>
+Also gate io_uring-dependent test binaries (cow and gup_longterm) on
+IOURING_EXTRA_LIBS being non-empty, so missing liburing support cleanly
+skips those tests instead of failing the build.
+
 Signed-off-by: Li Wang <liwang@redhat.com>
 ---
- tools/testing/selftests/lib.mk                | 2 ++
- tools/testing/selftests/mm/local_config.stamp | 0
- 2 files changed, 2 insertions(+)
- create mode 100644 tools/testing/selftests/mm/local_config.stamp
+ tools/testing/selftests/mm/Makefile | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index f02cc8a2e4ae..2840e98c225c 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -60,6 +60,8 @@ endif
- selfdir = $(realpath $(dir $(filter %/lib.mk,$(MAKEFILE_LIST))))
- top_srcdir = $(selfdir)/../../..
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 78496f705386..01bdd25e04e4 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -10,6 +10,11 @@ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
  
-+export PWD := $(CURDIR)
+ include local_config.mk
+ 
++PKG_CONFIG ?= pkg-config
++ifeq ($(IOURING_EXTRA_LIBS),)
++IOURING_EXTRA_LIBS := $(shell $(PKG_CONFIG) --libs liburing 2>/dev/null)
++endif
 +
- # msg: emit succinct information message describing current building step
- # $1 - generic step name (e.g., CC, LINK, etc);
- # $2 - optional "flavor" specifier; if provided, will be emitted as [flavor];
-diff --git a/tools/testing/selftests/mm/local_config.stamp b/tools/testing/selftests/mm/local_config.stamp
-new file mode 100644
-index 000000000000..e69de29bb2d1
+ ifeq ($(ARCH),)
+ 
+ ifeq ($(CROSS_COMPILE),)
+@@ -55,10 +60,12 @@ else
+ PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
+ endif
+ 
+-TEST_GEN_FILES = cow
+-TEST_GEN_FILES += compaction_test
+-TEST_GEN_FILES += gup_longterm
++TEST_GEN_FILES = compaction_test
+ TEST_GEN_FILES += gup_test
++ifneq ($(IOURING_EXTRA_LIBS),)
++TEST_GEN_FILES += cow
++TEST_GEN_FILES += gup_longterm
++endif
+ TEST_GEN_FILES += hmm-tests
+ TEST_GEN_FILES += hugetlb-madvise
+ TEST_GEN_FILES += hugetlb-read-hwpoison
 -- 
 2.53.0
 
