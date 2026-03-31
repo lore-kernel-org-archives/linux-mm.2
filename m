@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08565FF60E9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02FFDFF60ED
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:42:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1597C6B008C; Tue, 31 Mar 2026 04:34:02 -0400 (EDT)
+	id 33B616B008C; Tue, 31 Mar 2026 04:42:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 130CB6B0095; Tue, 31 Mar 2026 04:34:02 -0400 (EDT)
+	id 2EB9E6B0095; Tue, 31 Mar 2026 04:42:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06ED76B0096; Tue, 31 Mar 2026 04:34:02 -0400 (EDT)
+	id 201906B0096; Tue, 31 Mar 2026 04:42:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC976B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:34:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B6B01E15DF
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:34:01 +0000 (UTC)
-X-FDA: 84605695482.20.395A0F2
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0A10BA0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:33:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 091BD6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:42:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 968505C6B7
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:42:33 +0000 (UTC)
+X-FDA: 84605716986.25.B79E10E
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 928BFA000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:42:31 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WWRZgfiw;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GSqaylH2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774946040;
+	s=arc-20220608; t=1774946552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gV3wC6wNUStVNDdA5/n0gORLQ4zEznxAC2xRqMLlVrs=;
-	b=CTFawdnyqtaY6AZLFYPG1sPmXm09Kvz7MzB67p05V9qv220FM5BIpdvxG5aEK7EaZrkJ3o
-	wDmmgqP7nD8qHvDsCoRczOuC6sMtb+gSmhPYJCEdIQoRPVzxEjPcCbryveFxhcolHNYhcy
-	e9j3o3Hl9gRacEwfv4PY4gnVZjN5mNE=
+	bh=/AlGD7u4tl49XCgs6NmgwiGAUkvbnIHV7Y7bhbNiB1A=;
+	b=nXUz49yAtBKo+US6mpd04DtWDh8S41UAUWZZ/6Q6PEZvnZvWtqQ9/7juhkNIceIwd9YMeK
+	oNE/xELAPUPEcknZQOWbkSsRQE3Fwt5VukBsrGGqYL8/3qYUMFC58/8gAnnbAaHL0Cwa9x
+	TCYLLIKa7bHeNuZ4MyL5mjOkZZ34aYQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774946552; a=rsa-sha256;
+	cv=none;
+	b=r9EkVFGNWXuu/ioQ82kpseZuF4fznLgzG/65Qu3gqO1W2R5DeoYx0Hpfnrg+u/3HzjLPx4
+	hYkiDRP2hJOW8Nk5BawlxxzQNaMyOxaE49NEYuRgx5uKVc9pwa6aRmZjDWRunKp2UQILAd
+	cx0gNV74bZQTMA9ouGdc0d0cNyWLYJk=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WWRZgfiw;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774946040; a=rsa-sha256;
-	cv=none;
-	b=5477cVO3Au3iXas9t/2lA7Sk9KVilBZ9THEAEWcSLfAcCQ64wFFrI06EGcuVkcsoAISPUJ
-	5MjUfpsgSMN9DgDHpyYvsjPam/j2jLLTFM+G2c2ZkVvI3H0Iv7YSkboHcIHfCIEsNfSbSh
-	1xjNziPDDyP+XxySaCVWYoCPOciLQBs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774946034; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=gV3wC6wNUStVNDdA5/n0gORLQ4zEznxAC2xRqMLlVrs=;
-	b=WWRZgfiwiqRjclerUERliR7mwE/dSO5QHGggzczBW8KExil8TUtOYinZCZrz9ylg1JbKsyvJOlc4rZ9AsTFwKQAY6tR++Il19mN9KUaDR86n9CcBQFTNnwQ7jUc1ntdZ2C/bLtellDWsJIPStKl6zUK6zwQH+zde7mogmPURSt0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X03p4SA_1774946009;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X03p4SA_1774946009 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 31 Mar 2026 16:33:52 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Ingo Molnar <mingo@redhat.com>,  Peter
- Zijlstra <peterz@infradead.org>,  Ritesh Harjani <ritesh.list@gmail.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Baolin Wang
- <baolin.wang@linux.alibaba.com>,  Ying Huang
- <huang.ying.caritas@gmail.com>,  Juri Lelli <juri.lelli@redhat.com>,  Mel
- Gorman <mgorman@suse.de>,  Vincent Guittot <vincent.guittot@linaro.org>,
-  Dietmar Eggemann <dietmar.eggemann@arm.com>,  Steven Rostedt
- <rostedt@goodmis.org>
-Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
-In-Reply-To: <2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com> (Donet Tom's
-	message of "Sat, 28 Mar 2026 00:24:13 +0530")
-References: <20260326071216.11883-1-donettom@linux.ibm.com>
-	<f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
-	<2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com>
-Date: Tue, 31 Mar 2026 16:33:30 +0800
-Message-ID: <87cy0kpfdx.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GSqaylH2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774946549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/AlGD7u4tl49XCgs6NmgwiGAUkvbnIHV7Y7bhbNiB1A=;
+	b=GSqaylH2c7Q8tuy66qhpuXzOfPxj6bt0rDqgVSDRk2sc1JHLvey+8enRJ/spvq4w0IXqEq
+	w3SiquejJLiPKkar8ZjfkDsBIpDJAcMVLzlmmI6oL/zvxeV2JScYR1GagCek2TBIGbIhnr
+	NSsmi+c5ZI4YebrcSbAzSFMmi+nZgcY=
+Date: Tue, 31 Mar 2026 08:42:26 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "teawater" <hui.zhu@linux.dev>
+Message-ID: <03690880802c3b7bd03ab93ef463f0bc739e6652@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH mm-unstable v2] mm/memcontrol: batch memcg charging in
+ __memcg_slab_post_alloc_hook
+To: "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko"
+ <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "teawater" <zhuhui@kylinos.cn>
+In-Reply-To: <20260331011647.79bdd9b9b6efb99bcbac8d77@linux-foundation.org>
+References: <20260320020745.833792-1-hui.zhu@linux.dev>
+ <20260331011647.79bdd9b9b6efb99bcbac8d77@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 928BFA000E
+X-Stat-Signature: cejsu7d11msqp3bpgq63axq4ria36gqu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A10BA0002
-X-Stat-Signature: 9khcus8dsdjqegnn7rxreatqq7tk1a36
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774946037-102225
-X-HE-Meta: U2FsdGVkX18Qjum4dKszuW1k/ObqsWgSpblxSIeKMKqf+tDlBEf9fqQyxd/Zrm+5k7tv3g183qxuhBZRyh+lQ0cKz9PjHp+/DE8xjQZCDeCqhxIPd9dwb/4OTGyb9n9f3AS+B0wtjQdj+dIWcnoIyiWz4t5sSRa23FAE+BZJ375CoZHizrKcvfacaBu24zJYRmN3Xf6bnp8jyIAXP6lnCl34sirup5GTazxuaYIkd9+lOTHYOgeztQ5OVcGjTHzSINSTH+LMC3CMoy2gKbTlwoWjTNpM/GUJ/qMJB01EtshIDID8i7X4AqKhznbzZKHbUOyYwkmLckBzsqMrhLHKGGdPBAWj1V3HK+N2KYttcS62iR4/oomG7YQWDPhTEKN6/mnhXwP7FoQflEq5O6DXhgevWM60nj76i4hPBqrr7CPefmhaRTseZ8MPvc+7g1ULMDvnuve2HIulvGiJj13a84usZqTl6k/6kttDuCq/bnEN+ZnNMiLVZp/IRy+Zhzv9BDtoSC+he/ePtHiKc8bn/8qOGD3HmCEstO6Wda6JQeRXvOX8pfbk5WKAkFevszWcHDBTuOe8iJ/MZFfvEgnnZXGFezTp5KFLm3FaaYv54fJM/JrEmMHxAkhekTCeCVxy461AHy8SZNKB8VnxtyJG6637KInL/bjHVhZjmmLPyIyZjfNCF1vdhL9shjebiQWD85wZN5xUGeJK2hXWyUCkMBxquN0b6DqgkKOuTnUlOy7qzSa8aLnPiGX1HedYalk9FRybzzKrLEdjb1jy+ODjlEfTB816y3IhToop4xOFb93LcXtiURmRkg0CtzNzF6WW4yXc+lPz7UTiTkUoRdL5/nnyzyhxkZVoFb31yIKDeu6JvwO+dl+1LqBs3IOaS6AfGJ1zb7M+KzGhUvoRwQ8kIUTgOk4g3XUVxYzG9nRTeLAUFhwcwA9aYj9P8IfcDSpycwL3N2MD4BXfHPBmAAS
- 8xOBfyY/
- WaToBfQB4t2Qe02C1mk5nsyMfBmMqyEgnhoCI0Zqc0yke20TyTjca20dzj17vmp2JeKnBG7D96fs44QHhFvCyWOPPmelBkmOWJWypMVzYc/zHaaPLuYTO8AMhnTHMwcz7f20N71Ypxs33mmZ19MZwMDLPKLPP6IXwgtuQTXlo+dxiRyDlaVVjjKEjqqtPLBXiC1i7vbQG37OJWISButaSsHthjfDHiLX1i4QmoaUCf/NutWC7jJRQjXvmSDo+Ag0nKiQVAGy8lNT0y6CsMW62ztQvfm3DkAyA90xleLxsvJGPSOrSqiTPuO+02eALGL9RC84Gx6QwfK+TuleUAPWhzrEX0i4JtgjGF2Di3ewmAX8sk94ioAp//KLTKNsOMeXGAsyqsv08Fguqeqs=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774946551-375446
+X-HE-Meta: U2FsdGVkX18bKKHLgX9eVHJ/NpUwNYi5wNqfI88s8fo117NOqOYjFV/fW9Dl2K+xPpp+gDF2j9XIeT2WpWRUVSrfJCwF0go3hxpOUgSqRiEaMgwLluW+loP64Eob7SEVjUs1DHDW121m9DqqYRIMFuNx9WC4cM2s9B2ZZU6/HxciID362R1UbZItscYpywk795c/rnWhoL45vscuytgQnY/WElaOdgl+/E4j2/xQi1Vc5w9zTj86v0KUHuRbhxIHi9SGQRB1+1g5B4MSbppaUQpeVsVqefDXdK7/4h4ZcpnEWJE007VSI2/d2QI3/Bo582PPMXHD5dSik3nH38mbS9K78575YIUUAsavic5YNDFZeNmAqxkhmZxJveO6IWHK9KxjkiDXB8yQhEyAuhUMKxu3X64jZva6YNHTwfMdgdxGaygS+yEQs3ER5vtGg/0btxELtzG3HmMBXTxABH30o1BV0hnHrzQKrvIiVmL8SPyon88rPqO+YnrTlKdOsU4eWqyTihrcbMk4Bwd1vkQIJiwqfiI/nSu8cwRNzy09w89ifAVdEq1KGk1J+hLVCvKiU1CQwI9/TY5rTmqepyR2mTgY0n1enIq1N4AogcZNI8k2kgiL531FC9QMSAW+NjmJdNWPejuIZ/dw0Jda9RrQvTxwS7YWXsfJWmvPj9sUKPUWd3CyA6ohD7XsKUYQYlcpdq505O16iMFFigl+j0VG6ZPfPFCz/QBzrjXmNivueFKdWJ0zHhJzXEwDNRNP5nPv7S/O9Sldf/TLQD47uBc+vKgV1bSxRallAVl5/laFFl5Ng0K+O3Ltg4DKiXcAYETT/n7CTgp+sTG1pebtXoYZ+fKcyMwQ/BO60ClEHYLismAOQBbChQHeAWMp+xXQjXQ5YF6+4oTBBVwrsqo3Csur4m5bK5792JPCkg2PM1LEB3XXhO+Bl011aqZVgfmF1lQZkFBkX4SdxohdbBZHAg4
+ 8fYtIjVe
+ vU8HeT3Jqmv184FMmuXJtQAATsY6zOjMUARP2p/WP4xLJvpOilBHmBXrpUPiV5mIZoKJpCYRXQ6y1mJ7MQaDY4uzN8z6NuLKc1bOl3AFb/WCmgmOnvEqNPkNCC1Wx9H92kos7LhCUoZsarbb/TCpFW6T/4pOe13tXfTROg0iIxeaH9Kkh2B3fspl9/MEoOhb7Im8Nb3BAsZm3wDUVPtsqLyTIRbu+npSMeHbb0CGDAgrZDHKhNCvRKUlrzgDnCZgOKPos5vTPFb4j1mRok9Z06g501wH5EuozFqkP8JAc1iOOS8+GTtIS9p+tPklicVTZLQHG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,108 +94,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Donet,
+>=20
+>=20On Fri, 20 Mar 2026 10:07:45 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> When kmem_cache_alloc_bulk() allocates multiple objects, the post-a=
+lloc
+> >  hook __memcg_slab_post_alloc_hook() previously charged memcg one obj=
+ect
+> >  at a time, even though consecutive objects may reside on slabs backe=
+d by
+> >  the same pgdat node.
+> >=20=20
+>=20>  Batch the memcg charging by scanning ahead from the current positi=
+on to
+> >  find a contiguous run of objects whose slabs share the same pgdat, t=
+hen
+> >  issue a single __obj_cgroup_charge() / __consume_obj_stock() call fo=
+r
+> >  the entire run. The per-object obj_ext assignment loop is preserved =
+as-is
+> >  since it cannot be further collapsed.
+> >=20=20
+>=20>  This implements the TODO comment left in commit bc730030f956 ("mem=
+cg:
+> >  combine slab obj stock charging and accounting").
+> >=20=20
+>=20>  The existing error-recovery contract is unchanged: if size =3D=3D =
+1 then
+> >  memcg_alloc_abort_single() will free the sole object, and for larger
+> >  bulk allocations kmem_cache_free_bulk() will uncharge any objects th=
+at
+> >  were already charged before the failure.
+> >=20=20
+>=20>  Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
+> >  (iters=3D100000):
+> >=20=20
+>=20>  bulk=3D32 before: 215 ns/object after: 174 ns/object (-19%)
+> >  bulk=3D1 before: 344 ns/object after: 335 ns/object ( ~)
+> >=20=20
+>=20>  No measurable regression for bulk=3D1, as expected.
+> >=20
 
-Donet Tom <donettom@linux.ibm.com> writes:
+Hi=20Andrew,
 
-> On 3/26/26 3:59 PM, David Hildenbrand (Arm) wrote:
->> On 3/26/26 08:12, Donet Tom wrote:
->>> If memory tiering is disabled, cpupid of slow memory pages may
->>> contain a valid CPU and PID. If tiering is enabled at runtime,
->>> there is a chance that in should_numa_migrate_memory(), this
->>> valid CPU/PID is treated as a last access timestamp, leading
->>> to unnecessary promotion.
->> Is that measurable? Should we at least have a Fixes: ?
->>
->>> Prevent this by skipping promotion when cpupid is valid.
->>>
->>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>> ---
->>>   kernel/sched/fair.c | 7 +++++++
->>>   1 file changed, 7 insertions(+)
->>>
->>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->>> index 4b43809a3fb1..f5830a5a94d5 100644
->>> --- a/kernel/sched/fair.c
->>> +++ b/kernel/sched/fair.c
->>> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->>>   		unsigned int latency, th, def_th;
->>>   		long nr = folio_nr_pages(folio);
->>>   
->> /*
->>   * When ...
->>
->>> +		/* When tiering is enabled at runtime, last_cpupid may
->>> +		 * hold a valid cpupid instead of an access timestamp.
->>> +		 * If so, skip page promotion.
->>> +		 */
->>> +		if (cpupid_valid(folio_last_cpupid(folio)))
->>> +			return false;
->>> +
->> IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
->> we would no longer get false positives for cpupid_valid().
->> I suppose overflows are not a problem, correct?
->
-> Thank you, David, for guiding me in the right direction.
->
-> I initially thought that overflows would not occur, and therefore
-> cpupid_valid() would not produce false positives. However,
-> after looking into it further, it appears that overflow can
-> happen when storing the access time.
->
-> The last_cpupid field is used to store the last access time.
-> From the code, it appears that 21 bits are used for this
-> (#define LAST_CPUPID_SHIFT (LAST__PID_SHIFT + LAST__CPU_SHIFT)).
->
-> With 21 bits, the maximum value that can be stored is
+> I noticed that the AI review of your v1 patch reported a few potential
+> issues:
+>  https://sashiko.dev/#/patchset/20260316084839.1342163-1-hui.zhu@linux.=
+dev
+>=20
+>=20Can you please take a look, see if any of this is valid for v2?
+>=20
+>=20Unfortunately the bot wasn't able to check v2 because it couldn't get
+> the patch to apply. I've checked that this patch does apply cleanly to
+> current mm-stable, which is on the bot's try-to-apply list. So if you
+> wish to get checking of the latest patch, please send us a v3 and that
+> will trigger a retry.
 
-It can be less than 21 bits, if CONFIG_NR_CPUS is small.
+I will send a v3 to make sure the patch is OK.
 
-	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
-
-> 2097151ms (35Hrs) . If the access time exceeds this
-> range, it can overflow, which may lead to cpupid_valid()
-> returning false positives.
->
-> I think we need a reliable way to determine cpupid_valid() that
-> does not produce false positives.
-
-Yes.  IMHO, false positives is unavoidable.  So, the patch fixes a
-temporal performance issue at the cost of a longstanding performance
-issue.  Right?
-
----
-Best Regards,
-Huang, Ying
+Best,
+Hui
 
 >
->>
->> So what we're saying is that folio_use_access_time()==true does not
->> imply that there is actually a valid time in there.
->>
->> In numa_migrate_check() we could still use the valid cpuid I guess and
->> make that code a bit clearer?
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 631205a384e1..ba68933a9e4a 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -6119,10 +6119,9 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
->>           * For memory tiering mode, cpupid of slow memory page is used
->>           * to record page access time.  So use default value.
->>           */
->> -       if (folio_use_access_time(folio))
->> +       *last_cpupid = folio_last_cpupid(folio);
->> +       if (!cpupid_valid(*last_cpupid))
->>                  *last_cpupid = (-1 & LAST_CPUPID_MASK);
->> -       else
->> -               *last_cpupid = folio_last_cpupid(folio);
->>            /* Record the current PID accessing VMA */
->>          vma_set_access_pid_bit(vma);
->>
->>
->> The change itself here looks reasonable to me.
->>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>
 
