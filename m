@@ -4,123 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B87BFF60CF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:13:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26C5FF60DB
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 414136B008C; Tue, 31 Mar 2026 03:13:41 -0400 (EDT)
+	id 551006B008C; Tue, 31 Mar 2026 03:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB4E6B0095; Tue, 31 Mar 2026 03:13:41 -0400 (EDT)
+	id 4FFBD6B0095; Tue, 31 Mar 2026 03:15:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 328126B0096; Tue, 31 Mar 2026 03:13:41 -0400 (EDT)
+	id 3C7AF6B0096; Tue, 31 Mar 2026 03:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 250BF6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:13:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9A698C687
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:13:40 +0000 (UTC)
-X-FDA: 84605493000.01.CA023C0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 885DC4000B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:13:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YUzq448/";
-	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774941218; a=rsa-sha256;
-	cv=none;
-	b=GMIBmZN3Dk+2AP5HJZui7auLpqFuuDFek/tvAZx6waC29rYSXjotNtqhRdMmxfpJvWJCIU
-	K7GC6OFoVmrxDrW971ibhNxRbAJBQ7VWYGeXgJU0+Ez8zGfpzdGzRnkjRkT3Rlw+nXXNy/
-	i24+vkmAbZ67xnw8zZTYxoWO1vY2Kbg=
+	by kanga.kvack.org (Postfix) with ESMTP id 24A086B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:15:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D90315C378
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:15:57 +0000 (UTC)
+X-FDA: 84605498754.05.577E26A
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0C60D10000F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:15:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=S6XXWgiL;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774941218;
+	s=arc-20220608; t=1774941356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hHJZFHs0FUFKH1nrgiAFz2Owaw80mef2K1q51SyxNfY=;
-	b=xNAeTD70Yt/aE46ZctCzjnxpwvHUCx38g1u6DtsgJshxcK5wzLV5TB6T4D89lawzG4XN/f
-	UfAkGxRLBNZEofMFmJvKc6jlS81XxjUDrV6ZLrWpeAK6kDeX0JfMY9oPZsA2ZVp1I4PpNK
-	7j+DNVo0gEDGtIapRQtqvcQLr+CtQfs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hBZW9JjlCCiEdLUd24hKtYoeuSUNPJmQ9yAz6YgyHRY=;
+	b=yGVlryRGNZNmwvKVfgqw4LIzxac5AQm3/wN48DyS7PV3JiovKrTk+YLkZCfpsbF9+G/gFR
+	R4CYnLO5KmWfft8QVaqaJ2HZcG6jHTCw4Zpw66FxZapoK+auOt8tyMIpwi8XQMPhGSJdWc
+	hBZACxRUWsDCuCFCx7dQTpfPU98c/lY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774941356; a=rsa-sha256;
+	cv=none;
+	b=nT4WkbkQlqmGYFGuW9Er+NoNBi5l6iQ1oP0Aih0vWtMI/APH7cE9kgcKWsu/bVzrPdDrF0
+	A5lCK3aEU2e7soayQy+BMPedeoPJmuc4CwMERCmCtPFk+q561Qxh35qIDknytg+hFEX00P
+	1HmfWlKlEqqDKU1MhzVpORFSopO+Edc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YUzq448/";
-	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774941217;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hHJZFHs0FUFKH1nrgiAFz2Owaw80mef2K1q51SyxNfY=;
-	b=YUzq448/f0fGRevRn662kdIpVO2CQUd2N+Oh00l0EW1q66LRnJFCKUP2/m4K/HYKB8xyaj
-	HooYnSMmrQvtfo9KJpjcPUabiGistvVXrWZj2yTGwkng7vWXgvrrmz/o6LWvLB2kc7GGIE
-	IeG1FnILwVzR3aJW6j9zBwGbiZQHro4=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-455-t3yxx_tIMjuJKp3iamyiJQ-1; Tue, 31 Mar 2026 03:13:31 -0400
-X-MC-Unique: t3yxx_tIMjuJKp3iamyiJQ-1
-X-Mimecast-MFC-AGG-ID: t3yxx_tIMjuJKp3iamyiJQ_1774941211
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35da1c703d1so2306710a91.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:13:31 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=S6XXWgiL;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35d90833cacso1915811a91.2
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:15:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1774941355; x=1775546155; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hBZW9JjlCCiEdLUd24hKtYoeuSUNPJmQ9yAz6YgyHRY=;
+        b=S6XXWgiLCJ/hoesxw4XVaZfM/js5ROy4q9I3tgZ1Ek4sLlIbDmGy9gfnPTQSJBQDfP
+         VWRId445QnYeS8h8MECh0mzS4qZxe6FcWvHAjB7Sv665y5DPp3PnEM5r9YdFMuRpSsPf
+         T41dLlra/IDmtdypvOKwCCKEEUcxJySA22HMU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774941211; x=1775546011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hHJZFHs0FUFKH1nrgiAFz2Owaw80mef2K1q51SyxNfY=;
-        b=GgIm8wlJxOodwMaMHcz8GUE5QcZ/oQbcDk13aMFwaPMo4b8rmAgd3gnVWJz8jTNpL0
-         xJyVo222/z121zRMsI1+gQ/7EWSDyjzdg0ZdMkGTKq2OKrVu5KQy7PQmzqb2wmDXYDK0
-         3LWTk9jIPfZYWjQCW0itPAcVPscFAOFJ0EVAH6l30D/WN+X5U8CqiquaWbQ2ffltNht9
-         BM2Mxn4312jha6j/9ZNzkyT6uobJjsdBDa/+qlOoOBFBiHsXDa42byevQpBitMPB3R/w
-         Pl3a3wbQUM22ewnNNiIRd50tc+THuxyoF1y0u7wMxfNN4u2BHW2cZow2zf8cpqLCvZdb
-         FDVQ==
-X-Gm-Message-State: AOJu0Yx1Ypds1Kkw2eZpQWUMO83H9C05LI7P2i29Qpw+xsCldYj/nKcM
-	GC9mCQeWFoL4zAjA99B8n+zg0HQrUah/iZ7LdXjwZWBD5swmVwrw7qiyq+pdAo+Y0lZDztWeKnt
-	MizgzIlWxge/ZksUY2qh3zbTS6wwpksE7+7WWDAttciWh2RG5kt3M
-X-Gm-Gg: ATEYQzzqVCCvh4eRnwDcgfQcbxZTPTV1xlviZieV6FdJv4F2Tw0qBm1EQPfo62VfnvS
-	SaS04Ya7CizIYvTC8RFA56++ZySc0vid1YvmcmTjJFmni09O9YGW/iQIyCkUgEAahgi200rm9ve
-	FkcYKT3EYAMfGdFsD8VDPBn9vi/1iGKQGiJ57tlnMU9EtkDuxWuW1Y5Y9czSyg0hjjII+a3EUxk
-	eXjxTYwPVV9rNhOI7vvsOks78VnGZtujaGS0OeV14tAJNZ/s4HFCoCyxciZdmc4sOgEH4tSlC2Y
-	5lZS6iQ5NISvrl5Gl1WtQ5QkxYA4OeafjzxPMGYKOlgkx4acEPM0Q5Rg1sGKmG6Ky4KvTB3PQNW
-	OG7CccQ41+rQUzzBsKA==
-X-Received: by 2002:a17:902:e78e:b0:2b0:61f8:9f01 with SMTP id d9443c01a7336-2b0cdd21fd8mr172318345ad.44.1774941210817;
-        Tue, 31 Mar 2026 00:13:30 -0700 (PDT)
-X-Received: by 2002:a17:902:e78e:b0:2b0:61f8:9f01 with SMTP id d9443c01a7336-2b0cdd21fd8mr172318145ad.44.1774941210399;
-        Tue, 31 Mar 2026 00:13:30 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242787bc7sm105451085ad.59.2026.03.31.00.13.29
+        d=1e100.net; s=20251104; t=1774941355; x=1775546155;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hBZW9JjlCCiEdLUd24hKtYoeuSUNPJmQ9yAz6YgyHRY=;
+        b=m+NNLAb7QFktyMTncUKCq6ypvyLMp5wQ3hBVoo0l0grphC1/htEriv+PXDWseZeI6n
+         vgihQS9g1veASUefDPO7yLBYDA+S3A2oMC3AgSXLQtzK2vPBdtyoDys00XGuKJbOZIkM
+         O0WV6Z7P9Meu9SxhAgTXSK4GHAK1vCYofCuCvVmZL7bw7fq82cSSGVnw8QRx/780+aWO
+         RnZNAMT83j8BN7DfVQnKq+BHitudcYbH0Rtzqw72BhTzrCxcprCZx3o5NHekehe3QfDx
+         PQST7o2coZVcjzlHRbRJHeiCAWPSq7W0ZMNsm0u9DV3Rngey1RKlTZkVC8hcMLxMt8NV
+         u6YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW5JAkNumaRnG39gY/rn/Mpy/x179Ak5i/1kd98IPsKH3FNV2IcwbCTVzh4nRDIAlYsb6EAbLs8BA==@kvack.org
+X-Gm-Message-State: AOJu0YylWG87PG6AHHiyp4MAvq9NOqkAxH9dpKrlfL7PL7RBBtgO3Kha
+	wCYkPNV7yVVxMThSdthFrjhd/RkMIzllgQnZILaXHDOCfhOrf9enaHJ8M9/8Zl4nQg==
+X-Gm-Gg: ATEYQzyihP0PZmIUwmQVSbVRs5dIGVuUQH+mFbS4xDDtwDgl4toqMkrHpe/5mbJgLy3
+	qbscLOdqlFJL1GqM/2NUXzSJz+VCLDFIEF54TjRGngm7IOgywPhUzDbjWHuEo6JpnfdDmIO3RJq
+	3mZh+FlMg3t7lRkYKxCCkmZhWc4JcLP+ZC4UdT+4fmY/vXh/1H6EL/D41WNlR7I/8VSD9WmOZVn
+	iMJYy8LX7YBOq+nl57ys76iwCjOcjUAv6T/4hy7KU5TNJsLS3Q4g6Lb0LwKZhR41E6oQdgovYGE
+	8qvuI0jjI7J48YadMrX9uHydiDH3yKavNAXhup20Quamwd2TN0KajEl97Mob87iUou1cvxyAek5
+	MclOUh43fVEDmueCJdgHI9Q3ITXhf7Vtl4Vd47n1BdvogUe4vYePyRUYSu9tbrKlE3SNILELYUu
+	X3lhevbuK1ONjDmH//q3zjXI+SDYIomddhfFIqoVVNqJ2Jaa9C0T3uBHI28V98jW5JcaWvP0luO
+	Wdq2t+ceZiR0Q==
+X-Received: by 2002:a17:90b:3c8a:b0:35b:952c:43b9 with SMTP id 98e67ed59e1d1-35c2ff8b257mr13908581a91.10.1774941354917;
+        Tue, 31 Mar 2026 00:15:54 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbba1daf5sm331975a91.14.2026.03.31.00.15.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 00:13:29 -0700 (PDT)
-Date: Tue, 31 Mar 2026 15:13:27 +0800
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] selftests/mm: fix cow/gup_longterm link failures
- when liburing flags are missing
-Message-ID: <act0F2KTpXFFxmdf@redhat.com>
-References: <20260331040156.119158-1-liwang@redhat.com>
- <20260331040156.119158-4-liwang@redhat.com>
+        Tue, 31 Mar 2026 00:15:54 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH] zram: do not forget to endio for partial discard requests
+Date: Tue, 31 Mar 2026 16:15:06 +0900
+Message-ID: <20260331071537.706139-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
 MIME-Version: 1.0
-In-Reply-To: <20260331040156.119158-4-liwang@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0rV2_owT4Ha1UFOhFlXfPxpq8oTnKp0_CX3V_rO9-LY_1774941211
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0C60D10000F
+X-Stat-Signature: d1cqb9bewwxcbz58zbkynk87rkq17iyp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 885DC4000B
-X-Stat-Signature: c8xr18ew1r8pacp1a8gzw85w5m7xh3t1
-X-HE-Tag: 1774941218-194302
-X-HE-Meta: U2FsdGVkX18PrdKr5tW/bU8fgYdXMdrXk8D5/rpau8AYuqnkCexiifUzJu9e0ELZThGUf8t80HlgIvgW9Igxw+EFxi2M33BaLjjkAqr9QRE6DJ7PmBOVGDCHP23HowxQYHaii7hl4/42T6DdrshuY6bjZLGizjS6Uljw3sr/vO03uMOfzAGZYI4gg+LEgfeNZWrxRL/70XlB3myrj1xFCY8XaBlujKucCJ5bQrbxR1Sbg5t+6gCp9CneTR7QAQOOTQFaRuVDFd9qBJt2R9RiT3LvpqQuZNL44XnFFCiIoaSa/h3avGZadkzrcvHkZLcf1QbfxmbR64vsxkYuaUhtv4xGjDQ6g7Kghg9DpT4gaJrmpvcGDWPsEjcdZMT7RDCS3zZM5dMdcVZFhF9BsjbT7IhLMaqoThoFe388CmNARe1z3f31+d5AObXefsOYoYnmVVnoezq92cjU+AsUdESluCmf+allMsZdgKO/4qJMSzmmxoOzb5Wh/bsdZ/rHnY/GbVxfWApWOqoVCinoF2TyQr93K6n/iR6JQIxA9d8ku/ikqpmW6rarTbTb3N0SFj7vArwW92SQGfdLoHgksNo3Y65qI+iCL9wnuBQ6T0wc9NHbTo+/4tO/Ph5cOFxkXQU8skk61j0qO/FcKtd34UKxwZCmss4Hc85yUgJzHNzNNSGLvCCFfWn9s0+9YekNW09DCZogXhk7HOpYoiZt2muRTAIsBxveG4eBO0XTzhD6Pw+TAkzCFWXyhgXWYGX8L2GI63zsQRK8FCXlgbfu4DeQYYCvOaX7RKjo9GnjlrKPKmqR7wnL25dEjlj7jxCs9zjR/DYRfY0xrlpAL1CDZ0bghjbmy28a/co9sCp1/nQtKXYzbhrNmzLkspqcj5lKr5bAwHVplBp32ssGMxOswMCxikFmh/Cu+fEf32q/k2w2uY04zpxCrm80GV5aMJS9SDKxsvXFGSHbqf1VQsEEz9G
- XlSexTZ9
- T4BBS+sxh1pmKC/7We6Y0S8452TxbnBE5jqDAeFczS3vBxUwH7tx6XLQpxfCsM0lxElYeXdiATJ679oQWCTn+SgmC00a3fk8V6v53/NihSfqSkcdGY+J+9+l5l/1kjCj3L9hlUuuJ8XEtRlyMGEnBCMFNgusfb3WoKvE+R1kVelPGU8P30AfsEA77+egkcr9oWixrAU4ywEu5OL0giGBNx2HBUkiRVaEZLcOWgnjQmo1Yx+FIsc5jXfMFzcjx7JLIVBvA1gxmPTPXNrtbfh/EY6k/xMWw55gfmv+BJrjpA6DFiyPog5LTeGNcrvbY7+0mQNhGj4MOdQsoc2bQYsuoteHRDrE9tZFEv/YYhzfdUgLHLCL0m30AvXt8VKkNIFBcmcpcSYnjD+Wk58m/cMNMJcA8Cq9+7iRfuU7hEsF5NW2qZJqnUYkrws5stCqixOkdnT45hnysIF2XhrbIjS1MA0NwqDeIpj2L3ulX
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774941355-784171
+X-HE-Meta: U2FsdGVkX19DNZo94RS7PcevF0X305MaXHGK9QpQaTjSc8jtshVYrlg4IzMPtIrJhg33vVPa+LHCnVBrlkITMgYb2Qp63Lhm6PoF3R/PWOdOghsWnk4Gse5ZAnhvLXJ2NcWDQXl8hq84lpRnHqWIIxBu2ahvUqprOKEQnC+hAa9aZxEiAsDtxWExvWS7g14t4NmeiJARduB1dsyQcrF5XtkyXNjK7myutq/FRYUTuwSeAei4fpCrerlY8Yloq0et4RZT/ZTS9khaxjZTkGULm3m9Yx0MOKhLwNB1z9azf2y1sk/YFa1YFpBE3qYMG8A0BVq8WFD6FL6mH80fMsfnCWptorfQZLdXQhTeTuGtPXSi7yXTArGmvJI/1SJAMnco+jsehuIEopjudTVjnlaSzQMFCkZ7vJs6fDQyjVlDZkkzFZR1a2iA54TybuKPXGWKQtpZDlKnIlFzXQiR/qf5nwzwQFNcY3tNWld+oI0b+4ohTHqrBhiiRhvbUAmIgO3v5sMfCOYOyyLw1rg2bUckv4ImLKEOzf7iyIQdwOtpxUbmLldbhUdJ3yyCyRgwLFQ3stOitLL4HSLLWr8yI66EQjJYRkgH6VecyiaivoZPuhl9tQ0/sLnPVKSI0CHYpsFbVoI+9dctK5s8pqPONuJOYtekh2k3L8Il2XnedOs8lbpIl1PP0/byKYv22X8di3eODxl7F2iYHFU+pxdUkzaYksWGDVg2JNQB6nyp20VDSZsPMNOoGy7rIfLCY22FpusfDw7hneXIDruUQGolCQhCvcZh/hlRBX2CKabJasPwd2UuA0GNdCtyebSx+QSEG4uznE58ZGzoT2GxtTSt+OqXkSrvAs2T1oz76lIg9Yq7ztKu63lpbjiPi4JwyGfReaMGyff7K6xyzBYeHD8dCpJRK0V/gJSoti99rUsI4xUUCVLGXuAyObUsQMx9A+BNO/zECW7YFQZflq6FoqlM6Gv
+ k+mRlF++
+ huExSEsue64A8PVZGR58v1T0NdE5T3gGjt1tssa0pE2CvUvKagVzgNup4wZ+uZySPvkcorEGt1p+oqV4f8eun+IUSVLSX1/XyGO2Ci2pBTG5TxGuh2QXCTUjEBWbnZpWMBRVGv26WxbeLFDpDgDm5qF0Scyn3aVufv2hN5BH8PpUCy/CXNaEcY1l2MCVr3OtYKClZ6bzuP/OsHCTMF/eoNpOzWRWGrY30HoEVtfyfZKDH44PzhF1j6ufmaBLBSH3BgYmgS5VB+euqAZObDjmSwR2prnSIBlgaR8xOAc6j7m6/8FPT6QVIIiieNABFnjXPUKcuBFtzScN36pBzmvGmXKvgBaITcBmU4QOjJy/ZFjoXaEhFM2TVSMNnk5yVFyb+BD1I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,53 +117,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -10,6 +10,11 @@ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
->  
->  include local_config.mk
->  
-> +PKG_CONFIG ?= pkg-config
-> +ifeq ($(IOURING_EXTRA_LIBS),)
-> +IOURING_EXTRA_LIBS := $(shell $(PKG_CONFIG) --libs liburing 2>/dev/null)
-> +endif
-> +
->  ifeq ($(ARCH),)
->  
->  ifeq ($(CROSS_COMPILE),)
-> @@ -55,10 +60,12 @@ else
->  PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
->  endif
->  
-> -TEST_GEN_FILES = cow
-> -TEST_GEN_FILES += compaction_test
-> -TEST_GEN_FILES += gup_longterm
-> +TEST_GEN_FILES = compaction_test
->  TEST_GEN_FILES += gup_test
-> +ifneq ($(IOURING_EXTRA_LIBS),)
-> +TEST_GEN_FILES += cow
-> +TEST_GEN_FILES += gup_longterm
-> +endif
+As reported by Qu Wenruo, the following
 
-Please ignore this one, as Sashiko points:
+ getconf PAGESIZE
+ 65536
+ blkdiscard -p 4k /dev/zram0
 
-  "The io_uring specific test cases within them are already isolated via
-  #ifdef LOCAL_CONFIG_HAVE_LIBURING and do not require liburing to compile the
-  rest of the tests."
+takes literally forever to complete.  zram doesn't support
+partial discards and just returns immediately w/o doing any
+discard work in such cases.  The problem is that we forget
+to endio on our way out, so blkdiscard sleeps forever in
+submit_bio_wait().  Fix this by adding a missing bio_endio()
+call.
 
-I overlooked that two tests can be built without liburing-devel pkg.
-Sashiko is correct here, we don't need define IOURING_EXTRA_LIBS.
+Fixes: 0120dd6e4e202 ("zram: make zram_bio_discard more self-contained")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+Cc: Christoph Hellwig <hch@lst.de>
+---
+ drivers/block/zram/zram_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The compiling error comes from a temp file in check_config.sh, and I
-am not sure whether we should hide the error:
-
-/tmp/tmp.kIIOIqwe3n.c:2:10: fatal error: liburing.h: No such file or directory
-    2 | #include <liburing.h>
-      |          ^~~~~~~~~~~~
-
-
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index dcea703a6766..b0637423953b 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2683,8 +2683,10 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 	 * skipping this logical block is appropriate here.
+ 	 */
+ 	if (offset) {
+-		if (n <= (PAGE_SIZE - offset))
++		if (n <= (PAGE_SIZE - offset)) {
++			bio_endio(bio);
+ 			return;
++		}
+ 
+ 		n -= (PAGE_SIZE - offset);
+ 		index++;
 -- 
-Regards,
-Li Wang
+2.53.0.1018.g2bb0e51243-goog
 
 
