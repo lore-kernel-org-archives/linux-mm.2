@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AE25FF60CF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 06:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B856FF60CE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 06:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F84D6B0096; Tue, 31 Mar 2026 02:35:11 -0400 (EDT)
+	id 9CD516B0099; Tue, 31 Mar 2026 02:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CF516B0098; Tue, 31 Mar 2026 02:35:11 -0400 (EDT)
+	id 9A59D6B009B; Tue, 31 Mar 2026 02:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 697D86B0099; Tue, 31 Mar 2026 02:35:11 -0400 (EDT)
+	id 8BA5C6B009D; Tue, 31 Mar 2026 02:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A7E46B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:35:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F25431A0B66
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:35:10 +0000 (UTC)
-X-FDA: 84605395980.30.E4EFDD7
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011021.outbound.protection.outlook.com [40.93.194.21])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D6AB4000B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:35:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JtUO42ZE;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B0A46B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:35:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A59C160B10
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:35:16 +0000 (UTC)
+X-FDA: 84605396232.11.EB9B715
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013052.outbound.protection.outlook.com [40.107.201.52])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7E02E4000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:35:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XmvThVsY;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of apopple@nvidia.com designates 40.93.194.21 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774938908; a=rsa-sha256;
+	spf=pass (imf11.hostedemail.com: domain of apopple@nvidia.com designates 40.107.201.52 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774938913; a=rsa-sha256;
 	cv=pass;
-	b=eLt5sgEpu0sACLQ0opYlFOsRFjzf0flQlJ3ZqBqEmwkrSpD483i2tir3dwOHMJg0okBw52
-	Ro2Vk1MwUiTOjeLy0UJTY6E/Wq7Q5SQkxEgNXeLm6wtt5j1Zo9On8/PTbMlxcLy7j13YBm
-	7kxgMtE/SWU5bQnlplX0ySp54BFCb0Q=
+	b=wVamT5LCVcMAJpRNZGko9MKtQKz0A7gP3D8k4iXDa1L7VJ6lyFAfLJ4IHmITahKWBoeqJi
+	XFB3SOtWdLIAIFJtgHaOnrxR188hxXXNhhy0UrGGNkSUf1jqUKEfMbXNFGoEW7B6dZcTvz
+	X0CP5nsJR8upU2MK8bA7a0c8ZOQgBqk=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XmvThVsY;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf11.hostedemail.com: domain of apopple@nvidia.com designates 40.107.201.52 as permitted sender) smtp.mailfrom=apopple@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774938908;
+	s=arc-20220608; t=1774938913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z5KA5xRrXhPLMq5ByEwUlaaWw9eH8cuqVwCshKHb+Pg=;
-	b=WARgsMZEQFRCssAJfk8sAueNg+MUIS9ps19+X2SHePL1pzXW+I97OiVjcwWfraXL8JI7iM
-	0ACItr5WeSUhm+ExPc/TGOLoabrLVYlk7ikJj3meykIn96AEfgWDPuktbWLp8ffXsSLJ/M
-	wc7SGPTH42yZ9WQDebAdCK+vJu+yRJM=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JtUO42ZE;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of apopple@nvidia.com designates 40.93.194.21 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	bh=onh0xecJPor7saZ1Yw03mb2/rQXDP9YLm4UZNgkK2Gw=;
+	b=rWi9lNN19BTrSFuTdMI4R9hlHa0vZWKLI95YQXw9Cx3PFDD11FW7K/mIj5JUVyYqIwN43D
+	Y19ZFWXauGovAfgMTnX5IYyK7xfLTAPgVcAsWyAUX98GUOwRrtY5FFeH/kOA2lYyGcnwm9
+	WDuTHCsek1B1SuqQwM4Rnt6jJ1rUhT4=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cwf+xvCUrEneMQqAjvRtGGqv4cwyNdZtMg0qIjriSdQyZQJBESzjX4V9BGmKnBgijN1fQCvE9pGfLDmN2uP1jgQ1A37OHoVp3PmNTR3m/Rz9KpnJhwLeOQIXD+hPR2tnzEQvZ76xzCABkpfLx+JXvcyBjJRdOsUQGbuj8Hb6arcWeHwFGN0L8mWrWxm8ZJxVnCc7q8Y5urmXKSdvD5GW1Pj97TA80JX7J8pJJmVZ0YmzIg8nXQ04EM8adf+mB+4kMfyyrxOB299lHc9RhvLl28Wa5RYltPLhyhctLJQq0xVLIVMiBNzkg3nEQe4656aVnMgjx2l6vNvOg4jXRf9bRg==
+ b=I6UZoMcfelKjBbKPRhNVYqbJndri2RniBAfW9olQYcrWhp3SjGgBRGFBMoWlJ8OrlGGUub5UwXiLI6QaLW4NVC6wDHU/gogjKHP08MVYTdQfmvMCGVelScYUXEWD4gqmmCy/DuHGTkB/DDZrKscSdiDCPp2rwVdqbox0D3dxAuDm1xU6/GZHfghaaWD400O9Y/DEnmMMb1R05o4Z2Gwhjy6cj2hy21U3H+NV78oDCU2rXbwL4we0DyBu3AF23LkVvgvDQdrdgSWErxXdhooUxHrv5Dv/WQSuB4FfbY5UxZgcPY3wnedPtrkdo2tM6GUOkNuay8ETl0X+WCZgwgoHog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z5KA5xRrXhPLMq5ByEwUlaaWw9eH8cuqVwCshKHb+Pg=;
- b=ueuv5/wyuSQ6N+VJGavDYSER4ewCfXTnVz11DQ6ZtjFDTeIP8WxBmeAfv4kVwL9tydz6+s2F7ZleQ6DXuB4Zv8p1tnLsI7cMOEn2ih3eJ/mUVXlu9/KE373BtxX+5oqSzAN7nFmMz0OUMw9NGMAgucfFrUfU2AdQDV/h9Xjis5MF4pjBFCs92yEc5L4ezpMd2IvjDUuaSid3SMARViL5KTQSWMFrCby/mASWLrpVNifARrh61DIuIbquKF3CSOZdAvjQZbvrKo/dj/JGNBwoNOWphpFHENjjLA+VE0Vet5WEVzdraK+hRizYP1lrX4TRIEidk0hWaSAht0w3Tjg9oA==
+ bh=onh0xecJPor7saZ1Yw03mb2/rQXDP9YLm4UZNgkK2Gw=;
+ b=dJi1zuJbsODey8bfUj9TJ+xL9ejZDufW7pi/og+NuPaZIZU/SQATxSEhcHNaOAQoJxy8GXTNAiit6nwVIjt6b1wYPX3NRyb9mlfWAK4okceKnpUeYX9egrZpTTOMgwRS1OdeSylYIdSPXxU1AZcU4EN+ba14wGUpCo7S0LUj7cDOcid7IfaiZ4SafX7qGVsaaU5xfbzrDXicnzqjVm4l+drgcbmoTFeLwxYgBXDyosLVw+igVKx95VH3X4ee3g8p3hWEajeyf3+8uDqDFvbF6ToOEJwSbcVZlll8F7evJLz7cl29tmqm11+zlUmpxMER4Ri04GsKBFGl7XJG6AGE/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z5KA5xRrXhPLMq5ByEwUlaaWw9eH8cuqVwCshKHb+Pg=;
- b=JtUO42ZE6HCm8Z6/ssyoH+rwn0Rbo4WY911PBgS4J5r9EKNZMyqp2GGrK55e/sdKaM1wiOPO6/RUCgRJi9dObqOprEa+boaEO8WvZpRj7Fxtl0+PJ/cqzxbcCkDdaXe1cq21ftxNN/NmlRtn7RvPLYBpS0U0MN59nLM7GZllI4hwxFz4lui2UCB4W4Qc6tgtE3vzNjbbQgclCMeqUUROJJEZrNS2mbH5UCKzWcikmgtWgZlpHyGyw2zv6bhRz4PfJzs86cM1GtHyRZxxGmAsUAMlpO4O/r5gJ8PBZbjxyZ8wbHTmq5QxW/rzDod4YNBXPMGUzudzrgECgB5115qvcg==
+ bh=onh0xecJPor7saZ1Yw03mb2/rQXDP9YLm4UZNgkK2Gw=;
+ b=XmvThVsYvBRU513LgW63EhEQlyfyMuVu2SfLjw9f79mwN2XmFgRKUU7fW6tjebcP8cx7yAxiU0+pygfkvoRAn0CsV+o2Kc5+ZUXcM8/NCVPPaFKfRJkTUAQ6+VLO/33NAlchsXAXjmBT2ZtQkZGkn6YRXh6ACJoIYTWjKXRj5xB2CbkNIf3JDU/6P0zOIo9hVxmzfjd/epqq1RRy9h2CeexoQRUmiAmyB0Av8IvdyTjQgqcNMKx2B9C5TrqAdPU1sWlu++5iIUHzjxanOsvop9f81vgbUSuoXGAkMr9Z96CoopY56P9cBGtKpRd2gMBzA1/07whsSTJ3cgPCWsea/g==
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
  MN0PR12MB6150.namprd12.prod.outlook.com (2603:10b6:208:3c6::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
- 2026 06:35:03 +0000
+ 2026 06:35:09 +0000
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
- 06:35:03 +0000
+ 06:35:09 +0000
 From: Alistair Popple <apopple@nvidia.com>
 To: linux-mm@kvack.org
 Cc: zenghui.yu@linux.dev,
@@ -92,78 +92,80 @@ Cc: zenghui.yu@linux.dev,
 	dri-devel@lists.freedesktop.org,
 	balbirs@nvidia.com,
 	Alistair Popple <apopple@nvidia.com>
-Subject: [PATCH 2/3] selftests/mm: hmm-tests: don't hardcode THP size to 2MB
-Date: Tue, 31 Mar 2026 17:34:44 +1100
-Message-ID: <20260331063445.3551404-3-apopple@nvidia.com>
+Subject: [PATCH 3/3] lib: test_hmm: Implement a device release method
+Date: Tue, 31 Mar 2026 17:34:45 +1100
+Message-ID: <20260331063445.3551404-4-apopple@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260331063445.3551404-1-apopple@nvidia.com>
 References: <20260331063445.3551404-1-apopple@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SY5P282CA0153.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:24a::13) To DS0PR12MB7726.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY6PR01CA0146.ausprd01.prod.outlook.com
+ (2603:10c6:10:1ba::7) To DS0PR12MB7726.namprd12.prod.outlook.com
  (2603:10b6:8:130::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MN0PR12MB6150:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e22adf9-5d28-42b5-d837-08de8eefa421
+X-MS-Office365-Filtering-Correlation-Id: 06db78b7-f863-4952-ebb7-08de8eefa75d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|13003099007|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	rL/IsbFETqLIxWJ6UdW62yWUZ6CBZvsJQ8c1+sv/GxDdeXJ3Vs07HcmYIWsJTAakaA0IgzHNi3jL4KNxVCrb5Es+pGfONBTs861IwtN3uUrKibZgnO9xdfCnNjNKufTz/rvNRiPpZHzxc1pF1YrvSl33WBESu+Mm+CNtP9LpIeMz6AedlpEPhI6qYG/KwHMtHrl2CUDB+ebFVB4aBDty2+67ppVMWyED38I/qxnL9yBar3rCfBum0qnU54TC9/Uc2/yzkG116zo9hSbw3xRIJVbVK5eY6crUVatSlimSoFX7X0//UELAOHRwXWH8+RcnLxSxceE2ZhyOTa0dMjRdYlUHQzW+rrebtlATTiGCJNHbUBMEJ9vshAv8tWoKzhJQDeBAGT7WhUttxgcSi1/Xi5ih1N7WSz0P6Agu8ZmDnhWeC9AEdh6XcP6Pe1QRGID43mG6P3kUAAhmO7hBPf6AGQSOnfNksTb1y6Kohxafqxa/Tg/SyU8tNkshxVmZx5WCclBF03dqsJ1G+ch/Npegw1OkCzHprGowJYy6vo4qI84ilQfQVsvAN/hJmOLVwV7vA9UtYBMiJz/mgB0cOrtRYnZCclwBioUhHxA4VxzaTMZQyH1gK8bkznPbesKuyHoA/wAu5KNnQNsvdeoM7k7ar3PKek6MLwyk0Gs6QSbho0yh8YJy563WX2QH6ODfNLtHVBa2TUNKecfpLgqIxKUZeVkAeEvql28duaD3/Jbgkuk=
+	sEQeDRADUwY54whjGGYwABymwVmDcyDzBapkJl4eF1TK2gqphFLKcYh0Lv5EV3A+Fn1aFfXBB58vZH5kNcL9cAvJtj9uDoZVUL0uluK7jEg+IP1j+l+1fFTOqryRAhtSMMekuiT07evhosNd8LCzhdzSKRP4RCDa3eySstVIyuMSyvsjUhxw9+fT+KZll/zccMkUzTAyBlCs/iXBhbij9yWrrmXhqjmSPzMk04E8sLra32ESVz1tUseqkdpkjO+Kt5QcL5XYjB9E4l5OojdqcNKUh/pjXeICILGSf4n2fkuL/aW2DFt54XS6MwjIMI0aBs9in0s91Aq4EmSeAt3fiJxqfCr/w2jwZ7V2dM9/7CKiRrwj6eYSl4r77QF/FnMW778w4U84pStaJ3PBzgBb2I3FoOR/FqAD7jOHhvyW/5TsFj60OPtTbbKN0hRaWFttYMdxmo8/lyTYbt3utNVPSWT5jdKUZBwE6k4HEWz8JmZK38JlXxZUJls1frkIndxBLhFmGq0JF2RPoaqKOQgJm0iDZyw9MwXIWbuFjqfe4FrhzAl/GVuX6T8WEd39ocGTAtiHf2wQVf4oEn46SRvm6BxOQIStwlCZ2CTydXPOjtn8rxbK46vx7tq7TAUIa6qVJCJVt29x/0NGqoyZaceD2p/ULPq8opBmWmTiuckxZ7kOltd0GSsSxzO/8Q9QXeR1N3KfJeacoUk6FjZ/Ne5foV4IgFxdC9s63ELFYLDyinY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(13003099007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yPTQlPFtGpSpMEBFU48Z90iYGzU9J0V5YKrhdcttaj4W/1BjZVJ/w9ClULEH?=
- =?us-ascii?Q?idDlxDYSLAryCpQQSg/ERfsiGbzeUtw4vbioJytsdVcjQP9H6N9Nqpbmg6Ah?=
- =?us-ascii?Q?j0Y+fq6IvSCMLtHQT0eCfB8lots4A2K0XMATJZ48hNez/oie238BKI5qBR2A?=
- =?us-ascii?Q?0qWphBtqLx9E1eppJo4SWDdnYTj42mzsXir2utkFOAi+DuqU3D3XSalOx95O?=
- =?us-ascii?Q?UMcJ6x86aJ0V+Pxr8cwnc4hpenEWmFK7emb7+0Lpw1TjfrvWQxC50Tpq7025?=
- =?us-ascii?Q?rOz/611ADLc8Nbd2R6/Il5Hxdw84OgMRXObxeXYTsCZx363WHjKScDMpn4ck?=
- =?us-ascii?Q?duzVdUwAq1C7l/OkPialldWbq+qy6mTvXRKL5DvAQmtDKZwyKJf5yl6acPvr?=
- =?us-ascii?Q?c6QiNWRv5Q7LVVnqhRlAaah94n8VxPrUbey8A19p9imygh+NnwM2ADlLrZAa?=
- =?us-ascii?Q?3Aof9/wdfQgTtZX81UVCfUtBIQhueNwggBybQCbydR4ybU6FBX5hI0oZraPa?=
- =?us-ascii?Q?C5ekqypxN7RxE1EvDAG3ck1WtILXIZ0lVQ7EEFgBa6A739R3Y1r3w4SKX1u4?=
- =?us-ascii?Q?lDsqD92dPjiEhTNL0ChbGO9izmcxz29YX0Vf81Tsityf2UEfmSmcxGFAnWPq?=
- =?us-ascii?Q?BaktpoLw+UXGw8mw4j7D5RyiMxphsR3KJQ6Z5SPEAVatsznHKO8WU7duRep7?=
- =?us-ascii?Q?WIHIBqEGSJmx/RAXcvbuVU6NdiKfkYkWd/u7XQFNZR/TiLV8HSsbUN2bAvxD?=
- =?us-ascii?Q?ZsTKZWokjizzpMBXBJyNWfRkJUrFFunR48uQGJPOloWXrPCz0g4kcLV+34R3?=
- =?us-ascii?Q?DSCbriqbvoxsnBFKmEncUHF/o0+1/SDly43SZWUMVjzUzo/Rk6ZwWFVvdipf?=
- =?us-ascii?Q?e4ha59QEZD55BVNAaa6yVzejnrIHBuQDKNRPw1aMlLVP6OxnPYVSp7fZUTdc?=
- =?us-ascii?Q?XD/l7QGNux0zZe/IRy8Y7uH3U2B3xNSaFghzbgPmIDwjlWpJs0LVZbNZyJAK?=
- =?us-ascii?Q?kMdoNKLpsk7Ex2QWkeBAOco6LX8oWBfnKbjJxgGer4lcZaNR+BGYLLhSjuQV?=
- =?us-ascii?Q?Hnf87PrFl3Nz64t69SR/xMu7Ggh+4GP2iE3Xg1NnXCXKb3D/4+OKd2W2339E?=
- =?us-ascii?Q?Fo4txE5wrEWvbxF7WXT47plHQCyseBn1gffqkmClFjcrmfRC+cpmO0aMu5nX?=
- =?us-ascii?Q?K3Vn0yuDA+DU2lO0QTGqNJ4OdJAjjUk3tRd/430DY4qPEPTnE8YcgSWQu0eR?=
- =?us-ascii?Q?bINSsj22Gq06ypRFCFhy63538oMbctCGuyJQBy7+Anf9r+eo/KwaYcQIc8TV?=
- =?us-ascii?Q?GZ2INYM/cg1sP1cN4RqYuK7q5ErEVqXYjIj/P1KWI1RglWBMWfib0+YZ6rfU?=
- =?us-ascii?Q?UQKvRqsGtROL6Tja4ckqZGthrOsI7isFaK5ZdEqFrIV5OhppCb/pq2X+Zblx?=
- =?us-ascii?Q?qC4U1vv+1/MuBio1kzRRaF1p8UOgn8jsxNOd11j4n6FRSQsqurDHIm1G3mhT?=
- =?us-ascii?Q?K/TjiSwHdSw2WpFWb/w8UgfjpQtvHRahYGrxIqNbRle5nwJqHYZURciJ5RUM?=
- =?us-ascii?Q?aHEub5v1BLDRBvEOvQsrTv8mRVIdyt2grqZu4tGIoNqTQ+XNMHwu/U2wOvfu?=
- =?us-ascii?Q?adysaP0lNcUeD1QpR4zJOYhpMcyQk+NpfcrzQ0q4FuZZGbu8ztBojdkI7U2Q?=
- =?us-ascii?Q?zqDi9rLjh5v3RjKmG2OBslstfLoA0WHkj8HorDT0qC5yJQ0AAkEcYkg/iulB?=
- =?us-ascii?Q?6ZJaC4xlNw=3D=3D?=
+	=?us-ascii?Q?ZBumgQGvdRZkgyEEfBY2koAWFapJp2lsnq6+T/4d8ES750ZumLTelZqzaDw6?=
+ =?us-ascii?Q?l7AfQl5M/pqxcy6BrQW31NYrsAFu1DVEa7olgBUmRL/+0bhJ8+gVeJwJasb5?=
+ =?us-ascii?Q?GIC9GHKpZmhoaCpjvfZNtigesPfxDJVxnhMzLm/p9rzF7dvDX/rkajZ1AtX0?=
+ =?us-ascii?Q?yTmO3x0oBWakxylzp+rXE6VzcK+QoVMfyTAfiJqQtgD1IH/u0myxRFTj4FZ1?=
+ =?us-ascii?Q?v+0gULdwyGTskNjIZZH/U/JrJVsKSDZ3w8LDJOphdhUxS/dmZ0WC0E4HHfQc?=
+ =?us-ascii?Q?fSFcPo3OrMon67Q9Q/EJ50J6WvsjX3ET5GhrFTtRyflbYbNPKO5UYLZrAJLb?=
+ =?us-ascii?Q?keRg/0xhw/D2A86626eoHjoxxifT6OOV/OwWCf9izL2VNJQAa37Ktm6XPZqm?=
+ =?us-ascii?Q?NkqVSCWMFm+2dfaehGjMv9WAJRw5qrPU6ud0rPE3EkCCEqYNK6HP28QbRMGX?=
+ =?us-ascii?Q?oGf0Tdug2xU0whGWkPo5u2HesIUp1Jfn1BkscAyfakB8VLeq90Bo2qiUNssN?=
+ =?us-ascii?Q?BqsboHMNxKrPbmmF2pUqfuTdQAOwtO4YatSFtuz1r3aKnUcuLT9pt1qT8j3V?=
+ =?us-ascii?Q?SGFTXsKTHkr3SwfQ2zyJQ94TM9gPZzvVwTjY03ZqPNB/QBsf2H0d3JKpkOGY?=
+ =?us-ascii?Q?WOzQGVrJY6Wmp5ZnhBXUi0EmQq0KHfq7Opp1koS0SBIGegCdyEI4xhs1nMgL?=
+ =?us-ascii?Q?P9OhLX6BI/o2X2xQg4GXIMO/JQRWwdpTBVkpDNYmuFrNGm8lf9h9E81+TADU?=
+ =?us-ascii?Q?NIiL/QjNW8ld6axvnwQeebmWKEj7wWBYMTxnBxJjijIUafJHTSATfy+Z8e9y?=
+ =?us-ascii?Q?J0FLRjgkQCVzXtz3Elk8C4sz4nSVdeN9PkR2c5GEJcZmnE//QxfiWAxfedjU?=
+ =?us-ascii?Q?2fbYQ71PLh8w6SCx1r1BpYp46bbUpME5PsPYImL/YZNog+G+m8BYtunKcObE?=
+ =?us-ascii?Q?nUwbMc2OwGp/wshrpAnLQjWSjTXJwU7FubZA8KXKirxoQyl1zBbR2Sx5Bl5I?=
+ =?us-ascii?Q?RxWx8KdYry5+2d7g57/1demnoZvCPIdGkK79AEbtiYlj+Vph8LdpGQpVt0vF?=
+ =?us-ascii?Q?Vu7hBOtcbV+KOivhF3oQl54qOil8a0CE8bJuMoVi5IDUdlg9OZ5puSYNjk4c?=
+ =?us-ascii?Q?4x9/ZnpsMq1XAEcTvz1WoL8OorCqd+ZfIc1W5b5KaQWfS0sHa9hJVcXVj4Q5?=
+ =?us-ascii?Q?v4PD9su4TvGVnerK6U0L/VXxVIDmudxVoilRb1rvcEb/3BEBVDqt4pdw/7p9?=
+ =?us-ascii?Q?gB6T6hGxiPp57GDeOJdQQEKMFqEXiyD8oeiYPu0SzvT7vgRQpzb3P/QJnAeh?=
+ =?us-ascii?Q?UUces9ym1P1AltXET01OPcwQy9SqHlfFEv5oHJZKLVQfsSFDkT2KuaR7Srvk?=
+ =?us-ascii?Q?LpKHIlglP/VCTJ/MMKBf9okBbEu8PT8HlbC+bIo1WDnXUQOap+oUfLt4Qdlk?=
+ =?us-ascii?Q?+D0Pm/19mv969oE+67N/e72Re3ozEAXZ86TtOKOA7WHF1ViGgZMR5UWzU75M?=
+ =?us-ascii?Q?XOA+Y/ugOn7XlWzYnQOFDMCXp1i1nejR5mWTTEhzKomtq7pVlTMBdMnhT5gm?=
+ =?us-ascii?Q?wP3rt5shbNp3/PvD1njU+Tct8oaqWvL5s8DFaGMiKjLkr5ogzBI5NnD+tDhK?=
+ =?us-ascii?Q?yf2hhMaUy4OtNVGVl2syzxL2VGe/FIEzdfjN97NyBuKw80qWHnbzBzYYxs/w?=
+ =?us-ascii?Q?SDfX0R9wdtic6Luaw7fRvXWAm4mpeZj5ocU6X8N/shgQuCANdQXiUjTzTBRg?=
+ =?us-ascii?Q?1c1FxJK7DQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e22adf9-5d28-42b5-d837-08de8eefa421
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06db78b7-f863-4952-ebb7-08de8eefa75d
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 06:35:03.6706
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 06:35:09.0781
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HXP2+KjIo7ILoSryiYOR0y6XMUdHpCUY67OZD8O+Nq6C/CmiG4IoKM3qUH7Zi1U89J+jJ6qYo4VgsllyxpOK/g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bRfIqsM48HGjCF/nc5TAgcpGLPZrwfgIerP6J/oEL/DKRoPv7zrKjTl2K8ZSWpwOJG+KiT3M2gqZbsf0C0H9hg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6150
+X-Rspamd-Queue-Id: 7E02E4000E
+X-Stat-Signature: 9j6c9bhrr1m6br4edkk1snwey3ysxohy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3D6AB4000B
-X-Stat-Signature: 9orcftg6axom9zy645mqs7zed7gorjgi
-X-HE-Tag: 1774938908-248412
-X-HE-Meta: U2FsdGVkX19MOf18iRisFFFgpBfnnxAk2Gf4w9/JTMzLU5UjJ/Z2j/zPbpgCC1+jiAwFNptawWpRpUX6lbZKF7/w/kL//4AT+0QivW1aA3yTtYYQVYzcRpuMMFRbOnSIKJqZ9RxKyNjXVNHiY+I7+tm3gVHYDAd9/u0xQj4J7p/bLNZFyGquIOpbp2Ry8aK38JWMVhldR0aX3+DgL4rkVGv3YImCAYJ+FILpnnFtLuu1F9gU75BCtTKrqa2n8ZFd8NXKpLv+ecvJibiiaB4UzK0Li1uV1GBIiHpN4YnWfd3Sk2uDR9+HVR2a/1Vb3d7cIJ/2/1wGKeQqFyT4qPZVL7nKiZWvV5cmveVa458Kc422IDdz1PphlQSTaRLihdo/LxwxzUxbA6ZUnqSVZ2YN4L6ZqcbGzAF2zQ3lt1O7C9/GwvtO0b6Mo7s61YEXgrk2AehbmpCfMPeGPlAuxpQGrcw3s/oxKRrRQsP/XAzmYjO6feS8WAQec5NICf1jrxVuOy8tmMXlcRUTvigMJREz8jfg5LNa8is627h1rIIg6vVdSFyYf2csiEG6d/YFjAq0wBr213K8ij7Jawnpf299ar8D72wwo1cEWXZ166X1sTJ+CaTT8/shRNCC8g/E3asvwigBywv1YwsK2ICldpt+RdSRwrt1KzRIac+2jWispB08Ol73DNvz9+cQowvdli4UYgMl6JjtIYs4VHSg1q5yfdlvPOOmOB25AsAejI7FLAKt/ZJKubGwIwsz0ngNaeyYWvBDo4JMGZHBPxkenwGzVxiiTD9xMtK79N/SO5QhqdGHa6Utv6s3/rlI2Ml0/uUDbPEqAT1SM9BZONNE1a0W6tpaH1UqwEPaIY6Oee7Eff5W4R97cPRDaAEd/MecMk4m+VTkRYR0wq20livTp3iRCpPjBf5c0JfMbPCVhT4Y4czvNzpRA/57Jd0NLC20vZOj
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774938913-766622
+X-HE-Meta: U2FsdGVkX19/aiECO8haMlqVsQ299GHmMuQ+bPypvBClRwTq1H9BCf0fQj2qqecT8IuBnxqvPamqePmlUjgwepnzOsnp0ZtgRb/cYhk3swRVxdZl06yR9ovLFbrpAQEyC+xnk3jgxL8je40bArCJe9AejQL3g9FgiJBmFeWRrGFJwjGw/69I4nuKgBxz6g5ASyR5+0SjTDfJVRsVq9roj7uvCJ0kbmwz68FYc092zr9kmcV+grhYRt3vrs7SubQJVLgUU+BYlGnXrwbdmYHP+EyC/sOr8ZtPMm9puceNgp5BQUET3FTxNY4S/a3Cns+ETl7MCKMz30wYBoej1mRRD6TMd8K9GRh2kTtBLUzKAf3iqW5TJQKWUaVKl3mWfMkAf/d5MSjqUoG1HwBfm5MEnEjFecBu2o4dSjk/mCiIHOz0gYfxqtEBcnyvYL6y49v6e8MvTL4pOfQy9/DYQOjN15EBk3V9cUnibQz/tVd7FqMDiIistA+m1fIT/xv0KD8Ya/ELzLicRHhRCYTVQ8n+XMKVLj7O6a4yREu5efNp8XhrbdYI2q/1TxSTtTtYpcXfG6V5GI0gCe3ILz34MflF0vQQvPYDWeb5ox7GC2huCmOEiZLxfyLMdtiyCJqrVT5VBBAr2Ki2M+8/v03Iht6cC/4ytTc6U5oNLIlBE3tdr2C94OUN7GRGNsP4+CatCLEFvXM+FTJPIPicZkm3Ro1jKobVw2s3IFFTzwKB0XzYtoQ8WlVe9xJZ+lQJy9zYPy/ZXzLUApDmMTAl6H2ZBtq4pVWttVyOC+3KSZWekkx2AGD3pdZKQcQoWeyiReVtIl/PCZ+wLC6pFqh6REZ1pN0Jnyir+9Gnycf2z3CHRBUt/PrWMssZNVUVirNUst1/jozB8Xu4c7m5TFL9TxR+vuaMphMRInnrsvtlbVxmEl+IQd2XVqgkiWE03NE8fUEnRM6JHwnvBfBlOA+hWAiepvG
+ k8TazNsQ
+ BPdzkPWX1+MwpCMnqyNKX8a2S+JXM+0ElPVQuMFkzmV9ApNYnnOXLGnmOY3vFbc46qV71cey5t0jbFj4RTvhXzFGr7q6GJRVz/6DWIih/E3ZzGAe58FXTHD8sNjdu0z2XgmutuwfuduSPN69ELZf42g11BdGXwAOLTgnNyQnHiBn3/Ywh1ONcWUPujZMKo5dG01wYjgD7+AVZGH3XvyhPnK6GCzPFBXF11tlKq8Ih8oBVIwEJKQ6XUQql6bHL+JNtI9/shWoAYWiWcNw9idcfSF4XPe/pvMiL71V2kI6yepHB8nESq+2efobaMQiFnRrQYueoP+FfMFqbPEDf5uA5qqR3D+m8zOCB5j2XT6z0P1gCmy2K796yHDyIvtH6d0CTeLRzVVfONV3vZRIqi++8bmtBkwWPCVZfkvvdyi263hrt2q0G6KrREZ8YKy7RpaWV79kXc4xF0jUZBzV35fZexNdzU129iI43DE8EAG+4HZGEK+xP7YTsMkASVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,231 +173,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Several HMM tests hardcode TWOMEG as the THP size. This is wrong on
-architectures where the PMD size is not 2MB such as arm64 with 64K base
-pages where THP is 512MB. Fix this by using read_pmd_pagesize() from
-vm_util instead.
+Unloading the HMM test module produces the following warning:
 
-While here also replace the custom file_read_ulong() helper used to
-parse the default hugetlbfs page size from /proc/meminfo with the
-existing default_huge_page_size() from vm_util.
+[ 3782.224783] ------------[ cut here ]------------
+[ 3782.226323] Device 'hmm_dmirror0' does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.
+[ 3782.230570] WARNING: drivers/base/core.c:2567 at device_release+0x185/0x210, CPU#20: rmmod/1924
+[ 3782.233949] Modules linked in: test_hmm(-) nvidia_uvm(O) nvidia(O)
+[ 3782.236321] CPU: 20 UID: 0 PID: 1924 Comm: rmmod Tainted: G           O        7.0.0-rc1+ #374 PREEMPT(full)
+[ 3782.240226] Tainted: [O]=OOT_MODULE
+[ 3782.241639] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[ 3782.246193] RIP: 0010:device_release+0x185/0x210
+[ 3782.247860] Code: 00 00 fc ff df 48 8d 7b 50 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 86 00 00 00 48 8b 73 50 48 85 f6 74 11 48 8d 3d db 25 29 03 <67> 48 0f b9 3a e9 0d ff ff ff 48 b8 00 00 00 00 00 fc ff df 48 89
+[ 3782.254211] RSP: 0018:ffff888126577d98 EFLAGS: 00010246
+[ 3782.256054] RAX: dffffc0000000000 RBX: ffffffffc2b70310 RCX: ffffffff8fe61ba1
+[ 3782.258512] RDX: 1ffffffff856e062 RSI: ffff88811341eea0 RDI: ffffffff91bbacb0
+[ 3782.261041] RBP: ffff888111475000 R08: 0000000000000001 R09: fffffbfff856e069
+[ 3782.263471] R10: ffffffffc2b7034b R11: 00000000ffffffff R12: 0000000000000000
+[ 3782.265983] R13: dffffc0000000000 R14: ffff88811341eea0 R15: 0000000000000000
+[ 3782.268443] FS:  00007fd5a3689040(0000) GS:ffff88842c8d0000(0000) knlGS:0000000000000000
+[ 3782.271236] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3782.273251] CR2: 00007fd5a36d2c10 CR3: 00000001242b8000 CR4: 00000000000006f0
+[ 3782.275362] Call Trace:
+[ 3782.276071]  <TASK>
+[ 3782.276678]  kobject_put+0x146/0x270
+[ 3782.277731]  hmm_dmirror_exit+0x7a/0x130 [test_hmm]
+[ 3782.279135]  __do_sys_delete_module+0x341/0x510
+[ 3782.280438]  ? module_flags+0x300/0x300
+[ 3782.281547]  do_syscall_64+0x111/0x670
+[ 3782.282620]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[ 3782.284091] RIP: 0033:0x7fd5a3793b37
+[ 3782.285303] Code: 73 01 c3 48 8b 0d c9 82 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 99 82 0c 00 f7 d8 64 89 01 48
+[ 3782.290708] RSP: 002b:00007ffd68b7dc68 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+[ 3782.292817] RAX: ffffffffffffffda RBX: 000055e3c0d1c770 RCX: 00007fd5a3793b37
+[ 3782.294735] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 000055e3c0d1c7d8
+[ 3782.296661] RBP: 0000000000000000 R08: 1999999999999999 R09: 0000000000000000
+[ 3782.298622] R10: 00007fd5a3806ac0 R11: 0000000000000206 R12: 00007ffd68b7deb0
+[ 3782.300576] R13: 00007ffd68b7e781 R14: 000055e3c0d1b2a0 R15: 00007ffd68b7deb8
+[ 3782.301963]  </TASK>
+[ 3782.302371] irq event stamp: 5019
+[ 3782.302987] hardirqs last  enabled at (5027): [<ffffffff8cf1f062>] __up_console_sem+0x52/0x60
+[ 3782.304507] hardirqs last disabled at (5036): [<ffffffff8cf1f047>] __up_console_sem+0x37/0x60
+[ 3782.306086] softirqs last  enabled at (4940): [<ffffffff8cd9a4b0>] __irq_exit_rcu+0xc0/0xf0
+[ 3782.307567] softirqs last disabled at (4929): [<ffffffff8cd9a4b0>] __irq_exit_rcu+0xc0/0xf0
+[ 3782.309105] ---[ end trace 0000000000000000 ]---
 
-[1] https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+This is because the test module doesn't have a device.release method. In
+this case one probably isn't needed for correctness - the device structs
+are in a static array so don't need freeing when the final reference
+goes away.
 
-Fixes: fee9f6d1b8df ("mm/hmm/test: add selftests for HMM")
-Fixes: 519071529d2a ("selftests/mm/hmm-tests: new tests for zone device THP migration")
-Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+However some device state is freed on exit, so to ensure this happens at
+the right time and to silence the warning move the deinitialisation to
+a release method and assign that as the device release callback. Whilst
+here also fix a minor error handling bug where cdev_device_del() wasn't
+being called if allocation failed.
+
 Signed-off-by: Alistair Popple <apopple@nvidia.com>
 ---
- tools/testing/selftests/mm/hmm-tests.c | 83 +++++---------------------
- 1 file changed, 16 insertions(+), 67 deletions(-)
+ lib/test_hmm.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index e8328c89d855..788689497e92 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -34,6 +34,7 @@
-  */
- #include <lib/test_hmm_uapi.h>
- #include <mm/gup_test.h>
-+#include <mm/vm_util.h>
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 79fe7d233df1..213504915737 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1738,6 +1738,13 @@ static const struct dev_pagemap_ops dmirror_devmem_ops = {
+ 	.folio_split	= dmirror_devmem_folio_split,
+ };
  
- struct hmm_buffer {
- 	void		*ptr;
-@@ -548,7 +549,7 @@ TEST_F(hmm, anon_write_child)
++static void dmirror_device_release(struct device *dev)
++{
++	struct dmirror_device *mdevice = container_of(dev, struct dmirror_device, device);
++
++	dmirror_device_remove_chunks(mdevice);
++}
++
+ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
+ {
+ 	dev_t dev;
+@@ -1749,6 +1756,8 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
  
- 	for (migrate = 0; migrate < 2; ++migrate) {
- 		for (use_thp = 0; use_thp < 2; ++use_thp) {
--			npages = ALIGN(use_thp ? TWOMEG : HMM_BUFFER_SIZE,
-+			npages = ALIGN(use_thp ? read_pmd_pagesize() : HMM_BUFFER_SIZE,
- 				       self->page_size) >> self->page_shift;
- 			ASSERT_NE(npages, 0);
- 			size = npages << self->page_shift;
-@@ -728,7 +729,7 @@ TEST_F(hmm, anon_write_huge)
- 	int *ptr;
- 	int ret;
+ 	cdev_init(&mdevice->cdevice, &dmirror_fops);
+ 	mdevice->cdevice.owner = THIS_MODULE;
++	mdevice->device.release = dmirror_device_release;
++
+ 	device_initialize(&mdevice->device);
+ 	mdevice->device.devt = dev;
  
--	size = 2 * TWOMEG;
-+	size = 2 * read_pmd_pagesize();
+@@ -1756,12 +1765,16 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
+ 	if (ret)
+ 		goto put_device;
  
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -744,7 +745,7 @@ TEST_F(hmm, anon_write_huge)
- 			   buffer->fd, 0);
- 	ASSERT_NE(buffer->ptr, MAP_FAILED);
++	/* Build a list of free ZONE_DEVICE struct pages */
++	ret = dmirror_allocate_chunk(mdevice, NULL, false);
++	if (ret)
++		goto put_device;
++
+ 	ret = cdev_device_add(&mdevice->cdevice, &mdevice->device);
+ 	if (ret)
+ 		goto put_device;
  
--	size = TWOMEG;
-+	size /= 2;
- 	npages = size >> self->page_shift;
- 	map = (void *)ALIGN((uintptr_t)buffer->ptr, size);
- 	ret = madvise(map, size, MADV_HUGEPAGE);
-@@ -770,54 +771,6 @@ TEST_F(hmm, anon_write_huge)
- 	hmm_buffer_free(buffer);
+-	/* Build a list of free ZONE_DEVICE struct pages */
+-	return dmirror_allocate_chunk(mdevice, NULL, false);
++	return 0;
+ 
+ put_device:
+ 	put_device(&mdevice->device);
+@@ -1770,7 +1783,6 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
+ 
+ static void dmirror_device_remove(struct dmirror_device *mdevice)
+ {
+-	dmirror_device_remove_chunks(mdevice);
+ 	cdev_device_del(&mdevice->cdevice, &mdevice->device);
+ 	put_device(&mdevice->device);
  }
- 
--/*
-- * Read numeric data from raw and tagged kernel status files.  Used to read
-- * /proc and /sys data (without a tag) and from /proc/meminfo (with a tag).
-- */
--static long file_read_ulong(char *file, const char *tag)
--{
--	int fd;
--	char buf[2048];
--	int len;
--	char *p, *q;
--	long val;
--
--	fd = open(file, O_RDONLY);
--	if (fd < 0) {
--		/* Error opening the file */
--		return -1;
--	}
--
--	len = read(fd, buf, sizeof(buf));
--	close(fd);
--	if (len < 0) {
--		/* Error in reading the file */
--		return -1;
--	}
--	if (len == sizeof(buf)) {
--		/* Error file is too large */
--		return -1;
--	}
--	buf[len] = '\0';
--
--	/* Search for a tag if provided */
--	if (tag) {
--		p = strstr(buf, tag);
--		if (!p)
--			return -1; /* looks like the line we want isn't there */
--		p += strlen(tag);
--	} else
--		p = buf;
--
--	val = strtol(p, &q, 0);
--	if (*q != ' ') {
--		/* Error parsing the file */
--		return -1;
--	}
--
--	return val;
--}
--
- /*
-  * Write huge TLBFS page.
-  */
-@@ -826,15 +779,13 @@ TEST_F(hmm, anon_write_hugetlbfs)
- 	struct hmm_buffer *buffer;
- 	unsigned long npages;
- 	unsigned long size;
--	unsigned long default_hsize;
-+	unsigned long default_hsize = default_huge_page_size();
- 	unsigned long i;
- 	int *ptr;
- 	int ret;
- 
--	default_hsize = file_read_ulong("/proc/meminfo", "Hugepagesize:");
--	if (default_hsize < 0 || default_hsize*1024 < default_hsize)
-+	if (!default_hsize)
- 		SKIP(return, "Huge page size could not be determined");
--	default_hsize = default_hsize*1024; /* KB to B */
- 
- 	size = ALIGN(TWOMEG, default_hsize);
- 	npages = size >> self->page_shift;
-@@ -1606,7 +1557,7 @@ TEST_F(hmm, compound)
- 	struct hmm_buffer *buffer;
- 	unsigned long npages;
- 	unsigned long size;
--	unsigned long default_hsize;
-+	unsigned long default_hsize = default_huge_page_size();
- 	int *ptr;
- 	unsigned char *m;
- 	int ret;
-@@ -1614,10 +1565,8 @@ TEST_F(hmm, compound)
- 
- 	/* Skip test if we can't allocate a hugetlbfs page. */
- 
--	default_hsize = file_read_ulong("/proc/meminfo", "Hugepagesize:");
--	if (default_hsize < 0 || default_hsize*1024 < default_hsize)
-+	if (!default_hsize)
- 		SKIP(return, "Huge page size could not be determined");
--	default_hsize = default_hsize*1024; /* KB to B */
- 
- 	size = ALIGN(TWOMEG, default_hsize);
- 	npages = size >> self->page_shift;
-@@ -2106,7 +2055,7 @@ TEST_F(hmm, migrate_anon_huge_empty)
- 	int *ptr;
- 	int ret;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -2158,7 +2107,7 @@ TEST_F(hmm, migrate_anon_huge_zero)
- 	int ret;
- 	int val;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -2221,7 +2170,7 @@ TEST_F(hmm, migrate_anon_huge_free)
- 	int *ptr;
- 	int ret;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -2280,7 +2229,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
- 	int *ptr;
- 	int ret;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -2332,7 +2281,7 @@ TEST_F(hmm, migrate_partial_unmap_fault)
- {
- 	struct hmm_buffer *buffer;
- 	unsigned long npages;
--	unsigned long size = TWOMEG;
-+	unsigned long size = read_pmd_pagesize();
- 	unsigned long i;
- 	void *old_ptr;
- 	void *map;
-@@ -2398,7 +2347,7 @@ TEST_F(hmm, migrate_remap_fault)
- {
- 	struct hmm_buffer *buffer;
- 	unsigned long npages;
--	unsigned long size = TWOMEG;
-+	unsigned long size = read_pmd_pagesize();
- 	unsigned long i;
- 	void *old_ptr, *new_ptr = NULL;
- 	void *map;
-@@ -2498,7 +2447,7 @@ TEST_F(hmm, migrate_anon_huge_err)
- 	int *ptr;
- 	int ret;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
-@@ -2593,7 +2542,7 @@ TEST_F(hmm, migrate_anon_huge_zero_err)
- 	int *ptr;
- 	int ret;
- 
--	size = TWOMEG;
-+	size = read_pmd_pagesize();
- 
- 	buffer = malloc(sizeof(*buffer));
- 	ASSERT_NE(buffer, NULL);
 -- 
 2.53.0
 
