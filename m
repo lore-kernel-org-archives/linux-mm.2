@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0342010F92EE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:23:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DA510F92EE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:24:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FB546B0096; Tue, 31 Mar 2026 15:23:42 -0400 (EDT)
+	id 3C7546B0099; Tue, 31 Mar 2026 15:24:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2736B0099; Tue, 31 Mar 2026 15:23:42 -0400 (EDT)
+	id 378326B009B; Tue, 31 Mar 2026 15:24:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6107B6B009B; Tue, 31 Mar 2026 15:23:42 -0400 (EDT)
+	id 2B52D6B009D; Tue, 31 Mar 2026 15:24:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F97B6B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:23:42 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FD468B536
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:23:42 +0000 (UTC)
-X-FDA: 84607332684.25.E8338F3
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E3A598000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:23:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=ZYCfXx3+;
-	spf=pass (imf02.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=ZYCfXx3+;
-	spf=pass (imf02.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774985020; a=rsa-sha256;
-	cv=pass;
-	b=fyqFNjF6q20cyxwF461QWq+Io9wwTAH86Xh5GiqTpZhQGk251YYULgVBl0JFir5upt0odC
-	qKddXTxClVHVzzraWmLq5lsFqExPDXHnSuulLis4tGX4XaqvXOM2YXyjDSpLv1oe+elSyz
-	YFuJDZoJ3WAPtWqGIdpXXA0DZezR4ng=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774985020;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B8F66B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:24:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B91D71A03E6
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:24:12 +0000 (UTC)
+X-FDA: 84607333944.15.954DD13
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C22A6100007
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:24:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ct4mbDcM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774985050; a=rsa-sha256;
+	cv=none;
+	b=whj+hbM1ZBkciMS7pn7RPgrwxK6RlYQdp9JRHf1UE0rHeDXFFWm6Gs3cU6xwSj2XG2KD50
+	wkVNEeTiS5m2ANfx+iAgjoSbRjazEV6Sa/lIAWFhVIy9C/WpA3+knj42sVjtuj3uel+nNP
+	X/pxEj7Q1y0kKV8B9zemSfHN0rbRir0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ct4mbDcM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774985050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yBDxXYjZajrxzzN2zbsP/0cce6TF0J86eDUuZG2QDlw=;
-	b=VTpYLk0fYI9jKPC5rsdNybgo777OlOR4/1i50Rw2Uj3m/F68SX4wxTuNp8v0ZsVkogoN0a
-	Y2BQHmb4oMlZ9wYWsMMQBFR9+cap9vfNYIKSmOsOHHa7Na6oC211wWp01kSEspBV/bF2IQ
-	pnav157X9txvjLoc00TwncNQm70XMPI=
-ARC-Seal: i=1; a=rsa-sha256; t=1774984998; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=aX9oOwmj9AEHTHiRlLGZIN2zFmMLJj3vcIaXbjnApQDc82Q+bQ+0/lcmhOdLGM6ek0RWScXRUxePS6UgsLjfR2IQ59dcioqO2hS5UUwASdZY/X12m3ya6Waen8CwLrcbUCHeN5sj90UzrgHbRaTGRJl0zDvMvwjuIwNiUl2vpIk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1774984998; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yBDxXYjZajrxzzN2zbsP/0cce6TF0J86eDUuZG2QDlw=; 
-	b=XBSn/9Ha/06SUjmIY5K81SwK4VG7IbtltcBEHpAGeADAKlQxW4cppbP/RcLkQ+9UkMs2KeDEA7Eg8gxFNde1/A8p/nrhChAeBp7/4EgDaEIld3gSJ/PpoaWfNeAmSRV7qMkAJmMhj94MZrE85E3tKCUn/srRfnlgmvkyukPn+bg=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774984998;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=yBDxXYjZajrxzzN2zbsP/0cce6TF0J86eDUuZG2QDlw=;
-	b=ZYCfXx3+fwgO8RIJafF1FEBEu1zWstO+x6cq7TPXOhBSLTkNkHUwWJeKMMnGAnvv
-	uOrUZDQcW2A9uwxB/j+FDhFQjzJbbVjmJAL+Oku1Ru7dM0UF9Yc9PuS7w9BoW/W7axe
-	OWhoVIHqgryeGczQYBS8Ip2LM0qLDdfgmCzB37ZI=
-Received: by mx.zoho.in with SMTPS id 1774984996747280.013428865071;
-	Wed, 1 Apr 2026 00:53:16 +0530 (IST)
-Message-ID: <e6587458-a81c-4d85-922e-ba7e0a5aad25@zohomail.in>
-Date: Wed, 1 Apr 2026 00:53:12 +0530
+	bh=A/Gc1f2Y7Nm0mkyhY2UGCD7O3dcDvMIyKQbC7AzK6Vw=;
+	b=IOJ3MnMfFRbxCmqFz43KR5qO6SbslAGSzftwuqHdNTiCDcxvWxCmjpiEi+XFZKIDmg//+z
+	i764TalM6Cbv2XxCFsbK8R1N0rFuIDVF3XlvbMTxItVwQisj6L8Z9mEyJpUWRtEuCbHZFn
+	z7j1Vrwtptb9kZrdet2MyAQQASVDk5Y=
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d7f09aa39fso7400367a34.0
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:24:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774985049; x=1775589849; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A/Gc1f2Y7Nm0mkyhY2UGCD7O3dcDvMIyKQbC7AzK6Vw=;
+        b=ct4mbDcMvN7LYDFrPAhVJ/jFIsYISWvZzciiznWFtBQDYh054AbMkpen5tXCy0KkAQ
+         900tnuOTOdbvfkrvvwVRnwquP4pMQcaz57ZmSlaX+fbf0vccC3JMl3P3RqH6AZKvBTmm
+         quYox67c1xQZLJZAg+3IcSfyY0bDm+V5PxzS8kXTw2BpujAYinAoe59/oaTuopdIkL5V
+         1Fj/JQSLv53VXwpnUCNoeGN0mmibutMCGZmBJAzzWacmmp1vaX5jbI7v+Uo1FxQdH8Bo
+         OaIXC/ielPGr5ZMueNJpx3pryHE5xr/h1envYk2ziIuxkwpklJxqZXaF8vYoqAOkgov+
+         ae1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774985049; x=1775589849;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=A/Gc1f2Y7Nm0mkyhY2UGCD7O3dcDvMIyKQbC7AzK6Vw=;
+        b=ms20VzoCWT82uB5g1TNkRjcd40UXjwG8LxFkXGKKwzHvYkdnO8LL8YutZgIGbIGI6f
+         fjt8ytWtFWubSsl+HCpT43gmTB1M0ZsaPRD2LhyvI6m8C1ALNszg0Kx9ifYF0TgJYofi
+         nR2YtwXCphUoowCLQOpwRfpwiJWAyIIG/9Ev5mAst4oD3XghOQ2+im/6L2odcUoOyGII
+         UEMIbVjH84Xn2pwG5syBpi8qOUOU6pk/DCnPfOqqxJx3VceNsBM5dL/h2AuunY13lNDg
+         8bz+QDKlE5AtLBXNq0Dm3nWCSm//YR7Klbl7cslWgFwiAKNF7HwyNauWeoftN/oL2HTp
+         ahog==
+X-Forwarded-Encrypted: i=1; AJvYcCX8cbUKEQGgPxE+LcANPOFBDwt34j8Jbm4xXdn9R3lBYA+jVxA1H70FC4IN328k15BtGwse0X0bBw==@kvack.org
+X-Gm-Message-State: AOJu0YyNE1LCp8aCnI0ujie/l8AJNLIuwX4CpHEjWqXH1MFTwcUw0pmx
+	5LMbid0JpC8UFNTKtkyjjyC659ynX/LstlXfS9DQKsg1uC9Qm+y1k95d
+X-Gm-Gg: ATEYQzz56a/QX42dxehWx32933gKr/EF99e4MWu287TGBt9v2mPJDVC/QX0UvbtERRV
+	BrvVu4iqDF5cmcmtPdGuvZRpxiRl/C018ZVUhFYRyFuPEorf/p+fZ1/OXCyMb7i1wCrtZQfWvfn
+	v3H6dav7vF6VTjsBYrRUHkXsUL2A5tdzRN428lUnOKxn2j09YnalVICz2dHJlTvG9Skij9AQk58
+	8Oc5oujJnzUz85O3U6Skg5hp/XuhYtzNOLH5WY9zX0zWRPen6eGEoZk1gRHw0AyBsjNqNnlnvb8
+	Hm7JQQwqsWQ2Af1CZ8sIKJv3nFe0MD6QYrSXFCp6dMV3y6uhVUHaexLeya+yj7I9GnEmPjyWxTo
+	eX2oOCzhPDY6wc4kockCsJcHhzE9qZ2Us9feK1HD03f2NEmqdcxA3pfwaW6lZsAL0XR2GUC5chA
+	9RhGKwNrQtuARFUFWGPRhurw==
+X-Received: by 2002:a05:6830:349b:b0:7d7:f5d4:ef5b with SMTP id 46e09a7af769-7db991d1434mr655861a34.7.1774985049512;
+        Tue, 31 Mar 2026 12:24:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:48::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7da0a3b2e37sm9052412a34.10.2026.03.31.12.24.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 12:24:09 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Gregory Price <gourry@gourry.net>,
+	Jackie Liu <liu.yun@linux.dev>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
+Date: Tue, 31 Mar 2026 12:24:05 -0700
+Message-ID: <20260331192406.135112-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260331192105.109847-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/6] mm/vmalloc: free unused pages on vrealloc() shrink
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>
-References: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in>
- <20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org>
- <acou2CsZOUQPx5nW@google.com> <acpsKv-GmaYj2Bmx@milan>
- <f6f04017-3dcc-49af-b875-05a9ed4f4dfc@zohomail.in> <acwJe5yhAt1M7RfJ@milan>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <acwJe5yhAt1M7RfJ@milan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E3A598000E
-X-Stat-Signature: 9m71p1wisufkeuo1n3piznu3iudze36b
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xziiddg5678qzmnbm4uj1gqfpx3x7jnp
+X-Rspamd-Queue-Id: C22A6100007
 X-Rspam-User: 
-X-HE-Tag: 1774985019-49818
-X-HE-Meta: U2FsdGVkX1/ATSWx4CVdjm/d9B8mzD75YD2vkBu3n316PaDl653La/ask4PoUP8RTa1mNe37wkCfPjsstHPiOIJwfM6crsN8j1UBO/pF/YFFTh0KoEBd5w3pmq/DZUb5IwGPnqXKQND8dgxITZFJJHah2oiUNfaRTr6v/xY4WIkQ2axr6pHSZshHGdZBbbv6V+wnmavCMtdbipx9iaBpMu+D9ppfaGfcYCOJES7qdjLE0sgjQ2pIKSJZT3kWFCaDaWkpuaMO6yZBm9T0RCpFKgwOVm5+ePfYtUss3iywOVdQ/c3oJa27kjZR4jZd1x1boILTDbzMtCl+0asgLyPhjUvbF974XuylR8U96dlO6Q0oXXHlP427aWnU0qYQPlOAWdNFueigKbbhW4fQm2PKG7i//kv/dOdlca5q2QxNMYZWseUWdYE6/cApLBgBezreHpFIfhK8uIH/mteGfZX+3HZElMlUas0W4g/O9l9YxHh1jTH+5Yc0u0VvHrNbHG4hF0O4p7Pyu0s3383EXdt+dIDbuEIr3VG8z3m+XX1gbOZIfKKCAo7LRb51YJ2FCXlvOCKc2oC3YkoWj/dCLDPzXWQlXwwzXLxKqaQPta+9d/tfgtQ3ii8yatT2ZlguUqvjCXqZGgtDaZw2E69XFIlbLCb6QgjcTKmgV6x+kT+WJSA9MPxOPSCVCAYNCNn/sqRAFp7OyIYlBzE/cGf3L0M+TDtef9pdra96Q7SHwqHHCBz5C0EbDv1lBqRTPDyoqj5Yy7qgplCX+ok3zTiwyWa7mE3NtPON+qLLqK/J7acQSfE/C47bLyMPUXXcSzaCoBayOt31S8YXu140ifc3YXd+NTbPPEqfexTJaY7YUD1sLjH/iPVc6oUTPhUOL6mgpuE7U5lV2M1wv4h05Req/tUHdPF6vj39TnT7vOE/PF+fSWoUKSkKO0/Sa0sxZlZDuM0+iK+Y3YsfvppW7+Nqpqs
- qgwekl5Y
- g1T/tlgrB+VtNHxdB8zOpN5hmRPqEXh9IlZFmuGzBkGPLFHWOJctRM9LFcQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774985050-234300
+X-HE-Meta: U2FsdGVkX18FiVDDN7bZXrasdMM8OIML/Gwu0LVjW6NTpai25Vlo4GoG2BniYAoyEgJBfgi9tQMQ3ZLpm4KCGGBrVzjUTVHBTfOt70LrB761kbrek3iUsTTCgYU2bu70mkqIS8iST3zdTRcAEJSx0eeeVFaHH5ZG3PXnx2eB1RBEM8PICA0UZxVe4GkiXHnCTXUR2Iig+wFsULzY4X9aQ/2j/+S+4pp5q16QqgmDdYewFeDCgIld/5koaRCoMhASoMhlQXJU4jmWu83Ri0OTjFcmKYnNn2nkBpspzkbwgxW8dwFyLATNIMpAun2OyL2tzvGTKggfgHgbq3EGFFFd9eyo+GyyW4cjZACe6QBwWXzRc+jtIe9EKTk9xCuFXTbpcQFHG0WGDCWlJ0vVdi79mb+C/bYPV8dVdUb0vlH78rIj6wkcObAi5qRBeA9uKU/hfAG/83cieZm020f0krIwe4j1OgMY6uXAGVpCoib1YVAXESqBfj/2Pd71WM45qdfZ69QiFyj6gs03qoAM3/O44oIshhZ3ghQ3bPpCoFRhPK7URFJtPu9f3G2W+CynojnksSizrchJxRslRhg3ncfqfYqv2nhchYfaQ3eutkLpuO3OB8SmILMyJpFIWxV1FTlbgPe6sH2S91ewLjoP9RInlL4QUVZvSIGyr35e24eEHu9CYeZwNk3bmMct8Ts7k65B27XCSC7kzE0g+VuLy6eFIzbNTq9ykURg3eIiRCZH/EWea53bFk2jvrPWHO2LH3ElzC+9Kd4Yx0YN+WzfybCPC4i611NJDiOnb411bts58XGumbzm+qfHcA1X23sFclwLFrYJ8sMur9i8lfEgLcp4zt9Iv1YyrJNhCG0+Z4QjA/PhLLjGWQljsfU8v252Qt+GpLAFhftCw1fLu1Lu75ObD/HAmRjmjc+6qvYX83Fa3Hjv3/50BaktQmcNq8+52HyuLgpt1oYKSv7EcIUfS1E
+ nRoDv7Mj
+ zfOACNNF8aZelkeQRiUhdQf789zG6YLjcR8JCWwo4W9aCAZjsThRk+JQe7y+v3HL1s6wEJ4SNq4Et5nFsWuAzVeMTRY3DrC3+fYWOQzV0yFW+rBEv6FTpp2CWDndM4nqOF+H88aL9ujlVADnSRcEM4TzQypvHJATHe+bvVbvYWDl59pulMbXYX1LV0zYXo4TU+kkCSLOHqr+EB7wjKI1XGr/nsFnnq7BFDCMA9h9ZAHCpQyRmRouX7HibKjkoJZFJCzjWDTzMBiKZW5GYB3LN17fxXLNpQnlO+uzOLRmmoAs5rBmprqR/8olCUWgKhTMnB/yzHn0ITbcPhffPwg8U1qoKLE+c6RQuZHOTwcuyr/Sp9wMotua7F+Kbj3hrsmxd6nPTWhwRLEhSd2Tg6h6jOScI60p6+7EhVyNCwf46w8vXBe42luiwvndEYLQqmjOs/VWfe4f8oNwA01J4F8AHCkpmiZuLk8G17hm0WoOLk2arDsgEp4YfpVODc7saIuaCW9ffojbDOhlTn6HsATZYFmu0YTvPUPtDmm/DjqjFWLzosop+wglG3wKWuQXBCpO703va5TRORiyB3qYRavpl675qPwe/Cgialt8xWt8hE/JIpE6QI+ggpWIvt65shMGe8y5k4YKN5DTrlkN5tJ0P0GvUhfY+WLXzUA1ullMPbA9Cr9i4/HYFEj2j4+XyIC9LqsiQG6b6WNbiQV/2DtX+7cWaPlDpF0GubE2kQWb4YAr3em4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,15 +119,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31/03/26 23:20, Uladzislau Rezki wrote:
-> I have added some comments. Please have a look. Do we need those
-> READ_ONCE()/WRITE_ONCE()?
-> 
-> --
-> Uladzislau Rezki
-You're right, the spinlock makes these redundant. I'll drop
-patch 4/6 and the WRITE_ONCE in patch 5/6 for v9.
+On Tue, 31 Mar 2026 12:21:04 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-Thanks
-Shivam
+> On Tue, 31 Mar 2026 12:01:10 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > On Tue, 31 Mar 2026 12:53:40 -0400 Gregory Price <gourry@gourry.net> wrote:
+> > 
+> > > On Tue, Mar 31, 2026 at 06:07:40PM +0800, Jackie Liu wrote:
+> > > > From: Jackie Liu <liuyun01@kylinos.cn>
+> > > > 
+> > > > Add the missing kfree(new_wi_state) when the auto mode is already set
+> > > > to the requested value. When a user writes "false" to the auto sysfs
+> > > > interface and the current mode is already manual (mode_auto == false),
+> > > > the function returns early without freeing new_wi_state allocated at
+> > > > the beginning of the function. This can be triggered repeatedly from
+> > > > userspace, leaking memory on each write.
+> > > > 
+> > > > Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> > > > Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+> > > 
+> > > ..
+> > >
+> > > > --- a/mm/mempolicy.c
+> > > > +++ b/mm/mempolicy.c
+> > > > @@ -3713,6 +3713,7 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+> > > >  			goto update_wi_state;
+> > > >  		if (input == old_wi_state->mode_auto) {
+> > > >  			mutex_unlock(&wi_state_lock);
+> > > > +			kfree(new_wi_state);
+> > > >  			return count;
+> > > >  		}
+> > > >  
+> > 
+> > Thanks all.
+> > 
+> > Am I correct in believing that triggering this leak requires elevated
+> > privileges?
+> 
+> Hello Andrew, I hope you are doing well : -)
+> 
+> Yes indeed, writing to the file requires elevated privileges.
+> 
+> While going to check this out, however, I noticed a different bug which is
+> that the file is no longer called "auto", but called "__auto_type".
+> I suspected this was the result of a newly defined macro, and surely...
+> commit 6cce897a37dc "compiler_types.h: add "auto" as a macro for "__auto_type""
+> seems to have defined auto to always expand out to __auto_type.
+> 
+> Of course for using the __ATTR(name, permissions, show, store) macro this
+> is bad because writing "auto" there no longer works...
+> 
+> I'll send up a quick fix to just manually write out the name instead.
+> Doing a quick grep for the pattern thankfully seems to only point to this.
+> I do think it is a bit weird to pass a raw, unquoted string into the macro...
+
+(I just want to clarify that I am not suggesting that 6cce897a37dc was
+incorrect. In hindsight, I should have been more wary about using a name
+like "auto" when it is already a C keyword)
 
