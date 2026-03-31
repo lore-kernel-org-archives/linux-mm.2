@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9523AFF60F7
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3955AFF60FA
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:35:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A4146B008C; Tue, 31 Mar 2026 05:35:31 -0400 (EDT)
+	id A1A0F6B0095; Tue, 31 Mar 2026 05:35:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 054926B0095; Tue, 31 Mar 2026 05:35:30 -0400 (EDT)
+	id 9A3876B0096; Tue, 31 Mar 2026 05:35:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E85CE6B0096; Tue, 31 Mar 2026 05:35:30 -0400 (EDT)
+	id 892D46B0098; Tue, 31 Mar 2026 05:35:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D35D16B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:35:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 715FA140C5D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:35:30 +0000 (UTC)
-X-FDA: 84605850420.04.435BBBB
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A88AB4000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:35:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WU0OlCFU;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 77C786B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:35:40 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3080D5B9F1
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:35:40 +0000 (UTC)
+X-FDA: 84605850840.20.7686881
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EFD01C0009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:35:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LetgPKrW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sHDoojrS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LetgPKrW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sHDoojrS;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774949728;
+	s=arc-20220608; t=1774949738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lid4xA2I5RpvLuwKb/5kSWHVsAUfi8ob6hCwRrdpHiE=;
-	b=pLYOlUQanJe1enLTueOrDOHpqCdoaITmm0oKlILda78Z3V5NAQ5oouu+nsOEnzzZttvFcv
-	TsidiEx/TmAYjgjQj0u5Me5KgVshet7JzXZiMmSLus5C65YtwbsFpx2M4dAuS3K17uL6h6
-	Qp2Dd1oeLI5IajI3qoARfGIVEW8MEvA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949728; a=rsa-sha256;
+	bh=8RLMUhAjTtNtaUC2s2ScncUXf/vyBdpF+viQUvF/H1I=;
+	b=CBSQJZjkiBpO4/506cPqf0S+dnMC0fe3BcGmHhQSOkoSXsWP92JlQLGSedc8rNJK65uQPW
+	3ifskhsdUrkIA1XYHtHnx166GCNnqCZ53yuJ20VN6dGpldwe9okSZqOs/V4DNHnxTcetII
+	yW+ifnvc6D4yFxa2T6hphtPCvEH8gWg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949738; a=rsa-sha256;
 	cv=none;
-	b=rZuJJmsNFAy7Rai2HGi/TeiyZEWuMLfJfuYbB4WZPEaSy9PC6k1r65gRSazL4jcabSake4
-	e+bY2nD2g7rn+OjpBX/cABQVe7SnaWL0jfndx2xq2ckkqZYd0OlCUgV7PNHlnm2BhpKaR/
-	1+pOnInmMxgqQKPZhpr2GgvShNJqgfo=
+	b=EriUWfzhUXICy3b22+XbcKz3Lqiq85juWKptHFE0PJv39kqq1fnRBmJCDRcjc9959CD1ea
+	+4QGcGmakjouWVmVNyiU5pLgZRSTnHKJLrQlaSqueTZEeUnOFw4W2H8Srv5RusUiKFeQ6K
+	/xdMXZwbVun9XmgM0RndAjzKR6Qhp7I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WU0OlCFU;
-	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59dea72099eso6731914e87.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774949727; x=1775554527; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lid4xA2I5RpvLuwKb/5kSWHVsAUfi8ob6hCwRrdpHiE=;
-        b=WU0OlCFUXC9gJm+34sv/MwaJCdvnBBnH4Fq2PQ4JPzYiVvDw0Pr1YslDiy0ePQ36Lc
-         ViNFQ9caY9dzrTo+koN+LD6iY+GWmepVo2ejSfnQu/9hV0VqWsNGPNoKlp0e+RdBxKar
-         bVHVeF6DiocmM++PmU2/ZgCNkkW2IDGTc1eX6oekWBRZd/KMRCosz88sv56Ta4OK9697
-         lFjAGB7Mdlmx3vnj8hglOQ2mMlx0cTsWNc8BccEgDR0RPYS/8zzQ8na5tAWiOLccn79i
-         qwk1VzahUm0tLrutqtR/2ApHNuB/6TlzCcSWvIhRWQzDvxjgNnjEuqa17G2aa512S6P+
-         okoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774949727; x=1775554527;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lid4xA2I5RpvLuwKb/5kSWHVsAUfi8ob6hCwRrdpHiE=;
-        b=Znnh/Vs/JUGwiQT6HpfGqgoUDxJZfGRA3/hP8CR7e9GKR/YymSshKx8UhIo8Odm3t0
-         /9UfAy2urGnS/TluOJMwWJ/u5dBmS17g0Dpg6TjvIsGPuUb0g3rSviDmhhKS5vO1S7Ky
-         mWUXrn8GWkF6HTBpcCYZNTL3O+Qs6f1D/v0kGTsfRNTeModRUgh50Xll1L6ukR/N8YmU
-         DqOOynElEWwuAKzPcA4mOQ/sBpDmgLR/MphIc095VDmomCqQN7YDCZu+i7jRgT029zOy
-         EVDjzt3fHjM/O6cb8LgSahK0IjsW91WSitFGc9vEg7VhW5a8Qv/sjyNBAGWski60gYgG
-         +PEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3VHuTzDN5bIMfQzxcVPFFqCx1HGSoWQHyw0T57S1AG4MqiG1D428ElePjR6pJNgEOmTkVDQd10w==@kvack.org
-X-Gm-Message-State: AOJu0Yy1dI0nu6TYpNCKQqmveSBdikxS5xDPOxIRTNoYVasXus9WMGIk
-	oKg3j9VIMjIUQV7AFfItwpN68MPhzurh/yi8BhVsajCFlVfFRP+zIKqy
-X-Gm-Gg: ATEYQzwXiB+NUeOEfdu/NDT8xmFWYTBrLbrT4xKV59tNNzE/7XfjZeI1nPhawIOLSHa
-	VKY4OOyPflXjochDV8Wr2w2kVNay4toyU3aDw42A+u/VBNzEV5pe+6DzExLVpxsqo09kuLAOZja
-	d3Ar1sOjGV+DRuYTa30GdnASilwucwJH7BA1pqOZWqCMiCP9FNkYZsfm/CKKXDnQqDuv/u7IIxJ
-	Xc8X7cXIMEuD8hWJiswzE0NZYuz8nyutrHM04SnWaIckv9JL+A8EEkQ1rPUCxyVzgGFmt/4snZv
-	XnoPpOjJ6nJ1gj8mvYZTKpBFXTxWkxmdmSv4I17UkZShpVew2xEFpjZVuKAqstKT8SDtVl3zYvV
-	8WMZdMdpGd+41ZFH9gvc5dlrX6CTETpCYbTHRTb5KRK4zxp77G3StXQlhLPdpU3Qfsm2RMUu9nn
-	4=
-X-Received: by 2002:a05:6512:3053:b0:5a2:b86c:f2d6 with SMTP id 2adb3069b0e04-5a2b86cf38emr1680912e87.11.1774949726405;
-        Tue, 31 Mar 2026 02:35:26 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b1403c4esm2257320e87.26.2026.03.31.02.35.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 02:35:26 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 31 Mar 2026 11:35:24 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-	lirongqing <lirongqing@baidu.com>
-Subject: Re: [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap
- purge/drain
-Message-ID: <acuVXBglDLnnspgL@milan>
-References: <20260330175824.2777270-1-urezki@gmail.com>
- <20260330115618.62fb0d6bdf89cedd453035d0@linux-foundation.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LetgPKrW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sHDoojrS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LetgPKrW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sHDoojrS;
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6C0055BEB6;
+	Tue, 31 Mar 2026 09:35:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774949736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RLMUhAjTtNtaUC2s2ScncUXf/vyBdpF+viQUvF/H1I=;
+	b=LetgPKrWBjb6gcmwm17nwHwvSbdMlgC5PkRp0uh8mnZ9huntuqH2aPwrEDEdrHsANaB721
+	WUFjTjaKmBBdXheZSDu3sgfwuW6/p/XxXg98wEkBv/OKiwjkbh84Icjt02l3RIBksKMAe8
+	BGCPMdkKaLFE0hc1CmW+rzYaOdPTiCU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774949736;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RLMUhAjTtNtaUC2s2ScncUXf/vyBdpF+viQUvF/H1I=;
+	b=sHDoojrSG75TQ9qCOpcuv6UY3hhRLD06bynyEgWH96ZnnuO6N3LoOip6Xy+GMSQtAI8E0v
+	Mfr4NFJcxNb6fOAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774949736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RLMUhAjTtNtaUC2s2ScncUXf/vyBdpF+viQUvF/H1I=;
+	b=LetgPKrWBjb6gcmwm17nwHwvSbdMlgC5PkRp0uh8mnZ9huntuqH2aPwrEDEdrHsANaB721
+	WUFjTjaKmBBdXheZSDu3sgfwuW6/p/XxXg98wEkBv/OKiwjkbh84Icjt02l3RIBksKMAe8
+	BGCPMdkKaLFE0hc1CmW+rzYaOdPTiCU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774949736;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RLMUhAjTtNtaUC2s2ScncUXf/vyBdpF+viQUvF/H1I=;
+	b=sHDoojrSG75TQ9qCOpcuv6UY3hhRLD06bynyEgWH96ZnnuO6N3LoOip6Xy+GMSQtAI8E0v
+	Mfr4NFJcxNb6fOAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A7FD94A0A2;
+	Tue, 31 Mar 2026 09:35:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ARChJWeVy2lfYAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 31 Mar 2026 09:35:35 +0000
+Date: Tue, 31 Mar 2026 10:35:33 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] tools/testing/selftests: add merge test for partial
+ msealed range
+Message-ID: <ne3bppkwlk2srskam72k56jq5q63dhnvk67vzztciw2uxxcyr6@gki5bfznhqxa>
+References: <20260331073627.50010-1-ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260330115618.62fb0d6bdf89cedd453035d0@linux-foundation.org>
-X-Rspamd-Queue-Id: A88AB4000A
-X-Stat-Signature: 8ktsx7pgq4e61nfq3suwk8ckon6frz69
+In-Reply-To: <20260331073627.50010-1-ljs@kernel.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: hz888sisowr5x1hadixhrkq5wpa9yu8t
+X-Rspamd-Queue-Id: EFD01C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774949728-862490
-X-HE-Meta: U2FsdGVkX18MPGdLootgfLS5D61zOrkbramawABF+HwlNaIFuT59WcjUWTi6uuLs+R9+FxUNGkfca1EJ8HNCTplEk8wvkDX4pE+tDBm9mNP6mceuueBEEJ5Qub9q3Hu5wFmKNntFHyo3Lllr6kdxVOg6IaKUB6VkH+CeVTrIOP0F8q0B7LkRYvXhiC720Ed6mrG8rvHGxYlDu/QPfuFIiDB3YA6tIKHDIDVaa7/k1XlNPmwkd5WBZwscoavEhomTCzJLli0ikGi5eXjy65h9WjlvzN6G3ovrAibyJ+XyIy7ORkdkLK3G+GuXxTMcVZNO8+PkYxIer46qZ9BcbJIk5rC94/fY6vi/jFlyjU7ohqjntFPagZVeUo40kh/vMUtX3I21mBVLmSMD6WAHRjXzAIlwKtPDpAWhSmNOJbVLuPHSLHOSD8Xpr2sASTj1JAZIg3PbpawtH+xTLqtm7YdfkoQy+hFV2i5JV7GOPPkX3ATLWJ7V9Vk5arXNblWlPNA4xGL/Ndx5fA/+14dn/B0ZmAawFaXu9zL3ZyopabpleBhAIrBWz7UyZBhRxL1Mnrb7vdO55OKX/JsDaPtzSwHaJG5Fj/705WRVu/suIh7EtdRVqYK8COpu703xABat1D7PCfXhU/sP3jKY7hylLI+r7tSH9qCvWhSxLqFmuS6ak6RHY+o5s09zo1l8/qKSTVro61UI3bYhZnj/ybN0qKUYatxyoaijR1SanMIHDfJEZC+m4sh4u6GH51iDpErx0JCkArHLfvzN8/5gzI5M2rQZCQQr5OCChQS0PSXoKvZybTWn75pH1jwg3lZX6ssnX0XnlBDcJJfeLJQ6bh6OsngJzO6pDzBYJAtSvGc9b4mDj0fo9XBsLJUIvepodcS8+wXRrTmHzGe2iLuIAwSC0DpLsVQy5JSfw8ACmpHyZgoUi+aMXbVp4vmK3usjN1ENxUrkD+1kAPRz29DCrkMUody
- MptjTpvK
- 3QreaS8K0F0XbA2auhjqiJkmcrN4aVuxv27wikKrhlQi1Vmc=
+X-HE-Tag: 1774949737-826425
+X-HE-Meta: U2FsdGVkX18107h34ng4pYi5xnQghJ32alWlndSPCHsIoUeiys1bYsdJhj6txd1g+kFQ1UvVwAQNMk3G0karMcrDv37dPw9z3BVxaiEInro1Amm0T4BMYrBh+RC6tRasa1px+c1mj+rbB1CcuPAHStnlJJOUCyb/EQeFs7PBSm96ZrNaKiDbLtHzJxF9w10s/3EfepFRQh+BFpqzao19p93Evg6XPLVKqzz3NweUWtoAlh5DkdvxcMmEEoJqZNibkN1AMPCvsZMaykwqxAzlMdDC9oIRJvat3n0cLvTncZbQm5xgunX0kMgiwRPGc1JLMqRijVMir05jKLONuF20KFDX3+FNMNJfzah7HixoickXyXRCqKt+5ohkG7zFta5pKhdWeYoITcRP51meNbvSQ8TnBEvaJVmkqpRaDOievoDDamhu7UJaR3NMkjNb+UqKrsTf4oxRuwcCND4Wy3s8QxREZ7PNOeMhS47Dm7Xfu/dWtFgUpMGsaz9/p6x0BprB8fIN4Qq+pFUQTwYpfaklBFjEZRIEVgAPvRNQvCVd6p1jatE8pOtMJE6liwNYUDr2t9xsmixnyLNkuxVSqgKay/HJBTKDtpfUCMGi6AayhDGAz1DeB6zS5qnvIpJbCX6tmr1gMhh7elWLzwO2Z61++j3L0gG7FU+ASWMAWif6lieKRCBs01D+tc04UVr9d6WsPOQG+34Z4D783td+1uIQLJwRb/abtY1UWBjWoyyq+acMFLejSC0tJ1+uHrIf1cv1xGuOON4wE6N4CPj0kKWB/G9J0vwBOPhvK9N/4LA6RQ2P+j+alazM0ka+IGnJY+/9CB6f9AOp4S1+hGTwBnJcvmpmU0n2Q4FOyFyJF2tVscoGP7daNgQfKL1JZcscOb1jeJQKqJ2Zw+D2D0cLlLhunWRi21uu62+dsLJ0sRHreyAJm1KOO4V+nTj43TfRcVgYzlxa4U5/3AF5vWLhxCn
+ zlGYrnHg
+ q7vS9SrUit2ltWKsmv8CdZSAHXFGiVHlLAds8sA8HzodlTMde8XSsfW6zQMxqsW/OxcZPJ+GP+UygLrXJEqTj+EoU4v9hyXdTB5Ft+XWbgss1ENMAQO14JUnrBo06UWnCD/DOGrCWbXBTe0uw+cogDEMeBkq0qIUsiE/JB4JAqDtJ/i5cK0y0VvFht9bmz+LzcLKu7lVkjMqvF98H9jQQYXIzqcvQ5zIt7MSE/ycNGQgyq5P0X0kx3ZqYy6bcajng5SqaBPVHA88lELt400HVNNfAWsw5vjraNm0V9AutvNz/XQ40hgVIDw4vgPBROwsFlJA70Oy0BtHdQ003w0lYlR2K5Hsgik/B6lENPmZTPhtPcUc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,62 +133,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 11:56:18AM -0700, Andrew Morton wrote:
-> On Mon, 30 Mar 2026 19:58:24 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
+On Tue, Mar 31, 2026 at 08:36:27AM +0100, Lorenzo Stoakes (Oracle) wrote:
+> Commit 2697dd8ae721 ("mm/mseal: update VMA end correctly on merge") fixed
+> an issue in the loop which iterates through VMAs applying mseal, which was
+> triggered by mseal()'ing a range of VMAs where the second was mseal()'d and
+> the first mergeable with it, once mseal()'d.
 > 
-> > The drain_vmap_area_work() function can take >10ms to complete
-> > when there are many accumulated vmap areas in a system with a
-> > high CPU count, causing workqueue watchdog warnings when run
-> > via schedule_work():
-> > 
-> > [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
-> > [ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
-> > 
-> > Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
-> > run this background task on any available CPU, improving responsiveness.
-> > Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
-> > 
-> > If queuing work to the dedicated workqueue is not possible(during
-> > early boot), fall back to processing locally to avoid losing progress.
-> > 
-> > Also simplify purge helper scheduling by removing cpumask-based
-> > iteration in favour to iterating directly over vmap nodes with
-> > pending work.
+> Add a regression test to assert that this behaviour is correct. We place it
+> in the merge selftests as this is strictly an issue with merging (via a
+> vma_modify() invocation).
 > 
-> Thanks, both.
+> It also assert that mseal()'d ranges are correctly merged as you'd expect.
 > 
-> > Cc: lirongqing <lirongqing@baidu.com>
-> > Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
-> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> The test is implemented such that it is skipped if mseal() is not
+> available on the system.
 > 
-> We don't want to be scaring our users with kernel warnings.  Do you
-> think a Fixes: or cc:stable are justified?
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+> v2:
+> * Added tools/ based header so __NR_mseal should always be available.
+> * However, for completeness, also check to see if defined, and assume ENOSYS if
+>   not.
+> * Thanks to Mike for reporting issues in his build on this test!
 > 
-Probably we can CC stable.
-
-> And I wonder if that workqueue warning should be WARN_ON_ONCE.  That
-> would mean that other, later call sites wouldn't get the report, but
-> we'll still get to hear about those callsites from someone else.
+> v1:
+> https://lore.kernel.org/all/20260330135011.107036-1-ljs@kernel.org/
 > 
-I can switch to ONCE version. Below code:
+>  tools/testing/selftests/mm/merge.c | 89 ++++++++++++++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+> index 10b686102b79..f73803b3679a 100644
+> --- a/tools/testing/selftests/mm/merge.c
+> +++ b/tools/testing/selftests/mm/merge.c
+> @@ -2,6 +2,7 @@
+> 
+>  #define _GNU_SOURCE
+>  #include "kselftest_harness.h"
+> +#include <asm-generic/unistd.h>
+>  #include <linux/prctl.h>
+>  #include <fcntl.h>
+>  #include <stdio.h>
+> @@ -48,6 +49,19 @@ static pid_t do_fork(struct procmap_fd *procmap)
+>  	return 0;
+>  }
+> 
+> +#ifdef __NR_mseal
+> +static int sys_mseal(void *ptr, size_t len, unsigned long flags)
+> +{
+> +	return syscall(__NR_mseal, (unsigned long)ptr, len, flags);
+> +}
+> +#else
+> +static int sys_mseal(void *ptr, size_t len, unsigned long flags)
+> +{
+> +	errno = ENOSYS;
+> +	return -1;
+> +}
+> +#endif
+> +
+>  FIXTURE_SETUP(merge)
+>  {
+>  	self->page_size = psize();
+> @@ -1217,6 +1231,81 @@ TEST_F(merge, mremap_correct_placed_faulted)
+>  	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
+>  }
+> 
+> +TEST_F(merge, merge_vmas_with_mseal)
+> +{
+> +	unsigned int page_size = self->page_size;
+> +	struct procmap_fd *procmap = &self->procmap;
+> +	char *ptr, *ptr2, *ptr3;
+> +	/* We need our own as cannot munmap() once sealed. */
+> +	char *carveout;
+> +
+> +	/* Invalid mseal() call to see if implemented. */
+> +	ASSERT_EQ(sys_mseal(NULL, 0, ~0UL), -1);
+> +	if (errno == ENOSYS)
+> +		SKIP(return, "mseal not supported, skipping.");
+> +
+> +	/* Map carveout. */
+> +	carveout = mmap(NULL, 17 * page_size, PROT_NONE,
+> +			MAP_PRIVATE | MAP_ANON, -1, 0);
 
-static int __init vmalloc_init_workqueue(void)
-{
-	struct workqueue_struct *wq;
+I think it would be simpler if we did 5 pages (1 for each VMA, plus the two guard VMAs around it).
 
-	wq = alloc_workqueue("vmap_drain", WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-	WARN_ON(wq == NULL);
-	WRITE_ONCE(drain_vmap_wq, wq);
+> +	ASSERT_NE(carveout, MAP_FAILED);
+> +
+> +	/*
+> +	 * Map 3 separate VMAs:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RW     |    RWE    |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 */
 
-	return 0;
-}
-early_initcall(vmalloc_init_workqueue);
+And now carveout += page_size; would leave us with
 
+mmap(&carveout[0 * page_size])
+mmap(&carveout[1 * page_size])
+mmap(&carveout[2 * page_size])
 
-implies to be called/initialized only once.
+and we don't need to deal with the arbitrary 5 pages below, which looks a good bit nicer.
 
---
-Uladzislau Rezki
+> +	ptr = mmap(&carveout[page_size], 5 * page_size, PROT_READ | PROT_WRITE,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr, MAP_FAILED);
+> +	ptr2 = mmap(&carveout[page_size * 6], 5 * page_size,
+> +		    PROT_READ | PROT_WRITE | PROT_EXEC,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr2, MAP_FAILED);
+> +	ptr3 = mmap(&carveout[page_size * 11], 5 * page_size, PROT_READ,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr3, MAP_FAILED);
+> +
+> +	/*
+> +	 * mseal the second VMA:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RW     |    RWES   |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 */
+> +	ASSERT_EQ(sys_mseal(ptr2, 5 * page_size, 0), 0);
+> +
+> +	/* Make first VMA mergeable upon mseal. */
+> +	ASSERT_EQ(mprotect(ptr, 5 * page_size,
+> +			   PROT_READ | PROT_WRITE | PROT_EXEC), 0);
+> +	/*
+> +	 * At this point we have:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RWE    |    RWES   |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 *
+> +	 * Now mseal all of the VMAs.
+> +	 */
+> +	ASSERT_EQ(sys_mseal(ptr, 15 * page_size, 0), 0);
+> +
+> +	/*
+> +	 * We should end up with:
+> +	 *
+> +	 * |-----------------------|-----------|
+> +	 * |          RWES         |    ROS    |
+> +	 * |-----------------------|-----------|
+> +	 *            ptr               ptr3
+> +	 */
+> +	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
+> +	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
+> +	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
+> +}
 
+Apart from these nits, the test LGTM
 
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+
+-- 
+Pedro
 
