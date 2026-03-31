@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75982FF60F4
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7097B10F92E9
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8EA16B008C; Tue, 31 Mar 2026 14:34:08 -0400 (EDT)
+	id C2E976B0095; Tue, 31 Mar 2026 14:34:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65CC6B0095; Tue, 31 Mar 2026 14:34:08 -0400 (EDT)
+	id BDF566B0096; Tue, 31 Mar 2026 14:34:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA2F16B0096; Tue, 31 Mar 2026 14:34:08 -0400 (EDT)
+	id 995F36B0098; Tue, 31 Mar 2026 14:34:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC46F6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 77B511B7728
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:08 +0000 (UTC)
-X-FDA: 84607207776.16.D8EEDBF
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AEAAD12000C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D3+H70NV;
-	spf=pass (imf29.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D3+H70NV;
-	spf=pass (imf29.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774982046; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 85E756B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4121A160340
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:09 +0000 (UTC)
+X-FDA: 84607207818.03.C48F57E
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5E62514000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OWu+Gak5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774982047; a=rsa-sha256;
 	cv=none;
-	b=cI1Y/N7JdqiNKewLawkgWkUBluIgnXJjChtXZHi2fi3oIJiZFgEDdsv7O6pfky2eMqGfD4
-	OKuLKI3LuBKcuFgK0uqLy9AFJ3ArqPHQpxVfhoQwYEDUEvo1g0nX8xUclrp7sEuz5/FghL
-	H3LAf/f30NlB1tCQLNb0BR4InE+6Kq4=
+	b=tvlCEp8mLxE3r37oovoCZt1t4UmOZpt36B9F9E6jpVkVe2OxRQ677xbsljDynk9SUU9/H/
+	Tto/vpixYW+d/Vd3w168wWHbqOkl/KJWjVSHV/ACV9YCEantufvjnh9pvfINYap8u0eWHW
+	4deQ6vzx4nkVBgUq3z9r9toE3QoF9nw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OWu+Gak5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774982046;
+	s=arc-20220608; t=1774982047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pi+/aLk98y1Fjh0c3aLsh+cUIgd41dFwurTnFFIPGd4=;
-	b=IkK/s7CdOPz6uZSOUhxU02PxEkT6Ed6V9R3Q4dZuESkdTrzfNPIPeNtYCj6w4mKNz7W+0o
-	L+vptlyv+RN2dUgfRsGw/9xE+rW5rrP+4VKHVuqi1cQBDrhkvhmotDgql8VumAqLUKJ+S7
-	W3CGQg1aj1khjYTFCkGyzpWyYyFGzWY=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12a74039dc6so4855409c88.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:06 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8Z9k6IBVmnZKroX7/272gWXi20ZJmLT8jW6F8/KWzUQ=;
+	b=M8EpTCkBct7+zhwPSVruGJc3MhSxCzmjmz2AGznp3o1QJBjBW4zztVE2pnXkmJvGSVzWcH
+	Du0AvxNKTU2xfQyaNNNxwGYrrye081MGhZFcxE3UafHFYIXWj0WmxMGjR1iFksYnkHFNfE
+	ot06WG06cwvse+tFnATZjPSKhYB+VaM=
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-127380532eeso1299630c88.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774982045; x=1775586845; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pi+/aLk98y1Fjh0c3aLsh+cUIgd41dFwurTnFFIPGd4=;
-        b=D3+H70NVbelhTACa+XvzzJHFeETiPFrGjhu2FukxStxXCzYRFfxjquyhmycQ5nMm0E
-         7fMzJZB+Qmd7jxqViQ5PQwDQaR/xs/zgD8wXcUjAnJZnHqjZVwAQiJhyBN6ahGsjEY2k
-         2J8SVNy/9hBBhmDAvMxtOsdEORrolZwpiVUsZ4azsOfBbffs8c/oOwFlDwz5xYcWF1xW
-         KbNNd06S2pNqyIcCcdfaw/vTj8PIf4j5SzTRzcxzUa0VNKaM8EzIAhDqY2gVn8NYRzEG
-         SVBTmhSZxWI8JC9zRXglC2NJ1Xy6aqgyFSfjJ+YFT4kFYOaLAkR1NJS5CkDbFmUY9tSx
-         clRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774982045; x=1775586845;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774982046; x=1775586846; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pi+/aLk98y1Fjh0c3aLsh+cUIgd41dFwurTnFFIPGd4=;
-        b=Dc18YmVEIViOECBOnstkX2P7/4ALbOa8ZGr3A4DzbrCdtvaafY6vxsyxXVOzy52A60
-         NVua2yokmi//ZZiyIhg+QUTmZ+BJf1zh+82f3HPn2zfkeJdoVh3OM730VAbpWf2gA3VF
-         rWM/w6FXBTddwPx8PDIBabVozBeV8Y6YKqLXEkl8Dl6OuDQ57PEUEU+tXQbJuRUSDiEs
-         2OjzlbBxk9Rm2AKSo4/UdJ2Ppn8qH5FOaog2BR9t5VOgPd7GK2cDPWNR3+rzcZF15St9
-         wwoKaC+6T0WrkHfimK8nmprQA/q/6wGWOSnyEOw1nlr3P9YQkdd4XyeStDVqB1wET0mD
-         fx+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXCbK+eR3UiLfnWolfPiHonIxoIyn5u8I3lN05prQwNkjc+aoJmaQtg0z+VZXL+EHXs6Z8SBOgCbw==@kvack.org
-X-Gm-Message-State: AOJu0YxH4KurVy4PK7ijaFxGselFpZ7mNa3DEh1V6MMygFvIdk3Yq7C0
-	ZXs+h5u6VQMslyDWcG5HF+qMeiDJy1agXka++BTg70WSAqtKHkJ0t2pv
-X-Gm-Gg: ATEYQzxRcTFk3oe7AhEtPyQwPSiHqgae5PxZCLAMRL2IhOT403PGMksWXe2l3DsxVya
-	7ERJxhIJMN18f9oZ4/EYnAn7s8vvym/HaDHNFr7XcqPlNue4SfFhDAtzt0r3Z3OBaEcE22On39X
-	8OJ4WY2oO1TQxkwVdb6ABNbfjV/1uqcxxK3eUv+C4N1EVxWUdbFDcwUKc+QAbhp92JhHM9NyQsJ
-	ZDCcPmszqvod9W+FHisEZjpwCxyey1s00FBxwVFKMHjTLbgHYxiP26DxEF4bivXoYsJvwVhLe71
-	vk8D4lRu4P8yUsp2+gjAdiN9fQHpQ/aoxEtPspY45pOnDQgGA9dqaDvsnHHIE/GNZTWc4jo+85Z
-	U5v82tI6VZrgAmayP6ZWvP8p+qA+t7LFsOQv5aK4dElYVRv8nn7SA3kWm1zaNyv0QkOyF/VbDXX
-	jr2mBMPeC/u44Ew6Dl5H60S3piAaMi3fpKf5Xi3w==
-X-Received: by 2002:a05:7022:11c:b0:128:d39a:b141 with SMTP id a92af1059eb24-12be655e029mr334634c88.17.1774982045167;
-        Tue, 31 Mar 2026 11:34:05 -0700 (PDT)
+        bh=8Z9k6IBVmnZKroX7/272gWXi20ZJmLT8jW6F8/KWzUQ=;
+        b=OWu+Gak57Ps0qhSPCByeH/aPwlo+kb0SSFevWfoAMZ/89F3tMEoQgToiYlNHGq4Ps7
+         ChJD2zK+a9nW5UVkfty54bIS2z+7/0D9fMrwRG67SamvajkPpAPIPXq2XBfS+lGugsau
+         RcWC7ju/Sb0vRfPvsKRPdwT6+/GLcdYA689kbsqZyYqXFtTPz6CodEexEnYDloi6To0K
+         DDJV/ZYu0zgrBTEEh4Yt5KRo/CznQRGyEb8rFy3v/ynUmkTc/ul7kX63Yx3aUcop4mUt
+         XeNCWwVopKX9ZWkrutTo+9do4uAlyPTM79wLl7w7OvpI3e7y9QPPskviDPLi3+zQ8qm6
+         HbHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774982046; x=1775586846;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8Z9k6IBVmnZKroX7/272gWXi20ZJmLT8jW6F8/KWzUQ=;
+        b=fuD5vCjU/W2iirnqs7aoGfATTxKi3u/8skf7+Plk5+5COAbzv5hUj71vPiiz2IvVVY
+         D5znx0fFeMI+GDzDLbCsHxHHCgFPJdmfQozoORlLK0hjCCrGZvtYiw/ZSdZzTA9PW5jv
+         +YEqd62rcqMIOz/NcM6wKHysTPvqsRknK6YqB2l7wTeYAp6Ry4ByipGJz8u1J7aCg34v
+         PB1+a9qiOYLTmE1sSx2HfnVzRjInM1x3KUpfaMuNdvyyPTqAK8djlXPQgtna7dcbiLh5
+         LCsNp8sGO5XxaOqEx0Nk61OzmvAIPleJDj70U5SfcjbLWAyF41dxpnV45o22Xt3t7cDy
+         1sIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSuKYQgFsxLIMx/qqeU0FnbtAHy2C83vksE1HMyvT0lwa0jrj9LeUyaNt3Vwfp9V/O/Ix/R940Og==@kvack.org
+X-Gm-Message-State: AOJu0Yxe7SQ2A3GzEeV0SXk5+kr7zZHMgVtxhIlj1eC/YQW9EbRhvoJO
+	20jqgDsq/N/KdFM8hGbJIAXlKb3wqvBZUYvX07dGgne8/hxXA3xV1rch
+X-Gm-Gg: ATEYQzxlyLcYEJs5SWARsGDVW1hpHg+lUfyx+c4Qz60ZSqBcjpH4wtiLZh9uvH1vR5g
+	2ROyTnsUvF1PJP1WZ8feCsqR5+OHoGB7/5/KK/IfHMsJmD6cUefo82N+K4qva53FPxHoSe6epV1
+	KKTVvrro/Vkdq2lZ3gNaFsst0vaw0lT+n+uzX25AC3nwxp+UNiNPRel9asOt1kHpOo7Z97/Bt4c
+	Va6ie4Qus6cTXvBxQffXClA6/WydunQVWYG79smo/qkC8cxisgIfjc3Q/FxMRnBAixviSsH2ey0
+	ENvgaMmiI3Z8dzTa8dlbdfC2T5HHAVsyrcr78ftQCtDaJ/Fluo/En5zvT7Feirmna5s8e02E4SL
+	oNNxdw9NNHciucGp++vwLyc2GAemrbyshsnmiRKg2pd3LuMs6rchp9ZUQo6khOeVj0P5x5oDSiJ
+	zbIo2OfJ7DByC03b2PdlK0KsLq3A++MxryBAEcEnclvbCCsrgl
+X-Received: by 2002:a05:7022:f697:b0:128:cedb:33ba with SMTP id a92af1059eb24-12be645523dmr398491c88.10.1774982046018;
+        Tue, 31 Mar 2026 11:34:06 -0700 (PDT)
 Received: from penguin.lxd ([2601:647:6400:3ec0:216:3eff:fecd:e4ef])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ac4a0fa8dsm7961271c88.15.2026.03.31.11.34.04
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ac4a0fa8dsm7961271c88.15.2026.03.31.11.34.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 11:34:04 -0700 (PDT)
+        Tue, 31 Mar 2026 11:34:05 -0700 (PDT)
 From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
 To: hannes@cmpxchg.org,
 	yosry@kernel.org,
@@ -100,20 +101,22 @@ To: hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org
 Cc: herbert@gondor.apana.org.au,
 	senozhatsky@chromium.org
-Subject: [PATCH v3 0/2] zswap pool per-CPU acomp_ctx simplifications
-Date: Tue, 31 Mar 2026 11:33:49 -0700
-Message-Id: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
+Subject: [PATCH v3 1/2] mm: zswap: Remove redundant checks in zswap_cpu_comp_dead().
+Date: Tue, 31 Mar 2026 11:33:50 -0700
+Message-Id: <20260331183351.29844-2-kanchanapsridhar2026@gmail.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
+References: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AEAAD12000C
-X-Stat-Signature: hufo5rstpu1w6pdujbs7gtzw4c9yuz61
+X-Stat-Signature: 91mcct9uifutkhy733m69or43hp6etfp
+X-Rspamd-Queue-Id: 5E62514000E
 X-Rspam-User: 
-X-HE-Tag: 1774982046-440294
-X-HE-Meta: U2FsdGVkX19XoyNC7G8g9Td9GX4854YBN98zHvFtJMBsBUgrQmhHyLMSyjJQFOrTQGBLLOuyM7FzQNnxIl4Q+qcoPn4+tkuY4V68O9hJFjWPWP2bsxGqwHPeRxMbmbMxE1r5kfeCkUL7uq7BqKhmaLdF+Zig5FVyZqjxS7symaOvS5xuuq0xQMqs5pilHvNwXe3kkfTYoeCzGKIaCO973uwu/iYF7t9scuDUgEuIVJkDuiL0DnRfQWgvh1EuiyiTt7ZFusXteUWVptuu5e0b+XYh1fwAbknTZDC1kw1kTNf3DKHEcKYNJHae/DvIUpgmN+N23/rwJ0w8pN2Y3JG4q68bpvpxevkMZYnWOB9AlqYIwLxIFCQ5rC+Fsh0Jh4z9w86X4ZNf9vtecJ0ZcEo9K67+yrEouQ60XvBlo6HdWjwKS8Jcq7nlUygm4j95jTPIBazT4L7eqfKg/H5SOOr7vdmvQQsIQm+4vf4rcYkDU1aAXNbFaDybNrO9JRp1I+EkBfFuisT/8e5H8RUYDQnZu+RXl8liaPgz4tBBELOSOmxBtGY6raYIpPQ3MHEjK8w2aJRMwD/xhSn9XDUhScGXrgWDLt4BzSJvbk9y1WEXcHcXJRhRkeTKT3BBg6hNeNDDGZxRZgJ8OmODuLagPR+m6QQ+pWEdzDmy+2HYtOPdzPuoNaifQoHkWRuTbTIMCg0Qzt68cq4G9jE7T4CWG7upzCBTIsBnzp5m+aLy252l4tFiYBtksugwptlAnyMXXa8jj5l9qfYCXfqRC0CnoX3cioFIHKC3RMO0snwhWeVmRdtiCQKSHE1i6mtY/NX7d/HXfqx9wDaRyPU0aOXaS3xjD+TrrQIIaspUNO1o505yPThv2ABz2/GYaqqPqEzi+2uOvbhh8Z/U77vflNs0JPpSLVbi9Ws6XN95D+Kp3oE/0xYftfMtvI4sCG7ZzXkUHMOIxt7kRXIa/tqVr/ZPmC0
- N4WXd2b3
- ptw2xNunIxMrrrQ0NPWH6gG3wr8pyxWAD9gOP65k00m8ju3KHrSnRHV0sPLzAUu3lbFQ3x+UF7loOZlzidYjL1OoN5CK1v3D+qBBWphFWk3lXAbp10P5f+ZfZK1Aq6vt6tw40862oSfnvzFeRFR3plBogVD83A2qK2KPlPOCN9GAU6cAYXcgIk5TDzWl2WVo84jdwOTYrxMBxzR+G+ZWkWLnpvNUPB8pGLzRZGh+1TJREoEUixU45BPNOTf0DOTTzcn1jWv92gmNcsspSuo+X7De/NufRUoTUtppG4hoiGHWF1qBVJe3ASaEn8Obah+ldLgiVgRiw75UMLbwUx4CLzQB8spemrWn31grXU1hUX1JZYwAUkgpmaHu6QDnvaACLUyFtiUwiXX71D2JTG/PUd04pECjGIY01Em/IHHgzVu1yvqQ12Rf2Y9HM+FjROdjSHR/MgZ6vUEfVX/IQ6NvXiXwj4sksV+kYGcUn+8qFBxqh2HjIMuyf9bMPcA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774982047-750035
+X-HE-Meta: U2FsdGVkX19HRNNyhdxuyXODeSnRFoQZUpIAIASsiPQc5WDD7F6hvg0HtInxAlVaDzFs+ci68zVJWhxcWjFkBWL6GGPxpqmy+Xh7Oa1hWIBOSjAsdbWYwj8fprC5DTj5xPPY8xthRfYBj8dNHvtbVwDrJu2aSNITSpjAacaWhV+AImLiihWAuDTUCjEy8DgQi1vLW0zwxVP8eR0yA+Hz8Ip7ZW5658vS4+OqWo0XBg7eBTpkDLG6Weq2QZnYgWvstrUqneH9E2iGMhXkASNkuv5AOX1HsYny78maJwa1K+jZEDoUkb3radGkPJFbRi3Uwb8lJT+dBydu0DoqPZrDE8iM6AqbGjcYpe6MGU7kPjqe758Caf5sstwksYhuDHN9958F2tOB8BdLRIKJpMSIAaAnm8JgDUR1ibGQLkVQT1oSOv45gAeEma4PYnoyeP324dadMyhO+5YQD9n9y4yd6JVCCWGh7RJfAOMVcMLkHt0NPKKp16q/yGyqdoHxiEhea9I6ym4PcDdWwpOcval2V4xbgK5OMNIpy3prtnzBRpXCxGZhLqw6tzrVRBmG6jnp1lkCKCZRjrK7kyq/B4fEkdyg3KVyoqNR/GbBFxIuRMdBNLoSks3BcDne1ia1HOCdEnQb7DZ6lmiQ3mS0OT51OIv74pgTQ2+Qq8+Fcc4PXEU0qm2Nw1pe9fgMUgcdyrnZDGqq6G5Msac+vQr91++AlBKL8hbyhU9frCTGMfoimoRni+LCdLwSQeFtid23/tx80cw22ijjzq0mn/LusJQbhnLHYHBxAfpMIY+xjcrHID3r9uf+J+zb+sAFRxLiOajjf9iCLlJNTC36SLb/5Ha1T/otVN7/fmLEAIbVY7ok3vuHkk168MD6SQoRnzhg6i5ZtsyPN8MVjKxMh8NJ+srNNirMVAz5SUb81FKiHmiUQ9vz50d+ZR8wHg8hDAc8+Xsf0A3z6O70raU0aVRlYMm
+ 38XEOlRZ
+ DKs2PC4oWL2CDhk5tzbxQ7TeuHe5YKVNRQr/Upy34MrIiVoKPk54WcOJ1dqLT5WvxrDuP4Qj/AnU4+6mm5ZmOMV4X9/RpyZCUfTPCM7RPJWLpaKuGTeECoKn2XU7onA2q1UiHTNIV7LE8KhsgS8TSHjIQAj++K8nnuoX7vE/XdL4h1ovpmOM/ImiWj9b+vAOW6jAsPL0V5wH0OiAITw37xq67sCCfxatMcgl6CBF27+NGLFRkJr1Kho61qDuoNyftbE13a1UFvnRkv6iVVg4xouSZ9+Sr7qBRU48aS/trNClqNvPeqXAvS51qeLZlUaM7LfI8Ves2nC+RvuAtkbyO98mW+vgJNUcI64VOfWvYjEERvV/J5nNocWJfNvoXMj54gRhb0PL4K4JswRNhHdpdbOUHBh7zkWoTra2UYJncoHAq0SdRCTwICzjGQLE4zqYSaxj/k2ZlfSXSfCAkZvrKgZ9sn3ydEpfSweYmfUjgzWVIZfc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,45 +124,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patchset first removes redundant checks on the acomp_ctx and its
-"req" member in zswap_cpu_comp_dead().
+There are presently redundant checks on the per-CPU acomp_ctx and it's
+"req" member in zswap_cpu_comp_dead(): redundant because they are
+inconsistent with zswap_pool_create() handling of failure in allocating
+the acomp_ctx, and with the expected NULL return value from the
+acomp_request_alloc() API when it fails to allocate an acomp_req.
 
-Next, it persists the zswap pool's per-CPU acomp_ctx resources to
-last until the pool is destroyed. It then simplifies the per-CPU
-acomp_ctx mutex locking in zswap_compress()/zswap_decompress().
+Fix these by converting to them to be NULL checks.
 
-Code comments added after allocation and before checking to deallocate
-the per-CPU acomp_ctx's members, based on expected crypto API return
-values and zswap changes this patchset makes.
+Add comments in zswap_cpu_comp_prepare() clarifying the expected return
+values of the crypto_alloc_acomp_node() and acomp_request_alloc() API.
 
-Patch 2 is an independent submission of patch 23 from [1], to
-facilitate merging.
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+---
+ mm/zswap.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-[1]: https://patchwork.kernel.org/project/linux-mm/list/?series=1046677
-
-Changes since v2:
-=================
-1) Rebased to mm-unstable as of 3-31-2026 (commit 24e341657c28).
-2) Collected Acks.
-
-Changes since v1:
-=================
-1) Made the changes to eliminate redundant checks on
-   acomp_ctx/acomp_ctx->req in zswap_cpu_comp_dead(), per Yosry.
-2) Renamed acomp_ctx_dealloc() to acomp_ctx_free(), per Yosry.
-3) Incorporated suggestions from Yosry and Sashiko to reset the
-   acomp_ctx's members to NULL after freeing them, to prevent UAF and
-   double free issues.
-4) Replaced v1's patch 2 with v2's patch 1.
-
-
-Kanchana P. Sridhar (2):
-  mm: zswap: Remove redundant checks in zswap_cpu_comp_dead().
-  mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-
- mm/zswap.c | 182 +++++++++++++++++++++++++----------------------------
- 1 file changed, 85 insertions(+), 97 deletions(-)
-
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 4f2e652e8ad3..c59045b59ffe 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -749,6 +749,10 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		goto fail;
+ 	}
+ 
++	/*
++	 * In case of an error, crypto_alloc_acomp_node() returns an
++	 * error pointer, never NULL.
++	 */
+ 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+ 	if (IS_ERR(acomp)) {
+ 		pr_err("could not alloc crypto acomp %s : %pe\n",
+@@ -757,6 +761,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		goto fail;
+ 	}
+ 
++	/* acomp_request_alloc() returns NULL in case of an error. */
+ 	req = acomp_request_alloc(acomp);
+ 	if (!req) {
+ 		pr_err("could not alloc crypto acomp_request %s\n",
+@@ -802,7 +807,7 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+ 	struct crypto_acomp *acomp;
+ 	u8 *buffer;
+ 
+-	if (IS_ERR_OR_NULL(acomp_ctx))
++	if (!acomp_ctx)
+ 		return 0;
+ 
+ 	mutex_lock(&acomp_ctx->mutex);
+@@ -817,8 +822,11 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+ 	/*
+ 	 * Do the actual freeing after releasing the mutex to avoid subtle
+ 	 * locking dependencies causing deadlocks.
++	 *
++	 * If there was an error in allocating @acomp_ctx->req, it
++	 * would be set to NULL.
+ 	 */
+-	if (!IS_ERR_OR_NULL(req))
++	if (req)
+ 		acomp_request_free(req);
+ 	if (!IS_ERR_OR_NULL(acomp))
+ 		crypto_free_acomp(acomp);
 -- 
 2.39.5
 
