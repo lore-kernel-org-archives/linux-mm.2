@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE48FF60EE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AD8FF60F9
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96DE76B008C; Tue, 31 Mar 2026 05:24:49 -0400 (EDT)
+	id 071196B008C; Tue, 31 Mar 2026 05:27:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945C06B0095; Tue, 31 Mar 2026 05:24:49 -0400 (EDT)
+	id 021F96B0095; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 882C56B0096; Tue, 31 Mar 2026 05:24:49 -0400 (EDT)
+	id EA16D6B0096; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 757846B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:24:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E1A5140C2A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:24:49 +0000 (UTC)
-X-FDA: 84605823498.04.0A675A0
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 598EE100002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:24:45 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=skUgykUF;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D7C9C6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BE83BBC4A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:27:46 +0000 (UTC)
+X-FDA: 84605830932.14.C0983D1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 61BF4180011
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:27:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e6DcgIwU;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774949087;
+	s=arc-20220608; t=1774949264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H4lt0+h7SS3ec9sDgVEZvfQciy8Kbtp9kBHjHsNR7ik=;
-	b=ugDo9OjKhIcEsQTfanwVZ5R/RXy1t8C5XIvKlrLGBPbd6a717ivxpOVE7sgVdaAMNOmH5u
-	kPGH/ZJt7oOFtO1BVE8MiEJCVQRBCqS2ntCDnYTwIJJ0epKBs0rd4TBBPHm97K2/sEwHhQ
-	XvygCiUc/0hOwLvz/UUqDhd6lG6d3jI=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=cqrHbLvMINXpjDcfcVaDnrsqPLiAW5xmVuWZWarPWsY=;
+	b=G/MPDeAf8xPR7s8lZS/wq39KZs7XI89P29sofDDnuIKmx8A9mFEGQbQXMUZAqMeYEeDXji
+	zdd4LOV2felA8szl3uHY0IW5GFS3dx7x0kwgx2kxD35KYzimZ/vgpLH1oTEf/5XBo5dsgp
+	/z5DKNvGR1AG7RGZOV/U/hVqwm49Xa8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=skUgykUF;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949087; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=e6DcgIwU;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949264; a=rsa-sha256;
 	cv=none;
-	b=rJTCywiLUNUrQFcd/doEsCzmRHl7esmy49/48iOm6Aj4xZds5KiIVXOicfrQ37P4gtNDDj
-	OdKOGYW82erU1Gz34n9q+lrDX1CDXRGT1ZOySSge3mzenQOEokYb1Hb+eaFBJvHYDmx/sZ
-	HTw6/qqyXJYsZvI7Sp44tTynd73wQag=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774949082; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=H4lt0+h7SS3ec9sDgVEZvfQciy8Kbtp9kBHjHsNR7ik=;
-	b=skUgykUFH9+WXWkRLGh0NbtTVQJRz8NE45RipgsYYx/OhmD6WhfJrf65uCdbs4E2VU4JGm622LOHfPJWlaJJm8D8FIdGlNozeeBQGsYrKCjT0axLbAB5j+Gx16mzSnYu09mPDWVErp78x0Ziar7zWIIBeD0wj1NanDuENQOkNbA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X03xUAI_1774949080;
-Received: from 30.74.144.129(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X03xUAI_1774949080 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 31 Mar 2026 17:24:41 +0800
-Message-ID: <052ae271-509c-42c3-877e-ac8822b314e5@linux.alibaba.com>
-Date: Tue, 31 Mar 2026 17:24:39 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic and
- throttling
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 598EE100002
-X-Stat-Signature: gxyzhzx6u6ddafiudxjxihbx4kjhiwuu
+	b=xT/GDxiGBmP9WMXqyMO/NUjwsbjMX971kyRHl0k7fAqy9wTT+iEDc4DjLOCzHqofDXnOUx
+	ZpylBKrXOVNmcU2+2XXLzqPaepXuNKMrKUfzYq4dVBU17tFCvwKgGUSqWbKXTlmcr+8IGS
+	EtEzBV26VQRqRMOnOGIDT3bXoIm0aUc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774949264; x=1806485264;
+  h=date:from:to:cc:subject:message-id;
+  bh=WDiiMJa3TfFF+i8iHPr7Qv/bRTJnJrs0R3RCW+c5Sso=;
+  b=e6DcgIwU5XC7c4vlbw9l4fiNcmZUsRAJo2U31+78Z8WMN3JuljtcXl3B
+   CZM7UeD9VZ3ieTi+IicdmLpl6wZt1LLhwEIHY9c83FrGtX5EW5HoG4Gyc
+   s5YWidGiCfx88L4E9sY0y6kyMqo1Ycm2EhAgURPu5O3S5NwezWuyuhH1I
+   bRvNZz3yulPjC0cwC0fcHeHlw3C8sLYKsNNRNz+dXH0UjdtjwWXUBK4fL
+   9h9si9PxUAbFsgjGXz3IQWev8acELhCWQMW6bdg7s+bJIhg5x48LWKLGs
+   LYbK306y17rbIEFk5xxDpgC/dUFWyLBrbJC1BRolHEDUdN1riNHU+PWmw
+   A==;
+X-CSE-ConnectionGUID: Q1229eORRQWW0KaH6IGUYw==
+X-CSE-MsgGUID: +8+t3xicRceBrbzD8jDuVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="63509028"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="63509028"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 02:27:42 -0700
+X-CSE-ConnectionGUID: VMVsWeLNSCO74nzLjjOsbg==
+X-CSE-MsgGUID: ogdCg1EqT1Cd7KGyOi/Ycg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="227920969"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa004.fm.intel.com with ESMTP; 31 Mar 2026 02:27:41 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7VNr-000000008LJ-0hfE;
+	Tue, 31 Mar 2026 09:27:39 +0000
+Date: Tue, 31 Mar 2026 11:27:20 +0200
+From: kernel test robot <lkp@intel.com>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-unstable 121/130]
+ tools/testing/selftests/kselftest.h:427:13: error: implicit declaration of
+ function 'vasprintf'; did you mean 'vsprintf'?
+Message-ID: <202603311105.ysUeYPSZ-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1774949085-256226
-X-HE-Meta: U2FsdGVkX1/p/lxKIN7OFZf98TOg5zipB2V9kO72Xt4sUy01RjOmGE6jwHvzL+46fI4lt72yBdmrv2+0qsyeAqPlWANYKV/Rf6708TRgh4T6rsE3wKg468wreV+1RLmVkJEVSFqyWg1iCEsaunzMsWOsLkNSe54QpYRnrXRwvvZ/I2CFiCmqr4KmQ9cBsW5LfGATUqGF9AgLW583D6KX3DPAfSTk6GQ/h9vza9Xf7T1mkrpeQ4hcj/6XyvpCe7/DKbIa33ityHIgPMUL84eyVAXw5eXlfS+R6t03nYuWQWpjD7V6Yh+dBpAGNhGZZPztrlUZ+ajYMivhJeqAI8NktteUn1Jkcnmy548/RcfH/i+4HMtBspTCJfJVQ0WnPpro0FiROYAsiJS5XeC3+8zQBuxV9hLu2a4wtOQfEuhCK4Q6BXwCFcQXv49nHSyqsf0NeQBnnBnfwn+9Devgb6QOW1tJGvPLCYYqfQ50GS+QlLspYpuGS4M0DlnWEyNrk0/QzXTvEx9Nw8L2CVcDRx/iigoSMp9TggNmWVTOlGloxo5i4Bixcd1Q9FsS85WN9qrJyLjH5edR/R3Zcv8/DH/+RKgEiJgtIHkkcLV5JCc8bL19ZYmCB/UWs4oOGW96bqAVNudvpJT70wTTapspWcR6Orf8SQW9/mM9nSmbydgISs5TTKEuLLVKYwWFJSXGU7bvYUDVtES1+ccE5oyYXFH0cLuTXi0+kVheVpA9D/yeLua6usjuM7kq6RAsH+7ecO2BcfO2ilnlGENgbFL2AXKIio/30jx3rAOPHGHRjoI8mX5LtIONtyHVt2qRriZnzYKQ7qsW+GajEVQob7C9YdEjUoKosS1IEEaQ4XguXyBSCuB3VPyjitutS92H2q4vd12+uC60Hi/HlSiQr7VYfmx18Yt3pg8EIsXvM2wA+BL2jPTCAF2prI9E5YbWBq/Jpen18XTpEV1O5VAp1fzoEel
- 74496a97
- bV2cgdlYmCAC7JqRH8zz4kT9I5hnfoecQgCjEXewkhz99IDjVdg5rh86wEs8u3Q5bUNb8mU8+Y/Cs3Yf2V+2bdOgWwq767Lwfvk7EumcJd4sNzKOSkVjecXrRIEdle+T2tZSKi76+kulMU75FLo5uaftQyXaz1fgNA3cNoV3Z4XxCnUn5aN0kX/uH3GZGKEHK70Cl0FzTowm82mIcFR7jCRXOFjr7ysZWBsE1O39uEHySQfthlCdsMLpqKXLhwt6P/sTbF2zdzfcn6p2D5hPWrQOrxRDl7qdtURHExiEgEUQLlZkBEhC/YZrzDh47xCn/kt4GnFEknSsQy9uR2ThF/h5RapgEOHeKEITvkauRonL4N7thA8t6SBNXUa584TxCKqBDPfujILQWKyZSwMC+9H4xHigpj+tOH4EYuvyOHmdh1fZN3rVGqWlf1A==
+X-Stat-Signature: s7o9sn5eucjqzgf59ejeqhhrhgwc9ujs
+X-Rspamd-Queue-Id: 61BF4180011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774949263-404691
+X-HE-Meta: U2FsdGVkX18w+CerVwBsxSElSYVAIfQBHH+L3fL99DlJNbymjul74fB6u/z/J/4mOiWDAfKwNppg6TcEivwmAsdj2zbgejf8tLfJlPH4Y3tDMD0JjO3iEoEJqaL4geoLp2sGb5mqq35a9AE4qY5kLb+jpqOFhlmWwyijPp6UQITSqu75hTIzWFBh8BSPiEycnWNej1B2cPoIIXgGEZpYnsSexe66Tzs25PE3cEV84XSfM89UCrwIcZFJ4Htfajd8eBMzQruVyBWjydvbNnRM/HQxGrBx0nmAURq9wSiL0VWyhsUzdJBR1gOfGXa3cR2GJePQOg410ZeBMQj1y7A2O9O+QUqZSJIHSvLweKUzHUnnHqfpNtcfBIeliwQYL720RP+8Fx5w/GhulQraj/WA4aAdRcVRTlp7Myc+iCVwVqtM2dbXEBFOx1pd2tw9By5MvyiW66dqhWEr9WCcwtd5kIwcIlA96dDxD1sThMoMAtoAYP5HuCoVUAvasX0wRbpk5FVrMvmhwo/89Sx1Bu0h1NwBV4HDlhrV2vEfR9ywvt9T9BBDQlmghkznUEppZm7x7lXlLNruq/iyRHPWazQovzuaAGhTjsH/xE6d6jLjR6+lktme0HZGV7oxmfRLn0PLw+zUaVDOtUqsPKR/hgUfhhId01pgePeD5/h1qdVAEY1DTOQCZDNREG+J3I8XmBYnwHcrenLac3GqwecOPjAVDQ0HA4PeYcp88UdOZlMGdk8YmeZ1Xy0aavisihNUgVHKp1Y9+jcc5h5D/SO+NCURxygUaX4ckGCnYYlArCH646R1ECf0tQRGwpfPs+AHn7wx/t+91XIt80TsoLqR4wPNzY0Vflqud0GSxgMkihBaIH4slpQ2a2XndUi7jDDw5Hcje5S3Vpfy9ZPgEw2pgvDp9wT336nGmzNEKJtVKWdYI5upH1sQPYpXMUFWh/lz8HoJ/fCGYbQTCBqOkFXODso
+ BUq2/Kqc
+ 5jas064XS5q/ZV8tDUcrvS7M6Ysbe/Z5VU3BCljtFWtzUmnygsPiG38yzYcmToF3vAISDYJFBBeRekJSvGzC5PKchgIYQSOpMzI/dTlwMvaCQtfkUMzNTwu/eSRLSc9LmSOhpwoR8c3/8CnEXtM2MWX38+Kv6kwpuBxvcXdH4jRyeJ8En20GjqQdHdRDEXLYuKCe4KdCyS3I3ZYlYF6N34hOuXEJM0OdFJo8iJeCqenGqTr0D4yQNL5/QW3ILLKTcOy04ebgP2ZwUXAtOKChtX0M+BnCYdoPmMbnI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,154 +103,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   24e341657c283c965e3bfee0baa9ed0376127973
+commit: cc0b04b10a7b98fd8df2fd539177e94e0f83a5c3 [121/130] selftests: ksft_exit_fail_perror: support printf style arguments
+config: arm64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260331/202603311105.ysUeYPSZ-lkp@intel.com/config)
+compiler: aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603311105.ysUeYPSZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603311105.ysUeYPSZ-lkp@intel.com/
+
+Note: the akpm-mm/mm-unstable HEAD 24e341657c283c965e3bfee0baa9ed0376127973 builds fine.
+      It only hurts bisectability.
+
+All errors (new ones prefixed by >>):
+
+   In file included from za-fork.c:12:
+   ../../kselftest.h: In function 'ksft_exit_fail_perror':
+>> ../../kselftest.h:427:13: error: implicit declaration of function 'vasprintf'; did you mean 'vsprintf'? [-Wimplicit-function-declaration]
+     427 |         if (vasprintf(&buf, msg, args) == -1) {
+         |             ^~~~~~~~~
+         |             vsprintf
+--
+   In file included from basic-gcs.c:16:
+   tools/testing/selftests/kselftest.h: In function 'ksft_exit_fail_perror':
+>> tools/testing/selftests/kselftest.h:427:13: error: implicit declaration of function 'vasprintf'; did you mean 'vsprintf'? [-Wimplicit-function-declaration]
+     427 |         if (vasprintf(&buf, msg, args) == -1) {
+         |             ^~~~~~~~~
+         |             vsprintf
 
 
-On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Currently MGLRU and non-MGLRU handle the reclaim statistic and
-> writeback handling very differently, especially throttling.
-> Basically MGLRU just ignored the throttling part.
-> 
-> Let's just unify this part, use a helper to deduplicate the code
-> so both setups will share the same behavior. Also remove the
-> folio_clear_reclaim in isolate_folio which was actively invalidating
-> the congestion control. PG_reclaim is now handled by shrink_folio_list,
-> keeping it in isolate_folio is not helpful.
-> 
-> Test using following reproducer using bash:
-> 
->    echo "Setup a slow device using dm delay"
->    dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
->    LOOP=$(losetup --show -f /var/tmp/backing)
->    mkfs.ext4 -q $LOOP
->    echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
->        dmsetup create slow_dev
->    mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
-> 
->    echo "Start writeback pressure"
->    sync && echo 3 > /proc/sys/vm/drop_caches
->    mkdir /sys/fs/cgroup/test_wb
->    echo 128M > /sys/fs/cgroup/test_wb/memory.max
->    (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
->        dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
-> 
->    echo "Clean up"
->    echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
->    dmsetup resume slow_dev
->    umount -l /mnt/slow && sync
->    dmsetup remove slow_dev
-> 
-> Before this commit, `dd` will get OOM killed immediately if
-> MGLRU is enabled. Classic LRU is fine.
-> 
-> After this commit, congestion control is now effective and no more
-> spin on LRU or premature OOM.
-> 
-> Stress test on other workloads also looking good.
-> 
-> Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/vmscan.c | 93 +++++++++++++++++++++++++++----------------------------------
->   1 file changed, 41 insertions(+), 52 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 1783da54ada1..83c8fdf8fdc4 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
->   	return !(current->flags & PF_LOCAL_THROTTLE);
->   }
->   
-> +static void handle_reclaim_writeback(unsigned long nr_taken,
-> +				     struct pglist_data *pgdat,
-> +				     struct scan_control *sc,
-> +				     struct reclaim_stat *stat)
-> +{
-> +	/*
-> +	 * If dirty folios are scanned that are not queued for IO, it
-> +	 * implies that flushers are not doing their job. This can
-> +	 * happen when memory pressure pushes dirty folios to the end of
-> +	 * the LRU before the dirty limits are breached and the dirty
-> +	 * data has expired. It can also happen when the proportion of
-> +	 * dirty folios grows not through writes but through memory
-> +	 * pressure reclaiming all the clean cache. And in some cases,
-> +	 * the flushers simply cannot keep up with the allocation
-> +	 * rate. Nudge the flusher threads in case they are asleep.
-> +	 */
-> +	if (stat->nr_unqueued_dirty == nr_taken && nr_taken) {
-> +		wakeup_flusher_threads(WB_REASON_VMSCAN);
-> +		/*
-> +		 * For cgroupv1 dirty throttling is achieved by waking up
-> +		 * the kernel flusher here and later waiting on folios
-> +		 * which are in writeback to finish (see shrink_folio_list()).
-> +		 *
-> +		 * Flusher may not be able to issue writeback quickly
-> +		 * enough for cgroupv1 writeback throttling to work
-> +		 * on a large system.
-> +		 */
-> +		if (!writeback_throttling_sane(sc))
-> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
-> +	}
-> +
-> +	sc->nr.dirty += stat->nr_dirty;
-> +	sc->nr.congested += stat->nr_congested;
-> +	sc->nr.writeback += stat->nr_writeback;
-> +	sc->nr.immediate += stat->nr_immediate;
-> +	sc->nr.taken += nr_taken;
-> +}
-> +
->   /*
->    * shrink_inactive_list() is a helper for shrink_node().  It returns the number
->    * of reclaimed pages
-> @@ -2005,39 +2043,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->   	lruvec_lock_irq(lruvec);
->   	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
->   					nr_scanned - nr_reclaimed);
-> -
-> -	/*
-> -	 * If dirty folios are scanned that are not queued for IO, it
-> -	 * implies that flushers are not doing their job. This can
-> -	 * happen when memory pressure pushes dirty folios to the end of
-> -	 * the LRU before the dirty limits are breached and the dirty
-> -	 * data has expired. It can also happen when the proportion of
-> -	 * dirty folios grows not through writes but through memory
-> -	 * pressure reclaiming all the clean cache. And in some cases,
-> -	 * the flushers simply cannot keep up with the allocation
-> -	 * rate. Nudge the flusher threads in case they are asleep.
-> -	 */
-> -	if (stat.nr_unqueued_dirty == nr_taken) {
-> -		wakeup_flusher_threads(WB_REASON_VMSCAN);
-> -		/*
-> -		 * For cgroupv1 dirty throttling is achieved by waking up
-> -		 * the kernel flusher here and later waiting on folios
-> -		 * which are in writeback to finish (see shrink_folio_list()).
-> -		 *
-> -		 * Flusher may not be able to issue writeback quickly
-> -		 * enough for cgroupv1 writeback throttling to work
-> -		 * on a large system.
-> -		 */
-> -		if (!writeback_throttling_sane(sc))
-> -			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
-> -	}
-> -
-> -	sc->nr.dirty += stat.nr_dirty;
-> -	sc->nr.congested += stat.nr_congested;
-> -	sc->nr.writeback += stat.nr_writeback;
-> -	sc->nr.immediate += stat.nr_immediate;
-> -	sc->nr.taken += nr_taken;
-> -
-> +	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
->   	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
->   			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
->   	return nr_reclaimed;
-> @@ -4651,9 +4657,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->   	if (!folio_test_referenced(folio))
->   		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
->   
-> -	/* for shrink_folio_list() */
-> -	folio_clear_reclaim(folio);
+vim +427 tools/testing/selftests/kselftest.h
 
-IMO, Moving this change into patch 8 would make more sense. Otherwise LGTM.
+   419	
+   420	static inline __noreturn __printf(1, 2) void ksft_exit_fail_perror(const char *msg, ...)
+   421	{
+   422		va_list args;
+   423		char *buf = NULL;
+   424		int saved_errno = errno;
+   425	
+   426		va_start(args, msg);
+ > 427		if (vasprintf(&buf, msg, args) == -1) {
+   428			va_end(args);
+   429			ksft_exit_fail_msg("vasprintf failed: %s (%d)\n", strerror(saved_errno),
+   430					saved_errno);
+   431		}
+   432		va_end(args);
+   433	
+   434		errno = saved_errno;
+   435		ksft_exit_fail_msg("%s: %s (%d)\n", buf, strerror(errno), errno);
+   436	
+   437		free(buf);
+   438	}
+   439	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
