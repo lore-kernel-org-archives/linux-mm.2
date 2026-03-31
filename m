@@ -4,134 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D19410F92E3
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:10:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9DAF10F92E0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:10:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF3946B0096; Tue, 31 Mar 2026 12:10:30 -0400 (EDT)
+	id 5D98F6B0099; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA4266B0098; Tue, 31 Mar 2026 12:10:30 -0400 (EDT)
+	id 58AA46B009B; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA1A6B0099; Tue, 31 Mar 2026 12:10:30 -0400 (EDT)
+	id 4C7B06B009D; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99CF16B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:10:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 484691602F6
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:30 +0000 (UTC)
-X-FDA: 84606845820.27.5C1A552
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3C41C80014
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EDTdOfCr;
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774973428;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B1F06B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3806B7D6B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:43 +0000 (UTC)
+X-FDA: 84606846366.22.ACE90A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CF6804000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbyW5WFT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774973442; a=rsa-sha256;
+	cv=none;
+	b=ZgVEE/+/aOgNOWo/liRGL5qYDBaBTEAp8v4Xh6oq0u/nIUuG8bSqXCHGZUazpJI6J2NVey
+	pOILb1wqQpR10au0cj+pUjSlninJDhS3szOzJztg+ATcOlKE1tZ+s7Cpzjx62VHosyWmfy
+	6nGyL0jMu7Ku6H+L0JVcUVfiTkNf5QM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbyW5WFT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774973442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xdYwxX706aiv3hVMTntflMh4V3FGxCWTDWc8TgxR7L8=;
-	b=8Dems5GKe7/KP4IihEjPlnNcvXQwLjipytc887VXkVwdY2e5xapGMxtB2f1mKrk8uHTdek
-	Mq1zcWAh5xVPvwW2nn5xtbfgCQQoJjUkThb17XzvZolxz/AU+jzuLmUzlpzRXgYkqNyMZ2
-	CqRmehDS4FIMfCN88e+hpEnjAXDCkic=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EDTdOfCr;
-	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774973428; a=rsa-sha256;
-	cv=pass;
-	b=IsxI8r842gSEFyOds/rvE8sjJMSucvSrt/jjeqKWpIS+qBY0n8UDQPw22rq9iT7nSfOlY4
-	TTefQW9wtGyEtxk5Zl0INWf58O06ZI02XsvjipcHTCeACqsjk+6m7EWckLg4dXCmLdCDMq
-	gmW2SlnUDKRJv4e/xUpTXunHFnyb70U=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-66b0dc690bcso12093a12.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:10:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774973427; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SlbiVTxzd1CJhpuQcy2tftxOcvxRQoRGI7Hz7xVg6qVSYd2CUiRUN2yXceqaj0kYJ6
-         JS6JYoJGj822LPXo8fM6vA4BUCVUd1gEA2G0QugINTaszTb8QBGe6ZHWany0Fl87JRq8
-         c2Hnezu1G1PhSfGc5eYSB1FmaKbzPf8ABuhLi1wpvdyD/YdzRpRo7F8xVw0mi1bxpQVT
-         xcXeEBXzU7kfznbITwDbI97QxQe6/dyGl8a622MsielX7Dgootw7yxgGL1+VzeNHVtpc
-         Cog/aJM/vrl6Oggj99um7ou2CyxVnX4ceOhIuT+E5xbIL4Q0MQLx/UNtXgJmWiZW/Re8
-         d1kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xdYwxX706aiv3hVMTntflMh4V3FGxCWTDWc8TgxR7L8=;
-        fh=Lpkw5Mt64MGu1U6/CYHCjVOl5orA7aYbGRQ6esfb07U=;
-        b=PUgcu/wuDmmXhuMVmKxKWRt0SWCZybYHVVdiZWrazm4Dpj3Sd9BD+5QR0yH2ZNQtkA
-         d+3NyfITVcXegkSx1QXbNOMN619JyU3Aw/ey7vfNBchdVwzbbm9cIO5fYsA8BV+zdtPk
-         7tVkcmdakqlQAyXURehZtQ3JINqOryQ75Vq0BHp6FpqRylGp2JIaNgVeLugIOVFYw8bL
-         GZxtmXcDRoU83F96189X5KywCtVvVfRQLCcw/n86cJa1uxST2961lwjTMCZTjeHdvFJX
-         6y1UpQa64qHoMFkn2HsabpZlxq+fXHh7DWPEymhbxX9pupQi9uO4TNy/WAuGtEsMXsUI
-         MRzA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774973427; x=1775578227; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xdYwxX706aiv3hVMTntflMh4V3FGxCWTDWc8TgxR7L8=;
-        b=EDTdOfCroDly0BsAJSUdW0Bl+OAnUb6L8N4ZBryZyzxWAVdMRHPN8BUoTGQgh8p4is
-         eFZlU5iS/4FbMjOERNyjqfmmfN/z4XbopKWL/EFr4eLuA1dkUlcZWooAWQFaw34nZMEq
-         qhRYlz6/8XkFJ/QLfEwuAMgk9VvPPmdFtQLHhhpCMwK28mR27ccuDOE6iYnELBJPmMXZ
-         gCOVdySonQeoU2t8kvjT3kGOStoiaDnRRPcW3CqKXC+IIqnYkwY1zdns2w3s3ZE8X8ul
-         fAmdlPBhXKlbcr2PY/fUR4DJ0bFcBA19oXZJyn8THPSXIQzBLpxMprNTV/JLUJL9Y31q
-         B8+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774973427; x=1775578227;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xdYwxX706aiv3hVMTntflMh4V3FGxCWTDWc8TgxR7L8=;
-        b=Vtzrg3uDVrgJB/IAKN8V2D0iey3+caUPG5Q5HZN/jIl0//f8YvHeHbam8vcwlKOv6r
-         L3u4OVUzBu5bLcmwWAFXCPS61Nb8kOewqv7+jSOOvdB65rzPQavSd0cRbbJcXhYQhdAZ
-         VCmhioZBo2YWjHvRuAJav0DVVolQkvaJN4BdRTbeNLZ32J9Px/gO5MRkud6ORnpIf7fX
-         G6UVwzOukkgA1UtZAVYrBXyghRlkBo6OVGxXMK8OmnEKRkJ7XZlkOgE2Xuz/cXfdNMFH
-         dkcNReSe0Q4dnfTkjrBRyxfjAx5CVRUc4BPZ3aynDkQQNrFV7+Dgcpr4ZM8MrR0IGuou
-         GmKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOXl2JrZSf4OQvf64EqczjINV96MLH/8Wnn36cFhBrvkmt1tipfUbkLKscboQ+IVJlx4bzTbb7tw==@kvack.org
-X-Gm-Message-State: AOJu0YwQMhMO55QB1v68UPjxP+nse5e9HeM79Y4acItt6b++P3+dSFFz
-	kqhG4PRWo3oieZavy09U7oIKTbjd+mwvJpstqB4DZs1dJ0FAtLI36tEczZzPl0yBTk6uMu09/lE
-	tNl1GyjJUiFa4da7rSA7Tek+/PaPv1gF4aoaoIC2W
-X-Gm-Gg: ATEYQzxypxfRuFPuWsi58WceXN3hI/kRIdshA2fvmMP6j+Sfel0bFH7nos6+FuOioHK
-	wdD7JU7tan4gnjX1No82XHTRQ8msxzPTduyKfZwWM2TTTpE+/m9jvJmx/vS4JGZLAZA6H/0qaWN
-	RHmm1LrKfMDNuGnZM8aIi0YnpriQwQktRxjDVT7eghxG1mVPbA3hyuHdkEbmuNaEX94na73gUHA
-	uA71xpR2uk4JraKR2M7ltnMr3trLSDN8CVpmHBdBEXABvvN98Q6uG2Iy4jsD1/SHtBHUX3JAVMh
-	SDFCw8YZZPkKXEd5/3sN6gzyeW000uwz2yxapg==
-X-Received: by 2002:a05:6402:1513:b0:66a:7b3d:f43a with SMTP id
- 4fb4d7f45d1cf-66d95ac674emr5164a12.1.1774973426186; Tue, 31 Mar 2026 09:10:26
- -0700 (PDT)
+	bh=BpJzRi/dfXt3MjyImNXLRlCw/h5u6Pv3WS5qqFf2fWE=;
+	b=Nz8Vgrw0Ub73cC7XOhaJG7oxfCNUqOAnVHfYnIwrKC09tu2typUgFazzQ31ge+DB7wRdlI
+	QpiRbocOg2jpCIvtlKu6Xeld4LLPRo56HNuUdLtYdYqnYZAHzKVZzLDHMue0YAJxhNZopD
+	1zVr+m/HAgN3SHFSye78ZSeVZGFOnKQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D1D8E44010
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FB2C2BCB6
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774973440;
+	bh=F6Dn6HjDyhVOjbwalA7j6o20tmUhnC1lY7ExPGaI+z8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WbyW5WFTQBj7luC9mh6/1p3a55iauMAjvSqcXjnUztxl1emAOdXdVdoH13oVKZqiV
+	 EJkYqjrOEhUCNokcnLpwwkHQuxHugKaOHeMFiTdnxs+gy81OnoYtoUqVOG1YwNP5SI
+	 aGcGmt0ywuc5CauPG21h8q3mzVxkOeSmYRTNu5auM0DSsVdIqO11vKLWN2qu4CpR9J
+	 idD4MsjqfWk303Xcw54t+THjDslRh6JmdJ0VOl+xSCslWvEfguxUENVihdu5L0Wk/8
+	 iIFcjQQFBv6eZZg2DIX8y3FiXI+dqgYZhw/hlNF6Oa4pwQ8m+c3HpPmBlQpeiRA3Pk
+	 rW7fkgCscrKIw==
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64eee7b83cfso6682694d50.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:10:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV0ns92zHngXXJhIaXEZqxyGBwBfN1P3N8DHuaMIUwU5PybYIO68MJeQ1CQ6LBizvTYrmUkexKcSg==@kvack.org
+X-Gm-Message-State: AOJu0YwKqwClNL/+eKLfhOuCLVKvvyEws5e88PNUWGuoczsMamEsOWja
+	Qv3MMX47cWni/ZiPYt8S9ikEZ/ztH0yPQVWJOJk1N3K4Zbwggevm8mzhtkxDbAV0tMhhHprF+xM
+	CD8X1gnvzI7EIENO0p9F53cspyPQCoiMlQ75q5ADAow==
+X-Received: by 2002:a53:b178:0:b0:649:ae70:a19 with SMTP id
+ 956f58d0204a3-64ff741c8camr12486731d50.55.1774973439949; Tue, 31 Mar 2026
+ 09:10:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-In-Reply-To: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 31 Mar 2026 09:10:11 -0700
-X-Gm-Features: AQROBzAYE7yZ603ZCTiztIPoNJFv_LEwfruI4KST6j3KliEw3ITjS_K5RdjV59E
-Message-ID: <CAJuCfpE0zdEn7gguY0vkXpT2y4+Y6oniTyT90C-1KpXS4L_vEQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in alloc_pages_bulk_noprof()
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
+ <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com> <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 31 Mar 2026 09:10:27 -0700
+X-Gmail-Original-Message-ID: <CACePvbX_uaGizMFOsRHh8MgqW1yJjrS1qXnADLzFq=9pV553kQ@mail.gmail.com>
+X-Gm-Features: AQROBzDADBpMPFNTSA2SWfdQ-XZfri3rtWtqBweKR4gswYd3-nteGrFm1vLJY8E
+Message-ID: <CACePvbX_uaGizMFOsRHh8MgqW1yJjrS1qXnADLzFq=9pV553kQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, bhe@redhat.com, 
+	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	youngjun.park@lge.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: CF6804000E
+X-Stat-Signature: d77qpyrtmi8dczkgggh1kaa9hii85jqb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3C41C80014
-X-Stat-Signature: o1e7cggs6ajcft56ghzs4ih5y1879qc1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774973428-117563
-X-HE-Meta: U2FsdGVkX19mjHqqsNu41bYcguFxH1k1YB+RjdkxI61hJzN0H77DEl8iEgQSabqNB337rS+GobTTXsva5Zdo/WXrhQ5MRlvXvbGHF9ZopW4saJS+h6RFcWntYpCY3cOP0kirby2dqfcrKTht5EkQuTEvrqpbT/IyK587rBMRbdOumcKAFAqQSpaxafw7eJLSaML2Dl5P2jChC3oApHCkJmTZI9OpI9y0peZ5paTM1Q0LG9apL2IoGMnE1l/M7H49otVDXv6wJS8Ry0tkhdxvCOS1sgXJQFVgJxzzPnxTu9i27uS8AiBRHGE91Gx6Ppx1+V9DZw7UDnAdmg2gz/oPQOS1X2zK+Qw2CzhaSKvYL/MXCssFyA99n/86OufJW5sdrQ4Vo0A/EIhojjzGlg4/OP9DKUzbS68QAgijhAPVXqSWvvivcOtwUrm8JLqU1qfgoLkDMl57X2pNhrXLOASiTsJzcvd4gNsp+gCGz4jCRLJDqnJ0e6xOBlEJFceb9ByJWNWLk38F0yYP65LXDAr9cnjm2NYgB721JRakdffK+b4ntn1D19HlwSygT37Bdn5MDl+ZEUjRcDIjOg7GUFc5iH5VtujaKjlNIoZ+bjjMz6EbIzfbCUi9EwB2680XU7L0OzR4++z5bFhgf2+rHqHSN02Gjwl/mQFlFc7L+hPgeOjwMOIx8Pg+gfqB9RkX3u3eMPyRvyXvIDv9o5XAy9JlrLvbb3TyWdaB3YhwRJOP0gTPKv1WwhApOipKttWdOkGySsy126RTiRtbdwkTViqHIo/CFcahHOvcKJPal7Cv5plCXJKJ/bbhZVRIwGtyaBvlipcyPdFicuVPz2li9r1PI2cW1RRKdj3I+0jxjAM3oXybEHw2cOCoDB/ia/olrlDDv/9S+6WsPwoyIZw97FlQG5Vd3LPuRvFdoofWMtWheLqEtYfuBkUcFZOrvnAK+5Xq3lBH5bUXmRqjAQHxgEj
- diufheRd
- KHeNkTicFK0+ebVguW0UreG/CnsxlKMK1cESFksxN/AdUn6CVYyvx6PyN4xayOS/+NOCC4Db7oQY2Kt4i9pS/dxwyCEwFJrZE73nxjcIkr5emvQhs522PYvGmDQNd01UUZCMKaIGeThNEl8fjRQqxDNE5CDWc666MCHGTdeqNHgJwu3usJHioJPWb5wrrn/zKFoxN/53cx+vCWqSBbg2WLiETAM7gVYxWlm3NJRdzAY0C8emvaeILhZI3W4aIoGxgw2cKNjR4lz6BOvOlViCZdlG7v4bZliNBRq89PCvae8KWCizHH2M2KstSw654yGQkTTLJHP5d9Y54rFf+yGSSytTxhA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774973441-965601
+X-HE-Meta: U2FsdGVkX1+ybNnUXtmRlMhA0CmLGGpUklnrSvS6eXqGIfDYsdte2Z19lJqTfoeExPhB4vbOOkYCGmU+XQSdOCcDL+K0xamNU+2hKqO/Jy0zAleLK0I4tz7ZKZ4CK1Pqad7YloehHaC11BwiEXcH9fjZGbv3j7JNQFGoMhmUKuZoEDCEpr45T3yx+TGo3914is7Y7gmYSyZdknWCxN3T9COKR1uATfX68DwnGUcX5RBIPt4mlZAoRpCeP5yCkCJohcOZQxmt3VGBvO6MdwYKdWWTxXlewG/8vcNX30M6ZFpFde9xr2jK/oCu81JV9J4Bz6dX9uu29uTGKFaKD43kAgWt773SP12V5r53VW5VhsoMlyRO21NfwsYeo9JHC7tjFCAeG6Iy6AP1UkmlXr9kd3nZ1UlKZvtLDuC5HGJVqHfzYQGB5jzUWETA8Bxq4gBvxAEwRhZrglh8VeC+DQ9yoburTAXNUuOlq+KitTKLKGl8wCsLOdVLUxKTAvTcEEUBaTkRMf+OyoV1fAoKK/vKxgAHDD8BkRMJzhOvhykg7RD7Ct1fumvI2QI34ftF5vzRwBzWlxDpb0HwBbHx8eO3EoysNRS1jIuvkAxT5nhab3mC7+lJaL4PzqnZVdKRrdVOe6eG7jkh7Ql9/VIDKcuQnrZuNHXbz/XxND5CUn3Nt6MZWCXnXhtB1zN3rIm444XC414igxxCyXDrN+Ij+DCYJcF++Ftp21oGvKctMeC9Y5gj2pLkTIOU+njC97ocmxzbIU/gniHGn6pzLdQnimaVWJyLgwUItJ7JHwxNBWjjlsaMEC/EqvFBmvZef1UUGQVd5iqVRfhDG7j/gdGj3RW9/eUJLO5PWdHTySaS883e/RX9+VSCOzabfKqiox3KMqiRUdOKAVyje3PLOAOQ1q9SycUo/gL2WwClUTqeUc4RVtpzMSikQsAv8YhPsYMpzZn1BQtQmf0uAboKerXcvCT
+ WFODbogd
+ IcOaC3D4yXQXftnPRIg46vbt+BjEgo77vPNkGIjuwKjEij+nmkzKrPWhA+kKsZysiaHz7rrZrS0BxWWxuqaQ0zuI8ORGs5dTEswm9R8iI56Rzd0oChl2rt13S3lbufKqabyW4v47vkMtydTvoxSd/1dwF/EaTLMbwRpy3MW7daGZ3DfrBX+Ol0em6Ll+1yJ0x7dGDkvhkfi/us5Nopw4r0TH3yoK8+wrguyibhkF3Bi0Diynw6t/olyuXcVeQvEZbWxQoxK8/86F4SL2NrhqT0HHGiNdExQ+0AOU/kngomlGv0Y2XAEPbqcY3QvjKumqVYJpgZaJ0Z05FetHYKd2VjlLV7JXakVnUUBZzdqoBIjl+faVjH5WTDWbmXIz414Wdr2NDkGx+0IHRgfKyHDrdMARwZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,63 +104,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 3:52=E2=80=AFAM Brendan Jackman <jackmanb@google.co=
-m> wrote:
+On Tue, Mar 31, 2026 at 2:22=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
 >
-> These two variables are redundant, squash them to align
-> alloc_pages_bulk_noprof() with the style used in
-> alloc_frozen_pages_nolock_noprof().
+> On Tue, Mar 31, 2026 at 4:31=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
+e:
+> >
+> > On Sat, Mar 28, 2026 at 12:58=E2=80=AFAM Barry Song <21cnbao@gmail.com>=
+ wrote:
+> > >
+> > > From: Baoquan He <bhe@redhat.com>
+> > >
+> > > This simplifies codes and makes logic clearer. And also makes later a=
+ny
+> > > new swap device type being added easier to handle.
+> > >
+> > > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > > and bdev_async, and only operations read_folio and write_folio are
+> > > included. In the future, there could be more swap device types added
+> > > and more appropriate opeations adapted into swap_ops.
+> >
+> > Should add that there is no functional change expected from this patch.
+>
+> Sounds good to me.
 
-Indeed. I'm not sure why this was needed even in the original patch
-(387ba26fb1cb) that introduced this function. It carefully preserves
-the original gfp even though its value either gets overwritten later
-(prepare_alloc_pages succeeds) or is unused (prepare_alloc_pages
-fails)...
+Ack
 
 >
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> > > +static const struct swap_ops bdev_async_swap_ops =3D {
+> > > +       .read_folio =3D swap_read_folio_bdev_async,
+> > > +       .write_folio =3D swap_writepage_bdev_async,
+> > > +};
+> > > +
+> > > +void setup_swap_ops(struct swap_info_struct *sis)
+> >
+> > setup_swap_ops()` needs to return an indication of an error.
+> > The error is that sis->ops is NULL or op->read_folio =3D=3D NULL or
+> > op->write_folio =3D=3D NULL.
+> > If there is an error, we should fail the swapon.
+>
+> Right now there is no possibility for any of the ops (read_folio or
+> write_folio) to be NULL, so I was using VM_WARN_ON as an assertion
+> to catch bugs in kernel code.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Ack. Someone might register a new swap_ops later that introduces a
+NULL swap_write_folio. The check is for catching that.
 
-> ---
->  mm/page_alloc.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 111b54df8a3cb..5e280ded6e7ac 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5051,7 +5051,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, in=
-t preferred_nid,
->         struct per_cpu_pages *pcp;
->         struct list_head *pcp_list;
->         struct alloc_context ac;
-> -       gfp_t alloc_gfp;
->         unsigned int alloc_flags =3D ALLOC_WMARK_LOW;
->         int nr_populated =3D 0, nr_account =3D 0;
+> That said, I agree we can return an error earlier instead of letting
+> swapon fail later.
 >
-> @@ -5092,10 +5091,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, i=
-nt preferred_nid,
->
->         /* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
->         gfp &=3D gfp_allowed_mask;
-> -       alloc_gfp =3D gfp;
-> -       if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &a=
-lloc_gfp, &alloc_flags))
-> +       if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &g=
-fp, &alloc_flags))
->                 goto out;
-> -       gfp =3D alloc_gfp;
->
->         /* Find an allowed local zone that meets the low watermark. */
->         z =3D ac.preferred_zoneref;
->
-> ---
-> base-commit: 57e5b07deacb0a9bd7b8c9b933ff72e902d4f06b
-> change-id: 20260331-b4-prepare_alloc_pages-flags-5bb9a1e04e00
->
-> Best regards,
-> --
-> Brendan Jackman <jackmanb@google.com>
->
+> I think it may still make sense to keep a VM_WARN_ON in
+> setup_swap_ops() before returning -EINVAL or a similar error?
+
+Sure. We can just print  pr_err() rather than VM_WARN_ON.  VM_WARN_ON
+is nop when VM debug is disabled. It is a kernel swap code bug on the
+swapon path, so the back trace portion of the warning is not very
+valuable. A normal error print will suffice. Because the swapon
+failed, the user will notice this error.
+
+Chris
 
