@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C275CFF60C1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A6CFF60C1
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 206676B0096; Tue, 31 Mar 2026 00:02:23 -0400 (EDT)
+	id 9802E6B0098; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B5B16B0098; Tue, 31 Mar 2026 00:02:23 -0400 (EDT)
+	id 90A056B0099; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07E476B0099; Tue, 31 Mar 2026 00:02:23 -0400 (EDT)
+	id 7D1756B009B; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A6F6B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7746B13BFED
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:22 +0000 (UTC)
-X-FDA: 84605010924.24.9624165
+	by kanga.kvack.org (Postfix) with ESMTP id 64D126B0098
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 232AEC3223
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:30 +0000 (UTC)
+X-FDA: 84605011260.17.1C77D39
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1205614000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H2F5ET6I;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 49094180012
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aR3nwPCp;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929740; a=rsa-sha256;
-	cv=none;
-	b=Du3tbUXFoU+ocxiJtS9F7tgaYACGyc0EIBTJiKcQTKfoMlSIaCfFAlhR0VRbD1y7OZZO2z
-	okbskXcKOBuVPyCoUx9DiDZr8+Ro5CvOC0+R5C7QL+sT8ztl/KIvacvjKK39m84HfV2YaN
-	zYu3sGfAq6BlZg9W1mBJyuQZVYggO+U=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H2F5ET6I;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774929740;
+	s=arc-20220608; t=1774929748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VvrYLvc4bheXY6nHh3gvx/fU9nd8/iSIX4Lotedv4lg=;
-	b=Z3EGIP+r6pgvaoxAalak1ZwQvaxNanYdwsT0efAB6dSVI+tne58Wzu44JO0jpUMkve/CTJ
-	LkIMmJIU8JnKYq+++IJ8zNk/EIT0/nQPby9GE+/XMzhrvt0+eNnnmvqBp5K4wfY+gdA8II
-	96hsYIxTJHEqfOXQn2dTIHWZNkJ053w=
+	bh=6DLWLzQsoTlruy6dZYJmzr//ur1QVX1gW6lYgZn98iI=;
+	b=0nYqGR/4OdNCHQy7lk0rd76bZscFSVxYlxjrjqTyslJp6FpZcY00lYO0aWlYulNd0mO7t7
+	yFaQc8XYNVusho0brCtUmcoF79er3SXoqfpyaSxNmOu91W/2KqQGObgrbTLgO+UoWmVO9B
+	kTYYt+xppra/0kOOIl7ImpAotJDX8zA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929748; a=rsa-sha256;
+	cv=none;
+	b=L5tQkrpDWC3ha9KkEhbhZo2e0AflrOTiEg/Kn1tRUoj7s38Qg6jwQofKGmD0Sejmd5CDVF
+	X/22t32AxeXYgPq9pax3t8grnhAoao9GxTbIh5BaJpYr38FKdaeLAxhhU3zVP5Bexcb0Ue
+	U6EjchUbLR1zVrtdK7WkO7MQPBmr2PU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aR3nwPCp;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774929739;
+	s=mimecast20190719; t=1774929747;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VvrYLvc4bheXY6nHh3gvx/fU9nd8/iSIX4Lotedv4lg=;
-	b=H2F5ET6Iku75SxHLpGyS85HimXG45I50zc5PcH/Wiu8yr5QkvEqoy1Vhsjw13Pdt4TXuoM
-	sn8PdTzLQSeXqzQLGX1tsQt+bEGtpq46HNnX60qj8xEzwdow6PGfraoPaMueNhIwaZX7NL
-	ebyZGuqveKtHuxMOkFaxqx5tmWrOlA4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=6DLWLzQsoTlruy6dZYJmzr//ur1QVX1gW6lYgZn98iI=;
+	b=aR3nwPCp2ZWg94QxRzqQQEhe1OrjREiBQ3ujPHWXGwEAtdhnD9444SINWMTVBONI75sybj
+	ZOw1dbk6JMqmVUNSY9S+cMXCgjkWob46xJO0wKFjHoflCKLoUzBLjhkDpt8IT9SwvjBCok
+	N8GFRL+lXinWC6VqD0Wha7l1lN6E818=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-2sKpac99N2CcFOHSra_RFA-1; Tue,
- 31 Mar 2026 00:02:14 -0400
-X-MC-Unique: 2sKpac99N2CcFOHSra_RFA-1
-X-Mimecast-MFC-AGG-ID: 2sKpac99N2CcFOHSra_RFA_1774929732
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-kZ2gZjV7OFK3kiiuA2eVcw-1; Tue,
+ 31 Mar 2026 00:02:20 -0400
+X-MC-Unique: kZ2gZjV7OFK3kiiuA2eVcw-1
+X-Mimecast-MFC-AGG-ID: kZ2gZjV7OFK3kiiuA2eVcw_1774929738
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A4405180034E;
-	Tue, 31 Mar 2026 04:02:12 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63E2118002E8;
+	Tue, 31 Mar 2026 04:02:18 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.121])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 892DF30001A1;
-	Tue, 31 Mar 2026 04:02:07 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 56EEC30001A1;
+	Tue, 31 Mar 2026 04:02:13 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -88,25 +88,25 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] selftests/mm: serialize local_config generation for parallel builds
-Date: Tue, 31 Mar 2026 12:01:54 +0800
-Message-ID: <20260331040156.119158-2-liwang@redhat.com>
+Subject: [PATCH 3/4] selftests/lib.mk: set PWD from CURDIR to avoid wrong extmod path
+Date: Tue, 31 Mar 2026 12:01:55 +0800
+Message-ID: <20260331040156.119158-3-liwang@redhat.com>
 In-Reply-To: <20260331040156.119158-1-liwang@redhat.com>
 References: <20260331040156.119158-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: nMlu7uWigHgdOifAtYGjH24OtUdV6qSOXx0-W5ShUxM_1774929732
+X-Mimecast-MFC-PROC-ID: Ji5aUdrxfN4L8Awi5rdwpigiSYxf3gDd3jssCGZzKmQ_1774929738
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 1205614000E
-X-Stat-Signature: fqemg4conk61xwii7pmxa8cyqz1npoio
+X-Rspamd-Queue-Id: 49094180012
+X-Stat-Signature: rmow44umsf9nt8o54mdaydhimifj7te6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774929739-605059
-X-HE-Meta: U2FsdGVkX1/uqPg0cQ7eJSagRwn6pFjkabh2MUIQuC2LeP0eAc+Zwei2noE+FIrymV0xjChZNJ8heuonFWt08K/foClMG/R10yIbXZd0C4Yb8p+UymNm5390aGIFewnEmZBypA9Dke+5FyT6Crqjs3/c0Gwyb7FMyjWe4mLySfhJdmTxp3So4uOhRDhvAu2ogHmIfoq+X2uo5RUO5EVl7s9Ixp5XMuq7fbUa/7lJ5mPt8u0NwcGpI2njmrzrh40NhreLXnj4TPGKbo0zHzK80NQJRwZK/Pibt+o9RV7kPdK9sW3u1NAmplXCAuHwfkmADCuMr9xRtJpxFgKhY7mkejMoH+PFOuFO9BdvxMNnFdhTwTVBDA7FTzGAHbKQpTToinEiwteneVXQibsjo9Ps2z0UvgTJ655X/I9H7dRCXFfihfFcWaUbya54qX3oae3ti436dJosNT/lTF03kRaKey9UCGGXPgPRtVGxDRCVRd8hu441a+n9IMr+MQDIIkhayoI+JGwG0S1L1ovwc3ZZi1z22IZ39kxlhm7MRzsC/UhO/1ZlqmF+11tmHCYGWnjeYYKtLwwRSm6hyJ8twdLTC2dSYQAzpYYPQIpKBqb1f7dCP/DOzblGBcFMvA7EQJu13M1eXUln589lluhdGuzzjI84w/araldXhxKw9m+hh32is0+QW5zC129MUYNiSWSqN15AhO1Gw1MmDqzllqHxjVdFF1z+WOZ1Fg0M/RTNvJeoixlzDY3e/NV/AYR3QoKR90lPjtgiii6jjSWDKpCuT7cdj/u+IPVX8yMgOJOhCMga4MtB8KEcSZzf+xWUIPQHYB5y7xNDAxGVMflSYoOVpENYwoDPjrLAiGriT+yyLMikYwLDQTkoagrOZCgI1aAFvd9CntdDauVmBiUFlHH0j+zo0g50wmh+lZNhavQ599S66p1BpUhilsbNeqXlSA6WQaoz3ZOXInjbKbaZKeW
- sLO5rbp5
- cmv4/KtkBWe5BZYBPv8C0IUhivN2MSZnABNJV9F4t8FR9EpPjxh6kGshOpiSY2TUNUgAqqjYs6IOVk92wLA89Hm1OexlbW5yPd9g1SQrFhO/Oj6pVxm8llYIYiXZq+7nmpOB21mU4QTGOUNJUtP7Wk+OWmeGbjrtwjobqHRSwJEVpE4u148+okVmSmgPXWa6XFCTLir7EOKiXZBuf8B4+YI90tLQZTvvuzaWghTo3utDXXX24cCtRi+VhrqGsBp7Kf1Lxmi1MY+djOUjqNa02jH82GGaLN68qKqTtJfl149LvlYYYEm30OKBRHXf+VNvK5X8eZjsspmFoYjDmH5nuZJxEZEi7UcBX8Nes6G7hDPnG9e9dX9aLqK2RobAefx4enr5uPOLHmi+2/mc2MkX0FsUIXDTuAU+R35LRfrbl2di/7LoUFl+64HsUidHxUJqav4K+
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774929748-887046
+X-HE-Meta: U2FsdGVkX18lbUsoH/k1dH7geh9ncp6rz8LTFt8uroRqB0p30io0yZmE1pcgn28e+W2T4uz6x26R2AyrpFZ40PM3RIjdhRtgIGxZ92DbdTB1sjjxC6CZ+89W6ndHhpUesbuorUHPNVbzCNF13nINLRd1QtpJofRJpUHKlNgw7KKGV/7Z62odp7Xh2NlXsjhNs+XxaqiS0arWYuKAAkR7XaEiG7NIqi84v5piHgsQ8wJCsY/Vlw1ccbHz+iLLDu5/4ot06BAzVH2/sOtvjIvjMluW6l76029d0GTC+W6FB2Ydl0177YYdMsYXWgkieEuLBiwWTeyggdlzA4zwY6h4SoZ53C6YHkpjsXaXw5DJQHIB+6fBVvKjzvgj0xvZ+8t/xnKFNKZHO50ZLowVSeHBgsJplD2nl/YTFU9U5nYfiM8WEykajijs+SPuUiw8zjEgmTgDb3RTv0UKHXSdTxr37FdUXE5sSUy2fGDmC5KQZx0LjyVV8huRNA6MEjUgTfPUqTwY+spfoF5JDnOmLQihVVnr/hYq+FqUaNJkkBxrd7m+QzmWU+rfZKqLlVi5bIB3rtT9iLhy2umoATDSAgFcdlnltHjmBwNWTAAMSdpoPUkI56S+4lKntKKZQ+o5L+0fCBRYq0e4LQGe0wLZVIEn4xwJa8TugjfGSsA5oLIxKAGQML0YXlH/B6VAYiJOXYJtiaWRZIIOMRiAyx9+mCsDf9VQE8gFkKdk01d5NaSiJqJa7tM+iEE5VIU9A2kHJWjSEA+hNtXOCGPSN6w3pN1zWRXqJZGxivnqSpGm8ydJMN9REuz8UhvbKIrgBXCyIZd+xWZNpJzTItf+yYH8bskqhGAZlhNEWO1Sqe8jSreOouitxfp48oQ1oXVZFayxThzvuS/hZZCx2o8jOYO8HXZvSOo7sQ/FbUX2qlJiUxzOmfWe5GJGIgT0ifGpZj3A7w5q5FuXOlzE34Q+Cq4PaqR
+ E81qLR7+
+ 2189QqxkUAoIw0oXtEEUS5cqHH1Y90LZuK6yLKI0sRdIroH1tnxf7Xhew2moxsTbRCTsx/c0kjNwpPW5OO4eslJaEDf0SG4zydJRguxgISqke7gKkOQYLWwdNMEmXuL8fmTeSYhwVDn40iVS+euJ5CEWt9j6NW2UgxMnrGZN7z8hbl/oVl/77Vg7LqoigGqVZcn6wDzOWfLk4Kab5jCGX5R4RqdkxSBUytkeKPgS2g0/V9+DY30ptl4lnkti13pqRme0w+kWOLrAayF2/rXH4z5106mjOeffq7+YWMYjbGnDadrPEuaQns8VaZprAyX84Z08+4GcYg69e6pkDXjGWgzfF+lrEB2idnwrqmnGhNY4q2HAaPgZwZOaATV7nwmka9BfVT/lXAU2Md9B2rEUmLeQZaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,53 +114,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mm selftests generate both local_config.mk and local_config.h from
-check_config.sh. With high parallelism (-jN), this can race and lead to
-incomplete target builds (e.g. only a few binaries get built after
-'make -j100', while 'make -j1' builds everything).
+When running selftests from the kernel top-level (e.g. make kselftest-all),
+sub-makes might still inherit the caller's PWD from the environment.
 
-Switch to a stamp-based dependency:
+Some selftests use $(PWD) in recursive kbuild invocations, which can
+then incorrectly resolve to the kernel top directory instead of the
+current test directory.
 
-  local_config.stamp: check_config.sh
-        ... run check_config.sh ...
-        touch local_config.stamp
+In that case, kbuild may generate an external-module wrapper Makefile in
+the wrong location, potentially clobbering the top-level Makefile and
+causing recursive include failures ("Too many open files").
 
-and make local_config.mk/local_config.h depend on the stamp.
-
-This ensures check_config.sh is executed once per update decision and
-removes the parallel race window. Also hook local_config.stamp into
-EXTRA_CLEAN.
-
-No functional change intended for non-parallel builds.
+Export PWD := $(CURDIR) in selftests/lib.mk so $(PWD) always matches the
+actual current selftest directory.
 
 Reported-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Li Wang <liwang@redhat.com>
 ---
- tools/testing/selftests/mm/Makefile | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/lib.mk                | 2 ++
+ tools/testing/selftests/mm/local_config.stamp | 0
+ 2 files changed, 2 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/local_config.stamp
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 3b222cd6a048..78496f705386 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -261,10 +261,14 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
+diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+index f02cc8a2e4ae..2840e98c225c 100644
+--- a/tools/testing/selftests/lib.mk
++++ b/tools/testing/selftests/lib.mk
+@@ -60,6 +60,8 @@ endif
+ selfdir = $(realpath $(dir $(filter %/lib.mk,$(MAKEFILE_LIST))))
+ top_srcdir = $(selfdir)/../../..
  
- $(OUTPUT)/rmap: LDLIBS += -lnuma
- 
--local_config.mk local_config.h: check_config.sh
--	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
-+local_config.stamp: check_config.sh
-+	$(call msg,CHK,config,$@)
-+	$(Q)CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
-+	$(Q)touch $@
- 
--EXTRA_CLEAN += local_config.mk local_config.h
-+local_config.mk local_config.h: local_config.stamp
++export PWD := $(CURDIR)
 +
-+EXTRA_CLEAN += local_config.mk local_config.h local_config.stamp
- 
- ifeq ($(IOURING_EXTRA_LIBS),)
- all: warn_missing_liburing
+ # msg: emit succinct information message describing current building step
+ # $1 - generic step name (e.g., CC, LINK, etc);
+ # $2 - optional "flavor" specifier; if provided, will be emitted as [flavor];
+diff --git a/tools/testing/selftests/mm/local_config.stamp b/tools/testing/selftests/mm/local_config.stamp
+new file mode 100644
+index 000000000000..e69de29bb2d1
 -- 
 2.53.0
 
