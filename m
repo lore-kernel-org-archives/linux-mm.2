@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56069FF60F1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35BA5FF60EE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:22:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DEB66B008C; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
+	id A2D0D6B008C; Tue, 31 Mar 2026 05:22:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6466B0095; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
+	id 9DE0C6B0095; Tue, 31 Mar 2026 05:22:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2E76B0096; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
+	id 91B376B0096; Tue, 31 Mar 2026 05:22:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C0096B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DDFBBD458
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:08 +0000 (UTC)
-X-FDA: 84605816736.29.CB58913
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3B1562000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Or5RWsez;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 829D76B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:22:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 194028C8A1
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:41 +0000 (UTC)
+X-FDA: 84605818122.13.B7EA039
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9551040007
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F3aJHz+y;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774948926;
+	s=arc-20220608; t=1774948959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u89XgAtMoXR1/Ibc8jhF9HqZHMlFctxvUlUetm6nh0E=;
-	b=FUfbXhvfwzEPFFr8GHmmnwHX1BxykyqHM1rYDYjKc92lSGPipHNtiW8my/Vs98fOyItxbm
-	eL2/WOAopXdAZqfBGnCxXJ0m9UP/eEVIHXPCNk4t1p507NhuDg6eCANJdGLQFi3BOpCXkh
-	wFyBD+zQ0aN6/MzsaQSZtTQgksqMea4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=x9g1hB4qh9BcsuasyLunx9CoEu2jWdluCWl9ILvIuO4=;
+	b=1rSrfN1r5KeFDjoXQ2y5NS78SvGjxbyjxxmGL/iCabknI8z23Ob32Us1JX/Zi6OBbFU+NY
+	RDhqs7AJM9f28tvLpwwWw9LOjsjzfm/iiC7XubYStTOeZT0O452qFP96yolfBnhrzKoneK
+	+2edmnDULCryMpaAyx8gqRWSROa1XSw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Or5RWsez;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948926; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F3aJHz+y;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948959; a=rsa-sha256;
 	cv=none;
-	b=D3TWEHrLL+6j1Pyd+NSXunaxeEhzcZJbRuEDGShDTg/u3vPIXSIQzmF27MeDtwYX76+H2O
-	PouyGyfH2r3wpdXsKDlPrnTBjQo64pPhLxthIIHVxk7OJo6NolPRSP3JKF1OV4QB+CQCnA
-	61f+9TR23tvC5qDeUh8/h2dL+LDNeII=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2281F442DA
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C78C2BCB7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774948925;
-	bh=FV3sR90IOiDlBhgFbrawyU5jutKOvYsXcEIAnBX721w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Or5RWsezVdmJXmfKXLU/+RO6AW73b9HhH7qXdzh3PhUekUvVn6glLz/t2uLWGRfvF
-	 Bnqb7nfaVta9+E8dtOVG7lGniJp9Hwx3p6AnZwttYtQVYMBAAwQU8OiwzjBXdOphRW
-	 VZALKGp30KZ3cZqVQ3YRe7/+95QRXATjcCBJgGdUT23sZymEw1UlTGzysFv6oa1ZUg
-	 or4GK1TFMxuOsfIJdeThcNUTdzLNXZQf3sNf+wZMs0J+sOoo8zPsmVHKgbUq9XBoAS
-	 jdooTCWwai/K1tLXTdRFl3NlyHEtXQMoS8nSMi1Usc0hMx1zqPFMcvbqqHIEJ+ZYE0
-	 SdIOAzd7JNnXQ==
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89c43c4c383so71885446d6.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:22:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXbGJYohVs5eloe9or6sSpmE1zI8RISn142EXyNbn08hLn5GEkzIkT61hVjBHiO9W/drQSV+EAAqQ==@kvack.org
-X-Gm-Message-State: AOJu0YxeerlLFqkIMVR8+wKglrTnBM5XviSVoST1f/tUo/NJP4KkQQeh
-	UiexaPybm5pmHDH4nSbWonJtfgBWJ6bpUoX1/99nlq6gaj2Fd1prY77UNpYIoJBGLYR11HnGktS
-	RFnSqYBpCfFE2K27RM0ml4uBvkCLfQpM=
-X-Received: by 2002:ad4:5c8b:0:b0:89c:607c:8c4b with SMTP id
- 6a1803df08f44-89ce8d5d0d3mr214426876d6.5.1774948924079; Tue, 31 Mar 2026
- 02:22:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
- <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
-In-Reply-To: <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 31 Mar 2026 22:21:52 +1300
-X-Gmail-Original-Message-ID: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
-X-Gm-Features: AQROBzCJdjrXABR4qdV-glYAtPXEJJS9NfovzfViIj2lstem4gT-6tr0zCej8sY
-Message-ID: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Chris Li <chrisl@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, bhe@redhat.com, 
-	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	youngjun.park@lge.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	b=6Lbq4OGJUHNGQ3omvB0ZI8QXydlh1Z6mTR6XGsHJAfy/KyFnwocT6ohFkUeJKpHclCzIPI
+	WNj6Pwd53fDsC7gfqLgORlILHMB3kS9VZM7dBSXI5xeZNUbo/pjVL2oNLtK1OE5usDADnn
+	L2Sxdpm3Bn6VuKm77fHRi1emH13a3RE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774948958; x=1806484958;
+  h=date:from:to:cc:subject:message-id;
+  bh=NYW/PgnTXeFfdpQ4jOEdzfB4bwLYS8qx2Tohk7uPTYE=;
+  b=F3aJHz+yWKpb0yvTqHzB/0AbApdEJFyfAKHCXAPrGYpFLFcyUcQ5Y6+f
+   HbvReeNK6wT5L0KCkNElEnEx5dPJfdDf5kiw2CA6oLJ8UczTgkzVRnO3O
+   33mXehIDYjAqRsq5y0hKfqKymv50vsLdH1TbZWcwMjKWT5o/UB26rMH/U
+   z9aXfKUSyPFXJ0EmfeYGRHO0rmoBpvjhlp0XvOC3q09zdMqm1Ia1HnQah
+   xZIHY/r5EwUsBkpObpHrFD3P+6AQvlE6YizdW5i4+Ckf+8cAfNa89872+
+   OhrFJ1nh1WWd+shZSVCXtrInCA4+qT7k2Tn+4/4YR6F2NyKrgpxrKFGFI
+   w==;
+X-CSE-ConnectionGUID: i+rOdqLNRLWY5UQRLTegRw==
+X-CSE-MsgGUID: WDExQ5f2SJKWMAjX9qmRMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="79556600"
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="79556600"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 02:22:37 -0700
+X-CSE-ConnectionGUID: aPjd+e/3SNmeZMcpBh/5+g==
+X-CSE-MsgGUID: 5ghivsf7RHe2m5nX5FA/uQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
+   d="scan'208";a="230379274"
+Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 31 Mar 2026 02:22:35 -0700
+Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w7VIu-000000002Sx-2er9;
+	Tue, 31 Mar 2026 09:22:32 +0000
+Date: Tue, 31 Mar 2026 17:22:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-unstable 157/186] error[E0277]: `*const
+ kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+Message-ID: <202603311743.uZYPu1Gn-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B1562000A
-X-Stat-Signature: km88bk8af7grziz8zp7ptz99gi7p17oe
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774948926-16848
-X-HE-Meta: U2FsdGVkX1/7iiKPzKZWMJDeZ/9WDs500HN+nWuJu84pTI51yu0YaTlpwO7GyTBFP6k14i+flhIr2RBaCZdhExiNnfE3Lu61Pb1mQb9vkKWM+rPRu7vuFp/+8LBWayJXMAgWit/WTjzP4lzx0n38lln0K5pG89pMmffvgOVCvpVn+1VOcMfRc3p9jF0yW86BYWJobB2/5OsUVjc56tKiVIZEdaIkjWA0PlwsCjBH3ynrscGA2aepJ+s0h4ks7PpqYKXZE7pbG5H+Ppb5Thy0EOGREojBUsgI6GMRFNLdDG5b+GoItfqAbuDbSjvCY+XeRAUb4k3SSYNO1WEtlp4Ngu4m4Ox5916rdu8WykWMIldWQdo1iwgtnIm4xHoBN5OirzJKfNtuua9DgqHn6sMfRLHwENqhM7Be8RXeO7dlQj3QkYHuAfl2sCQ9b8yuRnl7m5yuIOspGz7ovtRFOxr1ohuaKysM4nv+OBOWVVjIjxDe7+bBMIUAPoS7S5FyQqsEJIO0Nu80u1+HOxQ87ONk2AaE+wbFW+QHHnepyM7kXyqi7/GjB6eSjmTT198MssPx8SfWK59y5/5UdLBGJIa/hRqwuOJP78Ih1zHBOSMcRjcQesJucZtYDmWsXNFH7B9jdbIOeGD4TOqZEiWYpYtLVg1JDAcvRmtl11WZS5ANlIkSdVG5OMXQrR6ILgMzi9kql9w/3b+Wry9uYKdI3HUT3ZYAWUHcy27o4ToXOtdST5GLYwg8K+l5Egijt5cYuphXm8MC97cs3x99EKGGDVb3jkMswFwkR0av30ZirC1aDou60FZoSFsviNdlC68Kf7zyVxoYb++XN5SbSD9aLBxUHJpmmABiDJBSMfibuoG7evqE4Cme4j4MMRmDkioUBZ2TSu7BYKlzBOGsxHqi4Hbxh3EtBTfWs2sf2aqCEqz7W7B+QcQcVW7em4+EFO4YgJ5QrgxrnCV6XV5A8qmiPgb
- GjyGvuJT
- 1eQiO9MMzjw/U6NWNRttDBQafWihNBrVH7jkx94fMWFf/uiFoA4iRFSzFQNafIPdqz8sfalU6Ddr4qXRGS/EmURi5QLDmXpQxpOK/coEStkKQvRhEwXP4C+yO6t6OeFxIA/lPl4ZSSZ15xwdWuWmY+53gznknAlKgE8jcCc+37m0knXhOwkA1j9zcrvcYDvvIJnh6kCeXxsnp7KwM7fopUx4JvsIwbpV+4l9uR8+thH4hH3tJg2+nPz/dH595HPsrmSy7r7aU/wqMAtVsukOJ3dhbGiabeVKj4LlL0UoynrK1r8ng78GyTST44wF72Xf3EQZDtr3MNM25RbjiBKRqV0PvBJncstHI+/4CREoVYsbfBWvsTPwv9CpHAMjZO6o63Deci9WCpdgQZq2CBtYpshIqrQ==
+X-Stat-Signature: gatac96ay8qjxw9gqx1r415penmi4mse
+X-Rspamd-Queue-Id: 9551040007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774948958-673810
+X-HE-Meta: U2FsdGVkX1/boH15LlExp0JSk8ubCCpUXbPXw0epUBgbBJoFiK0t6cVwwMKKDtEaqqkS73uqu4rHEya08HmgrrsOGLl8/7nzFti5ycFP9UElmZ04FbWn0hkCuspv2cYoEekSkZE3mgkn7Cpcn9GAr+gytkM/XbxR6H/amrOgcBEXzawTI69c1I/6Qz5YL/NPRJ7e1TLR/nSiRne1AUCU+XPnhQMnSSWtR849aRrEY4azAjvzu4ciXTsqwTeAs02oxRVKSjmklC2xWjihysKGhxkBT6btCfJ49seE5ulArEmKbgVCJAxY7H+/7zKIZYQBvCGSKHG412guSQjCP1Frf/uFq/30bEnQxjEZqqHqcZ6sc8LPulqY/YDJKp//1okWsmDG0axMhBetydTCuiHzfOhPmBV9mo6u9TeW72LVy6fn832pDK9BDyq2SrucWfK4nHfhK6GrWHTPvCPD7Vy/bi+FIdhRM+YgneE+NuCwYtJ89+qd4y19O55UFOSiOvjEmFmQ+M06r6vvnTjZHUCu1JPNnZZTnwLTYBE87TpexcSKwcEH76Qdqq/FnxI7ejfKl7BFaWVUCFjTSjf1tCg3hP1eO+gQN4p81pbGPR4dpZ3ubnpgMQhs3QNX17yUAk6hhtV5cH510iPRXNH+2mjuB+tIpL+Gy+coI/JKx+joqbYvBx1Ogd1k3r+qRJ18/BgoCjJOmmvKvcdq9PVuZSF605ZtUHmYs+2Oq0nx5tp2LpYpTk2aQcOuzXaGMxOLV56WPtOcDF/NCrhBCuBQUHj2D6332r5Ts+jNt9sVFgdVtM6N2Cg6u4IdV4UE4EyqHLzuZ61ze+jU7rYQIaAu2sBuk53XbIktg5qk/AkoC0I03TVO3W2xAdSaOOP89CQAFWCo+9rl3r0ROgYyrkHIBz4zvrdTeOS49Hkk39yYr9BPYAKnS7t96eHVgJ0bJJvR2MPcqgJo/AEZxnEmHecHQKN
+ urb1++Qg
+ H3YAqsBrnUpn5lhw9R0EheZPjGHTIo9unwG9moNwM0vIlUpn0BoDHO7oJR6H/rBkLkM5Jvh6yeAp2Kv8IB0ISxS5cy7wZFR65RxUg07jrwPPiU54rq9LLBLISfdZcYkU6m3AgW0sp04iEjn0WioWy3MkOxZad8YvfpLST8Gm4t6yJ1I+UDKCqgiqKdg0OVMu0CC3dbJtdytyE5zlwRjU4n/6hZHlV5k/8m+xa9dyO9rqxVMO9uNs3Mofo9ui+fvpz1BAl14egpXFE0CqPDY0W1Lp6c3ARuyu9Ga/4JhYW6M1XeWOIWe77jnA9VXxYf7cV4oyG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,49 +102,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 4:31=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Sat, Mar 28, 2026 at 12:58=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
-rote:
-> >
-> > From: Baoquan He <bhe@redhat.com>
-> >
-> > This simplifies codes and makes logic clearer. And also makes later any
-> > new swap device type being added easier to handle.
-> >
-> > Currently there are three types of swap devices: bdev_fs, bdev_sync
-> > and bdev_async, and only operations read_folio and write_folio are
-> > included. In the future, there could be more swap device types added
-> > and more appropriate opeations adapted into swap_ops.
->
-> Should add that there is no functional change expected from this patch.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   24e341657c283c965e3bfee0baa9ed0376127973
+commit: d310bb41720b8e81d704444fec89e62c286dc9c7 [157/186] userfaultfd: introduce vm_uffd_ops
+config: x86_64-randconfig-r133-20260331 (https://download.01.org/0day-ci/archive/20260331/202603311743.uZYPu1Gn-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603311743.uZYPu1Gn-lkp@intel.com/reproduce)
 
-Sounds good to me.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603311743.uZYPu1Gn-lkp@intel.com/
 
-[...]
+All errors (new ones prefixed by >>):
 
-> > +static const struct swap_ops bdev_async_swap_ops =3D {
-> > +       .read_folio =3D swap_read_folio_bdev_async,
-> > +       .write_folio =3D swap_writepage_bdev_async,
-> > +};
-> > +
-> > +void setup_swap_ops(struct swap_info_struct *sis)
->
-> setup_swap_ops()` needs to return an indication of an error.
-> The error is that sis->ops is NULL or op->read_folio =3D=3D NULL or
-> op->write_folio =3D=3D NULL.
-> If there is an error, we should fail the swapon.
+>> error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+   --> drivers/android/binder/page_range.rs:146:23
+   |
+   146   | static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+   |
+   = help: within `kernel::bindings::vm_operations_struct`, the trait `Sync` is not implemented for `*const kernel::bindings::vm_uffd_ops`
+   note: required because it appears within the type `kernel::bindings::vm_operations_struct`
+   --> rust/bindings/bindings_generated.rs:73862:12
+   |
+   73862 | pub struct vm_operations_struct {
+   |            ^^^^^^^^^^^^^^^^^^^^
+   = note: shared static variables must have a type that implements `Sync`
 
-Right now there is no possibility for any of the ops (read_folio or
-write_folio) to be NULL, so I was using VM_WARN_ON as an assertion
-to catch bugs in kernel code.
-
-That said, I agree we can return an error earlier instead of letting
-swapon fail later.
-
-I think it may still make sense to keep a VM_WARN_ON in
-setup_swap_ops() before returning -EINVAL or a similar error?
-
-Thanks
-Barry
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
