@@ -4,135 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97FFA10F92E0
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8099D10F92E0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:44:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2046B0098; Tue, 31 Mar 2026 12:42:36 -0400 (EDT)
+	id E71096B0095; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A196B0099; Tue, 31 Mar 2026 12:42:36 -0400 (EDT)
+	id E48826B0096; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE1F66B009B; Tue, 31 Mar 2026 12:42:35 -0400 (EDT)
+	id D5E5B6B0098; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8C76B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:42:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A617416032C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:42:35 +0000 (UTC)
-X-FDA: 84606926670.08.7DE0EF1
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8DDF0100008
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:42:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LTjnqWjO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774975353;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C458D6B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B2ED1B6E98
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:44:35 +0000 (UTC)
+X-FDA: 84606931710.09.2834B71
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A9DF240009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:44:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XQIfmewb;
+	spf=pass (imf12.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774975473; a=rsa-sha256;
+	cv=none;
+	b=4WE/irwnLcciZJXuqpqTtmG5qWHGQdU7YGrv+UogDmpnkOTpjzcoMKZrukc7NshH2RpuEC
+	UKYTNnnPQGn/0u2OQpZBp/OKYZh/8Vn85AbPjtsDXgkgBHUNkpPOvLEU8DreEZNP+m6CvR
+	scnfx7A7zsrl78wG5HJjFRtRqWNdo+w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774975473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OWXcgZxwCe/i5vmEyRuiCEIOs8zFNjOOEmunu4K6OG0=;
-	b=d26+PYpDzccBANgeZKL+9ldfqbfbj0+2zvPgVHJcUwYuq6iDQLHaBjsa1Hg/IU9+1DQAHR
-	ZWCiZNLI+H3wSd6dcp8DLKQBKoiCZ3cSkZJKXR5po7yjiVzkYjgO3+yFDU7iANrbCVyDL/
-	0ak8letaqSV7sCInoJOGDzseKPlZpws=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774975353; a=rsa-sha256;
-	cv=pass;
-	b=GhsH2CSEEqpc0qaz1oMVpDjTXW7GeTIUQnpdwsnHKr50ptbrN/DdmuZgDB9xghYso7dO3n
-	jXsGisS79PHN84azMgFGrz+y1ywsKdni4wS5ZHKbXDbymtR8WJjgSPZt8cAcWN2kNHNgNB
-	hJVwPETmo2TP1xm6E0h+0P899tMtpFo=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LTjnqWjO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b980b35534eso9852466b.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:42:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774975352; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U8x4KoApUrnyKUelo3R0GmxCFkJV7ZWu/YAHAX8NA812lUK42oRn5FWHEwcatgI9WU
-         htTLwDyDAmPOjJAYZOI2kNJ5imT0CGl6lLOy5JGdNOrEq2EUZb0QX1X1a5Puf1fNm5iq
-         eXLcVG824GRPHcWB+MlsENiXdIvUgztYmOvLs0BTrd10+y+nwKbk/qjFY4jGa8USbSSC
-         Yzo/WA/JQiqLPCfTuSyrOzg+IgLsoV3mhG4JqZS3iPRfFHPHkm7pPgoSPzcuX8HDeLiK
-         Jm1HNPeh1/jO3gW3wAgfznVGOdQCLlXUnvEyLnVBZgRE2GlFy3SEDlsM+S2o0pPgZr4A
-         rWGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OWXcgZxwCe/i5vmEyRuiCEIOs8zFNjOOEmunu4K6OG0=;
-        fh=aCJ3Yln5MLdjdHDtKpnhBCG9CtJFCxA90umqWbwNssM=;
-        b=QBT4m2W+ZmvBgJU/keqPM5nvO6+TloGaxnTGP6o8IoDmiYfRhs15Kv09Apfz1MYtla
-         ZXzFXar+Q0Ena8S4IXNWx58uKx1hSxuKpI+t69hfs7lpCaFWGr26XF0rEJuSQR2qGu3N
-         yUk7jB5h36J1KQqgS/kZKTx7NB1HcsZAkZHPnaoL+mp0E9znMy3k2mOBpbZzZTZtdLY/
-         /amdaA5S6m50zgJZtFkHEwrIFusINAYvkLh3vm0OQgopAAfRgqd23lslRTQD+UrUqcGM
-         DxOR7sTnOJAnzj8dgcu7E3KOsTI2j77s9q/wO0BCgqZHoSFK9BVd5KkOT35rzZ2VctNL
-         ufOw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
+	b=17i/4cpoBawNyWBbEeh1uTpm9sTc+PqTymLsARtdKjtyE7enV0xoeZbq2NZ4B02US6vQHD
+	r6XGYxWD9rMapeZ/1NSprgweF7bpErFJOXjy2hZBzsVaI2xnPnrl2s9yBJG+tkvEgizwa2
+	1s+We1fh1OckKCBRMjq6PP7Xs+B8+nI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XQIfmewb;
+	spf=pass (imf12.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b243198058so94665ad.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774975352; x=1775580152; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OWXcgZxwCe/i5vmEyRuiCEIOs8zFNjOOEmunu4K6OG0=;
-        b=LTjnqWjOw5xHq/xHhiq9RTzntSB1YfKzxuLGT829lGQ26IE/9oeq0h+n2Jk3U9Z3GZ
-         YW/isemiAVJiSKsXs6Ep9kSriuXRWPP014gB0v7QlAQ2lCbHxDpegPX2vyMaSleZQfkO
-         xmMUFCqBuQ5JbrSuVduSe7IVYTEc8K3jhdANUOaQJSMAYhH8katoMoxeF9lZOQub0USv
-         LqBeQ89DVdgscSZj6c+zHLXrAuAHkcAN/WdKH/ufVw7U4NM1sylH1xp6xqcXEngdJPin
-         vWQcZEE58TFLmQzGYldsdViKHgUB44s1DkySqWmFXe8bv6MDlzBEn0B2PSGUCK4ohwen
-         Ybsg==
+        d=google.com; s=20251104; t=1774975472; x=1775580272; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
+        b=XQIfmewb2tFK8rmvtQNEL3jEWZo6E34QSoQ0WnKw6syFINyAHzu5QGc3fUP28J7+hF
+         YMzKAxwYOGl/WCHzHEK5AJpvBygz91Q9bRX7yaHM2GTeLHiVeqhIAg1ohpeSSfXPkmd/
+         FD0zB3JhR1wrglqrAkCoxw/Bnft/ZG42/6N+TFlk5Ll+TRFKxaVWtUbQBTP/OmiR2iIg
+         K7RiwOJ2dm0uN/B48ue0ugbu2cghbZbdbO+OeIBLpqRHKLOKLbUlRUH9TpYM/T0yBCJr
+         yF4GGqxswNr2uo1LuXgX/HR1r78vUVjMz0EswRIQfgvqL03iLTQkuotVOmx5yIsJK4D0
+         hVBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774975352; x=1775580152;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OWXcgZxwCe/i5vmEyRuiCEIOs8zFNjOOEmunu4K6OG0=;
-        b=AQMGrjpcsdj4ufsKNaieH3IU+TkdXseJySjYrb0sVZM2d00C4iT2pAL4kJUnTX5/0c
-         jcia/oMwhVKhrryyYDLSMDIE4yfblyQW0e9ing/KoRbj7/qDzD9avqmmAzSwPlrxj19D
-         cLVZQNEQVpu4abJyUGnGb9d8RAA4VFvGKzCprcAlH7u+Id1Cho9Y6KZ6iPub7ssSOv+x
-         eI6/WcT4WcaSkkDmsDxojtAdJnHSPQyOt92PJnd0CqDkQEStgg9CGKXB559/hWuX6Dfz
-         L0sAi8IghATSXOm1n1oFifCs9yPJOoyhbofd9e4BwzB3P8RLE8JLGG98T9SG1ZYn8g9z
-         gjcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRgf/CM6z/GuayGk0/VI/b004NdM8h9NQhJ3VzqTnTQfhhisyu8GoGxHWWZhpvXTuBjz6Li/OpzQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwZF0CNpYQPjNn0StPAEwlnk1AzhDbMlVQp3drm4N7QEHvQYD8
-	k7N3fp61vG+Yyd/iz2Msft09qL4iBRMAPCyTlB+C1pmhYo1ZjZk3K3BnQU34WEaBpZ22j9pjnmw
-	ap4A3Oj5/tadqhyQZ1vQJZND7StrQJ8GEaTiiJV3dCg==
-X-Gm-Gg: ATEYQzzSvgneIKnzmAlN/ef8y4KtyljK53vtKDZRLr5UqT9Wts9s9VR3T2QesPoGA0H
-	PV/Y0KHR6p1bXjBX4XVaWXvKkOnT0DYMEnDB91BI1QAsjYBiG9yFBiVvMrADgn3EhA3eDmkE4pV
-	EjNq1N64/djjE4d6ZS/3Yrh94R1ZhZ8agO5ePkgPpiAat6X2vnLv58pKc+PiRtcFzigaD2Zsk1e
-	hlU5L+157XMKWkxpaJ7m0sKeH4h2Q2vwbLk7BgVkVcvS3TPzETk20+clbMW8lrxfOTk2Tiw7B6G
-	DZtr6wXFj8XeYdLU24ZNz6fxDAxUbGkmxk7VaQ==
-X-Received: by 2002:a17:907:74e:b0:b97:b149:4e72 with SMTP id
- a640c23a62f3a-b9be88c4be8mr199825866b.28.1774975351482; Tue, 31 Mar 2026
- 09:42:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774975472; x=1775580272;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
+        b=kPTRnItlU6jt4KgxuVEm//mVo+ICb1oMDBcl/Z8hwfpJx24F6Zl+a0OyPYD3RlxVHo
+         DSWoLQusg+22Z5mbvYwdPBXRyJeWV+S5Hf3nwqOlJvoKgDuS1Gb1Bh/rWDpX9MN0BmMn
+         iG/zvj4ZvPL+ZWdprJ/irTZ+5ZfwF37HQIAUKemiMYbVbnNnO97t7gqYUm3Es2P5VaCc
+         Z1n+yGhgwAFdX43x0fpf3tzAo/AmDk2A2CONT+jumQzK2DlmNXfZ1rFbhKcY1FpLWusT
+         fXYe3iFmpXLpotxJa5ba0e5CBAfHO/gooib4B7Eif6IYH+6RjBbCyA4IWXa4uwqMoh1E
+         sOpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAPuItVn5PYZaIGRIEic6OwP75+5scZ2wDwUY/hFbgBpMIwF8AehoqswMmtza8nFGVCrJA308y4Q==@kvack.org
+X-Gm-Message-State: AOJu0YyflhsrStGF5lTtH5mlyI3L/E9BlXfpQjoF8DkS6Sfojt3zoOgy
+	v2DfuS0s4nWByr5ny2Nfykp/abq1kGnpJRJ2zC8w3I28RPKTyYNsHn1ANbZgZk8x9w==
+X-Gm-Gg: ATEYQzxwDhsBUqMV+l1I68GHm210Uq83+pRsi6zeTQkSSxpObOAkGEz4tS11o54/ADz
+	RTwbyKE8YFm1EgoeY76ZA0oD3fSUihaalTAIwUsHpjTt7uApjyyXQUha4eR5I2zU8iXhw4r3kj/
+	RWGx+WuGrml27N1CDB3/+yLJiBY3K+Yue9J3dKfBDqt0dw/472ibcv/ZFyOsivSY7XLIr/wXeO3
+	ZDZ1MvlqjEaE3D2VTvU7/T59beavyHF44VBwWuaa6eUlC8Xmibpqux+PLELPieHwJZH15rNwZFd
+	hGeHzdYUPthNVN2a8svuql4p2geeH6aESvSYjZB0ZwzwEZUDJ3w6ksGNDAvuFKopWMyQK/1luD0
+	+5P8E3dQx0kJVQ3SnmH1OGpvNbXlVIxzFNS6i/CxHrp+90ZY+j89bbkTATtXaFGlXiBSBxOQUTP
+	lzQZAB2TRKnRD+2sIt+UMSreIe/M6xIGhKptecimxxiI5k/eMLWDRcVL7QQMN8VT96/J6v+DeU1
+	TBlEHTjwCtK1LQK6rM6YNQ91oIn6duGePn3Y15L6Gq0GaBMGVdp2w==
+X-Received: by 2002:a17:902:ebc6:b0:2a7:87c2:fcde with SMTP id d9443c01a7336-2b268f14089mr297505ad.15.1774975471796;
+        Tue, 31 Mar 2026 09:44:31 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:7c3f:a173:3e15:575a] ([2a00:79e0:2eb0:8:7c3f:a173:3e15:575a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76917bacc2sm9459387a12.26.2026.03.31.09.44.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 09:44:31 -0700 (PDT)
+Date: Tue, 31 Mar 2026 09:44:30 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Brendan Jackman <jackmanb@google.com>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+    Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [patch v3] mm, page_alloc: reintroduce page allocation stall
+ warning
+In-Reply-To: <69cb3957.5d0a0220.93499.af4cSMTPIN_ADDED_BROKEN@mx.google.com>
+Message-ID: <a65dc09d-f181-adc8-59d5-838b6a2b7c9e@google.com>
+References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com> <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com> <58a10940-e44c-a120-dd6e-ee9f480c4946@google.com> <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
+ <69cb3957.5d0a0220.93499.af4cSMTPIN_ADDED_BROKEN@mx.google.com>
 MIME-Version: 1.0
-References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
- <20260327033335.696621-3-pasha.tatashin@soleen.com> <2vxzecl0i8rv.fsf@kernel.org>
-In-Reply-To: <2vxzecl0i8rv.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 31 Mar 2026 12:41:54 -0400
-X-Gm-Features: AQROBzDDXSrXnDAF2LHX_tDmG-n3BYfL4GNehGeRWniM10iq-caP3N77QfA66TE
-Message-ID: <CA+CK2bDFidSZQ+UevEXPgfF2BWkN1AWkb2iRWGxUNV2iLpJGXA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] liveupdate: Synchronize lazy initialization of
- FLB private state
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dmatlack@google.com, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8DDF0100008
-X-Stat-Signature: xmd47sbqfodw9bijjgowyzrfck56jcd7
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774975353-658984
-X-HE-Meta: U2FsdGVkX19fdb4vmqjiTZxb1PJFDtg99hM4s2RmTby9llQTLtoGgdI/Q+wPiw31HqhbvUQbsVKC8qhwdPc63WXx807BXiQ/Un3LFo/iWHRnqs7jBATxVUIHp5LCzh9Y6E7V6YfHSRnMOqCvGd81XnLUzCbXspRwNcLJHXbk/tZOqmXWcO5vqDAFXpPBQ97QodZSEvflGgG0UR0olzhWaPmMPpcWsM3THg/WipJMZtlFqS5NUyB4z0e5GH9zLD6aB9Bij8cEshQoYQ4cabZZqqsZF6I3GNFUgCkZNCQqPJTInYR+aSIb3fz+6uCuK3vqSBex3FfhvAwjINTPqFXWBR2RfVoik34WbWNzhiiIDchXg6Thq3F3OcfN8+rIXGd5yJVoH04pu3OM/DKcWIbZC2li25/eWaw1Qbq1xcwGuhF2VXTi7gZfL44S5rZcEnLm0BJos91+7kb2aQfxXZ0bkpNtfSd6t0tlqqoxAeLnUJCURUDj3ns0NKNshdKR2FlnRPSvIsK0aG2XAPvRAOwIk7SIYXHuzRvRJt3Msahyg2LWmq3Akmr5QazotOdWSBleSBwged2Kd1ldh0bzEGx33Z+oubtqPG24sDquBV7lSenPg16pOYax5jwgqeUyiTE/Ewdf/RRbDw7UfFzyE1a06LI/OtUAr6Pj7H+ukvkD7iZ/v/9WAreJGN0ZH34jfzYaUp25BhJY02BznZ4iNiPDPEeX9dHJh7c8Qzkf3UY4pm0NKZ4vhn/QHXwuitQM30S3FG39dg2DeDCpYxf9yXn68f+FWvgWzPMBz8dRBkJ/DHvu1+tGftdWizRK4zWiD9m+apVnDzmz/7CQTvrsNwhvnWednUQ9SxiVnR9IOHyT4Pb2Yr8HoHKWKTO1JWORrJxOj8FwjdEp2vtWBaktPpj/2Zt5X06qiSElzQngJYdbPDfwb54yCBC1bYLuRd27d9KNFe5xroEiDcaonf+Otq/
- Egl7ltcE
- iKjee3n9gk9p50lK5xPmb/51Mu78TtIlMXac/97BVPWM3vPYpLIFcYC/NusXbvHRRf3mXOGzlsJb0hXzMhjTfK88VvLdpEknb29dBBI1P+0yqZc18MNxKY/+6u5xvl9LZwkKBVZuT5wXSRYsbPTt6eVXq+nmsxkOs0LVXP0ZZIUVt14KvkbXpubTTIp/O5ZiKm45jFMWeKPsJfG4Okdj4ch1yoWTZQeSVUj77tuJBWYPJkTfsRZgf3D2aVtvR5rkso0jcXQpt60G6XudqCms6R0Ep1tuQUgqVWADXJ6rGuxwP25XBXbnuM2QTOhDnXEMk4jVc
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A9DF240009
+X-Stat-Signature: tuaot43stii3bgs7dqce9m6hrjq7hasf
+X-HE-Tag: 1774975473-680375
+X-HE-Meta: U2FsdGVkX19m48wxDiVbKk+LxLshBU/CFH7mej42GM6csfqcqEQd3YKYixhS13r1bhTKxcWd7quEbR/d0Q1neNt0IfVloZ9RghkmMBmK9uYQVqlL0Deo9CF+aTwIjIXO6Qnt23vZe2X6z4tXkVOpmnSzOjQGa+VtWxqU32oLQ/vUBqsP7RWapCRZiHhrkbYrd936wWx9W0hAgKvtaxuzN15gm6K+NrOGAMr4RmcSXTEE6QKRt8EJiDzUCxyxCBCK6zOwKlamn856QCZlDgIk0t06V9tJvIkBzoebFdqyZ0Al+RWkSTSvYYnAnk8vLxtDHVDI1egP5qaYE40MTkziWyCn21LkpaJM5xgCLpnLV3vqyq+xBitXMARKb/uh6bKwHm+iBa0A5k25xu+srUcIe7zi9yS/i5KUahs4yraRUwL/F+8FevQbEeUAWHCORUYlJi4dRIacrwsORabpF7w5ALwXeRu7KDVmhbvJ8qN42m2RjtQULgT/iJf2wXZ9DGh5UXJkAxmOVV0M/2HKZKOSWJDtn6ROZa26HfqfFXW4TwXWwW5xhHYAEYuDfNAbHDB0ZbxxTFA4llU8VF8KiGzE1JcCFPETZOUsTZm8BBYCNxtI5HCYw3dNhVI7Zr4TIVnrdxBywFfamP02/70FwVPHauXLiLQAth8bMqDrknaforMC8Iyigk+2LuZ+xblhdrf+DpvKVd46aREfZyy30dsMs0ULQhwTTQjL6C4SfIGjw/h+rDSS/V6EiWsEItPFFneDSNy0jSZg7d0s6bkgujuSWK7XsaGorog0SXZFEt8R2EuMfylVCuttkJb22uPm79ujaqLf8SoeNNKG8VnGzFsccQzDVw1p630Y0rZyZLlp2R2c5h4qWi8FMTKl/iyhB5l6MlFRdYpKky4lVfJBjjGt0HhBxBtub8yi9I6/v+QtPjVMOCeWmaXPnRRn6bZ479K+vUQNcG4EJgs3a/Gxs+5
+ lAymWHjo
+ Z80Ei76FkvTtPnqX0Z1q45FBM6sptfxGrlhX/iFefiiNNcUiPcY/BiBVn6QSek4CZkkwtM8Jg/L6GT2uYSjJmuijH27pm9aZOHpAt2cQAg1CjTYBZNlWaaDC26yx9PGmX1cgkoE/f+XkGU6v1bzMlx22FgfFrNrqzrzg9OF6Ba2eeAM0/MRu1U4w2o6dtBYlt3AqzbynlEtRr5tnfK1gQoOmgi1x/XclLI6tcBWU+ZzACeHzqp4o/PIy6pD7mJ85PbpcQ3zfuaKltqGFhn53l21wmLdKtSQU1x9t94X4O3nMa1i2VRFs9f728RzPO5OY+ig/GZtPD9T5xmtLPWalLmcTCmxYZYbfACsF8W52bs+MrShO6e3k5WsHPte5yg1avJl9VRTh19g/ouBDtRlqby/ia47prnXtQbtlWRZ8KpkYvag8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,74 +123,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 6:38=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> On Fri, Mar 27 2026, Pasha Tatashin wrote:
->
-> > The luo_flb_get_private() function, which is responsible for lazily
-> > initializing the private state of FLB objects, can be called
-> > concurrently from multiple threads. This creates a data
-> > race on the 'initialized' flag and can lead to multiple executions of
-> > mutex_init() and INIT_LIST_HEAD() on the same memory.
-> >
-> > Introduce a static spinlock (luo_flb_init_lock) local to the function
-> > to synchronize the initialization path. Use smp_load_acquire() and
-> > smp_store_release() for memory ordering between the fast path and the
-> > slow path.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+On Mon, 30 Mar 2026, Shakeel Butt wrote:
 
-Thank you.
+> > Previously, we had warnings when a single page allocation took longer
+> > than reasonably expected.  This was introduced in commit 63f53dea0c98
+> > ("mm: warn about allocations which stall for too long").
+> > 
+> > The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
+> > warn about allocations which stall for too long") because it was possible
+> > to generate memory pressure that would effectively stall further progress
+> > through printk execution.
+> > 
+> > Page allocation stalls in excess of 10 seconds are always useful to debug
+> > because they can result in severe userspace unresponsiveness.  Adding
+> > this artifact can be used to correlate with userspace going out to lunch
+> > and to understand the state of memory at the time.
+> > 
+> > There should be a reasonable expectation that this warning will never
+> > trigger given it is very passive, it will only be emitted when a page
+> > allocation takes longer than 10 seconds.  If it does trigger, this
+> > reveals an issue that should be fixed: a single page allocation should
+> > never loop for more than 10 seconds without oom killing to make memory
+> > available.
+> > 
+> > Unlike the original implementation, this implementation only reports
+> > stalls once for the system every 10 seconds.  Otherwise, many concurrent
+> > reclaimers could spam the kernel log unnecessarily.  Stalls are only
+> > reported when calling into direct reclaim.
+> > 
+> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > Signed-off-by: David Rientjes <rientjes@google.com>
+> 
+> Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+> 
+> I am hoping that the reason you are reintroducing these warnings is
+> because you already are seeing such cases in your production
+> environment. Do you have anything interesting to share?
+> 
 
->
-> But... wouldn't it be a whole lot simpler if we introduce a
-> DEFINE_LUO_FLB() and get rid of luo_flb_get_private() entirely:
-
-We are planning some updates to this code in the near future:
-
-1. David Matlack will send a patch in the next version of VFIO LUO
-preservation series to add liveupdate_flb_put_incoming() so that
-caller can protect from race with release of the last FD release that
-will also release FLB.
-This change will increment FLB 'count' not only when FH uses it, but
-also when the object is being accessed.
-
-2. After I plan to convert 'count' to use kref, and also decouble init
-and liveupdate_flb_get_incoming(), this will allow to access FLB
-object with interrupts disabled, as requested by Sami for the IOMMU
-work. I think, that while working on this 2nd change, we can also do
-some clean-ups if necessary.
-
-Pasha
-
->
-> #define DEFINE_LUO_FLB(_name, _ops, _compatible)                        \
->         struct liveupdate_flb _name =3D {                                =
- \
->                 .ops =3D _ops,                                           =
- \
->                 .compatible =3D _compatible,                             =
- \
->                 .private =3D {                                           =
- \
->                         .list =3D LIST_HEAD_INIT(_name.private.list),    =
- \
->                         .list =3D LIST_HEAD_INIT(_name.private.list),    =
- \
->                         / ...
->                 },                                                      \
->         }
->
-> I can't get sparse to work so not sure if I need some special syntax to
-> initialize stuff in .private, but I reckon we can get something working.
->
-> [...]
->
-> --
-> Regards,
-> Pratyush Yadav
->
+We don't have this patch in our production environment (yet).  We've 
+been stress testing allocations for page faults with lots of concurrent 
+skb allocations that can keep us persistently below the per-zone min 
+watermarks and hope that this patch will shed some light on some 
+unresponsiveness issues that we've encountered if/when it happens.
 
