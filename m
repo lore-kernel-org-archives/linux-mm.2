@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9DAF10F92E0
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B5910F92E6
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:29:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D98F6B0099; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
+	id 1622E6B008C; Tue, 31 Mar 2026 12:29:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58AA46B009B; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
+	id 1132D6B0095; Tue, 31 Mar 2026 12:29:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7B06B009D; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
+	id 029066B0096; Tue, 31 Mar 2026 12:29:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B1F06B0099
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:10:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3806B7D6B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:43 +0000 (UTC)
-X-FDA: 84606846366.22.ACE90A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CF6804000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbyW5WFT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774973442; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E629E6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:29:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A16A813A42E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
+X-FDA: 84606894792.10.A4B3268
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 66505140006
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HStgsD/V";
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774974595; a=rsa-sha256;
 	cv=none;
-	b=ZgVEE/+/aOgNOWo/liRGL5qYDBaBTEAp8v4Xh6oq0u/nIUuG8bSqXCHGZUazpJI6J2NVey
-	pOILb1wqQpR10au0cj+pUjSlninJDhS3szOzJztg+ATcOlKE1tZ+s7Cpzjx62VHosyWmfy
-	6nGyL0jMu7Ku6H+L0JVcUVfiTkNf5QM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbyW5WFT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	b=mHAIZyASPAi98OjRgUu9AE15WJmgDZduymx/12FQdstlGnY/xu+MMGWaBccw2XiwVawj2t
+	BmcaYaz8PykUmGhj9MD2AiLEFnxmcqmQPcH/pupX61on5n131XadP8M7JbGuVLNrodzN2h
+	cAbDxRnKlwXp2H31ddYsEA2qPlArwxQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774973442;
+	s=arc-20220608; t=1774974595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpJzRi/dfXt3MjyImNXLRlCw/h5u6Pv3WS5qqFf2fWE=;
-	b=Nz8Vgrw0Ub73cC7XOhaJG7oxfCNUqOAnVHfYnIwrKC09tu2typUgFazzQ31ge+DB7wRdlI
-	QpiRbocOg2jpCIvtlKu6Xeld4LLPRo56HNuUdLtYdYqnYZAHzKVZzLDHMue0YAJxhNZopD
-	1zVr+m/HAgN3SHFSye78ZSeVZGFOnKQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1D8E44010
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FB2C2BCB6
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774973440;
-	bh=F6Dn6HjDyhVOjbwalA7j6o20tmUhnC1lY7ExPGaI+z8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WbyW5WFTQBj7luC9mh6/1p3a55iauMAjvSqcXjnUztxl1emAOdXdVdoH13oVKZqiV
-	 EJkYqjrOEhUCNokcnLpwwkHQuxHugKaOHeMFiTdnxs+gy81OnoYtoUqVOG1YwNP5SI
-	 aGcGmt0ywuc5CauPG21h8q3mzVxkOeSmYRTNu5auM0DSsVdIqO11vKLWN2qu4CpR9J
-	 idD4MsjqfWk303Xcw54t+THjDslRh6JmdJ0VOl+xSCslWvEfguxUENVihdu5L0Wk/8
-	 iIFcjQQFBv6eZZg2DIX8y3FiXI+dqgYZhw/hlNF6Oa4pwQ8m+c3HpPmBlQpeiRA3Pk
-	 rW7fkgCscrKIw==
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64eee7b83cfso6682694d50.3
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:10:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV0ns92zHngXXJhIaXEZqxyGBwBfN1P3N8DHuaMIUwU5PybYIO68MJeQ1CQ6LBizvTYrmUkexKcSg==@kvack.org
-X-Gm-Message-State: AOJu0YwKqwClNL/+eKLfhOuCLVKvvyEws5e88PNUWGuoczsMamEsOWja
-	Qv3MMX47cWni/ZiPYt8S9ikEZ/ztH0yPQVWJOJk1N3K4Zbwggevm8mzhtkxDbAV0tMhhHprF+xM
-	CD8X1gnvzI7EIENO0p9F53cspyPQCoiMlQ75q5ADAow==
-X-Received: by 2002:a53:b178:0:b0:649:ae70:a19 with SMTP id
- 956f58d0204a3-64ff741c8camr12486731d50.55.1774973439949; Tue, 31 Mar 2026
- 09:10:39 -0700 (PDT)
+	bh=t+PBWmKg1y16S9pTva+QSFTjRb299uFwMvllatkfV6A=;
+	b=JCFpxq5WkTIOe7OOW0zJk2Fq2awfkH6DR9Ohm4ltP2J/oQWftO9+JeWxfQahfmQvZ7W2ZP
+	IkinCn/Vd/HIg9pCulECPAmS97xuyoCliw2uWnnEDSO4RDSIH5kH0GBhZRyWqXgycekw20
+	OVjf2Rcoyf5cg7M0hsSDd5ekUHg725s=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HStgsD/V";
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <abd47506-9bd0-410e-861a-a747d284cc77@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774974591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t+PBWmKg1y16S9pTva+QSFTjRb299uFwMvllatkfV6A=;
+	b=HStgsD/VCRwVsSFrv9YmieEjeotbS2UpvXyW4M+abW7SekkdkMRu+geZDuDaMCdFwZ9CEL
+	dvuE06nvZHXXp5b530P3Jzdtocua3lOERUfFwUOtgD6f+Srdf3Z5Akw72OXUD3/iEwpSid
+	HxXZc9L5mtyQD9G1JlZaTqfwn0qEZhM=
+Date: Wed, 1 Apr 2026 00:29:17 +0800
 MIME-Version: 1.0
-References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
- <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com> <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 31 Mar 2026 09:10:27 -0700
-X-Gmail-Original-Message-ID: <CACePvbX_uaGizMFOsRHh8MgqW1yJjrS1qXnADLzFq=9pV553kQ@mail.gmail.com>
-X-Gm-Features: AQROBzDADBpMPFNTSA2SWfdQ-XZfri3rtWtqBweKR4gswYd3-nteGrFm1vLJY8E
-Message-ID: <CACePvbX_uaGizMFOsRHh8MgqW1yJjrS1qXnADLzFq=9pV553kQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, bhe@redhat.com, 
-	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	youngjun.park@lge.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CF6804000E
-X-Stat-Signature: d77qpyrtmi8dczkgggh1kaa9hii85jqb
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, Liam.Howlett@oracle.com,
+ lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260325114022.444081-1-npache@redhat.com>
+ <20260325114022.444081-6-npache@redhat.com>
+ <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774973441-965601
-X-HE-Meta: U2FsdGVkX1+ybNnUXtmRlMhA0CmLGGpUklnrSvS6eXqGIfDYsdte2Z19lJqTfoeExPhB4vbOOkYCGmU+XQSdOCcDL+K0xamNU+2hKqO/Jy0zAleLK0I4tz7ZKZ4CK1Pqad7YloehHaC11BwiEXcH9fjZGbv3j7JNQFGoMhmUKuZoEDCEpr45T3yx+TGo3914is7Y7gmYSyZdknWCxN3T9COKR1uATfX68DwnGUcX5RBIPt4mlZAoRpCeP5yCkCJohcOZQxmt3VGBvO6MdwYKdWWTxXlewG/8vcNX30M6ZFpFde9xr2jK/oCu81JV9J4Bz6dX9uu29uTGKFaKD43kAgWt773SP12V5r53VW5VhsoMlyRO21NfwsYeo9JHC7tjFCAeG6Iy6AP1UkmlXr9kd3nZ1UlKZvtLDuC5HGJVqHfzYQGB5jzUWETA8Bxq4gBvxAEwRhZrglh8VeC+DQ9yoburTAXNUuOlq+KitTKLKGl8wCsLOdVLUxKTAvTcEEUBaTkRMf+OyoV1fAoKK/vKxgAHDD8BkRMJzhOvhykg7RD7Ct1fumvI2QI34ftF5vzRwBzWlxDpb0HwBbHx8eO3EoysNRS1jIuvkAxT5nhab3mC7+lJaL4PzqnZVdKRrdVOe6eG7jkh7Ql9/VIDKcuQnrZuNHXbz/XxND5CUn3Nt6MZWCXnXhtB1zN3rIm444XC414igxxCyXDrN+Ij+DCYJcF++Ftp21oGvKctMeC9Y5gj2pLkTIOU+njC97ocmxzbIU/gniHGn6pzLdQnimaVWJyLgwUItJ7JHwxNBWjjlsaMEC/EqvFBmvZef1UUGQVd5iqVRfhDG7j/gdGj3RW9/eUJLO5PWdHTySaS883e/RX9+VSCOzabfKqiox3KMqiRUdOKAVyje3PLOAOQ1q9SycUo/gL2WwClUTqeUc4RVtpzMSikQsAv8YhPsYMpzZn1BQtQmf0uAboKerXcvCT
- WFODbogd
- IcOaC3D4yXQXftnPRIg46vbt+BjEgo77vPNkGIjuwKjEij+nmkzKrPWhA+kKsZysiaHz7rrZrS0BxWWxuqaQ0zuI8ORGs5dTEswm9R8iI56Rzd0oChl2rt13S3lbufKqabyW4v47vkMtydTvoxSd/1dwF/EaTLMbwRpy3MW7daGZ3DfrBX+Ol0em6Ll+1yJ0x7dGDkvhkfi/us5Nopw4r0TH3yoK8+wrguyibhkF3Bi0Diynw6t/olyuXcVeQvEZbWxQoxK8/86F4SL2NrhqT0HHGiNdExQ+0AOU/kngomlGv0Y2XAEPbqcY3QvjKumqVYJpgZaJ0Z05FetHYKd2VjlLV7JXakVnUUBZzdqoBIjl+faVjH5WTDWbmXIz414Wdr2NDkGx+0IHRgfKyHDrdMARwZQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 66505140006
+X-Stat-Signature: 8h6neistow7h8k1kkbznko5764o796g5
+X-HE-Tag: 1774974594-678430
+X-HE-Meta: U2FsdGVkX1+LZTZhRsc+04R7kMGwjK3enyMFR9OSsbhtL1FSDtITtqGui3t4l7k+2ZUXwgSsUl/EtCSyYZIG/Z6jiF0xIYR/BwEhVPN0h616+Jpk1jKMg60z1/HysA+6MssQycwdwhAkgLLPpAV0oI0aV1p22zSnvGD/6e0v+aRlyLglRL0AplDY/6/lDO4AqE/xgk7ry0/0bpoUOK+UMrofeS9XamJcROpf2tmIXZcnNeEGijXMoW3WX6HmLh4FVPGDESDPownEq5VWPbueczL9oPBkavBk+Pd+cm2Kgr+BfHnpa/xg+hj643T6NZPpf62A3ptgGayMAPl6xnQD0PYl3djhl5IyAVIu5MkhnP8VHEvRC0IXq6uFoMQmkyciUNcVsm1o2Cn5yriOg0i/Jox9R5kAbgQfN6sCJV3bbf/xW9OUjTcissmyqQx4e20QKmGVqE9mQADYJA6QQ0XX0B6c2QYrVXA6GURjrPA5LOBOIh+cNvqgo424Yybj8Mu12N5Fo6qx4hJ1FIooCrDLe7o3g5cMBLPghqMyvUbY/urIRIUu9qiC/If4hBEKSrWhyZ6bh5ZDGrjkRnWCSimT27Lmr4wdk+cG5X1u9TaWL5RJcna6gOcmWYuiAf0+NJJl3Ah9AJed69vqOfQ8feqYlA3YM03f24N12I+JTUrsb9dZ7CUz8qja2DA6O6U7cwXCcsum/gX5jc7Px5ZPdzXRpAxq+aNyDsHoyqX9u0LcHXtJ4N/qjbq976TykBvRzDSO0VlwiLis1vYmGZowqXhmH44bbARcZycCRRAgz5Hb3edx6TlCSg6AZA6p+Su0cJizCxxHs3ionzS6Jo/obKkZ7xOuuJCKBeb+fee+S70bPPDSrlDWSpaiWTNaaVjtaKQHdXc+Sulli2bfwSnF/fJsml9ncIQaA0Yynf67828BAAvNLb5mOyUCXZb9BMmqUITKml9W3HQzTlqWbIXhJ4y
+ eMTbe7j9
+ eVRFfcCmZvgQ9l2g2tr4/M5cJ0OGSdYF0flJqWoYj7Z2u/tTr9XvDvV9vD46DU4zUUv7XfOXEwwqPYHyNyz2KM53RI8PoDdCiUyBn1mnRCQB1vZaozkTO+bM3sm5gRpAb2HnMtYEtksJx+48Owt/zSIqjjPKzKyzy+ozSVIk3d1jJMjh4VG+/gLT1d4wlvqPdvNvw9Ljc4mmrPWOYE6sT/uaKyFI/DYDemEUip/PFWsaAyMI+SVGy222vFxYvN4pHl32FHiFVab1FDjhHsvQcnD8qeUP6a2iWUf/tFSle/XXbupFMpi3ZOXI6NIeDgJRiWvC4PVV1QTNfD2G0FOxcabJu81xEXTSYJCC7gN60EF3eDsf+lEK49BV+BJk8pJ6eTpy8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,64 +109,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 2:22=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Tue, Mar 31, 2026 at 4:31=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
-e:
-> >
-> > On Sat, Mar 28, 2026 at 12:58=E2=80=AFAM Barry Song <21cnbao@gmail.com>=
- wrote:
-> > >
-> > > From: Baoquan He <bhe@redhat.com>
-> > >
-> > > This simplifies codes and makes logic clearer. And also makes later a=
-ny
-> > > new swap device type being added easier to handle.
-> > >
-> > > Currently there are three types of swap devices: bdev_fs, bdev_sync
-> > > and bdev_async, and only operations read_folio and write_folio are
-> > > included. In the future, there could be more swap device types added
-> > > and more appropriate opeations adapted into swap_ops.
-> >
-> > Should add that there is no functional change expected from this patch.
->
-> Sounds good to me.
 
-Ack
 
->
-> > > +static const struct swap_ops bdev_async_swap_ops =3D {
-> > > +       .read_folio =3D swap_read_folio_bdev_async,
-> > > +       .write_folio =3D swap_writepage_bdev_async,
-> > > +};
-> > > +
-> > > +void setup_swap_ops(struct swap_info_struct *sis)
-> >
-> > setup_swap_ops()` needs to return an indication of an error.
-> > The error is that sis->ops is NULL or op->read_folio =3D=3D NULL or
-> > op->write_folio =3D=3D NULL.
-> > If there is an error, we should fail the swapon.
->
-> Right now there is no possibility for any of the ops (read_folio or
-> write_folio) to be NULL, so I was using VM_WARN_ON as an assertion
-> to catch bugs in kernel code.
+On 2026/3/31 22:01, Lorenzo Stoakes (Oracle) wrote:
+> OK we need a fairly urgent fix for this as this has triggered a syzbot. See [0]
+> for an analysis.
+> 
+> I show inline where the issue is, and attach a fix-patch for the bug.
+> 
+> [0]: https://lore.kernel.org/all/e1cb33b8-c1f7-4972-8628-3a2169077d6e@lucifer.local/
+> 
+> See below for details.
+> 
+> Cheers, Lorenzo
+> 
+[...]
+> 
+> Fix patch follows:
+> 
+> ----8<----
+>  From a4dfc7718a15035449f344a0bc7f58e449366405 Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> Date: Tue, 31 Mar 2026 13:11:18 +0100
+> Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
+> 
+> We are incorrectly treating lock_dropped to track both whether the lock is
+> currently held and whether or not the lock was ever dropped.
 
-Ack. Someone might register a new swap_ops later that introduces a
-NULL swap_write_folio. The check is for catching that.
+Good catch!
 
->
-> That said, I agree we can return an error earlier instead of letting
-> swapon fail later.
->
-> I think it may still make sense to keep a VM_WARN_ON in
-> setup_swap_ops() before returning -EINVAL or a similar error?
+Right, lock_dropped is not supposed to mean "is the mmap lock currently
+unlocked?", it should mean "was the mmap lock dropped at any point
+during MADV_COLLAPSE?"
 
-Sure. We can just print  pr_err() rather than VM_WARN_ON.  VM_WARN_ON
-is nop when VM debug is disabled. It is a kernel swap code bug on the
-swapon path, so the back trace portion of the warning is not very
-valuable. A normal error print will suffice. Because the swapon
-failed, the user will notice this error.
+> 
+> Update this change to account for this.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
 
-Chris
+Thanks for the fix!
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+>   mm/khugepaged.c | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index d21348b85a59..b8452dbdb043 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	unsigned long hstart, hend, addr;
+>   	enum scan_result last_fail = SCAN_FAIL;
+>   	int thps = 0;
+> +	bool mmap_unlocked = false;
+> 
+>   	BUG_ON(vma->vm_start > start);
+>   	BUG_ON(vma->vm_end < end);
+> @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+>   		enum scan_result result = SCAN_FAIL;
+> 
+> -		if (*lock_dropped) {
+> +		if (mmap_unlocked) {
+>   			cond_resched();
+>   			mmap_read_lock(mm);
+> -			*lock_dropped = false;
+> +			mmap_unlocked = false;
+> +			*lock_dropped = true;
+>   			result = hugepage_vma_revalidate(mm, addr, false, &vma,
+>   							cc);
+>   			if (result  != SCAN_SUCCEED) {
+> @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>   		}
+> 
+> -		result = collapse_single_pmd(addr, vma, lock_dropped, cc);
+> +		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
+> 
+>   		switch (result) {
+>   		case SCAN_SUCCEED:
+> @@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> 
+>   out_maybelock:
+>   	/* Caller expects us to hold mmap_lock on return */
+> -	if (*lock_dropped)
+> +	if (mmap_unlocked) {
+> +		*lock_dropped = true;
+>   		mmap_read_lock(mm);
+> +	}
+>   out_nolock:
+>   	mmap_assert_locked(mm);
+>   	mmdrop(mm);
+> --
+> 2.53.0
+
 
