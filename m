@@ -4,115 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE34BFF60F4
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599F910F92E6
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 096F76B008C; Tue, 31 Mar 2026 14:08:32 -0400 (EDT)
+	id 6773C6B008C; Tue, 31 Mar 2026 14:21:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06F166B0095; Tue, 31 Mar 2026 14:08:32 -0400 (EDT)
+	id 627FF6B0095; Tue, 31 Mar 2026 14:21:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC68B6B0096; Tue, 31 Mar 2026 14:08:31 -0400 (EDT)
+	id 4EF4D6B0096; Tue, 31 Mar 2026 14:21:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D90246B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:08:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8889816039E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:08:31 +0000 (UTC)
-X-FDA: 84607143222.17.EF7CCDA
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A7DE74000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:08:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y2IMy4FZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of rhkrqnwk98@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=rhkrqnwk98@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774980509; a=rsa-sha256;
-	cv=none;
-	b=neUzylW7uRkoEyjnVskHEU3zmEvj3r/UpiFG++iZ5DEIdrCgWmI4XS+kPh4itQ6Y7Zq7QW
-	40UX3RnRB9ec99FojbUgCEXEPjWaynYoF9eiBGj4F3tkLjAzrxP6nP4kfXGU2VxMAWKYAU
-	x4WmZgoCgKR5QC98pf9s40I0YEtLsXk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y2IMy4FZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of rhkrqnwk98@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=rhkrqnwk98@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774980509;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 383186B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:21:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B6235841E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:21:53 +0000 (UTC)
+X-FDA: 84607176906.04.6636EAE
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 34F364000D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:21:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ToHGBE9Z;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774981311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9ixODfTNhyekCgLAxcGK9gRDulyUyJjrmwYIdnfzbC4=;
-	b=oHCFR7Hws4vk/eD9go9C5PM/t5LBPBmbxn7kYzpHlma65eNSv9xRknlA20rB2WPNZA069y
-	ifrPj6AKRAztR3GbVrR8zE9lViLOVHayRLGsGs3qBjcv2q2ZMpI+k6/tICT2ehzDUsciOD
-	KzdixDaY60Lc3Dq1O1F9SFTORbufaRU=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35d965648a2so2367282a91.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:08:29 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1Z1ZTwUnghvA4wZBFW7neJ+hQNBTpYfH4OG7mwECm/M=;
+	b=p5J3VKGtLsO+WnTljQlNPZkJb3GlmZGZYQxoB/RYi54qQjXtLIAYh9G0GChgjig07u1Xta
+	QDRoTfUlaPjvdcJzPbb+JgrUy8EDAfu4uLwRoe7pAXhd0OLaICDXJd6qGVrcHZySs/vHr9
+	/BPJlPwo4FaEiUktrVZd7UP5k2R1peo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774981311; a=rsa-sha256;
+	cv=pass;
+	b=w8x2oyB5XanBBkUZaQHG2GNhJFIhyXf0Au05GBlxz5T8msef5ETbt4OSnTavzzwbyznB1W
+	Y4lwkRCCWWZT6bnEP3gLA4V2deUdJFK1YQL8mON/q7cxwFBxcMyITkMFvMEQH8QPOf+BUN
+	4mqjBXfq1fSXaE3i1BRH4LKPNQgcknA=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ToHGBE9Z;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf12.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso8247109a12.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:21:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774981309; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GmgN3zriaxQsfPVLJrmQt/uq0zSnNk5apr6RiHHlRQU6H+lCn/+dIW8ruV1ljmwTVN
+         qCqV2zCLHZa3jrDQ5CNTRS/BXDukq2XrCCGbzANYdxJwfyIznjDsIKpouXF19znRBPhx
+         saqwuNld4Ym8Jktb5IXKBwzatZUs+HkY1g2Nb6mYgRKPqusrcONMmn1Qu2NG0GRy6Nkk
+         kK8s3t0QViMR/HVEPAm1coeJfWnPHd8hFO3R4sbQyduVikF1y/xE31Mnw+tLc2f1uoCf
+         opAsdcnOgQCwLUekHdOAv92kc1Df5fP21hVIyyAjd1JVfQBfTGJvj1IO8m9222ksyOBr
+         AhFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1Z1ZTwUnghvA4wZBFW7neJ+hQNBTpYfH4OG7mwECm/M=;
+        fh=wyjdxY54co3Vn7HYmniS27YohyVLbAC3jk8nqpEvQVQ=;
+        b=BS/pAaLFPB0WIlgWCASoUtmFpTdFRDEDI4/RkI6HINviXLsHLzCsMKrldrYOHEMG3V
+         OjYR5+kLjRu1e9u5JtXNlFz6MSlwHK9TN7qMH3HPGsXkhFqyHUf+0w23hcmSjgvGSGY/
+         yeho7+v7AqXWNavzUJE86dNWyaz/8fPWN1PGQHYNVrAxU2P592Jo+yiEKQLhDWbz/RXb
+         lpkSukBqMU0uPVq2KPJPhX6xov6P0jYMlTAxlgiu4XiIcKC7c7F7Ftw+doPI4f7KD8dB
+         OHe3tRsotqYU41inX6qHKGQtNOaVnPDbwZReIRpbR5Muza4OiEWfqvF3eR1fimCezU/k
+         StRw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774980508; x=1775585308; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ixODfTNhyekCgLAxcGK9gRDulyUyJjrmwYIdnfzbC4=;
-        b=Y2IMy4FZUVYE6H8NzlaB6fxOmXv5vZJrECGLzeQ9jplqqXPPDd5LXJGYyWfV1C+/4z
-         iDY5BcKx2sRdFkElwXrJREW05zS8d/Xs5neoeEwb0tCh2ilV0exXsqUad5BbKh6oQqoX
-         LvI/JpV7GtvMiyOUUEvNmF0NSYf3VMpOAeZLIw2h6SWbOO3jHaHmdpNMpb07Ovg/irs8
-         v/kKcHAftIhGfSxavaRrUfnnhNAWjlDLJRHM1WNALS1L4SRFug05ri2PhjOrn4I3+g8u
-         x+evkQoqkIGhQSmaXX866Ph86Xfk83bEAP9e7lsc2dXHWBcbHVzdp0iuF7iJ7GVLbTN1
-         oqrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774980508; x=1775585308;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1774981309; x=1775586109; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9ixODfTNhyekCgLAxcGK9gRDulyUyJjrmwYIdnfzbC4=;
-        b=Obrg5h7fSw+Rc7T32v2T2XyK68KFtTwsm6tEvuVrGVLED1N2SwtQ9/lKqgxVBkPXs0
-         3FZbKF06fiMEYd2ad5HhMu/MiTco+GaRYiC4bCejXT5jfXYsHy7WDAmkRwIMvvD+s+lM
-         3hRADYqJ78iYr6MCd9CLIOhqZoabKcp1QO/hE2j7EyPO9nu8veqQZjMCL8IgFLVlhtA6
-         yNjp8YjNblb+YQQnpfeyG1NPxJyJgUJAXJJW8Mrax/FpxfxpSOBXVHN9bHT16wcJbeOM
-         Lc53ca8xtL7eYzStCF74Y404cguY4Y0MzePhf/UaVQ02iGpW2CTZZuhSLqpjMTz9bF8C
-         P5pw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0T/4bfksVWddeLCRi6PlUP58ebj+9AZw+qbrz4GU8MTysQmKioL6H520hZ1iE+PZjT/rsUL0b8A==@kvack.org
-X-Gm-Message-State: AOJu0Yyatze2YRqHM0mpz7Qmp0VSgPOGaQ8kZDmHaCdf2OnklfKWk9cy
-	j2XRRtNDBQcTVPLXhL1Kfkew99o2kJ9gpLvcEAPWRAnFlHBONgtHGPPe1BoWC4ks
-X-Gm-Gg: ATEYQzzatcLoBuqUCJflTq08W0mbthw0ZAlOfYBFMVx7dc3j+OZfE5x8//HL01UXs8y
-	5WEPZlONZiB3+zO030QGqDukRbkyk/UWfgEMZST6MgDOhDkuYUnNR9/R5jtFyMqusP5HfaWDhNw
-	6/P/GstpaO3cr9Je967a9pYPsgDF6tIQMgeKi92iBHnzpQheA27mv/7rYfKOhtcDkG/q7zRR25x
-	FyZk1vgQfYpOpov34u0d0F8src1YsklTj+g6KUvEUrYY9W4x6d7yn15VqDcVabG0UTonPod/6jy
-	RUI+mog8rk4U8fidO0rhDObmXK+Cxl0dyP1fjfGoD0Xsm7nRX+7BzUjcP1t/1A1DdzCBWaWmcMA
-	g7ngOcd/7vXLBQZM7VK3gCAHcNu45eN0orPEZBcFe1mLJpRhnPkDb9JiqSPerdRNMo6BemECLR0
-	yJETOmGqxixCc/chNA+PP6sMu0tOXjsWrPyFkzOYdHsQoDWk5pMbyfYohrqeA5J7d/qmyjfJ1L
-X-Received: by 2002:a17:90a:d888:b0:35d:9d28:e897 with SMTP id 98e67ed59e1d1-35dc6ff670emr260259a91.28.1774980508136;
-        Tue, 31 Mar 2026 11:08:28 -0700 (PDT)
-Received: from cps-manycore-1.. ([143.248.136.81])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dbb8932ecsm1263160a91.5.2026.03.31.11.08.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 11:08:27 -0700 (PDT)
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sechang Lim <rhkrqnwk98@gmail.com>
-Subject: [PATCH v2] mm/vma: fix memory leak in __mmap_region()
-Date: Tue, 31 Mar 2026 18:08:11 +0000
-Message-ID: <20260331180811.1333348-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=1Z1ZTwUnghvA4wZBFW7neJ+hQNBTpYfH4OG7mwECm/M=;
+        b=ToHGBE9ZAxY/Bx0A9qp6GLHtzuROhew+y3nE7y6fC7RLcA/82v1zNYXGxVbRe+cHsn
+         oimJ/5V1NWLFyozLuS71IajKC9/5tpsO7J2nx6wGBU6MPmpuA/+qzJ8rByRvVo/nbfwt
+         0DMXutwiJZVpkglMzckgRKsNl5xfhdhLeey8tcdDrkllmGlslFpWsgAF10cr7cqNsReh
+         XAXywknSmKz7ck6crbnTKLe6LaEIUzPaNCVbGZvYkJwRli9rGx9N9YUB5vyGldWmw9vd
+         HOhzaSwN6GnBh61Ji6ha7oxnqAChoGHfAH5Y6oAYA5g/vzHOVjNdt0EEnC4Rs8wySwvS
+         0mNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774981309; x=1775586109;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1Z1ZTwUnghvA4wZBFW7neJ+hQNBTpYfH4OG7mwECm/M=;
+        b=H1dsQSKvK86jjLmTUoYNGosfl7Ejg44W/Rmcj/nOSf5SD//f+Fz22kHVcP03P6A2mT
+         v5TiQXdt9GHk6fCMO4kSwVVXgI3rI1fpisYjERr/T+CPjdldGUT7F5O5Fpv5+M7aOZq6
+         8gS9fPaBP75vKU/yZ7Pdh4cpqgZm4kGQZIKlvu6Rg8lBJiey6A/8CXQNEjqlKpcPLThh
+         XVb2wgLiJoyoW+poBiWYRDuo3pI6lfMdR+usNGDNCS7F2MnOsZ/RypTrFHq4UgBYhwPM
+         7bo3d8AVkEgp6RsqZM22F2uY5XTSiXTb6JriZ1Y8V2CTx5yATiS3pxAw2v8BPax8QhB/
+         OOFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIxy0eNg4dt7RYMZ2Ly/RZZiRSRJhkkek7ntum3EX3KHsuz2gDOj0zRVBE/kYJexnS6QDLTGo4aw==@kvack.org
+X-Gm-Message-State: AOJu0YzmodxtB42dRD/Fuwmy6UFAkVZgdf59HL/f5AmhYIybdGH8/X/2
+	aZK56Inpyvt43eu+JzJIpLDaaUn0+I2Cioad51O2hsn2Jz8A33netFGPES4PLktT7QnVjRbOluG
+	9z7LYNjIEX1mTw6Y1tOqpVqGH8nl9KZm2CPcXeGRcNNRMW1rIg52IFo4=
+X-Gm-Gg: ATEYQzy4w14FOCNhRj19mPEHuxu/ieQI54kmduIuVDsUEsFtR1UcUE2Go1jqMWg4VPL
+	WYoLyPa9C2FyKiBCSJMQ2TKX88z9pIwKG1/+Q4G6VkEW+NRYoxQSvK4Deb7CC02XU9kIw0d56WM
+	iQzqr9n56m76muuVIBiO/E8StMRz0bICVX4cDoGyc0GlpmVLrl2epH4m/w7G7LE2WYgFqLyhHon
+	BdfOj4Y/vlvUHdvXkDKv71WcLbbgMkGCyhTuZemHM6zjlV0rRcLS08nzJocsiqhLeiywL5TIfDv
+	pTG1nY8gYYirSLcr1N9alddx1mNJQ3s8lJSDqw==
+X-Received: by 2002:a05:6402:4306:b0:665:a417:3ed8 with SMTP id
+ 4fb4d7f45d1cf-66db09e189emr327584a12.16.1774981309415; Tue, 31 Mar 2026
+ 11:21:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4515spd6qsr1ih5a4ppw8s5uywx1aqze
-X-Rspamd-Queue-Id: A7DE74000A
+References: <20260331175456.4065874-1-luca.boccassi@gmail.com>
+In-Reply-To: <20260331175456.4065874-1-luca.boccassi@gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 31 Mar 2026 14:21:12 -0400
+X-Gm-Features: AQROBzCTHvb05M0vcsTVPES6Ynk7b97-HrtYc5Ey0Occ_WM5chA1DLPefIFWYrc
+Message-ID: <CA+CK2bB0bMxW721Q+SzFJENe4X0_GwcOh83R-mm1V5dig3oP3A@mail.gmail.com>
+Subject: Re: [PATCH] liveupdate: truncate getfile name to NAME_MAX
+To: luca.boccassi@gmail.com
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
+	rppt@kernel.org, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 34F364000D
+X-Stat-Signature: 6xt7uqobzjogyfhid4mwmxccaij8eifz
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774980509-917286
-X-HE-Meta: U2FsdGVkX1/ym2MUEZz9alWsve0qxQYVKfsn0TGYdp4VP3iDTl3E3yyyZSyDYWfQKg1D6Tb4cdmwH8/V1Dk9jfjWVM6PRSq22zM8les1C7VKb1Df/mFjC8FTAa9x9ej8jNezhPkoxNFPBirscGfmLVPVwrimqOXcT6HAI8fb6dTTPs8jPt3ttadpce4hrqnqKRBMtzfXJc7gyctjHcm5UEoDnaW0NFHkWDkFnd0PQVnDQruWs1xM/JMgRqHmw56VSxiz8bqI9YYyc3AwC8R/jh7A7jno2XgbBTIrHPxJPpHAqEMVyBfWaeldGS5pxybqbPqMsXwQefqGeDB4TqslxZtIioF0wrIOqGIyx8THxgtuXuuzg6uv59Z6CIfxo2GlRPOp1F4E6RUzJ44qIoyW5Xb9fzHfImQCJE8XNgsiT31CXnYyj4zVtKZKKTOmSmUAVEAK8dpLyf5d3OTPmUZ2bd0OZNSVnn3HDOmH9eh/3zuyZszWGib0c75uFe3w22qWeda93jeGQ4LgZsq+J9HZW88/KT/34KHhTT0WACDylQ/A5t5rla7HlvWI4tPmq4MERYM3L9FWSXRzvikjFNUShCYM4EIYUEySSPIJSR3JdefE2mmnAracuVO8RHtuvsirjNSHg+5lNs1ayia82OIA0Uyn7QeUcUITmwWpTPiSuvio4rAJO5J29bKvC3Jb4pKlvey5AES0g3b1do2wrpBrsYym5RCiQW5XTHvaau+/By+iSvZou2BU3qOtE0SBkgQT+EA3TI1eU5xAr7CGQlANtExJA1+719jhwRNdF4PS8RyfYDzRMdqau38xkQe40Fmfz/uOuxgeDjofnhzNIAu+Nz7OuLt2WTm2PVXVCh35l8ou4LMS5Dn8v9CrNMTLPrC6Sj5dmlWiargmGDJKfIZwwx8bkElafpFeeDcsd7oMKhS2XrB9zN2FCYZddqT8jJNXaqgrDSiiImxRzMlFYVX
- WsqmqKyw
- 4LhhweaGSH6O03SxOp+y53KoEFokk49l4H60olAW70m7o+7EsYNakutctiWIahbDSn5mNS/aWSxdAmkFHr8nOHFJ+FMCx6Q0aJwmF9Edbbw24sYwwdp8n7tZcBxFuOXa2iBV0DCJhQrDt7xRLvBk+S5DL5USo8Fvbxbxw5BxBQvKuUyaXvzGQcGrvVgW9fnZUqSvYoNX+fE/SL5ZT9+C+W3yoUoUJoGxtWB9EoxlDnDvXEStHQ6sUFFgDT/9fq3JfkJQrCJw04ZDGwNsMI6eBWwUIYEaIfB7ygapmqj6Qpp3SG2Po5wSq1AuV4dB+kksCije2DJK0WtVk2xhXnGFKh0Xbh91jr4UjFsmfdSm4A38BIxaaOntNcgRVULBiBI/NZ3miM7shn+tPg74kp8al2BW092wZerGQpWp1eWEtwO8NxrvmVxTxj1jitUIjqXN02lH9jJ0BBdq5D6lC/o5rCGKrwkgwir/3jzJqv876mdMn6173yjnlDHO+7arjM/nC+1+2
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774981310-968523
+X-HE-Meta: U2FsdGVkX18F5zA3IPzYDXivPNs5aPXmK/Lu8psdhvMgj2YlazPSFxu4Mw4YT0BmtNG1EqsFenzBM+WcQS+0+y3zb3KnY1/9HB3KGFzrDmdCC2AhbbPNSYjZTnz0+O6t0vsKW/09Gl49CaMVcFlomE0H2jnftHdR93ZctifE1YF2HiyrPzifWTTJKwRWZkTsKfA5W+6CU3oSveyx+LBaLFFvYDaWoMNZNlydmNoSjZzsODDdKNdx3kUUBknP5hhbNtnxXuSsNL0d2tu0Umh2iFJ/BNxWZRnCi796A+VplXTv3X39ij0pC51JDPGUDLZMtD5rV1op1GnjL2tX/hl/lzOQbfntZgCLj7lOaZaFx12phW2TjeCdR+hW5ioLICj82pZYki29dKQLYA9NU/ZzC9L2AqSmjAckee72D96wXxN0JQUR7ODO8f1NrLAISNEZR4SoOj9PSNcQP4qPsCuiZxtYyxJmKXLp8twRNdoiYhRbpqsj2/G8m9Xucw4EeBmn4jPKePqX4U0eF9DTBl1ftSRGmoXrjvpZONl5uH80kPrEqVvH1rAE27YqoaKfPuoDlArAhr+VR46fKH/Ci3bfOHhnfrLkFl08afq+/b3H4KE3/8Xtril55IJO1DXObpCNdksD5n62s+8BLnAidcto2Jw76/e5rlG0wYkpoBObPApRQK1lKrI1/hRd+eq7vI9nNatBkvmin3odm8nDXxeYSz3rnm4BnrAyWkX4+lmKZvrNnsS0+WMhOgPPskHKvsHZqpO/Ac+bORdyJp6KaUP9UyroQJNCzsnyMfZ+OXW9cB/4tY3A2iA5T5uT3TyZvqhjNSVLhnpbVIDCu3DEgoI9jYdyAY4L9MiNS7TR7bCjthDJwac1pJLbGLN2XBDGOsSvR+ehZimCDBFZSkHebNTIpEmRMi2bJrfHpoqFLG3haqdIHDq+PpwQaS/B+QW1XXE6r9ovO/OjX+7B2s6ivbH
+ yWE8OGCG
+ 9wwRmBZuEGPr/jbUvmzM62WGMYX0xaWQNp4kq2wP/E/Cfs4vHp/ZwRwSpptZ4ceb8GM5Xd634+MSYI6uaEP26mhDzw6dlTaaqEgjdT1jS6HQyiEL2AatZ8RpNy6LgpZ4SkhDvzHtaq62DqvidniEmdQF02m4F44m2tWXJ6Pp1IxqY4GdstNCwb2JT9JSq7ffKIU72U4jOPEvAQ36UKD9m/z7I1YIKeYlJY+qoym81Qu0026UPSmCKu8HGzUopzEGuVFCd2e278ySHUNhE688s+cDjge8CPhrF+J5XF6dc/+46Rm/i2pnDnR/BH71UbEwbFY2W1QYW0y+AM/EksZ4YsOei06xl8Qy5VSDKz5XnzQ7syr7AWLYwROE1lzVtcy63pPyWjouKK57Y+gvWp9SHWgDGLHfYa70Y2nom65T5LKQZBCqfK7DHjOhrdPaezWr4KJyL1u7HoksFkfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,96 +138,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare
-swaps the file") handled the success path by skipping get_file() via
-file_doesnt_need_get, but missed the error path.
+On Tue, Mar 31, 2026 at 1:55=E2=80=AFPM <luca.boccassi@gmail.com> wrote:
+>
+> From: Luca Boccassi <luca.boccassi@gmail.com>
+>
+> dynamic_dname() harcodes its limit to NAME_MAX bytes, which includes a
+> NUL terminator and a 'anon_inode:' prefix. If the name passed on goes
+> above the limit it results in userspace getting a ENAMETOOLONG error.
+>
+> Truncate the name to NAME_MAX - 12 - 1 characters to ensure this never
+> fails (accounting for prefix and NUL).
+>
+> Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+>
+> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> ---
+> Builds on top of this just sent by Aleksa:
+>
+> https://lore.kernel.org/linux-fsdevel/20260401-dynamic-dname-name_max-v1-=
+1-8ca20ab2642e@amutable.com/
+>
+>  kernel/liveupdate/luo_session.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sess=
+ion.c
+> index 7836772956406..4a40c7fdfb44f 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -366,11 +366,14 @@ static const struct file_operations luo_session_fop=
+s =3D {
+>  /* Create a "struct file" for session */
+>  static int luo_session_getfile(struct luo_session *session, struct file =
+**filep)
+>  {
+> -       char name_buf[128];
+> +       char name_buf[NAME_MAX];
+>         struct file *file;
+>
+>         lockdep_assert_held(&session->mutex);
+> -       snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session-=
+>name);
+> +       /* dynamic_dname() rejects names above NAME_MAX bytes, including =
+NUL terminator
+> +        * and a 'anon_inode:' prefix. Truncate to NAME_MAX - 12 - 1 to a=
+void
+> +        * ENAMETOOLONG. */
+> +       snprintf(name_buf, NAME_MAX - 12 - 1, "[luo_session] %s", session=
+->name);
 
-When /dev/zero is mmap'd with MAP_SHARED, mmap_zero_prepare() calls
-shmem_zero_setup_desc() which allocates a new shmem file to back the
-mapping. If __mmap_new_vma() subsequently fails, this replacement
-file is never fput()'d - the original is released by
-ksys_mmap_pgoff(), but nobody releases the new one.
+I am confused by this change, the maximum session name length is: 64,
+as defined in:
+include/uapi/linux/liveupdate.h
+/* The maximum length of session name including null termination */
+#define LIVEUPDATE_SESSION_NAME_LENGTH 64
 
-Add fput() for the swapped file in the error path.
+So, 128 should be enough to include:
+"[luo_session] %s", session->name
 
-Reproducible with fault injection.
+Or am I missing something?
 
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 1
-CPU: 2 UID: 0 PID: 366 Comm: syz.7.14 Not tainted 7.0.0-rc6 #2 PREEMPT(full)
-Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x164/0x1f0
- should_fail_ex+0x525/0x650
- should_failslab+0xdf/0x140
- kmem_cache_alloc_noprof+0x78/0x630
- vm_area_alloc+0x24/0x160
- __mmap_region+0xf6b/0x2660
- mmap_region+0x2eb/0x3a0
- do_mmap+0xc79/0x1240
- vm_mmap_pgoff+0x252/0x4c0
- ksys_mmap_pgoff+0xf8/0x120
- __x64_sys_mmap+0x12a/0x190
- do_syscall_64+0xa9/0x580
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- </TASK>
-
-kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-BUG: memory leak
-unreferenced object 0xffff8881118aca80 (size 360):
-  comm "syz.7.14", pid 366, jiffies 4294913255
-  hex dump (first 32 bytes):
-    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
-    ff ff ff ff ff ff ff ff c0 28 4d ae ff ff ff ff  .........(M.....
-  backtrace (crc db0f53bc):
-    kmem_cache_alloc_noprof+0x3ab/0x630
-    alloc_empty_file+0x5a/0x1e0
-    alloc_file_pseudo+0x135/0x220
-    __shmem_file_setup+0x274/0x420
-    shmem_zero_setup_desc+0x9c/0x170
-    mmap_zero_prepare+0x123/0x140
-    __mmap_region+0xdda/0x2660
-    mmap_region+0x2eb/0x3a0
-    do_mmap+0xc79/0x1240
-    vm_mmap_pgoff+0x252/0x4c0
-    ksys_mmap_pgoff+0xf8/0x120
-    __x64_sys_mmap+0x12a/0x190
-    do_syscall_64+0xa9/0x580
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Found by syzkaller.
-
-Fixes: 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare swaps the file")
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
--------
-v2:
- - Drop redundant map.file NULL check (Lorenzo)
- - Add comment explaining the fput() (Lorenzo)
-v1: https://lore.kernel.org/linux-mm/20260331121906.1301155-1-rhkrqnwk98@gmail.com/
- mm/vma.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index be64f781a3aa..c8df5f561ad7 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2781,6 +2781,13 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 	if (map.charged)
- 		vm_unacct_memory(map.charged);
- abort_munmap:
-+	/*
-+	 * This indicates that .mmap_prepare has set a new file, differing from
-+	 * desc->vm_file. But since we're aborting the operation, only the
-+	 * original file will be cleaned up. Ensure we clean up both.
-+	 */
-+	if (map.file_doesnt_need_get)
-+		fput(map.file);
- 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
- 	return error;
- }
--- 
-2.43.0
-
+Pasha
 
