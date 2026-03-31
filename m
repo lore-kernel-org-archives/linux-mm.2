@@ -4,89 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224FC109B489
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04CFFF60F0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:18:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BBDF6B008C; Tue, 31 Mar 2026 11:16:00 -0400 (EDT)
+	id 208BD6B0095; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 893986B0095; Tue, 31 Mar 2026 11:16:00 -0400 (EDT)
+	id 1E0DB6B0096; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0E46B0096; Tue, 31 Mar 2026 11:16:00 -0400 (EDT)
+	id 0F65B6B0098; Tue, 31 Mar 2026 11:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AF246B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:16:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2DACA1A0108
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:16:00 +0000 (UTC)
-X-FDA: 84606708480.05.8AFEEE0
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 86764100017
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:15:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 000AD6B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:18:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F29CCE054C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:18:21 +0000 (UTC)
+X-FDA: 84606714402.27.D3F7445
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4CB611C0002
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:18:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=Z17IberB;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774970156;
+	s=arc-20220608; t=1774970300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dJWls4HbrnRTFReMO03SzwKm2vbyAGHZ2Neo0OuCcSQ=;
-	b=YwysHhF5I4GybD4Gzo/5+YTU+yIFBfH/W7X+gheQjypIM/SBe9HLNDM6IubBphToliIAsF
-	1kNt6ojQ/JQqXwB4hL08ziI2NzlCtuvwuoLVTgoSL5Guop1attHGtjjGT7RCfNwIhHjuwr
-	YyU3qzz1p9vpfWwsLO5QzhHFe8o7/mU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970156; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HIf8gyFX80uSQKCoWkQ5ZPo573gaG6x/O65jKZB5gh4=;
+	b=eibKHKpD6XsFlr03Tj9Avjocxd1kBgMh5+hxGbxRQWZClirhpnHPol6xkbvPQxtAkVqzM1
+	Z/w/Du6g1fgFWpKuHfnK687xk8G+hSd70qEDf2MjOu8CuLTCz4WgcZzpFYjt2r3Vd/VRmv
+	aY458dN3O10r9CXysgyezniZYx/WJCA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970300; a=rsa-sha256;
 	cv=none;
-	b=nuFD7ppfUGHb53ntaHnz9vko7yTeANKO8Wn7UmaHrXGXVk4/9HScUQSyXN6d5CnmWiPusR
-	kGjEV/+4ZZoHLTRa6v9GO2f8+svJD9VN/Jr051Vf+/2wnisqtQKZAIP70VnfuMt/imU3yK
-	ySdHqwOmQGfYs1dB4/Rs4fX0zvwk2ZI=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4flWs03LK4zJ46CX;
-	Tue, 31 Mar 2026 23:15:32 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 11DE140571;
-	Tue, 31 Mar 2026 23:15:51 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 31 Mar 2026 18:15:50 +0300
-Message-ID: <4fe88a6b-2d9a-455b-9ab0-5ff153e0e88d@huawei-partners.com>
-Date: Tue, 31 Mar 2026 18:15:50 +0300
+	b=LdjbROiLxlChW0mNsxvihk3p9zcskEJL5nwWZ0/UqGgjG3oo9+yIaD8IwiGHcioWmUH4To
+	qhIcWfPZSLVpcx2yWJan7e8/SzUlTlu4XuXMJepJ5R52KQ4K1Mr1SXqQVs3JzWz/lRbSVU
+	4wpyxvJ8e9ZM3hvGD8h8B0JWEXD41NU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=Z17IberB;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF79F40E0140;
+	Tue, 31 Mar 2026 15:18:14 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id HEXG6Jv-8W3v; Tue, 31 Mar 2026 15:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1774970291; bh=HIf8gyFX80uSQKCoWkQ5ZPo573gaG6x/O65jKZB5gh4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z17IberBscI1nNIel2qnP2dKieE8Angtikowhd8wgkm/JnlHdoCe/RUlPPxw7dyJx
+	 nePrSWXtzHAKzAfvLyykWFfOEc4+/vPcMwM83zNC9iYPdYwn4J/G1gLIuV/RRyLo8O
+	 cXokxt/7rMbYC92jB+sn6IaCUTAlguzdNqi+suGBYj2LTjIp8LOIUEsS6VkHTlOttn
+	 +Kfl7I0KBTYO3CNKi3E+67jkSbrLY9DzBReN2pt5hfiaiyBZYJxvjw4VDgD6JuDiuu
+	 VX75wBEayTVozfxkP7Nz3nRP1pX2PzQGfdEoInEH4fKr77BsPqzflHTnYzZIAODdlr
+	 qVNW01sIg3kDzj4b31WUQHkNONc5uCS5QF/cCOR9E1xGCBQ5pBM5oyvujNB9IgQFDn
+	 wmBGHWcGc/hlxZcaU7CLUn/FMGLSPEvTifJrIBmTt7akASYYQqwSg5s07mxHhs/zLK
+	 Rmq2uPj6IJn3SpucLkPXnqOI76PIlYGzikph8+AyYo5mDGoA2gYBZ/PpdtT47R8AW8
+	 sWBNyZqnDW6r9nbzK/gx+wObyNPWhvBDnGmERN3AvphrNgw42Ydg5SnnXNxAEjMZ8T
+	 LZ2X+A5zyhTvQfE6EvlE6gWGyoNKcj1HPsOUcu3s+EiKCpirb5e2x8HPrCPioSkR/d
+	 pUSmm0Z9qeLeuqB79ERFpTCg=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9FCEF40E0032;
+	Tue, 31 Mar 2026 15:17:35 +0000 (UTC)
+Date: Tue, 31 Mar 2026 17:17:29 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v17 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
+ table
+Message-ID: <20260331151714.GFacvleugPydw71hxQ@fat_crate.local>
+References: <20260311155518.1000-1-shiju.jose@huawei.com>
+ <20260311155518.1000-2-shiju.jose@huawei.com>
+ <20260312165247.GSabLvX5DjzhDtmyuh@fat_crate.local>
+ <33a8a02f07184508bdff31e1053606a2@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE
- scheme action
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260331013109.66590-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260331013109.66590-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <33a8a02f07184508bdff31e1053606a2@huawei.com>
+X-Rspamd-Queue-Id: 4CB611C0002
+X-Stat-Signature: crmt86p4a3ufr1koroih75mefsh7p3hy
 X-Rspam-User: 
-X-Stat-Signature: frmankdk19hdkg6cc8yaq446wxang3y5
-X-Rspamd-Queue-Id: 86764100017
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774970155-619778
-X-HE-Meta: U2FsdGVkX184gqeBi91T51QRVrI75CJNvxNc5m9octH0RzmTWMGhrtN+DIAirKAqeVVmbNduVDdXo+evBKGymrtP0K9j5oj/tXFHEa84jCrEsoBcCURjI3+Mt3sJ1uwLxF3nb59WCAscURHQ0e5So2mG3TwyiyQJxfJ77fHXa+4CaxrchETi2sz0KQB+EQSAVp+ePAWeMBVYj/houwhrJZXFy6idkNrk50q1kScyV5M5o1AD6bvmb42SVZIwKNyyKv3LlSm9R2s9sj4xtzhlxiEjxKS2SEc46S5TbFTK3FXnwv+Z+I1IbqmaR8JHNyetVE963U9o9k+7CERQh9WnjDE3C2kFr0Q5ik3/E+C1YFmB4xrMwlKX4nguDKqJsHB3f5GAKJgc1Rz9F8XHEdBH+L/d50XSVih2P01UViRiIPjgAfLjHISQZd1zCQmZU+MgivaU2CfpLmfB9sIMJ+udwd3qwTf2JdtRDDNOTbv2Oa/lFP58wqR5LtBcNQd8P2yc2hueSEEvH6RNmsX42fMw5kyE7ttb+dBjqFnaPihM2SyH/BRKVLzCtDhtz+wMfPQh4Sz1YRCMmyNHHCFY/TOXkvl+f+1Ftz99b12l357+Qc/8Z9DQWzhBVmhOohB3qOCMWFm4Xe48yZHdDN5sr64Ad+aMaJ5RU49U9umdgc9nWDdLdp20RCSK7liwpykBKM4qle2QY1H78HZ0hkxK0oXyJOOvIisXbZJug0yjKtvl5nth3IO09gu0ZZ8kojU6tiqvfkoruFkrmXn5L69rwhoPYxABfjnQsHvisfrVM2hMaqjLL+ELZDYWPxY996g6s/zRjdLWN/d+QuPI9vvxu5hVcngnBgR9lxWyqEXMjYwDjGr5jWCfxD65qliHnbtJ/4cu3essuDenb125DZN/QfakIRkvDvPqOKKKvPGdVauiflOtn/1JTjQSVZCt8b8oMRov2j6WI+nOj3GOSfGJtJu
- PhdGPwR6
- 8v8y/Xhjeln4VufL0FS75B+mw9w/Kiwe9EQmETNzn4XUFuh7nN28KYzVpuOrWebiNORHTzjzIkg4UilyiEjLGcyjZUPMIXo6eMz6i6GnV/WGmhIgtQ9hUpOmAGt7TAVzBuOVevG0mCLvD/6MyIPxyudhGIDu3sndtzu6lWg9azW5Lv/qkRrT3JhuqcWS4/qmqETetXDkM0fNS5Lx0tCB/+p+MLuw214JsWCyShivUU52P9dr7cmlhRMfewziwdaE2kdX78SyFAFrhjfNgggs8kqcR/Etw6mSp9Z3gJG8SjQ+xpIzrNtZRSgsCEkpBUUgiwnmB0avw2dC+TP0uSiG43h6SkqQ0HQgel+YVp45tDxEZZnZf3YTecaCVYPCngwEySO1y
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774970299-96788
+X-HE-Meta: U2FsdGVkX1+5Upp1m5ZR2vaa4PmPtJwKWgXSrErAdfPNz44VCD680qqoNoqNXv9Z6aHZd56Q2nSPA0Cw3DjdeuYDzMYPvDvwA/ry9a4epkIbGWK8t/glUBGWi4UM20ANnBYh3FOWEOxREUcf0RdyYjVzdqzTfGPZdF+caHm5zvY3l1gt1aRRfQvc6ktrAX2tmde4zoW9vIuBtr5A3iN3AlaTUoPDdGIGSuXyCweOaNNIEBs4kUdtEJMvbXxubzp+nwTR+1y3xDrHGmqLDIVvFtVd0B9eP+dr1N+VltQgRe1C9CDcAi9vnAFpRxZ8ZoKphzXoWKP464iTTH4/q6rL4s4279ZEZ75a2Nz5RfQtW5TxwUIjmClYzJiAQARkpb3e3IRN57GdyHykSJVv6rEbz3cTWqfvBOvEmqXDospjNvr+0kOCstsQGBew47ldzKdyHZ+ejH4OQcUfy1/TImfwlK75f/26eGT0KfnUyjqmn8ZhvSS0VSBzu/SbaULnXPRoU07TyqRYsyHoD4nugQMrtbXVKSd8GqGCbkYypUzXxbX5/6k3NXyqAgBNC1XOTRqaOaTmqfNySgDsdXddP7QWSqFs8PU0qWuaJiOHB6ZziYQZpDD8hBIWo7dP1b0kH/EhfqcQDnYTO5oDwDY+7WZeflDgKjGJrMRNyU49HBbNGtPC9FyM0H9av9Q5vPr3IlzJwd/SwJMVLcZEt7Vw+TdF8KK1uhKLHxDHaNRMI6I2mscBpiNjFj1usNdvnjyQqSAEfejhWXwj65G+g7mEmE7bqpda/PiGXSBOU2qeinLnzIJI9V4V8B6sEGLF/j0eriSWxXw7su2XCGT7KgaRiBHZPdjTcWZUBoptfqNF/os+Tp4zOVZpUPFsloEITbB+wis4X+yUdTpjWBvd8RxPp3jbQp1HoApQUyiKbSfDJLcgoe38gl31/J7HCVoNQAhqvwZVyu4Ks6ipYSX+UQHMekp
+ dRvt1F4g
+ aQ7/zKua2y1Q4gAK3qvgvcFnzUTV+4Tqamq4XfiUQaarMaX6jZipluFF6g2LchvwwW/p5t+gqwgg5sYPe+JnAOHuTcaQwhS+4+uRnQubLgb+8jQYRMsj9SQaLh5SxwTlyCr/9XVrdmkKMSnrCbnYuJOKzxScn3W3qtH1ziCl9EH5h1hyaJ3sIdGtXPKSJMsgTy2tlkNHjsxal+Agpckb0iNZr9xejbsIWhl1aAgsXckNzQ9exMKSeLM2QUuu04/ZkT5UmnrW0x2PgwoZtkK38NvlyKSCCnNr8bpNwO8UCXGLV/PVg4SQwIzC5omB3v/WT4GOy5WpDn8syxi9imPVMlJyBWT32734goyPOBVRt+qacWE1RYAtJex7rOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,199 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Mon, Mar 16, 2026 at 02:27:40PM +0000, Shiju Jose wrote:
+> In v13, support for address range has removed for the code simplification
+> requested with the expectation that a firmware will do the full node demand
+> scrubbing and may enable these attributes in the follow-up patches.  I do
+> not mind adding support for address range now or else later after first
+> version of RAS2 code will be merged.
 
-On 3/31/2026 4:31 AM, SeongJae Park wrote:
-> Hello Asier,
-> 
-> On Mon, 30 Mar 2026 14:57:58 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> This patch set introces a new action:  DAMOS_COLLAPSE.
->>
->> For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
->> working, since it relies on hugepage_madvise to add a new slot. This
->> slot should be picked up by khugepaged and eventually collapse (or
->> not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
->> enabled, khugepaged will not be working, and therefore no collapse
->> will happen.
-> 
-> I should raised this in a previous version, sorry.  But, that is only a half of
-> the picture.  That is, khugepaged is not the single THP allocator for
-> MADV_HUGEPAGE.  IIUC, MADV_HUGEPAGE-applied region also allocates huge pages in
-> page fault time.  According to the man page,
-> 
->     The kernel will regularly scan the areas marked as huge page  candidates
->     to replace  them with huge pages.  The kernel will also allocate huge pages
->     directly when the region is naturally aligned to the huge page size (see
->     posix_memalign(2)).
-> 
-> I think the description is better to be wordsmithed or clarified.  Maybe just
-> pointing the MADV_COLLAPSE intro commit (7d8faaf15545 ("mm/madvise: introduce
-> MADV_COLLAPSE sync hugepage collapse")) for the rationale could also be a good
-> approach, as the aimed goal of DAMOS_COLLAPSE is not different from
-> MADV_COLLAPSE.
-> 
->>
->> DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
->> the address range synchronously.
->>
->> This new action may be required to support autotuning with hugepage
->> as a goal[1].
->>
->> [1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
->>
->> ---------
->> Benchmarks:
-> 
-> I recently heard some tools could think above line as the commentary
-> area [1] separation line.  Please use ==== like separator instead.  For
-> example,
-I will fix it for the next version.
-> 
->     Benchmarks
->     ==========
-> 
->>
->> Tests were performed in an ARM physical server with MariaDB 10.5 and 
->> sysbench. Read only benchmark was perform with uniform row hitting,
->> which means that all rows will be access with equal probability.
->>
->> T n, D h: THP set to never, DAMON action set to hugepage
->> T m, D h: THP set to madvise, DAMON action set to hugepage
->> T n, D c: THP set to never, DAMON action set to collapse
->>
->> Memory consumption. Lower is better.
->>
->> +------------------+----------+----------+----------+
->> |                  | T n, D h | T m, D h | T n, D c |
->> +------------------+----------+----------+----------+
->> | Total memory use | 2.07     | 2.09     | 2.07     |
->> | Huge pages       | 0        | 1.3      | 1.25     |
->> +------------------+----------+----------+----------+
->>
->> Performance in TPS (Transactions Per Second). Higher is better.
->>
->> T n, D h: 18324.57
->> T n, D h 18452.69
-> 
-> "T m, D h" ?
-Right, my bad. I will fix it.
-> 
->> T n, D c: 18432.17
->>
->> Performance counter
->>
->> I got the number of L1 D/I TLB accesses and the number a D/I TLB
->> accesses that triggered a page walk. I divided the second by the
->> first to get the percentage of page walkes per TLB access. The
->> lower the better.
->>
->> +---------------+--------------+--------------+--------------+
->> |               | T n, D h     | T m, D h     | T n, D c     |
->> +---------------+--------------+--------------+--------------+
->> | L1 DTLB       | 127248242753 | 125431020479 | 125327001821 |
->> | L1 ITLB       | 80332558619  | 79346759071  | 79298139590  |
->> | DTLB walk     | 75011087     | 52800418     | 55895794     |
->> | ITLB walk     | 71577076     | 71505137     | 67262140     |
->> | DTLB % misses | 0.058948623  | 0.042095183  | 0.044599961  |
->> | ITLB % misses | 0.089100954  | 0.090117275  | 0.084821839  |
->> +---------------+--------------+--------------+--------------+
->>
->> - We can see that DAMOS "hugepage" action works only when THP is set
->>   to madvise. "collapse" action works even when THP is set to never.
-> 
-> Make sense.
-> 
->> - Performance for "collapse" action is slightly lower than "hugepage"
->>   action and THP madvise.
-> 
-> It would be good to add your theory about from where the difference comes.  I
-> suspect that's mainly because "hugepage" setup was allocating more THP?
-Correct. I will add a better description of the behaviour.
->> - Memory consumption is slighly lower for "collapse" than "hugepage"
->>   with THP madvise. This is due to the khugepage collapses all VMAs,
->>   while "collapse" action only collapses the VMAs in the hot region.
-> 
-> But you use thp=madvise, not thp=always?  So only hot regions, which
-> DAMOS_HUGEPAGE applied, could use THP.  It is same to DAMOS_COLLAPSE use case,
-> isn't it?
-> I'd rather suspect the natural-aligned region huge page allocation of
-> DAMOS_HUGEPAGE as a reason of this difference.  That is, DAMOS_HUGEPAGE applied
-> regions can allocate hugepages in the fault time, on multiple user threads.
-> Meanwhile, DAMOS_COLLAPSE should be executed by the single kdamond (if you
-> utilize only single kdamond).  This might resulted in DAMOS_HUGEPAGE allocating
-> more huge pages faster than DAMOS_COLLAPSE?
-This well could be the case. The database used 32 threads, so we may have
-simultaneously faults in all those threads, hence the behavior.
-> 
->> - There is an improvement in THP utilization when collapse through
->>   "hugepage" or "collapse" actions are triggered.
-> 
-> Could you clarify which data point is showing this?  Maybe "Huge pages" /
-> "Total memory use" ?  And why?  I again suspect the fault time huge pages
-> allocation.
-Looking at the performance counters and the percentage of TLB accesses
-that triggered a page walk. I will clarify this point in the next version.
-> 
->> - "collapse" action is performance synchronously, which means that
->>   page collapses happen earlier and more rapidly.
-> 
-> But these test results are not showing it clearly.  Rather, the results is
-> saying "hugepage" was able to make more huge pages than "collapse".  Still the
-> above sentence makes sense when we say about "collapsing" operations.  But,
-> this test is not showing it clearly.  I think we should make it clear the
-> limitation of this test.
-I will add another table clarifying this. My point was that the allocation
-in my tests happened earlier and faster using "collapse" than "hugepage".
->>   This can be
->>   useful or not, depending on the scenario.
->>
->> Collapse action just adds a new option to chose the correct system
->> balance.
-> 
-> That's a fair point.  I believe we also discussed pros and cons of
-> MADV_COLLAPSE, and concluded MADV_COLLAPSE is worthy to be added.  For
-> DAMOS_COLLAPSE, I don't think we have to do that again.
-> 
->>
->> Changes
->> ---------
->> RFC v2 -> v1:
->> Fixed a missing comma in the selftest python stript
->> Added performance benchmarks
->>
->> RFC v1 -> RFC v2:
->> Added benchmarks
->> Added damos_filter_type documentation for new action to fix kernel-doc
-> 
-> Please put changelog in the commentary area, and consider adding links to the
-> previous revisions [1].
-Ack
-> 
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> ---
-> 
-> Code looks good to me.  Nonetheless I'd hope above commit message and benchmark
-> results analysis be more polished and/or clarified.
-> 
-> [1] https://docs.kernel.org/process/submitting-patches.html#commentary
-> 
-> 
-> Thanks,
-> SJ
+Right, that makese sense.
 
-Thanks for the review.
-
-I will run some more tests today. The test try to hit every row in the database,
-which may not be realistic. Usually only some parts of the table are really hot.
-I will change the test to get something closer to a normal distribution on the
-table hit.
+Thx.
 
 -- 
-Asier Gutierrez
-Huawei
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
