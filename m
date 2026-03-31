@@ -4,123 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A214FF60EE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC8BFF60EE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EBCF6B008C; Tue, 31 Mar 2026 05:01:57 -0400 (EDT)
+	id 5CC5F6B008C; Tue, 31 Mar 2026 05:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79C096B0095; Tue, 31 Mar 2026 05:01:57 -0400 (EDT)
+	id 5A33A6B0095; Tue, 31 Mar 2026 05:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68C1A6B0096; Tue, 31 Mar 2026 05:01:57 -0400 (EDT)
+	id 492156B0096; Tue, 31 Mar 2026 05:03:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52CB86B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:01:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDFB28CDF6
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:01:56 +0000 (UTC)
-X-FDA: 84605765832.12.DE1607A
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 101D7C000F
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:01:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j76C41Ax;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 33D816B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:03:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7A1FE1651
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:03:42 +0000 (UTC)
+X-FDA: 84605770284.18.76ABE8F
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6568E140006
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:03:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=sWl7DdLn;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774947715;
+	s=arc-20220608; t=1774947820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkaMixAKXgiKFSF+p6/QZdNxjo7teueOK5Bj18mPxuY=;
-	b=hjNmuitqmImyERjWDyInZha8hVLsSTpnl6TBQQo6Vt4w6EKoH2ecmKx69GkhtZwB1eVQ6B
-	TjD+/t+LXSUpFcLqCk3jQWn4K1BgmJUFgrB0Wt+FzO7rx/tcOHRC8Yqnz8CnTYMX+qqHaR
-	fAUB8YWxD05DPd+R07bNoAh2qGkuH6w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774947715; a=rsa-sha256;
+	bh=syTSe4ROpksrczlRw3ujnaPgLF6ZrMM0eH/jY+IKP1o=;
+	b=F306POnI78CnYEo1+WW5LGG6Ak9xEXzbOr7azyFMEp8NvjJTDYymjgeYZBz0tQByPrUxig
+	kqILrbLG3W7LkZGIXumKzHilUWp2AjB/4smRMSKfRbBb0H8HstcG0ENEsG3H8mOurBKUhb
+	LHQabFNNbstOq9DrKbEvOYV7LII0B7w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774947820; a=rsa-sha256;
 	cv=none;
-	b=7wOZy4uwN+E9Wgx0mvSBCSJy+8BRTFvVGlI6i6NYf+NqwmUbFsSMMw4Bn6Ehc773MtTTXH
-	BE1ap3rzTb52p9gyHnP0ppZnwJ9U44KxjrC2HvwUItJWZFbUXlOpyDj6rEOqDQalW+DX9H
-	F1sGQGCfpLP1VZCt8acXKbkPv8PEz2Q=
+	b=7SMyUToRefCBmakM9ZPAwgjeB+5l5Ri+9pwgts+7deDl29zKaEp2mZTpzlDm8Bh6lybRNJ
+	jt/xzq+fdMrUF92u8ZQdjtBHvLpgOeOgDp/7G8cOydJXDDi6oUJstcGhY7nEqtoO8t1IAA
+	2zPGCHSDD9pu5A1gAZfousLn5x22yPg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j76C41Ax;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82ae379000fso1894604b3a.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:01:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774947714; x=1775552514; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AkaMixAKXgiKFSF+p6/QZdNxjo7teueOK5Bj18mPxuY=;
-        b=j76C41AxpfZ0LM0saffTudJSFlagVQ4YLaIUZAp3rtB+2JpF4cAsMCsLZz4kQBD+tE
-         BkfMCxVPBRtzhYh2SUrqKzQjzzd8Wr9TDil1KXfYgQD4QmnSmQBQjWiZzJiD62eGsOWF
-         iWQM/hHF+/IOdnV4LH7ZfQ76tUQaGIIaUTaN+5SxKkDYJAXkEuHuQsdXC6q7h2tmA2TG
-         K07bPfJbH6oGcvMJggBJvvV4tbZXeGO8kfqsgOdPZhhz3bcyDLEEkFXBzVl0JamRJDv6
-         LRVTg3x+3cY5zpRLavBezl5vMer7pd6teiteQQWau08x8F+3Enx8tTUDMZ3nHwnkLQZr
-         PcXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774947714; x=1775552514;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AkaMixAKXgiKFSF+p6/QZdNxjo7teueOK5Bj18mPxuY=;
-        b=qD79XU0IR3Y/RJBtCP4kvXBxs2IeO3jK0aci4oj2iPtH1n8pkLs6fvtO9v1RwxUIPq
-         X9KfqNltFff4iA6HMo6ggRRoJ6rlEgN6WqHaCR1LqkWtPeG2qCLVkqjDVBW49n9KbaUV
-         Fu3KZS+Lrs1ZxuHPBunZYdlNGmErFD1l02L9tBX7/o796fzfCdnYH654r6g7nxrV4LQp
-         srTdtNPd7gmz4B//Ipzh9AnfxUGrsFeyH8Z84dZzD2oQopKu3jS/CEkY7P/K7Ze4HPz3
-         7ObqdcGpjfy8bYrFw77gA+WkV1ho9eNgVlNW90L6Rqr+T9l5U5edQtfrOgpAbnT6lYd8
-         vqaw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9kd5coDo/tMz/vBJdxCfOuvtUvhM5DExDzDYl4LbC+sYJqXKUCH4zsiKylbvjMgNaNz7xpWTl6g==@kvack.org
-X-Gm-Message-State: AOJu0YwslSI6YDYhYVtv8l/EpAYtuGit7eu5MNolt7gQUhv42cenniLh
-	ajD2lrHZghofQ1B8dyOkM1E7dcqBkAaQt1z6hjjV7QMUlD6TikXIbdiL
-X-Gm-Gg: ATEYQzwC34BoJj1qli8ACQv7CsMwzRBOSTZuBIDwEEa/yEO6uiurI5vAjhJ8gLl6+Wx
-	xjMEQUi8QaPRKTTJQiDNOMtcT7oRMIfIWR6ClczwXg5nkBx48CMj89chTis3rpr8HLFpNZeimzo
-	dDmxwxUMFBk5x6Lgi6aS3i8eKhjpzXIrhu51CK3TvzSV913VV3lp/ehIoIF67yneEq1H2sf7/q8
-	bkOVXBNrC6RrwLQinM5kC4EKix11XrhpLDGr1opjihQGSoqbztFNm8pywZmGdnVoNBZKa1YpIeH
-	OjFTA04ByuZL6N8yv1h41bjt78njYnxaQFB2UJmky7CJfAQmazrZTfNZlYMaRAubOzCC2IWgNRs
-	CkYjReWneFIcO4/dXRtDf0psQZ/7BPmIQusgHoARGxruXHSMAqzyknxqFC7HHZJEyxr3dt18HAa
-	5z9hoTnnFII0Z9Ej8GiIF+bIVGbYRMRBigzbP+sKwHDMQy3UcXRkirVYCfMlt8NJYVmgU7
-X-Received: by 2002:a05:6a00:35c3:b0:82a:15a1:14d with SMTP id d2e1a72fcca58-82cd65952eemr2218627b3a.14.1774947713775;
-        Tue, 31 Mar 2026 02:01:53 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc756sm8858476b3a.47.2026.03.31.02.01.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 02:01:53 -0700 (PDT)
-Date: Tue, 31 Mar 2026 17:01:45 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v2 05/12] mm/mglru: scan and count the exact number of
- folios
-Message-ID: <acuBldipHM5fj_pw@KASONG-MC4>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-5-b53a3678513c@tencent.com>
- <3ef1cb78-5110-4326-bde1-d929f638b8f6@linux.alibaba.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=sWl7DdLn;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V0F6Yu3415434;
+	Tue, 31 Mar 2026 09:03:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=syTSe4
+	ROpksrczlRw3ujnaPgLF6ZrMM0eH/jY+IKP1o=; b=sWl7DdLnwzGSQUcQbeXj99
+	dHtXMFjgYtoG3pvTdqr+HwZNFIPpRks3aZch5MZwd+tweJUOACzMVbJa1GUdEDk2
+	ceuGRauBmwuFFfltH3h0HyilFF00yxWYm4okTuM8WO/v8y/FqzRmgisnPDPNSymb
+	ZwcchT7v2WLntVM4pFz9EOa5eXIpABv5vfyyG1ycLUiqvb6mreyC7pgJPrl6OxF+
+	qVBb1maisklso3qp9N/6kdhHVaAzje8QsKj8tSQgC1zDhc5rsxl2Uz86dE+hWYhV
+	PbATKEGeBr9uerbBDCzMWsrPH5xpYcSZMjfggWAmk/xF+xT/5dpLcgQaBxmE9eXQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q32e1k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 09:03:18 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62V8AiF4031552;
+	Tue, 31 Mar 2026 09:03:17 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjr4pk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 09:03:17 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62V93G3v25887340
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Mar 2026 09:03:17 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A491E58082;
+	Tue, 31 Mar 2026 09:03:16 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13FFB58073;
+	Tue, 31 Mar 2026 09:03:12 +0000 (GMT)
+Received: from [9.39.16.245] (unknown [9.39.16.245])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Mar 2026 09:03:11 +0000 (GMT)
+Message-ID: <eb9d54b5-6fe0-45b6-9a8d-aa117ccd3c0e@linux.ibm.com>
+Date: Tue, 31 Mar 2026 14:33:10 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3ef1cb78-5110-4326-bde1-d929f638b8f6@linux.alibaba.com>
-X-Rspamd-Queue-Id: 101D7C000F
-X-Stat-Signature: 34hzjbdstkf9x966516hrdz3hyohkjmh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+        Ritesh Harjani
+ <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ying Huang <huang.ying.caritas@gmail.com>,
+        Juri Lelli
+ <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <20260326071216.11883-1-donettom@linux.ibm.com>
+ <f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
+ <2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com>
+ <87cy0kpfdx.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <87cy0kpfdx.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: gMEEXDHzztlSNOMxb83DKfhFJQCxGrfY
+X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69cb8dd7 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=mOz9gw589m8ysdXsvZAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: vPv_gbVf7b_5wOiwgaP8bEk5mP2Aj9MV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDA4MyBTYWx0ZWRfX2OOxc/BSF5WE
+ tz3Hx8MVwv0MSHgYYCGXPIRNKO1W6nfmtp1VzZjG8vy4C6F1LSgtpFCfrVyMURa7u5aBnqz00lv
+ cR7B28p8cL4m+kvl+JlniHXkatZULMvIgIP+6fPUlj5KUfnD67/NWS3PFllV1l6WyyOTq/hy4Lu
+ eHbKOARLHKe6XRJDC5TlVX6JPogprEEx4IegDw9R8j0/1mK0GIwlgry+VcPM3S4+dlB/HOChKEo
+ XyYCv82qBCZ3qN3h0K6TAFoaajig6NSlamSuo9QP3Uwx+LtSuJ5Z4wNe8t9Soorb5zRgxVHFSPs
+ FDvJesN/NkQwwqS0NZG0BBNYMMANAEinOn+HaWVd6JpGFR3ElVBQvVjsTfkBK8xv2MEkqWDY9Zh
+ qd+s0tpKKdhoOn9qtzPgwcuMouu2/zOyzsnNGxwcsf/6kJc7G+eK1GOQri8IpsZfPb8Y9dtazDW
+ AMSiPr7D5qNRlmtRuAQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603310083
+X-Rspamd-Queue-Id: 6568E140006
+X-Stat-Signature: ooxzfiz6aiaaqbhijujjzkie67e6a7xs
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774947714-528203
-X-HE-Meta: U2FsdGVkX18fP4+g/LnrNsXRWQh15n39eP0Q2Qg7vol9BBisB8veCj7f+CR+bh5dzcLK3N7RgudW00XCUcXtoTsZWUlnKPmaEE4NZWkTW70ut077q38VHb6OkLMxQ8503y76TeIw7g8cpc9C4eQyBxyMkLLVILI2hETorShbS6VatxSVnlEUduA+uhAPNnmwzyLQ10b5ghwbokdoMAMwihzk0/i7KC9Xwv8M06h5zBl/ncngLb+0TIP8Bwlgi070ATXhM6FHgkXKsnK/nJsVTSHkBEbVElrlB5zMvC2De/7Jjlr1BwvRLX+cnf5VlQ7OOSelN53Zu8jW7Z0bzrAcIHA/0nJHzFRjn/Ic7jy0axxTe5SKayLUbsEIrP6sNuhUb0LtYGyHmZYIdT8pR7SavS2Q+X0UNrnfGdG9O3Baz+dRMLP3cBA+7/curVMZGO+hdwDY/WlkEACJqbgCvj1MelXGfKOZqcgWFC1JmfogStFtXetfJ436YGIfx2uYggp+SdT0GEYe88qi5J/x/jiqTrFZS3qtQ4mX42pxXqkQeeCtIgrAT3x+kuGY8cu3V+7LQ4cSJBF1pgPi28j85IwsOwJkO2/RKeueruWS5RkCe58TR0+iZAoq4qJzTmRdBJK8+/hc5nfBV7CK8n/WNx1tht2J6F6H/unViNvHw1SeQnOe4Le6CPSfOhy13vRJF1TM1kX5dNqmYdu98LDAmOJGeHTvIrPTdffhPKUb9W12eT+nGVnOELaAaatrpCGtH/QYPGxEgTpRddeidKQQKeCO0mIXGzyPpqSf2yY0VJiS7sfNEcpyCp+Q/dOX2m2TibxBr64MAENJwRuplEhoCwYIHHPMlTyf6dt62jbgJRYQKr7noQjh3AGDh1ALkEW9lsbuC6Y1kT9vOrh2DbLxyGAFLZBOnEggyVc1nhaF10WkRS20zr7PBWo5enU2viMrb1o86FrcXhGVMv42WSZcQ2Q
- 2EY7gs+p
- WrmBJfl2jJm4CJCghVidaalMuoJ+IJcp5ebVtdDa5Unyk9w1kyL5abTgweZma/RkovtnXf7dzyJ/dxBg12S5BGCCzrq27s5TB29o5mfoWe/R8G08XSeUfufmXO4yrVXA+s4+3hkaFpF68uvdaJnw+Cbh16VFGDvupF2eVnkBuqPeyqzaAIVXMZG54L8V2pFPDOGGjuH0H0sFeZalhpByTZu4Wf90nL0zr5oXecTG1rbDjnANvEJwjAJlQsPwjVI6UEKLxEctOJHsCfvlu10O06ACYfuw0eLwNsJMXYyGFrQzhT52gPo+gDWErpZw+eNP27h4JymeAiPltfQ69O+/O3m9Szr4yTX4ZW7LbNb/mlQEcZR2ACmdSXwoGlz8nUvgxF5+V7OzPGvietFMQ7Vp6c0CfuO0Rb+DeArgWMJFolPbrv6819I0PhYdesYufZANI6hA5kRZ1fe1MVmDDLetZM3Pae75pivVndkbMi+1dWWrn5w7IMhSU7AODqVoAEiBC9W6NBSdosfWz4YTr5DaD3fLvBQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774947820-240891
+X-HE-Meta: U2FsdGVkX1+y3zkp0/saOFoa/0S7Ee+wxTCPDLRlRKgmj+Rt/Tl/i7xADkmdCpLXqyFEzx7ulCjcFBXf0d6R7Iaso8SxXEDAgh/gqQgXkvshDOynkboD7/Mnwsyxw2NVgdt39ULjBGxk4G/pu4BPM6BKAwcNsQ2/Ogajy19BaN08LIvTkNRxbsLMqnghWCaGfND/NIjgmKvmaBSGtyaUKX4MxyZVy0JsnzFu2IdRU74kxNr7HbIO8pvGqr73FlD0DMJ1/ym/3SzWVjq4DMjZ6xdUhQ+tZBBHuNnlbli6IQllEsV0lS+LdGGEGPqp+KvXyfy7hktWqetZ0Q5Q9jYs/7CKmYAFmt3Sob5T3SXbLiExr9SQaIS35CAr9TMyi+2kY0VhxDZhHj5N+eRndhVqXMyy4byid3aQ7k4ELuN21iGakyXuigkR+WEBycFbRBak6uZdiu5cIBoOHwyJBuo6qYZYaKS0o8tdJz7VsG4GY8yuZ/ekBSM33HwRYHqgX5kLGw8+XYlYtupFQMe2fv5dpJKjLFNduBmvEP49ZGi2G4qnVnQXp3qLd1eK/dqiniboXhhNHK8B6IuS70eVMUV5pIWEd24R+EFAOFiDX31iFX13Q0yqeM7XRjTxTbIiOBWvfQRms9imrhCJlxcF+afQ0yX11lP3B+Yg00BhLdxmIJ5YHhSdda0yTbC+iDr2SzUz32LbqcoFzcNqeQHdbimoirEwEii2WRPraIGLfKRCYCsziBPPAJJ8JBqc0ct2bT+GwAFWv+o7b6WApYLYIjRl2NIYb65GkiZBFMgYpLQieG+OTlXvryc5xwpG30hiGJMsrbBeGvRaMIRlWI4GTC/VELi15GlgNSx4jaKWHYXYLcLEdOMl/bdUc+m8Bjcm/J/FOeerh2QlzyxDj2c59/L3Xqqf0tm4LkFI+lbtfeLmeVv9LngwjaBXj7/1LozaHMo7SzaOp67zvOBz28CcGlz
+ mTeL1J7w
+ BE6WNYeU/MQoNTjCi/wVcilebH0Tz/QEFMMzROdwGziQNsjefUrAcpRJIkiiSY2+tyZ0PlsJLznJtRjYwtTjtczeYfve8XOgFSNelsrs5Vx73zACUmpj1nTb4LzVir2aysU/yc7AQHpIMzpdaDiOk9OPMxhWK4G1DxhAFEjxUIfMhnUeen6vn7fQtS+lnU4Hznz1U2w9U0jD3gv+Gadmc84zfHNZGuDkua3Rdu37OUrjXT3Urh+euvUJZ5+c/LZZVJ5JGFWvEFFRlR7hkbhPu/EdsWa7FxBIFXjmO1t0xKu856XcQB2yA2od3YnyughKw+4bUw3r8Vs9yGfazGICWSxD7yPyBbXfK6Mx2kpDkFXwKOVD+nVnM9MiGboHpCCsb9Wu40YVD6WmqWMjiXvt6RqeuSNW5wu/L5dWV5ikYsjuXw9aV3Tv/OgzX2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,172 +154,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 04:04:30PM +0800, Baolin Wang wrote:
-> 
-> 
-> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> > 
-> > Make the scan helpers return the exact number of folios being scanned
-> > or isolated. Since the reclaim loop now has a natural scan budget that
-> > controls the scan progress, returning the scan number directly should
-> > make the scan more accurate and easier to follow.
-> > 
-> > The number of scanned folios for each iteration is always positive and
-> > larger than 0, unless the reclaim must stop for a forced aging, so
-> > there is no more need for any special handling when there is no
-> > progress made:
-> > 
-> > - `return isolated || !remaining ? scanned : 0` in scan_folios: both
-> >    the function and the call now just return the exact scan count,
-> >    combined with the scan budget introduced in the previous commit to
-> >    avoid livelock or under scan.
-> 
-> Make sense to me.
-> 
-> > 
-> > - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
-> >    scan count was kind of confusing and no longer needed too, as scan
-> >    number will never be zero even if none of the folio in oldest
-> >    generation is isolated.
-> 
-> Yes, agree.
-> 
-> > 
-> > - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
-> >    the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
-> >    naturally returns 0 when only two gens remain and breaks the loop.
-> > 
-> > Also move try_to_inc_min_seq before isolate_folios, so that any empty
-> > gens created by external folio freeing are also skipped.
-> 
-> This part is somewhat confusing. You probably mean the case where the list
-> of that gen becomes empty via isolate_folio(), right?
-> 
-> If that's the case, the original logic would remove the empty gens produced
-> by isolate_folio() after calling try_to_inc_min_seq().
-> 
-> However, with your changes, this removal won't happen until the next
-> eviction. Does this provide any additional benefits? Or could you describe
-> how this change impacts your testing?
+Hi
 
-Hi Baolin, thanks for the review.
+On 3/31/26 2:03 PM, Huang, Ying wrote:
+> Hi, Donet,
+>
+> Donet Tom <donettom@linux.ibm.com> writes:
+>
+>> On 3/26/26 3:59 PM, David Hildenbrand (Arm) wrote:
+>>> On 3/26/26 08:12, Donet Tom wrote:
+>>>> If memory tiering is disabled, cpupid of slow memory pages may
+>>>> contain a valid CPU and PID. If tiering is enabled at runtime,
+>>>> there is a chance that in should_numa_migrate_memory(), this
+>>>> valid CPU/PID is treated as a last access timestamp, leading
+>>>> to unnecessary promotion.
+>>> Is that measurable? Should we at least have a Fixes: ?
+>>>
+>>>> Prevent this by skipping promotion when cpupid is valid.
+>>>>
+>>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>>>> ---
+>>>>    kernel/sched/fair.c | 7 +++++++
+>>>>    1 file changed, 7 insertions(+)
+>>>>
+>>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>>>> index 4b43809a3fb1..f5830a5a94d5 100644
+>>>> --- a/kernel/sched/fair.c
+>>>> +++ b/kernel/sched/fair.c
+>>>> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>>>    		unsigned int latency, th, def_th;
+>>>>    		long nr = folio_nr_pages(folio);
+>>>>    
+>>> /*
+>>>    * When ...
+>>>
+>>>> +		/* When tiering is enabled at runtime, last_cpupid may
+>>>> +		 * hold a valid cpupid instead of an access timestamp.
+>>>> +		 * If so, skip page promotion.
+>>>> +		 */
+>>>> +		if (cpupid_valid(folio_last_cpupid(folio)))
+>>>> +			return false;
+>>>> +
+>>> IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
+>>> we would no longer get false positives for cpupid_valid().
+>>> I suppose overflows are not a problem, correct?
+>> Thank you, David, for guiding me in the right direction.
+>>
+>> I initially thought that overflows would not occur, and therefore
+>> cpupid_valid() would not produce false positives. However,
+>> after looking into it further, it appears that overflow can
+>> happen when storing the access time.
+>>
+>> The last_cpupid field is used to store the last access time.
+>>  From the code, it appears that 21 bits are used for this
+>> (#define LAST_CPUPID_SHIFT (LAST__PID_SHIFT + LAST__CPU_SHIFT)).
+>>
+>> With 21 bits, the maximum value that can be stored is
+> It can be less than 21 bits, if CONFIG_NR_CPUS is small.
+>
+> 	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
+>
+>> 2097151ms (35Hrs) . If the access time exceeds this
+>> range, it can overflow, which may lead to cpupid_valid()
+>> returning false positives.
+>>
+>> I think we need a reliable way to determine cpupid_valid() that
+>> does not produce false positives.
+> Yes.  IMHO, false positives is unavoidable.  So, the patch fixes a
+> temporal performance issue at the cost of a longstanding performance
+> issue.  Right?
 
-Yeah, I also notices this issue after sending this while doing more
-self review.
 
-So I did some test with the patch below:
+I was trying to fix a functional issue. When memory tiering is
 
-static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness)
-@@ -4818,11 +4814,15 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 
-        lruvec_lock_irq(lruvec);
- 
-+       /* In case folio deletion created empty gen, flush them */
-        try_to_inc_min_seq(lruvec, swappiness);
- 
-        scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-                                 &list, &isolated, &type, &type_scanned);
- 
-+       /* Isolation might created empty gen, flush them */
-+       try_to_inc_min_seq(lruvec, swappiness);
-+
-        lruvec_unlock_irq(lruvec);
- 
-        if (list_empty(&list))
+enabled at runtime, treating last_cpupid as access time is incorrect, right?
 
-The return value of try_to_inc_min_seq can also be dropped
-since it's no longer used, and the function call should be cheap.
+-Donet
 
-After system time of build kernel using 3G memory and make -j96
-with ZRAM as swap, system time in seconds average of 12 test run each:
 
-mm-new:
-9136.055833
-
-After V2:
-8819.932222
-
-After V2, with above patch:
-8783.944444
-
-After V2, without above patch but move try_to_inc_min_seq
-back to after isolate_folios:
-8807.874444
-
-This series is looking good, this inc_min change seems trivial
-but in theory it does have have real effect.
-
-- Moving the try_to_inc_min_seq after isolate_folios may result in a
-wasted isolate_folios call and early abort of reclaim loop if there
-is a stalled oldest gen created by folio deletion.
-
-- Moving the try_to_inc_min_seq before isolate_folios may leave a
-empty gen after isolation. Usually it's fine because next eviction
-will still reclaim them. But before next eviction, during that period,
-new file folios could be added the oldest gen and get reclaim too
-early. That looks a real problem.
-
-This maybe trivial since MGLRU itself also may suffer the same
-problem when the oldest gen is just too short, that's a much more
-common case (For this short oldest gen issue we can solve later).
-
-- Having try_to_inc_min_seq both before and after isolate_folios
-seems the best choice here and somehow matches the benchmark
-result above, very close to the noise level though.
-
-Well I only tested one cases, the cover letter described a
-larger matrix, still all good with this series and I'm not
-100% sure how this particular change effects them, I guess
-it's still trivial.
-
-The try_to_inc_min_seq call should be cheap enough since it's
-called only for one batch of 64 folios, and it's only reading
-a few lists for the non inc path.
-
-How do you think that we just call it twice here?
-
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index ab81ffdb241a..c5361efa6776 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4686,7 +4686,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
-> >   static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> >   		       struct scan_control *sc, int type, int tier,
-> > -		       struct list_head *list)
-> > +		       struct list_head *list, int *isolatedp)
-> >   {
-> >   	int i;
-> >   	int gen;
-> > @@ -4756,11 +4756,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> >   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-> >   	if (type == LRU_GEN_FILE)
-> >   		sc->nr.file_taken += isolated;
-> > -	/*
-> > -	 * There might not be eligible folios due to reclaim_idx. Check the
-> > -	 * remaining to prevent livelock if it's not making progress.
-> > -	 */
-> > -	return isolated || !remaining ? scanned : 0;
-> > +
-> > +	*isolatedp = isolated;
-> > +	return scanned;
-> >   }
-> >   static int get_tier_idx(struct lruvec *lruvec, int type)
-> > @@ -4804,33 +4802,36 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
-> >   static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-> >   			  struct scan_control *sc, int swappiness,
-> > -			  int *type_scanned, struct list_head *list)
-> > +			  struct list_head *list, int *isolated,
-> > +			  int *isolate_type, int *isolate_scanned)
-> >   {
-> 
-> 8 parameters:), can we reduce some of them?
-
-I'm not too concerned about this yet since it's a static function
-with only one caller so in most cases it's inlined.
-
-It's a bit long indeed :), haven't find out a good way since the
-tracepoint below needs the isolate type and number. Maybe can be
-simplify by unfolding the function here later or some other
-refactor.
+> ---
+> Best Regards,
+> Huang, Ying
+>
+>>> So what we're saying is that folio_use_access_time()==true does not
+>>> imply that there is actually a valid time in there.
+>>>
+>>> In numa_migrate_check() we could still use the valid cpuid I guess and
+>>> make that code a bit clearer?
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 631205a384e1..ba68933a9e4a 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -6119,10 +6119,9 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
+>>>            * For memory tiering mode, cpupid of slow memory page is used
+>>>            * to record page access time.  So use default value.
+>>>            */
+>>> -       if (folio_use_access_time(folio))
+>>> +       *last_cpupid = folio_last_cpupid(folio);
+>>> +       if (!cpupid_valid(*last_cpupid))
+>>>                   *last_cpupid = (-1 & LAST_CPUPID_MASK);
+>>> -       else
+>>> -               *last_cpupid = folio_last_cpupid(folio);
+>>>             /* Record the current PID accessing VMA */
+>>>           vma_set_access_pid_bit(vma);
+>>>
+>>>
+>>> The change itself here looks reasonable to me.
+>>>
+>>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>>>
 
