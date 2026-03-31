@@ -4,125 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCCFFF60CF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E9CFF60CF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:22:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1A266B008C; Tue, 31 Mar 2026 03:19:14 -0400 (EDT)
+	id B25866B008C; Tue, 31 Mar 2026 03:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF0316B0095; Tue, 31 Mar 2026 03:19:14 -0400 (EDT)
+	id AD6A36B0095; Tue, 31 Mar 2026 03:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E05BD6B0096; Tue, 31 Mar 2026 03:19:14 -0400 (EDT)
+	id A13966B0096; Tue, 31 Mar 2026 03:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CC9E06B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:19:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78C041B9147
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:19:14 +0000 (UTC)
-X-FDA: 84605507028.10.3DB071C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 44BA6C0010
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:19:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QVztDZB1;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FDA96B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:22:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 05381160B15
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:22:39 +0000 (UTC)
+X-FDA: 84605515680.02.376E3AE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5543F80004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:22:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhcsdCfz;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774941758; a=rsa-sha256;
+	cv=none;
+	b=T+r7heyXkRWiWGM+q4l3ZIIlY3yWCAPd8GYsk8u1j95i8Xsp197uLNwvzdO6Jsg+yepKHt
+	R8imOST6NyNMJ9sIfv9HdXFVXRt/oRVfJvexnzqVyFrXEv0fpka5Uuusstva/eDvstjiC6
+	7WcEgsmF8i2x0XfDLW6GPgr/bHbG+Uw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774941552;
+	s=arc-20220608; t=1774941758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N67mJoT6zBu5iQWKt0B0XRjd20kwe4lBGYJ6EUJjjbw=;
-	b=J0pRWZDEw/QLD3Lw7S45+e1HYZH9GTxBtuY2QX6bbFGsp7d8GxJczoLFsoHjiHQqn+gZFt
-	or54SBEzVn4GW22Y2p5Rro+1oNlEgbsTFXKx1HAvJA56nH8YIw70lW0SPbdfNoH6GbyLxF
-	TGnGTHrxi5cAjHseUSARyBlMUStG4RQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774941552; a=rsa-sha256;
-	cv=none;
-	b=UQE/KIuv/qa26s6KBjWrtH8YSialslnNWfC7TX7i7GunA1WD8+EkITuR+PYTQmLUM901CZ
-	4QM+ONerzRlkLdh/ZCb+nj4lAjKfSwy5s39el1PDO2RWxwMLjA9o0EsrgmsIQSMj+eU7A7
-	poaIdihqCXT2bU4PhWoRn30WmyL40vU=
+	bh=mRV2xROb0sd0cF4HGiyUlVKdordV/QtRMwVYAaxUhsc=;
+	b=2BaNCYE33OJxg8E81/2XEeNYKHNMTM4U7JCCiLIAAbBmtlA8CWAMOayxQb+t48Yukvc1nc
+	y+1gmMLv/9h7lS3OhrmXoTUhyBFM79CJibAJo+u0Nf/rI7yUKAgqDlGcKkbAu4SkVZV9LH
+	rH886jvu1UcS+WQzyxNxjR/08rhwg4g=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QVztDZB1;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774941551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N67mJoT6zBu5iQWKt0B0XRjd20kwe4lBGYJ6EUJjjbw=;
-	b=QVztDZB17/8R6kNWeTe7poUlxbNp4Yf7B8acbMwL3sRH35i3s63NuzsnJMU0vi30wZqGIx
-	jWItw6uIKLZyFzy0tWT8CXygQMW1s2RWn3mggcDLeIg4Pnq/atSX25USdx8cz1UOgRPUBQ
-	WvX3/gcr2wFYvuHQRI76Gq0ECPYXabY=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-9bchDeQPMVKoC04du424eg-1; Tue, 31 Mar 2026 03:19:10 -0400
-X-MC-Unique: 9bchDeQPMVKoC04du424eg-1
-X-Mimecast-MFC-AGG-ID: 9bchDeQPMVKoC04du424eg_1774941549
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c741f038f7cso3678909a12.2
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:19:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774941549; x=1775546349;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N67mJoT6zBu5iQWKt0B0XRjd20kwe4lBGYJ6EUJjjbw=;
-        b=qPVfvmD1lhLnwGkNUKmoDS7S8yOuLNUcof2O5RCg8IXwcH6U+uF/ZEvDvA+trpClQY
-         YfLSfTvS4XVYNfi0FN7QRmUJlbXepdHSZrWor0qNjOP4rJo/oLnotF4AkFFHdTO9b3Ap
-         F142FshR8nf01qRDbDaRVMWEOvA7gXoZDzclM24lm8cGOAIGbhiprCV7PV+oa01m8uGW
-         Qzw5Go1nnVYqVRlF9skphMO6OTjIJY5blQ9w44DUa4IecMhkcvCb+JrT81Fa+imAQgwY
-         0QcQ+OxTz49zmDY5bmop1wdToZpk18g236jzVD79T/sVT+CRQhmfL9C2OPrBc/TB4cZF
-         Jl8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWUDcAO4y/QKSQ+SdEtLHxHWuaWWuwZtpPWP40rsmrDfHLk4uurBfxWtNikWgBq1AkB/J4uPJFAKA==@kvack.org
-X-Gm-Message-State: AOJu0YwA28RILCpofWtc7ph3ZAQGOYPQw9dKAFd1d+3lnKwXW0WMZPIi
-	1bWF+axQJsJrpA+iknCsnc458aOgV+yMLH5rYtrd9XGj7CB+KhHf0+CQ0HGu5ui2NVQdsK6Q/C4
-	R33dYQ8iymYvXg9s7kbNU4cD6B03ce8ZGqYVpF/RSR3LUErbR2Dgi
-X-Gm-Gg: ATEYQzwPf3E2gcY/+X9eYOv+GcK77Icnxd0OMc6ibPJVN6OGITeat/moWKQefFVvvqw
-	gVhGSnSD2zmzdw4OQvtxuxLycG1aSjNJvF7mtAp4MhzraxT0fPwK8ns0lRQdN7EQt/Sgr/pnDE4
-	Vi+qikQYh/p9veIFpw16Y6sGzYXMqsXEJ5jGtihbDBOJ5xBm56PfF/ntvdgY+FE23Rf5EVKydHR
-	TBrEEDVzoHsOTsTB1fLzznss82oaPTJqvNvn35a7XYci54X16/RrZwGiF2xdjWdb7XKczE38RHE
-	XZBU8xXeu1lGVLAaXeX1MQ/ULQet6rPCo6xp57txYT+FermdUDlacdPDZTbxpnAE/+TfZD0vMbf
-	TqG4MeCKo8S9mrMD1pA==
-X-Received: by 2002:a05:6a00:438a:b0:82c:7f08:8826 with SMTP id d2e1a72fcca58-82c95e915fdmr13708619b3a.17.1774941549206;
-        Tue, 31 Mar 2026 00:19:09 -0700 (PDT)
-X-Received: by 2002:a05:6a00:438a:b0:82c:7f08:8826 with SMTP id d2e1a72fcca58-82c95e915fdmr13708602b3a.17.1774941548801;
-        Tue, 31 Mar 2026 00:19:08 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca849849fsm11095413b3a.26.2026.03.31.00.19.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 00:19:08 -0700 (PDT)
-Date: Tue, 31 Mar 2026 15:19:05 +0800
-From: Li Wang <liwang@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] selftests/lib.mk: set PWD from CURDIR to avoid wrong
- extmod path
-Message-ID: <act1ae44xGmG86xT@redhat.com>
-References: <20260331040156.119158-1-liwang@redhat.com>
- <20260331040156.119158-3-liwang@redhat.com>
- <20260330223025.4ad1cdb9b79e242f01d8b83d@linux-foundation.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhcsdCfz;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29F7C43370;
+	Tue, 31 Mar 2026 07:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732C2C19423;
+	Tue, 31 Mar 2026 07:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774941757;
+	bh=bqylBMF4ydyqvnzpcNQ3Ni+8LzSOq8suf1/N4xZ1WJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UhcsdCfzAiUk5aoX979n1D4zSHSJW0QYqSSInE0Gl6RFEhSZ6JRHX8+50No2p7/uT
+	 25rWnD2QsUffkqSOlGyLUbY6FB+UujhzLMneR9XnNvUWKnSsNs2wEv0htN0wg/Rtjn
+	 d19faf+AAMoe6RUb2cODk6BPyqk7+czt3uFsMLdgdKGyr5V1vq4cZDZRpmbedqjPHY
+	 8Hq7xWIAnU9QVf6Yu3wl3xS0seUnH31MkTnkEuDXDvw/dr07FA4mqeSRC0h9HH/BJj
+	 3DgeLyKItDd+Hlm9ZLP170oI/e7PuKvzzoIUK5QFBO/7dqVVqCVvDD6LCg8OeYz7cX
+	 h65MlmRKYz1vg==
+Date: Tue, 31 Mar 2026 08:22:32 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Julian Braha <julianbraha@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, hannes@cmpxchg.org, 
+	mhocko@suse.com, surenb@google.com, rppt@kernel.org, Liam.Howlett@oracle.com, 
+	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/thp: dead code cleanup in Kconfig
+Message-ID: <bfdfdb05-77e2-455d-b68d-9da3fd9d1c0d@lucifer.local>
+References: <20260331070730.33915-1-julianbraha@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20260330223025.4ad1cdb9b79e242f01d8b83d@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2vMhozIRMdCz2Mfz8upyGyXNmZjMQOy827yDxfgWfmA_1774941549
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 44BA6C0010
-X-Stat-Signature: szadixe85b1zjckrmtzybsxjh7agbw4g
+In-Reply-To: <20260331070730.33915-1-julianbraha@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774941552-229477
-X-HE-Meta: U2FsdGVkX19zFRW507aUZA9vmJs9yoBQXZp8WhVHN4ZcTV4yjLIvzqXpw649fUHHu153n06m4jqP/2zjyFtwbVHL0e6qT3RwxUb7dGZC/r87mz5OdHMQokMoFR/9csh97VuOrhI+gXgCoXwIQvQoCVHWZ91nZDl2PydDLt6Rinof7BP67kPuk1qG6fa+SxM7AD2b6oPOAoFgGjHdeXQ+wpmZZGLqclXAbh6KwECZhBYDfnkGfc2yzt2Dsar7hVvd/iEjzUJTOjoPyLQDrUmz/+cmawhGktXQ8F9P6iHOUrL4m15/E51i8Uip4O/Heq56ROEOA0lu4Fh+TaOrNFMoenaYBeN836fGOanYXFMirTMsPpTpokyLoBkbLASH/7mtnPUrjRm2abs3sV5S8rT/vFC2wOP+ZIE0dPYK3eC3BBSYEYlG/FHvUQM6LrArTZIVNoivJ8jEqyT8v2eMGzZrx0khW/4evb2HDe0s2EbLBqqv2mlsagqXaWzudhLGAgPvct8ZX5JbtINOcyWoohSAX6eIsWjRVkWazpTwq5TYqdWjZIcPVntOG99f4T5RbdaNjIiMw/7xDMLjDRlv0SnbQN9FTLcA6lYqee5jLUkNV0OVFYF/Z9V4zPfYhWOA/z6n2hLSPhaMUrtsTKUMtH4a9TKLq1XBP59pW2wVQORGuzsjjXA7DYWzMqkV+NxJSYyDcNR773qCRYU13Sv6rZaDKtvw6L9C48f66vvEvea+ov/WWRYWaogKu8Fe3HbspVa/KWpHy+ZxJeLCgAQnHyDL0x2z+JZpGySZ35/lYAnlekoH6Qo1TeYvMyopYkqozj2ZNXy3J/+B+g8v/4nCdejZhTUnjx76uAiQrVS23ZLd2ASRxFX7Zuxy1yXXmAmUva5Dkp0ZaJgy+csjq80JLIc5JIKUgWqkl/zCnOJrn94ZoVbkxqYu5VAPoO7UkrAXius4ADwn+m7Q3wRreycNl6I
- l6tLKC8j
- 993kSHzc6840lsEg3z0v+wXXyf7ipduk2KlL2gqpRd28BLARrKVQ6R0+XsedhEoxgU9AbG9Xe8WRh5NvaQPS8Wlv8+1xBd3J+KGv7aQBeQM3zPIYHPsodYDwJhmvBtFh3NIDxk0unNaA1bgpPcW/L+k1veR1xTbvX2H9Dj7emaEHb3EvhF/1RfgMzqMgE+M8+w/HG3iRvKeHxIf+tGqzLvz8y8DGmVWFB5C70Z3U6RZ8mk2lNrFb6xSzp+Z3K8YI7n9i4Ygjae/hbZAjdvoijLy9L4B3lMg+Dw+ppQSi2gBN5yBM03W1PFitjbP2guHCqvFPXevqokGNrlo5XDf9WwsGigiw+9dvTkiqYBpqeoW2sIy5mf0M/xxv9HcczzShP001Cg93zLOVq0/J+3VQAOfNDqumf6hJcAekOAgvEcHBWfNwkvSPSxiWz7w2fOY01ErlTDiUFCaBRSEDLWXGPqqWJ2n+1apNMC7PPzT2kJk248gcfWPuu4KxNf9efoivGzMqK
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5543F80004
+X-Stat-Signature: 4f7g6e3isda38ag133kxmhsdm9utqu3f
+X-HE-Tag: 1774941758-451468
+X-HE-Meta: U2FsdGVkX18yCOgxag6onf+9U78Bhl7bKBaGdBOFcMDFHQW/Uk0JpmcHczrSQ/8fh3T80T20vEE44BRYwKQkZTLhOpZtfVAPbsAVghGwng8s2zogcw95YrcLv5PARys6405QqYVMY2FOnQTD49wQl3aVlnmjoHrxa4JDSVWsvYWAKCop60zxwaDU41ZPqp6R+UzkMcJqyzNyR4g+Teu+VdATVV5bWzcle5Ulumq02bg8XFGj28NP4SGBQkNULc7NZfU3c6rRcp+fQ5Q1AUufItNrF7CxS2QRPRfhXa4KTHr1CHz8eQQsxcZjI/7eGSjqOeOzoHXIzs0D3DtPymIds62i3fq/KUlgfOXH1zTiQsGS4M+5+tXd6nonxR6/2R39yZrXiqV8oeA+mbtiWhJ9uk6lk199cbaqXk6NGsV7ectOT6t2cl1XsYIWQ7pp0TUmFeI+L+Cq/ndefUiCewarcGbinlKlzyTwoo7ScJd0HHRkzJjZHQNhlsoNf4Fkw6uEJhJ2b0xG5ZcziX3TFa/Qlsl2PmE7ANBDqRNk9dO+rrO9Ucx2ZL4R+rciGMsIJOB2XTPC25vxj647ANZMm0JA/4RNB7NqJ2sdA/58mzmNcLjbGtXH/gFl/MO9AD+3YL7PcZeZHNkSksKL034LvbyxUF88cKXgCINKJC4Sq+B+lCg4WcQwgMazt1R6mpsAZpPBXte6mSFqXx4ayZFukWQSeb1eRmfGPiXBLR5iXk0tG9rpo3dzQBSA8XErKCB7jyU57zcvE5adZ2T9dQOTSJyOzqviIafr/woaiganCYDqga/+qzVaVKtMvfqajH3YnE/euvnPv5qf9U4Z1I0SPjpqcWL61Wx65WLUBRjdg8XJdTQUSkJCvqF09nVk9nrREsyxRRxdXcHr2c9xUWCR6PpXna1Dcn1MkYrdyP9wmn6VaHILwCZv/qmLDttKcWbfRQYq2HMiCpuP1FVFzJ1ZIB6
+ Vcy3VJ2C
+ BeHrD5pWyVV8NV2odYpGd7dLAxOYOC23eI+KgbZK6SJgCfxODp+tCgDoPayMU2FSKLiWhw2bJrITQudREWyd3DJfGDycP2abD2PIL/nyknd+JwXrNWqAWj3tQsU6ypHi4lel4qEQ7meUnaTDqABLKezy/Dw09MoM++V52aFbRlxqklW2hR2hI5VhhEOizzrTP241luHCp2hWG7Df20dZXcHiHGUOf3KlZyroVT6iwKA89QfA+AntWfg+m5jiBFeII7UAY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,42 +91,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 10:30:25PM -0700, Andrew Morton wrote:
-> On Tue, 31 Mar 2026 12:01:55 +0800 Li Wang <liwang@redhat.com> wrote:
-> 
-> > When running selftests from the kernel top-level (e.g. make kselftest-all),
-> > sub-makes might still inherit the caller's PWD from the environment.
-> > 
-> > Some selftests use $(PWD) in recursive kbuild invocations, which can
-> > then incorrectly resolve to the kernel top directory instead of the
-> > current test directory.
-> > 
-> > In that case, kbuild may generate an external-module wrapper Makefile in
-> > the wrong location, potentially clobbering the top-level Makefile and
-> > causing recursive include failures ("Too many open files").
-> > 
-> > Export PWD := $(CURDIR) in selftests/lib.mk so $(PWD) always matches the
-> > actual current selftest directory.
-> > 
-> > Reported-by: Andrew Morton <akpm@linux-foundation.org>
-> > Signed-off-by: Li Wang <liwang@redhat.com>
-> 
-> I couldn't clearly figure out what I was doing to cause kbuild to
-> destroy my top-level Makefile.  It happened three times and it wasn't
-> fun so I Stopped Doing That.  
-> 
-> I tried a bunch of things *without* this patch and of course, Makefile
-> is still intact.  So I cannot confirm or deny, sorry.
-> 
-> I've switched my script so I'll henceforth be running -j100, shall keep
-> an eye on things.
+On Tue, Mar 31, 2026 at 08:07:30AM +0100, Julian Braha wrote:
+> There is already an 'if TRANSPARENT_HUGEPAGE' condition wrapping several
+> config options e.g. 'READ_ONLY_THP_FOR_FS', making
+> the 'depends on' statement for each of these a duplicate dependency
+> (dead code).
+>
+> I propose leaving the outer 'if TRANSPARENT_HUGEPAGE...endif' and removing
+> the individual 'depends on TRANSPARENT_HUGEPAGE' statement from each
+> option.
+>
+> This dead code was found by kconfirm, a static analysis tool for Kconfig.
 
-No problem, actually I wasn't able to reproduce it, the patch just worked
-out based on your description. We can kick out it from patchset unless
-someone confirm it is needed.
+Thanks for acking tooling used :) much appreciated.
 
--- 
-Regards,
-Li Wang
+>
+> Signed-off-by: Julian Braha <julianbraha@gmail.com>
 
+Unless there's some weird semantics I'm not aware of, this LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  mm/Kconfig | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+>
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e8bf1e9e6ad9..29d2de0d5c06 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -810,7 +810,6 @@ if TRANSPARENT_HUGEPAGE
+>
+>  choice
+>  	prompt "Transparent Hugepage Support sysfs defaults"
+> -	depends on TRANSPARENT_HUGEPAGE
+>  	default TRANSPARENT_HUGEPAGE_ALWAYS
+>  	help
+>  	  Selects the sysfs defaults for Transparent Hugepage Support.
+> @@ -840,7 +839,6 @@ endchoice
+>
+>  choice
+>  	prompt "Shmem hugepage allocation defaults"
+> -	depends on TRANSPARENT_HUGEPAGE
+>  	default TRANSPARENT_HUGEPAGE_SHMEM_HUGE_NEVER
+>  	help
+>  	  Selects the hugepage allocation policy defaults for
+> @@ -886,7 +884,6 @@ endchoice
+>
+>  choice
+>  	prompt "Tmpfs hugepage allocation defaults"
+> -	depends on TRANSPARENT_HUGEPAGE
+>  	default TRANSPARENT_HUGEPAGE_TMPFS_HUGE_NEVER
+>  	help
+>  	  Selects the hugepage allocation policy defaults for
+> @@ -931,7 +928,7 @@ endchoice
+>
+>  config THP_SWAP
+>  	def_bool y
+> -	depends on TRANSPARENT_HUGEPAGE && ARCH_WANTS_THP_SWAP && SWAP && 64BIT
+> +	depends on ARCH_WANTS_THP_SWAP && SWAP && 64BIT
+>  	help
+>  	  Swap transparent huge pages in one piece, without splitting.
+>  	  XXX: For now, swap cluster backing transparent huge page
+> @@ -941,7 +938,6 @@ config THP_SWAP
+>
+>  config READ_ONLY_THP_FOR_FS
+>  	bool "Read-only THP for filesystems (EXPERIMENTAL)"
+> -	depends on TRANSPARENT_HUGEPAGE
+>
+>  	help
+>  	  Allow khugepaged to put read-only file-backed pages in THP.
+> --
+> 2.51.2
+>
 
