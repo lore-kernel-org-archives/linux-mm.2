@@ -4,87 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9223EFF60C1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 03:54:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFCBFF60C1
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B95E56B008C; Mon, 30 Mar 2026 23:54:09 -0400 (EDT)
+	id 9CD4A6B008C; Tue, 31 Mar 2026 00:02:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B46926B0095; Mon, 30 Mar 2026 23:54:09 -0400 (EDT)
+	id 957346B0095; Tue, 31 Mar 2026 00:02:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5C516B0096; Mon, 30 Mar 2026 23:54:09 -0400 (EDT)
+	id 81EFD6B0096; Tue, 31 Mar 2026 00:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 959186B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 23:54:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40B7E13BFF8
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:54:09 +0000 (UTC)
-X-FDA: 84604990218.09.FD868BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 848E51C0004
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:54:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v969ObtV;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7436B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0269EE1167
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:15 +0000 (UTC)
+X-FDA: 84605010672.04.8467C52
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 23ADF1C0005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZRmJplnt;
+	spf=pass (imf21.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774929247;
+	s=arc-20220608; t=1774929734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c2dHNA3DxwCBQ6+tbssOIgQJAnIRi9Ds/njUC1rWBLQ=;
-	b=J3Fd/R5FnhsMfZFp9LeChqPLW7vcukbSr6HGh2m0q6n6WxRVNjkyqM/aJP0P/hwUAgGd8G
-	EPzZA3toAFsq9AT7ggl8aBn60XQF97O+cARo/JuUqGsoCZI8om3VtvJPZ8xSRRX36cl0Fo
-	TkqD3O/EqC+AcsVZssOz/JPGKJ5NH8g=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3EbDAZyAv6jeWZmKthzK/4CcHQ9kPum7Wu48BPoSuVk=;
+	b=qu5wWiNnO+e4eF6kC6eT8Qkp+aYrSTwtHHhPCP+FB+DEEC3dGnhl2E6z09ftNYw17x6s97
+	XPsT2+ay+6vCRyHvnfJSl9MGyzjutSWgPO885r5iyRrzqWtcc+mS9QAK+/rfOXr8cjc0zq
+	RbWjjagVS05cIdFlLGDlWFmgfLDYQC8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v969ObtV;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929247; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZRmJplnt;
+	spf=pass (imf21.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929734; a=rsa-sha256;
 	cv=none;
-	b=drfOhsCi0x0KVvmKkOkA6JpqfvzodD9KiiDYlKkrmtAF83qFcc41MzVq+UHLJNUevncFia
-	2AE7BLfihf/71oLiGQ/zBbWGKrYfPG4IPlFDaa+iPrAidsg4MTllNbWUU4bxDXGJ6+8uOi
-	hyivrd6FlXdBp8oFm0/hc4PTqO9A7sU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D294160123;
-	Tue, 31 Mar 2026 03:54:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1A8C19423;
-	Tue, 31 Mar 2026 03:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774929246;
-	bh=1zKueCjYPnMUW760AR6slevZskmLyUpa7pjvFUk5AWI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=v969ObtVceDu/y5QHcMcwGQ58QnhHdCUH7gc4zKcwrmwyvkeQZ5sbjun9BpPa+lSB
-	 j0fGOKuB1ZPTL2wmhlSQmz3XXeHalmeni8/LvVzICod+FXrVLF2suSaMTldjwKSSHe
-	 pJVqFm8ONtL0XAoLDyYwM4CNJLSH0YJGh/QpNUko=
-Date: Mon, 30 Mar 2026 20:54:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chengkaitao <pilgrimtao@gmail.com>
-Cc: linux-mm@kvack.org, "David Hildenbrand (Red Hat)" <david@kernel.org>,
- llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6 2/2] mm: Convert vmemmap_p?d_populate() to static
- functions
-Message-Id: <20260330205405.44d128cac32b971ec9134c70@linux-foundation.org>
-In-Reply-To: <CAAWJmAaOL_NUtJZfHguSdPUsNVCSU0U=GWnTeVAKhnGgwSKeEg@mail.gmail.com>
-References: <20260201063532.44807-1-pilgrimtao@gmail.com>
-	<20260201063532.44807-3-pilgrimtao@gmail.com>
-	<CAAWJmAaOL_NUtJZfHguSdPUsNVCSU0U=GWnTeVAKhnGgwSKeEg@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	b=pCmc7Dituxm0gW5ODMr2D6p/lNaE6OC0z85RF6flpIcM7Xo2AEXGVDc956nPuLX64txwNd
+	UEia1I+m4Zbxfv7GbgBJ0OWzTtGSrVd4bGW1zMGDBHLsAQioE71xgovT5dMcYdugy+g2VR
+	69FChNeDAQO0N8s3l2pbMhHfvFR+fMI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774929733;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3EbDAZyAv6jeWZmKthzK/4CcHQ9kPum7Wu48BPoSuVk=;
+	b=ZRmJplntLPC8cqNqKsUyXgAOoWdoYHOlkZBIi/QWu3TgYAMQY7D9KUFJXXGwtaZnQEELM0
+	PzGA0DUq2NwGdpH7/Jl9NJSTRsKWPOIJBWlCC3iBNop+3B+iaBnQdPy8adDKFaDfXvfO51
+	TxQWo72ZJc4ia1eRjy4PpdWP9px7qL0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-hqGagfUEPRab7xyPRGlypA-1; Tue,
+ 31 Mar 2026 00:02:08 -0400
+X-MC-Unique: hqGagfUEPRab7xyPRGlypA-1
+X-Mimecast-MFC-AGG-ID: hqGagfUEPRab7xyPRGlypA_1774929727
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5A851800561;
+	Tue, 31 Mar 2026 04:02:06 +0000 (UTC)
+Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.121])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF0D830002C3;
+	Tue, 31 Mar 2026 04:02:00 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] selftests/mm: respect build verbosity settings for 32/64-bit targets
+Date: Tue, 31 Mar 2026 12:01:53 +0800
+Message-ID: <20260331040156.119158-1-liwang@redhat.com>
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: KubUalEm22FWW5TbBQozLrMTqYZNEGMrZbvw0kZhpL4_1774929727
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 848E51C0004
-X-Stat-Signature: 7hi5tm5peiqrfacuawz1fk31h5kgh7oi
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-HE-Tag: 1774929247-695492
-X-HE-Meta: U2FsdGVkX1+xKOaawuijh4JbdHHrTCkcenwACXbzUdnhzU3NSBsYlDHWM9QVHjjNgzYrYOFW/VoAqOgPzekCrsmsrY2sjBrqzakgKmY4LTNPBf8uOI5XfQPaQmNsjAYp3kJgH8NANwFJZfr5GmXOtradsSI6pd9qSDj1aCp+EvlNp1a/tXOQ2gaRF4LEldDr7oowzrMHNcrSefqglKq19LGOKug6VeU4uI+aTmkdxqI/ObFNi7qh/UVf9raSkfKIQmGjBT5w4h2e39DOX9x/++IekpLMtBUusI0shVYkhxm9TrsHcH4mcN6h17tKMOA09odM6TtDcTpfAH42VmZbR6hbnPY/o9stOj5r8w/d9OlAWCC7xWJbcMT+M1tDN9OWKE/1LWgud647YNbf77oAd9PsPOGR70Yge3EcYFExlRYjwHPdu52g2Tp3hEcnJeOcRgqNT4FVhmIBN0rqvpz7i5qPhqbyLsqqmFHMYFftLeUF8pXSzO4hswbDpJCdhFUHjBIT2qDYrZAaUSFcmYD4tUIoK4aUGnorlmItUH1yw//pPUcKIgpVSlZYEMy0w5/vxuNjPXi/MqsWg4hTHjrbIJFAYkYQsGcvDFqaJUwykWFVxqY+6tvfuKJJYMb4jzT66mn4fgultxPcbtAUQrNeUgpNSCpxdb21j0FlGbsZL196bElYOygPRnEkoWWOKyG0vQdz5fLWF9AUvj1A4JSeuhlGr7Ub78qNOO/SvCFs913owDUQhuJIoBddBlaFHTO8clbswjpyUkDXvDDtQLVjZ2U3LDn8leMF0owmjsULYobK6GJ3a63CSUogUEvcA3Ne9GsumEbEKHkScQxBe+UFHuiWB6f30XbikCL6J3kOs7Xfr9PqZ9dfowswIQdWLP5E2elmKzPcekdQeyEsswwuW63+hiXmT00tNRMF8NxosxRtN50anh1h8cKQJ6LDrfouXMQkmeSz70MMj0I1j5D
- 2FeixvBw
- Atug3pSnias6tkDH33DKzgFhc4pCcYnyYZ3NTCrMEH2R82QS8iwjnSFlNhLBDuPKYIWalgBH8ruee0pVt/HGpyia7jAheJFTkg6fPO+cTqI13W/9n+LVkf6Qw//SJ7JgMfh4PEWGWPFPh3wv27lP7mfIU/j8LMUms1rMGAsvG2HOTx2mtOlNj508Gvfc7jco8LovXaYSic3CwL1Elst/RnfVPII0mc/S0NCHp/M8bgWLNbj57UasY+1RsJD4I6lN2Ic6oA8ZkP+G5uSzF8mp2BRgevg5kkpx7jY2JtPyfwCJN9EWlwglKOh/nTVVdwrZH0CYl8XCHDhXUH7NP+kYtckpoW5SuFw5TDdf3vEt72biD3PTYhDFOX1VuTpb5o/WUjMbNVH9BRN+9vAnCbXRvt5d/vX3g+SKJ1t3E0lIvq6jN7jfStS34asWNrQ==
+X-Rspamd-Queue-Id: 23ADF1C0005
+X-Stat-Signature: 3c943i13q9f78p3jstocuc7w9q3unfjj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774929733-221240
+X-HE-Meta: U2FsdGVkX19QEUUqjhb1OGlulftncquy5I55ZZYhsVhj4Hx4W2JTww9XTfsjfZuIi7ZSVyOnRDeL5+zkUC4a7Zb9jqDTgH1zalhr1e2VzP0xGYo2ZQ5IRHq2qc6ls0CnLr2JMla6EK57kjJgS/y6TK0/Z1uK0G7o2xs5fduSJMSgfef5Om9QVu2w4EtvjeJesjOWhkN3Sqp3xxCr/Sa5DkxVcncCH7G9dnhux6OYUlHQL+HsngfDUn0XzRvY6VB1/QCTIUfsZcyBA0X1nIgCOEjj97eM/JiCaOrI9OGYKe5Hu5h6BEPHN2ZIkqXoQn+wuToSWaj27d0pgnCsuz0T8nW9hPRfYQVWduD8Cwlh/GRd5FUeObnKESplb4xHthP6OuGfFVgU545tlF21IkM7va54kZiWXHPHoEyxNnw7+iHEK1Jj6ABMxgCoQ7AA5IdSm2PMtP++L4Hco2waZtycFwKL1SIEYxI/0UubLWqtFMrWGsc9NUK4HxQdOqN8BXnmqWH+qaupyLUEUxO8hc+kHB+G1zSxUueRFZQOOSA5ml3NR2oXOoWUySe0kbwGsu2rcINuu4ACpGMq31x14oMcg4OG0mFKxOGnS6WbueleCdT9gT+pjop7rV/KTR5y70WOIOc1daj7ZFP9KNpkt3XX5szHPqbdmnlHl9tPyyi7f6799feiaZVRED8Cz5MH4tEzvICO+Q0b3Pmy5gJeIIa1JOsMTp2tGUTWFGUcz/rTGrmaNNX0Gpzytre/XqekKerX1mQm4qMsAlZJegP9aJXpKiogfWPx3WdQLAzrBV1Hv68WsWfUCYCbgANLhEO8Vip95diR0jqVRsIEJQSgmug3NLWwalf96AZBtHhrHTTbuMffBNpF1WnSFlHHm+E7gA/410rU43DFPWPjrMetx4m7dZKa6e1g0jx/Mi98UHAxBm1cSmtZ2V2ihPfmnjDuD78l7Lmvc0bUzDuun1Nbe7T
+ IuM5sX19
+ ctx9m+yogNE4wmORJS8cb87JjzsxG4xdEsgEOk8KSQ3yOE8fJdaYlpz/Gb7W9f/CR8n0ojKOmRyhlCK0hHBADPUQw4IpstNDdBZX/pXwTIXQwu3r5RfhlJofN4/oCeuTH3pdOwEBknrRRTAbIXDbg0DoFyw/ulW42/pgsqnG1Fygz9WfSlMDEr/ndNMY+ELCN3itxt21WinV36Z8as6O7pgvfdcLb0sXA2lm+tSGROUiF6VUqQp3ucxePpkBe0VxIS45mMpn9BOFAbGsoSQ+IXRd7Y/7Sqv0U7Fxpx3EZP+hLEItAo1kS1N4fICXRZXqr1CU4u3aFgeSxAewxVYovLsw4rSUh+DGhQuIsDDk9eEUFRSbjpe7ZHTYNTox2F613aiJUdyiuzVlksGjNwQGd1uo79A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,24 +110,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 11:16:33 +0800 Chengkaitao <pilgrimtao@gmail.com> wrote:
+The 32-bit and 64-bit compilation rules invoke $(CC) directly, bypassing
+the $(Q) quiet prefix and $(call msg,...) helper used by the rest of the
+selftests build system. This causes these rules to always print the full
+compiler command line, even when V=0 (the default).
 
-> Hi Andrew Morton，
-> 
-> I noticed this patch was dropped; the failure report is here:
-> https://lore.kernel.org/all/202603251338.grra8xt7-lkp@intel.com/#R
->
-> Could this be a false positive? The series has two patches: the first
-> one already removed references to vmemmap_p?d_populate() on sparc; see:
-> https://lore.kernel.org/all/20260201063532.44807-3-pilgrimtao@gmail.com/T/#mefaa36aeff173d08f0508cd44be46e830c067fe9
-> 
-> Might the build error be because only the second patch was applied,
-> without the first?
+Wrap the commands with $(Q) and $(call msg,CC,,$@) to match the
+convention used by lib.mk, so that quiet and verbose builds behave
+consistently across all targets.
 
-There was some confusion over a later patch which was there to fix an
-earlier patch, only the earlier patch was dropped!
+==== Build logs ====
+  ...
+  CC       merge
+  CC       rmap
+  CC       soft-dirty
+  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
+                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
+                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
+                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
+                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
+                -m32 -mxsave  protection_keys.c vm_util.c thp_settings.c pkey_util.c
+                -lrt -lpthread -lm -lrt -ldl -lm
+                -o /usr/src/25/tools/testing/selftests/mm/protection_keys_32
+  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
+                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
+                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
+                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
+                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
+                -m32 -mxsave  pkey_sighandler_tests.c vm_util.c thp_settings.c pkey_util.c
+                -lrt -lpthread -lm -lrt -ldl -lm
+                -o /usr/src/25/tools/testing/selftests/mm/pkey_sighandler_tests_32
+  ...
 
-Sorry 'bout that.  Can you please resend the patch after -rc1 and we'll
-try again.
+Reported-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Li Wang <liwang@redhat.com>
+---
+ tools/testing/selftests/mm/Makefile | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 7a5de4e9bf52..3b222cd6a048 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -215,7 +215,8 @@ ifeq ($(CAN_BUILD_I386),1)
+ $(BINARIES_32): CFLAGS += -m32 -mxsave
+ $(BINARIES_32): LDLIBS += -lrt -ldl -lm
+ $(BINARIES_32): $(OUTPUT)/%_32: %.c
+-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(call msg,CC,,$@)
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-32,$(t))))
+ endif
+ 
+@@ -223,7 +224,8 @@ ifeq ($(CAN_BUILD_X86_64),1)
+ $(BINARIES_64): CFLAGS += -m64 -mxsave
+ $(BINARIES_64): LDLIBS += -lrt -ldl
+ $(BINARIES_64): $(OUTPUT)/%_64: %.c
+-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(call msg,CC,,$@)
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-64,$(t))))
+ endif
+ 
+-- 
+2.53.0
 
 
