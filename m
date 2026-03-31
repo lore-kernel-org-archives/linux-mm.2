@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5141FF60EF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40C47FF60EF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:39:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 191A36B009B; Tue, 31 Mar 2026 05:37:55 -0400 (EDT)
+	id AE2376B008C; Tue, 31 Mar 2026 05:39:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11BD56B009D; Tue, 31 Mar 2026 05:37:55 -0400 (EDT)
+	id A92C86B0098; Tue, 31 Mar 2026 05:39:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00A9B6B009E; Tue, 31 Mar 2026 05:37:54 -0400 (EDT)
+	id 9A9336B009E; Tue, 31 Mar 2026 05:39:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E30FB6B009B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:37:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C5EA160BE6
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:37:54 +0000 (UTC)
-X-FDA: 84605856468.23.EFDED32
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E1D50100002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:37:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CEvHkYAB;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 86F496B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:39:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 289F8E14BF
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:39:12 +0000 (UTC)
+X-FDA: 84605859744.18.730225F
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 21AA4160006
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:39:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UdIWB881;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774949872;
+	s=arc-20220608; t=1774949950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCOBs1WBIQYVMy+oCHFW0oUZuCFk/RTHQQNLRE6aDQE=;
-	b=Gmep5Oy5frnm9ogSEFMtduqVVQv8qEgV06u1hgbsMr2uJx9VqB58r+5zP6n/WXYeUYUo1y
-	P8mFKxtMZmlNuyEdLKm2cpU8VQYa/nwDrgD8/vLGO1CFm6N/dFuj2an4SnAsLwH9IOLFHg
-	7+nrH4SgOzz1Lq+N6K1t7lSSZF6iLWE=
+	bh=bbHlAEStjw6Wu8mMsfT+Jv4/X4ttfYMb0i0VeuUMhas=;
+	b=wmGzHF2jdp81E7o+S0kkE+/Me6lMqtyw4J1F5X5RV6HvTUl89MPTL04aOyjk4zjWCx4x/4
+	HIiQTuqXCkOFksLR8KIAxQoS9Do8IpfWIOtuFF/Flso2XaVnQZ1QD5FwCxuin/JnxVR8et
+	PM5E4ph7G8qL2C10ELo2RUhU7mZWLZ8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CEvHkYAB;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949872; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UdIWB881;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949950; a=rsa-sha256;
 	cv=none;
-	b=IrtWMZlVBoAaboh+4AkLB/aLW8K+78G/7dhd0GMdY39vOe37dsoHIoZly4wAGZcemPFg5+
-	z31yAbdbYkW5amGpV88g9wo6pxh8GOcZ/L2JTMHQbrpJvWmLeAwPMeT5biTe8xbAGy9TcO
-	KKc89ZpXuzjKNDZ4okDEoNxV5nlAOjk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 434906001A;
-	Tue, 31 Mar 2026 09:37:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77337C19423;
-	Tue, 31 Mar 2026 09:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774949872;
-	bh=qe1fsS6EN1RbtUHByWfENaECxhHVAJNyIfc33jUhTA0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEvHkYABu2ykhLpVPrg5c9nD/W/EmL/3D4L2PXSpINOdvkVdnHg1v0dC62gLsqnW1
-	 2BP0xz9zxBJCxQ6pxS69MynZJ17yI68NiDTd3Lx3On0VxdeZ/sdFHBQRD8D2BNVSLh
-	 XN+6OYhhExKyax6upW8bxPS5cEWrTPZ4P/B47rQrwGsVU3jaGezy1ygNAHEWGevxtP
-	 T3cnPJZHiX3+UMq5CcawDD6IrFJb4slqra59wrOwS4sz2vvj231GGqZejpoCubSvZI
-	 zVR3Mr82DUONXdQxRvksPRO6MyIQxi/J6nz1sEut/EojbUfMBn/AAl1ODuMYhxF9SX
-	 yfaDoIPFsz4UA==
-Date: Tue, 31 Mar 2026 11:37:49 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 04/15] genirq: Support dynamic migration for managed
- interrupts
-Message-ID: <acuV7V_7Z7X3dhhV@pavilion.home>
-References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
- <20260325-dhei-v12-final-v1-4-919cca23cadf@gmail.com>
+	b=3YkjlfONk0cKlGmlkjia/8FUU3NF6NjYbXle+i1WpejAXcmh/AbsByI+WNOJjtJtn/1XEH
+	HDfdEUpMXvqgj7bgfLVtpcHtNUMw1VMW28uNcpeiZoIidHI6NGpagMzMeuyGFjtvugHTd9
+	BnW/y8pF/EYX2b401tv5jXOnJCb/5SQ=
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38c620f1699so51243221fa.0
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774949948; x=1775554748; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bbHlAEStjw6Wu8mMsfT+Jv4/X4ttfYMb0i0VeuUMhas=;
+        b=UdIWB881F4gfV6e1mSYX9OgN9kh2yZZdgNAVw9MJrMQO/6WrBdLDbFHZufCSzNbn3Z
+         xuvmJHojp32X064mAuORAvEEyuy4yiTyHeYPdjBwaMS+Nhc9+fRUiWeYB5Mw39Peevmx
+         QpjE87hyRk3dhYOlTKq8WAjWD3MCgL2h5bHm1e1d5ZkfTo3nMsahM0ZY+pMSk4YFgkp0
+         ybOXPXNcAmsXm5CFHZvBB/v3KpC1A7FQHRn0BTqDn7aeWIw7u9m0pC+T5HH06IwCfxIS
+         oyB79KTjY5Cn7H4AbhmDuLC+xhuKNvHWzRd8gkXiW9G7QQYvjT1ICtHmAghN74a6B+1G
+         N8Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774949948; x=1775554748;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bbHlAEStjw6Wu8mMsfT+Jv4/X4ttfYMb0i0VeuUMhas=;
+        b=lmxQ6yIm7wqXQMo7IwOrnhip5dK6kkT4/vb3+PiAR4fdDcX1QwztCka7qp2XwcbmQk
+         CnsbXGlOp3H/csBDjfAAtnXvvsEj26ERSi4UK9CYDQRGYSAGXamb8QmP/XJEL1h6m9Mj
+         aDt4nVQoYZod0dkNkm1T5iBNUJtXlOcMSmHpjvQxsjKLSBskF90abFyXe3mHWxP1Cw4q
+         elKfl7c7PmajwSuP6NF6MQW1w14x/3T6FQ88HzvPP1U8MZo7cFfqqtftutAAEyVhWiwU
+         tOMMgbfp2PgQMmQRHpX6nqkbcwAh+xMdG4taetguS6zyjn6cUnM9pnkKGm9mFIalm1Dr
+         M/3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXlW4leLJrLbNfQgRCbHntQN7qqmyeQhV6Ny5HjpV5360qo1VH+WlxVHF7VkldSwX1dmDFc6LJrDg==@kvack.org
+X-Gm-Message-State: AOJu0YxUKmH8/x2i000zg3mdJ8PdDsCIlmIBbplExl3jpMvreYin2mgf
+	MXo3CcF/FKG9CDE6bLXvXTOmqz3gtF6wwSVEsRqGNQEzNb1U8L+N+QLY
+X-Gm-Gg: ATEYQzz7MhattcMVYxy1fH2tC26rXiujPjsbrS0liAJuUELwLRVtsTxnpLVz0+H6S/K
+	vUEQg+iuiE5vnMGAEIxloLff6FKUVlCZekqx2paG5iTscakcchVowW+vXQUDiMugg9WDFKncKeP
+	ZdETzHUXorpRtI8qfWyb1rOP0MZY243P104tO+hStyWUtyA2HfXe56Zz9JuF4Ma63j+Blj9mM0p
+	Lo34rej06VukW5sS3Xr4kuDykH+0SNz0TctxzTeAUxWcIqMtn0L9AfJQL2N2hOZedva3VmfaweU
+	DVXshgBR/UUX7w4ZmmKwGETb+mUj/RWSv9hfRncXrpi84fUd6V5RdkmiR6Rv0wttd2Nh00VOfl2
+	cyvzRRpmcxFueNhELzZdoRxnL+PSL7wEJerIfYl0xqkboBnJnYZCcbg03uW1r0D49
+X-Received: by 2002:a05:651c:1182:b0:383:282b:7ac5 with SMTP id 38308e7fff4ca-38c7400532fmr38265251fa.25.1774949948068;
+        Tue, 31 Mar 2026 02:39:08 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c835b0946sm20380921fa.0.2026.03.31.02.39.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 02:39:07 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Tue, 31 Mar 2026 11:39:06 +0200
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+	lirongqing <lirongqing@baidu.com>
+Subject: Re: [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap
+ purge/drain
+Message-ID: <acuWOtKmPTzrYEEG@milan>
+References: <20260330175824.2777270-1-urezki@gmail.com>
+ <20260330121625.c69f46a63c86c9540b823398@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260325-dhei-v12-final-v1-4-919cca23cadf@gmail.com>
-X-Rspamd-Queue-Id: E1D50100002
-X-Stat-Signature: oow64a188we9fowyucmtm3p96kzantfz
+In-Reply-To: <20260330121625.c69f46a63c86c9540b823398@linux-foundation.org>
+X-Rspamd-Queue-Id: 21AA4160006
+X-Stat-Signature: icdu4ce7fdxahpk4hxc9azu7xbcjrimp
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1774949872-504822
-X-HE-Meta: U2FsdGVkX1/9f6Ay+MJfX0m37GAmpzzl0sJe+RIJcyZubtc+3lT+Esr5rHVai9aVK2afWQsYREjIrvb0QwAw62pkx3HYThhHIsJBjFoT4ar/JBWkuvTN1FzaKOW4/1cMELcp1nV6Xv593E1Jd+AgciuhhNwiZw9RNK7ot5P9RV32Oai1dRdZiLU+cl+e3Q2acZBnbiqVBytmIbJCtmGa9YBALpkEXjDiXOUjptb2Ex280WeMJaqPuAIwkFBost59DdIzODcZgtHsLlMW1SetVYTrTetwWErrfxJJd/kGcHCYDXfysmO2wYYOaIfAPiguFSEhoF1TwzDnF260sjSGneXhRclxpMtAoziSb8NMpcZpdbTDqwCN45A291ygmujnGPoongUg4xEiaUhnRF49VSXvscaMtJdb7eaIorcQytGqxTowWtdjRrWt2ns6uIxttstDeUjhNFBgo9xTR0nCuFnHTXDaJiq4kY4CWl/UDe1eO56Q+lk2k7YFmA7Qge9IUUEPE5C2DMxwB9lR13uWUKd5SYsyhYo2As9DX95y7QmVq+CD5iY5CNRmVZMy79u/Cum+5UDhFDGZf4WsctAzuqpmQnra3KsiIh96Af2+z6k6/SsTrkwcoCT9jCAugqnv4TnQAJ5luWgWWNx22iR/5z4QT0VWEkZK4jq2SBovCgaZsBtAA57B0Px78SUvJsTwrMmtzLDe+RfDrVmyVnkG85ogVPuAYZwTU2X5jULoYLf/IMSPmqtMQkMxPmLDg9RcwVe4GdGXLQiXVpUHPDiFl4KRJD6b8Fq8tyykh995n6Qg+SEqbrevahUiGCcefk+/S9skQGv3VbiNbGH0RcqW8Fckebw+Akhz2NXjQN/uK+m1KZ7wy4h+sQhx9G/W8r30VLj/jMIwAp2ikwIW8TwV/NEkQd01MkDnEWKG2wZc6T8lPLvDfC8Nf1z52Z+nVwKosrF4/nesQ1ThN2hGkUz
- JdEX6Ets
- a5VVG10ZOslWwtUb4mcbcSuL0omBoWg7XeVd+IWXb1Y5NmfBU7zg/0pJwbR2wSfFBCkq44hvg66KLg9BOPJNTrzZ2fB5Z5madJmm6rfXnbFeVRrFTRju6+frVcFVX18Y68/oXYAzla1QAqPnfQGI5kFcjjDRa7UK+zr+wznA2ISNIan0vunkDQc89lcRo3zpKESqdSAkWQueSblLoBODhG9g8hUj+q2TYebhSFXrJUpeiEk1BDFIcXvuMWesah6oAi8b98tssOUSgBWHcTCoJMTR6SVMiEEOHdOP0cLaXcTIa1TSTS/8nMnTWFcMdIBc+rmaq+69APJXLeKs=
+X-HE-Tag: 1774949949-889
+X-HE-Meta: U2FsdGVkX19ZZLMKWw5eb4bfs4CG2/37Y2rl5uvmkNFNz3zl1Z/JKFsvXVYz5CIe/8Dxt+OruoWmOKQhocc46KhPEzxRTlfK/nD4EXVEqjAQaNiKjL/ItJixtZn+VxVZBh2X4DmlY0Kv8uRQC9E5p6miLE4r+sBvV9SMAcF/OtJCrlN4LArxob4cSiZ9LpUFJz+RRqBcWXMwUdOaSsR8fgPWBq8SlkRCjsblZKiIRPv1pHnQCnMmtrDUY+Syt+B4H649e9wNZgbd5wYvagQImJzwemyLKf9yVmxWnGpiH1Liq7QuPoa4Q//6sPUMK428rjX5X8yajWV8HXUVwZ4aZPjp/gFv7uTKum7a0Z2poQ0pqBuaU6kvPOsnGDokj0i+h4OHT8E0xY1qDjTsGP3gASM97LKn4HyKuK75yTdYHuogG6C1by/5l067N0XiSaaTu9yV7fHJKyFiw4BZRyM/8/6spstZL5Cl+Qdop8aVUM9/dXNXPPzCdd4o6XM4VTRj0Ar/O7oXpwTTR1gXT70qr5qQY4b8prArK0hUXkFG8XXtPwMQT9kxQzWgk/Ma4Yhe642DpRIPJttTETWDlAhdeXS6WalF3llYS9uhqfOv7OHGY50D3OofiN/NizNQtsqfhwXDZ8xMH35pwTbMoYb6FgNpUzzoIJbwULAaaUWjwkQX77uWb9jIHNBW2kQ+XI/hUMgLhIxE+GKCbPsWBztqrHvX5HlQMz4J4VyVoG6VhSQQLxydg9T1ah6r63cmzMbWjf1XI3zFd/VKfHJDPnt4fuiMunfh6Wb/tQ1DWKcEECNsAIMIfUndDhYYpibP33FUb54x7KT0w+eRl91CkhHyL85f27S6E+9YDRgVnIAlTBfv60XQDB1jrdvFIfX80m1TIWMQyEghBshCXLaM3bXxuXZipyXRzagkKne3eLktKrIQrmQ17E3C5w2R1tiPj+RowEEfbMeXAxng7RQuvxP
+ Xh4kfAzT
+ 8AQxXf3uAyJ8vrfs6bL24dSABpUzxcQoF1qTeTsj+bdusmRoA3rrAnFcV2Wc/+TyefBnM2aSHKNPt0U8fenoJZ7sf3scnd5tb4IOmBwZFvkzQPbuQGvkBB2aGGrgQs42Ag75/vuW8X2//x6x1N8n12pghA2VcvYSt0SPbKn6voL0QxjPlGpiJdvsDy1Ua5ktmpf2c1uQyT7y7hf1Iip35LcZosmapYtWzn3ijr6vjaOxfwZij7qn/rOlSKMsPI9AfALSVcbYenHmdMB0Zi9BjQknRFpPWHB8qG7RxJFStOkZdEWeKv/Ai1TWbwRI2AXC2dhW+SFi7RR7yH3aO93BbzFQLn5mCnyDhlNwagmYjUJbCTRs/BqNR4vHEOTiFK9IrUr3smqiQhoxltrSQgpRwKQWi084sOvNRN4K7IueNgXQI68da6cT2z/GiLe3yDkAyWMlUNn6cf1XTleh3PVmSEOkF0Uev4o8+iToUp3XtXzB5pSK3PI7oNa6VLdO8sue/g8J8VyNvANmnrqIq2H8P1/plwmLPRhKeJNsCUW5okRc0u6A6s3Z+t0IdxkRoCWHBoh7N7C/Pw3QeLd1+0OPzpqJMQRc/4iEJwqPnH+3p6NJsKWY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,89 +119,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, Mar 25, 2026 at 05:09:35PM +0800, Qiliang Yuan a écrit :
-> Managed interrupts currently have their affinity determined once,
-> honoring boot-time isolation settings. There is no mechanism to migrate
-> them when housekeeping boundaries change at runtime.
+On Mon, Mar 30, 2026 at 12:16:25PM -0700, Andrew Morton wrote:
+> On Mon, 30 Mar 2026 19:58:24 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 > 
-> Enable managed interrupts to respond dynamically to housekeeping updates.
+> > The drain_vmap_area_work() function can take >10ms to complete
+> > when there are many accumulated vmap areas in a system with a
+> > high CPU count, causing workqueue watchdog warnings when run
+> > via schedule_work():
+> > 
+> > [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+> > [ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
+> > 
+> > Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
+> > run this background task on any available CPU, improving responsiveness.
+> > Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
+> > 
+> > If queuing work to the dedicated workqueue is not possible(during
+> > early boot), fall back to processing locally to avoid losing progress.
+> > 
+> > Also simplify purge helper scheduling by removing cpumask-based
+> > iteration in favour to iterating directly over vmap nodes with
+> > pending work.
 > 
-> This ensures that managed interrupts are migrated away from newly
-> isolated CPUs or redistributed when housekeeping CPUs are added.
-> 
-> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-> ---
->  kernel/irq/manage.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
-> 
-> diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-> index 349ae7979da0e..f2cba3d7ef624 100644
-> --- a/kernel/irq/manage.c
-> +++ b/kernel/irq/manage.c
-> @@ -2811,3 +2811,52 @@ bool irq_check_status_bit(unsigned int irq, unsigned int bitmask)
->  	return res;
->  }
->  EXPORT_SYMBOL_GPL(irq_check_status_bit);
-> +
-> +#ifdef CONFIG_SMP
-> +static int irq_housekeeping_reconfigure(struct notifier_block *nb,
-> +				       unsigned long action, void *data)
-> +{
-> +	struct housekeeping_update *upd = data;
-> +	unsigned int irq;
-> +
-> +	if (action != HK_UPDATE_MASK || upd->type != HK_TYPE_MANAGED_IRQ)
-> +		return NOTIFY_OK;
-> +
-> +	irq_lock_sparse();
-> +	for_each_active_irq(irq) {
-> +		struct irq_data *irqd;
-> +		struct irq_desc *desc;
-> +
-> +		desc = irq_to_desc(irq);
-> +		if (!desc)
-> +			continue;
-> +
-> +		scoped_guard(raw_spinlock_irqsave, &desc->lock) {
-> +			irqd = irq_desc_get_irq_data(desc);
-> +			if (!irqd_affinity_is_managed(irqd) || !desc->action ||
-> +			    !irq_data_get_irq_chip(irqd))
-> +				continue;
-> +
-> +			/*
-> +			 * Re-apply existing affinity to honor the new
-> +			 * housekeeping mask via __irq_set_affinity() logic.
-> +			 */
-> +			irq_set_affinity_locked(irqd, irq_data_get_affinity_mask(irqd), false);
-> +		}
-> +	}
-> +	irq_unlock_sparse();
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block irq_housekeeping_nb = {
-> +	.notifier_call = irq_housekeeping_reconfigure,
-> +};
-> +
-> +static int __init irq_init_housekeeping_notifier(void)
-> +{
-> +	housekeeping_register_notifier(&irq_housekeeping_nb);
-> +	return 0;
-> +}
-> +core_initcall(irq_init_housekeeping_notifier);
-> +#endif
+> Thanks.  AI review flagged a couple of possible issues.  Do they look
+> real to you?
+> 	https://sashiko.dev/#/patchset/20260330175824.2777270-1-urezki@gmail.com
+>
+I think the problem about itself locking if running by rescue thread is
+a valid concern. I will address this. I think the easiest is to use two
+UNBOUND queues one for master/main thread and second for helpers which
+reclaim if there are too many objects so the help is needed.
 
-We probably want to do that for HK_TYPE_DOMAIN update on housekeeping_update().
+I will work on v3.
 
-Thanks.
+Thank you for review!
 
-> 
-> -- 
-> 2.43.0
-> 
-
--- 
-Frederic Weisbecker
-SUSE Labs
+--
+Uladzislau Rezki
 
