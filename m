@@ -4,136 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A68F10F92FB
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 355D710F92FB
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:59:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EDA06B0092; Tue, 31 Mar 2026 15:58:29 -0400 (EDT)
+	id 9F14D6B0092; Tue, 31 Mar 2026 15:59:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09E976B0095; Tue, 31 Mar 2026 15:58:29 -0400 (EDT)
+	id 9C8456B0095; Tue, 31 Mar 2026 15:59:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECF756B0096; Tue, 31 Mar 2026 15:58:28 -0400 (EDT)
+	id 904366B0096; Tue, 31 Mar 2026 15:59:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAD296B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:58:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89BFEC42C3
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:58:28 +0000 (UTC)
-X-FDA: 84607420296.18.51C7345
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 55FC940003
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:58:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=bIQz+TGG;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774987106;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA106B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:59:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 368A0588E5
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:59:26 +0000 (UTC)
+X-FDA: 84607422732.02.4229310
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8C8D1180011
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:59:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1aYxgRT;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774987164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CvbjGMrw6sSXQtTsWR0wzJ0JMKxByG9x973fvHacnEc=;
-	b=VG7Q53C18ht/w5u6RH7Mu/MT/4ppS3BoiAoOE4YpK6uJB7H2s4Pajxg/DdYkUwvYlniEu8
-	cmIH/qO0ooaUJbNc5EvXj5Vj7HYKFy5ZAtHULsfG8xpRZ0m+jHObKHHC3gyZtEO2bsGfx5
-	AzT7UTe1Ri1IjsBktBO57OC+yCUBHpo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774987106; a=rsa-sha256;
-	cv=pass;
-	b=2fEiqvKbhhx7ePbQ2xSQS+cj5pLn1gIyE1p1Ly8fxmKUPLH8T2FRoaFWnrARr1AKlMH5Jk
-	fT9Zb3hT7PHb/kLQ8XM3xChpSd4KFWzJMaV3vfGvfK1ZlLLpCb3mPDtKSdEzuPPCt40II+
-	tT/rfsMbzeGSOB/Yz4ndKEu/BvgnXRE=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=bIQz+TGG;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6618bc129acso9015058a12.2
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:58:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774987105; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OSKfzv52nkbE+XpfSyTljZY3TQiJ9k0V+sEu5bEOz+lGmxFTX9wZeeeXdEtwpP2PVT
-         4uBbGXNrwBki9svwQaT7y8cHes/+OzdFBSsQAqywEqpd3070Wo6MvyzJvTc6tLK3PBAY
-         KI6B4JXNgrNP8WTUx0akE7b2RoS2zrOHGljInQBof/Qkqpx7skR5gK0NoGwEZC5rvn4p
-         HaQJs6b7uUnwBP/V4zygbUMVeOogohNuB/gvpx83E2qiahO4s+Ojh+5l1MknwpwjfzCa
-         eY7V1ftIShBLXGl/k4gZxq4QN/EkehmghVZVnaCCRWmjhL/+r6ZtO/KNHjo2ZnqLaUHt
-         FsKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CvbjGMrw6sSXQtTsWR0wzJ0JMKxByG9x973fvHacnEc=;
-        fh=nDHRTS/65cnstJtTRdQvbHXH87jhBL4zsV+dIAwp0I4=;
-        b=dj8CPNPilb8HutbSNjZj0K0yxPdB5oCvhzJh6w94HAW+vaEejkjJ0WHp0oOQkj5ZSG
-         UP4+zq2e0ymI1pBDw/DInN+DHHck3Xbjh2uPxpQXe2PnGhnqHejNFaPTmK9Da3tstBAP
-         oqaplEeUclEihatpespa/Cv4SAagNScwh2dSMYOZRgrFVqteKptDRY1eJYHAWGmHzPWX
-         ijMytNIIr5FPgbl6+rAktw3DlJKv+6rOODxT78OYtQxUGPD8peD/uG/Z/yLi3Swh9eLE
-         1fQ5U7NfBTshSboqdd3sDkRDeeOcq1XERgxVBoaxyF2kQ6ECuobnlxc2mAn/dSIK1W2s
-         8ArA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774987105; x=1775591905; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CvbjGMrw6sSXQtTsWR0wzJ0JMKxByG9x973fvHacnEc=;
-        b=bIQz+TGGeOoMLHxrmK4m4urJNdoTarGHcJrsKfFIc8hm4bk10h34XDhjj1fL2KdOt8
-         eQl83QktRGansBSoVMcH/fQlgXHHydtIGHGkZetnYRiZDO3sIHagVekSPYZKfZG/MJ7L
-         KMvW4La+UqiYhYsisee0yUQFEvQHbuHOOo9PVdwhHbVVhQ6c69pUZ0OD3bfv7CKN34bt
-         okH/A2T2PhY4HBN9YQZmfk+wcCrQnACAQWr+zR3RXTMyJk+iMKLX24CItvI90iWvBfde
-         UOYy7fCaDyMi2UDpRJll6pNTbWyBT5Unh+hK00i5PHtcYmp/DCsMYu7WmnzGFTYJBU7u
-         /cnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774987105; x=1775591905;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CvbjGMrw6sSXQtTsWR0wzJ0JMKxByG9x973fvHacnEc=;
-        b=W3pVwqgDuLrk5qfjtUrlGS/yFJUuQRGzE6sspDvj3Ri+XY5z5DRglF35EUHqa+0gOU
-         hHFnGvUExTJQd4B9az/yHS7LmMIgCiEsMVDVgvDTofLhZyEVKbh+3mLkEhRTeiVdv4WL
-         f3tKRmOJOKBBHa8F1RLhFu5i2or0SyHE4JCyMTnLvpa133/8bWhxH9zczwS8S6l2uWW9
-         +WikJqVcDgRFwcOVv1okPx3uHXPwF/O2yvMZZoGzprsz3T6pZOFZcQbbSQhPNq2Uqwj5
-         lQ/rVykmFutpXqSHB8IXU3DphmP3MxLbB3Zx9jZtf0QjPMFc8R0HjLRkzeMrPZnvQA1t
-         W8kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqzXm9VeYphQqNIZ0AOFIVL/gacinv5WptGipRHt5WMoDjs2d3UL221AJtbnSrFZckCVzJ0PfLgA==@kvack.org
-X-Gm-Message-State: AOJu0YyGQtTELnYuZHW5QfOUL/J7L26aO5mhjfkRTFDf1TxBNmcV/ZoG
-	d+obsYqJqBxfse6JFOfLW59erZW8lRj9qS0G1V6719F1cgm0Q21A1SuHPx9tQUiEnYUQxMhRe+/
-	TsqTp76USXlWCe5XDQhpqE116jpezIXt/xbsh/UjanQ==
-X-Gm-Gg: ATEYQzwVZMYetr2l+mE6c59dy+SyWYNrKI9qRnOvb2qjqa/czwzaNJHTNqalSMFzztn
-	bsGbGc2ZWJs2+kgtcAmPEKhTydYM+uaUlwnrzvGWCFTnnmWji/883Zt3fYF/lxDwVybze+oB4Cn
-	EpKl58YXA+cO7ezsGBhx2OUp3vlQ2Fh+IVGTiIz9+FLwLbjqokPpL+QFKlUSYwEaLNvW2lshYeq
-	+3T77Egdc5/yYLAmql1Yqy4kebCs0Xn5vy3DbcjIp9Th6MYJWaXARCQ/lMElqnbWLuPKaCHYpyA
-	ughm+Z0HlCjyDWEKlFPirItkYagx01eRxU5L8g==
-X-Received: by 2002:a05:6402:1286:b0:66d:d07c:a8ea with SMTP id
- 4fb4d7f45d1cf-66dd07caa9amr52754a12.7.1774987104740; Tue, 31 Mar 2026
- 12:58:24 -0700 (PDT)
+	bh=lz/xF3KDwLbN6aQz3ePSnr6PbDtYU/vbc24DbciYYWE=;
+	b=03+rD+fGdEYCmRKX1UTeBCfg/f49QA1guY45bLQFnFWmoH27i+Go+ymbNDRDPFByzrNzKy
+	Sejt0rPEv0navKw8pn8bal9q+4sxzzuUZVP5VQKfO90qLVEk4QeK6TRW6OPvRky7ol6exb
+	NxMTN9ogDt+rWaROilOFCHWM0AMLxc4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1aYxgRT;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774987164; a=rsa-sha256;
+	cv=none;
+	b=Bkrr+kWnqo565z1MwmtYeRiEgw4GSqnmboqR2kfJofSBEbbyqa2ggx7J6u07Ne3m9I9gTD
+	atZ23Ctu4hwBhSJPF/AIX6sdTXvsyz5TXefxLy5fV+L8eF7TxSow3bHA4StaDyQcR2L3c2
+	jwkmCrYCs3UuVuDt2TXK4dJX0fIi7LU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E444960139;
+	Tue, 31 Mar 2026 19:59:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B49C19423;
+	Tue, 31 Mar 2026 19:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774987163;
+	bh=LxmMKzf7AC255UJDZa3vjLah4nTY2GHIEayHmzfCNyU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k1aYxgRT++QNPITYjQqA9vhZIEjuCZ3w0zUX+YIrWF49Sp7bpST99vgbN0FXofsVO
+	 rmdnAY7cE6sWxVOqqwmQfeIeuA0RxMh30mvaSNl/SWtevqKTuivs9QSMUZuf3Rty+1
+	 jehYrIJUWJp1p9SaQpGHqjWhW2MJimRdJmDrjvDETPny9EhbdJaxUEVFGgmeA3fN2+
+	 w0BG5lPfdtOYdLmzppxja4R8N61QcuNsQDJjdoqmIJJjcHl1szACPumNndVdJdp+NJ
+	 6LN0veNm1+9GKkJxYhaTjaJsMkU8lxMygzfOmIkUjxajvMSCZnolgTeNaNkBSwiPFA
+	 ufR6Q2lmV+xIA==
+Date: Tue, 31 Mar 2026 20:59:10 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Nico Pache <npache@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+Message-ID: <d3c348c1-a570-476f-a48b-700042e5cb24@lucifer.local>
+References: <20260325114022.444081-1-npache@redhat.com>
+ <20260325114022.444081-6-npache@redhat.com>
+ <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+ <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
+ <CAA1CXcAHa9KOR92oHAPZ0z44DKS6yhgNArKoH6caVSBio0z-8g@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260331175456.4065874-1-luca.boccassi@gmail.com>
- <CA+CK2bB0bMxW721Q+SzFJENe4X0_GwcOh83R-mm1V5dig3oP3A@mail.gmail.com>
- <CAMw=ZnQZm_k_mMQPmKwuBtkFyXXgAn9MK1NzmVbZst4nGu6xhw@mail.gmail.com>
- <CA+CK2bDL9=uNmy9hq=3D-w=MHYsY82FNCkqvNeNpnTnX6meYRA@mail.gmail.com> <CAMw=ZnRKEaWC0GiXWHpbiAchpZeBawOCoDgtq18B1UJsZpNN-w@mail.gmail.com>
-In-Reply-To: <CAMw=ZnRKEaWC0GiXWHpbiAchpZeBawOCoDgtq18B1UJsZpNN-w@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 31 Mar 2026 15:57:47 -0400
-X-Gm-Features: AQROBzD0oAOC_h1ZImCURxvI7CwZiGV3FDojPlJTfAKD12_kRIP0nvfRHxNVwpY
-Message-ID: <CA+CK2bDSfOE2VardTc=QY2RyY0uv6yQu7ucn=5sWg17t78oMjw@mail.gmail.com>
-Subject: Re: [PATCH] liveupdate: truncate getfile name to NAME_MAX
-To: Luca Boccassi <luca.boccassi@gmail.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dy1jaknpbg6xrio5mwkreo5k586w7qps
-X-Rspamd-Queue-Id: 55FC940003
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAA1CXcAHa9KOR92oHAPZ0z44DKS6yhgNArKoH6caVSBio0z-8g@mail.gmail.com>
+X-Rspamd-Queue-Id: 8C8D1180011
+X-Stat-Signature: 15mzb9rcuod1w3kzmtjincy3neyhxta4
 X-Rspam-User: 
-X-HE-Tag: 1774987106-636711
-X-HE-Meta: U2FsdGVkX1/IdrdvNPpblaKOICcNQGu13PNjpNi0uEzLmXQifUv3tRGJ4RKI2hZzvsVwOYRmMcnHoFNhlnEN4M/bfBfBb/G5J539u4wPPnluGW+aHgSgGZMQUzUImwSTAo0+jXUmIof4VxdaGjmgYPkVEKmOd5UwkzUI/SBC3N7blYW+iirYK0Lg552YwtWMJp8NvCSWwKrJYmtiB2t0IiFG7p3l6pbbbRx3Xt1wS57iGQPVfzApZKOcbRRkHwmxrc6rGtgz4kIc6JfKRCgyl7bnqJRX0W58dWVigeitgpwyHPBzaBJhxM69gj+bStFVL1tP6J5Sa8IwkzdO4c72NDD+Uu7s1RjWSAmhWCu6CJqpaTCUhVRsfSPUDR6jZX1PSYs+znToFKqukSODqfTEwl2POLBycpwxOW67GdI8cIDIc60KRCbzu3HFAj2Ta/eYowbom+lz86RLZUMNZBUXgtDln3x7HRrWuxiWN3T190PnNsb4gTNCYsw1qHM+xfQPxeEry3NoavjQv6R+5Ya1QC47DSADpuUurebIi8SWSjtHGtzI0iJ9BSUDltWTFWSidK7/DG6bqjfziC1rGD9UHOqZxmtQYcm6/d7Ec5b5nu8vQ/q/NtvFd0lQvUU/aA2LwqZI17s7JJaciUdRJCMJhbNjB3DGzV2MKN4GIGUn0mXIzkbVsmgGRbL/4id8A6TeqAbczV/HNEHBySjVqYVcI4EzVxZNbeXGH8F9Pu2SSqgNjDU65jbBC5Eqkx6I5CV4crEoxL+mjdEmj2vgp+88RsYH4oD7gNqrAo/iXhtnf6pb5gKJXg0JILU63lzdszlZodsDPPn8jFPgNs6z4LT2m4OZmxuRnIL/O/HMWVYte52N0YVV5qcAuCbi3qtAiWNDY35LBqsLexxq52U18S+8WEgxH7yeWeUgOpPGIiWK/k4ZAbgJsk/L973kThAuqFYOJ/W53kktEzf+i8XgmOP
- WakK6N/a
- jrbvJwup8EEiLijadIsWPbo1lyu1qwEknhZALf7yClWERb7RrtGVA9wNSgAY8HZyo/514H9ObO9fB6RoHaSYghTHXAysBWViIhEl2rA81VvJRTUwXD4lB7zpgCW2PARb3QoyVy65Zu80ozeJT8XjFA3/WP2UZmQthFFp2tanyB8k9rbpSPqtka95FjJSX+/sF+cUAMJ8OFxAbvUR3j0kPimynJeKyAyBEN0LMlt3QVq4G1FM8/V4NQguP3HVhuHPk7f3G+6fpwxk5zV/7uUMcW5FJixyEYgq2BLHBdnb2SkwJRmWyBDH5T/ZGxVYSHIZEMJZI+xudw9Tl4+VV/wzZAAI+iFzgCTmK/Sz2/OptkeaQDFFOqE771S3yp+VFPWTZNKS8EXcm4gscl58DprDQ4Amb7yXEDDLPTjt4w8cAGfPGCyRCii57sWdrHPLTd0a5b/7dph6eTh4j3RtRG9Nuy3FAmdd+/4NLA2dZCFBAPXrZvrvVzR3GfiLifSgrVFZEYUXwx8ZGWNVGJA1CYkxY6M697LxdCvDlYU/UkCeDqC++cV2P+Pm2FKsRcyDlE1JznKt204+9lG2p6L2brblpVRSyf8goXI5PhWGXzN5m47VDfnYLqUL3ITZAYO330U6GQce0MSvg/nka/INtJhNcrk2WVfSB7O0BHRZIdDKH++oxWPo4BFnh0U/Ep3cO3nFcKI0NT1cCDjpcYjWtbwYMF5M4jbzvy62l4BShS4TwjaMMHBMpkEVki7JIxQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774987164-215670
+X-HE-Meta: U2FsdGVkX19HINjFac0FZl6LR+cI0HvslB8thX8FwddsH2PQS7OWEGGwU1ANdZJd85vzNn/UIbt1R7vIv8USL6fQYiszXmyHAFkVHZcHcPg/Mb+afNd7T6ftkZIYC7G3wWX57LhMRj6o5J2zvkRC2a5zqL+0olR+ywP32tPg4Z5seX8VWjeIKXinO+3QxpJyQm+egaIeu4Adt5XDIQfj+VABLPbr/OG/7Axu6WcC+R6lI4KI0/t9TeG9PHhVPjKf8TFJSM5Zjx/8z9I0ay0lqa/3ReZqKqPQyhnMvj894YNiyBZkEhSmrUehoLiwOVF2r1v05cVa9nRWRJcctqAdBibOSe4JD3X49/qXhMDYOzAZSxG2l8bLnvN2sTnz8SsH+p5ac+0zBHykAiPE2hd5eKHXycPolMKDaqdDDPyU89q0VLOaToum7BgwHTB+VsNIYsLSHCvGzPajhsTHkpRCWT4Q99c6/SG3rl3wVlK9MV8f15UrE27GhuiKHQigU7bKX1ePr6V+Bhz6a7Cv4EALInFxhm95V17gFy102I90TDDXcucc99WUHppHHOU51YmQjMji6I7dyPKunv4bPysfuW2bGUb75QqCcW2g0Bjb3VZ+xwdL1QbllDF+qJUgLVh+1Qr5etii+hIdlNYWkciLYzewa588gftwseoGsGm+eVwa3Xn1KPm6Z+U81KBItwJ6NEdBW4V8cfWEMAeBMbe/o0VGoVGsWKdWHVz9o+DNuBhgKlsE6Ia9SplRweGSmURZgWYb5c+glU9bdri8LuxUKMJA1K0IupbalmS11MDlYpKqNsqk3AkIfh6Ip2RpuVyHWd+ViF7616scmR2acHOlutnn38pu4mIELa17VJvtpVknNuwOJMwHwnxWINdqtQzjMaEfAfIBU6COl9onSEroEQ3fOFfrr9ZtoLAIyp4RyyHbqy2yXxhbVaWylc9bSMUCtqifmP0STbvFCDSdfSR
+ Guym6ROx
+ FShiV3J24MypQDMXytKuY0yvVnsFCdYclMpYqCSl5Z2VBn2ya+6NXk7cewJJ5Zj2+z7UUkrFm0ADxJQWDKZ9iz71U4AByN5cf7jjKswCw1hS6QcfQu+v92/8W2FiqnoeL8BkKdbo4QBN6xbSixIxK9qMMaW4aER2DNvjzVgE9LYu3MBB63pbYgV/Mu0nYFWQLYJGsYD7Nsv2JlkWpKCfOc3wlaFUO57y8bfpn8csIFTNOK/rLN5655Iw900S1NxKsNA+mhccDmQvXhaq16iQWOMzvuXGqq6zb0tmELX0Rgqlhus0f9GMoyif31IR1A+dhsJoCuQhlCRNyZi5AMQ+81AOLUpzwQ0k76wwTeWpSgAzzSvUYr1Ccd5MiYd+e7QmHmBNhEdNUtU8yNT88BC2oSf3T2F4ZTSu9WkCK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,147 +111,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 3:40=E2=80=AFPM Luca Boccassi <luca.boccassi@gmail.=
-com> wrote:
->
-> On Tue, 31 Mar 2026 at 20:14, Pasha Tatashin <pasha.tatashin@soleen.com> =
-wrote:
+On Tue, Mar 31, 2026 at 01:46:02PM -0600, Nico Pache wrote:
+> On Tue, Mar 31, 2026 at 8:13 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 > >
-> > On Tue, Mar 31, 2026 at 2:30=E2=80=AFPM Luca Boccassi <luca.boccassi@gm=
-ail.com> wrote:
+> > >> +            if (*lock_dropped) {
+> > >>                      cond_resched();
+> > >>                      mmap_read_lock(mm);
+> > >> -                    mmap_locked = true;
+> > >> +                    *lock_dropped = false;
 > > >
-> > > On Tue, 31 Mar 2026, 19:21 Pasha Tatashin, <pasha.tatashin@soleen.com=
-> wrote:
-> > >>
-> > >> On Tue, Mar 31, 2026 at 1:55=E2=80=AFPM <luca.boccassi@gmail.com> wr=
-ote:
-> > >> >
-> > >> > From: Luca Boccassi <luca.boccassi@gmail.com>
-> > >> >
-> > >> > dynamic_dname() harcodes its limit to NAME_MAX bytes, which includ=
-es a
-> > >> > NUL terminator and a 'anon_inode:' prefix. If the name passed on g=
-oes
-> > >> > above the limit it results in userspace getting a ENAMETOOLONG err=
-or.
-> > >> >
-> > >> > Truncate the name to NAME_MAX - 12 - 1 characters to ensure this n=
-ever
-> > >> > fails (accounting for prefix and NUL).
-> > >> >
-> > >> > Fixes: 0153094d03df ("liveupdate: luo_session: add sessions suppor=
-t")
+> > > So this is the bug. 'lock_dropped' needs to record if the lock was _ever_
+> > > dropped, not if it is _currently_ dropped.
 > >
-> > Let's remove this, this patch is not fixing an existing issue, but a
-> > preparation for future uapi changes?
+> > Ah, well spotted. I thought we discussed that at some point during
+> > review ...
 >
-> The linked patch that increases the buffer to 255 is tagged with
-> 'fixes' so I don't mind, as that's enough to fix the -ENAMETOOLONG
-> error in currently released kernels. The original version of this set
-> the truncation to the current max buffer size, hence why I had the
-> fixes line.
+> Yes I think we've discussed this before, and IIRC the outcome was, "We
+> weren't sure why this semantic was in place, or if we truly needed to
+> track if it was dropped at any point, or simply if it is currently
+> dropped.". The code is rather confusing, and changed mid-flight during
+> my series.
 >
-> > >> >
-> > >> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-> > >> > ---
-> > >> > Builds on top of this just sent by Aleksa:
-> > >> >
-> > >> > https://lore.kernel.org/linux-fsdevel/20260401-dynamic-dname-name_=
-max-v1-1-8ca20ab2642e@amutable.com/
-> > >> >
-> > >> >  kernel/liveupdate/luo_session.c | 7 +++++--
-> > >> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > >> >
-> > >> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/l=
-uo_session.c
-> > >> > index 7836772956406..4a40c7fdfb44f 100644
-> > >> > --- a/kernel/liveupdate/luo_session.c
-> > >> > +++ b/kernel/liveupdate/luo_session.c
-> > >> > @@ -366,11 +366,14 @@ static const struct file_operations luo_sess=
-ion_fops =3D {
-> > >> >  /* Create a "struct file" for session */
-> > >> >  static int luo_session_getfile(struct luo_session *session, struc=
-t file **filep)
-> > >> >  {
-> > >> > -       char name_buf[128];
-> > >> > +       char name_buf[NAME_MAX];
-> > >> >         struct file *file;
-> > >> >
-> > >> >         lockdep_assert_held(&session->mutex);
-> > >> > -       snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", s=
-ession->name);
-> > >> > +       /* dynamic_dname() rejects names above NAME_MAX bytes, inc=
-luding NUL terminator
-> > >> > +        * and a 'anon_inode:' prefix. Truncate to NAME_MAX - 12 -=
- 1 to avoid
-> > >> > +        * ENAMETOOLONG. */
-> > >> > +       snprintf(name_buf, NAME_MAX - 12 - 1, "[luo_session] %s", =
-session->name);
-> > >>
-> > >> I am confused by this change, the maximum session name length is: 64=
-,
-> > >> as defined in:
-> > >> include/uapi/linux/liveupdate.h
-> > >> /* The maximum length of session name including null termination */
-> > >> #define LIVEUPDATE_SESSION_NAME_LENGTH 64
-> > >>
-> > >> So, 128 should be enough to include:
-> > >> "[luo_session] %s", session->name
-> > >>
-> > >> Or am I missing something?
-> > >>
-> > >> Pasha
+> Lorenzo asked me to unify this semantic across the two functions to
+> further simplify readability, but it looks like we indeed needed that
+> extra tracking.
+>
+>
+> Cheers,
+>  -- Nico
+>
+> >
+> > Thanks for tackling this!
+> >
+> > [...]
+> >
 > > >
+> > > ----8<----
+> > > From a4dfc7718a15035449f344a0bc7f58e449366405 Mon Sep 17 00:00:00 2001
+> > > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> > > Date: Tue, 31 Mar 2026 13:11:18 +0100
+> > > Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
 > > >
-> > > Yeah we need to to bump that size, it's too small - see the shared do=
-c. This is anyway needed for safety, as the user space call falls apart com=
-pletely if it goes over the hard coded limit,
+> > > We are incorrectly treating lock_dropped to track both whether the lock is
+> > > currently held and whether or not the lock was ever dropped.
+> > >
+> > > Update this change to account for this.
+> > >
+> > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > > ---
+> > >  mm/khugepaged.c | 12 ++++++++----
+> > >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > index d21348b85a59..b8452dbdb043 100644
+> > > --- a/mm/khugepaged.c
+> > > +++ b/mm/khugepaged.c
+> > > @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> > >       unsigned long hstart, hend, addr;
+> > >       enum scan_result last_fail = SCAN_FAIL;
+> > >       int thps = 0;
+> > > +     bool mmap_unlocked = false;
+> > >
+> > >       BUG_ON(vma->vm_start > start);
+> > >       BUG_ON(vma->vm_end < end);
+> > > @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> > >       for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+> > >               enum scan_result result = SCAN_FAIL;
+> > >
+> > > -             if (*lock_dropped) {
+> > > +             if (mmap_unlocked) {
+> > >                       cond_resched();
+> > >                       mmap_read_lock(mm);
+> > > -                     *lock_dropped = false;
+> > > +                     mmap_unlocked = false;
+> > > +                     *lock_dropped = true;
+> > >                       result = hugepage_vma_revalidate(mm, addr, false, &vma,
+> > >                                                       cc);
+> > >                       if (result  != SCAN_SUCCEED) {
+> > > @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
 > >
-> > If there is a safety issue, it should be fixed (even without a limit
-> > bump), could you please explain it.
->
-> Nothing specific, more from the abstract point of view - given that
-> this will fail with a hard error if it goes above the hardcoded limit,
-> it seems better to me to check it, rather than assuming it's going to
-> match, as that's error prone.
->
-> > I looked at the shared doc [https://tinyurl.com/luoddesign under limits=
- tab]:
+> > (in hurry so I might be wrong)
 > >
-> > I see:
-> > TODO: this needs to be bumped, as for the varlink API we will impose a
-> > cgroup path prefix, which means PATH_MAX + "/" + client-supplied
-> > string.
-> >
-> > Why would we do that? Why can't we use a 63-byte unique identifier for
-> > sessions and an in-memory database that maps the cgroup path prefix to
-> > session_ids, where the database also gets passed from one kernel to
-> > the other?
+> > Do we have to handle when collapse_single_pmd() dropped the lock as well?
 >
-> Because that requires tracking state across all runtime, and that's a
-> no-go. The session itself needs to be identifiable by cgroup, so that
-> its owner is uniquely identified in all cases, in all situations,
-> regardless of any state or lack thereof.
-> The structs have a size as input, so it should be doable to follow the
-> usual process and keep it backward compatible.
+> There are some oddities about madvise that sadly I don't fully
+> understand. This is one of them. However, I dont believe khugepaged
+> had these lock_dropped semantics and just tracked the state of the
+> lock.
 
-Overall, I am super happy to see LUO integrated as a first-class
-citizen with systemd, and I fully support this effort. My suggestion
-is that we step back and prepare a single patch series that performs
-all the necessary changes together, instead of sending a few random
-patches that do not make sense by themselves.
+(As said to David) with my fix-patch we pass a pointer to mmap_unlocked and will
+set the upstream lock_dropped appropriately as a result :)
 
-As far as I can see, we should:
-1. Increase the session name limit to include the data necessary for
-systemd fd store restore capabilities.
-2. Make the number of stored sessions dynamic rather than having a
-hardcoded limit (I have a patch for this, which we can include in the
-series).
-3. Add the necessary API to query back the incoming and outgoing session na=
-mes.
+So we cover that case also.
 
-Is there anything else that you are aware that we would need to add?
+But yeah the handling in madvise is weird, and we maybe need to rethink a bit at
+some point.
 
-Thank you,
-Pasha
+>
+> >
+> > --
+> > Cheers,
+> >
+> > David
+> >
+>
+
+Cheers, Lorenzo
 
