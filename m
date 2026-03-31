@@ -4,89 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D8F1061B39
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C633E1061B39
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:44:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24EB06B0098; Tue, 31 Mar 2026 07:43:35 -0400 (EDT)
+	id 3FDE96B009B; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 225B16B0099; Tue, 31 Mar 2026 07:43:35 -0400 (EDT)
+	id 3D4E16B009D; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13BF46B009B; Tue, 31 Mar 2026 07:43:35 -0400 (EDT)
+	id 2C3D96B009E; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 021946B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:43:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A257C16011E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:43:34 +0000 (UTC)
-X-FDA: 84606173148.17.8E1161E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EA37040005
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:43:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TReUQi2r;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 196F76B009B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFBF9140134
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:44:29 +0000 (UTC)
+X-FDA: 84606175458.24.95E5769
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A9E1F40002
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:44:27 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b="Jxap8/9S";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k uLyiPM";
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957467; a=rsa-sha256;
+	cv=none;
+	b=Xty+UPnkCW8wYGK+5NW2yiTSSt1Km+34nz7elfcxAKdEfeIJ4AlulF12wDkT7J3H5crF+J
+	65hDv8lLQpWsFleBJPeIajsl9cH+fIs9EtyzAV5KtpS0mHs8oz8jaalMe7FVKMavqLqxwM
+	TAFXxqeJSPTlH756xY9dF8XtiWJDbUw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774957413;
+	s=arc-20220608; t=1774957467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u47jI9RDsp6a1yf2n99ewdcRavRL1sZ12b9YCNap45M=;
-	b=2gzz75pI/Jh/u0OEmPyDLHQgZof3AB5NgBN9DdAXRlIqeMiX+voq3YEpuKmy2Hk4rpHEho
-	2M390dC0UNDv4Dg3Om2S0dW4odxuNKE/hoAOab6/WUVvMmjMB1LvTNt5m5pQiUMJ8pGXj+
-	RKL/rtJoDMwCIIFtE/XA1RG66IkjdPU=
+	bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=;
+	b=JQTjDrZBySQXycsXEnoQt3JZodW0WiS4p21GAcAMKgkdPfkqn7LasPVLgaZj9nayE8tgMT
+	fKGAKcbEmcsTzxrr6JEAbnt4NhVIgLzIUfIbILQP+QhnivPKE0llbSVcLDLWfWE8iFy3CE
+	ZJRw+zVFFBb+AUrPUSLI9pRB4m5rI7g=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TReUQi2r;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957413; a=rsa-sha256;
-	cv=none;
-	b=Ujl0t59X85Lc8AgyUg8KGPE9cf5QPbSM0AQAoGhtj3F4mG3zf3K43Z0Uthn+2Ti9FPqeaP
-	yOXGf88dh3JfOBsa4b8iw7k308JaJLMxifSJOjS4WvN5XsI1GX1zWyKP4qdvkQwkIVeRxW
-	zX8qEwFVg59pbd2tdOV27HASDf4THd4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA36B4446E;
-	Tue, 31 Mar 2026 11:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B54FC2BCB2;
-	Tue, 31 Mar 2026 11:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774957411;
-	bh=K2H2mISJQpoiMzYg+o6HrY0+mjFfvE5IqNsEatUuok0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TReUQi2rRROa0T2jJdcpU/Nyadk9HFeGlPp1oQVAoa0eyTOYNBpbj3VIoX+NEJwM9
-	 xEFgMVGD5BYdgfIKsfiyT8FQwlLQDklvPUgS5C9gGP5UiNzqk+XLhcZlGJKzDe1sLD
-	 fMK+c815EksVJ4Fee0yYWDcm9BFXkLKn4pBxbndWuAE9vLVi46XvojOgUD+Qv2+VL4
-	 VH640zZPKWJrQo/TDYNwEN75Z/Af+9+X/tUdmKsZ/ZKah0qduUHpsMkaohjwfL4B/k
-	 kaRbQLuD9TSYgMAmsmWPgRx6KGN/6lnmLLezrpAmDLHdI1FFGrUQjNkdODK+LRPGkh
-	 nIBuxwQ62H8DA==
-Date: Tue, 31 Mar 2026 12:43:28 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: syzbot <syzbot+001b9efd14d3e8fac896@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	jannh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in
- madvise_walk_vmas
-Message-ID: <e1cb33b8-c1f7-4972-8628-3a2169077d6e@lucifer.local>
-References: <69cb8ed0.050a0220.183828.0027.GAE@google.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b="Jxap8/9S";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k uLyiPM";
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 062CAEC0235;
+	Tue, 31 Mar 2026 07:44:27 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 07:44:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774957467;
+	 x=1775043867; bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=; b=
+	Jxap8/9S4qYqMwrKvG6LkL4qmDzEcuGMGDJ3Cz2bZ0vxUUfbPt7c1qTw+rKEDpy+
+	H96GkWp6u3KcKGr2qct0JUN/2X9EmZCHETETy4o/MQnOwTCKCxywAKErWV01t/tS
+	AoB2WNCyADBh/I9ydKmyNcfSk8ifT5ztBoh/vqUAviwELJGFfA0crVeDB4mK11WL
+	ahkiAwGQbh1GkVlIRlDvp2kBiECEdrZZ9pCtAZL7MoOKBwYlnwTHGMo5EVr3xqyk
+	bkBC7R4FFB5K20KVin1XLG6iOgUZ4X6ut43zPKpdCsTq4lcYKZLpTsWfI9o1mQ45
+	GxMWe28tebPtm8H9rPSwPQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774957467; x=
+	1775043867; bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=; b=k
+	uLyiPMoH1o8hur4JjSJuRWTEfIETsH7xtk6oTrvGkWtl/WpnqWZdsuVd4dFow7CJ
+	t+EYzO1ktwqkE+meCgWhVgE0SUn45Sx6RnyYx7a5iqlTvHIrhneDetOw102WDFrn
+	tHoOlJFw1F4AQROF04cLDYAraPS84KvCc3xdral9L9YKzdr540GQnAUdmYLN9qMU
+	smmRyd0iv77Vr4+N8sj8wYfQMhws9jKeyqvdga6in+0k1BsP5d042X5ThI3t95oK
+	2SeiZr3KvLiL1X8b8C/UbrsQoECRWzBT0Au56Ghgdk8zvRuOf+vArZ4A2c0rdx8k
+	ITZ0Aq5KQmVCecXlXCtyw==
+X-ME-Sender: <xms:mbPLaafs0nlOk9Q4g9puvZHHMG2cSvGX_65TGc17KWG9rifVmyVbAg>
+    <xme:mbPLafCg7zZEDtKSpnR3PPX8iUEmuKvzcvuZ-KilZn-zxuKNxNjbUVlrscqT1UKdy
+    5ehLghXHQayIclsu-xXgnbc_PNokmr2xsbYb9aMGM3Phjf5uTlVm-4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
+    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
+    foggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcuuegv
+    rhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrhhnpe
+    dvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrg
+    hrnhgusgdruggvpdhnsggprhgtphhtthhopeefledpmhhouggvpehsmhhtphhouhhtpdhr
+    tghpthhtohepjhgrmhhivgdrtghunhhlihhffhgvsegrrhhmrdgtohhmpdhrtghpthhtoh
+    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehmrghr
+    khdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlh
+    hinhhugidrohhrghdruhhkpdhrtghpthhtoheprghnthhonhdrihhvrghnohhvsegtrghm
+    sghrihgughgvghhrvgihshdrtghomhdprhgtphhtthhopegurghvihgusegurghvihgugh
+    hofidrnhgvthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
+    thhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrih
+    hsihdrshgthhhrvghflhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:mbPLaXWL4_RbtfLfnHQs8C4tG0ngXTCPv9euc-VB1lto6tqFQyGNcw>
+    <xmx:mbPLaU_cG1WcSE-QSkVD9ElI1dukFUPpc53IiCbdiAif50XEkb-z1Q>
+    <xmx:mbPLaf3Jw7KAvwSkj2NhSKaJwucaNeK5yqjANIhVWRFTYuRZjmC46w>
+    <xmx:mbPLaXfgUsSfpDNbiUxt6RT2rhVcYFtkTJ_DCYi6UKM2ewPiID8SDQ>
+    <xmx:m7PLaYahyRZ4gPZWSFwm_OyhnRUM4xeu34i4uTLr4s-lisp1T7JlXocj>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 31988700065; Tue, 31 Mar 2026 07:44:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69cb8ed0.050a0220.183828.0027.GAE@google.com>
+X-ThreadId: AUJnWW6OA6Vc
+Date: Tue, 31 Mar 2026 13:44:04 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>,
+ "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>, "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Ard Biesheuvel" <ardb@kernel.org>,
+ "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
+ "Will Deacon" <will@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
+ "Gary Guo" <gary@garyguo.net>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Justin Stitt" <justinstitt@google.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-um@lists.infradead.org, llvm@lists.linux.dev,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
+ "Bill Wendling" <morbo@google.com>,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Nicolas Schier" <nicolas.schier@linux.dev>,
+ "Nicolas Schier" <nsc@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
+ "Trevor Gross" <tmgross@umich.edu>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Message-Id: <a2c18fec-8ca2-490b-bd9f-bac79672c2f4@app.fastmail.com>
+In-Reply-To: <f159850d-5fe6-4329-9703-b355305fd106@gmail.com>
+References: <20260322192159.88138-1-ojeda@kernel.org>
+ <20260323000327.111235-1-ojeda@kernel.org>
+ <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
+ <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
+ <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
+ <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
+ <CANiq72=b+cr7Stxph_hXQTmD5crCvwWTqdaGKOJ7W1-66v4i_w@mail.gmail.com>
+ <f159850d-5fe6-4329-9703-b355305fd106@gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA37040005
-X-Stat-Signature: uymaskb38rf5uyhff7xihq3a9ozaorfe
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774957412-143119
-X-HE-Meta: U2FsdGVkX1+2LhoEGULkNedsATBqWmry1Sh8aSDlo+UJb7XPAPhbVHXbKbyVAImkxdURMCwQaS0lR2KuGO0A+RWu6LSSZ2a2XZqQcPnpVqaj6hcxABm9KK9VbOsqnDXZWtF2cvjjwbbBmmfjFW1jG9XnBfRcLHLasmxdQp9fTGZkThc5lQSlySB6V9VS/355Qy+ZG1ge+MerlVUCm3jNKDuJ9SM1pz7oFRVeHsJ6+N/4E3lEkaHT3E42CFEPLSPgV0ptrKzZ3XqKCbWWJBQRt9Msm8RgUQxpVhKum4u+y3uvHCe+Be6D8wWRoIsGrAzOFDxz4EuEDrbodGu8/6uSVaQvM08ZfMvjKIThEnW/7pOS89WhcR7JaFDl2Hk1/zy3eTZzGjSD4Vk0B1My6YBmPyU/1PzoBSufm/pUOa/Vpch8Ec7FoiycOYYLwjKVSFj4MQA8vbSJdYkfXhRNlAksRZO6oCUbwVahjeCsuJt0e+Xu/VWGP/b6iVJR/8d33ciDDaBpcScSxpsHYAkx9D4D+JPvwYFzC9HKI9OIhaExtNmZDGZvtd0N4681MKTCfgQeIZKiBp3q975AZ48MrzH+/lypYYK1jEUaXlFbybCSei2ed/V3eubPvW6i+qne6lEdt54alL8GM1ydYrnf9p6Rqkne32Ens1dV0SEONEJGUoGAKcdi8/8sc7nVUeYx+l6JA0YorfWU9tonFYLQAAhspbe+fkzT/sReUQOU4ABn8VNMcpNewkkSqdfZIz9g3c9h5f9NaXOIAGSnOEQ020jPGmyTME46q9oca6iWrs8N79WZXvOUl9l8M0HupU4v/1HQ/c4EQ/p1AbqcOGrAuBmbzRfIgLbb/yJ3QSVVZ8DR7eSD6QTsvdPOFgOmdccuBzHk/GAJtlPsoE4/fJi2v0C1+PAwnXU/rAiyWev6Qecooq/izWTNQy98XeanDejtRaJaLKIRdjz/ubeqrriFERE
- /FKd5lA7
- rnzxwvbTvdAWAJfgKp0YvS/d5CjXaLxEuDePPHUqs1CozrONV3FOIEQo65Zq3Q+/DvFkHEVa5ikMD+p0wZcBqKNS0cs/ov1AdvzhT4fOm1YRGL0ua6wZazKvR4NKrBaf01fV2SOSyKkgCLbu+byO48vcUJexNp1rTrxBNkh6wwhBscugKZkU1UpvAB57qd5T9HzkYwqbXD9M2Q0cphpVTaaFAxhnfTu0jIb7/8SmfzJ1kwj8coznZ+NY3fASVhQgzyo0K/0bYioBBCjyPgOOaqAfrkOGoG3GvyjNIt4UKPypFavfrJW3/F0YmNbpB3OIJYHI0apBz7/vQC+R1oh0NZNrR5aepWrCXVY+jud15e1GBYIHEa93vVnveeJIGNMfBVJfAlyEvKtP0NudQzdteCjryCfbfOtJ+XxOTjI+guN8hLeMcc/V13Jl9BfoUq6OTjmBE23sPLWzjngRXOGy6I76qBJwmAkaJknJLIEOadu9NRWJ6zz9ceL+C8CKDXv7xJHFGGluz6Xo4c6ibR/bYdgxj/2kp4M0W3hFTX5YWx9RFhACIhryFc0SWdjuqu2lYi4hLC/J2mBhyFSO2XCCtnyiZlAp2j6hTLmouugnMd5JgWbA+0JtICAe/26Wte3HShX5pGjlnX4826B6mA8i13NfdVZvamRldjrKLinDMj7oiKutq7hL0DioWp/BnF1QRdolQkzkAgPx0T/O43ENfNtkETUQY0vDvjHFdHZQrwF/BktnS7C9KxAWxA8G85tFDTBQgCoxAmn3+M6PkdUde21A0iy1qpRJT2y97wSQMNmqfNnpKVKBP4RMket5pOdPhCfaQ/hmjOwxDaOIvZ8nfmvLL00s99KjuKqMzs1xJUffDbdRJOhr3raRIZTVbcdUttoRKtgSb8uaNFfped0eKGSaRyrgIw1uW3yh62drqIMw5rl3JCDeVwwj8FMsNu81xgLKCIw3DrnHJ05/oiuYzcgZL61yC
- z2k5BZ+D
- frcXFhDtEqgnFb9XU4LapC7qZGyzNjdoo6P/VaSZfBI3lJz+zFv/Wlol9fECyVwZCUKwiynvhWtjS8+NqNiFKw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A9E1F40002
+X-Stat-Signature: a8ez5r5nmtk8icsqgty5deddredp6b6c
+X-HE-Tag: 1774957467-180926
+X-HE-Meta: U2FsdGVkX1+6Y/W23oAOHxcA/0RQNcxio9NFPZx//3zmLEXjZUGhOQlsZgfEUCCev5z/FFNaCbLyzZ6iwvtV6QSKfPVPlQD0p5TwrInRQFMGzrUTzAecnIn39YIy7N2MdiBeMuQKT2C1IN0J3xKPmbPiMjFxXkIMcYpP8qIf9JfuM/hAqY47H0qBewgxr/rRqbVFKzJaKKAOhNkRjuHU3gGz0svEXf/vwKIhkzQHQu/cH11dTwTJCA4VMCsk84f0T2Ka/nd3Yh88P2LEC6C7i0kXEhwq8/Wy7nYNSfB55oMNKA+O/8SqSPRULAxSn6Z1jgmz2D6PFVrfap967r9hEgdYXas+SB63kfVdb89DH2rWhLAaJUEiYWvLcNw9S9UZPJDGGJg5P+Pv+oZ65vMSwqH6kQ3eU48K0Xs7+8GrZPx24fPdUoW+xuiEbJqa0a+4sGwCTXHX66ULLFXJHRrsRXLdsY347W9+tS7JPCQop8ozVSztRmU4zO+rZ3SsMJJSf9jVUJbPxgJKKuJwoSIlm8iW905JNrwqY52luk7jtV123/4UGocE/LChKGn9l7tbfXG4NHRR721jSsA5Ivp5rcGQdjQzooBxWcBKT2pbcuhjsBkvlPN1AU/H7+pl/rpvcaSgrZUEukK/V44r1sDaNMBH6V8eAZeBta7kuKz7KDa4nIjLTilatgiH6r4Hm3duO8DJ6rsbwddm4a18pf90VwUL0LUab8X9ebG8of1dq8+ToLsU65LSMIP4MlrANGg2jxLleg+OBywxk7TT3RmkjWGQevu8e3GEadv5YEEh9X6UcbizWp1fQPnwelubi+PeKk3OIMRw0S6D4h+sF9U0YUZ1sldynDzn4Cz9rcUwGs8y6qhJbX+WMs+yTaXr2P0kcCy5vOX6PtTAV1HPQIZ+IzmHWp521zHKhEqYor5KDXcKaocfNkTLVCJLTlIdxbxFewCAt6Tnha4w+Weco62
+ 7xS+wzXO
+ D8mdYMkn55nlzplPv8yW8FSJZBdoAieytjq9ceu43ff3mZehWhZ7dCkbdWUPr4vh5t9u1mC5ba+r8S+WPa1DMtUGd3Z6FxaB0tvNk+Pe6oh0J0IBMGjtywbGwQLDjmS8HMTO4t9QAL1METzDtmUItStZT+Y/Nm08DpWWq6y44PCBqYPrqztinKDIWPwIjz78O66NyB2FPLVMzIRBB9fWog+tMoaAvRy7Smbx/IP8HjZqYQG7x+ZgEYyDTYEUWDb/SxtgsTT2XDuCKFKM/owoOA/L/cUvqolDobrjUlOLOEk86/aEFRbOmjtde0DgfFOWMlkpckHuCB+XemnnWuMenr9ONyodx4KMQ9imcqzeF1CCmqLb/FCWBi1/iM/cQ9iCGj0k+lHlOSQx3KDdr4GFF3/Sbzm68yECit1IS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,298 +171,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 02:07:28AM -0700, syzbot wrote:
-> Hello,
+On Mon, Mar 30, 2026, at 23:09, Christian Schrefl wrote:
+> On 3/26/26 6:30 PM, Miguel Ojeda wrote:
+>> On Thu, Mar 26, 2026 at 4:18=E2=80=AFPM Russell King (Oracle)
+>> <linux@armlinux.org.uk> wrote:
+>>>
+>>> I'm not sure if this is still true, but I believe it used to be the =
+case
+>>> that the -linux-gnueabi target has one behaviour for enums (fixed si=
+ze)
+>>> whereas -none-eabi, the size of the type depends on the range of val=
+ues
+>>> included in the enum.
+>>>
+>>> Certianly, when Arm Ltd were proposing EABI, EABI had the latter
+>>> behaviour, and I think there were cases where Linux used "enum" in
+>>> its UAPI.
+>>=20
+>> Short enums? I see `c-enum-min-bits` in the armv7a-none-eabi built-in
+>> `rustc` target, and indeed:
+>>=20
+>>     #![no_std]
+>>=20
+>>     #[repr(C)]
+>>     enum T {
+>>         A,
+>>         B,
+>>     }
+>>=20
+>>     pub static S: usize =3D core::mem::size_of::<T>();
+>>=20
+>> is 1 for that one, and 4 for the other.
 >
-> syzbot found the following issue on:
->
-> HEAD commit:    e77a5a5cfe43 Add linux-next specific files for 20260326
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13640f52580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=51ca7cbda5f81780
-> dashboard link: https://syzkaller.appspot.com/bug?extid=001b9efd14d3e8fac896
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
->
-> Unfortunately, I don't have any reproducer for this issue yet.
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/63883a48e879/disk-e77a5a5c.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/cfdff9b548ab/vmlinux-e77a5a5c.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/f2e4eca37d44/bzImage-e77a5a5c.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+001b9efd14d3e8fac896@syzkaller.appspotmail.com
->
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in madvise_walk_vmas+0x661/0xae0 mm/madvise.c:1726
+> I guess we could use a custom target spec, but I'm not
+> sure if that is worth the hassle of adding another one.
 
-This is:
+The kernel Makefile forces the Linux enum behavior using
 
-		if (vma && range->end < vma->vm_end) <-- 1726
-			range->end = vma->vm_end;
+arch/arm/Makefile:CFLAGS_ABI    :=3D-mabi=3Daapcs-linux -mfpu=3Dvfp
+ifeq ($(CONFIG_CC_IS_CLANG),y)
+CFLAGS_ABI      +=3D -meabi gnu
+endif
+KBUILD_RUSTFLAGS +=3D --target=3Darm-unknown-linux-gnueabi
 
-> Read of size 8 at addr ffff88803322aa08 by task syz.0.3603/14995
+regardless of the compiler. I think this should be safe
+for any combination of C and rust compilers.
 
-It'd make no sense for a UAF on stack variable range, so it's vma->vm_end
-(offset lines up).
-
-So it means we have a stale vma pointer here in madvise_walk_vmas():
-
-		error = madvise_vma_behavior(madv_behavior);
-		if (error)
-			return error;
-		if (madv_behavior->lock_dropped) { <--- this is a big clue
-			/* We dropped the mmap lock, we can't ref the VMA. */
-			prev = NULL;
-			vma = NULL;
-			madv_behavior->lock_dropped = false;
-		} else {
-			vma = madv_behavior->vma;
-			prev = vma;
-		}
-
-		if (vma && range->end < vma->vm_end)
-			range->end = vma->vm_end;
-
-So _after_ the madvise_vma_behavior() call, we won't look at a vma if the lock
-was dropped.
-
-So perhaps we're not correctly propagating this + then getting a stale VMA pointer...
-
-(See below for analysis from registers as to why this is MADV_COLLAPSE)
-
-In madvise_colapse(), we pass the lock_dropped parameter to
-collapse_single_pmd(), which can then set the pointed-to boolean to true.
-
-But then it refreshes the vma via hugepage_vma_revalidate on the next iteration:
-
-	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
-		enum scan_result result = SCAN_FAIL;
-
-		if (*lock_dropped) {
-			...
-			mmap_read_lock(mm);
-			*lock_dropped = false;
-			result = hugepage_vma_revalidate(mm, addr, false, &vma,
-							 cc);
-			...
-		}
-
-		result = collapse_single_pmd(addr, vma, lock_dropped, cc);
-
-		...
-	}
-
-And something might have raced to change what that VMA is.
-
-However... coming back to madvise_walk_vmas():
-
-		if (madv_behavior->lock_dropped) {
-			...
-		} else {
-			vma = madv_behavior->vma; <-- we are reading a stale VMA...
-			prev = vma;		  <-- ...and even assigning it to prev!
-		}
-
-This whole 'lock dropped' notion is somewhat horrible... I guess it's really
-about detecting a gap in VMAs, which is not exactly crucial since we tolerate
-there being gaps (but return -ENOMEM for some reason to signify it).
-
-Anyway, the proximate fix here is for *lock_dropped in madvise_collapse() to
-actually be relative to whether the lock _was every dropped_ not whether it
-currently is... which is of course what the meaning always was, it's just that
-commit e24d552a17e9 ("mm/madvise: eliminate very confusing manipulation of prev
-VMA") messed this up.
-
-I'll send a fix.
-
-Cheers, Lorenzo
-
->
-> CPU: 1 UID: 0 PID: 14995 Comm: syz.0.3603 Tainted: G             L      syzkaller #0 PREEMPT(full)
-> Tainted: [L]=SOFTLOCKUP
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  print_address_description+0x55/0x1e0 mm/kasan/report.c:378
->  print_report+0x58/0x70 mm/kasan/report.c:482
->  kasan_report+0x117/0x150 mm/kasan/report.c:595
->  madvise_walk_vmas+0x661/0xae0 mm/madvise.c:1726
->  madvise_do_behavior+0x386/0x540 mm/madvise.c:1929
->  do_madvise+0x1fa/0x2e0 mm/madvise.c:2022
->  __do_sys_madvise mm/madvise.c:2031 [inline]
->  __se_sys_madvise mm/madvise.c:2029 [inline]
->  __x64_sys_madvise+0xa6/0xc0 mm/madvise.c:2029
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f6f8599c799
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f6f8681a028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-> RAX: ffffffffffffffda RBX: 00007f6f85c16090 RCX: 00007f6f8599c799
-> RDX: 0000000000000019 RSI: 0000000008000000 RDI: 0000200000000000
-
-Clearly an madvise() is being performed, x86-64 syscall convention is RDI, RSI, RDX etc.
-
-madvise(addr, size, advice) so 3rd param = advice = 0x19 = MADV_COLLAPSE.
-
-> RBP: 00007f6f85a32c99 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f6f85c16128 R14: 00007f6f85c16090 R15: 00007ffd2a0e3548
->  </TASK>
->
-> Allocated by task 5846:
->  kasan_save_stack mm/kasan/common.c:57 [inline]
->  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
->  unpoison_slab_object mm/kasan/common.c:340 [inline]
->  __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
->  kasan_slab_alloc include/linux/kasan.h:253 [inline]
->  slab_post_alloc_hook mm/slub.c:4569 [inline]
->  slab_alloc_node mm/slub.c:4898 [inline]
->  kmem_cache_alloc_noprof+0x2bc/0x650 mm/slub.c:4905
->  vm_area_dup+0x2b/0x680 mm/vma_init.c:123
->  dup_mmap+0x8b1/0x1d90 mm/mmap.c:1786
->  dup_mm kernel/fork.c:1533 [inline]
->  copy_mm+0x13b/0x4a0 kernel/fork.c:1585
->  copy_process+0x1efd/0x4430 kernel/fork.c:2260
->  kernel_clone+0x26d/0x8e0 kernel/fork.c:2709
->  __do_sys_clone kernel/fork.c:2850 [inline]
->  __se_sys_clone kernel/fork.c:2834 [inline]
->  __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2834
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> Freed by task 15002:
->  kasan_save_stack mm/kasan/common.c:57 [inline]
->  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
->  kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
->  poison_slab_object mm/kasan/common.c:253 [inline]
->  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
->  kasan_slab_free include/linux/kasan.h:235 [inline]
->  slab_free_hook mm/slub.c:2689 [inline]
->  slab_free_after_rcu_debug+0x12a/0x220 mm/slub.c:6304
->  rcu_do_batch kernel/rcu/tree.c:2617 [inline]
->  rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
->  handle_softirqs+0x22a/0x840 kernel/softirq.c:622
->  do_softirq+0x76/0xd0 kernel/softirq.c:523
->  __local_bh_enable_ip+0xf8/0x130 kernel/softirq.c:450
->  lock_sock include/net/sock.h:1713 [inline]
->  packet_do_bind+0x33/0xe10 net/packet/af_packet.c:3198
->  __sys_bind_socket net/socket.c:1932 [inline]
->  __sys_bind+0x2e3/0x410 net/socket.c:1963
->  __do_sys_bind net/socket.c:1968 [inline]
->  __se_sys_bind net/socket.c:1966 [inline]
->  __x64_sys_bind+0x7a/0x90 net/socket.c:1966
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> Last potentially related work creation:
->  kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
->  kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
->  slab_free_hook mm/slub.c:2650 [inline]
->  slab_free mm/slub.c:6242 [inline]
->  kmem_cache_free+0x44f/0x650 mm/slub.c:6369
->  remove_vma mm/vma.c:473 [inline]
->  vms_complete_munmap_vmas+0x929/0xc60 mm/vma.c:1361
->  do_vmi_align_munmap+0x3b7/0x4b0 mm/vma.c:1604
->  do_vmi_munmap+0x252/0x2d0 mm/vma.c:1652
->  do_munmap+0xf9/0x170 mm/mmap.c:1067
->  mremap_to+0x353/0x880 mm/mremap.c:1448
->  do_mremap mm/mremap.c:1999 [inline]
->  __do_sys_mremap mm/mremap.c:2055 [inline]
->  __se_sys_mremap+0xe6d/0x11d0 mm/mremap.c:2023
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> The buggy address belongs to the object at ffff88803322aa00
->  which belongs to the cache vm_area_struct of size 256
-> The buggy address is located 8 bytes inside of
->  freed 256-byte region [ffff88803322aa00, ffff88803322ab00)
->
-> The buggy address belongs to the physical page:
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88803322adc0 pfn:0x3322a
-> memcg:ffff88803322af01
-> flags: 0xfff00000000200(workingset|node=0|zone=1|lastcpupid=0x7ff)
-> page_type: f5(slab)
-> raw: 00fff00000000200 ffff88801c294b40 ffffea0001163f90 ffffea0001dba810
-> raw: ffff88803322adc0 00000008000c000b 00000000f5000000 ffff88803322af01
-> page dumped because: kasan: bad access detected
-> page_owner tracks the page as allocated
-> page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 11045, tgid 11045 (syz.0.2085), ts 233915893282, free_ts 233883108694
->  set_page_owner include/linux/page_owner.h:32 [inline]
->  post_alloc_hook+0x231/0x280 mm/page_alloc.c:1850
->  prep_new_page mm/page_alloc.c:1858 [inline]
->  get_page_from_freelist+0x24ba/0x2540 mm/page_alloc.c:3938
->  __alloc_frozen_pages_noprof+0x233/0x3d0 mm/page_alloc.c:5218
->  alloc_slab_page mm/slub.c:3278 [inline]
->  allocate_slab+0x77/0x660 mm/slub.c:3467
->  new_slab mm/slub.c:3525 [inline]
->  refill_objects+0x339/0x3d0 mm/slub.c:7247
->  refill_sheaf mm/slub.c:2816 [inline]
->  __pcs_replace_empty_main+0x321/0x720 mm/slub.c:4651
->  alloc_from_pcs mm/slub.c:4749 [inline]
->  slab_alloc_node mm/slub.c:4883 [inline]
->  kmem_cache_alloc_noprof+0x37d/0x650 mm/slub.c:4905
->  vm_area_dup+0x2b/0x680 mm/vma_init.c:123
->  __split_vma+0x1dc/0xa40 mm/vma.c:516
->  split_vma mm/vma.c:599 [inline]
->  vma_modify+0x88a/0x1e10 mm/vma.c:1691
->  vma_modify_flags+0x24b/0x330 mm/vma.c:1719
->  mprotect_fixup+0x62a/0xb60 mm/mprotect.c:759
->  do_mprotect_pkey+0x8d5/0xd20 mm/mprotect.c:937
->  __do_sys_mprotect mm/mprotect.c:958 [inline]
->  __se_sys_mprotect mm/mprotect.c:955 [inline]
->  __x64_sys_mprotect+0x80/0x90 mm/mprotect.c:955
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> page last free pid 23 tgid 23 stack trace:
->  reset_page_owner include/linux/page_owner.h:25 [inline]
->  __free_pages_prepare mm/page_alloc.c:1394 [inline]
->  __free_frozen_pages+0xbc7/0xd30 mm/page_alloc.c:2935
->  __tlb_remove_table_free mm/mmu_gather.c:228 [inline]
->  tlb_remove_table_rcu+0x85/0x100 mm/mmu_gather.c:291
->  rcu_do_batch kernel/rcu/tree.c:2617 [inline]
->  rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
->  handle_softirqs+0x22a/0x840 kernel/softirq.c:622
->  run_ksoftirqd+0x36/0x60 kernel/softirq.c:1076
->  smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
->  kthread+0x388/0x470 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->
-> Memory state around the buggy address:
->  ffff88803322a900: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->  ffff88803322a980: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
-> >ffff88803322aa00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                       ^
->  ffff88803322aa80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->  ffff88803322ab00: fc fc fc fc fc fc fc fc 00 00 00 00 00 00 00 00
-> ==================================================================
->
->
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
->
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
->
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
->
-> If you want to undo deduplication, reply with:
-> #syz undup
+     Arnd
 
