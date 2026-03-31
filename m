@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B96C2FF60EF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:36:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E53D4FF60F7
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:36:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3157E6B008C; Tue, 31 Mar 2026 05:36:07 -0400 (EDT)
+	id 5ADF26B0096; Tue, 31 Mar 2026 05:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29FCE6B0098; Tue, 31 Mar 2026 05:36:07 -0400 (EDT)
+	id 537CF6B009B; Tue, 31 Mar 2026 05:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18EAB6B0099; Tue, 31 Mar 2026 05:36:07 -0400 (EDT)
+	id 427076B009D; Tue, 31 Mar 2026 05:36:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 03FBB6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:36:07 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB9755BA00
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:36:06 +0000 (UTC)
-X-FDA: 84605851932.03.FD6A558
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3BC1814000F
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:36:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqSufg7e;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE866B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:36:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA9E31B91B1
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:36:34 +0000 (UTC)
+X-FDA: 84605853108.09.613CD5A
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B39C0100005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:36:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LFGC0Em8;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949793; a=rsa-sha256;
+	cv=none;
+	b=ssEHmkxcFrQC5D7NkTKD57gNS9uWaVFA2bLQwSBoKcKQsiTkzb4DBZGM5tta18/SHYB4aI
+	R1S6khZJ8tuKsS7os8sGJXs0eJFReW+RlkHiSfsIJ2WCTwiNXDmtNO2jE3FryFTy8k8F0z
+	JbOar0sk+I226osCGrOEfj6P8wNbMVE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LFGC0Em8;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774949765;
+	s=arc-20220608; t=1774949793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b6CbvR8/dBASIiCO4zI3qofvdUKzb0+QulOlwNByytU=;
-	b=4ah82ShhQSI6BwqDrJ5o5z6mCxUE5jDUJ+dx9gQsxAqf1VOla/0KjdoG46YdWi6YCwPgUA
-	bC6zAjTFX0kONVVHytpVe1eNTYiQ6F0X9+dLSj8UCKyhZkAcJ0WKz6O8ZyWsCeNHOid/oL
-	H4Yo3E3WpHXpMMdB3sW1a5ohVMIdSSM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqSufg7e;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949765; a=rsa-sha256;
-	cv=none;
-	b=6e7YzzknVckCdYCZlg5IbAjehjp+UzNyd76N/gt5j/UokuX7Zj4qhK9fddoqSVAoTZC8dX
-	Vc53hngBCid4StbqQql60tCZvcedG6uzYB8KdL00qp0BH6xdXl/zbBtkb29gzhHjIu+Als
-	RszIznvC9MdR3EJE/Dm5MBiGXXtDjDg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A3B26001A;
-	Tue, 31 Mar 2026 09:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC742C19423;
-	Tue, 31 Mar 2026 09:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774949764;
-	bh=unm0mN5O/5fTupUJP5/43mpmznDqUzGRVDsTFh0CMvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UqSufg7ecQ+Wg2DuC+R/UR+odxiwJs2VYV4DwERoT3W8EmYBR8cHR6TV9nHDR5e9G
-	 DNWyNLpMyravuJGr8qGJLEkqqPWPDc8WRrUyHwvheRgvLWa4hru/o7xiaH2SxVtDps
-	 dGN9D1i8lfx9blhA+g66BOqVMoEHHohm+nM0nbCtS3gFune9sYQzK+SW9x38xKcc7b
-	 UFhDxkaNzAD1LwVq3ZS1NC7PMvMiJ0g60mTFEjqrJvsubEgFftMSvPWZ35E7Esdruh
-	 7Io7X37tGiqX5l5+4flhDHiTwOchYDFE58LQhMws4ARzYSrE01fZ537tQlBt/Xklt+
-	 FPD7dVClbx4sQ==
-Date: Tue, 31 Mar 2026 11:36:01 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 03/15] sched/isolation: Separate housekeeping types in
- enum hk_type
-Message-ID: <acuVgY5AC-bMNsZu@pavilion.home>
-References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
- <20260325-dhei-v12-final-v1-3-919cca23cadf@gmail.com>
+	bh=VkJVBs8ELvWsSuKQ+1IMOp2IRxZTSWkSwM2U/2pFHug=;
+	b=GXMC96wUbgd7Az/cb2yjTQGn8BNRIJ1aFvz9qPNCG5eqC5vG0ww4k6pCM8xo6PM2tF15vx
+	UvsR4TZYXfX5bhP2waxtU0tXlpWVQuzqrpRxAykXuqSKW/PwsfuRc8oVvkahFpcy1AwQMQ
+	CtHJihJ1f6Drlxx9jMWIgEy4VgeukWk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774949788; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=VkJVBs8ELvWsSuKQ+1IMOp2IRxZTSWkSwM2U/2pFHug=;
+	b=LFGC0Em88J4ZYeYezeuBCXAPF8nG6mrryeUWu1qP/C1jJUFjU78kOkbklXgHxczXHI6nB9J6Tfhm1fI4+DNIdnETgPbuw2KEhBw5V2uRjNXG/J9fM3El+FhtuTd9YprpeoyJc5gfCHR+/9wnWaNJiFCE1sgHFgcjmzR6LJ8zW2c=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R501e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=26;SR=0;TI=SMTPD_---0X03yfwB_1774949786;
+Received: from 30.74.144.129(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X03yfwB_1774949786 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 31 Mar 2026 17:36:27 +0800
+Message-ID: <522f4898-78c3-453f-8367-29327e29290e@linux.alibaba.com>
+Date: Tue, 31 Mar 2026 17:36:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic and
+ throttling
+To: Kairui Song <ryncsn@gmail.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+ <052ae271-509c-42c3-877e-ac8822b314e5@linux.alibaba.com>
+ <acuTMVSnGb0XRvTV@KASONG-MC4>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <acuTMVSnGb0XRvTV@KASONG-MC4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260325-dhei-v12-final-v1-3-919cca23cadf@gmail.com>
+X-Stat-Signature: df6nqkyxbn57eyw5sjqmu3axseowfwi3
+X-Rspamd-Queue-Id: B39C0100005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BC1814000F
-X-Stat-Signature: 9yswtp485r7gb43ibfp3zoozajb39ecn
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774949765-738714
-X-HE-Meta: U2FsdGVkX18ptvkLRAu+sF+leizRttrehOqyoqQYaPoKgpsAIW3doRleVAWYZYJ5GIfqFldwZC0vU0GwbcXxxpOf78q1lJQWyJA3dQSiVYsKK51+IEUZU2XGfefG3Um0diQ5yLcF/DeoFx6sEOY+ejTyoQJuUTLNUg3RD9JRX4gY1rVbz9iWeKCz6hP9X2kDsKhqVxSrIjGC5jLzOu5wdcXyjozFbpW7IQWjhDqzD6W8IrF6kfft1p72Lef5uZGDNFOf6Dv9EqR89TSVxgXXz+3lt6tuDHVzdCwD4ylB/yAxXLKbO3itKjDgC0E5Zqr4W/tnM+mjvS2HLh5/H4e8sb3W9FLwSFVp9GXMnvo3mmeAeS27aDCeVqM5hy+XfL6tsAnbuhZZlU0c9r7AcwTRjkbf7Ih6c3wRUtpspThRPss7mzzKv9D+xKm1BrItjoPqk3cJsiFkXcDzZUIJDkQjRnQqRVHxIjmH4/Gm6QuRAE8WH6Tl0sy+wXmG7GwCnLnWlVrW6CBpauPE3mTKVENXOg1z+Ii2ii+sHsyVuSlWFdPLphxVqAK8had4nC9W00pEdXsPKf57FJWNlV2VxMaT/7VcCVSGzduaZKMJHSmHAJtIJ7DORF95rO67KJ3QmtuR9HsugNLlg6mstIIk7y8bEYDwF1h9qBL+L4YKtSFbmgehJWsunfTlpe1kjIdAu+s8mD6q1vhTDJGgroaUQDGaOpp31dmus85A1c/d+Kktw86zK3yzG/Yjn+zNdKy6P7aKDACymtyON92Vd4/DKVBcX8cjVUIz77fzgHmDMWHJjYBx4fxBXnKhsJwNY+7cQ5nuLEDmZFzpJb/H1nGTQrK/WQqQRWaFjJ24/CUnjOyCsOcsx6cSXmOUTdkWpxzS6Bpg6SF6aI0/hYYd5f18b+p7MlM0CkAYfSI9sDHTYcrXhOu9H8Yk0bH+YOnWETnqazBWbqEui4Hoyn2iabty9uP
- T136Nl+L
- KuopqSHBlUx0aHp5DoI2vojjRBiwEIk3bYDdi7jXYth1s3RhZ9g1Qq1Clmi+mPg5oPGiJpN8GBunht5SHrTuJoZjtiSusM7M80j7ffgin5/+uLuIJ5fliqKG4NFMDushD3x6kJvA9c4H8VootAXC7cQOOhZbqKvYLCfDLUgij0PiDA6I2Rw1o8Wf2D8h8fhtMlkZFUW3oxmZW5UUcl/hUG1/T5h0mG2wh9XAYR4SIjEMpu1NK4LolBfLYt+FvOBoJDjQnZlpUgel5x46daEiG7TxaZDNWv5Ys3wl11bR8PQt1JsCx+9CVHG1wMrifBVhGP/8J6x0V3RknMiKCaLKPXkiIo5coL9Jbsjoa
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774949791-40384
+X-HE-Meta: U2FsdGVkX1+vtTImdSYkcTyoWvLGicyC28oJ3+4MgXxzNl+FXSTZknkYJRBuGSaaiLDObQJ9KCRmCk6Dtob26dswdZi1uIkj1leEsHuOncCBtzyFyjruDNGUrKGDRyF/CbkDIRx9740UdhlosTrjFdEzk935yIg4yCXvhmMjytXlTYo64iOXo+VTjphcFDUdR16LGmeDU+rRIe+jkkKT9EclYTohMuQfoCv7FqKuz+Mm748ESuFMHPdgLDXsBJ+5d+yWOMCgzeUsnqYpZ3lPNtZjxV4k14Y/xSe2rVQpWC2b7VsWngzEkWx4y5RYbka5S/eWKEnISmpINmyddGS8OK2fE6sF5f5NyQNOF/zmOM8polCQSsr15Uj2qruJHF7NpXHfA2EsjoovTI32qKUz6qVzdGvJRAY3fGlFFAJsIVC2n+GbUE/o6D0hJnHLXf+kwEw61ZkxaTsp5OVBNLUl2QlH6/gbST847i0hbT0STbsLUwxAmE49NeRydGEh4/MSdFos1paXw5Ax2KjdoODbo20tuOaEkmmGuqJ2Z/l9foyv11aNNanp9Ft2BhIY7ZR/mplf7Ln6rteJ9fva6u/fpo5uBADKB3GdCqUT7xO2egMIHnMLFQe3G9DzUiJ53VIOgm6uBnFLlBtimptFBa/dqOUmtCVKPDfWvbmhfbJtNElsIjzesk1oRy63ka69J6NHc48FcY0HSvqKFDxXlIHkzy9vHxXXwZTTotOEeU9MGQinshdcWcL6Bqa7+VsDrrGIPmN3BeHu4Y+Ul7SlLnP0OklA//Xxy4HOOvqDtia/69VgAw10psPu7TWk4Nj3mxDEkgz57vyevnd7KZDEXyxQy+Y2QC6EegeyMd6i6wW80rvC7UyUwUFlZWKyjLygo00KY0h28VeRc4XOI9WYf/UHK5r8wvijMgBTrx54r47LFBjssgI8TZgQ4fuLlZqnClkOogg6BTF1TiIRGSJ/Gei
+ FELEmUVG
+ mqa1HTktA6RW8j/iLqiTodchnHaQdTyguNrUBXvRHOtXRscm/Wpe/FXiAQ31PttXtv9MDMg28p+M2H+3EEvzPl61oqytg8IVeluzQEM+iUhSp9g6CVihiQgPnXIfYFHVj055n2seUOdmjjnRivjXlPimKBfU0mjGvMRiUxlq1jG97sKdIm3pqzqpEoIvJZp6VhyNiCFdCCIGsxkdFcKzauBIzuXPQEqMTKSIihUTBUKgSy6H2i1UR+WMbKGnOQe6cXRXUCtJ4IW2FwQ2rdG78wtoIKgtRM+npZX1dvGB3C9tqYKVzSYPH7rmMO0UwLmEI5EImHsNF9o+Wq39ZAKM0MeY0qVnABqg/DKrcu3lmsR3NVrS6vgp6i7R3+Q0O3Ix5FLq73LmlDW4yIcmoTtm/c8Yp1sUYBz7R6jyTWyRNtI5Jb5oR4clHeHyBGoYgFX8niXolrpzTDKhtkmk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,19 +102,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, Mar 25, 2026 at 05:09:34PM +0800, Qiliang Yuan a écrit :
-> Most kernel noise types (TICK, TIMER, RCU, etc.) are currently
-> aliased to a single HK_TYPE_KERNEL_NOISE enum value. This prevents
-> fine-grained runtime isolation control as all masks are forced to be
-> identical.
 
-For now we don't need finegrained runtime isolation. Only domain,
-nohz_full and managed_irq. If the need arise, we can make it more
-finegrained in the future.
 
-Thanks.
+On 3/31/26 5:29 PM, Kairui Song wrote:
+> On Tue, Mar 31, 2026 at 05:24:39PM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> Currently MGLRU and non-MGLRU handle the reclaim statistic and
+>>> writeback handling very differently, especially throttling.
+>>> Basically MGLRU just ignored the throttling part.
+>>>
+>>> Let's just unify this part, use a helper to deduplicate the code
+>>> so both setups will share the same behavior. Also remove the
+>>> folio_clear_reclaim in isolate_folio which was actively invalidating
+>>> the congestion control. PG_reclaim is now handled by shrink_folio_list,
+>>> keeping it in isolate_folio is not helpful.
+>>>
+>>> Test using following reproducer using bash:
+>>>
+>>>     echo "Setup a slow device using dm delay"
+>>>     dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
+>>>     LOOP=$(losetup --show -f /var/tmp/backing)
+>>>     mkfs.ext4 -q $LOOP
+>>>     echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+>>>         dmsetup create slow_dev
+>>>     mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
+>>>
+>>>     echo "Start writeback pressure"
+>>>     sync && echo 3 > /proc/sys/vm/drop_caches
+>>>     mkdir /sys/fs/cgroup/test_wb
+>>>     echo 128M > /sys/fs/cgroup/test_wb/memory.max
+>>>     (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+>>>         dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
+>>>
+>>>     echo "Clean up"
+>>>     echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+>>>     dmsetup resume slow_dev
+>>>     umount -l /mnt/slow && sync
+>>>     dmsetup remove slow_dev
+>>>
+>>> Before this commit, `dd` will get OOM killed immediately if
+>>> MGLRU is enabled. Classic LRU is fine.
+>>>
+>>> After this commit, congestion control is now effective and no more
+>>> spin on LRU or premature OOM.
+>>>
+>>> Stress test on other workloads also looking good.
+>>>
+>>> Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>>    mm/vmscan.c | 93 +++++++++++++++++++++++++++----------------------------------
+>>>    1 file changed, 41 insertions(+), 52 deletions(-)
+>>>
+>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>> index 1783da54ada1..83c8fdf8fdc4 100644
+>>> --- a/mm/vmscan.c
+>>> +++ b/mm/vmscan.c
+>>> @@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
+>>>    	return !(current->flags & PF_LOCAL_THROTTLE);
+>>>    }
+>>> +static void handle_reclaim_writeback(unsigned long nr_taken,
+>>> +				     struct pglist_data *pgdat,
+>>> +				     struct scan_control *sc,
+>>> +				     struct reclaim_stat *stat)
+>>> +{
+>>> +	/*
+>>> +	 * If dirty folios are scanned that are not queued for IO, it
+>>> +	 * implies that flushers are not doing their job. This can
+>>> +	 * happen when memory pressure pushes dirty folios to the end of
+>>> +	 * the LRU before the dirty limits are breached and the dirty
+>>> +	 * data has expired. It can also happen when the proportion of
+>>> +	 * dirty folios grows not through writes but through memory
+>>> +	 * pressure reclaiming all the clean cache. And in some cases,
+>>> +	 * the flushers simply cannot keep up with the allocation
+>>> +	 * rate. Nudge the flusher threads in case they are asleep.
+>>> +	 */
+>>> +	if (stat->nr_unqueued_dirty == nr_taken && nr_taken) {
+>>> +		wakeup_flusher_threads(WB_REASON_VMSCAN);
+>>> +		/*
+>>> +		 * For cgroupv1 dirty throttling is achieved by waking up
+>>> +		 * the kernel flusher here and later waiting on folios
+>>> +		 * which are in writeback to finish (see shrink_folio_list()).
+>>> +		 *
+>>> +		 * Flusher may not be able to issue writeback quickly
+>>> +		 * enough for cgroupv1 writeback throttling to work
+>>> +		 * on a large system.
+>>> +		 */
+>>> +		if (!writeback_throttling_sane(sc))
+>>> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+>>> +	}
+>>> +
+>>> +	sc->nr.dirty += stat->nr_dirty;
+>>> +	sc->nr.congested += stat->nr_congested;
+>>> +	sc->nr.writeback += stat->nr_writeback;
+>>> +	sc->nr.immediate += stat->nr_immediate;
+>>> +	sc->nr.taken += nr_taken;
+>>> +}
+>>> +
+>>>    /*
+>>>     * shrink_inactive_list() is a helper for shrink_node().  It returns the number
+>>>     * of reclaimed pages
+>>> @@ -2005,39 +2043,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>>>    	lruvec_lock_irq(lruvec);
+>>>    	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
+>>>    					nr_scanned - nr_reclaimed);
+>>> -
+>>> -	/*
+>>> -	 * If dirty folios are scanned that are not queued for IO, it
+>>> -	 * implies that flushers are not doing their job. This can
+>>> -	 * happen when memory pressure pushes dirty folios to the end of
+>>> -	 * the LRU before the dirty limits are breached and the dirty
+>>> -	 * data has expired. It can also happen when the proportion of
+>>> -	 * dirty folios grows not through writes but through memory
+>>> -	 * pressure reclaiming all the clean cache. And in some cases,
+>>> -	 * the flushers simply cannot keep up with the allocation
+>>> -	 * rate. Nudge the flusher threads in case they are asleep.
+>>> -	 */
+>>> -	if (stat.nr_unqueued_dirty == nr_taken) {
+>>> -		wakeup_flusher_threads(WB_REASON_VMSCAN);
+>>> -		/*
+>>> -		 * For cgroupv1 dirty throttling is achieved by waking up
+>>> -		 * the kernel flusher here and later waiting on folios
+>>> -		 * which are in writeback to finish (see shrink_folio_list()).
+>>> -		 *
+>>> -		 * Flusher may not be able to issue writeback quickly
+>>> -		 * enough for cgroupv1 writeback throttling to work
+>>> -		 * on a large system.
+>>> -		 */
+>>> -		if (!writeback_throttling_sane(sc))
+>>> -			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+>>> -	}
+>>> -
+>>> -	sc->nr.dirty += stat.nr_dirty;
+>>> -	sc->nr.congested += stat.nr_congested;
+>>> -	sc->nr.writeback += stat.nr_writeback;
+>>> -	sc->nr.immediate += stat.nr_immediate;
+>>> -	sc->nr.taken += nr_taken;
+>>> -
+>>> +	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
+>>>    	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>>>    			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
+>>>    	return nr_reclaimed;
+>>> @@ -4651,9 +4657,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+>>>    	if (!folio_test_referenced(folio))
+>>>    		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
+>>> -	/* for shrink_folio_list() */
+>>> -	folio_clear_reclaim(folio);
+>>
+>> IMO, Moving this change into patch 8 would make more sense. Otherwise LGTM.
+> 
+> Thanks for the review! I made it a separate patch so we can better
+> identify which part had the performance gain, and patch 8 can keep
+> the review by. Patch 8 is still good without this, a few counters
+> are updated with no user, kind of wasted but that's harmless.
 
--- 
-Frederic Weisbecker
-SUSE Labs
+Iâ€™m not referring to all the above changes. What I mean is that the 
+'folio_clear_reclaim' removal should belong to patch 8. Since 
+shrink_folio_list() in patch 8 will handle the writeback logic, 
+folio_clear_reclaim() should also be removed in the same patch.
 
