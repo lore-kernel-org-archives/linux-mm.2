@@ -4,118 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8099D10F92E0
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF52710F92E0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:53:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E71096B0095; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
+	id 0C33F6B0088; Tue, 31 Mar 2026 12:53:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48826B0096; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
+	id 04CB16B0095; Tue, 31 Mar 2026 12:53:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5E5B6B0098; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
+	id E56A06B0096; Tue, 31 Mar 2026 12:53:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C458D6B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:44:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B2ED1B6E98
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:44:35 +0000 (UTC)
-X-FDA: 84606931710.09.2834B71
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A9DF240009
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:44:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XQIfmewb;
-	spf=pass (imf12.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774975473; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE7986B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:53:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A375E052C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:53:45 +0000 (UTC)
+X-FDA: 84606954810.21.1A36F03
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 96919C000A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:53:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ur/lcsxR";
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774976023; a=rsa-sha256;
 	cv=none;
-	b=4WE/irwnLcciZJXuqpqTtmG5qWHGQdU7YGrv+UogDmpnkOTpjzcoMKZrukc7NshH2RpuEC
-	UKYTNnnPQGn/0u2OQpZBp/OKYZh/8Vn85AbPjtsDXgkgBHUNkpPOvLEU8DreEZNP+m6CvR
-	scnfx7A7zsrl78wG5HJjFRtRqWNdo+w=
+	b=iM3XMA2CUndujARjfqFEUYSE5M9W9GB4fnS+pWtaABCAmUH3vJYd/eghlWWSdmJBaeJAkL
+	jxf7r7ukJPZag5Hdda+6+TBTAfCeLOIFtve1EZFXL2GWfSliiJDwCM7uG/4ei5ylZc5rWJ
+	/1oJRE7InQ9TRT3YQJBJtFvw6CRvVU4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774975473;
+	s=arc-20220608; t=1774976023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
-	b=17i/4cpoBawNyWBbEeh1uTpm9sTc+PqTymLsARtdKjtyE7enV0xoeZbq2NZ4B02US6vQHD
-	r6XGYxWD9rMapeZ/1NSprgweF7bpErFJOXjy2hZBzsVaI2xnPnrl2s9yBJG+tkvEgizwa2
-	1s+We1fh1OckKCBRMjq6PP7Xs+B8+nI=
+	bh=aauTamozqKzQn+bD3WjE49ERKIyZisiImcibDa0IHF4=;
+	b=5zzlQtCv+S+dXYlRLyzlmOurhWZQWVTrzqdTY++Q9CIahO32fkIz1xPdJH0eyv595JKtlo
+	J8i8Dwj2oOkIpJc8UpHrGMviZOAK7fdYf/xzlwCbnZnu1gylcphe8TqGPZfFEShERqjH7G
+	Y8YulRiiyyVJKwFxLp/AIlgtk0k+5i4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XQIfmewb;
-	spf=pass (imf12.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b243198058so94665ad.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:33 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ur/lcsxR";
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8cfc2d1fdbfso499291785a.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774975472; x=1775580272; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
-        b=XQIfmewb2tFK8rmvtQNEL3jEWZo6E34QSoQ0WnKw6syFINyAHzu5QGc3fUP28J7+hF
-         YMzKAxwYOGl/WCHzHEK5AJpvBygz91Q9bRX7yaHM2GTeLHiVeqhIAg1ohpeSSfXPkmd/
-         FD0zB3JhR1wrglqrAkCoxw/Bnft/ZG42/6N+TFlk5Ll+TRFKxaVWtUbQBTP/OmiR2iIg
-         K7RiwOJ2dm0uN/B48ue0ugbu2cghbZbdbO+OeIBLpqRHKLOKLbUlRUH9TpYM/T0yBCJr
-         yF4GGqxswNr2uo1LuXgX/HR1r78vUVjMz0EswRIQfgvqL03iLTQkuotVOmx5yIsJK4D0
-         hVBQ==
+        d=gourry.net; s=google; t=1774976022; x=1775580822; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aauTamozqKzQn+bD3WjE49ERKIyZisiImcibDa0IHF4=;
+        b=ur/lcsxRfeqaQ9sok6u7RDcNN18juMMyilt1Py1x+wzVKMsZFnkdmTSNBbHfj2v4yu
+         MrXlwutoANvmqaZIU0meyMYaQbNbDxzV8eStcqe+qt5L65RmYisUevINXZf63xg3bIFL
+         expCy3Cvx/EfbtZRwRcPZS98dhDnHR/GMUJ8gHsGSDft6o9djhzn+5fN9JJhqxyqmzFK
+         T3FWFuXtGTxsWUoW/K8vtjcoBz6Ux0JpJLfxPaBCyrUU7PExVRhvP2A8XzprHcaYO3XB
+         JZM0eivXY83zxFsZe54ijOlhnnly9Y4UQxoE7dfWgSGYJaOWjAx/hZapN7658pgu4ccN
+         +3ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774975472; x=1775580272;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P9H7DtjUvqhXDyY5pBkhMdsDwbb7SsdQitFkTuKYIC0=;
-        b=kPTRnItlU6jt4KgxuVEm//mVo+ICb1oMDBcl/Z8hwfpJx24F6Zl+a0OyPYD3RlxVHo
-         DSWoLQusg+22Z5mbvYwdPBXRyJeWV+S5Hf3nwqOlJvoKgDuS1Gb1Bh/rWDpX9MN0BmMn
-         iG/zvj4ZvPL+ZWdprJ/irTZ+5ZfwF37HQIAUKemiMYbVbnNnO97t7gqYUm3Es2P5VaCc
-         Z1n+yGhgwAFdX43x0fpf3tzAo/AmDk2A2CONT+jumQzK2DlmNXfZ1rFbhKcY1FpLWusT
-         fXYe3iFmpXLpotxJa5ba0e5CBAfHO/gooib4B7Eif6IYH+6RjBbCyA4IWXa4uwqMoh1E
-         sOpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVAPuItVn5PYZaIGRIEic6OwP75+5scZ2wDwUY/hFbgBpMIwF8AehoqswMmtza8nFGVCrJA308y4Q==@kvack.org
-X-Gm-Message-State: AOJu0YyflhsrStGF5lTtH5mlyI3L/E9BlXfpQjoF8DkS6Sfojt3zoOgy
-	v2DfuS0s4nWByr5ny2Nfykp/abq1kGnpJRJ2zC8w3I28RPKTyYNsHn1ANbZgZk8x9w==
-X-Gm-Gg: ATEYQzxwDhsBUqMV+l1I68GHm210Uq83+pRsi6zeTQkSSxpObOAkGEz4tS11o54/ADz
-	RTwbyKE8YFm1EgoeY76ZA0oD3fSUihaalTAIwUsHpjTt7uApjyyXQUha4eR5I2zU8iXhw4r3kj/
-	RWGx+WuGrml27N1CDB3/+yLJiBY3K+Yue9J3dKfBDqt0dw/472ibcv/ZFyOsivSY7XLIr/wXeO3
-	ZDZ1MvlqjEaE3D2VTvU7/T59beavyHF44VBwWuaa6eUlC8Xmibpqux+PLELPieHwJZH15rNwZFd
-	hGeHzdYUPthNVN2a8svuql4p2geeH6aESvSYjZB0ZwzwEZUDJ3w6ksGNDAvuFKopWMyQK/1luD0
-	+5P8E3dQx0kJVQ3SnmH1OGpvNbXlVIxzFNS6i/CxHrp+90ZY+j89bbkTATtXaFGlXiBSBxOQUTP
-	lzQZAB2TRKnRD+2sIt+UMSreIe/M6xIGhKptecimxxiI5k/eMLWDRcVL7QQMN8VT96/J6v+DeU1
-	TBlEHTjwCtK1LQK6rM6YNQ91oIn6duGePn3Y15L6Gq0GaBMGVdp2w==
-X-Received: by 2002:a17:902:ebc6:b0:2a7:87c2:fcde with SMTP id d9443c01a7336-2b268f14089mr297505ad.15.1774975471796;
-        Tue, 31 Mar 2026 09:44:31 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:7c3f:a173:3e15:575a] ([2a00:79e0:2eb0:8:7c3f:a173:3e15:575a])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76917bacc2sm9459387a12.26.2026.03.31.09.44.30
+        d=1e100.net; s=20251104; t=1774976022; x=1775580822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aauTamozqKzQn+bD3WjE49ERKIyZisiImcibDa0IHF4=;
+        b=CJpy0zQQhcScBlRGbGA4q58ie/8hgc2grexD95cWn5RlrWvn63iOz9+t+BqWUcwxk3
+         aw5cAa+9+p3NmpvPOY66CqLCZItrajnbVh8EMTsw2xjB9ctBLqQNCedFxPFbhtGGmq35
+         fLR0mSNChXwn4qRegtRwz96vq2UEqyC9RnWFTLfnKBEwxTJt5K/3oAyojfOyz0mcbdax
+         0+5iMsjEsHw9sDYIqdxvwlWA9Qv9lqTXdLRWRYCKFaXtwbHv+4LFYRj8Sk+KO03lla55
+         7eX62txbsbxXDbHouB1N3rn5AX1vUY6wrZ7VA8Z3yyUMiyxCggm7LuGnn5EYMT22O3zS
+         xN3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVHnqsBSdQLKV4BFUlQ8eNWkRV6R1Choj9GCznko8n9SLh/GxzlqbXRUxcgNNrlbSs5h5jTlvx1ZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx0Q+hGVtDSmddBWwhOfHsfSYQ5VsyKEH1SM5DAbZf9tSrnTndF
+	62DqtN84eI5evOLMlrO/L5r4Evk7TvP+PuMczdFoA1+kEnkVcZS0x2F/Xsz6L8W4K7Q=
+X-Gm-Gg: ATEYQzzhxgg1eV+iAiodJBe5un3BCzgXSvy9OwdsdVivuDaCv3Jfkg8pCs/GgILKkQF
+	lVMs0paIFAusoIFZOwgZnZO5bn7ak1lCZEpbeWQBI6ivYF68oxbv9dzZA8UgA6SW9r2Hb0VXnh1
+	bZAvQHpP7xyg971QJJtJau9n5Ncdt5xEuRwCs0HnWi+L+dvTFtP6Zmmpwj70yqebWtkeZ9oJzJ2
+	SYE3CxPKIJBE91C4+5C+hGMsl2kkcECTyRhRz6QZmQt6HWpHSULBw7tNOyr5CvevqVIR1LLwq7l
+	Oqxk9xTtJ0AKCYCVTW/F0kqW5v4KexhQpQVxbMtSsMoML9AZIjc3yAkR0LHoZ7SzkU543nI5V6f
+	kgnUY7ROBjM9VxveOYBEj7AtjMxTlksg1IieELDALouwAdYQLALvCwlkpFhx9qLHlrv5DSx0wXg
+	+4CnzV0tBVKD5Ir0rvlqc03kLHJuwfFSqDxQfABL+kdt4zb98NAivZceSeX6kplLWsNRVECV/ct
+	KSOUa4=
+X-Received: by 2002:a05:620a:4013:b0:8d0:3cba:ea1a with SMTP id af79cd13be357-8d1b5b24b7fmr58497885a.31.1774976022583;
+        Tue, 31 Mar 2026 09:53:42 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-68-72.washdc.fios.verizon.net. [173.79.68.72])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d0280374cbsm937456885a.26.2026.03.31.09.53.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 09:44:31 -0700 (PDT)
-Date: Tue, 31 Mar 2026 09:44:30 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Brendan Jackman <jackmanb@google.com>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-    Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [patch v3] mm, page_alloc: reintroduce page allocation stall
- warning
-In-Reply-To: <69cb3957.5d0a0220.93499.af4cSMTPIN_ADDED_BROKEN@mx.google.com>
-Message-ID: <a65dc09d-f181-adc8-59d5-838b6a2b7c9e@google.com>
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com> <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com> <58a10940-e44c-a120-dd6e-ee9f480c4946@google.com> <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
- <69cb3957.5d0a0220.93499.af4cSMTPIN_ADDED_BROKEN@mx.google.com>
+        Tue, 31 Mar 2026 09:53:42 -0700 (PDT)
+Date: Tue, 31 Mar 2026 12:53:40 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jackie Liu <liu.yun@linux.dev>
+Cc: akpm@linux-foundation.org, joshua.hahnjy@gmail.com, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempolicy: fix memory leak in
+ weighted_interleave_auto_store()
+Message-ID: <acv8FJBVieQnpYT8@gourry-fedora-PF4VCD3F>
+References: <20260331100740.84906-1-liu.yun@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331100740.84906-1-liu.yun@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A9DF240009
-X-Stat-Signature: tuaot43stii3bgs7dqce9m6hrjq7hasf
-X-HE-Tag: 1774975473-680375
-X-HE-Meta: U2FsdGVkX19m48wxDiVbKk+LxLshBU/CFH7mej42GM6csfqcqEQd3YKYixhS13r1bhTKxcWd7quEbR/d0Q1neNt0IfVloZ9RghkmMBmK9uYQVqlL0Deo9CF+aTwIjIXO6Qnt23vZe2X6z4tXkVOpmnSzOjQGa+VtWxqU32oLQ/vUBqsP7RWapCRZiHhrkbYrd936wWx9W0hAgKvtaxuzN15gm6K+NrOGAMr4RmcSXTEE6QKRt8EJiDzUCxyxCBCK6zOwKlamn856QCZlDgIk0t06V9tJvIkBzoebFdqyZ0Al+RWkSTSvYYnAnk8vLxtDHVDI1egP5qaYE40MTkziWyCn21LkpaJM5xgCLpnLV3vqyq+xBitXMARKb/uh6bKwHm+iBa0A5k25xu+srUcIe7zi9yS/i5KUahs4yraRUwL/F+8FevQbEeUAWHCORUYlJi4dRIacrwsORabpF7w5ALwXeRu7KDVmhbvJ8qN42m2RjtQULgT/iJf2wXZ9DGh5UXJkAxmOVV0M/2HKZKOSWJDtn6ROZa26HfqfFXW4TwXWwW5xhHYAEYuDfNAbHDB0ZbxxTFA4llU8VF8KiGzE1JcCFPETZOUsTZm8BBYCNxtI5HCYw3dNhVI7Zr4TIVnrdxBywFfamP02/70FwVPHauXLiLQAth8bMqDrknaforMC8Iyigk+2LuZ+xblhdrf+DpvKVd46aREfZyy30dsMs0ULQhwTTQjL6C4SfIGjw/h+rDSS/V6EiWsEItPFFneDSNy0jSZg7d0s6bkgujuSWK7XsaGorog0SXZFEt8R2EuMfylVCuttkJb22uPm79ujaqLf8SoeNNKG8VnGzFsccQzDVw1p630Y0rZyZLlp2R2c5h4qWi8FMTKl/iyhB5l6MlFRdYpKky4lVfJBjjGt0HhBxBtub8yi9I6/v+QtPjVMOCeWmaXPnRRn6bZ479K+vUQNcG4EJgs3a/Gxs+5
- lAymWHjo
- Z80Ei76FkvTtPnqX0Z1q45FBM6sptfxGrlhX/iFefiiNNcUiPcY/BiBVn6QSek4CZkkwtM8Jg/L6GT2uYSjJmuijH27pm9aZOHpAt2cQAg1CjTYBZNlWaaDC26yx9PGmX1cgkoE/f+XkGU6v1bzMlx22FgfFrNrqzrzg9OF6Ba2eeAM0/MRu1U4w2o6dtBYlt3AqzbynlEtRr5tnfK1gQoOmgi1x/XclLI6tcBWU+ZzACeHzqp4o/PIy6pD7mJ85PbpcQ3zfuaKltqGFhn53l21wmLdKtSQU1x9t94X4O3nMa1i2VRFs9f728RzPO5OY+ig/GZtPD9T5xmtLPWalLmcTCmxYZYbfACsF8W52bs+MrShO6e3k5WsHPte5yg1avJl9VRTh19g/ouBDtRlqby/ia47prnXtQbtlWRZ8KpkYvag8=
+X-Rspamd-Queue-Id: 96919C000A
+X-Stat-Signature: 1tt8we6mi1gzywhnn157xrcryqcu9cwu
+X-HE-Tag: 1774976023-114659
+X-HE-Meta: U2FsdGVkX18t0PaJFhvKAG9Pm0ImXYAd140jRDgY+MJk9jtV+ZvOsnrT/cwn+BUYqE2sflnQiqulIoYefqrcNjyLWmxwjlnDV8Z3GHm46Kxp5dU92VsTPG0NKYTrTqVslVQGTNFT9RfPtIVZ+W1uiBJT6jIJ1eky8tpKRv+gLIbi3E8Es4g3YqloMPs+3/SgKOB7RljsioVjjEbTfw4Ln3vHQZnlYHuZxHyYCrXjg+pkL68dwFGzh99Kj9+x/18//xQ53m13ArGToZ22O610hrCTtnL9P62uGKfb4EZuBWSJJPDYKDA0lL+Fny0ez4NrsS5r+sTZUGsjwKVbbsSFzlwL2dQBvAKt+BrUt2HlACuNKG4sgc593H8wtKvtlhHECvgrXtWIFJoJPvg0e6vAmxtt3AP1z8qjt1icNt+W/pq0CDhsK9EiNlZdvuqya7FV2qC49E+NrUHOtvreC6AxEJMR0J7q1Jy/gMiJkpL6q7X+W7MlD0fxwFFiEsLFrPSz7tO6vwMMwvSOs3f+4Y8emc+dlOjjc1B/GL6fwXPGrT5R9VSrffcxjbeVqA8pIaQrW9l4P4dbUoZ/fyUhl5pSgl0rF8VpKCIA++3j1V6N/PJ8A4gasY6c9a+y97SsxLOkDBBCJzbp3Al56YU8RdCcjWYox3g/NY7cgDmEG1pMeaBRjWC1rHabbS0iOLF04oJMWphEu9eR60aG5LEBSIwzwk8+20Nh4Lu/S3v25PH/hSdSg+u/oKJNp1O51UG2eaVkldauBIbV/yCDubW5ddW0vv0pUxPHuUh2O7ZNujaFRVvj+rSPuQqU/b+yt+oWaQaTIIzkfCMAAVfE/ELP//1qWPnIozchnC6k0GsxWWEr+FnpYIOyM+fHkyF4keSZadaWaphc2DOGPHWVj4zz9qU6WGKGTzJHRw6ZkfwjZa5VuLIib8GyAsNIldICFLOlmvgYGlLmHSRfr8f0V5fV5Ba
+ lyZZ1oLl
+ iz4y0gd9CYRdaWBmzK29wCFiAYpA0Vtow+MHdPDZ066MnQlVoRIIilPq7p/vvn9W2j9L7CL90TP+dRMPC2L5waXY0CFlyHOb+t1nmXDog2DXliTmOC/LrbRwrbXLDn1SO0wXp6izjcvBpRqCQRbIMChKeyTgHDJj1/GajirCDpDmo/I4TbBy0JSd3QmOh4YcUca1i1PSsGzosQB5EvJJvCeWaCIruVfbqyu9oimnjL5IJN9noQl59MgA/NW8YqaHjeW7HkWlvE8md+1Cyk0KR16Lg2Gc31CS+gOxv7wo/BLLQQA1e6lvGjub6SK74Ch/eXb43guUDYxfjXVerM4cL3+MOR4uLR+lFdslMth+etxc9EZijA8AD3wLu7lgTiM8qGCh6DZ5CB/bUt5M8v93bZlM5yWaHgvqmUK31jl1z1edr5ziaeuPP2NkYP448x+Ile1trG6zpMwtis7gr0rv6+5vZEOt/oQheKK4MhI6Gfegkh9lp+HiFl7s8JQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,47 +117,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026, Shakeel Butt wrote:
+On Tue, Mar 31, 2026 at 06:07:40PM +0800, Jackie Liu wrote:
+> From: Jackie Liu <liuyun01@kylinos.cn>
+> 
+> Add the missing kfree(new_wi_state) when the auto mode is already set
+> to the requested value. When a user writes "false" to the auto sysfs
+> interface and the current mode is already manual (mode_auto == false),
+> the function returns early without freeing new_wi_state allocated at
+> the beginning of the function. This can be triggered repeatedly from
+> userspace, leaking memory on each write.
+> 
+> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
 
-> > Previously, we had warnings when a single page allocation took longer
-> > than reasonably expected.  This was introduced in commit 63f53dea0c98
-> > ("mm: warn about allocations which stall for too long").
-> > 
-> > The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-> > warn about allocations which stall for too long") because it was possible
-> > to generate memory pressure that would effectively stall further progress
-> > through printk execution.
-> > 
-> > Page allocation stalls in excess of 10 seconds are always useful to debug
-> > because they can result in severe userspace unresponsiveness.  Adding
-> > this artifact can be used to correlate with userspace going out to lunch
-> > and to understand the state of memory at the time.
-> > 
-> > There should be a reasonable expectation that this warning will never
-> > trigger given it is very passive, it will only be emitted when a page
-> > allocation takes longer than 10 seconds.  If it does trigger, this
-> > reveals an issue that should be fixed: a single page allocation should
-> > never loop for more than 10 seconds without oom killing to make memory
-> > available.
-> > 
-> > Unlike the original implementation, this implementation only reports
-> > stalls once for the system every 10 seconds.  Otherwise, many concurrent
-> > reclaimers could spam the kernel log unnecessarily.  Stalls are only
-> > reported when calling into direct reclaim.
-> > 
-> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > Signed-off-by: David Rientjes <rientjes@google.com>
-> 
-> Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> I am hoping that the reason you are reintroducing these warnings is
-> because you already are seeing such cases in your production
-> environment. Do you have anything interesting to share?
-> 
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-We don't have this patch in our production environment (yet).  We've 
-been stress testing allocations for page faults with lots of concurrent 
-skb allocations that can keep us persistently below the per-zone min 
-watermarks and hope that this patch will shed some light on some 
-unresponsiveness issues that we've encountered if/when it happens.
+> ---
+>  mm/mempolicy.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index cf92bd6a8226..9ac74178075b 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -3713,6 +3713,7 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+>  			goto update_wi_state;
+>  		if (input == old_wi_state->mode_auto) {
+>  			mutex_unlock(&wi_state_lock);
+> +			kfree(new_wi_state);
+>  			return count;
+>  		}
+>  
+> -- 
+> 2.51.1
+> 
+> 
 
