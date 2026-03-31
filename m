@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3DCFF60FB
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C0581061B21
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:27:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D99126B00A1; Tue, 31 Mar 2026 06:25:19 -0400 (EDT)
+	id D4DA76B008C; Tue, 31 Mar 2026 06:27:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6FF26B00A3; Tue, 31 Mar 2026 06:25:19 -0400 (EDT)
+	id CFE046B0095; Tue, 31 Mar 2026 06:27:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAED36B00A4; Tue, 31 Mar 2026 06:25:19 -0400 (EDT)
+	id BECD76B0098; Tue, 31 Mar 2026 06:27:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCE706B00A1
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:25:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 793BA1B934A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:25:19 +0000 (UTC)
-X-FDA: 84605975958.21.B194C19
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A333A100007
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:25:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Hwn6F+Z4
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9206B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:27:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4717E140C81
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:27:18 +0000 (UTC)
+X-FDA: 84605980956.20.90A0A05
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D062C20009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:27:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o7RBAi13;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774952717;
+	s=arc-20220608; t=1774952836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wS0B7N8hTDMx34nsv1RGAeGiy66uMx39VPwXLEOqJc8=;
-	b=5XTzkLVsdMaVupDlJjsSKXFF54YtZ0/22flh/vjPzJt1BK/A+ByUQwSPx1fBsKxiv1Ygqr
-	UG2dGkXksLmOreRyW9EdwZM+RO87WtJqa9bO4WnZCefmy2qM9Qa2uY7rteG/5bBV7AAp+R
-	JmORP4WfwORCPwWKBxD6rV1WVDcSRuQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774952717; a=rsa-sha256;
-	cv=none;
-	b=GTpc1+ybSiDvdg2waJoHm72pZ+V08HyvHzfaEfCbSu4f5JWnPbzPyZhAHN733zTmnEwwZp
-	aTq9PwNuQoyQSo2n9vtAMIxCz/xshJqGV+mZG6D/vFRC1cNuzt/94z76+6IqqKGRXe4pho
-	gL4DmA//6f7yTuTnHeo9NcQES5FbJyc=
+	bh=a18x6ZQjYkqeWxFtayZuE5Lz8yKC0RDpl9ExxmZO+X0=;
+	b=qoDQ7JvT40UjXZIypVN32GFp7q1MO9/qc8/STHwVWZGB0wtI1/3FRgGGOk4MDKuC1BL4bW
+	yEerIf3s0RyrPsF05nsXNH5gMDWwHEl+zWm/G5d9nOewlcI4yS1Ss8XTl7PHFN1koRxJJL
+	zgiS28kC7PKS71l/ujnT+RoPxpl6hU0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Hwn6F+Z4;
-	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wS0B7N8hTDMx34nsv1RGAeGiy66uMx39VPwXLEOqJc8=; b=Hwn6F+Z4RVWedrnbTn8XXv+KmF
-	5AeftYsSUV+CpcKV8Dhh/f9dxZvvhDwV8TLXHhWIZ85ubtLv7V+dzW+Ag0UptxBYGS+m9wb6YftTI
-	B5fFXXN/QC0DXIlf4d/xt4/rVFitE1jXpCJLb30QRn2PZW9adUoRaItFrM42JA/TBUOXR2gIbOPo9
-	r53K28YM6LRlxBHGZP4IJ5d33vb0xH9lUZFE4T0aChDOX267xz7zI9ZcF8k7lI/K03CexBxpH2SM8
-	M4kwg6kdgypyxMps6gjHM00AAsjlCxlXsh+OvLKm8W4AcXUgep2yodTI/H4sGPtvvwNme3gnpsBgr
-	lRm7yyFw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w7WHW-0029LL-1u;
-	Tue, 31 Mar 2026 10:25:09 +0000
-Date: Tue, 31 Mar 2026 03:25:03 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kernel-team@meta.com, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 1/2] mm/memory-failure: add
- panic_on_unrecoverable_memory_failure sysctl
-Message-ID: <acugba9zIDYTjp0a@gmail.com>
-References: <20260323-ecc_panic-v1-0-72a1921726c5@debian.org>
- <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
- <a88d62ee-530c-1a6e-c05f-de324f940b8f@huawei.com>
- <acp8wYLHDGAfhzI5@gmail.com>
- <d8d2a5ad-9b8a-f0e2-3eb0-ee820eb7a148@huawei.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o7RBAi13;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774952836; a=rsa-sha256;
+	cv=none;
+	b=C1vA1Xdzr4eGt+n3mj9BuHp51kxVgMEyHiy1ExbMN1XWi6U+VKFedxO4JldMMzzrSUuGZc
+	f2B5qCkX0kRw813ytZu+CegzohSWqF+F4e7mxLOyy5i7WBaa7/+E3cfkR19mPTxyU0n9I7
+	KlKPznSfn1Y4/4V9LfksgzMmG4P04ko=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774952832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a18x6ZQjYkqeWxFtayZuE5Lz8yKC0RDpl9ExxmZO+X0=;
+	b=o7RBAi13M3ymJIxeIcVVcVU7ArACtE8dCrjJjGz5z+vEZYGgF1B1ZaS7f35w+NpdDX2Unp
+	f/ElyU26K/tOyOtBeLLhv7VbxMV4S/xMG+FcVulhOO1Crwahfpdetbbi4j8NsAeXAtuv9D
+	TtMRPMhTEuuHOtV/fbSvHdHBJxbrGZs=
+From: Usama Arif <usama.arif@linux.dev>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 0/5] locking: contended_release tracepoint instrumentation
+Date: Tue, 31 Mar 2026 03:27:03 -0700
+Message-ID: <20260331102704.921355-1-usama.arif@linux.dev>
+In-Reply-To: <cover.1774536681.git.d@ilvokhin.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8d2a5ad-9b8a-f0e2-3eb0-ee820eb7a148@huawei.com>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rb3pm44d7p7py16bpd4yyw6czdocbkz7
-X-Rspamd-Queue-Id: A333A100007
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D062C20009
+X-Stat-Signature: 3z56zh4uiy7aa7rcb4mtyezbd78c5bx8
 X-Rspam-User: 
-X-HE-Tag: 1774952717-987386
-X-HE-Meta: U2FsdGVkX1/FIZRIsIPP/BJ+sXao4p5paBIU14Isd6ZIEmrb7z9LiYw8rfS4cFodTqnccmJP5vx9N82x4cfRWiqTgj3P+n7BHjfGfb/uqk8DcYHEJo9s3eZ4J1sLjQV3M76Uye8eusQkNQUErPIbZT0i+rPW2w69Iy6LMU9mFVYoMQv2X9STHVDd3ETSB5t2PwEozG5us+UUGU/3Wd8okglIROOnqAOPwXutfNfI0kMmor8ob2P8BptaHUq11H36lf9qP5UWwSNd8otuJY4rmRY4eo5uJyueFVYTDia0vAhEfnRUXW/PDg5jOAyxPmevlOk1IlfO899LFBzXASx22m5nfvIZQCiUXVwT1ojTyklQKIcfafR+cEcevGJpMt4WnE0xSsNyCfGXIzMm4SgkEK1HALJpirCja4LFhm0/c1l6NTPuRn7+1mHcSMWLVY0ngdKbEvzEqJHdqH+YBHleGgPxQ9tR4yv7EkHf4GFKjEs8yU/ihbL3AbPnDhHOqT/famvB25aYYu0hC+GPtKf0A/VGpMehe6nRIX9L1tYZUyYo8nSFmjKEn07ONd0ksaSmalip3dTEQEsPc03670LyoKs41nUggqHampsSQeAg9JkJlu6FIwrS/9MXPuwz3t8HTsSkw6FHEZAx4m5we5/UMO5okdpi2iLWwqQpvsA0goRs/uNhTheoGmb+tAiGiQkQOuVY6jxpAWsdH0sS/t3JMB/E6zxN666c29oen8ogTAy6OypDoAA4YDeUl8ruqsO6jZjth6RAEycy7hbA9zjNst3w2LZGrN2LjzQBIfWZy2PeGdx7rbeRzjJutwixN8WcKRV6G709Uez4ERUHV4slTl4Ju48zirIA2EgOaaDVQZhUG7z2sEUdlELGaT25pssfQdCsmloETY7qiaPDeZryVy/ciB5vYRStxS0qj4hJRUkHhP2WwjAmzKHIcYaVrROeN7Yv5OoRKxN8l14oef4
- 9BoVO6oa
- 0w4cXDuSIGSZYwYBi6Y6Ezpf0SYfCMq15cbYZnWwp3YFMyUMqU2ls/WsfRvIXROpHh0DCj3Cm9+4THOc80mC/psUivVVP8vrUb9Bwyt/daxCc7kkgEQjZUKgLbFtYmgEIX9qVUOA0uxAAOzI8bkIgL93C1pkKKrfsquMgb+jTAqFj7a22u7BWgd74IYyoeEYBb83o1CEuadW8be52LciGmVIgrQlTCgKpbkL74EdNevCKE0adL1XDvDGAMg==
+X-HE-Tag: 1774952834-827477
+X-HE-Meta: U2FsdGVkX180udRTDuea1t60oTM3NGb/7xpxJV3uQM32A3FzThqsYxMdgshbc0f2HIUbu2/mXVOp9wPTZLEq2OMEiH9yO/CTROOmnA/0gm2hzTBA/PXbcIAO6k4JTmYMODIwOOR+CXBKxEiQ4o6Xv39Z7qKLXuM3Sq/+HKsQ1gXTgvNYJIxPKTAfaWhCuhvZALnbqy3L0EagoA6B1cHDUcECfnyR5lUVHE8DAQkG4CRwPZr0Oi21Cj9i/IHJRAonnnGnGU/snuYrnGdqvNLoFqhMLKCf7UhIWPoGgV1jorPoejlftXmHhoYG26Xwlp0lLs89jYYQdcKxpsXKuIYyjIypvU5wZdQSS+yFprraKJKzKLgg6TZIMyoKFTA++s4oa1WTmSIIdRFP0zY+Up84E5vQU+6MdHN4qc/KBFlQ2RtD2S4JiE3cbjXyGxE8ySP7WpOjm54wHVOjRQWD5Dhxj6RSxaUzIVJrj/m6gbV5xckSCjHNEQ7LB6uc+e7+SsYc4FgcrkWBeTcRBkZPXi9JofRpxWgBmJmyl3ILu4dkeR52BpPT725rMdIUMJMLxpkaCcdYbh+ABDRZWvYxCa8DoLrNVbfDdBIfszp1B3T+vVfTr0MabPQPXaSDsn5VPSdgvWYBQcXZ4ovc1WGof3orrSCvB/9D2eNWv2aCGtWPK1HpoNDSB9Pj40h32MbynaO9KBfeQ4kagVjGzSHUrpNI0IxggsaYyBkSljV9ril8SOX6Lt8mUtQ/x1TwMrwKHNfSCyapPdqGXDxt676iMxPJg8tyORpPOebaDzeH7ut6r+zLoZImgpac9F62V97XI9c2RcK26U26XcRcpgv1oNeWn2LSXw0Ua3RYzVzrq9WAtGPv09Hx0QABV34pyf4rUKjCwp3h9Zt4bE6QYmCs/7HClhEeC3aGs4eqMb4Kdx/DFfGm1Fvth6haDgieL6mKbDq61046uH5UaROT4oLgf/e
+ 4letNYFo
+ GRukSCeyDX/sPd7d/Bv/NnZg/siKXaIjhzm1sjC/NQWfaEoLs5QYIuHFBQa/neM734OvtSkhW9peLCL5FEmAZisfMkPEtewJVBJdhV1ogSFj92bQ6o+AYOqzp3kBkFiz0n0VnQFwCkKZY8YMHpOin6fYAQ23zEK+KXuz2cL3aJxB5phqXFhLB5uhmjbFoNLSl51IvL3/NxRuNaRSc8VOTevl1PJfaBoNPjZeq0W1iH4exsQ9ukfkBVWEu81QoOlig/Xbq1pFRsUIpiaSttYrco1h1WoPGxniteRuLb59QsF+QD6fGbTfNGBNxFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,58 +114,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Miaohe,
+On Thu, 26 Mar 2026 15:09:59 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-On Tue, Mar 31, 2026 at 10:27:33AM +0800, Miaohe Lin wrote:
-> On 2026/3/30 21:45, Breno Leitao wrote:
-> > On Mon, Mar 30, 2026 at 03:55:00PM +0800, Miaohe Lin wrote:
-> >> On 2026/3/23 23:29, Breno Leitao wrote:
-> >>
-> >>> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
-> >>>  	pr_err("%#lx: recovery action for %s: %s\n",
-> >>>  		pfn, action_page_types[type], action_name[result]);
-> >>>
-> >>> +	if (sysctl_panic_on_unrecoverable_mf &&
-> >>> +	    type == MF_MSG_GET_HWPOISON && result == MF_IGNORED)
-> >>> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
-> >>
-> >> MF_MSG_GET_HWPOISON contains some other scenarios. For example, an isolated folio will
-> >> make get_hwpoison_page return -EIO so we will see MF_MSG_GET_HWPOISON and MF_IGNORED in
-> >> action_result. But that's recoverable if folio is used by userspace thus panic will be
-> >> unacceptable.
-> >> Will it better to check type against MF_MSG_KERNEL_HIGH_ORDER?
-> >
-> > Yes, I was discussing this with akpm, and maybe the better
-> > approach would be to panic for types MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_KERNEL.
-> >
-> > In both cases, it seems that, the page would not be able to migrate. What do
-> > you think about a change like this:
-> >
-> >
-> > @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
-> >         pr_err("%#lx: recovery action for %s: %s\n",
-> >                 pfn, action_page_types[type], action_name[result]);
-> >
-> > +       if (sysctl_panic_on_unrecoverable_mf && result == MF_IGNORED &&
-> > +           (type == MF_MSG_KERNEL || type == MF_MSG_KERNEL_HIGH_ORDER))
-> > +               panic("Memory failure: %#lx: unrecoverable page", pfn);
-> > +
-> >         return (result == MF_RECOVERED || result == MF_DELAYED) ? 0 : -EBUSY;
-> >  }
-> >
->
-> Maybe MF_MSG_UNKNOWN can also be considered? Kernel can't do anything further
-> for those folios.
+> The existing contention_begin/contention_end tracepoints fire on the
+> waiter side. The lock holder's identity and stack can be captured at
+> contention_begin time (e.g. perf lock contention --lock-owner), but
+> this reflects the holder's state when a waiter arrives, not when the
+> lock is actually released.
+> 
+> This series adds a contended_release tracepoint that fires on the
+> holder side when a lock with waiters is released. This provides:
+> 
+> - Hold time estimation: when the holder's own acquisition was
+>   contended, its contention_end (acquisition) and contended_release
+>   can be correlated to measure how long the lock was held under
+>   contention.
+> 
+> - The holder's stack at release time, which may differ from what perf lock
+>   contention --lock-owner captures if the holder does significant work between
+>   the waiter's arrival and the unlock.
+> 
+> Note: for reader/writer locks, the tracepoint fires for every reader
+> releasing while a writer is waiting, not only for the last reader.
+> 
 
-Agreed, I'll incorporate that change.
-
-> BTW I think current code can't reach to MF_MSG_KERNEL and MF_MSG_UNKNOWN cases
-> bacause there is always a (PageHuge() || HWPoisonHandlable()) check before calling
-> identify_page_state.
-
-You're absolutely right. I'd like to address this observation as well in the
-updated patch.
-
-Thanks,
---breno
+Would it be better to reorder the patches? It would help with git
+bisectability as well. Move the refractoring work in patch 4 and
+5 (excluding adding the tracepoints ofcourse) earlier, and then add
+all the tracepoints in the same commit at the end? It would help
+in the future with git blame to see where all the tracepoints
+were added as well.
 
