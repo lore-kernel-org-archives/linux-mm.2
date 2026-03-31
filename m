@@ -4,90 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E631310F9302
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 21:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55EE310F9303
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 21:35:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2002D6B0092; Tue, 31 Mar 2026 17:17:19 -0400 (EDT)
+	id 7C15E6B0092; Tue, 31 Mar 2026 17:35:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0B86B0095; Tue, 31 Mar 2026 17:17:19 -0400 (EDT)
+	id 771986B0095; Tue, 31 Mar 2026 17:35:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6776B0096; Tue, 31 Mar 2026 17:17:19 -0400 (EDT)
+	id 639236B0096; Tue, 31 Mar 2026 17:35:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB8916B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:17:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8636C1A0323
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:17:18 +0000 (UTC)
-X-FDA: 84607618956.24.591FDE9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C05B6B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:35:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E01058B82D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:35:43 +0000 (UTC)
+X-FDA: 84607665366.17.2BEA806
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D994C14000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:17:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gXIXNSNM;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3276E16000B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:35:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sJaBUwGi;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774991836;
+	s=arc-20220608; t=1774992942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/7V4fadgPhgRAHbAPI7BFfxB876KsTGQ+IJX9PiRJsM=;
-	b=pZaEhxfwn3ixjzREkSEJ0iEEyqWGt9LJHe6YxtAvZnkHWT/gBm7JawPnLRg4H/Qkdmux1v
-	lm++/hrKUcoAjhN5uvtsRw3dbd645/d1wce/PCaQeUWpUyTI1a87tUz5aF5ywo2PxyNYFE
-	4kVdNURZiVhfNHe6DnylQuvEwGN1GrQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774991836; a=rsa-sha256;
-	cv=none;
-	b=42sBrfNcf1yQMvs5ExbmcQD6kE3bdMj4QS+dRxIRgSFGr47JFmLd6SDjef4SF1lGM33fc6
-	l1NYf6zpAC+DNyViclzzssjwhdzrJXvmHdYduSSrnUf6Z1OlV77RP09R9jmkUlIZu1BoBY
-	w3ubb2ayPxwU/Pho48glWqezwzLhCkU=
+	bh=5cFCy8hZmLmmaLitye/ZKvqD4twJE5DUoU25LS5GRwM=;
+	b=h491IrAo+oMC3zh4dWZsVrz3fWUuQ6Cqe7DD/V+LsbOvcG2hWdsV2fLz91k1s5mqxI3BzM
+	WaqYzLb/s5Ry9MpM6X4o+yr+FlH1SXlVZ5wP7MyLIsHs0l6B1ews0wri5ET698lkBgY9PE
+	U+HZvruJqw20vytYJQw4mTIVfhC4MsQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gXIXNSNM;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sJaBUwGi;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774992942; a=rsa-sha256;
+	cv=none;
+	b=wriDd06d/abvuaTmWrLJx3Va1QZGIxtn8RKpPmTX+XVh0sScEEghQN0Arpnu9V20Ij6aUU
+	5QmE9jvz4ygVUtrxu/tnFlkG21K23a4izW04tvu6fUKeXPpCPPnNdiu3MYbZa7cHr2qhr/
+	Lvzxh9Uzxjdqxj3qbUe7xPJb5JQsCS0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DCD460133;
-	Tue, 31 Mar 2026 21:17:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7EAC2BCB0;
-	Tue, 31 Mar 2026 21:17:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 580E4600CB;
+	Tue, 31 Mar 2026 21:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7C2C19423;
+	Tue, 31 Mar 2026 21:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774991835;
-	bh=dXkrTSSnhDWqtHKoSdOUNn0uoqn4H6W1UrZQGBlydUo=;
+	s=korg; t=1774992941;
+	bh=ItF2C7vWxavYeti16KEiOx27zwXUGG1kSH+fSMaNpzQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gXIXNSNMmkoVNor9lok/efYhi7AraY/lYzc+w0MPepa2npDYVjVfV8csr2TCIpBNv
-	 ThjAsNgNiorsLVCRlHHDsuw8K29CLmiv0sUibMV/QXcEEd0zDdYklj3Ia+z9xrqBa4
-	 ebjQqsweArLhapmphHovf+Za9Br/fDeMRTOyH6hw=
-Date: Tue, 31 Mar 2026 14:17:14 -0700
+	b=sJaBUwGikN9Norhx8A5uvQMDFYl0Mwp8HvEEwLjLgR0wuVFvcc7ERqkxy5ZlLYsDg
+	 0LCAEdD0oTQbmCPM/6MJpOZ1EnAVOzkvmzSr34CThvn+U01XlYliRQ//lSoiqgZDlT
+	 Zofky4ajLoqO68zDBfo8dclRZkoicrnAxBT6bOdE=
+Date: Tue, 31 Mar 2026 14:35:38 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot
- be locked
-Message-Id: <20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
-In-Reply-To: <52bec9ea-5627-4ea2-8f27-f1729957fa47@sirena.org.uk>
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
-	<20260310155821.17869-2-anthony.yznaga@oracle.com>
-	<52bec9ea-5627-4ea2-8f27-f1729957fa47@sirena.org.uk>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Nico Pache
+ <npache@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+Message-Id: <20260331143538.f41a5fef4201a7384388f31c@linux-foundation.org>
+In-Reply-To: <26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
+References: <20260325114022.444081-1-npache@redhat.com>
+	<20260325114022.444081-6-npache@redhat.com>
+	<7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+	<0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
+	<fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
+	<26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D994C14000A
-X-Stat-Signature: hc8ymp6ikkdq11zqor7gh1bxierukec3
+X-Rspamd-Queue-Id: 3276E16000B
+X-Stat-Signature: q1e3e69jfkwgiysm4mbroxdxmsnatgy1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774991836-955184
-X-HE-Meta: U2FsdGVkX1/ArbI8K5O5QICgjey+1SMLN1mhtv7mCha1K5iFlNxKToYXVF01O/ZE/7lS4ZKel/WejRPNeitthnc6obO0dSWSYj4X4QfuQ3C7n+I3oJX37AaCikRolv2V3KRS9hnzjcn89VHMpGsfyJwUAiu1Qa6EHiUKG7/pFdJYdHnv715ElVrGBnCOHgKlklp2+upVA3pilL6K3sXSIwY6Ha0H5H6Yd1G0OsdTcg3ULF+zQTeCRQxCx/zVXIUuNsQUSLzDYn68ew625aJGanos0qgNWC4OCWzZlNY6fQRujs1xQ+iyud6Lym8+kRdMgt6ud5o50+d4EaHIUeEkeWnKkgvvBxxVxsSP3xDIa4GL4EuM8Bw1vATRmiVgyN3MYzH87SWWiUUxASpClKseTTtivBSlwuXEv18l2oG0nPVo/UzZmjdW7Hu9YTDpezyCwbEPMNNLGnAtbrDpprTki+Qwh46aoQYRfIwErLCGTcD5maGzktEN/VKu6zJGp5YZJ8JYoXMWimZugfSIHCohT6MuEegpBLf5T9LlzkDe3zAur77XWTzEzDcyi1HUdkJ4L2s4DzD5DWj+TkilhADIzYkV6/W5RAXst6USwjTZ+CpnAcqvknQm2m2a87MP/SIB/UCzJuuly55JtohZf+spmv1kQ7S9He59cwaPG98pCEoOS936jys9xwQJ/VXN9ZUKE7tTdTWosSzapk9RA3SlZJkrPWtD/WKIVwoJFhPt7vFWsgKWa5pdx8W8hi+w9F+DK7xiI3R88ih7Ghyyho0MO/M2vmQtuMvr1xJuJl9GRk8NbpGPhaIeJUdoY+mMoHri7IVmZURx0aNE6ABYPrxa5CoNUbf93tfETuxM1VTFmO5XcfkWy1MOlGED+brvRJw6EBqKAfvXv+x4qOL+PdrYpu1DHy6EEbZqLqR7D71goLPLdZkSpSalL81fDkcSLatWUlT2jWJofjvsGBEHHmY
- RqtgvGKK
- 7d3ddAmiUDfrPe0ieqVAGLkcLXG2ARL8LpnSj8ft5R3WNTzuC6ZixpExiZB8XH4qVK29UJE2QwAEcDpLc3IiGqi24bRGoz7g1QH7oBRZVqCtMoQ4CgsoIOD3B/9eJ3IpN48j15cPpFyPIpGSo+vznqE2nPh/aOvDVka27L14i1ZIFKWc/fe+FEw0A6aRSQXFoYpbSwM8X5qBM3SrfrcgbntKT1D+LAe89h9PKnjLeWJ4cHw8SIxXSbY5tGoJXnznFxOpA61sgY9cJy6EGf3ZkHMY0fi0AdZWQoZLCJhT1cPBswPSLdbv937ONZi8x6zzcCBFZ
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774992942-966645
+X-HE-Meta: U2FsdGVkX182ODPNvydihfJR2GJSYn3ibTNkaTTtbwmzOCB3jtyilM9AYgncahx7Hh2BPRpawhx+BloQPdB/MpUXvIp3eOxZdOOlHH7YZANbIaQRarWjcjRXwp3gI+4vD361hI3KGQIQrydxYMsvjbumNqkahkB4yWPr2t/eqBA3W5Pq5Ha3mw5jTrdXztA5gKxryM22NEkbYK1b5FJTIXJq1wxiIM2YsKa1kjaPsSl2HEyqNDgwMZXvKS9b3CIQ33lY0/nxSNb9XC0zPyEPf0Q4rmOs3M+wbMkvMM1TYAyYEub2U67H/6FHusvceHZXDWd34JKgQ5uhJ/PRdvXZ1i1ilNWNhkle0XWFrEM7AM4yZ3LTw6hAvcvSNsUcxheB45PDrzfcrYvOqa93Oum5scEHeGwvWpaU+8vs3HBqswZ33XJpyhJtnfkdQmgB0QPWX3fs7Posv7MV/nWj78V2k7rPRi5EjY9RRxt8ZpWXh++u40a33mr9PaqPyzq8DeBFh8RLwtZDsE523M7xiaEQ3QyGaS9GOJbuaWUSUEVt4QMz3tMrdhpE6VP+z1JGYZ/aq3B+NmVkjQBeykyfO/RXuciPvGhW0i3OwCRiUykkFrB4ocaU+taAExDtqcF6ATl6rGgdOkhp3c+oAgR1EBwZD0PodRdJuinAYvnBZYHjxO/K6ELSEcztPtxzDdiSI5Lkro14kj+a5QCnaCLD3J7C0HVt+CtIOKG4ySVgMbHXv6xdn7v1tK4JGLFyhTnrArQi5Ks5skxE2I1T0Ps+nYzw/xmcdR5vuAqAO5mO/yUotTKvGvUY5bpydrxSEhpRRldzC9k0wLzhA58yrjvkZd2wGp2w3Q9TQM8EzcBAn9He47XpnEMNDxZrhq0IpcS3FeQWbehIneni/o12G9SpZCkvRSpkdvTZmDomR2WvYYIF+IkHwBFO5STKVZn++tJeF7+451C0dphmCegrjXHbbGm
+ BhhUh8hF
+ vQe+8ZRqA9ox/DcFke7BY2/MlS0Lmp9rcrL4DKh+/r9u1Rs6XTOlYIVgkcL2a8NTotAXPFJuooery1/82SWAV9W78NE8s/AU4IPQ+tkM4Gl1fn7qdpQdkML0Bi1SEwZbFe4dLeBGWhrH3F6CEdeArOUkFtHZhtZFHqvKyfmiKPNQWzcd1cr58NQQY1NAAVyf5zhTDK4UpDVD4l3ZgD1SaRXrz3YDBJyT2RrqV2yjrSoYKhuR9h22ySnhAH57uKTYroo2dHe9bzO4zuGFOWx9sf0qLcABB0h8IPtYqz+rl/jC6iOZy30d82dM/07wR+RHItg5jtTMCsriDlBq+j/evQQFa2MmZGoicHCoB0tfsxg+F9cN+WeToUheKLfhYM2J6stNnETSDlBLDhx7Xoa8h5fo9sii+t03WcR40ZLea0+o/JUiJK+vsBPrbMuzYDZ8Lj+o+NyPA0b0d/DUdWk/EcjrPqnFDh+7YRdYeCQgJLIzNpsWUrfj64haRCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,28 +112,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 14:17:50 +0100 Mark Brown <broonie@kernel.org> wrote:
+On Tue, 31 Mar 2026 22:00:58 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> On Tue, Mar 10, 2026 at 08:58:21AM -0700, Anthony Yznaga wrote:
+> > out_maybelock:
+> > 	/* Caller expects us to hold mmap_lock on return */
+> > 	if (mmap_unlocked) {
+> > 		*lock_dropped = true;
+> > 		mmap_read_lock(mm);
+> > 	}
+> > 
 > 
-> > Verify that a mapping created with MAP_DROPPABLE cannot be locked
-> > via mlock(), and that it will not be locked if it's created after
-> > mlockall(MCL_FUTURE).
+> Right.
 > 
-> I'm seeing a regression in -next on 32 bit arm which bisects to this
-> patch:
+> The original code used
+> 
+> 	bool mmap_locked = true;
+> 
+> If the fix get squashed, maybe we should revert to that handling to
+> minimize the churn?
+> 
+> (this is not in stable, right?)
 
-Cool, thanks.
+"mm/khugepaged: unify khugepaged and madv_collapse with
+collapse_single_pmd(): is presently in mm-stable.
 
-> ...
->
-> All these failures which cause the entire test program to immediately
-> die seem exceessively strong...
+Doing a big rebase&rework isn't the done thing, I believe.  So queue it
+afterwards, add the Fixes: and tolerate the minor runtime bisection
+hole.  It ends up looking like a later hotfix.
 
-Well, is the test code incorrect, or is the patch which it's testing
-incorrect?  That's 5435ba164b0d ("mm: prevent droppable mappings from
-being locked")?
 
-5435ba164b0d is presently in mm-stable, cc:stable@vger.kernel.org.
+Below is what I added to mm-unstable.  I added a note-to-self to check
+in on Nico's question at
+https://lore.kernel.org/all/CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com/T/#u
+
+
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Subject: mm/khugepaged: fix issue with tracking lock
+Date: Tue, 31 Mar 2026 13:11:18 +0100
+
+We are incorrectly treating lock_dropped to track both whether the lock is
+currently held and whether or not the lock was ever dropped.
+
+Update this change to account for this.
+
+Link: https://lkml.kernel.org/r/7760c811-e100-4d40-9217-0813c28314be@lucifer.local
+Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse with collapse_single_pmd()")
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Nico Pache <npache@redhat.com>
+...
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/khugepaged.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+--- a/mm/khugepaged.c~mm-khugepaged-fix-issue-with-tracking-lock
++++ a/mm/khugepaged.c
+@@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_stru
+ 	unsigned long hstart, hend, addr;
+ 	enum scan_result last_fail = SCAN_FAIL;
+ 	int thps = 0;
++	bool mmap_unlocked = false;
+ 
+ 	BUG_ON(vma->vm_start > start);
+ 	BUG_ON(vma->vm_end < end);
+@@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_stru
+ 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+ 		enum scan_result result = SCAN_FAIL;
+ 
+-		if (*lock_dropped) {
++		if (mmap_unlocked) {
+ 			cond_resched();
+ 			mmap_read_lock(mm);
+-			*lock_dropped = false;
++			mmap_unlocked = false;
++			*lock_dropped = true;
+ 			result = hugepage_vma_revalidate(mm, addr, false, &vma,
+ 							 cc);
+ 			if (result  != SCAN_SUCCEED) {
+@@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_stru
+ 			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+ 		}
+ 
+-		result = collapse_single_pmd(addr, vma, lock_dropped, cc);
++		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
+ 
+ 		switch (result) {
+ 		case SCAN_SUCCEED:
+@@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_stru
+ 
+ out_maybelock:
+ 	/* Caller expects us to hold mmap_lock on return */
+-	if (*lock_dropped)
++	if (mmap_unlocked) {
++		*lock_dropped = true;
+ 		mmap_read_lock(mm);
++	}
+ out_nolock:
+ 	mmap_assert_locked(mm);
+ 	mmdrop(mm);
+_
 
 
