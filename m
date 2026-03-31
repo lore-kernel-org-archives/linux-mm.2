@@ -4,112 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D56FF60CE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 06:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B56D4FF60CE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 06:35:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3EF06B008C; Tue, 31 Mar 2026 02:27:03 -0400 (EDT)
+	id D27DC6B008C; Tue, 31 Mar 2026 02:35:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEF4D6B0095; Tue, 31 Mar 2026 02:27:03 -0400 (EDT)
+	id CFF926B0095; Tue, 31 Mar 2026 02:35:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDDEB6B0096; Tue, 31 Mar 2026 02:27:03 -0400 (EDT)
+	id C15036B0096; Tue, 31 Mar 2026 02:35:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C848A6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:27:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA65213C069
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:27:02 +0000 (UTC)
-X-FDA: 84605375484.23.D53F7D9
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1570540009
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:27:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bgaeDLGi;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.42 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774938421;
+	by kanga.kvack.org (Postfix) with ESMTP id B3E9F6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:35:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46DD58C701
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:35:02 +0000 (UTC)
+X-FDA: 84605395644.16.8B9B297
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012024.outbound.protection.outlook.com [40.107.209.24])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 846374000B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:34:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Dr7g1lRL;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf07.hostedemail.com: domain of apopple@nvidia.com designates 40.107.209.24 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774938899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iFuV2hrKChe8VPlJWziIwCmvIdRAMcpeZAmPUEU/b+E=;
-	b=c+dtiCzLSeysDVt1Jelm6HL7vCLkUQm6oyDBXVele7JFNs6VE70tl5+9SERleTNyyBhzj8
-	/HMKnJhQ80vwDJ8fBTY0qUh6WUllLQ0ETnDdk20CtnkVZTBNStY/kYiiBWuXaaV/PT4M31
-	MAOPvK2FNfys9hOBVIxVEmknAZKqIBM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774938421; a=rsa-sha256;
-	cv=none;
-	b=5SiVPCvOWOwGUlnHz8YggbaPMC6ZqePjRWTdrSfBYl47q/bpvMBpy++vp+RqK/rG0JQiMj
-	PGkJn5G7sG4ecT0Xjfz39XBbjEfs7SiWrXq9Q3t3jInYwA5pP1VBxiEpiYuuwJOOIS6pQI
-	nyERDyakoXop2RpmVW0vP8+l0XV1SUk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=bgaeDLGi;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.42 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so3125830a91.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 23:27:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774938420; x=1775543220; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iFuV2hrKChe8VPlJWziIwCmvIdRAMcpeZAmPUEU/b+E=;
-        b=bgaeDLGihNDbdWafoI88XiDXdcuopQLOehWFhirLvmeKsItmbFVkQtDa9RXZXfmokF
-         s1b5xwJZIRY89w4WFcv/39XJ0M7u1FAZ5u4A7HUps+JgBBcKW2c5li9EescV9iy4LNdA
-         uBucvmKCv73P0A1scpAGxVj6xXi4kdARuCBCk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774938420; x=1775543220;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iFuV2hrKChe8VPlJWziIwCmvIdRAMcpeZAmPUEU/b+E=;
-        b=Vy1xf5RSeFOnNYmLdAw/e8WVd+vKhlwKR8lRw+d1C645FBhoL66+lvJG1gi7i0Dwwj
-         F0Ll80S3G6DU3X3N0DZqj8xtxMwD5F4XA11B4q0na+YszQ2Naa48HTG02If8rXHM1uHr
-         90F6KQ6DXq4TbOeo2PNUkbxEG9EXHP3YIojdWyPI9YPj8Xl44hvSu5/0wX+96Bsf74Co
-         O3eDN2RLx8YqYiDwSKrxselUM6yCwfFVSK0IN54gHCZge69EkmSRa8AfVpQmSKTaGveR
-         a8FYu8KvuyRrJ05ekRWNByglBAv69/1Qyh7BAFvr0C4dYkC/JFAqFu2aykphHzVr3NOz
-         7CJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVq2kwA7wWkhCOiud3aqSZcHFWwtK5qG7FS5xpeXfvXPlLEsXFryylfeFI4oaKmjnkVZ+jmsjjCQ==@kvack.org
-X-Gm-Message-State: AOJu0YzGnSMvuF/qVS8hjAqsaBHjRBDfO8VVwtSaZ89F9ZZ+PGuIs5t9
-	YlbFEevHczEdrpmm0csOxsx5qU6JhExEgQ1C6TanBE2R7yfg6reXw+IB0LyU4sgmDg==
-X-Gm-Gg: ATEYQzy1pILH5cBWowY9Ni4oJwLZNCDqLeb8BxkLEEVe4PAmprxtnx8ZUh/sRgmz8Y4
-	rj2QzDuQ4xp+aRbrrjThij+L+vs7XgN052wRXakSo2JX9LfB1poblEORzwCOB9mUb7jWfQwMekX
-	aS5Cpo1tXaE9WEOLlMlE/NCjp/YyWZvbeCNZzU19OQ07vQxLtFnq0QMUCiIvKc0zwITdMNrpHPI
-	2HL2o1jotKCqt7yUFatNgsvZpwiOFVXJX4yEtvlRrRkd4hdB1OjCDaZCO/zvxGx+yXO0wdba/74
-	7tynEspMxiUMh34Ng03Yge3vXhuhrcdMkdTovyfwzeM4oppeFpnI4fT6uYK+R2iq9/reld7kTer
-	AiKYyQ6CYMNh/B5EHaNWgsC67A+4LKyEpP7PoqJQ7+XE8bSj8LcVcPEeelA8DBusVPeh/3/m/x9
-	1/kR4p0IPven84P8jB3E3mkZmNb7m/S6smW4ukfU8QhvKudZPlUBpXAvZRlzBWLF0GLOx2Hy7wC
-	THVKMIfw5Fqqw==
-X-Received: by 2002:a17:903:19eb:b0:2b0:5a4c:726a with SMTP id d9443c01a7336-2b0cdcd55f7mr169704795ad.43.1774938419771;
-        Mon, 30 Mar 2026 23:26:59 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24ddc0afbsm90813585ad.64.2026.03.30.23.26.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 23:26:59 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Brian Geffon <bgeffon@google.com>
-Cc: Richard Chang <richardycc@google.com>,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: [RFC PATCH] zram: update ac_time of written back slots
-Date: Tue, 31 Mar 2026 15:25:59 +0900
-Message-ID: <20260331062648.596077-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-MIME-Version: 1.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=TwuGlbxb8jF3C9KPlhXK6dlU1ccfq5AkyJgn52OVw98=;
+	b=pNNrpew5Py19psZvlWE7BAXi/DpQvpSz/HcMm5ZSJus2gtJVvyBKeo1vfFo+9e8Q6j7YN0
+	w2EOu5Ly12Ak4PFTnDlbGDd9QxoEQh/kERFgGIUC8JR3l+isa6Q8dE1Qa0u2Aat4Q/CHo3
+	P2Xy/F+YpC2l7Jm0rucLVA99eDSdeaw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774938899; a=rsa-sha256;
+	cv=pass;
+	b=B/V1+jWRYVr+4pMYPxY7HrmHeqzz3l0u52gfxHiZwIMK1oAdBjyXW7NvEv2muRxqd0h3qE
+	34dBxc3rJeW8k6APQlofJoe07CwSHzstBcRhiFqyKZP95xAz9C9gIpbsP1L4SyVcI0PdWk
+	MpeoSfxMmKCJDg0jKYKujdR2lOdOhHI=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Dr7g1lRL;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf07.hostedemail.com: domain of apopple@nvidia.com designates 40.107.209.24 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BfDAmQzdgBk1AiZeunQqOQmPK8bGxuEFOqNntG6gx1H5GuyCKONFfbqJHoN6Ghl0XhINrJnItUFNdWqcLhIq31TriSxJC1YYL1zDSaDDfe/qovuu7W0UvvtwqZbMa5YH8nTjk//m/wg4MK/On63Q3XAc05BrufNYAf2/IAnNMG6J0RPB9hS/ltsuIDRJBsDf+6D5QDcISKYMzoRElg4QcRSsbhKz6RRZW0PPS56WMub2V8VfzqlQzV1nnDr4S42fJIFoTxKK7xvWAlN2xssaIp4wTY0Dh/sWI8/iTEpZsVsF75JudtLPKbbudgBikuStTCsHu0d3gWh+LK6CrCCwpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TwuGlbxb8jF3C9KPlhXK6dlU1ccfq5AkyJgn52OVw98=;
+ b=M58Gu228sUs0vvEZjinlw9ijAK50gdDWDFjbfyyoM21NsIJqTp8YY+XEYv11p/B2Ua7OmueW3N7kYwnyk1GhoYw6QAJj8Co7jt2A2vU7e2CNHQHi0Kw5DEFN5m54s6abOuqaqhlNw4pY1/A6zDXNwdDk/4wpgTtYFmA3pn5mKcLyi33bdhLXULOhSK0lqb0x7GOkvNup7o2xqz0Kkx8QzwTdCnlNRz+CJrO/fjWjyaCHN9o0/xlJWtoBYbbO2ciDoqlMQLzQ+lCcq+hAY6wDRbOhBRjZItr60X+1bruxxGE27nfwwqNX1PE7sI9t0rW/5/ED2vGsomkirJuYjTK+Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TwuGlbxb8jF3C9KPlhXK6dlU1ccfq5AkyJgn52OVw98=;
+ b=Dr7g1lRLoMK54TPy892OAeKShpGdDrENDeico1lY4/grfML32MORKPIcDbZ3cEQU20AnRUN4vZW+BNmK5U5pflGw7NBsH+O8zTQ0b+QiacklPZ9mj263qpwUeHoE0HBsfZH0kYcYHZ6vtWPDSmTO0zc9TL8SrW2x1cjBulMTeVm50IGen7RDVu5d46yi9IEWYNYYGt6wji7oXd138pKMICmDtWW5GLoLwcDaWOicNlypKDgPgRSiZzuzDS0nhLYaJKp7TTYTwLpktd+Uknh2FvXMZzfNsZBjT7khOYJ57qCft4VDPBA4ypmLgkn/ff4YfBpHasSZBtdawdu+3l+L5A==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ MN0PR12MB6150.namprd12.prod.outlook.com (2603:10b6:208:3c6::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Tue, 31 Mar
+ 2026 06:34:53 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9769.014; Tue, 31 Mar 2026
+ 06:34:53 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: linux-mm@kvack.org
+Cc: zenghui.yu@linux.dev,
+	Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	balbirs@nvidia.com,
+	Alistair Popple <apopple@nvidia.com>
+Subject: [PATCH 0/3] Minor hmm_test fixes and cleanups
+Date: Tue, 31 Mar 2026 17:34:42 +1100
+Message-ID: <20260331063445.3551404-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ar8p5nre5nwprgbfwdg67yy5yq4fgxji
-X-Rspamd-Queue-Id: 1570540009
+Content-Type: text/plain
+X-ClientProxiedBy: SY5P282CA0089.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:201::19) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MN0PR12MB6150:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6aadabf2-5d10-4fa5-1088-08de8eef9dec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	+qiqJH5FDpJCe4d0KuZjCTWXsZ/waTKW64ynsbSlFcnemhnNNT5ZAOuGdsCVA2KbBUq4pwNDxgxloNuyroqlnMWQOvha1HKhEqJXU8xL+PGnz0Iw0Bib/UCs8wz7RydNLVNUK7muvlCl6K5Pj46WgwiQPP9ff77N7IceOGwvR64lKS5lxqZugjDK1FPs+HIP+j1CXqYDI55UvIUsGiJJINmgTeS0jYRpCfspBpIpZuM++CE2B9yofa9zgjbRZ/afKTPa5/d7l7eb/yo5y015dgGxGaUwPF0oY0ILd/TSr2QEyZbBBpaZywXR8wT2MeDirK9R7nAfUQIG7Pq2XPHvcs7EoL4IN49uerQGJ6pfnCcrzFa4g86Ydc0KC++Gq/fBMW7CEWYJD0vCnM0P1idyhjhIi7Er1QD86FKjlSb8IjHve8+KPunqPIY9wlmNPC50f4cFso0GhtjhXggcpN6wZNm+n5QEKfBN03X5GxiF4S4TERrR381AvQaqFHHit73ATeGoQnCxp4nBMGB8r7cU15OSs26+ZTDW33Wbqj6zuaudB2Q6Vc6z4eDkhaCSzBIx0DCQTWUogEQWYIVLt1ndp9v7gEJhhUivJzTvjDqA6zxeAzRQR2DJfFk6RPvkPIekabpfOW2sx6JqwhXRY92HKmRTkwGu6aNth4vZvgNRJP1UlkAhd1faFLLh4c/6WcIEm/w5sFC5dNth8lLM27d5H9E83Yi58eLasEgcWJTqoh4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?10bcZN93iJCmjjz5oCHUbiR6WnMYweQdq35QYgALWLllR+cLSppE+GYb1chH?=
+ =?us-ascii?Q?E5je/cQJ5f3J1upzOwrevjtikqjEtyfmHNMfe5NCk+pRpmElOIZXgcZOY+L5?=
+ =?us-ascii?Q?R61KPFe71MfnDbI2Kmy++HbXbVWj3a4bp5rpZyOXbp1gzz1QNZ3lCLe0zoPo?=
+ =?us-ascii?Q?yJWxhXuJwe1fP0x8vq4rql3XRj90WQ01sCz2hJF/tZIqFebW6jJMRauy+GFP?=
+ =?us-ascii?Q?NnhS7W4NQ/XtCLHeCiuWThW+YAyn/iVo+EDOfmVIebNulglf+99I7QE0p0wR?=
+ =?us-ascii?Q?at/T5GviQ44PZj+PVxhuHdBCmJBEk5F+RtWDw0SnhjkZzFtozfpHFO/xRAZk?=
+ =?us-ascii?Q?U5iZ/Ahh5nHw63WEtLGrfRvZxhpDDWUd1zLAHZ8KCGjms1voL+jgZ+iC42d/?=
+ =?us-ascii?Q?35l3QF1H2CLfZ30iAgtGAb03K1GXgKd+fseVnh+m2IkSFnLakwURb+MIWqOe?=
+ =?us-ascii?Q?b9GuGzNRFygcWC+CrS01Wyaha1493Pfpc0U0cVlrjv7o0ipNmSuz1Q851kh9?=
+ =?us-ascii?Q?yIC0XwZEmX0DcOQ3+RJCtU1BgTcT66HIk2qFdrBUSRUSq0nQQgGdxez7wSrl?=
+ =?us-ascii?Q?JEj6IUJv+KCtgjwPfIxxoKJmrXiyc9MYL5adxpZxDnEb43pDi+GFrfpXX89R?=
+ =?us-ascii?Q?KHH+DaBVeMi1W1urrmEKWcPEiM3H5d4Q6/SzUs/K50STNcjTSwcdlfne0vJ2?=
+ =?us-ascii?Q?p9+vgHpi9ThJ8ROw0BQaWN/TBDsLm+5jHChPfdCmPgeFJxhBYFk92oPHZlE/?=
+ =?us-ascii?Q?u80ymj83rT6V2PgVGUoGCCGElhefs8R+8BVRqAznauLwtfSyvwUKlC5Lb+Mh?=
+ =?us-ascii?Q?ZxqwL2zN9FlxD90Kjx7dIoTYQ7GHNtqXH9ytR3XEOlltItTxs3DXowBSXtwL?=
+ =?us-ascii?Q?GdElMKBEajXCp04i0Ic51ycm16ING5hnaImkL2CP4+udwoIoEfh/uaMZTpiO?=
+ =?us-ascii?Q?UMjtT6GeF/JONpqNdWd/NzysIZIfavCPng22AwdFMRUJkE59LT/LuFlOBItc?=
+ =?us-ascii?Q?2LfrD6A2TWTLVm4/aAY+OJ4EU8GXR5jXE/T/889lPUgxfVrQgOFwFq0hX68T?=
+ =?us-ascii?Q?zaB6jeTG3JlKbhJbZjacQtErK8StHY+ajr/bQAtDi8KkULCEgacQGerM3ZPw?=
+ =?us-ascii?Q?YELSBndARDcwo7iqJyngpGAiSrmizW62gNyB6Mh6oJSOcHnW8LWHE0E6kAHe?=
+ =?us-ascii?Q?Ei5j/CbipcUwuvkQy4f/qrsVQ5FuzkEFROhmT63ftNFarkxjMafFkriD7plX?=
+ =?us-ascii?Q?SlGAJ8AKTc42Sxa2K/qNg+wLOQFpghoCUEsJnzwQyUdVugJ3qY94S4Q986qD?=
+ =?us-ascii?Q?ZhIWmFjzLO7SBCW/WgVUC2MZITmxRGmmJg2qqc6cdfFIGumTpJFCvmladT3j?=
+ =?us-ascii?Q?NcBKjDE4F1AckgwPd/g7+V4uM61Tdv/A9vRA5tDUPfOJCk0ss6dq56GFJtHh?=
+ =?us-ascii?Q?PukpuyYh+aUp1u9dSROBaG6AOaPnJ+6w+G7PIHD2datSNOTPQzJY9XXNrLRh?=
+ =?us-ascii?Q?kXIPCMyrk3/34xAF5rkTd4uXs5I0VpQTXeAZnsSrfrBeefWfWgZ2oRrDHHXy?=
+ =?us-ascii?Q?zSD7kDSzNaXiAYZnIaSQyAj/wjPpL48Llr805uEELcZe7Gb+FtkNySSk1NiP?=
+ =?us-ascii?Q?CENJwm3FPFPImovgrYC0gZ6MeSjHfRf0hZ1i815746bpzPZrCGDW7LRp33hd?=
+ =?us-ascii?Q?jb7SUC9WPS0pCrkNJddpuzXnoW5KJihI+WR7IYMLenZbz8u5OtyGuVvvOh9L?=
+ =?us-ascii?Q?lmuQD0B0pQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aadabf2-5d10-4fa5-1088-08de8eef9dec
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 06:34:53.3940
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9zKkFydajDinBH5Fn0WuZbpF818MDayCqPWPu8vAsZedQkIkRQhTkPLrmQhyEN7UlfZPVcFn83v5PjiunSd6XQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6150
+X-Rspamd-Queue-Id: 846374000B
+X-Stat-Signature: incryu5aweyk9i86mzfsm13de68d6rki
 X-Rspam-User: 
-X-HE-Tag: 1774938420-383450
-X-HE-Meta: U2FsdGVkX18HTuS9EBj14XNx3ZAx9/urjKnF3YkTk8ujwIm74mN5EuimZOWoKMTiXKAXSeJNDtVzwRZpPBxeqqDvAwxWDm1o0rZcjAzPHCnLuR2wxmxQ3GPQpgQD2Z1vRei5BEQPE3IalvYFHIUa4CMFDnyFUFkW70NoUF8+7P91e4rwU20GcgpZkO0FfEtjkcMcxiHe/4/cgPpHCo54n8t/K+RfFoI9THM18Jcz7tBoxc5C1M9LbsSkNnfcEC8r4ZJC9mGRGuz6vQ13f+5cm2NjsUflqEaRlsveLVyYfxPXOjkRhXW0gcT3pGmHkWUFYaYssC/EgJqsXoYZEO5ULubSGfZbD2e5ys/9djgRS/1M6HbwjILKatTw9NIPG3/LuRaLgJtTUH3IZBJwef+h01/p92bdBo7sP9uZvRAs3JJvGk1SBWOC2Cn5vyjfsNlQ2WBfL0CrclZI+Gn6wb+/Cn7tAjXvTSbb4qzTGTOi7QGWAX/4EypXwDsr6JmYahySiqlz/9FqZZlaND7k4KdASQ1EeAaU+JAfsyzWRii0vn2x5xC2pdggWDbBgDa5qrphrpV71DjzT6WXSOINYbMs5GHoJMjlnnjvIYhjagFyZjAWVGK1rFcWRgz2UYPWwv/svuXrBGX/RWRyOIkFKwQGJ+w/zgdRvBxFgA8QKE520fm4UzYjyltOoS0G18DkADUQSVlIvizYfUOqLCJ4GIZx1RcNd0g5RQjVNc0IFA3frHSsLjDl1O4hrv3Zc1Z7zs+IO6d1ug06PBoKUNfiulvyQmQCz8LH5PGmto+lM31tyOgn9R1dOu3ztvlwxEYdkTFToG0T4zQKRfygYBe9CzrdgUnj7GOtmq/3JEgWnmsNV6Y103evmHG1zEDGnsw8bk89vDwC2Y8rLCbmcOVmEv4Uhwe7kltqZKHlolqRWsvFql3HcmXR/Xq6enj11vHgfj19NJg47QtCRd0MfWQw/e1
- cpLyWMGq
- 1zJb2gcJz9uC4qONpNKojOe0pvy9Q6z/MTOFqRte4elRTAovAPc30LaYRgWNs8Ni0xlPJTcgkI2aFxysBOggKl5Y4IruKpM778bl0sVQN4u5S2ZLcGysPJQ1uNAz1ML4oFfG2/12ZBMjObXd0P6Jb4UBpw3FYJl68DSXBG8hcd4+bciWbadWe4qnOqnY1XZJdDrBrDRWRrYCLAN7JjxWFqU7H4mtPG1fFpb1UhNFg00P41QvYE23eCR8qwbOjoV1MaTIQqvHeOaHmtDxcK9lTQCucY6KU/wZvZ9ISUh39a/qZntT7nB5oqUlpPLCF6KQlYHRiTsAkTBiR9XnHGir1VEjeuUm+LoheDTkDDS2tr7mshbmz7Siug/aecpD/6XbukO2jmBEG9xKsRX4cz8Xe01VKK/IO1oWFM8cz+YsCSC/nawGoAsE9AoLPWF8dMZVG/zFppU/0S99GDos=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774938899-227804
+X-HE-Meta: U2FsdGVkX18OcZlKGcmbD0St3PjKR3Aglsa3QLYD/+AwbvDfl/piYUcMYE5sm4MIjZD3y/UlRAM1NPDpseBfqA7ZxkMJHk1a4eWOz4CZHFKqcydUXLhaUTFHEMBiH9KlhjT4+k26n+DA9ARsJmksTVNq23KWvJH1k/UjMl1Nx91GzcYXJhVZPZw5O0boXrs5pZ9i/PgT32zkSWB2dxfeFQiLNILrgvimkxR35upxGe8LfTNkSuZ8XRrpuJjlKqBQfJ/VVDVze+U1tIbTNRXhVt0KriRmZduttsWGuC6cH238wdtFGVD4SfbyRuvpJINqTaaDUzHPXthAxju/zgbBKOwH3zaWFfTt4Ab4NoAYtpTu74TBZVoxkxZMa4U4OsFt8n/6+85I1NatkQaK0ABwAWkG6grVSKj0RbCtv7+ZuPFuW8XV0ePz6F7RSc2iXlekXfcu7/eW9rfGihReLWs8/Ji5DoO2sE4A1bGeFRU33k2UPdxfOzlNC9uIAKVYP6tTuSAjO9ooQvliq0/btNe1atZcm/jmBneQA5b3+HLHBgWGEm+YECG5k3EKP0SOqhIxwtcM0jciofL8zTBBmB6TDwcoFNM071XVrxGbMD5MxnzdHFjlzriAcmigTH+n/FMr3gxJZBptcBLQhObZ4PewcjWu/YVjd6gwPcyvHzO9sO7Wl4G3/nCA8Pq0eR9mNNeVB4h2NGWd9YLMu4Ui7a0k+y3KZCkm0zR9dlkTKD3l3e9MEpeK0fCgMFMeGIe9MPxhbX1r/bUyf5BwMWRU+Wa8L4oIAcvmHTC0i9XEwUuxJTc2/gNuLe5crA6xpeqps+J3lOnZEFVHPeGBr8+Qt37PaeMb3VZQ234ASMoN9MVODak9FWyKZordpDloG81cVjDenXnHTRr3KNdI5LgVuSwrf68W+ixLWcxBXV51i0etYRJN+1AYq3l6BVViQQaCfRM545XUmoUnDbxW8dpn3tB
+ +Uq9mp86
+ aB3XYPqoiRzLqYecnhmiA011jKb9MepQMibqaRxK3UZ60BlUen6kSHRPNH2ilD+mkA5SMMFsNtU8oxa8Debe6EDKU4pPcqSkjFxikukpyuxeWniPSbqOtVhAAPApUibme1aimZ0hODolNWpx8yB6dY+YOfCFkcGABi9u277qQqf2wuFj8g/xVOOoSvifVc+ut8AT5E+ecfZZqVGyAaf+bEoiCOgMnHUr5dJ+FkGC6e+9yOTCkLDEECfqAEc7+nmdW8PgU545AjQmVt88/+xhWUFW8P4fM7aRzYKbqpOEKGakw0UI+Gj7JZ+PQZX/AbvytrZzx1ZcTVG88q9qOTJZEBJ93o3BKY0aGdg+ACViIeQvr/2LKV/f4dTHItTP1Lmuutz8RRK1EKSccoQ5AZ/IUSdZL14DK3xEYAFJqz6fsHHNTmSc+i2IDGU4Yqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,61 +170,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This makes it possible to tell how long each particular
-ZRAM_WB slot stays on the disk and, basically, to monitor
-writeback efficiency.
+Just a couple of minor fixups and cleanups for the HMM kernel selftests. These
+were mostly reported by Zenghui Yu with special thanks to Lorenzo for analysing
+and pointing out the problems.
 
-Note that the patch factors out a small update_slot_ac_time()
-helper, which we call on writeback completion, instead of
-calling mark_slot_accessed().  The reasons being is that
-mark_slot_accessed() clears ZRAM_PP_SLOT flag ahead of time,
-while we want to keep that flag set as long as the slot is on
-the post-processing list (unless the slot is freed concurrently).
+Alistair Popple (3):
+  lib: test_hmm: evict device pages on file close to avoid
+    use-after-free
+  selftests/mm: hmm-tests: don't hardcode THP size to 2MB
+  lib: test_hmm: Implement a device release method
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Suggested-by: Suren Baghdasaryan <surenb@google.com>
-Suggested-by: Brian Geffon <bgeffon@google.com>
----
- drivers/block/zram/zram_drv.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ lib/test_hmm.c                         | 130 +++++++++++++++----------
+ tools/testing/selftests/mm/hmm-tests.c |  83 +++-------------
+ 2 files changed, 93 insertions(+), 120 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 5ecc4ba40e9d..dcea703a6766 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -185,15 +185,20 @@ static inline u32 get_slot_comp_priority(struct zram *zram, u32 index)
- 	return prio & ZRAM_COMP_PRIORITY_MASK;
- }
- 
--static void mark_slot_accessed(struct zram *zram, u32 index)
-+static void update_slot_ac_time(struct zram *zram, u32 index)
- {
--	clear_slot_flag(zram, index, ZRAM_IDLE);
--	clear_slot_flag(zram, index, ZRAM_PP_SLOT);
- #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
- 	zram->table[index].attr.ac_time = (u32)ktime_get_boottime_seconds();
- #endif
- }
- 
-+static void mark_slot_accessed(struct zram *zram, u32 index)
-+{
-+	clear_slot_flag(zram, index, ZRAM_IDLE);
-+	clear_slot_flag(zram, index, ZRAM_PP_SLOT);
-+	update_slot_ac_time(zram, index);
-+}
-+
- static inline void update_used_max(struct zram *zram, const unsigned long pages)
- {
- 	unsigned long cur_max = atomic_long_read(&zram->stats.max_used_pages);
-@@ -952,6 +957,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- 	zs_free(zram->mem_pool, get_slot_handle(zram, index));
- 	set_slot_handle(zram, index, req->blk_idx);
- 	set_slot_flag(zram, index, ZRAM_WB);
-+	update_slot_ac_time(zram, index);
- 
- out:
- 	slot_unlock(zram, index);
 -- 
-2.53.0.1018.g2bb0e51243-goog
+2.53.0
 
 
