@@ -4,122 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8095E1061B28
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 02:04:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8BBF1061B28
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 02:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD2A16B008C; Mon, 30 Mar 2026 22:04:28 -0400 (EDT)
+	id A715C6B008C; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA6E6B0095; Mon, 30 Mar 2026 22:04:28 -0400 (EDT)
+	id A22086B0095; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBFFB6B0096; Mon, 30 Mar 2026 22:04:28 -0400 (EDT)
+	id 95F606B0096; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BB0FD6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:04:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C21913BFB7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:04:28 +0000 (UTC)
-X-FDA: 84604713816.08.64BF83A
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8F3C2180009
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:04:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="JfTt7K/L";
-	spf=pass (imf06.hostedemail.com: domain of ke.zhao.kernel@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=ke.zhao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88C316B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B2821609E7
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:27:44 +0000 (UTC)
+X-FDA: 84604772448.25.3BA7415
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 626FBA0008
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:27:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hW57cjof;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774922666;
+	s=arc-20220608; t=1774924062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JB5ukn0uCa6Qxbx0qz8yn2WmcmtYcqs4HV7hWyMTUYc=;
-	b=ie3hw1Q0M9/2y7nHH0V6L/e441lI5qDJMmP6nr2ixSNc7hqUrh2ckAd43N90149OJpHgw+
-	5DcO6AGdrIinOZpMpWsK0osSM375tLDSONJzwS6lonPoPhjh0L/S02Mq+aO33KfNX+3/LE
-	newBbRZFbD09eeepuk+u6P989pHeL80=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774922666; a=rsa-sha256;
+	bh=YnMiibA4W4Ig7F76dyLFhn4fKhWlo5n8E1B42uPMv6U=;
+	b=tKbj8CQIyg0wlxhMN/CxiWim66S9RFIfsxYgNhbTFfk28lmhUTPx1DNWhR5x+11skQN1Ct
+	rj/NnCOv6KRUoGxqP5wOQULyJXwpMYC2FddGeiWKXQInaXGwsaQzcDsgd64WUgrs0zDeWP
+	ixObLjhJNZHUqSce+mULGFuFZXhl1kA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774924062; a=rsa-sha256;
 	cv=none;
-	b=SNRfJcj7/5YRHmZOGhHbbGSYlGpaCBtCkQh4J6t/02qt+J3Mgs4jl9FzfBe4fjqGcSPtje
-	jS8P3Q52cKy0O8QI5wRTseCbs+JX3eSaH5wQEv++Xld/3jwnlIR6d4XICiINeEnxhcM7Vm
-	HRfSsJzc+rbolp69l8YJJXbeCkOWhZM=
+	b=VGt5IGAATC2bEQqUkvPAlIxd5Bm2KN+Cm/H8XDhrL5FXiuz+HOornHnA38+foaVw3j2axg
+	v+f/kW+nnWcMohg3dBSWJlNNYC/53+7ba8nfesqn1UfH3rAATdmnt+i0y2qW6POZEZbvCm
+	L5NwlEqzBEudcYmdeX8BY9pEWHvjFJs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="JfTt7K/L";
-	spf=pass (imf06.hostedemail.com: domain of ke.zhao.kernel@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=ke.zhao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-35c238f1063so2526741a91.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:04:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774922665; x=1775527465; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JB5ukn0uCa6Qxbx0qz8yn2WmcmtYcqs4HV7hWyMTUYc=;
-        b=JfTt7K/LRTWpz3lgviLVXI7xp4Z499tt3SRWFxY1gXpwY/lU07jcX61XN7CYpi+eyc
-         99/Y8oiyY4hv9UzI6M4v//rswPy3KJgbopzqrQwAybA9KfPteWX6GckKt3hssh14BpNG
-         IuF38Ftayzu3oIZxAVl6Jn4SpTiTgQCkMR8+odk8WKNmcvKuqGRhMp/YkZ6woVci9VpX
-         Z8VMoJzuXJyXMoAQGjMX7hjkOODmurikVmT/XSXPEFDY4WARODkuTBJlVdCVAv52xN8X
-         ACqrQ08zsbGfGlsMkpwTwfE+J4R5bDGFU2zqF8AooVpMHMgIGPGCI6rkw0MEqnaH19O7
-         e1yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774922665; x=1775527465;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JB5ukn0uCa6Qxbx0qz8yn2WmcmtYcqs4HV7hWyMTUYc=;
-        b=ANOzB7DxsPZCkr6o5PTWYjs/RSjTIcsLit1SEpBSCdCcDbuzPug61BRuo+rSVpCp7d
-         y2jL0jm5cggCyKR/m5GoMfbLzwmFaj3f6aWzTloo3Nwcg1wAtrbXCV1IdWgCrfFYTCG4
-         K2RH1owPq/elmh4qf1YFgsEkTH7EFKa8NJOl/ryQ2EHE9ZTpBgPDYTtBam+YYYom80hq
-         knSKxeGmV22SFNqsln27Ad+Ph9haYy2J3UoBDz3BeUrUhzV/Z1EvnmPRzFgZGNAlFgSH
-         1OQtTAvW33MAQZ3OnVotlx4BkcOISXWAVvwU9giJU4rbfN70m8eTfjbJl/ecd7tWHTMH
-         ttMw==
-X-Gm-Message-State: AOJu0Yw30Xg5e3/pWvBFEDiflF91TtDB1OcbYhkAR2U577nTq3K2llwJ
-	lUubY3uY/XTKXyTJ2ty3kkhxOlK4QqlCInXF38zZ6QRrWat1djUZ3s+s
-X-Gm-Gg: ATEYQzw7LClqI6McqB0lsoaN2I+adXwhugUbGcHnW6bqrWr0CqII02B8SrO3UXlm+6y
-	rcN2IOmDovMgdoYgzcoxI5iEy7j0bjXElZBHrLAkZredRbs0SWkx74e0VSx4DoGUITVjt2AD7EF
-	xagR1Z3hGSzS0wx8s5QvO8dcCi7n+QiA5kGA0cwD+u1pbLMBXxDnxXS19S1AuQ687M68jJQ89Ha
-	tL4dwComvfE2jBAcmmB1B7UK/OPj8iAgIBNOozkIDNVT/HxFXGrHqcUrrB/dPwvvkp61OodPm1+
-	mi4tIhIcvBvGCBTrpm+aBAbz7ivIMq8LV+hqiSTa4dixREPreQ3eGJVtOj6kp//tz2RT66tE/oe
-	GzsWUuCqCDy0pkUsjocaDoNHF1r1qicfw0gWypgGzZQLo+JaEn2YpEx0Cio/ZYOyQ8ISR1oYO0f
-	MjPExkzU18KUUZHBR0Ntws5qiB/wFeRyoVhBss7u/RF0/igXK+
-X-Received: by 2002:a17:90b:4f42:b0:35b:e52a:6fe5 with SMTP id 98e67ed59e1d1-35c2ff26762mr13137266a91.5.1774922665300;
-        Mon, 30 Mar 2026 19:04:25 -0700 (PDT)
-Received: from [172.19.21.154] ([112.64.138.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35da9ef1b70sm4251292a91.16.2026.03.30.19.04.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 19:04:24 -0700 (PDT)
-Message-ID: <6f0fcf07-9ee1-43a7-a0ac-0a5200acf099@gmail.com>
-Date: Tue, 31 Mar 2026 10:04:19 +0800
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hW57cjof;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=YnMiibA4W4Ig7F76dyLFhn4fKhWlo5n8E1B42uPMv6U=;
+	b=hW57cjofNyt2Z8cfky5nD0k3qupiKnrd769HNDVr4A3bIgeIsfIKeLWlqkHuWqzRPTn2AfcQV
+	USdejPQSAK0bUdVRoJzGYDvEUGDw50qMtIzt08JubSyyUz0hypD6PR45EJEIZzhErx4Nfqvtc6O
+	MnXUDQSJtgCIyERZJXpiVGc=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4flBhN0PSJz1T4Hm;
+	Tue, 31 Mar 2026 10:21:56 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2A33C4056D;
+	Tue, 31 Mar 2026 10:27:35 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 31 Mar 2026 10:27:34 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 31 Mar 2026 10:27:34 +0800
+Subject: Re: [PATCH 1/2] mm/memory-failure: add
+ panic_on_unrecoverable_memory_failure sysctl
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260323-ecc_panic-v1-0-72a1921726c5@debian.org>
+ <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
+ <a88d62ee-530c-1a6e-c05f-de324f940b8f@huawei.com>
+ <acp8wYLHDGAfhzI5@gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <d8d2a5ad-9b8a-f0e2-3eb0-ee820eb7a148@huawei.com>
+Date: Tue, 31 Mar 2026 10:27:33 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, KMSAN: Add missing shadow memory initialization in
- special allocation paths
-To: Usama Anjum <usama.anjum@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+2aee6839a252e612ce34@syzkaller.appspotmail.com
-References: <20260330-fix-kmsan-v1-1-e9c672a4b9eb@gmail.com>
- <1dfbe39b-d052-4810-81d8-2ab74263bd7a@arm.com>
+In-Reply-To: <acp8wYLHDGAfhzI5@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-From: Ke Zhao <ke.zhao.kernel@gmail.com>
-In-Reply-To: <1dfbe39b-d052-4810-81d8-2ab74263bd7a@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8F3C2180009
-X-Stat-Signature: wxacbdswc57qmewd1f87kf5f9zpgsfhg
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 626FBA0008
+X-Stat-Signature: a13f6aqcs5ugeoegor8pd9nytywx9ttg
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774922666-211410
-X-HE-Meta: U2FsdGVkX18yggyJXq9RhBY60zg57C5NRCa0sZNGIV7AQixMc3/CX0WOPzQQF7AxhibWpUMxdiAdUA0e3nN45l93vUcDGFbWjzQu8iCkAxtOect/3TYXe0DuML3Z3+rKCMYiwUxX6umfxR4xjD46LpSIiDUhAZ67oNB8NPpb1a9FYeW3R/qtzGUhax0D7XQ8+yZQpRPEe9pDZ2FJyQ6yaJQ57wRZAxYq7u96UDPkm+URpqRr3pKG2o2oAJD2Ac7/aKMMSyaXvqTdhK88TYkQyidMGTOpw3c09wwLoLKaZpGQg37rQ0YR/H56dwMssv3wlw7YQ6CSkXifL8fboYCou7ARoUhLnhWJqkQ9acN5aL6vYCREl1QmIFNFNw0Q5q6dpsVTcn6U0c0pAfOUvnQkLgfXwe+TdDvVeqcxUGY0oBSZQL88KfJh4yXUmZ0yQNcEVNrdR3gp2JGlA3Rdm7U7UYq2YOUpofXtCYKQOXh6wBn10Cf48/OjLyZY3iuRaFHBYtttTpnvO1VgKpM5/A5vexIhauIazvgm0o93IV4xl+yzKt6MMO9DnNGMidLp443vv8hnpEx8KUs3ogFXNA9vsSfzg4crZNs1YIcAxTCtixn/a+UJA5FyKLAxVrOt4IgEyLtIy+MTMWeMn+dMX6XFt5PKO0lh/QIhoNa5EWfP1zghP6d+xlF279VKGE23nwKYH8t5+j9EQcti7Ps5QmiQPFfJXN5ZRavPbQ7Y04mBZo1p8S5KfesBGrgpipQHukX7srjZ12xj5CId1aRovg6tUaAPp4g69xoMxx03GjnVNQDMuaIch3hKTUFkOlAnwA641i+gKsxCL4GAeoT9G7zrhYPbp/NAQO2UyZ8vAMb44AxVwsFruhqN/6EBugATjSMP0IuwnuZbNNi4s2CTAna+QmVDtXvpjLwXNBM1a0gLYuJQ+J36Pdc8eva91PkPZNITzwrFRxdzsRKT7CqXEjK
- RxyqcOMA
- K8uR4AO8DxiMDVyiWkmI2Fqv/dggKcW5sZUQ9xdtzQEhBHfZ0mU3wMDLXx23fQURIoWVO2L90kNzDi1e5+5vCC3Im2//Qev0xKfc+NKot2F1mEu27li+DVOJjO0SrGPD4Ep+G6Yousri4uJSD11y0EKQm6/ake7LdO8/LUGgniY6mohHj9Hydi5A3rFUriAL+s4bG7N6IETn2CPOC7vLqrRVgFkSWW2x0ytluqfX9ifXeCMh+pznZlKHmhG8UEZqWyMFldiQFO6Ln0pVYV2yE3YhJ9eqbKBPQ8IBBn9pJnqbXpPAIHu/n3RQ2cCc+h1d3vEvfKwhubuUm7h/p5BbaLtkcNW/5iNt0BGcYhcGoti2QXhV7bexC/geZZOXUiEIhcifDhDl6yClysybQtO/IJPlHQIZXhBCuQ5+m/XJpzhygyx96FGjXs03wJnxrYOYLsacO4aHyvQWYbmeNpsLDaTI0xFy2VCQHKWnsqzKxc4F8y7xLasMMBMlX2SAei5Kdg0UwBHbBLv0e0LholFlFJbm5IeGm6z+f/9g+iZID2E4PydyFD3buz/RYcWFSjpxKXls2qNT3KSeJ4SQxRQETTvGimXUPOAnlxJOMglMEGZpDIHumJg8nX3UjJ10ny++p4f3uR9GPbxmNVIaKv/ARCO+2Q9cLlaCqWkFI0xQcf/1hq1j1TSvOdF6a+clQ+AawhzV7QmbLl8uNbjejZQnyrB1coUfxQ/hNiCwha0jJAumJzDjZ5MToNSVsMdsSb96E+gvHZY71MJQBQr2GbTMxJ3Tv+LKC2uWtzNYQ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774924060-302392
+X-HE-Meta: U2FsdGVkX1+2cHJ/zLzJpkx3G4UpvmNBVErW0VI4xE9JmCm3TyIyi4kvQtTMW4War6MOqvrp1Uf9eDN6OIxthfT0ieJeVIC2GjpYri7qpqaLyC7TJIB96fb/TIfiNX4vnwN4h7+xd4BR+6kVtvvLmXkoeWPeMtXRcb7vhJB7/DlfyEoE3uTS9eDl23/KWhfs5xlM+z//hoXXtvfG1vfiRTBsadhbAVSDPiyVWXFBDrYrFHsq0QJ9+/LTKHhqt9bM5/t5qPopQC3h5ZTL/VcNOq4U6iFy9ap2c+NGUOHqF4MgJ2QmtI/i3+8y9AAGZcz+7erpoUFCB2w0Hk5UJS1FRqmzCXlgqFLoBcdOE3XGy9fWQgy4CaDS6x2kVPt+Nqn3li2eA7dQQJjdvNxxBHgS9kPdZ85f+I/AuXyT0FX6hTfWZRgkT0v5WoexYBMbe8vjCuTrm74iOUU3FzcPF0ZhUwoYCokfwckWYGKiumF9cxiCUbXsc68MAImv0Lshuphji91shBMfofvwLCsbLIeii5PZrfrJkaylRxFxC3Fi/Ye75GA1nUXsIAY+uy+VPyHhglZqKFnaiN/gDPi+Cdl0LCYoTgIyy4b7E1RWtjoOo2ma+qzYntxoFKM1MpPIvTKOW23U+exJIbiYSwOF2CxBsKU3yIrXbUMjC9OLnZgyvMyVw4iANVohCO23B1pIb+H4KLFnAWGJL4yridGvZt7VweTnLHx7ZeJX+rgdQPu5O/wXT0r4Sd472lx5DJt235e0frXY11r9YLG+zeYk9y521KxpBdLj6a5egur/CCelDN3nVdNTRcD3XO12Ubl3iX3+ylQAAA1LDS1nnUMJXHI8O66MmTVVKwlaeyHptXMp/WpWLj9aO0QDFO7ear6FmEFBOb+mGtEqxRuZ9BoXdQsgtCWQhuL5LaZ/L3tDfzW1TNJngOGW0BogoHT/T3lKa139t/VTFhYrUe7gUwdfvzs
+ DDKCIxFS
+ akoaqc6GK48OgKCSi9N7+OKf92OhxeaHYQ0YI6TFHyJL8cJoBD+YDRvvBguOPOhZSmEyHyZ4bdHVQgflz8QKsS77q+pBqokcQRi1vIis25rumzyjcCK52LdXcvzLyo4L/zIby0gt4lFZRkGtT5tb0XOJBux1HQi7QOXP6D7B0v9/7H2K6D7MUIW5q8fbf0ueiT5tHBGHC5rqxzqBZyVJ02dPyVXKRn5V42GYHLx+WNWkyLnO+GjpplNt4WZ7eAMai4QYR74HZddwUJbh7rRg2om0iOI0Cv4XypEBlvbmLOqXDqTxFP7H3gVfj//HL3YUuucA9TQObzrlcBERsqIl/L7tUAbz4txIovKjCMuOTDFofl6lDqTYhqhTDSkzb6LqDOWO1TERI5Qb7sTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,77 +109,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/31/2026 4:39 AM, Usama Anjum wrote:
-> On 30/03/2026 9:36 am, Ke Zhao wrote:
->> Some page allocation paths that call post_alloc_hook() but skip
->> kmsan_alloc_page(), leaving stale KMSAN shadow on allocated pages.
->> Fix this by explicitly calling kmsan_alloc_page() after they
->> successfully get new pages.
+On 2026/3/30 21:45, Breno Leitao wrote:
+> On Mon, Mar 30, 2026 at 03:55:00PM +0800, Miaohe Lin wrote:
+>> On 2026/3/23 23:29, Breno Leitao wrote:
 >>
->> Reported-by: syzbot+2aee6839a252e612ce34@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=2aee6839a252e612ce34
+>>> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+>>>  	pr_err("%#lx: recovery action for %s: %s\n",
+>>>  		pfn, action_page_types[type], action_name[result]);
+>>>  
+>>> +	if (sysctl_panic_on_unrecoverable_mf &&
+>>> +	    type == MF_MSG_GET_HWPOISON && result == MF_IGNORED)
+>>> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
 >>
->> Signed-off-by: Ke Zhao <ke.zhao.kernel@gmail.com>
->> ---
->>   mm/page_alloc.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 2d4b6f1a554e..6435e8708ef4 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -5189,6 +5189,10 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->>   
->>   		prep_new_page(page, 0, gfp, 0);
->>   		set_page_refcounted(page);
->> +
->> +		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
->> +		kmsan_alloc_page(page, 0, gfp);
->> +
->>   		page_array[nr_populated++] = page;
->>   	}
->>   
->> @@ -6911,6 +6915,12 @@ static void split_free_frozen_pages(struct list_head *list, gfp_t gfp_mask)
->>   			int i;
->>   
->>   			post_alloc_hook(page, order, gfp_mask);
->> +			/*
->> +			 * Initialize KMSAN state right after post_alloc_hook().
->> +			 * This prepares the pages for subsequent outer callers
->> +			 * that might free sub-pages after the split.
->> +			 */
->> +			kmsan_alloc_page(page, order, gfp_mask);
->>   			if (!order)
->>   				continue;
->>   
->> @@ -7117,6 +7127,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->>   
->>   		check_new_pages(head, order);
->>   		prep_new_page(head, order, gfp_mask, 0);
->> +
->> +		trace_mm_page_alloc(page, order, gfp_mask, get_pageblock_migratetype(page));
->> +		kmsan_alloc_page(page, order, gfp_mask);
-> There is no page defined in this function. Most probably you wanted
-> to use head in place of page here.
+>> MF_MSG_GET_HWPOISON contains some other scenarios. For example, an isolated folio will
+>> make get_hwpoison_page return -EIO so we will see MF_MSG_GET_HWPOISON and MF_IGNORED in
+>> action_result. But that's recoverable if folio is used by userspace thus panic will be
+>> unacceptable.
+>> Will it better to check type against MF_MSG_KERNEL_HIGH_ORDER?
 > 
-Sorry, I just simply compiled with the change but add wrong code into 
-the commit. I can hardly make an environment that could trigger the same 
-warning here. I'm not sure if I can trigger syzbot to test this.
-> How did you compiled and tested this change?
+> Yes, I was discussing this with akpm, and maybe the better
+> approach would be to panic for types MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_KERNEL.
 > 
->>   	} else {
->>   		ret = -EINVAL;
->>   		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
->>
->> ---
->> base-commit: bbeb83d3182abe0d245318e274e8531e5dd7a948
->> change-id: 20260325-fix-kmsan-e291f752a949
->>
->> Best regards,
+> In both cases, it seems that, the page would not be able to migrate. What do
+> you think about a change like this:
 > 
-> Thanks,
-> Usama
+> 
+> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+>         pr_err("%#lx: recovery action for %s: %s\n",
+>                 pfn, action_page_types[type], action_name[result]);
+> 
+> +       if (sysctl_panic_on_unrecoverable_mf && result == MF_IGNORED &&
+> +           (type == MF_MSG_KERNEL || type == MF_MSG_KERNEL_HIGH_ORDER))
+> +               panic("Memory failure: %#lx: unrecoverable page", pfn);
+> +
+>         return (result == MF_RECOVERED || result == MF_DELAYED) ? 0 : -EBUSY;
+>  }
+> 
 
+Maybe MF_MSG_UNKNOWN can also be considered? Kernel can't do anything further
+for those folios.
+BTW I think current code can't reach to MF_MSG_KERNEL and MF_MSG_UNKNOWN cases
+bacause there is always a (PageHuge() || HWPoisonHandlable()) check before calling
+identify_page_state.
+
+Thanks.
+.
 
