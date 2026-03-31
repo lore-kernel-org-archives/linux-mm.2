@@ -4,104 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8BBF1061B28
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 02:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F32F01061B2B
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 03:02:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A715C6B008C; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
+	id 0E2926B008C; Mon, 30 Mar 2026 23:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A22086B0095; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
+	id 093846B0095; Mon, 30 Mar 2026 23:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95F606B0096; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
+	id EEB3F6B0096; Mon, 30 Mar 2026 23:02:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88C316B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:27:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B2821609E7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:27:44 +0000 (UTC)
-X-FDA: 84604772448.25.3BA7415
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 626FBA0008
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:27:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hW57cjof;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD55C6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 23:02:41 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18324C3120
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:02:41 +0000 (UTC)
+X-FDA: 84604860522.03.22DB595
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 40E654000D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:02:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AjfzNudJ;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774924062;
+	s=arc-20220608; t=1774926159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnMiibA4W4Ig7F76dyLFhn4fKhWlo5n8E1B42uPMv6U=;
-	b=tKbj8CQIyg0wlxhMN/CxiWim66S9RFIfsxYgNhbTFfk28lmhUTPx1DNWhR5x+11skQN1Ct
-	rj/NnCOv6KRUoGxqP5wOQULyJXwpMYC2FddGeiWKXQInaXGwsaQzcDsgd64WUgrs0zDeWP
-	ixObLjhJNZHUqSce+mULGFuFZXhl1kA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774924062; a=rsa-sha256;
-	cv=none;
-	b=VGt5IGAATC2bEQqUkvPAlIxd5Bm2KN+Cm/H8XDhrL5FXiuz+HOornHnA38+foaVw3j2axg
-	v+f/kW+nnWcMohg3dBSWJlNNYC/53+7ba8nfesqn1UfH3rAATdmnt+i0y2qW6POZEZbvCm
-	L5NwlEqzBEudcYmdeX8BY9pEWHvjFJs=
+	bh=tcgf/nnaWd6CtKz6QeNTxmCGWplJP0pcuH1q2jZJj0U=;
+	b=neak5SgY1Oc1v5ZoHy7glJKpDT0xdjN4kSqnjHCYE5g6BVvEj3K2sPt+7diJBDuNCER32q
+	8pLa74Cmn7bOFNzS51d6MnZO/dpwXth1xKCU8Dp7XtLaYjtGHIwFRcceyjEMpGltXMogMw
+	4pdPm189QtvyIxqf6G2RmTbjWnH6HPE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hW57cjof;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YnMiibA4W4Ig7F76dyLFhn4fKhWlo5n8E1B42uPMv6U=;
-	b=hW57cjofNyt2Z8cfky5nD0k3qupiKnrd769HNDVr4A3bIgeIsfIKeLWlqkHuWqzRPTn2AfcQV
-	USdejPQSAK0bUdVRoJzGYDvEUGDw50qMtIzt08JubSyyUz0hypD6PR45EJEIZzhErx4Nfqvtc6O
-	MnXUDQSJtgCIyERZJXpiVGc=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4flBhN0PSJz1T4Hm;
-	Tue, 31 Mar 2026 10:21:56 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2A33C4056D;
-	Tue, 31 Mar 2026 10:27:35 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 31 Mar 2026 10:27:34 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 31 Mar 2026 10:27:34 +0800
-Subject: Re: [PATCH 1/2] mm/memory-failure: add
- panic_on_unrecoverable_memory_failure sysctl
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260323-ecc_panic-v1-0-72a1921726c5@debian.org>
- <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
- <a88d62ee-530c-1a6e-c05f-de324f940b8f@huawei.com>
- <acp8wYLHDGAfhzI5@gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <d8d2a5ad-9b8a-f0e2-3eb0-ee820eb7a148@huawei.com>
-Date: Tue, 31 Mar 2026 10:27:33 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AjfzNudJ;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774926159; a=rsa-sha256;
+	cv=none;
+	b=0/fse/meCKgToO26AP0uojEK5c/UEdDn2cfphNzn2w+ekFvysWky+Q/hljcS8esxZp3ADj
+	ODQ9MVzVqqvYrExJlSyUl+84VB7vgNah5EmYhLReu5UgJLW1FS8kxw2ik24IqnLG7TXZSg
+	k1EVdfpbfZ1MyEi7e9HS0PE/X6xpYNY=
+Date: Mon, 30 Mar 2026 20:02:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774926156;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tcgf/nnaWd6CtKz6QeNTxmCGWplJP0pcuH1q2jZJj0U=;
+	b=AjfzNudJ+37u2+bTzacJSPj7Y7zPpLOERw1g9uBPVSKcibUf86ePoyN72cc1vPJHdr2HFE
+	skRaNLjBx4b6Ym1bSo8gkexoLRfAtQ8g73XyBAVC6Gq99djw9WqkE8eGZjrxRUY77Hiveu
+	dAoPCCQ8p6yfJGnets+tnYQTGRyINv0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: David Rientjes <rientjes@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Petr Mladek <pmladek@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [patch v3] mm, page_alloc: reintroduce page allocation stall
+ warning
+Message-ID: <20260331030102.GA615109@shakeel.butt@linux.dev>
+References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+ <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
+ <58a10940-e44c-a120-dd6e-ee9f480c4946@google.com>
+ <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
 MIME-Version: 1.0
-In-Reply-To: <acp8wYLHDGAfhzI5@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 626FBA0008
-X-Stat-Signature: a13f6aqcs5ugeoegor8pd9nytywx9ttg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774924060-302392
-X-HE-Meta: U2FsdGVkX1+2cHJ/zLzJpkx3G4UpvmNBVErW0VI4xE9JmCm3TyIyi4kvQtTMW4War6MOqvrp1Uf9eDN6OIxthfT0ieJeVIC2GjpYri7qpqaLyC7TJIB96fb/TIfiNX4vnwN4h7+xd4BR+6kVtvvLmXkoeWPeMtXRcb7vhJB7/DlfyEoE3uTS9eDl23/KWhfs5xlM+z//hoXXtvfG1vfiRTBsadhbAVSDPiyVWXFBDrYrFHsq0QJ9+/LTKHhqt9bM5/t5qPopQC3h5ZTL/VcNOq4U6iFy9ap2c+NGUOHqF4MgJ2QmtI/i3+8y9AAGZcz+7erpoUFCB2w0Hk5UJS1FRqmzCXlgqFLoBcdOE3XGy9fWQgy4CaDS6x2kVPt+Nqn3li2eA7dQQJjdvNxxBHgS9kPdZ85f+I/AuXyT0FX6hTfWZRgkT0v5WoexYBMbe8vjCuTrm74iOUU3FzcPF0ZhUwoYCokfwckWYGKiumF9cxiCUbXsc68MAImv0Lshuphji91shBMfofvwLCsbLIeii5PZrfrJkaylRxFxC3Fi/Ye75GA1nUXsIAY+uy+VPyHhglZqKFnaiN/gDPi+Cdl0LCYoTgIyy4b7E1RWtjoOo2ma+qzYntxoFKM1MpPIvTKOW23U+exJIbiYSwOF2CxBsKU3yIrXbUMjC9OLnZgyvMyVw4iANVohCO23B1pIb+H4KLFnAWGJL4yridGvZt7VweTnLHx7ZeJX+rgdQPu5O/wXT0r4Sd472lx5DJt235e0frXY11r9YLG+zeYk9y521KxpBdLj6a5egur/CCelDN3nVdNTRcD3XO12Ubl3iX3+ylQAAA1LDS1nnUMJXHI8O66MmTVVKwlaeyHptXMp/WpWLj9aO0QDFO7ear6FmEFBOb+mGtEqxRuZ9BoXdQsgtCWQhuL5LaZ/L3tDfzW1TNJngOGW0BogoHT/T3lKa139t/VTFhYrUe7gUwdfvzs
- DDKCIxFS
- akoaqc6GK48OgKCSi9N7+OKf92OhxeaHYQ0YI6TFHyJL8cJoBD+YDRvvBguOPOhZSmEyHyZ4bdHVQgflz8QKsS77q+pBqokcQRi1vIis25rumzyjcCK52LdXcvzLyo4L/zIby0gt4lFZRkGtT5tb0XOJBux1HQi7QOXP6D7B0v9/7H2K6D7MUIW5q8fbf0ueiT5tHBGHC5rqxzqBZyVJ02dPyVXKRn5V42GYHLx+WNWkyLnO+GjpplNt4WZ7eAMai4QYR74HZddwUJbh7rRg2om0iOI0Cv4XypEBlvbmLOqXDqTxFP7H3gVfj//HL3YUuucA9TQObzrlcBERsqIl/L7tUAbz4txIovKjCMuOTDFofl6lDqTYhqhTDSkzb6LqDOWO1TERI5Qb7sTY=
+X-Rspamd-Queue-Id: 40E654000D
+X-Stat-Signature: 3zro6t58z6mfyhbxsw9ueqskxo4px48c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774926159-952985
+X-HE-Meta: U2FsdGVkX18TcBTjzmaevoKPj7GUVNMpB+7wjTJV+f0LTZsIhxjO89dgHu/sPYfYc+hyRyzudpHYWfJl43auIeEjSrZ1XqEpZ2WLE01Ila61RsN9RwL/gkpLq82/ObnOziSw66+NpYO5aHJhdm3mZt/BMzWj6+q+6/slIScCrNJWpaLs2eVedCTP8+bOnOWZj0qyCKye9Yk/ePRI7CMGmcwniURCDEvsAVssqHfRL+5SPk4D8tQPWcEs5e0pvyo2dgqYeDfta61dQQ2N5GMXCccfvH6BT57sVbtTaMUDAp207azofzWEEEKZQNkmWJFbeMQbHqcBobeLRjQUdm40GbO8rDDO+l+0+m7Un+Mrh0TbTh8WV+PDD/CQJxNVHHEQ3Jur/TMFw6EtOmKC4AZ3w2JcJFz+3Q5bMEhaYejYFOaRY6V+4lcyl9rVlDJtQqC5wNLGUQj425RfmX4Ftkqbn0owvR4k+2lphM7O+VjC9enHEvB5wqCUvLRJutj3lGu1Yr/J383IBCU2320m8a2ATLte25EvDB2zinocEbs0nw6bYypKBB58OL+rW4sEgeBDIn7T0XirK3j+63H+3ZgbT/czs//DzlYEapF0nyH/hGIFAG/83hlxDSZcduT+oGGkedt1pU/ueapebRM9c41GaaMQK2FUHcg++luDouHl87KLmUFBalZzoQwjLUsHln9a7VxOEtL/BzUXt4P4ptsTFT/hFs/9SU+ahA0vpZlPSmfjZUmv6jdtcxPEXvhm75QApAtCIZUGaFfY1X5M6mjQrVqZRdICA38p/N1viparaJCMLtOXYK7rmee+UEmerEGbm1mcbDRhT9bm5jQl1GNZ3qcIhtPMixdcoJIIRnVnxRmA3hAv2Lu7YpRWHm8tNI3+H7i0OxFjP72T1v7VyesnURDDfc0DVnOid4CBG3uC+5CvQTtinWNGIz6aWNH+Uqnx4WcL1pcTwbpKQEZ+IBq
+ fbM7eHZ7
+ ZpFUHUTs3xHKPUfpzCx3haXo15NoxYcaU4s8H27GjmjMEaidS5dG//3to5607LdUxWaRxKQe2NRM8eCM3HTHkMwqtdQ69tnQ79ZNPHWZem9an5roRTDKJD/B4ZyOgvkC35pSkwFFx+kB2nnjqIYuJNAwUI+4jMzmfxI0SkB/tnniuvOSpe/1LIu1cFwSvf6gBYjJeRHLN75bQwq4EOOR8BRV3Eg2BOVJEmTjlM2zHZ4wROCUl/8i+M8nCRVMWMUwYa/ClLkXbC+sUX4lUuUPwpyOaLXqnII5pc8RnCvDnGKGZQtk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,49 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/3/30 21:45, Breno Leitao wrote:
-> On Mon, Mar 30, 2026 at 03:55:00PM +0800, Miaohe Lin wrote:
->> On 2026/3/23 23:29, Breno Leitao wrote:
->>
->>> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
->>>  	pr_err("%#lx: recovery action for %s: %s\n",
->>>  		pfn, action_page_types[type], action_name[result]);
->>>  
->>> +	if (sysctl_panic_on_unrecoverable_mf &&
->>> +	    type == MF_MSG_GET_HWPOISON && result == MF_IGNORED)
->>> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
->>
->> MF_MSG_GET_HWPOISON contains some other scenarios. For example, an isolated folio will
->> make get_hwpoison_page return -EIO so we will see MF_MSG_GET_HWPOISON and MF_IGNORED in
->> action_result. But that's recoverable if folio is used by userspace thus panic will be
->> unacceptable.
->> Will it better to check type against MF_MSG_KERNEL_HIGH_ORDER?
+On Mon, Mar 30, 2026 at 06:20:57PM -0700, David Rientjes wrote:
+> Previously, we had warnings when a single page allocation took longer
+> than reasonably expected.  This was introduced in commit 63f53dea0c98
+> ("mm: warn about allocations which stall for too long").
 > 
-> Yes, I was discussing this with akpm, and maybe the better
-> approach would be to panic for types MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_KERNEL.
+> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
+> warn about allocations which stall for too long") because it was possible
+> to generate memory pressure that would effectively stall further progress
+> through printk execution.
 > 
-> In both cases, it seems that, the page would not be able to migrate. What do
-> you think about a change like this:
+> Page allocation stalls in excess of 10 seconds are always useful to debug
+> because they can result in severe userspace unresponsiveness.  Adding
+> this artifact can be used to correlate with userspace going out to lunch
+> and to understand the state of memory at the time.
 > 
+> There should be a reasonable expectation that this warning will never
+> trigger given it is very passive, it will only be emitted when a page
+> allocation takes longer than 10 seconds.  If it does trigger, this
+> reveals an issue that should be fixed: a single page allocation should
+> never loop for more than 10 seconds without oom killing to make memory
+> available.
 > 
-> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
->         pr_err("%#lx: recovery action for %s: %s\n",
->                 pfn, action_page_types[type], action_name[result]);
+> Unlike the original implementation, this implementation only reports
+> stalls once for the system every 10 seconds.  Otherwise, many concurrent
+> reclaimers could spam the kernel log unnecessarily.  Stalls are only
+> reported when calling into direct reclaim.
 > 
-> +       if (sysctl_panic_on_unrecoverable_mf && result == MF_IGNORED &&
-> +           (type == MF_MSG_KERNEL || type == MF_MSG_KERNEL_HIGH_ORDER))
-> +               panic("Memory failure: %#lx: unrecoverable page", pfn);
-> +
->         return (result == MF_RECOVERED || result == MF_DELAYED) ? 0 : -EBUSY;
->  }
-> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: David Rientjes <rientjes@google.com>
 
-Maybe MF_MSG_UNKNOWN can also be considered? Kernel can't do anything further
-for those folios.
-BTW I think current code can't reach to MF_MSG_KERNEL and MF_MSG_UNKNOWN cases
-bacause there is always a (PageHuge() || HWPoisonHandlable()) check before calling
-identify_page_state.
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Thanks.
-.
+I am hoping that the reason you are reintroducing these warnings is
+because you already are seeing such cases in your production
+environment. Do you have anything interesting to share?
 
