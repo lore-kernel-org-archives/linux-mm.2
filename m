@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F32F01061B2B
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 03:02:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5BDE1061B21
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 03:04:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2926B008C; Mon, 30 Mar 2026 23:02:42 -0400 (EDT)
+	id 0BE9B6B008A; Mon, 30 Mar 2026 23:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093846B0095; Mon, 30 Mar 2026 23:02:42 -0400 (EDT)
+	id 0704A6B008C; Mon, 30 Mar 2026 23:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB3F6B0096; Mon, 30 Mar 2026 23:02:41 -0400 (EDT)
+	id EC7CC6B0095; Mon, 30 Mar 2026 23:04:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD55C6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 23:02:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18324C3120
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:02:41 +0000 (UTC)
-X-FDA: 84604860522.03.22DB595
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 40E654000D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:02:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AjfzNudJ;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE7086B008A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 23:04:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 762345BCF3
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:04:49 +0000 (UTC)
+X-FDA: 84604865898.16.28CB371
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E382B1C0003
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:04:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=flIILcqn;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774926287; a=rsa-sha256;
+	cv=none;
+	b=G5fWgJTGZrqEL5z/gdee6mxffeh9TdMnuzs1mhd4KOVbHUKP4Gwh9OeJiRHd+xv9Z5gX+b
+	TF1BHEJFYiXXiC6SQedQrgnGANGvxCEvTzIR0yeRabOqsijWw6G1etKOdIeI31Qm/UDZie
+	12RFgzk6SGkd9pmzX06pL4v+mcjgt9k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774926159;
+	s=arc-20220608; t=1774926287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tcgf/nnaWd6CtKz6QeNTxmCGWplJP0pcuH1q2jZJj0U=;
-	b=neak5SgY1Oc1v5ZoHy7glJKpDT0xdjN4kSqnjHCYE5g6BVvEj3K2sPt+7diJBDuNCER32q
-	8pLa74Cmn7bOFNzS51d6MnZO/dpwXth1xKCU8Dp7XtLaYjtGHIwFRcceyjEMpGltXMogMw
-	4pdPm189QtvyIxqf6G2RmTbjWnH6HPE=
+	bh=7Um4ewX29gXehgCBuoDL9V3/KYIC3onz/0fTJy7ifeY=;
+	b=x5IkEexgwsCdShukMkWbHupVH3ZH1Uq8Yd8jTyZ9b1l68pu4sDzz5UrAaEPgIVfWIQ8dJn
+	4GggEMPUJ4Oniu2zEfK4zsRBNoo96cCQkW+/oIj44ImbOxm0bqbmBobu1YZBH1OT3XEXZE
+	oHlqKqviEOBZ1jWspCo90EPjbxxHMXU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AjfzNudJ;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774926159; a=rsa-sha256;
-	cv=none;
-	b=0/fse/meCKgToO26AP0uojEK5c/UEdDn2cfphNzn2w+ekFvysWky+Q/hljcS8esxZp3ADj
-	ODQ9MVzVqqvYrExJlSyUl+84VB7vgNah5EmYhLReu5UgJLW1FS8kxw2ik24IqnLG7TXZSg
-	k1EVdfpbfZ1MyEi7e9HS0PE/X6xpYNY=
-Date: Mon, 30 Mar 2026 20:02:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774926156;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tcgf/nnaWd6CtKz6QeNTxmCGWplJP0pcuH1q2jZJj0U=;
-	b=AjfzNudJ+37u2+bTzacJSPj7Y7zPpLOERw1g9uBPVSKcibUf86ePoyN72cc1vPJHdr2HFE
-	skRaNLjBx4b6Ym1bSo8gkexoLRfAtQ8g73XyBAVC6Gq99djw9WqkE8eGZjrxRUY77Hiveu
-	dAoPCCQ8p6yfJGnets+tnYQTGRyINv0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: David Rientjes <rientjes@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Petr Mladek <pmladek@suse.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [patch v3] mm, page_alloc: reintroduce page allocation stall
- warning
-Message-ID: <20260331030102.GA615109@shakeel.butt@linux.dev>
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
- <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
- <58a10940-e44c-a120-dd6e-ee9f480c4946@google.com>
- <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=flIILcqn;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A27E6001A;
+	Tue, 31 Mar 2026 03:04:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85681C4CEF7;
+	Tue, 31 Mar 2026 03:04:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774926286;
+	bh=cvVmqCKIqLKepAb7/80JpYxt9nnAQhs9tMixAvmVgaw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=flIILcqnDvljYA6KkCUeMvcGhPuCzNuoPmsc+nmaIP4sbX4GrpCTV4G5GPLX5DiE7
+	 imZ7GclJ33lI56dY9oJJBu5y2+z1gsk6l2rgrVa7fpnAMgn+39FZR/Y/d+1CZqT4Fk
+	 UpuFeymZPn772kqHgKSkqBpdHKGiJhGi/efGeYLeaSEsBbBq+IjrnHzjiMS7hdfpU1
+	 F366BYEv7zJHVVVaRRRRee0GQIPySZEzUO8dTnqkhLfAymbkY56bj8hkPKmN7IDr9y
+	 6oT5g6KTG0BtUalGpkzKgYfGZ6d7Q0RxGK4ILi2/lYOJo5u2zBIb2lhGsThkxpK94q
+	 9Z5s9oUgVurcw==
+Date: Tue, 31 Mar 2026 12:04:44 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH V1 2/2] lib/tests/slub_kunit: add a test case for
+ {kmalloc,kfree}_nolock
+Message-ID: <acs5zLWBo-eQnQme@hyeyoo>
+References: <20260330120517.104743-1-harry@kernel.org>
+ <20260330120517.104743-3-harry@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <371c86c8-1d47-bd70-b74c-769842718b1f@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260330120517.104743-3-harry@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40E654000D
-X-Stat-Signature: 3zro6t58z6mfyhbxsw9ueqskxo4px48c
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774926159-952985
-X-HE-Meta: U2FsdGVkX18TcBTjzmaevoKPj7GUVNMpB+7wjTJV+f0LTZsIhxjO89dgHu/sPYfYc+hyRyzudpHYWfJl43auIeEjSrZ1XqEpZ2WLE01Ila61RsN9RwL/gkpLq82/ObnOziSw66+NpYO5aHJhdm3mZt/BMzWj6+q+6/slIScCrNJWpaLs2eVedCTP8+bOnOWZj0qyCKye9Yk/ePRI7CMGmcwniURCDEvsAVssqHfRL+5SPk4D8tQPWcEs5e0pvyo2dgqYeDfta61dQQ2N5GMXCccfvH6BT57sVbtTaMUDAp207azofzWEEEKZQNkmWJFbeMQbHqcBobeLRjQUdm40GbO8rDDO+l+0+m7Un+Mrh0TbTh8WV+PDD/CQJxNVHHEQ3Jur/TMFw6EtOmKC4AZ3w2JcJFz+3Q5bMEhaYejYFOaRY6V+4lcyl9rVlDJtQqC5wNLGUQj425RfmX4Ftkqbn0owvR4k+2lphM7O+VjC9enHEvB5wqCUvLRJutj3lGu1Yr/J383IBCU2320m8a2ATLte25EvDB2zinocEbs0nw6bYypKBB58OL+rW4sEgeBDIn7T0XirK3j+63H+3ZgbT/czs//DzlYEapF0nyH/hGIFAG/83hlxDSZcduT+oGGkedt1pU/ueapebRM9c41GaaMQK2FUHcg++luDouHl87KLmUFBalZzoQwjLUsHln9a7VxOEtL/BzUXt4P4ptsTFT/hFs/9SU+ahA0vpZlPSmfjZUmv6jdtcxPEXvhm75QApAtCIZUGaFfY1X5M6mjQrVqZRdICA38p/N1viparaJCMLtOXYK7rmee+UEmerEGbm1mcbDRhT9bm5jQl1GNZ3qcIhtPMixdcoJIIRnVnxRmA3hAv2Lu7YpRWHm8tNI3+H7i0OxFjP72T1v7VyesnURDDfc0DVnOid4CBG3uC+5CvQTtinWNGIz6aWNH+Uqnx4WcL1pcTwbpKQEZ+IBq
- fbM7eHZ7
- ZpFUHUTs3xHKPUfpzCx3haXo15NoxYcaU4s8H27GjmjMEaidS5dG//3to5607LdUxWaRxKQe2NRM8eCM3HTHkMwqtdQ69tnQ79ZNPHWZem9an5roRTDKJD/B4ZyOgvkC35pSkwFFx+kB2nnjqIYuJNAwUI+4jMzmfxI0SkB/tnniuvOSpe/1LIu1cFwSvf6gBYjJeRHLN75bQwq4EOOR8BRV3Eg2BOVJEmTjlM2zHZ4wROCUl/8i+M8nCRVMWMUwYa/ClLkXbC+sUX4lUuUPwpyOaLXqnII5pc8RnCvDnGKGZQtk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E382B1C0003
+X-Stat-Signature: 7fx6uprcyfwtnugxkzx8975ke3kfrkct
+X-HE-Tag: 1774926287-56499
+X-HE-Meta: U2FsdGVkX19GH0DLQctNAGJvirkZiRawSBWV4AuNXT792C0e10FHjPtyqm01tI6+j7SIj30Aj4PPD20mjRaLV5W26W6uYF+NVPsZync1EDIGiUzRhKYF3R9JQwBRpTMH64hA2keVKvGfzE/IWRv0GrihymkAEgMcDfambBmW18WszL67nqvKKmZs5CW8yGK8NJmhnk5Iz1r0EL4yS67TgyBQs8H5TRmjrWlUBISD3pYcyVQReq4tmtEQDGLVggWaGaX1+EWrmSCyh0vnZi0RUnf3yRrLbJB/rdhnNdX4YYsW46tVtzMRbkn4gTp7INGEzwfCa/93h2J3MEQGmHCX3KJT11QMaPau2IZImmP7xvokeKhlh5RJzvdk0xICe33/MWVWsKPvLdmFVnMzRMyeCI8Gs2BnhK0mzN+JhcA98U9myFvC5or7tNM2OvMwil6caRmQX/aMFqfwGaJ8mjRq5CWtJaG5tiul/BQb/Koz4FUL7aYNe/cmkIINOmjQe0kd0ZqV99VKVYuQ2mhpf97RI9nA0LpvfjQlWU45CKBBElfl8XY1MDQpN5zv+pcktcXi++GsCGebLSw4QGumyEP5MsFKQNO+R4zegbrVAOZgRHhzmpJetD9YNm6cv2Dxdz5uAyqsI/sXgCB/SyfXFedbke/NknplDIZO+liOnBboAQ7cEGQ7ayBfRhYezi8qz5G4rrWcvMI9otOiWgJKYythjNxJC17Ghvpf672oUxGXVD9Ilof5FrYu7iY+bkgbcDRH6+3y4hd5XHvH05K/zuRnEl9EetWjhPCtUa9LLhn85UO6KH35z5+3LTfTdaazM4zZq5MDQsrSGE2SasTOgb1F/qPO/mEq6ixAY80HkKgGfxRV6JSO11OjpLVt5u7e8rfRc3cnrd5vyw/lis9J9nNhW/Anb7w3S56qyFyliMhUczaPnPOmKLAAB4QZzAnN0Bcn5m+EuoLmf/FKUR9OP7q
+ wfAg4peL
+ cb7qrIYh3JFycEGHZ3t8TR3oqHJDkupd4F64P2JFMHX5YLGjlosIzBDris+F3I/RDCczfsFKytt+ovTUWOO4i9Si4Scc27W4ZuBCXC2EjdHbHy0/Sn9DVWI2XqM7f61wUK7FAvEuvLw9OS8/2AJdVt2pD0IGaeI4HiPs2CBSEdgG3pMTXuPJ3xOBaM8E4dl3z318RlscVGuFYKSRvrsEzACCXvzUtOYHI69Mh/nQY8gdeNZZLXwBI5Jo+7QwlM7X/c6aWbCkFAlvbjX9x/vBC1ztgo38NoLW1Gg4SQ6/einrhxpsYYUIjB+KXKvGadjDLuZdEY2m+ifn9huh4npo+76qV2WhPzi73CAaORqbxCSQJIYOiIq6KLUP2vT53gyt+0ncI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 06:20:57PM -0700, David Rientjes wrote:
-> Previously, we had warnings when a single page allocation took longer
-> than reasonably expected.  This was introduced in commit 63f53dea0c98
-> ("mm: warn about allocations which stall for too long").
+On Mon, Mar 30, 2026 at 09:05:16PM +0900, Harry Yoo (Oracle) wrote:
+> Testing invocation of {kmalloc,kfree}_nolock() during kmalloc() or
+> kfree() is tricky, and it is even harder to ensure that slowpaths are
+> properly tested. Lack of such testing has led to late discovery of
+> the bug fixed by commit a1e244a9f177 ("mm/slab: use prandom if
+> !allow_spin").
 > 
-> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-> warn about allocations which stall for too long") because it was possible
-> to generate memory pressure that would effectively stall further progress
-> through printk execution.
+> Add a slub_kunit test that allocates and frees objects in a tight loop
+> while a perf event triggers NMIs on the same task, invoking
+> {kmalloc,kfree}_nolock() from the NMI handler.
 > 
-> Page allocation stalls in excess of 10 seconds are always useful to debug
-> because they can result in severe userspace unresponsiveness.  Adding
-> this artifact can be used to correlate with userspace going out to lunch
-> and to understand the state of memory at the time.
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
+>  lib/tests/slub_kunit.c | 88 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
 > 
-> There should be a reasonable expectation that this warning will never
-> trigger given it is very passive, it will only be emitted when a page
-> allocation takes longer than 10 seconds.  If it does trigger, this
-> reveals an issue that should be fixed: a single page allocation should
-> never loop for more than 10 seconds without oom killing to make memory
-> available.
-> 
-> Unlike the original implementation, this implementation only reports
-> stalls once for the system every 10 seconds.  Otherwise, many concurrent
-> reclaimers could spam the kernel log unnecessarily.  Stalls are only
-> reported when calling into direct reclaim.
-> 
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: David Rientjes <rientjes@google.com>
+> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+> index 848b682a2d70..2ed5f90a748a 100644
+> --- a/lib/tests/slub_kunit.c
+> +++ b/lib/tests/slub_kunit.c
+> +static void test_kmalloc_kfree_nolock(struct kunit *test)
+> +{
+> +	int i, j;
+> +	struct nmi_context ctx = { .test = test };
+> +	struct perf_event *event;
+> +	bool alloc_fail = false;
+> +
+> +	event = perf_event_create_kernel_counter(&nmi_hw_attr, -1, current,
+> +						 kmalloc_kfree_nolock_in_nmi,
+> +						 &ctx);
+> +	if (IS_ERR(event))
+> +		kunit_skip(test, "Failed to create perf event");
+> +	ctx.event = event;
+> +	perf_event_enable(ctx.event);
+> +	for (i = 0; i < REPEAT_TIMES; i++) {
+> +		for (j = 0; j < LOOP_SIZE; j++) {
+> +			gfp_t gfp = (i % 2) ? 0 : __GFP_ACCOUNT;
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+One thing sashiko pointed out [1]: '0' as gfp for kmalloc() is
+unnecessarily restrictive. (it's not kmalloc_nolock()!), it should be:
 
-I am hoping that the reason you are reintroducing these warnings is
-because you already are seeing such cases in your production
-environment. Do you have anything interesting to share?
+`gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;`
+
+[1] https://sashiko.dev/#/patchset/20260330120517.104743-1-harry%40kernel.org
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
