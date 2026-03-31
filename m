@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4355FF60D0
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:49:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAE7FF60D0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:49:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 408F26B0095; Tue, 31 Mar 2026 04:49:33 -0400 (EDT)
+	id B5C156B0098; Tue, 31 Mar 2026 04:49:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E0416B0096; Tue, 31 Mar 2026 04:49:33 -0400 (EDT)
+	id B0CBA6B0099; Tue, 31 Mar 2026 04:49:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31DD56B0098; Tue, 31 Mar 2026 04:49:33 -0400 (EDT)
+	id A49FE6B009B; Tue, 31 Mar 2026 04:49:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2121B6B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:49:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE4DF13BD1D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:49:32 +0000 (UTC)
-X-FDA: 84605734584.17.12E9FB9
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8BACF14000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:49:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KnhQvPBt;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 93C256B0098
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:49:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29E7E1B8811
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:49:48 +0000 (UTC)
+X-FDA: 84605735256.03.2314B69
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3C4714000A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:49:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ZZk/NHNk";
+	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774946986; a=rsa-sha256;
+	cv=none;
+	b=kVXEYMkT/K3sBoUh+HErV5wi6wdSNIgB76iL7EAUzs2ECrpTjvdD82gPnulHPLNDQTNFQs
+	W+s4F4Ys/mrIViOV/jcfQ401cDrZhqRNtGxkih/un3uNoQ53NH/Bga5+CyLH54je9SfP4f
+	PqZte/R+bD5Ss4cwVa2q+2NQ0s+H6/I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774946970;
+	s=arc-20220608; t=1774946986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZC6OiONE+MNTxDLMVZqfRM/eFX3r4XWu/MWb5nj2URs=;
-	b=5jNcPYsArFvJSPA19rc01F05seSfcoFBFU5D0UDlX/xRvPokWvN4+P73RWdwHN/HWNRRzF
-	m5CryOi6903BN4oeHCS820RUDYlZoH2pUCIk89JTgrXyp5saf8I0qqVje7Y1tdFPrqiqdg
-	bueJqJiafeuCLufbnuivMGOGg5qfFF0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774946970; a=rsa-sha256;
-	cv=none;
-	b=xFHWVll0+9zKbewizr6M29KM0DRPdZyj6f+t9NxL3Djj3YSJmvvnfWUmTldz29J0tPcGKC
-	+mo2JaX1iJEAy/cvSD5OHpLbKcYSxf/L8EIzDjzuQ0TtDC//8qr82otRnjBWDDYNTBil5T
-	oFjwWSvoKezLK3iQWrWyeR81Mo5ouJk=
+	bh=Ylwj5m6FghjB84mXTKNcHoRC2MN8ceAn6QL5hBDySUA=;
+	b=X/54CRhuD9CEDw+RDF0wjYibaNCmYZEHEF4F3uB5UnIjOBySirWotUQrhr2P0elszMcGqu
+	QwMqWo+dz83ZzhFGmlWroY876A2xILdAHuEikLXEFh2r2GoJ1i8x9KnGIscukuQCM0bsWM
+	qPf+sJNKDAi4Qz6dl5spIIS6ACxYcPA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KnhQvPBt;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774946966; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ZC6OiONE+MNTxDLMVZqfRM/eFX3r4XWu/MWb5nj2URs=;
-	b=KnhQvPBtEM24G4MyxyK3GWWc9FMz529gyharYOb/G7Pt2+Ta4ZAa5uEsGnhjJx/94PiDSXpMUmRKdMBUsYvYT2vcJSePZC55NXy75XLTcfvW+vnd+sfp1AOMyXp4QShfvibbhzshgAaPRVOnTPFnQm11fyYgwPv94xJedUDFlhY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X03pAZZ_1774946964;
-Received: from 30.74.144.129(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X03pAZZ_1774946964 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 31 Mar 2026 16:49:25 +0800
-Message-ID: <f2d49bdc-1103-4804-88ce-fb9902fe2164@linux.alibaba.com>
-Date: Tue, 31 Mar 2026 16:49:22 +0800
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ZZk/NHNk";
+	spf=pass (imf01.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <f1973455-6af0-448f-b657-274bbf64146b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774946983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ylwj5m6FghjB84mXTKNcHoRC2MN8ceAn6QL5hBDySUA=;
+	b=ZZk/NHNk047P/vzjYveNrefMrYGdRud2b9vPCbkuxQN3D9DrSIjFOUUbzBTRsDW+pVUQlS
+	prWk41QkBO89u5vWeoIKpNJfWcbuqivwxHTYn7KLlOk4VTNVpExSEx4hKTh45WaO8x27rf
+	3b/j4t9xeVn1G08coiCsGW7ief9H56A=
+Date: Tue, 31 Mar 2026 16:48:58 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/12] mm/vmscan: remove sc->file_taken
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-10-b53a3678513c@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260329-mglru-reclaim-v2-10-b53a3678513c@tencent.com>
+Subject: Re: [akpm-mm:mm-new 193/194] lib/alloc_tag.c:815:25: sparse: sparse:
+ cast removes address space '__rcu' of expression
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+References: <202603291211.YhY0R0se-lkp@intel.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <202603291211.YhY0R0se-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8BACF14000E
-X-Stat-Signature: kq3ou1c9d8ssxdcmbook9k5qf7r538zt
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774946969-499577
-X-HE-Meta: U2FsdGVkX18wXxqC+ZL1t813wDhAn1TiWBFfNL3AOLrzWhHvfSB/zSdmg2YUykC5VW003cu7dwkG61AgFG73LCxLlwou+ucvPnlsq3oOxsj6/s42nh3518Oe+68gZtHKRd6yX5VNs3vxj/e1kzWsylWBi8sf9bhFE/HbNPo/P+P/QaB7cwsE5Hy/0Vz4MF9Se6Xj7iAHZeh5BWeKgoPTwY9s4RrCkgGz+L30z2l4MbSOhms5GLYcuV8adTE2p5Qd9R2w/pudW3qQ3/UrhRwiizJgDEawSh8Pa2/XLltGYJMmGL+85Pv0jrIrXs2tRrKL8S+3KtIZYKddpAcp6hBONr/2aB1GBzp8YOM8ji6n1KVJ8BS+GxoI3qV0EEoskF42GFJc1eX+1FTbet3Z/byTfOtF1eLmD4RnsrngeFkF7EiMaRr41COKPwtXZdFlG9a0A/MBlvpFnXhjMtpoEALsXTomAr0whlF90M4jMVYt9bFLKg5pg3f2NlCnRjKGaU79sLTj3nHRM2Goy3mAbnY9uC/tPa3meQPqZk182cM/QaFT9ChThGjtm1wvfPu0y990L0A050RpHqXaqulSY3n1nbtsIVW+ZOBkSWttecpaiKQ7SR6u4Bu+1Fox6LNLJw1kpZZN+wKuUSC0m9P0KvwnyW1EM9fEvAvQe6SeR0vIGC2QjuZ2QRKAYFjqGNAPCC4Twu4Ir8ah1D6vXfF8bwqHLL4i7v6/EHGFrjQ+GAjTxBjj8KPUvBZRUO3VzE+up6HSh/3VNnE4HF+g9ANt4IKgmqxM30mop76dz30S0wifOovA33/b/rkxpcEYzgZI866RuwUZIgLkSk1I9X6QWpH6mH3Qr+74eTrJo7BAjA4aob6e0wSzoPwMtH0TIz4EpXBlnl2YxOguNdQBw4q9+gbV9uLEn8e8TgzWcJg4gHj1Yk0WH34bpxO1ZmpaDMIYFQp/MqMdCSDe5Ii8Y6vEQ3d
- Pds/kzAQ
- JtgD1uK9cWwxMtvQuIMXtPMtEsIQCMDEM7io8G1g2PzprlxTV1dTRxqOToNrTx8zbxmjJOBMJ3I4emk3qM8vo7RNjD6wvTVuzpNSb2D50KglB7RQ9G3gQhcTo2sJ/BzghJU0hkwffXN0PTYp8d78qiuVn1btd9ayhC/X7pvaUsWzJbQh6LYXfroQ60udJ5JhQ6pF4UByo0h9zsPrYJ/ZsWEZ/zKbloKVZ2p7PQPgSAKPoaKJzZAzfjk4VenIBgaFY+abTTpiY58eXfEBEGRyTgy1Z6F9lsCFSlMksUUmt9gpzeHC9XFUWcH+H6guM34RPoTp/ScIGHf32iPlgJNwxv9ciPqOKSlc+SzKB7WdbWwQR+pEdz8gyEggjevXvr99cWbVi8MhLxusyrMgEP1J/MT0htXezi1z5+viu2vMNs2taCkHsj8h5pVlhbq6FIoYCsAu4CQUosUquKcAShr+2y0CeixVy2kYa4p+I5SgNMV19VMIqDE9GdNLYkbjO/HCcONQ0fBLgVG7qyzXNrW0mD8kwpA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3C4714000A
+X-Stat-Signature: iaji8sf6q7ajucbq9w3fy5zpizo745f8
+X-HE-Tag: 1774946985-152024
+X-HE-Meta: U2FsdGVkX19/OEYY5WC5KkUowtz4zlY3wqfSaRE48Eqguyi5MXPlVllnLGb4DIQ7PEGraCxwepKD7KsXpe6+WEK5BQPUPtlVVdKJ5koXRTakST2gGVBQZLKPPijlYzKQOWZZq3Vq1gC6jwPgvQgbPzcAhnzVZ/AtQg125Y7sBhUKLcDg3zjAwoitS/IiKOcz/ACnGJhW0KGKEfgYpQ1EnJ+XLfMyhoXtoSOaEV1+vOpzlR60EC57j5uJVufZdS5VacvXKkDeNhXSbIEOT+RM9BWlJvZ0oklasM1CFq3ZNWpQ6bdYnz0QyeD2jEK3bVt5lm3VTteMWCHCUqMYhe9LFEcwD8op+Lg+xfDY7jE5u9u9yUZ8vOAV0Ovw97EfLwaNrxVmw20SiWoPjujnElQZXhOhuWCB/VPymG+eqo4jq8Cc+muSyMa+Ka3il/AhHg4tcCXeUJ6wN5lxSD/jqJ7VhB8yKN+5mHBTT0qa9Wu0ciBlbdet70wB4isma7bKvVlVnKCf41HRE9T1Jq2/Z9iIai/59J4CrxZqIgqDXDvHp6bq+8O2FUG0F+bU/FF9HLNne8bl+wTfY6x+nd3Ok5P1zVPOcJZ9LRytboq/75noanoyIlcQbWwPl3x7muY5a1ulz7LNl6/WJ0vHfZp/ZXlvAFOWjU4Y5VsINCpzKNQ3/FIsvy/okIN2GKqafh9nhGRw7JunG8kf/rULitdDqrfXgxl6KIbE8v4jua6XY+NyEMrv+QErrfjghtkTjcuuR1rpGOO3hj9SXS5Kya9xEaYWNlOPE7lYM/6esi/v3zchOB9AFg/G+Xbpaikt/DgkYPeRvCH7At4Adw2FRXrIcLM41CHJDAtxAvJbThbAEhmeEZQ52bVLVEdualL1/trpbDqe1unmdMqBtJwmYIkkDTAZddWxTNDJOoX876ZlAT0uXGZr++uoGq0+V6Uxe1yhsdfdXDaexRQjZAZ2+whPG33
+ j+4CJkcg
+ dDZQXyA7ifXHIRrPG55HOFQ7yKd/lPQJbiqzVL3Oh5ZckDprO33rHUFMUB8wdUs68pviDLhTw/YbcEIfnE9ywN36+zYqQeVXs1rtm1605C2CvlW+Pgv92ri7A7F3Zyw+4l9EuETNu27Um6/20/kE8fJtk5Hu/FSX2eW6rirm4kg9LbNCY5LZi3imDgCDs7BWWkBkLTLGQCLFt/rTOoWeextekifLjGN7H3tOaFHWtdPeWFmlhRWdt1sSIOiurI+Ashqb0lApuZB5k7zy2s8QVmq8w4gafnmwGEJBk/LovCZrk0SOano54tUkg+qCt6zsRMTtRJWj0Q05DNLbUW6itlYu659FpCACUmtIO8fVCFa6y3Oc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,17 +91,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi
 
 
-On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> No one is using it now, just remove it.
-> 
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+On 2026/3/29 12:36, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   df2267b6380964f1305128001f05bc043ddf1f37
+> commit: 8bee7b4b574f880ff2c7491212e2ef01cd82f2fd [193/194] mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+> config: openrisc-randconfig-r121-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291211.YhY0R0se-lkp@intel.com/config)
+> compiler: or1k-linux-gcc (GCC) 10.5.0
+> sparse: v0.6.5-rc1
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291211.YhY0R0se-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202603291211.YhY0R0se-lkp@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+>>> lib/alloc_tag.c:815:25: sparse: sparse: cast removes address space '__rcu' of expression
+>>> lib/alloc_tag.c:815:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
+>     lib/alloc_tag.c:815:25: sparse:    void ( [noderef] __rcu * )( ... )
+>     lib/alloc_tag.c:815:25: sparse:    void ( * )( ... )
+>     lib/alloc_tag.c:828:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+>     lib/alloc_tag.c:828:9: sparse:    void ( [noderef] __rcu * )( ... )
+>     lib/alloc_tag.c:828:9: sparse:    void ( * )( ... )
+>
+> vim +/__rcu +815 lib/alloc_tag.c
+>
+>     802	
+>     803	typedef void (*alloc_tag_add_func)(unsigned long pfn);
+>     804	static alloc_tag_add_func __rcu alloc_tag_add_early_pfn_ptr __refdata =
+>     805			__alloc_tag_add_early_pfn;
+>     806	
+>     807	void alloc_tag_add_early_pfn(unsigned long pfn)
+>     808	{
+>     809		alloc_tag_add_func alloc_tag_add;
+>     810	
+>     811		if (static_key_enabled(&mem_profiling_compressed))
+>     812			return;
+>     813	
+>     814		rcu_read_lock();
+>   > 815		alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
+>     816		if (alloc_tag_add)
+>     817			alloc_tag_add(pfn);
+>     818		rcu_read_unlock();
+>     819	}
+>     820	
+>
+Thanks.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+The v4 patch I've just posted has fixed the issue. Thanks for your report.
+
+
+Thanks
+
+Hao
+
+
 
