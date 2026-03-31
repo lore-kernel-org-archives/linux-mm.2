@@ -4,134 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7129810F92F1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:14:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BC8810F92EB
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B59B06B0092; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
+	id DFBFC6B0092; Tue, 31 Mar 2026 15:21:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE3806B0095; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
+	id DAD006B0095; Tue, 31 Mar 2026 15:21:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D1EF6B0096; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
+	id CC29C6B0096; Tue, 31 Mar 2026 15:21:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 883FB6B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 242A0140368
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:14:22 +0000 (UTC)
-X-FDA: 84607309164.04.A647C3C
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DDD741C0004
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:14:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QOQxu0Lb;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774984460; a=rsa-sha256;
-	cv=pass;
-	b=SSVgoTgcioPdlHNuWfZL5W2pKhJl7zvO6H0+bUqHABvZeqfJ2kHCACDyWK8i6mgybMN2sX
-	ftGcqcm4ttDdnU1uSiZBHozPYl4mxlrp/H7M6t8i/q0TOpz+E8rPXu2N6aH1/Asj65RV+C
-	SowI+T3u96ANJ0by3Sf6ZaeD81aPvxo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774984460;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2EC6B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:21:10 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7318613AB4B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:21:10 +0000 (UTC)
+X-FDA: 84607326300.25.08729E9
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C411B20004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:21:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q1Zrcu22;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774984868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
-	b=lqf/+m0Ez4Lt6Bw4TRdzgMNX8aWQIy5rO26cC8rCiLowyzdJsB3goWR4TAzSU5ejU0eKJ3
-	CiX3luVR8U2RgfK5KB5SC+a88ZcAvuy2gsQXzuPJIsPEReUMrMB1GuXCf7LDG0ubnbBx+s
-	6oSOd1FABGljsdU43CAADzwVVKVk/fY=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QOQxu0Lb;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-661b16ac011so11447898a12.2
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:14:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774984458; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EAc6OLqecoHwmT8S1z7WXECJiZKkRq0m+BMuLQM9tTiM/nhqJUgACqsUDBmSB3HHdi
-         lMtVyFygIXQHSEr8prpMeryUnR7puf/Hq1SEAlAwUPsmkAohDWiT3gxKPkz/Qxayal3S
-         9S4+73aeLAkKyKrwhvzITDKKf87QWDFlkgVg2vj+WAHoSQtO3J+yRYF3osDLm/ZhscOY
-         1GY4Xa7rHbSbVDhpTqSezhqgTFAxseK9rc1WVgl2P/nlLWOkA0Rk+fmwDmmlFBK8zy80
-         fNatI36mRtHCNZMVpvquJA39gYZW/8KUqk5+uGApZl35p1itlfpvCXQTmcRwjCtu3/c0
-         966g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
-        fh=U8XvdNpgkMMEoGh4cM+fv33In7/Y4uc9/4mC7OQNClI=;
-        b=DwKhUniKtqHh8AhLM/Xiuj58Y7fgEgVjLdXQVAVbm7j7IMfPgxJqxSGfM/no9w8v5+
-         eDQm4jLeuRBUO284G6lOy1eZhQNZ4SsFdB7hkGCkeqP9b27/kgP6tUGIWVDsj1sptTnc
-         GACAsCYmFj53Mdw/NoueESr6xQPmf6Y6Ug+J8bHwKkww1PwOhG1hsUqjAKm3Vp1WbXMy
-         U32S8HcI+5+Iag2zsNe6pRXrFDrEmAseZ0FB1YLOqL3ppVyKNssvkLW0tewFbCxm6tFD
-         Xq0LSbvIlXB69tnOHQOWaRcsVEXKGeqzsAPPK+4NJ5CbkFyCpSoFflRuaVxOOjJg0OW+
-         MG2A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=LJE3PpkFeGHJrMNwgWqXHyr2ZWENeuionHCcPXCokI0=;
+	b=3AbwDRRKSNm4FQkfLPkins+RFvio6hKYPMThFDGcJ2q/z1P8o//R/1VvpIN6EXNV4ysNvB
+	mVQPNf9fwKbtm4G/FMe5BpDn4BUQWGW3Ta7u0ceB8pDtxiLvkGcOyc7cBX0Fdz/k1Iehy+
+	voaSGWX2tY4CIpqNanG5pKsr7kvp75Q=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q1Zrcu22;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774984868; a=rsa-sha256;
+	cv=none;
+	b=H3NamPJwUjijb9FSuR0+cUZEa4nnNg/4WgoJcJCKhxgyVTHrQ51L8YLWZ05BgtMRYTvJZY
+	zQlnvjAs2lIAk5q5gw63Nx7Rd3was6jPqCpQd8I0XIbahBmqpvLlaIXKChD3bIOyfwypZO
+	SvN8DSNruKL1f2cPiL33M+GTXcIrNZQ=
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-40efc77933fso3837918fac.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774984458; x=1775589258; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774984868; x=1775589668; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
-        b=QOQxu0LbOVwIMH2vkcvrgWjTDMEBq8iwGaeaooxE+pdPafu6pVlGK3HTPsd0o695ML
-         wnOzOUAcdImeN+Zux+gTGFhkBZGEbABcpN6q5R3SXFA5MFD6Nqi1TiaiVUt/zbNFq/Hv
-         Do6L4cEXqXHGuXDlcGtk+k7eT3sY/jZd1UnLcNY3anpMsr/QqSA29f8Tpni+x2Vsz1WU
-         pcPo64SaaNoLBiCkd+9w1EsNIFyKyvfOdc/XMCuaSrukBOhnk2cIsvYjIXt1OZ3bYX7D
-         ABIkN/APSrfbTkuymnZ1cAdr3wnYp3FJmjmtIgNOOxRHc7fAp3yuzIbtDw3DY1Ko6gPr
-         QZpg==
+        bh=LJE3PpkFeGHJrMNwgWqXHyr2ZWENeuionHCcPXCokI0=;
+        b=q1Zrcu22dRp4mKpnByWUOFCCquEeBVXF77onepOyGD+dSq/RKYwUB8HO7R1YwxiEeu
+         uiAz93akewMP2SnC1fVcWuvbr23DwwXzmUlgyXMD3fujFCqlSPxTlFrG38DZTdWRjnpZ
+         6WvwFNKTDaflIF4QZ3S/H/EndXCD4oIEFkyWAA3tSlsAVC8svlwuRQ1jKJGiH3Vmzsml
+         b5+aHueMQOR+8xXRmRUA/0FQlfjaL5+ARB9zu0gmclY+eZgCXGNcxBO9oQyJU4GerO16
+         Er1oJGBTqBItZ4GuT7oYKh/mAY5LM2sPUzIIeewpj7IOxB9GIdKH5VZ8rrncoO5ee+9r
+         J3cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774984458; x=1775589258;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774984868; x=1775589668;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
-        b=r52fIqY4JE3FwLcUA9+NxpeY2b1zWTe9Z5I0MC9XmAKokQRntzRUZmCZk5ztENdNn+
-         vaTkzcTCR2IWybxhm/fU3HRq/F8RUalroxvgYaE3LWgOPYVkJwbm/qHSpoD0hqPTO9v7
-         a8LexFAYghurs6Z1tglirI2Oa+WafynYYxAbA8dHJaohmmIuOgZu6T18fP4QJ9TQeZzI
-         xCZtCXhWJNDEmU5hZxASxhNnmNHlEXCcn4HDc9ga4tKt4X0UBsPsqMNFz7Gu4bN7tCWI
-         LCmTMTvxH8u9Wc0MCtDdYWeAWzWx1KX0p0Z3MYhGlSoG67sDv0KAjPOMoppbEUiLkj+/
-         w6Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCWB0GRDttE1w0iKsOlJPpEZMY0Nsq+W1QXp937uVKXoQqumoDKmtiWsq353LFjwNt7L5MnRsQCaGg==@kvack.org
-X-Gm-Message-State: AOJu0Yx1e8RkSJeReNtPg4NhJuYuv2gbMYOZyvE5Md0x5oh3tcJTVs8D
-	CJ8BLwZxC6PJrGPClWsVVTeoaqLJ7DVeOJIu7uKlMJQo5OzPFrVdDUaMwHoKyuJlqXI2Z/Q8djz
-	50iBhDiwZgKXfVWmkUDRM2684aTHA12sS/qPR6hA6Aw==
-X-Gm-Gg: ATEYQzxZ7dJ1lQ6qjSO/Qgy30oW2NU6k+xtNo9gkveKXFu5QoGiGugGhWwyaVlNIxsE
-	QEkjPrQ25oYs/mjCptREuWIPxnrUZI+HTsa1jUudPAfM2tQ4jGtb2HLKpfSAQDHoUtZfweiCIeS
-	ME4VWCNMwRXoZV68+AzbgkrrYpMLjQHFi5A7LJKTBGA/Emb7LqgfuaPEBgtECbXI1dpXKvxxIqU
-	0ZKBy/+bqnGBc5einoiYIxZIoHCCJu/PxNMrgtlm5s62gsF4iq1TVkO0N+SMSWo5n5XmfKVAcUT
-	8dwd1GMbM9IHIisTJzwpn5pm3BQXzFytgkZDqg==
-X-Received: by 2002:a05:6402:4308:b0:66c:4d3c:fe2f with SMTP id
- 4fb4d7f45d1cf-66db02aae4dmr430347a12.7.1774984457471; Tue, 31 Mar 2026
- 12:14:17 -0700 (PDT)
+        bh=LJE3PpkFeGHJrMNwgWqXHyr2ZWENeuionHCcPXCokI0=;
+        b=MMHcdGRy+rIK8kj2A2KKOET87HZ1jAo95/Pe5IThL7nTjH/bzbp3VttAoolNqBAtfE
+         68XdWEbqn0JF+1hy8h62rh57ZuTSo+OvvdRwimMw3qOJ/CfMmvlfrnlB5NGC4ytGfs2s
+         9Qzjo58TMUO8fD5Onn4zgamSUhEBadrpiLMZNg3RxCfAxN6tpqV7bxIH4DXGN+GAZXSV
+         1c/OLhILBX20ZEaZd9Lll3LL0TAsiq6UwN/FnsebYxa2EwtaZGltWqcW4drR8Y5boXR7
+         uGxqpPZfvyhNkUAwvNuFSwrcWYNh2IZRpluWIbVKXsJ0ucJtUeNSyAFS74pqNu+BYOvF
+         KR4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUpuLeBR/y2jFvJG5tRCC0TqDU2XfbvVbA3ze2pCxyaS0h6KLQMOWhTlTOs5OBaekvasOq+Gu5KCA==@kvack.org
+X-Gm-Message-State: AOJu0YyOKqInufiMjRBxK2GhpNJRjpY73IfIpFTsSo4uEUBPxzIKUhPx
+	ng4TO07EDIB2QapcTSo2oPcNnNXVG5Xq4K2b/OJsaW4gs+SJha6BNPVz
+X-Gm-Gg: ATEYQzy+p9WwK1fmwo/vCg9/hyQAxFBnVNnNasaoEHzyz4F4z0NxFUVCIsxf7IKopQK
+	wdWJQQRZeALlBa5htfIWZO9+eXnBQLuzYAYXI7XRf9Ndo+dvNz4qsmCyZd0AHAMCSx8cnWKCsdj
+	ExumBuTVf/0Pw5E+KUDwyy0uMaxkE2/tVPwoQat35oAtijN7vg6t125MXa6njIIoE7/SV7pnODF
+	xGZd8nlgwKZ59l57i8y9w6ZU1bTanl192C4CwTwOQpgvb7rVtNN/Vj6VMYvOp5VcRhVLmhZP12q
+	8KRobT9VjOVLh2M315WkqEFDnvzEeajnk9HFTXSTTc/TgrwAe6/mwCkdqAjhTo3LVx0ZAo4Eokz
+	h1SPiF3t8/AAmaCoY/aJfjNUQ9y3YMWwasRL7xrRakfFgjJrUDtYxr3NoCeYfWCwGdIFfx5KN8e
+	A5XQcXWWc4SR/eoSmlFOO5cw==
+X-Received: by 2002:a05:6871:7601:b0:41c:e4:f93b with SMTP id 586e51a60fabf-422d0000ea4mr505280fac.43.1774984867505;
+        Tue, 31 Mar 2026 12:21:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:57::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d04501478sm7851874fac.0.2026.03.31.12.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 12:21:07 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Gregory Price <gourry@gourry.net>,
+	Jackie Liu <liu.yun@linux.dev>,
+	joshua.hahnjy@gmail.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
+Date: Tue, 31 Mar 2026 12:21:04 -0700
+Message-ID: <20260331192105.109847-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260331120110.9136f80efa9c41146f1b92a2@linux-foundation.org>
+References: 
 MIME-Version: 1.0
-References: <20260331175456.4065874-1-luca.boccassi@gmail.com>
- <CA+CK2bB0bMxW721Q+SzFJENe4X0_GwcOh83R-mm1V5dig3oP3A@mail.gmail.com> <CAMw=ZnQZm_k_mMQPmKwuBtkFyXXgAn9MK1NzmVbZst4nGu6xhw@mail.gmail.com>
-In-Reply-To: <CAMw=ZnQZm_k_mMQPmKwuBtkFyXXgAn9MK1NzmVbZst4nGu6xhw@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 31 Mar 2026 15:13:40 -0400
-X-Gm-Features: AQROBzDlFd9ZpXe2hTLzsg799tWUQs2xMihrXKRkRQAFEGJt31hcnoPOvpe85WA
-Message-ID: <CA+CK2bDL9=uNmy9hq=3D-w=MHYsY82FNCkqvNeNpnTnX6meYRA@mail.gmail.com>
-Subject: Re: [PATCH] liveupdate: truncate getfile name to NAME_MAX
-To: Luca Boccassi <luca.boccassi@gmail.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DDD741C0004
-X-Stat-Signature: 3qxzt4bb1bhkz1j5ntpqm7q3ywn7ns35
-X-HE-Tag: 1774984459-71946
-X-HE-Meta: U2FsdGVkX19AIeK2fddnCxJ3z9XqURczI2X5opkJO3TzCa3XfX1RabUwtufAyexGzhnOLFcCYT2isnvmKblqd8p8gUT6bkeClzp3FA9OzycTH5xsQ4kQCYU/n6ePeww48uJaozkjQT7qt4Wkb+gG9OzASgCNprxvT0lYPNaJzrmrlm4g0Fur8FDlB7+OeXD1Mo8DKUT+mvf92otEdNlAE+LWfFY/aTTR0f3cu6zUHML7n1wP2360qLxDxBYAqzLb9ZSqqg2xk8DE4mOexm44OhHeEj5aFemSUWqExGkrO3RaKGRBYRVXsEwS3pi/UNt1trUXEbg7FNsBqxQE26xeCYax53MKzD/WbzcILDWM1rCUC2jwDGaRKq82Vk+7SvJFEGGy/7/v4GtQzTerGnwUJPtemI3HJpXoblU1iVvYRS6T+rHWANsoJ45b6nVx67I49+L/02ZZC5BcsIcZrneqKe4zBZGgMda093cJ0bvBOY78rbIneBcjteKrBLClYEr3LzleBgpwle/GhWaG1aj2ErDZapY15WMWGhN2tOHuvuxo6pG4BMVUIk1DhOVex1C5L/V0oU0T29wUdRsPhPh915rQqWabtwLZUybdY4Vwip7c5VTlP/4NANpkv7kr52zn9v7FFd8QWJXbElxVj/ug6u4AxGzQB56hLdingcxcR76kC0NdDPs5ND6+rYtvI+eipB3nWRRaD1MvJQrDCRs90zu6J2JgQ2RvU9Dl9fhREIZhtBJQWbeC/Lhe5jHJs6H62aPl77/g/wPPnfxgoKJjI9MSUgN1290uw1AcLnSTSmkNCg8S9CiIboM9F6R2H2LbkjxmkB7tjjpH9auVev8SxziNp55Au2to92dMrgFrcFcmY/JxehiZDCjRGuuUp1EvdRF0a8MGk6GMCGNlzM2S040p1uKQaLSB5msEByQLNsIoc7UVfnJgCWQ7D0KsRmyYc+skE5GEgowaRR7YYfA
- AEqFfZZd
- OmIhG+pdvYAERI446rmPfZalTotV6mKPKpEu0JlyZARbQYddbLxDvo9j0GHqed5VWe99juUdI1I2LVVoPf1Nn0sUu+S1gF6k7gnWJgX0pqBhE46+alQd9MLzf2YkyW/OPdTriDbGaL1GjX2LApIb+iNav1co6DYScjGcnVpLJPwGSylFiUtjqTk0K7i4SpZ5hoodE9ozvoE+lsreVG5P0dZsJ3lsuynQ/nMVSLORTSHi0AFXCxl1+gYoNQ6qdrapql+B93dWZZmOHd1aftu0gNvte7Mx4USwwv9Hz+vVnjwNVBspa6cDhqXRbIpF16NA/SdASra/QdabauesFYoEmDbX8UCyA/qOfg3dTng9kwBbx1lP2hNVPKbFNVHwvKCVoI51e9p7y8zztGD66mj77H5xNyX09dqwzBeZHWyn9tv8TIyTENh8Oc1Qa16jgSjME2gjrij7IBhImKf77Tz1Rl9fiQxbaBzZhSD2Ws82wHEh/BVDYSuZ3zGTJLBiyblmkp9wemJ3kKnG0x/CE1sF++kwFNkfQQYnbRIqqbPrE2NRyFEHpwDOKbjkrCFf96Fiv0BL/StVUQKYWURHdTQ4eDnhO8eaqx3mDLG1rlBwib9aslDjgxTIroOkIIJF7rw4O0dQ5aL00mVVSzzwOzVbUBKBZX0Y5Vs1kT/w8DPZftGfMNKabAGbgO9slBfcoNDtvDpLYoVelDnRFXsN5VC/PScVQTD1Lt5i3l0Y3Pg/LK5kTcDzlGszwjkOojw==
+X-Stat-Signature: kq1t6jzes687m98ykbeyeexhwbymt3bi
+X-Rspamd-Queue-Id: C411B20004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774984868-320154
+X-HE-Meta: U2FsdGVkX18GAzdlTvtIJykw+hY7IzaL9bc6yBe2j8rQ9MDrZILt7FB7Yyy7iH0AWJKdJFhBlKfH7kKjwui7Vswbei0apjvaz4bdEqEvFjhmDmL55qGbzOFkWTpwXimNyF0AErzp4MOJNi1idFdSM2AemcCgUG0UB9BJVvsIuYpYQT43IvAJjOyACabE8VOWfRicp1NCR8hkHMFvfPG6wsh9MMuFCa3o/MP7Y+Uv8/e3vqO72ZJ4oQD/yNnIXOLITcEdBcHM/NAMh4ZTcegvefXf7HaAO4VI0eIXPl2TtOZW4op/4rFWWRJ3yaFL2ixxushKDfVTrWMtwme287AlydwITpRhFfBsVMNga0c9OhI5a4RoBig2JJFn3HxGfz1G2GrMruKpOWq/NBEWQ3FRgoV3wVZd7azDBNyRHp3OQhXkpHzlT7k4kL6L9F+Yp5dl4YCPMAN0+tLy4G9FWUQrXcXMRjVot/+142mkAIr/5ZxRP6UracGRSUifLKvYhZbSescvtlMHOjVpt2QKsHT5kEuC3jVg/sgo5E1DSpC4tip/gOXA1352zBBcVQocwoXnnS7AesPjRv1CioIN+RHmGsshveg9eTJpajA3Yj66TrMRJYqg/CKiSU1uqWpItkPbZ/PNpjfdqutFpE+76RXtjYo3dUoqB/7Qwz6EBu6QkeCtpcRAypvN+ViPbUSsZ4z11E8W36p0VSTGW7aX9ofj0aPP08lAxJtSfFmMS9N7P7PqC4DgJlH/IwSTd+byd8a1obCHilw2N1E/5VWHUatYih2ig4BWsm2Scrf/xrRX2rbAu7gcDZa2ELHbfARicDEsr207Zt73p/0lCPM7AK+prkAl+j0Aez6upacw+yGtfUGUoXrKyTpFDJTVEeMGHcN4GoEeBDnZx4zHCDKHa2MTivcJuX/Ic6VUsdZyKLk034H93KspDRzsl2NiiNrtobS51ZZk181bWKfOWxCs6np
+ 1R5oQ9/L
+ I+rSCO9rgSLzJp1EC+rGSmZU/rt3RpRML7tBJGR2KfsrX1feICbvTrIeQDdve+JzAPffQkvFdVDksxwwOUWZLF6/8cHE/4o7uP87dqs4DK76GoRVMOd4TrCiTdVqNnMj54PGErQxL+ryVH+23UMZQPCt4nh+DJ3IC0DKWIbenJ6Q3tn/XaCd9u+NS8QN2Za2Ckl0e2KaJVijvV+KmFmgjhi9kxgEHFW8m7f6AiByYL24NhePHT90AclvaOvbdWCy0dFKV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,113 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 2:30=E2=80=AFPM Luca Boccassi <luca.boccassi@gmail.=
-com> wrote:
->
-> On Tue, 31 Mar 2026, 19:21 Pasha Tatashin, <pasha.tatashin@soleen.com> wr=
-ote:
->>
->> On Tue, Mar 31, 2026 at 1:55=E2=80=AFPM <luca.boccassi@gmail.com> wrote:
->> >
->> > From: Luca Boccassi <luca.boccassi@gmail.com>
->> >
->> > dynamic_dname() harcodes its limit to NAME_MAX bytes, which includes a
->> > NUL terminator and a 'anon_inode:' prefix. If the name passed on goes
->> > above the limit it results in userspace getting a ENAMETOOLONG error.
->> >
->> > Truncate the name to NAME_MAX - 12 - 1 characters to ensure this never
->> > fails (accounting for prefix and NUL).
->> >
->> > Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+On Tue, 31 Mar 2026 12:01:10 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-Let's remove this, this patch is not fixing an existing issue, but a
-preparation for future uapi changes?
+> On Tue, 31 Mar 2026 12:53:40 -0400 Gregory Price <gourry@gourry.net> wrote:
+> 
+> > On Tue, Mar 31, 2026 at 06:07:40PM +0800, Jackie Liu wrote:
+> > > From: Jackie Liu <liuyun01@kylinos.cn>
+> > > 
+> > > Add the missing kfree(new_wi_state) when the auto mode is already set
+> > > to the requested value. When a user writes "false" to the auto sysfs
+> > > interface and the current mode is already manual (mode_auto == false),
+> > > the function returns early without freeing new_wi_state allocated at
+> > > the beginning of the function. This can be triggered repeatedly from
+> > > userspace, leaking memory on each write.
+> > > 
+> > > Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> > > Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+> > 
+> > ..
+> >
+> > > --- a/mm/mempolicy.c
+> > > +++ b/mm/mempolicy.c
+> > > @@ -3713,6 +3713,7 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+> > >  			goto update_wi_state;
+> > >  		if (input == old_wi_state->mode_auto) {
+> > >  			mutex_unlock(&wi_state_lock);
+> > > +			kfree(new_wi_state);
+> > >  			return count;
+> > >  		}
+> > >  
+> 
+> Thanks all.
+> 
+> Am I correct in believing that triggering this leak requires elevated
+> privileges?
 
->> >
->> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
->> > ---
->> > Builds on top of this just sent by Aleksa:
->> >
->> > https://lore.kernel.org/linux-fsdevel/20260401-dynamic-dname-name_max-=
-v1-1-8ca20ab2642e@amutable.com/
->> >
->> >  kernel/liveupdate/luo_session.c | 7 +++++--
->> >  1 file changed, 5 insertions(+), 2 deletions(-)
->> >
->> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_s=
-ession.c
->> > index 7836772956406..4a40c7fdfb44f 100644
->> > --- a/kernel/liveupdate/luo_session.c
->> > +++ b/kernel/liveupdate/luo_session.c
->> > @@ -366,11 +366,14 @@ static const struct file_operations luo_session_=
-fops =3D {
->> >  /* Create a "struct file" for session */
->> >  static int luo_session_getfile(struct luo_session *session, struct fi=
-le **filep)
->> >  {
->> > -       char name_buf[128];
->> > +       char name_buf[NAME_MAX];
->> >         struct file *file;
->> >
->> >         lockdep_assert_held(&session->mutex);
->> > -       snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", sessi=
-on->name);
->> > +       /* dynamic_dname() rejects names above NAME_MAX bytes, includi=
-ng NUL terminator
->> > +        * and a 'anon_inode:' prefix. Truncate to NAME_MAX - 12 - 1 t=
-o avoid
->> > +        * ENAMETOOLONG. */
->> > +       snprintf(name_buf, NAME_MAX - 12 - 1, "[luo_session] %s", sess=
-ion->name);
->>
->> I am confused by this change, the maximum session name length is: 64,
->> as defined in:
->> include/uapi/linux/liveupdate.h
->> /* The maximum length of session name including null termination */
->> #define LIVEUPDATE_SESSION_NAME_LENGTH 64
->>
->> So, 128 should be enough to include:
->> "[luo_session] %s", session->name
->>
->> Or am I missing something?
->>
->> Pasha
->
->
-> Yeah we need to to bump that size, it's too small - see the shared doc. T=
-his is anyway needed for safety, as the user space call falls apart complet=
-ely if it goes over the hard coded limit,
+Hello Andrew, I hope you are doing well : -)
 
-If there is a safety issue, it should be fixed (even without a limit
-bump), could you please explain it.
+Yes indeed, writing to the file requires elevated privileges.
 
-I looked at the shared doc [https://tinyurl.com/luoddesign under limits tab=
-]:
+While going to check this out, however, I noticed a different bug which is
+that the file is no longer called "auto", but called "__auto_type".
+I suspected this was the result of a newly defined macro, and surely...
+commit 6cce897a37dc "compiler_types.h: add "auto" as a macro for "__auto_type""
+seems to have defined auto to always expand out to __auto_type.
 
-I see:
-TODO: this needs to be bumped, as for the varlink API we will impose a
-cgroup path prefix, which means PATH_MAX + "/" + client-supplied
-string.
+Of course for using the __ATTR(name, permissions, show, store) macro this
+is bad because writing "auto" there no longer works...
 
-Why would we do that? Why can't we use a 63-byte unique identifier for
-sessions and an in-memory database that maps the cgroup path prefix to
-session_ids, where the database also gets passed from one kernel to
-the other?
+I'll send up a quick fix to just manually write out the name instead.
+Doing a quick grep for the pattern thankfully seems to only point to this.
+I do think it is a bit weird to pass a raw, unquoted string into the macro...
 
-Increasing this limit would require a kernel uAPI change, which
-requires a very strong rationale, and would bump up the KHO ABI for
-LUO. It also means that the LUO session data in:
+> I'll add cc:stable to this and shall queue it for 7.1-rc1. 
+> This means (I assume) that its entry into the -stable trees might be a
+> little later than if we were to upstream it immediately.
+> 
+> AI review liked this patch but claims to have found another one:
+> https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
 
-struct luo_session_ser {
-   char name[LIVEUPDATE_SESSION_NAME_LENGTH];
-   struct luo_file_set_ser file_set_ser;
-} __packed;
+Sashiko seems to be correct here. Pretty neat that it was able to catch
+a related bug when analyzing the correctness of this fix!
 
-would get bigger, and thus the kernel would need to preserve more data
-for every single session.
+I can send up a fix for this one too, or leave it to you Jackie, whichever
+you prefer! Just let me know : -) I'll go ahead and send a fix for the
+naming issue though, since that one seems orthogonal to this.
 
-Ideally, this extra data should be preserved by the userspace
-orchestrator via a separate memfd.
+Thank you, and I hope you have a great day!
+Joshua
 
-Pasha
 
