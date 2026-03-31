@@ -4,87 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 721AF1061B39
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 098301061B37
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:08:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D851B6B008C; Tue, 31 Mar 2026 07:56:43 -0400 (EDT)
+	id 495906B0092; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0E5E6B0095; Tue, 31 Mar 2026 07:56:43 -0400 (EDT)
+	id 4463E6B0095; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C29FA6B0096; Tue, 31 Mar 2026 07:56:43 -0400 (EDT)
+	id 335386B0096; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADDB86B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:56:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9B9AC3A5F
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:56:42 +0000 (UTC)
-X-FDA: 84606206244.04.8685F10
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5ECD580011
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:56:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BeFzkVmi;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774958201;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 236726B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9EA316011C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:08:14 +0000 (UTC)
+X-FDA: 84606235308.13.D23B8B9
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9C98610000C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:08:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmhGWX1l;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774958892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x1neFz9KiFuS/ik3xCthmlvvsKLgTlG0ztPXiWCKcus=;
-	b=NY+TgqlDHxJ4RphQ8nYDMRyMpC8hgAUTuiodQkmwP2omVv94/FJgsGnPWWqW7vf0K6LcQs
-	A8OomDIodAJYRsL5kPStdco/uCjql2oL1F7ZqGRUsOGOQwO9RLYIugCEYEr8O9HdNJyCKc
-	sFI1YZZ8dNTAGO+2zHvvIxE2pSmdZPc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BeFzkVmi;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774958201; a=rsa-sha256;
-	cv=none;
-	b=iwIMFAsBHS64+8HxaayERlEdMxx8tu8xgJvnBKdOaCkb7Lr6a5+FC8BaZBr0lDVu8IsPxK
-	uq8syNcrfhBXN/ZGUlCF01tAQrMiHV1J/R4ok8fDUf/BjDChbdQbomhS3ft5TKMkTAM4xI
-	DD+wbKZv0JKeQK4tpgEmaBGWLFqRvf0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9587060120;
-	Tue, 31 Mar 2026 11:56:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D835FC19423;
-	Tue, 31 Mar 2026 11:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774958200;
-	bh=FMyI+hF8rpe/NqjE9yc1wgMGr70W/8wNEBMJNTw+CEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BeFzkVmimymyHmwLsFeymfxbRTc6ipv0ec8kukVBw1ecHuDomyng9YcdVwlB3yCVA
-	 gMhNj9hx34sznU4d7IW98tdbTZso9CJzekFw6KtSOJkMgE9WVoSmiTS8z+MS6IpcBx
-	 Zg5quKZqA1NNKn45/Pru6/3DPUyVoYnWlTPpovD/W9YzFUuTt4tKY8cUysKZsTXote
-	 rlCwBOAK9KcujLxnXXZA3D7vxwSBlf+oOjauq2UjEiknKs0+f32e5gofoE2thqtaDd
-	 TT4fID0wuhtNCzQ7mEfPS0UeNYIVYnsgRkV9Iw1NwN6skPK5kLXJghhShlTOC8s9Re
-	 LepzmQCuei9Eg==
-Date: Tue, 31 Mar 2026 14:56:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>
+	bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
+	b=A+ijViVho/E+DQ1VZaNGEyovLrqAcFysPTw3m3rZgrArPiWS6lIE9n3WxioyPnCbT+fiSn
+	P3ljHk1w3L26MpEm5ArxwmYbs9Lc8aJWXiKXT66tyeU9bvKwgQ689O0dvxZqT4MUMMUmi+
+	9LddSjNTcNsIkKeJztl+abJRan/mJIA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774958892; a=rsa-sha256;
+	cv=pass;
+	b=2f8tOFBsf7Cj89FyHiT5POWQs3JMPEbFMx/4nrXD/6/xVzK0ZwlS6VxE6uB14D/SLKZKu/
+	5sJO6kDwmn81DkzRTMUqdgGSyIIHzn+gqenYogrHXl3LJXnStiNVcHvgdoG03q1r0zhKn3
+	BIEqKdmrooGmTrHFD/W2HvwTLsX2a4A=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmhGWX1l;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-463f00cda04so3159976b6e.2
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:08:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774958891; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ieMgrD+L4NAgMsAOStXTu12kT5tfDyc7zt7lkFLpy+R3HmFWUcFzSI94UM8GTj0AJe
+         O1dl+BaEwOvjMnFy14hTtoEqQ4mAf3PG+QAecb697KbpjZ2PXQh8UbXtfXKZO+61DJo7
+         T3IgB4O1/nR3ADFzjBp8uahN1N7pPAc+XhIHOKidUKX1nOvGV611Anq2L1VSODyAIsoB
+         x2vqrNN2jxbgGEnNgLTG4c6hgFvyIgfXdFDmqKGQy/4NWt2FL/JkYQudURtX2Jmonm6x
+         7x8rdiSZBwgQeHxH+KzpV7/sISgx70ZwpzOLCYXocSOWYgKrGxV3tYpj5EtbYzkJop9C
+         fdhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
+        fh=XNANgjDpp4BDT3hOinkzYh6G4aKOZCmCAK7iI9sLM7I=;
+        b=H0HKStTIxQN+Qfd8KElZoZKZ5BTsORaijRLHrqJDYyiTSO+SRRLJtCeU3nCdPSSMve
+         jBjMD/kZ7fpuoCcye0s3ay0NRFrZrmpBmNqIc3NbPqvvVj35b7zfLfZD6fgfQ1BCb+mJ
+         NLpH/8q5MT4ZVYRMDjRgOW1x1vDintfyFsNhdKW7E/3QV8Lm1y9kbVnObAV5c+VBHxbx
+         ubkUgCeJQTWAABJyxN7iUSkFeOtkVNIjNd5S+W4L4aW+vRdVJ9tZyLlAgvVkBFHxAx2u
+         5sWd7F5YwDMOOQgKEjhQXt0WHCkTXxDZgYtc812Thg8UjEcGDftwy7Mej89tZo0/AxWh
+         TxoA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774958891; x=1775563691; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
+        b=SmhGWX1lQt4BMOQN4mTDyfy3yxjOKHN+WaCKTuqtBh/IcQy/sV9ogDDyD6WJZr0E57
+         4EkmIHbFMu3ROFXz1/Bml9rVL+k2YeNFN8CPXj1deUK4Ise8nLyFQxbIjaX3UYdhEzTL
+         fYZrAxn4SaCf0LTu1kwDJqi0IRCJ6MRqlWqfkvmkhXhlSmPFJiPXsX3IpNUpyaOYUrvf
+         A46Jxd9lVhHrxsC+VDmVQdV4VVLXqYIHfRD1wemnhfnnMQANUSGv9/MpWPqWmdhvSTZB
+         fxIxIECZdq9g9c28gKy3uHslIQmzfVWUKFkJQYXD9oQNk3kuHybdDDYb67B/MiiSW9f2
+         xd3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774958891; x=1775563691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
+        b=byP14ozza3fJ74wXXby98dJGB8FUmJlQRA9H6DXQ8RETRIPOQ/GQ7VYk5KghWIUZa+
+         lJ3QeIgi4Y/CBHJtFXPe8AW9F/P4jyfxm+GAFfw+TWkb8BnLLYrhXuizIq1YnNPTMTd+
+         52Kg1fS+6PmMVuDMJYHtXWR3xhd/DExhMmazLvog7wWe4P5O3wdnzwrj1E8jYrXlxpYt
+         64DLOYEMrtEIZRtjA0avpUBD+QnwkOF/B8eBIcvQ/xrqQrKVMKYT40UDw+m++K+pgelh
+         zuiBVBpjIrRaruxZ4pkK//OdlPm3RRjm4KRirJpo1CiO6E37ZYdAGX9Bhe4e+r9TxLLK
+         WdXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXplonWXezXOH0ExmEYZcnRiuALelyjYWWP0LYyqa3mRaMqs+4Ez9YcNCfuldx2hryxcO1VFJ1M6Q==@kvack.org
+X-Gm-Message-State: AOJu0YwxS8IbHAgfeS1JzDUoCEN+s67CUmjz5GkUSR2FV/MWj1ErRzJ0
+	1I5Hqmk2mSDJGFleopYOGj3TiHCOjD+HE/M80IUrpoxfGWE1qMmLlhb4/IkHwGVOZ2SgeijlaD5
+	eWjM0+NVaGlGSaJ0pCPNehaX4+0rKMow=
+X-Gm-Gg: ATEYQzzV2nyGLR5m5brHKrOy1ToEo2an7VHwmq0DnOSuxIcC4vqdg5c/eZ4eGN3fs4I
+	7F0dfLbeUgozbpaYgvmSRBrnNi1I/t42fVVFD3EHBR9Y+fwrZeLGcZXCP5MjDm2ae8iMPuDiQdI
+	XK/gxrcbXslRwgbJok3jVjW8DwzigBVWXOGfo0+asuzusw7QcsoufN/J7DD95HNuDVchTUE8llN
+	dNoFHSJL/QYiKOxyOgCU+T1hSGWWWqO/s5i5AUIlD0lKxDPcE8PtO69sRqiq2V+xiYVctlHzSak
+	KbnX0Y5Fl+eNu9JmiOUE5Opfn8iZ1+PFqVoSvA==
+X-Received: by 2002:a05:6808:4807:b0:464:74e1:45a0 with SMTP id
+ 5614622812f47-46a8a591061mr5342269b6e.36.1774958891506; Tue, 31 Mar 2026
+ 05:08:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260330202909.136776-1-devnexen@gmail.com> <acu2cpUBS0ahkgkx@kernel.org>
+In-Reply-To: <acu2cpUBS0ahkgkx@kernel.org>
+From: David CARLIER <devnexen@gmail.com>
+Date: Tue, 31 Mar 2026 13:07:58 +0100
+X-Gm-Features: AQROBzDFhnb9rsW6pTaEnek38J3jJ280IK1AWIaU5LoK8H-mPw3Bt7Fpj5Pl2bw
+Message-ID: <CA+XhMqxDqrWaOTCE2YKLu8FQPCiVkOxLBOQyVpZe2KxdHFKAoA@mail.gmail.com>
 Subject: Re: [PATCH v2] mm/userfaultfd: detect VMA replacement after copy
  retry in mfill_copy_folio_retry()
-Message-ID: <acu2cpUBS0ahkgkx@kernel.org>
-References: <20260330202909.136776-1-devnexen@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330202909.136776-1-devnexen@gmail.com>
-X-Rspamd-Queue-Id: 5ECD580011
-X-Stat-Signature: iwupojrgps6m7rfmb3gaqq848wnc56qc
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9C98610000C
+X-Stat-Signature: uxonwr6ygnxqizn4d57hpdjdoz8jzsar
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774958201-47929
-X-HE-Meta: U2FsdGVkX1+6A2VAoZBXvUcEZVYYc4RJPdNgVysYUTrl3E5dtlRbcPMz7hTdG86mtM+BWcrCV7lf1JQ8Q2Lm6MWxzssBgHUwtZd7LHewhkGvMis0k2MQmWSGuCXHHD6vvc4y+3UVmKeepM69J1raHWW09Pvi+YStxBb8DfGvHvEJLql3E899JRhWyYn6TdHqixQEvHY94q1K8Uljb5CXKJ0+/Bo3fv9M7Vj2oDnQNnC7A96ce6+8ObB6I1LuzVrNVP3LWMiXo+T/OlKZCbsgsMx+OXlGtQhrK6OnlCCKDh99FtL/wjmyyexp6Ng3XVTmRUE15jm7zzH96HjXtbBCtmpcCIDl0I7rEAj3xfru1oODrkOjrHZGVIT7kJ0tt7+cIiY4oq0xRCzhGbmb//ya7Nk1TtOfTEF5JyCLbmEWSuQjZQaA1Vq4Pz1rG0fNoco0D77HMw2RYkj6yDkoyUu+O1iqoA2rAqC1hk5x8kdlmngoglw19t36jhARtP2e3SJFis7tYHWT0RdKuO8g+AhzhE3PanUbHekauMqOIR0473ycNcpMxKwVl+vfc5t2SakV6xQAOdzTcQ8RhF7ytfWu0EZ8iP5Z7wvc3rWhRWGdui3k+FLk+XkQ7D5+vIKkjSf1xiY+qTOm2fcDB2VwMg7fC3d0uznW6p7BuOwrIXO0Lz8HWUQ9lG25iTFo0hUJ7Hxpc9NrQ4NqemIRiJ/3VIGKXmh9na/cSNZmtibVTqrGasZ+TCtZTe/1A82ac8yktSiburY8rVu8ZSLDwnVFOxg0UVCvfeGwr7KMeui4mhcpYAqts+OKLsGC/H5v3g/airs5C6KollHtVS4/xveRrFi1ysXtL3A08rkR9qdwrT8rzuDnLzQZK07mphFF2hyrWgCY89T/zqvZbEwjj13/sqYE8As7Fnx8TeIhINvUircTb8A8L5uxg0Xk7vhYrp5cRwIMOXdC6sZMHvRnYFo4N9v
- bMRs42sh
- 3rtnlliLh18Fkb88Si1ji6cjkOpwylbrxk8EP65MUIXUTJ6axY7STRzSWIcLph5lCCxui/EIZ+oYdiGO0yDoAqaS6DkcMQmROhsdFh1yyhEGUg1h+pSU5PRPIjhBIqD9GF+nZgXKZ8auIYM1KHaKMtjzGeLg+C8DELar4tE+pkI6F6U4O7S/iVx6jlq08QFvdo/gZm9uLSR1x+JuYDIkQsYA8HqXuN51AB7hxGbSrSUeAINBXmK0MEXHhQRvZSSr+CYloRLJr3iCmWpXMfsMLYesaG3aKP9cs1DmARMzv+MN75e64eS6Yq88+QCG0pk0g89LhaWrm46lkwqYcI5niPBTx225BX6B62u0MLPcO4igFG50sEeJcg0PNdmyK66NUYO7M4ksHv7nVM/YVoKp/cYaS2g==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774958892-358400
+X-HE-Meta: U2FsdGVkX18qEz01a+z1RaXJNGDO0K5KmdiuDOS+nuEXQhMneZcRmVLHaOHS+8TUTS8lQ0cFbrQgAwVslLWhIJ1xwpfdOT6Q2wXqHOFVVLv87Qy2eUfyUyz3+7MOS8kGbVgGootdXiLLVxmTu1zOT/Sp5D5GGps3QnAYxl2P+CsuqtLJbD6scR8VqwK050A2yCJizUQKnVIvMv4vwWHB35fbD0DWgtcHv+zIjpkFY2leWdM8/MIgTFb2do40Y/rRQvJEtNGHqkWhPJz9YxL/0sGc0+aqT5y+LAGFKS7RXwg3jFv2AacqwvV4CC3L+gGq3CsPLM/0OLjx06xa37yKRy7ajl16XQBGmNnsjpFprfOZBdeDq54ioXaTkA5dTEAyy268GYYo2iK2xXBFd7LzVnCVadUdBpyPblNZrFVBVnlO4GysH9peXwKFqouJ2Bm1iWwDgMXAj3JspX0hEZmZx/B3dGdUxVrHFbOgSS84WOSMqjoPkTLCEqmyUOlPjdNmdz2XHnBSWSh2l0ZziZqTsSI6Jq6Zi86vNtvZ6eS29bmdRKAlFhsnNBoYKepuofcaJ+3mKK6Sbmuqm4u7bktssgJIOKWfqNWZhsR86ZEjn8htxTx4rhu4OlEC0AeNKOVbEqRxX3E/gIbrHCBygAp6he0UjoPF3OP8V5IhQIrYZlnMpIycQtRT5wsamMWV6erNasr9tUi8b/2HrRf/lVq9iWyjHV9uSnpRO7yo6I6CU56oZymiQrtRMdO97T5LDQnZwmKi2Lx1D4xbIfF0g3vGkIqwh0H6Kgmt9tdvA+cK8cSPjRfWD6VyuMfOfwdpOH8GNdUUcbvk1/3ygBLM2unt/gBbkLEMRltOh8vI3b3s/vy8+L5110QsbMcNyMwziwbF0lDYRpK3+kku1kR70/o5CJSv85N/0QVaIG2ZRnGr1XFp7QBPHFHQtQ4WUTMcrPmrPt30lqmIrqu9pQRJ9Av
+ oTNYr5eW
+ ZQhgmPZwSjl7SXXRr/mY2u5wEqeqxmfLCW3/r6ctK/UEX0Tnt2HwlgUXEOz6xrAkcoxIaZUY3eJ+dF39hThGd6bAmEpRi9j232kFxIi3qNLk8Na9kmsp5jRwdq0pMThDXyMVltbfidigANAn4urMZzqymtk8Wj/D56P+txJGlIlhPCgGbNWqmxp38R2VMD2+2AWab8YnxQkIgsg00zE9ALIipJee360PC5C58uc19AJrYe3NnYdI+g12D7ErF/z9t9oScEwEVpzEW/dtx8knEa1+iE2x8TJXxFB7v6AYbiTXzIDxNS52avAPh7jd4sED7AM8gRsVRvMR03bHm4g30whmv1Jq5LCpn/rLO4nuO1BYP46nnx8E7mU4d6Ajau2d09yuAMzV+H/xToIiV0laL8uTKIAO84eP0UigthPDLNijOkrbGor3AOgG8wmWTReb4MSyP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,48 +139,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(added VMA folks)
+Hi Mike,
 
-Hi,
+=E2=96=8E Is it possible at all that after all that dance vma pointer will
+remain
+  =E2=96=8E the same?
 
-On Mon, Mar 30, 2026 at 09:29:09PM +0100, David Carlier wrote:
-> In mfill_copy_folio_retry(), all locks are dropped to retry
-> copy_from_user() with page faults enabled. During this window, the VMA
-> can be replaced entirely (e.g. munmap + mmap + UFFDIO_REGISTER by
-> another thread), but the caller proceeds with a folio allocated from the
-> original VMA's backing store.
+  Yes, VMA structs are slab-allocated so after munmap frees the old
+VMA
+  and mmap allocates a new one, SLUB can hand back the same address.
+The
+  pointer matches but it's a different VMA =E2=80=94 which is exactly why t=
+he
+  snapshot is needed.
 
-Is it possible at all that after all that dance vma pointer will remain the
-same?
- 
-> Checking ops alone is insufficient: the replacement VMA could be the
-> same type (e.g. shmem -> shmem) with identical flags but a different
-> backing inode. Take a snapshot of the VMA's inode and flags before
-> dropping locks, and compare after re-acquiring them. If anything
-> changed, bail out with -EAGAIN.
-> 
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+  =E2=96=8E This isn't a bug, but struct vm_area_struct uses vm_flags, not
+flags.
+  =E2=96=8E Will this cause a compilation error?
 
-Sashiko has comments and they seem quite relevant to me:
-https://sashiko.dev/#/patchset/20260330214948.148349-1-devnexen%40gmail.com
+  This is a false positive from Sashiko. vm_area_struct has a union at
+  include/linux/mm_types.h:956-960:
 
-> ---
->  mm/userfaultfd.c | 64 ++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 57 insertions(+), 7 deletions(-)
+  union {
+      const vm_flags_t vm_flags;
+      vma_flags_t flags;
+  };
+  Peter explicitly asked to use vma_flags_t / vma->flags since
+vm_flags_t
+  is being deprecated (see vma_flags_to_legacy()).
 
-...
+  =E2=96=8E If the original VMA was file-backed (s->inode is non-NULL), but=
+ is
+  =E2=96=8E concurrently replaced by an anonymous VMA during the lock-dropp=
+ed
+  =E2=96=8E window, vma->vm_file will be NULL. Does accessing
+  =E2=96=8E vma->vm_file->f_inode here cause a NULL pointer dereference?
 
-> +	if (vma_snapshot_changed(state->vma, &s)) {
-> +		err = -EAGAIN;
+  Good catch, this is a real bug. Will fix with a vm_file NULL guard.
 
-Whatever we do verify the VMA this should not be EAGAIN. EINVAL or ENOENT
-like mfill_get_vma() returns seem more appropriate.
+  =E2=96=8E Filesystem eviction paths often acquire locks (like i_rwsem) th=
+at
+  =E2=96=8E invert with the mmap lock. Can this cause an AB-BA deadlock? Sh=
+ould
+  =E2=96=8E this take a reference to the struct file via get_file() and
+release it
+  =E2=96=8E with fput() instead, which defers destruction safely?
 
-> +		goto out;
-> +	}
+  Valid concern. I'll switch to get_file()/fput() which defers the
+  destruction safely.
 
--- 
-Sincerely yours,
-Mike.
+  =E2=96=8E Whatever we do verify the VMA this should not be EAGAIN. EINVAL=
+ or
+  =E2=96=8E ENOENT like mfill_get_vma() returns seem more appropriate.
+
+  Agreed, will change to -EINVAL to match mfill_get_vma()'s validation
+  failures.
+
+  Will send a v2 with all three fixes later on.
+
+Cheers !
 
