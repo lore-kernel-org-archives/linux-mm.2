@@ -4,101 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0912C1061B3E
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7601C109B462
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444506B0092; Tue, 31 Mar 2026 08:32:06 -0400 (EDT)
+	id 6B0476B0092; Tue, 31 Mar 2026 08:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F53B6B0095; Tue, 31 Mar 2026 08:32:06 -0400 (EDT)
+	id 6610C6B0095; Tue, 31 Mar 2026 08:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BD756B0096; Tue, 31 Mar 2026 08:32:06 -0400 (EDT)
+	id 576806B0096; Tue, 31 Mar 2026 08:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 15D2A6B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:32:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A161C56AE0
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:32:05 +0000 (UTC)
-X-FDA: 84606295410.07.9CC3A07
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DE89C40013
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:32:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=sqT6OpXi;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774960324; a=rsa-sha256;
-	cv=none;
-	b=R8KFQqKzaa3AsDI13Tflau5KLB5F1sjzjNKX34hOON7bZC2aeDNrBuPhldEfNUFUGt1by+
-	8tatKAqu0NbeISOWicYivqqiEmVylpwcLsxcIAV0fHzjjyJZVvu848wESPZ8wvEQ0v8L1O
-	UcJpJjPqOV5xZDrKhnR0mNXlrANkvAk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=sqT6OpXi;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf07.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 453E76B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:54:51 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE2B61395D8
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:54:50 +0000 (UTC)
+X-FDA: 84606352740.21.EE0F626
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 077BA100004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:54:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=CWpV19df;
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774960324;
+	s=arc-20220608; t=1774961688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z2eDNMN/atToABrH6ndusX6IX5Tl7QShF5YQMMFudmE=;
-	b=6hKm2AS+u+Spi5OqkTe7XwY8qS//87zJF7cA7OMNVxt0jBmTzMRY7ZGGYstuwFD/yQH6a5
-	SScXDCGWrJLkHe9vmzc0nMnR9t/KwTHxyS9Gc9kXaoPUfKAqPxVoj1MR0V3VZufxohMT8C
-	gSz7WJGNKorDWbXMO+x7Xoe4Jps8VmI=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 13031BE24E;
-	Tue, 31 Mar 2026 12:32:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1774960322;
-	bh=Z2eDNMN/atToABrH6ndusX6IX5Tl7QShF5YQMMFudmE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=sqT6OpXij7sXEX3lR7XgTL1XcgqS0sbDtamjJbhFSIjtfPZbzbcUFQsqFcFf2rKIG
-	 xkuFi6SFXicXAPn0RihX5CqsaIzIdziwT35ZJgVXt9fOj2prKQ9PpypId/QyqhaZ/s
-	 /TOW0Qcvg1BqUshPhXmKn/69Wfdtpsvoz2aqbO3I=
-Date: Tue, 31 Mar 2026 12:32:00 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 0/5] locking: contended_release tracepoint
- instrumentation
-Message-ID: <acu-wAFTVCmI4_da@shell.ilvokhin.com>
-References: <cover.1774536681.git.d@ilvokhin.com>
- <20260331102704.921355-1-usama.arif@linux.dev>
+	bh=UDPXxR0SE4tZo6SAHEuDV5VawAn9RHxLdc/GV2ahcmY=;
+	b=AIGkRHlBwVWIiw5OWUVZnq9S8nJhkd9pFvaYNVbt3uu1YKsw6cRpnvqDprLVgdrboIqtGE
+	sEDlnDr6011b7kYIRCwxH5O079ta6qxFal6Hw+VGxbu/9csYRzzCTZpw2/f3QLKjxBcOzp
+	zwc8Y5HbM7GcwTGNxi3MVQ4ve3BD5TA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=CWpV19df;
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774961688; a=rsa-sha256;
+	cv=none;
+	b=XQjNvT+l43wUMs7kmx9IGKWq3mJV0ee6oTu1V4EM1tEXqBYm2iiz7Vd8qIEfAAnNfhmdbT
+	FV23zsZhOebpLzD+b2NNczav16ggiTyKEeGkoywxeM7hsBxZbTryPFu1un3R3w3/tmJGz/
+	CC1XJSqiCvl8E3+z+haG+5YWQVJKL8M=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260331125445euoutp016d9c13543de9684b45ade912a6734af7~h7j_7-fRx1994219942euoutp01L
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:54:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260331125445euoutp016d9c13543de9684b45ade912a6734af7~h7j_7-fRx1994219942euoutp01L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774961685;
+	bh=UDPXxR0SE4tZo6SAHEuDV5VawAn9RHxLdc/GV2ahcmY=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=CWpV19dfi3aKCVmn65P/Kj4WMSYU8Y008v7a6iPLjcfr/70u3PHFeMS5bxMdiMZpP
+	 x/IkU/FWyfkJr5Axx5dbEaTf6T8Qg4Y9YfiHyfr+sfBLQplBnBvNX4Aus8e4NcZB65
+	 FW/pNTtgcFQ0o4nh7Ov1X224Nh/y5TEPxJRmUrRA=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260331125445eucas1p25ed7c9b6e702e473313d0de397658d96~h7j_m4aJp0030700307eucas1p2_;
+	Tue, 31 Mar 2026 12:54:45 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260331125442eusmtip20a0364ea267d99390b05fc4b52f918c4~h7j8E31Ay2848828488eusmtip2b;
+	Tue, 31 Mar 2026 12:54:42 +0000 (GMT)
+Message-ID: <46397de2-eedf-4e09-a83a-3b683d154fe7@samsung.com>
+Date: Tue, 31 Mar 2026 14:54:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260331102704.921355-1-usama.arif@linux.dev>
-X-Rspamd-Queue-Id: DE89C40013
-X-Stat-Signature: g3bhzdz6jtnems1f15yoo58cgmah7547
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v4 0/8] dma-buf: heaps: Turn heaps into modules
+To: Maxime Ripard <mripard@kernel.org>, Sumit Semwal
+	<sumit.semwal@linaro.org>, Benjamin Gaignard
+	<benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>,
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, David
+	Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+	Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260331125445eucas1p25ed7c9b6e702e473313d0de397658d96
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260331100026eucas1p19bdc2aaca4c9a48c6f6ac8fec71478d8
+X-EPHeader: CA
+X-CMS-RootMailID: 20260331100026eucas1p19bdc2aaca4c9a48c6f6ac8fec71478d8
+References: <CGME20260331100026eucas1p19bdc2aaca4c9a48c6f6ac8fec71478d8@eucas1p1.samsung.com>
+	<20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774960323-476196
-X-HE-Meta: U2FsdGVkX18ZakSaGrLNYRKiqrb7gXCqmmTkD1uOQlf8vcvWiGcTas7JZpq93d+O8wbU4iFCMM1uokeZ0DhPSfZc0gXIZGsj3m7iGxlmN8HYS6yA/AOb5N8qPeyDdH4nfQTjSeigDvgi4ETtlqbIng7mu+EmjCGZVBC9U9cWgDf/iJ509g3z/awz2zfqPPks9K3xr72ejK7JP/5r5a9QXSXKAKb3EuLj00DgN8oN/FUfp7p+XbaqAEXdH/ilSa/XfhTQu3i2yC62zEHmvpiQAJb7CaiNxZ6H38f4O5WryIj7npTD39+VCj+fvupJSTwb9Wd+URAX+J3W+jR8a6IZmJDSbLeYFkHQeQf9jZu2hsZqYkFmxjJbomrqLL969yHNriz0QHQ7zznBajLUVpUeBmIIzOJzeCE2KbsJgXRadweUUAIPg3FqfNIC6PhT5jUlAufG1PMDNHGdCRVcj4Yxvqs2h84WuPMhTfCFT64qw9DNHgXrj1twotvNZ/frxANjSS3D2wvpsnv9kCHS/ASrdzNd8SwR/8d4T+wkrdq6HtKIN9gxBGRCw2Av/BtI+O0Ce1iVKCBBX5Pq/XPv9GJ8i6ciiRp2/qTflYQsyPzsfLr1jAaN767IvCwSu4LoaKA2fYfQuENRRws7U/4xU8PvZEu5D3bsOpvEqffzzIo+OEHpUfFoEWyZe7RwdGea9TOaXuQ9yh1gA2UeyDN/CNoe7X9VEw9QGj/l3JB/tWiVQq7ewColnsOfxj9n5nutUJq1G3/pF+tP0IlhQm8UJ6hZenoraiTy9YhI2u+VMtW2xabAuhfgWiO50LkF45PWKQVby51EpT83tEmSqEFeN1AcGA8i8zz69GA/0QmQlctGHPXJWfazilntiqLo5L+DZJU7z4lOtSTXiSfdhSCPL9bd+kctMW6MJ1YimYCPXpmDtGAg00XcyADq+COJWQWAPLR1oNHYDrhAD2VkaBIxW1e
- ErxRALyF
- eWzicyFwGxZQuejbfAP18fh4iD/dNU2y3OeoXETnZ+yE7XIbgL/XJnG80vCvtjSqwVpxfwiDTEEYPNzcFrLVx7o01T9kHvo+KOxiA3YhUwREL4h3x/SYf6XhXyWQkJzOZTj39CaC+1PvYrlS+yTwrUIHLhqmBwTxY4aN1pyn1wSnom1VLRAxjQ9ZO3ysE2wgqcFYNozDv5LgWBFZrujh0bEAlGTr3+UfTZMSzoabxwL8R8DsLyQ697hf0ocyU2JAVuVDfE2AqNo6ff/+MGKTgtiXRdogtwqVMV+zhLHrBRci16bABl9s5uxxJMdex/jHKGxwsBdUDq9LiYGrqZRFquMG3sg==
+X-Stat-Signature: 3dpu79wdttgpapyfqzsidc7foky1xmha
+X-Rspamd-Queue-Id: 077BA100004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774961687-117452
+X-HE-Meta: U2FsdGVkX1+JcQIuOQN++bbHkyRpZ1p3G5JlZJnb8i2YAaHR/1xqU0kScLl/KWOwvUCYGRmWOilyMuCfqeQAKOfLZTLhYE7iLsDx6Cf6+fWAqs3fdmi8ZYzuiMhkc+U98mR5YN+e1C24BMANS77GoISqNg64TdSVJHpUtEqD+34oEpMmSNjIFljosuXp5i/QXq2MnBE+efaRd5etqaMvpp2GwwroOG/4nKQ2kb7+L/bFEsSf7lx5SkTJoy/bmMnnrCCz3NDZnrjMDmyfdCHevMEYNQPXE2xZqJU6wvcz7vfsT3uz1PRpyIMoyOMoyIPGIcSSR5XQOFvBhgYkXQnWTIQzbp0D1NxZGpJPzqnIn1luGnWMaFqbBhlTUzM3CO9Bl76sjzIZgIV/xO9AqooTrqcXW6pw/ssLSHrYdjegkkFlLOnP1FGGVUAcBjZbBVM4DxysvPoQlmVOZQVy44HnqyarGGlLbNux3tLglMCxPlxFFEW4hffmcBm0IhKiUGwkguy3Cug/DoY0av/uxG6dOC3mc790k2FB0+RZZ1GXSjNApEXS3UezODKc1U8UPrKthfEimoJfMLdjUcj6igiaR6OgfA0A9TLvfr6/0BtBoEyHhjRhNd4kzpE9AsT/hM+6olysh76Oafvj/sHDjPtls2RPSpXDFV42UNeYRIrnLt76xg5oqJ4/hj+hEaa2yO7cXxDfXYduBcvtpH/HCUp/T4pNbgoGC298XVouFVQHugvy2o2MBI9ZCfL0R6i6NP+k83gAakVnBhuPM6EwG4hbRD+jjzNHPfjhPK7MbP3ybsLP8XX26xdCRr6DQKOkvolV36f5yM26ZjoYtABjLv4Q8s61/NOFNnRuTyFOaOID350snU/OdAsJ9Sf0LgJ3nov7krDKA+uaq4/1CATzHQjc/xM01HrlYEZ8nYrEIPmYIwsZek1Hql3otiW51bIfwJJ+YK3C7VWUCjHKkU80nOk
+ lR0n58KI
+ nSL8I1aUOrU4k+acfNIGSm4ZvJ1Z/oWflHyk2828058/1Y/Z1yycZXnccdeYDu03nZqJZvJyLarf0eScdbb+NgS4ToLRNLWZurBvc3V5tvDXYT90cGSyulRhplRx/pq+FBYIZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,48 +113,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 03:27:03AM -0700, Usama Arif wrote:
-> On Thu, 26 Mar 2026 15:09:59 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> 
-> > The existing contention_begin/contention_end tracepoints fire on the
-> > waiter side. The lock holder's identity and stack can be captured at
-> > contention_begin time (e.g. perf lock contention --lock-owner), but
-> > this reflects the holder's state when a waiter arrives, not when the
-> > lock is actually released.
-> > 
-> > This series adds a contended_release tracepoint that fires on the
-> > holder side when a lock with waiters is released. This provides:
-> > 
-> > - Hold time estimation: when the holder's own acquisition was
-> >   contended, its contention_end (acquisition) and contended_release
-> >   can be correlated to measure how long the lock was held under
-> >   contention.
-> > 
-> > - The holder's stack at release time, which may differ from what perf lock
-> >   contention --lock-owner captures if the holder does significant work between
-> >   the waiter's arrival and the unlock.
-> > 
-> > Note: for reader/writer locks, the tracepoint fires for every reader
-> > releasing while a writer is waiting, not only for the last reader.
-> > 
-> 
-> Would it be better to reorder the patches? It would help with git
-> bisectability as well. Move the refractoring work in patch 4 and
-> 5 (excluding adding the tracepoints ofcourse) earlier, and then add
-> all the tracepoints in the same commit at the end? It would help
-> in the future with git blame to see where all the tracepoints
-> were added as well.
+On 31.03.2026 12:00, Maxime Ripard wrote:
+> The recent introduction of heaps in the optee driver [1] made possible
+> the creation of heaps as modules.
+>
+> It's generally a good idea if possible, including for the already
+> existing system and CMA heaps.
+>
+> The system one is pretty trivial, the CMA one is a bit more involved,
+> especially since we have a call from kernel/dma/contiguous.c to the CMA
+> heap code. This was solved by turning the logic around and making the
+> CMA heap call into the contiguous DMA code.
+>
+> Let me know what you think,
+> Maxime
+>
+> 1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wiklander@linaro.org/
+>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-Thanks for the suggestion, Usama.
 
-I'd prefer to keep the current ordering: each refactoring commit is
-immediately followed by the commit that uses it. For example,
-queued_spin_release() is factored out right before the commit that adds
-the tracepoint to spinning locks. This makes the motivation for the
-refactoring clear and should also ease the review since the context is
-still fresh.
+Applied again patches 1-5 to my dma-mapping-for-next branch. I hope this time it
 
-Bisectability should be fine as-is, each commit compiles and works
-independently, since the refactoring patches do not introduce behavioral
-changes on their own.
+won't cause new problems in linux-next.
+
+
+Here is a stable branch to apply remaining dma-buf heaps patches:
+
+https://web.git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git/log/?h=dma-contig-for-7.1-modules-prep-v4
+
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
