@@ -4,133 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DD3A10F92EF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 703ECFF60F4
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A33D96B0098; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
+	id D68D66B008C; Tue, 31 Mar 2026 14:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B886B0099; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
+	id D19486B009E; Tue, 31 Mar 2026 14:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 921166B009B; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
+	id C2F8F6B009F; Tue, 31 Mar 2026 14:34:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E90A6B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1789E585BA
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:40 +0000 (UTC)
-X-FDA: 84607209120.16.B7670AB
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E8F57A0019
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EGcdM+wY;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774982078;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B27E96B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5411756500
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:48 +0000 (UTC)
+X-FDA: 84607209456.28.5542EF6
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1890C14000F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XZVOQ50P;
+	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774982086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
-	b=OEOcuS8nvWF4+Qd/YRkOkRsiZqE2gaEN/NL20VnYg/NuwghIxxjaztCoFoDrfVCJWUqbOw
-	HHjJgTEOWeJurZeZnO8lQVQwNHmfZURSoBkpYSv4m1luIwkNi7WP1qhFvDc6OJLBc7qptE
-	32O5kCxwtrwBSvxU9VP2rpZAjvbiouA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774982078; a=rsa-sha256;
-	cv=pass;
-	b=N8cRrVSM8JglKpp8Eq+IZfsHEogH8dqA1ocFQ5BeL+0RYTcQva+tXXXjEHuWJd+9HXBVvZ
-	eiCezjDOh3/JeDAfljIUiXGbyaqQKl4PD1T/0deRSPDv6cqfeI180jHm1uheHTvsNlzpV8
-	0T4Cch/QHKXEvQ6eaWZVDWzFCNC7cak=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EGcdM+wY;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b979d16dd0cso1049462866b.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774982076; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ALleXFSBvmezmvDkRkm7AZll64ALf4D8PH6soJQpleBtPZsi+gIbFuhpln2CLdghTD
-         3yWbIvSKOgpPMbnTxSG0L957M5rZPUhubjHkqQRdZQT5GRsszla4MMu5fw6ztiZ250gT
-         XNt6QLdN65CAYJSurLxstE5R1nY5wHGMqeKRq/eKGnerBxs70hRHfV6z830Ccmt/oStO
-         rUHubg11uMt5IWKI46l8NcrjOgmxJIszTmXUb4RZOZ7jzU9jnkpOLn/SpqNNvmWVzbuP
-         Rq6znHJAYwcAYE6Z6VLI/ujdW1RxeCC+pLT08I9gpvGtq2A/WDir41VNnwoPOSsVVMAa
-         vzJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
-        fh=wgLMPrwGwyPuF7uFehKKCvbKRmkG4LqyPXmCtMOUunk=;
-        b=OTXcqNt+07pxQMp7D/Cs0ytX4dqShxyUDuBqfAxlxfgbxb58fhhND4fPWxqxJPnhhH
-         K1HVAuCGXLwI1ykIqa1/2EX+r1BBuOYakF4bEjbrI9wB7VvE8EPKQGeLkMmM2yhtwdRk
-         IYmcL7EOoJaTvkuasOyV3d5aDPqxe+nEuIV85/a957QFApmWm2+PIARpwnNbIK2lo1Y6
-         mUWIP76U37zwQ0kCPya6siALgnGWl67/gtLoYXauvDkI6gHQ2MY/hpF28fw0ZE0SWbr+
-         NvXOO28CCiU8ZFpJYjsWydcizH74D61RjcXk4zS0wyH7zSSZArUatOkgN7EiMrt+YP9y
-         xzHg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774982076; x=1775586876; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
-        b=EGcdM+wY0JyZNEUP3ZjbwcmNE9YUFjCqh4x79X/wziD/4C0fXJUAdaXCUsCCQLrBru
-         1ok1AG3e6pOHsY6dZHG4lp4pTgc8QXkGEZ3xJfzbetAHo08JHtoOFw+PS8+C0hU8rpFv
-         DI7M3yrRtzxqbSgM1dpfMkf6YN4gcnWgyMa+2wm6siq7Q+sLmVkibMZxtxReo/07sxUd
-         Z3dnNPXF/YddstFBlZJwB5Aa106aDnlw6MAs3habFlG1rWr+IG/X7wHuHB+bpbq09XtL
-         P2UvXHZLozBeH/kd/dXhFoYHzz0pzuAPP5nd9uYi+bMZThxAAAuooPO/xDtNR0t5W6b4
-         jsyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774982076; x=1775586876;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
-        b=QhuZ1KROjjOp6rSPEyrTUntXB0yNDniOKft2g9Y3pI5vkQqe1vULOHijspbs8CCQsv
-         U6Kd5uPOb0rrV656bs8ox465L+1UZAiyKIKyvFMi0vf/BaycD89ouYXRGXjhu7PYJWxH
-         +NcBWEnkhvJXnEkniwdayNXYvWksJfS0QBiCzvNbA4A5lfsjcRAlEgPXKaHMxTiQvhIk
-         vEAw6as15ip+tLmKitFx1okj94vUGG0B8hAaeSODaZ+Dy47ry78/+hMbNbIQSlUcX/ui
-         JETf7JZT+HVreKxBTIGznZbMwNMlCBcEcodNH+hCEr68p49upep6ujyrS5NO9GFxXZPG
-         0U6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUPPE+0J42aRQqlBx9W+s2Z+7QEW10HttwGonlQ61k0ezEsJa7By+zV1GeZT6VY43o64/0aBnIdiQ==@kvack.org
-X-Gm-Message-State: AOJu0YynE7AKSaPqyI1n36CWCjvi0PYrY7JN0cBF8HCALS0reVDZaJcy
-	QHtngT0DEk+ICz1sOVe7PaHw8qgnX8Nl0wVKAE1LNCvOfzRRTl+IQyVC3fx5sYh4f3BHe5ylFVs
-	btlBTgW+IH1f7Mk85SL3A8fxAMg/dEsy63S5DZ29urA==
-X-Gm-Gg: ATEYQzxf75cIV4UdXXJdRXNgsl8R0rWUUqlNc31hHPdnRKMF9RwDITdltoMOxl9hVy8
-	77ZOsCycl1CL4lVp/Ff6FRGoXW93E5FgC3fX4n+VpvysfCI5c4hbrhxpnXJ2V8i0ryNQbeGdZ6+
-	DTXcTeZ4SAaAzHpX9FqehyFA4T8YrLXfFTBySb7dYmAMTzTpmOXTeVrEeUQn5Uav2u7/mkQFeLI
-	pV5PHaKD/5f6+gZhYPRV1dQMDCOIWeA6XfPSYubHlaBAI+7U3dUx36coKfH3oVHDYl2J7prkHWL
-	WhtmSV/9AX2ybHw6JtOo8d2O7a4Y7kvITH3wAw==
-X-Received: by 2002:a17:907:84d1:b0:b9b:fd23:d0c8 with SMTP id
- a640c23a62f3a-b9c13b0fd96mr41864466b.29.1774982076111; Tue, 31 Mar 2026
- 11:34:36 -0700 (PDT)
+	bh=kSGP0/s81dLgGLLBMYCM/i6fiwnt5b3rSO7xri9j6e8=;
+	b=Mz23JZ1fbad3SGuPHp0idtDPVuPLFEE+dgxuODNEMDOCs5GSdTprce287UlaXUUyeF4rjl
+	8NzsAU5zfeoipgTVRBKEo4I9QR5gfiUnBMKTOt1NikA/V1f0RKTwMWMfjhcmEYB37nZTfF
+	kcLBT+eZjBg62p9Z8Wml0Cb+HqofKg8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XZVOQ50P;
+	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774982086; a=rsa-sha256;
+	cv=none;
+	b=cxSZg6vdNeeVXc77RVXKDgwUVQAp7RAV+CFhaBMr7VcYjSqRvXxwXdUSsRhja8ND9UvHmY
+	H6oYFANAHx4g7gTDfnatzwoi5e5tVUiGSi0KDoeUz1l4vDoSACqvzQL2MRozQFpOwHmrXq
+	Krx9A9Omr8Eg6NL1r66F/cGtKFAqIwg=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V8hUK5216795;
+	Tue, 31 Mar 2026 18:34:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kSGP0/
+	s81dLgGLLBMYCM/i6fiwnt5b3rSO7xri9j6e8=; b=XZVOQ50P6Me39hDV//3Dtt
+	hosvD3usIrmmMJlMa9zxKm9z0lSD0DqM/W0lu4EWyXfAqXCrzZvCs3k31j+vzJJJ
+	x5qyz4hC52wOemv1zWpsYEqxYSYPVz6KiWXto6xIyPep0sZ94x3iGO9rUQVDfe9V
+	sDS4B0vDy29fgfLY1n4AgHdKC7whmMZpDqFYjIr4XommvUkSpuceyrN3ishzlDnm
+	9sy7GuQbCiODXEQ1aJG7ko/sRL/mGAi4QuXohcLEd15rcKo24cBDp0rl7mUsULiI
+	pb8VYfUNNOuukIFYZvwDFy/31fAiO2zHDZuzLAG29D06Mrd/xFjxskcNssAzVcdw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66ms48xd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 18:34:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62VGOBDw030952;
+	Tue, 31 Mar 2026 18:34:34 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjt807-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 18:34:34 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62VIYXm866912764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Mar 2026 18:34:33 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4710658050;
+	Tue, 31 Mar 2026 18:34:33 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D47A058045;
+	Tue, 31 Mar 2026 18:34:28 +0000 (GMT)
+Received: from [9.39.16.245] (unknown [9.39.16.245])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Mar 2026 18:34:28 +0000 (GMT)
+Message-ID: <81857888-b6aa-4f04-bfd7-e9365d62669d@linux.ibm.com>
+Date: Wed, 1 Apr 2026 00:04:26 +0530
 MIME-Version: 1.0
-References: <20260331175639.4066033-1-luca.boccassi@gmail.com>
-In-Reply-To: <20260331175639.4066033-1-luca.boccassi@gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 31 Mar 2026 14:33:59 -0400
-X-Gm-Features: AQROBzBHBf68DKK7aZZU4u2jQSiYayfjEGRzUDBkbeEz7PAvcd2w4jNJnR0shvA
-Message-ID: <CA+CK2bCKJ8rkJ_onp9Za0KNuWujH4Gzue3a=HvwOJAK2tYhReA@mail.gmail.com>
-Subject: Re: [PATCH] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
-To: luca.boccassi@gmail.com
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
-	rppt@kernel.org, pratyush@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 7rgp8ahyxz6tcx18gjx9wadz8e7xj13o
-X-Rspamd-Queue-Id: E8F57A0019
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
+ failure path
+To: Muchun Song <songmuchun@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, muchun.song@linux.dev
+References: <20260331113724.2080833-1-songmuchun@bytedance.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260331113724.2080833-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=J6enLQnS c=1 sm=1 tr=0 ts=69cc13bb cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=968KyxNXAAAA:8
+ a=B2iOVZ4RgrPQK8wAUSEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDE3NiBTYWx0ZWRfX3IPT0D0Vpfvj
+ r59Fgdk5Xh7zi+wu3KO4TsG9Uzo/Me4UlliWVQuyeNK2GzP7HYKgC8ut89bu3cCxv8WMtw9n3tr
+ 7691sWDWd/HO6Z4PGdb9j1KPloHbxbj27I/vmjFfahFBRkETOdYqZSZFIZDj+Jv+h9x9ugaSArQ
+ GIMzzik39Zn+LWawvJd8FADztjvrszj7Ne2iUPDGu+ueaI4qxyH27WWcWWjUkiu+U/IfLVrZzN/
+ f7uLTgPqBuzwzkdhygT4lj8rgc6nXs/+PA9Aev+CgvqUhQZ/PLL19n8B+jo65JnU6D5vxVa2F61
+ WQ7cnXmsym9rSAk6r9EZLLSbA4kWm6cdaRl89FW9HQaIaXKI2KdTLxp4A1pZfCc/XAcR8kP+Kls
+ BrT1qM0zfYh2Yng9ubJAyBUgkIT4sWUBr8e/8sfhFJeXtixYXjA7R22e0k5U5N0HFq8jwPgVrAi
+ ubJgZJuLoWUgHLxq6EQ==
+X-Proofpoint-GUID: ceGfuKj6JtU_viIudgnsZLLel_znQlh6
+X-Proofpoint-ORIG-GUID: fnvtgq5ZdlXM3Kgq-hrrYo-gCMT4N89R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_04,2026-03-31_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1011 adultscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603310176
+X-Rspamd-Queue-Id: 1890C14000F
+X-Stat-Signature: 9i5p84gsup31oisb7ou7c9d8yia9g6ei
 X-Rspam-User: 
-X-HE-Tag: 1774982077-809270
-X-HE-Meta: U2FsdGVkX18MUhbS2aZoStDWXADhx5jCKVuMC03TXbrxBbBR4ZrFSdOy1IVyiCfreDqKWG4MHAWzZIJDC6aBs7XMayy6U/oIOKmgXPCbc58rgffDDfby9ERl+9o9NOwZCRA0LxG26sbDj0PhqrsohNPg0LDuaw3OOW68RO9NhALENTEvQax3mxfCXti0uD328b/MNf8AuBavplpfy9E3MWFjvevArFt/NZo6FoE/xgIyYZmjIqvHjbMN+Jm/sZ0NkJzOp1kWX9kzE8NWDxt4KimCV0OuIIYRtXX2KKcApYg+bZ50+9VGc4ikME4W6frJk/YkCAZwk6vYJP7mxRRWb0ozv+6kZ3DQVu1RINu2KgRY6Ynz17ae6OLEAKkl8bdsx6bp/08kSbORBEO9aqmhwFn3k74p8QJK/jh6cpiZEuwrw3J0dmyAEkEaCqmO8bLNt51EIa/DdbHtxNPKlVXXR3QgnnF/vy0mBRF35rMLi7jeuzaUseB60eFkPcOgegFLKeKr0AZ7uvoD2biH840HpJF9TkLmwufgGDhiFsEzIsCB/qa0un/50xVK5JgiXWmeAZ/ZpUt+6mMavYBKMYmbq4ja21aB4OHKRT5pwCELfuZ1AYAhVdcv/6OxQ2efBMBJ5J4RpLHOmcJwQWi1uMDg0nVCtyJ61/7HCkZLQSrHVTEkbgQgwAPttY/QseNK9TdinnmHjfRflJqSHeuqaiLDg+LpBVu7c5WEySG30bf50W7RQN9jIweF1ZONZzJAJMOxwJGuPJgMH98iWIvq8IMPM9mFiSmlvxZQdS9IyRg+BQsyyapxj5cqeG/WM2YwdJndihdlYxNcYawg0gJYC86YyOl0LkjgMxK1belU89BP8rYNGg8QpL9O9zFfnSxaXaW9lB8LJjeVOH1z7OyO5qwN7b33CilK2cCvMLxfhQBaywCL89Gky/XDt6gOopvWsLFYTeZB2M0qrKJ3p3ZMskW
- dylZ908f
- 8g17vV2cDVaQhmryyK1jOXzhHJ3rdRJA3GQrVeL0MDjx5mGF8PbSct/jOIHR6EoW9PQQqvZT3Gt+M+YBn58jMRoVFxXgoc0dTtCuooEnO40j374XdwMI7mtkYJR/Kn8V3bO7DAw0B2FxtPVWK8VRXLMCuO51J0yRJiOo6Hvteo1H1+WIJ2GkEFeuGuIn9IlHTpuXENtwoVCf8ugi9J1zHa4NS9+f1U+0OIOe07HVTHp4uzCnzoN1zmvauQXcKf0DtLLZ8xMoEM6bX5g6CyLuLc+tE/rF2s6ZMOWL20Lgw+DmlwrR+ABX+l0/6wLkIQJ6RDAFOvKqomzmSET5uoNs5FQlC5DpnpCtjoi2EKseM0XugIoNZJmRy1BVUdg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774982085-945297
+X-HE-Meta: U2FsdGVkX1+eY/RwRiRo553qP5BjsynaMONcSFzSUWbtktD1OvV7CnS/kMmO50zgLxtgoxxxvNMYAteKptJXohoo6ZBNLjqaaVZTFRJwhqTV3Ug8H8EEazPMIMSz3vEM51wBGHLb7MurqljMY9r87ogauXbnlkeaifAvBPvIjHedY3Kw0z33q3wL9/aoZ74PzTayZbVA7vdnWi2QmBmLshcbFhd/BMcvszbldBzkuTXigS0Q68PDKvM3EI04OwycrEsplOn1J8xa6gpJT4kmD6VoFPBI1nGWa20SI9qd+AySpoBEO3lAL4OFzD8BRCWDtoDjTotGTGLlOV3r52rn5p4wvcCxtNaHTbFd/feAt85OEV77/NetWIy1oBxHE5Ral+r6959FjNyL3GGHilYkgfw3IfeTvGfSjkPJ6RT0S5dOWH91X15ZgXu0NrzQRMnxpsYuZbjlr3ONu6j40Rjwn7oLgNPxlX3zpAlQ05ye2PElaLjtFa9nfKBTHlkWAYJ60tR0WgysYR+347jaEPy+Q7KMscY8/2oeUNPC7cLt7UT8M3Y59sSD9y0yV3X3jI/uYgGXMcgrfMCzztQ8RV1wDZBDyNMvh7GAWGRkXXWJjhXhPrk8CEnqmqlEZ7z5x1GWlN7f2iOuhmMrqsp3C88rxaenh50wP2miCqz4sFjhzK8aNknLiiTXMb6FYLLJqY4J4rG88bC9OfLokUHuKtjgKoou87LLCzgVE1iW5c194cDKbjAHRdQ5u6C6ird6f5bYW6vchrACa+e3iKATvbVaXF7D5FY/Orl4pCvsiEJcfe5iM2LFMA1ytG4YAokt7QiORP3ls/DwC84QrdBLXwDqSYR5T/y1G44vjam4ErQPwTebVN+4sQChP+X/asVam1/HDjN/lJJKJMTKHBeZ1VuwkHPPA7MUqqmqoawUPjrbE4UT9s6VKj729dSEpXP2Dul2jMsIzXED9j06Fv4Kyv6
+ WqCwMjME
+ t2XI1c6S9M2qbq6KOj5/gwbHavN10lE9e97L6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,229 +147,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 1:56=E2=80=AFPM <luca.boccassi@gmail.com> wrote:
+Hi Muchun
+
+On 3/31/26 5:07 PM, Muchun Song wrote:
+> sparse_init_nid() is careful to leave alone every section whose vmemmap
+> has already been set up by sparse_vmemmap_init_nid_early(); it only
+> clears section_mem_map for the rest:
 >
-> From: Luca Boccassi <luca.boccassi@gmail.com>
+>          if (!preinited_vmemmap_section(ms))
+>                  ms->section_mem_map = 0;
 >
-> Userspace when requesting a session specifies a name and gets a FD,
-> but then there is no way to go back the other way and get the name
-> given a LUO session FD. This is problematic especially when there
-> is a userspace orchestrator that wants to check what FDs it is
-> handling for clients.
+> A leftover line after that conditional block
 >
-> Resolving the /proc/self/fd/X is lossy as that has a hard limit
-> of characters, so names might be truncated. Also requiring going
-> through procfs and doing manual string mangling is not a nice
-> pattern.
-
-Hi Luca,
-
-Thank you for working on this.
-
-This needs more explanation. The way I see it, the user orchestrator
-can be the only one that has access to /dev/liveupdate (and this is
-actually enforced by kernel). It opens it and creates session_fds for
-any client out there. So, the orchestrator already has the FDs and
-sends them to clients(e.g. via SCM_RIGHTS). It then monitors the PIDs
-of the clients, and if they die, it closes the session_fds for them,
-as their data does not need to be preserved.
-
-Could you please explain why the user orchestrator would need to query
-the session_fds, since it is the one that creates them in the first
-place and has to keep them open in order to preserve them during a
-live update?
-
-Thank you,
-Pasha
-
+>          ms->section_mem_map = 0;
 >
-> Add a ioctl to simply get the name from an FD.
+> was supposed to be deleted but was missed in the failure path, causing the
+> field to be overwritten for all sections when memory allocation fails,
+> effectively destroying the pre-initialization check.
 >
-> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> Drop the stray assignment so that preinited sections retain their
+> already valid state.
+>
+> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
-> Need this for integration in systemd, so that I can check what
-> FDs I get from clients and what they are, and so that I can know
-> where to hand it back to
+>   mm/sparse.c | 1 -
+>   1 file changed, 1 deletion(-)
 >
->  include/uapi/linux/liveupdate.h               | 19 +++++
->  kernel/liveupdate/luo_session.c               | 13 ++++
->  .../testing/selftests/liveupdate/liveupdate.c | 72 +++++++++++++++++++
->  3 files changed, 104 insertions(+)
->
-> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupd=
-ate.h
-> index 30bc66ee9436a..41dc44d239dde 100644
-> --- a/include/uapi/linux/liveupdate.h
-> +++ b/include/uapi/linux/liveupdate.h
-> @@ -59,6 +59,7 @@ enum {
->         LIVEUPDATE_CMD_SESSION_PRESERVE_FD =3D LIVEUPDATE_CMD_SESSION_BAS=
-E,
->         LIVEUPDATE_CMD_SESSION_RETRIEVE_FD =3D 0x41,
->         LIVEUPDATE_CMD_SESSION_FINISH =3D 0x42,
-> +       LIVEUPDATE_CMD_SESSION_GET_NAME =3D 0x43,
->  };
->
->  /**
-> @@ -213,4 +214,22 @@ struct liveupdate_session_finish {
->  #define LIVEUPDATE_SESSION_FINISH                                      \
->         _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
->
-> +/**
-> + * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAM=
-E)
-> + * @size:  Input; sizeof(struct liveupdate_session_get_name)
-> + * @name:  Output; A null-terminated string with the full session name.
-> + *
-> + * Retrieves the full name of the session associated with this file desc=
-riptor.
-> + * This is useful because the kernel may truncate the name shown in /pro=
-c.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +struct liveupdate_session_get_name {
-> +       __u32           size;
-> +       __u8            name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> +};
-> +
-> +#define LIVEUPDATE_SESSION_GET_NAME                                    \
-> +       _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
-> +
->  #endif /* _UAPI_LIVEUPDATE_H */
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sess=
-ion.c
-> index 4a40c7fdfb44f..819e8864869fd 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -289,10 +289,21 @@ static int luo_session_finish(struct luo_session *s=
-ession,
->         return luo_ucmd_respond(ucmd, sizeof(*argp));
->  }
->
-> +static int luo_session_get_name(struct luo_session *session,
-> +                               struct luo_ucmd *ucmd)
-> +{
-> +       struct liveupdate_session_get_name *argp =3D ucmd->cmd;
-> +
-> +       strscpy((char *)argp->name, session->name, sizeof(argp->name));
-> +
-> +       return luo_ucmd_respond(ucmd, sizeof(*argp));
-> +}
-> +
->  union ucmd_buffer {
->         struct liveupdate_session_finish finish;
->         struct liveupdate_session_preserve_fd preserve;
->         struct liveupdate_session_retrieve_fd retrieve;
-> +       struct liveupdate_session_get_name get_name;
->  };
->
->  struct luo_ioctl_op {
-> @@ -319,6 +330,8 @@ static const struct luo_ioctl_op luo_session_ioctl_op=
-s[] =3D {
->                  struct liveupdate_session_preserve_fd, token),
->         IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
->                  struct liveupdate_session_retrieve_fd, token),
-> +       IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
-> +                struct liveupdate_session_get_name, name),
->  };
->
->  static long luo_session_ioctl(struct file *filep, unsigned int cmd,
-> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/test=
-ing/selftests/liveupdate/liveupdate.c
-> index c2878e3d5ef90..510a583371fac 100644
-> --- a/tools/testing/selftests/liveupdate/liveupdate.c
-> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
-> @@ -102,6 +102,22 @@ static int create_session(int lu_fd, const char *nam=
-e)
->         return args.fd;
->  }
->
-> +/* Helper function to get a session name via ioctl. */
-> +static int get_session_name(int session_fd, char *name, size_t name_len)
-> +{
-> +       struct liveupdate_session_get_name args =3D {};
-> +
-> +       args.size =3D sizeof(args);
-> +
-> +       if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_NAME, &args))
-> +               return -errno;
-> +
-> +       strncpy(name, (char *)args.name, name_len - 1);
-> +       name[name_len - 1] =3D '\0';
-> +
-> +       return 0;
-> +}
-> +
->  /*
->   * Test Case: Create Duplicate Session
->   *
-> @@ -345,4 +361,60 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
->         ASSERT_EQ(close(session_fd), 0);
->  }
->
-> +/*
-> + * Test Case: Get Session Name
-> + *
-> + * Verifies that the full session name can be retrieved from a session f=
-ile
-> + * descriptor via ioctl. This is important because /proc may truncate th=
-e
-> + * anon_inode name.
-> + */
-> +TEST_F(liveupdate_device, get_session_name)
-> +{
-> +       char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] =3D {};
-> +       const char *session_name =3D "get-name-test-session";
-> +       int session_fd;
-> +
-> +       self->fd1 =3D open(LIVEUPDATE_DEV, O_RDWR);
-> +       if (self->fd1 < 0 && errno =3D=3D ENOENT)
-> +               SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +       ASSERT_GE(self->fd1, 0);
-> +
-> +       session_fd =3D create_session(self->fd1, session_name);
-> +       ASSERT_GE(session_fd, 0);
-> +
-> +       ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)=
-), 0);
-> +       ASSERT_STREQ(name_buf, session_name);
-> +
-> +       ASSERT_EQ(close(session_fd), 0);
-> +}
-> +
-> +/*
-> + * Test Case: Get Session Name at Maximum Length
-> + *
-> + * Verifies that a session name using the full LIVEUPDATE_SESSION_NAME_L=
-ENGTH
-> + * (minus the null terminator) can be correctly retrieved.
-> + */
-> +TEST_F(liveupdate_device, get_session_name_max_length)
-> +{
-> +       char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] =3D {};
-> +       char long_name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> +       int session_fd;
-> +
-> +       memset(long_name, 'A', sizeof(long_name) - 1);
-> +       long_name[sizeof(long_name) - 1] =3D '\0';
-> +
-> +       self->fd1 =3D open(LIVEUPDATE_DEV, O_RDWR);
-> +       if (self->fd1 < 0 && errno =3D=3D ENOENT)
-> +               SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +       ASSERT_GE(self->fd1, 0);
-> +
-> +       session_fd =3D create_session(self->fd1, long_name);
-> +       ASSERT_GE(session_fd, 0);
-> +
-> +       ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)=
-), 0);
-> +       ASSERT_STREQ(name_buf, long_name);
-> +
-> +       ASSERT_EQ(close(session_fd), 0);
-> +}
-> +
->  TEST_HARNESS_MAIN
-> --
-> 2.47.3
->
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index c2eb36bfb86d..3a14b733bf71 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+>   		ms = __nr_to_section(pnum);
+>   		if (!preinited_vmemmap_section(ms))
+>   			ms->section_mem_map = 0;
+> -		ms->section_mem_map = 0;
+
+
+This looks correct to me.
+
+I have a couple of questions:
+
+1. As I understand, section_mem_map initially stores the nid
+    during early boot, and later it stores a pointer to an
+    array of struct page. In sparse_init_nid(), the struct page
+    array is stored in section_mem_map via
+    sparse_init_early_section(). If
+    __populate_section_memmap() fails, we are  clearing the nid
+    stored in section_mem_map right?
+
+2. Another question: if sparse_init_nid() fails for some
+    sections, there is no retry mechanism to add them again,
+    correct?
+
+3. when ms->section_mem_map is set to 0
+    for a pre-initialized section, does it only affect the
+    pre-initialization check, or could it lead to other issues?
+
+
+- Donet
+
+>   	}
+>   }
+>   
 
