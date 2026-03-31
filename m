@@ -4,93 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91E7E109B46D
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F58B109B471
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E069B6B0099; Tue, 31 Mar 2026 10:15:37 -0400 (EDT)
+	id D6B346B009B; Tue, 31 Mar 2026 10:16:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D90456B009B; Tue, 31 Mar 2026 10:15:37 -0400 (EDT)
+	id D1C216B009D; Tue, 31 Mar 2026 10:16:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7F026B009D; Tue, 31 Mar 2026 10:15:37 -0400 (EDT)
+	id C0AD56B009E; Tue, 31 Mar 2026 10:16:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFF866B0099
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:15:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BA9FC403E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:15:35 +0000 (UTC)
-X-FDA: 84606556230.25.D88CC5C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 935A61C000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:15:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oJM7vb4P;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774966532; a=rsa-sha256;
-	cv=none;
-	b=rSu5fRpSvv2671CF9f/MvfX5rMhyHh+8IadikDPvbqxytnsyyi6pfW2SwXqN+/9r+wHJ9A
-	aYUyj0i5PUpc1CfsJtT+E5inykugihk9ND+iz6m+j+pqII0KZ2on9aQXCpeh2bjPj5OaZ+
-	gV2lilrN6XO91jK+5GmohD3CqtyeOAk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oJM7vb4P;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABA476B009B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:16:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11E3F5728B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:16:10 +0000 (UTC)
+X-FDA: 84606557700.14.5A5AA93
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 48CA74000B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:16:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNboa4Y6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774966532;
+	s=arc-20220608; t=1774966568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vh7GsL2aOJLXCu2y3HKS78dfz1/yFoQr/PU/mbSm8s0=;
-	b=lncWQsKHL12HwjNjQG5ky872EQ1/e8qumvQ29TLi9kdMxA3nDFJ8/Qeg+bH1D3U5JiWCz+
-	/UIYLF3syW5PgbsjzDzLBGXiJMYYiajpVPtd3vVTVi4+38y8bX18XvBn6iWaoP3G05jk90
-	mygUxOsjegIa4HU2w85WtXKNKt2hAiQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79392497F;
-	Tue, 31 Mar 2026 07:15:25 -0700 (PDT)
-Received: from [10.57.56.98] (unknown [10.57.56.98])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 83F593F641;
-	Tue, 31 Mar 2026 07:15:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774966531; bh=9z2MXKM/ZiMSqPeqkaUKxlawR2frF3py0x92yErvlU0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oJM7vb4PMFH8u1/9y2halmmZt6v/lBq8nRr1CQtr07dScwz8NKTR7nvLEVsrXHI2M
-	 klGmCUswAwUvGwr1LljNzFRndxJf6Rv0el6JfhfIv57auBJK1/WHKBPEasmO4dMZd5
-	 Vvs9SSp1PkrOXybInOopmh2rYwurpfgXCLuo9QcQ=
-Message-ID: <c27cad07-bba4-472d-8853-fc6fc55e951f@arm.com>
-Date: Tue, 31 Mar 2026 16:15:23 +0200
+	bh=cspgg8gJ1YN7XmBWMIm4W8AdRfzO/zMnHSiWsvcBAcM=;
+	b=Gu7MF78+GYlkOTLLEvXlcfRp++l8m4lQ+yXsn9OkLrXMhcZHNIKdL9jMgd/Kjvsw3Cp0kt
+	egV3FVINV7UkWv6I9RRwmyPWBcXff3TWRIRZI9lH9HnmJZLgTUh3pFPz+YJz40MvESMXo8
+	+qPhKKf+uNOEsLORJyZ1GT7NU1goScU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774966568; a=rsa-sha256;
+	cv=none;
+	b=edaC0t5H72Rei2g+wJvIooRBfw8y68BNaofygkGCE8+BOCfGuGH6omWiyTzvdzQC5RIWsK
+	T+ZtVqbopid4TjvQh/KhI2/NB2IVWdTJjhdramHMVwjdr7q4rtMHvGddCl/NTamxgPDtM5
+	jj/FBzum6jualVvf8JYdSeqppASamZ4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNboa4Y6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A652260126;
+	Tue, 31 Mar 2026 14:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54175C19423;
+	Tue, 31 Mar 2026 14:15:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774966567;
+	bh=P+JOMuhq4U1b2iThGkPhI7G7/g5oR6RU6sBz2YvQW1I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SNboa4Y6IqQh1zqNeRcApl01cTc/UNKo3mGYLne8KJIgI4EckiJMCfe/Igf7lVlmF
+	 01/yN8Vd/oc7QZ4dTEEuR1WlMwmkcqxhJc30YrV79BR6hPZYJCcYf42xHLoYcrhAxk
+	 QUetGq35k6EnEZVu0VwdC6JAiExy7n4q5zf17laIIToknXPDOnyDFLchaVRsQPaVjD
+	 lC9pkeEMIid+OmmRRBBksTmG8pwNgBqE0qg0ToVcdR3hSKbeIw2jM/ZCQ3588Uw4+5
+	 vDLoXtcpwJcsI+9cFgnigzUN0ueIgApPvzjXCIRuRLS7ROcpSeBs3ztHwVWnAcMpnO
+	 3riO/udH1Ra3g==
+Date: Tue, 31 Mar 2026 15:15:56 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, aarcange@redhat.com, akpm@linux-foundation.org, 
+	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+Message-ID: <fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
+References: <20260325114022.444081-1-npache@redhat.com>
+ <20260325114022.444081-6-npache@redhat.com>
+ <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+ <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 935A61C000E
-X-Stat-Signature: 1wt5fogyfhsz6i3r38f3hyhyef4gbbp3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
+X-Rspamd-Queue-Id: 48CA74000B
+X-Stat-Signature: ygz877c4os8f9atdeqyzagnjh5bdmpjr
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774966532-720808
-X-HE-Meta: U2FsdGVkX1/jFJ0n1vw8of6um7RvDwW4cd43N/2zUTSSlat6VGaqYPKu068KhlsEq5wZLC1vLLTNqB0I9Y7oR1eAiVtqXlob33RgAavf8BBWn+DLpv7HTjhizI49K1djBilkOtfxSLOLFLZ2sI+s9xjoEmmNifdbT5AK3xcutrQTIyIP9hWOMaG+oVSC73OFLAi1/EHE+YH75VvR15Fskc8gUrksUOCyOxjq2FWzf1PQgSeqWohkHABpfGsXqJUxymVWp5vZxdUOPioD+8GK8qoznF1782DVX7lwknws3Whum+XrPKu9DYkCjqm+w74BonAAbujpyDhdIH0WUvbTpiG9ASdLI1/4vtfG/H+Ox7y6hPU5ia7MxLWolXQa0CiJxBuYls2O4joQAtmpxJUlcAqeQpMcC5GR4pyJVSAkn2efm7XkupjQfYmoLTKQc+bcnSna7IaSPGTIZ5TpbevA3Ytjr5034LF0muzyxgfZj2odbiHCfU6MmIceCoI5sde1bi9jJaCc8IJ1ARHd6sXwp7Lve+m1qfTuzYGfes90wMAu+YrQf4zOi5R5WIkdZRBS9jP2u8XtvkeLHaxlb7NKVmdXFlD9wsa63YyJ5omcJH7kDdCKsW5jnaw7Aui2nwrGDaA74VH1FkaWp7b89dylYIcvxW7sJB3d8gYgUWckJz84TFc7vfW1hN9rPlT8jEAUdHunz7Ta4KyKac/gui/pG/hMFhpy4VJu/Eep6LH0OkzqUXcINpGPxTW90BmYnMhx3YTkgcKOC0A2vOBQ6zNACxh2pJs93uwP9X7YfVhwiBlUqd3qW3F0aTTy85luKHljt5bIEz14pdw97iLa5eqByMDXnzZjOGxi4bn/L93TVuNfIYs4r3y23CRbF03+bJh8i8Nopwe38NPdXPhTAhS8QOogWG7lYG1zg9k7Y8NwBVFdm/Puac7eGQ639zWjRGJLGj5y5b0HBmDTcBtp4wq
- sL5EiZ32
- nOpXc9s0YyRtGyyqoAMV59IlBlf7zNv3ETNwrpn0fvTO/lIstaTAy5uHdeONSi1eWwSaE+eUmB0jBoxpG3w5bf9SlGLO/AhbcBSDnflAZbzj2YG9HaW5CBDpp9Ow7m1yF0XrWxkKdDL+kdJrfDUbhaeT5aJYVUycooegHCa5kuGrXIDPsvttn5uYLObYxHfvGtNizxVOVfXzab2f7+3Bynwe841ZCA2DLBDgDCBQ/5nzcBB4=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774966568-231840
+X-HE-Meta: U2FsdGVkX19GkhR2vO7gx/ZYQOzz8nkDtIP9szA8DqQSE1GNQZrNvIoUMkdgaNKX6aYHF7RvNxp/ri9IHNuQOFRFF6qjhISTqttfo3xLsA8OBreu/HPNZwvys1Lf9SuurRypfTSymPU5f/5a+rDuBw+RnvZiF+qcpY+AsAdT9logMbTQZ4PaM6txBk4UP1NC/RofSnvg94dZmoEv2jc/Hwq4sxXfz7Ash09TlFfD7MxlTwkvzbQ5OiqLQf01+IJkPjWfK/swwZxcuUwL2tA28cfks+HI7F2Z4v0TRfwN65N+dVODTl478P8MkSgH2tFzr0h+VFGi8zGozkHlyGss+QjfPjhJUWikYfBv+O3O5xC6SOkq+fBcY97i4mYXtEtJhwbM5/5i51mwiBLUIvpzS6MJKwlJbsFJTsN7ygQjR8/FgpGMQI+9DtMb/FdLqallSUksFlscpnafO5zadFpgmNF+/pSq4WFLWXCbbyrP8qs8kgdqvZx99C0zDsM5e4a8Vzq3PGAZ3Qz/X8sYKyMcdxr8AeKdDjX70vRFF6T+qiSeLzdYt8+7oWNHMlOSczmuBQI5mD3lIP2rjOeSttgiFK3bZuJe0oL+zRLsD8u97rhhCMLu+W7ntjwEk6riKkKDHFGrRSCOMEFlBxMk/FkaBnkNZsWUpGRUpAB6mcF+KWq5durLXg656IgzH9hjJ8iOxJymngxN3uondoIPH5w/C8BrUqki3zINpfwoFDJF7nB2Pxy1y0RQd7j19ZoNZUDHOlUGQemMglqeX89eITDq6iKvl3EcA0VAEqtN8DtXa1CJYmFrmwlZw3yP6+RMpiNaPMa99UZjeeeUAZdDziApvkccYLJb+aPvLk3nYGkmo+/3t/k5vBmps44OZWKtWBl61CwG18omUxdAhMFumdKIiGnvk3FZb7R+2aGtIHztiU8M/U6ZhdGw0UX8aeq7D2hg1a6LAA2AAzVBIc8h/KD
+ 6zjFt7UP
+ ttEA7zZ1EVyNyMdnYHCD7KzKWKrUpUqPzub0r+g6yUNfCy4o/sRrLLuB8fWcZrP27qUkja33xf22pREcs7WneVqrAO9jLFp+iYjqpp0PEz3xUkf0D6jMJzLt4KD/LtPHzHdp70hEYCgJjqcV7KE346p7SejF5hWeY+v29GN1+gKP8i5ocjsoTAlWZ+lJcWSfMUZwDW6w9fh+Aft331A9hmm3vX6xMuQdu1zZyCLYPD+lpquui2hKH7jPS/IdFBY+JKyLfXE4TaoHYgr4gl3skOaQOaVhiSbrFLB7leZGFi8fpR/N4vHPP7Fj07SDz6yPRhvlY4mda3GPhk/e00CkCF10PMVDhy5qVA07f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,67 +108,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/03/2026 17:20, Alexander Gordeev wrote:
-> On Wed, Mar 25, 2026 at 10:55:23AM +0100, David Hildenbrand (Arm) wrote:
+On Tue, Mar 31, 2026 at 04:13:29PM +0200, David Hildenbrand (Arm) wrote:
+> >> +		if (*lock_dropped) {
+> >>  			cond_resched();
+> >>  			mmap_read_lock(mm);
+> >> -			mmap_locked = true;
+> >> +			*lock_dropped = false;
+> >
+> > So this is the bug. 'lock_dropped' needs to record if the lock was _ever_
+> > dropped, not if it is _currently_ dropped.
 >
-> Hi David,
+> Ah, well spotted. I thought we discussed that at some point during
+> review ...
 >
->>> +/**
->>> + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with parameters
->> You have to be a lot clearer about implications. For example, what
->> happens if we would bail out and not process all ptes? What are the
->> exact semantics.
-> The only implication is "only this address/PTE range could be updated
-> and that range may span one page table at most".
+> Thanks for tackling this!
 >
-> Whether all or portion of PTEs were actually updated is not defined,
-> just like in case of lazy_mmu_mode_enable_pte().
+> [...]
 >
-> Makes sense?
+> >
+> > ----8<----
+> > From a4dfc7718a15035449f344a0bc7f58e449366405 Mon Sep 17 00:00:00 2001
+> > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> > Date: Tue, 31 Mar 2026 13:11:18 +0100
+> > Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
+> >
+> > We are incorrectly treating lock_dropped to track both whether the lock is
+> > currently held and whether or not the lock was ever dropped.
+> >
+> > Update this change to account for this.
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > ---
+> >  mm/khugepaged.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index d21348b85a59..b8452dbdb043 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> >  	unsigned long hstart, hend, addr;
+> >  	enum scan_result last_fail = SCAN_FAIL;
+> >  	int thps = 0;
+> > +	bool mmap_unlocked = false;
+> >
+> >  	BUG_ON(vma->vm_start > start);
+> >  	BUG_ON(vma->vm_end < end);
+> > @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> >  	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+> >  		enum scan_result result = SCAN_FAIL;
+> >
+> > -		if (*lock_dropped) {
+> > +		if (mmap_unlocked) {
+> >  			cond_resched();
+> >  			mmap_read_lock(mm);
+> > -			*lock_dropped = false;
+> > +			mmap_unlocked = false;
+> > +			*lock_dropped = true;
+> >  			result = hugepage_vma_revalidate(mm, addr, false, &vma,
+> >  							cc);
+> >  			if (result  != SCAN_SUCCEED) {
+> > @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>
+> (in hurry so I might be wrong)
+>
+> Do we have to handle when collapse_single_pmd() dropped the lock as well?
 
-I also feel that the comment needs to be much more specific. From a
-brief glance at patch 2, it seems that __ipte_batch_set_pte() assumes
-that all PTEs processed after this function is called are contiguous.
-This should be documented.
+That updates mmap_unlocked which will be handled in the loop or on exit:
 
->>> + * Enters a new lazy MMU mode section; if the mode was not already enabled,
->>> + * enables it and calls arch_enter_lazy_mmu_mode_pte().
->>> + *
->>> + * Must be paired with a call to lazy_mmu_mode_disable().
->>> + *
->>> + * Has no effect if called:
->>> + * - While paused - see lazy_mmu_mode_pause()
->>> + * - In interrupt context
->>> + */
->>> +static inline void lazy_mmu_mode_enable_pte(struct mm_struct *mm,
->>> +					    unsigned long addr,
->>> +					    unsigned long end,
->>> +					    pte_t *ptep)
->> It can be multiple ptes, so should this be some kind of "pte_range"/
->>
->> lazy_mmu_mode_enable_for_pte_range()
->>
->> A bit mouthful but clearer.
->>
->>> +{
->>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>> +
->>> +	if (in_interrupt() || state->pause_count > 0)
->>> +		return;
->>> +
->>> +	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
->>> +
->>> +	if (state->enable_count++ == 0)
->>> +		arch_enter_lazy_mmu_mode_pte(mm, addr, end, ptep);
-> I will also change arch_enter_lazy_mmu_mode_pte() to
-> arch_enter_lazy_mmu_mode_for_pte_range() then.
+		if (mmap_unlocked) {
+			...
+			mmap_read_lock(mm);
+			mmap_unlocked = false;
+			*lock_dropped = true;
+			...
+		}
 
-Makes sense. The interface looks reasonable to me with this new name.
+		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
 
-One more comment though: in previous discussions you mentioned the need
-for arch_{pause,resume} hooks, is that no longer necessary simply
-because {pause,resume} are not used on the paths where you make use of
-the new enable function?
+...
 
-- Kevin
+out_maybelock:
+	/* Caller expects us to hold mmap_lock on return */
+	if (mmap_unlocked) {
+		*lock_dropped = true;
+		mmap_read_lock(mm);
+	}
+
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
