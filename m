@@ -4,100 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8196109B48D
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBBA9109B48D
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CDEC6B0099; Tue, 31 Mar 2026 11:22:28 -0400 (EDT)
+	id 51EDE6B0095; Tue, 31 Mar 2026 11:24:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47ECE6B009B; Tue, 31 Mar 2026 11:22:28 -0400 (EDT)
+	id 4F5D16B009F; Tue, 31 Mar 2026 11:24:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BBE06B009D; Tue, 31 Mar 2026 11:22:28 -0400 (EDT)
+	id 4336A6B00A0; Tue, 31 Mar 2026 11:24:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CF236B0099
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:22:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E88A5E04AC
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:27 +0000 (UTC)
-X-FDA: 84606724734.22.52A71BB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 366D680016
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bpRI+so9;
-	spf=pass (imf02.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bpRI+so9;
-	spf=pass (imf02.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970546; a=rsa-sha256;
-	cv=none;
-	b=3dOf+dm1EYeBo18/XQlcBd2bihW5U325DBrlWoC7Miua1l5KCfm19cBRUNNXjdHVrEM6j8
-	L1SxnplRJutS9th/IQUAaCeI3mBwxw1VUj8BWZhuzrlK4sAv8R9DkWG+UERb4JDpg8vLYn
-	L36bxa5wazUNMsGEYyfNoBDQUg2v9UY=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 350606B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:24:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFB47B7310
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:24:05 +0000 (UTC)
+X-FDA: 84606728850.03.BE63B55
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3668D40005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:24:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKqiA6JX;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774970546;
+	s=arc-20220608; t=1774970644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dxR14EfNSPOgswogNlfNvobucNrvkEkEYxQfUULs/Wg=;
-	b=GHJiEezeKOL8pcJjzvKNXmli3gZPP4cNfNfkXRBY0bSpZUtwXSfbPpaPNAA5358751VRWp
-	IWSdq1JX5HYeVxpyq4OckNmZZSGa1oZUowU/3bCJ0Ypbtk0nHiColAHmhlNHZIcDDXJ/kV
-	tjEFrD6wfNJZniCBp1JFO3teijiR4H8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45B602364;
-	Tue, 31 Mar 2026 08:22:19 -0700 (PDT)
-Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B29EE3F641;
-	Tue, 31 Mar 2026 08:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774970545; bh=vhlrZdxspo58Nxacdcn7UwJrBzvZGGfK9wI9IlW3WOA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpRI+so9x/rCAhu4Ej2MBKLkyBcb6E//csEp3kacMtoOab7qHWImh9qjP7QySIhut
-	 KRmHLKfjpBIUHR3SCfXuKbNNhPVQYxGEirGVwJ0vy4H2eGPrBfSxs4UN3pmu5bjtPE
-	 99diFpyczO/NIfFrVdz1bDofbZiJ2DjfDHeWMVh0=
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
+	bh=i+549Nln8DqoqXF0qCkIjYDCZp/f92HAIUb2SiSCCNY=;
+	b=3g5BAUiCNGYllLPwG9U85lQFfY4jPGqPkOPzxCQXAQGyWyz/U9wLs4+90HW+W9QEZPn3pq
+	IoQ1z0Yeym8GGFfOqSUCRItozRXZdkCtogoNbmC8NTHQ7PdM1UkJK+QWmjpxWZom00bJGr
+	kpo/94ZyDQ88OtUBXNOo/fMEPuG81fo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKqiA6JX;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970644; a=rsa-sha256;
+	cv=none;
+	b=x7EclEnku4XAYH2ZV26qvILk1xRx2EewiWN3KrFiFAv0bJjFQaNQqtWWU3tROOzVu3Jp35
+	oV2jpKQ0zhtkJhBaFRh5VXFDMFoZZslyOpdXjRI8Fa4fiyPht/NASTQZUBnFBpNN8jClYs
+	5rqHMx+GQfgK6UpvgBFbybINSCMp4PY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1340342E01;
+	Tue, 31 Mar 2026 15:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925D4C19423;
+	Tue, 31 Mar 2026 15:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774970642;
+	bh=3mA8yhmwSAY4oxzzAbFQyFqOh6xAwsxwgZjjBw72kWw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YKqiA6JXJp8cZOzS0sGVZ37Nc19QkYMmlautv+TkliDyiVF4PeV3zMHiNLwUI4RK/
+	 vuWX6IwSC+JpiWxF9sDdC+Rknar2iLWvFVMr216e5uKXpDJfqlRHSh0ta6rLRFbcsf
+	 7x4HHDlGp64qAgFz+icMggzhUz45aVTmLjG5bukEVsMCsNdEocNsM2Bf4FT8xAnK7j
+	 pYl891rWsuPwvkqM5G8WhKYxoV9vI7bQWZq07rcrh6tLx3TiqZ7TkIrU8odYJo5Ybe
+	 NUWAWRKrHOD//+MV22oUMi4aPYxtvImourkUYscAFQtxeC19vapANRluBjwes0uwf3
+	 BkBzpSX8Kjucw==
+Date: Wed, 1 Apr 2026 00:24:01 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nick Terrell <terrelln@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Ryan.Roberts@arm.com,
-	david.hildenbrand@arm.com
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH v5 3/3] mm/page_alloc: Optimize __free_contig_frozen_range()
-Date: Tue, 31 Mar 2026 16:22:01 +0100
-Message-ID: <20260331152208.975266-4-usama.anjum@arm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331152208.975266-1-usama.anjum@arm.com>
-References: <20260331152208.975266-1-usama.anjum@arm.com>
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
+Message-ID: <acvnEd3-s6XI26vb@hyeyoo>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-3-rppt@kernel.org>
+ <actxscYZGFiyvUcs@hyeyoo>
+ <acva_NKf7T5rbIC8@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 366D680016
-X-Stat-Signature: jg84uoon5wgbcwzzs1gbodz9iogm8ic9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acva_NKf7T5rbIC8@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3668D40005
+X-Stat-Signature: z1n3pkbu13dijbpkxc1a351xu46y869g
 X-Rspam-User: 
-X-HE-Tag: 1774970546-229569
-X-HE-Meta: U2FsdGVkX1+OiGk4ugQhUu5tKLjGoH8aZmPBu9btsLxFyQsbCVT8Zv9DJSQFKwpn+f6inv8uCy50e/fsftuVZVQ/g5bIxh/Tj22Aaz8YrScgfCwzkQCgjgkRl8l7bwwQR6IvXe7g2i1BQSHiLCWr37XdLYf/ZOAeAxn8SB3HSwR0inpamHn8oNM4ZgoWudIkCsayBLNMSiR8yVl57GHguDRj0wOqTaNKgh0x7vzSlyP7Mn4CPp7PvvKmXGPvF3iwQktZ6ZflzA1cxnOzaZwD+aLxr6mzvdzHUuvhxp65pzV5MsUOxdykt68c3aQRwBEZc8LOpa07ZWVqfXn+9xE47eu3ELR4cTqv0cCRm8IhK25+D1wh54nRsI4qZ21CTPYtELX3PSXVM1Df1/JapcgZ98MKPWGgN6IEYugfHoPat6HTq73lT17zaYwRJhHnncI90pYxlHOxUeQsu8jX9n/VNcvITkuAfE+r7NpPbRHfSEW8aOESF/hdFaPoTxqQI+oeX+qOxn0+P9PYutEhLAkmoj3sOSK5apk8KhYBgAJSTX7AXp7LxZZkd8yfvssRnS0oSwSrR1MAXVjRcAJmBss8MJH5KCMdMcXYxCN6oV/n2ZlhRd5AiKU6VxYr3uo4/URrTRLKH5peY5s5VS6hYSVa/R4kCRF72CBdKMFHOv1qJ5JdyacmnKDXkV3K8lYSz53sJKD8kQV+SBHKm8qmTRo6tCsh8ZfoBbZX3VlosAGJvmie1PoPMjbs0OfGKrU3nMu8izBVxM5+N2GCt7LS6sfEf9+/32Qx4cxUbcUJ2BQMP+mUJeDGr7jW61Xrrw4bMWDs80HbrmYX3rZfdo5w4oKQUUo2GvRrR1MRrgirrRDbTdlubo78249LYWjjmvmHf1+q6MPlUF+T9s1edoquFtw91W7o7BdbcEh0MTczQ3GeUVILLXB57dF2JjisvM9xqsvd9cmn8W+uxo14ficWFAx
- LKIvok+N
- ZVfJA5s2Hah+TeiYIceLo8yuYBGUnveipQaY7PSUUJ6cTmW/rU3Pc0WNvCn7jukDgMe2ja8PVLJuWrlnVpGyysftJeYQ9GgBy1McnkfHYmciKiK7j1vpr+DwLXB0z3MEJ1YNQmG0US7T/HobTNQjMTwtod7pmZTYtvdfHn71dF1WwBAdwtmA3W3YKJv6ksugO8mlyoKcbpHxTa7QMAI7cYjx8h+PalMdrQVB31FsEzIJCGfghw9McdOaczmPcxk8Qz3h4e+nbKakvS9MdVcQn1twvF4Sg258E/M3fciB7GebdVjzSjLwJm8dBrG2LW1x7NQtHistlOX8SKQowoC2PXYhZdiccZbGYEJcn+YKIc2TIgorCaf7GwleBnrXj5Ji6r82u5A44OgzG2FxZpgFMEuuC0A==
+X-HE-Tag: 1774970644-916642
+X-HE-Meta: U2FsdGVkX1+1Xd1pjpkCXqkkrO8cBSU4RVOx75sOyCa1KUMhPyf8BBz/BoN+J+E9bXoR9hlQpFIvMehAimJ0J5WhabxSTa3isL3kZo0B7UyAO1P9KnyzAypG9AI/OHeRMXBts+Pt7XGPfMy5S82e+3/WbbEKGdRC+g2gkyPk6CDJC/+LKiY0P+oZ8sT8jslP8mbC3/zv67OTuoo7+kpc0Sk2SwQHUP8/SFjrev8xRR+UAvFgufR9hIeXpA9AyG0EgPjkxD70spLMzxuziGYLrON/tkr3rcVJkOMZRZYUoM1SvUX6O2emAbE1+eEoFdbZowgcqavPsRC1kGyvpWIJ9kvrUdJmeBlQfRUdsxGt68E1WqEbvHuWHGSL54QbgPPEgjcHk1ZUrPHeMWzgcLP2/a5yHxG1lRLjEBM8Av0eUITYld6jKSZ5GWsDw7b8Mfl/TmBCMOybnbnPAJ0fmSmfU9N4gKnOOGp/VtyT6uwyjp0hahslqBmV1zJOI3CszX5asYCMjsvrSbXrET0eFPij97uv2wpRt56xuNd0rTYzn7ilAPB1fJClucgDUFwWf+ea7THcJ5yNSBaaJ4TzJJy1BcnvzTWtUcmA2HXEW0Gud1C8GaIxUGIZecKQKjKn6StZYa0FmRtQYf/7KQp9nSC625C+5zLd/3Wxt6YLWJ8sVJSAUyrqAlZOvoLnrw0w0jZ0oHZba0ITm4Hvfr+/GC+dBz3TnF+hb3BFBz+xgHYEFg18fYj1Pz/54pBNRvYgq084pbzR/2/wHoDlW6AjRAY0DdJbO4MssAIFBHSK99ebN9SECVSgjLk3Qepdicw9nBXWIhlaPp1xi/qnEEzkgSBnDLSWIp6ZmV/3Z08W6b7oLPzh6vbxwrgoJrK1JHL5H6fG5QCcm6ckxW4Xi/4E9UwM37qD6iEQTCzw4dOvFC9csxOJ1JqfpgenYRVBw4Czj+Pvszj3MOf21fN2USt6pz3
+ SThw43N2
+ sT5df
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,99 +112,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apply the same batch-freeing optimization from free_contig_range() to the
-frozen page path. The previous __free_contig_frozen_range() freed each
-order-0 page individually via free_frozen_pages(), which is slow for the
-same reason the old free_contig_range() was: each page goes to the
-order-0 pcp list rather than being coalesced into higher-order blocks.
+On Tue, Mar 31, 2026 at 05:32:28PM +0300, Mike Rapoport wrote:
+> Hi Harry,
+> 
+> On Tue, Mar 31, 2026 at 04:03:13PM +0900, Harry Yoo (Oracle) wrote:
+> > On Mon, Mar 30, 2026 at 01:11:03PM +0300, Mike Rapoport wrote:
+> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > > 
+> > > mfill_atomic() passes a lot of parameters down to its callees.
+> > > 
+> > > Aggregate them all into mfill_state structure and pass this structure to
+> > > functions that implement various UFFDIO_ commands.
+> > > 
+> > > Tracking the state in a structure will allow moving the code that retries
+> > > copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
+> > > loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
+> > > memory.
+> > > 
+> > > The mfill_state definition is deliberately local to mm/userfaultfd.c,
+> > > hence shmem_mfill_atomic_pte() is not updated.
+> > > 
+> > > [harry.yoo@oracle.com: properly initialize mfill_state.len to fix
+> > >                        folio_add_new_anon_rmap() WARN]
+> > > Link: https://lkml.kernel.org/r/abehBY7QakYF9bK4@hyeyoo
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > ---
+> > >  mm/userfaultfd.c | 148 ++++++++++++++++++++++++++---------------------
+> > >  1 file changed, 82 insertions(+), 66 deletions(-)
+> > > 
+> > > @@ -790,12 +804,14 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> > >  	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+> > >  		goto out_unlock;
+> > >  
+> > > -	while (src_addr < src_start + len) {
+> > > -		pmd_t dst_pmdval;
+> > > +	state.vma = dst_vma;
+> > 
+> > Oh wait, the lock leak was introduced in patch 2.
+> 
+> Lock leak was introduced in patch 4 that moved getting the vma.
 
-Rewrite __free_contig_frozen_range() to call free_pages_prepare() for
-each order-0 page, then batch the prepared pages into the largest
-possible power-of-2 aligned chunks via free_prepared_contig_range().
-If free_pages_prepare() fails (e.g. HWPoison, bad page) the page is
-deliberately not freed; it should not be returned to the allocator.
+Still not sure what I could possibly be missing, so let me try again.
+when I check out to this commit "userfaultfd: introduce struct mfill_state" I see:
+| static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+|                                             unsigned long dst_start,
+|                                             unsigned long src_start,
+|                                             unsigned long len,
+|                                             uffd_flags_t flags)
+| {
+|         struct mfill_state state = (struct mfill_state){
+|                 .ctx = ctx,
+|                 .dst_start = dst_start,
+|                 .src_start = src_start, .flags = flags,
+|                 .len = len,
+|                 .src_addr = src_start,
+|                 .dst_addr = dst_start,
+|         };
+|
 
-I've tested CMA through debugfs. The test allocates 16384 pages per
-allocation for several iterations. There is 3.5x improvement.
+[ ...snip...]
 
-Before: 1406 usec per iteration
-After:   402 usec per iteration
+| retry:
+|         /*
+|          * Make sure the vma is not shared, that the dst range is
+|          * both valid and fully within a single existing vma.
+|          */
+|         dst_vma = uffd_mfill_lock(dst_mm, dst_start, len);
 
-Before:
+It acquires the vma lock (or mmap_lock) here, but doesn't set state.vma.
 
-    70.89%     0.69%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
-            |
-            |--70.20%--free_contig_frozen_range
-            |          |
-            |          |--46.41%--__free_frozen_pages
-            |          |          |
-            |          |           --36.18%--free_frozen_page_commit
-            |          |                     |
-            |          |                      --29.63%--_raw_spin_unlock_irqrestore
-            |          |
-            |          |--8.76%--_raw_spin_trylock
-            |          |
-            |          |--7.03%--__preempt_count_dec_and_test
-            |          |
-            |          |--4.57%--_raw_spin_unlock
-            |          |
-            |          |--1.96%--__get_pfnblock_flags_mask.isra.0
-            |          |
-            |           --1.15%--free_frozen_page_commit
-            |
-             --0.69%--el0t_64_sync
+|         if (IS_ERR(dst_vma)) {
+|                 err = PTR_ERR(dst_vma);
+|                 goto out;
+|         }
+| 
+|         /*
+|          * If memory mappings are changing because of non-cooperative
+|          * operation (e.g. mremap) running in parallel, bail out and
+|          * request the user to retry later
+|          */
+|         down_read(&ctx->map_changing_lock);
+|         err = -EAGAIN;
+|         if (atomic_read(&ctx->mmap_changing))
+|                 goto out_unlock;
+| 
+|         err = -EINVAL;
+|         /*
+|          * shmem_zero_setup is invoked in mmap for MAP_ANONYMOUS|MAP_SHARED but
+|          * it will overwrite vm_ops, so vma_is_anonymous must return false.
+|          */
+|         if (WARN_ON_ONCE(vma_is_anonymous(dst_vma) &&
+|             dst_vma->vm_flags & VM_SHARED))
+| 
+|         /*
+|          * validate 'mode' now that we know the dst_vma: don't allow
+|          * a wrprotect copy if the userfaultfd didn't register as WP.
+|          */
+|         if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
+|                 goto out_unlock;
+|
+|         /*
+|          * If this is a HUGETLB vma, pass off to appropriate routine
+|          */
+|         if (is_vm_hugetlb_page(dst_vma))
+|                 return  mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+|                                              src_start, len, flags);
+|
+|         if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+|                 goto out_unlock;
+|         if (!vma_is_shmem(dst_vma) &&
+|             uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+|                 goto out_unlock;
+|
+|         state.vma = dst_vma;
 
-After:
+It is set here. So if anything before this jumps to `out_unlock`
+label due to a sanity check,
 
-    23.57%     0.00%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
-            |
-            ---free_contig_frozen_range
-               |
-               |--20.45%--__free_contig_frozen_range
-               |          |
-               |          |--17.77%--free_pages_prepare
-               |          |
-               |           --0.72%--free_prepared_contig_range
-               |                     |
-               |                      --0.55%--__free_frozen_pages
-               |
-                --3.12%--free_pages_prepare
+[...]
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
----
-Changes since v4:
-- Use /* */ style comment with boolean variable
+|         while (state.src_addr < src_start + len) {                              
+|                 VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);             
+|                                                                                 
+|                 pmd_t dst_pmdval;         
+| [...]
+| 
+| out_unlock:
+|         up_read(&ctx->map_changing_lock);
+|         uffd_mfill_unlock(state.vma);
 
-Changes since v3:
-- Use newly introduced __free_contig_range_common() as the pattern was
-  very similar to __free_contig_range()
+the `vma` parameter will be NULL?
 
-Changes since v2:
-- Rework the loop to check for memory sections just like __free_contig_range()
-- Didn't add reviewed-by tags because of rework
----
- mm/page_alloc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+If I'm not missing something this is introduced in patch 2 and
+fixed in patch 4.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 9218fda8842a6..b043b56f65c57 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7052,8 +7052,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- 
- static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages)
- {
--	for (; nr_pages--; pfn++)
--		free_frozen_pages(pfn_to_page(pfn), 0);
-+	__free_contig_range_common(pfn, nr_pages, /* is_frozen= */ true);
- }
- 
- /**
+| out:
+|         if (state.folio)
+|                 folio_put(state.folio);
+|         VM_WARN_ON_ONCE(copied < 0);
+|         VM_WARN_ON_ONCE(err > 0);
+|         VM_WARN_ON_ONCE(!copied && !err);
+|         return copied ? copied : err;
+| }
+
+> > > @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> > >  
+> > >  out_unlock:
+> > >  	up_read(&ctx->map_changing_lock);
+> > > -	uffd_mfill_unlock(dst_vma);
+> > > +	uffd_mfill_unlock(state.vma);
+> > >  out:
+> > > -	if (folio)
+> > > -		folio_put(folio);
+> > > +	if (state.folio)
+> > > +		folio_put(state.folio);
+> > 
+> > Sashiko raised a concern [2] that it the VMA might be unmapped and
+> > a new mapping created as a uffd hugetlb vma and leak the folio by
+> > going through
+> > 
+> > `if (is_vm_hugetlb_page(dst_vma))
+> >         return mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+> >                                     src_start, len, flags);`
+> > 
+> > but it appears to be a false positive (to me) because
+> > 
+> > `if (atomic_read(&ctx->mmap_changing))` check should have detected unmapping
+> > and free the folio?
+> 
+> I think it's real, and it's there more or less from the beginning, although
+> nobody hit it yet :)
+> 
+> Before retrying the copy we drop all the locks, so if the copy is really
+> long the old mapping can be wiped and a new mapping can be created instead.
+
+Oops, perhaps I should have imagined harder :)
+
+> There's already a v4 of a patch that attempts to solve this:
+> 
+> https://lore.kernel.org/all/20260331134158.622084-1-devnexen@gmail.com
+
+Thanks for the pointer!
+
+> > [2] https://sashiko.dev/#/patchset/20260330101116.1117699-1-rppt%40kernel.org?patch=13671
+> > 
+> > >  	VM_WARN_ON_ONCE(copied < 0);
+> > >  	VM_WARN_ON_ONCE(err > 0);
+> > >  	VM_WARN_ON_ONCE(!copied && !err);
+
 -- 
-2.47.3
-
+Cheers,
+Harry / Hyeonggon
 
