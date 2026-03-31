@@ -4,116 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89B3109B46D
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF42C109B46D
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:11:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4E6E6B0092; Tue, 31 Mar 2026 10:11:46 -0400 (EDT)
+	id 43D2A6B0095; Tue, 31 Mar 2026 10:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF6F6B0095; Tue, 31 Mar 2026 10:11:46 -0400 (EDT)
+	id 415376B0096; Tue, 31 Mar 2026 10:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C876B0096; Tue, 31 Mar 2026 10:11:46 -0400 (EDT)
+	id 351E16B0098; Tue, 31 Mar 2026 10:11:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C43706B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:11:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A285C3F10
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:11:46 +0000 (UTC)
-X-FDA: 84606546612.04.302ED93
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4475D8001B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:11:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pj06nudl;
-	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 295F06B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:11:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB841E0261
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:11:55 +0000 (UTC)
+X-FDA: 84606546990.13.B00B7A3
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CAB7520009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:11:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jeSL2mHH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774966304;
+	s=arc-20220608; t=1774966314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uEOp0RWGebAq1pKpMH/DnvyOx31FKeMcpUjas+GFEbY=;
-	b=MiNWLh88UboAWvP6dmQc8y3IDrrsuhG+LaaD8mYmifMnpfP57QCxTP4C1DloI08NaIAzcb
-	+7+epJoemA364j853lPB5YGkfs2wQJLkQzkmX4GrkQ/2OawnNJSOMSlpcezPL+WrEWPVZ6
-	PNuV/VoR8byivFwh8EoS6p6cEfQ/Cmg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pj06nudl;
-	spf=pass (imf30.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774966304; a=rsa-sha256;
+	bh=TdPxN9QaNf36x/V2Ie3LXQAiv3fTO3U7y0mPTWEOTDE=;
+	b=UxoYLfiAQ3KLCRl9EvcPHKj09AeZB87+PReshx55eYOB0xqphRgeuzBWrjTKF6hkoSeobL
+	TOGPpAxoEv+6wT8N8+CiJYwxCwtKy6KXuIPwvAWPNndR3Y0NXwIYo18TWJfSP7iDc+LPJo
+	XVobItMPrNHn4shmKpKVnmOcJjVi0Bc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774966314; a=rsa-sha256;
 	cv=none;
-	b=XbH8ykL0gtaPXOqmaUzcfy5n1VrlrVK2lhMObRaB48lTEdNHhmJGLF7TCtsUO6JMmtVoal
-	/zineWTyECLJxjtrOFRpjRu04JR6TD3+EEsQeNUtLZAbhiCxrEklxsDZ8o8m65i4c3d2L8
-	NvSiEWazcYxNekmcoXAKzV9t5/AOoW8=
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-38cb8e42d1dso4869531fa.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:11:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774966302; x=1775571102; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uEOp0RWGebAq1pKpMH/DnvyOx31FKeMcpUjas+GFEbY=;
-        b=pj06nudlNusY3Hf6qqm7FV3A/1ZSG3bPQh5kNy6iySeWHAZi6TROgy2wdHegEjinEP
-         BQ2G3Hzmo0ZdvYjgJZlBKsnme3QvoJ71LwCWzEgigBqYqejmNljcDVzwY9Qs+RBs1c31
-         tBOSVyckhcxjtsaqVTHUGS/GW5hKXrVFE7Bw19RZVFSJv+WjYL1cSIvrysjmqu4stb0k
-         CeGAPIBJYx8PrCgoem3BidhL2Un1mvsDNcWrhJEB91I6IxfV1YtCWsO7wN7DpPz4EoMI
-         U9WC4kc6d6ysA8KosA2073snBmgL/e9Nab/AYXvtk8kEkDuGx26kB4YvGACQSDjrGW46
-         IJFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774966302; x=1775571102;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uEOp0RWGebAq1pKpMH/DnvyOx31FKeMcpUjas+GFEbY=;
-        b=qHhlF35j+f0pdH67eCeV6v20YxEx6Ow9H8tMCQwg0ujK4MYzWjr8p7iUeHk6y1BiKL
-         fK7xy5+uYzKSnobfX2/oH8d0KIeHRCzALJ2CqaBb/51pr/g9smFOuoDHsCTzSjr9Dshr
-         t7AR1jMSQuz0ADNTd8zK2Ilp81kA7tScSXJL6d76eVdHf/SA1oTTtWDTOou5SiboxT7U
-         TvgU5Oe5rhOHdU0SPlbjdD817XSW5nu+ifngtcp3I9cv6AcoiRqm4X2knObzPeDfo8zt
-         1iR70Seg09YcWrSS489Dy0SzxZ+Mt/tD0l1HoHsi0tDD2TGLiuBQEWcmvqVQcxQIn0cN
-         KlMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpD6lCTl0ATPkMYcB+zeGyQFZRVPcp1jtNra2iEVef9Y+jsN4zrT/h5cnKgACcYyB7bHaNtdmBww==@kvack.org
-X-Gm-Message-State: AOJu0YxFIy/MMcOXRF2iCC+c63z/SSrRDiYME42o2dcyBGMB6uneEHJF
-	ZpUzGL6/jMYOgnespmBpXeu3lH+XXnNon/NQg3KhzRwgQJS72+80IsMl
-X-Gm-Gg: ATEYQzygvXEX1scgpt3SK8gVj6NwozothO35p7h/Dwnxj+f6Ayx1VyuGnt9SlaT2dwO
-	nZRGOXuGJHHsXha6BWFZug2hJEMwa4qpENZIvGXP8T0xBarEn0YVuOiqWSbWEhCsv6zda5II+Qa
-	6x7qo7yjZa6mUnVJ8pDaoUKrqozm47hkgsnMlST9/F7+W+nt0sHFaSou+hHJgbZncnH42zEDsiM
-	KInIg2jDaCPZfcoP19H1oqbkwqgiaRZ6A+GoyF/r+IbxpaadRYha3+fN9cJSmn/sGrnuU2Ef9Cf
-	oVWydf7x5fhJTo7SuBUJu3HfeXolwG814r/hmh/8wTYLDB+0YcYKPYlcRg6Ftf/dGYXV56bGrqa
-	E8SMcx9Eos1TYv/+rsc/47fogJf88ZP9yNnEKeNFsOUEkVpwjO1/3D3KDnUebZ2Vasq72Gpkhgf
-	c=
-X-Received: by 2002:a05:6512:695:b0:59e:57d2:75f0 with SMTP id 2adb3069b0e04-5a2ab928655mr5498684e87.32.1774966301894;
-        Tue, 31 Mar 2026 07:11:41 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2bd66239asm514817e87.51.2026.03.31.07.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 07:11:41 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 31 Mar 2026 16:11:40 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-	lirongqing <lirongqing@baidu.com>
-Subject: Re: [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap
- purge/drain
-Message-ID: <acvWHBzPc82kPEdM@milan>
-References: <20260330175824.2777270-1-urezki@gmail.com>
- <20260330121625.c69f46a63c86c9540b823398@linux-foundation.org>
- <acuWOtKmPTzrYEEG@milan>
+	b=u/wN2uYNFaOD/XbYBpMSOs25a3TOChXPxza/W0xYTlG2bMKHg/QdSGQktwn+P0O1jat0iF
+	EJvmqa9ZtS4nFg8DPtRjrs2tuz2RJhDD63vCVtCt0jC5GSXtnx0RJXXuVBRptEe2M1qOjS
+	AMWrg0JS3E0T7HtVGsaba85eCYMIaPU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jeSL2mHH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Message-ID: <157dc048-4b2f-4170-b9ed-a72f5599e460@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774966309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TdPxN9QaNf36x/V2Ie3LXQAiv3fTO3U7y0mPTWEOTDE=;
+	b=jeSL2mHHnGMx63cxD4zvGwxlACLsVsl7hBb6An0yUyWU4Keh1E51CS0u318GzzMGMiEsRG
+	uYkNEF5p9F59Ki2EdLT+y7fWRrnDmJjgI3VFCB+QP786AS6D1cxHmuDUvO9KE9wZof7vPe
+	8vNKYD8P0hSJBsNkzW8Q2/LDRkXOY6E=
+Date: Tue, 31 Mar 2026 15:11:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acuWOtKmPTzrYEEG@milan>
-X-Rspamd-Queue-Id: 4475D8001B
-X-Stat-Signature: mfw35u4fznygzwu74pqewfomam5ym94q
+Subject: Re: [PATCH v4 3/5] locking: Add contended_release tracepoint to
+ sleepable locks
+Content-Language: en-GB
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Waiman Long <longman@redhat.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+References: <d2e5763278812499335b22a013aafb4979e3324b.1774536681.git.d@ilvokhin.com>
+ <20260331103451.1070175-1-usama.arif@linux.dev>
+ <acu7LdegiZ5_-dEW@shell.ilvokhin.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <acu7LdegiZ5_-dEW@shell.ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CAB7520009
+X-Stat-Signature: 1pijy8pmtngejz3acjx67ag5srzzbn1t
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774966303-638378
-X-HE-Meta: U2FsdGVkX1+xa5GJrL/dYv2Zf6c7uMyaJknv0HSZQVZx58aTORXIWKwcKRrZaS/CTvS+ZW1KHmDlgAnxfaocZOrG4R5R96ptyl3B1ocJtQ6YT/W/S1argcOWLlMXlJWoygsJom3XK5mKMH5h/6fxiDHu04PgO6d+CFXJgiUDVou/AuFZKsh8Oy+xcpZyqiGHBtjoGUPsv1EUaG4ECJOoaiNv+IN1HT9PiadOIRU8dJLsnHZ7T53Yl6/UVyv0zDAA22UiX6EfbbVt4ZDnMXxw91N76rywN8279KIJefIQqV3BTbvSGUInGU4TxMZVOnYv+/gMNLYETYrfpGf5dLrEE2mIF6D20+Zv8CNsqg/y0hRx1B/7RfBDvhJQ3IT0+FqsMq186VI4zB2JHm3SQW6cLVmda1/m7zlThM68h1PU1AU738rCCN1mi7ckaYZUuaGSi2cuZP/xgMIeWYLBBVX8oyMDO1BzK5sg4jyTRb5UoLZVKVgKIPErNdPyIw16Dl5UwmY2gD7pgmgpUShDeHUmcq6mRXl8NQibKQ28j8LxF1o3bf5THDnjaNQc4yXiGa9XRNwRHt5nvQXCuW9CBZ1oDMCbOmRZU5ZWtatbgI/E0/STmSMmWVa7+ACh4d5ZYU4ORfTVaBbOiQggIaT80X/uOFpmnZo22ujK186tf0JHXZrwvMt6RJRvJDdFVa4YBOT7XFjTVkFXQ1JTJTOvsZsHy7gWphB04hkH3CrDTTLMQjwhSktf0pCaGp56nw8cOhK1Q5m5efpIF2Y3Mc9+WN8pHutFeQ989gntl5Du+7+6+6wcLcP/m165IOtZnCsVwTOp9DSgyHEYdPkkFWTPHm46tjRXNAsVe2bzMEXyWCcxLTTvRKRrKUR63LEsx3dmXIoxOsQ0cQE4Kuxe7Fk+QXnX2FAvm0Meji5jalEMiOKQBiTgusvjF0qEq30/NfD1Qkh2uzOWk4gD0ER58YFm+kY
- QdjWsN+x
- oayb2KSoN1lbYAxmCnQlgKeSPScNOHhYi4vrPIXrqNxolj9cHQzj6bM9SvGWqz4ZVbhse/gy2sXhXIC1BTmo4zZvxe6jQJ/PgivXw83bFUbu5qq03pxwyBwa6D492QVazHV8lGUoQ0xVnjFIz3zOWiMHIG8vwczNIH/kYMXlQw4r4pA/0Ml8+zwby/vi/XMe2YNxie19e9X2/0xqyrKTh8hiqA1oC3Qc7kB3i5ybLOd3rrkQAJg1XaB6BM1WoLlZwYQRK7X4sVOTTMt4RQH+kMQ5QYlJoVlPUkTsIr+yt892wFbgZ7JjwH0DkO93VnBgLe59VXPX57MKcFc0uMR/NkLq0S/2oUJtiTPUKWPSBaKJVY5w7gwnRnpmrrLOqFi5jo0XYvp+//AeQGSa1tm3BfnIbCQqcWQdTWA8zkEIqqSPc68w282WSYB1YqaCWlVb83nQ7gmztdLuYCgJOFpArOzIHTirkEHFyJjRq2JVBHpf86cgqxGY5yiqvJiONckPn6nwZ2n5jerXm9EU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774966313-699199
+X-HE-Meta: U2FsdGVkX18EEZkLGODuG1ekMP+jzAsuEnoLYMG/TU9ZMmx44lZ1Y2Zh++UWxjWPANHjpGNBDvQrNGabYqN5oCPlERs4TU9hYSMeeecWX5OZDguliRFoWUJnQroLNExoYvpHQ1tXsphwDcOi7kf4aWCGgwl7TUrjMBCAkBwf5PR3Mq90Z63wQKoufW7mCh1FmzNxPyE0Wuv9peGNSfJmaWHfV9M0PYXJdlHQSSAQAbtu/pSanfvMhjN4Ve68yaxRiq0YrIqbngPPWQDNpHnKWvqc3cLnB+fcZtXr85keb2507mWvvrDLoEhGSFnMcdJf3IAnH8LsMV0Q/ehH9zbRdMYVrbKKm6hqYGzBiGROT6Cy6ZBjtlit8yPFfyJfFHLzbPh/EW96RPz0eO2ev4NVqrsGk8TfU2Bf0BeWTq7p3YYTp5J76TcTfSEDJoxG4Le6PUpK1OSAPsMkDk2tds/KWv+IjHZh655QWjWv7N6ui7mkS7NEXQqoLAZxqBb8G8uQTDVIsX5RAKq7TlEvpnZ70L2C7ud9+F3MDFt7yU9pS8Cp8pL/ZPbPMFAg0NCz1E5c31Kfy8OojN0a/AG5U28/tGSGdMJ6suqPtrsu0Kp4m7iMYTQt3BzHS14bWNqlYTfYfGMlIcqODjkVfTaxo6zCs4i3sosooVXNQ1aUKjKOfRwUrV8M7z0CTQW35HbyWEamAqw4S1Cow7wncTRdmYplTAPiFYd4yy/f7I69c3f7+z4yuDkXxeXX4JCcilKFNiyIfsbtCIVLn8qbWvnuBOv9DKpyXptPDdiQzoJ7S+DfTDkUuNkyuQBC38w9FqzHfR1VdXc6dj6REdAhfKJxfp9tndvukO15bfPsKt9gbCfSADdGxSpFb5YhytpSvZL1U2r73vw04t2/EUgyU8y+94UFG7DeUkH/cm/st11DSw0PM4w3l78azCeuuTYfcU7e0V7ErqZL7ybrSoi7SczuBOQ
+ g8VDZSRu
+ ZVZ6CY0PMzetWE7Uk1vYlmDZgfQ3X48698RjcR6Fgc0+Rngimi0m9Vq09lWJ9KqlFUZCPp9jzHIKUktfQlCMYUV3hsZUnrvaYb0OpgEN89pgWk2mCNTm9KHkrXkPv56A5zcUzx2t6HQtQoecW45mlUsCypRuUIZsZ8W5iQ5UHWcZazp+HX514vrYFZJerlDiefoSpLuA9N+7UIjCuNzbOj+Oe7umyPFzOJHytMEOQ7VJEyxzc2bXVAOwkGwhDjpPiebAM0FpG1QAhSASiZWRd4vNI4GLLoKdZqP6muRUEdlCVsAK2WvbMxKKVrMXQDCrVQw8x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,119 +107,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 11:39:06AM +0200, Uladzislau Rezki wrote:
-> On Mon, Mar 30, 2026 at 12:16:25PM -0700, Andrew Morton wrote:
-> > On Mon, 30 Mar 2026 19:58:24 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
-> > 
-> > > The drain_vmap_area_work() function can take >10ms to complete
-> > > when there are many accumulated vmap areas in a system with a
-> > > high CPU count, causing workqueue watchdog warnings when run
-> > > via schedule_work():
-> > > 
-> > > [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
-> > > [ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
-> > > 
-> > > Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
-> > > run this background task on any available CPU, improving responsiveness.
-> > > Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
-> > > 
-> > > If queuing work to the dedicated workqueue is not possible(during
-> > > early boot), fall back to processing locally to avoid losing progress.
-> > > 
-> > > Also simplify purge helper scheduling by removing cpumask-based
-> > > iteration in favour to iterating directly over vmap nodes with
-> > > pending work.
-> > 
-> > Thanks.  AI review flagged a couple of possible issues.  Do they look
-> > real to you?
-> > 	https://sashiko.dev/#/patchset/20260330175824.2777270-1-urezki@gmail.com
-> >
-> I think the problem about itself locking if running by rescue thread is
-> a valid concern. I will address this. I think the easiest is to use two
-> UNBOUND queues one for master/main thread and second for helpers which
-> reclaim if there are too many objects so the help is needed.
+
+
+On 31/03/2026 15:16, Dmitry Ilvokhin wrote:
+> On Tue, Mar 31, 2026 at 03:34:50AM -0700, Usama Arif wrote:
+>> On Thu, 26 Mar 2026 15:10:02 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+>>
+>>> Add the contended_release trace event. This tracepoint fires on the
+>>> holder side when a contended lock is released, complementing the
+>>> existing contention_begin/contention_end tracepoints which fire on the
+>>> waiter side.
+>>>
+>>> This enables correlating lock hold time under contention with waiter
+>>> events by lock address.
+>>>
+>>> Add trace_contended_release() calls to the slowpath unlock paths of
+>>> sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
+>>> RT-specific rwbase locks.
+>>>
+>>> Where possible, trace_contended_release() fires before the lock is
+>>> released and before the waiter is woken. For some lock types, the
+>>> tracepoint fires after the release but before the wake. Making the
+>>> placement consistent across all lock types is not worth the added
+>>> complexity.
+>>>
+>>> For reader/writer locks, the tracepoint fires for every reader releasing
+>>> while a writer is waiting, not only for the last reader.
+>>>
+>>> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+>>> ---
+>>>  include/trace/events/lock.h   | 17 +++++++++++++++++
+>>>  kernel/locking/mutex.c        |  4 ++++
+>>>  kernel/locking/percpu-rwsem.c | 11 +++++++++++
+>>>  kernel/locking/rtmutex.c      |  1 +
+>>>  kernel/locking/rwbase_rt.c    |  6 ++++++
+>>>  kernel/locking/rwsem.c        | 10 ++++++++--
+>>>  kernel/locking/semaphore.c    |  4 ++++
+>>>  7 files changed, 51 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
+>>> index da978f2afb45..1ded869cd619 100644
+>>> --- a/include/trace/events/lock.h
+>>> +++ b/include/trace/events/lock.h
+>>> @@ -137,6 +137,23 @@ TRACE_EVENT(contention_end,
+>>>  	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
+>>>  );
+>>>  
+>>> +TRACE_EVENT(contended_release,
+>>> +
+>>> +	TP_PROTO(void *lock),
+>>> +
+>>> +	TP_ARGS(lock),
+>>> +
+>>> +	TP_STRUCT__entry(
+>>> +		__field(void *, lock_addr)
+>>> +	),
+>>> +
+>>> +	TP_fast_assign(
+>>> +		__entry->lock_addr = lock;
+>>> +	),
+>>> +
+>>> +	TP_printk("%p", __entry->lock_addr)
+>>> +);
+>>> +
+>>>  #endif /* _TRACE_LOCK_H */
+>>>  
+>>>  /* This part must be outside protection */
+>>> diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+>>> index 427187ff02db..6c2c9312eb8f 100644
+>>> --- a/kernel/locking/mutex.c
+>>> +++ b/kernel/locking/mutex.c
+>>> @@ -997,6 +997,9 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+>>>  		wake_q_add(&wake_q, next);
+>>>  	}
+>>>  
+>>> +	if (trace_contended_release_enabled() && waiter)
+>>> +		trace_contended_release(lock);
+>>> +
+>>
+>> This won't compile? waiter is declared in the if block, so you are using
+>> it outside scope here.
+>>
 > 
-> I will work on v3.
+> Thanks for the feedback, Usama.
 > 
-> Thank you for review!
-> 
-> --
-> Uladzislau Rezki
->
-I will fix the AI concern by maintaining two queues. One is parent
-second one is for child helpers. That way both will not block each
-other and both have a rescue context to move progress forward:
+> waiter is declared at function scope, right on top. It's also assigned
+> before the if block, so it's still in scope at the tracepoint.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 6bc2523bf75b..2c1ed76cffe8 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1068,6 +1068,7 @@ static void reclaim_and_purge_vmap_areas(void);
- static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
- static void drain_vmap_area_work(struct work_struct *work);
- static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
-+static struct workqueue_struct *drain_vmap_helpers_wq;
- static struct workqueue_struct *drain_vmap_wq;
- 
- static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
-@@ -2338,10 +2339,9 @@ static void purge_vmap_node(struct work_struct *work)
- }
- 
- static bool
--schedule_drain_vmap_work(struct work_struct *work)
-+schedule_drain_vmap_work(struct workqueue_struct *wq,
-+		struct work_struct *work)
- {
--	struct workqueue_struct *wq = READ_ONCE(drain_vmap_wq);
--
- 	if (wq) {
- 		queue_work(wq, work);
- 		return true;
-@@ -2400,7 +2400,8 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
- 
- 			if (nr_purge_helpers > 0) {
- 				INIT_WORK(&vn->purge_work, purge_vmap_node);
--				vn->work_queued = schedule_drain_vmap_work(&vn->purge_work);
-+				vn->work_queued = schedule_drain_vmap_work(
-+					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
- 
- 				if (vn->work_queued) {
- 					nr_purge_helpers--;
-@@ -2479,7 +2480,8 @@ static void free_vmap_area_noflush(struct vmap_area *va)
- 
- 	/* After this point, we may free va at any time */
- 	if (unlikely(nr_lazy > nr_lazy_max))
--		schedule_drain_vmap_work(&drain_vmap_work);
-+		schedule_drain_vmap_work(READ_ONCE(drain_vmap_wq),
-+			&drain_vmap_work);
- }
- 
- /*
-@@ -5494,11 +5496,16 @@ void __init vmalloc_init(void)
- 
- static int __init vmalloc_init_workqueue(void)
- {
--	struct workqueue_struct *wq;
-+	struct workqueue_struct *drain_wq, *helpers_wq;
-+	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
-+
-+	drain_wq = alloc_workqueue("vmap_drain", flags, 0);
-+	WARN_ON_ONCE(drain_wq == NULL);
-+	WRITE_ONCE(drain_vmap_wq, drain_wq);
- 
--	wq = alloc_workqueue("vmap_drain", WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
--	WARN_ON(wq == NULL);
--	WRITE_ONCE(drain_vmap_wq, wq);
-+	helpers_wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
-+	WARN_ON_ONCE(helpers_wq == NULL);
-+	WRITE_ONCE(drain_vmap_helpers_wq, helpers_wq);
- 
- 	return 0;
- }
-
-
-if no complains, i will send out v3 soon.
-
---
-Uladzislau Rezki
+Ah ok, I was reviewing on top of mm-new branch from today where waiter
+is declared in the if block. Probably something changed related to
+locking/tracing and its not in mm-new yet.
 
