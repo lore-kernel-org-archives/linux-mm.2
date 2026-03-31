@@ -4,125 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8066FF60F7
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E62EFF60F7
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FD3A6B0098; Tue, 31 Mar 2026 05:50:58 -0400 (EDT)
+	id A581C6B00A0; Tue, 31 Mar 2026 05:51:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3E46B009B; Tue, 31 Mar 2026 05:50:58 -0400 (EDT)
+	id A2FEA6B00A1; Tue, 31 Mar 2026 05:51:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9866B009F; Tue, 31 Mar 2026 05:50:58 -0400 (EDT)
+	id 96D486B00A2; Tue, 31 Mar 2026 05:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 518776B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:50:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07DEF160B91
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:50:58 +0000 (UTC)
-X-FDA: 84605889396.24.C56FC54
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8C960C000D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:50:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VwiRDeDS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 840576B00A0
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:51:09 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6BF813C149
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:51:08 +0000 (UTC)
+X-FDA: 84605889816.18.F0DDD93
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5693C8000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:51:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KNtyMoYn;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774950655;
+	s=arc-20220608; t=1774950667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ZUnMNCPUch+nJ3/cZQxbUv/pjvJWtkozyvEHDR71gc=;
-	b=B6JYHQx8YQFixZinxlNsAHDNIal6N6UIpkK5pEG7faX2l0axkWIRsTAzRlfLMoKKNPMTMB
-	VUIq+IzsuAnY7aYzMYjq746ZBt0CJgQvhxtzBbr54WdGVl8pzFz/M8wpWXB4IY1IvGQpOS
-	mXItC9OSrH09xbrjFgRPIcIiQZX8cks=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774950655; a=rsa-sha256;
-	cv=none;
-	b=a+nRx59UBGaT2ieEZsLP764BelWqhm2JWE2Z4i3QsLrbn92Ns4cgjcWjriJfCcnl0F2OFQ
-	foV9Eeq8tgyJVVaqDN9TyeMKeyxFm8tifOlroo3bsvals35CHbznAuK5dAEQ/haQgMr9G9
-	DucZR/Y6XpAZ9UrVkOPh+RAEPjg74m8=
+	bh=/DDBlA+u+YDbAua4nmsZ0euWewjZTMT7HLm0BneIPTo=;
+	b=Py8eGHFMEh0IOUIdjoxyaBB3FQ+4Vq4px+rWRXF5SgNdrpkbnPv4rqyVC9f+AANt0nig9b
+	phrkTQX5Wk60ixz/49Iii9+wlQlWhfTKXOCkRt/ik1dZrHf8OTCEK8yCz1aJteIzgo8LE5
+	O1VIZNIdqdVc+VciISQESKscQS7pdTk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VwiRDeDS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774950654;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6ZUnMNCPUch+nJ3/cZQxbUv/pjvJWtkozyvEHDR71gc=;
-	b=VwiRDeDS2EzUz+0LbsyrzX7NFAE8117TsoXT6lqkvXYlHDZvvtUnf0WcjQOG2gS3byCXzF
-	BK3cDQAYuIn6vUuFEYT7GwDY9W1i6IjHFGSiPaIzSdyxvLW0oicuuXOFZEuEKL08xY6LT6
-	nrVNh0V3QxWFHDFD6APO1m3bbgm1810=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-ASW_mg7jPWSV1HGMwIRB1Q-1; Tue, 31 Mar 2026 05:50:53 -0400
-X-MC-Unique: ASW_mg7jPWSV1HGMwIRB1Q-1
-X-Mimecast-MFC-AGG-ID: ASW_mg7jPWSV1HGMwIRB1Q_1774950653
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b24611696eso20684435ad.3
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:50:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774950653; x=1775555453;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6ZUnMNCPUch+nJ3/cZQxbUv/pjvJWtkozyvEHDR71gc=;
-        b=brxisPMn/un4HtKIf+ZMixWLLKJHaW+FZWm2Q86mByDkkVYClCs3arz01qcWy100pK
-         tpXfXchQRAJqtsAyRxy1bMjUK2aOb0ZghnpXRWT0ycePG1p8ZTb1sZ0IknX1bbiYl4yY
-         1UrpN+TW3LmyxKtVGLlXt9GHJrCKvYEl6kyEAixAjySnhVX2N1VZz8zoV/pRQuF5XjBT
-         SZTNfWa89aXSZbrbEemTWHo8jPQuwZ27hhOn7tF5P/hQ6KzDSRz7llg1804roly3l7JW
-         +S3TtHRspng1AOj26CvQ9pS4uDa5S+G1LUtJ4fMVC/YJas3NP2Z7758JQL8KYQ0Calvh
-         5upQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOSY3WV8jF/OFbg5V6ah3dnI02/ZIeBZ72EH7EVht+3Hp/pIO01SH+7OxiKCmoaRf+l620Jgempg==@kvack.org
-X-Gm-Message-State: AOJu0Yz4OAUUbea3mvRwzKU3AqTKqlbeaogQ+hhOsC4immkDNdCZopfZ
-	NQ90gBWjjXoZm51V3XK5xOpJSz6HCGsX6tXhAyNf9zIWzqfV+Vp2smr6pOlR5QLTwho/d8cu+LD
-	dCZLopLQ2DQo9hXw4mlUekbLBfw61zq+DfMWoh6QFQRNJfIxGKKRF
-X-Gm-Gg: ATEYQzzsEVxkljh2M1QthGM4lfOrXPMOjBsluG1wKd32mnvXjibwARSwiKGIG7GofgQ
-	fW3WDRJNKTqYMVtN1XP9s/RvUBjZCBaB2ZPWEIGD2vnTvSs1wme5lF+5+d+L+6zsdLmtHFMFcac
-	XzVSWvAVzvDYovl9/voNxRWfe4EFp4tWIa1T1ILf7QdrGt5seTuVzGEMaRoEOzhpNksfHidkpUG
-	zRtnWP9sLV0eUelId7uqYT7cOloDLtgfNWIX38//60bDcexqVYOfmxeQXQfvjR/Kj6tqkHUkgUA
-	LMHnQSurZEPMlfh561u21AoSVvA/C83u/0VDPEkSZ90aBIyhuOuI5lW2M3WeZ/lX4xaMVa3zfAf
-	HxoS7qtE2taMRw0Rvtw==
-X-Received: by 2002:a17:903:32cb:b0:2b2:57f3:8d07 with SMTP id d9443c01a7336-2b257f39949mr54098045ad.7.1774950652636;
-        Tue, 31 Mar 2026 02:50:52 -0700 (PDT)
-X-Received: by 2002:a17:903:32cb:b0:2b2:57f3:8d07 with SMTP id d9443c01a7336-2b257f39949mr54097695ad.7.1774950652197;
-        Tue, 31 Mar 2026 02:50:52 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24277fb50sm103515325ad.56.2026.03.31.02.50.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 02:50:51 -0700 (PDT)
-Date: Tue, 31 Mar 2026 17:50:49 +0800
-From: Li Wang <liwang@redhat.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KNtyMoYn;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774950667; a=rsa-sha256;
+	cv=none;
+	b=FKRmEK6FEhZX7XItBH2mEcu4Lz2h9wWrSTf7B4s3+28r9cfwt9+nSsNTMXFntLO3bzMEPS
+	ONgg+/XgTRTayIuzreUUYgK5PpiAcxYHeDE6mP/V8NtDyXFnBonW/cModpp0p1lsbjIyk7
+	uiDOhEJPlg4z3NVgfFe/qLAbDTK2YUw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C86CA600CB;
+	Tue, 31 Mar 2026 09:51:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBD3C19423;
+	Tue, 31 Mar 2026 09:51:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774950666;
+	bh=GUYv48aqnOB+9lrhq/OJxgTDhnzEElBOBOj0aReQt00=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KNtyMoYnwvw8y7P34krJLMvPuk9Ug1u22pw5FUadp9aWf/T6utbvWI7nh/NXWnEKC
+	 tJ4F3CDEPr3Vha3SMIaiIUgFcrZiDrA98XybSdpl11bHRSaKj+zFJ0+mV+jzp+cwrj
+	 jH/QZyrPNiNDzvdpGi2yzAs+H4B/F2ck5wsIPLfe3keXguMAuUV66LjmJftvhp986C
+	 Jkt4gDcMMWmboVTTO8L51n5cNQ9BnwU32voSLRWWseQnTdDx3sRt/gggQPu4pccJz2
+	 P0dfGFMVwgLdKgJ8TQdJb/4TtC799ap1M3TRT+hlw4zD6oJYTcZrgyemeOPptHjrgP
+	 aVIemcS5phjtg==
+Date: Tue, 31 Mar 2026 10:51:04 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 1/4] selftests/mm: respect build verbosity settings for
- 32/64-bit targets
-Message-ID: <acuY-biDCExbw3aR@redhat.com>
-References: <20260331040156.119158-1-liwang@redhat.com>
- <20260330222932.a8c10bb3ea3e86581fcea8a0@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, willy@infradead.org, 
+	david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
+	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
+	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v6 0/6] Use killable vma write locking in most places
+Message-ID: <f128b795-5577-40f9-8dae-936be4253642@lucifer.local>
+References: <20260327205457.604224-1-surenb@google.com>
+ <20260327161226.17e680fec33117d67dc8b5f9@linux-foundation.org>
 MIME-Version: 1.0
-In-Reply-To: <20260330222932.a8c10bb3ea3e86581fcea8a0@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: D-PiMFSUdkspFrnSsq5LEZMcoLDgBrTv-5Rn2Oe5p5c_1774950653
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 8C960C000D
-X-Stat-Signature: i4196s1jnj53nmsmxuuidkn3c6ycj3da
+In-Reply-To: <20260327161226.17e680fec33117d67dc8b5f9@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774950655-787226
-X-HE-Meta: U2FsdGVkX1/mvmICAzDiiZ9pFONQqd9WbQwi3mBQzTwvQmCI8mTlYIEoisxUaILc2GlqTcBeKEwGsPMdAWLmOUAjtGcVhI+G1GQSJTk5eVFhFGEZclE+f6OQqC8Cf8m6LSpxPlGaaCnNKfbx6Eu9wLcs86kr0+8A5fhNLYnIInjCusOW2Yeui0b4AzfrktTA2n6dRAb28SJMM1+7AOFZQ9Y7PUWX9GdJwuam6ntiK5V2J2QyNBga0AIoBf225tvI6aFTPYDOmNJt+F8YxhHdykIhx8dYwckDAtrG2B7RP2rF8Pti6YYtyWcf097xTJz/r5lC2oM/oXtqR0CUTy/a7p+mu20b231NRXZxEWNzPy0Uc0xQ2Ar1F7eMCTu0RpBIAsIAwSmSsfvkmVvO6uRqH4z1o7QBqy0WaX14PLen/pbvCdWM2jrBdyOIQbZ22SQF9LyGONMtR1Qd6MSWf1beMc34XooE9Gte98KZZZ2pUqanmFYhRNoWWyjWKx+bFo4uUjtn+8oCK94jIcgQNVH7CEIQqIX4MViO4o8TdyNogS2bQEKHo34lSOx3tF5FmjTXNd3EELQkm8gInG50IAPEEuyDPWbLdvnbZWI13r0VtvLNjB+DY/kyTlkwgjRdIIi9EhDC6QvzeR3LE/8JBrUJAq8V4C+epnl9tcmSwbkWyNxTXIOHaxWrteg09vQNqemDqyKwHO5+jfRYMV2s80CnwDZBKmwm4d4E9WOyF84YPeLH0/AKOcRN9GEn7L4Kwu0QTSGyQTGZcQoVPY7RZtMM2yqJ76oCioTUwHm33XdM8n66Js22wi3a5DTrvg4QzeeTiKMx9zVfV2c+6V0cz0HcFNukcw1q0xgxU3MKC+r3C/K5ydL1W4kg+cFLlYYH2xSy1YtcWKwLR3beFi2pvItAFmDoG1dyICDVeZnLe/ZbzllmH2hkGmMTD0qYZxTcG2JXUnDRNu98zlfnomrFykF
- cgp/WZHy
- TIEBMoEDNfzH1Tmuj8Q/z96QCJla4MLjsFN2CQ6/yoQb8EPp7bM8BopEwnFjh0OvuL9d/dMk0ueUJA37cX1GMQcypMUFybOGqjQ/6X0HjLeSPhV3Qum9r6T2rJKk/5MDClHDxlBJCuZKCY1g+vb+8PgWRaMJ/lWh1fZA3sjUCQA5PlbrxXNDBtldF7wkNjG50xW+xilXWjjcqviUZygc2o/KKEmULXvKvzfv9M6rt6VYR0Z3wXmh4po3DwDc5QNslnZsyzQoOYBwUsyN2+WFI9rBXF9wHiOtoBwV83xkCkA3QUUKU3jwCExXcsfpZy9jdpXVD9SS78Dcii4IduevPUohe19fyV+xgwx0SLM+4hq+6rz+jz2Xvad1zhPEt3kW2imFop5/Xe4YZjaZcjPxxiJJLE/v1AiNh5Rv+KhqDcxq+n5wb5qzWdGEfU0D9yorPVTGtfdrtxQM9ldPKsiZcQxO62kWN9vzHGKxw80K1Gwst61uXE/gv6nQc4qJO9KVbMoEveWSFECtsJd3MKZdEVMBJZueIs3EHEU4c
+X-Stat-Signature: u7icw8ksuaqje819izgx9abppawz693f
+X-Rspamd-Queue-Id: 5693C8000E
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774950667-74924
+X-HE-Meta: U2FsdGVkX19vJ50k79TLGkEz1JQs09QO9KZwxYU7foKg+Sn5RhKOHTbt5HvccvpuNuB8lICAnjU9eI83RMSe9+NZUy4rmBKVfVtoGNprQ7AUu09/RvbYxQtyNC4o+e4/qfp73rm7YVCVQBp+4oO2VhHxWTAtJGf806CJ2p/smeLEcy2SQtwBfqHB5YIDDCu12+3rw0O1QBLvDnfX8NX6DoT9y/P81GU+ff/lMCb1pRmVOf7Hpvuw9D4Suua6QPB7xlLvo/RVS7fZYEoIaizhnsFA8+zLETjMXYUHknP6rA66JRWwtNR9gAeLRbsin4y4z1+up42295POU92H3js9kUOvOnPkOJUq0atFoEUvv87LxnIt/Qnoo5wVh94wwX5c/TRJJ3Hn00zEgMIZZ+oGPvZZ/yAo/Cfmm+3JIKKMgqraNuGVXm7bjU6v4cz7XifIlrYj/RERm7AbOL7uE5yk7IuHSfAlp/7figlefJVhgyh3Mr6W6Z9+jidLsjMWkA/zSoZoNLTc/G9B4WPoezJKUvu4y3VyI6OntHoBrnQc7qKp6HSeIlyiqIuIJ/ENyq9AAFyPgFdKaTbSj/f/ETt1Uuv26Wnd9yhEpdYD28irfW/1Omuel8HkJkS7uKArSex1uJ7Fh/Yygo+WUgIZ4t6894gtB/kxPQ2bfRUq18rQm/DEdIFOzv9I2bIn1c+mHXMTS8GuRNc+j/hqTiHVWv/wG/pIMLRc3zIBUabuvhQkmd1ysQNes5TNKT53MFS8jqsULfN06uei178VQ8KlKP9u9wxs6yZFAj/emCxjpDVaT2teTfzDVk+j0dze+W0mQ6C2YblMsVRkaZ1/IScKX21nS9mVpL2bX8ELNlM8EL1BBBArxUId2Qvve4WwUvqB8IGOjztGPOVEHF2e4eQORHVN9CL4MSYsqwYEPzV+rimiFRrzhtwXEAXRu4/khaL65xAj6YTblGDpLysuoTq3hkQ
+ h0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,18 +100,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > Reported-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> wow, thanks, do you want my credit card number?
+On Fri, Mar 27, 2026 at 04:12:26PM -0700, Andrew Morton wrote:
+> On Fri, 27 Mar 2026 13:54:51 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+>
+> > Now that we have vma_start_write_killable() we can replace most of the
+> > vma_start_write() calls with it, improving reaction time to the kill
+> > signal.
+> >
+> > There are several places which are left untouched by this patchset:
+> >
+> > 1. free_pgtables() because function should free page tables even if a
+> > fatal signal is pending.
+> >
+> > 2. userfaultd code, where some paths calling vma_start_write() can
+> > handle EINTR and some can't without a deeper code refactoring.
+> >
+> > 3. mpol_rebind_mm() which is used by cpusset controller for migrations
+> > and operates on a remote mm. Incomplete operations here would result
+> > in an inconsistent cgroup state.
+> >
+> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
+> > vma_start_write() out of these functions and replacing it with
+> > vma_assert_write_locked(), then callers of these functions should
+> > lock the vma themselves using vma_start_write_killable() whenever
+> > possible.
+>
+> Updated, thanks.
 
-Only if you want me to add a Funded-by: tag to the commit message. :)
+Andrew - sorry I think we need to yank this and defer to next cycle,
+there's too many functional changes here.
 
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
+(There was not really any way for me to predict this would happen ahead of
+time, unfortunately.)
 
-Thank you for testing!
+>
+> > Changes since v5 [1]:
+> > - Added Reviewed-by for unchanged patches, per Lorenzo Stoakes
+> >
+> > Patch#2:
+> > - Fixed locked_vm counter if mlock_vma_pages_range() fails in
+> > mlock_fixup(), per Sashiko
+> > - Avoid VMA re-locking in madvise_update_vma(), mprotect_fixup() and
+> > mseal_apply() when vma_modify_XXX creates a new VMA as it will already be
+> > locked. This prevents the possibility of incomplete operation if signal
+> > happens after a successful vma_modify_XXX modified the vma tree,
+> > per Sashiko
 
--- 
-Regards,
-Li Wang
+Prevents the possibility of an incomplete operation? But
+vma_write_lock_killable() checks to see if you're _already_ write locked
+and would make the operation a no-op? So how is this even a delta?
 
+It's a brave new world, arguing with sashiko via a submitter... :)
+
+> > - Removed obsolete comment in madvise_update_vma() and mprotect_fixup()
+> >
+> > Patch#4:
+> > - Added clarifying comment for vma_start_write_killable() when locking a
+> > detached VMA
+> > - Override VMA_MERGE_NOMERGE in vma_expand() to prevent callers from
+> > falling back to a new VMA allocation, per Sashiko
+> > - Added a note in the changelog about temporary workaround of using
+> > ENOMEM to propagate the error in vma_merge_existing_range() and
+> > vma_expand()
+> >
+> > Patch#5:
+> > - Added fatal_signal_pending() check in do_mbind() to detect
+> > queue_pages_range() failures due to a pendig fatal signal, per Sashiko
+>
+> Changes since v5:
+>
+>
+>  mm/madvise.c   |   15 ++++++++++-----
+>  mm/mempolicy.c |    9 ++++++++-
+>  mm/mlock.c     |    2 ++
+>  mm/mprotect.c  |   26 ++++++++++++++++----------
+>  mm/mseal.c     |   27 +++++++++++++++++++--------
+>  mm/vma.c       |   20 ++++++++++++++++++--
+>  6 files changed, 73 insertions(+), 26 deletions(-)
+>
+> --- a/mm/madvise.c~b
+> +++ a/mm/madvise.c
+> @@ -172,11 +172,16 @@ static int madvise_update_vma(vm_flags_t
+>  	if (IS_ERR(vma))
+>  		return PTR_ERR(vma);
+>
+> -	madv_behavior->vma = vma;
+> -
+> -	/* vm_flags is protected by the mmap_lock held in write mode. */
+> -	if (vma_start_write_killable(vma))
+> -		return -EINTR;
+> +	/*
+> +	 * If a new vma was created during vma_modify_XXX, the resulting
+> +	 * vma is already locked. Skip re-locking new vma in this case.
+> +	 */
+> +	if (vma == madv_behavior->vma) {
+> +		if (vma_start_write_killable(vma))
+> +			return -EINTR;
+> +	} else {
+> +		madv_behavior->vma = vma;
+> +	}
+>
+>  	vma->flags = new_vma_flags;
+>  	if (set_new_anon_name)
+> --- a/mm/mempolicy.c~b
+> +++ a/mm/mempolicy.c
+> @@ -1546,7 +1546,14 @@ static long do_mbind(unsigned long start
+>  			flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagelist);
+>
+>  	if (nr_failed < 0) {
+> -		err = nr_failed;
+> +		/*
+> +		 * queue_pages_range() might override the original error with -EFAULT.
+> +		 * Confirm that fatal signals are still treated correctly.
+> +		 */
+> +		if (fatal_signal_pending(current))
+> +			err = -EINTR;
+> +		else
+> +			err = nr_failed;
+>  		nr_failed = 0;
+>  	} else {
+>  		vma_iter_init(&vmi, mm, start);
+> --- a/mm/mlock.c~b
+> +++ a/mm/mlock.c
+> @@ -518,6 +518,8 @@ static int mlock_fixup(struct vma_iterat
+>  		vma->flags = new_vma_flags;
+>  	} else {
+>  		ret = mlock_vma_pages_range(vma, start, end, &new_vma_flags);
+> +		if (ret)
+> +			mm->locked_vm -= nr_pages;
+>  	}
+>  out:
+>  	*prev = vma;
+> --- a/mm/mprotect.c~b
+> +++ a/mm/mprotect.c
+> @@ -716,6 +716,7 @@ mprotect_fixup(struct vma_iterator *vmi,
+>  	const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
+>  	vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+>  	long nrpages = (end - start) >> PAGE_SHIFT;
+> +	struct vm_area_struct *new_vma;
+>  	unsigned int mm_cp_flags = 0;
+>  	unsigned long charged = 0;
+>  	int error;
+> @@ -772,21 +773,26 @@ mprotect_fixup(struct vma_iterator *vmi,
+>  		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+>  	}
+>
+> -	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma_flags);
+> -	if (IS_ERR(vma)) {
+> -		error = PTR_ERR(vma);
+> +	new_vma = vma_modify_flags(vmi, *pprev, vma, start, end,
+> +				   &new_vma_flags);
+> +	if (IS_ERR(new_vma)) {
+> +		error = PTR_ERR(new_vma);
+>  		goto fail;
+>  	}
+>
+> -	*pprev = vma;
+> -
+>  	/*
+> -	 * vm_flags and vm_page_prot are protected by the mmap_lock
+> -	 * held in write mode.
+> +	 * If a new vma was created during vma_modify_flags, the resulting
+> +	 * vma is already locked. Skip re-locking new vma in this case.
+>  	 */
+> -	error = vma_start_write_killable(vma);
+> -	if (error)
+> -		goto fail;
+> +	if (new_vma == vma) {
+> +		error = vma_start_write_killable(vma);
+> +		if (error)
+> +			goto fail;
+> +	} else {
+> +		vma = new_vma;
+> +	}
+> +
+> +	*pprev = vma;
+>
+>  	vma_flags_reset_once(vma, &new_vma_flags);
+>  	if (vma_wants_manual_pte_write_upgrade(vma))
+> --- a/mm/mseal.c~b
+> +++ a/mm/mseal.c
+> @@ -70,17 +70,28 @@ static int mseal_apply(struct mm_struct
+>
+>  		if (!vma_test(vma, VMA_SEALED_BIT)) {
+>  			vma_flags_t vma_flags = vma->flags;
+> -			int err;
+> +			struct vm_area_struct *new_vma;
+>
+>  			vma_flags_set(&vma_flags, VMA_SEALED_BIT);
+>
+> -			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
+> -					       curr_end, &vma_flags);
+> -			if (IS_ERR(vma))
+> -				return PTR_ERR(vma);
+> -			err = vma_start_write_killable(vma);
+> -			if (err)
+> -				return err;
+> +			new_vma = vma_modify_flags(&vmi, prev, vma, curr_start,
+> +						   curr_end, &vma_flags);
+> +			if (IS_ERR(new_vma))
+> +				return PTR_ERR(new_vma);
+> +
+> +			/*
+> +			 * If a new vma was created during vma_modify_flags,
+> +			 * the resulting vma is already locked.
+> +			 * Skip re-locking new vma in this case.
+> +			 */
+> +			if (new_vma == vma) {
+> +				int err = vma_start_write_killable(vma);
+> +				if (err)
+> +					return err;
+> +			} else {
+> +				vma = new_vma;
+> +			}
+> +
+>  			vma_set_flags(vma, VMA_SEALED_BIT);
+>  		}
+>
+> --- a/mm/vma.c~b
+> +++ a/mm/vma.c
+> @@ -531,6 +531,10 @@ __split_vma(struct vma_iterator *vmi, st
+>  	err = vma_start_write_killable(vma);
+>  	if (err)
+>  		goto out_free_vma;
+> +	/*
+> +	 * Locking a new detached VMA will always succeed but it's just a
+> +	 * detail of the current implementation, so handle it all the same.
+> +	 */
+>  	err = vma_start_write_killable(new);
+>  	if (err)
+>  		goto out_free_vma;
+> @@ -1197,8 +1201,14 @@ int vma_expand(struct vma_merge_struct *
+>
+>  	mmap_assert_write_locked(vmg->mm);
+>  	err = vma_start_write_killable(target);
+> -	if (err)
+> +	if (err) {
+> +		/*
+> +		 * Override VMA_MERGE_NOMERGE to prevent callers from
+> +		 * falling back to a new VMA allocation.
+> +		 */
+> +		vmg->state = VMA_MERGE_ERROR_NOMEM;
+>  		return err;
+> +	}
+>
+>  	target_sticky = vma_flags_and_mask(&target->flags, VMA_STICKY_FLAGS);
+>
+> @@ -1231,8 +1241,14 @@ int vma_expand(struct vma_merge_struct *
+>  		 * is pending.
+>  		 */
+>  		err = vma_start_write_killable(next);
+> -		if (err)
+> +		if (err) {
+> +			/*
+> +			 * Override VMA_MERGE_NOMERGE to prevent callers from
+> +			 * falling back to a new VMA allocation.
+> +			 */
+> +			vmg->state = VMA_MERGE_ERROR_NOMEM;
+>  			return err;
+> +		}
+>  		err = dup_anon_vma(target, next, &anon_dup);
+>  		if (err)
+>  			return err;
+> _
+>
 
