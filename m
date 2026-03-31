@@ -4,115 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBE91FF60F4
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 17:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD85410F92E6
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 17:45:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F66C6B0095; Tue, 31 Mar 2026 13:44:58 -0400 (EDT)
+	id 249476B0096; Tue, 31 Mar 2026 13:45:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D3576B0096; Tue, 31 Mar 2026 13:44:58 -0400 (EDT)
+	id 220A76B0098; Tue, 31 Mar 2026 13:45:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E3436B0098; Tue, 31 Mar 2026 13:44:58 -0400 (EDT)
+	id 15D0E6B0099; Tue, 31 Mar 2026 13:45:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 20D076B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 13:44:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C032C8B3C7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:44:57 +0000 (UTC)
-X-FDA: 84607083834.04.37FDA20
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D091A2000D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:44:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=orcF7H9H;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A1236B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 13:45:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 90725585FC
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:45:25 +0000 (UTC)
+X-FDA: 84607085010.02.2D383CD
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 90C6CC000F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:45:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sH4tIoUZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774979123; a=rsa-sha256;
+	cv=none;
+	b=Gg1kc67GQzebqg0wkCTSHvJH8q+nOHwVHhs9JWZFv7QaQOw6lt4BHmnkenyWUOL+kqSc3/
+	dijaNCJImCJ0rzOkIzUhVP7ZOXqQ7In7jx46fdC3xSIB9A3MTMrniQ7Tx3pbbeCJ2y/zka
+	aLyIuAsYZWOTP3ONWlidinChA3O/LTM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sH4tIoUZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774979096;
+	s=arc-20220608; t=1774979123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vofdppwa9otl2577biBqhJMer4b1Y4JsoxCtUCoyMx4=;
-	b=EUrU9SwOKi34TgKFIkgPagIUbH3ursfiwKE/tH2E5WxSaMXu2Db2zy5u+Gn/sDnPFyOPRa
-	y/i2EG+P7tYm6NW5D3o3kEhxixgvI/Rgov8gw8uXlUJAkUsXbvhhh9p1p1MR0jedxKH+fU
-	iAbXrMl7inNkpBC2ycZtYNKMFRl+EU8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=orcF7H9H;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774979096; a=rsa-sha256;
-	cv=none;
-	b=BvVKZLT7Ds2wjEHIJG2KebUdHFAwNaD2PrV2ZzIC6s/rYjdvBvso4BXsKMyI4G1ggs5ijV
-	SHZVURjZFhaL4+AKl8qBWRWEMqYmIiFUeQiej053fDtJ0AimHNZ9Nw/KHZfhKTXtSELavw
-	PGOuT9hw/riD4L3AcBBNKBi5Ph6YUFg=
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38bd15d82bdso45797281fa.2
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:44:55 -0700 (PDT)
+	bh=N6FXrG475cDPtduYVwRttERvMXjCgD4c7f7JNUYgbB8=;
+	b=UAM7zpIwjXPxdqRNOXxxiytP5NvU5s2oMFy2MF/LQH+ZtejAdA+pX+RJWQFm3KmjHJV+7v
+	v5VfYC8Q/2Zeve+G7Q7jeOoOg0TvEsafSRPW+ykGv2mHpiLEpLuA33Fkc37z+DnJFZiog4
+	+lnOsdsAcvjV2J0LmHgiuZ5v7gaL0Fw=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a133b686f7so6954141e87.0
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:45:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774979094; x=1775583894; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1774979122; x=1775583922; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vofdppwa9otl2577biBqhJMer4b1Y4JsoxCtUCoyMx4=;
-        b=orcF7H9H4maVlJAoetUxP0Y/b1/HSgNisSLoTsYDrdmoDKzlMAz/nq68zI09Z9lSvY
-         ZlWyuOahYfhBLbdFCSdgekE2hp48AkQ8rhoUeENtsz+DxKsG9rHSNVj1f0tZOOUgLSdm
-         KuTehQ4dNNFVP8c3KQHeDslDBngGUKiUTZ90Clhha3hX2g5ZqCGWi4ipp8PtpHrKHZT0
-         ZiCc7jsT+EgCF/eID5BGLOru/7B8pwuv/2CRRvWog5Zic+b2A0viEwfKSFYvAZFT8D/K
-         rOztVIg9/fS2aFonHSJeI9QXwy1kD4isL24+Eyrzr2SssVp4j23Rsa8R3UNCQuscVDmK
-         Q03w==
+        bh=N6FXrG475cDPtduYVwRttERvMXjCgD4c7f7JNUYgbB8=;
+        b=sH4tIoUZteQuqA6GkzhJF04tK7Lg0AD613v2IWuQxyI5SvVFDOp+W/wWSH0gHAHok3
+         OGXwc62c+Q3Y+oMv6TbtTmu5FfbLWzasEnasdpJSoO5J5wskd7h1FeTSOyERmFnEZ7BH
+         Mx8wJP5So+SPlPtIT4rNM1XpWYDhQGdLHU71NWeY669hfX8Ciu5a1Pt4BDWIT3LNOVV2
+         Fz7kL5/jwDlzEa3BuxOy0Uh7PMDoe1W55wIze1e3ISsw8Gm9JDpX4+ntEi2w3BC0tUzb
+         QZQus4yl9Cks/gYSZsQ+CZcvMNW67SeE+X+FRcS7LMG0toEpoaOduxqmEF3ajf9w8+AV
+         RM4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774979094; x=1775583894;
+        d=1e100.net; s=20251104; t=1774979122; x=1775583922;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Vofdppwa9otl2577biBqhJMer4b1Y4JsoxCtUCoyMx4=;
-        b=dcXu3uOhNeRB8yqeycaRHC2Dtld/IYYMSms4MIpsJTdg9AOGtJ5RyO2W8DAnPbVKlI
-         BvxFIovhoH0ZF90U7/pL83iUltW674QMmRng6xBi2ftJSYChmmLRbJEw+yBg/B8oEHZI
-         ee7RgMvW0oFpWaxQ5hRb2lm5wgCm6oJDfeRJOP+t36wg8SeG8j0R6cTr8ymnlaXffiA2
-         QZMRuE8FRltTrBfUYJx1J3xGIjysCYuJRSD5BTChKNEMhrpw8N/QxYSlHTTYOGivzOlc
-         tfwqMkY+8+dVSOMp6Z45elQjGRbQVqIsxW4Cl4Ir0yf1nZanYNxQTZVFXnHVwBILG7p1
-         ZmUg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3a3F+bysxOaKmHDzO5YoBwPimySW/Bl4uBsWc0YfEfkjmYg6nMh5jpXoTu5XF5mKpskw80TBLhQ==@kvack.org
-X-Gm-Message-State: AOJu0YwiFsomDFsqnbPWNFFWCtV2ibwsfzkitNfxYrsW2u4iXG2/X5yD
-	s5Svsko8CL5aU2AVRUloiVO7hVNnmeb3dkxF4yyadLruV98Uw7ggPBge
-X-Gm-Gg: ATEYQzxRmhPyF4c7p+3pD+mGxZwMdp9vWhfpbOlUKjKmyJ5/mYgpq1BscBVjmgoeRq6
-	WK2gSrFdZ+vuhVCwy8tgKjmBq44ATi/3G90G8GrMOQ4K9zI1BnYRv4pDLfutU5fRlh6VX0/Rh2W
-	eGRoQ66u6ns5oxhZu0GKzUyLdSOpY3/9IhzCa7BhMQr9nyfODgKQGu1D7TgsYxOfo7AYno4BoS+
-	ZUhWW2xEQlbLHpxNNd4G5X2wAZZMEB/U+D7PaXD1MQjStR4bT/Ru2Kc7OSEKgTMrBYcdve8TUsB
-	vBrZFFPWbuD48b03NENZWFs16++rfDSKZT6PGChgXxalFhni2YkmT+UWD9TxUImGWfmnD20kTWt
-	LgEFb3pAGEnQM4O1PUMmTy26eCZGsMv9qrBWWgLXOYbHY4z68iutmS4mLf7IpuYG4
-X-Received: by 2002:a2e:2e03:0:b0:38a:2c06:a270 with SMTP id 38308e7fff4ca-38cc3131a92mr593751fa.30.1774979093718;
-        Tue, 31 Mar 2026 10:44:53 -0700 (PDT)
+        bh=N6FXrG475cDPtduYVwRttERvMXjCgD4c7f7JNUYgbB8=;
+        b=XZ1ODE6jvliyEHTWZd8CQHrC2nlTD2UggCPU/GmX8ACURv6H16BITsLV+9YU7Ka86l
+         RMPPfb/54ZuWVPc/UjOAOQ/zvBI8YsgdH9+FTE0ge7F8ywyOVo7dBkEFQK2zvZEcBLjH
+         askK6FPND3ROSAQJ86AcgJRXxOIM1GiCpzkcqI3HXMgrTAvqI/qVkYqYwxyfjGwNnOG+
+         x2GsVBqGXJ88rYEfLXkdaVCU55lA6Qm3LXz206MRwve67+SOwPAUeb+GK8e4yud6RVHB
+         t9NoFwfi2JBFYP4LfguhW0u5ubb4iYx248vw7tuxf3Orj6esaUE5553mIC8o2ecNSYvA
+         xAFA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8NKRv6MV+cfeeTo8JKPDNZHA+AqIRsc2YRcM37FOgo/WisP0ON2D0g3msm7FZddK4UY9Op+Ph6g==@kvack.org
+X-Gm-Message-State: AOJu0YzCKbaE1fIFqOCIY39RO0nn34of+E/WEWCvVsAlMoT97TfiFVPu
+	iJzlvBJC9jMftj00Pv0h7qKwNQOM1BGr08lzUWq+5rC0VwFo2q1mpms4cFxX6/cA
+X-Gm-Gg: ATEYQzxPusTjb9eXP21Q5D2n5j9vwq8Kc5lmV0X0BWHBx21urYPz7H8yE1WgmouW1Wn
+	Ki7tmCtYVvJZkNapY4kyXF77qiiXMuxpj8dpGyJcq+RT/seFgBPjtWN9t1kOSiERJhg/fAvED3T
+	qltNk6mCD9GTiWimOcHgedAvNZv2rvQQDbm8+wOGViIwGEsbATzJGLTN4ozhHtwR0sR1FPYRPiB
+	IaM11NXeZg90ke2HtnT+7fEnkebkxtgWtMECxS8KA1JM5if8mTkTMajQJtyUIwyvVwyArPZVAML
+	T3w9nW0eESbiexJYLlB9zkl1f6lBxl237J7q93K3ptITBtElkzTnx0z4vSkD9KtyJ8yiK8WMqtZ
+	0xAz5enPWvcBgCbncja64UV3DuNtj3w0eRmYqL1uG0XMDVUIDvB6K0odrJMFv4/INlRl1R6hey0
+	4=
+X-Received: by 2002:a05:6512:1282:b0:5a2:7ba1:493e with SMTP id 2adb3069b0e04-5a2c1f0d4b7mr160277e87.13.1774979121746;
+        Tue, 31 Mar 2026 10:45:21 -0700 (PDT)
 Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c836d3f3dsm26283081fa.8.2026.03.31.10.44.53
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2b145f145sm2594562e87.78.2026.03.31.10.45.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 10:44:53 -0700 (PDT)
+        Tue, 31 Mar 2026 10:45:21 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 31 Mar 2026 19:44:51 +0200
+Date: Tue, 31 Mar 2026 19:45:19 +0200
 To: shivamkalra98@zohomail.in
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v8 1/6] mm/vmalloc: extract vm_area_free_pages() helper
- from vfree()
-Message-ID: <acwIE1FVoFaoYnLh@milan>
+Subject: Re: [PATCH v8 6/6] lib/test_vmalloc: add vrealloc test case
+Message-ID: <acwIL5BkeZ8IpgWx@milan>
 References: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in>
- <20260327-vmalloc-shrink-v8-1-cc6b57059ed7@zohomail.in>
+ <20260327-vmalloc-shrink-v8-6-cc6b57059ed7@zohomail.in>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260327-vmalloc-shrink-v8-1-cc6b57059ed7@zohomail.in>
+In-Reply-To: <20260327-vmalloc-shrink-v8-6-cc6b57059ed7@zohomail.in>
+X-Stat-Signature: kyic4569n6m4sjk1o4rh9gneat8uxtye
+X-Rspamd-Queue-Id: 90C6CC000F
 X-Rspam-User: 
-X-Stat-Signature: 35z3wkwacbj649wyd8131udyjyzby9pt
-X-Rspamd-Queue-Id: D091A2000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774979095-378145
-X-HE-Meta: U2FsdGVkX1+UTvVwkgDgEaOzHF4NV0ifkACMigBYfTDlGtgzQDM/zQY8tid2prwwrTkNSbgR3CRSvtIzmPuiaq4tIvV31KRaGkzPNfn/d6hSqii5LJeXrwDl9a2Z/LSIx8I0vO9i4UEEc7uJXXoYOUe57k7+QFJ8KYbygr2DcfcmX9jOK67ln2G70NEyIAFT+9NG/kAPALMlVMrdw1hqE+Vi7eo3J6HL1qH3gDlKw7vDSKLNZkS76J/27K1NzYykNP582ATNtXwGQQhYrnWt9cqq6ovljIaVe51FO5TmNgR15BaECiriml+Sohb2atw0VKh6hGzLiyAkWe3UrZVAneaNIuOhiXdSbRIizFihUruJrWl59eJ1aRT0hj/irKScqc6K/clMJgMwCwGz1bl5M9STHi93yxY38IJKtUkqfDGnOoZZmWqBwFsE6RzF9E6zuYQo9BIT4xTMwVXEVDLGMB0xUf0E/5GBwI+kvug34ltAXibRm+O7XjdQxlmbkvEZRtiUYCK1JNiAEYG1mDrObAtHJyw2EPXQ+6W9c5lAHTVgzn+1/VcHgcefWVpZL0ivrIDndZts6HoTS9b9mQ9JEyikpcD22szOgP070axWZRyK9t2vQeQ9FjA+oKT1Muu7jdTq2U55lYOr4YBmPw6S4kC3cGe8rulgECSLKsRtGNeTwBPfGrch9wJuhvYcZ/t0ecuMVncQ7uMsiMFmVJ/VE3NOZoQoFK11ZiHyHo+7lr+702Y1HWIV4a0XN2CyDE+DoGWUC0Ld2clFAlBFwmIzUOalMV1Cg7OZWN02f8y4JTxTBPN15W8VaDEgXObfc6EyrmNGrPvMLs9Vhmkyv7CIQyrxsOmNSNDe9FRqnKhdDyB4LkC+VANLV7Yx9Ozx2kkgL5aPI5agn4IenQl8iQPcAj5kda6AdXayerjYZLIsf+qyO3RfqYZU1kgU99rwZjMNxa/8EV9wx1a3LqVXCNY
- 6oPTmxp/
- mH7xGsTtG3wPP1V6+JCby5npGJ/INecYuQm6tlJwX4YxWCSbxrMmuhQjYgCwh/4cTI/D/VIFOzp2iiV4G92YjkXzbe4ZjV5jNAncABkBrMDPOA3JLlpABMNnxNBo2aIEspMBzruRsrzCKCcwr6FuzSCX4dDjkURfsjLO+2uGIWQWXLTxu449HvRqRf7uqSkTg6sJHjYahHo6Qf1ANLTxgDer/abOvTXHsdIEIZSN/bzbAjrnfuJXzu7ZCR1c0qE14NMZ5ssbWFiqt/CqeDnAZbRlj6m+K42MSil1tl17hEiR6wBuXd++XaENuJMzZE57DVI2xU9/5ulJ0r8z7mrdbDEdruZTjgcfmFQwN8clbQzBHqSUZ1xkSQseEWGgCBuLQDIaq9aVQgwIa2fR6CDHcwVciWTdQEJeMX7xkA4Wunf6rNcC0H6o7Bbik6NC8vM8YY7JzjqhorOOdNL4ExEZ73oJvNWpWQbCruajgjOAzWUR8DVpnxNb1VGgCZceojiM6L6mmYf2HA87vFHl5KEVRbY4r6A==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774979123-413429
+X-HE-Meta: U2FsdGVkX18SnXKilX+tY1s6cOORHs4mnKWnz0Py0gfqjDk5Wv4Zig3Uc/9K9Nh61+BY/q0s/R8xWGB7xM0+vsFqZe4gKh7016pSeJhiXcbN9GBR7RorGpn5dYtdB4hArsT9jRK8/Xq3ou/tUlYsM7TeJDYezIGdfiduQfFYuGqtLWHiX+TswK4HMGmunJF4S1x9IWxrSYbORY6st//KXyB6JcTsrjfNEmpulsQbr70dy1jCzGkJsEmKsVt/QzXlW5FhYMUtcov+iZOAslCq1wxsavxUxLcHK8o0cWA2HPnh8WCe3U6qVaR2+xV0qP2UzP555VUjKRXaalAmEm/HXdRpqLuJNH9FQXkXn/Hn7uopfNKW+xIDle06qvZ5IH5n4W0yzcsT/9UUVfFNcWOIsMSJX7Ro5bjdEcMV3mc6uUJ0iNDa8ulHvfa+espTZGmQesGv9J+qqcElkSFkPlBMmhnPE9jg65rZTcGvy0Nipj+1fBdK2xCnXhHLXnPEEW998SHsa5TL16keMk2q5DaTSIHDOjZo9YI7Dj7XHrOvkg7D3xZslzx+HJN38rVWsaJ7/SuANuP5fH3A0A2bOvv+mCxSjQW7WJm+vE9DeahG3Y95hk31UHQWKUtvdivF5+ML7rPM5L7XLITM6e/PZDF5EEkDN8PH7hEbzHwA4YChapvcZdLnNQh7AnkAsTCOYHwsmeIwYdrHtFFhuB5UGv3rsLKrVGmY8xcTm8hCw7YvZ0gMct6jw4fJFJtU32NhuhimS23Ut92InnxvTEjM4Nj380XmZUjJvZRdjfDRnm2vtHyIZoL2d9N+S7Rg10gZEZbxFgD4ewoj05BzHJiZwAs2fUutVnhhA9diSJdqX2JyuVDYxNLOV6ysrayxuQq4HaXWcwToVfmyWv29NNM2pABtrXJE8PB1TN3qlROgbNHW3wDCZPLUXidVc4U3HWTyurZhF5Q6ga4eK10UaGDQY0k
+ CBr0ENta
+ PbIYwH/sVuKWmq+VccL/p+R4AJApLXFGf8WaUNJqs1bFqpOVY1UFLcDcXGji5NRO3Xhd3+X1pQuit81BNe6fJ6uWYmydbdDrafK6EIUSFZaWm0yCFd8jZvGwANZA6JEd3fqzoGZTR/qyevr8BobW3RnmYc9hEs2yvR+MvRJsqEj8JjSuYizwLGZHX1ztT+P+UjxIaH7uQH0r4ly5ddhFfB2+LrDyHRnDaCUCxVCo4tlCzmqs9/rg/Gy+hzQaZyk6cXspiup1TcxNMSWPtSbPP5WysKo4FB2fW0+6rsiQ6MKDcQqasa4Z6tAo1CwgQdHLPzVjZdUCqsZXNYz4LldldnUyY5JNd/T+8s1JkV8w2Br6QXHYO8J9VOHeBIeP2JvMzXpjBFy6AerbZwws0ivZRKxFXvkYRAWRJ0qCDdtvkI4IhgaQUMoJPdCHe5kJSH0o/WVsgghgNyrXl+FhlVEA1J7+haswMXhA4fW9UhOw0yMBkkekOFKogh8KkV6RvNFzyvX1xtbM8wbv18S+TRTIQ8TEdPMz7Q8m6lk6L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,96 +120,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 03:18:37PM +0530, Shivam Kalra via B4 Relay wrote:
+On Fri, Mar 27, 2026 at 03:18:42PM +0530, Shivam Kalra via B4 Relay wrote:
 > From: Shivam Kalra <shivamkalra98@zohomail.in>
 > 
-> Extract the page-freeing loop and NR_VMALLOC stat accounting from
-> vfree() into a reusable vm_area_free_pages() helper. The helper operates
-> on a range [start_idx, end_idx) of pages from a vm_struct, making it
-> suitable for both full free (vfree) and partial free (upcoming vrealloc
-> shrink).
+> Introduce a new test case "vrealloc_test" that exercises the vrealloc()
+> shrink and in-place grow paths:
 > 
-> Freed page pointers in vm->pages[] are set to NULL to prevent stale
-> references when the vm_struct outlives the free (as in vrealloc shrink).
+>   - Grow beyond allocated pages (triggers full reallocation).
+>   - Shrink crossing a page boundary (frees tail pages).
+>   - Shrink within the same page (no page freeing).
+>   - Grow within the already allocated page count (in-place).
 > 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Data integrity is validated after each realloc step by checking that
+> the first byte of the original allocation is preserved.
+> 
+> The test is gated behind run_test_mask bit 12 (id 4096).
+> 
 > Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 > ---
->  mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
->  1 file changed, 33 insertions(+), 14 deletions(-)
+>  lib/test_vmalloc.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 62 insertions(+)
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index d75151649c97..79a57955345d 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
->  		schedule_work(&p->wq);
+> diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
+> index 876c72c18a0c..b23f85e8f8ca 100644
+> --- a/lib/test_vmalloc.c
+> +++ b/lib/test_vmalloc.c
+> @@ -55,6 +55,7 @@ __param(int, run_test_mask, 7,
+>  		"\t\tid: 512,  name: kvfree_rcu_2_arg_vmalloc_test\n"
+>  		"\t\tid: 1024, name: vm_map_ram_test\n"
+>  		"\t\tid: 2048, name: no_block_alloc_test\n"
+> +		"\t\tid: 4096, name: vrealloc_test\n"
+>  		/* Add a new test case description here. */
+>  );
+>  
+> @@ -421,6 +422,66 @@ vm_map_ram_test(void)
+>  	return nr_allocated != map_nr_pages;
 >  }
 >  
-> +/*
-> + * vm_area_free_pages - free a range of pages from a vmalloc allocation
-> + * @vm: the vm_struct containing the pages
-> + * @start_idx: first page index to free (inclusive)
-> + * @end_idx: last page index to free (exclusive)
-> + *
-> + * Free pages [start_idx, end_idx) updating NR_VMALLOC stat accounting.
-> + * Freed vm->pages[] entries are set to NULL.
-> + * Caller is responsible for unmapping (vunmap_range) and KASAN
-> + * poisoning before calling this.
-> + */
-> +static void vm_area_free_pages(struct vm_struct *vm, unsigned int start_idx,
-> +			       unsigned int end_idx)
+> +static int vrealloc_test(void)
 > +{
-> +	unsigned int i;
+> +	void *ptr, *tmp;
+> +	int i;
 > +
-> +	for (i = start_idx; i < end_idx; i++) {
-> +		struct page *page = vm->pages[i];
+> +	for (i = 0; i < test_loop_count; i++) {
+> +		int err = -1;
 > +
-> +		BUG_ON(!page);
-> +		/*
-> +		 * High-order allocs for huge vmallocs are split, so
-> +		 * can be freed as an array of order-0 allocations
-> +		 */
-> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> +			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> +		__free_page(page);
-> +		vm->pages[i] = NULL;
-> +		cond_resched();
+> +		ptr = vrealloc(NULL, PAGE_SIZE, GFP_KERNEL);
+> +		if (!ptr)
+> +			return -1;
+> +
+> +		*((__u8 *)ptr) = 'a';
+> +
+> +		/* Grow: beyond allocated pages, triggers full realloc. */
+> +		tmp = vrealloc(ptr, 4 * PAGE_SIZE, GFP_KERNEL);
+> +		if (!tmp)
+> +			goto error;
+> +		ptr = tmp;
+> +
+> +		if (*((__u8 *)ptr) != 'a')
+> +			goto error;
+> +
+> +		/* Shrink: crosses page boundary, frees tail pages. */
+> +		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
+> +		if (!tmp)
+> +			goto error;
+> +		ptr = tmp;
+> +
+> +		if (*((__u8 *)ptr) != 'a')
+> +			goto error;
+> +
+> +		/* Shrink: within same page, no page freeing. */
+> +		tmp = vrealloc(ptr, PAGE_SIZE / 2, GFP_KERNEL);
+> +		if (!tmp)
+> +			goto error;
+> +		ptr = tmp;
+> +
+> +		if (*((__u8 *)ptr) != 'a')
+> +			goto error;
+> +
+> +		/* Grow: within allocated page, in-place, no realloc. */
+> +		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
+> +		if (!tmp)
+> +			goto error;
+> +		ptr = tmp;
+> +
+> +		if (*((__u8 *)ptr) != 'a')
+> +			goto error;
+> +
+> +		err = 0;
+> +error:
+> +		vfree(ptr);
+> +		if (err)
+> +			return err;
 > +	}
+> +
+> +	return 0;
 > +}
 > +
->  /**
->   * vfree - Release memory allocated by vmalloc()
->   * @addr:  Memory base address
-> @@ -3436,7 +3468,6 @@ void vfree_atomic(const void *addr)
->  void vfree(const void *addr)
->  {
->  	struct vm_struct *vm;
-> -	int i;
+>  struct test_case_desc {
+>  	const char *test_name;
+>  	int (*test_func)(void);
+> @@ -440,6 +501,7 @@ static struct test_case_desc test_case_array[] = {
+>  	{ "kvfree_rcu_2_arg_vmalloc_test", kvfree_rcu_2_arg_vmalloc_test, },
+>  	{ "vm_map_ram_test", vm_map_ram_test, },
+>  	{ "no_block_alloc_test", no_block_alloc_test, true },
+> +	{ "vrealloc_test", vrealloc_test, },
+>  	/* Add a new test case here. */
+>  };
 >  
->  	if (unlikely(in_interrupt())) {
->  		vfree_atomic(addr);
-> @@ -3459,19 +3490,7 @@ void vfree(const void *addr)
->  
->  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->  		vm_reset_perms(vm);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> -		struct page *page = vm->pages[i];
-> -
-> -		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> -		__free_page(page);
-> -		cond_resched();
-> -	}
-> +	vm_area_free_pages(vm, 0, vm->nr_pages);
->  	kvfree(vm->pages);
->  	kfree(vm);
->  }
 > 
 > -- 
 > 2.43.0
