@@ -4,166 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C633E1061B39
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:44:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F6D1061B39
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FDE96B009B; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
+	id 8E64E6B0096; Tue, 31 Mar 2026 07:48:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D4E16B009D; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
+	id 8BD296B009D; Tue, 31 Mar 2026 07:48:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C3D96B009E; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
+	id 7FA5A6B009E; Tue, 31 Mar 2026 07:48:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 196F76B009B
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:44:30 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BE176B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:48:47 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFBF9140134
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:44:29 +0000 (UTC)
-X-FDA: 84606175458.24.95E5769
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A9E1F40002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:44:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b="Jxap8/9S";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k uLyiPM";
-	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957467; a=rsa-sha256;
-	cv=none;
-	b=Xty+UPnkCW8wYGK+5NW2yiTSSt1Km+34nz7elfcxAKdEfeIJ4AlulF12wDkT7J3H5crF+J
-	65hDv8lLQpWsFleBJPeIajsl9cH+fIs9EtyzAV5KtpS0mHs8oz8jaalMe7FVKMavqLqxwM
-	TAFXxqeJSPTlH756xY9dF8XtiWJDbUw=
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE8E414013E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:48:46 +0000 (UTC)
+X-FDA: 84606186252.24.D97A881
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1F97B40009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:48:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qH+lWmDY;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774957467;
+	s=arc-20220608; t=1774957725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=;
-	b=JQTjDrZBySQXycsXEnoQt3JZodW0WiS4p21GAcAMKgkdPfkqn7LasPVLgaZj9nayE8tgMT
-	fKGAKcbEmcsTzxrr6JEAbnt4NhVIgLzIUfIbILQP+QhnivPKE0llbSVcLDLWfWE8iFy3CE
-	ZJRw+zVFFBb+AUrPUSLI9pRB4m5rI7g=
+	bh=4Aw52YAuDxhZ/g4e4zwp8EqeNDbuPHuIPkJdArjeYzY=;
+	b=mLPERWhxrda4fcZrwc0fJQEp3dC2dXCUXVItkKl0LF9jiHUA/EyQq+KPbbJ/TjpAWTfRl7
+	c2gmQubMUCD7o0cR3Cf9NaZlXamTWFIRNr6/stacKz9s1HFSP01lSuHbxVHEOySTOp/UC8
+	V8P0CMF++PYEsknJ+mfNIU33/COvtL0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b="Jxap8/9S";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k uLyiPM";
-	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 062CAEC0235;
-	Tue, 31 Mar 2026 07:44:27 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 31 Mar 2026 07:44:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774957467;
-	 x=1775043867; bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=; b=
-	Jxap8/9S4qYqMwrKvG6LkL4qmDzEcuGMGDJ3Cz2bZ0vxUUfbPt7c1qTw+rKEDpy+
-	H96GkWp6u3KcKGr2qct0JUN/2X9EmZCHETETy4o/MQnOwTCKCxywAKErWV01t/tS
-	AoB2WNCyADBh/I9ydKmyNcfSk8ifT5ztBoh/vqUAviwELJGFfA0crVeDB4mK11WL
-	ahkiAwGQbh1GkVlIRlDvp2kBiECEdrZZ9pCtAZL7MoOKBwYlnwTHGMo5EVr3xqyk
-	bkBC7R4FFB5K20KVin1XLG6iOgUZ4X6ut43zPKpdCsTq4lcYKZLpTsWfI9o1mQ45
-	GxMWe28tebPtm8H9rPSwPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1774957467; x=
-	1775043867; bh=45JgVcq0EgVfNtDgS04MgTxf5U+SjaNRaHQGB6s03l8=; b=k
-	uLyiPMoH1o8hur4JjSJuRWTEfIETsH7xtk6oTrvGkWtl/WpnqWZdsuVd4dFow7CJ
-	t+EYzO1ktwqkE+meCgWhVgE0SUn45Sx6RnyYx7a5iqlTvHIrhneDetOw102WDFrn
-	tHoOlJFw1F4AQROF04cLDYAraPS84KvCc3xdral9L9YKzdr540GQnAUdmYLN9qMU
-	smmRyd0iv77Vr4+N8sj8wYfQMhws9jKeyqvdga6in+0k1BsP5d042X5ThI3t95oK
-	2SeiZr3KvLiL1X8b8C/UbrsQoECRWzBT0Au56Ghgdk8zvRuOf+vArZ4A2c0rdx8k
-	ITZ0Aq5KQmVCecXlXCtyw==
-X-ME-Sender: <xms:mbPLaafs0nlOk9Q4g9puvZHHMG2cSvGX_65TGc17KWG9rifVmyVbAg>
-    <xme:mbPLafCg7zZEDtKSpnR3PPX8iUEmuKvzcvuZ-KilZn-zxuKNxNjbUVlrscqT1UKdy
-    5ehLghXHQayIclsu-xXgnbc_PNokmr2xsbYb9aMGM3Phjf5uTlVm-4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    foggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcuuegv
-    rhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrhhnpe
-    dvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrg
-    hrnhgusgdruggvpdhnsggprhgtphhtthhopeefledpmhhouggvpehsmhhtphhouhhtpdhr
-    tghpthhtohepjhgrmhhivgdrtghunhhlihhffhgvsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehmrghr
-    khdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlh
-    hinhhugidrohhrghdruhhkpdhrtghpthhtoheprghnthhonhdrihhvrghnohhvsegtrghm
-    sghrihgughgvghhrvgihshdrtghomhdprhgtphhtthhopegurghvihgusegurghvihgugh
-    hofidrnhgvthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrih
-    hsihdrshgthhhrvghflhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:mbPLaXWL4_RbtfLfnHQs8C4tG0ngXTCPv9euc-VB1lto6tqFQyGNcw>
-    <xmx:mbPLaU_cG1WcSE-QSkVD9ElI1dukFUPpc53IiCbdiAif50XEkb-z1Q>
-    <xmx:mbPLaf3Jw7KAvwSkj2NhSKaJwucaNeK5yqjANIhVWRFTYuRZjmC46w>
-    <xmx:mbPLaXfgUsSfpDNbiUxt6RT2rhVcYFtkTJ_DCYi6UKM2ewPiID8SDQ>
-    <xmx:m7PLaYahyRZ4gPZWSFwm_OyhnRUM4xeu34i4uTLr4s-lisp1T7JlXocj>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 31988700065; Tue, 31 Mar 2026 07:44:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qH+lWmDY;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957725; a=rsa-sha256;
+	cv=none;
+	b=4PxbHdSaojXg/6EHNjf0eqRxzFTQS40o3FDIvGDReZy8+7R4ANIvMl4BhDw+vpAnwGPV1L
+	56Q/bzZgS9/V9fzDdv/FW2K4K7o0sKmWBKCdYI/jghwAVoWbptJL8zNfejayXYrwqSES/e
+	GMJrUrpBVhPQ5T9pHZ7kkC3zocQ0NAQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 121BE41708;
+	Tue, 31 Mar 2026 11:48:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7772AC2BC9E;
+	Tue, 31 Mar 2026 11:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774957723;
+	bh=UbzwtiFI4elDO2ehY143SPhvyyOtbmJDip5hc70RcPE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qH+lWmDYqwBLGcMXBzxy6RXjgL4K97AmcRwRsEq/1CMvCesL5ZZ+szGv2L8DNIURZ
+	 HRGvEGwYgDMCe5y3QMwYZQeqk+W/UIVbwdN57Fc7mfE6En2wPrK10+bQfK72RxVBSz
+	 XbfunX4ZYn1g1kzmFWevbfv1dVJIAr09jEfTY0ykzvC9vQaLjYKZTAyIfGZf/q5BAs
+	 eutxQ/A/MG8D7oopemN4PoVsQ3VwyojuF2jMI/c6S7YK5HX1c5Xg1xJUNyFR+G3Zmi
+	 3+zfaBcoF6aKf6xU4Q5MuFiAnjd2aNJHUysVFIrdYn/Tne2E9PltBbPK1OgS3wYVBU
+	 mDHSC6Hd5YEMw==
+Date: Tue, 31 Mar 2026 20:48:40 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH mm-stable v3] mm/memcontrol: batch memcg charging in
+ __memcg_slab_post_alloc_hook
+Message-ID: <acu0mGYGI6K_yTL1@hyeyoo>
+References: <20260331091707.226786-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AUJnWW6OA6Vc
-Date: Tue, 31 Mar 2026 13:44:04 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Russell King" <linux@armlinux.org.uk>, "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Ard Biesheuvel" <ardb@kernel.org>,
- "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
- "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
- "Gary Guo" <gary@garyguo.net>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Justin Stitt" <justinstitt@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev,
- "Benno Lossin" <lossin@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
- "Bill Wendling" <morbo@google.com>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Nicolas Schier" <nicolas.schier@linux.dev>,
- "Nicolas Schier" <nsc@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
- "Trevor Gross" <tmgross@umich.edu>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Message-Id: <a2c18fec-8ca2-490b-bd9f-bac79672c2f4@app.fastmail.com>
-In-Reply-To: <f159850d-5fe6-4329-9703-b355305fd106@gmail.com>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <CANiq72=b+cr7Stxph_hXQTmD5crCvwWTqdaGKOJ7W1-66v4i_w@mail.gmail.com>
- <f159850d-5fe6-4329-9703-b355305fd106@gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331091707.226786-1-hui.zhu@linux.dev>
+X-Rspamd-Queue-Id: 1F97B40009
+X-Stat-Signature: 4153m9q1finf7a6zf6q91is1c87df6om
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A9E1F40002
-X-Stat-Signature: a8ez5r5nmtk8icsqgty5deddredp6b6c
-X-HE-Tag: 1774957467-180926
-X-HE-Meta: U2FsdGVkX1+6Y/W23oAOHxcA/0RQNcxio9NFPZx//3zmLEXjZUGhOQlsZgfEUCCev5z/FFNaCbLyzZ6iwvtV6QSKfPVPlQD0p5TwrInRQFMGzrUTzAecnIn39YIy7N2MdiBeMuQKT2C1IN0J3xKPmbPiMjFxXkIMcYpP8qIf9JfuM/hAqY47H0qBewgxr/rRqbVFKzJaKKAOhNkRjuHU3gGz0svEXf/vwKIhkzQHQu/cH11dTwTJCA4VMCsk84f0T2Ka/nd3Yh88P2LEC6C7i0kXEhwq8/Wy7nYNSfB55oMNKA+O/8SqSPRULAxSn6Z1jgmz2D6PFVrfap967r9hEgdYXas+SB63kfVdb89DH2rWhLAaJUEiYWvLcNw9S9UZPJDGGJg5P+Pv+oZ65vMSwqH6kQ3eU48K0Xs7+8GrZPx24fPdUoW+xuiEbJqa0a+4sGwCTXHX66ULLFXJHRrsRXLdsY347W9+tS7JPCQop8ozVSztRmU4zO+rZ3SsMJJSf9jVUJbPxgJKKuJwoSIlm8iW905JNrwqY52luk7jtV123/4UGocE/LChKGn9l7tbfXG4NHRR721jSsA5Ivp5rcGQdjQzooBxWcBKT2pbcuhjsBkvlPN1AU/H7+pl/rpvcaSgrZUEukK/V44r1sDaNMBH6V8eAZeBta7kuKz7KDa4nIjLTilatgiH6r4Hm3duO8DJ6rsbwddm4a18pf90VwUL0LUab8X9ebG8of1dq8+ToLsU65LSMIP4MlrANGg2jxLleg+OBywxk7TT3RmkjWGQevu8e3GEadv5YEEh9X6UcbizWp1fQPnwelubi+PeKk3OIMRw0S6D4h+sF9U0YUZ1sldynDzn4Cz9rcUwGs8y6qhJbX+WMs+yTaXr2P0kcCy5vOX6PtTAV1HPQIZ+IzmHWp521zHKhEqYor5KDXcKaocfNkTLVCJLTlIdxbxFewCAt6Tnha4w+Weco62
- 7xS+wzXO
- D8mdYMkn55nlzplPv8yW8FSJZBdoAieytjq9ceu43ff3mZehWhZ7dCkbdWUPr4vh5t9u1mC5ba+r8S+WPa1DMtUGd3Z6FxaB0tvNk+Pe6oh0J0IBMGjtywbGwQLDjmS8HMTO4t9QAL1METzDtmUItStZT+Y/Nm08DpWWq6y44PCBqYPrqztinKDIWPwIjz78O66NyB2FPLVMzIRBB9fWog+tMoaAvRy7Smbx/IP8HjZqYQG7x+ZgEYyDTYEUWDb/SxtgsTT2XDuCKFKM/owoOA/L/cUvqolDobrjUlOLOEk86/aEFRbOmjtde0DgfFOWMlkpckHuCB+XemnnWuMenr9ONyodx4KMQ9imcqzeF1CCmqLb/FCWBi1/iM/cQ9iCGj0k+lHlOSQx3KDdr4GFF3/Sbzm68yECit1IS
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774957724-131324
+X-HE-Meta: U2FsdGVkX1+JnA/zwMau/uZzvmfZtSCI7kA68jziVswKydNo3y8oAqHZzlYnEtQgyJGdqUS1NNqPcSLzI/M3T6ty+f9/2A1TFMUSbhwcC8HTOBssApK6YxJyDmiJxvn8DiHNWKdkd5ffYJj9KibvxckcSZObWyvG2BubsBT7NQFkzg0VmeIzEr0Gooku7r1cEbPDBJ/JHaXy5CCV8MfzC9ZGRFg9WUDPoj19s/QkMMlQTBvFo/QswWxS+Ryxn5BpMbuqx+7WnHiBauSCFZ0FwshSwFsLk+wY47y3OAzuiGlE0rjyETVLsGob3eEDMTB2fPFoO35IeFxxtmdWqIhrS3g9eq8PVzD54KPXsBXTS9ht2FwaqcBN0xIMoqCOkLAQdNko6ttN4PuuxgYoe8JtG16kzh0+/W2yDrjy5S8SKHoKsORwXKCfpNxW6gaOv00BvStjqxZDavhcu0nW1ymv96ydZRRYeUsoVscJhFdhklkZHp27QTc0bEzl3dWsLvGzEFExvCwAvBkoPyOPCrMAxNgQasNoa5ojgVRS6u8rKc+yUCl29e7MtVd4NT4r7SNG9ymq9AX9eg9tuzl+JVxtolyuxeeKw8zGl5FivuL6DxQY8NS/Iwrw9B7nCJOFhMiQNm7R1HJecNjFzNZXwZEs07z3riqZheUNcvtA3eGiuKzr5F7mVMXpFHL7Ufqkn3Wv2l6O+DHp8bXGcpAgyEDa+2ansqUsTkfWdjS6TZ6JOYKx15BWDYlOQntvmOf1eSHtZpJYm545VE7+OfDvfExhzGqE7DerDC41SFYONqKEOYrKBSmerkUUL8XRwFmwPtp0XoklG0seW0YZurRnBkCgHb+tKn0Q3zXdo10G6PkKx8bL3XS5813yvAYSfpI1Zi4bqyPdM9+RMwzhbcRbo0JhDzYM2zWtC/jx7ciD9P+mqD099NDdqvqtNKyXSybbM6oReIbUCJNsPCG3bCoLkUo
+ IBL92nCO
+ 82A3bTW2B8uudawY0A0aF3aEnygIoZGISTrdVLPjLwvh5uNOMRdBGmWjIBv445Gnjm21FgVMW40tHeM6MT60stsGhvgsmsDqXAEGpvi/GG8I15aUICaSeYPB1XGhJiPMnL2imfZe4y8GgXUJDZDNfo5WapcRvpgPUCOphadS7LcvblhlzU/CHM1mVruBrYhZiLVRRYr+1erYugGZEFzaKjEHvonU9xzCuGOU6BhYt61zdce2bLO/Fe4nkg/ZfJGQs+hZlkcDhse6ZRrueO9Mn1/vZvxtZd0r7xii9cZsZyQ8x2B3Vmfbem8eiG/voRChwcPCYffINKOZzkW411zVjSOmNa34EHXf4ezmG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,51 +96,333 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026, at 23:09, Christian Schrefl wrote:
-> On 3/26/26 6:30 PM, Miguel Ojeda wrote:
->> On Thu, Mar 26, 2026 at 4:18=E2=80=AFPM Russell King (Oracle)
->> <linux@armlinux.org.uk> wrote:
->>>
->>> I'm not sure if this is still true, but I believe it used to be the =
-case
->>> that the -linux-gnueabi target has one behaviour for enums (fixed si=
-ze)
->>> whereas -none-eabi, the size of the type depends on the range of val=
-ues
->>> included in the enum.
->>>
->>> Certianly, when Arm Ltd were proposing EABI, EABI had the latter
->>> behaviour, and I think there were cases where Linux used "enum" in
->>> its UAPI.
->>=20
->> Short enums? I see `c-enum-min-bits` in the armv7a-none-eabi built-in
->> `rustc` target, and indeed:
->>=20
->>     #![no_std]
->>=20
->>     #[repr(C)]
->>     enum T {
->>         A,
->>         B,
->>     }
->>=20
->>     pub static S: usize =3D core::mem::size_of::<T>();
->>=20
->> is 1 for that one, and 4 for the other.
->
-> I guess we could use a custom target spec, but I'm not
-> sure if that is worth the hassle of adding another one.
+On Tue, Mar 31, 2026 at 05:17:07PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
+> hook __memcg_slab_post_alloc_hook() previously charged memcg one object
+> at a time, even though consecutive objects may reside on slabs backed by
+> the same pgdat node.
+> 
+> Batch the memcg charging by scanning ahead from the current position to
+> find a contiguous run of objects whose slabs share the same pgdat, then
+> issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
+> the entire run. The per-object obj_ext assignment loop is preserved as-is
+> since it cannot be further collapsed.
+> 
+> This implements the TODO comment left in commit bc730030f956 ("memcg:
+> combine slab obj stock charging and accounting").
+> 
+> The existing error-recovery contract is unchanged: if size == 1 then
+> memcg_alloc_abort_single() will free the sole object, and for larger
+> bulk allocations kmem_cache_free_bulk() will uncharge any objects that
+> were already charged before the failure.
+> 
+> Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
+> (iters=100000):
+> 
+>   bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
+>   bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
+> 
+> No measurable regression for bulk=1, as expected.
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+> 
+> Changelog:
+> v3:
+> Update base from "mm-unstable" to "mm-stable".
+> v2:
+> According to the comments in [1], add code to handle the integer
+> overflow issue.
+> 
+> [1] https://sashiko.dev/#/patchset/20260316084839.1342163-1-hui.zhu%40linux.dev
+> 
+>  mm/memcontrol.c | 77 +++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 58 insertions(+), 19 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 051b82ebf371..3159bf39e060 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3277,51 +3277,90 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>  			return false;
+>  	}
+>  
+> -	for (i = 0; i < size; i++) {
+> +	for (i = 0; i < size; ) {
+>  		unsigned long obj_exts;
+>  		struct slabobj_ext *obj_ext;
+>  		struct obj_stock_pcp *stock;
+> +		struct pglist_data *pgdat;
+> +		int batch_bytes;
+> +		size_t run_len = 0;
 
-The kernel Makefile forces the Linux enum behavior using
+Let's initialize it to 1 to simplify the code. And perhaps the variable
+could be renamed `batch_count` to align with `batch_bytes`.
 
-arch/arm/Makefile:CFLAGS_ABI    :=3D-mabi=3Daapcs-linux -mfpu=3Dvfp
-ifeq ($(CONFIG_CC_IS_CLANG),y)
-CFLAGS_ABI      +=3D -meabi gnu
-endif
-KBUILD_RUSTFLAGS +=3D --target=3Darm-unknown-linux-gnueabi
+> +		size_t j;
+> +		size_t max_size;
+> +		bool skip_next = false;
+>  
+>  		slab = virt_to_slab(p[i]);
+>  
+>  		if (!slab_obj_exts(slab) &&
+>  		    alloc_slab_obj_exts(slab, s, flags, false)) {
+> +			i++;
+>  			continue;
+>  		}
+>  
+> +		pgdat = slab_pgdat(slab);
+> +		run_len = 1;
 
-regardless of the compiler. I think this should be safe
-for any combination of C and rust compilers.
+Hmm allocating 2GiB of memory at one kmem_cache_alloc_bulk() call sounds
+already crazy, but if we have to check overflow anyway...
 
-     Arnd
+Could we simply skip the optimization
+if check_mul_overflow(obj_size, size, &batch_bytes) returns nonzero?
+It should be extremely unlikely to trigger anyway.
+
+> +		/*
+> +		 * The value of batch_bytes must not exceed
+> +		 * (INT_MAX - PAGE_SIZE) to prevent integer overflow in
+
+Since the vmstat data is cached at least once before it's flushed,
+it isn't accurate to assume that stock->nr_slab_{un,}reclaimable will be
+<= PAGE_SIZE.
+
+So I think it's safe for `batch_bytes` to be INT_MAX but
+__account_obj_stock() should check if it'll overflow before adding the
+counter?
+
+(but again that sounds quite theoretical and unlikely to hit in practice)
+
+> +		 * the final accumulation performed by __account_obj_stock().
+> +		 */
+> +		max_size = min((size_t)((INT_MAX - PAGE_SIZE) / obj_size),
+> +			       size);
+> +
+> +		for (j = i + 1; j < max_size; j++) {
+> +			struct slab *slab_j = virt_to_slab(p[j]);
+> +
+> +			if (slab_pgdat(slab_j) != pgdat)
+> +				break;
+> +
+> +			if (!slab_obj_exts(slab_j) &&
+> +			    alloc_slab_obj_exts(slab_j, s, flags, false)) {
+> +				skip_next = true;
+
+Let's not micro-optimize it and drop skip_next.
+In the next iteration of the outer loop it will be skipped anyway and
+it's rare for alloc_slab_obj_exts() to fail.
+
+> +				break;
+> +			}
+> +
+> +			run_len++;
+> +		}
+> +
+>  		/*
+> -		 * if we fail and size is 1, memcg_alloc_abort_single() will
+> +		 * If we fail and size is 1, memcg_alloc_abort_single() will
+>  		 * just free the object, which is ok as we have not assigned
+> -		 * objcg to its obj_ext yet
+> -		 *
+> -		 * for larger sizes, kmem_cache_free_bulk() will uncharge
+> -		 * any objects that were already charged and obj_ext assigned
+> +		 * objcg to its obj_ext yet.
+>  		 *
+> -		 * TODO: we could batch this until slab_pgdat(slab) changes
+> -		 * between iterations, with a more complicated undo
+> +		 * For larger sizes, kmem_cache_free_bulk() will uncharge
+> +		 * any objects that were already charged and obj_ext assigned.
+>  		 */
+> +		batch_bytes = obj_size * run_len;
+>  		stock = trylock_stock();
+> -		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
+> +		if (!stock || !__consume_obj_stock(objcg, stock, batch_bytes)) {
+>  			size_t remainder;
+>  
+>  			unlock_stock(stock);
+> -			if (__obj_cgroup_charge(objcg, flags, obj_size, &remainder))
+> +			if (__obj_cgroup_charge(objcg, flags, batch_bytes, &remainder))
+>  				return false;
+>  			stock = trylock_stock();
+>  			if (remainder)
+>  				__refill_obj_stock(objcg, stock, remainder, false);
+>  		}
+> -		__account_obj_stock(objcg, stock, obj_size,
+> -				    slab_pgdat(slab), cache_vmstat_idx(s));
+> +		__account_obj_stock(objcg, stock, batch_bytes,
+> +				    pgdat, cache_vmstat_idx(s));
+>  		unlock_stock(stock);
+>  
+> -		obj_exts = slab_obj_exts(slab);
+> -		get_slab_obj_exts(obj_exts);
+> -		off = obj_to_index(s, slab, p[i]);
+> -		obj_ext = slab_obj_ext(slab, obj_exts, off);
+> -		obj_cgroup_get(objcg);
+> -		obj_ext->objcg = objcg;
+> -		put_slab_obj_exts(obj_exts);
+> +		for (j = 0; j < run_len; j++) {
+> +			slab = virt_to_slab(p[i + j]);
+> +			obj_exts = slab_obj_exts(slab);
+> +			get_slab_obj_exts(obj_exts);
+> +			off = obj_to_index(s, slab, p[i + j]);
+> +			obj_ext = slab_obj_ext(slab, obj_exts, off);
+
+> +			obj_cgroup_get(objcg);
+
+This could be batched by calling:
+		obj_cgroup_get_many(objcg, batch_count);
+
+> +			obj_ext->objcg = objcg;
+> +			put_slab_obj_exts(obj_exts);
+> +		}
+> +
+> +		if (skip_next)
+> +			i = i + run_len + 1;
+> +		else
+> +			i += run_len;
+
+With the suggestion above this could be `i += batch_count;`
+
+>  	}
+>  
+>  	return true;
+
+To sum up... something like this?
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c3d98ab41f1f..3252252ea9c3 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3184,8 +3184,12 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
+ 		*bytes = nr;
+ 		nr = 0;
+ 	} else {
+-		*bytes += nr;
+-		if (abs(*bytes) > PAGE_SIZE) {
++		int old = *bytes;
++
++		if (unlikely(check_add_overflow(old, nr, bytes))) {
++			*bytes = nr;
++			nr = old;
++		} else if (abs(*bytes) > PAGE_SIZE) {
+ 			nr = *bytes;
+ 			*bytes = 0;
+ 		} else {
+@@ -3422,6 +3426,8 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 	struct slab *slab;
+ 	unsigned long off;
+ 	size_t i;
++	int batch_bytes;
++	bool skip_batching = false;
+
+ 	/*
+ 	 * The obtained objcg pointer is safe to use within the current scope,
+@@ -3455,51 +3461,77 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 			return false;
+ 	}
+
+-	for (i = 0; i < size; i++) {
++	if (check_mul_overflow(obj_size, size, &batch_bytes))
++		skip_batching = true;
++
++	for (i = 0; i < size; ) {
+ 		unsigned long obj_exts;
+ 		struct slabobj_ext *obj_ext;
+ 		struct obj_stock_pcp *stock;
++		struct pglist_data *pgdat;
++		size_t batch_count = 1;
++		size_t j;
+
+ 		slab = virt_to_slab(p[i]);
+-
+ 		if (!slab_obj_exts(slab) &&
+ 		    alloc_slab_obj_exts(slab, s, flags, false)) {
++			i++;
+ 			continue;
+ 		}
+
++		pgdat = slab_pgdat(slab);
++
++		if (likely(!skip_batching)) {
++			for (j = i + 1; j < size; j++) {
++				struct slab *slab_j = virt_to_slab(p[j]);
++
++				if (slab_pgdat(slab_j) != pgdat)
++					break;
++
++				if (!slab_obj_exts(slab_j) &&
++				    alloc_slab_obj_exts(slab_j, s, flags, false))
++					break;
++
++				batch_count++;
++			}
++		}
++
+ 		/*
+-		 * if we fail and size is 1, memcg_alloc_abort_single() will
++		 * If we fail and size is 1, memcg_alloc_abort_single() will
+ 		 * just free the object, which is ok as we have not assigned
+-		 * objcg to its obj_ext yet
+-		 *
+-		 * for larger sizes, kmem_cache_free_bulk() will uncharge
+-		 * any objects that were already charged and obj_ext assigned
++		 * objcg to its obj_ext yet.
+ 		 *
+-		 * TODO: we could batch this until slab_pgdat(slab) changes
+-		 * between iterations, with a more complicated undo
++		 * For larger sizes, kmem_cache_free_bulk() will uncharge
++		 * any objects that were already charged and obj_ext assigned.
+ 		 */
++		batch_bytes = obj_size * batch_count;
+ 		stock = trylock_stock();
+-		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
++		if (!stock || !__consume_obj_stock(objcg, stock, batch_bytes)) {
+ 			size_t remainder;
+
+ 			unlock_stock(stock);
+-			if (__obj_cgroup_charge(objcg, flags, obj_size, &remainder))
++			if (__obj_cgroup_charge(objcg, flags, batch_bytes, &remainder))
+ 				return false;
+ 			stock = trylock_stock();
+ 			if (remainder)
+ 				__refill_obj_stock(objcg, stock, remainder, false);
+ 		}
+-		__account_obj_stock(objcg, stock, obj_size,
+-				    slab_pgdat(slab), cache_vmstat_idx(s));
++		__account_obj_stock(objcg, stock, batch_bytes,
++				    pgdat, cache_vmstat_idx(s));
+ 		unlock_stock(stock);
+
+-		obj_exts = slab_obj_exts(slab);
+-		get_slab_obj_exts(obj_exts);
+-		off = obj_to_index(s, slab, p[i]);
+-		obj_ext = slab_obj_ext(slab, obj_exts, off);
+-		obj_cgroup_get(objcg);
+-		obj_ext->objcg = objcg;
+-		put_slab_obj_exts(obj_exts);
++		obj_cgroup_get_many(objcg, batch_count);
++		for (j = 0; j < batch_count; j++) {
++			slab = virt_to_slab(p[i + j]);
++			obj_exts = slab_obj_exts(slab);
++			get_slab_obj_exts(obj_exts);
++			off = obj_to_index(s, slab, p[i + j]);
++			obj_ext = slab_obj_ext(slab, obj_exts, off);
++			obj_ext->objcg = objcg;
++			put_slab_obj_exts(obj_exts);
++		}
++
++		i += batch_count;
+ 	}
+
+ 	return true;
+--
+2.43.0
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
