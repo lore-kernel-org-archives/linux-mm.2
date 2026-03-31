@@ -4,105 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C5ED1061B37
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67861061B39
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:43:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5E056B008C; Tue, 31 Mar 2026 07:42:16 -0400 (EDT)
+	id 29AD36B0096; Tue, 31 Mar 2026 07:43:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0F586B0095; Tue, 31 Mar 2026 07:42:16 -0400 (EDT)
+	id 24C856B0098; Tue, 31 Mar 2026 07:43:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD706B0096; Tue, 31 Mar 2026 07:42:16 -0400 (EDT)
+	id 189796B0099; Tue, 31 Mar 2026 07:43:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C2CD6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:42:16 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1861F559C0
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:42:16 +0000 (UTC)
-X-FDA: 84606169872.11.2936323
+	by kanga.kvack.org (Postfix) with ESMTP id 0643B6B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:43:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDC431A0120
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:43:02 +0000 (UTC)
+X-FDA: 84606171804.24.96E0FD1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5A4ADA0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:42:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eklxj6nk;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 117F120003
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:43:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mic0UrNq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957381; a=rsa-sha256;
+	cv=none;
+	b=B/E+Y4u2SWW8FlVpYyW0KVjlvYgx45Lgelap/gd9zHLG0nK0vn2Fa76cHmKtFA9+Lm07eP
+	meAAbCgcevriMRVbfyxk15wQSoDs6XJdotkag7x7bZbwGb/L11l4taVB34fVKcJxaNqMk0
+	VjoOBJGiKoyONbQ9wrSXgCzac0gkNWs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mic0UrNq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774957334;
+	s=arc-20220608; t=1774957381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sV4bKEX3SHqLd+MsbDz9nAG/v9xodOWpOT03SIGw3yk=;
-	b=ZV49+DUgkpWsZLuFFs2syDrWDnpg0BwODCds5NOIKF0prIRAyrb2alwfcPR7D8PxyQWoqn
-	BG0IlQ74/F+LCqYGb7mdYSO3nr8+uKo7LyrjecqAFSHigr/1ZqNscKfNUdnkMApPaEmVon
-	rrC30Z77tPEgS4cPdkYH7tpvTGmBrWQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eklxj6nk;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774957334; a=rsa-sha256;
-	cv=none;
-	b=CNRiQU1kOUEAkaenJ6LFCUDIEUNbjBjT938oGcVvFgT5BaQ5L7N9/hbDCMAfNVfw+tYJLw
-	g1Tc4tzpE1K69D3veu+BiguZTjE2FzopriBy0Jzy/NkTvX4fV/U5rKRoBpWMBuw7xO+0K2
-	VItk/kBEzEVopdG32upJr03plWbDFiY=
+	bh=nVdnS8515qBZn12afe277s14u2j6qhWX36vHKXQ/1fg=;
+	b=uEm4GyzJiU7gcWKjEITBy/xJMQQ1ewMubfWiBok4ELvgcY/MWYnhlZwjP73uC/kDolB0L+
+	Vo8E7H66Uxwfm0P1LyQQrbxbKP8QI6lR00fK7eio+i/F7jCZRUtrlI1JtGv3Wie+c62xYW
+	yKYz4eHHGseZmaLmLvPb7Y5zbARGYXE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD43D43E9C;
-	Tue, 31 Mar 2026 11:42:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A17AC19423;
-	Tue, 31 Mar 2026 11:42:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B12F441C7;
+	Tue, 31 Mar 2026 11:43:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2921CC19423;
+	Tue, 31 Mar 2026 11:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774957332;
-	bh=v9/AUUMGVf9+nhrOWCMNuXE2J/EJf4Yx/A5I91wqayM=;
+	s=k20201202; t=1774957380;
+	bh=247pA96YIQXewVCf132JKie0YIN1hc4dvqlsqaYdnbo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Eklxj6nkgag9phGSwi3AtluNOuSXDrudDeC/1PoarzkDyR4p3o0WsR5+F14ZRDl5g
-	 K2Nl5yCy0RGOJ0DRUiYL4OX7lS9rHaVpZcs/Y14YToXTDAfwhtXM5q/OBBwVM6+9rC
-	 a5PY+jeY6+oE9/UgIx8ASEbSIyVGTC4HR0AcfqfaLCYhekdoktZLfYZ2+11xgMDX/l
-	 Wejb1KLzSWw22xCDrro+pnvMhSvIuDD7yHMaAR6HJWWaIHeb/lR56OmzTWLRk1p3mj
-	 zt/MN2oV2Jzvs8jCoFDoR2DNo66mXetay7g3pMu7BgyOJjl9SFicy9OxWrV0FhxgiZ
-	 d+DZbWhjK1q1A==
-Date: Tue, 31 Mar 2026 14:42:01 +0300
+	b=Mic0UrNqqNfV55zdjXUqwQrg9u7c13NFfUwM6GjdKIItNtcBY3kuGQ1pAkLONlASN
+	 jORmduxma2Gej9GpBK7kjYfwebJhZlx7ATpi/8H9PHXaHmt/i0/gwTJwoZDxxt//YF
+	 g1Gs8AuEfEuva8i2Vk6qYgW2xG/GJSbuzgLMnH7HbrTz9EBzev1Y7bX3hyoZpdF61r
+	 ZG/ugAZG/0c67G0bXslH/6L71VmliJ3afB/cs/NWz9VzEbCDX88tTMSPVPTmzECcHM
+	 tcgs6sWfhYGxyefuFkY+29YPca/u0uodDzLNBl+hqh5HAiwo1ZR53p4WTkJA8nlbZq
+	 t+8vF8SHBIquQ==
+Date: Tue, 31 Mar 2026 14:42:54 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 07/15] userfaultfd: introduce vm_uffd_ops
-Message-ID: <acuzCX1GHZRLSu_x@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
- <20260330101116.1117699-8-rppt@kernel.org>
- <acqrtd7E6UxrX6Ji@casper.infradead.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/userfaultfd: fix wrong likely() hint on
+ mmap_changing check in move_pages()
+Message-ID: <acuzPjzx9byIJ2tG@kernel.org>
+References: <20260328170101.184163-1-devnexen@gmail.com>
+ <20260328170101.184163-2-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acqrtd7E6UxrX6Ji@casper.infradead.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5A4ADA0002
-X-Stat-Signature: gwc7aqp7xn3bm7opcefrorgd358sz5nr
+In-Reply-To: <20260328170101.184163-2-devnexen@gmail.com>
+X-Stat-Signature: 7be58zh7w3ajq1n9fjzd5zygk33f3jg7
+X-Rspamd-Queue-Id: 117F120003
 X-Rspam-User: 
-X-HE-Tag: 1774957334-128722
-X-HE-Meta: U2FsdGVkX1/KqRWwmKe3q4vv0kRH6MaVLfkw4QSRAMTF+MHoB4yDmq27fV/BhyobpdlUBEAUVycgc2va+pYyTb9PF3V4yCgm2TdQEd3nIPnRlk81rSLWeROyne4WBl4uPZzNvYdUdf0uEVzfuN0Ha1WY8TjiQbWcfvANxUZsq8Yppz480bLdcE9nb8Ur4Nvou64CpiJTzx/+2//953I1kDltDHbUf6gzpF8/bns3CuguUXXGNwyDqyhOAi8tplHJvI5T8DUYbH5rh6SFqCeUDHW/kPGUPJQukNMOwpXv2OmumnHJ8/oyMtFz/FlCQjRgS8ufRvviZRz4O+WR17BEu0ifimsTGhnwX1lkv/Uu4vbBuNhV5rRJ5azid8Vn9UzBEaeA5OJbYLVa19Z16PAyxuZHd7rWl2dUX4RLKe02bdQdC8g8GIBJZf4jOPdK1YFBBFJzX5CjRyGq3EVWGMoFyZ6yX9K+nfVjdI/FbxPENVGgqVa6Vf61SysrGR2RhjzQlTPhJh/e10SNJ79FsELcYsb/pHau8FwQ8inMwkXeVc8FbAIFMTywViwAf3jsZZpzaIfNSyjc1TAB+qRJMlW634Z1bB/sUz6j/bYymRI7vA6i1czWP4RaAcaKYxBegvHiM+YXFOCuaVV8IHwXs8G5MYPNkc9/DuxKppyhSRJ0WE2Et7O56b3hJP6l6I78yD3IkQK/D+NpMPTNH86s91HGgLhyWVo4p4ZYPj3TIPlXl7C3Y7rB9qHfeTgP+wkcvIRON4HL6VGPNKTCQBDf+9fGcnuy2Fylr7l7UyBE3X74e8JMpAf4ITb9bLujxi6UKtGhKD8wtYwovzykoUprC1Q8KTm/LBecWRb/m+AWCCQQ31TPQKWZXMcHWhIWp4KSsZ8Uzg91nk5LuIZdsYU8V+77R0QLy4F60XcvPQrpsGDUHu0E2YQXOhfyQ8uCZI2mJNpA1z96j6OS2qyb+lO2waM
- XYZRB/Gy
- YaSf4JXyvcjCYVABGurdCeO8UG93kxMDzZEzFraDKQasinsHSJI2ftH5y3K8SbFax4dpejrGWe3jheWVsSkVi9+wVG3c86bw4CgT/nsLtQgUN3LQJEWALm6b4Le8hoxfeUSYjvf780Z6AuBOskHqZaa8/QOKIDG+kj1x1TkRttk+N+sB+mHYQW2LaNvKSsNJgeJDuuxsh97cg4Xdev6MJkm4TykyThH+2QXhYzPmF3EAw1q8CdS3erqXN438II5mre7/xJb8pQH9zAPEQ+gU9mrYxm3uqxtziF6rRuCVfpbNDf0sfZ/1dQpyrHA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774957380-357341
+X-HE-Meta: U2FsdGVkX1/qvOzTE8cmauduu0qNs/aBiVJ8KjMW1ZJc8xJbok+8HQIQNTQozH7A8zJDvLjebXyyW2NOU5TWEiseTvD9xFmeeQ2eYtinTYUk9T98aqG+wrerVPqmhjDpvjjIxV2V9oy/C1enARXJQOHKHk6Nq52jtWRplAxmZ0HinB4ovgQiSH1qmq5xi3sdCIlxggfYxqjcs57XtoZuzMU7G64uyUHjxLqLHdrDc/tXjIjYK7CBO3vvb2MBy61mpUS8KAor8Q3dwN3aiQtrF4JVKkj9LdmvnsV6V2iK2cu8x7CzEXg5YDEo0kSzmeGYnBHE5fjHNuq9oE/vy6NLFdJBlOrbWT3WCqDCUh/dl0kT1Gu13XumSQOzw0Sd9JRJyz5W9OYofHCQnELZX6swAStu+m0N8/KrvZ6nqj5ZHGCjOIje9veKlOeo1Y8AhqFT2KYeCkW/mOGDcyFx7I0oC1DteG++MeqzgSbbSC75T8Pb11pgV6kcsXdpsiIvAtG81cPXRcTiyxfAmet5GmYp+yFHAQJJnBUmMEiL1KGTaIYTibSt2Vh36r0FsVrQvdqs9RBX/5iA/Flfk8uNZbwLkH0NakV5wIi1ip9qFLpRRHP2Zq3wfZAl2R096HR2nlA21KZ0okO018Svov1yf6257pJZ2i/JmGG/pRRaXq3CWDe6rKMhoJASR/NiIca/CKgtvEQU81J5n1BBztOklk216MMo1a9VAnUVSCwcg7LI9mlPCoZDqCu9s0fey6xI3AybkLmNOvh8KjHZ/WIoOMlXEcRSnyQ5IctsNSMtZrzqUTKeoyn7COtCRnf4w9HXpDLLC9eh4yfmvY7IB8DJJAUZ3IhkgFqNVc+a5fq5W1R8KNVGcqWRzOG2565uiIgHaoWLI4nBQC6Gnvyj33JpWFX2VlHiGHN42POT8HWrC7UWqET35iRmoT9yibx7bvOo/3bAB3+aGpom/AuN6BY9WjK
+ ZVz5JG/5
+ S2kQCX7JnX7ePrYxuRLL5RN/3+V0wxXexvLOCDy9ujlmwOL8srXByRanrTKu0ScZt1Fjdaf8EyXhZ6NKBpvcG5kz6br3gpkbsHzsJcBiv4tJtnF7pQVfxlEc+eJMET17dcdMPbzQjyjygjSyYaGcL47AXirP18J80eOWO4g84nCRYH9Jh6aKsq32hU/UA0mzhA2tlsmCeOTzYVebFjUfO9ousQWcknGt0Unybk2ITdL2GkAt95rIelc1gPuckaXGdddQoK/UwV88TMEWB+z93u46k+SS0jxDBw90zeICAXix3vJgTO9yXnFyOZ7JorLDkl+1ekyIZYVHwlmX/eTcBMxchAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,32 +92,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 05:58:29PM +0100, Matthew Wilcox wrote:
-> On Mon, Mar 30, 2026 at 01:11:08PM +0300, Mike Rapoport wrote:
-> > First, there is no fundamental reason to limit userfaultfd support only to
-> > the core memory types and userfaults can be handled similarly to regular
-> > page faults provided a VMA owner implements appropriate callbacks.
-> > 
-> > Second, historically various code paths were conditioned on
-> > vma_is_anonymous(), vma_is_shmem() and is_vm_hugetlb_page() and some of
-> > these conditions can be expressed as operations implemented by a
-> > particular memory type.
-> > 
-> > Introduce vm_uffd_ops extension to vm_operations_struct that will delegate
-> > memory type specific operations to a VMA owner.
+On Sat, Mar 28, 2026 at 05:01:01PM +0000, David Carlier wrote:
+> The mmap_changing check in move_pages() uses likely() but the condition
+> being true (concurrent mapping changes during UFFDIO_MOVE) is the
+> exceptional case, not the common one. All other mmap_changing checks in
+> the same file correctly use no branch hint or use unlikely().
 > 
-> But the VMA owner already gets control of the page fault.  We don't need
-> the vm_uffd_ops to be accessible from the vm_operations_struct.  The
-> page faullt handler can pass a vm_uffd_ops into the uffd functions that
-> it calls.
+> Replace likely() with unlikely() to match the expected branch behavior.
+> 
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-Not sure I follow you here. The ops are not required by the page fault
-handler, they are needed for uffd ioctl handling, e.g
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-	userfaultfd_ioctl(UFFDIO_COPY) ->
-		mfill_atomic_copy() ->
-			vma = find_vma();
-			/* do VMA specific stuff */
+> ---
+>  mm/userfaultfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
 -- 
 Sincerely yours,
