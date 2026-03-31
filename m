@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F94FF60F7
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:44:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E52CAFF60F7
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C2816B0095; Tue, 31 Mar 2026 05:44:24 -0400 (EDT)
+	id 5E1806B0099; Tue, 31 Mar 2026 05:44:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 199CF6B0099; Tue, 31 Mar 2026 05:44:24 -0400 (EDT)
+	id 5B8C36B009E; Tue, 31 Mar 2026 05:44:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D6E36B009E; Tue, 31 Mar 2026 05:44:24 -0400 (EDT)
+	id 4CF3A6B009F; Tue, 31 Mar 2026 05:44:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EF0076B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:44:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8173E5C6B7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:23 +0000 (UTC)
-X-FDA: 84605872806.05.C6AEB33
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 81736180006
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SjHGdz+s;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774950261; a=rsa-sha256;
-	cv=none;
-	b=LS2LjroSDgjIpNcZyx4GcdAe/YzqMu9dwHd0zx7nvqU4nHIppVBcVLMaW90lmeorAseupB
-	bh07XnhsRbMU4Zxcnvo0aiszrH/3QAUWXWRKVSI0Hz4+lcg6IurRzBjIkOtsx9DmfGNVpH
-	fvxOCn2mPKEgIN+nSe6i3yXUCgEwCjU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SjHGdz+s;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CB4D6B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:44:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E476C1A0980
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:28 +0000 (UTC)
+X-FDA: 84605873016.01.807FD85
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 122DC100002
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:44:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=faIpoM07;
+	spf=pass (imf05.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774950261;
+	s=arc-20220608; t=1774950267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HApNsJMnQkGjRCw1G9QlTLRX0WXwGT8mBK0arH4RiRo=;
-	b=aV4/mxSRnBvE/xDhPAS7cC+DMvwq+WmiYpKeVf3eLXnreB34Nrv9hOB+SCwpsfbrwnnxpC
-	CLLBuYQVczhiCL7H9wxZePA79tqu80eDL9/q4mM53GnPyTgkW5yQqWqee00mm1ttEgsNpf
-	ntr7kRQKjHhhcWXN7ECABdEjEDoKlYc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=62QxktDCjvLNB+7zU7T9t0KDFlRYYB3ZQ/FbFPCsVjA=;
+	b=mL3ab2RzQkV/V638HSMsC5pURCG/FXxaJ3et5DCegvS0kJ9C3F+xHWSl/MN7goQbHoRXzn
+	KpZLLxzU0BiVEZljVuUPjF4Wy39zF/gebuRBuuM49pz0dTNvZ2V/3EvRffDLs0Mn+LTpZ1
+	AFvvyLNUwW8DrmolEDWn6eDKBQoTOpI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774950267; a=rsa-sha256;
+	cv=none;
+	b=4ixz9kzryUfyPgfy2qNbwZqHDkCZIYYen3r3hKZzosnqAbUT7oTGd/T+mtJwiXsr8R7JOb
+	/xdT8K+ubF/d9RjfS6Xtly2Xp4S/xQ2iLxGvZO2UDZLvqj6YH0vvxGMLHYkE2W/Gjhy39N
+	hVRKLHNwDw3+h/1HLVXHLIwJX0hONxU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=faIpoM07;
+	spf=pass (imf05.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774950260;
+	s=mimecast20190719; t=1774950266;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HApNsJMnQkGjRCw1G9QlTLRX0WXwGT8mBK0arH4RiRo=;
-	b=SjHGdz+s2i0c5utmVNjcmdIm6u4cwgd+jtgsFpjHbj9JIxm9SQ9Ivq9i9jHQbi/RC1xoPC
-	EIr9y+3XQcS1y9M5GXa5m5EX/ukM5GRPAg4Ph8HTjfIGrM/4Kl2d72nVkBxCJ5Hs4OYH8C
-	H7WEaFnKnlo8l7iY9Hns92f7Sv6WlJg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=62QxktDCjvLNB+7zU7T9t0KDFlRYYB3ZQ/FbFPCsVjA=;
+	b=faIpoM07r1eOAkqK3c+KD+dHLQ8O+llH2u54V5sDcCLaHayJv8FzCwAhI2Ez+2c/+Mpuat
+	ak6Tq9Y4YKYH0vg11beQGrT2ybUqEUABdib7atOH1/wNfsqYIFHEqg+m5yeT9fyzmqwQ7j
+	bM1FxeKFfjmrtWw6PPz8ISM/oTs7hvQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-9FjosW1CPO2exaI7I-bw2A-1; Tue,
- 31 Mar 2026 05:44:15 -0400
-X-MC-Unique: 9FjosW1CPO2exaI7I-bw2A-1
-X-Mimecast-MFC-AGG-ID: 9FjosW1CPO2exaI7I-bw2A_1774950253
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-FnlVuaCkOiKoGKM9c8FI2w-1; Tue,
+ 31 Mar 2026 05:44:22 -0400
+X-MC-Unique: FnlVuaCkOiKoGKM9c8FI2w-1
+X-Mimecast-MFC-AGG-ID: FnlVuaCkOiKoGKM9c8FI2w_1774950260
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CBBF195608B;
-	Tue, 31 Mar 2026 09:44:13 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E013B1800345;
+	Tue, 31 Mar 2026 09:44:19 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.121])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9E08B30001A1;
-	Tue, 31 Mar 2026 09:44:06 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B27B630001A1;
+	Tue, 31 Mar 2026 09:44:13 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: nathan@kernel.org,
 	nsc@kernel.org,
@@ -89,23 +91,25 @@ Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH v2 0/2] selftests/mm: clean up build output and verbosity
-Date: Tue, 31 Mar 2026 17:44:00 +0800
-Message-ID: <20260331094402.144131-1-liwang@redhat.com>
+Subject: [PATCH v2 1/2] selftests/mm: respect build verbosity settings for 32/64-bit targets
+Date: Tue, 31 Mar 2026 17:44:01 +0800
+Message-ID: <20260331094402.144131-2-liwang@redhat.com>
+In-Reply-To: <20260331094402.144131-1-liwang@redhat.com>
+References: <20260331094402.144131-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: MYSCorYA3NHCZMTAkGhxYcugpZ0FYlQg3J-5uKtN5FQ_1774950253
+X-Mimecast-MFC-PROC-ID: V8pDFSwFukiFexkd9AOuEkGoX8PNYY0s5F5P2T-M9C8_1774950260
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: ur9nxsfbgnb8td7stfbk87ritkux4io1
-X-Rspamd-Queue-Id: 81736180006
+X-Rspamd-Queue-Id: 122DC100002
+X-Stat-Signature: irchb5xf17p3zcp7rqr6wjps5xrup13a
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774950261-700471
-X-HE-Meta: U2FsdGVkX18872QTTnn92roh3KJ5StQWWkwAV+xj06c5yycYUvLiX4mv0Mgx7Aw/mNPMseoynyEpuj2cuK9DkyZ2TR8N0I0Yt4Ialoraeqoes5mEkH0if+PLA83BW3Twb9jmXig+s6LjNSLPCDvQ9qbA+P5yJXKkPVODH4jBjDZ33UdvxqfiemM5w7nZeCECHFjiUU98ohVCtKfPwl79oYjKXxFbzbHoB2g35koUKo+QupHwhuYkDgdGdXq3do8IU35hWqEcyeY/KWr3hvUmHAycKCksFGir58K5mUdFV+LiLL+X3Eam3wHh85lBtx+8OvQ0xTWPMVvM+n26ccLA4Sf8a5T99JCM02UaQWd0lSftfUHmdo92OTvaGztTunzSwcdkjIj41mlQVNGRZhe+j58iWv1SADEdU76WwBaWsXFhOwgNmvn1NvaIhslgQpudnHK85b6PW1jj+KIMx2If/1iik+4PKtyE9N4Xg+BOxsWAVqPf1xoJJaXXFkdkBHzLCUIq9KUH9W2x4G4ftDZcSMOnQZ3NBP3o4KCnWzdAqoW5b5464Xzkj5u9FKOlcomz/k+73wYfvGMmOGaUxfpUCJf2owxYryAhI0Ro5T7ZMsGA3f6gyDJwWD4vE57BUk3+K9vTc/sN2alemLbJpWW8Mjwm82w8ayZfygXt7P7Bs2dg1K5AsO6p18xwuEBASMvJlyiTezy+tXMaAXXzRUAHx+ifE9EyaOw9qVcOtoqkNmjOW71bmoR4OMuYlsKMLQ8QwzmZ9gmz2kCWmeM/oAtwSHxvv4a14VLt1xmgSLJFaRoY4NMv/gWiEyqxilDTJpn3K34IwzRu/Y8fONz3ZvyXQCG8Gyth2XC/r3DhghH9ZRlDHaFEuF3TEaQj7VSX+k98LFe4fzABgYjWvopmx1ZeFRmMxSweb2fMn2eeqlY81T0VFeaLbO5OueLjttDcLIPSbQk8t/Z1wA0ZRgfWUwm
- E6aAKvBm
- Xg7yuqUVC2cfW4c14OFA/sdwAL0Y/T/C/ETTD6H8jHm5hXfLu2SHgfhcAFOU4YBgREIDhOJh0nU8ZUDE43hApjYBcxqgflCvNgD97xaAWAm2BcIwPI9OJl/7vq7uogGZlMCIF1Yq0mwdyoQfThsTVZFhGZ2gaDJ7EHlDjSkkZ7TlHd+vUIldnQ3ROBS+sf9jkK/3o2CNwcVRYQXU9THpi+zYP/aBMKhbEouM3FYHRbxm5zHkQXnDI7lInzCsXTczQKPt0eD2feIa6fal38Mc8MFS4Ftbz4gf8APBYE6WZbGPgxuQDehWLbRMHt09cbXvSTpwiFuEE6AiVaNfLmulciYgDPA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774950266-350885
+X-HE-Meta: U2FsdGVkX19uRbE34oZf/8vTPo+yNpGFau23VcEmrCJjzzagTv8xTLttjUZFVRO+0IvRxIAd+dDR2UwL6+f88RJLP/MK9TUK7UggJLDvl7Pz87BfxjTCkGzUG/MvgNBUfwDd06jixncbViownjzcX7K0QdCUR/Le6WIc526n519k+/bezken5wQXpE8cTlM3Ig4+HRtLwvS4UGJ7fWb7YMbpgySDlSgr2/zP1B0QrZqLZF9m+J+Shg3W8+jrMCShzKUldOrkTE7XWuaIX89axYDNt52LCCa3Y+djT3gFSzU0QfjF9d2Iol/bdg6G4KXRlW00qAaUTDbOzpkblTCAGuiadY0cpySfqO+IFSIJwVbMbQ3tz4xpXnB4aNyTjQyM9Vdo9RyWGfY8UvGPhRfBYw37kLv9W9b+JTWiAHLQKUaUyBU5TKPh6c7uTmGtOBoHpKpVPnMUu1UTg+mhf+XjaK6jUhVqVPM/rtxtj3BKTL8V9XPtul3BTfTfytc1sBk4ytBhBeXlVhHyQ1irN4nnmp38+SRhjUx6ffuSdOLG+dGY8Mrm9QPYD9pbusm2qfJwt2A/yl7yIrvcIazIKTzCzjCDvpDydHs1GN2tyNd4ho/XLWKIs/MtD4AdPevnIpdIojGosSoVazF725ZFarVJxjICj6MHHddHxKmW54ANl2cP4jRbh8pqW4ElZDKGUUMGslDNqw9GSDkBsz3rh7AlfHfVfBft3Raer4kGlWpI5Eofo/Zp2BtgNdObTyJeoejAPVl63MbXeGwif8cdyFiJca0hgbhcCe6F1QF2k1ZFN4uovqgl1gyUxFeUWrxa2HHLnmL4no2PPMSUXW16diRGshccOtLZrd7G3REnqrsykZG9xZmWhMkHDsnOoFzzsEfG4yHGyPBrdD5GWN2kexNqGc/3tbRIg9PEYRTf7dCVkcjIy8WxwqqCeB/snuanmkLqo9j+zhkJbUpAdZW3qfp
+ 3qnY1VgU
+ myYIX1J8c5xXeqOsAKV5cD46EtvELT2+AP7Ks9XHQOSHEsm20qusrBJuPYi7KVSg6d5J70mQ7awbKdX9ggBtE77I225JiJz/IrMQem0haOTTYoLu833n7rEtRLLpmb0yh8rwWARMbbPw7/Yu/4ppsziNNeYTEReHhrAPgW06nqmQQbyuXET2bHfX+He4JyM1vad8NMXNn3dDKLuemGkjM0B28Pn6IhhXRiYuhXf3zNzbuJ58IDQ2cb9ku/iw2HpZuHRd9AIZ1tbn2lOrSYQ5omqzXefqIzTwJQWm0jC/4wHzMur2tpj1e3Kq8iOwRKScbdogTw1FgcMPY9imUZTxxWT9p6BYVMferwaUchgIVVB0yndsKz5FSIHHmwJ8RquKOk6wKwusvsSZOIBAXpKH8BJaRaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,36 +117,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, the mm selftests build process can be quite noisy.
+The 32-bit and 64-bit compilation rules invoke $(CC) directly, bypassing
+the $(Q) quiet prefix and $(call msg,...) helper used by the rest of the
+selftests build system. This causes these rules to always print the full
+compiler command line, even when V=0 (the default).
 
-First, it leaks raw compiler errors during the liburing feature probe if
-the headers are missing, which is confusing since the build system already
-handles this gracefully with a clear warning.
+Wrap the commands with $(Q) and $(call msg,CC,,$@) to match the
+convention used by lib.mk, so that quiet and verbose builds behave
+consistently across all targets.
 
-Second, the specific 32-bit and 64-bit compilation targets ignore the
-standard kbuild verbosity settings, always printing their full compiler
-commands even during a default quiet build.
+==== Build logs ====
+  ...
+  CC       merge
+  CC       rmap
+  CC       soft-dirty
+  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
+                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
+                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
+                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
+                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
+                -m32 -mxsave  protection_keys.c vm_util.c thp_settings.c pkey_util.c
+                -lrt -lpthread -lm -lrt -ldl -lm
+                -o /usr/src/25/tools/testing/selftests/mm/protection_keys_32
+  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
+                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
+                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
+                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
+                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
+                -m32 -mxsave  pkey_sighandler_tests.c vm_util.c thp_settings.c pkey_util.c
+                -lrt -lpthread -lm -lrt -ldl -lm
+                -o /usr/src/25/tools/testing/selftests/mm/pkey_sighandler_tests_32
+  ...
 
-Notes:
-  Andrew mentioned he hopes this patch merge into kbuild tree, so I resend
-  to linux-kbuild@vger.kernel.org.
+Reported-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Li Wang <liwang@redhat.com>
+Tested-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ tools/testing/selftests/mm/Makefile | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-V2:
-
- - Drop 2/4, 3/4 from v1 to v2, since Andrew wasn't able to confirm the
-   patch works for the rarely happening issue now, so I decided to just
-   hand on the process of the parallel issue.
-
- - Refine the 4/4 patch only to hide compiler errors when missing liburing.
-
-Li Wang (2):
-  selftests/mm: respect build verbosity settings for 32/64-bit targets
-  selftests/mm: suppress compiler error in liburing check
-
- tools/testing/selftests/mm/Makefile        | 9 ++++++---
- tools/testing/selftests/mm/check_config.sh | 2 +-
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 7a5de4e9bf52..3b222cd6a048 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -215,7 +215,8 @@ ifeq ($(CAN_BUILD_I386),1)
+ $(BINARIES_32): CFLAGS += -m32 -mxsave
+ $(BINARIES_32): LDLIBS += -lrt -ldl -lm
+ $(BINARIES_32): $(OUTPUT)/%_32: %.c
+-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(call msg,CC,,$@)
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-32,$(t))))
+ endif
+ 
+@@ -223,7 +224,8 @@ ifeq ($(CAN_BUILD_X86_64),1)
+ $(BINARIES_64): CFLAGS += -m64 -mxsave
+ $(BINARIES_64): LDLIBS += -lrt -ldl
+ $(BINARIES_64): $(OUTPUT)/%_64: %.c
+-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(call msg,CC,,$@)
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-64,$(t))))
+ endif
+ 
 -- 
 2.53.0
 
