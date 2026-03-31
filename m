@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EABEFF60C5
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:34:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E8CFF60C7
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 235E46B008C; Tue, 31 Mar 2026 00:34:47 -0400 (EDT)
+	id 8E13C6B008C; Tue, 31 Mar 2026 00:52:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E77C6B0095; Tue, 31 Mar 2026 00:34:47 -0400 (EDT)
+	id 891EC6B0095; Tue, 31 Mar 2026 00:52:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FE236B0096; Tue, 31 Mar 2026 00:34:47 -0400 (EDT)
+	id 7A7E96B0096; Tue, 31 Mar 2026 00:52:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 024706B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:34:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9142AE1123
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:34:46 +0000 (UTC)
-X-FDA: 84605092572.13.9CABF88
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C09F6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:52:51 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C5D713C01C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:52:51 +0000 (UTC)
+X-FDA: 84605138142.20.8A382EB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C869D4000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:34:44 +0000 (UTC)
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5910A40005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:52:49 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4rVCzDJ;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TYXXjUYG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774932769; a=rsa-sha256;
+	cv=none;
+	b=O44SSpOf0jtCCLw3KtSz9GW8M1pUDnWTZgJeBimgj/OdRjMymK+wDi+biTozp9V5MOa1gb
+	32o1PaOsZGKkMoG4jhOSSh3cp9z1m1aVf8QcCWWi3eAQVxUdmaW/XP5CpiFc5C3/ujQ48m
+	yAOyH63TIuhD+WsyAEuyrF0z+1+BwpI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TYXXjUYG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774931685;
+	s=arc-20220608; t=1774932769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/O+JEctYaw7F0lgevhlP3s9Rk6Nf7MFMhoMgz8AQLa4=;
-	b=mjUeqpHku1WhH+jWXMn84D/G80dSQqk4NlIyHm/Nv2Dkb2tbAV+Tnrz0MrfpADxlKowb8i
-	Rw5P21IOO2NS/JgfADRGzyUU1o+dhD5hNzTCy0/t+asIS0+VPoRxfCzhPeusc1jHNsAEEE
-	bXFZ4M2Rlzq29ky11NhJY6GQ4vCyTlo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4rVCzDJ;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774931685; a=rsa-sha256;
-	cv=none;
-	b=gGakdcnIUhO4mYJvqWuPmKgH2TLPc8wYmkNsqQdO8gH6+ZBLfY5s/5v+2OR6+ERlSfddzO
-	k8NJM/+Y19MTGveyLmJdwYaML1VkYQkVSVWihk0R7dkts78OyesYTXftY66MxAwD/78Qy0
-	XvffR50682FMA3uFni7ftK5FNZz8qKQ=
+	bh=Oh6NK8Hex6PkkQSWIKQBEv2ndPT+0ZV4f9VfjjYeiX8=;
+	b=vwBK4i9D32qBNA8fiRcr3n3F7g5QuQx2+066ed67pU8TpYFMJ9e1JUz7N9Bv6Ab1JzBoyF
+	X7inLdZeUR4fFCvSgaKWabCWgh8ymsxHRTiq6GG6+osJOCd8ZPQF+pvXCV9lHcky4bKMi2
+	Gtj+wwmtULt6F+P2U9SWuMto+OfTo48=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB5074019B;
-	Tue, 31 Mar 2026 04:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF161C19423;
-	Tue, 31 Mar 2026 04:34:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4EBEA43687;
+	Tue, 31 Mar 2026 04:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C421C19423;
+	Tue, 31 Mar 2026 04:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774931683;
-	bh=iddzIyo57Gf5sB0Ovre3TYWjXksr2WHRb+oWFdACaHY=;
+	s=k20201202; t=1774932768;
+	bh=W1sV0gG5y7v5xTcQdkLYhQC8LVNXIot5XhAZDvh9WtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4rVCzDJK1ThAOnYIY1hZm0cimOvsWGzC7jzqOQOpp0+6Qj1GjD0Lyl93L4BwFnXl
-	 PPLlzaJgLmyJybeLdOhmLBiuVFnBD/OKEvKZnQztwVaApQ1ZDd6J71rLogh6nltF60
-	 m+ccBJDJf2Ym1vgj6/8djkTkxhjN2BOTSPlO+wRMnRs2flSosMwqCScgxGyyroyztR
-	 0HoUIY1wS0XwOvccFAwoUvXuIck6Ydat5gjLp6e3BIZ8s7JcHhbUdEVKVyzP10TJI2
-	 b7dpVo996xAYbEiFR0vsAy0fqKxrtJKtU15TzihpYJbYXFUOjHJ0qemOvNmexynzy1
-	 o2l7lHEmDa04g==
+	b=TYXXjUYGsygiFeTxc15ZdsIJXlkwr86dYuvCilb0aMIDAh38qnVxfos/7uroLY2PU
+	 iWYOMO4QDA3gMPxE2alA8RkBjKU8Oo5jJffsQ9Y8izDZ/UlHADM8T7YHPRBS4AZnfb
+	 SEEM7AJFtW9Y76p0FPK9IOtBohiB6NkBjXpEbjCJgymtOtS8vlmQjlkC8RjYA4l+IV
+	 Qt0l1kNaXWlfLZrcyVKHs5OrJPe9Dt/ziF+OcBeg8MdY9RRH0U/jj2uOWkpPizFeDM
+	 LzzrM+mpWPjqrT8WlBtVvGgCoJgBACt9VQ/vmYFICTi16MmCkuR9me4asjESYAsxDw
+	 9BCXgjPOU1KYg==
 From: SeongJae Park <sj@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	"# 5 . 19 . x" <stable@vger.kernel.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -83,21 +83,21 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	Roman Gushchin <roman.gushchin@linux.dev>
 Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
-Date: Mon, 30 Mar 2026 21:34:41 -0700
-Message-ID: <20260331043441.67196-1-sj@kernel.org>
+Date: Mon, 30 Mar 2026 21:52:45 -0700
+Message-ID: <20260331045245.67438-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026033013-drainage-stylized-43d6@gregkh>
+In-Reply-To: <20260330142205.e7c7d7b47ec15a634f6eebf4@linux-foundation.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C869D4000A
-X-Stat-Signature: 7fc73jitk6xsgp3ufkc9jnbuxt1q71z3
+X-Stat-Signature: bxgfe9fse3yo5tacmq8nouez7mcjoq1x
+X-Rspamd-Queue-Id: 5910A40005
 X-Rspam-User: 
-X-HE-Tag: 1774931684-582604
-X-HE-Meta: U2FsdGVkX1/iqD1ewaxUI9stIy29A21eqsg9ORVWAjzcZ466nn138xAI35qLGN7XJEmgQW0cG0hjgI7OZot8SPF1FO9xYheNYu5QDHsYW7yMvo4UvwKjvV+vM6sTzlHcS6kMl3pzhfcQo+ylTgvB83TE2o7OCtH+AaG45OaEUx1dJNnubbrbMWHnGCKApZeUUFt8y7ZZmA2cQFBHeIQPofogk3Bb9qHmfMJxR8qIQcHecyadWbTdlflvRzw9MnN0P+ZxN3gzBb0qghR+zSCawbAeFmzUFMrrEALGKKg1MXs1hfQg3d92CuesATaqZGHP01jYK2ce/EAbGWKDRqXwfVBs/lzX7bqn0Vo33kT2sD4LU89qkmY8FYlqkbb8VEFKLkdisWHwOzMnhfCbJKr0cRSmzCe83iois2/qvlF4WnBmDiblD9kfHTFrFvWvRkSkhuRIRnXaGRJhXaY5mD1Bu3RxVFU8BnLO5K7G9SfHHIG53EIvJYrNfknD0lncSl45v2/KAZhyBH2VjoM26PxgxCmfLW4vpOtTsdrOp1z/dXfKUksDBbPsE6TWv11zcCbA1kJ1EvuVxNqehf7vN00VuFBm4POVIdcfWgqWD+xgpy3rPjzwWFCJZ/3Wx+vII6mV+4EcNZNJmoRmagL5qU9ZhTh3wGIW+p1DWFDOs4Yj4xZC3uIJd+VvHYzKTrbWSPGGPj+K9DqElqwO4p6M4G05zsiStTeLdZu8zw4KoS/c93GAXxszFQrik0s12zgKLFam/PpeTeVjqMA5kTRm1y9dHw4vnWR/tjTjnQkCH/a4iRzSFXpwm3JhdluRPOsaD3LgCffkaGVbDU+KNMG3rXno726fix8Hr4l1NtlSWyiLHo9NRVUwxQbwDSUsMIcnPHDGS8cKs28ormqLkkwonVRSi8hGmMIBNmE2nHbVZJhWVlu1KaZ3Gdb/NfkPPru/CtY0ImipX0w+JHL4heOqoPt
- 6P7dKWio
- nzhWVcebGvKMCK+kNsj/tpbQ6gbqLwWDeoPMOMvnvWgJLPyK/FOGiwmG8ETF9MRVnxDdIPdk3Wu/sB2TlURZcS5Tei6lyljsjuqcIgcH9luiKKyEHbPTgiU6ifdqq06fRaoR4CdPkzAlb8f4+ZNPYCQ3CinDw1ROMxblBJjc0vx4r8RltufpO+hnv0nM3w3TAhrox1QNRBvK+nbOtt3njNmzXivUPZ80pMld+EAMVx4TpusWLKPtrwl2l8Ojl/9GeuMuPmgWYoBFAKWMfjyiCeJ8Wz8YVgenOB/g18GjPGpNfXLuoguz077MGc00j/pZo1agBXQO3RGbP8Zy+l/jCM/S93+1hTK1eEzJ77R2l9ipskFw=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774932769-98302
+X-HE-Meta: U2FsdGVkX18uZNCG1t5ANTFdDWC/NPNwxkK3v/pPJkLtiUxPnkozIk4qKnD5uMShbTzM09I0MFn5oG5EX0YzxhW2h6EmbgUQRqAU6ubE5BxwqsWYPnZ6Gs1G+OVE4jL0L0yQ+Nzzbn52NHNhBBfFY69O9iL0bAMFJAiqVuJHYK4gTPYVWXW74VqW/sg6uGJgZn5DqicDlvoFI/HjKkLRawiLYs9VENMVZ+Y1PVSFNtFZzm7XyhjRU7H5Bw+V+dgaY3BaQWQk/CvvWdi2r9y4NP2oRi4DeAsGXFBsWSbCBsBQndIHQ7f9djlakgbQJmaUfGZzDWuJwpoHw9hUNdjQx6XE/caaCLKdyGT7wE42n+xVbK2D9mDT7XBDg731qkAGxvCGBXzRXU7GaOv4bEeKhVocvm4dA/Rj5Gm8vB/UO7PAyApHkPSXomZYpk6kIvh1A5uk8qRaMDvM/PlK4/X6xp9eu1BytFNLksDqXlP9oiEtDoiToIn9RIp0PD/hUmZw8XA0u7ktNOLuUYR84tmk0nmd6Q0zdzX+XmiK/e/aMnbCxHd7avL8WzESSW045T50JesnEmhabCt5CbV82pLcHsQFDLUILdIDPm+YWMiB6RBFP5MQWftTNoXE8Jg8hAWGeSzUW40SD0KcKPb9rxZZ/ArDHmMFGUUcqDyemGxYN2pHFWPuPgxeSIyeHEH2hjIHQzL4T2VjBBHrccWoGSEC58oRmOS+h9rj/dCcEmT2brixuqp+wn7Hpzp4DShqGJVztwesz0SUSxezSt63U8vH8L4rIfkVObcWuE0OBGc8mcMJG3fR70ExUh7YDr0W+pqzpcLqMkx3otHvH5oEa+j83f9aP5gllsOVH4fcijgdf18cSbneO69v+ePkoAbYqPyFUBIylgJ6HXxjC14xbGgn1+qjxKC62hpCuaA23Ck+jYyNPLsEX0Y1aI8eyjm7B7ujPWOe7tAK5heacz0tW6P
+ Azg4JzmU
+ k1NOOKnmFiqV9tjYE6qXVA5nYWkqCZyvnARlB2k3MlFwg7XUawNA+HJl1/rU4lqIyjSAv+UbORRgJSsBJIS3swjTTngGn2FS2ICRtf+S023Auwf7vXkii+7JMzv2YTPQ4MOUvjJVMqq4f7K+t9qo46zMAezztriaiksd9SthFhbuX3HyVp/bsR7R3o0OH31kDbyVNc/5OA5VXGxUgX4Rpt7/7SQUyf864VHXjegqHvLyjCM/bfEsoJCal83WE4QqqwQSVKDnCD8SOZWVHt5ufcRF5yCYWXtyZih2U6Kr35/L6HOS6tXIgaDNILNe95QAj49lteRltJbXOcnVgG5NZJauAZHB1S7zHBChJy9EM21Npw/SFHJMk5TLBC1SQFTBY4uR8PaTbSLChH3tQTUyLkHEYTk8mKPadcIrDQlFGbEViTcY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,13 +105,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 07:47:54 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
+On Mon, 30 Mar 2026 14:22:05 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Sun, Mar 29, 2026 at 12:32:26PM -0700, SeongJae Park wrote:
-> > + Roman for a case he has any opinion about my sashiko usage.
-> > 
-> > Hello Greg,
-> > 
+> On Sun, 29 Mar 2026 12:32:26 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
 > > On Sun, 29 Mar 2026 20:05:53 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
 > > 
 > > > On Sun, Mar 29, 2026 at 08:49:16AM -0700, SeongJae Park wrote:
@@ -126,79 +123,59 @@ On Mon, 30 Mar 2026 07:47:54 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
 > > there.  Reading everything on the mailing tool is easier for some people like
 > > me.  Like some test bots send reports are replying to patches, or we sometimes
 > > forwarding bugzilla reports to mailing lists in a form of a plain text mail.
-> 
-> Sure, but are you going to now forward all random tool reviews that are
-> run on your subsystem to all of these lists (your distribution cc: is
-> quite large here)?
-
-Obviously not for random tools.  But if there are a few tools that (nearly)
-everyone agrees useful and worthy to integrate with the mailing lists workflow,
-I would like to.
-
-Now it seems I was much more optimistic that others.
-
-> 
+> > 
 > > Secondly, I have to share my opinions about the reviews, as many times AI
 > > reviews need human's opinions.  There is no good way to do that on the web ui
 > > of the tool (sashiko) for now, and I think this mail based flow is the best.
 > 
-> That is assuming that you can fix up the AI reviews, is that happening
-> here?
+> I do agree with Greg that it's all a bit excessive.  Thanks for your
+> your diligence, but perhaps dial it back a bit?  It's OK - we're all
+> trying to figure out how best to utilize this tool.
 
-What I mean with the required human opinions for the AI reviews are not
-necessarily only for fixups, but also sharing of reviews that the human and the
-tool are aligned.
-
-But in this case, I was sharing the review results seems incorrect, or doesn't
-need deep dive at least:
-https://lore.kernel.org/20260329163102.58683-1-sj@kernel.org
+Thank you for your kind words, Andrew.  I understand and admit the fact that
+this looks excessive.
 
 > 
-> > And anyway I'm supposed to share at least my review of AI reviews, in mm
-> > community.  If I ignore, I will only make Andrew have to reply asking that.
-> > 
-> > I used to share only my review of the AI reviews as replies, instead of
-> > forwarding AI reviews and then replies to those.  But it was
-> > 1. cumbersome for me (should summarize AI review and then my review; feeling
-> >    doing work twice), and
-> > 2. feeling not optimal at sharing all concerning comments with others.  My
-> >    summary might miss some points of AI review but other reviewers might just
-> >    believe me and don't read the full review due to the additional web browser
-> >    opening work.  Also some other reivewers might kindly review AI reviews
-> >    before I do, and save my (or their) time.
-> > 
-> > Hence I ended up to do this bit odd workflow:  Forwarding the full AI review on
-> > the mailing list first, then reply my responses.
-> > 
-> > > sending it back to all of us feels odd,
-> > 
-> > If this is polluting your inbox and/or distract you, I'm so sorry for that.
-> > Please let me know if this is distracting you.  Maybe I can filtering people
-> > who don't want this kind of replies out of the recipients for the forwarding
-> > mails.  Or, if you have a suggestion about what need to be changed, please let
-> > me know.
+> I view Sashiko as primarily an author tool.  Sometimes I call it
+> checkpatch++.
+
+Thank you for sharing your perspective.  This is helpful at what you want from
+the use of the tool, thank you.
+
+My view of sashiko was a human reviewer that having very odd characteristic and
+cannot answer to my feedback for a reason, but still being useful in many
+cases.  Hence I wanted to help the special reviewer be able to communicate with
+others on the mailing list.  And I was thinking anyway that's what sashiko will
+do, because I saw sending review as mail as one of TODO items for sashiko, from
+the public announcement, and I onboarded DAMON for that.
+
+But apparently not everyone is sharing same view.  My understanding of the TODO
+item in sashiko public announcement may also be biased.  Maybe being a
+subsystem's sole maintainer that looking for a reviewer made such uncautiously
+biased perspectives.
+
+> In a better world, author would be able to sort out
+> Sashiko issues before ever sending out the patchset.  But in this
+> world, a public send is needed to obtain that review.
 > 
-> It just seemed odd, and might get crazy over time if this happens for
-> all random AI tools that happen to be popping up now, right?
+> So what we're presently seeing is author development activity which is
+> unfortunately and inappropriately being conducted on a public list.
 
-As I also mentioned above, I agree.  And seems in this case I was much more
-optimistic that others, or hallucinated ;)
+Makes sense.  Now I understand why you and Roman were discussing having a
+separate mailing list for sharing the reviews via mail as a path forward, and
+I agree that could be a good option.
 
-> If this is
-> the "official" one for -mm, that's fine, but consider the distribution
-> and intended audience a bit please.
+> 
+> Personally, I pay only a little attention to author's Sashiko activity.
+> Just enough to see whether I should pay more attention.  If author
+> says "oops, let me redo" then fine, I'll await the next spin.  If
+> author says "that was all nonsense" then fine, time to take a closer
+> look.
 
-Andrew replied this is not such official and recommended action for mm.  I once
-thought this could be the official one for DAMON only.  But in any case, I now
-understand this can look crazy, odd or excessive to some people including those
-that I believe.  I will think about a better way to use this tool, while
-keeping your inputs in my mind.
-
-Thank you so much for sharing your opinions, Greg.
+Makes sense.  I will try to keep sharing necessary information, but for only
+targetted audiences, with less traffic.
 
 
 Thanks,
 SJ
-
-[...]
 
