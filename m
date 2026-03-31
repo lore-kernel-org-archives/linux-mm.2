@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FDAFF60DB
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82C02FF60DC
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4A966B008C; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
+	id EC0EC6B0095; Tue, 31 Mar 2026 03:37:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB5F6B0095; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
+	id E97C96B0096; Tue, 31 Mar 2026 03:37:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D11A06B0096; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
+	id D86E76B0098; Tue, 31 Mar 2026 03:37:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF9B16B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 976CC1A09CE
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:36 +0000 (UTC)
-X-FDA: 84605553312.07.7582725
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B81B11C0005
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FP1spozR;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942654; a=rsa-sha256;
-	cv=none;
-	b=ltxFAMYsYPTErY4AquGq/mzjJvfkVb5gUj1rhjBB1BIUP4M6WENJ+gQwOtk5EDFsTW6oQY
-	hDaVALhPPPkUNDOvyGU7L9PgBDlVrghcmfnxuPRZs6ssPvT18biK1SbCNTWJL6E2k8IoL+
-	t+o8jYMaBHnKFczxdP01C4WUyhKmVBk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FP1spozR;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C8D836B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:37:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 656DB8CD85
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:56 +0000 (UTC)
+X-FDA: 84605554152.15.AC962E3
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CEA60C0005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:54 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="JMoZD3/0";
+	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774942654;
+	s=arc-20220608; t=1774942674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
-	b=YGfGrnn69PLl7OMJtaDLqgIvMMH1sEuaxeCarMtbTOslSYEL9LHs2+7jYXIHyhQXgRyDOd
-	Y9KfGtPvC79C1GPTFaJoYcHfIerIcrxWIkIa2VvJBJCL71xR5heYZj4krqjtDTtkmr/i0S
-	lKns3WrV6NpE0IMIiHtLTXy6w0ABDvY=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b24fede2acso13455265ad.3
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:37:34 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Qge3MorNS1YgycDNr3wmwHALhVcOGjEeMYPPOcQMBh8=;
+	b=eq40sNJR1spgaQXM2BAkIp3vg+SEYNujqv63DaXxL3ws1FGjAXt2tORa5U+MIobIhq9Ypx
+	QC+woxCwa5GlfctjfMSPXtJYvf6ydUmvRSmt0bsArnDb7oOCtKRZOIOmM8NgqsJvQO4FRc
+	55Ymb26Zf+lt8afeoxsrGap0ydSwlgk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="JMoZD3/0";
+	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942674; a=rsa-sha256;
+	cv=none;
+	b=uxkwt4fcYEM4kZNhdRC8tutFy3QzSeZj6qvGOGX3kO8qNCj6Aze0ePOxUC98e4gcKi2z0I
+	PV9vk9H7c52hV7Wojjhm9C3BpIFi3xIRf82qkoCMpp/0lmbsfjGjndynxX/8LeOoFGdOSn
+	zZZDNlab2FD1uMesbH3JKuSg2Hgte1c=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b0ba3bfe16so41049065ad.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774942653; x=1775547453; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
-        b=FP1spozRpwufepFgWBCKauoNFGJ5A4eNpfxfW/IYYCQplOAZqf9m2ymXmU8V0Hs49t
-         3Jupa+WL7tLMagMKXKuUqjr9ljDsuR8RIMM1uTHkhVkPHtNVGYOEixwG/wiw9XeiZLcN
-         x/FJib3tLcrERnF4QDUcsNEr4DU2u9Xto5kMM=
+        d=chromium.org; s=google; t=1774942674; x=1775547474; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qge3MorNS1YgycDNr3wmwHALhVcOGjEeMYPPOcQMBh8=;
+        b=JMoZD3/06VMbHdOPqhaN332Z92CJVrd0YRD8GC3p3H/3bI87+F7SKxqxvJFowwJPMj
+         y2vIMTr2+iTD76/fKU58Y5D15hxeWb9eY+eFq51RJpRF1w/IcaL+HbCD6rP7MfTJbGlg
+         dY+8TeQtLj/5oQ7tLv97mYVkeFQ5rwEuprCyA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774942653; x=1775547453;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
-        b=XYS6kT87E8xn8j3cVy07IAFN4aQsobARJYbgx67L67SJRbqKWRAJHY4O94J6Iz0AnC
-         IdcvzWJrTOagy/w8gwLcF9L6Iw/DZeHRibyu/SWl/+D8V+t5CXb/KBCDJsmZRmiW0an4
-         u+/PzGn1DSeAiISNOOq6WuiR6Fm3mKUm2U6KSPzUhykluNIEZbutsRHjj+pqnrEzC2LO
-         GoUIJ/UmY5HOxkXcRSu84yVd2nFGyNMnmBHcmvrr03ZetAOfHM2J8NIkd3e5lx0RwKqD
-         aQXcobtz5RKlEh3QE5WDoYWvrxUqk8RP8ZGndPdqhYpToHhBBy5FzMTej7hnUOrDOiRA
-         EAjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgYRxEIOkNXO+b+KJO0sfgqDEC5EPuVfTohdKzJIXMRZI5Uwyw2EyGMm8fXRx1EKR7rGZV+2HQXw==@kvack.org
-X-Gm-Message-State: AOJu0YwgmCsX69pYxyDQt8Xo2lZ6d6bbR40bfpzVp2jrfhmasBRTHHDE
-	m7MUY/Ew+c5WeWPZdJFXW1ytYWOKzEWNiZvdME8C5kxLyOACIMo3FcqDnzCTf4s7oQ==
-X-Gm-Gg: ATEYQzz6bfSeSgOxCsXWYFIW+plpM+CzcguZ7xKRWWjlc1C4QGyUpa54IZPq0cFIwBt
-	D3aKC+cEFJUA5Me5ALSTF+RsJh1QgF9MkTHFipyJrGeZJ8lmA+RuBOGgNJg6N3bFRAWtzu7P+QW
-	QqK+CbEqa9Qvb4JVc4LyHsWQuSX2I8Sw4mgz8u+aHpWj6opG4+Qk1Y9Bf6oBlKPL98ulAf1ulaJ
-	MNO3wfstOs0FHkk81s68M9JduxrkPeNeBCTqm5SErVT2GSyGe91fRzsRTjG65cUTQNOX6pq6CJe
-	FQA5SeRNcrQuvm+I6OeNJCmcObLJZUu74/9OzIOH1V/Kamc9I9fpsDLUNVgDLIQEJbDdc9q4FjL
-	tLZJ65HWeNux+9PGMIh4F2aQiHKAlap21F+mW69XTRs65t/hHzQEo+Lk8nGGEeLP4KhdIINO/1C
-	TecCcgMZSHN+0sYXCnLV0rVaUJv0YLHxMlUt81UMotKC/BdmH2XJQL9+piLWNZi5w=
-X-Received: by 2002:a17:902:db0f:b0:2b2:50bd:83ac with SMTP id d9443c01a7336-2b250bd85b6mr76653425ad.40.1774942653595;
-        Tue, 31 Mar 2026 00:37:33 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242690e60sm102404315ad.37.2026.03.31.00.37.31
+        d=1e100.net; s=20251104; t=1774942674; x=1775547474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qge3MorNS1YgycDNr3wmwHALhVcOGjEeMYPPOcQMBh8=;
+        b=hBMO7PeiIHG3Dan61sSNhwGJGOcTsujJVM08J4iXBPH366u0aBzaBOn0gp0zPcCrch
+         +7FzVodN5V6zme8Qr125tQobV44YrM6iUabRZJAN/vaMZ7ZNtRJ9O4x8cBSYM4trV3pc
+         IYdDJb/VqYqzsSdQ2jvaZLqXDL3d99q/OD+ZPLDOUJG9IW5bK0fMVlGG72Q7JcusaIli
+         pWnH26YIwoRf2ZuA5Eo+QrP6cmh68NxKQkhgo1df9hzUlGLsNzrZgD2zGdG2UoYfyxee
+         VXKPQ5iNYKzyaSaAiEUKBitkAx/CfAtM+OJll/JfzPusj7dYDLOrTTdkVLgz0E+uWgDY
+         Fhrg==
+X-Forwarded-Encrypted: i=1; AJvYcCXulRl8jjcRnbkWKfYZd164v9oZY+UR70IvfGnJK/C4BnyBVs4tMU4HlSZ5iStLbQJX+Ks4VGxTPA==@kvack.org
+X-Gm-Message-State: AOJu0YzOq3nuXudtCTZ8+ik13yvsmYFBV20x9e0WjGQduf0Xk1kBG4qO
+	TrL1NhraaMbz3gf/sxyojMUXwLS3Iaiy1/6if8Qa9JzPFsaD8wKllE6kOgSjYUSuGg==
+X-Gm-Gg: ATEYQzxh8cNVANkB2p7ef4oI5IOS2ZJUDhMQagCm5vhF3ooOsuYIbyDo/pLIrvRZAeb
+	NQXB/PUhHKCDSdpPIVc8/RJaxAKU18Xg2o2C/SFu5rt7gb/yArVaU/6oNUri6fmxJwdNWukuFJT
+	XyDTEE2FxEIrUWyUMjhA0wrrB4gTACxWGHD6A4YtMXdV+H1dhnPC5u3Yq83LwE3/q/MNg9c7y0W
+	3bGpL/VTlpdnelQVwSmoQYA4rNeuE7/KllNg1QAE3WdJrw1zDvK6n4madjB5TA/U52oJSduZW9w
+	cxuLI2bv8zJTnvA9HZf0Rwn0Htjcbmrjpog9KtiWX3MwwxsV/4M4Ejg7GZByJocvRwTQsQVQdzl
+	69yrLvJSv0PsC2G9rMmCYukTAzN3W0QXrzhKwwf4tXcE3P7jNcmH8cifQKHCRnu0eUbG9hfFaL0
+	rU1niR5iIvjl7CxaK+K61OFYL7Ee4wEvYydfRJy7kaUE11nodyex8XzcJKUpe7tq+J2Z+xO8G8Q
+	yUmhjQvWklUgA==
+X-Received: by 2002:a17:903:32c2:b0:2aa:e47d:e3b with SMTP id d9443c01a7336-2b25ed654ecmr25933655ad.0.1774942673664;
+        Tue, 31 Mar 2026 00:37:53 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76916bd67dsm7848596a12.3.2026.03.31.00.37.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 00:37:33 -0700 (PDT)
-Date: Tue, 31 Mar 2026 16:37:29 +0900
+        Tue, 31 Mar 2026 00:37:53 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Qu Wenruo <wqu@suse.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-block@vger.kernel.org, linux-mm@kvack.org, 
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Qu Wenruo <wqu@suse.com>,
 	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] zram: do not forget to endio for partial discard requests
-Message-ID: <act5XhgtqrtN1zdY@google.com>
-References: <20260331071537.706139-1-senozhatsky@chromium.org>
- <a6b566e8-5808-4244-bcda-5612760bde3b@suse.com>
+Subject: [PATCH v2] zram: do not forget to endio for partial discard requests
+Date: Tue, 31 Mar 2026 16:35:34 +0900
+Message-ID: <20260331073737.774503-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6b566e8-5808-4244-bcda-5612760bde3b@suse.com>
-X-Stat-Signature: k3up9cs57ch5yofabq1p3jpp8ceyz89b
-X-Rspamd-Queue-Id: B81B11C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CEA60C0005
+X-Stat-Signature: amqajknij45478di5na6j4874hrco1ie
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774942654-800567
-X-HE-Meta: U2FsdGVkX1+IpdE/SpeC7TSzJ8GkgcC7fu9pnAU5BrdrjI8ldyKiC54aynOZs3Ko+7Iyovv9wZOoVf5YeFZb21p1TSbHdBdOngvDworYof8QTJNYGMfHh3aXXD/ZkY52eCUKZ+/Vva6Hw/aeuhhXtzqG29nLnV9lRA2YkPl680zwgl8YYGs+HkyW0JyCYq2Ich9f8fFDyAntvyO0f8tL6lOWx5vt/ANOJbJEJexrtLcyZKCNILPsW5qr9aK5iE38PLdU7HD2QidsI0zpQVo3wcaaUHxQY7M/JfQa2An9/PQfFu50thyAnhI3sc1ehSHM3YcCcihzwWQjgC4W84liJLU2Hwn+a60NGMpaz4uEj9XE1M4drVWEqN0lI0yw+ezK+oJQzNOnF0LyHqqnuFHQnP3M/g6lB9cJV+vwnsF2s2N+biGJeUGmd5fzsVwyLkMIvEyTypIV7hglAb8Oz6Y0rXQ8cNliypboB2t2+oYontLFdka0wwYvuiQMnhginTvVNz0j5ur+dFSM/I+j/qsvSJS2yP1Gb1uxTecnnTeF+bTPH+NNfx74o4qnD3VgNQ3ryQXumNTYUfH1SA4gF+Ue8FbLTEQxdCfuu7FD6O/yYZTECLPZczVtyByAZJ8wMD8kDMMXt/nOH7y3hvbKUeUIOFrDwQu6LJuQ5YvIMsISMSg1fVfHXSjFh6+loiDgQqy7fn1JyvdXRGO7zICn0WItDm1n0cwa7i+jNmEiPXlamzz0i3CfLo9F6CjWGrPPGxE/iqdQk7f0bsxU7uUM6YEIFfWVwgqLYaPiOytszrALTRD/I+dXPSLwozk2j1vT+zAhqHVZkbswJtl5viOnZcyiNjXVjJEST6QJj/+O5CjSfCeZho6LWAqMY+f+1KEc+6A0qlGT7mdsxH+JqGa8/gN+3iB+zuJZFpEVld4Xkc3FkdnsDK2tJsQlbamGUGPFtEQGoVJ0vwvjzisJPtu7A+e
- pmzt9dVB
- hnUgoXv0D4LR4pBqxW87ZO5OmOCrEhhn52BhIl3Vl1qH0X3ftcqNawqJeuklSlGF5Bf2yti4UaY0iQqy1X+I8OCgpezD5W2qR8ahNxhQOKOKUA+ed9GVgOV+SCI7922FKApik4bxf8nTQNz1Xnpzzk/xrAm6otf+e+v+FgUWmH2EkX5yUd4PNuwc5RccInH5y7h8iowvJNZdcbfpQmBthR0anEjTNKIHHXPrr/+5/pw6QXGDxFv5cOmcYDH5EYz2bKxORGrCWtKcuD4mKrybXCd+6ZjQ2ei9BF+9K7F0r2PL7+cNaoFPIf+u3zFGwXM4mZeo6VI/hgHr2EksQ3WwoyhCm9MniYaj1YbVj2o3MlLoP8O4=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774942674-827963
+X-HE-Meta: U2FsdGVkX18Z7zrp6ChANLtOJmvLOyUAMh+Gw3V03PBjeAxFzmhqBYrVScTgfFRWw9GOPtLUNX90a0ZwFkrQiK4bwWOHUtEckresTprwU+LS8910fM2SS3LnIDj2zmlVar7oSpgs3vejtcR6RFxWcnqRUYtooDSw/U52AalKiYuTgeFyBdbcljMJ+rl3xGe448nC4aIzgn1xs8oa3DHB8kKQLQ/ejiYAY6lckD7w44eNkhBSsNbneBm1EF+i7CAUG5uAktQPShoWXj1XT07if8MBElXYoUGmMsPE01oWYNjfSfR4ensMsyAW0w6JsRxjDeiBlKTtibgNVG/ycyeKbFeIsPeqUYx6WkWuAIauhw1Yf+VOw3S1NXwPWcpos4ky//Zn4WVRQc/wv2drpW6e1xuuN1JUl8TFZeQ55cl8WO9tnWMW2XHsHGrulAquMHCVMdEnlHz6w6v49KLRxYF/A8B3iJuq8UCiMc2xNwL9kK5tAXmSZWRcWVBztOP6Qc64EesjOts+F6qHXbICpv/dUH0OAzMURuz5jdfJhKRJKeM0B+B4hdUKKsZpWizt/eRBNWShHW/JV6LKfu01mQqpSdSne3tbH5JB9mpat226RrjotTJ8Z7FwcO1L6n+2CbINujhfCmYOv9w/EVxs7QZ/hoizyhBEpyeEg50O3c89E8olKmu8JMkl/Ake58HxTzHb2GvlXHNcwOzoJqapu7NgTswyZqNwmNY0qv192v5be0YvnjI2fBjtzyt8ZiCVfaWxb910w4PsoS2vgo7SHdQxarKaE3A0PHEg92HzIZKC9doXuNAE0ITM23attxvX4Zk5cV90sOSnJA/WfY8HltQK+bb66oBkZ2VrSs8oBTBnxei6gCDM/tEPZhw0KdmPPXB7kDVpB07AwKiC7gW+8OAdjC2SolqptPrBz+NoCIq+ba35rgf4pKdPbxx0x5AF7+JtrIGbkpOQX2QPtxFVB67
+ 6kjA3mFw
+ bB0JL3l9PjOXVeq3rMyxzrRqUIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,19 +117,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/03/31 18:02), Qu Wenruo wrote:
-[..]
-> Which is 3 times slower than regular block devices.
-> 
-> And after that short fsstress run:
-> 
->  NAME       ALGORITHM DISKSIZE   DATA COMPR TOTAL STREAMS MOUNTPOINT
->  /dev/zram0 zstd            1G 271.2M   10M 20.4M
-> 
-> I guess this time the overhead is just in the compression so that's
-> something expected?
+As reported by Qu Wenruo, the following
 
-Yes, pretty sure that is compression overhead, zstd is not the fastest
-algorithm.  If you need something just for testing then lzo or lz4
-should be a better choice.
+ getconf PAGESIZE
+ 65536
+ blkdiscard -p 4k /dev/zram0
+
+takes literally forever to complete.  zram doesn't support
+partial discards and just returns immediately w/o doing any
+discard work in such cases.  The problem is that we forget
+to endio on our way out, so blkdiscard sleeps forever in
+submit_bio_wait().  Fix this by adding a missing bio_endio()
+call.
+
+Fixes: 0120dd6e4e202 ("zram: make zram_bio_discard more self-contained")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+Test-by: Qu Wenruo <wqu@suse.com>
+Cc: Christoph Hellwig <hch@lst.de>
+---
+
+v1->v2:
+- use goto end_bio (Christoph)
+
+ drivers/block/zram/zram_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index dcea703a6766..aca67d7144e4 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2684,7 +2684,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 	 */
+ 	if (offset) {
+ 		if (n <= (PAGE_SIZE - offset))
+-			return;
++			goto end_bio;
+ 
+ 		n -= (PAGE_SIZE - offset);
+ 		index++;
+@@ -2699,6 +2699,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 		n -= PAGE_SIZE;
+ 	}
+ 
++end_bio:
+ 	bio_endio(bio);
+ }
+ 
+-- 
+2.53.0.1018.g2bb0e51243-goog
+
 
