@@ -4,108 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DB6C1061B26
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DA381061B26
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 11:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 988076B0098; Tue, 31 Mar 2026 07:00:46 -0400 (EDT)
+	id 124116B0099; Tue, 31 Mar 2026 07:00:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9119F6B0099; Tue, 31 Mar 2026 07:00:46 -0400 (EDT)
+	id 0D5286B009B; Tue, 31 Mar 2026 07:00:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F9E6B009B; Tue, 31 Mar 2026 07:00:46 -0400 (EDT)
+	id 011F66B009D; Tue, 31 Mar 2026 07:00:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7627C6B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:00:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EF7B5CD58
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:00:46 +0000 (UTC)
-X-FDA: 84606065292.06.3CB45EE
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2FB662000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:00:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=i6VLUgQA
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=i6VLUgQA;
-	spf=none (imf13.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774954844; a=rsa-sha256;
-	cv=none;
-	b=QEuILAhTVVQozwVlamk4eH/kqPW/cBWodbhFHuZeZK9wGudo0ke9/zdUPCXSlzvxDSdxFH
-	pLB2F382eQbXe8KtzqyOLe52knNPD9s2I5UV6+DbpLK5zaEcWy0zgE4hxKQkYLRvKL7Rkd
-	KGuPE41KuN3K+626ksMeixyaVB+75eo=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E86036B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:00:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABF03160C60
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:00:54 +0000 (UTC)
+X-FDA: 84606065628.17.5349C17
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 771B6A0021
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:00:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZvVHS//d";
+	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774954844;
+	s=arc-20220608; t=1774954852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ej999Lltj3psDX+lSQBFgt+N0EJ87JUHiVq66s1ytUM=;
-	b=ccdYkRlDcVyRt4X89LW/AJEUkdCeBWfi0jxfP76dLaiBj5M2JF+i/LPf1Jm/GcHuzqZFU+
-	fDURUkgZAqMqvYj5lwuV6fRVaNfde0fVqDd6uQt7pwceg8NDqUCg7tuxB2egbeGKdhfCXp
-	QPtUEp30U7Y/1gazOeZ8KmM23IsJFCs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=ej999Lltj3psDX+lSQBFgt+N0EJ87JUHiVq66s1ytUM=; b=i6VLUgQA/T0U4Tb0sHMae0huaZ
-	DcHpw+WDe4WKFSLgNEx6/iYQ5QKrY1wYAc7PlcqpMNjdjsX5kn8EhzI7DZ0OZUaysRpoSAFqhIgwD
-	ZngqZaFcB9zZvKGWzZn3GGTclUY2J2wp9RJ5g93XeBOWbiLlhU99/9uRk9PUGld31uog+4fpMj3TB
-	S13iCPBlXulv0Jr8k4gmNRWXzbt7KLO2ZXDaITx4kyLJqidYNoRngbqtzlQg3sI7y3TQqkR3h5TYe
-	OSsgZm0bFPTvqARhR13J3SjMdiOxt5owZOLQjxlHl4YBYrIg2GGNrIts692bLvq8uVwTnaWP2Lcez
-	GuNN27hg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w7Wpt-002Ab1-2Z;
-	Tue, 31 Mar 2026 11:00:40 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 31 Mar 2026 04:00:18 -0700
-Subject: [PATCH v2 3/3] Documentation: document
- panic_on_unrecoverable_memory_failure sysctl
+	bh=TNuT2cAuD0OlKPSarRBqH1oonNnIziA47qF4/GN+rec=;
+	b=5116mZV1v9dTkZgoNPhOxgqdLYTSQGG5vxuEEYJt2YQ//iwUm3GnFRpAjnbbWskG53d7+F
+	7gP4a/5pLPuyZv4s2dSjmdVOprOsQ+0+W88LFzIRTBcC0DIb7wzwwd/APxJTqxCwg/G9Ld
+	ZeV5a838y3g5pQZ9FwJhhRb+KYHc1/E=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZvVHS//d";
+	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774954852; a=rsa-sha256;
+	cv=none;
+	b=dabUs6YzEH4b8GViLwiRXRy2ynLsmOEja6OPXfAjFIDzMpul9Lpv8OuqzCoPDrYOIAkfRk
+	pVtt7ADrptOhjei9GLKXh2RNTIpDtm6np3xfUd3nVoMxFCWxLxN0MsjbYGRf3I15dwEgzD
+	630/kj3R/+elGLXZTXiMa8I/ZD3rsHY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774954851;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TNuT2cAuD0OlKPSarRBqH1oonNnIziA47qF4/GN+rec=;
+	b=ZvVHS//d76VApYp4knoqZ1AI4W7F7vTr7zW7bVEUfM+FAclmhmbT59lb6wtgh6xe/7dUMG
+	LeezC24HY32fUOLCU3485eETgiZUkYcZHKUKBDuojmdyWg8C9lzWh/HnfPLYtrOmUDQqLN
+	MIH7CSsbRewFyzLXd0C2M8HjF8bFgGU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-YDbL3fC4MyW1ulyVcUfRwQ-1; Tue,
+ 31 Mar 2026 07:00:46 -0400
+X-MC-Unique: YDbL3fC4MyW1ulyVcUfRwQ-1
+X-Mimecast-MFC-AGG-ID: YDbL3fC4MyW1ulyVcUfRwQ_1774954843
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C18301944F2F;
+	Tue, 31 Mar 2026 11:00:42 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.187])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9385A1800763;
+	Tue, 31 Mar 2026 11:00:33 +0000 (UTC)
+Date: Tue, 31 Mar 2026 19:00:28 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev
+Subject: Re: [PATCH v6 4/6] selftests/mm/vm_util: robust write_file()
+Message-ID: <acupTAjkYf3USAGo@gmail.com>
+References: <20260324013316.2590422-1-chuhu@redhat.com>
+ <20260324013316.2590422-5-chuhu@redhat.com>
+ <acZ4wTxSmPn_s_mn@kernel.org>
+ <acjwcQjCP81JldAX@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-ecc_panic-v2-3-9e40d0f64f7a@debian.org>
-References: <20260331-ecc_panic-v2-0-9e40d0f64f7a@debian.org>
-In-Reply-To: <20260331-ecc_panic-v2-0-9e40d0f64f7a@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2203; i=leitao@debian.org;
- h=from:subject:message-id; bh=qiZP3pMkiWVhwKRsjcSJIBXS5tm3G3sL6gwl8SO35OI=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpy6lInoiOsKvmqn6zqDWvDEROH5pmoV+ihKV/y
- MR1/drgwtKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCacupSAAKCRA1o5Of/Hh3
- bRPXD/0eaeyWiE1Kspzsio63y3xZCajlbk7YAuNAZscwsWBzwt/us5mtJR+/U1FW9IxJ1aIde12
- 23iTxJZeNecTeF/tpBu/brJ4fm9HrKL/ws2a8q6s1OXwFtSPbQq6JIJmCwr2xvMZ6XUTrfJLpFm
- vBsH7/XV2NTRcgLS/lXd4yl3bqP6HcseRaUk2RPCUeUXUJ89Bdlpaa7VEc31qag+j573OQxpaYE
- cBjddR29bMmm7RUsd/JbrOlPaXioD2as5uj8vRsSQmDgxs34e7PZIqqvp4mYbZdShzIQW+KRqo8
- iiKbtOM12ujLYlr/580y80C3Z/sxy5VsN7pciBU9ajWSFhX4C0Ze5OldxRp309jzSnucUWDFTE+
- ppp4Ru2UjQFJdG4p8hycOZfFswIC7pR40Y2Q7FIrYj8VwOTiZfhPqhWccG8KwMyhExQnseAzc6o
- VmekuFk2Pk5n3JD2I1844DzPag8gx/qFCgVNNoEcet0tEyEXKkxoJwQ5i9ZDhvBfamuAByEnX2T
- uIWhrsBnE65GsSRmMuQNZFfn3/4a+cEba31Lf8Fxpqc4a1Jz5y8XDE/QRYD/nJtpgUpNtk7YqSJ
- CI/uq8Ssj2NFj8Dz+HbkLS17Y/Rv10yfgpd754oyf0iafvr/gd/kLFIscbcjbY1HNwO48OfO369
- kvLCJzvXVXOq2wQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2FB662000E
-X-Stat-Signature: 3ztsfpqu9yzio7bw3yji8wbdk1wxx7th
+In-Reply-To: <acjwcQjCP81JldAX@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: Atm7Y79SqMQd6vf6lWJiGiLz-riV8rBVLz1Tdb6THGU_1774954843
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 771B6A0021
+X-Stat-Signature: j91z3tn847wkobnj1keze77kno9djyw5
 X-Rspam-User: 
-X-HE-Tag: 1774954843-444346
-X-HE-Meta: U2FsdGVkX19XUDSKq+HJJvSfmuJsO0If/SHcms91fSlOEoOJ6UWO23h3cgb7EJYjQYGkJ0qoUtGyqyoJ9KFGgzm+JKUjjBorMOBxELMlk+uFavhRQ44FLX5MlWmmeaLIyyRjAkPFtR+FmqrOI3EJ4b1lWzMwF0HRN26vHq5tWEkYTcg73vdu1Dq7/x8qw20fylW2iAeTaH7by8KBsZ4tGAFWGzuYXqll/2y68t3kke24RrYZMrcB6MpP+efhwtfJTk8JDY5jm5X0493nagbQ6TuyJ0CGuNosJrnZYP9C3lx6v1Zl/fApE3OuXAPhyqDw/u+SgjMvOQD73WtNrHV6Xs4G9s3rgN5P6FKsbcszW3kOFlkdv1HBhkff7otxTkgsjqOwlum215uQdrJlsbfdxnK9ELLX1nNWtpZKeWeuX9E7utV6pc88C5QgTl22cnowS6g0ExvzYGZp1x6/CcTghQUeK9k6aBSLriUq5MQTRa6N3DR4n7gwejQIWvGZMTh0KnkfAu69M3Zk9kBVrto3ZsI2oIK4JcyVvZ28s2sUHd+krQteULfQXrGNtgluXiVkagX6JQAyuemk6kfyh2k1OEbVVn2Pprvdd51v6xK0iR81IoD51QICjo0dGh8DhZ2Z3DnEiZ7yHtsaQowiEmM2/YAB5aIJUAF5PyQktNNOLAhYQGPKmmvL2Lhyr01T8+gJjctEHXy+yyA6BWoDt7tLy2gZ+VCcNRfruetXPJSzuy093Gt/uyEL2s6i9hTrI5p0zWp/Bk56mmLWpqETbmBdOzi6FlsUheakP0KnS01EaW9Y6O7n5pubeZXKl3IDqipq9sTOw237RfFQ6Nz7hOwu7nAXIzQSn5T4asiMi9h9Qo4XaLafzlMe9T3ALnRt42r3c4Q/GaaSvpgpkzOG41xeGNHoJRS37t/WupK9XkeicEM3NZp+x0bjBF3jefYaOFVEzo1lKrgBKTkpDiaYZBU
- 4LLhq6XZ
- rbCYCXdnjDEqzsj6am8TStSKXrTgKnmBTPENDYT8jrS/pkXGK60mSpjsS6OX/CJ4sRX8xsDoN6hgPhM73v80R6Mc1ZETpy3bE93Zq64IUh9s6tRTfo4yTx5T2MTOkXdmIF0tIcvLvY+YniOlSwXrEczne9x0ZaOc7f69e/AcddhCpv2/moZuebg69Aver2Llh+nCmlULEhSEu2hmFFR2CiNTvqaw2T/hAzwf+Mgzdt6cJlzX85GZgTMdWDrpxN48YuKnpePI4s8w/7gs0SMDUytBJGw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774954852-28652
+X-HE-Meta: U2FsdGVkX1/1CwxLSylmn82lHHB15o/PMC5/czBqHtYUiy63vTMBPCXMA9d4AxG4u+p9UaD+4328k3VAbydwPm6aq9SnL2pDut5wWwCVPKzRXjbqbho5Romy5xwNkeUXWqU2pS/mMkNMBz2Nxc9tznub4OXnFuay/xpKg7ooC0NrQpaFVoa7Su3OcTVuE1UR8/JbOS1rteNaNDs+z8RhLOIKfkHXh23keF61WS7OGNu5IyJpuujvFz/4YLaLD1BoltOu/CnnfXohaGE44xyc86nIn9iXbEifq81rUZsRtb2QczKJqOT0u9OTskufRPmDQjN8gpXbMOXubVrbEauJxovpOs4CB2iI3AwfNov8MIhmhQyrGpoXISJlntcWVzaud9Y23ADmX4RLaawblnxgg4OTLiMW4PpgC////hXOS9kfUcfmanWNyoLbmx4fRVEaORwfCNOxHDpSLPVIWNdFrHjVXRpoE/n05eIPJmdYdz3SDj1qn4+giRZ05ikDDPtQk/PGtuJgUmRcL6zKe+sJF04+oTgDfmrerDjzxldJWYgLga11UV8XsDhai95YOBJE4ck5lWBmAg7Anex7qmKa9skG4rXsToJq8EKTWmMdPUFsq4pwRNhrI0LP2w/b8ZpQTCb33/WINs2Q4VqfxTBkx9hXsH1nCu/lOsjtFcfTyT+H1EKnQ7eUzQXEM7FVFzDRE5dxXz6nMzQXMo6sTvZ+DNHXp/1m/maDSkiOGbnwYVOBwZsb4nrXqkHRxSHY+VqE5pBbtsUb53wMWatjQqwJdkFHpv7yCfh4AFEaagR2QCFASw4S0nSYaFCDRcD8Db/H7eXP8duFyI1mDWRxdZbN+xfHIIvZkxKWuB4cdkZC2miEXf31SpugJwbV4U88GXd1O42/sB73hWG+FeJ/9pnaUESA9ziMemW9EqANvL7WAbZA/hp+x/Lv3hlk0c1tIBrHeRcY8wt2a5ftHgwYeMX
+ mSIUUvUW
+ UKQsn7dYcblaHNt+4iiiGcn7gEM04525ybsiWlyxpi123vvTPhDsckC/aIhWI80cujjJX9tHOrve4D+KkKkRouUW06tpJggk5U7GveBzMXYPHNCW8p7SQNU7nhTMmKyDiJ7pO03C4kt6e477hqIg1lceMGdxpu0oM9FOBgGOewlrfW33fGMUzjCmkc3MydFrdEb7BCd0fgNfLciW0kWFwkibJ/bMZKJhkLGYE/kdfDAVvt8nafSUt6McjVwFvU8i8uLGaOmzpL8Vxm6LSItQKEhMBekHwxi6MWmXw1hxgASjh8DUZrq8AXrBDzFWYQwhmIMNy2k4n6QIaYw0IMUCKgXfnwakL5YdRVtez
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,61 +111,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the new vm.panic_on_unrecoverable_memory_failure sysctl in the
-admin guide, following the same format as panic_on_unrecovered_nmi.
+On Sun, Mar 29, 2026 at 05:27:13PM +0800, Chunyu Hu wrote:
+> On Fri, Mar 27, 2026 at 03:32:01PM +0300, Mike Rapoport wrote:
+> > On Tue, Mar 24, 2026 at 09:33:14AM +0800, Chunyu Hu wrote:
+> > > Add two more checks for buflen and numwritten. The buflen should be at
+> > > least one, otherwise the 'buflen - 1' could underflow and cause trouble.
+> > > The numwritten should be equal to 'buflen - 1'. The test will exit if
+> > > any of these conditions aren't met.
+> > > 
+> > > Additionally, add more print information when a write failure occurs or
+> > > a truncated write happens, providing clearer diagnostics.
+> > > 
+> > > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> > > ---
+> > > Changes in v6:
+> > >   - save/restore errno before and after the close(), so the log could show
+> > >     the correct error info on failure. Suggested by AI.
+> > > Chagnes in v5:
+> > >   - new patch for making improve on write_file. Add more safety checks and
+> > >     diagnostics info in log
+> > > ---
+> > >  tools/testing/selftests/mm/vm_util.c | 12 ++++++++++--
+> > >  1 file changed, 10 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> > > index ad96d19d1b85..572ccb99de8e 100644
+> > > --- a/tools/testing/selftests/mm/vm_util.c
+> > > +++ b/tools/testing/selftests/mm/vm_util.c
+> > > @@ -767,15 +767,23 @@ int unpoison_memory(unsigned long pfn)
+> > >  
+> > >  void write_file(const char *path, const char *buf, size_t buflen)
+> > >  {
+> > > -	int fd;
+> > > +	int fd, saved_errno;
+> > >  	ssize_t numwritten;
+> > > +	if (buflen < 1)
+> > > +		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
+> > >  
+> > >  	fd = open(path, O_WRONLY);
+> > >  	if (fd == -1)
+> > >  		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+> > 
+> > We have ksft_exit_fail_perror(), fits great here
+> 
+> the ksft_exit_fail_perror() don't accept the fmt string, it only accept
+> a single string as parameter.
+> 
+> ```
+> static inline __noreturn void ksft_exit_fail_perror(const char *msg)
+> 
+> ```
+> 
+> But we can change it also support va_list arg like 
+> ksft_exit_fail_msg(msg, ...) does:
+> 
+> static inline __noreturn void ksft_exit_fail_perror(msg, ...)
+> 
+> I can have a try in next version.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- Documentation/admin-guide/sysctl/vm.rst | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Tried in v7.
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 97e12359775c..a811f503bca6 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -67,6 +67,7 @@ Currently, these files are in /proc/sys/vm:
- - page-cluster
- - page_lock_unfairness
- - panic_on_oom
-+- panic_on_unrecoverable_memory_failure
- - percpu_pagelist_high_fraction
- - stat_interval
- - stat_refresh
-@@ -925,6 +926,32 @@ panic_on_oom=2+kdump gives you very strong tool to investigate
- why oom happens. You can get snapshot.
- 
- 
-+panic_on_unrecoverable_memory_failure
-+======================================
-+
-+When a hardware memory error (e.g. multi-bit ECC) hits an in-use kernel
-+page that cannot be recovered by the memory failure handler, the default
-+behaviour is to ignore the error and continue operation.  This is
-+dangerous because the corrupted data remains accessible to the kernel,
-+risking silent data corruption or a delayed crash when the poisoned
-+memory is next accessed.
-+
-+Pages that reach this path include slab objects (dentry cache, inode
-+cache, etc.), page tables, kernel stacks, and other kernel allocations
-+that lack the reverse mapping needed to isolate all references.
-+
-+For many environments it is preferable to panic immediately with a clean
-+crash dump that captures the original error context, rather than to
-+continue and face a random crash later whose cause is difficult to
-+diagnose.
-+
-+= =====================================================================
-+0 Try to continue operation (default).
-+1 Panic immediately.  If the ``panic`` sysctl is also non-zero then the
-+  machine will be rebooted.
-+= =====================================================================
-+
-+
- percpu_pagelist_high_fraction
- =============================
- 
+In v7, I tried to change ksft_exit_fail_perror to support va_list args,
+and I used vasrpintf() to print the message to the buf and then pass it
+to ksft_exit_fail_msg(). But it requires _GNU_SOURCE can cause a build
+issue in mm-unstable tree from the kernel test robot report. 
 
--- 
-2.52.0
+The vasprintf, the static buf[] (will trucate long message), or make
+a copy of body of the ksft_exit_fail_msg and append a perror string,
+none of these ways is clean, using ksft_exit_fail_msg may be still
+a better way.
+
+What do you think, Mike?
+
+> 
+> > 
+> > >  
+> > >  	numwritten = write(fd, buf, buflen - 1);
+> > > +	saved_errno = errno;
+> > >  	close(fd);
+> > > +	errno = saved_errno;
+> > >  	if (numwritten < 1)
+> > > -		ksft_exit_fail_msg("Write failed\n");
+> > > +		ksft_exit_fail_msg("%s write(%s) failed: %s\n", path, buf,
+> > > +				strerror(errno));
+> > 
+> > and here.
+> 
+> Same answer with above coment.
+> 
+> > 
+> > > +	if (numwritten != buflen - 1)
+> > > +		ksft_exit_fail_msg("%s write(%s) is truncated, expected %zu bytes, got %zd bytes\n",
+> > > +				path, buf, buflen - 1, numwritten);
+> > >  }
+> > > -- 
+> > > 2.53.0
+> > > 
+> > 
+> > -- 
+> > Sincerely yours,
+> > Mike.
+> > 
+> 
 
 
