@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A7C10F92FD
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:29:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD30710F92FF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 932436B0092; Tue, 31 Mar 2026 16:29:10 -0400 (EDT)
+	id D65A76B0092; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9099D6B0095; Tue, 31 Mar 2026 16:29:10 -0400 (EDT)
+	id D15E06B0095; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81F356B0096; Tue, 31 Mar 2026 16:29:10 -0400 (EDT)
+	id C04976B0096; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA586B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:29:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CBE688B39F
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:29:09 +0000 (UTC)
-X-FDA: 84607497618.27.8E4B54E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB7936B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 515BA1A0410
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:42:49 +0000 (UTC)
+X-FDA: 84607532058.29.B10241D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CCC83140007
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:29:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQ6oC3vz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9A6144000C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:42:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eba21Pvm;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774988948;
+	s=arc-20220608; t=1774989767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1KTkQBINa5saDvWdadzna3hOOOA8qIAlvXqHIMEyXKM=;
-	b=WUBjLZmoXb6U3x7bRpKbTBDRe+sdTIrjtoHHH+hV3NdVTfsOWAp0vz796Y8nKM502vqi+D
-	rt95lQ5Tv+7sqDJAwloZ7nKmR4ial8DHevZ7NJGtbbeq6OxCtOfRutFAoi9vjHDRZnMqgr
-	cZbtiEIDeaj113EJmcOA4vBX2axjGX0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774988948; a=rsa-sha256;
+	bh=KetaSXAFzmNw2ScxNIo3ttVtjT2Evc3UVkvUnmSfR/Y=;
+	b=gmmGNkz3yVfaD/EWnHvIY0YDmV+rwoXIOtIxn32fuJg4ae6NAZr+om4vUpMNX/h+BoH99g
+	RKIG32h7bbgkhhBcqnU3hOSFFoyzd8PSNuAVyJsGoC1p6Ruzzxookzf3/65tp8TqzAYX3k
+	Smx8iBv98smfwxutLV/wUG1X2tfabkk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774989767; a=rsa-sha256;
 	cv=none;
-	b=0s4uZBiOxlOXfQaAxdY33tnI8sA28G7DfRkfVxIz++IDygZ/1jGULm/uaXTABivFLJA6+s
-	7bdpZXIiaEu8ny5bvk3u4zT+d/VwoatTMaVGMCRwiVE6GsIsS7cg+Y15S/NhtOplbw1eVw
-	y8YZvnJ0Fpi4llrLZQ7aCH8sd34U/KU=
+	b=kfQ4ewHJfe5ckq7QFuGHg33s+Qp8higec3uPXwjhOGhXXFedPa3NVmWf6IW6jppJv5P3m5
+	o/WVYrOxCAyQx13pacsKa5MpSbYZdyKiZdP+lHudrJ6dxV0gWPi0ljynRVDmekPsrYSvNs
+	t8zhtop3vuoorbIU8ZSpM5Ofi7SnulU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQ6oC3vz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eba21Pvm;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99AF041AD0;
-	Tue, 31 Mar 2026 20:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59882C19423;
-	Tue, 31 Mar 2026 20:29:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A156944318;
+	Tue, 31 Mar 2026 20:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46024C2BCB0;
+	Tue, 31 Mar 2026 20:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774988946;
-	bh=pKby/ZX2VmMWpNCCDNP2Wy4p5zuyG0QXqTXu3JUWTX4=;
+	s=k20201202; t=1774989766;
+	bh=oB8dpB+SN9yPzGGvndka9yi2F9CpLqgw73xHznRR0bc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vQ6oC3vzb8AdJasj93sjco6igdBg8z9qx/+U8QqY5qEhJkbHvNJNW5ZhzMtnFvs2D
-	 bSvzOEHAiGnHAv8KfsTkz2mg0DxEHjUR1vEPUX2f3zRYFWGXNO3dQX0lgM915mAcPO
-	 sjiGHNtQH/nXUNaPRcg85tli/zb8Iw6I4m80PlZx4VKza8/qCXd/doB6nmENU8/9si
-	 WoGn37PGC0xOJZ3WiDakDZKLmLpsm0FvuNWgx57LmLe4Gm5XKbnp6zBIfCnWEDejMM
-	 HdYreEKZrAH2MZfSDA7f3RRlB82+alfnW2SMkD99zR5hsfUm/ZPAQIA27/CTyBk7Il
-	 2uNTREtBD6hCA==
-Message-ID: <32789381-f860-4b60-a1e1-4c97f6ed08b1@kernel.org>
-Date: Tue, 31 Mar 2026 22:29:01 +0200
+	b=Eba21PvmyJy14oTz6L7Ltue5mqV1wwUxLmuP/Z2Sa3rv+mC7pAlOiiguGcgVDxhxI
+	 hyCRx/Bj4qCDtLiuufrjMmGRCHquV38SGLFbds6tQYOy/rySar0qxnJkjZxlCZW4DM
+	 FfUMq69OgoTywRD4a32eQKX7vaYy7ARfbq2FS1tSg/7yC4yJnMkTX+ioDIeQWZeySe
+	 3UKnPhV3t0zQNRlWM10Z1PfqixOu2Nh7+z2ymB6bP0XcKYNCOSYtSIYlmNyckrqeGd
+	 m2vEjoWhNMORlvWXhrTCI0/jn0CPYOthlKW9C6oeHeiQEf45W0VE5BMTDSQI9EDWh8
+	 Gi6T1cAm9VB6w==
+Message-ID: <17246161-f314-45da-933a-770231ef2a49@kernel.org>
+Date: Tue, 31 Mar 2026 22:42:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/sparse: fix BUILD_BUG_ON check for section map
- alignment
+Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
+ failure path
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Petr Tesarik <ptesarik@suse.com>, linux-mm@kvack.org,
+ Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, muchun.song@linux.dev
-References: <20260331113023.2068075-1-songmuchun@bytedance.com>
+References: <20260331113724.2080833-1-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260331113023.2068075-1-songmuchun@bytedance.com>
+In-Reply-To: <20260331113724.2080833-1-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CCC83140007
-X-Stat-Signature: jfaikfmnutb7dopfxhuzxmw35afikdyx
+X-Rspamd-Server: rspam12
+X-Stat-Signature: srdfssznx6d9mdbjgscjr9ofjzstxmpw
+X-Rspamd-Queue-Id: 9A6144000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774988947-223262
-X-HE-Meta: U2FsdGVkX18cxEAIhzbxPCQnTyNNW+jUc3AGJneVgeO++6ExOy+aHL+nShnxwqUkXLOToqi47A1hlh/UcVOhAyoY4XmRsGSNQObSXrPD3FlYlMKw18h/Q9ayIhBTnkevwaGNz1NgbM3lwl7kumtPwCNZ5JgfdQRzv1B9ODmBx1UDZKUx5vplHGnAl/XB1CSGpDDXyidr4XZATieBQjCaZ1obA4GCNVlf6T3o05XGdbPBk8SN1NOeoJ+et6lxEMeb7eqGBCHbiaKiBC4AiH+BHLIvN+nbBkXim2tA2RQKmyDxxoOze9K0VflutaLGoXNsBAFwajniPU+m3dIiwgzN0PAhvZS2l1btPSKpT09jzOpCQFhoXOgikMXxsxjZZiQOebqzQcvq3yUritfQ9AMjdViUrCf5dxl3HvCgB63RkFx5PPrm8gQdBKZfJyJZqrqo5liEEKUalPqLj2Y5kGmTwgGIMTODMMw72gpwoGZ30p6WMFVo+e23r5h1NvzKxLjUl9DByIoRz1B7wWvlcusqO/8F0H0dN/0k3ZlMZ4zi37Cm/5n7id5iwbPeLFVkJRz1nmYFjELIuIpxn2XQhTNEZFtDqDgepfemVDBhbIGMSyovYNzTyKRJ+0sixpwLj9Ms8sv8BbzRaTmFXpaLphi2xFTpCRzsjwcqPbkMJeCILDUfuTXOorqzqX3BsCFNJkFe8KdpcpbPBNGqFDkqzVgiYHJlvLd4em4rs4LXusn+ThlIewR6DCdiSn5xmw6eG8Jjmg6atWUgYkh5HmH7GhEdqyBJikTtV3V7em0UpsKqbI8yaHUYD/1JKMVfboZWoXbTwxU2BatJtWqJrEPaWrRdmSlAIFAGNqfZJmdhwVUE7afgS8PjHB4t1VeSWqgLrd+vJOcdtGqif5eE+fqYaeG2DgnoRUnZwb5EPoMdjIsCUSQ+tDNe9ic8QMiQ6VdHFoW8l20JpjPeXq1dB+xbq4v
- jRRCg8Kc
- 4TryWWuPuLzGdVMSXJbe8JS7QRJ6cD3wApuaPeqVJoN51EA0lC2kSauyksvpi/NPYyZI6ZRtd5b5oVkhiWL0+pm/afSTG+HONhD+xZlsZrDX8E5krTXR66OvCS2/jI3TrPcul7gkRW/xF9m2+D2FXdww5A0Od7U98p1EKUes7eX8IWtI+Aq9gqLQhMU9yK4gDT8tv4rZ8TLzigufTaFESPqhYnfbdEhhR8b7Y6enX7Gf907IkJgZnWnUcOjc9LWpEYMe+uT/ZlLaZO4jMG4axDUZ755TktMfvqVGOPzKNeurqv41IvuLfXSM3HsHwjmGarhB69tBPTOUy5G0=
+X-HE-Tag: 1774989767-829515
+X-HE-Meta: U2FsdGVkX1+EgcWlQOor+iwzrr0gkre/yirBjEjtmEskTnbWMriAL01CAotq5vnZL7LgUJatGUmCflzwm+xXVuNdifS+apx6MPzPfrZaV+T0loMh5fVl1QZsdKASAVNGobTtgKI5nigbRbFPubGDJWrcPszKiMa2HGdj6ls0O6THEABLgmvz0t9hO3LeczHmmlXgp+c5PIouCTJtyHJv0RvzH8S344VZtvSwLKCssVfPoKGwP0+5NYDeVphmfZaIQ/tHm8KW+OzfRvqHtuSPi2yhtjfwjTiZtw7VB0XP72C1xnUvPTqU3iS4x9y2fIBbmC4Cp7xHOd6MHeGZvnyx8jtczb6IqkTpF94fUCbtUKi1srQCJKT756Czx7plC9suw3BnaREixIYoSifSyhr09MROuqEMvZwFeK3n97CprtvHtfiqH7wQEn6lGdOdgwJpJUsJUUDifBN/1Of90HxyGo5vGUHRX+zNZsqjltEWeHQGdwyqCbBmgll57BIs79DeFBWlCCv94xDseUuU5RI/Xaj3FVV2mGnDXNBymahMwKuoCFwINmQ5je7wYkh5yA+NMDRbnkPLhZPKHjvjC61Vt7T3AFbnjrJxIXWAgIfU73zOfMtK0CiASowdtNbSAJXDVH9hYAOj32zW4giezia8JgiE0q8VjGXmw/IkNsNtNENJnc9xjFVDvaCItrkblMOJWUow1eZDDW4Pg4vtI8fy8Xd3lbO2AZKfIux86jfnUgzJZhCazFKGM99iARUvHEMGz4Q03LHiy3HoQCwOBVIKdHxgB9LzXdCwfrvOAc+CiRtsjFjUTJ/HDbAMDTmfUD7/GW4nFSnAvlnO9BglC8Oj6lD1w1oLmNBhlQLsGAIKZ81vohiSPJaC6IwhOJpyQm7Jtbmf45kGSojJtfNg+5PPBFsZskj25PLvZjM6KTdbiB21iRx5T3BbzRVMq3qPQEI/3pUjOdlOIcsUiQvJwjx
+ Y5wTWERu
+ VZJ+Lca6bXaWqfZk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,87 +143,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 13:30, Muchun Song wrote:
-> The comment in mmzone.h states that the alignment requirement
-> is the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT. However, the
-> pointer arithmetic (mem_map - section_nr_to_pfn()) results in
-> a byte offset scaled by sizeof(struct page). Thus, the actual
-> alignment provided by the second term is PFN_SECTION_SHIFT +
-> __ffs(sizeof(struct page)).
+On 3/31/26 13:37, Muchun Song wrote:
+> sparse_init_nid() is careful to leave alone every section whose vmemmap
+> has already been set up by sparse_vmemmap_init_nid_early(); it only
+> clears section_mem_map for the rest:
 > 
-> Update the compile-time check and the mmzone.h comment to
-> accurately reflect this mathematically guaranteed alignment by
-> taking the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT +
-> __ffs(sizeof(struct page)). This avoids the issue of the check
-> being overly restrictive on architectures like powerpc where
-> PFN_SECTION_SHIFT alone is very small (e.g., 6).
+>         if (!preinited_vmemmap_section(ms))
+>                 ms->section_mem_map = 0;
 > 
-> Also, remove the exhaustive per-architecture bit-width list from the
-> comment; such details risk falling out of date over time and may
-> inadvertently be left un-updated, while the existing BUILD_BUG_ON
-> provides sufficient compile-time verification of the constraint.
+> A leftover line after that conditional block
 > 
-> No runtime impact so far: SECTION_MAP_LAST_BIT happens to fit within
-> the smaller limit on all existing architectures.
+>         ms->section_mem_map = 0;
 > 
-> Fixes: def9b71ee651 ("include/linux/mmzone.h: fix explanation of lower bits in the SPARSEMEM mem_map pointer")
+> was supposed to be deleted but was missed in the failure path, causing the
+> field to be overwritten for all sections when memory allocation fails,
+> effectively destroying the pre-initialization check.
+> 
+> Drop the stray assignment so that preinited sections retain their
+> already valid state.
+> 
+> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->  include/linux/mmzone.h | 24 +++++++++---------------
->  mm/sparse.c            |  3 ++-
->  2 files changed, 11 insertions(+), 16 deletions(-)
+>  mm/sparse.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 7bd0134c241c..584fa598ad75 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2073,21 +2073,15 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
->  extern size_t mem_section_usage_size(void);
->  
->  /*
-> - * We use the lower bits of the mem_map pointer to store
-> - * a little bit of information.  The pointer is calculated
-> - * as mem_map - section_nr_to_pfn(pnum).  The result is
-> - * aligned to the minimum alignment of the two values:
-> - *   1. All mem_map arrays are page-aligned.
-> - *   2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT
-> - *      lowest bits.  PFN_SECTION_SHIFT is arch-specific
-> - *      (equal SECTION_SIZE_BITS - PAGE_SHIFT), and the
-> - *      worst combination is powerpc with 256k pages,
-> - *      which results in PFN_SECTION_SHIFT equal 6.
-> - * To sum it up, at least 6 bits are available on all architectures.
-> - * However, we can exceed 6 bits on some other architectures except
-> - * powerpc (e.g. 15 bits are available on x86_64, 13 bits are available
-> - * with the worst case of 64K pages on arm64) if we make sure the
-> - * exceeded bit is not applicable to powerpc.
-> + * We use the lower bits of the mem_map pointer to store a little bit of
-> + * information. The pointer is calculated as mem_map - section_nr_to_pfn().
-> + * The result is aligned to the minimum alignment of the two values:
-> + *
-> + * 1. All mem_map arrays are page-aligned.
-> + * 2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT lowest bits. Because
-> + *    it is subtracted from a struct page pointer, the offset is scaled by
-> + *    sizeof(struct page). This provides an alignment of PFN_SECTION_SHIFT +
-> + *    __ffs(sizeof(struct page)).
->   */
->  enum {
->  	SECTION_MARKED_PRESENT_BIT,
 > diff --git a/mm/sparse.c b/mm/sparse.c
-> index dfabe554adf8..c2eb36bfb86d 100644
+> index c2eb36bfb86d..3a14b733bf71 100644
 > --- a/mm/sparse.c
 > +++ b/mm/sparse.c
-> @@ -269,7 +269,8 @@ static unsigned long sparse_encode_mem_map(struct page *mem_map, unsigned long p
->  {
->  	unsigned long coded_mem_map =
->  		(unsigned long)(mem_map - (section_nr_to_pfn(pnum)));
-> -	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
-> +	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > min(PFN_SECTION_SHIFT + __ffs(sizeof(struct page)),
-> +						PAGE_SHIFT));
+> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+>  		ms = __nr_to_section(pnum);
+>  		if (!preinited_vmemmap_section(ms))
+>  			ms->section_mem_map = 0;
+> -		ms->section_mem_map = 0;
 
-If that would trigger, wouldn't the memmap of a memory section be
-smaller than a single page?
 
-Is this really something we should be concerned about? :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+I have some cleanup patches lying around that cleanup that code heavily.
+I think I get rid of this questionable "failed to allocate" case entirely.
 
 -- 
 Cheers,
