@@ -4,92 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B26BFF60D9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0199FF60DC
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EDBD6B008C; Tue, 31 Mar 2026 03:42:06 -0400 (EDT)
+	id 10E1D6B008C; Tue, 31 Mar 2026 03:43:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C4C46B0098; Tue, 31 Mar 2026 03:42:06 -0400 (EDT)
+	id 0E4456B0098; Tue, 31 Mar 2026 03:43:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5023B6B0099; Tue, 31 Mar 2026 03:42:06 -0400 (EDT)
+	id 021906B0099; Tue, 31 Mar 2026 03:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DAE96B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:42:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEB465C6C9
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:42:05 +0000 (UTC)
-X-FDA: 84605564610.22.7DD82A6
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 343C1100008
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:42:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of 3y3rLaQkbAEQy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3y3rLaQkbAEQy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942924; a=rsa-sha256;
-	cv=none;
-	b=DAMkm8taASFCQ0l2Fc8RdplKpnSWdI0+ov2VY40BoUduZhGkZBJ8+jOUXjUwwPD51i63d2
-	E3jF8v20xj99cPH0Pt4ADDnYzY/pbxGb1LFPB6GlHNad3WEpFSrgaSTVoupnmJVt7lYlsY
-	8Eb/LdymoFWA1x2dmlU052qqrorepv4=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E42456B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:43:10 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B140A13C0E8
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:43:10 +0000 (UTC)
+X-FDA: 84605567340.30.C55FDD4
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DDC09180003
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:43:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=FOu7wqdx;
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774942924;
+	s=arc-20220608; t=1774942989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=kW/SphJaHT/+6fQIuBd3Wr/1eFRaQ4h0O20BveCN4m4=;
-	b=wUN24uAWIAPE3s9riEFsPFbusx6L+vPIrLxQCzBO3Pq4qiE0/5UrBbnygpG7tXvyF2QrhT
-	lYeIgvL8FFdj/ul61itASUsnKqokQZQslH7Yjk4rZEw3gzUlhsMicKKKrwKwlqFrJtFA7K
-	ELdRJCm4YEGmi9aAoKnbi4RVBqBsaJ4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=H4zrNQ1+hM10X372wm0lwqlhzeSkOK5YKY8PR2eVC/w=;
+	b=JoH9fKlFUDA8oXhR/kGg0uegHQmVqkqCZUtsEkH//ukBNTzy/MXDbnPIEn0bWzuSXSdlxN
+	mwZZVmAKpq8Zi6wxtsWhdJ169G5hZBwRWvGQMy7Nzd3q47olVhRU/6XiQOEyXBwhAvty/Q
+	R6tI1L/YVGAfvGBcYWnaU7FmqvLnkzE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of 3y3rLaQkbAEQy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3y3rLaQkbAEQy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-67deade993dso20437912eaf.3
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:42:03 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=FOu7wqdx;
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942989; a=rsa-sha256;
+	cv=none;
+	b=b0rNHytjd1Na7ZbreaOE/l7PN1d3cVXrpOhryMt9wVAFVaUhOjsOcKeMkhytfspZYeUF00
+	T3oSulWJcxBXyPQqzB8pifKaK7cB1HZ4tOuxwHgcj8ylMWf8ffmXiohhyWc5mwz5ZQcVR/
+	xdyyfU4YzALYUv00ilIB83wW4UrFSCo=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-827270d50d4so4809070b3a.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1774942988; x=1775547788; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H4zrNQ1+hM10X372wm0lwqlhzeSkOK5YKY8PR2eVC/w=;
+        b=FOu7wqdx463RujJ+QP57NLnlgjLd7/Z5kMCicyqwUPkrHIxB3pLqWmwt07K8Zk9z67
+         2VO49BgYIZXrFsALrCpI6THh88ytpJC/0GLzURzqe27x2RwvFV74L1psc/SnuM0RDrWs
+         m7kTn/E2ssAQsaPwuS+b7BFDlYuMQz8cgBuG8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774942923; x=1775547723;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kW/SphJaHT/+6fQIuBd3Wr/1eFRaQ4h0O20BveCN4m4=;
-        b=LUV9dinvUMeQHhWKgya+5+arjfgItId38JrGkzl6nPZBviF001pAPrqov3zIY732HV
-         EZMb5YYFChg4+myBInWzD5RD1NJLT/qeMMngBJTjSA+F7q2Xr99ElWQRsphwl7pGc8sg
-         QSfidfKZY6LJKil7mepX8f6UQI2h4AgCpbaXt0je8Qab/uxWAqQXz4EljS1norLllVqZ
-         4IQNjhGm3pAphrt5G4XC03I1n8E1IwjA1MTvfw8iw0Hm7UJ2S43NxzyMXXoGB9lebP1n
-         GipK+hr11CRioqjiCBkytA9u6eW0OANo25taS0NYBq7kXSBMdhyU+OE7n6GgdQOUaE9n
-         0cOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSMdrVhZmbzxwIhU4HCwYo0YQK9uyD2n4SvE1nSTdYO+zL5Wt5VctivHXe7RXbXHZPQUj9/bA+zQ==@kvack.org
-X-Gm-Message-State: AOJu0Yye+wSrss5T8KAdoICnN+ljTOiFMm1ZeWWx5qsA6Y88adf/ruKW
-	N4T2b/M5LaCEG9sPwObIyiQwLyJAJqti7fQFaryy4N/KCeIpdb+tKa0wpNwutUGbaLjFQ3OGHRA
-	rmDtzez4KV3uM3J7+itW0y6OBw9Rj+5oKkOL+s+J45rihUUx5auiP4Bxvmic=
+        d=1e100.net; s=20251104; t=1774942988; x=1775547788;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H4zrNQ1+hM10X372wm0lwqlhzeSkOK5YKY8PR2eVC/w=;
+        b=qLZusu/cxipmpvmNZKJ7YRcxjFp3heUTS4DcsWOwFXONVWw2YKMfiW2WsLnjQInQeO
+         91Y7AYkVZRymZtQGuKU41MtAPmdB6Nj3ozc8BWlaTlESSGcx6LZ5g8PkltVI57z1zftB
+         uUbvcLMmuSRxNCwoK4z+AG+qLnNBzDpci5MtVqvdqPUyxQmvzqZ8L1GkwEZyr6RH0Vue
+         Ux2LEkKsv/dgbakvYB2y4krAHgCa/I4oUD61Ez40n3Ebr/oFbUCaDqG/Jkh6vkHdx6Hh
+         H8wJ2St3Z4SZ5ulML+WJCLwrVD2v/zCb7ZBWEwRMA56gDulBErGF0lLsDMYxnTHTdMyC
+         4wAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUa54C/fv9F6uaZgg2apUuSVQhFrilk/badyistA0XOg7jwYhSPxQo15E7YCwNuSBSRoJS5j8DQFA==@kvack.org
+X-Gm-Message-State: AOJu0YxPVs+e6b6YvV27WkQqStt6UcuQ8W434Dfie1m/H8uh2EQ/z6fK
+	8dqbBqM91opZ+TXoV7AtFMlqo+JhaRMWKmsjk8f+f0STMh4J1EhB+y0i9QK7Jrz40Q==
+X-Gm-Gg: ATEYQzxIN0j3X5T+HH7hsinYWIdbTAl1YJJ3FpjgHSvt+s23Z7EsQ+ZedwuRPFDQKOA
+	lnYyXQA/jJflGUIDM9LZBSXMqV6XnnNT8brHF2q5pcOdB1uwSfCP94rLnEgYK/LVn7L4W67Fu0M
+	3/f78hMZxaRYNrJ/Vmv5T2wDlXwYeGny1B3wtEM1kQx1OJdVYlTkDy8Nz+56qCujWd38Gz2nNNE
+	Zn8YbHWO0OxC2vp+qIAhsITgac58C3LSDoI/ew6f1GTZVOYOmLZCS1d8UMuJZEZ/0DiAfMXB7C7
+	WFHymmE1HMEAoMtEBKsD7oGkXNHwlIdSBp6ghlTdjGA//1xVl0uCXsvn5f1MbMor0ezl9NXVq5B
+	jdclOw79cVr7LheV3pgSakfE0kVzvPHj1iNsiwWWItnAD/nwBKLB2TuFnd1FfcGUxl4I4gDg7wf
+	kSaJq5oFSqqjNyYlBWHZJ9Z9qRcriH0ZnD9/8Fk0lUA+w6ilMxTP5Mxz+bt21HVh0AWY23m1izy
+	Rx4cOgNC212Bw==
+X-Received: by 2002:a05:6a00:3486:b0:829:7d31:dd9a with SMTP id d2e1a72fcca58-82c96002073mr14909919b3a.51.1774942987629;
+        Tue, 31 Mar 2026 00:43:07 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca846e08dsm9447759b3a.24.2026.03.31.00.43.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 00:43:06 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Avinesh Kumar <avinesh.kumar@suse.com>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v3] zram: do not forget to endio for partial discard requests
+Date: Tue, 31 Mar 2026 16:42:44 +0900
+Message-ID: <20260331074255.777019-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:629:b0:67e:15c2:9d85 with SMTP id
- 006d021491bc7-67e186330f1mr8627582eaf.21.1774942923216; Tue, 31 Mar 2026
- 00:42:03 -0700 (PDT)
-Date: Tue, 31 Mar 2026 00:42:03 -0700
-In-Reply-To: <20260330175824.2777270-1-urezki@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69cb7acb.050a0220.183828.0025.GAE@google.com>
-Subject: [syzbot ci] Re: mm/vmalloc: Use dedicated unbound workqueue for vmap purge/drain
-From: syzbot ci <syzbot+ci3c65cfe4c9a15aea@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bhe@redhat.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lirongqing@baidu.com, urezki@gmail.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 343C1100008
-X-Stat-Signature: zzdx3c6tq1789cm1zy4hbxoqejmrwkuc
-X-HE-Tag: 1774942923-812608
-X-HE-Meta: U2FsdGVkX18pzc1mf+Hyh5AACwTxTtf/zV0aXItqvBXJ6wlW6+imKeJMPmrVTv++1gs3stMw0i6wFLblfZnHDuzOfzlbZLJV56VjIOYGweHEAbJtd+OOrWm90P1eVUUvMt296igGS1N3TR16paxOeBndUqpG9Ha5RorIQVgRiXwzuyIVT4d0q4iqQWX1gnp+fQi4qKb2qiXc2x4sxq0Wly33kCIb1y86uxE3ZQk6V4jo0YO0apPDbYHJixav5QfY+XE9BfqaX0qEJ2I+NwIUZx+HlrDDjrD1KvEWIONMmEkk0eb1y1B66C/csfbat1nzsXiV++nnDxDMUYItVcJhUfrCaYXrxfi7V1X9AJMJr5qwr0ppuRQFGcy3ze2Fb8N/vQiQD6cVMJQm6UP5VK0ifeSN+1N0gNTfPKjH+bmLz5SY3ZfXj5F2rt7eQelMvjXyhPE8aKWFbswdE0cEX88OwgCdIZSlICsA8VydHb5gAaZfdwgDJJvBCm0/Y3T8LzM/Xqqa68ymR8o0OE8KUAeWKR56ybLH3Pz2p23BhShe1HGMkxJWZkq73tnVCHsrKuXMELGi67TFH72XoEt6KctTXsN9xqdMH0lZa+/BAdVQHJsuxmyUJHQPOOzX7I2WU+iZag4TAqIuaDQU7vNKvTeLntWl1zlMKMjBZQZEpqCinhBWpxUJ59e1ZK/txYwLIExPcG/whS5Ago551lfWOHpdM9qLlYmPv7tcDhI1ndCxs1sC/Tx7Gw3GyyCkC0xWhP1zqDhsjNntmmXNFZeDtrrE7Pup8S8YBCNrOWuy2t7I1BRmrZEfHoyuICZOuyr8DO3Y9lsMzjIEjJSJ0ajIX3jcahVyqy0MIFasT+gTkmj1pV1rolf5DVUYuRj+F5nUDTMRbIlyhXwEz1+PKjBeTSvyfQPjQnxFJZ44dowh9GyWzvhPuT33DIAvwbsMO2lfd3oYVxQsA3H83uSTcq1a485
- uyNgH0KK
- Z7Jt+8tOLdXgNxjt4D20DG9R+BcK4igUSoP3leMwUX8u0TrFgQmR8RWnbz0ZgoTeAbhaa4cQhOy97zguo5aplH7iGdZJoYiM6Yi26s49+LRn2Uh6GhHlOJmgWC/13QcvpOMzxSAePrAnJCOFMcsix+AtR9SqozaT55fBYWj8yRMfktFMCezjIkVwPOjn+yR/SdfjO6LOHXaOsIpXM22IRLCvIFIr3uO3AlxA0de0iIAG3sUJxKY8egiRGlsNEAMkZCkPbanhB/0g9G7dn3MsSjpUpK2G9U3hwzgBOWFroIRbejZ7fK09rD56bHMELcnHwkca4hcl08vuTck8/E5bfi691HFbh3994R81kSUNid1npt0Fbo6/XkSsdvKSxQF69N97HinVMSrjxTucTgEsej3Nn4P5yxlUWEl+uwUIQpCAZiujbFxTCdYqyNPMrHzFGr3a0IgdaQjNU5Ov4ya9wKfZR6F0cjwsffO0QfuUgg5WhvzgF4pyGHP1+0YqwePHq6eRaIfkAg9+sj0jUVjxy8w/CmZ9Toc77W/0nZEMJTVx+BeA6Ta3HoQhirP/Ui/s2wI+krPh064CUR8kocHSqnaDVnVJG6N3jWasTNfttxwrivULQ7+cuJKcreKIjbkamHdEk9IS8PBlU7mDLTs4O5Wx/gK7ojZXntkrXqzPi/AAJQ2f4CGc59VVWzjoH+hArihUEdyuPgokq+t1bHmwqcaYehQdH3Fvj6psDs06jDS6yW3Z6FPjjb7lLt4g5tysI1FqLMX40k5k4uZnDbnQt9Nf3B8p1HcFqZ6nEJ9CXlevcBKkjsGu/2qhpRE04J1U/Kx6viSgc7IYk8kBax1uY4WYnSPbGJ4GeHkUgBGi4MhBgbcp238XakUtRxfvjWgdnFaf2WB3i1C8lPOmMnZi7MGfRAzMG01wH/No61KgZDv3MXVfmVxLRw3FFRRCD+7ENbGpjxhKgY1by/2n9AE9wilevXiBE
- V9Dd3LG+
- BTmjjyELd9g8+XOblPSf980CTvdzc1mJ
+X-Rspamd-Queue-Id: DDC09180003
+X-Stat-Signature: y93s4rzmzpuwxx5dprf6cw1kxpsdmhmf
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774942988-316439
+X-HE-Meta: U2FsdGVkX1875VE/zxdCWCK+3gvdXqKp/kxFPtBsoS73irQi5EQeQs7UWhe3sUq860bpkBcpA72g/iSt/Wcb1JjSUPfuTns0l0bkyvo9lUaFT89pxCXRoxDWfkSrtFb+CkXpyGMVeKIjofxQHlKxFjGDIp9OeH12f27ib7F2Un6lvB5Cx2/PC4Yo49e8NJf7/vj/zfYsv6Q5L/SMC9F9D+45Y/ygIPzWzNKNoSDBCC91jd/t06DjfUFammWYHkn2y2M1f+ZtG/qpvXuvMH1ZnuwvsqvLh6dP6eVi860w+b1pVP4UWNOBGAVZr+4dmoaWJbEtzxNvrzAxrI7Ldg5RfGdd2QgGw+BgLmbhCS4rbPxT1fG+5YqjOI7QSwOnh2LhpxqIhV/tWWJMy3edQLLIkJeB+mdgXDQIU13uEKLUrjVkfh2lsibg5pUgDcwEhocMeNLCATk1wh0SYUIL/1XLmHB78o/ILOrgECw8EpTakWfeJhN+iZh5O+x9AdR0W/eKztfpVp6LMrYL0AomGKSRY0YFnYdxe7PXIoM6IF2qNwcseFDOp0T3kEZClXNbL5iOfOuZ5XPZFfUfHvLN9HTnt9Czdopmdb5kOTv2Oi9UgS87aOiaTiNhC+tpVo+EsBXir0IvRIiq00nBKrACyETOe/qKRU78mrUpJs8R1VmONNv4q363kMQSZlmQGIt/d7ZdNSe4yDfhNeUQhJdXEm8be47ZfuRm5WUrk5rD7wqCgcXCS8MAg4IxqIW5gCO5FTT/E8qLlzDvtbBwOV6DM3obwH0pZ0//GQkm7clXAy8+GgUVlRQtaphuZXnWrvpjxEwtXjcDIGZ8XFoiRBL0fzkRwAC9/A1LtisAv7B0uqYUSPmsVlGnXOHU1W6uxlsRGou6w5I/puJhEhk5lTcH1bhl4q+AS8TV2bJywc0SYj4v3b2U7P1DBcw4ueo4HWB1qfM/8gwsXpATNZg+yLNjT1m
+ S8FQD2en
+ bNwM7jfnTC3wdOfSHsCThecHjhXUENR96scUWee4r/T+HnQsswZIL/oX6XsQEOKqBPTe/kW+FsSHSrEGCWB1cUiLD4tg5F8bi6heUew7ESR4GNkUPCpgynSMYHk2iWVbbX9S0/TadRoCUDRerdyO6l4ITwFa7/9Cc4FrEX+R+AEsmJ9Zsb/mSSRwGXMKRpIyypSqFjFnCea05XYMRvMCGmjrfA552O+LKwqC+SHU4Kj9LGbkjUa4Y+nrxhqKcQzog92iXdWPb4JD0YNNWJUSkOEU9RbNshgFtIaoZSRDsJSzBu3TYtouXEFrnIePmQMVBJErho0mwueOyviIPM2S4BivnWZakqvPbC182uWiFTp3iUusNeDq2yHXc+DTys2LmqcPN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,103 +118,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+As reported by Qu Wenruo, the following
 
-[v2] mm/vmalloc: Use dedicated unbound workqueue for vmap purge/drain
-https://lore.kernel.org/all/20260330175824.2777270-1-urezki@gmail.com
-* [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap purge/drain
+ getconf PAGESIZE
+ 65536
+ blkdiscard -p 4k /dev/zram0
 
-and found the following issue:
-possible deadlock in touch_wq_lockdep_map
+takes literally forever to complete.  zram doesn't support
+partial discards and just returns immediately w/o doing any
+discard work in such cases.  The problem is that we forget
+to endio on our way out, so blkdiscard sleeps forever in
+submit_bio_wait().  Fix this by jumping to end_bio label,
+which does bio_endio().
 
-Full report is available here:
-https://ci.syzbot.org/series/4a8f638e-3a3f-4346-8189-2b5a0eb9ceaf
-
-***
-
-possible deadlock in touch_wq_lockdep_map
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      af42d6d3650b95295a3f08fc35189998bc26c2e1
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/d94b1f61-6a69-4415-b385-b3c99018e8c2/config
-syz repro: https://ci.syzbot.org/findings/01e4d436-e924-4ce6-8902-78c6000bf34e/syz_repro
-
-============================================
-WARNING: possible recursive locking detected
-syzkaller #0 Not tainted
---------------------------------------------
-kworker/u9:1/33 is trying to acquire lock:
-ffff88810168e948 ((wq_completion)vmap_drain){+.+.}-{0:0}, at: touch_wq_lockdep_map+0xb5/0x180 kernel/workqueue.c:3991
-
-but task is already holding lock:
-ffff88810168e948 ((wq_completion)vmap_drain){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3251 [inline]
-ffff88810168e948 ((wq_completion)vmap_drain){+.+.}-{0:0}, at: process_scheduled_works+0xa52/0x18c0 kernel/workqueue.c:3359
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock((wq_completion)vmap_drain);
-  lock((wq_completion)vmap_drain);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by kworker/u9:1/33:
- #0: ffff88810168e948 ((wq_completion)vmap_drain){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3251 [inline]
- #0: ffff88810168e948 ((wq_completion)vmap_drain){+.+.}-{0:0}, at: process_scheduled_works+0xa52/0x18c0 kernel/workqueue.c:3359
- #1: ffffc90000a97c40 (drain_vmap_work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3252 [inline]
- #1: ffffc90000a97c40 (drain_vmap_work){+.+.}-{0:0}, at: process_scheduled_works+0xa8d/0x18c0 kernel/workqueue.c:3359
- #2: ffffffff8e87ed68 (vmap_purge_lock){+.+.}-{4:4}, at: drain_vmap_area_work+0x17/0x40 mm/vmalloc.c:2443
- #3: ffffffff8e75e5e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:312 [inline]
- #3: ffffffff8e75e5e0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:850 [inline]
- #3: ffffffff8e75e5e0 (rcu_read_lock){....}-{1:3}, at: start_flush_work kernel/workqueue.c:4234 [inline]
- #3: ffffffff8e75e5e0 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x100/0xc50 kernel/workqueue.c:4292
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 33 Comm: kworker/u9:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: vmap_drain drain_vmap_area_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
- check_deadlock kernel/locking/lockdep.c:3093 [inline]
- validate_chain kernel/locking/lockdep.c:3895 [inline]
- __lock_acquire+0x253f/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0xf0/0x2e0 kernel/locking/lockdep.c:5868
- touch_wq_lockdep_map+0xcb/0x180 kernel/workqueue.c:3991
- start_flush_work kernel/workqueue.c:4272 [inline]
- __flush_work+0x87c/0xc50 kernel/workqueue.c:4292
- __purge_vmap_area_lazy+0x7db/0xab0 mm/vmalloc.c:2419
- drain_vmap_area_work+0x27/0x40 mm/vmalloc.c:2444
- process_one_work kernel/workqueue.c:3276 [inline]
- process_scheduled_works+0xb6e/0x18c0 kernel/workqueue.c:3359
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3440
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Fixes: 0120dd6e4e202 ("zram: make zram_bio_discard more self-contained")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Qu Wenruo <wqu@suse.com>
+Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+Test-by: Qu Wenruo <wqu@suse.com>
+Cc: Avinesh Kumar <avinesh.kumar@suse.com>
+Cc: Christoph Hellwig <hch@lst.de>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+v2->v3:
+- updated commit message and added Avinesh Kumar
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+ drivers/block/zram/zram_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index dcea703a6766..aca67d7144e4 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2684,7 +2684,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 	 */
+ 	if (offset) {
+ 		if (n <= (PAGE_SIZE - offset))
+-			return;
++			goto end_bio;
+ 
+ 		n -= (PAGE_SIZE - offset);
+ 		index++;
+@@ -2699,6 +2699,7 @@ static void zram_bio_discard(struct zram *zram, struct bio *bio)
+ 		n -= PAGE_SIZE;
+ 	}
+ 
++end_bio:
+ 	bio_endio(bio);
+ }
+ 
+-- 
+2.53.0.1018.g2bb0e51243-goog
+
 
