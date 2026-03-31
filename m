@@ -4,113 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF2E109B46F
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DBB109B47A
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:32:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5EEB6B0095; Tue, 31 Mar 2026 10:31:26 -0400 (EDT)
+	id 3E69C6B0098; Tue, 31 Mar 2026 10:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B366A6B0098; Tue, 31 Mar 2026 10:31:26 -0400 (EDT)
+	id 3BEA86B0099; Tue, 31 Mar 2026 10:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A732F6B0099; Tue, 31 Mar 2026 10:31:26 -0400 (EDT)
+	id 2D51B6B009B; Tue, 31 Mar 2026 10:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BED86B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:31:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49D40160285
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:31:26 +0000 (UTC)
-X-FDA: 84606596172.24.C54BD81
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6139940003
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:31:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Na3Pm3oO;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BEA06B0098
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:32:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BD60214023E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:32:42 +0000 (UTC)
+X-FDA: 84606599364.11.A509BF9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 46DB34000F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:32:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zck+Jne5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774967484;
+	s=arc-20220608; t=1774967561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHhIod2Il1Dyv55t10VBMSrZQ93hKY5LNGG+LK8WkrM=;
-	b=nSI0mt+B/PcLnjMLZidXaiB8cAKgAI5NJ0g/FVRXSqWcaDgpvDeSp0xkXOATpbZO6zZSue
-	CJ1BBsMVlZKDKtQ/hwEha7dGqaBm7gO1xy0IvI77rijHxqhvhRipDJTYry9ikcSKCt2NXd
-	yUpxu/obO5sswTwqp5lvvByiJwA8nao=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Na3Pm3oO;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774967484; a=rsa-sha256;
+	bh=wmDtWV5n1kIOuiA64o05Qh8QH/Tu/KN0eS4fkgEpCX8=;
+	b=QY5jD4YW6Jfa4XBS33Jzg7JQoQ85rYEEsBDGKRHYszEQYN/95kpaebunVwiTuMyBRiyKXc
+	38Vq9W2BlQoY8FbRs7NH8rgSxf9IZ+PNnMVylXMrqVcmOsWbQR4v+6jbEDfCd0Merbxhu7
+	l2RuP1Hsl0n8+BVrgxdAFQWcQr96GIo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774967561; a=rsa-sha256;
 	cv=none;
-	b=PdA0sRcfhguES+mVQrXTltwzV2fn4YAhb6UfxEI5J4ERaMQVDCMFkHtUt3dzf/REAJyEXN
-	y/fHhS0YoZuN7yANSOfUvw8gESsWujnEeJ4Ap1pc2S77/qMgFKYfV4UMCTZLqduz3asx9P
-	5I5qeW/zWEr5VXrC9XX/0vhmwCQ+7U4=
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40ee9b945d5so4068447fac.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:31:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774967483; x=1775572283; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cHhIod2Il1Dyv55t10VBMSrZQ93hKY5LNGG+LK8WkrM=;
-        b=Na3Pm3oOagEOgeCbKkkZEbsMZirtZcFO4JaN7KmiDDzZZLaUji2FYb1O7+FTmNT8vr
-         bILxb6f20vqUOtSEny9Bm8uJYTuIUwbIXKgZjM7phrOK9gC2iWUggO3l/TsF0SX3xw+B
-         c42DdZIP2ICu2bFavPRm1+QLJ0efy7bQuZOXVk+5ZDr+IV24wH/UABezagUFKAqA0tTH
-         HHOQG0hAiLnUwO2O24y8/KPo9fCtH/owo+caoPT5MRi9saOpWZwjyWr4RLOhuAUzc5t4
-         RL5K7GtggDEx3gm6YtDw9Kp7VQxANDq9AvaP5dUMFXRrE8wujJdxgwlyOGayBpyrGMmR
-         fmuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774967483; x=1775572283;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cHhIod2Il1Dyv55t10VBMSrZQ93hKY5LNGG+LK8WkrM=;
-        b=bUfZ7pFRhNnsIBhxvsa4pe3bu+gwr/kNox6zLYUqsVcp83qoZGnMrM1wCC/nTBT09h
-         6RG3BL6NzD7hwtWZT+BjqItDAu3ejpHlxhFIiO/J0F6b6VxjYrgBtb2NUAU48IHz4xya
-         Bqfl+RDoSs5e9q4uD3rH+LFq2UNqV9XixAvDvFhf175jTE2v/tn6HPKeyURqC8drWe3E
-         Q3nWVoToitsjvmMKq2p8miBE4OLyNHiDwf5JqtxU0Y/2Xy4DBcwxY/YHcXrKTxLil5Cu
-         /kTgsI6rlYGIsX/dP9160KVEjUgvOcQySB+LfqDkCrK1LDibEEQ/Ak/PbYS8x8wW8NvI
-         w/KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvcNADSzVexrdPO/gXwY/xTrss0M5NLvLtgEsJ2cOwJ1lUknb/8TPLwWMl2iSuR2H9ULcjbVaQlQ==@kvack.org
-X-Gm-Message-State: AOJu0YxOLDbsnslakFhKQqW5SG+kChjQccOy1NH4xlCGsnqqfrt3MBnO
-	6JzoscJCNhSe7cFx+WM1AlGwum1p5rPgsNWk481vw1hqXoQ/lKqOM4NNTYSpAw==
-X-Gm-Gg: ATEYQzzz1hDUi3lpREc2nL4pDTx0jKBv8Cj00gc/VQp9pNO6Dy3HWjYfMUOsc1QK6Zp
-	9+D45MFwaOXW9iHekcH5k5eRdWHTVVkT3QTgnhFC0B5MEjGgKaQ39Lpp/hV3UiaW7PlRsoWOhfR
-	KI2JArecrc8ZPvXc2c9kqZNrD4KHnObbZ9Hci5HBKs2KonOtcOClkIq8X6NMkxXDwf+TXLlgB2V
-	msyGzTjB88dkx4hfHjEi6m4aIfCQTr2UER4F906YsS0KOIOqmsUeEWJFcXldsOCoSs5P72gD3hR
-	TCXQkPv/3ot1plPx6MmX7yDFYBzVsdXMzhn186DrzajciaqJac7KTZpFGbSq8JQbkm1t3e9NmhG
-	JqbC+Tse4OAcdJ1gUIDdUJGa/KmsSYOyMoFFNW5GgG7pjaQovs5BZ4GiDkLVWVA1Yb8xFG/1lpA
-	qKRlJvCn2HpgSYJTOwpzQC9w==
-X-Received: by 2002:a05:6870:a11d:b0:40a:5a07:3598 with SMTP id 586e51a60fabf-41cec3c0ba0mr9664059fac.36.1774967482952;
-        Tue, 31 Mar 2026 07:31:22 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:43::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d0e47178bsm7232543fac.11.2026.03.31.07.31.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 07:31:22 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Jackie Liu <liu.yun@linux.dev>
-Cc: akpm@linux-foundation.org,
-	joshua.hahnjy@gmail.com,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mempolicy: fix memory leak in weighted_interleave_auto_store()
-Date: Tue, 31 Mar 2026 07:31:19 -0700
-Message-ID: <20260331143120.1531855-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260331100740.84906-1-liu.yun@linux.dev>
-References: 
+	b=fNL43d7grN5vWCXz5FpWAgZVjzokYHHDKlnhUmx/zyIzZwxpg5c+g1pbWl8kKsyYRCNpwa
+	NRYRB/wUOwFuL9zhqvXxol5PFhsWprh6ueJI/9IWlQ0iMRmQKuWT6xjoDE9N9UEZs6afeS
+	jUgzXmBHxt8Fq2hkPiREkzb6EhVt5i8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zck+Jne5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D9D260128;
+	Tue, 31 Mar 2026 14:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CCCC19424;
+	Tue, 31 Mar 2026 14:32:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774967560;
+	bh=eCcZFLBMKfzOLFrTMyw6/QPJblN9ZaXUah2YenOiatQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zck+Jne5EuclgGsxonpXVSJJaoN10ildftuLrZuUiFKQeHmChX1y7iFUOzhIn0915
+	 3beBBAYGThwIgQD9OF23CIYHAXoaY1EMDIQ5+LQlMvBkKJuFSFufIfhSxwkbT8xysl
+	 pT1ZNVdwzR79WKuUktdBRdvoXyNu0BxDpt7zALp2cZ/bPbxkM6i4pf/V7SXdtJ8XFw
+	 rP777dipQdkTEK10hyfpevVhB+dLfoI3xl8f/vDZxjHUpuHu5cF79a+EmdKyW5n4FC
+	 fqoF67FQusrW3nObktdTNu2kjRDxZoTKqHUKOtv8qXptagyfoPAkCy4S98/M8PSW0Y
+	 wAagqRHHVbs3w==
+Date: Tue, 31 Mar 2026 17:32:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 02/15] userfaultfd: introduce struct mfill_state
+Message-ID: <acva_NKf7T5rbIC8@kernel.org>
+References: <20260330101116.1117699-1-rppt@kernel.org>
+ <20260330101116.1117699-3-rppt@kernel.org>
+ <actxscYZGFiyvUcs@hyeyoo>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <actxscYZGFiyvUcs@hyeyoo>
+X-Rspamd-Queue-Id: 46DB34000F
+X-Stat-Signature: hb3wzzu1xxqqaesmy8f3ouhunfahhdzh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6139940003
-X-Stat-Signature: 5omxcjyma4dfz69hd7kfixmo5jst3kfs
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774967484-907917
-X-HE-Meta: U2FsdGVkX19+UQp71WeqV9p6PJlR3w/+jVIAA5vgXLPPCpYsODsjuZurEJ9+gF1k/d77uM6s78rGGpMlTG35ACnSB0a3QVwBAn8ZqJlb8lx3Yx8hacmI9tTBYM7X4NbFa0grCuROXWbVoX4/YJxvQ4dioZsQPyJfGbiI8wUynTySyg1AAbvC3kH2NdH3tvmb0QmKTIaSveBNCDU7JnUjKmzFJ1EqHbiXUUIsOiGdRl+eLEfP3KXURROPfJ9/Qws7btySB238VTcBZwKipXhHBSEM75yP3cnbIghr0TdaCFvm+MsbZsSwYBCK65/D2I1HEgPTaBBol+9OIKWk7aNRmpODiYn0UpPShEyfdBL1I5JE1dQMqCHBNXJcS84gFPVGF45ps41k7rlCkwv2EkTmFJFRg69IYrEwPktQMkqIDdfLxxOlH497BoUB7G9v/DgvGh3d4y0Vf5dE0/LA9sobuWk/+FnspRyL9E0dowxjjFGay9MyS960lhp7EvJ/hg0ecSmHNT5iekkYJDk8dNb9/ofPhpohH4ahkNbYBGrStrE3FHAKk74r7rCKlMEBo85hA9EFtOwPyEd9i7chqcsf3BPTy1w5XIRh1hyXGQDViAA89Cu0ryzSThfFGW8N77hGHDfNyXuFGSwPsvn+RhxCSUD3alPuHXb2z3Ug9COjBTnWsV7jen35z93OrK/GKgjrk3TlxmmXhFwv8QGXnTsjFKRCzRj92Ryf6cINBmOXDzeKfjUgBtb+xqjEZodGJTmHYkaFULsNS0Ul/aKSKCj1BGzNjR854I7fXCM9w4lJZowCv4mIPlRotYUz8s2Sembh7+yUv5hsXbq+n9EmurlhZYzFa0Vq58X6cNlaPW0YMRk9L65pbDyLQhi9zilYmEZkbXvVDmWohie5Dg6duBjoTczUyXSxPcYiw0H6IuEDq39b4yzWYj0wV4hFV8Q9GbC5siQECLy8lHV5mJCsl7O
- yokpeHdx
- RZfiUw9NaSPOYlH52sp0Vjc3xid5ehyni/uW/ulrzYYuxR6dS4fUBA1YB3wxc/bjUr7OoKimylPa4qwsMGegpec4XV31bLrQzIZUQAPCwOJKuaEgsOYN4sIvrUs5VWVPG4P6sRmZJusLnH3kylSavdQqi5qNPcIAcq2gAuGGM1dve9DBFR3i5le+znk4JsFlKsi2Iafprl8EIMzwDQBWKmX5CbOGVTEPP/XvDtjB24FoaSjLjLAl2+VmVUSY3LLj455R3uAxIHYmioyc222zJk+T1qWHvpczJc5BfjfawW/fHyxdp3rk7aQgqPHWF6FkKvo95/IFHbbbgZ+OMmgsLvBt6RQo4VMUSKpc/3Ifuz5PWk0cNZo3wwATn8xBsT0ZvHrvx97CWdIVnkKIXCZE8ZJNHmuSQUxA3CDD6kOXQHqMmHM5gRPZGGNZhW2SRqHZ7zDKd2M01IKym6l4+xR/k/YulbPtbn+drsJkFJpdaHhF7N92gpuG/L1/CqOL76wW30iwQaxHWF3UJk4MDf4diod9BOIjtqs1x2/1tpERpK4laVj1laCB9rYW+ZPRb1gZKsVZ4gkpGpzG2gjQoR/iA3ntZuj3uZsp1FGFtBYawY87JCcQ=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774967561-103212
+X-HE-Meta: U2FsdGVkX1+A9qCQyltgyIzTEjX9rJjoCFBrYdfFCHfTu4CPwLHJGRsFYh5ON200iJK3DLfmmUs96oIzrPpiT8fgxYvKXz8VQOfDs3JmyIUayEHq6z1Kcy3VZXX/+ZcIMGr+eApgzoXTiDVSaNNVDWNkc/O7QrExf31QHKRnMsnnkGRci/61tYZUxYepSaX7t+aJKgT5//fwmQlphjKjZokOHj9boUYRMidQqpzrxGrs6gVgRz94sH7QVHA/A5nvIVcISsiAirCikWcyv94meAV2f667P2MBxTPcA4hDEtpdMnV8bP1VgL45gftsnkNltBo3K2qeFvCRvtdRDxEUmSKrNAF95/RIMwHS+5r2F3hDxV4L/8CR7HrQ0+hlWzysZkbwEfbqkIE/lRAXM/5Ox8EtYHARJEVTfEIj7kMMlQrGUREGSuU1eWuJNFSj3+y5Pk4y2LRFEShaua1a2VXT0i3qt6EnJZ4bCQ2arO49mq5hyUhj3I34WH51Q8Efh/ORL0b92R408stZKZaYZdbzCijbuEMXmN7DcJb4uLGSaZCvbguJG8USqgOlKtxGQqHshzKj2GKtFdimgmIWXBhrIJvnDrqhh8O83AF6Mh0VEptxHuUETSTWhWrs0qxz4vB/gpAdZ2CBAA9rxWrgmzhvvlchzIc6h7dm+ORTGJjEv+EMqivBKHCIjTBDf3ILdnL1hQOo2Stg6+dTfabhjck7JucdNDt+ogoadrDJwtIqqVfKNvj8yRcUG90Xt0fxNkgRFyWjcRZbucV5UGmW0oY/jjPJmm8zn7KSljltDFS1V5bAOq77noEQZACoIuFgTBc13I5amvEUayWZquiLtEON9qeBgCPrLhGu9HwGVh6vweJOdBvwbHRY+UNYT10XQBr686ieziNrXi2pL4wp4qqAduIyvzhj/NeHl0EsZ4QRMki9tHJnj+MXPV8T9/gnDnTUF1CEwZ59TcQFDc7erUO
+ umrcs0cW
+ Ea6TU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,44 +111,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 18:07:40 +0800 Jackie Liu <liu.yun@linux.dev> wrote:
+Hi Harry,
 
-> From: Jackie Liu <liuyun01@kylinos.cn>
-
-Hi Jackie,
-
-Thank you for the patch! Wow!! This is a great catch. As you note, the
-trigger for this memory leak doesn't seem too difficult either.
-
-Everything looks good, thank you! Have a great day : -)
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-
-> Add the missing kfree(new_wi_state) when the auto mode is already set
-> to the requested value. When a user writes "false" to the auto sysfs
-> interface and the current mode is already manual (mode_auto == false),
-> the function returns early without freeing new_wi_state allocated at
-> the beginning of the function. This can be triggered repeatedly from
-> userspace, leaking memory on each write.
+On Tue, Mar 31, 2026 at 04:03:13PM +0900, Harry Yoo (Oracle) wrote:
+> On Mon, Mar 30, 2026 at 01:11:03PM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > mfill_atomic() passes a lot of parameters down to its callees.
+> > 
+> > Aggregate them all into mfill_state structure and pass this structure to
+> > functions that implement various UFFDIO_ commands.
+> > 
+> > Tracking the state in a structure will allow moving the code that retries
+> > copying of data for UFFDIO_COPY into mfill_atomic_pte_copy() and make the
+> > loop in mfill_atomic() identical for all UFFDIO operations on PTE-mapped
+> > memory.
+> > 
+> > The mfill_state definition is deliberately local to mm/userfaultfd.c,
+> > hence shmem_mfill_atomic_pte() is not updated.
+> > 
+> > [harry.yoo@oracle.com: properly initialize mfill_state.len to fix
+> >                        folio_add_new_anon_rmap() WARN]
+> > Link: https://lkml.kernel.org/r/abehBY7QakYF9bK4@hyeyoo
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> >  mm/userfaultfd.c | 148 ++++++++++++++++++++++++++---------------------
+> >  1 file changed, 82 insertions(+), 66 deletions(-)
+> > 
+> > @@ -790,12 +804,14 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> >  	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
+> >  		goto out_unlock;
+> >  
+> > -	while (src_addr < src_start + len) {
+> > -		pmd_t dst_pmdval;
+> > +	state.vma = dst_vma;
 > 
-> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-> ---
->  mm/mempolicy.c | 1 +
->  1 file changed, 1 insertion(+)
+> Oh wait, the lock leak was introduced in patch 2.
+
+Lock leak was introduced in patch 4 that moved getting the vma.
+Patch 2 missed the assignment of state.len and introduced an issue with
+bound checks.
+
+> If there's an error between uffd_mfill_lock() and `state.vma = dst_vma`,
+> it remains unlocked.
 > 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index cf92bd6a8226..9ac74178075b 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -3713,6 +3713,7 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
->  			goto update_wi_state;
->  		if (input == old_wi_state->mode_auto) {
->  			mutex_unlock(&wi_state_lock);
-> +			kfree(new_wi_state);
->  			return count;
->  		}
->  
+> Probably should have been fixed in 2, not patch 4...
+> Sorry didn't realize it earlier.
+> 
+> > -		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+> > +	while (state.src_addr < src_start + len) {
+> > +		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
+> > +
+> > +		pmd_t dst_pmdval;
+> >  
+> > -		dst_pmd = mm_alloc_pmd(dst_mm, dst_addr);
+> > +		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
+> >  		if (unlikely(!dst_pmd)) {
+> >  			err = -ENOMEM;
+> >  			break;
+> > @@ -866,10 +882,10 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+> >  
+> >  out_unlock:
+> >  	up_read(&ctx->map_changing_lock);
+> > -	uffd_mfill_unlock(dst_vma);
+> > +	uffd_mfill_unlock(state.vma);
+> >  out:
+> > -	if (folio)
+> > -		folio_put(folio);
+> > +	if (state.folio)
+> > +		folio_put(state.folio);
+> 
+> Sashiko raised a concern [2] that it the VMA might be unmapped and
+> a new mapping created as a uffd hugetlb vma and leak the folio by
+> going through
+> 
+> `if (is_vm_hugetlb_page(dst_vma))
+>         return mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
+>                                     src_start, len, flags);`
+> 
+> but it appears to be a false positive (to me) because
+> 
+> `if (atomic_read(&ctx->mmap_changing))` check should have detected unmapping
+> and free the folio?
+
+I think it's real, and it's there more or less from the beginning, although
+nobody hit it yet :)
+
+Before retrying the copy we drop all the locks, so if the copy is really
+long the old mapping can be wiped and a new mapping can be created instead.
+
+There's already a v4 of a patch that attempts to solve this:
+
+https://lore.kernel.org/all/20260331134158.622084-1-devnexen@gmail.com
+ 
+> [2] https://sashiko.dev/#/patchset/20260330101116.1117699-1-rppt%40kernel.org?patch=13671
+> 
+> >  	VM_WARN_ON_ONCE(copied < 0);
+> >  	VM_WARN_ON_ONCE(err > 0);
+> >  	VM_WARN_ON_ONCE(!copied && !err);
+> 
+> Otherwise looks correct to me.
+> 
 > -- 
-> 2.51.1
+> Cheers,
+> Harry / Hyeonggon
+
+-- 
+Sincerely yours,
+Mike.
 
