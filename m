@@ -4,98 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AD8FF60F9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C230FF60F7
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 071196B008C; Tue, 31 Mar 2026 05:27:47 -0400 (EDT)
+	id 72B906B008C; Tue, 31 Mar 2026 05:30:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021F96B0095; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
+	id 703816B0095; Tue, 31 Mar 2026 05:30:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA16D6B0096; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
+	id 618B46B0096; Tue, 31 Mar 2026 05:30:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D7C9C6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:27:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BE83BBC4A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:27:46 +0000 (UTC)
-X-FDA: 84605830932.14.C0983D1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 61BF4180011
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:27:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=e6DcgIwU;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774949264;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=cqrHbLvMINXpjDcfcVaDnrsqPLiAW5xmVuWZWarPWsY=;
-	b=G/MPDeAf8xPR7s8lZS/wq39KZs7XI89P29sofDDnuIKmx8A9mFEGQbQXMUZAqMeYEeDXji
-	zdd4LOV2felA8szl3uHY0IW5GFS3dx7x0kwgx2kxD35KYzimZ/vgpLH1oTEf/5XBo5dsgp
-	/z5DKNvGR1AG7RGZOV/U/hVqwm49Xa8=
+	by kanga.kvack.org (Postfix) with ESMTP id 513E86B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:30:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F25CBE122D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:30:12 +0000 (UTC)
+X-FDA: 84605837064.28.664B7C7
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E8F6B100010
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:30:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dO3M8zHl;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=e6DcgIwU;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949264; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dO3M8zHl;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774949411; a=rsa-sha256;
 	cv=none;
-	b=xT/GDxiGBmP9WMXqyMO/NUjwsbjMX971kyRHl0k7fAqy9wTT+iEDc4DjLOCzHqofDXnOUx
-	ZpylBKrXOVNmcU2+2XXLzqPaepXuNKMrKUfzYq4dVBU17tFCvwKgGUSqWbKXTlmcr+8IGS
-	EtEzBV26VQRqRMOnOGIDT3bXoIm0aUc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774949264; x=1806485264;
-  h=date:from:to:cc:subject:message-id;
-  bh=WDiiMJa3TfFF+i8iHPr7Qv/bRTJnJrs0R3RCW+c5Sso=;
-  b=e6DcgIwU5XC7c4vlbw9l4fiNcmZUsRAJo2U31+78Z8WMN3JuljtcXl3B
-   CZM7UeD9VZ3ieTi+IicdmLpl6wZt1LLhwEIHY9c83FrGtX5EW5HoG4Gyc
-   s5YWidGiCfx88L4E9sY0y6kyMqo1Ycm2EhAgURPu5O3S5NwezWuyuhH1I
-   bRvNZz3yulPjC0cwC0fcHeHlw3C8sLYKsNNRNz+dXH0UjdtjwWXUBK4fL
-   9h9si9PxUAbFsgjGXz3IQWev8acELhCWQMW6bdg7s+bJIhg5x48LWKLGs
-   LYbK306y17rbIEFk5xxDpgC/dUFWyLBrbJC1BRolHEDUdN1riNHU+PWmw
-   A==;
-X-CSE-ConnectionGUID: Q1229eORRQWW0KaH6IGUYw==
-X-CSE-MsgGUID: +8+t3xicRceBrbzD8jDuVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="63509028"
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="63509028"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 02:27:42 -0700
-X-CSE-ConnectionGUID: VMVsWeLNSCO74nzLjjOsbg==
-X-CSE-MsgGUID: ogdCg1EqT1Cd7KGyOi/Ycg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,151,1770624000"; 
-   d="scan'208";a="227920969"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa004.fm.intel.com with ESMTP; 31 Mar 2026 02:27:41 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7VNr-000000008LJ-0hfE;
-	Tue, 31 Mar 2026 09:27:39 +0000
-Date: Tue, 31 Mar 2026 11:27:20 +0200
-From: kernel test robot <lkp@intel.com>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 121/130]
- tools/testing/selftests/kselftest.h:427:13: error: implicit declaration of
- function 'vasprintf'; did you mean 'vsprintf'?
-Message-ID: <202603311105.ysUeYPSZ-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=L9h0yBOUxs1Qbign89NHGuLZ2waOSVz5T/NBCVOyKn34JxsI3PEdqeO2DHGxVPWPGyEHTG
+	JDqXBPRg2ctXlDcusfNf5rYUgcGqH1NOsHL8TEIg6i62KURLNz1mm2ei8m5gK+YLAgKMcz
+	IfoC3ywmhPl3xDPoIxmJufEXnMHJuts=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774949411;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fDJbRrmR6P4+bOcvvHxpRXwGXp36zFt9hwZGamgixpA=;
+	b=cxKraNoR1PYXRFH8Rgkqy+4Auk8OfyvmFfy6aOljlHAszkQpGp5OePtgWs/Nb/wcXKDk+Q
+	L7SFC7y75qsCNI/CrsUI6Vkyx53+TEoOCQMLqCsfLTVEe+9NQv7Mq8jo2f403VfqOzv2Qr
+	B6l0LZ6lWgj7J9LSz6QtiObHNrZNPN0=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82418b0178cso2633649b3a.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774949410; x=1775554210; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fDJbRrmR6P4+bOcvvHxpRXwGXp36zFt9hwZGamgixpA=;
+        b=dO3M8zHlgXk0ZI1EmxLJIxEkeHw9T5kduJeiXHPdG9fR+PJJy563swttesj/llQX9v
+         zGcceQZziFTzhW1n6f7Q2QfKK8fgmYeOWY/NqVyXC8cUON19ugDyr/ABWTj+PLCQW9tV
+         plYYzLeDV3YVwV96AOP6sh0FY6eWqPl3L8cjGDShgIbdw31CD3/kp8bWzqwm6tXgI/Zu
+         1s1h0Box6/0+3lQWuitmnRE/jlGBEGGxLEaC0zBTe+6DzIhDOikqEVxnhYtCGabsU90i
+         9zJR6gwwqFHzpaqOZoRbsDineXZ3LpuBLBdO3jkyXnOGljQlUKBKHf1EEtaELnOhoJ/S
+         uSsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774949410; x=1775554210;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fDJbRrmR6P4+bOcvvHxpRXwGXp36zFt9hwZGamgixpA=;
+        b=RDJVw4iYoh3+YXS+egxYgpUaeIKEIEf/VrjSwWiTQcwuozgn3PzR06tIyW0+Cd3OY7
+         j/JMcV+PhSr9FQE4xuEnzwPDSWvWGznF6y+5z5JmcKDb+gArM2peqMHcu/wbTzyEx599
+         6qAQF3v2IS35i5LeVMy9vktC/sBAIAF2hYvpytttQVShqTNpPq1QOP1S/O7pk9FSF15a
+         1hk9v/P/tApxo/oZWYzHQj/U/zuJDgpK/bt55H85vUJSqA7PPqLvXtAs0zJUYbhoGQZn
+         omSpK9Jyp2blJfjlkQP7AtTbOb6cD0cZnvUe5ENsQiSeiXo3vVlEhya6rKp41yzIgN8H
+         50pg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwkjnZpwIy6GN9tkZuYMVbVDytZyk+tzYImmb2ilGIcQYgOKmWmpiAvkwjjIfH5IAmCYsi5G7cjA==@kvack.org
+X-Gm-Message-State: AOJu0Yyci4vNfBpJ77DUKz4Ds+5fa6HJ3jGFH6MUJMTzT4VZeHwgphVV
+	ChaAuwwoucrVLCyIjTeLjsJZ+hFjdlex27hxAuNdcL2QoKnq88PP3/4x
+X-Gm-Gg: ATEYQzx6/IiaEkrC4GT5pe2Db1u5Yb6j09s4Lz/8VDhc7WDtrh1eOyivtqGJ03WwK56
+	urnivcQpRL5iEFj5be6Dn+1MSF/KXbfxS9Ma+U7lpoxlyOvmb1KC1HKff+W86uaeSFnOSaqvnXU
+	nWelrQy2/mKN9REQQwNDs8O0QNxfJ3UraUDjjfoWxRbnQsZ12IMmCjGDui7XGtZ/d3QcjOADvi6
+	0H5IpaUrNMwRzP4cfXX7/VVRh9JIRW8QeV9BJcbCMoc1svsoJBNglQoAiOoN0Z6n0/2wWTfOEh+
+	EM8TQuR+3ao6N7fBdCPKepxrJBtbCATosVRoPRvO/zrbUGXZrcIn626+wPndRkaYM5uhh5ME3P5
+	tuuXTOV5kZxZi+MIIbHxN4yNVHAlehBCUa7jIT3hh9vWvEyVVKP9cf7y2Cg/3L5KWwIpoNEJuen
+	vQK2+KejsV10NXM2ApZDPOLyesaTZqGjrYlxd/DSXmhOmCaUCQzqdyHv6sjfnFKVBsa1Nh
+X-Received: by 2002:a05:6a00:8b96:b0:82c:9f7e:518c with SMTP id d2e1a72fcca58-82c9f7e5570mr9014194b3a.25.1774949409128;
+        Tue, 31 Mar 2026 02:30:09 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca862dee1sm10374642b3a.61.2026.03.31.02.29.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 02:30:08 -0700 (PDT)
+Date: Tue, 31 Mar 2026 17:29:55 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic
+ and throttling
+Message-ID: <acuTMVSnGb0XRvTV@KASONG-MC4>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+ <052ae271-509c-42c3-877e-ac8822b314e5@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <052ae271-509c-42c3-877e-ac8822b314e5@linux.alibaba.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E8F6B100010
+X-Stat-Signature: mxb1f5t91yzzk4aiy17qi7yim3z3wshd
 X-Rspam-User: 
-X-Stat-Signature: s7o9sn5eucjqzgf59ejeqhhrhgwc9ujs
-X-Rspamd-Queue-Id: 61BF4180011
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774949263-404691
-X-HE-Meta: U2FsdGVkX18w+CerVwBsxSElSYVAIfQBHH+L3fL99DlJNbymjul74fB6u/z/J/4mOiWDAfKwNppg6TcEivwmAsdj2zbgejf8tLfJlPH4Y3tDMD0JjO3iEoEJqaL4geoLp2sGb5mqq35a9AE4qY5kLb+jpqOFhlmWwyijPp6UQITSqu75hTIzWFBh8BSPiEycnWNej1B2cPoIIXgGEZpYnsSexe66Tzs25PE3cEV84XSfM89UCrwIcZFJ4Htfajd8eBMzQruVyBWjydvbNnRM/HQxGrBx0nmAURq9wSiL0VWyhsUzdJBR1gOfGXa3cR2GJePQOg410ZeBMQj1y7A2O9O+QUqZSJIHSvLweKUzHUnnHqfpNtcfBIeliwQYL720RP+8Fx5w/GhulQraj/WA4aAdRcVRTlp7Myc+iCVwVqtM2dbXEBFOx1pd2tw9By5MvyiW66dqhWEr9WCcwtd5kIwcIlA96dDxD1sThMoMAtoAYP5HuCoVUAvasX0wRbpk5FVrMvmhwo/89Sx1Bu0h1NwBV4HDlhrV2vEfR9ywvt9T9BBDQlmghkznUEppZm7x7lXlLNruq/iyRHPWazQovzuaAGhTjsH/xE6d6jLjR6+lktme0HZGV7oxmfRLn0PLw+zUaVDOtUqsPKR/hgUfhhId01pgePeD5/h1qdVAEY1DTOQCZDNREG+J3I8XmBYnwHcrenLac3GqwecOPjAVDQ0HA4PeYcp88UdOZlMGdk8YmeZ1Xy0aavisihNUgVHKp1Y9+jcc5h5D/SO+NCURxygUaX4ckGCnYYlArCH646R1ECf0tQRGwpfPs+AHn7wx/t+91XIt80TsoLqR4wPNzY0Vflqud0GSxgMkihBaIH4slpQ2a2XndUi7jDDw5Hcje5S3Vpfy9ZPgEw2pgvDp9wT336nGmzNEKJtVKWdYI5upH1sQPYpXMUFWh/lz8HoJ/fCGYbQTCBqOkFXODso
- BUq2/Kqc
- 5jas064XS5q/ZV8tDUcrvS7M6Ysbe/Z5VU3BCljtFWtzUmnygsPiG38yzYcmToF3vAISDYJFBBeRekJSvGzC5PKchgIYQSOpMzI/dTlwMvaCQtfkUMzNTwu/eSRLSc9LmSOhpwoR8c3/8CnEXtM2MWX38+Kv6kwpuBxvcXdH4jRyeJ8En20GjqQdHdRDEXLYuKCe4KdCyS3I3ZYlYF6N34hOuXEJM0OdFJo8iJeCqenGqTr0D4yQNL5/QW3ILLKTcOy04ebgP2ZwUXAtOKChtX0M+BnCYdoPmMbnI
+X-HE-Tag: 1774949410-786143
+X-HE-Meta: U2FsdGVkX18HaZw/mZlUvNyMeSaBlmMy39xCOLqZRIMIqt9WddzeJZy4xYTff7/vS9kN8a/nc6I/0ig2ynhOwvWiwhCml23UR08Ew27AOKxSAVCy4VxUGh40CqOVMYq9U1WlSPpxx8iyNZl9wA7iOQECOuquXBIrQNFAdVH47wqD9NiYfOR56IsUHOo9K5UYSfpKxJIU6wDVZC+vcvpVxTj3EZTiJ7Vtkufw6J+MQyBiGnrJA7kIPU9PiWMyCw5td5mGViMgeOmtsK8IchLEpH8a/TdoDYrjlHhTFKrwz70L7eqsIWfQ1lbZBrEsxEmHDcEpyKLEwSMPiWBhobXZM6WyX3m9ty5pSe3ixUNRgosmzmnJHzvlu/SO04N+043jEo0Ao7TkCUU/45UjX5OKLkFSk8c+Wb0fUwooq3P9zN0IgRP1xLEn5DOx2sMKe9xBgqWIc2GFLF/fPEooWVGhGT7MpEF7F3Wmvg3GMHCwA8FUVpGERjM3MuIhBNov1xPIldcWbztfHubBqfanBDH4Qlduo3zHknFBdfm6lSslGyE9lXwEZT5fHFG0CgZkloZqaG81x/aVWyv4Sgh9gDLRFGjljADBLszSqoCHnsSs1tvkmASboiPixwXibrz6BMd4+H/dRK022YTy52G4R281uWsr+zNxAkayEfXvcAUyH5LcqYj24JjZQuOwUWZk7hhkks9IpIKjii9e1ktIx+ccbQ6RxroYr6SBsMRylMBHEPzr3bQiXuM7Jn4VjieCfO8Bsx90zqb8iM2gZZDuvd+6vEtvzTM55LgJQW4VY6eTpfmyS6Znc8Ep7P0EQpZqpHp+ZYKwW1GdXwQZJAgnD/4rKmsrUS8UKCzD3xncu4FtFeuUGeKFXinEXBjuBVBqtC1fRSB7HphR4yTKsrqqlP3zSJJmJq5NKnTENoruFsby8K4EPRViIIIqXww/7hVwnSFx8yAYfigAdYRSSD8gnjb
+ tuFhzqnM
+ HnEuhIJqTWSwzYeTNx1+kz9R7Ymgs24j7gMsvAjGXowmSuDq35TCorJxALoTjUkTN14JbaZxkkAhAHRPR/JlImxFy27RrslCAMHBjpZJtiLFkeNtneiopDV0n1w3Y3ViiC7+CfyIXxYAu3iDxQfIIXypVFxa2DB/5pXxNwJdtqcAHeELhTE7BtN5ox/H0/UaU0wzAu5d5a03H1FuQGExVBlQ6TbsGK/7CMOvM+4Pgq+OxXRP8nPcb5eIhJlhKTD8NZ6NUXPMkAR4MaNdDh736BWvlYCgdYv1iYKlkMYU8AvP6mfEntbtX5m+TB3hCrFBarWBs56ZkwigssWfBBUp/LDXGyVAtS9CfxZKVHPsHv+1EqDwsDCvlscMgyCzdbKjcSTHPv/puuj/jlY7jIOHdQBlPZioUZK1ZeVyEsgUOhojStetxDK7H8KN3SvtHd9Z0mA8KLTBJXuhnx3tXN0WaIM85WZBqYVquqeWZdf9H6pGbj3+IaTV8VaU8cPZPqmBS11YnK5SU03fsagqgyRkUd0msGd0M/Qs0DY8V35j3HkHwQV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,63 +128,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   24e341657c283c965e3bfee0baa9ed0376127973
-commit: cc0b04b10a7b98fd8df2fd539177e94e0f83a5c3 [121/130] selftests: ksft_exit_fail_perror: support printf style arguments
-config: arm64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260331/202603311105.ysUeYPSZ-lkp@intel.com/config)
-compiler: aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603311105.ysUeYPSZ-lkp@intel.com/reproduce)
+On Tue, Mar 31, 2026 at 05:24:39PM +0800, Baolin Wang wrote:
+> 
+> 
+> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > Currently MGLRU and non-MGLRU handle the reclaim statistic and
+> > writeback handling very differently, especially throttling.
+> > Basically MGLRU just ignored the throttling part.
+> > 
+> > Let's just unify this part, use a helper to deduplicate the code
+> > so both setups will share the same behavior. Also remove the
+> > folio_clear_reclaim in isolate_folio which was actively invalidating
+> > the congestion control. PG_reclaim is now handled by shrink_folio_list,
+> > keeping it in isolate_folio is not helpful.
+> > 
+> > Test using following reproducer using bash:
+> > 
+> >    echo "Setup a slow device using dm delay"
+> >    dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
+> >    LOOP=$(losetup --show -f /var/tmp/backing)
+> >    mkfs.ext4 -q $LOOP
+> >    echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+> >        dmsetup create slow_dev
+> >    mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
+> > 
+> >    echo "Start writeback pressure"
+> >    sync && echo 3 > /proc/sys/vm/drop_caches
+> >    mkdir /sys/fs/cgroup/test_wb
+> >    echo 128M > /sys/fs/cgroup/test_wb/memory.max
+> >    (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+> >        dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
+> > 
+> >    echo "Clean up"
+> >    echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+> >    dmsetup resume slow_dev
+> >    umount -l /mnt/slow && sync
+> >    dmsetup remove slow_dev
+> > 
+> > Before this commit, `dd` will get OOM killed immediately if
+> > MGLRU is enabled. Classic LRU is fine.
+> > 
+> > After this commit, congestion control is now effective and no more
+> > spin on LRU or premature OOM.
+> > 
+> > Stress test on other workloads also looking good.
+> > 
+> > Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >   mm/vmscan.c | 93 +++++++++++++++++++++++++++----------------------------------
+> >   1 file changed, 41 insertions(+), 52 deletions(-)
+> > 
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 1783da54ada1..83c8fdf8fdc4 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
+> >   	return !(current->flags & PF_LOCAL_THROTTLE);
+> >   }
+> > +static void handle_reclaim_writeback(unsigned long nr_taken,
+> > +				     struct pglist_data *pgdat,
+> > +				     struct scan_control *sc,
+> > +				     struct reclaim_stat *stat)
+> > +{
+> > +	/*
+> > +	 * If dirty folios are scanned that are not queued for IO, it
+> > +	 * implies that flushers are not doing their job. This can
+> > +	 * happen when memory pressure pushes dirty folios to the end of
+> > +	 * the LRU before the dirty limits are breached and the dirty
+> > +	 * data has expired. It can also happen when the proportion of
+> > +	 * dirty folios grows not through writes but through memory
+> > +	 * pressure reclaiming all the clean cache. And in some cases,
+> > +	 * the flushers simply cannot keep up with the allocation
+> > +	 * rate. Nudge the flusher threads in case they are asleep.
+> > +	 */
+> > +	if (stat->nr_unqueued_dirty == nr_taken && nr_taken) {
+> > +		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> > +		/*
+> > +		 * For cgroupv1 dirty throttling is achieved by waking up
+> > +		 * the kernel flusher here and later waiting on folios
+> > +		 * which are in writeback to finish (see shrink_folio_list()).
+> > +		 *
+> > +		 * Flusher may not be able to issue writeback quickly
+> > +		 * enough for cgroupv1 writeback throttling to work
+> > +		 * on a large system.
+> > +		 */
+> > +		if (!writeback_throttling_sane(sc))
+> > +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+> > +	}
+> > +
+> > +	sc->nr.dirty += stat->nr_dirty;
+> > +	sc->nr.congested += stat->nr_congested;
+> > +	sc->nr.writeback += stat->nr_writeback;
+> > +	sc->nr.immediate += stat->nr_immediate;
+> > +	sc->nr.taken += nr_taken;
+> > +}
+> > +
+> >   /*
+> >    * shrink_inactive_list() is a helper for shrink_node().  It returns the number
+> >    * of reclaimed pages
+> > @@ -2005,39 +2043,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+> >   	lruvec_lock_irq(lruvec);
+> >   	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
+> >   					nr_scanned - nr_reclaimed);
+> > -
+> > -	/*
+> > -	 * If dirty folios are scanned that are not queued for IO, it
+> > -	 * implies that flushers are not doing their job. This can
+> > -	 * happen when memory pressure pushes dirty folios to the end of
+> > -	 * the LRU before the dirty limits are breached and the dirty
+> > -	 * data has expired. It can also happen when the proportion of
+> > -	 * dirty folios grows not through writes but through memory
+> > -	 * pressure reclaiming all the clean cache. And in some cases,
+> > -	 * the flushers simply cannot keep up with the allocation
+> > -	 * rate. Nudge the flusher threads in case they are asleep.
+> > -	 */
+> > -	if (stat.nr_unqueued_dirty == nr_taken) {
+> > -		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> > -		/*
+> > -		 * For cgroupv1 dirty throttling is achieved by waking up
+> > -		 * the kernel flusher here and later waiting on folios
+> > -		 * which are in writeback to finish (see shrink_folio_list()).
+> > -		 *
+> > -		 * Flusher may not be able to issue writeback quickly
+> > -		 * enough for cgroupv1 writeback throttling to work
+> > -		 * on a large system.
+> > -		 */
+> > -		if (!writeback_throttling_sane(sc))
+> > -			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+> > -	}
+> > -
+> > -	sc->nr.dirty += stat.nr_dirty;
+> > -	sc->nr.congested += stat.nr_congested;
+> > -	sc->nr.writeback += stat.nr_writeback;
+> > -	sc->nr.immediate += stat.nr_immediate;
+> > -	sc->nr.taken += nr_taken;
+> > -
+> > +	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
+> >   	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+> >   			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
+> >   	return nr_reclaimed;
+> > @@ -4651,9 +4657,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+> >   	if (!folio_test_referenced(folio))
+> >   		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
+> > -	/* for shrink_folio_list() */
+> > -	folio_clear_reclaim(folio);
+> 
+> IMO, Moving this change into patch 8 would make more sense. Otherwise LGTM.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603311105.ysUeYPSZ-lkp@intel.com/
-
-Note: the akpm-mm/mm-unstable HEAD 24e341657c283c965e3bfee0baa9ed0376127973 builds fine.
-      It only hurts bisectability.
-
-All errors (new ones prefixed by >>):
-
-   In file included from za-fork.c:12:
-   ../../kselftest.h: In function 'ksft_exit_fail_perror':
->> ../../kselftest.h:427:13: error: implicit declaration of function 'vasprintf'; did you mean 'vsprintf'? [-Wimplicit-function-declaration]
-     427 |         if (vasprintf(&buf, msg, args) == -1) {
-         |             ^~~~~~~~~
-         |             vsprintf
---
-   In file included from basic-gcs.c:16:
-   tools/testing/selftests/kselftest.h: In function 'ksft_exit_fail_perror':
->> tools/testing/selftests/kselftest.h:427:13: error: implicit declaration of function 'vasprintf'; did you mean 'vsprintf'? [-Wimplicit-function-declaration]
-     427 |         if (vasprintf(&buf, msg, args) == -1) {
-         |             ^~~~~~~~~
-         |             vsprintf
-
-
-vim +427 tools/testing/selftests/kselftest.h
-
-   419	
-   420	static inline __noreturn __printf(1, 2) void ksft_exit_fail_perror(const char *msg, ...)
-   421	{
-   422		va_list args;
-   423		char *buf = NULL;
-   424		int saved_errno = errno;
-   425	
-   426		va_start(args, msg);
- > 427		if (vasprintf(&buf, msg, args) == -1) {
-   428			va_end(args);
-   429			ksft_exit_fail_msg("vasprintf failed: %s (%d)\n", strerror(saved_errno),
-   430					saved_errno);
-   431		}
-   432		va_end(args);
-   433	
-   434		errno = saved_errno;
-   435		ksft_exit_fail_msg("%s: %s (%d)\n", buf, strerror(errno), errno);
-   436	
-   437		free(buf);
-   438	}
-   439	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks for the review! I made it a separate patch so we can better
+identify which part had the performance gain, and patch 8 can keep
+the review by. Patch 8 is still good without this, a few counters
+are updated with no user, kind of wasted but that's harmless.
 
