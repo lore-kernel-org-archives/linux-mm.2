@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B5910F92E6
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:29:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C0310F92E0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 16:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1622E6B008C; Tue, 31 Mar 2026 12:29:57 -0400 (EDT)
+	id CFF2A6B0096; Tue, 31 Mar 2026 12:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1132D6B0095; Tue, 31 Mar 2026 12:29:57 -0400 (EDT)
+	id CDC566B0098; Tue, 31 Mar 2026 12:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 029066B0096; Tue, 31 Mar 2026 12:29:56 -0400 (EDT)
+	id C13FC6B0099; Tue, 31 Mar 2026 12:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E629E6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:29:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A16A813A42E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:29:56 +0000 (UTC)
-X-FDA: 84606894792.10.A4B3268
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 66505140006
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:29:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HStgsD/V";
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774974595; a=rsa-sha256;
-	cv=none;
-	b=mHAIZyASPAi98OjRgUu9AE15WJmgDZduymx/12FQdstlGnY/xu+MMGWaBccw2XiwVawj2t
-	BmcaYaz8PykUmGhj9MD2AiLEFnxmcqmQPcH/pupX61on5n131XadP8M7JbGuVLNrodzN2h
-	cAbDxRnKlwXp2H31ddYsEA2qPlArwxQ=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B26516B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:32:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C03C34B2
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:32:19 +0000 (UTC)
+X-FDA: 84606900798.30.A2F4E79
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B59A240017
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:32:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bNA1Fkic;
+	spf=pass (imf01.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774974595;
+	s=arc-20220608; t=1774974737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+PBWmKg1y16S9pTva+QSFTjRb299uFwMvllatkfV6A=;
-	b=JCFpxq5WkTIOe7OOW0zJk2Fq2awfkH6DR9Ohm4ltP2J/oQWftO9+JeWxfQahfmQvZ7W2ZP
-	IkinCn/Vd/HIg9pCulECPAmS97xuyoCliw2uWnnEDSO4RDSIH5kH0GBhZRyWqXgycekw20
-	OVjf2Rcoyf5cg7M0hsSDd5ekUHg725s=
+	bh=/MAqzCf42QLu8TV8j9Wj61ROnuwrNN7bkpugWVreJh8=;
+	b=lOr9AZNuipNEUP33hRKnMwRnfWBvG8zhPqehVYBFdpOMw1X7XHTgE/DdM19a5bRMq43Cvz
+	i2Jhc9CFtWxXQQJ6jOLuv993SyIgdyUC4XF2232wbyPKzpHIKYdrZQPR3eZVEnUaN386yX
+	TeZeS/FyT5D2VMgmJMOpIlGfHRDRZmo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HStgsD/V";
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <abd47506-9bd0-410e-861a-a747d284cc77@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774974591;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bNA1Fkic;
+	spf=pass (imf01.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774974737; a=rsa-sha256;
+	cv=none;
+	b=qf/ycVplc/2OFIlIp1zb8b1BnS6Xa+795TE0am2CcWClI6mzMoSLzvoZ0GcUwY64CjNy88
+	w7xD+Qn8nI4UVHoQnJbgtgEekj40Bh7ZGZVUqfh6WaBZi5lNK0InAPnJS4q/tkx/XgKVti
+	iSDk1Y8sYsYUse5KkVoiTvJwtM6VKIc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774974736;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t+PBWmKg1y16S9pTva+QSFTjRb299uFwMvllatkfV6A=;
-	b=HStgsD/VCRwVsSFrv9YmieEjeotbS2UpvXyW4M+abW7SekkdkMRu+geZDuDaMCdFwZ9CEL
-	dvuE06nvZHXXp5b530P3Jzdtocua3lOERUfFwUOtgD6f+Srdf3Z5Akw72OXUD3/iEwpSid
-	HxXZc9L5mtyQD9G1JlZaTqfwn0qEZhM=
-Date: Wed, 1 Apr 2026 00:29:17 +0800
+	bh=/MAqzCf42QLu8TV8j9Wj61ROnuwrNN7bkpugWVreJh8=;
+	b=bNA1FkicqrCm6jyKo4l2lM7jy3dM/z9yxsjxAwrRBlXPNSCV013p0ACz1xuHxWdmGRNBl+
+	4lTnFr7bj0vpYstQ0gVTHQxVSBThZC1wEhRFt55vSajzS0/sjgmd+NBDLUtMcxj2cQTNkW
+	irB+kjoqjsoR56lDyWVSsBpkBuHbs3E=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-ON8EvXtePNOdxzNh7juJ0A-1; Tue,
+ 31 Mar 2026 12:32:14 -0400
+X-MC-Unique: ON8EvXtePNOdxzNh7juJ0A-1
+X-Mimecast-MFC-AGG-ID: ON8EvXtePNOdxzNh7juJ0A_1774974731
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5686C180049D;
+	Tue, 31 Mar 2026 16:32:11 +0000 (UTC)
+Received: from fedora (unknown [10.22.81.166])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4A92019560AB;
+	Tue, 31 Mar 2026 16:32:09 +0000 (UTC)
+Date: Tue, 31 Mar 2026 12:32:07 -0400
+From: Audra Mitchell <audra@redhat.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, "David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-kselftest@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
+Message-ID: <acv3B8ah8toDYYlP@fedora>
+References: <20260218184210.206466-1-audra@redhat.com>
+ <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
+ <abludfGu4upPcyRI@fedora>
+ <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
+ <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
+ <f00dce3f-d6dd-477e-bac5-b9b8253b03ba@lucifer.local>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
- gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260325114022.444081-1-npache@redhat.com>
- <20260325114022.444081-6-npache@redhat.com>
- <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <f00dce3f-d6dd-477e-bac5-b9b8253b03ba@lucifer.local>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: SoW4UMFKY6fLf_Y3_-7cPViL0VDkrP6eIVpiz5CL3TI_1774974731
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: B59A240017
+X-Stat-Signature: s5opdmohy78oromx8s3ebwzywff7ooqu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 66505140006
-X-Stat-Signature: 8h6neistow7h8k1kkbznko5764o796g5
-X-HE-Tag: 1774974594-678430
-X-HE-Meta: U2FsdGVkX1+LZTZhRsc+04R7kMGwjK3enyMFR9OSsbhtL1FSDtITtqGui3t4l7k+2ZUXwgSsUl/EtCSyYZIG/Z6jiF0xIYR/BwEhVPN0h616+Jpk1jKMg60z1/HysA+6MssQycwdwhAkgLLPpAV0oI0aV1p22zSnvGD/6e0v+aRlyLglRL0AplDY/6/lDO4AqE/xgk7ry0/0bpoUOK+UMrofeS9XamJcROpf2tmIXZcnNeEGijXMoW3WX6HmLh4FVPGDESDPownEq5VWPbueczL9oPBkavBk+Pd+cm2Kgr+BfHnpa/xg+hj643T6NZPpf62A3ptgGayMAPl6xnQD0PYl3djhl5IyAVIu5MkhnP8VHEvRC0IXq6uFoMQmkyciUNcVsm1o2Cn5yriOg0i/Jox9R5kAbgQfN6sCJV3bbf/xW9OUjTcissmyqQx4e20QKmGVqE9mQADYJA6QQ0XX0B6c2QYrVXA6GURjrPA5LOBOIh+cNvqgo424Yybj8Mu12N5Fo6qx4hJ1FIooCrDLe7o3g5cMBLPghqMyvUbY/urIRIUu9qiC/If4hBEKSrWhyZ6bh5ZDGrjkRnWCSimT27Lmr4wdk+cG5X1u9TaWL5RJcna6gOcmWYuiAf0+NJJl3Ah9AJed69vqOfQ8feqYlA3YM03f24N12I+JTUrsb9dZ7CUz8qja2DA6O6U7cwXCcsum/gX5jc7Px5ZPdzXRpAxq+aNyDsHoyqX9u0LcHXtJ4N/qjbq976TykBvRzDSO0VlwiLis1vYmGZowqXhmH44bbARcZycCRRAgz5Hb3edx6TlCSg6AZA6p+Su0cJizCxxHs3ionzS6Jo/obKkZ7xOuuJCKBeb+fee+S70bPPDSrlDWSpaiWTNaaVjtaKQHdXc+Sulli2bfwSnF/fJsml9ncIQaA0Yynf67828BAAvNLb5mOyUCXZb9BMmqUITKml9W3HQzTlqWbIXhJ4y
- eMTbe7j9
- eVRFfcCmZvgQ9l2g2tr4/M5cJ0OGSdYF0flJqWoYj7Z2u/tTr9XvDvV9vD46DU4zUUv7XfOXEwwqPYHyNyz2KM53RI8PoDdCiUyBn1mnRCQB1vZaozkTO+bM3sm5gRpAb2HnMtYEtksJx+48Owt/zSIqjjPKzKyzy+ozSVIk3d1jJMjh4VG+/gLT1d4wlvqPdvNvw9Ljc4mmrPWOYE6sT/uaKyFI/DYDemEUip/PFWsaAyMI+SVGy222vFxYvN4pHl32FHiFVab1FDjhHsvQcnD8qeUP6a2iWUf/tFSle/XXbupFMpi3ZOXI6NIeDgJRiWvC4PVV1QTNfD2G0FOxcabJu81xEXTSYJCC7gN60EF3eDsf+lEK49BV+BJk8pJ6eTpy8
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774974736-243767
+X-HE-Meta: U2FsdGVkX186BmZmBJzsj86QwhTzWuJ9pxuSMtY/cJmOFro8LQEEfMpBHr4Uhrx90BABkrvT7NLaRNUYzZvFdT0D2HlSTUDZuI6m5RJESxgyZ6t0glkgfQVwiWWFn4FrWweq+1S0QtXCNdrQSQL7n56rQ9Tb/bxjXdvodXhinE3oYT3UZYKnzE/JZJpK9cPv7dxIaEx21PiJf5jNxh6etVqMsmTzp4GS65rfHYwHoCzg/aiiFHX5X1Le9kgbxjFyvLPTJLNsF943juidMb8Tqoswhdcr1QbF3Z9ZUZkgFIQOWBqKzH3F14ybH+lXMIcmgFdzyBfMyBZFbBfsXWlu59RG48kZs4fCydP+vbcnm4C5RsHKH4eTn/NwAlncc99re7S+sL1dLrPvFysPoSp6fYCWKR/24EVEBtuY8gD/857hzLyCVqFbHKxMbVnAz5N5P01/HgDTkgDjCy7qR0cxgkVQgm6uWSzgP8w7QsJ9+KDXNtjLA8EV+HSykwWgqr6MNbUpiDFiqkzeGQYdCyNkNL4/ZD2Ao7/UXeYmHugmOVLGkO6oNuE+6zCgHMVcxwcAHfUuJAINIWQLbDLupplvu6Cv0CgfCJl8tdbbg5efWw0oLxGu+ZFpWZi9WV23RBpvXLXBJaEvCsUGsQNd21F6PuGWoZGTpx2AKsyf9/S8iDEnZb9PI/B9epxlxWriVfbdsuaJRZdf0rutSejfRCI2rUlnGIIXtw4MCOLtvjVXqd1zqo0SmL+RhkLbfnztAfuSan7IWVsHHKOier4AKgmT9kk96MPGPsKIcMIZYpUxnIzl6Zd7VhX8Q6SmX0UoEeHkI0uwOphJacLFjQjhXOfOy/obOl7TxTDCmyQ/gh72eRLC2YpuG+twu5RXfJlkxapKzRo02pFPiz7AInidyTyZ0m7dr0mvhPlMtqV/WQodyH7F3wjdqRXLcwI0X0dWPHIElHhcTmSmRO2AG/rqK0Q
+ Yd0FNqcS
+ UHM2C3MRPGXFpqY86Fgi4nGDD+VSbzxKbpKB11PY0yn4yOpbW3yLSRroQ3kuDTF+B+fx4PrHWttLqSDfP+54MCw9MTZDiyafnF4TG2Qjy69rkZtzH7EXEhNhcrd1RLxvQJ8IeZfRYSWdJIKDFLvUHZXHbhp17tuPDM0wPO8HrLnoeCFtB1ahwt+SBxtHDSKtSLWBpT1SqRGks+oyApdFfANrLkRXWs70izOpDVoC0CAzuC8Hrg6E11/0kaTbL+lMf6RIvm3NRCko7pN0Ufy6SfEG5g2bLbRu9vvqba0Gn9PMm1nP79wj5Y9V/rwxGdUziz8zr5AR1CiTh6t8vTUoNK+ZzhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,99 +111,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Mar 27, 2026 at 11:14:04AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Fri, Mar 27, 2026 at 10:52:24AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > OK again I'm starting to think we just shouldn't support fix-patches at all any
+> > more.
+> >
+> > This is an example  of a change being done in a fix-patch that's _really_
+> > causing issues.
 
-
-On 2026/3/31 22:01, Lorenzo Stoakes (Oracle) wrote:
-> OK we need a fairly urgent fix for this as this has triggered a syzbot. See [0]
-> for an analysis.
-> 
-> I show inline where the issue is, and attach a fix-patch for the bug.
-> 
-> [0]: https://lore.kernel.org/all/e1cb33b8-c1f7-4972-8628-3a2169077d6e@lucifer.local/
-> 
-> See below for details.
-> 
-> Cheers, Lorenzo
-> 
-[...]
-> 
-> Fix patch follows:
-> 
-> ----8<----
->  From a4dfc7718a15035449f344a0bc7f58e449366405 Mon Sep 17 00:00:00 2001
-> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> Date: Tue, 31 Mar 2026 13:11:18 +0100
-> Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
-> 
-> We are incorrectly treating lock_dropped to track both whether the lock is
-> currently held and whether or not the lock was ever dropped.
-
-Good catch!
-
-Right, lock_dropped is not supposed to mean "is the mmap lock currently
-unlocked?", it should mean "was the mmap lock dropped at any point
-during MADV_COLLAPSE?"
+Yeah, this is my bad. I built my test patches, but didn't verify on David's.
+I will also take full responsibility, I rarely push upstream fixes- which is
+not an excuse.
 
 > 
-> Update this change to account for this.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> ---
+> Thoughts?...
 
-Thanks for the fix!
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+I think all your suggestions are great, but I also don't believe I am the
+intended recipient =)
 
->   mm/khugepaged.c | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d21348b85a59..b8452dbdb043 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   	unsigned long hstart, hend, addr;
->   	enum scan_result last_fail = SCAN_FAIL;
->   	int thps = 0;
-> +	bool mmap_unlocked = false;
-> 
->   	BUG_ON(vma->vm_start > start);
->   	BUG_ON(vma->vm_end < end);
-> @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->   		enum scan_result result = SCAN_FAIL;
-> 
-> -		if (*lock_dropped) {
-> +		if (mmap_unlocked) {
->   			cond_resched();
->   			mmap_read_lock(mm);
-> -			*lock_dropped = false;
-> +			mmap_unlocked = false;
-> +			*lock_dropped = true;
->   			result = hugepage_vma_revalidate(mm, addr, false, &vma,
->   							cc);
->   			if (result  != SCAN_SUCCEED) {
-> @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->   		}
-> 
-> -		result = collapse_single_pmd(addr, vma, lock_dropped, cc);
-> +		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
-> 
->   		switch (result) {
->   		case SCAN_SUCCEED:
-> @@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-> 
->   out_maybelock:
->   	/* Caller expects us to hold mmap_lock on return */
-> -	if (*lock_dropped)
-> +	if (mmap_unlocked) {
-> +		*lock_dropped = true;
->   		mmap_read_lock(mm);
-> +	}
->   out_nolock:
->   	mmap_assert_locked(mm);
->   	mmdrop(mm);
-> --
-> 2.53.0
+I intend to push a V3, but it's going to a few more days as I have some other
+things that got put on my plate that are a higher priority.
+
+Thanks!
 
 
