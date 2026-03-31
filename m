@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411C1FF60FF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 137DAFF60FF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:40:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED696B0098; Tue, 31 Mar 2026 06:39:02 -0400 (EDT)
+	id 76DB76B009B; Tue, 31 Mar 2026 06:40:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9EB16B0099; Tue, 31 Mar 2026 06:39:02 -0400 (EDT)
+	id 744F96B009D; Tue, 31 Mar 2026 06:40:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DBC66B009F; Tue, 31 Mar 2026 06:39:02 -0400 (EDT)
+	id 6815C6B00A1; Tue, 31 Mar 2026 06:40:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B0D16B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:39:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3ACBFE1792
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:39:02 +0000 (UTC)
-X-FDA: 84606010524.05.08A7708
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6D828C0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:39:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kj7mU3zJ;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 571AF6B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:40:10 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE0F9BD80D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:40:09 +0000 (UTC)
+X-FDA: 84606013338.17.636DD4C
+Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 46A79140006;
+	Tue, 31 Mar 2026 10:40:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=RGXImBG9;
+	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=IkV85c1b;
+	spf=pass (imf09.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
+	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774953540;
+	s=arc-20220608; t=1774953608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DUc40uI7e6fpkkzQl3EAlfc1Not7eAQrRynxsM92pZg=;
-	b=kbtqtRB/PD3KOzJfg59FrAIumpEn7vDXq9OsacyYjqPO7qntdSOlSc8Om96LDMFjduKgq1
-	KK52mqRIYLKWGYieU08pvZe4SJBEFh2Y5zHfu2qJpI1cjF7wFa4zQdr1noctSYzAOtkK6l
-	qY+PLVRc/uqdnQRyqZYwKDzIxnhzBBU=
+	bh=o61ziz1K7RE+vfkx01/BqKbiM2DvTc1gWIWpdSZJsrk=;
+	b=CrejlnDyOd95J9zyqt1ArvmUCcZItxLMLVxYui8vU/lK1/wum8yamjwIlSofkFey+fvRjb
+	oPYBKeNMbwb4zrLQRXZnu6uIZmDDuCFOTJ+YEs1HPJ8Qf9aYRb+xV4pTL92dctqp/IIYXH
+	WahRabVxtRiu2FiH5KFLRW/aqmiofhQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kj7mU3zJ;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774953540; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=RGXImBG9;
+	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=IkV85c1b;
+	spf=pass (imf09.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
+	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774953608; a=rsa-sha256;
 	cv=none;
-	b=lcvpR9DQRyKexwKtJ5K+gKNmQEvc6Y7zLwshxlW5a59Hx9kj+jzWkj4/c+9qa7XeWSDG9h
-	CNHd3GCkBrfb4fK9/AB6a/DOAB3SIZ5cpXOwGvVBhVb6nNC6rIC5KZtTnEnD91O1Diuhyu
-	qsYl9o+6nC+F9nwaFSKqgfxyO1eksu8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56DBC40648;
-	Tue, 31 Mar 2026 10:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0EFC19423;
-	Tue, 31 Mar 2026 10:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774953539;
-	bh=ns25mF2UrLHOJDvx/LnwaHuyB+Hf+Nyj2xT98c2l78k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kj7mU3zJLCNNKhIQIiBnX3/r4iNBlU6v60RiEgsOF7hVhyKpPx7fHySOX/1HcZ6HT
-	 g46QUG/QO0DvQW1+pKythy1s52UNDgvTjrWLTdj5d7spmSO1LFbNQUyRArY7Mj37Z3
-	 7GHfGdvFSXRLtrA12eblkVnS0sp8uYMAOeilRIccIqfzkyfaGXDubOLNifxNz+z1EL
-	 JmAWQ1FY+eJeiMxXzo4jYsxtkMZYa6oPg7TWrLWfmhPzaBZ1DhSvnKuYoSeP9/E2Xm
-	 kG8zGjdKyVcdRF/Y9LgYk7Ghn6/jZmqo2vQFXc8thsNIf/gxryTLdUM9GwUrpEdsQe
-	 Zc/hNO6wMpYBA==
-Date: Tue, 31 Mar 2026 11:38:57 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
-	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
-	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v6 5/6] mm: use vma_start_write_killable() in
- process_vma_walk_lock()
-Message-ID: <4e1c47a9-77a2-4f29-8de5-37f9958f5885@lucifer.local>
-References: <20260327205457.604224-1-surenb@google.com>
- <20260327205457.604224-6-surenb@google.com>
+	b=zVZs7exSyZnDyh/cfibCXIzzwqa3YJtr0BL+KbDuZlDHUaiZJltjXtAkihkKMyeuVH3n+U
+	a2rE+eCiZH/BZWRCP612LIUHeGlt37Xd7zrlwGK2tUEhoR4xo1Gx2Vb5f3mITMfWsYElCt
+	04NzCBmvQTRgj/GUfJ/itXwis8X+yw8=
+Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
+	by mail.parknet.co.jp (Postfix) with ESMTPSA id 779F226F7689;
+	Tue, 31 Mar 2026 19:40:02 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114; t=1774953602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o61ziz1K7RE+vfkx01/BqKbiM2DvTc1gWIWpdSZJsrk=;
+	b=RGXImBG9OkkmJqMaygJ7AQDGsKzIQl9abCecZ1Urgp/oZ2yiBvcZeoE7CFuE+/kvV+iN6D
+	U4swsphXGmlc5MObWhkYovizM+FxkoO6U2EEfzujW5BqBtiQ0r/J752mOChnK4gJbLR1dD
+	1VUSlKrbZJpn48cr/6Z/ap3ks+R41GUVNedpzkFQCJe04B0BLknTNOOiimUB7JUPB+SQ/N
+	4X6OBt/0Ut5bSz7MyVLy+TgrTD28bKJcZgC7ik/AyOmHECVjUd9Vv439R9htdHSYnn55Lv
+	bCx5WQtQ/S9RUkvZ1CIEdGRCrYI8pxGW0DbfMNG8k94uebjKG5i/Rptypu+OKw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114-ed25519; t=1774953602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o61ziz1K7RE+vfkx01/BqKbiM2DvTc1gWIWpdSZJsrk=;
+	b=IkV85c1bt9eSNB1ACUrhM1X1oZJQ7QVVMbbvnBOLSwK7ls9q0Ga6u2jMZrt3U7fvRHGRKO
+	E6TPZwycQpL0rOBA==
+Received: from devron.myhome.or.jp (devron.myhome.or.jp [192.168.0.3])
+	by ibmpc.myhome.or.jp (Postfix) with ESMTPS id 04458E00CC9;
+	Tue, 31 Mar 2026 19:40:02 +0900 (JST)
+Received: by devron.myhome.or.jp (Postfix, from userid 1000)
+	id EABA92200056; Tue, 31 Mar 2026 19:40:01 +0900 (JST)
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org,  linux-block@vger.kernel.org,  Christian
+ Brauner <brauner@kernel.org>,  Al Viro <viro@zeniv.linux.org.uk>,
+  linux-ext4@vger.kernel.org,  Ted Tso <tytso@mit.edu>,  "Tigran A.
+ Aivazian" <aivazian.tigran@gmail.com>,  David Sterba <dsterba@suse.com>,
+  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,
+  David Hildenbrand <david@kernel.org>,  linux-mm@kvack.org,
+  linux-aio@kvack.org,  Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
+ fat_evict_inode()
+In-Reply-To: <mjraa5thsnzchejoomqgiahwajx4cs5ryqnmn7zsi3fylzhrrr@5ip65jcrlknn>
+References: <20260326082428.31660-1-jack@suse.cz>
+	<20260326095354.16340-57-jack@suse.cz>
+	<87ldfazqo2.fsf@mail.parknet.co.jp>
+	<3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
+	<87jyutwo6o.fsf@mail.parknet.co.jp>
+	<mjraa5thsnzchejoomqgiahwajx4cs5ryqnmn7zsi3fylzhrrr@5ip65jcrlknn>
+Date: Tue, 31 Mar 2026 19:40:01 +0900
+Message-ID: <87wlyss2ny.fsf@mail.parknet.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327205457.604224-6-surenb@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6D828C0002
-X-Stat-Signature: f1b6nfmekabmoao1skjh5yx4hcj6y8bc
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 46A79140006
+X-Stat-Signature: jsh7tgn9o9jgdafgti188z9a7idac7bm
 X-Rspam-User: 
-X-HE-Tag: 1774953540-710432
-X-HE-Meta: U2FsdGVkX18YPtWCCfeZnbPgrUSLZdhVOkxQLjz7j1DRq7G7urAJ9XfbD8Z725/DiIRl4aUBtoq6oc30+hk+MUVfqPDbrm1zaHkeAImJieLVcTSbECub6pl03Iv+/CzVR6BjUAxTdWZCTm3H0t4zHvjZxHh3KIXN7QnmEvL+ke37DWcwQNsFxi+W6xy7iqutTn8wzpwiOxHZB8Q+laaerSFPFuL8XuC3NPB8/4/cwFUOzuAvs4AbUwWoxHprPi+b7BR3ZHeaBVdoYPTTG3z/9ioncr+fmcy7IXXHGBSbx3FxmUczf9bMWqyjqOvtf3eH3ifkyiNcYCfbGduCYuFpPqqYHlt2bVueG2TBCXxQFFgButqgzvOXDNGG8fC6H1JURPiKujTvEqm953tvWRORxUR6fS3n/qcnsJQjRFWggyx3vNUvA+Fhc4L653aNowjkQ4HWl4PvoEBWfFdoBrhpf5oJ0gLNASb98hrGfgE7K/zc68F0SEebpa/xU6TKDHKs8/ZFNDkT8R5z1C1atTBKU5L9thPge+FqHmLyIGmb+PnUsw52groT/QhqVqSWVADOZOX2jzWvqoXpWuB21GImIR3p13fZZZPrKkrgPEkIMfJUfOzaUlu4+nat11Xw4Zqc1zQtPp3VRwM4SN3rH28QsO0szOcajj6inklIgzI3JGojO+nCsXCkrFRFZe1OisFWUFsTHceoUA+laGuV5Dnh7DhXmYZjaYjxhuvxCHzhLM0T1qU4PmDT+zr5HZetFYjrg7/BKb9RN38NtvrApGKXhaUwLpkRuQ3KmNrA98vDhg9KA1q/q//1GsjKA0QdtitImsCbPtO281bqF6Ww86kftrUxdDFZFmzsi/+bZXhEffhpBZ0JBV73Nj9pQ9fwJe0nIZdwYqdUZiUOnxVHgjU6Hhqnpy7GpwR/79fgQi1YgvgStrJVqFRE2JVF1DOXAEFItR9kMfplYxbu49sM4QM
- ZxH1PzC4
- /fdoGB6bDstJ7P9cNVNb4vtFaj7srs4PzHH8gTjW8BWNgS1nV+ZY6p7uVMTXFiXWnT1tExV0RMfAdC7j+PanZNwDwM/nF9deeORz5LMqndeP98nfJ7stsgTxBZhaO7f1HSapgtilO65snaU6l4ipJBMMM/pAYW8qEx5ukO77Ned9Jm7pFvoMBRakApMkAMNj2LgB6Ided53RetUghbKo4ssHF+VpSxdjgzPqXkPIbI6plmBH7SaPuF+EKvhwWF4dtmwY+rMRtI5UMAY2UDy1fb8FiuRBbyrh0rhImmMduxgb6bH/c4Y/8xeFKo5cCiXwjfJoWOLIUxk50u4mMFEp2XdULdfH0XjMxczwgk9Czr+uzkOos7wYGx+rZ+waUJ10uL4wQroqTrALcnXaCmQR5Hu8ssi/x7i3h7m8p
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774953605-990744
+X-HE-Meta: U2FsdGVkX1+1WOc31TdfOaprpQqOkTcOCVgKF59fqw/HYI/jj9dlZruc9K/eGDiVHhHZb6ENmTUPOo1izJWSQ8S85ZhJYDcD0El67cKh1974dZM6xs/F5VX89l4p6j0l8ZZKZPiXIUaVmjmF5oSfJB2avJtNu3AzYQDNnIEkPt/yXs55bIbA7QXwzcVZPquaN5QfwLcBsV1j6IJfbrtORdHRJFZICEq9w+XNuAUNqx3LXCP8/BGi7hMHgP6HN5xL8xlSy8fhEEvK3llGxj7aU6AHE7EZBv0emKQ9hl1hHhMQMUaiChySQskGlBc1yZx0J+gg34CFU8tzV690STA0FQaJprRog5dCeKs2hSx5g3Q5tvyHKyxCSfBcqh1a4yjH9dUH34KqF1JL+WDeiBJk0hgp1PSJQ8lwRqk8bneaQNX4r9WL7Lx0I6r/oZxY5FgyDL+GSFtNZ0aYiD0k4pwOgHBmZFXPorgZLZ71MXuFY1ANMMHfMiTkEdbbAUHazJe+3P/ndamHdVAf6VeJD2iCgv5HPpmfA3Nh4bcLjC/TO7xWc2nJt/Ujd4ToToa6PE5eBoDQGaxN0Fk/Ym1NRMeUC6+hQq9rpJHSjN5wvH44LtuJE+suFvvpAgAHxLp08d0TPI774gMjxInasX2Fj3vVciW+JbLEa549pllKTyz53Ck+uSwSh3+WD96yRLVlC0eRylfu2GXJ8BmzKG2ru5qu8Hg7C+UeslZcOh+8kR9n4QiJwXZHXJ2mLlXkkAnt9tJDC/Oa0OkzaNtfi1gR32i+amng718wRvY/SKto/VrDTJ0ebj4k0Wb5WpUncL9d4tpfEqbpAYGl/SDnXiSuYv8xhmKwDT92f+Hiqd9d5aCKLToHukeXAZxeoM+zDe1txTmy7ONCgJCYQbWbvpm8vetoSul5Fs/Zm3UJ2aKfoYkiPQIo+p6Nhd36nHvYGnr8ewryzKkdBEdTTl0IKWUmyPC
+ PZHFah21
+ NWRm3y4a6JeEAgXA+A8nk3MLhEgP0tViHQ2Nzd2g86YdxNqf7Og1aj3i3bSsLrZ8k1CGPBb8H9v+ytEHxW02nAoAuBv9UJyCkIuuua7xFNIYPneCdfOyEkQfOWMoCw07tvTT++qHXmqwlS1qrN8Y4Sd3RsQIMHdwQ5wkL9amr/JxZEDHWfLBXPEiVbDy/YUzPxI1klLpLxpT6tBaZWltciNRad4LwwHskjWTZOtbPu5u7Bt1mBIPvOU0pszd/P9c4+OrIvtUtLJx/8FVFAj2CNU6JbzGzOfpkm1Ri+fN4vH2SukTtPsMjgS92O6yXp+m3aEvUZ9S28R2ZkpQdfqXoN9pUJklIks4x0J1b+qhdaCrtfOQPCXqqbbF1vfpKZ18/JGDGYoEc9s8Qhh6uKF4bTSnt/TpGFkUwGRsHoFh6QNQvNPAwK879X5Dl3Jgrv2JM0nJePB33e8eTut1/TqhnbGh3rpzdUrDpDhZgO905wgEpFZ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,180 +115,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 01:54:56PM -0700, Suren Baghdasaryan wrote:
-> Replace vma_start_write() with vma_start_write_killable() when
-> process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> Adjust its direct and indirect users to check for a possible error
-> and handle it. Ensure users handle EINTR correctly and do not ignore
-> it. When queue_pages_range() fails, check whether it failed due to
-> a fatal signal or some other reason and return appropriate error.
->
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  fs/proc/task_mmu.c | 12 ++++++------
->  mm/mempolicy.c     | 10 +++++++++-
->  mm/pagewalk.c      | 22 +++++++++++++++-------
->  3 files changed, 30 insertions(+), 14 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index e091931d7ca1..33e5094a7842 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -1774,15 +1774,15 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  	struct vm_area_struct *vma;
->  	enum clear_refs_types type;
->  	int itype;
-> -	int rv;
-> +	int err;
->
->  	if (count > sizeof(buffer) - 1)
->  		count = sizeof(buffer) - 1;
->  	if (copy_from_user(buffer, buf, count))
->  		return -EFAULT;
-> -	rv = kstrtoint(strstrip(buffer), 10, &itype);
-> -	if (rv < 0)
-> -		return rv;
-> +	err = kstrtoint(strstrip(buffer), 10, &itype);
-> +	if (err)
-> +		return err;
->  	type = (enum clear_refs_types)itype;
->  	if (type < CLEAR_REFS_ALL || type >= CLEAR_REFS_LAST)
->  		return -EINVAL;
-> @@ -1824,7 +1824,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  						0, mm, 0, -1UL);
->  			mmu_notifier_invalidate_range_start(&range);
->  		}
-> -		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-> +		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
->  		if (type == CLEAR_REFS_SOFT_DIRTY) {
->  			mmu_notifier_invalidate_range_end(&range);
->  			flush_tlb_mm(mm);
-> @@ -1837,7 +1837,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  	}
->  	put_task_struct(task);
->
-> -	return count;
-> +	return err ? : count;
->  }
->
->  const struct file_operations proc_clear_refs_operations = {
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index c38a90487531..51f298cfc33b 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
->   *      (a hugetlbfs page or a transparent huge page being counted as 1).
->   * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
->   * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
-> + * -EINTR - walk got terminated due to pending fatal signal.
->   */
->  static long
->  queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
-> @@ -1545,7 +1546,14 @@ static long do_mbind(unsigned long start, unsigned long len,
->  			flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagelist);
->
->  	if (nr_failed < 0) {
-> -		err = nr_failed;
-> +		/*
-> +		 * queue_pages_range() might override the original error with -EFAULT.
-> +		 * Confirm that fatal signals are still treated correctly.
-> +		 */
-> +		if (fatal_signal_pending(current))
-> +			err = -EINTR;
-> +		else
-> +			err = nr_failed;
+Jan Kara <jack@suse.cz> writes:
 
-Is that really a big deal? Does it really matter if the caller doesn't get
--EINTR in this case? This feels like another sashiko nitpick and is adding a
-bunch of additional complexity here.
+>> >> Hm, why do we have to add this here? For FAT, if buffers are still
+>> >> dirty, buffers will be flushed via bdev flush?
+>> >
+>> > The reason why I've put sync_mapping_buffers() here is the following
+>> > sequence:
+>> >   fd = open("file")
+>> >   write(fd)
+>> >   close(fd)
+>> >     - now data gets written out, dentry & inode can get evicted from memory
+>> >   fd = open("file")
+>> >   fsync(fd)
+>> >     - this should flush all dirty metadata associated with "file" but if we
+>> >       didn't call sync_mapping_buffers() during inode eviction we wouldn't
+>> >       have a way to do that.
+>> >
+>> > So in general I think sync_mapping_buffers() call is indeed needed.
+>> 
+>> Hm, it looks like not new issue, isn't it? Why we have changed now in
+>> this series?
+>
+> It isn't a new issue. But so far inode_lru_isolate() was checking whether
+> the metadata buffers list has any dirty buffers and if yes, it skipped the
+> inode. So inodes with dirty buffers in this list could reach .evict method
+> only for deleted inodes or during unmount and either case makes above
+> problem impossible to happen. This is however a layering violation (generic
+> inode handling code shouldn't care about details of buffer heads) and as a
+> result it makes it difficult to abstract the metadata buffer handling this
+> series is doing. And all this for a handful of filesystems which,
+> honestly, aren't used in performace critical settings.
 
-I mean if you 'filter' error messages you might always end up with an error
-that's different than the original...
+I see, I could understand why you wanted to change though. However, (in
+my thought, this change has disadvantage by below reason) changing this
+behavior because of layering violation is not good way, IMO.
 
->  		nr_failed = 0;
->  	} else {
->  		vma_iter_init(&vmi, mm, start);
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 3ae2586ff45b..eca7bc711617 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -443,14 +443,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
->  		mmap_assert_write_locked(mm);
->  }
+>> It is including trade off write amplification vs reliability (i.e. may
+>> not call fsync()), for example. So I think we should not add it easily.
 >
-> -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> -					 enum page_walk_lock walk_lock)
-> +static int process_vma_walk_lock(struct vm_area_struct *vma,
-> +				 enum page_walk_lock walk_lock)
->  {
->  #ifdef CONFIG_PER_VMA_LOCK
->  	switch (walk_lock) {
->  	case PGWALK_WRLOCK:
-> -		vma_start_write(vma);
-> -		break;
-> +		return vma_start_write_killable(vma);
->  	case PGWALK_WRLOCK_VERIFY:
->  		vma_assert_write_locked(vma);
->  		break;
-> @@ -462,6 +461,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
->  		break;
->  	}
->  #endif
-> +	return 0;
->  }
+> I expect in practice you'll hardly be able to observe the difference as
+> inodes usually get quite a while to be reclaimed at which point the dirty
+> buffers would be already flushed by background writeback. I don't see how
+> this change would lead specifically to "write amplification" - that would
+> mean frequent redirtying of the same metadata buffer of an inode
+> interleaved with frequent reclaims of the inode and I don't see how that
+> would happen in a realistic setting.
 >
->  /*
-> @@ -505,7 +505,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
->  			if (ops->pte_hole)
->  				err = ops->pte_hole(start, next, -1, &walk);
->  		} else { /* inside vma */
-> -			process_vma_walk_lock(vma, ops->walk_lock);
-> +			err = process_vma_walk_lock(vma, ops->walk_lock);
-> +			if (err)
-> +				break;
->  			walk.vma = vma;
->  			next = min(end, vma->vm_end);
->  			vma = find_vma(mm, vma->vm_end);
-> @@ -722,6 +724,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
->  		.vma		= vma,
->  		.private	= private,
->  	};
-> +	int err;
->
->  	if (start >= end || !walk.mm)
->  		return -EINVAL;
-> @@ -729,7 +732,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
->  		return -EINVAL;
->
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> -	process_vma_walk_lock(vma, ops->walk_lock);
-> +	err = process_vma_walk_lock(vma, ops->walk_lock);
-> +	if (err)
-> +		return err;
->  	return __walk_page_range(start, end, &walk);
->  }
->
-> @@ -752,6 +757,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
->  		.vma		= vma,
->  		.private	= private,
->  	};
-> +	int err;
->
->  	if (!walk.mm)
->  		return -EINVAL;
-> @@ -759,7 +765,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
->  		return -EINVAL;
->
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> -	process_vma_walk_lock(vma, ops->walk_lock);
-> +	err = process_vma_walk_lock(vma, ops->walk_lock);
-> +	if (err)
-> +		return err;
->  	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
->  }
->
-> --
-> 2.53.0.1018.g2bb0e51243-goog
->
+> If someone comes with a realistic workload which would suffer significant
+> regression from this change, then of course we should address it. I have
+> plans for adding an interface for filesystems to expose the information
+> that inode has some pending dirty metadata and a way to flush them from
+> flush worker because that is a common need a lot of filesystems has and
+> doing the flushing from .evict isn't always doable due to locking
+> constraints.
+
+I think it would happen with normal operation, for example, copy many
+files more than total memory. I think this would be much common than
+write=>close=>open=>fsync in your example.  Anyway, with it, reclaimed
+inode metadata will be flushed forcibly and frequently (yeah, may not be
+significant though. but I can't see the benefit for users from this
+change.), and lost to chance combining multiple time of dirty while copy
+many files.
+
+> I'm still thinking about details but this has to be a properly
+> abstracted interface all filesystems can use and not a special hack for a
+> handful of old filesystems.
+
+Sounds great. How about we delay this behavior change until this
+interface?
+
+Thanks.
+-- 
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
