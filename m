@@ -4,94 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79A9DFF60D9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4136FFF60D0
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 08:05:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76E2C6B008C; Tue, 31 Mar 2026 04:04:42 -0400 (EDT)
+	id 859276B0096; Tue, 31 Mar 2026 04:05:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 746116B0095; Tue, 31 Mar 2026 04:04:42 -0400 (EDT)
+	id 830C96B0098; Tue, 31 Mar 2026 04:05:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 683326B0096; Tue, 31 Mar 2026 04:04:42 -0400 (EDT)
+	id 747306B0099; Tue, 31 Mar 2026 04:05:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5981C6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:04:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB6F71A0B93
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:04:41 +0000 (UTC)
-X-FDA: 84605621562.20.3EC39E2
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D8EC4C0006
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:04:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JTnWCh3H;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774944280; a=rsa-sha256;
-	cv=none;
-	b=oHJapRkZrw2nRuEDJt4WN8q6ng41xsH96r/WRu0FBaeGEWG8gGxDZjBZ8HZNgWWPihcxyh
-	LftcurBWjDa6yRpj8nowBULy8wAz+5vtnMqHojGfhP2qe9cZgYgem5gqBVCSeQil73PyV1
-	p3vs0CChmRNb8kd2VMlERiGlD+hOS/4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JTnWCh3H;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 66B806B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:05:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EFC31A0B85
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:05:03 +0000 (UTC)
+X-FDA: 84605622486.18.E510755
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D50A110000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:05:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eaNfKyIj;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774944280;
+	s=arc-20220608; t=1774944301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aTnq0mmzjppffXpYB5B4b2z/irJ0T8mlES9cozy6Bi0=;
-	b=ub1r7YeD7eJ3TTHar+id0eb+YjSkD5UG6CfTvXZ2z9RilxQibpudCv1eHWI5T/Ec/hHxyM
-	aCAUI6eV6uYDM/RyuUxGJYA68CaBPQsrD7HhpEUlofDj39+6/4lpHWDi+xin9eSnecWWn3
-	VTzbUK/8cz5AbrNiC+CkYgcHbuMTZ+U=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774944273; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=aTnq0mmzjppffXpYB5B4b2z/irJ0T8mlES9cozy6Bi0=;
-	b=JTnWCh3HWDMqmiPSLGlO5VbmojOhq+H6EOezOnXNIhdghl+FnfcQCV62hHo+HwbV4C96MQmYtjXGLZ/lgRX9dGQ36lAw3JruqjlWxkXuTVkiujNJgK6aaIjjykz62Irgl/fKMjWVzlKft9+FIfdzzqqKXvaWrKRqNCOX9+Z2/nI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X03ffKP_1774944271;
-Received: from 30.74.144.129(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X03ffKP_1774944271 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 31 Mar 2026 16:04:32 +0800
-Message-ID: <3ef1cb78-5110-4326-bde1-d929f638b8f6@linux.alibaba.com>
-Date: Tue, 31 Mar 2026 16:04:30 +0800
+	bh=HLXfFb8U8Zgq1sbn5+Sf1i+7GC+yyn45UCcNC9RaZio=;
+	b=1SH35zMQan39DraBxIpRJx6lG0k3h4zU9iXG3kpim2a/u1VqvaN8F4clFALAdpP+vHZfQV
+	uGVXBOg4vcX8u2yGS3k97eds/kaieOdW9TYZEVkqcLG4hddAqFAFoY8jh4NUrtM1jzNrhz
+	QTbAF7paMv3HcqpQiW5pU25UKfVA23k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774944301; a=rsa-sha256;
+	cv=none;
+	b=tt2Tteg9pd+rbu4Elh9AcEbsEaXVwbtauaXs6/rHhh4hnOr5h0/JA1SQ6vnWB5JHzqKGOO
+	qMRkpi+iXOUDCPokKofhGLZqtXzuIddusl83q77MN800pvHke3H5z/AptJEhcjBlI1+lL7
+	NtWtSqsFFIYiyjmZYmLnbzwLkIH1fro=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eaNfKyIj;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V7k0rJ505649;
+	Tue, 31 Mar 2026 08:04:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HLXfFb
+	8U8Zgq1sbn5+Sf1i+7GC+yyn45UCcNC9RaZio=; b=eaNfKyIjjmlVVCAWOwd/A+
+	cA+U8IBsJpyFJ9yvkFJ6UJEUtEEJ3d0/tuCg7ht9ZC9+k5MOn1IwUqlX0ov0c8L5
+	kmudaJxRNehQw9r28ybncfpuEd6Ro5n0e8uwaHkpgJzW8SbTxo4XKIrd8HzLbOa6
+	m5ypiEOPMOza2DYmAj8XPe4WB3V/rDFSA6rbVe2yObfJXrxqH8CI3PMiScomXrZn
+	jn9i01oJ58khCd9WPss7jm2X08Q1VM03wm+sLyb3upn/LNvQ/O0NA2pdGI/N5icV
+	6BobtWnn/1yibe7bPh7nWgiDG5aJmpCgxI96tAzZ/XpumHElFl6Qi2OLDlambgnw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66g1t99e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 08:04:56 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62V63Zdv021659;
+	Tue, 31 Mar 2026 08:04:55 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6sasg9s7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 08:04:55 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62V84s5D4850178
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Mar 2026 08:04:54 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80BBD581BB;
+	Tue, 31 Mar 2026 08:04:54 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F39C1581BA;
+	Tue, 31 Mar 2026 08:04:51 +0000 (GMT)
+Received: from [9.52.221.31] (unknown [9.52.221.31])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 31 Mar 2026 08:04:51 +0000 (GMT)
+Message-ID: <65d33e3f-37f2-434c-9d39-38cac66aa7a5@linux.ibm.com>
+Date: Tue, 31 Mar 2026 10:04:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/12] mm/mglru: scan and count the exact number of
- folios
-To: kasong@tencent.com, linux-mm@kvack.org
+Subject: Re: [PATCH v3 7/7] mm: switch deferred split shrinker to list_lru -
+ [s390] panic in __memcg_list_lru_alloc
+To: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-5-b53a3678513c@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260329-mglru-reclaim-v2-5-b53a3678513c@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        David Hildenbrand <david@kernel.org>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+        Dave Chinner <david@fromorbit.com>,
+        Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        Alexander Egorenkov <egorenar@linux.ibm.com>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <20260318200352.1039011-8-hannes@cmpxchg.org>
+ <4d3f8d79-3593-47df-9de8-f94f7f09a403@linux.ibm.com>
+ <acrf5_rS7hO5Ec0Q@cmpxchg.org> <acrjmBx_hX-Aa_SH@cmpxchg.org>
+Content-Language: en-US
+From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+In-Reply-To: <acrjmBx_hX-Aa_SH@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D8EC4C0006
-X-Stat-Signature: ucyo67uq375jp7nnut8hquuiurmag3sc
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Fdo6BZ+6 c=1 sm=1 tr=0 ts=69cb8028 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=bDKavUFbIZVm-0GZW4UA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 4GdaSQlSImMa_KzvLy3rjzfO77vK-sHP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDA3MyBTYWx0ZWRfX1twzc2BG99CB
+ TMuWES9DvXucC66Yhoje0lleePR7zGvBHW+Gzq+yLxE7s80widTi/buSvb7zXyLwFFXPQuGPvQR
+ sQ/kovp9E4t+FvZ8G2feMbgyCEsN9Kl4WQvO8vmXHOCABfn3Nz+horWftwhWMsVuhL8seR0w835
+ EPEMD1atamxKZSVNr5/G+Jh/u17J5UqKeGmInHeXOHBUYJYsflsBGxC/M3RjjM+DN8VrNJmbfSC
+ DHJojbTtmJ9IB+wf2qJz5xSQaPpq9PYCK4W2KmIOR/IxMYUsxfWDa+MUeFWR41DhTxCUpG21rDz
+ D/4zeoLNBkipiZ3+mx88eCmeLsGE78XJ+GeI+3AwslvJqSWlREgZ9r19TOD1hcAw7Ajd0ygW+0G
+ a/Vk0P7ytYPTEuuCDz6+YzOhgfmtZcwSmmiFRCw5MKPZkuauxfZxk0g4d/+MY/+dj61BgqtIrwb
+ KoyQe85Dox9/PyzfxHA==
+X-Proofpoint-GUID: 4GdaSQlSImMa_KzvLy3rjzfO77vK-sHP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 malwarescore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603310073
+X-Rspamd-Queue-Id: D50A110000E
+X-Stat-Signature: 1hxi63zws7k1tk4sj5myjodsq74cs6cx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774944278-153538
-X-HE-Meta: U2FsdGVkX19kOiYlPFW2PJgBu+jqU7tLv27f4o3QwlPYzmrv8/Zxzi28zUI8WmXqrPL6v6xbGJeerBs+G5GyIboA7uGKkOcFXOzBBdtHD5S6S4rG7kPteeljMOSSp3f7nFZEokP5Wv+9lGXYWVTL3wxy4UNIBTQOHo765ybTBpn0O9nJ8VnB2lsxGjE+7NuwJZctbHb3zm2t3cY0EzgEz9xpomV8Er9ysPYDcQ3xlYuxmdqlEmZR9xmA+bhRnA3+4F2U2xz4Mm9G7y2G99uMh8ehy+iijTbeQSJsoKD6/L6TgWYNyfN3NBq8CjtOB7YCqRd5B73gEYf77eE9GF+p46zKelmIVcRrYiIcqqF0q6pBuzeh2kfi0KZdw5x357uBc6Y9rcl0Z3hFr4wTCZ/5z9vlXPbX2ScsZzpzeycAA6Q5DvyzLSp1L9FaYEv73K06ih5rjvbDfmiptsrGhskCu9qemrGPilOjr+AxkeNlCUwNxFZCBuKbnhZFXLCuok3+cQnBXXg5Si4Sr7gv/sqLnovCsnNC0RzExy5LSLgpF1M97XoZv+fUbcqPyJwdiZ78KPgEBqMXPmBmTMwQUWhSKhWBVEzYzznVzDHhSUXyHFp8jLVy5gh3JJFBuUJGzCQyRkMMWs0FEmy/XmKDCHsniPAZfqqNZGVUwzii4pR3qF5XxqIdywRdopbGCC/xeEtsoDf4DKHd0fkpH3Q2Io16f+mh1ln24y6DIxpwXt8hMp34AqXYvrce5QM+Iy8NvCF0nT7S1e6UAZVT/2/79cY3Rw//9GIkibwA2hJQJC275cv5Bu4INWbw6d86blxSEkBojsbBb8xDtYCjngenx2is0ifYEiqFbnYS8gCrLjXOCzCm+P+UvEReaF9+4wrtErKCJTa35ibELG4RcvTPdD+lcsSE11kRYFsWyMGC6bMElGHyHbXYhZJTuaEgE9Rqbnk1SFbO1qu1fw0b3j39p8X
- qoU1eXjO
- V1t46bdvNxL4+vGYStTPazDoASN6YRoA/GXRxMRDwZ0sq40MRBBpnNuMNCZvhade9NKAOK4YhQwFnoPvx4Gn2kHXkyLwugsHyHxwejUCDvzaAjQOwWksAMmE0Y/lGTdZoBsY3q/wOC6Pd0MaF/26BsTmAFKXYnsPMmLinJLUg/Sre5ZXcoPUazxj1XX6K2LmZJSi8fb0MwhBTSqQ4kcazvdzRQd3zHF2buNX0IF26b05K0VM1pZ4M24kDsDzYD5qa/wP9j+nDb+Ra6qs1rjw93NuRS7ZpJWqsPdd8ZhD3OsRQkmGh7B5U0VICrBL1OsAz/k/Ty4L72aNj+9IaOyVvzTNE62ZWojS9+jJf/0+b/KntwWWZljlrO7cmamDbdQzmuVucjehA6z2hWqn1nfVe64K+Tw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774944300-618266
+X-HE-Meta: U2FsdGVkX18qF4gtvqOzVJy4jF9C4nLTw0th/oLe4SYUK+W5riB/TGuUqgucDXtGaBdpEZ+XKz4QdoCYofTpnbN0G6K2Pn4gj1uKyOGrz6GQj9kXDu+H0+FTC2EJHYCLH4InU/q8xoP0ZTDbkx7BkYY48ZZnsZemjpO7fj1xhDspde0a7W5ZlAEjSQACjEUe7+Xmy7wQMCaVPEP2WoUu8jubaGYG1Oi+9HgeKIk8dJKuTsDTqm83pZ7RXIVxgVsmHmk5yZuU3lTJHq0y0JaOeaLX2NsK0+55HjWlyrWKPPF61EED4kqm48VTn6W7i682enlEpmYnfBZNPgqoI74pwyiodR9o5/AQlwv+7DboXGjABEOHJlLOLTGOyLUnNWLn1SEn0RjPD9E0lz2B+QmYSKSmMW53t6Bq69wXw5oy0OV6MokfZP9kDK2Vv9Y6CfTz9hZ5HuFVbvaCTFcnqtXqUHs8D/yDYuyWTE4UeV1loRZBA5w80zaZVS95IQNRUsDH+ADgzvM3UPWxmCPLSU7ouhIXZbzycnGDKVbdQyyNc6hxWVlTm1HYVFMBjjWocH1xINil6yjFUkG82Wziq4beNUiiy3Zkf004jWl/jK7nxOgbLNnD0jOIB5fka4dCa6H5jGncR60ZMUWX5kt3b4XgCzSrF/jIqmaFh92UbWSgmHZttzA+6GlWBxTg8+OvAVZasxYz47vsqrac+pB10wISQu6sjHzriNh+fGr3UBLnKEn6PdaYxLP41CKb8LdJ4UjpFVNcjnjU5w+ocYJyfFi2kj+ZqcOBqkJV4lXoncNGr0FRAEBVIAlZR+vH9Bss7XyaQJibUtRw8mudRYBX3ZdOU/HWPeiE9U/aXLvCj6z9eY00WAtWXkGIVsTZ59kaP6rpRrVM1pCFnCiOdNSGj/xSaM6bJXkJD5wUdOs6PwkPO3gEjzTdhB9vtBbvbB8WDPmpPgFxKebYMMXZ9V+wgQN
+ VYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,173 +153,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Make the scan helpers return the exact number of folios being scanned
-> or isolated. Since the reclaim loop now has a natural scan budget that
-> controls the scan progress, returning the scan number directly should
-> make the scan more accurate and easier to follow.
-> 
-> The number of scanned folios for each iteration is always positive and
-> larger than 0, unless the reclaim must stop for a forced aging, so
-> there is no more need for any special handling when there is no
-> progress made:
-> 
-> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
->    the function and the call now just return the exact scan count,
->    combined with the scan budget introduced in the previous commit to
->    avoid livelock or under scan.
-
-Make sense to me.
+On 30-Mar-26 22:56, Johannes Weiner wrote:
+> On Mon, Mar 30, 2026 at 04:41:16PM -0400, Johannes Weiner wrote:
+>> Hello Mikhail,
+>>
 
 > 
-> - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
->    scan count was kind of confusing and no longer needed too, as scan
->    number will never be zero even if none of the folio in oldest
->    generation is isolated.
+> Can you verify whether the kdump kernel boots with
+> cgroup_disable=memory?
 
-Yes, agree.
-
+It was not a kdump, but s390 specific dump tool. Yes, here is the cmdline (forgot to include):
+kernel parmline...: 'reset_devices cgroup_disable=memory nokaslr numa=off irqpoll nr_cpus=1'
 > 
-> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
->    the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
->    naturally returns 0 when only two gens remain and breaks the loop.
+> I think there is an issue with how we call __list_lru_init(). The
+> existing callsites had their own memcg_kmem_online() guards. But the
+> THP one does not, so we're creating a memcg-aware list_lru, but the
+> do-while hierarchy walk in __memcg_list_lru_alloc() runs into a NULL
+> memcg.
 > 
-> Also move try_to_inc_min_seq before isolate_folios, so that any empty
-> gens created by external folio freeing are also skipped.
-
-This part is somewhat confusing. You probably mean the case where the 
-list of that gen becomes empty via isolate_folio(), right?
-
-If that's the case, the original logic would remove the empty gens 
-produced by isolate_folio() after calling try_to_inc_min_seq().
-
-However, with your changes, this removal won't happen until the next 
-eviction. Does this provide any additional benefits? Or could you 
-describe how this change impacts your testing?
-
-> The scan still stops if there are only two gens left as the scan number
-> will be zero, this behavior is same as before. This force gen protection
-> may get removed or softened later to improve the reclaim a bit more.
+> Can you try the below on top of that -next checkout?
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/vmscan.c | 46 +++++++++++++++++++++++-----------------------
->   1 file changed, 23 insertions(+), 23 deletions(-)
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index 1ccdd45b1d14..7c7024e33653 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -637,7 +637,7 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
+>  	else
+>  		lru->shrinker_id = -1;
+>  
+> -	if (mem_cgroup_kmem_disabled())
+> +	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
+>  		memcg_aware = false;
+>  #endif
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index ab81ffdb241a..c5361efa6776 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4686,7 +4686,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->   
->   static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   		       struct scan_control *sc, int type, int tier,
-> -		       struct list_head *list)
-> +		       struct list_head *list, int *isolatedp)
->   {
->   	int i;
->   	int gen;
-> @@ -4756,11 +4756,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->   	if (type == LRU_GEN_FILE)
->   		sc->nr.file_taken += isolated;
-> -	/*
-> -	 * There might not be eligible folios due to reclaim_idx. Check the
-> -	 * remaining to prevent livelock if it's not making progress.
-> -	 */
-> -	return isolated || !remaining ? scanned : 0;
-> +
-> +	*isolatedp = isolated;
-> +	return scanned;
->   }
->   
->   static int get_tier_idx(struct lruvec *lruvec, int type)
-> @@ -4804,33 +4802,36 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
->   
->   static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   			  struct scan_control *sc, int swappiness,
-> -			  int *type_scanned, struct list_head *list)
-> +			  struct list_head *list, int *isolated,
-> +			  int *isolate_type, int *isolate_scanned)
->   {
 
-8 parameters:), can we reduce some of them?
+I confirm, this resolves the issue.
 
->   	int i;
-> +	int scanned = 0;
->   	int type = get_type_to_scan(lruvec, swappiness);
->   
->   	for_each_evictable_type(i, swappiness) {
-> -		int scanned;
-> +		int type_scan;
->   		int tier = get_tier_idx(lruvec, type);
->   
-> -		*type_scanned = type;
-> +		type_scan = scan_folios(nr_to_scan, lruvec, sc,
-> +					type, tier, list, isolated);
->   
-> -		scanned = scan_folios(nr_to_scan, lruvec, sc, type, tier, list);
-> -		if (scanned)
-> -			return scanned;
-> +		scanned += type_scan;
-> +		if (*isolated) {
-> +			*isolate_type = type;
-> +			*isolate_scanned = type_scan;
-> +			break;
-> +		}
->   
->   		type = !type;
->   	}
->   
-> -	return 0;
-> +	return scanned;
->   }
->   
->   static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   			struct scan_control *sc, int swappiness)
->   {
-> -	int type;
-> -	int scanned;
-> -	int reclaimed;
->   	LIST_HEAD(list);
->   	LIST_HEAD(clean);
->   	struct folio *folio;
-> @@ -4838,19 +4839,18 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	enum node_stat_item item;
->   	struct reclaim_stat stat;
->   	struct lru_gen_mm_walk *walk;
-> +	int scanned, reclaimed;
-> +	int isolated = 0, type, type_scanned;
->   	bool skip_retry = false;
-> -	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->   
->   	lruvec_lock_irq(lruvec);
->   
-> -	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
-> -
-> -	scanned += try_to_inc_min_seq(lruvec, swappiness);
-> +	try_to_inc_min_seq(lruvec, swappiness);
->   
-> -	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
-> -		scanned = 0;
-> +	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-> +				 &list, &isolated, &type, &type_scanned);
->   
->   	lruvec_unlock_irq(lruvec);
->   
-> @@ -4861,7 +4861,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
->   	sc->nr_reclaimed += reclaimed;
->   	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
-> -			scanned, reclaimed, &stat, sc->priority,
-> +			type_scanned, reclaimed, &stat, sc->priority,
->   			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->   
->   	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
-> 
+Thanks.
+
+
 
 
