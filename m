@@ -4,85 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09710FF60EE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFFBFF60EE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 718B96B008C; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
+	id CE6956B008C; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C96E6B0098; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
+	id C96A96B0098; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B79F6B0099; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
+	id B85876B0099; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 464546B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE680140C6A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:29 +0000 (UTC)
-X-FDA: 84605805018.26.2D938D2
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E92BF1C0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=urNiOCnm;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948648; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id A6E886B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B7D65C991
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:18:17 +0000 (UTC)
+X-FDA: 84605807034.02.2E42134
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 870BF160003
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:18:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CJUiDad8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948695; a=rsa-sha256;
 	cv=none;
-	b=ZyOtjgriJ/o2pgsEEn8TTmzV/E1X1I2TXN+zZFCN6iAjjKZCGjKEeKo+Ie01w5VLVyMJ35
-	1IU2H2XOmVIaOYcFw+CIBV3nvCogEG6gsNF9Azj2RMXQsosg2M8ejS5qGwg3m2wDAWOMDq
-	fNyBn3+8mKjXBudbXpzdR0b6UekdCRE=
+	b=4E7EY0L/U0mb8Pn5aNXAgzrTBkbYykN69DLsmErQp/nCMMJWlDh+FWLWNfMVwKMi6fHgAC
+	MVjf1WsC25J6JRGOxvqg0MfU8kqZ+eobCIdOHugitEmfz7jzgYc2a6Pxju5Zf7J5f7ts5n
+	RaUC5bZ0eHt1f0vs7SBtGBXXALdgo4g=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CJUiDad8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774948648;
+	s=arc-20220608; t=1774948695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lp3DpxTMCR7y+PPNSc4ZSesA8X8RvD0NTh7t+I9q0Pk=;
-	b=fN2CbesIIQtO/b6OxF9T9AEIStMpCNyC88IegLYJl44DlWaGh5HA+fMTgDRzeppjov46jG
-	CgD3+l9YYKiP/FQvfrcSnKTWz8u9oXc0BenFHaqrZpvTuGYBC3CyL02xidOzS9UQ0yNgyD
-	oegkmRxQ0z9foe43K2+ivgo4vcmVOjk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=urNiOCnm;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774948645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lp3DpxTMCR7y+PPNSc4ZSesA8X8RvD0NTh7t+I9q0Pk=;
-	b=urNiOCnm2nA1ap8689/tDYlQ/VXYIFTKHVvXNCZnKlJYDDK/+GzCJ/wgrIIst/j+7thz4v
-	qZwF/jJt/Ts7FFBGcQ0D/E1PcXRVpSvE2u+CjhCkZry2q8S5Gw+6ZD/8OqJ/ZG5Ho4g8v2
-	GeyAxmhOMUkGUUtMZoRK47cgFHzOXRs=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH mm-stable v3] mm/memcontrol: batch memcg charging in __memcg_slab_post_alloc_hook
-Date: Tue, 31 Mar 2026 17:17:07 +0800
-Message-ID: <20260331091707.226786-1-hui.zhu@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
+	b=sp3iqY4ueBlPhfwfGGmguYd69E8ITvYefjP9diuPushS+leOgpgp0g7f8NyqvX+MDal/gt
+	pcF2BSXGL23At1YHJgC3dHKg1/fylw4N7XcWNVcnswPWYpD9NaDjXDCpyKbMgvBxzkUYaI
+	76Ta1dJWyYOVG6e6EL6dR7VY5dYwQ4w=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c76af7b0f94so484065a12.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:18:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774948694; x=1775553494; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
+        b=CJUiDad8p4B/YC684ICujU3dQLtl2lw9dCM2BcVyR3pjl4eTIIIvb+V+23WrMWRcFz
+         TEjR/HMLjddYm4w4iL0q5kT9AaZ3QYc/lXIwyyInrHT4tpkpSTYJhVLKmRbIEg1p4m9U
+         Dl83C+BaoMixhqIQoTwllYv3xOHWRYe/fHf4KtUS4sP+7F/HsqPr7rx0pUaDKxtiRab6
+         /BIMRGqeyJbEikp7L5jZkfQD8jLbjsUIyLxo0VK93hgpHyKaA2G8JbeHFU7ALbhgJT7s
+         HTZT0/pOgA6ttXES2uGdUdMik1JxFXRM3GLfLxxqcEiyi1tGlK7SWxQJt8yHTBJ8uJpz
+         OEDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774948694; x=1775553494;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
+        b=heRfJD78bavrBoB0J7j+bEbu9RGZ8DemAQsl7s8TQJhptP6ofykMSZMePgSbdwTTVR
+         krtWhg7fYbXOlcRfUi8rnX2RLhu6oOCaD4a+C6YE47AKPsbnbf45JHPF6bOewqrEqgC9
+         rxCtPnxJ+uVZhM3nLw4yWYWFDv78qYR8m9ULMNx4aiharCUX8gwqC2i/6PWqeRGCsnJ/
+         Ir5CAUGoB/bo/QUi/QbmkzYwA61mVXQYueC1PvBKdlxWjfhTxJwelnCvnDMpnEz7OIzK
+         o/zNnFXOUk31dZvLVnHOstNJEz9zaM+XlOmGD6Sov4zoF+eyx1BcKfDVqvtXCKZLDrZn
+         j4Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP1kwlWv6rzCQKX/waw+EmAx7vxepKR/OjIXUjpOSepqKmWfp3r0TUl5VQASQjqk9VePHWU3k4wg==@kvack.org
+X-Gm-Message-State: AOJu0YyODDgJivrsBaNY73GJnb55VbsRKW9xDXqv2UGuVb5cGtB5QXu9
+	fXjRm8Xwx5bZMBSIGLKQr4QhTEPrLSVleg14rtdHDp9RbgEuexeFAnIp
+X-Gm-Gg: ATEYQzyWha2Lypk2LmKP2OxZWteyZeTOzu7FF25HsU36W2v4pXaKr8Qap97bbNFa3iw
+	A6JkpWlYHzCpDobJVWqshM2fX4qnc9BIofbtk3kMWpwoVrv/188OWz40N7BLDbv58qM1zFUGj/J
+	uD9m9bgrMP20nElmhW23atcVgCqhCQUiJ6vqVXq1uV71hGohkh9Gybthmgfs0XuJ0cJ8GsqqK2/
+	jPLQk3wGoqwfMqFU+nHbHlnjaS6MiACAKv5rLEKzIa0MOG0CFCNvLBDgeuEFR0D+vQSix9+FSSo
+	bs5J87don3fpgAuVIZMJOmzA/PMhBk2cLMfhMInOK3j+Ymv7MuOf81+nK2QH90KfazZphuUvI6q
+	hsMflpYR5cJMr/SQKm8lLsq2ETp4GXPr8LCwTx1NeuQHT+XzXswC75t7asuX9ZNkE55aGO/Jc2K
+	gg7ZSyixCDn6n4bJpY+wyndEH94WFEllwvzNEaoeKA39TIrt4SxtO7NBpkwg7amC4NFWdiDcCcy
+	d8h5Sw=
+X-Received: by 2002:a05:6a20:9187:b0:39c:a791:6ab1 with SMTP id adf61e73a8af0-39ca7916d08mr12865517637.31.1774948693982;
+        Tue, 31 Mar 2026 02:18:13 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc72asm9765765b3a.48.2026.03.31.02.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 02:18:13 -0700 (PDT)
+Date: Tue, 31 Mar 2026 17:18:05 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback
+ handling
+Message-ID: <acuNtuf-mv3KJJdn@KASONG-MC4>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com>
+ <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
+X-Rspamd-Queue-Id: 870BF160003
+X-Stat-Signature: 1iofdjh7psci7nus48xxi9ji5pzbgadx
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E92BF1C0002
-X-Stat-Signature: 796zj1kqgmdnpo6tpxm3qf7tdbj9on65
-X-HE-Tag: 1774948647-374992
-X-HE-Meta: U2FsdGVkX1+7ON+ZhFBvvGL09p6EBuWrilSyeACkmnisBDeUz8sXo3srh2n79/PtqaoCb0/YXwRTm5ls3zbwK3AaoBoHIAA62sr71eNmdOPwEU/OHwXZxwDzT/fptHGu9ovi8aUiFOHSFpcEGR1tPqpoNEqNfafAJSI0zsPtGwu3nlalnph//Ze3A8Mev1chjzs0xyaPR6StZ8qQB8IkiOJmSv8C5kHwWOIQUqRGUywDX4leuOhaCM94Z7c0qiO3uiUV0p6NVEKCLS7VX6UnXQZwyab6yG0p9IhOMFKjWaBFPVMNfBZKgvatTmcxbK2wtaYy5J2fhJfCe27xu+OVRdYMuKv2bqGNZS9joZ7Suv/CER3ryS76UcSR5K9V453y+prg2rmJfrC/SQuZ5zghAPfueYk/0Eyo6z9g9u5QYiuE9SgNcyOulWPOkCywb7/iRp+sM3vZt8i1tlucTTVRde+MhfJnJsFiHUgWGmJBgqK9u8cO9JykcUW75Ia8AUbeQs8bLzP5DhNNLUf0+FmXrSi8mwMFSxO5z7YDdlCJyA+zXGfpgy0dLQDhN2wpgLvqAMJ+OJGL6Ggd8Ff8cnDLBSTXGrPqZTczzHiv//fv3IDko9YnRS1Tf6dlttjR/jPN5xND9Fe3LizPV+fq9z9E5NyElwxrqTCBYTdlC3jFne9MsAFgCS2jUUIQIOlntxJVGZy4SSZdWitInGKM4bzVY9AN836efmPsgiHgSPWzCzEJuroz49WUMj/iG/vYl9d2mhNOfNGbLjtoJ22dRRdllEmrf33R8/zhW/qAkC9DjPD4YvZWtSLxmie27tCbMeRzxITtrUVJshKxpc3LcliWlEDQBF1LGeOOtY7v05gfXY6X74KC1a9CtL0oww/8o3qepiN0gf1ht3EwyF2B2C+WcimgVNLGMBWIU03puaDyrczigsVTYx0VUtXKywT+2JTxKJ2l5JL10uMCuQ+eLqs
- hCpBcdS4
- 2qXUI4cWYkFbBT2O+/yHYEzU3dnC8iClxHncxBHm65whYqKou79haxEiOPqiH/N/NsU8HSD2UIFtXys38jDpYKjW+rXZPKHxWQcn6COqPyeUJg1OJnL1DAhpxEzi6ahjZgqSHbCVCTXm4xHwJPCMetP43Xc/+xfoWYc/I4pjrjItRfsuVqqsY5+eylJ63jaiRCSYJlODQ7oDjQpdEphCh5BstIOHho84A7GN8waFCcsfSkVZEq8QbTI0zOvU0zCzISvwHsaaEm/0TkKurdkKkk8Y5kJYQsESxxGVwEyGJLiEO44E=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774948695-199098
+X-HE-Meta: U2FsdGVkX19oCecjbEmKaTAXItxzyRMZ1lHmHbhrX2DAo7Ivg8Xqj7LA25K0dr4XSUHCYDg7DD6qOTnH28lVE3qlnkCoMvMOdAb9+a1/ZY4NQSKW93zunF88iKBJ3IL5s1Uzy93y116Dq+eJZf2OfNAdojcl6dEcY/TVmxf3YOcSVMZbdO+xRNScrqetkTNKB6Kt8gCUCtD8P7Pj8kQU/hhiAHkju0tOoEAZlVSkD4pqDA7ZNdFqYhIvbUUEXIaG8PC/ZFWWIeQe/tde3yiePYFNTW/0Twcouh6m90hR2IOz8wJVBepffhyzNXWP3Yah2CsH84uyiB80OZNzfIlyhNQBClqRAX2Agb/FQMnMBVSiG99ndZv1CIAfknKNnjymOuFY2Ks3b9ixjQ4r46BtnvhKl20LtrTrB4LQBEAoi/ozMDWu1qpW1I48m8/Qnq6HiGSbrGcZ5X5jLoIbkCRThW5S032PCEH+9R7RscNgiYWg/dAWu6pQCqBmqdZJXzFoOP57IBXeGPD4KS3ueWx54pU87ryUlZwRjkWsb2BDorXY0jVIdWmKbAs38watWMZyClgxpa0S3p7eC3S9WdI5Bawg5+WTQCxfZHKn5m10wsas9psAhZvKGNo9b+KG7kyC2zCCFsonQDpiadup4biXJ5bU2sF9jHB+hvWuKElt57VbTYZAfJcazqOR12DnG/MUDeu8MVkgmU+I6OiDCDJbu17Hvus19/u10HYQIJLG5Ylx6fsEBwG8IAneRr30hmGa2As5CEXWFRDfsoe6AQVJCxhDo6wuKpUxTr6ySLmTAaWnhf2CBNEImcEOfiITXcR+lUvUaBX8R8RZdOukRGgylQm5NNa5otJWqPjlSqn7VfIEyfv60z+7ltvo98jlhefmfyJXLs+vUtixtm9P1nxibr18GDutJnmzr1j0BdbIessIOoXXrtarjXLFVtt/T6eNAOVWr8lXpV9PyqPR24P
+ VG/ms8F7
+ lqAfQO/4vD0XyHhpdx7l3M1fBJet9wWCVfIPZRF7WH5D5+Ew3GKKIAwwU3CpVeKKJ8B7F2Dl3/oA4Yd7wAnXRQUuRrZAT4RsT0Ln13nb44f/+y6S0CMP/GqSnojyqsLwl6vTj7VfJqW5bpDeLfzPRiH/QlRm9RSYovIEaHqa0tsU2oQVk3aiHBmdWIS31WcI4DNxhlpXJQwUO+3y4o4NfVjJzaBLpd+uiRYkFRs6QncrFf82SV1tst5dL6wvjajSMRVa4elUEBPz8Neu0ecESifNJlrBpWhgoJNE+AcDgP6sV1jSGF3qUzV6bH9NJXOESrLtky+loDuLTpOGn+v/Z01Ax0P1hSpP8IwBw1NU5AH8cfrnBZLtJEW8AHL27o4V1LOc2YrvomQm1CcxBE3ZPwblXyFuyR1lpGFQEwDezCMpaCRQy/7ScFMqGNvP9MaNf57QyEocNK3wTKOCEnJqeGwk3L8TnyMJ60YcaagYuucvPVzgykcM4W8Lr+W/euh9ZzQpASu08+1aN6pb/5bOXz6tsnvQ177q8px+/bpZZqMkiuHwyBtbmBZ0SlGVQ6YOIecZzymJNitS1WjsT0w1a007btqmpY6RkH+6a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,165 +129,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Tue, Mar 31, 2026 at 04:42:59PM +0800, Baolin Wang wrote:
+> 
+> 
+> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > The current handling of dirty writeback folios is not working well for
+> > file page heavy workloads: Dirty folios are protected and move to next
+> > gen upon isolation of getting throttled or reactivation upon pageout
+> > (shrink_folio_list).
+> > 
+> > This might help to reduce the LRU lock contention slightly, but as a
+> > result, the ping-pong effect of folios between head and tail of last two
+> > gens is serious as the shrinker will run into protected dirty writeback
+> > folios more frequently compared to activation. The dirty flush wakeup
+> > condition is also much more passive compared to active/inactive LRU.
+> > Active / inactve LRU wakes the flusher if one batch of folios passed to
+> > shrink_folio_list is unevictable due to under writeback, but MGLRU
+> > instead has to check this after the whole reclaim loop is done, and then
+> > count the isolation protection number compared to the total reclaim
+> > number.
+> > 
+> > And we previously saw OOM problems with it, too, which were fixed but
+> > still not perfect [1].
+> > 
+> > So instead, just drop the special handling for dirty writeback, just
+> > re-activate it like active / inactive LRU. And also move the dirty flush
+> > wake up check right after shrink_folio_list. This should improve both
+> > throttling and performance.
+> > 
+> > Test with YCSB workloadb showed a major performance improvement:
+> > 
+> > Before this series:
+> > Throughput(ops/sec): 61642.78008938203
+> > AverageLatency(us):  507.11127774145166
+> > pgpgin 158190589
+> > pgpgout 5880616
+> > workingset_refault 7262988
+> > 
+> > After this commit:
+> > Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
+> > AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
+> > pgpgin 101871227                        (-35.6%, lower is better)
+> > pgpgout 5770028
+> > workingset_refault 3418186              (-52.9%, lower is better)
+> > 
+> > The refault rate is ~50% lower, and throughput is ~30% higher, which
+> > is a huge gain. We also observed significant performance gain for
+> > other real-world workloads.
+> > 
+> > We were concerned that the dirty flush could cause more wear for SSD:
+> > that should not be the problem here, since the wakeup condition is when
+> > the dirty folios have been pushed to the tail of LRU, which indicates
+> > that memory pressure is so high that writeback is blocking the workload
+> > already.
+> > 
+> > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> > Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingxiangzeng.cas@gmail.com/ [1]
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >   mm/vmscan.c | 57 ++++++++++++++++-----------------------------------------
+> >   1 file changed, 16 insertions(+), 41 deletions(-)
+> > 
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 8de5c8d5849e..17b5318fad39 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4583,7 +4583,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+> >   		       int tier_idx)
+> >   {
+> >   	bool success;
+> > -	bool dirty, writeback;
+> >   	int gen = folio_lru_gen(folio);
+> >   	int type = folio_is_file_lru(folio);
+> >   	int zone = folio_zonenum(folio);
+> > @@ -4633,21 +4632,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+> >   		return true;
+> >   	}
+> > -	dirty = folio_test_dirty(folio);
+> > -	writeback = folio_test_writeback(folio);
+> > -	if (type == LRU_GEN_FILE && dirty) {
+> > -		sc->nr.file_taken += delta;
+> > -		if (!writeback)
+> > -			sc->nr.unqueued_dirty += delta;
+> > -	}
+> > -
+> > -	/* waiting for writeback */
+> > -	if (writeback || (type == LRU_GEN_FILE && dirty)) {
+> > -		gen = folio_inc_gen(lruvec, folio, true);
+> > -		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+> > -		return true;
+> > -	}
+> 
+> I'm a bit concerned about the handling of dirty folios.
+> 
+> In the original logic, if we encounter a dirty folio, we increment its
+> generation counter by 1 and move it to the *second oldest generation*.
+> 
+> However, with your patch, shrink_folio_list() will activate the dirty folio
+> by calling folio_set_active(). Then, evict_folios() -> move_folios_to_lru()
+> will put the dirty folio back into the MGLRU list.
+> 
+> But because the folio_test_active() is true for this dirty folio, the dirty
+> folio will now be placed into the *second youngest generation* (see
+> lru_gen_folio_seq()).
 
-When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
-hook __memcg_slab_post_alloc_hook() previously charged memcg one object
-at a time, even though consecutive objects may reside on slabs backed by
-the same pgdat node.
+Yeah, and that's exactly what we want. Or else, these folios will
+stay at oldest gen, following scan will keep seeing them and hence
+keep bouncing these folios again and again to a younger gen since
+they are not reclaimable.
 
-Batch the memcg charging by scanning ahead from the current position to
-find a contiguous run of objects whose slabs share the same pgdat, then
-issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
-the entire run. The per-object obj_ext assignment loop is preserved as-is
-since it cannot be further collapsed.
+The writeback callback (folio_rotate_reclaimable) will move them
+back to tail once they are actually reclaimable. So we are not
+losing any ability to reclaim them. Am I missing anything?
 
-This implements the TODO comment left in commit bc730030f956 ("memcg:
-combine slab obj stock charging and accounting").
+> 
+> As a result, during the next eviction, these dirty folios won't be scanned
+> again (because they are in the second youngest generation). Wouldn't this
+> lead to a situation where the flusher cannot be woken up in time, making OOM
+> more likely?
 
-The existing error-recovery contract is unchanged: if size == 1 then
-memcg_alloc_abort_single() will free the sole object, and for larger
-bulk allocations kmem_cache_free_bulk() will uncharge any objects that
-were already charged before the failure.
+No? Flusher is already waken up by the time they are seen for the
+first time. If we see these folios again very soon, the LRU is
+congested, one following patch handles the congested case too by
+throttling (which was completely missing previously). And now we
+are actually a bit more proactive about waking up the flusher,
+since the wakeup hook is moved inside the loop instead of after
+the whole loop is finished.
 
-Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
-(iters=100000):
+These two behavior change above is basically just unifying MGLRU to do
+what the classical LRU has been doing for years, and result looks
+really good.
 
-  bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
-  bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
-
-No measurable regression for bulk=1, as expected.
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-
-Changelog:
-v3:
-Update base from "mm-unstable" to "mm-stable".
-v2:
-According to the comments in [1], add code to handle the integer
-overflow issue.
-
-[1] https://sashiko.dev/#/patchset/20260316084839.1342163-1-hui.zhu%40linux.dev
-
- mm/memcontrol.c | 77 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 58 insertions(+), 19 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 051b82ebf371..3159bf39e060 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3277,51 +3277,90 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 			return false;
- 	}
- 
--	for (i = 0; i < size; i++) {
-+	for (i = 0; i < size; ) {
- 		unsigned long obj_exts;
- 		struct slabobj_ext *obj_ext;
- 		struct obj_stock_pcp *stock;
-+		struct pglist_data *pgdat;
-+		int batch_bytes;
-+		size_t run_len = 0;
-+		size_t j;
-+		size_t max_size;
-+		bool skip_next = false;
- 
- 		slab = virt_to_slab(p[i]);
- 
- 		if (!slab_obj_exts(slab) &&
- 		    alloc_slab_obj_exts(slab, s, flags, false)) {
-+			i++;
- 			continue;
- 		}
- 
-+		pgdat = slab_pgdat(slab);
-+		run_len = 1;
-+
-+		/*
-+		 * The value of batch_bytes must not exceed
-+		 * (INT_MAX - PAGE_SIZE) to prevent integer overflow in
-+		 * the final accumulation performed by __account_obj_stock().
-+		 */
-+		max_size = min((size_t)((INT_MAX - PAGE_SIZE) / obj_size),
-+			       size);
-+
-+		for (j = i + 1; j < max_size; j++) {
-+			struct slab *slab_j = virt_to_slab(p[j]);
-+
-+			if (slab_pgdat(slab_j) != pgdat)
-+				break;
-+
-+			if (!slab_obj_exts(slab_j) &&
-+			    alloc_slab_obj_exts(slab_j, s, flags, false)) {
-+				skip_next = true;
-+				break;
-+			}
-+
-+			run_len++;
-+		}
-+
- 		/*
--		 * if we fail and size is 1, memcg_alloc_abort_single() will
-+		 * If we fail and size is 1, memcg_alloc_abort_single() will
- 		 * just free the object, which is ok as we have not assigned
--		 * objcg to its obj_ext yet
--		 *
--		 * for larger sizes, kmem_cache_free_bulk() will uncharge
--		 * any objects that were already charged and obj_ext assigned
-+		 * objcg to its obj_ext yet.
- 		 *
--		 * TODO: we could batch this until slab_pgdat(slab) changes
--		 * between iterations, with a more complicated undo
-+		 * For larger sizes, kmem_cache_free_bulk() will uncharge
-+		 * any objects that were already charged and obj_ext assigned.
- 		 */
-+		batch_bytes = obj_size * run_len;
- 		stock = trylock_stock();
--		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
-+		if (!stock || !__consume_obj_stock(objcg, stock, batch_bytes)) {
- 			size_t remainder;
- 
- 			unlock_stock(stock);
--			if (__obj_cgroup_charge(objcg, flags, obj_size, &remainder))
-+			if (__obj_cgroup_charge(objcg, flags, batch_bytes, &remainder))
- 				return false;
- 			stock = trylock_stock();
- 			if (remainder)
- 				__refill_obj_stock(objcg, stock, remainder, false);
- 		}
--		__account_obj_stock(objcg, stock, obj_size,
--				    slab_pgdat(slab), cache_vmstat_idx(s));
-+		__account_obj_stock(objcg, stock, batch_bytes,
-+				    pgdat, cache_vmstat_idx(s));
- 		unlock_stock(stock);
- 
--		obj_exts = slab_obj_exts(slab);
--		get_slab_obj_exts(obj_exts);
--		off = obj_to_index(s, slab, p[i]);
--		obj_ext = slab_obj_ext(slab, obj_exts, off);
--		obj_cgroup_get(objcg);
--		obj_ext->objcg = objcg;
--		put_slab_obj_exts(obj_exts);
-+		for (j = 0; j < run_len; j++) {
-+			slab = virt_to_slab(p[i + j]);
-+			obj_exts = slab_obj_exts(slab);
-+			get_slab_obj_exts(obj_exts);
-+			off = obj_to_index(s, slab, p[i + j]);
-+			obj_ext = slab_obj_ext(slab, obj_exts, off);
-+			obj_cgroup_get(objcg);
-+			obj_ext->objcg = objcg;
-+			put_slab_obj_exts(obj_exts);
-+		}
-+
-+		if (skip_next)
-+			i = i + run_len + 1;
-+		else
-+			i += run_len;
- 	}
- 
- 	return true;
--- 
-2.43.0
-
+The global congestion handling is still missing after this series
+though. Have to fix that later I guess...
 
