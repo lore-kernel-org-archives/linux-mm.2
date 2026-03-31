@@ -4,91 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF15DFF60D9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FDAFF60DB
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 07:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03F746B008C; Tue, 31 Mar 2026 03:36:39 -0400 (EDT)
+	id E4A966B008C; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0170F6B0095; Tue, 31 Mar 2026 03:36:38 -0400 (EDT)
+	id DFB5F6B0095; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E96356B0096; Tue, 31 Mar 2026 03:36:38 -0400 (EDT)
+	id D11A06B0096; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D48A06B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:36:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8A4AC377C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:36:37 +0000 (UTC)
-X-FDA: 84605550834.30.EED9D6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 42428100014
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:36:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IUbcizkl;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BF9B16B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 03:37:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 976CC1A09CE
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:36 +0000 (UTC)
+X-FDA: 84605553312.07.7582725
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B81B11C0005
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 07:37:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=FP1spozR;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942654; a=rsa-sha256;
+	cv=none;
+	b=ltxFAMYsYPTErY4AquGq/mzjJvfkVb5gUj1rhjBB1BIUP4M6WENJ+gQwOtk5EDFsTW6oQY
+	hDaVALhPPPkUNDOvyGU7L9PgBDlVrghcmfnxuPRZs6ssPvT18biK1SbCNTWJL6E2k8IoL+
+	t+o8jYMaBHnKFczxdP01C4WUyhKmVBk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=FP1spozR;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774942596;
+	s=arc-20220608; t=1774942654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4qd9bBncq+mwyJAdo9H+gUXwc1gSi8XeDX+38FltmqE=;
-	b=77RhDtLgCX1csrR1YmuXb+Kk+J8Npv5/LYMd9hGIoZUXy9aZlzOma6VZhxa90MI33xXV8E
-	u68Z0muZDgDIMrYsI2+zF4qd+6rb6nueh9LLZPvLT2AhDbYts6sIFKAHGFPF4qdyJMYVcA
-	2UUjnkw7wLwjgwCpYwfrkMtfA495YFE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IUbcizkl;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774942596; a=rsa-sha256;
-	cv=none;
-	b=dOtw0WbI4wvb0GxPUrlV0U4q6SK66iO7FBL8w54W2Iv2V7xL4DYjxPNeIZfNUzfjOwSyZF
-	V8tPCxPU4SeHuXCEbpmliVBQPqPgjzMS3ch7YXmNK4IO7GRkYTZbVTVrzT18rtQ2Py+26s
-	ihr415Hx52g0OuWejJttQPMaTBUTq8A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3DCD543B1A;
-	Tue, 31 Mar 2026 07:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF981C19424;
-	Tue, 31 Mar 2026 07:36:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774942595;
-	bh=1aLP5pU2VJqnqi+qS5pxWmVzBh4A4EESl8jLJtYmit4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IUbcizklv/BBBOz7QZr8ip9oeUH9fmeVbVP77kIC/XiINHE/wIJPiyCYWApJojsyp
-	 0y48Q6C6hrxVB0RQ8XYNdO1AjV/wHfDJpbAYEm3KdUicAKDKh1XX9snBBx747UpUzA
-	 mFDHk7nW2vEx45Wh9PTZkKjpETba79IXYswvPA5sasQ3sueNbYDBs5X4a9kmAYgTE0
-	 9Aq5c4x3G9dme/KTMoh2IQ2tnbW5HhhVQCRVOX8QZzqMXbcPd0ve62ZRN3HitJygMd
-	 +/ksdGYNrlpLzLXVr97cJUS3qOjUaL2V9a2QT0EJX7tBDoGwanmo6G0xl0m5adom2K
-	 1XBheC7M8Ki8Q==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] tools/testing/selftests: add merge test for partial msealed range
-Date: Tue, 31 Mar 2026 08:36:27 +0100
-Message-ID: <20260331073627.50010-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
+	b=YGfGrnn69PLl7OMJtaDLqgIvMMH1sEuaxeCarMtbTOslSYEL9LHs2+7jYXIHyhQXgRyDOd
+	Y9KfGtPvC79C1GPTFaJoYcHfIerIcrxWIkIa2VvJBJCL71xR5heYZj4krqjtDTtkmr/i0S
+	lKns3WrV6NpE0IMIiHtLTXy6w0ABDvY=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b24fede2acso13455265ad.3
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1774942653; x=1775547453; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
+        b=FP1spozRpwufepFgWBCKauoNFGJ5A4eNpfxfW/IYYCQplOAZqf9m2ymXmU8V0Hs49t
+         3Jupa+WL7tLMagMKXKuUqjr9ljDsuR8RIMM1uTHkhVkPHtNVGYOEixwG/wiw9XeiZLcN
+         x/FJib3tLcrERnF4QDUcsNEr4DU2u9Xto5kMM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774942653; x=1775547453;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0zB4K43acGXLF9/IX+A7nsvuZUclZzkurqbD17TuUhE=;
+        b=XYS6kT87E8xn8j3cVy07IAFN4aQsobARJYbgx67L67SJRbqKWRAJHY4O94J6Iz0AnC
+         IdcvzWJrTOagy/w8gwLcF9L6Iw/DZeHRibyu/SWl/+D8V+t5CXb/KBCDJsmZRmiW0an4
+         u+/PzGn1DSeAiISNOOq6WuiR6Fm3mKUm2U6KSPzUhykluNIEZbutsRHjj+pqnrEzC2LO
+         GoUIJ/UmY5HOxkXcRSu84yVd2nFGyNMnmBHcmvrr03ZetAOfHM2J8NIkd3e5lx0RwKqD
+         aQXcobtz5RKlEh3QE5WDoYWvrxUqk8RP8ZGndPdqhYpToHhBBy5FzMTej7hnUOrDOiRA
+         EAjg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgYRxEIOkNXO+b+KJO0sfgqDEC5EPuVfTohdKzJIXMRZI5Uwyw2EyGMm8fXRx1EKR7rGZV+2HQXw==@kvack.org
+X-Gm-Message-State: AOJu0YwgmCsX69pYxyDQt8Xo2lZ6d6bbR40bfpzVp2jrfhmasBRTHHDE
+	m7MUY/Ew+c5WeWPZdJFXW1ytYWOKzEWNiZvdME8C5kxLyOACIMo3FcqDnzCTf4s7oQ==
+X-Gm-Gg: ATEYQzz6bfSeSgOxCsXWYFIW+plpM+CzcguZ7xKRWWjlc1C4QGyUpa54IZPq0cFIwBt
+	D3aKC+cEFJUA5Me5ALSTF+RsJh1QgF9MkTHFipyJrGeZJ8lmA+RuBOGgNJg6N3bFRAWtzu7P+QW
+	QqK+CbEqa9Qvb4JVc4LyHsWQuSX2I8Sw4mgz8u+aHpWj6opG4+Qk1Y9Bf6oBlKPL98ulAf1ulaJ
+	MNO3wfstOs0FHkk81s68M9JduxrkPeNeBCTqm5SErVT2GSyGe91fRzsRTjG65cUTQNOX6pq6CJe
+	FQA5SeRNcrQuvm+I6OeNJCmcObLJZUu74/9OzIOH1V/Kamc9I9fpsDLUNVgDLIQEJbDdc9q4FjL
+	tLZJ65HWeNux+9PGMIh4F2aQiHKAlap21F+mW69XTRs65t/hHzQEo+Lk8nGGEeLP4KhdIINO/1C
+	TecCcgMZSHN+0sYXCnLV0rVaUJv0YLHxMlUt81UMotKC/BdmH2XJQL9+piLWNZi5w=
+X-Received: by 2002:a17:902:db0f:b0:2b2:50bd:83ac with SMTP id d9443c01a7336-2b250bd85b6mr76653425ad.40.1774942653595;
+        Tue, 31 Mar 2026 00:37:33 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242690e60sm102404315ad.37.2026.03.31.00.37.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 00:37:33 -0700 (PDT)
+Date: Tue, 31 Mar 2026 16:37:29 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Qu Wenruo <wqu@suse.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Brian Geffon <bgeffon@google.com>, linux-block@vger.kernel.org, linux-mm@kvack.org, 
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH] zram: do not forget to endio for partial discard requests
+Message-ID: <act5XhgtqrtN1zdY@google.com>
+References: <20260331071537.706139-1-senozhatsky@chromium.org>
+ <a6b566e8-5808-4244-bcda-5612760bde3b@suse.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a6b566e8-5808-4244-bcda-5612760bde3b@suse.com>
+X-Stat-Signature: k3up9cs57ch5yofabq1p3jpp8ceyz89b
+X-Rspamd-Queue-Id: B81B11C0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42428100014
-X-Stat-Signature: 5de9ktdwu5jbxbonb8yxtuukd6kea8hh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774942596-686577
-X-HE-Meta: U2FsdGVkX1/EDrWiWaA9HO9u5Ddw0jg11zRtjbUJ1Rqauynv14APbQC6H5+AQ/Q8lPF3h17rXpHazECA2VZ0hxvp8R7LRoWkyjhW8ZxRxag5xLMTNtBavnojD+qBlSms+TgA6Wf8EGFWT7aOuU7VUGsrCN8g2/7LgZwu7oTdcEk7OquvvJIUI4AmsRWQ/crIB9wuFfOgw0ii61qrtgnnAE+EX9xcQwSfiLnmGVxKwg0C/joCBV/JdKf0M7EcgMVZd+Hg7akf4Gm2WfW8VC5I0n3DdmhPcwOkXRuX/9OX8D4FVm/boAo7JO+AlZYkv6aalOshrrQWRYMzzhlbF5cAc5obFu6DjTq8iO/ccQ3Y65kentgDnQ9+YzV53OMLuap8NCD4M+3q56Oex8wSOopXzlo7Z6ZZJ7KjbYyT+UzEs3sXnuPL0xaaPcgZcfsetp4z7xtXjh2m9nDG6r0LsT/KJEAxl5mBrfodIZAerVrQAVsc69VxOwpMkdLfmvGU2dlx1RiNXwIzY0KdkBbYsnCCi/dgnJgC34RDnFcdoMGFPlB94Q6Q6yd4sMUw3IyqFWL2NAPLvPvIxGj0zEDCfnEDjy+U/ghzJoE0/K3zyuzgzdGR9fFoosVW1UfDbDZxcWA+vcgyN6PajiQjE9sP/lHX9i+9aWNwaXP75rpAqOMuQbHTG6h6EN3BRQ8zwIM8nKk+fnV9JJE/iHhHsS8RrXb8PsMBpBx0tOuIy56tcO3VZ+CovSxXAqNnKHN2nrZHJfrvcEfeTiclOxNGCKSMJlfDlLb37cOfQfrVvnUEJlXXC66EM8zSWPFbMfBq3JuaxFJO/n0YxZfMXlZP4e3jE8ooZsc8mDo66bUKDkHrOPLzieCyeuBiALqjWFdmad0uBjJr4TvBnx9XUtq2z3QeNTq/V1CPMbRgOWqqAEFXQXocwercCNwz30STqn7UZbmuLTf1TNUPa1CgyoJU/OksiOK
- jQyKCxJs
- kK4tObl7cdnjWxj88PxoQcgizGLduunCoZmbaPUyCTVcCrBsBiqJK+iDJWusGIXfb3LL7BmKR8CjI9OzZ7KrpcQEnbHwh8tQg+yedzB9dAF+9cG8VL4V+Y57XNEukzoCgIa3S4b4Zl9RVTWBVJST2mYsM9PnBVmQZjgZGYJoAEa3Sw6egOyqUKLU6R7C+Fj8lZsy4hFxxmCzrPbksg6fmmcsR37TedW2sU2Ldlxa9IpL5l00=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774942654-800567
+X-HE-Meta: U2FsdGVkX1+IpdE/SpeC7TSzJ8GkgcC7fu9pnAU5BrdrjI8ldyKiC54aynOZs3Ko+7Iyovv9wZOoVf5YeFZb21p1TSbHdBdOngvDworYof8QTJNYGMfHh3aXXD/ZkY52eCUKZ+/Vva6Hw/aeuhhXtzqG29nLnV9lRA2YkPl680zwgl8YYGs+HkyW0JyCYq2Ich9f8fFDyAntvyO0f8tL6lOWx5vt/ANOJbJEJexrtLcyZKCNILPsW5qr9aK5iE38PLdU7HD2QidsI0zpQVo3wcaaUHxQY7M/JfQa2An9/PQfFu50thyAnhI3sc1ehSHM3YcCcihzwWQjgC4W84liJLU2Hwn+a60NGMpaz4uEj9XE1M4drVWEqN0lI0yw+ezK+oJQzNOnF0LyHqqnuFHQnP3M/g6lB9cJV+vwnsF2s2N+biGJeUGmd5fzsVwyLkMIvEyTypIV7hglAb8Oz6Y0rXQ8cNliypboB2t2+oYontLFdka0wwYvuiQMnhginTvVNz0j5ur+dFSM/I+j/qsvSJS2yP1Gb1uxTecnnTeF+bTPH+NNfx74o4qnD3VgNQ3ryQXumNTYUfH1SA4gF+Ue8FbLTEQxdCfuu7FD6O/yYZTECLPZczVtyByAZJ8wMD8kDMMXt/nOH7y3hvbKUeUIOFrDwQu6LJuQ5YvIMsISMSg1fVfHXSjFh6+loiDgQqy7fn1JyvdXRGO7zICn0WItDm1n0cwa7i+jNmEiPXlamzz0i3CfLo9F6CjWGrPPGxE/iqdQk7f0bsxU7uUM6YEIFfWVwgqLYaPiOytszrALTRD/I+dXPSLwozk2j1vT+zAhqHVZkbswJtl5viOnZcyiNjXVjJEST6QJj/+O5CjSfCeZho6LWAqMY+f+1KEc+6A0qlGT7mdsxH+JqGa8/gN+3iB+zuJZFpEVld4Xkc3FkdnsDK2tJsQlbamGUGPFtEQGoVJ0vwvjzisJPtu7A+e
+ pmzt9dVB
+ hnUgoXv0D4LR4pBqxW87ZO5OmOCrEhhn52BhIl3Vl1qH0X3ftcqNawqJeuklSlGF5Bf2yti4UaY0iQqy1X+I8OCgpezD5W2qR8ahNxhQOKOKUA+ed9GVgOV+SCI7922FKApik4bxf8nTQNz1Xnpzzk/xrAm6otf+e+v+FgUWmH2EkX5yUd4PNuwc5RccInH5y7h8iowvJNZdcbfpQmBthR0anEjTNKIHHXPrr/+5/pw6QXGDxFv5cOmcYDH5EYz2bKxORGrCWtKcuD4mKrybXCd+6ZjQ2ei9BF+9K7F0r2PL7+cNaoFPIf+u3zFGwXM4mZeo6VI/hgHr2EksQ3WwoyhCm9MniYaj1YbVj2o3MlLoP8O4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,148 +116,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2697dd8ae721 ("mm/mseal: update VMA end correctly on merge") fixed
-an issue in the loop which iterates through VMAs applying mseal, which was
-triggered by mseal()'ing a range of VMAs where the second was mseal()'d and
-the first mergeable with it, once mseal()'d.
+On (26/03/31 18:02), Qu Wenruo wrote:
+[..]
+> Which is 3 times slower than regular block devices.
+> 
+> And after that short fsstress run:
+> 
+>  NAME       ALGORITHM DISKSIZE   DATA COMPR TOTAL STREAMS MOUNTPOINT
+>  /dev/zram0 zstd            1G 271.2M   10M 20.4M
+> 
+> I guess this time the overhead is just in the compression so that's
+> something expected?
 
-Add a regression test to assert that this behaviour is correct. We place it
-in the merge selftests as this is strictly an issue with merging (via a
-vma_modify() invocation).
-
-It also assert that mseal()'d ranges are correctly merged as you'd expect.
-
-The test is implemented such that it is skipped if mseal() is not
-available on the system.
-
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
-v2:
-* Added tools/ based header so __NR_mseal should always be available.
-* However, for completeness, also check to see if defined, and assume ENOSYS if
-  not.
-* Thanks to Mike for reporting issues in his build on this test!
-
-v1:
-https://lore.kernel.org/all/20260330135011.107036-1-ljs@kernel.org/
-
- tools/testing/selftests/mm/merge.c | 89 ++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
-index 10b686102b79..f73803b3679a 100644
---- a/tools/testing/selftests/mm/merge.c
-+++ b/tools/testing/selftests/mm/merge.c
-@@ -2,6 +2,7 @@
-
- #define _GNU_SOURCE
- #include "kselftest_harness.h"
-+#include <asm-generic/unistd.h>
- #include <linux/prctl.h>
- #include <fcntl.h>
- #include <stdio.h>
-@@ -48,6 +49,19 @@ static pid_t do_fork(struct procmap_fd *procmap)
- 	return 0;
- }
-
-+#ifdef __NR_mseal
-+static int sys_mseal(void *ptr, size_t len, unsigned long flags)
-+{
-+	return syscall(__NR_mseal, (unsigned long)ptr, len, flags);
-+}
-+#else
-+static int sys_mseal(void *ptr, size_t len, unsigned long flags)
-+{
-+	errno = ENOSYS;
-+	return -1;
-+}
-+#endif
-+
- FIXTURE_SETUP(merge)
- {
- 	self->page_size = psize();
-@@ -1217,6 +1231,81 @@ TEST_F(merge, mremap_correct_placed_faulted)
- 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
- }
-
-+TEST_F(merge, merge_vmas_with_mseal)
-+{
-+	unsigned int page_size = self->page_size;
-+	struct procmap_fd *procmap = &self->procmap;
-+	char *ptr, *ptr2, *ptr3;
-+	/* We need our own as cannot munmap() once sealed. */
-+	char *carveout;
-+
-+	/* Invalid mseal() call to see if implemented. */
-+	ASSERT_EQ(sys_mseal(NULL, 0, ~0UL), -1);
-+	if (errno == ENOSYS)
-+		SKIP(return, "mseal not supported, skipping.");
-+
-+	/* Map carveout. */
-+	carveout = mmap(NULL, 17 * page_size, PROT_NONE,
-+			MAP_PRIVATE | MAP_ANON, -1, 0);
-+	ASSERT_NE(carveout, MAP_FAILED);
-+
-+	/*
-+	 * Map 3 separate VMAs:
-+	 *
-+	 * |-----------|-----------|-----------|
-+	 * |    RW     |    RWE    |    RO     |
-+	 * |-----------|-----------|-----------|
-+	 *      ptr         ptr2        ptr3
-+	 */
-+	ptr = mmap(&carveout[page_size], 5 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
-+	ASSERT_NE(ptr, MAP_FAILED);
-+	ptr2 = mmap(&carveout[page_size * 6], 5 * page_size,
-+		    PROT_READ | PROT_WRITE | PROT_EXEC,
-+		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
-+	ASSERT_NE(ptr2, MAP_FAILED);
-+	ptr3 = mmap(&carveout[page_size * 11], 5 * page_size, PROT_READ,
-+		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
-+	ASSERT_NE(ptr3, MAP_FAILED);
-+
-+	/*
-+	 * mseal the second VMA:
-+	 *
-+	 * |-----------|-----------|-----------|
-+	 * |    RW     |    RWES   |    RO     |
-+	 * |-----------|-----------|-----------|
-+	 *      ptr         ptr2        ptr3
-+	 */
-+	ASSERT_EQ(sys_mseal(ptr2, 5 * page_size, 0), 0);
-+
-+	/* Make first VMA mergeable upon mseal. */
-+	ASSERT_EQ(mprotect(ptr, 5 * page_size,
-+			   PROT_READ | PROT_WRITE | PROT_EXEC), 0);
-+	/*
-+	 * At this point we have:
-+	 *
-+	 * |-----------|-----------|-----------|
-+	 * |    RWE    |    RWES   |    RO     |
-+	 * |-----------|-----------|-----------|
-+	 *      ptr         ptr2        ptr3
-+	 *
-+	 * Now mseal all of the VMAs.
-+	 */
-+	ASSERT_EQ(sys_mseal(ptr, 15 * page_size, 0), 0);
-+
-+	/*
-+	 * We should end up with:
-+	 *
-+	 * |-----------------------|-----------|
-+	 * |          RWES         |    ROS    |
-+	 * |-----------------------|-----------|
-+	 *            ptr               ptr3
-+	 */
-+	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
-+	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
-+	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
-+}
-+
- TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
- {
- 	struct procmap_fd *procmap = &self->procmap;
---
-2.53.0
+Yes, pretty sure that is compression overhead, zstd is not the fastest
+algorithm.  If you need something just for testing then lzo or lz4
+should be a better choice.
 
