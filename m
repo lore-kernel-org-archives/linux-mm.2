@@ -4,109 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A3DEFF60FF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 417A2FF60FF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C89306B00A1; Tue, 31 Mar 2026 06:00:47 -0400 (EDT)
+	id A8E996B00AD; Tue, 31 Mar 2026 06:01:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3AA06B00A2; Tue, 31 Mar 2026 06:00:47 -0400 (EDT)
+	id A65A36B00AE; Tue, 31 Mar 2026 06:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B50486B00A3; Tue, 31 Mar 2026 06:00:47 -0400 (EDT)
+	id 97BD06B00AF; Tue, 31 Mar 2026 06:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A50656B00A1
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:00:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 692D113C152
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:47 +0000 (UTC)
-X-FDA: 84605914134.19.85CB44B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A36C51C0002
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s/s6p71L";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774951245; a=rsa-sha256;
-	cv=none;
-	b=syz6Fe+F8LBPTpcHc8Cr90F14p9B+IMpRP2fVZMqCbkwr2wbo1Xf05YceBYoyxZtb+49N2
-	mhvM+2x63Hp7UaB1gVGA/9nXpqiKPAnNeaOjjgEKm6cml4OYgs0wW08zKNYN9eoSPCt/sY
-	hcwxGVhgNlM6VEwBlWPy06COIw5s18g=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s/s6p71L";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 83C2E6B00AD
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:01:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4FFA713BECB
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:01:15 +0000 (UTC)
+X-FDA: 84605915310.23.07EE359
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C7C7410000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:01:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hcdgPHMY;
+	spf=pass (imf14.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774951245;
+	s=arc-20220608; t=1774951272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VPRQYmHrVvcJSbAxnJLz6xu1jGb2AmGEWR3nhNOgtpw=;
-	b=AI2MGhv0ab4HEfXDhNbS7hlluml/TYpEjxFy59wooBi/nSsM9zaWiTjXkk7yEruF2Y57bN
-	xnijk8vJSu3d8InIZjM5MvPIfkSzyxN0gRAib2dSrM4wx78HWFB0srDZ4rJgKnQbRg6Pm3
-	HXX5YKR3cYn7CobPyC+RsokmqXQ+HV4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 305A460120;
-	Tue, 31 Mar 2026 10:00:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85040C2BCB0;
-	Tue, 31 Mar 2026 10:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774951244;
-	bh=oNUPt44D7xewgXiELSrkzONvN2UIFpJB+B1908QRT5k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=s/s6p71LxMqFQbl4akadLuhcwdZW9aya2yBfpNfo+H/No5t7G1dhY9pZ4066sLYDx
-	 q5mvU+6WAMCW4CsRm+5zBophaRKt7pmtDCVaK5M4hOq8oaTj+rBpWeEcz3xJxP6Ff5
-	 8WmRsbGsNNVZDIhPERKDwsfcsRCpVT6bFinWEEWmnFPTDeSInt+0KOikVNdXc0epxd
-	 zbyBBB9nqQyEpDoFbnshN1tdI/iudjbEXKgMATw54G2PeJQ3sjUaAHCWp6R6oEEpEN
-	 c/ZDiGaHirJjyEzHO5lV8L2BLWWerUvA0a2U1H7q51T0hZDAuwAWqrjxeo8tsgpTzg
-	 oqKxai1WQyI7A==
-From: Maxime Ripard <mripard@kernel.org>
-Date: Tue, 31 Mar 2026 12:00:17 +0200
-Subject: [PATCH v4 8/8] dma-buf: heaps: system: Turn the heap into a module
+	bh=Cfp9sj8bzWBMlYeri8cK26Hxagi+Z/bHu6P5bCVBtAk=;
+	b=V/wgRIYOglE2v0PkWGAVNBGgivqQRMwayaL2jj3eFuyRXbY0gxt9rSAO3nJh718AGdCPVP
+	vrE2YJE+w3CoX/4o8Jsx/57+Q9RpJbIg8h506hVSYdaGJGYfisz/pAwbopVOYTYm3RSYu6
+	mlQaASSeQlGIEdSHEYg6Yeoih25TSnM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hcdgPHMY;
+	spf=pass (imf14.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774951272; a=rsa-sha256;
+	cv=none;
+	b=3aW2aYGJWldRYF+LEs+SvNXiKTCO+2vcl3idlnVlqUVTjqXDF03oZKmIWs1+lbhjVbHWSd
+	LLa1qyFefwmgmcBcXAHRIxppXV59WlINkvC6RLWFtqGSyR3vaZlGHizg4pYRJ1rV299UPS
+	eXn6AVc9uH1hOfMx49Q0FAJjq0y0eTs=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62V7nwQS057294;
+	Tue, 31 Mar 2026 10:00:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Cfp9sj
+	8bzWBMlYeri8cK26Hxagi+Z/bHu6P5bCVBtAk=; b=hcdgPHMYDIupXlIGZmIdar
+	5I/NCSHQASaxK9JkG4NCSHwsfkZ1Ao/GQFTdG4KbucKglM4vgJqsL6dmsaul3QHb
+	6xP9g6LFtSqcSeGKPbdX4NX1gbE0tzeyMik5TaKcQQ5iGXt923tkmf+cFHHraTg2
+	c9ld0G8IU1U90PSUl3G1BY89FqVh0yssrODKc3ja2mPaOe3hNpRkO/TxFDfVl6F4
+	oX1ScU7a0zYsRkZ3YR3IjQACZoOhLmhieMS0lIibOC4Wei8zvx+DnWOJSF6smTrr
+	MuC9YZNy0p2ZYT7W4+bhkcABOzpcQPm4ADYHOZTJkEuM99h2VTpNAZr7VDO+7QJg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dca7ef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 10:00:58 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62V7qX5E030952;
+	Tue, 31 Mar 2026 10:00:58 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhjr9yk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 10:00:58 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62VA0v4U28115548
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Mar 2026 10:00:57 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9757858057;
+	Tue, 31 Mar 2026 10:00:57 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C4B3B58063;
+	Tue, 31 Mar 2026 10:00:52 +0000 (GMT)
+Received: from [9.39.16.245] (unknown [9.39.16.245])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Mar 2026 10:00:52 +0000 (GMT)
+Message-ID: <207228fb-a4ee-460d-98e5-589187968b97@linux.ibm.com>
+Date: Tue, 31 Mar 2026 15:30:51 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+        Ritesh Harjani
+ <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ying Huang <huang.ying.caritas@gmail.com>,
+        Juri Lelli
+ <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <20260326071216.11883-1-donettom@linux.ibm.com>
+ <f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
+ <2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com>
+ <87cy0kpfdx.fsf@DESKTOP-5N7EMDA>
+ <eb9d54b5-6fe0-45b6-9a8d-aa117ccd3c0e@linux.ibm.com>
+ <875x6cpddd.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <875x6cpddd.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-dma-buf-heaps-as-modules-v4-8-e18fda504419@kernel.org>
-References: <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
-In-Reply-To: <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org, 
- Maxime Ripard <mripard@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1645; i=mripard@kernel.org;
- h=from:subject:message-id; bh=oNUPt44D7xewgXiELSrkzONvN2UIFpJB+B1908QRT5k=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJmnZxt66SQ2vj7w7OYxd5vfvxkLJORYhFqY/HbXJbDdK
- v0z90F9x1QWBmFOBlkxRZYnMmGnl7cvrnKwX/kDZg4rE8gQBi5OAZhI/C/GhrO/OBSVxPf72jHa
- mqf+O2h2+15d1FXZjJ8vGirXCGp+m7aO99LpcvaZp94m27jmScz5xljv7O6//3xn08Wbkp+Y896
- eNHlgelTtfQn/8vj63oZQx2U71J0Ox/lpHp4pkcoWf+LK8cMA
-X-Developer-Key: i=mripard@kernel.org; a=openpgp;
- fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
-X-Stat-Signature: osokyezc4wcmfd364pjq7jqt7z347wyi
-X-Rspamd-Queue-Id: A36C51C0002
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69cb9b5b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=wirRZfjEyRCDJu0qy4UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: wkBRYBN92QUNJAcDZjrV2VwhL-rXr_A1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMxMDA5NCBTYWx0ZWRfXys+ZPnaAfCCw
+ pPVt76hIttmE1P78GFSTpZrzV4b5QNIMkbTJryLngcWTadnKywEPXZG3Ez2ifWxDyJ0VvKykrNI
+ eS8H4vs4ZFr+egR4UOuunsNwLuYOY/n6pbX4mOngOwGmbXPluxXHXrrt7UVpbUe4lXPe3ep7jq3
+ BZYKTaW3Z9br5/09J+jxUL8pQ70W4jK8ntZbIf0WWGbxJepVEAADgwasC1y2aIDKjNiq8z0ExAR
+ GjM3NQ3ZvQL9lR2vedH7OUDJgJDGJK9OoFkpgVG5TXqe3sf9K2twEHyFY8vjdAdrcgYATHp6fHJ
+ obnriFpiqAzxrIzsHrBj5mkvillu9PKtHUpc5DsMSNRHqzoCHBe0m9M5dg5ba7qKb1osO0nG5z2
+ mT/DgfRmLxOf8Z3ZW52Z1slgbp3+JesLdPeSpBzwlit0Bsll0T1Q7d5PP6q0WUgD+QlTi1NoTYM
+ 7V2HZWvnXIrmur1nX/A==
+X-Proofpoint-ORIG-GUID: ub8R7S2hHL24WwRtIqsPlwgRs8Aoal_U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-31_02,2026-03-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603310094
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774951245-578517
-X-HE-Meta: U2FsdGVkX18+C9owpcRM5l81cwLcMFqgNqmbZVaA6m17ar9QLKhLrtjddabYNBTwf1mjgRAGlcVjQAe5tiwOEEusVWJpvyUBGflU5V6Xm9WdbNYhIYEJR1Oovk6Way4R0ZsrLEyEdYo0WocFE6enn0hX1E8XI/zjoIL7Z2tpHKT7yTUpDsF5zDN/cTYsjyN45Pu7zKiDEH9YH0byLnH+2ujU7ZGPmn0OlQ3dP6ONi68YRZS2k47urrmzpwO7L9Nx6QHXFiA34SWNMYoMbU++Jb0VaPP5BKGFf6OJhJcq5r6NtI86ThOX5n+cHPHU1JDxakAHQPsNFOdJZ//ZtMdCsDSLt6LIqRlsUNi7ev+ihh7Sk42xGLLWOzErJcn9TsVXma6t9n/5H7ybfEubxdOldrVDV5izGal/4OVQ9PchAUlHN6xFd1KMDjNH4F7bEncqgVBkRAooJTXqvm+RV0tmtdmucL5uH3yrrqh/oOA9nbdLmtDT2EnexCFP5txyLmzvyAWjuDPaY9S9K64J1CMzbfEAV8QPFgjWtssLNjmUt7JO0gsafNNdVjPl4Ae53Ufyo7k6QagkPy8YVvIq9ixtMqCFX8V0qNo2mJIGsfkvy1ChI7SoRQVnw04mLkn/3wc6YT3wXEthf2rh4mMvOSEGGy5Ait4CTBXsJZIcU7fOgFjiTq5Gt6yVTPwOjpJ85eetjVirdQQD+o7hvbQujKfI2pIjIaoSFkjR8HtVMSGSeCbRensmf6c3pJq5tcS6R9tujO4wUE1PvLqfH0mhd5nhXBWudnWgW0K1KsUIArKx4VO8Zrm6leW9Rl8iCyMXdm/7FqGrpdRPusPnds98N4an/Xlw+l4vwXx+0Hcozj1ntq4X3T82dD7Igw4Vf8+DyzxVdX4vCAifSHsOXyK74PevkGSrHhDZ2lqJnUtrxW9gpe1vBDQ+B78YTRrTPvby8AI/DHOkbHe8A9/s+8rZvUn
- 7G8Wl8n/
- z6Tc7OWiqBkwaopbw1dr4czqo7HiWPq1Cu6NKiCqpUHrgYssfvV84y7GcGL71vvcrAq9hV+h3OQpdX10Xm7kyNrqsHZd15tYo+C1Ln3wK58uEO8ubhoZrraZ6CgxEiTTKlxgrP+npdw4JcKP8acTFytpuHvdIbl05CFiLxEnConQYIRXDRu5UT70KQG/OWklAnN/2jiHADpaQruuFp8Tfs1awEVUHdHmA4Ad4QFw7nz0sRIGBglDETWwXrliSr+rOwVG2OeOvbfc5EPo=
+X-Rspamd-Queue-Id: C7C7410000E
+X-Stat-Signature: hk34ykssmzjm3hbb3qgmh9w8ij5eriey
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774951272-873343
+X-HE-Meta: U2FsdGVkX1/gOlXI3GzF6z8kOlM3FsHBpvpPk7DLLhLdfzvm8UtwyJnk2LHGwR4Mdw7oG3puNRVwM26j350ocGNlVgRUrkwx7B07TMzXA0OsTdKKgCqgQ+GeQzkRKCnlEo0CKVVKd1gbNo2bn9cPnPtoZamiQ1JpZUlBKr90+YWiKXIeGB3q7zdZ3X2sQfFyjsHsHFbgk/6a8U9IqVnkMB110HBsZwDIe2/gR+lBRP4Wn3KT6COBhgFpsD8A88ygpNicogJbQG2gPBgjYIpJcxps7V1gSIJoECdJKTsWA2wFKcxqYQCxj2723HaOQo4fl71OlockznWvKET5pQUg3h8bgopbMP4qk+JOKSTBwlaB7hWmNbmqno1GDGAhgJdfll+ot47VkylAzxgdyP+LFZRBGQ/udebWteHkhMZfmkPTBromrPH+oFwquvB2Oeg8lbZrqaUkfCipgbED3ZIkHRsmdWDcewiucRNh/PSXmOdSaIIOnl3rw5VP1fqZskIuVbJbMrThXePs5NdP8dWHsyIGw4zlMDaSB69jS1VV+25ymNC5qtZ2vF1tR+gYENwdb57/guMQLt5CWc88Pm+GsetlNnchEuWGGmgXt7UgpLsZPRdIadbW1Qp5UfWwfQVuqb1zMvzKOZXVLS463Ulr647tG0M0hfUZ/77L8J65D41v028pBgfinPZE2ma4m5riExexzpTb/167NgJr/iChYaiJRURpOjf10oomHcRASWNE+Mu7ysoREO5gTJT7+j+Sy+nA6xP7zWNcT4S8qAEmoIzmIX0v21afMYTrb+LdHf87F4xrB9MKpGNQxequcM5qGzE3vzl0wLxa65mDedHpKbYn2R89j3CdpVGNdffnxPHpkx7BYOldJKylBwpMtHP3zBZqk3EgsKL8PfaLQsZ7nj7M+dxBdrT43ieLaf83Z2XNJIBf2LCDwBvi1vHoX2ZflF+AtsAJdZcCvs9CG0F
+ wkhPvRd8
+ E65d1tOWBCfV3N2nJnyzyupZfJjGK195ag9VC2f7jPle2F4gx7Ue9QG+HPfSnRnjJIAoV1jO1SniEGJYj4VPsQk8hp4iN0BSd/3Fdh1EvkJw/o27UBDy4I7ONXbosTvrlt+qy+Xl2ravmTtZakevVOX81/8AfSqUH0FZYXrMNST3pFvq45yCMKJdh4CmkvqjVS2BqRsAZOPB4EXJOhrF+vCAxU2K3alsnogrxtuBzSpmwaBtZBq9Ei5yFdgG89YVyzR7P2Uqj7nacNqZ14lmG7vlIDwjP9sSTQGl9eLCuHGRDzs5OA/ZF3fWV5yjwSWrfYapKwS98XbnvAHVI1YpY9stPZfTvorJ39i7ZZMa6QszU9IJkchHEXafRAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,50 +157,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The system heap can be easily turned into a module by adding the usual
-MODULE_* macros, importing the proper namespaces and changing the
-Kconfig symbol to a tristate.
 
-This heap won't be able to unload though, since we're missing a lot of
-infrastructure to make it safe.
+On 3/31/26 2:47 PM, Huang, Ying wrote:
+> Donet Tom <donettom@linux.ibm.com> writes:
+>
+>> Hi
+>>
+>> On 3/31/26 2:03 PM, Huang, Ying wrote:
+>>> Hi, Donet,
+>>>
+>>> Donet Tom <donettom@linux.ibm.com> writes:
+>>>
+>>>> On 3/26/26 3:59 PM, David Hildenbrand (Arm) wrote:
+>>>>> On 3/26/26 08:12, Donet Tom wrote:
+>>>>>> If memory tiering is disabled, cpupid of slow memory pages may
+>>>>>> contain a valid CPU and PID. If tiering is enabled at runtime,
+>>>>>> there is a chance that in should_numa_migrate_memory(), this
+>>>>>> valid CPU/PID is treated as a last access timestamp, leading
+>>>>>> to unnecessary promotion.
+>>>>> Is that measurable? Should we at least have a Fixes: ?
+>>>>>
+>>>>>> Prevent this by skipping promotion when cpupid is valid.
+>>>>>>
+>>>>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>>>>>> ---
+>>>>>>     kernel/sched/fair.c | 7 +++++++
+>>>>>>     1 file changed, 7 insertions(+)
+>>>>>>
+>>>>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>>>>>> index 4b43809a3fb1..f5830a5a94d5 100644
+>>>>>> --- a/kernel/sched/fair.c
+>>>>>> +++ b/kernel/sched/fair.c
+>>>>>> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>>>>>     		unsigned int latency, th, def_th;
+>>>>>>     		long nr = folio_nr_pages(folio);
+>>>>>>     
+>>>>> /*
+>>>>>     * When ...
+>>>>>
+>>>>>> +		/* When tiering is enabled at runtime, last_cpupid may
+>>>>>> +		 * hold a valid cpupid instead of an access timestamp.
+>>>>>> +		 * If so, skip page promotion.
+>>>>>> +		 */
+>>>>>> +		if (cpupid_valid(folio_last_cpupid(folio)))
+>>>>>> +			return false;
+>>>>>> +
+>>>>> IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
+>>>>> we would no longer get false positives for cpupid_valid().
+>>>>> I suppose overflows are not a problem, correct?
+>>>> Thank you, David, for guiding me in the right direction.
+>>>>
+>>>> I initially thought that overflows would not occur, and therefore
+>>>> cpupid_valid() would not produce false positives. However,
+>>>> after looking into it further, it appears that overflow can
+>>>> happen when storing the access time.
+>>>>
+>>>> The last_cpupid field is used to store the last access time.
+>>>>   From the code, it appears that 21 bits are used for this
+>>>> (#define LAST_CPUPID_SHIFT (LAST__PID_SHIFT + LAST__CPU_SHIFT)).
+>>>>
+>>>> With 21 bits, the maximum value that can be stored is
+>>> It can be less than 21 bits, if CONFIG_NR_CPUS is small.
+>>>
+>>> 	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
+>>>
+>>>> 2097151ms (35Hrs) . If the access time exceeds this
+>>>> range, it can overflow, which may lead to cpupid_valid()
+>>>> returning false positives.
+>>>>
+>>>> I think we need a reliable way to determine cpupid_valid() that
+>>>> does not produce false positives.
+>>> Yes.  IMHO, false positives is unavoidable.  So, the patch fixes a
+>>> temporal performance issue at the cost of a longstanding performance
+>>> issue.  Right?
+>>
+>> I was trying to fix a functional issue. When memory tiering is
+>>
+>> enabled at runtime, treating last_cpupid as access time is incorrect, right?
+> I don't think that it's a functional issue.  It has only performance
+> impact.  Did you find any functionality bug?
+>
 
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
----
- drivers/dma-buf/heaps/Kconfig       | 2 +-
- drivers/dma-buf/heaps/system_heap.c | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Thank you for the confirmation. I thought this was a functional issue. 
+In that case, we can drop this patch.
 
-diff --git a/drivers/dma-buf/heaps/Kconfig b/drivers/dma-buf/heaps/Kconfig
-index aed0b9b4febf388376cfc41be9843980d010c4e8..e273fb18feca091ccd9b406e68f86c12efb339e9 100644
---- a/drivers/dma-buf/heaps/Kconfig
-+++ b/drivers/dma-buf/heaps/Kconfig
-@@ -1,7 +1,7 @@
- config DMABUF_HEAPS_SYSTEM
--	bool "DMA-BUF System Heap"
-+	tristate "DMA-BUF System Heap"
- 	depends on DMABUF_HEAPS
- 	help
- 	  Choose this option to enable the system dmabuf heap. The system heap
- 	  is backed by pages from the buddy allocator. If in doubt, say Y.
- 
-diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
-index b3650d8fd6511a4a755612cfe3a9d9fee796f80e..1957403b0f2ae5e82ab39f5945dfe82808e93964 100644
---- a/drivers/dma-buf/heaps/system_heap.c
-+++ b/drivers/dma-buf/heaps/system_heap.c
-@@ -442,5 +442,10 @@ static int __init system_heap_create(void)
- 		return PTR_ERR(sys_heap);
- 
- 	return 0;
- }
- module_init(system_heap_create);
-+
-+MODULE_DESCRIPTION("DMA-BUF System Heap");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("DMA_BUF");
-+MODULE_IMPORT_NS("DMA_BUF_HEAP");
+-Donet
 
--- 
-2.53.0
 
+>
+> ---
+> Best Regards,
+> Huang, Ying
 
