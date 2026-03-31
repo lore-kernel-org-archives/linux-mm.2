@@ -4,134 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 098301061B37
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2641F1061B2E
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:16:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 495906B0092; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
+	id 69EF16B0092; Tue, 31 Mar 2026 08:16:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4463E6B0095; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
+	id 6760D6B0095; Tue, 31 Mar 2026 08:16:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 335386B0096; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
+	id 58BF46B0096; Tue, 31 Mar 2026 08:16:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 236726B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:08:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9EA316011C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:08:14 +0000 (UTC)
-X-FDA: 84606235308.13.D23B8B9
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9C98610000C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:08:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmhGWX1l;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774958892;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 44A376B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:16:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD35113890B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:16:50 +0000 (UTC)
+X-FDA: 84606256980.06.693D705
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E0E332000B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:16:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=E9ChVItp;
+	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774959409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
-	b=A+ijViVho/E+DQ1VZaNGEyovLrqAcFysPTw3m3rZgrArPiWS6lIE9n3WxioyPnCbT+fiSn
-	P3ljHk1w3L26MpEm5ArxwmYbs9Lc8aJWXiKXT66tyeU9bvKwgQ689O0dvxZqT4MUMMUmi+
-	9LddSjNTcNsIkKeJztl+abJRan/mJIA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774958892; a=rsa-sha256;
-	cv=pass;
-	b=2f8tOFBsf7Cj89FyHiT5POWQs3JMPEbFMx/4nrXD/6/xVzK0ZwlS6VxE6uB14D/SLKZKu/
-	5sJO6kDwmn81DkzRTMUqdgGSyIIHzn+gqenYogrHXl3LJXnStiNVcHvgdoG03q1r0zhKn3
-	BIEqKdmrooGmTrHFD/W2HvwTLsX2a4A=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SmhGWX1l;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-463f00cda04so3159976b6e.2
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:08:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774958891; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ieMgrD+L4NAgMsAOStXTu12kT5tfDyc7zt7lkFLpy+R3HmFWUcFzSI94UM8GTj0AJe
-         O1dl+BaEwOvjMnFy14hTtoEqQ4mAf3PG+QAecb697KbpjZ2PXQh8UbXtfXKZO+61DJo7
-         T3IgB4O1/nR3ADFzjBp8uahN1N7pPAc+XhIHOKidUKX1nOvGV611Anq2L1VSODyAIsoB
-         x2vqrNN2jxbgGEnNgLTG4c6hgFvyIgfXdFDmqKGQy/4NWt2FL/JkYQudURtX2Jmonm6x
-         7x8rdiSZBwgQeHxH+KzpV7/sISgx70ZwpzOLCYXocSOWYgKrGxV3tYpj5EtbYzkJop9C
-         fdhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
-        fh=XNANgjDpp4BDT3hOinkzYh6G4aKOZCmCAK7iI9sLM7I=;
-        b=H0HKStTIxQN+Qfd8KElZoZKZ5BTsORaijRLHrqJDYyiTSO+SRRLJtCeU3nCdPSSMve
-         jBjMD/kZ7fpuoCcye0s3ay0NRFrZrmpBmNqIc3NbPqvvVj35b7zfLfZD6fgfQ1BCb+mJ
-         NLpH/8q5MT4ZVYRMDjRgOW1x1vDintfyFsNhdKW7E/3QV8Lm1y9kbVnObAV5c+VBHxbx
-         ubkUgCeJQTWAABJyxN7iUSkFeOtkVNIjNd5S+W4L4aW+vRdVJ9tZyLlAgvVkBFHxAx2u
-         5sWd7F5YwDMOOQgKEjhQXt0WHCkTXxDZgYtc812Thg8UjEcGDftwy7Mej89tZo0/AxWh
-         TxoA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774958891; x=1775563691; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
-        b=SmhGWX1lQt4BMOQN4mTDyfy3yxjOKHN+WaCKTuqtBh/IcQy/sV9ogDDyD6WJZr0E57
-         4EkmIHbFMu3ROFXz1/Bml9rVL+k2YeNFN8CPXj1deUK4Ise8nLyFQxbIjaX3UYdhEzTL
-         fYZrAxn4SaCf0LTu1kwDJqi0IRCJ6MRqlWqfkvmkhXhlSmPFJiPXsX3IpNUpyaOYUrvf
-         A46Jxd9lVhHrxsC+VDmVQdV4VVLXqYIHfRD1wemnhfnnMQANUSGv9/MpWPqWmdhvSTZB
-         fxIxIECZdq9g9c28gKy3uHslIQmzfVWUKFkJQYXD9oQNk3kuHybdDDYb67B/MiiSW9f2
-         xd3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774958891; x=1775563691;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LWnbOpzONRGJiLmoV0vKu9xzFQRSedr0o6MAdYTsM/w=;
-        b=byP14ozza3fJ74wXXby98dJGB8FUmJlQRA9H6DXQ8RETRIPOQ/GQ7VYk5KghWIUZa+
-         lJ3QeIgi4Y/CBHJtFXPe8AW9F/P4jyfxm+GAFfw+TWkb8BnLLYrhXuizIq1YnNPTMTd+
-         52Kg1fS+6PmMVuDMJYHtXWR3xhd/DExhMmazLvog7wWe4P5O3wdnzwrj1E8jYrXlxpYt
-         64DLOYEMrtEIZRtjA0avpUBD+QnwkOF/B8eBIcvQ/xrqQrKVMKYT40UDw+m++K+pgelh
-         zuiBVBpjIrRaruxZ4pkK//OdlPm3RRjm4KRirJpo1CiO6E37ZYdAGX9Bhe4e+r9TxLLK
-         WdXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXplonWXezXOH0ExmEYZcnRiuALelyjYWWP0LYyqa3mRaMqs+4Ez9YcNCfuldx2hryxcO1VFJ1M6Q==@kvack.org
-X-Gm-Message-State: AOJu0YwxS8IbHAgfeS1JzDUoCEN+s67CUmjz5GkUSR2FV/MWj1ErRzJ0
-	1I5Hqmk2mSDJGFleopYOGj3TiHCOjD+HE/M80IUrpoxfGWE1qMmLlhb4/IkHwGVOZ2SgeijlaD5
-	eWjM0+NVaGlGSaJ0pCPNehaX4+0rKMow=
-X-Gm-Gg: ATEYQzzV2nyGLR5m5brHKrOy1ToEo2an7VHwmq0DnOSuxIcC4vqdg5c/eZ4eGN3fs4I
-	7F0dfLbeUgozbpaYgvmSRBrnNi1I/t42fVVFD3EHBR9Y+fwrZeLGcZXCP5MjDm2ae8iMPuDiQdI
-	XK/gxrcbXslRwgbJok3jVjW8DwzigBVWXOGfo0+asuzusw7QcsoufN/J7DD95HNuDVchTUE8llN
-	dNoFHSJL/QYiKOxyOgCU+T1hSGWWWqO/s5i5AUIlD0lKxDPcE8PtO69sRqiq2V+xiYVctlHzSak
-	KbnX0Y5Fl+eNu9JmiOUE5Opfn8iZ1+PFqVoSvA==
-X-Received: by 2002:a05:6808:4807:b0:464:74e1:45a0 with SMTP id
- 5614622812f47-46a8a591061mr5342269b6e.36.1774958891506; Tue, 31 Mar 2026
- 05:08:11 -0700 (PDT)
+	bh=fmOnVSldgMRg/8pGDKo6wUzrYFaZS5iOwP+Hm7ivSzc=;
+	b=RUbLGjbWJ6ZbsdSZX9KolOYkrppEis8vVuZtMg2Ooxr/8gE8MuULLhF4N0TzjqWZXtODcE
+	loUcC5wQojCAF+ojd33qOMAfrvqxjde27mSbw8qZiHVvB2UhJprUVwp9VSKg2050nYm29X
+	a397ao6oRgaxBLdNCEre92/7JKAjXzU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=E9ChVItp;
+	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774959409; a=rsa-sha256;
+	cv=none;
+	b=AWj8+KuX/vh5G0p9OflDhdMLkQbRV34ILgSvpOVlhns+4w5EvCvYietlDHkgeZF38O8UGn
+	U8cE2/v6C4Sa8Qf+QJ+uWnjHam92LuCGz/e6RNsWfI/hJcUWkcPSL9OUJqKWRI6lH2CelH
+	A2p3Pm2djgblYGS2YU460B5MCcivIIM=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id C7DD3BE242;
+	Tue, 31 Mar 2026 12:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1774959407;
+	bh=fmOnVSldgMRg/8pGDKo6wUzrYFaZS5iOwP+Hm7ivSzc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E9ChVItphVkjUtNNOlIsaXKqbJIKHVd05tZl9VjsTincvkl4+6OIMtozfMyTd9khm
+	 wG63Wu+eCzPfC9aBKGIUFKss7uZL7kLRRjZxL80a35fei1ME7K/m2xG6Ft5zImKYdQ
+	 nXNrJwdEjYs6yNqfZ5evrY6xy632+Hfb5anmMfN0=
+Date: Tue, 31 Mar 2026 12:16:45 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 3/5] locking: Add contended_release tracepoint to
+ sleepable locks
+Message-ID: <acu7LdegiZ5_-dEW@shell.ilvokhin.com>
+References: <d2e5763278812499335b22a013aafb4979e3324b.1774536681.git.d@ilvokhin.com>
+ <20260331103451.1070175-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260330202909.136776-1-devnexen@gmail.com> <acu2cpUBS0ahkgkx@kernel.org>
-In-Reply-To: <acu2cpUBS0ahkgkx@kernel.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 31 Mar 2026 13:07:58 +0100
-X-Gm-Features: AQROBzDFhnb9rsW6pTaEnek38J3jJ280IK1AWIaU5LoK8H-mPw3Bt7Fpj5Pl2bw
-Message-ID: <CA+XhMqxDqrWaOTCE2YKLu8FQPCiVkOxLBOQyVpZe2KxdHFKAoA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9C98610000C
-X-Stat-Signature: uxonwr6ygnxqizn4d57hpdjdoz8jzsar
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331103451.1070175-1-usama.arif@linux.dev>
+X-Rspamd-Queue-Id: E0E332000B
+X-Stat-Signature: fko79ik5gtrh3kqyp1jy7ibnxy7ohoap
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774958892-358400
-X-HE-Meta: U2FsdGVkX18qEz01a+z1RaXJNGDO0K5KmdiuDOS+nuEXQhMneZcRmVLHaOHS+8TUTS8lQ0cFbrQgAwVslLWhIJ1xwpfdOT6Q2wXqHOFVVLv87Qy2eUfyUyz3+7MOS8kGbVgGootdXiLLVxmTu1zOT/Sp5D5GGps3QnAYxl2P+CsuqtLJbD6scR8VqwK050A2yCJizUQKnVIvMv4vwWHB35fbD0DWgtcHv+zIjpkFY2leWdM8/MIgTFb2do40Y/rRQvJEtNGHqkWhPJz9YxL/0sGc0+aqT5y+LAGFKS7RXwg3jFv2AacqwvV4CC3L+gGq3CsPLM/0OLjx06xa37yKRy7ajl16XQBGmNnsjpFprfOZBdeDq54ioXaTkA5dTEAyy268GYYo2iK2xXBFd7LzVnCVadUdBpyPblNZrFVBVnlO4GysH9peXwKFqouJ2Bm1iWwDgMXAj3JspX0hEZmZx/B3dGdUxVrHFbOgSS84WOSMqjoPkTLCEqmyUOlPjdNmdz2XHnBSWSh2l0ZziZqTsSI6Jq6Zi86vNtvZ6eS29bmdRKAlFhsnNBoYKepuofcaJ+3mKK6Sbmuqm4u7bktssgJIOKWfqNWZhsR86ZEjn8htxTx4rhu4OlEC0AeNKOVbEqRxX3E/gIbrHCBygAp6he0UjoPF3OP8V5IhQIrYZlnMpIycQtRT5wsamMWV6erNasr9tUi8b/2HrRf/lVq9iWyjHV9uSnpRO7yo6I6CU56oZymiQrtRMdO97T5LDQnZwmKi2Lx1D4xbIfF0g3vGkIqwh0H6Kgmt9tdvA+cK8cSPjRfWD6VyuMfOfwdpOH8GNdUUcbvk1/3ygBLM2unt/gBbkLEMRltOh8vI3b3s/vy8+L5110QsbMcNyMwziwbF0lDYRpK3+kku1kR70/o5CJSv85N/0QVaIG2ZRnGr1XFp7QBPHFHQtQ4WUTMcrPmrPt30lqmIrqu9pQRJ9Av
- oTNYr5eW
- ZQhgmPZwSjl7SXXRr/mY2u5wEqeqxmfLCW3/r6ctK/UEX0Tnt2HwlgUXEOz6xrAkcoxIaZUY3eJ+dF39hThGd6bAmEpRi9j232kFxIi3qNLk8Na9kmsp5jRwdq0pMThDXyMVltbfidigANAn4urMZzqymtk8Wj/D56P+txJGlIlhPCgGbNWqmxp38R2VMD2+2AWab8YnxQkIgsg00zE9ALIipJee360PC5C58uc19AJrYe3NnYdI+g12D7ErF/z9t9oScEwEVpzEW/dtx8knEa1+iE2x8TJXxFB7v6AYbiTXzIDxNS52avAPh7jd4sED7AM8gRsVRvMR03bHm4g30whmv1Jq5LCpn/rLO4nuO1BYP46nnx8E7mU4d6Ajau2d09yuAMzV+H/xToIiV0laL8uTKIAO84eP0UigthPDLNijOkrbGor3AOgG8wmWTReb4MSyP
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774959408-950269
+X-HE-Meta: U2FsdGVkX1/Y2up+yXCL/kd3sRR/0XAV7ArGs5EDCEM879X+WiF3O2bDnmS7XPN6lt2sF0UYTCTTXi87O4YulI5orRNXXVWlobq0oRXCTR/IJ3i0yLNgj6w7m/sLyFzkIhFdtDVwD48/wIkQSLvbkYbKHHg4RXaj5eebj+k71QzLoa+d1h9Gtdlbx7MMZ6voCndsutJ31VVxdcSRKYX5ujUEa+f0QUCzIf2YY4DqEGorjXO7kD2RFc6APKvkvBVeb+o9GI4eYOzxk8FTA6GFoRCJPLGxbRIXgap7JxwHdJ4zalD6effPIGOH0EJlRLFixQg3YuMVDjCUsV97RUMUNYgDe6NpF7Hab1y/ykNHRKhanW16IysTp7S0s5QCzB/oOZMUR7rHDa6BorMITprdHqSW29MmFWhzWMPeDHmC4u6kCEjUjJbPKsbTmAuUPr57nD5TlNS3A2zVTR0dLJ9KsTixgiTPmbRtxZv3g0Z/zQrV/R91X5JxzsKERF+4LcA69y2U4Rx3VoXhO0MEjJzoavOmKhaP4681HU/nlTN2qo83ab8dIr1F6Ut266k+gPTvfeAEuVQZwuQPsec5T2W1zWSVIPg+8P07ulMQgAISDKzYeu/dCyhccsvjScLQkar4Nlnn8XFk1hAlJoJQQgjzqu4Vc3m8IN5BK8KOB0g95tnrpxSVkCWMqkLPkArlyR4y04hHctQOMCa83IOO+jUyg05ABH+CtQ+XY3D3M3/bguplf2YUOuxnDtKVx8q8zgAfiJdxdfooRXcATPjcplxFjuuMrqbGmQxloVi3+oLu4touJPzY6+TuuI2bnYCav43UQCEA8/eB6DbJEkWJL+PdDb0bvnZMiETRC7jcrFilm5u56DnjteObYC1fCgMoZrhrQOeNQqqm8y2aA3IMK/bXwDtmSlerw8cfBKZSMSyHNuliGFUU/pqQ2D6TrN/aA2XAdUFfaWm2sjtqqnYVdO9
+ nagPGTZj
+ PpxQZ6dSOUVs45yQRlHVs1ehQUHYzN0LRxtPFi9NMCpG5Pxl8caYJe+GAFGCFPOrSN5EkgI+34atMvWtfHxfQ1jvkOiuBlFXMEHj/E0+3m8LB7fjX7OdhaFJL5H+cC/XuShw8L8xIcYRlIT7K58iLOob0aXWhGlsPvkvHRuOs7j8W3KmyMWnv5/SEKK186vYRflaf23OyiqACMOMy43An8stXdwusO3/mYi0OdmkLowJaLPdOQUBNUxv3PnWIg/lyyKh9UPNXla5fCdVocE5cPEIzfi+KFioBYbtq7JkGweL4Mj8qdA/8C1iSkTwMA1TEOZaAxU8PVD2n1bYrCJF/sbRUxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,63 +106,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+On Tue, Mar 31, 2026 at 03:34:50AM -0700, Usama Arif wrote:
+> On Thu, 26 Mar 2026 15:10:02 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> 
+> > Add the contended_release trace event. This tracepoint fires on the
+> > holder side when a contended lock is released, complementing the
+> > existing contention_begin/contention_end tracepoints which fire on the
+> > waiter side.
+> > 
+> > This enables correlating lock hold time under contention with waiter
+> > events by lock address.
+> > 
+> > Add trace_contended_release() calls to the slowpath unlock paths of
+> > sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
+> > RT-specific rwbase locks.
+> > 
+> > Where possible, trace_contended_release() fires before the lock is
+> > released and before the waiter is woken. For some lock types, the
+> > tracepoint fires after the release but before the wake. Making the
+> > placement consistent across all lock types is not worth the added
+> > complexity.
+> > 
+> > For reader/writer locks, the tracepoint fires for every reader releasing
+> > while a writer is waiting, not only for the last reader.
+> > 
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > ---
+> >  include/trace/events/lock.h   | 17 +++++++++++++++++
+> >  kernel/locking/mutex.c        |  4 ++++
+> >  kernel/locking/percpu-rwsem.c | 11 +++++++++++
+> >  kernel/locking/rtmutex.c      |  1 +
+> >  kernel/locking/rwbase_rt.c    |  6 ++++++
+> >  kernel/locking/rwsem.c        | 10 ++++++++--
+> >  kernel/locking/semaphore.c    |  4 ++++
+> >  7 files changed, 51 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
+> > index da978f2afb45..1ded869cd619 100644
+> > --- a/include/trace/events/lock.h
+> > +++ b/include/trace/events/lock.h
+> > @@ -137,6 +137,23 @@ TRACE_EVENT(contention_end,
+> >  	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
+> >  );
+> >  
+> > +TRACE_EVENT(contended_release,
+> > +
+> > +	TP_PROTO(void *lock),
+> > +
+> > +	TP_ARGS(lock),
+> > +
+> > +	TP_STRUCT__entry(
+> > +		__field(void *, lock_addr)
+> > +	),
+> > +
+> > +	TP_fast_assign(
+> > +		__entry->lock_addr = lock;
+> > +	),
+> > +
+> > +	TP_printk("%p", __entry->lock_addr)
+> > +);
+> > +
+> >  #endif /* _TRACE_LOCK_H */
+> >  
+> >  /* This part must be outside protection */
+> > diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+> > index 427187ff02db..6c2c9312eb8f 100644
+> > --- a/kernel/locking/mutex.c
+> > +++ b/kernel/locking/mutex.c
+> > @@ -997,6 +997,9 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+> >  		wake_q_add(&wake_q, next);
+> >  	}
+> >  
+> > +	if (trace_contended_release_enabled() && waiter)
+> > +		trace_contended_release(lock);
+> > +
+> 
+> This won't compile? waiter is declared in the if block, so you are using
+> it outside scope here.
+>
 
-=E2=96=8E Is it possible at all that after all that dance vma pointer will
-remain
-  =E2=96=8E the same?
+Thanks for the feedback, Usama.
 
-  Yes, VMA structs are slab-allocated so after munmap frees the old
-VMA
-  and mmap allocates a new one, SLUB can hand back the same address.
-The
-  pointer matches but it's a different VMA =E2=80=94 which is exactly why t=
-he
-  snapshot is needed.
-
-  =E2=96=8E This isn't a bug, but struct vm_area_struct uses vm_flags, not
-flags.
-  =E2=96=8E Will this cause a compilation error?
-
-  This is a false positive from Sashiko. vm_area_struct has a union at
-  include/linux/mm_types.h:956-960:
-
-  union {
-      const vm_flags_t vm_flags;
-      vma_flags_t flags;
-  };
-  Peter explicitly asked to use vma_flags_t / vma->flags since
-vm_flags_t
-  is being deprecated (see vma_flags_to_legacy()).
-
-  =E2=96=8E If the original VMA was file-backed (s->inode is non-NULL), but=
- is
-  =E2=96=8E concurrently replaced by an anonymous VMA during the lock-dropp=
-ed
-  =E2=96=8E window, vma->vm_file will be NULL. Does accessing
-  =E2=96=8E vma->vm_file->f_inode here cause a NULL pointer dereference?
-
-  Good catch, this is a real bug. Will fix with a vm_file NULL guard.
-
-  =E2=96=8E Filesystem eviction paths often acquire locks (like i_rwsem) th=
-at
-  =E2=96=8E invert with the mmap lock. Can this cause an AB-BA deadlock? Sh=
-ould
-  =E2=96=8E this take a reference to the struct file via get_file() and
-release it
-  =E2=96=8E with fput() instead, which defers destruction safely?
-
-  Valid concern. I'll switch to get_file()/fput() which defers the
-  destruction safely.
-
-  =E2=96=8E Whatever we do verify the VMA this should not be EAGAIN. EINVAL=
- or
-  =E2=96=8E ENOENT like mfill_get_vma() returns seem more appropriate.
-
-  Agreed, will change to -EINVAL to match mfill_get_vma()'s validation
-  failures.
-
-  Will send a v2 with all three fixes later on.
-
-Cheers !
+waiter is declared at function scope, right on top. It's also assigned
+before the if block, so it's still in scope at the tracepoint.
 
