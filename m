@@ -4,124 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFFBFF60EE
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:18:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56069FF60F1
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:22:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE6956B008C; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
+	id 9DEB66B008C; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C96A96B0098; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
+	id 9B6466B0095; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B85876B0099; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
+	id 8F2E76B0096; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A6E886B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:18:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B7D65C991
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:18:17 +0000 (UTC)
-X-FDA: 84605807034.02.2E42134
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 870BF160003
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:18:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CJUiDad8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948695; a=rsa-sha256;
-	cv=none;
-	b=4E7EY0L/U0mb8Pn5aNXAgzrTBkbYykN69DLsmErQp/nCMMJWlDh+FWLWNfMVwKMi6fHgAC
-	MVjf1WsC25J6JRGOxvqg0MfU8kqZ+eobCIdOHugitEmfz7jzgYc2a6Pxju5Zf7J5f7ts5n
-	RaUC5bZ0eHt1f0vs7SBtGBXXALdgo4g=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CJUiDad8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C0096B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:22:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DDFBBD458
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:08 +0000 (UTC)
+X-FDA: 84605816736.29.CB58913
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3B1562000A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Or5RWsez;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774948695;
+	s=arc-20220608; t=1774948926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
-	b=sp3iqY4ueBlPhfwfGGmguYd69E8ITvYefjP9diuPushS+leOgpgp0g7f8NyqvX+MDal/gt
-	pcF2BSXGL23At1YHJgC3dHKg1/fylw4N7XcWNVcnswPWYpD9NaDjXDCpyKbMgvBxzkUYaI
-	76Ta1dJWyYOVG6e6EL6dR7VY5dYwQ4w=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c76af7b0f94so484065a12.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774948694; x=1775553494; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
-        b=CJUiDad8p4B/YC684ICujU3dQLtl2lw9dCM2BcVyR3pjl4eTIIIvb+V+23WrMWRcFz
-         TEjR/HMLjddYm4w4iL0q5kT9AaZ3QYc/lXIwyyInrHT4tpkpSTYJhVLKmRbIEg1p4m9U
-         Dl83C+BaoMixhqIQoTwllYv3xOHWRYe/fHf4KtUS4sP+7F/HsqPr7rx0pUaDKxtiRab6
-         /BIMRGqeyJbEikp7L5jZkfQD8jLbjsUIyLxo0VK93hgpHyKaA2G8JbeHFU7ALbhgJT7s
-         HTZT0/pOgA6ttXES2uGdUdMik1JxFXRM3GLfLxxqcEiyi1tGlK7SWxQJt8yHTBJ8uJpz
-         OEDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774948694; x=1775553494;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BEdkmigAEVqczid4AF8EblZrFULW10CxExgl595pn5Q=;
-        b=heRfJD78bavrBoB0J7j+bEbu9RGZ8DemAQsl7s8TQJhptP6ofykMSZMePgSbdwTTVR
-         krtWhg7fYbXOlcRfUi8rnX2RLhu6oOCaD4a+C6YE47AKPsbnbf45JHPF6bOewqrEqgC9
-         rxCtPnxJ+uVZhM3nLw4yWYWFDv78qYR8m9ULMNx4aiharCUX8gwqC2i/6PWqeRGCsnJ/
-         Ir5CAUGoB/bo/QUi/QbmkzYwA61mVXQYueC1PvBKdlxWjfhTxJwelnCvnDMpnEz7OIzK
-         o/zNnFXOUk31dZvLVnHOstNJEz9zaM+XlOmGD6Sov4zoF+eyx1BcKfDVqvtXCKZLDrZn
-         j4Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCWP1kwlWv6rzCQKX/waw+EmAx7vxepKR/OjIXUjpOSepqKmWfp3r0TUl5VQASQjqk9VePHWU3k4wg==@kvack.org
-X-Gm-Message-State: AOJu0YyODDgJivrsBaNY73GJnb55VbsRKW9xDXqv2UGuVb5cGtB5QXu9
-	fXjRm8Xwx5bZMBSIGLKQr4QhTEPrLSVleg14rtdHDp9RbgEuexeFAnIp
-X-Gm-Gg: ATEYQzyWha2Lypk2LmKP2OxZWteyZeTOzu7FF25HsU36W2v4pXaKr8Qap97bbNFa3iw
-	A6JkpWlYHzCpDobJVWqshM2fX4qnc9BIofbtk3kMWpwoVrv/188OWz40N7BLDbv58qM1zFUGj/J
-	uD9m9bgrMP20nElmhW23atcVgCqhCQUiJ6vqVXq1uV71hGohkh9Gybthmgfs0XuJ0cJ8GsqqK2/
-	jPLQk3wGoqwfMqFU+nHbHlnjaS6MiACAKv5rLEKzIa0MOG0CFCNvLBDgeuEFR0D+vQSix9+FSSo
-	bs5J87don3fpgAuVIZMJOmzA/PMhBk2cLMfhMInOK3j+Ymv7MuOf81+nK2QH90KfazZphuUvI6q
-	hsMflpYR5cJMr/SQKm8lLsq2ETp4GXPr8LCwTx1NeuQHT+XzXswC75t7asuX9ZNkE55aGO/Jc2K
-	gg7ZSyixCDn6n4bJpY+wyndEH94WFEllwvzNEaoeKA39TIrt4SxtO7NBpkwg7amC4NFWdiDcCcy
-	d8h5Sw=
-X-Received: by 2002:a05:6a20:9187:b0:39c:a791:6ab1 with SMTP id adf61e73a8af0-39ca7916d08mr12865517637.31.1774948693982;
-        Tue, 31 Mar 2026 02:18:13 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc72asm9765765b3a.48.2026.03.31.02.18.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 02:18:13 -0700 (PDT)
-Date: Tue, 31 Mar 2026 17:18:05 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback
- handling
-Message-ID: <acuNtuf-mv3KJJdn@KASONG-MC4>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com>
- <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
+	bh=u89XgAtMoXR1/Ibc8jhF9HqZHMlFctxvUlUetm6nh0E=;
+	b=FUfbXhvfwzEPFFr8GHmmnwHX1BxykyqHM1rYDYjKc92lSGPipHNtiW8my/Vs98fOyItxbm
+	eL2/WOAopXdAZqfBGnCxXJ0m9UP/eEVIHXPCNk4t1p507NhuDg6eCANJdGLQFi3BOpCXkh
+	wFyBD+zQ0aN6/MzsaQSZtTQgksqMea4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Or5RWsez;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948926; a=rsa-sha256;
+	cv=none;
+	b=D3TWEHrLL+6j1Pyd+NSXunaxeEhzcZJbRuEDGShDTg/u3vPIXSIQzmF27MeDtwYX76+H2O
+	PouyGyfH2r3wpdXsKDlPrnTBjQo64pPhLxthIIHVxk7OJo6NolPRSP3JKF1OV4QB+CQCnA
+	61f+9TR23tvC5qDeUh8/h2dL+LDNeII=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2281F442DA
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C78C2BCB7
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:22:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774948925;
+	bh=FV3sR90IOiDlBhgFbrawyU5jutKOvYsXcEIAnBX721w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Or5RWsezVdmJXmfKXLU/+RO6AW73b9HhH7qXdzh3PhUekUvVn6glLz/t2uLWGRfvF
+	 Bnqb7nfaVta9+E8dtOVG7lGniJp9Hwx3p6AnZwttYtQVYMBAAwQU8OiwzjBXdOphRW
+	 VZALKGp30KZ3cZqVQ3YRe7/+95QRXATjcCBJgGdUT23sZymEw1UlTGzysFv6oa1ZUg
+	 or4GK1TFMxuOsfIJdeThcNUTdzLNXZQf3sNf+wZMs0J+sOoo8zPsmVHKgbUq9XBoAS
+	 jdooTCWwai/K1tLXTdRFl3NlyHEtXQMoS8nSMi1Usc0hMx1zqPFMcvbqqHIEJ+ZYE0
+	 SdIOAzd7JNnXQ==
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89c43c4c383so71885446d6.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 02:22:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXbGJYohVs5eloe9or6sSpmE1zI8RISn142EXyNbn08hLn5GEkzIkT61hVjBHiO9W/drQSV+EAAqQ==@kvack.org
+X-Gm-Message-State: AOJu0YxeerlLFqkIMVR8+wKglrTnBM5XviSVoST1f/tUo/NJP4KkQQeh
+	UiexaPybm5pmHDH4nSbWonJtfgBWJ6bpUoX1/99nlq6gaj2Fd1prY77UNpYIoJBGLYR11HnGktS
+	RFnSqYBpCfFE2K27RM0ml4uBvkCLfQpM=
+X-Received: by 2002:ad4:5c8b:0:b0:89c:607c:8c4b with SMTP id
+ 6a1803df08f44-89ce8d5d0d3mr214426876d6.5.1774948924079; Tue, 31 Mar 2026
+ 02:22:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
-X-Rspamd-Queue-Id: 870BF160003
-X-Stat-Signature: 1iofdjh7psci7nus48xxi9ji5pzbgadx
+References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
+ <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
+In-Reply-To: <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 31 Mar 2026 22:21:52 +1300
+X-Gmail-Original-Message-ID: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
+X-Gm-Features: AQROBzCJdjrXABR4qdV-glYAtPXEJJS9NfovzfViIj2lstem4gT-6tr0zCej8sY
+Message-ID: <CAGsJ_4x97xHVHCtXi7v9wgbjRpOO-LaC=SsNsYQ5tJf5_Wc5FA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
+To: Chris Li <chrisl@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, bhe@redhat.com, 
+	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	youngjun.park@lge.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774948695-199098
-X-HE-Meta: U2FsdGVkX19oCecjbEmKaTAXItxzyRMZ1lHmHbhrX2DAo7Ivg8Xqj7LA25K0dr4XSUHCYDg7DD6qOTnH28lVE3qlnkCoMvMOdAb9+a1/ZY4NQSKW93zunF88iKBJ3IL5s1Uzy93y116Dq+eJZf2OfNAdojcl6dEcY/TVmxf3YOcSVMZbdO+xRNScrqetkTNKB6Kt8gCUCtD8P7Pj8kQU/hhiAHkju0tOoEAZlVSkD4pqDA7ZNdFqYhIvbUUEXIaG8PC/ZFWWIeQe/tde3yiePYFNTW/0Twcouh6m90hR2IOz8wJVBepffhyzNXWP3Yah2CsH84uyiB80OZNzfIlyhNQBClqRAX2Agb/FQMnMBVSiG99ndZv1CIAfknKNnjymOuFY2Ks3b9ixjQ4r46BtnvhKl20LtrTrB4LQBEAoi/ozMDWu1qpW1I48m8/Qnq6HiGSbrGcZ5X5jLoIbkCRThW5S032PCEH+9R7RscNgiYWg/dAWu6pQCqBmqdZJXzFoOP57IBXeGPD4KS3ueWx54pU87ryUlZwRjkWsb2BDorXY0jVIdWmKbAs38watWMZyClgxpa0S3p7eC3S9WdI5Bawg5+WTQCxfZHKn5m10wsas9psAhZvKGNo9b+KG7kyC2zCCFsonQDpiadup4biXJ5bU2sF9jHB+hvWuKElt57VbTYZAfJcazqOR12DnG/MUDeu8MVkgmU+I6OiDCDJbu17Hvus19/u10HYQIJLG5Ylx6fsEBwG8IAneRr30hmGa2As5CEXWFRDfsoe6AQVJCxhDo6wuKpUxTr6ySLmTAaWnhf2CBNEImcEOfiITXcR+lUvUaBX8R8RZdOukRGgylQm5NNa5otJWqPjlSqn7VfIEyfv60z+7ltvo98jlhefmfyJXLs+vUtixtm9P1nxibr18GDutJnmzr1j0BdbIessIOoXXrtarjXLFVtt/T6eNAOVWr8lXpV9PyqPR24P
- VG/ms8F7
- lqAfQO/4vD0XyHhpdx7l3M1fBJet9wWCVfIPZRF7WH5D5+Ew3GKKIAwwU3CpVeKKJ8B7F2Dl3/oA4Yd7wAnXRQUuRrZAT4RsT0Ln13nb44f/+y6S0CMP/GqSnojyqsLwl6vTj7VfJqW5bpDeLfzPRiH/QlRm9RSYovIEaHqa0tsU2oQVk3aiHBmdWIS31WcI4DNxhlpXJQwUO+3y4o4NfVjJzaBLpd+uiRYkFRs6QncrFf82SV1tst5dL6wvjajSMRVa4elUEBPz8Neu0ecESifNJlrBpWhgoJNE+AcDgP6sV1jSGF3qUzV6bH9NJXOESrLtky+loDuLTpOGn+v/Z01Ax0P1hSpP8IwBw1NU5AH8cfrnBZLtJEW8AHL27o4V1LOc2YrvomQm1CcxBE3ZPwblXyFuyR1lpGFQEwDezCMpaCRQy/7ScFMqGNvP9MaNf57QyEocNK3wTKOCEnJqeGwk3L8TnyMJ60YcaagYuucvPVzgykcM4W8Lr+W/euh9ZzQpASu08+1aN6pb/5bOXz6tsnvQ177q8px+/bpZZqMkiuHwyBtbmBZ0SlGVQ6YOIecZzymJNitS1WjsT0w1a007btqmpY6RkH+6a
+X-Rspamd-Queue-Id: 3B1562000A
+X-Stat-Signature: km88bk8af7grziz8zp7ptz99gi7p17oe
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774948926-16848
+X-HE-Meta: U2FsdGVkX1/7iiKPzKZWMJDeZ/9WDs500HN+nWuJu84pTI51yu0YaTlpwO7GyTBFP6k14i+flhIr2RBaCZdhExiNnfE3Lu61Pb1mQb9vkKWM+rPRu7vuFp/+8LBWayJXMAgWit/WTjzP4lzx0n38lln0K5pG89pMmffvgOVCvpVn+1VOcMfRc3p9jF0yW86BYWJobB2/5OsUVjc56tKiVIZEdaIkjWA0PlwsCjBH3ynrscGA2aepJ+s0h4ks7PpqYKXZE7pbG5H+Ppb5Thy0EOGREojBUsgI6GMRFNLdDG5b+GoItfqAbuDbSjvCY+XeRAUb4k3SSYNO1WEtlp4Ngu4m4Ox5916rdu8WykWMIldWQdo1iwgtnIm4xHoBN5OirzJKfNtuua9DgqHn6sMfRLHwENqhM7Be8RXeO7dlQj3QkYHuAfl2sCQ9b8yuRnl7m5yuIOspGz7ovtRFOxr1ohuaKysM4nv+OBOWVVjIjxDe7+bBMIUAPoS7S5FyQqsEJIO0Nu80u1+HOxQ87ONk2AaE+wbFW+QHHnepyM7kXyqi7/GjB6eSjmTT198MssPx8SfWK59y5/5UdLBGJIa/hRqwuOJP78Ih1zHBOSMcRjcQesJucZtYDmWsXNFH7B9jdbIOeGD4TOqZEiWYpYtLVg1JDAcvRmtl11WZS5ANlIkSdVG5OMXQrR6ILgMzi9kql9w/3b+Wry9uYKdI3HUT3ZYAWUHcy27o4ToXOtdST5GLYwg8K+l5Egijt5cYuphXm8MC97cs3x99EKGGDVb3jkMswFwkR0av30ZirC1aDou60FZoSFsviNdlC68Kf7zyVxoYb++XN5SbSD9aLBxUHJpmmABiDJBSMfibuoG7evqE4Cme4j4MMRmDkioUBZ2TSu7BYKlzBOGsxHqi4Hbxh3EtBTfWs2sf2aqCEqz7W7B+QcQcVW7em4+EFO4YgJ5QrgxrnCV6XV5A8qmiPgb
+ GjyGvuJT
+ 1eQiO9MMzjw/U6NWNRttDBQafWihNBrVH7jkx94fMWFf/uiFoA4iRFSzFQNafIPdqz8sfalU6Ddr4qXRGS/EmURi5QLDmXpQxpOK/coEStkKQvRhEwXP4C+yO6t6OeFxIA/lPl4ZSSZ15xwdWuWmY+53gznknAlKgE8jcCc+37m0knXhOwkA1j9zcrvcYDvvIJnh6kCeXxsnp7KwM7fopUx4JvsIwbpV+4l9uR8+thH4hH3tJg2+nPz/dH595HPsrmSy7r7aU/wqMAtVsukOJ3dhbGiabeVKj4LlL0UoynrK1r8ng78GyTST44wF72Xf3EQZDtr3MNM25RbjiBKRqV0PvBJncstHI+/4CREoVYsbfBWvsTPwv9CpHAMjZO6o63Deci9WCpdgQZq2CBtYpshIqrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,139 +104,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 04:42:59PM +0800, Baolin Wang wrote:
-> 
-> 
-> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> > 
-> > The current handling of dirty writeback folios is not working well for
-> > file page heavy workloads: Dirty folios are protected and move to next
-> > gen upon isolation of getting throttled or reactivation upon pageout
-> > (shrink_folio_list).
-> > 
-> > This might help to reduce the LRU lock contention slightly, but as a
-> > result, the ping-pong effect of folios between head and tail of last two
-> > gens is serious as the shrinker will run into protected dirty writeback
-> > folios more frequently compared to activation. The dirty flush wakeup
-> > condition is also much more passive compared to active/inactive LRU.
-> > Active / inactve LRU wakes the flusher if one batch of folios passed to
-> > shrink_folio_list is unevictable due to under writeback, but MGLRU
-> > instead has to check this after the whole reclaim loop is done, and then
-> > count the isolation protection number compared to the total reclaim
-> > number.
-> > 
-> > And we previously saw OOM problems with it, too, which were fixed but
-> > still not perfect [1].
-> > 
-> > So instead, just drop the special handling for dirty writeback, just
-> > re-activate it like active / inactive LRU. And also move the dirty flush
-> > wake up check right after shrink_folio_list. This should improve both
-> > throttling and performance.
-> > 
-> > Test with YCSB workloadb showed a major performance improvement:
-> > 
-> > Before this series:
-> > Throughput(ops/sec): 61642.78008938203
-> > AverageLatency(us):  507.11127774145166
-> > pgpgin 158190589
-> > pgpgout 5880616
-> > workingset_refault 7262988
-> > 
-> > After this commit:
-> > Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
-> > AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
-> > pgpgin 101871227                        (-35.6%, lower is better)
-> > pgpgout 5770028
-> > workingset_refault 3418186              (-52.9%, lower is better)
-> > 
-> > The refault rate is ~50% lower, and throughput is ~30% higher, which
-> > is a huge gain. We also observed significant performance gain for
-> > other real-world workloads.
-> > 
-> > We were concerned that the dirty flush could cause more wear for SSD:
-> > that should not be the problem here, since the wakeup condition is when
-> > the dirty folios have been pushed to the tail of LRU, which indicates
-> > that memory pressure is so high that writeback is blocking the workload
-> > already.
-> > 
-> > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> > Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingxiangzeng.cas@gmail.com/ [1]
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >   mm/vmscan.c | 57 ++++++++++++++++-----------------------------------------
-> >   1 file changed, 16 insertions(+), 41 deletions(-)
-> > 
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 8de5c8d5849e..17b5318fad39 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4583,7 +4583,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
-> >   		       int tier_idx)
-> >   {
-> >   	bool success;
-> > -	bool dirty, writeback;
-> >   	int gen = folio_lru_gen(folio);
-> >   	int type = folio_is_file_lru(folio);
-> >   	int zone = folio_zonenum(folio);
-> > @@ -4633,21 +4632,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
-> >   		return true;
-> >   	}
-> > -	dirty = folio_test_dirty(folio);
-> > -	writeback = folio_test_writeback(folio);
-> > -	if (type == LRU_GEN_FILE && dirty) {
-> > -		sc->nr.file_taken += delta;
-> > -		if (!writeback)
-> > -			sc->nr.unqueued_dirty += delta;
-> > -	}
-> > -
-> > -	/* waiting for writeback */
-> > -	if (writeback || (type == LRU_GEN_FILE && dirty)) {
-> > -		gen = folio_inc_gen(lruvec, folio, true);
-> > -		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> > -		return true;
-> > -	}
-> 
-> I'm a bit concerned about the handling of dirty folios.
-> 
-> In the original logic, if we encounter a dirty folio, we increment its
-> generation counter by 1 and move it to the *second oldest generation*.
-> 
-> However, with your patch, shrink_folio_list() will activate the dirty folio
-> by calling folio_set_active(). Then, evict_folios() -> move_folios_to_lru()
-> will put the dirty folio back into the MGLRU list.
-> 
-> But because the folio_test_active() is true for this dirty folio, the dirty
-> folio will now be placed into the *second youngest generation* (see
-> lru_gen_folio_seq()).
+On Tue, Mar 31, 2026 at 4:31=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+>
+> On Sat, Mar 28, 2026 at 12:58=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
+rote:
+> >
+> > From: Baoquan He <bhe@redhat.com>
+> >
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> >
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
+>
+> Should add that there is no functional change expected from this patch.
 
-Yeah, and that's exactly what we want. Or else, these folios will
-stay at oldest gen, following scan will keep seeing them and hence
-keep bouncing these folios again and again to a younger gen since
-they are not reclaimable.
+Sounds good to me.
 
-The writeback callback (folio_rotate_reclaimable) will move them
-back to tail once they are actually reclaimable. So we are not
-losing any ability to reclaim them. Am I missing anything?
+[...]
 
-> 
-> As a result, during the next eviction, these dirty folios won't be scanned
-> again (because they are in the second youngest generation). Wouldn't this
-> lead to a situation where the flusher cannot be woken up in time, making OOM
-> more likely?
+> > +static const struct swap_ops bdev_async_swap_ops =3D {
+> > +       .read_folio =3D swap_read_folio_bdev_async,
+> > +       .write_folio =3D swap_writepage_bdev_async,
+> > +};
+> > +
+> > +void setup_swap_ops(struct swap_info_struct *sis)
+>
+> setup_swap_ops()` needs to return an indication of an error.
+> The error is that sis->ops is NULL or op->read_folio =3D=3D NULL or
+> op->write_folio =3D=3D NULL.
+> If there is an error, we should fail the swapon.
 
-No? Flusher is already waken up by the time they are seen for the
-first time. If we see these folios again very soon, the LRU is
-congested, one following patch handles the congested case too by
-throttling (which was completely missing previously). And now we
-are actually a bit more proactive about waking up the flusher,
-since the wakeup hook is moved inside the loop instead of after
-the whole loop is finished.
+Right now there is no possibility for any of the ops (read_folio or
+write_folio) to be NULL, so I was using VM_WARN_ON as an assertion
+to catch bugs in kernel code.
 
-These two behavior change above is basically just unifying MGLRU to do
-what the classical LRU has been doing for years, and result looks
-really good.
+That said, I agree we can return an error earlier instead of letting
+swapon fail later.
 
-The global congestion handling is still missing after this series
-though. Have to fix that later I guess...
+I think it may still make sense to keep a VM_WARN_ON in
+setup_swap_ops() before returning -EINVAL or a similar error?
+
+Thanks
+Barry
 
