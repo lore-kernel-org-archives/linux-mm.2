@@ -4,110 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3C7109B474
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA11D109B46F
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 14:31:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1386B0092; Tue, 31 Mar 2026 10:22:50 -0400 (EDT)
+	id 285056B0096; Tue, 31 Mar 2026 10:31:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 388706B0095; Tue, 31 Mar 2026 10:22:50 -0400 (EDT)
+	id 25CFC6B0098; Tue, 31 Mar 2026 10:31:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29E2B6B0096; Tue, 31 Mar 2026 10:22:50 -0400 (EDT)
+	id 1999B6B0099; Tue, 31 Mar 2026 10:31:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17CA66B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:22:50 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B66561A027E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:22:49 +0000 (UTC)
-X-FDA: 84606574458.02.9A90842
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 73E4312000D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:22:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Esv9LtaP;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774966967;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 09EC46B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:31:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DDD01601F6
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:31:13 +0000 (UTC)
+X-FDA: 84606595626.11.189B708
+Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA3F3C0011
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:31:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=oTPjgewB;
+	arc=pass ("zohomail.in:s=zohoarc:i=1");
+	spf=pass (imf28.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774967471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FjPnT8UZI5+fypQy7Esk/XN5lPJcnz8LjUMG9CElVu8=;
-	b=8BXymqgfHtZo6INwChdohG4o1ObxDjIUx/OlDd7OUQb/DE43UfUOaYaCU7Z+wLd43Fvgwa
-	5nqQk8sB/zlRzW+ACtWQjm8GxiPpOIJ5oZZw6xSDX4yoo+5e+Wpw/3jpmKZUA8l0uz+Eir
-	zwPpUDLOiSB94gB7drTeuPc/KdAdl+8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Esv9LtaP;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774966967; a=rsa-sha256;
-	cv=none;
-	b=jhnKf0BWlrBWoIEekoiG8VCRJ8Bjq5TqpAlER0cOLvUgalVdynwoC3ULkYrJypy9hzc7Ta
-	bnpdbxnhQR55b78JYmrdCayRtSBIBeCADCYI8EuNxZZnNi2Lw+GDuxizk1QAwb5zy3zwyy
-	O4g1VZbLRRRcp4w001e9Y1dEAORMsD8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774966966; x=1806502966;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0NHd7MoiHso6XGrGY3JRf6vUjJ0rFdjq7faARME6oMM=;
-  b=Esv9LtaPTep8QtbikJ9Rx86O/zyVyw3vL+Os38R5B159mRMSaEeFquZr
-   xEBgxRSqjMWrYyJhX79LMbbK0g8We9sDVHyRlaNL63ETDcO/YJH+gQk9y
-   VAJcrQltAzxC2xjle09V8fzlSvKOU0fGnSa3pjThxdphnzkOBjaj8KH3c
-   iroIzzvfw+YKbXWEA0kjk+F3z9IpNeSzGKxEz1RQxLXTab+IQZtj9GplX
-   mJgpdyTOgN5hdereEYfs5KJDRDbpKl52IfRYxnEQTzPr40RNLpSfUsBEo
-   gnyB2d5ErhWGPe4NQ3WcT9f7U0Lu13eIYrBAi//qLitd5Xi15FG4OH9Xf
-   g==;
-X-CSE-ConnectionGUID: q0A3CMLBRiSuxJxCFvGXJQ==
-X-CSE-MsgGUID: aXfOjpmcRc6EhIB1fCQz4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="76094733"
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="76094733"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 07:22:45 -0700
-X-CSE-ConnectionGUID: zAMgVqIpTWeBABnQ1nMeTQ==
-X-CSE-MsgGUID: VC/gRx4lQ0y5ciZax8UDdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,152,1770624000"; 
-   d="scan'208";a="219729936"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 31 Mar 2026 07:22:42 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7ZzK-000000002kz-2yWg;
-	Tue, 31 Mar 2026 14:22:38 +0000
-Date: Tue, 31 Mar 2026 22:22:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ke Zhao <ke.zhao.kernel@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, John Hubbard <jhubbard@nvidia.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, Ke Zhao <ke.zhao.kernel@gmail.com>,
-	syzbot+2aee6839a252e612ce34@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm, KMSAN: Add missing shadow memory initialization in
- special allocation paths
-Message-ID: <202603312255.WPPwS69Q-lkp@intel.com>
-References: <20260330-fix-kmsan-v1-1-e9c672a4b9eb@gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NGshc/UqCbA7iiGIi9F1QT8k5YqCxY0TabFipUM0D5E=;
+	b=VTuICg7ASCFeRhtfuhi3mYL4VBNPvr5WvBEvD0o1kH7zZEsbZdJrMo3X9hz3bzPX/zVjr7
+	a3zk4OA5zVjIPm1jPDFN21BK6kjup8zXjmL8DER4wpjNovAR+u3pJUlSHRLwhkzVLdBRIt
+	rTK71+D0DlFl0Wb2VyHxouRqggbPXys=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774967471; a=rsa-sha256;
+	cv=pass;
+	b=54WzF6CfZsbJXJpY+r8slUz5JW4aT0a/Om8OMwMr63dVqMZUaVfjuQAtUOJy2y6i54QWAX
+	rdz6Qwd4quPQ6cAph7AsABrDOe5KsRpq3tVVnRLZ91Pl3/D3BF4OSzGUIF5JOW4KYN1Hrl
+	zNuR0GhxQmAtC3hkzM6iox8+hGxOojw=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=oTPjgewB;
+	arc=pass ("zohomail.in:s=zohoarc:i=1");
+	spf=pass (imf28.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in
+ARC-Seal: i=1; a=rsa-sha256; t=1774967445; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=PR2BOI0WUA/jbhJQoSugMXDrktANluxu9zUXOhjhGawzQnC3UckTjVktO70EJQnYfgVs7aGj/B9IWJ0+HQQer1ItO9kjPlrDCA57bD1D/nA0dd/+cAUxY1ZFmoGi5dKiW6wnGKI8VZW8AR+pyS+FQBIpyJYdmiiyXNnR9VN8R0A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1774967445; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=NGshc/UqCbA7iiGIi9F1QT8k5YqCxY0TabFipUM0D5E=; 
+	b=FFkSnReCN8BEp19kru1SmBJxFsDJgH/Gk+J+MBmlkAJ1q7M8u/P8yPXH43mA65ny28VGt51DUwkxIlOipe0GCd6DL/SpiZ3iGWiXMykKi/cp/S+lRbnEHtXegUKq7NALMvtPLLQQTSyrL4X4uogXTASU2rEF9uqabEaOcRlvHT8=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass header.from=<adi.sharma@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774967445;
+	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=NGshc/UqCbA7iiGIi9F1QT8k5YqCxY0TabFipUM0D5E=;
+	b=oTPjgewBYhOtOkyBL+NYJtv7YEeThH7kqVgCTxPSD+IXAfYDqARFNo5YN9bw3UVK
+	NcgB+INEzz2o3Kh16N5BVixwG8WbLTUFk7nMsvp2eW1nQtuwDjQREbUBDCPWK6WB48N
+	nmR2emg2xSakv1oXPn8lizcJvOB87dIp2FDi8QE0=
+Received: by mx.zoho.in with SMTPS id 177496744424821.477018728494045;
+	Tue, 31 Mar 2026 20:00:44 +0530 (IST)
+From: Aditya Sharma <adi.sharma@zohomail.in>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-kernel@vger.kernel.org,
+	Aditya Sharma <adi.sharma@zohomail.in>
+Subject: [PATCH] mm: update stale locking comment in do_anonymous_page()
+Date: Tue, 31 Mar 2026 19:59:36 +0530
+Message-Id: <20260331142936.229667-1-adi.sharma@zohomail.in>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330-fix-kmsan-v1-1-e9c672a4b9eb@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam12
+X-Stat-Signature: m3p1h9pbsefdazo4u6r8qicr1mfs1of9
+X-Rspamd-Queue-Id: EA3F3C0011
 X-Rspam-User: 
-X-Stat-Signature: 1fa1kbit4p3cicw6n3cwzqj95fai9xbm
-X-Rspamd-Queue-Id: 73E4312000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774966966-213568
-X-HE-Meta: U2FsdGVkX1/84XlhtGahntsXIdNvMGhY9GbHCWLgY1Xu3K6qnljHjRR4ymAPTtCxopFi6PuWRzPW0T0V4hZwDuBEqpY2n5LLrmPwSOEIKUrj4RW5B1kJkBb5fdz3UkO1BbZVDnsYI2vEsD5RqECvsHqKBmxRyiYuIqjmRGsPHGcHz2NDOpDEWbgG6UAWZb/EgYkKYjDfy3DmVm+HsfJ9dMd285EuRGoRx8Yk6xuO4FzusgtKC3EeurdQeqjPYpMtwAm9YV5nNSskqR46SkMcSKDPML86IvHWVS8EwwOiGFh62v4Lr5X4NuW4IIh4bCw5wqULV+499/JaQEsulydwWUcwqT3LGbsFDMIQsVwOQDuYfdTf7i5UoXGRAb8S5Dn0KC+bXBA2uRlNCDvHv38NVI81tc0QXiAm6Ad5wZ9YywQlOKY0jh4zeqFI49oyLmM9q2zq0AzTFc94Jn/0bRNLvE0qrmaStKfEM2rtDaHOHgRmEkMEOuoJ3a1E5YSAGEpUh5U4KQTzdKmbZKH/bJ/ilPDRUZ4G+LU7M8uLdid6emv+z4QHHjseCx3u/xsnlZqCM9kYdqH1qh+C/3w6C+sb4Fb6SMZNa2fMRa8nTEUneXitZKucBq03hPZoPws+F+IzB2flBO5mfmNf1pou3w2MIMNk3/WKVr8UqT2V1QWDrU3KqSTIFzXi7qDHINCrlWbPBuUPFHSB5CceWbOttgPcn7NO2o1s5dd8XuGA3b0XH5hLPVhhksbkfVJbzQt1vO6XbIuseyUYkgVlOq10bD96jJc5Ho8GGCsdpODxottB+NpSLDNsvFPbzrahqegxEiuk/0VpfcIh4fkEPCS5IXSK5ks0bc+f7iOxV0I8rKSp10Fy02kVJ1H62+jtgSpKKN0XtcNIBRVwVFj8TA4VPRjQekQJ7ywUD+ujXLETQPzwXQhgEoLHqavM6nbjIcbm57ueDzsYZs8nH7UEPCNc9zy
- 0HPLy0wn
- GNNYtlcl/mI4Kyy4ZkGgnE9BO8209RtUaCqiv8ZI6qn6BmA2d1sVOD1ljsuioquL/jlZElED3JUZOZcbKVBCS7WxlOsRdYVID7r/heX9hIbD90CeoU+A/eLfDrN/gPah2U38x4rRpciep6cSZrkslZXJ76AgfAVvACVk3SJXrdwk0/RCLKAyELP78fRBCl8ZegpRD2w4wl/QjfuhR0SHtSMcn6vXxuRQHd5yVZjsEUl1GV1gHaRN5UCqR+cEdJXSftdNnmGKylTCS3bKCXT/jDn1E/DUDSRh4eokY+yBJQaFud1sTFyRwPKq8En3HWCSLKUau08iqAPGHS3Da1afBQ02vr0/OUibKLtlv1hU5GkKkF+VAZ7qNmoaiyLOt8zd36Eev+Lfr515ceYrOXs/zIE5ntiRL/Agf4oikiHykYQ+0CDV+yPYZhxCR9/FcQagsaPsz
+X-HE-Tag: 1774967470-374615
+X-HE-Meta: U2FsdGVkX1+1j3hfkJhav79CQLwenIPXiq0r+QYVjNUAstziWxjO++vEabUogLfvS8RAx4rrM73T7+h3CVXHBU9WyGvqbg8xPpEoqwh9CyHLeg+jm0OXJPSjdnLj1cSpYGa/E8dDxmR/EXKBV1B2WeTX8mIg7bZQZnkyrNmTs1FZACCu87obnKUipxqOtKXCBXgX2CBzbjVbbDoYA1nAxrY7YFyriaypE0mrEsZ0/2HRGEVIqZC2fXcwxDowNrST13bCDGc9NAo4v/aBpi8h1x6kmAylPQHaVtPLx0NDC6zHLOOMDVfiTcDKEicTH1K2HPFiCAlpC1WeT4Pcz23UR7sz2Oo0ssnZRkvRQPbE9bZjz8EShGbMwJ2S/8ZZJwabnb+EUS4rXw+jvfu7R+3CxrtpCH8gBGvZkZjRHQEVIIOQXqBl2YxP6WMcwDAe3iAtuQNOuBecog+Age0dnFlTm2UcPOrUGj5o+vQ1X6VNe2pVbWAswXfvkWax6PrXwnoAFpk2L345MC6ZneFMvlaiejGjiv8iRjaG1AZid40TiHJJcEcoENOgxq4q8IpoqIZ7znkQv9MNduAeQpeRkyYekoz3xU9hLouRRQBFSHcJjT0IZLq7v6T/j6j62ZBMdOIcNdJwasJwzIiqwpINQ5ZxHoZuxl9T4JpGZAJLQtT1CucnbrE3wvhyA9Eeva2nVlLI1dnhzsbY8w8C2QIGVJwo4OyYJiXw40IVA7oeHgFGy4S842NU5rb9D9GkdeJPLNmorR6nQ2Tfk+JE0KMxiHcGv3DMLz+QWob59pAeTuJ4fCFURlU9ul/ABF5cuj2wwgpCiv9AEyWtRaw+iVAym3c3GsQQ2eKJYqTZ82wU8tDXm4PtWBua0PkUl6XIEyZj/Kilrze1pHl1LJ0clLa7mc8InMqGKoBAfyUwDZ/xBT94n7g0tNWO/Bs8nFn4agRnmIShL2CkAiTtPK88BO2Vlpn
+ pNAN7kVq
+ p1fp668qRORkZxMrhKYeTKhXMp0IAH4hDShNppa6sBqYLzGCpsXgLLCKkU2D32RMxin3Z2bqG1umc6tHASeaWqGhraeNIB8/B9n+7f+R3fTxlX6dHaEetCiukAm6EqJaQWgqEom99TOnyg0shEDv740opC2L0oCmM7cSGcO4QtufEEQr6D2xBlE14eVpDL/8uj9zTEWnlv7oB9eun3gbZn38Ms/QdqU7iW+312TwPC+t7QKESjFuc+VS5sdwanneoX0mcjhav46PydJeiqdSRrghU7g/+JTmuIPnmezBPFLoUbBuBnb/5PeEezMwpGKofILxc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,205 +104,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ke,
+The comment above do_anonymous_page() dates back to 2005 and describes
+the pre-per-VMA-lock world where mmap_lock was always held on entry.
+Since CONFIG_PER_VMA_LOCK was introduced (6.4), the fault handler now
+has a fast path that enters holding only a per-VMA read lock, with
+mmap_lock not held at all.
 
-kernel test robot noticed the following build errors:
+Update the comment to describe both entry contexts accurately.
 
-[auto build test ERROR on bbeb83d3182abe0d245318e274e8531e5dd7a948]
+Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
+---
+ mm/memory.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ke-Zhao/mm-KMSAN-Add-missing-shadow-memory-initialization-in-special-allocation-paths/20260331-050740
-base:   bbeb83d3182abe0d245318e274e8531e5dd7a948
-patch link:    https://lore.kernel.org/r/20260330-fix-kmsan-v1-1-e9c672a4b9eb%40gmail.com
-patch subject: [PATCH] mm, KMSAN: Add missing shadow memory initialization in special allocation paths
-config: microblaze-defconfig (https://download.01.org/0day-ci/archive/20260331/202603312255.WPPwS69Q-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603312255.WPPwS69Q-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603312255.WPPwS69Q-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/page_alloc.c: In function 'alloc_contig_frozen_range_noprof':
->> mm/page_alloc.c:7131:37: error: 'page' undeclared (first use in this function)
-    7131 |                 trace_mm_page_alloc(page, order, gfp_mask, get_pageblock_migratetype(page));
-         |                                     ^~~~
-   mm/page_alloc.c:7131:37: note: each undeclared identifier is reported only once for each function it appears in
-
-
-vim +/page +7131 mm/page_alloc.c
-
-  6977	
-  6978	/**
-  6979	 * alloc_contig_frozen_range() -- tries to allocate given range of frozen pages
-  6980	 * @start:	start PFN to allocate
-  6981	 * @end:	one-past-the-last PFN to allocate
-  6982	 * @alloc_flags:	allocation information
-  6983	 * @gfp_mask:	GFP mask. Node/zone/placement hints are ignored; only some
-  6984	 *		action and reclaim modifiers are supported. Reclaim modifiers
-  6985	 *		control allocation behavior during compaction/migration/reclaim.
-  6986	 *
-  6987	 * The PFN range does not have to be pageblock aligned. The PFN range must
-  6988	 * belong to a single zone.
-  6989	 *
-  6990	 * The first thing this routine does is attempt to MIGRATE_ISOLATE all
-  6991	 * pageblocks in the range.  Once isolated, the pageblocks should not
-  6992	 * be modified by others.
-  6993	 *
-  6994	 * All frozen pages which PFN is in [start, end) are allocated for the
-  6995	 * caller, and they could be freed with free_contig_frozen_range(),
-  6996	 * free_frozen_pages() also could be used to free compound frozen pages
-  6997	 * directly.
-  6998	 *
-  6999	 * Return: zero on success or negative error code.
-  7000	 */
-  7001	int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
-  7002			acr_flags_t alloc_flags, gfp_t gfp_mask)
-  7003	{
-  7004		const unsigned int order = ilog2(end - start);
-  7005		unsigned long outer_start, outer_end;
-  7006		int ret = 0;
-  7007	
-  7008		struct compact_control cc = {
-  7009			.nr_migratepages = 0,
-  7010			.order = -1,
-  7011			.zone = page_zone(pfn_to_page(start)),
-  7012			.mode = MIGRATE_SYNC,
-  7013			.ignore_skip_hint = true,
-  7014			.no_set_skip_hint = true,
-  7015			.alloc_contig = true,
-  7016		};
-  7017		INIT_LIST_HEAD(&cc.migratepages);
-  7018		enum pb_isolate_mode mode = (alloc_flags & ACR_FLAGS_CMA) ?
-  7019						    PB_ISOLATE_MODE_CMA_ALLOC :
-  7020						    PB_ISOLATE_MODE_OTHER;
-  7021	
-  7022		/*
-  7023		 * In contrast to the buddy, we allow for orders here that exceed
-  7024		 * MAX_PAGE_ORDER, so we must manually make sure that we are not
-  7025		 * exceeding the maximum folio order.
-  7026		 */
-  7027		if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-  7028			return -EINVAL;
-  7029	
-  7030		gfp_mask = current_gfp_context(gfp_mask);
-  7031		if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
-  7032			return -EINVAL;
-  7033	
-  7034		/*
-  7035		 * What we do here is we mark all pageblocks in range as
-  7036		 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
-  7037		 * have different sizes, and due to the way page allocator
-  7038		 * work, start_isolate_page_range() has special handlings for this.
-  7039		 *
-  7040		 * Once the pageblocks are marked as MIGRATE_ISOLATE, we
-  7041		 * migrate the pages from an unaligned range (ie. pages that
-  7042		 * we are interested in). This will put all the pages in
-  7043		 * range back to page allocator as MIGRATE_ISOLATE.
-  7044		 *
-  7045		 * When this is done, we take the pages in range from page
-  7046		 * allocator removing them from the buddy system.  This way
-  7047		 * page allocator will never consider using them.
-  7048		 *
-  7049		 * This lets us mark the pageblocks back as
-  7050		 * MIGRATE_CMA/MIGRATE_MOVABLE so that free pages in the
-  7051		 * aligned range but not in the unaligned, original range are
-  7052		 * put back to page allocator so that buddy can use them.
-  7053		 */
-  7054	
-  7055		ret = start_isolate_page_range(start, end, mode);
-  7056		if (ret)
-  7057			goto done;
-  7058	
-  7059		drain_all_pages(cc.zone);
-  7060	
-  7061		/*
-  7062		 * In case of -EBUSY, we'd like to know which page causes problem.
-  7063		 * So, just fall through. test_pages_isolated() has a tracepoint
-  7064		 * which will report the busy page.
-  7065		 *
-  7066		 * It is possible that busy pages could become available before
-  7067		 * the call to test_pages_isolated, and the range will actually be
-  7068		 * allocated.  So, if we fall through be sure to clear ret so that
-  7069		 * -EBUSY is not accidentally used or returned to caller.
-  7070		 */
-  7071		ret = __alloc_contig_migrate_range(&cc, start, end);
-  7072		if (ret && ret != -EBUSY)
-  7073			goto done;
-  7074	
-  7075		/*
-  7076		 * When in-use hugetlb pages are migrated, they may simply be released
-  7077		 * back into the free hugepage pool instead of being returned to the
-  7078		 * buddy system.  After the migration of in-use huge pages is completed,
-  7079		 * we will invoke replace_free_hugepage_folios() to ensure that these
-  7080		 * hugepages are properly released to the buddy system.
-  7081		 */
-  7082		ret = replace_free_hugepage_folios(start, end);
-  7083		if (ret)
-  7084			goto done;
-  7085	
-  7086		/*
-  7087		 * Pages from [start, end) are within a pageblock_nr_pages
-  7088		 * aligned blocks that are marked as MIGRATE_ISOLATE.  What's
-  7089		 * more, all pages in [start, end) are free in page allocator.
-  7090		 * What we are going to do is to allocate all pages from
-  7091		 * [start, end) (that is remove them from page allocator).
-  7092		 *
-  7093		 * The only problem is that pages at the beginning and at the
-  7094		 * end of interesting range may be not aligned with pages that
-  7095		 * page allocator holds, ie. they can be part of higher order
-  7096		 * pages.  Because of this, we reserve the bigger range and
-  7097		 * once this is done free the pages we are not interested in.
-  7098		 *
-  7099		 * We don't have to hold zone->lock here because the pages are
-  7100		 * isolated thus they won't get removed from buddy.
-  7101		 */
-  7102		outer_start = find_large_buddy(start);
-  7103	
-  7104		/* Make sure the range is really isolated. */
-  7105		if (test_pages_isolated(outer_start, end, mode)) {
-  7106			ret = -EBUSY;
-  7107			goto done;
-  7108		}
-  7109	
-  7110		/* Grab isolated pages from freelists. */
-  7111		outer_end = isolate_freepages_range(&cc, outer_start, end);
-  7112		if (!outer_end) {
-  7113			ret = -EBUSY;
-  7114			goto done;
-  7115		}
-  7116	
-  7117		if (!(gfp_mask & __GFP_COMP)) {
-  7118			split_free_frozen_pages(cc.freepages, gfp_mask);
-  7119	
-  7120			/* Free head and tail (if any) */
-  7121			if (start != outer_start)
-  7122				__free_contig_frozen_range(outer_start, start - outer_start);
-  7123			if (end != outer_end)
-  7124				__free_contig_frozen_range(end, outer_end - end);
-  7125		} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
-  7126			struct page *head = pfn_to_page(start);
-  7127	
-  7128			check_new_pages(head, order);
-  7129			prep_new_page(head, order, gfp_mask, 0);
-  7130	
-> 7131			trace_mm_page_alloc(page, order, gfp_mask, get_pageblock_migratetype(page));
-  7132			kmsan_alloc_page(page, order, gfp_mask);
-  7133		} else {
-  7134			ret = -EINVAL;
-  7135			WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
-  7136			     start, end, outer_start, outer_end);
-  7137		}
-  7138	done:
-  7139		undo_isolate_page_range(start, end);
-  7140		return ret;
-  7141	}
-  7142	EXPORT_SYMBOL(alloc_contig_frozen_range_noprof);
-  7143	
-
+diff --git a/mm/memory.c b/mm/memory.c
+index c65e82c86..cc8dbbaea 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5210,9 +5210,25 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+ }
+ 
+ /*
+- * We enter with non-exclusive mmap_lock (to exclude vma changes,
+- * but allow concurrent faults), and pte mapped but not yet locked.
+- * We return with mmap_lock still held, but pte unmapped and unlocked.
++ * We enter in one of two locking contexts:
++ *
++ * 1) VMA lock path (FAULT_FLAG_VMA_LOCK set):
++ *    Entered holding a read lock on the faulting VMA (vma_start_read),
++ *    but NOT holding mmap_lock. This is the fast path introduced with
++ *    per-VMA locking (CONFIG_PER_VMA_LOCK). If this function cannot
++ *    complete the fault (e.g. needs to wait on I/O or encounters a
++ *    condition requiring the mm lock), it must return VM_FAULT_RETRY
++ *    and the caller will fall back to the mmap_lock path below.
++ *
++ * 2) mmap_lock path (FAULT_FLAG_VMA_LOCK not set):
++ *    Entered holding a non-exclusive (read) lock on mmap_lock, which
++ *    excludes VMA tree modifications but allows concurrent faults on
++ *    other VMAs. No per-VMA lock is held.
++ *
++ * In both cases, on entry the pte is mapped but not yet locked.
++ * On return, the pte is unmapped and unlocked, and whichever of
++ * the above locks was held on entry is still held (mmap_lock is
++ * not dropped, VMA read lock is not dropped, rather, the caller releases it).
+  */
+ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
