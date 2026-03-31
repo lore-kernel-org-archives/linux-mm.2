@@ -4,109 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BCBFF60FF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:11:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 675AFFF60FB
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:16:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEC846B0095; Tue, 31 Mar 2026 06:11:51 -0400 (EDT)
+	id CC87E6B00A5; Tue, 31 Mar 2026 06:16:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9D0A6B009D; Tue, 31 Mar 2026 06:11:51 -0400 (EDT)
+	id C79756B00A7; Tue, 31 Mar 2026 06:16:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98C3C6B00A0; Tue, 31 Mar 2026 06:11:51 -0400 (EDT)
+	id B8F146B00A8; Tue, 31 Mar 2026 06:16:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 854EF6B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:11:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BFF4BD4CB
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:11:51 +0000 (UTC)
-X-FDA: 84605942022.06.F38C22F
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 76ED3100005
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:11:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZV77eGoB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774951909; a=rsa-sha256;
-	cv=none;
-	b=ijv0foJzgQjwVtONZCznImBUtK5fqa6mwWp5K/qPJ6sJrZp001RAqW+8wWA2D/4ZeclfKy
-	L7p69Yh2HZAC/mQQkkB4hNQlyAN0K1Vra1RpCpVfVFhD4+VAS+A3e0Ne0h03ntWhqQz8EW
-	iKOfaYAqZ8odMaj/8T5WFYegYRsjvvw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZV77eGoB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A84E26B00A5
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:16:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 50F14140C89
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:16:49 +0000 (UTC)
+X-FDA: 84605954538.11.CA444C6
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A900A40011
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:16:47 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E9ZaGMxs;
+	spf=pass (imf27.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774951909;
+	s=arc-20220608; t=1774952207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G/KT1XoeoGhxQZGd0moPT/YeBL0YVj4iz/EMh/8Na9M=;
-	b=pzAJo8wkI5X0+MF0DiIh6R6K8JeMfDoInmmStr1xTm8K8ssKnO6wKWBwzxxa5Hh+K5hcnE
-	BeXHi5HDDw2HG3JkstsU14eFIAzWDXZ5y22mI88nxQzub4irO1k/bqLk5tuXJdtEX9Kbbv
-	IWeYM+kh8W/0Ukz5+6X9cp/oG9HNOUM=
+	 in-reply-to:references:dkim-signature;
+	bh=rT8LZjKw1WlLbKamhMIT2ihOgjShZoBPzAgEywAby0E=;
+	b=Q3w1FPTqEO1uPwT7mjh5NwRRLVjD1L/4oN5JGhl/aGQFCR9O44VAkHDBLhnbq7FUKY5RLZ
+	Dxfe+MSTvipowY1C8Wxq0DzcR//LQ9KssoxFXJCPpB0i7KefLx1H2itoVqv30GdojA7Kqh
+	0clM41qzfmJHuqboaKdQiYogsBRWCc4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E9ZaGMxs;
+	spf=pass (imf27.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774952207; a=rsa-sha256;
+	cv=none;
+	b=p7dyyo2WZrEB1QIDTnsJFZEvqFYxbTwNM3n7nm9Cx001gA9JmuoIwmchNqJtkpC8Gvyjom
+	QhnNLQT4bxUFdV91Dfyh1QxAhwxWjvrCItyR+KzhdqjYcEANVtYg0rxoXZxUAXrH4MYG6Q
+	VrDOCoAR8nBCuEldKhoxsBsFwh6wV8k=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774951907;
+	t=1774952206;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G/KT1XoeoGhxQZGd0moPT/YeBL0YVj4iz/EMh/8Na9M=;
-	b=ZV77eGoBYxkTQ01Z1xvT+NwWiLOnJG01ICF7R8IEluW7BoQaYyfRsHnF4bxuJdehzxdj8i
-	m5gLxZ96FaWK0TlLmANrVzEeuUXgeDwIUAYiYJMSXgUyIuQtaXpJnCSPnF9/D0yIb0gnxj
-	f7KmNc4JXej6hhm5RiNUBa77Va9m+5E=
-From: Usama Arif <usama.arif@linux.dev>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 1/5] tracing/lock: Remove unnecessary linux/sched.h include
-Date: Tue, 31 Mar 2026 03:11:32 -0700
-Message-ID: <20260331101134.643490-1-usama.arif@linux.dev>
-In-Reply-To: <5593ed9718b1a6e4ec51d99772c485734029d4d4.1774536681.git.d@ilvokhin.com>
-References: 
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rT8LZjKw1WlLbKamhMIT2ihOgjShZoBPzAgEywAby0E=;
+	b=E9ZaGMxsk5ZSeEzCJcAjKxNwly6MDE8ag6MKYVFEyr5jtbHaMnTsG0n8PCbIWCPFgX6vyz
+	n2H2dibnFzYo6m1QdiQ2Vmu3sZEPhu/gTkwqN8+BWLvtVrJLq55N56ZTJcRMcRumRrw62E
+	Wt7XDa5dkae56hxnJk51sEMq7M5RdIU=
+From: Jackie Liu <liu.yun@linux.dev>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/stat: fix memory leak on damon_start() failure in damon_stat_start()
+Date: Tue, 31 Mar 2026 18:15:53 +0800
+Message-ID: <20260331101553.88422-1-liu.yun@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: n15dr8e96su4d7k7adcesh4i8ba3hhgs
-X-Rspamd-Queue-Id: 76ED3100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774951909-859847
-X-HE-Meta: U2FsdGVkX186fGglyk7F+rMwq59rwbeMdCv9JqPdGUJTV9yGBcEyhJrJ8h8rdMYwyjnMsjwMRoZ63ypEgaJKTKIHn7PvOlBCVQ8Nmk+9sg/05PwWqO7zzcBVBSzSaDLarPaXtsvFHVsRnb/OhoVa6rQPEjC87XzEozVa5mSb8R5lJCqDlUnn0Ehn4lmXmXJpwhPAcfEfDs7F6emBIyMEnO4/Wt+rJwFwrYv9ro+2obLZJuGzxnfvAbjioYqlctOPquTKV5V3Pg+x3rDKoFPipLRRJQ+PVUXQ5IIo1TGOH+ZdUoJrWVMTMrZoqZPDkE58hoP5Q+yIQiBB9x4vAtYPGb/k6k4fr63/Q0d61T5hADu/i+VH33yiemYYAlgFys1CxI4envroM7Rnmk0I3krlwYFEMEadCwbi8xFyCf/qCQ8OtsaaksT8DVgeySg8vCCgSYuMyRfPQx9/XP17jlUa+eUyYwfdpP6PJoWhADVojh4azAKVi+mstwD7+mtdpTnGuFGuXg5EdDhe1TnbMw/OWELmD/GZkP84X5bSCr2uCwWIXwx2M/fd8dHL+i3jZdejhGdNYq9w6Z3ccTlQronwTtIy2I9LNsQ5zndfCZ/bi1uXFPE58tKMUIJLBtLzStojBVk5FgxYIzUnMXVnTY8Zy3ZUKhRnWb4w+N0cN5u7QAdwFRwo3yiq8Ou9FQJ00JVjvK+9ukN3QFS22I90ygbFEqfby0cUd08ST1SVSmpmF4LApdfcz10wQA3udfM30E6FkZdnXSznuQA6k4/o4vIQ+wfVBkPlChdUVN08bc/crb5bugy/8eVgdPRrwzwUVpU3m05Mf8JfBA36FADCQXQdbiwVerl2Qy39raTbaOCRygNboQ5q9T4pzkWx3glZ5N3n+wG2gowH+sSNAi4bWSKXQzoMBDAm99Sys1imzFfcb3hfo7M+yMgUdOaU7B8T93poYcWR2+U9YH87kmyRFbt
- +BKVuMJD
- K1QWE98i4RdeG7P+ypOtBNLoFjiEEqkHtyoCUkaHNbkTRA+AM+r9CZt4aBT1CxJVc7YqMQyD5o/VmYoNJwOWZRhoRHb3NEWl5qC+7Z/hd2Te7TZBQiPk3FmTsd8pBY8dhJ16yTS9O4Jo1fl+CFpg10BtiGgrJe+5MPZJZv+OTPwh8wE9+2NOv0iD+/cKlzSp04rNILJ0mXuqP0287N5A2yxODqb9ZmLt7jYIbbbw+smXyiqQW4CT9eg8h0BB+Ll0Chh8r
+X-Stat-Signature: 7zwdu7q8jkkmwb7qgeyuhujkirhx1q34
+X-Rspamd-Queue-Id: A900A40011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774952207-987765
+X-HE-Meta: U2FsdGVkX1/nXO3BRFWlBbaEiC+ya2i0KI3Vbo1yzgklLviTPG7Ma9SNHne3JScaDMR77VUStJFVzw1uk/QvU10vse+eWobhDWQ0/JlPSgBtWNm18Mi1cCtSrfcNox8516aRRJIpq2CTIdVO2YohBZAxTSONvN/K9lLaYMcKTUUHrKg6112BViM+v++20eVrytxzAMCawYUaP3Xz8y9ESFYB1MwvX/xbsgCRDEMw9FpcAmAeT/vRBwlKXkJkMi/tgslCXK5TkEjWaq+lTP16d87zFESLZU5hlbbQpWtnaYxuCRFoShn0VE1pmQXI5o66E7qlu1j6N1MGUhzaIkJGTGTuGRvNwkUMQJ+aj9E5URZD7yb/8Cl5nLxi933XD2lR6ro/GEj21AryAG2sp7pC9yfzfpsyzDk3m7xxwpi1p3JYaFK8NwZOszgK87zGB9MlAtnqkhwSJncOAc5ODBBxaiZsCIFGguf2uoildLKUbgDtxPenOG1xQXwRdcuFyt9nI5xZWoVxpHMCUVjJbKBvoxZtpGq4BLg5Bj+4aRwnWounPPySg44lOYNt/PeVoNYZiLAOoZdUzSt+2uHarIL7fO8RU9mfhcsi/gz+jg/1KklbGT3PYbFY7W9cSssEndSO9UpcnaDynLrox2Sl9TGMoFOY1UQmxuRubmLhnzYgcTYBO+7z13qwg3hzrkrGcHuQDeEL/oQ2uSNzpNumhkvSZIGEJGfOWristSROq6lWeAtKQIvtWY8NK9mXmiOgv2KvqlKhVs+rG/zz9bfLtk9UwSM/PdXLQNuqh0eJWEVmhCCPxoQLVeDsSNVORaqsItVsnoT9a0lIyFE8XiPhIquRdfJg39RA+08z4Hm4vUhlqbxfrS1ojVVISs6OlbfysBl1fEm84F3kZVI9KdIQP6Q2DWpsQGBASWb5+pz+dKJCoHbc0uyFq8ZTpysoh6Ento8DGbT9KUyCM5RktJZgsBI
+ IacGBnJs
+ AO6gzGpNCzI+St4aa79JbvyXU9W52e2HpuJFKzF4OYRx3oiDvXUThyekTZW/zrrzIStdT21VuX/6VTFiEnUj1hoDEv1Jv0XH6K8LokSB1QPymjhEDOMO8vncHHCjDWN5YJM5nIfRm0Y/ltgnGmKmwdEdkiJRvHs9VJwphS9jMSXNbZ7oFe7iYHmzV/0Bg5gjQUDcKXBNnKrYQMG/7Klie2J3gAv/f4LL41aVCBxri7ID1j/3n/0WfGoxynw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,16 +83,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Mar 2026 15:10:00 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+From: Jackie Liu <liuyun01@kylinos.cn>
 
-> None of the trace events in lock.h reference anything from
-> linux/sched.h. Remove the unnecessary include.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> ---
->  include/trace/events/lock.h | 1 -
->  1 file changed, 1 deletion(-)
-> 
+Destroy the DAMON context and reset the global pointer when
+damon_start() fails. Otherwise, the context allocated by
+damon_stat_build_ctx() is leaked, and the stale damon_stat_context
+pointer will be overwritten on the next enable attempt, making the
+old allocation permanently unreachable.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+---
+ mm/damon/stat.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index cf2c5a541eee..5a742fc157e4 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -249,8 +249,11 @@ static int damon_stat_start(void)
+ 	if (!damon_stat_context)
+ 		return -ENOMEM;
+ 	err = damon_start(&damon_stat_context, 1, true);
+-	if (err)
++	if (err) {
++		damon_destroy_ctx(damon_stat_context);
++		damon_stat_context = NULL;
+ 		return err;
++	}
+ 
+ 	damon_stat_last_refresh_jiffies = jiffies;
+ 	call_control.data = damon_stat_context;
+-- 
+2.51.1
+
 
