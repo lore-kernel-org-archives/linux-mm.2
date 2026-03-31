@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9CE109B489
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F70109B489
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:22:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 347416B0096; Tue, 31 Mar 2026 11:22:23 -0400 (EDT)
+	id F071C6B0098; Tue, 31 Mar 2026 11:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324006B0098; Tue, 31 Mar 2026 11:22:23 -0400 (EDT)
+	id EDF7A6B0099; Tue, 31 Mar 2026 11:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25BF16B0099; Tue, 31 Mar 2026 11:22:23 -0400 (EDT)
+	id E1BEB6B009B; Tue, 31 Mar 2026 11:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 130226B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:22:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A5F31A01A4
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:22 +0000 (UTC)
-X-FDA: 84606724524.28.383EAED
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CE3286B0098
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:22:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42987C3F3B
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:25 +0000 (UTC)
+X-FDA: 84606724650.26.6D74248
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9C45640016
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="PfhGgS/C";
-	spf=pass (imf04.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 60FDDA0002
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:22:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="K+gpd3C/";
+	spf=pass (imf25.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774970540;
+	s=arc-20220608; t=1774970543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M417ceWlET+MKOGJCYKigcH0CuHD4EWSvafmpSIgxsk=;
-	b=PwZobclwwgOiCHHuu2/vGBwnxmGtxW7YLiIceQw14sO3JSDIyWgCNCRFlQPs3swwsdIIqn
-	H4eGNM5+7JCNhYk+coHcKVDlr6gmP8EpOYPuFVxa6ap7qK78YyMVjDWnuY9eVADidoookv
-	9X59BB/Qtpc0adcWF//z1/T9M4cBdg0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970540; a=rsa-sha256;
-	cv=none;
-	b=pgbW7lvIuwkyxWpBpA6S9xcmImuk5woSMX7jSsZkt4X3omSr8bAruLn3wQcJFDLYk2GS6m
-	C/aOpiZOlsLLzpmuiH8i3dI9occsYmzPXOERxSimbmf7bIfeP5A6UOqVcdUwtUjxVl4spq
-	ioLoxe1w3K9toNZuXEcUulyFn49jy0E=
+	bh=s8mi2VEvepnnhco04aSwdylM8vrvNWwEDThvfLxS/DY=;
+	b=1tzBRRc73T7o/RzBfzVxekpFh9I59iFGa3dinb4m4Phw4ClGPERXz6y4NwLOdnHoMudd8K
+	AZxBlZnbvruRwfHmHU+6Plc2mJkexPwAK2yNtiCdxXVpkIG9zXW0J+EJECBizx8m3oL8Y4
+	t6fz8K5wJhreo62FCRre+Qvcw32MVzU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="PfhGgS/C";
-	spf=pass (imf04.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="K+gpd3C/";
+	spf=pass (imf25.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774970543; a=rsa-sha256;
+	cv=none;
+	b=LiYYnyS2pNADgAw+1GTtcda8F53Ht/wFTeWKIW2vJz+4lcNNiTGGQ4d9ROIkSF77Cf8Rw3
+	N+J4CdQS1CIQuNPcU1iycMiQmXNur932eDGQUaQDf/pno8592PyHEQji9rctL6P5R39JQ+
+	+wwGEnBAjhLPkOxx5l9MkI+z8urdErk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C94AB2364;
-	Tue, 31 Mar 2026 08:22:13 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 93BD82379;
+	Tue, 31 Mar 2026 08:22:16 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 268623F641;
-	Tue, 31 Mar 2026 08:22:17 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E796C3F641;
+	Tue, 31 Mar 2026 08:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774970539; bh=bcj7BWcdUogEO3QgW8KoRFZxBKN6XvunpRYykYSaY60=;
+	t=1774970542; bh=iw1cxYLgBxaWuZ82GU5UhvU0kTfhXs28b6E9rhswUCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfhGgS/C0aoyIo7p8cpKAM5dsolISk/lmVgQPmI3scljx18j622BrziVnalF2A7aN
-	 zqTduXjjbHrWy5BLGB55XEtBo/JvjGewExf8NXpo/eAnujvi9Xpa14O/6yg+5LVH/5
-	 SzBUcvWLGidw1ZFB8LKJXJgi76iJVJaxai/J+fS8=
+	b=K+gpd3C/xi7jagrUlr50F6fqL3URe0IuH7gOdWrdNxeuN9lQGWTZqu1J59tg7QfTV
+	 uI/SKAf7hqv85jN3ZoFwtouCMCoLdwF7UcjfPSqUY1rCJGse2OgBkyA9a6mLddxuS2
+	 5/pQzgtWuwxVPyVJIq820RY/KQvfnXLvFZEI1I4s=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -83,22 +83,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	david.hildenbrand@arm.com
 Cc: Ryan Roberts <ryan.roberts@arm.com>,
 	usama.anjum@arm.com
-Subject: [PATCH v5 1/3] mm/page_alloc: Optimize free_contig_range()
-Date: Tue, 31 Mar 2026 16:21:59 +0100
-Message-ID: <20260331152208.975266-2-usama.anjum@arm.com>
+Subject: [PATCH v5 2/3] vmalloc: Optimize vfree
+Date: Tue, 31 Mar 2026 16:22:00 +0100
+Message-ID: <20260331152208.975266-3-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260331152208.975266-1-usama.anjum@arm.com>
 References: <20260331152208.975266-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9C45640016
-X-Stat-Signature: js3idh7ia97dtwj3nnh3gx19zcp1f6rc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 60FDDA0002
+X-Stat-Signature: ozd84kmtzyq6ir7gzubnybnc1gtr4zd6
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774970540-783046
-X-HE-Meta: U2FsdGVkX18As1CkbGhZ+rMUjiaEV6fyEV4aNlX03YGxLjbUi53t9ReaTT6BC/VaHScoTF5x7/azYGCH/oWVuEaF31PLYL2cXGiQmrcmmkI5mJ7vMfVM7UBiiGyat+XpNdzk6jz92Q5TITnvp/hJiaIs1IzwE0xoEQ+opzgv8Ga4LR3WJV44fNIEI+IWA/euAPyqup4q2IDwD3ISZoQ+rgoMDx+Srjk8y+Wq5bzs6AKkBINIoLHJ426TzL1WsNnLEMgSE7+2t8gXtMtEUoxWUzl0mCJuA0Nrk4iovtT3qgbXiCGWhDQbMc4pM8ecz9NYC75HhOvmze+oZ580Z89Lt9cAHSX1l2DdwCvPQ2JWihmMvM/AS6c8r8gO6HlJwxoJnL3XcqvjQaAy/JN2YB1JRZCYYjQOem+A5+mbI8yLUDYBlYwnXUpKaBeRgrgyOSzrSvu8y8t2KcmDguJK5pk4wwkQD/tzQVRgglOn0XFwrtTyzVi4AnSiEJHGxyjJxLEnZB0SG8j/pIehIvKoBiZdwLRlY86Zcme7H6YcGmj6P9rMnCJiUO+a6UHBhrC8ZAtg7yw7eR0Vc3TrPUFnS4Oq5yymFrjc5W1bOfyQTm5KG0GNrBdvYtmq78DGC65agvInKampTglcpr5tY004Rzptn3E1ZZA/yDIplPSQwYtJ+e3Z+wjMMYOCNA+Uq6JXbCBaZCRS4KGLkOSZvE63+FeFlJfz0hGkZAhaaCWu6uswAm8tufO/sg/WQsa3aFe/x1xnsrm5/5GGE0rt1ZpY1WG7UxjqOIbg6XJ1o/SvgyY7PHY5CdZIpVETWI4qdmBOWHq01iXh6HHacwIVghxF/UbuZofjtdSVfKBJ+vso8koKwd+DA3KriX4793xPWXdzUgRLg3FTBVuPNpvMBEEllNjjBXmi4a2MabCKlYqV386d7/JvvGEOemS6aAjFkzsy8HOvwqgS6ufJ7h4PRdHQZbr
- H3yS9aCR
- vxcIEd9ZE6z2RvrY0LOk3PcFv+hB8QRnd9oyJL+9BcLxKjhzSBxjP9DqE/FXbuJ+XNr4ag5bbC2hP+zd5fkR2YVVKaxJ+qOQkJEjNWJNzLsIqxaEi/4eoeemk0MKb8ID03BEe3ey1gdBFnz/7D4QgKCkZOT+tp8zLGiUOEDHlDhVJk7/8Jz4t7CAnT6jkCRq1dtPqSK782JJBWhLVv2DTvoa1a+PgJpBHMh9S8a8VqhXMFBJ+dlgmGjQCkT7K14aOI1UZk8J8HYfpE+xYmoYx2KIyoRo3MrYy43wxKJkFPG6wPWyW8C93j4TJrScGOX9tslCtlIKIEpmpt1cCHnGpfV8wS2RFGkd0tutFMNAGIqPLnu0=
+X-HE-Tag: 1774970543-864532
+X-HE-Meta: U2FsdGVkX1+TSNvs1xBymF6jXHWL1F6ToLavUE23rwF/+epHjrhAAnoxumvmrTwDuuHjODoIQNP/h1EfKWyZ4ljtWzLigF9fbR+JS0WOEE0mlykFdJClxramD7GVmVeEAC8yZU4JiOAXL8qXlY8d4N1LzavfreF6vENpeL4oAsXKojhfqdE9Gz1goDYXVAyF9K/+FKm/o0+KoBrjaVR+9MYWG02AOyQLMy8RA3MFiyRVBQBezD2o9WLgf5uBvDGf+tKlegXhSW8n7TrxURVOoFXA1tlrBFAs7Y2Ob0Jq+C4zvttgXtMK2p0YFMCt5y9wAarqpUN35oCO3tugXfYG7y1kQ9nRhx3wPZsklHYKXxVUZwiEDkRKoLuabT+llXb0veN5tY67ReDrbEQmbwrXsDv6NiKl9yP05JpzvGYCnc4AYXYvpvL47ywwsQQtFtX3Lkopws2kAwGwPVDrCto8V6lAqWgY0su0ny+nF13s26SMKM5dGPR5P+431mM2lhCaUNbOCeQlgZ1L5g8vCRCNuSAr8JctKFhFq2RR1UoRw+Jh131ZwyCf6Q5gXAXFJjk2D7oopvmu/e9Ll0Eydg/cuO9ndTDUOGoeTf85jvcwFhc2cd6VDxh2dXZCOAJqfP4P3zIcuyOgguVS6qm5LZBye+TaBZusg1T/k3vJy2HDt8aO3oh2s22YOU0rF30ggGsFdXupLwdz8PofLgYagnGn7tJJ9J7WM4yEWgLW5vWgOb+tewgqV3XMmWXedX5nxODQ7cXYitpXka9zH5g3rQpVL4Q8x0Cu0hGQ8osteYQSu+EeR+4Jl+fJaFSn9ATYUj2+TnTc6Rkk3YJNOvldUCkNQ48WXJScDMd5Dp02XB786Ee1/fI9pi3L6k0h2wRxGfIJiwr38OfIYVwV8rwUl7hObMeYOgJOoUK1hcTZKg3Tp1TbX4ykfvEETaB8B2MtkrSODut8yWJZHXcVDSIo8j9
+ o0DEWmxz
+ 3InClkEfXqoWhkBCe6jPTVnEDKk7tKCqpRdJA0miANPlXbklFDojtEdJuZst6so1t5LjUl6nNuGRTL0GPQ6HDHTZnXmmXnpIvAZ9D+ey4Mx9j79SLU7gVRYVxhJKv3ua1jpFCcLm7osPpgN8O01ojlzTGwGzxhG7KWDQFHAP4KOD/awEjRsksbT8+ws36p9OwIZlJGxHYaS9l9rJaRUwJsC0JzA5OuZlXAKsKzngnKsnXFzb6f4/9v5WED/EimWvfD2hXl9yX9u8mUgkbq7WhCH5uJtggPlIvGrWXdsHo0AwMd8fBMIc105+di5Jh8CAg0x31
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,314 +108,172 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ryan Roberts <ryan.roberts@arm.com>
 
-Decompose the range of order-0 pages to be freed into the set of largest
-possible power-of-2 size and aligned chunks and free them to the pcp or
-buddy. This improves on the previous approach which freed each order-0
-page individually in a loop. Testing shows performance to be improved by
-more than 10x in some cases.
+Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
+must immediately split_page() to order-0 so that it remains compatible
+with users that want to access the underlying struct page.
+Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
+allocator") recently made it much more likely for vmalloc to allocate
+high order pages which are subsequently split to order-0.
 
-Since each page is order-0, we must decrement each page's reference
-count individually and only consider the page for freeing as part of a
-high order chunk if the reference count goes to zero. Additionally
-free_pages_prepare() must be called for each individual order-0 page
-too, so that the struct page state and global accounting state can be
-appropriately managed. But once this is done, the resulting high order
-chunks can be freed as a unit to the pcp or buddy.
+Unfortunately this had the side effect of causing performance
+regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
+benchmarks). See Closes: tag. This happens because the high order pages
+must be gotten from the buddy but then because they are split to
+order-0, when they are freed they are freed to the order-0 pcp.
+Previously allocation was for order-0 pages so they were recycled from
+the pcp.
 
-This significantly speeds up the free operation but also has the side
-benefit that high order blocks are added to the pcp instead of each page
-ending up on the pcp order-0 list; memory remains more readily available
-in high orders.
+It would be preferable if when vmalloc allocates an (e.g.) order-3 page
+that it also frees that order-3 page to the order-3 pcp, then the
+regression could be removed.
 
-vmalloc will shortly become a user of this new optimized
-free_contig_range() since it aggressively allocates high order
-non-compound pages, but then calls split_page() to end up with
-contiguous order-0 pages. These can now be freed much more efficiently.
+So let's do exactly that; update stats separately first as coalescing is
+hard to do correctly without complexity. Use free_pages_bulk() which uses
+the new __free_contig_range() API to batch-free contiguous ranges of pfns.
+This not only removes the regression, but significantly improves
+performance of vfree beyond the baseline.
 
-The execution time of the following function was measured in a server
-class arm64 machine:
+A selection of test_vmalloc benchmarks running on arm64 server class
+system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
+large order pages from buddy allocator") was added in v6.19-rc1 where we
+see regressions. Then with this change performance is much better. (>0
+is faster, <0 is slower, (R)/(I) = statistically significant
+Regression/Improvement):
 
-static int page_alloc_high_order_test(void)
-{
-	unsigned int order = HPAGE_PMD_ORDER;
-	struct page *page;
-	int i;
++-----------------+----------------------------------------------------------+-------------------+--------------------+
+| Benchmark       | Result Class                                             |   mm-new          |  this series       |
++=================+==========================================================+===================+====================+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
++-----------------+----------------------------------------------------------+-------------------+--------------------+
 
-	for (i = 0; i < 100000; i++) {
-		page = alloc_pages(GFP_KERNEL, order);
-		if (!page)
-			return -1;
-		split_page(page, order);
-		free_contig_range(page_to_pfn(page), 1UL << order);
-	}
-
-	return 0;
-}
-
-Execution time before: 4097358 usec
-Execution time after:   729831 usec
-
-Perf trace before:
-
-    99.63%     0.00%  kthreadd         [kernel.kallsyms]      [.] kthread
-            |
-            ---kthread
-               0xffffb33c12a26af8
-               |
-               |--98.13%--0xffffb33c12a26060
-               |          |
-               |          |--97.37%--free_contig_range
-               |          |          |
-               |          |          |--94.93%--___free_pages
-               |          |          |          |
-               |          |          |          |--55.42%--__free_frozen_pages
-               |          |          |          |          |
-               |          |          |          |           --43.20%--free_frozen_page_commit
-               |          |          |          |                     |
-               |          |          |          |                      --35.37%--_raw_spin_unlock_irqrestore
-               |          |          |          |
-               |          |          |          |--11.53%--_raw_spin_trylock
-               |          |          |          |
-               |          |          |          |--8.19%--__preempt_count_dec_and_test
-               |          |          |          |
-               |          |          |          |--5.64%--_raw_spin_unlock
-               |          |          |          |
-               |          |          |          |--2.37%--__get_pfnblock_flags_mask.isra.0
-               |          |          |          |
-               |          |          |           --1.07%--free_frozen_page_commit
-               |          |          |
-               |          |           --1.54%--__free_frozen_pages
-               |          |
-               |           --0.77%--___free_pages
-               |
-                --0.98%--0xffffb33c12a26078
-                          alloc_pages_noprof
-
-Perf trace after:
-
-     8.42%     2.90%  kthreadd         [kernel.kallsyms]         [k] __free_contig_range
-            |
-            |--5.52%--__free_contig_range
-            |          |
-            |          |--5.00%--free_prepared_contig_range
-            |          |          |
-            |          |          |--1.43%--__free_frozen_pages
-            |          |          |          |
-            |          |          |           --0.51%--free_frozen_page_commit
-            |          |          |
-            |          |          |--1.08%--_raw_spin_trylock
-            |          |          |
-            |          |           --0.89%--_raw_spin_unlock
-            |          |
-            |           --0.52%--free_pages_prepare
-            |
-             --2.90%--ret_from_fork
-                       kthread
-                       0xffffae1c12abeaf8
-                       0xffffae1c12abe7a0
-                       |
-                        --2.69%--vfree
-                                  __free_contig_range
-
+Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
+Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
+Acked-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
 Changes since v4:
-- Move can_free initialization inside the loop
-- Make __free_pages_prepare() static on reviewer's request
-- Remove export of __free_contig_range
-- Use pfn_to_page() for each pfn instead of page++
+- Use num_pages_contiguous() instead of raw loop
 
 Changes since v3:
-- Move __free_contig_range() to more generic __free_contig_range_common()
-  which will used to free frozen pages as well
-- Simplify the loop in __free_contig_range_common()
-- Rewrite the comment
+- Add kerneldoc comment and update description
+- Add tag
 
 Changes since v2:
-- Handle different possible section boundries in __free_contig_range()
-- Drop the TODO
-- Remove return value from __free_contig_range()
-- Remove non-functional change from __free_pages_ok()
+- Remove BUG_ON in favour of simple implementation as this has never
+  been seen to output any bug in the past as well
+- Move the free loop to separate function, free_pages_bulk()
+- Update stats, lruvec_stat in separate loop
 
 Changes since v1:
 - Rebase on mm-new
-- Move FPI_PREPARED check inside __free_pages_prepare() now that
-  fpi_flags are already being passed.
-- Add todo (Zi Yan)
 - Rerun benchmarks
-- Convert VM_BUG_ON_PAGE() to VM_WARN_ON_ONCE()
-- Rework order calculation in free_prepared_contig_range() and use
-  MAX_PAGE_ORDER as high limit instead of pageblock_order as it must
-  be up to internal __free_frozen_pages() how it frees them
 ---
- include/linux/gfp.h |   2 +
- mm/page_alloc.c     | 110 ++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 108 insertions(+), 4 deletions(-)
+ include/linux/gfp.h |  2 ++
+ mm/page_alloc.c     | 28 ++++++++++++++++++++++++++++
+ mm/vmalloc.c        | 16 +++++-----------
+ 3 files changed, 35 insertions(+), 11 deletions(-)
 
 diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index f82d74a77cad8..7c1f9da7c8e56 100644
+index 7c1f9da7c8e56..71f9097ab99a0 100644
 --- a/include/linux/gfp.h
 +++ b/include/linux/gfp.h
-@@ -467,6 +467,8 @@ void free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages);
- void free_contig_range(unsigned long pfn, unsigned long nr_pages);
- #endif
+@@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 				struct page **page_array);
+ #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
  
-+void __free_contig_range(unsigned long pfn, unsigned long nr_pages);
++void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
 +
- DEFINE_FREE(free_page, void *, free_page((unsigned long)_T))
- 
- #endif /* __LINUX_GFP_H */
+ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
+ 				unsigned long nr_pages,
+ 				struct page **page_array);
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 75ee81445640b..6e8c79ea62f1c 100644
+index 6e8c79ea62f1c..9218fda8842a6 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -91,6 +91,9 @@ typedef int __bitwise fpi_t;
- /* Free the page without taking locks. Rely on trylock only. */
- #define FPI_TRYLOCK		((__force fpi_t)BIT(2))
- 
-+/* free_pages_prepare() has already been called for page(s) being freed. */
-+#define FPI_PREPARED		((__force fpi_t)BIT(3))
-+
- /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
- static DEFINE_MUTEX(pcp_batch_high_lock);
- #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
-@@ -1301,8 +1304,8 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
- 
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
- 
--__always_inline bool __free_pages_prepare(struct page *page,
--					  unsigned int order, fpi_t fpi_flags)
-+static __always_inline bool __free_pages_prepare(struct page *page,
-+		unsigned int order, fpi_t fpi_flags)
- {
- 	int bad = 0;
- 	bool skip_kasan_poison = should_skip_kasan_poison(page);
-@@ -1310,6 +1313,9 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 	bool compound = PageCompound(page);
- 	struct folio *folio = page_folio(page);
- 
-+	if (fpi_flags & FPI_PREPARED)
-+		return true;
-+
- 	VM_BUG_ON_PAGE(PageTail(page), page);
- 
- 	trace_mm_page_free(page, order);
-@@ -6784,6 +6790,103 @@ void __init page_alloc_sysctl_init(void)
- 	register_sysctl_init("vm", page_alloc_sysctl_table);
+@@ -5175,6 +5175,34 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
  }
+ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
  
-+static void free_prepared_contig_range(struct page *page,
-+		unsigned long nr_pages)
++/*
++ * free_pages_bulk - Free an array of order-0 pages
++ * @page_array: Array of pages to free
++ * @nr_pages: The number of pages in the array
++ *
++ * Free the order-0 pages. Adjacent entries whose PFNs form a contiguous
++ * run are released with a single __free_contig_range() call.
++ *
++ * This assumes page_array is sorted in ascending PFN order. Without that,
++ * the function still frees all pages, but contiguous runs may not be
++ * detected and the freeing pattern can degrade to freeing one page at a
++ * time.
++ *
++ * Context: Sleepable process context only; calls cond_resched()
++ */
++void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
 +{
 +	while (nr_pages) {
-+		unsigned long pfn = page_to_pfn(page);
-+		unsigned int order;
++		unsigned long nr_contig = num_pages_contiguous(page_array, nr_pages);
 +
-+		/* We are limited by the largest buddy order. */
-+		order = pfn ? __ffs(pfn) : MAX_PAGE_ORDER;
-+		/* Don't exceed the number of pages to free. */
-+		order = min_t(unsigned int, order, ilog2(nr_pages));
-+		order = min_t(unsigned int, order, MAX_PAGE_ORDER);
++		__free_contig_range(page_to_pfn(*page_array), nr_contig);
 +
-+		/*
-+		 * Free the chunk as a single block. Our caller has already
-+		 * called free_pages_prepare() for each order-0 page.
-+		 */
-+		__free_frozen_pages(page, order, FPI_PREPARED);
-+
-+		page += 1UL << order;
-+		nr_pages -= 1UL << order;
++		nr_pages -= nr_contig;
++		page_array += nr_contig;
++		cond_resched();
 +	}
 +}
 +
-+static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages,
-+		bool is_frozen)
-+{
-+	struct page *page, *start = NULL;
-+	unsigned long nr_start = 0;
-+	unsigned long start_sec;
-+	unsigned long i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		bool can_free = true;
-+
-+		/*
-+		 * Contiguous PFNs might not have contiguous "struct pages"
-+		 * in some kernel configs: page++ across a section boundary
-+		 * is undefined. Use pfn_to_page() for each PFN.
-+		 */
-+		page = pfn_to_page(pfn + i);
-+
-+		VM_WARN_ON_ONCE(PageHead(page));
-+		VM_WARN_ON_ONCE(PageTail(page));
-+
-+		if (!is_frozen)
-+			can_free = put_page_testzero(page);
-+
-+		if (can_free)
-+			can_free = free_pages_prepare(page, 0);
-+
-+		if (!can_free) {
-+			if (start) {
-+				free_prepared_contig_range(start, i - nr_start);
-+				start = NULL;
-+			}
-+			continue;
-+		}
-+
-+		if (start && memdesc_section(page->flags) != start_sec) {
-+			free_prepared_contig_range(start, i - nr_start);
-+			start = page;
-+			nr_start = i;
-+			start_sec = memdesc_section(page->flags);
-+		} else if (!start) {
-+			start = page;
-+			nr_start = i;
-+			start_sec = memdesc_section(page->flags);
-+		}
-+	}
-+
-+	if (start)
-+		free_prepared_contig_range(start, nr_pages - nr_start);
-+}
-+
-+/**
-+ * __free_contig_range - Free contiguous range of order-0 pages.
-+ * @pfn: Page frame number of the first page in the range.
-+ * @nr_pages: Number of pages to free.
-+ *
-+ * For each order-0 struct page in the physically contiguous range, put a
-+ * reference. Free any page who's reference count falls to zero. The
-+ * implementation is functionally equivalent to, but significantly faster than
-+ * calling __free_page() for each struct page in a loop.
-+ *
-+ * Memory allocated with alloc_pages(order>=1) then subsequently split to
-+ * order-0 with split_page() is an example of appropriate contiguous pages that
-+ * can be freed with this API.
-+ *
-+ * Context: May be called in interrupt context or while holding a normal
-+ * spinlock, but not in NMI context or while holding a raw spinlock.
-+ */
-+void __free_contig_range(unsigned long pfn, unsigned long nr_pages)
-+{
-+	__free_contig_range_common(pfn, nr_pages, /* is_frozen= */ false);
-+}
-+
- #ifdef CONFIG_CONTIG_ALLOC
- /* Usage: See admin-guide/dynamic-debug-howto.rst */
- static void alloc_contig_dump_pages(struct list_head *page_list)
-@@ -7330,8 +7433,7 @@ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
- 	if (WARN_ON_ONCE(PageHead(pfn_to_page(pfn))))
- 		return;
+ /*
+  * This is the 'heart' of the zoned buddy allocator.
+  */
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index c607307c657a6..e9b3d6451e48b 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3459,19 +3459,13 @@ void vfree(const void *addr)
  
--	for (; nr_pages--; pfn++)
--		__free_page(pfn_to_page(pfn));
-+	__free_contig_range(pfn, nr_pages);
+ 	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+ 		vm_reset_perms(vm);
+-	for (i = 0; i < vm->nr_pages; i++) {
+-		struct page *page = vm->pages[i];
+ 
+-		BUG_ON(!page);
+-		/*
+-		 * High-order allocs for huge vmallocs are split, so
+-		 * can be freed as an array of order-0 allocations
+-		 */
+-		if (!(vm->flags & VM_MAP_PUT_PAGES))
+-			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+-		__free_page(page);
+-		cond_resched();
++	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
++		for (i = 0; i < vm->nr_pages; i++)
++			mod_lruvec_page_state(vm->pages[i], NR_VMALLOC, -1);
+ 	}
++	free_pages_bulk(vm->pages, vm->nr_pages);
++
+ 	kvfree(vm->pages);
+ 	kfree(vm);
  }
- EXPORT_SYMBOL(free_contig_range);
- #endif /* CONFIG_CONTIG_ALLOC */
 -- 
 2.47.3
 
