@@ -4,109 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF969FF60C1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:02:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744F4FF60C3
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:03:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7D96B0099; Tue, 31 Mar 2026 00:02:34 -0400 (EDT)
+	id B086B6B009F; Tue, 31 Mar 2026 00:03:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141DC6B009B; Tue, 31 Mar 2026 00:02:34 -0400 (EDT)
+	id AB8C76B00A0; Tue, 31 Mar 2026 00:03:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 030226B009D; Tue, 31 Mar 2026 00:02:33 -0400 (EDT)
+	id 980966B00A1; Tue, 31 Mar 2026 00:03:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E2B746B0099
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:02:33 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8359BC939
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:33 +0000 (UTC)
-X-FDA: 84605011386.15.E9163E4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF40640006
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:02:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXMlbeVF;
-	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 817E66B009F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:03:46 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B67871608F5
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:03:45 +0000 (UTC)
+X-FDA: 84605014410.09.58C4737
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E838D100004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:03:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Nz1g5H+j;
+	spf=pass (imf14.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929824; a=rsa-sha256;
+	cv=none;
+	b=uVEowTJcfoHD141li3Y3HHkSUp444yBlkFMOYPgWbpPjhPU91InZdan5TSndKhxo/OY1Uz
+	BU6N8S4KsWinTMrpD7tdrAf3tiW9Zb+OCMbAUYdjxJcVTmiWx7T91lhL3KwouaRDl+HSmi
+	rqGA5ru28Bc8TkGEu/i3NyfnBvGqSvU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774929751;
+	s=arc-20220608; t=1774929824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xxDRoVyz2HRzp4YgRHoGs0Z0VHavzt0gkcpBjOPrbJI=;
-	b=kv0baoG4zrj00UcDpTpbp9Bd4hgw7gZzA9XwVQIjZdVnq6lIuR8F11J0H70EhNGTn16E/4
-	yGgfsEIo4MvRTMjPRv5yqMGHRsxshqQknxCDJL8/lzCEmZiW/m3yFgT/F3UYyao17IGVZF
-	HClwlIugnjRlz32FvkaW89GGCPqI9Lg=
+	bh=OhQhsVlHkUdp1u8lVh/yc5BWf65vNXkGXbfUATcYfMM=;
+	b=xeUYPhmn29Vc82djbRc7zslZZschDe/5sFoteCTwttCQk9LzRvcsp75+32R810ZaVAGvXN
+	voFihVNJLrEM3px9rbBjr7vw94Zii2AuEIm+8zfp0NnRruZJY2s4Fk+C6ufYA4T8+qxD2D
+	d5+wthEB+iHUfXKCbKgWu4dMbra34o4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXMlbeVF;
-	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Nz1g5H+j;
+	spf=pass (imf14.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774929751; a=rsa-sha256;
-	cv=none;
-	b=ZNaQ9pEfCCvixsn62adjwhKy7qL8SmQqduhSdxOet9KnOfObvXRltZCYzjQcBMXegBumvf
-	8FXBNsPOw6U/hDCSNXV7DtEfNSHm9Yl1ny9ysDUiGZwZbdrV5Y0xJVVauFiHv4EFyjIofB
-	O7Lf8xYKPS0NmnUyNOjdymuc2oVxkKc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774929751;
+	s=mimecast20190719; t=1774929823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xxDRoVyz2HRzp4YgRHoGs0Z0VHavzt0gkcpBjOPrbJI=;
-	b=BXMlbeVFR+YdwNkTCcDcYip0TnCzvI5etj91hcW0+hzRsTsczKUBkAPG/FVa6d/iHP0iAq
-	1MySJiueqf3UfGB3olaKICEoOQHTpI0BuAnAd7iwaLF7tFsm7QwbXt3laQvB7FCaQ536+D
-	xZi3obLFl+fAemvfaOfeCglfIVLnvWs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=OhQhsVlHkUdp1u8lVh/yc5BWf65vNXkGXbfUATcYfMM=;
+	b=Nz1g5H+jOksC0fQ76pHe8PtPRS14t+ZBtSc0YJ4blcw++jr5jt6e1wXO3Jesyj2Z+YVSV+
+	7xQ3EiaiJIoCdy9+1qCbnCHxQk2cL+wvTT4UuaZhB9+//d6eBUZOYnqtGW1DOfip/RKWJy
+	5WRaJJy9XL/MlcRbDPGLn4aJ1zEsVQ0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-SmUw6YuZOKCNPKr_74qPSA-1; Tue,
- 31 Mar 2026 00:02:26 -0400
-X-MC-Unique: SmUw6YuZOKCNPKr_74qPSA-1
-X-Mimecast-MFC-AGG-ID: SmUw6YuZOKCNPKr_74qPSA_1774929744
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-5dWhUe2xNV-3EvUixeNarg-1; Tue,
+ 31 Mar 2026 00:03:38 -0400
+X-MC-Unique: 5dWhUe2xNV-3EvUixeNarg-1
+X-Mimecast-MFC-AGG-ID: 5dWhUe2xNV-3EvUixeNarg_1774929814
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2E0E419560A7;
-	Tue, 31 Mar 2026 04:02:24 +0000 (UTC)
-Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.121])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 166BC30001A2;
-	Tue, 31 Mar 2026 04:02:18 +0000 (UTC)
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] selftests/mm: fix cow/gup_longterm link failures when liburing flags are missing
-Date: Tue, 31 Mar 2026 12:01:56 +0800
-Message-ID: <20260331040156.119158-4-liwang@redhat.com>
-In-Reply-To: <20260331040156.119158-1-liwang@redhat.com>
-References: <20260331040156.119158-1-liwang@redhat.com>
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9322E195605E;
+	Tue, 31 Mar 2026 04:03:33 +0000 (UTC)
+Received: from [10.22.64.128] (unknown [10.22.64.128])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21F9E19560AB;
+	Tue, 31 Mar 2026 04:03:27 +0000 (UTC)
+Message-ID: <18473552-2a97-4da9-9f44-ac49d4131004@redhat.com>
+Date: Tue, 31 Mar 2026 00:03:26 -0400
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: YfC_WdApSGTFiQHyqQqN_FP3cys5NgJHWzt2PY_YiaI_1774929744
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/15] sched/core: Dynamically update scheduler domain
+ housekeeping mask
+To: Qiliang Yuan <realwujing@gmail.com>, peterz@infradead.org
+Cc: cgroups@vger.kernel.org, akpm@linux-foundation.org,
+ anna-maria@linutronix.de, boqun.feng@gmail.com, bsegall@google.com,
+ dietmar.eggemann@arm.com, frederic@kernel.org, hannes@cmpxchg.org,
+ jackmanb@google.com, jiangshanlai@gmail.com, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, juri.lelli@redhat.com, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ mathieu.desnoyers@efficios.com, mgorman@suse.de, mhocko@suse.com,
+ mingo@kernel.org, mingo@redhat.com, neeraj.upadhyay@kernel.org,
+ paulmck@kernel.org, qiang.zhang@linux.dev, rcu@vger.kernel.org,
+ rostedt@goodmis.org, shuah@kernel.org, surenb@google.com, tglx@kernel.org,
+ tj@kernel.org, urezki@gmail.com, vbabka@suse.cz, vincent.guittot@linaro.org,
+ vschneid@redhat.com, ziy@nvidia.com
+References: <20260325140053.GC3738786@noisy.programming.kicks-ass.net>
+ <20260330114516.103451-1-realwujing@gmail.com>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <20260330114516.103451-1-realwujing@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: PEzCZnARtR9gW-pI5PvrodW8O6uvf1Apf_n9uknT6kw_1774929814
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF40640006
-X-Stat-Signature: 5inpsmfz3mn5pyjom57hrnkbtxro1hwj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774929751-169966
-X-HE-Meta: U2FsdGVkX18js/04M+njPmUIvzvRYwf4r/ZCHpA4kpi2y0bXNGaaQjoaVYuq9LpAjzC7JytL/+I3tdTd4+xglaGa7Rzb+Tt1lZT70xpzVsYCDnJAn9iGvtYAwmIfCUatLzz+bZRwRFsnRSdjYheWaasiFQTTu75AE1K+vJVsckTxHHxJVWTgzwfnepMlL24Q7HVTsTDMQdCBuarswO/FnR4yWZvuZ1pws43/oAhRJEfWAx5UM+o2rhhWCCe66+OdXL9+ea0MjX6DyNrRNsb2Zqvdw3M5ksuQVTtwivcFbFsI+0dT9fcyVBtKtXryZdKrR7K1NVqDnfzXppya0jOjKONl3Y8UHl4PGhigcfel2GS5zqOkS4N6j8TxxO/TIdX8WWCkPIxS6ZtDvydGzWsRNHXbP35LRT3sDXjEMQhInx38lE5csAs2HpJLssyWyAACQiA3vaDHLNHkzMdVjXFAGFdMlkF8FHXzVRHEWt7ARsEhYZ14Uw3jprPPJwHwBxQFLLGgXjQZTMAkPeGs1OqCCoY+Lo/MA3I48zYsezsORl4fikoTWATi+W3TAq/HJzDb26/9PxvMCQHy/1A8mjs8zHE2Ud5MxeQIfBM9U+QrlPSleXvrkuHXb3msZvqMZ+ICXYdetgvNQfArIQD6nUBzS69qI9bQTAgDGLNh1bwwEOAn+ejurBIPtxp/sIxBO4s55OZMfzDiNApBTyE/+HcNZmNEiUDa0gt3Emw2jvQfYqKctO7Xn5daAYOcKU4Znshk3LLDuep1BEf37ErTzSG1zVea/z9PDRkTkpcmKEAjXnpCBTP3lxGstjBUBUc6NDIJ3RpltToe0/7Q/CYed9oXPy92z3XIjS7v/X7fhVzsLaL/Zz693pyb+So+XB6eLGBC9ZNqk5Dyz5ibb2qyQpqAX0D4FFFDAWMnIwj6pfOi+455YG7eqopPFowSS+yv1R36dogTYBK/22AJi1zD0yL
- ceag3TiD
- iBr8a3WRk1L62WPv1/qzoNCPRdVKTh24wtlw0j62XqoOlrV0lorv4N2UC7vPHAoBx6GIK4blI55uqn5iV7gjPuyhg591BGKgHfT/XF6iM9PZ/Nr3oFobLiIeRzPMQPFhj3BO4fo9gRnNsUZqAaqJKlNnl6BaixxMpOeGU8K1aevDf2jLANEX6PAwa2aPpFdcP2U3QMbMBtuHTSOsxI153mbZup9GSRIUVQqGYtNSWLmVhl1MCDOOJW6tZC5Pqa1+8hRrDg/hY2W16+yaPoHrTb1MQR2vKS5dkfwCqsVI1bxmiyKyuX6X9S8bWInTN6Ok3UC/ZZTyNp9GNawOlrr2rFu7tCTwWidmaudCNtQ6gzHHV+2uZDeYPX9bu4WmirdvhmP38oUea5XnnBms=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E838D100004
+X-Stat-Signature: ei51qs3u6egp3rorktacq6kpjmz547ao
+X-HE-Tag: 1774929823-378054
+X-HE-Meta: U2FsdGVkX19Cbi/xSdfTUmMebITpASXvKhNBRVVQHXRgG58/IBc1oJ/xVaF7ynGycfEK0nhYmPAyPekDHwaGlyuxHnHWPvPPAjp5ejEe8YQA4cJE3pQWlC6frKLUdN/5+dVz3bB0C3dErEJ++ZepcTqQOc1DDSlIGYz7p39np2auDl4RMGejNMIu//ed8k332aIG1jLvOAN2vV13v/v1/6frOUNQpAPxgxJbM6WzGWMvePTh+AvkHFEZ4w53pgFtNPkRrqfuWkhyHG+1/bVEq73NXKgtMMNycIfqSztyF3TAYZcJyNfl2JvbMU687micjPfStZbClp/y7a6sxsHGji3PW4a211AabmEtEbGcLG7SMcQfMXxeUmvaPtjzUeReRzjPh10ISlf+ou44B8jr0eO6vkZuWSiWJ4JjdRwbeYvBR+CVekdyhQvzsqSBHFptAQk/Vpq57i+grEKuSB9sE2JPgE81k1s//+y1s2pVFYYm+C6OXez/FIR4gO/99azbEXbZwzQ6kLueV8WW/QrUUrZBsMs6OWj6Dut+DWaVU9HHx4Jn34zNoAdxL07eMym02SJXdGVDkQsWCKZrPVxnCFu5krJ+BF53jdHIuNpcB5sskLpH4KNjWmdPXFQK3yve8bvUzWU/oQwqdJg0sosmYpirgdALxDpi6cu6e3/XXgcnFdWT2pOns2jBrh5J+NWuKoBxmeJRvzhlbdJU5Ns0ljxI2/ZQ8YUDnRgE8xW1eQjsIMkmPX4ZXaw4lQRe+8wifHR+HGmuLq3yZFzollrJMrKeK4MluQ5tZYn5uxfMPM7ZkKuhjsKvjHJ7QpGv4Nv7TlLZ5tIDNPQyP2F8L0HxHtwkTfucTmOPXvyaQTKRTXIE2fsrMPskwMWWOCTa1NrBXSdTYGWa4c9vD6g+TJSDDloi4IHltXkjwX3nZ/3P/ne3drgyP7UTB7DyzNvM1NUrxxSo1tWGby6Z+nYjjvu
+ y74zTsBC
+ 1TBI7i9EKnjhqd9iqGnVpg0q9xl/veS6vnbGLz/0WK7LdgLzkpM8wwTiLXOo8mE4Ob8dobuc1GIjXpfMSLYrUy1BzbpOljE8Vufy3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,59 +119,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mm selftests rely on IOURING_EXTRA_LIBS (typically from local_config.mk)
-to link io_uring-based tests (cow and gup_longterm). On some systems
-with liburing installed, IOURING_EXTRA_LIBS can still be empty, causing
-link failures with unresolved io_uring symbols.
+On 3/30/26 7:45 AM, Qiliang Yuan wrote:
+> On Wed, Mar 25, 2026 at 03:00:53PM +0100, Peter Zijlstra wrote:
+>> Sched domain boundaries are not static, they are easily changed by
+>> cpuset partition (v1 and v2 both support this).
+> You're absolutely right. My description was imprecise. The goal of this
+> patch was to ensure that the housekeeping mask for scheduler domains
+> follows the partition boundaries dynamically as they are resized.
+>
+> In V13, I will explicitly integrate the housekeeping update logic
+> directly with `cpuset.cpus.partition` transitions. This way, any change
+> to the isolation level of a partition will automatically update
+> the kernel-internal housekeeping state, avoiding any parallel management
+> logic.
 
-Add a fallback detection:
+It looks like your patch series isn't based on the latest v7.0 kernel. 
+With the latest upstream kernel, the HK_TYPE_DOMAIN cpumask has been 
+updated to dynamically follow changes made in the cpuset isolated 
+partition setting.
 
-  IOURING_EXTRA_LIBS := $(shell pkg-config --libs liburing)
-
-when IOURING_EXTRA_LIBS was not set by local_config.mk.
-
-Also gate io_uring-dependent test binaries (cow and gup_longterm) on
-IOURING_EXTRA_LIBS being non-empty, so missing liburing support cleanly
-skips those tests instead of failing the build.
-
-Signed-off-by: Li Wang <liwang@redhat.com>
----
- tools/testing/selftests/mm/Makefile | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 78496f705386..01bdd25e04e4 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -10,6 +10,11 @@ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
- 
- include local_config.mk
- 
-+PKG_CONFIG ?= pkg-config
-+ifeq ($(IOURING_EXTRA_LIBS),)
-+IOURING_EXTRA_LIBS := $(shell $(PKG_CONFIG) --libs liburing 2>/dev/null)
-+endif
-+
- ifeq ($(ARCH),)
- 
- ifeq ($(CROSS_COMPILE),)
-@@ -55,10 +60,12 @@ else
- PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
- endif
- 
--TEST_GEN_FILES = cow
--TEST_GEN_FILES += compaction_test
--TEST_GEN_FILES += gup_longterm
-+TEST_GEN_FILES = compaction_test
- TEST_GEN_FILES += gup_test
-+ifneq ($(IOURING_EXTRA_LIBS),)
-+TEST_GEN_FILES += cow
-+TEST_GEN_FILES += gup_longterm
-+endif
- TEST_GEN_FILES += hmm-tests
- TEST_GEN_FILES += hugetlb-madvise
- TEST_GEN_FILES += hugetlb-read-hwpoison
--- 
-2.53.0
+Cheers,
+Longman
 
 
