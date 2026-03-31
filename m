@@ -4,115 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 574711061B2E
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:19:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD6811061B37
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 12:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF9316B0092; Tue, 31 Mar 2026 08:19:16 -0400 (EDT)
+	id 433B86B0092; Tue, 31 Mar 2026 08:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD14C6B0095; Tue, 31 Mar 2026 08:19:16 -0400 (EDT)
+	id 40B8D6B0095; Tue, 31 Mar 2026 08:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE6A56B0096; Tue, 31 Mar 2026 08:19:16 -0400 (EDT)
+	id 348F16B0096; Tue, 31 Mar 2026 08:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9466B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:19:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 398DF8784F
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:19:16 +0000 (UTC)
-X-FDA: 84606263112.14.056E31A
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6E58540017
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:19:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BVrN1xAO;
-	spf=pass (imf07.hostedemail.com: domain of rhkrqnwk98@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=rhkrqnwk98@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2320D6B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:21:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD54B8784F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:21:05 +0000 (UTC)
+X-FDA: 84606267690.19.3D2B588
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 05BFC80012
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:21:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=OTalYU3c;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774959554;
+	s=arc-20220608; t=1774959664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BtAjvvyWXMliCL6lUIkd5Xn2L7jgh7Ti0JdeQLLXF8Q=;
-	b=YDaIbtBLiv/nQ2Nm3nFAra86dkH3E4z9qO71LSo1nVveX8W4XDxqq3DgTiGJ8D1YkxcACd
-	46n1uxxStNKgcmkF2VnDzyoY8YiocgnXsmW8T5acU7jb7jTcjMfFhqweUxvpZlIGvkx+rJ
-	3fgthum10MYu7IxfZmA3vVbJwaKlT+s=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NgNcg+u1NBRoAeJ0X2EC7mko2ww9hZ9u4YDqZn07NJA=;
+	b=BlAmaYlRvv6+VnUCerUbnfmws1SoE4kue/fUtebrHDh3QBkJosV/rt4jiCoI05abQGCIEq
+	2GWOzSuGAwiCV5H6lPc7wOswRJ7Y4NvyzVZk6o0sKqtv8GDxKv7bVb7qVEfPefV6G3bTtl
+	BqZS51Phr7kcm3xIvrwejpvjzAs+3XM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BVrN1xAO;
-	spf=pass (imf07.hostedemail.com: domain of rhkrqnwk98@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=rhkrqnwk98@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774959554; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=OTalYU3c;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774959664; a=rsa-sha256;
 	cv=none;
-	b=qPYch6iN+H2ZTADkyh+djNZxaQejseiroe2bWLemjyVVjn6s/D8NnTlZdjmfLinY5XAxzg
-	VBNHKCU2QjqSpznb3S2riDLpOpjTCGFBdDC2TlNQWwAoIhjrvR6uISwP8haK6gJm0EV4EI
-	aRWotZbz0ewQQFa3lTr43SJiaghbw+A=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8296dabef74so5323874b3a.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774959553; x=1775564353; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BtAjvvyWXMliCL6lUIkd5Xn2L7jgh7Ti0JdeQLLXF8Q=;
-        b=BVrN1xAOYxSLIQzfIOObE6PNmy+xKqxr70giYPQBofTEqcTQKzgi8w14wiE1lMtAdC
-         poMxJCdDgags4wrUbr2jejqPnZ7TYQ+OZp4I1ABOVmoM0e4jyg11c4cFkdFxj8wAh1r/
-         Zhx8EFcn+S0s3AT4CGPqSZ0/ufeIJ27/wm5P5K/pFmj93ZiyKO9e+0xvXTjU1OmRYGG8
-         B/GuPPn2KH/OESFt7mzls/Qff4h5ZN5F0d4f3//WvYFQkAa3JIFxmv6kpalJH1Svr7S8
-         qG5WGI9npVOA4/eH4YzNPd09LbUnYnVO8b4wTsY0NhCLne+/i22vTy/2y84ZxHUQ6ZTW
-         BIbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774959553; x=1775564353;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BtAjvvyWXMliCL6lUIkd5Xn2L7jgh7Ti0JdeQLLXF8Q=;
-        b=lUryIO9N+KkUUapubnuGagVoaTi3N7ovGCtdcrJ56mXgyuiuAn7vSbwE30dYKR+G4B
-         W/SFll7dXQb9CKiJJDnRUzYpiAK8KKAvor/ETwLEfSfSQZzqP5BwZyVzpgg2dNCLshVW
-         SaQ4ZOhTGXBTlZAZnPGET9fLLkATLUqfWnNh6uSKcRQNdkbe1sDM7zwcO+l4SbxdM0Ru
-         AInzuRci87Mt/Djtq2+Eh6ns4F9DfsgmdBgnaY+j0UpGsR2l/q2SU6j0CG45tSQhZ22p
-         g9KEZ8avc+7FFLiBaZjH8aKqRCHeNYm88SMFny+jW5NAkEprbvhUlAwtAb/lx6CB51kM
-         MzcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbCoQ7pumahTdlJJVAWjr52cb/CG/8TexzkgW0ZAH1584bXDSVYwMPb0OEyQA18MTVcfC9tP+zMQ==@kvack.org
-X-Gm-Message-State: AOJu0YyTcRctN0CmuMAFPc5aH0ZyA4NZlX6WFkOsUqq92sx6pAC4hGpO
-	kS39MMB8G9/jRHD2lajyCJ1uTgnylqsZLntzQIniqetZ0UQ6RHdQ2CaZ
-X-Gm-Gg: ATEYQzwgYZsr1tMPc7/RniWOY1f1FEfDKwyHn3LnI5SZdoW3onEaWDk/DSuBpwb1kiH
-	8WoxNKrRv0C+uzRyLuEEOxFa5TtWlABEPGsrKhPBPgLeHh296lL73mPIxepS+xTV6Gqs5QjM9Mg
-	abIYo1IoUtBGTgwfLTTkuyIwRgha92yBRT/02vjyShHre3BEwwK3RnGxDcwkApDKhlWCLLarkFw
-	SjH8bKO+FKt81n5LklD6JKDsNRuhpdCiFIq6xJspl2A1ovzN51Syr73v3ZzMlbKGkcTwbclrBeI
-	dNKUzWg9z4cPc5UtfTDnK4UYAE5MQ4nNo6CgFWjpSBVeOCZmDjiMFYK6SehhMy7vKSKgZrjUQXv
-	p2vDchsXgguxXTTelJWQrgDMuEEGs52P+PR6LrsD17xNqdGjGHU6bGB10rHQZU5+DOY3Gu5qMd9
-	38Y2L/XV2l9pOYLHq94bKL+hj/32TQteig3Dkv2ybJhdTvSq3jNbdjIdd79Sp11Q==
-X-Received: by 2002:a05:6a00:9517:b0:82c:20ba:1570 with SMTP id d2e1a72fcca58-82c95ed90fdmr16398547b3a.29.1774959553169;
-        Tue, 31 Mar 2026 05:19:13 -0700 (PDT)
-Received: from cps-manycore-1.. ([143.248.136.81])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85eeea8sm10126828b3a.41.2026.03.31.05.19.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 05:19:12 -0700 (PDT)
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sechang Lim <rhkrqnwk98@gmail.com>
-Subject: [PATCH] mm/vma: fix memory leak in __mmap_region()
-Date: Tue, 31 Mar 2026 12:19:06 +0000
-Message-ID: <20260331121906.1301155-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=2hsf5O0Wa32qN/JuP4/bIpiUML/ckIAn+RfoKYTnCfeUDwF7RoDNoEyS42QhgIEzs8Q+9D
+	5YiYO1iY+st6ZZL3iYxFAvemAd+U8dPiZQu0oDsH6nUI+kbtpXmXoyfluVW/ZwevKnPzyn
+	AY59XUbmupJGYGTDCdYg0z7ENyYWWYA=
+Received: from macsyma.thunk.org (pool-173-48-112-174.bstnma.fios.verizon.net [173.48.112.174])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 62VCKh5d020429
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2026 08:20:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1774959647; bh=NgNcg+u1NBRoAeJ0X2EC7mko2ww9hZ9u4YDqZn07NJA=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=OTalYU3cH/zbxpYh+VufB1Rr+bdCrgFKwM738zGplWvymBF6OUgZu9hWPAzjeHaDM
+	 GeZHgEIvEybyWZGOtv+Aj2qOgDjEcpW4xk60ILOXsKPV6t6YOZRK2Ruyd+JkqnjKG1
+	 SXqRJNxi99vuNRrTlgUSuvgv1l9iWZCPTiAVLx11jTT5RULo2j7D6OL13XUPICc3nC
+	 sgfCVF3MVZY/aXuhKkqvrlneGO/4nOIuz5QboAJzrPh8Z6yH/qn4SVuRTaknr/1id+
+	 n29o5SXu06wFfiEmG1v8oFk44lf+PNZw/X+Eh5H4zMYZW+CIB2KQ1ms2pTM5ngFLOi
+	 bVHabiPWhVKfQ==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id 5D6D560291BE; Tue, 31 Mar 2026 08:19:43 -0400 (EDT)
+Date: Tue, 31 Mar 2026 08:19:43 -0400
+From: "Theodore Tso" <tytso@mit.edu>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "# 5 . 19 . x" <stable@vger.kernel.org>,
+        David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn
+ commit_inputs vs other params race
+Message-ID: <20260331121943.GA74409@macsyma-wired.lan>
+References: <2026032915-library-embolism-b48c@gregkh>
+ <20260329193226.59025-1-sj@kernel.org>
+ <20260330142205.e7c7d7b47ec15a634f6eebf4@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6E58540017
-X-Stat-Signature: h4smea9cbgfghegqi99t983pbnjkuom4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330142205.e7c7d7b47ec15a634f6eebf4@linux-foundation.org>
+X-Rspamd-Queue-Id: 05BFC80012
+X-Stat-Signature: apupiaz4pi43p1xr6p6ghpo31wecss4z
 X-Rspam-User: 
-X-HE-Tag: 1774959554-192065
-X-HE-Meta: U2FsdGVkX18ebJoJDBTGANczkRS+t3sFLbHkzB0bzTwGysIGt6lQp6oikVH3jqodjhfE4rsX30Ltg1XlX1fZ+r3h1vh/kj4cMV9nL3758pY6gcHHeZZLsIww0cwosJvchMxqT9wfcggQtms3o87IKEFldshYyp88dVreH+clA0h70+EOu8CEjZDK+P1BIcSS5aaqncvagppj0mehiIV7nvuF91bjfIUIMnq6dj1bu3iIMJvq2ZamiuwBKpT9rL33lGemm0Oa1vcgeH1L696fjj4w3D+RqpkoKIa1wcDiouRtP369ISQR6Jf0lC6uGx6NA1fWZ76pxIxydLXx0bXipc6eDbyG5Pb+kdNxrrfZt2+K/spuRspAaCiz8efC49177Iz3xGMbVy9LtMiTSqkx/vudrIWOuwl3jNNBaMaUvc6TaJyQ7qichHCksZZJaXiZ+EwshNrXvGNPSSQ2lahiWVaTc8G2hzVVBb319aU2KoPyPCj9Jbfm7pFdsxHKqFsDioJP5pdMb6vOZvnURIPiVP4B/i1YIW5gZ6SCzhvGBA5hCkHwUSDiUNPtSVpKKkcC4ANfvpKwGcor48YB/Ki9ig395D8A1+N+u5oG2MusHRwF9ADhvyHSfjSp7CUvYs8PEI7RUg3CjlhFedMdLLbbBjBYca3McO4kwREl10ZklzQxOR7IIlIK34gtF6Cmx3G9Ymx/+Z2fBAWX4ufQHw4w6xY3cUkJGTpAlUHWAXva9JgEOp4v+Szj5ktHS6VOZaX7RJ2WtyJQmRd1QxTkq6RnuGfOGWTAoDiHoFguCFbhDc4uVH14S85e28SD6xE1DcLi5gBPV+/HL/fuya905m1WUTF7vO1f01zEg9X/khiihdUg8w6/ZpJOrUAuWQfwiqvzD8fL1DOw0zQPLZEmuQhBwalwfvzLJO0SAG/nSsbqUoZ3QWwSGC3NvIVMdZD9v+CNgclRBQF6MhTqHWobcZr
- KElaitf4
- fHtV4tLBe6pOqjGLGV4HltsgmzK0FLmG15byaq2vHPFJ9gHVbA/OUwL3E1mf9owmjZ7noVgNa+mf0sJcP2PLJv2mEMKSzkXpb0saO8DTVxm79EIz9Nf3ww4NxGORrMmXddE3gFmre/P2C1bNIbziycW+Pikp2dTZUKTwAxS0Td9LrgJPYehYk1ni8F1w+hLEPDhyLFqile+D4obPsaTqNxdQIH5j9ZD48UCA9f3P5pYmMQKTGjWRPxsG+bi1OK1TahmmnPT56FCRQF4DEKSse1BXxiCbrtqJ6Ccrf/8DHfU19iVQSi4IDLSkYcZ1+WEj34JiK6ctuhoDtrkrT8AqMfDVMYj8tCDalOYE/CjpPg/GePFAMZKx+iJmETyC+qFwxOv5SKh1t8AlY39q1z+fAhIPXKpace+sZYWOUlctMjNroPV2YxYrqYIuPKW+98GW7/mwKCnJrx2Zh43pu7UI57BMlGuIU0dY5/n/YiwvNnCiCXqk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774959663-160028
+X-HE-Meta: U2FsdGVkX1+C3wZHk/2reyThcMrlmWT0KI2phEUm48Igt3Kpw4j+RKeHKQn9C/uTI6KEsVvoUFVM4Asq10t4JfJmkHCy7QrJ/esS8IygpUvedVumgk7mzr8l3cbikL1IsijW7fM/yZItMOFQ/rSec1tw0xT9dN9uTVTV5CZdYSYG69Z3sG1v8ME0zsnnNsJDRzfX6qeoQL6aADlydn+HsLRg5lAlCoBbyvmYSkZxb9hd6hwBtfdslfFJ9c6PAGUGj3obxbOdRRRhLhNimsfxbthVymMi/nlPQ1DFNX5D6fO/h28cY8IoyHHoVnVM1PNSkpOY1rionKdF7I5H6T+cK6mLpuTSTNMWL2RW4gdnmsPhYAPedNmDWdfCVS+KbZSoPHm16OqxaX5y25ofmrJ09v8SqyOdTYHWOIcqqqvMEUfLZk4itm1XVkC4AxebPfQThj2z+PwD0Ta58/IqHZ9aYNm3lqTBwCvS3CYQz2quzve9dhrR0FhS0kf3OXFXIfKGm4yqerXPhrXbkClx9GX0QzW5VePbKWTAMjmGbmVK9mvUNatIFWDaloVw24V24yRYsI77kEnFKztWCs4JBkb6ReSkT5pNN7HGhSIujXXcWZGSis7HMcC1vkERM+km4u5wOIalK9Go7hyXFX6+WTeKpd9iAQX0mJJPV/Bb3q5eOrLk8qlMuG9j4r9SR59x/h4EP4xviU+uW0lze5pOieosEJeqdIPXL/jBhLgGKMjasPmbOT7dszdkMomKvtFTQjrbeQN6+feD2Y7GMKWNFqHc1IqHB4jxkNZgcLN8elzxPl3PgqNay4gupvPBIn6ax86oy+gVXtkniISSYPPerfHgkB83kTJWnFImoQCP8oMFm7DoDH5USkWDt/at3q+NfVO+f+hgpI+QZ4U0V6MswhijrwxAlGLB/YK/oLYtiG8Y7ORgOx84jJuIQ8yxzzU/5ErgRd0pedbfmIjLl+wOC7o
+ Ps3dbiGC
+ tOOCfOvewveDVzBMMxBLDHSi15GOZbrZicd5Skvmolubr35t5e+ptbGeKlfWIrTH7G22gDr5BmHsiL9qjcjuu2Mh16DVrWBWuPUci6g1zS02QzjWyKdu7aLQtfyx8Otx50b90QSodFFoxf1hCedFDhmDr1UKJoMHuJu1Mtihnv9piPyKaQvV0Ck1sHkfOG7MoBORBL5WsMjYN11JmpNX8qgEKUJLTMvu46j4UMa0bXOaCU2yhuu2UbfdqrbZ40fVJ8arw0BD/lxBnOyLM4DN/HHvx4Lhe3ZUbePIaOSipicnNN/YwLeZCFHUNDgbHbWFQLXUXfwWN7C7U2kQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,86 +104,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare
-swaps the file") handled the success path by skipping get_file() via
-file_doesnt_need_get, but missed the error path.
+On Mon, Mar 30, 2026 at 02:22:05PM -0700, Andrew Morton wrote:
+> 
+> I view Sashiko as primarily an author tool.  Sometimes I call it
+> checkpatch++.  In a better world, author would be able to sort out
+> Sashiko issues before ever sending out the patchset.  But in this
+> world, a public send is needed to obtain that review.
 
-When /dev/zero is mmap'd with MAP_SHARED, mmap_zero_prepare() calls
-shmem_zero_setup_desc() which allocates a new shmem file to back the
-mapping. If __mmap_new_vma() subsequently fails, this replacement
-file is never fput()'d - the original is released by
-ksys_mmap_pgoff(), but nobody releases the new one.
+Note that Sashiko is fully open source and the prompts are available
+in third_party/prompts in the git repo:
 
-Add fput() for the swapped file in the error path.
+	https://github.com/sashiko-dev/sashiko
 
-Reproducible with fault injection.
+So people can run it privately, although they will need to provide
+their own LLM credits.  This also means that you can use some other
+LLM besides Gemini 3.1 Pro.
 
-FAULT_INJECTION: forcing a failure.
-name failslab, interval 1, probability 0, space 0, times 1
-CPU: 2 UID: 0 PID: 366 Comm: syz.7.14 Not tainted 7.0.0-rc6 #2 PREEMPT(full)
-Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x164/0x1f0
- should_fail_ex+0x525/0x650
- should_failslab+0xdf/0x140
- kmem_cache_alloc_noprof+0x78/0x630
- vm_area_alloc+0x24/0x160
- __mmap_region+0xf6b/0x2660
- mmap_region+0x2eb/0x3a0
- do_mmap+0xc79/0x1240
- vm_mmap_pgoff+0x252/0x4c0
- ksys_mmap_pgoff+0xf8/0x120
- __x64_sys_mmap+0x12a/0x190
- do_syscall_64+0xa9/0x580
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- </TASK>
+Cheers,
 
-kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-BUG: memory leak
-unreferenced object 0xffff8881118aca80 (size 360):
-  comm "syz.7.14", pid 366, jiffies 4294913255
-  hex dump (first 32 bytes):
-    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
-    ff ff ff ff ff ff ff ff c0 28 4d ae ff ff ff ff  .........(M.....
-  backtrace (crc db0f53bc):
-    kmem_cache_alloc_noprof+0x3ab/0x630
-    alloc_empty_file+0x5a/0x1e0
-    alloc_file_pseudo+0x135/0x220
-    __shmem_file_setup+0x274/0x420
-    shmem_zero_setup_desc+0x9c/0x170
-    mmap_zero_prepare+0x123/0x140
-    __mmap_region+0xdda/0x2660
-    mmap_region+0x2eb/0x3a0
-    do_mmap+0xc79/0x1240
-    vm_mmap_pgoff+0x252/0x4c0
-    ksys_mmap_pgoff+0xf8/0x120
-    __x64_sys_mmap+0x12a/0x190
-    do_syscall_64+0xa9/0x580
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Found by syzkaller.
-
-Fixes: 605f6586ecf7 ("mm/vma: do not leak memory when .mmap_prepare swaps the file")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
----
- mm/vma.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index be64f781a3aa..89073980de46 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2781,6 +2781,8 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 	if (map.charged)
- 		vm_unacct_memory(map.charged);
- abort_munmap:
-+	if (map.file_doesnt_need_get && map.file)
-+		fput(map.file);
- 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
- 	return error;
- }
--- 
-2.43.0
-
+						- Ted
 
