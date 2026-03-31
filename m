@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31115FF60EF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:00:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC61FF60FF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 10:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F51F6B0095; Tue, 31 Mar 2026 06:00:28 -0400 (EDT)
+	id 44C846B0096; Tue, 31 Mar 2026 06:00:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CC0F6B0096; Tue, 31 Mar 2026 06:00:28 -0400 (EDT)
+	id 423736B0098; Tue, 31 Mar 2026 06:00:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6957D6B0098; Tue, 31 Mar 2026 06:00:28 -0400 (EDT)
+	id 3120A6B009B; Tue, 31 Mar 2026 06:00:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59CCE6B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:00:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0473A1B8ECE
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:27 +0000 (UTC)
-X-FDA: 84605913336.02.22BF4B6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E3556B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 06:00:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A386E8CEEF
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:30 +0000 (UTC)
+X-FDA: 84605913420.23.38D7C79
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 22764A0016
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KSo3fkb1;
-	spf=pass (imf15.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 99F6DC0004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:00:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWOBMbVZ;
+	spf=pass (imf22.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774951228; a=rsa-sha256;
+	cv=none;
+	b=IO3zTcBKWiNk5UZXzgb4VV1yDu7A76PObBi3dsHgj5BgSePMHa6vSFebdBaYXq52jywL26
+	dyqQUAjoEXiyCEijeL8VK8D0E3LatX4Ym2Ko50D+Zu4WQPIq9DdALg4+alibnLE29YYrzQ
+	OQL+att9Sr/aAhlhH7scDKRLzzx6SFg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774951226;
+	s=arc-20220608; t=1774951228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FezJzULdoQbPk22pOginhl2WYIxWclyY8Ve/oKjHpyM=;
-	b=OHDkz6g5UHvWLFM/cBAHo2frAFboczoXMx799vz9acmrVY3JL8Mi/ocUoUTDZxEG8pzEAW
-	6zqsb8Pd4IQf7rm5mIXP4HVR4B694/FPUdVfjnR23MIRHxzccevN/BcesWTq4mRrpKhrud
-	8xatvacYEcRNBGZ4eHvjA3TwnD/rIDs=
+	bh=RgAo/4A4smuJFu/7d193wUa3ABspm0u6DoGDuJKA1Lg=;
+	b=0GX+0K27ZAPFGHVH0OC2L8w6aWuFTL5zP9kovh2G1tTT/vjG19g1iaxAX/zAIEr9uK9Fho
+	5xy47SkDGSS2uQBUaPjy1srZzJCuVh2L+UMZMTw4/1lZST9ZbBleebuCFtbc3vGSV9ZiM1
+	X6Gwg16PF1U/euleUy6+TxkAJ6+lCSE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KSo3fkb1;
-	spf=pass (imf15.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWOBMbVZ;
+	spf=pass (imf22.hostedemail.com: domain of mripard@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mripard@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774951226; a=rsa-sha256;
-	cv=none;
-	b=VG6Cet51848Fv267kzp58QUsH+8Wl8ZjjJYEfD+i71m+Y9MJSAtSEnBbEwjHZLFXfAOS5n
-	sFr2jvCQZsYLHxfH5uRT7DvY+rmFWdOmeHd71qAGszYqUoqR25+sTiu2rWM73YfbcHl3YX
-	k3tyo6/E71xIUOxuISggmZQCrwtVol8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA85C4405D;
-	Tue, 31 Mar 2026 10:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58671C2BCB1;
-	Tue, 31 Mar 2026 10:00:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C131B43AF7;
+	Tue, 31 Mar 2026 10:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CAA6C19423;
+	Tue, 31 Mar 2026 10:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774951224;
-	bh=2RziEouTjtQzhvFU7nMRdzuP59YmynilgplJsjF6ais=;
+	s=k20201202; t=1774951227;
+	bh=HViJ3A2FjlDEklvSisEqyQ3MoBEs84TC4OJD6vWGvCU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=KSo3fkb1PtQO8hBEs29qrPHni57waTli1pc16dvDGP+vruzJBqN1b/Mh3z2gbXY4b
-	 pLynpkymbHiKKFVCBpy3ReB0qBGpkKz3SdgJs/Z5Nvqw51SWTwsR+7U9rOA7CqAvKq
-	 3p7+6dOMFrCx74lnn681dpIGoKxRac5Fgu35SxSCUbGcY1jluS/ORRA7Q/A4axey+Q
-	 dyJfE6Wy+10LeISxd2Ookz/wYd8yyj38bOM3lpdjooExi7ctWdqCIc9i9mxSOXQvHc
-	 U/Epv9rqd1WhzIiG6IIgc0rKuty0xmv8ycqx8pEnOvXHAInamKZsyHhXAXdzbimkzu
-	 zaDi7jI+kaXFQ==
+	b=pWOBMbVZv+nHWUv6rnOHekogJLNlvQSUhgs8kiDRIVR4rb9hs6nzcs9z32W5KqUSx
+	 jxGAJCaQOrRjegiJHCr6ThMqNcbBZvZw2yQQNAn+z8rwClG72e+aZRicYRFw/86EfY
+	 kcpt00GzP4E0wABRNZr3nSZM9zbjE21lWfsOOfbQ2j6KHQiFemBCvxEkzfMADhlym4
+	 hMrdpY/Sd/4r14/IJzWd2v1qVcFoNffqZaobMz2sHgTQCwiixND4wVHTkPvuCELveg
+	 DcKPabGsZ3PW8ZDxD0PPNKheRO99RhsFLuY6ZIP2RY0TwgwW3e1aQnQxuR8TIqCn3P
+	 Hyzmhs4UMbZ+A==
 From: Maxime Ripard <mripard@kernel.org>
-Date: Tue, 31 Mar 2026 12:00:10 +0200
-Subject: [PATCH v4 1/8] dma: contiguous: Turn heap registration logic
- around
+Date: Tue, 31 Mar 2026 12:00:11 +0200
+Subject: [PATCH v4 2/8] dma: contiguous: Make dev_get_cma_area() a proper
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260331-dma-buf-heaps-as-modules-v4-1-e18fda504419@kernel.org>
+Message-Id: <20260331-dma-buf-heaps-as-modules-v4-2-e18fda504419@kernel.org>
 References: <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
 In-Reply-To: <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
 To: Sumit Semwal <sumit.semwal@linaro.org>, 
@@ -92,22 +92,22 @@ Cc: Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org,
  linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org, 
  Maxime Ripard <mripard@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7747; i=mripard@kernel.org;
- h=from:subject:message-id; bh=2RziEouTjtQzhvFU7nMRdzuP59YmynilgplJsjF6ais=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJmnZ+tdXmoVdl/5vPUvF1WllgixQGGdU26r9Q6cajC+7
- pGo5MLXMZWFQZiTQVZMkeWJTNjp5e2LqxzsV/6AmcPKBDKEgYtTACZyiJWxTlf828uPbVLSm25/
- KUw7ffPbI8kanqSHr15/z2SOEAhVzy6+dlsmQVfox95dW30u6ptlM9anXzkuncl0x2mu4sHTHN8
- OPqyQP6NkIMtv/2GV8Ubtur95G6LKXpsWNqyKTJSdwy+vYQUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2404; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=HViJ3A2FjlDEklvSisEqyQ3MoBEs84TC4OJD6vWGvCU=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDJmnZ+srzBZWUjrEa3fu2IUTV3l+3Pyqejiwi/mKUVuvx
+ /9je98d6pjKwiDMySArpsjyRCbs9PL2xVUO9it/wMxhZQIZwsDFKQATsZ3BWB/kd67z+pUXtTGW
+ h1sCIzZvmPJDbYKbcWmbJsvjppVXzMqeXZRy+tB68e/zt3Pknx3+qMDY8O5/7p6p2rZvbY82FMU
+ caGgs2sBsqsXk9lA5WNn6cqf57Z9KEkyuq/KPLJH8LPlwVe0sAA==
 X-Developer-Key: i=mripard@kernel.org; a=openpgp;
  fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
-X-Rspamd-Queue-Id: 22764A0016
-X-Stat-Signature: c4yfj7pj1o1qjmzck4pnkomq54u6ct38
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774951225-160037
-X-HE-Meta: U2FsdGVkX18mMoOX9djzuzN9uLhKMA3bTKgwGSuRiTFZqR1ql6CjT6X2gMGlHZ0bHKCeIibHl+sthnH6jtPM8K3bRsh1BcO+QnBiJEDeix3clViqY9Ck4kzeIjJITeQOzNnG5bYEoUjs66dQOH7k81mQRk2PJSneE5g+bu+8JH4+T41cO+rN21qjNGjLOF3rHPUu3ElLfLrv8a68RuYBHwvdR1RU4PEWum6LjZG44efjVWMHQD5hLL/yv2CpNTFaHhz1ELNVdlkasxURgOuZcGLdZ4rPQDllb7+x7Wgl6vaEcUhHCNv9XCpdxmNS695wra3HYXgClvmBnMoLFShTKgr3fPiwr2TMWoXi0f+Cup2UXDatpYrTmGwcmOPfTB4SuTWVUh7WE+PbtwOw/xUfxNqpkT/Mj/DQ7RSlEoaoFw9iPgM42ORHClhD3PkOjdzQpUgU2DI4L/f+VnIK4423NnIPxwLolDTda8rI4dCsWN9qsvc3YAqxypYiXyFdVyBhe0QWMrJSBwx9+fg71ORbrffG/DMaYZbQpMJS7KYnVDeKJuvWorqKK+Zp/5rg+qv304Kngyc/XPrGLTJGq0Wek/BngCGZyXfEtrJ4c2Mrj1YIhoXqHcTna5dgFAr3lGQlCjlfbzMz8UVR4N7mWZb3p3bUtBjRzyXyxQnAx5GlsJJP0imDckloQfoiJRiRaef6GYImvHCNsWTRHQ7HQhVHKDd7zST2E4pwJXslJc+JW4h5gCHC1vO6W63lGlTQdcEixgdJz6/RBwu1ClvurGGoRbeHD4DOuxVulTeORd2A2oImCQCEwbuVWBoOmthrF/vZk5Y+2eEATmoqD5hTXqaregP62PYFNQ1DxhNgKVK0lPfDRuR6qyNkcP9vkHy/kDS/m/JfN6wXllJubhhz+Lz26pLw/1MUOPi5qzsENmK2roYamfgHZ4N/N9c7QLqGw5thSuq3FSEUtC0GjU6fzOu
- eYLanf9P
- KknFMWhMHru3u0RZ/WrhX35iHWsfZGuHcYmUguG8LDpu6uMk47ln29bUuiYEDbL1B3uvpSkwcAToCYNrF0w0WYebYWjaaIzz4xQOuv2dI2J1NnkF4Tf9+IYHm4K5DcXowlqD6qba1g5yOgAgCXdK3ejuPfPIjtFtnOnFmHrY8OF4CJTmmemtxgFpjpRI/118wyGmmDm7vIRi0BU0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 99F6DC0004
+X-Stat-Signature: y5sicn16bw9arp7w1p687fhjzi7y8yuk
+X-HE-Tag: 1774951228-442645
+X-HE-Meta: U2FsdGVkX1/SnzHijQqo5rfG7wqYbEtoMAzd7UgxDlDnZXnmna1/Earxouwm1GyWrJ0haL+Lf2uOXy9VRrtXAnzFcv8b9apFlD6QY8Y2pPjh9rng1Cp4p1mdDUCE9Ij8rc6pKGSrjYYF7yXsw7i8RBynGy1PGt0tqnBSrIeecGrmrzz2F2YlpcEd/F0DHn6lzQxFUV81dcLUTWYvCQ7p2OXJZjmO47RYGWK+eiYBu0VS8NxQuenWC9ZbdcGrzX1jViDxkcKzOiosLoOC7U0+BkpftQfDjjK1Ce+Pv92D46/REiYrWmZtAHSxSCIV9Wx84OjOXpwAeKjUwuFUrT3nWvDGFbseV4jU5lz+TwkZjhl6m8b3MfrlAiuYQasJrZo5nXrJ6+n5S7SrohKHNf+mi7zV5nXvr6lt4ipFXS9EqcxuqZyQgGvU/R8rEQoMiKmVpRWfH9bBhmQIjOwXzqkg1AxvM+4AuZOzCqTCMqWt3ZRG3yOKLkLoKHwQgoBtQZMHCHFwhhfrgr4HPaUQ45i+N+SUS1398hNn0nfiy6ySaUmilMp8uX7v/7rctP33MqAf06PU9rt6BcHWpSypxY10Io8UQCqtpdY8DUJqCb0M7sPMtiYszfWGhxIiV1UgtLCjH9PInRRwYxo50ERs6dqBE+ZeAomJpxmy09OU4BG7ekmU24S561BIkgIazjxHtz5rd/ocVvSvYpX+3Uz6FRjD2t6BozdQ/ro3VXXZmwYNqxRsj7gbSko0AVU6ffXL5ObqgbskIQVkYPEiNM+45P4AKUHqQOYR7dZLBop7kIGqM8RVIGrG3EKA4qCdCqGMqsbPCylf/sKos2snJHiDwJEyKPQe4ibKUKs9davWJJx6i2bVHidBhJIH3+Cnycnz3XPjyg7qHTNNh8NnMfAy8Al9IWkKil9y+fc4lft8ZL+FWgFptDlUaNPGEUH8322kYeSoCe9DdNq2wxCcYWFol8v
+ yV5ZeZbE
+ OgOF23z7QMW5v5XjXJgOdeMrFPMbotwnLVrFEoG9KpZw7KWmb2JqXuObo0cwAZHo7Kpf6xDJ6fmmmCGpI4G8Jp+1T+MU1EcVLsWLwE5QjJomPjkFAmbosz6qFCbuyObSYTsX31uv8BMg7gKUgcrAUGPUt+gJbe6CJ1MqAD9KLos+8PwIwKY7dL1TIPL831zk4mwa/LJ1lnMLtc9YZ5NdblEDqa3IW852KM4UshEqE6EgGqBPDtlKiGkQir2qktHgcoMpvo0hidzRRBc3UwtjFAsfG28j2kYyHmMN4LYaOb8tFobnGtdVF1C/yQTrevHfBXbQ/tenopSO8F6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,247 +115,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CMA heap instantiation was initially developed by having the
-contiguous DMA code call into the CMA heap to create a new instance
-every time a reserved memory area is probed.
+As we try to enable dma-buf heaps, and the CMA one in particular, to
+compile as modules, we need to export dev_get_cma_area(). It's currently
+implemented as an inline function that returns either the content of
+device->cma_area or dma_contiguous_default_area.
 
-Turning the CMA heap into a module would create a dependency of the
-kernel on a module, which doesn't work.
+Thus, it means we need to export dma_contiguous_default_area, which
+isn't really something we want any module to have access to.
 
-Let's turn the logic around and do the opposite: store all the reserved
-memory CMA regions into the contiguous DMA code, and provide an iterator
-for the heap to use when it probes.
+Instead, let's make dev_get_cma_area() a proper function we will be able
+to export so we can avoid exporting dma_contiguous_default_area.
 
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
 ---
- drivers/dma-buf/heaps/cma_heap.c  | 19 ++------------
- include/linux/dma-buf/heaps/cma.h | 16 ------------
- include/linux/dma-map-ops.h       |  5 ++++
- kernel/dma/contiguous.c           | 55 +++++++++++++++++++++++++++++++++++----
- 4 files changed, 57 insertions(+), 38 deletions(-)
+ include/linux/dma-map-ops.h | 7 +------
+ kernel/dma/contiguous.c     | 8 ++++++++
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma-buf/heaps/cma_heap.c b/drivers/dma-buf/heaps/cma_heap.c
-index bd3370b9a3f6d4e18885a1d0e8ba3f659b85ef47..33cac626da1198e3c4a1cdcd562223c1924b6ceb 100644
---- a/drivers/dma-buf/heaps/cma_heap.c
-+++ b/drivers/dma-buf/heaps/cma_heap.c
-@@ -12,11 +12,10 @@
- 
- #define pr_fmt(fmt) "cma_heap: " fmt
- 
- #include <linux/cma.h>
- #include <linux/dma-buf.h>
--#include <linux/dma-buf/heaps/cma.h>
- #include <linux/dma-heap.h>
- #include <linux/dma-map-ops.h>
- #include <linux/err.h>
- #include <linux/highmem.h>
- #include <linux/io.h>
-@@ -28,23 +27,10 @@
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
- 
- #define DEFAULT_CMA_NAME "default_cma_region"
- 
--static struct cma *dma_areas[MAX_CMA_AREAS] __initdata;
--static unsigned int dma_areas_num __initdata;
--
--int __init dma_heap_cma_register_heap(struct cma *cma)
--{
--	if (dma_areas_num >= ARRAY_SIZE(dma_areas))
--		return -EINVAL;
--
--	dma_areas[dma_areas_num++] = cma;
--
--	return 0;
--}
--
- struct cma_heap {
- 	struct dma_heap *heap;
- 	struct cma *cma;
- };
- 
-@@ -412,22 +398,21 @@ static int __init __add_cma_heap(struct cma *cma, const char *name)
- }
- 
- static int __init add_cma_heaps(void)
- {
- 	struct cma *default_cma = dev_get_cma_area(NULL);
-+	struct cma *cma;
- 	unsigned int i;
- 	int ret;
- 
- 	if (default_cma) {
- 		ret = __add_cma_heap(default_cma, DEFAULT_CMA_NAME);
- 		if (ret)
- 			return ret;
- 	}
- 
--	for (i = 0; i < dma_areas_num; i++) {
--		struct cma *cma = dma_areas[i];
--
-+	for (i = 0; (cma = dma_contiguous_get_area_by_idx(i)) != NULL; i++) {
- 		ret = __add_cma_heap(cma, cma_get_name(cma));
- 		if (ret) {
- 			pr_warn("Failed to add CMA heap %s", cma_get_name(cma));
- 			continue;
- 		}
-diff --git a/include/linux/dma-buf/heaps/cma.h b/include/linux/dma-buf/heaps/cma.h
-deleted file mode 100644
-index e751479e21e703e24a5f799b4a7fc8bd0df3c1c4..0000000000000000000000000000000000000000
---- a/include/linux/dma-buf/heaps/cma.h
-+++ /dev/null
-@@ -1,16 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef DMA_BUF_HEAP_CMA_H_
--#define DMA_BUF_HEAP_CMA_H_
--
--struct cma;
--
--#ifdef CONFIG_DMABUF_HEAPS_CMA
--int dma_heap_cma_register_heap(struct cma *cma);
--#else
--static inline int dma_heap_cma_register_heap(struct cma *cma)
--{
--	return 0;
--}
--#endif // CONFIG_DMABUF_HEAPS_CMA
--
--#endif // DMA_BUF_HEAP_CMA_H_
 diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index 60b63756df821d839436618f1fca2bfa3eabe075..c4c93c72ff6ff3ff5c59b7161970805422e9dccb 100644
+index c4c93c72ff6ff3ff5c59b7161970805422e9dccb..8604106c0c01b6a9dadc45263f3b1d9ecfacd4aa 100644
 --- a/include/linux/dma-map-ops.h
 +++ b/include/linux/dma-map-ops.h
-@@ -97,10 +97,11 @@ static inline struct cma *dev_get_cma_area(struct device *dev)
- {
- 	if (dev && dev->cma_area)
- 		return dev->cma_area;
- 	return dma_contiguous_default_area;
- }
-+struct cma *dma_contiguous_get_area_by_idx(unsigned int idx);
+@@ -91,16 +91,11 @@ static inline void set_dma_ops(struct device *dev,
+ #endif /* CONFIG_ARCH_HAS_DMA_OPS */
+ 
+ #ifdef CONFIG_DMA_CMA
+ extern struct cma *dma_contiguous_default_area;
+ 
+-static inline struct cma *dev_get_cma_area(struct device *dev)
+-{
+-	if (dev && dev->cma_area)
+-		return dev->cma_area;
+-	return dma_contiguous_default_area;
+-}
++struct cma *dev_get_cma_area(struct device *dev);
+ struct cma *dma_contiguous_get_area_by_idx(unsigned int idx);
  
  void dma_contiguous_reserve(phys_addr_t addr_limit);
  int __init dma_contiguous_reserve_area(phys_addr_t size, phys_addr_t base,
  		phys_addr_t limit, struct cma **res_cma, bool fixed);
- 
-@@ -115,10 +116,14 @@ void dma_contiguous_early_fixup(phys_addr_t base, unsigned long size);
- #else /* CONFIG_DMA_CMA */
- static inline struct cma *dev_get_cma_area(struct device *dev)
- {
- 	return NULL;
- }
-+static inline struct cma *dma_contiguous_get_area_by_idx(unsigned int idx)
-+{
-+	return NULL;
-+}
- static inline void dma_contiguous_reserve(phys_addr_t limit)
- {
- }
- static inline int dma_contiguous_reserve_area(phys_addr_t size,
- 		phys_addr_t base, phys_addr_t limit, struct cma **res_cma,
 diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index c56004d314dc2e436cddf3b20a4ee6ce8178bee4..afa9fd31304051d200cd4396dec26dd50becc375 100644
+index afa9fd31304051d200cd4396dec26dd50becc375..40a0ead24979cfdf25e4779545536a5438e26356 100644
 --- a/kernel/dma/contiguous.c
 +++ b/kernel/dma/contiguous.c
-@@ -40,21 +40,51 @@
- #include <asm/page.h>
- 
- #include <linux/memblock.h>
- #include <linux/err.h>
- #include <linux/sizes.h>
--#include <linux/dma-buf/heaps/cma.h>
- #include <linux/dma-map-ops.h>
- #include <linux/cma.h>
- #include <linux/nospec.h>
- 
- #ifdef CONFIG_CMA_SIZE_MBYTES
- #define CMA_SIZE_MBYTES CONFIG_CMA_SIZE_MBYTES
- #else
- #define CMA_SIZE_MBYTES 0
- #endif
- 
-+static struct cma *dma_contiguous_areas[MAX_CMA_AREAS];
-+static unsigned int dma_contiguous_areas_num;
-+
-+static int dma_contiguous_insert_area(struct cma *cma)
-+{
-+	if (dma_contiguous_areas_num >= ARRAY_SIZE(dma_contiguous_areas))
-+		return -EINVAL;
-+
-+	dma_contiguous_areas[dma_contiguous_areas_num++] = cma;
-+
-+	return 0;
-+}
-+
-+/**
-+ * dma_contiguous_get_area_by_idx() - Get contiguous area at given index
-+ * @idx: index of the area we query
-+ *
-+ * Queries for the contiguous area located at index @idx.
-+ *
-+ * Returns:
-+ * A pointer to the requested contiguous area, or NULL otherwise.
-+ */
-+struct cma *dma_contiguous_get_area_by_idx(unsigned int idx)
-+{
-+	if (idx >= dma_contiguous_areas_num)
-+		return NULL;
-+
-+	return dma_contiguous_areas[idx];
-+}
-+EXPORT_SYMBOL_GPL(dma_contiguous_get_area_by_idx);
-+
- struct cma *dma_contiguous_default_area;
- 
- /*
-  * Default global CMA area size can be defined in kernel's .config.
-  * This is useful mainly for distro maintainers to create a kernel
-@@ -262,13 +292,28 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
- 						  &dma_contiguous_default_area,
- 						  fixed);
- 		if (ret)
- 			return;
- 
--		ret = dma_heap_cma_register_heap(dma_contiguous_default_area);
-+		/*
-+		 * We need to insert the new area in our list to avoid
-+		 * any inconsistencies between having the default area
-+		 * listed in the DT or not.
-+		 *
-+		 * The DT case is handled by rmem_cma_setup() and will
-+		 * always insert all its areas in our list. However, if
-+		 * it didn't run (because OF_RESERVED_MEM isn't set, or
-+		 * there's no DT region specified), then we don't have a
-+		 * default area yet, and no area in our list.
-+		 *
-+		 * This block creates the default area in such a case,
-+		 * but we also need to insert it in our list to avoid
-+		 * having a default area but an empty list.
-+		 */
-+		ret = dma_contiguous_insert_area(dma_contiguous_default_area);
- 		if (ret)
--			pr_warn("Couldn't register default CMA heap.");
-+			pr_warn("Couldn't queue default CMA region for heap creation.");
- 	}
+@@ -129,10 +129,18 @@ early_param("cma", early_cma);
+ bool __init cma_skip_dt_default_reserved_mem(void)
+ {
+ 	return size_cmdline != -1;
  }
  
- void __weak
- dma_contiguous_early_fixup(phys_addr_t base, unsigned long size)
-@@ -504,13 +549,13 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
- 	rmem->priv = cma;
++struct cma *dev_get_cma_area(struct device *dev)
++{
++	if (dev && dev->cma_area)
++		return dev->cma_area;
++
++	return dma_contiguous_default_area;
++}
++
+ #ifdef CONFIG_DMA_NUMA_CMA
  
- 	pr_info("Reserved memory: created CMA memory pool at %pa, size %ld MiB\n",
- 		&rmem->base, (unsigned long)rmem->size / SZ_1M);
- 
--	err = dma_heap_cma_register_heap(cma);
-+	err = dma_contiguous_insert_area(cma);
- 	if (err)
--		pr_warn("Couldn't register CMA heap.");
-+		pr_warn("Couldn't store CMA reserved area.");
- 
- 	return 0;
- }
- RESERVEDMEM_OF_DECLARE(cma, "shared-dma-pool", rmem_cma_setup);
- #endif
+ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
+ static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
+ static struct cma *dma_contiguous_pernuma_area[MAX_NUMNODES];
 
 -- 
 2.53.0
