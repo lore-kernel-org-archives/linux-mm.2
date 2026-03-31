@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A87FF60C2
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8334DFF60C2
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 04:25:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCC846B008C; Tue, 31 Mar 2026 00:18:52 -0400 (EDT)
+	id 9C9A66B008C; Tue, 31 Mar 2026 00:25:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F9C6B0095; Tue, 31 Mar 2026 00:18:52 -0400 (EDT)
+	id 9A09C6B0095; Tue, 31 Mar 2026 00:25:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF7336B0096; Tue, 31 Mar 2026 00:18:52 -0400 (EDT)
+	id 8DD906B0096; Tue, 31 Mar 2026 00:25:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1346B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:18:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B2D96B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 00:25:03 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 355158CBD7
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:18:52 +0000 (UTC)
-X-FDA: 84605052504.06.110F31C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9224510000A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:18:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q0j9+sxl;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774930730; a=rsa-sha256;
-	cv=none;
-	b=djy5UY0iv+EYgiRfaTbypU4eT6NBbnC3WKRtdKLTcKpc6pNzqdeAIrrWagwnEl+a/d1jEG
-	ds1xjATGNbum2LcFsk1wqD1jRXK5IRE0yzy0jk1iTj1fU/ghujpH39i38N/aunVZ6Va01B
-	tr9IS1BoxvmPbkVXNezM1fyFrFt2MyM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q0j9+sxl;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A8E9C315D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:25:03 +0000 (UTC)
+X-FDA: 84605068086.06.1090D2E
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4512B1A000A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 04:25:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CWwxbEs+;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774930730;
+	s=arc-20220608; t=1774931101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8YPEYrx2KoWLOWVKHshYKYPi1T3Col0/e0HPuW6yJMU=;
-	b=ePIMRbr0oCFzF94AnPdSCoFgMwbd+dFWQ4S+V2Xl7UzgLlqjVYE/iv1XZU84h3hfV5rUTJ
-	7I+voS9C2AMPa+RofoDoBDR/kmwhKNIalzDu9ZksOd+YE7H6oSCq/8QcqTfZeHIQHlJ5Dr
-	Ep8DnQtDjd5stQOD/wPlfDrmq7svNmk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30FA841B05;
-	Tue, 31 Mar 2026 04:18:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55B5C19423;
-	Tue, 31 Mar 2026 04:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774930729;
-	bh=OSpIVe29UbdvbUCBvkXi5tp6fu4U/6QSDun7Xql9Q4s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Q0j9+sxl2WHbwhzae7hyXyPKIaMAE1YcTzOf/JgGqnIipaHQHamJTixv6+faaTA2g
-	 0rxQzO0yuOQbX/yrQECv8nEMi/UABRc/JRkkf4S4tKd8rCpq0L/2IKuRz23a/P/Tgk
-	 pSJDXfWJ3b9gTHpriv9QQXNSGZ0ZfW/J37WEu2kc=
-Date: Mon, 30 Mar 2026 21:18:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
- <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
- <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-Subject: Re: [PATCH v2] mm/hugetlb: fix memory offline failure due to
- hwpoisoned file hugetlb
-Message-Id: <20260330211848.a838814f501463ea8f003aec@linux-foundation.org>
-In-Reply-To: <20260321021031.2240780-1-tujinjiang@huawei.com>
-References: <20260321021031.2240780-1-tujinjiang@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9224510000A
-X-Stat-Signature: ytags4owhi5kr1cmq9xp43g8ehwpqw66
+	bh=j3Y6o5j93R7sTJgQpUSEqOpWjTfzF7tRF8MdJiE9tik=;
+	b=0AFc6rc3yut+f0E064nNLn+F4/QmqwMNojvLNF+G8a366Uu91dEAkKSuLXFfTT2swicH+E
+	ab6lA2BRuhRaDX16xe8rQXU/tsI82AS+iMlYrO3x30DYLljB+PdERrFG2OHEhG/WneGkyU
+	I2QdoIxtf62wiB6AvpYtmyjtCtBb27o=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CWwxbEs+;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774931101; a=rsa-sha256;
+	cv=none;
+	b=i4Ji2wdwcQr8w/Z5shmB3yxvaQyj/hqPwpWjhvT1jgodPAOCY5S0oFKStKu2o2r6xPwh8p
+	yEcGqPY4ouWrLGMkBGczcCdQ9mDC8N6dj5hwoOqmJTP/3LPSrOITRVMPDI+8mHp/ElhuGn
+	1ZsYBow92eYI+pEuCHIkQVDIAjZbrnA=
+Date: Tue, 31 Mar 2026 12:24:46 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774931099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j3Y6o5j93R7sTJgQpUSEqOpWjTfzF7tRF8MdJiE9tik=;
+	b=CWwxbEs+Qf7usdMzhi3bJHLVHjx+iHXGgFxDj37SYp5Z0a5YzbzxUAJf0STnFi3/6s2Lsj
+	tt9fW4FHy9d+uwgHEyiQlzWwIZSOUn0x9lSd3exrZ+Dd4Me4mvO702/lQCiFbiVsLbaDbY
+	6+HmyebYsosRgi1kdp+8zGe9ob3Dhjk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, david@kernel.org, 
+	osalvador@suse.de, vbabka@suse.cz, joshua.hahnjy@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v2] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
+ hotplug
+Message-ID: <ceqmspe2x2p5uv5bk3jyiw67qkyweaviclcjdp6kgwpg6v4kdq@f7yd6rr2lpkl>
+References: <20260330035941.518186-1-hao.li@linux.dev>
+ <aco0MtqpysMXMZdy@hyeyoo>
+ <23feu42lqvc7iymgaxmnywea7c3qie5vmjm4aijbgdiazwvrcb@mmlxjowgtotv>
+ <20260330144640.161ca53e94b37b3252de2e95@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330144640.161ca53e94b37b3252de2e95@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774930730-28362
-X-HE-Meta: U2FsdGVkX1/fKgE3epiflVe3rMD86drc/4mNJeXhpobMNlyupCboffixBe58Nz3XWFWWQ7v2IwFx3Bv+Ga1yNCXhGLxVfMvjgGLDbSi2MPMFf3AHorglofdYAbvzLtkVPctZ6qYVb6vMBP4TC+QqYSVlIifVmG1v/j5ILnA+62OXbV5TxYpxFcSHAm6vCDcJ+NlX3RD6Cz7Q2TEJuxo9HTQeAYJnSoTPZ5G/Z4PYqVxmBViKWuo0/OAkWiwuxv7uixAdV499BpLETA4qllBHuWCxiC96xQiiMWwn1ySMyiN1EG53DuTLLBN1/PuUocYy/1k3ZcC4rjMwu5daJPxFTz1MyMpa1RSMrmJZA1qBTPp74J+6PBZFpuDvEPN4ysFM1UdSM0u2c0QwBUF3YwKliYhS1Ya96Hze/mo2HbCOYjU4tgFrFnQHwSoWxAYvFWzo77HS2kg3bubFocH2yokwSouy+7mXQFfzhgnh74Q9tWQp6MNmyJogFN1ZRvpXmNrQgz0BqrNC9XrkS6e8PlbweizLEt8QftRBuWFPUgaAwLCX/QqD5qnAyTRTb1YrmKj/lM5OOQMR+YnSoyT0ELTzTw2zPa8yM00DkUp2TmY0JZaUvJS/VwbzOIsXcgqxt8veou5B5HcUNaGzGyz2yYFG9hjxebmc0Y5Ghf6GVtOrwvUdsSXnC3IV0XE43XimY0jZck40oAFwU+ElMCzO/8lenw124gA+b40GxvmcW8fr4kPbOkWxd1PK49c2Pv9cpZJ82zRpcb/m5hGpv/3isSin2oQq9EYeFWAY5yxqPuRRi/28kw33CvtU2lPJcBCvrm0Y16G5IyqOSQ2MS7qj8qkyJRS5DsdJ8g2RLQnvri36DPEplKoqjpuc74SRyCJJpv51kHu+68ZCSsXhGXW52ZyKbP9lqRcsThO+KEpHHjkC2yVAWnPlCEe69y8Ugj2Hw4qJCCNRvAB3t8eA5IOxmGM
- zrE2Ey1H
- 2gSMQQIMuBf8A3hRyUigg3AlZ6Q==
+X-Stat-Signature: z1hxwuueadg979x5gqz9dj9fsenykppb
+X-Rspamd-Queue-Id: 4512B1A000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774931101-975250
+X-HE-Meta: U2FsdGVkX19nayXKmJOcnbMSwST0ctrL5VT/rU5mslvVANyA5WOm6YbBkJDzbmS4EhIOAD6WzXTHdOhPEapzKS//7ynounUp3g/caIeKVpbWhRMMYkPu66aqlejjZBPCbqyDE2Bu4Ka8RfS1KTWFBr158IBW9grdxkIvGPopdUjQgWmOqGUUo3Cy/ybnjWoQWK96ONeXn9w0rLseX+o36kge+UXA8R4Mno4Bs0KqluxJMj+5VEjEys9HuI9s3LrT48UUSPzhX7f2U3/MLe3zkffcWP/u1eOX3DrcyxrxtgM0CXlV2WqEYFdUVAX+ctfrxfw6+TxobrPoaKKugQ4dqmBkO4WGzd2UNxIBA58LM/Hevq8MgXMKCaww01j+Ki75J9vJWXY5dr6Zwz8j8Nzd1IsnoMBFLrRfgcQMbYW8EoereGyLoMTfiH09alxcYJxbNxWA8QXsNkMGSdHZklQsXci62zutExaeH/IjaMUb9K2pTsdS4LQeqtDkg++qpB0DldfTpDWNVy40lMnuKmF8EDbPBdTEjdRHnyeapqWsx2hyjVOjCEaeX3Yl2QwKM9amXSTu/sXXuvO+ftqWeopQdG00r2jj4U8kURIDBxofg5uQJ/mayFuxnmSik/8CJ0nN2g8dFmX3GIrSHCmLZ5mYvVf+vI2xwLEPGWNX4X86x3XF6I45bxVeHWjgYKdTYeMYSlzONPs+AfcczPDmngoRfa5UahtHnoBMgvSAyiigi560cX3FvDMe5sODXrDrf5xw7D3wVzUSry5vyNaxLAM9S2/EfM4bcqaSMl3rp1DHf8Xo7heYeluurllq469nvsOVv09+RCIf79gXtwpYrUjos/urndboh4+3/3nuwdHX3m4rLvgdqxQMOIeJTThPLRsYjA9aHc++B/zQ4AuYTBe5/e+PDnfRIBaXl9enqkQZpWUfrjP5ipnjH3VJ/6mMgBgZLTt48MEwIEPlBpQFhkf
+ HKwx44ci
+ y2xyM0EF+gmltMPLTXlr9scfmmg8Fx1MJ5jw1S92aihGPHT8gt+f3o3zzBOOF911pcegEAiC93ni0pi3NLOMmrEPL3febPn+Mmzjq/GRbmc6ozZ8czClVqIr8hZ2ezyuiGEBbkZXJFis+NlomR0Zkc4RD/ukkKCY8IQehCgG/D5KY+GNmNIvcuM78S8qplOZcCbUI92onLI3LCnpQZdbnKKsURVl8ljLY5nzqvfyAAJsU4RyrP4h9SNYg3gzQKsIL7c3fUAJ4EVTU0gas6uVUooDYrXcg/46hCKWku/Ro4zlcvzwffs4ugwplmkRghdl/vRnPz/DK522wZnDG/gjU2UmjiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,54 +91,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 10:10:31 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
-
-> When a file hugetlb folio triggers UCE, me_huge_page() will keep the
-> hugetlb folio in pagcahe with refcount increased and PG_hwpoison set. Even
-> after the hugetlb file is deleted, the hugetlb folio is still leaked.
+On Mon, Mar 30, 2026 at 02:46:40PM -0700, Andrew Morton wrote:
+> On Mon, 30 Mar 2026 17:34:21 +0800 Hao Li <hao.li@linux.dev> wrote:
 > 
-> If we want to offline the memory block that the hwpoisoned hugetlb folio
-> belongs to, it fails in dissolve_free_hugetlb_folios() due to the
-> hwpoisoned hugetlb folio isn't free.
+> > > > Current users that benefit include list_lru, zswap, nfsd filecache,
+> > > > hugetlb_cgroup, and has_normal_memory sysfs reporting.
+> > > > 
+> > > > Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+> > > 
+> > > The Fixes: tag indeed looks correct to me.
+> > > 
+> > > By the way, MM needs an explicit Cc: stable@vger.kernel.org for backporting.
+> > > 
+> > > Since this commit was introduced in v6.17 and we have v6.18 as LTS,
+> > > this should to be backported to v6.18.
+> > 
+> > I had gone back and forth on whether to add the Cc tag, but I'm happy to
+> > include it now!
 > 
-> I can reproduce this issue with the following steps in qemu:
->  1) echo offline >/sys/devices/system/memory/auto_online_blocks
->  2) in qemu monitor:
->        object_add memory-backend-ram,id=mem10,size=1G
->        device_add pc-dimm,id=dimm1,memdev=mem10,node=2
->  3) echo online_movable > /sys/devices/system/node/node2/memory136/state
->  4) echo 5 > /sys/devices/system/node/node2/hugepages/hugepages-2048kB/nr_hugepages
->  5) run ./hugetlb_file. This process will receive SIGBUS.
->  6) remove the hugetlbfs file.
->  7) echo offline > /sys/devices/system/node/node2/memory136/state
+> That's OK, I'm very cc:stable-vigilant. Thanks,  I'll get this upstreamed during
+> this -rc cycle.
+
+Thanks!
+
 > 
-> hugetlb_file.c:
->   fd = open("/dev/hugepages/my_hugepage_file", O_CREAT | O_RDWR, 0755);
->   fallocate(fd, 0, 0, HUGEPAGE_SIZE * 2);
->   addr = mmap(NULL, HUGEPAGE_SIZE * 2, PROT_READ | PROT_WRITE,
-> 		MAP_SHARED | MAP_HUGETLB, fd, 0);
->   memset(addr, 0xaa, HUGEPAGE_SIZE * 2);
->   madvise(addr, HUGEPAGE_SIZE, MADV_HWPOISON);
+> I do like our cc:stable patches to include a clear description of the
+> userspace-visible impacts of the bug.  Two reasons:
 > 
-> To fix it, force to put ref of hwpoisoned hugetlb in memory offline, the
-> hwpoisoned hugetlb will be freed and succeeds to be dissolved. We couldn't
-> avoid races here, just like commit b023f46813cd ("memory-hotplug: skip
-> HWPoisoned page when offlining pages"), which force to skip hwpoisoned
-> page regardless of refcount.
+> - To explain to -stable maintainers why we're requesting the
+>   backport.  If they care.  Heck, and to explain to me why I'm doing
+>   this!
+> 
+> - To help out someone who is using an older kernel (there are many)
+>   who is dealing with a bug report.  They're looking at this changelog
+>   thinking "hm, I wonder if this patch will fix that bug".  Let's add a
+>   few words in there to help out with their pattern matching.
 
-Well, David sounds skeptical, although discussion petered out a week
-ago.  We haven't heard from Miahoe or Muchun and the AI review might be
-seeing some issues
-(https://sashiko.dev/#/patchset/20260321021031.2240780-1-tujinjiang@huawei.com).
+Agreed, and thanks for spelling out the rationale!
 
-So I'll drop this one.
+> 
+> So, and not for the first time ;), what are the userspace-visible
+> runtime effects of this bug?
+> 
 
-Please feel free to resend after -rc1 if you feel this is a desirable
-change.  When doing so, please review the concerns which have been
-raised thus far and attempt to address those within the updated
-changelog.
+The most visible effect is that
+/sys/devices/system/node/has_normal_memory does not report a node even
+after that node has gained normal memory via hotplug.
 
-Thanks.
+Also, list_lru-based shrinkers can undercount objects on such a node and
+may skip reclaim on that node entirely, which can lead to a higher memory
+footprint than expected.
 
+Feel free to fold the above into the changelog if useful :)
 
+-- 
+Thanks,
+Hao
 
