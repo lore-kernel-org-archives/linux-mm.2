@@ -4,156 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A780010F9302
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6EB10F9303
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFC466B0092; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
+	id EDD2A6B0092; Tue, 31 Mar 2026 16:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD4726B0095; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
+	id E8D5E6B0095; Tue, 31 Mar 2026 16:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE9D96B0096; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
+	id D7C746B0096; Tue, 31 Mar 2026 16:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD8296B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5962F8B7E4
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:50:54 +0000 (UTC)
-X-FDA: 84607552428.13.138E595
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6525F40009
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:50:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0ekHcU8;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774990252;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1B966B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:58:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 756808B4A3
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:58:52 +0000 (UTC)
+X-FDA: 84607572504.06.62DB367
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7499F80010
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:58:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cffk4lX7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774990730; a=rsa-sha256;
+	cv=pass;
+	b=TAZVVF+optLF+Cy2MnCpVlu9jP5zIBpMLFLg1anW0bzbvp8kIga4XQR+DO+OAiN1qR7GZx
+	wH7ZhDt+tbzq4MDm7X1GQmFOzSuZqLl5TJFrd1sEGkBg1mu4Mr8+xJo9ZCIKla6kT8vMbY
+	kb2eAj5wDWVD7UaRbTAFnb+JOziaO3E=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cffk4lX7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774990730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ho/lxcLP1M5/u0UNdE+ZMlKo93vNUCFOIO+Ln7ZTxZU=;
-	b=m7AmKQR74z8N+a83LXigLZDZx2A1KBiOMYwoTBCLK6ElHCfOB86zTBQ9NKhlYut7PzDNCF
-	WeL8bWZvuh6O1p0a/SoeXSIZiypVTYK2NWOVq8/PIejmkPGUGO9+TSwAMp7btUvygeRESt
-	Ed+olpnJiUF9O68s+9IwEgWN4Ci0N2g=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0ekHcU8;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774990252; a=rsa-sha256;
-	cv=none;
-	b=rKlVMQX++UrrpDzB6qQT9iVo57bwIN3JkLsl0rAylgQhcHAYyAgub8F+aXWUy6rzvEovbX
-	e+gCZH92EqopyUYCOWflwmet8IG0VQcKekU3pTgSulfs3Woc92czY8ArnlqtLqTpI6jhR5
-	xDTY9m850jKOyb9lKgAbUGIrQCvfV+I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E29E043E75;
-	Tue, 31 Mar 2026 20:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120B0C19423;
-	Tue, 31 Mar 2026 20:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774990250;
-	bh=VK5A4yy0VGMGiyXdNogpkOycz3ulih/Q35ZzZi3/ebQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L0ekHcU8aNxw4cMIJhgWfXXXKP5fXHi3LkO2rqW6zLNI1wPu7ssDqAQmTPZz580wD
-	 nwl6fHS2MgUzWVlrLtfcWMKq2s/RGhvBBceLAwg30j6zxYztucryxJC+X9diEyRi9z
-	 GtxdAg+bnItIiYefGAHCHK+6PjEYfhGFVwTeVGbGwjK8R50ZStqSIqwCDr748/goSN
-	 hzZq1G9UCmZu82yR/jX9kOb/TqZC1ZYVpvr7naTxHK+jaNiqZv6UINRR7LTKblzygU
-	 pVPzl5c7sW4GqgitT4Dr0PMTWnAyW5wxlbyy+mFx6HMEQlKO9b1wOXSSzQ9QZMWSNc
-	 9wcO0z/+FPeDw==
-Message-ID: <37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
-Date: Tue, 31 Mar 2026 22:50:32 +0200
+	bh=uLY9rDGUzAEWyF/YQZN9r1lSRA7JufMKV4ZLHNJ/vEo=;
+	b=Y68Lt2aS1OFXF3wsaYv56dg3RuKNgd9d1HsC4nwI1WHZJnE0T/PkIjjHPMV0zQiOcHiMbs
+	XLpKHsiP6vAkbIX+TFc0w1ovaGjm7VSm8bTkXCiFUDHRp75TidGJ6QO2HxBd4w6tYSOU7U
+	O9TbYfTVvAW7+5x7N5lRAOdCHMiV9q0=
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2bdd40d3c61so4976796eec.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 13:58:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774990729; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HuyiVcfG733nGDR0ePYmsZFW+Xe4f3gnIrrlrvUpwG+Z4L/JWJu2X0RbWI2siPw5Y8
+         Kg3uhUJ46zntTTgOxZHO2SyW0DjyKfRCxgzeOw3Z72EZIMBMHYwYPnxfGmkLOEeKYPkq
+         vEhzu1UVrETxK0ffUqdgG1Bc2VIgl79lYqjWVNoVevGQmj7b1H4rxfg/ELu9ii6wSHIi
+         U2HvWwfDLEKDdrcY+IdbymNRjvXtgLh02djz7ZciQy0KnHjWVfv52MXteWR1WiRs18yc
+         7QheVvGqtfwAFfZkjwLhM2obsxC6dwIgpKN4sYC30QI6ODXPKDOLykHDxJdLGG8dWlaB
+         0VzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uLY9rDGUzAEWyF/YQZN9r1lSRA7JufMKV4ZLHNJ/vEo=;
+        fh=H1+OES0CsB1fvHUn71h6l+CkFnZmgmCrFlWtBtGoo18=;
+        b=FdseEgbj347CPa4dqrFUEpFmnzs/02cIs9B/8C6dZEbLS5XWnkXJkllqlP84GSBHX4
+         PAui9AWTweuDfqdBtbfb2DEGAzxOWhp/q6rSms7eAur2riJzikDJa0GJ7wcIcIOUOv2D
+         3iSUqpugYhSrhW9aJFpGWFHzOPXkHlJNsigI91FZ609drgPp+bTlTX4h1nr0CHcnZRy7
+         R+TD7DAbQt98NmWHUeWhPtMfGcqu1j+DfuKyWSqPw8jYTh4tsofuIHeXqv2eeoESNy4R
+         uAK+Am0vUu6g/ueFK+7fl1x4iy06rGZBCpzT9bTyES395NSCa9vXOJ2b3f2vs9eWvAqE
+         ZwnQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774990729; x=1775595529; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uLY9rDGUzAEWyF/YQZN9r1lSRA7JufMKV4ZLHNJ/vEo=;
+        b=Cffk4lX7OnLVYE8YMyt2doOhwE59t+25lbNno7Moyhfzf4IOFvSxjpKrEazQRL1izG
+         7TtzkuPhTYE8Jsff07Zo/3z6GFFN9EcqIyVS6ZyOIbBYvww0esq2a+LEUEHHAwZxESmm
+         3wDGdvK5tl7duaTrddLcN1XvGbAtZdZ+xhfUa/0mUA1xzk6vqd2XZfRTHhrGaReDD52N
+         /7eBxbqWi+jfdsOoD7BOmajvP1iqE2URlOjXOgxKETKe9mcJCmFGwGVfQMkwa+Noo3c/
+         K2/yif2++1fal81PrRo6KDfz4SEziSCzzMgqJ9V0mZBgukY8UJHHFhLbnGoQl5oCNJ7Z
+         uOIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774990729; x=1775595529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uLY9rDGUzAEWyF/YQZN9r1lSRA7JufMKV4ZLHNJ/vEo=;
+        b=j8jl8hrH5d8WuroSqVbsrZVr1E56QI/BmPZWgwMmGq0KtXGTyEWrH28B+9piqcAKdj
+         2dVWctTngEnxGF2lo5IEjHGhW870KAqS+zOgYriKCT7h469fYAeCvw1PzMUAm/JhrVOO
+         ze/3v8cEvc9OfqxfUwGrt1dDmbgwon2f+KDsot/D41GjEc7tnGM23Wgc2D86iwqRombb
+         E+MHwilGTkWIqVyGS+NTs9wcXuyDdaVrSdDcG1QxInlna0v9gs+KC53gKjlCP7NutFFo
+         TIlOwGShhmDtmtN8IuVnvQrI50lw+4Igm++IybPLnQpZg5QmoHj8BrJ3iaeB7c1d6JBH
+         TpVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXppJM3c6R7UoYuTf0lDnk4ncQugJ1faEpzrKuHkQi95P0kuyeFZRwwDIj4zu5Wf9A7vXXdTW4tgA==@kvack.org
+X-Gm-Message-State: AOJu0Yz3VetLWKxOlVAN6hCZiUZ4njiLoDvSxhb36hzD2dlt5liTtD6t
+	ifpW4zjLrpOxgnl2uvS452RoaeC4zZ6hnV/xITMfWV16+DnHBd7Y5v+EFe+TXDsn5A3nbkB3znO
+	yNT1O8uYykGSGTdQqHKp7KQ6Gd2GmMIY=
+X-Gm-Gg: ATEYQzwHY96h/6Qo2wkoG2yDjV/qlIEFRrWIYdyRMkjmJQKQtPjmz4Aw3S4GxBwsXMj
+	SwInEmOhZeoG77pgiAuK6ji4/bACAXSTAVXe1Y5w/ZFcme/n3ar6OtxtFVkcwd6AzrYWdncdIGl
+	8PxRdSlg4byoWkdhbLWQXtw/l0M1GKfBHheeGYLwwlWbgP59IwsbgP5njdA/iJ17Y5bWDR6VOxb
+	IUD3Eac33b/oohMgLMYYNZ6uRKbENyoMrRufy8kEbk6/109/OMoot1CpzRUKQkxIfWDfPyBp7IJ
+	pmZw5ZwfZAd/RXGAs2U0YzrI4jXOFYNAlBeYTA==
+X-Received: by 2002:a05:7300:a90c:b0:2c1:27c:7598 with SMTP id
+ 5a478bee46e88-2c9330aff2emr450940eec.30.1774990728979; Tue, 31 Mar 2026
+ 13:58:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, aarcange@redhat.com, akpm@linux-foundation.org,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260325114022.444081-1-npache@redhat.com>
- <20260325114022.444081-6-npache@redhat.com>
- <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
- <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
- <fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
- <26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
- <440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6525F40009
-X-Stat-Signature: 84sqyp31be1jqsx18zd5kphpz86pc6di
+References: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com> <CAO9r8zNaEKDdOxe9yOC0yEgh_obRQTHTo3hJ8t39=UbJ74fVDg@mail.gmail.com>
+In-Reply-To: <CAO9r8zNaEKDdOxe9yOC0yEgh_obRQTHTo3hJ8t39=UbJ74fVDg@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Tue, 31 Mar 2026 13:58:37 -0700
+X-Gm-Features: AQROBzA9ZSoIDzkoZbPHpCipWylmpJkNBlGAZiNG_lJB22CqtR9m_YX0aEhKVXA
+Message-ID: <CACpmpofnKdfprZG=WHW-jOeeXGF47MYoCJDbkZJnemQU+x4wdw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] zswap pool per-CPU acomp_ctx simplifications
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7499F80010
+X-Stat-Signature: 5ttb146n6to8k97nso1d6bei5f4n8i1w
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774990252-469651
-X-HE-Meta: U2FsdGVkX196lvXZ30bIlAf0RSnZI/dwbSgxMyGQsoI3Gvk9h/kh5TcJamXXX87m0l80VjPanXkaEmg8KyfG9C/dCfqE0N9FzYMdohPYEv/Mg1LpcZwWctCQshTabuy7INKemx6anwe/QyanF6qE9Z4vEB39Jmdh5i0TNhlJKqBeBKwRUktetsnzxiyi9G20J3gb3LOctgGwThPVCjYq6QHnZVLWxwvuedaO3u9fMT6PIMynHiARmVU4hrgQDBgaJiFmTf4nAQf5AMwKeUfQ6wwurWt2VgLdF9CC5lhyuCsf2cg+jXdm3iu5fdEq5MDuQXhffSj9Uicaylr5etFVOmQQxyJUnR4xLQIz8jXkcgGqsiq1m6Tg8KlhJUWbZz+ipbtmXkIDnm/03+yHpNNZZIdo03lNQQ8p0yC+k5zLbuIj5Zg/uTX+qAlTG1GCci7f8QkRrchAiPNQU/1gS/J/iykFpBzEQ6E1EivQeFnEmQaFHYOZt8iPN4HwmOWIgWsBceWv6MOgjekj/G49DUlyC8t5RGUvcPIcCLFJjQF11KTk+XFT2KgYQGGdnzZ8js39m4lau4WRQpMXDUsQRP7uh3bHVbqtsNgcf572gi6s+Ou+36KopMd+8Ra1BifPByJJx6Ua5r4MJ82kjdBaABV9F7IXn11NgMB2LF4N4jljKAX1sZJmbTGlvbuFaneeDoUfSwS8h5s8wxzuEw/QmcuTD8vMxr/BOW7fiQIwTXQvl9fB6+XbYy/BC0ZWNtA6hSAOlRAJt4k9EWnXoyDxyH5gIFCPRhJ+Ldy0Rf6cYRWckSexUun4z9D8+E7wHRRhxVYNrwesMNnvepMjg5RxxPPCKKKjGr9dgb4wFzImga+4+zMW3qVuSGOFkOtIzO6JXARgFQSSPY5BKxWwA8fgwFBxUq848OwLX83rU/FdhZoQdfWeQo8fIZfsSdzjBQPGWTTRjxT6x7Ux2UcOnLBQV6Z
- 3zGkE3yj
- SkuZlTXCrrZz23sQ6SKW1KIBW7bsLFNwFTzJea6XU5AVlgVlKg9wzsSb6ANYSb5XfELZI4HNMjdJD0SEka2G5mNMsa+t/fOh2nY2phDCUcP05ZfnTw9c7tovNH8L9R5SsFxTySu5ByNKgL7Gy9aZFSuwgM/PBhKClwUvxJDn2bs7LVUeTjBoWNqtDZup1YoCUc2WS3KaEmOlHcMvtsvw++KkIyFSFWj0y6wfMl8VNNRrbNXUwPR8qNAib7Pg2QPcNOJqUGpNI01snYfPGRUAr+3ocZFKYP3MWGJD2+kLjs5L5qIXVOFlJcjoiNPC9U/tDpHUbl6PqiRbr14FiQ7Po7ohkltQVNmmQEbYAvPQrytBn8BC8LTiP3n5iXg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774990730-921381
+X-HE-Meta: U2FsdGVkX1+9c9WXEhWjRu8dzVA0r1P5X/tWp6EvUIqD8MrJ74AP7t4tquXWAseDqrpYipNZPMPGb9rMqU1ylNRwZdNVnopE7ShaIm7Z6+tuiXnL8Am9QAgHqJJdzX/LNSYmelQmouCpKA8YiNOPtKyxidjOgtVBCnzJ/xUuY8SJFu0YQsF6uexIn4N4MP14QTrVpe1PyzjHWkw1RAysymSmtN6KBw7AnQHPYpmLGwZGOZJnNtPtnglboGVqrHvueUK+SllrbQEK6UkIcRYQTmSaaE8Zxw8tyb0CZP20qGTx8sN5TZ8x1UHojFnZCbRcE+LOMQao6A7Emqnw9ZdhM9Dyvk3zdnkoAaUY/oXofVJEGt28y83agYDHqZLUABJ++khJmakHHYqAKGtWTH1QpDGsb3iQ3tn6hRjCms2cBGTd8XT4rDoB/x7ziHZzE6/gR5kvRZcL5dJKk6fPL33wup2DgKz8DVtwh2YlIHzz4cxVdGOiJKO5h0/kewc7pWMEGc8H8yp3KDAOC1ADR4vsMjag/XyaNrF8eDtP6GbMM096GQzSUg0QQ40DARjYN23evaHx/hEuDlo6jEGx01ffJw5sWNzbfMjASF2ZMazLcVuY3xl/KjfbiemA6zasZDGEP8jpBE6kXmcM7neM3bsMCYVkIagWY4ts7uAwukzBdWOUhvf80PTu8WlbNvUBumT1u+1WP8qQFZS0YIRvheeq9wCindzBwIL93TmapU3fWtfV+97rHiooVxod3PYPr0cs5GMLHss273Ldrny5p0cFMtnhjoHo9fV31GgpylR0CJiXmGjV0Z9aMWlGJJKiPPsYw4MdszFcwWqCBPliZsMKictuNqDGVyhekiZrJ464cVMikuyYdNLkKWJo4j7cQk8qgQdDCCPjQqgfzRIc7vAvsK+LSqSZIaoCJTru+ckbwXJoNEUnrSnAIoMvLMqGYn2g6074WYyWujKq0zHxzoH
+ as5vJ6QG
+ bnfbrPWsk5epFk1kvjza/nD6W41O176hn4LHlfB4Fm4lM3moLZwhVLctEm/hqD2G6J2d0bTdfunHHjrRL2XxkclQQ7s0qDSP3nlKd37ypx1QCtUi2+n6kt0H2G8ogbivBNBUtCSdxVLDznSmskX2Qi3judYQPJehPlzNxC0SwbI8HQTmnGoQRM6oamj7buGalHhRSeTvRTiFSdJ0dnmyIMg8GKCQxqGJ2QRdDPlgzeRRVDUZPLaEpwIHksuasBCrdP53P+ahp9sMQ6Xzzbvsc6v++/qjbr9qdNDrlYEC86MXFjr556vhxrxER0jzMFfxGrjuhcxoPWbztT7LyU4ES2L4sB/R/ETRuW/ihaGr1Jd5WdniZ/A3R+1PsD6rhva0lgQQFegD/0xpvkPUly9wph6zpMf/9AjczwTf7CFFqWq+uVUNhWtkFuIfFINHZG6soKIieoB5nU5svSUF/xJ43agLkYNbzrY4ZWl0ZKOKitsE/VP8fzMapqd0gsRxIs5YosCErGVCQbtfu+2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,61 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 22:06, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 31, 2026 at 10:00:58PM +0200, David Hildenbrand (Arm) wrote:
->> On 3/31/26 16:15, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> That updates mmap_unlocked which will be handled in the loop or on exit:
->>>
->>> 		if (mmap_unlocked) {
->>> 			...
->>> 			mmap_read_lock(mm);
->>> 			mmap_unlocked = false;
->>> 			*lock_dropped = true;
->>> 			...
->>> 		}
->>>
->>> 		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
->>>
->>> ...
->>>
->>> out_maybelock:
->>> 	/* Caller expects us to hold mmap_lock on return */
->>> 	if (mmap_unlocked) {
->>> 		*lock_dropped = true;
->>> 		mmap_read_lock(mm);
->>> 	}
->>>
->>
->> Right.
->>
->> The original code used
->>
->> 	bool mmap_locked = true;
->>
->> If the fix get squashed, maybe we should revert to that handling to
->> minimize the churn?
-> 
-> Well collapse_single_pmd() and all descendents would need to be updated to
-> invert the boolean, not sure it's worth it.
+On Tue, Mar 31, 2026 at 12:23=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> On Tue, Mar 31, 2026 at 11:34=E2=80=AFAM Kanchana P. Sridhar
+> <kanchanapsridhar2026@gmail.com> wrote:
+> >
+> > This patchset first removes redundant checks on the acomp_ctx and its
+> > "req" member in zswap_cpu_comp_dead().
+> >
+> > Next, it persists the zswap pool's per-CPU acomp_ctx resources to
+> > last until the pool is destroyed. It then simplifies the per-CPU
+> > acomp_ctx mutex locking in zswap_compress()/zswap_decompress().
+> >
+> > Code comments added after allocation and before checking to deallocate
+> > the per-CPU acomp_ctx's members, based on expected crypto API return
+> > values and zswap changes this patchset makes.
+> >
+> > Patch 2 is an independent submission of patch 23 from [1], to
+> > facilitate merging.
+> >
+> > [1]: https://patchwork.kernel.org/project/linux-mm/list/?series=3D10466=
+77
+> >
+> > Changes since v2:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > 1) Rebased to mm-unstable as of 3-31-2026 (commit 24e341657c28).
+> > 2) Collected Acks.
+> >
+> > Changes since v1:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > 1) Made the changes to eliminate redundant checks on
+> >    acomp_ctx/acomp_ctx->req in zswap_cpu_comp_dead(), per Yosry.
+> > 2) Renamed acomp_ctx_dealloc() to acomp_ctx_free(), per Yosry.
+> > 3) Incorporated suggestions from Yosry and Sashiko to reset the
+> >    acomp_ctx's members to NULL after freeing them, to prevent UAF and
+> >    double free issues.
+> > 4) Replaced v1's patch 2 with v2's patch 1.
+> >
+> >
+> > Kanchana P. Sridhar (2):
+> >   mm: zswap: Remove redundant checks in zswap_cpu_comp_dead().
+> >   mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+>
+> Sashiko was able to apply the patches and doesn't seem to find any
+> regressions: https://sashiko.dev/#/patchset/20260331183351.29844-1-kancha=
+napsridhar2026%40gmail.com.
 
-The code is confusing me.
-
-In the old code, collapse_single_pmd() was called with "mmap_locked ==
-true" and set "mmap_locked=false".
-
-Now we call it with "mmap_unlocked=false" and it sets "mmap_unlocked=true".
-
-So far so good.
-
-However, collapse_scan_pmd() consumed "mmap_locked", now it effectively
-consumes "mmap_unlocked".
-
-I think I have to squash your fix into Nicos patch to make sense of this. :)
-
-
--- 
-Cheers,
-
-David
+That's good to know, thanks for confirming Yosry!
 
