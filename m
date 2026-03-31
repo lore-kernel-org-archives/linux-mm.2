@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DFC6FF60C8
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 05:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61DC7FF60C2
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 05:15:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C756B008C; Tue, 31 Mar 2026 01:02:35 -0400 (EDT)
+	id 92A9D6B008C; Tue, 31 Mar 2026 01:15:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 964026B0095; Tue, 31 Mar 2026 01:02:35 -0400 (EDT)
+	id 9022A6B0095; Tue, 31 Mar 2026 01:15:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0E56B0096; Tue, 31 Mar 2026 01:02:35 -0400 (EDT)
+	id 83F396B0096; Tue, 31 Mar 2026 01:15:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7935D6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 01:02:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BB551A0B01
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:02:35 +0000 (UTC)
-X-FDA: 84605162670.13.33E08CB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E0946B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 01:15:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE4F414097A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:15:03 +0000 (UTC)
+X-FDA: 84605194086.17.2B4B628
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8EA918000E
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:02:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sw09ypaH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0901412000D
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:15:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ho556UJ4;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774934102; a=rsa-sha256;
+	cv=none;
+	b=bd2NhLUEXpn/82Zzty6tIFXVCMZFpEW0qTKpWH+PLBj2MyPMpZSnjoICANtCl+XHyIHoor
+	JV6fUpJl5SYTKsClUbFFpsGAfOPAdyezmZgMnW7IGnn9XpP0ZWxuQwXKi0KCNF4tSgtkEM
+	7aHLN0IedRiRrTaQ9A9CsXM0e2vEzo0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774933353;
+	s=arc-20220608; t=1774934102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eNLqZAK4jJFc0GrnUg/ym/amqe0AlLo48TqlEL5Vta0=;
-	b=MmVc0YTnlWGpH2EsO99MZfesuJN0mhY/bZXQ+7gkK6pyREXntKnMnGZ4CksK0DY+KxYE2i
-	a+rJvzRkmLNXdyctwQx8QEpH8jYRa9Z89xyRf+Nu8lt1vjzd8xdDx0FzlWw05h/MSBLdCQ
-	m6H3JCn8EVCPgOhdADT6bxbBD3/xK98=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774933353; a=rsa-sha256;
-	cv=none;
-	b=V3/QyxdWNlKqsPhmPShKQ1xxSUz4tIQoi/BzJVjOdtx0u4GPRYq2Lx7+pD92VH1TJe/V0w
-	G5uU1e2m0rTgPugTfXbtYzamZqRqrS4EYqiciXMwDgQDKIBWXKx5TJWANf0DKkfQovdQsU
-	6x5T3kD7QySaO5l/d4jcAnGm+bOfCcM=
+	bh=yPPQl0XwsBjm2lswGHXiGfs8Ssv8jDUCGkFDWefUheE=;
+	b=r8UyF6ljD5t3jeJa6juD/6eY5hZzk54tCFSc/67PryXT0FAgi8AxfJehPYZYtJ5y4rGaiV
+	64Hxtbt1UsXB9XvdrmypGASK8ggTG8d1q9PSTrrG5iXn8Osj72/Mkx6S/VvIlf0ralxHae
+	bDfmSymVFnMULTJgcDycFe6Ri1SYpmU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sw09ypaH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ho556UJ4;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90A4A60103;
-	Tue, 31 Mar 2026 05:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11309C19423;
-	Tue, 31 Mar 2026 05:02:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774933352;
-	bh=KMlHZ1xC3+1qBF97/gsnz/xHHgFxmdj8FYcgvWX2MYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sw09ypaHWUA8uM4PzgO+K/kuvQSK1dnFg+80G3CCrE5s7bN2Z76wdJlQtgHmuHCRS
-	 X9p/u2b51sG3KZbmBtlpuV/JL8rJHmxQN9F86ZtaPGOxNugjOAesRAhMCgdq5zAMUQ
-	 jO3QBdUBpY/48mUvSRMAoaHliVOwoNSwevRIGiinhm6nuCGonTXuaaolQ8hd9/2Ult
-	 Ab+tyCBs5hrrLwQH1wz1RpSlSzRW2946B3quPDRttOWESCtAmTLEYmuEIU2glu4iGe
-	 7ekvtKHHadgMz8pOfzPCAc8Oo/VGDScvx8DoPQSAQDgyoOAaXE+NZSd/gLC6LdMh6X
-	 lIKg8swQJL0lg==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
-Date: Mon, 30 Mar 2026 22:02:28 -0700
-Message-ID: <20260331050229.67637-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260330164347.12772-1-aethernet65535@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8EA918000E
-X-Stat-Signature: pdu4x45qe7w3uxz8ero1p9f3wokq1c4b
+	by tor.source.kernel.org (Postfix) with ESMTP id 48762600CB;
+	Tue, 31 Mar 2026 05:15:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D99C19423;
+	Tue, 31 Mar 2026 05:15:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774934101;
+	bh=m6vXHv+hxo99iG5dI3XPQgsu3KBW43Y/f16iDN2u+fU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ho556UJ4SsEPhuIGcdF7Uct6O2topnSDWm7A5jrm9fHUUZoLjR4jyti61bEgPG0Q1
+	 4OXEw4DFFOnbRmMUHfw4qrOBpiJa+mCGf1eZPan+LaF0Y015vaIUfTauGzYOkJa0Qy
+	 tK2NmGm5BwepW8Okt66rBmkMvBhSNiqBXkMwKYy0=
+Date: Mon, 30 Mar 2026 22:15:00 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, david@kernel.org,
+ osalvador@suse.de, vbabka@suse.cz, joshua.hahnjy@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v2] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
+ hotplug
+Message-Id: <20260330221500.01d5466b26c969f460225bea@linux-foundation.org>
+In-Reply-To: <ceqmspe2x2p5uv5bk3jyiw67qkyweaviclcjdp6kgwpg6v4kdq@f7yd6rr2lpkl>
+References: <20260330035941.518186-1-hao.li@linux.dev>
+	<aco0MtqpysMXMZdy@hyeyoo>
+	<23feu42lqvc7iymgaxmnywea7c3qie5vmjm4aijbgdiazwvrcb@mmlxjowgtotv>
+	<20260330144640.161ca53e94b37b3252de2e95@linux-foundation.org>
+	<ceqmspe2x2p5uv5bk3jyiw67qkyweaviclcjdp6kgwpg6v4kdq@f7yd6rr2lpkl>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774933353-848844
-X-HE-Meta: U2FsdGVkX1+U5ZD9AZby9beXEUcGjeZ2f2+0v4DHR1qAgPyt+V37RR/636DpHGKHmJzYCL/15EsYM3VBn00Jv7xGTdfvMn5TT4UIT43BgM+3zkrL/wf5TFfZLBf393WjD5cQSCxuDEsOz58ixi2AW3w9KA8K+BYpg72olEMriZZ7x5gaPBBRQcW78iXnMf0ihLQlrhyPBpIvf9GNFU93doaRlf7qvrVYLGzjwVjjc6Zpi1i08NNMxyf3LPXbNhgnhfTS0l/iHnBQ+LgW0qwPtUjUQVLp6iE3WYMfkJ2tgkEQ71JHpiT/g9lOLnewWt8TLq3GxgjNAtQkKnwX1Sn8aXo5HnWlUOfasGTfBMmX3sLHHU+yDTrnMJ3qvWViMj4nL9iyHdA4Yy8b7hIn3JbhrEYtV0uoY8vtFX5zVhkIX4Pl7pfhpEJHCUl2QJxdzrQfKFZ9JjH5TKzbz1t7zX64xXndJhUpQhdEbdrKnbmZ2DGNsPhHtZKr+wpRf2YfgNNF/OArJY9amdghte43JvQpJSS7aY1F1RgbMu+YSK2U3cxvuTWY0Uv2pxicvvfZ/3jzFbVrr1xuU9UlejaJ/woMBRdpmRqfyIi3kzwtebp+Tgiuymipr+YEzBF5zGjiwq6TwHt/KhWyNAQVfTSMElz6WjlGLtXNalHHRdwIJWlzvwfc+3hng1xf4cssM9TXY5CN7af5vsOm+gV/1kPYGBV4Rc7SYIX3gXyLDnbDZ3QopO1g7izJRxl6O93fgn3bGIEmPLqoMEZPkjF1to7qYqafh4ddW2E68KhqXb9Lw7RrRxz3nKwSN2pgZQgYJDb21+2kRbePU1RRN68MYtHTWJh6BTSoy5RhORvTRguXC5QnQeMPpc5/Iac+wHrSmvOndJbC584vusdNs+waR8Wmn3PoJ/w2uhS9yqg1jB6Fu+ExrzJazVrqWl9hLa0dHGFberlzfBP1qiIhRIPiFOaBhO0
- BlnwYTTV
- iLqwEO1WX/5fxati6BivRmeAIkHgweHExkoMOhEReT/fbebi9E6yfhyemGSu2jnYXcFiHiRU82hAsPw2hJiFI0vqjDYIrx89ypbPWuEElii6B4DPDkuE1+vhawqAV4bU+JU4m42ZhZ2NujvGmFn2Ze+fv+9KWMm+QdYkFnJin76zWLozYfK9iGGXlYveO+X41CP5dWljc7tRr1owaGa0OT7cq/oFZcZesQZz+e9oOsCvi1M4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0901412000D
+X-Stat-Signature: nxqar7pd4fghxz5jt6d3g4ek91fj495o
+X-HE-Tag: 1774934101-602582
+X-HE-Meta: U2FsdGVkX18rD6n1mvtijaAaDaNByBb5xhlk0DBiVmy0FrqMpehUpTlYwDNY8Z1jTy8SiNEwo1ZriI3Y8YF3piPj3xMDO1mJ7Y9vDMspSWYXOP5UsTFBH5iR7PUn0ej9isEsv+E1JpX5T+poP+lIfvC1KpjC0Geilkj2n79DT9pBCF21akoKLGlnL+0mdnpa9etHTpmd4uSGPJrLgB5oz7ZNJop0VCy1a1YpzIlBIbLyt1UUK3d0grztkAywocxQaZ3EEWGDeFUx0NFUff9uGYVmT11mU0aVlgd9AABq54HBu6Ir1b3l2lW1NJZVvYRlWqPKj+Aox4tgn11+DyHvVqBP9XkfiqZEeGJzKk4gf5cbCJhnW/967OD1lZZqSYO8dMMwVxObXr91lyodBnsP96XeaezGTjU3EMv8b5uPe6d8AgFXCEdGmHDxCYdVCq+VsTAoBoze9shFk0ykms1dmfSbtQAEGfyG0jQ2whggxMl3dp30wR9HHQy9wTv0xFew1cVwa2nXtTuR704GHJICIoaXcnRiwRwneuO1ZERVjTAtoNAYYmcllaM5Bi8Mo0FqkIwfvasjBOAtWfhCgBvRXNRyi63v7PNh56IwyodVLWpcbHJhs/2AQBKcPCePn7noTyWmH2/M+oA4BBTAwZ+/1iIAeXOAXSvG2EVC//plllJ/e2ETxrqTBaKXIisCeZdFPJGokpyapfkAj7O9cr0tHqy3vHYkX1eLUYrAPD303IsxN/QFMT1+orE6Ma0suCLzRb3v5vglmsw2u08g+Nj+I4gIwLwfOTY/c9/ERPUZLp2/TJ1eajWHjuiMulXwsw/BWjxM6NdTciGoPbLDxo2M3m/XkdnkcsHnvjngucMBO25KQ/Kr8U4sE0zsuXd1ZSTwwbNvbflg9nO+Yj8qQSNBZk1wRPU737mnz66tEw0uhSzQVR68W7vq7L7GHq5cWENSb7/de6NGWJzZLC4xWRV
+ ZDkCsXV8
+ HjfU0eYrtggi9UJDOu7IUX3locdeb+Td3zXPfuwLILwUyumItJnIWR0jY7EjhxhFX6c6sNP0QkMhvv1xnZjRQUB6M5VBoZDvjES0wabWbG5IDIW1wsh54z18Ltr30II2zIyVSL/LinLXZsHghqin0B8mZSrX7wxd7/41sg8TIiW5XYSOVx9ggRiwnl6xF8GIUATY9FLJeucviQUq6VVTdFLuH3EPbgmKdufmoDTSINy2YGJvC1SgPxVjUsvtDZWQS+eC1eBW3mCod1vvOb8MlGa8Ipq+FuPgRgWkOhs4/7+tDRg2+oFrxOcqT0An+ihz5a00pAMhk81eFUrC/FKeXeak73l4raAYHU0W8XRRqKVLMgVQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,50 +95,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 00:43:47 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Tue, 31 Mar 2026 12:24:46 +0800 Hao Li <hao.li@linux.dev> wrote:
 
-> Problem
-> =======
-> kdamond does not actively modify the module's
-> (DAMON_LRU_SORT/DAMON_RECLAIM) 'enabled' and 'kdamond_pid' after
-> exiting. After an unexpected termination, user will still see 'enabled'
-> as 'Y' and 'kdamond_pid' as a value other than -1. Furthermore, user
-> cannot restart the unexpectedly terminated kdamond by executing 'echo
-> Y/N > enabled' again.
-
-Nice catch!
-
-I guess this can easily reproducible?  Sharing detailed reproduction steps
-would be nice.
-
+> The most visible effect is that
+> /sys/devices/system/node/has_normal_memory does not report a node even
+> after that node has gained normal memory via hotplug.
 > 
-> Solution
-> ========
-> Introduce a 'thread_status' structure to link the internal kdamond
-> state with module parameters ('enabled' and 'kdamond_pid').
+> Also, list_lru-based shrinkers can undercount objects on such a node and
+> may skip reclaim on that node entirely, which can lead to a higher memory
+> footprint than expected.
 > 
-> Specifically:
-> 1. Extend 'struct damon_ctx' to include pointers to the module's
->    parameters.
-> 2. Initialize these pointers in damon_lru_sort_apply_parameters()
->    and damon_reclaim_apply_parameters() to point the respective
->    module variables.
-> 3. Implement damon_update_thread_status() to reset 'enabled' to
->    false and 'kdamond_pid' to -1 when the kdamond thread finishes.
+> Feel free to fold the above into the changelog if useful :)
 
-This feels too much extension of core API for a problem that can more simply be
-fixed.  Can't we detect the unexpected termination of kdamond from the modules
-and update the paramter values accordingly?
-
-If we cannot due to a limitation of the DAMON core API, I'd like to extend the
-API for letting the caller detects the unexpected termination.
-
-Because this is an RFC and I already have question for the high level
-direction, I will skip code level review.
-
-
-Thanks,
-SJ
-
-[...]
+Very useful.  Added, thanks!
 
