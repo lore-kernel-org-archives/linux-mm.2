@@ -4,137 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5686F10F9307
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 22:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C423110F9307
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 22:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9296B0092; Tue, 31 Mar 2026 18:39:09 -0400 (EDT)
+	id 27C056B0095; Tue, 31 Mar 2026 18:40:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D0E96B0095; Tue, 31 Mar 2026 18:39:09 -0400 (EDT)
+	id 253E36B0096; Tue, 31 Mar 2026 18:40:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E6D36B0096; Tue, 31 Mar 2026 18:39:09 -0400 (EDT)
+	id 191286B0098; Tue, 31 Mar 2026 18:40:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F3E36B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:39:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9C21B8977
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:39:08 +0000 (UTC)
-X-FDA: 84607825176.21.FDCACD4
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E82D420008
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:39:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HPLHAuHM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774996747; a=rsa-sha256;
-	cv=pass;
-	b=XIDEqEZdXTvasicTRrSJ/wCJC/EVbFoZj8j3fkZ8XwaHWBhJBvlcOy2UfF/P9lCbmG/0iJ
-	ssPjuhKuUDD0WMyl5XPEI+HbidTer7TU3MIZm17QUTcyPyNYmLSF37he6hR6zDuT7Ii0tX
-	I2wLz9yzsWMKZ+xQcgaiFOteAdzzuKE=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HPLHAuHM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774996747;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 081936B0095
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:40:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2DC01B7E60
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:40:09 +0000 (UTC)
+X-FDA: 84607827738.29.A4059A4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DEDA440006
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:40:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E2lmhWqJ;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774996808; a=rsa-sha256;
+	cv=none;
+	b=cPBg1/5CCHsmGIKOB2d8kGtnC8pb4jf9y4Yy1m+RCz62BfRr7k4BoNXrObd+RLPU8NQqBe
+	T+odhbYit3iQTrk3WXJopi4hJyS3Q/S8WNtMPqfYccQMucDquLUXTlA4nksUm6GhXR8GKx
+	mdKNXlXZ5oNR4PvhD/Yn0hv1jmzPHOc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774996808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nOm+IZBI9Gyyl23ujT1K624bUaJ4CxbCURFBAGSrpjs=;
-	b=GbQUGRvy3jq2tfq2qlT5rsdwhXFfg+lNH3NASEJEv8DSB1W5g31yQ9qf65PwWoZ4JTWcgs
-	GSA1FCVaOlnYC7/bRgnqG2r0QOvbYzRDOlJn/CZjU7ALy5T8k0PhwyqzD7JIQ5MyXn8c6y
-	BsHEb4OAJ8VQI0nYck0D50awed3KjDQ=
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2c1632faeb9so11260925eec.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:39:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774996745; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BZEqDE0jL1JJMBLfNqL7DtXqXvaKmOL3GYYLhmfqNksD7StFyBZQ6oCN/vTAe9sxI8
-         kzdbGckNxxNEQkkjAmNovfDjGHQ4OEwvzKvfOq2r9+fPkc6nxDhlAG3yaolP9mhxzbSv
-         l7UnEgLImNIjssLId0gtxSypDCiA7fXY/Quc05hJ4Cm0w9IyAY2MK3W6RF6SFETx9QVx
-         4WGyfCZc7NpSTFhFll3Jqi4nJOIHrecleRvO6Go2F2lSank+f+Mn1Mqp/6ZtXN0fjb4r
-         Q9aLjeiamveNsfxkqVMbmCDKR9VWdicpXBiQuMM+Nzib6HMGifsHj3s8MECbv8YnIjzD
-         IdKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nOm+IZBI9Gyyl23ujT1K624bUaJ4CxbCURFBAGSrpjs=;
-        fh=ixaSOmd1jDXy5lxZwkHvotBQNP3FtIzJ/7JKZuBL+uw=;
-        b=Sxs3Ez7qyuWkRO2iPevhQ/JRxwMnklnYclYPOk2E9ykHiQF+QbmOnCdvV8SIv4YpQV
-         pBgX0x/Ruw3Br2r4fdBLO/MTb6gWpDpfKWZ7LcrblxC+omhC1drBuql+4QZs7id5+r8Z
-         mBZ1BXFjAYq0Y2FyQEt8KZKb58DZd2vtSNpkPFlmjpbZ/vjyXRHW0YE24KlloBffXQye
-         KNpLdQby9bMA0Z7XZzL9kOJVvr3tVETVVHIfEDtZustMUvkLTd5wi9r2zM5zY7vM64Hv
-         +kBTuj9dRvt2mUkSEbS+X2zC44xlHRe5t4pSMs5e+8JbmmPRnrt0bRlro7IoGd1Y0F8/
-         VKzQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774996745; x=1775601545; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nOm+IZBI9Gyyl23ujT1K624bUaJ4CxbCURFBAGSrpjs=;
-        b=HPLHAuHMWs9wnfGFQMuKBdezT9chwKz5EBDLB96AmajDu3T44R6m6TrLgi6/0GeNdB
-         pHSzcA9xYWA9U6j6FduIXP8x+hcfyM+ZmOmkdLvV+kToUEYfTi7mslOwhZBnGGVkxI2h
-         ud4wEngJ/5WdV4Px9K5LIY3Q/XxarucTlJxhYhJaWEbZxtxL7uvqxpPUrw8AD4lSTGfs
-         CJ98aIyJcLWqej8O0jrG9USAwWpINtdrUm4l6pzdVtMLu9j/XHW1+ebp1YF1NoUwEB3i
-         GXdfriC7TQOQQlB/ST8bYs+RWQiXCvLqN/kaTDpWigeDwFzF287G5X+aSWve6xUowJ3X
-         oNWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774996745; x=1775601545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nOm+IZBI9Gyyl23ujT1K624bUaJ4CxbCURFBAGSrpjs=;
-        b=he5r3BSsMQUCS5Cu3VTJ59sZrxohofaCq5stJWrUgZ8ELj0TqyfihCGZ7sjxEyGiT6
-         aM/94tznOOV3hofxdmUKDHbLVJHAgPLOahpSPWA1IMwo+q17sQeuHQPJ+5fvNvlP8IjW
-         5TwUsx6QKDNHgYQhptE1gXO6ftuNJZ0F2Dms1BAQODTKW7Q3HduMtkG0OlwFCLIcWP+D
-         A32X/y7mD2zzA39SjJFjSEESiMlLHT0GpdxwwlqleOBHGBPVK0xqzV+Mm7EIoFb/BTmn
-         yTy9cpzXcZvmAPMP4sv2GrpJ2cOEh0QGyZ2Fn77vz/6hgTdae3bnDbJm7Ib1yR/UU0A5
-         IqbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDIl44wwO/YX6FqjRh14WpKdKKK37ahc73rxh0F5VimM9DfrE2xmiYO+y+rcaIOPwnoTnvuNG/7Q==@kvack.org
-X-Gm-Message-State: AOJu0YwIOjyC9jeaH7zXjQdainTthg78LOs5d35Syd74hlLHF/LcX6V4
-	dqeHqjGj+EMNtb8ush0tDwaGn99kur9KhNcBxNVNDPyf5MDBQXmCvK5XdHrS3M8PQvL2B5mIZHI
-	ruTh/7XB+aU4XpUyaWjwQPJxBkHQI+PQ=
-X-Gm-Gg: ATEYQzx9Sm2Gcp2T9KsraS6JYz5U9Fo+LNWf/ps0s4pNZdiwRfUFB0+0WhdbFFgEfgV
-	4CIegOPiFZcniHm1mQYYL8HKB3HTaU9qZ1aNJrzXw2JmZX3xWHwIrtMgdbd/cs+K9CYBg+xcQaP
-	OpbxaNBIPjJ6ifyOMOY62Q3nHHDmNqQxrQVnEs+5efdPzRqOJFUC0QmIrVilpYGUpXHKoVEKchl
-	DjF/c85rCHRgHmvjt/Nj5fC2e7WvGDhkkifSBLXqL97uD8KqJWXP5kcsoz6tfms4jCjmr7WPeVa
-	JKxu0w==
-X-Received: by 2002:a05:7300:2213:b0:2c7:2cac:815b with SMTP id
- 5a478bee46e88-2c930986704mr765776eec.6.1774996745436; Tue, 31 Mar 2026
- 15:39:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
- <CAO9r8zNaEKDdOxe9yOC0yEgh_obRQTHTo3hJ8t39=UbJ74fVDg@mail.gmail.com>
- <CACpmpofnKdfprZG=WHW-jOeeXGF47MYoCJDbkZJnemQU+x4wdw@mail.gmail.com> <20260331151950.54771bdaf8ddfac766abe3c4@linux-foundation.org>
-In-Reply-To: <20260331151950.54771bdaf8ddfac766abe3c4@linux-foundation.org>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Tue, 31 Mar 2026 15:38:53 -0700
-X-Gm-Features: AQROBzDxQK8fSuofgiRkgxZt65JE7WjU6Fmsn-Ki4NGw-eOy2FLQD-WdowmVrIs
-Message-ID: <CACpmpofQ6hxf7OKCbC2LQXK2U-LjfekMx_KtLMAJQbVMs2=rtA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] zswap pool per-CPU acomp_ctx simplifications
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: cnfgfgu3znxsdyya6jshzpof71oqudmh
-X-Rspamd-Queue-Id: E82D420008
+	bh=IFD7WZgFJWD+7FI2n24DlTa/YBUWCJoLQWxKiC5cH+Q=;
+	b=kVh0OyykNsIW5PuuHAeuHPQc4d13wi5KbF1DK8hLF95MPKiD+R4Z0m74vOc92Wsns3W71y
+	anXqNMm123YiKhDOa8bWiOxP7ocvlMpqwfsbKFIlSQpOTwuAztPW/E2o8PyHPlm6qeCeDF
+	pqyETHP4RGpFz7q1Afls1w0idbOtKSM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E2lmhWqJ;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA27D4330F;
+	Tue, 31 Mar 2026 22:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA53C19423;
+	Tue, 31 Mar 2026 22:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774996806;
+	bh=rl4/17UJ02DrCORAEhhWxTz7VUCl9Xg85++OigKCpx0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=E2lmhWqJngQkNc0t2bSGmbkbQ9CydxkrIfPDRpvweyNCbhBotNOv0k3eKUBcWEuYz
+	 1EJCKHKdVMSa1Zc1Irfvpi5sOeF+xnv6TYAYOGgSPHveAttww4OWnJ4zmjNfUAzHgg
+	 J1OWpqsoljMNSc1t9GEHp4YIxsDWTajqizST3nws=
+Date: Tue, 31 Mar 2026 15:40:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, LKML
+ <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, lirongqing
+ <lirongqing@baidu.com>
+Subject: Re: [PATCH v3] mm/vmalloc: Use dedicated unbound workqueues for
+ vmap drain
+Message-Id: <20260331154005.4471389e14061f467ab1e433@linux-foundation.org>
+In-Reply-To: <20260331202352.879718-1-urezki@gmail.com>
+References: <20260331202352.879718-1-urezki@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774996746-296402
-X-HE-Meta: U2FsdGVkX18Azw4/KntgpeVdTZfGoM95vKfOysBzxemOWhpM5uff92ytHXoV9Xj/yJ+APItk1F2i6XQYjf7qlEFJUpqxHLNywj3KckDrlHZEW4iRER0hFgoO0Tyze3C6n3wSXDwLYYXQsU6f3ocVxLTsYqXCsHRJdOr9wmNo8wo+gnEHq63OlfhyP4xvaye1raKwxMyl8s20eJVWK97yP/woOKCWr0/oZIF84S0WXNlXKXPmOk7/X9v1e81b0Vb2kDKcoFKVtyDpOAPo97cee7mRxU5n94j7fo6wGH0DroQTTnNdEud7AySeKl2HiNvZ9STww6wO8Ier80zcSy+kJdA6wmxboX/k14HzQoHJIz567An9SgGpkikmvF+affJZVWwaWzzCSLE0t/hhEOP8p2xvCcFHf3LqCFtyZ6bT/MMmP/cHsx0jsf306ioNO6m761wQvkOrhpfYX32j6xA5M79tdDwBOcbMbi24PxBWkJdyWjTSaQRm4frHCsQCfW+dyj4hu5ne8D+MGYoGxFluyt5F2OTmsfTDVrRhinqYg9QSFcpn7yiS4e986v2ZUz5X3Qmt8YvwfgAN/rBI6zF36Y5gCHelO1hwVL2gUj+9U1tjP9Phh5Nvd/JFRYdzS6lefr7oXgEHehFQXSoxlQuMoUDRSKH872ExcrNFcplzlRMrzIln6dckNCU6HF3rcye5SmBMDQpNL2P4sl/7Tx+YAauLu9sayZAh7ziZiXIqHCzBJmNSsvsXrmAzjcqEV+osDgSvr1Ed7Y6zsNI83M30KTu/7H68GSSjNjVAa9I2xsUCZnODrl9XtXrpUMsLmy0FsIV3thb47+uJ05SpI/RMEGDh0g44cMouZPD1ypTCbHUxeJ2b6+Ig5DFgq+Tnq0S7yH/EvdQOqtp0VCIZoqWWcfPWKzmg6hl6KWfRBYMkD03c2QqyQFlQXwHDNgtpZL1h8LC1CVyXPfJiIDn6u8+
- 1zypfPTd
- P3841fo7EGAzf5dC0y/wevPoi/aMzeRtntC/j+DI2CkATpRJYIQ0kQ2XzDMqPX54M4EQ9Rb8WXpqTEkfcnCgMuvBAt6uq9ky7bMge46IIawki0ZJOMjQv5o4tNJhYaukBP2p32RKOjnocqUeNt9JEGI2IlcDyMANaUcqXWmF+cdp+R9qWS82moP7XMGBd/xyoxWOGdb6Ld9hzhe+N/xLdBa56Yq+rcfiSKnmyv7a1FQRwFG6Kss08SFHw37uSmS2I/tER5CeVA1QOtNbjlbRpyvuZIl8djAxFYhZ46ldlEa5lnDdhGaw+wW8WXK1HIwN4lqy+D1KPPBmReuI8+XbxOZ/W+0QjgHzv5VuYxscr13kmuy5bpdbrry4D3Xg2tsRzPGFmyyqMaIJDTF6TcOP22fZlk9J3CFXBicj7CZ+1kjna57D85bDLvVseCRnxSUKuxKhSlFtfxSelia1Xg2spRnYnbtdhwYOeJNkC+oQJLJBTvVQehFIUweXGy/edBJVZRMQmxXc2JX9/0BSgYmdAUiLUwT5Lb1440nMgo/Mo8jmlFV3Mg+bCc5nyOwa0MdMLuHHM5knPhoSBaU8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DEDA440006
+X-Stat-Signature: qfyft67s49bscybbi4itfbuzpcwsysah
+X-HE-Tag: 1774996807-821344
+X-HE-Meta: U2FsdGVkX18oZ5fr6UgGZRe0yLx62laYb7ejmiMZn0coVlSulep/mnzSe8/PJTjOE1Cjo6UIPDAGhihu8FzVkQZEZJHTDk6hZDGAPXRSRQiKg+Xu2Y6X2jQm0JFMpz7P+Gb8JWFBjUr0afwl+xqYW/LCKszvEzAIJ7GR8uWzbK4BBhfQgc4TdfBDswCdw1fuTY/Dp0dVrm4LvEKLBL4Lb4dGJpczz4WqDFHTAQXUpUWaJZW8Sc0pXm5fRKneT+PHQwaUUn4XjzpZvmY/qZIK00+5VZLtiaSkoni7lZ35/JgBm2G6xiivFJ1I0ME58E6qmW/CfPWa2WT7aqiU9NN/Nziu/R1SE6ucZgYD3sRSeLf/ufoLQYPPCi2Gw89R0U60KFeQB9gMwJ+vk3PRtVChuNghgt62+LO0Zmyi1r59/++b8lLH10lGDu+dNiXEaig4pXjUCP3kjjS2gzJ3yqdwuY8ZhDwIDjCNtDIIE9LlojmwGvwbTIVmxlvcwtcalfgyknhIBiv3S1DIEv/4iXfQtkMGGfZPvrfmVQOORG6AOR1aGW8ABy4x6addVRjclziYObGSCcA1Z2x/GMedQrulAUDQk8+lmaHjSfQ8Wsg5NwY3EAP0E+Vghg5bg9r/qUISyUGbGbYEzOP7Z+yEFcs8+1BIKKpZ3vcQhPtQ1DGMoHtVtWe52hzocG3fMwwtiFMTMYzHymf1TRruc/mklD52tNjjpfXJs95aZbBWgOo+uNcoIBFGYnshiZXnYEqj35++Xv1CtBW/8AHyUadTt46MbHMl28YaItbtmCZMmsn3eW/tus2I2S+85OfQN0SQ4ZvVcCvNgbBQQs2ltYNG2QweUP8RChRlDGZyjxCT6u2Fdv5oprpQe86DUUikI20SKYN5ChjNrdMIqgojskh1B2SzLn/D5qPCbaPnFt8SPECbGVoxHFkiI+lymb3PEJ5LTj5+LRfrL6VPuk0hZXDh0Q3
+ aYB52GQS
+ 9p38AbTZ/+HNbds8mY8Fgg6zhu3CUz/zDHPkCnuxJBfUVZev8yH7YcQb51ioPHyS4WPWCMjAmMUzEBHekyrQtjZ3hshAC5pLQM36l5xuXM+KWH71oefw17l36iXCMqSeelsAzNt9HEOAbhp8QZwdAgp9Ctvic4szRZzev8PGxrah0TSJnaucOvYApVsAaLoUhHYgDRMe74T2xsixHSv/BBCOH/FwXsVbdxyySQWx3tcgWvxA3AyRTKveA4WxkFxp2h5IE5Uwh/RyrIQk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,41 +91,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 3:19=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Tue, 31 Mar 2026 13:58:37 -0700 "Kanchana P. Sridhar" <kanchanapsridha=
-r2026@gmail.com> wrote:
->
-> > > > Kanchana P. Sridhar (2):
-> > > >   mm: zswap: Remove redundant checks in zswap_cpu_comp_dead().
-> > > >   mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-> > >
-> > > Sashiko was able to apply the patches and doesn't seem to find any
-> > > regressions: https://sashiko.dev/#/patchset/20260331183351.29844-1-ka=
-nchanapsridhar2026%40gmail.com.
-> >
-> > That's good to know, thanks for confirming Yosry!
->
-> Thanks, both.
->
-> I'm surprised that a patchset of this signficance got through AI review
-> without comment, actually.
+On Tue, 31 Mar 2026 22:23:52 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 
-Thanks Andrew! I must thank Yosry because he pointed out end cases
-that helped make the solution more fail-safe.
-I am also very impressed by Sashiko's thorough analysis.
+> drain_vmap_area_work() function can take >10ms to complete
+> when there are many accumulated vmap areas in a system with
+> high CPU count, causing workqueue watchdog warnings when run
+> via schedule_work():
+> 
+>   workqueue: drain_vmap_area_work hogged CPU for >10000us
+> 
+> Move the top-level drain work to a dedicated WQ_UNBOUND
+> workqueue so the scheduler can run this background work
+> on any available CPU, improving responsiveness. Use the
+> WQ_MEM_RECLAIM to ensure forward progress under memory
+> pressure.
+> 
+> Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+> workqueue. This allows drain_vmap_work to wait for helpers
+> completion without creating dependency on the same rescuer
+> thread and avoid a potential parent/child deadlock.
+> 
+> Simplify purge helper scheduling by removing cpumask-based
+> iteration to iterating directly over vmap nodes checking
+> work_queued state.
 
->
-> I've confirmed that the code changes in v3 are identical to those in
-> v2, which I removed a couple of days ago for Sashiko's benefit.  v2 was
-> added to mm.git March 16. So all good, I've re-added this series.
+Great, thanks.
 
-Sounds great, thanks again!
+> Fixes: 72210662c5a2 ("mm: vmalloc: offload free_vmap_area_lock lock")
 
-Best regards,
-Kanchana
+That was a couple of years ago so I see no need to rush this into
+mainline.  I added it to the next-merge-window pile - it'll trickle
+back into -stable kernels later on.
 
->
->
 
