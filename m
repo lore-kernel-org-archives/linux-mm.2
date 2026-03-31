@@ -4,119 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5682C10F92E9
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DD3A10F92EF
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 18:34:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCAE86B0096; Tue, 31 Mar 2026 14:34:10 -0400 (EDT)
+	id A33D96B0098; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7B426B0098; Tue, 31 Mar 2026 14:34:10 -0400 (EDT)
+	id A0B886B0099; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44896B0099; Tue, 31 Mar 2026 14:34:10 -0400 (EDT)
+	id 921166B009B; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FA06B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 548471B7A3A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:10 +0000 (UTC)
-X-FDA: 84607207860.17.0DFB5DB
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 74F61180010
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZcSaltk1;
-	spf=pass (imf24.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774982048;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E90A6B0098
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 14:34:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1789E585BA
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:40 +0000 (UTC)
+X-FDA: 84607209120.16.B7670AB
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E8F57A0019
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:34:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EGcdM+wY;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774982078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+VQr8VStIW3khugMggzICz/R/RgxNPfHVnCtjXQuBpc=;
-	b=03kPlnBJYXHVgje28FAz07zi8olTsWkQ2SX6dnImmgYK0H0/HVZc5UsC4Y54vuw5UJWIg1
-	AxQNrue/AIgB8OV14sbrFE0wHaj9RDA2jZb8h/o1GyrbKfc2cwGMdbxL9SyRDDSBQu6ASR
-	osmrhHUm+Y1P2fVfIpFoCijQKlKB3hU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774982048; a=rsa-sha256;
-	cv=none;
-	b=Yj6TkjPbt0SjfCdr2mUhIlyVtqNGwBMLEFPl6Edxs5mkQHJ1TbIFc0RP/wT+FIxvDNkyiu
-	4jJ5pxiG0tCzwGvhZdxCQdz/PTvDqgL9kpu6nVuTbfYeROUyACY1culHAyDj83Jw9cOGtY
-	nG4w4/ekfI51cqdmLE8psVC8JVcocvE=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZcSaltk1;
-	spf=pass (imf24.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-126ea4e9694so1014055c88.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:08 -0700 (PDT)
+	bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
+	b=OEOcuS8nvWF4+Qd/YRkOkRsiZqE2gaEN/NL20VnYg/NuwghIxxjaztCoFoDrfVCJWUqbOw
+	HHjJgTEOWeJurZeZnO8lQVQwNHmfZURSoBkpYSv4m1luIwkNi7WP1qhFvDc6OJLBc7qptE
+	32O5kCxwtrwBSvxU9VP2rpZAjvbiouA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774982078; a=rsa-sha256;
+	cv=pass;
+	b=N8cRrVSM8JglKpp8Eq+IZfsHEogH8dqA1ocFQ5BeL+0RYTcQva+tXXXjEHuWJd+9HXBVvZ
+	eiCezjDOh3/JeDAfljIUiXGbyaqQKl4PD1T/0deRSPDv6cqfeI180jHm1uheHTvsNlzpV8
+	0T4Cch/QHKXEvQ6eaWZVDWzFCNC7cak=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EGcdM+wY;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b979d16dd0cso1049462866b.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774982076; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ALleXFSBvmezmvDkRkm7AZll64ALf4D8PH6soJQpleBtPZsi+gIbFuhpln2CLdghTD
+         3yWbIvSKOgpPMbnTxSG0L957M5rZPUhubjHkqQRdZQT5GRsszla4MMu5fw6ztiZ250gT
+         XNt6QLdN65CAYJSurLxstE5R1nY5wHGMqeKRq/eKGnerBxs70hRHfV6z830Ccmt/oStO
+         rUHubg11uMt5IWKI46l8NcrjOgmxJIszTmXUb4RZOZ7jzU9jnkpOLn/SpqNNvmWVzbuP
+         Rq6znHJAYwcAYE6Z6VLI/ujdW1RxeCC+pLT08I9gpvGtq2A/WDir41VNnwoPOSsVVMAa
+         vzJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
+        fh=wgLMPrwGwyPuF7uFehKKCvbKRmkG4LqyPXmCtMOUunk=;
+        b=OTXcqNt+07pxQMp7D/Cs0ytX4dqShxyUDuBqfAxlxfgbxb58fhhND4fPWxqxJPnhhH
+         K1HVAuCGXLwI1ykIqa1/2EX+r1BBuOYakF4bEjbrI9wB7VvE8EPKQGeLkMmM2yhtwdRk
+         IYmcL7EOoJaTvkuasOyV3d5aDPqxe+nEuIV85/a957QFApmWm2+PIARpwnNbIK2lo1Y6
+         mUWIP76U37zwQ0kCPya6siALgnGWl67/gtLoYXauvDkI6gHQ2MY/hpF28fw0ZE0SWbr+
+         NvXOO28CCiU8ZFpJYjsWydcizH74D61RjcXk4zS0wyH7zSSZArUatOkgN7EiMrt+YP9y
+         xzHg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774982047; x=1775586847; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1774982076; x=1775586876; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+VQr8VStIW3khugMggzICz/R/RgxNPfHVnCtjXQuBpc=;
-        b=ZcSaltk1OOLz8z7yk/FkS5Idxca7EJDBPhQcp3nfT4T40Cv3NWAtPWuOGvSYIz5Bi4
-         FkQb2pth30cT0WL9Mc5CYjx1zFZB2+rMc5q+UuqYq4IEsetwgtxRhXl8yemiGxsCrOam
-         tVrtYd7VZO50GUqf9LwIJ2Ca18GFr2Ahb+o3AVsoofl/qp4FKp3aveSjDtzzXA28XjiM
-         XwSlUx5DjqNwKIEWgCIgecxlc8pFtF/KiGxsE4zl8PP+nVYosdDCYmuTxv7Iv51kECR/
-         57/fLFocdKP2l6Sm8ojY+iyE83igGTH6MzPJK6mweOhRSB6P6t7YQ9nhHj2oMBT3u823
-         EkoQ==
+        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
+        b=EGcdM+wY0JyZNEUP3ZjbwcmNE9YUFjCqh4x79X/wziD/4C0fXJUAdaXCUsCCQLrBru
+         1ok1AG3e6pOHsY6dZHG4lp4pTgc8QXkGEZ3xJfzbetAHo08JHtoOFw+PS8+C0hU8rpFv
+         DI7M3yrRtzxqbSgM1dpfMkf6YN4gcnWgyMa+2wm6siq7Q+sLmVkibMZxtxReo/07sxUd
+         Z3dnNPXF/YddstFBlZJwB5Aa106aDnlw6MAs3habFlG1rWr+IG/X7wHuHB+bpbq09XtL
+         P2UvXHZLozBeH/kd/dXhFoYHzz0pzuAPP5nd9uYi+bMZThxAAAuooPO/xDtNR0t5W6b4
+         jsyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774982047; x=1775586847;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774982076; x=1775586876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+VQr8VStIW3khugMggzICz/R/RgxNPfHVnCtjXQuBpc=;
-        b=lzCeUJU3F6AI+C8milyKwCDBJ8HzznQ3HOxtJEKTI9Qa3l8+JoSNMKu6xJiDm6toWg
-         vw8k5Y5lZ/X7JwVUirdgSxbUdCyAj93fDBVntZa8nnqf9eOa61e+zpRtzH2lL48xag8S
-         9KMPtAMcz9w3bsUJyVbadGUQLmfmcl7iDWXlwmeysQd3qkPGlOFWZnKDMRam7JnlHdMR
-         YbuRUU0REzB15jmzDTJmCAHS+t3Lsj0xLCsedit361e/Ik1jcldoqvGB+D7KQM5xm5b+
-         VyyEp2muUfsVsvm+qBdmQ6rYhvkvc9/rUa9lbg+qIPi3d5A5rsG38przHs4bJnZp+RxG
-         vaug==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ3bvvvidPv0SileocgXQ+KwQEX3VuApgyH1hZds+FPsfR9glGtHnDxaV4kEhA7I5oUp+7CADuSw==@kvack.org
-X-Gm-Message-State: AOJu0Yz1ZdZlG+8FOt8Laxksc2dzyC3eehRKZY0AX9n1WVtXU3+V8UKm
-	gYq0NbFXdjIq66Wwcw+BW9U5Aw2n7Gto9TDS39AEa6KBf4GgQFhU3Fir
-X-Gm-Gg: ATEYQzw4qR6D5jRH5wTm/pINb1PdbTExT4FlgG1yiiqaIbuNI8MRznswJDeRcgyehrQ
-	n9DEcazogHfUAssGZS9+sKICukux18eqevZHclF/x4UNJPih1yhZawn2xYCWfCVeABhSow7GMOt
-	hUwH0Ao6fxvL9SS7Q633T2T7s+zYD0sSVv7dvobSk05bQjACdqoKyWH4OshS8G5CCkoWmL2ZClo
-	pN2e3/6ux/C6ai1WDbYpZKJ0wnPPTCTJY0s0p7zIb9w450qNA5PqciazN60MEzR2RSh22EB6u6c
-	BA74u65BVcCOVbwVljXxAOg8TrfX8DeQ/FKbXZPxMybLVdpQ4Pz6LvBqRihCFuoRGBljGzLJqXq
-	k28P8TT4rHQncrSx+s52oTAflb/+JSYEmS5D9B1xaL0pGkNBn7aX3tzK8W4/t5BtVxrFvN5ZyDF
-	neTCpFIFROoXF/tP1Yf4sogkEJ/NAkY5Bx0vPIWQ==
-X-Received: by 2002:a05:7022:ea22:b0:11a:61ef:7949 with SMTP id a92af1059eb24-12be6473dccmr353198c88.9.1774982046977;
-        Tue, 31 Mar 2026 11:34:06 -0700 (PDT)
-Received: from penguin.lxd ([2601:647:6400:3ec0:216:3eff:fecd:e4ef])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ac4a0fa8dsm7961271c88.15.2026.03.31.11.34.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 11:34:06 -0700 (PDT)
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-To: hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	akpm@linux-foundation.org,
-	kanchanapsridhar2026@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: herbert@gondor.apana.org.au,
-	senozhatsky@chromium.org
-Subject: [PATCH v3 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-Date: Tue, 31 Mar 2026 11:33:51 -0700
-Message-Id: <20260331183351.29844-3-kanchanapsridhar2026@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
-References: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
+        bh=DY3wbcvnuH3o7Ixe/6Ynw4mfzgsEK5w185n5jaWWQGM=;
+        b=QhuZ1KROjjOp6rSPEyrTUntXB0yNDniOKft2g9Y3pI5vkQqe1vULOHijspbs8CCQsv
+         U6Kd5uPOb0rrV656bs8ox465L+1UZAiyKIKyvFMi0vf/BaycD89ouYXRGXjhu7PYJWxH
+         +NcBWEnkhvJXnEkniwdayNXYvWksJfS0QBiCzvNbA4A5lfsjcRAlEgPXKaHMxTiQvhIk
+         vEAw6as15ip+tLmKitFx1okj94vUGG0B8hAaeSODaZ+Dy47ry78/+hMbNbIQSlUcX/ui
+         JETf7JZT+HVreKxBTIGznZbMwNMlCBcEcodNH+hCEr68p49upep6ujyrS5NO9GFxXZPG
+         0U6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUPPE+0J42aRQqlBx9W+s2Z+7QEW10HttwGonlQ61k0ezEsJa7By+zV1GeZT6VY43o64/0aBnIdiQ==@kvack.org
+X-Gm-Message-State: AOJu0YynE7AKSaPqyI1n36CWCjvi0PYrY7JN0cBF8HCALS0reVDZaJcy
+	QHtngT0DEk+ICz1sOVe7PaHw8qgnX8Nl0wVKAE1LNCvOfzRRTl+IQyVC3fx5sYh4f3BHe5ylFVs
+	btlBTgW+IH1f7Mk85SL3A8fxAMg/dEsy63S5DZ29urA==
+X-Gm-Gg: ATEYQzxf75cIV4UdXXJdRXNgsl8R0rWUUqlNc31hHPdnRKMF9RwDITdltoMOxl9hVy8
+	77ZOsCycl1CL4lVp/Ff6FRGoXW93E5FgC3fX4n+VpvysfCI5c4hbrhxpnXJ2V8i0ryNQbeGdZ6+
+	DTXcTeZ4SAaAzHpX9FqehyFA4T8YrLXfFTBySb7dYmAMTzTpmOXTeVrEeUQn5Uav2u7/mkQFeLI
+	pV5PHaKD/5f6+gZhYPRV1dQMDCOIWeA6XfPSYubHlaBAI+7U3dUx36coKfH3oVHDYl2J7prkHWL
+	WhtmSV/9AX2ybHw6JtOo8d2O7a4Y7kvITH3wAw==
+X-Received: by 2002:a17:907:84d1:b0:b9b:fd23:d0c8 with SMTP id
+ a640c23a62f3a-b9c13b0fd96mr41864466b.29.1774982076111; Tue, 31 Mar 2026
+ 11:34:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74F61180010
-X-Stat-Signature: 7i8t1mskes4htsmd8k8nwo75srf3nujc
+References: <20260331175639.4066033-1-luca.boccassi@gmail.com>
+In-Reply-To: <20260331175639.4066033-1-luca.boccassi@gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 31 Mar 2026 14:33:59 -0400
+X-Gm-Features: AQROBzBHBf68DKK7aZZU4u2jQSiYayfjEGRzUDBkbeEz7PAvcd2w4jNJnR0shvA
+Message-ID: <CA+CK2bCKJ8rkJ_onp9Za0KNuWujH4Gzue3a=HvwOJAK2tYhReA@mail.gmail.com>
+Subject: Re: [PATCH] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
+To: luca.boccassi@gmail.com
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
+	rppt@kernel.org, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7rgp8ahyxz6tcx18gjx9wadz8e7xj13o
+X-Rspamd-Queue-Id: E8F57A0019
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774982048-413505
-X-HE-Meta: U2FsdGVkX1/aHxqtno783zOhUviIEUkKC9I4Qp3UEGZZKBemFJG9WcA8F6xciEDwBVw1eLSOTSlajNChbXfVy3jACoOaKykGWrA6MUqP+lP2Ig2jWt9zUAPOwwXJyTQYkNWqSC+4TdTL5aePFjIVy01IVS4pvnYIMswwJxWIp2nQW0j87RGOborsSysBBMjLEoDjYqosCoB9SWpX/XRjuldoCtaw/2bWXtRn3xFTHTqwI4rMnnfjZhjevjz9oqgIF/kcIFN8B8OR52fUEPbN0iK6hvvTGKwI7F1GHVFm6e+aWoClyvBsbPOhkQ5OVrQFfkiXOrEcYNB51HG0mVCH94BNMbfQ9RRb1KEN76dRPcMpWl0ou9HsXukiOIte0wT3C50RQD/+sVIz7HeOA5eOXQ480zqo9nCI0EgsI7ype68rNuCByDdQgG680aSdtpb7LmL8cxiV0+HIdVpRvRqbDAer/MCpDz+bR2cNHA/o1b2VTsmv/hj87CHbVLikrXNuW1Cyl5SalqlSJDJqxSw5MWwF9urdM/OKFVPPHhHscI7w91d6rOsrFTV4n+tW01s3klR0yBXuBsxvabb1UnX4FgDxlgJLaN+h6pXdznS/fDp746/Xz+cpNfEoEHdDnedfUcdhSwrzsUdlgOJEv7kFn1Rgh4WyWf+MZumtThBOMb5+j3gVdzwOgxOqJjDTWh43vbioHbDrOYxg0VnYXhP3TtgENv5uWy8ldnK0speWfjvz+408Qb2V5ubiMEMyCLAhrbm1BNliU+kvUVI6OmUhMaeYBAVxPJTsu4QAyXr+lSGY+8bWtmLt6qvKq6OXf0HI0JTmZX1eYha8hEypxvopkGLFG0bLX/PtaF43VkbrRnGK2fKubpYQHHmbztNH2WXkUxIlL/zYrfYLlRgO4MJQTXbxxwHWdaKYpYxLMMjSCceJ19eEx5XHQhTjay4Tmm4tVdlONxqIiE6d6647syG
- KIP2Pn0b
- qXQ5A8pfxjsRL3DjwvKxYD7/cMIMQP3XvT7NyBHbIn0naVo4IwCGabIOZeORGrGrVPo3kPQohgoYXPM+ZINxiVolbloI3brQ2klD3ApKLGbi+SPmqVqlrNcjjTXX5JIJhaIbMDgEx4LonQ7WwnNQ3nmrLh5NnjzGb0WkAAzD62hyGH85UpY9uMrPyGLub/+LlvkUz7gHrqbrJnGs7taOo+63EnYOR4w1q+iLlTUmfeuIC/UzfbWFxETvWoDl2ejSVxjcTvocTTDpNjKXjzMgHVJwmOkKbDYgDUt6Cv4XxeBVEJe1jarw6GlRgZxUGVa+8mmP4SBsyVIKPDXVeam2swBNNZTgLMNK4VtqbObX1W4Ra0tyZ06bSnn8XqWKFYLcZhQIiN21Pj2cLZZiLoVi3ZYyrzAPZBrCert2KI5G3/22cNmdpieYbccahmrhZV3dFjQGe1svkETC2AoKIn9MIVinSj5grDGWwrIHuyO8i7SgDyg+/FuPt1+C7p5RdeEeWFaoP
+X-HE-Tag: 1774982077-809270
+X-HE-Meta: U2FsdGVkX18MUhbS2aZoStDWXADhx5jCKVuMC03TXbrxBbBR4ZrFSdOy1IVyiCfreDqKWG4MHAWzZIJDC6aBs7XMayy6U/oIOKmgXPCbc58rgffDDfby9ERl+9o9NOwZCRA0LxG26sbDj0PhqrsohNPg0LDuaw3OOW68RO9NhALENTEvQax3mxfCXti0uD328b/MNf8AuBavplpfy9E3MWFjvevArFt/NZo6FoE/xgIyYZmjIqvHjbMN+Jm/sZ0NkJzOp1kWX9kzE8NWDxt4KimCV0OuIIYRtXX2KKcApYg+bZ50+9VGc4ikME4W6frJk/YkCAZwk6vYJP7mxRRWb0ozv+6kZ3DQVu1RINu2KgRY6Ynz17ae6OLEAKkl8bdsx6bp/08kSbORBEO9aqmhwFn3k74p8QJK/jh6cpiZEuwrw3J0dmyAEkEaCqmO8bLNt51EIa/DdbHtxNPKlVXXR3QgnnF/vy0mBRF35rMLi7jeuzaUseB60eFkPcOgegFLKeKr0AZ7uvoD2biH840HpJF9TkLmwufgGDhiFsEzIsCB/qa0un/50xVK5JgiXWmeAZ/ZpUt+6mMavYBKMYmbq4ja21aB4OHKRT5pwCELfuZ1AYAhVdcv/6OxQ2efBMBJ5J4RpLHOmcJwQWi1uMDg0nVCtyJ61/7HCkZLQSrHVTEkbgQgwAPttY/QseNK9TdinnmHjfRflJqSHeuqaiLDg+LpBVu7c5WEySG30bf50W7RQN9jIweF1ZONZzJAJMOxwJGuPJgMH98iWIvq8IMPM9mFiSmlvxZQdS9IyRg+BQsyyapxj5cqeG/WM2YwdJndihdlYxNcYawg0gJYC86YyOl0LkjgMxK1belU89BP8rYNGg8QpL9O9zFfnSxaXaW9lB8LJjeVOH1z7OyO5qwN7b33CilK2cCvMLxfhQBaywCL89Gky/XDt6gOopvWsLFYTeZB2M0qrKJ3p3ZMskW
+ dylZ908f
+ 8g17vV2cDVaQhmryyK1jOXzhHJ3rdRJA3GQrVeL0MDjx5mGF8PbSct/jOIHR6EoW9PQQqvZT3Gt+M+YBn58jMRoVFxXgoc0dTtCuooEnO40j374XdwMI7mtkYJR/Kn8V3bO7DAw0B2FxtPVWK8VRXLMCuO51J0yRJiOo6Hvteo1H1+WIJ2GkEFeuGuIn9IlHTpuXENtwoVCf8ugi9J1zHa4NS9+f1U+0OIOe07HVTHp4uzCnzoN1zmvauQXcKf0DtLLZ8xMoEM6bX5g6CyLuLc+tE/rF2s6ZMOWL20Lgw+DmlwrR+ABX+l0/6wLkIQJ6RDAFOvKqomzmSET5uoNs5FQlC5DpnpCtjoi2EKseM0XugIoNZJmRy1BVUdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,420 +138,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, per-CPU acomp_ctx are allocated on pool creation and/or CPU
-hotplug, and destroyed on pool destruction or CPU hotunplug. This
-complicates the lifetime management to save memory while a CPU is
-offlined, which is not very common.
+On Tue, Mar 31, 2026 at 1:56=E2=80=AFPM <luca.boccassi@gmail.com> wrote:
+>
+> From: Luca Boccassi <luca.boccassi@gmail.com>
+>
+> Userspace when requesting a session specifies a name and gets a FD,
+> but then there is no way to go back the other way and get the name
+> given a LUO session FD. This is problematic especially when there
+> is a userspace orchestrator that wants to check what FDs it is
+> handling for clients.
+>
+> Resolving the /proc/self/fd/X is lossy as that has a hard limit
+> of characters, so names might be truncated. Also requiring going
+> through procfs and doing manual string mangling is not a nice
+> pattern.
 
-Simplify lifetime management by allocating per-CPU acomp_ctx once on
-pool creation (or CPU hotplug for CPUs onlined later), and keeping them
-allocated until the pool is destroyed.
+Hi Luca,
 
-Refactor cleanup code from zswap_cpu_comp_dead() into
-acomp_ctx_free() to be used elsewhere.
+Thank you for working on this.
 
-The main benefit of using the CPU hotplug multi state instance startup
-callback to allocate the acomp_ctx resources is that it prevents the
-cores from being offlined until the multi state instance addition call
-returns.
+This needs more explanation. The way I see it, the user orchestrator
+can be the only one that has access to /dev/liveupdate (and this is
+actually enforced by kernel). It opens it and creates session_fds for
+any client out there. So, the orchestrator already has the FDs and
+sends them to clients(e.g. via SCM_RIGHTS). It then monitors the PIDs
+of the clients, and if they die, it closes the session_fds for them,
+as their data does not need to be preserved.
 
-  From Documentation/core-api/cpu_hotplug.rst:
+Could you please explain why the user orchestrator would need to query
+the session_fds, since it is the one that creates them in the first
+place and has to keep them open in order to preserve them during a
+live update?
 
-    "The node list add/remove operations and the callback invocations are
-     serialized against CPU hotplug operations."
+Thank you,
+Pasha
 
-Furthermore, zswap_[de]compress() cannot contend with
-zswap_cpu_comp_prepare() because:
-
-  - During pool creation/deletion, the pool is not in the zswap_pools
-    list.
-
-  - During CPU hot[un]plug, the CPU is not yet online, as Yosry pointed
-    out. zswap_cpu_comp_prepare() will be run on a control CPU,
-    since CPUHP_MM_ZSWP_POOL_PREPARE is in the PREPARE section of "enum
-    cpuhp_state".
-
-  In both these cases, any recursions into zswap reclaim from
-  zswap_cpu_comp_prepare() will be handled by the old pool.
-
-The above two observations enable the following simplifications:
-
- 1) zswap_cpu_comp_prepare():
-
-    a) acomp_ctx mutex locking:
-
-       If the process gets migrated while zswap_cpu_comp_prepare() is
-       running, it will complete on the new CPU. In case of failures, we
-       pass the acomp_ctx pointer obtained at the start of
-       zswap_cpu_comp_prepare() to acomp_ctx_free(), which again, can
-       only undergo migration. There appear to be no contention
-       scenarios that might cause inconsistent values of acomp_ctx's
-       members. Hence, it seems there is no need for
-       mutex_lock(&acomp_ctx->mutex) in zswap_cpu_comp_prepare().
-
-    b) acomp_ctx mutex initialization:
-
-       Since the pool is not yet on zswap_pools list, we don't need to
-       initialize the per-CPU acomp_ctx mutex in
-       zswap_pool_create(). This has been restored to occur in
-       zswap_cpu_comp_prepare().
-
-    c) Subsequent CPU offline-online transitions:
-
-       zswap_cpu_comp_prepare() checks upfront if acomp_ctx->acomp is
-       valid. If so, it returns success. This should handle any CPU
-       hotplug online-offline transitions after pool creation is done.
-
- 2) CPU offline vis-a-vis zswap ops:
-
-    Let's suppose the process is migrated to another CPU before the
-    current CPU is dysfunctional. If zswap_[de]compress() holds the
-    acomp_ctx->mutex lock of the offlined CPU, that mutex will be
-    released once it completes on the new CPU. Since there is no
-    teardown callback, there is no possibility of UAF.
-
- 3) Pool creation/deletion and process migration to another CPU:
-
-    During pool creation/deletion, the pool is not in the zswap_pools
-    list. Hence it cannot contend with zswap ops on that CPU. However,
-    the process can get migrated.
-
-    a) Pool creation --> zswap_cpu_comp_prepare()
-                                --> process migrated:
-                                    * Old CPU offline: no-op.
-                                    * zswap_cpu_comp_prepare() continues
-                                      to run on the new CPU to finish
-                                      allocating acomp_ctx resources for
-                                      the offlined CPU.
-
-    b) Pool deletion --> acomp_ctx_free()
-                                --> process migrated:
-                                    * Old CPU offline: no-op.
-                                    * acomp_ctx_free() continues
-                                      to run on the new CPU to finish
-                                      de-allocating acomp_ctx resources
-                                      for the offlined CPU.
-
- 4) Pool deletion vis-a-vis CPU onlining:
-
-    The call to cpuhp_state_remove_instance() cannot race with
-    zswap_cpu_comp_prepare() because of hotplug synchronization.
-
-The current acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock() are
-deleted. Instead, zswap_[de]compress() directly call
-mutex_[un]lock(&acomp_ctx->mutex).
-
-The per-CPU memory cost of not deleting the acomp_ctx resources upon CPU
-offlining, and only deleting them when the pool is destroyed, is 8.28 KB
-on x86_64. This cost is only paid when a CPU is offlined, until it is
-onlined again.
-
-Co-developed-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
-Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
-Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Acked-by: Yosry Ahmed <yosry@kernel.org>
----
- mm/zswap.c | 180 ++++++++++++++++++++++++-----------------------------
- 1 file changed, 80 insertions(+), 100 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c59045b59ffe..4b5149173b0e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -242,6 +242,34 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
- **********************************/
- static void __zswap_pool_empty(struct percpu_ref *ref);
- 
-+static void acomp_ctx_free(struct crypto_acomp_ctx *acomp_ctx)
-+{
-+	if (!acomp_ctx)
-+		return;
-+
-+	/*
-+	 * If there was an error in allocating @acomp_ctx->req, it
-+	 * would be set to NULL.
-+	 */
-+	if (acomp_ctx->req)
-+		acomp_request_free(acomp_ctx->req);
-+
-+	acomp_ctx->req = NULL;
-+
-+	/*
-+	 * We have to handle both cases here: an error pointer return from
-+	 * crypto_alloc_acomp_node(); and a) NULL initialization by zswap, or
-+	 * b) NULL assignment done in a previous call to acomp_ctx_free().
-+	 */
-+	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
-+		crypto_free_acomp(acomp_ctx->acomp);
-+
-+	acomp_ctx->acomp = NULL;
-+
-+	kfree(acomp_ctx->buffer);
-+	acomp_ctx->buffer = NULL;
-+}
-+
- static struct zswap_pool *zswap_pool_create(char *compressor)
- {
- 	struct zswap_pool *pool;
-@@ -263,19 +291,27 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
- 
- 	strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
- 
--	pool->acomp_ctx = alloc_percpu(*pool->acomp_ctx);
-+	/* Many things rely on the zero-initialization. */
-+	pool->acomp_ctx = alloc_percpu_gfp(*pool->acomp_ctx,
-+					   GFP_KERNEL | __GFP_ZERO);
- 	if (!pool->acomp_ctx) {
- 		pr_err("percpu alloc failed\n");
- 		goto error;
- 	}
- 
--	for_each_possible_cpu(cpu)
--		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
--
-+	/*
-+	 * This is serialized against CPU hotplug operations. Hence, cores
-+	 * cannot be offlined until this finishes.
-+	 */
- 	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				       &pool->node);
-+
-+	/*
-+	 * cpuhp_state_add_instance() will not cleanup on failure since
-+	 * we don't register a hotunplug callback.
-+	 */
- 	if (ret)
--		goto error;
-+		goto cpuhp_add_fail;
- 
- 	/* being the current pool takes 1 ref; this func expects the
- 	 * caller to always add the new pool as the current pool
-@@ -292,6 +328,10 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
- 
- ref_fail:
- 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+
-+cpuhp_add_fail:
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
- error:
- 	if (pool->acomp_ctx)
- 		free_percpu(pool->acomp_ctx);
-@@ -322,9 +362,15 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
- 
- static void zswap_pool_destroy(struct zswap_pool *pool)
- {
-+	int cpu;
-+
- 	zswap_pool_debug("destroying", pool);
- 
- 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_free(per_cpu_ptr(pool->acomp_ctx, cpu));
-+
- 	free_percpu(pool->acomp_ctx);
- 
- 	zs_destroy_pool(pool->zs_pool);
-@@ -738,44 +784,41 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct crypto_acomp *acomp = NULL;
--	struct acomp_req *req = NULL;
--	u8 *buffer = NULL;
--	int ret;
-+	int ret = -ENOMEM;
- 
--	buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
--	if (!buffer) {
--		ret = -ENOMEM;
--		goto fail;
-+	/*
-+	 * To handle cases where the CPU goes through online-offline-online
-+	 * transitions, we return if the acomp_ctx has already been initialized.
-+	 */
-+	if (acomp_ctx->acomp) {
-+		WARN_ON_ONCE(IS_ERR(acomp_ctx->acomp));
-+		return 0;
- 	}
- 
-+	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
-+	if (!acomp_ctx->buffer)
-+		return ret;
-+
- 	/*
- 	 * In case of an error, crypto_alloc_acomp_node() returns an
- 	 * error pointer, never NULL.
- 	 */
--	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
--	if (IS_ERR(acomp)) {
-+	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-+	if (IS_ERR(acomp_ctx->acomp)) {
- 		pr_err("could not alloc crypto acomp %s : %pe\n",
--				pool->tfm_name, acomp);
--		ret = PTR_ERR(acomp);
-+				pool->tfm_name, acomp_ctx->acomp);
-+		ret = PTR_ERR(acomp_ctx->acomp);
- 		goto fail;
- 	}
- 
- 	/* acomp_request_alloc() returns NULL in case of an error. */
--	req = acomp_request_alloc(acomp);
--	if (!req) {
-+	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
-+	if (!acomp_ctx->req) {
- 		pr_err("could not alloc crypto acomp_request %s\n",
- 		       pool->tfm_name);
--		ret = -ENOMEM;
- 		goto fail;
- 	}
- 
--	/*
--	 * Only hold the mutex after completing allocations, otherwise we may
--	 * recurse into zswap through reclaim and attempt to hold the mutex
--	 * again resulting in a deadlock.
--	 */
--	mutex_lock(&acomp_ctx->mutex);
- 	crypto_init_wait(&acomp_ctx->wait);
- 
- 	/*
-@@ -783,83 +826,17 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
- 	 * won't be called, crypto_wait_req() will return without blocking.
- 	 */
--	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
--	acomp_ctx->buffer = buffer;
--	acomp_ctx->acomp = acomp;
--	acomp_ctx->req = req;
--	mutex_unlock(&acomp_ctx->mutex);
-+	mutex_init(&acomp_ctx->mutex);
- 	return 0;
- 
- fail:
--	if (!IS_ERR_OR_NULL(acomp))
--		crypto_free_acomp(acomp);
--	kfree(buffer);
-+	acomp_ctx_free(acomp_ctx);
- 	return ret;
- }
- 
--static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
--{
--	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
--	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct acomp_req *req;
--	struct crypto_acomp *acomp;
--	u8 *buffer;
--
--	if (!acomp_ctx)
--		return 0;
--
--	mutex_lock(&acomp_ctx->mutex);
--	req = acomp_ctx->req;
--	acomp = acomp_ctx->acomp;
--	buffer = acomp_ctx->buffer;
--	acomp_ctx->req = NULL;
--	acomp_ctx->acomp = NULL;
--	acomp_ctx->buffer = NULL;
--	mutex_unlock(&acomp_ctx->mutex);
--
--	/*
--	 * Do the actual freeing after releasing the mutex to avoid subtle
--	 * locking dependencies causing deadlocks.
--	 *
--	 * If there was an error in allocating @acomp_ctx->req, it
--	 * would be set to NULL.
--	 */
--	if (req)
--		acomp_request_free(req);
--	if (!IS_ERR_OR_NULL(acomp))
--		crypto_free_acomp(acomp);
--	kfree(buffer);
--
--	return 0;
--}
--
--static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
--{
--	struct crypto_acomp_ctx *acomp_ctx;
--
--	for (;;) {
--		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--		mutex_lock(&acomp_ctx->mutex);
--		if (likely(acomp_ctx->req))
--			return acomp_ctx;
--		/*
--		 * It is possible that we were migrated to a different CPU after
--		 * getting the per-CPU ctx but before the mutex was acquired. If
--		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
--		 * already freed ctx->req (among other things) and set it to
--		 * NULL. Just try again on the new CPU that we ended up on.
--		 */
--		mutex_unlock(&acomp_ctx->mutex);
--	}
--}
--
--static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
--{
--	mutex_unlock(&acomp_ctx->mutex);
--}
--
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -872,7 +849,9 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	u8 *dst;
- 	bool mapped = false;
- 
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
-+
- 	dst = acomp_ctx->buffer;
- 	sg_init_table(&input, 1);
- 	sg_set_page(&input, page, PAGE_SIZE, 0);
-@@ -938,7 +917,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	else if (alloc_ret)
- 		zswap_reject_alloc_fail++;
- 
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
- 	return comp_ret == 0 && alloc_ret == 0;
- }
- 
-@@ -950,7 +929,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	int ret = 0, dlen;
- 
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
- 	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
- 
- 	/* zswap entries of length PAGE_SIZE are not compressed. */
-@@ -975,7 +955,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	}
- 
- 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
- 
- 	if (!ret && dlen == PAGE_SIZE)
- 		return true;
-@@ -1795,7 +1775,7 @@ static int zswap_setup(void)
- 	ret = cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				      "mm/zswap_pool:prepare",
- 				      zswap_cpu_comp_prepare,
--				      zswap_cpu_comp_dead);
-+				      NULL);
- 	if (ret)
- 		goto hp_fail;
- 
--- 
-2.39.5
-
+>
+> Add a ioctl to simply get the name from an FD.
+>
+> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> ---
+> Need this for integration in systemd, so that I can check what
+> FDs I get from clients and what they are, and so that I can know
+> where to hand it back to
+>
+>  include/uapi/linux/liveupdate.h               | 19 +++++
+>  kernel/liveupdate/luo_session.c               | 13 ++++
+>  .../testing/selftests/liveupdate/liveupdate.c | 72 +++++++++++++++++++
+>  3 files changed, 104 insertions(+)
+>
+> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupd=
+ate.h
+> index 30bc66ee9436a..41dc44d239dde 100644
+> --- a/include/uapi/linux/liveupdate.h
+> +++ b/include/uapi/linux/liveupdate.h
+> @@ -59,6 +59,7 @@ enum {
+>         LIVEUPDATE_CMD_SESSION_PRESERVE_FD =3D LIVEUPDATE_CMD_SESSION_BAS=
+E,
+>         LIVEUPDATE_CMD_SESSION_RETRIEVE_FD =3D 0x41,
+>         LIVEUPDATE_CMD_SESSION_FINISH =3D 0x42,
+> +       LIVEUPDATE_CMD_SESSION_GET_NAME =3D 0x43,
+>  };
+>
+>  /**
+> @@ -213,4 +214,22 @@ struct liveupdate_session_finish {
+>  #define LIVEUPDATE_SESSION_FINISH                                      \
+>         _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
+>
+> +/**
+> + * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAM=
+E)
+> + * @size:  Input; sizeof(struct liveupdate_session_get_name)
+> + * @name:  Output; A null-terminated string with the full session name.
+> + *
+> + * Retrieves the full name of the session associated with this file desc=
+riptor.
+> + * This is useful because the kernel may truncate the name shown in /pro=
+c.
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +struct liveupdate_session_get_name {
+> +       __u32           size;
+> +       __u8            name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +};
+> +
+> +#define LIVEUPDATE_SESSION_GET_NAME                                    \
+> +       _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
+> +
+>  #endif /* _UAPI_LIVEUPDATE_H */
+> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sess=
+ion.c
+> index 4a40c7fdfb44f..819e8864869fd 100644
+> --- a/kernel/liveupdate/luo_session.c
+> +++ b/kernel/liveupdate/luo_session.c
+> @@ -289,10 +289,21 @@ static int luo_session_finish(struct luo_session *s=
+ession,
+>         return luo_ucmd_respond(ucmd, sizeof(*argp));
+>  }
+>
+> +static int luo_session_get_name(struct luo_session *session,
+> +                               struct luo_ucmd *ucmd)
+> +{
+> +       struct liveupdate_session_get_name *argp =3D ucmd->cmd;
+> +
+> +       strscpy((char *)argp->name, session->name, sizeof(argp->name));
+> +
+> +       return luo_ucmd_respond(ucmd, sizeof(*argp));
+> +}
+> +
+>  union ucmd_buffer {
+>         struct liveupdate_session_finish finish;
+>         struct liveupdate_session_preserve_fd preserve;
+>         struct liveupdate_session_retrieve_fd retrieve;
+> +       struct liveupdate_session_get_name get_name;
+>  };
+>
+>  struct luo_ioctl_op {
+> @@ -319,6 +330,8 @@ static const struct luo_ioctl_op luo_session_ioctl_op=
+s[] =3D {
+>                  struct liveupdate_session_preserve_fd, token),
+>         IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
+>                  struct liveupdate_session_retrieve_fd, token),
+> +       IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
+> +                struct liveupdate_session_get_name, name),
+>  };
+>
+>  static long luo_session_ioctl(struct file *filep, unsigned int cmd,
+> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/test=
+ing/selftests/liveupdate/liveupdate.c
+> index c2878e3d5ef90..510a583371fac 100644
+> --- a/tools/testing/selftests/liveupdate/liveupdate.c
+> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
+> @@ -102,6 +102,22 @@ static int create_session(int lu_fd, const char *nam=
+e)
+>         return args.fd;
+>  }
+>
+> +/* Helper function to get a session name via ioctl. */
+> +static int get_session_name(int session_fd, char *name, size_t name_len)
+> +{
+> +       struct liveupdate_session_get_name args =3D {};
+> +
+> +       args.size =3D sizeof(args);
+> +
+> +       if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_NAME, &args))
+> +               return -errno;
+> +
+> +       strncpy(name, (char *)args.name, name_len - 1);
+> +       name[name_len - 1] =3D '\0';
+> +
+> +       return 0;
+> +}
+> +
+>  /*
+>   * Test Case: Create Duplicate Session
+>   *
+> @@ -345,4 +361,60 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
+>         ASSERT_EQ(close(session_fd), 0);
+>  }
+>
+> +/*
+> + * Test Case: Get Session Name
+> + *
+> + * Verifies that the full session name can be retrieved from a session f=
+ile
+> + * descriptor via ioctl. This is important because /proc may truncate th=
+e
+> + * anon_inode name.
+> + */
+> +TEST_F(liveupdate_device, get_session_name)
+> +{
+> +       char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] =3D {};
+> +       const char *session_name =3D "get-name-test-session";
+> +       int session_fd;
+> +
+> +       self->fd1 =3D open(LIVEUPDATE_DEV, O_RDWR);
+> +       if (self->fd1 < 0 && errno =3D=3D ENOENT)
+> +               SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +       ASSERT_GE(self->fd1, 0);
+> +
+> +       session_fd =3D create_session(self->fd1, session_name);
+> +       ASSERT_GE(session_fd, 0);
+> +
+> +       ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)=
+), 0);
+> +       ASSERT_STREQ(name_buf, session_name);
+> +
+> +       ASSERT_EQ(close(session_fd), 0);
+> +}
+> +
+> +/*
+> + * Test Case: Get Session Name at Maximum Length
+> + *
+> + * Verifies that a session name using the full LIVEUPDATE_SESSION_NAME_L=
+ENGTH
+> + * (minus the null terminator) can be correctly retrieved.
+> + */
+> +TEST_F(liveupdate_device, get_session_name_max_length)
+> +{
+> +       char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] =3D {};
+> +       char long_name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +       int session_fd;
+> +
+> +       memset(long_name, 'A', sizeof(long_name) - 1);
+> +       long_name[sizeof(long_name) - 1] =3D '\0';
+> +
+> +       self->fd1 =3D open(LIVEUPDATE_DEV, O_RDWR);
+> +       if (self->fd1 < 0 && errno =3D=3D ENOENT)
+> +               SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +       ASSERT_GE(self->fd1, 0);
+> +
+> +       session_fd =3D create_session(self->fd1, long_name);
+> +       ASSERT_GE(session_fd, 0);
+> +
+> +       ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)=
+), 0);
+> +       ASSERT_STREQ(name_buf, long_name);
+> +
+> +       ASSERT_EQ(close(session_fd), 0);
+> +}
+> +
+>  TEST_HARNESS_MAIN
+> --
+> 2.47.3
+>
 
