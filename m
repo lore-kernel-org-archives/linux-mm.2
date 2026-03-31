@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14A50FF60F1
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09710FF60EE
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 09:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 802426B0095; Tue, 31 Mar 2026 05:17:09 -0400 (EDT)
+	id 718B96B008C; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2B66B0096; Tue, 31 Mar 2026 05:17:09 -0400 (EDT)
+	id 6C96E6B0098; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67B426B0098; Tue, 31 Mar 2026 05:17:09 -0400 (EDT)
+	id 5B79F6B0099; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 518216B0095
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:17:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F27DE8CCE6
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:08 +0000 (UTC)
-X-FDA: 84605804136.11.EFBC25B
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CD08440005
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SV0VIqPC;
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 464546B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 05:17:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE680140C6A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:29 +0000 (UTC)
+X-FDA: 84605805018.26.2D938D2
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E92BF1C0002
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 09:17:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=urNiOCnm;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948648; a=rsa-sha256;
+	cv=none;
+	b=ZyOtjgriJ/o2pgsEEn8TTmzV/E1X1I2TXN+zZFCN6iAjjKZCGjKEeKo+Ie01w5VLVyMJ35
+	1IU2H2XOmVIaOYcFw+CIBV3nvCogEG6gsNF9Azj2RMXQsosg2M8ejS5qGwg3m2wDAWOMDq
+	fNyBn3+8mKjXBudbXpzdR0b6UekdCRE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774948627;
+	s=arc-20220608; t=1774948648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KVOJiF6uwcHFWAX/3sTvyGHbX8XKYvu+j1EC4JDT8wE=;
-	b=zMGkwqmmyZp3zatogYehm9Xr625eueBau1/zX2ustI/61By3GphFzC0at8972A36VTHx0M
-	GQrI1K8L7awQmIDxNRUkSKDSxXehvXnguhoBp06GO6n3qgGunsD+FS6J1IJ2F3cf2ggjKF
-	6H+BXtLERhP8d1F6b7ku4M1hawtIc+0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lp3DpxTMCR7y+PPNSc4ZSesA8X8RvD0NTh7t+I9q0Pk=;
+	b=fN2CbesIIQtO/b6OxF9T9AEIStMpCNyC88IegLYJl44DlWaGh5HA+fMTgDRzeppjov46jG
+	CgD3+l9YYKiP/FQvfrcSnKTWz8u9oXc0BenFHaqrZpvTuGYBC3CyL02xidOzS9UQ0yNgyD
+	oegkmRxQ0z9foe43K2+ivgo4vcmVOjk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SV0VIqPC;
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774948627; a=rsa-sha256;
-	cv=none;
-	b=IonSmQaRZiPfY6hcy4jx4xfAF87ieocGlQwklZDgBEANRS25rAjMqnEqHPTBDVVzzkpwBK
-	LugJn9uT7hZkGxXIDPIcfHmPDB7NMLk/VZcLms83/oDmB56AaEBqzV6+rkV2oOYElWc1Wr
-	lSq3VJxWsvSYCnOJf+9caUI/077bHR4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774948622; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=KVOJiF6uwcHFWAX/3sTvyGHbX8XKYvu+j1EC4JDT8wE=;
-	b=SV0VIqPCFm5TpASglJhPQ3j8PI2Q8ezdXtiPOTrvrYPomliv5JLUZRMSwbb87m6bgeKDuOLcVIt5j8yKpfxHKTc2MjgLsZJh0nXE4dXpPoHS/dP1BceRzhZpNxfHEfhFV7Hj1llYeqCNG5DMcAZq2GmohkxM/GEHfy2Es+YiZ2M=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X03xQvk_1774948621;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X03xQvk_1774948621 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 31 Mar 2026 17:17:02 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Ingo Molnar <mingo@redhat.com>,  Peter
- Zijlstra <peterz@infradead.org>,  Ritesh Harjani <ritesh.list@gmail.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Baolin Wang
- <baolin.wang@linux.alibaba.com>,  Ying Huang
- <huang.ying.caritas@gmail.com>,  Juri Lelli <juri.lelli@redhat.com>,  Mel
- Gorman <mgorman@suse.de>,  Vincent Guittot <vincent.guittot@linaro.org>,
-  Dietmar Eggemann <dietmar.eggemann@arm.com>,  Steven Rostedt
- <rostedt@goodmis.org>
-Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
-In-Reply-To: <eb9d54b5-6fe0-45b6-9a8d-aa117ccd3c0e@linux.ibm.com> (Donet Tom's
-	message of "Tue, 31 Mar 2026 14:33:10 +0530")
-References: <20260326071216.11883-1-donettom@linux.ibm.com>
-	<f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
-	<2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com>
-	<87cy0kpfdx.fsf@DESKTOP-5N7EMDA>
-	<eb9d54b5-6fe0-45b6-9a8d-aa117ccd3c0e@linux.ibm.com>
-Date: Tue, 31 Mar 2026 17:17:02 +0800
-Message-ID: <875x6cpddd.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=urNiOCnm;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774948645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lp3DpxTMCR7y+PPNSc4ZSesA8X8RvD0NTh7t+I9q0Pk=;
+	b=urNiOCnm2nA1ap8689/tDYlQ/VXYIFTKHVvXNCZnKlJYDDK/+GzCJ/wgrIIst/j+7thz4v
+	qZwF/jJt/Ts7FFBGcQ0D/E1PcXRVpSvE2u+CjhCkZry2q8S5Gw+6ZD/8OqJ/ZG5Ho4g8v2
+	GeyAxmhOMUkGUUtMZoRK47cgFHzOXRs=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH mm-stable v3] mm/memcontrol: batch memcg charging in __memcg_slab_post_alloc_hook
+Date: Tue, 31 Mar 2026 17:17:07 +0800
+Message-ID: <20260331091707.226786-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD08440005
-X-Stat-Signature: 5k9dzbjtesyym13qnti3mwpe5hjax9cg
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774948625-245659
-X-HE-Meta: U2FsdGVkX18rPVovY4XcrG/aH3esb60zcOlPH4+14pzi+S990sss3XkMBDsfp9agCrWeG7hWn4dtjab27opTXB9Iobmn5oBvJgI24DcFP/8CWVTNZ58Ox2085/TbQeSzisjEr5jC7qoY01IQaz4etmwwDEHdegbT+3mKq33odnJHTunBdfU7z6wiJ4QSGq6Ok/DX2vPM3WUhzQXLLFmGMUEfUPzLUhqjx2/WMKlCjdZZxo/1mExN8FaHXK2kP77iZ7aEuMM1QLfMlNFdaOdc99Ip0pF+oJxyY05VQBa5yF8OyNfghN9LvDCgm1Ej1i8C3VfHZI7nMfoIxBh90EmT/T0QRofrkgUW9N55goKa/HaIGchWMI3xfG0wjoF+vYWss61DLEXZOHNDe9+Dy6epYWptJQLnMx0jsm0bOnWY+yGOQSckdOB3GO7xy/kvGaq8ygL8hcD51z57evOrSMCdsWZtZ5LDHrCIIHNR/aW1SRfLNVn4kQZsNCMzQ4L64zjQeVZafsqGUax6bOEVcLMuvnChTmTbNcfWKUquuqHl1pj6zPUIxdMhYVAef/PcFs2Q5ZEYOTL/QWFBpBiBV1dJT/CV5t93DkqYOekvMu6LSPyVQM2va6XXM/JDWw9a4AnjCcX99XkSfeW+8qBzdSS/isANR2OxcUSHq/pHTJyWZ3foc8fMCDDNSDhef/Cr2mp2r4RjjaZmes3L6xXGej4LwyiNGBLNwJaUUH63YuDPy/mpEQGwSOAJ4O0seJlOt+DZU/ZmYA4g95OkDK1G0e4ZNr2sO8nxdkxXk86WmEPtKmMSTr5foU+FgdUvqZUhpgc27qvz/wFliYZQkjD2Aq1CUxQankPaymNY6z++u+OG0+5Ell8vf9DY6Ys3isYiFGiwnEG5LPcY6lm+oD5etyx/H9QHMml1hZmyakKry1pTN24cTkptE+/2Etya/IOjpI/ukuHfleEpTK3c+Dg6L0d
- OVB4Fdpf
- VZLMkC/45cNxCtiagqDQsk4QiwZEN5YTQGcddB9nEuuXV9sBFuG3xYUgjlL5XG9zTwrtWHE8EXRDjMv++N9cwkhPWG7yGFuEsqxWbsywK646z/AoDG/JftU9dgBungf0UKUIBkADwkTMDTYcU6/q+oSL5aDbvrfxJNOYIoZtqSyNfqy8la79ixFGaU7sf/zF8MjBAe8xXR4eNLg5beEmX1+LbNUI6wWKhxTDNXujhrJ24Wn+iOz54MWCVJQYdc+8x8xO0M7ko/2fem8jaSUdRKiDkLEKaPypzbnE1GOiFzHN9XoI/LCDStXG5d72vUeiNw2jeLSvhUpUYZY4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E92BF1C0002
+X-Stat-Signature: 796zj1kqgmdnpo6tpxm3qf7tdbj9on65
+X-HE-Tag: 1774948647-374992
+X-HE-Meta: U2FsdGVkX1+7ON+ZhFBvvGL09p6EBuWrilSyeACkmnisBDeUz8sXo3srh2n79/PtqaoCb0/YXwRTm5ls3zbwK3AaoBoHIAA62sr71eNmdOPwEU/OHwXZxwDzT/fptHGu9ovi8aUiFOHSFpcEGR1tPqpoNEqNfafAJSI0zsPtGwu3nlalnph//Ze3A8Mev1chjzs0xyaPR6StZ8qQB8IkiOJmSv8C5kHwWOIQUqRGUywDX4leuOhaCM94Z7c0qiO3uiUV0p6NVEKCLS7VX6UnXQZwyab6yG0p9IhOMFKjWaBFPVMNfBZKgvatTmcxbK2wtaYy5J2fhJfCe27xu+OVRdYMuKv2bqGNZS9joZ7Suv/CER3ryS76UcSR5K9V453y+prg2rmJfrC/SQuZ5zghAPfueYk/0Eyo6z9g9u5QYiuE9SgNcyOulWPOkCywb7/iRp+sM3vZt8i1tlucTTVRde+MhfJnJsFiHUgWGmJBgqK9u8cO9JykcUW75Ia8AUbeQs8bLzP5DhNNLUf0+FmXrSi8mwMFSxO5z7YDdlCJyA+zXGfpgy0dLQDhN2wpgLvqAMJ+OJGL6Ggd8Ff8cnDLBSTXGrPqZTczzHiv//fv3IDko9YnRS1Tf6dlttjR/jPN5xND9Fe3LizPV+fq9z9E5NyElwxrqTCBYTdlC3jFne9MsAFgCS2jUUIQIOlntxJVGZy4SSZdWitInGKM4bzVY9AN836efmPsgiHgSPWzCzEJuroz49WUMj/iG/vYl9d2mhNOfNGbLjtoJ22dRRdllEmrf33R8/zhW/qAkC9DjPD4YvZWtSLxmie27tCbMeRzxITtrUVJshKxpc3LcliWlEDQBF1LGeOOtY7v05gfXY6X74KC1a9CtL0oww/8o3qepiN0gf1ht3EwyF2B2C+WcimgVNLGMBWIU03puaDyrczigsVTYx0VUtXKywT+2JTxKJ2l5JL10uMCuQ+eLqs
+ hCpBcdS4
+ 2qXUI4cWYkFbBT2O+/yHYEzU3dnC8iClxHncxBHm65whYqKou79haxEiOPqiH/N/NsU8HSD2UIFtXys38jDpYKjW+rXZPKHxWQcn6COqPyeUJg1OJnL1DAhpxEzi6ahjZgqSHbCVCTXm4xHwJPCMetP43Xc/+xfoWYc/I4pjrjItRfsuVqqsY5+eylJ63jaiRCSYJlODQ7oDjQpdEphCh5BstIOHho84A7GN8waFCcsfSkVZEq8QbTI0zOvU0zCzISvwHsaaEm/0TkKurdkKkk8Y5kJYQsESxxGVwEyGJLiEO44E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,87 +90,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Donet Tom <donettom@linux.ibm.com> writes:
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-> Hi
->
-> On 3/31/26 2:03 PM, Huang, Ying wrote:
->> Hi, Donet,
->>
->> Donet Tom <donettom@linux.ibm.com> writes:
->>
->>> On 3/26/26 3:59 PM, David Hildenbrand (Arm) wrote:
->>>> On 3/26/26 08:12, Donet Tom wrote:
->>>>> If memory tiering is disabled, cpupid of slow memory pages may
->>>>> contain a valid CPU and PID. If tiering is enabled at runtime,
->>>>> there is a chance that in should_numa_migrate_memory(), this
->>>>> valid CPU/PID is treated as a last access timestamp, leading
->>>>> to unnecessary promotion.
->>>> Is that measurable? Should we at least have a Fixes: ?
->>>>
->>>>> Prevent this by skipping promotion when cpupid is valid.
->>>>>
->>>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>>>> ---
->>>>>    kernel/sched/fair.c | 7 +++++++
->>>>>    1 file changed, 7 insertions(+)
->>>>>
->>>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->>>>> index 4b43809a3fb1..f5830a5a94d5 100644
->>>>> --- a/kernel/sched/fair.c
->>>>> +++ b/kernel/sched/fair.c
->>>>> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->>>>>    		unsigned int latency, th, def_th;
->>>>>    		long nr = folio_nr_pages(folio);
->>>>>    
->>>> /*
->>>>    * When ...
->>>>
->>>>> +		/* When tiering is enabled at runtime, last_cpupid may
->>>>> +		 * hold a valid cpupid instead of an access timestamp.
->>>>> +		 * If so, skip page promotion.
->>>>> +		 */
->>>>> +		if (cpupid_valid(folio_last_cpupid(folio)))
->>>>> +			return false;
->>>>> +
->>>> IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
->>>> we would no longer get false positives for cpupid_valid().
->>>> I suppose overflows are not a problem, correct?
->>> Thank you, David, for guiding me in the right direction.
->>>
->>> I initially thought that overflows would not occur, and therefore
->>> cpupid_valid() would not produce false positives. However,
->>> after looking into it further, it appears that overflow can
->>> happen when storing the access time.
->>>
->>> The last_cpupid field is used to store the last access time.
->>>  From the code, it appears that 21 bits are used for this
->>> (#define LAST_CPUPID_SHIFT (LAST__PID_SHIFT + LAST__CPU_SHIFT)).
->>>
->>> With 21 bits, the maximum value that can be stored is
->> It can be less than 21 bits, if CONFIG_NR_CPUS is small.
->>
->> 	DEFINE(NR_CPUS_BITS, order_base_2(CONFIG_NR_CPUS));
->>
->>> 2097151ms (35Hrs) . If the access time exceeds this
->>> range, it can overflow, which may lead to cpupid_valid()
->>> returning false positives.
->>>
->>> I think we need a reliable way to determine cpupid_valid() that
->>> does not produce false positives.
->> Yes.  IMHO, false positives is unavoidable.  So, the patch fixes a
->> temporal performance issue at the cost of a longstanding performance
->> issue.  Right?
->
->
-> I was trying to fix a functional issue. When memory tiering is
->
-> enabled at runtime, treating last_cpupid as access time is incorrect, right?
+When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
+hook __memcg_slab_post_alloc_hook() previously charged memcg one object
+at a time, even though consecutive objects may reside on slabs backed by
+the same pgdat node.
 
-I don't think that it's a functional issue.  It has only performance
-impact.  Did you find any functionality bug?
+Batch the memcg charging by scanning ahead from the current position to
+find a contiguous run of objects whose slabs share the same pgdat, then
+issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
+the entire run. The per-object obj_ext assignment loop is preserved as-is
+since it cannot be further collapsed.
 
+This implements the TODO comment left in commit bc730030f956 ("memcg:
+combine slab obj stock charging and accounting").
+
+The existing error-recovery contract is unchanged: if size == 1 then
+memcg_alloc_abort_single() will free the sole object, and for larger
+bulk allocations kmem_cache_free_bulk() will uncharge any objects that
+were already charged before the failure.
+
+Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
+(iters=100000):
+
+  bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
+  bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
+
+No measurable regression for bulk=1, as expected.
+
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
-Best Regards,
-Huang, Ying
+
+Changelog:
+v3:
+Update base from "mm-unstable" to "mm-stable".
+v2:
+According to the comments in [1], add code to handle the integer
+overflow issue.
+
+[1] https://sashiko.dev/#/patchset/20260316084839.1342163-1-hui.zhu%40linux.dev
+
+ mm/memcontrol.c | 77 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 58 insertions(+), 19 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 051b82ebf371..3159bf39e060 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3277,51 +3277,90 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 			return false;
+ 	}
+ 
+-	for (i = 0; i < size; i++) {
++	for (i = 0; i < size; ) {
+ 		unsigned long obj_exts;
+ 		struct slabobj_ext *obj_ext;
+ 		struct obj_stock_pcp *stock;
++		struct pglist_data *pgdat;
++		int batch_bytes;
++		size_t run_len = 0;
++		size_t j;
++		size_t max_size;
++		bool skip_next = false;
+ 
+ 		slab = virt_to_slab(p[i]);
+ 
+ 		if (!slab_obj_exts(slab) &&
+ 		    alloc_slab_obj_exts(slab, s, flags, false)) {
++			i++;
+ 			continue;
+ 		}
+ 
++		pgdat = slab_pgdat(slab);
++		run_len = 1;
++
++		/*
++		 * The value of batch_bytes must not exceed
++		 * (INT_MAX - PAGE_SIZE) to prevent integer overflow in
++		 * the final accumulation performed by __account_obj_stock().
++		 */
++		max_size = min((size_t)((INT_MAX - PAGE_SIZE) / obj_size),
++			       size);
++
++		for (j = i + 1; j < max_size; j++) {
++			struct slab *slab_j = virt_to_slab(p[j]);
++
++			if (slab_pgdat(slab_j) != pgdat)
++				break;
++
++			if (!slab_obj_exts(slab_j) &&
++			    alloc_slab_obj_exts(slab_j, s, flags, false)) {
++				skip_next = true;
++				break;
++			}
++
++			run_len++;
++		}
++
+ 		/*
+-		 * if we fail and size is 1, memcg_alloc_abort_single() will
++		 * If we fail and size is 1, memcg_alloc_abort_single() will
+ 		 * just free the object, which is ok as we have not assigned
+-		 * objcg to its obj_ext yet
+-		 *
+-		 * for larger sizes, kmem_cache_free_bulk() will uncharge
+-		 * any objects that were already charged and obj_ext assigned
++		 * objcg to its obj_ext yet.
+ 		 *
+-		 * TODO: we could batch this until slab_pgdat(slab) changes
+-		 * between iterations, with a more complicated undo
++		 * For larger sizes, kmem_cache_free_bulk() will uncharge
++		 * any objects that were already charged and obj_ext assigned.
+ 		 */
++		batch_bytes = obj_size * run_len;
+ 		stock = trylock_stock();
+-		if (!stock || !__consume_obj_stock(objcg, stock, obj_size)) {
++		if (!stock || !__consume_obj_stock(objcg, stock, batch_bytes)) {
+ 			size_t remainder;
+ 
+ 			unlock_stock(stock);
+-			if (__obj_cgroup_charge(objcg, flags, obj_size, &remainder))
++			if (__obj_cgroup_charge(objcg, flags, batch_bytes, &remainder))
+ 				return false;
+ 			stock = trylock_stock();
+ 			if (remainder)
+ 				__refill_obj_stock(objcg, stock, remainder, false);
+ 		}
+-		__account_obj_stock(objcg, stock, obj_size,
+-				    slab_pgdat(slab), cache_vmstat_idx(s));
++		__account_obj_stock(objcg, stock, batch_bytes,
++				    pgdat, cache_vmstat_idx(s));
+ 		unlock_stock(stock);
+ 
+-		obj_exts = slab_obj_exts(slab);
+-		get_slab_obj_exts(obj_exts);
+-		off = obj_to_index(s, slab, p[i]);
+-		obj_ext = slab_obj_ext(slab, obj_exts, off);
+-		obj_cgroup_get(objcg);
+-		obj_ext->objcg = objcg;
+-		put_slab_obj_exts(obj_exts);
++		for (j = 0; j < run_len; j++) {
++			slab = virt_to_slab(p[i + j]);
++			obj_exts = slab_obj_exts(slab);
++			get_slab_obj_exts(obj_exts);
++			off = obj_to_index(s, slab, p[i + j]);
++			obj_ext = slab_obj_ext(slab, obj_exts, off);
++			obj_cgroup_get(objcg);
++			obj_ext->objcg = objcg;
++			put_slab_obj_exts(obj_exts);
++		}
++
++		if (skip_next)
++			i = i + run_len + 1;
++		else
++			i += run_len;
+ 	}
+ 
+ 	return true;
+-- 
+2.43.0
+
 
