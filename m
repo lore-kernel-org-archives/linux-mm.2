@@ -4,171 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDA35109B491
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2E1109B491
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 15:34:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E8006B008C; Tue, 31 Mar 2026 11:33:56 -0400 (EDT)
+	id 8B1CC6B0096; Tue, 31 Mar 2026 11:34:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BF276B0095; Tue, 31 Mar 2026 11:33:56 -0400 (EDT)
+	id 889176B0098; Tue, 31 Mar 2026 11:34:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC9246B0096; Tue, 31 Mar 2026 11:33:55 -0400 (EDT)
+	id 79F2F6B0099; Tue, 31 Mar 2026 11:34:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D867C6B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:33:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8528613A373
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:33:55 +0000 (UTC)
-X-FDA: 84606753630.29.64449B8
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011061.outbound.protection.outlook.com [40.107.74.61])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB3D2160007
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:33:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=bp.renesas.com header.s=selector1 header.b="IWDZi5/3";
-	spf=pass (imf08.hostedemail.com: domain of biju.das.jz@bp.renesas.com designates 40.107.74.61 as permitted sender) smtp.mailfrom=biju.das.jz@bp.renesas.com;
-	dmarc=pass (policy=none) header.from=renesas.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 6600A6B0096
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 11:34:52 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 334661B74B3
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:34:52 +0000 (UTC)
+X-FDA: 84606756024.15.2B742E7
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 18F8580011
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:34:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="s/gjA+SR";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774971232;
+	s=arc-20220608; t=1774971290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pDzaFbP6AN9JUup7nUQ4+5gPf8sGGyojy6+WaLJoIoo=;
-	b=LfTzmuexihaBPu8u4vfUGACHPdlRlMqK7NjOUmn02T41Ad3MQ2VOVA8KXpnkRHh6XYqled
-	xhVfYqkVwZLUb+vjiGlXG2/CHbC5yz5KHIa1kF9TDGI+0j9ksUmkEU+2QTKz/sAUhG7lpR
-	rJTaqXdOhbBIB52q/hUVRQ2P+XL86DU=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=bp.renesas.com header.s=selector1 header.b="IWDZi5/3";
-	spf=pass (imf08.hostedemail.com: domain of biju.das.jz@bp.renesas.com designates 40.107.74.61 as permitted sender) smtp.mailfrom=biju.das.jz@bp.renesas.com;
-	dmarc=pass (policy=none) header.from=renesas.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774971232; a=rsa-sha256;
+	bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+	b=34AdncKQ68F9Ud+rMfcvKfHg8VhNrk+9TLVnFBHPwYR7Tq05PUqTKvjkNTe2u2HmNfIReq
+	SCeDB2veodU5EFNd7Rry0+faRR5lnYMH+DVWcWz2rQwQck8E4JbuuuEnOqw2vc0UprqulU
+	v0cxfAyWIAY7m9vhU1/p7x/Ik/izoQs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774971290; a=rsa-sha256;
 	cv=pass;
-	b=JE/S6W0iKYrVRjP8zJCuvTAfVup2w8GoJu0rONB8gax1NNGCFg/1TRw8zo6z9Nlu2elowu
-	ZofQB1if6/7Wuds2zJkcAko16Gj5bH147BRe3+DNWL3ZqjwSypTrovXxKXWd79oYXx4zhU
-	jS0DEGSRPGsudQ0iNt+zErd5e4yAboM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vwHqNpodn+1dKWHlhMBTGHGcnyrqUennNBAr0lcum/bHm0xYWK2oDLOfwg/2T+oYAHXHWgIosrwsaxqE+9PQ6DyiLTXAyor6qA2Z7xeYRAxruG44WH/JkyNrl4PUANGmLXHSZRj3xSVIC8G+YEDyIC6K1mG37O+rDy3JxwHhY4SxA8G9E9MyCp6hZF11VR4KXh/d0OTHWMTB1psVYC/JhSQLtMcKHVSkGqodFbQGryeIxpRFVD7RCXYV/wXAaAoMe6w69iQnJbfH9r0waqeEEIxE9JJIKXh5liwN1XlpWfAhQpH5dB34m3HM/qwOyFHkJGtHtTCzMH2IAM7V2Vb0sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pDzaFbP6AN9JUup7nUQ4+5gPf8sGGyojy6+WaLJoIoo=;
- b=BiH/vAXB+R7TiJbsTbT6h+66Q6sMS2tTf7V4x4btTycUCttWmobsWSWEtj+h8A8uv1Zm3Sr/VDYJpsBpS5If7B4d72s22VzAu1epCqC0qtOiBCBYzjg13bsduJlssKLJOekDoxoTRnCqs35fwf7K1O7+loUd+wNURebJ6p867gOpiJC+betValNRRvZmuaShcMdbHU+7MAyYTT4s5wAUxER9PSXLzEVxYZ5EFllIRmGAT5avJzjy5ryZybbdhgKf7KRDr5oq6zNTrPH4EH08MGNjeXpbxrA8QkcJ/95nkJafeGiO0yNtM3w02KC/KkLPZ+bFJ2zNhlQ1ETL/PWLKcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pDzaFbP6AN9JUup7nUQ4+5gPf8sGGyojy6+WaLJoIoo=;
- b=IWDZi5/3c4VF43EURCbbiCr1RZ6bFue/qckGHmp4pdaO2bvMGdPXFHTNfTfk7rAA00yINxBbOYpkiNlM1HQ7wajAVauLtxX3JB718AhRHM1pvS3ucX8BCJSvZRpI8cnZRXS2aVjQKmII/U1p8eFuVJcQ+BrcKohzUlbNkSeKSa4=
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
- by OSCPR01MB13408.jpnprd01.prod.outlook.com (2603:1096:604:336::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.16; Tue, 31 Mar
- 2026 15:33:45 +0000
-Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
- ([fe80::87d1:4928:d55:97de%4]) with mapi id 15.20.9769.015; Tue, 31 Mar 2026
- 15:33:41 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>
-CC: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
-	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"kernel@collabora.com" <kernel@collabora.com>, Tommaso Merciai
-	<tommaso.merciai.xr@bp.renesas.com>
-Subject: RE: [PATCH] drm/shmem_helper: Make sure PMD entries get the writeable
- upgrade
-Thread-Topic: [PATCH] drm/shmem_helper: Make sure PMD entries get the
- writeable upgrade
-Thread-Index: AQHcuHzyAwQHwn7Eak6JBM/l6bq/JLXI1hEQ
-Date: Tue, 31 Mar 2026 15:33:40 +0000
-Message-ID:
- <TY3PR01MB11346066DEA6D30785AB2E2388653A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-References: <20260320151914.586945-1-boris.brezillon@collabora.com>
-In-Reply-To: <20260320151914.586945-1-boris.brezillon@collabora.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|OSCPR01MB13408:EE_
-x-ms-office365-filtering-correlation-id: 6c7dc3a1-e8a0-4e86-fcdb-08de8f3ae2dc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|22082099003|56012099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- 7prs6+BFW6YWa7qykjFNU35CkuzyXAjudz7tsgps7EX25HFLJnathcoJLX+vDt3yjBGucIfzdacynHahcUVmG/7/cfAPGaz94sHxtfyL0iPXPDs37/QUPB5r2d4AawuTo1TuqH1ohcHKit3R8FGIqqCAUhfMuAZj376NxTx8WBgKVhhHFZ8wWKvUbOUftN1w233O/sC6NONDkVqCkR/XH4BNomEhQHABU8Jywr6awlxBdRo7634r/BuPWjpH4f88R3p2Xic4zN1C7VnWe0tv25/lHvOofPDtGZWBgLFALbqKtuLUHt/UywJT0wlYAsT3wlm491eg1HrVKXQxY1nb5Vb/K9m7AHRvfNLWOJWzadTVK/hopFPAVPNPL7518QjqAqHseuqUMLcM6Thgh+/3/RN26lppoC11OJ5GSQMs0Zg8EQu0s/+ncM9kVdUppVW6oNAAk3hltR8icoqFzqOEodOhZpwWz606WrA8sEn2t5hZ2AcEItptPgWBug6SwfvHmXpemrSFzKUYywf+ZBXUMackLgDEprOrTmqZcmyH7m8Yf686SwJPhlluGHXQotC45llXGdWoVGbhjLecBOxK/QJqYb2hVRGpH2Y0pEgTYu10Bz6xOJxWBf72jej/Oe9xzEnSvtMGJO0d+yjlOL6cVZ/PZfzP3+WYO27n3mo05ggxGv7ldVfPjOXQsEJYk2Lmh3r/Rw1MRUYjRyjW8p7i0AuQbAgTN6e34wiDqoBTM2zdkekqwVs0m+O7mZnDSBEt
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(22082099003)(56012099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mhGjcabHAWDEZT7hzxUVdk2z2rGPQitWYmk3L1uJXDnwsbQ+dpYw7U0iVEl3?=
- =?us-ascii?Q?1wMecZeyjnwJLYMZD6XrgRdzERprGyTijNrcE3eq8cvv5iUVj3eCjXDg2K50?=
- =?us-ascii?Q?XA0Df0tRlXLNgWI6jpuhwKnsUOVQGdUkASdeTcdTCK48kTaRi80LGgyo18Lx?=
- =?us-ascii?Q?Ngl0Lo8T674wR/iQ3BWA3oQ4KYlEj+HWcs0gvGJFWLbKkpAUaIe058VZg+8x?=
- =?us-ascii?Q?jdtnmA3+ywZPB3NdDY+NZqsJZdvkff459XMTVLltBivUF8TGNT7UflkJxT8W?=
- =?us-ascii?Q?fxMEydwvwRq0XAxjOrZoVe38u3wWXw+/zELneBnK1gd/SPivV9h219Qc5+Yp?=
- =?us-ascii?Q?J8igbLP/r7+YwlJxvn8qKt0pE34QmW4Xxp9ev9gifRcD25xTxGrA/Ef5v7uZ?=
- =?us-ascii?Q?huK0btsxv+7sLKN/xtzLDAs8GxEZNcuqorxT6zrqiRmUgAhUXsJ5j12Koy3e?=
- =?us-ascii?Q?NHYm15r+2F/7ugxwHVQilxHS8XEYN09hkZYCOLk8N1Yl8UW76VHETpB5NV+U?=
- =?us-ascii?Q?5LjKo7SDWorSEaRQbQJWplSRQyb62FPSoVXFcBPKSj/V2zZYPYQdTcL4lAps?=
- =?us-ascii?Q?gfSwCJMMGv1FXsj2+GHjru7FVqoom6n1DKKgdLrlbq++qWYN5djwLm6R0AjM?=
- =?us-ascii?Q?Wl5EsHkLhzWbCUCygSF4uc20SovkaTTAqX/FuH1QvxlBtxrvB80EMeZmTe6V?=
- =?us-ascii?Q?o1d6i+GdDCt2+ySiht3edGzhfDPfjKbdM7QP9B5rszcR1BlqxTBGwd4efEb6?=
- =?us-ascii?Q?yTxq9zbC59bxdqqEqSAGwu9KbmZ5IwWl7fm7W8QD7QNDHYe7Nqrc2IEVTvGu?=
- =?us-ascii?Q?JVInZsy4dW2AWvJLM0e6H4xo+9gfohaOTXfrSYjLKK4vGKoFhnt8y97G3bS1?=
- =?us-ascii?Q?+cY7NCLlvexZLR/B+C0A+XxisM6kT9Rnk51Znxa93+HQtvTW0Qof4EsGkmlw?=
- =?us-ascii?Q?5kQWmAagZFBlsikOXksp/ewrRe8UmD/WelVyMHuR8tcy4zeLfINSHAT+FWIn?=
- =?us-ascii?Q?U+qmLKBbU1YuWxRKYSmW12tUxnL8zQReTRsIJsFPaO7dkzmrt6WYqM1APhAS?=
- =?us-ascii?Q?YYmVNOzfejwe263V8I9xN3m1R5IpmeMGSFmITRzTs17E6uRt0KPxlYoOCW/R?=
- =?us-ascii?Q?JHCQR43VG3MjmOLHrE3xbDW5WI5of++CyFQvrB17e9uOeNWsSu2EvgeYPvwq?=
- =?us-ascii?Q?DvmOOSNGrHnGEMc8YzysSvLtFj+EgmobjZx85njpJAWTf0V4MWYKHBJcL9ox?=
- =?us-ascii?Q?jtwKNtPvGJbKdouEVGjwuRdCCGzC/apYT6dAiGADMRkOHMQdm+4jK5PVQaa1?=
- =?us-ascii?Q?Y8ZPZweAaCV5RJynT/lxEyN7RiqXZv+/QJty1+wkDgRM0uCTzd3/7DdSpRav?=
- =?us-ascii?Q?V6Iw8LC1kLEmpBYCNWiSGUHNyFBNesQy55bBdcRQgW2C0CsW0I55Zkp7CTSv?=
- =?us-ascii?Q?L1CJ4WK168fhFluA8bSrfw+jI2CK762aWkBwnuqr0bO2K4a6Ed/Klp9O0xuE?=
- =?us-ascii?Q?A031YMaoXXuSIqTr0OFwtr8OazbV8bo9JU+L2/OV9gP2sDGyvkxX8qIlrxO6?=
- =?us-ascii?Q?a43Sqy29VFCbYDXem7O7zVXfQ+8Fa+fntfDbdQ6pwYwVsQtrychcKsfkw1C5?=
- =?us-ascii?Q?bYIhB42asnFj0H+KuuafGRGFyWYmVWdv/V3LB7yJ72BGigbprrgAvflXfSoW?=
- =?us-ascii?Q?nf/9kf4rp3wDHjGWfw5TqDm5iuiimuUhsOr395Lz6CpMCAwF7lkRRQwFuKGF?=
- =?us-ascii?Q?IRS5tleJeQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	b=BKhzVI2XtQpGArNOII/0B+1locTE2th4my+Fj9jiNjMO68MTayqeNUTZ2ZzdwtUhNIF8HP
+	aiuys0hDovUW5Zkt1XT+ULHpiKfMoQd7E98IPkmhbLOqDjgKrzyfHywMuluUJ4T0RVdgvD
+	SvWAY5neMao5xTxX8QVIx3cbIor+YBA=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="s/gjA+SR";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66bb7118c96so14058a12.0
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 08:34:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774971288; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kyjqJgBGh8bORkzLslKNFqyWdDZPAOMCOG5Iq3Wu6fGvRl3eQ3lagoDxQzpeicSRNs
+         Xx1hM5Oc256VI8Ij4j0+JluUrMXUx6Rm137+mfYoaorbTiKnmAApAymyQxj4dNWvVkju
+         z3Zku9ZrxLQJinItN7SaF+mzkDtsGjN2XFPkf/T+7zlzH50RhAAQ5KDya9icLK+iQmQK
+         1LbU0gC6+nv46M2E6TZEzDuh8eS7/h91ByoPksnFJX3i3X7fM2meAOfuNAEVDKhfYFGH
+         0jigdx2MW60Z3rJNedhtp8h0/hOC0zuk+jXyE9gMN/eW9KBnERxV/ZVUgiDfPQDDp+oO
+         BfAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        fh=obh49sra5+dQvXlKLqvC1bb25ENYKCOVAdTdwGIyk/8=;
+        b=kAhuqM3XyAGGA2HcBhzqJ/UTKPCa57IbJRajM3RI+hVRtL7iRYvxstt9bv4HimjXub
+         kdfS3douyxZYpjMMrax5xsn5Kuqb765ZGQDNSgS5CczpvjW6u5gd7WqPxokPsuabN+Wx
+         SC6AAh/eEPbyLlrOzoeoJ2Pg9V6Lt+DZfy079I0Lzq37HeGnx/e8z7xABmxc2BUFpF8Q
+         gsbqPt+TNDrZpSfdIjV4rLbEzyWxEEN670lXNJHsT/+5W2haRnz1z5JiPzxMkeEXZ4jt
+         AdpDIsbo2Ywve0Lnki1SCWuen/tNRUWk8DXQ78RaeP0aQ9q+7MTewh29oDbNlunUJlUe
+         xHtg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774971288; x=1775576088; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        b=s/gjA+SRTffOTxkxGdfTBiK8rmCs5vIibz0EFbCsJDRwgCaVWwZtg6xtpJ9SxvYv7M
+         l5revVJVS4QsY8EI39AcFTvnAsMDhhBRn8KWE7yaUDI9ujYFlLCHdT1HKwDngDsLSKE7
+         /VlkoRGtlwwMcp4hOwbrbShr/3O1Yenlp1HKcEByhIDWO6jXgKlg2LPyVNpm/avhTsy9
+         aPZJE51nY5w/va12ZN6teVrbuCdCN7ZsTPESYXOKA5217gvkf4+W3HWDZFs8ZVfKoc63
+         4oIcEidyPTIP9WyEwdXHAPdZidLjIQcxex1tBkEQ6M45ucB8xYmkuNFyxJy431/AQyXP
+         8OkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774971288; x=1775576088;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2kbC6DRNJUxFn/ggqNRgjVNMgVXnUw4VaYyyf9fTTGQ=;
+        b=OGfL6SF20N8thIRcqweB2zmf1klRy1O/xESiVOF8DZhHfRFEoY5tv1FBea1vs7Gd3b
+         WI0JIbMbDLs+ct5KpEPDcddYHfa1YOENTIywsFTGlsGegW5Ccmn9TTnCS+xZXyDW3IWB
+         ICQRvFz6gyImimv6R/6XkVR34YK7JgOCAYS6yu22mBVZuscinLPxNsBPc31cqgrIsq6U
+         MsnHFD1pQVpgkmdjNXVlOoQUDxQevaD+8WFMMnB+iGkIfhPMbcZHFClj2ldGGP/QuNLa
+         MZvaQW64TdquzM37S1NHQUzEsFb5EjZpFqURIkp+hl7d6zWyqIjGS0auitAjayuWir3E
+         swyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeUJyB5dDK3UEYi8oz/f4XHLcSCRRsIyzLXUOKCnJXm4QEF09uuf+/2up5dfWuGBKxPEFPDtre5A==@kvack.org
+X-Gm-Message-State: AOJu0YxauL4ZhvY15dZMBdaI/EjkTsjMNgZKF9Cj4zrvC4JJxD/sQ43S
+	SBOvaf7dJ37ihOQhCHHoji2i/T4unyPKCXYDfRlYpcWLZqLZdfWJPMW0wGBcfyhE0B3OYt0xzSA
+	okf40H85/s5s5Lqu01TnOphGVJUdIknGUaPstAZGe
+X-Gm-Gg: ATEYQzwDecRdjawei74Kh6hmnhlmTOos8HnkBRefjjLzX0bsFywyFC8NEUPiB317LQG
+	xLGkVJe6cqHi2u8jFP9L9cMX1i66ZHlfWD73CWPuyeOgCO/7s6T3/A/c4TbWae5YYzD5r4Si3YC
+	f7xCxzGWwF9goE0HTHhl9zs+b1znYQTWxHdErY4I5T5z5Zy1vstmS5nAnKBDgh8COCj1rHA7+ni
+	s+LsyUKVvInxTvxoyddEQC8MeURIVtNYSO/b1m9BLcBpazT89wjTq4x38LhaCo75LjPx7ceUcs1
+	Oxw2yv7au4whxb1T2DxcMjXakFlLC9/QKgtNzw==
+X-Received: by 2002:aa7:d157:0:b0:66b:ea0e:1782 with SMTP id
+ 4fb4d7f45d1cf-66d95ac6b83mr3294a12.2.1774971287536; Tue, 31 Mar 2026 08:34:47
+ -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c7dc3a1-e8a0-4e86-fcdb-08de8f3ae2dc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2026 15:33:40.9909
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RktCGZUL34boWpnq261fO5R7nVL1rT+7b1QKmVVaGJZpD3MwjvOcR5Y57dSu/rn3PIUvuP9SPAiZ+70khgPKInUWpzkAYpvC2lWXYjhWR94=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCPR01MB13408
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EB3D2160007
-X-Stat-Signature: j9sgadyujnkzg1smd7mfozrkwnecf6pm
+References: <20260327205457.604224-1-surenb@google.com> <20260327161226.17e680fec33117d67dc8b5f9@linux-foundation.org>
+ <f128b795-5577-40f9-8dae-936be4253642@lucifer.local> <CAJuCfpHmUop-UzxM9QN7OiAnXUzj461+9ErgtXrtve_bR0_NjA@mail.gmail.com>
+In-Reply-To: <CAJuCfpHmUop-UzxM9QN7OiAnXUzj461+9ErgtXrtve_bR0_NjA@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 31 Mar 2026 08:34:34 -0700
+X-Gm-Features: AQROBzCjbp_TCkkxwhu_axsyxtZ1SbbwXiNA5twqFRnYfWa0PnszaVM289IvRRY
+Message-ID: <CAJuCfpF5CqSMU4yz5mgSOTbSLfMsmATGk4vcKWiqrzV3rGkZEw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/6] Use killable vma write locking in most places
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 18F8580011
+X-Stat-Signature: adb3aker1qa8shddmnp8qxppswmnbfof
 X-Rspam-User: 
-X-HE-Tag: 1774971231-960163
-X-HE-Meta: U2FsdGVkX1/Q20in1mu1NGymKjPhmnBWCso6757B1yGDnKMqp1cJxl8o7dWqL4+dCx+5lX3deTmT3Bs6rvS+6r/PFv1pHz2FXOkU3LtODsAUaFYg0+OTDBmZQxxXiJhz6R0FR3ZTSx8xDIR82cVrHFJVpNofbP3cC3zx+Ub1X3vf5cwPJN6ZhZ4taFRZPiLGUKccEXHAWiuGvwMP826V7YBa8EgXOWc+mHd+qAsOfa8yaXzC5ur5zuqjY0p8wQAYbgVgql5I25zxcZBdeCa5hYO+ZMuY8j0k683CCW3IaTkqLYEabaYsF8TnM2Bs4m7g7PHZ/njMzSDc40jn0fkjeAYKMfLj5PBR+BPKgGZHsIUZkjPNBMTgTrmatZ9zh1vskAjDThGqaeAxXWcQ8D43lFh9cKwK8Zn3nJVl01Y9QZzD4iVJbeyqZqpNc/zoYJyMGPoVzN9kLG8kqF5jLWDtZXprRG/O+lyhWkdyOS+y9lJhvQBuywjDr6+lK2DtqqB+MeeLSnXmZFQVCZxuLQccZahto503dbnOwW5TzeWuw4i6s66iyfaCHLz5hKFrZcVv259ep6ArOQhxjtRRtU8h5ELr8LJh1KkU5MKMd1uxrYcZr0qREDSa98fCxxa3/Fhxx6S60pDLKRpiZHQ1YznkDUb6sLqk2wmJl6K0QfqdfcDWMKF4aNi+AmG0Wtp8hzrEB430OEvkKHR+vEBp2MOqOP4NNiNAn/eo9qp1duj8jogLOafO4DJSNy1fRmWnCDwd4JHG5T1vVg4KCwE6/FW2R50r05yojNgt0PHb7vYLSCAPIZz/k+WyXEwr8dVRt1cLKFWNwdz4NEYq5ESiPCC4tNHLlNZ+zTfMTDzUPu/iJDssxEFHshyfnIrzTDZIsG7ts4xXu4DxpXoFIhdMKTvmTJ3vu8SUejBz64PNXjubODm43fi9sdWUxJMBfrnpqNc/vfmL2L1Rum/nH4SCTLo
- 2ceARE4w
- 2iTaN/GjkUtOpcwXpRWm03Uf9YwgBWQFE+UUdL7Y+hO+6ogj3/ntuK+GI1bN3sZMLXvKfg2KZvGd11D+V5AjX/EeVCsd0+khEM+vpce5F+EB34cldXdHr5PH0czwxYi+J2CTjy0yaZDrMDrWYretu6jzsKvWC0GyALEjj+vl/bnI/qefOXJQhp7KR7t5EzwF9kM5GqBguAQDDqDObq8sYOKEKk7MZj5bMLQIjIYE5d2vwc4MUBnZIr159R8mgNbkiV6I2/uG7Abtbk4FDw+Y1f6VJF0el4IdVbW/Ou0GgtG5E1AdR4lWaidbm4oq8/sEHKQ4wNDBloOYDhmFxFkwaqhjd2irvHAV5hJriLAO6gFpHXGU+k5SEFGCH1Myr32Aywwqxpyr53pQ55H+VPiOmpjBaBfE9LmZQp5PIq3rBuzc9QttoMNm2Wr0kMEFG36WAe69/ZYCQAl2KWUMvpSd6wOWJvTkRLXnz6cFA
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774971289-314570
+X-HE-Meta: U2FsdGVkX19hqw7TQM13vs7VgIs+o6j/uL4v5U9EVGw2PE3biK8VyHi/Ehyi0cwGeP6blz7h2utHw+tlrcDPS4pM3BjuFrzUK+7K/F6wNV6Z2jMPaD2RWJYzjLNbczjasXutfTUIs2hJohPq9DBCIn2xAtO5A3JNl5oKYlIKT+XGOfxUAmUSJSNwk2KmX7UJt05JTr+oXOUcaw378/GS4OLaGbHxdjaLJzDMdC1HE7RxeeUb6cLtAL58wSujBEZwDPyu3sQKqWuYhSdp9mbfVy1Z6LIHDjF4w76WegRE8E4QtrWd5pLwF/h1PEloGc6Z76YrTFTXl3dRka8MDdnSMHTVWc0J4ptBSsiBZEsGDSAHVQ6KwMgMAApWK8ueGn0L1cnhpZwqdbdLPewOpdCwroLH/nZhhy3NpzGROvV33r7rOfY0x/xhHjiyIvj8ra44DDYcadrIpV4gPW8WwY9RFz+pj+T3094nOGG9D+DSe4mT+uFrCxOHKCPdB9EYKVlp4Qi2gobngG29tOreYLWobcA3AmLxUGEbcVsGbz7U7GYP2/4aoLLLLSZEoXp8wT80KXwx+6hVnCd9EUqHzTpkFVNqfXobRoKjZsH6jpfQe/23fNj+VHCsnp6vngnMvkim5bGsj2ov663u7Q6fdVTXV/F70m9NHUNFnTCfyhiD3qvSKww+krt+8o2XK/anpGSdstTEPSgduvuFBL4Tj7w72TGBxfIgo/jr0I/k6yquermg1naUnKQ8QV7a+NViiPFkFTk7sTTWdcuwX7KVyQXLLw59WKyGKZy5dKujcFlT4oj18vxU++sO7aWVAKQWJTtb9PL4O5fwmwJr64Yf1UJPnLz4Xfqv4H9DFX2+T/QngMN7jF2brAd0XJabPUAZL/bAlmh0PXZB6Ezt8mKFH/kbt+6gpRBaypmQdPBuqbzI554isTBC6KBmSw0t6ea9OOAoKjcbCR+9EWoSVSuvbtH
+ 3eyn5ORU
+ gZRC10XMYSkH+uIVpCG5Qn+0fZKzHe04OVmyku3B8YosZpdwhPI1gMRvAUUuTiSA6ufY6w0hZvL2+nH3xP518riWHYOUq9XWwaGrFTbaaSjdcNaNvDXqca7iR1dsPAj5CkO9sUqomlzvTrqdzQXXXi8uDZ9J8WCMIKHQ3SjCGMzNuoneHjCYY5EC8YN7K5w5DYGFhMAKeNsdDTaBIGZ+0RfKEPq+j++e814ms3Hottzls+vESPkMBPu9iduOQ/fCH9xZwnM3usisGEHsI1N2zdCbn4+Acb34pU2yUUSYumzVwf1LGjPl17YBsdtXlxE8r68M5MIm2CfkbfvwY8nDu2GawH/vVJsc9Masm1iPsi7sNTEX+/Wa5Ki+igoCAdDa27Pbj1rHnWv42ZmoHFec9kWjHJGbyVws8yC16hOruow4DMJH0ZYwh15n9mkZXsGImwDH9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,148 +151,320 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Boris Brezillon,
+On Tue, Mar 31, 2026 at 8:06=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Tue, Mar 31, 2026 at 2:51=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@ker=
+nel.org> wrote:
+> >
+> > On Fri, Mar 27, 2026 at 04:12:26PM -0700, Andrew Morton wrote:
+> > > On Fri, 27 Mar 2026 13:54:51 -0700 Suren Baghdasaryan <surenb@google.=
+com> wrote:
+> > >
+> > > > Now that we have vma_start_write_killable() we can replace most of =
+the
+> > > > vma_start_write() calls with it, improving reaction time to the kil=
+l
+> > > > signal.
+> > > >
+> > > > There are several places which are left untouched by this patchset:
+> > > >
+> > > > 1. free_pgtables() because function should free page tables even if=
+ a
+> > > > fatal signal is pending.
+> > > >
+> > > > 2. userfaultd code, where some paths calling vma_start_write() can
+> > > > handle EINTR and some can't without a deeper code refactoring.
+> > > >
+> > > > 3. mpol_rebind_mm() which is used by cpusset controller for migrati=
+ons
+> > > > and operates on a remote mm. Incomplete operations here would resul=
+t
+> > > > in an inconsistent cgroup state.
+> > > >
+> > > > 4. vm_flags_{set|mod|clear} require refactoring that involves movin=
+g
+> > > > vma_start_write() out of these functions and replacing it with
+> > > > vma_assert_write_locked(), then callers of these functions should
+> > > > lock the vma themselves using vma_start_write_killable() whenever
+> > > > possible.
+> > >
+> > > Updated, thanks.
+> >
+> > Andrew - sorry I think we need to yank this and defer to next cycle,
+> > there's too many functional changes here.
+> >
+> > (There was not really any way for me to predict this would happen ahead=
+ of
+> > time, unfortunately.)
+>
+> Ok, no objections from me. I'll post v6 removing the part Lorenzo
+> objects to and you can pick it up whenever you deem appropriate.
 
-> -----Original Message-----
-> From: Boris Brezillon <boris.brezillon@collabora.com>
-> Sent: 20 March 2026 15:19
-> Subject: [PATCH] drm/shmem_helper: Make sure PMD entries get the writeabl=
-e upgrade
->=20
-> Unlike PTEs which are automatically upgraded to writeable entries if
-> .pfn_mkwrite() returns 0, the PMD upgrades go through .huge_fault(), and =
-we currently pretend to have
-> handled the make-writeable request even though we only ever map things re=
-ad-only. Make sure we pass
-> the proper "write" info to vmf_insert_pfn_pmd() in that case.
->=20
-> This also means we have to record the mkwrite event in the .huge_fault() =
-path now. Move the dirty
-> tracking logic to a
-> drm_gem_shmem_record_mkwrite() helper so it can also be called from drm_g=
-em_shmem_pfn_mkwrite().
->=20
-> Note that this wasn't a problem before commit 28e3918179aa
-> ("drm/gem-shmem: Track folio accessed/dirty status in mmap"), because the=
- pgprot were not lowered to
-> read-only before this commit (see the
-> vma_wants_writenotify() in vma_set_page_prot()).
->=20
-> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in=
- mmap")
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Biju Das <biju.das.jz@bp.renesas.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Just saw Lorenzo's other reply about reworking some vma error handling
+first. I'll wait for that rework before posting the new version.
 
-
-Thanks, weston is now back on RZ/G3L SMARC EVK with mesa 24.0.7 Panfrost
-
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-
-Cheers,
-Biju
-
-
-> ---
->=20
-> This patch is based on drm-tip [2], because that's the only branch that h=
-as both [1] and the dirty
-> tracking changes that live in drm-misc-next.
->=20
-> Also added the THP maintainers in Cc, so I can hopefully get some feedbac=
-k on the fix. For instance,
-> I'm still unsure
-> drm_gem_shmem_pfn_mkwrite() is race-free (do we need some locking there? =
-should we call
-> folio_mark_dirty_lock()? should we call the fault handler directly from t=
-here and have all the dirty
-> tracking in this .[huge_]fault path?).
->=20
-> [1]https://yhbt.net/lore/dri-devel/20260319015224.46896-1-pedrodemargomes=
-@gmail.com/
-> [2]https://gitlab.freedesktop.org/drm/tip
-> ---
->  drivers/gpu/drm/drm_gem_shmem_helper.c | 46 ++++++++++++++++++--------
->  1 file changed, 32 insertions(+), 14 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm=
-_gem_shmem_helper.c
-> index 2062ca607833..545933c7f712 100644
-> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -554,6 +554,21 @@ int drm_gem_shmem_dumb_create(struct drm_file *file,=
- struct drm_device *dev,  }
-> EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
->=20
-> +static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf) {
-> +	struct vm_area_struct *vma =3D vmf->vma;
-> +	struct drm_gem_object *obj =3D vma->vm_private_data;
-> +	struct drm_gem_shmem_object *shmem =3D to_drm_gem_shmem_obj(obj);
-> +	loff_t num_pages =3D obj->size >> PAGE_SHIFT;
-> +	pgoff_t page_offset =3D vmf->pgoff - vma->vm_pgoff; /* page offset
-> +within VMA */
-> +
-> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >=3D num_pages))
-> +		return;
-> +
-> +	file_update_time(vma->vm_file);
-> +	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
-> +}
-> +
->  static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int orde=
-r,
->  				 unsigned long pfn)
->  {
-> @@ -566,8 +581,23 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vm=
-f, unsigned int order,
->=20
->  		if (aligned &&
->  		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
-> +			vm_fault_t ret;
-> +
->  			pfn &=3D PMD_MASK >> PAGE_SHIFT;
-> -			return vmf_insert_pfn_pmd(vmf, pfn, false);
-> +
-> +			/* Unlike PTEs which are automatically upgraded to
-> +			 * writeable entries, the PMD upgrades go through
-> +			 * .huge_fault(). Make sure we pass the "write" info
-> +			 * along in that case.
-> +			 * This also means we have to record the write fault
-> +			 * here, instead of in .pfn_mkwrite().
-> +			 */
-> +			ret =3D vmf_insert_pfn_pmd(vmf, pfn,
-> +						 vmf->flags & FAULT_FLAG_WRITE);
-> +			if (ret =3D=3D VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
-> +				drm_gem_shmem_record_mkwrite(vmf);
-> +
-> +			return ret;
->  		}
->  #endif
->  	}
-> @@ -655,19 +685,7 @@ static void drm_gem_shmem_vm_close(struct vm_area_st=
-ruct *vma)
->=20
->  static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)  {
-> -	struct vm_area_struct *vma =3D vmf->vma;
-> -	struct drm_gem_object *obj =3D vma->vm_private_data;
-> -	struct drm_gem_shmem_object *shmem =3D to_drm_gem_shmem_obj(obj);
-> -	loff_t num_pages =3D obj->size >> PAGE_SHIFT;
-> -	pgoff_t page_offset =3D vmf->pgoff - vma->vm_pgoff; /* page offset with=
-in VMA */
-> -
-> -	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >=3D num_pages))
-> -		return VM_FAULT_SIGBUS;
-> -
-> -	file_update_time(vma->vm_file);
-> -
-> -	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
-> -
-> +	drm_gem_shmem_record_mkwrite(vmf);
->  	return 0;
->  }
->=20
-> --
-> 2.53.0
-
+>
+> >
+> > >
+> > > > Changes since v5 [1]:
+> > > > - Added Reviewed-by for unchanged patches, per Lorenzo Stoakes
+> > > >
+> > > > Patch#2:
+> > > > - Fixed locked_vm counter if mlock_vma_pages_range() fails in
+> > > > mlock_fixup(), per Sashiko
+> > > > - Avoid VMA re-locking in madvise_update_vma(), mprotect_fixup() an=
+d
+> > > > mseal_apply() when vma_modify_XXX creates a new VMA as it will alre=
+ady be
+> > > > locked. This prevents the possibility of incomplete operation if si=
+gnal
+> > > > happens after a successful vma_modify_XXX modified the vma tree,
+> > > > per Sashiko
+> >
+> > Prevents the possibility of an incomplete operation? But
+> > vma_write_lock_killable() checks to see if you're _already_ write locke=
+d
+> > and would make the operation a no-op? So how is this even a delta?
+> >
+> > It's a brave new world, arguing with sashiko via a submitter... :)
+>
+> Yeah, this is not really a problem but I thought I would change it up
+> to make it apparent that the extra vma_write_lock_killable() is not
+> even called.
+>
+> >
+> > > > - Removed obsolete comment in madvise_update_vma() and mprotect_fix=
+up()
+> > > >
+> > > > Patch#4:
+> > > > - Added clarifying comment for vma_start_write_killable() when lock=
+ing a
+> > > > detached VMA
+> > > > - Override VMA_MERGE_NOMERGE in vma_expand() to prevent callers fro=
+m
+> > > > falling back to a new VMA allocation, per Sashiko
+> > > > - Added a note in the changelog about temporary workaround of using
+> > > > ENOMEM to propagate the error in vma_merge_existing_range() and
+> > > > vma_expand()
+> > > >
+> > > > Patch#5:
+> > > > - Added fatal_signal_pending() check in do_mbind() to detect
+> > > > queue_pages_range() failures due to a pendig fatal signal, per Sash=
+iko
+> > >
+> > > Changes since v5:
+> > >
+> > >
+> > >  mm/madvise.c   |   15 ++++++++++-----
+> > >  mm/mempolicy.c |    9 ++++++++-
+> > >  mm/mlock.c     |    2 ++
+> > >  mm/mprotect.c  |   26 ++++++++++++++++----------
+> > >  mm/mseal.c     |   27 +++++++++++++++++++--------
+> > >  mm/vma.c       |   20 ++++++++++++++++++--
+> > >  6 files changed, 73 insertions(+), 26 deletions(-)
+> > >
+> > > --- a/mm/madvise.c~b
+> > > +++ a/mm/madvise.c
+> > > @@ -172,11 +172,16 @@ static int madvise_update_vma(vm_flags_t
+> > >       if (IS_ERR(vma))
+> > >               return PTR_ERR(vma);
+> > >
+> > > -     madv_behavior->vma =3D vma;
+> > > -
+> > > -     /* vm_flags is protected by the mmap_lock held in write mode. *=
+/
+> > > -     if (vma_start_write_killable(vma))
+> > > -             return -EINTR;
+> > > +     /*
+> > > +      * If a new vma was created during vma_modify_XXX, the resultin=
+g
+> > > +      * vma is already locked. Skip re-locking new vma in this case.
+> > > +      */
+> > > +     if (vma =3D=3D madv_behavior->vma) {
+> > > +             if (vma_start_write_killable(vma))
+> > > +                     return -EINTR;
+> > > +     } else {
+> > > +             madv_behavior->vma =3D vma;
+> > > +     }
+> > >
+> > >       vma->flags =3D new_vma_flags;
+> > >       if (set_new_anon_name)
+> > > --- a/mm/mempolicy.c~b
+> > > +++ a/mm/mempolicy.c
+> > > @@ -1546,7 +1546,14 @@ static long do_mbind(unsigned long start
+> > >                       flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagel=
+ist);
+> > >
+> > >       if (nr_failed < 0) {
+> > > -             err =3D nr_failed;
+> > > +             /*
+> > > +              * queue_pages_range() might override the original erro=
+r with -EFAULT.
+> > > +              * Confirm that fatal signals are still treated correct=
+ly.
+> > > +              */
+> > > +             if (fatal_signal_pending(current))
+> > > +                     err =3D -EINTR;
+> > > +             else
+> > > +                     err =3D nr_failed;
+> > >               nr_failed =3D 0;
+> > >       } else {
+> > >               vma_iter_init(&vmi, mm, start);
+> > > --- a/mm/mlock.c~b
+> > > +++ a/mm/mlock.c
+> > > @@ -518,6 +518,8 @@ static int mlock_fixup(struct vma_iterat
+> > >               vma->flags =3D new_vma_flags;
+> > >       } else {
+> > >               ret =3D mlock_vma_pages_range(vma, start, end, &new_vma=
+_flags);
+> > > +             if (ret)
+> > > +                     mm->locked_vm -=3D nr_pages;
+> > >       }
+> > >  out:
+> > >       *prev =3D vma;
+> > > --- a/mm/mprotect.c~b
+> > > +++ a/mm/mprotect.c
+> > > @@ -716,6 +716,7 @@ mprotect_fixup(struct vma_iterator *vmi,
+> > >       const vma_flags_t old_vma_flags =3D READ_ONCE(vma->flags);
+> > >       vma_flags_t new_vma_flags =3D legacy_to_vma_flags(newflags);
+> > >       long nrpages =3D (end - start) >> PAGE_SHIFT;
+> > > +     struct vm_area_struct *new_vma;
+> > >       unsigned int mm_cp_flags =3D 0;
+> > >       unsigned long charged =3D 0;
+> > >       int error;
+> > > @@ -772,21 +773,26 @@ mprotect_fixup(struct vma_iterator *vmi,
+> > >               vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+> > >       }
+> > >
+> > > -     vma =3D vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma=
+_flags);
+> > > -     if (IS_ERR(vma)) {
+> > > -             error =3D PTR_ERR(vma);
+> > > +     new_vma =3D vma_modify_flags(vmi, *pprev, vma, start, end,
+> > > +                                &new_vma_flags);
+> > > +     if (IS_ERR(new_vma)) {
+> > > +             error =3D PTR_ERR(new_vma);
+> > >               goto fail;
+> > >       }
+> > >
+> > > -     *pprev =3D vma;
+> > > -
+> > >       /*
+> > > -      * vm_flags and vm_page_prot are protected by the mmap_lock
+> > > -      * held in write mode.
+> > > +      * If a new vma was created during vma_modify_flags, the result=
+ing
+> > > +      * vma is already locked. Skip re-locking new vma in this case.
+> > >        */
+> > > -     error =3D vma_start_write_killable(vma);
+> > > -     if (error)
+> > > -             goto fail;
+> > > +     if (new_vma =3D=3D vma) {
+> > > +             error =3D vma_start_write_killable(vma);
+> > > +             if (error)
+> > > +                     goto fail;
+> > > +     } else {
+> > > +             vma =3D new_vma;
+> > > +     }
+> > > +
+> > > +     *pprev =3D vma;
+> > >
+> > >       vma_flags_reset_once(vma, &new_vma_flags);
+> > >       if (vma_wants_manual_pte_write_upgrade(vma))
+> > > --- a/mm/mseal.c~b
+> > > +++ a/mm/mseal.c
+> > > @@ -70,17 +70,28 @@ static int mseal_apply(struct mm_struct
+> > >
+> > >               if (!vma_test(vma, VMA_SEALED_BIT)) {
+> > >                       vma_flags_t vma_flags =3D vma->flags;
+> > > -                     int err;
+> > > +                     struct vm_area_struct *new_vma;
+> > >
+> > >                       vma_flags_set(&vma_flags, VMA_SEALED_BIT);
+> > >
+> > > -                     vma =3D vma_modify_flags(&vmi, prev, vma, curr_=
+start,
+> > > -                                            curr_end, &vma_flags);
+> > > -                     if (IS_ERR(vma))
+> > > -                             return PTR_ERR(vma);
+> > > -                     err =3D vma_start_write_killable(vma);
+> > > -                     if (err)
+> > > -                             return err;
+> > > +                     new_vma =3D vma_modify_flags(&vmi, prev, vma, c=
+urr_start,
+> > > +                                                curr_end, &vma_flags=
+);
+> > > +                     if (IS_ERR(new_vma))
+> > > +                             return PTR_ERR(new_vma);
+> > > +
+> > > +                     /*
+> > > +                      * If a new vma was created during vma_modify_f=
+lags,
+> > > +                      * the resulting vma is already locked.
+> > > +                      * Skip re-locking new vma in this case.
+> > > +                      */
+> > > +                     if (new_vma =3D=3D vma) {
+> > > +                             int err =3D vma_start_write_killable(vm=
+a);
+> > > +                             if (err)
+> > > +                                     return err;
+> > > +                     } else {
+> > > +                             vma =3D new_vma;
+> > > +                     }
+> > > +
+> > >                       vma_set_flags(vma, VMA_SEALED_BIT);
+> > >               }
+> > >
+> > > --- a/mm/vma.c~b
+> > > +++ a/mm/vma.c
+> > > @@ -531,6 +531,10 @@ __split_vma(struct vma_iterator *vmi, st
+> > >       err =3D vma_start_write_killable(vma);
+> > >       if (err)
+> > >               goto out_free_vma;
+> > > +     /*
+> > > +      * Locking a new detached VMA will always succeed but it's just=
+ a
+> > > +      * detail of the current implementation, so handle it all the s=
+ame.
+> > > +      */
+> > >       err =3D vma_start_write_killable(new);
+> > >       if (err)
+> > >               goto out_free_vma;
+> > > @@ -1197,8 +1201,14 @@ int vma_expand(struct vma_merge_struct *
+> > >
+> > >       mmap_assert_write_locked(vmg->mm);
+> > >       err =3D vma_start_write_killable(target);
+> > > -     if (err)
+> > > +     if (err) {
+> > > +             /*
+> > > +              * Override VMA_MERGE_NOMERGE to prevent callers from
+> > > +              * falling back to a new VMA allocation.
+> > > +              */
+> > > +             vmg->state =3D VMA_MERGE_ERROR_NOMEM;
+> > >               return err;
+> > > +     }
+> > >
+> > >       target_sticky =3D vma_flags_and_mask(&target->flags, VMA_STICKY=
+_FLAGS);
+> > >
+> > > @@ -1231,8 +1241,14 @@ int vma_expand(struct vma_merge_struct *
+> > >                * is pending.
+> > >                */
+> > >               err =3D vma_start_write_killable(next);
+> > > -             if (err)
+> > > +             if (err) {
+> > > +                     /*
+> > > +                      * Override VMA_MERGE_NOMERGE to prevent caller=
+s from
+> > > +                      * falling back to a new VMA allocation.
+> > > +                      */
+> > > +                     vmg->state =3D VMA_MERGE_ERROR_NOMEM;
+> > >                       return err;
+> > > +             }
+> > >               err =3D dup_anon_vma(target, next, &anon_dup);
+> > >               if (err)
+> > >                       return err;
+> > > _
+> > >
 
