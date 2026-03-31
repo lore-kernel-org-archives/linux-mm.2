@@ -4,81 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD30710F92FF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A780010F9302
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 20:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D65A76B0092; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
+	id CFC466B0092; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D15E06B0095; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
+	id CD4726B0095; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C04976B0096; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
+	id BE9D96B0096; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB7936B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:42:49 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 515BA1A0410
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:42:49 +0000 (UTC)
-X-FDA: 84607532058.29.B10241D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD8296B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 16:50:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5962F8B7E4
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:50:54 +0000 (UTC)
+X-FDA: 84607552428.13.138E595
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9A6144000C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:42:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eba21Pvm;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6525F40009
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:50:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0ekHcU8;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774989767;
+	s=arc-20220608; t=1774990252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KetaSXAFzmNw2ScxNIo3ttVtjT2Evc3UVkvUnmSfR/Y=;
-	b=gmmGNkz3yVfaD/EWnHvIY0YDmV+rwoXIOtIxn32fuJg4ae6NAZr+om4vUpMNX/h+BoH99g
-	RKIG32h7bbgkhhBcqnU3hOSFFoyzd8PSNuAVyJsGoC1p6Ruzzxookzf3/65tp8TqzAYX3k
-	Smx8iBv98smfwxutLV/wUG1X2tfabkk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774989767; a=rsa-sha256;
-	cv=none;
-	b=kfQ4ewHJfe5ckq7QFuGHg33s+Qp8higec3uPXwjhOGhXXFedPa3NVmWf6IW6jppJv5P3m5
-	o/WVYrOxCAyQx13pacsKa5MpSbYZdyKiZdP+lHudrJ6dxV0gWPi0ljynRVDmekPsrYSvNs
-	t8zhtop3vuoorbIU8ZSpM5Ofi7SnulU=
+	bh=ho/lxcLP1M5/u0UNdE+ZMlKo93vNUCFOIO+Ln7ZTxZU=;
+	b=m7AmKQR74z8N+a83LXigLZDZx2A1KBiOMYwoTBCLK6ElHCfOB86zTBQ9NKhlYut7PzDNCF
+	WeL8bWZvuh6O1p0a/SoeXSIZiypVTYK2NWOVq8/PIejmkPGUGO9+TSwAMp7btUvygeRESt
+	Ed+olpnJiUF9O68s+9IwEgWN4Ci0N2g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eba21Pvm;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0ekHcU8;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774990252; a=rsa-sha256;
+	cv=none;
+	b=rKlVMQX++UrrpDzB6qQT9iVo57bwIN3JkLsl0rAylgQhcHAYyAgub8F+aXWUy6rzvEovbX
+	e+gCZH92EqopyUYCOWflwmet8IG0VQcKekU3pTgSulfs3Woc92czY8ArnlqtLqTpI6jhR5
+	xDTY9m850jKOyb9lKgAbUGIrQCvfV+I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A156944318;
-	Tue, 31 Mar 2026 20:42:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46024C2BCB0;
-	Tue, 31 Mar 2026 20:42:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E29E043E75;
+	Tue, 31 Mar 2026 20:50:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120B0C19423;
+	Tue, 31 Mar 2026 20:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774989766;
-	bh=oB8dpB+SN9yPzGGvndka9yi2F9CpLqgw73xHznRR0bc=;
+	s=k20201202; t=1774990250;
+	bh=VK5A4yy0VGMGiyXdNogpkOycz3ulih/Q35ZzZi3/ebQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Eba21PvmyJy14oTz6L7Ltue5mqV1wwUxLmuP/Z2Sa3rv+mC7pAlOiiguGcgVDxhxI
-	 hyCRx/Bj4qCDtLiuufrjMmGRCHquV38SGLFbds6tQYOy/rySar0qxnJkjZxlCZW4DM
-	 FfUMq69OgoTywRD4a32eQKX7vaYy7ARfbq2FS1tSg/7yC4yJnMkTX+ioDIeQWZeySe
-	 3UKnPhV3t0zQNRlWM10Z1PfqixOu2Nh7+z2ymB6bP0XcKYNCOSYtSIYlmNyckrqeGd
-	 m2vEjoWhNMORlvWXhrTCI0/jn0CPYOthlKW9C6oeHeiQEf45W0VE5BMTDSQI9EDWh8
-	 Gi6T1cAm9VB6w==
-Message-ID: <17246161-f314-45da-933a-770231ef2a49@kernel.org>
-Date: Tue, 31 Mar 2026 22:42:40 +0200
+	b=L0ekHcU8aNxw4cMIJhgWfXXXKP5fXHi3LkO2rqW6zLNI1wPu7ssDqAQmTPZz580wD
+	 nwl6fHS2MgUzWVlrLtfcWMKq2s/RGhvBBceLAwg30j6zxYztucryxJC+X9diEyRi9z
+	 GtxdAg+bnItIiYefGAHCHK+6PjEYfhGFVwTeVGbGwjK8R50ZStqSIqwCDr748/goSN
+	 hzZq1G9UCmZu82yR/jX9kOb/TqZC1ZYVpvr7naTxHK+jaNiqZv6UINRR7LTKblzygU
+	 pVPzl5c7sW4GqgitT4Dr0PMTWnAyW5wxlbyy+mFx6HMEQlKO9b1wOXSSzQ9QZMWSNc
+	 9wcO0z/+FPeDw==
+Message-ID: <37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
+Date: Tue, 31 Mar 2026 22:50:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
- failure path
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, muchun.song@linux.dev
-References: <20260331113724.2080833-1-songmuchun@bytedance.com>
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, aarcange@redhat.com, akpm@linux-foundation.org,
+ anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
+ cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
+ dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
+ jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260325114022.444081-1-npache@redhat.com>
+ <20260325114022.444081-6-npache@redhat.com>
+ <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+ <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
+ <fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
+ <26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
+ <440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +143,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260331113724.2080833-1-songmuchun@bytedance.com>
+In-Reply-To: <440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: srdfssznx6d9mdbjgscjr9ofjzstxmpw
-X-Rspamd-Queue-Id: 9A6144000C
+X-Rspamd-Queue-Id: 6525F40009
+X-Stat-Signature: 84sqyp31be1jqsx18zd5kphpz86pc6di
 X-Rspam-User: 
-X-HE-Tag: 1774989767-829515
-X-HE-Meta: U2FsdGVkX1+EgcWlQOor+iwzrr0gkre/yirBjEjtmEskTnbWMriAL01CAotq5vnZL7LgUJatGUmCflzwm+xXVuNdifS+apx6MPzPfrZaV+T0loMh5fVl1QZsdKASAVNGobTtgKI5nigbRbFPubGDJWrcPszKiMa2HGdj6ls0O6THEABLgmvz0t9hO3LeczHmmlXgp+c5PIouCTJtyHJv0RvzH8S344VZtvSwLKCssVfPoKGwP0+5NYDeVphmfZaIQ/tHm8KW+OzfRvqHtuSPi2yhtjfwjTiZtw7VB0XP72C1xnUvPTqU3iS4x9y2fIBbmC4Cp7xHOd6MHeGZvnyx8jtczb6IqkTpF94fUCbtUKi1srQCJKT756Czx7plC9suw3BnaREixIYoSifSyhr09MROuqEMvZwFeK3n97CprtvHtfiqH7wQEn6lGdOdgwJpJUsJUUDifBN/1Of90HxyGo5vGUHRX+zNZsqjltEWeHQGdwyqCbBmgll57BIs79DeFBWlCCv94xDseUuU5RI/Xaj3FVV2mGnDXNBymahMwKuoCFwINmQ5je7wYkh5yA+NMDRbnkPLhZPKHjvjC61Vt7T3AFbnjrJxIXWAgIfU73zOfMtK0CiASowdtNbSAJXDVH9hYAOj32zW4giezia8JgiE0q8VjGXmw/IkNsNtNENJnc9xjFVDvaCItrkblMOJWUow1eZDDW4Pg4vtI8fy8Xd3lbO2AZKfIux86jfnUgzJZhCazFKGM99iARUvHEMGz4Q03LHiy3HoQCwOBVIKdHxgB9LzXdCwfrvOAc+CiRtsjFjUTJ/HDbAMDTmfUD7/GW4nFSnAvlnO9BglC8Oj6lD1w1oLmNBhlQLsGAIKZ81vohiSPJaC6IwhOJpyQm7Jtbmf45kGSojJtfNg+5PPBFsZskj25PLvZjM6KTdbiB21iRx5T3BbzRVMq3qPQEI/3pUjOdlOIcsUiQvJwjx
- Y5wTWERu
- VZJ+Lca6bXaWqfZk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774990252-469651
+X-HE-Meta: U2FsdGVkX196lvXZ30bIlAf0RSnZI/dwbSgxMyGQsoI3Gvk9h/kh5TcJamXXX87m0l80VjPanXkaEmg8KyfG9C/dCfqE0N9FzYMdohPYEv/Mg1LpcZwWctCQshTabuy7INKemx6anwe/QyanF6qE9Z4vEB39Jmdh5i0TNhlJKqBeBKwRUktetsnzxiyi9G20J3gb3LOctgGwThPVCjYq6QHnZVLWxwvuedaO3u9fMT6PIMynHiARmVU4hrgQDBgaJiFmTf4nAQf5AMwKeUfQ6wwurWt2VgLdF9CC5lhyuCsf2cg+jXdm3iu5fdEq5MDuQXhffSj9Uicaylr5etFVOmQQxyJUnR4xLQIz8jXkcgGqsiq1m6Tg8KlhJUWbZz+ipbtmXkIDnm/03+yHpNNZZIdo03lNQQ8p0yC+k5zLbuIj5Zg/uTX+qAlTG1GCci7f8QkRrchAiPNQU/1gS/J/iykFpBzEQ6E1EivQeFnEmQaFHYOZt8iPN4HwmOWIgWsBceWv6MOgjekj/G49DUlyC8t5RGUvcPIcCLFJjQF11KTk+XFT2KgYQGGdnzZ8js39m4lau4WRQpMXDUsQRP7uh3bHVbqtsNgcf572gi6s+Ou+36KopMd+8Ra1BifPByJJx6Ua5r4MJ82kjdBaABV9F7IXn11NgMB2LF4N4jljKAX1sZJmbTGlvbuFaneeDoUfSwS8h5s8wxzuEw/QmcuTD8vMxr/BOW7fiQIwTXQvl9fB6+XbYy/BC0ZWNtA6hSAOlRAJt4k9EWnXoyDxyH5gIFCPRhJ+Ldy0Rf6cYRWckSexUun4z9D8+E7wHRRhxVYNrwesMNnvepMjg5RxxPPCKKKjGr9dgb4wFzImga+4+zMW3qVuSGOFkOtIzO6JXARgFQSSPY5BKxWwA8fgwFBxUq848OwLX83rU/FdhZoQdfWeQo8fIZfsSdzjBQPGWTTRjxT6x7Ux2UcOnLBQV6Z
+ 3zGkE3yj
+ SkuZlTXCrrZz23sQ6SKW1KIBW7bsLFNwFTzJea6XU5AVlgVlKg9wzsSb6ANYSb5XfELZI4HNMjdJD0SEka2G5mNMsa+t/fOh2nY2phDCUcP05ZfnTw9c7tovNH8L9R5SsFxTySu5ByNKgL7Gy9aZFSuwgM/PBhKClwUvxJDn2bs7LVUeTjBoWNqtDZup1YoCUc2WS3KaEmOlHcMvtsvw++KkIyFSFWj0y6wfMl8VNNRrbNXUwPR8qNAib7Pg2QPcNOJqUGpNI01snYfPGRUAr+3ocZFKYP3MWGJD2+kLjs5L5qIXVOFlJcjoiNPC9U/tDpHUbl6PqiRbr14FiQ7Po7ohkltQVNmmQEbYAvPQrytBn8BC8LTiP3n5iXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,46 +161,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 13:37, Muchun Song wrote:
-> sparse_init_nid() is careful to leave alone every section whose vmemmap
-> has already been set up by sparse_vmemmap_init_nid_early(); it only
-> clears section_mem_map for the rest:
+On 3/31/26 22:06, Lorenzo Stoakes (Oracle) wrote:
+> On Tue, Mar 31, 2026 at 10:00:58PM +0200, David Hildenbrand (Arm) wrote:
+>> On 3/31/26 16:15, Lorenzo Stoakes (Oracle) wrote:
+>>>
+>>> That updates mmap_unlocked which will be handled in the loop or on exit:
+>>>
+>>> 		if (mmap_unlocked) {
+>>> 			...
+>>> 			mmap_read_lock(mm);
+>>> 			mmap_unlocked = false;
+>>> 			*lock_dropped = true;
+>>> 			...
+>>> 		}
+>>>
+>>> 		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
+>>>
+>>> ...
+>>>
+>>> out_maybelock:
+>>> 	/* Caller expects us to hold mmap_lock on return */
+>>> 	if (mmap_unlocked) {
+>>> 		*lock_dropped = true;
+>>> 		mmap_read_lock(mm);
+>>> 	}
+>>>
+>>
+>> Right.
+>>
+>> The original code used
+>>
+>> 	bool mmap_locked = true;
+>>
+>> If the fix get squashed, maybe we should revert to that handling to
+>> minimize the churn?
 > 
->         if (!preinited_vmemmap_section(ms))
->                 ms->section_mem_map = 0;
-> 
-> A leftover line after that conditional block
-> 
->         ms->section_mem_map = 0;
-> 
-> was supposed to be deleted but was missed in the failure path, causing the
-> field to be overwritten for all sections when memory allocation fails,
-> effectively destroying the pre-initialization check.
-> 
-> Drop the stray assignment so that preinited sections retain their
-> already valid state.
-> 
-> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  mm/sparse.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index c2eb36bfb86d..3a14b733bf71 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
->  		ms = __nr_to_section(pnum);
->  		if (!preinited_vmemmap_section(ms))
->  			ms->section_mem_map = 0;
-> -		ms->section_mem_map = 0;
+> Well collapse_single_pmd() and all descendents would need to be updated to
+> invert the boolean, not sure it's worth it.
 
+The code is confusing me.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+In the old code, collapse_single_pmd() was called with "mmap_locked ==
+true" and set "mmap_locked=false".
 
-I have some cleanup patches lying around that cleanup that code heavily.
-I think I get rid of this questionable "failed to allocate" case entirely.
+Now we call it with "mmap_unlocked=false" and it sets "mmap_unlocked=true".
+
+So far so good.
+
+However, collapse_scan_pmd() consumed "mmap_locked", now it effectively
+consumes "mmap_unlocked".
+
+I think I have to squash your fix into Nicos patch to make sense of this. :)
+
 
 -- 
 Cheers,
