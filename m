@@ -4,118 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF06BFF60F4
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 17:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43BEDFF60F4
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 17:55:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7086B008C; Tue, 31 Mar 2026 13:50:58 -0400 (EDT)
+	id 899406B008C; Tue, 31 Mar 2026 13:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29E796B0095; Tue, 31 Mar 2026 13:50:58 -0400 (EDT)
+	id 8710D6B0095; Tue, 31 Mar 2026 13:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3E56B0096; Tue, 31 Mar 2026 13:50:58 -0400 (EDT)
+	id 7AD386B0096; Tue, 31 Mar 2026 13:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 06D836B008C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 13:50:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A12F6B008C
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 13:55:04 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3862C422D
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:50:57 +0000 (UTC)
-X-FDA: 84607098954.28.D94A077
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A98BF140011
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:50:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J3fCEuap;
-	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 157691A036F
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:55:04 +0000 (UTC)
+X-FDA: 84607109328.28.E512887
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 50399A000E
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:55:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUu9NuQP;
+	spf=pass (imf25.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774979455;
+	s=arc-20220608; t=1774979702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lSpt569BZn9s9W7oEJMwarKmLrOigBiTyhQtatPKvaw=;
-	b=CCiG34M0/ZIAjXJKYyTyalKUbyLECb5HUTUPFgnOq6I721brAErYAN5YD5997JE4JXDrPq
-	YZMOt/9LVBCyR3LvOWSveh31D9OQrsmwIWiZB+7f2E0OOSF6sq/zfYZdNDyH/2Asn9FqZd
-	PPp68CCfkR7mjFYN28zgphbBEe8jDyI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J3fCEuap;
-	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774979455; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BO7Q7fJTvO07jMNB/2HEJHgEeGh8y95froHiw59EioI=;
+	b=cm823ooD37yy5oKXdGEg5LYXE83F00pjdjO4hwDOJdSrz3eBbRADJDkkd+U5tBoHC8wI3A
+	qXdYltquIVDac7fXsqlcO4Da4hKDzajNcsW36S3QZF0cj4HrfzDEaojusuPYYazheW95q6
+	R2G7e7IqJxQsw9JsQF+6zU79vNUyiGs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774979702; a=rsa-sha256;
 	cv=none;
-	b=rfPlJsBF4G785UxAmqGMoNTakrOZjcLSHhQ9fQjiL99Jt3qzXBsyj8wQS8cUPQ3Sd6MJVZ
-	7yp1hdmPQw0whnWyyY5+kQR1rUYM+/JEGtWXonZQrZwJOm8lO4XwJjNrHyIvbDqY6aJxWQ
-	PznD+DFDVDpgkFXAmlVsV0QYNCoVrmg=
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38ad12fb595so1145161fa.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:50:55 -0700 (PDT)
+	b=0XmafqposXvleXCZEayEEI4aUWS7X9H4UnMFDb2KPseqAiXVeIXGYOTopGRzys9Hxyrqcw
+	4isua2IgzbYYZY2vOxqxFgcZvY/KpXiJZF8nYpcd0h1Tj/MK2K3Paq/I2O9YzD+dDFcsjD
+	b6PHH7E4SxlCQWe5vuXtB0cF/+9cSbM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUu9NuQP;
+	spf=pass (imf25.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-486fd3a577eso55176835e9.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 10:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774979454; x=1775584254; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lSpt569BZn9s9W7oEJMwarKmLrOigBiTyhQtatPKvaw=;
-        b=J3fCEuap5w3DfSWhR0CWA7bOLtELBxe4jaSZ1xjr7//a1HhMJ2rFLIwB/sobvqzOEr
-         T9DO/PzMAVwZGwJUf2EqHGRj51FWPvLNUCzihY5f+EBznujPOHUfEFYscdurcloLkIa/
-         fRDAWFYCvR4S2YPlXxjqWUsDdfVm5qHCRN7j5oQ03Kv4ULCc0EgxMYz0YYZPGbTO2Zcu
-         gYGUHnA3Q6mHSIFBo8RajYJUsSc0Ij6Kma62YWDu905ZIfM2SdGJ60+tHgZz2uEShLF+
-         zHn2M89CmRHxxws9fwcTkJKuw/aZDmMhf8uVveJDmI2Bel/i+9ElFy1TrcSuAtRhsQ48
-         3tUw==
+        d=gmail.com; s=20251104; t=1774979700; x=1775584500; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BO7Q7fJTvO07jMNB/2HEJHgEeGh8y95froHiw59EioI=;
+        b=LUu9NuQPyLg/PeCOkWmFJ7T/xCfzvZVqsTvyZEzqM+5Bj4F4quYLZtX1Y7x7mfcagK
+         T8/Fxknevwy8ID5jAPJzlLaGlOc1Odlwd1xcRD6BGOf0MtRVTlMBdhCKQ0iLHEvWR43Q
+         Irq1EhmmuYQhURAWgoZCiJR/NDTjztGtgswSe6O+0zov/w0H3Qkh6aqUKfdvLj5TPRqH
+         U2eQ0f678seyywie1avIqly6eXQyr7rYIGykdGP6UFG8biEQGjwcMZX0MqmxUOM+vlUn
+         IQjveXEUWbMLMW1KEb+wV7MiAtXtBj7sANINOvmHLmxuFpNWugCZZoRYDhU0HvKIOeYJ
+         yFNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774979454; x=1775584254;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lSpt569BZn9s9W7oEJMwarKmLrOigBiTyhQtatPKvaw=;
-        b=PzRjpmg5l9n5Jlv8y2TfHXK+dGtIghgJgfFjZz5nbJNh/4UEuube8xzI0ddCGeGd3j
-         V0NlSpKBDw0n+dngOSnCBxezDbjf1DOTW1GTkKSSzhSqa1TnuhwslDUDa4gzAV4nxqFh
-         KiVp8y7eT25vh6JVao2NvTu5j5bf8VyFVwR5cEnRuXv3whY1UxV+cRH0fBmzKpHQR1cY
-         A9Keu6sIC7WEGcRDX05MjvZOrtMA5k5qjXZTd208h0BRV3B2Dd4L+dEcm5351DZAYPev
-         sB3q4ieNFe9wWLo1yV8emlJOkgTEEXz15fS+vpqzy5QbJ2p56NG/sYohLHfUB9kaGJ5t
-         WNUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUIOWecfeCHEmrNsVOQKCqWGBeO5gyooUuj2tuWsMZ11AgAEE/DR5EtqpfF2qA6rMTtVbofUoviQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxdx+UZyhLz/sqCzx1eyTm3FRsahdMned+jknedSUoPjH+hVByS
-	Kdd25znrgW00sRPXpVFX0IitOiPyLsQk2MK3dm+BI6EpQONd7UrVi9/N
-X-Gm-Gg: ATEYQzxi12OOJMxUJlFUPl00dl14e+5tENZpOYIpKHqryNkOOLno6/Hm7FUbUHMd8YF
-	nt4iLzKC+/IYeJuA5WfNf9CTP3OWsFhgHzsiZt+4jqJ+oyk4YI48daLJ1L9cmb1rN6kFslfv2AF
-	DmISD827i5YVv4G7mdfUGKYEneindvlrnXG51AGbeJdTOAS7VZSp72FjkWuGsQe2VtSGRDjJLg9
-	ZaKNsZwmFXVKNusOl17NvzOlfmo4gVLyGeJAjUTwKRCSPQ7kfgcdYQNLSZw432T0OfW1DI61sRE
-	BSFuNWz8Hiuxpa7qaCdcYhDCWP42FT3EUQUIz7LAmhtPjAsiYCmzHvbx3hBy22ydT9e3YKZ2aAc
-	c7QyrSmQ9uIJYLlsRb62puRjkza6LGmvxeRbYBAof5Ghvki45p3IVT48/AmB2wjcd
-X-Received: by 2002:a05:6512:6cf:b0:5a2:b43d:ac67 with SMTP id 2adb3069b0e04-5a2c220483cmr84806e87.16.1774979453562;
-        Tue, 31 Mar 2026 10:50:53 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c2233101sm45232e87.49.2026.03.31.10.50.52
+        d=1e100.net; s=20251104; t=1774979700; x=1775584500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BO7Q7fJTvO07jMNB/2HEJHgEeGh8y95froHiw59EioI=;
+        b=DPb2fcNlTXhIIRzBpBjJ8z7AQb0JMBiMfBR6stCKaqOhgMglg7vvRaiHkRpyIyzLUu
+         NFzTBRLTGcqrXB/JtF9DCwMa/pyRvbTOzRupe8Hg+ZgjTT1m6WQukMZxU8gipbYXvPdr
+         dglM5CRAgCNn4dgIR0tplVv7UfOq1HHBnKiTI41NJS+C7MtpVEmVDbp2PedmYK4yL+w6
+         dsx/OECf3IptyW8CntyJGv/qheaJLuzkLsIkYkQQZoPIBT8VxAZW22N6qD5m5WuAVy7d
+         iTr2VMw74ykFarSN8NY7FP7BCBCPoEA8L3EzbQVeKAn9Q72UhmKMBmTuQ16NZJ5E46rK
+         31ow==
+X-Gm-Message-State: AOJu0YwkPg9i0ykudxOlHBRENkcj9D9cH/Fuw4L2e7jLlTyKgRa1r2He
+	XlTfzgbTlSzgjmQRyk9NSU9NgtRatrmxIqi6oYRzLBztz9vZ3aQugWmf
+X-Gm-Gg: ATEYQzwEPc9TvEqaqEPYhRKsff8CMgR9eetc6smGGLXQnj/kW474FEUzbba+aBECgx6
+	mhJgAXgn6IVOF52Rn5TMI5L6LoL4i0701Y8ak0rGQuzf1HCI6uAwfn+EGYasV33zhQ24SRrIdEP
+	oZptZV7qBAUrlvc/n94e4RyTBalySAnGunypnwjl/KLoBIzjW5zVmQ+Yz7EpH5VG+9nnqV04Cll
+	sW1c6or13xl46yKp2iXP+qXP89+BsnKup8kbDMTp4lAO31Vs67bweyAYFM5y1UeCqOwB22EiC9R
+	0Xib8oR4vLt05mN4OiFkwdoWxLstYpbEvbUbe6u5mcKraGGuJrnbcWcigKJXnbe5SyCziRwQ/PI
+	4W2nukeo4j81rDq15Mk+CKurkTGT0X1PhwFqqAfD11girvTx3DBNr1H6q4AmES20MesAHs+nw5O
+	hppmRM0mjA9cjl2LZNzjeVidMZujdB
+X-Received: by 2002:a05:600c:818f:b0:488:7ebd:78 with SMTP id 5b1f17b1804b1-4888359d302mr5083925e9.14.1774979700154;
+        Tue, 31 Mar 2026 10:55:00 -0700 (PDT)
+Received: from localhost ([2a01:4b00:d036:ae00:5ed5:ec79:be2b:6da8])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4887eb5aff3sm70585735e9.15.2026.03.31.10.54.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 10:50:53 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 31 Mar 2026 19:50:51 +0200
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v8 0/6] mm/vmalloc: free unused pages on vrealloc() shrink
-Message-ID: <acwJe5yhAt1M7RfJ@milan>
-References: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in>
- <20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org>
- <acou2CsZOUQPx5nW@google.com>
- <acpsKv-GmaYj2Bmx@milan>
- <f6f04017-3dcc-49af-b875-05a9ed4f4dfc@zohomail.in>
+        Tue, 31 Mar 2026 10:54:59 -0700 (PDT)
+From: luca.boccassi@gmail.com
+To: kexec@lists.infradead.org
+Cc: linux-mm@kvack.org,
+	graf@amazon.com,
+	rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	Luca Boccassi <luca.boccassi@gmail.com>
+Subject: [PATCH] liveupdate: truncate getfile name to NAME_MAX
+Date: Tue, 31 Mar 2026 18:54:32 +0100
+Message-ID: <20260331175456.4065874-1-luca.boccassi@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f6f04017-3dcc-49af-b875-05a9ed4f4dfc@zohomail.in>
-X-Rspamd-Queue-Id: A98BF140011
-X-Stat-Signature: hguw4zmcmptzjyzyujq98k8bg9x6qwnq
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 50399A000E
+X-Stat-Signature: ipj1snsqpoqqgqe4faoi9xjakxinhmum
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774979455-816374
-X-HE-Meta: U2FsdGVkX1/Ni2fQXbhuyTYgQDQ1xrpDCLT9RiqLGEeb/7d9BGPkk0E66SfN6MitA1o74fMhhFo9a6GXV7WnU2653TxRpcUD44eBRLUXmPdAlpPVAV8hJ44s3A6aSqWF37C5WRP4Jlcsu/qyDDf+nudq0bs4NyroJK+H/o35Jmar5GsFH03j54VeFphbXtZduqpZlxm/foolgTcZuDTIzhir4CWNLFth1qvbxzA1o9+y/o4qfK+ly1nzev1Sc6dkQ1lmouYEMFUc/zVpPXCH9nvk2x8gaTvnylXI+Z/kIRGmiLovvPCgX/85asfRy12MFYOGU46tm4DngpCp61v0fjGN/LTVd0RcQ25JoGdX7tZtTJQC5bQ+qgm+BI22NFpiq+Zm1LKeItL/Abiguxtj4Cy7i5Wt2/V0/WTazFpRiNIEY11mWpA10Jk9dzYxR/GTicYtcqSJvPIxdwpF74jfXf6J2AsvVf4v2oEhEyyQTy5262qcEv1I+FP7ObOzg+Mf3idFnW5faIvI9DSSEy0qPsq5WEg/GjgrF61Uq1n16ljYFl622O5wg7OorHyyddxODW31HV4ckjWk+u9Mb23uo7+1gxZtU8yhCERQbX2frc4/jGK+6jY/Tmy2Nys/hGiAaWbkRPSjGOOanyvweFXw4B7PhizDFzMwR+9GmvLT1cLxAiQGlq2C0HSQ/ug87/pD6Fc1Xw3bNORvHiD+P09mhLXKk0nGNLwjPFJVfqrdC80fTtx0M08EGJ7gjhiJqGcSeev7zjgLjypSkNZ/ukI99Nn9+rs5xfVsCo4YAPaMnC5mM2HGp4tYnl58pdsJVle5mFE8wXgDB8toQOf0VBlyf0fRCOI33mvK1epztaawaXYSVzTc4S5XGT0T3bUyPnpaf4YqCjDvJ0dzRXidW9TrZGA9WsSdcvSyai6vgi362KtIedmzud93tMei4wxWVSnu7ohqficsXpxPSyqncko
- Ow9rCRJi
- qiYW15NwBuxMA1thjiuUB4AgS3QM+en85ONYqfYh6e9Ju5QXjfnTRMEg5pNBJ8km0nRdg8lSd7tO6EA/ILtRaVsNYrAB1E8oLhg6OzQWmctEOhS1FLS8e81r19yqNU4pyqYlfKtOpneVQpZitK4H2FF1FTbuy0rEBqlI2ENodAc0N7qqZjXEQfUO0/QkbCIEDQvo2M+1KDLr2XIcH3oup9R1Jcx3JWHveLseZEBPYYIOjfBgEOBzZ+9Ou8ER4v9BPcZx+Ae4JNx4S9lgGf9mEd6dIGpTAIkPPwQr7Q25aLu7p+Y/VfjifkZ0qza8sCdUWw+59M+dnTt4SKaaWNG3NCRoQfkbAsCGFhZOpE/E+Vc90ezkrZ4c6OsVaFu102roM1KCnDmAD7cokPWs13Gln0fz0SIb99aDZeL+znGwwkdf/KkrWka20D9WcB9QOwNE/tQEfxHpb9LGtgQ4urCldAhdoW4d14rsFQRfBN8GJXE7n2LkJOPCKjfInts8jtAo3Uu5DcYuMKZYCbmqC+iyYyDNOU1Ei0AF924eywO2d1oEt9FZXa1jLXWu6kil/MUUlJZ0hPY6KG4wIqPY=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774979702-311062
+X-HE-Meta: U2FsdGVkX1+Zrs/1qb32VK8gb6kebNwinyvnni2mFzhPSysIf2M1ya2PuT4irMqEITCf46xMlA1qFPjHJNHLMjt/OeSST0L1YE3q1U92rjiQ1vt8aONdMLEyuipp71YhNwUPMKBR71ECIb875+TV+FdW/0rPZzkjfRwl8lJCutM16Vz31PcxnXhT55dzmxJcSW0rx8sHr8UUVN0Te3BPdlGUL3ipBt28H8XpOFTUbzPBhAXS/K2C+7alLO0vczmPUioQZs/cLfklsXlijQz8wWx/EyodfgYq7h3TNFcIXWtAakoIaX/Q4jUStRFmhwwClX7JBLNOgnUgjcAHeB1uZHHjh/cy+lVx1W3qmwAGJ7AfTWzxy0gfkggrqtUyrW8Fpps2cCV1GKSj/AKl09TRaELPPXCTrR2bhA/Y38FKiqE+oyXGpuEih17ckyCUBHFAThF6WadSMocJEeCxD9H7uNM0D+P12HQc0+d9seLnS42yQkbt2q4QDrM8NygdmsEmQWBYzw/JwCGxjJ0P2C9JwKQ76LZnVI4nvcM/zejs5xt4gGPgTSJo9lGWfCVurKFLFY0u2u4RtjJMu0jSIj00R/S6Fh930fLO/BysuDPrAkOy/vzcfarujnjYhuWTUwNmvWEernHjzXbAH8dRaHZE21i77MiXZGbWcSyQTd2L1RANiFkZCA9QoUnK+QfkmfVP82E2RfmbElx+wkOdxmVnJ50EpeP/Qr6ECbw6koP3rLOOE6EpiQ2ZEwvPWKYbtcc42Frxz+RKS1V/8l9mrZX89BZ5P8sfMV5A1aLujo69JD0PSahRD2YkKf+KKUKGEOqHsc9nOK2mGQrMcbH7rio9V4oT+g1unLoQF5luknjSxSe76nwpgeW4qMo0fCelgz2jVfBfHo+TmuTNze0z0bg8lqq7xEyP/rv0RktfPFLITVI4wsXQ2JuDG5SrMhVrJT84Rx90y8FWNtbOdTDrhMr
+ DURkA+JT
+ bFNNLsFTCfP2aZh2RZbsY1crROiXB3N7BS+YVi6RhmPx+RA59jABYYbelzPfN8ztjV/BFAgJbzFXGlcc8YRVL9BNztkGs/40mcuM5oyjWAe8MzbKDBRTKabnhvYS4IAjcimVO6Ru+EE8ywwR4h7nt1C4c34246Tjj4y0I4m1pYfqXKD18/9upD5JRzlQrsPp4O9LBKx1XrWbi5amsvmYhswTQnUxz5KJAqbe54kCA76NhjzE1Y9UEd0DVHAemvR+Q08ohYjVXMc7pAT3IwouslSKmQ1VXdgPpjfBmyG21lYUJfAos034LiTs/17CAEsCcQUfa0RV+KTgGRupEeaVscbSt1u6UmAtIMJV7Ry5fyMlLOmsJyn7a3yGMExulGQ+dYoSdvrI4dgUXOMXvTLjLWI/odnt+AJS36LTBvX3NQA0q0HR0jaaw7Zv/97Av0B1sV9wyFxpv2yENF/IhWjG+veuPKIhi85Du8nE5+PWM8UtFdexgIr8YhL9dOvuIyP6nM+/iSJgOA8ymBd+d8O8BSXqFDw/lGtKhKcfDGkK7GtmBOOklXmflY4jCtSci5/LtYmLkOOVGWTCnRcLeg2JL0hClpv+M2gTqhpxlTOhLBlzb9X32v5UB/Oc8Ms559l913sUByR/7j8bvQpp6dRCbpbGI5gtRp3Y6LIveMOQOXzdz30Utyu3A+BxaHBo6ddTwbY4vx12fcbEKwUvG8oqas+2LXQOhhtD7jA9GxDHD0C3MSKQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,20 +117,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Shivam!
+From: Luca Boccassi <luca.boccassi@gmail.com>
 
-> On 30/03/26 17:57, Uladzislau Rezki wrote:
-> > Agree, let's postpone this, so i have a chance to check it one more
-> > time even though it seems ready.
-> Hey Uladzislau
-> 
-> I missed rephrasing the commit message pointed out by Alice in v7.
-> If you want that changed or any other assistance from my end,
-> let me know.
-> 
-I have added some comments. Please have a look. Do we need those
-READ_ONCE()/WRITE_ONCE()?
+dynamic_dname() harcodes its limit to NAME_MAX bytes, which includes a
+NUL terminator and a 'anon_inode:' prefix. If the name passed on goes
+above the limit it results in userspace getting a ENAMETOOLONG error.
 
---
-Uladzislau Rezki
+Truncate the name to NAME_MAX - 12 - 1 characters to ensure this never
+fails (accounting for prefix and NUL).
+
+Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+
+Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+---
+Builds on top of this just sent by Aleksa:
+
+https://lore.kernel.org/linux-fsdevel/20260401-dynamic-dname-name_max-v1-1-8ca20ab2642e@amutable.com/
+
+ kernel/liveupdate/luo_session.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index 7836772956406..4a40c7fdfb44f 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -366,11 +366,14 @@ static const struct file_operations luo_session_fops = {
+ /* Create a "struct file" for session */
+ static int luo_session_getfile(struct luo_session *session, struct file **filep)
+ {
+-	char name_buf[128];
++	char name_buf[NAME_MAX];
+ 	struct file *file;
+ 
+ 	lockdep_assert_held(&session->mutex);
+-	snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
++	/* dynamic_dname() rejects names above NAME_MAX bytes, including NUL terminator
++	 * and a 'anon_inode:' prefix. Truncate to NAME_MAX - 12 - 1 to avoid
++	 * ENAMETOOLONG. */
++	snprintf(name_buf, NAME_MAX - 12 - 1, "[luo_session] %s", session->name);
+ 	file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+ 	if (IS_ERR(file))
+ 		return PTR_ERR(file);
+-- 
+2.47.3
+
 
