@@ -4,110 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DC510F92EF
-	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7129810F92F1
+	for <linux-mm@archiver.kernel.org>; Tue, 31 Mar 2026 19:14:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FC736B0092; Tue, 31 Mar 2026 15:10:17 -0400 (EDT)
+	id B59B06B0092; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D41E6B0095; Tue, 31 Mar 2026 15:10:17 -0400 (EDT)
+	id AE3806B0095; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 511346B0099; Tue, 31 Mar 2026 15:10:17 -0400 (EDT)
+	id 9D1EF6B0096; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4275B6B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:10:17 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0A83C42C3
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:10:16 +0000 (UTC)
-X-FDA: 84607298832.14.3D195E4
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 600792000C
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:10:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=MME+mIyP;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774984215;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 883FB6B0092
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 15:14:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 242A0140368
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:14:22 +0000 (UTC)
+X-FDA: 84607309164.04.A647C3C
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DDD741C0004
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 19:14:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QOQxu0Lb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774984460; a=rsa-sha256;
+	cv=pass;
+	b=SSVgoTgcioPdlHNuWfZL5W2pKhJl7zvO6H0+bUqHABvZeqfJ2kHCACDyWK8i6mgybMN2sX
+	ftGcqcm4ttDdnU1uSiZBHozPYl4mxlrp/H7M6t8i/q0TOpz+E8rPXu2N6aH1/Asj65RV+C
+	SowI+T3u96ANJ0by3Sf6ZaeD81aPvxo=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774984460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9J4oyQdFTw1JEDTJIcVZ0yRoiRCjhJYpSNrXR3GSd6E=;
-	b=pLNYR0jiUXP4HEUsG1EJIitNIQMGUIrSAUCsB99ntrHkgRbVVzFJzHl9Wy8FS1hlDXRaSS
-	vs783e/9yHHClRo0gEIwXa1/uVQqswDTcHCliWBGsAEpi2gVn1V1q+VXZnZ1ril3oTEaHU
-	NHryJtB/raV53dmN7/tQjSPVuS0nots=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774984215; a=rsa-sha256;
-	cv=none;
-	b=8A/3llqux9U7inEVB05Ik3ZG/g7x0ShwcjOPGBtNgJ/oeQxmtfLszxJhjGrE96KmFiity5
-	hYSyG3WMc6ewRhajp3P7s6h35BzOKBkY6Ie5acpxf87g6YR6KcEGKyphqnMUTAAvxELd3q
-	sLgIxkEKVmA9RjSbbSjQy6eGSe4k2ok=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=MME+mIyP;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D7D4540E00DC;
-	Tue, 31 Mar 2026 19:10:09 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id NwInlk3m7uiH; Tue, 31 Mar 2026 19:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774984203; bh=9J4oyQdFTw1JEDTJIcVZ0yRoiRCjhJYpSNrXR3GSd6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MME+mIyPJJhkctSyuwWSM0gOGYpppwNxrd7IJMgFpEoYcFX8iZdSsxvGYWecDGsUU
-	 bqcsT9CXd9xCDvyrmrfIVNnIo66+ks4s2xT+4AtZcaKMQc53WJK4MoU8QHJth2m7IT
-	 k2IFeay5QV/8oQCjfTgTGcLEUYb+Gl/stATH6JytK2pPzjtTUt2uqEJwomUz2DxENf
-	 pE+BmgJjh9nWjQ5mHMDBQHXEd0mXKoHzzu2ZbeRGVB57lms3XIFOJygKLH6xxz6ng6
-	 btUgPU7KBJEbOQqF4c3uIF3O7bhtUtfS4wILT8lsywQWTxVtz4aayD7y/Y/AhCpFdv
-	 BtrHgmjz1WcO+cKouKuOLLydR7F+ysYuKcDWDygKXWodVpYLjBvp1FOk+oLglpRes9
-	 yBi5RrZcIoM9UkefH4X8zP2aEsBfaWTD22HxY0kaxE+rbr/aviGqZbrmtHqQvQ34tq
-	 ztiuZPw4ELy7bwwYeqYF7BWDRDguq2SBUJ8ZoIj/p0T+1fLTlKAmrxS8PiVK5kwzec
-	 NVDiebkHjC0KNKFo3QTnTcyorem2rlqY5dKsohSiukAB/PB4Q4VLI70rr1Vu04ur/E
-	 GAxyNTlz8sGu83SH4SASWeTYMFBQasZiRaLoP7aATf/grvwCrGdOpJLcYG0xT4WplL
-	 A5sl8rHNc6WmQEC4YTmL1zcM=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 14F1E40E0032;
-	Tue, 31 Mar 2026 19:09:27 +0000 (UTC)
-Date: Tue, 31 Mar 2026 21:09:19 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	jonathan.cameron@huawei.com, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v18 0/2] ACPI: Add support for ACPI RAS2 feature table
-Message-ID: <20260331190919.GVacwb35SNFnzXUvnE@fat_crate.local>
-References: <20260325165714.294-1-shiju.jose@huawei.com>
+	bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
+	b=lqf/+m0Ez4Lt6Bw4TRdzgMNX8aWQIy5rO26cC8rCiLowyzdJsB3goWR4TAzSU5ejU0eKJ3
+	CiX3luVR8U2RgfK5KB5SC+a88ZcAvuy2gsQXzuPJIsPEReUMrMB1GuXCf7LDG0ubnbBx+s
+	6oSOd1FABGljsdU43CAADzwVVKVk/fY=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QOQxu0Lb;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-661b16ac011so11447898a12.2
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 12:14:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774984458; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EAc6OLqecoHwmT8S1z7WXECJiZKkRq0m+BMuLQM9tTiM/nhqJUgACqsUDBmSB3HHdi
+         lMtVyFygIXQHSEr8prpMeryUnR7puf/Hq1SEAlAwUPsmkAohDWiT3gxKPkz/Qxayal3S
+         9S4+73aeLAkKyKrwhvzITDKKf87QWDFlkgVg2vj+WAHoSQtO3J+yRYF3osDLm/ZhscOY
+         1GY4Xa7rHbSbVDhpTqSezhqgTFAxseK9rc1WVgl2P/nlLWOkA0Rk+fmwDmmlFBK8zy80
+         fNatI36mRtHCNZMVpvquJA39gYZW/8KUqk5+uGApZl35p1itlfpvCXQTmcRwjCtu3/c0
+         966g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
+        fh=U8XvdNpgkMMEoGh4cM+fv33In7/Y4uc9/4mC7OQNClI=;
+        b=DwKhUniKtqHh8AhLM/Xiuj58Y7fgEgVjLdXQVAVbm7j7IMfPgxJqxSGfM/no9w8v5+
+         eDQm4jLeuRBUO284G6lOy1eZhQNZ4SsFdB7hkGCkeqP9b27/kgP6tUGIWVDsj1sptTnc
+         GACAsCYmFj53Mdw/NoueESr6xQPmf6Y6Ug+J8bHwKkww1PwOhG1hsUqjAKm3Vp1WbXMy
+         U32S8HcI+5+Iag2zsNe6pRXrFDrEmAseZ0FB1YLOqL3ppVyKNssvkLW0tewFbCxm6tFD
+         Xq0LSbvIlXB69tnOHQOWaRcsVEXKGeqzsAPPK+4NJ5CbkFyCpSoFflRuaVxOOjJg0OW+
+         MG2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1774984458; x=1775589258; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
+        b=QOQxu0LbOVwIMH2vkcvrgWjTDMEBq8iwGaeaooxE+pdPafu6pVlGK3HTPsd0o695ML
+         wnOzOUAcdImeN+Zux+gTGFhkBZGEbABcpN6q5R3SXFA5MFD6Nqi1TiaiVUt/zbNFq/Hv
+         Do6L4cEXqXHGuXDlcGtk+k7eT3sY/jZd1UnLcNY3anpMsr/QqSA29f8Tpni+x2Vsz1WU
+         pcPo64SaaNoLBiCkd+9w1EsNIFyKyvfOdc/XMCuaSrukBOhnk2cIsvYjIXt1OZ3bYX7D
+         ABIkN/APSrfbTkuymnZ1cAdr3wnYp3FJmjmtIgNOOxRHc7fAp3yuzIbtDw3DY1Ko6gPr
+         QZpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774984458; x=1775589258;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bmHyVXpnDYQ20Y8tpOog8F563dlY7wEta5zrK8UkI6g=;
+        b=r52fIqY4JE3FwLcUA9+NxpeY2b1zWTe9Z5I0MC9XmAKokQRntzRUZmCZk5ztENdNn+
+         vaTkzcTCR2IWybxhm/fU3HRq/F8RUalroxvgYaE3LWgOPYVkJwbm/qHSpoD0hqPTO9v7
+         a8LexFAYghurs6Z1tglirI2Oa+WafynYYxAbA8dHJaohmmIuOgZu6T18fP4QJ9TQeZzI
+         xCZtCXhWJNDEmU5hZxASxhNnmNHlEXCcn4HDc9ga4tKt4X0UBsPsqMNFz7Gu4bN7tCWI
+         LCmTMTvxH8u9Wc0MCtDdYWeAWzWx1KX0p0Z3MYhGlSoG67sDv0KAjPOMoppbEUiLkj+/
+         w6Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCWB0GRDttE1w0iKsOlJPpEZMY0Nsq+W1QXp937uVKXoQqumoDKmtiWsq353LFjwNt7L5MnRsQCaGg==@kvack.org
+X-Gm-Message-State: AOJu0Yx1e8RkSJeReNtPg4NhJuYuv2gbMYOZyvE5Md0x5oh3tcJTVs8D
+	CJ8BLwZxC6PJrGPClWsVVTeoaqLJ7DVeOJIu7uKlMJQo5OzPFrVdDUaMwHoKyuJlqXI2Z/Q8djz
+	50iBhDiwZgKXfVWmkUDRM2684aTHA12sS/qPR6hA6Aw==
+X-Gm-Gg: ATEYQzxZ7dJ1lQ6qjSO/Qgy30oW2NU6k+xtNo9gkveKXFu5QoGiGugGhWwyaVlNIxsE
+	QEkjPrQ25oYs/mjCptREuWIPxnrUZI+HTsa1jUudPAfM2tQ4jGtb2HLKpfSAQDHoUtZfweiCIeS
+	ME4VWCNMwRXoZV68+AzbgkrrYpMLjQHFi5A7LJKTBGA/Emb7LqgfuaPEBgtECbXI1dpXKvxxIqU
+	0ZKBy/+bqnGBc5einoiYIxZIoHCCJu/PxNMrgtlm5s62gsF4iq1TVkO0N+SMSWo5n5XmfKVAcUT
+	8dwd1GMbM9IHIisTJzwpn5pm3BQXzFytgkZDqg==
+X-Received: by 2002:a05:6402:4308:b0:66c:4d3c:fe2f with SMTP id
+ 4fb4d7f45d1cf-66db02aae4dmr430347a12.7.1774984457471; Tue, 31 Mar 2026
+ 12:14:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260325165714.294-1-shiju.jose@huawei.com>
-X-Rspamd-Queue-Id: 600792000C
-X-Stat-Signature: erdyneeurg5okwjrgwmiceoie6qxc1kk
+References: <20260331175456.4065874-1-luca.boccassi@gmail.com>
+ <CA+CK2bB0bMxW721Q+SzFJENe4X0_GwcOh83R-mm1V5dig3oP3A@mail.gmail.com> <CAMw=ZnQZm_k_mMQPmKwuBtkFyXXgAn9MK1NzmVbZst4nGu6xhw@mail.gmail.com>
+In-Reply-To: <CAMw=ZnQZm_k_mMQPmKwuBtkFyXXgAn9MK1NzmVbZst4nGu6xhw@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 31 Mar 2026 15:13:40 -0400
+X-Gm-Features: AQROBzDlFd9ZpXe2hTLzsg799tWUQs2xMihrXKRkRQAFEGJt31hcnoPOvpe85WA
+Message-ID: <CA+CK2bDL9=uNmy9hq=3D-w=MHYsY82FNCkqvNeNpnTnX6meYRA@mail.gmail.com>
+Subject: Re: [PATCH] liveupdate: truncate getfile name to NAME_MAX
+To: Luca Boccassi <luca.boccassi@gmail.com>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
+	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774984214-336328
-X-HE-Meta: U2FsdGVkX19TdAZ0WrCGKWzLqPNpWwDY2C03TT0FgOHq2h6UoRILJ7M1gn5RQXbWKH3VZKfv9MQZIlz2459SWMV8fcfVOOI7rtCz68pmb3K6F0da/wYu4tHn81+JeLorX1t4sCToa8H324LId29J1YpvVYTmu9fH2CAh58sInnNKONWE96//zNb2PSA/SQ9I+eeUGh5jMU4KphC3288+FZamx8dbYmv1HAyhUcUv4blci4Z7nsicuP8f/Tw1HoW9MzBlOH7bFYuFa6HBKS86YuxP3+vpzckURDtImakpgFsykFBcJcOXJeLJZnErtszmbWqnAx5rcW53b3qbihJPlzGd5I0S0AQOhowzHKTQyxCj2xDodVpKNfNB8Q9K/DRM8lDX6WCqCCeXJoeN7G2LqjczH+xNtzWK0KSHpyDi6zisEsUcI5bDn/Wc3ejBPd0vvtERslBLl2gcGUCjAB2w1ZEuTKVVAb0RRLwnYn7A4U5uIRggRwmjU34NM8ybf0ymZlGb0oWIGv9b3EiKDZsfVafexthq/qv3EJ+BjMjDtwZ3uC+U9QFG2UDXIzZmHRp89h0SfrajT2rw+uRZHfo2XFSG0yPK+c/YyjVjqxjhVm1gmvKNxjT2q/HGTrbQyUMJ7Pdm2ATbfputJiw2SnGEQh2EPX0bRn+8JmMjRgV+bkThjHvYn2v62Hu1nB1AI+XYHOLnTCGTd77w1hNCpCJjkFa4RvK4FDCwdi08vcQs9QCGqXBkw4bTebLDHQz1J25fK+zX5+wVKeIHfg1yKQyaeut/7B3SGrVMw8beSEDOmq+dgsGAtQHZKHDYakMwmc0k2H9GPwPkYN6YBOCz0jCBz23oU1oEjtaRK0tzFfc9uGfdQHPUH5YSEihODDa+WQkhLvDww8AwROnzlfVxsrd030oiHJiCcn4rQaFas6lldQY6KML3u46U6JH+Uqq8vzYTqA/YXBjUluVrlFvPrpj
- tv1CaE4W
- oZluHeojcuomFUaivlnAe1m3EZ80mn8k2VCcj6V6HBFUbxJJdxgvDGdekzKS8E4OfudqgMdYudG0KifWLynGfPoBfCCahQDlVl3L4yBdtqFSxWW6lK2vVel64A6SJtRFVaKEvb/FPE/JZk+iX+QChAk8//xI/yiFZnNZtIxVtCW6/RpoPLFi+89Vz/g1/Qb6wWEt3f3EWWPUzmsYHw6KV10pzxT3GRUVBwQHyL1Bom5QXrKV3rYKKIiNadcXDJAfc6BqkAtVAUjlV1+yXrVZ7kCHfHI22ETYB0ea9sZgn7xygf+wwN4XDv1KbE1gkpgEoL7Ht/tabLBRnsrJyKFnFn/aQrjmFZDs53CwN0Izx8ZJtp/W8Y/ZV3L7cWTO2QSTSho3X
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DDD741C0004
+X-Stat-Signature: 3qxzt4bb1bhkz1j5ntpqm7q3ywn7ns35
+X-HE-Tag: 1774984459-71946
+X-HE-Meta: U2FsdGVkX19AIeK2fddnCxJ3z9XqURczI2X5opkJO3TzCa3XfX1RabUwtufAyexGzhnOLFcCYT2isnvmKblqd8p8gUT6bkeClzp3FA9OzycTH5xsQ4kQCYU/n6ePeww48uJaozkjQT7qt4Wkb+gG9OzASgCNprxvT0lYPNaJzrmrlm4g0Fur8FDlB7+OeXD1Mo8DKUT+mvf92otEdNlAE+LWfFY/aTTR0f3cu6zUHML7n1wP2360qLxDxBYAqzLb9ZSqqg2xk8DE4mOexm44OhHeEj5aFemSUWqExGkrO3RaKGRBYRVXsEwS3pi/UNt1trUXEbg7FNsBqxQE26xeCYax53MKzD/WbzcILDWM1rCUC2jwDGaRKq82Vk+7SvJFEGGy/7/v4GtQzTerGnwUJPtemI3HJpXoblU1iVvYRS6T+rHWANsoJ45b6nVx67I49+L/02ZZC5BcsIcZrneqKe4zBZGgMda093cJ0bvBOY78rbIneBcjteKrBLClYEr3LzleBgpwle/GhWaG1aj2ErDZapY15WMWGhN2tOHuvuxo6pG4BMVUIk1DhOVex1C5L/V0oU0T29wUdRsPhPh915rQqWabtwLZUybdY4Vwip7c5VTlP/4NANpkv7kr52zn9v7FFd8QWJXbElxVj/ug6u4AxGzQB56hLdingcxcR76kC0NdDPs5ND6+rYtvI+eipB3nWRRaD1MvJQrDCRs90zu6J2JgQ2RvU9Dl9fhREIZhtBJQWbeC/Lhe5jHJs6H62aPl77/g/wPPnfxgoKJjI9MSUgN1290uw1AcLnSTSmkNCg8S9CiIboM9F6R2H2LbkjxmkB7tjjpH9auVev8SxziNp55Au2to92dMrgFrcFcmY/JxehiZDCjRGuuUp1EvdRF0a8MGk6GMCGNlzM2S040p1uKQaLSB5msEByQLNsIoc7UVfnJgCWQ7D0KsRmyYc+skE5GEgowaRR7YYfA
+ AEqFfZZd
+ OmIhG+pdvYAERI446rmPfZalTotV6mKPKpEu0JlyZARbQYddbLxDvo9j0GHqed5VWe99juUdI1I2LVVoPf1Nn0sUu+S1gF6k7gnWJgX0pqBhE46+alQd9MLzf2YkyW/OPdTriDbGaL1GjX2LApIb+iNav1co6DYScjGcnVpLJPwGSylFiUtjqTk0K7i4SpZ5hoodE9ozvoE+lsreVG5P0dZsJ3lsuynQ/nMVSLORTSHi0AFXCxl1+gYoNQ6qdrapql+B93dWZZmOHd1aftu0gNvte7Mx4USwwv9Hz+vVnjwNVBspa6cDhqXRbIpF16NA/SdASra/QdabauesFYoEmDbX8UCyA/qOfg3dTng9kwBbx1lP2hNVPKbFNVHwvKCVoI51e9p7y8zztGD66mj77H5xNyX09dqwzBeZHWyn9tv8TIyTENh8Oc1Qa16jgSjME2gjrij7IBhImKf77Tz1Rl9fiQxbaBzZhSD2Ws82wHEh/BVDYSuZ3zGTJLBiyblmkp9wemJ3kKnG0x/CE1sF++kwFNkfQQYnbRIqqbPrE2NRyFEHpwDOKbjkrCFf96Fiv0BL/StVUQKYWURHdTQ4eDnhO8eaqx3mDLG1rlBwib9aslDjgxTIroOkIIJF7rw4O0dQ5aL00mVVSzzwOzVbUBKBZX0Y5Vs1kT/w8DPZftGfMNKabAGbgO9slBfcoNDtvDpLYoVelDnRFXsN5VC/PScVQTD1Lt5i3l0Y3Pg/LK5kTcDzlGszwjkOojw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +139,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 04:57:10PM +0000, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add support for ACPI RAS2 feature table (RAS2) defined in the
-> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-> scrubbing feature.
-> 
-> ACPI RAS2 patches were part of the EDAC series [1] and
-> this is the 38th version (20 + 18) of RAS2 patches sending
-> in last 3 years.
-> 
-> The code is based on linux.git v7.0-rc3 [2].
+On Tue, Mar 31, 2026 at 2:30=E2=80=AFPM Luca Boccassi <luca.boccassi@gmail.=
+com> wrote:
+>
+> On Tue, 31 Mar 2026, 19:21 Pasha Tatashin, <pasha.tatashin@soleen.com> wr=
+ote:
+>>
+>> On Tue, Mar 31, 2026 at 1:55=E2=80=AFPM <luca.boccassi@gmail.com> wrote:
+>> >
+>> > From: Luca Boccassi <luca.boccassi@gmail.com>
+>> >
+>> > dynamic_dname() harcodes its limit to NAME_MAX bytes, which includes a
+>> > NUL terminator and a 'anon_inode:' prefix. If the name passed on goes
+>> > above the limit it results in userspace getting a ENAMETOOLONG error.
+>> >
+>> > Truncate the name to NAME_MAX - 12 - 1 characters to ensure this never
+>> > fails (accounting for prefix and NUL).
+>> >
+>> > Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
 
-The other AI has more review comments:
+Let's remove this, this patch is not fixing an existing issue, but a
+preparation for future uapi changes?
 
-https://sashiko.dev/#/patchset/20260325165714.294-1-shiju.jose%40huawei.com
+>> >
+>> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+>> > ---
+>> > Builds on top of this just sent by Aleksa:
+>> >
+>> > https://lore.kernel.org/linux-fsdevel/20260401-dynamic-dname-name_max-=
+v1-1-8ca20ab2642e@amutable.com/
+>> >
+>> >  kernel/liveupdate/luo_session.c | 7 +++++--
+>> >  1 file changed, 5 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_s=
+ession.c
+>> > index 7836772956406..4a40c7fdfb44f 100644
+>> > --- a/kernel/liveupdate/luo_session.c
+>> > +++ b/kernel/liveupdate/luo_session.c
+>> > @@ -366,11 +366,14 @@ static const struct file_operations luo_session_=
+fops =3D {
+>> >  /* Create a "struct file" for session */
+>> >  static int luo_session_getfile(struct luo_session *session, struct fi=
+le **filep)
+>> >  {
+>> > -       char name_buf[128];
+>> > +       char name_buf[NAME_MAX];
+>> >         struct file *file;
+>> >
+>> >         lockdep_assert_held(&session->mutex);
+>> > -       snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", sessi=
+on->name);
+>> > +       /* dynamic_dname() rejects names above NAME_MAX bytes, includi=
+ng NUL terminator
+>> > +        * and a 'anon_inode:' prefix. Truncate to NAME_MAX - 12 - 1 t=
+o avoid
+>> > +        * ENAMETOOLONG. */
+>> > +       snprintf(name_buf, NAME_MAX - 12 - 1, "[luo_session] %s", sess=
+ion->name);
+>>
+>> I am confused by this change, the maximum session name length is: 64,
+>> as defined in:
+>> include/uapi/linux/liveupdate.h
+>> /* The maximum length of session name including null termination */
+>> #define LIVEUPDATE_SESSION_NAME_LENGTH 64
+>>
+>> So, 128 should be enough to include:
+>> "[luo_session] %s", session->name
+>>
+>> Or am I missing something?
+>>
+>> Pasha
+>
+>
+> Yeah we need to to bump that size, it's too small - see the shared doc. T=
+his is anyway needed for safety, as the user space call falls apart complet=
+ely if it goes over the hard coded limit,
 
-Some of them do sound nasty...
+If there is a safety issue, it should be fixed (even without a limit
+bump), could you please explain it.
 
-Thx.
+I looked at the shared doc [https://tinyurl.com/luoddesign under limits tab=
+]:
 
--- 
-Regards/Gruss,
-    Boris.
+I see:
+TODO: this needs to be bumped, as for the varlink API we will impose a
+cgroup path prefix, which means PATH_MAX + "/" + client-supplied
+string.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Why would we do that? Why can't we use a 63-byte unique identifier for
+sessions and an in-memory database that maps the cgroup path prefix to
+session_ids, where the database also gets passed from one kernel to
+the other?
+
+Increasing this limit would require a kernel uAPI change, which
+requires a very strong rationale, and would bump up the KHO ABI for
+LUO. It also means that the LUO session data in:
+
+struct luo_session_ser {
+   char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+   struct luo_file_set_ser file_set_ser;
+} __packed;
+
+would get bigger, and thus the kernel would need to preserve more data
+for every single session.
+
+Ideally, this extra data should be preserved by the userspace
+orchestrator via a separate memfd.
+
+Pasha
 
