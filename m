@@ -4,115 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86B610F9305
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 04:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C98661076361
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 04:40:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 119F66B0089; Wed,  1 Apr 2026 00:17:06 -0400 (EDT)
+	id ED2626B0089; Wed,  1 Apr 2026 00:40:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CB246B008A; Wed,  1 Apr 2026 00:17:06 -0400 (EDT)
+	id E81496B008A; Wed,  1 Apr 2026 00:40:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22D76B0092; Wed,  1 Apr 2026 00:17:05 -0400 (EDT)
+	id DBE606B0092; Wed,  1 Apr 2026 00:40:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E4A366B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:17:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 793E6B9B61
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:17:05 +0000 (UTC)
-X-FDA: 84608676810.04.C428549
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C7DCB1C000D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:17:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="R5gZIf/P";
-	spf=pass (imf18.hostedemail.com: domain of ethan.yang.kernel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=ethan.yang.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6A466B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:40:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75BE41A05ED
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:40:00 +0000 (UTC)
+X-FDA: 84608734560.11.A0BFDD7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E68A7180003
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:39:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wzt4JxZl;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775017023;
+	s=arc-20220608; t=1775018399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
-	b=GT8C34nn7QcRxlZ8yWrMp3rJsH1FM9FAyoapHhWejQXP39iZaNgUKbhCM5iMkPhTcqm6Rr
-	cUr/yHDj3HxExM8Gi4sgZZ2AU26fH6bkfyURPtMODpzYISha262RCi0/uN/lE/WbQOdtur
-	36+TKS69c2oL3ajfi42tJEgcV21xdcM=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4Xu5UDoEoQVThkSf9xyrh7LejyElGJ/H6CVv/YRoL7o=;
+	b=jH1f+n28IagOD3HkBUr81IDmG5PF3x6gv4To4W5uhvkg8zAMh82h3hY5aO+sx4fnojF+WM
+	fDMjuhDVQFxIUQ11FL2vxwt3DIDHBWaqJ46IfGAvMFkKpr7/LoeplPynVUyA1T+3Jh4KL3
+	m11eZUjm1BNDxWmmAhMF3/0t6yT0l/M=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="R5gZIf/P";
-	spf=pass (imf18.hostedemail.com: domain of ethan.yang.kernel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=ethan.yang.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775017023; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wzt4JxZl;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775018399; a=rsa-sha256;
 	cv=none;
-	b=xu4E0n9FyEgYqzpcJBTYJb1e/oJBVXy1koId9TyLc1z4g0a8mG2UM88D/saRlV+PdzsnE2
-	ZVwapDoWsQUPIIiFWbzc+umErKAkUgXoQu1EDrQfTl3ogeloBPOZnzyDwtQVAqCcdet4q2
-	iKCgRha9APoY/HSbDGW1p9bfv8G2ybY=
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b6b0500e06so8678714eec.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775017022; x=1775621822; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
-        b=R5gZIf/PwJjtrtglWPlSI1Fh4mgoc1k492Ymq5tPcPqs34WBlHGTxzdWydapXX+bZe
-         /Crw7SrdmUo3t+pXQVMWlsbVCyZg5uoRJGJSF0EOT33o2K7AGS2qmKoRJgoMpUrEKq9q
-         NFgB/x7446Koxn4fvPzZ9ShkULmbZa+6IDerEf+Ny44/usM6opLmhpXdIeAuOnEM2n+Q
-         Hu0a1UuVocCBJIJH5H9mt3rAHY7D0W67uzOe5zZigNdUxqoEe/jz4UBdyU/b+lAMIi57
-         GnT0D+bmyUfU8JtFi3wckXZsP3uY8sAztaCTjMjexoJKE/bjuHT4VbB3SZtGaLjdDF9v
-         fe2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775017022; x=1775621822;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
-        b=r8oxrHi9EhTUDZdLi69VsvDrEVLpcU7+Q63fvRvCVoJqR2xQ0WTBOu8GcJwt5Aa88x
-         pi40Nc0lsLvd0M3Zt5aFHbsCd7DO8C1/zUdi9QYezuLOc/SRfNaSIQFL8R2fOOQ119Oj
-         43rOynH8rl7cPTjj6YZOPzDUisvSB40jljOHyvJmIDZlWbbtLfjbom5VY+aIR+1nwgNU
-         cbmDOZ1wFAhpNnwYlmkcxJYhUMu4ftx/Coah7mnwM1CckstncOG+TSdh2iNaWKmOaUKF
-         Mk1DAbyF+ir0LozrOXeRiF2Vj3NzU6/QhCoCFRAVUmR5oUaMQJn3wPM7ZKLP9HIt/xV5
-         A8Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXONntkKbesNd5w6JkPV9G5z8ktof2lKTIcUs9d5wH4RDliVM12aicvZs15zNWBioh5McFidh4euw==@kvack.org
-X-Gm-Message-State: AOJu0Yxe6awlPX+JZQOh6ujHoys7ANU5glTF8bviRDFnIgVzopAyslqj
-	wUAQQUA3qToxgNq3W+ZEIg+1kGCJbe9PqvEzMqNBLUuNJ2rsVFLLpHnl
-X-Gm-Gg: ATEYQzzRKqHvj4PuOQVGjeVuPvcbb/tLba0AfSr+KhS8pNMbJn34BU2DjrS9lsI8Yfe
-	QqdKxOfEy0y5M3+u1gBhmQ+VCNRyqW/B/kM0eUPBpFqGEXltlI47Bvs1a55CKolGPt+KXcLE8Wi
-	HMTzsp9UvMxqCtXyFq4ma09sA0yB6OVZa/GZx5UFJIE3LT8UKa+CmfYE4zNvim1dbBcl6t81wpk
-	gXhxpZ1LR+ZF6TDguwoEW+Gq656jTBkLZQTHXMj0JiOH44SVSE4jVtDUnNuuCptYHu957FsZZKW
-	pChSSdzMepuqmQcpj5AwBs9Mkg1p9p4304vkYHfqmWiTVgGLtH8EHTMfGRR6FpQzm4IuJ9FEotM
-	JXJtnWPe51acMUHIVFiQXjEufEc3NjgryJc99tmcuFLAxxLNtoPPBvPDeuHCVmTGjdHINyldKmE
-	sqqNxMchsTv3WmZ7A=
-X-Received: by 2002:a05:7300:2213:b0:2ba:6978:2b4 with SMTP id 5a478bee46e88-2c9321b5d9cmr1075299eec.20.1775017022050;
-        Tue, 31 Mar 2026 21:17:02 -0700 (PDT)
-Received: from gmail.com ([52.161.55.196])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c45dfcc95fsm9876945eec.29.2026.03.31.21.17.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 21:17:01 -0700 (PDT)
-From: Ethan Yang <ethan.yang.kernel@gmail.com>
-To: chenhuacai@kernel.org
-Cc: kernel@xen0n.name,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Subject: [PATCH v2] LoongArch: mm: fix FLATMEM ARCH_PFN_OFFSET for non-zero DRAM base
-Date: Wed,  1 Apr 2026 04:17:00 +0000
-Message-ID: <20260401041700.3260-1-ethan.yang.kernel@gmail.com>
-X-Mailer: git-send-email @GIT_VERSION@
-In-Reply-To: <CAKeWACY11_1JL_OagfxUhQckW4rkAjhwXxUnVHNPdHF60Uc81w@mail.gmail.com>
-References: <CAKeWACY11_1JL_OagfxUhQckW4rkAjhwXxUnVHNPdHF60Uc81w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C7DCB1C000D
-X-Stat-Signature: w91y9dudhghs31nhdig8s7xawxnx8uro
+	b=zvqqY0AScKzCu4X/Vk5aP2WVCQBfGLCXiIHvPwnhax0QxcP1Di0/70wxpW9QoYSlK0iqBD
+	zyfiqXlpPO9nQtuqHq/JXrv3wexYPRjfxiD1OqPon+TNEk4NRolXv1Iu2v59kAKnt/i5od
+	tGkVX11ofLYgsMZgZl+xZ8fWpzqsIG4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D3F6600AD;
+	Wed,  1 Apr 2026 04:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A601C4CEF7;
+	Wed,  1 Apr 2026 04:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775018397;
+	bh=SbLMjYDrxJO2kzvnOLYoQMT8kDx45iCj5BMoIr3x1IY=;
+	h=Date:From:To:Subject:From;
+	b=wzt4JxZlDPaSYVAQTUJ6gVztIyhNOrnrxV4T2PrR244DFa/S6TM6ohPTHeG9ZA1LZ
+	 1RwHQR8QpcVXRGscU0MJnl5TpabEX+UZn8qUVHLAj6RvmUH2BP2Sis2s2nF8lCUVLG
+	 GrxLIszwI9ZjCZP2oAzVvk93L9xAxncDbFjdzvSI=
+Date: Tue, 31 Mar 2026 21:39:56 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: linux-mm@kvack.org
+Subject: mm.git review status at 7.0-rc6
+Message-Id: <20260331213956.2f3925ff0dd12eabf55b7c37@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1775017023-977690
-X-HE-Meta: U2FsdGVkX1/O07hTj+M1FlqVN4MMdeSY9k2TAVz5u4lsBskAdSQmsaBk9qQEg8d5Re2y/P83flz/ROLWn0cXNVrHGzA9l8f7c60mxScTIL54KaFSYtRXZBuoAFIU6RPae9JoM1OeeE+MoSWO26fr+NySiN/3ddrjiOvqpdJlAlKRrc5s4OZEuLfkRYD3vPukAiCZEdvC+A3Aejajxfs1WXRQ0eGlmjmC4kcR9TP/HSdETaYQGbJLs8+Wwyn+KCOmMdNvggFYSjnzFRBsgNP2ZAJVMCt8SCimp0ZBi68iyB56S2+lq+dM6QbW0j23Uldfu088XRXPOWjcyXBFqn5WpXhZX7yurjf7hQhntIbddF5fWEKNoX1m7Gv/2ch4C/JvfJ4GZ7X/nA1INUxXJ4TBCHzwjusJWP/iYkpSR7MgIfmbhZen+4IYXwzzgMIXzx2Tr9FLIUc/3gHFy8OCJEE/GVYvgCYoQ0vpQQ+Xwk9AmANXBBA+NrkVWP2AtAdKfUbY+ddwtDzEUcPvacXWQhv9B8Gt+97yaHDqjmSFHOsD3PSVlGofPSOl/6bwpUDXFdRdYmg0dNpcOB07tejCrKprD5db+w71QxkWMPVMT4GeUE7ESYjvnwWextEB9RW5xmkgmvNJGUr4y74zYD0Yhc182cs+uikB1tIBEz5ynDFc5GWgHBc8Ck89Ry6C4B1yxP2uysSYguOX0u86SW4BFHe5aS3A8S2f8hQEaDYFbV5QUjzF6bSow85F68a9TmRgYK/RFJGhfiM30jW8P+H5Z8ItHkyvRC0gNE/gp+nY8u1gYwMNF1E25jmX2oK7sOfnB8Cp5JSap8NXFgB8gmYzOaYvGm3E4KslsW8nXaWhIky65Mm8m3p3F19zVvhqBPQ6SwWczA5UXob3OFi1hwVNV5IamUoQAKIbg5jHqbHO3tpH2qs9kqPmVFEmyUZLDszNbwq+8vt0oth3R4oFyKgJtYV
- x/ZHYIgg
- gSR5YNtWXnbAMm6QDw6x8JQn+qWBJRlJnbQiWGJWgCDk1gO0bAUvSqGLCZwXK9elDFk0DCLEwovIEx9VVSosi+6bBVmsx8BGb356rJR8PvkPr4iNIw4VzMSB+JJdtIfsJ3i2R5L+sY3fjXWwiLtFTSxTz5cm4FOV9LmzoQg3ZFOP7//5oYnPnaPx9DumpMxUnVLF25FBjebR8vOzM1gfJtbRqvsvFF8OgL+26B2O8fWINAdW31imPqaPhEIgfCbKrYls7
+X-Rspamd-Queue-Id: E68A7180003
+X-Stat-Signature: jarhwcdm5kfesh5ux31ihhasnij8y4eq
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775018398-511509
+X-HE-Meta: U2FsdGVkX19FO3UYRUQvSZhWAoNONGE5wQVWdXn2pUl3jAew6dM9xUsqXFPwByQRMLzxyjywp5ifdeWlj9yQoCClcIj39iIx3ndchHeWO3oQ5Z65AC84M4D+We43mvq+7/Y5n+xvLu0Urk6ToArYdkqNfHFL9016jsfjh1WmslAv/vjsUD+NsJTrhd3w9EYrZYC+vkIyZf6OfYHkgGor79dlNbQZzNj1fyK33T+tCkXdFtkM3J4rEA0ED3PhUuzljFTkR+pew+/GI+wWOLAiuhfWYbJ3KJl1L8KoSeASc9VUU58/Ru7F8PurrDaq5kVJQ3DlYynDocFa+dwkBZy4c2tZcqCH/VhXUcOA26Sfsvvtt1CJe3Ofeguv1+FK2g435UlRRdTHFj4LwC9lgthUQrniWkQyPcmBz/ikr0p8xQrRhTjTbcV6MPEzJYW/bGDWYjRZaOVfFQn43imvRdVv8z5jyZsF6t8qaVuBd4yCMyAhtbg7IMTZ2+9gU4D61ufSRmck9XoGoi7XD0a3Id/RkPfsz8UPzknW8/9hwFEO504hhaIYY50AN6HW3aw2nopA8lCmqee7SjJ2qh+EcJzj4BVAKAaAWUTw9pDcu2qU9qKJFDlfR10OGVkwSj6bWyzphKoj/q99/ge78MvxTcXgt5dx7LpjtGpfQi+9tSg3YRnjhMPV73fyfo/6wMdujP2k2pLIgIsBjb2UTaMqZQGK/blYKPv/n9sLv5Kp/KFvpdTAfgkPsOzG8hDslsgFsHWS7HfRwPu5QICf+fIOOPPvOt6xfuavDoy8wzC/4icbxjSjw8zBQTXRZgH/mkCz9qkU+pt3PbSFC2sru9qIwI3rMsHSZCz2a3IxJug30204PKqdsmO79LiljwNJGbMBPWZ/yp6doeAFmUSuEy9M089bX8YSRSq1Zqn3OaQcvrpVfeDVMOpfkOlOKB/Xto9SPg7MNsCUuLmZ7R68Khaad3M
+ WFxYP2xr
+ R66fokbUyUvqXS43JZQq2hW6RmmiS00EFSNGrIdFf/zbFWBUtNRnj1YoAnwxZYSfQ+p+E9AllIacCEUIjtZcGqC3K7OPfMojtfGvd64e93T28P6SpjRZm4Wme+kz/AefE+A6gWmKZ+3w/YKTb4ddNo0EjOZzDEfcGVDLibLCzhB0B6dXsbIuyw89YkrGMUQ2sLTkv32E9ENe6OJXOKhcMcPmGK1RQ1G/gUsf5Tl2axQEJxdRC49BpAPF3xdt76UTFgB1t2xdy7EniL9WjXYcCd04BdtdEbA9iKcy07HZ2uh//guMirsRaOE56YwFtWZNFzu4QAg8zcmR0iNLEBWXep7+k23Fa3mCY2lSj9gKWqKhgtNoX/0uXEQBhZHl6zrO2SAMBp6/++h2XtTU7rWckYehYYmVMTINTtIC8IYNKMUzWTe3UL/K/m8NhYq8tqSwAqUay/Nz2oEomstHZjVA+h47/y7eU393xPGq75ZhxPgEX5roiM6KjwLdLlPe02UcwV55tLzllnl+Glym7ralrdeI7mqgziqUflLfIbsUEDzjB3vaVsDy3ao4SfUkVAq3V007hY/zT2KqsXGY6lcuQKnJw0G4s5lCaXUNaYFOo5eEI7GY1TXSOgyjUR9qU2+vLLLNW0f9902VW9N+ycQA3hNmK1JSC+BaEPEg0UDcJsgr3q5hue5zepMipclZ+oucCjS/C1FKpgiM+GoWNgCEZ3e0XMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,76 +84,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With CONFIG_FLATMEM, pfn_to_page() is computed as:
 
-  mem_map + (pfn - ARCH_PFN_OFFSET)
+If anyone wishes to be Bcc:ed on these little missives then drop me a
+note and I'll add you to my list, no probs.
 
-LoongArch currently derives ARCH_PFN_OFFSET from PFN_UP(PHYS_OFFSET),
-while PHYS_OFFSET defaults to 0. On systems whose first DRAM range does
-not start at physical address 0, ARCH_PFN_OFFSET becomes smaller than
-the real RAM base PFN.
+mm.git's mm-stable branch contains 358 patches and that's a wrap.  This
+is the material I intend to send into Linus in the first week of the
+merge window, April 14 seems likely.
 
-As a result, pfn_to_page() points past the intended mem_map base during
-early memmap initialization. This causes struct page initialization to
-touch wrong entries and can lead to early boot failures in the
-memmap_init_range() path.
+The mm-unstable branch presently holds 135 patches.  I'll move some
+subset of these into mm-stable after Linus has merged batch #1, so
+maybe Apr 17.  I'll ask him to pull this material in the second week,
+maybe Apr 20.
 
-Fix this by deriving ARCH_PFN_OFFSET from min_low_pfn, and initialize/
-recalculate min_low_pfn from memblock_start_of_DRAM() in LoongArch
-memory init so PFN-to-page translation matches the actual DRAM base.
+mm-new presently holds 10 patches, the aim it to keep this "empty" until
+we're all merged up.
 
-This change only fixes the FLATMEM PFN base and does not alter the
-existing VA/PA linear mapping scheme.
+I'll be spending the merge window getting dragged around Roman ruins
+(please save me) while laptopping over the hotel WiFi.  Responsiveness
+will be slight.
 
-Signed-off-by: Ethan Yang <ethan.yang.kernel@gmail.com>
----
-v2:
-  - Fixed tab-to-space formatting.
----
- arch/loongarch/include/asm/page.h | 3 ++-
- arch/loongarch/kernel/mem.c       | 1 +
- arch/loongarch/kernel/setup.c     | 1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+People, please let's not see an enormous flood of patches the day after
+-rc1 is released?  If you have new non-critical patches then it's best
+to send them out when they're ready rather than buffering them up. 
+They won't be applied to mm.git and they may not get 100% attention but
+it's better this way - spread things out, at least give others a view
+of what's coming up.
 
-diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
-index 327bf0bc9..80aea8b51 100644
---- a/arch/loongarch/include/asm/page.h
-+++ b/arch/loongarch/include/asm/page.h
-@@ -25,7 +25,8 @@
-  * used in our early mem init code for all memory models.
-  * So always define it.
-  */
--#define ARCH_PFN_OFFSET	PFN_UP(PHYS_OFFSET)
-+extern unsigned long min_low_pfn;
-+#define ARCH_PFN_OFFSET	min_low_pfn
- 
- extern void clear_page(void *page);
- extern void copy_page(void *to, void *from);
-diff --git a/arch/loongarch/kernel/mem.c b/arch/loongarch/kernel/mem.c
-index 8ab1ffedc..03835f8cb 100644
---- a/arch/loongarch/kernel/mem.c
-+++ b/arch/loongarch/kernel/mem.c
-@@ -46,6 +46,7 @@ void __init memblock_init(void)
- 		}
- 	}
- 
-+	min_low_pfn = PFN_UP(memblock_start_of_DRAM());
- 	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
- 	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
- 	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 839b23ede..625be2494 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -394,6 +394,7 @@ static void __init check_kernel_sections_mem(void)
- static void __init arch_mem_init(char **cmdline_p)
- {
- 	/* Recalculate max_low_pfn for "mem=xxx" */
-+	min_low_pfn = PFN_UP(memblock_start_of_DRAM());
- 	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
- 	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
- 
--- 
-2.47.3
+We still have ~38 unreviewed patches in mm-unstable, listed below.  We
+have nearly three weeks to get everything nailed down.
+
+Thanks.
+
+
+mm.git review status for mm-stable..mm-new
+
+Everything:
+
+Total patches:       134
+Reviews/patch:       1.52
+Reviewed rate:       66%
+
+Excluding DAMON:
+
+Total patches:       125
+Reviews/patch:       1.62
+Reviewed rate:       70%
+
+
+Unreviewed patches by author:
+
+
+Andrew Morton <akpm@linux-foundation.org> (3 total)
+    "liveupdate-initialize-incoming-flb-state-before-finish-fix"
+    "shmem-userfaultfd-implement-shmem-uffd-operations-using-vm_uffd_ops-fix-fix"
+    "selftests-mm-skip-hugetlb_dio-tests-when-dio-alignment-is-incompatible-checkpatch-fixes"
+
+Chunyu Hu <chuhu@redhat.com> (2 total)
+    "selftests: ksft_exit_fail_perror: support printf style arguments"
+        Link: https://lkml.kernel.org/r/20260330151503.670415-5-chuhu@redhat.com
+    "selftests/mm/vm_util: robust write_file()"
+        Link: https://lkml.kernel.org/r/20260330151503.670415-6-chuhu@redhat.com
+
+David Carlier <devnexen@gmail.com> (3 total)
+    "mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path"
+        Link: https://lkml.kernel.org/r/20260322052120.14021-1-devnexen@gmail.com
+    "mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()"
+        Link: https://lkml.kernel.org/r/20260323231315.240137-1-devnexen@gmail.com
+    "mm/userfaultfd: detect VMA replacement after copy retry in mfill_copy_folio_retry()"
+        Link: https://lkml.kernel.org/r/20260331134158.622084-1-devnexen@gmail.com
+
+Donet Tom <donettom@linux.ibm.com> (1 total)
+    "memory tiering: do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled"
+        Link: https://lkml.kernel.org/r/20260323094849.3903-1-donettom@linux.ibm.com
+
+Chenghao Duan <duanchenghao@kylinos.cn> (4 total)
+    "mm/memfd: use folio_nr_pages() for shmem inode accounting"
+        Link: https://lkml.kernel.org/r/20260326084727.118437-1-duanchenghao@kylinos.cn
+        Link: https://lkml.kernel.org/r/20260326084727.118437-2-duanchenghao@kylinos.cn
+    "mm/memfd_luo: fix physical address conversion in put_folios cleanup"
+        Link: https://lkml.kernel.org/r/20260326084727.118437-6-duanchenghao@kylinos.cn
+    "mm/memfd_luo: remove folio from page cache when accounting fails"
+        Link: https://lkml.kernel.org/r/20260326084727.118437-7-duanchenghao@kylinos.cn
+    "mm/memfd_luo: fix integer overflow in memfd_luo_preserve_folios"
+        Link: https://lkml.kernel.org/r/20260326084727.118437-8-duanchenghao@kylinos.cn
+
+Nikita Kalyazin <kalyazin@amazon.com> (3 total)
+    "KVM: guest_memfd: implement userfaultfd operations"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-14-rppt@kernel.org
+    "KVM: selftests: test userfaultfd minor for guest_memfd"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-15-rppt@kernel.org
+    "KVM: selftests: test userfaultfd missing for guest_memfd"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-16-rppt@kernel.org
+
+Breno Leitao <leitao@debian.org> (1 total)
+    "kho: fix kho_in_debugfs_init() to handle non-FDT blobs"
+        Link: https://lkml.kernel.org/r/20260316-kho-v9-4-ed6dcd951988@debian.org
+
+Jackie Liu <liuyun01@kylinos.cn> (1 total)
+    "mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()"
+        Link: https://lkml.kernel.org/r/20260401005702.7096-1-liu.yun@linux.dev
+        Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
+
+Lorenzo Stoakes (Oracle) <ljs@kernel.org> (2 total)
+    "tools/testing/selftests: add merge test for partial msealed range"
+        Link: https://lkml.kernel.org/r/1c9c922d-5cb5-4cff-9273-b737cdb57ca1@lucifer.local
+        Link: https://lkml.kernel.org/r/20260331073627.50010-1-ljs@kernel.org
+    "tools-testing-selftests-add-merge-test-for-partial-msealed-range-fix"
+        Link: https://lkml.kernel.org/r/1c9c922d-5cb5-4cff-9273-b737cdb57ca1@lucifer.local
+
+Muchun Song <muchun.song@linux.dev> (1 total)
+    "mm/sparse: fix BUILD_BUG_ON check for section map alignment"
+        Link: https://lkml.kernel.org/r/20260331113023.2068075-1-songmuchun@bytedance.com
+
+Pasha Tatashin <pasha.tatashin@soleen.com> (6 total)
+    "memfd: implement get_id for memfd_luo"
+        Link: https://lkml.kernel.org/r/20260326163943.574070-3-pasha.tatashin@soleen.com
+    "liveupdate: remove luo_session_quiesce()"
+        Link: https://lkml.kernel.org/r/20260327033335.696621-7-pasha.tatashin@soleen.com
+    "liveupdate: auto unregister FLBs on file handler unregistration"
+        Link: https://lkml.kernel.org/r/20260327033335.696621-8-pasha.tatashin@soleen.com
+    "liveupdate: remove liveupdate_test_unregister()"
+        Link: https://lkml.kernel.org/r/20260327033335.696621-9-pasha.tatashin@soleen.com
+    "liveupdate: make unregister functions return void"
+        Link: https://lkml.kernel.org/r/20260327033335.696621-10-pasha.tatashin@soleen.com
+    "liveupdate: defer file handler module refcounting to active sessions"
+        Link: https://lkml.kernel.org/r/20260327033335.696621-11-pasha.tatashin@soleen.com
+
+Peter Xu <peterx@redhat.com> (1 total)
+    "mm: generalize handling of userfaults in __do_fault()"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-13-rppt@kernel.org
+
+Mike Rapoport (Microsoft) <rppt@kernel.org> (4 total)
+    "userfaultfd: introduce mfill_get_vma() and mfill_put_vma()"
+        Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-5-rppt@kernel.org
+    "userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()"
+        Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
+        Link: https://lkml.kernel.org/r/20260306171815.3160826-6-rppt@kernel.org
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-6-rppt@kernel.org
+    "userfaultfd: introduce vm_uffd_ops"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-8-rppt@kernel.org
+    "userfaultfd: mfill_atomic(): remove retry logic"
+        Link: https://lkml.kernel.org/r/20260330101116.1117699-12-rppt@kernel.org
+
+SeongJae Park <sj@kernel.org> (8 total)
+    "mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails"
+        Link: https://lkml.kernel.org/r/20260327003224.55752-1-sj@kernel.org
+        Link: https://lore.kernel.org/20260320020630.962-1-sj@kernel.org [1]
+    "mm/damon/core: fix damon_call() vs kdamond_fn() exit race"
+        Link: https://lkml.kernel.org/r/20260327233319.3528-1-sj@kernel.org
+        Link: https://lkml.kernel.org/r/20260327233319.3528-2-sj@kernel.org
+        Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org [1]
+    "mm/damon/core: fix damos_walk() vs kdamond_fn() exit race"
+        Link: https://lkml.kernel.org/r/20260327233319.3528-3-sj@kernel.org
+        Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org [1]
+    "mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp"
+        Link: https://lkml.kernel.org/r/20260329043902.46163-2-sj@kernel.org
+        Link: https://lore.kernel.org/20260325073034.140353-1-objecting@objecting.org [1]
+        Link: https://lore.kernel.org/20260327040924.68553-1-sj@kernel.org [2]
+    "mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp"
+        Link: https://lkml.kernel.org/r/20260329043902.46163-3-sj@kernel.org
+    "mm/damon/core: use time_in_range_open() for damos quota window start"
+        Link: https://lkml.kernel.org/r/20260329152306.45796-1-sj@kernel.org
+        Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org [1]
+    "Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race"
+        Link: https://lkml.kernel.org/r/20260329153052.46657-2-sj@kernel.org
+        Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org [1]
+        Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [3]
+    "Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race"
+        Link: https://lkml.kernel.org/r/20260329153052.46657-3-sj@kernel.org
+        Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [1]
+
+Uladzislau Rezki (Sony) <urezki@gmail.com> (1 total)
+    "mm/vmalloc: use dedicated unbound workqueue for vmap purge/drain"
+        Link: https://lkml.kernel.org/r/20260330175824.2777270-1-urezki@gmail.com
+        Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+
+Youngjun Park <youngjun.park@lge.com> (1 total)
+    "mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap device"
+        Link: https://lkml.kernel.org/r/20260323160822.1409904-1-youngjun.park@lge.com
+        Link: https://lkml.kernel.org/r/20260323160822.1409904-2-youngjun.park@lge.com
+
+zenghongling <zenghongling@kylinos.cn> (1 total)
+    "mm/percpu-internal.h: optimise pcpu_chunk_struct to save memory"
+        Link: https://lkml.kernel.org/r/20260305073043.571691-1-zenghongling@kylinos.cn
+
+Qi Zheng <zhengqi.arch@bytedance.com> (1 total)
+    "mm: memcontrol: refactor mod_memcg_state() and mod_memcg_lruvec_state()"
+        Link: https://lkml.kernel.org/r/7f8bd3aacec2270b9453428fc8585cca9f10751e.1772711148.git.zhengqi.arch@bytedance.com
+
+teawater <zhuhui@kylinos.cn> (1 total)
+    "mm/memcontrol: batch memcg charging in __memcg_slab_post_alloc_hook"
+        Link: https://lkml.kernel.org/r/20260320020745.833792-1-hui.zhu@linux.dev
+
 
 
