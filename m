@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D89B610F6FA9
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:40:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4E610F6FB5
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EB2D6B0093; Wed,  1 Apr 2026 10:40:21 -0400 (EDT)
+	id F28486B008A; Wed,  1 Apr 2026 10:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2696B0095; Wed,  1 Apr 2026 10:40:21 -0400 (EDT)
+	id ED8D66B008C; Wed,  1 Apr 2026 10:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FFA36B0096; Wed,  1 Apr 2026 10:40:21 -0400 (EDT)
+	id E163E6B0096; Wed,  1 Apr 2026 10:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30F196B0093
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:40:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07D7A140950
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:40:21 +0000 (UTC)
-X-FDA: 84610247442.09.DEE0DA8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3F4B92000E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:40:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZnwoGBjE;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D104F6B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:43:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7819CC4731
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:43:16 +0000 (UTC)
+X-FDA: 84610254792.29.22773E3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D9E9420003
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:43:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRWI7TCY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775054419; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775054594; a=rsa-sha256;
 	cv=none;
-	b=6sxyDMUF80hbr2q2Oqi9BCK+kjwPAEgQVbqp8/Th5ggcl62OvnYJn24wf2WTVPfw+wDLmV
-	+qPDtHkLPTkirGE5M/QgYt+o9Jv30IVbldnwGdB6UKK3nZcHhZKFho8xFFctLSIwzU+MUZ
-	3BaguRR+Ot4joxgyqfjGni2sK7UO2y8=
+	b=YJdaOve6eB8nLE4wop8f2Cmd7NVaeZoYUP750MkAx7n9mhSFUScDS16iM21KVVX06qp0si
+	R9KZryb+4+jx3pcVhm0vQnJje1ffuQwHJpZ1no50Z4RmqlJpOjM7mLK+VC5PDpRDi6mCPy
+	GXyb7XECtgIQJEmyrnx89CsY+RfoIHs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZnwoGBjE;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRWI7TCY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775054419;
+	s=arc-20220608; t=1775054594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s2RRM3QGRUEh5mk0XorWfno6FKqdtME4d+e9bl95YEw=;
-	b=zVOfI8DzU/oOYV7PgDzA59vShHc+YNbaqLIKEqQTFo27EDfRZuSbfImkC6IRJUg5VfhvwW
-	59RFujyJkO7/WCcZTnFrhCb7ipX0dXEEV1pPf3htv64R0X/iKLjoJbEGHK4xCxJ/sagqLW
-	99FCNOHXQplgDUh8eAcWVoEmPe6EoGg=
+	bh=5QkcdOmHwjiXH6hnsGgSqdxrVK8fuBRrg0O/JOb3qzQ=;
+	b=FgI8iswa+QoeXiVpUGI5awnl0+CQk7LJ6IuP+KXda50sJiRBIQXQHsKqxRx3zjGsyFxVnc
+	4STqoehDiYHBoqwnHkXe5uwvLZMYtIgv/S9u4dJKY1BUxKAZ8LX8GVzRfx2OlSl3FgFSb0
+	Lvyi7WJeIy/qoXo11C+pAnjYYRb54BM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F802402E0;
-	Wed,  1 Apr 2026 14:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE94C2BCB2;
-	Wed,  1 Apr 2026 14:40:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6437F60123;
+	Wed,  1 Apr 2026 14:43:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6624C4CEF7;
+	Wed,  1 Apr 2026 14:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775054418;
-	bh=TykJ8jJa8X/A3BfI1NqncbeKLLHymAMT2RdQZ8mQvPg=;
+	s=k20201202; t=1775054594;
+	bh=Ryrbj2IiZ4oRSg/YxtGqfJDYuXiLqJFKUZfZB+svoLE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZnwoGBjE8UYsn+9Xz9/gonK7PmqMkPpL1IB6t7JB7DCHwrrblJDIa0hgV1ipYoMhw
-	 UQZXBR7Wl5F3qV2fqgICwVZxPLmYkt2doik8IaYwSJ/7iDDBLX33AD2su9nPqO07dR
-	 tRqWqxK6/rbyi5ekZ5BDxU0bZKz4iKvzi88B6paqwvsnZkMW11YQkyJ5gfQ9HTG3LK
-	 ksHYB9pkywb4n3rstunacatxXd5ylpUyTcqBsn+rPb4HyOClK3si44RlGn2i4fFymM
-	 /MI4fcS6BVZSxz6GZLlRbrXCPW2aY+Lkp9RuJOPrcDCI5NEm2pOSrt0Gvv4XqqbLM0
-	 qANAOlkXh9GXA==
-Date: Wed, 1 Apr 2026 15:40:16 +0100
+	b=QRWI7TCY2OEibcAM+J9UNMnBQJseoKKaYdIG2FL84fqqQRus5j4dSxuNq9MLClz+j
+	 y402AZmpGPvw5gjZgu9NMATWREV3TnDFAOaIqU7YgW6uI3VZBE0HrnPUp0V4V4ERen
+	 REAj/V/owhJzJuVhcxXVqryWBB1W/4Hi+diLvc5E3jIcbYBVRlEeA0PxOEDGstklW3
+	 j7P3dxGO1VRQu52R3i42R2086LRfC/Kb5atGPJqA9T0StbvKcOFI75PO46qepHtPx3
+	 2lMyWRavoiL6/aFp2MHbEkfzIxMApmYZKoSB/KHoLznt9Rs5tC+z7GK2tO1NP4/QR5
+	 45OwMtGWNwWhQ==
+Date: Wed, 1 Apr 2026 15:43:12 +0100
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Sayali Patil <sayalip@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v3 08/13] selftests/mm: ensure destination is
- hugetlb-backed in hugepage-mremap
-Message-ID: <b590a17c-13ed-45f4-9f51-ac662d00e7bf@lucifer.local>
-References: <cover.1774591179.git.sayalip@linux.ibm.com>
- <3b6ffba238a4b59de891acf896fa25d7d3193228.1774591179.git.sayalip@linux.ibm.com>
- <ee15d52f-45df-415b-b0d9-3d267d147e5c@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 6/7] mm: list_lru: introduce
+ folio_memcg_list_lru_alloc()
+Message-ID: <b358289e-2138-4ffd-84ac-ceedbba77b5d@lucifer.local>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <20260318200352.1039011-7-hannes@cmpxchg.org>
+ <58ea360a-54e1-468e-99b5-57b716026088@lucifer.local>
+ <acqqxEDgfNOIqBIL@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ee15d52f-45df-415b-b0d9-3d267d147e5c@kernel.org>
-X-Stat-Signature: m8ruf5ieo8izjqokd4p6ahydu3gmox94
-X-Rspamd-Queue-Id: 3F4B92000E
+In-Reply-To: <acqqxEDgfNOIqBIL@cmpxchg.org>
+X-Rspamd-Queue-Id: D9E9420003
+X-Stat-Signature: zi1667kwpggyoonjus1iryr65cgfxmtp
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775054419-322442
-X-HE-Meta: U2FsdGVkX19Nsdugm21mCYLmgSLKc5dNOHSEKrK4ENw1AiXnMnyqPisO/zcGU5VmDvbghBJzmr0BaPsqSUHOkO53UF3JvOaKrf3O82wlZK0AjRCJC8DznGz529Wu9XHIRNP6kFlSnWpJBE8IfRcR8KRc/LLCAduFFRGZHe3yF4hZPi/TRmPOkBUWlYgLtfuQ3IgKXiKECl/8TF8nDlbAFZxAaHAethsLoELHGMqmvRX6UOXch1yU+VdKspZD1qdMn5ZXY/YgPPwDfk/8iZbYIsjblQdUMQ/JEQStNzVgK/B708aMvfF+8SGmakDuPL/ujIYXZlxPp8yPtI95Gk98xEHz5VJ5wE5bsn42TNghzw5HcwDfr/FtqqRPblHxq+Cz9YKox6M2VdPK1qFWeYxCal0QNl80kygAqfHvMUGy8GVDBft599TKbUGcT/sCw9DP6Dx1Dbhqp5XeBOAryPpzTy5Y2rX+QxzGljRrHaztNPiXK6M4TO5NDIsfUPKDS3x8gNzkEifjwXCDN0KlB8ajvfiVnvjEZMnNHUN1yeYZAj8+X8crE6BD02gnegt5230chIT5rDh5vLzbNc8GrYe8ScOUKTcTM7d7ddBAnwRwZgY6FwBUoMuCw3rQqnCf53VaggU1mADhmo73mCeKdrazdwZYto4e80PD1hkTi+F2ArLL78VIhDlhx48ZDIeQ0q79lgqIZ+7uSLqO+DzjdlmFWtY79iix4C41HnVsqkkUuf4E0Equ+n5Ii4nBGaq1J9m1PeK71gw9DrVXuoBmMLOx9O8hcjqs5tfdTXTGiahRrDUXh2U8fbGc06YAhYcSYe6Zpf3UQpR/nzsDMIialWAngZXeNGS+GyHu64fBlpdI9brzRml/qjM0i9cDPii2URtz2hcG/aDiegGRlQ8vt6FlJuVOW3BE6Tug3KD6WE0WMjdoDs6CXWT+E8OXl4G5pJ4FdgvVJfXvhviXFySGHMF
- or6pPeD0
- QasDeWUMTqLTFH0hhT7OPwYpumQi2uejBBYQuy6CVFuOicSkvwR9OWKIs9U3Yh15qaK6PlSdyBRbzNZL2X9WtP2wfmegNQ9HgW+V8BBX7eDQfXCsCvBk6YNoqKW/whhkFYBMSe9qsCANtnBuEw8D7io4AbqlqqORaGJopb2sfIKt+/QXTJb5MGUWvwxs+ue0ot140bO2Q+1PQwaj6HgTKMoxGwKVTPVL72Qh5p/zE5FXrmINXTQbhRmnK97MnUBOCVpWqIOL6hQJFNNWDFAR0iCOvgdQxMXo+dL0r8bznD9fyN4+N/+knE6POpBnwwSwLo+KEiukA/wNGc70=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775054594-248561
+X-HE-Meta: U2FsdGVkX1/YucUYQG+khm15KVMsoKFPGAlcs24WkEsaGEPVFSWzqrdQJjUfnYbsBfpGePcwV4fjteKfBB9YMi1HZ3zdz2udBIoT4x7fzh7hlFmTRWd061f9cDeZOIQ/yAbGg4bqIvGuc5r+iejIGUbxRPYTZk4km51iUD8wER/+b9k2/6KOM7K/i1CoBVX1B0g3U8Fyv47ecWYWt68MP52JU4WPXOj3WKIvNO01yds06/YZltfJlAZgR3PARCENuq/hUr3hkixPPaaZGm6XuKDCZ63+HNKCp2sBR0USE+VepDtdFB5HuWzXfsIMx1npTJhNN3JpQTD15Nc/+iGeYpfWviQfIks1xkwZmNPt/j8T99WprbySHpiDNLa3qWPvL3ikOVJzA5XlYSKOZHLvt6q0wXsPGaxV9LdPO5aMLIfYIqaQtGaVIN9N0nmJGm8PqikKb0OAV9HXgHYEnzn/uJ9Q3exM1O5KwGTDFP5jFqohVeb7Xe6vWGBuHlCoYa6T6hsO+U0aYc5i1vqM1+IG/DfniGgQwmyVTxkrGMh6W1vX7VArbuy6MSn6qFowf/ZOaidcDx5CryVeFvHlZSIarIBz/nBy+fk5vSWuafLlMyaMSBL+CP9H1HD9bJR4WdfoyCYbeJ6TUotzGdxbpCMFdmBL+QYHKTrBy1qKtzH4OdppZImomr5OXwfig+fN9nFGTDx6Ih53wHOsCxXc8+G2qkUOLBR2iz6iM2+x0oJnvsTSWSM20cEIl8+vCq44WDtN7ymOAQdFYTyT1X7D5AFiKJiaAItu69X+eeQgiIidLkRRIWZXwwMSDo5R3eB9BOaPr55J0QhvDe5tqqJF4pfv0oB83hRe3mTXAmX6ohKj1ZHdwl7uJruJZcf8xQ+ap9bteEpw3vOs83yvu69188ZNWBUvvO5DClB0poRqLCBSwTPE1jOEpj+FFO0efYmZGJQ7TzjpxVJ7aLmZKVcfeDQ
+ YsSSAxp/
+ b+ngXgGdikNJaPFwZhuM3zaPrZA+HYs2F03rat0o1EdB1J+KD71j2qM22uVsypAnITjEjWQAhgD3S1Ip/xmZc52/cbfPJgIjvuAG5BKiAVNf0JhpER/sdzvU7I+oeZm6IbhbE6KQChoM4rLtzCmYg6uZNjIsmZF1Cas/96M8j1KZ3FPgla/fNA+8g5n9sA2gD8T2DIHS0/G9qFBUpM4rz1LSca3Chq9wOATeokdoBQoHut6PWAQIE7gDp49WOaAp+90gLHzRIwSlXhc3r1esptJF3p/jUEgZz/ft4P5oiEGGLaXMXjGbrQFg4PSCQzK8DW9suJyIykwQsQjEscsq3eCZD8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,132 +98,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 04:21:55PM +0200, David Hildenbrand (Arm) wrote:
-> On 3/27/26 08:16, Sayali Patil wrote:
-> > The hugepage-mremap selftest reserves the destination address using a
-> > anonymous base-page mapping before calling mremap() with MREMAP_FIXED,
-> > while the source region is hugetlb-backed.
+On Mon, Mar 30, 2026 at 12:54:28PM -0400, Johannes Weiner wrote:
+> On Tue, Mar 24, 2026 at 12:01:55PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > On Wed, Mar 18, 2026 at 03:53:24PM -0400, Johannes Weiner wrote:
+> > > memcg_list_lru_alloc() is called every time an object that may end up
+> > > on the list_lru is created. It needs to quickly check if the list_lru
+> > > heads for the memcg already exist, and allocate them when they don't.
+> > >
+> > > Doing this with folio objects is tricky: folio_memcg() is not stable
+> > > and requires either RCU protection or pinning the cgroup. But it's
+> > > desirable to make the existence check lightweight under RCU, and only
+> > > pin the memcg when we need to allocate list_lru heads and may block.
+> > >
+> > > In preparation for switching the THP shrinker to list_lru, add a
+> > > helper function for allocating list_lru heads coming from a folio.
+> > >
+> > > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > >
-> > When remapping a hugetlb mapping into a base-page VMA may fail with:
+> > Logic LGTM, but would be nice to have some kdoc. With that addressed, feel free
+> > to add:
 > >
-> >     mremap: Device or resource busy
-> >
-> > This is observed on powerpc hash MMU systems where slice constraints
-> > and page size incompatibilities prevent the remap.
-
-OK so digging in:
-
-mremap -> ... -> vrm_set_new_addr() -> get_unmapped_area() -> ... (in ppc arch
-code) -> slice_get_unmapped_area():
-
-unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
-				      unsigned long flags, unsigned int psize,
-				      int topdown)
-{
-	...
-	/* bunch of checks */
-
-	/* If we have MAP_FIXED and failed the above steps, then error out */
-	if (fixed)
-		return -EBUSY;
-
-	...
-}
-
-Is presumably where we hit the issue.
-
-> >
+> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 >
-> That is weird. An mremap(MREMAP_FIXED) is really just an munmap() + move.
-
-Yeah the weird bit I guess is that we _still_ invoke get_unmapped_area() but
-with MAP_FIXED set to indicate that we want the specific address, so it's
-subject to the above checks.
-
+> Thanks!
 >
-> Are we sure this is not some actual problem in the hugetlb implementation?
-
-It seems the 'slices' check sees if the _target address_ has an equivalent page
-size, presumably hugetlb-mandated, and fails if they're not equivalent, so this
-change is just accounting for that.
-
-
+> > >  include/linux/list_lru.h | 12 ++++++++++++
+> > >  mm/list_lru.c            | 39 ++++++++++++++++++++++++++++++++++-----
+> > >  2 files changed, 46 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
+> > > index 4afc02deb44d..4bd29b61c59a 100644
+> > > --- a/include/linux/list_lru.h
+> > > +++ b/include/linux/list_lru.h
+> > > @@ -81,6 +81,18 @@ static inline int list_lru_init_memcg_key(struct list_lru *lru, struct shrinker
+> > >
+> > >  int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+> > >  			 gfp_t gfp);
+> > > +
+> > > +#ifdef CONFIG_MEMCG
+> > > +int folio_memcg_list_lru_alloc(struct folio *folio, struct list_lru *lru,
+> > > +			       gfp_t gfp);
+> >
+> > Could we have a kdoc comment for this? Thanks!
 >
-> > Ensure the destination region is created using MAP_HUGETLB so that both
-> > source and destination VMAs are hugetlb-backed and compatible. Also add
-> > MAP_POPULATE to the destination mapping to prefault hugepages,
-> > matching the behaviour used for other hugetlb mapping in the test and
-> > ensuring deterministic behaviour.
+> And one kdoc comment.
 >
-> But then the test suddenly requires more hugetlb pages, no? I don't see
-> a good reason for the MAP_POPULATE, really. It will be discarded either way.
+> Your total will be 8.75, you can pull up to the next window, sir.
 
-Yeah I'm not sure about the MAP_POPULATE being all that important here.
-
->
-> >
-> > Update the FLAGS macro to include MAP_HUGETLB | MAP_SHARED |
-> > MAP_POPULATE so that both mappings are hugetlb-backed and compatible.
-> > Also use the macro for the mmap() calls to avoid repeating
-> > the flag combination.
-> >
-> > This ensures the test reliably exercises hugetlb mremap instead of
-> > failing due to VMA type mismatch.
-> >
-> > Fixes: 12b613206474 ("mm, hugepages: add hugetlb vma mremap() test")
-> > Acked-by: Zi Yan <ziy@nvidia.com>
-> > Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> > Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> > ---
-> >  tools/testing/selftests/mm/hugepage-mremap.c | 11 ++++-------
-> >  1 file changed, 4 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
-> > index e611249080d6..48c24a4ba9a7 100644
-> > --- a/tools/testing/selftests/mm/hugepage-mremap.c
-> > +++ b/tools/testing/selftests/mm/hugepage-mremap.c
-> > @@ -31,7 +31,7 @@
-> >  #define MB_TO_BYTES(x) (x * 1024 * 1024)
-> >
-> >  #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
-> > -#define FLAGS (MAP_SHARED | MAP_ANONYMOUS)
-> > +#define FLAGS (MAP_HUGETLB | MAP_SHARED | MAP_POPULATE)
-> >
-> >  static void check_bytes(char *addr)
-> >  {
-> > @@ -121,23 +121,20 @@ int main(int argc, char *argv[])
-> >
-> >  	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
-> >  	unsigned long suggested_addr = 0x7eaa40000000;
-> > -	void *haddr = mmap((void *)suggested_addr, length, PROTECTION,
-> > -			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
-> > +	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> >  	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
-> >  	if (haddr == MAP_FAILED)
-> >  		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
-> >
-> >  	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
-> >  	suggested_addr = 0x7daa40000000;
-> > -	void *daddr = mmap((void *)suggested_addr, length, PROTECTION,
-> > -			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
-> > +	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> >  	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
-> >  	if (daddr == MAP_FAILED)
-> >  		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
-> >
-> >  	suggested_addr = 0x7faa40000000;
-> > -	void *vaddr =
-> > -		mmap((void *)suggested_addr, length, PROTECTION, FLAGS, -1, 0);
-> > +	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
-> >  	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
-> >  	if (vaddr == MAP_FAILED)
-> >  		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
->
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+:>) Thanks!
 
