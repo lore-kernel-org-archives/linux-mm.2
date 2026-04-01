@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37DC7107639C
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 19:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEA9A10FCACC
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 054826B0088; Wed,  1 Apr 2026 15:52:18 -0400 (EDT)
+	id C4FA86B0088; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 005626B0089; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
+	id BDF0A6B0089; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5D376B008A; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
+	id AA0AE6B008A; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D1B786B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 185A916018D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:52:17 +0000 (UTC)
-X-FDA: 84611033514.10.3844E7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9D89318000D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:52:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 955386B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C9381601E7
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:05:47 +0000 (UTC)
+X-FDA: 84611067534.23.BFAADD6
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 359AF180007
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:05:44 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iegSTeTG;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775073135;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="en9/rYeQ";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775073945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WgWd1vXoxl2EUV3d1vVjeNG4k45Arz2el5P//CNWG6c=;
-	b=4XqTnRaHOTJhv7Ew+PqpBIYyiTvhk8NiMmt1IBHseiw445QInonlOtlDnmcgH5zZyC2qe2
-	s+MS8Xmx5JMhm9tu2BVXzB8awrq6pzZ6d2isak3cWiYl+hmICf2PUlXG0Ntw1jTAKJMZ6D
-	Puik2Bsj1Z1q2rCxdHHQCdva+kAiAG0=
-ARC-Authentication-Results: i=1;
+	bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
+	b=H/2HAFJJgHYzAgyjvbg1Htnt005Xluw+3MjIHYDlIREC8CDpJ0seUz6Q+TyGCHYRLYL/wI
+	vIw27MRbQXwo8w6VAo3QUJM4/bZrhMVVOMZTJn9xk1vluQv2uw/KRV4xrcZROFHKLvkush
+	zH4EUi4J9canKstF6BIKxAuJlMh7QBk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775073945; a=rsa-sha256;
+	cv=pass;
+	b=8Hkf9wHlh3yWnnJDSQKgh+f2rq4mgNYqzsjNBsHR5YaGp5anyOHVpuOueyUGhMztqdbw7O
+	vYzaPLwtv/jbyehM3CGk13vf3TIFbpFB301hIk2ROa0WWpS5UHZKibBw/GPdiXiu8hr5jA
+	VArNCk3GF8a9urT1bVWxBMq9xmiy1Ek=
+ARC-Authentication-Results: i=2;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iegSTeTG;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775073135; a=rsa-sha256;
-	cv=none;
-	b=KIqYANwzTZ8f8gXofQEtZvowL6BP6lKBo/i7mW5RDy/Pk2WNDIhONjB4JyGyfzKAgmGivC
-	tebFeyc45bzobWeMN61PBPj8ctHJX6t/zhvg7yxKU60rIXjlSAdM7rrd7nHSV57UJAx0Ig
-	HRZveKX/a61GxmgdkEqPfkRGX9l8+8w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED8AA600CB;
-	Wed,  1 Apr 2026 19:52:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DE2C4CEF7;
-	Wed,  1 Apr 2026 19:52:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775073134;
-	bh=8td1vtx3iaV4CtFL9W4NINSFT/pfU0MJKyD0q1yzYto=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iegSTeTGSkpbx6uOdKbaa8PHajPSmamUqAiudCJYUsPCcuLVNjTo1tvyvUvrkCqR3
-	 9PacvUB70x9rntJXq5Z9ygVn9H9cXaigsf7s1ZgTiMMksEM5a8MzCMydoLY6eUbGhK
-	 fS2nDbywhQpw9F4x1B5c3+7wddNV9cJfHP2pe/EVgQF6gsmW29AXa3vnG5chEdzJnZ
-	 UoensbbOEhn8P9X55bLGfG2z96MR9575K2exh8ZmzSznjfCT/BCiGXePnJUhVLS1HP
-	 eB1M3M98fPym2kwn1QaARVC8+Nzt0uokKWzse5O+y4GMtr5TFy3pJJ5InJ+dLJWfJN
-	 7GVqLRLZdRUXA==
-From: SeongJae Park <sj@kernel.org>
-To: Vishal Moola <vishal.moola@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: add sashiko as the first DAMON reviewer
-Date: Wed,  1 Apr 2026 12:52:12 -0700
-Message-ID: <20260401195213.68900-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <ac1fOrrURjCfQyJY@fedora>
-References: 
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="en9/rYeQ";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-463a0e14abfso88469b6e.2
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 13:05:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775073944; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jwY6TFRjLnOj7PPMFPlo4KyWwWtKKgpYooGEqd8Td7gYTvrwsVbK5Tb2/jJr7a24uE
+         gR3RJWalGgNxJpjSJpe68s+G/sOnd/lNPKDRnc3FeFw6QyN/Gj+Q9EVtrKR7YeORc65Z
+         vpBXCqExh5TGDNLpTDQSbs9wQqtYI6O1QIjga6MoTsNhoknqS7MALAQG/dbh6T+F5ShX
+         rIgyc6HUmZJF/sCRZXcqc8m+3qKOfHzwpuFTKeePiiaVjEZ32DdsAakJtuJTywOVzNpH
+         QtOc91jyrs5Tqkgb8mNnAE6MIHRZWQxDiiyahohgaElUZdc/ENnFJOjOsi0r2ItvxPA3
+         1DhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
+        fh=eBlTHkn6fVickXEqYMONeDwRYWeMmAFVsCHmrf1RBWE=;
+        b=RODoxz9XoofmhqpNZWIoQsTHNR5WpkZMHGc7xGEFyy2wGMKFSpieyTM+aDa+aXpkss
+         uTpe90B384rLjoqlHXEWuFilSZVUigRHZjoGI4Hl3h0xzMYetjX5POf2auodBipXiS65
+         cZTjyS3btWn//Jb2sg1dxVPYE9WjmzMp2ZJTkJ+MIMn+mgM0Sy+i08D8YVYY1fLdiLxv
+         jkdUmhs3bj4Hzk28negK84Tru2kVuoOxr2TKmk656WUZ45F00wY1OMhul7lCaHoMt/wl
+         5CK3NXxR6TIPGE/+pyJmfYhDvVTNaemkNaXm2D6Gedi0h53EpSbgnhgg0RC/K3kTxI4n
+         f93g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775073944; x=1775678744; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
+        b=en9/rYeQFu84cQCe65NLyA3nNrC49ETcQGCUhSRt7Z8HM+QH1vfOLq4on5tRdcTrC9
+         Z4RL0xBoeVjxf2uIw/782yNnkoqE/tnvWBmE+P4DXoFUtgkqEVLnWtimq3S4KUZoUN3p
+         apA/mK0tBjCrBG+UWZIc3mDJr7Y7DcIyA4zhY1345ZVMIyB0QkRWjbJvrv9f9/yFVV0x
+         iWO1gj11S6lWH32jbv1C4GRf8gSYql9bjVpXY/l3x1QzagTKOfLkD9I+k5AaoMLS2KRH
+         CHuhYJDtaq5tSpQDIYdZI6V4ZIWPXxQL/bDoRp48aMOa7+FGN10/aIKjIrP6lfWuNRnK
+         pX5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775073944; x=1775678744;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
+        b=fKZoJhr2QQEKVuSO6faA6K07zbZyhNv4+eepldq5rpiz8kTgBBxdjNHedEBbLiHXlu
+         LP1RDMM+VrrW3053+uRwY9T8+eTUJ8LOO4XrO5JgEk68pHsVeL9g3MYbc0FaNPiywdKg
+         nc6dVTbY3gflCTqX/K6lcGRWbXPehJIqDXBCvCWLe8Slof14yVaaAFl9p5lkfRcJYFbb
+         Dn/b73hJmtwx6kLPSbJxtxeZuK482FZIiqM/aK5yv8GMnpRsKV+/bjTbvrg/K8MMcIIk
+         kXl5+KONzOxaeXMSMEqmbNWY/ysDOrUNX5Ik7oNCYut29PWep+6Aa/Qm3XaA1qAepGHL
+         RDXg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2EM7ioVHS0SAEHD4yomNj9XtgnCd3Qr1jARzLvVwJH3FNFhz78se9PGTL7Psc1iOx/D7DaVEMdw==@kvack.org
+X-Gm-Message-State: AOJu0Yw+DIRGkq1wa7mLwkkwSBSLJfvVj5VSKYddJuXq0KHLHpyOE3No
+	8eTjXsRr/La0gbCKtLD/Wm1MqpH0s47BsT1HNBPgTJfdruLJmZaRRLupkDcHb/7OnYCGYE2hZ9i
+	8tUbbra/1vhvWSNUADwzwWcnauXPP0Hg=
+X-Gm-Gg: ATEYQzyKp3LZ9/qDTJ87dIFmOqXpOIWgc1wkELYMG0kqX4RnFaRpdLJ/pSarwzkhxzh
+	sZBnUDr0CeRa9QmzuFAHDXRuKsKtobrgIiUaeF8ri0jrt9x8cfwu/hZg2tQXKu7K8Ub7aRIvQKa
+	86M02FxI5Q6hnb0EZs1p8r5B/tkEOFM4vgUw3SKbXPeR4Q0YfruJBJKeydgOuXtkWWPeKZQdCkR
+	cOaXfzGvdypJK7HAZuYM89MZHzzC4yEeLztpW4+JKAs3hwzhGZLZMKTQt7OypiyH/3oviNQ+vX7
+	kIjRrTwgTKMv2kX3+nVDk1h7wlhepZvUKRm+pg==
+X-Received: by 2002:a05:6808:1521:b0:469:f699:af80 with SMTP id
+ 5614622812f47-46d8a88c34fmr606090b6e.55.1775073943972; Wed, 01 Apr 2026
+ 13:05:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260331134158.622084-1-devnexen@gmail.com> <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
+ <aczOCqrCx7Xd5HIF@kernel.org> <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
+ <ac04ZeFdz7yvByRp@x1.local> <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
+ <ac1wW6LHzzkXBeSl@x1.local>
+In-Reply-To: <ac1wW6LHzzkXBeSl@x1.local>
+From: David CARLIER <devnexen@gmail.com>
+Date: Wed, 1 Apr 2026 21:05:31 +0100
+X-Gm-Features: AQROBzDepiA8nWeW45-9o8fU5OhH57cwCWdR5XQtZW4sMyLftuPZNGBCSivb5fs
+Message-ID: <CA+XhMqwW-mXGuFgA4i+0JKW551CS9h6XczKY8P==DLwfV954TA@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
+ retry in mfill_copy_folio_retry()
+To: Peter Xu <peterx@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 359AF180007
+X-Stat-Signature: 343omm7poxgmz3rm5nif4rixbs1sk4ek
 X-Rspam-User: 
-X-Stat-Signature: 18ibizpirsdj4nxikpnuk7qy5ax13m4c
-X-Rspamd-Queue-Id: 9D89318000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775073135-577215
-X-HE-Meta: U2FsdGVkX1+S3L0zB/kU3UR0qDJDNnPqh/BdWQHYZxBgChaEMi8n+uCp6Bu+5lcDfS/wqPQqiLIerZFC6jxDS/c6ZFJLDweO1HqG4n/7w0OVkB+UtvMdLzYiTz+LbbZvD5Abqol2tvGVA9cmC73lutZ/6nkWMkW9s2wfumlwqcgcwUvAdXT0oubfT3zYpP1NvODhSY+oYYhedY0qbExbWGCO7iDZGAYwM4cCzMi2TA98tTAv17k7MLVsYIjCVfQ72K+C3xf1QGDboLBypRdtrg27XMI0qMh+7zwR1X+APvkP9MwEkZ8INBS4lUEecg4MoBtZBrMr6J9xZzoDU3bgB9/xy1Y/R0LDoDZpYKv2SBkQKrZKFO9BgY+LEHG3J/PPkQ7i3Td2Jn0FQGIUxhrqROGC0V6iOPI/c63apA7AkDdRrEUhqzwgKT8J906/NKJMT5jhmNac3anexxgxP9aFv0yW0Fv/hoPXZTDtjSQyKZ2SSdf5QsMOPduOOhoYU/HdWpPtqpaGIzNL2T+8HQLa6fk4IKQ0a3CxkCZd6GOpozD46zgpMlZuSKvedzz0MMHvO6RGDiRJsXxj7tDEA98Gf9Rsfli63ZkvslrWLEDxsZFTgPP0FGrDkpvdVbVyXFlinGYyQzSAOMGCxAnox7NGojcRY4XMXaULtT14e0O8iqaWb0WFEmBmeH8PeuED/xzRWy8ing4mwBJveOFg8mcjPVOhjoenxj2z39LJxPTzm/dMac9fCZFADW54L7/NvfOW163OP/hFeugyelmWq/bGbMzGrvWwLQ8jo8IHaay6XdkkApZunz3ke3fjGB6J9DPqypLFP2ZhKJFfyk3MMY9sXeNWWwhWg/3G5pHCboxvE3A0xQsrUaKCox70iXZL6n75vk2CNN86JPqEbs6qZI7yvdNR9fXJwjaE1ZeOW6/n0DDJukuttn6SsMzyQAZanNEZ0jp35mzyJdR7yvNISO2
- TMeQs6tg
- SYw6Hjo2dpH8m+q4s2B4h0q+rhg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775073944-799265
+X-HE-Meta: U2FsdGVkX1+JQDmmmv5xH1jyhr+obZwmGVahLU/sIlTbDdYr5BDK9JVDAjPoB5hFqJo3CBuGUIdwdzVsJrIWsuga2WJEC7GzCzpST5jT5rNoiCuqfcu368SyZQodDv0FwT62e+EURK7JMVP1ZgAiN/jk1E6OwLSlgR/P9JKxtQ4F/3vnCKucxMO6KHEjiyVS69l3CJ3lyn5ZTC/bv5F1XeVQDYEtTE2RO+vuIHCFgfKHIWFNVZ4XCsDa3UxXEfrr9aJk93M5Tri4kVuxShxmiu6jc3iyFBnbXNB5Aiz07z35grohbLWB8HiUs2gg/G8xRTAUWudao7j0vWiNN3IhXRTtU5eIH4sIn0xhTE4w9hqFpRCZFsgDnNCFLC2zqGLjWXG7CdZTit8rFXSAhnC+YtHR5BjSy5snoCxHPNRYo6nK+wAbzk6MRdGW9XWwF4EIh77C7ZG0fJEbpx364CpjverUet+JfscOsxqvBBu/YJqWiQpYwDnZ/KoR+PM9s9z3nQevKsFqdp6VnLsO/L0BQvJu47u6NT168ooAhzVSlxM458B1viIVEIyjHOnL+homgpgBJ8bI17nUoqbzYmyt2C5MIr0Wep3OnnBSEVICpPhXyyT5tLJPpTH+mf9gBpJ5nwiwLGDWJYigq4NO4Hk0xlVntptXRv8rQZUCxdnCEAdCulBMVMH5wtb5Y1j/hNIaxGrGBHbtkGYav7KET2Y9S74aLTMjS+hCgLPWd8S5jZGlS8Qel9AsebVXOgQ7Usy4lW+5uEkwVm67RsjP94aiwKXfywxP5Ouj7ZyljWFGu7IXD5UBRLkkCy7Z7WSsMIGZxXbKJdGifHCSCmRYVAvGKTZKs2ayDVy4Qcv3eEut4YqcwlMcwNYAPM8zHgVXYLCl2a+BviCytFhlMpRrjFR0l3yXaFI5RTCHKLLTvmVVL8XIwsrckOKz/hORxNGVSxN7gNxnr0mvrqB0ou2QUmg
+ nWEXvUtU
+ WXm3hNbUGHUWISLSDJtgGghn2saBzjGhX1PdpZoXYdf8UeSWLTpOj0O2XHcm69LqljREbH7bdWuLGf87bLiAgaHr7VCK66+euN5oyiT4PWApZIl2WaoahmMBAIQD7kT6XtF6Hgs1owDQ0+asGfWb04grhg4QMZnxjWXUIZw2K7L4acFbmVK5k5VQhPKZ4WeyEtG4ihCwTXREuywhiJkQumrSrtq4AQR1nFfhD7EtVcNreFQvvj7QU0QwHkdqM8PiY9GyVtEo2i5EJeKFEld3BumAgqDyMBi6tjRItqh9JSYCWcFY6uykhsNS35DorCYUGKyS9XaQghgD0TywmKvs9m4174CtWDiTacA5N6ObiqGgTKO7KDFjBR6IAnMSJ3yyqwhV2msFh4Z3zZZvunbUx19PXDzNt/tL1pR8CPHydXfrlJfffxKq46Xc6mTj+nZsT/ILq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +140,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 1 Apr 2026 11:08:58 -0700 Vishal Moola <vishal.moola@gmail.com> wrote:
+On Tue, Apr 01, 2026 at 08:22:00PM +0300, Peter Xu wrote:
+  > When caching the offset, we should likely use linear_page_index() with the
+  > address provided rather than caching vma->vm_pgoff directly, then
+it'll
+  > avoid same vm_pgoff while VMA mapping shifted like this:
+  >
+  >   VMA1:  vm_pgoff=0x10000, vm_start=0x10000
+  >   VMA2:  vm_pgoff=0x10000, vm_start=0xf000
 
-> On Wed, Apr 01, 2026 at 09:26:36AM -0700, SeongJae Park wrote:
-> > sashiko did arguably good jobs at reviewing DAMON patches, for multiple
-> > cases.  "Today" is the greatest day to give sashiko a credit and the
-> > responsibility.  Add sashiko to MAINTAINERS file as a DAMON reviewer.
-> 
-> This is a great idea! Andrew should add it to the MM one too :P
+  Makes sense. linear_page_index() folds in vm_start so it catches the
+  shifted mapping case where raw vm_pgoff alone wouldn't. I'll snapshot
+  the computed pgoff instead.
 
-Why not 'THE REST'? ;)
+  > The other thing is I just noticed the err code was changed to -EINVAL for
+  > snapshot changed cases, sorry I didn't follow previously as closely on the
+  > discussion.  I think it should be -EAGAIN.  It's because the userapp can't
+  > resolve -EINVAL failures and app will crash.  In a VMA change use
+case, we
+  > should return -EAGAIN to imply the app to retry, rather than crashing.
 
-> 
-> > ---
-> >  MAINTAINERS | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 16874c32e288..42aeaa858531 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -7041,6 +7041,7 @@ F:	drivers/platform/x86/dasharo-acpi.c
-> >  
-> >  DAMON
-> >  M:	SeongJae Park <sj@kernel.org>
-> > +R:	sashiko.dev
-> 
-> Maybe we should give it a kernel.org address while we're at it. It would
-> look more in place.
+  Right, -EAGAIN is the correct choice here. The VMA changed underneath
+  us, but that's a transient condition the app can recover from by
+  retrying. Will fix.
 
-Oh, so that it could use kernel.org infra, right?  Good idea, but asking
-kernel.org address might take too much time.  I will move fast and break things
-by sharing my GPG key with sashiko!
+  So v5 will snapshot: vm_file (with get_file/fput), vm_flags, and
+  linear_page_index(vma, dst_addr). Return -EAGAIN if any changed.
 
-
-Thanks,
-sj
+  Thanks for the detailed review
 
