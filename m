@@ -4,147 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2873D35171
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99EE5D35171
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:08:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 332536B0005; Wed,  1 Apr 2026 07:05:47 -0400 (EDT)
+	id 0C57A6B0089; Wed,  1 Apr 2026 07:08:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E2C46B0088; Wed,  1 Apr 2026 07:05:47 -0400 (EDT)
+	id 09CCB6B008A; Wed,  1 Apr 2026 07:08:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D17E6B0089; Wed,  1 Apr 2026 07:05:47 -0400 (EDT)
+	id EF47B6B0092; Wed,  1 Apr 2026 07:08:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0765E6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:05:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C848F160827
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:05:46 +0000 (UTC)
-X-FDA: 84609706692.03.5B53D08
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DE5E018000D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:05:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VuHMapRR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775041545; a=rsa-sha256;
-	cv=none;
-	b=tYSZQd4kYXUsbXJwxtvnLQZOUtxaYkFdxyhqptGwGAnmIwIDUiYHovaBEu6ZpkxH0D9VhV
-	4w5hCoa1X+VAFcglmlqBpwZgaYfjmITKrpw1551Tz6tI997wMc3AjEExM9gp7z/AynutC5
-	dOME66mV5gPkYCb+/185kbDOwFurtHI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VuHMapRR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DCD2B6B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:08:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D1AD13BACF
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:08:14 +0000 (UTC)
+X-FDA: 84609712908.24.CB1E047
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4A89D40006
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:08:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Lm1/Oucy";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EZIpCN9Y;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q3ydXVuF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=INUdjBYh;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775041545;
+	s=arc-20220608; t=1775041692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d2lPtimPmQkkXNmuzgtBX2qZ0+CUFIjd5DSbsVAJgA8=;
-	b=X76qZizkoAGulVRGi8nr/of5WdpRB3pCDM8euIJfmEO2kil7afSrVNRjASvkohE8SJGdym
-	pi35ZvvOv3fX2gLn7FAn9dBn5Vgtz/gtDjT0aKvkkn0eEF3F6xcB0JIK1fwBDewlbuJN13
-	1EJDYC5o2RHU7znj/M7qLLZBBG/ywQY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D709840882;
-	Wed,  1 Apr 2026 11:05:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC9DC4CEF7;
-	Wed,  1 Apr 2026 11:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775041543;
-	bh=1W8+dv317eOsKjSSy7HgGqEJKVTnHGlpluDtimbO0rY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VuHMapRR71+J3DlcJFKc9P8Xga9VPkyYA3xDODcUmkHZppM1f7vrFLx9TfqB4nsfa
-	 zcJRZUR0/leUE9Hlu8V1oFMF8Jges1BU3/Ut7ip5Gd9A0tVoVnrvnyoZz0ob+QERqY
-	 sCDDxqmzDC5B6JAV6UiILDNM/TISWWkyd0OqRYheRlCNLvtZYytI1Y2scLGVxyMuLA
-	 Q7HY5yYrnoYb4L6gpIeFWvF5APaSUBv9Vig3bre8nb6VJfBTgdYrUp/8cg96MSXYBL
-	 YZb2MbPl4y17XP+zhjdoNfax3le4qTyY8Uo4c0Nk5pLOWGF6eZElJyqTyaKLjOQ2TQ
-	 W/J4qw5K1dJjg==
-Message-ID: <d5cdcb88-c7ca-4a29-9b8e-3abb7c37726c@kernel.org>
-Date: Wed, 1 Apr 2026 13:05:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	bh=gyTjX+7gYFGs/V0ReF4YKYRShc/UaAx67M+99AWTHXg=;
+	b=E9tBRNgI8qmgrff0VcUb8bXRwBljg7z6qe8+icfIMCxhW7bBFHwu2gMuUxY/Tpi5sPHiMx
+	xqyxI/rgi/zmxwJ6H09u6EA6mK4O/D6RMNRbh0JOIvVF6fzp1CGo2e/5HTI3HHJH9/LlNV
+	5AfEjunPHmkE2RT6f26fFa6is8589qY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Lm1/Oucy";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EZIpCN9Y;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q3ydXVuF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=INUdjBYh;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775041692; a=rsa-sha256;
+	cv=none;
+	b=P6/KPINxQUoGx0QpCgG0gityRy5oRB2IFoH6kC5wR1fNI+mzaTq6eDrEOZKTK+EKTh1K5d
+	0qx+qWpMOp/jXvi5r7N9gnEo2w4GIZiIYtGsyZF4mBIkTGkfhf9zwPKtVRWx01FbAtbWhi
+	11zydpDLdKigWjBCNiOJ3iMyfmWJr8Q=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 68DBD5BD9B;
+	Wed,  1 Apr 2026 11:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775041689; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyTjX+7gYFGs/V0ReF4YKYRShc/UaAx67M+99AWTHXg=;
+	b=Lm1/OucyVPxvlpIQSHxeZ947XENpxtQcrAJMPYNwo0OqfFUO2LLVvYjgeOoo3CK3spVh/h
+	3keGC+MCrp3EVKI3Y8DRfxGKzdloMVSZy3DXu16AP2OBlxzXvTdWgcXrbxbVkjWytIUPc9
+	svJPxLATcfPQ73QtX75AY4zobDjaJ+E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775041689;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyTjX+7gYFGs/V0ReF4YKYRShc/UaAx67M+99AWTHXg=;
+	b=EZIpCN9YL7pYI06K2vgVPcVWxoXWOAb8I6kfU+P+anC7WiLahUBYKqRP2PActbHiQbglA/
+	m85o2xRw81mMUICw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775041688; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyTjX+7gYFGs/V0ReF4YKYRShc/UaAx67M+99AWTHXg=;
+	b=q3ydXVuFVxfH8iEkkfH8BtFtNcXz63n4VgJmlyPpSpUOxGHACUrfdme9DuvfTMHWOKu/PL
+	ze1ks8WiQEWqah46R37DHTlN1qtlf8V/sP8LYw1GXCQRqp/M6rfOX8SCA4L+sghn7zEPFN
+	4oFT42Xh3KjZoCEYjhnHh+2pw+jVOSQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775041688;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyTjX+7gYFGs/V0ReF4YKYRShc/UaAx67M+99AWTHXg=;
+	b=INUdjBYh8tlcTC4rUTQza3BTc0IwPuKHOjU3huRK9bSLq8naJWkk7te6DcxkJQBYXYDSvn
+	wvkjrT5rKA5RBtAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A78104A0B0;
+	Wed,  1 Apr 2026 11:08:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Sm16JZb8zGnULwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 01 Apr 2026 11:08:06 +0000
+Date: Wed, 1 Apr 2026 12:08:05 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Harry Yoo <harry@kernel.org>, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Muchun Song <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>, 
+	Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org
 Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
  option
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry@kernel.org>
-Cc: Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Muchun Song <muchun.song@linux.dev>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
- Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, cgroups@vger.kernel.org
+Message-ID: <vjwodyrd7h72xutanjmgeriu37gwp5ooqakimaifk33347ka7g@adlojotcd4j3>
 References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: acfuupecdz4azqhdkk63esywyfpoubph
-X-Rspamd-Queue-Id: DE5E018000D
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775041544-442186
-X-HE-Meta: U2FsdGVkX1+G6E5ZS8Zj84L1xYxGpqHPxb3A5LExjPK05LwQj3kma/SYGGlOg7sqKwscrM23AMkPUqYPAsoVE3Xw9vJ0Opz5JKOn1bMbtcY1wKiZJz2PJOuNTDuG7Om6YuLELVm8AFpnTnIGje/+ZmrcKsXK08XpEIXuo0+zoUgsPnzae6XWBZ52riveiuKJ71UQHXaUa99w0o2NhcpKPUQYAOO8zw+QIXFzYBYATj3gdYJYzdPzPB0YkTIq1cneDspgJSxFyp9V4tbjkSuwhkoNZ34hgA3B68A0PxdQ4W8PhsdOBnWLHeaVq0aUDQgG4lJDKfL5zk7BCjLwwO8csG3UdE4lAqmOkS3rotQIH1KLoWb4XlsrIgd+Y5q3vderjQzYcT5TiNQxY0LQMX2GwBkv3vJRnlztJ+jsFVk6teaHio2h8U5zwBKwSFDp6Cg+z0USFYbSmTj/ydIwqXg8rodTSZf7KQTU7NeFpnTNYvjhf68peNA3arjYvdT/Tekp/l2i0tQhtYo1aVh4NyALp9whzKJuuEB3ms4Jho8EcZhgVckoupkCpDuFqSQ67NcWL7Wvfds1F75nuafOfqkBlQ5GvFNaVhFls6GwJmMbkGiikKAuOZhaGbvdtsJqr8SSi8KIK+J7mmBeWRKdg4lvp9n1eNyF2SDVEErGtq1G3N2wGzaHyMIk7wh3Q46qrNf+iIX+8sNolNoZRxh2eQllnz1kQ5NFL9BSp/b0XfW9q8IztdKEZ7FnuFgFAwtoV0VtFY6DLckraxBAosyj+wbsJaKL7vu0rT3lNSE2ICsQ8HX0S1GqaRBzleTHl7bxti+gfnHKZ/AU/6YAZCj8Q7aPJxff076bswkFVidgD3uAZo3+1CQflhC28CsTQEnZkkhDMq+Mo6dm27fFE52pr73J2Glsi1AP2hRc9e6HzJ4d4r95nHvHvwJkDz1T6FOUg0L3CkFDQwx0JIp4awPkiuR
- 4AEfRKJr
- YSJL9JvcTLVa5VZ6AbOhLIPTC1GG5+eAYNHb6SZLnyrWIPeX9fUOFHuAzx5bi4O1RzXrM7DSJ3+RsPTxuRCHPE6ve46prpfIKV9QOM4PKRoJIBZqdFt/3WMe5ToLqULZ78kebrJQCbeJ0Jp1AzdPM0680WqEjVIkOUca/7oA4Cqw+beYipm6gZpMp2bp1078TVqUKEVLnrttYgk62Tu7XcXoyqlmcUxVunxf14eTvkk6duAEdVk4TO4LQRi0ukuOLQkEVO4Vn/3GOJEtPbi3FXVuOtOkwP4S8VgrYzIAokSAAgIpvKxamaofqVE1RW+XCs84fqJcnvbnxlIC204QcMbfu2ZgLG7OUVymdzOQNwbIM0OQniNRcRCOa1R4QHfMQXQvILRbXBWHcmrW2EVSwzZ+wYg==
+X-Rspamd-Queue-Id: 4A89D40006
+X-Stat-Signature: j5qe65ey9hycsn11zfojzhr6efqqxuaj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775041692-335911
+X-HE-Meta: U2FsdGVkX18+T8Lc8QmEBGzVszGOVYPWkSJJSKmcuoYC23UjZR+aaS3wEhVAE+OgVLuoc15kVdEPLuwHTu/4QnXoIGRFL/LYxBokMrOMhpQN96lDkOwU1UjjtfFCb3aB2rbBAjTvDWDLd19h2mqubXDUathk8Amqkc47GBj5Wk5+I3E4t+GLAbtocS+5oT36FeUSf7i6kUcjEPCQKJ+FZJxwueFWbaK4+z8XRhwVkdpc/RIfnaIueQITNA+tkKe92DqCkIXeItRR4A2QPIcc9CnAVd5H89iv+rvWb74oeVYjJOQccLRxhxytjB1RScB4nlWfLL/lEHR260RIbtoKQmgKYcjqeTFn1b6mBY8PKd8252MftaoXNtDpESKD6f/uLjKb08zPyvWrmA3XaUPBq8rBQ/rLLS26XAVROO/qCAg2YYT5bMfNQmmblW0bfLar/UQZ+kDpUQ6ZfKiDtzRiG6saNJbgOyUCkua4v6heByoOqzOg27VGpJJWaviNtGeiZzoDQIBTwJDoHZFBv1Tm7/p2UaWzbRnwjAINfYHodLSElvW/e6PkeDtJH1yYsBAv0tAq8hJDaMT/VIstSNJVlXk07XGKK3vrtBrwfyIW7ZYxguYZnixcDtMx3GC4P8FptwdBL8Y6PtDSWEAyF4ubmwTAa4peYF8xm4m/hYF5tFvUG8UHoulQObmO/GQclvEXoGjAB4JYsmuv3fmxUCaRN8u6ukhDgMLC54psqwwVAZdkn1EcKLCwPrwSO+24TRJiOuz04grPar0qR1ylcnjiobjoqH0swral7UTtIXFf5gxPy5WVz2uMgh3eHfYzYN2FGDsWtcqiIYmWeFM7p0S8Fsqq9sFA8dpPk0PXycouFgXvp4oGMk0X+u7LnS9ph6yfDhlViBJsbbZuEmGjAJ90XJypbfCU7tUSwBhzNphPxABzKd9UqZS+dz2jcjI7WEWem1A1SO+nVwZoKGLT4zU
+ TubZA0ue
+ I/QKNlE+QCJgYFfwaPgdzkh4xD3asjqqmvK2DP2EKO/B/iaJZYzI7pDuXcqdAnyUmVDGJvKIHqUEn98fFqd4rZqQdeafuyDXz5fQGKeh7UEW8AYP1G2WNKUs25nN+PjmQnKx4B4w4MNn/yuA33EyRCOhDNBdRzHTvfml8mzVj5P48ELe9Lx7G0IcjzSOPCc5zFRGImAizIcg5oMBAjMpCnowFT406Ou3hHNP1EaAfhBG3RWmw2A0o+q9E868J628dByAIKPvKASGsC5cVXcAui8DmD5FxFgZ+kA44IHlfxYiWTUygQnfods04PxEp9NGKXTT+kiAkzBv6YKi+foD9YwZlveUWATakrTIPlnqbaRYkvsot3YKnIBgsXw6Uebp2Oiu2ecbCUEKAl8gSKIb9Qzxgxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,24 +142,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 12:59, Vlastimil Babka (SUSE) wrote:
+On Wed, Apr 01, 2026 at 12:59:29PM +0200, Vlastimil Babka (SUSE) wrote:
 > The boot-time enabled per-cache debugging has served us well in the
 > past, but it's time for it to go, for the following reasons.
 > 
 > - It's a debugging feature. However, thanks to the advent of LLM-based
 >   reviews, we are not adding bugs to the kernel anymore, so it's
 >   unnecessary now.
-
-Right, and probably LLM review would find many of bugs in the existing
-SLUB_DEBUG code.
-
 > 
 > - KASAN is more powerful anyway for the classes of bugs that SLUB_DEBUG
 >   can catch. But I suspect KASAN is likely to be removed soon too, see
 >   above.
-
-Of course.
-
 > 
 > - SLAB never had no such dynamic debugging functionality. With the
 >   introduction of sheaves percpu caching, we have turned SLUB back into
@@ -177,34 +160,21 @@ Of course.
 > 
 > - It's removing ~2500 lines of code and I want to keep my overal
 >   diffstats negative. This adds a nice margin.
-
-Personal stats clearly matter more than anything else.
-
 > 
 > Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
 > a big loss, see the first point above.
+
+Did you check if there's a performance regression with this patch?
+
 > 
 > Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
 > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  lib/Kconfig.debug      |   12 -
->  lib/Kconfig.kasan      |    2 -
->  lib/tests/Makefile     |    1 -
->  lib/tests/slub_kunit.c |  329 --------
->  mm/Kconfig.debug       |   60 --
->  mm/dmapool.c           |    4 -
->  mm/memcontrol-v1.c     |   17 -
->  mm/mempool.c           |  105 ---
->  mm/slab.h              |   34 -
->  mm/slub.c              | 2074 +-----------------------------------------------
 
-slab.h vs. slub.c is annoying.
+LGTM, thanks
 
-Can you just rename that to sheaf.c / sheaf.h now while at it?
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 -- 
-Cheers,
-
-David
+Pedro
 
