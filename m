@@ -4,97 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE114D3515F
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A78D35160
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5198D6B0005; Wed,  1 Apr 2026 05:07:37 -0400 (EDT)
+	id 1092C6B008A; Wed,  1 Apr 2026 05:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F0076B0088; Wed,  1 Apr 2026 05:07:37 -0400 (EDT)
+	id 0898A6B0089; Wed,  1 Apr 2026 05:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D786B0089; Wed,  1 Apr 2026 05:07:37 -0400 (EDT)
+	id E92B46B0088; Wed,  1 Apr 2026 05:11:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3196B6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:07:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C06CE1B867F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:07:36 +0000 (UTC)
-X-FDA: 84609408912.14.C6FCCC8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EC766180004
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:07:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CQ9qN/q9";
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CQ9qN/q9";
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775034455; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB9836B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:11:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FA178C3A2
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:11:26 +0000 (UTC)
+X-FDA: 84609418572.19.03A7B36
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 40A8420005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:11:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nZxYsEjv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JCN8Ehc+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zo2PpqKA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BAatxIFH;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775034684; a=rsa-sha256;
 	cv=none;
-	b=PZIAJsILp9okTU6boNzkzOaqmdheBVdlJxZ3j1+32tA6YZ9LqDw1IlHaXJaAaG9QEaqORP
-	1C71+cMj/CbpfAmWTqd0R7Lpa0UsDJRw+odGFl7mvs4QG0dE3e3RYHGc22TY+jKDfQIM6u
-	Y3FfbP2meHRDQXRpHNaly6T2d0lLb34=
+	b=sNVC5EDT80mQLyskTvWXkM9+XuvY7ik3sqjpgfL3NBPhclZCPrOS4lsQe7qNp61V3LO39t
+	Az9CB6EIPmcAunBdCEhh7liHzqRKe90OPme90n4BFLpy4fwqEou+Wtw8IEx5MhJ+Jxi/Pg
+	iS+oGLa5u107Jp24i8lNO8JUtgFQkyg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nZxYsEjv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JCN8Ehc+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zo2PpqKA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BAatxIFH;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775034455;
+	s=arc-20220608; t=1775034684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Au0W8p0anXBwQRw2VDaI7GC5Qu7bLo+qw2kp9GkG+qI=;
-	b=b5b2QXDRL7aDxoO99SDtX5sPi4ozXf8pTxqKcIat1hSY/GdT/xh+N292Nou22Phf2r01v5
-	mRmjqNGVD86YNpZkPU5LkfKbOcC3sUxdlkoBiPL6QfA7KAUR7639/8Cs1vOljrckdew8nl
-	E407tFPI/KVHPTSSnvbm7twVt3mKt70=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F008A4068F;
-	Wed,  1 Apr 2026 09:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DABC4CEF7;
-	Wed,  1 Apr 2026 09:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775034453;
-	bh=Ai0SUn3D0BgOXKunw85YnznITvntYENkG+BT90h3JJw=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=CQ9qN/q9y4FNLLtzCh9t3G0lfNYLNTTQbKnGgiICdJXULSK1z6Yx6WMQBAqlTLp+X
-	 owAXSJYhv1dl7eWTLwfo58G+DhR71jcau28Jc/wBXytG+cip8u7hZqtgCXamzxlitF
-	 CRm94ybj4QV4kSjoVcMq2K6Er5F0mSqK0EMp87IkyWqhnj86kzU675WNUSEaAD0lTm
-	 yTVmjnCXLgx+n620nMFTdYkgSrno6oGnSixsdiFUTehKaXt9K3JRhrI+VEj8XHQ6bC
-	 jF0SV8GBkhlH4TJe9n+ZHZI6N6QPO/YQNRn64G6FNHHhxGtmNK0+EK9gcVpyg9g+Fr
-	 apLueOKG/2e+g==
-Message-ID: <f61e0fa6-a716-405f-bce9-a2bf4ef0c045@kernel.org>
-Date: Wed, 1 Apr 2026 11:07:28 +0200
+	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
+	b=5ynVGqaSIr3KHkQacevGDmD2HPc8NhRypiTeIN28Jj2NQK17zXHhU0j7wcd8/T6Z1k+vNu
+	T9SJOwAlYqpQadeVb9HuXwlL8VzMoOx5Ee2hefnrxZZbWp/rpuaGee7G7vFgngfJwrAAfb
+	Uie8mxWxVmGN5GDzsFIG3cNpeN7Meug=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EBBC24D2CF;
+	Wed,  1 Apr 2026 09:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1775034682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
+	b=nZxYsEjvLNi0fjFwdsdR1QIaA5CvnCSA2jDPIHtYN/zMUPveX4qhK/mtlK3b2E2MA5YHn5
+	K6wSSMfGS6pQ+rykA1fRsTcl+zcoowmjDYoJHQITm9pgexAemYCQK9PkVOejTlhUzl1lM2
+	VIV5BvNh/EoHP/3O5qFeEP8cTeIbqhY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1775034682;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
+	b=JCN8Ehc+FFINdGPTdJ+9HBZQRIpd6mKRIPCj7gdnQHcZCq1hpu7eDDuibBMcEPjV60J3hM
+	BfW0iDBNn8QnJpDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1775034681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
+	b=zo2PpqKAESdoDeQY2nAufXpoxkmcfvpYoV6gUQSBEZsX8z810LV8EEnBxv5xgeAtIdc4MS
+	iix+uHfALyUGNhO93ta76Wu5ie9nz/RxdKk+d+NVbcV6+PvDY5C/r6ZjTtJUsOpr/zrkvQ
+	eBthHK1py/eqJtWIXTqPWLeU6YFIduI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1775034681;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
+	b=BAatxIFHNOqSkzuZWOB7WxBGFIaFDehxiBNj+YqoR2+cqrgIPuY0C0BJNxqNmTVJ8EfJuP
+	7B26ja4KxcBrjhBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE8044A0B0;
+	Wed,  1 Apr 2026 09:11:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Db9LNjnhzGmdMwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 01 Apr 2026 09:11:21 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9F960A0AFD; Wed,  1 Apr 2026 11:11:17 +0200 (CEST)
+Date: Wed, 1 Apr 2026 11:11:17 +0200
+From: Jan Kara <jack@suse.cz>
+To: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
+	Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
+ fat_evict_inode()
+Message-ID: <gkwyh4z45xglmq7jmam4yfvkecivipr23trzjkbyfolm6pdzre@d5huocjf55ew>
+References: <20260326082428.31660-1-jack@suse.cz>
+ <20260326095354.16340-57-jack@suse.cz>
+ <87ldfazqo2.fsf@mail.parknet.co.jp>
+ <3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
+ <87jyutwo6o.fsf@mail.parknet.co.jp>
+ <mjraa5thsnzchejoomqgiahwajx4cs5ryqnmn7zsi3fylzhrrr@5ip65jcrlknn>
+ <87wlyss2ny.fsf@mail.parknet.co.jp>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] mm/page_alloc: Optimize free_contig_range()
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
- David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-References: <20260331152208.975266-1-usama.anjum@arm.com>
- <20260331152208.975266-2-usama.anjum@arm.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260331152208.975266-2-usama.anjum@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EC766180004
-X-Stat-Signature: ycbgjx5kqudeaek5xppzy69j3jfi1qam
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wlyss2ny.fsf@mail.parknet.co.jp>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 40A8420005
+X-Stat-Signature: udexu5jabjsmjj33bxccneo1o4bc3kxy
 X-Rspam-User: 
-X-HE-Tag: 1775034454-877139
-X-HE-Meta: U2FsdGVkX1+6vpUGYiBywZhGAAIlVuoLNhO3bsZOBnAM0xS+ReLa9YR7IvpD223gYJKQgnHOkqWZ28D5OA7PKLAYc3ICyNyqMGnDgNKbjCoubtHZ6apvVCAgvhpEHBUnlMy3W0S1NT+84YgMEhpH8Rz6BP3N1sAUjgz/y/jVxKrEekpMhM0wRQldJC3j4sLedaYJRwJ2QehSHV2A4x/bcApZ03eR/DaYEk+ssO+LtvtTBX7DBVbKPAcMbhzXdOIxSZoNsxLLPmF0QicNqYfVzNnqN552zRxa6vE84IlgHfMy/EBO4JWeFnJbFXH5EWNfIMYXwydEZnYkDEJ0Gel8VFWtdDg9KWhlzfbonaFirkFVwWYUOcBqzycsiumJ7+P34GPHUD0gZnbL4Ayl/sGPAdfzdOp+QnmzZ0NNevOLq8liv1I42RKIwbBRHy0XCr0WSMTHnudRYc59DnzVo/dUJAHxTDVWvah77lprTgKCPmuuxb90kbCRLIhOumFjxQmeq1Q6T77ArWb/0tIhJhOPUsSBvZqOkGwvvNjD3PDk9PhdahogVLfEGDhbw7UYKy/FEOMjssDn+7gcFsMcR3qYEV7khkyds391ljygHTW5oq0MBKTxotEhs22LW/B1Ybp6uxtaw8DaVPK8jqiawdzp22Q//Q3Xr+/EoiMH79RRwC6UKiF4iaDAFauKSOqRtAktHbPeg0jOATIumhfSjpzvzkyFLobxcEtDkRNg3MhM/oOt4IQ9Gkv7W0jRpC89Z4nkTu0h8wN1yKG1oxe0EVCkTnwJoChe93HxM9lDkYEEsNXXFiuT0xsY9MqSBrUrjV4nE+0AIWULIc+AOgsRMqX5PrNVlahLKytpSj/Nczh/k2zxY5i/UgH9IbCA+9qHzsm1AEFzpqhgZG6Q3C/7XoWB6sRVo9HejCxTe3Ypq9+AMR2cIVm8CnzEChW6d/OP2ZrWtDV/kTmEyZNJphkA4YP
- 5AFp854y
- Y+rzbHvpMJp1pqDVWWGw5rsuxJfYJtMQilu+hmox+8bGkojo3096zg7u1SCb2e2g+0CTAfYa8d7hOro2tgf6oJcXm3t2sV75t2JpOJENXnuyFBaIS/sXR4I9VsawCo1Tja+5bAslhkQLZFTFkDDSv+Ic5lxrHwLb3SyDdVRlUFvkbSQyHqjS1ugi+uqff45tMZKE7nEXTC/QCyPRtTTu+7Oj4psFYmbq47x/N8TEIc8gsBvB1N3MX5eXIpkukuBT9T4+1jfRSKVVMFNgYnJeHacWc5MD5RaSe+kJK4xtalZmJPEe+6b84NdR7R2gDOWR9dBSrznhnP5hiYw28XoP79owZOFkGW24xgH7OBY5fgT/4HTd24b+eEvmUH3+TCkZJR4BjBx5fUOwPzr6fJy6j+vxeuxEt/Sn2FyAxo7U4lVw4BMoCc6w9ZbZT0kML3Q7WCiHUUpa1rcLDdpaZ2lQeVkRoog==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775034683-408540
+X-HE-Meta: U2FsdGVkX1/ygldrnjW04WyyhsE59ocqrACXM0X5FSdcLr+G7fZArA/M1nkt2UDmpzsvwgkMIhfGuYMBcjGbM9ZPu2w7ldt4utsBtPGMousM3bMTtAxARmJoAxcURcBFXKriBW3YzLe3FIhZb+VCUSHhKnnGa/2vknSFrerCXjq/2E3Q9R19hxKoQ9Xgw1+G6kvzwCBj1LvHvqeH/ahMDMVPMnp8LG/KD1GyDph29VxZFMFrbhso4qPbtTpGwrOfin/cxLJBX6S5kZV1iyPYDksrYK/LvDnH95DWB0KW1Wt2sTz3dn1CAA9bPvD+Z6D72Ri99pkCQTYwtoYfuy6I6NWPavcLIq0YpS/WIrEJ0EvgyMe9WklxMaehAHdOwPDFGjs8ynvH3Hxh2GFzNNG9tzdFd9jdBvnGjfJLjVRdYQyovKi7NXDlBJf8UJN7r/DDfi8h13vxTxuUsGyTW4UAZdr26jpTo2S2Jh2J4VhTTphv8ygSzjva+/AYOZapEf1sws0IxSm1Bsas95fRv4QZpayBBmT/p6kMspu8oIlBneAWuuZFNnqfiSG67dxP11fIz+/yVgs5RaHyQpI5gtv/ffktGYOTc0LXKL8yXh1ttxEQHXcm/pfcRS08WX+MFjJbinJNlwWFjJO5QjWAyDloYpoqYC1nuilkg3SSP1cFhBJ3dktlmYgNAywelwWVkYIw5z006g+wI+yUDCOTsgHYtfAQBZnPWVrA5dDvMVaAHBnuXTbBlZeIYtaxnnzDU4KuOixlLpzHF4kSTU5FuLLc+OqzS8q16ENn0LRbWPkEYrKuuaRiXPPsV2joZXDK0Nzy1Fo/ZQaH57JBVWCzVczK51dKviXqnh3xsnS1ahd1BaumAO6Elq73Ybm993v1H/rZzPGfEwtrCk6kZVfvofOK5vJhrSjOVGEby7EyS0LU+/sDQihcQWeSFBsO2Unyi1clMLsGnGAZJF8mDqNhYQZ
+ f5ztQ2LD
+ iEWArcAWskHwMMQVGjt9Tbu9dTCYBOY7pVIOt34/OBnog3DKxtuxy87lnGk4dhFc/Dio57bfph79WP9xnGuSsh8LWRBpZKstKqNHdUgbIGFBhetXj5KnbR63bVppOCG21IWPqtTz31TGRbH7iCp8dCpWpRGaYjvdsBVzw0ApCi1A34tsLkAM1WPWoOx97QlRJdAe6ghu8a9U8AhZ+XmkNWz3HOH9ZHrDxcrI47rsw37XXqkm+2IGjaVrWqazfS60O/jKrIe8EA5FyV48Wpy7hbZVhCf3WIDQi5kUW/EkK4QRWDX9ch+2Wnmo8151YfEwsRdEO50WmpG8hudPqeppNHwekkbhEYzIHzwDHDSgHWICcpqqUbsYtLe61dl6QGT8HRlCdBGJSRhUDYL68RzxhfCJ1Z7cC0yec9AtKGOI4fzOdqcfr/PdCtd1+4SnnjI8tWPbuKrVwB6lyyUw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,216 +144,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 17:21, Muhammad Usama Anjum wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
+On Tue 31-03-26 19:40:01, OGAWA Hirofumi wrote:
+> Jan Kara <jack@suse.cz> writes:
+> >> It is including trade off write amplification vs reliability (i.e. may
+> >> not call fsync()), for example. So I think we should not add it easily.
+> >
+> > I expect in practice you'll hardly be able to observe the difference as
+> > inodes usually get quite a while to be reclaimed at which point the dirty
+> > buffers would be already flushed by background writeback. I don't see how
+> > this change would lead specifically to "write amplification" - that would
+> > mean frequent redirtying of the same metadata buffer of an inode
+> > interleaved with frequent reclaims of the inode and I don't see how that
+> > would happen in a realistic setting.
+> >
+> > If someone comes with a realistic workload which would suffer significant
+> > regression from this change, then of course we should address it. I have
+> > plans for adding an interface for filesystems to expose the information
+> > that inode has some pending dirty metadata and a way to flush them from
+> > flush worker because that is a common need a lot of filesystems has and
+> > doing the flushing from .evict isn't always doable due to locking
+> > constraints.
 > 
-> Decompose the range of order-0 pages to be freed into the set of largest
-> possible power-of-2 size and aligned chunks and free them to the pcp or
-> buddy. This improves on the previous approach which freed each order-0
-> page individually in a loop. Testing shows performance to be improved by
-> more than 10x in some cases.
-> 
-> Since each page is order-0, we must decrement each page's reference
-> count individually and only consider the page for freeing as part of a
-> high order chunk if the reference count goes to zero. Additionally
-> free_pages_prepare() must be called for each individual order-0 page
-> too, so that the struct page state and global accounting state can be
-> appropriately managed. But once this is done, the resulting high order
-> chunks can be freed as a unit to the pcp or buddy.
-> 
-> This significantly speeds up the free operation but also has the side
-> benefit that high order blocks are added to the pcp instead of each page
-> ending up on the pcp order-0 list; memory remains more readily available
-> in high orders.
-> 
-> vmalloc will shortly become a user of this new optimized
-> free_contig_range() since it aggressively allocates high order
-> non-compound pages, but then calls split_page() to end up with
-> contiguous order-0 pages. These can now be freed much more efficiently.
-> 
-> The execution time of the following function was measured in a server
-> class arm64 machine:
-> 
-> static int page_alloc_high_order_test(void)
-> {
-> 	unsigned int order = HPAGE_PMD_ORDER;
-> 	struct page *page;
-> 	int i;
-> 
-> 	for (i = 0; i < 100000; i++) {
-> 		page = alloc_pages(GFP_KERNEL, order);
-> 		if (!page)
-> 			return -1;
-> 		split_page(page, order);
-> 		free_contig_range(page_to_pfn(page), 1UL << order);
-> 	}
-> 
-> 	return 0;
-> }
-> 
-> Execution time before: 4097358 usec
-> Execution time after:   729831 usec
-> 
-> Perf trace before:
-> 
->     99.63%     0.00%  kthreadd         [kernel.kallsyms]      [.] kthread
->             |
->             ---kthread
->                0xffffb33c12a26af8
->                |
->                |--98.13%--0xffffb33c12a26060
->                |          |
->                |          |--97.37%--free_contig_range
->                |          |          |
->                |          |          |--94.93%--___free_pages
->                |          |          |          |
->                |          |          |          |--55.42%--__free_frozen_pages
->                |          |          |          |          |
->                |          |          |          |           --43.20%--free_frozen_page_commit
->                |          |          |          |                     |
->                |          |          |          |                      --35.37%--_raw_spin_unlock_irqrestore
->                |          |          |          |
->                |          |          |          |--11.53%--_raw_spin_trylock
->                |          |          |          |
->                |          |          |          |--8.19%--__preempt_count_dec_and_test
->                |          |          |          |
->                |          |          |          |--5.64%--_raw_spin_unlock
->                |          |          |          |
->                |          |          |          |--2.37%--__get_pfnblock_flags_mask.isra.0
->                |          |          |          |
->                |          |          |           --1.07%--free_frozen_page_commit
->                |          |          |
->                |          |           --1.54%--__free_frozen_pages
->                |          |
->                |           --0.77%--___free_pages
->                |
->                 --0.98%--0xffffb33c12a26078
->                           alloc_pages_noprof
-> 
-> Perf trace after:
-> 
->      8.42%     2.90%  kthreadd         [kernel.kallsyms]         [k] __free_contig_range
->             |
->             |--5.52%--__free_contig_range
->             |          |
->             |          |--5.00%--free_prepared_contig_range
->             |          |          |
->             |          |          |--1.43%--__free_frozen_pages
->             |          |          |          |
->             |          |          |           --0.51%--free_frozen_page_commit
->             |          |          |
->             |          |          |--1.08%--_raw_spin_trylock
->             |          |          |
->             |          |           --0.89%--_raw_spin_unlock
->             |          |
->             |           --0.52%--free_pages_prepare
->             |
->              --2.90%--ret_from_fork
->                        kthread
->                        0xffffae1c12abeaf8
->                        0xffffae1c12abe7a0
->                        |
->                         --2.69%--vfree
->                                   __free_contig_range
-> 
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> I think it would happen with normal operation, for example, copy many
+> files more than total memory. I think this would be much common than
+> write=>close=>open=>fsync in your example.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+When you copy a lot of files which are large in total, I agree the flushing
+can be triggered. But I don't think it will trigger any excessive IO
+because the metadata blocks being flushed aren't redirtied after the inode
+is evicted. So blocks may be written out earlier but I don't think they
+will be written out more times. For FAT for example you track only
+directory blocks in these lists so when directory inode will be getting
+evicted, you may see earlier writeout of dirty directory blocks but that's
+all.
 
-Nit below:
+> Anyway, with it, reclaimed
+> inode metadata will be flushed forcibly and frequently (yeah, may not be
+> significant though. but I can't see the benefit for users from this
+> change.), and lost to chance combining multiple time of dirty while copy
+> many files.
 
-> @@ -6784,6 +6790,103 @@ void __init page_alloc_sysctl_init(void)
->  	register_sysctl_init("vm", page_alloc_sysctl_table);
->  }
->  
-> +static void free_prepared_contig_range(struct page *page,
-> +		unsigned long nr_pages)
-> +{
-> +	while (nr_pages) {
-> +		unsigned long pfn = page_to_pfn(page);
+The benefit for users is 24 bytes saved for the majority of inodes that are
+there in the system - all the virtual inodes on sysfs / proc filesystem,
+all tmpfs inodes, all XFS inodes, all ext4 inodes when using journal (once I
+optimize ext4 code a bit), etc. So actually quite a bit of kernel memory
+saved in common configurations.
 
-Sorry for not noticing earlier. I now realized that because here we are
-guaranteed to be restricted to the same section, we can do page_to_pfn()
-just once outside the loop and then "pfn += 1UL << order;" below?
+Another win is that with metadata buffer head tracking now separated, I can
+modify that code (which will require growing the tracking structure) to
+properly track buffer head containing the inode and flush it on fsync(2).
+Currently there's a race that if flush worker writes out inode before
+fsync(2), then fsync(2) does not writeout the buffer containing the inode
+at all and thus data is not really persistent. This is actually my initial
+motivation for this refactoring since growing inode for everybody to fix
+data consistency issues of FAT/ext2/udf isn't popular these days...
 
-> +		unsigned int order;
-> +
-> +		/* We are limited by the largest buddy order. */
-> +		order = pfn ? __ffs(pfn) : MAX_PAGE_ORDER;
-> +		/* Don't exceed the number of pages to free. */
-> +		order = min_t(unsigned int, order, ilog2(nr_pages));
-> +		order = min_t(unsigned int, order, MAX_PAGE_ORDER);
-> +
-> +		/*
-> +		 * Free the chunk as a single block. Our caller has already
-> +		 * called free_pages_prepare() for each order-0 page.
-> +		 */
-> +		__free_frozen_pages(page, order, FPI_PREPARED);
-> +
-> +		page += 1UL << order;
-> +		nr_pages -= 1UL << order;
-> +	}
-> +}
-> +
-> +static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages,
-> +		bool is_frozen)
-> +{
-> +	struct page *page, *start = NULL;
-> +	unsigned long nr_start = 0;
-> +	unsigned long start_sec;
-> +	unsigned long i;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		bool can_free = true;
-> +
-> +		/*
-> +		 * Contiguous PFNs might not have contiguous "struct pages"
-> +		 * in some kernel configs: page++ across a section boundary
-> +		 * is undefined. Use pfn_to_page() for each PFN.
-> +		 */
-> +		page = pfn_to_page(pfn + i);
+> > I'm still thinking about details but this has to be a properly
+> > abstracted interface all filesystems can use and not a special hack for a
+> > handful of old filesystems.
+> 
+> Sounds great. How about we delay this behavior change until this
+> interface?
 
-Hm ideally we'd have some pfn+page iterator thingy that would just do a
-page++ on configs where it's contiguous and this more expensive operation
-otherwise. Wonder why we don't have it yet. But that's for a possible
-followup, not required now.
+I would prefer not since that would delay fixing the data consistency
+issues and I expect that reclaim discussion not to be very fast to
+conclude.
 
-> +
-> +		VM_WARN_ON_ONCE(PageHead(page));
-> +		VM_WARN_ON_ONCE(PageTail(page));
-> +
-> +		if (!is_frozen)
-> +			can_free = put_page_testzero(page);
-> +
-> +		if (can_free)
-> +			can_free = free_pages_prepare(page, 0);
-> +
-> +		if (!can_free) {
-> +			if (start) {
-> +				free_prepared_contig_range(start, i - nr_start);
-> +				start = NULL;
-> +			}
-> +			continue;
-> +		}
-> +
-> +		if (start && memdesc_section(page->flags) != start_sec) {
-> +			free_prepared_contig_range(start, i - nr_start);
-> +			start = page;
-> +			nr_start = i;
-> +			start_sec = memdesc_section(page->flags);
-> +		} else if (!start) {
-> +			start = page;
-> +			nr_start = i;
-> +			start_sec = memdesc_section(page->flags);
-> +		}
-> +	}
-> +
-> +	if (start)
-> +		free_prepared_contig_range(start, nr_pages - nr_start);
-> +}
-> +
-
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
