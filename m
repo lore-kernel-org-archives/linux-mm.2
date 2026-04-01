@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4491DD3517A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 12:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C236AD3517A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 12:11:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 788D66B0005; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
+	id 235F86B0005; Wed,  1 Apr 2026 08:11:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739F26B0088; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
+	id 1E6996B0088; Wed,  1 Apr 2026 08:11:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 676C56B0089; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
+	id 0D5D36B0089; Wed,  1 Apr 2026 08:11:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5621C6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7AEBBB736
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:08:58 +0000 (UTC)
-X-FDA: 84609865956.21.A8C2E64
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C4EF812000A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:08:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=qVhrNEMw;
-	spf=pass (imf29.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8206B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:11:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 965CF8C5B8
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:11:35 +0000 (UTC)
+X-FDA: 84609872550.09.2C09DFA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 556AD40018
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:11:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FNDsTbVE;
+	spf=pass (imf07.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775045337;
+	s=arc-20220608; t=1775045494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=//7XitCZDuL8U313dQu90sWodjmALOrjLUhCd5TQrMI=;
-	b=r2jDNPznz0t8tTZ4MSlXHwbXEXg8Mhc2iq4T5wbiXSwg+Bk3hJfHaoNG0XmgLzaGVVDDH9
-	bonA4lyY9mpqm+ZtjZu+iGFjkpYzT9+4oLzXzVicloPBSxbZmh+6TgxC32ocs41Tyc0eBp
-	DE1kvTslPoVlB1oa7oALFNJp3fWOBWQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=qVhrNEMw;
-	spf=pass (imf29.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775045337; a=rsa-sha256;
+	bh=iSeb7biapRVrCJpAI3pOdfntjxfozo+70Fxxd4XRkfM=;
+	b=TdLKZ9SooriplDcjUzebrMZ4/C2b5XYX6J7SSlnzUEEADnWZ8ZjuvoTl4GRHKU7MC3UlA8
+	pJlIxyR0lSFSI7q6zDUlcrmnpkp3ut2St5vR3HLwX6foR9GKIN8TedXRuRikGNDYsA7M0w
+	uJ76Gq17XTcP6vn8pUEg9wRiPcRiL88=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775045494; a=rsa-sha256;
 	cv=none;
-	b=KVnz11GnhT0JiDwkNsPidg9Mr9XoV9DOqaL0YLPGinQNBEdoQsmRt+TL+jHk4EZmXR0x60
-	cqS9QY/AnaQ74nACiJdjH+gfnXwx/LLm2vzWs0QcwrtWDkMa2T0lTkYF4Ib7px9BgIB44S
-	ybXWcI7ETeP1FfqwKhn9nAS+lTVdZYo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1775045333;
-	bh=Zsz1KWW88aqJcvMBUIOh0Ys1zgAR7pErU1ze+icLZtI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qVhrNEMwQvEty5OInor3o7jjNTKDrf5eYOiqax+m5k49pdAI5GZ6b1wJkU7mc33Fa
-	 fO2ZARKw/2fimxKOoitqgAPMASC6pyrF9j8Ta1FEZxMHbhTIXY83YPeG1dLmxVissW
-	 rmmPtGiPAv26FsohpFsoWNZ5ZcCQFWPBPJ3rvl54=
-Date: Wed, 1 Apr 2026 14:08:53 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Mark Brown <broonie@kernel.org>
-Cc: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org, 
-	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	Willy Tarreau <w@1wt.eu>
-Subject: Re: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf
- style arguments
-Message-ID: <c6976e34-54b7-42a8-968e-9ae967c52968@t-8ch.de>
-References: <20260330151503.670415-1-chuhu@redhat.com>
- <20260330151503.670415-5-chuhu@redhat.com>
- <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
+	b=aUQSwfZhBnwAX1p6vlkgR+/oXRdnZ0DNUugU/lUaDoGGQ6s/wDXVeDjtIX7VFA+UeMIqe2
+	fc70/Nn4AcvR8Ks31cDDDqqD+PmnkVTIP0L435K0Eqj0rVf8oO3X4mC2LLBpMNXfP7eGNp
+	V6r1DJvq6+hAzEo+GlzSznJvMDK1XUQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FNDsTbVE;
+	spf=pass (imf07.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 429D31BB0;
+	Wed,  1 Apr 2026 05:11:26 -0700 (PDT)
+Received: from [10.57.77.192] (unknown [10.57.77.192])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 610EF3F915;
+	Wed,  1 Apr 2026 05:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775045492; bh=BE5/nPRKaHRs63cPfmGPfBklsCc8yJVyXPy273mNLyk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FNDsTbVE+dEiFbJpw+3tElXCfZHMBObNS/5oxU0uSjGMnwgeMM/5I47NhEc/4WPmB
+	 PnE2ghf/jR8nTm2Dhd2kAQ2b2dWvFR/wyB1eCJYRdAgCyC0HUEbNE3bbZmtG/lGOpQ
+	 2XRAycjpy4vEjbPShbCiHyksZ605KXgFH187AaO4=
+Message-ID: <c9ded35b-fc10-47d8-bfaa-cecb4fa91add@arm.com>
+Date: Wed, 1 Apr 2026 13:11:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C4EF812000A
-X-Stat-Signature: wt4cjqzaq19yet1cqwqb1u4m65pgre7u
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dma-debug: suppress cacheline overlap warning when
+ arch has no DMA alignment requirement
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+ Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-mm@kvack.org, harry@kernel.org,
+ vbabka@kernel.org, akpm@linux-foundation.org, stern@rowland.harvard.edu,
+ linux@roeck-us.net, andy.shevchenko@gmail.com, hch@lst.de,
+ Jeff.kirsher@gmail.com, catalin.marinas@arm.com
+References: <CGME20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72@eucas1p1.samsung.com>
+ <20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
+ <6270d4f0-85e4-496d-8db4-87ccb791ca4d@samsung.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <6270d4f0-85e4-496d-8db4-87ccb791ca4d@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wsouzdodkz66c9xfnsysm6hghwa84abt
+X-Rspamd-Queue-Id: 556AD40018
 X-Rspam-User: 
-X-HE-Tag: 1775045336-697091
-X-HE-Meta: U2FsdGVkX1+s84QWt6T1kmyTCO9F0xZy9Lu/XlslpMKjJ8o9tOGzpTVV/+U0toRdJ8jp1UqWngnSx004KbzEM4drA4RFgHL37T9YWD6PWwSGlaH8BQECOzt+rlyM8HtzjMlY66VY47eIS4VlLjwvbNb/1xAJhKQuSVvFv7uPxFG8vJrOKJv3aEfQsDEUf/fzgEWGuhTgt6A+jN6pAPnTVeejKRaEmSFbBx6HhwLgcIJ3d9z7OP8JA4vUj+noH2/r1fygbry9Hh+CRHzsqcpsNMEy1VY+WlkopE6Hhc9s2LSs6ON2fzTrnrixYqTxqFU4KLzcTQdi7IW/hpqwYZ1s/YpPNv1f8fmCkst24i8OjbmwMiQr0x1k6FVu5t01bh9Ej3y/KCXtHAOcVce4+Fy7R7oR7INnmtbEHrrfYmyXTPd8OwPtE/C383BHILPKaX0NM7G7GXocA6woHo14Igv5a6ADIMSardP3hFLwHnwpojlpvr41xWmWB4z4JEIZ20eo64qWktR5wg3bOrasTsaItUKpF5fxJSq5acz/x0DT5ILyyGHR6K0svRH8f2Nr7qcOTo9a/MvNREAIMXybYtHmbB/9GbdymorGuwi4AKGOCQTmRozWp8o3pnTadKjAxmR6VRkzBMoORpK/b6YteobJbFBJ0/x95PddrPzKCKdcviA7hBSsCMYOR88prDUW5T6GdmtThTaBkbRNnwjHvPQkJUfnD7406Ko8ALidoA3MzCWmwPR800q1RFK1lDLb6UoF6l5DH7BE3bfpdMcf4vSBT63eJCmZsfnAdsz+yHtfauV9YvpBx4hEHeTORMh9EWp2SEQL3EgCGMXynDDvg35WoUmRmrSnVDsZfW+66gaSay/iFd5o+R4wGGyCshX6BTaf0KMHYlb317Oa/lWT8Yr6UtaBoML/WfOJ2sG6Gr9smuaYqxISVxnyXGiQtzVNkXuQy/uWlOWLsJVa2vp0vNS
- NbZkgHQN
- 2/xIwfOtOdiX7chI/8miOvPUwOSykL9Lko4XM/FN1xusmHmlTQ0SYqeju2+n7rgyfhRA1zgIkdRra65sQoVzHrPgqKEH/PkdniNptB/PGwPPCmvXHfRTmyK4q85IAke3bXkOrXI1K2qtwYqPaV3nC0jEVzZSs+6fLzwx/O8l09zIeKyogomfV3LcjqvqeYVS+eTjZ8F2GtbsSRnd4NNVHA99UzwHXu+nUW3F4E8dRJeKbARY=
+X-HE-Tag: 1775045493-668552
+X-HE-Meta: U2FsdGVkX19yfQV8cxHFKKsCYkzrNwYxplZjTwpGo87XMBfs4sM2LE6XFLeE9ekTdeQEt5NP80hd5bmB2V+5nq10fJBv4I/kzQ7Ev8jVBg2Kry1xEmLcMQSWG58bcGZ0vBCw4NsyLF5KqdJsOHyFAXpk5Xf8m8lE8SIR13jhY8fYMEkboFCKwtTXoolQ9txctyNQsXuvrd7hzc+BmAe5mUDLcp8du3umL/C0i4yWnmx/vYjYh+d9LMLQ6U2MrjHLSAZIxtGQ2MqIRCF6wQJVpqVPQUvVUXXKAml2Z9B2gJ9P8YmFh+71/ibLhDkVeReL3fUzYIn2sOpfQn+Rg7H4431uWnNcPckSMIEiGbB0kYOs9nzCVEq/XjzVxrO2XqBEHZPbXxGseIB4J5+jAnKuQsCpZad1XapIzjanyxEFHkh6+4r6+op9V+JsK6CgHhx21zlOBPO4wvyN2pIiwVjwMdh4w7EA5AsOqp3AvGGOI1SpfibCyI6Mz6Gp3Gid8NZvViWiL47M+xfWM+mHqb/hP+6Ndd9BCGUxyElVNGGnnTVqH8/DXUaTcKVGzU5kAA918M2gXusS6sA6evqLhEXbnLtNm3752CPkzi/H0PvcQai7X4zhzRzsmxRddMUBYPr8PhqLw7VkCDiQF4l4qDWnJARQKInjQHcxbL4Jjkon9Se4wTUdE3KNHYcRBvIw2U+9VU+3pHMIGqDGQ8eRK0qfXS1Vt0Ibxun/J3tDQGLyVE6Ur7G/U6FW4PFGpV1+NLwl6mrNCYox65c6vB3JvXnACi1gXSf8FvXHPFH/FCQ1Ku8nnA7xqq8LlRZKAudUz9D9ynXt02a+qvNxSl3Sr0oQlitjgIAlBiZEw9g+WOkwYZQzCVmwmYa8QzmtSkSRxum9Ol7GsgnFGuLFo6J+hPp/3jtxexi7CuEG5R/lJctESYTBjW0v23ESqvk20BQQwLwPbabLhc5TwE7U/dR4a+a
+ 6z/aAo6Y
+ p3Piv5kncI+bvaJEeYChG0mCXIaTHLUJ33MrtSPjoGnXZ/J/l1UinvYqq/lk0mWOPjnzC1F/lRmchNN8SWoghTOptF9ka5sXkcniRezz0VDZ28xKuvnef68O54b+1YCSMBf2RzpS0dS7dScd/rP+RqNYYWfeENKAwzvWkkVNDszoH4d8fN2N/HbZuOh85BSwHUEUMyqgoa88hpTXYcIKtmZS5oiq2dX+EpzoYm4Dyr05qXGuTVCpnEw8IM/mHWjC1aDoRQQaLk5owdns2hjsOWi2qxa36yPgT8p+QSivJnQhGvrGc7GGMrlTIWEOTr62I9vuzGyhyErqaAgSPQWg3sf+LnRce40awoXJJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,46 +97,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-01 12:03:09+0100, Mark Brown wrote:
-> On Mon, Mar 30, 2026 at 11:15:00PM +0800, Chunyu Hu wrote:
+On 2026-03-30 8:44 am, Marek Szyprowski wrote:
+> On 27.03.2026 13:41, Mikhail Gavrilov wrote:
+>> When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
+>> tracks active mappings per cacheline and warns if two different DMA
+>> mappings share the same cacheline ("cacheline tracking EEXIST,
+>> overlapping mappings aren't supported").
+>>
+>> On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
+>> allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
+>> hub driver) frequently land in the same 64-byte cacheline.  When both
+>> are DMA-mapped, this triggers a false positive warning.
+>>
+>> This has been reported repeatedly since v5.14 (when the EEXIST check
+>> was added) across various USB host controllers and devices including
+>> xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
+>>
+>> The cacheline overlap is only a real concern on architectures that
+>> require DMA buffer alignment to cacheline boundaries (i.e. where
+>> ARCH_DMA_MINALIGN >= L1_CACHE_BYTES).  On architectures like x86_64
+>> where dma_get_cache_alignment() returns 1, the hardware is
+>> cache-coherent and overlapping cacheline mappings are harmless.
+>>
+>> Suppress the EEXIST warning when dma_get_cache_alignment() is less
+>> than L1_CACHE_BYTES, indicating the architecture does not require
+>> cacheline-aligned DMA buffers.
+
+Really the value of this check is for mappings of structure members or 
+array elements which have no inherent guarantee of being individually 
+aligned to ARCH_DMA_MINALIGN, and while x86 can also get away with that, 
+it represents a genuine issue for non-coherent architectures. USB's 
+mapping of a dedicated tiny allocation is, if anything, rather the 
+special case.
+
+TBH I'd be inclined to have CONFIG_DMA_DEBUG raise ARCH_DMA_MINALIGN as 
+appropriate such that genuine false-positives can't happen, rather than 
+effectively defeat the whole check, but I suppose that might carry a 
+risk of tripping up arch code that doesn't expect it... Oh well.
+
+Thanks,
+Robin.
+
+>> Verified with a kernel module reproducer that performs two kmalloc(8)
+>> allocations back-to-back and DMA-maps both:
+>>
+>>    Before: allocations share a cacheline, EEXIST fires within ~50 pairs
+>>    After:  same cacheline pair found, but no warning emitted
+>>
+>> Fixes: 2b4bbc6231d7 ("dma-debug: report -EEXIST errors in add_dma_entry")
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215740
+>> Suggested-by: Harry Yoo <harry@kernel.org>
+>> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+>> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 > 
-> > The ksft_exit_fail_perror function previously only accepted a single string
-> > argument, which limited its flexibility for providing specific context to
-> > failure messages.
+> Applied to dma-mapping-fixes. Thanks!
 > 
-> > This change updates ksft_exit_fail_perror to support variable arguments,
-> > similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enables
-> > compile-time checking for format string correctness.
+>> ---
+>>
+>> v1 -> v2:
+>>    - Moved fix from include/linux/slab.h (ARCH_KMALLOC_MINALIGN)
+>>      to kernel/dma/debug.c per Harry Yoo's suggestion.
+>>    - Instead of forcing cacheline-aligned allocations, suppress
+>>      the warning when the architecture has no DMA alignment
+>>      requirement (dma_get_cache_alignment() < L1_CACHE_BYTES).
+>>
+>> v1: https://lore.kernel.org/all/20260327055846.248829-1-mikhail.v.gavrilov@gmail.com/
+>>
+>> Reproducer module that triggers the bug reliably:
+>>    https://bugzilla.kernel.org/attachment.cgi?id=309769
+>>
+>>   kernel/dma/debug.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+>> index 0677918f06a8..1a725edbbbf6 100644
+>> --- a/kernel/dma/debug.c
+>> +++ b/kernel/dma/debug.c
+>> @@ -615,6 +615,7 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
+>>   	} else if (rc == -EEXIST &&
+>>   		   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
+>>   		   !(entry->is_cache_clean && overlap_cache_clean) &&
+>> +		   dma_get_cache_alignment() >= L1_CACHE_BYTES &&
+>>   		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
+>>   		     is_swiotlb_active(entry->dev))) {
+>>   		err_printk(entry->dev, entry,
 > 
-> This is causing build regressions on the arm64 selftests:
-> 
-> /arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
-> In file included from za-fork.c:12:
-> ../../kselftest.h: In function ‘ksft_exit_fail_perror’:
-> ../../kselftest.h:427:13: error: implicit declaration of function ‘vasprintf’; d
-> id you mean ‘vsprintf’? [-Wimplicit-function-declaration]
->   427 |         if (vasprintf(&buf, msg, args) == -1) {
->       |             ^~~~~~~~~
->       |             vsprintf
-> 
-> This is because za-fork uses nolibc which does not implement
-> vasprintf().
+> Best regards
 
-We can add vasprintf() to nolibc, I'll send a patch later today.
-But it will be fairly inefficient, as our malloc() implementation
-is *very* simple. Not that it would matter here.
-
-That said, I am not a fan of the new ksft_exit_fail_perror().
-What about this:
-
-#define ksft_exit_fail_perror(msg, ...)	\
-	ksft_exit_fail_msg(msg ": %s (%d)\n" __VA_OPT__(,) __VA_ARGS__, strerror(errno), errno);
-
-A similar treatment might be done to ksft_exit_fail_msg().
-
-> I need to look at why this managed to pass the build testing I do in
-> -next...
-
-
-Thomas
 
