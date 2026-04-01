@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04970D35163
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E8A8D3515C
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:48:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30AE06B0005; Wed,  1 Apr 2026 05:47:52 -0400 (EDT)
+	id D6B4D6B0088; Wed,  1 Apr 2026 05:48:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BBCC6B0088; Wed,  1 Apr 2026 05:47:52 -0400 (EDT)
+	id D1C616B0089; Wed,  1 Apr 2026 05:48:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D1516B0089; Wed,  1 Apr 2026 05:47:52 -0400 (EDT)
+	id C59976B008A; Wed,  1 Apr 2026 05:48:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BB726B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:47:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A69A3C730D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:47:51 +0000 (UTC)
-X-FDA: 84609510342.01.6532A18
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AA0FB40013
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:47:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W3jaSwZE;
-	spf=pass (imf07.hostedemail.com: domain of devnull+cryolitia.uniontech.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+cryolitia.uniontech.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775036869; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B91E36B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:48:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D1401A0780
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:48:06 +0000 (UTC)
+X-FDA: 84609510972.13.15D8DE5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5D64120009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:48:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ST4emp8p;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775036884; a=rsa-sha256;
 	cv=none;
-	b=Ur2Ke/vC6ydRuGSmd8cuTMypZwMvXHo1PqNYkur6T/4CvREUK0W9aiE9CmPXgznCI2Tq8T
-	Oo6cDG6esF/DS/2yT8peXigdIwsFmfAIMa/W9fD/vjspzCqDD72ne0JTkoNoJE96JdWT/Z
-	VDFvEphVAuZSA18IK6Vi9RtabEeWsjo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775036869;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=afI2Lc+3MK5obFT9IQwgHT0dqRdC6lyakBvhQaF9U+A=;
-	b=bOtYwJrQ4JuH/8S8sTgR66paXpp0scv1TH67mTHhxt6IM/dZPe8rSX5qIqR2TO/GDW43IU
-	LUQVBV1fKnPMY0ZZExXhZvfTlvXnQq8Xy5HL269QD0ucmdhOtMTSEJ/+548kJ7LQZD3G/6
-	RcWRv5jEIM7wWDn0sM6euZVm36aNaWM=
+	b=tmX/mp/WOTLFXfZc/CCP7HqDmL8aao0GaWVHSNURXXFfn+GvUSHfX/5mzhT0vd7bU8FaEK
+	EPWHSK7WD72iMZetrdEZlxTtyZU5TZHT1R3ox5JIcjBVBcffey5ohYVvyekxAci7MZ5jeG
+	ererucpP2GZrP5DT0DqmIgUZBHiA7QI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W3jaSwZE;
-	spf=pass (imf07.hostedemail.com: domain of devnull+cryolitia.uniontech.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+cryolitia.uniontech.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88DDA40763;
-	Wed,  1 Apr 2026 09:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 681D6C4CEF7;
-	Wed,  1 Apr 2026 09:47:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775036868;
-	bh=oHACDhC+fZQ3tsbDQTIB2DTSoCEJP78r6wVQx/nRDIY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=W3jaSwZE0aXIN5yI/C4LR42EXdnDXP7M5k1CHLUupp7SpMKSheIoQwDHVqiaqc6z+
-	 HrDnZZrqQGa8kMjQzIpvxOsIrW1gNka2MBGRhg5yAPPCT9G6FgstcjifE1zVls88Xv
-	 Zy6h8qmoZ5O7sy5VFH9nDcmmot/DQIuGebhMIZfCHBzRr2JpGY8bQQGx41FWyOf6Ib
-	 ZOqC6UBkSdfJ8QhBwjKToVoJhInlBXnZIGRA2yU5qQdlxDJCOtA+FLM5CSJN4i81Ib
-	 1Jc/s92rNCLokaGmFD3rDpRMEYCfLf6w8vJ6YijnjJiCnKjIwBXjSoxjxzixwmyAl/
-	 MvPn5AUyAJ3aQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55919D3515C;
-	Wed,  1 Apr 2026 09:47:48 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
-Date: Wed, 01 Apr 2026 17:47:47 +0800
-Subject: [PATCH RESEND] checkpatch: Suppress warnings when Reported-by: is
- followed by Link:
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ST4emp8p;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775036884;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P5Fn2UlyTzbBubxoJbwHjMcPOZ/geBIS1AM3iCXfMrc=;
+	b=5C6TytINu41TD9jfBR4HyKSDIRc8aq7SOB2qIuU7Ob6DIGElIprPO8LM2XWd3ixkS9sPcx
+	vcmouzEoy3QM/HPzt0ZdpEbbWeWGAY/wIMli2l/HJz4AHfpC/tVDh2l75FhWR9mMaz/eUn
+	hylRXNZCjULfdSFgupvTCUVELXi1IZk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775036883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5Fn2UlyTzbBubxoJbwHjMcPOZ/geBIS1AM3iCXfMrc=;
+	b=ST4emp8p0HfbFaxElkURR+xQXozyTbNouQuvW2cnmy1Dm0Ymx5FFd+l3Fnf3dmvuSEgWbX
+	oAxxg8qIBthI6hUsqc7HUiOoTuDZlM4R5tNY7tMsoP7URTbeOQ18t5HK/hcdFvtpz/OFSK
+	LSrVKAlDNw60sQdPWrQOewM/e4maWMM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-OchIZal7PCWIHHQhgfKtSQ-1; Wed,
+ 01 Apr 2026 05:48:00 -0400
+X-MC-Unique: OchIZal7PCWIHHQhgfKtSQ-1
+X-Mimecast-MFC-AGG-ID: OchIZal7PCWIHHQhgfKtSQ_1775036879
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1A33418005BF;
+	Wed,  1 Apr 2026 09:47:59 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.128])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1FF819560AB;
+	Wed,  1 Apr 2026 09:47:57 +0000 (UTC)
+Date: Wed, 1 Apr 2026 17:47:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+	lirongqing <lirongqing@baidu.com>
+Subject: Re: [PATCH v3] mm/vmalloc: Use dedicated unbound workqueues for vmap
+ drain
+Message-ID: <aczpyc7sxzBL4MQn@fedora>
+References: <20260331202352.879718-1-urezki@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-checkpatch-v1-1-57da0c7aeb30@uniontech.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEwND3eSM1OTsgsSS5AzdJEvzFIPkpFTz1FRLJaCGgqLUtMwKsGHRSkG
- uwa5+LkqxEPHi0qSs1OQSkElKtbUAvrdnm3YAAAA=
-X-Change-ID: 20260401-checkpatch-b97d0cbe7ee9
-To: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
- Dwaipayan Ray <dwaipayanray1@gmail.com>, 
- Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhanjun@uniontech.com, 
- niecheng1@uniontech.com, kernel@uniontech.com, Petr Vorel <pvorel@suse.cz>, 
- Cryolitia PukNgae <cryolitia@uniontech.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775036867; l=1810;
- i=cryolitia@uniontech.com; s=20260401; h=from:subject:message-id;
- bh=YxanUXAo1zZz/4EvE63HKWNGGvJyrkveItkRihtZCV4=;
- b=D766Pb878qsWoWtRl0Y0dX3lM14ATdLtp1TaIGcCCH6ilanTBA4wKyOB419peRrrBVysnR6RU
- kqnOeWaKfSZCzh3anOpxpDemFvfIqvkNOvBuErAtYFvPCTQzK05soEm
-X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
- pk=kF6wBkp7j9167keuk8Q9RvPgMRPuHlJztbLy0vbJ3K0=
-X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20260401 with
- auth_id=710
-X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
-Reply-To: cryolitia@uniontech.com
+In-Reply-To: <20260331202352.879718-1-urezki@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: ekq9kqBeOYiXfL6hjJF7IT4YQnU6B0Jnme6U4eNN0yw_1775036879
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: uf8anwdm5rictdsjoddcewjip5k9g4m8
+X-Rspamd-Queue-Id: 5D64120009
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AA0FB40013
-X-Stat-Signature: ikd738178mkn6sof1p6jeogeu5bn8phq
-X-HE-Tag: 1775036869-62836
-X-HE-Meta: U2FsdGVkX18V99RmGVknP+nMNRcRketD0v6M+X5K8oWAUHeKUFb4suOw89ehAPxMtjOYMcfi74JJ5IjjacWFxMX1ds48yr0c+2JQ641JHwYgD8KcWIa3qZWvx9Ozup6glFRybMpnL/jtp54pad0qpwvoCxrZiY1c/bbcMIle7PCBYDbPo7oW7CEGMMYdY06/pmC3vuHWVF96clAbgT2E6LlmjZD9KsVSQXGJiH/3+xru8ne/4tGleE4STxUcflHuBaUXQAVw2WjczcnfHCYAJTSgipu6s6tkCW72GBG/nzSbN+Pnt6oRuam/ZCqpL6FryJP2U/GagZKdXDHrLGjlJMpJ/OIy3PAHLq9UFa5LKaEEQNvlT431xeibzyya3YtI4qaS0nOvWNupvEQS3uzr6zbgcLMRyvc6umTdvvi8hDqsZ+pshdM8MrgV02peQ3A2jtcuvudW5msJ1LQvL0G3582f4MvZBGX86vuSCEVy1BW9+R7/DHNM/DiaVBokwTPfg6ZQcpeRNMP0yoPtUPsAkYCj2TZjSywRq9S60f26UTxxR2YCE8k1ZMcUygkraDcuNCkIHhXmgkGYjGdvJ4toBRzzElpm65NVzAJXbsD97CXwTHh0+FtDR5jmE4LL4qylH6tx5dnTPjo8pgSlDOOL8f8qKV7T+a35zmnGh+e3Fe4nEnhDmf0aRsJHqFDi+9eevFtwoVleA1yLkUZaiDZ+vztixH7SGC9r+cHk/45/7fXJ0oY9kg47Rg3bEus+FOdrM7iHK1AY24xlCwwQog8o/+tmE9m8BjYhhtfS2Yi28s3odIVS1/MF2VO1E1JJQodxDvPo9XqzEwjAbse8cOEr3q4cNZOxfNFk22Xy7P0nCpz6LCf/n0VSr7izrnbHLK14VACV3O1XZUsWn5apsRYvWfIVBIh4OdOF1tuIEhDSumMlBe6B+Ort6QGTILCpu6Y1Y7XG5ieMMh9f8L+1d+Z
- PfemMkmo
- c4Jq292xmXaCHIk9hRYDNZaUMz3oSK8/vCgLVgVuaJiV5t+0EQWxljeYBQOi6lHapcZmld9g0qiT9DyOB1HG/UY4Y93b3+NVwj7OX7rTMKptIysEuggNr1CZHB48Iq8MPIbNMvUU4m8ufRkVWB6N5ZibVha+OE3hSyYADSkNh6goHYGWcrXH1CnwO8X339+pre1xzfRVDC07KpNJz0s5lpPXu4X9apllKvpZvPvHseYVlBPxctzUim+F6oe9IArBSC1ZM2Jcwajz1euCNQpvcvai7ZcHQv5QlhACeg5hG+q4TxL8FnCCQ57mzcxpqqpdD8oLiFSD6xP9bXQURWZtFpJl7DyS4sCDK2MsFAYPcIs84U1zmcw37wQctYBUuqy8ADK9HJvkeyY48WM4lKW4H/qc6/ySu/YW9o395MtslUodZl/+lPJ+7mIzLA8isnY87gE1VbZ7nzm4ozScizJk18FPjw60oLgVzmBH7J5QJRnAnwF8=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775036884-814786
+X-HE-Meta: U2FsdGVkX1/clPZxN2JNGj3OZUi5ujr6sREyjlIYy9tA0kmDXOktsEAihIh15sj+9SMEdLy8/0uiuOfCI95klURlpzEC3OkvQRxwukPJ9fLbJatULXte8tQXj+hd0agiYbSXPVJ76lktWWDv0RRgYr5P7i8rIIspuNf54oH6lGywX29LAfjjRL4UsJrd0bFDqzVXldQm4plB0zBavGGoerudK2xNoetqHmqb6+kDXRxdXi31lWnwYdVl7kH0mkChGXqL5y6k2amxcgqHrOkvifvGenKCFnUDVa9TST3/2w0/1S2iWDyU2F1IZxOrK1IgWzNBfVcZZDQBrjh9NLleio9gf8MAD2tG9TaQBsReGfq90DYSPehkas4F2nfVyvdHVgN9OdqjruYXFjURaeKPVweyvdbK0j+LGsUqSgPxrmRtGqHgBm+g4edKckOEGKuPL9Vu7aZ/0mZZyVJP4Paq9ul8jZHyY2+Fe916XLtudJTCeQsCY95a0bFOtKqrc8Todh1Ny0Zsmz1tXs4GpNOL4o6Lv7+xTuJp4Va3bYfziBDWIwojTX4BpJepe2kTS/rC32JmRtOnz+wCbjumeGCqaX+EwFbuvSPUsns3bhQ0jTfA0IU6AY6+bHpQS2i89K2ghak7HR4KDQwB/75KWShHKlksNQWIbYNpOOyZZEw0v/K9baxzaUJYjDIcWuvchDq6Lu5lyg+jyxZixqRNpPK7Wwd2S/WfZsnll+TdI8Dm+pftTZNOh1k9NhLHrdjZutoq3E6HAX0x2OxAtz7tn34hJfZijuJAPiZPBR8oBfCSi6FKbKPnKTs++ZfZosJDzkO+UbS/NpGI9wCOQFnkRa4xB+sfP4G+ODpTt63UYP8i6kCpD08m8nj21ayLsoojuWSX/hsIEkycuNnhMEjtHb0aKx1ojUjxeRWKu9s2+FLJPJA+q4psoNJ5aP4cV88lixui9+OU/OAH7+JkxsJOa3G
+ emuqZe2H
+ m2SZg3uxJg+iwu5Erm7FdrHrgwH6JzqZygTRRzPPY6kNTqWrKybSqamo/RUlAX7RgMkyqzxuggpdNzrRGAqdRg9Pm/Rl8m3lV+W3ddIa94Ac3fLsivvQK1SP13GL1M50J/NIosR0L9feZ8V3upjO2b8wKmvOt/8yj6xX8fXqXba4lBXjr9G6rWXLO9UaHhI/oS6voTiivsTXS1vTNFq3GX3mPcLFlFurrQKM7IqfJnv7NZ+sgm1+lblayPE9vMZDIlYR50Uiz9pUA2qeKoajdxI/OSSB4fjAqKdXsJ01Z3yX3ewY6P63JGViYICPd33ThqH9jsVFB8OO4gpTS06kUu5l0ot1AWM6P1aMBRaLcsAkqy44=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,49 +105,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+On 03/31/26 at 10:23pm, Uladzislau Rezki (Sony) wrote:
+> drain_vmap_area_work() function can take >10ms to complete
+> when there are many accumulated vmap areas in a system with
+> high CPU count, causing workqueue watchdog warnings when run
+> via schedule_work():
+> 
+>   workqueue: drain_vmap_area_work hogged CPU for >10000us
+> 
+> Move the top-level drain work to a dedicated WQ_UNBOUND
+> workqueue so the scheduler can run this background work
+> on any available CPU, improving responsiveness. Use the
+> WQ_MEM_RECLAIM to ensure forward progress under memory
+> pressure.
+> 
+> Move purge helpers to separate WQ_UNBOUND | WQ_MEM_RECLAIM
+> workqueue. This allows drain_vmap_work to wait for helpers
+> completion without creating dependency on the same rescuer
+> thread and avoid a potential parent/child deadlock.
+...snip...  
+> @@ -2385,29 +2390,31 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+>  		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+>  		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+>  
+> -		for_each_cpu(i, &purge_nodes) {
+> -			vn = &vmap_nodes[i];
+> +		for_each_vmap_node(vn) {
+> +			vn->work_queued = false;
+> +
+> +			if (list_empty(&vn->purge_list))
+> +				continue;
+>  
+>  			if (nr_purge_helpers > 0) {
+>  				INIT_WORK(&vn->purge_work, purge_vmap_node);
+> +				vn->work_queued = schedule_drain_vmap_work(
+> +					READ_ONCE(drain_vmap_helpers_wq), &vn->purge_work);
 
-> The tag should be followed by a Closes: tag pointing to the report,
-> unless the report is not available on the web. The Link: tag can be
-> used instead of Closes: if the patch fixes a part of the issue(s)
-> being reported.
+The new schedule_drain_vmap_work() could submit all purge_work on one
+CPU, do we need use queue_work_on(cpu, wq, work) instead?
 
-Accroding to Documentation/process/submitting-patches.rst , Link: is
-also acceptable to followed a Reported-by:, if the patch fixes a part
-of the issue(s) being reported.
+>  
+> -				if (cpumask_test_cpu(i, cpu_online_mask))
+> -					schedule_work_on(i, &vn->purge_work);
+> -				else
+> -					schedule_work(&vn->purge_work);
+> -
+> -				nr_purge_helpers--;
+> -			} else {
+> -				vn->purge_work.func = NULL;
+> -				purge_vmap_node(&vn->purge_work);
+> -				nr_purged_areas += vn->nr_purged;
+> +				if (vn->work_queued) {
+> +					nr_purge_helpers--;
+> +					continue;
+> +				}
+>  			}
+> -		}
+>  
+> -		for_each_cpu(i, &purge_nodes) {
+> -			vn = &vmap_nodes[i];
+> +			/* Sync path. Process locally. */
+> +			purge_vmap_node(&vn->purge_work);
+> +			nr_purged_areas += vn->nr_purged;
+> +		}
+>  
+> -			if (vn->purge_work.func) {
+> +		/* Wait for completion if queued any. */
+> +		for_each_vmap_node(vn) {
+> +			if (vn->work_queued) {
+>  				flush_work(&vn->purge_work);
+>  				nr_purged_areas += vn->nr_purged;
+>  			}
+...snip...
+> +
+> +static int __init vmalloc_init_workqueue(void)
+> +{
+> +	struct workqueue_struct *drain_wq, *helpers_wq;
 
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
----
- scripts/checkpatch.pl | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Maybe there's one local variable is enough like below:
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index e56374662ff7..b8a098061181 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3223,10 +3223,10 @@ sub process {
- 			if ($sign_off =~ /^reported(?:|-and-tested)-by:$/i) {
- 				if (!defined $lines[$linenr]) {
- 					WARN("BAD_REPORTED_BY_LINK",
--					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . "\n");
--				} elsif ($rawlines[$linenr] !~ /^closes:\s*/i) {
-+					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . "\n");
-+				} elsif ($rawlines[$linenr] !~ /^(closes|link):\s*/i) {
- 					WARN("BAD_REPORTED_BY_LINK",
--					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
-+					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
- 				}
- 			}
- 		}
+	struct workqueue_struct *wq;
+	unsigned int flags = WQ_UNBOUND | WQ_MEM_RECLAIM;
 
----
-base-commit: 9147566d801602c9e7fc7f85e989735735bf38ba
-change-id: 20260401-checkpatch-b97d0cbe7ee9
+	wq = alloc_workqueue("vmap_drain", flags, 0);
+	WARN_ON_ONCE(wq == NULL);
+	WRITE_ONCE(drain_vmap_wq, wq);
 
-Best regards,
---  
-Cryolitia PukNgae <cryolitia@uniontech.com>
+	wq = alloc_workqueue("vmap_drain_helpers", flags, 0);
+	WARN_ON_ONCE(wq == NULL);
+	WRITE_ONCE(drain_vmap_helpers_wq, wq);
 
+	return 0;
+}
+
+Just personal preference on nitpick, not strong opionion.
 
 
