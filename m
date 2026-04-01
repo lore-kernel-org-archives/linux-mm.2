@@ -4,96 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC929FF4937
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 04:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86B610F9305
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 04:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39C5A6B0089; Wed,  1 Apr 2026 00:02:09 -0400 (EDT)
+	id 119F66B0089; Wed,  1 Apr 2026 00:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 325D86B008A; Wed,  1 Apr 2026 00:02:09 -0400 (EDT)
+	id 0CB246B008A; Wed,  1 Apr 2026 00:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ED1B6B0092; Wed,  1 Apr 2026 00:02:09 -0400 (EDT)
+	id F22D76B0092; Wed,  1 Apr 2026 00:17:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AFCE6B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:02:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DDEF140624
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:02:08 +0000 (UTC)
-X-FDA: 84608639136.12.6D261D6
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A0E6A180009
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:02:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b6EZ5nIA;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E4A366B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:17:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 793E6B9B61
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:17:05 +0000 (UTC)
+X-FDA: 84608676810.04.C428549
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C7DCB1C000D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:17:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="R5gZIf/P";
+	spf=pass (imf18.hostedemail.com: domain of ethan.yang.kernel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=ethan.yang.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775016127;
+	s=arc-20220608; t=1775017023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xV8zvVRzNnwLvG8qVHUSGa4pUEQsoV9qthwjA8YsSM8=;
-	b=BAo2OgLTUto9s1NYwPCUtM5UqzuH52tX/vGUeIzMZpVExwuUqrRspbXzc5nr892/yQZ3T1
-	k6KYburyJQC8mtZsra66P2Q3CC34lX5eDSy/Z+EDw6nuYeVmXKTA1/Cag49XDq9Jlp11aq
-	JU95rVPijc9GKtFNN+maDJEB7sYF7Lc=
+	bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
+	b=GT8C34nn7QcRxlZ8yWrMp3rJsH1FM9FAyoapHhWejQXP39iZaNgUKbhCM5iMkPhTcqm6Rr
+	cUr/yHDj3HxExM8Gi4sgZZ2AU26fH6bkfyURPtMODpzYISha262RCi0/uN/lE/WbQOdtur
+	36+TKS69c2oL3ajfi42tJEgcV21xdcM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b6EZ5nIA;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775016127; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="R5gZIf/P";
+	spf=pass (imf18.hostedemail.com: domain of ethan.yang.kernel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=ethan.yang.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775017023; a=rsa-sha256;
 	cv=none;
-	b=flyyzgZviRfgWR+GRK9N2Uly+T0m2D9AkIf1yPLosjN4LPtbPfzhQor4WZbnAQPPJ4B6p7
-	MBJGrRzcEcOkLlKSeFH2CuFAbXRdxz7rsf23AuPoJ2uKjqK/0K2JjfOpaWvaAX3b2gWkmj
-	FbKoBIBgWPxlr2WO5MdlDp5/rl6JHbA=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775016124;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xV8zvVRzNnwLvG8qVHUSGa4pUEQsoV9qthwjA8YsSM8=;
-	b=b6EZ5nIAg6ohZy8JkXux89ixmSDOVqFviLjlxGWdpD+EDk4blym2q7gK5pwh+jlO9TNYf7
-	9q4UOUwD092vuIxi5RpHWYeCo7XNVTzHpM+D4xfg0sdXGFNdWtut2TEcUQq6jut76QcnHw
-	7D5Yy+o5ihlHbkbiunSsDYL+8DECJb4=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] mm/sparse: fix BUILD_BUG_ON check for section map
- alignment
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <7C90E910-D229-4F60-A62D-E893A89D58F2@linux.dev>
-Date: Wed, 1 Apr 2026 12:01:11 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Petr Tesarik <ptesarik@suse.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1742503A-F912-4AB6-AAF6-6CDB06829024@linux.dev>
-References: <20260331113023.2068075-1-songmuchun@bytedance.com>
- <32789381-f860-4b60-a1e1-4c97f6ed08b1@kernel.org>
- <7C90E910-D229-4F60-A62D-E893A89D58F2@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+	b=xu4E0n9FyEgYqzpcJBTYJb1e/oJBVXy1koId9TyLc1z4g0a8mG2UM88D/saRlV+PdzsnE2
+	ZVwapDoWsQUPIIiFWbzc+umErKAkUgXoQu1EDrQfTl3ogeloBPOZnzyDwtQVAqCcdet4q2
+	iKCgRha9APoY/HSbDGW1p9bfv8G2ybY=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b6b0500e06so8678714eec.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775017022; x=1775621822; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
+        b=R5gZIf/PwJjtrtglWPlSI1Fh4mgoc1k492Ymq5tPcPqs34WBlHGTxzdWydapXX+bZe
+         /Crw7SrdmUo3t+pXQVMWlsbVCyZg5uoRJGJSF0EOT33o2K7AGS2qmKoRJgoMpUrEKq9q
+         NFgB/x7446Koxn4fvPzZ9ShkULmbZa+6IDerEf+Ny44/usM6opLmhpXdIeAuOnEM2n+Q
+         Hu0a1UuVocCBJIJH5H9mt3rAHY7D0W67uzOe5zZigNdUxqoEe/jz4UBdyU/b+lAMIi57
+         GnT0D+bmyUfU8JtFi3wckXZsP3uY8sAztaCTjMjexoJKE/bjuHT4VbB3SZtGaLjdDF9v
+         fe2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775017022; x=1775621822;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9uvuJacAw3jMb0IWkn6pjnEJfWKbd9mokrTdkvUS1kE=;
+        b=r8oxrHi9EhTUDZdLi69VsvDrEVLpcU7+Q63fvRvCVoJqR2xQ0WTBOu8GcJwt5Aa88x
+         pi40Nc0lsLvd0M3Zt5aFHbsCd7DO8C1/zUdi9QYezuLOc/SRfNaSIQFL8R2fOOQ119Oj
+         43rOynH8rl7cPTjj6YZOPzDUisvSB40jljOHyvJmIDZlWbbtLfjbom5VY+aIR+1nwgNU
+         cbmDOZ1wFAhpNnwYlmkcxJYhUMu4ftx/Coah7mnwM1CckstncOG+TSdh2iNaWKmOaUKF
+         Mk1DAbyF+ir0LozrOXeRiF2Vj3NzU6/QhCoCFRAVUmR5oUaMQJn3wPM7ZKLP9HIt/xV5
+         A8Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXONntkKbesNd5w6JkPV9G5z8ktof2lKTIcUs9d5wH4RDliVM12aicvZs15zNWBioh5McFidh4euw==@kvack.org
+X-Gm-Message-State: AOJu0Yxe6awlPX+JZQOh6ujHoys7ANU5glTF8bviRDFnIgVzopAyslqj
+	wUAQQUA3qToxgNq3W+ZEIg+1kGCJbe9PqvEzMqNBLUuNJ2rsVFLLpHnl
+X-Gm-Gg: ATEYQzzRKqHvj4PuOQVGjeVuPvcbb/tLba0AfSr+KhS8pNMbJn34BU2DjrS9lsI8Yfe
+	QqdKxOfEy0y5M3+u1gBhmQ+VCNRyqW/B/kM0eUPBpFqGEXltlI47Bvs1a55CKolGPt+KXcLE8Wi
+	HMTzsp9UvMxqCtXyFq4ma09sA0yB6OVZa/GZx5UFJIE3LT8UKa+CmfYE4zNvim1dbBcl6t81wpk
+	gXhxpZ1LR+ZF6TDguwoEW+Gq656jTBkLZQTHXMj0JiOH44SVSE4jVtDUnNuuCptYHu957FsZZKW
+	pChSSdzMepuqmQcpj5AwBs9Mkg1p9p4304vkYHfqmWiTVgGLtH8EHTMfGRR6FpQzm4IuJ9FEotM
+	JXJtnWPe51acMUHIVFiQXjEufEc3NjgryJc99tmcuFLAxxLNtoPPBvPDeuHCVmTGjdHINyldKmE
+	sqqNxMchsTv3WmZ7A=
+X-Received: by 2002:a05:7300:2213:b0:2ba:6978:2b4 with SMTP id 5a478bee46e88-2c9321b5d9cmr1075299eec.20.1775017022050;
+        Tue, 31 Mar 2026 21:17:02 -0700 (PDT)
+Received: from gmail.com ([52.161.55.196])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c45dfcc95fsm9876945eec.29.2026.03.31.21.17.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 21:17:01 -0700 (PDT)
+From: Ethan Yang <ethan.yang.kernel@gmail.com>
+To: chenhuacai@kernel.org
+Cc: kernel@xen0n.name,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Subject: [PATCH v2] LoongArch: mm: fix FLATMEM ARCH_PFN_OFFSET for non-zero DRAM base
+Date: Wed,  1 Apr 2026 04:17:00 +0000
+Message-ID: <20260401041700.3260-1-ethan.yang.kernel@gmail.com>
+X-Mailer: git-send-email @GIT_VERSION@
+In-Reply-To: <CAKeWACY11_1JL_OagfxUhQckW4rkAjhwXxUnVHNPdHF60Uc81w@mail.gmail.com>
+References: <CAKeWACY11_1JL_OagfxUhQckW4rkAjhwXxUnVHNPdHF60Uc81w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C7DCB1C000D
+X-Stat-Signature: w91y9dudhghs31nhdig8s7xawxnx8uro
 X-Rspam-User: 
-X-Stat-Signature: 9cg6xhwx5nhysoepnxnf5pjew5par5p6
-X-Rspamd-Queue-Id: A0E6A180009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775016126-599122
-X-HE-Meta: U2FsdGVkX1+N/7D3ZC/ue0i8d26I3btZvgij+G/fUZwDLJhIBaY7STkJl4RC63pZ+1LUiYLIF9KBHrUPbuKZIzc3UMYBiF8v+XTv8ky2PBfJYDnL6mRuFytefY7fFmUJvqt5FTyF3Hd+zXeIP4QmJYtui86rl5cV2U51xcE/CWRslcV4Jo0wnnIyOPU1Z19QTqyzjB8WnPayxTbMTmY1dCxMUzK7rPWs53IDW44E/OQBFiUdu+QUhXrzipEHfGGzW7bg7uU/4WZryt3zIIq0GAES2mM/SUZRKRrJB9t+0SbfJDhxV6IOr9ORYoUfP1OwF9C4FqnYuReFXV5dat3bLYVq1NTKzMX09INwyYQCLT0IFMQpNGnZcAUm7wYKwc6NmXzKPof3dTF4eHrn4WAcf40y/JGXC8xXGb500FkrEbVB5+z2gFRcUcwpPY7RakTtie5h3glUF6sM4uaVyKa1At2jBQlwHkCxxObHuo4gm9Qzpl91nSwesWI5vUHn5Jft+w5r9ff5MFC22lMoOli5lisM1ET/lSmv4OkpsRcB+Gx6A5qXMfRjW2LfLUihrcDaeNIWLEkDJTXYz7Ojq3HZPCrYwjjZlwXDzwVAc9Aaowkegd6DyPJvHOr916XKY3n/wyAqDZcbbyizONA9aBuwj1LvZQW1Z5dgE4XOzievGzYT58M1IJMgCMZPC2xhM0mcdrVGXvgCDPk/n38TzianQ5PFT91PuPYX9H/DERafqDvsiy6ggp1oeZz/THVLGUDrW+9dMRVN7tZpVAeZRo8vUf6ZGGglO+K4+LfuIY2hGl5uopnYnVgPAeMDw+uHb//R7DKXYt+czAkWCCLi0YQp5PR9+tTRVwStkhhuXo69kp7A4bOeUFQ4eRJc95g2w2wiKK82qlvrZZBBMDR/6DOXTRUexBCm+dDjQlqGp0vRGTWkD5MbR2H7f3hb44TCq0Oak5j3xb6SQFp8E2jv3In
- HH6q9Xxt
- 4B8tNoyp7VNq/mejtj00wetPvF99ggeQq+kf3+rSMcEbGuwScZcPekm76XLa+c7E0Gg7vkFBv1wVB15RaYhY8Uy1Ig6EFOzHE1nKpfn28UZ1Lb5z+9+yMdtf9x35TGd4Q6UnG07Xo5R8u1NfdTOSF5u6dhkYWbXiX9BBLdn9uvvA/kEyH9awcel0eluk8juIbAJJByYa0IPvc9qFdnuWSkf8IfiZ3V2K+0GPoW1S4N4z1kD8RYmWsu5ree4g/vxyfdRwRxOik8mrs8jEmcokOzD13mUr607af672sxJRNanb65UQL5i/IuPVHi0z605DopLaXHMEQNUu2hLU=
+X-HE-Tag: 1775017023-977690
+X-HE-Meta: U2FsdGVkX1/O07hTj+M1FlqVN4MMdeSY9k2TAVz5u4lsBskAdSQmsaBk9qQEg8d5Re2y/P83flz/ROLWn0cXNVrHGzA9l8f7c60mxScTIL54KaFSYtRXZBuoAFIU6RPae9JoM1OeeE+MoSWO26fr+NySiN/3ddrjiOvqpdJlAlKRrc5s4OZEuLfkRYD3vPukAiCZEdvC+A3Aejajxfs1WXRQ0eGlmjmC4kcR9TP/HSdETaYQGbJLs8+Wwyn+KCOmMdNvggFYSjnzFRBsgNP2ZAJVMCt8SCimp0ZBi68iyB56S2+lq+dM6QbW0j23Uldfu088XRXPOWjcyXBFqn5WpXhZX7yurjf7hQhntIbddF5fWEKNoX1m7Gv/2ch4C/JvfJ4GZ7X/nA1INUxXJ4TBCHzwjusJWP/iYkpSR7MgIfmbhZen+4IYXwzzgMIXzx2Tr9FLIUc/3gHFy8OCJEE/GVYvgCYoQ0vpQQ+Xwk9AmANXBBA+NrkVWP2AtAdKfUbY+ddwtDzEUcPvacXWQhv9B8Gt+97yaHDqjmSFHOsD3PSVlGofPSOl/6bwpUDXFdRdYmg0dNpcOB07tejCrKprD5db+w71QxkWMPVMT4GeUE7ESYjvnwWextEB9RW5xmkgmvNJGUr4y74zYD0Yhc182cs+uikB1tIBEz5ynDFc5GWgHBc8Ck89Ry6C4B1yxP2uysSYguOX0u86SW4BFHe5aS3A8S2f8hQEaDYFbV5QUjzF6bSow85F68a9TmRgYK/RFJGhfiM30jW8P+H5Z8ItHkyvRC0gNE/gp+nY8u1gYwMNF1E25jmX2oK7sOfnB8Cp5JSap8NXFgB8gmYzOaYvGm3E4KslsW8nXaWhIky65Mm8m3p3F19zVvhqBPQ6SwWczA5UXob3OFi1hwVNV5IamUoQAKIbg5jHqbHO3tpH2qs9kqPmVFEmyUZLDszNbwq+8vt0oth3R4oFyKgJtYV
+ x/ZHYIgg
+ gSR5YNtWXnbAMm6QDw6x8JQn+qWBJRlJnbQiWGJWgCDk1gO0bAUvSqGLCZwXK9elDFk0DCLEwovIEx9VVSosi+6bBVmsx8BGb356rJR8PvkPr4iNIw4VzMSB+JJdtIfsJ3i2R5L+sY3fjXWwiLtFTSxTz5cm4FOV9LmzoQg3ZFOP7//5oYnPnaPx9DumpMxUnVLF25FBjebR8vOzM1gfJtbRqvsvFF8OgL+26B2O8fWINAdW31imPqaPhEIgfCbKrYls7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,146 +120,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+With CONFIG_FLATMEM, pfn_to_page() is computed as:
 
+  mem_map + (pfn - ARCH_PFN_OFFSET)
 
-> On Apr 1, 2026, at 10:57, Muchun Song <muchun.song@linux.dev> wrote:
->=20
->=20
->=20
->> On Apr 1, 2026, at 04:29, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->>=20
->> On 3/31/26 13:30, Muchun Song wrote:
->>> The comment in mmzone.h states that the alignment requirement
->>> is the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT. However, the
->>> pointer arithmetic (mem_map - section_nr_to_pfn()) results in
->>> a byte offset scaled by sizeof(struct page). Thus, the actual
->>> alignment provided by the second term is PFN_SECTION_SHIFT +
->>> __ffs(sizeof(struct page)).
->>>=20
->>> Update the compile-time check and the mmzone.h comment to
->>> accurately reflect this mathematically guaranteed alignment by
->>> taking the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT +
->>> __ffs(sizeof(struct page)). This avoids the issue of the check
->>> being overly restrictive on architectures like powerpc where
->>> PFN_SECTION_SHIFT alone is very small (e.g., 6).
->>>=20
->>> Also, remove the exhaustive per-architecture bit-width list from the
->>> comment; such details risk falling out of date over time and may
->>> inadvertently be left un-updated, while the existing BUILD_BUG_ON
->>> provides sufficient compile-time verification of the constraint.
->>>=20
->>> No runtime impact so far: SECTION_MAP_LAST_BIT happens to fit within
->>> the smaller limit on all existing architectures.
->>>=20
->>> Fixes: def9b71ee651 ("include/linux/mmzone.h: fix explanation of =
-lower bits in the SPARSEMEM mem_map pointer")
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> ---
->>> include/linux/mmzone.h | 24 +++++++++---------------
->>> mm/sparse.c            |  3 ++-
->>> 2 files changed, 11 insertions(+), 16 deletions(-)
->>>=20
->>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->>> index 7bd0134c241c..584fa598ad75 100644
->>> --- a/include/linux/mmzone.h
->>> +++ b/include/linux/mmzone.h
->>> @@ -2073,21 +2073,15 @@ static inline struct mem_section =
-*__nr_to_section(unsigned long nr)
->>> extern size_t mem_section_usage_size(void);
->>>=20
->>> /*
->>> - * We use the lower bits of the mem_map pointer to store
->>> - * a little bit of information.  The pointer is calculated
->>> - * as mem_map - section_nr_to_pfn(pnum).  The result is
->>> - * aligned to the minimum alignment of the two values:
->>> - *   1. All mem_map arrays are page-aligned.
->>> - *   2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT
->>> - *      lowest bits.  PFN_SECTION_SHIFT is arch-specific
->>> - *      (equal SECTION_SIZE_BITS - PAGE_SHIFT), and the
->>> - *      worst combination is powerpc with 256k pages,
->>> - *      which results in PFN_SECTION_SHIFT equal 6.
->>> - * To sum it up, at least 6 bits are available on all =
-architectures.
->>> - * However, we can exceed 6 bits on some other architectures except
->>> - * powerpc (e.g. 15 bits are available on x86_64, 13 bits are =
-available
->>> - * with the worst case of 64K pages on arm64) if we make sure the
->>> - * exceeded bit is not applicable to powerpc.
->>> + * We use the lower bits of the mem_map pointer to store a little =
-bit of
->>> + * information. The pointer is calculated as mem_map - =
-section_nr_to_pfn().
->>> + * The result is aligned to the minimum alignment of the two =
-values:
->>> + *
->>> + * 1. All mem_map arrays are page-aligned.
->>> + * 2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT lowest =
-bits. Because
->>> + *    it is subtracted from a struct page pointer, the offset is =
-scaled by
->>> + *    sizeof(struct page). This provides an alignment of =
-PFN_SECTION_SHIFT +
->>> + *    __ffs(sizeof(struct page)).
->>> */
->>> enum {
->>> SECTION_MARKED_PRESENT_BIT,
->>> diff --git a/mm/sparse.c b/mm/sparse.c
->>> index dfabe554adf8..c2eb36bfb86d 100644
->>> --- a/mm/sparse.c
->>> +++ b/mm/sparse.c
->>> @@ -269,7 +269,8 @@ static unsigned long =
-sparse_encode_mem_map(struct page *mem_map, unsigned long p
->>> {
->>> unsigned long coded_mem_map =3D
->>> (unsigned long)(mem_map - (section_nr_to_pfn(pnum)));
->>> -  BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
->>> +  BUILD_BUG_ON(SECTION_MAP_LAST_BIT > min(PFN_SECTION_SHIFT + =
-__ffs(sizeof(struct page)),
->>> +  PAGE_SHIFT));
->>=20
->> If that would trigger, wouldn't the memmap of a memory section be
->> smaller than a single page?
->=20
-> I don't think a memory section can be smaller than a page, because
-> PFN_SECTION_SHIFT is defined as follows:
->=20
-> #define PFN_SECTION_SHIFT (SECTION_SIZE_BITS - PAGE_SHIFT)
->=20
-> Therefore, PFN_SECTION_SHIFT must be greater than PAGE_SHIFT. On =
-powerpc,
-> PFN_SECTION_SHIFT is 6, PAGE_SHIFT is 18 (the worst combination).
->=20
-> Sorry, but I didn't understand what your concern is. Could you =
-elaborate
-> a bit more?
+LoongArch currently derives ARCH_PFN_OFFSET from PFN_UP(PHYS_OFFSET),
+while PHYS_OFFSET defaults to 0. On systems whose first DRAM range does
+not start at physical address 0, ARCH_PFN_OFFSET becomes smaller than
+the real RAM base PFN.
 
-Sorry, I misread it earlier =E2=80=94 I thought it was about the memory
-section size, but it's actually about the memmap size. Let me respond
-again to your question. On the powerpc architecture, when =
-PFN_SECTION_SHIFT
-is 6 and PAGE_SHIFT is 18, it does seem that the memmap of a memory
-section would be smaller than a single page.
+As a result, pfn_to_page() points past the intended mem_map base during
+early memmap initialization. This causes struct page initialization to
+touch wrong entries and can lead to early boot failures in the
+memmap_init_range() path.
 
-Thanks.
+Fix this by deriving ARCH_PFN_OFFSET from min_low_pfn, and initialize/
+recalculate min_low_pfn from memblock_start_of_DRAM() in LoongArch
+memory init so PFN-to-page translation matches the actual DRAM base.
 
->=20
->>=20
->> Is this really something we should be concerned about? :)
->>=20
->=20
-> When we continuously increase SECTION_MAP_LAST_BIT, it may trigger =
-issues,
-> because I expect to catch problems as early as possible at compile =
-time. That
-> was the motivation behind my change.
->=20
-> Thanks.
->=20
->> --=20
->> Cheers,
->>=20
->> David
+This change only fixes the FLATMEM PFN base and does not alter the
+existing VA/PA linear mapping scheme.
 
+Signed-off-by: Ethan Yang <ethan.yang.kernel@gmail.com>
+---
+v2:
+  - Fixed tab-to-space formatting.
+---
+ arch/loongarch/include/asm/page.h | 3 ++-
+ arch/loongarch/kernel/mem.c       | 1 +
+ arch/loongarch/kernel/setup.c     | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
+index 327bf0bc9..80aea8b51 100644
+--- a/arch/loongarch/include/asm/page.h
++++ b/arch/loongarch/include/asm/page.h
+@@ -25,7 +25,8 @@
+  * used in our early mem init code for all memory models.
+  * So always define it.
+  */
+-#define ARCH_PFN_OFFSET	PFN_UP(PHYS_OFFSET)
++extern unsigned long min_low_pfn;
++#define ARCH_PFN_OFFSET	min_low_pfn
+ 
+ extern void clear_page(void *page);
+ extern void copy_page(void *to, void *from);
+diff --git a/arch/loongarch/kernel/mem.c b/arch/loongarch/kernel/mem.c
+index 8ab1ffedc..03835f8cb 100644
+--- a/arch/loongarch/kernel/mem.c
++++ b/arch/loongarch/kernel/mem.c
+@@ -46,6 +46,7 @@ void __init memblock_init(void)
+ 		}
+ 	}
+ 
++	min_low_pfn = PFN_UP(memblock_start_of_DRAM());
+ 	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
+ 	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
+ 	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 839b23ede..625be2494 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -394,6 +394,7 @@ static void __init check_kernel_sections_mem(void)
+ static void __init arch_mem_init(char **cmdline_p)
+ {
+ 	/* Recalculate max_low_pfn for "mem=xxx" */
++	min_low_pfn = PFN_UP(memblock_start_of_DRAM());
+ 	max_pfn = PFN_DOWN(memblock_end_of_DRAM());
+ 	max_low_pfn = min(PFN_DOWN(HIGHMEM_START), max_pfn);
+ 
+-- 
+2.47.3
 
 
