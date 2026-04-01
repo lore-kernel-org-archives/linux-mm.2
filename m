@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E27ED35162
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A96D35162
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5C5E6B0089; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
+	id 879A56B0005; Wed,  1 Apr 2026 07:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6636B008A; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
+	id 82A106B0088; Wed,  1 Apr 2026 07:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE056B0092; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
+	id 718DA6B008A; Wed,  1 Apr 2026 07:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8674B6B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2268E160847
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:19:19 +0000 (UTC)
-X-FDA: 84609740838.18.C0FA47E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 79DF91C000F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:19:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p3T1INlz;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DFFC6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:21:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F1053E1224
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:21:05 +0000 (UTC)
+X-FDA: 84609745290.22.BDCB867
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D12E910000B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:21:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Igxn/Ksy";
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042464; a=rsa-sha256;
+	cv=none;
+	b=tXPMi6smddSGi/8u+mrQaorvmi5fH96P29hmd2MmI9BwHJRnp2jtD3KYCvEWMX180Jq4fv
+	QUZ3KYQz2ro12abfFGLrsSk1vRp4t91Kxfyo6gbtFou6sQWECibcPZENM7BDqmmCOMLYNU
+	Z1RnujlHRZuZQYUTd0Bp7OAK+h5yUNo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775042357;
+	s=arc-20220608; t=1775042464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j4rIOdL4hDW/Y6phoK2Qqh4ggQ5XNBvZZDrtqgZzdUU=;
-	b=PPygbsm/61rdQZK9aqmdWqsnL2ZWLR+Zc62YACgzDoVTBPEIBRIfOwXeozAmdzLb7IhYXh
-	RKf5BAV6KLIj8iAQwYVB20OKIEiv+jAlIKr4hkaUDGCs2a93SMk8RT/KQ/x6M+bmD880/h
-	wCW/zQMujV9GPiapF6Dt0NKGNJTT8mU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042357; a=rsa-sha256;
-	cv=none;
-	b=j5KrpYS+UFixjrIELRF+1lesxH2DNM92ZJYMgHG59Yj3XDjxNvXsQFKXht7GCYBX4g1sh+
-	Vn+fiMZ+sNU4dbLShZoy9JtXaosSCBUZyqeOkuwQB+NSsKoIynaY2RCi+kFURIb782TuMD
-	8PMYvUAHjIWL9IBQfVMurZLay5+eM78=
+	bh=UebqlSzKqacX5E8CJ3qASYdWU109pMRbyg8cPv53GRc=;
+	b=PWld6shGZ1/zErlbYtX9CcsQwRMVf1PD2iSvvBPvVEtcTy0Et0NZ7ZtKiCTTPYEGtMzGw/
+	iP4mBychXvyxHDQrPXYi12vDUTFSZ7LHbMmqKP5e9IfQkZI1Ks9Pxf1fDG4n/3ds5dFrQB
+	ulTPKydpZqLkugvH9C33gVOHjer07V0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p3T1INlz;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDBE860131;
-	Wed,  1 Apr 2026 11:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C6BC4CEF7;
-	Wed,  1 Apr 2026 11:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775042356;
-	bh=xpFWMh9MkdSBc1hJn+/AhQ/w65T3zgOUU+VStizxE4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p3T1INlz224JnvHd+iI/XTnAO57Xnl3aK9ePNoq/6qIJSX5mgLV+QHeUTpHeQXZhS
-	 AOKIshDblweICaHv7+3y7gpoNJnSgXUUyvsP0J3BJQ5MHIAZnntCiKjPetRiIIu2s0
-	 kP+fEhUtZMfMWv0qy/qUs5yjQkZpOKcP49EYUHiAq2HFx3AYfQgNDwa7Gdhg9HJMIj
-	 BHE4QbHE805rQ7ISCK28qG/Dn83fdR3bU8IHdZVCrNdXtAKqLu+kNIaX3LifW6wK0n
-	 /HZOJGHGkpF7y8srBH7x6egrSN350zRfrcNr8Kj9Nkb3EMxdkzFtsJ8eibqndNsMwA
-	 FkLH/NxvGiYew==
-Date: Wed, 1 Apr 2026 12:19:09 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Harry Yoo <harry@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Pedro Falcato <pfalcato@suse.de>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
- option
-Message-ID: <a2b60504-5971-4cff-bb0d-2005e2a216f6@lucifer.local>
-References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
- <d5cdcb88-c7ca-4a29-9b8e-3abb7c37726c@kernel.org>
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Igxn/Ksy";
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775042461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UebqlSzKqacX5E8CJ3qASYdWU109pMRbyg8cPv53GRc=;
+	b=Igxn/Ksyj6n7VznzSj69beimIUFJWdx4bwroO+BMnIhy++j5EoH0g+omggUGB6H3KxUhfr
+	/U7eLljdyGvI9OPKyZYkdbh2Alnu1pO/SznB+dR1zMi19oNOAK9rBYtVhBtGDKWzKRTGBm
+	m5wI9yoSk0rLmPcOUGijQO4kMWdtnqM=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: lance.yang@linux.dev,
+	kartikey406@gmail.com,
+	usama.arif@linux.dev,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	dev.jain@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [mm?] WARNING in deferred_split_folio
+Date: Wed,  1 Apr 2026 19:20:49 +0800
+Message-Id: <20260401112049.18634-1-lance.yang@linux.dev>
+In-Reply-To: <f28d968b-1d09-4db9-9f4b-55205f43c951@kernel.org>
+References: <f28d968b-1d09-4db9-9f4b-55205f43c951@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5cdcb88-c7ca-4a29-9b8e-3abb7c37726c@kernel.org>
-X-Rspamd-Queue-Id: 79DF91C000F
-X-Stat-Signature: qunt535sps83am5foinegh7m8t94uzjp
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775042357-817425
-X-HE-Meta: U2FsdGVkX19C9g91tCvAypjmc9X+c4XRiR9TeZc5X2GWwcUXHGgsv8P3Wg/ny+kc1CnQ8E/5mGF+dCNPXPKKJqQGYJ+Fud5A3AdeSPPe9pfzE6kDRbAMQlwiYwyFmT9EjM8k3jGyszugl9zWLcmh/sG29347yHmHZ9GANIsBRRlj2X0x5jAwaObp4LPC4QgYZFKpI616qfe4sb/T2ArPZdNQlStQRxQwy7fnnOzqE8AmyONUiO9SdZr2VWJcNcq+V9hYyZCWUOhyMXQr/UVP3UpB/C5naRXL3VyX8KI2M3dDkSZ6FYpsB1D9opqc+vbiodsuni1YgkSX75qBuA26KA/8lEqmyWMH7+FaE0N6hvfbjqeP0dQuqrPA70dpxWLXw2JDBlQ/9wJM8jSpd7OgOhBc70DnTinjYvM9TsBBUENA15V1y5SxO/J4zVTRVwg/4x4qusARCn7PzEMFTJeGWZkG9oBqVF+RMDbNTkSN/Kg/8VtHGsf7/rMho4snC9qytB7sBNgLdIPCiOEWqJy77RqY7Q53pCYfWj6sYssNqrVr6ghJgm8aNaqyGDG+lEiwoz9mqLpXvd1YPfZVCUEroTHOWkHacpvaP7b7UkEPmiSOYue6ucSJQcOX33h46XRdRMjqGnqm6c5xR+BE4SKEHmx3E4Gr4MfvXEQ7mN1kh5zcfzVWXD4gHFcki3uK0DHgguRyDahQxxzPSkiPvZdRRSZYvxoGDARqf4sKFyYJ8HMUIffqRYi8iqvXyMcuE/ImFBRnjhKRC5kUtOeGDowiua2kupa6AqxuN2FYJC/CrjaT5vGUUUdDNRW7OF8Vf04ZtcZF7yiR/fRUy3pRxMVfpI3G0LaSbd7uwUFX3H7O/EqXshp8dnRrqGzdSPm7lrNdL+KO4AVOR9akO0TF6Y+GdGiL59FwRf9SMwazFrem2MbT2TSYQA9vbZM9WZZ3fWP9pEpyDvKlNPXfvLAsOtR
- J9UJzmG2
- HoOdsMmWp4YW38T0C6gdoZVajt0A60I5dyLqC8zc+GdB0jFM3hKAGVGE70HasOyqmKZ4RQiMI1BRh4zS2wHU7F2hObeE7Mmt2u47Fu4RbCdaCVQL/5QabJp3VvgNaxUs1eUhsEoXfqDv565+f4q3PiWviCzhGgqNpbI38hWaYGdKoVxlwmmyeT9FcljxYbo5Lrt0dJI2bfD+1AGPuLESKbRnHnJpssD/m6U36a8KJeEf6pjEBwWtJqjKH+VrWqR2qHXgOT4udi5g/u72yavukyiBT2Oxnm06SMr5Q8bNOTZ+yaLmkXShDdsjGEniW+IZVTkLhWrOdTvqrO5Y7A+5Sjo886mZRBTBxAwiR
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D12E910000B
+X-Stat-Signature: yqatmp9ygg1g1q9wss38nigfmhc7hark
+X-HE-Tag: 1775042463-412463
+X-HE-Meta: U2FsdGVkX1826+4M8CK6xmEjtt/3Il/IcHJXOgj3h8UpOJYamn8t55MJqa6ykGzeRLhx91QIHqCkL1HF8jctEPZLRY3NTG0iDR7BTjoZXiD1nRG82Cc1tT2gBj+t71Z4/Unhxiu+9c8oVa38ZT2EQ0lyRMPL+KEiZ78aGSWLMIT5eufjAIyD5JXP019J7WS2kMLbXGj+phzOpzc4RsHQWNTlB77r59+p82XpapblWNEQRyyV30xAgVIdn4TAWeI4tP/xsGjPGpSUhHo5rzk5qlB/nx+lcoXKoVeKiNNeFy6DN6f/eZ5gDF253busa8Of+bCjl7fVHcDgSXSdocqnmyjSI+VHJjKByn+TRwBG1sNR3G+YJdTnimYy+x5l2mfzoxiJD0Ji/NCllcVDfOKJiLYfwYzSbSH8U6ZFq8Oi69otgfdGvppHovd6ngqNElP651vZgc4ajjhDagdh/ZPi4kS2vbweEfAfh7cw2raGFujL0lm1Ah1B0Z30ERAhTdKtgmTOW5HD5vHWwkHIAP3V7fX6EAoBw1onMrdkM+KQrIeQC23VROPuJOuU76zUimTkz8X3huFKAR2XKroBuivW9GlzOB8FYNLBMoZKAeihwIT13Wce/SOThThx9+7OsoKakOay6/EJNwiQ/FriYoo9JJ9UTjpZhrkHbNrAt917IO928rWiMhn+xXrsPsW3hmIn9ZoRGtp0jQjxzot9sC40nBQbhB6a4BFyoie2+xCwV2gAl6PKGL0nKj1GaezuUkeyClOJ0zF6qkBWP/+9SVZIDuxbTyFVizEUgpav9C+zXzOqDUPXvSZONle4cRZkAbiGNyDJ2wPI7rON8z459NYltCw3ZRsWHyiTVemlAmdehF2ssz/gcBlwYlIL4BO3ycR8tE5KIoiuX3eJdtELfYgrJEmzwcLumWsL5DIPBNzbWk+qxvwiQPzhUEkicmwxzZkb9PkrZELxUZA8hv2kkXu
+ 5iVbFAV5
+ SiySg0JAeogGx9fvDFqQnqwx8lSM9+zzF5jnNvbFbR5QBMQ2s6vMOUErd8PASxDR8PyDxq5SriZ7rwe1AgJQZbDXpuweyEX6ECHnXj6SFzUDI6cw/wtM5Oms6zValTxbBHhCmTuHxDz+LA2m2niU3on8VhG48LGUf/zQJ1EYwdjY9+Ml6fDD8Y+AUf5umfXTjamHS46uVZtre71PZ5luCau/aHTyXrdZSU6vxeE4BYbMeMJjVPby9G7/1nlFIFcQkSeADPGDoOBMBR6loDV9OB9Vhtbtce6wOLVV25iMx4kqGn48tar4Afg4vp2NNQPSUsbdy+foQfUN/bINgQol6Rkv68OCjQ9tqMG6q/pn+bFDbhZDbr4mEjW+N1BBjZYVNyFJ4snv7i17OR2tdrDaP5wF0wlvqtgZTfeWXA7LBivPjtDSxsD8mGVUBwDkPXKHtc6ycBJAhvf/HTcrJYmtFeM4EZyNXqlWXdiJcNZwLLRZt5XMcNVPUKAlamQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +102,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 01:05:34PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/1/26 12:59, Vlastimil Babka (SUSE) wrote:
-> > The boot-time enabled per-cache debugging has served us well in the
-> > past, but it's time for it to go, for the following reasons.
-> >
-> > - It's a debugging feature. However, thanks to the advent of LLM-based
-> >   reviews, we are not adding bugs to the kernel anymore, so it's
-> >   unnecessary now.
->
-> Right, and probably LLM review would find many of bugs in the existing
-> SLUB_DEBUG code.
->
-> >
-> > - KASAN is more powerful anyway for the classes of bugs that SLUB_DEBUG
-> >   can catch. But I suspect KASAN is likely to be removed soon too, see
-> >   above.
->
-> Of course.
->
-> >
-> > - SLAB never had no such dynamic debugging functionality. With the
-> >   introduction of sheaves percpu caching, we have turned SLUB back into
-> >   SLAB partially, so this just follows that direction.
-> >
-> > - It's removing ~2500 lines of code and I want to keep my overal
-> >   diffstats negative. This adds a nice margin.
->
-> Personal stats clearly matter more than anything else.
->
-> >
-> > Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
-> > a big loss, see the first point above.
-> >
-> > Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > ---
-> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > ---
-> >  lib/Kconfig.debug      |   12 -
-> >  lib/Kconfig.kasan      |    2 -
-> >  lib/tests/Makefile     |    1 -
-> >  lib/tests/slub_kunit.c |  329 --------
-> >  mm/Kconfig.debug       |   60 --
-> >  mm/dmapool.c           |    4 -
-> >  mm/memcontrol-v1.c     |   17 -
-> >  mm/mempool.c           |  105 ---
-> >  mm/slab.h              |   34 -
-> >  mm/slub.c              | 2074 +-----------------------------------------------
->
-> slab.h vs. slub.c is annoying.
->
-> Can you just rename that to sheaf.c / sheaf.h now while at it?
 
-I'd prefer sheav.es.c, but naturally all comments in that file would need to be
-translated to Spanish.
+On Wed, Apr 01, 2026 at 01:00:13PM +0200, David Hildenbrand (Arm) wrote:
+>On 4/1/26 12:53, Lance Yang wrote:
+>> 
+>> +Cc Deepanshu
+>> 
+>> On Wed, Apr 01, 2026 at 12:16:43PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 4/1/26 10:59, Lance Yang wrote:
+>>>>
+>>>> >from another sharer can then remove some of those mappings and reach
+>>>>
+>>>> Perhaps the WARN is simply too strict there :)
+>>>>
+>>>> Migration already holds the folio lock on dst, while the competing
+>>>> rmap-removal path runs under the page-table lock. So once
+>>>> remove_migration_ptes(src, dst, 0) makes dst visible again, this race
+>>>> looks hard to avoid.
+>>>>
+>>>> So maybe the simplest fix is just to drop the WARN in the
+>>>> !partially_mapped path:
+>>>>
+>>>> ---8<---
+>>>> Subject: [PATCH 1/1] mm/thp: avoid false warning in deferred_split_folio()
+>>>>
+>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>
+>>>> migrate_folio_move() snapshots src_partially_mapped from src before
+>>>> migration and later requeues dst after remove_migration_ptes(src, dst, 0).
+>>>>
+>>>> Once dst is visible again, a competing rmap-removal path can legally set
+>>>> PG_partially_mapped before the migration path reaches
+>>>> deferred_split_folio(dst, src_partially_mapped).
+>>>>
+>>>> Migration already holds the folio lock on dst, while the competing
+>>>> rmap-removal path runs under the page-table lock. So once
+>>>> remove_migration_ptes(src, dst, 0) makes dst visible again, this race
+>>>> looks hard to avoid.
+>>>>
+>>>> So just drop the WARN in the !partially_mapped path and preserve an
+>>>> already-set PG_partially_mapped bit.
+>>>>
+>>>> Link: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
+>>>> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
+>>>> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+>>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>>> ---
+>>>>  mm/huge_memory.c | 3 ---
+>>>>  1 file changed, 3 deletions(-)
+>>>>
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 745eb3d0d4a7..8ea8e293dc7c 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -4433,9 +4433,6 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+>>>>  			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, 1);
+>>>>
+>>>>  		}
+>>>> -	} else {
+>>>> -		/* partially mapped folios cannot become non-partially mapped */
+>>>> -		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
+>>>>  	}
+>>>
+>>> Can't we simply move the setting before restoring migration ptes?
+>> 
+>> Afraid not, it closes the remove_migration_ptes() ->
+>> deferred_split_folio() race, but opens a new one with the shrinker, IIUC
+>> 
+>> Once dst is on the deferred split queue, deferred_split_scan() can
+>> pick it up immediately. The shrinker unconditionally dequeues every
+>> folio it visits:
+>> 
+>> 	list_del_init(&folio->_deferred_list);   /* always */
+>> 
+>> Then for a non-partially-mapped folio, if folio_trylock() fails
+>> (dst is still locked by migration), it falls through to:
+>> 
+>> next:
+>> 		if (did_split || !folio_test_partially_mapped(folio))
+>> 			continue;  /* not requeued, dst silently lost */
+>> 
+>> so it is *not* requeued.
+>
+>How is that different to the shrinker just trying to lock the folio before we
+>unlock it and failing? The race already exists?
+
+Ouch, you're right, I was wrong - the trylock drop is a pre-existing
+issue, not caused by the reorder ;)
 
 >
-> --
-> Cheers,
->
-> David
+>To sort out that race a trylock must not result in the folio getting
+>discarded.
 
-Cheers, Lorenzo
+Nice, LGTM!
+
+Given that the "trylock -> drop" behavior seems to exist already today,
+do you think it's worth fixing that together with the reorder?
+
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index ff9a42abd1b6..521989517cd1 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -4558,7 +4558,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>                                goto next;
+>                }
+>                if (!folio_trylock(folio))
+>-                       goto next;
+>+                       goto requeue:
+>                if (!split_folio(folio)) {
+>                        did_split = true;
+>                        if (underused)
+>@@ -4569,6 +4569,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+> next:
+>                if (did_split || !folio_test_partially_mapped(folio))
+>                        continue;
+>+requeue:
+>                /*
+>                 * Only add back to the queue if folio is partially mapped.
+>                 * If thp_underused returns false, or if split_folio fails
+>
+>
 
