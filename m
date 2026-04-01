@@ -4,81 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C5F1D35144
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09AE6D3514B
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:32:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A07526B0092; Wed,  1 Apr 2026 03:30:22 -0400 (EDT)
+	id 6FDD86B0005; Wed,  1 Apr 2026 03:32:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B8146B0093; Wed,  1 Apr 2026 03:30:22 -0400 (EDT)
+	id 6870C6B008A; Wed,  1 Apr 2026 03:32:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F51D6B0095; Wed,  1 Apr 2026 03:30:22 -0400 (EDT)
+	id 54E866B0093; Wed,  1 Apr 2026 03:32:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EE766B0092
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:30:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 31A8C1B8552
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:30:22 +0000 (UTC)
-X-FDA: 84609163884.11.82600E9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4414718000C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:30:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qTjlT+Z3;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EE116B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:32:39 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0912E13B85B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:32:39 +0000 (UTC)
+X-FDA: 84609169638.19.39B4BA2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 437D014000A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:32:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=humF71eb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775028620;
+	s=arc-20220608; t=1775028757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N1dlHf8hN3ksEavwQi7uGUJ6P1K8vhWTlQBs80vW480=;
-	b=GqlAfTiTGZJcVahhX/rEIbkp/hincVd8dyr8TT+pmPAxFQYb/urIvYhJGayoZ2Esfx4IIO
-	RZAQek6+9pxEmgivNmzH2gH+ZrVEWAiPITa75JNFu/yVYbab7hTsxbRGhPJYRuu7ol3dBr
-	R3fhXV5kA29JWuqrfjyCMtNkNqU31P8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775028620; a=rsa-sha256;
+	bh=nK/oZoLqLWhs4vERutI8f/q4LdD/IXEGNSiR80qnwf0=;
+	b=M0JMU4RegXG+u3gkBYsgm+udeJ6ubiL8HaP3rYXka2NOu3ajKPo9ysPkKr/+4zDAA5nHlF
+	4jNYfKeW7JTCDVEJBzbT8KciIu6MSMKgt9RujimhZ0NUeqJqR/mxoDtAwgq1H71n20E8DH
+	fmqKq4it2rvYD9tv+EkYJESx0RKrjVw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775028757; a=rsa-sha256;
 	cv=none;
-	b=OKxiK3gLFAhv9WEwxZtDMr8pZmj8KJy8Uu8qlIRpRt3osJ6scLTXvlnR+/rntcEBtoQn5W
-	xc2YpT7giFE0/vtp2n1ovDE+dfP+IKMGHgUz+eW0GTTouxvVRwcnm81If8ezsod8J5sbAX
-	PwHtuJ6a1VuvGDUaLd23VxrH40oYA74=
+	b=W64Y6US/QkuSIZeN2cA+WfBjGh35DYcOmlHsYjI8RXHjzm9Y2wW9ji8/xrmcfmjhXCWp6+
+	kJAQI0Qb7UPEsDyZSEXdXtls4pOVFZmMNVN1oz7G93cvhPRNBoM9/A/JBW2smNB3yZeN49
+	tzsOxU1BmivnFOkcbLL1VGSYa690NFQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qTjlT+Z3;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=humF71eb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3BAC540541;
-	Wed,  1 Apr 2026 07:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C40C4CEF7;
-	Wed,  1 Apr 2026 07:30:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B56B960130;
+	Wed,  1 Apr 2026 07:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63542C4CEF7;
+	Wed,  1 Apr 2026 07:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775028619;
-	bh=f1Ngdbz7uczIY4RWfNQQvAw4tyC9TKeVNLanQ2yWR14=;
+	s=k20201202; t=1775028756;
+	bh=Xn630OcqIQHi39xngA8rdVFLMzJ6oRMn/HMdRSOCPls=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qTjlT+Z33eRpwuN3qRicMSrxRdg+ybY/sOd850b1NNr7iV9YylLG1TIu7htcvWEPe
-	 PHS2kK7t164uPMtgxaSJWoytBMROaoHFIA+zD1FuW6WI7vo56Y5V1f08v1GoTb7D1P
-	 zVkWh+YNPmGx4lj2Azna2IfuiHOEPOs0JKJQIdQGfBOTqMU9wypeTe3piIiPUz3lCo
-	 Oq3/Uv0hI5C6AoiMYKGLqQms82bvPDnkQ6Sk9sFVcq4gti7llUxibJrn3xn/uJqsKM
-	 7z/6L+/LYV3TZz4Z9+7KKN6pvLtlYlu1BxruR81iDsTUsm/l5y6HJxiPLXNdgzCBGU
-	 Qw4tB6QbsjKBg==
-Message-ID: <f8dc6424-9f64-40aa-9b82-b7d29a46cb48@kernel.org>
-Date: Wed, 1 Apr 2026 09:30:14 +0200
+	b=humF71ebabeqOf720kG9Kp3v1uYNN24B/eb+zf0MwE0EGHGt2SYsVKdjAeLFIYQPE
+	 JpKTQti9qdA1UD0aJ2wjmmtixB9bFuBuNiNW0fwF3ilqHrSx2t8VLzRyRIbw6bmN2c
+	 saJYL9J6ElfuXkNpR6MQZlw5JCLTibOual5FmZzEu5pm/AbinbE1hM/XAFIdXV+6lp
+	 ry3tOJfVitrM3Lyzuapcby8OwKWlDVY+ikszsrQmDUWK8FIDdhxWVxq5Q8e1n+TcQb
+	 aqgJswJUKR+MLwPFaGtVmpizs2Uk+dbXHjxKIPqVsgEKItt6A0x3cOseQpYN4SmQs0
+	 PcSyJjFVX2qNQ==
+Message-ID: <e1431688-17ba-4881-9536-b598383ed2d8@kernel.org>
+Date: Wed, 1 Apr 2026 09:32:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in
- sio_read_complete()
-To: David CARLIER <devnexen@gmail.com>, Barry Song <21cnbao@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
- NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260330071229.14614-1-devnexen@gmail.com>
- <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
- <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 0/2] Fix storing in XArray check_split tests
+To: Zi Yan <ziy@nvidia.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, willy@infradead.org,
+ akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, michael.roth@amd.com,
+ dev.jain@arm.com, vannapurve@google.com
+References: <cover.1771831836.git.ackerleytng@google.com>
+ <6ada27e1-8f85-4b85-8c25-bc9207b2624d@kernel.org>
+ <87FD20AF-55B6-4129-9AED-E2E854593883@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
+In-Reply-To: <87FD20AF-55B6-4129-9AED-E2E854593883@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4414718000C
-X-Stat-Signature: gws3ra5px1jtw4nrf6wefnhpw5yrtd3e
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 437D014000A
+X-Stat-Signature: kmzbfc5ahynbw3xe91kui1x9zbh1j1x4
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775028620-392736
-X-HE-Meta: U2FsdGVkX1+ZyiEUbVn/LUaX6BWtLw67tO1HdeTDrsbFBObCMBQZkQJOOs0yu1dcPCaK/+G2khpjG9HAsvzJB0nJx/iHL4ju7JY9tHrrJSvUw5FqwG7WCmgd1WtDHMf3WAcGKn3oppNZr0nlAHIvcimeiylBUmcavMsn6tqaohGZaB7cLyUkoN53FewxFgRfVR7x7gQjvpwpSeQXKpFjicS6Eoxbz3GXMBh1RKFxU3IsITl66qIaOXFoODIsC+RgHa23/TscF34AQPgc5dnfl+hCN68EJyY/MpPBSM4ZX5jhdMshS3nwbJBXN7h1n7qw56ljQMbQmYWpqSzQ4xfejpSbhAZ3vi1otkhcvrali5s5ft9PPIfiSLNqneRsogy1s9htYg3Qvm1+vVzu46kGT315WhYZZlLlmRuO4rZnktkHQxcooJDZMTIi5NmMRPZBxm+o0+eKXzqmSJzw/pwLSUuQZjDQnabSJlLSOqvood6kDFfCobRzoOlcDkPSNb7w/cvXiLND4m5hg70LthqRQotfUva4IRwDmhSb1221FYj2BtiO0LKgr5vzUPmIFxdAZndpLi0HdnlVJiZb+YKPm/8dzZk6kBUVtfm5LhVZbN5IuGcg1xGNVQDFUFZHjNSWKfB4XRewYpoE8afi+XFf6JDJVHi/RkWJHbqxMr3DFV8XWb0D3j+KJHWAtj20vwKPFFX30jB8YsXXGnL4LLi8ENVJ2wAFsbocCr5Uyy91dM/xZ69qKjwM6P+1raGGhyhMuLu9E/92JIaU8aoFhYeGZjJXtElSpoSGYwwJh5prODSJw62UuzVqIHPdjgCRbdWBSs7HKoXRKAqH9/PCvCttYXGYOBp3biWXHGjIYmMmiP60h8zIfsx/Y7ABVfn7Q2rEwxuDhCECNFMwzGT+adgln0Tji2UzYtM5/YoJ44r91TMZtHnEd7TvK8KzfPuA6m1XtBwzWVuGvq0Aa570Xjy
- vJThG5Er
- 9lg9WdFIaFNwabtyl1nZCrcGRNuKZNU9Q1tADddCg0tfzPzUHmwHFW0TCo1u/6mAv8CrIBHtD7kJi6lGAaARFWvE7jfxBT0CSMyH7uoy6fD9J/8bqTFPbpH/FYFa9A2dCQz9nyQUn8Ugmft4p7cWjeOYvxO0weSciI3721EnTXYqiNdI2U/CnB165q94uDo6XKwTiSHeIAGa65VtmIVuAwDl0QN8JGgEwyiP/2RfxF8PqO61j3leAaM2OWL3rsnfuBASDaWk7sw1ksA9aJS1PIaE/kq52ePsSQT/6Pgc5c1s6B6YICrhVwCsffTd77MBHgrPUrQMvPtoiWVXwBfq3DInVYJLut1p5n/+H
+X-HE-Tag: 1775028757-476251
+X-HE-Meta: U2FsdGVkX19N3ubsX+xDwtZbKVa4DQj5ejMhBhGJEnRvWbxvJp26z1PC1eOtQ0hPZ1IPWIVVZ8NtzMGZ+TvJYx4TaPhJmpugct6giMszuEHU22X/ntixlLTy7FdQZo3ZJHy52+8yHkvueACIBqoCTwa6RYvE26dIrg3ulkeSKGRKaQ+Uzq8tNO5eeHQwggQN6BEYK8pxxYHxOTcMjtuM13QDh+v00faM0QNlgnJOE8YorW5uKOw7U1zo9BbIrLMt6OOtW6IkyVdDJoYqpOl5Vp7muqhJBPi+SMh/kfG1/BZVuhBfjNnGzhvNN3EJlrLbjersftc9TDBa/UsBojGWHVYS8/SWUnEtN8xE1GVZ5uo6m9E9diSer5HrM17tcC5boEIUyMlg6OXzkhsKtEfKokSSWXntavvt5SVFxFfZQfUG9jSSNyou6tFC9NCMVjFYJHnsMO7ZZj6mF3hgzoxFGe1Ij3cFEPBTyCaO6mFABZqm15MkAEUViFEm71/5yW74ELUR/Ql85/eUXZGft4Hx8Y7FGROJtHm/tKhYfz/4FWBOrLYkqrT9Y1JMan2z3ElydS3XeepBr5EhuR/UD08QqwtLpZIwtdADhSd64AvsHZZUpRrPnCMrBAJRHnpuAndTOtxim7pCoinze9HRn80gfsQJTrB4b2gayX5V0rLRnxgmh7IFaN10AJ62GjGKfWrVtvgq9XGE8wgkjqpRjc/QSb9aVdn2aS0fYvKr0YeMlSyz8hf1ZEIxZegHeSEheUvdSstroMo0Tv7qrMg0TsHv10Iinip2ARppkZgaKg0On/mxLahzUVlQ4rxDNUSlS8mYmp/Dk3h1f+Ml4zQUyClQ92EXIcEkpTMTd1wFBG+51dqE43yjEvfhk47wOR70wjm/C0xP9YC7BQ5MWE8aQJ1YmBmS8eOQ/M//Pytf7XHyd84pNvWFR+2gEYJWTB/c1h04Qbz8MUZ2Bx2oCjyLu65
+ rzwPtAeW
+ 8VXmB2rL8tKZ4IgoaJr0q8fjWhyS8nP66HX6ERFwE6ztWP755uR3ZoVvlVbFvywr6y24yOyEA6d17WO2R4J74Ci7wjYUunfGjHd0jBJbOJF6Pzh06d7yBqxFtmgzjsAfQJ2l/+G/lPUb7tpdtRLynVa/bfwldkOuSROrJZsUk1VPwjEv3CMYHThpvVpjITxRyZvNkUnHG5D8YUZCY8DUW2Fnmp89FMEsG8Pfjve27K2hZV1PJmStKTFE1HS1PzuL6HqnAU7rguTvSmqdGMlEAwAXAPvkHIVdr08QopomAuFprVFXRZNi5QfKD+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,55 +141,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 09:10, David CARLIER wrote:
-> On Tue, 31 Mar 2026 at 23:33, Barry Song <21cnbao@gmail.com> wrote:
->>
->> On Mon, Mar 30, 2026 at 3:12 PM David Carlier <devnexen@gmail.com> wrote:
+On 3/16/26 17:49, Zi Yan wrote:
+> On 16 Mar 2026, at 12:23, David Hildenbrand (Arm) wrote:
+> 
+>> On 2/23/26 08:34, Ackerley Tng wrote:
+>>> Hi,
 >>>
->>> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
->>> but sio->pages tracks the number of bvec entries (folios), not base
->>> pages. For large folios this undercounts compared to the per-memcg path
->>> which correctly uses folio_nr_pages(), and compared to the bdev read
->>> paths which also use folio_nr_pages().
+>>> I hit an assertion while making some modifications to
+>>> lib/test_xarray.c [1] and I believe this is the fix.
 >>>
->>> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
->>> count since sio->len is accumulated via folio_size(folio).
+>>> In check_split, the tests split the XArray node and then store values
+>>> after the split to verify that splitting worked. While storing and
+>>> retrieval works as expected, the node's metadata, specifically
+>>> node->nr_values, is not updated correctly.
 >>>
->>> Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
->>> Signed-off-by: David Carlier <devnexen@gmail.com>
+>>> This led to the assertion being hit in [1], since the storing process
+>>> did not increment node->nr_values sufficiently, while the erasing
+>>> process assumed the fully-incremented node->nr_values state.
+>>>
+>>> Would like to check my understanding on these:
+>>>
+>>> 1. In the multi-index xarray world, is node->nr_values definitely the
+>>>    total number of values *and siblings* in the node?
+>>>
+>>> 2. IIUC xas_store() has significantly different behavior when entry is
+>>>    NULL vs non-NULL: when entry is NULL, xas_store() does not make
+>>>    assumptions on the number of siblings and erases all the way till
+>>>    the next non-sibling entry. This sounds fair to me, but it's also
+>>>    kind of surprising that it is differently handled when entry is
+>>>    non-NULL, where xas_store() respects xas->xa_sibs.
+>>>
+>>> 3. If xas_store() is dependent on its caller to set up xas correctly
+>>>    (also sounds fair), then there are places where xas_store() is
+>>>    used, like replace_page_cache_folio() or
+>>>    migrate_huge_page_move_mapping(), where xas is set up assuming 0
+>>>    order pages. Are those buggy?
 >>
->> The patch seems theoretically correct, but I’m wondering
->> where we can swap in mTHP for filesystem-based swap？
->>
->> In both do_swap_page() and shmem_swapin_folio(), we check
->> data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
->> large folios. Am I missing something?
+>> Zi, do you have any familiarity with that code and could help?
 > 
-> ▎ The patch seems theoretically correct, but I'm wondering
->   ▎ where we can swap in mTHP for filesystem-based swap?
+> Not much. But I used lib/test_xarray.c to did a test:
 > 
->   ▎ In both do_swap_page() and shmem_swapin_folio(), we check
->   ▎ data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
->   ▎ large folios. Am I missing something?
+> 1. initialize an xarray with order 6 and set entry to 0,
 > 
->   You're right, I missed that. SWP_FS_OPS is only set by NFS and
->   SMB which have no bdev, so SWP_SYNCHRONOUS_IO can never be set
->   alongside it. Large folios can't currently reach this path since
->   both do_swap_page() and shmem_swapin_folio() gate mTHP allocation
->   on SWP_SYNCHRONOUS_IO.
+> 2. add a new xas like XA_STATE(xas0, xa, 0);
+> 3. xas_store(&xas0, xa_mk_value(32));
 > 
->   That said, sio_read_complete() already calls count_mthp_stat()
->   and the per-memcg accounting uses folio_nr_pages(), so the code
->   seems written with large folios in mind even if the path is
->   currently unreachable. Using sio->pages (bvec entry count) for
->   a base-page count is still semantically wrong, but I understand
->   the practical impact is nil today.
+> 4. add a new xas like XA_STATE(xas0, xa, 16);
+> 5. xas_store(&xas0, xa_mk_value(48));
 > 
->   Happy to either drop this or keep it as a correctness cleanup,
->   whatever you and Andrew prefer.
+> The outcome is that xas_store() does not change xarray structure,
+> namely the orders are preserved. No issue is present.
+> 
+> After 2 and 3, the xarray is still order 6, but its 0-63 entries (all order-6)
+> are changed from 0 to 32.
+> After 4 and 5, the xarray is still order 6, but its 0-63 entries
+> are changed from 32 to 48.
+> 
+> I will need to dig into the code more to explain how xas_store() works.
 
-Best to rework the patch description (clarify that it's a cleanup) and
-drop the Fixes: I guess.
+Zi,
+
+we discussed this topic with Willy in the THP cabal call. I did not get
+all the details, do you remember our conclusion?
+
+(I can try getting access to the recording)
 
 -- 
 Cheers,
