@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0320210F92EC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:38:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE8C10F92EC
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:42:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CA136B0089; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
+	id 91BEA6B008A; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A18E6B008A; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
+	id 8C9606B0092; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DE866B0092; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
+	id 7DF1A6B0095; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C8986B0089
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE97EB9C39
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:38:50 +0000 (UTC)
-X-FDA: 84608429220.27.FD5A10E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1FFA380004
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:38:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uj8tPH4E;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA136B008A
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 018D3140562
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:42:24 +0000 (UTC)
+X-FDA: 84608438250.03.0878372
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3946340006
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:42:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AWD8gD2y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775011129;
+	s=arc-20220608; t=1775011343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=atriZJFr46Myib7CdkfsgoATvdJh0lyt6fPnkAWbosc=;
-	b=lScpx2JnaQ3QHOBozjx/C9ZX+mHoaEoghvDiqGxI1re3YxSnqJcBmoFlRZK0UOHQZemxMA
-	7kV/j2vucRUC1NukYGlN/O13tDiiChPsYVLRBmDKsaDPp4VCylC31GhyY7bNfH3k0g/Yy3
-	ydByg0MpFw2ExK11Xm45Hh1odi2N2Po=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011129; a=rsa-sha256;
+	bh=OYzgJhPBELX+5svIaMHyyrG4VC9DWWPsk64e6cKGVmQ=;
+	b=3Rf1yCIRAftxM3OYz+X3i3aONSlJrNMUH6Yu0PshTKmZfobtnlptrVuaL0QOa38SKxd9WU
+	toS6wXXDspaaEGHNbUaqrMVj2q8Xggc/jL2mFbhYPSDWv2t23GssZ3Ji0DepqZyBHq6RR3
+	O/+ZxvjyZernxN+Skr6my42mykGPB+U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011343; a=rsa-sha256;
 	cv=none;
-	b=azzeiBzcOqvQ6TyNjF1M8c6y00GJwx6+OoQEo4GRtcw57Q+Txz9SCahZDmZd5Pe1BzCsXg
-	aP7G4cUPioZkeyT8Pj7V3eqQx6Q8uHLT+utXOIdZvAAv9tDTho3HGiNG7cv8DRcxpjiRfb
-	lM3bggCmUj+AnfGZVV1K1Q79XvEf/rA=
+	b=Ffjn6MdumstVjQQJ4MdbBXH8SU93wTfwjeGxGwLiWKSg0LqjE7YLumupYDw2srbC+gXp9I
+	nc8JTwaxgMvKokIi5jtgnRM1+fw7Bm5omMRZ+juM2t5HspZw9nD92e013AMHJP/JhJpOxa
+	tjE+AAagIPyp4Hjzwjzss9zjabalsK0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uj8tPH4E;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D62E443A5B;
-	Wed,  1 Apr 2026 02:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D806C19423;
-	Wed,  1 Apr 2026 02:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775011127;
-	bh=nUUu7l1xK87MHgb+obB6Qi0cxCVs6kWFc4Wh3VJ0FBA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Uj8tPH4EzbxuS+eMTIZZmhJq2UCqS9O02dswC4MgLakfc86HqCh4rSadfQhfNxs81
-	 UiM6AP+jaxDML8d4U/O/y/vT47/ofQ2P5x5JkM5hCEd1YM684ENbBumvm5aXVNLP0N
-	 ki1pr6CWdD4rFg9tdX77Xcqylgrx8Vwt9Qn5JWio=
-Date: Tue, 31 Mar 2026 19:38:46 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm/alloc_tag: clear codetag for pages allocated
- before page_ext initialization
-Message-Id: <20260331193846.1822055eac7f8555fbb5ebdd@linux-foundation.org>
-In-Reply-To: <20260331081312.123719-1-hao.ge@linux.dev>
-References: <20260331081312.123719-1-hao.ge@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1FFA380004
-X-Stat-Signature: 3mua5j1byapwshezdufq86cyo9pgf7bb
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AWD8gD2y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775011341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OYzgJhPBELX+5svIaMHyyrG4VC9DWWPsk64e6cKGVmQ=;
+	b=AWD8gD2yYWhtLaaaFtHHTzd1ZrylQ42YS7/HwqG4IQZqmc2IQngtGJ4Umql4wmBnVv8uGq
+	FoOU9skiW9PmptHxqrkm7Xn6snIs6UVKy+AEph/5JmLJS6wPse+LzmOQINMandy2PiOlwv
+	4cRE/oLBStgnXB9LaUJrkHWQ6y1ffDM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
+ failure path
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <17246161-f314-45da-933a-770231ef2a49@kernel.org>
+Date: Wed, 1 Apr 2026 10:41:42 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Frank van der Linden <fvdl@google.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2183487D-0CED-4BEF-84D7-4439F3386584@linux.dev>
+References: <20260331113724.2080833-1-songmuchun@bytedance.com>
+ <17246161-f314-45da-933a-770231ef2a49@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 3946340006
+X-Stat-Signature: uahm8b49h33618uss951f9b1byptxk76
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775011128-972249
-X-HE-Meta: U2FsdGVkX18dX9CoppkH+zuOtIzhP7qTKrREEGCfw2MImsFxllCi+Qh8Shm4OAWj4UMBZ9fQ9r3MdhR9gg476RbRB5ACcZmXhH64MaHWF833SiOuSGv2NdD/aX7d6NSWBYX8RgDXs0h0eK7JXpq0aHpPKeikiDRihVuMKvNpQpjUWq00fe4R5VmDIK567OJWv6jgkix3UaA66nMLL8ZjchcnK9E7e5H68LBHxwYHAx++OVejWxDSduM2XYuwp890Wn/eMv8/WT4grkdIIOk/7trk43tiJBb0y5bOxf059KlH9iHgF8rHsG9/3JBPm5Mtuua5Z/GBnMTZlCw3YRF3owKaceqcqHvpQNvaEIQPCEC4VyGkR0mmtjcz1bQYQQKwT+XxHVt+qtgGa9Y4v/GpHTMhm6gIHxBmETcvMeSN5iBe6W7XbI7HzPRRwnHlyZaw7ypodpD0ZVeNYB2i3SAbCxwE4lEG/Be12ZjmlLtM+tY4FxQM5ukckTO0Hk258xXQCGFrKYIy6oE0zPXjRBOlh1RHl1LcD/j5EQ89ten9V4L4HJn+UHet9vlawDQUZrVM/FvO+G2dEKEgslxmLCnrXFvh0BJX5w+SlSBu/dkxRED+syAdXV59d9lZl6xIQv6XV/i5N44ydo3afqVFv9XIBeQCXOLCgbqUzEiKxhv5xM5wsxosiOufJ6sjQ+/YGWaS4ZSvzZS8HxqB26IZYHgj9DS+x1tvVNsAZ0LSvWkqAN7KdqtnqSvZWVkfaWYF/gLn+9kwU1uMt/ql9/sCuyN1TZakV7EAXgEdm1wv+c3hZ8baqcfiYhYALzEbNY0c5aZiNL5uSfSCnVETaoYxYLwsn4lYFjy7zWK1QwCZgj5j+muWkBKNJGQ9GRyxAfpyVd3X6J+59xuUNuHBQZj6HzkNC5JRW/rPv+QbixTjc1aXfe1zWRjehCpca6k9jBUKbfPtxRdb16AHjHWKWtAh/aQ
- rgOAt3OK
- zpqTY8KZTaqL7L/9Av8KfSmDqZVzZZxUwYSRwlA8VQdG8RTBlYez4lZhrYewpKM1swlqpNn5V8vOGxWKyaEScXZN+bHJG3QL18mITs5OxvyXgt3cUY89jq8KtDI3aBHwbsAto3yCCgjORFJEwYWW7a2p6vMcFmiXYRLq/m2jYrDwH5Q+rzNrYGnMD0rshMp8rSwwFvySsWfR+YsPoIGYjUbmoVcgyn1bS4ifediLgjQIA+7Gq0jd40/do4HRYEpwOXs51dD/aOLj6Bbz/ohGvenYr2mm7JyZnmiu2/Yk31+xONn6iBRw0xOu8s7xChU6Sw/x7oQit3+SNnuu7wwOLhEnRUw==
+X-HE-Tag: 1775011343-81382
+X-HE-Meta: U2FsdGVkX1/HpBHtpjAhgHME2dAkVgZESpDJzBEErWFMBJ2tN8lDv4iCESARKC3Sr4ztxMP6S8n7FRaG4ioQyfyWCQVjsi7+EmUlNF92L/jMCslkm72FTaQsceZPyqcPYqAKUKQ2rK027mV0GFu7EU3IhvjOxmaroTkQrGX8QA7UkOS0bfUDCqqNqYZ8fTHYAf1MrGmXeC2pEeHVmEShK8bmDT0zLPujFNt1X/Km+yKdhDXZgplfcQLKxAztn1tFcPpsCLGg9/1d9PUjKHwY89n6R2ylzkQ49sDglc44zvXMT78Amh+Hb8f8VmzP8cKPlFPP2EsX2KrYpbPS1Z6kfqX8xQnEeAV4o8ku3B8L4CIARYI5/P5aihyaRDOXRWKMqsk2JVVifU344D6SFh4yVeGf/sLsOk0MlltkhdZQmmLW0H236Y8zghh51nl9tu1+fsrClzrA/u5DcGYbnxxWkoTa5FR6dlDq9d++ibMzxz0ySFuxkH87rOWKx1fJ6Sl2Q65w75+H5r2Al/xGT9rAt9z9nYj2Xkr190vzsHAqCL+H87TRAuJUizoc9Ha3uDjHtizg7nIuohrNdh6ub3hRJDN+LZpxqON1dcDKYVcRCKE87oQSwGGJwygJmyFlOjnjRiqKke9/sJ89cMInmGq7exevqNI7r+I9gKVMamT3FOLTGRv0fRwBXC+9OZN46N6p3C4rsTw1Fqt1ZFzJx2lWkt1CCAYMkokpQEpF6Y24keaBesFmZbW5ocu1/EuATMfBIF+MtfZCwhxBVrwFgLnBgnh9hA7Bcr0kEvGRLVLmAELOVDaIp0oN4GntIKiGiQvz8AEnJy2+8Mlxbms4tZPw/W7da1OgZkU5kpObK7y8f72V5o+UGPgma7AfmHGpqcqyk7vEfh/zb7gwbrL1m18WHPxrZjX9yrBhXI2gzATuddxajhZUDHQJeBcMXLOFz6Kc9Q5n1SIJn4YtI2UnaEl
+ VayqAzZZ
+ ZSTWw5+BVkrdZtwniwJP2fJHFUIS2Uzd7z1ot8jZKS+f81uQePzxLbdtc2kFSnApAIut8VS7YyXVLxJm3PSZkfzTXvIGm6uvCytvZASuM9sArZFBnpn46+9bcLKdINWUFq9YQxay2p6VrF4ukiEOuAmYEHkLQJBO5CDTKMSN2rbE1pI1coosfQ1LFh/uHY03IMkcj7BKpN2DS7B/tEqGyFunkdzPhCU4EEmmzVNsjzRjj4DmL/LDnkjrcMhtECnyFvvXKmWFkXeDXDQpCYhxhr6VToscqkqCHe0HKRiOp8pXxgQtQyeI7oyX2zGG4LIYuh+EBbyBXP6xACPI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,66 +100,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 16:13:12 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-> Due to initialization ordering, page_ext is allocated and initialized
-> relatively late during boot. Some pages have already been allocated
-> and freed before page_ext becomes available, leaving their codetag
-> uninitialized.
-> 
-> A clear example is in init_section_page_ext(): alloc_page_ext() calls
-> kmemleak_alloc(). If the slab cache has no free objects, it falls back
-> to the buddy allocator to allocate memory. However, at this point page_ext
-> is not yet fully initialized, so these newly allocated pages have no
-> codetag set. These pages may later be reclaimed by KASAN, which causes
-> the warning to trigger when they are freed because their codetag ref is
-> still empty.
-> 
-> Use a global array to track pages allocated before page_ext is fully
-> initialized. The array size is fixed at 8192 entries, and will emit
-> a warning if this limit is exceeded. When page_ext initialization
-> completes, set their codetag to empty to avoid warnings when they
-> are freed later.
-> 
-> This warning is only observed with CONFIG_MEM_ALLOC_PROFILING_DEBUG=Y
-> and mem_profiling_compressed disabled:
-> 
-> [    9.582133] ------------[ cut here ]------------
-> [    9.582137] alloc_tag was not set
->
-> ...
->
+
+> On Apr 1, 2026, at 04:42, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 3/31/26 13:37, Muchun Song wrote:
+>> sparse_init_nid() is careful to leave alone every section whose =
+vmemmap
+>> has already been set up by sparse_vmemmap_init_nid_early(); it only
+>> clears section_mem_map for the rest:
+>>=20
+>>        if (!preinited_vmemmap_section(ms))
+>>                ms->section_mem_map =3D 0;
+>>=20
+>> A leftover line after that conditional block
+>>=20
+>>        ms->section_mem_map =3D 0;
+>>=20
+>> was supposed to be deleted but was missed in the failure path, =
+causing the
+>> field to be overwritten for all sections when memory allocation =
+fails,
+>> effectively destroying the pre-initialization check.
+>>=20
+>> Drop the stray assignment so that preinited sections retain their
+>> already valid state.
+>>=20
+>> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section =
+init at boot")
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/sparse.c | 1 -
+>> 1 file changed, 1 deletion(-)
+>>=20
+>> diff --git a/mm/sparse.c b/mm/sparse.c
+>> index c2eb36bfb86d..3a14b733bf71 100644
+>> --- a/mm/sparse.c
+>> +++ b/mm/sparse.c
+>> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, =
+unsigned long pnum_begin,
+>> ms =3D __nr_to_section(pnum);
+>> if (!preinited_vmemmap_section(ms))
+>> ms->section_mem_map =3D 0;
+>> - ms->section_mem_map =3D 0;
+>=20
+>=20
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Thanks.
 
-> v4: Fix sparse warnings by changing the typedef from a function pointer
->     type to a function type, and placing __rcu before the pointer
->     declarator. Use RCU_INITIALIZER() for static initialization.
->     Closes: https://lore.kernel.org/oe-kbuild-all/202603291211.YhY0R0se-lkp@intel.com/
+>=20
+> I have some cleanup patches lying around that cleanup that code =
+heavily.
+> I think I get rid of this questionable "failed to allocate" case =
+entirely.
 
-fwiw, here's the delta relative to v3:
+It's truly a coincidence =E2=80=94 I also have a piece of code locally
+that does something similar. Since allocation failure would also
+affect subsequent startup processes, I simply made it panic when
+allocation fails.
 
+    mm: panic on memory allocation failure in sparse_init_nid()
 
---- a/lib/alloc_tag.c~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization-v4
-+++ a/lib/alloc_tag.c
-@@ -800,13 +800,13 @@ static void __init __alloc_tag_add_early
- 	early_pfns[old_idx] = pfn;
- }
- 
--typedef void (*alloc_tag_add_func)(unsigned long pfn);
--static alloc_tag_add_func __rcu alloc_tag_add_early_pfn_ptr __refdata =
--		__alloc_tag_add_early_pfn;
-+typedef void alloc_tag_add_func(unsigned long pfn);
-+static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
-+	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
- 
- void alloc_tag_add_early_pfn(unsigned long pfn)
+    When vmemmap pages allocation or usemap allocation fails, =
+sparse_init_nid()
+    currently only marks the corresponding section as non-present. =
+However,
+    subsequent code like memmap_init() iterating over PFNs does not =
+check for
+    non-present sections, leading to invalid memory access (additional,
+    subsection_map_init() accessing the unallocated usemap as well).
+
+    It is complex to audit and fix all boot-time PFN iterators to handle =
+these
+    partially initialized sections correctly. Since vmemmap and usemap =
+allocation
+    failures are extremely rare during early boot, the more appropriate =
+approach
+    is to expose the problem as early as possible.
+
+    Therefore, use BUG_ON() to panic immediately if allocation fails, =
+instead of
+    attempting a partial recovery that leads to obscure crashes later.
+
+    Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 1b017026925e..bb0b86a4f3ef 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -354,19 +354,14 @@ static void __init sparse_init_nid(int nid, =
+unsigned long pnum_begin,
+                                   unsigned long map_count)
  {
--	alloc_tag_add_func alloc_tag_add;
-+	alloc_tag_add_func *alloc_tag_add;
- 
- 	if (static_key_enabled(&mem_profiling_compressed))
- 		return;
-_
+        unsigned long pnum;
+-       struct page *map;
+-       struct mem_section *ms;
+-
+-       if (sparse_usage_init(nid, map_count)) {
+-               pr_err("%s: node[%d] usemap allocation failed", =
+__func__, nid);
+-               goto failed;
+-       }
+
++       BUG_ON(sparse_usage_init(nid, map_count));
+        sparse_buffer_init(map_count * section_map_size(), nid);
+
+        sparse_vmemmap_init_nid_early(nid);
+
+        for_each_present_section_nr(pnum_begin, pnum) {
++               struct mem_section *ms;
+                unsigned long pfn =3D section_nr_to_pfn(pnum);
+
+                if (pnum >=3D pnum_end)
+@@ -374,16 +369,11 @@ static void __init sparse_init_nid(int nid, =
+unsigned long pnum_begin,
+
+                ms =3D __nr_to_section(pnum);
+                if (!preinited_vmemmap_section(ms)) {
++                       struct page *map;
++
+                        map =3D __populate_section_memmap(pfn, =
+PAGES_PER_SECTION,
+-                                       nid, NULL, NULL);
+-                       if (!map) {
+-                               pr_err("%s: node[%d] memory map backing =
+failed. Some memory will not be available.",
+-                                      __func__, nid);
+-                               pnum_begin =3D pnum;
+-                               sparse_usage_fini();
+-                               sparse_buffer_fini();
+-                               goto failed;
+-                       }
++                                                       nid, NULL, =
+NULL);
++                       BUG_ON(!map);
+                        =
+memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct =
+page),
+                                                           PAGE_SIZE));
+                        sparse_init_early_section(nid, map, pnum, 0);
+@@ -391,19 +381,6 @@ static void __init sparse_init_nid(int nid, =
+unsigned long pnum_begin,
+        }
+        sparse_usage_fini();
+        sparse_buffer_fini();
+-       return;
+-failed:
+-       /*
+-        * We failed to allocate, mark all the following pnums as not =
+present,
+-        * except the ones already initialized earlier.
+-        */
+-       for_each_present_section_nr(pnum_begin, pnum) {
+-               if (pnum >=3D pnum_end)
+-                       break;
+-               ms =3D __nr_to_section(pnum);
+-               if (!preinited_vmemmap_section(ms))
+-                       ms->section_mem_map =3D 0;
+-       }
+ }
+
+ /*
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
 
 
