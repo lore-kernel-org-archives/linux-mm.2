@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C6A3107637E
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC202107637E
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C57906B0088; Wed,  1 Apr 2026 10:05:37 -0400 (EDT)
+	id 1F9236B008C; Wed,  1 Apr 2026 10:06:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09366B008A; Wed,  1 Apr 2026 10:05:37 -0400 (EDT)
+	id 1A9DB6B0092; Wed,  1 Apr 2026 10:06:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1EBF6B008C; Wed,  1 Apr 2026 10:05:37 -0400 (EDT)
+	id 0BFFF6B0093; Wed,  1 Apr 2026 10:06:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A0EF46B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:05:37 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 345B0E159E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:05:37 +0000 (UTC)
-X-FDA: 84610159914.09.2152F93
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF9496B008C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:06:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 865811A088D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:06:34 +0000 (UTC)
+X-FDA: 84610162308.29.593C890
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4A88E1A0002
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:05:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okgej+9y;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id A1A5810000F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:06:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rfcqm4bj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775052335;
+	s=arc-20220608; t=1775052392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZAj8fPYR8t9QC3/lrLGCsIwWdlo87Q2YfYvBoHcAo38=;
-	b=pROWFtoiIxS6VRVCkAm/Yb+4Td9SJJDdKAEwb/eitkoM5BzVnfQFgOgHhizmzXOWhdoTe5
-	S1ENQ8tQqlLxdov5wZxTF7tH0MUj1M7NqmZXjrsnwR4LDObM1ziHrF9A4mMtINd9zJ7JqN
-	gt5e6ziTIt1AycEMe0YcQgarcFQ8Zsg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okgej+9y;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775052335; a=rsa-sha256;
+	bh=G3/rH5uo+g8sJkjRkUiHeu5NNZhWP1osqYPs+dik3iU=;
+	b=4ezZoI6AiBnihiTqjEjxjIxC5NtL3i2ITrZ1M0FbJDTJwuF02FzFUl4lDs+oT9OJ2FkxSr
+	yKQPvxjCpvvSZ3OdJY6w3krfXGfd9STdjsOn0TJR6mPYeHfvfluih08p9/rf0VkPKnYLaF
+	5o3Je7GgQ8C+Q032zl5FjiA13BPuCX8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775052392; a=rsa-sha256;
 	cv=none;
-	b=zZx3Va+t9NBfeSceC9rBc/rw4tcm6SGJNykT/xs8coETr65p1o816P/RM5fK1NvcPfjADd
-	eLOjIji/6f0NE9q6Fjdwg6Si6tCQeeNEfke9sTo4AtgCJ07ZWkEO3ZSh/bX78YInowntJo
-	6TRyvNjKKixc1YMPwvrMOzex5MM7MuQ=
+	b=wdXE+YViI0ere4ai2eS6eWRKsuUn6awR8MMF4GPlQfkrS6InEbJ1wP3G521rzxXh3M1gLW
+	YBlozpovwZ+FZ5C1H3/hJbrgX2h8dzyO6clb/jQ0dNB1JcpHu1kcFNzeL4g9BkYdQNJmVI
+	c8M8mlVsK/sgfUenvy1Lfi5XUUBsmzI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rfcqm4bj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D818600C4;
-	Wed,  1 Apr 2026 14:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9A4C4CEF7;
-	Wed,  1 Apr 2026 14:05:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17396600C4;
+	Wed,  1 Apr 2026 14:06:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BEFC4CEF7;
+	Wed,  1 Apr 2026 14:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775052334;
-	bh=18eng7a3PN7FjoM6NdQpFNVTtE1OZpCZ4zH2G0dIZ+o=;
+	s=k20201202; t=1775052391;
+	bh=cxVnBzqdjqFWTZAgsZ5um3GJjilJSoMxDnvtKIE779o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=okgej+9yHEHuMp5ikbtmmnewWHiF7KMMZ4fM8OVjC8xqDnhI0DkQosCa2KAIvYo29
-	 pHkodWFZQ5ir9UOmI3Dj3wNHtFn/l3E5JgiM229RpZuVfYkdRYCO0mXrWpRScT7OU0
-	 eCb5drED+kOCKwubCdvl8PjwMbYHqOXezSm8p6+PuKf60TsitaPP0NtmPzXEiupv88
-	 qLL7xbEGPMIbdVAoMUNV5IugM+UjCPHp9kq4RMsVMgMSq7ihVTY2ICGerKo3GB2UMn
-	 kxCwgbRlSHxIi7yJgYwylVsITdutYEs8dsZZdstaqrLM8DWIdzXNMASwTD2i5kGmmp
-	 NFKD2rRZk/mCA==
-Message-ID: <7bc24281-8676-481b-8c61-1c5cb71068f3@kernel.org>
-Date: Wed, 1 Apr 2026 16:05:28 +0200
+	b=Rfcqm4bj/SYJzxPuxmgocTdUVdfpmEg/yKOuHcPtzZVp2bMAq8xAF5bgIXDyM2MHm
+	 7KBDBReICSpNTUhShYwpQWkVaoZJAVBKMsQe4MwT88U6rXFBygwZUu1iCVG2/tOVPe
+	 jPA54OIonFN9Q+YD06EL+0yejAZC8e7BzbHMQb6HEookQ799RrNNgJOesXHEzMG2qI
+	 RUTkU+e3CQMJABxd9HoKhURbhVLlyBY4P7m742XTuPI+E3Vr6/1RAzOEomVvf1KiMr
+	 HIwpalNO03k+QDegeJsYIm9l9SdaopRMNM1Ry1J8iF9v+MO7PTIutWe5orWFpeFkIL
+	 3+TAiAhoeGJDw==
+Message-ID: <30ab15c5-56c3-4855-914f-74ece8ac5ec5@kernel.org>
+Date: Wed, 1 Apr 2026 16:06:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/13] selftests/mm: fix failures and robustness
- improvements
-To: Andrew Morton <akpm@linux-foundation.org>,
- Sayali Patil <sayalip@linux.ibm.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Ritesh Harjani <ritesh.list@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+Subject: Re: [PATCH v3 02/13] selftests/mm: fix hugetlb pathname construction
+ in charge_reserved_hugetlb.sh
+To: Sayali Patil <sayalip@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
- Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org
+ Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 References: <cover.1774591179.git.sayalip@linux.ibm.com>
- <20260327111104.b8bc18be45172639f5b9226f@linux-foundation.org>
- <09104413-483f-4852-9d7e-71e0f86a1754@linux.ibm.com>
- <20260330151125.d0b6cbb24b273bc963b05116@linux-foundation.org>
+ <705e68507c9a0d20de835d53dd332eeda7dee772.1774591179.git.sayalip@linux.ibm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260330151125.d0b6cbb24b273bc963b05116@linux-foundation.org>
+In-Reply-To: <705e68507c9a0d20de835d53dd332eeda7dee772.1774591179.git.sayalip@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A1A5810000F
+X-Stat-Signature: ia7jsqupd3nn89hu1k5hx7d1aib9s67d
 X-Rspam-User: 
-X-Stat-Signature: i93gpwsfbnxhkgkaof93e5kaoaddfo7n
-X-Rspamd-Queue-Id: 4A88E1A0002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775052335-147165
-X-HE-Meta: U2FsdGVkX1+PieCxRQxnWSes4xyth/N2vRXeNp+ljEsdp2kBc8Ykfe2DUR5IdSHC4NRAZJiV+M5mmPKJixq6u4Q+JU89bWn3KOPiB6sRRxP+ueYM98hg94ZQq+I9gBD2ngIPQIRz9VktPjToXvF18AeWI5JrbwCAGfOEvnsmk3IQr/1qpW2xUq6nenjhMR/1k7EgoO9R0sBMCyoDsE+tT+zt9ms7iG0NLcbiv4OBGd6kIelGsIswRxFH3YjJjbbtYR+mcD4syWOo2wwrgCPjIZdgr9KiOQRVz1aqC0jrlVh/FEPDR9kSELi7ed5681s30/xDCxaG9lhjcMnAYheVcfLvAz1M7lf35vm+kpsJ2tEFg8UG1mSGkv7ZklBc+b/K7tzBfiovnPfKuq2qx3RWl8AIvSq/bT7oGz2/cANTwTT1yfJbyo+eldi9siv/oq6AqM2T/hDqrW8e4JK5GN/AX5cujyLfwipUgLyGY6Sa5eub+jIo4ihNyGTu/gH5PPIQfj6bFQyTBPyB0bT7KfHFuFcL47YjpLDlO12RH6D6vF02LCgcCVf30Od7a9MGnu0aa9iH+SnjFvsH310JrpKRXPGxJgJv+G1a5/cc9MFVBjCi3ovxO5WjB14ByrsvUWbbvSailtDJUTTX2IOUGekB57oaso0zJ1hvkXXZx81Y9QBG6CNZdkbQ0NrKD+fWQR9GchAxnrFM8nQBzWhDcyCbxDo/6O97VXq5AXOklqviwX2d7UQB4231R4BOJ4kkWfjrtWeWM9QiRvSV9II+1ArfiSqyXcWwmk++uYDhGAOfi12J8l109cxB8vprFGrHE3CPmQFkI6nbFrer9xVXx2ka6ZwRNYJoMlUL3KrMiIuoof0grjHXmHu0bsCc5AR+aVhvgc0dcGkCtBaQYHgGR77wtM68TcQNvBAH73pdPE6Bap/G4fvVW7qMUHeEmaxMo6sUyE/8RgrBqYzuNs+8QPw
- 4G1KNbLo
- rUdXJGr8vEchtkxOsgJfjov91CfUJqjojoOK81pRXwYvr/4TDXyuVwTsho055d/82OUsc/A21xuJEbTniLXodSBQJCJ8cJ3qMIEHXJ7O3irQspNmWNVVeq5OQ9tIypa1NAqnz9GpvCOgaDPiLBh30TCWFIOCP7gd8HlpzZ1mi3fAlY8CTs/LF8Vx7FGOd/EuVUYu6vDlP4/lmglh6MGof+tyJEOXaUJQs/ZlS7clRy5W/nCaEO4d+x0HDTnAwbGi9u9YoEzLEPp3Vvs9uidavBJuazxCY0OJAEFacFA3UeqbGCVWuKFZ2rUmAx9fIbbXVVbHLg78SvHYt2rgsO2CT7LYDwFDt70iJYStNWE0NqhIHPSSjY0qPcLZdI9HfdU8X0sEeNmDULyXk4HXy+x2KN2yEwUuW/oaDRaUAmTyHHf1gJt0/tYwr+uRrvY5UEcJQMUDwDqnncxEQ4CnDAFMTwRVUSTG6UZJWaoxg
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775052392-389917
+X-HE-Meta: U2FsdGVkX19OuWj9SLRoDWbxawX43Don11G1Sic2tYZdDp/s/v57asQ7Qd6mqdga5Tfkpf+OiktRXYoFyHLY8Ze3LYFmrSql1X9iuHufs7/tgGh2FAzv6quaIj0lS8REDI7XK5kBxby5X9kClcvxozaB1WNBnkOdvlvCSsorUtyIo7IH7HQZVOJOk0sfKdZGExAYwbaP6hGZ/cH6XpR+GMjfTeqiM8Y/vYyJJoLLMW/fhVOJcNSuBEaC07bdLtyobTHMNYDIgUBFXseMEFM5Mfpj/gsxYKUo3g+CXXl9MYuLWIurgKE45Kx+j+dVWagiBblrhvKHqu4MCnCAAqls5b9Omw7Fb6m3m4E4bDzA6yCqjY6jCaKdoVeTE4P7iFc80t4w+x4ekA0krgZ15jsS1AJ7ipP0LsDllCtCJxCgxIyvmgWgHHRrNpvvctaaw8ShG7OkvHpy72ocKMOmgr1Gxve19J2FMMLtCOlczDYK/eteMFULdMRH4+uImKqdhXHbXa1SMsNp3b5Osh6klLzhQ1NHSzm9wmEsqSe0i54sFHgDXrQMlWAcw/K0bWE7TKobh8iVYLO6/2SPyO4KL+GY6Jbm2EmWGBYteKQz8Gmy+pjVH422N1rEBYhLISnjy7j+33ofwOavQOU+gWZQXrRA1N2iu20uwDhU+/D8sjsUyzZY6io2RL9syLLQtVUfCtLVYAfw4qnS7iCW1A7aeas9PxeaIBKjwlzB7aflbX/HCGibhvtbW/9jUFgMMOTjcQMqq68LF8QlUQMebZYT2ammrytfFnuAHpg21HvE5SKK8MoNFy+JTPDinItJNaU9URKvdXqyIAwjAwrdxMrOYTej4gAxe1wH+wjXGC/bgKYYtJdTS4r+5jqt6N6xsb5Qsu3et58Ftw/R0Ic0pXwz1H5UB+N0PTj0fuz35/e31++re+Z07YiNKoj80EeW8Qj4G65atzX2h7HRBG3Qx1/TDaw
+ jUhkGhvT
+ nI7l/trZrTWZjZTRXX56QLSrSewaYSPTt+jZwat5dYLZLwUUwB68C1QvnBQBFoaWGlmLXFaLjzBzDNXCBbIlwDj6raExyGpdEY/s4gtYzP/jU33onEyhCHkmmGmu2U/ikKC+jsKZgYBppZo380RApVJ0zGH9HnD8KgwAYPZmBrCtGZb6KGt0R8NLyRwykH9QLo3hPWjKgQg4PCMocvoka8uBennuE0JRi4HddTXl4dYjRMku9qUrXJNV+bAN4aPchIIie679aYhnFn0lQFfp2q87tn3h2BWSq+Hj86MK/IDWwwRxJlOXQvU9RIi38r3vOG3x28aV23TZMQPGI/zDnPmbhJ803hCizamnndq4hO/+yTFZxrZCxX7HthJZMCEs7tA9OLWf83/PrvOIX8+10JFW9Jy0kBseifmb/QP9kcAJTZgQrfgSEV1pBGBhHxXf2Mzfa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,34 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 00:11, Andrew Morton wrote:
-> On Mon, 30 Mar 2026 11:27:04 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
+On 3/27/26 08:15, Sayali Patil wrote:
+> The charge_reserved_hugetlb.sh script assumes hugetlb cgroup memory
+> interface file names use the "<size>MB" format
+> (e.g. hugetlb.1024MB.current).
+> This assumption breaks on systems with larger huge pages such as 1GB,
+> where the kernel exposes normalized units:
+>     hugetlb.1GB.current
+>     hugetlb.1GB.max
+>     hugetlb.1GB.rsvd.max
+>     ...
 > 
->>> I don't want to risk breaking selftests so I'll set v3 aside until
->>> you're confident we should proceed.
->>>
->>> Thanks.
->>
->> This line continuation pattern has been used in selftests for quite some 
->> time. For example, a similar usage exists in 
->> |charge_reserved_hugetlb.sh|, introduced here:
->> https://lore.kernel.org/all/20200211213128.73302-8-almasrymina@google.com/T/#u
->> <https://lore.kernel.org/all/20200211213128.73302-8-almasrymina@google.com/T/#u>
->>
->>   echo "$reservation_limit" > \
->>      $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
->>
->> In this case, it was primarily used to keep line length within 100 
->> characters. I’ve tested the script  and it behaved as expected.
+> As a result, the script attempts to access files like
+> hugetlb.1024MB.current, which do not exist when the kernel reports the
+> size in GB.
 > 
-> Great, thanks for checking.
+> Normalize the huge page size and construct the pathname using the
+> appropriate unit (MB or GB), matching the hugetlb controller naming.
 > 
-> Series is nicely reviewed and an earlier version spent time in mm.git. 
-> And the bar tends to be lower for selftests.  So I *could* break my rule
-> (https://lkml.kernel.org/r/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org)
-> but would prefer not.  What do others think?
+> Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
+> Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
 
-I guess it doesn't really hurt to take this now.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
