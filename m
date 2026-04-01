@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A21D35159
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B39D35157
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:24:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770E26B0005; Wed,  1 Apr 2026 04:23:58 -0400 (EDT)
+	id 32BC46B0005; Wed,  1 Apr 2026 04:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FA736B0088; Wed,  1 Apr 2026 04:23:58 -0400 (EDT)
+	id 2B51C6B0088; Wed,  1 Apr 2026 04:24:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C1D06B0089; Wed,  1 Apr 2026 04:23:58 -0400 (EDT)
+	id 1A4696B0089; Wed,  1 Apr 2026 04:24:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45EFC6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:23:58 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5C9E16070D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:23:57 +0000 (UTC)
-X-FDA: 84609298914.21.EF4B101
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1A1931A0002
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:23:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MasF9480;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 04D446B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:24:44 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 914308C209
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:24:43 +0000 (UTC)
+X-FDA: 84609300846.07.EA62BE9
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B091320004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:24:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ILT4qvGp;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775031836;
+	s=arc-20220608; t=1775031881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+tahSagRy2rxRu2goCN+5yCBu9Tsu0dbKR4tdDc4VDo=;
-	b=3Upp1Risqg1s3ioxk0ZocFqR7jTpCv7+o471xC0gRdldkhQ+NlkoXkOUlxHFz0AJPEI74S
-	TYqk4jf40/1m7X6rQMAxjOcPTd8VEiWXJxCkyaE13Io3xPkNX280daVcii4eWY9ryutz1t
-	VqXL1NwC57q9Qq0UMnNQGKwScOrhLbY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775031836; a=rsa-sha256;
+	bh=Oi8b6kNbARyFvnrDLDVCGkFE4VG0ORxMai3aXTvGZjA=;
+	b=lqy3qY13cYndSXCBBPW0fSsVqp02Bo+VBBJ7ibZ5WbZMFGAJMfwFa9mT+8CTCeW/stPn1W
+	aJhZLm55qti6SFggaZhgOhVSTHJjDPsTrrm49QxyyBMLWVtCBXugclMtHAyAVuHglEvYj2
+	0KKEJH86bq8WFYVKL6s2Ki+sKMDbKTU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775031881; a=rsa-sha256;
 	cv=none;
-	b=tD371LJqE/3KfTDBlqCIn+PMgsziO1hQHCRsMLxcBAG42TeTCOPZk5S4C19AUwE8tNCkNQ
-	uDwUsrNXmT6jL40p47mt6gFSh1wcrFmgAXndHGoZ3R29Bt6/UlkXoD2RlW6EBfnj8YbmOs
-	UirXBdJWGhWVq5qetMJu3k94/AmXb64=
+	b=Pa0b4EkaMHn2Te4vf2jatoXYXc53Uw3u291IC4pFO8Spqy2Yp3p/EjpRBE5nzYt1NbS62V
+	x8dNL4fOTpKY3cz0sTGKO7fPUcGW8oAuLqJF0PjiWbWHrvy+KLgTdQNtasnC3qcL1Tfhwb
+	DkHbsRpXcZWkElBKx2O83blZsb35wtQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MasF9480;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ILT4qvGp;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ab46931cf1so4655855ad.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 01:23:55 -0700 (PDT)
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82c68339cf0so430542b3a.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 01:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775031835; x=1775636635; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1775031880; x=1775636680; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+tahSagRy2rxRu2goCN+5yCBu9Tsu0dbKR4tdDc4VDo=;
-        b=MasF9480LhcDTmxPy2R6SVgaJDERBAkaYT1wWekcb3MvDsibivmmJVr+T66HcDG+cx
-         oTvtLOKN85vqCRBjS/wTLnqYNaBdesoigVYlIbuBuAKDvvmZ1YL9gbss4f1Ms4P/t+C/
-         5BRoVzYoyGtnQSjD+GzHi8xvvXx8TwjlORFM0+7kcLatAyr9TCuCVzQt2oUnqUXs3CL0
-         B5hJI7wZNSNYMrygnv8AWiKvd0IhZ4cp0CXFF6Ace1ClyU99IeXAwhi7QfFeCGKiS/zK
-         8Ufcx3UEPXjhJKcT2RLnH/QTP7u2F1o+I4RbRy76TOrOMXNskiKeESCHzhuWG8rKKsDq
-         qKXQ==
+        bh=Oi8b6kNbARyFvnrDLDVCGkFE4VG0ORxMai3aXTvGZjA=;
+        b=ILT4qvGpQoNpniQxDHk0ZMpFDEI1HV/TOaRawdgW5I5zlrvcXbZaMP367AWTqXsVEQ
+         g8lNqDGNgOl3knd0dS/D9doEOBAiHb9m2y90STufA4h3nKNCoFlnTiUlTI9xHJH1ppaa
+         jDlehDTGrvHM0tG5g7++Cy7A+hGUsXjt+JTF5pRmzUbw/QIkYDcRWI4nWSmE/nsK1yfj
+         MZ31FDDU33/UK1yEtp7D+8mfyrveYDmkBcSRUvLjI7OCPlUCp5T6mVODaXAIhB8tvhwP
+         CwBgW1xlERwdXMxjCYpNlPPYzIyBguwA6sf1+Q4Ve9D4QoG/CuffbYEJnatJdjAJDCS+
+         36bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775031835; x=1775636635;
+        d=1e100.net; s=20251104; t=1775031880; x=1775636680;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+tahSagRy2rxRu2goCN+5yCBu9Tsu0dbKR4tdDc4VDo=;
-        b=F0SiiJSxS2bh1RXQs0zSelrNoO6walyzx0mGrZSuomfGDXn8skRrQu/xlAnJ2C56Wg
-         3c9vpM/cBALeCvZNeaIw5DYB0ig+9NkgjOkDlalV3pnFxgfiU+/UFCyuYpknKFwpIC10
-         73ySoTOt16gwLvBmNb1xY0y1VENunCmUZ2KkJj02LgVCnd6tSYCLrmpbshxREN+434IR
-         dGr+pOta+THWNvDpZMGirCRC4uzyc7k8nGDSTNQHf7jmHpoPNfs/l1O7ADQEED3LFa5/
-         KiYKJRGEP+ccmyZRkAIvYuiEiO1RxB0R3Glo/vIBN2q4fAiD90gmTHRPB+EfoAKDJR4C
-         XRYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVgKODswKzHHW98+lC2h+jQrL84GYGRjYtBVAkm33dXZyHk/5Jd4nXvi/x2xPs2EfSl83c4ww59Q==@kvack.org
-X-Gm-Message-State: AOJu0YxCPd4CmU/yKTyHGW0hKSh25KSnnEuA5AoeyFbemvr1VHJq1+2d
-	IRTCFSsxAu9Q+5oz9+cjt23ee92GnCEoGwipeOBVRxmvPTuIxvWB7CkP
-X-Gm-Gg: ATEYQzwlPBjJuXkjfrN+QN5g++4jOyXZmlGYiqU8t10rgvqTAV1vXroNS5Pwp6CLJcP
-	9izoTnINxd/8+4S9Zj/B8Nx1xNPR6l+3ibp0X/kJryjpurz0rPBFeC398C3O/64Ku7rKhNZeyKh
-	+3i18/TTV8WvGR9S0r5mA2IcQ4RAhJ9SD8y/hJmgkZR/EYaSwBYTpTEU2z0Ta5F5wp2QkxfpVyI
-	7zj2RYA17ZREpYJAUWDvqMt/+GC8o1lMQChjhh7qko67/bmXb03wJE7p6A3HPwtWyRU9cKV/luD
-	/JflmtDwBcBu4kmfrTD/1h8C/EySLBDVXDucgkzlm4MOYEYBjGG0TwXGTseZssdOJR7Uyk4P/oA
-	DLV6+AEe0bhY11mSP7X7eKEob00HZeTnHyTehjMa+pc41cb1U4gN/TWaa6MxQCcFYvl3eb1vXDb
-	eg5hzD1nx64pe3qlsDE8ZlvPpG83VrfYKUDU27dQB/MvYM8k3y+Iw=
-X-Received: by 2002:a17:902:e54f:b0:2b2:5168:2f82 with SMTP id d9443c01a7336-2b25ef80e90mr62217495ad.24.1775031834583;
-        Wed, 01 Apr 2026 01:23:54 -0700 (PDT)
+        bh=Oi8b6kNbARyFvnrDLDVCGkFE4VG0ORxMai3aXTvGZjA=;
+        b=DEopGZejijaviTFJniQ/OkWVWKAeK60QieAIPXw23oTmRXH9KoCxZHs/SuNTfua0c3
+         q/wFOq2j8s3nVPxu7m9BzQMq4Z7gQNz2/pP8U1r1WceO10kPapKP38E1cixrZ8pSt13n
+         3dsd8ZfP9Y0yiaCNeCR6K/JwzVsdyKobPNT1Fljf8eGewnsPVgzKIbCDuTKZKFaZ5Vw2
+         97gAQr2CGFAI5biqFMVt0Ih7fZnRg9SXx+3hhpFq25LNIcehbGLy9sexF56h/OZeOYYL
+         7BlymdvGfkdQHg3KjQrsOwlK6/X++KRT8VzYX0NYBKq5CKfBxdkZmtpJAEtDenVCHbdx
+         sZAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0x7ZMIMkk6+FD6FRFJiY/M0H8lvIcUk66pI1zXcVDY6iCLnbU9xTBGsmNAXy2Dt7cXRCTHxuKTw==@kvack.org
+X-Gm-Message-State: AOJu0YzdrpDuyale1mZ+uUoHvhRDMkVYtd7YMD08HVmF/qGDnBUP+oq/
+	EtKzOKXSabENm7KlL8draDThuApx0YAWSGwc+Cee342PrRoafMY7Qawxu3tAGA==
+X-Gm-Gg: ATEYQzyqKWYARRHbVjKZiL0wzAM3WbGqCR26Smn4YuAE+Gp2pGjxDeVlKOjixyaa4bj
+	jTnW6fgO3eJLR852BOw4onb6fq/rGqUTlHAWi0yJqXWJo1ZIp1gJJQIn6JecE2pkpZiNQua52fl
+	hV7hlMOurShrKIpIsjFwB1Nun5uy0AYeueReOjk/qnK4An0IGAglmevYmJJa6WagnU2oMnRimwf
+	wc5a77iNRxd/SB1aBjMgNscCsqv8lkcN+Cq24egQ2FMVQgx+ydv5UzPGQ24iD43zZaWAjDYuTmb
+	JzXJGTPNatXB8NUE2/C10K0GkPcBIjj3/sP8AzyQ0HsdCanS4Ip747gdr9jMzefm/TSSqTwzJJL
+	zDncGSb15/wDBxU4CChx2q5QFHaynuwnY61Q1LdV6QJVGhtwF3uuAXpkSDOlVHbchTy+yfTreG3
+	tgLyp+XOl5iZ2CqT8w9m28b3Pt+XStZsTsg0K5DDjRbEK/iGr1STjD9rwPXso+Lw==
+X-Received: by 2002:a05:6a00:4188:b0:82a:7918:7f4b with SMTP id d2e1a72fcca58-82cd66c574dmr5739470b3a.34.1775031880237;
+        Wed, 01 Apr 2026 01:24:40 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24ddc0afbsm142463115ad.64.2026.04.01.01.23.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cec36da5fsm2597927b3a.2.2026.04.01.01.24.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 01:23:54 -0700 (PDT)
+        Wed, 01 Apr 2026 01:24:39 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
 Cc: aethernet65535@gmail.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
 Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
-Date: Wed,  1 Apr 2026 16:23:54 +0800
-Message-ID: <20260401082354.12467-1-aethernet65535@gmail.com>
+Date: Wed,  1 Apr 2026 16:24:39 +0800
+Message-ID: <20260401082439.12612-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260401002918.85255-1-sj@kernel.org>
-References: <20260401002918.85255-1-sj@kernel.org>
+In-Reply-To: <20260401004400.85613-1-sj@kernel.org>
+References: <20260401004400.85613-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A1931A0002
-X-Stat-Signature: 8oo5qnibfxa4ar9jfutfogp5eiiqw4qd
+X-Rspamd-Queue-Id: B091320004
+X-Stat-Signature: xcqbubirjkb74q4aqmft3tcz1pyk3bft
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775031835-690568
-X-HE-Meta: U2FsdGVkX19LK4yeSjOqoVeYRSG0pbJNkorFAqqBREeFmlXVoYygERmOUO4ww8fPHraxdtwuU/ZDH5kWfmfhs+fAqqxWnYXc/tKTAHqiaF+p1l4y26kVuYBeod3EqbGMH7K0rmxlEfLb3HQ7ChmbTM1eUuIDI2OiQVR2cibjY7sMEDiXv5aLC3POey/UUgms5qUOFjA9ONAXoHvxpF0fGRx1zSDAovG61GHUiC8eFskXHTiyfGQaFW/05kZ5AGUHA3ikC0t+dWGCViKkpkGOc744jxfxGhuhsiF2TCImrbGexYeUzP+eSC1IogXTlDfrccukAmaM8iyNafOAE914CdKP1/vdqCRsiTwXmmn+IM9uq813asZCPOwY1ITuLbV0RTFAJf+VoLx4GF91J/K0IJN8NuVVBz8CQCm4GEBe8RKrSA0X5bj3SQItSGAhH9qJ2Q3fD38bcjHwY3c3hns5cGTPZVLT9rMAeM8Yub9taULz7CQcI3Pdbp8fQzAxLfBJNIpzJaNDHZIjl2ntoj4k44UqfIiGXW5ZHPi//tA1jMEH/BeKbRTgr2FrREeCrtLspvmsSXF0htqgV7BPfin0DaUayHKDf26HdN22WmY0kx72uBeSrBtho5XxSgAL2DikP7fitMocnDHpSqlD4mRpkgXo4YKAQuPJ+rf0UPeV8JDSzZd9y7mGxqbPmBKgyyxQ0TrhH5XU7jlxN8GDgg1dM0wG/gyn7VQx99+t0FITwmoy0njCNQqDUuQzplXilPtoC/Ht1Z+wsa3NRxU+cyiiyJXbZ50x3maCwsvIeokxGH/A+IJfbRXva7/hZCTisQAtQdjct89APLZ5PcUKDAA+cEL21hKA6hBOzbmV4arrd6sZYC8uX8WSV1iFhYqI+dnVWJ9jJzhFsubmHPXMPbssKy6QlDrJE2sIWWuO9InY7JfTFNJhPdrD8sbqwjF5Tjp7yHV7BHUOx4Hp+MKCbBU
- oQuVKck2
- 7hYTCpfHcCbdcsUZuEU24JwCkFGvSyAngP/iAgBLRKWD8987Bfm2UsR6TLJyZrQkx8L20UqU2BjnkeHTv6T6rGYSEcL9z2ufzLqErpETinwFLmieV4wvPEJiliYZtXA6c5wiKV0mlE7J23B8zLDWSF+sYpv5XYyEcc2ANUhwYqw814cKJ/Li39ePNIMr5rBoEP4FJZOZ9/GSJnd+zHXP0Uo5YLxCyInfUiHlZkvxhw5aXknAfOrJyTOtLqoYNx/8PXVMmuZWGYKghxZJC9qYpOlE/CRGx0IB58qDNTBD6vJMpEGv3P8CYh4lpKU5zxdafIWRpDL+rWLFR+B2lpJdvpDW0PH4NolFfU86gTyYx2QYTFd36nSwTXmzT/lbJsKQMNyRn5nOSehFtUPjM9BnzGIyuUkAzi/Ca65L+nQpdaeHPiqq9wD9ZAehtQaGvTN6pOizb
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775031881-333757
+X-HE-Meta: U2FsdGVkX18FFL6JgLy7j/LrR1lgea79vt5fkzCnq67VsqzFBg3M3AfVkPJakQMxWG9k3mbuQGWktdSo7BGh5kysvMy7yRwVll80hr+CJv1dk+FCM2BaAGHpeGZoCd9tcDThKOdlySODgDVsJhKG5NfsvbaI3yN0poCROLH8yU6ycC9vlEGZQoCKgvEwQouDBYf0bWSb0n5IzdtZLKGARS0+g1ZudQ7QQmTeFS1qoVbfdd4EB68nGA+47MY41cyJFei3ZqdkNmoE4zS8dZyqmg5uD12eaTQkx3C6axudkXaLDVlkeNwrZ/rcelvsCy//kDm13lSZZrooZzRrDi/HPw7QEdeZjgp2VRq5PjixlBw9SF8lXk4WWCSbF6PEUbm1Cwperx67fxTxIVWTYwjICb9exG9Ipr6CigpJYm3T9UrEyB20ScYHkyADWhz0huGWA444MrfrZnyMs7dduP1Wx+O8ieZPxhBp+aH5KjvmorSymdbdf/Fenbz0drv2kRIamhXJ1nv37yjR4SLxxaVzUWK62uKNUBUPklBA1P0NVKDF1W8hu9EzjOCT9O15ddHG6baV5U4YCWSXzHG5KF5u0eU5YZQ9lOuh4kSZQbAGYgHUq7ns+YZlGq35tQnncwlTQiNCL/ZcarFr/4E/suzf/bNPsl/APAaeO2SiWuhKOfT+U46ZJbb9VInZFuW6vGlHcnRnAmUlNOdiMZGO8hKyq3E2hCUeQARHlPtv+JpXjbiyfUPTV0gh7/aIzAmZt7uw6txFbLadCC2a0UqjxCBWr2wqkMvd3dmOlUTzEcuO2xayMfGBl0qifZYHUPUQQJtwMNn7qPKOuSJnauwwEcOVfF/yydzqs+IL6hgbJfhlWG4HnAmejaPFePsqskoFG+PMJ6nL3MGIC0tqAu2y/JaUZRy0QKdEEcyjpkWL/u0WVoau2R971C9H1w4xhYtxxiH32IYzlM/iqScDFVCiZg/
+ uhs3yLr0
+ TBavdjP94f4k5mbUPksu84Nb4OqgwqyOfREmGD6Kbtx5ZzLcafqM+WuMwKtaeXSO5E0aBRzo/Lf/qfomRjEMmwQ5Fidr/ywKKfUuih04lS5ACdPgrI9wDBi629MM4Cq7eOaB+X2QVfNA0jjrdZDxDtEBFuBL8Mifwv6wao0Pa+UqVf5aFwwb/8pqGF07h0iBfSUKxa7A1AxWAS31oXo8W8yxenmz3XAHgAb/gNcECbf3MpRTHHnDEXoTBNfV1PV3BvzFfKW4Q3LP+eVznsCJ46JpIoPYsRgSNCxB4mm3UH314PI+K0xC017tRkc7djEEMvLfv9mK1Z7ki8uyO6GuguM5g8NZosB+6zqQm4d4BmBh2dKUDIx5A0fbxrABlLL7cpK6wnUaPB6rYQd5U+tEpqCvPFpFxgDXRqVtJjrWEFLgVheSiQY/PGv5QqpRQTE0EZ3+Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,59 +118,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+On Tue, 31 Mar 2026 17:44:00 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-First of all, I apologize for not completely answering your question,
-and I will be more careful next time.
-
-On Tue, 31 Mar 2026 17:29:18 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> On Tue, 31 Mar 2026 14:58:36 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> On Wed,  1 Apr 2026 00:09:56 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> > Hi SeongJae,
-> > 
-> > On Mon, 30 Mar 2026 22:02:28 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > Nice catch!
-> > > 
-> > > I guess this can easily reproducible?  Sharing detailed reproduction steps
-> > > would be nice.
-> > 
-> > I will include the reproduction steps in the next version.
-> 
-> Please completely answer questions.  You didn't answer the first question.
-
-Yes, this issue is easily reproducible. Specifically, setting
-'addr_unit=3' and then 'commit_inputs=Y' triggers it. I will include the
-detailed reproduction steps in the next version's commit message.
-
 > > > [...]
-> > > This feels too much extension of core API for a problem that can more simply be
-> > > fixed.  Can't we detect the unexpected termination of kdamond from the modules
-> > > and update the paramter values accordingly?
+> > > Option 1: Introduce a generic termination callback
+> > > ==================================================
+> > > Add 'void *after_terminate_fn(void*)' and 'void *after_terminate_data'
+> > > to 'struct damon_ctx' or 'struct damon_operations'. While this extends
+> > > the Core API, it provides a clean notification mechanism. When kdamond
+> > > exits for any reason, the module can perform its own cleanup (e.g.,
+> > > resetting 'enabled' and 'kdamond_pid') within its own callback. This
+> > > keeps the core logic decoupled from module parameters.
+> 
+> Maybe this is the right long term direction.  But to my understanding the fix
+> should be backported to stable kernels.  Is that correct?  If so, I'd prefer
+> simple quick fix that can easily backported.
 
-Yes, we can detect it. From the module, we can check '!
-damon_is_running(ctx)' in conjunction with 'ctx->maybe_corrupted'. Since
-'maybe_corrupted' persists until the next initialization, it
-effectively indicates whether the kdamond terminated unexpectedly.
+I agree. While I hadn't initially considered backporting, this bug
+certainly warrants it. A simple and easily backportable fix should be
+our priority for now.
 
-> [...]
-> Please do not add '> ' to your reply.  This confuses me.  Also, again, please
-> completely answer questions.  You didn't answer if we can or cannot detect the
-> unexpected termination.
+> > > Option 2: On-demand state correction in the module
+> > > ==================================================
+> > > In damon_{lru_sort, reclaim}_enabled_store(), if damon_stop() fails, we
+> > > check is_kdamond_running(). If the kdamond is found to be terminated, we
+> > > forcibly reset 'enabled' and 'kdamond_pid'.
+> 
+> I think this can work, and simple.
+> 
+> > > 
+> > > My perspective
+> > > --------------
+> > > I personally prefer OPTION-1 because it ensures the sysfs state in
+> > > synchronized actively.
+> > > 
+> > > OPTION-2 is simpler and avoids API changes, but it's a "passive" fix
+> > > that only triggers when user atttempts a write operation. User might
+> > > still see inconsistent value until they try to interact with the module.
+> 
+> I agree your concern.
+> 
+> > > [...]
+> > 
+> > To avoid over-complicating the Core API (Option 1 or current approach),
+> > I've implemented a lightweight, on-demand synchronization mechanism in
+> > the module layer.
+> > 
+> > By overriding the '.get' operator of the 'enabled' parameter, we can
+> > detect if kdamond has terminated and reset the module-level state right
+> > before the user reads them.
+> > 
+> > Since sysfs parameter access is protected by 'kernel_param_lock', this
+> > approach is race-free and keeps the DAMON core decoupling intact.
+> > 
+> > Core Implementation:
+> > 
+> > 	if (enabled && !damon_is_running(ctx)) {
+> > 		enabled = false;
+> > 		kdamond_pid = -1;
+> > 	}
+> > 
+> > 	return param_get_bool(buffer, kp);
+> > 
+> > Test Log:
+> > 
+> >     # cd /sys/module/damon_lru_sort/parameters/
+> >     # echo Y > enabled 
+> >     # echo 3 > addr_unit 
+> >     # echo Y > commit_inputs 
+> >     # cat enabled 
+> >     N
+> >     # cat kdamond_pid 
+> >     -1
+> > 
+> > I think this approach is better than my previous OPTION-1 and OPTION-2.
+> > Does this looks good to you?
+> 
+> Looks not bad.  But, what if we read kdamond_pid before reading enabled?
 
-I'm very sorry for the formatting error. I accidentally miselected lines
-in my editor while batch-prepending "> " to the quoted text. I will be
-much more careful with my editor operations.
+You are right. To make this robust, I could apply similar '.get'
+overrides to 'kdamond_pid' as well. This ensures that reading either
+parameter would trigger the state synchronization.
 
-> I will reply to below in another reply, as you added a few things to that part,
-> while cutting the above part.  When you reply to your reply, please consider
-> keeping the previous reply part.  Then I can reply to your two mails at one
-> place.  That would help my life :)
+Would that be too heavy? Or do you think it's unnecessary?
 
-Understood! I will keep the previous context in my replies to make the
-discussion easier to follow and reply. Thank you for your patience and
-guidance!
+> Also, what if the user simply try writing N to enabled?  Wouldn't user still
+> see the partial-broken status?  So this doesn't seem gretly superior to the
+> option 2.
+
+In that case, we could modify the damon_{lru_sort, reclaim}
+_enabled_store(). Before processing the write, we check if kdamond is
+still alive. If it has terminated, we reset the 'enabled' and
+'kdamond_pid'.
+
+> Based on your above reproducer, I understand this issue happens by the
+> damon_commit_ctx() failure.  If it is not wrong, can't we catch the
+> damon_commit_ctx() failure from the calling place and make appropriate updates?
+
+Yes, we can. We could check 'ctx->maybe_corrupted' right after it
+returns, and reset 'enabled' and 'kdamond_pid' immediately if it's set.
+
+Do you think this approach is feasible?
 
 Best regards,
 Rui Yan
