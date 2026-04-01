@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8F1E10F9311
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 00:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2992D10F9314
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 00:59:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E9B06B0098; Tue, 31 Mar 2026 20:59:12 -0400 (EDT)
+	id 856686B0099; Tue, 31 Mar 2026 20:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C1796B0099; Tue, 31 Mar 2026 20:59:12 -0400 (EDT)
+	id 8347A6B009B; Tue, 31 Mar 2026 20:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FE596B009B; Tue, 31 Mar 2026 20:59:12 -0400 (EDT)
+	id 76B636B009D; Tue, 31 Mar 2026 20:59:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 217976B0098
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:59:12 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B96EF1604D6
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:59:11 +0000 (UTC)
-X-FDA: 84608178102.06.BE23FBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3211740011
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:59:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DpfeV6vm;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6790D6B0099
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:59:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DC871A0504
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:59:21 +0000 (UTC)
+X-FDA: 84608178522.19.7E9ECBF
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 33F3F20003
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:59:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xl8e16Nw;
+	spf=pass (imf03.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xl8e16Nw;
+	spf=pass (imf03.hostedemail.com: domain of liu.yun@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775005159; a=rsa-sha256;
+	cv=none;
+	b=1e20gM2CedCtec8hoNnxg8usrwT1SQjeokqEMTamp8BBRL/QAJZLI+2f1TRpVWWEjydvAx
+	x8rQBqeUgB/GjLcS1E5h7OTYBkxbrzvqghzZm8EEyzpCD40xa1rhrf4CuJSoPnbm3vGl8b
+	ajgnKFiqDZoXq4CKoCBVL5Rp8mDlQa8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775005150;
+	s=arc-20220608; t=1775005159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qZh2xaS9Yck5znRKt1VYVbeHm/1hhPVZnMV94M+ncGY=;
-	b=vey/FOvXfxw2H4q6RuRK0cBw0aeWIUR6uZAvogNlGQNX0099koJgK9EoV9osxJUSN6fL7F
-	7uUDjtuFGynuz7uWrHirt2uaN5pUyi1qDKNlQ6qgEXvMOxO0VqAXkd6SM3t+D21X5gBheJ
-	uaQFka6WxJJqmP8ST0DvOOnsR/d8bxg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DpfeV6vm;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775005150; a=rsa-sha256;
-	cv=none;
-	b=OGcRiB1745rWlrsDagLXMSWx43Y4GDrDE2/J7rQZ15YPiS+MuGEHfUM6wHiHDwjvcFK+6j
-	jX8dkW04tjVG11M0bkO56L306jyguKOcCHDMpQ1WFnmNSVS9zujFiuTZ1YZ1o/hZPXbuK5
-	YOQGySnEeT/DrC76KrmUIXAOh26gmPA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A91F6600C4;
-	Wed,  1 Apr 2026 00:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C6EC2BCB2;
-	Wed,  1 Apr 2026 00:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775005149;
-	bh=vlrwwARqJyOsWvsUI29VDJAa3DH8Mh38OVXxiNATEv8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpfeV6vmOJE94JC4YmwmGxhAYT13SF+q9j4PN0LkzexOkXJtKrfyIDylj1mXyh6dA
-	 T+QJlPEe3K96waxCJUkqkcODvzE4Ca2gwyac79tr+DMkwCkHWFYdjDjgn/5Fz7MGW9
-	 8DQEOrGJ9mGfP/gftMTI0F9169kOcNcynWBo9/J3lQnnpPdp1awpJJUs44XsdrX0OX
-	 2OJNzQhsKejzkJKbJ6zJjO5cL4I4ww7HiyIOe53jMmayWT0iYUYjhH77jrr5NcnJp6
-	 NTMgZI/C2YJkw4EhCQpvD9me7KMFxJvIdKvt827ncwxHqtM5PP/bxWZBsptDaGCZKn
-	 vyKpHddEzwVmA==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Tue, 31 Mar 2026 17:59:07 -0700
-Message-ID: <20260401005907.86002-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <4fe88a6b-2d9a-455b-9ab0-5ff153e0e88d@huawei-partners.com>
-References: 
+	bh=enPi/jTnBX40fIZnKN4ASLdfaf8/Sda6QK+UaHUO80c=;
+	b=j67+O7ziht/zoZSFfK1JTDYSVmnvGk6plJDzEHhP8LfIKIhQ4X67TFMQ5l+T/GL+5NknAg
+	pUzml3R09TuJGSHrEgfnpaSQoZI+S8+6zGp7S3Gwor1ghnB+LU7aSvuruDaekLg5mWBeEc
+	n1Bsl/z2oHa4JBmkiq0xUac1sioy/tY=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3211740011
-X-Stat-Signature: 1gpfuripyd179yf71sxnjgiykr38zdkm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775005157;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enPi/jTnBX40fIZnKN4ASLdfaf8/Sda6QK+UaHUO80c=;
+	b=xl8e16Nwx++zzLIJJx4lfsiW1ZlfZYmgPc4Plymf6QFTUcDhp8VOHx8MuWCO1AahnSm3aA
+	8wQcqySZYelDiv741yiatvcwusXHIrtsjF6hKBSddjrwrNKeV0hb66E6jL2aeW5BExrR1q
+	+2n1Aj/LupdEbRvan0ENHPwqd5up1UQ=
+Date: Wed, 01 Apr 2026 00:59:16 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jackie Liu" <liu.yun@linux.dev>
+Message-ID: <2d001f10532d0c89ab118c6734d91ba3a4b7d89f@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] mm/mempolicy: fix memory leak in
+ weighted_interleave_auto_store()
+To: "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>
+Cc: "Gregory Price" <gourry@gourry.net>, joshua.hahnjy@gmail.com,
+ linux-mm@kvack.org
+In-Reply-To: <20260331192105.109847-1-joshua.hahnjy@gmail.com>
+References: <20260331192105.109847-1-joshua.hahnjy@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 33F3F20003
+X-Stat-Signature: q76u6wf4omxsy54fr44gcc5ufm15mxed
 X-Rspam-User: 
-X-HE-Tag: 1775005150-744803
-X-HE-Meta: U2FsdGVkX19CG1mPiJYeWIDYVm2YJKvwjHWzR4+DBadBxLLKnnkOp3ZrcpepcZFKyb6odCtxE/mdbOM5j/lPxHk8vfSvyARBllyq375QRYoXldtOPMxUROmUMb3QdJYiWWoVTOOvTDzWUx0dM3ZzfTcQOR9ki3Kmv9xencc1PQ+SeHz6g5o6igkTQTlGovEQnQnwedXpDA1KgFgF91WthaCYW8o9qcNCJbMsXhRqs5scR0W4lhaHXZOzxD6yz4e55zHM+erHxB1eEqlrLvop7mL/hEIErjAo0Kt/rqF7vLW8t9pLK8mE/FXLmjRKVm/yx/ZWmt9eQHCmkZho6JK5IWfzbqqKRSrjcrE5JPoY928b0cvY4HdsWfeF0LVZQoFnnHERmoTwCwXMZCUurggq0WTh7yi2ru7tZXuB00jK6eZwEjzKFsIsfIPjNzbwnVZxyAtbsGtu4cZNWyiAJlPrICqO+UEt0iKSXIwb5zk4l9CLAqKQcqKp93y4DhNoquyEV635Y9kbggk2Ny5d7NnKVTXBEuhzaYZbeRcGEP4yR0JFL3/5xBI1eJhj6kWOszQryIWXtMN9ruGxyofhnDECVEojvY0QUt7TBFQ1xpzoe1drEuUN2QOK2kxRx7f1heqWrTyxIs6+l7gxTkPEtYel+H3WwnfrYgaGCcGWT/Ty3GHog3aiDiS8uCAoERAju+CaVyedgIbT9sLigEa8vU7Z7DYFuJK7uu5MRz7hVjQBAf5+8PLvjJ+v0NM4vgFvu8BAa84iboRdzOsf/zFZhpgVUP6bat8Mv7o7nuP0pZgX5cMm2btKeXaEm2h/M0INR/6UrkhPJcYkCfEsyCFGMUYmD0pkGx3kWehA/tVdghTrOWSFOChYoHe4/elUNK7LQEIH7+tJ6APTp+zUAVc0GeJnsTsVSDkXmSz38ygeGXrjuTv2If9aCGTDiKgSr2pwDeJoXN8D7o34qaGm9VijRdr
- TojKduFq
- sJ5K8N43wxFUn2dx5HPLIH9uu0WyFDKzPn2lYw9f37rVRdUgB1AQzAghD2iDiqCXz6MmypSiwvo4L2XQLQNSroBKd5MCsaRzgf0ZrNRZXjZRDsGc3rb8cwfoVX3qSG3J7Pvr66Lxn8QzH7YdzkSQ9XAFeX5YS2PDDhj9Q4kp9TTcrBh+oZhOgbgG4Pnt1+aaf4l5LM2dHGsaCgM4cYeEVSEy9dFmK/XDePWnjvaJFGqWQk7tXx8JRuYdAgunp++FTo7MPKOCG8CBQMD3tEDAmqelMb4BECB9lxno3yQttcWTW8y3T5DLkotA4hw==
+X-HE-Tag: 1775005158-165681
+X-HE-Meta: U2FsdGVkX1+QSbSemedyBvjsCf3ANPWwcR2Cz1dW1dHnT3XORC09m0+uNJQXj6xiAGihF0B1c3tuCNkDE8s22VzRwlK+2sxtEMjKMp+zOUPJmg9SlL7BuE1CIK/lb9fHrvniPw9pP6InClaX1rAcxnTqgrILjf88N4sfIgG06LssXTA0Idc1nZwkF1JIe41ctsB0E4aQHUzZXA/rMIOVYMxdIMLb4Q+D/2pjjbxHq97SBQ8DX1JJY2peYZBL/gdjjWvZsbpbWAfo0AngXa4VlWlokA5uK/fvpB+pKLAPHUbroBCucr8O6RhD9BfnSFFcifTpZWY5eyqxhZVkxekQ3b37VgDUgC7ZNBHf2nwRVysr9tro7uziA2yLDiuH/ry5Btcp1T++pKeOlYWn6MQLIDMO9T0cAf7OJx3KCfkDlk/HwsA08it4376zMwmbg7tYFcKgVk/SjFLJfDb9pfwKQRRyVFZI86L+RujYrelG+Hi3pBHhhz0xTLGl8/2LxI2L/MTXVMQId4UKq2fA7vcWRuStvrQ9k1FKGPVML3XeQ1K1Y4r41ThZE/zKNIrnfF4/mx23Fag8kGhSMbPZ8x8CJy0Npw4AlfHdWENmImZ+OgKRiI4yXzv1FdiskoS3TOUuHCQMpQV8HsRBuRMawXd2KGxBG15SQ99Ff2rFMPI3BnHuzOctEvccz1GOCishLZetfsBsjFCIM5aOkQOTu5v8AKRQDnjMXaGKEQ2FyuZIaVJ8lvHEsacT8+oB/AUB2JwNQVcNCtsSpg4cLqxuz3TNnziYgr+4JJyNpyi3is+GKz693Zdb+pZDZxAwMreFNH+9YB8gMzP72vt4C+p/F5Exjuslf2BN08R8u3v+y9chTwNTP7nQysqDmWsLW5GLQgi4ADW5oog9OpNXYnNVHeR4+g0OslKYZcQP9Fbp1VhCs8T7yekmjFrbfrCnkEQCONETxJfRdsxy51oSBW2oY5y
+ 7VMCjTHs
+ g2qpOS5xEmImk+Ja56udm19YMb5yUEBxI8uM8jgrlUBYcphISTzSKvQc12fTOPYd4W1VfvSOB5qGzmAdsUrHdl9STaU2Dl9r1mu300HFUfqKXXbkjo7pm3mRoDxwX4kFBb5NmBdES6BlAgfBhSP3Ckpllj8+bGRGb+GadPJTRksTZDax9IwC++sg0OWqeO8MEnh9KTNy9u9Ro/68izFZ5dtbQk7PcgBjHJMshs3qVolEh2ZQhNCg7+7q799+ewtI12VkE0NL4ZGh1TlrrnXtZVWS0Ttq2+kTVOYIqKXH3QPHKhCGr6LGPJ1YmyAeh4cW3gYqKp8R+XzxaprgTEQ1MqUSCdhjjIZkpuPLbNVLLAOf7HVq4/ECtvzWfAGpU7NhPAM87P08C8SiSU2e0aD17lP+WOuvOH+6HKVCCsimWc4pkFt69+fmKwzge7wKt8sUvtLVDxL4u49MExjwk21UTtxiwuZs0lLvagyWq6CDrT2/oa8NKilELRc8jZHpe89E8gy2k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,33 +91,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 18:15:50 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-
-> Hi SJ,
-> 
-> On 3/31/2026 4:31 AM, SeongJae Park wrote:
-[...]
-> Thanks for the review.
-
-Thank you for generously accepting my suggestions and answering questions, too.
-
-> 
-> I will run some more tests today. The test try to hit every row in the database,
-> which may not be realistic. Usually only some parts of the table are really hot.
-> I will change the test to get something closer to a normal distribution on the
-> table hit.
-
-Sounds good.  I wouldn't strongly request more detailed test results for this
-patch, though.  As the idea is solid, just the simple test showing the expected
-behavior is already good for me.  I'm rather bit concerned if you will go down
-to a rabbit hole while doing more tests.
-
-Nonetheless, if you want to make the commit message more complete, I have no
-reason to stop you, either :)
+2026=E5=B9=B44=E6=9C=881=E6=97=A5 03:21, "Joshua Hahn" <joshua.hahnjy@gma=
+il.com mailto:joshua.hahnjy@gmail.com?to=3D%22Joshua%20Hahn%22%20%3Cjoshu=
+a.hahnjy%40gmail.com%3E > =E5=86=99=E5=88=B0:
 
 
-Thanks,
-SJ
+>=20
+>=20On Tue, 31 Mar 2026 12:01:10 -0700 Andrew Morton <akpm@linux-foundati=
+on.org> wrote:
+>=20
+>=20>=20
+>=20> On Tue, 31 Mar 2026 12:53:40 -0400 Gregory Price <gourry@gourry.net=
+> wrote:
+> >=20=20
+>=20>  On Tue, Mar 31, 2026 at 06:07:40PM +0800, Jackie Liu wrote:
+> >  > From: Jackie Liu <liuyun01@kylinos.cn>
+> >  >=20
+>=20>  > Add the missing kfree(new_wi_state) when the auto mode is alread=
+y set
+> >  > to the requested value. When a user writes "false" to the auto sys=
+fs
+> >  > interface and the current mode is already manual (mode_auto =3D=3D=
+ false),
+> >  > the function returns early without freeing new_wi_state allocated =
+at
+> >  > the beginning of the function. This can be triggered repeatedly fr=
+om
+> >  > userspace, leaking memory on each write.
+> >  >=20
+>=20>  > Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tun=
+ing")
+> >  > Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+> >=20=20
+>=20>  ..
+> >=20
+>=20>  > --- a/mm/mempolicy.c
+> >  > +++ b/mm/mempolicy.c
+> >  > @@ -3713,6 +3713,7 @@ static ssize_t weighted_interleave_auto_stor=
+e(struct kobject *kobj,
+> >  > goto update_wi_state;
+> >  > if (input =3D=3D old_wi_state->mode_auto) {
+> >  > mutex_unlock(&wi_state_lock);
+> >  > + kfree(new_wi_state);
+> >  > return count;
+> >  > }
+> >  >=20
+>=20>=20=20
+>=20>  Thanks all.
+> >=20=20
+>=20>  Am I correct in believing that triggering this leak requires eleva=
+ted
+> >  privileges?
+> >=20
+>=20Hello Andrew, I hope you are doing well : -)
+>=20
+>=20Yes indeed, writing to the file requires elevated privileges.
+>=20
+>=20While going to check this out, however, I noticed a different bug whi=
+ch is
+> that the file is no longer called "auto", but called "__auto_type".
+> I suspected this was the result of a newly defined macro, and surely...
+> commit 6cce897a37dc "compiler_types.h: add "auto" as a macro for "__aut=
+o_type""
+> seems to have defined auto to always expand out to __auto_type.
+>=20
+>=20Of course for using the __ATTR(name, permissions, show, store) macro =
+this
+> is bad because writing "auto" there no longer works...
+>=20
+>=20I'll send up a quick fix to just manually write out the name instead.
+> Doing a quick grep for the pattern thankfully seems to only point to th=
+is.
+> I do think it is a bit weird to pass a raw, unquoted string into the ma=
+cro...
+>=20
+>=20>=20
+>=20> I'll add cc:stable to this and shall queue it for 7.1-rc1.=20
+>=20>  This means (I assume) that its entry into the -stable trees might =
+be a
+> >  little later than if we were to upstream it immediately.
+> >=20=20
+>=20>  AI review liked this patch but claims to have found another one:
+> >  https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.=
+dev
+> >=20
+>=20Sashiko seems to be correct here. Pretty neat that it was able to cat=
+ch
+> a related bug when analyzing the correctness of this fix!
 
-[...]
+Thank you. I quickly wrote a patch and sent it. Sashiko looks amazing.
+
+The link is https://lore.kernel.org/all/20260401005702.7096-1-liu.yun@lin=
+ux.dev/
+
+Please help me review it again.
+
+--=20
+Jackie=20Liu
+
+>=20
+>=20I can send up a fix for this one too, or leave it to you Jackie, whic=
+hever
+> you prefer! Just let me know : -) I'll go ahead and send a fix for the
+> naming issue though, since that one seems orthogonal to this.
+>=20
+>=20Thank you, and I hope you have a great day!
+> Joshua
+>
 
