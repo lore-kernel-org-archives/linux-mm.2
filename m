@@ -4,123 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AE74D3514A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4511D35157
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:49:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABE026B0005; Wed,  1 Apr 2026 03:48:02 -0400 (EDT)
+	id 591496B0005; Wed,  1 Apr 2026 03:49:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A20866B0088; Wed,  1 Apr 2026 03:48:02 -0400 (EDT)
+	id 540D76B0088; Wed,  1 Apr 2026 03:49:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C17A6B0089; Wed,  1 Apr 2026 03:48:02 -0400 (EDT)
+	id 4576D6B0089; Wed,  1 Apr 2026 03:49:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 746DB6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:48:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1A2D5160683
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:48:02 +0000 (UTC)
-X-FDA: 84609208404.26.C122FB6
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2AF92180005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:47:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eC7iT6qM;
-	spf=pass (imf24.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3061C6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:49:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDDF8BA5C1
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:49:39 +0000 (UTC)
+X-FDA: 84609212478.05.34E8E1F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0E9A01C0009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:49:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WVmXq4Md;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775029680;
+	s=arc-20220608; t=1775029778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-	b=eUyPWehTitAdVMc+EqzlBTPB3sJ3s6012YOkK/P4LQZO7eREZoyGyy52wGGdx68ZOQ6ogg
-	2zIoQ/VLpzXL7tUXD+SoydL+Nj5ScixXCipA/6qAa8+Ec7Oes1AsBoJLmqXWhP9zEsC/5w
-	8T73rJdPk0+jliJ6agBF8gwfHRcsb14=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eC7iT6qM;
-	spf=pass (imf24.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775029680; a=rsa-sha256;
+	bh=cRal5JpvGQi/Ec1z4Xph87pR/OtOOriU8MwfQlFWDg0=;
+	b=y7B2U7pEEbrCV0XjVzJkJtN5d+DSGIy/HqisYvF4YKrPqISzGQwgpRUAZKwWtr09aUM6gG
+	wNv1N4xn4E2ddRZUKs0RtghVREbWPGoPDjGc8Hm6VdVmyCyEdYRoPIdd/wdnC4ed0oNHJJ
+	88JmpsH4q7cLSM9AEQLUtzTdppWjwgU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775029778; a=rsa-sha256;
 	cv=none;
-	b=x4wVGgB688IHeU2uVjY9sA3opO8ffLFyYRtr4SEIFap6eDyBtIhQUnSZqyc6zo3vSkO5c+
-	xu5GWN6dKN8As2mbNk48acDaOQ0eibQh1lGXzi9b6IwNZI8niPrcVXn/IVPuOpjWu+f/az
-	FnZlunqF7iLTqYu8nayRKwU1s+nQZNw=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48558d6ef83so65415935e9.3
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 00:47:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775029678; x=1775634478; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-        b=eC7iT6qMJG8dQo88hghmGTB0ncwi7wxIH/4ouxqiZjvjo0+Vmf7B99GQS+JT1naxVL
-         75Y17CTNonHOOTsViWGZ2naJp5t9JoBp/PldHYAoeXM5vmZRO8TwWkTWZYBExJ95+cX0
-         i6eqJ7V6BtPxOW3s8l2+gRbgX6klpSVjTVGDV1l76kBS3Byo2SqXhTV55o6lkyTROAzT
-         WI4dQwUvRHhMtVKCkIdQZbu3jbJ2rBqim2VWvJYIQ1NP6U9x6PvkC3FUrWydNypG7TCq
-         oFm7Msyyu8OMvL9LA5Omp6tPoAHU01jf2mTR04nTV7n4bRM9COtXOCM+648M4g2DqUBg
-         dKIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775029678; x=1775634478;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-        b=MTZ+VHIq5fn7qIRmcNpwETXB+esztjJEKfQikUv/dlxHzm7Kj5ToluSgn/zOdMfW6H
-         vRXhVk4p992wugf/qyoW2eyEeSInFq9BMvym3sHKWlWRYvHKB8hDdkbgwHPHVWyxDKB7
-         KReAWyLr3hXwZexpet/WgcROEltyNnvJoGFUCOY7lxVMr9yLQvS40a6P09c+AdpsujCS
-         4JtPfMAH3dQhXqpbc8r969399gSeGpETJNMO3e/f71H5bGNMKJKP37oKG+2PN8NSLZYD
-         93bWiOTvP40Dc6rjrQyxj9Cx2iED55lu/BkmR535QdRU0+Rf+GgN1uYArH/AF6s/VfiO
-         L3jw==
-X-Forwarded-Encrypted: i=1; AJvYcCXoU2TX0WNcHAW3B7rzA9OveU6zgYpm9+FSEiU1gwOtFgDU8QAdLD6tmP9eHMfFG9d2+KYGtZ8Jrg==@kvack.org
-X-Gm-Message-State: AOJu0Yx74SEjtLyknTSieC75ZpwCW3xm6ZpLoQYl0ogB+Km/3OYsY+2L
-	Hpp2zqs2/U8oJWKAnH3nUz0LvqTjW3AwmbZ7nuxqSD0NFdo24BsrZqYn
-X-Gm-Gg: ATEYQzzCc0WFRh9Oi6Kh/cw5nGATmHL2HhIkI0g6DrXB25P4oebDDKZYGv9AnpJUgDp
-	bUbbw3q9FT3tdWMCBU26Ji4k91dErworYP8A17tmC36YcC2gSLphC8siwbr5VETCTrYhgqQ+B6n
-	8B0IWVCYwjOKtF4zj7dOZsKWvrB3imjbyu1GN4+x8tTd6mcTNZOtMMVlUbQ/srayEVAhs7KsIAA
-	/68XqkWmoK0QkAMe8JCD+IpWstXA/DC+4ZEQNlmIVvlcf7C2TP4QH7ikw9PYRzE03XGzXh8P4WY
-	6iRwVFkGGWaX/Dt/4ap6tFF//odNPTV7iHouPLMR6nrbmsr3HxcsPiqAK9FpTozWwNJVhz0ctIO
-	vqefa8CiJrXl9uPlEizA3Gou9Co1dTgxUflA5JkkOPEwyZW7wxTwiQ/99o4onjQSDnHcXUWlvyQ
-	7UlhAujsNQwogzQPkslWf/FF68DQ8N2nkI7PuwbhYtkrQuRNcJxE0cujLfc1+pibwmKC3xB655D
-	uQtOoUQS6EE
-X-Received: by 2002:a05:600c:3f14:b0:486:fb69:4960 with SMTP id 5b1f17b1804b1-4888359d919mr39810795e9.19.1775029678179;
-        Wed, 01 Apr 2026 00:47:58 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887e83e906sm89863085e9.8.2026.04.01.00.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 00:47:56 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Barry Song <21cnbao@gmail.com>,
-	Kairui Song <kasong@tencent.com>,
-	David Hildenbrand <david@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
-Date: Wed,  1 Apr 2026 08:47:53 +0100
-Message-ID: <20260401074753.238053-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330071229.14614-1-devnexen@gmail.com>
-References: <20260330071229.14614-1-devnexen@gmail.com>
+	b=N0W1Uit45BvvsZZXEpiZKdSmci9lKEQjJ7A6Ztz2dhohxLgMT5DcCzzjJqlxG/1f0KJQBw
+	owQo3VCdRksK4ZUopiDrEfJSClX+TGYmzMDBSR0VHk5vTLG+m3WVhK5F2M0oi6925o331N
+	Nn4AjdPxjAsf0HiTrwziXSafQouHU40=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WVmXq4Md;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DEA58405B4;
+	Wed,  1 Apr 2026 07:49:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9691C4CEF7;
+	Wed,  1 Apr 2026 07:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775029776;
+	bh=KXrcAabRXu64p61zi0r/SiEB+D1HpCqdbity0mmwBtc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WVmXq4Mds92NLhisdW5zIPu95ypbyDQ5cW7sYnZ7ymo0YlW7BzXrBQpUeXlhC/qsk
+	 MblqDdXhREK80qPF34v2Kbw8Q21xXmxzphPaVnu2fn/ahpcEGRFmJ9iDn7YdqiPBh1
+	 +xd8Aavr8LoJZKPgA/64FkWmAevt8V7iQGNXRTuoedmkSqXL10uzrfrH8otepZGZLs
+	 fxe7H7piYA0MCvI8R0DtxMfC43MNiSQ6TzXYVfSz6h94G4KI6uZe8b0c8XkzNL7Bke
+	 UPCNshClzH1MkpNjrymmG/npAbTxpRGt6mw2VjHCyQUlmwOnw2TTbDRswi7VCXrSWM
+	 UWwY+v2RUf+rg==
+Date: Wed, 1 Apr 2026 10:49:30 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Carlier <devnexen@gmail.com>, Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
+ retry in mfill_copy_folio_retry()
+Message-ID: <aczOCqrCx7Xd5HIF@kernel.org>
+References: <20260331134158.622084-1-devnexen@gmail.com>
+ <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 617w4xdoyawbsj3gfswqomgbfksc9io3
+X-Rspamd-Queue-Id: 0E9A01C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2AF92180005
-X-Stat-Signature: c7fd6btzw8sj1rguuxcn6zqpfbd37hry
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775029679-662774
-X-HE-Meta: U2FsdGVkX184WgW8JwTkqq/Ac5qGMYmSx721dRSe0YFLZiLXefCkT7GlVZlPSnuIXa7gSFcmwiSqDeuS1sGee2jo6bI8GO1oKyQfMLsYWzqcx+jLF7cNXVA3wAq0Ra7qmDAAsVSe4bscn6J0hbhrBjt1DQ0F076T2blQ0avOZhUu5EbcWg61ZujJj3nMhE5iG4tm2302jK1YhUt8CRyjl49kvxbFvXSAMC/BhfX5csUhDaR72PF01OZFIJudAL176IgxP7i7WNr55TgJmB7iCpm/PDllsx69CXSnLyXq8ldorJH7mg7c/HrwNhH7Q2FgRud9vHAAcNjxO9L0GwqvJyeulR8UXQF7txh9tWrIwIzKh1LwC4ZehnZTgggO2kA509I9035WgQ1IZUwkg3XmsvuWPGgR8JJU8ZacUkFHqch5fwtA5Id3h3VMm3+LoGxfkduMCv+Ngo+4qQ1IB/+iSHA1j2R7/uBH60kPmictInRWYminorvJd8dmWEUHAnOO4kmE9/ipkZSnErFVnh5PTSAZ7z/oamfwwyz662eXLmR38RnW2zXA6QtFWjvKkjGWSeXocfoCJltO2VFtFJNgl7iuA7qmS4DZHBAYKI79Q33RBtdr/N4SJVOVHij3jXuyeViJ+9r/23Ig+eW56Mn4TMrmzca6KkXS6UgmkgkgXpId8lH/UkdLIRkZIGzDveScvUV1lpAfFKc8KmyjEIwmhbmAzKH6/59YHDvI8P9BP2mTtTm9r4x8Vl4PwQwo2GaFoRvhKGUTVbC5RNwnMIMG6xXewZlZ/KsD6mi3kIVZg2Ei1xlqLiMR3wsR/DUjjRVmMrBGdVvrDqkk8wBK9sY6aYrWCdUrjZlRVOfqRCCuYVGG6WITVdupZ61q0zYfMMjmGN40E+uxXSUv4DqS6enkSheul5PBs0AfNKE4E7xVlUjLbvaBlJS/XrkC7I4O0HG/wyOvyfCJzzCHjQ/AzAV
- RclKC1YM
- nNdZT8Wdevi6Pde79iNLEIpavy2k+Jmvq0tDTH/aFmaOXnQUyAhmE2jkw4/mTKBEvk6+iwrQ9amZ+G6KuSGNVszzibkyZNwWV4PdZDwt7AK8mh5WDnS1QUh0GoIbKLx8ewOcl9ERW3QAVjcseMUHyLxHpdvEoKBa2W0jWsmMPB3oHVoQoONt5yiazcBf5HeKeW18p3G7YUy9OpJqjJ0X8FsiOvC6BwIfE4H9AQAX7ScLfiY8fjmnlmEpLReAtxyn8Cgv2ACRiBs1CtUxCdpi+JJ/VutXYHmm5tojkjD11N5+1RlQCX6/CsWmkyC/rvadCtdCOFuwA/uBtM5hLL2jBXjQmTc5ScMsR5hOQakIoEu6eUH7MHGAAh/DYAGW/TXdFUGjbStTJh/BzZTNb/2TI60uhWtn2D3OJnv6/p1CAimfQ+RdEVjukiEThoSNRoqxJu3BwnV4SlqYpjgHmGaSjjJ9KqbLqfK/LDw1Lvzjjhv5bfA/icnXsdckMWx8Z2iB6dMfWXPu5FfjVvNHHnyuch3sdZB12y5+zHYk7
+X-HE-Tag: 1775029777-16597
+X-HE-Meta: U2FsdGVkX18TYa50bZZ0l6MgQv7PnN9/rvBsrOwoJgdtSlxminLPR/r0y1NKjw2Am2ki+PAit7jVmu7gISU4WQvi1xynEAfGLAI71iJCMU/fbuygu8uXh7mkkPlwyVKX+7H/C9WRZaE5b7TcTS0kBsdt8uq+BbiCDoFTLI1K72ZuIQIoWaWk8z4f9aZXae0hXbF0cQ3Vr2jmukI5oI8Bq2XQ4DRV+V+YkCTACMFWQtS0ba6BbOsfEvt3ocBQ7PGKL1E3s8vky9dJDxOVHBKfME1hDmpn/wX9bRf1jcaLHbgq+3Qhwl15ni9eU6acKnnwKc0I1Px2n0dXPy9s3pxbkm0HpsCpbHNDiyM4qcw4JDPgyDjk9aXmy6dE9XIMLFIe++FwsihCVOJ7ybQZDkUpL1sfcjfF1SKrJOrhMCw37uweumK0i+UFj7C64YlsIfbpMfkql27edejvSRooqRaz4fGK/BZkpzy3SZS8PsoQ+TgX08Fu4dSjPlHtpVZ0/JXECPYCQnZFLJ6MIn+5omBuMdVHK2mnbnj8tdM9EKlIDeJNZrD5hF4EjqZj9GuKNL1y9w6wHozqNebE3KeVVWqhIVMcVB1FqA9lQUq31qLXKGWTrm7m/BBTL+KkwlBQZuX1v/Q0CLS4EqU26jnpH/WMvHJVYQ7qMW88BQ0cZFpDgF4BhEaPXVNmoPpXXSqC/iikKITquFA2eMWSg61kW3jF14YCTjv33pvr+Rdl5ts6yXfxlNqIsS1S/p03hle0Xy/vEzeaXbONXQJzi32PHPPFUONdzTDS+fJpNCrs+fXWuOmW23B8upYcYJk96yhAuokMxuF4TqBsCogrSQ48fBXgRBHVN/wO5gy3Mzai9wOB0pjxoig8mbbVYnvJU7bn0mrXrlb/4z2wsodx6DCYvyB5WGsJ3jm7W08SRa4H04YXww7cli/EpBp7B7B1kU9b9Tn2ZnbVTWNxLEq0xX2fSp4
+ nOWDOXPA
+ jrYbEC4DXxAu5mLk4BMCayIFi0WypaOptyKYOSi7WYG9U8f7i9Iw/Q6RTyq3Kx5SblkZeMz6MYJmvpXoOBNsBr6eddPHf0LNTpne/mAlKsxm67SOHBu8ZX6+RDQ83A/UlG64GjmAI1grlw7d65744061RFb4v5ianlSTPyu/JfoaJK12LCGU1Hl9vAozIE22F8DXYTLcNUD0eBQTpgsz/BHVpCH/HhsmfvKV7NZOAPNiwXCwf89Scznloycl3+tzR9LvssGiAqaqn0oo1ImzA6vyJBdI8eOilewpkRNQIiPFkpo+e5dQVTmIroK7JP5FogyP8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,38 +95,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-but sio->pages tracks the number of bvec entries (folios), not base
-pages.
+Hi Andrew,
 
-While large folios cannot currently reach this path (SWP_FS_OPS and
-SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-inconsistent with the per-memcg path which correctly uses
-folio_nr_pages().
+On Tue, Mar 31, 2026 at 08:01:48PM -0700, Andrew Morton wrote:
+> On Tue, 31 Mar 2026 14:41:58 +0100 David Carlier <devnexen@gmail.com> wrote:
+> 
+> > In mfill_copy_folio_retry(), all locks are dropped to retry
+> > copy_from_user() with page faults enabled. During this window, the VMA
+> > can be replaced entirely (e.g. munmap + mmap + UFFDIO_REGISTER by
+> > another thread), but the caller proceeds with a folio allocated from the
+> > original VMA's backing store.
 
-Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-count since sio->len is accumulated via folio_size(folio).
+What does "folio allocated from the original VMA's backing store" exactly
+mean? Why is this a problem?
+ 
+> > Checking ops alone is insufficient: the replacement VMA could be the
+> > same type (e.g. shmem -> shmem) with identical flags but a different
+> > backing inode. Take a snapshot of the VMA's file and flags before
+> > dropping locks, and compare after re-acquiring them. If anything
+> > changed, bail out with -EINVAL.
+> > 
+> > Use get_file()/fput() rather than ihold()/iput() to hold the file
+> > reference across the lock-dropped window, avoiding potential deadlocks
+> > from filesystem eviction under mmap_lock.
+> 
+> Thanks, I've queued this as a squashable fix against mm-unstable's
+> "shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
+> ongoing".
 
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/page_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+First, this a pre-existing and TBH quite theoretical bug and it was there
+since the very beginning, so it should not be added as a fixup for the
+uffd+guestmemfd series.
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 63b262f4c5a9..1389cd57ca88 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
- 			folio_mark_uptodate(folio);
- 			folio_unlock(folio);
- 		}
--		count_vm_events(PSWPIN, sio->pages);
-+		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
- 	} else {
- 		for (p = 0; p < sio->pages; p++) {
- 			struct folio *folio = page_folio(sio->bvec[p].bv_page);
+Second, I have reservations about vma_snapshot implementation. What
+invariant does it exactly enforce? 
+ 
+> I've fumbled the ball on your [2/2] unlikely() fix ;).  Please resend that
+> after -rc1.
+
+This one should go the same route IMO. 
+
 -- 
-2.53.0
-
+Sincerely yours,
+Mike.
 
