@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EE910F6FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72F2B10F6FDA
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:26:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD2626B0088; Wed,  1 Apr 2026 11:24:07 -0400 (EDT)
+	id C5C396B008C; Wed,  1 Apr 2026 11:26:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA536B008A; Wed,  1 Apr 2026 11:24:07 -0400 (EDT)
+	id BE60D6B0092; Wed,  1 Apr 2026 11:26:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 972496B008C; Wed,  1 Apr 2026 11:24:07 -0400 (EDT)
+	id AAD966B0093; Wed,  1 Apr 2026 11:26:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 842A56B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:24:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 287148C71F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:24:07 +0000 (UTC)
-X-FDA: 84610357734.22.760CBF9
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 325394000E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:24:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PKEmrArh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 965C96B008C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:26:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B72E13BCB3
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:26:23 +0000 (UTC)
+X-FDA: 84610363446.13.40DA7F3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0BB0B140009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:26:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RyvOPtCr;
+	spf=pass (imf09.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775057045;
+	s=arc-20220608; t=1775057181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7bgKpzn8XxryGiVAnWC5zFvW5iObgW7oiW/vycCAsgs=;
-	b=wKyd2ZnR6iFLoIUdBiYC+jD1+8QOeDcWOi5tNxQwAYibutz1FO/7kq4Uw88eA6t75UySwA
-	+LafVhxMp310P0cKHcB8KvRTTAgaL6Y7POUrCxM/6PpL8tuFISvHrS/Os5OVNo/0TzuZkW
-	iY730k1gX1SUwAW1XkNJFP0mCIjEV7k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775057045; a=rsa-sha256;
-	cv=none;
-	b=CAnXY43Fn+sAhwqLAMuYmK/IZRsmp6iuUIJSiG/bRdh2H1YtgqYmOAfMotW7InJ55QlZk0
-	mrrQvhXwwGVLwlcEUvOtHBO8pkn/r7lg/KCpTpI7IAcVaK3m/PToYe98asAWqzURTT5xuG
-	PBbVetUGn9mIU7j/JLPYEroSIYNGqRg=
+	bh=ns+W8zI088VkUl5ff8iLclI6vAEGjQ3WPvtozSvzT9I=;
+	b=bQnKH0KfC3LNbkm8nJiRDMBmsslqfXCpkOye2jcukc65DGm0xEW3UMGPfHNcaFvH/9nkR4
+	EkiuWLBY0IFeAydc90eULes6l9HNabq2OBgksa6OyrB9g769WUv0n54xh5AkIgJSmf0sTo
+	q3YGjsyPBz159WLbJBlik0tJ9r8GHWc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PKEmrArh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775057042;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7bgKpzn8XxryGiVAnWC5zFvW5iObgW7oiW/vycCAsgs=;
-	b=PKEmrArhr4S5xmd8rRqYloL1+Gt1Ok+SavD1QVhWSjom+r1bFhwk5YVaSqJ2OKwKJ2nT1X
-	vC4I+46Ulmu69eV6yS6Z1Q3rWZC3oK1ErmO8ThVkAXLFbYQiS4wwX74dRLHo/84LYGxdQY
-	uThg9XrqZVMC2zSzmzFIZOI51P7zJaw=
-From: Usama Arif <usama.arif@linux.dev>
-To: Breno Leitao <leitao@debian.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kas@kernel.org,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat interval
-Date: Wed,  1 Apr 2026 08:23:40 -0700
-Message-ID: <20260401152343.3294686-1-usama.arif@linux.dev>
-In-Reply-To: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
-References: 
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RyvOPtCr;
+	spf=pass (imf09.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775057181; a=rsa-sha256;
+	cv=none;
+	b=ZTpSQqhMb6HAJiB0VBJCKfNkB+Ske4kiFm5hHLQz3r8bJyVNa6Skz7cbz4VzaH6jPAn+RA
+	1olmbdqoBFH3rxjy/Hk0cEF8Tnq29etqskRpTsXju9salJpeq6RNF9RttFLntOmgC+GgfU
+	hsUAsBqxRhNZUl1hH07PyKKu4kic1HI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E93711F91;
+	Wed,  1 Apr 2026 08:26:13 -0700 (PDT)
+Received: from [10.57.77.192] (unknown [10.57.77.192])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37AE93F641;
+	Wed,  1 Apr 2026 08:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775057179; bh=wgI+SVOkvgIgOkHOsP10HpUziCGVii7hr3xefXc2Vxs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RyvOPtCrsaxhbwyyXJ9/sJxTBCYbXkxvMc+iFf5L1/ntPvY+woD6bO16mABcc9fzV
+	 TRRjRLZAcc2Nn8wIqx41NvyZRgmTLLMoST3hzqBUZIzl1WOZ+HRkzq+Y0o3H08c2yb
+	 TuGDO7ocWaI0p0OlB0jJ5cAO9ZDJxmYha4jc0j0g=
+Message-ID: <75f65aa7-4f89-4ef8-8941-51b1d54d1ad3@arm.com>
+Date: Wed, 1 Apr 2026 16:26:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dma-debug: suppress cacheline overlap warning when
+ arch has no DMA alignment requirement
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+ Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, linux-mm@kvack.org,
+ harry@kernel.org, vbabka@kernel.org, akpm@linux-foundation.org,
+ stern@rowland.harvard.edu, linux@roeck-us.net, hch@lst.de,
+ Jeff.kirsher@gmail.com, catalin.marinas@arm.com
+References: <CGME20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72@eucas1p1.samsung.com>
+ <20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
+ <6270d4f0-85e4-496d-8db4-87ccb791ca4d@samsung.com>
+ <c9ded35b-fc10-47d8-bfaa-cecb4fa91add@arm.com>
+ <CAHp75VdrGk=foAzQBJNRNDZ1yfFY8p-tC_ApM8_gN4EehpmN_Q@mail.gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CAHp75VdrGk=foAzQBJNRNDZ1yfFY8p-tC_ApM8_gN4EehpmN_Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 325394000E
-X-Stat-Signature: dnajin3gjognphn596og5yrijssbnu7p
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775057044-607043
-X-HE-Meta: U2FsdGVkX18pfTcF6Zi6777Nq1TgkMwPP7d7Kr3VO6/o7BuI8YmmrIWbQyr8x26m++Jel50arnHfHsczersTkAozZ49Pyi99+7zAQObUq1GEelBpwjGBkn1KiDloN7YjW5voKwRhBPM7KvIe0SQPAhMTy1bgGc92gKbwRcl4SbaLeCng4EoHq0MBw7CuANIihTTYf58CI89dU59IorVRCsSgJ6e52w9ohgUljvwfs+ngwblvWlsBf1rE4WsOfDUPrrVUld3E5GGYiv79tn8L/r+qzjvMfwhElALo8dEqrkQx8El1cQbv1DGguHG0OX1C7lcNGCWjzlu7sgNzMgqvVIAQqg5mVpQVfBSlgMZ8kTapernnUFP94FxvLdmGj6T3gIToprIpkWzADLqBvyOEB2UyzMuKgEJFanG3NbZkGSmVVltSsTOwnB/UfPa3fn6czA9D/pdTS7E+dKS0H8JwSXh7QtmNhQDSJcmtwfCdDNDUOz9BA7RY7dp9+bND6n7pDglnooposNgvzSARuiRTPXCmtlGohur4k0RTrPWcrSHKp1NLinMgTAhIKAwJ6/x52Hjqduf51GY5j9raZYnjdDfu6UduS7W2xGRGqnn2URG3NqE+60G7GcMf6xbRnVO0MUsgLfsCgovqhXXxp27IaWKtjnnq9UPd4G3ne6kjIHkrjXnaOEQA5HdRO932WutoCNOcI7jHQ6Sd2IgqMFofjub5ObCVKQToaEQ/STWZkSfU/L+9VMVOBJAyaYmvXWvYjAG5koUpXz9L1Y3s6NHWpvVfEctOeLkz2v5Ce94RTdQzgy1u8/pdaf7Clyie7yxoytfY1YzsYgiSMnM1tn0J4Ru3Ml95gBcfufTh9OUKsLpb7SHaF1Nqdmw5ieVzvqiiLYQtVeqkbRelIjTKrVOTPBc8wKDbLCPOOays6PICMqt1OCT+aHW8jrvIALNOpK7V6FYoLtBTXVWiNSwlWr2
- rkYHonpn
- Ue06JKy9a/fNFEdh5HWr983UROZypOamOQS5fbb/ViTdTrl+MsFGLu8UI6c8hzAqJeOq+BYM6pPr8aNAIEu2pcTrnTwigX7OwdhFebkWUsXvInCOf9ZcDpKVb5ocfjjKsjG36anqmP8/9Zsb1WxmeGoNhsVqqFERTJLPGgDXx8hJ5P0HsOUGCVgcOcMD+5HnEDYbJYh/letYO/nAeFsWSbyyRtqTjGnI/hSQU60F5RwbjtYzvEThCM9JZmjJ2YGSOzKLWBlnomhF8JYRj/bVloQXKJ/z7ggcg5LG5bPUIjSg/Rwn+DZ2AWNDlNg==
+X-Rspamd-Queue-Id: 0BB0B140009
+X-Stat-Signature: dfskjkjmi71iw4gahkz4inc3uj3ewe8x
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775057180-423295
+X-HE-Meta: U2FsdGVkX1/SuAZkd/joKJohbwNQADiz7fsNvKPpE/U4QcI98NfvZJJRuc15DAX16twy7mRA12tSqCTiLNuLDuxreYrw5w2cJGTS0DhnSugT7OpyY1+CbKZd3rRrHM3AVTS4GgMkipIRNeM084FVKrIgaUw+Q7JAY580mkqGnSRKXNF0Mx5HIBKM60hTcASmJ7q7B2oSBDq2aazh42SlWGf0bmcRfoSsPGMG7gnkQf/+kxhx0TJ68p4pYIRv9pFUOgbASawJJiqsnNqPXobHKTuxQ/evN3Rt5wZMFfl6JcTTgLkjmzSaneHfFB8O87yGja7XH1AuOVvcwjbHzePltNy7TpDkNxNLCxFXgnDiC+cEFoXKE6exJaZE6j37jc51CcHPANUyPtckJZB8RqiNRLzhUMKiPOIKk9u2XLylCihFgV/pGRm8zoPYgEeEaU7Mhy/02GN4GgMZlPW14EaHFbkoJCyuCYXGgTWTtsESAKdgUHcE/Bc1sdoiWA8ZMkRsTbJ3m3Y6kBnFHWdvPHv8qXIYj2lr0J0krYk31TuDMDBHQs009HuS9u4o9GJdNN1c9y9AnxBRN5BQHfa1IHYA7R2JpBLyuC2W2V0UKAoUQtw7z6aQCkEdTZxtuOIauFKcMWF61KZos3EdRpHcW7HkX/EdSsVRJBRhaEOOVDsdNsVik79fIi7caQKgtRHRxcmKfcC7JuN06+vETGd8TXzQDiFMvuL+xfXVK22RA47OGR/aP6oJBdh1/ic9+pmQbkaskCAAHhCWLsRFyiEpxqeMNW7vEQo50jVfz4rzfYIQLR0Vfjq3WMUSScEfQUYgwhONa/3huUPNq9dOqxigXafAYv+rNkSdLEiFm+rY9yeUzbY15juCPD3s8xXmL4ua6M1XXWEwgPVCLpb2MhMYsHKxUMuBzMBUENA0M46KYy5EB3n1PaUEd0r6nGfOdOtlrybqZfZMLBoFv8e4g1ruXpB
+ TS9zo3fi
+ qFVBwK6XmU95X5PYeCHQlccSKzBGPzelEwuT+P6J3Za/jvrsfiAKAz3X3/d86kxVpnJGbN8p4qHQYudC/2H3qek0xUWCk4rIxanL7PJeVPw9tu042zMeM6HywnRysNgqmWFeoCDwNLYFbDgog1GmaydF+ItHPcDnVk77940UGiep+6lv776pk0N8jCQaI/NLauXuxHvhCfes2LBjm33BZsF4e5FPfiHDw7xOho1rAhBNR3ASaNlMaa36f1N07BLUS7LoYInHmiA2XXZixN+zSrJVbAJPOyThtgCiJjBlh9bp5nG9GR+TArPc5P6u4b3le2TOem+pWSKQHbzsX4GF7Gh7KB1g8jE/nSfjCr1cTnPTRXEUqU5UIHLbj6TtVPDFJgavc8ltm10Douq4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,126 +99,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 01 Apr 2026 06:57:50 -0700 Breno Leitao <leitao@debian.org> wrote:
+On 2026-04-01 2:25 pm, Andy Shevchenko wrote:
+> On Wed, Apr 1, 2026 at 3:11 PM Robin Murphy <robin.murphy@arm.com> wrote:
+>> On 2026-03-30 8:44 am, Marek Szyprowski wrote:
+>>> On 27.03.2026 13:41, Mikhail Gavrilov wrote:
+> 
+> ...
+> 
+>> TBH I'd be inclined to have CONFIG_DMA_DEBUG raise ARCH_DMA_MINALIGN as
+>> appropriate such that genuine false-positives can't happen, rather than
+>> effectively defeat the whole check,
+> 
+> I dunno if you read v1 thread, where I proposed to unroll the check
+> and use pr_debug_once() for the cases which we expect not to panic,
+> but would be good to have a track of.
 
-> vmstat_update uses round_jiffies_relative() when re-queuing itself,
-> which aligns all CPUs' timers to the same second boundary.  When many
-> CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
-> free_pcppages_bulk() simultaneously, serializing on zone->lock and
-> hitting contention.
-> 
-> Introduce vmstat_spread_delay() which distributes each CPU's
-> vmstat_update evenly across the stat interval instead of aligning them.
-> 
-> This does not increase the number of timer interrupts — each CPU still
-> fires once per interval. The timers are simply staggered rather than
-> aligned. Additionally, vmstat_work is DEFERRABLE_WORK, so it does not
-> wake idle CPUs regardless of scheduling; the spread only affects CPUs
-> that are already active
-> 
-> `perf lock contention` shows 7.5x reduction in zone->lock contention
-> (872 -> 117 contentions, 199ms -> 81ms total wait) on a 72-CPU aarch64
-> system under memory pressure.
-> 
-> Tested on a 72-CPU aarch64 system using stress-ng --vm to generate
-> memory allocation bursts.  Lock contention was measured with:
-> 
->   perf lock contention -a -b -S free_pcppages_bulk
-> 
-> Results with KASAN enabled:
-> 
->   free_pcppages_bulk contention (KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      872 |      117 |
->   | Total wait   | 199.43ms | 80.76ms  |
->   | Max wait     |   4.19ms | 35.76ms  |
->   +--------------+----------+----------+
-> 
-> Results without KASAN:
-> 
->   free_pcppages_bulk contention (no KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      240 |      133 |
->   | Total wait   |  34.01ms | 24.61ms  |
->   | Max wait     |   965us  |  1.35ms  |
->   +--------------+----------+----------+
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  mm/vmstat.c | 25 ++++++++++++++++++++++++-
->  1 file changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd..2e94bd765606 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2032,6 +2032,29 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
->  }
->  #endif /* CONFIG_PROC_FS */
->  
-> +/*
-> + * Return a per-cpu delay that spreads vmstat_update work across the stat
-> + * interval.  Without this, round_jiffies_relative() aligns every CPU's
-> + * timer to the same second boundary, causing a thundering-herd on
-> + * zone->lock when multiple CPUs drain PCP pages simultaneously via
-> + * decay_pcp_high() -> free_pcppages_bulk().
-> + */
-> +static unsigned long vmstat_spread_delay(void)
-> +{
-> +	unsigned long interval = sysctl_stat_interval;
-> +	unsigned int nr_cpus = num_online_cpus();
-> +
-> +	if (nr_cpus <= 1)
-> +		return round_jiffies_relative(interval);
-> +
-> +	/*
-> +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
-> +	 * use round_jiffies_relative() here -- it would snap every CPU
-> +	 * back to the same second boundary, defeating the spread.
-> +	 */
-> +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
-> +}
-> +
->  static void vmstat_update(struct work_struct *w)
->  {
->  	if (refresh_cpu_vm_stats(true)) {
-> @@ -2042,7 +2065,7 @@ static void vmstat_update(struct work_struct *w)
->  		 */
->  		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
->  				this_cpu_ptr(&vmstat_work),
-> -				round_jiffies_relative(sysctl_stat_interval));
-> +				vmstat_spread_delay());
+I had not seen v1, as I took the last 3 days off and hadn't got that far 
+up my inbox yet - I guess it's at least reassuring to have reached 
+similar conclusions independently :)
 
-This is awesome! Maybe this needs to be done to vmstat_shepherd() as well?
+The fundamental issue here is that dma-debug doesn't realistically have 
+a way to know whether the thing being mapped is intentionally a whole 
+dedicated kmalloc allocation - where we can trust SLUB (and 
+DMA_BOUNCE_UNALIGNED_KMALLOC if appropriate) to do the right thing 
+across different systems - or just something which might happen to line 
+up by coincidence on someone's development machine, but for portability 
+they definitely do still need to take explicit care about (e.g. struct 
+devres::data).
 
-vmstat_shepherd() still queues work with delay 0 on all CPUs that
-need_update() in its for_each_online_cpu() loop:
+Certainly some milder and/or opt-in reporting of 
+potential-false-positive overlaps wouldn't be a terrible idea, if 
+someone wants to have a crack at it.
 
-      if (!delayed_work_pending(dw) && need_update(cpu))
-          queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-
-So when the shepherd fires, it kicks all dormant CPUs' vmstat workers
-simultaneously.
-
-Under sustained memory pressure on a large system, I think the shepherd
-fires every sysctl_stat_interval and could re-trigger the same lock
-contention?
- 
->  	}
->  }
->  
-> 
-> ---
-> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
-> change-id: 20260401-vmstat-048e0feaf344
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
-> 
+Thanks,
+Robin.
 
