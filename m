@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F65210FCAC9
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 19:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37DC7107639C
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 19:52:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 623F16B0005; Wed,  1 Apr 2026 15:28:26 -0400 (EDT)
+	id 054826B0088; Wed,  1 Apr 2026 15:52:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D49D6B008A; Wed,  1 Apr 2026 15:28:26 -0400 (EDT)
+	id 005626B0089; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EA226B008C; Wed,  1 Apr 2026 15:28:26 -0400 (EDT)
+	id E5D376B008A; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FDE16B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:28:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C67244C03F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:28:25 +0000 (UTC)
-X-FDA: 84610973370.28.2B50A12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 01DF11A000C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:28:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNbFpRGJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D1B786B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:52:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 185A916018D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:52:17 +0000 (UTC)
+X-FDA: 84611033514.10.3844E7D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9D89318000D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:52:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iegSTeTG;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775071704;
+	s=arc-20220608; t=1775073135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSg/N27waNOMYzpjYpPHkKZa6c5gQlQNNMBfj5Ys52A=;
-	b=kx7mNcDpcnYphh2vemLRLgZtDjaoHE6PGpoY+ky+VwVmkpHdAyUyrSIiA8Inxlq/YeRJTj
-	BeYhQAO7uHwhBgSt0CMBjrkTKD2ucPQev5p5ueNeUf3vvOmNY/Xzc1tV0qk+CXBqAfHRmK
-	GY4uHtrS0JprKLmLV+VMCRNq/vtAc1U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775071704; a=rsa-sha256;
-	cv=none;
-	b=ELLrMZgOpH6jDWsIKSb4o2casxUsUhscwffHp3DKcs8Nu/XMAaEsuB0kGzJ8eY8lFH6Zkl
-	4KiQKbgJgu07wKZ9w4SC/Xi6TkfkUgoWgaUAVl5pMx4EJHUyZILefUsnYYHMA4B44B+dl1
-	/4lWu7IF/4xSkw4vSAZa3+ZaYcIenNM=
+	bh=WgWd1vXoxl2EUV3d1vVjeNG4k45Arz2el5P//CNWG6c=;
+	b=4XqTnRaHOTJhv7Ew+PqpBIYyiTvhk8NiMmt1IBHseiw445QInonlOtlDnmcgH5zZyC2qe2
+	s+MS8Xmx5JMhm9tu2BVXzB8awrq6pzZ6d2isak3cWiYl+hmICf2PUlXG0Ntw1jTAKJMZ6D
+	Puik2Bsj1Z1q2rCxdHHQCdva+kAiAG0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNbFpRGJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iegSTeTG;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775073135; a=rsa-sha256;
+	cv=none;
+	b=KIqYANwzTZ8f8gXofQEtZvowL6BP6lKBo/i7mW5RDy/Pk2WNDIhONjB4JyGyfzKAgmGivC
+	tebFeyc45bzobWeMN61PBPj8ctHJX6t/zhvg7yxKU60rIXjlSAdM7rrd7nHSV57UJAx0Ig
+	HRZveKX/a61GxmgdkEqPfkRGX9l8+8w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFAC044349;
-	Wed,  1 Apr 2026 19:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3D3C4CEF7;
-	Wed,  1 Apr 2026 19:28:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ED8AA600CB;
+	Wed,  1 Apr 2026 19:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DE2C4CEF7;
+	Wed,  1 Apr 2026 19:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775071702;
-	bh=fme8hyEq6LPmNJncesjibWSiJqsBbRwNp/PF6ClVQXo=;
+	s=k20201202; t=1775073134;
+	bh=8td1vtx3iaV4CtFL9W4NINSFT/pfU0MJKyD0q1yzYto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNbFpRGJl4xmGCqsJNjNwi7sck8ydvYFdoECaM+MI8+60dcA/yHsKwt6QrZ37uHXq
-	 Ihkwn6X/Emc+wPN7z05vDcXTgFd2l0gLBPetCJ4Nk4KYlrNi3LI5jmFjvXvYHUaxRG
-	 Ys6VuPShFGK4/6DKUIQ4Eua4SCmW3Xlw++iaDEX+fot9zXt03E4H463WCyMkW/YjJR
-	 g+p/W7Grymw6Dl7CrJqLy5eceN5Xq7VT+JhE8t4OhbI8+hjY5dBbrHdE5TCu2q1kM3
-	 bck3YUxwwrPbPp5E5ipAPgqv2o3KpZRHi1WoKIaYoU2Amhfg4PINjIVQ2RMeN6Blm3
-	 2rBxRXchglkcQ==
-From: Kees Cook <kees@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] exec: use strnlen() in __set_task_comm
-Date: Wed,  1 Apr 2026 12:28:17 -0700
-Message-Id: <177507169460.2890967.1588878662313985569.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260401152039.724811-3-thorsten.blum@linux.dev>
-References: <20260401152039.724811-3-thorsten.blum@linux.dev>
+	b=iegSTeTGSkpbx6uOdKbaa8PHajPSmamUqAiudCJYUsPCcuLVNjTo1tvyvUvrkCqR3
+	 9PacvUB70x9rntJXq5Z9ygVn9H9cXaigsf7s1ZgTiMMksEM5a8MzCMydoLY6eUbGhK
+	 fS2nDbywhQpw9F4x1B5c3+7wddNV9cJfHP2pe/EVgQF6gsmW29AXa3vnG5chEdzJnZ
+	 UoensbbOEhn8P9X55bLGfG2z96MR9575K2exh8ZmzSznjfCT/BCiGXePnJUhVLS1HP
+	 eB1M3M98fPym2kwn1QaARVC8+Nzt0uokKWzse5O+y4GMtr5TFy3pJJ5InJ+dLJWfJN
+	 7GVqLRLZdRUXA==
+From: SeongJae Park <sj@kernel.org>
+To: Vishal Moola <vishal.moola@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] MAINTAINERS: add sashiko as the first DAMON reviewer
+Date: Wed,  1 Apr 2026 12:52:12 -0700
+Message-ID: <20260401195213.68900-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ac1fOrrURjCfQyJY@fedora>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 01DF11A000C
-X-Stat-Signature: ufboarwr3tkeirsf565qm4brtf9yz6qu
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775071703-720210
-X-HE-Meta: U2FsdGVkX18mRAKxhUQMkwKDyNVWkfjf8LOZWaT7VRbUUvBB27FLRGMxCXEIEC95892RBXgcGc5mKp40EeUnDn5Df0wNERT09wfIfVS2r0DyK0hxE8W2YNQvqqR+1jrV++XaE0RQWLo0QQC01JcuSw+6LHEhHXgiduB9FFWqhoJS4m32/5umaAKaQxoyE2HwyA29SSKGhP6GAuAwO+CXoTcTAtwlINJ/cC+uAm60GTix+5pJ/rRpWgIvGpf4IiyNNZYEbWhslVVuMqE+24IyZLkhrA7EckwhRZmdJVctar7VxVmNAs7zJ+hvQ7q6EZculWtPOLaEsxhv0KD2VALWIVyaU+SgulA4gzMJrO0cEyYy1xvtKsVZqBcM4IlxsnU0Qfa+UCE6h+4OyLAL9s9gg48xra625cG2ivYTLRCUo8fpFZXxgWOXKlmTisO+IPAipk+WaZ1sIoWafADe2B6sP5EhvqUNT+lxgcftDG+Hp/3kMJjYcHR9LHjfUuPOYTpTKJs1f6jO3/ANQcl0CPC4r59RMitnYNIU1i8YoAND8/nei8iVfEQ3Sinp75viDbV75vZFMfHRU3hYmwDHEPj7DP+Vec9jYhDQRpG9tcIV0AK1nCjxp1wMTm7rxqKJqJGBaKFRzoHlyNAlXdItKZ8mQcDBLEAqtlbslqgZMu6hQOwIs6IvGSYIpBo2cXfb3liMArkxc2C+39TPfjddiEN/bATntSyd84/FEQK56gkiqP38+Lxt+j5DRPoqscHZtfRlSIjchv9DAzWfO0inFCOiSh2zRRD3pV6PxjnG0kdWvQXJXbluMoUstfxygvMLVMqOSZlX2tuDLxyAHdBSRQa466PR1dmvchkjHc4nhYNHAp8tANh0eFby6cRhz6xdS7D3BHmnbl7u5f/xqqoS0v3nuSqc3fmAFdmCQGwM5pfYtojUJpwGtSUouRGbZ17ocq0J1yNJJUc6QDFPETnH+SC
- qXruGH74
- 4rE7k5yr7EVmIef9IZ+txLL+EACurqv5c8aOm9lZFeqDvvO9TBGG3tPJUrsHzZdxNfg48NEshv/fxdz9fIClcCKGbdUH/J5nlKzdGTEdAl30BsZVpK41Md1D45WUheWZnqyUOXCna2KPbtwBEOI0OtlLhThY45RWr5f2szxVLvMHn9tlihOxy8O7VF/ACzHYJ6TgLM2bATWn/fO7zqCjATJxQgIEyJX3qc9E/R7aVCIWWQT89ev5ZBdhd+SIedIMbINfGGUV7nFtYTC5qi/SQkfBOmXI1rJrjsaKx
+X-Stat-Signature: 18ibizpirsdj4nxikpnuk7qy5ax13m4c
+X-Rspamd-Queue-Id: 9D89318000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775073135-577215
+X-HE-Meta: U2FsdGVkX1+S3L0zB/kU3UR0qDJDNnPqh/BdWQHYZxBgChaEMi8n+uCp6Bu+5lcDfS/wqPQqiLIerZFC6jxDS/c6ZFJLDweO1HqG4n/7w0OVkB+UtvMdLzYiTz+LbbZvD5Abqol2tvGVA9cmC73lutZ/6nkWMkW9s2wfumlwqcgcwUvAdXT0oubfT3zYpP1NvODhSY+oYYhedY0qbExbWGCO7iDZGAYwM4cCzMi2TA98tTAv17k7MLVsYIjCVfQ72K+C3xf1QGDboLBypRdtrg27XMI0qMh+7zwR1X+APvkP9MwEkZ8INBS4lUEecg4MoBtZBrMr6J9xZzoDU3bgB9/xy1Y/R0LDoDZpYKv2SBkQKrZKFO9BgY+LEHG3J/PPkQ7i3Td2Jn0FQGIUxhrqROGC0V6iOPI/c63apA7AkDdRrEUhqzwgKT8J906/NKJMT5jhmNac3anexxgxP9aFv0yW0Fv/hoPXZTDtjSQyKZ2SSdf5QsMOPduOOhoYU/HdWpPtqpaGIzNL2T+8HQLa6fk4IKQ0a3CxkCZd6GOpozD46zgpMlZuSKvedzz0MMHvO6RGDiRJsXxj7tDEA98Gf9Rsfli63ZkvslrWLEDxsZFTgPP0FGrDkpvdVbVyXFlinGYyQzSAOMGCxAnox7NGojcRY4XMXaULtT14e0O8iqaWb0WFEmBmeH8PeuED/xzRWy8ing4mwBJveOFg8mcjPVOhjoenxj2z39LJxPTzm/dMac9fCZFADW54L7/NvfOW163OP/hFeugyelmWq/bGbMzGrvWwLQ8jo8IHaay6XdkkApZunz3ke3fjGB6J9DPqypLFP2ZhKJFfyk3MMY9sXeNWWwhWg/3G5pHCboxvE3A0xQsrUaKCox70iXZL6n75vk2CNN86JPqEbs6qZI7yvdNR9fXJwjaE1ZeOW6/n0DDJukuttn6SsMzyQAZanNEZ0jp35mzyJdR7yvNISO2
+ TMeQs6tg
+ SYw6Hjo2dpH8m+q4s2B4h0q+rhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,22 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 01 Apr 2026 17:20:40 +0200, Thorsten Blum wrote:
-> Use strnlen() to limit source string scanning to 'TASK_COMM_LEN - 1'
-> bytes.
+On Wed, 1 Apr 2026 11:08:58 -0700 Vishal Moola <vishal.moola@gmail.com> wrote:
+
+> On Wed, Apr 01, 2026 at 09:26:36AM -0700, SeongJae Park wrote:
+> > sashiko did arguably good jobs at reviewing DAMON patches, for multiple
+> > cases.  "Today" is the greatest day to give sashiko a credit and the
+> > responsibility.  Add sashiko to MAINTAINERS file as a DAMON reviewer.
 > 
+> This is a great idea! Andrew should add it to the MM one too :P
+
+Why not 'THE REST'? ;)
+
 > 
+> > ---
+> >  MAINTAINERS | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 16874c32e288..42aeaa858531 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -7041,6 +7041,7 @@ F:	drivers/platform/x86/dasharo-acpi.c
+> >  
+> >  DAMON
+> >  M:	SeongJae Park <sj@kernel.org>
+> > +R:	sashiko.dev
+> 
+> Maybe we should give it a kernel.org address while we're at it. It would
+> look more in place.
 
-Applied to for-next/execve, thanks!
+Oh, so that it could use kernel.org infra, right?  Good idea, but asking
+kernel.org address might take too much time.  I will move fast and break things
+by sharing my GPG key with sashiko!
 
-[1/2] exec: use strnlen() in __set_task_comm
-      https://git.kernel.org/kees/c/10cd6758e054
-[2/2] sched: update task_struct->comm comment
-      https://git.kernel.org/kees/c/9bf092c97b86
 
-Take care,
-
--- 
-Kees Cook
-
+Thanks,
+sj
 
