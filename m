@@ -4,86 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D4E10F92EC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 01:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B0710F92EC
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 01:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BDAF6B0092; Tue, 31 Mar 2026 21:02:02 -0400 (EDT)
+	id A3BD96B0089; Tue, 31 Mar 2026 21:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76E906B0095; Tue, 31 Mar 2026 21:02:02 -0400 (EDT)
+	id A13826B008A; Tue, 31 Mar 2026 21:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684AB6B0096; Tue, 31 Mar 2026 21:02:02 -0400 (EDT)
+	id 929A36B0092; Tue, 31 Mar 2026 21:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A18B6B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:02:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC9641B82CE
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 01:02:01 +0000 (UTC)
-X-FDA: 84608185242.09.080CBE5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5924D180011
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 01:02:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZDeVQJw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 80C3E6B0089
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:10:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0840413B128
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 01:10:19 +0000 (UTC)
+X-FDA: 84608206158.30.9788EB8
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5178E40010
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 01:10:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=dPwOUqRt;
+	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775005817; a=rsa-sha256;
+	cv=none;
+	b=AIN73VF98osoIAeZNnaEoyHvr+OHvXIuGxM/rowHF5P4Lh5+CGc+Ns5HtgJNImZqHrgNHj
+	X4tjwHdOZXkdueeYotHwlCxleqz2N777KcXdrTd3MR6tUt2fzSOiw88Ft1w/9bt3DV8TS6
+	M6ZNaTFLfPTWyBPllPP3yqWQFTniCpc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775005320;
+	s=arc-20220608; t=1775005817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4zuqYmEh5+WKaXwTR6bFZ3uWCmKP26pMS5biANl4oc=;
-	b=psAh3o+Tf2elnNHOnFVP/CkVCrL36WJSMt3pU9vGhAX/p3y3p9Vc/GdYnIRwnPK7ycmEzr
-	RqoP7zXt+raoTd0EG5KRgHt2JMfMjPMz45ld14zaD+Uzjb1vxi+0tjadEyMfl1E5EaaKYt
-	rCiGfLGkefrCH+IGj4+AM905RqQBQ6s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775005320; a=rsa-sha256;
-	cv=none;
-	b=6bpl2cObBNWIk9PyyeBuxrmTPqTmj3nmqvcdBFluPlCciwKswVT/w2+ob4WYVMIUbhdscE
-	dAbC5Nyoy1qma3v42nxc0JMYljNfnXRVXQ6aBC0dTME+x6OGn7Nhl3N9FWEvmJmEu3mq6k
-	piGlM7iTwSx2C/gs4WZ59ofXHdt4DH0=
+	bh=V0n+PXr9OzThVuja6Hb1iu9lamcpcjJRqduJBuh1qgM=;
+	b=IxcXSH4I9WFrzp1QQ9d3ZTiYWEmU8xtVey80/34tD/xnQqBjKh+a4YdPrElzkUmHBcaIH1
+	bfxGBS3bkbI6ZkxvnA52tWT+9dZs4h8vPuKZsEQCtfvP8ues7/XAJZ+bghVkVEL+OdsXhd
+	AJbcL2rMoYhqXdlwwIu3bOZjlEIK2XY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZDeVQJw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5FDB600AD;
-	Wed,  1 Apr 2026 01:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBDEC19423;
-	Wed,  1 Apr 2026 01:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775005319;
-	bh=jcORolmk2pu3U1KnRXM+xvp+DaiomzAMbEur1rQS6PY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZDeVQJw4GASOjNYX8+ocjkJYyN3ReMmn6javnl04Oau69d7Wl/6H4cvUhTVfwRPx
-	 +BYTI0tkNnsaV0C3QQ9KSj41eUL6LVtnClbc6wipxwdEU3i0GWn4567J8llXXFVBz2
-	 IlXw7OvBoKEArkvIBXWb8GVWxyp5uy0yIVRHcHwXEmc4lTsch74QGTyjIWpw/x0ph1
-	 Hmt7SwgqOytbGavQH8UqtzMcJ03Ihnm/yUZwnPcOFcWIfK2BkAp8XEoeG7njazXdU6
-	 o8PGB4ElirT/dagWyJfTs3TQbzzlwkdy+GZlJllB1DfSsNlInQKYUUb0gN9cdan7/h
-	 bUcqd890l5EIg==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate min_region_size to be power of 2
-Date: Tue, 31 Mar 2026 18:01:56 -0700
-Message-ID: <20260401010157.86136-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260331073231.30060-1-aethernet65535@gmail.com>
-References: 
+	imf27.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=dPwOUqRt;
+	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c76bc3e8de3so190182a12.2
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 18:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1775005816; x=1775610616; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V0n+PXr9OzThVuja6Hb1iu9lamcpcjJRqduJBuh1qgM=;
+        b=dPwOUqRtHPbFvsyrMKMcpmbWxSJoRbGqZMULIGbmWbX77b0gYU2+356jNjn9cFf+mS
+         sVz8Ww5BkB0oF/4mvMhBhN56T8X5MNatU4h9z3lc8MF+1+3cCt5vd2YpmOOLPhG6y+Hs
+         PDZ3tLLlBBU5lehJ0Y2pRStPGd/BQkjb6lk+w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775005816; x=1775610616;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V0n+PXr9OzThVuja6Hb1iu9lamcpcjJRqduJBuh1qgM=;
+        b=GGkh4FVcPv4fN7gzx4/IqMpQFro/ZXvi3sV5QrKEOkXqvgcLpR4xX524Zkvu5Sj1HM
+         qi7ECS6UVnk8xHqN3S8xlToVhpUhssKWWuuLOUu14QdDiYcRFzaSGiFFHGBK3CgLN++1
+         BbQyl6NdPpSSUTo8QK0dp+C1pnYOGTHHoFf1PdSIDDUkkjsfyXL8PnrTYruyw7J4sb7I
+         Wmm78Ii13lEgc/Yx29ZJoNERVRDY/dFMQx2xHGMzpB8eHQgujyZmdFGkz5CoFs5lugZ0
+         nbI90vvFGeuhVkrbC0+INP3zfUoWHLBoBTwG9pfvL+Ud3qTws1M4A9+rNaQilCAVmn7d
+         a4NA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXpLRrnXNQ0ABI6PJfLfSfzGKZ/mr1/XRLicYKZDsinJTVVX8vk45q/znXjEfyv96EQvcr1Hy94A==@kvack.org
+X-Gm-Message-State: AOJu0YwnV6RwE0DPAEmqGjn9WKZUZiEAgFgAvzk6Y99MuarXGJJL35qb
+	ouAzgQ06AVpPS8pxWWo0x324K6PARM9hpLA5ESURpo8XycZR36p8dTHE4f5nh9hEOw==
+X-Gm-Gg: ATEYQzxnHKy6aE1f2cVkhpuQQCVvPqsUnMPMgFMiH/O0Q+z7Dn98bfVEuvNR0TyGjGO
+	HdO4VMye9onLOY1aWQPCMDUYri4CXFkp3BHWxvlV+M7Xs3zTxFNptWUdmu1Jz0V/EpRYur3hxSz
+	d1KuWCj/eKRmh5Hd+1RlU1OeGsGYQCpF6gHElnGBpeOh+0kIEcN/mZb7ifFWIvXIFPNDjh0F8eg
+	4B3nGvwd8wSLtuVy4J18jb5rZWHRCya/jo4R7OTcoMhMcz8jey4axaOVAlTdpI5oSOiJgu0DxFM
+	6q/eyMQfdElLc2FoGYpC/yuFcbaqHETEPrccVGBHkHfWlmZzDyS5vSY/xzvkBnPWuoOCTG4RLIU
+	L39qN6//e0TFGxG70cbJedxE6qdru9AdeCNGkVcHZqY/gimUWwSJXg1rXZv9NUTByDezMdfQaEM
+	Ks5fxHZpESaBP2LDhoyOQB1hYHj9UyE2eScKlenwqNb9wId/a3WkQCecOiaTWfVJE=
+X-Received: by 2002:a05:6a00:4fce:b0:82c:20ba:156d with SMTP id d2e1a72fcca58-82ce8943bc6mr1497769b3a.5.1775005816060;
+        Tue, 31 Mar 2026 18:10:16 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:90ef:61f3:1679:56f5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cdaa4c3basm3551673b3a.37.2026.03.31.18.10.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 18:10:15 -0700 (PDT)
+Date: Wed, 1 Apr 2026 10:10:12 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org, Qu Wenruo <wqu@suse.com>, Avinesh Kumar <avinesh.kumar@suse.com>, 
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3] zram: do not forget to endio for partial discard
+ requests
+Message-ID: <acxwQXhma2s-e7dF@google.com>
+References: <20260331074255.777019-1-senozhatsky@chromium.org>
+ <20260331174926.58ef8dc4d40ac12f8ce3905d@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5924D180011
-X-Stat-Signature: c9ucdr5y9fza13ouyrrhixf4d11kkd1f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331174926.58ef8dc4d40ac12f8ce3905d@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775005320-903849
-X-HE-Meta: U2FsdGVkX1+OVdKKiHryvJm7HeG6HDVUApkYU3ktaazxqV8KDs8IOiSrsGFNY3Bl9OD7LE8/syk1uVDIPjCRYWTqm8jtYBydihA4mzT9tOzb1WfallYm3aZxQDyzQXLEggQawXDYSOEQQpmDgxMFoxPFT5XooLKEBUf8Sa8M6rf7dOiONhnoFkmHtrYG/bzld0Odx4A4vKWRGvBjzaIWQGdeZJ7iSffy4E8CUVjgWQSXO0476LWMJI/3Mqi2AxB2QP8uqMfwlWpS35PFyAEaPOzJig3aH49MFBLpJzuaZBIip3JmoLOaGjJletZM9ETFSFwabE8GBVqpyC3M/lwFtyw8Cnsf3AtDP3f+TVt8JlIvw4VOTR8AUVaI4aAiaC0cWUZQKShtyOdOx6BsHmSjeFqp9HuJvoFO8SU2/w34pZSCPCUoaznznq5K5lWUjyKgnFm/0+x25nzp3lhyomxKTNKeXl6HPOITy4DVcIClqGtOTbFCu+72Y+853t0H7i9qWsyhKXOK/KFNCWah8KZ2F6t1mfVcacLZVI+AHr4GhRnxMca9rH4D+yO27C7nLbXGmpDWkY+rR6p8N33CL3cZR4XCLElj8sP5HTx8RgjK4hMHP2SxBN7QNy1G2bZ/GqKtUL73nlLnaLkWyI3HuqI+Zjlh5YPmr5bfHu3NYtWTO4L1iE9xr+77JtrPQtliS/rCnWh5+0tnT9AMQtSYJow5efNmS9jlHswL2W+oXM+c5oTnlZ5tNigO0uLgdFQDg5qasG6DwgkpzFjY/dfX+OXg9UOvhleQ1BrqqEmd+pLu9pRWiAeNiF7iC93JjJRCRti2rGpidZpwHXFFopl4PenMY4bYfiq4jyYpGYoBlHsY4BfRXX5lHYPWUBbvv2X/ET+wGo3ofqpNBrtk6GojKEbRD5SlXc+gEpDfo7NyNLVQBCjF0mWQO/wAeDKkiUgeVt9lUqRR1zPNIZrtVvACHCD
- E7oTv3he
- woaEr/LMu/kDp7/IutXVLetSmiZmJeYXB6jra+hbH5SRhtptlzyWdbDqtPzHcN1TJPyKU5F4QytReDBHnzB+roFdVUlva9L95nj9xbBF4EVd9f+PvUMbV1bJNAdv1OaQqgBpidLspHCERS9LJOEC3+i5Yy04XpK9VbGROKbKLGEnTvTNatqKYHcEpXxkZ/+aPiDdLatvHT1icjm1cgFQ6VQBr6REOeMzZaLQffCgtFtNqfXbSpyG+8RCzNuzl4FVM9DUIgq6DwpIp9u46fezLlE1ftw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5178E40010
+X-Stat-Signature: 7ezhcihjrt99dwwkkjkca9cru1so9pen
+X-HE-Tag: 1775005817-119225
+X-HE-Meta: U2FsdGVkX1+X6cyjkKbKWhsjnhm4nBO6u8kbIQHqvqU7j0MDAVNoK3V/+/TytYmy0Bbyp39JMKNt+26KVWXn7rmvKodHxMu09ZzbK4k4krJGmEz9KFlW18GdkXVS9MDeD8Ghm5axjf8/4Ex5UsNIErxZXU0R1xdj09PbP5Qr35zhsf2pV/vBSNu/n4/jwwoWF6AAJ9SvJZemGMK6CO1D7VKPNvg1tOzT4b+wPFX7sFdNH4/nPtWdxbBYhpV3eeAksbY3UBFN8YinM7XHCAjmjImTyYmIOlp6ymWV4cWQe3cHeGtyQ4mjZNzjv+/BzB+2DHD67rISv+KrTaWCZ7RkhxhscnvGvYl+Ou+tecb7Gn8isBSTiraVFFE9W7l1fa6+T0kBbmkEshm+EYuD06ux2oVod6MMeIebW4GOyre/6wYenII0Wypt73DwiLbSzn7kv04IZDb+Fvqt5q/yILbAiWhaLP/jCnfqIN08gZOHKrrw9tdlvtGtGvIjWs4BH7FItDDcOXrWTkHN9mRMaWzlHJunRYwYC9bJ7aoV/Jo2s2GuKzupGvgXT5z6+CCGUM2QwWYxWwiC/Jim1aJC0/jyZLWnl9WJVUW2FedXmt0L0mraX9pUacosRNOZMVYke9qPHp1u3mo/pxnVHWC8LdwPOMxQERV4xkZBeleveVQa83sAKwlLhfiHLLetQjDWIspK5CAESGcfZ3qw7lw1dbvPsknhAPJrUl572js7vEMAun3Vsn5R0eE/aRuZ8BJER8jKAf9H7FZJumv+V7UfOQtwGHxSeuEB4NaTRD7XH6xB5HuBIlSARfUL8Z34snBJFXPpaCYMFvYzfGRuBI1BgBvuj6UJ/dmThSyp8S5Cwuoz7YXYf4BWuI3JJK9PnrSi6y1bkE5C7MV1asFoAMwSpHMX4dPdxElI7c0EuB+m4Z0qnHuU6W+FVlYasEXCQBWgpAOChMHv5WJqTJ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,32 +115,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 15:32:31 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> Problem
-> =======
-> damon_commit_ctx() checks if 'min_region_sz' is a power of 2. But if it
-> is not, kdamond will terminate unexpectedly due to the user's invalid
-> input.
+On (26/03/31 17:49), Andrew Morton wrote:
+> On Tue, 31 Mar 2026 16:42:44 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 > 
-> Solution
-> ========
-> Add the same check to damon_{lru_sort, reclaim}_apply_parameters(), but
-> return -EINVAL immediately. This is to prevent user's invalid input
-> causing kdamond to terminate unexpectedly.
-
-Seems sashiko found an issue, and you are preparing the next revision, right?
-Assuming so, I will skip code review of this version.
+> > As reported by Qu Wenruo, the following
+> > 
+> >  getconf PAGESIZE
+> >  65536
+> >  blkdiscard -p 4k /dev/zram0
+> > 
+> > takes literally forever to complete.
 > 
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-> ---
+> I'm wondering how you measured this interval ;)
 
-Weren't there previous versions of this patch?  Could you please add changelog
-here, from the next version?
+:)
 
+> > zram doesn't support
+> > partial discards and just returns immediately w/o doing any
+> > discard work in such cases.  The problem is that we forget
+> > to endio on our way out, so blkdiscard sleeps forever in
+> > submit_bio_wait().  Fix this by jumping to end_bio label,
+> > which does bio_endio().
+> > 
+> > Fixes: 0120dd6e4e202 ("zram: make zram_bio_discard more self-contained")
+> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > Reported-by: Qu Wenruo <wqu@suse.com>
+> > Closes: https://lore.kernel.org/linux-block/92361cd3-fb8b-482e-bc89-15ff1acb9a59@suse.com
+> > Test-by: Qu Wenruo <wqu@suse.com>
+> > Cc: Avinesh Kumar <avinesh.kumar@suse.com>
+> > Cc: Christoph Hellwig <hch@lst.de>
+> 
+> Thanks.  I made several changes to the changelog from the earlier
+> discussion (Anivesh Reported-by:/Closes:) and added a cc:stable.
 
-Thanks,
-SJ
+Thank you, sir!
 
-[...]
+> 
+> 0120dd6e4e202 was a few years ago so no need to rush this into mainline
+> - target this to the upcoming merge window.
+
+Sounds good to me.
 
