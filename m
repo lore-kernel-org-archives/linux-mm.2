@@ -4,135 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEA9A10FCACC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F2110FCAC9
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4FA86B0088; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
+	id BF3F86B0088; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF0A6B0089; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
+	id B817A6B0089; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA0AE6B008A; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
+	id A45B66B008A; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 955386B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:05:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C9381601E7
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:05:47 +0000 (UTC)
-X-FDA: 84611067534.23.BFAADD6
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 359AF180007
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:05:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="en9/rYeQ";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775073945;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F8786B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FD50C0946
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:56 +0000 (UTC)
+X-FDA: 84611110752.01.48F9145
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DBBD040009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kh9nIqIm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775074974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
-	b=H/2HAFJJgHYzAgyjvbg1Htnt005Xluw+3MjIHYDlIREC8CDpJ0seUz6Q+TyGCHYRLYL/wI
-	vIw27MRbQXwo8w6VAo3QUJM4/bZrhMVVOMZTJn9xk1vluQv2uw/KRV4xrcZROFHKLvkush
-	zH4EUi4J9canKstF6BIKxAuJlMh7QBk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775073945; a=rsa-sha256;
-	cv=pass;
-	b=8Hkf9wHlh3yWnnJDSQKgh+f2rq4mgNYqzsjNBsHR5YaGp5anyOHVpuOueyUGhMztqdbw7O
-	vYzaPLwtv/jbyehM3CGk13vf3TIFbpFB301hIk2ROa0WWpS5UHZKibBw/GPdiXiu8hr5jA
-	VArNCk3GF8a9urT1bVWxBMq9xmiy1Ek=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="en9/rYeQ";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-463a0e14abfso88469b6e.2
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 13:05:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775073944; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jwY6TFRjLnOj7PPMFPlo4KyWwWtKKgpYooGEqd8Td7gYTvrwsVbK5Tb2/jJr7a24uE
-         gR3RJWalGgNxJpjSJpe68s+G/sOnd/lNPKDRnc3FeFw6QyN/Gj+Q9EVtrKR7YeORc65Z
-         vpBXCqExh5TGDNLpTDQSbs9wQqtYI6O1QIjga6MoTsNhoknqS7MALAQG/dbh6T+F5ShX
-         rIgyc6HUmZJF/sCRZXcqc8m+3qKOfHzwpuFTKeePiiaVjEZ32DdsAakJtuJTywOVzNpH
-         QtOc91jyrs5Tqkgb8mNnAE6MIHRZWQxDiiyahohgaElUZdc/ENnFJOjOsi0r2ItvxPA3
-         1DhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
-        fh=eBlTHkn6fVickXEqYMONeDwRYWeMmAFVsCHmrf1RBWE=;
-        b=RODoxz9XoofmhqpNZWIoQsTHNR5WpkZMHGc7xGEFyy2wGMKFSpieyTM+aDa+aXpkss
-         uTpe90B384rLjoqlHXEWuFilSZVUigRHZjoGI4Hl3h0xzMYetjX5POf2auodBipXiS65
-         cZTjyS3btWn//Jb2sg1dxVPYE9WjmzMp2ZJTkJ+MIMn+mgM0Sy+i08D8YVYY1fLdiLxv
-         jkdUmhs3bj4Hzk28negK84Tru2kVuoOxr2TKmk656WUZ45F00wY1OMhul7lCaHoMt/wl
-         5CK3NXxR6TIPGE/+pyJmfYhDvVTNaemkNaXm2D6Gedi0h53EpSbgnhgg0RC/K3kTxI4n
-         f93g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775073944; x=1775678744; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
-        b=en9/rYeQFu84cQCe65NLyA3nNrC49ETcQGCUhSRt7Z8HM+QH1vfOLq4on5tRdcTrC9
-         Z4RL0xBoeVjxf2uIw/782yNnkoqE/tnvWBmE+P4DXoFUtgkqEVLnWtimq3S4KUZoUN3p
-         apA/mK0tBjCrBG+UWZIc3mDJr7Y7DcIyA4zhY1345ZVMIyB0QkRWjbJvrv9f9/yFVV0x
-         iWO1gj11S6lWH32jbv1C4GRf8gSYql9bjVpXY/l3x1QzagTKOfLkD9I+k5AaoMLS2KRH
-         CHuhYJDtaq5tSpQDIYdZI6V4ZIWPXxQL/bDoRp48aMOa7+FGN10/aIKjIrP6lfWuNRnK
-         pX5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775073944; x=1775678744;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HQorzreAA2R4OJHpB/2k5Ejfe7f/juBu0lAuIW52RoI=;
-        b=fKZoJhr2QQEKVuSO6faA6K07zbZyhNv4+eepldq5rpiz8kTgBBxdjNHedEBbLiHXlu
-         LP1RDMM+VrrW3053+uRwY9T8+eTUJ8LOO4XrO5JgEk68pHsVeL9g3MYbc0FaNPiywdKg
-         nc6dVTbY3gflCTqX/K6lcGRWbXPehJIqDXBCvCWLe8Slof14yVaaAFl9p5lkfRcJYFbb
-         Dn/b73hJmtwx6kLPSbJxtxeZuK482FZIiqM/aK5yv8GMnpRsKV+/bjTbvrg/K8MMcIIk
-         kXl5+KONzOxaeXMSMEqmbNWY/ysDOrUNX5Ik7oNCYut29PWep+6Aa/Qm3XaA1qAepGHL
-         RDXg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2EM7ioVHS0SAEHD4yomNj9XtgnCd3Qr1jARzLvVwJH3FNFhz78se9PGTL7Psc1iOx/D7DaVEMdw==@kvack.org
-X-Gm-Message-State: AOJu0Yw+DIRGkq1wa7mLwkkwSBSLJfvVj5VSKYddJuXq0KHLHpyOE3No
-	8eTjXsRr/La0gbCKtLD/Wm1MqpH0s47BsT1HNBPgTJfdruLJmZaRRLupkDcHb/7OnYCGYE2hZ9i
-	8tUbbra/1vhvWSNUADwzwWcnauXPP0Hg=
-X-Gm-Gg: ATEYQzyKp3LZ9/qDTJ87dIFmOqXpOIWgc1wkELYMG0kqX4RnFaRpdLJ/pSarwzkhxzh
-	sZBnUDr0CeRa9QmzuFAHDXRuKsKtobrgIiUaeF8ri0jrt9x8cfwu/hZg2tQXKu7K8Ub7aRIvQKa
-	86M02FxI5Q6hnb0EZs1p8r5B/tkEOFM4vgUw3SKbXPeR4Q0YfruJBJKeydgOuXtkWWPeKZQdCkR
-	cOaXfzGvdypJK7HAZuYM89MZHzzC4yEeLztpW4+JKAs3hwzhGZLZMKTQt7OypiyH/3oviNQ+vX7
-	kIjRrTwgTKMv2kX3+nVDk1h7wlhepZvUKRm+pg==
-X-Received: by 2002:a05:6808:1521:b0:469:f699:af80 with SMTP id
- 5614622812f47-46d8a88c34fmr606090b6e.55.1775073943972; Wed, 01 Apr 2026
- 13:05:43 -0700 (PDT)
+	bh=2bgtfIq1zRS0GcFj3J4C74dQe6vGPo8AFkp0eGgx56I=;
+	b=baq/Kpl9JMK8/LMTFEuw/pRwZ1WkpMMBsYhTlaRA2qW6gCD5/4NhJ4JdkRR8W+kR/XCTqC
+	ne0UxbpQjg0LG2vgGalxJ6jZUuv/QAHT+R5sou66N3jST4y5lfW52aKeoOaChyIAZUnnZf
+	VL574qYa2BUTYo7YrY+AElfrsfZ3wPo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775074974; a=rsa-sha256;
+	cv=none;
+	b=Lm4ooxCx+cICb3SYmlqUWd5JdVXQNhuyi6uhSZRmIRaxTs/TLzrWDt6a2ruidfkeLGqyeA
+	qhucd6WhTGs+jjF40kH+H0ifiB/16FixNZleECC7qWVpUAGv+U8N8Lw5zbgypX5MF+5sKt
+	XIVuBAzsNcF9cVGUdVNhUIkkQKLBemE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kh9nIqIm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B2CA0432C2
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B04C2BC9E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775074972;
+	bh=N1dSuIgj7e/PoIrDkyO9MUAKq6GumfQ0T+iWjsXaZt0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Kh9nIqImRkvQZJAD16JbmjAiy6a1usqifi+ejwwqWIn2AHmMje0N55i3QWoOdBLIv
+	 hFXY9iMGVh47QIGFSXmlw/pO9eMfvspCJd6aaqDNBkf2D1koZbiCrDTF460qKoYEtH
+	 52IKTtu5dkuKofoOyKi+BnzVvKYBsoIe69Yg6BMhs+90/YqOf5df3Lq5OEPjCsrZh2
+	 DBRNG2cW0WsdZo/Ow4k8z+hS31WJML1HCHWqmVSPaw4pAPBXCetN1dj9EPcyprngKC
+	 l4tXY6j7vnsj+B5XWCh5QtOH2Q3FGhgXoWfA9m+1lObMjnSBKypSZFb9JYz6HCYQiu
+	 rILbvWkXk4osg==
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-506362ac5f7so1113801cf.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 13:22:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVWlhGlTPwdykFdNQ0l5rUxwiarHdBbSGDk2nAkAnKUL/lgL7kyaicpSd3B5V3HX3OoqhiwnyKgAQ==@kvack.org
+X-Gm-Message-State: AOJu0YwAzRYqIfBEF8wCRcwu/t1aMw4cBYbFI82O+QBOTpTSxb0B4zHy
+	xoqW4tSjDATuwk3ZcWpeWuYRdnrE7PiyOdpp0+TLNDI0AxsgOXAbngn1VD88+mY3D9oA6J7h9wW
+	qO/WvPTXJklMKm+g8kfYsZScFqOuuUe4=
+X-Received: by 2002:ac8:5811:0:b0:50b:8deb:6a3b with SMTP id
+ d75a77b69052e-50d3bd09e9emr70551201cf.57.1775074971885; Wed, 01 Apr 2026
+ 13:22:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260331134158.622084-1-devnexen@gmail.com> <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org> <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac04ZeFdz7yvByRp@x1.local> <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
- <ac1wW6LHzzkXBeSl@x1.local>
-In-Reply-To: <ac1wW6LHzzkXBeSl@x1.local>
-From: David CARLIER <devnexen@gmail.com>
-Date: Wed, 1 Apr 2026 21:05:31 +0100
-X-Gm-Features: AQROBzDepiA8nWeW45-9o8fU5OhH57cwCWdR5XQtZW4sMyLftuPZNGBCSivb5fs
-Message-ID: <CA+XhMqwW-mXGuFgA4i+0JKW551CS9h6XczKY8P==DLwfV954TA@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-To: Peter Xu <peterx@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>
+References: <20260330071229.14614-1-devnexen@gmail.com> <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
+ <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
+In-Reply-To: <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 2 Apr 2026 04:22:38 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xqmCPCTnWNvxp+fTFgnJT64oOxFVNBnkVVBKOW26K7-Q@mail.gmail.com>
+X-Gm-Features: AQROBzBoOjM5D-IXgae6XgnRkEpJbpi97gBWlUDLzHjnzkQ_MDvqB4MSuYBGqgA
+Message-ID: <CAGsJ_4xqmCPCTnWNvxp+fTFgnJT64oOxFVNBnkVVBKOW26K7-Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
+To: David CARLIER <devnexen@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 359AF180007
-X-Stat-Signature: 343omm7poxgmz3rm5nif4rixbs1sk4ek
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: DBBD040009
+X-Stat-Signature: f7b8ahs85ufed6a3qwhn18i1gym1mxoc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775073944-799265
-X-HE-Meta: U2FsdGVkX1+JQDmmmv5xH1jyhr+obZwmGVahLU/sIlTbDdYr5BDK9JVDAjPoB5hFqJo3CBuGUIdwdzVsJrIWsuga2WJEC7GzCzpST5jT5rNoiCuqfcu368SyZQodDv0FwT62e+EURK7JMVP1ZgAiN/jk1E6OwLSlgR/P9JKxtQ4F/3vnCKucxMO6KHEjiyVS69l3CJ3lyn5ZTC/bv5F1XeVQDYEtTE2RO+vuIHCFgfKHIWFNVZ4XCsDa3UxXEfrr9aJk93M5Tri4kVuxShxmiu6jc3iyFBnbXNB5Aiz07z35grohbLWB8HiUs2gg/G8xRTAUWudao7j0vWiNN3IhXRTtU5eIH4sIn0xhTE4w9hqFpRCZFsgDnNCFLC2zqGLjWXG7CdZTit8rFXSAhnC+YtHR5BjSy5snoCxHPNRYo6nK+wAbzk6MRdGW9XWwF4EIh77C7ZG0fJEbpx364CpjverUet+JfscOsxqvBBu/YJqWiQpYwDnZ/KoR+PM9s9z3nQevKsFqdp6VnLsO/L0BQvJu47u6NT168ooAhzVSlxM458B1viIVEIyjHOnL+homgpgBJ8bI17nUoqbzYmyt2C5MIr0Wep3OnnBSEVICpPhXyyT5tLJPpTH+mf9gBpJ5nwiwLGDWJYigq4NO4Hk0xlVntptXRv8rQZUCxdnCEAdCulBMVMH5wtb5Y1j/hNIaxGrGBHbtkGYav7KET2Y9S74aLTMjS+hCgLPWd8S5jZGlS8Qel9AsebVXOgQ7Usy4lW+5uEkwVm67RsjP94aiwKXfywxP5Ouj7ZyljWFGu7IXD5UBRLkkCy7Z7WSsMIGZxXbKJdGifHCSCmRYVAvGKTZKs2ayDVy4Qcv3eEut4YqcwlMcwNYAPM8zHgVXYLCl2a+BviCytFhlMpRrjFR0l3yXaFI5RTCHKLLTvmVVL8XIwsrckOKz/hORxNGVSxN7gNxnr0mvrqB0ou2QUmg
- nWEXvUtU
- WXm3hNbUGHUWISLSDJtgGghn2saBzjGhX1PdpZoXYdf8UeSWLTpOj0O2XHcm69LqljREbH7bdWuLGf87bLiAgaHr7VCK66+euN5oyiT4PWApZIl2WaoahmMBAIQD7kT6XtF6Hgs1owDQ0+asGfWb04grhg4QMZnxjWXUIZw2K7L4acFbmVK5k5VQhPKZ4WeyEtG4ihCwTXREuywhiJkQumrSrtq4AQR1nFfhD7EtVcNreFQvvj7QU0QwHkdqM8PiY9GyVtEo2i5EJeKFEld3BumAgqDyMBi6tjRItqh9JSYCWcFY6uykhsNS35DorCYUGKyS9XaQghgD0TywmKvs9m4174CtWDiTacA5N6ObiqGgTKO7KDFjBR6IAnMSJ3yyqwhV2msFh4Z3zZZvunbUx19PXDzNt/tL1pR8CPHydXfrlJfffxKq46Xc6mTj+nZsT/ILq
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775074973-377843
+X-HE-Meta: U2FsdGVkX1/Vin5GGlNlZB6Wz7lENzx7lTXA8rNmPpj3wICHU2n2HQTiUuOGyTlrqqnK7AqIGcrroiBh3DCWl0858UuSBUL911Afljc/cAhz1/A+zEgPDOwrSoZB6Lt8EQlU9VRCrC1LpPKGGtFiAD0s/WvTZKcYB2Oijp692cf57e8+UIU+WVxwLYLPYX6ATIDePQ9/ivITrmwcN0UuwlseOzmxZXgTzh04iR0YeRI9/d3/toXWoCVzrhDym/Tpsko2IYtR3aAO+3R1yZt2dP1zD1/X+7tqgCN5ARsvdN5Pjy8HtzEk8JSPf/9tNWTilXJlEgjHCqmNDeTGP7tTWCmVrHgSsrtBzi1lJARFP/bDcL7U1NEiPJ73OWInSay30duzPZ5jy779Miobb2w3jGGDw8P2ApgaFtIU/vS2z+hRX4zZlzjlC7a/67R1HYDoBW+gpe3EWwZT2bSbCBagEb95uHodxn27CXuNiKhIJkW2RdXXkO6GXhC0q3sC7u4hHbF8KUU7Sx6KQ5lI9C/qo7CjGyk3a8NaGLIG8KF8d0vCLtcEq0LJx3G7LKtMbExbatgGU64THZBPex8JF+TVh+mgxlS5tzwZnZa5Ci2SlIMQuw9OMETNXDjB5onf4er5a5DrbbpAS+F7BtCVEtGVedhBrQOUViBRtOkt59CurAJO7+z3V+VuS4kDYWi1ZvlQbnf5VQu9KOopo7bxwbkvZMxiBjaaPoXTMYF1Lv20hcSV7xoVFY7P+2xrt0KRv7KMy+pQ0CVYkKEohyMGyA6EJqprt4rwTuuxXhXRnQ1bKZ0chchVUwJ5/ADveui2HJf9vNHRA3ufEzLZcqWTxnxFXKW1IoL3w6ozCieop7q44Wm+0pLDSzPH6PQMsFAaReOX+qvII481mPMwtpcgOJ9FtO+mT9nWk50iOwhb/Yzv0DDLL0Y95uKFpeCPsiHqW82uPQIjTgDA9n+v+e0qX+/
+ kbfbxSWc
+ gdAWMn2rrG8quNaO6QtDIX4P1oDAsMn2vq3T3oa+3kgBdpcBzGoujV69F13BD3svSqatYFNC4PA6ij61v3/oqdslu8LUI3tdDnZRkksKSL2Ae3jGvc9828mEpDrTRwl3SGWfXu0fG5TsBQDJL6tPGEqfoo5uH6z1CbrDN3SDc79sWD1cebRLKZwekSpHuO1I9+L1wRgz9qvnRn1RRR5CiXMhRY4zEdn6MEkKtPHFJ0NPlKoMIIJfpJpKbMx1p64cNUJczWQZKEZWkW+i0Dt6G/JPb26rQkz7Qj4HrDDgR5lLLFgJR8Mt4ee3ukhFzOU6mrhtFmIopMcTTC0yfbrerSOO8vERcG/HVkjysBAUK99hgXNRpvr60eI/8sHAc7P/0jmyQDuvZxJusOcU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,32 +106,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 01, 2026 at 08:22:00PM +0300, Peter Xu wrote:
-  > When caching the offset, we should likely use linear_page_index() with the
-  > address provided rather than caching vma->vm_pgoff directly, then
-it'll
-  > avoid same vm_pgoff while VMA mapping shifted like this:
-  >
-  >   VMA1:  vm_pgoff=0x10000, vm_start=0x10000
-  >   VMA2:  vm_pgoff=0x10000, vm_start=0xf000
+On Wed, Apr 1, 2026 at 3:10=E2=80=AFPM David CARLIER <devnexen@gmail.com> w=
+rote:
+>
+> On Tue, 31 Mar 2026 at 23:33, Barry Song <21cnbao@gmail.com> wrote:
+> >
+> > On Mon, Mar 30, 2026 at 3:12=E2=80=AFPM David Carlier <devnexen@gmail.c=
+om> wrote:
+> > >
+> > > sio_read_complete() uses sio->pages to account global PSWPIN vm event=
+s,
+> > > but sio->pages tracks the number of bvec entries (folios), not base
+> > > pages. For large folios this undercounts compared to the per-memcg pa=
+th
+> > > which correctly uses folio_nr_pages(), and compared to the bdev read
+> > > paths which also use folio_nr_pages().
+> > >
+> > > Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
+> > > count since sio->len is accumulated via folio_size(folio).
+> > >
+> > > Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
+> > > Signed-off-by: David Carlier <devnexen@gmail.com>
+> >
+> > The patch seems theoretically correct, but I=E2=80=99m wondering
+> > where we can swap in mTHP for filesystem-based swap=EF=BC=9F
+> >
+> > In both do_swap_page() and shmem_swapin_folio(), we check
+> > data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
+> > large folios. Am I missing something?
+>
+> =E2=96=8E The patch seems theoretically correct, but I'm wondering
+>   =E2=96=8E where we can swap in mTHP for filesystem-based swap?
+>
+>   =E2=96=8E In both do_swap_page() and shmem_swapin_folio(), we check
+>   =E2=96=8E data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
+>   =E2=96=8E large folios. Am I missing something?
+>
+>   You're right, I missed that. SWP_FS_OPS is only set by NFS and
+>   SMB which have no bdev, so SWP_SYNCHRONOUS_IO can never be set
+>   alongside it. Large folios can't currently reach this path since
+>   both do_swap_page() and shmem_swapin_folio() gate mTHP allocation
+>   on SWP_SYNCHRONOUS_IO.
+>
+>   That said, sio_read_complete() already calls count_mthp_stat()
+>   and the per-memcg accounting uses folio_nr_pages(), so the code
+>   seems written with large folios in mind even if the path is
+>   currently unreachable. Using sio->pages (bvec entry count) for
+>   a base-page count is still semantically wrong, but I understand
+>   the practical impact is nil today.
+>
+>   Happy to either drop this or keep it as a correctness cleanup,
+>   whatever you and Andrew prefer.
+>
 
-  Makes sense. linear_page_index() folds in vm_start so it catches the
-  shifted mapping case where raw vm_pgoff alone wouldn't. I'll snapshot
-  the computed pgoff instead.
+The patch looks correct, so I=E2=80=99d personally support keeping it
+after cleaning up the description, as David suggested.
 
-  > The other thing is I just noticed the err code was changed to -EINVAL for
-  > snapshot changed cases, sorry I didn't follow previously as closely on the
-  > discussion.  I think it should be -EAGAIN.  It's because the userapp can't
-  > resolve -EINVAL failures and app will crash.  In a VMA change use
-case, we
-  > should return -EAGAIN to imply the app to retry, rather than crashing.
-
-  Right, -EAGAIN is the correct choice here. The VMA changed underneath
-  us, but that's a transient condition the app can recover from by
-  retrying. Will fix.
-
-  So v5 will snapshot: vm_file (with get_file/fput), vm_flags, and
-  linear_page_index(vma, dst_addr). Return -EAGAIN if any changed.
-
-  Thanks for the detailed review
+Best Regards
+Barry
 
