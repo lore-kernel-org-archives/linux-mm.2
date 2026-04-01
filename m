@@ -4,85 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C6810F6FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC80010F6FBF
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BD046B0005; Wed,  1 Apr 2026 11:21:54 -0400 (EDT)
+	id E06196B0088; Wed,  1 Apr 2026 11:23:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96E1B6B0088; Wed,  1 Apr 2026 11:21:54 -0400 (EDT)
+	id DDCF66B008A; Wed,  1 Apr 2026 11:23:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 884BE6B008A; Wed,  1 Apr 2026 11:21:54 -0400 (EDT)
+	id CF3096B008C; Wed,  1 Apr 2026 11:23:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 774426B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:21:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25AE7BB825
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:21:54 +0000 (UTC)
-X-FDA: 84610352148.04.B518104
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 40556120008
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:21:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KO1/IbXU";
-	spf=pass (imf29.hostedemail.com: domain of thorsten.blum@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775056912; a=rsa-sha256;
-	cv=none;
-	b=Nt1a4UJtxyDOG0cjI6oTGh8BqIUeDtQ1uiAYKLaMLmRjcoZnL7SHNzuSCLGT/Lnu8bWtA6
-	jVj7kKOCCl6ZtvA5v6mkCyKr5vjdBmG1WRYUEtsTph8klNuMe3peczGalZ1ATUEnU/zqmv
-	u2JyQyEoVJkse2sYgVNVYf1bUl8RMHA=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BE7AE6B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:23:25 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68DEA8C625
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:23:25 +0000 (UTC)
+X-FDA: 84610355970.13.FB72DA9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 24B464000E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:23:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xy+ggk8X;
+	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775056912;
+	s=arc-20220608; t=1775057003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7zEkV6rAlsSBEPVbyFMZ428Oys5VqsSf2SLVRMYelsA=;
-	b=YrF9j+om0y4e7jRtcyvcvWCZ56I/HfyrpBHGw41FCl5SiNHJ2zCzooHyAE5xF4KPNqr9Jo
-	9pwQv7tanhIepPfuaBXliC80SXB5peESTwYRa3aNB9WN5sfZC/Nz5ZcN2g4AKTCWbKIeUn
-	G9R948ekkeyzvrei2VPe0GP2bFxEpaU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AS9sBE8MNzlgdJ7Owvs0YGGHjd+pXwcJRuuv+ZiN8LE=;
+	b=qH9BzKVG7Hvdxyw+5DHodONwEUnfNx0vLoJbakKtcODYObsNwyo0VCxqx3GAH7SABO8UQ5
+	koMPNNIrteDUTyXfXbBgQhhvadP+tAOxugNChiH79g1jVIMcZxkBYSgcRBwJ9eTmV6kdzf
+	8XH4CvmaACM/HF3jRS233P7gknymgMs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775057003; a=rsa-sha256;
+	cv=none;
+	b=1he+geddfdr9BrRqTqBt9nzh7IBeV6IVfLHwQFcdLVKnt7NJsuvPrQtz37jgweog3dcQpQ
+	tA58wf7UTqWieGtWVFrj2FE6czg2M68Nlk+wUg014QN1nfmpi1SYMivFHpISVuKOO3QazG
+	rl0n47Lia5fzYAC4QISRQ5EwlOGQoRo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KO1/IbXU";
-	spf=pass (imf29.hostedemail.com: domain of thorsten.blum@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775056908;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xy+ggk8X;
+	spf=pass (imf27.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775057002;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7zEkV6rAlsSBEPVbyFMZ428Oys5VqsSf2SLVRMYelsA=;
-	b=KO1/IbXUSAZ+YOxPEAWkfbtRL5TDn38230kQD8+4o8hbAMYXxJCijkmC+sSA85KxcCscR4
-	nuvXT2sgV7BNue+XNd4kXP6gsQL5tvpidi5gfOVCpxG5etLDbUBZIdq6ofkRj04bh3QjOk
-	DI2hjqqy3qwI5AAm2bCmE+HDgvR3Fj4=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Kees Cook <kees@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] exec: use strnlen() in __set_task_comm
-Date: Wed,  1 Apr 2026 17:20:40 +0200
-Message-ID: <20260401152039.724811-3-thorsten.blum@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AS9sBE8MNzlgdJ7Owvs0YGGHjd+pXwcJRuuv+ZiN8LE=;
+	b=Xy+ggk8XalA8GicI6SyjtfbSnafV03ZJopH1gzkjMudGfVM6oqtpFJou9wiNQGNfztjWwe
+	V4Npvo3FB0CHtrNXwehpfy15592QR5Vo/i3EATEfE8nh6mWCtQBme+P0C3CRljWc5s30ij
+	H0YEZlzn06DcfRKilGgc+rcZZEnfN7k=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-s-QVMts0Ora-fBYgr61TFA-1; Wed, 01 Apr 2026 11:23:21 -0400
+X-MC-Unique: s-QVMts0Ora-fBYgr61TFA-1
+X-Mimecast-MFC-AGG-ID: s-QVMts0Ora-fBYgr61TFA_1775057001
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50b4fe4ff7bso33020371cf.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 08:23:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775057001; x=1775661801;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AS9sBE8MNzlgdJ7Owvs0YGGHjd+pXwcJRuuv+ZiN8LE=;
+        b=IWdLIfERO/QG9EsgwhFrJC91VVK8e6zO0nTEtuufgn7pDUNcmZp5bQjz2P6h2bEn+e
+         dXOPHV8iXz3zwbIm/5sz2t+DYOUPW5IzdMoj1wHjKOmSbOrj+jaPBNevyC9M1UDAM9rT
+         ZBJRpRsAgt51jxAHMqCxIATC+LCB8kV2JSdalfmvtxbiWIYVqm3+ld06ib9PB5kcLret
+         h3Nw2epGk7JuEdZUxQA/7F7apYMUlLojNoG68o2ffInsFP14jOz7vwqhdbksnZ0gAZ9n
+         iLyWqluqcipOEfaS0e09fYuehHOTmvgnhilM8qSZEszbGC1w75jz/em3LzyxD19ojStL
+         d4VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSpDpSdJwYHYchPlbgd0XKcFiHm9XJ/LmzvydEj0OmMeNGcrKKVbWpjCGwIbnGHt1W3l9OOxBK9w==@kvack.org
+X-Gm-Message-State: AOJu0YxG4BtIlHxo0opFTFsj4uGR+ZknG94O8953Zo6/3Jw1VfXtssSa
+	ZCuSJeX89cpJkE7Gcq4GPK5vGtt3+ezuab+LUGXFPSl5WHVHTh2cdrCaESzUfl/Dr2p352JYvqy
+	zKQEuRp6KWGtkeGzIXo5FsJIldgHFn93PgmjdMT1XLlkPzwEzrh1H
+X-Gm-Gg: ATEYQzzGPoQwH1xK52Y1T3axtNcWecEUMwbQOEAcX5JCwwEqc/xSw/fgsaQLYCv0reu
+	lVpmPKAZ1/QyOhffJYoaNvreZMU1Nz+bH5W3i+dTnlZQWjD8hQH28fbrduMpk51g68BPQ60f4ZE
+	4QmVg+rsnvOyBJGmdhiP+4H7w+qz2iTqpJ4ZDuJU9FITn0320HDDR/cfjiLLorWLFtSVqoivuZV
+	dsm9rOuP2EUfDdiK1WWWLFH6hNRLotbWt/6z9JsXf0n5Mt9ppEZj/G18a7Qs2prM7QNEEAo9pbj
+	IzZX9vYOQaU+P2NLe56ghcNJJMvCU6oybrui4ZCEtea5KQtSje0QUGvKDOvKjuagyRlrhrouFdR
+	5pp5H+WXCvsFphwavqJn4EIZgjCaWUFlFq82g8GhvVUEbcg==
+X-Received: by 2002:ac8:5dcb:0:b0:509:5116:b433 with SMTP id d75a77b69052e-50d3c146b2fmr49400861cf.11.1775057000851;
+        Wed, 01 Apr 2026 08:23:20 -0700 (PDT)
+X-Received: by 2002:ac8:5dcb:0:b0:509:5116:b433 with SMTP id d75a77b69052e-50d3c146b2fmr49400251cf.11.1775057000209;
+        Wed, 01 Apr 2026 08:23:20 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d4b1dcdaasm345181cf.9.2026.04.01.08.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 08:23:18 -0700 (PDT)
+Date: Wed, 1 Apr 2026 11:23:17 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David CARLIER <devnexen@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
+ retry in mfill_copy_folio_retry()
+Message-ID: <ac04ZeFdz7yvByRp@x1.local>
+References: <20260331134158.622084-1-devnexen@gmail.com>
+ <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
+ <aczOCqrCx7Xd5HIF@kernel.org>
+ <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=658; i=thorsten.blum@linux.dev; h=from:subject; bh=HS4UGZQ1zzADaK78wR3NC5vUlfO80M5mYOCHTc0l3KA=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJlnzY//e/yhtna51vqq/3c3fVlTtmGD/bHuC6qpbNUtR TqsDvLCHaUsDGJcDLJiiiwPZv2Y4VtaU7nJJGInzBxWJpAhDFycAjCRz08ZGb6nzqg4Xv+Ff+V3 wZnV4rICs7Pjgjh3TVv259xhtc/Xkmcw/He4Zs6zPuGeFd+M4yZKu/3+7ngze7uJ561fcw5YrUm e8Z8TAA==
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+In-Reply-To: <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lDlPiFyZc6HqLsnYif5CpFiO9Qd5QzUjr1tBkzq9DNA_1775057001
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 24B464000E
+X-Stat-Signature: 7j76x1d3izx7ruou7t6gxnyia5gy36wo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 40556120008
-X-Stat-Signature: sf4th5osbhdtt8rfwysqa3ixf6ius5d1
-X-HE-Tag: 1775056911-667639
-X-HE-Meta: U2FsdGVkX18CwJUeczzHZg2f70bjBQOMaftJ7VxkR2EEGLSxZT2dQpNGF3e000bS/zB7WFiruCcvUZ8waIKW7GyfwMAAvbQBvevJFSU+VhnnlyRmzTnXA1ZJDq5x36qD3AvKi2t8lLt83TqRfzf1G74ba6xSnUZksVYblIemRgW57OeQR1OykcO9ilbrGz7ekcdnBLgYkTwmNweb9wQ+4htBqpOn646myeBdWuDI4pUS0ZmxBBYq3+INCiZ7FxU/gPcr9dwSKB4hmQW4qW50yfJi+k3hdm1AXm5LDRHmhKu/iRof2Heh49xGt3033SJQOWTXnhIOD4wSKh15XqchLF0pt6Z5duE4P24SSL/2LtcLLndKwQCO+YxeDF0uSg2Ss5H9aRgB/CWdXg7kJ7AADqRmmKdd6j66hpaxi1HP/sPAxeEKT2CdCYC1hbwBUE0IF3AfMpGVpeJSIZAWRZi/3hJdag/wXXuz1EZ4myDeoYvwaXE0l/jlCFfoHkXB6TNOEx/J+ROslMQg8WZcxNcU4LurwNHjtCXrhtGlqlqrbdpOt3qnQ9DaLrStgQ5orIB/BAgkPzb0QbcglqdHfat6sIbgvKJuHMpqC6e5tHObBknhKTDgNoMU57OhKxJJcK4tlG2u97HiX9GtKFeuVWeeyiGt6AlBG26GTl3XvxMbwMk/vd0b/0VuPAJzWPmJkKICpZj+hCyyeCUZC8hLX1s3J4xNqBV1ZnCq3+cdhCTM2AxvHotFb3fpqfOGY4z+uEe7ZLnNMHlz5vSe1RPwjGE5cPHS4F8FX1VIsx4xLU42ePEMy+jD2t/7CFO48u7EZ3m8qyJ+9yL8KvFyR2g1i5wU/cByojWaMsj4u6O9m4nLZdZr8rOsTxoVp6RGMVKDU3Cjs4ml11C8DuJLpEL39+Vfoc/MyxAaCD+yvoW6I0EKOf24JoVFLx4NAH7BkT+73/Em+iTvMg5yWppaw6MLXn2
- DTYpY/56
- EIOkELzeoKRiiaii8a2Qn0k/j8dcKQDxQhg6y0b/u+Ix+I6rK+Wn6+ER4oRN2IsF8QlkBZ/lMyydrDzcxGPfRXEEe72XKipXlMN36arM9HWSObgC2jv1pe29XNYUuoSn0NNafvbxMjYF87/4UpJ+anCwvVo4RizDdpZtryhEa3k+vDg3PFMeBKJ0+tDRxoHxuY2N1Nglq6d5MW5wEPvq9m88/Ze/80lSqJddWFvpI7H6Jd80EZZoxTjqKWk3BCAFKhxontwzGCTT/H9Hl2fwdhxQLNA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775057002-747290
+X-HE-Meta: U2FsdGVkX1/JTU3E+0EdGvdcc3rtz2Kyt4c36pYHIZGb/Ba78tvoi2ljv61JJ9xr/wb7SSa5H2he7tjuyfhTHGWwJE7ubWj2i5BX4fzE8+839w60kKpv4vjPcyJQwJxiplWvhclFPMs6x7zOkAAVgYDfNY/skZvUS389fN6WPOeERlv4GtZOEsK+np/E8FB/rAAdYqjGnxltZVWQkUq3BAPeV0KlMQ1lvUhx/++ek3Mk07t1NyaAEpyPTIRZSmc4ethumOecRyhWR0CxJIVNGNAX1Aae8+OzpMt2tQLl7ME3BuzyUuc1KG4jJ4FshLV1TBF9CsT9cdpVyQ09RaUgKiQFfxXfXDzhQuvqv8Br48PFdrAk1qjGgWJnAJd52XOhhHL1qZj5f1YtOtJffCJNK0jegtpjexHXBkCaBkzwdpQqoNVJfToZaaHj8oUZnDi0u7I8jfVpuN6wRSyQVxXBJH0oqVK3tDPCXmesxiZ18kMHYhCHMIH5XUtWJidTsp0kotdfmgU5R9RhGLliXv88T28jkaf8vhuNpE+kObrWGIwLpwuIe5mbeO2yvm3ebdUsIxEMKHO85nkGXewI0ctQfnn/FM/J8BK6WdaS/dKam1aNIuhxa8PPNgj3r8qpXjz+0/y5SSiUq8I7QdiyuCGbq9xyMkdEghCMpIN4Pslt409L619TN/BYPhW0eXAp+//fwjtm+56Px0Ozg0YoLp232+oBp/8X5nq7HPxwe11TNxds28GznX9af67oJO0X+JNtBvnvZFg6JQ530O00q0ETkEK21CQahXzkvsgCoWiNTUdFOP4L/T5o4dYt8zJgdDFuFnFrslYrDQQTzBTNcFpRLQdfLdzskpN8MhtXN8onLZsNR7zqpBJCJjo7JQWvcyJqQH3GClPlpHRk/iGXf8W1eIZdd0nlGFrR0W2j5I4nsV3onu73LX9TWenOVFWtvzn2vzIrU3xbCOjyOUKUXh7
+ piQpMRI6
+ znKsc5h1FhHUaBDQ3kjz3tECCXN2r5gddEyy8ImAhHxowS6XCUfsn3qGD9sHuc/OdpBh2e2KdeTqGiY2N25Ylr1qF+dKasGd2GTkoatEecnkoN8A3uo8WLuJiH6+FG69jjDAccIv1+mNwQ2U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,25 +135,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use strnlen() to limit source string scanning to 'TASK_COMM_LEN - 1'
-bytes.
+On Wed, Apr 01, 2026 at 09:06:36AM +0100, David CARLIER wrote:
+>   The invariant I was going for: "the folio we allocated is still
+>   compatible with the VMA we're about to install it into." Since
+>   alloc_folio() allocates from the VMA's backing file (inode), checking
+>   that vm_file is still the same after re-acquiring locks ensures the
+>   folio matches the inode. The vm_flags comparison was a secondary guard
+>   against permission/type changes during the window.
+> 
+>   That said, I can see the vma_snapshot abstraction is doing too much for
+>   what's really needed. Would a simpler approach work better — just
+>   saving vm_file (with get_file/fput) before the drop and comparing it
+>   directly after re-acquiring? That makes the invariant explicit: "same
+>   backing file means the folio is valid for this VMA."
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- fs/exec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+IMHO the flags is needed, consider a shared shmem vma remapped to a private
+shmem vma.  That needs to be covered in the fix.
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 9ea3a775d51e..ba12b4c466f6 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1074,7 +1074,7 @@ static int unshare_sighand(struct task_struct *me)
-  */
- void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
- {
--	size_t len = min(strlen(buf), sizeof(tsk->comm) - 1);
-+	size_t len = strnlen(buf, sizeof(tsk->comm) - 1);
- 
- 	trace_task_rename(tsk, buf);
- 	memcpy(tsk->comm, buf, len);
+Actually instead of reducing checks, maybe we also need to check the offset
+of the mapping too, that is: vma->vm_pgoff can't change otherwise it may
+also affect how the back store would behave on this UFFDIO_COPY request.
+
+For that, see the example of shmem_get_pgoff_policy() where it seems we can
+apply different policies to different ranges of the back store.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
