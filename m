@@ -4,125 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4090C10F9312
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 00:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1C4310F9311
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 00:44:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A82E56B0092; Tue, 31 Mar 2026 20:39:58 -0400 (EDT)
+	id DE4786B0088; Tue, 31 Mar 2026 20:44:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5A746B0095; Tue, 31 Mar 2026 20:39:58 -0400 (EDT)
+	id D95776B0092; Tue, 31 Mar 2026 20:44:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9709C6B0096; Tue, 31 Mar 2026 20:39:58 -0400 (EDT)
+	id CAB2E6B0095; Tue, 31 Mar 2026 20:44:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 86CC86B0092
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:39:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B0EC160506
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:39:58 +0000 (UTC)
-X-FDA: 84608129676.29.7036394
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BA71B1C000A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:39:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fwXnNihg;
-	spf=pass (imf20.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BD59D6B0088
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 20:44:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53B61160542
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:44:05 +0000 (UTC)
+X-FDA: 84608140050.07.B162E2D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AC43240003
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:44:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ah4YX0Hl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775003996;
+	s=arc-20220608; t=1775004243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZlAyR4IsTCd6Wy9tY8fsi0F7XjnqGFSW2B8UQN2ZazM=;
-	b=3OG6wEGrwu5FgYDBsMv23E6Smew38UkZyKcClCZpHvb4TqDYxW196s3dTkDw/EmokD2k3o
-	dErdeucDJEoJNzcBzWTPeQi0v1nzERGu4no8JDOS99C+hrKlSQrR/hg/uE2tL0gOtXIBCP
-	B/vYfQnvkPzHiHjgrCGIByE/BO9tqF4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775003996; a=rsa-sha256;
+	bh=tTu9pTeN9tgCk34dQ5SqKtihZud5BtL3bQyUkBB73G8=;
+	b=RDNmezwIvqReLqxhaXyuow/7RGIpBcAqT1ccdLG02hAiFilAJgjzTe2mQ25a7Z561eNOvZ
+	sTOYjnWweWytco7sG5SlR1TFJt8rYpsCmEAl08YfDrekDrygh5KywSuUTnB7Pte7vU5iR1
+	PlvWnQuBoKebm9Pr3iCKbvDs4/GlZ0I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775004243; a=rsa-sha256;
 	cv=none;
-	b=duoaQu7f4d1HBnblUgGAuQdVcqTZ70hGqf2eWDx6kR3xBEjow9+LIHanSP4xVSzVkUDpUZ
-	UZEgSE4Ei4F5dukT3aOOYCevpISSVhzohbrEEJaTMYY3YHULY9JWC/DyOUznMrDDU1BY6Q
-	PgVYjALXDuvGk1hXNbxz8QELQNSxeiI=
+	b=xc5qpPPfujJjUOg0gnBXP4w1c/lOSeruVZ6BOAH5zKG2Kcuh+CnJAbJ1nfweFOZrpRUGpR
+	Qp/gbh0l7yAtQa/Aj7sjsAGq6QUlPHIXYlE8795FGBbWxMA3X4ljIdbiBRgTfUm1A8Wgd1
+	Ulj51SCmXYSSlyx+xQqId4IS0DjRdMg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fwXnNihg;
-	spf=pass (imf20.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775003995;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZlAyR4IsTCd6Wy9tY8fsi0F7XjnqGFSW2B8UQN2ZazM=;
-	b=fwXnNihgx1DSAhtOamatFR15FV662OWPCGO6ik+eHZ0cZh7fvhNsP79zfb0EYU+WgLHn3U
-	FC0PN8RxISRmbgK5cQChGvL6uLCX1BWQW2dvFzI9CmDjY4ozC+LFU8TNMxA8aKkROkLHYL
-	wtIaOO/mx6INWBUfbhG6YpOQ/EpOeLM=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-W-IGbPjcMQy2Ir3KumA-lw-1; Tue, 31 Mar 2026 20:39:53 -0400
-X-MC-Unique: W-IGbPjcMQy2Ir3KumA-lw-1
-X-Mimecast-MFC-AGG-ID: W-IGbPjcMQy2Ir3KumA-lw_1775003993
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-bce224720d8so3964180a12.1
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 17:39:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775003992; x=1775608792;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZlAyR4IsTCd6Wy9tY8fsi0F7XjnqGFSW2B8UQN2ZazM=;
-        b=lublTXosBBWV98kdGwa+tm5pU9V5ktzjtr+omVYja2t1wXZR0AdvCF2RzQZP46Uuta
-         G5vEcIGNoHk7glhWXhfGvY6b7Z1KPUJh761yfowmtuUurdoQIq/llDLwoEYsdrzYoSAb
-         q4n2RcRw/I8tA72N/duZVFH7/letZ9S1PsmGa5ELISFZ6jeqU9z1TYU5Ksc17ba/cfCa
-         JpiKUOtiwMg6t60Wc2FuYonOyiRwjF330HhsCwjT1p/YSbWS9gkQcUCpRF+DP9ZJ4Yr0
-         uu9FLjI7tKbUnmXtaXEFPeEun6E5JEuBbYrJNYPafhXNaRjWpW7ZVTdF3DT6PI+A51N3
-         Z+Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4wqJ8zcisiHW+yHmoy2qz780LAbhyFmJnQV33//ZiEoc2qFUFUEjlPNwk+JPDGLW4tGxVzSjtLg==@kvack.org
-X-Gm-Message-State: AOJu0YzVAKi8wXuJWxGmAnBYxJfRYJIN81E5zs1K+zXDlxakqQLA2MWk
-	kiRsODHRDfriQMr93kqml3HfiUzFHPVkTSycEBp+8lFzWE5WuZrOeMCitgvXDtdZvxE1gs5vcYK
-	jTt5bRRY853tRyqLytRLiQREHjXiTbwUqG9+1oViF/0T7814SOXU1
-X-Gm-Gg: ATEYQzwYlSvNrx+YnOoLWiZNWvchw3BfXh5TuRlzOOfX1rfksZY5THAYksT7nHoFOvn
-	6EpXSgd8TEiUOfV1mip02LK9qcYqR0fzdvdddnDBR/ZfS6Sy6i8oH1pmCCR3SWZM/sx1y7yw8uZ
-	2qKgqOSqRAtKM02ABXgfCWcqSrIcgDTTjcmwswCaTN1sdAdC+USRPDb6xPnxyu8f7NuJe1yJyZY
-	bW8V0so0uXL6qobB6jyFS+ebAx/KHxBf5Z0W1OxMhi8MRlJPWnu+vGCBseo+50xl+8h8wdJq+Si
-	8thdwt8xXykOmVC1fKUI4hQUrB5w/WsWlr2iJzsap/9V0yvHt/J0bph63bIrhGKNcAlQyxg68TH
-	IPLYthm2sYdi1JKem1Q==
-X-Received: by 2002:a05:6a00:94c9:b0:82c:7767:5bb2 with SMTP id d2e1a72fcca58-82ce898c25amr1699800b3a.21.1775003992508;
-        Tue, 31 Mar 2026 17:39:52 -0700 (PDT)
-X-Received: by 2002:a05:6a00:94c9:b0:82c:7767:5bb2 with SMTP id d2e1a72fcca58-82ce898c25amr1699778b3a.21.1775003992032;
-        Tue, 31 Mar 2026 17:39:52 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cd706985esm4659303b3a.34.2026.03.31.17.39.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 17:39:51 -0700 (PDT)
-Date: Wed, 1 Apr 2026 08:39:49 +0800
-From: Li Wang <liwang@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, aubaker@redhat.com,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v4] selftests/mm: skip hugetlb_dio tests when DIO
- alignment is incompatible
-Message-ID: <acxpVd5hQUuGPQCF@redhat.com>
-References: <20260330125307.98581-1-liwang@redhat.com>
- <96d14f27-ca0f-413d-8b61-768933ee70ba@kernel.org>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ah4YX0Hl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B748600AD;
+	Wed,  1 Apr 2026 00:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AF0C19423;
+	Wed,  1 Apr 2026 00:44:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775004242;
+	bh=6HLg+daKemhcsyvc2Z8QkE7LSs10O0Nc3zdCGX7p03I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ah4YX0Hlwz87zByh7BTWO+SP42Q0S2SoarNUck4KRKIOVwokqWCiHjq+ZyiGSIXlS
+	 8RFZaJcNlKmfjr+ESK3cP/8oGPB7CQ9zplKeCy6WiXQlP70AlqkdIY1r1ODyJQkJKU
+	 /cRS72GB7WbIiHQguuGG/YRq5STNYIVALEzY3BSjrzaHYBe2Idle/ZW3mNnXWtm4Qq
+	 QFxdjwCP/Hx0ZjQp12BSN9mYBQz1am1bxwbTXZbe22wbL+x99NDYA6Y2UGpp4XRalh
+	 0XybcSOdSz/mGk9oBsXSZNTf1l+Q3JpIyS3B/8kX5TnAdLvlgS73zzbEs6/hnuxd6/
+	 CPg6vuyAq8dYg==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
+Date: Tue, 31 Mar 2026 17:44:00 -0700
+Message-ID: <20260401004400.85613-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260331160956.16312-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <96d14f27-ca0f-413d-8b61-768933ee70ba@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ctke5AyRX2VaBvU4BybD7oxnC8XfWlY2V_GV4nx3O1w_1775003993
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Stat-Signature: r7s6mbexcy4i3xoi5rtsqt8gr44jbbi9
-X-Rspamd-Queue-Id: BA71B1C000A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AC43240003
+X-Stat-Signature: arnjnxebeokdbaroyewkwqo1k4yajue7
 X-Rspam-User: 
-X-HE-Tag: 1775003995-154045
-X-HE-Meta: U2FsdGVkX18yrXRlixeXG5oUzLXv1l8cjmC809rNyv53xuv1Qxp7akGuwjQSRBdlzvJOjn2JL3HUx3wFztB0JwM02H6+5ms2ETS4GBwirAGuLoTmELWUhLxD5+degh1WykwLUuS/33GCBCxNzPb63z+DygE4HdJvTAdDzVAuZADz0L+s08pCpJYbRfYPG8s11fzxmdhKANxiokzsRNAPsSN0RzHfG6z4O62Do1Bw5g/p+2U3HIAqY+8zY0HyRZjLxUe9C5XZbb5NE3gMtGV468HKmlTV+E5Vijf773TSdcvXJhUaQPkArCi2epY6Sb26msizEjQFvEfeavh1LsRf7vnq9E47w4rlR8T5Mb5gUqiKFFNK1xV2nTzIGLPfmZBW0W3ia9AWIo2QPmhlxg3c2YqVknvK8nSZPNNf6dWG4BpYqtz+accxTTU7jQZl8KxGsiKx56CjlTeeOquVD2N1B72PTArGqqgQy/OIJKP+ZinBj+A8vECDbbVJ1K///5L7K9iucYK1iB+E+9geIvpdAl1Eg7in0TW7RKFlcnwZxKqv0a3+OoPnjo3QP7qn0j3PudB1nhIlj4Kb7YFrY/T4AY20pjN0NB/ZiitHFN4LO6isztkUFQsMKBENfsLnKB6azJtLHR0Yzc/iZBc9pPceWNkn2wbPVwIfHwLcIrEPev018j+1vLO9edv+xbin2x4btNeE/inYl+XgzsRIHV+OWHCm6x1BtTGwJPakt5TWWVANVdIEysRbcEgisnHiF5KCB0jX5+sBR/+EoHdZFm85aWnIac1rng6AMn/DuuvSYnS0ZFeJuRmRzXoUfn77tzjdn+DMD5zUWwd8qfIGfoHJJYtdnLjfJBJuwsca176J14zGBAGZ7f6fUd8a6eH5WGXzdac/jMDdPTAVce0zdrCl48KjAe+47C3Pyh6A2YlAVn/UY58nKeXYFmy51bA8nXzyJrGOyBGwQzosHXB3wbG
- WdgAfwYV
- 4pzUlZJwsRs4k0h9MviR5Q/WJm10efkLDa9sOmEAZvyeDiuqDMWJ38wrgC3v3c026GxYHbj2qzc0x/oxt9GN9Sy2EwuXDyTzw6ABq/C19BKvCJOTR4hdpRXYEXyLPzIQ01t8089kTg7HnylWloWlEhV5LqKN/2jdRmT7O5M5J4hAuqSwjQGIiVv965TxWWawsIf7dNqDljivFNlJ2JTxPB74C1xHmBuK/XnN7WjLG7yRMB8MdaKRIsbKn3zLj2QmBASgoxx4Ur7A5Q1+vF/5PrtKkFhrh2P5ZBUtmyvbpVyysmcuOzFjCE0aj3dtsB3dnx02F9YxrY3rhdv8zo3ioSgpwF9JLUzapY5ctz2baoMrHTtwgasClfeQhln/t1TvdDOKoxvCR80VU2uFp02okjxUuyqxtpQFJrDr5dkr7QUXMplPFS7QCzeG4AvBrmy3bkynkAE51JdbclvqyXcxdHRb6i4Z1Icqlt52lm4ystHDl5V8wsIgjGD7HUw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775004243-788667
+X-HE-Meta: U2FsdGVkX1+ZztS5Xc7lCNikx98kpf9Al5t71vOCSfcpUPg0tNlPQE5MNEjT8kk2w6N5vAgpUa+EVU2MJXaEeRaFogqql/ZIfdEJHpAQfocK3pICxmaXJnErOyzFTgjlNcpvSaz1dok01pNQO254e5txflskCVmNfOTEMX7HbrcPRjxQRin5SOeef4myeUmB+Eohf/oRvZAyYUeW9f8LDp/KtuCMjVT1W0x0koJSXeWIoqmgo+BzrpZPJKznPNbzYteSduvrLQyOTUg7AwkBKIy3+LzLc+Dmn0rzkOO9VgSevyzVXf9/4Ewfbfm/nqi5L3B8XU1iqJXHitosV0dEl9aeI/X0LGnG2wuGVGN6HawkNC6sqKG9m7uXzEYZwXxun/wae3qpt+ZOtxcH1tHqlXgL/FbmL/ai74echd+tuevsntCvE6m/Ugd1j+Fzvag91jToPjeEmbs3WgsCqR3lRi/j3v3CR9BaYjbfMAVjtar4K7toIvFZZS3VmMcp2WZUpPmX6a5I9ugBeKkip7JTm+FWExOl1EYoGQEY8wkh4B/I2MN3yJryL2vxDXv+76QDHlKkSRy3WiUtEo1nD/5cEeCtE8ZWWr8JGwcHFDrXBEvzRiBkMVC6J41xgiQxDbgwzqQw4iNsUyKijHij/ZwEpcWi76Dpm5nrBuuLtGSr/t56krMa37h+m1U1LmZDCkBqJJ/+3fsiA44ot1SiqQXM84a43KGQJwTVEhfIx2KL3FnajuRS3O3qtItlF8EYqZR7KgscUXmgMzAhqj7L4ai/1x8ZioUDErmdC8R7eWbobzcJVTFBPIsE7EHnjd+hQ7A89E6N4EkOZKDDMBIwE7yForOSUjvy7Mi09omYUEj/5g5+bOt8uyFAhGYkO9EErJEEKJF222ntuUU2VoTyVgMIpYZaeTkvMJa6zpEKsediV001YAaB/TMPlz0Vt6hYxwd/frQi0i6I39kQEnjkOY8
+ 5H9tUK16
+ j4NPvIULnLgh5RzHKkPs1cIZllfFnb8908KwTtJAJWcBFuKPhEcU5Glx7rPeORGXN+7SbTjrXj2Wmwk7J289I233hJoNeSq7SrhW6j49EFNZdxQtx0U7ryaW5ADNcSHxH1CdETrPeGEk27CahzE0j/T/zKYY2BmGzlJBcLdFzOj7GmG+CTlSPzRJxEtTcEMLd9vdi8mJhDhgN1ep+A0IyWkJgktlVoZq/fPf76f3PRmEsxmqSzl7SiUnsL8mQt/Pw6XjWETSkrruC+Lo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,33 +91,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +static void run_test(int fd, unsigned int start_off,
-> > +		     unsigned int end_off, unsigned int align)
+On Wed,  1 Apr 2026 00:09:56 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Hi SeongJae,
 > 
-> Nit: prefer to-tab alignment in MM land.
-
-Yes, I noticed Andrew (thanks!) corrected it and added to -mm mm-new branch.
-
-> > +{
-> > +	if (!check_dio_alignment(start_off, end_off, align))
-> > +		return;
+> On Tue, 31 Mar 2026 14:58:36 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> Is there a reason we just perform that at the beginning of
-> run_dio_using_hugetlb(), avoiding run_test() entirely?
+> > [...]
+> > Option 1: Introduce a generic termination callback
+> > ==================================================
+> > Add 'void *after_terminate_fn(void*)' and 'void *after_terminate_data'
+> > to 'struct damon_ctx' or 'struct damon_operations'. While this extends
+> > the Core API, it provides a clean notification mechanism. When kdamond
+> > exits for any reason, the module can perform its own cleanup (e.g.,
+> > resetting 'enabled' and 'kdamond_pid') within its own callback. This
+> > keeps the core logic decoupled from module parameters.
 
-That will make the run_dio_using_hugetlb() have too many args and
-uncomfortable to read, yes, it's more likely personal preference.
- 
-> In general, LGTM, thanks!
+Maybe this is the right long term direction.  But to my understanding the fix
+should be backported to stable kernels.  Is that correct?  If so, I'd prefer
+simple quick fix that can easily backported.
+
+> > 
+> > Option 2: On-demand state correction in the module
+> > ==================================================
+> > In damon_{lru_sort, reclaim}_enabled_store(), if damon_stop() fails, we
+> > check is_kdamond_running(). If the kdamond is found to be terminated, we
+> > forcibly reset 'enabled' and 'kdamond_pid'.
+
+I think this can work, and simple.
+
+> > 
+> > My perspective
+> > --------------
+> > I personally prefer OPTION-1 because it ensures the sysfs state in
+> > synchronized actively.
+> > 
+> > OPTION-2 is simpler and avoids API changes, but it's a "passive" fix
+> > that only triggers when user atttempts a write operation. User might
+> > still see inconsistent value until they try to interact with the module.
+
+I agree your concern.
+
+> > [...]
 > 
-> Feel free to add my
+> To avoid over-complicating the Core API (Option 1 or current approach),
+> I've implemented a lightweight, on-demand synchronization mechanism in
+> the module layer.
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> By overriding the '.get' operator of the 'enabled' parameter, we can
+> detect if kdamond has terminated and reset the module-level state right
+> before the user reads them.
+> 
+> Since sysfs parameter access is protected by 'kernel_param_lock', this
+> approach is race-free and keeps the DAMON core decoupling intact.
+> 
+> Core Implementation:
+> 
+> 	if (enabled && !damon_is_running(ctx)) {
+> 		enabled = false;
+> 		kdamond_pid = -1;
+> 	}
+> 
+> 	return param_get_bool(buffer, kp);
+> 
+> Test Log:
+> 
+>     # cd /sys/module/damon_lru_sort/parameters/
+>     # echo Y > enabled 
+>     # echo 3 > addr_unit 
+>     # echo Y > commit_inputs 
+>     # cat enabled 
+>     N
+>     # cat kdamond_pid 
+>     -1
+> 
+> I think this approach is better than my previous OPTION-1 and OPTION-2.
+> Does this looks good to you?
 
-Thanks a lot!
+Looks not bad.  But, what if we read kdamond_pid before reading enabled?
+Also, what if the user simply try writing N to enabled?  Wouldn't user still
+see the partial-broken status?  So this doesn't seem gretly superior to the
+option 2.
 
--- 
-Regards,
-Li Wang
+Based on your above reproducer, I understand this issue happens by the
+damon_commit_ctx() failure.  If it is not wrong, can't we catch the
+damon_commit_ctx() failure from the calling place and make appropriate updates?
 
+
+Thanks,
+SJ
+
+[...]
 
