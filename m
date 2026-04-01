@@ -4,125 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D15C10FCAC0
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 18:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C8BD107639C
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 18:41:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FE5C6B0005; Wed,  1 Apr 2026 14:37:09 -0400 (EDT)
+	id 6A1B26B0005; Wed,  1 Apr 2026 14:41:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5617E6B0088; Wed,  1 Apr 2026 14:37:09 -0400 (EDT)
+	id 652A26B0088; Wed,  1 Apr 2026 14:41:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 401BD6B0089; Wed,  1 Apr 2026 14:37:09 -0400 (EDT)
+	id 5414D6B0089; Wed,  1 Apr 2026 14:41:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B2656B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:37:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0B1A88B09
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:37:08 +0000 (UTC)
-X-FDA: 84610844136.11.2BED9A5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B66CEA0006
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:37:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JkZvhZfp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbW8AIfy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=POr51HJ2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hLiwalMs;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775068627; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3ECC06B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:41:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA6F8139305
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:41:55 +0000 (UTC)
+X-FDA: 84610856190.30.26302AA
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C0C3410000C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:41:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GHxbN5Cv;
+	spf=pass (imf14.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775068914; a=rsa-sha256;
 	cv=none;
-	b=DeWOoEl3oeIGOpCLhsMOKPkeMRAoNI7LKPnpBG4zpsqkWh7Z4AXUBViT2WID5mmJIj857S
-	2OLFZ8WEAmLg1iquiejzGthj52Ika+08DeA1fdzFC3TLA7difGJqaqthjy723S+1fdFtx1
-	cPAgnw15JrZE3Cd20+SCtWDt6B3R0uQ=
+	b=ods8vtMlWw1fbbmqYROw4J8QoZmuBg6NinBsc1Hpjvk/V8f/K+NaZO68MbSEuRdYO56Mr1
+	7XeQtHWTwNu/zmhwD7UtsGwsBa03fljTDIk1lTkpUQKktjQoEwtdH+jqOf8woJgS9oMCu+
+	OvXva3u33sfAfwkmEVPYt9MXP9eTJZ8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775068627;
+	s=arc-20220608; t=1775068914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/7sUiZjbg4FKN7DXWpr1Oi6HzSM5TNIS0g3pr1Zlz0=;
-	b=hUR3PsntULsw9YNttHcOhAdx9bHUf6rrTK9PJZmd+UQLdFrpMVnqA+cgiBTSm++ETlQwKj
-	EcFW5Gh0VkCGxsmVYbT7ZzVTbpaObc/m+zgc9cgYx2SZ+VjWHo/DlMvhjDmzMljo4UtN8/
-	uTbLN6cSn6DED31RgCPO1v42Pi7QnH8=
+	bh=diWyiF5CM6MLfjiGHibL/eUp1W0TNuRh03hTNEA1N0U=;
+	b=l1CeRdz1XF6lG0M5dBgnVfnsBS0e6PpUpvx6XhqghisXV/N1TdUrTVWmQX8hiH/RW/UX4w
+	xCl1UvtuzHKP++UuVVgv752lNcq6WI1XxpAea5C5J26OtuksDCZWlcAojCpyQx+LNpt3D2
+	gVovZuXGgMrZGMdd9wkL9NnKlvxtNQM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JkZvhZfp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbW8AIfy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=POr51HJ2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hLiwalMs;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D3B4F5BDC5;
-	Wed,  1 Apr 2026 18:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775068625; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/7sUiZjbg4FKN7DXWpr1Oi6HzSM5TNIS0g3pr1Zlz0=;
-	b=JkZvhZfpi7/IaBWoErYLFhgBaJSYG128bDqkfjTnyrhjWxZZZ2bmyaNZBKSbMCYGNpwNER
-	BkoMnIJdg9I/n8U44ylLHIjX+lmp3+gGHrd56Cae5ign0XcGnkSiyxaUmN9ZF0LjNcpSNe
-	1f98IV8srLqx8v4izkDN4BJqczsAjtQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775068625;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/7sUiZjbg4FKN7DXWpr1Oi6HzSM5TNIS0g3pr1Zlz0=;
-	b=wbW8AIfykoj+QjgyGKft2Xsp6peYlUIWMT6G0LUDUtxQV2B71jIPFheH8F3HHntrfXjalY
-	9aFspkjHLS7KEnDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775068624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/7sUiZjbg4FKN7DXWpr1Oi6HzSM5TNIS0g3pr1Zlz0=;
-	b=POr51HJ2SkJZdhxQaYhY7IsID247msoAUHMCHQ738ijoNjaOb1TTg3XfvDyvUTlEpvLrhr
-	35FUeMzUwAHRbtf6McNC1gVj1U7H+xXNFmAf6AuQA3PWnTpPluqSzoqOBtvx5U+arWCtMo
-	5PeqA6YjrYBDcBldQ4Guv+5h7MoKL2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775068624;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h/7sUiZjbg4FKN7DXWpr1Oi6HzSM5TNIS0g3pr1Zlz0=;
-	b=hLiwalMskmmr0p5hMBwNSgy7COpfeNC7un7eBsD6XBMKEcA7I6ovIOQi0I3fhJJnwv6m7x
-	jf7WpRpB0HfK2GCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A48C4A0B0;
-	Wed,  1 Apr 2026 18:37:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id K6JqGtBlzWnnfQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 01 Apr 2026 18:37:04 +0000
-Date: Wed, 1 Apr 2026 19:37:02 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] execve: block Emacs binaries
-Message-ID: <mxbttfswskgpmgakwz5cja4u3gzroonkqcqf4yggybtfolp5hd@qt7762avy5qf>
-References: <20260401131226.4011156-1-mjguzik@gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GHxbN5Cv;
+	spf=pass (imf14.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48557c8ad47so347805e9.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 11:41:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775068912; x=1775673712; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=diWyiF5CM6MLfjiGHibL/eUp1W0TNuRh03hTNEA1N0U=;
+        b=GHxbN5CvGD8Tjgnii07kxKCQeOVydjPMLtdtofOTnCEsKZY87WyRe1RC75DWOICpW3
+         8MOGD5hsn+hQLGso0Ryhi/vULCjHVnZfap7Bbr/UZ+XwHMBhKhC3/NOd6xIwDG2hbgvh
+         64u+yHmzpiSeDklgwWMIqpgiV63nMyR5y+khkcVwZmB42k3eiHYjVRRdeP4Q96EnOtHM
+         pzRXI1WgRFamQstNOYPOS238sQQUW8/9sveWmxMXqY9IV9KyllUbZN5rp7kX2tes1nKf
+         zuoKXRdKOCD69ZtEyN8yq5UR65ijCXC5X4ZdiDfZEY9TYg3Giqql+4GDKxIkwFJNHh9M
+         //0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775068912; x=1775673712;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=diWyiF5CM6MLfjiGHibL/eUp1W0TNuRh03hTNEA1N0U=;
+        b=PTwBkmKgZnESvzhwu0df2vQnjgsqb1wy2R7qUGa27Yg+SEXqKSrNUS1dT/XT0Amn8l
+         ZSHbzfFl7PTwfKfTfIx50zc8kMqeiZGKYXOg/XZvlHFyCf/uxzlHfUHMATgCu2ttlKNH
+         DbDtS44xuG+a5UR06VlaC1s7mHI3TixWiix1mv7sZcgVwWIY0+D1LrLGB7H2QQVtiElG
+         Y3vd5EZp28Jjg0KVOg3sXwNYMFxNrYdWyM40WS+LHnGEkKKSTON540CIct1rN3lUMbNb
+         xM6kIZC1PHS0A0WIWRaqU8lo2gD6d6o4SYQU17gF1ERgMqHtlEGK3YWOODGqgIAMF8aW
+         X4+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVrNc5yNBrGAHSccwwRk+KSGujfTpx3G00RHMTUzJ03ErV7GNR3V1fjF82IICldRWxz3cKck6GQ2g==@kvack.org
+X-Gm-Message-State: AOJu0YyRJ67K0+I5cMSw+JGkd4kvMoMFb/r5vMAWdvVSDztFRsvXF4ag
+	IeL9d4PiFAMeY7tmhZbw7hMdQnCgoUTHsn2iriiTdoZPF8psw1J+JVtQ6g1yh5ElC8E=
+X-Gm-Gg: ATEYQzxMlb2TYyz12F1UwXR5ED2k9EwavJSUKuGgbySIqvH3r0qyZABJdlSnu7hjoPC
+	0CI5ldymoX1+7AJfBiZCnM6HiBQQPNhqMHC1h8aOK/6TrGdGhC8otoejmI5mSTZJW8a9g0HFg03
+	0kHuI8/e1MtFOhIYn3PLWZTzSCHXEju7N8TPNyiEIEUiPIH55DWe58hJ8U1k5eUChnu9IvKbtjz
+	TOAixd8gakBijHdrnEl2q6B/TPd6bOJNt414IHa/cWlS48UIXqre26nzsjaBO8VgSI7slxoXUoq
+	KcISHEqQQoXPWbaM+yEP5uw0i2baPLX9HMdRAnsmVWHCtKTi/wSwMwB2dRgK7m1l8Es2+qBOrfh
+	0FAicQmJ0SffdIg/48Vqr/sNTyJvnrUepuOZzPLrZ1Cn3rFont44plJuAvYJdPCdmovxUMKJmcN
+	Azz91yHxHVnrweICT3/oQ58+frb3cBB9bjJYfMqN0my/Q=
+X-Received: by 2002:a05:600c:1798:b0:488:8bdd:cfde with SMTP id 5b1f17b1804b1-4888bddd1bemr1447595e9.7.1775068911853;
+        Wed, 01 Apr 2026 11:41:51 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c9250afsm49170605e9.36.2026.04.01.11.41.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 11:41:51 -0700 (PDT)
+Date: Wed, 1 Apr 2026 20:41:49 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	James Houghton <jthoughton@google.com>, Sebastian Chlad <sebastianchlad@gmail.com>, 
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>, Li Wang <liwang@redhat.com>
+Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
+ int_sqrt(nr_cpus+2)
+Message-ID: <n6mhkjsxsami3qmczkdh57eep4lmcgbtyl7ox3ajzveke44yf6@m4bjevvsr47k>
+References: <20260320204241.1613861-1-longman@redhat.com>
+ <20260320204241.1613861-2-longman@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="isa3i4d4tepb4cvo"
 Content-Disposition: inline
-In-Reply-To: <20260401131226.4011156-1-mjguzik@gmail.com>
-X-Rspamd-Action: no action
+In-Reply-To: <20260320204241.1613861-2-longman@redhat.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B66CEA0006
-X-Stat-Signature: ukh8ud1mmmcgqni34iin843uypgf7m1x
-X-HE-Tag: 1775068626-831423
-X-HE-Meta: U2FsdGVkX1+2LpClV2DcEetbgB9Va8Al7ro8SCjaatXO9MUmIwq8tXzGr9ipFaPAEKafwg2pBpd09HDNPH5NS5cjMi2ZMKChQ8OpD7dyRSZyyLP9vf5XTl0aDD4/CdH5qWy3dW4BfXffkgiLq5tZJBqB2PeZ7SHW58md5/kdBQ+MbPyjIGcDgDRhod5j5RWch+L/carAXS+JxkPfTU3NpMrgkwCcVDz3/pJzCQH5W2pu2l2a7fbqVY7cV/1aE8h3ajQ06rUlgJToAQdxPbYLuoNL3O1bqVCa2CA88oEqoAvGfadhCO7tlWE+8XJpBo+FVdzPiaOE1QWYqSd2xYFm8S77OI7NT1DO7K4bqtYhfYTaQEN4yzzRurmkojkO1f+cl1LzxN/teSIY9iXNQj3ZvM6Kr5IIv6Sob+2nBlf7rt/e9w4xMq0Q21Dj9BtuLkI2SrtKRtNxchesKPuhejU0iItRSvYF0tqMIgIKqicPtgve8N4zdfFo1hx1azaTXyimNXrTt4l4oh/MlrNCksnW5z6DizeaWXgVgSf60h/XiRICP119wfu+DATBvI533vEuxpnuUft5koePZ+tZAFjJ2zAEtK0FdkHy7XcqgSOfpWezJf2MK0eJufHOmNQ9L4MPXFpi3SfQyN0uomWC4we3LV079FMfY2wsYK62ueGLxkYxwiBJ/NFjOw26VAhFwYnQRyW7ju13evu13j3IVn4wPBlzeFSTQ1qsHYWIyILzVj3lbSoN0GPhS4AxQRb+L9OmWzv7iA4kBxZVCetwxmeUOF9W4lWCfDrUpMhvsmjMvXTfA9U0XJejh0x3bq5GlndEKh0rRuDi/0+gVHappB3mqY+SkGHjsRYtxxF/7bHAxZAqKcfURc1FAvqkHdewgBBnRdiJTpLWz+MOFu3DmthSq1O7FOPWo+62+85Q0l0HxffjEMFx2st0uL9m5gHizGHZeqfnTUmMpYpdAZjD/rc
- 5NDmWRlS
- rGGysox5J8qSMiX8=
+X-Rspamd-Queue-Id: C0C3410000C
+X-Stat-Signature: 3pkn1ziywyru5mytcg7ezi9k7wtnb6io
+X-HE-Tag: 1775068913-713897
+X-HE-Meta: U2FsdGVkX1/HLo8p3b8VGyxwiIv+TX+C/BmX6SP+i4h55f7msL/8gXWd/fezV/owZGhoSZK339WD8QLh9/02HUpCO7MXrsREdzZmBayfp+IHm7vC7CCcatm9AhtYoWxUSMMAFjLpBJVFe9EqVPJb6kWJm62IXsXpZO2h0edeGxQ5xV/TTi3QTY+z37ylOdzMVIN6NSexHtzCZ5Ou49JUFTwDqLgcVjQY0Z2xOYR4xNb5KOP4oVYyqgnEoNY+GK+f26dMiJ2dOF0wYTJb36uqqFRGuQ2QgAX5GwlwuQlAia3jgp6ZMRmRbC2I/IxT5ytDNSCd7xc+IHBe6x6ntKj/8W1Y5BPtjxSNYoARYWbpWkDN/UvI03Fsbf8+xkE5XE9AXFKbxfrb0SB+DO7YcyQg25RP3DGLK5r/RBlpQkLKhTu+3ue9vSm5HmwueYnOW36CY2chjmqp0fpSHFTYal/h39cQjmvyttTyom5wUH69JcXuURrZvW+oTIaWVNY3BJLhkNJZB9qugkzba55fZENb0FyLmNCk+h3mae+gLxrJpGE7UQWrG1bN9WcUjflOai+6q853V+rkIgvbELEiwhLAf3VCdSqCwD8TG0FJGU7Ggn9tC0V2wuE9KE5mh2ntq4d2Hhg9AdLq2+EoM3QFEZRtql57/hl224jS5Zk9I5PByGt/aEdI0dyC/iMuoGhvldAzdEkmD66SGpuDFP/+rqo0ddQfNiNDb1RcwrMmE39HQwtQU9hA879xJGDD4NPvUUuS0qTHc2z6Z5NCXZIskOpo1uD7ExwcNQkFPvJErDpsb9H3iAcerOJSKY2MDVrHIO8RLgrwY8360GhGv8XtN+FRiCsdNhXOIPANcW0c+YVLPdsc3RxaaqMYgwJo+YqkKomeyWtFaz7EPLFrneJVrHJHFxX/g3X8TbWhOxcXrBULZNZae2jegPXozV3kShf3qhGkUZFKlmNSGZ90mp4nAXJ
+ id0ZjEmD
+ Pf4mFviN+vyfwdWYnQlwYO8g6v0r3g5mC25vVqDHF1UFGgHz5MMssTJuA8alNSaXGFN69sP0onOiE9cogSdFn0nRic1k33cTFJDvLL4ys981v/MgXJDA83IcFie+0JrxdJak/kpbCZ9CEqNzAlLbzKHtnMST467b2150Vwfe0kURqo6IfevhbgKWmdbD7Za5sNmZNmthTGiL190/hqDA8UfS4l9EdUsDcmvIC4t3CtkL5bKE3kmJcdDSXOjgimc6ejdXr6iXcB5mQPZIFatRjJ7pzCjTRbW8TzZy8jOp/277/Ut+2Xz18UeTgDepr4+FpC7ZNJkN9jXOVO71jWvRgmIq/kDgW1F0L0V88GTJ725bB/XYWEWYi9BhhKoS550kow2zHY2a+nL99qXpQ5TXen4mAmp5t6fU0wymyGuvLdDXLySzkHyYQRjVB+RGlzqOGQsQfYQu/LQIBIFW0ZZZIAk75bumLHBfnoHRNZZIs85MzgTpq4/AulCgNtjDGxtw015EbI/d/lYoPlni59sHIz2RDnV3b/H4YArvnqPdRZloxcPDwdp9z1Y/acROs2HH4MygavuD0HwxCi8u/KlkZ4Ou7Jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,44 +125,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 03:12:26PM +0200, Mateusz Guzik wrote:
-> No justification needed.
-> 
-> A new errno is introduced to indicate what happened.
-> 
-> Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-> ---
->  fs/exec.c                        | 16 ++++++++++++++++
->  include/uapi/asm-generic/errno.h |  2 ++
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 9ea3a775d51e..2e954b31e3a2 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1725,6 +1725,22 @@ static int bprm_execve(struct linux_binprm *bprm)
->  {
->  	int retval;
->  
+
+--isa3i4d4tepb4cvo
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
+ int_sqrt(nr_cpus+2)
+MIME-Version: 1.0
+
+Hello Waiman and Li.
+
+On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long <longman@redhat.com> =
+wrote:
+> The vmstats flush threshold currently increases linearly with the
+> number of online CPUs. As the number of CPUs increases over time, it
+> will become increasingly difficult to meet the threshold and update the
+> vmstats data in a timely manner. These days, systems with hundreds of
+> CPUs or even thousands of them are becoming more common.
+>=20
+> For example, the test_memcg_sock test of test_memcontrol always fails
+> when running on an arm64 system with 128 CPUs. It is because the
+> threshold is now 64*128 =3D 8192. With 4k page size, it needs changes in
+> 32 MB of memory. It will be even worse with larger page size like 64k.
+>=20
+> To make the output of memory.stat more correct, it is better to scale
+> up the threshold slower than linearly with the number of CPUs. The
+> int_sqrt() function is a good compromise as suggested by Li Wang [1].
+> An extra 2 is added to make sure that we will double the threshold for
+> a 2-core system. The increase will be slower after that.
+
+The explanation seems [1] to just pick a function because log seemed too
+slow.
+
+(We should add a BPF hook to calculate the threshold. Haha, Date:)
+
+The threshold has twofold role: to bound error and to preserve some
+performance thanks to laziness and these two go against each other when
+determining the threshold. The reasoning for linear scaling is that
+_each_ CPU contributes some updates so that preserves the laziness.
+Whereas error capping would hint to no dependency on nr_cpus.
+
+My idea is that a job associated to a selected memcg doesn't necessarily
+run on _all_ CPUs of (such big) machines but effectively cause updates
+on J CPUs. (Either they're artificially constrained or they simply are
+not-so-parallel jobs.)=20
+Hence the threshold should be based on that J and not actual nr_cpus.
+
+Now the question is what is expected (CPU) size of a job and for that
+I'd would consider a distribution like:
+- 1 job of size nr_cpus, // you'd overcommit your machine with bigger job
+- 2 jobs of size nr_cpus/2,
+- 3 jobs of size nr_cpus/3,
+- ...
+- nr_cpus jobs of size 1. // you'd underutilize the machine with fewer
+
+Note this is quite na=EFve and arbitrary deliberation of mine but it
+results in something like Pareto distribution which is IMO quite
+reasonable. With (only) that assumption, I can estimate the average size
+of jobs like
+	nr_cpus / (log(nr_cpus) + 1)
+(it's natural logarithm from harmonic series and +1 is from that
+approximation too, it comes handy also on UP)
+
+	log(x) =3D ilog2(x) * log(2)/log(e) ~ ilog2(x) * 0.69
+	log(x) ~ 45426 * ilog2(x) / 65536
+
+or=20
+	65536*nr_cpus / (45426 * ilog2(nr_cpus) + 65536)
+
+
+with kernel functions:
+	var1 =3D 65536*nr_cpus / (45426 * ilog2(nr_cpus) + 65536)
+	var2 =3D DIV_ROUND_UP(65536*nr_cpus, 45426 * ilog2(nr_cpus) + 65536)
+	var3 =3D roundup_pow_of_two(var2)
+
+I hope I don't need to present any more numbers at this moment because
+the parameter derivation is backed by solid theory ;-) [*]
+
+
+> With the int_sqrt() scale, we can use the possibly larger
+> num_possible_cpus() instead of num_online_cpus() which may change at
+> run time.
+
+Hm, the inverted log turns this into dilemma whether to support hotplug
+or keep performance at threshold comparisons. But it wouldn't be first
+place where static initialization with possible count is used.
+
+
+> Although there is supposed to be a periodic and asynchronous flush of
+> vmstats every 2 seconds, the actual time lag between succesive runs
+> can actually vary quite a bit. In fact, I have seen time lags of up
+> to 10s of seconds in some cases. So we couldn't too rely on the hope
+> that there will be an asynchronous vmstats flush every 2 seconds. This
+> may be something we need to look into.
+
+Yes, this sounds like a separate issue. I wouldn't mention it in this
+commit unless you mean it's particularly related to the large nr_cpus.
+
+> @@ -5191,6 +5191,14 @@ int __init mem_cgroup_init(void)
+> =20
+>  	memcg_pn_cachep =3D KMEM_CACHE(mem_cgroup_per_node,
+>  				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
 > +	/*
-> +	 * Trivial attempt at blocking execution of Emacs.
-> +	 *
-> +	 * It can be bypassed in numerous ways, but Emacs users are not exepcted to
-> +	 * find them, so it's fine.
-> +	 *
-> +	 * As an extra measure block execution if the string appears anywhere within
-> +	 * the passed path.
+> +	 * Scale up vmstats flush threshold with int_sqrt(nr_cpus+2). The extra
+> +	 * 2 constant is to make sure that the threshold is double for a 2-core
+> +	 * system. After that, it will increase by MEMCG_CHARGE_BATCH when the
+> +	 * number of the CPUs reaches the next (2^n - 2) value.
+
+when you switched to sqrt, the comment should read n^2
+
 > +	 */
-> +	if (strstr(bprm->filename, "emacs")) {
-> +		/*
-> +		 * Disgusting!
-> +		 */
-> +		return -EMACS;
-> +	}
-> +
+> +	vmstats_flush_threshold =3D MEMCG_CHARGE_BATCH *
+> +				  (int_sqrt(num_possible_cpus() + 2));
+> =20
+>  	return 0;
+>  }
+> --=20
+> 2.53.0
 
-Can you block vim too? We only use ed(1) and GNU nano in this house.
+(I will look at the rest of the series later. It looks interesting.)
 
--- 
-Pedro
+[*]
+nr_cpus	var1	var2	var3
+1       1       1       1
+2       1       2       2
+4       1       2       2
+8       2       3       4
+16      4       5       8
+32      7       8       8
+64      12      13      16
+128     21      22      32
+256     39      40      64
+512     70      71      128
+1024    129     130     256
+
+--isa3i4d4tepb4cvo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCac1m6BsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AhqDgD/ZH5FdNATX0Dm9ldZMHyS
+oV/8qO6gLgjmu8goJGbY7NgA/Av2MbsmiWijOj+3I3XEmPfOtsPxWjctyieoz9ut
+LtMB
+=Nhw7
+-----END PGP SIGNATURE-----
+
+--isa3i4d4tepb4cvo--
 
