@@ -4,114 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F50F10F6FB8
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF9D10F6FB7
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:57:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132786B0088; Wed,  1 Apr 2026 10:56:29 -0400 (EDT)
+	id B94946B008A; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E49A6B008A; Wed,  1 Apr 2026 10:56:29 -0400 (EDT)
+	id B6BBC6B008C; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F14A46B008C; Wed,  1 Apr 2026 10:56:28 -0400 (EDT)
+	id A82006B0092; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6146B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:56:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2FD28C61B
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:56:28 +0000 (UTC)
-X-FDA: 84610288056.23.2B50A0C
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B9A78140010
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:56:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jz+OsnE7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 97CF56B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C5B6E0797
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:57:11 +0000 (UTC)
+X-FDA: 84610289862.03.510A8EB
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D1722C0002
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:57:08 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=thc87eUm;
+	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775055386;
+	s=arc-20220608; t=1775055429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5HolNeuwbINOzku9XvRNUwtFL9uV6PKzV6kppEuwHDg=;
-	b=Mnqeh5GluBbp0/SbEfw8LDX1XD+PqipnaNXs/v+yBU6GFkUSEjSNF2YJwzb+jHq+CdoscG
-	oZ+6gZALLU1otmai31YzEoOxbsNuDXI118n4MlGKOHBVBx0u8b2paNTOy1CCU8nHlNfgKw
-	8eGDuFrn7I07zwYXQbJmL92PCq8puLQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775055386; a=rsa-sha256;
-	cv=none;
-	b=iKKoe5WavXzoQ7P+WO/pdT+BB4Wmn7ICA3eNpWA2uVU6Dqr4PZuoUFxsonGlan1xGiXHPY
-	X/SlmlUDX3gOPzCfEEHz6IpHBLMsLmp6/twI+ZjwDGOp0qBWD6XXFtDihlYDsiznjUyE8h
-	t835YIN44ZemShohKpfv7IJU+Nk9/XI=
+	bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
+	b=XHwmFsPqIbh9tDTQ5LLerzzdMMzlviwpTjYue7iSaNz+IxyaZ4ogsjcRPSNsjxSTmQB0Uo
+	7/zQKEvUi1MrSAJlh9f6fVF0bhvBelPHVUOJkjo21CUSCXD2JtDuxh7mKnBAmjhSwJVwuM
+	drGYppher+eTN6eRmIhJ1Sfv1P6kT4w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jz+OsnE7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-464bba3a9easo4282069b6e.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 07:56:26 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=thc87eUm;
+	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775055429; a=rsa-sha256;
+	cv=none;
+	b=fDZhsSYJzUlfNgAklheeragn6uo7056Q9D5Iirhnf81aGHaxdXJcU9qwmDT5om27NUWg3r
+	VZy2liyx0Rhoyde22f34Cb3XY09Hijepi2U+xkh24M3Rbs6yQu8hrtb/a1suZeph8QUYmZ
+	zU0lZImg+jaz5hMciJXpseP/PQxSWC8=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89f68634786so52139296d6.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 07:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775055386; x=1775660186; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5HolNeuwbINOzku9XvRNUwtFL9uV6PKzV6kppEuwHDg=;
-        b=Jz+OsnE7IeAgv/ahjRDDY5+7Ky3OqbXTEswR7TaWFKNMEkxq0HForrg9dVuzF7qERa
-         67lVl4LZHp+m2qWpPjuSouo3Vg3e14I5uHca6/OaV1h66V2TiRi1BAttdcrVghbsC2xj
-         aQzDXmIJJsrfRDIMOIQFY9RNdnmFJ+xOlUTxrQ7fL91Xx0o7F2LFQgckGNUKTulQlW9/
-         7kFZ86LDgAT7TfyqTXQk89VpSa8MRq4ULQK+sqZY0HPm4uXl5HzR+a6FNdXGo729zKRK
-         azyETbfp3aPW6kpEq8uRDRkNrWCDRxLLNCrGyRrmrSJ91ofUwy1LOrHC5p3QnjxSwJPG
-         n1Vg==
+        d=cmpxchg.org; s=google; t=1775055428; x=1775660228; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
+        b=thc87eUm2YA7p1XHNH8tBlrJD1PuUDGKMgu0GrQaXwZ3qrb+DDXbfhuADoEJq83CoM
+         KB/RPw6X2v8DyuMWA1whnvpBIEg6/WRTfDE0/Z9lxJ9J2W7TUB6R/tCxdKVi1KWd8jgZ
+         MEX4p0RMdFhAu3ec8Ok0MeX9tfBm1/7K4CiH8RAK00T/CHXTeLiSFWnwVB0eLsRSGebY
+         o+2stanyNVViXtYQ0qWNNf2IUbavqUkKtcv/4R1z5+wWo/G3eCQ46aQa0jO+a9xo/pJv
+         uSfy/03//GWk9vPSW3DN5zS+gZm+2un0UaSXa8Z4WPH7GrjO26519mBYBjhyxErdv0fj
+         xy2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775055386; x=1775660186;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5HolNeuwbINOzku9XvRNUwtFL9uV6PKzV6kppEuwHDg=;
-        b=Xv+rhGXmt6NamaRzOLHo0Vv4MJIDLXd+kk/7HiR/mXew7CZ7VLO4Iiw7ZcHHI6+5iU
-         XXDBUityiM3udHAiPU/QX2y8VOKFgdJlAntXdYJgMePHCVhcAJJtylEsE3142rWIf+cG
-         pUJHCdAB36N7GcP/M5CfV0Q3kvZGIUqHvb/Ffk0YwDCU3HlyeK5mil9Qc8u1r92tJldY
-         irj2CemQb04hMMywE7pJ1QA6VgbPazYPktqD6P+VCzKqN5gTgL2QNJNeEXC2Dgv8Ve9E
-         PZmypQdZ4NVtPdCQVtSTZxN+X2HLx1qO8UhNe4kOmr5bQgc9U2rwutDHCWnQTOeFXUfO
-         Dx9A==
-X-Forwarded-Encrypted: i=1; AJvYcCV4JekAt1bH76rcXFydhW0fPoFZVesonw1/Huj/hdW4fleCIDCFfsBO3Lbg5J3Tak+XFIy+3FBwkg==@kvack.org
-X-Gm-Message-State: AOJu0Yz3JxgKzuJ9zY4ewEuk7yI1oBv9zbARl/J3HVvR8akzN9PyzhaW
-	S2zoTEKimteEElvUK6Nz1vXBuK1ZRXLRsj9zBLrslbosj25+BflPhC1m
-X-Gm-Gg: ATEYQzykUcsPcgiKc9EDQ7PvrIOouj3EK5pQCdMeD9WkcPgu3YQ8ijrIUg3NrHVBOAj
-	7xh4VsqUIbdmjUEE/2LDnBPn9N/xRZVjk9CKkmg6zwSMEEHgcCiCuNL+Lxezig3SpdDLM3eWKM6
-	EKX3G/MRlXjlVvP037DcdshYkCTGtCq39prOiL+PXY8eY4bvonvXzQxocgx3b6cqY8B6mob8HM2
-	R10Y8+OaWuqLEgTfzE9J6rjRX0aHg8wb7LzGAQ7+WMq281HXbcq8Kw4vbcpdsjYOwbOS4qZqdRk
-	PguknOEH6uWPA+I8HszaGeh4ajhJ1yxHW1qZEpAgA9Dvhk/VfaN2xTTJRKQ7AaVb4dSVnWKYpW1
-	sBKG2CpOzn+zRFnFuuoXqHJezGqpTeIUUoAx4y/xqr2steh/4K7X/xaD/RZ92EQ08r/e31o4F/a
-	/Q5ToJvs181TLJOMI9Sdgquw==
-X-Received: by 2002:a05:6808:5393:b0:460:f435:2a70 with SMTP id 5614622812f47-46ae020553bmr1699542b6e.47.1775055385668;
-        Wed, 01 Apr 2026 07:56:25 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:59::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-46a9fe94ebdsm8869643b6e.4.2026.04.01.07.56.24
+        d=1e100.net; s=20251104; t=1775055428; x=1775660228;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
+        b=pLFjcpvCGCmd94dsmEPTvUtDelQRBiqF9McBehCTWX+TtCQ/B9b0zNRtgVKD85EfKb
+         ewbj/R84PCKZ7zk5daRE+kpUm0gwCHqAF2HBP9S4XT6M7JXroKGjU5nqK2jztgIhYn6D
+         UgUgHEEKZrRC6ZDRQb5a/BhmFPCXjRValhWuPxowZVLhAoywmrkw7Bre8YIXfSgo41ZF
+         Wr6FuJ1d/q5w7N02ad/zMNu8wDliyJdLk7+CuWL27+AG8pT8mK/lUGn1nNEa084qKDj+
+         7uza5IvdG+1Y+6Dya/JiocGWl0xfZ3nOSFSu3QiAxBcyJ+GdDPtIYszrJlrK3vlCfrxA
+         guBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUe1XKoJLcRMdscylvDAwihBy+cr5ylOJwVqgyh/QknalNALiJzuciWKdnH0vwHYl2sNndYcM0fFA==@kvack.org
+X-Gm-Message-State: AOJu0YyXQFyrzU5NvsLdnfbBStD0caMfD/Z4ONdh9d2k8FTeiPfy6VpI
+	337RXn1oqkIbFlqaR0SQ2d8cMxAN0Ie6EyfcMrVJlmFwEGQ0RVwSXAmSUIe5wN00NwQ=
+X-Gm-Gg: ATEYQzy+8o+TA8cRR+6lBjlXm1Ml+kv/99X3wylntLthBZAJZ5oaMjhXv0cLiuPbsLU
+	LabAXO5rb6hm5VC9bZvlc0wMvzIgNpt+I8BihYPzIh+e8aNt+DkWvsnuf2yFu5RkhIiTfCCVTJC
+	NpHHTIz4n+9W5y8BYORi7t/GbD4vYLUJaNbUPm7eDMVUSIvL13eh9o/R9rCDCAUHw7ZIA5pXwSg
+	2mmVkvMoV1lvKa+0nsVV+JsqO9aM8yZdc1edtVUh2GKJcd51Y3fvvwhjyddRA/cq1vQ3DKymju4
+	Ylda4OqwCLaiq4nuFSeNMhXgrM/g3hgLKtY7VS2nnfunaaUDNlj8doHB6hzy2ISwWp2ZVYx/A34
+	+IhtczQ3Tq4MknFiHvIEpyxjuYN+DWn9Qe+ehDwkeumVFFm/DMy5UKvlg2Zrj8ZwI7nnHT5IicV
+	3wiuXZtBFnSmKru86o5RGaRA==
+X-Received: by 2002:ad4:5ae2:0:b0:894:6510:4946 with SMTP id 6a1803df08f44-8a436c125b4mr63773826d6.10.1775055427499;
+        Wed, 01 Apr 2026 07:57:07 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecf960d2esm119091476d6.34.2026.04.01.07.57.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 07:56:24 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Jackie Liu <liu.yun@linux.dev>
-Cc: joshua.hahnjy@gmail.com,
-	akpm@linux-foundation.org,
-	gourry@gourry.net,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
-Date: Wed,  1 Apr 2026 07:56:22 -0700
-Message-ID: <20260401145622.2829947-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260401005702.7096-1-liu.yun@linux.dev>
-References: 
+        Wed, 01 Apr 2026 07:57:06 -0700 (PDT)
+Date: Wed, 1 Apr 2026 10:57:06 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Message-ID: <ac0yQjSJfhH6nSfy@cmpxchg.org>
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <ac0q37PYB-2DZhLk@cmpxchg.org>
+ <ac0tQb96dK7FKkCQ@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B9A78140010
-X-Stat-Signature: keo4rcm8f71ay455uw1q5yo93kk49iji
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac0tQb96dK7FKkCQ@gmail.com>
+X-Rspamd-Queue-Id: D1722C0002
+X-Stat-Signature: f74und9mkwbetwur53fmkemss1ujiyg6
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775055386-903633
-X-HE-Meta: U2FsdGVkX1/s4NojJpzpUrZbc1+q+yedQnZxvgbVKOpbRLWEKXDUYM/n60tHFUmdhtHJgz4PToFU2PehAbCXQxvGITAVbBBEIASuIxijK5ieUQr1K3jOcGXyKlPgRHvcOtO9jn8YMaBexDqSDKLnQMEzpxdXa/lk8ZCR1KjNv93X+KX/F6iKs+9bPMeHZ0PY7zBc2Zi2QtlFhvmYWYb2xg4WkWmUnbJk+dYqvkRwJEWFh9WeDpnnCNNj9FHE2r70DQc/kE0pY6qikYBIEHaD3EL+EvvNyKqugrMeAiVu5JR6ieU7fgLb+O5P3QMcJlptzmSrGqvV9+8AFyMflwhIsL4Fd+s9NeNXUf28CULm4LZnO+FjryQT549ToN2QPQPnbTQuYE20Rty0s/w6lOd5fhFlmUcAMBfruof8LsIrwrP+2qy4BleL2RIVbmaEi37GTcKq0eKNWSlAYbPGfjrZMJyXZ6PMXJZss8Ta87hCbp9Y6hn6kB8dwjh5RhApibh23ePvC+RgIthXLhB02AbimilZovAouisQD1b/xhFtRdjnehax7zyvd6VfpeNXrrTy97YGUwo6gU+HMCbkC34elIxxd5IVzuMMysYGXRwbiw0Fd3Izbp9ajNLzVfkE4QwcosTdrbp3VS6qyKazodZKkdj928tKHPNssYS61B4Y9rpQpjo82TZSMALR+gCHft2Ph0L717RI4czMQPlxwSvc4jhVxYNBl7SzCR6ltvJfKXlDXp8wD3habxnBmmw2bFI1yKiKi2Ar0QX3qTQJkhyukdD2+MGRs0NTl9QzgCQLrVtC3ZHOKG72ei55w98lNMfWbL3s9E/mrejLd5+jxCVh7dvZq0cPfzSnmseCeCMKjCbrUwyQWQqqD9S7C6PMMJcUztVh85RZCOdWh3yNszbtIRo30GF4+2sDvUhKikIfuhxPkh6HiC03+xtHoHkFw38vaT5MLfYRja9Yz2aYoUh
- DYxv0n6B
- DMHPMKuWMG1MNyM3SJ5o2DQLxMJFkzHXdU27ooyTWPpIU3qtPZe7DlPX+hjZlNn++SAxrYD1+oqYiM8vW9ErZGWx0LUk8+COSMPbstmKXgJxnp4cKL3Hi3RsqmWuurDsKCkJkgq26eSHQi2sSTYpPvlSiV5Iigoc3+z+J9OcDgxfkTjHvf4ZM+dMQbkVKu9UHn1qOvnccIKZVT4tkU6Wgp7b48N0B0iYagFs8wTWhRQK9swbWUozXn3UmsyGQKmzXptYn6pP+07XgsouGfakF999NXGmHKfp4bjOXJFpnUs6KgPbxRNszHabR62WdhsrrilY4nuRfMy+HrtqChYDfNJt+C916gPH+oruq09uLxo1BpSlVOPOePYYJcXY0A6aAPdViZ3BC4paiE08gSsxSZppwH7xv718dNBqEtPZpc+3wbMA6fL1UJBdU1D3QGsQZ64PZd3boM5cN9d1S6RmHYPLOKvLqWhrvxDBVY6eMU9rgu/zMPCC/aI8HSWs+5Zz9fUT9hWAIiYt4WMsrMF7DMZCCo5R91QDNz5zICjVIbCpfc+7gpedkAEf4q0MWopfzN6G35KdfldmqUm3Qt9f91rPsWvPZbWjkp1ax6+zu4iFcWbJ6j1IAQ6gvNP7nR82yV0dnf9Z35XI470zX+opbOLV/BR53brOMrl+hZKO6azDOhK2+okU9poHtd94M4MZtcpR8
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775055428-263346
+X-HE-Meta: U2FsdGVkX19oqkYciTeH0yjbvKfxoLjjRCnKEsvDJIRlAHHLtz1HnY2ifl8Imsk987xOvRq2X/l2l7VsS2adrDyx90VOIKJwfI1bMNHC7C5Rm5kZNXL63y7oo8c6ZIfvQGwIaXkAo2ovTs3oJ5tCRv3z2k1HiTDMZzWf+y88/IcNXvJo7zyR/Xmr+VDzR75xFI42I6vTvYNDGjy5abu9D/8rLZTglMlX07JY4T9XYk1QpXmee9l058KCQRGYkLWzAZdVIqI2VJy20b0abFZFWeQ/aZSlNg6mR+nnWI9QoR60eGDykLhcMSOw9AtsWBnU/4RmxVJUCOn7pdSry/EOGySsGVYni+GPFBHFea32vx5YIr88dBKyxc4NU7dcxpkRpCeYqlDJ9PWNJRj86+rn1uOt0jGonpNGLqtgSWBXwCyZ1IXw2TUw6cnebdzI+YkY0wGocoNge+n3ywxdKY02VoWMgScMMm5YuZAlAOmMijjrCcjGYV4UQtewwzIJAw6IBSIPj2YujVfHNzP7K/4ckqWUVxDzp3peMQWJNKIE9DPVApQs/MfgkeidrqU4PoW2c2BuySM07UykUAm9Wxx4kdoLCgrbho4eVDzHLrJTchPnT9tM/oAFdXa4yxA5Sa0kl+F+jOAa43lNejh9LVN0h5v4QxTwyJfh3aLKmR0HSYqBxFdd4SdGrrjO1t84T8C0aGmwpsmt/Ojtl6JSOOmyKP8edRa6yzIkmzWFnIw1gQ2uzGK8Oz8Dx6cmT8sPRwoAEI9dvZm//y+n1sK5ISQOW9wQbnMjhRIveiqNK9I/3AfXHwms6sxRqwtEgaVGFfgGDBxObvFSU+g+3NtxyMHW13ch3XRyDcwmIq/0Tx73o49De9st4BX2A5WhQyaVQptam+vWee51A3bjImOeDqePoNyAUARR/V37rnuQHMFoXgFPP3KQHLJjesLHf1UgFX76Zn6uPac3eZ40HwZKn5v
+ tqc9ClpJ
+ h/826IQMislodR6UgF5S9VshVg72QvwSt0HZS0vonp+aKu3wzwYLUfOD9haBwJWomFB9hAtd96rhSWZoW9QOVYBv6U8//Yw+8HyoyiRC+Aplr3gpZXYpHUHkpGr5+hTrwhWWtRWT+E3DEpKiuyx5HyjXTbj0NHi5y0f34XvOYtAO81D2apPTZrNY+uMkedBGkTF4H7ozZtQ8DWLd9DVmGGBq5xt7b5vd9GlUeP4DNipwmRLxosletPWPsEXtxhuccKq9+o5bi6Le2SidWThsO4ceiLKqw/ng3qm6y52dLNneTsXTUgARS98Ot2s2qbmACC1yfsphxhQsSqTVKWUf+dxrbG9eyjOax4uFcyOsJPXqAv4I4/42TnN90TmKoq+jdHEPDQ7XRK7Qb332Sj5Wk3VyLrzK1TSp4dj+mrfrZQcpR1Awc+UogXIbDMtmaO05UAkq1xp3QgrEmCyg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,85 +127,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  1 Apr 2026 08:57:02 +0800 Jackie Liu <liu.yun@linux.dev> wrote:
+On Wed, Apr 01, 2026 at 07:39:28AM -0700, Breno Leitao wrote:
+> Hello Johannes,
+> 
+> On Wed, Apr 01, 2026 at 10:25:35AM -0400, Johannes Weiner wrote:
+> > On Wed, Apr 01, 2026 at 06:57:50AM -0700, Breno Leitao wrote:
+> > > +static unsigned long vmstat_spread_delay(void)
+> > > +{
+> > > +	unsigned long interval = sysctl_stat_interval;
+> > > +	unsigned int nr_cpus = num_online_cpus();
+> > > +
+> > > +	if (nr_cpus <= 1)
+> > > +		return round_jiffies_relative(interval);
+> > > +
+> > > +	/*
+> > > +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
+> > > +	 * use round_jiffies_relative() here -- it would snap every CPU
+> > > +	 * back to the same second boundary, defeating the spread.
+> > > +	 */
+> > > +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
+> > 
+> > smp_processor_id() <= nr_cpus, so
+> > 
+> > 	return interval + interval*cpu/nr_cpus
+> > 
+> > should be equivalent, no?
+> 
+> nr_cpus is the number of online CPUs, while smp_processor_id() is the
+> CPU id.
+> 
+> If you offline a CPU, then smp_processor_id() might be bigger than
+> num_online_cpus()
+> 
+> My goal was to linearly shift the timer and avoid creating gaps when
+> removing certain CPUs.
 
-> From: Jackie Liu <liuyun01@kylinos.cn>
-> 
-> weighted_interleave_auto_store() fetches old_wi_state inside the
-> if (!input) block only. This causes two memory leaks:
-> 
-> 1. When a user writes "false" and the current mode is already manual,
->    the function returns early without freeing the freshly allocated
->    new_wi_state.
-> 
-> 2. When a user writes "true", old_wi_state stays NULL because the
->    fetch is skipped entirely. The old state is then overwritten by
->    rcu_assign_pointer() but never freed, since the cleanup path is
->    gated on old_wi_state being non-NULL. A user can trigger this
->    repeatedly by writing "1" in a loop.
-> 
-> Fix both leaks by moving the old_wi_state fetch before the input
-> check, making it unconditional. This also allows a unified early
-> return for both "true" and "false" when the requested mode matches
-> the current mode.
+Ah makes sense. Plus you'd spill into the next interval otherwise.
 
-Hi Jackie,
-
-Thank you for the quick turnaround on the patch, and also thank you for fixing
-the second bug as well. This looks good to me! So much cleaner than before
-as well : -)
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-
-> Cc: stable@vger.kernel.org # v6.16+
-> Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
-> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-> ---
-> Changes in v2:
-> - Move old_wi_state fetch unconditionally before the input check,
->   instead of just adding kfree() to the early return path
-> - Also fix an additional memory leak when writing "true" where the
->   previous wi_state was never freed (Sashiko)
-> 
->  mm/mempolicy.c | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index cf92bd6a8226..ebe4bc8220b1 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -3706,18 +3706,19 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
->  		new_wi_state->iw_table[i] = 1;
->  
->  	mutex_lock(&wi_state_lock);
-> -	if (!input) {
-> -		old_wi_state = rcu_dereference_protected(wi_state,
-> -					lockdep_is_held(&wi_state_lock));
-> -		if (!old_wi_state)
-> -			goto update_wi_state;
-> -		if (input == old_wi_state->mode_auto) {
-> -			mutex_unlock(&wi_state_lock);
-> -			return count;
-> -		}
-> +	old_wi_state = rcu_dereference_protected(wi_state,
-> +				lockdep_is_held(&wi_state_lock));
->  
-> -		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-> -					       nr_node_ids * sizeof(u8));
-> +	if (old_wi_state && input == old_wi_state->mode_auto) {
-> +		mutex_unlock(&wi_state_lock);
-> +		kfree(new_wi_state);
-> +		return count;
-> +	}
-> +
-> +	if (!input) {
-> +		if (old_wi_state)
-> +			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-> +						       nr_node_ids * sizeof(u8));
->  		goto update_wi_state;
->  	}
->  
-> -- 
-> 2.51.1
 
