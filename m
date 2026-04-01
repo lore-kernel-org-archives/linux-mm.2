@@ -4,123 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6989A107637F
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 921A8107637F
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7D66B0005; Wed,  1 Apr 2026 10:25:40 -0400 (EDT)
+	id D6AE76B0005; Wed,  1 Apr 2026 10:32:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79576B008A; Wed,  1 Apr 2026 10:25:40 -0400 (EDT)
+	id CF4996B0088; Wed,  1 Apr 2026 10:32:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967D66B008C; Wed,  1 Apr 2026 10:25:40 -0400 (EDT)
+	id B950D6B0089; Wed,  1 Apr 2026 10:32:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 85BCF6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:25:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 309A71608EB
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:25:40 +0000 (UTC)
-X-FDA: 84610210440.20.98770F2
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1C3E9100012
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:25:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ffu3GeIl;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775053538; a=rsa-sha256;
-	cv=none;
-	b=mCeO2wNnVCJQ2AZYHQv7PubD2Cg2GQ/b5WSCgP/64t4SDubcKmDbE7KaETNMVjbS2ZT7GS
-	QK+r65v3D8kMmQ14sp5YClIRHbqthZQVSSMh23Hevq2EQI4w0MsJidsK9fCBTdEhnyDdij
-	ilBcqqQBSKJVIbXdppnFOq7X0h4tl1U=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ffu3GeIl;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A52276B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:32:40 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D9331B8726
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:32:40 +0000 (UTC)
+X-FDA: 84610228080.09.BD9AE9D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 879E51C0004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:32:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="lUexXE+/";
+	spf=pass (imf21.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775053538;
+	s=arc-20220608; t=1775053957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z0enE4GAHK8hrP3H3mmhLmXee0EMRPHy0H0LDOHahRQ=;
-	b=YjjInLMWeSCn/HKbZKLYwCD82W/VyiX8sEaCLJIW1TiOBtQAiz1ny6mVlu1uWx5vr10+6S
-	agloXkdYWMeRppmR6DzzGZVwMzLzylGaTCrOK7wqO6hDiaT9tMIDVL2/I6Nl7lkqplP0Bq
-	MZss2z/ZR2Q314KVZP3HRtMBFSTvJ3Q=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a4b8c3a30bso7394356d6.3
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 07:25:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1775053537; x=1775658337; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=z0enE4GAHK8hrP3H3mmhLmXee0EMRPHy0H0LDOHahRQ=;
-        b=ffu3GeIlHlgldrob/R2vI7VUCMo4ukX2K+J4FjoMdBTp8T21/70gpjkAVtJa8cJBe6
-         4g+2IkKwy0llUfL0k/XfabJS72rdVRTWdagX8pKxRdz5MXbAo70jfwptjpD0JgRAwseP
-         N4/laxiJFTvq5pdJoFUOKLWxH40pXROzybkSU1UnWwzQl0SwmXNywk8l9PVRwEQxHb3N
-         VIsAfpiNHZzegaUFn1jQK+jlabbbNrZYIaL7JmNuSbhaRsNW2+RAmAN6ppCzWe+yfFNs
-         U+TIT868TY9KYmqnssiBuuR9mIa6pjx2/Bor4Lmb0g83CLRyFQXbYZazP4ipGGps0Dna
-         Lb1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775053537; x=1775658337;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z0enE4GAHK8hrP3H3mmhLmXee0EMRPHy0H0LDOHahRQ=;
-        b=gy/HbzEJwgbFmnZuhg2oKjuHsHgRbyQd8g6FvPlUMvH7j7uJ3PjZd3CtOpNxcZSbn3
-         ypZQxlMYj2D5DNlaOK+jtBqc6tg2sVrEhfbIOU9WB7igKnapKSVFUqBVtde6IfDd8rLS
-         bFmKUzcinsm6UJFjuTH1vXGnjQcF4O2sEy0JwOUqQJgnUmO35Cq0kqbSStwNMhgsbttE
-         /wXPkawzQMwOXKLxW0EdTkIJENroAKDS7/j8qvFCzdMA72RdwwPBaI/czJSja9eSN8b2
-         2aXX2jScqCL6boNp4oADZj2CJgy0Uf8ZYVm2J6jhBnIkiqj0TTSWUKH1uNgIQtdE+8XJ
-         5e3g==
-X-Forwarded-Encrypted: i=1; AJvYcCU7A5/b1mrXkXMzGHYkmM1ap/8V1Lkiw5rclAJwe7BhzvNHpHA2D43MmKOq067fNhsqzRwNFl+V9A==@kvack.org
-X-Gm-Message-State: AOJu0Yz17eaVd3fvU0VF5iEOEzS5yj/WHtKMHJjKmpGxF64uEfYElvaa
-	L4qxdJO+iaQKWUFSI9Id2pbx2FGAqLDOVzLadmwtSQoOyVoSW6U2WoUsfkssjiWHChU=
-X-Gm-Gg: ATEYQzw/wVf1tvtcKsnkvpdMOY9M9XbZTe2/vNKQfP2HDZcKdX9/gy7qqnjEowFQtd2
-	/89gFcezLwc2voRljAdcXM7AOW73bR4kgtcEXFu0x026D3KCjr0rpUx3SWlRzfD8JyPtHg8jqYT
-	s1TpTPBhEKmiQgfEsfkuOuVQZK6Zs/TbvrnocJhkZCY6K9/hLsUS6TrumVlJEbs4+UusCvg7Jp0
-	boOF22uJoEVyOXH5p7Ez1lvd6uDB2PQV3FIkPXyFDu0dQ3Pns1k3D8N+oTIBT/Y8SqM7cs8NdEq
-	UjdXA3SOFaBZMoKOAXrh3TvJQCRytIPmz4OKdz999l9Z5TC1SH/7/45vUJV73Npw9IXmwIEXKWT
-	IHXVXs1KdCcW17iXqEPGYO5BhUcfC8uFVVWXRfh//l3Uxbi8nyjhpK99ckA4XCrkonKVnbUUNq6
-	Dvq+5xXq8nBsD/6R/FA3kSsw==
-X-Received: by 2002:a05:6214:4981:b0:8a0:598e:897a with SMTP id 6a1803df08f44-8a437415ad6mr59972356d6.13.1775053536759;
-        Wed, 01 Apr 2026 07:25:36 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecb5cb530sm121185876d6.7.2026.04.01.07.25.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 07:25:35 -0700 (PDT)
-Date: Wed, 1 Apr 2026 10:25:35 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <ac0q37PYB-2DZhLk@cmpxchg.org>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+	bh=XCjnqfzND3siMSjdM7ztAg0ApusfOuj9tUAMFjr53ZY=;
+	b=jcWgZcjpCwiZSUs3n1QtV8kWm8fyNblx7jbzOGHWJzB9lreDD6W58+cgFZs0gwQ79Oy9eH
+	gzHjI3/n0/RCe1gNBjw9KbVwsp4N8bAILTnz041wV6gMP+GNyscDRgqal6EIotmQ+EdQDA
+	BEiXQgsApxAii3tm6r1lwblqBIXhtu0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="lUexXE+/";
+	spf=pass (imf21.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775053957; a=rsa-sha256;
+	cv=none;
+	b=k5iFJ091lRkBYC5+NiZtK7dxyOddiRVGVP/kMPXWsZuFAxDwrzWsBvf1OUu2g01vpRB/eF
+	N28378DxKUdKlcXb5vU2MWGklUlkqB8kPf5JcUyTjcR1NCgjrrd3o+s4ZyTVDZrtjF7Cr4
+	rLMPQAWP1Ra+3Bzxw1zdYo1A2/Tt0Xk=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631CXfGr169440;
+	Wed, 1 Apr 2026 14:32:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XCjnqf
+	zND3siMSjdM7ztAg0ApusfOuj9tUAMFjr53ZY=; b=lUexXE+/iv7l23MV8dz9Oz
+	0XEzCy1FXjw990EAmF7E/gNcymfqYhA2gRKKmxaU7hRkeOctQb/qbb8PRYLUHUlS
+	TFbSPFYkM8cRfGpSq5sdSifV/QAj4jpichXMmuolEJNvKWR25kU1ZzOPbusdYD7l
+	cpmgv6tsDFNcO7T0P9+ungV07c705ctfMR4zS2hWLRh0wJfX6gVkOhaCWMiIxqEK
+	BUhuPsLDMqzVHf53A68y6p/qszDRo2uAQbD2F9NcW3SKVl0JYfKhdE8jrbYl2VbJ
+	IiO5jRjFT8cLyrWZYPERMKcB7oVaTi1BLTu3aejyrH6KfGd2zMuowFYf4P8ok+hw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q38m3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 14:32:31 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631BjPRO022291;
+	Wed, 1 Apr 2026 14:32:29 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6tan5yx1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 14:32:29 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631EWS3X1770044
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 14:32:29 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DB54C58054;
+	Wed,  1 Apr 2026 14:32:28 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 563F25803F;
+	Wed,  1 Apr 2026 14:32:23 +0000 (GMT)
+Received: from [9.39.18.42] (unknown [9.39.18.42])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 14:32:23 +0000 (GMT)
+Message-ID: <b6d211e1-233e-4079-a8b9-6682e12077ba@linux.ibm.com>
+Date: Wed, 1 Apr 2026 20:02:14 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/13] selftests/mm: fix double increment in linked
+ list cleanup in compaction_test
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1774591179.git.sayalip@linux.ibm.com>
+ <4c47a2ebbc41f90c7a0cb3f8b34106b2b64296f6.1774591179.git.sayalip@linux.ibm.com>
+Content-Language: en-IN
+From: Sayali Patil <sayalip@linux.ibm.com>
+In-Reply-To: <4c47a2ebbc41f90c7a0cb3f8b34106b2b64296f6.1774591179.git.sayalip@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
-X-Stat-Signature: 6ax1gfkrzjnf85ryphxoob7a7mcawbsn
-X-Rspamd-Queue-Id: 1C3E9100012
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: N46Buve6LLjOY-8cEDx28LKGk35wp2Te
+X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69cd2c7f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Ikd4Dj_1AAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=_rQTWCYq3bkPLdup__cA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: q70nen16mzFyUJWl05e4U8Txb9r8jnvY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDEzMyBTYWx0ZWRfXxVz1MwK3oBRi
+ b593UD/1bwhpKB6ZGc+V1gyY5N3wSUvdD6PIJn+ip4X0z5qBlhU4hTlwJjq0CjZiI6pqhhTzRZE
+ oZCOtFPMjtQABspSqebRFvaMc2MRFCCmxOT+sWTHuGHFHcSk3I6ont3eeHT3219qcn32cHaHkS7
+ ld8RA5ofe1bmWjrzf1XeSzQ1rQgQhwgl/SqZz16H7KXl2G7USFCtI/5Fs4SKb3goyPIP3rXts4M
+ IrkXoL3Jz8bKPQOLExNaj+QM5on8Oh8nz1rb2tF6lE6WxrzoKtB8+gkJ8LxEAsp5WlIGIXpXTla
+ 9rH06kriLngXUJaPRfyv/GkAzcJ5UsuqFBDUcgi7Z+nEAMySwe8e5l/i96J+BTxw1NUlt5hEu8l
+ aQDZIukCAk9RSqribHSDgd4gqa5gN46CV8QT/XlEdPOj0przE/HgR+O5D3TIOfrVZJAn+RUmFbq
+ W8iifSNYOHfP21RDdYQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010133
+X-Rspamd-Queue-Id: 879E51C0004
+X-Stat-Signature: xg866eop7dg1oo76yjae97czrxmn6pfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775053537-462264
-X-HE-Meta: U2FsdGVkX1+pliigJ4gAiON+mrueS+gosuqX3KYsFHoY6rnECl5lyUYds7z2XCGHgUwcnLraGuv6nD7LaOiKOSIeIIF2wzb93FqJXm+ad8lECkqbk8Aej6Pe7KlABhAJZG/FzfHN0lkVkryXI9YbOWv2cUlpppupn3AoWdiwUeToj0Sqfu7s+dcVppfTpcQU83ufxtAHeyE8GckfNqca6vv+Ig8ZhWtu6Yy65wssaOmIZQR9Km31cL5quX5Mzj6ZIL8OPOawMrfQ0hXdZanbnZPYcAuy78S/mz4qTauUgFNA8hHOT9eG5AlmWQ2L7kNo9rmZzGCbtg+EogY854Ufj57Z3OG3PPrDUV+t7ouAePVfImF8lwq1JhONN2L0bURhuGHXVqyaC9AMV1envf3kS1F74OpLx0lEK321yM2PlNC8w4rNUYz15iVRqJWodrL6k03nM/2jj/SZWH5DmDRzJ2/LQAA/fVFr+ZRdnWQ/V8PymhpRxxmEREHyIwZDpprBF0hHskkqTr5o6cNIZWfbUYdkXiJ3rU9qJcOLclTXXxhlfTiSeuN520VxU8h4FzIxoeK/cGG8Hw863XcRu1VmJ07UP1m0i1jBzEKXG1oX1o25e1ox7jr95A+y2Vq+k4eZWmzgLl0f5kyAZgMwGbD1+GTqT9hk5GTWICZcnnjHvKKnF5Yt44D4pEoKVZ5xKf8pKgeFiYzcHYO5P9ZF6//druPtBwxt7ZxLN83i9mEiHq3vPtMxIOPUGC00EMZ2eAs2dpw+OHbkQCOHmgd28/sxdXVf654lmXyV5enbYKHUY8HaeADTltWJgOaaBdfT9aVM6MoDC190naZwrz20mdMq+BXU5N0v8FCJHGsIlgYT8OsifqGD+MSiUYybOm6HlyROEKYyNewAhbUoxCyknDEwXDXMyg/9TSeig4hKy1+vu1fhWlIPYC/4QSej2Jnq4+lmuZKj1C6/3J9z2JH4TZW
- 6AIxwRNx
- jQiuieGxDyJibPvsaxz/RRFR7tWkQ9mru91dy7cpOgF1hQNRPgEAk8A+fw8nmBcD3XIS4YlmUUQPkgwMtQaoheqqt31+4fW3vWqlIlofY03kCCdCM1MNdA0CyIw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775053957-197744
+X-HE-Meta: U2FsdGVkX1+UulIVkj7UVmXW3wKAhC1VPiQklvkxfthENVxv3NmmQxCCUw0RHw/DFGkvT5NsQudHRCEhuzTFxdKHLFCq6/2d9Q5MS6N/MDXufeiGdS/klr6IePPBsGFAn6GNhbWStRtip4R/e/XpeOy8dcOEJAyk8Jh203SCD3JENPU2CNCocr6iwgYhZK1WitVokk6yRzJlZ8TkoPL7BfpYfxbcW+eIBbldKt+6FOAic6/CBZumxh4ctzCxi9ZJYsjOUQBt92DY1UKg8ockaGIrT1ZY9xyzALnEN/kh3Rkv4S3xd/x/3nepjcj+g+kD0ZoVPtWZFD3fTkukJFV+qAL4ookKB+10/nBCh0Mj8f3rOfizh/u+Hje4uCkNgWwcWcqpFUy0Ss4fPOQxb3wRXTMrXtztH8iYaSak6VZSXjMgJ8ajlwwKtl0eLhVkxf9jjo/yXNGAxcaWarbKEKMGoZwJUHOWqMnjMVY+WVQ7ERdD9f/q6VqkC8j7BmD2lj5G8jX4hIIBbFhT+shUroTrK5+vr5MI3IEA5p2T4VrMxfo0lTBnnC/F0BakqDket98ynPkropoqLDlw/+gCeu41VuANgo1rM5j5dASKSHDLJoU0fw9pECM2v+Z3vNgfWVF3fkVHMGWTN01STj9TR/R+gU9v+OCI0J0TQIi1cwc0lpb6BZiRyjkZHJj9CZIjjdDhfEg1vhuzVrlb+b/AjbpEHq0nEuDmJxK/eqmEmIhFRS2brQyZNM/hu84o305dKZY+6A35LXwicxmAYQgUZUrZZAEq5K4yJsIF0BuYEoiHVnRiRlDicW3wA3YqPovYjZR0Cd9zBEGs/uV3k/AF5LCGej8aUKl53A7m6UvGcsp+4DD897LGSlPs8/nCrgOY7xrcYxB4Sv2Jt00vq30xhzsFsqmc5O9Eb+JziBoSKpycSfaSV6c+nWCB3al95RoA2FLsO/ce0onQ7xsNaYyRVrL
+ VQ/yJM0N
+ s4k7r0kyI/clogk51FQ5SW5qKeI5/nHvXPRwWzUG4EoNvOJQPHLYBJY4Zx8Q8xWjSbPxpxGpcou7bpc+L+3vUL9vJyjtD7U5QaazmgVhLW33YtTRwKyuIZzYBNwQc9SgtRJPaUAmhM2lMWt4OYusuDsguyvVSlaWnCrgY8IJitVY79aUEoiQNTUqvMMpxVko7WZw6TmzQZRNqw6gAvXXKGgfe1QkLPT6gFFpEM9fkyPRHj0zK5Sobo77zeVQfSa6b3oW9Kgtj3elACOAsQ2rqDvGUe4T4rr+YhnRJYGkIipAJCtsnCV5sh0IbTtMVnFyep+BEczH60sIghnLGG703YK/kfOI4E+Nl+t3HBjyeN/DqNcCf/oiwy5nd4LNABadWeCJ6iIQOevIv2G/S6WpcpKBtUCnKJUociX22bxpFyIaH71yWhKJJmQmAUnUDOOUl1AsF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,98 +150,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 06:57:50AM -0700, Breno Leitao wrote:
-> vmstat_update uses round_jiffies_relative() when re-queuing itself,
-> which aligns all CPUs' timers to the same second boundary.  When many
-> CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
-> free_pcppages_bulk() simultaneously, serializing on zone->lock and
-> hitting contention.
-> 
-> Introduce vmstat_spread_delay() which distributes each CPU's
-> vmstat_update evenly across the stat interval instead of aligning them.
-> 
-> This does not increase the number of timer interrupts — each CPU still
-> fires once per interval. The timers are simply staggered rather than
-> aligned. Additionally, vmstat_work is DEFERRABLE_WORK, so it does not
-> wake idle CPUs regardless of scheduling; the spread only affects CPUs
-> that are already active
-> 
-> `perf lock contention` shows 7.5x reduction in zone->lock contention
-> (872 -> 117 contentions, 199ms -> 81ms total wait) on a 72-CPU aarch64
-> system under memory pressure.
-> 
-> Tested on a 72-CPU aarch64 system using stress-ng --vm to generate
-> memory allocation bursts.  Lock contention was measured with:
-> 
->   perf lock contention -a -b -S free_pcppages_bulk
-> 
-> Results with KASAN enabled:
-> 
->   free_pcppages_bulk contention (KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      872 |      117 |
->   | Total wait   | 199.43ms | 80.76ms  |
->   | Max wait     |   4.19ms | 35.76ms  |
->   +--------------+----------+----------+
-> 
-> Results without KASAN:
-> 
->   free_pcppages_bulk contention (no KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      240 |      133 |
->   | Total wait   |  34.01ms | 24.61ms  |
->   | Max wait     |   965us  |  1.35ms  |
->   +--------------+----------+----------+
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Nice!
-
+On 27/03/26 12:46, Sayali Patil wrote:
+> The cleanup loop of allocated memory currently uses:
+>
+>      for (entry = list; entry != NULL; entry = entry->next) {
+>          munmap(entry->map, MAP_SIZE);
+>          if (!entry->next)
+>              break;
+>          entry = entry->next;
+>      }
+>
+> The inner entry = entry->next causes the loop to skip every
+> other node, resulting in only half of the mapped regions being
+> unmapped.
+>
+> Remove the redundant increment to ensure every entry is visited
+> and unmapped during cleanup.
+>
+> Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 > ---
->  mm/vmstat.c | 25 ++++++++++++++++++++++++-
->  1 file changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd..2e94bd765606 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2032,6 +2032,29 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
->  }
->  #endif /* CONFIG_PROC_FS */
->  
-> +/*
-> + * Return a per-cpu delay that spreads vmstat_update work across the stat
-> + * interval.  Without this, round_jiffies_relative() aligns every CPU's
-> + * timer to the same second boundary, causing a thundering-herd on
-> + * zone->lock when multiple CPUs drain PCP pages simultaneously via
-> + * decay_pcp_high() -> free_pcppages_bulk().
-> + */
-> +static unsigned long vmstat_spread_delay(void)
-> +{
-> +	unsigned long interval = sysctl_stat_interval;
-> +	unsigned int nr_cpus = num_online_cpus();
-> +
-> +	if (nr_cpus <= 1)
-> +		return round_jiffies_relative(interval);
-> +
-> +	/*
-> +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
-> +	 * use round_jiffies_relative() here -- it would snap every CPU
-> +	 * back to the same second boundary, defeating the spread.
-> +	 */
-> +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
+>   tools/testing/selftests/mm/compaction_test.c | 3 ---
+>   1 file changed, 3 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+> index 30209c40b697..f73930706bd0 100644
+> --- a/tools/testing/selftests/mm/compaction_test.c
+> +++ b/tools/testing/selftests/mm/compaction_test.c
+> @@ -263,9 +263,6 @@ int main(int argc, char **argv)
+>   
+>   	for (entry = list; entry != NULL; entry = entry->next) {
+>   		munmap(entry->map, MAP_SIZE);
+> -		if (!entry->next)
+> -			break;
+> -		entry = entry->next;
+>   	}
+>   
+>   	if (check_compaction(mem_free, hugepage_size,
 
-smp_processor_id() <= nr_cpus, so
+Sorry, this change is not valid.
 
-	return interval + interval*cpu/nr_cpus
+The goal of this test is to verify the kernel’s ability to compact
+unevictable (MAP_LOCKED) pages. The loop is intentionally written to
+unmap every other chunk, thereby creating fragmentation with locked pages
+before check_compaction() is invoked.
 
-should be equivalent, no?
+With the proposed change (removing the double increment), the loop ends up
+unmapping all allocated locked pages instead of leaving a fragmented
+pattern. This results in memory being effectively unfragmented.
 
-Other than that,
+I will send v4 without this patch.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Thanks,
+Sayali
 
