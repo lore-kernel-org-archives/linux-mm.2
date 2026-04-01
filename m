@@ -4,139 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78797D3516C
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 10:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5577D35170
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 10:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB416B0005; Wed,  1 Apr 2026 06:15:42 -0400 (EDT)
+	id 050606B0005; Wed,  1 Apr 2026 06:16:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5C016B0088; Wed,  1 Apr 2026 06:15:42 -0400 (EDT)
+	id 000EA6B0088; Wed,  1 Apr 2026 06:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4A0C6B0089; Wed,  1 Apr 2026 06:15:42 -0400 (EDT)
+	id E80AF6B0089; Wed,  1 Apr 2026 06:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A3FE76B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:15:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4392513B1A3
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:15:42 +0000 (UTC)
-X-FDA: 84609580524.18.7E8D0DD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8297F2000A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:15:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C87ht2XU;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D69216B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:16:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E0E81B8A2C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:16:43 +0000 (UTC)
+X-FDA: 84609583086.10.43892FA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A6C86140009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:16:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OTyDEOYG;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775038540;
+	s=arc-20220608; t=1775038601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bLa3ebsfLxEdbY4TGYxv+TNWkhy6Tc7youISpmiJTgg=;
-	b=QgRyxSbpMFbwjOSFUcOpV87Xvx6RTHy5gHiP9GKBHDSYgOJUlL1RwsOktpG1jvms29eDy9
-	0Qz6e+A4EjWNkDOap7rUqVU3O7dVy3OXWwoixFnastwI7f3MRuf1ofS4pRqV/fnFMfhLko
-	YAkAMOUq9ZqA5+FcsOxchxTeGZ9HaG4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775038540; a=rsa-sha256;
-	cv=none;
-	b=6qv0HbiDFTs1XXBiZdJVxqdeCT4BUe+6pNK16fvdaE3MFi+6nLxL0usI43EvZKl36OSxzs
-	m8p5t/VpOQjxbwbSofF8tyIbPap0pUUNWhTcSZKgS+TPd2T4zOekAFUQVhmAkzI9hh18Di
-	uL7yjz2AjxpELoqn8NLDrUHWmkauqhk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YYXyiboMIImqwuc7vkYcx8H444RW6P5IN0gdwzbgOE0=;
+	b=N4j34uGjaJcshlHCJosLXRdS+hbq3biJuZpNbws9cNzITM93rJR+8uE5LQUkZ2eC5PMkVf
+	AZx3ONI7I7n6YT4ymOjtKzyfmOE24iGsmOiRd+sOlVFdaFGmKaexbRe1Crv7RWEXvF7NW+
+	CCgDcQfJi+hp96XYmYoHxDvW2OElSr8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C87ht2XU;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC36D6012A;
-	Wed,  1 Apr 2026 10:15:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CACC4CEF7;
-	Wed,  1 Apr 2026 10:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775038539;
-	bh=gPfGpsPWtFNdEOnKKfHw5AfsvOOAcxMLCXyvPk3Q6Cc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=C87ht2XU1p1ey1swk04IfzogavurvJ5V8TQ8YgI1FffaGA64aro2WYLEj5yHRd36V
-	 h2CDWj3+M/DEChZcelqV6WMOYHlDDYvUx+BWgdMywl46ggRJSipBnCpybJVrELs2ZU
-	 7Gz80GC/Q+PXSpWWRz7Gcz2HXbDMAzYMP7xVwaFFaV//fp2CFdOrl23NnKB2T4MUPG
-	 w0+CtylbAGSFGpiYQzmD739xdKyVIJrH7rMwCpzwBO7teXqRDdQ4gt7Sb7dobh7RP3
-	 CYucX69y+K7/j64jx8hRw9l4SLKZnr6Av+XAqi4ZoulG4M7TAPqA+pBGbNDw/ex6XW
-	 ++rjEazkEKfdQ==
-Message-ID: <f1fd3148-3303-44dd-8ad3-c031251abd51@kernel.org>
-Date: Wed, 1 Apr 2026 12:15:32 +0200
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OTyDEOYG;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775038601; a=rsa-sha256;
+	cv=none;
+	b=T03AeQ+csyz19Hr3JkjvcwyrkaG4TX/BDpo9OSyeQMRGrCxb8zWWE1fG6d2errHAwIOhwG
+	yR07ViYRYAtkjDlzT0sxZnF51YUu4pZeyds4QiHA+R9qUEBkI62rVPirAK4DnEL734m9hs
+	wTh37jdBsGB8mvBZfjJmLvwx8axlvgo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 823CD1D6F;
+	Wed,  1 Apr 2026 03:16:34 -0700 (PDT)
+Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D489D3F915;
+	Wed,  1 Apr 2026 03:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775038600; bh=QIGPbG/hNIIrgGzENVsHjAyVbxwqz7uvUwqcJOctN9c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OTyDEOYGrlSdWlXHxWZDUCgyH4c4VL3P6GzJEFGdz/OZ9L94HLTySuOrD/gAHNfzD
+	 dI7TDFTKnhIJnijUDHYJ7wZ6zQ1dhX36e5R7dEhCPwI18F7UGGsJrqgSp5rNTIcC6b
+	 r2gZ+r5Mq9pUnrhhnNy/ba4C0W09xgNOfN7IO3So=
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Ryan.Roberts@arm.com,
+	david.hildenbrand@arm.com
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
+Date: Wed,  1 Apr 2026 11:16:18 +0100
+Message-ID: <20260401101634.2868165-1-usama.anjum@arm.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: fix stale partially_mapped arg to
- deferred_split_folio()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com
-Cc: usama.arif@linux.dev, richard.weiyang@gmail.com, sj@kernel.org,
- hannes@cmpxchg.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
- Lance Yang <lance.yang@linux.dev>
-References: <20260401084116.22219-1-kartikey406@gmail.com>
- <f0599d26-eebb-4bb3-812f-beee0bce5f5a@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f0599d26-eebb-4bb3-812f-beee0bce5f5a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8297F2000A
-X-Stat-Signature: 464u4xxzwroiir7z3pjgu6s74kx4ggdn
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775038540-63393
-X-HE-Meta: U2FsdGVkX18HnIE9sljz80iHSZYChZUSdsv42qq/DCAPJbBkILmgzVB40cV3eJ0ay+uJoLJCp0JDVCDCrqTNAPNTON3pLs/rhl2Bwgjri4bfTg1wncbxx4bIH5nSKECbve6UtDzxetweb/te5WEtpRRlqq6v6G9InOWWxdU4oJ3LfI3elJhpnih4tvoJAJbgSRGru9QrlkVusSgSq39zOkzZThCooqW8v/0CGdG0nzK3xNg6lz+afQadAziEY2JiBlDUyUX02RG6NASkAo+vcL8FiT+HftlRzrVHlEB6hg08TT7FtgJGdcr2PuuXddY1Xfq9FyImn/V0WmlqaZMSZcFPnerollT7c/ShM3+kXBhYvazERRuzb2KgIUGT49L8I8TVQ3HiUE+0aJJQtsEPPn+0I2y6RUbqSm2IVt84Dr1EM3eeo0WUoUq7DyUCHrCO5sSI2pqxVIOa4r4h523GM/f+W/bR7COD1O2pyn5HWLTaEV1lK0eXFIFT04cC8PBWbd5BlvYuKEzoERD/sgWg8+5LrUKHfvpD8qsf7fKlbdrE/kXCkAKjwFGwYyR0JNA9WIe21dnvn/8yKvLKFqlf2d6pIvh5EIVYjcdQT4GEHkl2wtAYuJzNyGMuu6kXKeL66qTa+u1F5PdWGYK7GRXTiz4dEtX8j4GhQtpgtYgQjTd5o8h4XQ0lYYtgh1yTmdr5uWxFfOt6/1W9C5yPVIQXsdBIy8ZsZgxzSbI0uKNbx8pdagIV300Pp3nTTqfWnVBXJfbu/TKmsqnIUAgxNdXJjlY5ketU8piRHsQaKADbfcsF/qRYX6sTAL1JZDpG5Sbs6/qjNLm/CDvWKmnD38ypCQrGYTj1OWbsbfA4nWNYRZlLPoRlUhqQgeDzLdKi2MuFaA4kH/oU/H6Xgc0zQ+XMCc72zpri89jkKljUNiw6RGIbHPqWsUgoR8c0Ss5J//uR3jEIv4rdRuIPdCxqplU
- Var6gFaq
- jb+gI69BhH8+kAhaadgWqHzanS+es1i7oLsNF8m/9hGNgh7VOi2LJg4viu6ULyyA/EgofUXQ88Pfcu8dS3otiJ93ko2At7jrM1TJrqyTL+ap+opuefgghBIEmNRp35atDhXPCXUP6VNE1kJtzcQpY3+FG1ldC8hQ44hZ6fAp/nW3jtTEWa5YVUIWxqKGtvOabUtzeYJhlq3p3+1GtP1lhYdgIYJX1xcNDrc0KMu3HqhaG4uEVC8rhofC0oIp8Zed9AaokgikvD9pMxeZwv9lXg5N5QrYRDFyQaSqBImTHGkjphKZ2lpncTCniLqm8zj+Mj/W04HkpXMwMghUL0osqbBh1jEVLuoZ3cbKqPvEk2BExIoXptIzhvOV9z1gmZxgvE3pJhm906pwPJ8l7cT4X2S8TavpreExXd+v7IUCdx32J88s=
+X-Rspamd-Queue-Id: A6C86140009
+X-Stat-Signature: f44mkbjtju538okb7pd4b9uhidugusiq
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775038601-885088
+X-HE-Meta: U2FsdGVkX1+cHqjDwy5mRI6u5WL0YEJ0JjHYenHfFZ3KjjGhquKYMNLTaA20YHiQwaIlJX1eQjzvcJ381wMVjf6xGAj3EeczWYOKDUPYiQTcVXQT4jCOIGwvHoyEDvGDZmwkkVxDl0WiNU5gHkDDxDkiVICvwo4+FWUHHmiDgCWVaBb+V0yZ3o8v7J5ZnUW3Ee5z5OmL99BniuVOSB4OyNpYKgxT+xg4bVtTfk0/2JaWXADDb4tYed8eck1w7oc0z4MV+vtf8yBogqE4hPo9d5Af1Q0a773Wx2+ZtrjN4e7jC54/vzM8M4fJtB4Gzt4CAuvXkG8tPCiF7/s3iJ3Mm3racZnCfGEDPrbQmo8seZzAVCd0Svm+kpMSWn/LIrh+Tnn2579XJdEadz5DUlAPAsJLBOfgES6WvcjCn4DZ6i8BfilMQKBe6qA6zbrY8F4BXweKGht98I5ZOFCq2lxyBFkGXyqfYehJsSjSAIPBjgPb3JlB5MwYRHHGHhj0J1oFVsqvx++eEDcdhYj++wMOAP8Mf4Cr0OeRU0zBeSXXaTu54hCJjUzA/TnmZvBrCYYGB01qzNpxIf5Vccc43dKSOcCQx3K4JZ/Fc+oFJqwOqMCLqtShLW+bqXCsptd3Y6gR1s5XwfE5JCCrZ28FfY6BgsQYD4c1wbhgW1XK29QoOH1cXeyMYL4PcZHE2bMG4x5j9LZghS4pn45rUQDokdFkCrD56EvbtRQ6tKLkVp1VznB8CucSvwyJQnDiMnP5Atu4BUTsDK4kl4wQxotR1IKSZr0nuy3q7JwgXp+aAM2A5dHiHrfXoao3oRYPBwS5tLjlOY9fY82gCkvzx84qEQK+F/evUVoq0w/gmWEvBQmoon6dmEeDaHZiOGJm8E6EL7AfdK8gOmCI2WvG9nP9OjpbqddCR7ODnh+nbt7B3dbHHcEZGFud7IuMAJX/8BfiAnWmWA7yCaV/Gd7E5y8NlQ0
+ a6uIYJFB
+ 5OVtqA4Mhnl6mE563RHSwiMhyxGPC+9KwWGW894ltkPXA2QDmUP+aaCIrRXmcsGv69o0vpTuDK70xNDmYlxvlEgfCpf7/GM4FcDIrR6/PbPSCR11bPc+T680OAh3z6BGP9ebSptrhDrWZXTUqhYEdfvW9/uFqEP0dZ+8ftn4PXMGnRRenjSfeIyGcnhe49eFGV/2FtP5N2uKLdG+ZMJ/vtP1mpgiTzkCAFOiZL0E3dzWjRoC3HNVH0hNElM3cfP1WaCC+kMQWK0Dm7VLs5aU6/pLb6PLJLOtIaWeC2UOZDtndx+E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,41 +103,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 12:10, David Hildenbrand (Arm) wrote:
-> On 4/1/26 10:41, Deepanshu Kartikey wrote:
->> In migrate_folio_move(), src_partially_mapped is sampled from the source
->> folio before move_to_new_folio() is called:
->>
->>   if (folio_order(src) > 1 &&
->>       !data_race(list_empty(&src->_deferred_list))) {
->>           src_deferred_split = true;
->>           src_partially_mapped = folio_test_partially_mapped(src);
->>   }
->>
->> A concurrent thread can unmap pages from the source folio between this
->> read and the actual migration, making the sampled value stale.
-> 
-> Trying to make sense of this.
-> 
-> In migrate_folio_move() don't we have the folio completely unmapped
-> because there are only migration entries referencing the folio?
-> 
-> See migrate_folio_unmap(), where we check !folio_mapped().
-> 
-> Why should we suddenly have mapped folio here? Something is off.
-> 
-> Unmapping a migration entry will not involve rmap code and not mess with
-> the partially-mapped flag.
-> 
+Hi All,
 
-Okay, concluding that the above reasoning is all wrong.
+A recent change to vmalloc caused some performance benchmark regressions (see
+[1]). I'm attempting to fix that (and at the same time significantly improve
+beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
 
-Let's discuss it with Lance's proposal, which makes more sense.
+At the same time I observed that free_contig_range() was essentially doing the
+same thing as vfree() so I've fixed it there too. While at it, optimize the
+__free_contig_frozen_range() as well.
 
-https://lore.kernel.org/r/20260401085932.20945-1-lance.yang@linux.dev
+Check that the contiguous range falls in the same section. If they aren't enabled,
+the if conditions get optimized out by the compiler as memdesc_section() returns 0.
+See num_pages_contiguous() for more details about it.
+
+[1] https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com
+
+v6.18      - Before the patch causing regression was added
+mm-new     - current latest code
+this series - v2 series of these patches
+
+(>0 is faster, <0 is slower, (R)/(I) = statistically significant
+Regression/Improvement)
+
+v6.18 vs mm-new
++-----------------+----------------------------------------------------------+-------------------+-------------+
+| Benchmark       | Result Class                                             |   v6.18    (base) |    mm-new   |
++=================+==========================================================+===================+=============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 | (R) -50.92% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 | (R) -11.96% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 | (R) -35.21% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 | (R) -36.45% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 | (R) -31.83% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 | (R) -38.62% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 | (R) -24.84% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 | (R) -37.83% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 | (R) -26.32% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 | (R) -37.76% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 | (R) -31.15% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |      -8.97% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |      -5.88% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |      -6.95% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 | (R) -40.19% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |      -2.10% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 | (R) -48.03% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 | (R) -40.48% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |       3.52% |
++-----------------+----------------------------------------------------------+-------------------+-------------+
+
+v6.18 vs mm-new with patches
++-----------------+----------------------------------------------------------+-------------------+--------------+
+| Benchmark       | Result Class                                             |   v6.18 (base)    |  this series |
++=================+==========================================================+===================+==============+
+| micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 |      -14.02% |
+|                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 |       -7.23% |
+|                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 |       -1.57% |
+|                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 |        1.57% |
+|                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 |   (I) 15.75% |
+|                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 |    (I) 9.05% |
+|                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 |   (I) 38.45% |
+|                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 |   (I) 12.56% |
+|                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 |   (I) 38.61% |
+|                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 |   (I) 13.43% |
+|                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 |   (I) 49.21% |
+|                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |       -8.47% |
+|                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |       -8.17% |
+|                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |       -5.54% |
+|                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 |    (I) 4.63% |
+|                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |        1.53% |
+|                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 |       -0.00% |
+|                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 |        1.22% |
+|                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |    (I) 4.98% |
++-----------------+----------------------------------------------------------+-------------------+--------------+
+
+mm-new vs vmalloc_2 results are in 2/3 patch.
+
+So this series is mitigating the regression on average as results show -14% to 49% improvement.
+
+Thanks,
+Muhammad Usama Anjum
+
+---
+Changes since v5:
+- Patch 1: Move page_to_pfn() outside the loop free_prepared_contig_range()
+- Patch 2: Change subject of the patch
+Changes since v4: (summary)
+- Patch 1: move can_free initialization inside the loop
+- Patch 1: Use pfn_to_page() for each pfn instead of page++
+- Patch 2: Use num_pages_contiguous() instead of raw loop
+
+Chagnes since v3: (summary)
+- Introduce __free_contig_range_common() in first patch  and use it in
+  3rd patch as well
+- Cosmetic changes related to comments and kerneldoc
+
+Changes since v2: (summary)
+- Patch 1 and 3:  Rework the loop to check for memory sections
+- Patch 2: Rework by removing the BUG on and add helper free_pages_bulk()
+
+Changes since v1:
+- Update description
+- Rebase on mm-new and rerun benchmarks/tests
+- Patch 1: move FPI_PREPARED check and add todo
+- Patch 2: Rework catering newer changes in vfree()
+- New Patch 3: optimizes __free_contig_frozen_range()
+
+Muhammad Usama Anjum (1):
+  mm/page_alloc: Optimize __free_contig_frozen_range()
+
+Ryan Roberts (2):
+  mm/page_alloc: Optimize free_contig_range()
+  vmalloc: Optimize vfree with free_pages_bulk()
+
+ include/linux/gfp.h |   4 ++
+ mm/page_alloc.c     | 143 ++++++++++++++++++++++++++++++++++++++++++--
+ mm/vmalloc.c        |  16 ++---
+ 3 files changed, 146 insertions(+), 17 deletions(-)
 
 -- 
-Cheers,
+2.47.3
 
-David
 
