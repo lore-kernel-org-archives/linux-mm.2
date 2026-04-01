@@ -4,86 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7725610F6FD9
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8023110F6FD9
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C6F6B0005; Wed,  1 Apr 2026 11:41:23 -0400 (EDT)
+	id D61316B0088; Wed,  1 Apr 2026 11:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D186B0088; Wed,  1 Apr 2026 11:41:23 -0400 (EDT)
+	id D12676B0089; Wed,  1 Apr 2026 11:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 853376B0089; Wed,  1 Apr 2026 11:41:23 -0400 (EDT)
+	id C01166B008C; Wed,  1 Apr 2026 11:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 77E236B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:41:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13575C9BDE
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:41:23 +0000 (UTC)
-X-FDA: 84610401246.24.00924A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7776212000B
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:41:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM3le0ln;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB1C36B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:44:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62F198C72A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:44:16 +0000 (UTC)
+X-FDA: 84610408512.07.E711488
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 79AE91C0012
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:44:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HNEaaa3j
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775058081;
+	s=arc-20220608; t=1775058254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+p4nmCiQBIo/7aL5VHwQRYAgLPs/WUMdW27dlmb0SE=;
-	b=mU6+N2ritcvLzlElei3QxYe0x4R6tbH9WM6PI6rn7eDGtJ2AkD+lPBOelcygQ2R4Ft2kPH
-	glpMny4rcpcbUrg7QfHDJ+b3hOFFkHeDsgVXDUya95CGESr/YJqEyD9mfjtQyUOLZ2/kcK
-	FCeUbPfqztKDN/GaF293THZhljjyGsM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775058081; a=rsa-sha256;
-	cv=none;
-	b=5G+UJA9kgN7nME+MayA0g1FDOTISO0sKMG9+87caZU/uo8zf1biYlwT7Na31djYfSXaTb1
-	uCIeSGjqaadB7BI2AKYkyFDssNN+ji5pwmzP8+TvDokeOkg2WfGRfJZE3WWduJ11vACrHf
-	YA9qJrpgB6tdKfzgY/lsoAnFetguGuM=
+	bh=MxBAS4YTt72TMZrDYJdny7nH8fv6qBkvO/lDqD+k4tA=;
+	b=CgP800VJgbA8GN14dQtUwqs3anhEyY3UQLTCPbLoyD/DlEhgOPqY9HjQnUWmujgwVWYX1i
+	AIeAuAvuqTtZur4CBbQWUOmGzjVneP7BOHZD1c0kiy8IidllR1xOh8iV4hrTPOYKomogwN
+	nAsLiAFY+7l5d9gXJXo0RzKk+4Jh12U=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM3le0ln;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B686361340;
-	Wed,  1 Apr 2026 15:41:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0C4C4CEF7;
-	Wed,  1 Apr 2026 15:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775058080;
-	bh=S/VWLw2jpuJ809fs69jIdpFQnzH6zWS3RJfJT30T91Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XM3le0lncmNRcKu3J8uKbGR3DbAO1ZzKNuBwjwWrEyd6vSn0+rTTXTY7L4crjGW6K
-	 C0axHHwy0u0Pi5ioLEzoa4Yt5sgKUm7w4minEGAKD3C1Htrp3hxEFkNY2VEzf31sh8
-	 CnVAgLvb6sGTh+mupDNpczzTLcYMc2tYSHLhHpyTfixpNnp4vxbUeZB9HmG+DARyE5
-	 NloFdgmUdeJVzt04G0sfY4On/8dk05wSlIL6CqqElbELv/PsTbt9qcm6FpmQBPQbtm
-	 qRHfFInL11IIrcAzdpj+CZ7ZBKiuatmIv7TJ7POpdrEhgikEAiCNvJaSOMM5DMJcgc
-	 SElmbA8STxEbA==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
-Date: Wed,  1 Apr 2026 08:41:18 -0700
-Message-ID: <20260401154119.67874-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260401082439.12612-1-aethernet65535@gmail.com>
-References: 
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HNEaaa3j;
+	spf=none (imf18.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775058254; a=rsa-sha256;
+	cv=none;
+	b=YGa7D4Gs/SD3eSJHyjiaAkKGHFbdPMHnVN3Sd/Ov1ZG2Zs1TOYOwyu87lIuKE/Y7dbMjuL
+	izeiElmin4ZUJJywlaolN+Qx+dYVK6xnhWmXeQToLO+4at6FmcKrhkbqbPE4fMlgwvVdN4
+	Lb6llBkQmDHj0+tAZ5kzRBRPLABHjTI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=MxBAS4YTt72TMZrDYJdny7nH8fv6qBkvO/lDqD+k4tA=; b=HNEaaa3jH/NeXpyDOGO153//jx
+	44xxgKRQoLjCe0iYy7Zz1Zl7KGxpfv4AlxvYbNBQmiqetlmWa6dJSjcAAaH52FwjEw+42AU7j65Ca
+	fmmf1Is+7CSvnnDVZG6wK3+fvn595Xs8sazwT89P6vrcOY/M/nYn1Fc9iMH9RMxf+XKdO5nE2tvVO
+	osPeMAFeSzNfmItI6sZPabpFxHCBqSZ0Z9umPw84fadx/ftjPISpWD+QuqnFuKIF0fJF4GMaDw2O7
+	q20WmxrlDGB6v8iC7xF/LwaYTADteT+ylMgj5xaFDYYRleOEcrXwaaVCwIr1sMCcf99FBdeayaSBK
+	Z8uGRfwA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1w7xjb-0035ak-0s;
+	Wed, 01 Apr 2026 15:43:58 +0000
+Date: Wed, 1 Apr 2026 08:43:52 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
+	shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Message-ID: <ac08dcv31J5_lAHs@gmail.com>
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <20260401152343.3294686-1-usama.arif@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7776212000B
-X-Stat-Signature: 1i4d7uxmip3shknjs8cbeg7u5au53ic3
+In-Reply-To: <20260401152343.3294686-1-usama.arif@linux.dev>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 79AE91C0012
+X-Stat-Signature: ba4cfdcbtiz5kacqtdr8gwxcy9fhpwq5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775058081-210317
-X-HE-Meta: U2FsdGVkX1/to5SaceVW36cLZVPraZpZOnrug1mS+iJtUdTKM/3HdDGyfbuvQtEv/dImShzt+F8kN1bPwkH+3CrXx6H1j9D3dbp87BmHDbJPyb+DmQrGN6MD8tYk3C8RkFjs7Hct4ISFRV+gHqO+/gJ2k8WGzBStKFSciiLEXgBchdEPAyYzmNI+afp9+ieWsEqTS7BvOE2bB5kUk4P6Zp/WW6MTTrNHihoEMAB6dGKoLj5un/3YD/1kg/9N3SZ/9JVwqshrLWjLgl71gCEdZ803KmYVfVv9bAgagcB8vj1C6WV47L43f2uJE0mmZRzJVqYRd5SOclqHM2Ipr7hmv33dqdZVVvXA/xxM3PWMevoAEyTMhB9iV32BO1IdksGtePQvj0R7pPNTZ4wliUQ/dz9uiBkkkwJHfZg+A/6wgHwynSu2URrlbaaPFMPQuj7hNnjLvF9Oq1S7Goiz+Vzje++5Jb3DN0dpxKg8WlOC6jElanAtttEc72KFBWqK3SVdHRhFyMTG7T8RNlNvhWS0f8C5u5MGQIKmUyTIjb3WirxqE0MNwSdmEk4JcxnX4vY5SDVuSe+4vJyJtcUUXjcbrYOmWn7e2hia7pwojXnPuqZJqRbFMTwDV1e6vZc4+2lFVkmPi7WYuwuO69DyiDNT6/dpnpmF+rHMW8LbNbXuqzStlNvttand63xLycVTU2GWXLj5hwermwT/jOj+zAGqZIIEnbVJWP9NnfXmCmXKGHX2nr0xc+Sfpx45OzZLustLo9hvTVu+SZ8hursA2jU+IFLcgu7qjnz6IeNxXlm+uw6bXnZ39BzrUW/wNS+gBAe/skjjMiX/Rmvt7QeNlYaIL6m4IUQOyXODiLdTczV0/U2Yq686K2Fy2PMu9DQp7UF7zTxjO0LGOb9X+yaQ7jWoYyby6HrzJUHGt8trivbg0mocbBCes4Lf/DAE3mANXTSLNUFIC5jtJfPgErv1YM0
- n460G/6r
- ME44htXUpHwWiLcZvnWXgdPGBYr/V4aOPW90WU1FVmYhnqt37+bnKqOyjibzT+SSGjIqpWpdOyu6Xl+rm2oB0/qwUdEvdPWLt0h/iD7jPyOHi3iCOrinnRZz9T3Sw2CuFDVkI7lz1BL2aCgzOc0K7qnDgmkXjxMg31AmIqkJMpXPK1J18DNkiWEKzShQrDfMB6d6y1z1ss6TlstFOQqNOKwCgqsEqEwrElzbTlygYzYbpBsWV8CrUBXZpEccP7PBJyowj
+X-HE-Tag: 1775058254-644842
+X-HE-Meta: U2FsdGVkX1+nLehe/9lyN+bxG2GQbghGHOuPQaSgiW+UrzZWvA5icsCee91WcbvUa1dMjgs7Cah4+LXZ5nd0TeMH/I8DPEi6H9I+qMYmFeyMMe2aPJMtsNnWsEKXWV+Eoc9xSrt0n0YUTSlWEAQ1Hj2r5gOdVfwMYltQ2BHNkuKu5bTuZRpd+vBT81w80sw/O7KRZvw8wd3mUQI+PL3pqFCukYzJYlwELWIx0YkS7FdlYs7IBR4AxrFkTHGEeZDgPFxOV0q59qN1oZzygcTtAJrnbowoI7qvwt0j2b2p+ZalHY+kFy7X1RAlO0xtUx57TZlR+RhYC0JazI+2/JzVZpYGaHUV3s4DEZYaCk5BJFxAS6Rjsd2phZU2nQVVTKkjxWlXC0GFHKg//KzcCQrSKxg7si+3R/jPHCn85QuuefrCttPWvS1BdgG4IYLZzWdoW0beuXz68PC5mhEG5pOPhiabkEVHpBcQ/sf9PRX7n33GrRu9DCHbJsV4eyOkueBYq56ZmGKrMQZuBQZ/tbh+eYMrSJ6dRnBz99Cz1ECdG93GvMG1jJ7Si5Lldq6JteebR+engxeIJkbIOF47BjiwbjIrjGlQEkaoOuVzJ3WcFcO1NRp8GLgLrN3tAJX2FNIdu3RW6d09F8ow+PsgYqJ8/DTa33n1gfWIJfQ/5HzdKyOa12M36Nvr/Pd2q08gBSAAI+0nGSnhSQoQYLSPJLzJHfSn6sv9ac0iTIoh8vhJm6GEoFX+eKPTXfOf8EciwvQoVhdPi4FuUaD9tbFUSIMSQIRiKhaKG+GM3MMcL7SmRo5957y+7vOGiGcElKWvgGEPNq1z0bq4N0bk4jzU80RNOHmtL7ZOa7Xg3heWjBNFSnVXAi/zyZjgNSf2vNwdKAamA9inr9DkRJHURGdJVAHxCzw6mtq3GYXkWkEeipTKTHLxcGki9jxHE3ht5YEg5AsoZgbC0uBliFLgqFp0fZe
+ dk+IV4ir
+ cIAPJgOWK1a3WHNTMaLJNmxVBqe16mSpIYUXDmuownoPnQ1RaniWppGmK1DRp2vIXgJype+8VHQqTH7+qv3iSDXFBZvmNo60oZ6IgX8tqQ0zE//1z2rU1+o2FNCOOUnJU5wlSB0sY8h6CM/obtNBnxtnBgd/sXQvXAhy4Rj94GCgF55r6p1yeU2tAMipBdBWZ9dFbKsxfqZYQoIeMDbLSIMy7Q4LjZ95Tk78O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,135 +98,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  1 Apr 2026 16:24:39 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Wed, Apr 01, 2026 at 08:23:40AM -0700, Usama Arif wrote:
+> On Wed, 01 Apr 2026 06:57:50 -0700 Breno Leitao <leitao@debian.org> wrote:
+>
+> > vmstat_update uses round_jiffies_relative() when re-queuing itself,
+> > which aligns all CPUs' timers to the same second boundary.  When many
+> > CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
+> > free_pcppages_bulk() simultaneously, serializing on zone->lock and
+> > hitting contention.
+> >
+> > Introduce vmstat_spread_delay() which distributes each CPU's
+> > vmstat_update evenly across the stat interval instead of aligning them.
+> >
+> > This does not increase the number of timer interrupts — each CPU still
+> > fires once per interval. The timers are simply staggered rather than
+> > aligned. Additionally, vmstat_work is DEFERRABLE_WORK, so it does not
+> > wake idle CPUs regardless of scheduling; the spread only affects CPUs
+> > that are already active
+> >
+> > `perf lock contention` shows 7.5x reduction in zone->lock contention
+> > (872 -> 117 contentions, 199ms -> 81ms total wait) on a 72-CPU aarch64
+> > system under memory pressure.
+> >
+> > Tested on a 72-CPU aarch64 system using stress-ng --vm to generate
+> > memory allocation bursts.  Lock contention was measured with:
+> >
+> >   perf lock contention -a -b -S free_pcppages_bulk
+> >
+> > Results with KASAN enabled:
+> >
+> >   free_pcppages_bulk contention (KASAN):
+> >   +--------------+----------+----------+
+> >   | Metric       | No fix   | With fix |
+> >   +--------------+----------+----------+
+> >   | Contentions  |      872 |      117 |
+> >   | Total wait   | 199.43ms | 80.76ms  |
+> >   | Max wait     |   4.19ms | 35.76ms  |
+> >   +--------------+----------+----------+
+> >
+> > Results without KASAN:
+> >
+> >   free_pcppages_bulk contention (no KASAN):
+> >   +--------------+----------+----------+
+> >   | Metric       | No fix   | With fix |
+> >   +--------------+----------+----------+
+> >   | Contentions  |      240 |      133 |
+> >   | Total wait   |  34.01ms | 24.61ms  |
+> >   | Max wait     |   965us  |  1.35ms  |
+> >   +--------------+----------+----------+
+> >
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > ---
+> >  mm/vmstat.c | 25 ++++++++++++++++++++++++-
+> >  1 file changed, 24 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/vmstat.c b/mm/vmstat.c
+> > index 2370c6fb1fcd..2e94bd765606 100644
+> > --- a/mm/vmstat.c
+> > +++ b/mm/vmstat.c
+> > @@ -2032,6 +2032,29 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
+> >  }
+> >  #endif /* CONFIG_PROC_FS */
+> >
+> > +/*
+> > + * Return a per-cpu delay that spreads vmstat_update work across the stat
+> > + * interval.  Without this, round_jiffies_relative() aligns every CPU's
+> > + * timer to the same second boundary, causing a thundering-herd on
+> > + * zone->lock when multiple CPUs drain PCP pages simultaneously via
+> > + * decay_pcp_high() -> free_pcppages_bulk().
+> > + */
+> > +static unsigned long vmstat_spread_delay(void)
+> > +{
+> > +	unsigned long interval = sysctl_stat_interval;
+> > +	unsigned int nr_cpus = num_online_cpus();
+> > +
+> > +	if (nr_cpus <= 1)
+> > +		return round_jiffies_relative(interval);
+> > +
+> > +	/*
+> > +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
+> > +	 * use round_jiffies_relative() here -- it would snap every CPU
+> > +	 * back to the same second boundary, defeating the spread.
+> > +	 */
+> > +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
+> > +}
+> > +
+> >  static void vmstat_update(struct work_struct *w)
+> >  {
+> >  	if (refresh_cpu_vm_stats(true)) {
+> > @@ -2042,7 +2065,7 @@ static void vmstat_update(struct work_struct *w)
+> >  		 */
+> >  		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
+> >  				this_cpu_ptr(&vmstat_work),
+> > -				round_jiffies_relative(sysctl_stat_interval));
+> > +				vmstat_spread_delay());
+>
+> This is awesome! Maybe this needs to be done to vmstat_shepherd() as well?
+>
+> vmstat_shepherd() still queues work with delay 0 on all CPUs that
+> need_update() in its for_each_online_cpu() loop:
+>
+>       if (!delayed_work_pending(dw) && need_update(cpu))
+>           queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
+>
+> So when the shepherd fires, it kicks all dormant CPUs' vmstat workers
+> simultaneously.
+>
+> Under sustained memory pressure on a large system, I think the shepherd
+> fires every sysctl_stat_interval and could re-trigger the same lock
+> contention?
 
-> On Tue, 31 Mar 2026 17:44:00 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > On Wed,  1 Apr 2026 00:09:56 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > > [...]
-> > > > Option 1: Introduce a generic termination callback
-> > > > ==================================================
-> > > > Add 'void *after_terminate_fn(void*)' and 'void *after_terminate_data'
-> > > > to 'struct damon_ctx' or 'struct damon_operations'. While this extends
-> > > > the Core API, it provides a clean notification mechanism. When kdamond
-> > > > exits for any reason, the module can perform its own cleanup (e.g.,
-> > > > resetting 'enabled' and 'kdamond_pid') within its own callback. This
-> > > > keeps the core logic decoupled from module parameters.
-> > 
-> > Maybe this is the right long term direction.  But to my understanding the fix
-> > should be backported to stable kernels.  Is that correct?  If so, I'd prefer
-> > simple quick fix that can easily backported.
-> 
-> I agree. While I hadn't initially considered backporting, this bug
-> certainly warrants it. A simple and easily backportable fix should be
-> our priority for now.
+Good point - incorporating similar spreading logic in vmstat_shepherd()
+would indeed address the simultaneous queueing issue you've described.
 
-Thank you for generously accepting my concern.
-
-> 
-> > > > Option 2: On-demand state correction in the module
-> > > > ==================================================
-> > > > In damon_{lru_sort, reclaim}_enabled_store(), if damon_stop() fails, we
-> > > > check is_kdamond_running(). If the kdamond is found to be terminated, we
-> > > > forcibly reset 'enabled' and 'kdamond_pid'.
-> > 
-> > I think this can work, and simple.
-> > 
-> > > > 
-> > > > My perspective
-> > > > --------------
-> > > > I personally prefer OPTION-1 because it ensures the sysfs state in
-> > > > synchronized actively.
-> > > > 
-> > > > OPTION-2 is simpler and avoids API changes, but it's a "passive" fix
-> > > > that only triggers when user atttempts a write operation. User might
-> > > > still see inconsistent value until they try to interact with the module.
-> > 
-> > I agree your concern.
-> > 
-> > > > [...]
-> > > 
-> > > To avoid over-complicating the Core API (Option 1 or current approach),
-> > > I've implemented a lightweight, on-demand synchronization mechanism in
-> > > the module layer.
-> > > 
-> > > By overriding the '.get' operator of the 'enabled' parameter, we can
-> > > detect if kdamond has terminated and reset the module-level state right
-> > > before the user reads them.
-> > > 
-> > > Since sysfs parameter access is protected by 'kernel_param_lock', this
-> > > approach is race-free and keeps the DAMON core decoupling intact.
-> > > 
-> > > Core Implementation:
-> > > 
-> > > 	if (enabled && !damon_is_running(ctx)) {
-> > > 		enabled = false;
-> > > 		kdamond_pid = -1;
-> > > 	}
-> > > 
-> > > 	return param_get_bool(buffer, kp);
-> > > 
-> > > Test Log:
-> > > 
-> > >     # cd /sys/module/damon_lru_sort/parameters/
-> > >     # echo Y > enabled 
-> > >     # echo 3 > addr_unit 
-> > >     # echo Y > commit_inputs 
-> > >     # cat enabled 
-> > >     N
-> > >     # cat kdamond_pid 
-> > >     -1
-> > > 
-> > > I think this approach is better than my previous OPTION-1 and OPTION-2.
-> > > Does this looks good to you?
-> > 
-> > Looks not bad.  But, what if we read kdamond_pid before reading enabled?
-> 
-> You are right. To make this robust, I could apply similar '.get'
-> overrides to 'kdamond_pid' as well. This ensures that reading either
-> parameter would trigger the state synchronization.
-> 
-> Would that be too heavy? Or do you think it's unnecessary?
-
-I feel it's bit heavy, or duplication of code that could be avoided in a better
-way.
-
-> 
-> > Also, what if the user simply try writing N to enabled?  Wouldn't user still
-> > see the partial-broken status?  So this doesn't seem gretly superior to the
-> > option 2.
-> 
-> In that case, we could modify the damon_{lru_sort, reclaim}
-> _enabled_store(). Before processing the write, we check if kdamond is
-> still alive. If it has terminated, we reset the 'enabled' and
-> 'kdamond_pid'.
-
-I agree this would work, but again I feel like this is a duplication of code
-that could be avoided in a better way.
-
-> 
-> > Based on your above reproducer, I understand this issue happens by the
-> > damon_commit_ctx() failure.  If it is not wrong, can't we catch the
-> > damon_commit_ctx() failure from the calling place and make appropriate updates?
-> 
-> Yes, we can. We could check 'ctx->maybe_corrupted' right after it
-> returns, and reset 'enabled' and 'kdamond_pid' immediately if it's set.
-> 
-> Do you think this approach is feasible?
-
-I think this is more feasible.  But 'ctx->maybe_corrupted' is a private field
-that supposed to be used by only core.c.
-
-What about checking if damon_call() and damon_commit_ctx() failures via therir
-return value?  It seems damon_call() fails only when kdamond goes to the
-termination path.  damon_commit_ctx() failure always causes the kdamond be
-terminated.  So if I didn't miss something that could be a path forward.  What
-do you think?
-
-
-Thanks,
-SJ
-
-[...]
+Should I include this in a v2 of this patch, or would you prefer it as
+a separate follow-up patch?
 
