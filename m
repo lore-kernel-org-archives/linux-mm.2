@@ -4,85 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D1D10FCAD2
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B1A10FCAD2
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 424176B0088; Wed,  1 Apr 2026 16:44:05 -0400 (EDT)
+	id 0A44D6B0088; Wed,  1 Apr 2026 16:46:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5136B0089; Wed,  1 Apr 2026 16:44:05 -0400 (EDT)
+	id 055AA6B0089; Wed,  1 Apr 2026 16:46:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EB166B008A; Wed,  1 Apr 2026 16:44:05 -0400 (EDT)
+	id E86DD6B008A; Wed,  1 Apr 2026 16:46:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 197466B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:44:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A027789AC1
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:44:04 +0000 (UTC)
-X-FDA: 84611164008.13.59A231B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EF10640009
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:44:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SVC1G+9q;
-	spf=pass (imf04.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D7B716B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:46:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E3511B701D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:46:05 +0000 (UTC)
+X-FDA: 84611169090.03.313271D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ED9A4140007
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:46:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="E7b6l/2Q";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775076363; a=rsa-sha256;
+	cv=none;
+	b=MGlwFgGvXt1+WTAOVdmd9jpw89obp9ExUCp6Zxc+sBJrUY+cOXep7uNKVlvAhb6Yn0tR2J
+	Pj6oyM7QoO+1b9+3xQuZeufvmhcFu8GQebvbGigzwMID4+0suxEnPi6zz1HwRCE0He1nwe
+	xas/ekUchheWLgb84u/lFAAuJnwwaHU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="E7b6l/2Q";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775076243;
+	s=arc-20220608; t=1775076363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IMe2h+8nwoxfX40YPi4Rbri4SOzp9FJKTrDnD96vqkw=;
-	b=7k/iKpACTHdcQRwOOQQfbTahDeSqPoYKCnLg8aj6UcL7vyjJxS0NtYYVIUYj7RYNuwF9ye
-	vUnfPY0jFs3JbF1lJv1Jlp7neHQVQR+DvBka+kdeVWmy57oVryS7i5W6W51aTFB+TVffa4
-	VThIxGXLOEp7GL6VENaxHoypSVHy1es=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775076243; a=rsa-sha256;
-	cv=none;
-	b=Qc+3mHfaAEcOckQHLKCs3vO2LXVc+1FHwyB0TWaZFIkxqZGS8j35WFIvHai46tqW5cktTR
-	TX0wCzM97xl8tgkojzKj9snmghrZjTYD2Hg13LAtAA5+OmvpPKJ8GQVepxRZdQR87042k0
-	FcaUuf7YzGwVsEWQyoJiRYmNIy5+QU8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SVC1G+9q;
-	spf=pass (imf04.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0037844115;
-	Wed,  1 Apr 2026 20:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCACC4CEF7;
-	Wed,  1 Apr 2026 20:44:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775076241;
-	bh=kTOS3uekJiiJ5a6z93beysMcrDQebo3EZ8N7JGrOBNg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SVC1G+9qBK5pCrZkNWxdglydUIgueJO94ACXdf/Xztp3Npu7WHpWWPpRC59QtVDTu
-	 jwIRDs1ZwWfKffRZq2/C25rUuH6bXOvsqbOiXkq52vDgNWX+Xl0ozaeaJaVkqMj9Qw
-	 qRK1Iyl1gtxyEUD/5R3EOGrpZQ6DsKiqPYLCnjsiqW/FsF7zNnQy1TltcT7+JunXGo
-	 dNEDAzO4oj9lOaoimycNQyMyoz9aBXvMdIg14QAYWoK+iT/XYGgeQR9dorQlRoLt0c
-	 57LAT8WKdtDLr2DgJfw+aQTxzcZW5dW4HdTzhGPuV1lsSzbLZMem3p2bDkwbZBnF3D
-	 VUuBjnWo7FERQ==
-Date: Wed, 1 Apr 2026 13:43:59 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] execve: block Emacs binaries
-Message-ID: <20260401204359.GD2466@quark>
-References: <20260401131226.4011156-1-mjguzik@gmail.com>
+	bh=RWruVUI1tyA0IagjZ+3lclFkCSQNagbCICLF95nwFe4=;
+	b=1kUDNCfdEPHhk7cyntpmCP7kGMAnhq5aSE+iH3GNs1p+13RRhRAiv9ahtV3+Qfjup2hwCb
+	VSB1RvVXn+sBrGork/G5uTGpcB8X62e7/EV/JW10emh5q0oiqsXzWW3I1UMplhxrPXZGnh
+	rqWGI4M5sL6cgX0iR7m25cGxsFuD/Ug=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631AjOUb015098;
+	Wed, 1 Apr 2026 20:45:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RWruVU
+	I1tyA0IagjZ+3lclFkCSQNagbCICLF95nwFe4=; b=E7b6l/2QjZCkcKJ5G4G/yI
+	hK9FUV+8cIkcFYWGWsXdUJG9JFH2o0hURCYLGsttdJMwHxUp0BmjOPrddiIhTJBf
+	JSI/aGGaWDK57MvekGVsXmjXF43WZ+YgR/eWbrEYJGU4x+eBOJ0e1RCTAPAizUvH
+	LNKFbXVymu7GR2aJk/aB00teaB43zhUraGE3IQr/JL0BKicELbB5GeqpBRV7syMa
+	FCPytU46RU4XoR2Sy5i9LRlIhshepaDecbeL5XoBO1FLlbYMktAfVIiqcZJpL0b/
+	atvkCs90EAZ7CdXunmqS3oejFRPhJDZpEt1cpeSBr7Z+U0+JxByfRkfaIAC13fAQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q3a4p5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 20:45:56 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631Id5q2021709;
+	Wed, 1 Apr 2026 20:45:55 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6sasqk58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 20:45:55 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631Kjsf427984504
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 20:45:55 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D426458052;
+	Wed,  1 Apr 2026 20:45:54 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4CE1458062;
+	Wed,  1 Apr 2026 20:45:50 +0000 (GMT)
+Received: from [9.124.211.138] (unknown [9.124.211.138])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 20:45:50 +0000 (GMT)
+Message-ID: <20a95f92-57f9-44cc-bc40-8110dd562998@linux.ibm.com>
+Date: Thu, 2 Apr 2026 02:15:48 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401131226.4011156-1-mjguzik@gmail.com>
-X-Rspamd-Queue-Id: EF10640009
-X-Stat-Signature: csjiifncr3cq3zsranx1wjjbab7hkif4
+User-Agent: Mozilla Thunderbird
+From: Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v3 06/13] selftest/mm: adjust hugepage-mremap test size
+ for large huge pages
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1774591179.git.sayalip@linux.ibm.com>
+ <fd252496169a91c80e339910978f21c3f4aac9f7.1774591179.git.sayalip@linux.ibm.com>
+ <4e859cfa-db79-4676-9509-81a2140db3f3@kernel.org>
+Content-Language: en-IN
+In-Reply-To: <4e859cfa-db79-4676-9509-81a2140db3f3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ImgjBi1YotGdXNs22t1V0XVsv_SW0sfH
+X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69cd8404 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Ikd4Dj_1AAAA:8
+ a=VnNF1IyMAAAA:8 a=pPYpmyHQdkSp_mSMAUoA:9 a=pz4v2tEdkw714-FJ:21
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: PTslfsCMgxc-PgvVTdlUoFhCgIDowRJo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE5MSBTYWx0ZWRfX/vpITs/nmC19
+ /HYzZkKvv7DnQZZjAVg/dqj9D4Ya0Zju+8RAbNF7ZC79P24cqL0i3Xl7aFvXeSah2TSCS2iLMKe
+ Elu5RqPslaih4wdGEbIep85pvivsUFShFgT2nDqAQveRt/W6etlcGJfHwwKTbxhnUU1YHxVyzZB
+ KV1ZQ0n5qrEwUxd8Tl4BkXe5Wx47/eqF2sDLN/3zzJp0UN6dw9YNP/bU0LSK5rncvL3FawzE06A
+ o+5XjA5b1rzjhNrvTlmLXLgXjpejj+osr0A9E77Q8VjdSDiazL0lhoO4cwvr0poO1G2hJK+XLuY
+ 5a1MnnIouHfdYFflzxwgXSOaPP43O4bzx+SvZK565CPcKlV7rOICa4GhubHZ+mqm6K2YTwXz00a
+ KVSI0Ijm3/KXSS8w/UG2++nO6DyGUREGBVIZzf0qBIlmemvJ6EUu4uQa4lCf1DFxMVGlnKlof8A
+ ekT1kBhoZnFXhujbR4g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010191
+X-Stat-Signature: ii9iy9p51yj4w5aesgdi47hu8cumkpo7
+X-Rspamd-Queue-Id: ED9A4140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775076242-343465
-X-HE-Meta: U2FsdGVkX1+ZnR1HPe6OQft2pDSC0FiK3AytjrSu017uPJpcx5dNkd3oHdkvPoOOsmQFQEB5QSBX21AWj1IpBODsrvdsqZpom40M5Pj1GfuhFPoNmJszCT2hKt5biDBHLXonOzwu0nplcG7F3+gekWhnyjcOYAf/8VIyxYYBDQUCLkJgM5Rw6SG/mpBEwPViZ3CPQtVyJRgLikzfA5WYO2j5lUIRJKEhdJhGNREQrMw34Q7RgQXF7S9yh3r12NojqwfgLi3xiysxJszGBRG8CYyQ8Ql6reTRcY6dLjSWzxp3EfM3cjxsK3XR0Ow3gH0vXc8ddWoawE2Wd2HYBu3SYF8SG5GK4zDi1NqlvnGUPFcOg/m2lICc78gBoSx5zcxQC1U6Vedut6wVY56+9t6E4qIwP6yqXPG7bJbilYl6xChFBJ8SDVVCiwjOHlCTa8munDSLjI+zVvIGlKMTqArHlfbHBXJgfpLV+kUalKijw+DYszG9E5mQzYu4kRdmUaSEVeAZDINKmrpEz1NcOmUhI0X0une5KDqaykM89/fF0iubCEpO7HK5sRRxpMVD2rhJxlG+Yvjm5z5rJ6d/5PYqQ1xuWoRmXXmGZu1uq/Fb4NRT2NdBXAC+bK0oMX45mIIinHFzzQH0gE79rIssexWVp6HiTifMtC2GZZ+U/R3KUnONuw9OqkEGj9DjoG/ZanRUMTmN8SYDw7/dzKOZTIbg+XtGF6iCMmTunQVtQE2xlG4QapQsiUY2tBrDdK5O8dDY9gKLTG7rgEfWkM6Byh6aDFqEf81ZZRXSmLb/MddTJvzHlrhKY+IpAc7dGXj8+Sv+lG2rsYV3GokeFh/61a6RgusA3kytcpJByc33y+7qtMp/XIB0A5UMf6BBKKqNo0LLNY8adpwl1Glkxw9LJ1xymL65l15rQ6KXJs8J2r/Dx1CyxqW7RQ80dLU6y/cDc6jroGuRUfPQ+zxwAIi6+Ys
- TctnaXv1
- Gs+5/1FS2lBMCj0BkpbiM5s1MmbFnBjHsnQJkCxTcR//hUVjjfeWWPtNt20nr42f6UbQCs7PU3ILqW1OfGfX6a+zuHe7FKCUJls7fKid0udwDo/DygCC6P95PNgPzaOKzY3AkmC56OCmVRO3jjwoWRMDP+aQq5Z+isLQ2SZJBy197ied9F+Esue1Aj/jxrTnwWgT6Szb2bmhK4ODl8zbWgC3dDKBR/8sHyFLO+p4PyT+JWUOvJVIeh7whelXFjSFIRCG/8qYYmVCijXqC0Mvu54cnw9yhaHQb7dyyVPmEx+aeFBUdqWBb18GeLw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775076362-998332
+X-HE-Meta: U2FsdGVkX18cTaE7y2a5bbdxbZ17wNkrU+BrGMREZGsZWFtiRb/ADMqMeLsMfOunx7aefZUUIWC/X1rqRh19CDuXoaRtCaB5mNXqUC0in6O8PjJfA1636ZQ3krIKH0LgkxsxiB1qkVmZFmeuSyWH8x62fLboG/wHMaN4tObjFhZH4HfJQ1HNcwPLz54I2fxsTmt4lNpxU6eH80YhoSE49YfoDJ1IraZCLE9txgSlheGi/VJa3tA2x/1CXrCVIB02vGvIzG6evqc6ejPC3ud8u08nM90GdVWAutcnCLRwK9jg8Jf3TjQQ75ZOjFtSjR5lfYIMK5I2Mo76iGJBKNoLaSukGIsPrDZ9nTV4ejZ5JXAsWpl1dEC4l2qWTBCLIlHVpdKiU62MCIn+Dxw0lgbkMLX6pu9cnkeFJRf6s1hA5YQTLIkPKSqS3NxfTb55asDMVQfSc7CXfHf5NgRyzV5HmjdqquSkOVsL3x+nwg7QQBYY4lXtygUTt4m01ePGBibFrE5p62pP85zifR1sOpjG30Tznsn8mMnkAfhvxqmEfTlqPOWEmmyqAMjFKFr6FmlUT/cAnTJQ/ipNAPHtIvEvUXqUijnbHgtft17XUGEbqge/D7agC2mRquvgU8rAB3BY3wI5jjuD5rGW9CTwstV7mukK75/JXQeBSwYBLyTNs1v7xZROkQSDwWcHQrftK8+MAWPPStFcqhgWOs6YSOhGX/J/BkxFCONOROX3h7tjgji64wzBjxl0HKNmryeRobcT0kfpMy970JdqJZd5VuQsYzR2IjXbRSHQlfI77ucB1ziRAZoTsM9GvF+AkKvxpo42IUUYoxbZTaQ2kJVKviYlWDFCW6UkLHYkRy5smLIDbFR7wPyXFWsmoSZE786MWcIsVYlTwzP0SDaXJfcafPFOqgMuj3hhWq1cMfRdYBwlI1/qyVKkVlCnO7e10dvV7gFMnbACwk9ZtdV6GnBeTlW
+ T8WWrClj
+ Og1PeAWQri58lQeSexrcs8sPuEJLRmRTMp2L2BrxMtJmzvvfQGgiiYp71+hegB0bl0TBYr3rMWak0psJHHEebZwVeCVKdWujBLXXgY48FapQMFXSiar3O62f3y8EZ1AJWxxkaJZ0UUythG9Z5tZUoIcN5oGsn4CVgb9Ju+UWroWESPSnniPRBaBaukMNEJX3iF5rEgY4fREeiGxk5t4F2ztQAYniaOWY+NCHRnAi/gpb2HpLmnjPPD9ojyK8oDRjAi5i3FzYoh6Eavv/Xqnje/uDOnO69if0kegMWCDbLNT73Dmi7PSwWpnnBRJF0xPWJLImLWW18nd/l1v0RERvsB557zshcqkEJtitAajJEa0p+4NVfLQLDydESMatnplLaBIeXi9FTZ2hOVAOkpLW8uWJXJ0OeLvX/dpoFf2fDG5ox4d21J7qs40OmSm6S9BPF25ot5Davj6a5Yd9d9yr8tKB0TA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,45 +152,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 03:12:26PM +0200, Mateusz Guzik wrote:
-> No justification needed.
-> 
-> A new errno is introduced to indicate what happened.
-> 
-> Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-> ---
->  fs/exec.c                        | 16 ++++++++++++++++
->  include/uapi/asm-generic/errno.h |  2 ++
->  2 files changed, 18 insertions(+)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 9ea3a775d51e..2e954b31e3a2 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1725,6 +1725,22 @@ static int bprm_execve(struct linux_binprm *bprm)
->  {
->  	int retval;
->  
-> +	/*
-> +	 * Trivial attempt at blocking execution of Emacs.
-> +	 *
-> +	 * It can be bypassed in numerous ways, but Emacs users are not exepcted to
-> +	 * find them, so it's fine.
-> +	 *
-> +	 * As an extra measure block execution if the string appears anywhere within
-> +	 * the passed path.
-> +	 */
-> +	if (strstr(bprm->filename, "emacs")) {
-> +		/*
-> +		 * Disgusting!
-> +		 */
-> +		return -EMACS;
-> +	}
 
-Won't this break some existing text editing workflows?  To ensure a
-seamless transition I'd suggest also embedding a copy of a proper text
-editor into the kernel image, and making the kernel automatically
-replace the emacs binary with it.
 
-- Eric
+On 01/04/26 19:40, David Hildenbrand (Arm) wrote:
+> On 3/27/26 08:16, Sayali Patil wrote:
+>> The hugepage-mremap selftest uses a default size of 10MB, which is
+>> sufficient for small huge page sizes. However, when the huge page size
+>> is large (e.g. 1GB), 10MB is smaller than a single huge page.
+>> As a result, the test does not trigger PMD sharing and the
+>> corresponding unshare path in mremap(), causing the
+>> test to fail (mremap succeeds where a failure is expected).
+>>
+>> Update run_vmtest.sh to use twice the huge page size when the huge page
+>> size exceeds 10MB, while retaining the 10MB default for smaller huge
+>> pages. This ensures the test exercises the intended PMD sharing and
+>> unsharing paths for larger huge page sizes.
+>>
+>> Before patch:
+>>   running ./hugepage-mremap
+>>   ------------------------------
+>>   TAP version 13
+>>   1..1
+>>    Map haddr: Returned address is 0x7eaa40000000
+>>    Map daddr: Returned address is 0x7daa40000000
+>>    Map vaddr: Returned address is 0x7faa40000000
+>>    Address returned by mmap() = 0x7fffaa600000
+>>    Mremap: Returned address is 0x7faa40000000
+>>    First hex is 0
+>>    First hex is 3020100
+>>   Bail out! mremap: Expected failure, but call succeeded
+>>   Planned tests != run tests (1 != 0)
+>>   Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>>   [FAIL]
+>>   not ok 1 hugepage-mremap # exit=1
+>>
+>> Before patch:
+>>   running ./hugepage-mremap
+>>   ------------------------------
+>>   TAP version 13
+>>   1..1
+>>    Map haddr: Returned address is 0x7eaa40000000
+>>    Map daddr: Returned address is 0x7daa40000000
+>>    Map vaddr: Returned address is 0x7faa40000000
+>>    Address returned by mmap() = 0x7fffaa600000
+>>    Mremap: Returned address is 0x7faa40000000
+>>    First hex is 0
+>>    First hex is 3020100
+>>   Bail out! mremap: Expected failure, but call succeeded
+>>   Planned tests != run tests (1 != 0)
+>>   Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>>   [FAIL]
+>>   not ok 1 hugepage-mremap # exit=1
+>>
+> 
+> Why are there two "Before patch" in here?
+Thanks for pointing that out, Let me fix it in the next version.
+> 
+>> After patch:
+>>   running ./hugepage-mremap 2048
+>>   ------------------------------
+>>   TAP version 13
+>>   1..1
+>>    Map haddr: Returned address is 0x7eaa40000000
+>>    Map daddr: Returned address is 0x7daa40000000
+>>    Map vaddr: Returned address is 0x7faa40000000
+>>    Address returned by mmap() = 0x7fff13000000
+>>    Mremap: Returned address is 0x7faa40000000
+>>    First hex is 0
+>>    First hex is 3020100
+>>    ok 1 Read same data
+>>   Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>>   [PASS]
+>>   ok 1 hugepage-mremap 2048
+>>
+>> Fixes: f77a286de48c ("mm, hugepages: make memory size variable in hugepage-mremap selftest")
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+>> ---
+>>   tools/testing/selftests/mm/run_vmtests.sh | 13 ++++++++++++-
+>>   1 file changed, 12 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>> index afdcfd0d7cef..eecec0b6eb13 100755
+>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>> @@ -293,7 +293,18 @@ echo "$shmmax" > /proc/sys/kernel/shmmax
+>>   echo "$shmall" > /proc/sys/kernel/shmall
+>>   
+>>   CATEGORY="hugetlb" run_test ./map_hugetlb
+>> -CATEGORY="hugetlb" run_test ./hugepage-mremap
+>> +
+>> +# If the huge page size is larger than 10MB, increase the test memory size
+>> +# to twice the huge page size (in MB) to ensure the test exercises PMD sharing
+>> +# and the unshare path in hugepage-mremap. Otherwise, run the test with
+>> +# the default 10MB memory size.
+> 
+> PMD sharing requires, on x86, a 1 GiB area with 2 MiB hugetlb folios.
+> 
+> How does doubling sort that out?
+> 
+> Also, why the magic value 10mb?
+> 
+> 
+Hi David,
+Yes, 1GB huge pages are mapped at the PUD level and are not involved in 
+PMD sharing, as huge_pte_alloc() skips sharing for sizes other than 
+PMD_SIZE.
+
+The issue here is due to an unaligned memory size on a 1GB mapping.
+This leads munmap() to fail at an unaligned address, causing the 
+subsequent expected-to-fail mremap() to unexpectedly succeed.
+The default memory size for this test is 10MB.
+
+Aligning the size to a multiple of 1GB avoids this failure, but it is 
+not related to PMD sharing. I will update the description in v4 to 
+reflect this more accurately.
+
+I will also update the test code directly to align the memory size to 
+the huge page size, rather than modifying run_vmtests.sh.
+
+Thanks,
+Sayali
 
