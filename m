@@ -4,125 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7836E10F6FCD
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:13:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA4FA10F6FCD
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:16:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D811D6B0088; Wed,  1 Apr 2026 11:13:21 -0400 (EDT)
+	id 178186B0005; Wed,  1 Apr 2026 11:16:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D58D76B008A; Wed,  1 Apr 2026 11:13:21 -0400 (EDT)
+	id 1293E6B0088; Wed,  1 Apr 2026 11:16:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E5A6B008C; Wed,  1 Apr 2026 11:13:21 -0400 (EDT)
+	id 017D06B008A; Wed,  1 Apr 2026 11:16:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B59876B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:13:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CFD4140928
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:13:21 +0000 (UTC)
-X-FDA: 84610330602.10.DCF4345
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E0CBC4000B
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:13:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBLaPMBW;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775056399;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E64296B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:16:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94EED140918
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:16:38 +0000 (UTC)
+X-FDA: 84610338876.14.38D301D
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012023.outbound.protection.outlook.com [40.107.200.23])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6F33B40019
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:16:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FWb+47bj;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.200.23 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775056595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7V8NwxjJKMOpltZaIZFZoGhOg5tW8DUtEYCSg58hw0M=;
-	b=P6LLxkprVHScvaTf6s27l+UgMKXkPUmU6nDMWQPJu4m4NMS7RQdTLefdkwTBskIrIg5c+Z
-	op7k/DFCyj6ODtTx4V27YGBeuJbBZ8ALXS/EauFNNyWUL3J8HzrvSCNBzZkyFse6YLeRkH
-	4xQW/IiRgB5xgprffe5cdLlHFZVRPqg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBLaPMBW;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775056399; a=rsa-sha256;
-	cv=none;
-	b=S7j/nlY+Wlha6aY28dZK4dBJBGMOlHQ3IeRo/d9pzAmpJfWPeeJnu+CF88X7MiRC0xAYDP
-	Qt8W0sy6TgZPiRRmYkt+NUfrrHqlEaOUtN2QAT35JJNx/0eG5xoI8PSq/lja/82agNYoDD
-	S4+2jLi3qxCoZWjWVepM785VBKWxAuQ=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a1443780c4so1137054e87.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 08:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775056397; x=1775661197; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7V8NwxjJKMOpltZaIZFZoGhOg5tW8DUtEYCSg58hw0M=;
-        b=dBLaPMBWp7OSmDZHA1il+CZEO1PJxvxzGAqj/ShfY+yzutZX3xqueQjPHqFTkyYHeR
-         6aj8wZML+BlyRvdx0GjPND4uBJtzhhfiohJ+MKm/wpBqOh3FfFv5Mw7i16XioaUqXiq8
-         VvEmJmpFePbk6fyg7JxlBa/RRIqUgIKUWquTB2SnSmKsc+bjh5Ue5MakWNGitYpuP6+r
-         1O9mToV8GV1tuZWg0+sO7ckBoEFEHbJYEM9kseYrK3i/Y8B+Cn0EAAXUyXh6enSNKx7P
-         TGyuokdC46+Xy2I/aWUDcdkakF20kmVz4Z5BAq+xHSZelRJLK1VzAqUF0qaMAIQkADZc
-         aEDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775056397; x=1775661197;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7V8NwxjJKMOpltZaIZFZoGhOg5tW8DUtEYCSg58hw0M=;
-        b=ZtTA1EyxJEC2OJTMLmF9MORvOABY2Tl6P5/sNueQJOtSOt8+cheearMwHEm4Lor3WD
-         VL//rrvUk1RGPnSTis/4xNXWJqmu+EWUxqY2j3QTNYusWuRye6vC2XCw/LFu/41hy0vp
-         KO+nboS6qzZ3lrZYJ9k1IFxKqZuNQQxFPDbnRw1KiD4YkiJEhEkKaGGwOWrf2QAKm3EI
-         ujjsA+oINp0LmY/Qy2clfc5xOmAZUnKmamGZX4kCtIHUSm6MCYXKL05wjZ3wUdvtuHes
-         FYw8dIWMPn5D+a7TnsN7e42BV8t5Sq3L8zUioX3gMkbXT8qYkV1eQg87cR5rP1Irt0D2
-         Pvlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUERSNUiry4odI/Ns8vV1UW/1Kk9xydgOjhNqt0prFaCDoTTUlucM0rSfXl1Pwlk9UvO/JrCReEGQ==@kvack.org
-X-Gm-Message-State: AOJu0YwJsRWiIBOn3Rxg/zGUSG5z0a7aPq+iLFDKAhb12r9nFRg1tXWK
-	C4x3XNneauFc4AC79gcScy8YYjDiL23PLUBwumSOLHYLPPGZaho+f+74
-X-Gm-Gg: ATEYQzxNVmqQN7iTUuH8dfWFSLD1B4onIrGQckMcFScYLlhL8Pyf36fXvqSFmfZp3YH
-	vyMZH5EzxgiXxCUxWjo8XXNceCNJwIWMaUukb/9Ygrw4Kyrx6MprWTE77vrjfv6ioLfqtCNeayR
-	+ayxWHBAxBLuJxQ/Nn6FNgvw2swZwscT9/1wz11yM56Q5Ugl7+fvixL8YGK80FqwQArEMd8QFd3
-	IaNqk7a9LSMXVY4zx3g4NDRvWO31F73AVzO6Iirtb2UH336Nvijwkj5uEm23FhREAAzz6BWYceN
-	BVJxk2Nk1Aj5vWlHfwUkKSQv0+NLub6IoVbMY3yUxK8dfs9Xf/7TMC2Uwm+KCCTAEvTRXRMAToi
-	2/2JPRheBQ7dzqznt73UoVcySFY2w4x7/hEbjzR6pVp+W76Kv1VRh2N841VZUqW7i
-X-Received: by 2002:a05:6512:4023:b0:5a2:c0b8:26e with SMTP id 2adb3069b0e04-5a2c220b4afmr1279512e87.21.1775056396314;
-        Wed, 01 Apr 2026 08:13:16 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6cc5f90sm4157e87.49.2026.04.01.08.13.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 08:13:10 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 1 Apr 2026 17:13:07 +0200
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v6 2/3] vmalloc: Optimize vfree with free_pages_bulk()
-Message-ID: <ac02A4ntuPKT7eyp@milan>
-References: <20260401101634.2868165-1-usama.anjum@arm.com>
- <20260401101634.2868165-3-usama.anjum@arm.com>
+	bh=3+9k8JR0Ma+fU77OX2G1VmdHTeBqJ7vzDnkf43am6Zs=;
+	b=y8nr8aTJO83eAIxQcw+hgKjN65GwK1i27IyyrhD3/5YCUXlvGypAaT4IL9Www6s/CoBixw
+	wF590LCqLp97tKgiCdB8RReuxLSEU2bohMWaMJguXhjsJb2ljTI+DV/YKq6B21Ys4nNGEJ
+	s32W0ws48y+qy91YMUdi9rjV5jc+ibI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775056595; a=rsa-sha256;
+	cv=pass;
+	b=fDya2/QcXymOjpGjg5O7eW3p5cwmWQaWmYAO0xOkbG3/UYyM8V49yX9o9rkFGtrdui49N1
+	JDrNZBMfwnXi4Yx8DG67nEXHtJ4Hu8Gy4jkwBgFMJx/Oj6jDPgK6YiHxSZmyvbZHLjzKtb
+	KWbabTkkSIXPh6CbH7lZnum79W6q2Mw=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=FWb+47bj;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.200.23 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dpRH/8qTGowq8wTk7e6gZK05hdTDq9RWP6Apgt13BaCSJC2D2kXLJJemX8a8eUI/ahpdROi0ZgQv+QKDFGhj/klFDEavM2krUdCysCROuqvdAc7Y3YMZ6lbvrSZxuXMQvD2PVN7oAaz9hQQ/zncLZWdYburCXv0UcHnjejWK+grM5iXN7yvCX75vmgBjcNKIrh9UMvzDzAA3xSUyAy5aemzTZ7m+Wlm3HSxN6Mdyq6JRigMhh8p3LnWpG7jstrCRMo60n7mtEedLSlNpdonn2HT4dZMCa6tt0DJ+eQZTAe0CcgIHnDuw8UDwuPPMDHpyu5rBk1nudJQr6LzVXybcdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3+9k8JR0Ma+fU77OX2G1VmdHTeBqJ7vzDnkf43am6Zs=;
+ b=Xqf8XhhcEp4psCMi/Af5EMPdwjgeHy0JDwSyNYXTB8NqhBDJEJ28MDJy1tikXnqF2TKg4+1QLz8jceH9v5iShNKq39gBEyljHOx8mNZOGgMpWY+vBEnZOzfM3L1DefQDjWIgT6XZtaFmQvSdQbPNOyvH8PrINMxpE7Phlw15C8NlhOyB9y7WAiWtJ13l1HHBWGX+IkEsDhqO25IB4ipDNOYLHLrCmutqXUsbOyOJfcWX2E7zCVn+Hd4OkvmfK8N+2CSDdD+hbg1OF3F/ciSHSYViFLDO7/FFGA3x73uJjUD460CoaqLOKg/d+JUw+CUZte0jnc482rKfdmYRnO5sEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3+9k8JR0Ma+fU77OX2G1VmdHTeBqJ7vzDnkf43am6Zs=;
+ b=FWb+47bjFKXeXDde3tKB0z8gHotXO6r2s+QPw0GnH+EWuYOuSnsARujou4nZz2ACsblrlnJZfydz8+NDw3p3YYocs9lo8W0CyApmmS/ciRIhAfqySx+LNpAlvePz5Y7Wahj1Nyv5T1Xk5Si0D2YSz7l9o2c8GEfZHwSd+NTeJMI=
+Received: from MN0P221CA0003.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::6)
+ by SJ2PR12MB8979.namprd12.prod.outlook.com (2603:10b6:a03:548::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Wed, 1 Apr
+ 2026 15:16:29 +0000
+Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
+ (2603:10b6:208:52a:cafe::1d) by MN0P221CA0003.outlook.office365.com
+ (2603:10b6:208:52a::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.30 via Frontend Transport; Wed,
+ 1 Apr 2026 15:16:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Wed, 1 Apr 2026 15:16:29 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
+ 2026 10:16:28 -0500
+Date: Wed, 1 Apr 2026 10:16:11 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
+	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
+	<ira.weiny@intel.com>, <jmattson@google.com>, <jroedel@suse.de>,
+	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
+	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
+	<shivankg@amd.com>, <steven.price@arm.com>, <tabba@google.com>,
+	<willy@infradead.org>, <wyihan@google.com>, <yan.y.zhao@intel.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, "Sean
+ Christopherson" <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>
+Subject: Re: [PATCH RFC v4 07/44] KVM: guest_memfd: Only prepare folios for
+ private pages
+Message-ID: <s4dbqrv2c6yzt4nsflfarnggtl25xlz6mzg74tfeg3eskceno6@6l5hpfmcbju3>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-7-e202fe950ffd@google.com>
+ <CAEvNRgF+FjJ1EWSR_rzD1=N040ZitiRrM2O3N0Kj5yN5rT3h+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260401101634.2868165-3-usama.anjum@arm.com>
+In-Reply-To: <CAEvNRgF+FjJ1EWSR_rzD1=N040ZitiRrM2O3N0Kj5yN5rT3h+Q@mail.gmail.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|SJ2PR12MB8979:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff40745b-b42a-494c-3951-08de9001a639
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|7416014|376014|82310400026|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mui79d6WuBdwGPubUtn7BNSU3jT282Dhswk6ENFdhnDCc9ZI8zlPlr73kshxh//pWhss6OcsMg5zHvXhxwrUSpIlnTIaPkKy7aOTuwsign9ECxrbbJcVf2j5xCrBMT7meU1CV/ChOjqkM8gTfQnJ3PLQNgJqu9VWeyjmWKJm9Of0fsltOBRrnWr0JssZ4SAelkWvbZzaCYHjI3hxLLS0tVm2TsSShHbbQO2HAFRgP2todtk3Z0+cAJ1U0UJjXYpNdZLMlqov6uMiI59nvrofXy6nJeLgFPULBjT7YJaTkXZicRaQtUp/lfjXm1krIOneTxqIAFmGKRD4UWTM0FGVB0hVy405FF9BGRGn1pzd+v9IRvB6vTrag6bq0cOQyo1NAcszcawZNhREoX1+FDjOYXzGiTiCpBC6sYeIT7hh6Ei07SCagTlzn4r9axGOoNLVj6bejksqoJDoO0d3TAFhZfQvrUrAMethbT2q1HjSp5zOG7w4I0PcLHsy4mvJ19K2EmDnYTI7hCEKZlViRanMXRtSwDyYmPr75hCAu0PxtcEgBeaE0prXuHdDt6FsirfDjoLd9PDzSVsUIUnmixFa3yGoNtpaedR1EJP98l5pUIq5jitqmmiFfuqGGt0KtcNbuVJU5zwzTRkdmpeM8OHxBf6baQYwNzdOJV0/QNhOjOPUT6c/n4CksnZ5ZNvjKUUwBLzYJiZ92VwrN4YKlxr1cEr5+XB7q41x36BhiDuiWqa9V8G5uXCuc4g8MSEoTxWo09k48ActffrteUeNfwfS5w==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(376014)(82310400026)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6j0hghzGGfUdhgvFuRXBlwdLqgPU+otHpxr1M7O7RokP7WQ8mPd4l79jTc5H90IqV/NkKXvpi3PJH8AYLdpcP7vjdB10HSAwSyG7aAK7cHVuFYq5IKnDqP5Mb1gsIVNmjXD/UDU6f+6FxDQU2MtiumT6n3evwWvFAcgX0g0p5lpk9OT+SAHTjAUt8tqvg5Cxy0FyXs+WY3Cz0RtVtnU9+/xGSfxc+zwo+/Hi9hPf8Xu1kHMPpm4UH2pBDy7yNNFDBAFMY/GBKwZkrLW1RxBpI8W6h3cpUrbz8gJGVb12cxBfSz76JXXFMOoEcJGmgjQYO/oEg/V/D/74m8oMMyec3kP+IHaey5Fd5ybIdoY9CogEDAzI781QP4r7wYTguMG9uWHZ6w1mMZZoA7a9Sasces9jKAOgrKWrXKzJ7nub54kZ61mu+gPWAjyegATcwOvB
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2026 15:16:29.0873
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff40745b-b42a-494c-3951-08de9001a639
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB58.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8979
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jccstub4yxrhru16i1cf9rkaiqksiqoi
+X-Rspamd-Queue-Id: 6F33B40019
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E0CBC4000B
-X-Stat-Signature: ipexe19wya15o5wydni3664qdoa5ria1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775056398-262663
-X-HE-Meta: U2FsdGVkX18BsrmxPRwzvZ9NjhxcAZEnh7uyBHt49W1VbHq4VNyzDBTp6t0cT5HmlFnaRemgxTO9vJGQhSBgjdr4PxGE9CXpQMtWIFBgvtHpu49dCF1HZ5eLsrb9yCajnNldKRogMkJp9H9o4M41hj2y6Ast2e+4u4rerKyF91l5g1xc4mKVvy1aUZ8TQpmgn1ZFzgTFlK38cHB6KFFsHSovkSoUjIba8o9Wkg4QTExIwI4ZmIRiD5+ZDeWbYFShDKTAfPnIiSy8y21shF+Igu+KzsgoI5MngZxe31TJmWKTPsuOu2l9GRrN26EwaaBZDNkv968CXT8r2tqj2qUrqWzsQTEAsIob3a7uhRATCLkASTwu1/4w4NLrueUkeNsw/RCtdfItaTd6/ZMSLnBhvtloX5Q96XtdNQm4xyqqrTda/HLr/IXAGKxQAnRd8Wq5Q038ZmSrDlPNFSWhV51OHeuKn/SFv9YSAFcq1LasrlH/yMdjxUZTN9ml8UFlVLCsO55fLmwxXdlYBfaEGtktAO2puoKkuZR4zKw32mJYKr4B1PTXH3QC/Uzj1rBk01YoqmtZ4sbAJhRzRkllcGWR3xGmN8hDM/7NYT38Nj6z9341F/iSfC4LWXGWaRw1XDxYGXb1zQLxRlIVAZz2T7OgSV6bMDIx2n8oRBUEU9twpybzVelgUqxfZUa5k45WHyYkY5133PWMvgyhUNafFu3YXEtJ0ttmB0dAfPZ2Y5LUkl2Ml6p14iYbNccwceNU7RFFdyz7ZpOOfkZCa/G7dS9AjZtCmMv8hA3rYyiAB5+orJxNufzj8aowG4YbA0L3kwPWqfEulEKC3JRwVICANxUYc+O+VzjSj5BNQl2HrDE0eK/h9ZWMJzERVJHhXbgdD7XZORITyBZI/QiaOJX2xlOF8dDxJSgufzIg18l5O3HRdGxqsb2w+3/EunavdhhH9pXbW/cIYBE/mxTa25YCRe2
- MZ7QBGHj
- eXtnNm+kwVXBh77xMBfkuto6Ia344OPxD2tHs0VZhw1uxfamP+hhofAFLSl9sDi2FC5ePoyLe9S7FS7mkz1w4irRFgZxIUAIa8prI9o73Hn9BTGrY4/3MdeEm47Q0sLhkADY3dLaNGztAt6bEsV3OfFKkqjnMF0dPd+GnPcDL+TOg69zH4pvEmZajLcQdQm0qOp490suL90fBgEJik8teX8/2yedIG65EKqz4Q1e9xYfM9GffvuFbawJ15WCOGXu0vPA9jqt/MO9nx9D0UJQBoH55kLaUn4IMULaHbNzIc5x8vNtuDL99WsD2P4WcH4UklthdXQAA4pfL5R7c0pmu0MQTL32TKQOy6PtUlrz99bAd1zf6+5fTkfjWOJ11hjS5MskyuVFRVs5mn1amcZzcQGwYmh97SWiwehXn+6XYvdXKDF3Qprqx1vVAo5H9FxhCtAlZbXm3WrW/JorEgH/E6Xs3IVwI317S97rO37mICwp9LefGHTLCPme/AKkixgfHwcGZJXjs7Wr8+yDdc0EhnZB8IhzjEtxNSLEh9AOUEOUYxNaSNn2UYHR0HjR/fv03MD/Ud944fJ+QeILhlhfD+er1B0b5pW1tkRfXqAXW99Vci0yskpPfp75L6zqfr+g3SXbcQatU1VAjSUf33tkiepO4NOeXiPtejCJJIkm/iV/zakoOTw6O7tQzpA==
+X-HE-Tag: 1775056595-63421
+X-HE-Meta: U2FsdGVkX196ba6VXywrhZgd1ocFF/2+0fg4n8q9sz/GXhit/jv4hTmfs3viLlAwJng7I2nFjmoGMHM1nFh2BzJ8h8rT+19GWzDWjv95TiVY3ELqGVezIa6av0rBb89lkeSGbIVIvwiFuld+j48yDjMyN9mctkSchq8hbWj1k5MzGVgkU6N5qDAvEBnaRm5heuU/5+n96vgKZrbHsVGxsUY3IL46kQAzEP3ZANJX2klb0knfSarkChc/6s9X8vZNWzmfzUIpDgCcMClTuLj3BAVl93im6+W28ObMiXVxg7w75OfrvNrO1rENTs12QMiumdPrOew52mN32rJIFHZ/kB/YPGsRq4h65vQOH50VF+9sOPU/ArlI5iIqFHJ083ciCPTTnLB2dzJWp1vP9QT/K6Dz4c8gipEjEfjqP3LaiG6qEWtFNnvYk2D4H/ejQQnpHXvGtly6qbBj5Y1il4maOxskNnMa/+X1obtEB2KO0ml6CNDX/nGhWAfMCc2uokw65GhslglT5kIHtHHzRFLvuhe7jSHfyGF3rEjN4V4INJsawMcsuQfpTDie1iX7X8ZreEReULqba4WEiBam7gHv+c/3Cd+RG8evyJ6q9J24Mb1yu7wrQqw22Nm79FxxJVNhThZwO32OD8ZMnKzDVQaGsNhtkyF5PMFqyCSW+0C5sqpMWoRmBCMH1gDJHmzX5bsZl3NzBq5UalKmBjgm+drfaIfOxEK8m0Ns8FxdZnsGsEi/eFFXViC27fv6CfSiwWYSOrY9VlEaFPHTp7Vgt5OxjKJzbU8dAsqBz548KCK0JKlUar3FBz6tsfTBAVbjFP2yFu1zz+El+8cXu2s13KADMVdCATCm0dFGbQFsdy57g9hVRNEa07y9pmgLqfEwInj2dNmVnjMx5PZB05iLJIPNOYUUL0QbLz87v2EOvmQwFD7YF0+el3NazpRxANBRfUhF003tGMAkmd2HM7VoX5M
+ p0EHkF2D
+ BIG4MSNPfD+chhM3AITLSXUlxf8URtn83DPLXW6jW9UlaXNjHUVzDCK74OV62MZCpFRwZ8QNsK8HsA8hBrEjwOg0YUN8pkYDqWN2k4oGk6sfP/FXAF7bchISaA/35inD+Hz5Q2bKMIojnUCsl5h0F9a6AELvlF870P9vdUI+oBBhutnaw/AcqlkbZEZViinrPeLHTLZzWwd5LLq3gGkx2BjLRKDf8eD4IM0q3R81PeaSDdrbWsVKL3HKaigAJe8Wd7z6QHG1cElMJIcCb1vrMzoohLBD5vetdVR7497iPCRAsOsjedjztU++BfxK9w0yGXWGN3ZdylVBs9ieLtIWp5H6si7DF0HhP5bLJ975Y0hTjGwPTihOsBjrNaJvsfxF/dfnL+gJfjdLVhGFA9isoi6JaZuGICpQT1h+438qZU3UfliGbhd8seeUFGybO7bGSNDp8VV7NTQ2nGDYf9OVEEc9Y479/RgJMxZlj8fAMOdoXZq15OyeXwgxL7gn/O378mxWMm4ste0cH3uKUeLjN/waxXZ90F8iBGAT3t/adVEwrBDetmyyRkS/YChLRne8u0R6//y9WtwwTJ2tBFKR/oxyU+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,191 +171,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 11:16:20AM +0100, Muhammad Usama Anjum wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
+On Wed, Apr 01, 2026 at 07:05:16AM -0700, Ackerley Tng wrote:
+> Ackerley Tng <ackerleytng@google.com> writes:
 > 
-> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
-> must immediately split_page() to order-0 so that it remains compatible
-> with users that want to access the underlying struct page.
-> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
-> allocator") recently made it much more likely for vmalloc to allocate
-> high order pages which are subsequently split to order-0.
+> > All-shared guest_memfd used to be only supported for non-CoCo VMs where
+> > preparation doesn't apply. INIT_SHARED is about to be supported for
+> > non-CoCo VMs in a later patch in this series.
+> >
+> > In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
+> > guest_memfd in a later patch in this series.
+> >
+> > This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
+> > shared folio for a CoCo VM where preparation applies.
+> >
+> > Add a check to make sure that preparation is only performed for private
+> > folios.
+> >
+> > Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
+> > conversion to shared.
+> >
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index b6ffa8734175d..d414ebfcb4c19 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -900,6 +900,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		     int *max_order)
+> >  {
+> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> > +	struct inode *inode;
+> >  	struct folio *folio;
+> >  	int r = 0;
+> >
+> > @@ -907,7 +908,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  	if (!file)
+> >  		return -EFAULT;
+> >
+> > -	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> > +	inode = file_inode(file);
+> > +	filemap_invalidate_lock_shared(inode->i_mapping);
+> >
+> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+> >  	if (IS_ERR(folio)) {
+> > @@ -920,7 +922,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		folio_mark_uptodate(folio);
+> >  	}
+> >
+> > -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > +	if (kvm_gmem_is_private_mem(inode, index))
+> > +		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
 > 
-> Unfortunately this had the side effect of causing performance
-> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
-> benchmarks). See Closes: tag. This happens because the high order pages
-> must be gotten from the buddy but then because they are split to
-> order-0, when they are freed they are freed to the order-0 pcp.
-> Previously allocation was for order-0 pages so they were recycled from
-> the pcp.
-> 
-> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
-> that it also frees that order-3 page to the order-3 pcp, then the
-> regression could be removed.
-> 
-> So let's do exactly that; update stats separately first as coalescing is
-> hard to do correctly without complexity. Use free_pages_bulk() which uses
-> the new __free_contig_range() API to batch-free contiguous ranges of pfns.
-> This not only removes the regression, but significantly improves
-> performance of vfree beyond the baseline.
-> 
-> A selection of test_vmalloc benchmarks running on arm64 server class
-> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
-> large order pages from buddy allocator") was added in v6.19-rc1 where we
-> see regressions. Then with this change performance is much better. (>0
-> is faster, <0 is slower, (R)/(I) = statistically significant
-> Regression/Improvement):
-> 
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
-> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
-> +=================+==========================================================+===================+====================+
-> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
-> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
-> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
-> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
-> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
-> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
-> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
-> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
-> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
-> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
-> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
-> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
-> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
-> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
-> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
-> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
-> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
-> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
-> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
-> 
-> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
-> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes since v5:
-> - Change subject
-> 
-> Changes since v4:
-> - Use num_pages_contiguous() instead of raw loop
-> 
-> Changes since v3:
-> - Add kerneldoc comment and update description
-> - Add tag
-> 
-> Changes since v2:
-> - Remove BUG_ON in favour of simple implementation as this has never
->   been seen to output any bug in the past as well
-> - Move the free loop to separate function, free_pages_bulk()
-> - Update stats, lruvec_stat in separate loop
-> 
-> Changes since v1:
-> - Rebase on mm-new
-> - Rerun benchmarks
-> ---
->  include/linux/gfp.h |  2 ++
->  mm/page_alloc.c     | 28 ++++++++++++++++++++++++++++
->  mm/vmalloc.c        | 16 +++++-----------
->  3 files changed, 35 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 7c1f9da7c8e56..71f9097ab99a0 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  				struct page **page_array);
->  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
->  
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
-> +
->  unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->  				unsigned long nr_pages,
->  				struct page **page_array);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index fb4522ba51faf..6568af69b5cdb 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5175,6 +5175,34 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  }
->  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
->  
-> +/*
-> + * free_pages_bulk - Free an array of order-0 pages
-> + * @page_array: Array of pages to free
-> + * @nr_pages: The number of pages in the array
-> + *
-> + * Free the order-0 pages. Adjacent entries whose PFNs form a contiguous
-> + * run are released with a single __free_contig_range() call.
-> + *
-> + * This assumes page_array is sorted in ascending PFN order. Without that,
-> + * the function still frees all pages, but contiguous runs may not be
-> + * detected and the freeing pattern can degrade to freeing one page at a
-> + * time.
-> + *
-> + * Context: Sleepable process context only; calls cond_resched()
-> + */
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
-> +{
-> +	while (nr_pages) {
-> +		unsigned long nr_contig = num_pages_contiguous(page_array, nr_pages);
-> +
-> +		__free_contig_range(page_to_pfn(*page_array), nr_contig);
-> +
-> +		nr_pages -= nr_contig;
-> +		page_array += nr_contig;
-> +		cond_resched();
-> +	}
-> +}
-> +
->  /*
->   * This is the 'heart' of the zoned buddy allocator.
->   */
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index c607307c657a6..e9b3d6451e48b 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3459,19 +3459,13 @@ void vfree(const void *addr)
->  
->  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->  		vm_reset_perms(vm);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> -		struct page *page = vm->pages[i];
->  
-> -		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> -		__free_page(page);
-> -		cond_resched();
-> +	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
-> +		for (i = 0; i < vm->nr_pages; i++)
-> +			mod_lruvec_page_state(vm->pages[i], NR_VMALLOC, -1);
->  	}
-> +	free_pages_bulk(vm->pages, vm->nr_pages);
-> +
->  	kvfree(vm->pages);
->  	kfree(vm);
->  }
-> -- 
-> 2.47.3
->
+> Michael, I might have misunderstood you at the last guest_memfd call:
+> sev_gmem_prepare() doesn't prepare a page for being a shared page,
+> right? Does this work? That prepare is only called to "make private"?
 
-LGTM: At least vmalloc change
+Hmm, I guess your guest_memfd-inplace-conversion-v4 branch is out of sync with
+these patches?
 
-I do not see any concern(mentioned by AI) if mod_lruvec_page_state();
-is invoked in loop without cond_resched(). The operation is light and
-nr_pages can not be millions of pages.
+I have the below local patch based on top of that for SNP-specific enablement,
+which is basically identically, so suffice to say: yes, this should work
+for SNP :) If any architecture pops up that needs to do some prep in
+advance of mapping shared pages, then we could potentially plumb the
+shared/private flag through to the arch-specific prep hook, as was also
+suggested on the call, but it doesn't seem like that's needed by any
+users for now.
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+-Mike
 
---
-Uladzislau Rezki
+  Author: Michael Roth <michael.roth@amd.com>
+  Date:   Mon Oct 27 07:58:32 2025 -0500
+  
+      KVM: guest_memfd: Don't prepare shared folios
+  
+      In the current guest_memfd logic, "preparation" is only used currently
+      to describe the additional work of putting a guest_memfd page into an
+      architecturally-defined "private" state, such as updating RMP table
+      entries for SEV-SNP guests. As such, there's no input to the
+      corresponding kvm_arch_gmem_prepare() hooks as to whether a page is
+      being prepared/accessed as shared or as private, so "preparation" will
+      end up being erroneously done on pages that were supposed to remain in a
+      shared state. Rather than plumb through the additional information
+      needed to distinguish between shared vs. private preparation, just
+      continue to only do preparation on private pages, as was the case prior
+      to support for GUEST_MEMFD_FLAG_MMAP being introduced.
+  
+      Signed-off-by: Michael Roth <michael.roth@amd.com>
+  
+  diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+  index 3acc6d983449..4869e59e4fc5 100644
+  --- a/virt/kvm/guest_memfd.c
+  +++ b/virt/kvm/guest_memfd.c
+  @@ -1249,7 +1249,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+                  folio_mark_uptodate(folio);
+          }
+  
+  -       r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+  +       if (!kvm_gmem_is_shared_mem(file_inode(file), index))
+  +               r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+  
+          folio_unlock(folio);
+
+> 
+> >
+> >  	folio_unlock(folio);
+> >
+> > @@ -930,7 +933,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  		folio_put(folio);
+> >
+> >  out:
+> > -	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> > +	filemap_invalidate_unlock_shared(inode->i_mapping);
+> >  	return r;
+> >  }
+> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> >
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
 
