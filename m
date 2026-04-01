@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E09810F92EC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0320210F92EC
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78ADC6B0096; Tue, 31 Mar 2026 22:37:50 -0400 (EDT)
+	id 6CA136B0089; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7628E6B0098; Tue, 31 Mar 2026 22:37:50 -0400 (EDT)
+	id 6A18E6B008A; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69FA36B0099; Tue, 31 Mar 2026 22:37:50 -0400 (EDT)
+	id 5DE866B0092; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 587E66B0096
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:37:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8A7DB9AE6
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:37:49 +0000 (UTC)
-X-FDA: 84608426658.20.36837C8
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EFEA414000A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:37:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eUkfkE49;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011068; a=rsa-sha256;
-	cv=none;
-	b=gvqSGLYqj53kyNsyJbJhLohqQSjdlBogCw8P+EWhArrChICWjLC6mnyprlzNY4xtI5gPJl
-	gziMOXyYnZptWmhXZx/3v+f3XqdZruDGLZtfzhaBzckaS/pOL0QQykDMn0j0dVRO4Tnvvr
-	6S1oMhHfmzDdSCfDxOghygBDVyTN2Vk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eUkfkE49;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C8986B0089
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:38:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE97EB9C39
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:38:50 +0000 (UTC)
+X-FDA: 84608429220.27.FD5A10E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1FFA380004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:38:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uj8tPH4E;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775011068;
+	s=arc-20220608; t=1775011129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/AgBuplD7pnvBkbFJrPZhea+7Gp1573Ry9VeaVLzLo=;
-	b=8Mvr7W7Yl89MSQR3ZYdatnk3bF68qsMhfJ3R2JMPhOTpC/aoyOHkFUmvPHKeyLNNQAxFTz
-	b/1SW4S6zZH+0oukt6Z3YM6VdCH/lN/dFoHPM7NLvnUt2V32k9kSURXX1gpIy9ZDbLI2nX
-	foc6vlYIx01wTot1Rr/BkRfZQII5Z6M=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775011065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V/AgBuplD7pnvBkbFJrPZhea+7Gp1573Ry9VeaVLzLo=;
-	b=eUkfkE494scS5DpjMexgKp4GRacwUJesJZUh/YUI7JSBAtUQhARYvX74hu0/pEuhyfXYLU
-	0H7/S25yVJQZZJiWmyxagB95WKmdz/rPUGK9GdYAolRCAslHL3Ue7048AxPW2HhY8NbtB+
-	HJFc2mJ/zryp76I6GeQyjHWKY778Z7Y=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
- failure path
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260331131054.0164f3b3ab6f7868add37cd3@linux-foundation.org>
-Date: Wed, 1 Apr 2026 10:37:01 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0D1D7025-7DF4-41DB-83A4-6AA800FBAAD6@linux.dev>
-References: <20260331113724.2080833-1-songmuchun@bytedance.com>
- <20260331131054.0164f3b3ab6f7868add37cd3@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EFEA414000A
-X-Stat-Signature: oh157553nbqub1cmypnp6pkaq535x6gc
+	bh=atriZJFr46Myib7CdkfsgoATvdJh0lyt6fPnkAWbosc=;
+	b=lScpx2JnaQ3QHOBozjx/C9ZX+mHoaEoghvDiqGxI1re3YxSnqJcBmoFlRZK0UOHQZemxMA
+	7kV/j2vucRUC1NukYGlN/O13tDiiChPsYVLRBmDKsaDPp4VCylC31GhyY7bNfH3k0g/Yy3
+	ydByg0MpFw2ExK11Xm45Hh1odi2N2Po=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011129; a=rsa-sha256;
+	cv=none;
+	b=azzeiBzcOqvQ6TyNjF1M8c6y00GJwx6+OoQEo4GRtcw57Q+Txz9SCahZDmZd5Pe1BzCsXg
+	aP7G4cUPioZkeyT8Pj7V3eqQx6Q8uHLT+utXOIdZvAAv9tDTho3HGiNG7cv8DRcxpjiRfb
+	lM3bggCmUj+AnfGZVV1K1Q79XvEf/rA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uj8tPH4E;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D62E443A5B;
+	Wed,  1 Apr 2026 02:38:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D806C19423;
+	Wed,  1 Apr 2026 02:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775011127;
+	bh=nUUu7l1xK87MHgb+obB6Qi0cxCVs6kWFc4Wh3VJ0FBA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Uj8tPH4EzbxuS+eMTIZZmhJq2UCqS9O02dswC4MgLakfc86HqCh4rSadfQhfNxs81
+	 UiM6AP+jaxDML8d4U/O/y/vT47/ofQ2P5x5JkM5hCEd1YM684ENbBumvm5aXVNLP0N
+	 ki1pr6CWdD4rFg9tdX77Xcqylgrx8Vwt9Qn5JWio=
+Date: Tue, 31 Mar 2026 19:38:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] mm/alloc_tag: clear codetag for pages allocated
+ before page_ext initialization
+Message-Id: <20260331193846.1822055eac7f8555fbb5ebdd@linux-foundation.org>
+In-Reply-To: <20260331081312.123719-1-hao.ge@linux.dev>
+References: <20260331081312.123719-1-hao.ge@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1FFA380004
+X-Stat-Signature: 3mua5j1byapwshezdufq86cyo9pgf7bb
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775011067-438778
-X-HE-Meta: U2FsdGVkX1/67zwtAjbK3lZNhuYgr1TDTVNBpUf1RBpBSPNb51fV29itGQIqm2enZe3TAoD6GrtOWvPvqsSbiCR6QKfJ6D+S13/+AKJh1iL0kuEYUP/zXzGTMDbXzMiPOxdxEtUTy7gVtbtx8zyAmKi9XyxRkmQkbF+YevsTjhH1knFlDarb6X7bMjZuV1HnfYTZLl4oA3By1oyyfZm4S2uc99095IK2e69PeswPdRhn/W89Lpb5x+Pufpk4GaUKjy73HjBAhmFY+b7CNQg80fDto46Yl0pONW5VHfN3bJOcKP5Sk+xvQkMZS/lKoMgInhJBHx4tOvjonVPGJGaK/BXjyjsv9c/FamkNlnLE1fzSk4hflJBEZ9bQme8kT/OOyMFrP175xMjnjmwuLgCJQJA5DegBxokPmdy3c1/9KPAJE4wbHMKi7mvv7/audciE/HJQYKbWOgRDzq4vrO76n16INBPD9FqEmgW4Aaz3g6j4Hdmxkx9VvmTqfEnZ03G1eI6rMUznPHa1wznWsl6W1Nd0JnPR6LVjbjBw9k/kyWaRYe34xCNxcqU49G2/RwFSnLBJWsWOL4/WhT852iDB8wZLv+KW/965AyB4xVlUzTLrwjX2wtGJxZ83koOw+KtA4NEEo4Ms1rNvWhBHISJsAzTrS03a1tYstYkzgFQCvS+BHyHpZAoLWnFuZvFvRugl/kIEKKpZIly++mL2R7yDiiqWDo0ZswipzbJZHjaGwsmfwqCazCPE36kEh3u91M2909IOmKlUBAT+s0tmyIthjZN5MXCv5wG22WUvF55lrhCr2/vgdaO9EibP3T+kDS1UONJW4XDGZRZXRevSb4JWZ0VZ8dyi9zRu2mbpgrBnqqtSq3pbg/ROOKCVfWZ43s16uFYSlF5JY6+LD+jy6F9BRIJ2Msi+unMf+ek8Uq5Ca3AwcBc8wyFyGh4xEF4juLNpOI+JWFtAHP4t9plAFIk
- FT3D6ThX
- Y0pmFcEqMBqyBz8W765eFYFLOWwycFcnrWXQb6bfX+9Ks8yMe53RXFzMXKk+6FJr5iBViH38iYMx3gNQYQriYoUIzN07k2T3lUyrTC2Wmh2T0Vq+P2bukz9Fkgb1c/6Kpsd1+ZaiE9lZzLfdaM0v7lg8K5evv/ThX550tTV6sEHVWXHvtcC1w0wOgv9xuLTNRTy47/oKHbtdLVx/z4+0V7scF02k0NRCPKepHlDo2AWCstZKKmmS0L3qySZU11/GcVhAt8Fr69qqwBsfD++FAtTUjXiA7wBQ8gcbkJeXILX77TQ998Nz6/0mOmlTDHFQn4j3/rui/51WWxNe84B6wAuHcb7x2fvWwwK+TUIDnQs1q+oKrx3/uuius943rkAyNcD/qX5rk/pWIw22ztAyLWBzwIfnR9cSMHyxemo8zmlHP44U=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775011128-972249
+X-HE-Meta: U2FsdGVkX18dX9CoppkH+zuOtIzhP7qTKrREEGCfw2MImsFxllCi+Qh8Shm4OAWj4UMBZ9fQ9r3MdhR9gg476RbRB5ACcZmXhH64MaHWF833SiOuSGv2NdD/aX7d6NSWBYX8RgDXs0h0eK7JXpq0aHpPKeikiDRihVuMKvNpQpjUWq00fe4R5VmDIK567OJWv6jgkix3UaA66nMLL8ZjchcnK9E7e5H68LBHxwYHAx++OVejWxDSduM2XYuwp890Wn/eMv8/WT4grkdIIOk/7trk43tiJBb0y5bOxf059KlH9iHgF8rHsG9/3JBPm5Mtuua5Z/GBnMTZlCw3YRF3owKaceqcqHvpQNvaEIQPCEC4VyGkR0mmtjcz1bQYQQKwT+XxHVt+qtgGa9Y4v/GpHTMhm6gIHxBmETcvMeSN5iBe6W7XbI7HzPRRwnHlyZaw7ypodpD0ZVeNYB2i3SAbCxwE4lEG/Be12ZjmlLtM+tY4FxQM5ukckTO0Hk258xXQCGFrKYIy6oE0zPXjRBOlh1RHl1LcD/j5EQ89ten9V4L4HJn+UHet9vlawDQUZrVM/FvO+G2dEKEgslxmLCnrXFvh0BJX5w+SlSBu/dkxRED+syAdXV59d9lZl6xIQv6XV/i5N44ydo3afqVFv9XIBeQCXOLCgbqUzEiKxhv5xM5wsxosiOufJ6sjQ+/YGWaS4ZSvzZS8HxqB26IZYHgj9DS+x1tvVNsAZ0LSvWkqAN7KdqtnqSvZWVkfaWYF/gLn+9kwU1uMt/ql9/sCuyN1TZakV7EAXgEdm1wv+c3hZ8baqcfiYhYALzEbNY0c5aZiNL5uSfSCnVETaoYxYLwsn4lYFjy7zWK1QwCZgj5j+muWkBKNJGQ9GRyxAfpyVd3X6J+59xuUNuHBQZj6HzkNC5JRW/rPv+QbixTjc1aXfe1zWRjehCpca6k9jBUKbfPtxRdb16AHjHWKWtAh/aQ
+ rgOAt3OK
+ zpqTY8KZTaqL7L/9Av8KfSmDqZVzZZxUwYSRwlA8VQdG8RTBlYez4lZhrYewpKM1swlqpNn5V8vOGxWKyaEScXZN+bHJG3QL18mITs5OxvyXgt3cUY89jq8KtDI3aBHwbsAto3yCCgjORFJEwYWW7a2p6vMcFmiXYRLq/m2jYrDwH5Q+rzNrYGnMD0rshMp8rSwwFvySsWfR+YsPoIGYjUbmoVcgyn1bS4ifediLgjQIA+7Gq0jd40/do4HRYEpwOXs51dD/aOLj6Bbz/ohGvenYr2mm7JyZnmiu2/Yk31+xONn6iBRw0xOu8s7xChU6Sw/x7oQit3+SNnuu7wwOLhEnRUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,52 +91,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 31 Mar 2026 16:13:12 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-
-> On Apr 1, 2026, at 04:10, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
->=20
-> On Tue, 31 Mar 2026 19:37:24 +0800 Muchun Song =
-<songmuchun@bytedance.com> wrote:
->=20
->> sparse_init_nid() is careful to leave alone every section whose =
-vmemmap
->> has already been set up by sparse_vmemmap_init_nid_early(); it only
->> clears section_mem_map for the rest:
->>=20
->>        if (!preinited_vmemmap_section(ms))
->>                ms->section_mem_map =3D 0;
->>=20
->> A leftover line after that conditional block
->>=20
->>        ms->section_mem_map =3D 0;
->>=20
->> was supposed to be deleted but was missed in the failure path, =
-causing the
->> field to be overwritten for all sections when memory allocation =
-fails,
->> effectively destroying the pre-initialization check.
->>=20
->> Drop the stray assignment so that preinited sections retain their
->> already valid state.
->=20
-> Here I go again ;)  Are there userspace impacts?
-
-Those pre-inited sections (HugeTLB pages) are not activated. However, =
-such
-failures are extremely rare, so I don't see any major issues.
-
->=20
-> AI review thinks it found a different bug:
-> =
-https://sashiko.dev/#/patchset/20260331113724.2080833-1-songmuchun@bytedan=
-ce.com
-
-I don't think the issue reported by AI is a real problem, because the
-allocation of sparse_usagebuf has already taken these hugetlb sections
-into account.
+> Due to initialization ordering, page_ext is allocated and initialized
+> relatively late during boot. Some pages have already been allocated
+> and freed before page_ext becomes available, leaving their codetag
+> uninitialized.
+> 
+> A clear example is in init_section_page_ext(): alloc_page_ext() calls
+> kmemleak_alloc(). If the slab cache has no free objects, it falls back
+> to the buddy allocator to allocate memory. However, at this point page_ext
+> is not yet fully initialized, so these newly allocated pages have no
+> codetag set. These pages may later be reclaimed by KASAN, which causes
+> the warning to trigger when they are freed because their codetag ref is
+> still empty.
+> 
+> Use a global array to track pages allocated before page_ext is fully
+> initialized. The array size is fixed at 8192 entries, and will emit
+> a warning if this limit is exceeded. When page_ext initialization
+> completes, set their codetag to empty to avoid warnings when they
+> are freed later.
+> 
+> This warning is only observed with CONFIG_MEM_ALLOC_PROFILING_DEBUG=Y
+> and mem_profiling_compressed disabled:
+> 
+> [    9.582133] ------------[ cut here ]------------
+> [    9.582137] alloc_tag was not set
+>
+> ...
+>
 
 Thanks.
 
+> v4: Fix sparse warnings by changing the typedef from a function pointer
+>     type to a function type, and placing __rcu before the pointer
+>     declarator. Use RCU_INITIALIZER() for static initialization.
+>     Closes: https://lore.kernel.org/oe-kbuild-all/202603291211.YhY0R0se-lkp@intel.com/
+
+fwiw, here's the delta relative to v3:
+
+
+--- a/lib/alloc_tag.c~mm-alloc_tag-clear-codetag-for-pages-allocated-before-page_ext-initialization-v4
++++ a/lib/alloc_tag.c
+@@ -800,13 +800,13 @@ static void __init __alloc_tag_add_early
+ 	early_pfns[old_idx] = pfn;
+ }
+ 
+-typedef void (*alloc_tag_add_func)(unsigned long pfn);
+-static alloc_tag_add_func __rcu alloc_tag_add_early_pfn_ptr __refdata =
+-		__alloc_tag_add_early_pfn;
++typedef void alloc_tag_add_func(unsigned long pfn);
++static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
++	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+ 
+ void alloc_tag_add_early_pfn(unsigned long pfn)
+ {
+-	alloc_tag_add_func alloc_tag_add;
++	alloc_tag_add_func *alloc_tag_add;
+ 
+ 	if (static_key_enabled(&mem_profiling_compressed))
+ 		return;
+_
 
 
