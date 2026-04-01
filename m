@@ -4,112 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79FB2D35154
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:31:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB3C10FCACE
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B168F6B0088; Wed,  1 Apr 2026 16:31:50 -0400 (EDT)
+	id EE9776B0088; Wed,  1 Apr 2026 16:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC78F6B0089; Wed,  1 Apr 2026 16:31:50 -0400 (EDT)
+	id E9A216B0089; Wed,  1 Apr 2026 16:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD366B008A; Wed,  1 Apr 2026 16:31:50 -0400 (EDT)
+	id DD6C16B008A; Wed,  1 Apr 2026 16:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CA726B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:31:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 400B41B700F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:31:50 +0000 (UTC)
-X-FDA: 84611133180.27.10DD18E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 81C28180008
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:31:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QFGj+Tqx;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB44A6B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:32:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76FAAC0E36
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:32:56 +0000 (UTC)
+X-FDA: 84611135952.01.3D6EE68
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8C69540009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:32:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=leaPaYSm;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=leaPaYSm;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775075574; a=rsa-sha256;
+	cv=none;
+	b=P9tKs/GPxJJE+soqZQ3HzrxOFCeOYfsIi5iQXQngtCFcv6J/NrXZEwmc+ORN/S04m/0Esy
+	+Gwtpe9cu5sMp+vWvFTpe2JOHaHi+ftPyzHazIE2TK2qhtzaYb5Ot+h6dpzTz4Ax0pM+Zb
+	k4p22RQlvx0hnAwGYbKRKpi0E1a2m6I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775075508;
+	s=arc-20220608; t=1775075574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y197KJDP0dD4lqGDL7B1/1OW4ifcvDrgN5b1M60Uz2g=;
-	b=y+gTTmfEunbVCU3J64Z6soiti1oygj5ir2uxVJtnFlthV+lVW3asbtfHQ8mavsO2G6l6zy
-	UUGw4O7piEKf9NrhjzDYCWxoa17EHV35rusxWe7mpFTB9mVV6bbtFcXPZe99ph0L5kKto8
-	63cmuYkVwrk3GQlaj2UsRJcE/5IAyx8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QFGj+Tqx;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775075508; a=rsa-sha256;
-	cv=none;
-	b=3TtMRDFZDgInSLQFJOjW3inn+AsilwKfYrkUPd71g/CqGGYPudRpNRAL8wLeCX58bLzMAi
-	il7h4ueQJ+D1G9ssAXims97dQKauzHFsAu3lzxn1YRtIkt9txsKgTx2hI478NjBjcNsB7K
-	Thc2q7XB/fDZjX9Can9eRIHoLVfwWEU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 731F844151;
-	Wed,  1 Apr 2026 20:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0D3C4CEF7;
-	Wed,  1 Apr 2026 20:31:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775075507;
-	bh=KCK2cUrZ/ubOAvnVxJj+KHP+CUfSw+QVN0xXkKOMlCo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QFGj+TqxNjuAOC4xK35vi4qTlGzbma1asJSTBAuT62kreNNb7np8i7TmwsVRyg8UI
-	 OxmukRYd2bxsaWBktv16rVLBFXvb3v2mFlvBM/kzUFyZ5F6sYRbWc0nREE341whOMe
-	 ySXEQSYPpDmI2f9w8oB483hg9vRLQlz6VVIQCrhg=
-Date: Wed, 1 Apr 2026 13:31:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, "David Hildenbrand (Arm)"
- <david@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-Message-Id: <20260401133145.90b094a7b87bdceb0013b5af@linux-foundation.org>
-In-Reply-To: <87b83f7b-f0b1-4184-93a0-3b4b574c813b@lucifer.local>
-References: <20260325114022.444081-1-npache@redhat.com>
-	<20260325114022.444081-6-npache@redhat.com>
-	<7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
-	<0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
-	<fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
-	<26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
-	<440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
-	<37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
-	<9d5a4703-a15e-4be6-926b-af2d98db40c0@kernel.org>
-	<CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com>
-	<87b83f7b-f0b1-4184-93a0-3b4b574c813b@lucifer.local>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 81C28180008
-X-Stat-Signature: hahun8cawuty6mqx3r93zm9swfbmrzx7
+	bh=vg1qGD3qx7K/fSuaArorcBrvxHQxJiEvWr7E5KZsN8E=;
+	b=FzjnZQjUlNgN2/XUqZHwCWEyOrDto4pwEms7l3X7QPewO785l+P7iK6ziur/UVjj0Xnfsp
+	ZGtZbtWbbeHQiDrBojTcaQsycyPA0atew3892R89/ntZnB0vy1wJzYG9XwrGDwDDYMMau8
+	W+xGyo64C0/5h1t7GYCjqgHblRXbPrg=
+Date: Wed, 1 Apr 2026 13:32:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775075570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vg1qGD3qx7K/fSuaArorcBrvxHQxJiEvWr7E5KZsN8E=;
+	b=leaPaYSmz2vEv7lc5Zpx3vd5Mj5O90XGj/bgb5NLS7Vsc6IlyA6siBBXKVwDqmwFnqM3n8
+	hXRfpcplhXCi/uc+53US1FqFRZw0P1svlG+IK9k8FHU0phLg6arC/Iom52z0Kh63anYDQ5
+	C6J6s31IId36Tvi+MQ1hq+BDBUDEaOQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, ljs@kernel.org, baohua@kernel.org, 
+	kasong@tencent.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1 for
+ MGLRU
+Message-ID: <ac18iLvF-nNtxk1-@linux.dev>
+References: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8C69540009
+X-Stat-Signature: 4eih61a1ks3dsoakxy6z9nqaybzmhw6w
 X-Rspam-User: 
-X-HE-Tag: 1775075508-618076
-X-HE-Meta: U2FsdGVkX1+EO5HhXOfxiLiDyFX/ETvc19X+U8SmKiigk69Srom4SIcRSEveK03t6xZYQBu6tOULSH08//Id81IXITDywOmMuuJ7tIPJFE/Zoq3rkkAFVFOntAOM29ZUFkMeGjoujt+ATM1DfjTVbzjasA+miufVAR3mWwMBwd2RqQB9i95HnJbSUKfx4R4li5+BQ6UFMZOwl8U9tQGH9VD51YEEcjUwzWjWFj2YaRatDlrixG7BVc6DfvqZK3aoXBtlgrkUSYK4VLmvUW4/s07TxKcH0hES3cZjijkRVdNoagGE4Zqv/yg71uuiMteEtoQ6sMq8d1765aTnjLXj/ON1sn9cJmOUeGPHnveql+uN+mz3V8f/PT5YUSEhO9lkmaa6//Xsw+4guLEUCFIG2pLjmowoGZXHgMPSLFbxNTMnM20dbPGbBHyisnbFnKNx1xEoYxrpcdAdlH5UIKNH7dPzSRikNpdFUBY9JMzr8e3Kwd0WWZQcTuYu7+3MCuegyJrFpr3ym0LRzjusMTiCSUmkZY9aCP7NQIBGdIUAQiu1oZ5HNs6U4SKD9lVvQ848RETbtv2nAEebSYLcIInyzhVU5XTT0U96sAvlOEmQbzmUPBTPKXUHFwop0shhXOGQ8sNfYLyJ35LWjA04xuUbMd+nsbyLWfWKsQTDng+UqBrsbK5ROXxzmCM0SmYny1APUoP1EAMjM+nWiJJG5kUB1cV/8w8UCObPHAOskdg1xlkpvWq8O6y7wJ96PnoQ3wTRbewEypTi1BCY4jijXdXyGlU9pBNMSTX87P+EPtzt0LLVmE+UpB7hsvHRqsHgdwQ8AErbLf/lJFbjpcQ2WMO0oDKZ50fGbNQIewlDz4IaIkJdIZKmU8OIame3r4DZAH2AtWeEHaQsbpxcsmhWYDxCD2vae+0JndhX8QIhYdzfiY8+eAMIsK3dxEkamkBsga12DHvBSH5HgoVQbKjcxuK
- cpLAajxK
- BClreDWf/c0WC7eN9IgnNZYxT1Lm9cqDLcIgkdiuH05WLc/xVojNtuYzRXhUSlvnFHunB/pRNEG0cWoW1jo5dIvrx86GWUJjUihY8yHAYIG9JJ5qy196arkCVqqezd41hTD4XccCXeT9m9k55S3/OJNYRefEmDM7rc68uYe7FFPgtAR/NUSs0bSYcz7UKfBxiy9NpH03cfBcgusumGXpqftzqNGZ/bPnSU0p9QlDULC6MGIlsUoCLmyljT93Wh7mSYRW/u3T0mdScLQEcuCmibGhSdJ6YDH0imiADTBTNm2fui9HoLKrD0o9XPeEWXerQF5+vQzoLcK1Vvpt1GpzT7Jg9XZeQTKJ/SbJ1fHZtMQsHup2WrsodF7zDKLApAwLAvSBcM/FEb0UE05ypTz0X/9JKdWGawg6TKyFG
+X-HE-Tag: 1775075574-341275
+X-HE-Meta: U2FsdGVkX1+2JqzokBjGDUpjlbtLDplXvjQ8Q9pdUM9IGWC/cLoXrvG7vd5SDLcykiHWxu0we6I+1thD+EkJR6KasQwUTgd33KuRgcM9ARs+uwC0qbm/c2CyAaxfUNOGI3pjDBQUdVicWznQOJIApRPbxeW5NPRLT+fa0hShvAXZmKmlEK3MGcybAIQKOn2MLwYoAwR96KDXBlUK/mBgEzoDMGA/PEuYLhhvDqPKGHuj+hB0hY4uLX+zMaOwWPwB3OExw3jv2A4iIM1ILnEFgIUmOw1tOcXY/mR0BWVZCQp5sT3jv8yY9LZkr35MscJh2atR54rIQ/WxJe/Qq7d7F8qdl7/2tIorYtvb4uE65QkqHgLGwOaYGZsQ7LjWuAFcwMRAat2uydnFX7BfkUpfdfWm3/nFpeDVsHwXIAf2n5CVduQq8VrCEHBzRSfqhg1Y9T0eJ/DR++abEJ92pnxR16orHfK6uDx54KLvZxqQ+zQBbG81/h7abMi+VPLuYeb+ujd117ZTTw+Hq9DTf5pGMXC4N/bVZCYpNbxIAKa8YSmoKW5u5vPP5CeYytdVFPx11HeUYfXuBOyQOybDey0Cr7vbqn53KgEBjNpJH2hTm88c0EUJXqmfeRp0ylIHLbSnw50gcs07E5Qje+K1J63z+BKNhnWm+3mbYJO0SQwDImhZn1tEdjurbsQcOAtUF38YY1jTuiOpu5bY3rK+hiHxVWpEAQzTuSowu7KkDu3QLAeTnxJvzGTie0OuG1hTELDsPR76Ef/j5Y8JB3XvAUiia/XKG4RXd8MeVYkevN7bhVq/wAe7JyspKCcdid9NlL9WOIdXkkmMfyFn6BX8CgS1kq3xn/gaQeUh0ykypgem9F+OLdcS8BLJeJ2ZnqMdj256la+Yr0soXvkiZ83VWF+VFGt6WAiw9zpYpr90HFZfW3IjZQ2b8vgp2PXAOmRck2HQNajNXA00sSh24wG2ggH
+ LnNZgpW1
+ cr2+QInz3FjCilRToyRYa3urw5SD+D0562b0eDOAGTv5YxgnIJKLGRBsbzXEBxXnYkp4GLQD7uJ9i9iDYGQa3RreESd45Q1J3AmcPGbWfwACAucxpX+e8XgMu4VTWJUjOYM9lpgf6hTjwzDjGDRz/eEdvdJOeM1KSyvQuFHszays3Ch/h/OdQaeRZ+L6GSSojI7Tdg3XK6ZFMj0xBV0LrkETMh+F/doUW/yaqeOcbOGz26A41cOxDy4Okk7PmTwitXMvApvhK3+srJN6JTe8e6yJO0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,23 +89,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 1 Apr 2026 09:14:35 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-
-> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> Date: Tue, 31 Mar 2026 13:11:18 +0100
-> Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
+On Fri, Mar 27, 2026 at 06:21:08PM +0800, Baolin Wang wrote:
+> The balance_dirty_pages() won't do the dirty folios throttling on cgroupv1.
+> See commit 9badce000e2c ("cgroup, writeback: don't enable cgroup writeback
+> on traditional hierarchies").
 > 
-> We are incorrectly treating lock_dropped to track both whether the lock is
-> currently held and whether or not the lock was ever dropped.
+> Moreover, after commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no
+> longer attempt to write back filesystem folios through reclaim.
 > 
-> Update this change to account for this.
+> On large memory systems, the flusher may not be able to write back quickly
+> enough. Consequently, MGLRU will encounter many folios that are already
+> under writeback. Since we cannot reclaim these dirty folios, the system
+> may run out of memory and trigger the OOM killer.
 > 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Hence, for cgroup v1, let's throttle reclaim after waking up the flusher,
+> which is similar to commit 81a70c21d917 ("mm/cgroup/reclaim: fix dirty
+> pages throttling on cgroup v1"), to avoid unnecessary OOM.
+> 
+> The following test program can easily reproduce the OOM issue. With this patch
+> applied, the test passes successfully.
+> 
+> $mkdir /sys/fs/cgroup/memory/test
+> $echo 256M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
+> $echo $$ > /sys/fs/cgroup/memory/test/cgroup.procs
+> $dd if=/dev/zero of=/mnt/data.bin bs=1M count=800
+> 
+> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+> Changes from RFC:
+>  - Add the Fixes tag.
+>  - Add reviewed tag from Barry and Kairui. Thanks.
+> ---
+>  mm/vmscan.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 46657d2cef42..b5fdad1444af 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5036,9 +5036,24 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  	 * If too many file cache in the coldest generation can't be evicted
+>  	 * due to being dirty, wake up the flusher.
+>  	 */
+> -	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken)
+> +	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken) {
+> +		struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+> +
+>  		wakeup_flusher_threads(WB_REASON_VMSCAN);
+>  
+> +		/*
+> +		 * For cgroupv1 dirty throttling is achieved by waking up
+> +		 * the kernel flusher here and later waiting on folios
+> +		 * which are in writeback to finish (see shrink_folio_list()).
+> +		 *
+> +		 * Flusher may not be able to issue writeback quickly
+> +		 * enough for cgroupv1 writeback throttling to work
+> +		 * on a large system.
+> +		 */
+> +		if (!writeback_throttling_sane(sc))
+> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
 
-Not sure if I should add this?
+This seems fine but note that this throttling is not really the same as the
+throttling happening for traditional LRU. In traditional LRU, the kernel may
+throttle much more due to throttling check happening at each batch within
+shrink_inactive_list() while here the check is happening after full scan for the
+given memcg's lruvec. So, throttling can be much more aggressive for traditional
+LRU.
 
-Should it have
+This is v1 only and I don't care much but what is stopping you from moving away
+from v1?
 
-Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse
-with collapse_single_pmd()")?
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
 
