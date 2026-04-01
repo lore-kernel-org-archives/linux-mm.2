@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45F010FCAC0
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 19:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 269CC10FCAC9
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 19:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DA4C6B0089; Wed,  1 Apr 2026 15:11:23 -0400 (EDT)
+	id 917EB6B008C; Wed,  1 Apr 2026 15:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D516B008A; Wed,  1 Apr 2026 15:11:22 -0400 (EDT)
+	id 8F0346B0092; Wed,  1 Apr 2026 15:11:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95686B008C; Wed,  1 Apr 2026 15:11:22 -0400 (EDT)
+	id 7B4CE6B0093; Wed,  1 Apr 2026 15:11:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DE8A16B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:11:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5BA61601C8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE926B008C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:11:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DAF5E56E6F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:11:24 +0000 (UTC)
+X-FDA: 84610930488.03.C6F4DE2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DE122140004
 	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:11:22 +0000 (UTC)
-X-FDA: 84610930404.04.D9475CF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CFADA1A0007
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:11:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MsFz6DVr;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SUnJBnGa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775070680;
+	s=arc-20220608; t=1775070683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SxwAbCC//tcSSNUWR/EHVwnrALlxFalCHJPWsw7xqmo=;
-	b=r7DjG/1SFYCN7rntOmyKP+Fc+O7uWbf2yxmcXUaMGqqRsLVjoGGW7qABfKRL+MHpTJ9qgA
-	eCSGUQbrjmI+QRFED+O9UPJDPnPjgsD/n7hbE32eWjVgd6QJ8I6V9p1Qx7Hc3Nfs9wXpYl
-	d1CjCtnfySoIj2sn0euanlEMVKPnttA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775070680; a=rsa-sha256;
+	bh=uxztzYD3eCHMyVwk1kRw2nL5v5tk4UTFzk933HDSrB8=;
+	b=7hCJ+nrYl/Z2lDhwf1qHPz2GVebLGRg0wu3lr6z1GlJHci2Y1ZwbrafgyVSyju2Pr7DA0w
+	y/JMK2Vv4VXTLxmFhXZ1N5IbvoB1l2mmBYnWV0NSOnNjLJenkxmPAcSjCVPyYuw5Qt0ZOZ
+	EUA4Ez5oIniGo2kXQmZhdbZF/N3SevM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775070683; a=rsa-sha256;
 	cv=none;
-	b=OPxOLpA/bfMijL1iY/BWB+xKcl+UFjqYsqOfc+b4i6MS+lhuJ2PTRDTyPNmD0dMsJHs2Qn
-	qRr0byF6mfcKKtgQp7MKsb/pDbrsGRYHV6gqM58cl+OwKIS1Nhem0DSLLcT0WfRPmoml8N
-	PNb6Gd0EFo5SIwDVLzt13J2qWDWHpuw=
+	b=M4W4uqjmpBXhbDDC8sAQPKBWPKD/QkjZJULkaqfN0utOvtOiBHHa4N6xHh+c/d0Pt80eO7
+	Bwlb9Lq9FniocUKrrzQJEeb6Gl5H4imo46g3oy26spsGC3acSwip6tyoCEwSqp71wZbl8d
+	w4achgj7LnvXOv1gRz0wAUOYVCVBkYA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MsFz6DVr;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SUnJBnGa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4806061842;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0342343A75;
+	Wed,  1 Apr 2026 19:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E65C2BCB0;
 	Wed,  1 Apr 2026 19:11:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ED2C2BCB2;
-	Wed,  1 Apr 2026 19:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775070680;
-	bh=bOe16hkUqbqlZCJU8w30Z5j55Ar6Gej61o9MPI+OrvA=;
+	s=k20201202; t=1775070681;
+	bh=n7l9LGVOvDCd2+hzVMt9/rX50u2r86z4dGB9ckGBacs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MsFz6DVr/Ad+viBQxt7EKPRr3hWIB+yuzGZEntIDplLs3LBGri8Xl8j1CJU4brkSm
-	 FiS3M3355DIrRglMNdt2+q33GkdPVfLqMY8afHJ9EhxSCLPa4JAKHcrQQeQJvv1SWr
-	 e0VkGtKq61zGX/umvM1kOgzoPH+iCzFOSrafUnkSIoRcYCGAoEaL+IBSeA/OjD8ii7
-	 8HJRTQbOc+nGQn2kxq/uuKBJVnR9n1R8t1dtx586spadqAHtsgZ2u7KrJnFoIarVin
-	 323HmyWIQY93UihThmi3VXjSvCaadaNOe/80lj4qR7kj9os0ScD1e4UXSHHkLOTFnk
-	 wRET25BGoJgMw==
+	b=SUnJBnGaMXzuGq2jfYs5fyq28qNIXelBnO41hoV9B/TDNXaFNLeaPBA2u3IMD422G
+	 Ef6b8Zmsw7GAGQcn7TyhEIdCdl6Jn0ONVBWJw8mFzvClmoMfSUuUTRHcZgndSQjL7j
+	 6Ix4yrbDHn/OGZLU/GQng+CtK6HHtIe1VsTa9haE1EululVtYpLj3/SzuMcZ7FCPlD
+	 JzWsYwWE4BWEDLVp6nesvMuvbK3TlxevVn1b1OItdbzsPmXSXQGwe+atQUtZdQ728k
+	 l9Fn9FKi6h6StO7mevqc6+hID5bh/R+NxiUbjVVkfjkQBRAA+yCWJx0IlRu5jmJFQO
+	 zghBTtxY4mTXQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Wed, 01 Apr 2026 15:10:58 -0400
-Subject: [PATCH 1/4] mm: fix IOCB_DONTCACHE write performance with
- rate-limited writeback
+Date: Wed, 01 Apr 2026 15:10:59 -0400
+Subject: [PATCH 2/4] mm: add atomic flush guard for IOCB_DONTCACHE
+ writeback
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260401-dontcache-v1-1-1f5746fab47a@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260401-dontcache-v1-2-1f5746fab47a@kernel.org>
 References: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org>
 In-Reply-To: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -87,30 +87,30 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4439; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=bOe16hkUqbqlZCJU8w30Z5j55Ar6Gej61o9MPI+OrvA=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpzW3TYYBGxB56wbiSNOObN6S4exPYnQ+w1A6S3
- USLKZ4d5smJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCac1t0wAKCRAADmhBGVaC
- FSj/EADCTOcmKwq7ER+CHpVYKKkKxZKs6LtlI+SGxgJR7bR2Ytq1OHRCgdxX/mFBolJ3jWmFGCo
- UN5zb8G7MsLL7+RA3wZch+lVZ+HtrT8VK33trWUwWiZ3/Y0pT8/szAL6kjkKF/YyEUxjn0ps2IM
- 3bJd1f6fPRKwsnk0X7x/rhvRocAol7QnLsRgZBMeQ7+j+ZF9RpYhKf1J8bN4sdEkYdetphsVqaV
- 5nNKaCKmGRfA7q7sl9RgeBLHr68nZpA0aFhZoKO10UvVqVp+TgBVcvLTHOiI9qx3pxU3ZH4lhtm
- QHAbpLt2FFphXNir6sLBoR5sJW1u/2ScCVxj5f+AJHxA0ha0jHhQMkeYgipgPITocCDghBr9N1g
- Xlilb2Vwf6YqvVKZiQE4+B2U7XDKGz6XcGTPntUzVCWKFBrzzrtr0gBXKsn7eCagRYhucoo4F1/
- UkjNW6of6HjuRG0XcSVvEpQBfD/d6rcV9zm7K7IUUaS/QNLrQWqR6yT+1EWoBTHj4NxfPorpvp0
- dH8Z/31MrgFT1mPQJxvuqmwQxDtZrHe6zz50HF8RVlC1SFd6eAQKnUHcUNW+RLq+kHlydHjEdIR
- WrvYJtr23sc2IK3WkYXB1lRgpoSya7nuyslzkCuySX1bpQstObmlZ6YrYycq0UkSvXazf0nJRz7
- UhUIwXTGWPBRjoA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4833; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=n7l9LGVOvDCd2+hzVMt9/rX50u2r86z4dGB9ckGBacs=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpzW3T1yRFo42zG4qubsASRC7nh36KGdmLOG0+u
+ SYX0QTMzu+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCac1t0wAKCRAADmhBGVaC
+ FXRND/wLxlUsyChusdT+tMPyQlfIoRYVZSMnojtBnUxpk4ci5Ejisdqd31zG5v6L9d8nO2CqZ/7
+ XOkPlNuHLyCnnyvsNQfUoazU5/RyJKEmCUpAlVYl1p23ZACTrxj4dFv0rLIGuUf3i1hZU79WZ2V
+ RZbFm0iLhHUS4IUYslnQm8Ybyn3AY1WtsM7n8aKqzF3ojSAZScFAkuiybXbkTL9J3x64/9e0Bsl
+ e1NS+ojwLWQvZSy/D/dSYz0A6HuW81amiFk0cruWpqIBHIqpIDTzYXeXdqLbymCEYQV2yYdCGPN
+ L4utfged3Ib93dMnGPE1gq1hP8Xc09bDojftaQ0Wjn2zJ//axjaMpLVZb/Auo2vfxY9h8RHWYmK
+ mhJM6oR3tjgTf3FnUBoOqN5PIMObMl3fb6/VOZ3MybiSyx8jFCnR77b0+G2RLsuZhIqgGXjrhye
+ 2sQWYaohXVjIXg410jVNstXP8tO8z+UjNAY35AMkBuW5Od5sE5RMR1f6OCu9dGppesvkmHoDHzP
+ 3PlLqZOh8CjjS0gxnwq4jp2VWqSO0fr1ciFGtVF9CNytB/iIzXXhns1IJMTP0sbquNuM17N/HRt
+ EIzcNuT3AxXLENvanZOvvzU9ooef3c62RM6qckIl2xdtB4wMoDEA/CaTKcji10x5zdyijBa7iiw
+ p58BsgyOdBCCZsQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Queue-Id: CFADA1A0007
-X-Stat-Signature: bfbbrpcioacc8jssm6xpo9pfq1odndfa
+X-Rspamd-Queue-Id: DE122140004
+X-Stat-Signature: g36hsao3uq1rmga56ee6xfjx9a9gn3tn
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1775070680-588726
-X-HE-Meta: U2FsdGVkX193WYq4pCktTshsCuPQIPtntW336lu9LET1QigR3zY/em+ZJJJBxThQoM1vbDlhR9408tBPdA96oelclSLHt8BVZKxIHne8mu39ne1HUahUHHrzZoM4MGjyk7n/9Oe6Q1Uw4/eUxe9naFm4UEspyEWu33W3apJ04RG8Au61fZBbCsWExfpN5zsEGEIhWYEV2E0hAWHidCNVtzAvzRfpUZybk2zeQ1ogJmdZmynMdHeTgEbRvnGlPnOUKRaZKJfh/+Fg6yV4bWwn8wmV3bd0q+DUh8KgaWPdUX0Tml6tNeYpZ14z6ux7BvEF94s+24b6R0SP6nJJc1NqNl0rrAmISkn7CfI2M1XhPiy2zS+7ptswUjsTJWw43DVo0/k6W7cpsHPSt7TiIhKutLsIIfNwnGQNs0bd6BS1M4uqgvkJG3V9bib34rA74u9OSgw8NGAS4147dzVeHnQcO7GI0MAggbcVC5Y7OJXpHxoCmQjiBe/HujcBIN4qY60RGtbiZVBijTEPCzrgpc60zf2FZSD0tXbaVzERRBAGN8nkwy2iMnC56n0PPlzTSMkAiCKaj0yoFaTaiCZJUjZk7GDJBXDv7ChEBMlwmn6Kwe+j+JW+t3MgWnHt0AR0R+nNN5LtEHrMHAFZC8KV2ZtRAnaAbT3p32aVxnnbMFEEmuSbjssEUHNS/TL0EO2+BqWMiL9+1zl8yZrG60kXyQ7M8Vxb5Y1HuNY9ks8q1RcBAUN+IpD0Ytc+L+JDO/9QadNm48Loc66bdtJ/vbA66VlbUDgasoC11mFpTFS3L67/OIvqy0L+/WZ6W7h9KsMI4KALyLa29W4PGib0XYiuJW2lOaUrI1umOrxLctvJ5EwXZnHEndv8UdHVjC0IAmUuVE835ZgO5ZRo/hCv1CNqLcb9/Fi6IbOI2LckPnq5CVBC+qTwCZQNC1V7dL4e8/zQ8N07AJrF/g4DRb5zQVbv5yP
- kNcQ98Rn
- QgECVHEDDEcgnPYizldSe9nxp87K+orthk4kzAQK+7IcRSyrY0ET0nDmwdvcas9q2M4LeFyyk0IbJbLzt7OhF4MfGGtwuOEVh2afg03JJyzR938rrp8OZRGAUWjr3had7dl0Lm7A0ThhPwXnUY3zrESYuMPsUwctRmy024zKx6cQt/tRZ/WRvpbQHpOtHwzupHW4seRidCa76v2f1UKCXVcSPXGKmq58xX+eLbMREyo7Mn8GIw33Xq5JxLANI+8+qlOqCOQNUerXfMnZPsp1pbtwxzusOABUpYmr61ZaeBt5Bkd6ISGTa3bvJsRY2fqtsPRiZ
+X-HE-Tag: 1775070682-117448
+X-HE-Meta: U2FsdGVkX19ZKR54Jl9SiRWRqF/GovZjQjj/kNI2telFGYCtxZLmqpevcdsQKi6XP323yeHuGcUmoyaegtcfe9oKRtzXEhK6L557nZfX+gSxTUHQxvJ71+VOgXycnsfRH6O9FUYE/E/FvMwl85ku0LJkJwOYXv+hMa88q6ECdhbecx2//Y+7O2uF45W9nDYpEZ5nIiIMmER3A5sIwE06ygeVLGiILWuQqiLAS8ZzMpQW4OEqTjmO2t5kJolt7eZrBcCQWmhYCL0rTsi6Ch7s8Hdv3FjfD8mGfKYaBicYRsIA6iaP3nW3JdCPp/9YjI3fJx9+tC9Gto9g+VPeZXFMTvumDd3QJ0OZvtwgRSH0jmPs39ia+Thqc35Q56WhrfC0h2NdmHYKxz/h8dzvHjm92FH1FpAjftf1UogM643ZKnZwhRQj07ZUgXlNdpvaNCjlUxZo60mowX+6I8eOHNjP1+6dZbHYLPjYFHOCtv7j02iUEjbw6nAFSF67zziebxIpEkMFsfoQ9Oxf1iFz93sVqggwsRR3qUF81JqM5tcL9uYenqggPGmLMhFENtN7jbZTMHChuyXU8LZeYttFWDOBSbaVTxjWNetQHTRzn9TjTD4zlxWzmHJUO0R+f9XDtFI2CyMojvWkFxbS1UTA3XVI6kh6V9LQuTRU9DiCBQwSUbYxWQZWrGPbrj0UNs50qaykgppdpka/04WpGK84ig5ML2D8p3yxmFl6JYpnyxCNn9b4icNIK4S6DHJUS+cfL7e0/W+eTolj8rPI83dqnefv4vtx8mCX7hfIpPfVSmTOoplnKiq4/n8PKD2f3x+z/3+iJKa5c+Lkaa/J353yOLL8k/sD6Xw/ueWrqZyZe862M3Eio415TEFX/kSwbZsP/362BlYOW5TVdQEHSWEuVgee6iV5K3Ifw1ctn2b/vp9H7CQVXWbaAMNUN7J2H1YxvwfXFqt/pPq6wb4sUUYPvAM
+ VGI6KUo0
+ JxtQCRCTaCYtRPuHC7qDroQabmjZJDIfnbRBUgl1xvgANzyTLerFlBjmADVz8RDvmt4pWBpEuObI9FCm3IXQD1AFxoIm2+cSTTnMksc4OfdXxvjhOKdM+RrVZBv+1qH4lwk23aFlmyVTQ4OaQao2SwB8rYfb1ofTlIf9CE2r74GwtGJb8qh/ZOv5rAdK0hCLU48mqHoVTuCjdZSHbSriUis2PYZJxsPObDeptwWcX1UThM5Cm56CSOL+piWoiLPN7Usm2hBU88ySa28SvhRuvO/LbwLdVbHsSvGx1uyIPUzm3A5UfVcfWjCxACtepYWVffFqBNZt/Ywy+FYMsMS+ZURLwSRVRBa7q7kGc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,109 +118,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-IOCB_DONTCACHE calls filemap_flush_range() with nr_to_write=LONG_MAX
-on every write, which flushes all dirty pages in the written range.
-Under concurrent writers this creates severe serialization on the
-writeback submission path, causing throughput to collapse to ~47% of
-buffered I/O with multi-second tail latency.  Even single-client
-sequential writes suffer: on a 512GB file with 256GB RAM, the
-aggressive flushing triggers dirty throttling that limits throughput
-to 575 MB/s vs 1442 MB/s with rate-limited writeback.
+When the PAGECACHE_TAG_WRITEBACK tag clears after a round of writeback
+completes, all concurrent IOCB_DONTCACHE writers see the tag clear
+simultaneously and submit proportional flushes at once — a thundering
+herd that causes p99.9 tail latency spikes.
 
-Replace the filemap_flush_range() call in generic_write_sync() with a
-new filemap_dontcache_writeback_range() that uses two rate-limiting
-mechanisms:
+Add an AS_DONTCACHE_FLUSHING flag to the address_space and use
+test_and_set_bit() to ensure at most one IOCB_DONTCACHE writer
+flushes at a time.  Other writers that find the bit set skip their
+flush entirely.  The bit is cleared when the flush completes.
 
-  1. Skip-if-busy: check mapping_tagged(PAGECACHE_TAG_WRITEBACK)
-     before flushing.  If writeback is already in progress on the
-     mapping, skip the flush entirely.  This eliminates writeback
-     submission contention between concurrent writers.
+Together with the existing skip-if-busy check on
+PAGECACHE_TAG_WRITEBACK (which provides temporal rate limiting by
+skipping flushes while prior writeback is still draining), this
+creates a two-level guard: the writeback tag paces flush frequency
+to match device speed, while the atomic flag prevents the thundering
+herd at tag-clear transitions.
 
-  2. Proportional cap: when flushing does occur, cap nr_to_write to
-     the number of pages just written.  This prevents any single
-     write from triggering a large flush that would starve concurrent
-     readers.
-
-Both mechanisms are necessary: skip-if-busy alone causes I/O bursts
-when the tag clears (reader p99.9 spikes 83x); proportional cap alone
-still serializes on xarray locks regardless of submission size.
-
-Pages touched under IOCB_DONTCACHE continue to be marked for eviction
-(dropbehind), so page cache usage remains bounded.  Ranges skipped by
-the busy check are eventually flushed by background writeback or by
-the next writer to find the tag clear.
+Additionally, add a dirty pressure escape hatch: when dirty pages
+exceed 75% of the dirty_ratio threshold, bypass the WRITEBACK tag
+skip and attempt to flush anyway.  Under heavy multi-writer load,
+the skip-if-busy check can cause dirty pages to accumulate (most
+writers skip because writeback is always in progress), eventually
+triggering balance_dirty_pages() throttling with severe tail latency.
+By forcing extra flushes when dirty pressure is high, dontcache
+writers help drain dirty pages before the throttle threshold is hit.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- include/linux/fs.h |  7 +++++--
- mm/filemap.c       | 29 +++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ include/linux/pagemap.h |  1 +
+ mm/filemap.c            | 36 +++++++++++++++++++++++++++++-------
+ 2 files changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 8b3dd145b25ec12b00ac1df17a952d9116b88047..53e9cca1b50a946a1276c49902294c3ae0ab3500 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2610,6 +2610,8 @@ extern int __must_check file_write_and_wait_range(struct file *file,
- 						loff_t start, loff_t end);
- int filemap_flush_range(struct address_space *mapping, loff_t start,
- 		loff_t end);
-+int filemap_dontcache_writeback_range(struct address_space *mapping,
-+		loff_t start, loff_t end, ssize_t nr_written);
- 
- static inline int file_write_and_wait(struct file *file)
- {
-@@ -2645,8 +2647,9 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
- 	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
- 		struct address_space *mapping = iocb->ki_filp->f_mapping;
- 
--		filemap_flush_range(mapping, iocb->ki_pos - count,
--				iocb->ki_pos - 1);
-+		filemap_dontcache_writeback_range(mapping,
-+				iocb->ki_pos - count,
-+				iocb->ki_pos - 1, count);
- 	}
- 
- 	return count;
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 31a848485ad9d9850d37185418349b89e6efe420..e71bf75f6c22d0da5330c17c6e525cb12d254dfe 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_DONTCACHE_FLUSHING = 11, /* dontcache writeback in progress */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 406cef06b684a84a1e0c27d8267e95f32282ffdc..af2024b736bef74571cc22ab7e3cde2c8e872efe 100644
+index af2024b736bef74571cc22ab7e3cde2c8e872efe..1b5577bd4eda8ad8ee182e58acd50d99f0a8f9f5 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -437,6 +437,35 @@ int filemap_flush_range(struct address_space *mapping, loff_t start,
- }
- EXPORT_SYMBOL_GPL(filemap_flush_range);
+@@ -444,11 +444,21 @@ EXPORT_SYMBOL_GPL(filemap_flush_range);
+  * @end:	last byte offset (inclusive) for writeback
+  * @nr_written:	number of bytes just written by the caller
+  *
+- * Rate-limited writeback for IOCB_DONTCACHE writes.  Skips the flush
+- * entirely if writeback is already in progress on the mapping (skip-if-busy),
+- * and when flushing, caps nr_to_write to the number of pages just written
+- * (proportional cap).  Together these avoid writeback contention between
+- * concurrent writers and prevent I/O bursts that starve readers.
++ * Rate-limited writeback for IOCB_DONTCACHE writes.  Uses three guards to
++ * avoid writeback contention between concurrent writers:
++ *
++ *  1. Skip-if-busy: if writeback is already in progress on the mapping
++ *     (PAGECACHE_TAG_WRITEBACK set), skip the flush — unless dirty pages
++ *     are approaching the dirty_ratio threshold, in which case flush anyway
++ *     to help drain before balance_dirty_pages() throttles all writers.
++ *
++ *  2. Atomic flush guard: use test_and_set_bit(AS_DONTCACHE_FLUSHING) so
++ *     that at most one dontcache writer flushes at a time, preventing a
++ *     thundering herd when the writeback tag clears and multiple writers
++ *     try to flush simultaneously.
++ *
++ *  3. Proportional cap: cap nr_to_write to the number of pages just written,
++ *     preventing any single flush from starving concurrent readers.
+  *
+  * Return: %0 on success, negative error code otherwise.
+  */
+@@ -456,13 +466,25 @@ int filemap_dontcache_writeback_range(struct address_space *mapping,
+ 		loff_t start, loff_t end, ssize_t nr_written)
+ {
+ 	long nr;
++	int ret;
++
++	if (mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
++		unsigned long thresh, bg_thresh, dirty;
  
-+/**
-+ * filemap_dontcache_writeback_range - rate-limited writeback for dontcache I/O
-+ * @mapping:	target address_space
-+ * @start:	byte offset to start writeback
-+ * @end:	last byte offset (inclusive) for writeback
-+ * @nr_written:	number of bytes just written by the caller
-+ *
-+ * Rate-limited writeback for IOCB_DONTCACHE writes.  Skips the flush
-+ * entirely if writeback is already in progress on the mapping (skip-if-busy),
-+ * and when flushing, caps nr_to_write to the number of pages just written
-+ * (proportional cap).  Together these avoid writeback contention between
-+ * concurrent writers and prevent I/O bursts that starve readers.
-+ *
-+ * Return: %0 on success, negative error code otherwise.
-+ */
-+int filemap_dontcache_writeback_range(struct address_space *mapping,
-+		loff_t start, loff_t end, ssize_t nr_written)
-+{
-+	long nr;
+-	if (mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
++		global_dirty_limits(&bg_thresh, &thresh);
++		dirty = global_node_page_state(NR_FILE_DIRTY);
++		if (dirty < thresh * 3 / 4)
++			return 0;
++	}
 +
-+	if (mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-+		return 0;
-+
-+	nr = (nr_written + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, &nr,
-+			WB_REASON_BACKGROUND);
-+}
-+EXPORT_SYMBOL_GPL(filemap_dontcache_writeback_range);
-+
- /**
-  * filemap_flush - mostly a non-blocking flush
-  * @mapping:	target address_space
++	if (test_and_set_bit(AS_DONTCACHE_FLUSHING, &mapping->flags))
+ 		return 0;
+ 
+ 	nr = (nr_written + PAGE_SIZE - 1) >> PAGE_SHIFT;
+-	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, &nr,
++	ret = filemap_writeback(mapping, start, end, WB_SYNC_NONE, &nr,
+ 			WB_REASON_BACKGROUND);
++	clear_bit(AS_DONTCACHE_FLUSHING, &mapping->flags);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(filemap_dontcache_writeback_range);
+ 
 
 -- 
 2.53.0
