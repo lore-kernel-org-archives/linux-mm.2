@@ -4,141 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1029BD3514A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D135D3514A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48F426B0088; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
+	id 6188D6B0089; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 466936B0089; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
+	id 5CA326B008A; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37CC96B008A; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
+	id 4DF8F6B0092; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AFA56B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9EC61606C6
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:08:25 +0000 (UTC)
-X-FDA: 84609108570.07.22DBD48
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3B69E12000B
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:08:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gz2eKhzf;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775027304;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F3A16B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F18D91B861C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:10:24 +0000 (UTC)
+X-FDA: 84609113568.17.078EB36
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E07DF1C000C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:10:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y/ULCIg1";
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775027422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=juk/yrwlqljfx3yfY2+dZnX8QwkcUowy3ScbgHmbN5Q=;
-	b=nb5hrhdc7QVJ0DUl6/HkaMWURhBDXNBixUvBT4z6VOOz4Cdn5tmwJk1U6VlYO9XlNu30zc
-	5HF2PjzwJCOpRDC1zC7ecWT1n+3AvtzrSSKumdTDwp2a0xVzNfZq2grl48H2HArS95AECh
-	19NFfYbsOoOILvnJVC5nHp5I0GHqryo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gz2eKhzf;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775027304; a=rsa-sha256;
-	cv=none;
-	b=EQ1qaTIsYfWXtXyskYCigCHZjuQE5X8xQEDFYId5bTqCTmY2W1jeNZpk75SIuF4qKZaQeh
-	9d9RLOngt2RsvhKj3RW2V0i5DfsZL+73Ww4S/2eeAE0iUYR1Gs5cqn7azsYyDFn74YL3vx
-	tcRri8zF8AccPi1sJXHR541XrKn4NBY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48AD060127;
-	Wed,  1 Apr 2026 07:08:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C981C19423;
-	Wed,  1 Apr 2026 07:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775027303;
-	bh=9dWTDjvpA+ASwfwn7e7CTy1SkAgAXTZVgBAk3qFv6xo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gz2eKhzf9cD7Z1Fi1Va71fGpdDvjsc60Y/YbH/UE0lJqnUJYdRjLamgTeC1oAE95e
-	 0i2oDHTvM0ImWMjhx/4rFy9CUnT9NstLmN65QRpje15iK2Y1tUUInbuUkbmRWgkthE
-	 Kle35fD1WEj8RP+Ut/UFDu+h8PPIEjbLPG0sJrMqClfFg7nKWrNBYsBz5DX5xuAzG4
-	 HMfVjPZcUfh9ammj6UMlDN/l3C3Os8dwR6vmNR9HLW9KdLBmISlstIkTbSyH0kdtTZ
-	 kqfbQeqP2uEXWoziN87VBCaSCzC6iLA2UvgefryUt5SXPPhKrFT3cokmpjeLLB7gM5
-	 9Aac07ayJoyvQ==
-Message-ID: <9fddd112-e304-4ce1-b3f0-a4b133fcb281@kernel.org>
-Date: Wed, 1 Apr 2026 09:08:17 +0200
+	bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
+	b=Qm06FxtZCnSoItPgz0P7AfP7B3P/2i+5OCidS5lf1jhxugkxDVIgEOZYjStDFZ9n4gTCKd
+	nGytYHml8MNnCf9cf+YLzREjoGZ2/PE0n0nMAsQyYG0D0E4Vg6a3ueofhnZjkhX70uQ6F9
+	QzYkToSTQ0Sv/fTNqtEfAPwvBRKpXu8=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y/ULCIg1";
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775027422; a=rsa-sha256;
+	cv=pass;
+	b=DMndSB0UjK/ZJjfjvmx49Vmq58Rjac/FrKtoZzwtrn1a5nqs9E1zeGkbT4pg3l6vGqiOt0
+	iiTtl7jVBae0M9m1H1d1Kag7yqQ4/Qgz9TipaB+NrO0VKWiyM4d5qQd71i2U+WrVI9tq43
+	gFqB4R810CbypF6e6c2UDmQRPcCDab4=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-794719afcd4so34215487b3.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 00:10:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775027422; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hFYv6ZZgwg7IvZNGlr5QZd/jIlRXcjTGpNQa8zWw9jK+1/UnxDabymKp+skdhOEPA9
+         igEFyUd8ECRzcSg2NZpxkylthFGq20mLd/cxwoJyOgMQ48QWlwh83Zv1Rum/9enCgJcE
+         Gabm9UZGPIyj52aHgkk8wmw/bl4EkzHSRf3s8J2cQLp0LTdfHN848r8BTspIJB6CLghC
+         SN0vEenNizz+BD92YCd6WEN//0DTbyxXxo6Gn1GK4xgxcpekBeFRl6kPa363Qp1+BXc3
+         CqcIKtFdnJ29u8Le5dI+yeKR+VtNJK7ha3BGyksBO2+a7NdH+eStuB/XRDS/qJvvoJoa
+         /B5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
+        fh=meCTCE3QK3nN8FShFKql4Amv3CoLb7sHyBqxuoDI6A8=;
+        b=anKEA7nKwXK7R2v9dPjXDW4hpeEKAFx2bhWqBfk2fbG14DzW4786X1qOEqCGd8VQTx
+         i/CKoLo9O6Aibq5LSl/nFdnowob3bK38pGK4Ff9dQqQSiNb61aMqRwVuXk/O3E+lLrV7
+         HLtOPQuapZGlRO7WJd0cafMJ/BnEQxAUEUizOwx16eBQT+H4hHAYwLLUBKEnBBePb/KI
+         9y1Akauv9VskhQM6FABhYAUKf1WvIGvYiY1uZ8a+5fKFTYJLpl+UjV29M2H1XzeoktXX
+         Ksyd8qaDF5LOE3qGeGlvZuN+hD8JVJYAM7Mbd/vZbj2p/qRi8IJOhd1DztoQi7q7pAxe
+         Y9/g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775027422; x=1775632222; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
+        b=Y/ULCIg1kQPb4Ot9IhRq2o0w0ZcTMMhDHagfRKH5fkb2DDaLPyvOYsia6g10Nalvo3
+         qoIMr/9sZ/YUoRyGMC38+2XDjym3gLWopQQTHOKWdXDhslaVMBYyjOQadTyzaNP7sags
+         M+VCWGp8AWFwItq13Z9uokKljnrtmt7syL0M5OribOmO+evL5o/bhO75GozRkoM9lOWc
+         40OzdW8HEmgd2Ps5xYF5tW2jHOovDocXTXuqzgjLLr7MOQc6rPx6YOHJQaNVzYN1ViTE
+         2spt++IB80/ZjZblwGuZ731y3kB5GTxQdX0iFjUbV3qP+nnp5hfJCJ8fXwKS63jsCgxu
+         OdyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775027422; x=1775632222;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
+        b=bzXmN1J/53uHU0kIJEfKPvx6TzQTFw+UXJs3pBUvOS2Wypt9V+TPTgkUkyYbWYkfbX
+         +SB3H71Zsfc/z2ICGdD/Bfxjh3QAyWhJz2Wh53PTl6jHgH3kyOab7pDk7kT15bL8i1ic
+         /8MZo1Nw0wClW+KUOWNGkEGqkEN6cEvpl9zjVBnlXmdJ1zNy20uFPQkSGnjvUjP9n5ym
+         MppiGycZXyVQfSrWVDFI1Ax7Rr3cWAYCMjZmINJgFzTEMOVKbuwJfZn16xKdnt4kG0eb
+         eOgi0YEr9nG1D2f1D1jrODZEek+pJRCOFMV6/2arV36GOgaCXxXZBU4coKTUKrHNVUqh
+         SxYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUr/DRdZh9PP7y2UYuxU6vVi/YkxxB1uy3RhJdP7aTmI1lRIih4AGEWKGkDgNJ6LVSSy5B+Y1HovQ==@kvack.org
+X-Gm-Message-State: AOJu0Yylwf3oGH9C7ADAOH9SQcEY94KwvEB1uwebGXxlu/PPdXv+W99x
+	iStGUxUWsfAgznPIgJdYJwsWhUWHWxG1daK26Rwxp+ef1Dfh9mEf2fk43XHrK1KZkz9unf0jt9k
+	i5cABoGy3W6lD4HI0Qhz28x2TN0Vtgcg=
+X-Gm-Gg: ATEYQzxAtvFX6WSE+sgPzb3bqcqRLyfV8gS5xUVSGI4vyE0ETdT1iqjRcJ2q1tcY6CP
+	fcyvMpxCZvZ7f5W4MrNUyi4phKB++o4TKu6AjpI5YzOie8m/D4+Z5J5/OHhalT847SPFHP6J/SF
+	iu6TpQdmnNSOG/GtPbAuhvIiSt/i5APfDdgqk2Txo7A/sTNegTxKIqlPPnV3ahD8168UCsKPStr
+	4iOZySX79UN7nyZ3QhaNzMaS4Jm8LdvFG7+JzL1mAi0bOS2w2bWLoPXEw5fZO7Ypm0o8K9821VA
+	h6hoa4rEkb7cgLbfMK2jhBNw7ezQQcmbFt7xOA==
+X-Received: by 2002:a05:690c:940d:b0:79a:8dd1:53b9 with SMTP id
+ 00721157ae682-7a212e17e61mr21518597b3.55.1775027421821; Wed, 01 Apr 2026
+ 00:10:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/sparse: fix BUILD_BUG_ON check for section map
- alignment
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Petr Tesarik <ptesarik@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260331113023.2068075-1-songmuchun@bytedance.com>
- <32789381-f860-4b60-a1e1-4c97f6ed08b1@kernel.org>
- <7C90E910-D229-4F60-A62D-E893A89D58F2@linux.dev>
- <1742503A-F912-4AB6-AAF6-6CDB06829024@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1742503A-F912-4AB6-AAF6-6CDB06829024@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260330071229.14614-1-devnexen@gmail.com> <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Wed, 1 Apr 2026 08:10:08 +0100
+X-Gm-Features: AQROBzAvqftq4k998KUQk_SHQCSrieImEsgsOd3Jjv47f8RWBMv9DB5Ldgi70rc
+Message-ID: <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
+To: Barry Song <21cnbao@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B69E12000B
-X-Stat-Signature: 6oj8m45us3mi1bu3eny6bof8kgc5o1w9
+X-Rspamd-Queue-Id: E07DF1C000C
+X-Stat-Signature: jzcezezotxnau9chbxizf78ja5q3h4km
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1775027304-60268
-X-HE-Meta: U2FsdGVkX197S6JxewJUZgqvBWJxT1GZI4Wie/C8eOqxiFxrHRqUd4+DIO0KSwVlwzoIYIeEUc9/HYylQdkLFjQ5eSBPHbpFJEpXYx53553luONHrGVNe2MLSp3KbjaCU/uaLIQw3aB2Y3cbGnC8GzQvEfcIFUX8lyFqbPaGnnW9dgx7kxKx0Kvnl2QTHnTBhp5Nyc3LRj0S3iXTuifNAQnyaOYJCS83Pm+TgFJ2eFZ5b5QEygLoqMjvIvX8hMpYjDHyWQT8lquYPF6Ip4GaL0Y2D1qhnQl/DO3FnloLYZTxgcOYQqr3sUCLjbALPd55nmb7eRtVxMzeXZVGdzT10TTdKWfoFA/Jvr2OxXoU94WMtF7m6U6wFGa+yg2ymYS/j1ZpIMXHkk0Eb+kaL9vKqsMvEp4EGRVZz2mziZNmhhm87yRp89PuDEclLnQvy+Fb2cfulKyiLaS8rzTgnr1KVBKGRYpa2IuCgQtXNGNtLU0CxQ/gLdn9hI33FoGxcsplLxRBcOSKzCLTAYZsx+dlw9ziToXDXpX0yVdmp0fM0EsZp4N/zJ43NyabTaYIuByfO3NqflKnN/yao0X/jZXI3lkIhSvj/Eq0leU9cuQCG9zKSVU6u2mkJZyYMSNnsi5Rasm/Zk4C2CXZQBaEg7gEeTmQvqQBAOh6MoaNWkmKJtik0dYFBDZjfHGTNxSs6I5l3aVo0Iw9RfVKyvVi4W0OkG/Yf9vWmkZvoSs68Irw1c5RbN6cPPDoxqOA+hiENmZZP2X8LGXol3hvfxJTk65Z0m9cPyMm3WUDBp9rWwKLSZBVTEE+T7/hEVMY+rL5Hl9CNNUkHRBlDDzFVrqHRXO4i0/4LALJbzHWVnw3Zh9ZS8h938dYsDwEb1+EBzFctzgBozgAbVhvLo36XYEPulObRSUht7O9g4OLCNr02aOIJKwZShejD9HtDUDTts/kYqFIBrGAeunIMj3J5fM7oju
- mSDGjlK1
- /J1l5DfZJOqGIhmYhdi4ZI5BHrQCQ0YyNgZONQcTilyH9GDWzOoxznvgoooGOyFaJv3+QjQTloGQSabQpNLExNh50z9SCaR+S3dPYY375IJDOBPLKbbBsI8X6as6sOY3OANH/c+unWMLP1BTyWUA/y2jEF4BmCcXTPQ+zf8szWztcY96uPgngfV5m17QfO3rEahd82TOSCoHFLcdP22+jjVJiHdozsRWpyAa4uQZheE6y7w3As/2MUUDoBF3+YTaJ9oT93sUdXYC+Hkpqbuwk5bI3J7cZwn768W4WDdCIQPL8XdD/UiUSVUM99AmRMYOdtkqs88jQl/30O4I=
+X-HE-Tag: 1775027422-577473
+X-HE-Meta: U2FsdGVkX184IRHOi96dIQbm06si0e/sR5gAygB0C6NsIeW28Uc8FHy1v/WMjKpATE1WHhQ3UWfbvbmyktUfUYLOotApB0Hoz/jx5iB3DyTB4xAwlWvA+qQ2WpZUSgkFnEB4P9YbvRw7ZXKv1tekCyBbRjI5Lx4YWsdtPpSGTRMlMnCjLV8bl8fLLhWLYVu3vm8viLtgAbeAsVGgYEuTba4/CEKzWMDozrWGw+cLKoprH4GHVJaAlV8jg6WRYALRZLtWs5R28L0R+MymfN8gErAhZyJfYx8um98SLm9LdDJ/nNzinK3njQboFKc4hd5vY/ZT/0D8tjdx9U4cczvYRtPrpH4LK6ljjp0v+hlqCJLrSbWz1wYcLf1IpcjBJN7/0s9YbN5QsM/zNqp/he7A5rYTVBTpOLZE3Hn+dlLNpHETZFVUWwIWpyxF0+KuX2gH+EQQvYYGw176k9gKKO0UHdHpqyBnNUCnmiDCPgbLTEd5TQu4x6SIguV8A5ACp5WHgW3m0hvW8vAVq3JWuGYaXoUtrvVpn3T6Ody05R57ffl+9pBgOdwXJUho5hC6JdV8ZK+GaEgcyY4Yi5fymGS209bMWlz6S19xUZJd7P9pPvFNQLrJ+k8Eoz1XIRPpJijg/NcMCUtDbgwyBJ11CRkqrpqCzcTkrdUB+hS+IHQqfZjOjq9uGt9wXtERtbLoOk1fKct1t4HerOLLq7uX8CSBpRzY5edalbnsqISolr1FhibYG0eNefEwjR3V4o3QxiCxlfeyIg0YObZ582X2Vb6vYN0JujaGbRZwvjYIWYOva2XhpixNnbOQIxa6ArWMtZibI98hDbQOdDpzJl4WfLzPIHVX1bUxrCu3S+ki6lF0wQGZiLllXzBH/TzcrJSj8xZTAN0HSnPLh6x9hfmxiBH0s0fjuOP31BM2fK6EuroFoacx56XY9IxZjYSAEyR4c4NluOi3Z5f2lcPy04W+Wki
+ BbYfNvdk
+ 7JqrdHeepL9Ks86PysM7khX07CT7vGEEHLeZJ55y6Qads3kAxM7SOkSMY6XygZ27iKpiKCHXtBnP/3I/GrlB3/Wug/OD6BwLFSB7yKFPULQ4OojQYMNv4EdgW5bp5PPtx47g17B35ZKwkETG/Q9Qf1tW3gIU1X3rzHYjVJLcBGmyF2FxGb3A7pv0lKs/taZbseFznvnmH/Ay0/Le0qh/pi6Syrh2z4qLfu2FjFEVj7N4isD93J71ll1AdwUEpKnK6xkZ143uiNBaBm/sJRZUxXUw9cxgSPzXNa6TkNolnuvZRga/1PNkuHhB+nJ6lBNxKTu9HcVpRH/axUOMazi4+T5Qd5dLvXhF1uk8b8BXBcYfKjq/UjZJMAumu5N2brLPTNlOWqPitEVU8EoBO4qYDBo/rT2uoNwyPpxA/v6Q12J9IiGagWaXegmkp/Q/ukFBhB00sHth5IgFd/FWTiUw8l2tfZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,45 +141,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 06:01, Muchun Song wrote:
-> 
-> 
->> On Apr 1, 2026, at 10:57, Muchun Song <muchun.song@linux.dev> wrote:
->>
->>
->>
->>>
->>>
->>> If that would trigger, wouldn't the memmap of a memory section be
->>> smaller than a single page?
->>
->> I don't think a memory section can be smaller than a page, because
->> PFN_SECTION_SHIFT is defined as follows:
->>
->> #define PFN_SECTION_SHIFT (SECTION_SIZE_BITS - PAGE_SHIFT)
->>
->> Therefore, PFN_SECTION_SHIFT must be greater than PAGE_SHIFT. On powerpc,
->> PFN_SECTION_SHIFT is 6, PAGE_SHIFT is 18 (the worst combination).
->>
->> Sorry, but I didn't understand what your concern is. Could you elaborate
->> a bit more?
-> 
-> Sorry, I misread it earlier — I thought it was about the memory
-> section size, but it's actually about the memmap size. Let me respond
-> again to your question. On the powerpc architecture, when PFN_SECTION_SHIFT
-> is 6 and PAGE_SHIFT is 18, it does seem that the memmap of a memory
-> section would be smaller than a single page.
+On Tue, 31 Mar 2026 at 23:33, Barry Song <21cnbao@gmail.com> wrote:
+>
+> On Mon, Mar 30, 2026 at 3:12=E2=80=AFPM David Carlier <devnexen@gmail.com=
+> wrote:
+> >
+> > sio_read_complete() uses sio->pages to account global PSWPIN vm events,
+> > but sio->pages tracks the number of bvec entries (folios), not base
+> > pages. For large folios this undercounts compared to the per-memcg path
+> > which correctly uses folio_nr_pages(), and compared to the bdev read
+> > paths which also use folio_nr_pages().
+> >
+> > Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
+> > count since sio->len is accumulated via folio_size(folio).
+> >
+> > Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+>
+> The patch seems theoretically correct, but I=E2=80=99m wondering
+> where we can swap in mTHP for filesystem-based swap=EF=BC=9F
+>
+> In both do_swap_page() and shmem_swapin_folio(), we check
+> data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
+> large folios. Am I missing something?
 
-Right, and I am saying we don't care about that and do not support it.
+=E2=96=8E The patch seems theoretically correct, but I'm wondering
+  =E2=96=8E where we can swap in mTHP for filesystem-based swap?
 
-For example, most vmemmap code I am aware of relies on a single section
-covering full pages.
+  =E2=96=8E In both do_swap_page() and shmem_swapin_folio(), we check
+  =E2=96=8E data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
+  =E2=96=8E large folios. Am I missing something?
 
-So I don't think this patch here adds any value, except faking that we
-might be supporting something we don't?
+  You're right, I missed that. SWP_FS_OPS is only set by NFS and
+  SMB which have no bdev, so SWP_SYNCHRONOUS_IO can never be set
+  alongside it. Large folios can't currently reach this path since
+  both do_swap_page() and shmem_swapin_folio() gate mTHP allocation
+  on SWP_SYNCHRONOUS_IO.
 
--- 
-Cheers,
+  That said, sio_read_complete() already calls count_mthp_stat()
+  and the per-memcg accounting uses folio_nr_pages(), so the code
+  seems written with large folios in mind even if the path is
+  currently unreachable. Using sio->pages (bvec entry count) for
+  a base-page count is still semantically wrong, but I understand
+  the practical impact is nil today.
 
-David
+  Happy to either drop this or keep it as a correctness cleanup,
+  whatever you and Andrew prefer.
+
+Cheers !
+>
+> > ---
+> >  mm/page_io.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/page_io.c b/mm/page_io.c
+> > index 63b262f4c5a9..1389cd57ca88 100644
+> > --- a/mm/page_io.c
+> > +++ b/mm/page_io.c
+> > @@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, l=
+ong ret)
+> >                         folio_mark_uptodate(folio);
+> >                         folio_unlock(folio);
+> >                 }
+> > -               count_vm_events(PSWPIN, sio->pages);
+> > +               count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
+> >         } else {
+> >                 for (p =3D 0; p < sio->pages; p++) {
+> >                         struct folio *folio =3D page_folio(sio->bvec[p]=
+.bv_page);
+> > --
+> > 2.53.0
+> >
+>
+> Thanks
+> Barry
 
