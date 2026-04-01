@@ -4,101 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E642810FCADE
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 21:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C85F10FCADC
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 21:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A336B0005; Wed,  1 Apr 2026 17:03:58 -0400 (EDT)
+	id 0254D6B0005; Wed,  1 Apr 2026 17:05:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3D146B0089; Wed,  1 Apr 2026 17:03:57 -0400 (EDT)
+	id F3ED76B0089; Wed,  1 Apr 2026 17:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2C316B008A; Wed,  1 Apr 2026 17:03:57 -0400 (EDT)
+	id E2E1E6B008A; Wed,  1 Apr 2026 17:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D125A6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:03:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85117C117C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:03:57 +0000 (UTC)
-X-FDA: 84611214114.22.522FD6C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9D431140005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:03:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D8YvdShG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D0B1E6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:05:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9633BB6FFE
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:05:01 +0000 (UTC)
+X-FDA: 84611216802.11.2C6DDB3
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C979C18000E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:04:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="b0H/XamJ";
+	spf=pass (imf06.hostedemail.com: domain of 3eojNaQYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3eojNaQYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775077435;
+	s=arc-20220608; t=1775077499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3/dQOwbAePVZXat+beXvywX1ZwU38x9BcZONqepSIo4=;
-	b=Qb6RNf7OldRyq0SvWbsUdH/wGs95mZS4/HrlntXBut2t0y2o7mJK0cF8k2RWErcbj5i3/l
-	BWKUvmW/LmQYLQ8ZsWQXeImCoqOFYvrzKBkb5mT44X5rQtP2P75icucYrn/q2PySrmnLIs
-	PqJQkAZc+t2n1RtQkXnEtuKf9wfR9pA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775077435; a=rsa-sha256;
-	cv=none;
-	b=6S0uPly3SiFqQlNo6InjJomufOYSy4TBKkZ+JjziLaYQrxiQKXGdJ2i0wEM2vzcncnXtGg
-	D8F99S+KCsNJVuSXlNbxN3gWIk9m9RrP3LfiJY64tLWtsOfkN/7djX8vjb2y7WV9OWuKk/
-	nCpGFApiAY1k3HQqEnQdvT9hKvmcnh0=
+	bh=Z2G9uSQqW1t77mVxoAaIkc05+KXCw20NeU1W0ypS1GQ=;
+	b=l8tRjmKgOhfXh+AYony5S2SPbiJHYGRoaAz9iGKFwSKkslfWbfkivLZFmK2iOlD6FvPtNK
+	TnUJrOnrf+C8TglH0XK52Qg4T8a5SNH9hiN0ZYrDawzjX2YC1PLAYKVIx0b3AEKyCr9ZLx
+	6qQMD713n8wFKFC4NzVjDXdYsaDk26c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D8YvdShG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F1C36013C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:03:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBD3C2BCB6
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775077434;
-	bh=3/dQOwbAePVZXat+beXvywX1ZwU38x9BcZONqepSIo4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=D8YvdShGs6n4UFHd2rtSLxODcMJB9ggzZNYXVINaIbWdDJDUBBegWwYw5O0xUAKyI
-	 rtEtTmhxhnwXKp+5H41Y4FQQjg7JFv8yuvdBTv+BapsghfVrA11yqfCbwyBSBwzpEk
-	 eKmZtj/3V4G8a6p8oXt0HVD3VC9w/Gm72tSGErIeFFA+gTbBBVbrmmTlNzLld9boL7
-	 2gvKTaWfN+Edp6hTpPFO6wxtaf3o88ibkkc4buAYjCZVZRTs2lBSeDQEEB0Ge5N1+W
-	 KP6MDmBmkzhsHve5ovkURR0Zykl79nR7et3JbfQGjpbQzJqe05PfCXGyycuKzm4Ox3
-	 WIZWHgXMxBfCQ==
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506a747448dso1451871cf.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 14:03:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWs9pfAk1dK6ccKYXHSdDwwHukKw4F4Zg4cdKzrfsfmGUZhjdRM5rDUm/YBNXeaQvdDP4AdXZmjUA==@kvack.org
-X-Gm-Message-State: AOJu0YxnL1TamqU3LqT+9rI/ke58gmi3a0HEbPanDZHNUgAo+JyLdaTx
-	ZEJxeyzuWofkYaoK5/19rf0kCL46g2i1ktRrwmiPMQsiubcO0lC6hLbBCK8DRQEmt0CzrEUZjFi
-	TyjXrmMR5EtEaOlvE0KqX5BwRLc2WJF0=
-X-Received: by 2002:a05:622a:14c:b0:4ee:17e9:999a with SMTP id
- d75a77b69052e-50d46ed48eamr37949401cf.33.1775077433730; Wed, 01 Apr 2026
- 14:03:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <aec533b2-37a7-4f44-a279-c4aa604206ac@lucifer.local>
- <CAGsJ_4yEqwVHsG5joEVpuxE4Lki9vC6UJCRrEPNQDGMinyP+tA@mail.gmail.com> <2dab0995-ee80-47f7-a25c-fd54b4b649a6@lucifer.local>
-In-Reply-To: <2dab0995-ee80-47f7-a25c-fd54b4b649a6@lucifer.local>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 2 Apr 2026 05:03:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wdsMca64zYJ8-K1-APFUNQTAaxfNG-JxaVZTuzV+KJqA@mail.gmail.com>
-X-Gm-Features: AQROBzD4LcaIX2S2ULsLPAOqmRV5cv7xgcwF14uov7jTIlztohkRcrASqj1IQT0
-Message-ID: <CAGsJ_4wdsMca64zYJ8-K1-APFUNQTAaxfNG-JxaVZTuzV+KJqA@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] The Future of the Anonymous Reverse Mapping [RESEND]
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, Chris Li <chriscli@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9D431140005
-X-Stat-Signature: qksr8abijx1rasc31i3m8999fm5kbd9b
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="b0H/XamJ";
+	spf=pass (imf06.hostedemail.com: domain of 3eojNaQYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3eojNaQYKCBcF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775077499; a=rsa-sha256;
+	cv=none;
+	b=IEb/+Ghq1V2j3FFWcG3zyqnzq3ZgxURS7EQDOzcjTcwdo7/mciLo86yFZrPwhzLsZiApeg
+	t/f8KqhpPcmvla4Z0TGQjwM28tuUC7BBBeaRQ1B3F2H7erf8f5wbomRxSIg5/EcCNPMTkH
+	G+grDyUTioYOtmIY/OE06E6ULV2/eps=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2489af602so1125495ad.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 14:04:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775077498; x=1775682298; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2G9uSQqW1t77mVxoAaIkc05+KXCw20NeU1W0ypS1GQ=;
+        b=b0H/XamJqozej1O3DdWZQdaEuEnd1QtWJ/0WHuLTsxMvjM4ca+KWszkljLL/0KFVY9
+         zxC0QWWYjaZskJrwZsjEdizb4TW1c+F6JDyHvLVBu0zGUyDL3SmCHS9AjsqyQ6JCldp/
+         XEq3ZDggvYs5O5X9F1gPmJgw/n5fBeNEI+cYk4GzSQk+b/N+vPFwWN7iIQi/7nuEC7DJ
+         zj8Xr0lI2tV2SdD5RQwIJ+LtsUYelLKmENudb683oFMBCfgBN4q/cmcaFIIakx3QsS5p
+         Ew6/x147FxSlF6QleqXs9p1yFSIbrWe1owgXnSbUgv6au4Qo9HcLVUsHoxm5EX16VrGo
+         MMlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775077498; x=1775682298;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2G9uSQqW1t77mVxoAaIkc05+KXCw20NeU1W0ypS1GQ=;
+        b=H/aLqg7UHyuvOawb/cY5wZ/MTF4WOZFIRrb1OFyan7jw2UayWbyCwFWX4rvc/4bHHR
+         3Wxva4W/LGkL5qKGC3SqzChNQ4M6KXnHCCcbSRwExxyRdeGBoQxeh3nxtsFNlVRZotf7
+         xfhk5zotTu5IkV/0JDfQ20gSg1hQHvoVtDabU9BjcSBB4POzMKRyTpcjj7+6lhcJeqxK
+         6MC8Ye/gMJx7VoxR1U6n9I/a1RGYNWJjlHDWTIcaYD6NYoTPlWJ8SbU0P7if+3nabmLO
+         NOwsgZ2QvBMmOWOspqHi6SqTOnMuIOy8f7c1lPRYkbWAXW8yasC63jiUduEOJC7hu7PD
+         KEgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUT1H7BcVjk2weF1yhIroOnWMXSKj0AhiTzef/r4y/kwb+4DFbS4mqtv6GpqMzquE1e8p29TSdJ8Q==@kvack.org
+X-Gm-Message-State: AOJu0YyG0Jen/QbrA51V6vrUD0p/GANVE8n+rZ6SJ/vfCfzOORnSW+kB
+	JHY3oJr/02x9gzeRl+UtEG8kBvg4nOJm4FWHaD7/LbeFI6m10cN/DHHxVQCu4jCgiDiuZSVRy9N
+	cHYv4Iw==
+X-Received: from plhk15.prod.google.com ([2002:a17:902:d58f:b0:2b0:6c44:fc55])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c48:b0:2b2:4f43:b49a
+ with SMTP id d9443c01a7336-2b2698a1054mr47624785ad.22.1775077498214; Wed, 01
+ Apr 2026 14:04:58 -0700 (PDT)
+Date: Wed, 1 Apr 2026 14:04:56 -0700
+In-Reply-To: <cxmtst7txfodp6lo4ipue3trohx2ge7nkagkfzfixfdnlf5qlo@e3jw3tmbe272>
+Mime-Version: 1.0
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-8-e202fe950ffd@google.com> <cxmtst7txfodp6lo4ipue3trohx2ge7nkagkfzfixfdnlf5qlo@e3jw3tmbe272>
+Message-ID: <ac2IeJNrrBuKtYn2@google.com>
+Subject: Re: [PATCH RFC v4 08/44] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775077435-480665
-X-HE-Meta: U2FsdGVkX1/cqRlb8V0WVt8Ux5V4X8B5mc4pH4f/O9/NqRDKq6o0GTZ8S7HplOVSe6jso3/V3sq2TRCyOPYCtBMhv7TVYSZcgcVULoCDBeyR+bZC2bMKZx1TNF+cyaRMdsJEu5xm1Hyk9vj8/hLh13Nhwip7sEfxZle1JaInJjssvGFnRzZDcM0v72sdu07fAQR9TXIQ5ORjKjhNzqrZCQ3pNfU/nvs4G67ZZNJV7JxlLZZxrhPaP2jHka7Pb6cRLRuJKhQjq/7TtgbPAZ+gCgRT8YzUz52Pzo1uAy0HQtSmnsIVNpBcRKljF16gBgmtEJPGnDf0GC/DQvbQCPJoxfUnlYzIgbNdrc5/bHx3vHAbOVQTvwKy1uGwGPi29SfdctgHtYtzxqCLKyOSX1L7zjd3MA00+Yq/T7ahbDliftEzQ3D01bSn93uevYFlx9gTMhmNdIQugYC7MQnuYlMFs/aUoDyCStTynJi1Do3K4qe3/CptG/sakqG0RCa+NQ8RQ2cY4Z9MM91DmEKWGpLiQc2WPZNmePvr5ja57XeoFV08etEzeUcszo/fyaL3qygKvgsI9ruxQVQU0P4Nyvjoi6fDDm8uECTFVPNAZj7tEW7Hv1hxsbc0MRxPUaIjYI7j0UWyk0rEWfoeSbByIb6UY/RQi4Sfv7OXKu1n2nB1u13ctRi9wnrG27UMoHuLzKpGfK4Qxii2je7yzmK+UllcT1uihGH6DIoZ4Z8NES05rYPmCyU6fx7fRXqL3y/UEoJ4VqbTtd8JTtMtjRSyVR4tydFTRN/eH22DFGfoazRilg3QXor/p6GaTCTI5RMOQ49e7hMmZx4mIXgWusfk4dd/HP1NpSvgHGCBhEVOYhLcptXRNV66qcVoHnGbiKbaxk2PmiEjnhuQ7XXxBN0lKGsy3okc2ZvJ3UE/yONDsoLjGubrF0aGHTGKRniIzz4YmavpZ6SMJY/djB4uB/JPQch
- olv9j6mB
- 2BBYsEdPJ5WgIzvJLPA7/451jN5aX5Fx+QDSKD3EX4iItjSruCTMbTG7Va6XtJr+aVl0o/Kh1wIWSmj5sYsCDZEKeWcp+CzdyUF0sByRUuTnHCebL3q7MawLfp1bp+LDWgXUoXpDeCVCcivgm4Vl3skA1v1NzcjKNKHsHtDnq7dT3+qV2N2fSBFqUlXwIKHvW+q2VO9LipkeFb5Dp9HLdl3BwF8wiand6tnJjdGNvo7Ks1oitKcwBFhICQJvy9aefn6uWMQ9HTyvwRpa1No+nxbAoJU8OrKS/jeApIDfvKx2KU70HsCK9SWgC9TStbTK2Exj2DIhAFpJJqZg2Qk8ISVNaEfTHF10ounl0SWMLTo+IUjCcaoPKwMZvTIaSIUvUXcEOEofSEVY8sIq6oMBpC+vggg==
+X-Rspamd-Queue-Id: C979C18000E
+X-Stat-Signature: 9jt3n88dizsq839ropiggsxgez1hh43y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775077499-94378
+X-HE-Meta: U2FsdGVkX19BXLDj63sZ6h4K+2ikwGDIb/Z3cdFWaOexrjGLHG46U/RbBvLddL0a248WzXYyusXy1tPiHmkf7azDNK7cX6f12oaVE4YX9GoU07ZtmZwtH7sT7+k2ZcNuXnUIftf4U53YMWnwvNcZhjBRkIJLI2Rc9kpsc42rbFzGTR8+J5sk3ZWYq+zDfv9oWnqvd7wwm1mQeqOE9lPqk3HgkpPKSIt1Q5/EfN4v6p6yW6OFPkHTG2jJBAq+3534kG8eBh4Dxhd/LBPkZJU+5wqSHWjD1owdGVYFCLm1+vyfcRM5RFUV/2GDqr3isMW93IGzjpKy0f2V96eLHjo7L4UXIiPyl119AOETycTQxSi1QbJnPiyL2zTNSeveYvLY9p2bd2qFjOMf3Rfyxe9UjmRsg/sp9X2lATF9mkVSbXTCRf+pFRtGv/32Tn3QTyCUNx7X3Re5D+FmogDLB1yFW15hp/wgaQaKCIrFl2Bkrm75yZ0VUwJY0zWa03/Kto27VXO1xk5q6Swo6A/1ivpbeZjAL87Rnn4niDdMmkC/K0H+I2OZNr5JAtt/KE+MIDFHJlHpNK423Igo2ZhY4arzz/+Ltp8rSOIoNVt9iEsSjBhNTwXv9E3HhQOJfPCFgPyhNM/qIt9WwvWcbZUOE0Uiu5Pxxe7tRYBHFW7pb7GW1GcdBJ1mZ5xMjNj0TxkXpQBvvvV2MYEhDiFVD3RA9ns4Rvrds1cTfqJKJVl5R95dic0KABq2a4oUb4dDzVkz+01OgEOLVxgfNbHtFBtUmBQSFhY94tiGv1P+1xkLlQtOkiDSMLMA7QK8goDA5Yr37/kHn+8op8SoNvyYhY79fS8dkF81rvxfaL9qllKeVyfdl8ePxpJEVD+82v4A7dk1aTWC95WKKv6OQPbnJf9o2mtsC1FJh3smGMyZhWRD8jCvLGX5a4Af/ovuqxh6SFUeI/PhwNjA3oiJoNOl023WK81
+ YPl4CQtU
+ zhQ4ABI88L+7yIH0iVmNM9FDtlS9AWx+kOgn48HPsJJ5Sx+BATZRb52LDb/3vkj/i5i79cuMmA022SbK2GepT2mhDmU52OlPQTxLrqRFSnKbyIMOPf9hmHo4/mPct8bVKieyklf2dgb6f6qSc6MF8XpPrN7JBT6KmbasfNKx0wgzqTBJn0utHVphr/JCYeJ7R/aFmPrAWciMvSA8a16dT443uezbVNTPpTpaEjklivXYOe4QmSjyho4pQ78ShqmIs4LYqJQ6A8k6lRWMklu3t9cAHhR6wcRHCVt1kmKsqrX4K+IWk05vf1GylhwXSLjYSRq2SGclGGlaETL+JpmHZUHQXGaFTt8wri6xm3nZHNXFRke3p575NL3PHpRy0sovsb3xabKhIeNj7Ckbrkn90GjJsMMftSZtywEvup6I+NmHAcb9GZ5bggCjcDpk7c2scexAIY/f1JADVW+DH+zSuYJZ2a4nmHQW6lzQt2EYMAQ22b4ZHhfxgv+zIWW486HWrWgfx1iTsLA1a/L3+dYhnFNrfhCPQkCAKG0HOwK7/Lu9koRcEB4EccTAkqZ6bXLWcDgWUuM64BPSQIc9soNQYBYxTzghOAYmyrvlpJt9OVxBzKqOCijCjejNF0Uj3tzBclxV8fXrJoFRnxb1YKPTTNVBYB5dnbT1dRf/GRml6lTe+5r+hG3rMZEbwSh7H6JlcRGBQpR7ZsXvltJqiDzF2MeekjKTNQXiHoUou
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,194 +127,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 1, 2026 at 4:43=E2=80=AFPM Lorenzo Stoakes (Oracle) <ljs@kernel=
-.org> wrote:
->
-> On Wed, Apr 01, 2026 at 07:30:41AM +0800, Barry Song wrote:
-> > Hi Lorenzo,
-> >
-> > Thank you very much for bringing this up for discussion.
-> >
-> > On Tue, Mar 31, 2026 at 5:23=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@k=
-ernel.org> wrote:
-> > >
-> > > [sorry subject line was typo'd, resending with correct subject line f=
-or
-> > > visibility. Original at
-> > > https://lore.kernel.org/linux-mm/8aa41d47-ee41-4af1-a334-587a34fe865d=
-@lucifer.local/]
-> > >
-> > > Currently we track the reverse mapping between folios and VMAs at a V=
-MA level,
-> > > utilising a complicated and confusing combination of anon_vma objects=
- and
-> > > anon_vma_chain's linking them, which must be updated when VMAs are sp=
-lit,
-> > > merged, remapped or forked.
-> > >
-> > > It's further complicated by various optimisations intended to avoid s=
-calability
-> > > issues in locking and memory allocation.
-> > >
-> > > I have done recent work to improve the situation [0] which has also l=
-ead to a
-> > > reported improvement in lock scalability [1], but fundamentally the s=
-ituation
-> > > remains the same.
-> > >
-> > > The logic is actually, when you think hard enough about it, is a fair=
-ly
-> > > reasonable means of implementing the reverse mapping at a VMA level.
-> > >
-> > > It is, however, a very broken abstraction as it stands. In order to w=
-ork with
-> > > the logic, you have to essentially keep a broad understanding of the =
-entire
-> > > implementation in your head at one time - that is, not much is really
-> > > abstracted.
-> > >
-> > > This results in confusion, mistakes, and bit rot. It's also very time=
--consuming
-> > > to work with - personally I've gone to the lengths of writing a priva=
-te set of
-> > > slides for myself on the topic as a reminder each time I come back to=
- it.
-> > >
-> > > There are also issues with lock scalability - the use of interval tre=
-es to
-> > > maintain a connection between an anon_vma and AVCs connected to VMAs =
-requires
-> > > that a lock must be held across the entire 'CoW hierarchy' of parent =
-and child
-> > > VMAs whenever performing an rmap walk or performing a merge, split, r=
-emap or
-> > > fork.
-> > >
-> > > This is because we tear down all interval tree mappings and reestabli=
-sh them
-> > > each time we might see changes in VMA geometry. This is an issue Barr=
-y Song
-> > > identified as problematic in a real world use case [2].
-> > >
-> > > So what do we do to improve the situation?
-> > >
-> > > Recently I have been working on an experimental new approach to the a=
-nonymous
-> > > reverse mapping, in which we instead track anonymous remaps, and then=
- use the
-> > > VMA's virtual page offset to locate VMAs from the folio.
-> >
-> > Please forgive my confusion. I=E2=80=99m still struggling to fully
-> > understand your approach of =E2=80=9Ctracking anonymous remaps.=E2=80=
-=9D
-> > Could you provide a concrete example to illustrate how it works?
->
-> I should really put this code somewhere :)
->
-> >
-> > For example, if A forks B, and then B forks C, how do we
-> > determine the VMAs for a folio from the original A that has
-> > not yet been COWed in B or C?
->
-> The folio references the cow_context associated with the mm in A.
->
-> So mm has a new cow_context field that points to cow_context, and the
-> cow_context can outlive the mm if it has children.
+On Tue, Mar 31, 2026, Michael Roth wrote:
+> On Thu, Mar 26, 2026 at 03:24:17PM -0700, Ackerley Tng wrote:
+> > Introduce a "version 2" of KVM_SET_MEMORY_ATTRIBUTES to support returning
+> > information back to userspace.
+> 
+> Hi Ackerley,
+> 
+> Not trying to bikeshed below, but I'm working on getting related QEMU
+> patches cleaned up to post soon and was working through some of the new
+> uAPI bits, and plumbing some of these capabilities in seems a little
+> awkward in a couple places so wondering if we should revisit how some of
+> this API is defined...
+> 
+> > 
+> > This new ioctl and structure will, in a later patch, be shared as a
+> > guest_memfd ioctl, where the padding in the new kvm_memory_attributes2
+> > structure will be for writing the response from the guest_memfd ioctl to
+> > userspace.
+> > 
+> > A new ioctl is necessary for these reasons:
+> > 
+> > 1. KVM_SET_MEMORY_ATTRIBUTES is currently a write-only ioctl and does not
+> >    allow userspace to read fields. There's nothing in code (yet?) that
+> >    validates this, but using _IOWR for consistency would be prudent.
+> > 
+> > 2. KVM_SET_MEMORY_ATTRIBUTES, when used as a guest_memfd ioctl, will need
+> >    an additional field to provide userspace with more error details.
+> > 
+> > Alternatively, a completely new ioctl could be defined, unrelated to
+> > KVM_SET_MEMORY_ATTRIBUTES, but using the same ioctl number and struct for
+> > the vm and guest_memfd ioctls streamlines the interface for userspace. In
+> > addition, any memory attributes, implemented on the vm or guest_memfd
+> > ioctl, can be easily shared with the other.
+> > 
+> > Add KVM_CAP_MEMORY_ATTRIBUTES2 to indicate that struct
+> > kvm_memory_attributes2 exists and can be used either with
+> > KVM_SET_MEMORY_ATTRIBUTES2 via the vm or guest_memfd ioctl.
+> 
+> The guest_memfd support for the KVM_SET_MEMORY_ATTRIBUTES2 ioctl isn't
+> added until patch #10, and to scan for it you sort of need to infer it
+> via KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES reporting non-zero (i.e.
+> KVM_MEMORY_ATTRIBUTE_PRIVATE), so it's confusing to state that
+> KVM_CAP_MEMORY_ATTRIBUTES2 means you can use the struct via a guest_memfd
+> ioctl.
+> 
+> I think the above is trying to simply say that the corresponding struct
+> exists, and remain agnostic about how it can be used. But if that were
+> the case, there would be no way to know when KVM_SET_MEMORY_ATTRIBUTES2 is
+> available in the first place, so in the case of KVM ioctls at least,
+> KVM_CAP_MEMORY_ATTRIBUTES2 is advertising both the struct and the ioctl,
+> whereas for guest_memfd it's only advertising the struct and not saying
+> anything about whether a similar gmem ioctl is available to use it.
 
-So we can=E2=80=99t use list_for_each_entry_rcu(child, &parent->children, s=
-ibling)
-because in vfork() and exec() cases the mm_struct is not inherited?
++1 to everything Mike said.
 
->
-> Each cow context tracks its forked children also, so an rmap search will
-> traverse A, B, C.
+> Instead, maybe they should both have the same semantics:
+> 
+>   KVM_CAP_MEMORY_ATTRIBUTES2: *SET_ATTRIBUTES* ioctl exists for KVM that utilizes
+>     struct kvm_memory_attributes2
+> 
+>   KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES: *SET_ATTRIBUTES* ioctl exists for
+>     guest_memfd that utilizes struct kvm_memory_attributes2
+> 
+> In which case you would leave out any mention of guest_memfd here as far as
+> the documentation does, and then in patch #10 you could modify it to be
+> something like:
+> 
+>    4.145 KVM_SET_MEMORY_ATTRIBUTES2
+>    ---------------------------------
+> 
+>   -:Capability: KVM_CAP_MEMORY_ATTRIBUTES2
+>   +:Capability: KVM_CAP_MEMORY_ATTRIBUTES2, KVM_GUEST_MEMFD_CAP_MEMORY_ATTRIBUTES
+>   -:Architectures: x86
+>   +:Architectures: all
+>   -:Type: vm ioctl
+>   +:Type: vm, guest_memfd ioctl
+>    :Parameters: struct kvm_memory_attributes2 (in/out)
+>    :Returns: 0 on success, <0 on error
 
-I still don=E2=80=99t understand how we can get a folio=E2=80=99s VMA from =
-the folio itself.
-For anonymous VMAs, vma->vm_pgoff is always zero, right?
+As discussed at PUCK, I think we should omit KVM_CAP_MEMORY_ATTRIBUTES2 and
+vm-scoped support entirely until it's needed (which may be never).
 
-Are you changing vm_pgoff to a value equal to vm_start >> PAGE_SHIFT?
-
-In case A forks B, and B unmaps a VMA then maps a new
-VMA at the same address as before, what happens? Will the
-traversal find the new VMA, which doesn=E2=80=99t actually map the folio?
-
->
-> >
-> > Additionally, if B COWs and obtains a new folio before forking
-> > C, how do we determine its VMAs in B and C?
->
-> The new folio would point to B's cow context, and it'd traverse B and C t=
-o find
-> relevant folios.
->
-> Overall we pay a higher search price (though arguably, not too bad still)=
- but
-> get to do it _all_ under RCU.
-
-Yep. I see that list_for_each_entry_rcu(child, &parent->children, sibling)
-can work safely under RCU.
-
->
-> In exchange, we avoid the locking issues and use ~30x less memory.
->
-> (Of course I am yet to solve rmap lock stabilisation so got to try and do=
- that
-> first :)
->
-> >
-> > Also, what happens if C performs a remap on the inherited VMA
-> > in the two cases described above?
->
-> Remaps are tracked within cow_context's via an extended maple tree (curre=
-ntly
-> maple tree -> dynamic arrays) that also handles multiple entries and over=
-laps.
-
-If we have multiple remaps for multiple VMAs within one mm_struct,
-will we end up traversing all the dynamic arrays for any folio that
-might be located in a VMA that has been remapped?
-
->
-> >
-> > >
-> > > I have got the implementation working to the point where it tracks th=
-e exact
-> > > same VMAs as the anon_vma implementation, and it seems a lot of it ca=
-n be done
-> > > under RCU.
-> > >
-> > > It avoids the need to maintain expensive mappings at a VMA level, tho=
-ugh it
-> > > incurs a cost in tracking remaps, and MAP_PRIVATE files are very much=
- a TODO
-> > > (they maintain a file vma->vm_pgoff, even when CoW'd, so the remap tr=
-acking is
-> > > pretty sub-optimal).
-> > >
-> > > I am investigating whether I can change how MAP_PRIVATE file-backed m=
-appings
-> > > work to avoid this issue, and will be developing tests to see how loc=
-k
-> > > scalability, throughput and memory usage compare to the anon_vma appr=
-oach under
-> > > different workloads.
-> > >
-> > > This experiment may or may not work out, either way it will be intere=
-sting to
-> > > discuss it.
-> > >
-> > > By the time LSF/MM comes around I may even have already decided on a =
-different
-> > > approach but that's what makes things interesting :)
-> > >
-> > > [0]:https://lore.kernel.org/all/cover.1767711638.git.lorenzo.stoakes@=
-oracle.com/
-> > > [1]:https://lore.kernel.org/all/202602061747.855f053f-lkp@intel.com/
-> > > [2]:https://lore.kernel.org/linux-mm/CAGsJ_4x=3DYsQR=3DnNcHA-q=3D0vg0=
-b7ok=3D81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com/
-> > >
-
-Thanks
-Barry
+> and *then* add in your mentions of how the usage/fields differ for
+> guest_memfd/KVM_GUEST_MEMFD_CAP_MEMORY_ATTRIBUTES case vs. KVM ioctls.
+> 
+> This avoids needing to issue 2 checks for the guest_memfd variant vs. 1
+> for KVM, but more importantly avoids subtle differences in how these
+> similarly-named capabilities are used/documented that might cause
+> unecessary confusion.
 
