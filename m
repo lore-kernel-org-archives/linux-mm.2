@@ -4,136 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1696D35157
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5837D35157
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:10:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39A26B0005; Wed,  1 Apr 2026 04:06:53 -0400 (EDT)
+	id 33F1F6B0089; Wed,  1 Apr 2026 04:10:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC3776B0088; Wed,  1 Apr 2026 04:06:53 -0400 (EDT)
+	id 316C66B008A; Wed,  1 Apr 2026 04:10:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8ABD6B0089; Wed,  1 Apr 2026 04:06:53 -0400 (EDT)
+	id 22C646B0092; Wed,  1 Apr 2026 04:10:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 933B56B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:06:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F41318C0F2
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:06:52 +0000 (UTC)
-X-FDA: 84609255906.29.0C6D548
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 25A95140007
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:06:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F7266B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:10:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7569B8C296
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:10:50 +0000 (UTC)
+X-FDA: 84609265860.07.C8F8D4C
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7343A140006
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:10:48 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="YfDS+/IV";
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="YfDS+/IV";
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775030811; a=rsa-sha256;
-	cv=pass;
-	b=kg7wANHBa7+sZZzMfNgq9HWKCpImuzDoKNLcNFvynu/7TxZseHbId40FQeK2W6JlIbgv5G
-	G1jwbmI+mLtYZJo7HCAU2G7jqfTqktVxFjCkzlthCvbI9IOIXViO8ZxqFvVzUtbFXK/huG
-	kdVMeKPp0dQyqSkWJEOGUZwm1ueFkF4=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775030811;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sMLGq1lB;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775031048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PyYJugKs3rrQS2rBLgo7U7gDQ88tBzfe12MYvvk/lY=;
-	b=O4rAmHrzqW7EFd2+Q1jvXvcnaeBCpVH6yVfPSdthcoW9BOvqbjKNLirBn3QLOEDoUjnChg
-	7h2rg5t3ZJYoyHrtRlW+XVQHLmLWNDAZYjMvthPyoQvo5tUfM9YIbj0ooMsX2pOZwYhpXb
-	MeKqU6xGOb8dk9d68gI/eObrAx6qKZU=
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-41576c5c01cso4204365fac.3
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 01:06:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775030810; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jIkuQL690G4UB/D+lWQHy45+SstVm86NwaA8xOsu98AzZJh+3GjobWsgsibG5uVTPQ
-         ZrallMOJx8YzwzqxErzVl29vmk8HS7bNDGoyhFvUvWUJYxX1llS9jYz5tN8YEtcciRrR
-         x9xBlVIBWse6Nusu/l820py5IBEFMNAoBTJPkqJ7qubQHhcvgYlDG4QJYd88/k+SIypt
-         Pw4P+UTJwPBns9DCmBo2tugBnZRkJYgOE4TVVEXkACRj/3kR/L3Jmlk5kmqGc5Y69Dh2
-         6Rq/6VPePkhjXCEKIPZiFBwHcF+IDqJTz5PE8jMUT74wVHQKk/BDDc+DHReMVgB6FGY/
-         VE2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+PyYJugKs3rrQS2rBLgo7U7gDQ88tBzfe12MYvvk/lY=;
-        fh=SE2g8xK1QAVNV5r43wM6LsI82r9ymCW2zR11ShlrZqI=;
-        b=VAfOhmvbmdjL9pspwSEvnw1hnBEYGKcSS8seHYDma7YsfxkAyQ+Be1DvciYGfpwv4O
-         t9T3L5zUTwtVrNtI6ppdiXZKyStBnOBddVpH4YIBRSWjL19y6Ok+OcbZN3BUazJrnd7r
-         CCpadE5K5Jg4sb0+XEZPY5fDJ+Mt4bQT+E31HscO6mlMViY9EKPFqTO+QRObIIFP+uya
-         61l5JWPPZaelhWr26lOcMSEf9GOMBRvAeoLSLwEbh/F2utXmVnxTLlibim7SH4Z7HvNa
-         5B74MFIiP166NjeXz1KNYFurFc5Gp0uTB3Gz1j2miKmA753/yE7r6VakLb3Z66KNEcwl
-         4Orw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775030810; x=1775635610; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+PyYJugKs3rrQS2rBLgo7U7gDQ88tBzfe12MYvvk/lY=;
-        b=YfDS+/IV7Zb+1ixWSuK2MLD8STknOYqBzEIbfcm+8CBNTkjK7DS/PqXDBL0hrkaldb
-         4BdMgZnLdmrYQhfF8gtYUqsQxHbhyCSVitYDHUEjQcWHHetWPKt3B+dL3xgrRR5CLLUx
-         qZ0hvSkMLUpi423yniZWRhCJUsDi5g8TaAnxSWGcjAhp9vreBdj3HMSKIlPs86+KP/Gu
-         0jaYEkKHipFYmw8HXrTvxJTUFZtQ8BbR9QpX9oGYAfm+gq6LePxZ4cIUHc4Zp9TwpAus
-         gXB4mnPpoT5z6l4zQ5jfsdk1VUk2UxlTUQoK75bQ8wwiKWVvDLzQw874xUmxLN2Tis9A
-         exow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775030810; x=1775635610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+PyYJugKs3rrQS2rBLgo7U7gDQ88tBzfe12MYvvk/lY=;
-        b=hmwqucw1gQ7SNEROTl4BiwbrMChHusRjfqn5ywksVvrDxs2M0YNQi1uhCnfWpsCQuY
-         83GYuESZwq+jDexOZty4gbRqRT96RIQFBrx/ExxknLhUZiZY4lR7rMFeDC4J8C5sa8gI
-         IhMl6HRRCWCyVZpoyWFQK9gRmlcmfO5OIK27UGIHPzdb1B792zmot73Wyd7sbeWhgeO1
-         m39f4Mf7QXeHaYyf7ef9ytJOsCotKGRL6egQuvnZapfzSnRp7ZLugW8HbkldmJajz/PY
-         pbyqfItGyVGF5WDfT7+B2x8BANmpWvs/G9ACDGB8Ts03tDlgrdHjbtBNRUJeqQRtZOwG
-         QWwA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPL8pDm31EcuePMUXuoDmhPbrap2RYDCqv88w1HRLMTwDrT01PXgipMb5QGg/uJwd0efECdgSZoA==@kvack.org
-X-Gm-Message-State: AOJu0YyTWUb1ygcuja3NZnaJamYua+PcvNxJbNlJtgk3bYUIDHsumkXG
-	pRxkjV1Y7jknRF1RLbLa202Uf8Dxs1Z8RD7D4NFbMPVgrWD1ve7q5QSJ0xEW9g4r1hypwgDHvce
-	F68nUu8ENTn/vmgnWtIw7Jw4FTC8kTgA=
-X-Gm-Gg: ATEYQzznqECiBTbTHp7nCpFV6NFeNXdU5T5anjQ5Aa2Y8aygkRT6HR8rcKnsDMCAuHk
-	iaa3Z9garTVPsYY8dzQubyt9ura4kVREL1vr+2vE8MOSqwqgYTLjG3q9J9eJJWFD7AS6yGT9B2A
-	y5s6C5PTp7IUeTezjJcaHtglMsM/lWcKQuT3MljVtDtwnRi1K9E50nQybwrc/tfYf8nxf1tn+pa
-	gPvpEKDOtLl+40uOsNyMyE4swXRlh9p/57SiyzB4cpuuOSUZ6r37WkUp22zrXoBgEgL+mWOi7Zq
-	MGwQJZ09jqzxW1e0XmN0SBoXvg1mfTMbDfA2XX/vG3TxYOgV
-X-Received: by 2002:a05:6870:b3ce:b0:3d4:6fba:31ff with SMTP id
- 586e51a60fabf-422cfc2c2f3mr1745082fac.1.1775030810009; Wed, 01 Apr 2026
- 01:06:50 -0700 (PDT)
+	bh=+MX+RoBiY5GwiGP2B5rBEJoBhjbFGz1wfvNFGjyXQdU=;
+	b=Hto+aplsme95EVXrDITty5lIixupUiW+pF1JOYuqN2mHL64sh5FQ/F5YhfXAaZX2cY9r6w
+	nVY4ObFsoGnzrxFNZPcf6siyvH9GwfJnynSvhenA9EQ16U8fqUonY5yD+zzDlAmMq+YcV9
+	4nB598zehbh4tB1ccyTmdohrl+KdBp4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775031048; a=rsa-sha256;
+	cv=none;
+	b=ungvcgH5wvRs/kSW2/YPWtfKpIuj0GNmd8wlkYCqS3zCXmVno7nM02vigiCm0F5W48JP2Z
+	zzYmF2F5aouL707LDY+wtuLAr2O8DDVvZ6TEoj0YAeanNfX/fk8VHmHtYd1lQEve/Z+wTn
+	Zkb2YZv5NDWJ6Ro/B9Clp7TAybF40Lg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sMLGq1lB;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775031045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+MX+RoBiY5GwiGP2B5rBEJoBhjbFGz1wfvNFGjyXQdU=;
+	b=sMLGq1lBOjKwNfxhwTIsTvcB2Yx/li/jpYvuuC6BF76iXh1NTBHs3zvmAYdxQQmznyGBLt
+	40k+kUzCzRxIg1JvfDNh73zhOK2DMY/jarvGN3WLZ5whjUHuYSasY89rIKrtZ9PKZzAbIg
+	+kqut5ByqxmuDP4Ddnyw5f3CdH+3+ZQ=
+From: Lance Yang <lance.yang@linux.dev>
+To: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
+	usama.arif@linux.dev
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	syzkaller-bugs@googlegroups.com,
+	ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] WARNING in deferred_split_folio
+Date: Wed,  1 Apr 2026 16:10:25 +0800
+Message-Id: <20260401081025.68951-1-lance.yang@linux.dev>
+In-Reply-To: <69ccb65b.050a0220.183828.003a.GAE@google.com>
+References: <69ccb65b.050a0220.183828.003a.GAE@google.com>
 MIME-Version: 1.0
-References: <20260331134158.622084-1-devnexen@gmail.com> <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
-In-Reply-To: <aczOCqrCx7Xd5HIF@kernel.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Wed, 1 Apr 2026 09:06:36 +0100
-X-Gm-Features: AQROBzAx55RdIwx7SOU_j9d2ER3AR4Ymgnzi50Xv3jf7c4PW3gDEB7WsCX7nXBU
-Message-ID: <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 25A95140007
-X-Stat-Signature: 6optfgiwnxcuwntu1ytiko8gre7igpeh
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bhrdtfmog9w181zauhrp4k3wbpir5qwt
+X-Rspamd-Queue-Id: 7343A140006
 X-Rspam-User: 
-X-HE-Tag: 1775030810-879077
-X-HE-Meta: U2FsdGVkX19MSFB1+q7aQzyQoNcLnpxnCY/e39dxeZoickySdDXzfeQFfqp4RXfbDKh5+X/R+W3aKkn3Oph5Ntez4c/9PKU+C1XxygO6He2wBEpemI3GBZNDnruP7bqKizX/SsaOO22ZACJi63FrR/Cf9Y8HGmWrNVC7/iJn3ND1YwclwVSZAeU7K10emLiiqhTXM5wzbF9VjYiyeWu7p37Oom+EuBN4RD8R2wfT/Gs26k0cJmGWV3ZGkGmwmRumsf+Vs/l6FCI9adhV3TXg/mhYq1zv1wHQfCuBHRcgNsp+ffaQPJpdwYUglA00w6AHADEAGXIDWBccuWoJL4VRsIzeuBV4lde5EUyouhxVTeJLbd0fjeb8v6jTriS5aHlJfsQ05GUJCu3PTHP/JS/Veq8l+whX8A4E5quYzIxM8Kqf8XdeDC3IJaQNVdT4eBsPa5BMHddjP11NeT+pCGp0eSJCasNHamGnNnMQqqKV0koUecxWyoMk2vkzP/pdN5SLhVyO24S2KdX2uIVyqFYogqS1/5lDBso48v1SFH1tr/G+4VGAEfN6LwWwteQ3Yb4Il0SLVzXx59vYhz5/P8zBCvBWFXwpc7u/EjeTsd7owHW+bBHcTQaRsf4x/eGKtpRYvjuNxDQBZqc4WbP3Z2J7qEbB13U20XP/8Kb58F+S4ggjyB5Zmy6DEhqd8V+l7JJuTPZJdtSgAbwn7vnEzY7xiYlv5esJijJVYOSvbx7lM2y7TNmQfy5YY6Z1MH+RR8rH0Ay8eLJ7DtKP1RM3Tam0nEfNvRpkEepbmK92iA/K1SrMn8AyOKM9qx+yzANAiPD/+c+Ol2AAqvl17sDctG2rKpVQ/IsoJaFGmcaoCJuhkKsB/quqxk2gvyIyzOSKc4KYOlwglchA/pfoMPm0n9lrffXjcBgheja7Eh2cjJS7H/pGNBkBVT3EzJsC6pcofpAKZdXUcSot2NPXfHkFDFl
- QNjeY8p4
- bGoSiQxe8HVHkuK8szlpiHuM5zHO3I+4fB5MmcM0TGOaf24G1Y+a16v30YAxLEWJ7wRR4LdwGLxuvbzRvonVbT4WsheCvblysmFsRVi1mB0oQx38=
+X-HE-Tag: 1775031048-485112
+X-HE-Meta: U2FsdGVkX19hLBYwQSQsoyMmmQORDG7CS0ng2QmgElWbj/9rNuA1RWuyvzIIwgUW5pVA1j6QvrLXD71vvMCNMKoYoLilF0DoKb4mPAX54w/eqhwW+oka2L8jMLv3vT2gg6Gyd5JNq7Xs9wAke5kPKDJOioHuALQU9N9r9EX1U8Ihkx3TeT8vtuJRwVBoD2/JooEsiZneJK2mZ9gRwklWLfxy4hENkvhHOsHwAAklBc/nrQL8KmkaEfEO+LIDubjlYkZX5RM6vI+WC2LKlEi1PixWmsT/3uGhZFHIoiO1pkXSvPCnmWBxu6MjoFLpQoRNIf4BSb5LvT8TDQM5j5BQNP9LUg2O0x3HIBzNh1fZHhemg+HmUbTOgAehZ84lVvO9p8MqaeMwQBzJNr0OwnlMCFOA41TjptVB/lphUdFP6tmiCdtEVpiR33RfaR84QwaxOqh4saBI9CtSJT1j6oUlHDhYhBFejpPwVWbPo3gpoPEWPfxFmld9pdosfzX2lY4zlqvyxk+Nt1ahbV6UCK/hAbe+VQELkbUwhC3UedW8pIHJQMri6w1CFZlHzWFR/9pgoYBfzmVp//bRSld9umLLZalDsKWSxWQml3fUQ2/uqFtgw6KdZdmArJnW8IlDC9T41JF8tI+esI88LS0hYXgE6+pC5hBw95lIxWTcBX31BJWJTEoox70BkckeJsgA2rM6dY5BS8S/JAhzNoT55uIx3Do1ecTe3BIYlIX7gD2WdifCSguyTsOqoSvgsivstkWuIhsbnV+wRCx3lPShzDqrcAIYG7nB6ONGzsxMg8panqPmzLBOMswq7x6TSAObdbN05uhRR/TxOqMSB0H1d/QvTcMwyQ0Tn+JLzM++2qE/JgIQNfTGzcmrrezne2rws4L5Vxc3e+rqLux3A85mnasYnL+7kZIv4JE5N2EQtk9LBEZYiKFxoruniX6r1bsYh+W2aTp9yHvlpTTBpd+2JRj
+ U+/oRl8s
+ kOU17mocD/yc57B9c0jNaFNJQDI4C+E0dq6DmREnWtRSQmeIHZsyFQobExib1xERQfA9rBYS2pGzq414gFyi6FxaESz45KrHQQ0UMQ7IWAwKub2tO8gNNC9xenKgeBFP0Kvq5jmRqdyIgXqj5Dscg27Ttqfb0exCU4BDEAXfob+3WdqyoKGxwzYcofZBzSc7qdTm7VRnO43/vXw+5WdXmKH2Jrz6W8lw+OfTba8RzlV1VPynrjsAeVQ7LWepsS7V1C2J+9NXSTA1PZOtVazhdvO/qTcoJe0UsW/UP94/KlYTL06dDloQWkLkpOe4shJoJWwGbCwu1ZuDt45DA1bmVPx4Rf23d9O8FBNNjcLoXWiulCvDBhYyCE3k7dkQZqoSXrLy/TOtU7Vf6uOAqtikGyYA7oDFDI+b4FopuH9xn7k3kVKmSWu9AXr0toYrdwP7Iok6gbQ+6ZyxuIW8S5jaXrQokDfcAoZ90iprb3uq8M91ZIRhnEZ17Hy3Ics06RainaFoITHLHtkeFSyBPmgKdItu1Hh1Eapd5hlY3DGRDU4jXMj4/sNW0XWpGelxN2aCrhSZSuBrMpmbMvDAan8eD7F7o7wu5hZzAo+I6HbQYVD3fBBFUD6GFQiQ10D2jrGuFup7gtimJIQ5ffUOmfNi7/IrM9ewkElmRB8xnQndlszD3BHnHbmIkmhsrwEb5arJZ3vWeqF7uvCxFHi919q5MW1yMhmoq+qJ+FtSMx/Q21o/epEAe5OEYLbnyroXtW0qloCuj/KggTIR5BEvhbLadeXF2ufhuqkmDsxV2oN4yZAjeuTdsVD7By6E49nef63ggpEXYiGCi9fdq3NWFZ/A4UwAWMVs/ElH3xj1P9Yn27eMY1TjGphH/C/RixfQRdt3N1gVUlQYy9rCNx3I4dtyszaxty5YBGTPL4LUBX71yhkfUPl323p8ax9BN1xoLexjRP7/rWab4GD6vmaGLR90iIh7Xyy/V
+ RrebFdP4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,64 +102,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
 
-  On Tue, Apr 01, 2026 at 08:49:00AM +0300, Mike Rapoport wrote:
-  > What does "folio allocated from the original VMA's backing store" exact=
-ly
-  > mean? Why is this a problem?
++Cc Usama
 
-  Fair point, the commit message was vague here. What I meant is:
+On Tue, Mar 31, 2026 at 11:08:27PM -0700, syzbot wrote:
+>Hello,
+>
+>syzbot found the following issue on:
+>
+>HEAD commit:    cf7c3c02fdd0 Add linux-next specific files for 20260330
+>git tree:       linux-next
+>console output: https://syzkaller.appspot.com/x/log.txt?x=154ee46a580000
+>kernel config:  https://syzkaller.appspot.com/x/.config?x=3944d875fa9bfb67
+>dashboard link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
+>compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+>syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c846ba580000
+>
+>Downloadable assets:
+>disk image: https://storage.googleapis.com/syzbot-assets/053d3b49a360/disk-cf7c3c02.raw.xz
+>vmlinux: https://storage.googleapis.com/syzbot-assets/faabb37d41d0/vmlinux-cf7c3c02.xz
+>kernel image: https://storage.googleapis.com/syzbot-assets/8d47fe92aaa8/bzImage-cf7c3c02.xz
+>
+>IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+>
+> free_pages_and_swap_cache+0x2b9/0x490 mm/swap_state.c:401
+> __tlb_batch_free_encoded_pages mm/mmu_gather.c:138 [inline]
+> tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
+> tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
+> tlb_flush_mmu+0x6d3/0xa30 mm/mmu_gather.c:424
+> tlb_finish_mmu+0xf9/0x230 mm/mmu_gather.c:549
+> exit_mmap+0x498/0x9e0 mm/mmap.c:1313
+> __mmput+0x118/0x430 kernel/fork.c:1177
+> exit_mm+0x18e/0x250 kernel/exit.c:581
+> do_exit+0x6a2/0x22c0 kernel/exit.c:962
+> do_group_exit+0x21b/0x2d0 kernel/exit.c:1116
+> __do_sys_exit_group kernel/exit.c:1127 [inline]
+> __se_sys_exit_group kernel/exit.c:1125 [inline]
+> __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1125
+> x64_sys_call+0x221a/0x2240 arch/x86/include/generated/asm/syscalls_64.h:232
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>------------[ cut here ]------------
+>1
+>WARNING: mm/huge_memory.c:4371 at deferred_split_folio+0x974/0xaa0 mm/huge_memory.c:4371, CPU#1: syz.3.1110/10500
+>Modules linked in:
+>CPU: 1 UID: 0 PID: 10500 Comm: syz.3.1110 Not tainted syzkaller #0 PREEMPT(full) 
+>Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+>RIP: 0010:deferred_split_folio+0x974/0xaa0 mm/huge_memory.c:4371
+>Code: 31 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 c2 67 8d 09 cc e8 8c 73 93 ff 48 89 df 48 c7 c6 20 5b fc 8b e8 dd 2b f5 fe 90 <0f> 0b 90 e9 d4 fe ff ff e8 9f 7a 8a 09 e8 6a 73 93 ff 48 89 df 48
+>RSP: 0018:ffffc900047ef540 EFLAGS: 00010046
+>RAX: 1c05fb65cfaab100 RBX: ffffea0001840000 RCX: 0000000080000001
+>RDX: 0000000000000002 RSI: ffffffff8e4da1c7 RDI: ffff88807d6f9e80
+>RBP: ffffc900047ef610 R08: ffff8880b87247d3 R09: 1ffff110170e48fa
+>R10: dffffc0000000000 R11: ffffed10170e48fb R12: ffffea0001840040
+>R13: 0000000000000000 R14: 0000000000010000 R15: 1ffff920008fdeb0
+>FS:  00007f32e32a76c0(0000) GS:ffff8881250e8000(0000) knlGS:0000000000000000
+>CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>CR2: 00007f5825757930 CR3: 0000000034ad8000 CR4: 00000000003526f0
+>Call Trace:
+> <TASK>
+> migrate_folio_move mm/migrate.c:1411 [inline]
 
-  mfill_atomic_pte_copy() captures ops =3D vma_uffd_ops(state->vma) and
-  passes it to __mfill_atomic_pte(). There, ops->alloc_folio() allocates
-  a folio for the original VMA's inode (e.g. a shmem folio for that
-  specific shmem inode). Then mfill_copy_folio_retry() drops all locks for
-  the copy_from_user retry. After mfill_get_vma() re-acquires them,
-  state->vma may now point to a replacement VMA, but ops is still the
-  stale pointer from before the drop.
+Looks like a race introduced by commit[1] ("mm: migrate: requeue
+destination folio on deferred split queue").
 
-  The code then calls ops->filemap_add(folio, state->vma, ...) which
-  would insert a folio allocated for the old inode into the new VMA's
-  backing store. If the VMA changed type entirely (e.g. shmem -> anon),
-  ops->filemap_add could be operating on a VMA that has no business
-  receiving this folio.
+Between folio migration (mbind) and rmap removal (exit_mmap), I guess :)
 
-  > First, this a pre-existing and TBH quite theoretical bug and it was the=
-re
-  > since the very beginning, so it should not be added as a fixup for the
-  > uffd+guestmemfd series.
+migrate_folio_move() snapshots src_partially_mapped from src before
+migration:
 
-  You're right. The race window (VMA replacement during the lock-dropped
-  copy retry) existed in the original mcopy_atomic_pte() code long before
-  the vm_uffd_ops refactoring. The Fixes tag pointing at 56a3706fd7f9 was
-  wrong. I'll drop it and resend as a standalone fix against the original
-  retry logic.
+	if (folio_order(src) > 1 &&
+	    !data_race(list_empty(&src->_deferred_list))) {
+		src_deferred_split = true;
+		src_partially_mapped = folio_test_partially_mapped(src);
+	}
 
-  > Second, I have reservations about vma_snapshot implementation. What
-  > invariant does it exactly enforce?
+Then move_to_new_folio() eventually unqueues src in
+__folio_migrate_mapping():
 
-  The invariant I was going for: "the folio we allocated is still
-  compatible with the VMA we're about to install it into." Since
-  alloc_folio() allocates from the VMA's backing file (inode), checking
-  that vm_file is still the same after re-acquiring locks ensures the
-  folio matches the inode. The vm_flags comparison was a secondary guard
-  against permission/type changes during the window.
+	folio_unqueue_deferred_split(src);
 
-  That said, I can see the vma_snapshot abstraction is doing too much for
-  what's really needed. Would a simpler approach work better =E2=80=94 just
-  saving vm_file (with get_file/fput) before the drop and comparing it
-  directly after re-acquiring? That makes the invariant explicit: "same
-  backing file means the folio is valid for this VMA."
+After that, migration restores mappings to dst:
 
-  Happy to rework along those lines, or if you have a different approach
-  in mind I'm open to suggestions.
+	if (old_page_state & PAGE_WAS_MAPPED)
+		remove_migration_ptes(src, dst, 0);
 
-  > > I've fumbled the ball on your [2/2] unlikely() fix ;).  Please resend=
- that
-  > > after -rc1.
-  >
-  > This one should go the same route IMO.
+At that point, dst is already visible again. A concurrent unmap path
+from another sharer can then remove some of those mappings and reach
+deferred_split_folio(dst, true), which sets PG_partially_mapped on
+dst.
 
-  Agreed, I'll resend both after -rc1.
+Migration then resumes and does:
+
+	if (src_deferred_split)
+		deferred_split_folio(dst, src_partially_mapped);
+
+If the earlier snapshot from src was false, this becomes
+deferred_split_folio(dst, false), but dst may already have been marked
+partially mapped by the concurrent rmap-removal path, so the WARN in
+deferred_split_folio() fires:
+
+	if (partially_mapped) {
+		...
+	} else {
+		/* partially mapped folios cannot become non-partially mapped */
+		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
+	}
+
+[1] https://lore.kernel.org/all/20260312104723.1351321-1-usama.arif@linux.dev/
+
+> migrate_folios_move mm/migrate.c:1740 [inline]
+> migrate_pages_batch+0x319f/0x4c40 mm/migrate.c:1996
+> migrate_pages_sync mm/migrate.c:2026 [inline]
+> migrate_pages+0x1c74/0x2a10 mm/migrate.c:2135
+> do_mbind mm/mempolicy.c:1614 [inline]
+> kernel_mbind mm/mempolicy.c:1757 [inline]
+> __do_sys_mbind mm/mempolicy.c:1831 [inline]
+> __se_sys_mbind+0xe89/0x10f0 mm/mempolicy.c:1827
+> do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>RIP: 0033:0x7f32e239c819
+>Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+>RSP: 002b:00007f32e32a7028 EFLAGS: 00000246 ORIG_RAX: 00000000000000ed
+>RAX: ffffffffffffffda RBX: 00007f32e2616090 RCX: 00007f32e239c819
+>RDX: 0000000000000000 RSI: 0000000000800000 RDI: 0000200000001000
+>RBP: 00007f32e2432c91 R08: 0000000000000000 R09: 0000000000000002
+>R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+>R13: 00007f32e2616128 R14: 00007f32e2616090 R15: 00007ffe30c61cc8
+> </TASK>
+>
+>
+>---
+>This report is generated by a bot. It may contain errors.
+>See https://goo.gl/tpsmEJ for more information about syzbot.
+>syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+>syzbot will keep track of this issue. See:
+>https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+>If the report is already addressed, let syzbot know by replying with:
+>#syz fix: exact-commit-title
+>
+>If you want syzbot to run the reproducer, reply with:
+>#syz test: git://repo/address.git branch-or-commit-hash
+>If you attach or paste a git patch, syzbot will apply it before testing.
+>
+>If you want to overwrite report's subsystems, reply with:
+>#syz set subsystems: new-subsystem
+>(See the list of subsystem names on the web dashboard)
+>
+>If the report is a duplicate of another one, reply with:
+>#syz dup: exact-subject-of-another-report
+>
+>If you want to undo deduplication, reply with:
+>#syz undup
+>
+>
 
