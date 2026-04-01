@@ -4,95 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE8C10F92EC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A48BD10F9318
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 02:47:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91BEA6B008A; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
+	id D404F6B0089; Tue, 31 Mar 2026 22:47:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C9606B0092; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
+	id D17726B008A; Tue, 31 Mar 2026 22:47:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DF1A6B0095; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
+	id C53F56B0092; Tue, 31 Mar 2026 22:47:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA136B008A
-	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:42:25 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 018D3140562
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:42:24 +0000 (UTC)
-X-FDA: 84608438250.03.0878372
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3946340006
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:42:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AWD8gD2y;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B85306B0089
+	for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:47:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40BF61605D6
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:47:51 +0000 (UTC)
+X-FDA: 84608451942.17.8D6E304
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5851C160003
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:47:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CFaEf11v;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775011343;
+	s=arc-20220608; t=1775011669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OYzgJhPBELX+5svIaMHyyrG4VC9DWWPsk64e6cKGVmQ=;
-	b=3Rf1yCIRAftxM3OYz+X3i3aONSlJrNMUH6Yu0PshTKmZfobtnlptrVuaL0QOa38SKxd9WU
-	toS6wXXDspaaEGHNbUaqrMVj2q8Xggc/jL2mFbhYPSDWv2t23GssZ3Ji0DepqZyBHq6RR3
-	O/+ZxvjyZernxN+Skr6my42mykGPB+U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011343; a=rsa-sha256;
-	cv=none;
-	b=Ffjn6MdumstVjQQJ4MdbBXH8SU93wTfwjeGxGwLiWKSg0LqjE7YLumupYDw2srbC+gXp9I
-	nc8JTwaxgMvKokIi5jtgnRM1+fw7Bm5omMRZ+juM2t5HspZw9nD92e013AMHJP/JhJpOxa
-	tjE+AAagIPyp4Hjzwjzss9zjabalsK0=
+	bh=CukHr5iu9h+eVEsN1hruv3LZlxiR3whhorbvL1gsP6g=;
+	b=U7RYYYJKEmiKzZFiGKnWWMaabx6rVECvMKsMSgF8lgE1+KUQmT42r/1/kW9ydWYue5i8Xv
+	kwNQiAp47lUSCtLwAIm8cuTwL99gzo9sVoc6FqKOThlGRYbO6RP+B972M0LCiTb/X8ibXK
+	27pRjlmRBbez2DYgiHRgqHyDkmkaMHQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AWD8gD2y;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CFaEf11v;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775011669; a=rsa-sha256;
+	cv=none;
+	b=iVAol0jy2KlakpOiN3Ly+jYrHtp/9Db+JrUZIWfBRmxscP0hbC5b2lIQPFhjn/zMzs/EBb
+	K/4ZL2FJP6ztBasxgOCe+Pz6/x2FMUDLbRcPkD1cUXRjJEh0CL/2riDbNMKSiofZohDug5
+	HdZz/YnceELnPgsmMZUAC/1svzotDFA=
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775011341;
+	t=1775011667;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OYzgJhPBELX+5svIaMHyyrG4VC9DWWPsk64e6cKGVmQ=;
-	b=AWD8gD2yYWhtLaaaFtHHTzd1ZrylQ42YS7/HwqG4IQZqmc2IQngtGJ4Umql4wmBnVv8uGq
-	FoOU9skiW9PmptHxqrkm7Xn6snIs6UVKy+AEph/5JmLJS6wPse+LzmOQINMandy2PiOlwv
-	4cRE/oLBStgnXB9LaUJrkHWQ6y1ffDM=
+	bh=CukHr5iu9h+eVEsN1hruv3LZlxiR3whhorbvL1gsP6g=;
+	b=CFaEf11vAIM+Q1ildXdtLdEWJOJcvrAttxpq+jrrWS7fCZTZVm3n7d4nyovGUW/KG9zmIc
+	cmpp0sRwnMqwtvSPgh3+hHJ8ohCbJ+QU8Om0pzjVbwcjEbUmLIqP6/QNVyUc/ItBP6a49d
+	1sJDU1kKbyiGgTXfTQUKsKdMDKGV0m0=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
- failure path
+Subject: Re: [PATCH] mm/sparse: fix BUILD_BUG_ON check for section map
+ alignment
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <17246161-f314-45da-933a-770231ef2a49@kernel.org>
-Date: Wed, 1 Apr 2026 10:41:42 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+In-Reply-To: <29442561-9426-4635-9b7c-cdd138076127@kernel.org>
+Date: Wed, 1 Apr 2026 10:47:10 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <songmuchun@bytedance.com>,
  Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>,
+ Petr Tesarik <ptesarik@suse.com>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2183487D-0CED-4BEF-84D7-4439F3386584@linux.dev>
-References: <20260331113724.2080833-1-songmuchun@bytedance.com>
- <17246161-f314-45da-933a-770231ef2a49@kernel.org>
+Message-Id: <A75367AE-4459-4C17-9847-E1963849C3BA@linux.dev>
+References: <20260331113023.2068075-1-songmuchun@bytedance.com>
+ <20260331125529.de4deb7b46239fb13e4be517@linux-foundation.org>
+ <29442561-9426-4635-9b7c-cdd138076127@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3946340006
-X-Stat-Signature: uahm8b49h33618uss951f9b1byptxk76
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775011343-81382
-X-HE-Meta: U2FsdGVkX1/HpBHtpjAhgHME2dAkVgZESpDJzBEErWFMBJ2tN8lDv4iCESARKC3Sr4ztxMP6S8n7FRaG4ioQyfyWCQVjsi7+EmUlNF92L/jMCslkm72FTaQsceZPyqcPYqAKUKQ2rK027mV0GFu7EU3IhvjOxmaroTkQrGX8QA7UkOS0bfUDCqqNqYZ8fTHYAf1MrGmXeC2pEeHVmEShK8bmDT0zLPujFNt1X/Km+yKdhDXZgplfcQLKxAztn1tFcPpsCLGg9/1d9PUjKHwY89n6R2ylzkQ49sDglc44zvXMT78Amh+Hb8f8VmzP8cKPlFPP2EsX2KrYpbPS1Z6kfqX8xQnEeAV4o8ku3B8L4CIARYI5/P5aihyaRDOXRWKMqsk2JVVifU344D6SFh4yVeGf/sLsOk0MlltkhdZQmmLW0H236Y8zghh51nl9tu1+fsrClzrA/u5DcGYbnxxWkoTa5FR6dlDq9d++ibMzxz0ySFuxkH87rOWKx1fJ6Sl2Q65w75+H5r2Al/xGT9rAt9z9nYj2Xkr190vzsHAqCL+H87TRAuJUizoc9Ha3uDjHtizg7nIuohrNdh6ub3hRJDN+LZpxqON1dcDKYVcRCKE87oQSwGGJwygJmyFlOjnjRiqKke9/sJ89cMInmGq7exevqNI7r+I9gKVMamT3FOLTGRv0fRwBXC+9OZN46N6p3C4rsTw1Fqt1ZFzJx2lWkt1CCAYMkokpQEpF6Y24keaBesFmZbW5ocu1/EuATMfBIF+MtfZCwhxBVrwFgLnBgnh9hA7Bcr0kEvGRLVLmAELOVDaIp0oN4GntIKiGiQvz8AEnJy2+8Mlxbms4tZPw/W7da1OgZkU5kpObK7y8f72V5o+UGPgma7AfmHGpqcqyk7vEfh/zb7gwbrL1m18WHPxrZjX9yrBhXI2gzATuddxajhZUDHQJeBcMXLOFz6Kc9Q5n1SIJn4YtI2UnaEl
- VayqAzZZ
- ZSTWw5+BVkrdZtwniwJP2fJHFUIS2Uzd7z1ot8jZKS+f81uQePzxLbdtc2kFSnApAIut8VS7YyXVLxJm3PSZkfzTXvIGm6uvCytvZASuM9sArZFBnpn46+9bcLKdINWUFq9YQxay2p6VrF4ukiEOuAmYEHkLQJBO5CDTKMSN2rbE1pI1coosfQ1LFh/uHY03IMkcj7BKpN2DS7B/tEqGyFunkdzPhCU4EEmmzVNsjzRjj4DmL/LDnkjrcMhtECnyFvvXKmWFkXeDXDQpCYhxhr6VToscqkqCHe0HKRiOp8pXxgQtQyeI7oyX2zGG4LIYuh+EBbyBXP6xACPI=
+X-Rspamd-Queue-Id: 5851C160003
+X-Stat-Signature: s1j6oryj545rmxjq96ahpksb5srbdxje
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775011669-754747
+X-HE-Meta: U2FsdGVkX1/+FNWnaoeiw17mxhyVLJpzbJHhQvJXFJjxM5NQ7yCDsiP2NKHMViIQ/jIIpv6ohThqzFo4GnNbCUpg+ZtXnSxUb+mGlbON1XS2/Tcyamqrs6kgQOV36+5hHuUgBEijPj774WTqSwmyEF1aR0A4Z5upZ1OWkINGUSCdPraKhuPwrHyAB9jwBhldt8aEt4rH6XhJc0uMeMyxOjb20RiSGs/8KJnxvRGJyGTU+QHtacDdU3uyXNV77AW2KCsR7rppnNtbgV09qfCRMGC20+QQoh8Oc/ObZltoLmS/cEuY59Ab8FAXhNOEhS7gDRRgQQgUrIkj3BQR0wQfKwuFM/QrKbIpnMhaPzIDo/ozXeTEyqUDvjUwKyE5KnfhkFLUoct8AtKTj9DPSxtynrF1GTeNco5J6xrzAy1++9MdCxz/Dyvp50OSraoJLXk8e8RCvSrK/YunWyU4+/OeMLOvAPRWM2oM0OaDZx3WDW1LK1TR5ot19SePyNmHLc7p53UV29RT2r8jQ1hdt03Az5qDBVevut2BHpjEsUwYsMoPQ4YvlVV6tNb0YgMXFNVDMDXRPzYJ0ijxTwb7+oISjmQ0SNITuF4WMiyXovcOSdgGeO8FaFiCc5Oe0MoSJH5bbEyG4AO1YHHIZjVlnEaRU1jY8OryoXreSSKgp7g6xrWvJz99AOvxfJTbgD0oSQ/UYhCPklbldI3dc41xcvk/flRN2kf7fHqUDT8sQTP2r352YZxXRTVcs6LeVX/EZVvCey9izxyMCwnN7uCJmQJFtgk3qE1d0U/auoYx1CNdnaqLgbVVn7cUqJ318EHNdwnMAVwi2c13jLb0sOMNRg4SGW1lL72XQelq7n5+5i0D7F71cIydux/IDk6shw8rQCwcG0PswjovSTu8U0hKW8RzhxHk+gxgR/IaNMSUDzg69TXwiOOeorTUp6iXzXhSmVYmQ3jrLVee6JAyPslclJq
+ teJ6D79h
+ oLiJJ+y5K3/IB3nwR0W+mEQYSPEK2H/F5Fh/R1YMQ2Q2WsmHEe3mzRjZWwz3zQKC2yupAF8rDoeqsJz/vwQLaR66ktx92hypq3oSBB4aNFEJ7GdFMgAmLKjVNJ1bA412pW/3iyy5kKN60y3IxCBG7ng/pLImLA+Kbiaiu8CehF9UljRqJIuiGHl6KAjOZTLzXQqawdwToL326XHRWUVneI5EgBIhrf7W5/S6ZjZCrbI6/WjeWtuf7IntbxouJ4ZCgSA3CdKkfI+pEUh2xzrEpRFPA+UcMydAlSWXtqsBja11HbnwBM+meynq1JBlb0dmvxNOMbhVWOr4YaQY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,173 +103,60 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Apr 1, 2026, at 04:42, David Hildenbrand (Arm) <david@kernel.org> =
+> On Apr 1, 2026, at 04:04, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> On 3/31/26 13:37, Muchun Song wrote:
->> sparse_init_nid() is careful to leave alone every section whose =
-vmemmap
->> has already been set up by sparse_vmemmap_init_nid_early(); it only
->> clears section_mem_map for the rest:
+> On 3/31/26 21:55, Andrew Morton wrote:
+>> On Tue, 31 Mar 2026 19:30:23 +0800 Muchun Song =
+<songmuchun@bytedance.com> wrote:
 >>=20
->>        if (!preinited_vmemmap_section(ms))
->>                ms->section_mem_map =3D 0;
+>>> The comment in mmzone.h states that the alignment requirement
+>>> is the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT. However, the
+>>> pointer arithmetic (mem_map - section_nr_to_pfn()) results in
+>>> a byte offset scaled by sizeof(struct page). Thus, the actual
+>>> alignment provided by the second term is PFN_SECTION_SHIFT +
+>>> __ffs(sizeof(struct page)).
+>>>=20
+>>> Update the compile-time check and the mmzone.h comment to
+>>> accurately reflect this mathematically guaranteed alignment by
+>>> taking the minimum of PAGE_SHIFT and PFN_SECTION_SHIFT +
+>>> __ffs(sizeof(struct page)). This avoids the issue of the check
+>>> being overly restrictive on architectures like powerpc where
+>>> PFN_SECTION_SHIFT alone is very small (e.g., 6).
+>>>=20
+>>> Also, remove the exhaustive per-architecture bit-width list from the
+>>> comment; such details risk falling out of date over time and may
+>>> inadvertently be left un-updated, while the existing BUILD_BUG_ON
+>>> provides sufficient compile-time verification of the constraint.
+>>>=20
+>>> No runtime impact so far: SECTION_MAP_LAST_BIT happens to fit within
+>>> the smaller limit on all existing architectures.
 >>=20
->> A leftover line after that conditional block
+>> Thanks.  So this can fix the build on some arch/kconfig combinations?
 >>=20
->>        ms->section_mem_map =3D 0;
+>> Do you think we should fix older kernels?
 >>=20
->> was supposed to be deleted but was missed in the failure path, =
-causing the
->> field to be overwritten for all sections when memory allocation =
-fails,
->> effectively destroying the pre-initialization check.
+>>> Fixes: def9b71ee651 ("include/linux/mmzone.h: fix explanation of =
+lower bits in the SPARSEMEM mem_map pointer")
 >>=20
->> Drop the stray assignment so that preinited sections retain their
->> already valid state.
->>=20
->> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section =
-init at boot")
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> mm/sparse.c | 1 -
->> 1 file changed, 1 deletion(-)
->>=20
->> diff --git a/mm/sparse.c b/mm/sparse.c
->> index c2eb36bfb86d..3a14b733bf71 100644
->> --- a/mm/sparse.c
->> +++ b/mm/sparse.c
->> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, =
-unsigned long pnum_begin,
->> ms =3D __nr_to_section(pnum);
->> if (!preinited_vmemmap_section(ms))
->> ms->section_mem_map =3D 0;
->> - ms->section_mem_map =3D 0;
+>> Eight years ago so I'm going with "no".
 >=20
+> IIUC, there is nothing broken. Could only be revealed by some new
+> architecture.
+
+Or increasing SECTION_MAP_LAST_BIT for powerpc in the future.
+
 >=20
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> So no stable :)
+
+Absolutely right.
 
 Thanks.
-
->=20
-> I have some cleanup patches lying around that cleanup that code =
-heavily.
-> I think I get rid of this questionable "failed to allocate" case =
-entirely.
-
-It's truly a coincidence =E2=80=94 I also have a piece of code locally
-that does something similar. Since allocation failure would also
-affect subsequent startup processes, I simply made it panic when
-allocation fails.
-
-    mm: panic on memory allocation failure in sparse_init_nid()
-
-    When vmemmap pages allocation or usemap allocation fails, =
-sparse_init_nid()
-    currently only marks the corresponding section as non-present. =
-However,
-    subsequent code like memmap_init() iterating over PFNs does not =
-check for
-    non-present sections, leading to invalid memory access (additional,
-    subsection_map_init() accessing the unallocated usemap as well).
-
-    It is complex to audit and fix all boot-time PFN iterators to handle =
-these
-    partially initialized sections correctly. Since vmemmap and usemap =
-allocation
-    failures are extremely rare during early boot, the more appropriate =
-approach
-    is to expose the problem as early as possible.
-
-    Therefore, use BUG_ON() to panic immediately if allocation fails, =
-instead of
-    attempting a partial recovery that leads to obscure crashes later.
-
-    Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 1b017026925e..bb0b86a4f3ef 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -354,19 +354,14 @@ static void __init sparse_init_nid(int nid, =
-unsigned long pnum_begin,
-                                   unsigned long map_count)
- {
-        unsigned long pnum;
--       struct page *map;
--       struct mem_section *ms;
--
--       if (sparse_usage_init(nid, map_count)) {
--               pr_err("%s: node[%d] usemap allocation failed", =
-__func__, nid);
--               goto failed;
--       }
-
-+       BUG_ON(sparse_usage_init(nid, map_count));
-        sparse_buffer_init(map_count * section_map_size(), nid);
-
-        sparse_vmemmap_init_nid_early(nid);
-
-        for_each_present_section_nr(pnum_begin, pnum) {
-+               struct mem_section *ms;
-                unsigned long pfn =3D section_nr_to_pfn(pnum);
-
-                if (pnum >=3D pnum_end)
-@@ -374,16 +369,11 @@ static void __init sparse_init_nid(int nid, =
-unsigned long pnum_begin,
-
-                ms =3D __nr_to_section(pnum);
-                if (!preinited_vmemmap_section(ms)) {
-+                       struct page *map;
-+
-                        map =3D __populate_section_memmap(pfn, =
-PAGES_PER_SECTION,
--                                       nid, NULL, NULL);
--                       if (!map) {
--                               pr_err("%s: node[%d] memory map backing =
-failed. Some memory will not be available.",
--                                      __func__, nid);
--                               pnum_begin =3D pnum;
--                               sparse_usage_fini();
--                               sparse_buffer_fini();
--                               goto failed;
--                       }
-+                                                       nid, NULL, =
-NULL);
-+                       BUG_ON(!map);
-                        =
-memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct =
-page),
-                                                           PAGE_SIZE));
-                        sparse_init_early_section(nid, map, pnum, 0);
-@@ -391,19 +381,6 @@ static void __init sparse_init_nid(int nid, =
-unsigned long pnum_begin,
-        }
-        sparse_usage_fini();
-        sparse_buffer_fini();
--       return;
--failed:
--       /*
--        * We failed to allocate, mark all the following pnums as not =
-present,
--        * except the ones already initialized earlier.
--        */
--       for_each_present_section_nr(pnum_begin, pnum) {
--               if (pnum >=3D pnum_end)
--                       break;
--               ms =3D __nr_to_section(pnum);
--               if (!preinited_vmemmap_section(ms))
--                       ms->section_mem_map =3D 0;
--       }
- }
-
- /*
 
 >=20
 > --=20
 > Cheers,
 >=20
 > David
-
 
 
