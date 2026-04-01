@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC051076387
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C9B1076386
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DEAA6B0005; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
+	id EF9DB6B0089; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668CA6B0088; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
+	id EAA906B008C; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 530EA6B0089; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
+	id DC04D6B0092; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DA7A6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DE7D52D60
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:11:21 +0000 (UTC)
-X-FDA: 84610627962.26.708072A
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7F972A0008
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:11:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFpeS9V;
-	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C881D6B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E036AFDAD
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:14:31 +0000 (UTC)
+X-FDA: 84610635942.16.2680F1B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AEA1340006
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:14:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZBFII1S;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775063479;
+	s=arc-20220608; t=1775063669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
-	b=Fw33OXaBriFrmN6FQDQEBn9Uv1X1FFFo7kMHsIqlaWR3O/aGJw3ba402pknGTkrr4ylcUE
-	o0n9zFOLUfTatzi1A33m6zprmcUXGjVwXlrjqy+Kv3VvvxEvL489qy0q4NvIm3g+SuRP4X
-	78tDWYGcXWKOVBR+ipIK3UhXuaM4aDs=
+	bh=cto4sWJusGWBCK4PX3JhzRIsLBm/2XNz4jQ8FcKR964=;
+	b=o+ovv5RwYZ1rZHmE05lGOuaFx8dqxJ4wyhXxzs0I9M8o72Gl9FKuPAOo02kGEW3DNcuG04
+	xUPXbn5s4jbWyTxu66ZKVxxyUeU3sFb97BB5+4h5lCYVdHMGLJJqjy55HmH1XgLzn0YpCw
+	dGMkpuol3mU6EnORd02+6rcfdFHbSHU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFpeS9V;
-	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775063479; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZBFII1S;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775063669; a=rsa-sha256;
 	cv=none;
-	b=ewDuELKV62oEKYF4abtoXcYaRa6HoIpanjyxdvray7/Z7Vm1TlUDBG8i7dqjbbdLdzqW2m
-	s/PJAOwK0CqZTBO2qdj5QX+Fy7bm+6dpgslkKa2sSH/w/dRIVo9xJ9uhu7Gyc8Av+d+mhL
-	J5BbcdBLe274OGnEdASeZar3UX4yZJE=
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b4520f6b32so63862eec.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 10:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775063478; x=1775668278; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
-        b=MLFpeS9Vnq8vrofCc8Qzu70syVi560nFm7YX/XYWkBwOgQMqtu8vpZt8SBh92ruT6g
-         /UhXSFieLxUZeSHbd4fDZBp0/Noz/ECZwD9L0hac8vklR6xi2i63eLHSGf+k48Ymkbcr
-         vkUS9B7KekVbO4DAVplaGtns619BCpj1ozl6RXBFlvxfcB6jMBOISmorqi7t7Ph8U5+q
-         ywYbPg6UizK4eVsoMi6I1ILvX4uNkrfSamM4EX/7dkPHToEsqKkJr1J6KORcTwmlAT3x
-         zdf8Z7SO0v2Zy/pLGgxkV24aIrgGXObLqxs5lSBJlccISyMnGxvGDSB0sp/m88iHOOVt
-         ltOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775063478; x=1775668278;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
-        b=o/MmQuxc8eWNrr1dFjatKtAlfWnMFViQvq9PgJG5eb+4hleYcwQ3JnVORObol0iXjP
-         9CMx8xDeXALgen/mzpyOkNDkmyfTvMdDVFRvR8z/ZLvY9z9uC+nKoZugWhQVL6KY1Uhw
-         FCVAGIrGgj919tje78yXJkyvaKdyRRdwuRLZw+PRuxcKQpHJIefktMGy2GfKtYHXeFYh
-         0PW/fGI0D6A/szaz1kgGjs5tB+t3Yr+/H0UGwV+wFu9hYvDYGtLsj4+DVWdMqkPL4S68
-         iCM0rNqWcpDkzl/xfGdlL+Y50ZmZ40YWaDrsE2gSITsKJf20qnDVo2+iYMrIrhZuXFI1
-         kUcg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/iVwP7KOZ++p0ALczabedvxA/b9CkUbELjNE9hseeMJ7kG87+FsGlJ6KffGFbJevVYjbjXPZEzg==@kvack.org
-X-Gm-Message-State: AOJu0YzvlibhzWVL2zpfg2F+B/UOB0yUGwPMKPAguHd1rd/I/o6nxypt
-	H+Ltf50cH0bG3gbMRgiObYS7nwQNcojOEjMpnXtiUpvF82gYRqYQSnsa
-X-Gm-Gg: ATEYQzxNQ6MRrru1R4ZaCxlGseDrhi+wp8JikDItcbuFlfuxqNRT5nA/xJaOgtM9qAN
-	UK9HN73R99mPPvha4QUz33qedm+YjVHcVYzrftfybCBMraFH0XspInXaCDFBaJvONhU9cbKCnZ4
-	Q2zRANC3/zd/XNWuvVrJ0J+5W6DwLlN9n+nC15Dd2IBGiQIq/pB7FsUMObIzzfrt1oXbecIqZ8j
-	qVld5jaYmFa/xIx/y7HtSfmjexakZhfWjmo4SaA+Dnce91mnGloDFRadlony6chEgfuo5Dfi4Uq
-	Bk5WsLgsVIZuOS4Lwlina5XIDnx/U1/mLziWKhmaU/6U8VY9BUPHPIwZoEDkZ5T3aIbHKkP7rtL
-	k6bbG264v1EgCVpdXhyOCYuMNwbPQvZ2/TV5goZ2IuQIkj+Ce9GAXZH5GaJuOjK3qfbHLEhdQya
-	/UMuFc8ZFi50+tOf3g33rhRW+XKmDEF808SDEc
-X-Received: by 2002:a05:7300:aa8c:b0:2c1:23d:c728 with SMTP id 5a478bee46e88-2c9333bca76mr2295783eec.31.1775063478040;
-        Wed, 01 Apr 2026 10:11:18 -0700 (PDT)
-Received: from fedora ([2601:644:937c:6c90::c63a])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca792f3f3dsm250190eec.8.2026.04.01.10.11.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 10:11:17 -0700 (PDT)
-Date: Wed, 1 Apr 2026 10:11:14 -0700
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Brendan Jackman <jackmanb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	b=SslP53EXHwPDSXJMDSmtIROi1ySfhwScp0TVSkjHtaJfsqq+Z+Sv8HlI/D2HyHt77AZTQw
+	li2jEPRWIQSCLCRLZYdnzT1sGKlvHTE37tYhppYfxijs4dzcIsk7fmziUTdQBrouuef1Mo
+	dxvYOeHORAKQvLvpunPfNNyf6XCB51c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E18B26013E;
+	Wed,  1 Apr 2026 17:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA983C4CEF7;
+	Wed,  1 Apr 2026 17:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775063668;
+	bh=EvI/mf/p7ahLxwtiTqriQDhtRh6IYTRjLpLevB/oOQc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bZBFII1SMDyYkP1Kc6KML2r9asPZ9iCWEIY2JvnWYCtKmV6aVDxOpF85ZoFKVTf0E
+	 DDy2SlIvLulZ6RVtRtWIfxBzKtFeqWnRHiw3iAv2peVV6GMI3i0qbSfBp5flJKqKF3
+	 J8S82ZSX16VZD4USROgBhxOn4qVp6A3XE0aHCdISrT+jw2Jt9xUeltjdnt7yggEWYe
+	 Nfhw/boLIhqTzYgJrr+HhLRqACxQr44ogX3M5z73vKSBs/5faWCkoqZxOn98egwOcp
+	 ocnA0cYIO3TmUl1V4wKMtIoe0VGHRCibJlRgYKNmegJjMlLr/Qfgi0EIfm45gmHVc/
+	 bUHKdaaL3VHUg==
+Message-ID: <885b3c93-32e3-4488-a7a1-891f5ee55515@kernel.org>
+Date: Wed, 1 Apr 2026 19:14:24 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in
  alloc_pages_bulk_noprof()
-Message-ID: <ac1Rsmwl2pm8QV_Q@fedora>
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
- <CAJuCfpE0zdEn7gguY0vkXpT2y4+Y6oniTyT90C-1KpXS4L_vEQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpE0zdEn7gguY0vkXpT2y4+Y6oniTyT90C-1KpXS4L_vEQ@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 697jjop1zq4c6o64x551xr8xoxpz87s6
-X-Rspamd-Queue-Id: 7F972A0008
+X-Stat-Signature: 89qeuew8fpyzyj9dzjxsamsu799ow9uy
+X-Rspamd-Queue-Id: AEA1340006
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1775063479-305333
-X-HE-Meta: U2FsdGVkX19CfN8iSNhwHVktIATUY6Ne42IkNrBXwxXvbtGRWto1ojmKTqTNqQXNjT+hKhwzCy3vE6pYwaWEgJYqDEND0i+Vi5yYnvIq4GKU0AvOpDiqp9+2SppcxMCccFWbCBL7C0Qhgzx7kO0A8TBKQVOhwWl3xY93VfKLJEL7FMWg/IRCePaF16A32hXbjC8ePHrYYBTavOzeOBFpRVW+xOD3U9X/vnzF7FsuEcp9dy7UMmi42I8Hg/iFO5x7fRopS46yFM2Y31pR8kgQ/arRXUVLxTH4TWLTQLONS/JID+4R3JZxrUUNE1R5qIrIqn9Gdi/dlP+ID3qTESh6rhfQbWdzXaujx6Ifm15RHQvWFF7M5orRmhIntEWXiW6OxDrCIK2ZiRyZvMK0zLK/Y2kT8n3CsHmYj1cfXZ0U5RCt8rE2g0Kij0BnbhO+bfnEgW2N+OG6ktKkME7LaHikt/XZ8gQkth8y5gQCvjmwz1vjBDpKIbk7gCj4KEPe6SY+VL1wwwzi70rMcq5GbSdxdaIQb/m00ogSptJ0Qf3eN3DNxTQD7zx2zoCy+VYvTB0enm0awK0LY5Ri6H/+aQD9iqlpq4mymClr46fJedVVm3wpE1F2206FbDAKDBceWTI6vLjlgEt37SUa5CEeGEd+tczuu0L5IV1YZBmfdYOh9upvooeJKG52ClYVi8vZ/6jjgSMb9VX03shiRSxqhFgB3UX1BfVDD3f99a6I8nlNfVJ269fE3x0pRms61ofTnugMKqqi7qZmOtzrN+fyfdf1+65ZdjIv6OHfl54uKZLxxheJeKlDTMy9Wo/UrlahW0DtQi1qJrxIQYPwEJQc3THp3KKQ8Q2GrInVEiZTCaCAqiNzDHuxtZKcSHqNAMzFgvQ5W1nx9ztSs+1kPCjL4jId45RQiEJol4lkO4X/lkDxmciA+37MZxDBo0YH82imTOUcTBSLi00RNFiLiBIva5l
- Rr2UVJXY
- n55GZ0jQORqWsk1TZ2fmQwrKg6lZOvizgFYHErMz1izYxTN2P2QikigzdyPXFscrQXpTd8NMePsK1V1BnQt5YKGPaLVbphaUBlDlk39tG0TXs5ab2ouzT80KmSKiEFNcpMbgLoxllzJstjyygyH3XejM09SbdfNxHq8jRvqB2pw51wEo36ZykRrVbSOnqvY2TAcUwoqg58r7c2kcv3A1zq16pECNyY5WCd7krXzH5x564Tlbz9EU/RdsnTVZEWq2bRqLPuWrZxhD3z69laJl8eKZChwIMc4iqUyKn3zVpaEgLehHw0J4qV3d+uPkbTAfaqfTHSQf6PPx5TcsIRzm5KTp3dmJTWfYYbYigwjezjk83h73wa/PIrYxwKb5srFyubHyhF5pigkDQiEvO3ulF84f7AsG6I9Ul+GPEWPTmYl4+TpGXvEvJKxvzNZ64C+Y/72mGzXtlYtAoFpAu1hsLlKYGyG8jAE3Ks5mX/hcXrtc/5QFsLNOpLm0bJdfkSMjyMbbFgROE8qnFZZdXq3H+Of8POGY661Fypr85JQIgXLxvek7FRAvhwwtcj4FP/5lY9IUqSw/yqDodnUPU9lkqJhwxfqhE44s6PNc5jcioTTY96prlgLw5oxd5Xx+enQhOnqBODWIMVhjVAWH8fOiPQ3Yh0jc/0ye3PBouFGa7cW5kgqI=
+X-HE-Tag: 1775063669-44687
+X-HE-Meta: U2FsdGVkX1+hYgJJf0tvY2SO+WtEJEx5/sM+lO9xYDjEgUB0l3Y5/fwtnufkuZQeWLQNhI4AWk6CiEsImdCHAp/P03P5X4p7F+98bejqfpc0lC263wzBgxl9e/q83cK4ljSSBl1r27SFIcy+lzpXXAuSIZOOoUUU0vHiyTOkxBrIlEF11uF4HVUjYG2HEwU7VHjwUJHEN8g8Bh4Nu25XdFvEnKLZ25JgNEkKIs/QY9E6IyQ4OHJxFTS6Ghobo65yPEktq0xv2HYT1G89ksiT1jjw5R2EaHK6WwwUffMQsaNfsEdVRb71WERZfoYo0Ee/0Kt1mnsUMigJ933j3ywvfjMnEduFYsoxAGjpLw33NhA8R22ebfxxD6sC4/iR6Xo4xtAAfvm7udfxsV139NlBQBnb0U7azyMJ1unJwiwz1tBngfzi4LqrwgRPu9vzTnvpUTn9/AWrqjTAq3rqiYDJ8ym6NBnOs4NvEupFZ3YEBACx0O6DPYpM4LvI2Nl2bbtYbGs6/u7FIUbyrB8O9Cgpb3nA/HeUjcX7XRqLK5H7osxRgSgTIyGYoQVSooT+AuPEXiylZKtn/laDN7ZGSwjb8HBoZlQOT2PMEmOapS/OTZR3CQ0B+g6U/K1u7JKSYk0EjwEQxI1DBwhfzZrbnpxZUo7Wo3kpYnmwkiUkqO32XDusgrW4weWx2+90kbsAEOQmXSH5+r/C7EXNq4sme18HZmKA5JL51P2vaJisUGpjjZiX+ejV7hnK3APkffeLUOuUmYfhSQ7PVAS/n+mhvh/bHFDMi4jZm81CaQEWFRsPjOk/mDlh+/9STOPH/Qes3SU5yVYsL9OsmAKfY3yGnuv5hqmcIR4eOwuEGUcTO7chr+V/bdrxuWZr/HAHNDsO0UvAfzVdqEV7Y+C5q6CmcrKNBz8vWusZyOUV6aSoA78t+g6cjwR+ETS+OFyCLHtZINbzGqXEcBxC4DdcHYh4R+m
+ 1vAtvnbc
+ kzUqFwBmFLcFIqg4trrrCPv3Mg10P2TF/JLDadN/B+ULogPA9ot5pJSZBSbZ//+31s3432TCitwhDgKd3Ia7ul4XCLOiYNRICLz6OHB5O5kwcNRYDlxAS2twEjMTjPbbdkhExxYChR7ImbCz7v5lzQH3VaIATzqVGHw2bklmABoRMzbYbwD4tzrw/6i/WsDS4cd+yYkofb6g/3F1m2d+1BOSfcrN+osDAGBfKa+x75o4IYMAx260nVdOszwrsUR2Ua6GqSppfGvdcNVjsrZSdjXSli4lQCjHMqsbW6/drqJWdww55S5tOKn+fnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,26 +96,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 09:10:11AM -0700, Suren Baghdasaryan wrote:
-> On Tue, Mar 31, 2026 at 3:52 AM Brendan Jackman <jackmanb@google.com> wrote:
-> >
-> > These two variables are redundant, squash them to align
-> > alloc_pages_bulk_noprof() with the style used in
-> > alloc_frozen_pages_nolock_noprof().
+On 3/31/26 12:52, Brendan Jackman wrote:
+> These two variables are redundant, squash them to align
+> alloc_pages_bulk_noprof() with the style used in
+> alloc_frozen_pages_nolock_noprof().
 > 
-> Indeed. I'm not sure why this was needed even in the original patch
-> (387ba26fb1cb) that introduced this function. It carefully preserves
-> the original gfp even though its value either gets overwritten later
-> (prepare_alloc_pages succeeds) or is unused (prepare_alloc_pages
-> fails)...
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-I did some digging and wasn't able to find any reason myself. It should
-be fine without it.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
-
-> >
-> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/page_alloc.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 111b54df8a3cb..5e280ded6e7ac 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5051,7 +5051,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	struct per_cpu_pages *pcp;
+>  	struct list_head *pcp_list;
+>  	struct alloc_context ac;
+> -	gfp_t alloc_gfp;
+>  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+>  	int nr_populated = 0, nr_account = 0;
+>  
+> @@ -5092,10 +5091,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  
+>  	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
+>  	gfp &= gfp_allowed_mask;
+> -	alloc_gfp = gfp;
+> -	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &alloc_gfp, &alloc_flags))
+> +	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
+>  		goto out;
+> -	gfp = alloc_gfp;
+>  
+>  	/* Find an allowed local zone that meets the low watermark. */
+>  	z = ac.preferred_zoneref;
+> 
+> ---
+> base-commit: 57e5b07deacb0a9bd7b8c9b933ff72e902d4f06b
+> change-id: 20260331-b4-prepare_alloc_pages-flags-5bb9a1e04e00
+> 
+> Best regards,
+
 
