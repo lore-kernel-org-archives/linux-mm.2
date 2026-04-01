@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BAE0D2ED0A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:07:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E98D4D2ED0A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:08:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CA606B0092; Wed,  1 Apr 2026 10:07:02 -0400 (EDT)
+	id 5F3916B008C; Wed,  1 Apr 2026 10:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A2BC6B0093; Wed,  1 Apr 2026 10:07:02 -0400 (EDT)
+	id 5CA4F6B0092; Wed,  1 Apr 2026 10:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B8416B0095; Wed,  1 Apr 2026 10:07:02 -0400 (EDT)
+	id 4E09F6B0093; Wed,  1 Apr 2026 10:08:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF166B0092
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:07:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0FA11A08ED
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:07:01 +0000 (UTC)
-X-FDA: 84610163442.11.4A1685E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CD896B008C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:08:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC3358C691
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:08:08 +0000 (UTC)
+X-FDA: 84610166256.24.FC3113E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2426440018
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:06:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U61ulmMY;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id DF6068000B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:08:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J76Ug42E;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775052420; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J76Ug42E;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775052487; a=rsa-sha256;
 	cv=none;
-	b=zn9P7+5ehN12PiQ7T/b/fnwI2590y6v9h54uWx8y8LHoMO+ZmpvTVOIvkptteBF12SpU08
-	7a/vV5N2iTL4boayHY5hFK7ZU2FCZ0KclFfGYkFq5wX88I6iC978WXV0SqwJ2DBBqj5ASQ
-	oXVzEenrq38nNbe9oC3BBVRg69FLs64=
+	b=Pu7Jx/JCzq4p7BXOOU19iY/bFuJqoqQMQMyQ2yp5N71C7TaaV/NONl/H8s9uQOz0yIX2aF
+	UGJqTQgt71Y0ujtlQTMk62iov+m0ZD9V53BiT4FdS6fr8SGw3Q9n833maVrszBepK8hSoR
+	I3AsoTEK7YMLFl5nlY3vY5plpA4jHw4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775052420;
+	s=arc-20220608; t=1775052487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Kx55uf0D7Gc53sbqvgS2TKfdci9DeXpth9CJGILJ5k=;
-	b=dI1WdkfISjJAJsedZClP75mdf4I+uRN/JLfuVyuk8XbMsF+NbGS5IH1CNsk1t8Hf0jULdE
-	G02wiChNr8yaUCsfV8+7MCXMSa159XoXhn3QpRulXs2BBRzV+THNeYu4IExZuapvgK8EBI
-	NvSS09L/ajt2MGntRqZ3ZjGJ0zNCkfY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U61ulmMY;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=4tNMXwGjj5cYuNiUVOVd2WCvhceFqZrqwbIJelkfsYY=;
+	b=oNh5Vbq5x8RIdDzJYnOC4y+ehjXkEYxlZ8ZNosJJFkcd91V5g37sUSGhT7ORew6Y1qX9qd
+	4xR2xyKoflQ6jOzNykmA3heBlTTUSMwUJGaFXlntzlx86g6D+tDgwr+pJ3gdr9Dg2aif63
+	YLYHP98X9xWJ0iG739Nuzd6ONBTC5I4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED3BE405D5;
-	Wed,  1 Apr 2026 14:06:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E5FC4CEF7;
-	Wed,  1 Apr 2026 14:06:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E368F40A69;
+	Wed,  1 Apr 2026 14:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7361FC4CEF7;
+	Wed,  1 Apr 2026 14:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775052418;
-	bh=GCQU01a5ZNsuOCEJYuG5sSvpFncIhytdteUSQSLtuig=;
+	s=k20201202; t=1775052485;
+	bh=bVa8O4fwTG1tjCVclLBS4//gcP3cU/KztS+qU9zJiIU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U61ulmMYXO/Yxw0dI+GfTeGBv3vu/sR2an67Crxc3iRUCR8cQLH+y1P0zuQot2jbJ
-	 71RWDV9K+xygQo5j2djepYA2QGko7NLMwLUaCOiBzpbJKOdz9tcaZdq75lQO1/BRqo
-	 tsuVxCIwA748CsNNZZPWkZqi/Zxs88VP5BABlslc+UpF5wbqSDH4adQNPfNPgUyqCi
-	 2dUVJH8d4shCVNmVeGYRDOYtAQudo+Z5b4EBMzedTMoTphcqByUw7S/O1JUpMAbG19
-	 OpsW9K4XJBhdosrhTJCKhB6bA15+agZ/07fGKRvbkVDAFqux4pahx7Uk7MXV8/J0Hm
-	 N2x+Lo1QPCj4A==
-Message-ID: <fcead016-04a2-46f7-b667-c8feeaec9a13@kernel.org>
-Date: Wed, 1 Apr 2026 16:06:52 +0200
+	b=J76Ug42E+fQObk7s9g8QR0SUmtCwVlz3vosaqR92/k9ma26Whbo+9/s7UKl/KV6QN
+	 iAmWdjQAmjwejHm4+4BD4x2j2hiWa8mxr+GnywY/itHAigaanX4Ps/zJdLwZEaA54O
+	 dDnZarHpco6Ua9OAj7i3OXebtVUd4jCvbMKZjtTx1y2HgBY3k6pl1e8rgbJ6xtkSyT
+	 B3JHJ/b/e1XEx9q9oh0zi3ESYg13hZ3ZH5W6prmZV+gpBsZl2B7DKLoCWXFO3JXKfG
+	 MG+3eWARiCMWThrcEVv1W30SVPkgQg8w8hFnFMVPCbsZXfgPeAjn4NgPcuGk5A3+lj
+	 fMa7I6BGXFMLQ==
+Message-ID: <7dadb91c-745d-4fde-8a2b-c141b26823a7@kernel.org>
+Date: Wed, 1 Apr 2026 16:08:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] selftests/mm: fix hugetlb pathname construction
- in hugetlb_reparenting_test.sh
+Subject: Re: [PATCH v3 04/13] selftest/mm: fix cgroup task placement and drop
+ memory.current checks in hugetlb_reparenting_test.sh
 To: Sayali Patil <sayalip@linux.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -77,10 +77,9 @@ To: Sayali Patil <sayalip@linux.ibm.com>,
 Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
  Oscar Salvador <osalvador@suse.de>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
- Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+ Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org
 References: <cover.1774591179.git.sayalip@linux.ibm.com>
- <05459b5038595a3a673507e707402839cdcc2955.1774591179.git.sayalip@linux.ibm.com>
+ <1ac1cac332a692e8d2dd70922bb09c0582340143.1774591179.git.sayalip@linux.ibm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <05459b5038595a3a673507e707402839cdcc2955.1774591179.git.sayalip@linux.ibm.com>
+In-Reply-To: <1ac1cac332a692e8d2dd70922bb09c0582340143.1774591179.git.sayalip@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DF6068000B
+X-Stat-Signature: hrqtw118o8j7tes67w1y8z7r9jo9rn1f
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2426440018
-X-Stat-Signature: dc67x1ec59w46arp5ib9i4184qxiy9w4
-X-HE-Tag: 1775052419-577268
-X-HE-Meta: U2FsdGVkX19laTnXxopcqxN1jjDGe0hsmxGCvddrUPslXuZcUr0I1IrsxGupIIBBfpGxo4NTV6AYzWCDpTGaXb3VZ4Es8iVx+o6j0KGAHG+O+YUP5UpIQXYJvuwOeWyq3ZolLF4uuAZMolHnn46bpIIod9N3hWSeqLTzxWQAQPg7mO3h1yw7eAqKYotYXiMMZYU6wFvqq18ji0xLQIZdy7PEK7WQuOywSFkUJyD5GqjbuU/JnAgNAAfcjSA6wMmE0D2oEuojELd+u23ZQfx6W5o+AxYR03i3WjeaoDhfhSUN17HRnOVjlcQWh0ME72jA90k4oDB8L9r+KkITOjyh7+SLb40BV7O9p19Yq6A8Lbk+Hrbmh1ihUQgBCnhkS1vRldelWTKFg0uEbRRwNOOiP8iAt6EALT5OdNJtGWbewcUKKgjJ4CQhmVF+sbxrbEr0HX8pfwOxfm4C31EoWZZmBRzilWuBpIpdmyOR7FdC9xIpB2zZtfUqjQMLczcoakx+VGYQMtuFLukoy18RV0Hf2K7gJgDHc+g0EDizOnEVulVzhVleew0gDvpiNJtFqs/vefr/aWo61zWiU0b+zOxIkSRMmZw5ou11DHig5vyVFr6o1fe3kpNpVoVyA7gL1NiwTkElDHM7xVm/RfoKqhaVuniNdhORqxpJNWg2XrH55CrG0iWZscFPAmeksxE0XuBZjbNbs7JeleSMQ/QGd8ie2j1/Oqx4ciFhTi27y+JksB6iG0KQn8rkqT7UdJRXC7OJPbZfk1IRzM1IT9KUC4bTFLycCBfG4o4+v7Z9G4KuyMYmt4DreoDpHkmrnfYOOOntkGmVGx1r/w3UiGQEK4hLUxI3+ttxTc/3fno6+rtOiKk2NhP1F817keVdMdO9ZFuG/2PWu7wgIl+lCfyAfEqSQaZ4/bJZ4ip/VIH3rzNHpkltbPHMWKwqVao5djc4yhOk3jLO74Fi0PlOKpyuxe4
- l41Iq0tX
- Urzky9zBKpu3jwhkBKPjaUv07ELEpBlaUo1EmAi4ELfSzv/8TSifsA2aAkpCOOByPiKpBG7FGEm7+PoARp0Fr8Z3ZisGkz6tI9Bm3mzoFfiRWAgFyUfmIYGPqfwLyc9WypdTShXo0zKCv8upIZD3QAr7wOiP7zJA1CmHly5M3Yl5VRqvnGi/WJ8oaqMi+pPKKnTlfWhcVlu/2Z2nMItKtJOhWyW+jxpTLc1FeR7A290K/7tK301kc4TgbKbN0uL8V2Z+JfI2WDOndGugy+YRUgF/wvqNyeHt5SYo3QAtikLJ1htn6626j8CfaZinKYIhntB6OLxLUoYstK7zTCcqLPi8sA9jMiYvHplroiQpxEOWHkHVHjex2lo4ho12MTNBd1vMOiwQCvramBt8GEm0GAB6ABuTUf/j2mu0weHmMapG8wNad60hrA9NHbUG9NEkZnk37
+X-HE-Tag: 1775052486-13244
+X-HE-Meta: U2FsdGVkX19f+80YL+MBf5oomykuIivAi1e0Vxr6dYtmn10sCYKxDdBGqrLKkjYD3ZZWUdU8HiG5ZP//YmwS53+5n+BfHh3XwbXRNr9wW6pDRDZT21fr+YK7dUNkbbrGrcoEF4+JXtsn8OFpXZIXHkO3TmijeJ7pjcONds4dyQteK8CxqGvEaZOLQ3F63hgpkQsp4Ay8bMWzSAbWNugl0BItZBL+ezeW6ijBj6VkzflLnQZqXf8vwtAcHWaZSwwdDJBLbQyZ7EB4HpgWfo1UgvQRNNFeUgfSSXPHYEBjCNqG9r0OEilNUECRG7eAFKi9R2UtmyZekYFW+p3+849QUSNKiNJhXDg1e1/8rr4AWJfohLFI6yKou+gpRwHqdvOSYEHxIlSULj0YweFGFJlHrvHw0H0b96xkNML3pNp5illR+vaYXs3xqXeN9Z3rzTEAZwIi0HaTV2gPyoN3NFfz4jhdvSHm5qGJsvUt+wSWCAf/RpztphpV6cqan0VOtJcgtUx3oQ1v2IoNZ5BbSfQLIaBNtPpQmzPcznnnItel61ko2LZ82yX94bSlh3AKmEbxkR7CGGCgG96fVBXVg3x9T8Guv0vWSrHAQd1e5bu64dCie99F5+RgPzhIXYuAHKBFFluQ2gQvYFgcvLvRLSgNE6t3pXGNV6VvkQ+veEiP9u912oVI9eZOsSmJwwvCMmvL6vdZGRa8W3+Xpsn6884S3H5rb1xKgGBKYe5cI9/qfbYgjfsbQhD2cHTErG8XP77ivZgCYhGnR+t4TX6Op8v1M/z4OpFGsUu7JDgL7rD/nV0w0YvylP/Bdm4jNb1TwylLN//RF1HxjbYa94iUW//3nOE6UQIKZP/fr7OYvJgJbVr2wM+YZSuj5phOsvaTDsWx5P1omIAxQ4b0xmWAF/URFYc9o4aPk7xSS+4aFpIn2iVgTEV+3Oli5YdyV6hGpdw/CSy12QKRVXU7GWg4MRg
+ 9OpqPomR
+ T3eEoNWTzjnOf/Sqj0M02+nE/sSSCkMzDF5S3M/lSnD9m/1Xas9FMVju8qJ68Hlx2CbXEdD/eJYZuIq3k/RU6UZuB5KTVYfJQt+PDls83j8LRfD17pO0pxMkp0eo0Ldclyzr0hILeIOs74qVEcbURBLo7D1fXQi19iIrOcL8hqGidp7Hu+pWd2OJg3aCp8MkP4BUZNwk1SJOZb27ZVj4VjBK8BXru1EiEadWB4pNn/3nEpbFQsLqCRbPB9K9uthkes+gsHJz7Sb6RZcLx+kXHBPw54ZA0l0meDjAMvw8uRh+ghNk13SPavBDMHb/2E5uF9VR0o3T4UJcI25DlUikXyHgLW1ubpFVFFx2CKLKOgXp6JGtCBt54sO5ZrvusXvsjGjJJdmgYOiLvFpP4F/oDNX4zvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,29 +145,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/27/26 08:15, Sayali Patil wrote:
-> The hugetlb_reparenting_test.sh script constructs hugetlb cgroup
-> memory interface file names based on the configured huge page size. The
-> script formats the size only in MB units, which causes mismatches on
-> systems using larger huge pages where the kernel exposes normalized
-> units (e.g. "1GB" instead of "1024MB").
+> Launch write_to_hugetlbfs as a separate process and move only its PID
+> into the target cgroup before waiting for completion. This avoids moving
+> the test shell itself, prevents unintended charging to the shell, and
+> ensures hugetlb and memcg accounting is attributed only to the intended
+> workload.
 > 
-> As a result, the test fails to locate the corresponding cgroup files
-> when 1GB huge pages are configured.
-> 
-> Update the script to detect the huge page size and select the
-> appropriate unit (MB or GB) so that the constructed paths match the
-> kernel's hugetlb controller naming.
-> 
-> Also print an explicit "Fail" message when a test failure occurs to
-> improve result visibility.
-> 
-> Fixes: e487a5d513cb ("selftest/mm: make hugetlb_reparenting_test tolerant to async reparenting")
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> ---
+> Add a short delay before the hugetlb allocation to avoid a race where
+> memory may be charged before the task migration takes effect, which
+> can lead to incorrect accounting and intermittent test failures.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Isn't there still a chance for a race, for example, when running in a VM?
 
 -- 
 Cheers,
