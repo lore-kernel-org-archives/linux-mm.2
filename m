@@ -4,139 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A78D35160
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E7FD35160
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 09:19:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1092C6B008A; Wed,  1 Apr 2026 05:11:27 -0400 (EDT)
+	id EC70F6B0005; Wed,  1 Apr 2026 05:19:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0898A6B0089; Wed,  1 Apr 2026 05:11:27 -0400 (EDT)
+	id E78036B0088; Wed,  1 Apr 2026 05:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E92B46B0088; Wed,  1 Apr 2026 05:11:26 -0400 (EDT)
+	id D67226B0089; Wed,  1 Apr 2026 05:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9836B008A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:11:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FA178C3A2
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:11:26 +0000 (UTC)
-X-FDA: 84609418572.19.03A7B36
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 40A8420005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:11:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nZxYsEjv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JCN8Ehc+;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zo2PpqKA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BAatxIFH;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775034684; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C32C06B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:19:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76C125A795
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:19:38 +0000 (UTC)
+X-FDA: 84609439236.07.DBC8F76
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A7791180004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:19:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jp3XqGg/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775035176; a=rsa-sha256;
 	cv=none;
-	b=sNVC5EDT80mQLyskTvWXkM9+XuvY7ik3sqjpgfL3NBPhclZCPrOS4lsQe7qNp61V3LO39t
-	Az9CB6EIPmcAunBdCEhh7liHzqRKe90OPme90n4BFLpy4fwqEou+Wtw8IEx5MhJ+Jxi/Pg
-	iS+oGLa5u107Jp24i8lNO8JUtgFQkyg=
+	b=TojHEvuF1lhCcz8ILA0q7FRmG+Kgk/tUu7oANjpIlBIVLF+bjlsyG1moExqJA25D/9NhtF
+	ZEk/1r6IsTD1/G4N6vaJ3EP5p1CBGvVxkZ2sk/10BlvQthCg4zW9JGMoqmXCJ8isqQn8s9
+	ooQBRSqW+1Vww29FTOQBGAicmc8cP4Q=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nZxYsEjv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JCN8Ehc+;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zo2PpqKA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BAatxIFH;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Jp3XqGg/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775034684;
+	s=arc-20220608; t=1775035176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
-	b=5ynVGqaSIr3KHkQacevGDmD2HPc8NhRypiTeIN28Jj2NQK17zXHhU0j7wcd8/T6Z1k+vNu
-	T9SJOwAlYqpQadeVb9HuXwlL8VzMoOx5Ee2hefnrxZZbWp/rpuaGee7G7vFgngfJwrAAfb
-	Uie8mxWxVmGN5GDzsFIG3cNpeN7Meug=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EBBC24D2CF;
-	Wed,  1 Apr 2026 09:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775034682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
-	b=nZxYsEjvLNi0fjFwdsdR1QIaA5CvnCSA2jDPIHtYN/zMUPveX4qhK/mtlK3b2E2MA5YHn5
-	K6wSSMfGS6pQ+rykA1fRsTcl+zcoowmjDYoJHQITm9pgexAemYCQK9PkVOejTlhUzl1lM2
-	VIV5BvNh/EoHP/3O5qFeEP8cTeIbqhY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775034682;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
-	b=JCN8Ehc+FFINdGPTdJ+9HBZQRIpd6mKRIPCj7gdnQHcZCq1hpu7eDDuibBMcEPjV60J3hM
-	BfW0iDBNn8QnJpDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775034681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
-	b=zo2PpqKAESdoDeQY2nAufXpoxkmcfvpYoV6gUQSBEZsX8z810LV8EEnBxv5xgeAtIdc4MS
-	iix+uHfALyUGNhO93ta76Wu5ie9nz/RxdKk+d+NVbcV6+PvDY5C/r6ZjTtJUsOpr/zrkvQ
-	eBthHK1py/eqJtWIXTqPWLeU6YFIduI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775034681;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XM6oHFuqZWj3V/W6hULx0qKrror0GGtm4rr7xe9LUwQ=;
-	b=BAatxIFHNOqSkzuZWOB7WxBGFIaFDehxiBNj+YqoR2+cqrgIPuY0C0BJNxqNmTVJ8EfJuP
-	7B26ja4KxcBrjhBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE8044A0B0;
-	Wed,  1 Apr 2026 09:11:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Db9LNjnhzGmdMwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 01 Apr 2026 09:11:21 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9F960A0AFD; Wed,  1 Apr 2026 11:11:17 +0200 (CEST)
-Date: Wed, 1 Apr 2026 11:11:17 +0200
-From: Jan Kara <jack@suse.cz>
-To: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
-	Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
- fat_evict_inode()
-Message-ID: <gkwyh4z45xglmq7jmam4yfvkecivipr23trzjkbyfolm6pdzre@d5huocjf55ew>
-References: <20260326082428.31660-1-jack@suse.cz>
- <20260326095354.16340-57-jack@suse.cz>
- <87ldfazqo2.fsf@mail.parknet.co.jp>
- <3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
- <87jyutwo6o.fsf@mail.parknet.co.jp>
- <mjraa5thsnzchejoomqgiahwajx4cs5ryqnmn7zsi3fylzhrrr@5ip65jcrlknn>
- <87wlyss2ny.fsf@mail.parknet.co.jp>
+	bh=ZMTgbJN9tgqibcOCuGESgyJ4VCPAkiVtsO9LrIwjHrw=;
+	b=3MYBkofRljw0KR0U36IEa2ovr0wesfJgOpW40fY9l3GXZvsEKO+jOSyRF5VoT7Iegb2XX1
+	ypH7S07D9e04m41BwqybZ7y81R+wOTy1nSh7kBTJli3b/7idXHLRZLTC9V2dL3srRvrv/v
+	iwkLiAK/xGLH7usGm/RUJIO0k7WW5OA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B2A5D406F8;
+	Wed,  1 Apr 2026 09:19:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FB2C4CEF7;
+	Wed,  1 Apr 2026 09:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775035175;
+	bh=jUjFCCnbzFPHXcrJnArw9JouUlj+FBuCgch0ngZXMTw=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=Jp3XqGg/uKhu2Pqn6P4Nf7cKFakXRJ1HlZxnet10zStjNd7ZZPhgmZCmpdCnRMnsF
+	 zcrke9g3oIIV4+Jto4uhKj1rZ/geQMUFm4dWw1deZ1RwmvGnNmnzhR3KMrNtPdytnt
+	 HijuMCb6e0TVopn0OmE2xnqCl+RFgg6Y/spg/GTf/sVJeY3rZ+ERuDCieEQiMNqwAB
+	 SpyczBXcMcoD8iCXJe6vVB0sjqwyUzYHSaYzS9WcTvA2WtlRsot4gX9iZ6JJT8FrpJ
+	 oVGxNIljsZKpb9lJ0QZxSJ8lFAYlYRo6dmVnXoMlOy2aksvdWEqs1TKkSdw+Xl8vCh
+	 BU0ZQJMiNO/NA==
+Message-ID: <c52c0500-b255-41ee-a2fd-1caaba5499df@kernel.org>
+Date: Wed, 1 Apr 2026 11:19:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wlyss2ny.fsf@mail.parknet.co.jp>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 40A8420005
-X-Stat-Signature: udexu5jabjsmjj33bxccneo1o4bc3kxy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/3] vmalloc: Optimize vfree
+Content-Language: en-US
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+References: <20260331152208.975266-1-usama.anjum@arm.com>
+ <20260331152208.975266-3-usama.anjum@arm.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260331152208.975266-3-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A7791180004
+X-Stat-Signature: eto68fyf469z6p33gdqwyr1nwz386bzx
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1775034683-408540
-X-HE-Meta: U2FsdGVkX1/ygldrnjW04WyyhsE59ocqrACXM0X5FSdcLr+G7fZArA/M1nkt2UDmpzsvwgkMIhfGuYMBcjGbM9ZPu2w7ldt4utsBtPGMousM3bMTtAxARmJoAxcURcBFXKriBW3YzLe3FIhZb+VCUSHhKnnGa/2vknSFrerCXjq/2E3Q9R19hxKoQ9Xgw1+G6kvzwCBj1LvHvqeH/ahMDMVPMnp8LG/KD1GyDph29VxZFMFrbhso4qPbtTpGwrOfin/cxLJBX6S5kZV1iyPYDksrYK/LvDnH95DWB0KW1Wt2sTz3dn1CAA9bPvD+Z6D72Ri99pkCQTYwtoYfuy6I6NWPavcLIq0YpS/WIrEJ0EvgyMe9WklxMaehAHdOwPDFGjs8ynvH3Hxh2GFzNNG9tzdFd9jdBvnGjfJLjVRdYQyovKi7NXDlBJf8UJN7r/DDfi8h13vxTxuUsGyTW4UAZdr26jpTo2S2Jh2J4VhTTphv8ygSzjva+/AYOZapEf1sws0IxSm1Bsas95fRv4QZpayBBmT/p6kMspu8oIlBneAWuuZFNnqfiSG67dxP11fIz+/yVgs5RaHyQpI5gtv/ffktGYOTc0LXKL8yXh1ttxEQHXcm/pfcRS08WX+MFjJbinJNlwWFjJO5QjWAyDloYpoqYC1nuilkg3SSP1cFhBJ3dktlmYgNAywelwWVkYIw5z006g+wI+yUDCOTsgHYtfAQBZnPWVrA5dDvMVaAHBnuXTbBlZeIYtaxnnzDU4KuOixlLpzHF4kSTU5FuLLc+OqzS8q16ENn0LRbWPkEYrKuuaRiXPPsV2joZXDK0Nzy1Fo/ZQaH57JBVWCzVczK51dKviXqnh3xsnS1ahd1BaumAO6Elq73Ybm993v1H/rZzPGfEwtrCk6kZVfvofOK5vJhrSjOVGEby7EyS0LU+/sDQihcQWeSFBsO2Unyi1clMLsGnGAZJF8mDqNhYQZ
- f5ztQ2LD
- iEWArcAWskHwMMQVGjt9Tbu9dTCYBOY7pVIOt34/OBnog3DKxtuxy87lnGk4dhFc/Dio57bfph79WP9xnGuSsh8LWRBpZKstKqNHdUgbIGFBhetXj5KnbR63bVppOCG21IWPqtTz31TGRbH7iCp8dCpWpRGaYjvdsBVzw0ApCi1A34tsLkAM1WPWoOx97QlRJdAe6ghu8a9U8AhZ+XmkNWz3HOH9ZHrDxcrI47rsw37XXqkm+2IGjaVrWqazfS60O/jKrIe8EA5FyV48Wpy7hbZVhCf3WIDQi5kUW/EkK4QRWDX9ch+2Wnmo8151YfEwsRdEO50WmpG8hudPqeppNHwekkbhEYzIHzwDHDSgHWICcpqqUbsYtLe61dl6QGT8HRlCdBGJSRhUDYL68RzxhfCJ1Z7cC0yec9AtKGOI4fzOdqcfr/PdCtd1+4SnnjI8tWPbuKrVwB6lyyUw=
+X-HE-Tag: 1775035176-290613
+X-HE-Meta: U2FsdGVkX1+RcasvlqRTLL1JVe/66Zj2w6kFB0q+5oJVSZaocgq3ZoMSkGwy2phmkG+WaOLxTnlgt2jHE89wtj+jAYovMcqZjeU1jIGPIYV0wFRIGKHF3/dzukFakAMOfqxXrOc4Z+L7N6GSos9ZGxohtCTuLQ+wqcs4NWfPzhOwK/f+FjZK1pPDRxpnI1rho3eDLPq2gd5a1IqSynCbCeZFcpDGZmGJ6vx0OWyuAXnBpNP5ErukG8rmzHq2uEhrkX8PQ/EN8xz7GBWlEqtO7BMByGUxEpUjz6gJqzvXK9zpFMm9FN6gtPENcylo2ukLj08iyKjonuToN81VX3y1MFDGQhh+It0bRS30Cz7ewpaBu/awphNcXiLJmCEf8x+pTTTI0vscYJMarPMgqD8G87MjyMjK47yBP8s0c2CYiFdK3xaD0q+y/NFyQlvAEcqtjMsQEEWZ1kclH7r8YF2FBTlcHmilAvAHZI1sTINVGXABxBCJiZyRCYuJKCNOBUerYh1YXvw5xaBPIJaL0bTWif0miNxWI6LQ0UwdmMViHIW3FIbAKfGaxf3g/5rorQ/+HaJs46RngaHTf610AuiY9XZI56wuDA9be+zFmLIl/oGeuux1CiqSXkj74h1AlfVeAKGbpaBqwDZpYqJENMa4aIV7lsbx+NsOBG94rkSZEa8yolPou95pu5PCSWUlwAzi5iBQuk09WNlfDBtMK+m7k4FvNB5hX+CVFyA2GE1o5BrFlXN+dO36ihbMZHEqOE9AVhqufSVwW3JCOUOSKiQ8t+Z7jgs8yOI1tQTGHLlUeg4pzoHsWmcCCmMjO73SQAP3XZuBzpY9PmMb4WJw1T8mH+sO6nqXKNPo2S+t57lOE4GI9peGHXWOVdQ6H/fnfBz7p+Zr+SbLMkDdZ3FdsJ9f0G1Cqavr2yGcDT5BCeaabwdi+RRzr1J1TAjqvbZh35XXNw6klA+LnQtK9gxDcSV
+ XPjTpak9
+ jqMkzigMBY9Agv3Lq2QIZstTnCyESpwUHUhGAZJlt4GvGPHII2ubiRot21dKvfpMawtsUuavVjORlqnISm4HuC6FnPJWmI4NaY/ki/QCTAVU+92Su5Ns3l3wc/OhdzbZECo/OzVoMzPdrlpmXzfEwlhooC+68YhF0p4v/KpbnwrIRXwDH60ZJ6J2qSmaViP09xQ2vWIeZ0Pe7xC3cxLVb7Kq74UTLgF9CJBn+M17rhOt34gfplxisU8E9j+cwScI289pfZpFSw7ml8tjLHxnXm0ynE28bdSv/M9PRMGvwhfXFw6tmyQtyeiezlERNozhrtIZD6OiOZxV05mNT0LEf9kuegLBTIdjYvLiTZFUGD/DLcgfN+GxeQq6XWPC6bcI8QsXBQEnm//lY+sX/Hetfd2IY9S/X0HswVi/6SiQaoYG+YMF4B2hCVqq+qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,74 +102,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 31-03-26 19:40:01, OGAWA Hirofumi wrote:
-> Jan Kara <jack@suse.cz> writes:
-> >> It is including trade off write amplification vs reliability (i.e. may
-> >> not call fsync()), for example. So I think we should not add it easily.
-> >
-> > I expect in practice you'll hardly be able to observe the difference as
-> > inodes usually get quite a while to be reclaimed at which point the dirty
-> > buffers would be already flushed by background writeback. I don't see how
-> > this change would lead specifically to "write amplification" - that would
-> > mean frequent redirtying of the same metadata buffer of an inode
-> > interleaved with frequent reclaims of the inode and I don't see how that
-> > would happen in a realistic setting.
-> >
-> > If someone comes with a realistic workload which would suffer significant
-> > regression from this change, then of course we should address it. I have
-> > plans for adding an interface for filesystems to expose the information
-> > that inode has some pending dirty metadata and a way to flush them from
-> > flush worker because that is a common need a lot of filesystems has and
-> > doing the flushing from .evict isn't always doable due to locking
-> > constraints.
+
+Nit: the subject could be more specific, e.g. like this?
+
+vmalloc: Optimize vfree with free_pages_bulk()
+
+On 3/31/26 17:22, Muhammad Usama Anjum wrote:
+> From: Ryan Roberts <ryan.roberts@arm.com>
 > 
-> I think it would happen with normal operation, for example, copy many
-> files more than total memory. I think this would be much common than
-> write=>close=>open=>fsync in your example.
-
-When you copy a lot of files which are large in total, I agree the flushing
-can be triggered. But I don't think it will trigger any excessive IO
-because the metadata blocks being flushed aren't redirtied after the inode
-is evicted. So blocks may be written out earlier but I don't think they
-will be written out more times. For FAT for example you track only
-directory blocks in these lists so when directory inode will be getting
-evicted, you may see earlier writeout of dirty directory blocks but that's
-all.
-
-> Anyway, with it, reclaimed
-> inode metadata will be flushed forcibly and frequently (yeah, may not be
-> significant though. but I can't see the benefit for users from this
-> change.), and lost to chance combining multiple time of dirty while copy
-> many files.
-
-The benefit for users is 24 bytes saved for the majority of inodes that are
-there in the system - all the virtual inodes on sysfs / proc filesystem,
-all tmpfs inodes, all XFS inodes, all ext4 inodes when using journal (once I
-optimize ext4 code a bit), etc. So actually quite a bit of kernel memory
-saved in common configurations.
-
-Another win is that with metadata buffer head tracking now separated, I can
-modify that code (which will require growing the tracking structure) to
-properly track buffer head containing the inode and flush it on fsync(2).
-Currently there's a race that if flush worker writes out inode before
-fsync(2), then fsync(2) does not writeout the buffer containing the inode
-at all and thus data is not really persistent. This is actually my initial
-motivation for this refactoring since growing inode for everybody to fix
-data consistency issues of FAT/ext2/udf isn't popular these days...
-
-> > I'm still thinking about details but this has to be a properly
-> > abstracted interface all filesystems can use and not a special hack for a
-> > handful of old filesystems.
+> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
+> must immediately split_page() to order-0 so that it remains compatible
+> with users that want to access the underlying struct page.
+> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
+> allocator") recently made it much more likely for vmalloc to allocate
+> high order pages which are subsequently split to order-0.
 > 
-> Sounds great. How about we delay this behavior change until this
-> interface?
+> Unfortunately this had the side effect of causing performance
+> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
+> benchmarks). See Closes: tag. This happens because the high order pages
+> must be gotten from the buddy but then because they are split to
+> order-0, when they are freed they are freed to the order-0 pcp.
+> Previously allocation was for order-0 pages so they were recycled from
+> the pcp.
+> 
+> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
+> that it also frees that order-3 page to the order-3 pcp, then the
+> regression could be removed.
+> 
+> So let's do exactly that; update stats separately first as coalescing is
+> hard to do correctly without complexity. Use free_pages_bulk() which uses
+> the new __free_contig_range() API to batch-free contiguous ranges of pfns.
+> This not only removes the regression, but significantly improves
+> performance of vfree beyond the baseline.
+> 
+> A selection of test_vmalloc benchmarks running on arm64 server class
+> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
+> large order pages from buddy allocator") was added in v6.19-rc1 where we
+> see regressions. Then with this change performance is much better. (>0
+> is faster, <0 is slower, (R)/(I) = statistically significant
+> Regression/Improvement):
+> 
+> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
+> +=================+==========================================================+===================+====================+
+> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
+> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
+> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
+> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
+> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
+> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
+> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
+> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
+> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
+> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
+> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
+> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
+> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
+> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
+> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
+> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
+> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
+> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
+> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
+> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> 
+> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
+> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-I would prefer not since that would delay fixing the data consistency
-issues and I expect that reclaim discussion not to be very fast to
-conclude.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
+> +{
+> +	while (nr_pages) {
+> +		unsigned long nr_contig = num_pages_contiguous(page_array, nr_pages);
+> +
+> +		__free_contig_range(page_to_pfn(*page_array), nr_contig);
+
+I'll note that num_pages_contiguous() already handled crossing the section
+boundaries and __free_contig_range() checks them again. But that's fine I
+think, we don't have to optimize for !SPARSEMEM_VMEMMAP architectures and on
+SPARSEMEM_VMEMMAP the checks should be compiled out, right.
+It would complicate the API otherwise.
+
+> +
+> +		nr_pages -= nr_contig;
+> +		page_array += nr_contig;
+> +		cond_resched();
+> +	}
+> +}
+> +
+>  /*
+>   * This is the 'heart' of the zoned buddy allocator.
+>   */
 
