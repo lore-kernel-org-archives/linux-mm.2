@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F9910FCAC0
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 18:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC92710FCAC0
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 18:50:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068626B0088; Wed,  1 Apr 2026 14:47:13 -0400 (EDT)
+	id 575D86B0088; Wed,  1 Apr 2026 14:50:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 040C56B0089; Wed,  1 Apr 2026 14:47:13 -0400 (EDT)
+	id 526E96B0089; Wed,  1 Apr 2026 14:50:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E986D6B008A; Wed,  1 Apr 2026 14:47:12 -0400 (EDT)
+	id 4157C6B008A; Wed,  1 Apr 2026 14:50:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D98E16B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:47:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EE846B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:50:28 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 700AE134022
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:47:12 +0000 (UTC)
-X-FDA: 84610869504.26.5E1581A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7DA341C0002
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:47:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qn1IIrXF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775069230; a=rsa-sha256;
-	cv=none;
-	b=uvyreuSa1LWiVH1LLz/WfJXzyJ9B3qGGhBu1MYmidK9sMNcyIfU+NWAC+n0b8Xg/cNFYA1
-	YMsDxzuonPOmugQOjLPU/lDC4UJS2s1XpINym5d83ZdKxXVICaJbcydnZgFFnaVXNdq72n
-	IqVH/fwD3jAjFgV8rMixiw3jgIOsgrY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qn1IIrXF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D4321A01D2
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:50:27 +0000 (UTC)
+X-FDA: 84610877694.26.67D10F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9E251140007
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:50:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=czA3AYEf;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775069230;
+	s=arc-20220608; t=1775069425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HpRBWh/34JyqHmyDfKJLm0eryVs1QdVQqD2RYFPfKbM=;
-	b=iwbFhbFWt2CcXx+edISaPxoCCviL09/qzT6utzH7Zu8WfQdJtYtNyWs5dLYFo/gyFfE6ZG
-	VclhIZjU4zO0GrKaVabaDjWK8EnDkTbgTD9C31U2zLkMY0vglQkrROQx2Y6m8imuinIrPm
-	b2O+hvRLbd0B0F0KaM4l/8x9ZVcqr24=
+	bh=Jj19y4++qUtDh4UsJVdE8XVNxu8TxpKvDRYluipqUXc=;
+	b=8Q05NOvOQl9QCHuc8bBw3QpdzQPDGRifL06waRlBLWBYzqIX2xC16h71aiifk4B7pJ4p5T
+	CoTvZpDRnwThbFOwZeV8hVZhFZxT3UnnExoYVCo/YlYq1YkKeA9Mj7l/YItlQCZarzOD/d
+	5o0siQ570zhfuN6Jn4hHkNd+nmk2COg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=czA3AYEf;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775069425; a=rsa-sha256;
+	cv=none;
+	b=SrLk0kcurE480mWT8TCnsg47t/meLlWyBJ8vxw9WFEdI5SSzXNTmZz40LiyhoMdioze6tq
+	JNTXVJRh0g+7luXRgVOhCX9MIeKL2E0ZfjzeT1spc90hsqHu3cguM0NZopMSpVRVHbLZPM
+	aUxCKGhbmSn6gk7bzMIsav2AXkazyKk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDA3160120;
-	Wed,  1 Apr 2026 18:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D402C4CEF7;
-	Wed,  1 Apr 2026 18:47:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 62B6E44140;
+	Wed,  1 Apr 2026 18:50:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9DCC4CEF7;
+	Wed,  1 Apr 2026 18:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775069229;
-	bh=Md1s0fr2AtVUtJNKp2WzOQLe+z9ypGkqmv3OND+GXq4=;
+	s=k20201202; t=1775069424;
+	bh=yFr+6pN+gSthtYPUMkPOCzx9pN9VnMpe50u0D+mLClI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Qn1IIrXF/o3xUq2xY/HivQNRlycebcDAdO5dYCh7bMq5adD8d3dCrePMeoe7E3HHj
-	 HH6iQ3+bn5v+eWhFI1/5WDyaUJo4+gFTkLR6mJkoVo3OqLSjiioA2jn6RH2q9wOvxx
-	 Qte94LmdrivH3BuyhVFoZA+MzaUKx5SmmtrbaHyFUoaubg7wj9YcGCIHwr7t6potHh
-	 iG5IDp1/W43IWtEb0oMzPsXPatyjT3OWOutX7tIHMmBctCZMYTLgfJ6rxe+imD696/
-	 ZN1gUPNNspO/mM1dnFrC7w1sp61I68FbegA+d/0ILgTr7/3P6ukYd1J1sgyxVYlbcP
-	 jfMzWHokG7ocA==
-Message-ID: <e0417e55-1de9-4b77-bea4-b889dc2ac01e@kernel.org>
-Date: Wed, 1 Apr 2026 20:47:05 +0200
+	b=czA3AYEfwyQu2qQtrMZzAfTt3fC4ZfeWDW/pgS2GYNMXZuj+8+RelkDDMQfreIG3N
+	 9ucAmD4ylt+cctWrnbj2YXaMe24h1JJ9/k1ob1TAJyn4GspIJnwF6yLtYWwfWsHvTZ
+	 KUEz8RWcUudc/Ik9LTx/JGQa9E3TCjoef5RK9RsDykN5UlOcWrFed4h6uc3bgiXHPu
+	 CQ2nHuWGzvzBy8araAnLDYKiAJ9umbxE24yppx5qf4suOA6UftYEUueaT8l87AEPEP
+	 nMYq+DpbccZVugR0RvUZy+IqxuAyrfQWT9IQMhxDF6GgZ1L5Xd2bZFX7baGn/eS8E/
+	 kHegycPmozc/A==
+Message-ID: <a34fd3a9-91ca-4ff5-8a45-151101022c6f@kernel.org>
+Date: Wed, 1 Apr 2026 20:50:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: update stale locking comment in do_anonymous_page()
-To: Aditya Sharma <adi.sharma@zohomail.in>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org
-References: <20260331142936.229667-1-adi.sharma@zohomail.in>
- <20260331142936.229667-1-adi.sharma@zohomail.in>
- <db246b9b-2cc4-4aff-b92b-537ca27c47c0@kernel.org>
- <19d49eccfcb.5f815dde233268.9181527708613952801@zohomail.in>
+Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races during
+ migration
+To: Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, richard.weiyang@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kartikey406@gmail.com,
+ syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260401162855.146945-1-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <19d49eccfcb.5f815dde233268.9181527708613952801@zohomail.in>
+In-Reply-To: <20260401162855.146945-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7DA341C0002
-X-Stat-Signature: 6ch4f3dzfbjam6zths11mfodyah8yqpm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775069230-485180
-X-HE-Meta: U2FsdGVkX1+W9326A47q2aSj3tiPVAtaRVf/nU8gb0ZAaPP/xQ/UMVCeS4s8h4zuuKw7b/a7pDD0I4selm9Bx2fUTVVSUtND0x909oddQwVsyL+47vdqPXb8XpM786wmgeVV/Bjt6J462QJ8xYkAUZsNsrcbegHzI8oQ+1EV1VhaVwhh/uVTz77zwGtbEKtg5axZOqHu1WspYVsnORPliIQ8koTH+79YlYY9FfYotwSqJORmC9nPE0/VHYY8hL4ziMRScfwEpFeFntpzCoF82fIyol7vupakBS10Yl/RLOzmPeDVkMXbk4C5Ca3JYgHBhFU+qkpSojH/udRXTWus1kX5VMbiRXSbdu0M8ObB+DEQzNgk1sxVjYidGnbjELLJcZgFJRC3fwJ7DCoagtGleOKnUC7EHRC72aQi7ptqxUWq08SvY8X00WwElCW/ujheIYDJfLewmpCxFO2fL+9XChXVaw/gShdi9onm77IL2SnDqhQuYXyCsvk5uvMX6sZuvWmXk6iyFbMXfRJ6BY7VuxLjXt2hzBIE1u9689AAmhEW6Y4I9dzq78ym2S71O8EsbQjKFTuAWYZvm5fV48uWQubKRaA/pKUTZnMkql8IfBez78xVwequpIEN+z9D1fZumMEHC6dtBe2ab+aMpmcEd5/VPaSJYd+7gogQ6nlnwxJIgGeG7+IQvo1f2LjG4Vbz0XANV39uytsg07zs+mxDHrRSGizRPZ7swoIC07+oNMQgMbivLYyXeTp6iBOxekgB+3Rz2EDLg6zNxrOhUtDlrI7cW5pwo5yJeAAVFA+DvDCH5JOhywo+8xTyyI0o3mQnSe43nVw2304UtnebutY5Da7CcsobG1C9/jhiT4WNRZf0/rRB2eTutQ2ahydY/dwmDj4PayXvFiphXLrXFkYq04qRXYc0/+lqJjlQX1GncIjNR14G6Pwg36xQhSaRWVO78FHeJSzNvm4C//+Pi5M
- fqBrLBEQ
- 5Lc6v1Ta4PLe/RBw3NMxKP3RsvqSpSEFh+HrsM/GK16ZMsl51qiDT8kMacuO1KLgwPm+9MgXwPHbnJU07eGqgh5IoBPK+GVl8JEudyVQqDaPnwVHrz8bsrEKxwVI8+wc7O1KDcNsVbhvb51vIA2XdkwxHNfTK9WTt3ZwOh5gNjBmYj1EWNruhcHYw73Nz3K6UkcgiZo1vivHxuuoXFVO0EPiC3w/hmQoECNayyThxiV6HVqcb/MsDCxNNePboqsoRejJKp61oull9BIX2HFsjIaJzCIQeTR0fm2E+37Ukj4QoCtzOqFpV8nRzNpON++rb4Gru3ecWq0YeJyI=
+X-Stat-Signature: tqjrpghdjagtnam8bos13pq5ejomjngh
+X-Rspamd-Queue-Id: 9E251140007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775069425-331808
+X-HE-Meta: U2FsdGVkX189MCS6JZti4enn2pvqDFOhHZvcho8BSmYFgoax2URIG8M6UJzeHsjTW2lEnZumvm3sF1WX/4rEDRDw5Vjn75+iPEHhJGqhwvoFJ0aa5d4SAHyiSvJK+KannadbsScRh4LWjkv6MGZ0nOgyumEbjdChupNNW1X24sjjBFpu3c9wyUfwNVIKdd73vFuadMHpJHfa3pCL6DvOaGA/eEIygg5zsXS2697+sw/ra6K3G/iuFv8j6AubZ9/OWI1/+AuBzl0AKGTqXvttGAm3JA6Rv47gZ6tdr4XUx883LmOHS2bWCEJir4yFij3xXXtv+BpMmCfhW56oUNUbpUiG97fMW/0tDSlnJFzfPvHirxml5kyapDX5VA0o5q0CNc4j5i0MGk3XGxA7CTpdi/pJbqHrGOv7nZXbh9JNh0SXiaHqL4eN6jRkbME/f6OXiI0pYbaXIFn1TQUamww/A3NkNwFiXlqX9yICkE8qvI5OmqTN13hrnMeY/0siGsDKvxlmRLypWo1NO/sIW22jc2o0bHsth9JBw88HMyAVzZMmt3/pH+xgtagG3fJBCeHfj0obwBM0iLE+4SCnWPBnAallXjWd2RVUFtOlaZ4l5wFUhFsvgx0SatSBHcwSCEBvninoQJbOJmiSLl1avggppt6dIkgCpnaJak/p6tI4C6MMjI332qrKLFshB1cNRT2tLAb2OWm90FjVsrmieDvUOqaK+NnLPV/BQBqwLf/pB44XcuuPrC1xEuBHc+1UHgklEHhwcBLG+ERAj1rnLNZJN+9dWbKc7yxjb7yw857j/Qaieh/5aPmVybSaMvlsLILfzNb1YfqvA7ZCGU6ynQGIZPufEN987c0aTjM8ldbyfZ5xxpl0ddVaEAVKug7PlcdlKIk7CFOrV1RBVdcwqpzWWPPrBfzkcwINfTm7qs3Jv126KGHhB3O294G3wGjae4rshk/IfNKgnbHAnP6pTBZ
+ UuGzITLS
+ OQ2lRGnp0aRd/+GMXawRkO9RPYBnMFdmmcVieFWEDc8h1AaFWcwxnvlOSe24BAICJERhYvPDt/yFPZH35h4O/vgWT6XA0n2GkV7EImrluYaj/RbEgsnWewtfblt0XbWXmPDmaKdjwUJghw3SP/qKCI7ipAXbwBYcXABsFsNw/w0PCTI/lfOqvvAdBNumPW6CV0xCMfc1P2VN9bV7nI1ec/kgJhMFoxTGiYFlR2jXi45Y9n6Dd2YL502hZVllEwLN9YR86FNoAoPxhj31y2XKBae9vQkCZfnd+3VBrmYJoO6rao0Suf5uFkRVNIJKTSbBEIficqcgcYBxeNInpnXxJ1Y/gL394cHmyj3f30FUAMiqgMqZgtPBo/IoergD4YLNW55sL23odg0FX7VgaB3oyCi0No+JUrT7PrQDlFTpIH2jU1si0POOCmQNlzD/B6z3jJeox/Ocoaxuj41HBOX2W+sJ3jp6LVaD9Yp7u7k7LAoh2Zi+sDSJrCHYQCOndLYFt8JIGImHgOk0dQv0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,14 +144,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 18:42, Aditya Sharma wrote:
-> Sorry about that. The comment was AI assisted and probably too long. I
-> had this confusion myself spending half a day debugging only to realise
-> that the comment was stale. Will send an updated patch with a concise
-> comment
+On 4/1/26 18:28, Usama Arif wrote:
+> On Wed,  1 Apr 2026 21:10:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+> 
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> migrate_folio_move() records the deferred split queue state from src and
+>> replays it on dst. Replaying it after remove_migration_ptes(src, dst, 0)
+>> makes dst visible before it is requeued, so a concurrent rmap-removal path
+>> can mark dst partially mapped and trip the WARN in deferred_split_folio().
+>>
+>> Move the requeue before remove_migration_ptes() so dst is back on the
+>> deferred split queue before it becomes visible again.
+>>
+>> Because migration still holds dst locked at that point, teach
+>> deferred_split_scan() to requeue a folio when folio_trylock() fails.
+>> Otherwise a fully mapped underused folio can be dequeued by the shrinker
+>> and silently lost from split_queue.
+>>
+>> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
+>> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
+>> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+>> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
+>> Cc: <stable@vger.kernel.org>
+>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>
+>> [ Backport note ]
+>> This patch is a follow-up fix for 8a8ca142a488 ("mm: migrate: requeue
+>> destination folio on deferred split queue"), which is currently only in
+>> mm-stable, and should be backported together with it.
+>>
+>> Credit for this fix goes to David, thanks!
+>>
+>>  mm/huge_memory.c | 12 +++++++-----
+>>  mm/migrate.c     | 18 +++++++++---------
+>>  2 files changed, 16 insertions(+), 14 deletions(-)
+>>
+> 
+> 
+> Thanks for the fix! And sorry for introducing the bug in
+> migrate_folio_move() :)
+> 
+> So I am happy with the migrate_folio_move() change, it makes sense.
+> 
+> The goto next if folio is locked in deferred_split_scan() was actually
+> on purpose. The reasoning was that if the folio is locked, we consider
+> it as in use by someone and therefore we shouldnt split it. Eventhough
+> thp_underused() does a zero-filled check, the whole point of the shrinker
+> was to split THPs that are "not in use", and in my mind, locked folio
+> is a folio in use. So not sure about that change..
+That is a questionable assessment. It's about checking whether folios
+are *underused* not, if they are used, by whoever in the system (e.g.,
+migration).
 
-Right "mmap lock or vma lock held", for example, is sufficient. While at
-it, please look for other cases in the file that need similar care.
+Just take a look when anonymous folios are actually locked :)
+
+So the original locked handling here is just bogus.
 
 -- 
 Cheers,
