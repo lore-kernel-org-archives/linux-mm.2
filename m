@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F2110FCAC9
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:22:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 410A5D35154
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 20:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF3F86B0088; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
+	id 89F9A6B0088; Wed,  1 Apr 2026 16:27:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B817A6B0089; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
+	id 877486B0089; Wed,  1 Apr 2026 16:27:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45B66B008A; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
+	id 7B31D6B008A; Wed,  1 Apr 2026 16:27:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F8786B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:22:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FD50C0946
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:56 +0000 (UTC)
-X-FDA: 84611110752.01.48F9145
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DBBD040009
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kh9nIqIm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 662966B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:27:26 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E91101B6EC8
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:27:25 +0000 (UTC)
+X-FDA: 84611122050.29.8A7BA73
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3D4CB20009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:27:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uws9wjJE;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775074974;
+	s=arc-20220608; t=1775075244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2bgtfIq1zRS0GcFj3J4C74dQe6vGPo8AFkp0eGgx56I=;
-	b=baq/Kpl9JMK8/LMTFEuw/pRwZ1WkpMMBsYhTlaRA2qW6gCD5/4NhJ4JdkRR8W+kR/XCTqC
-	ne0UxbpQjg0LG2vgGalxJ6jZUuv/QAHT+R5sou66N3jST4y5lfW52aKeoOaChyIAZUnnZf
-	VL574qYa2BUTYo7YrY+AElfrsfZ3wPo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775074974; a=rsa-sha256;
+	bh=+wRlZga6UVBdQUfvWB6uS5UqMQsGTmZhX1Om3RCm+fU=;
+	b=wJPc2+/5/1wTCSJz9gMUw9T2QWq8gf539sDB9Jp6XBzC4aTkNVuoLEegkMihnW/OKzu0kB
+	hQkx4e7smxeXp6tXu5GNWT5MhvENFH3VebiWcgWFwJVtUvLjqhy9oJRtRx58+ghUgkLTqp
+	YYYGdoyIjYeWgwXNaPNqo3AZ5I/F160=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775075244; a=rsa-sha256;
 	cv=none;
-	b=Lm4ooxCx+cICb3SYmlqUWd5JdVXQNhuyi6uhSZRmIRaxTs/TLzrWDt6a2ruidfkeLGqyeA
-	qhucd6WhTGs+jjF40kH+H0ifiB/16FixNZleECC7qWVpUAGv+U8N8Lw5zbgypX5MF+5sKt
-	XIVuBAzsNcF9cVGUdVNhUIkkQKLBemE=
+	b=3SM2sg2bHzioXUXBpQFAGJWO9MdLDZ3e1ofqjXxURMYd3CLkWQxlf17Bx/jPpqwz6EyKOp
+	L9Cd5tEMmWKhDj/fBWB7cuc+yTh54UeJPlLlom8U6pXsVwuwC2D4n0HcynuOB/wNyUwtIM
+	cl5dobSqtbM+by3N+SmAqn0w4yVjq1Y=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kh9nIqIm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uws9wjJE;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2CA0432C2
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B04C2BC9E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775074972;
-	bh=N1dSuIgj7e/PoIrDkyO9MUAKq6GumfQ0T+iWjsXaZt0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Kh9nIqImRkvQZJAD16JbmjAiy6a1usqifi+ejwwqWIn2AHmMje0N55i3QWoOdBLIv
-	 hFXY9iMGVh47QIGFSXmlw/pO9eMfvspCJd6aaqDNBkf2D1koZbiCrDTF460qKoYEtH
-	 52IKTtu5dkuKofoOyKi+BnzVvKYBsoIe69Yg6BMhs+90/YqOf5df3Lq5OEPjCsrZh2
-	 DBRNG2cW0WsdZo/Ow4k8z+hS31WJML1HCHWqmVSPaw4pAPBXCetN1dj9EPcyprngKC
-	 l4tXY6j7vnsj+B5XWCh5QtOH2Q3FGhgXoWfA9m+1lObMjnSBKypSZFb9JYz6HCYQiu
-	 rILbvWkXk4osg==
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-506362ac5f7so1113801cf.1
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 13:22:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVWlhGlTPwdykFdNQ0l5rUxwiarHdBbSGDk2nAkAnKUL/lgL7kyaicpSd3B5V3HX3OoqhiwnyKgAQ==@kvack.org
-X-Gm-Message-State: AOJu0YwAzRYqIfBEF8wCRcwu/t1aMw4cBYbFI82O+QBOTpTSxb0B4zHy
-	xoqW4tSjDATuwk3ZcWpeWuYRdnrE7PiyOdpp0+TLNDI0AxsgOXAbngn1VD88+mY3D9oA6J7h9wW
-	qO/WvPTXJklMKm+g8kfYsZScFqOuuUe4=
-X-Received: by 2002:ac8:5811:0:b0:50b:8deb:6a3b with SMTP id
- d75a77b69052e-50d3bd09e9emr70551201cf.57.1775074971885; Wed, 01 Apr 2026
- 13:22:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260330071229.14614-1-devnexen@gmail.com> <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
- <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
-In-Reply-To: <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 2 Apr 2026 04:22:38 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xqmCPCTnWNvxp+fTFgnJT64oOxFVNBnkVVBKOW26K7-Q@mail.gmail.com>
-X-Gm-Features: AQROBzBoOjM5D-IXgae6XgnRkEpJbpi97gBWlUDLzHjnzkQ_MDvqB4MSuYBGqgA
-Message-ID: <CAGsJ_4xqmCPCTnWNvxp+fTFgnJT64oOxFVNBnkVVBKOW26K7-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
-To: David CARLIER <devnexen@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DBBD040009
-X-Stat-Signature: f7b8ahs85ufed6a3qwhn18i1gym1mxoc
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E5F860120;
+	Wed,  1 Apr 2026 20:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C92C4CEF7;
+	Wed,  1 Apr 2026 20:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775075243;
+	bh=OWtKm95laT3U6i3fhcBOR5W+DKz0FEB3jZZILO5nH8A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Uws9wjJE8a6LUlC1K75cOrahSIa88MlVL/cOcGuUfmc1fIrG9KUDszDZkHNbCl0c5
+	 7fg+sHAYKj2SjgOTbgnX0K9/5vfXssNMrRMlEuipz5giV8UMy0BiZsnKd9TrQ7yX2U
+	 0FS7eKqnC8rVi0MtpnmgZSNg+gx/mfFft9Y/l++c=
+Date: Wed, 1 Apr 2026 13:27:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot
+ be locked
+Message-Id: <20260401132721.ef6c976eeb5e50b0cf6bb635@linux-foundation.org>
+In-Reply-To: <d20a7a98-2bc7-48fc-b467-21eba8df89a4@sirena.org.uk>
+References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
+	<20260310155821.17869-2-anthony.yznaga@oracle.com>
+	<52bec9ea-5627-4ea2-8f27-f1729957fa47@sirena.org.uk>
+	<20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
+	<d20a7a98-2bc7-48fc-b467-21eba8df89a4@sirena.org.uk>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3D4CB20009
+X-Stat-Signature: wudbzbuh9fqut5t65ubszzxc8xp6fyfr
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775074973-377843
-X-HE-Meta: U2FsdGVkX1/Vin5GGlNlZB6Wz7lENzx7lTXA8rNmPpj3wICHU2n2HQTiUuOGyTlrqqnK7AqIGcrroiBh3DCWl0858UuSBUL911Afljc/cAhz1/A+zEgPDOwrSoZB6Lt8EQlU9VRCrC1LpPKGGtFiAD0s/WvTZKcYB2Oijp692cf57e8+UIU+WVxwLYLPYX6ATIDePQ9/ivITrmwcN0UuwlseOzmxZXgTzh04iR0YeRI9/d3/toXWoCVzrhDym/Tpsko2IYtR3aAO+3R1yZt2dP1zD1/X+7tqgCN5ARsvdN5Pjy8HtzEk8JSPf/9tNWTilXJlEgjHCqmNDeTGP7tTWCmVrHgSsrtBzi1lJARFP/bDcL7U1NEiPJ73OWInSay30duzPZ5jy779Miobb2w3jGGDw8P2ApgaFtIU/vS2z+hRX4zZlzjlC7a/67R1HYDoBW+gpe3EWwZT2bSbCBagEb95uHodxn27CXuNiKhIJkW2RdXXkO6GXhC0q3sC7u4hHbF8KUU7Sx6KQ5lI9C/qo7CjGyk3a8NaGLIG8KF8d0vCLtcEq0LJx3G7LKtMbExbatgGU64THZBPex8JF+TVh+mgxlS5tzwZnZa5Ci2SlIMQuw9OMETNXDjB5onf4er5a5DrbbpAS+F7BtCVEtGVedhBrQOUViBRtOkt59CurAJO7+z3V+VuS4kDYWi1ZvlQbnf5VQu9KOopo7bxwbkvZMxiBjaaPoXTMYF1Lv20hcSV7xoVFY7P+2xrt0KRv7KMy+pQ0CVYkKEohyMGyA6EJqprt4rwTuuxXhXRnQ1bKZ0chchVUwJ5/ADveui2HJf9vNHRA3ufEzLZcqWTxnxFXKW1IoL3w6ozCieop7q44Wm+0pLDSzPH6PQMsFAaReOX+qvII481mPMwtpcgOJ9FtO+mT9nWk50iOwhb/Yzv0DDLL0Y95uKFpeCPsiHqW82uPQIjTgDA9n+v+e0qX+/
- kbfbxSWc
- gdAWMn2rrG8quNaO6QtDIX4P1oDAsMn2vq3T3oa+3kgBdpcBzGoujV69F13BD3svSqatYFNC4PA6ij61v3/oqdslu8LUI3tdDnZRkksKSL2Ae3jGvc9828mEpDrTRwl3SGWfXu0fG5TsBQDJL6tPGEqfoo5uH6z1CbrDN3SDc79sWD1cebRLKZwekSpHuO1I9+L1wRgz9qvnRn1RRR5CiXMhRY4zEdn6MEkKtPHFJ0NPlKoMIIJfpJpKbMx1p64cNUJczWQZKEZWkW+i0Dt6G/JPb26rQkz7Qj4HrDDgR5lLLFgJR8Mt4ee3ukhFzOU6mrhtFmIopMcTTC0yfbrerSOO8vERcG/HVkjysBAUK99hgXNRpvr60eI/8sHAc7P/0jmyQDuvZxJusOcU=
+X-HE-Tag: 1775075244-481395
+X-HE-Meta: U2FsdGVkX18rXAzvgwDgfrRTnKtRZja03+DCGexgVGCi561fSRgD5KbFJmTQEG1vBp2FVEAV2Zh/FeuznG0b5M2bGIHeTf/tR8uoJJ5bIJ8XH6Z9soEPoaF6uc05sf41cYmDIrTnUP9qv9eWroiJ/lMZYnsS4irGVU/U/O4oZ2DYKiC4EyiUUrpmPJT8wZqXpqhJHOyTydrVgOEBH446uAXAB1ljrV3ygbtzbK34BxrdFYHiIUSAC5pEmBAQBqzxkVSLK63sY433o6ldt37QbOTZDXyuDUDeqZ7t2R1da8ivIEEvzv3cPNLsXDHxLEUFeBWdtgMjRS1JSifxF8SMTlQVebOSyIERfgTJmf66jp3cKZTBoflfmjoHJI2lgz9yrWEkOAzm73Y5Jm55tMU5vmfl5FvHPVtMbV4W7iXmhYiPbDC1jUpK3nAYyGF7MldgRdtROu3bi8RFJIbcwXNJKXEqm0/L5rhhYH5fETEQ4wcDD2OouOQsIses2J84TAfox0R6a6ILG82eyLjTlZLRfJOWX6mJOpAhp5m1Dih7nte7nI1njtm0LD3UA+Nkc0nereumKCUeWso7W5EaL/y6nI2ACeILD0ni0baeclLpcuwALBrlsGcUMf1SeOf5Q9DWh2IYsyLzk/EXQlumVCv4tHE/NdEsrdplU4a6bucxGI9zK3g02hOLnybxy4GEpO6MNmAxJ60mls7LMb6S/3kkqeFjUmTFGQV9yhi4D0FrF+BG1MBh2KV0jzIiBYgea7Tlx7fKGfHHBknQcTMX7CBWcNdbAuWiUJCRlR63ayAWO3+qvmC1mQhJYtHhFEpgj4zNEHWXhUNcQWN/YYQBT4uBxlKOKsv9fKyuiCncH+U5/2DTUMTg4c0DM0pwRIQ2BHLrf2zWeMDXa5aCVkJR9Ux4nZ8uPQtM62isDPchv60sxoYs5JOJjwEKDArXFGtr8mIGARToCZ0X/X6uivQ2m7e
+ DcM9ye/c
+ HTAyyMQ4BY+NcTbdmndx0M6YZf00f/vGH1ZpPSsbnhi+ee4kyesaHAtvFQYRGhA+qotprzdz2DDF7Ft5XRWDKP1DHTkUx5QAkIGmu6C5GF+PG3AZqm7qsR8uTWOIkqjPKIH4i+X/arzOOMKLl5xt1NUwv7cJORi0aFKqOsVRHPfRHkSHdxmr881FDf3VFvILTvtnoqlmv7rLOx6BI8Oszn47Kn04ZGbW/eh6RAfu1Q6wt8nJ6ecnwSBdOGMRcXBmNAy2E/l9KKe4FKOP35yeO15jKGpdqaInigT0E3Mq33X7f7esFp8qFhWlfckNqGV81dBUKoBV4DHH/H7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,62 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 1, 2026 at 3:10=E2=80=AFPM David CARLIER <devnexen@gmail.com> w=
-rote:
->
-> On Tue, 31 Mar 2026 at 23:33, Barry Song <21cnbao@gmail.com> wrote:
-> >
-> > On Mon, Mar 30, 2026 at 3:12=E2=80=AFPM David Carlier <devnexen@gmail.c=
-om> wrote:
-> > >
-> > > sio_read_complete() uses sio->pages to account global PSWPIN vm event=
-s,
-> > > but sio->pages tracks the number of bvec entries (folios), not base
-> > > pages. For large folios this undercounts compared to the per-memcg pa=
-th
-> > > which correctly uses folio_nr_pages(), and compared to the bdev read
-> > > paths which also use folio_nr_pages().
-> > >
-> > > Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> > > count since sio->len is accumulated via folio_size(folio).
-> > >
-> > > Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
-> > > Signed-off-by: David Carlier <devnexen@gmail.com>
-> >
-> > The patch seems theoretically correct, but I=E2=80=99m wondering
-> > where we can swap in mTHP for filesystem-based swap=EF=BC=9F
-> >
-> > In both do_swap_page() and shmem_swapin_folio(), we check
-> > data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
-> > large folios. Am I missing something?
->
-> =E2=96=8E The patch seems theoretically correct, but I'm wondering
->   =E2=96=8E where we can swap in mTHP for filesystem-based swap?
->
->   =E2=96=8E In both do_swap_page() and shmem_swapin_folio(), we check
->   =E2=96=8E data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
->   =E2=96=8E large folios. Am I missing something?
->
->   You're right, I missed that. SWP_FS_OPS is only set by NFS and
->   SMB which have no bdev, so SWP_SYNCHRONOUS_IO can never be set
->   alongside it. Large folios can't currently reach this path since
->   both do_swap_page() and shmem_swapin_folio() gate mTHP allocation
->   on SWP_SYNCHRONOUS_IO.
->
->   That said, sio_read_complete() already calls count_mthp_stat()
->   and the per-memcg accounting uses folio_nr_pages(), so the code
->   seems written with large folios in mind even if the path is
->   currently unreachable. Using sio->pages (bvec entry count) for
->   a base-page count is still semantically wrong, but I understand
->   the practical impact is nil today.
->
->   Happy to either drop this or keep it as a correctness cleanup,
->   whatever you and Andrew prefer.
->
+On Wed, 1 Apr 2026 12:17:30 +0100 Mark Brown <broonie@kernel.org> wrote:
 
-The patch looks correct, so I=E2=80=99d personally support keeping it
-after cleaning up the description, as David suggested.
+> On Tue, Mar 31, 2026 at 02:17:14PM -0700, Andrew Morton wrote:
+> > On Tue, 31 Mar 2026 14:17:50 +0100 Mark Brown <broonie@kernel.org> wrote:
+> 
+> > > All these failures which cause the entire test program to immediately
+> > > die seem exceessively strong...
+> 
+> > Well, is the test code incorrect, or is the patch which it's testing
+> > incorrect?  That's 5435ba164b0d ("mm: prevent droppable mappings from
+> > being locked")?
+> 
+> I've done no investigation on the actual failure, sorry - the comment
+> above is a stylistic/usability one about the test program.
 
-Best Regards
-Barry
+Thanks.
+
+Anthony believes this is a problem in the test code, not in the kernel
+code which is being tested.  He's working on the test code so I shall
+drop the current test code from mm.git't mm-stable tree. 
+
+That's 6235dbcce97f ("selftests/mm: verify droppable mappings cannot be
+locked")
 
