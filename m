@@ -4,136 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D135D3514A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB465D3514A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6188D6B0089; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
+	id E3A7D6B0005; Wed,  1 Apr 2026 03:18:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CA326B008A; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
+	id DEB856B0088; Wed,  1 Apr 2026 03:18:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF8F6B0092; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
+	id CD9DD6B0089; Wed,  1 Apr 2026 03:18:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F3A16B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:10:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F18D91B861C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:10:24 +0000 (UTC)
-X-FDA: 84609113568.17.078EB36
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E07DF1C000C
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:10:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y/ULCIg1";
-	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775027422;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BA3A86B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:18:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 189F459F9C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:18:03 +0000 (UTC)
+X-FDA: 84609132846.07.D8F7F9C
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 31E591C0009
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:17:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=e9RLizYc;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf21.hostedemail.com: domain of wangzhen5@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzhen5@honor.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775027881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
-	b=Qm06FxtZCnSoItPgz0P7AfP7B3P/2i+5OCidS5lf1jhxugkxDVIgEOZYjStDFZ9n4gTCKd
-	nGytYHml8MNnCf9cf+YLzREjoGZ2/PE0n0nMAsQyYG0D0E4Vg6a3ueofhnZjkhX70uQ6F9
-	QzYkToSTQ0Sv/fTNqtEfAPwvBRKpXu8=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y/ULCIg1";
-	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775027422; a=rsa-sha256;
-	cv=pass;
-	b=DMndSB0UjK/ZJjfjvmx49Vmq58Rjac/FrKtoZzwtrn1a5nqs9E1zeGkbT4pg3l6vGqiOt0
-	iiTtl7jVBae0M9m1H1d1Kag7yqQ4/Qgz9TipaB+NrO0VKWiyM4d5qQd71i2U+WrVI9tq43
-	gFqB4R810CbypF6e6c2UDmQRPcCDab4=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-794719afcd4so34215487b3.1
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 00:10:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775027422; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hFYv6ZZgwg7IvZNGlr5QZd/jIlRXcjTGpNQa8zWw9jK+1/UnxDabymKp+skdhOEPA9
-         igEFyUd8ECRzcSg2NZpxkylthFGq20mLd/cxwoJyOgMQ48QWlwh83Zv1Rum/9enCgJcE
-         Gabm9UZGPIyj52aHgkk8wmw/bl4EkzHSRf3s8J2cQLp0LTdfHN848r8BTspIJB6CLghC
-         SN0vEenNizz+BD92YCd6WEN//0DTbyxXxo6Gn1GK4xgxcpekBeFRl6kPa363Qp1+BXc3
-         CqcIKtFdnJ29u8Le5dI+yeKR+VtNJK7ha3BGyksBO2+a7NdH+eStuB/XRDS/qJvvoJoa
-         /B5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
-        fh=meCTCE3QK3nN8FShFKql4Amv3CoLb7sHyBqxuoDI6A8=;
-        b=anKEA7nKwXK7R2v9dPjXDW4hpeEKAFx2bhWqBfk2fbG14DzW4786X1qOEqCGd8VQTx
-         i/CKoLo9O6Aibq5LSl/nFdnowob3bK38pGK4Ff9dQqQSiNb61aMqRwVuXk/O3E+lLrV7
-         HLtOPQuapZGlRO7WJd0cafMJ/BnEQxAUEUizOwx16eBQT+H4hHAYwLLUBKEnBBePb/KI
-         9y1Akauv9VskhQM6FABhYAUKf1WvIGvYiY1uZ8a+5fKFTYJLpl+UjV29M2H1XzeoktXX
-         Ksyd8qaDF5LOE3qGeGlvZuN+hD8JVJYAM7Mbd/vZbj2p/qRi8IJOhd1DztoQi7q7pAxe
-         Y9/g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775027422; x=1775632222; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
-        b=Y/ULCIg1kQPb4Ot9IhRq2o0w0ZcTMMhDHagfRKH5fkb2DDaLPyvOYsia6g10Nalvo3
-         qoIMr/9sZ/YUoRyGMC38+2XDjym3gLWopQQTHOKWdXDhslaVMBYyjOQadTyzaNP7sags
-         M+VCWGp8AWFwItq13Z9uokKljnrtmt7syL0M5OribOmO+evL5o/bhO75GozRkoM9lOWc
-         40OzdW8HEmgd2Ps5xYF5tW2jHOovDocXTXuqzgjLLr7MOQc6rPx6YOHJQaNVzYN1ViTE
-         2spt++IB80/ZjZblwGuZ731y3kB5GTxQdX0iFjUbV3qP+nnp5hfJCJ8fXwKS63jsCgxu
-         OdyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775027422; x=1775632222;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9IDtRLIbhkJax9pZlIS106eYJzTeVArPppd84gRGp4Y=;
-        b=bzXmN1J/53uHU0kIJEfKPvx6TzQTFw+UXJs3pBUvOS2Wypt9V+TPTgkUkyYbWYkfbX
-         +SB3H71Zsfc/z2ICGdD/Bfxjh3QAyWhJz2Wh53PTl6jHgH3kyOab7pDk7kT15bL8i1ic
-         /8MZo1Nw0wClW+KUOWNGkEGqkEN6cEvpl9zjVBnlXmdJ1zNy20uFPQkSGnjvUjP9n5ym
-         MppiGycZXyVQfSrWVDFI1Ax7Rr3cWAYCMjZmINJgFzTEMOVKbuwJfZn16xKdnt4kG0eb
-         eOgi0YEr9nG1D2f1D1jrODZEek+pJRCOFMV6/2arV36GOgaCXxXZBU4coKTUKrHNVUqh
-         SxYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUr/DRdZh9PP7y2UYuxU6vVi/YkxxB1uy3RhJdP7aTmI1lRIih4AGEWKGkDgNJ6LVSSy5B+Y1HovQ==@kvack.org
-X-Gm-Message-State: AOJu0Yylwf3oGH9C7ADAOH9SQcEY94KwvEB1uwebGXxlu/PPdXv+W99x
-	iStGUxUWsfAgznPIgJdYJwsWhUWHWxG1daK26Rwxp+ef1Dfh9mEf2fk43XHrK1KZkz9unf0jt9k
-	i5cABoGy3W6lD4HI0Qhz28x2TN0Vtgcg=
-X-Gm-Gg: ATEYQzxAtvFX6WSE+sgPzb3bqcqRLyfV8gS5xUVSGI4vyE0ETdT1iqjRcJ2q1tcY6CP
-	fcyvMpxCZvZ7f5W4MrNUyi4phKB++o4TKu6AjpI5YzOie8m/D4+Z5J5/OHhalT847SPFHP6J/SF
-	iu6TpQdmnNSOG/GtPbAuhvIiSt/i5APfDdgqk2Txo7A/sTNegTxKIqlPPnV3ahD8168UCsKPStr
-	4iOZySX79UN7nyZ3QhaNzMaS4Jm8LdvFG7+JzL1mAi0bOS2w2bWLoPXEw5fZO7Ypm0o8K9821VA
-	h6hoa4rEkb7cgLbfMK2jhBNw7ezQQcmbFt7xOA==
-X-Received: by 2002:a05:690c:940d:b0:79a:8dd1:53b9 with SMTP id
- 00721157ae682-7a212e17e61mr21518597b3.55.1775027421821; Wed, 01 Apr 2026
- 00:10:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260330071229.14614-1-devnexen@gmail.com> <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zpre2gUcYdZxY3s57=ESf_av59L+DNCYd0hZ3UtHNvSw@mail.gmail.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Wed, 1 Apr 2026 08:10:08 +0100
-X-Gm-Features: AQROBzAvqftq4k998KUQk_SHQCSrieImEsgsOd3Jjv47f8RWBMv9DB5Ldgi70rc
-Message-ID: <CA+XhMqw59iWLPQba5WSaF5Y7HKDgf3BjjBLn_X=w=g5tAk26-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
-To: Barry Song <21cnbao@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CgTvKdo/p2bgLfcLhC67tpYYumUMNTRd/FLgAyX/pIQ=;
+	b=TYaMcOfUHBgxCzSGndQrzpqXJgQkv+aJ2uu8cQaHV26Nw8TZIL+Nrx+Lj2W4obC/q9ehcJ
+	xV0TIIRO3jx9jFsr5QrA1vdIi0M7EIU18CH2tUFqPzciEZqFb3FRb2ZirVMjhnRQUlGnAM
+	/pUoBgbjcKyc/J5XqMzNHrAr1uR1QHo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775027881; a=rsa-sha256;
+	cv=none;
+	b=qUg3Arsi853vm3XMMvj5/dQryvKOaYoJgQQfdSTf43sFWN4tj+6ugFuwLJOwFsbb/T3Rjh
+	1i6p3yPHL8uN/BTLSrlLdyt/fwnn7FscaJMrvrtgGqeE6nPA8PA0mJ1grZM2t3zg49ydxZ
+	moe6v1E3lbXd5r/FGxr4TmsxZfLvkqA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=e9RLizYc;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf21.hostedemail.com: domain of wangzhen5@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzhen5@honor.com
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=CgTvKdo/p2bgLfcLhC67tpYYumUMNTRd/FLgAyX/pIQ=;
+	b=e9RLizYcoe8gkHVBOqL7jxfUkmtOdBuXmz0i9jpqj9M+1oYceFOXiNqyOD3rR09deo8Il143E
+	L6p5gETjJSRBVWmLliaH0KmsZx7cNZTUEXo9oVZ9NyLMPoGgH4UzFWwolQwJJmW3SSxdX/fxk6G
+	TTtGe1u1yIkkdIF9U+2D1ss=
+Received: from w012.hihonor.com (unknown [10.68.27.189])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4flxBN5Kl3zYlYLZ;
+	Wed,  1 Apr 2026 15:17:00 +0800 (CST)
+Received: from TA012.hihonor.com (10.77.228.68) by w012.hihonor.com
+ (10.68.27.189) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Wed, 1 Apr
+ 2026 15:17:55 +0800
+Received: from TA011.hihonor.com (10.77.232.85) by TA012.hihonor.com
+ (10.77.228.68) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Apr
+ 2026 15:17:43 +0800
+Received: from TA011.hihonor.com ([fe80::1391:8a1:1ddc:4344]) by
+ TA011.hihonor.com ([fe80::1391:8a1:1ddc:4344%8]) with mapi id 15.02.2562.017;
+ Wed, 1 Apr 2026 15:17:54 +0800
+From: wangzhen <wangzhen5@honor.com>
+To: "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+CC: "rostedt@goodmis.org" <rostedt@goodmis.org>, "mhiramat@kernel.org"
+	<mhiramat@kernel.org>, "mathieu.desnoyers@efficios.com"
+	<mathieu.desnoyers@efficios.com>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"david@kernel.org" <david@kernel.org>, "mhocko@kernel.org"
+	<mhocko@kernel.org>, "zhengqi.arch@bytedance.com"
+	<zhengqi.arch@bytedance.com>, "shakeel.butt@linux.dev"
+	<shakeel.butt@linux.dev>, "ljs@kernel.org" <ljs@kernel.org>,
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com"
+	<yuanchu@google.com>, "weixugc@google.com" <weixugc@google.com>,
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, wangzhen
+	<wangzhen5@honor.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-trace-kernel@vger.kernel.org"
+	<linux-trace-kernel@vger.kernel.org>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "kasong@tencent.com" <kasong@tencent.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"baohua@kernel.org" <baohua@kernel.org>
+Subject: [PATCH] mm/vmscan: add tracepoint for changes in min_seq and max_seq
+Thread-Topic: [PATCH] mm/vmscan: add tracepoint for changes in min_seq and
+ max_seq
+Thread-Index: AdzBp6diUCgIzLcpTbOIx0zw848r2g==
+Date: Wed, 1 Apr 2026 07:17:54 +0000
+Message-ID: <402fbac2fde14bcda8230c1535186b4e@honor.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.163.18.244]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 31E591C0009
+X-Stat-Signature: nghk1xe61899z3ifs5p5r4zdghsxrpxi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E07DF1C000C
-X-Stat-Signature: jzcezezotxnau9chbxizf78ja5q3h4km
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775027422-577473
-X-HE-Meta: U2FsdGVkX184IRHOi96dIQbm06si0e/sR5gAygB0C6NsIeW28Uc8FHy1v/WMjKpATE1WHhQ3UWfbvbmyktUfUYLOotApB0Hoz/jx5iB3DyTB4xAwlWvA+qQ2WpZUSgkFnEB4P9YbvRw7ZXKv1tekCyBbRjI5Lx4YWsdtPpSGTRMlMnCjLV8bl8fLLhWLYVu3vm8viLtgAbeAsVGgYEuTba4/CEKzWMDozrWGw+cLKoprH4GHVJaAlV8jg6WRYALRZLtWs5R28L0R+MymfN8gErAhZyJfYx8um98SLm9LdDJ/nNzinK3njQboFKc4hd5vY/ZT/0D8tjdx9U4cczvYRtPrpH4LK6ljjp0v+hlqCJLrSbWz1wYcLf1IpcjBJN7/0s9YbN5QsM/zNqp/he7A5rYTVBTpOLZE3Hn+dlLNpHETZFVUWwIWpyxF0+KuX2gH+EQQvYYGw176k9gKKO0UHdHpqyBnNUCnmiDCPgbLTEd5TQu4x6SIguV8A5ACp5WHgW3m0hvW8vAVq3JWuGYaXoUtrvVpn3T6Ody05R57ffl+9pBgOdwXJUho5hC6JdV8ZK+GaEgcyY4Yi5fymGS209bMWlz6S19xUZJd7P9pPvFNQLrJ+k8Eoz1XIRPpJijg/NcMCUtDbgwyBJ11CRkqrpqCzcTkrdUB+hS+IHQqfZjOjq9uGt9wXtERtbLoOk1fKct1t4HerOLLq7uX8CSBpRzY5edalbnsqISolr1FhibYG0eNefEwjR3V4o3QxiCxlfeyIg0YObZ582X2Vb6vYN0JujaGbRZwvjYIWYOva2XhpixNnbOQIxa6ArWMtZibI98hDbQOdDpzJl4WfLzPIHVX1bUxrCu3S+ki6lF0wQGZiLllXzBH/TzcrJSj8xZTAN0HSnPLh6x9hfmxiBH0s0fjuOP31BM2fK6EuroFoacx56XY9IxZjYSAEyR4c4NluOi3Z5f2lcPy04W+Wki
- BbYfNvdk
- 7JqrdHeepL9Ks86PysM7khX07CT7vGEEHLeZJ55y6Qads3kAxM7SOkSMY6XygZ27iKpiKCHXtBnP/3I/GrlB3/Wug/OD6BwLFSB7yKFPULQ4OojQYMNv4EdgW5bp5PPtx47g17B35ZKwkETG/Q9Qf1tW3gIU1X3rzHYjVJLcBGmyF2FxGb3A7pv0lKs/taZbseFznvnmH/Ay0/Le0qh/pi6Syrh2z4qLfu2FjFEVj7N4isD93J71ll1AdwUEpKnK6xkZ143uiNBaBm/sJRZUxXUw9cxgSPzXNa6TkNolnuvZRga/1PNkuHhB+nJ6lBNxKTu9HcVpRH/axUOMazi4+T5Qd5dLvXhF1uk8b8BXBcYfKjq/UjZJMAumu5N2brLPTNlOWqPitEVU8EoBO4qYDBo/rT2uoNwyPpxA/v6Q12J9IiGagWaXegmkp/Q/ukFBhB00sHth5IgFd/FWTiUw8l2tfZw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775027879-408700
+X-HE-Meta: U2FsdGVkX18BErTCF/mAOycJZa4iKJ57BiBElRbGARgj2juz37vxiX51Ac2Oti5wbj89SnnRg3l78ve80r3tFkevecXp17PcFBUcZA5yuPJkcagiAVoJe7YMJFtBwenseudv0Lr1TPWHAmPzDHslkv5mAF9Mxzcr+5lwwwsaxlxIw/JU69zsbQYQp09lSgdHONRYD/nuN99fmHb4zIpkLnx60E7xbvIYzeZXfjGm9R4Byq29IdSRstUS84jF0SAJa+QFdyCsz98pWJLxuyt1zvuWQZcN8vj4PtmA37W2AIxJItFDjupyxSLCMnns0a46TqcpY1nJuU13tBarOgWDKPtmV6CIpGMaAVZwD4K3vD1KO4SAzJVolBORsclWqghQE7+fqLJeQXmelvlXRiOMnfOrvc6rDxYhOJl2jGv4/G0PUOleRFTLsrlHQL0dzDh3X27G5bWW3ZqjuJCC8KBgORRL2/oqvRZVK78eHZzsGF1sjqpVLCXSC9CqBX/WXpZv5AK2Ih/NMLhTiIaQu020obZb4rMo1rPOZMiAmmcFWUkxaV6JNJZaB7FRcocRw2EcYV1l5mnB4sNxQxqsmAXz57xnuEEsBPGI6pqVRwc6tu6/bDMoLwcT2QZL2qLVY9d3P6IlPScMjekT/+BtzNNCM2YbP0zfiKH5jfWVcgMDy3V84aZMDv4LyVidXrHJUIXXsHEgs7OyIZ5ms9WF+DygeGd4mpVKUphkkk4xFIyIe3X+xY3TtprhaUfDcMBjDrKs3izeMh7bpfxDOYahiXAYYGeMfuGH0pyqnVAeoNuXKDOvbcJBAEAsENLMtTexDewsp2sPe6/O4AfjN4uRo+bnve4yt+uEfjarO6yZs4u+ivKlnSciyLFqNilJnc3JOHKedp5sqswQx2ZkySMfOq7TMEMXU1HJcZ4qAmjyOs31WGs7MEQU5HF5gMyYsKaquosYybnzOoOQEGWgFxP/nsm
+ k18JLlC7
+ q38Gw9oAo8LWEiJCSzvvtWXCO+Fya0FI6G312noFi60cbvRl9Uy/dAR/avr3ShxBctEqL6Eiz0qt7zmZnXthMlGGBWrV7SzAEJP+KihZXLhFj5FzzsrzTFAL+rpjLxTvQgAVjENDV9TeqUlC9Ab0J+mY/Xc9BxbWVMRmDhopK8kXpQUAu8pBEnUx/VFgVz30rxGRJo8j8FkQpvqXDXEJLxkwPzYnI95IC2SlgRIksNsoN+S+xHBpqUIrcVtsZwu9GmA4ucbwRIsxtoQ+5JWO91SskaNCM6m5uECTQqITyMnXq4CvfZ18kHDnlGTlHzfFFC6ypzTkkOVVtBF3Y7Ta1+hP9DmouG4+rX9UKRvaz6HohR6N9UsL3V7AwuF6pF2Mktn1AYqvxM/U249Jm4bzvpgbm/0js1DjFYP4b6txM8/UbklRa7XOIeIY7oBNGcXjOQDasD3ylvmMXEkEXnj0zmfDTgQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,78 +116,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 31 Mar 2026 at 23:33, Barry Song <21cnbao@gmail.com> wrote:
->
-> On Mon, Mar 30, 2026 at 3:12=E2=80=AFPM David Carlier <devnexen@gmail.com=
-> wrote:
-> >
-> > sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-> > but sio->pages tracks the number of bvec entries (folios), not base
-> > pages. For large folios this undercounts compared to the per-memcg path
-> > which correctly uses folio_nr_pages(), and compared to the bdev read
-> > paths which also use folio_nr_pages().
-> >
-> > Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> > count since sio->len is accumulated via folio_size(folio).
-> >
-> > Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
->
-> The patch seems theoretically correct, but I=E2=80=99m wondering
-> where we can swap in mTHP for filesystem-based swap=EF=BC=9F
->
-> In both do_swap_page() and shmem_swapin_folio(), we check
-> data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
-> large folios. Am I missing something?
+From 20f685d13826ebaa86705a689128893be6316c7b Mon Sep 17 00:00:00 2001
+From: w00021541 <wangzhen5@hihonor.com>
+Date: Tue, 31 Mar 2026 16:00:48 +0800
+Subject: [PATCH] mm/vmscan: add tracepoint for changes in min_seq and max_s=
+eq
 
-=E2=96=8E The patch seems theoretically correct, but I'm wondering
-  =E2=96=8E where we can swap in mTHP for filesystem-based swap?
+Currently, when tracking the changes in min_seq and max_seq of mglru,
+it can only be done through debugfs. The granularity of debugfs is too
+coarse when we debug the generations of mglru. there's no way to trace
+the increase in min_seq and max_seq, so we add 2 tracepoints,
+mm_vmscan_lru_inc_min_seq and mm_vmscan_lru_inc_max_seq.
 
-  =E2=96=8E In both do_swap_page() and shmem_swapin_folio(), we check
-  =E2=96=8E data_race(si->flags & SWP_SYNCHRONOUS_IO) before allocating
-  =E2=96=8E large folios. Am I missing something?
+Test results:
 
-  You're right, I missed that. SWP_FS_OPS is only set by NFS and
-  SMB which have no bdev, so SWP_SYNCHRONOUS_IO can never be set
-  alongside it. Large folios can't currently reach this path since
-  both do_swap_page() and shmem_swapin_folio() gate mTHP allocation
-  on SWP_SYNCHRONOUS_IO.
+kswapd0-94      [003] d..1.    72.664921: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D87 type=3D0 swappiness=3D140 min_seq=3D2
+kswapd0-94      [003] d..1.    72.664922: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D87 type=3D1 swappiness=3D140 min_seq=3D1
+kswapd0-94      [003] d..1.    72.667303: mm_vmscan_lru_inc_max_seq: memcg_=
+id=3D87 swappiness=3D140 max_seq=3D4
+kswapd0-94      [000] d..1.    72.807691: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D25 type=3D0 swappiness=3D140 min_seq=3D2
+kswapd0-94      [000] d..1.    72.807692: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D25 type=3D1 swappiness=3D140 min_seq=3D1
+kswapd0-94      [000] d..1.    72.810955: mm_vmscan_lru_inc_max_seq: memcg_=
+id=3D25 swappiness=3D140 max_seq=3D4
+kswapd0-94      [005] d..1.    73.482586: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D91 type=3D0 swappiness=3D140 min_seq=3D2
+kswapd0-94      [005] d..1.    73.482588: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D91 type=3D1 swappiness=3D140 min_seq=3D1
+kswapd0-94      [005] d..1.    73.485509: mm_vmscan_lru_inc_max_seq: memcg_=
+id=3D91 swappiness=3D140 max_seq=3D4
+kswapd0-94      [000] d..1.    77.708630: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D88 type=3D0 swappiness=3D140 min_seq=3D1
+kswapd0-94      [000] d..1.    77.709491: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D88 type=3D0 swappiness=3D140 min_seq=3D2
+kswapd0-94      [000] d..1.    77.709491: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D88 type=3D1 swappiness=3D140 min_seq=3D1
+kswapd0-94      [000] d..1.    77.715550: mm_vmscan_lru_inc_max_seq: memcg_=
+id=3D88 swappiness=3D140 max_seq=3D4
+kswapd0-94      [003] d..1.    77.749288: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D4 type=3D0 swappiness=3D140 min_seq=3D2
+kswapd0-94      [003] d..1.    77.749290: mm_vmscan_lru_inc_min_seq: memcg_=
+id=3D4 type=3D1 swappiness=3D140 min_seq=3D1
+kswapd0-94      [003] d..1.    77.763055: mm_vmscan_lru_inc_max_seq: memcg_=
+id=3D4 swappiness=3D140 max_seq=3D4
 
-  That said, sio_read_complete() already calls count_mthp_stat()
-  and the per-memcg accounting uses folio_nr_pages(), so the code
-  seems written with large folios in mind even if the path is
-  currently unreachable. Using sio->pages (bvec entry count) for
-  a base-page count is still semantically wrong, but I understand
-  the practical impact is nil today.
+Signed-off-by: w00021541 <wangzhen5@hihonor.com>
+---
+ include/trace/events/vmscan.h | 49 +++++++++++++++++++++++++++++++++++
+ mm/vmscan.c                   |  6 +++++
+ 2 files changed, 55 insertions(+)
 
-  Happy to either drop this or keep it as a correctness cleanup,
-  whatever you and Andrew prefer.
+diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+index ea58e4656abf..6f2ae5c597fd 100644
+--- a/include/trace/events/vmscan.h
++++ b/include/trace/events/vmscan.h
+@@ -488,6 +488,55 @@ TRACE_EVENT(mm_vmscan_lru_shrink_active,
+ 		show_reclaim_flags(__entry->reclaim_flags))
+ );
+=20
++#ifdef CONFIG_LRU_GEN
++TRACE_EVENT(mm_vmscan_lru_inc_min_seq,
++
++	TP_PROTO(struct mem_cgroup *memcg, int type, int swappiness, unsigned lon=
+g min_seq),
++
++	TP_ARGS(memcg, type, swappiness, min_seq),
++
++	TP_STRUCT__entry(
++		__field(int, id)
++		__field(int, type)
++		__field(int, swappiness)
++		__field(unsigned long, min_seq)
++	),
++
++	TP_fast_assign(
++		__entry->id =3D mem_cgroup_id(memcg);
++		__entry->type =3D type;
++		__entry->swappiness =3D swappiness;
++		__entry->min_seq =3D min_seq;
++	),
++
++	TP_printk("memcg_id=3D%d type=3D%d swappiness=3D%d min_seq=3D%ld",
++		__entry->id, __entry->type,
++		__entry->swappiness, __entry->min_seq)
++);
++
++TRACE_EVENT(mm_vmscan_lru_inc_max_seq,
++
++	TP_PROTO(struct mem_cgroup *memcg, int swappiness, unsigned long max_seq)=
+,
++
++	TP_ARGS(memcg, swappiness, max_seq),
++
++	TP_STRUCT__entry(
++		__field(int, id)
++		__field(int, swappiness)
++		__field(unsigned long, max_seq)
++	),
++
++	TP_fast_assign(
++		__entry->id =3D mem_cgroup_id(memcg);
++		__entry->swappiness =3D swappiness;
++		__entry->max_seq =3D max_seq;
++	),
++
++	TP_printk("memcg_id=3D%d swappiness=3D%d max_seq=3D%ld",
++		__entry->id, __entry->swappiness, __entry->max_seq)
++);
++#endif /* CONFIG_LRU_GEN */
++
+ TRACE_EVENT(mm_vmscan_node_reclaim_begin,
+=20
+ 	TP_PROTO(int nid, int order, gfp_t gfp_flags),
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..6b5d21ee45ba 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3848,6 +3848,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int ty=
+pe, int swappiness)
+ 	int zone;
+ 	int remaining =3D MAX_LRU_BATCH;
+ 	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
++	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+ 	int hist =3D lru_hist_from_seq(lrugen->min_seq[type]);
+ 	int new_gen, old_gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+=20
+@@ -3892,6 +3893,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int ty=
+pe, int swappiness)
+ done:
+ 	reset_ctrl_pos(lruvec, type, true);
+ 	WRITE_ONCE(lrugen->min_seq[type], lrugen->min_seq[type] + 1);
++	trace_mm_vmscan_lru_inc_min_seq(memcg, type, swappiness, lrugen->min_seq[=
+type]);
+=20
+ 	return true;
+ }
+@@ -3902,6 +3904,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec,=
+ int swappiness)
+ 	bool success =3D false;
+ 	bool seq_inc_flag =3D false;
+ 	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
++	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
+=20
+ 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+@@ -3947,6 +3950,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec,=
+ int swappiness)
+=20
+ 		reset_ctrl_pos(lruvec, type, true);
+ 		WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
++		trace_mm_vmscan_lru_inc_min_seq(memcg, type, swappiness, lrugen->min_seq=
+[type]);
+ 		success =3D true;
+ 	}
+=20
+@@ -3959,6 +3963,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsign=
+ed long seq, int swappiness
+ 	int prev, next;
+ 	int type, zone;
+ 	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
++	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+ restart:
+ 	if (seq < READ_ONCE(lrugen->max_seq))
+ 		return false;
+@@ -4012,6 +4017,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsign=
+ed long seq, int swappiness
+ 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
+ 	/* make sure preceding modifications appear */
+ 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
++	trace_mm_vmscan_lru_inc_max_seq(memcg, swappiness, lrugen->max_seq);
+ unlock:
+ 	spin_unlock_irq(&lruvec->lru_lock);
+=20
+--=20
+2.17.1
 
-Cheers !
->
-> > ---
-> >  mm/page_io.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/page_io.c b/mm/page_io.c
-> > index 63b262f4c5a9..1389cd57ca88 100644
-> > --- a/mm/page_io.c
-> > +++ b/mm/page_io.c
-> > @@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, l=
-ong ret)
-> >                         folio_mark_uptodate(folio);
-> >                         folio_unlock(folio);
-> >                 }
-> > -               count_vm_events(PSWPIN, sio->pages);
-> > +               count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
-> >         } else {
-> >                 for (p =3D 0; p < sio->pages; p++) {
-> >                         struct folio *folio =3D page_folio(sio->bvec[p]=
-.bv_page);
-> > --
-> > 2.53.0
-> >
->
-> Thanks
-> Barry
 
