@@ -4,100 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D3ED35144
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1029BD3514A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 07:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A574D6B0088; Wed,  1 Apr 2026 03:05:59 -0400 (EDT)
+	id 48F426B0088; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A081F6B0089; Wed,  1 Apr 2026 03:05:59 -0400 (EDT)
+	id 466936B0089; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F6BF6B008A; Wed,  1 Apr 2026 03:05:59 -0400 (EDT)
+	id 37CC96B008A; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F02D6B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:05:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6357C6415
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:05:58 +0000 (UTC)
-X-FDA: 84609102396.25.0914ADF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0629D1A0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:05:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkQVQASh;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AFA56B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 03:08:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9EC61606C6
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:08:25 +0000 (UTC)
+X-FDA: 84609108570.07.22DBD48
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3B69E12000B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:08:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gz2eKhzf;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775027157;
+	s=arc-20220608; t=1775027304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTQTdfmufH2EOweeeilKJr7KloWw8t6HzsQXkHwD79s=;
-	b=TOhvA/3Ee60sPDzK2TDYhPzZ6xRYSi35wxW8TkBFpSjlpKMxg5zuL8BssZ8IOL6o/pUkV4
-	dvUOip0/PVRITXeCn35b0VdCYlE9aT0gskQSQ8L9BR8fwUR7T+47TduLpPdDTbcHDfGvLM
-	DHwRPQJOwu6rnpCp7gPqem+Qpebzk90=
+	bh=juk/yrwlqljfx3yfY2+dZnX8QwkcUowy3ScbgHmbN5Q=;
+	b=nb5hrhdc7QVJ0DUl6/HkaMWURhBDXNBixUvBT4z6VOOz4Cdn5tmwJk1U6VlYO9XlNu30zc
+	5HF2PjzwJCOpRDC1zC7ecWT1n+3AvtzrSSKumdTDwp2a0xVzNfZq2grl48H2HArS95AECh
+	19NFfYbsOoOILvnJVC5nHp5I0GHqryo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkQVQASh;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gz2eKhzf;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775027157; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775027304; a=rsa-sha256;
 	cv=none;
-	b=OSy8LmvtZuWJAHHoIU546fzfnnZtUL5zIwIXeovrs0wWqxt309uuZ3lIGTOL9BoUI442et
-	JHg3c9zU8O2rGQBQiSjDUiMhkWf5HKaQBZtPxIMmcwAiUdRy6k9vaA0s+GxNDFb3maSRlE
-	EO80iDM22TNsE2diTdXRPV0CrMPlnWc=
+	b=EQ1qaTIsYfWXtXyskYCigCHZjuQE5X8xQEDFYId5bTqCTmY2W1jeNZpk75SIuF4qKZaQeh
+	9d9RLOngt2RsvhKj3RW2V0i5DfsZL+73Ww4S/2eeAE0iUYR1Gs5cqn7azsYyDFn74YL3vx
+	tcRri8zF8AccPi1sJXHR541XrKn4NBY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98471404FB;
-	Wed,  1 Apr 2026 07:05:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01500C2BC9E;
-	Wed,  1 Apr 2026 07:05:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 48AD060127;
+	Wed,  1 Apr 2026 07:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C981C19423;
+	Wed,  1 Apr 2026 07:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775027155;
-	bh=c3l6MPA4k0TQ0xyReyvOamQy+3h8kUAjazcvuAgobGE=;
+	s=k20201202; t=1775027303;
+	bh=9dWTDjvpA+ASwfwn7e7CTy1SkAgAXTZVgBAk3qFv6xo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TkQVQASh19TdIE+kSJCQVylESD/gh9WNHjm+1ZaxFTtvW/Tm88WijUSmhVopEuP7Q
-	 P6m9W2moTIeXZcx1kzsNkFvwnT3ubCqFs19USnBKKTEJLVv16VDsR0kGy/II0S177L
-	 AcXrm4yLCQudSpD3y/RjZ86rarGElt+/x5rynEI1oUKEODe6e0HQu/odmnwT5yS67v
-	 H6CsFr+QoA7JliPDDu5IWdSAKfRyD17zHFHS/M1C8X1wMFeXs54/stDLEdaa/SFhoc
-	 gnJnjlK1S1Il7UJuIZyssypjNbnuk9h/BtAAfLphXMqayX1r9Y1Rcavw/NIH3yjJM1
-	 Yyg6bBB8fMPxw==
-Message-ID: <1cdec848-4822-402d-91fb-50237488aec3@kernel.org>
-Date: Wed, 1 Apr 2026 09:05:39 +0200
+	b=gz2eKhzf9cD7Z1Fi1Va71fGpdDvjsc60Y/YbH/UE0lJqnUJYdRjLamgTeC1oAE95e
+	 0i2oDHTvM0ImWMjhx/4rFy9CUnT9NstLmN65QRpje15iK2Y1tUUInbuUkbmRWgkthE
+	 Kle35fD1WEj8RP+Ut/UFDu+h8PPIEjbLPG0sJrMqClfFg7nKWrNBYsBz5DX5xuAzG4
+	 HMfVjPZcUfh9ammj6UMlDN/l3C3Os8dwR6vmNR9HLW9KdLBmISlstIkTbSyH0kdtTZ
+	 kqfbQeqP2uEXWoziN87VBCaSCzC6iLA2UvgefryUt5SXPPhKrFT3cokmpjeLLB7gM5
+	 9Aac07ayJoyvQ==
+Message-ID: <9fddd112-e304-4ce1-b3f0-a4b133fcb281@kernel.org>
+Date: Wed, 1 Apr 2026 09:08:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-To: Nico Pache <npache@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
- anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com,
- cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com,
- dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
- jackmanb@google.com, jack@suse.cz, jannh@google.com, jglisse@google.com,
- joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com,
- mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
- mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
- rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
- richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
- rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
- sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
- tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
- vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
- willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260325114022.444081-1-npache@redhat.com>
- <20260325114022.444081-6-npache@redhat.com>
- <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
- <0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
- <fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
- <26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
- <20260331143538.f41a5fef4201a7384388f31c@linux-foundation.org>
- <CAA1CXcB8D9o=5EC2dbL8N=o9p2WqrHnugoGYmwUvLh8n=w5p=w@mail.gmail.com>
+Subject: Re: [PATCH] mm/sparse: fix BUILD_BUG_ON check for section map
+ alignment
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Petr Tesarik <ptesarik@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260331113023.2068075-1-songmuchun@bytedance.com>
+ <32789381-f860-4b60-a1e1-4c97f6ed08b1@kernel.org>
+ <7C90E910-D229-4F60-A62D-E893A89D58F2@linux.dev>
+ <1742503A-F912-4AB6-AAF6-6CDB06829024@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAA1CXcB8D9o=5EC2dbL8N=o9p2WqrHnugoGYmwUvLh8n=w5p=w@mail.gmail.com>
+In-Reply-To: <1742503A-F912-4AB6-AAF6-6CDB06829024@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: u6m49q1p6qi6nqpxcphcm9pb93k1xtsa
-X-Rspamd-Queue-Id: 0629D1A0005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775027156-285954
-X-HE-Meta: U2FsdGVkX1/gc3cTR+OZBzufqElwbaPYPrI6feNHrul3sQX3Hq/1pJOdavq/nzrYGHq1NQNMNr9QqSAUzu+Ir821I7SKfyH/6pAJ5YYHtXgQs+mBfKgp9vUzKw5deEXgmZaNxpIG9lUiXkXjmXggcyaiu4UA9muladl0G6r3WwBx/hvTFyA4S0ijdbVIFbjAwoi/yDm1B3st7Yv30PE/WpVnn9Vk4cuN9tMFUqbQO6HLHN0eVKDWRABZHTQ2zf/XsCeuv5sRL7L9A2PxXWGCEwprHNNBGd0dKd2w/IDoriv62LlzNsmRA44Rw/dAWn6RZkIqUqB3zgpOKYv+dapCp3V2g0Oke49oKgJRECLZNdTwGKsCtsUkt5cDdIpZxTcNt7deG81VEnHxFXMog1GxeeqNI6luA2y6EbJYEYHr3XcY6zmRAb8vbjFKrvcFQYf+jKqdnPaoWB0VoEmdoPbQKwSJd630lC78MSfmAHfPFksdonU3iG9pG3t4MTgrRtBDCBVSCKlEiCO3oia2jBSC1uKlBrryEguWLOiHVFyfX7kXvpaKKPf5Yg7VIRp6LDgXStfStllWrE7TUEUoHhCVD7v1epD/0nOwuCTZnq4CmbuLdqHxM1PAjNUz5l5ASTUNKAZBbtskIFB0rNfMbNUm6IvJrVoRpc9aZorhAyBX6vGrfSnCgbKiTYSVrRXsT8HsOqJIhmATjJnrs0BDbdnikcmaJzJuxxJ3ShEonjk96RpEvr7646JVjhNsBJ43qnZGsDtpL5GQlV1+Zc11sbQzoC49PoXw6ZbvIq81LSBezeOtLE02LNjNWHwAEKj5fmCOAA5/6TKtdRPpcO6ngcMNmWTsZ9T0th96G+dVb040dqhxmXXh7bP0Sj3YV/DkNA7jdSgjZoG+Z5oxN2ZQJTpJLMqvRreSrEWXrL6osjmBzqRNqWVe6vxdjF+TFVDr/PI8a3XUkUYGpuBgNoYLa7b
- gpuOt2ED
- 19o7QGL4QsoNKTnckvAmlgrP33Wog763DkhbxDMVMOiSl/fYXOpiNKvdjFzcyvtAnhUoIHYd7wWAHq2ShCRpwTiRmLZQVSA/1g6S/2QI283SuJGCDf/z2GL0OgiqOEhQZLzlmHWRYuXDfyq34zWc4xdot66Xz8znsb3YWRd2YBCJXEthSwGZ6Bb5PtMgUtBzkiCiWg4iredNtbq4Xv5nYqP7PJtDTo+dVXdSTFBU44TLEecT6tAqYKrnDmAWaagTyh07shK8boTonULZMmcnmLjDQVev2cZ00WHp/XAk7cV6TJt0/pNWxqVkmIsHLTx3EFNpaZ/tXFvpPDyWEez3NS0ncn+shXcn5D+JCCT2o+fEYLEPG9FFPjF+uar0Elf8dHwREANuV7f/mCWXBr1xtxDk3Bp7MMemrH424Vppt6wwgS0Ms5zofIxMWS02YSkGiXAz7R3bV3LVjTdXfKnYlIS7W4mDQJzFNTNckJQveT1C+TEivlmdzsPSlMrGX6uU/Et6W43VhTCm/DeBFaUBFhQJQBA==
+X-Rspamd-Queue-Id: 3B69E12000B
+X-Stat-Signature: 6oj8m45us3mi1bu3eny6bof8kgc5o1w9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775027304-60268
+X-HE-Meta: U2FsdGVkX197S6JxewJUZgqvBWJxT1GZI4Wie/C8eOqxiFxrHRqUd4+DIO0KSwVlwzoIYIeEUc9/HYylQdkLFjQ5eSBPHbpFJEpXYx53553luONHrGVNe2MLSp3KbjaCU/uaLIQw3aB2Y3cbGnC8GzQvEfcIFUX8lyFqbPaGnnW9dgx7kxKx0Kvnl2QTHnTBhp5Nyc3LRj0S3iXTuifNAQnyaOYJCS83Pm+TgFJ2eFZ5b5QEygLoqMjvIvX8hMpYjDHyWQT8lquYPF6Ip4GaL0Y2D1qhnQl/DO3FnloLYZTxgcOYQqr3sUCLjbALPd55nmb7eRtVxMzeXZVGdzT10TTdKWfoFA/Jvr2OxXoU94WMtF7m6U6wFGa+yg2ymYS/j1ZpIMXHkk0Eb+kaL9vKqsMvEp4EGRVZz2mziZNmhhm87yRp89PuDEclLnQvy+Fb2cfulKyiLaS8rzTgnr1KVBKGRYpa2IuCgQtXNGNtLU0CxQ/gLdn9hI33FoGxcsplLxRBcOSKzCLTAYZsx+dlw9ziToXDXpX0yVdmp0fM0EsZp4N/zJ43NyabTaYIuByfO3NqflKnN/yao0X/jZXI3lkIhSvj/Eq0leU9cuQCG9zKSVU6u2mkJZyYMSNnsi5Rasm/Zk4C2CXZQBaEg7gEeTmQvqQBAOh6MoaNWkmKJtik0dYFBDZjfHGTNxSs6I5l3aVo0Iw9RfVKyvVi4W0OkG/Yf9vWmkZvoSs68Irw1c5RbN6cPPDoxqOA+hiENmZZP2X8LGXol3hvfxJTk65Z0m9cPyMm3WUDBp9rWwKLSZBVTEE+T7/hEVMY+rL5Hl9CNNUkHRBlDDzFVrqHRXO4i0/4LALJbzHWVnw3Zh9ZS8h938dYsDwEb1+EBzFctzgBozgAbVhvLo36XYEPulObRSUht7O9g4OLCNr02aOIJKwZShejD9HtDUDTts/kYqFIBrGAeunIMj3J5fM7oju
+ mSDGjlK1
+ /J1l5DfZJOqGIhmYhdi4ZI5BHrQCQ0YyNgZONQcTilyH9GDWzOoxznvgoooGOyFaJv3+QjQTloGQSabQpNLExNh50z9SCaR+S3dPYY375IJDOBPLKbbBsI8X6as6sOY3OANH/c+unWMLP1BTyWUA/y2jEF4BmCcXTPQ+zf8szWztcY96uPgngfV5m17QfO3rEahd82TOSCoHFLcdP22+jjVJiHdozsRWpyAa4uQZheE6y7w3As/2MUUDoBF3+YTaJ9oT93sUdXYC+Hkpqbuwk5bI3J7cZwn768W4WDdCIQPL8XdD/UiUSVUM99AmRMYOdtkqs88jQl/30O4I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,106 +146,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 23:49, Nico Pache wrote:
-> On Tue, Mar 31, 2026 at 3:35 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Tue, 31 Mar 2026 22:00:58 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
->>
->>>
->>> Right.
->>>
->>> The original code used
->>>
->>>       bool mmap_locked = true;
->>>
->>> If the fix get squashed, maybe we should revert to that handling to
->>> minimize the churn?
->>>
->>> (this is not in stable, right?)
->>
->> "mm/khugepaged: unify khugepaged and madv_collapse with
->> collapse_single_pmd(): is presently in mm-stable.
->>
->> Doing a big rebase&rework isn't the done thing, I believe.  So queue it
->> afterwards, add the Fixes: and tolerate the minor runtime bisection
->> hole.  It ends up looking like a later hotfix.
->>
->>
->> Below is what I added to mm-unstable.  I added a note-to-self to check
->> in on Nico's question at
->> https://lore.kernel.org/all/CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com/T/#u
->>
->>
->> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
->> Subject: mm/khugepaged: fix issue with tracking lock
->> Date: Tue, 31 Mar 2026 13:11:18 +0100
->>
->> We are incorrectly treating lock_dropped to track both whether the lock is
->> currently held and whether or not the lock was ever dropped.
->>
->> Update this change to account for this.
->>
->> Link: https://lkml.kernel.org/r/7760c811-e100-4d40-9217-0813c28314be@lucifer.local
->> Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse with collapse_single_pmd()")
->> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Nico Pache <npache@redhat.com>
->> ...
->> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->> ---
->>
->>  mm/khugepaged.c |   12 ++++++++----
->>  1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> --- a/mm/khugepaged.c~mm-khugepaged-fix-issue-with-tracking-lock
->> +++ a/mm/khugepaged.c
->> @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_stru
->>         unsigned long hstart, hend, addr;
->>         enum scan_result last_fail = SCAN_FAIL;
->>         int thps = 0;
->> +       bool mmap_unlocked = false;
->>
->>         BUG_ON(vma->vm_start > start);
->>         BUG_ON(vma->vm_end < end);
->> @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_stru
->>         for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->>                 enum scan_result result = SCAN_FAIL;
->>
->> -               if (*lock_dropped) {
->> +               if (mmap_unlocked) {
->>                         cond_resched();
->>                         mmap_read_lock(mm);
->> -                       *lock_dropped = false;
->> +                       mmap_unlocked = false;
->> +                       *lock_dropped = true;
->>                         result = hugepage_vma_revalidate(mm, addr, false, &vma,
->>                                                          cc);
->>                         if (result  != SCAN_SUCCEED) {
->> @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_stru
->>                         hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->>                 }
->>
->> -               result = collapse_single_pmd(addr, vma, lock_dropped, cc);
->> +               result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
->>
->>                 switch (result) {
->>                 case SCAN_SUCCEED:
->> @@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_stru
->>
->>  out_maybelock:
->>         /* Caller expects us to hold mmap_lock on return */
->> -       if (*lock_dropped)
->> +       if (mmap_unlocked) {
->> +               *lock_dropped = true;
+On 4/1/26 06:01, Muchun Song wrote:
 > 
-> Hmm this was =false in David's example and = true here? Now i am also
-> confused hahaha. It seems Lorenzo's code is correct. I think i
-> responded to my own code changes, when I thought David was replying to
-> Lorenzo's.
+> 
+>> On Apr 1, 2026, at 10:57, Muchun Song <muchun.song@linux.dev> wrote:
+>>
+>>
+>>
+>>>
+>>>
+>>> If that would trigger, wouldn't the memmap of a memory section be
+>>> smaller than a single page?
+>>
+>> I don't think a memory section can be smaller than a page, because
+>> PFN_SECTION_SHIFT is defined as follows:
+>>
+>> #define PFN_SECTION_SHIFT (SECTION_SIZE_BITS - PAGE_SHIFT)
+>>
+>> Therefore, PFN_SECTION_SHIFT must be greater than PAGE_SHIFT. On powerpc,
+>> PFN_SECTION_SHIFT is 6, PAGE_SHIFT is 18 (the worst combination).
+>>
+>> Sorry, but I didn't understand what your concern is. Could you elaborate
+>> a bit more?
+> 
+> Sorry, I misread it earlier — I thought it was about the memory
+> section size, but it's actually about the memmap size. Let me respond
+> again to your question. On the powerpc architecture, when PFN_SECTION_SHIFT
+> is 6 and PAGE_SHIFT is 18, it does seem that the memmap of a memory
+> section would be smaller than a single page.
 
-I think I messed up that in my posting when manually applying :)
+Right, and I am saying we don't care about that and do not support it.
 
-So this here is correct.
+For example, most vmemmap code I am aware of relies on a single section
+covering full pages.
+
+So I don't think this patch here adds any value, except faking that we
+might be supporting something we don't?
 
 -- 
 Cheers,
