@@ -4,93 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A5910F6FBF
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B88010F6FD6
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 16:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50A7C6B0005; Wed,  1 Apr 2026 11:52:58 -0400 (EDT)
+	id A74846B0005; Wed,  1 Apr 2026 12:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BB5A6B0088; Wed,  1 Apr 2026 11:52:58 -0400 (EDT)
+	id A26046B0088; Wed,  1 Apr 2026 12:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D1C06B0089; Wed,  1 Apr 2026 11:52:58 -0400 (EDT)
+	id 9140D6B0089; Wed,  1 Apr 2026 12:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B2A66B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:52:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEF5416097D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:52:57 +0000 (UTC)
-X-FDA: 84610430394.25.03EFC43
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1073318000E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:52:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="PabF1i/o"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 753066B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:05:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3713816098F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:05:47 +0000 (UTC)
+X-FDA: 84610462734.29.C1FBD43
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 98A461C000F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:05:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=m8bvimfo;
+	spf=pass (imf20.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775058776;
+	s=arc-20220608; t=1775059544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xpk2KqHsKd8WkdQw/hVd0mcmOtkvgHESF7Hs9H3tAtg=;
-	b=qe4NEDgzL4AIiCt3nenMxVw9OJNSSTjiutBmRPCQRAj5ZAZqI3OlfmGlvkwGSqg2gvmhdF
-	6P/PmIsUAYdxWGlk3SVLiPJOL3J/yf0wX4vkFfT0l9WSEgez5qiejqP6t2nxboPzOMiHbD
-	jvnhNTFB6ibOqXrUOtaNhetnwR/4P3Q=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="PabF1i/o";
-	spf=none (imf06.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775058776; a=rsa-sha256;
+	bh=DS41ytpRnWbYo6AReClMhBSZ/2PMMtxIe4+jyO36Jy8=;
+	b=SJpZ9uQYOIA54cB0nYhOi1uXwRyMZJNvI68vQGHdyOFbvpjKdydWLNJwn31O1dl8w5iqmp
+	D8niuh2ULoQ2ja6UeQYBO3A+1wOxIAOOyYbuGmoDWtGphp7U4NkqDhMB/zHH19aOZdaSau
+	vaFgOn3gUA5n+epXf81XXv0xrgeaq8U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775059544; a=rsa-sha256;
 	cv=none;
-	b=KsxKuSvW0dEMu8QhcYpdm1Nu7QVetH6ffCwyk6TNDB+kHUbk88TPZQ4bTBQMPYCNS8klPP
-	u82NNmJb1oDOuP3Q8Yh6RFz2CPIMOaP12STgMUsRsTJTZicBBdSsQ96dcVmMxvvsFiueS/
-	Osnl827ikWeu7rLo4gZYlzXjqo2IzTg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Xpk2KqHsKd8WkdQw/hVd0mcmOtkvgHESF7Hs9H3tAtg=; b=PabF1i/o+ZJiHqJ+M/BVARG8ZC
-	xJK+r/BlIFxBeexlys85rDUFrrTRjg8xRIcVMJSnTBw42KKu31nLD20u+E2JWBAH7AxLIoXOA11+M
-	lZUbAv0zDsU3rFPCu6iDYDbLegbUdQS8k45f0LsNmUPiSd1SsbHl57cPp/k0lZiWdJLiuzkMln9hw
-	IL9Plu9r3sL0uI/dGhEEdYwL6/5rP+0xLY0Sm3Bht9j1A8ycZ/Mx/78osTpZVUa4N3yrNWz1WBFoy
-	MWNqeW/4XQdwD2n/IqmjWFHj1cD5HQEacj73cFeC0rtnH4C7n+/6Zdd70UVtq8GdhTvVIQpld/JhV
-	e3Rmbd6w==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w7xs9-0035ru-2w;
-	Wed, 01 Apr 2026 15:52:48 +0000
-Date: Wed, 1 Apr 2026 08:52:43 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
-	shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <ac0_KvfNV4DDa0uj@gmail.com>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <20260401152343.3294686-1-usama.arif@linux.dev>
- <ac08dcv31J5_lAHs@gmail.com>
- <8ede5e20-9309-4d1a-8f12-13603fd92014@linux.dev>
+	b=Z6PD7+qPPWSrwIERTbCl1bIjihU1VupjJxNrFC7pgMGA8KBWHrv719liT/PXDlrcV4liJD
+	qwxV1Dnjxjm25PEkrFxReV1anEzkUzWNUVJLaQDuriGKVq3yBOHaLvlqv5/tf/t4jTaM2b
+	pRRUjf9aXBzNEG0c4tiH3z2vVKw9H+g=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=m8bvimfo;
+	spf=pass (imf20.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631DhxMi361878;
+	Wed, 1 Apr 2026 16:05:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=DS41ytpRnWbYo6AReClMhBSZ/2PMMt
+	xIe4+jyO36Jy8=; b=m8bvimfo7sQ7K+OFSaJF+fwyFLGJFa3QPjPgbq2rC6ADa5
+	E3zitbZ9xaIydBNiDNYbW0INvHaSckqQhTIfcoLFtvTcRUFCv5Avx5cCeV1LIB0l
+	Nq5jcYWgZQ04m5DJ55lWJgOo5JUbmUypq8/wBexPkuRdBKiLqIFqfMtAYH4NE4UV
+	FlTP8ujgRDSQRib+7glYBE4xeVOmjLQl+sUsZkincDF3MPr7SxTeTLIqNpNq3rkK
+	NeT/DGU9+91/BklpL1tQNVHQiEH2rj8853hlh3PZZCzVF/T6HzQ2vZQ4pxvW7Mob
+	yi3xJQyEjmIS0n5EyhModM55fB+55D602kLSvtSQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgreas-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 16:05:37 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 631FdtHT013936;
+	Wed, 1 Apr 2026 16:05:37 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6ttkp8b8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Apr 2026 16:05:37 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 631G5ai933423888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Apr 2026 16:05:36 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3662258061;
+	Wed,  1 Apr 2026 16:05:36 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22EBE58056;
+	Wed,  1 Apr 2026 16:05:31 +0000 (GMT)
+Received: from [9.39.18.42] (unknown [9.39.18.42])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Apr 2026 16:05:30 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------Z1mtNmbpFyIZY1A5sUbCG03n"
+Message-ID: <df407504-0e24-4c0d-85f5-3ef2deb86a50@linux.ibm.com>
+Date: Wed, 1 Apr 2026 21:35:29 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8ede5e20-9309-4d1a-8f12-13603fd92014@linux.dev>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/13] selftests/mm: restore default nr_hugepages value
+ during cleanup in charge_reserved_hugetlb.sh
+From: Sayali Patil <sayalip@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1774591179.git.sayalip@linux.ibm.com>
+ <2ba0f8d8a00fd049e8ed4b97e9ce8ee6b58a2892.1774591179.git.sayalip@linux.ibm.com>
+ <2f5da9dd-812e-4645-8340-de8c6beec584@linux.ibm.com>
+Content-Language: en-IN
+In-Reply-To: <2f5da9dd-812e-4645-8340-de8c6beec584@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAxMDE0OCBTYWx0ZWRfX1E+RdoVFV/MG
+ MGtpgYTdtAoWaxRvQzG69ZMhwUvom3yvWDAGhabg2aJVhjFWxLA6T3NQx7NQvCWE5EyonevaoOx
+ l57i9I5vAIjRHQj6V6wFIkab70BpwHqttIH71h2+YnK/0gUcA05rpeEl/QCJPeJGe0ees/6+ElX
+ BJhtZ1Y7psneX6tZXG/KaQmQdbsvZvvjhc85vyvN35ZZKLrK6zd6R6SdnlfDM6mpzgxjUWNTxxi
+ IF6Ch75QqhItgkulhJCTzVDcX5FGwu2NNTOjqPv5IEwp+75ndwHPc/G1oCN8NGTM8zj+gEJ2d68
+ ftktOEGsmQUtQIu/Bb7cYvlMiLbP2Id2HJ6MgFaAydnoWtcPwq7xRJIDkJS8TEBQkUEqQCMbUVg
+ AYZT7Ui2TADS6k7USyqewzDiblCGeRsZT/SjQWsvicEaQOC1xP0fXW6xXZSwTq2/g6RUkTZAdPl
+ MEQVfxxFBI+JtTmKSeQ==
+X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69cd4252 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=r77TgQKjGQsHNAKrUKIA:9 a=Ikd4Dj_1AAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=oXnG4xuSCdGAOdH6UXUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=Npm3-rHHuYopk5QS1gAA:9 a=sTxRpBpiy98KL1WkT8X2XIWo+SM=:19
+ a=OnTCA0UXLqtbvC45:21 a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10
+X-Proofpoint-GUID: QbFgDZ6yCipgXBCMc5U6gz-Wzy_ElmVQ
+X-Proofpoint-ORIG-GUID: QXtvmoxprzUNYoGnGF5H3qs55tu-XvjE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-01_04,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604010148
+X-Rspamd-Queue-Id: 98A461C000F
+X-Stat-Signature: w4sn9e9ys93aq4jnyoo3oxony7yjzquh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1073318000E
-X-Stat-Signature: cay4qi73ek6746oiwrx7c433uujiboo8
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775058775-259507
-X-HE-Meta: U2FsdGVkX1+7iZ0TFypZ0uD9kJSqCfUbX6Kf6XJ1UBdzy+VUVbhIYso57knqDPb2i517BXvXi38ELb60UR9GdemHyqBagPaSCNzYhBbfRcZfxFtOIl+0Uv+vpeYDLoAPpFFZnFZplmAWflfPNrPX2rscaEkavRiBy8f7KU7ETsnlIDuyinwhoboQV+1uJv5nPwn7mXm3VBytnUl90IDHEZf4T43rO1u962MtDwLivHBN+J3l4doXb02pUvBd7ultK6T5TuafLQmLLAkQ/jpWN+kp9/G8RT15gbwzapOW7D/Q5Vgj80Jqho9g4BCRDHplmb7qYzmLk/fbJBwI79TTjPBqE+RfWbODQeSKaVZbEhFVaSyH5L3Nl/MxyzUwxM+Sx93sFjf3lcs6FYJ9r58WHjloQpxa64y8s7CEOIBJY8L9h63zyzvTr+6I+kbVEuqYmsc/0SMo4OenbannxsPP+j3qUmB6nGVCvdhj1GG3qT34uJxp+azuNqiedHAlPiprXzpDfjIZKTJ9mVJj75zwTyFI/cA3+yTbR9mXcp8vkWlv7ehPswik90HDnZidsCVWnt385GZsYUeICj7cBdc4tGVj2/M52dSijbfdPcZDDB8vPjykwbPQdcGC0g7zAqijjPf6jhTYWefHqiGPFaAVQH8+KLbC3zhmkXUEa0+oaCHgc/ISRaXMf+SyQJFfhjX8XGy8MqjHQAKi7KHM7TC1pr7zBoTc6aJ7htlQPZAeHWZasW0y8UZIbisB7MeM3taVacGRjnm3sgllJGxQ4OvxB5Ix3J/gvvR/EFOB7YZtqw7/MGB+k0OsG2fF4EV7/OnJg4sgzX09r5K7mpXyq0QNE3SdzEaawZna8rSk0TGDmRUek+X/8PIa2mWSJHdYY5+jaL6EAuzsQ6e7CIInzvybEVW30GsvvMW1Qq6GPycf/J9NR2S1wfb9bFoPK3E9G6CwRQan6iZBqnfpSMEcPjr
- oPrQ+isx
- Ipee3oa+Z9FmOLrqQtCcSsD6zMsa3t9fWtWStATotOVxLx1PuuiN2x7amkE5GzY2n0LIKws1R4qFHcgti3HWFHlh5pzWFFY8tzO0OlRRBYC1a8V+X+O1CcSUMgvTc/IkgryzRMjuu0+ec3AQqVBgU/JaXoGF+bEbQvDVMMfSfYbPMVUuzjq2vPngjXw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775059544-205691
+X-HE-Meta: U2FsdGVkX19QVC3GFcDOO4yvhMrHw5s7Cac/lROtJSZEx3E2hTtLzNEerjXsSAELKstekBUHPTs2Y1dWIkImwRhXtHUJYMg7xgtI64fMSaDRllt9O1M2RJKZxzGIdq0+phn7TyqjXnmlfx2rHs/VmTcvK8PauwucUVnkuAnj8mrahiBE0ZPG9aOjJE7ckyYPfwp9AYFwiyeammVcmOS0ROegudtooYR2FKfFN9GNpJxF6STGuqwNcxMmS27NBaxO1YRLsWWvmFQGX84eKr1mfpiQ0Yut6XG4pdEs2NHv2e37uQ328jBuyJ2dlJC5IuOpV0W1TI3P6l1vV9rXfLi5xULSldXpwHn0e2m4QOFP0dLEGoTAcZxIiL3do2T0v7rdWC96GJ1/fQ4UDxbk1JWvfcIPD22dA+NMVDyJ0STVdwKF4aZteZfKDJKk1YAAaQAy/sbZKbBFGcUdeWqfyjuQP3HlOexlzfkS4Zh4gnnHIhC1pA9i7uvSpKeVPfGESE9qTvDQGMQgar+o+NR2nx78peDW+VYyjzo+qYzjCj64PeCbu/d8wgFCpouggtNit/8aYMULps3Tt/ycTYxskTlmcXQ08I7Efg9/2xiqYYd1OvGD6BItqz1uUvnIW6LM+f5gl+K3XS+QY2qeZNxu3Ppk4UTPxvA6XZxiMha/QhZY/F62c2W9MJsKwA9PqyJxyYqKhTWBSOFlWndjbWHuGPOT/kP9vGTcrd8mn0ZeU5MNxr/NceHNzI+kWgFlrX3FuNk+wjHHTyrOIZg5JVSxSao089GerUweE6U61SUVjjxENf1qPch1Y28cnMFcAXGsZ/wZyUmBfW0goPhi/HdFt0pQNnq6AzVj2m/3FDewvKaEGhuKD3TIGMrDUr7kSKhpoWLXvZFG8zlSchyAva5xbF7/r5ShVP0A/Acbfyo6chQd8Gp3/SIAiUIAKSsIT696bIfpAN9hIK7zRknUa66YSWc
+ MW/N9Qb7
+ p6BJF8TwOP0uWohhVoSvH4OPuYoUssOAxklUosdxz5XLJwmd+u0ODF200PIaQ6bzZ9G0CgiRuR424l1xjD8tsM7GU2Oq8Gh3taZ1l4NONBIn2szj/cQm5c+e8cKNz8yGWxwy0p+aKRV91ALAHSPQ+/8jQW/a3wpKyl4ux1lkcIEBAV4NngNc5BEkYfphVNBFfxClMyiKXwVR9fwuewbGseFkSjn7+u9EVibKLmqPG/Da6bXQ1XYp3bwPd4bsuxZene+mDBKnlDe7rg70+I65XYTNfJTsiazAHq5kNQeaHznmwFp/SBLmEARcl65aGbpDUTTQAGvys4Vuf4vbdBmE1qKAZpo7p6OLvxaVJWQrksWey+cUwi1bqOBs4MIoIPXpqM7YKewePo3yCINCqESOQITS7AExOJ8dL26DTlNMmc+fT4waDAL2lO8/FoNUUjvDGiJ5hwIrnLVuo30yETuWJ8EQIytglADY+8pgWw41W8+yCYoV4+tHCxjLNkv4I/aHE36TCr9j1Po2/61stoN6HFNhksQ2O0YK6wmlCTrVMspYxMI0cnZSoWq91zDGiDTheztTBm9bzMLClC9dc1nayQH3Hg0a3mBaCnJ2gAJb+HLEZieKjjIiy/XTwOFJsCyjNQf+cf3eCz6Jeoj5TU+kV89iyGJykyLyruR3jZxu2SdtLILWvnAF101ZCouA0V4UqtdyW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,33 +150,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 04:50:03PM +0100, Usama Arif wrote:
-> >>
-> >> This is awesome! Maybe this needs to be done to vmstat_shepherd() as well?
-> >>
-> >> vmstat_shepherd() still queues work with delay 0 on all CPUs that
-> >> need_update() in its for_each_online_cpu() loop:
-> >>
-> >>       if (!delayed_work_pending(dw) && need_update(cpu))
-> >>           queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-> >>
-> >> So when the shepherd fires, it kicks all dormant CPUs' vmstat workers
-> >> simultaneously.
-> >>
-> >> Under sustained memory pressure on a large system, I think the shepherd
-> >> fires every sysctl_stat_interval and could re-trigger the same lock
-> >> contention?
-> > 
-> > Good point - incorporating similar spreading logic in vmstat_shepherd()
-> > would indeed address the simultaneous queueing issue you've described.
-> > 
-> > Should I include this in a v2 of this patch, or would you prefer it as
-> > a separate follow-up patch?
-> 
-> I think it can be a separate follow-up patch, but no strong preference.
+This is a multi-part message in MIME format.
+--------------Z1mtNmbpFyIZY1A5sUbCG03n
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thanks!
 
-I will send a follow-up patch soon.
---breno
+On 01/04/26 20:22, Sayali Patil wrote:
+> On 27/03/26 12: 45, Sayali Patil wrote: During cleanup, the value of 
+> /proc/sys/vm/nr_hugepages is currently being set to 0. At the end of 
+> the test, if all tests pass, the original nr_hugepages value is 
+> restored. However, if any test fails, it
+> ZjQcmQR
+> ZjQcmQRYFpfptBannerEnd
+> On 27/03/26 12:45, Sayali Patil wrote:
+>> During cleanup, the value of /proc/sys/vm/nr_hugepages is currently being
+>> set to 0.  At the end of the test, if all tests pass, the original
+>> nr_hugepages value is restored.  However, if any test fails, it remains
+>> set to 0.
+>> With this patch, we ensure that the original nr_hugepages value is
+>> restored during cleanup, regardless of whether the test passes or fails.
+>>
+>> Fixes: 7d695b1c3695b ("selftests/mm: save and restore nr_hugepages value")
+>> Reviewed-by: Zi Yan<ziy@nvidia.com>
+>> Reviewed-by: David Hildenbrand (Arm)<david@kernel.org>
+>> Tested-by: Venkat Rao Bagalkote<venkat88@linux.ibm.com>
+>> Signed-off-by: Sayali Patil<sayalip@linux.ibm.com>
+>> ---
+>>   tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+>> index 447769657634..c9fe68b6fcf9 100755
+>> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+>> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+>> @@ -65,7 +65,7 @@ function cleanup() {
+>>     if [[ -e $cgroup_path/hugetlb_cgroup_test2 ]]; then
+>>       rmdir $cgroup_path/hugetlb_cgroup_test2
+>>     fi
+>> -  echo 0 >/proc/sys/vm/nr_hugepages
+>> +  echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
+>>     echo CLEANUP DONE
+>>   }
+>>   
+Previous reply was not formatted properly so sending it again.
+
+AI review question
+> Does this cause excessive memory allocation churn during test execution?
+> Since cleanup() is invoked before and after every test iteration, restoring
+> the original nr_hugepages here (which could be thousands of pages) and then
+> immediately setting it back to 10 in the next test case forces the kernel
+> to repeatedly allocate and free many hugepages for every single test case.
+> Also, does this reliably restore nr_hugepages on test failures?
+> The test script runs with "set -e" active. If a test fails while the
+> background write_to_hugetlbfs process is still running, commands earlier
+> in cleanup() like "rmdir /mnt/huge" can fail with EBUSY because the
+> directory is still a mounted filesystem.
+> Due to "set -e", this failure causes the script to immediately exit,
+> completely bypassing this restore command at the end of cleanup().
+> Would it be better to restore the original value once at the very end.
+>   
+
+Yes, it is better to use an EXIT trap here to avoid unnecessary allocation
+churn and to ensure the original value is reliably restored on all exit
+paths.
+
+A similar change can also be applied to |hugetlb_reparenting_test.sh|. The
+test modifies |nr_hugepages| during execution and restores it from
+|cleanup()|, while also reconfiguring it again in |setup()|, which is
+invoked multiple times across the test flow. This can lead to repeated
+allocation and freeing of hugepages.
+
+I will prepare a patch for both tests and include it in v4.
+
+Thanks,
+Sayali
+
+
+
+--------------Z1mtNmbpFyIZY1A5sUbCG03n
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 01/04/26 20:22, Sayali Patil wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:2f5da9dd-812e-4645-8340-de8c6beec584@linux.ibm.com">
+      <!-- BaNnErBlUrFlE-BoDy-start -->
+      <!-- Preheader Text : BEGIN -->
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <div
+style="display:none !important;display:none;visibility:hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;opacity:0;overflow:hidden;">
+        On 27/03/26 12: 45, Sayali Patil wrote: During cleanup, the
+        value of /proc/sys/vm/nr_hugepages is currently being set to 0.
+        At the end of the test, if all tests pass, the original
+        nr_hugepages value is restored. However, if any test fails, it</div>
+      <!-- Preheader Text : END -->
+      <!-- Email Banner : BEGIN -->
+      <div
+style="display:none !important;display:none;visibility:hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;opacity:0;overflow:hidden;">ZjQcmQR</div>
+      <div
+style="display:none !important;display:none;visibility:hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;opacity:0;overflow:hidden;">ZjQcmQRYFpfptBannerEnd</div>
+      <!-- Email Banner : END -->
+      <!-- BaNnErBlUrFlE-BoDy-end -->
+      <!-- BaNnErBlUrFlE-HeAdEr-start -->
+      <style>#pfptBanner6bb4zwh { all: revert !important; display: block !important;
+    visibility: visible !important; opacity: 1 !important;
+    background-color: #d0d8dc !important;
+    max-width: none !important; max-height: none !important }.pfptPrimaryButton6bb4zwh:hover, .pfptPrimaryButton6bb4zwh:focus {
+    background-color: #b4c1c7 !important; }.pfptPrimaryButton6bb4zwh:active {
+    background-color: #90a4ae !important; }html:root, html:root>body { all: revert !important; display: block !important;
+    visibility: visible !important; opacity: 1 !important; }</style>
+      <div class="moz-cite-prefix">On 27/03/26 12:45, Sayali Patil
+        wrote:<br>
+      </div>
+      <blockquote type="cite"
+cite="mid:2ba0f8d8a00fd049e8ed4b97e9ce8ee6b58a2892.1774591179.git.sayalip@linux.ibm.com">
+        <pre wrap="" class="moz-quote-pre">During cleanup, the value of /proc/sys/vm/nr_hugepages is currently being
+set to 0.  At the end of the test, if all tests pass, the original
+nr_hugepages value is restored.  However, if any test fails, it remains
+set to 0.
+With this patch, we ensure that the original nr_hugepages value is
+restored during cleanup, regardless of whether the test passes or fails.
+
+Fixes: 7d695b1c3695b ("selftests/mm: save and restore nr_hugepages value")
+Reviewed-by: Zi Yan <a class="moz-txt-link-rfc2396E"
+        href="mailto:ziy@nvidia.com" moz-do-not-send="true">&lt;ziy@nvidia.com&gt;</a>
+Reviewed-by: David Hildenbrand (Arm) <a class="moz-txt-link-rfc2396E"
+        href="mailto:david@kernel.org" moz-do-not-send="true">&lt;david@kernel.org&gt;</a>
+Tested-by: Venkat Rao Bagalkote <a class="moz-txt-link-rfc2396E"
+        href="mailto:venkat88@linux.ibm.com" moz-do-not-send="true">&lt;venkat88@linux.ibm.com&gt;</a>
+Signed-off-by: Sayali Patil <a class="moz-txt-link-rfc2396E"
+        href="mailto:sayalip@linux.ibm.com" moz-do-not-send="true">&lt;sayalip@linux.ibm.com&gt;</a>
+---
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index 447769657634..c9fe68b6fcf9 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -65,7 +65,7 @@ function cleanup() {
+   if [[ -e $cgroup_path/hugetlb_cgroup_test2 ]]; then
+     rmdir $cgroup_path/hugetlb_cgroup_test2
+   fi
+-  echo 0 &gt;/proc/sys/vm/nr_hugepages
++  echo "$nr_hugepgs" &gt; /proc/sys/vm/nr_hugepages
+   echo CLEANUP DONE
+ }
+ </pre>
+      </blockquote>
+    </blockquote>
+    <font face="monospace">Previous reply was not formatted properly so
+      sending it again.<br>
+      <br>
+      AI review question
+    </font>
+    <blockquote type="cite"
+cite="mid:2ba0f8d8a00fd049e8ed4b97e9ce8ee6b58a2892.1774591179.git.sayalip@linux.ibm.com">
+      <pre wrap="" class="moz-quote-pre">Does this cause excessive memory allocation churn during test execution?
+Since cleanup() is invoked before and after every test iteration, restoring
+the original nr_hugepages here (which could be thousands of pages) and then
+immediately setting it back to 10 in the next test case forces the kernel
+to repeatedly allocate and free many hugepages for every single test case.
+Also, does this reliably restore nr_hugepages on test failures?
+The test script runs with "set -e" active. If a test fails while the
+background write_to_hugetlbfs process is still running, commands earlier
+in cleanup() like "rmdir /mnt/huge" can fail with EBUSY because the
+directory is still a mounted filesystem.
+Due to "set -e", this failure causes the script to immediately exit,
+completely bypassing this restore command at the end of cleanup().
+Would it be better to restore the original value once at the very end.
+ 
+</pre>
+    </blockquote>
+    <p data-start="0" data-end="153"><font face="monospace">Yes, it is
+        better to use an EXIT trap here to avoid unnecessary allocation<br>
+        churn and to ensure the original value is reliably restored on
+        all exit<br>
+        paths.</font></p>
+    <p data-start="155" data-end="474"><font face="monospace">A similar
+        change can also be applied to <code data-start="195"
+          data-end="224">hugetlb_reparenting_test.sh</code>. The<br>
+        test modifies <code data-start="244" data-end="258"
+          data-is-only-node="">nr_hugepages</code> during execution and
+        restores it from<br>
+      </font> <code data-start="297" data-end="308">cleanup()</code><font
+        face="monospace">, while also reconfiguring it again in <code
+          data-start="347" data-end="356">setup()</code>, which is<br>
+        invoked multiple times across the test flow. This can lead to
+        repeated<br>
+        allocation and freeing of hugepages.</font></p>
+    <p data-start="476" data-end="535"><font face="monospace">I will
+        prepare a patch for both tests and include it in v4.</font></p>
+    <p data-start="537" data-end="553" data-is-last-node=""
+      data-is-only-node=""><font face="monospace">Thanks,<br
+          data-start="544" data-end="547">
+        Sayali</font></p>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------Z1mtNmbpFyIZY1A5sUbCG03n--
+
 
