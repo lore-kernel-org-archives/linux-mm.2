@@ -4,92 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665C810FCAEA
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 21:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2604810FCAE8
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 22:38:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA736B0088; Wed,  1 Apr 2026 17:48:43 -0400 (EDT)
+	id F30376B0088; Wed,  1 Apr 2026 18:38:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC1E46B0089; Wed,  1 Apr 2026 17:48:43 -0400 (EDT)
+	id EE1956B0089; Wed,  1 Apr 2026 18:38:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFFB16B008A; Wed,  1 Apr 2026 17:48:43 -0400 (EDT)
+	id DD0216B008A; Wed,  1 Apr 2026 18:38:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B09A66B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:48:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 468DF1B6EC8
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:48:43 +0000 (UTC)
-X-FDA: 84611326926.11.A9FD644
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 57FD640013
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:48:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRoFhmas;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775080121;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CD1E86B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:38:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6FA361B6EC8
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:38:17 +0000 (UTC)
+X-FDA: 84611451834.22.1F16D1F
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 72C2C20004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:38:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ecHDv55q;
+	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ecHDv55q;
+	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775083095; a=rsa-sha256;
+	cv=pass;
+	b=iYl9z2NfZjx7VbhmI4T3znSuS2n+EUqG1RssxrQqrU+UohC8hRvDKPBSXp9cAxvN35pCAp
+	VSh8HbF1+Vp5cqZMF5Y2MXLUIPO/B5Mb/N/hg4+VH+0UK52xP+/mzK882tL9GwI6Ed3LxW
+	Jb6gTk0L6/aE4mDOCWM6pkrnbB229M0=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775083095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJbYhrcMdyqdUCdloK0PLg0Z6SDZ5d3JkKLdQiJiWBQ=;
-	b=2FCRjQ//06SFemQZ/e7vRhR9wDQxz6A/GLMNfrzO/36HodsUYHoL+4XtYkmDM8OChS4fwO
-	sjloxpcY4napMZeQn90GKYrHaMz/67DyoJB24u/7lrfmsh/W0GjSz1nYZ6XXEGZNsG0AKL
-	hT59AOnK32sCu/EbT+tTp+1glI8vPwM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRoFhmas;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775080121; a=rsa-sha256;
-	cv=none;
-	b=tCJes5I0r/uESSXJUTW0ExDi4HjIuvLZGnINAhlguO6nFXMcmK269uNsOETydl/s0uWIrX
-	6oKajjZcnqrNPY8rFMMGvDTk0HWyoa42mTLJvj4hOToasxkP0GH3s8GS3pLZlCZI1OCOG9
-	rWZ6VL1sjDNVGKX6mcycQhiSjeZ4G4s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D2BC40381;
-	Wed,  1 Apr 2026 21:48:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F860C4CEF7;
-	Wed,  1 Apr 2026 21:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775080120;
-	bh=DNJaCNZdFC80zGgJFtAuVlv2J8uV9wtsJdfASUh6qrI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oRoFhmasNi1W+kf51MBZlPjvlrcjkvN/UGWInXlI3S+Xz5+GenIfIzdHhFXX6Y2H8
-	 cMdQlm83BYIK82l+hreGER6Wn1Ati6ozJ00tJig6GLJiyT3A3oRrpFfEljAk51Azdh
-	 JFOu1iTB0R4bpScWLf39NP376IFOGgRPRDgRV4a8=
-Date: Wed, 1 Apr 2026 14:48:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, richard.weiyang@gmail.com, usama.arif@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kartikey406@gmail.com,
- syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races
- during migration
-Message-Id: <20260401144838.e07cebebb625b2810257c2ec@linux-foundation.org>
-In-Reply-To: <20260401131032.13011-1-lance.yang@linux.dev>
-References: <20260401131032.13011-1-lance.yang@linux.dev>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 57FD640013
-X-Stat-Signature: s4ie7i93tfmbc5y45e6uu4oe1q6qhm6k
+	bh=euITMSp/xJeCQhYA18f4lx9pM8JTP5ZhaaxCuXCtMTI=;
+	b=hQxDjjrwaloAwA/0U+5MqD6GcA7yWs/Ql/0MZ+UmY2JXcrudlne3eZEJP9BNmxJi0/uRCD
+	gmVLj3jk0MkQEOHR9ctkyB8QSk0aSoTEwFxlFdSHEQjBy7W4onFa/Wu6rPI7sF1CsS267H
+	gkCIMrhA3qjGUO+Kq9STa5BqFd+qQjk=
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5ffe9a5b128so62234137.2
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 15:38:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775083094; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AdlqZWt30oiFSz1bPFKJN4mqxKD7PeU57i04iTHjFKTmqazqhGr4mdK9C+Uj2FW58Y
+         CdKmz06T3f9XHb1UYMmgFt3PI275uhKVMARBoxhyR/n64ObnVmPNk4YtZy90Sdf5X/UZ
+         AtlgHqiqqlQzALkSoZ4wP54+2JIuZ8WWNxkhJGYVdzRoDgGpFrymI9CkRRvh5UpFFeFD
+         6wxvJYaoed32Mdrek3kDVWtO17Wc+p+n5xcPgurs5cMAavMNDLzsn1TR6cShYFVV9Cnq
+         VVReZoprcOCFjjJia6/IJ8c9iDyFSmKg1997gabYApAIQsrzJdkCiM+wzDFkwGJzfNwy
+         Ge6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=euITMSp/xJeCQhYA18f4lx9pM8JTP5ZhaaxCuXCtMTI=;
+        fh=Bw9oi5xPIBY90ZeS39jX6zrFiIb6SuFPvJpW5DEhHwE=;
+        b=hKIIyrMAnMsVIiMPosC51JjUPVVrAEfdDs0/7kPF0Lpik8nc2tp3XKhq+5Kv07zP3k
+         lUQIkfhXVhsL2FzvJFlxpmZLEuSDMJmjR/f0aIyeG/GL9HrQWHtbfSlnJ7kb5cT+oOwq
+         t7GUh2SjKPtp7zAhXfsjaOKmYRqHGtQJNcu5vEvBhhWVzzJRZODLLitgIi5FPwYkSJww
+         YGKvYBWxO49B9jdTnPBLG9xipnlnhXCJvQ0iYFR+i/ewNwM/7Me2GXmiupL3QpVAGdc9
+         jh3xcRZ9PG9OeUGIASN8Ln+nWhU10vFNRczsombWDZt/Ihbq1uYwPpxjHxH6FAmxzduQ
+         POxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775083094; x=1775687894; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=euITMSp/xJeCQhYA18f4lx9pM8JTP5ZhaaxCuXCtMTI=;
+        b=ecHDv55q3n1OUf+TOQhbjH/lDptYhK8SenN0MPQmZ3wBxRDRJn5D0AD9RTUv1//THS
+         M3F/MezMwBpRqVe20FRt/xdOcj1z0rcT7e7ESUeAv8AVREulGLGnoVb6bPKhIDSS4opT
+         UncAMssqziCHuWuDDphgaBrzJhM+2Zk/OiiRvQjELRbrgZtD4ty/+PycvWe9yOgiDYw8
+         rqLoO0IjPJ2RkwbVW6SqGctLULtrPcUNoeCfz5xzmAmcmBoXibmy2uIfEMiuoksY0Yq4
+         XKIRfA+hmaAvGisl5ElW4xsjDTL/45DR9Twno+d12rZski+b38om/TNsgb2KNFGuuiOa
+         2Mkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775083094; x=1775687894;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=euITMSp/xJeCQhYA18f4lx9pM8JTP5ZhaaxCuXCtMTI=;
+        b=DxyJzUAnI4ouHiLWTey+xUTKk9zD70hrK4nH9kuniGcy8nuEwvnYSEcUEIlUc5cKQJ
+         GulbHMjj28b7juKQzsgZGLI/4rBWY0cVqSUopkEEvx5DF8MqlJ9+m8AuVhxXkRtSfHPU
+         afH7LFSLnfkrunpU2RPY8+hkm/URov8VYSTXyl4wxiOEiCrA3hSicCt+Wu+fjH/fPJEz
+         VppG4XAdoxkF3XPOfFD8igSmCtkEnu0AE8wqnSOzZnf5P/Azmsv0VGCgvS1d/eYUbR6l
+         JMBgvv5tavmVfg552OEv7i4l9naicfmIypIBjcyoeG1HcP+2nc1HlnJYM6flIlK6CZZz
+         eQmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4D5q+JgHv/vqcnSe+IpJ6qwJ5BCW8nHJ88Ysg5rQg6nz1c+iQ40CGSN+ipeVeSALXsKGbznUggw==@kvack.org
+X-Gm-Message-State: AOJu0YwaTcNzzObm8TBqN36IKnpOSBGidj7nS5JpSoGz6C8AihKXymgC
+	cZkW/ebcGHW6FgYAoJRS5NeNRt+r6dI0u81Mj5DavUBiaKVhb7+9u7G/4Wots9KHHgba68/pHBI
+	GgTISuomiw9jUFKSQ8nyAoAHAHk5aV66DWi8BXP6K
+X-Gm-Gg: ATEYQzxIIVqFpmDpcSnWzysIobEUft/KAmnYGRCdc1BRAmieev7tKTYgDIgFZyI+XAr
+	5mNZ8YJNCiYXQS/0eIRg0OrJl/CHG7VLcS9xXEGYGr4vkaefNHw7Q70oocpy/z9ULGttbSS5rzw
+	zU5ezYi+uExQuyAmFkdOdrSoWjsqMD9Cf4tZJcPQZ7CA6UZ5VmLV932vV4HYY21JmaqhJ0gKBmN
+	B3pQcTGKiS+oNcARBysXswa8sN5WQvWptf1CfmufOsMwA+udjt6BJT3Oc14jMl0g03mp3r8EnUC
+	Zziie1h+hgO0nw0RO/ArFrErFrf3BKw0IfaZxzV6nymzjCzn2ClgAD4oJ7P9KWjIZPTDmQ==
+X-Received: by 2002:a05:6102:cd0:b0:5f5:40ab:2d65 with SMTP id
+ ada2fe7eead31-60583fb718fmr487325137.22.1775083093776; Wed, 01 Apr 2026
+ 15:38:13 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 1 Apr 2026 15:38:13 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 1 Apr 2026 15:38:12 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com> <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+MIME-Version: 1.0
+Date: Wed, 1 Apr 2026 15:38:12 -0700
+X-Gm-Features: AQROBzCNhmfEK8q5oXqVxD-E8d6K5nvB8FmwqZKQD4ACNG80cfTfNWvs3WVsxNc
+Message-ID: <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+To: Michael Roth <michael.roth@amd.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 72C2C20004
+X-Stat-Signature: ook76t887agu9gj1h7xz59ydzbenha9j
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775080121-110396
-X-HE-Meta: U2FsdGVkX1833waeYAqwwrZzt1tha5D1kK3CIVuCCecU9xMC5xb6kO4PnVhNT7By4YtBzO7RD7YYW4wcTk+ibHEug2+oM4/gWMHuYLv6j4zbxptEzlUGXqyJn95IdjHciRCp2FS6SYM6rToG8CdFHwLB+zRBwkFcrUj7xGx66IIkib/DGpH6fOfDlyTPpby7zF60GsMEy8n5U8kZeappw80PLfJH02xi3l1cpItGGtX8OK/3m7IMkqA+Nz4R0GSDZ7V3fURprLrzZCYQ03rxwQFr+RpuqG285ZoHhGESTThnLizsKhc3q/7U/erQ7oTFYMpb89rtDyDrdf05ED/XstGJZ9GOTXK0v/PX8FXGRiwWqX1rGTTmHdBX3QgtzPJ7lo2FHsuiY0e+N9/XD8wp987X8RL++zdE5q6UP5PAB0Qgk3NBb4rsmHl+5KpKpr4evTV34uqCVOIb31Pdjw8bVR4xf63oV1nCG+T2PN6NJD4J1T31nEQxtLbcNqbxVD7dQah2S0l/+kiXyxiXoBLTP5dQqzXwASIOrDxm5Ti7t4pjKU9AK6wzAMTyFrekK0w0CYAjIFnc+uee75DqjaDreNXJB3SK8mS3pXjZyGeAe4OofB1pRYUsA6YNib4iXxl12ZsIpggPJVQmOEWr0B2mZYE9f+Fnq4Sd8M4YqNJ/Us9hmb7/CRFWLfqJOP/g8IHAuLv/2Z+u8g885J9ojT+cYGrDT9yD4qk82PkmDVw/FiVWhMwYTBJxetdpLB/1tCVyD15urbs9IRT5jha+7BuGHZeR05qNB/zfeU3Lc6g4lt7QOnu0f26oXv4YnAL7fNHQyIXBa0Kf2odxJcOTsY6yN0OYmR+tuqqXPIMmW+IZw+U7tjMEzbLQdSjnJh1UBAVmyas+SsBA9rdiguFQ824O/vycafvMJm2xOZg0yJ63I3TSMyxXnpzEBmWY7CKYXAD2vYXuXuWLdJra1/MBeuW
- PIL0TCxW
- kbp/CKm8dcT6UjmlBwMbUxGOPDztbDp5HlCrep3mTrikZoUxhEnAYHQhYCly6lg4fTDUo7MgzXMa3dxnJ99VDmSP8JIwb7dW7ihNW3arFiP7VnZ+0MZEGC0LcXq7pYnPvRj1U1yKG/+xHkH1NkJdTbdEKMmGN/2fOQ3T8sX5nRqG67tql6RDNrP0IM4QUF41Ag4P3HkCefFfBvdfdQC/sqITQpVxU8yNqlZdt+zSmLK847XXBsHwiOxyL55JIPWBPJTyMOTtZhYNzYNFbRAOuR3CGEXRF9aYh4IM5omXDzLjXOq61BqGQ/9JlfG3efz1WUGjBsINpNqmunLQ+Rxy3PZ+BM3oSCCPuL0n9tT8PLG+eg4pOhGiB0eqAzGum8zHA8YiQJEMwPIa4Rt6vo6dngs2+dyBdbLYqoEmLI3d+QELk6FJ+r5cDjaHz/9Di5mJZZV+zngF4Dz2fxTHFwt45WmnJVXkoWvkSXIHsnT6dfrs5AZGkebApFWXg1r5Aje4p4uKU
+X-HE-Tag: 1775083095-713311
+X-HE-Meta: U2FsdGVkX1+pdVdY5Dka4jdwYnUdAx6NtBtlFGK3ZtGnyZvRH8BYLxNs4Z2A7TiZCRM81XLrVbV2FdcTL8O6qEy9AtSxXwfdIbLoP6A13Kk9FkMf+76Wv0h3CTHCakBLe8Td/6OGg2RQ7wDPItyjfnwkz+ZVJX4lUZGHZgI7eNlhMq31irRbmFeFIkGBKOY8Epnn9p2UW+6AkVOi/fUU0rzmQOMQYJ3/UltQxDmGdkP1U1Qh0ZUJ5eLgd7nYz9rtygAw0LnBgpp5RsB5j5VOXmsxXKp9lSwm28kYZnycyY5dsr6euvULQfXBZ5WVgxANFa0qII6AYXcJyx3a+xIFysfnag4RLUF4yKLnRAAp6KY23O0ejYAfZWDTlFpJ19oEA2F1cae/N95P5Wv83f6NGoKfN74Z7S0CpS9zJmrKaATFr+UdtpVSF9WRtJmURUKF3uhKJ63UG3CTeiTDGWpS31O0xmOr68xfWeh9qmpxpwgsyxozbQ+cniG55pHFfuRywnV1oivK59qNWsF6g/RI0BKfFJf20FzEX814plPzFNFuHsHud4UkFMU9f/t1r7BtuzRtdqi53Usv3O2Ru4cARnTo4fTZwjMNrUxyFGk6/7YEPExpfFn7SDo70FjYR7qcX9OhDsqFV6Hoq+C/n+HQpw+AeOp2fiHFSLplP269VKGrU4f0wZDyA0aQNyYafoQYPa5euUAckrllH8ChSxf5e6/dcvNG1+JEYeziQy3DlOWB6F4LdTv+U2PbbJJXBBqbtfDagkZVQIHXhiyEeeo0092+iM/AYLqAVc4SkUYsO6r4aLYsJZLQIcnQQoTqDwVgHJky05eJXyjUFvKYwb/Da7Wj9epJtz8E4/id+XhqOMAKrK8Z9afUiMcV/PCLuBWl5ViSe3U9xpsFJSVkHkPEgsTq7o3R+Z5mUm3xVTaajU3KA8uo7C0uuAKPQnYLpQonHOTM7mdo0DCQeMa/TkH
+ RBLvuVVd
+ Dyu15zNeq4p7Q+Ynd+E9iEqnw1EADUCGzqziEVx9eQfZO8ZAzc1jfKiUADVIlQkou67Dm1/66EbmQ2PbkllQM2nyT5UYmiSeClFZp2t27dpaV2lURls20rEiUYMzGnneE/ExiYzd+4CYz/Hr/qr/txAIL4W4pSDirqXjOliOHR9vFz5JA4yhSl9LcaXdpxUfTFZB/tL3OZK/uk5dvERUIb7VMhySFII7sbk9KafgNHDkly/L4YloeBmh5pQqd36VCxUBSXczo5NpH0GtITcxrg1iFkqOmrWtJ5E/8WDy19nf/NTiZkNqPqjJd5qDcx+bLest3KgkmfSuv1p1XIUzwbCQcUU5P/j+J7vfuorqpV66C9OqkPIjTPeSF+7ynO/uv/5wev5S2N5Bi++8CgFQP+3Lvhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,45 +161,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  1 Apr 2026 21:10:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+Michael Roth <michael.roth@amd.com> writes:
 
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> migrate_folio_move() records the deferred split queue state from src and
-> replays it on dst. Replaying it after remove_migration_ptes(src, dst, 0)
-> makes dst visible before it is requeued, so a concurrent rmap-removal path
-> can mark dst partially mapped and trip the WARN in deferred_split_folio().
-> 
-> Move the requeue before remove_migration_ptes() so dst is back on the
-> deferred split queue before it becomes visible again.
-> 
-> Because migration still holds dst locked at that point, teach
-> deferred_split_scan() to requeue a folio when folio_trylock() fails.
-> Otherwise a fully mapped underused folio can be dequeued by the shrinker
-> and silently lost from split_queue.
+>
+> [...snip...]
+>
+>>  static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>>  {
+>> @@ -2635,6 +2625,8 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+>>  		return -EINVAL;
+>>  	if (!PAGE_ALIGNED(attrs->address) || !PAGE_ALIGNED(attrs->size))
+>>  		return -EINVAL;
+>> +	if (attrs->error_offset)
+>> +		return -EINVAL;
+>>  	for (i = 0; i < ARRAY_SIZE(attrs->reserved); i++) {
+>>  		if (attrs->reserved[i])
+>>  			return -EINVAL;
+>> @@ -4983,6 +4975,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+>>  		return 1;
+>>  	case KVM_CAP_GUEST_MEMFD_FLAGS:
+>>  		return kvm_gmem_get_supported_flags(kvm);
+>> +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
+>> +		if (vm_memory_attributes)
+>> +			return 0;
+>> +
+>> +		return kvm_supported_mem_attributes(kvm);
+>
+> Based on the discussion from the PUCK call this morning,
 
-Thanks.
+Thanks for copying the discussion here, I'll start attending PUCK to
+catch those discussions too :)
 
-> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-> Cc: <stable@vger.kernel.org>
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> it sounds like it
+> would be a good idea to limit kvm_supported_mem_attributes() to only
+> reporting KVM_MEMORY_ATTRIBUTE_PRIVATE if the underlying CoCo
+> implementation has all the necessary enablement to support in-place
+> conversion via guest_memfd. In the case of SNP, there is a
+> documentation/parameter check in snp_launch_update() that needs to be
+> relaxed in order for userspace to be able to pass in a NULL 'src'
+> parameter (since, for in-place conversion, it would be initialized in place
+> as shared memory prior to the call, since by the time kvm_gmem_poulate()
+> it will have been set to private and therefore cannot be faulted in via
+> GUP (and if it could, we'd be unecessarily copying the src back on top
+> of itself since src/dst are the same).
 
-I'll add this to mm-unstable with a plan to move it into the current
-mm-stable batch in a few days.  So that 8a8ca142a488 and this
-follow-up fix stay in the same bundle.
+Could this be a separate thing? If I'm understanding you correctly, it's
+not strictly a requirement for snp_launch_update() to first support a
+NULL 'src' parameter before this series lands.
 
-> [ Backport note ]
-> This patch is a follow-up fix for 8a8ca142a488 ("mm: migrate: requeue
-> destination folio on deferred split queue"), which is currently only in
-> mm-stable, and should be backported together with it.
+Without this series, the startup procedure is to have memory set up in
+non-guest_memfd shared memory, and then snp_launch_update()-ed into
+guest_memfd private memory.
 
-As far as I understand it, this should happen automatically. 
-8a8ca142a488 has cc:stable, this patch has Fixes:8a8ca142a488 and
-also cc:stable.
+With this series, it is a little troublesome, but the startup procedure
+can still set up memory in guest_memfd shared memory, then copy
+everything out to some temporary memory, then set guest_memfd memory to
+private, then snp_launch_update() the temporary memory into guest_memfd
+private memory.
 
-There's enough info here for the -stable people to figure it out!
+We would be unnecessarily copying the src (now in some temporary memory)
+back onto itself. Can that be a separate patch series?
+
+Btw, if snp_launch_update() is going to accept a NULL src parameter and
+launch-update the src in-place:
+
++ Will userspace have to set that memory to private before calling launch
+  update?
+    + If yes, then would we need some other mode of conversion that is
+      not ZERO and not quite PRESERVE (since PRESERVE is defined as that
+      the guest will see what the host wrote post-encryption, but it
+      sounds like launch update is doing the encryption)
++ Or should launch update be called when that memory is shared? Will
+  launch update then also set that memory to private in guest_memfd?
+
+>
+> So maybe there should be an arch hook to check a whitelist of VM types
+> that support KVM_MEMORY_ATTRIBUTE_PRIVATE when vm_memory_attributes=0,
+> and if we decide to enable it for SNP as part of this series you could
+> include the 1-2 patches needed there, or I could enable the SNP support
+> separately as a small series and I guess that would then become a prereq
+> for the SNP self-tests?
+>
+> Not sure if additional enablement is needed for TDX or not before
+> KVM_MEMORY_ATTRIBUTE_PRIVATE would be advertised, but similar
+> considerations there.
+>
+> -Mike
+>
+>>  #endif
+>>  	default:
+>>  		break;
+>>
+>> --
+>> 2.53.0.1018.g2bb0e51243-goog
+>>
 
