@@ -4,141 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B29CD35174
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 10:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A68D35175
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 10:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906006B0005; Wed,  1 Apr 2026 06:37:02 -0400 (EDT)
+	id 4CB5C6B0005; Wed,  1 Apr 2026 06:52:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AABA6B0089; Wed,  1 Apr 2026 06:37:02 -0400 (EDT)
+	id 47C0C6B0088; Wed,  1 Apr 2026 06:52:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 772426B0088; Wed,  1 Apr 2026 06:37:02 -0400 (EDT)
+	id 36B736B0089; Wed,  1 Apr 2026 06:52:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A956B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:37:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D4785AD2E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:37:02 +0000 (UTC)
-X-FDA: 84609634284.14.66622E3
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 86890A000D
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:36:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="F/mE2xUZ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/UccDmD8";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=POf5okF1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aUqErqgt;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 24E196B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:52:27 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6671160808
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:52:26 +0000 (UTC)
+X-FDA: 84609673092.30.4A635FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C8DA84000E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:52:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dru08UI0;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775039820;
+	s=arc-20220608; t=1775040744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZI/NH6MnG5cMCHh3hQuSK0Fc/OsQ6oNTdNxeEnpKjI4=;
-	b=Iv9bG0kbRYcdmc6KeReOwXDNfz+Oj+KgLIU4J4ClUCt4phzdEnzjwWzPvrSeu/OBWPJ+Mx
-	oxRVGwIzj+xM1jbb54ie7jQE1+bXOqg3rtyoRyx9OMWkfMQkxCCcguslxbuS/pPGPJuUWi
-	jWGpBPjOKAcoPZWxtqsCV6oEL7FSs8A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775039820; a=rsa-sha256;
-	cv=none;
-	b=lFC6hQ+3Pqx0lTalknwYISuszn7/rUt+UwCaBD9q1T6oRFge+DSSIpmzuA+coO7z90tTBA
-	/d5iWROf056ipKEQ2ue3siXJeJnIZzHdW4l6uiOU3WeSO4ioYq7Ynjo+CCgUTK5MbbrMTO
-	HgDTj+Z1a0NLu3Pfb+0K+pdJ2g6moTQ=
+	bh=6uHNK8men8KTEINJKE6QlNq7BhDezKdwsa8MqGQv070=;
+	b=RYIKLzNj0bAHlqzkcVgsIA8DWjuwsNYKqAXIgcJEM8uyy+RE8wvZDdY1f9klG7/A02p2Wc
+	qswLDb4S9ScegIXOEsMDSn4AuPinkXZjyIXEebmAzNlfqjfwY5Yx1bhkjYj+y8gSgd2RJ3
+	YTkgbtAU+K2vURAUUvGNEbt5y5GSQyo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="F/mE2xUZ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/UccDmD8";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=POf5okF1;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aUqErqgt;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CA5074D250;
-	Wed,  1 Apr 2026 10:36:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775039817; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZI/NH6MnG5cMCHh3hQuSK0Fc/OsQ6oNTdNxeEnpKjI4=;
-	b=F/mE2xUZAQea/XHXfCcYqP6U7yh+XRiWyxOcB9QX6W4Kts1Ugd/6N+n7a4sE4o/z/WYfoM
-	gKQKxEhA20xLQGogKp7G0QriBpXoOJ0csPcZFlCIKBvMsT90WRVGIUQwNj9KIxdRrGZYk1
-	03z7EoEBaUazm6teNPyJLhq8rY/XXGQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775039817;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZI/NH6MnG5cMCHh3hQuSK0Fc/OsQ6oNTdNxeEnpKjI4=;
-	b=/UccDmD8wkmfjZGhyYrnjMEADda/bmrssSeVDp+PQMafWCf8szzau/h/vuv/xF3o3NbLYL
-	g0k9WAaMPlBmrGAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775039816; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZI/NH6MnG5cMCHh3hQuSK0Fc/OsQ6oNTdNxeEnpKjI4=;
-	b=POf5okF1V17iFfbrnw9u5ARfRncGmDuCZNDLesvOSBGlNQgqsI0RLcDW9TtbApPabNXM4J
-	PyOIEK2snE+VD2xx0r6ae2kQrZUO1+8hDBilzn/BD4T3cBxZoByDYXtmsGzLmieJmMAHN1
-	hpFnDV+GTzJFvXDO4nxPl/uuh7lOrn8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775039816;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZI/NH6MnG5cMCHh3hQuSK0Fc/OsQ6oNTdNxeEnpKjI4=;
-	b=aUqErqgtW6YullBWTiJ6nJ2+Z1UFG7qI038hpzIdUk69peJy1Byw1XuuFY3RNLd0bagbxC
-	/Eb68QI3sM5ZoWAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEE614A0B0;
-	Wed,  1 Apr 2026 10:36:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dBKVLkj1zGkNEAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 01 Apr 2026 10:36:56 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7F9D5A0AFD; Wed,  1 Apr 2026 12:36:52 +0200 (CEST)
-Date: Wed, 1 Apr 2026 12:36:52 +0200
-From: Jan Kara <jack@suse.cz>
-To: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
-	Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
- fat_evict_inode()
-Message-ID: <dvo2jvc6upmzrgqxx3n6er3e2gvujheongtzkihzmllwxqiyuq@h3qrrnwxlwo4>
-References: <20260326082428.31660-1-jack@suse.cz>
- <20260326095354.16340-57-jack@suse.cz>
- <87ldfazqo2.fsf@mail.parknet.co.jp>
- <3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
- <87jyutwo6o.fsf@mail.parknet.co.jp>
- <mjraa5thsnzchejoomqgiahwajx4cs5ryqnmn7zsi3fylzhrrr@5ip65jcrlknn>
- <87wlyss2ny.fsf@mail.parknet.co.jp>
- <gkwyh4z45xglmq7jmam4yfvkecivipr23trzjkbyfolm6pdzre@d5huocjf55ew>
- <87tstvc90b.fsf@mail.parknet.co.jp>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dru08UI0;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775040745; a=rsa-sha256;
+	cv=none;
+	b=z/VoRZWdVvKOCJiFlAQVL2aWA8hUhspMI+iVW3dMv5SUAT0+adAQPjEJ0Zt+A/I6dLmT0B
+	4rc6v5PVGcCvPZ3vvLv6k55MjX0+yIuLYjMXASwa4uCZKv3r6fuFo1vSasEq7tlt/87723
+	k0piP3giiAuNf9WpGaAPEH5D6F2EB6Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 95D3B4082E;
+	Wed,  1 Apr 2026 10:52:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2699BC4CEF7;
+	Wed,  1 Apr 2026 10:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775040743;
+	bh=7eNw3TxRt2f7CALy41ojguRmYDMXKZ+2KH/2ZcV1NOs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Dru08UI0SlP+Zwr0Te9QbJF+/b46qG2ViXXUiJYjswDkYhjhSWdbmpJXK7G1WHlkD
+	 6di7HCe5TFwgqXb+Ge0z4hdZnhdpK68ez7YcCpurn5ZWoryFnp4cKUX6jZqlmR4pmA
+	 0TtgvpeaYYCg9D81Yo5gopS05svvPQGIv1YSyrFeLlSajQ3GFxf0ITZPT+KcVXniS3
+	 pDXGxjWW4kHhTkBJb33IddJvGYDMrQQ8l11VHigcsqW8SCPjDi7NsU+7dOmfR6mvah
+	 4ZG19BEuNK+xRB/jZQWYBIZ6bzuvJN33/FKM382xZ+ynvXr8YRAgTVt/fDrTsGXtXJ
+	 33ow31PSjJAew==
+Message-ID: <db246b9b-2cc4-4aff-b92b-537ca27c47c0@kernel.org>
+Date: Wed, 1 Apr 2026 12:52:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tstvc90b.fsf@mail.parknet.co.jp>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 86890A000D
-X-Stat-Signature: gazqdub3kw11jzaspg13fshro6xexk11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: update stale locking comment in do_anonymous_page()
+To: Aditya Sharma <adi.sharma@zohomail.in>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org
+References: <20260331142936.229667-1-adi.sharma@zohomail.in>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260331142936.229667-1-adi.sharma@zohomail.in>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775039819-91204
-X-HE-Meta: U2FsdGVkX198zuEkI3bA8gWh6RTwKuslIBi7XiSXk5V1Qjm7A5q3qe/JJVFeXUeIN/DsiDj9Sec5ist7oUIVR27uo3s31r8RLLMJKKKa0Cgd7GTRYtfRm2ibJbleMeYynH0o4E6ZaHa4tjYR5EN2utNbKW9YoOy1fmddyaW05Bw/fBPEZcVKHENFA7rk5r+kHnwyMmoJzBO8GS545xRZ89PeOs+KN4hatnAbZDdKAXd9l4tkOiG3OKJ3CR0htRlC+fv8k8D4BHRg9jt0SMEly2PuiVnDMgnWf2ZAI7gushAYyeFjpztrHbZVUPQtCbq+nSmRQPAuOFPMRAgBdfMZMF+fO0VruLYgwyK3eZOFe1DvIySI0KNg0GqVDkDPcUpbjnOM2N5WeIW/LX6rtRZctdQgWM40fXYYvYEBTIMRvvSMUwrcHhf8UmyFeRbLqTZsDWxNdcevuPneTNXH31X9pYAQUe1H+PudEMKivJ/lP4A+En8IH/P5x75gJXgEoFh1IpDps6p2IClpzJgn2CxtDk5q49w1IWycFio63hHSpvsFgsdCsfFBmiUeMQmEh3/uogITYD+PPYscmVlf7s+z50iPcDPMhxbnEYwUBafS3jx2MYnn1eloMrBhmwrgbZNOIz7ohxuqHvWkKgUbSRCw/6wokCLYpFIQyP+no1wwCtDnvl9m29ZLmSS9jyZNDOiifL2S6wsuj63gS35lUI83Z+9wsnvJn1b1riRhFhDhQ/UgUavN8s6Utd1ZF0M6kVJjJKeTL1K0VMjs4Er3pGIc/0Ab+hzA7IhH+699bJ3HQkdkI+sKMl1kPLdxtYBbgx0REH4m9m/AOdBoPnKk2/B9N3rr0zSbRiGKeF8bNQpLtvdZTeUfdvr/q23tgNM4l1uOfV2kM9mIGAGcqIE2eH7rp8ovVQiu758s1xg+wt1+z/GpF+6YELat7KjJRaCpCA1eoeQV0i/HzhFf3DP9kgc
- oj8lw4u5
- UInHUH/0MJPNl20lD8cLBpJAFMLokqHeje1mphdGvvCN9dHZ25m9fDFndEtpMbwjyZ3FLPVjnJuB8wHDtdqZhNpS7vWJ4UUzYp39XaatSxCPJzakoXfGB4w8bF8mU6CWJfWRiBhdUFoxyQc8XLetK5N81+6FKFdsJCYn44X9LJYTOEAYoPdPRPnZfmDKtAXMdma42XAFF60GGPStKtOsq77gK1L9Utzr49q04lLFg7b4RPh5Rbm6CYarWjFKfkRFAqvBgoqMzrnOi+cEbHZI8RnbP+ve2Hu3qrnadEpkdElJIggX2NM4C1uWGLYFDxKgEz0uOJNn6ZBk/w+yL3JN9Ng51NeXDGrrcdyuzU0ucS13MItdbuLJgykyTi39ymcpV5zxp+VOxXjpORiIuQAX+P3Y9n59wHYFKaPbhrLfM0q6Cfqmbn4LnsvHNiwMlNGXfxO2/QUecVaD8Cyk=
+X-Rspamd-Queue-Id: C8DA84000E
+X-Stat-Signature: efkc19hsfcjdzmwkmzesmk1iokdyw43c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775040744-692685
+X-HE-Meta: U2FsdGVkX195yLqpAKiHY4sWlEVMa7VW76biu4bfRsnmXpo3E7a+Oq6fcUB08SeSaI55DFZFME+GcFOFZpcbSV5vamp4dST3aZBmipyodEkOy3ZvpG+tuochuR3ir14W6kgYSelHPBubI7ox9yGQv9T69n52npsdmdXcQ0CMSDLj5pI90Y+A5+nPbLasA8+Qdoic23/FItBdKOQTvBQFRIBRzzzY2Ba/I0AMKdORgOFYIJhKktatFTZSFkHHgTK4s7DxpZy7kwdw+2x9s3YBFxmDnqzyBseyPJuDpcLbzOfpL2G++DfxcKrOKvJhW+rLRY0mqARdV+bn/kMuuEG5CMZTxXuN39UXwzuiLg192kJZtRMVVlKHnf6gCbqU3HdONRDlbNMyYh6euFlhF1ZKXS9Tkcr0m4bql77pKjU1YFLns9eV25t0WhXTvbwlzrbmuKx3MYO5DrQ7MuYqAZ5o6dUaNZkPOinCfX3eiNzLZ/8Tjt/E2yAK4xjOC0GUvz1D8+h3XLcURByPtvfU1Jmf8bkX6hJ+M+xPhz1H/+lH6gQQUeDXYkREhtU4N0+ELIXdkuAXjTszWOVyKvo6HPXLZNWBcjm9AHcE25xxbxWD6ss9qEIkRP7VqhAa4YsaN8JkWcqWL31oyLbq+19H3p5E+WMpGtN+2hXbH7ceEqPvmjtFQHy5icb+frBp25Lb4AT4UOPWzlYzZBKbgCMLv/wCz0wN3amjCsLTyXmAak7AWOF/FmmZyLj8pbmkLpWGbPOgFAYBGSxb9qHN4VJZ5jbEWZQadUOvuvWM2vrpXOxgJIRmVNaM8W+RO2vq3NuroqW/DVOJwz69w3zetAYgMVP8tPpwXz0sI/IqzEJgm2G0jJxVnBXKkS1XCArEQn6zdFjQYHjGkmklrCgUwTX5QmpMDvVf0EwfoVyZ6tQCVJJ22S6A8sG6GpmXpAq6LdkRjR8dEZYsgIz+BPDKPX+IjmQ
+ yy0dVUiF
+ Rpi5FjSwxIzd1CV71o9l2Pc5NIpQ1ukk+y3QeBsxC5eisE6ABtxiwcUSpznalN/ZJ6zJcEprbq0yDOirlQ6/QyLpBH2SkCS4jUzxry1Tg8Mbod0jgcg1Mj9wWye4saynfelQ+6sq4n7Od1bs8hpJTwz8lt+KCsVn/S3DgKdXZko7hpnuJyTUiTqvvvHpFN1SBC3oG4sa/4p4iYzUfdk9GOopHfdWfobYzXbfKy66ul+94euegcm04Ut9D0vru2Bw/QYKVFcnf2EsNNNbdxhoasbsn2jwuho8MzXqWzGCHaT+MeMq5jNf7LEccxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,83 +138,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 01-04-26 18:41:56, OGAWA Hirofumi wrote:
-> Jan Kara <jack@suse.cz> writes:
+On 3/31/26 16:29, Aditya Sharma wrote:
+> The comment above do_anonymous_page() dates back to 2005 and describes
+> the pre-per-VMA-lock world where mmap_lock was always held on entry.
+> Since CONFIG_PER_VMA_LOCK was introduced (6.4), the fault handler now
+> has a fast path that enters holding only a per-VMA read lock, with
+> mmap_lock not held at all.
 > 
-> >> I think it would happen with normal operation, for example, copy many
-> >> files more than total memory. I think this would be much common than
-> >> write=>close=>open=>fsync in your example.
-> >
-> > When you copy a lot of files which are large in total, I agree the flushing
-> > can be triggered. But I don't think it will trigger any excessive IO
-> > because the metadata blocks being flushed aren't redirtied after the inode
-> > is evicted. So blocks may be written out earlier but I don't think they
-> > will be written out more times. For FAT for example you track only
-> > directory blocks in these lists so when directory inode will be getting
-> > evicted, you may see earlier writeout of dirty directory blocks but that's
-> > all.
+> Update the comment to describe both entry contexts accurately.
 > 
-> Hm, metadata block is shared by several inodes. So earlier flush
-> makes fewer chance to combining multiple dirties.
+> Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
+> ---
+>  mm/memory.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
 > 
-> For example,
->   create dir-A
->   reclaimed and flushed dir-A
->   add new entries to dir-A
->   lost chance to combining re-dirty of dir-A
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c65e82c86..cc8dbbaea 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5210,9 +5210,25 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+>  }
+>  
+>  /*
+> - * We enter with non-exclusive mmap_lock (to exclude vma changes,
+> - * but allow concurrent faults), and pte mapped but not yet locked.
+> - * We return with mmap_lock still held, but pte unmapped and unlocked.
+> + * We enter in one of two locking contexts:
+> + *
+> + * 1) VMA lock path (FAULT_FLAG_VMA_LOCK set):
+> + *    Entered holding a read lock on the faulting VMA (vma_start_read),
+> + *    but NOT holding mmap_lock. This is the fast path introduced with
+> + *    per-VMA locking (CONFIG_PER_VMA_LOCK). If this function cannot
+> + *    complete the fault (e.g. needs to wait on I/O or encounters a
+> + *    condition requiring the mm lock), it must return VM_FAULT_RETRY
+> + *    and the caller will fall back to the mmap_lock path below.
+> + *
+> + * 2) mmap_lock path (FAULT_FLAG_VMA_LOCK not set):
+> + *    Entered holding a non-exclusive (read) lock on mmap_lock, which
+> + *    excludes VMA tree modifications but allows concurrent faults on
+> + *    other VMAs. No per-VMA lock is held.
+> + *
+> + * In both cases, on entry the pte is mapped but not yet locked.
+> + * On return, the pte is unmapped and unlocked, and whichever of
+> + * the above locks was held on entry is still held (mmap_lock is
+> + * not dropped, VMA read lock is not dropped, rather, the caller releases it).
+>   */
+>  static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+>  {
 
-Yes, but for this to be possible you would have to:
-1) stop using dir-A between dir create & file creates
-2) create enough memory pressure to cycle the dentry of dir-A through the
-LRU and reclaim it
-3) continue memory pressure to cycle the inode for dir-A through the LRU
-and reclaim it
+Was this AI generated?
 
-So the amount of work that already has to happen to trigger flushing of
-a single block is so large that IMHO that flush will be lost in the noise.
- 
-> >> Anyway, with it, reclaimed
-> >> inode metadata will be flushed forcibly and frequently (yeah, may not be
-> >> significant though. but I can't see the benefit for users from this
-> >> change.), and lost to chance combining multiple time of dirty while copy
-> >> many files.
-> >
-> > The benefit for users is 24 bytes saved for the majority of inodes that are
-> > there in the system - all the virtual inodes on sysfs / proc filesystem,
-> > all tmpfs inodes, all XFS inodes, all ext4 inodes when using journal (once I
-> > optimize ext4 code a bit), etc. So actually quite a bit of kernel memory
-> > saved in common configurations.
-> >
-> > Another win is that with metadata buffer head tracking now separated, I can
-> > modify that code (which will require growing the tracking structure) to
-> > properly track buffer head containing the inode and flush it on fsync(2).
-> > Currently there's a race that if flush worker writes out inode before
-> > fsync(2), then fsync(2) does not writeout the buffer containing the inode
-> > at all and thus data is not really persistent. This is actually my initial
-> > motivation for this refactoring since growing inode for everybody to fix
-> > data consistency issues of FAT/ext2/udf isn't popular these days...
-> 
-> Agree, it is good.  I'm only saying about the flushing earlier. To
-> implement it, is the flush earlier really necessary?
+I don't think we want to have such a wall of text for each and every
+function that can be called with VMA lock or mmap lock in read mode.
 
-Yes, to separate metadata buffer head tracking into a separate structure we
-must remove the handling of buffer head list from generic inode reclaim (as
-the filesystem has no way to provide the separate tracking structure there).
-Of course we could add a filesystem hook to inode reclaim to allow for
-handling of metadata bhs but:
-
-a) I'd rather do that in a way that is usable also for other issues
-filesystems have with inode reclaim as I mentioned in this thread before
-
-b) I don't think it's warranted for FAT etc. at this point as I don't think
-the possible overhead of metadata bh flushing on inode reclaim will be a
-problem in practice.
-
-But of course we can reevaluate if my gut feeling is wrong and someone
-comes with a workload which significantly regresses due to these changes.
-
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
