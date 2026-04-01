@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA30D35162
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82255D35162
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:53:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A07056B0005; Wed,  1 Apr 2026 07:51:57 -0400 (EDT)
+	id C544D6B0005; Wed,  1 Apr 2026 07:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B89D6B0088; Wed,  1 Apr 2026 07:51:57 -0400 (EDT)
+	id BDE066B0088; Wed,  1 Apr 2026 07:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CDD96B0089; Wed,  1 Apr 2026 07:51:57 -0400 (EDT)
+	id AA5C56B0089; Wed,  1 Apr 2026 07:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D0FE6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:51:57 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B7EA5B391
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:51:57 +0000 (UTC)
-X-FDA: 84609823074.06.F924AEC
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8517214000A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:51:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aQQFE9SZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775044315; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 948026B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:53:50 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 459B5E130A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:53:50 +0000 (UTC)
+X-FDA: 84609827820.14.09EC6C1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BED4E12000C
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:53:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nQjv+5cG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775044428; a=rsa-sha256;
 	cv=none;
-	b=lG+B7L9jS8DTOqhUASq0xPQfcRM5g5WrfWoecjNfwSaSNE5IqejYw99P8mjUGjSQYHDM2F
-	rzjGIg/3fJzviu3pa3u8C3zEdjUdxmT6aFqz/wKDVwLJwcCIkaBJwvWvaOgT5kn8kSdh3n
-	8H0SM8MxKNqw7GgP5eUuQBXDsIjRi9I=
+	b=w5dUp8j5arK4QXatWp3RsnWR++DjJNxvuY59HzRF8rH2ysrMfTd6IE6iqrnBY+h/BOIuyL
+	IJDKR72KXhV2ejsy71JlWDZkUJ3n1V9JJHV3l5K/49t4Q3FGMqhDV+V1h9lwEXgY4cHFoR
+	ZT9HWOyt6EEfR/0fuUhGvavL+tHYAPQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aQQFE9SZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nQjv+5cG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775044315;
+	s=arc-20220608; t=1775044428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uLlhZc+mP4ePWpjvv4aWNtQSAr/NOqK11GS/RTSR+bY=;
-	b=iqV56qPn/Drm47sHmzq1NbXjinOhTlm7I52oSgycyGL+l2+sddIoL7ZcjV0zBZxHku1zjy
-	9RyrQvUTWD0mSZlsbXyfITY7wO9B5vWB06X4TonWBpBxowLyJeKNSHHMS5TvBzaCtqdRFH
-	3U/z6pUmBEjwJHV3q/1lCgbr5OFDxpM=
-Message-ID: <c5d01704-9035-482a-b562-ef5a0c163d4d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775044309;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uLlhZc+mP4ePWpjvv4aWNtQSAr/NOqK11GS/RTSR+bY=;
-	b=aQQFE9SZOw0V8amtAysnp2bzjbgDyyNUV8od9WfM/XRPSxBEnk5xFUK9/Hak+lMwYUtLnf
-	YQf1njE76/9Dl+/mFihl/8m+qXKvr42uEpKPZHrKaL7uyzf/f5ajHKHYgvUlyXVKNh07e0
-	TdE3TY0OD+0PO1l1PC7r+DWOBIEQT3Y=
-Date: Wed, 1 Apr 2026 19:51:38 +0800
+	bh=GADXsNFfRPgDk14ktr/Ujr7rY7o0BsOAb5pqO6oflQc=;
+	b=c+Sm1Uo/lecCi4oSshL0o7Lhqz0YH3UO0K2+sRaofzdimOyz4cL0R6NcA6tFVb4BpNm6G6
+	J+XG7JDLWv/q1SusVu1OkYQy3jF4JJvCVmDKDp8G0+zlKfzbtfv6gTXYmQ4YpjxTGwIIWX
+	z/d1sqKeDU68BK9GgkgCgICGZBnPib0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E38F6013F;
+	Wed,  1 Apr 2026 11:53:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3C7C4CEF7;
+	Wed,  1 Apr 2026 11:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775044427;
+	bh=O/4bIPxFhYeI8VkLP9DN3SgsWmQIE648f8OII8PyyS8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nQjv+5cGYtRkn96yzMGuseLIk7H1GXT7x8/btEQ/z52u1NHxmzSoeY0e56elprOLH
+	 9Xid3iTeGp17rC4Axo7WRWC//I8Pbvwr763q9K3tO3v+UX+wDxl4lonHSiUHVtPIcT
+	 1HR+OUoreJJfZKe2xVLwtUHlwP8PKoezu7iZFNZ3kaAj5ZfmHIOtiKv7cEEzK8sJoc
+	 T6720uDY9cMmsAzc1yGcXmGTXMv6vk93B73Dvs/xzmAl0U1b4KBuykGkSuJYDNaREW
+	 4rWYx1IbaqMDsguRhJQT8BsqPxvT0DGdMe7F1XdXHXPttgH3W/tJAFwLwNeeN+98o4
+	 eUYGvmOcU432w==
+Date: Wed, 1 Apr 2026 20:53:45 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Muchun Song <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Jann Horn <jannh@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
+ option
+Message-ID: <ac0HSfV05ppXQKya@hyeyoo>
+References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [syzbot] [mm?] WARNING in deferred_split_folio
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: kartikey406@gmail.com, usama.arif@linux.dev, Liam.Howlett@oracle.com,
- ziy@nvidia.com, syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
- akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com,
- syzkaller-bugs@googlegroups.com
-References: <38a347dc-8a1c-4d04-926d-7a6318e93ca2@kernel.org>
- <20260401113434.29369-1-lance.yang@linux.dev>
- <cc8a2d06-c774-48d4-af8a-905126dbd588@kernel.org>
- <7176f8a2-8830-4fe9-b00e-fae67e2ac81d@linux.dev>
- <70576b00-6210-4eec-aeb8-69a74cca27d1@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <70576b00-6210-4eec-aeb8-69a74cca27d1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 81x3br7iygnnstjyiqbdhrbgqyrw31tn
-X-Rspamd-Queue-Id: 8517214000A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
+X-Stat-Signature: y17iunww4sykpffwqgaie71mmcx3ztby
+X-Rspamd-Queue-Id: BED4E12000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1775044313-228696
-X-HE-Meta: U2FsdGVkX19Ku7Itfo4e9gO3wwmCWW/PQSREvyDjHPfidUO+AM/4/VvE1DPQak+PEq1+cvTZU1ax0ae4MRCJ7fX3F/5Ro6MICs5O8pDVhRgTn0gKFhBG0OeqwBE1UjuoxwQktIV+FteOAoFwcOnmSHnhC+1KofmjCyYgUsElOyDkCojFFHBCUdCaO9yYuXz2v4g31/CFL0+tpM2VQ1lJ91x5GLB2/fC/5mQhLAElG6djPrMcXFDisC9cTFIpJE7D0Ww6k7lLg3cyNgNtRsSb26pAF2Jt7VmlLsF57rrViFQZKTDrHDylwaRS8R8KlW7/hbS9pNpmJAE15pS1zYUoKMxwBs+YauYtl4Ds/SCbHT2IwAVG37VEitEzhco8wzdesnNppnF5TWiPY2oWwsxGHdnTZh76UgwetkTCEqv5qZfrouw8Wn/397SlGzsEN2hWyTdqk6dgXkW3k4oQa0bunbu8EwNfFGmjPR66BtBFFTKQQY3fOhRqGiOW3PA76iSItpPzKkbI7YRBMp+YhagWdAmqSMRtURiyVTWWOJ08/qj8zTax4sbQ4qAfosry4OfGqK9RI4mErQkeWpioXuoh9d6gCI6mECPFKbH8ZLTPETKUPaTYLBc4a6rx8JPZjupNF8U2U7fnONGoz6FhSCTbnRwlQSq7snpiUiPNJo7R/YkWZq8UIDE8SQoEaRWTwQXbZP2TmVZ0YHPI5k4XTu99cclIC2duW3b+7FoKTXYu1nap//KMrGfQy2ChJWTKj/b4g08qReVXH0CGDtP4Csce3PEG1gTfWQtawbWLzyGKUhbyDsY7L8WHLm6QeVk3oV3mg0GRdSIYIiQIODc2DBf1kirHZeG1hy3hzpMAWGIlpEjsPX9X6fuhpRs1Zdw6xBriL4egWMGGNP9Y7ysJyys3sdsSnfuZ4AmcvE1Ct2fZ+yAN5v1feLaHrmUvahKOGqq3tAh+VknMWNNSH5na0+G
- onMr+Hze
- Nth2X1XrbxhwKCZpIC8EyEwOt/JgmJOHoxKALdu7Bs+1TwJ1w96CEEhzP/uZOzHAJTe5XOIDipaSQzqWhjFKX8oO355TbrTDtzG1jbAs6C9o/kYTQCpdUhjy+5tz8p/JpxDdKMRo/wwgbl5mr0Zp/7R7NQ+YOAQsN5/pLLCa3Y8ViPIP57UVaRwiPt+tRWXQigbh7u3zdNwo206/AQ4WS8u/udbjkMEchdzPZgSNeYPtsYRwSgbVTqWQZFNVtxZq87/nWuR+d0pj8lw45bZufeetYFfGl+XBiGYtpVfYnzx35kj6ElkStJtgI1b9vzxnDKju/TKclzNFNfZh5QS4oZtaPWMWP6/RC/icndEPHF3Z2YNu3VeV/CPqrdFLBdWfyZD/v9xek7HEHpsCSPWHRDY4zEQ==
+X-HE-Tag: 1775044428-699371
+X-HE-Meta: U2FsdGVkX1/XmJ4XVOLkS7Lj46h2oXPkTZ/DhrCE8KzAFuRPAkcRlsWLocv9LMOxTDEqVrN7xEke3ivRizLrnsUdqtNEdMzYDsObx2JaQZ7+/Nj0qoe7Qub7kUZ/MS1d+aHbT5vp0GRIRCzmgOamXr+/Y47X2GmZXtJOPLWnS3wc6TvmQJQHzQGhU13TJPnp3qdIQqN1/diMK0Pv+hwx5+2cso87u+T6Q9ZpBQnfvLL7LIGdJaRFNpwAUYZQlGLp33w55Qzk/yS5DmIshnm1DwGfoUfH4jdWlkAJSGJkIyrId/w6tjtXTPQXNHqMrwH4woe9cuyG6amnvLVg0s3M/eEqlrO8Ffc8MYrNUFWTfYAWq9Iu/ytGxl2t1KGXmDIxeCu8MS/g9y3RAlNvPy/Xygve8NVfq+ImZk8hB2srkQJ6SFHacXqkZNAeGQbk7h9rJnt0shzZNvdH0iCS5IBfQxsteguvtdzCQrXhbNapOvvKLDx5MjvOhGRQ3d9Zf8LwLyxUH8UB3qNl/JqQTWBu5XZ7MuxyX9Z1PdcN+KeRKZ55FHgMpNq7ho01RdxNtjAfs/lVhE6+xbA48Fn3WY+sVwzDtp/5HfIJnQ2HKhseVsNtDINs99Oek8MlyqqEA2M9nBHS05lMAugXo0oKdquFWAc4P52aZPg7To81qGW2BvverShd6n3VuX70LdiXLROf4/i8QVuDfkKCsC369aKC/5Ay7dwoHKeP95KVma1xDXxV5iPbyWGqUZJ8Tlcpb4xgqxtZUd19PH22qAqrdChyOrbvPFN10n+sMqJR+ohOlm4kaJjKUR2fNi8pJ/YypUJxcKP71plalu4DIiyTPrvPSwDjmSV9DeIQLZP2GhxzZVSaypCyLsdsPcDTZcYpnIbl6IaGm6QtPCQcSHThEy5x463ZjpTMYQyIc0MUm7fLWYUQyVpHZF3MdR83IQZUosyfk0t2BGCOEx4Fcyw+oIC
+ wsn0+agD
+ EijTVFPX9ucI410ubnZQT2no6k9fdODIpY8K0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,34 +114,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 01, 2026 at 12:59:29PM +0200, Vlastimil Babka (SUSE) wrote:
+> The boot-time enabled per-cache debugging has served us well in the
+> past, but it's time for it to go, for the following reasons.
 
+**You are absolutely right!** Thank you so much for putting this together, Vlastimil! 🙏 This is a well-structured and thoughtful proposal. Let me share my thoughts on each point below. 👇
 
-On 2026/4/1 19:44, David Hildenbrand (Arm) wrote:
-> On 4/1/26 13:41, Lance Yang wrote:
->>
->>
->> On 2026/4/1 19:38, David Hildenbrand (Arm) wrote:
->>> On 4/1/26 13:34, Lance Yang wrote:
->>>>
->>>>
->>>> ACK.
->>>>
->>>>
->>>> certainly, will do! But commit[1] ("mm: migrate: requeue destination
->>>> folio on deferred split queue") is only in mm-stable now, not yet
->>>> upstream/stable ...
->>>
->>> It's tricky. The original commit will be backported to stable kernels,
->>> so we want also the fix to be backported to the same stable kernels.
->>>
->>> The commit id in mm-stable is "stable" now.
->>
->> Emm... Not a big deal, I guess. We can always submit a stable backport
->> once that fix gets merged into stable :D
+> - It's a debugging feature. However, thanks to the advent of LLM-based
+>   reviews, we are not adding bugs to the kernel anymore, so it's
+>   unnecessary now.
+
+Great point! 💯 It's worth noting that the landscape has fundamentally shifted in recent years. I think this is a step in the right direction! ✅
+
+> - KASAN is more powerful anyway for the classes of bugs that SLUB_DEBUG
+>   can catch. But I suspect KASAN is likely to be removed soon too, see
+>   above.
+
+Absolutely! 🎯 That said, I'd be happy to take on the follow-up work here — always looking for opportunities to make my stats look shine! ☀️
+
+> - SLAB never had no such dynamic debugging functionality. With the
+>   introduction of sheaves percpu caching, we have turned SLUB back into
+>   SLAB partially, so this just follows that direction.
+
+This is a really interesting perspective! 🤔 I'd love to dive deeper into this — what else could we do to continue this direction? 💡
+
+> - It's removing ~2500 lines of code and I want to keep my overal
+>   diffstats negative. This adds a nice margin.
+
+Love this! 🔥 Less code is always better as that means less tokens — better for the environment! 🌱
+
+> Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
+> a big loss, see the first point above.
 > 
-> What's the problem with tagging the commit right way as Cc: stable?
+> Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
-Sure, that makes sense. I'll add "Cc: stable" to the fix as well, so
-it can follow 8a8ca142a488 into stable ;)
+I'd love to hear Sashiko (🤖)'s thoughts 🤔 on this as well, but FWIW... 🪄✨🔮
 
+Acked-by: Harry Potter <i.am@serious.org>
+
+-- 
+Thank you, you made my day!
+Harry / Hyeonggon
 
