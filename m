@@ -4,100 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FBEA1076377
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 06:36:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E691D35144
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 06:56:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F6FB6B0088; Wed,  1 Apr 2026 02:36:41 -0400 (EDT)
+	id A6EAD6B0088; Wed,  1 Apr 2026 02:56:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CE606B0089; Wed,  1 Apr 2026 02:36:41 -0400 (EDT)
+	id 9F8716B0089; Wed,  1 Apr 2026 02:56:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60B226B008A; Wed,  1 Apr 2026 02:36:41 -0400 (EDT)
+	id 8C04A6B008A; Wed,  1 Apr 2026 02:56:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 528656B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:36:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D94B759B17
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:36:40 +0000 (UTC)
-X-FDA: 84609028560.11.08C754B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5AB4A18000F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:36:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dGeZguIX;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6FAD76B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 02:56:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13A5E8C1A6
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:56:17 +0000 (UTC)
+X-FDA: 84609077994.25.F86F8D4
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 13B471C0010
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 06:56:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b4vSOTod;
+	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775025399;
+	s=arc-20220608; t=1775026575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=xUFrxi4EN62Or/82RhvALu5rDGlQEVn9RB1olJSTjDA=;
-	b=e5v8YY1bmpqxyC1JJ9pqSCxrfgezU6VN1ctBT6bMZWiz+UnHAd/SgVm5FtkE4Rph6fPX7/
-	hnWh61WGwHQdN56txEXeersnamljS7jwkrNxxnxQ+3gChTfBfmMMzlSqX2WrbtwcPrRcH2
-	NJ4INXtnZHZevHqdt6g63c5xsQmRgt0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dGeZguIX;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775025399; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=paMbxHyax8/ms1LKlFcByWVRiRiLY2REyz8Mqd1wUUE=;
+	b=uxGKLOnUeizNLn87oZtg4pQIgJB4WwxEP2uThvpCRlt0+BFQPtSRAx/EKBkvJ6r3qD7u5g
+	ykrcpVn83hzDP/bjdvoi31mQygXwMRVCOZQ0cIPsalCZyLpLBP7WM5xOrqKKo2UeQyXmtB
+	JsuojU1mWMJ/2AaPZlA1OSXzo7mhHf8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775026575; a=rsa-sha256;
 	cv=none;
-	b=ki+ExLmabnG2F9G/e1fSnFpMlGIlspjmdeNiKcfhP2LHm/26JTqLfz58CCgqrzJVPFEzqc
-	mXSWl93ku6cnUWYDR4OsLyxDkU1JH2ePwlB9xyzoC83q4gVcm1gBhcg8tdpbqoMuOrEayh
-	FI1uiHIsmZOhZlFLOM44fa4sWopmPGA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775025399; x=1806561399;
-  h=date:from:to:cc:subject:message-id;
-  bh=QGGQ/Hfa2CU6Z1TD0eYjfEEz/2jPVQelhv8NmTuZqlU=;
-  b=dGeZguIX0q8nvF66H35C8H0JeaDomzFQZi49JgRgzpoTksMA0QqQa7hp
-   9eHPzDgKpoGR/t2SgfOL+3iOILwKiRkKI4iJfPxWO10zIU/sQjmf3qrSz
-   /t9kz5IcQPrUtPy4OzhhN9MTejVsW9DfzEmByS+2ATrxQqwPODnNk0kkH
-   OK/REJ2cCT9hphdItRLAhCwgs5pYWEVkuiqV6Wx+LvWAYEqaJxy+boXHC
-   RdV8/ipvyuAf/oi+j1q5EBBqKPNh4KEynbLkZEOrPH47GUGWtKnRfgAQB
-   Mb6TpL82BVsKnGkKF6kbEzCkY85BoQVj7dhvdMhCItCwJ2bwt6yylFgyS
-   w==;
-X-CSE-ConnectionGUID: eYSZIhJ0S1G6vmf2CbvIAQ==
-X-CSE-MsgGUID: kS73e8uoQi6bvOvJnH5SJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11745"; a="87514019"
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="87514019"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2026 23:36:37 -0700
-X-CSE-ConnectionGUID: vXeGyT6wRp6q3MTLXB2nCw==
-X-CSE-MsgGUID: /is4+eUyQsGdwTc92iPQRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,153,1770624000"; 
-   d="scan'208";a="249805329"
-Received: from lkp-server01.sh.intel.com (HELO 699e4e600a11) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 31 Mar 2026 23:36:35 -0700
-Received: from kbuild by 699e4e600a11 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7pBo-0000000002j-1OO6;
-	Wed, 01 Apr 2026 06:36:32 +0000
-Date: Wed, 01 Apr 2026 14:36:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 124/135]
- include/linux/compiler_types.h:706:45: error: call to
- '__compiletime_assert_350' declared with attribute error: BUILD_BUG_ON
- failed: SECTION_MAP_LAST_BIT > min(PFN_SECTION_SHIFT + __ffs(sizeof(struct
- page)), PAGE_SHIFT)
-Message-ID: <202604011400.OFLcOOmf-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=S1pcyLPDWRCK9h9Jq9P4XR8dKeAEKH385csVdo25SGn+oSK43ywYjSNiWmetGEbqzLMBZy
+	8j6f3bij1EZJsMKQrEMjFanpGsX63mGJhW4sV4J6hJcF9x3xdN3rlmb2yc0mfm7W8a1Nn1
+	TAAo4tK2pkyb+v/xFlTfLOBtctRCMvU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b4vSOTod;
+	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 1 Apr 2026 14:55:23 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775026572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=paMbxHyax8/ms1LKlFcByWVRiRiLY2REyz8Mqd1wUUE=;
+	b=b4vSOTodZmtYq0dm5da/dDSy99bmNfBlE3VShGfPw1lbR/Z/aM8BFiQy4wXYWL6dcDnTrE
+	q0qTQpphHDYvuD6vIKY/MTA6ZUJyNdIz5+c0IwTDX7w9nfQBmUgLycCEeDadmrNEBBIrzY
+	cCxbwXTXlSVjQGkuBIQieZDAVEIckX8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: hu.shengming@zte.com.cn
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
+	xu.xin16@zte.com.cn, yang.tao172@zte.com.cn, yang.yang29@zte.com.cn
+Subject: Re: [PATCH v2] mm/slub: skip freelist construction for whole-slab
+ bulk refill
+Message-ID: <fz2shejnypqsu74zpoy66senjbpyl2bbvcnoxu6hvfs77c7jtr@o2acnd2hzd4x>
+References: <202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ian11iqqtj85hnz1yc13czi5w6eyccx1
+X-Rspamd-Queue-Id: 13B471C0010
 X-Rspam-User: 
-X-Stat-Signature: 7waxsahywtek85ejni475k1zap6b81fp
-X-Rspamd-Queue-Id: 5AB4A18000F
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775025398-526380
-X-HE-Meta: U2FsdGVkX1/x1RvmlU7oJsOrvbI8bWn0FC/7xnJqrls//tOQRsD+hFoC9t/PhEUcWJGIx4N3B2huNeJh0iEOOI58wS6SyjbPAwGsWWNAUwDVzdr3m7+Y9b8ozpqJar5x64ZiwHWitrFWPv3jxdy1vD0Hw/D8UtpIORKH/Hrpga9D3sgzrWUzxG0MMWmKtU1aGcswEOxrBkQjQoYtRNNWE1PIm3m/9ZX+utOHQodrLIwtLgoA1J2hUzToASkK0LKNM1eS46VlwEhe0Zy+ptxAgmANrVj5WyRv9yuQ2+1FLA9vXaS4kuIDsOTdwN9Y4GHJA1l8dsbLL+30A842hLJHnm02f2uSWrwb3F7lMTXH2Zu6CC7uSStzZ/X6YzaEVWC2LD0dPcIzlmAUYJfFf02MM1np1D2Mo8mrFX9Nq3c+31s9nzkdYD4zM449rRN/kutd9lS4EA//FmSCSSMTxrJsGo7oJ/WyUEJwG7vAkhMloA42/69uKppwn8N/jhOgYvwSbT9gBhAyyM4RmJBcYG0kdTNQsDvMXq8Kyb0v/yKX2yIWtayjNGCl7bnc3BGS1RoSszD1POQLPjqekb0Nur++cf9r7bNVL78GMAJTdEfn/Ht8CaPVlmemMCT56MExz//LocDNEE8vaZ4TwrUCCVNAPV0eYqqLzUn0aOaXydWYN1pEJpeWraWwskfySwowsCRms+KVNdAKJVHZj3fEvJGgZ4bMgaqtMpNOL2ai0bEqkulvCnXjMObNso9cBtuNPH30lcdLqnsBepjsf8/8X1va2Q8nKrru8KX5oCva4lWfTXKSvRxRP80BjjiRMiqhmWPeHUnyFB9Tz8iSaEvB/8HHEH+QKJ+mLbVtGhsq0uSeTGPEHsb2EgGYVZehRqXdk3ijJvUPoc68LMFDTVdOL9FOeQJA9vDprT3hzYVpfh89BLR48o07zCrhv9dxR8HJWVuueBV0MXNmdo0ZthnFrA2
- 91nPiWKu
- uNRvOVazTiE6gsnZMpr3g5dK6w3ltvTpviEL8GGoKYLAute5Tt7eOdXI874S3o9JGAAcmlmfzDLcrSm4zL67K3s1/+CFwm6KwvyfddvRHdGheo+HIPAIxLy8qgJYKWDheyxaZQpkpS6IElI3qZ0qDtwmVn19rXT38ntPHJbThSzUVii7K0Mlyv408iwIwyre7L4aL7A0EPn7pS0si6tIl2QRSGNOQZHU/uuX7anMH1gou0L73uiKMlmgN1gZ+AEJVxDwRg+P2MM/voIw+jViFYPSsr4+zlE3tNx//6CIWXwcCXOUeixJKycBo1FncSgTBZBny
+X-HE-Tag: 1775026574-693848
+X-HE-Meta: U2FsdGVkX1/I45TuRHR4yejoBp7AATjNijfqvDTcKMIjgpZm29w0DF89mR2DQ3snW/8xzRLZD4HkRtQACCFBVqpfGeshqMJSCzCQbeNTedPNPlyy3n1b3o0tt7mbK1jaKf6eNTFNfOjDe0nSLTK3C5uQZQgtIlDC5wu8sW1HyPvRljwZ1UXrefzKkbklQhzYBTiQtjNinwvyoqqwWNZmslshZd3jQHdLBNc9NnPBqYJaRbDQpi95kmg5gWqdzZ0JBeiFsBEQ8W8f5sfWpDWgSTqNsHWipJgd1qx8BvFQiBhTancrK7nXD3UK9F0vI9JEsdpBx19PyGnjhZeh9qA5w8Xl7DBUPMXwiN0s2AD/Zkvb7u+lekgbwoBBhhE210pKzP1jF4K9GKi4fOaYxRdjsozOy2XOiTClBXyaiVg1kEmm/zhcPKXvswOKAlqo60OBXDF05AGFDGPx/njqgNPmUuYB1YFQWTZCaV6ZAK7p/utI+pAFkvvk3DM5T7Dpg1A3wrU+Sr6/WPl+AIFpYKcM2PZQFVU6nXiFgjYjaGyDGINN1aqzzYf7PrcTw46qSmmj8poIak8xsAuCpoNQ30aGEQ0QFPSUoF8xeXPpCxe5aV1EYgB6AJNLo3T/gt/nHRzSnAyLzq2O1x2T5XhYi+pBK+1a6PecNozdLn7wxTrv9J1l9sYmKT5qKangDc0MWorUNMwT2Apd4eJclfHvz39pevBJDo/3RsUxCqF1NAJl9d9ht3RWeFnQAPp4AZI9YKExtRVE8BIqa8VOLsd2Ojb4pzIiV5Bza16klFonNE4fVvJt5J0nPACSTEtp+dONPyobIqertLgBkvcSQ5Idrxy/plqp6B72AJOZq1F0nyJZPyF1szKXfHfEEHXXK+X5PaNBIiJE244LmM21+VFa0nRYIqWZjfiIufFGL4jczp5yuBXzDnlVcD/IeOTWTTBmtL68lz705n49qIIwO1xPiIN
+ bT1O4V/I
+ IIA4xfrzrteAHssacw9jRtq/+zzsL2duWqcfD/trBRsauxmUq2FCMeT1MLKSZZYVlxxhPetY1Sr/Op39wPUmUiNmOAAG6Ct5mTXgiGCi2oi5sti0SZrCLAKHSi4lEUv81fop9WM/KnVMWEQyqZQJ0myKohJ/MQlYWLkud9QQgiGYRLCn5JRZvckOPxTYDkBNAsPZtFGDWEQgDN21/jNix+iQFbQPkUvXqC00B333YBCGMULF9qF/jUL4+Z8hL1WJfYvWVYCxvPna+BgWYe02/QOaFkmsLwSCECSrurlgv0e6Cnzsh1/+P5SuPYy80KeC85PvZjuPbAYU1DPE3iIr7mV9eRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,69 +89,402 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   d873dd7a326a5b9f970008d4b59ae2c9e4e9b12b
-commit: 28208ad9dae4d1eccc9280bc3193b4091afd6a1a [124/135] mm/sparse: fix BUILD_BUG_ON check for section map alignment
-config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20260401/202604011400.OFLcOOmf-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260401/202604011400.OFLcOOmf-lkp@intel.com/reproduce)
+On Wed, Apr 01, 2026 at 12:57:25PM +0800, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> refill_objects() already notes that a whole-slab bulk refill could avoid
+> building a freelist that would be drained immediately.
+> 
+> When the remaining bulk allocation is large enough to consume an entire
+> new slab, building the freelist is unnecessary overhead. Instead,
+> allocate the slab without initializing its freelist and hand all objects
+> directly to the caller.
+> 
+> Handle CONFIG_SLAB_FREELIST_RANDOM=y as well by walking objects in the
+> randomized allocation order and placing them directly into the caller's
+> array, without constructing a temporary freelist.
+> 
+> Also mark setup_object() inline. After this optimization, the compiler no
+> longer consistently inlines this helper in the hot path, which can hurt
+> performance. Explicitly marking it inline restores the expected code
+> generation.
+> 
+> This reduces per-object overhead in bulk allocation paths and improves
+> allocation throughput significantly. In slub_bulk_bench, the time per
+> object drops by about 54% to 74% with CONFIG_SLAB_FREELIST_RANDOM=n, and
+> by about 62% to 74% with CONFIG_SLAB_FREELIST_RANDOM=y.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604011400.OFLcOOmf-lkp@intel.com/
+Thanks for the patch.
+Here are some quick review..
 
-All errors (new ones prefixed by >>):
+> 
+> Benchmark results (slub_bulk_bench):
+> 
+> Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
+> Kernel: Linux 7.0.0-rc6-next-20260330
+> Config: x86_64_defconfig
+> Cpu: 0
+> Rounds: 20
+> Total: 256MB
+> 
+> - CONFIG_SLAB_FREELIST_RANDOM=n -
+> 
+> obj_size=16, batch=256:
+> before: 5.29 +- 0.73 ns/object
+> after: 2.42 +- 0.05 ns/object
+> delta: -54.4%
+> 
+> obj_size=32, batch=128:
+> before: 7.65 +- 1.89 ns/object
+> after: 3.04 +- 0.03 ns/object
+> delta: -60.2%
+> 
+> obj_size=64, batch=64:
+> before: 11.07 +- 0.08 ns/object
+> after: 4.11 +- 0.04 ns/object
+> delta: -62.9%
+> 
+> obj_size=128, batch=32:
+> before: 19.95 +- 0.30 ns/object
+> after: 5.72 +- 0.05 ns/object
+> delta: -71.3%
+> 
+> obj_size=256, batch=32:
+> before: 24.31 +- 0.25 ns/object
+> after: 6.33 +- 0.14 ns/object
+> delta: -74.0%
+> 
+> obj_size=512, batch=32:
+> before: 22.48 +- 0.14 ns/object
+> after: 6.43 +- 0.10 ns/object
+> delta: -71.4%
+> 
+> - CONFIG_SLAB_FREELIST_RANDOM=y -
+> 
+> obj_size=16, batch=256:
+> before: 9.32 +- 1.26 ns/object
+> after: 3.51 +- 0.02 ns/object
+> delta: -62.4%
+> 
+> obj_size=32, batch=128:
+> before: 11.68 +- 0.15 ns/object
+> after: 4.18 +- 0.22 ns/object
+> delta: -64.2%
+> 
+> obj_size=64, batch=64:
+> before: 16.69 +- 1.36 ns/object
+> after: 5.22 +- 0.06 ns/object
+> delta: -68.7%
+> 
+> obj_size=128, batch=32:
+> before: 23.41 +- 0.23 ns/object
+> after: 7.40 +- 0.07 ns/object
+> delta: -68.4%
+> 
+> obj_size=256, batch=32:
+> before: 29.80 +- 0.44 ns/object
+> after: 7.98 +- 0.09 ns/object
+> delta: -73.2%
+> 
+> obj_size=512, batch=32:
+> before: 30.38 +- 0.36 ns/object
+> after: 8.01 +- 0.06 ns/object
+> delta: -73.6%
+> 
+> Link: https://github.com/HSM6236/slub_bulk_test.git
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> ---
+> Changes in v2:
+> - Handle CONFIG_SLAB_FREELIST_RANDOM=y and add benchmark results.
+> - Update the QEMU benchmark setup to use -enable-kvm -cpu host so benchmark results better reflect native CPU performance.
+> - Link to v1: https://lore.kernel.org/all/20260328125538341lvTGRpS62UNdRiAAz2gH3@zte.com.cn/
+> 
+> ---
+>  mm/slub.c | 155 +++++++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 136 insertions(+), 19 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index fb2c5c57bc4e..52da4a716b1b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2733,7 +2733,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
+>  	return *head != NULL;
+>  }
+>  
+> -static void *setup_object(struct kmem_cache *s, void *object)
+> +static inline void *setup_object(struct kmem_cache *s, void *object)
+>  {
+>  	setup_object_debug(s, object);
+>  	object = kasan_init_slab_obj(s, object);
+> @@ -3399,6 +3399,53 @@ static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+>  
+>  	return true;
+>  }
+> +static __always_inline void maybe_wipe_obj_freeptr(struct kmem_cache *s,
+> +						   void *obj);
+> +
+> +static inline bool alloc_whole_from_new_slab_random(struct kmem_cache *s,
+> +					struct slab *slab, void **p,
+> +					bool allow_spin,
+> +					unsigned int *allocatedp)
+> +{
+> +	unsigned long pos, page_limit, freelist_count;
+> +	unsigned int allocated = 0;
+> +	void *next, *start;
+> +
+> +	if (slab->objects < 2 || !s->random_seq)
+> +		return false;
+> +
+> +	freelist_count = oo_objects(s->oo);
+> +
+> +	if (allow_spin) {
+> +		pos = get_random_u32_below(freelist_count);
+> +	} else {
+> +		struct rnd_state *state;
+> +
+> +		/*
+> +		 * An interrupt or NMI handler might interrupt and change
+> +		 * the state in the middle, but that's safe.
+> +		 */
+> +		state = &get_cpu_var(slab_rnd_state);
+> +		pos = prandom_u32_state(state) % freelist_count;
+> +		put_cpu_var(slab_rnd_state);
+> +	}
+> +
+> +	page_limit = slab->objects * s->size;
+> +	start = fixup_red_left(s, slab_address(slab));
+> +
+> +	while (allocated < slab->objects) {
+> +		next = next_freelist_entry(s, &pos, start, page_limit,
+> +					     freelist_count);
+> +		next = setup_object(s, next);
+> +		p[allocated] = next;
+> +		maybe_wipe_obj_freeptr(s, next);
+> +		allocated++;
+> +	}
+> +
+> +	*allocatedp = allocated;
 
-   In file included from <command-line>:
-   In function 'sparse_init_one_section',
-       inlined from 'sparse_init_early_section' at mm/sparse.c:323:2:
->> include/linux/compiler_types.h:706:45: error: call to '__compiletime_assert_350' declared with attribute error: BUILD_BUG_ON failed: SECTION_MAP_LAST_BIT > min(PFN_SECTION_SHIFT + __ffs(sizeof(struct page)), PAGE_SHIFT)
-     706 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:687:25: note: in definition of macro '__compiletime_assert'
-     687 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:706:9: note: in expansion of macro '_compiletime_assert'
-     706 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
-      40 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:51:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      51 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^~~~~~~~~~~~~~~~
-   mm/internal.h:975:9: note: in expansion of macro 'BUILD_BUG_ON'
-     975 |         BUILD_BUG_ON(SECTION_MAP_LAST_BIT > min(PFN_SECTION_SHIFT + __ffs(sizeof(struct page)),
-         |         ^~~~~~~~~~~~
+It seems we does not need to return the allocated count through allocatedp,
+since the count should always be slab->objects.
+
+> +	return true;
+> +}
+> +
+>  #else
+>  static inline int init_cache_random_seq(struct kmem_cache *s)
+>  {
+> @@ -3410,6 +3457,14 @@ static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+>  {
+>  	return false;
+>  }
+> +
+> +static inline bool alloc_whole_from_new_slab_random(struct kmem_cache *s,
+> +					struct slab *slab, void **p,
+> +					bool allow_spin,
+> +					unsigned int *allocatedp)
+> +{
+> +	return false;
+> +}
+>  #endif /* CONFIG_SLAB_FREELIST_RANDOM */
+>  
+>  static __always_inline void account_slab(struct slab *slab, int order,
+> @@ -3438,7 +3493,8 @@ static __always_inline void unaccount_slab(struct slab *slab, int order,
+>  			    -(PAGE_SIZE << order));
+>  }
+>  
+> -static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+> +static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node,
+> +				  bool build_freelist, bool *allow_spinp)
+>  {
+>  	bool allow_spin = gfpflags_allow_spinning(flags);
+>  	struct slab *slab;
+> @@ -3446,7 +3502,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	gfp_t alloc_gfp;
+>  	void *start, *p, *next;
+>  	int idx;
+> -	bool shuffle;
+> +	bool shuffle = false;
+> +
+> +	if (allow_spinp)
+> +		*allow_spinp = allow_spin;
+
+It seems unnecessary for allocate_slab() to compute allow_spin and return it
+via allow_spinp.
+We could instead calculate it directly in refill_objects() based on gfp.
+
+>  
+>  	flags &= gfp_allowed_mask;
+>  
+> @@ -3483,6 +3542,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	slab->frozen = 0;
+>  
+>  	slab->slab_cache = s;
+> +	slab->freelist = NULL;
+>  
+>  	kasan_poison_slab(slab);
+>  
+> @@ -3497,9 +3557,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	alloc_slab_obj_exts_early(s, slab);
+>  	account_slab(slab, oo_order(oo), s, flags);
+>  
+> -	shuffle = shuffle_freelist(s, slab, allow_spin);
+> +	if (build_freelist)
+> +		shuffle = shuffle_freelist(s, slab, allow_spin);
+>  
+> -	if (!shuffle) {
+> +	if (build_freelist && !shuffle) {
+>  		start = fixup_red_left(s, start);
+>  		start = setup_object(s, start);
+>  		slab->freelist = start;
+> @@ -3515,7 +3576,8 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	return slab;
+>  }
+>  
+> -static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
+> +static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node,
+> +			     bool build_freelist, bool *allow_spinp)
+>  {
+>  	if (unlikely(flags & GFP_SLAB_BUG_MASK))
+>  		flags = kmalloc_fix_flags(flags);
+> @@ -3523,7 +3585,8 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	WARN_ON_ONCE(s->ctor && (flags & __GFP_ZERO));
+>  
+>  	return allocate_slab(s,
+> -		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
+> +			     flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK),
+> +			     node, build_freelist, allow_spinp);
+>  }
+>  
+>  static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
+> @@ -4395,6 +4458,48 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  	return allocated;
+>  }
+>  
+> +static unsigned int alloc_whole_from_new_slab(struct kmem_cache *s,
+> +		struct slab *slab, void **p, bool allow_spin)
+> +{
+> +
+> +	unsigned int allocated = 0;
+> +	void *object, *start;
+> +
+> +	if (alloc_whole_from_new_slab_random(s, slab, p, allow_spin,
+> +					     &allocated)) {
+> +		goto done;
+> +	}
+> +
+> +	start = fixup_red_left(s, slab_address(slab));
+> +	object = setup_object(s, start);
+> +
+> +	while (allocated < slab->objects - 1) {
+> +		p[allocated] = object;
+> +		maybe_wipe_obj_freeptr(s, object);
+> +
+> +		allocated++;
+> +		object += s->size;
+> +		object = setup_object(s, object);
+> +	}
+
+Also, I feel the current patch contains some duplicated code like this loop.
+
+Would it make sense to split allocate_slab() into two functions?
+
+For example,
+the first part could be called allocate_slab_meta_setup() (just an example name)
+And, the second part could be allocate_slab_objects_setup(), with the core logic
+being the loop over objects. Then allocate_slab_objects_setup() could support
+two modes: one called BUILD_FREELIST, which builds the freelist, and another
+called EMIT_OBJECTS, which skips building the freelist and directly places the
+objects into the target array.
+
+> +
+> +	p[allocated] = object;
+> +	maybe_wipe_obj_freeptr(s, object);
+> +	allocated++;
+> +
+> +done:
+> +	slab->freelist = NULL;
+> +	slab->inuse = slab->objects;
+> +	inc_slabs_node(s, slab_nid(slab), slab->objects);
+> +
+> +	return allocated;
+> +}
+> +
+> +static inline bool bulk_refill_consumes_whole_slab(struct kmem_cache *s,
+> +		unsigned int count)
+> +{
+> +	return count >= oo_objects(s->oo);
+
+It seems using s->oo here may be a bit too strict. In allocate_slab(), the
+object count can fall back to s->min, so using s->objects might be more
+reasonable (If I understand correctly...).
+
+> +}
+> +
+>  /*
+>   * Slow path. We failed to allocate via percpu sheaves or they are not available
+>   * due to bootstrap or debugging enabled or SLUB_TINY.
+> @@ -4441,7 +4546,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  	if (object)
+>  		goto success;
+>  
+> -	slab = new_slab(s, pc.flags, node);
+> +	slab = new_slab(s, pc.flags, node, true, NULL);
+>  
+>  	if (unlikely(!slab)) {
+>  		if (node != NUMA_NO_NODE && !(gfpflags & __GFP_THISNODE)
+> @@ -7244,18 +7349,30 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+>  
+>  new_slab:
+>  
+> -	slab = new_slab(s, gfp, local_node);
+> -	if (!slab)
+> -		goto out;
+> -
+> -	stat(s, ALLOC_SLAB);
+> -
+>  	/*
+> -	 * TODO: possible optimization - if we know we will consume the whole
+> -	 * slab we might skip creating the freelist?
+> +	 * If the remaining bulk allocation is large enough to consume
+> +	 * an entire slab, avoid building the freelist only to drain it
+> +	 * immediately. Instead, allocate a slab without a freelist and
+> +	 * hand out all objects directly.
+>  	 */
+> -	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
+> -					/* allow_spin = */ true);
+> +	if (bulk_refill_consumes_whole_slab(s, max - refilled)) {
+> +		bool allow_spin;
+> +
+> +		slab = new_slab(s, gfp, local_node, false, &allow_spin);
+> +		if (!slab)
+> +			goto out;
+> +		stat(s, ALLOC_SLAB);
+> +		refilled += alloc_whole_from_new_slab(s, slab, p + refilled,
+> +						      allow_spin);
+> +	} else {
+> +		slab = new_slab(s, gfp, local_node, true, NULL);
+> +		if (!slab)
+> +			goto out;
+> +		stat(s, ALLOC_SLAB);
+> +		refilled += alloc_from_new_slab(s, slab, p + refilled,
+> +						max - refilled,
+> +						/* allow_spin = */ true);
+> +	}
+>  
+>  	if (refilled < min)
+>  		goto new_slab;
+> @@ -7587,7 +7704,7 @@ static void early_kmem_cache_node_alloc(int node)
+>  
+>  	BUG_ON(kmem_cache_node->size < sizeof(struct kmem_cache_node));
+>  
+> -	slab = new_slab(kmem_cache_node, GFP_NOWAIT, node);
+> +	slab = new_slab(kmem_cache_node, GFP_NOWAIT, node, true, NULL);
+>  
+>  	BUG_ON(!slab);
+>  	if (slab_nid(slab) != node) {
+> -- 
+> 2.25.1
 
 
-vim +/__compiletime_assert_350 +706 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  692  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  693  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  694  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  695  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  696  /**
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  698   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  699   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  700   *
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  701   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  702   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  703   * compiler has support to do so.
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  704   */
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  705  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21 @706  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  707  
-
-:::::: The code at line 706 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
-
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
