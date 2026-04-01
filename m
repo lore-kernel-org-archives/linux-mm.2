@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32BCD35177
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4491DD3517A
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 12:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 577466B0089; Wed,  1 Apr 2026 07:54:27 -0400 (EDT)
+	id 788D66B0005; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5282D6B008A; Wed,  1 Apr 2026 07:54:27 -0400 (EDT)
+	id 739F26B0088; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 417706B0092; Wed,  1 Apr 2026 07:54:27 -0400 (EDT)
+	id 676C56B0089; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B0C16B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:54:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF82213B6B1
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:54:26 +0000 (UTC)
-X-FDA: 84609829332.27.542B8A3
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0909320008
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:54:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FA3xorRu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5621C6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:08:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7AEBBB736
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:08:58 +0000 (UTC)
+X-FDA: 84609865956.21.A8C2E64
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C4EF812000A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:08:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=qVhrNEMw;
+	spf=pass (imf29.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775044465;
+	s=arc-20220608; t=1775045337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Od0KGdAt79Hlpl+RQqHGd+sZXqx3QxXuL8MZO01WLhE=;
-	b=FgTpexO1G+cazSkrnLhPfpXAcLL/Xpe2O0CvwS1oc9PDKW+C47jI9n/auK8fmCCy7dyo7R
-	FTafryRAGlM5LXyE7GxRb+14wm8579q4cGg6fkCN+e5JosJU/qiyi9kiQugQco3whuCCwe
-	epQBbSjB/usfZcR4SM11/LcmwsXiRik=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775044465; a=rsa-sha256;
-	cv=none;
-	b=D0eHZZk74Ouxc4/Mp/1CXIRvT3rbzsny6LOhzYFfi5aoW7L60hxZGSCPJglVLh9UX5VnxV
-	CFRiLFnJrUvUl8dV3t39c8wrUETy+bIdRL6fpUUdLDrwl0YgZCwMl/jjODHCyKv7fJdN6g
-	zRMBxNVdlp48lmh2CqjP8A4cnHtsOLs=
+	bh=//7XitCZDuL8U313dQu90sWodjmALOrjLUhCd5TQrMI=;
+	b=r2jDNPznz0t8tTZ4MSlXHwbXEXg8Mhc2iq4T5wbiXSwg+Bk3hJfHaoNG0XmgLzaGVVDDH9
+	bonA4lyY9mpqm+ZtjZu+iGFjkpYzT9+4oLzXzVicloPBSxbZmh+6TgxC32ocs41Tyc0eBp
+	DE1kvTslPoVlB1oa7oALFNJp3fWOBWQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FA3xorRu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <87a48c70-b6fd-48f6-9ec0-7eb2dc6cc3d1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775044463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Od0KGdAt79Hlpl+RQqHGd+sZXqx3QxXuL8MZO01WLhE=;
-	b=FA3xorRuCN1CkX5XsCTYNerU5KwqOVywN0vQvF43TelYLJ3CQvxT0s//W7+9bD9Tk6yhib
-	jJxP3b7CR5X6ngcP1kG4DVpYnqzurWCl+gOykGo72rU+ahThqH07aH8XlkzXU9wXKon0BI
-	auoqb25HQUO00BzqhhzT+QklpElPf9U=
-Date: Wed, 1 Apr 2026 19:54:14 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=qVhrNEMw;
+	spf=pass (imf29.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775045337; a=rsa-sha256;
+	cv=none;
+	b=KVnz11GnhT0JiDwkNsPidg9Mr9XoV9DOqaL0YLPGinQNBEdoQsmRt+TL+jHk4EZmXR0x60
+	cqS9QY/AnaQ74nACiJdjH+gfnXwx/LLm2vzWs0QcwrtWDkMa2T0lTkYF4Ib7px9BgIB44S
+	ybXWcI7ETeP1FfqwKhn9nAS+lTVdZYo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1775045333;
+	bh=Zsz1KWW88aqJcvMBUIOh0Ys1zgAR7pErU1ze+icLZtI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qVhrNEMwQvEty5OInor3o7jjNTKDrf5eYOiqax+m5k49pdAI5GZ6b1wJkU7mc33Fa
+	 fO2ZARKw/2fimxKOoitqgAPMASC6pyrF9j8Ta1FEZxMHbhTIXY83YPeG1dLmxVissW
+	 rmmPtGiPAv26FsohpFsoWNZ5ZcCQFWPBPJ3rvl54=
+Date: Wed, 1 Apr 2026 14:08:53 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Mark Brown <broonie@kernel.org>
+Cc: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org, 
+	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf
+ style arguments
+Message-ID: <c6976e34-54b7-42a8-968e-9ae967c52968@t-8ch.de>
+References: <20260330151503.670415-1-chuhu@redhat.com>
+ <20260330151503.670415-5-chuhu@redhat.com>
+ <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
 MIME-Version: 1.0
-Subject: Re: [syzbot] [mm?] WARNING in deferred_split_folio
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: kartikey406@gmail.com, usama.arif@linux.dev, Liam.Howlett@oracle.com,
- ziy@nvidia.com, syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
- akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com,
- syzkaller-bugs@googlegroups.com
-References: <38a347dc-8a1c-4d04-926d-7a6318e93ca2@kernel.org>
- <20260401113434.29369-1-lance.yang@linux.dev>
- <cc8a2d06-c774-48d4-af8a-905126dbd588@kernel.org>
- <7176f8a2-8830-4fe9-b00e-fae67e2ac81d@linux.dev>
- <70576b00-6210-4eec-aeb8-69a74cca27d1@kernel.org>
- <c5d01704-9035-482a-b562-ef5a0c163d4d@linux.dev>
-In-Reply-To: <c5d01704-9035-482a-b562-ef5a0c163d4d@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 0909320008
-X-Stat-Signature: cwroyipjt5hgwwn1fmgebjzcptmqfi15
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C4EF812000A
+X-Stat-Signature: wt4cjqzaq19yet1cqwqb1u4m65pgre7u
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775044464-659362
-X-HE-Meta: U2FsdGVkX1/XutmtP6elpRCfKdlEUgaVfLbhKJEyNJD0CaEs4CS/nWB4CjtULaSh9uXYCfcoMDNNiDSRmg5ydQRUysnQhOlRIWkRI0CSB4fupWONSX7lZYdd95PjPLchCqQo3agrLZo0I56Y2vBuQZ76pnavV6p+PfNZzVVkmBC2SvazNrqGq24sXuv9v5pEMSftjjOmsMCwZiPsFC13+UmlHwx3deRV/gRz57/uu09rDY9GEohKGDjIJ9v4m0PzNiOI0pDgHAnNUw0lm8GjiVtUTjgmfT1m4eb9CTHoLeKn0PpNtMtRgmiU/Nxp2L9u6oSPo6qQJJ+QQaptQ4MArm+Gl8LhIxBLNE9KpF0n+I3GJwOUc0BuCzktu+ZzpwipKNjqfc2uqRgAVxWZSRXzqH6sxWXNDUoG9J0wnEUfT5fGP8JZaGY90AkFWe8nqClvpJtttdbEn6LqyvpnP+42X7gdNbE2+K5CBvl1xzQnN0IsDtInEyh6cqj6STMq9/irtAqfXUdxEyuPzId/UaGNgxP1WXWhD3y+nOC0p+zBTGvvTVdckKPAXcbs5urUIfj17flZ4J7kZtYcG/TIKbDuDIG5fBl5AdUSI2cHL28SC/c7jcWjdXIW3x82DdtkbIFmGMLiktLbG2MUnWotBfuPsXwobPvaqWIYQSZJ6WQ7DjVJVom1aNdwyp5NefWy839kuzUjReou5CK6Bv4sANLoPjZaDoaaSqjjpKaK97EsFfbfG44cBnqSUroPfCGIo+Vl/GJNlqQnf8DX/lM/soRjbuj9KhhqLR0uD07HddvTjTumey7ZUXMxf3rrDvAAjdl0vC1jynAEarVCDmuR84SojcGxmpRd4HI8WRRWgOcq2bDKxqTUq83+0IX1f3XjzwlO50ienvTDAXvbCAOkGAnHQNgT2C9EL5liQ0z/FIWiYyZskypQac4aLtO15pT4goJGRsr2/iT9YEt+6l6aLNt
- n/ryQQGo
- 9u10zU6/DuFUuDZywldFy7HphpM61QT5g3UrZ9otHhnW2T9nWsCKvT7aUSnJh6oSM6tFrP+46xt2hGIXy9I4sH9Mvrzf/2xnycOPg83Sd/dH4D8AU9QFRTiJ103v+i9huVZbBpT1AdwnnhuLBzL1dQ/2wyUenrLZkNCdtLQUeWe2Os7z0DIErQT4BMjiKJPFyqulcNDaye5P5cXI/ep4h15p7bn5Op/fqcb4HT3iUU/KU2ZCPI9YLuos7rRvY3l4WOgvo3ud0wfWBUHOhavrPsiQdBrkX4X98jPYqEoCp0Pj8P2/VNjFQB4fEnBWay7l/IJd/TrsQTIgf/daDgYzF6Y0pVPJXlFaX+RYN/hNBMPN9wLPa98jth8D4KO4KblKxtwggSdPmB3aQssOtAsVq7T5oqA==
+X-HE-Tag: 1775045336-697091
+X-HE-Meta: U2FsdGVkX1+s84QWt6T1kmyTCO9F0xZy9Lu/XlslpMKjJ8o9tOGzpTVV/+U0toRdJ8jp1UqWngnSx004KbzEM4drA4RFgHL37T9YWD6PWwSGlaH8BQECOzt+rlyM8HtzjMlY66VY47eIS4VlLjwvbNb/1xAJhKQuSVvFv7uPxFG8vJrOKJv3aEfQsDEUf/fzgEWGuhTgt6A+jN6pAPnTVeejKRaEmSFbBx6HhwLgcIJ3d9z7OP8JA4vUj+noH2/r1fygbry9Hh+CRHzsqcpsNMEy1VY+WlkopE6Hhc9s2LSs6ON2fzTrnrixYqTxqFU4KLzcTQdi7IW/hpqwYZ1s/YpPNv1f8fmCkst24i8OjbmwMiQr0x1k6FVu5t01bh9Ej3y/KCXtHAOcVce4+Fy7R7oR7INnmtbEHrrfYmyXTPd8OwPtE/C383BHILPKaX0NM7G7GXocA6woHo14Igv5a6ADIMSardP3hFLwHnwpojlpvr41xWmWB4z4JEIZ20eo64qWktR5wg3bOrasTsaItUKpF5fxJSq5acz/x0DT5ILyyGHR6K0svRH8f2Nr7qcOTo9a/MvNREAIMXybYtHmbB/9GbdymorGuwi4AKGOCQTmRozWp8o3pnTadKjAxmR6VRkzBMoORpK/b6YteobJbFBJ0/x95PddrPzKCKdcviA7hBSsCMYOR88prDUW5T6GdmtThTaBkbRNnwjHvPQkJUfnD7406Ko8ALidoA3MzCWmwPR800q1RFK1lDLb6UoF6l5DH7BE3bfpdMcf4vSBT63eJCmZsfnAdsz+yHtfauV9YvpBx4hEHeTORMh9EWp2SEQL3EgCGMXynDDvg35WoUmRmrSnVDsZfW+66gaSay/iFd5o+R4wGGyCshX6BTaf0KMHYlb317Oa/lWT8Yr6UtaBoML/WfOJ2sG6Gr9smuaYqxISVxnyXGiQtzVNkXuQy/uWlOWLsJVa2vp0vNS
+ NbZkgHQN
+ 2/xIwfOtOdiX7chI/8miOvPUwOSykL9Lko4XM/FN1xusmHmlTQ0SYqeju2+n7rgyfhRA1zgIkdRra65sQoVzHrPgqKEH/PkdniNptB/PGwPPCmvXHfRTmyK4q85IAke3bXkOrXI1K2qtwYqPaV3nC0jEVzZSs+6fLzwx/O8l09zIeKyogomfV3LcjqvqeYVS+eTjZ8F2GtbsSRnd4NNVHA99UzwHXu+nUW3F4E8dRJeKbARY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,39 +92,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-04-01 12:03:09+0100, Mark Brown wrote:
+> On Mon, Mar 30, 2026 at 11:15:00PM +0800, Chunyu Hu wrote:
+> 
+> > The ksft_exit_fail_perror function previously only accepted a single string
+> > argument, which limited its flexibility for providing specific context to
+> > failure messages.
+> 
+> > This change updates ksft_exit_fail_perror to support variable arguments,
+> > similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enables
+> > compile-time checking for format string correctness.
+> 
+> This is causing build regressions on the arm64 selftests:
+> 
+> /arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
+> In file included from za-fork.c:12:
+> ../../kselftest.h: In function ‘ksft_exit_fail_perror’:
+> ../../kselftest.h:427:13: error: implicit declaration of function ‘vasprintf’; d
+> id you mean ‘vsprintf’? [-Wimplicit-function-declaration]
+>   427 |         if (vasprintf(&buf, msg, args) == -1) {
+>       |             ^~~~~~~~~
+>       |             vsprintf
+> 
+> This is because za-fork uses nolibc which does not implement
+> vasprintf().
+
+We can add vasprintf() to nolibc, I'll send a patch later today.
+But it will be fairly inefficient, as our malloc() implementation
+is *very* simple. Not that it would matter here.
+
+That said, I am not a fan of the new ksft_exit_fail_perror().
+What about this:
+
+#define ksft_exit_fail_perror(msg, ...)	\
+	ksft_exit_fail_msg(msg ": %s (%d)\n" __VA_OPT__(,) __VA_ARGS__, strerror(errno), errno);
+
+A similar treatment might be done to ksft_exit_fail_msg().
+
+> I need to look at why this managed to pass the build testing I do in
+> -next...
 
 
-On 2026/4/1 19:51, Lance Yang wrote:
-> 
-> 
-> On 2026/4/1 19:44, David Hildenbrand (Arm) wrote:
->> On 4/1/26 13:41, Lance Yang wrote:
->>>
->>>
->>> On 2026/4/1 19:38, David Hildenbrand (Arm) wrote:
->>>> On 4/1/26 13:34, Lance Yang wrote:
->>>>>
->>>>>
->>>>> ACK.
->>>>>
->>>>>
->>>>> certainly, will do! But commit[1] ("mm: migrate: requeue destination
->>>>> folio on deferred split queue") is only in mm-stable now, not yet
->>>>> upstream/stable ...
->>>>
->>>> It's tricky. The original commit will be backported to stable kernels,
->>>> so we want also the fix to be backported to the same stable kernels.
->>>>
->>>> The commit id in mm-stable is "stable" now.
->>>
->>> Emm... Not a big deal, I guess. We can always submit a stable backport
->>> once that fix gets merged into stable :D
->>
->> What's the problem with tagging the commit right way as Cc: stable?
-> 
-> Sure, that makes sense. I'll add "Cc: stable" to the fix as well, so
-> it can follow 8a8ca142a488 into stable ;)
-
-8a8ca142a488 refers to commit "mm: migrate: requeue destination folio on 
-deferred split queue".
+Thomas
 
