@@ -4,98 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E6110F6FDC
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 16:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC051076387
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EC106B0005; Wed,  1 Apr 2026 12:44:40 -0400 (EDT)
+	id 6DEAA6B0005; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C36C6B0088; Wed,  1 Apr 2026 12:44:40 -0400 (EDT)
+	id 668CA6B0088; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9003A6B0089; Wed,  1 Apr 2026 12:44:40 -0400 (EDT)
+	id 530EA6B0089; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E77D6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 12:44:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B52691608DF
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:44:39 +0000 (UTC)
-X-FDA: 84610560678.06.F599B21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 08C78160003
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 16:44:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t83NRmcz;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775061878; a=rsa-sha256;
-	cv=none;
-	b=3y0LlWtJ9a57SA3UMghK5vAj0h7z+hVIEBj72MEFQQIXDWK+CvZzIbETpZdG1fMbu+vKFu
-	NKhJBogTBbSn1wT8L2DAZtwjuD+68sB4lQ3TRHCJAl0FTYfQ6wfhR3fqvthzoWl2Fef0r0
-	3zX5QX7U0/cmSO7BEGRryjoDE48XP3I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t83NRmcz;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA7A6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:11:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DE7D52D60
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:11:21 +0000 (UTC)
+X-FDA: 84610627962.26.708072A
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7F972A0008
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:11:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFpeS9V;
+	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775061878;
+	s=arc-20220608; t=1775063479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C1Wu1pVXZAWbhwyJWgIGkYmjtqOotlc5ym/aFKDUEik=;
-	b=R1zd0+DTDtJj07tZbc7bVTJDjt52AhtYaxjQodzEHi8d23jXc1an8n4+cj2IkDUF5HOBx5
-	OhlaPguDrcmldOumk2EZW0B2QKpzgoIngi7DZFuJn1ugnX2DhPqmtEHgcaXk5/znYNcCIh
-	khtnrWDOAmxP1RHYDPTHGkg7ID+uMrA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF1D140B00;
-	Wed,  1 Apr 2026 16:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBF4C4CEF7;
-	Wed,  1 Apr 2026 16:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775061876;
-	bh=iq//KXqZOjYC2twVYm1HleMs4iVAx+pB1nyZhEdk28c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t83NRmczOO0cMyNqAWnMMzAFCQWZ4uxYr9ha25Y06L/IB+bKIyE5VgtUFHeKgWg0J
-	 qgpTX9DQySC96eevO0W7dcXR7oE4UuY60oAQUpUWXuES+wGN1Zc8e6zW5Qp/g45nWD
-	 zWoR/9As7DMkw6JZzf2mUCoFRG8QYkkFzAu0+Vtw=
-Date: Wed, 1 Apr 2026 09:44:35 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, David Hildenbrand
- <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko
- <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel
- Butt <shakeel.butt@linux.dev>, Harry Yoo <harry@kernel.org>, Alexander
- Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino
- <vincenzo.frascino@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Muchun Song
- <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Pedro Falcato
- <pfalcato@suse.de>, Jann Horn <jannh@google.com>, Matthew Wilcox
- <willy@infradead.org>, Petr Tesarik <ptesarik@suse.com>,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
- option
-Message-Id: <20260401094435.cf1d3ad4bf473c3ddc00c434@linux-foundation.org>
-In-Reply-To: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
-References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5976baifykqsrkm9imgtqdpxytqm39ni
-X-Rspamd-Queue-Id: 08C78160003
+	bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
+	b=Fw33OXaBriFrmN6FQDQEBn9Uv1X1FFFo7kMHsIqlaWR3O/aGJw3ba402pknGTkrr4ylcUE
+	o0n9zFOLUfTatzi1A33m6zprmcUXGjVwXlrjqy+Kv3VvvxEvL489qy0q4NvIm3g+SuRP4X
+	78tDWYGcXWKOVBR+ipIK3UhXuaM4aDs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MLFpeS9V;
+	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775063479; a=rsa-sha256;
+	cv=none;
+	b=ewDuELKV62oEKYF4abtoXcYaRa6HoIpanjyxdvray7/Z7Vm1TlUDBG8i7dqjbbdLdzqW2m
+	s/PJAOwK0CqZTBO2qdj5QX+Fy7bm+6dpgslkKa2sSH/w/dRIVo9xJ9uhu7Gyc8Av+d+mhL
+	J5BbcdBLe274OGnEdASeZar3UX4yZJE=
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b4520f6b32so63862eec.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 10:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775063478; x=1775668278; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
+        b=MLFpeS9Vnq8vrofCc8Qzu70syVi560nFm7YX/XYWkBwOgQMqtu8vpZt8SBh92ruT6g
+         /UhXSFieLxUZeSHbd4fDZBp0/Noz/ECZwD9L0hac8vklR6xi2i63eLHSGf+k48Ymkbcr
+         vkUS9B7KekVbO4DAVplaGtns619BCpj1ozl6RXBFlvxfcB6jMBOISmorqi7t7Ph8U5+q
+         ywYbPg6UizK4eVsoMi6I1ILvX4uNkrfSamM4EX/7dkPHToEsqKkJr1J6KORcTwmlAT3x
+         zdf8Z7SO0v2Zy/pLGgxkV24aIrgGXObLqxs5lSBJlccISyMnGxvGDSB0sp/m88iHOOVt
+         ltOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775063478; x=1775668278;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cqZuiU/Uwawkq6HgVlP6yMHEQIxXC9LO0ktZ8u6/saY=;
+        b=o/MmQuxc8eWNrr1dFjatKtAlfWnMFViQvq9PgJG5eb+4hleYcwQ3JnVORObol0iXjP
+         9CMx8xDeXALgen/mzpyOkNDkmyfTvMdDVFRvR8z/ZLvY9z9uC+nKoZugWhQVL6KY1Uhw
+         FCVAGIrGgj919tje78yXJkyvaKdyRRdwuRLZw+PRuxcKQpHJIefktMGy2GfKtYHXeFYh
+         0PW/fGI0D6A/szaz1kgGjs5tB+t3Yr+/H0UGwV+wFu9hYvDYGtLsj4+DVWdMqkPL4S68
+         iCM0rNqWcpDkzl/xfGdlL+Y50ZmZ40YWaDrsE2gSITsKJf20qnDVo2+iYMrIrhZuXFI1
+         kUcg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/iVwP7KOZ++p0ALczabedvxA/b9CkUbELjNE9hseeMJ7kG87+FsGlJ6KffGFbJevVYjbjXPZEzg==@kvack.org
+X-Gm-Message-State: AOJu0YzvlibhzWVL2zpfg2F+B/UOB0yUGwPMKPAguHd1rd/I/o6nxypt
+	H+Ltf50cH0bG3gbMRgiObYS7nwQNcojOEjMpnXtiUpvF82gYRqYQSnsa
+X-Gm-Gg: ATEYQzxNQ6MRrru1R4ZaCxlGseDrhi+wp8JikDItcbuFlfuxqNRT5nA/xJaOgtM9qAN
+	UK9HN73R99mPPvha4QUz33qedm+YjVHcVYzrftfybCBMraFH0XspInXaCDFBaJvONhU9cbKCnZ4
+	Q2zRANC3/zd/XNWuvVrJ0J+5W6DwLlN9n+nC15Dd2IBGiQIq/pB7FsUMObIzzfrt1oXbecIqZ8j
+	qVld5jaYmFa/xIx/y7HtSfmjexakZhfWjmo4SaA+Dnce91mnGloDFRadlony6chEgfuo5Dfi4Uq
+	Bk5WsLgsVIZuOS4Lwlina5XIDnx/U1/mLziWKhmaU/6U8VY9BUPHPIwZoEDkZ5T3aIbHKkP7rtL
+	k6bbG264v1EgCVpdXhyOCYuMNwbPQvZ2/TV5goZ2IuQIkj+Ce9GAXZH5GaJuOjK3qfbHLEhdQya
+	/UMuFc8ZFi50+tOf3g33rhRW+XKmDEF808SDEc
+X-Received: by 2002:a05:7300:aa8c:b0:2c1:23d:c728 with SMTP id 5a478bee46e88-2c9333bca76mr2295783eec.31.1775063478040;
+        Wed, 01 Apr 2026 10:11:18 -0700 (PDT)
+Received: from fedora ([2601:644:937c:6c90::c63a])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca792f3f3dsm250190eec.8.2026.04.01.10.11.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 10:11:17 -0700 (PDT)
+Date: Wed, 1 Apr 2026 10:11:14 -0700
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Brendan Jackman <jackmanb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in
+ alloc_pages_bulk_noprof()
+Message-ID: <ac1Rsmwl2pm8QV_Q@fedora>
+References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
+ <CAJuCfpE0zdEn7gguY0vkXpT2y4+Y6oniTyT90C-1KpXS4L_vEQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpE0zdEn7gguY0vkXpT2y4+Y6oniTyT90C-1KpXS4L_vEQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775061877-583101
-X-HE-Meta: U2FsdGVkX18FDKglhEPwkFTPsz8RsJV6VrVmjPZvucKp+/h2wt7IoReOETdk6fUwzdL6Bay1JqgKvpwat+37PCTFQ/zv6p2hB/p+Got3EWmqvCmcCeYWGhPRMFH+trHx/SCn6Li0r7llUMQoYUtZ8wx9DWTjh8Oq2Vrg2hNmdiMB8guakf129addsTw7Opb+SnxmongU5C0rFHbPLGd6LyCosik6nL6EafUqAzsQenIMyyYutq4Cxk1p6/2YWgpW0Yo3ZqtISi79cf+6lFUZt1d+cLOC61u+kCPf5/L2+6HuX01m6/EUvFYAx/UIIzrd6Oh0c8bsUAYY8AERkzSYvXxdEKjI4hqtiynYvzJU0oogkcJOik8rYMMTjKgNet7rA97WHJkpad4d2o9H82Oos1PbgLhBLTHOdvN36GXDrFf+Pnalc/IEqUI9JEwU2ju0ner/pbDgU+MtQSOGufeAlQz6pwYGwUvkYxepirBqdWv+BH/8XMghoSPU2VuBHroCZYUfOXYraUfTwxjGbWat6Y1JNeebx0Fr3Nf/YIb9ZDCwhdKu2jeGSCdY6iq5cgnvlNVIzWqbCDq54rYAZZ9cRr+s375dqsLwhU/4ik0H1FmZKmYIplz4t6+NaUHJ7FUKDjXMTAnB14q5Jl//3DLCgcGM73KnqkR/hLZYiFbpQDaG/HRhQd+qdv6UFEUlHoYz81LEhvyaB5/YmPc9UlA5en8gytYGgfSyft0RYIBUyy7YBYlvWLE55+AqHzm/LXT40Ex2wdYwQIQ6p4rq931xWBowm6pFDzV1QQypg04dBgFd6tLw6mSnx5HbISLSmGZn5xXSxO9fhOFARpwv4kHfw0s07njTyQIJuugpF1lZFs79ZqxwnpRza/RnsK7gShUq33ckLXofhKguPVvjd3W6WunXhOh2QX6bBWcT2xGhwqFLECmWJS/WIj4hm4hwtdVRZDLq77UInNEmf+vfP/B
- AGImfM6H
- JYrj/bwIgVHUZC+RoLYL3WZSVpx/qwm+uq4gS7rYpHIakKnekoTmOplaiZ/CPXG4qONnZuolCY/YTs9AARrLqMDPIkRuberEfENvmsNVGBOFm+DgCJY3EhDUyVQ9LNTlGQuCXcDNGVJq2pRB81oPJh1y03fZhaCdIPx6V67cJkOtVUa3iSt3ufdOxvQV1DYjJ07fWIqUd3pHs2W2AY/tqGjg/3bQlE6xSe98uVIwFZgU2Mshwm42kmFBgTgGwr/tfzLJ1yizBPzwaFx/1vRMFiyy5Cq60syD0pRXNK8PmruaM4pkN88QktUC1QihNASWyXfdZD+od+f6tNTav5k8c13zFZXLFjye9k4vmyCA8CU+gDfY/JgVHXyJHQc+kL8q8ZMULmhY5kVUsylU=
+X-Stat-Signature: 697jjop1zq4c6o64x551xr8xoxpz87s6
+X-Rspamd-Queue-Id: 7F972A0008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775063479-305333
+X-HE-Meta: U2FsdGVkX19CfN8iSNhwHVktIATUY6Ne42IkNrBXwxXvbtGRWto1ojmKTqTNqQXNjT+hKhwzCy3vE6pYwaWEgJYqDEND0i+Vi5yYnvIq4GKU0AvOpDiqp9+2SppcxMCccFWbCBL7C0Qhgzx7kO0A8TBKQVOhwWl3xY93VfKLJEL7FMWg/IRCePaF16A32hXbjC8ePHrYYBTavOzeOBFpRVW+xOD3U9X/vnzF7FsuEcp9dy7UMmi42I8Hg/iFO5x7fRopS46yFM2Y31pR8kgQ/arRXUVLxTH4TWLTQLONS/JID+4R3JZxrUUNE1R5qIrIqn9Gdi/dlP+ID3qTESh6rhfQbWdzXaujx6Ifm15RHQvWFF7M5orRmhIntEWXiW6OxDrCIK2ZiRyZvMK0zLK/Y2kT8n3CsHmYj1cfXZ0U5RCt8rE2g0Kij0BnbhO+bfnEgW2N+OG6ktKkME7LaHikt/XZ8gQkth8y5gQCvjmwz1vjBDpKIbk7gCj4KEPe6SY+VL1wwwzi70rMcq5GbSdxdaIQb/m00ogSptJ0Qf3eN3DNxTQD7zx2zoCy+VYvTB0enm0awK0LY5Ri6H/+aQD9iqlpq4mymClr46fJedVVm3wpE1F2206FbDAKDBceWTI6vLjlgEt37SUa5CEeGEd+tczuu0L5IV1YZBmfdYOh9upvooeJKG52ClYVi8vZ/6jjgSMb9VX03shiRSxqhFgB3UX1BfVDD3f99a6I8nlNfVJ269fE3x0pRms61ofTnugMKqqi7qZmOtzrN+fyfdf1+65ZdjIv6OHfl54uKZLxxheJeKlDTMy9Wo/UrlahW0DtQi1qJrxIQYPwEJQc3THp3KKQ8Q2GrInVEiZTCaCAqiNzDHuxtZKcSHqNAMzFgvQ5W1nx9ztSs+1kPCjL4jId45RQiEJol4lkO4X/lkDxmciA+37MZxDBo0YH82imTOUcTBSLi00RNFiLiBIva5l
+ Rr2UVJXY
+ n55GZ0jQORqWsk1TZ2fmQwrKg6lZOvizgFYHErMz1izYxTN2P2QikigzdyPXFscrQXpTd8NMePsK1V1BnQt5YKGPaLVbphaUBlDlk39tG0TXs5ab2ouzT80KmSKiEFNcpMbgLoxllzJstjyygyH3XejM09SbdfNxHq8jRvqB2pw51wEo36ZykRrVbSOnqvY2TAcUwoqg58r7c2kcv3A1zq16pECNyY5WCd7krXzH5x564Tlbz9EU/RdsnTVZEWq2bRqLPuWrZxhD3z69laJl8eKZChwIMc4iqUyKn3zVpaEgLehHw0J4qV3d+uPkbTAfaqfTHSQf6PPx5TcsIRzm5KTp3dmJTWfYYbYigwjezjk83h73wa/PIrYxwKb5srFyubHyhF5pigkDQiEvO3ulF84f7AsG6I9Ul+GPEWPTmYl4+TpGXvEvJKxvzNZ64C+Y/72mGzXtlYtAoFpAu1hsLlKYGyG8jAE3Ks5mX/hcXrtc/5QFsLNOpLm0bJdfkSMjyMbbFgROE8qnFZZdXq3H+Of8POGY661Fypr85JQIgXLxvek7FRAvhwwtcj4FP/5lY9IUqSw/yqDodnUPU9lkqJhwxfqhE44s6PNc5jcioTTY96prlgLw5oxd5Xx+enQhOnqBODWIMVhjVAWH8fOiPQ3Yh0jc/0ye3PBouFGa7cW5kgqI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,19 +124,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 01 Apr 2026 12:59:29 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-
-> Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
-> a big loss, see the first point above.
+On Tue, Mar 31, 2026 at 09:10:11AM -0700, Suren Baghdasaryan wrote:
+> On Tue, Mar 31, 2026 at 3:52 AM Brendan Jackman <jackmanb@google.com> wrote:
+> >
+> > These two variables are redundant, squash them to align
+> > alloc_pages_bulk_noprof() with the style used in
+> > alloc_frozen_pages_nolock_noprof().
 > 
-> Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Indeed. I'm not sure why this was needed even in the original patch
+> (387ba26fb1cb) that introduced this function. It carefully preserves
+> the original gfp even though its value either gets overwritten later
+> (prepare_alloc_pages succeeds) or is unused (prepare_alloc_pages
+> fails)...
 
-I love this one!
+I did some digging and wasn't able to find any reason myself. It should
+be fine without it.
 
-hp2:/usr/src/25> grep Singed-off-by ../gitlog | wc -l
-62
+Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
 
-> ---
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+> >
+> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> 
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
