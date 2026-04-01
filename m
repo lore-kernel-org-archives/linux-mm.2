@@ -4,128 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 405331076368
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 04:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC8251076368
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 05:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96DFF6B008A; Wed,  1 Apr 2026 00:58:03 -0400 (EDT)
+	id 30B5A6B008A; Wed,  1 Apr 2026 01:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945AE6B0092; Wed,  1 Apr 2026 00:58:03 -0400 (EDT)
+	id 2E26C6B0092; Wed,  1 Apr 2026 01:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85B376B0095; Wed,  1 Apr 2026 00:58:03 -0400 (EDT)
+	id 1F84D6B0095; Wed,  1 Apr 2026 01:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 707466B008A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 00:58:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB94513B464
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:58:02 +0000 (UTC)
-X-FDA: 84608780004.09.6C13B82
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C002D20005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:58:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=U1ElDMib;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0E27B6B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 01:02:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7A87160464
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:02:02 +0000 (UTC)
+X-FDA: 84608790084.10.4F75B99
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BF5F440016
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 05:02:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="JmwYAz/V";
+	spf=pass (imf07.hostedemail.com: domain of lenohou@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=lenohou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775019720; a=rsa-sha256;
+	cv=none;
+	b=AVTfBrVZHg+RF7x38efm0AfqJzcfZZjWYgf67IfR3LtFOIGGg21Uoz7CNxuXafycBs0VGM
+	dDQisU8waiJfKXAOuKn3jkE9S+gvRghz/MP7YX2k6AYuyF8gsTDmxypqbFiGAErdc4+mT1
+	p2RbsRJ323jf/EgUyqhpvHNZKQ8LOrE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775019480;
+	s=arc-20220608; t=1775019720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4aN1DZWPJ0MnS1SDustHqFcyPNSSbBG6QzLrU5nB1OQ=;
-	b=wZr1/So8jm/J53B8iOR6rRUa8sNSwiWxuDZ665jQGVuzdSKmITzk4Q8bmoUBfXTpyXD/KT
-	vRi0TD/t3SXL95bX4xIrsFBGF8Qd/mg7Sp8cGvS1r/NLKbsBF7/tqE8Kth13f0cWsYtCEm
-	+ngflitXb6t2czPbLKEfPGcV0b55lAU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775019480; a=rsa-sha256;
-	cv=none;
-	b=XJJiEUgE865xgr/E4abVl8CtLXTZsR3H7Fq7bdjYkuMgPh1keGZu+4RAlcJfQswqtZxvzT
-	ikyhaX1SpwRY/5M81v/qwB4jfOvpcMhw6/RRIN8bhSvZgA3QeVZc1oryZckKhD3G3+1M5B
-	GqsHzy6B7WtxEUWSUu4LAdhgLMeKYas=
+	bh=OOpyS9/oME1LQxC/LMAj1sLy32p3fU6TvzMpmXikFow=;
+	b=JLe7WTnJu6OqbcvTetWmqbzM8BM/lVdFC73fjBd1NZ7ZiBz86dyp15MH5grd0ky3xAM7IT
+	hoy/XtGC46qtmOtw16ZIxB/m/CU26+TfjXkGEzq9kqxPKWuGhKNkFk3hcSqPla1ADIRNgZ
+	1xi18AY5QjtFdPloBDYWgvpXL/FBHuM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=U1ElDMib;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c70f91776fcso2589959a12.0
-        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 21:58:00 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="JmwYAz/V";
+	spf=pass (imf07.hostedemail.com: domain of lenohou@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=lenohou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c736261ee8dso2312504a12.1
+        for <linux-mm@kvack.org>; Tue, 31 Mar 2026 22:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775019479; x=1775624279; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4aN1DZWPJ0MnS1SDustHqFcyPNSSbBG6QzLrU5nB1OQ=;
-        b=U1ElDMib6DuT2XLzWvdw2F5RwqB4lMulv/FRgGY5zasRGw3wQBQjG+cYGIkHyHDCq2
-         Ma3to/bgF/YNRLoELPx6NXG8/md/QqTaWRWQ+jKaVKTbPndgnGlU4f66bYa40AAG1J/u
-         liTdxY1cjNNLFcT112KnkM5edjF890lJt/lMeCohrfZh0WEH2X0T5kHE+c9zn1+KH8KU
-         /ZvENoOSkfYcNrfXGMObd/F6K/1/9tEayAYJISFBxl/uYS4xhZXC6+n9Kuo7UBdAJWdU
-         k+qG/KlK9roKSqkBk+kCI1D70CcfIwcfGlFeWf+GuLGsq7fVGNZFGh5ndRJnS4YafhZE
-         BMqg==
+        d=gmail.com; s=20251104; t=1775019719; x=1775624519; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OOpyS9/oME1LQxC/LMAj1sLy32p3fU6TvzMpmXikFow=;
+        b=JmwYAz/VAkmLRbJ6N6QKOzzReosBZeAYj3dujYhn5JrpSiYcFB3LDorS5eYtqgqEku
+         bQgfXq+rc3uMiiYbxJp9JglEsrrChdWGOI+ZSoWEsA7PpWYgkouKJEGj5IybaGASLYk7
+         QrUesu4Ywow1+qGMYU2a3j1x7Az3gI1yxYY9loXOkpVQD8b7KZDOBVcFjw6pAncuAyhw
+         n0VbS0dv8SrF6SixdFgt2Eg0+AHE9uDxfyQ1VrMUjCsyLBBJb1C9qgzdORvsJDhWLIDN
+         /E8LQ0af+f5Oa4jnbl/fbuVmekG0R5hGYpHK5/L47b+dkYEhFT7qPImGzXmjENpA7Puj
+         a11A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775019479; x=1775624279;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aN1DZWPJ0MnS1SDustHqFcyPNSSbBG6QzLrU5nB1OQ=;
-        b=Ol4XtFr/f4c6L9xebZj3yg36FZIPmg6tbbp1Nu7uZ/OmF9ZyQzdckqoZlzowDCNYQX
-         KibMTXiDoZFTlng1fB3+HxvOsLoThcFKKjBwIxQa7a586SiQf/a6XPtrx96EipgSTwUS
-         bObzuC+4pk1vYgEy800MW0yu+QYEdnyxjjLWy4vrAWIu/wgmmOawrlsOrK26QW4UeO6d
-         G0sPWH6lbGwFjkuZKQ1AKDJkS7MGCttVo7omNQOCKVff5CLq29nYETqndNtGuVLGg3q5
-         vMykRKV1+s3lHCvfZBUAdkR6l82+5l7CcOQn7JLpE5rniRLqK6CTtVh4RqKCVgIta+i9
-         CbIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpCOZOCkvvySIHSLOdBaMrTOhVsBD+OSpuLSuTu4zN7naxfiNK88GSctUsmBG4HRUqNDpxyZvnxw==@kvack.org
-X-Gm-Message-State: AOJu0YyTWEX2//iI1pQRgj0ZBgrSoo2bC+oEkcjWSpbgQTe7labY9IRq
-	PbDcN3XXl5ByvHbc3rMiCzecMSYS5Xcnlitz1gsfQ+5QPBKE+jwLxfs0
-X-Gm-Gg: ATEYQzzHY+bMpVwj4UNJqfuvOraYUAqBWHklIqQGOb6+hDvVKbmaYhDwtE1bgXkeJAs
-	IhAnEMoQQk4GSnFNi/XIxYLfs7kTryG1WP6vxczKgcEJ734NRO/SWMeG4LyzCJK6EDUqYEwsu18
-	splZ0VqeOsfl7qxWoYGFU7UqUOHT+ctpXZ7FmADdppjwMKSqcY4FHWAvYx5cVoBSxG4G5khtSJY
-	PdnxD2js9EJmSAlCfc4bMWwSscBoNMlBkaXL6noLQ6xWFaNBvSuJdOdLI8W5R2PZath6jpJbtF7
-	4aVBheUfjGKnPd7nUC3xz37Es+cxK+rh5hoR99olJlTfxiA4lbDfQYsZEMDJxi2BTfdSRGCX3yU
-	fOHtuI7De7xokn3MhjVORHqh8oN3H1+B0vVqocT20wi9ixS5qojyunVXMcvHqK14KpcrQTsDCXC
-	jIOFt/1iY+4/X1daYaCviTXZPXrRToiE2oZm4RdVlbjpzZaChF4KJcFZQakdURnnnBy4yd
-X-Received: by 2002:a05:6a20:1588:b0:398:7982:21df with SMTP id adf61e73a8af0-39ef71fa7e6mr2175517637.9.1775019479166;
-        Tue, 31 Mar 2026 21:57:59 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76a2914799sm6882583a12.7.2026.03.31.21.57.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2026 21:57:58 -0700 (PDT)
-Date: Wed, 1 Apr 2026 12:57:51 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback
- handling
-Message-ID: <acyJ2REH1ouj7VGx@KASONG-MC4>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com>
- <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
- <acuNtuf-mv3KJJdn@KASONG-MC4>
- <703627b8-4c7b-483a-8c5d-379d98400154@linux.alibaba.com>
+        d=1e100.net; s=20251104; t=1775019719; x=1775624519;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OOpyS9/oME1LQxC/LMAj1sLy32p3fU6TvzMpmXikFow=;
+        b=Ji9amEepm05oRJ2l7C6fjfqbhGw5qeXk0GEaV2dMpOxaYAA3nUisDjEcoMRB9zUVn1
+         gkbL4eSOL56zJhUmHutHpIGjy2MumckTxdrBrFmjRdyZQlIhEVkVCFpCPcuuxNtXaaYo
+         VX02oZuVWoJ7eXHsf0qK2hQap/ROhbqUmx13OUcNJQMAL0LfGS81iI6RtrLR41nd/mZP
+         gG6HnHqGfci+b8mnCLBaMuKP71OV31YkLrwCgKYZr7JPqs2rz4lE6rQsm4j/ygECiMkg
+         NtzGRGofpH1dEzk7XV7I2ZTOrdK/2zyVzF7YRH0CCQx9qz+0YO8JU3o5T0ngai8kJYMu
+         0sBg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwqfxVkq2r/QIuDaD0SxtDdW1Sywus4iIKUv+yzjsvz16MS8J+/rdfvXBm1sB7+fCENCEZ8ULf8A==@kvack.org
+X-Gm-Message-State: AOJu0Yw6LrdLENnp2zYM1+GnfSs7GhpTNWvfzQDMPpWJJb+W4foY9H1S
+	Wq3fPBQvrULAf1UjNo3oJeYlqPB5+AD+olVOJmvMi4mezqOjLHfuCJES
+X-Gm-Gg: ATEYQzxu75CFg5/3CH4SRs86oSEIKC06P7DxyVXMyBgNIg8dgFarg3Cin0893PuIgGf
+	4YJUmqY+U/P1fD//ZZE0GBtYL52xgBFShOxX7XAm50KLGrRAqbREuCWQEVvjK9GduCCBGx0L1My
+	zGeOr5Crg9ERnAE76GOmJVhmGoUz0fKn3KAkBj5xZgdhGMy9nJQ9w5JWAvNbgY9MO0KiHeQYIfN
+	0uYJSTP0u5vIPGXGtUPqAfCGxf30W1cOxls7dEF61xFsWCHhIgXYPo4Gr5JpVs+KSX2Ab9mx7tD
+	OYbALwecp+szHDM7TE6Z1rnZL+oJoxUnrw2JRXlQRBCg8/l6pgIO3w62V7lmdMgMWuxvwgOK01K
+	15gQyc+w2AtkmPaHp6wM6NH7wEUNuXhReVTaf+2osjiL6oefCG2kBLfGrs4AFk/W/eCFwbi6BvL
+	jtmzDcqz/WURAocnYya8mfozyrL7lgQaOtE2M42GBk6oPB5FZwQWLWEaM8ABkIrdreKm1pqJ/3H
+	L5zREL76bnRZJBMFftLQ0wgsCgTrZoz+2QdhvgT18ia
+X-Received: by 2002:a05:6a20:72a3:b0:39c:4c23:a175 with SMTP id adf61e73a8af0-39ef77161eemr1966646637.45.1775019718967;
+        Tue, 31 Mar 2026 22:01:58 -0700 (PDT)
+Received: from ?IPV6:2408:840d:2000:afa:a06d:889c:87b5:c739? ([2408:840d:2000:afa:a06d:889c:87b5:c739])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76b5b9f153sm3797650a12.18.2026.03.31.22.01.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Mar 2026 22:01:58 -0700 (PDT)
+Message-ID: <aa3423c8-d4f1-4a22-9098-bcfb5760551c@gmail.com>
+Date: Wed, 1 Apr 2026 13:01:46 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <703627b8-4c7b-483a-8c5d-379d98400154@linux.alibaba.com>
-X-Rspamd-Queue-Id: C002D20005
-X-Stat-Signature: 8wsrkqwzs799eb81wecoapphktnuyurh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic and
+ throttling
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Yafang Shao
+ <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+Content-Language: en-US
+From: Leno Hou <lenohou@gmail.com>
+In-Reply-To: <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775019480-378439
-X-HE-Meta: U2FsdGVkX18Ra94F6MYMF2686bGMz6SnrWH8FijbRXaYUbQ6EE8qm+Arhr1h03vBQ00eLYnI/fv/FN1yXSmEXuoKLEhA2yFi69+hHnyXndbQxQoSncXIfjeNehSrj1oQ4A2FoHemJIVlONwocMRlIBHYWqnnJt5qz3/oQZwmoonoJtwDdVULwwNzwqhYdFIAYPjMzY2klBEd3KLg5YWW3sGe4LVJzVfkg51tOq4V+M+zRYSVS2+D8Hvlg50gD1tqQcSWoE4m7hQd1LFCP4JhUKvYPoGhND74AKVRt2tQ7vQM+6zdYEAwTGGz5m86XrUFSv9rFZqscEdOUx03e6qNJlhK9aSuy9uRgarc4rM3NapxhiUgsJ5Qi/YzffCe0102sBPVfX/LlC3j8IIgT3lJwoU80lR2A1mQvFQbf3GuAeN3cwFQ/XMxCJDj5feQS/ABpdBFpJA7FdV4SPZerfPzRDUqQXEV2rwycWFb68Patmnqe8pBj73MfeU526W6djmtCdpkQMVF4BoKObP54zMHJUA4vqhtlrb1YIvKz4euUWRkBo4ki2ErAEVv8+gj0q9QNj5Ifqwih4zQNQ5h37OMobFqE4tPR+XGly06YsOGfvL0QwgxAsEwuRKe+o7ec+s8PbPHNsB3GTaOvav1BKgj9Nrw/doXEa9mOGvYfljKeyFKUnyTdY9gaaCINmPTKR+7HHGrpGK2uZoBzBgXqoOBb+ejoxdFdu/7JGZqvB4CoFTwPpLJ4yYKqLZnaL3pOQhcYxlm+8Qh5yFXQvdG4vfhIPiz24OdJXtcu5KedjuVFuyZKaNVnIwIgI8CEyRz1E2oO3ow65VKLrddmIfkJl8w+0RW+l5W+lOaxum5usDXO2HR95lVIzdVPp36VIoySyiwok/fnv1Gov7JVb3UcHh0t2QozOtvdVzu68i1mhVjO8GVG4nCKgS/vn17Z+eHSFKW+6DU+BJOb5QriO/VqLv
- PtiT350Y
- hGBNvCVf8peNvIxusb6/eIQ/KxFKZT2McATT1oJOlnKQyeI9AONCLhQ6oOSIkFmQaleolxNUAiPgjTt3q4cLWAhgKM/8rXTwphSwN/PEOnLH/vyL7fhd83ZqbnOlRGzfMkk2HUpfqZ0OCW9smVOZAEgyiQ9ho8oXIMPQCBxXqm6urkpAB3h9wtKDp2a6hKd5LMObrVjxpVxiT2sVmCYlQZRoCo3yQvJ3d5ukX1FxORGTKnJfrdzC7zV/e29yRZ60fLA+PQL1CoMRI7kuTAUfEsI7ZpRDEV6cNs1ZI4QFDtyezfgOoCZFRAzphCDIqKGHg+ayZSckOV4u22uiIZ7iDLQexRJcTGhSpz9h1yi0l2/GHF36Tt3ZoJiNzy8D+Z82tanaLnbXrmAcSMMASt62Ol+HWD96nqjuc7TFVRR5EwvDMXrkjsbYYXUmTSC1gPTh3ieGjhpJVy5M/U/LwGgMfN9LnrOdDy4zacuhw9eFykkxUnK1qY/9TNCirg4boFuiQvIi1xkUJIbEQMv9iFAdsqWH0aRC9GEWXFovc5OR8dkv679zg3+PJa+ZL5qF9yzxmMuOZjahbyM2LjbR8fHCwe00qCmapiC5JuJYUnj3+DH598nfIs/qj0d5NoUxKU/5GihQ+1Vlyd/A+l4BIihrTIDklyXbJEAU+HEX/V5MVtWw5RXYePNSOkXnP2nLi/FGDpJh0p1kY55D/kFU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BF5F440016
+X-Stat-Signature: b5gm5uws9kex7mks4mqiziuz8j1wahxh
+X-HE-Tag: 1775019720-213427
+X-HE-Meta: U2FsdGVkX18COCKKbgJuwyUSkVDsHWQah47H3jSgZ76KK6NisubAuXUwJN5tVta3ODEftz2x3PzWctLEqSmoHcoCaASyKNZmNS6TBzSc545kDqxGBeTvJuDCNqjd6XqjsjW8hGyOvVoz0gtuEJxT5EhPcfAoZb40mqT/PPQzk+h28tXMkSwRI+JiaBg3ACRXlb3Jz4k6/HXPpBgCIb8VA/lUqt5ynqssYWWx73oXdOhTNKZfb17wwzo8P6ObEtBDpAyFjINB4aCJJ4iNXTzSlUT86M0hZNd6oUHS5L7/4pqNifSMwat6RQq3MrNAGD4uQNBHvwpxqQZ/KyBS2E50T0wg1Dw/wbTNMg58cyzE4gKPVBtPObGYVm/blDZeUveQwBle2a9PiKsBYsPNnWqZJu5hp8ZgyHB6ZgdcBn9RU35tRlo/q09jAuHigLDuCa4lbO1aZPrmlM/cOhfSO0J9M1meYz+1QvnWSvyMoN5f+pJwdPK1iJUGRhuEsXIBn9vHRc6b5sM5lnCq3hOcLiErJpSgjbCQlSBxXcjJfXuV/FJxrRIRffwz55SOjE+Kw4Uo5bfY74q47Ae6riSs9zfZLXpVjpCcXjDWpVcTqvE4qN7gfmOSozhPrs0G9s2dgSci/pToz/wxYHau+J5KExT3Y4wRS1hg9453Vgi/Sy3R7kxL0nR7LTp4Vn2lMPVNCRJRmSuXz2OWT0/sAB/0yN4GcNnSBYPLCp6oJkMZgw76LoOspHn+8kvfL3ranXfIGURUbbkcljl5ee+2D0AQ091ZFbxH7WnA7U19P1fNT+/wwYmD0jZFsnegGkxj/HP1WYgUFlNSgGotntl4Sk215Cx9+qoVagcp5spD4hwgjyQbeWynk2+jDMpfI3XuOicFZAaWC0+r+zv4EQBG2AtzFArD67zSeGIMr0sTmq/5NPyBmTriLi1E/cumVH0EsIkBFdzzd9b973jisAKF/+u0etN
+ cyNvh6A0
+ fdbJYcOXwKUqQb664GkflLuoNbIRJWaiNeS9T64ZFVfeO0YcDNkYBMWVqjj4AwqaB7Lr8CZFddbQvILVQhIylQ2XapOcpaHoYoBkGuFogzEvPT9UpU8DN+a3iWYIJKSuVu0UygOTXFkq/Py9eNSvuPgc0eI3Xk/a36i6iQ1co3+sTjWBU+UErBb+ErnqM089EQ6UMhsmUMNgQ49Nd01XyIT+xVA06dQtt9ADZ1idIhvMwhqGgeF3L15+YG5XHtKdm9JSyK0hNKfdBmr/5XMMsQzZrLoBWyii7mRVGsE6xD2eqwU7q0+oKw67c7NgkvxXKkJRRgp1dOHwhek73VqFZqXUO2KsZrIE4+nlIYCBAaWQK0oszc5cLPf9xqsNDd2m7nWn0OxIgwdYeV+1VLASgr45fVlejeEEhQVY094pe+53SwddBgkRtHrXpPJI2P2LrR46lJ4NPvk3I8T6KV6n+2Eql8m8MyXSma6XqShBNPv/DC4MIpGe38mMiX2Mh5RAB1e75w4q3padXGV/oBOiYmZfxb/gefklATiUg9IcbwJUtTmdJEey1AUcsOqxeQRHPQt0ftYUYNq7p3cg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,235 +135,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 10:52:54AM +0800, Baolin Wang wrote:
+On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
+> Currently MGLRU and non-MGLRU handle the reclaim statistic and
+> writeback handling very differently, especially throttling.
+> Basically MGLRU just ignored the throttling part.
 > 
-> On 3/31/26 5:18 PM, Kairui Song wrote:
-> > On Tue, Mar 31, 2026 at 04:42:59PM +0800, Baolin Wang wrote:
-> > > 
-> > > 
-> > > On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> > > > From: Kairui Song <kasong@tencent.com>
-> > > > 
-> > > > The current handling of dirty writeback folios is not working well for
-> > > > file page heavy workloads: Dirty folios are protected and move to next
-> > > > gen upon isolation of getting throttled or reactivation upon pageout
-> > > > (shrink_folio_list).
-> > > > 
-> > > > This might help to reduce the LRU lock contention slightly, but as a
-> > > > result, the ping-pong effect of folios between head and tail of last two
-> > > > gens is serious as the shrinker will run into protected dirty writeback
-> > > > folios more frequently compared to activation. The dirty flush wakeup
-> > > > condition is also much more passive compared to active/inactive LRU.
-> > > > Active / inactve LRU wakes the flusher if one batch of folios passed to
-> > > > shrink_folio_list is unevictable due to under writeback, but MGLRU
-> > > > instead has to check this after the whole reclaim loop is done, and then
-> > > > count the isolation protection number compared to the total reclaim
-> > > > number.
-> > > > 
-> > > > And we previously saw OOM problems with it, too, which were fixed but
-> > > > still not perfect [1].
-> > > > 
-> > > > So instead, just drop the special handling for dirty writeback, just
-> > > > re-activate it like active / inactive LRU. And also move the dirty flush
-> > > > wake up check right after shrink_folio_list. This should improve both
-> > > > throttling and performance.
-> > > > 
-> > > > Test with YCSB workloadb showed a major performance improvement:
-> > > > 
-> > > > Before this series:
-> > > > Throughput(ops/sec): 61642.78008938203
-> > > > AverageLatency(us):  507.11127774145166
-> > > > pgpgin 158190589
-> > > > pgpgout 5880616
-> > > > workingset_refault 7262988
-> > > > 
-> > > > After this commit:
-> > > > Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
-> > > > AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
-> > > > pgpgin 101871227                        (-35.6%, lower is better)
-> > > > pgpgout 5770028
-> > > > workingset_refault 3418186              (-52.9%, lower is better)
-> > > > 
-> > > > The refault rate is ~50% lower, and throughput is ~30% higher, which
-> > > > is a huge gain. We also observed significant performance gain for
-> > > > other real-world workloads.
-> > > > 
-> > > > We were concerned that the dirty flush could cause more wear for SSD:
-> > > > that should not be the problem here, since the wakeup condition is when
-> > > > the dirty folios have been pushed to the tail of LRU, which indicates
-> > > > that memory pressure is so high that writeback is blocking the workload
-> > > > already.
-> > > > 
-> > > > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> > > > Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingxiangzeng.cas@gmail.com/ [1]
-> > > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > > ---
-> > > >    mm/vmscan.c | 57 ++++++++++++++++-----------------------------------------
-> > > >    1 file changed, 16 insertions(+), 41 deletions(-)
-> > > > 
-> > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > > index 8de5c8d5849e..17b5318fad39 100644
-> > > > --- a/mm/vmscan.c
-> > > > +++ b/mm/vmscan.c
-> > > > @@ -4583,7 +4583,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
-> > > >    		       int tier_idx)
-> > > >    {
-> > > >    	bool success;
-> > > > -	bool dirty, writeback;
-> > > >    	int gen = folio_lru_gen(folio);
-> > > >    	int type = folio_is_file_lru(folio);
-> > > >    	int zone = folio_zonenum(folio);
-> > > > @@ -4633,21 +4632,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
-> > > >    		return true;
-> > > >    	}
-> > > > -	dirty = folio_test_dirty(folio);
-> > > > -	writeback = folio_test_writeback(folio);
-> > > > -	if (type == LRU_GEN_FILE && dirty) {
-> > > > -		sc->nr.file_taken += delta;
-> > > > -		if (!writeback)
-> > > > -			sc->nr.unqueued_dirty += delta;
-> > > > -	}
-> > > > -
-> > > > -	/* waiting for writeback */
-> > > > -	if (writeback || (type == LRU_GEN_FILE && dirty)) {
-> > > > -		gen = folio_inc_gen(lruvec, folio, true);
-> > > > -		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> > > > -		return true;
-> > > > -	}
-> > > 
-> > > I'm a bit concerned about the handling of dirty folios.
-> > > 
-> > > In the original logic, if we encounter a dirty folio, we increment its
-> > > generation counter by 1 and move it to the *second oldest generation*.
-> > > 
-> > > However, with your patch, shrink_folio_list() will activate the dirty folio
-> > > by calling folio_set_active(). Then, evict_folios() -> move_folios_to_lru()
-> > > will put the dirty folio back into the MGLRU list.
-> > > 
-> > > But because the folio_test_active() is true for this dirty folio, the dirty
-> > > folio will now be placed into the *second youngest generation* (see
-> > > lru_gen_folio_seq()).
-> > 
-> > Yeah, and that's exactly what we want. Or else, these folios will
-> > stay at oldest gen, following scan will keep seeing them and hence
+> Let's just unify this part, use a helper to deduplicate the code
+> so both setups will share the same behavior. Also remove the
+> folio_clear_reclaim in isolate_folio which was actively invalidating
+> the congestion control. PG_reclaim is now handled by shrink_folio_list,
+> keeping it in isolate_folio is not helpful.
 > 
-> Not the oldest gen, instead, they will be moved into the second oldest gen,
-> right?
+> Test using following reproducer using bash:
 > 
-> if (writeback || (type == LRU_GEN_FILE && dirty)) {
-> 	gen = folio_inc_gen(lruvec, folio, true);
-> 	list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> 	return true;
-> }
-
-Right, it is still similar though, scanner will see these folios
-very soon again as the oldest gen is drained.
-
-> > > As a result, during the next eviction, these dirty folios won't be scanned
-> > > again (because they are in the second youngest generation). Wouldn't this
-> > > lead to a situation where the flusher cannot be woken up in time, making OOM
-> > > more likely?
-> > 
-> > No? Flusher is already waken up by the time they are seen for the
-> > first time. If we see these folios again very soon, the LRU is
-> > congested, one following patch handles the congested case too by
-> > throttling (which was completely missing previously). And now we
+>    echo "Setup a slow device using dm delay"
+>    dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
+>    LOOP=$(losetup --show -f /var/tmp/backing)
+>    mkfs.ext4 -q $LOOP
+>    echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+>        dmsetup create slow_dev
+>    mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
 > 
-> Yes, throttling is what we expect.
+>    echo "Start writeback pressure"
+>    sync && echo 3 > /proc/sys/vm/drop_caches
+>    mkdir /sys/fs/cgroup/test_wb
+>    echo 128M > /sys/fs/cgroup/test_wb/memory.max
+>    (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+>        dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
 > 
-> My concern is that if all dirty folios are requeued into the *second
-> youngest generation*, it might lead to the throttling mechanism in
-> shrink_folio_list() becoming ineffective (because these dirty folios are no
-> longer scanned again), resulting in a failure to throttle reclamation and
-> leaving no reclaimable folios to scan, potentially causing premature OOM.
-
-They are scanned again just fine when older gens are drained.
-MGLRU uses PID and protection so it might seem harder for promoted
-folios to get demoted to tail - but we are not activating them to HEAD
-either, second youngest gen is not that far away from tail.
-
-Classic LRU will simply move these pages to head of active, so it
-takes a whole scan iteration of the whole lruvec before seeing
-these folios again, so we don't go throttle unless this is really
-no way to progress.
-
-> Specifically, if the reclaimer scan a memcg's MGLRU first time, all dirty
-> folios are moved into the *second youngest generation*, the *oldest
-> generation* will be empty and will be removed by try_to_inc_min_seq(),
-> leaving only 3 generations now.
+>    echo "Clean up"
+>    echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+>    dmsetup resume slow_dev
+>    umount -l /mnt/slow && sync
+>    dmsetup remove slow_dev
 > 
-> Then on the next scan, we cannot find any file folios to scan, and if the
-> writeback of the memcg’s dirty folios has not yet completed, this can lead
-> to a premature OOM.
 
-Let's walk through this concretely. Assume gen 4 is youngest, gen 1 is
-oldest. Dirty folios are activated to gen 3 (second youngest). Then
-gen 1 is drained and removed. gen 2 becomes the new oldest, and it
-is still evictable .
+Hi Kairui,
 
-If we are so unlucky and gen 2 is empty or unevictable, anon reclaim
-is still available. And if anon is unevictable (no swap, swap full,
-or getting recycled), then file eviction proceeds - MGLRU's force
-age is performed as anon gen is drained.
+I have tested this patch series on both stable v6.1.163 and 7.0.0-rc5
+regarding the writeback throttling issue you described on arm64 platform.
 
-Gen 3's content (demoted) is reached after old gen 2 is dropped, by
-which point the flusher could have been running for two full
-generation-drain cycles and finished. We are all good.
 
-Overall I think this issues seem trivial considering the chance
-and time window of reclaim rotation vs aging, and the worst we
-get here is a bit more anon reclaim. The anon / file balance
-and swappiness issue when the gen gap >= 2 worth another fix.
+Test Results:
+1. Kernel 6.1.163: I was unable to reproduce the OOM issue with the 
+provided test script. This is expected as the MGLRU writeback handling 
+might behave differently or the issue is less prominent in this specific 
+stable branch.
 
+2. Kernel 7.0.0-rc5: I successfully reproduced the OOM issue using your 
+bash script. The dd process gets OOM killed shortly after starting the 
+writeback pressure.
+
+Verification:
+After applying your patch, I re-ran the test on 7.0-rc5:
+1. The congestion control/throttling is now working as expected.
+2. The OOM issue is resolved, and the dd process completes successfully 
+without being killed.
+
+
+Tested-by: Leno Hou <lenohou@gmail.com>
+
+> Before this commit, `dd` will get OOM killed immediately if
+> MGLRU is enabled. Classic LRU is fine.
 > 
-> If, as in the original logic, these dirty folios are scanned by
-> shrink_folio_list() and moved them into the *second oldest generation*, then
-> when the *oldest generation* becomes empty and is removed, reclaimer can
-> still continue scanning the dirty folios (the former second oldest
-> generation becomes the oldest generation), thereby continuing to trigger
-> shrink_folio_list()’s writeback throttling and avoiding a premature OOM.
-
-Moving them to gen 2 (second oldest) blocks reclaim of gen 2 and starts
-throttling early, while gen 2 is very likely reclaimable with clean
-folios. Classic LRU will scan the whole LRU before starting to
-throttle to avoid that.
-
-So I even hesitated about moving these folios to the youngest gen here.
-It might be fine as the youngest gen in theory should be hottest, so
-skipping it might not be a bad idea.
-
+> After this commit, congestion control is now effective and no more
+> spin on LRU or premature OOM.
 > 
-> Am I overthinking this?
-
-We lived without throttling or proper dirty writeback handling for
-years (e.g. the benchmark represents a lot of real workloads).
-Things are getting much better, so I think we are fine :)
-
-Have been testing this new design on servers and my Android phone,
-so far everything looks good.
-
-> > are actually a bit more proactive about waking up the flusher,
-> > since the wakeup hook is moved inside the loop instead of after
-> > the whole loop is finished.
-> > 
-> > These two behavior change above is basically just unifying MGLRU to do
-> > what the classical LRU has been doing for years, and result looks
-> > really good.
+> Stress test on other workloads also looking good.
 > 
-> One difference is that, For classical LRU, if the inactive list is low, we
-> will run shrink_active_list() to refill the inactive list.
+> Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   mm/vmscan.c | 93 +++++++++++++++++++++++++++----------------------------------
+>   1 file changed, 41 insertions(+), 52 deletions(-)
 > 
-> But for MGLRU, after your changes, we might not perform aging (e.g.,
-> DEF_PRIORITY will skip aging), which could make shrink_folio_list()’s
-> throttling less effective than expected, as I mentioned above.
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 1783da54ada1..83c8fdf8fdc4 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
+>   	return !(current->flags & PF_LOCAL_THROTTLE);
+>   }
+>   
+> +static void handle_reclaim_writeback(unsigned long nr_taken,
+> +				     struct pglist_data *pgdat,
+> +				     struct scan_control *sc,
+> +				     struct reclaim_stat *stat)
+> +{
+> +	/*
+> +	 * If dirty folios are scanned that are not queued for IO, it
+> +	 * implies that flushers are not doing their job. This can
+> +	 * happen when memory pressure pushes dirty folios to the end of
+> +	 * the LRU before the dirty limits are breached and the dirty
+> +	 * data has expired. It can also happen when the proportion of
+> +	 * dirty folios grows not through writes but through memory
+> +	 * pressure reclaiming all the clean cache. And in some cases,
+> +	 * the flushers simply cannot keep up with the allocation
+> +	 * rate. Nudge the flusher threads in case they are asleep.
+> +	 */
+> +	if (stat->nr_unqueued_dirty == nr_taken && nr_taken) {
+> +		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> +		/*
+> +		 * For cgroupv1 dirty throttling is achieved by waking up
+> +		 * the kernel flusher here and later waiting on folios
+> +		 * which are in writeback to finish (see shrink_folio_list()).
+> +		 *
+> +		 * Flusher may not be able to issue writeback quickly
+> +		 * enough for cgroupv1 writeback throttling to work
+> +		 * on a large system.
+> +		 */
+> +		if (!writeback_throttling_sane(sc))
+> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+> +	}
+> +
+> +	sc->nr.dirty += stat->nr_dirty;
+> +	sc->nr.congested += stat->nr_congested;
+> +	sc->nr.writeback += stat->nr_writeback;
+> +	sc->nr.immediate += stat->nr_immediate;
+> +	sc->nr.taken += nr_taken;
+> +}
+> +
+>   /*
+>    * shrink_inactive_list() is a helper for shrink_node().  It returns the number
+>    * of reclaimed pages
+> @@ -2005,39 +2043,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>   	lruvec_lock_irq(lruvec);
+>   	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
+>   					nr_scanned - nr_reclaimed);
+> -
+> -	/*
+> -	 * If dirty folios are scanned that are not queued for IO, it
+> -	 * implies that flushers are not doing their job. This can
+> -	 * happen when memory pressure pushes dirty folios to the end of
+> -	 * the LRU before the dirty limits are breached and the dirty
+> -	 * data has expired. It can also happen when the proportion of
+> -	 * dirty folios grows not through writes but through memory
+> -	 * pressure reclaiming all the clean cache. And in some cases,
+> -	 * the flushers simply cannot keep up with the allocation
+> -	 * rate. Nudge the flusher threads in case they are asleep.
+> -	 */
+> -	if (stat.nr_unqueued_dirty == nr_taken) {
+> -		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> -		/*
+> -		 * For cgroupv1 dirty throttling is achieved by waking up
+> -		 * the kernel flusher here and later waiting on folios
+> -		 * which are in writeback to finish (see shrink_folio_list()).
+> -		 *
+> -		 * Flusher may not be able to issue writeback quickly
+> -		 * enough for cgroupv1 writeback throttling to work
+> -		 * on a large system.
+> -		 */
+> -		if (!writeback_throttling_sane(sc))
+> -			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+> -	}
+> -
+> -	sc->nr.dirty += stat.nr_dirty;
+> -	sc->nr.congested += stat.nr_congested;
+> -	sc->nr.writeback += stat.nr_writeback;
+> -	sc->nr.immediate += stat.nr_immediate;
+> -	sc->nr.taken += nr_taken;
+> -
+> +	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
+>   	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>   			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
+>   	return nr_reclaimed;
+> @@ -4651,9 +4657,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+>   	if (!folio_test_referenced(folio))
+>   		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
+>   
+> -	/* for shrink_folio_list() */
+> -	folio_clear_reclaim(folio);
+> -
+>   	success = lru_gen_del_folio(lruvec, folio, true);
+>   	VM_WARN_ON_ONCE_FOLIO(!success, folio);
+>   
+> @@ -4833,26 +4836,11 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   retry:
+>   	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
+>   	sc->nr_reclaimed += reclaimed;
+> +	handle_reclaim_writeback(isolated, pgdat, sc, &stat);
+>   	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>   			type_scanned, reclaimed, &stat, sc->priority,
+>   			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>   
+> -	/*
+> -	 * If too many file cache in the coldest generation can't be evicted
+> -	 * due to being dirty, wake up the flusher.
+> -	 */
+> -	if (stat.nr_unqueued_dirty == isolated) {
+> -		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> -
+> -		/*
+> -		 * For cgroupv1 dirty throttling is achieved by waking up
+> -		 * the kernel flusher here and later waiting on folios
+> -		 * which are in writeback to finish (see shrink_folio_list()).
+> -		 */
+> -		if (!writeback_throttling_sane(sc))
+> -			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
+> -	}
+> -
+>   	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+>   		DEFINE_MIN_SEQ(lruvec);
+>   
+> @@ -4895,6 +4883,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   
+>   	if (!list_empty(&list)) {
+>   		skip_retry = true;
+> +		isolated = 0;
+>   		goto retry;
+>   	}
+>   
+> 
 
-That refill doesn't change the order of folios, it just shifts the
-LRU as a whole. So essentially it needs to scan the whole LRU before
-throttling. I think we might even be still a bit too aggressive since
-gen 4 is not touched before throttling starts, but gen 4 being
-protected seems sane, so the whole picture looks alright.
 
-DEF_PRIORITY gets escalated easily if the scan fails to satisfy the
-reclaimer's need.
+--
+Best regards,
+Leno Hou
+
 
