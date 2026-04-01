@@ -4,122 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF9D10F6FB7
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8CA410F6FB3
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 15:01:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B94946B008A; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
+	id 188B16B0005; Wed,  1 Apr 2026 11:01:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BBC6B008C; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
+	id 139A76B0088; Wed,  1 Apr 2026 11:01:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82006B0092; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
+	id 050216B008C; Wed,  1 Apr 2026 11:01:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 97CF56B008A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:57:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C5B6E0797
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:57:11 +0000 (UTC)
-X-FDA: 84610289862.03.510A8EB
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D1722C0002
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:57:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=thc87eUm;
-	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id E9DED6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:01:41 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F0565B6C5
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:01:41 +0000 (UTC)
+X-FDA: 84610301202.18.FD1AC95
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7422F180016
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 15:01:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XtDUqcg+;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775055699; a=rsa-sha256;
+	cv=none;
+	b=Ur/6zil9pzb7DUPQ9gyIRZacl+EDL0Rtrdvr0TPc5z1AcTUx4LTRoWM/plaow3NQcDmHta
+	GI/nWmcUFHuq+HEzbmGGRR6eI4ZYkg1BPNhdp7zpFieJuRNBCFcwAZ3a/y8dO7wY8fvdo8
+	I8bALoOw82LW6FLNwAyUllz7B3hXh9g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775055429;
+	s=arc-20220608; t=1775055699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
-	b=XHwmFsPqIbh9tDTQ5LLerzzdMMzlviwpTjYue7iSaNz+IxyaZ4ogsjcRPSNsjxSTmQB0Uo
-	7/zQKEvUi1MrSAJlh9f6fVF0bhvBelPHVUOJkjo21CUSCXD2JtDuxh7mKnBAmjhSwJVwuM
-	drGYppher+eTN6eRmIhJ1Sfv1P6kT4w=
+	bh=+z3dYGlkY6P444uNhJjcU/Cu0lajLFIylE8PpccdWzo=;
+	b=PXTsbx4UnXPv2gY9PvM5ByvG/aLQsNnJmLYqHolnyH7tlHKG7HL3+Jj86AZVwOQU70J5Xm
+	c+ioCGzAKtdJyTzVos2/e/sTTm6JEyprMNupiBW1//19nS/XUiujl+eoGk+fby6u4zeAbO
+	VGQd9k635GebNr+f4a3GxXtGyHAQLp4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=thc87eUm;
-	spf=pass (imf22.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775055429; a=rsa-sha256;
-	cv=none;
-	b=fDZhsSYJzUlfNgAklheeragn6uo7056Q9D5Iirhnf81aGHaxdXJcU9qwmDT5om27NUWg3r
-	VZy2liyx0Rhoyde22f34Cb3XY09Hijepi2U+xkh24M3Rbs6yQu8hrtb/a1suZeph8QUYmZ
-	zU0lZImg+jaz5hMciJXpseP/PQxSWC8=
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89f68634786so52139296d6.1
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 07:57:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1775055428; x=1775660228; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
-        b=thc87eUm2YA7p1XHNH8tBlrJD1PuUDGKMgu0GrQaXwZ3qrb+DDXbfhuADoEJq83CoM
-         KB/RPw6X2v8DyuMWA1whnvpBIEg6/WRTfDE0/Z9lxJ9J2W7TUB6R/tCxdKVi1KWd8jgZ
-         MEX4p0RMdFhAu3ec8Ok0MeX9tfBm1/7K4CiH8RAK00T/CHXTeLiSFWnwVB0eLsRSGebY
-         o+2stanyNVViXtYQ0qWNNf2IUbavqUkKtcv/4R1z5+wWo/G3eCQ46aQa0jO+a9xo/pJv
-         uSfy/03//GWk9vPSW3DN5zS+gZm+2un0UaSXa8Z4WPH7GrjO26519mBYBjhyxErdv0fj
-         xy2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775055428; x=1775660228;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UQXEHfCvMyv/KoK0NtC8KfdmVuqSsveRiH4neLzH/nM=;
-        b=pLFjcpvCGCmd94dsmEPTvUtDelQRBiqF9McBehCTWX+TtCQ/B9b0zNRtgVKD85EfKb
-         ewbj/R84PCKZ7zk5daRE+kpUm0gwCHqAF2HBP9S4XT6M7JXroKGjU5nqK2jztgIhYn6D
-         UgUgHEEKZrRC6ZDRQb5a/BhmFPCXjRValhWuPxowZVLhAoywmrkw7Bre8YIXfSgo41ZF
-         Wr6FuJ1d/q5w7N02ad/zMNu8wDliyJdLk7+CuWL27+AG8pT8mK/lUGn1nNEa084qKDj+
-         7uza5IvdG+1Y+6Dya/JiocGWl0xfZ3nOSFSu3QiAxBcyJ+GdDPtIYszrJlrK3vlCfrxA
-         guBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUe1XKoJLcRMdscylvDAwihBy+cr5ylOJwVqgyh/QknalNALiJzuciWKdnH0vwHYl2sNndYcM0fFA==@kvack.org
-X-Gm-Message-State: AOJu0YyXQFyrzU5NvsLdnfbBStD0caMfD/Z4ONdh9d2k8FTeiPfy6VpI
-	337RXn1oqkIbFlqaR0SQ2d8cMxAN0Ie6EyfcMrVJlmFwEGQ0RVwSXAmSUIe5wN00NwQ=
-X-Gm-Gg: ATEYQzy+8o+TA8cRR+6lBjlXm1Ml+kv/99X3wylntLthBZAJZ5oaMjhXv0cLiuPbsLU
-	LabAXO5rb6hm5VC9bZvlc0wMvzIgNpt+I8BihYPzIh+e8aNt+DkWvsnuf2yFu5RkhIiTfCCVTJC
-	NpHHTIz4n+9W5y8BYORi7t/GbD4vYLUJaNbUPm7eDMVUSIvL13eh9o/R9rCDCAUHw7ZIA5pXwSg
-	2mmVkvMoV1lvKa+0nsVV+JsqO9aM8yZdc1edtVUh2GKJcd51Y3fvvwhjyddRA/cq1vQ3DKymju4
-	Ylda4OqwCLaiq4nuFSeNMhXgrM/g3hgLKtY7VS2nnfunaaUDNlj8doHB6hzy2ISwWp2ZVYx/A34
-	+IhtczQ3Tq4MknFiHvIEpyxjuYN+DWn9Qe+ehDwkeumVFFm/DMy5UKvlg2Zrj8ZwI7nnHT5IicV
-	3wiuXZtBFnSmKru86o5RGaRA==
-X-Received: by 2002:ad4:5ae2:0:b0:894:6510:4946 with SMTP id 6a1803df08f44-8a436c125b4mr63773826d6.10.1775055427499;
-        Wed, 01 Apr 2026 07:57:07 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecf960d2esm119091476d6.34.2026.04.01.07.57.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 07:57:06 -0700 (PDT)
-Date: Wed, 1 Apr 2026 10:57:06 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <ac0yQjSJfhH6nSfy@cmpxchg.org>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <ac0q37PYB-2DZhLk@cmpxchg.org>
- <ac0tQb96dK7FKkCQ@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XtDUqcg+;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 48BE240B54;
+	Wed,  1 Apr 2026 15:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FE4C19421;
+	Wed,  1 Apr 2026 15:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775055698;
+	bh=m5cXrw/+u7nKwxTo1ZXueSC2bQlHWB3BDoYUE/63wdQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XtDUqcg+8C7Lr5ORoq5jgXq4ExL7mkdYBbI+HbXbD+EiIrifX22GTsHVvdlpNiGI1
+	 t9bbkkZTKUEymM1JgJ1rAUK3MEO69/FH+B4etlOCtQOzRaxHfevMK99UfmgFWXZ87A
+	 L+HvGcSazTrwMCUS7jBXENLt76CvS6yyOFkV334Y74UlKInUtcegg5X5Nc9U8AMRfu
+	 Ev/GLbMxVgvlDdE27R9aOnmPRKRhsL1D5FHRzhMz3nwQCosP1viDjzE43zm0Qnj+h8
+	 mz9T/NO4JldZ2zkylMEMqt0aX5un1QE5V32uvZU2cjPGOJMwjW8ujNMiHTPV2x8hBc
+	 1O1aLQ1sEf+nQ==
+Date: Wed, 1 Apr 2026 17:01:35 +0200
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras.c@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v3 3/4] swap: apply new queue_percpu_work_on() interface
+Message-ID: <ac0zT4FaL2ZwN4Sq@localhost.localdomain>
+References: <20260323175544.807534301@redhat.com>
+ <20260323180150.304067458@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ac0tQb96dK7FKkCQ@gmail.com>
-X-Rspamd-Queue-Id: D1722C0002
-X-Stat-Signature: f74und9mkwbetwur53fmkemss1ujiyg6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260323180150.304067458@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775055428-263346
-X-HE-Meta: U2FsdGVkX19oqkYciTeH0yjbvKfxoLjjRCnKEsvDJIRlAHHLtz1HnY2ifl8Imsk987xOvRq2X/l2l7VsS2adrDyx90VOIKJwfI1bMNHC7C5Rm5kZNXL63y7oo8c6ZIfvQGwIaXkAo2ovTs3oJ5tCRv3z2k1HiTDMZzWf+y88/IcNXvJo7zyR/Xmr+VDzR75xFI42I6vTvYNDGjy5abu9D/8rLZTglMlX07JY4T9XYk1QpXmee9l058KCQRGYkLWzAZdVIqI2VJy20b0abFZFWeQ/aZSlNg6mR+nnWI9QoR60eGDykLhcMSOw9AtsWBnU/4RmxVJUCOn7pdSry/EOGySsGVYni+GPFBHFea32vx5YIr88dBKyxc4NU7dcxpkRpCeYqlDJ9PWNJRj86+rn1uOt0jGonpNGLqtgSWBXwCyZ1IXw2TUw6cnebdzI+YkY0wGocoNge+n3ywxdKY02VoWMgScMMm5YuZAlAOmMijjrCcjGYV4UQtewwzIJAw6IBSIPj2YujVfHNzP7K/4ckqWUVxDzp3peMQWJNKIE9DPVApQs/MfgkeidrqU4PoW2c2BuySM07UykUAm9Wxx4kdoLCgrbho4eVDzHLrJTchPnT9tM/oAFdXa4yxA5Sa0kl+F+jOAa43lNejh9LVN0h5v4QxTwyJfh3aLKmR0HSYqBxFdd4SdGrrjO1t84T8C0aGmwpsmt/Ojtl6JSOOmyKP8edRa6yzIkmzWFnIw1gQ2uzGK8Oz8Dx6cmT8sPRwoAEI9dvZm//y+n1sK5ISQOW9wQbnMjhRIveiqNK9I/3AfXHwms6sxRqwtEgaVGFfgGDBxObvFSU+g+3NtxyMHW13ch3XRyDcwmIq/0Tx73o49De9st4BX2A5WhQyaVQptam+vWee51A3bjImOeDqePoNyAUARR/V37rnuQHMFoXgFPP3KQHLJjesLHf1UgFX76Zn6uPac3eZ40HwZKn5v
- tqc9ClpJ
- h/826IQMislodR6UgF5S9VshVg72QvwSt0HZS0vonp+aKu3wzwYLUfOD9haBwJWomFB9hAtd96rhSWZoW9QOVYBv6U8//Yw+8HyoyiRC+Aplr3gpZXYpHUHkpGr5+hTrwhWWtRWT+E3DEpKiuyx5HyjXTbj0NHi5y0f34XvOYtAO81D2apPTZrNY+uMkedBGkTF4H7ozZtQ8DWLd9DVmGGBq5xt7b5vd9GlUeP4DNipwmRLxosletPWPsEXtxhuccKq9+o5bi6Le2SidWThsO4ceiLKqw/ng3qm6y52dLNneTsXTUgARS98Ot2s2qbmACC1yfsphxhQsSqTVKWUf+dxrbG9eyjOax4uFcyOsJPXqAv4I4/42TnN90TmKoq+jdHEPDQ7XRK7Qb332Sj5Wk3VyLrzK1TSp4dj+mrfrZQcpR1Awc+UogXIbDMtmaO05UAkq1xp3QgrEmCyg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7422F180016
+X-Stat-Signature: afe1omfsbg3orrmqc7zt6n6fprcwjto9
+X-HE-Tag: 1775055699-211159
+X-HE-Meta: U2FsdGVkX1/Yrse3L6cWDoL1eZpp5o6rPrNxE1O9Iyo4x2JR93YlGCnz/uOTsJKxWgZf37VONEH0YBYgkV5AUC0ta43fjPG134uq2stCmD0Wk0MxN3OIG8LrIxr178MQVd4hhifg6QywLA8kvhjE8HlqfzTJGEPp/3ujQ6Idhp+j4ysFQhlFTtfgxms4vu8fb5TiJY7WgKeOXAKpGnsROB9kAmY/8WevQzrjonaGg0ae2zY53Ysn+CKtrQfKjdbHsLHnb0kyvozlYZxs9B+ftuIyNqEYk+xVKgwD4gTSAoD9Lp5kqjmP560SruWtxlwmA1vg4uA4MBbfXExPqsKNfQyTceFjg96Ygi0JYyqfm1G4+wT65/djxBbhuIUiV8LKUy61V/pLI/xvw8PRlV+3d6+Sic6sb7Zrhby2rdxhyWECrdxmk52X8uFQMu42k6fhh5gLOfO5hXx2E2xVQu2vsZ1QNRBFxnsRN1ruG1TSzLS8HUrqwjP6lahu5A1pZ43ogjIeKd/dWU/KQr1/8TRtHZP/4Hr674CFUxJmTlmqzvunCCJY3VhSxyHSIU4vVg3R1r1P0R2f/gdhrXx8HIhKVB1YW1+oINO14qIw5t/rzixvvvE4/TULl4dLMdk0CUssgMF09KpkpEd96KzS2GFRq1MTHGc7Q7U4UXsIDozHkX6hyDw1ng2O/rfYSzkkTxPrbpjeCHlGB77AwjtdoP1rhhmteptEt56GfJ65UJXlHB10u1QQU/VFqIa0i1BPpDS28klBqr9KPJV5vDh+FNA3L/zsaEr50b+SxW+HI3EuSMUGqc+PWJxT1dsJwFl6xn1ujZ9eKYzK7bLFzRouOrx5dMFZoyGgZCkyxpEt1GpHLKpd4V4rXGRr9nOWRHOeliZwrnXNDQGp4j4oLfKq2X8Uu8PD5jb5zGMCvXenygUbIoGwNNmT2TPHamHvumuywhADSXoOb0rUAurQ04ippa5
+ b6clgv6y
+ Wj0Iczxqu0mm5+EuArdAycpwbZsIICrEmKkhMdE7SX4g7TvcIxL12lS+l+rL03ieM624CEygllETsPZeJvdmb5uMWX/mk+BP/IpOojbMSmwIStCWWc+STxiiIsHSM9fv1w4wiCKcbXP4/9NDSpLpgNhF2JPvWPqVfNFgV4zvormu9SE9aI9WdT9MeCYpWUlLfjibp25LYwAcSUnnhM5mhW/GVt+e+Dql0eqHDveCPZEwYSUSrbLh8R2deZ5/sDwk6LzPNSXI6mmiegl98p5M+UYzcrflBH0qUAfNf61S832Ncg/PIkF9ZpOC4ma8yx6DoyxmqkRBadW0ij7Kh8HPGymE6rodwkB2LwfF2JAyeiBOKN/UhzmJHUavg1ZSd5tY/3YSYB/SEn9YLySuQvv+Dz8savgd3BwxI2UhoO6PZYBgPNdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,41 +106,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 07:39:28AM -0700, Breno Leitao wrote:
-> Hello Johannes,
+Le Mon, Mar 23, 2026 at 02:55:47PM -0300, Marcelo Tosatti a écrit :
+> Make use of the new qpw_{un,}lock*() and queue_percpu_work_on()
+> interface to improve performance & latency.
 > 
-> On Wed, Apr 01, 2026 at 10:25:35AM -0400, Johannes Weiner wrote:
-> > On Wed, Apr 01, 2026 at 06:57:50AM -0700, Breno Leitao wrote:
-> > > +static unsigned long vmstat_spread_delay(void)
-> > > +{
-> > > +	unsigned long interval = sysctl_stat_interval;
-> > > +	unsigned int nr_cpus = num_online_cpus();
-> > > +
-> > > +	if (nr_cpus <= 1)
-> > > +		return round_jiffies_relative(interval);
-> > > +
-> > > +	/*
-> > > +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
-> > > +	 * use round_jiffies_relative() here -- it would snap every CPU
-> > > +	 * back to the same second boundary, defeating the spread.
-> > > +	 */
-> > > +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
-> > 
-> > smp_processor_id() <= nr_cpus, so
-> > 
-> > 	return interval + interval*cpu/nr_cpus
-> > 
-> > should be equivalent, no?
+> For functions that may be scheduled in a different cpu, replace
+> local_{un,}lock*() by qpw_{un,}lock*(), and replace schedule_work_on() by
+> queue_percpu_work_on(). The same happens for flush_work() and
+> flush_percpu_work().
 > 
-> nr_cpus is the number of online CPUs, while smp_processor_id() is the
-> CPU id.
+> The change requires allocation of qpw_structs instead of a work_structs,
+> and changing parameters of a few functions to include the cpu parameter.
 > 
-> If you offline a CPU, then smp_processor_id() might be bigger than
-> num_online_cpus()
+> This should bring no relevant performance impact on non-QPW kernels:
+> For functions that may be scheduled in a different cpu, the local_*lock's
+> this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
 > 
-> My goal was to linearly shift the timer and avoid creating gaps when
-> removing certain CPUs.
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
 
-Ah makes sense. Plus you'd spill into the next interval otherwise.
+I can't review that thoroughly because it's not my area of expertise.
+But I'm fine the approach. Just please consolidate that qpw_* prefix based
+namespace.
 
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
