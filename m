@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163DED35162
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E27ED35162
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69F676B0005; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
+	id B5C5E6B0089; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6501D6B0088; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
+	id AE6636B008A; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565C36B0089; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
+	id 9AE056B0092; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 49E0C6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED8691B8A5B
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:17:38 +0000 (UTC)
-X-FDA: 84609736596.28.B5C032F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3083940013
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:17:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtkyqXx0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042257; a=rsa-sha256;
-	cv=none;
-	b=fGmuAH+voNXPL3fgoBaCfvvNbj0hlLN7vDWbECYEiZLIfqZ4oH54sRj3b2J3J5/4cS7Zna
-	KRqpMXWrJHDwVW92L4A8yu13OGMRo9XY5GQahu8JLQSSMGzh4QbttE4ujZFO/PM7eAJh7l
-	gP4YUKgujDcPpq+0igsKPthz3BAmTLQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtkyqXx0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8674B6B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:19:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2268E160847
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:19:19 +0000 (UTC)
+X-FDA: 84609740838.18.C0FA47E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 79DF91C000F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:19:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p3T1INlz;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775042257;
+	s=arc-20220608; t=1775042357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HwOCAyG3TTWEIt2f0AUGMNbjfpqujqWRqR+DRuh3U/U=;
-	b=oG/VAvuaSkY/Km0iVlmIKb+1KVOsHfaoA5cNMhLZk6oCEt8GuTx4oCtrMvfEuRGI/SLbHu
-	TPVYTA6K9fpCZMtWyUXBOfcJt+e/E9WeFaWdxlmBS/goOzeQ2dwe8I3AW2ZQfIxLf9dFmH
-	oI7HKFGFwSZusg3hciLcqbwTaxMdMhc=
+	bh=j4rIOdL4hDW/Y6phoK2Qqh4ggQ5XNBvZZDrtqgZzdUU=;
+	b=PPygbsm/61rdQZK9aqmdWqsnL2ZWLR+Zc62YACgzDoVTBPEIBRIfOwXeozAmdzLb7IhYXh
+	RKf5BAV6KLIj8iAQwYVB20OKIEiv+jAlIKr4hkaUDGCs2a93SMk8RT/KQ/x6M+bmD880/h
+	wCW/zQMujV9GPiapF6Dt0NKGNJTT8mU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042357; a=rsa-sha256;
+	cv=none;
+	b=j5KrpYS+UFixjrIELRF+1lesxH2DNM92ZJYMgHG59Yj3XDjxNvXsQFKXht7GCYBX4g1sh+
+	Vn+fiMZ+sNU4dbLShZoy9JtXaosSCBUZyqeOkuwQB+NSsKoIynaY2RCi+kFURIb782TuMD
+	8PMYvUAHjIWL9IBQfVMurZLay5+eM78=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p3T1INlz;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 216704089F;
-	Wed,  1 Apr 2026 11:17:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0268DC4CEF7;
-	Wed,  1 Apr 2026 11:17:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DDBE860131;
+	Wed,  1 Apr 2026 11:19:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C6BC4CEF7;
+	Wed,  1 Apr 2026 11:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775042256;
-	bh=N1Lg/uuMEG2XclojkpbMXk7nlKJI478QJMLpw9zok0Y=;
+	s=k20201202; t=1775042356;
+	bh=xpFWMh9MkdSBc1hJn+/AhQ/w65T3zgOUU+VStizxE4I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TtkyqXx0O7OeO7sZ0xDozi/d6eOhTtvwWBptDQHmVQaL4CKzCN9kCUoZBOpvrZKeE
-	 Pp5UnmUUAFa95UoVI2lwUNtcTYvqACblxFId+EBTFK3q6sJSDeutW3aSA+s7ONlSv3
-	 rG3M+xaK8nhjtsuL7b7mTVMFc7kEU1xGfJ53dsGjtPpveDkSpfUsf5rO+n1uu8CBLh
-	 8bbc5nXSPsSWYr/a1/eBBQBVUNL5H2f+tFemz2mxJuovPcTcCbEGiXiDOmWtp0JyXI
-	 QG6BpI3HY34L0gIlPJ4oem2aNcFY1S0Qyi1hOXmwYKyC9FmjGsMFcNibqcG3gqaL9H
-	 LfmfYU4KvL2/g==
-Date: Wed, 1 Apr 2026 12:17:30 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
-	Jason@zx2c4.com, shuah@kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
- locked
-Message-ID: <d20a7a98-2bc7-48fc-b467-21eba8df89a4@sirena.org.uk>
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
- <20260310155821.17869-2-anthony.yznaga@oracle.com>
- <52bec9ea-5627-4ea2-8f27-f1729957fa47@sirena.org.uk>
- <20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
+	b=p3T1INlz224JnvHd+iI/XTnAO57Xnl3aK9ePNoq/6qIJSX5mgLV+QHeUTpHeQXZhS
+	 AOKIshDblweICaHv7+3y7gpoNJnSgXUUyvsP0J3BJQ5MHIAZnntCiKjPetRiIIu2s0
+	 kP+fEhUtZMfMWv0qy/qUs5yjQkZpOKcP49EYUHiAq2HFx3AYfQgNDwa7Gdhg9HJMIj
+	 BHE4QbHE805rQ7ISCK28qG/Dn83fdR3bU8IHdZVCrNdXtAKqLu+kNIaX3LifW6wK0n
+	 /HZOJGHGkpF7y8srBH7x6egrSN350zRfrcNr8Kj9Nkb3EMxdkzFtsJ8eibqndNsMwA
+	 FkLH/NxvGiYew==
+Date: Wed, 1 Apr 2026 12:19:09 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Harry Yoo <harry@kernel.org>, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Muchun Song <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Pedro Falcato <pfalcato@suse.de>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
+ option
+Message-ID: <a2b60504-5971-4cff-bb0d-2005e2a216f6@lucifer.local>
+References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
+ <d5cdcb88-c7ca-4a29-9b8e-3abb7c37726c@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JxsWWm5ZucbJodln"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
-X-Cookie: "Yo baby yo baby yo."
-X-Rspamd-Queue-Id: 3083940013
-X-Stat-Signature: doubduxko547nfugk9f4ugzqe8kjmxe7
+In-Reply-To: <d5cdcb88-c7ca-4a29-9b8e-3abb7c37726c@kernel.org>
+X-Rspamd-Queue-Id: 79DF91C000F
+X-Stat-Signature: qunt535sps83am5foinegh7m8t94uzjp
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775042256-691560
-X-HE-Meta: U2FsdGVkX1+bDqM1j4yu+mR2W+qfLjN7v8lu0ME+TA4lACve5908iaTphCgEMmKSi4Oe3V73DSUTnlkok4n4HKwgJkpj3yR1DXXmbfWlZL59RCl72gU3sBGKDqgDJGUhqfaM1DuspQn5hXpWNg/f070A3Bn2ogdrz3/r2CMXvL1V74rjZ/Rshfpz0h07gJZ4QvyWJiOvfw8swymeAXOeDKXL41uElgbPeoBcyk2orF88BeAThhhikltCqkR9MAHYvHP3uVJlsAHQekt4g1x9imTC/u49fQRowLVR2qNVnYhv4Z7IjfG9Kp6cpifHTowVPLEfOahZLEk4VrgpQ5aJAiq0BmLkD7sXxMmyVmROcDalw84NVRc5cvKkWErpWMZd7ksVp09lzzcC9FNK9E0CuKeCc6xEiPL5sZBtE2vkIXenkQwsduDKkGk856u9L32xtgLNEVv96z7HreAnwtJs6dmB5AwccvdA6THVq80ME17vEgAECanHQrS3AJiEcVZtjawifJn4wKrciLe44d2wISeUflP7YtzMMx1PCEt1pp1hbud7/31kBzuoauBYSHHgZ+QbqFjadPKgCVrf+K8QVIWsLhygchBHhYjlvTJt3HHt1blNKMOInauHzGa+jpj9C1ZV2ltUO6p5WFeRYgJDOiW/ojwBsWkD6tKlwlGXpB2ErvMMmZOGxwzE2Ub7Fu6XUQOBsNY778n8JQIG/G+JMb0vYQPO2N36lODtaG71lH+jWqYtXqYVj4Tpnep5/YUK6ZyfiZ0Al7qr0NqRfxwLustUyqUgjo4C2Q5XuPSI58is3Av46zTCv2klcpUSiVE9zc2zTgY7cFWxCkqR1sB1R6cfbbdPtX00y5fbnoDdvFy1Urdq/806v+Izcrl8pGDUXgThRNc4QnIYGAXwJOsDXrOtG3dNOuQFyU01lVaL7hLZrfb7bitH8NkzsX17k74XGLUmjdNSzaYlR6XHpyW
- dFtuEnB0
- SFdcWtYcL2bgbmcaLLAb7cz8KNDEM0vMTCi0niE/CNrMSaPPAtlZ6UWSnuckaDXTlqgDGDjzWlZ76lhqkkRBNH+vrtj2dVxV4QstTMtYORpiEwOAflVb/vCLm0HE2RJZbAdJ2nwSO94Q2CGwXiHccBqUMlcNs6S3DZVflTg59XWXgQHDpOplISYGuzbajZegCqCF2enZ9TDqUJX1GEBarQ7RlTRRqM4nopApWAbDZOzuK/IYm8qEwRR64Qfxxc18wN1MsC5BLveQWblDim7fO4iti0Ly8OjuKpNgOM+jRZZhJVHbgkfQkRXzeHCKaso4dblgxQQVkzQrBIsUgZJ68NQEOlDyLbp/1mHOkKrnTLkTUKEI=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775042357-817425
+X-HE-Meta: U2FsdGVkX19C9g91tCvAypjmc9X+c4XRiR9TeZc5X2GWwcUXHGgsv8P3Wg/ny+kc1CnQ8E/5mGF+dCNPXPKKJqQGYJ+Fud5A3AdeSPPe9pfzE6kDRbAMQlwiYwyFmT9EjM8k3jGyszugl9zWLcmh/sG29347yHmHZ9GANIsBRRlj2X0x5jAwaObp4LPC4QgYZFKpI616qfe4sb/T2ArPZdNQlStQRxQwy7fnnOzqE8AmyONUiO9SdZr2VWJcNcq+V9hYyZCWUOhyMXQr/UVP3UpB/C5naRXL3VyX8KI2M3dDkSZ6FYpsB1D9opqc+vbiodsuni1YgkSX75qBuA26KA/8lEqmyWMH7+FaE0N6hvfbjqeP0dQuqrPA70dpxWLXw2JDBlQ/9wJM8jSpd7OgOhBc70DnTinjYvM9TsBBUENA15V1y5SxO/J4zVTRVwg/4x4qusARCn7PzEMFTJeGWZkG9oBqVF+RMDbNTkSN/Kg/8VtHGsf7/rMho4snC9qytB7sBNgLdIPCiOEWqJy77RqY7Q53pCYfWj6sYssNqrVr6ghJgm8aNaqyGDG+lEiwoz9mqLpXvd1YPfZVCUEroTHOWkHacpvaP7b7UkEPmiSOYue6ucSJQcOX33h46XRdRMjqGnqm6c5xR+BE4SKEHmx3E4Gr4MfvXEQ7mN1kh5zcfzVWXD4gHFcki3uK0DHgguRyDahQxxzPSkiPvZdRRSZYvxoGDARqf4sKFyYJ8HMUIffqRYi8iqvXyMcuE/ImFBRnjhKRC5kUtOeGDowiua2kupa6AqxuN2FYJC/CrjaT5vGUUUdDNRW7OF8Vf04ZtcZF7yiR/fRUy3pRxMVfpI3G0LaSbd7uwUFX3H7O/EqXshp8dnRrqGzdSPm7lrNdL+KO4AVOR9akO0TF6Y+GdGiL59FwRf9SMwazFrem2MbT2TSYQA9vbZM9WZZ3fWP9pEpyDvKlNPXfvLAsOtR
+ J9UJzmG2
+ HoOdsMmWp4YW38T0C6gdoZVajt0A60I5dyLqC8zc+GdB0jFM3hKAGVGE70HasOyqmKZ4RQiMI1BRh4zS2wHU7F2hObeE7Mmt2u47Fu4RbCdaCVQL/5QabJp3VvgNaxUs1eUhsEoXfqDv565+f4q3PiWviCzhGgqNpbI38hWaYGdKoVxlwmmyeT9FcljxYbo5Lrt0dJI2bfD+1AGPuLESKbRnHnJpssD/m6U36a8KJeEf6pjEBwWtJqjKH+VrWqR2qHXgOT4udi5g/u72yavukyiBT2Oxnm06SMr5Q8bNOTZ+yaLmkXShDdsjGEniW+IZVTkLhWrOdTvqrO5Y7A+5Sjo886mZRBTBxAwiR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,38 +102,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 01, 2026 at 01:05:34PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/1/26 12:59, Vlastimil Babka (SUSE) wrote:
+> > The boot-time enabled per-cache debugging has served us well in the
+> > past, but it's time for it to go, for the following reasons.
+> >
+> > - It's a debugging feature. However, thanks to the advent of LLM-based
+> >   reviews, we are not adding bugs to the kernel anymore, so it's
+> >   unnecessary now.
+>
+> Right, and probably LLM review would find many of bugs in the existing
+> SLUB_DEBUG code.
+>
+> >
+> > - KASAN is more powerful anyway for the classes of bugs that SLUB_DEBUG
+> >   can catch. But I suspect KASAN is likely to be removed soon too, see
+> >   above.
+>
+> Of course.
+>
+> >
+> > - SLAB never had no such dynamic debugging functionality. With the
+> >   introduction of sheaves percpu caching, we have turned SLUB back into
+> >   SLAB partially, so this just follows that direction.
+> >
+> > - It's removing ~2500 lines of code and I want to keep my overal
+> >   diffstats negative. This adds a nice margin.
+>
+> Personal stats clearly matter more than anything else.
+>
+> >
+> > Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
+> > a big loss, see the first point above.
+> >
+> > Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > ---
+> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > ---
+> >  lib/Kconfig.debug      |   12 -
+> >  lib/Kconfig.kasan      |    2 -
+> >  lib/tests/Makefile     |    1 -
+> >  lib/tests/slub_kunit.c |  329 --------
+> >  mm/Kconfig.debug       |   60 --
+> >  mm/dmapool.c           |    4 -
+> >  mm/memcontrol-v1.c     |   17 -
+> >  mm/mempool.c           |  105 ---
+> >  mm/slab.h              |   34 -
+> >  mm/slub.c              | 2074 +-----------------------------------------------
+>
+> slab.h vs. slub.c is annoying.
+>
+> Can you just rename that to sheaf.c / sheaf.h now while at it?
 
---JxsWWm5ZucbJodln
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I'd prefer sheav.es.c, but naturally all comments in that file would need to be
+translated to Spanish.
 
-On Tue, Mar 31, 2026 at 02:17:14PM -0700, Andrew Morton wrote:
-> On Tue, 31 Mar 2026 14:17:50 +0100 Mark Brown <broonie@kernel.org> wrote:
+>
+> --
+> Cheers,
+>
+> David
 
-> > All these failures which cause the entire test program to immediately
-> > die seem exceessively strong...
-
-> Well, is the test code incorrect, or is the patch which it's testing
-> incorrect?  That's 5435ba164b0d ("mm: prevent droppable mappings from
-> being locked")?
-
-I've done no investigation on the actual failure, sorry - the comment
-above is a stylistic/usability one about the test program.
-
---JxsWWm5ZucbJodln
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnM/skACgkQJNaLcl1U
-h9CnEAf8D+qC45AiMzqQRSdGPBaX2a40RNgSp2rCACIzsmXr1xk7NNZ1k+XlQc2I
-BMlDKY7emJ7ZDKoEdOFE4ghdlkNyLSpx3fY/p9Iu+tiN7cE4G14FJzmuqg9QY0DR
-vNPFvJGsKVeCIAz5Rf4DsB2NwFCR3iD1iJNXe2LpjqNb9xDxL2823/F5jLXGeR9e
-K0PN6ABceEV2fFUeXLg9O3iNp/0A7tbSfGirAlu0pebo+8Po+wISeXk5G/qNRn1w
-IxqJ+HGTGiwAPcCmDs8LeOf816+NMN1XQ8vU3XkVXanViBgfjfYPcF0HRTey7M6j
-w2yh4lWvUy1Gsn/uAr9LbLdR6jNhdg==
-=T9t+
------END PGP SIGNATURE-----
-
---JxsWWm5ZucbJodln--
+Cheers, Lorenzo
 
