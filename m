@@ -4,136 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E03D2ED08
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 13:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E016AD2ED08
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 13:47:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4A5E6B0005; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
+	id 3B1256B008A; Wed,  1 Apr 2026 09:47:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D22EC6B0088; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
+	id 3883C6B008C; Wed,  1 Apr 2026 09:47:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C37736B0092; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
+	id 29ED46B0092; Wed,  1 Apr 2026 09:47:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AAD2A6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B9FC1A088E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:45:07 +0000 (UTC)
-X-FDA: 84610108254.23.FDADD78
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 71BE3C0015
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:45:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G6ncSX4O;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G6ncSX4O;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775051105; a=rsa-sha256;
-	cv=none;
-	b=slFRagRm06L5IBXlliRlryK/OUQ+OJJv9KDFc6SjriHHt0jg3rzKKiJYR414jl9N8T4SGE
-	/wcR3NpAjLc6mToWb85ypdCKRhQctmEN70r+9kjRjM7RzLSawBSLZvl7hYsXwolNP7n0ol
-	4+caajsWtN/9IWLioxblMOgCByZME+k=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18DAE6B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:47:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE81A1A089B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:47:01 +0000 (UTC)
+X-FDA: 84610113042.24.A5DDB0D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 92EEBC000D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:46:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i8BlmBtp;
+	spf=pass (imf22.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775051105;
+	s=arc-20220608; t=1775051219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qpgjXYWg+Hjk60RwOpnZIWST7vnvIQmUK05pccp+8vs=;
-	b=a350sH/dpiAKysQH6tOWdSGzWFmzZSPxILixDRbLQhGigTYnWR3EWvDO1TyuO7zQvi4nCY
-	f4+kAmq5Rmpt43vpfK04dNzQl5jAx0bl4wgXRqb2TtyZ2nAiyVC/IvSbGBfTWUBvGaWxxU
-	MW7ndAwAk4kdt015l/POHyBDhsrXs9E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB5A5600C4;
-	Wed,  1 Apr 2026 13:45:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A847BC4CEF7;
-	Wed,  1 Apr 2026 13:45:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775051104;
-	bh=sXEt19JQ1n98ew1H3czQ+UsUIfs9zXbmSY2HuWsxRWs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=G6ncSX4OMSyBURFLqejZtgReUgcbfcgjOZCtVdcZMsxumWwOSmIKB9NS34FIMdLSm
-	 5P3hWtWv5j/KLzldnAz5pqIo1Lwts0OX3kYcwevnqX/Vdozw7T7QQ9irRFrrWrH4Bf
-	 lkoR5cSLzhCQDSOZ2QoOonaqifc7OlIU5RlcYFgQCxpQvnyMhwikkt7G5ew+2+fBim
-	 s/XFXi7ArXee77MJxoraMZAt+lVyZUp+nT9AIXmhL2qiXmcx9I7LMjtTAh20tj0+Mg
-	 7vuMaUZwMWfHGQd2xbjYagACPy9TQLxYdmTfthbW+AjBEgH3ETbv7iEFhZInxGaHTv
-	 MCxfG3hKcQKMQ==
-Message-ID: <153b1a47-ed97-49ee-8977-e010ef5648f8@kernel.org>
-Date: Wed, 1 Apr 2026 15:44:59 +0200
+	bh=+EB1KQ617Kr5VhuoNKPvDM4wGdT34Y57wo3PzW9IfKw=;
+	b=a/GXMZ+09LsQMkAvJ7xKgwRT0fPvna/pddmgqktoIpwh1o1oCg790wSdZGnylOF91qhzJA
+	otB3CW9ElKS9ZsJPHq1K80IyOOIBDUMVh0GbF4ukEfBzi+3Enb3b9pKIgF0jRNm2ca4hMx
+	IT97ek0/fdOigqXdspc9eQn3eC/nNYo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i8BlmBtp;
+	spf=pass (imf22.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775051219; a=rsa-sha256;
+	cv=none;
+	b=7LFZCOOlyutZrCVvr2iZL2va87we24smNZ8g6DX0YSgsRY3QXwCrMVK9KanI0HYvGmBp4x
+	JRcvVUp0bJUeY8Ae6Fr7/7eEHU+HQTz3ftJ/Pn/dPj2i2xDFBZTyiffrz+rXVghcMS1O7l
+	uLoD7OBz48R5ikbqJPtBRK28ZLi7hbs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775051218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+EB1KQ617Kr5VhuoNKPvDM4wGdT34Y57wo3PzW9IfKw=;
+	b=i8BlmBtpBwz+asNG1mj5bOJuBzFioMLUvD+GLuESW3Z6eEkSrh34zHJA9gyYEgym1Fhhrg
+	0DKoL32lTm6yXzjKK6zmrEx8iLcNUgtNJ9+cfpHT9QlLve7zcARlz/2SHvzPfOV+NtDhRa
+	VfQhOBbkXAPlL/RnR+FQieAGV2mvtA4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-H8Yb78HpM766BeEiqGoEjw-1; Wed,
+ 01 Apr 2026 09:46:54 -0400
+X-MC-Unique: H8Yb78HpM766BeEiqGoEjw-1
+X-Mimecast-MFC-AGG-ID: H8Yb78HpM766BeEiqGoEjw_1775051211
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C64DF19560A2;
+	Wed,  1 Apr 2026 13:46:50 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.80])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3B9421800767;
+	Wed,  1 Apr 2026 13:46:39 +0000 (UTC)
+Date: Wed, 1 Apr 2026 21:46:32 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf
+ style arguments
+Message-ID: <ac0huDc_GH2uSgsZ@gmail.com>
+References: <20260330151503.670415-1-chuhu@redhat.com>
+ <20260330151503.670415-5-chuhu@redhat.com>
+ <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] selftests/mm: fix cow/gup_longterm link failures when
- liburing flags are missing
-To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260331040156.119158-1-liwang@redhat.com>
- <20260331040156.119158-4-liwang@redhat.com> <act0F2KTpXFFxmdf@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <act0F2KTpXFFxmdf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 71BE3C0015
-X-Stat-Signature: xusunxh7occj75pmthgme4hmzrdskyp3
+In-Reply-To: <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: YThS0FZEKwBVF8Dy15_jOkEUxDHbzIX9_nXTAVat9ng_1775051211
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 92EEBC000D
+X-Stat-Signature: smwu54s13wop6w1sz5e8jizzzyd1hif6
 X-Rspam-User: 
-X-HE-Tag: 1775051105-24011
-X-HE-Meta: U2FsdGVkX1+QFVPiBwdZNfQmTkLD/18v6YlKtwxjVob6GU9opBncQ23fy68Zwld8IKPwGMiKyCu6jYdUDuCMym38aWYAsNpPSg9wxuwV7isZ6P/gjeDs5HcdzffojjU/BNS1nBe7zVmvB1O4RJLeTCnNBKrr4Do/U6uSq7vEH0aUEn57/M/RnSOjDfhPncOmnR0q3k23qq3Gz9wy5z2gabFhQLH6RJHICHtRBHjYGONzsYyVnDK+4iy76pbqGYhHoaSzE8BRSWOeSpKB+wlXiDnrG4ydWPdaPoEXwZAIh/TCyv6OXro47AEY5Z966PccW4YCgvYC2NGZ8cI6uUbl0taeB8R0HkP4AXF5ljrE8dgpU0XoSVXqqcKSdV4cIbkNUb1MOIK4mok3ELAzVE4kzja2ewRK6WbOF9J7Z8yKeQDwCQSrilY0rMbGibINf7kHKBZiUNRft+URBsXLAQXNPslhNduwPQbLv2tP5fh6CaiKpqFL9fWQL5MGJa8zzvFZXUlDDF72vdMtSeRKVgGf7jn2leVuwUCUfpXCm6jMiEAbeoOJU5XAH2Qm5uAysO0ROE/w+FrWg10bfJW05demB/W5LAEIqItUAbtKftCTno8YN3yudTRMXdm+0r0qfCoP3vimuOeSsFP+qvHUDpwC9doBv37fFRTxxtIKcflib3aN9J/cdVVJI4RmQUH8ycyziKJ4fhxD6CJCyC7rhFIIA1b19vHc6iz0G2jTKF5fukIILhVJB77fdQNuBplXaFbxlJ7nUcKi1Fj4vCFGhaYcLE/Jd5ABDYhDbTwEGrUe78HgHEKVl2F1FXYvMkRBntzoH2ARmxlorfST48XzNmgwRTaqV2Mj58MxClfXrX2y9Esq+XSIkByYoIhzo18JtNizkV4eOuMLVTISdy34t+ufkRA94FsyOs5OxI1QlMmdVpq635vgPAsBIJfyKhM9U3fPGnSB90/K5Blw+pd7DhE
- h7d0xS6L
- 8rvWLfWMyagwhh17+GoTvncw5pUaCvBM14YuR9u4pevQF4pJCTBwyWC6/2Bq3lDhAyrzT/vrlkobJX1lq0Olj2isD7LBqz1skmC0FGazlZQwpMxNEmqB642tpYmbfCnBwwDLOMsPRjQ01gjO3II79Mc4u3Sj2Oa52rVyiT9j757zjTI/otq777BV1BDlu2xW1gWQB5jsBv4Kx/K4MNhf5xYPwIyt5YzeWf027ETinBybxahAI9sKlAID9ZOr/I+naX5shxyIdW0x0FgL/7+gQJ0PIcwwaH9pgSO0g6YFgbxAe3EEpIJMj/tXKTg==
+X-HE-Tag: 1775051219-23335
+X-HE-Meta: U2FsdGVkX18dftTaMwhEHEgWdfWGJKEDW4tn5XqQECU6ZbVmjJhRhHsQVAYHxWI6tCfeZDhip9GdZHppvC/I/iYKl/f6QXhXBWw1do+GJPG28Ou1HVOTxANK8PDLf7DqfjqlVXIbZPhq8RUmP6nQBEEi80RkAYpbuE/pndlXUL43qQqp727S6YbrqqbWXXbXmRZutWf4tUskU61PsFYboiukCQQej96gXsfM7MyeeedlFhDE0z2ary6rzgv4lcvdTJodSUlA6oUxIzb/pRUTPwg4TStx2kCG/ebydQnHEnrhtMaVl3nOQmWEL0xhXqrs7cdoGcwNNWUGWiDF7c80XJ+gZFRrtXiWWDk6y+09e3zBbKMWeyoBNBkldjO2TWnyv2CN/w3ezcBWIGUdKfkn7bL72+7bVpz/JMTDbMtK8aOk/ZmRiMaWSJoHpFQQfPENIgaRmLL8itSqldqwD+J1gNOHxB4SYZJ6vBe5avijKAY+CuDUMSj/IaR+JvwjFc3wCF8f0Q9/BhiysG9vM6fPfoZ9RJBIdq9msI/Tc1pGAjqUFHiVQjV9ZnHlka9UiUiVuTtOjDqQHyTAfraGaZKzAHVQ4bX0O8dGM+gRITTR9Vu0VmFcLar9+IB7MZZPdqyaICyJsw/RnteUKvS3PskkuF9ytyvmwA/cds8mgVQG7205nRVhAXFBsFZQct0Na7VO7HA8CE/OBjVMxEMbmrA01QiHzHjAg+z7o6SVKUawnIthKbH8AdpiKsy2+30B/nPElMZrDzRbsSpQ8aijGU1wzLTXPsivjQj2xLtTbS+2tRqvi3mHDTkQpX1cq1+E7ehHAXPKtBENPX/RDW8/Nfg14N0EoYg1P5VLqroGiOlhHMllHYzpIGU8dmCkzQ1ELIEKFb3olim/xKEfTYLxPlvuoqkotD705JFol77XZkVfySIoGHrES8sn1He5g5OZoNQcjS+O/Jx4cnoExzAMLKg
+ 29Nr8r6i
+ Z2Zg963+wMsFOVQYFdjjkTO7hRQVsjHZpywCA9CafwbZuLbBBuKNDczVCZOkiRu4v/xarOpBvzsnV9U/PrRKii4+5Sv2SFTDPrNNp1s7MGCRSCXPgsvd4/cqqREw15pnPZRwST57EVFP39xDgqkx/t+wiy/iZjFgF4Z3TJq270G7cAvSwCMadjLDHbTu8TSx+XXAzaFQOryxm5+I6EJpKQ7rbiQZ3NSU2LaiQXQrEXeLkqddt5lZzy10jZjLhT4nVsdD06sAs+FdhG3hur02o8PQi5k/XzT9Wzd8/ALIbLva1WckyYhmngxh6pyvUpoqgY22+Wq43e3qDjOuVrOji/4PUVlBIYNKaNYTu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,41 +117,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 09:13, Li Wang wrote:
->> --- a/tools/testing/selftests/mm/Makefile
->> +++ b/tools/testing/selftests/mm/Makefile
->> @@ -10,6 +10,11 @@ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
->>  
->>  include local_config.mk
->>  
->> +PKG_CONFIG ?= pkg-config
->> +ifeq ($(IOURING_EXTRA_LIBS),)
->> +IOURING_EXTRA_LIBS := $(shell $(PKG_CONFIG) --libs liburing 2>/dev/null)
->> +endif
->> +
->>  ifeq ($(ARCH),)
->>  
->>  ifeq ($(CROSS_COMPILE),)
->> @@ -55,10 +60,12 @@ else
->>  PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
->>  endif
->>  
->> -TEST_GEN_FILES = cow
->> -TEST_GEN_FILES += compaction_test
->> -TEST_GEN_FILES += gup_longterm
->> +TEST_GEN_FILES = compaction_test
->>  TEST_GEN_FILES += gup_test
->> +ifneq ($(IOURING_EXTRA_LIBS),)
->> +TEST_GEN_FILES += cow
->> +TEST_GEN_FILES += gup_longterm
->> +endif
+On Wed, Apr 01, 2026 at 12:03:09PM +0100, Mark Brown wrote:
+> On Mon, Mar 30, 2026 at 11:15:00PM +0800, Chunyu Hu wrote:
 > 
-> Please ignore this one, as Sashiko points:
+> > The ksft_exit_fail_perror function previously only accepted a single string
+> > argument, which limited its flexibility for providing specific context to
+> > failure messages.
+> 
+> > This change updates ksft_exit_fail_perror to support variable arguments,
+> > similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enables
+> > compile-time checking for format string correctness.
+> 
+> This is causing build regressions on the arm64 selftests:
+> 
+> /arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
+> In file included from za-fork.c:12:
+> ../../kselftest.h: In function ‘ksft_exit_fail_perror’:
+> ../../kselftest.h:427:13: error: implicit declaration of function ‘vasprintf’; d
+> id you mean ‘vsprintf’? [-Wimplicit-function-declaration]
+>   427 |         if (vasprintf(&buf, msg, args) == -1) {
+>       |             ^~~~~~~~~
+>       |             vsprintf
+> 
+> This is because za-fork uses nolibc which does not implement
+> vasprintf().
+> 
+> I need to look at why this managed to pass the build testing I do in
+> -next...
 
-Right, this should be dropped.
+I can reproduce this issue with nolibc compile. Thanks for the
+debugging. It's great if we have that definition in nolibc lib.
 
--- 
-Cheers,
+For thsi series, because according to man page, vasprintf()
+requires _GNU_SOURCE, and implemeted it in kselftest.h will
+add the burden to all c files, or fore a _GNU_SOURCE to
+all c files included, I tend to go back to ksft_exit_fail_msg.
+;)
 
-David
 
