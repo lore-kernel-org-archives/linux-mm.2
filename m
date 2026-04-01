@@ -4,137 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D8AD35171
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B404CD35171
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:03:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEE0E6B0005; Wed,  1 Apr 2026 07:00:23 -0400 (EDT)
+	id 159966B0005; Wed,  1 Apr 2026 07:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5B46B0088; Wed,  1 Apr 2026 07:00:23 -0400 (EDT)
+	id 10B396B0088; Wed,  1 Apr 2026 07:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDBBD6B0089; Wed,  1 Apr 2026 07:00:23 -0400 (EDT)
+	id F3C7A6B0089; Wed,  1 Apr 2026 07:03:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B10BA6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:00:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 58799E1214
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:00:23 +0000 (UTC)
-X-FDA: 84609693126.24.C326D8F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE7786B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:03:19 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A4DF8C40D
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:03:19 +0000 (UTC)
+X-FDA: 84609700518.14.BF134C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 43361100012
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:00:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lq/TXV9t";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id AAFB84000F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:03:17 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aL0b4Yew;
+	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775041221;
+	s=arc-20220608; t=1775041397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NgQlvT7HXim2f+4oQJCFZZ6ALZtvPfeqfyykoKM5poQ=;
-	b=iRwuTTObZnwub8NPGofRxcI9nd400a/xjQwgn8wykZMmE34yeN/g1Wmb23IK9YdUBvxYwt
-	Ybk2WK7MhA+aOZTYYHQuBsiUTHi6mOCnFl/ydXOWUCKMPEEz+vOvRQJXZHR0wGjp/CRNME
-	lWqjvETW3itOueNoRE+zHnDJ0Lcsu9w=
+	bh=hG6gQ6hK/FU5RPpY0YrGT9hhOChh46naoft2NCoqvAw=;
+	b=WP+mi2wUWIDWG0uKWADXIJvtUvDmNWhdPtAUQ8IDo2xlQIU6N6FJw1cQpL5Os0FHN65ahU
+	TLWQEuOdaUAg6ctCx69HSllgtAUvyl/dA9GNAnW9t6fjnV7g9j09XhptTrQFPy2g0Tds+U
+	UB6jCdOltlqObxL6UWdZprJMeYp6VJM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lq/TXV9t";
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aL0b4Yew;
+	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775041221; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775041397; a=rsa-sha256;
 	cv=none;
-	b=ucBvpdqMRmNmJfzU0Ees+q+GDH3aHpuFchPb0sp9iDZnm4OtRdhej8c36o7qSfpQjT9Ffa
-	G5ogQQuhGQv3oER0YEVHL3plSeflnQe/ezY3IMwInLroakJxLuyR4hCdqH/Z9xLjVpC5G5
-	tliYEdrilGECqjcfr/Ppghggrx7CJC8=
+	b=SuaegIPEC+fuCaeBQaxjU40Pm5RUfa3mcfZJtn3KIICop4VLtWA5yhfXD9nuPxxVRIwXvx
+	L/v1ESNhKgsF23vCYf7qKM0dbbJVFqR/8C8eMOfXmNF/v6VojCWgZh7qMrIay9yw+GRMfp
+	StdukV06AB/YwB2VgE55c6TEvNP4cYA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 137C540875;
-	Wed,  1 Apr 2026 11:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB629C4CEF7;
-	Wed,  1 Apr 2026 11:00:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7A7840888;
+	Wed,  1 Apr 2026 11:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503AEC2BC9E;
+	Wed,  1 Apr 2026 11:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775041219;
-	bh=Sn0m1q1+j6lDe7jogLiwV6iavRQIFV9BO8Doky+kRR0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lq/TXV9t+5cmUeGofFuxuXFePuYCo9Pd4hVefeEaXq/h4nd0BIR9v4eRmMhWWtbae
-	 XVj2Rclj7WYyU8XDc+dVatQH48JTG+7Nz9VJdAi5W99kditCPzafa2fbpZ4TwwzpsR
-	 Ic6JZMa14nT8TaKAHpVZgIkYAIi58Eje9Oh7Ff3oTCo6W+9LGr8Ip7xi23hIPsfw/m
-	 T0Uqma/A2vgvD0cLtZs3unjPZHbE87WFfkmZxNB+Y0/SGt3M8XRFIj+ST7vewisAvF
-	 mMMZEF1NaeJJ1oOuCld7OhBQUUzU0GEgWpHyTGeZQyx0MiN+ek2qQG6ppcvDWPaaMl
-	 HleGU5pyi/Q0A==
-Message-ID: <f28d968b-1d09-4db9-9f4b-55205f43c951@kernel.org>
-Date: Wed, 1 Apr 2026 13:00:13 +0200
+	s=k20201202; t=1775041396;
+	bh=RH/XYoy0u1GXxuioMWBp+5tj4HkPtd9OVS7rZ8jnj3o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aL0b4YewS9hzxKIWWcxGghBZ3HN/cCZSjanrVtgvlJnUT97WpPDMbDKAHUq+C0NXs
+	 g+ZioF+/oNv5M4DuW4ATayCcgkynj3WLHv8UBeNdhzBxM7x4F7Ie/0avlygPhWhPfZ
+	 IYIowM15pgSBEFAjHjp37HOhMGdpPuOWEdvALeM4QGttnedLuBvMbF6om9+6RIAaWp
+	 aZ4BsckZdUURf/oE1Tqg57dEFEczBoA6wUwVvJa30XjAzXhojNz+2MHORCYlSpXlFw
+	 oAwTrTNGRq14AEuKy4I3DbhJd5Gbo59PwXm2+UJsRgooPh9jkTMyhHlteRdLbzPPyo
+	 oLdnFyv6xgRmA==
+Date: Wed, 1 Apr 2026 12:03:09 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf
+ style arguments
+Message-ID: <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
+References: <20260330151503.670415-1-chuhu@redhat.com>
+ <20260330151503.670415-5-chuhu@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] WARNING in deferred_split_folio
-To: Lance Yang <lance.yang@linux.dev>, kartikey406@gmail.com
-Cc: usama.arif@linux.dev, Liam.Howlett@oracle.com, ziy@nvidia.com,
- syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com,
- akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com,
- syzkaller-bugs@googlegroups.com
-References: <27d742c6-631a-4878-9c44-bf49bcce9510@kernel.org>
- <20260401105305.94886-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260401105305.94886-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xo4ND846i3VDr5Tk"
+Content-Disposition: inline
+In-Reply-To: <20260330151503.670415-5-chuhu@redhat.com>
+X-Cookie: You will be divorced within a year.
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 43361100012
-X-Stat-Signature: mka95r3awmwjhoebnmkjowpbo7kxfxnc
+X-Rspamd-Queue-Id: AAFB84000F
+X-Stat-Signature: ewfwbuzfbcy3z63iwfphheqpgkzspemj
 X-Rspam-User: 
-X-HE-Tag: 1775041221-37779
-X-HE-Meta: U2FsdGVkX18xfVZ3eH1x44I27UCeKp7blzS4FqgmpQbLcc7B8FRsk+93rbTxwh3gDW7YjokXcaxiieo2CSUBk6X7USbaTGcB/cLRn6R0FeMp2MSC+gUvBd9P4QH43bK2i4NwD0XIY1AnZC0CsGEpBu1z+PBjHH3HfiF7Ic4W9K0L99/SW71jaXCWIOGCfXgqdh4owTs2ZdPLZyEcABgWQjoIC182H/y7rsPf9vSLFZRJQ+YfdXBCQzMmkCdaPuknN9zvkY59sWwT6pOVtG3cmZvBgdKoPE/Iff/zUlMgNkXmX+9aBAUUqoYF3ezvGDBQR3Pjq79q0w4/phsGzeYwzgC0F2kdWqC4+YGBWfYihl1RwNeCNDU2Z7UxN7gS5Zx8mbPB1YNfi7OaX3Z06xT8P5Cx74i3b5gbk/IaEToOOABzuLpq9/cz7oNB6wj98gOuwf0X+VMJX5yDYEwtMBj4bBO3D4zsbWvsfP9q8Y/poc/ACfKzW4dpP5fwU4TQq+If98XSXla2OYHmE0LfG+YrzJJLqy15IpmJCaxAGHscJWM0eNxZNCOFfCbVEtM73I9m99LBxF8KZcFkIlz9hg13nfcrLkVV5uJlfZ+0p9/5MJupmuwaqjDMnoLm5J2Cb4QJCYnXs3vJ4pKI10rBsCq117LzHzXXolRf6okDqhwyXdSOfOe10K8AVJImqriGrdAlFpiDaDjmfZbKNyrPNcn0B6PVR5S+te0dxiuH+pOg3By50s2w51cTdmKDsY1OJIF0ABbqbs8VnyTuRAk4UN4r+xCKGNlrlZp0fJ8h6MKGSeNINqqYge8NnjlGkGlTAQanw283OFbcgUTZ3MYu2xwDGw6o5nYqkx3J16nDQr8NltQUI9d6RcaJF64nu9JF8xEGJCYtVlTOOzJCzEevAbOIhEuHvw4Iknx4zQLrf7ZsUBFyl7JGh7xlTUiKBjYxV6BlMOsWEseH11prGjLKb8n
- Q/XC/Qay
- Dy3XmqbKSs3GcvWM6LoD9naGxp4J7piGyiaSLXuBFCMkiIzLvbAYW0JWjgUuXE7PU4mDZsp7dEh4JY5O72n9bil+lhAU8WStDRdUbw1MUcAirWkKjQbpJXGdEPMVm6ICg+eMgqN1bRyh+ywlHXLAwjIawdCFxQP7uRiuZ4BnYV54CVbkmsOC3ow6iToM1nTlqGwmV2XCwylxKPJzqL/PvxRzJGoKPspNyaOqt3D2aUvdHaAvDRbr+tMsbF0n5CB2MPIYDD5ucGif3U7V0CZ3iChlH2uNktQVMQria7GcoLbegpp+ZukWwGmjkktVM0sPv7wMKFGWtsbnWN17rK6xiKI8tcUzZ76cvBCTRCpc9CJ6tFkKVu70k6t+W6+s6Lbf7BmP9gsbpfSPnTiRhaqogLowpub00ovtZcwVzXdE86QP4p5LX7b2I6aUDOXMBmVetnY9E9PDPP49vGdwa5JjFxtoheWRz+UG6wnBfHqaVpdjxpRzIseir021L0pFXaMtF/n3AnFrqUhgbX+ZHSpckKyYZVG32P0zWmrEIqh/vZu3kPTI=
+X-HE-Tag: 1775041397-803475
+X-HE-Meta: U2FsdGVkX19ra4ZnTo26xpaUEScfY8rQBqcDbcdeKacp4B+XtRr2uEemleIV8L7qSNm0a4cjnR8G4WwaxrTOrkhGFjopp6glsdGK9Pw6Ze5ePpffuosK75pbypmXEJ3Jg3BxNoYDSRyW2UWedKvsyXQ1ccVqvFQWH1pnt7k7HExeMGkLZRiSNeIYMTDt57zwXlg9nkdu1cfx2iGfpK0bTNyIoipai7e7fpLnzQrYAT5hH191df4TFekdGipUVeMX4uROOpUh0hsj450O9os7NSOi6w+IfgagvHXafNx7puW76NngRxoqr4SMgqvvKC9bfKb5OSnIm+Eyc000voq6xUPFgpHCTGHR3UKUe6C51pTFqaefWbVUW5fPUIlFnV2LsaSWk7LI1BIyX4fLdNms838r4Clb8cFxKj6ixAxH4YhggfiRr0fEEaXizNiZa1Kbyly8vX/4lmIuPnGGmjzZMQ1N7KMyUgO8q/m+CP2e25TaKCL22SNXrLaKjMTx3HhxTGGRBIK913tMUaQBq/rKaOl3MpBFiIS1EchR0/cmZDF6EgZpwSEQcLR53DTYzYIqHpbb3mgYOttkOPm+8Rq2Z+oaHO2XZ2gUoz/p5foP6WDpHjl6lCLjQJG9OSaGXFxZr5eOlOulaNVJ5YSuJRZ7GfgIwQJsqNXTg60d+uMFDAZr2Mes0IOPxynQ9x+39HCzfFbg8J4FhEEu0E186sSssJz3W+OCmNpLdRZK3yFCc0fEzsKPLoJFwHAZ4mqVBo1cOrQS+z+mAtHpluCOS84ccWtLBJ35MyYhflEQHZ7p/zrNfTMUGEqt0gkBRG5vKfL6RypjBJANAVF+PvbDcAAr0HUXFuHN87YQ6eYvlXLrm4Z+uvR0ECP5IgPElWQNLkcLvpEUccf6EI1qTCFJGyJm1oaxmzHV7Q/ozc7WenWJoxkcHEJGwqLi2ud7rxHrKiS0Xvu4+TRkLp+t3q2F5Gk
+ 7kX8M+sU
+ zu/eklhomu44gYiEGkzL5QnAQEpWGUiT/OB6JQ3Kw/RG1qjwfd3T0jloHBe9kZ5u6C+WRJDAAU+iJMMMzwJ4f4dMTFQJ36b+fYL5VH5kEi8S/C5G4NUIC8y/F400A+M1sf7egdhfL4Ef3Lx1RMySiAEfva48Ay7rzwOKpxsFmEPRL0onuNQ6kf8f5Bkk6Ytq2lypNxvnwByfjHTUzxARUchUihXl4m7zw4d+KNeIZMUlgjWH1R19+BvBq1mFE01gAqf25kR5bk1UzzJrbTaZ5Wr+NcrDBthlrJ32NRlhMBZ4v/teR1iR338g0l85XYYeSgnl5SSTQMajeaXw3FNYGwg2157KsMr8kYdOXDEsqXDvMG6g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,117 +102,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 12:53, Lance Yang wrote:
-> 
-> +Cc Deepanshu
-> 
-> On Wed, Apr 01, 2026 at 12:16:43PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/1/26 10:59, Lance Yang wrote:
->>>
->>> >from another sharer can then remove some of those mappings and reach
->>>
->>> Perhaps the WARN is simply too strict there :)
->>>
->>> Migration already holds the folio lock on dst, while the competing
->>> rmap-removal path runs under the page-table lock. So once
->>> remove_migration_ptes(src, dst, 0) makes dst visible again, this race
->>> looks hard to avoid.
->>>
->>> So maybe the simplest fix is just to drop the WARN in the
->>> !partially_mapped path:
->>>
->>> ---8<---
->>> Subject: [PATCH 1/1] mm/thp: avoid false warning in deferred_split_folio()
->>>
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> migrate_folio_move() snapshots src_partially_mapped from src before
->>> migration and later requeues dst after remove_migration_ptes(src, dst, 0).
->>>
->>> Once dst is visible again, a competing rmap-removal path can legally set
->>> PG_partially_mapped before the migration path reaches
->>> deferred_split_folio(dst, src_partially_mapped).
->>>
->>> Migration already holds the folio lock on dst, while the competing
->>> rmap-removal path runs under the page-table lock. So once
->>> remove_migration_ptes(src, dst, 0) makes dst visible again, this race
->>> looks hard to avoid.
->>>
->>> So just drop the WARN in the !partially_mapped path and preserve an
->>> already-set PG_partially_mapped bit.
->>>
->>> Link: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
->>> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
->>> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>>  mm/huge_memory.c | 3 ---
->>>  1 file changed, 3 deletions(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 745eb3d0d4a7..8ea8e293dc7c 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -4433,9 +4433,6 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->>>  			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, 1);
->>>
->>>  		}
->>> -	} else {
->>> -		/* partially mapped folios cannot become non-partially mapped */
->>> -		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
->>>  	}
->>
->> Can't we simply move the setting before restoring migration ptes?
-> 
-> Afraid not, it closes the remove_migration_ptes() ->
-> deferred_split_folio() race, but opens a new one with the shrinker, IIUC
-> 
-> Once dst is on the deferred split queue, deferred_split_scan() can
-> pick it up immediately. The shrinker unconditionally dequeues every
-> folio it visits:
-> 
-> 	list_del_init(&folio->_deferred_list);   /* always */
-> 
-> Then for a non-partially-mapped folio, if folio_trylock() fails
-> (dst is still locked by migration), it falls through to:
-> 
-> next:
-> 		if (did_split || !folio_test_partially_mapped(folio))
-> 			continue;  /* not requeued, dst silently lost */
-> 
-> so it is *not* requeued.
 
-How is that different to the shrinker just trying to lock the folio before we
-unlock it and failing? The race already exists?
+--xo4ND846i3VDr5Tk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To sort out that race a trylock must not result in the folio getting
-discarded.
+On Mon, Mar 30, 2026 at 11:15:00PM +0800, Chunyu Hu wrote:
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ff9a42abd1b6..521989517cd1 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4558,7 +4558,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
-                                goto next;
-                }
-                if (!folio_trylock(folio))
--                       goto next;
-+                       goto requeue:
-                if (!split_folio(folio)) {
-                        did_split = true;
-                        if (underused)
-@@ -4569,6 +4569,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- next:
-                if (did_split || !folio_test_partially_mapped(folio))
-                        continue;
-+requeue:
-                /*
-                 * Only add back to the queue if folio is partially mapped.
-                 * If thp_underused returns false, or if split_folio fails
+> The ksft_exit_fail_perror function previously only accepted a single stri=
+ng
+> argument, which limited its flexibility for providing specific context to
+> failure messages.
 
+> This change updates ksft_exit_fail_perror to support variable arguments,
+> similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enabl=
+es
+> compile-time checking for format string correctness.
 
--- 
-Cheers,
+This is causing build regressions on the arm64 selftests:
 
-David
+/arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fo=
+rk
+In file included from za-fork.c:12:
+=2E./../kselftest.h: In function =E2=80=98ksft_exit_fail_perror=E2=80=99:
+=2E./../kselftest.h:427:13: error: implicit declaration of function =E2=80=
+=98vasprintf=E2=80=99; d
+id you mean =E2=80=98vsprintf=E2=80=99? [-Wimplicit-function-declaration]
+  427 |         if (vasprintf(&buf, msg, args) =3D=3D -1) {
+      |             ^~~~~~~~~
+      |             vsprintf
+
+This is because za-fork uses nolibc which does not implement
+vasprintf().
+
+I need to look at why this managed to pass the build testing I do in
+-next...
+
+--xo4ND846i3VDr5Tk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnM+2wACgkQJNaLcl1U
+h9DE3gf8CyPPY0cS+fjVRrHslaPRCSHlXcW6VZnznjdKtRRFlBifghOePoiIZseN
+By2f9+ZvZfElAWGMr2QgC+2AUkCgAzFJDJsjQNgxqy8yScuJ4zrp+qa49YUFVwiP
+cgd8uDlzCskr9Uaqoo7dRegP7st74Kr2ZPVtGi+yaOh/aDZ9CD9L7pHG3cU2Olcd
+lmRbjWNYIa7k471RVQTxC8FPWj2X0kY6X8DCB44BeqkWKnw1XgFZF8Y7HlboK5VM
+RIS+ggqHuTJ3zOJiGmAalwCcNL9Pdj83axrLHW2EX2x1EEaVxV9spK1cdVDA8J6x
+P2wbQfL9yT2Awy/9KJDfVxAfeQTuIA==
+=Z1lx
+-----END PGP SIGNATURE-----
+
+--xo4ND846i3VDr5Tk--
 
