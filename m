@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB2AD35159
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608E2D35159
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 08:34:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72EF56B0088; Wed,  1 Apr 2026 04:32:39 -0400 (EDT)
+	id AB4E46B0092; Wed,  1 Apr 2026 04:34:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 706DD6B0089; Wed,  1 Apr 2026 04:32:39 -0400 (EDT)
+	id A8C546B0093; Wed,  1 Apr 2026 04:34:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61CBF6B008A; Wed,  1 Apr 2026 04:32:39 -0400 (EDT)
+	id 9A1F66B0095; Wed,  1 Apr 2026 04:34:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F9576B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:32:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05A7513A989
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:32:39 +0000 (UTC)
-X-FDA: 84609320838.17.AD865E2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88FA16B0092
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 04:34:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 257AF13AD6F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:34:49 +0000 (UTC)
+X-FDA: 84609326298.02.967B688
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 52962180005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:32:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XQHM9uVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3B567C0008
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 08:34:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IxGG+u2r;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775032357;
+	s=arc-20220608; t=1775032487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MxKZnzzeuiIgV08dROFGS/rsGKma9WByQcI93Z/y3T0=;
-	b=Mxcx35/SmgXgBE4v+MqIR3+pORIZHP+pDsMx/4f3lS6TNW6cFBDiFhsiOXTCyWkEJU9naZ
-	2rG9crMQ7j4l3wKVZbRBovzDn7syjubu/oU9tQ/iatw+MVvtMkToo3zhFG7CkuuugtQdq5
-	w8mzaClCHZFTJAcdS6StFXsxwSjH+s0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775032357; a=rsa-sha256;
+	bh=2VyOjMYQj8D5f/V6M/4ZUVqXB8132k/WCQ/uNHTB4Ow=;
+	b=i8pjSHV+KqT6BJQbWZ0aCZZJQmfJzlcSNj+949G/5+h/3K5LSsxShk6VUrF7Y6IqeT/rx8
+	XPDFXxVyHKSXPSvHxk0kaMWImTuXKhEgimZTLJgKBd8/ygZG/J7KiMBHcD6LPGdZOkMIBc
+	kJlEQVFzOkhbOBQEuW1hD0iQtmtvoRM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775032487; a=rsa-sha256;
 	cv=none;
-	b=a909ha6B4BUbo3C5HeynC9O3jPcD+dIvDYqvohZNjP4+EHMDQk3hcKtrfZmi1JQnLOzHeJ
-	v5qIUt+EdmHwS4KmkLrWrdnmAPekzEZSrm1zzPG1kYm7xaYyPLIp+4HcAbSRdB6NnEL/1C
-	VHUUeUImvakPn7eyGmCgXfSGQgir+1Q=
+	b=cN+XKFw3MrH6ugLvDRB6OoL5UcvWrgqRLxXdOrXWT+nSAgKUJSUGhyr73tL9czsdK3Yrsy
+	b6ljowciQiHo1uglM8u+LTFzXUiBXahjDr8VYgIO6pdhvc2jhWTbNJHFbqGmmfvrRePCiY
+	89j/7GS5kVGv9hRte1yqqBoCj0/XW6A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XQHM9uVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IxGG+u2r;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71CE3405EE;
-	Wed,  1 Apr 2026 08:32:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55654C2BCB0;
-	Wed,  1 Apr 2026 08:32:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 407974067F;
+	Wed,  1 Apr 2026 08:34:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2575C4CEF7;
+	Wed,  1 Apr 2026 08:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775032356;
-	bh=FWpKlCRjE0MaEpEALV0M0e/bqdmtSE+E/9VxxS4+JM0=;
+	s=k20201202; t=1775032486;
+	bh=1w0/GG5qdyXghEHkrjmckecNc+tGwP/YtCUkolWuqHA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XQHM9uVa9hZuc4Tlb9fIE7zYIL7/BBftidq4d5NM0JDfiuXyKd0sBUwKbumSINvUV
-	 Du3szP9dLJnRM5X5H1nhy/ffQ1397bX/UNP4AxExFTRnHQar5pnKtTOxXfJ2aKd4eL
-	 cCt663qZgIGl+GqWnDtlvtnGk8TMXSU1koVpcGv/4mIVoRSPHZRhFQzq9//XZGeh7G
-	 IxFgK6dDO6o1nlHacMhiLZ//X8VFX7412Sb4Va/+JSkcuZzEMbiYrBP6r+uBkcBgQY
-	 qHlY/A7lHBOdQnKq6FpcLqM9oRWfyF21LTR5ZBuVCw7rvW6uCqM2YHUq5scQqCxNM/
-	 IOnwezv/zfW5w==
-Message-ID: <a8a8533c-992a-4ac5-a387-3cde8b6e40b5@kernel.org>
-Date: Wed, 1 Apr 2026 10:32:30 +0200
+	b=IxGG+u2rr/ad4XEBZBnd/tb5GmMxRtkBZKF5Xo4+ciDnYGUZAn0l83cG2WqTxe/yC
+	 pVfAkeHlfCuCJ1VsvHWr2eeYRPSO2ik65KmqZqUBbV8DXa3RqZ1kFbK3VVVaiOdHPK
+	 BtDmlV9goLrIH55wF0WTxAF2GJiqjg6GutIBSfahEFfMqiWTQijXTw617+F+89vkyh
+	 kLSlc2aCOzWg6Y2fvyY6aXSIO/Mj5iwJ2hFMcMDGicCrtFxyPLTx6ZeLSASwR5Czky
+	 QEnCS2JRwBBHVe3OgggeLHBpTfFLNr+hBsDLG2vfwdpuQms3gu9H9vXSs6slkRKjMm
+	 2Oa0Ubztz0KIQ==
+Message-ID: <b9625c60-2b1a-4890-a703-49e31aaaa168@kernel.org>
+Date: Wed, 1 Apr 2026 10:34:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in
- sio_read_complete()
-To: David Carlier <devnexen@gmail.com>, Barry Song <21cnbao@gmail.com>,
- Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
- NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260330071229.14614-1-devnexen@gmail.com>
- <20260401074753.238053-1-devnexen@gmail.com>
+Subject: Re: [PATCH v4] selftests/mm: skip hugetlb_dio tests when DIO
+ alignment is incompatible
+To: Li Wang <liwang@redhat.com>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, aubaker@redhat.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260330125307.98581-1-liwang@redhat.com>
+ <96d14f27-ca0f-413d-8b61-768933ee70ba@kernel.org>
+ <acxpVd5hQUuGPQCF@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260401074753.238053-1-devnexen@gmail.com>
+In-Reply-To: <acxpVd5hQUuGPQCF@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 52962180005
-X-Stat-Signature: iy9xbe3hc5beik8sy5cj8urho7q9eaqu
+X-Rspamd-Queue-Id: 3B567C0008
+X-Stat-Signature: idfeohrdmeztm5t1yn4mpccxc3o168k9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775032357-780567
-X-HE-Meta: U2FsdGVkX1+0jZ9fylrRxpqWsvlxJG9UCj8gCyus9waIcbDkLzP36Vov1irdwEkbQNiH/Rjhvvr69ns8lpKiYvg6/GTj2YvYRrIKb/F41M7wC2tLRmlN+7UUHQVGh8H/sArXpvj304EdrVCvhkArGRpol17PQzNrdkRaFxu+jfTL9vttV5wZCNTKtjpYgxTytPwjvCJKpQtebWqZhd4DV49zBWy1+2lP1ACxHRuWsoRGriZqLyzoBxeAeuHDaEvCdxhsCyCauOjPShJcmEunSTq3P7XHfOqppmdQuVhGWVc8VTA4p3yZKV2hIwAaP+vqrywj3uGf7WXJo5vePyApWo2jgP8EaiM3GiDW5gV608grKxBlJVlbSNHiymm3SCO43FZ+lUMN3vx9KsRoFbZDix7Ym05csKOT9tWoDhyMNBYVf33/AzH2cqoGCOpbjtT17l1oTreq/UnNlKPFh9PaRh8aCZWaKfB5/0wI8Atl4BICmwRgQCc66QgeqoVGkut++4Wawtn2lUnr4Flbc3NL/kqFPJjtGu0iu64ZFFK9dGwJZmGGpSyosNSneJONT1nJqZBKBvp/1P+bTvW5xI5BamzhCGjghu9QHRJQCBJbse6WlfSubSwnjIgDgZ6YtFcIX9xQBh6q+HaBZy3qxxZFhFlNsN6Rp5cuKKcEEg21GLZOqv323J/ir7jYe2L7bD90o8K7pWkWT5JQZQopdK3a7mArRhu6nYhbnNckxebCbzhpcMbmKlNkJe31v8xG1Az55BxwQy3wVnE850U/GKs/tURziHTtvZUWXhAxGsPZuYMnDMySHO7tb6eZcGAWr35/lpdrOqT0ZiSxHT7ZRkzjd1yBfoHRTn83iDQauAqF3Sw/9Pn8Xx/Kp9we3kjSBhZlG4t4YuOdqfzExpNaI0/SR3LAi0fd08aYC1v2o8SyxTb4qvHcxtizmsh6Rx8l2TwSmhrsUuL7z6zmRw/jvu2
- htK8XK5X
- 0HSn+mrJNRc29YHM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775032487-59187
+X-HE-Meta: U2FsdGVkX1/z8JbpIiUF5dbtArXWvzr89cKtuBICdDfeEqjFMI0sdb33TRrAWCnbN1Jhy7K/sOa7wErpXhmKALPE3o/YBlaAySdwKrczhWijDU3bsPBf6//9heTDRg84mfRZUvQ9blBupP58Swpc84sUF3dNYf+3u8JEuq0ldUMd2zn2OOrup8vU4/9Us0qG5EIyGFQllhy1Oz1xlDpKqqMfZ8nYyqXm4f+rBk61aiJWbSUudTZmKF10TXN0bp6uOAM04Zu5YJu6Al/oEI9xgl0Gi7hWVkM+ozG03QVTXmYjQAyoTYA/ybqjOZVa3P3WiSkS6liPe2nEpy6YE58fDddzzw+KBoI0ljd2uA0pDnqlaFHNx91tqsviFP9g4STQwmkAzj2WvrNbS+bo1IDfMJNZsju9TyM4Hay4HDmKd6/ZWMacWJ2ONlH5gLXYFvcsBklLkcX4t6z/G1+FDK2MQoNVnsXTkkAYO2mmtl/ZcZ9FveMmFUF43O5d3jSkNr0gwX1Er0Mq9CaIPkw58WznGBgfMdGPcK4yxGwfjBAQ3MZvfMBHzSAmT5RlvVyxTfAJxa77HfkDOHBdrw1dRBB5Kf39bBTU1bLDGxA8pUb+1ehwJW+eTN77rE5oiOPlhiJ6bx+5rqF3kfSLAnjXIxDaQWsBvtvjBPMi6vC9LAZL1U5B+97FGLgdgVUgQwkipGiJP7h5rnbgPuyqNZ6kTbwv+lFq0o7uJqqrdZ72xpOV3n/1jQl0LDO/L9IsvvtVhLzHVTNbmMMkwEMXUixrvZxtMtsvl4emWa09lXd8LUoGYO0YGRRn12g70Vd76Lz0mlaRQ1E53af3AJvCJSYf1FvM4urDSBF6lSMu8A0RL+UpNM733iTi7cj9AC0wWqcBTjK0FB7sl/UTRtzytQZiHjvz9+asQM85KDslgCo8vTZfLs+fNzWcYNChMSXnJ5NY2Jy7hxI3STvVx/5xwwk1oYI
+ 3DE8v01W
+ 5/PNUcR9VRoPGIPTUncINOmmTLjsit7WfUnm5evmNYSzAaU0zayZOs3Ke7Ol9nLIh2Yi4EJH/8D+DATyGPTACZMf2x3zJRoBS4UywnxwBBkJPq1Ta8ufgsj8uzlJ1y+f3FJExSfsY0okMwoeHoN37Zp51Zzg8TlntmeORZ+PeIdar/4EOgsB0caUaBpg2XdtUq9aEpzMVaMK8T5tyDcGJhTUwZa4eNKfAuqg89W5akYxLPHgwRZUDvGXJaRtGf86UkQ9Fi4f6DEVndM1WQ2TbvVMRkMYPW51UhofbD9fpXSvnUNTBIiZqMAE6iQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,48 +143,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 09:47, David Carlier wrote:
-> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-> but sio->pages tracks the number of bvec entries (folios), not base
-> pages.
+On 4/1/26 02:39, Li Wang wrote:
+>>> +static void run_test(int fd, unsigned int start_off,
+>>> +		     unsigned int end_off, unsigned int align)
+>>
+>> Nit: prefer to-tab alignment in MM land.
 > 
-> While large folios cannot currently reach this path (SWP_FS_OPS and
-> SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-> is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-> inconsistent with the per-memcg path which correctly uses
-> folio_nr_pages().
+> Yes, I noticed Andrew (thanks!) corrected it and added to -mm mm-new branch.
 > 
-> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> count since sio->len is accumulated via folio_size(folio).
+>>> +{
+>>> +	if (!check_dio_alignment(start_off, end_off, align))
+>>> +		return;
+>>
+>> Is there a reason we just perform that at the beginning of
+>> run_dio_using_hugetlb(), avoiding run_test() entirely?
 > 
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+> That will make the run_dio_using_hugetlb() have too many args and
+> uncomfortable to read, yes, it's more likely personal preference.
 
-For the next time: Please don't send new revisions as reply to other
-revisions :)
-
-> ---
->  mm/page_io.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index 63b262f4c5a9..1389cd57ca88 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
->  			folio_mark_uptodate(folio);
->  			folio_unlock(folio);
->  		}
-> -		count_vm_events(PSWPIN, sio->pages);
-> +		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
->  	} else {
->  		for (p = 0; p < sio->pages; p++) {
->  			struct folio *folio = page_folio(sio->bvec[p].bv_page);
-
-sio->len always covers full pages as processed in swap_read_folio_fs(),
-so there should not be any difference.
-
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Nah, just squash it. There is no need for this separate function, really.
 
 -- 
 Cheers,
