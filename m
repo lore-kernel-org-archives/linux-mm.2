@@ -4,94 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FFF1107638D
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09638107639C
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 18:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69E8C6B0005; Wed,  1 Apr 2026 13:46:44 -0400 (EDT)
+	id 315716B0005; Wed,  1 Apr 2026 14:09:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6287F6B0088; Wed,  1 Apr 2026 13:46:44 -0400 (EDT)
+	id 2C63E6B0088; Wed,  1 Apr 2026 14:09:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFBC6B0089; Wed,  1 Apr 2026 13:46:44 -0400 (EDT)
+	id 2038F6B0089; Wed,  1 Apr 2026 14:09:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 391F86B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:46:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 721C3160145
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:46:43 +0000 (UTC)
-X-FDA: 84610717086.06.1E9195D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7C1AE40009
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:46:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4+8YjAY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F3286B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:09:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC6BD8720F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:09:04 +0000 (UTC)
+X-FDA: 84610773408.01.F3A2574
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D1A8A160004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 18:09:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXtHi3bM;
+	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775065601;
+	s=arc-20220608; t=1775066942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ilvAZvX6c8awgrEddN/eAnjZjT2zGT0xUPSsgoIUxtw=;
-	b=GJTUG/OuzCq2nlV2k2sb6MEZ1sibOdebufG/J7Bkh7Ab7kJukFFLrlzabnwQGfKXhJE171
-	CGyfRzXfQgsmD+nErdJZGbW8xQEf6uDhtJRlreduUWIm3z8FNfBtgbY+sbYnaR+s88Sajf
-	O2Xe0G3BPXTVqz7pEQICtWZDagXY3ao=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775065601; a=rsa-sha256;
+	bh=lOudpFoWx8XSk/HnG+DRMg8OAxAthLf7Y5r1o4OCHrM=;
+	b=2RtWIUV5V4HidD70TNSMIF6KXvF0bVqWNeHqy000O6iU98W/WFVGRBrEwCoTzuX8JgY0Cr
+	Szicos2beM+IY94C/DES2kTqACg5fvg63jO9LNnL/vTTD8MzMvw87TGE2RZ2xjaQZU+irO
+	HIuGjSThFeyyah+TUDC+CQllYcZTvks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775066942; a=rsa-sha256;
 	cv=none;
-	b=MW5Gu7DrqpYPyoJXhr6CiLrZCfuri1UWFzwNUaeATL29Q7XNCTOeJc+cX2YBOq4pplJFIn
-	dXHihbOxvIfzFvLB8yutTtDJ3lkc943+wLNlVliky85tbvo9MZKmc++IN5Le8iD+Rxkldd
-	iqTh2ckqZF2fit5uhOZYf01Bo6ZGDMk=
+	b=WG/GmTdk4JINkEeB/NiXWSaP65nB5Fgtyj5ed5L6oF3vZZwcgv8JGJtnKvTs41XWNYz2O2
+	5Mpm2RLKVGtEIcw9sBCNXSI8AyaDevxDg1wCxTq7jZNtphyS0llndSXRTGnVglAP6S1iir
+	9zeEHmBjLLnsV+KrZ06QQIpyKdj19Y0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4+8YjAY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6FEA0434C0;
-	Wed,  1 Apr 2026 17:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6175BC4CEF7;
-	Wed,  1 Apr 2026 17:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775065600;
-	bh=fohMRa5K9g7ocVeE2BTtOtg64GbOaCSV2v/AyKbYIx0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t4+8YjAYNy57lJHDN6YAsvie1MhYiKifQRrUrzv0aY/Z8Sy2P2I2WuppajvkT+DBT
-	 V7hsQrh7uVwJB4VhjhM+pjZ3Mac84DefOTyzV6HBR9ghVshnzRwN9xXcLIr6zDiWqP
-	 0JtJc/FAhn8bul6Hx0+DSqWlKXVp0BawzGSdrfyK2gNwlQaJFRIOszsJ2Uglajj77d
-	 18B5UwXwc2HLWygT9Wl8X4PPf1GsQsfv/4Qc2eYOKaDNyeZ0Z+Uh3hYfEj2RRrbDKe
-	 xb76dPtJgfgXad/1r67uMO+4YTgQzOo7x0aCgfcAaFrOjqFcIG9DyugUAuHluRFhVv
-	 zZupFcILz0ZIA==
-Message-ID: <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
-Date: Wed, 1 Apr 2026 19:46:35 +0200
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXtHi3bM;
+	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba895adfeaso136283eec.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 11:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775066941; x=1775671741; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lOudpFoWx8XSk/HnG+DRMg8OAxAthLf7Y5r1o4OCHrM=;
+        b=fXtHi3bM4RFHgM7NO+n2KFp+UWoW9v1B08q8KawgrzdKo0/k5hx16fjLJr4p0Z4iTp
+         jz6cuNrF2KPjvvrhqvqCK8mMuN8Izyk0pP0KX9PCr5STKPBK04/Jg0XjEZXbs0Gr5+FL
+         P2gHS/G1w+Bob8cWCG+wCOfEldBEtAuYrIbqtXQjrer/n3O5mDlYSH+88GgSj+/KFdYQ
+         943HL8eV0A/PAPJ3SpEFJwmbyOAPuZ4LrOjX+7CpWxH3faL6sP1hBsIASfAwNxai+pMC
+         MaLcTNFWSUOomiLtGTS8r18+a5k2kLKJ8tiBkp7BQvv3BbsfkAA7PSGm6FVrNUDtgZHe
+         Mo6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775066941; x=1775671741;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lOudpFoWx8XSk/HnG+DRMg8OAxAthLf7Y5r1o4OCHrM=;
+        b=oDjHoVHdNiq0VhTWM0oZfmUrOndww3tqaovEnhzmRYkWAtn7FKAbp26HIIVVnSTYMD
+         Xiuxv3ppcTI9yOi/UztdCgY7FntJA2EP7GqTPrE9/GTkblT17Rf9qJ3ciHrWbdp1SM5X
+         fr1iZFfxKWw/9mwb88ub4p78YbrJxojXaDi5Dw6CRvywizi9RGjhWX3VNsD7jrVKIdeH
+         +BDM0uUgg4hAikaQnr8Xg3Bb9PD/NyynH4ADsHVJcy6NGNl0JC6bQuhSbNWRZ5HpyVzA
+         dotI3oMLdypWXFzynSXtvEdMSRd42dlob8megdFekwifEaUXK7UoT+XmjsUYutV/mNWF
+         V3CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMYrfkhM6YQ9fVXu2+T/xE5iVKD0VlB1RS9i+0M4uTZcCen+Z0660chv2VAu9LoCOJxjmETL5alg==@kvack.org
+X-Gm-Message-State: AOJu0Yw3o5IzDQ7dVdiNyLJO9HYH4cM1QxpiNWhalNWcWR0LhvVoHcwN
+	wH3CKN14JzLgSZFUNBORZbCxXn/otBPrqxPWoqpSrJRJ0RcJMU9wiD9NG/qXWg==
+X-Gm-Gg: ATEYQzxxjihPBC0IE5hXr5DFfRcrXNuPVSuWmfIkfSRKNflTibyv3m6IzQNDlvNvh++
+	crHaUMOpPI3sh3ZJL8KSZzvA+pJRJ/1uGgG71QUerGg8Qe/zIfir0MpISIPI0lKqFHLx5v17b4S
+	Zi+LrQnQDCIxwcqdBrgzPB5N2kqELaU/gqXocpCSiR0HFo065eRxDlnGI4RNpgzUYQx1O/rk0tO
+	NmHmNhDDek24KtRpSl2pvxrkQTwTmZKO9IHPu9bJBNMahJ71YlC6u1lwcpOXTdGAvm4m5681+fk
+	bIsy8Iesz7xnphuFVCqMwAmJP44EsDYZiKjYxrsIilmrC8DuaoK+cew35QuDF2qs6gkH2pZDEAx
+	j0lKaViSWfyoZuDTFISwTC5CDQbdcrZSl771NkE+XEBzcPuBwF0lNAxEghn394kmVBjDxBa4PaZ
+	En3rofQTkTgHnf0cozFS7LwZf9s+P8vO3UXfcH
+X-Received: by 2002:a05:7300:a287:b0:2c5:3b87:2ffc with SMTP id 5a478bee46e88-2c930b800a4mr2410628eec.7.1775066941427;
+        Wed, 01 Apr 2026 11:09:01 -0700 (PDT)
+Received: from fedora ([2601:644:937c:6c90::c63a])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7d3111d1sm355429eec.30.2026.04.01.11.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 11:09:00 -0700 (PDT)
+Date: Wed, 1 Apr 2026 11:08:58 -0700
+From: Vishal Moola <vishal.moola@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] MAINTAINERS: add sashiko as the first DAMON reviewer
+Message-ID: <ac1fOrrURjCfQyJY@fedora>
+References: <20260401162637.68506-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
- shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C1AE40009
-X-Stat-Signature: zcpiykogjbbn8hs8ysqempufa8aspbdk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260401162637.68506-1-sj@kernel.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: q1r7tp1jmwia6i6c43aye85oxnepj9u1
+X-Rspamd-Queue-Id: D1A8A160004
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775065601-221334
-X-HE-Meta: U2FsdGVkX19GY26Ad2ulFpbpGKDYoglHHUkn62nUAaR3qgk7AHNih5828MYaCX9Sunokb/gnqa5aSgzvCIgRTtxwm8YfanUe3YNIDdtvUThiWEvSKxpcV2awFZhekmbwPtLJbp2g6MWYHELiJnmlw7WU+Fegs+nnFyAdz9QljngwEsIkNks6GGcgY4RR0mQ9VIaZBEg2o8hYuB8AXaqni8i7IjyggwXwf2Zqzo9+LUNfmQi8SpJ+EoskEvwQVoRw3oMm3gs9QQ068OWeAfEZPU1m87iw7sUczXHxvQfQjAPr1d4FlY5fI5lxIid3ZyJS7YRX9CqxfAAV7gxLG1I7DE6jrVG5guDZf8QGhiVvByv/IxbAK2YhNwxnMw1ad0q6H7sSK+v8tXbcW9ip8SWvtbMrqr9+gMrrVEA1/m8k7r5jgKeX/DF1gHpaO7mlVhnfhW8McZkI1yzUT8IEoOIBlTOiWcHs0hOFITSNocgWjTt8UOv8vdTafs0b7rH5ou4unWmJQ0kzXE3D1Vm+V8UBwzge9ZxUBMy7cuSR4bULMoZnngs/wsjv5bebUI+s7k1B4h5CBZYNEBVmqJKxpWGdiuzVpWIQy9iec3OPtVzQHQJHv0PNVdexyLbE/ThbGWyvhhtaV//TwPGcDM5q984I2hIFqj3udK4aWaA+FYs+7/ye74AgNqLNzTi2KEItZaI6go9M3fuO0tGlKpAhxlx1Q4JCM6ec56Pvq2GmrJTMYyI8fTtgjz2WQo2UDJew3a30tzcG+9fUsJAG263+xXj62Yo6maHJdRGLSG2rs1AERDnaKofTnjJzJGQRjR9qwEnPt1ZX5PTxZinjdQJsVGFcPBkWBp6Gj1MPKVec5eTKwdr0rju1e5xfB5wPqMDif6wSWSY5LVX2mDcfpZcRcTsrunPKeKwejJBr64GLqO5ADdxhxsjKuySvlz5C0LolCOfSn8eu3fBdhjzen7STDhF
- VesMHXpF
- FQxy7M13x18iBq80RTwOUzzmPOSBRsq7cMtVDnnFSK1MIZnjX1yvbDF2iFoArYEmKRFzv8FvaSI5aN+6ShA1pSFZOB/A/kdlg2W/vkMVBUpyPKLvWStn5vxXK44m1i9HXGdAGaltCamPGiaSHY/7sRzVwjNhElxn3njxXO1fbNk9tmvy7OYGw0MAV9h8qIKov1TU7L3vlYcnHgekXn3YpJ3JmP1pvlAsAPv/WOY0wjxTZEM6lgsOMZ5onwbr8hHY1yJz7tdsLuVzSAs2mBNxfOWgdj9zp24Vdsf0/XvbziMf6R+YIgyC8A8ls1FdbTZ3u6GTP6smbwCtLqxy2scx/PWDy3OEPKUSImIm+
+X-HE-Tag: 1775066942-233409
+X-HE-Meta: U2FsdGVkX1/GXzkIHPHBGsBuaFPMsBzbKRSCRb433zU1/juI1pkFA4godo0r3PtpD8lqqtMgP1gvmZ3Yq8shH+LNCogbRsC+0FSTpWzLWUDQeKd8MtIHyGQvdn/PHwC2Lsz/SE/qAR4O1zdfH5xmiHUAVSH6H583iw8ZPRR5OpSpK2dsyPA2dKfK88zG3xz10/qlvpSS/b/SFBh7s3kKHWrodSw7ZswHHyGKuVQwZiARzLDCxV/j7dtmsUlB2vwcNukvWgBPOMbGm/FPzrvS+VPKAHHJ2vMoIhkW874G/11q055b5HbICcP2aJL5+HFWNXlg7hMkLhEesxE9cIZhP8ZsqX8mhoixqRuO8QJ5yPQ3tW7ulBc86ydxt2rQwoXJ49ipJpntHqanPVondjA+d8LnrNCadfp2pIEG1/CRxXryOih4MG5d6772f2agfStuKtd0NVtNzcLH5tYwxlcTFaNQCqk5/RoNNZLc8For+xzsFenRxRe3L/3Gp5wvBeWLbLzPtRuV0WtoejJy5sLJFqnR+D8rbkhV2vmVNw/4m0eLslbYZx3MNY17DrrRoRir+F1dTEIQRe/iRq9w94IXijcHfjjVx9h8tc9qhBkoimYc8WDLf0GEU1eAvD+bDjHne5Ff6Qq7dK9m3ZxDHgOzUauDH8Yh75eBmX23Ecq7srxEFWQkikR2Rh6laKgr0qwLOkvLsH0YkDJiTsatGy1kFfbLKot7xaBF8+RDuoSccRrYW62gl580Aq1zbBixo8uhtew/kC6EEBtf+dnbQNIK90lFNh7FV2CwNi1ZRsvqKQmTCFAXWsWXnNNZNYzoZxzEse1aOo2TCa0By5qVA0vbFiyw1Ub3uT1dIEeanTZix0JRWIF4ciMlHDuxXTeFwDwDissPeGD7ghx8+9cRJ/Cm7+qrlAVKwVWB5LwZYkMQBHVVaroCfOiQZuiUb/XAo0cPnKZdrxiNNwUKj9w2izn
+ cbX3HQY+
+ uMBRWr/tEB/D7nLRTwxLG+8mT34rHKZVXON/2xy05QLf564/5D7Be66ftKIQjchE97j6pKF64w9jpCvDBcwQV3PtJL5RfjEd0BW2nkpMZJ7sCsVj1gcOTaqHXZUE/U4O/BW8abZPcnDGYQDt+rMw2U5fuBn59CA5urvKcJKWJmQPrf7sQf/sT4LTS9vMxpzhzeYHZMeNWVjyDSMZYUPUD5oVPpL0I5Uren7qwGNs7hogWWia7o3+8jWWhPfuY8Cknrag82f0tzkXRLDlC8JYPG80T6viMQ3ie7pBnRRhfxXwLJEb6/Ow2Ys/LzcVgbJDtNvBDBRuAjxE2MnLeQH2e/ZaRCBce013/bzkqbVj9Ji/2Rs50vChBXj02T4ncvuoXxjyx9wAEc5yUkJ/eL/lJVLC3ubHS2mjfeBzwu340fSI6LRUmH9xJnI3A4IfjfRrkmXEzveJuB2Hu/ZGT5H494tYdlI/1wifCGHfMjfycjL104DXBBcybEUDF/EYTg2UOzZVP70mqZHNEgq4f6j2ojcnjfyUCDDSLx9hAoT35Y/4Hk7UEAUA7beFNWKV76RBBlMAPnWvxeJef8NwyTHcYhXSjLYLiCQAtHvM7DUKgVPFlteTU5V+jBkY6VlhbUY0RKI9RnKrZNWwm9szX2lrBYW2Xv/i3cChiy6Cbf4zD7kkZhuOlnHK2qdYjIrwOQVKZ3aFn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,120 +115,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 15:57, Breno Leitao wrote:
-> vmstat_update uses round_jiffies_relative() when re-queuing itself,
-> which aligns all CPUs' timers to the same second boundary.  When many
-> CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
-> free_pcppages_bulk() simultaneously, serializing on zone->lock and
-> hitting contention.
-> 
-> Introduce vmstat_spread_delay() which distributes each CPU's
-> vmstat_update evenly across the stat interval instead of aligning them.
-> 
-> This does not increase the number of timer interrupts — each CPU still
-> fires once per interval. The timers are simply staggered rather than
-> aligned. Additionally, vmstat_work is DEFERRABLE_WORK, so it does not
-> wake idle CPUs regardless of scheduling; the spread only affects CPUs
-> that are already active
-> 
-> `perf lock contention` shows 7.5x reduction in zone->lock contention
-> (872 -> 117 contentions, 199ms -> 81ms total wait) on a 72-CPU aarch64
-> system under memory pressure.
-> 
-> Tested on a 72-CPU aarch64 system using stress-ng --vm to generate
-> memory allocation bursts.  Lock contention was measured with:
-> 
->   perf lock contention -a -b -S free_pcppages_bulk
-> 
-> Results with KASAN enabled:
-> 
->   free_pcppages_bulk contention (KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      872 |      117 |
->   | Total wait   | 199.43ms | 80.76ms  |
->   | Max wait     |   4.19ms | 35.76ms  |
->   +--------------+----------+----------+
-> 
-> Results without KASAN:
-> 
->   free_pcppages_bulk contention (no KASAN):
->   +--------------+----------+----------+
->   | Metric       | No fix   | With fix |
->   +--------------+----------+----------+
->   | Contentions  |      240 |      133 |
->   | Total wait   |  34.01ms | 24.61ms  |
->   | Max wait     |   965us  |  1.35ms  |
->   +--------------+----------+----------+
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Wed, Apr 01, 2026 at 09:26:36AM -0700, SeongJae Park wrote:
+> sashiko did arguably good jobs at reviewing DAMON patches, for multiple
+> cases.  "Today" is the greatest day to give sashiko a credit and the
+> responsibility.  Add sashiko to MAINTAINERS file as a DAMON reviewer.
 
-Cool!
-
-I noticed __round_jiffies_relative() exists and the description looks like
-it's meant for exactly this use case?
+This is a great idea! Andrew should add it to the MM one too :P
 
 > ---
->  mm/vmstat.c | 25 ++++++++++++++++++++++++-
->  1 file changed, 24 insertions(+), 1 deletion(-)
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd..2e94bd765606 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2032,6 +2032,29 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
->  }
->  #endif /* CONFIG_PROC_FS */
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 16874c32e288..42aeaa858531 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7041,6 +7041,7 @@ F:	drivers/platform/x86/dasharo-acpi.c
 >  
-> +/*
-> + * Return a per-cpu delay that spreads vmstat_update work across the stat
-> + * interval.  Without this, round_jiffies_relative() aligns every CPU's
-> + * timer to the same second boundary, causing a thundering-herd on
-> + * zone->lock when multiple CPUs drain PCP pages simultaneously via
-> + * decay_pcp_high() -> free_pcppages_bulk().
-> + */
-> +static unsigned long vmstat_spread_delay(void)
-> +{
-> +	unsigned long interval = sysctl_stat_interval;
-> +	unsigned int nr_cpus = num_online_cpus();
-> +
-> +	if (nr_cpus <= 1)
-> +		return round_jiffies_relative(interval);
-> +
-> +	/*
-> +	 * Spread per-cpu vmstat work evenly across the interval.  Don't
-> +	 * use round_jiffies_relative() here -- it would snap every CPU
-> +	 * back to the same second boundary, defeating the spread.
-> +	 */
-> +	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
+>  DAMON
+>  M:	SeongJae Park <sj@kernel.org>
+> +R:	sashiko.dev
 
-Hm doesn't this mean that lower id cpus will consistently fire in shorter
-intervals and higher id in longer intervals? What we want is same interval
-but differently offset, no?
+Maybe we should give it a kernel.org address while we're at it. It would
+look more in place.
 
-> +}
-> +
->  static void vmstat_update(struct work_struct *w)
->  {
->  	if (refresh_cpu_vm_stats(true)) {
-> @@ -2042,7 +2065,7 @@ static void vmstat_update(struct work_struct *w)
->  		 */
->  		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
->  				this_cpu_ptr(&vmstat_work),
-> -				round_jiffies_relative(sysctl_stat_interval));
-> +				vmstat_spread_delay());
->  	}
->  }
->  
+>  L:	damon@lists.linux.dev
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
 > 
-> ---
-> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
-> change-id: 20260401-vmstat-048e0feaf344
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
-
+> base-commit: 36cdacaadf95f0245cfcb76c0b0cb7e6706b05ea
+> -- 
+> 2.47.3
 
