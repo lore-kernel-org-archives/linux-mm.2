@@ -4,77 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACA2D2ED08
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 13:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E03D2ED08
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 13:45:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DF3A6B0089; Wed,  1 Apr 2026 09:38:09 -0400 (EDT)
+	id D4A5E6B0005; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 290606B008C; Wed,  1 Apr 2026 09:38:09 -0400 (EDT)
+	id D22EC6B0088; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A6896B0092; Wed,  1 Apr 2026 09:38:09 -0400 (EDT)
+	id C37736B0092; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BBF96B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:38:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAAF01408BD
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:38:08 +0000 (UTC)
-X-FDA: 84610090656.18.6731D59
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AAD2A6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:45:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B9FC1A088E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:45:07 +0000 (UTC)
+X-FDA: 84610108254.23.FDADD78
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1C8E51C000E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:38:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mWkVf7ka;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 71BE3C0015
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:45:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G6ncSX4O;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775050687; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G6ncSX4O;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775051105; a=rsa-sha256;
 	cv=none;
-	b=BypTEbjzOEwiB0kXzH3MWRiPTBwKX0P2SdPr6l5UxWAvL129eWcxMOPyWLxD4ifDd322IY
-	qTqo0BleTOylUlBMl7lWOy+F5bh53oBoQGvM3xPaMtmrPq/LzqojYnTZpH2Z0e+Ii9DEGv
-	Ge2Yk0a/ojVAxXueBEMcRCoOhw1+/4Y=
+	b=slFRagRm06L5IBXlliRlryK/OUQ+OJJv9KDFc6SjriHHt0jg3rzKKiJYR414jl9N8T4SGE
+	/wcR3NpAjLc6mToWb85ypdCKRhQctmEN70r+9kjRjM7RzLSawBSLZvl7hYsXwolNP7n0ol
+	4+caajsWtN/9IWLioxblMOgCByZME+k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775050687;
+	s=arc-20220608; t=1775051105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LXl5Oa0cejHlirGJN6Tddcm1Ykiz3RJ0jARS/clyiBw=;
-	b=OWJdWQHK7ZLBUrNkAQaNei+wRvcCyQ/JJUYOn+84dmmmDS4mvjTHIR5fPDYxEGl7+bjIvb
-	mcUGWR9hxwXWtW49kDXcr+ojkMDdgcxrzysPfzJpeBVoGQewslYbGVYafEhOW4eMFj7cTe
-	2naSzjbpR4DGrbdaVvfbDceqZwMZV1A=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mWkVf7ka;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=qpgjXYWg+Hjk60RwOpnZIWST7vnvIQmUK05pccp+8vs=;
+	b=a350sH/dpiAKysQH6tOWdSGzWFmzZSPxILixDRbLQhGigTYnWR3EWvDO1TyuO7zQvi4nCY
+	f4+kAmq5Rmpt43vpfK04dNzQl5jAx0bl4wgXRqb2TtyZ2nAiyVC/IvSbGBfTWUBvGaWxxU
+	MW7ndAwAk4kdt015l/POHyBDhsrXs9E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4736D60121;
-	Wed,  1 Apr 2026 13:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C33C4CEF7;
-	Wed,  1 Apr 2026 13:38:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CB5A5600C4;
+	Wed,  1 Apr 2026 13:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A847BC4CEF7;
+	Wed,  1 Apr 2026 13:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775050686;
-	bh=kHNWjAj93z7Z6Od8xkd0JOrKty2SNO5bqPckeuv4KoU=;
+	s=k20201202; t=1775051104;
+	bh=sXEt19JQ1n98ew1H3czQ+UsUIfs9zXbmSY2HuWsxRWs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mWkVf7ka6OrTk/RspZojEw6FOoenIoW/UDOpx6v2RHFEIKucTcggFO3wV6mslQUoe
-	 /1uEycr/SXtB5Tck/GHckKQR/owyvF4NE7uUFdRMY7fH+DVGrUoiUxIzkqy5dIWTtd
-	 MQ1hPSxqP8RiS+1C6ewrz7wh9jiC909RKpjugpsGdFpX0Lzc5LvUMF9oAMEVJta74m
-	 TwDUZwP+R/DCBrTVraV8ZsTAX5aaNm9SJEBHoPTB37fv0SFiCpf1/XBUlvGahE87aD
-	 KTXWbFTvlwIA7e2jowzc18x9VIFK/tMfHw7h5GN22dgrHQ+3kLFu6DkWQacybwGCe4
-	 e0qc+I40Y502w==
-Message-ID: <40ca760d-c200-4ec2-bbf2-66811fa8ae45@kernel.org>
-Date: Wed, 1 Apr 2026 15:38:01 +0200
+	b=G6ncSX4OMSyBURFLqejZtgReUgcbfcgjOZCtVdcZMsxumWwOSmIKB9NS34FIMdLSm
+	 5P3hWtWv5j/KLzldnAz5pqIo1Lwts0OX3kYcwevnqX/Vdozw7T7QQ9irRFrrWrH4Bf
+	 lkoR5cSLzhCQDSOZ2QoOonaqifc7OlIU5RlcYFgQCxpQvnyMhwikkt7G5ew+2+fBim
+	 s/XFXi7ArXee77MJxoraMZAt+lVyZUp+nT9AIXmhL2qiXmcx9I7LMjtTAh20tj0+Mg
+	 7vuMaUZwMWfHGQd2xbjYagACPy9TQLxYdmTfthbW+AjBEgH3ETbv7iEFhZInxGaHTv
+	 MCxfG3hKcQKMQ==
+Message-ID: <153b1a47-ed97-49ee-8977-e010ef5648f8@kernel.org>
+Date: Wed, 1 Apr 2026 15:44:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/thp: dead code cleanup in Kconfig
-To: Julian Braha <julianbraha@gmail.com>, akpm@linux-foundation.org,
- vbabka@kernel.org, hannes@cmpxchg.org
-Cc: mhocko@suse.com, surenb@google.com, rppt@kernel.org,
- Liam.Howlett@oracle.com, ljs@kernel.org, linux-mm@kvack.org,
+Subject: Re: [PATCH 4/4] selftests/mm: fix cow/gup_longterm link failures when
+ liburing flags are missing
+To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20260331070730.33915-1-julianbraha@gmail.com>
+References: <20260331040156.119158-1-liwang@redhat.com>
+ <20260331040156.119158-4-liwang@redhat.com> <act0F2KTpXFFxmdf@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,15 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260331070730.33915-1-julianbraha@gmail.com>
+In-Reply-To: <act0F2KTpXFFxmdf@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 71BE3C0015
+X-Stat-Signature: xusunxh7occj75pmthgme4hmzrdskyp3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1C8E51C000E
-X-Stat-Signature: w5r3dotinfzm98dno9rkxkyfdgo44sqh
-X-HE-Tag: 1775050686-748813
-X-HE-Meta: U2FsdGVkX186y8x8h/6M7uQ0M+JUzV2BgyBhTT7LEI3QcltMHBMqe+q04elbTnYW7qe1sCTTOrLjAwmRN+cgD0nIK+B1akIR7r8omF/J/fGFsriJLTcCLSErR6qafjp03lniq6t8AhunNhNc47SvDLSr439guPLwEjcyNHssxDupfuSE5apbQhSY4Es7lTQ/yzv3gTwNa+pU3+aqt9W8QTFAFsPN3nYAe2IhEMaQVT1cmCuymd1WGaP0RnFPlsWVLAwnfuuhNsHBadwKbbYM8tUfof7HyKpEdw5RclrL1iNKxnHhcH5tJH8ehifWI326rQUHgmFonEk0NTzq6gT06GoGAB0l17IrjHCnQ4vkyyj3+R6Wc1NuiqTbQTgxI5hIws4ZngV5S90g2QLspD+UdfbgOnwkBuxLyxzM9b+wPY/6d/gNdmbPlXv162ZRSjpUjHnzrEJ/AK3r9006XOOXDRmgIoudvVKFTQJD0sZmxMx/Zg7xTzvB7tjMVA5QYam5gEOKIbcrQ3AbsSRsE4U7gOikx8H25hhqLBAgwWnMLdSnEC+aI47gevlnWsbPsWuOsULnhbLBnRXHlOwkhvnUOYrYvpR6gQvTppiLHOdPBrt1AYoClj+pGx0s69l5Ng3aUoAxEyenIL4wsNXnq1QPIEvfbtLmOfFPOcAxGgafwunBpOPqD9eO5lrs2sw38R2gd7KfflkvoRXU8yLrb9BCBkLoMbUKQFMthiKj03kcyiT7rxRg6eWDD+qBZGJ3avNDAiRGl8GvgXxvcM7lpiw+XsEgGhjFqKVt/fGxWstcWpwIVF0ky8D22Khkvi08odEji+dTkBNKbHM+9yzzDsUCjy6Wc8CvSdSiNm0UDGudDQH6rrngOy1kVpp1o8idimqJQLWd+fHrtXfhU2z3mkcqCW4f3KvNlYjRHV32wyeKdVjxhyds2Lk7ZQ==
+X-HE-Tag: 1775051105-24011
+X-HE-Meta: U2FsdGVkX1+QFVPiBwdZNfQmTkLD/18v6YlKtwxjVob6GU9opBncQ23fy68Zwld8IKPwGMiKyCu6jYdUDuCMym38aWYAsNpPSg9wxuwV7isZ6P/gjeDs5HcdzffojjU/BNS1nBe7zVmvB1O4RJLeTCnNBKrr4Do/U6uSq7vEH0aUEn57/M/RnSOjDfhPncOmnR0q3k23qq3Gz9wy5z2gabFhQLH6RJHICHtRBHjYGONzsYyVnDK+4iy76pbqGYhHoaSzE8BRSWOeSpKB+wlXiDnrG4ydWPdaPoEXwZAIh/TCyv6OXro47AEY5Z966PccW4YCgvYC2NGZ8cI6uUbl0taeB8R0HkP4AXF5ljrE8dgpU0XoSVXqqcKSdV4cIbkNUb1MOIK4mok3ELAzVE4kzja2ewRK6WbOF9J7Z8yKeQDwCQSrilY0rMbGibINf7kHKBZiUNRft+URBsXLAQXNPslhNduwPQbLv2tP5fh6CaiKpqFL9fWQL5MGJa8zzvFZXUlDDF72vdMtSeRKVgGf7jn2leVuwUCUfpXCm6jMiEAbeoOJU5XAH2Qm5uAysO0ROE/w+FrWg10bfJW05demB/W5LAEIqItUAbtKftCTno8YN3yudTRMXdm+0r0qfCoP3vimuOeSsFP+qvHUDpwC9doBv37fFRTxxtIKcflib3aN9J/cdVVJI4RmQUH8ycyziKJ4fhxD6CJCyC7rhFIIA1b19vHc6iz0G2jTKF5fukIILhVJB77fdQNuBplXaFbxlJ7nUcKi1Fj4vCFGhaYcLE/Jd5ABDYhDbTwEGrUe78HgHEKVl2F1FXYvMkRBntzoH2ARmxlorfST48XzNmgwRTaqV2Mj58MxClfXrX2y9Esq+XSIkByYoIhzo18JtNizkV4eOuMLVTISdy34t+ufkRA94FsyOs5OxI1QlMmdVpq635vgPAsBIJfyKhM9U3fPGnSB90/K5Blw+pd7DhE
+ h7d0xS6L
+ 8rvWLfWMyagwhh17+GoTvncw5pUaCvBM14YuR9u4pevQF4pJCTBwyWC6/2Bq3lDhAyrzT/vrlkobJX1lq0Olj2isD7LBqz1skmC0FGazlZQwpMxNEmqB642tpYmbfCnBwwDLOMsPRjQ01gjO3II79Mc4u3Sj2Oa52rVyiT9j757zjTI/otq777BV1BDlu2xW1gWQB5jsBv4Kx/K4MNhf5xYPwIyt5YzeWf027ETinBybxahAI9sKlAID9ZOr/I+naX5shxyIdW0x0FgL/7+gQJ0PIcwwaH9pgSO0g6YFgbxAe3EEpIJMj/tXKTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,21 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 09:07, Julian Braha wrote:
-> There is already an 'if TRANSPARENT_HUGEPAGE' condition wrapping several
-> config options e.g. 'READ_ONLY_THP_FOR_FS', making
-> the 'depends on' statement for each of these a duplicate dependency
-> (dead code).
+On 3/31/26 09:13, Li Wang wrote:
+>> --- a/tools/testing/selftests/mm/Makefile
+>> +++ b/tools/testing/selftests/mm/Makefile
+>> @@ -10,6 +10,11 @@ LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
+>>  
+>>  include local_config.mk
+>>  
+>> +PKG_CONFIG ?= pkg-config
+>> +ifeq ($(IOURING_EXTRA_LIBS),)
+>> +IOURING_EXTRA_LIBS := $(shell $(PKG_CONFIG) --libs liburing 2>/dev/null)
+>> +endif
+>> +
+>>  ifeq ($(ARCH),)
+>>  
+>>  ifeq ($(CROSS_COMPILE),)
+>> @@ -55,10 +60,12 @@ else
+>>  PAGE_FRAG_WARNING = "missing Module.symvers, please have the kernel built first"
+>>  endif
+>>  
+>> -TEST_GEN_FILES = cow
+>> -TEST_GEN_FILES += compaction_test
+>> -TEST_GEN_FILES += gup_longterm
+>> +TEST_GEN_FILES = compaction_test
+>>  TEST_GEN_FILES += gup_test
+>> +ifneq ($(IOURING_EXTRA_LIBS),)
+>> +TEST_GEN_FILES += cow
+>> +TEST_GEN_FILES += gup_longterm
+>> +endif
 > 
-> I propose leaving the outer 'if TRANSPARENT_HUGEPAGE...endif' and removing
-> the individual 'depends on TRANSPARENT_HUGEPAGE' statement from each
-> option.
-> 
-> This dead code was found by kconfirm, a static analysis tool for Kconfig.
-> 
-> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+> Please ignore this one, as Sashiko points:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Right, this should be dropped.
 
 -- 
 Cheers,
