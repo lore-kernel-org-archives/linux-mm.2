@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF88D35162
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163DED35162
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 11:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0813C6B0005; Wed,  1 Apr 2026 07:15:15 -0400 (EDT)
+	id 69F676B0005; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0325D6B0088; Wed,  1 Apr 2026 07:15:14 -0400 (EDT)
+	id 6501D6B0088; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E89956B0089; Wed,  1 Apr 2026 07:15:14 -0400 (EDT)
+	id 565C36B0089; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBBEB6B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:15:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A3F71B69AC
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:15:14 +0000 (UTC)
-X-FDA: 84609730548.06.2BADC41
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1BC4120011
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:15:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K32yyvLf;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49E0C6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 07:17:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED8691B8A5B
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:17:38 +0000 (UTC)
+X-FDA: 84609736596.28.B5C032F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3083940013
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 11:17:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtkyqXx0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042257; a=rsa-sha256;
+	cv=none;
+	b=fGmuAH+voNXPL3fgoBaCfvvNbj0hlLN7vDWbECYEiZLIfqZ4oH54sRj3b2J3J5/4cS7Zna
+	KRqpMXWrJHDwVW92L4A8yu13OGMRo9XY5GQahu8JLQSSMGzh4QbttE4ujZFO/PM7eAJh7l
+	gP4YUKgujDcPpq+0igsKPthz3BAmTLQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtkyqXx0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775042112;
+	s=arc-20220608; t=1775042257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rjZVgB77RsRkWf06+levwA6ayx+NXXNkjcv4qhUis68=;
-	b=QSh1RPaqBMt0IXzy5QLE4jc0YDvSyxoAYhgXW2wnxvrNco5ajNeCFgMY8r0mbMPZSiYthU
-	EVv7J8K6TbSbHOKHREcjJo0s6lUBPZYEmQ1XnfDy4+XQ4Iw1pHoCH1EipCqFeF0aZPSMNt
-	OnuugK4Vjq3XYouQoeI4EoU439wZ6Wo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K32yyvLf;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775042112; a=rsa-sha256;
-	cv=none;
-	b=Su61fC3xhoIlAZU9H5cmlIpTlFs922UkvJ9uIs8NXQcKdLzyKhbD8j6FTOmj0ladDpnquJ
-	OwNqCTV6MBbyH7LzUGG2ah8YvbI1KrXmolwReBdyfGEKuA+iqqube0CyliBHv8UBCcx9o6
-	//EMb8kgKI3UivaC97ZlNYxqV6KcXlU=
+	bh=HwOCAyG3TTWEIt2f0AUGMNbjfpqujqWRqR+DRuh3U/U=;
+	b=oG/VAvuaSkY/Km0iVlmIKb+1KVOsHfaoA5cNMhLZk6oCEt8GuTx4oCtrMvfEuRGI/SLbHu
+	TPVYTA6K9fpCZMtWyUXBOfcJt+e/E9WeFaWdxlmBS/goOzeQ2dwe8I3AW2ZQfIxLf9dFmH
+	oI7HKFGFwSZusg3hciLcqbwTaxMdMhc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E2B160131;
-	Wed,  1 Apr 2026 11:15:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93246C4CEF7;
-	Wed,  1 Apr 2026 11:15:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 216704089F;
+	Wed,  1 Apr 2026 11:17:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0268DC4CEF7;
+	Wed,  1 Apr 2026 11:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775042111;
-	bh=dewT5thds98VTAImtEDNC0EfFTjUiz4qEvaiq2jKju4=;
+	s=k20201202; t=1775042256;
+	bh=N1Lg/uuMEG2XclojkpbMXk7nlKJI478QJMLpw9zok0Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K32yyvLfMjplva3EkWRS5sBRxaNW5h2A8wKlmF06k1twv/MTgVWjsJ2N6yJsDwD1a
-	 n7q5yhqJY+3pjT3mB2tlgJkWYrzk2VOIKX4Q7RrzFCCNHmFEMM8uCyvKjmjjDS+cGi
-	 NDlCoGWWo+vsO4zkGxbNjF5zPDkMW9zqBpwMx+JvyYOH9IOVa0pxnygel68fOHRVJ8
-	 7BJV3MuB1GZ5vcBs7XjJibMa8uJPrd4YGaHF/Uhwcht5rMTomukjzwWoNnzERVvWyB
-	 KpxZZlQN9veszefrADFZNEA1ZF2sBYwbiJQEZxfnfj4IKu7ZUSiHRR3rq+y70noYel
-	 8+OWFV/nITe4w==
-Date: Wed, 1 Apr 2026 12:15:04 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Harry Yoo <harry@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Pedro Falcato <pfalcato@suse.de>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Petr Tesarik <ptesarik@suse.com>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH] slab: remove the SLUB_DEBUG functionality and config
- option
-Message-ID: <cf2f7892-9ae0-460b-9c71-ca5b5d3697db@lucifer.local>
-References: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
+	b=TtkyqXx0O7OeO7sZ0xDozi/d6eOhTtvwWBptDQHmVQaL4CKzCN9kCUoZBOpvrZKeE
+	 Pp5UnmUUAFa95UoVI2lwUNtcTYvqACblxFId+EBTFK3q6sJSDeutW3aSA+s7ONlSv3
+	 rG3M+xaK8nhjtsuL7b7mTVMFc7kEU1xGfJ53dsGjtPpveDkSpfUsf5rO+n1uu8CBLh
+	 8bbc5nXSPsSWYr/a1/eBBQBVUNL5H2f+tFemz2mxJuovPcTcCbEGiXiDOmWtp0JyXI
+	 QG6BpI3HY34L0gIlPJ4oem2aNcFY1S0Qyi1hOXmwYKyC9FmjGsMFcNibqcG3gqaL9H
+	 LfmfYU4KvL2/g==
+Date: Wed, 1 Apr 2026 12:17:30 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
+	Jason@zx2c4.com, shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
+ locked
+Message-ID: <d20a7a98-2bc7-48fc-b467-21eba8df89a4@sirena.org.uk>
+References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
+ <20260310155821.17869-2-anthony.yznaga@oracle.com>
+ <52bec9ea-5627-4ea2-8f27-f1729957fa47@sirena.org.uk>
+ <20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="JxsWWm5ZucbJodln"
 Content-Disposition: inline
-In-Reply-To: <20260401-b4-are-you-serious-v1-1-dcacda70647d@kernel.org>
-X-Rspamd-Queue-Id: C1BC4120011
-X-Stat-Signature: ucn53g39bby8w87ansq8mmwmaq33j8gy
+In-Reply-To: <20260331141714.b2f4e41b494060e55610a5f3@linux-foundation.org>
+X-Cookie: "Yo baby yo baby yo."
+X-Rspamd-Queue-Id: 3083940013
+X-Stat-Signature: doubduxko547nfugk9f4ugzqe8kjmxe7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775042112-112737
-X-HE-Meta: U2FsdGVkX1/3RhYQtxdiCEuKDunaoeDzeZB+KIlVim/D6fRNh+tz2PL2h7oFt7MtqahUEPSwMWaBlt1PJATcgA+UoSVw2TClyUKm+58AuWmczHQsL16Z8nDWCRTcq9XTzbVXzQBk7RVsFkruUdnGl1+0wnJXJ1/sY0QvGqmoY7ZJHUWRmrMDl9J9yqs3n0/cqToBMWY7CSdrdevJUAV9ewa8ypOR5TmtXJRe9X/sGY9AwbkGNof1CYo9/h60XbV/0CLR/ge57DDAXn+0E4j33qikRpblptgNkKatjLZNIoxaj75+U4ROWJsiWT9oJwvapZLoO8TROmmlx6CU2kGg5pCGXErwfi4PhM4l557q3ypvQfPb9DHA/lKd5+326HofkIrWOrEy0CzK04UzkMdU4L63g1ArI5BP/aYq87a80nF4pnbzfHu7CdJFroRpBLjOmll/LQG1yn1ucw4hIIrgNaXc9sPor0fyR9xq07kkbQIkgj98D+8xJeuXP/6BIK7TJwz4Jusa6zY1GbeOsuTYBguEKekgNolr4EdTbNnU/aZ7LqUkKYndGkmUL/j6Gs67d1/tsHldxTTA6Fk9PWAyaLUQ9J8xhRuE649O2JJOdonJISlG+znfTXwNTm3I4wflvSWaWpZ6p0ObaazXqipIMukzlP02c+NOAiQmF09Ko8oD0G+IeCdErQ5Qw9mtk6zP8uwCt99g44mEHpMyLRp9ACwrgT3Y/ehF0f0aAdfaKOcs4Y7xDm488AaypV77fVWk7CeupJ2auRLll9ofOhC4HFUg6diRTFOdppK++ePnBOxEcQf3Xc9XNIsqvHZc5ggCZrUVKLRDYYyJKyj+l4E905sHzacVTzr4EffDUyRnloNr1ir7S58rC2qHQcCdrvAgswCW768sqhBEJ7AQenLhEs0TWo8uViedmN4UbDVTbnm9je3esZFWms9pvg2UYNq2oxJM98TbExsTH0VGWl5
- N1jUXiaR
- MI6xKOkqnyunDf/3k6rG4tSVFd4k02AIy9UUV0VK2sFrFPkjhftHUayLBnwMiY8cmi8o5DM9HeNWYcnOqdMxAqAq+IwpOEaGSHWwpiXx621b4n6rDY+lCf8NOBo5Shd/ghPOSUz6qO30iUoH6Bf+Cd2JZ3JfuOq9MMmNELaASY0vtQMcnxuvn/ysAksfkfcJ4VdtmJEzxUOuWyoEN9MA1OhItAztbTcbr9LvC0XqClgm1jrUiwiTpcqv71muYmHER5p+lt9UrGbZJTi8C8bWYHmEGTbhtSd7g3M/UdPadfuWtvu6axHja6Zpf88jFc45IyuGWeHbuc7fXWGRHpyLumR98LuPnvGYKsq7N
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775042256-691560
+X-HE-Meta: U2FsdGVkX1+bDqM1j4yu+mR2W+qfLjN7v8lu0ME+TA4lACve5908iaTphCgEMmKSi4Oe3V73DSUTnlkok4n4HKwgJkpj3yR1DXXmbfWlZL59RCl72gU3sBGKDqgDJGUhqfaM1DuspQn5hXpWNg/f070A3Bn2ogdrz3/r2CMXvL1V74rjZ/Rshfpz0h07gJZ4QvyWJiOvfw8swymeAXOeDKXL41uElgbPeoBcyk2orF88BeAThhhikltCqkR9MAHYvHP3uVJlsAHQekt4g1x9imTC/u49fQRowLVR2qNVnYhv4Z7IjfG9Kp6cpifHTowVPLEfOahZLEk4VrgpQ5aJAiq0BmLkD7sXxMmyVmROcDalw84NVRc5cvKkWErpWMZd7ksVp09lzzcC9FNK9E0CuKeCc6xEiPL5sZBtE2vkIXenkQwsduDKkGk856u9L32xtgLNEVv96z7HreAnwtJs6dmB5AwccvdA6THVq80ME17vEgAECanHQrS3AJiEcVZtjawifJn4wKrciLe44d2wISeUflP7YtzMMx1PCEt1pp1hbud7/31kBzuoauBYSHHgZ+QbqFjadPKgCVrf+K8QVIWsLhygchBHhYjlvTJt3HHt1blNKMOInauHzGa+jpj9C1ZV2ltUO6p5WFeRYgJDOiW/ojwBsWkD6tKlwlGXpB2ErvMMmZOGxwzE2Ub7Fu6XUQOBsNY778n8JQIG/G+JMb0vYQPO2N36lODtaG71lH+jWqYtXqYVj4Tpnep5/YUK6ZyfiZ0Al7qr0NqRfxwLustUyqUgjo4C2Q5XuPSI58is3Av46zTCv2klcpUSiVE9zc2zTgY7cFWxCkqR1sB1R6cfbbdPtX00y5fbnoDdvFy1Urdq/806v+Izcrl8pGDUXgThRNc4QnIYGAXwJOsDXrOtG3dNOuQFyU01lVaL7hLZrfb7bitH8NkzsX17k74XGLUmjdNSzaYlR6XHpyW
+ dFtuEnB0
+ SFdcWtYcL2bgbmcaLLAb7cz8KNDEM0vMTCi0niE/CNrMSaPPAtlZ6UWSnuckaDXTlqgDGDjzWlZ76lhqkkRBNH+vrtj2dVxV4QstTMtYORpiEwOAflVb/vCLm0HE2RJZbAdJ2nwSO94Q2CGwXiHccBqUMlcNs6S3DZVflTg59XWXgQHDpOplISYGuzbajZegCqCF2enZ9TDqUJX1GEBarQ7RlTRRqM4nopApWAbDZOzuK/IYm8qEwRR64Qfxxc18wN1MsC5BLveQWblDim7fO4iti0Ly8OjuKpNgOM+jRZZhJVHbgkfQkRXzeHCKaso4dblgxQQVkzQrBIsUgZJ68NQEOlDyLbp/1mHOkKrnTLkTUKEI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,42 +100,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 12:59:29PM +0200, Vlastimil Babka (SUSE) wrote:
-> The boot-time enabled per-cache debugging has served us well in the
-> past, but it's time for it to go, for the following reasons.
->
-> - It's a debugging feature. However, thanks to the advent of LLM-based
->   reviews, we are not adding bugs to the kernel anymore, so it's
->   unnecessary now.
->
-> - KASAN is more powerful anyway for the classes of bugs that SLUB_DEBUG
->   can catch. But I suspect KASAN is likely to be removed soon too, see
->   above.
->
-> - SLAB never had no such dynamic debugging functionality. With the
->   introduction of sheaves percpu caching, we have turned SLUB back into
->   SLAB partially, so this just follows that direction.
->
-> - It's removing ~2500 lines of code and I want to keep my overal
->   diffstats negative. This adds a nice margin.
 
-Honestly you're making me look bad because mine is so 'positive' (I SWEAR IT IS
-TEST CODE AND COMMENTS) so this turns me against this patch...
+--JxsWWm5ZucbJodln
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->
-> Since the slub kunit test depends on SLUB_DEBUG, remove it too. It's not
-> a big loss, see the first point above.
->
-> Singed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On Tue, Mar 31, 2026 at 02:17:14PM -0700, Andrew Morton wrote:
+> On Tue, 31 Mar 2026 14:17:50 +0100 Mark Brown <broonie@kernel.org> wrote:
 
-...but because you're removing clearly useless and superceded debug code (I mean
-hello, we have people using openclaw to automate all this unnecessary kernel dev
-stuff):
+> > All these failures which cause the entire test program to immediately
+> > die seem exceessively strong...
 
-Reviewed-by: claude-opus-4-6[1m]
-Assisted-by: Lorenzo Stokes (as per the register) <ljs@kernel.org>
+> Well, is the test code incorrect, or is the patch which it's testing
+> incorrect?  That's 5435ba164b0d ("mm: prevent droppable mappings from
+> being locked")?
 
-Cheers, Claude
+I've done no investigation on the actual failure, sorry - the comment
+above is a stylistic/usability one about the test program.
+
+--JxsWWm5ZucbJodln
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnM/skACgkQJNaLcl1U
+h9CnEAf8D+qC45AiMzqQRSdGPBaX2a40RNgSp2rCACIzsmXr1xk7NNZ1k+XlQc2I
+BMlDKY7emJ7ZDKoEdOFE4ghdlkNyLSpx3fY/p9Iu+tiN7cE4G14FJzmuqg9QY0DR
+vNPFvJGsKVeCIAz5Rf4DsB2NwFCR3iD1iJNXe2LpjqNb9xDxL2823/F5jLXGeR9e
+K0PN6ABceEV2fFUeXLg9O3iNp/0A7tbSfGirAlu0pebo+8Po+wISeXk5G/qNRn1w
+IxqJ+HGTGiwAPcCmDs8LeOf816+NMN1XQ8vU3XkVXanViBgfjfYPcF0HRTey7M6j
+w2yh4lWvUy1Gsn/uAr9LbLdR6jNhdg==
+=T9t+
+-----END PGP SIGNATURE-----
+
+--JxsWWm5ZucbJodln--
 
