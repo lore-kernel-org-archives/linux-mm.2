@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C9B1076386
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AC91076381
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 17:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF9DB6B0089; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
+	id 7FBCC6B0092; Wed,  1 Apr 2026 13:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAA906B008C; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
+	id 7AA8D6B0096; Wed,  1 Apr 2026 13:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC04D6B0092; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
+	id 649E46B0095; Wed,  1 Apr 2026 13:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C881D6B0089
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:14:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E036AFDAD
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:14:31 +0000 (UTC)
-X-FDA: 84610635942.16.2680F1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AEA1340006
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:14:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZBFII1S;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E1156B0089
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:16:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5C1DAFCF4
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:16:52 +0000 (UTC)
+X-FDA: 84610641864.12.84F8A49
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D5061C000E
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 17:16:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHF2LsJB;
+	spf=pass (imf22.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775063669;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1775063811;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cto4sWJusGWBCK4PX3JhzRIsLBm/2XNz4jQ8FcKR964=;
-	b=o+ovv5RwYZ1rZHmE05lGOuaFx8dqxJ4wyhXxzs0I9M8o72Gl9FKuPAOo02kGEW3DNcuG04
-	xUPXbn5s4jbWyTxu66ZKVxxyUeU3sFb97BB5+4h5lCYVdHMGLJJqjy55HmH1XgLzn0YpCw
-	dGMkpuol3mU6EnORd02+6rcfdFHbSHU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZBFII1S;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775063669; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lrGaXZa7q9BJYISJ8JZCcyfBRUnBy5om+AklJ3fwTzk=;
+	b=w1/mQRxGMaNoPS3ESDoX3SB8gAuyaIbFJ093mL1+L1bLiYHlJW2qJJKs9TlBy2MolqYfUc
+	crErPOdNgPttc3YLL3QKvTNIC+VPS6cUgDznMT1N0WzaUVa0OjVZtrGcnOpQq0BZy8nzwu
+	CF6n/oGqezfgEeuo1c2410PUgkhKaWw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775063811; a=rsa-sha256;
 	cv=none;
-	b=SslP53EXHwPDSXJMDSmtIROi1ySfhwScp0TVSkjHtaJfsqq+Z+Sv8HlI/D2HyHt77AZTQw
-	li2jEPRWIQSCLCRLZYdnzT1sGKlvHTE37tYhppYfxijs4dzcIsk7fmziUTdQBrouuef1Mo
-	dxvYOeHORAKQvLvpunPfNNyf6XCB51c=
+	b=H+8F5dW6E+mrMSvSVO6cfZyrD0eltLsY3vaBln3XXlbEHiU6uc67u50fvSToASJX/5I9Ov
+	kCCPmDAwTxrwJe4z4xVzzWNZtfQIDlcydaW76UcZb51xSh6lZIx/25fdcD3w6PoFAxYmg2
+	fbZmNpecjBE9H1JYEtkUciEtCCem4LU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHF2LsJB;
+	spf=pass (imf22.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E18B26013E;
-	Wed,  1 Apr 2026 17:14:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA983C4CEF7;
-	Wed,  1 Apr 2026 17:14:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D6C2442DC5;
+	Wed,  1 Apr 2026 17:16:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AA7B1C4CEF7;
+	Wed,  1 Apr 2026 17:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775063668;
-	bh=EvI/mf/p7ahLxwtiTqriQDhtRh6IYTRjLpLevB/oOQc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bZBFII1SMDyYkP1Kc6KML2r9asPZ9iCWEIY2JvnWYCtKmV6aVDxOpF85ZoFKVTf0E
-	 DDy2SlIvLulZ6RVtRtWIfxBzKtFeqWnRHiw3iAv2peVV6GMI3i0qbSfBp5flJKqKF3
-	 J8S82ZSX16VZD4USROgBhxOn4qVp6A3XE0aHCdISrT+jw2Jt9xUeltjdnt7yggEWYe
-	 Nfhw/boLIhqTzYgJrr+HhLRqACxQr44ogX3M5z73vKSBs/5faWCkoqZxOn98egwOcp
-	 ocnA0cYIO3TmUl1V4wKMtIoe0VGHRCibJlRgYKNmegJjMlLr/Qfgi0EIfm45gmHVc/
-	 bUHKdaaL3VHUg==
-Message-ID: <885b3c93-32e3-4488-a7a1-891f5ee55515@kernel.org>
-Date: Wed, 1 Apr 2026 19:14:24 +0200
+	s=k20201202; t=1775063809;
+	bh=Mi9R4u3lZc00+hP0YhV+QFhEHE6cFT/fYerPqhKLNAg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=BHF2LsJBDQrF5Rl7TOjfHUiRH3dpVR1GWWzlMcXVRdNjRg88TxA/nuH0tpZQCLlED
+	 +YXCgAKKAvFqU4ssl107d+lETjlMV3DuKND81o38KMb03E1aK4RRgB+wq1I+riQ7ot
+	 5FDyoyKw+eliOYvD206W72l9goGhdIPHfBT/Jo9MGLyNGtbRtugeE/bwyu71D53KQu
+	 PlyZLfPaPQlPmeSVCn7HqTisjPIqnxpVwEm8FGI+eP8cd/uWpeYjXAKIgw6PZYSYJ1
+	 RzlC5fuxGKjlGt2ALmZAZY4cOcUmUMml8h1cyYCxij4k+6ennD5Kgn5tG6AlIy8Rml
+	 +24/JrXkE6DlQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E65A1076381;
+	Wed,  1 Apr 2026 17:16:49 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Subject: [PATCH v9 0/4] mm/vmalloc: free unused pages on vrealloc() shrink
+Date: Wed, 01 Apr 2026 22:46:32 +0530
+Message-Id: <20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in
- alloc_pages_bulk_noprof()
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPFSzWkC/3XPwU7EIBAG4FfZcBYzTBmge/I9jIcCgyXutqY1j
+ brpu0v3hEGP/yT/l/lvYuUl8yrOp5tYeMtrnqcS+oeTCOMwvbLMsWSBgAY6QLldh8tlDnIdlzy
+ 9SdAe02CcG5QWpfS+cMqfd/D5peQxrx/z8nX3N3Vc/6U2JUFqEzklbchbfvqex/k65MtjnsSBb
+ VgDugGwAOgC9ioaUAAt0NVA3wBdAYh6SNFFRvYtoCtAtR/oAgRVquA9aaIWoBqwDUAF8D75RDo
+ Qmj8AUwGoGsAUAAyGwXob2GML2BpoJ9hjArBB75ii61rA1UA7wR1AMJ4sUM/R/gb2ff8Bi1sLh
+ XUCAAA=
+X-Change-ID: 20260302-vmalloc-shrink-04b2fa688a14
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775063806; l=5371;
+ i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
+ bh=Mi9R4u3lZc00+hP0YhV+QFhEHE6cFT/fYerPqhKLNAg=;
+ b=FM8tzE01dzz+t7eQbf/IJh3MbSsxbVwMnbOU3+5oxRl54okCRP27G8YwkjlxtvPelqoPIfX56
+ ETb0nSG8TDfDa+9zDhsePpM/JxSGTn6R2tp6ECsi+1OX1q5v41dA2+r
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
+ with auth_id=633
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
+X-Rspamd-Queue-Id: D5061C000E
+X-Stat-Signature: yczomgphtnntb6gkocet7zbarhykc9zf
 X-Rspam-User: 
-X-Stat-Signature: 89qeuew8fpyzyj9dzjxsamsu799ow9uy
-X-Rspamd-Queue-Id: AEA1340006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775063669-44687
-X-HE-Meta: U2FsdGVkX1+hYgJJf0tvY2SO+WtEJEx5/sM+lO9xYDjEgUB0l3Y5/fwtnufkuZQeWLQNhI4AWk6CiEsImdCHAp/P03P5X4p7F+98bejqfpc0lC263wzBgxl9e/q83cK4ljSSBl1r27SFIcy+lzpXXAuSIZOOoUUU0vHiyTOkxBrIlEF11uF4HVUjYG2HEwU7VHjwUJHEN8g8Bh4Nu25XdFvEnKLZ25JgNEkKIs/QY9E6IyQ4OHJxFTS6Ghobo65yPEktq0xv2HYT1G89ksiT1jjw5R2EaHK6WwwUffMQsaNfsEdVRb71WERZfoYo0Ee/0Kt1mnsUMigJ933j3ywvfjMnEduFYsoxAGjpLw33NhA8R22ebfxxD6sC4/iR6Xo4xtAAfvm7udfxsV139NlBQBnb0U7azyMJ1unJwiwz1tBngfzi4LqrwgRPu9vzTnvpUTn9/AWrqjTAq3rqiYDJ8ym6NBnOs4NvEupFZ3YEBACx0O6DPYpM4LvI2Nl2bbtYbGs6/u7FIUbyrB8O9Cgpb3nA/HeUjcX7XRqLK5H7osxRgSgTIyGYoQVSooT+AuPEXiylZKtn/laDN7ZGSwjb8HBoZlQOT2PMEmOapS/OTZR3CQ0B+g6U/K1u7JKSYk0EjwEQxI1DBwhfzZrbnpxZUo7Wo3kpYnmwkiUkqO32XDusgrW4weWx2+90kbsAEOQmXSH5+r/C7EXNq4sme18HZmKA5JL51P2vaJisUGpjjZiX+ejV7hnK3APkffeLUOuUmYfhSQ7PVAS/n+mhvh/bHFDMi4jZm81CaQEWFRsPjOk/mDlh+/9STOPH/Qes3SU5yVYsL9OsmAKfY3yGnuv5hqmcIR4eOwuEGUcTO7chr+V/bdrxuWZr/HAHNDsO0UvAfzVdqEV7Y+C5q6CmcrKNBz8vWusZyOUV6aSoA78t+g6cjwR+ETS+OFyCLHtZINbzGqXEcBxC4DdcHYh4R+m
- 1vAtvnbc
- kzUqFwBmFLcFIqg4trrrCPv3Mg10P2TF/JLDadN/B+ULogPA9ot5pJSZBSbZ//+31s3432TCitwhDgKd3Ia7ul4XCLOiYNRICLz6OHB5O5kwcNRYDlxAS2twEjMTjPbbdkhExxYChR7ImbCz7v5lzQH3VaIATzqVGHw2bklmABoRMzbYbwD4tzrw/6i/WsDS4cd+yYkofb6g/3F1m2d+1BOSfcrN+osDAGBfKa+x75o4IYMAx260nVdOszwrsUR2Ua6GqSppfGvdcNVjsrZSdjXSli4lQCjHMqsbW6/drqJWdww55S5tOKn+fnw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775063810-460917
+X-HE-Meta: U2FsdGVkX1/1HT5hSOI9g3QZ6rZKaHbze1kcTiQP/8sONDyQvw60pWclUI8ZqwUe4A/zZH7IxtW6hLuNMg8ivyCOR5UeyF/6xjNSJIWCRMwZkyo9QPZ7+F/MY9b/Xxu5KXIlSTq6exAN8jJs5uOgr9BY6WD+IIQzCobm2oOFSm/yZDP3ecDx3ngHNF/XA+9tKLehFyRrq0qzMCPgC40wvALYGorY73RmPsuuV/rPwueoRXnx2/dOZ3VCb6fU2fp0KLZogjXuIhBw9sn7sa9fxYSt/FrEtsLEbz5LBt4Ns4Garqwe+whms7wWOwYZNsmu6AvAa7LKXqG5zr+0eEpATKwdQE9CfGZK+GDNm+M2vjq7e4ncni1dRWnsr0vsF08eTjiEJtJg+L7zrwU54da0LzrPVJvC4wiJjxG7PRAQNs59l+fmAS/hUR8eOaM7a6cNVg4e1cQdpAqOa1YUpdFmTJmfKklM+LE24dhsREtFw5b0noF0j/1YabJ6O3iDba21+PsfVJiF4Kfj28nLDTItxOQjcjY3yCZiSuxvVda6YxigFCO4rLzk7AiFd6eKCTaze/2QUR1US1fXacTxytUh3IH3f2pAza8IJ+bHVvaeI9UBQepurK121EC45WS1KWf6DAY4Hv+3vntoaRpBNeZzo2+WaI/tbFpxvi8znlrrcUiT2wnMk23l4HtzmyQkFJvy8D9QYeGdo8gX7+gCx3yVtuBOV/55QGWYga7bKLJt6R9sjNLm9et9beUfpemS7j1QbQaezBLnxOvnwnC5GbZZcWBFBv0+w/UJZm/nBawNUxGYUXKF639lpFNHX/p/o+moobCUmMG2ZTDz8izMextqB5w2sPoHKLB38FhlyOqhAX4ImeR9/7QM+vX4pLpHL6+/2Ae1T2/JTHfQMa+6eAeiwIZPITXIgziyTOGajlcznbni/g8eNxL8g7UjUj9c4bwD9kTlodtLW2zBgALHffE
+ prbZCJQM
+ OVWv6YlJN+2pDDZGncSVD/9i4uUqT8Euem+V+ikYrgfrwnprYBsv6PnQpu5J27z6pP84uv4x7RWr2gQMaac5YNbxmf19ITbABki4+xH61GXIFwcsGKn34Pj3TMmF6jBT5oOKzzgR9iyq8w3QbIrDX3L1jwf6lNOalpWr61P20XGd43psL4u1yRT5Y/aiZrgOvJdikz223ORWyh/kATDffiApk9L63peqNBJgyed3QvLEDnLDa3Btv+xCet0xJlUZ1lApTqh1fJibAVo3GFi/kPW5ErISFm/y/xpC1NoIz77+rRvGcVgg9GsooWl02TeTc0Xdc03zsqfg/TDNix7j8RYk9l9tvbiZzBbPgOCPEbpAH1ycoE8vGGGmls0MLgiREqNyHhZZiz7kWSS/PBWbwT7jcMnAqlnC8ZcyeGvgefKuY7+WxsRTHsg+sOZBBGdSc1euH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +112,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/31/26 12:52, Brendan Jackman wrote:
-> These two variables are redundant, squash them to align
-> alloc_pages_bulk_noprof() with the style used in
-> alloc_frozen_pages_nolock_noprof().
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+This series implements the TODO in vrealloc() to unmap and free unused
+pages when shrinking across a page boundary.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Problem:
+When vrealloc() shrinks an allocation, it updates bookkeeping
+(requested_size, KASAN shadow) but does not free the underlying physical
+pages. This wastes memory for the lifetime of the allocation.
 
-> ---
->  mm/page_alloc.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 111b54df8a3cb..5e280ded6e7ac 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5051,7 +5051,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  	struct per_cpu_pages *pcp;
->  	struct list_head *pcp_list;
->  	struct alloc_context ac;
-> -	gfp_t alloc_gfp;
->  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
->  	int nr_populated = 0, nr_account = 0;
->  
-> @@ -5092,10 +5091,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  
->  	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
->  	gfp &= gfp_allowed_mask;
-> -	alloc_gfp = gfp;
-> -	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &alloc_gfp, &alloc_flags))
-> +	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
->  		goto out;
-> -	gfp = alloc_gfp;
->  
->  	/* Find an allowed local zone that meets the low watermark. */
->  	z = ac.preferred_zoneref;
-> 
-> ---
-> base-commit: 57e5b07deacb0a9bd7b8c9b933ff72e902d4f06b
-> change-id: 20260331-b4-prepare_alloc_pages-flags-5bb9a1e04e00
-> 
-> Best regards,
+Solution:
+- Patch 1: Extracts a vm_area_free_pages(vm, start_idx, end_idx) helper
+  from vfree() that frees a range of pages with memcg and nr_vmalloc_pages
+  accounting. Freed page pointers are set to NULL to prevent stale
+  references.
+- Patch 2: Update the grow-in-place check in vrealloc() to compare the
+  requested size against the actual physical page count (vm->nr_pages) 
+  rather than the virtual area sizes. This is a prerequisite for shrinking.
+- Patch 3: Uses the helper to free tail pages when vrealloc() shrinks
+  across a page boundary. 
+- Patch 4: Adds a vrealloc test case to lib/test_vmalloc that exercises
+  grow-realloc, shrink-across-boundary, shrink-within-page, and
+  grow-in-place paths.
+
+The virtual address reservation is kept intact to preserve the range
+for potential future grow-in-place support.
+A concrete user is the Rust binder driver's KVVec::shrink_to [1], which
+performs explicit vrealloc() shrinks for memory reclamation.
+
+Tested:
+- KASAN KUnit (vmalloc_oob passes)
+- lib/test_vmalloc stress tests (3/3, 1M iterations each)
+- checkpatch, sparse, W=1, allmodconfig, coccicheck clean
+
+[1] https://lore.kernel.org/all/20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in/
+
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+---
+Changes in v9:
+- Remove READ_ONCE, WRITE_ONCE and drop commit
+  about show_numa_info. (Uladzislau Rezki)
+- Update the commit message in Patch 2. (Alice Ryhl)
+- Remove zero newly exposed memory commit.
+- Link to v8: https://lore.kernel.org/r/20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in
+
+Changes in v8:
+- Strip the KASAN tag from the pointer before addr_to_node()
+  to avoid acquiring the wrong node lock (Sashiko).
+- Rebase to latest mm-new.
+- Link to v7: https://lore.kernel.org/r/20260324-vmalloc-shrink-v7-0-c0e62b8e5d83@zohomail.in
+
+Changes in v7:
+- Fix NULL pointer dereference in shrink path (Sashiko)
+- Acquire vn->busy.lock when updating vm->nr_pages to synchronize 
+  with concurrent readers (Uladzislau Rezki)
+- Use READ_ONCE in vmalloc_dump_obj (Sashiko)
+- Skip shrink path on GFP_NIO or GFP_NOFS. (Sashiko)
+- Fix Overflow issue for large allocations. (Sashiko)
+- Use vrealloc instead of vmalloc in vrealloc test.  
+- Link to v6: https://lore.kernel.org/r/20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in
+
+Changes in v6:
+- Fix VM_USERMAP crash by explicitly bypassing early in the shrink path if the flag is set.(Sashiko)
+- Fix Kmemleak scanner panic by calling kmemleak_free_part() to update tracking on shrink.(Sashiko)
+- Fix /proc/vmallocinfo race condition by protecting vm->nr_pages access with 
+  READ_ONCE()/WRITE_ONCE() for concurrent readers.(Sashiko)
+- Fix stale data leak on grow-after-shrink by enforcing mandatory zeroing of the newly exposed memory.(Sashiko)
+- Fix memory leaks in vrealloc_test() by using a temporary pointer to preserve and 
+  free the original allocation upon failure.(Sashiko)
+- Rename vmalloc_free_pages parameters from start/end to start_idx/end_idx for better clarity.(Uladzislau Rezki)
+- Link to v5: https://lore.kernel.org/r/20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in
+- Link to Sashiko: https://sashiko.dev/#/patchset/20260317-vmalloc-shrink-v5-0-bbfbf54c5265%40zohomail.in
+
+Changes in v5:
+- Skip vrealloc shrink for VM_FLUSH_RESET_PERMS (Uladzislau Rezki)
+- Link to v4: https://lore.kernel.org/r/20260314-vmalloc-shrink-v4-0-c1e2e0bb5455@zohomail.in
+
+Changes in v4:
+- Rename vmalloc_free_pages() to vm_area_free_pages() to align with
+  vm_area_alloc_pages() (Uladzislau Rezki)
+- NULL out freed vm->pages[] entries to prevent stale pointers (Alice Ryhl)
+- Remove redundant if (vm->nr_pages) guard in vfree() (Uladzislau Rezki)
+- Add vrealloc test case to lib/test_vmalloc (new patch 3/3)
+- Link to v3: https://lore.kernel.org/r/20260309-vmalloc-shrink-v3-0-5590fd8de2eb@zohomail.in
+
+Changes in v3:
+- Restore the comment.
+- Rebase to the latest mm-new 
+- Link to v2: https://lore.kernel.org/r/20260304-vmalloc-shrink-v2-0-28c291d60100@zohomail.in
+
+Changes in v2:
+- Updated the base-commit to mm-new
+- Fix conflicts after rebase
+- Ran `clang-format` on the changes made
+- Use a single `kasan_vrealloc` (Alice Ryhl)
+- Link to v1: https://lore.kernel.org/r/20260302-vmalloc-shrink-v1-0-46deff465b7e@zohomail.in
+
+---
+Shivam Kalra (4):
+      mm/vmalloc: extract vm_area_free_pages() helper from vfree()
+      mm/vmalloc: use physical page count for vrealloc() grow-in-place check
+      mm/vmalloc: free unused pages on vrealloc() shrink
+      lib/test_vmalloc: add vrealloc test case
+
+ lib/test_vmalloc.c |  62 ++++++++++++++++++++++++++++++
+ mm/vmalloc.c       | 111 ++++++++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 154 insertions(+), 19 deletions(-)
+---
+base-commit: 54c9d0359b180b34070aa7ff8d9428fa3db8acbb
+change-id: 20260302-vmalloc-shrink-04b2fa688a14
+
+Best regards,
+-- 
+Shivam Kalra <shivamkalra98@zohomail.in>
+
 
 
