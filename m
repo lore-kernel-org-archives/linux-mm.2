@@ -4,110 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A05BD2ED0A
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 13:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78071107637E
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 14:05:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93F946B0005; Wed,  1 Apr 2026 09:58:20 -0400 (EDT)
+	id A5C006B0005; Wed,  1 Apr 2026 10:05:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C8E96B0088; Wed,  1 Apr 2026 09:58:20 -0400 (EDT)
+	id A0CCC6B0088; Wed,  1 Apr 2026 10:05:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B9596B008A; Wed,  1 Apr 2026 09:58:20 -0400 (EDT)
+	id 8FAED6B008A; Wed,  1 Apr 2026 10:05:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 69A226B0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 09:58:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E333F5A12F
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:58:19 +0000 (UTC)
-X-FDA: 84610141518.30.0E91AF5
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EEB2018000E
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 13:58:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eEl96zUq
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775051898;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E04B6B0005
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 10:05:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C89814094F
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:05:21 +0000 (UTC)
+X-FDA: 84610159242.04.CA2AB4A
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 80A87160004
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 14:05:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EnvTzdn2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775052319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9rsyYcZRgU9Y9m6EjiMjdPnpAaVlNNPh8zFmHNh1W+Y=;
-	b=x2dRs9jTHYEP6zPStUVTEH7otMSzAjQGD9vxeXqUIx1djtamaE63MKRVyhe7DKCFRAqS4B
-	jh52zW4ie3B5p5YFAbSk2IILMMndT2Nsbq+aj6IqCaOyJ/Ha7POrbB4xcBxr0smfiXSDoM
-	SjjlMRaUtAxKe8hRU10XXDJjxnnE2XY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eEl96zUq;
-	spf=none (imf06.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775051898; a=rsa-sha256;
-	cv=none;
-	b=dOVQbwdRi6+y5odrxj2A/jaL13rLlyj8N7MTn347xvU4jgrP3E8WKRfXeUoIHacAEXL15V
-	U4j92W0FkIUOE6mqp/gjGV20lhbaqNTagp8YxZwYp+c5htvtCNm95wI15ZaCGNLtB8AxoK
-	3tpJtNpt0BqP8kIwKwzPlkf3IAFZzns=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=9rsyYcZRgU9Y9m6EjiMjdPnpAaVlNNPh8zFmHNh1W+Y=; b=eEl96zUqmHHS1O9aRrxCfAaKv9
-	JrEUCGHVx+qFR1lRPq0vQlz7VCPIg4LmnNQCyb66NevKQx6uGjACgUNlJEiiL4vt+UuKKv/yDDNxa
-	thOn2n4P0MBaDfQ9T0Vt1+ra9tVFA2Yq2KdmjMLoZhttG/JxASTpBAg1A3G6xWADSZQVYM6vJkEDv
-	uaZW3o/77EfL0o83jzyEpZoTRstcFk5CnG7c1La5MuWq7TfWwWvn4KLQJeCbhmUkckSBlDWZ7mwHF
-	ZqyY3L2tWn6vVj9tNt8oiJwU4ILGRE+uLDFQPEkw5yeqzj1wSqRprOOc8WRtvtfVYx0R9ZVJ5chVM
-	adzGMDhg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w7w55-0032AU-02;
-	Wed, 01 Apr 2026 13:58:01 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 01 Apr 2026 06:57:50 -0700
-Subject: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cok0tTO+M9AY7GrL3ZPCAkrKaBzewD/gpEZeNzSpUo4=;
+	b=RkyBIsGodvXorifL1VKaZcE3Ni1bLaenntSbPsbCXv2XmOCHVRADZ9M27B9YjXtKN9AhHW
+	u7NTOCCeXHfGaKrZuSqXndlMI70JFRyFFfVdn715l7buBv1DN4KFxEU/DT5nJQwroqYNzP
+	3ytpdqN8UFbRwmRNjWS0+GkvlQEayYk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775052319; a=rsa-sha256;
+	cv=pass;
+	b=cAlB5byrMqbnPSRskhKg7IUhCMzccy8kJLeIdjyYSDPjGWlqpZYME6Qkp0RPKIGzfXpH73
+	fut7gR5qoUpLkxEKjDelVAYM62YpG0Z7XN/C11ODIpGd5gtrDDU/3IZwViqG8GDWse3/3c
+	JnZKOUG7/KLNl53pFlHRTV3gLysUUOo=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EnvTzdn2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5673804da95so2510779e0c.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 07:05:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775052318; cv=none;
+        d=google.com; s=arc-20240605;
+        b=I6SeUdJfuHdcNaCyRho/4zVDE7Hc/RflhGrAQEbeZalQiOQzdObZdHycswKAZV4KxW
+         Ugyx0ZSaGl6MGNs4JiDS1sW9lUZf1g+sK5j6QOeYn8EBkOdxLdSAVFp7E0oip8j5q+ti
+         5AMcFjPbMqKD+F9LSVipu+OcSykZkqQcDtcAytKKJPu9zl8xSq5Qetb4an3Mxb+0lgKW
+         DeuuhwTC1RnSoRakYQwsg12J4zmcF4WSxXdLC2LDb4zq/et324LErPOJuLQRxWf96A29
+         TX4X6THK/iKy4mxRtpBhhM0NQm8IrJ7ZK8gSViEWE2+cmwONXNrpCIzTgzC/DOa8Bgxg
+         ZPhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=cok0tTO+M9AY7GrL3ZPCAkrKaBzewD/gpEZeNzSpUo4=;
+        fh=7MWHL9VBNLE5q4uUQomR+AbXGwwjTxOcagW7mxZU8Lw=;
+        b=ErKFPQk0YXGmHLFu/fBZvAr8ARwhllVR9hcg9Tb3M7c/YigVBBJ5Xb1+0wEj7m1sqC
+         7LAJ8JGClsEohMckyQHrE5ZMk3/x2JcbcJgeRpwUg1suyFySAAdjCnzxxPpPcgpEb77C
+         4V1SQtn7tFc8+McJNgh9j0/VoFiFtKZbSDO3TPtb+ydCzQ9O8jkMG8u6p4mm/jTziF7v
+         KDg+ygjb/JeWhRTfIqfIuIihFj1qdFBdMIMQyxz+xE5usTPnza9uqSIX5L58JiMO5qqS
+         kveWaRyClODli+qo8sE81PfmfxQdrEjGIvcQrCKR0fFI0WQUSqbpFIOyxQc83emu+lLD
+         s+tg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775052318; x=1775657118; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cok0tTO+M9AY7GrL3ZPCAkrKaBzewD/gpEZeNzSpUo4=;
+        b=EnvTzdn2RGe5mnCDqMEzY7wiSPQS/sw2OrE5Ko9OxmnSeOdmquov8FVANsFa22U82F
+         XAZS3JPceZ4Q0OPD6uhEHcGsk9f/hHFwaCcdKbhrH8QpzVFScAnW8M4TEOghJkWtBTYU
+         vdPN59NDqpyoqMbUfj8/07joMeuv3I5uFPKg3MQ6N3sWidCv8KX6At5XlO8dql1jE8Ax
+         hZRuiNRwiO8mx63KjoKDFaQBm2gwhbRMt3u0eTHUWx8PswlgQUXzo/Tii2hYgbMb3QJj
+         QFPyMzhRwTkvxSByOjHVzOpwRrttXjZe0Byf6kpZZci0w2cNU0hkOxrAadfNJSV/LbTu
+         VpWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775052318; x=1775657118;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cok0tTO+M9AY7GrL3ZPCAkrKaBzewD/gpEZeNzSpUo4=;
+        b=CjzFFeNmLRl+29dY4ih5RN4ZAtutO2txbXIq/Mg9yqYtZ1iV88pMvWXui0/dhtZtYn
+         K9CMLMW2LFJAbCW9/N9ftJa8dvp/5Zfq5I5mzQ511DBjmqFOFuxrLTpZa6plNHZa3Iaz
+         ppEBpA4DAtSxgwoifB1zVts6kfSU4VNqWGjygMgzUYkE47U/YeKiWYxGpZS78/+ewkNI
+         RWMg2qqyK1JnVXQZxBT+okDqrK+iXpHoZ6OrJK6B4w68K6Ysq1ZxCElOk1MAB/O0sJSJ
+         4kqQBj+3xA1elq38ru+SVvuXktrP2BwssmCk736m4sueMdh+WcSMAECC/RjuUdmoYKSa
+         IQLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWi58vPLwc9HZTdIk+TdRBanEVHlgV4pi5mn+lCwkY4/baymgPbqACl3NaPYIgvOWDpu3fuyuNPLA==@kvack.org
+X-Gm-Message-State: AOJu0YwezzT0+Rd32yjvu/1dF0Sn48kUb3iLYVzyTrXCbGpFCpEVIxoU
+	uExocEg8/SOv7icWSD+FUZ7hSNlm0m62GDxqNZurxV1hvbNhG9wkGBYy82RBuR0JzHZEX7dt+Fr
+	Iw92FsYkJsnFJBwwEqUWXDD9jfCml1ZYCnegU83yE
+X-Gm-Gg: ATEYQzyRd7v71Pp+MEotvRykw2vm1HRLL39kQEmPHm3DM6Fz5kNoXSlc9cq4DhHlP4d
+	h2HsmBWReFtGToD29zva4sKQVx8bvpb5HGwrdn4uJ/fzmip4CY3imizo3bjqVuTJOs4r+LGYJ9C
+	j2AMEYqlTQZrGsPfjBny8OdSw2PDLSZMD/JBUuRBGQtE90EuuMIiuDkWuRy/Obb0pq5ejWHiox1
+	gVnA6l4PEpRCIM2pom25WqfsPxgas+4tZNeJy4kBoNbM8n7/W0ta1krnSuT9Xxxwen6COnkDt6E
+	G0RrtwNG0vxpCpugXh0ZuF6JZHY4WOXTPj5z2Q==
+X-Received: by 2002:a05:6122:ca1:b0:56a:ef89:34fc with SMTP id
+ 71dfb90a1353d-56d8a81bd48mr1423992e0c.6.1775052317094; Wed, 01 Apr 2026
+ 07:05:17 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 1 Apr 2026 07:05:16 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 1 Apr 2026 07:05:16 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260326-gmem-inplace-conversion-v4-7-e202fe950ffd@google.com>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com> <20260326-gmem-inplace-conversion-v4-7-e202fe950ffd@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
-X-B4-Tracking: v=1; b=H4sIAF4kzWkC/yXMQQqDMBBG4asM/9rAaINIrlK6SO2kjqAtmSgF8
- e6iXb7F9zaYZBVDoA1ZVjX9zAhUV4R+iPNbnL4QCA03LXuu3TpZicWx74STxHTzHhXhmyXp7xr
- dH/+25TlKX06NfT8AO4oC3WoAAAA=
-X-Change-ID: 20260401-vmstat-048e0feaf344
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
- shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3632; i=leitao@debian.org;
- h=from:subject:message-id; bh=pwRxG9GAAJufRx8H+Z8Qgyqr6YmcWMfzUDBj8VjAQ5k=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpzSRlU90iOKhLZPrjg3oQM3wcL26xI35lLkGCj
- o6bzf91b2mJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCac0kZQAKCRA1o5Of/Hh3
- bWjWD/9J6ejSbwu8LItrXR9+TD9jdyZbhREGu5RimJOjV1uq6J9iyGpmCky3hjifppp6vavFufC
- R4RhwNNTVEr6RoDOMcGuAJBqYM5s0o+6MHAWerGVlP/VhQJSDD78QAqLTIgPgWtguELNn5ExkrL
- lE9caYxKayZVcSS2QsJoyz4yYr21tFAyBrkHrDJXDOCtwlkG9FVUlhzGK/amoQabsCkYzMtrXsn
- 9miNeGaI7TdB7RabwfyCPTmx0BE3/Tx59/CrLQ53NAfLY/U7tEPV4LRHJ6F8F8XkB4LNnT2Hta3
- Dbdw5Fp6wvFZObjkldlUtI+JVWiCviYEXwrC2VV7vXDxQx0pQ5cDVbuyYfw4mHp2joS3q65kon0
- vwtdiVzV6b6HP9BYvbo2M+TxqVfM0R273GbPJpgm1fIXz3O9wqEh7bliRijCV3HXYF3fZWikpJz
- MTm6oMVwI6olQW94MDOh77za8UcDQO5GNSOBpUJed7HzJfJzi2Lxuph0yeOWZ6XDXuvjFt0ne85
- zSzUQvEjzZPXXYB6T/QYGSuYxd7OUlH2sGkQS6tKzeqkQg+75kLsYNyOrWOdyC7uj7pnmYN+Bvu
- S3GKHPG3UXjo6vc8JfsFPUsJR8wDftC52LamyOaExTDmJj+xFNEgwsH3QwnMUBV6CIiAha+XBft
- L6qxrkuHkSQMiAA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Date: Wed, 1 Apr 2026 07:05:16 -0700
+X-Gm-Features: AQROBzB8ZjEkM1kRtGYPSYrf1SL2xnDWxbzougnTteAKEFNAbNZQz2YVpzx5v1o
+Message-ID: <CAEvNRgF+FjJ1EWSR_rzD1=N040ZitiRrM2O3N0Kj5yN5rT3h+Q@mail.gmail.com>
+Subject: Re: [PATCH RFC v4 07/44] KVM: guest_memfd: Only prepare folios for
+ private pages
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 80A87160004
+X-Stat-Signature: xey9gjwtpyhxugh4ykho4so73nzxhrsq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EEB2018000E
-X-Stat-Signature: 99t5uacc1xcdpisxz7utzzs5nnmue5wc
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775051897-280669
-X-HE-Meta: U2FsdGVkX18zN7ARyiKZuBbiCJ/v3RruCw5JOeyU8wAsX1tI9H7IuyRQrOrnAd6JaZYUYB5Fw3A76jndblcvLuc85b12ZXjxU0yGooG2uUr9LM6tFDRWh4142M2pGmtX21NPmsUsBACPPHPk6WI4gOXGuBntccz2VvW8fyhuXt/Zo1z8NvrFbeGjcsL30A5RmsNhILfLTGEa8rcCTipzV+tVC0VH19E6480LX9qbu3NztAcBYRmzKlpyImmF4+/xjGD1sOZX6LLSGk5wqS1mGBGOlyUsc+6d+XZUHzJDPFlDCJbQunaA2GeqSLRwTRu2A1F8mgkdYxrUg8NVT5zJ0+uMejFAjmKPYQg7iWVzXtKlc0Z+gmbAAg6Ezt7X/t9RpALc2XAiaSXIrHR9rutY5PKph1/LQdv9Ui7aktEvWuIf+RdJAlDmQMOKFEkZToW8l5XuV7+H6XTmmWCZb9kPGiG9GVL6YEIbySO+rnA26An+2TCpg1DLy3uZrjdOx43P7iHTcLGE0bApRsR6kpbABvTlgJUf665lwwdChNj6eTEzwbldVW6ucIhc1C6wKzqbjhD6mUhcSdyMZUgkt6zM68W8/ipqB4weP87HQq9cLHqR5iTiUEATSND6akwa0sPHigdpBUVPxnmDTXCv/7zu+xYB6ehSgS7tf1dfy9HHFOeKmlvpUr/qLXPFI4f1tHyC1n2MgTP+aR08M5FseqiYxEJKPbKTULDD2mWOevaGy+4/+z+zr092TLnJVLmoC+Bs/qJYPyxP75icYFVFzyjpL0lES0AjavWOQW+eWZw/8YvfuebxMCfrPuJKmgk/adguWNNXH5f+2263N6b3dLvm7czzSerO8pWbLHLOZZymxhQlCgwEmKV9mxLBpf5ZTuLfYkdyp/+yT2aQAGS6Up6eHq8NMM3Mj7uqEYMzSo42jX+KJbi1feg2+s6nV3ONhWJIq6eH9BGIL8TjOPp3kjQ
- jbpB+VMx
- HO9EAeZrzKYy8t62ZMxFS/nmGBY9x2wTV26FtuX88YgfVcm0fhBaPqQxPv9b2OllD1r5tb2aC/br529EcXGO2kNJaAzBWorUbJlsybfNmj3OeCLnFGSpBW3z1pYNqbHyaLJf6nTTFcrDlZ6EBzXCruEdsfjiRxzKJIJQqi5unuF6vEzkdOmJYex3Ju+9loWUosWa/X43ba3XSLU/obippn23RPdY6T0/Ez1Z5k0Dcgt/Kyjw=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775052319-949077
+X-HE-Meta: U2FsdGVkX18P6wQ7VEBmdz6iIJHR9ifchvJCFZk2/64KP3Xq0jkcH9EDnaI5pDzG7A3YcMEjmvhTDgyKZwqVBZKIUHwTDHaD/OzaMod9pYsNrtD1b4jjMLxsa5hdXRGrT7QryXqyRGTN42UNVDTw22orhxQ3i/FF9C5gWyFh+Cs6RBrylu/Z1N78q6kFreid2kVlpt4JUNNCndC2jb/H1/2hErla18nnBsPaxnP5zGJfAiPPGKcQ2wMYAhR0nazJdV7Ao1kmyfRRrssiXjc1EGw7JKy4vRQsnYN+czqpHZuHKph0DCfvvHLv6kDxiFK6/cbNH0OyTBJLmBhNkQHV4Fq6dt56RAzlIlAFmLA0Mcb2J//Zxol2zWBreDJ0gCsVrSNKw0PMgPRH+/o48UKE1Fqjli4XfhL7hKticbRmR0subZeRry50jqchtKV62t73+SyB1XtTgPWw1wLarRyVLTjHgnMZ0wcsiQJLhcrRoS70PPdurRRaab/dm421dwBMLESJIFu4u5XM7iNGt/GtZz/cAUiKRj2Cm0JwU7bmaM5eRjmRycwnbdUfUMJ2w0MW8DOhL6jtyYX+s+myT+YMv2QvGa0CuAP4nCpwnHz9Z4ZBKTP/sakDx73T3dzj7gGK2m0DiKlgtWEvKr2WVi8p38XiMpiVEWM3bbPrJR7InLQqgZQBiLrWmU2auSQ09XWgCSMHgEZd80coo9oAUhKyeOkWtPfgsri60ZzauetrT4wYGN/WXCY3GTuW4tq19lwX/0R5jClizrg+VFY5pA50jOvE654q5gg8iKCBOGmhL55ziyquqy62GUfbcdQ5ANg2bucaAqnC5J4sOYiXJqtbT7NQ9rDApTP81RcyYIrhrCraVQG70pQWPGNMZLV2lunRLwr7wOYg4/12ag2cCk521KVBK8HInCe22+QpE2mwEfiQFzldOgKczz8vh7I6CRD/UbsHbsL7O6aLO78U0U1
+ v8piMhQS
+ +SKqI2oJdga4ArA3BemDh4gv6Zt/T7oHmDR5FGs3DwZ49UCJdHOmhubbRL8RNmOVxoHD20krNLKmMQ8mwRqgi84jNhcm4BId2o+2EE7hyQ33dqmHY6cZg8HVnmo38FQ7pF3vwcszUTLN4EaAK42Qval4/JXxPz4wClxZ6vs/rHbi5PBFezcAoqnSex5JaRg4oLqQ/RebihDVcvClZQf4Vu+buSLF5VdqCIwS+RoDhe/TerDkyBe0UNpAvxkK3z1D+nO7nUaHkPuTf5Y8WfNRNWhgHORw0Z4nBQ7UaRy3+P/V0/7ztN5zf30zwQeoKADbdfC00UcG5Ut3VnJaIoG4WHvZZ5QPipM5kD+1IfpZaXy4w6BOa7y6AE72bHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,107 +160,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vmstat_update uses round_jiffies_relative() when re-queuing itself,
-which aligns all CPUs' timers to the same second boundary.  When many
-CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
-free_pcppages_bulk() simultaneously, serializing on zone->lock and
-hitting contention.
+Ackerley Tng <ackerleytng@google.com> writes:
 
-Introduce vmstat_spread_delay() which distributes each CPU's
-vmstat_update evenly across the stat interval instead of aligning them.
+> All-shared guest_memfd used to be only supported for non-CoCo VMs where
+> preparation doesn't apply. INIT_SHARED is about to be supported for
+> non-CoCo VMs in a later patch in this series.
+>
+> In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
+> guest_memfd in a later patch in this series.
+>
+> This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
+> shared folio for a CoCo VM where preparation applies.
+>
+> Add a check to make sure that preparation is only performed for private
+> folios.
+>
+> Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
+> conversion to shared.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  virt/kvm/guest_memfd.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index b6ffa8734175d..d414ebfcb4c19 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -900,6 +900,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		     int *max_order)
+>  {
+>  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> +	struct inode *inode;
+>  	struct folio *folio;
+>  	int r = 0;
+>
+> @@ -907,7 +908,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	if (!file)
+>  		return -EFAULT;
+>
+> -	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> +	inode = file_inode(file);
+> +	filemap_invalidate_lock_shared(inode->i_mapping);
+>
+>  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+>  	if (IS_ERR(folio)) {
+> @@ -920,7 +922,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		folio_mark_uptodate(folio);
+>  	}
+>
+> -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> +	if (kvm_gmem_is_private_mem(inode, index))
+> +		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
 
-This does not increase the number of timer interrupts — each CPU still
-fires once per interval. The timers are simply staggered rather than
-aligned. Additionally, vmstat_work is DEFERRABLE_WORK, so it does not
-wake idle CPUs regardless of scheduling; the spread only affects CPUs
-that are already active
+Michael, I might have misunderstood you at the last guest_memfd call:
+sev_gmem_prepare() doesn't prepare a page for being a shared page,
+right? Does this work? That prepare is only called to "make private"?
 
-`perf lock contention` shows 7.5x reduction in zone->lock contention
-(872 -> 117 contentions, 199ms -> 81ms total wait) on a 72-CPU aarch64
-system under memory pressure.
-
-Tested on a 72-CPU aarch64 system using stress-ng --vm to generate
-memory allocation bursts.  Lock contention was measured with:
-
-  perf lock contention -a -b -S free_pcppages_bulk
-
-Results with KASAN enabled:
-
-  free_pcppages_bulk contention (KASAN):
-  +--------------+----------+----------+
-  | Metric       | No fix   | With fix |
-  +--------------+----------+----------+
-  | Contentions  |      872 |      117 |
-  | Total wait   | 199.43ms | 80.76ms  |
-  | Max wait     |   4.19ms | 35.76ms  |
-  +--------------+----------+----------+
-
-Results without KASAN:
-
-  free_pcppages_bulk contention (no KASAN):
-  +--------------+----------+----------+
-  | Metric       | No fix   | With fix |
-  +--------------+----------+----------+
-  | Contentions  |      240 |      133 |
-  | Total wait   |  34.01ms | 24.61ms  |
-  | Max wait     |   965us  |  1.35ms  |
-  +--------------+----------+----------+
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/vmstat.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 2370c6fb1fcd..2e94bd765606 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -2032,6 +2032,29 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
- }
- #endif /* CONFIG_PROC_FS */
- 
-+/*
-+ * Return a per-cpu delay that spreads vmstat_update work across the stat
-+ * interval.  Without this, round_jiffies_relative() aligns every CPU's
-+ * timer to the same second boundary, causing a thundering-herd on
-+ * zone->lock when multiple CPUs drain PCP pages simultaneously via
-+ * decay_pcp_high() -> free_pcppages_bulk().
-+ */
-+static unsigned long vmstat_spread_delay(void)
-+{
-+	unsigned long interval = sysctl_stat_interval;
-+	unsigned int nr_cpus = num_online_cpus();
-+
-+	if (nr_cpus <= 1)
-+		return round_jiffies_relative(interval);
-+
-+	/*
-+	 * Spread per-cpu vmstat work evenly across the interval.  Don't
-+	 * use round_jiffies_relative() here -- it would snap every CPU
-+	 * back to the same second boundary, defeating the spread.
-+	 */
-+	return interval + (interval * (smp_processor_id() % nr_cpus)) / nr_cpus;
-+}
-+
- static void vmstat_update(struct work_struct *w)
- {
- 	if (refresh_cpu_vm_stats(true)) {
-@@ -2042,7 +2065,7 @@ static void vmstat_update(struct work_struct *w)
- 		 */
- 		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
- 				this_cpu_ptr(&vmstat_work),
--				round_jiffies_relative(sysctl_stat_interval));
-+				vmstat_spread_delay());
- 	}
- }
- 
-
----
-base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
-change-id: 20260401-vmstat-048e0feaf344
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+>
+>  	folio_unlock(folio);
+>
+> @@ -930,7 +933,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  		folio_put(folio);
+>
+>  out:
+> -	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> +	filemap_invalidate_unlock_shared(inode->i_mapping);
+>  	return r;
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+>
+> --
+> 2.53.0.1018.g2bb0e51243-goog
 
