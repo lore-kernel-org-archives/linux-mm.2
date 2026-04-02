@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D40A7D6AAEC
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 18:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A903AD6AAF7
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 18:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BEB96B0089; Thu,  2 Apr 2026 14:13:49 -0400 (EDT)
+	id 1C36B6B008A; Thu,  2 Apr 2026 14:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 396226B008A; Thu,  2 Apr 2026 14:13:49 -0400 (EDT)
+	id 19A846B008C; Thu,  2 Apr 2026 14:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3396B008C; Thu,  2 Apr 2026 14:13:49 -0400 (EDT)
+	id 0B0936B0092; Thu,  2 Apr 2026 14:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2161F6B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:13:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BEAA513BB3F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:13:48 +0000 (UTC)
-X-FDA: 84614414136.04.50C2848
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1C3658000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:13:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jBVlATxq;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EF90B6B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:13:58 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AFF71A08A0
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:13:58 +0000 (UTC)
+X-FDA: 84614414556.28.419C4E8
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 994B540004
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:13:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="VN/xKWhW";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775153627;
+	s=arc-20220608; t=1775153636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BYo+MsU3NDEL+koHfyTJu1xHHS5mV0CFXLaMn8ZezZo=;
-	b=pugN+J4dsXCktm1zIGIW0CD+7XmSP/V2nKoqz4Qn1Y9hZVmr9i5Us/7Fo4tYQmErWRoG4l
-	zYUXvJOdEnt7IiO3rUal8Rg/IseCfc+sExBTsswuesFle2LE4P1gehSaPG0lqrr7jt4+xU
-	uxZegYce000OFKNJhfcCwV+KD2Vpp48=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jBVlATxq;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775153627; a=rsa-sha256;
+	bh=8Ia1sFEyXeZdxVFbuj/aPmaW6OhiGG63EnIUFcXLkNs=;
+	b=65ehRzWxqRoxa3TkJubEVPuZ2sdtdkdFVwPAbN+c6/U8uy/JbQCnE1QWxerQqZPmerxQ7p
+	ard4aC0HZKDhKPxSXMYUVTLHu1IJj70tJzBnMZzXDVjrEy99fhn/4GMUrsVP4hqt09to8n
+	OfDYhn0FuqH9zJkDEueat9whdtmjmjc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775153636; a=rsa-sha256;
 	cv=none;
-	b=FVRGuWEFLMX2EWv3FaoBiIiaeXtwjnYv3+QEGvogpdQTsHyz/HUPjcj61r9M1M7sMaki7/
-	NISJ6VWyVd5W5ONgfKkpLhT/pfHCP+pV9Ag9GmBpb/GC5sgqz+HwWzEX8fZvviMq9OYAZU
-	sHTb58bcAxSeQTIc9mjawiCIOVUkLaE=
+	b=niYORHzcYuhrgJukVsvhtn4LaUZ0tlpP/+9bTm/E2yYMpcHHolxv78btQhDGLah7B6R+CO
+	MLnpx772ohZ+Ow1BOZbTeR6izdOReyw4m20NY2tSw9OrsHpL82I7XZ0zl6aGEexTT8q0RJ
+	PcIOztOIKtqrfPxNHmC+IgbU/2/X5zI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="VN/xKWhW";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775153624;
+	t=1775153634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BYo+MsU3NDEL+koHfyTJu1xHHS5mV0CFXLaMn8ZezZo=;
-	b=jBVlATxqIYgZfj3KHFj3T3aVBW1J8ZhMacXVtFHk4eHh5FwgyqeygxWtikdiA+B1T7VuFg
-	v/zAHoBUYT/h+us80bWmoIGHjJz8uEo/Um3mzOQJ7+5N9tE4RDgdtwmMVvyXBJ/TJ40i0J
-	828uNtru0sPYXV9jPylnQLnOE7M8Y8c=
+	bh=8Ia1sFEyXeZdxVFbuj/aPmaW6OhiGG63EnIUFcXLkNs=;
+	b=VN/xKWhW4T1d6MRH4BQZ9XDkgsNICk0RkaHsoJ4/SHiiK6qO9J3HbBdh0Xc3S36J4CQqal
+	RNBEpGOL3dXoJiLQg6UnaZ0fD5w075XAel8y95zYT8oejYfkDczwhXCdeDMmGteExVe2+F
+	eGQvFOpEYfTV9f4BOZfgHiHqflW+bdU=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -79,22 +80,23 @@ Cc: r@hev.cc, jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com,
 	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
 	leitao@debian.org, kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 1/4] mm: bypass mmap_miss heuristic for VM_EXEC readahead
-Date: Thu,  2 Apr 2026 11:08:22 -0700
-Message-ID: <20260402181326.3107102-2-usama.arif@linux.dev>
+Subject: [PATCH v3 2/4] mm: use tiered folio allocation for VM_EXEC readahead
+Date: Thu,  2 Apr 2026 11:08:23 -0700
+Message-ID: <20260402181326.3107102-3-usama.arif@linux.dev>
 In-Reply-To: <20260402181326.3107102-1-usama.arif@linux.dev>
 References: <20260402181326.3107102-1-usama.arif@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1C3658000A
-X-Stat-Signature: 45ykxm1yciypt97jxpgckonkmoj3eexn
+X-Rspamd-Queue-Id: 994B540004
+X-Stat-Signature: nu9dfsh4gi16fcfs4tfqa1e6ygf3nd66
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775153626-248830
-X-HE-Meta: U2FsdGVkX18o0kH1uJyXKy8lS9/JVJKFxkJk95UhfHiCvWxVZDD+Awc9AnsPBKZq8VP6cAs3Ywsrg6kPa1mfwqZWKdvNuGPChb5q0zHTV60bUofRREizlFkq1dogkJp47IF3CvtBr5p1DgoST8BIQODfZICpAt6sPXGrKf8cLQdkWIFwkEtpgiM7Jenahhj0g8TqckiBQN2SU5WCWPgVG1+d7f0MZl1I3skqoJkKIUx7x5Q+EnsuIpxqG0fsj6hf5rTPxxiQrlOG9bK803TVpjtST/gd/1k6rNZN8qLp0vyLdCAGYp1KnDNS8OP/7aCgL0SCl64ZjUV6gF203Y7omCyYAS4uKeo68lu6aBV43+YHd+vSO2tOaHtpKe5Iub6PVRObLdKPv4RzKgAs6WJDXfePCHeZ/iZk0OiFnN4/eFTNqXEqfnakAQSZBgRLvC+pTlGZJzzZoN9670d5ybmfqdRiBVuwT9UnJlAiY2N0U2qXqMQTK4vsxF4aOQSWtAsCFE+0x09mLon+Y3UxGqQRGU0RKI88C0LKH9yNNHM/QEgEkMqgP4S7epu8ClOBmQ+bu7Z11u1HWXYAOXKUMnJBlpcw+s1dgpgP+SXYI5sPZoLoMYQTV5tmqdVrWfBR9ADpLKa8qgg/+8ZveUfv81ak6lkuyFyyFbvOb6jpOq3hZzTk98qklLoPziXOdGHc2kMufUZvDVtOHv37FJrHTmt+g4qIQ5iRGL8qyAzMmzFiVEfXqEn1IVznW69u6/XWZ5r7XPKWEVTNNC+g2wj/0FJvgon55CzMSkVDKx46nV1+ShkdSsSPM4+9Sb2hfTtp4kQc7NrFX7czwIcT/39ryoDUYd07EqbJ8BZ24wM3fAYfrhvII7MjPjNhunF+1a+C7Otxd7TA+n69qn1yZiGWz+4aBPLmDXHmzV8WYsCPCGcKM5nrc9gkrFmKqsxjjMD72mcLrKY9xEUTimCTxVZlbjS
- HVGoZRke
- AaEi6y9QYZhhlxDnAxweCmxv2t4R5PryhJ5I7euqcunip9L3Z1fTkkKE0JB7/q2Er/WID7eEQYQQkmDjosVyigcgnO8ZrcV+0n7l7K0iCch6oUhNOSCScUIfMgaRT2S0K8W6UXljc93x8g144QhDuSqz2LfrsHja6hIidrtxp5wxSHQmpi3PYXlvq3u0fBnAzXiHuwDox8s5E8ynYltDhvFlxfsc9nJ/yHB42loptot5Ge6yPlC9z8L2/lHoRGCadw2jdUQ6sIvKkPQy2COVdzr2HmNtPVRJyZwbhpAxH+lQn0H0fh9XQO6lyet/NMgiUeov93u61KJtwR54=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775153636-58640
+X-HE-Meta: U2FsdGVkX18neHYXVTxJWVn4b5iD63w7SPPH5vC3Xlg9yXfCBFMu1SGoF3Jr8D4W1RbPb18QneOFKEZnnxBEsTUJR8NtILXi44SlHE/qwoHRmZv5ZRZI8zM+dkQxBAc0fcjEtU+lmBe84x5Gt9l6fB23zCs1x278qaIc/lj5URM4vd8zBKX36KOiRoRPBAQZm2WHXZs2KmdLsO1adgbduXrXaaHlR7nRXaxY6ZkYzt3j69Fcu5IHM0ZjLwOc2KoXaijSev1eQ8PZRK0l9mTj5USnfJqXL4FvS57Auf9S7GPpR/YgLR0MdAzdij/pAjQp15NAebBW/Hn/19SEHXymAOcCSngXMX9veCItMMNO1nq1GwS15lxpI1HCwmsK8WlDjOaJQyw5a4x4v9FUzd/8qm6VSqzufCd1jR7JXNdGkLf8PJWs4RqdT9cCYdsl26KfIz3iYP1An9FhatrxbPzYvcliE0Ibe7+hjKmb7teiSVSscPp1ez/cdBvVQ/BJVEZc/OUeDbZnSL6OChdiDa8Oqohpuxc1zrKuNORXH/Zito9fZK/TOmCzTq2WM29PNHT/1jzrgaIwGywB2BRpSUkMM1J+052d2oZnAYHhN4koLXFrhLk1uTqHUYK0pmvXkHW6IKNVVzYz8WUk9uSW9CL5sm1E8svVrxx5jyz9dbZ9xJLTyXEGlGwPwMn6iElh/306+eTIJLE13XYLbrVp+Ncqbih7uls5s9Be0RQrJVl3izGH/CY+Qdu2IFfjlp+0weFg70PjqbEiIcLoCv9R+0nqTXyv/qc7nOZoXRqry42DdE5M5OxYokh1q9NkHHvZC5hqVX6NaK1NVFCLbaXEvg7VItAoiD8FIppoy2McDy4jLItDYnUOJJQNS0TzkMb3UBw/msm0yTjYd95SkAT17Fs3+CSk1bVMghXUc79H82xi3jGLdoHShy/ADJ8Oiv7mBjPLYRtR4EY/QPqmd7E0goH
+ tbV1rSxs
+ J76XKkahTqEFKzaKVfJMS8hmTgl1FnQbV7Xfm8mYiAppY0QXntfXfvfYgxMcCko2vgt7exIrIHCzBLEg5itCqeAXYhXa9JTQJ1bvM39JCAy9E48wBa5sKhi/+OSq6uD/GODQk9SRKdojpzTdIPv4KcWt9s0uhgzajCFrX8tqokTuCCnkRkaODRKF8kW04AChAUREbAeBkBGPScGH7HC/LKSKniW2zat2V8MxV6evI7/Is9+nJ/1gw7OTtQuajEz0cYvmdTK5BlYxqGcd/tauZZXNTww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +104,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mmap_miss counter in do_sync_mmap_readahead() tracks whether
-readahead is useful for mmap'd file access. It is incremented by 1 on
-every page cache miss in do_sync_mmap_readahead(), and decremented in
-two places:
+When executable pages are faulted via do_sync_mmap_readahead(), request
+a folio order that enables the best hardware TLB coalescing available:
 
-  - filemap_map_pages(): decremented by N for each of N pages
-    successfully mapped via fault-around (pages found already in cache,
-    evidence readahead was useful). Only pages not in the workingset
-    count as hits.
+- If the VMA is large enough to contain a full PMD, request
+  HPAGE_PMD_ORDER so the folio can be PMD-mapped. This benefits
+  architectures where PMD_SIZE is reasonable (e.g. 2M on x86-64
+  and arm64 with 4K pages). VM_EXEC VMAs are very unlikely to be
+  large enough for 512M pages on ARM to take into affect.
 
-  - do_async_mmap_readahead(): decremented by 1 when a page with
-    PG_readahead is found in cache.
+- Otherwise, fall back to exec_folio_order(), which returns the
+  minimum order for hardware PTE coalescing for arm64:
+  - arm64 4K:  order 4 (64K) for contpte (16 PTEs → 1 iTLB entry)
+  - arm64 16K: order 2 (64K) for HPA (4 pages → 1 TLB entry)
+  - arm64 64K: order 5 (2M) for contpte (32 PTEs → 1 iTLB entry)
+  - generic:   order 0 (no coalescing)
 
-When the counter exceeds MMAP_LOTSAMISS (100), all readahead is
-disabled, including the targeted VM_EXEC readahead [1] that requests
-large folio orders for contpte mapping.
+Update the arm64 exec_folio_order() to return ilog2(SZ_2M >>
+PAGE_SHIFT) on 64K page configurations, where the previous SZ_64K
+value collapsed to order 0 (a single page) and provided no coalescing
+benefit.
 
-On arm64 with 64K base pages, both decrement paths are inactive:
+Use ~__GFP_RECLAIM so the allocation is opportunistic: if a large
+folio is readily available, use it, otherwise fall back to smaller
+folios without stalling on reclaim or compaction. The existing fallback
+in page_cache_ra_order() handles this naturally.
 
-  1. filemap_map_pages() is never called because fault_around_pages
-     (65536 >> PAGE_SHIFT = 1) disables should_fault_around(), which
-     requires fault_around_pages > 1. With only 1 page in the
-     fault-around window, there is nothing "around" to map.
-
-  2. do_async_mmap_readahead() never fires for exec mappings because
-     exec readahead sets async_size = 0, so no PG_readahead markers
-     are placed.
-
-With no decrements, mmap_miss monotonically increases past
-MMAP_LOTSAMISS after 100 page faults, disabling all subsequent
-exec readahead.
-
-Fix this by excluding VM_EXEC VMAs from the mmap_miss logic, similar
-to how VM_SEQ_READ is already excluded. The exec readahead path is
-targeted (one folio at the fault location, async_size=0), not
-speculative prefetch, so the mmap_miss heuristic designed to throttle
-wasteful speculative readahead should not apply to it.
-
-[1] https://lore.kernel.org/all/20250430145920.3748738-6-ryan.roberts@arm.com/
+The readahead window is already clamped to the VMA boundaries, so
+ra->size naturally caps the folio order via ilog2(ra->size) in
+page_cache_ra_order().
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/filemap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h | 16 +++++++++----
+ mm/filemap.c                     | 40 +++++++++++++++++++++++---------
+ mm/internal.h                    |  3 ++-
+ mm/readahead.c                   |  7 +++---
+ 4 files changed, 45 insertions(+), 21 deletions(-)
 
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 52bafe79c10a..9ce9f73a6f35 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1591,12 +1591,18 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+ #define arch_wants_old_prefaulted_pte	cpu_has_hw_af
+ 
+ /*
+- * Request exec memory is read into pagecache in at least 64K folios. This size
+- * can be contpte-mapped when 4K base pages are in use (16 pages into 1 iTLB
+- * entry), and HPA can coalesce it (4 pages into 1 TLB entry) when 16K base
+- * pages are in use.
++ * Request exec memory is read into pagecache in folios large enough for
++ * hardware TLB coalescing. On 4K and 16K page configs this is 64K, which
++ * enables contpte mapping (16 × 4K) and HPA coalescing (4 × 16K). On
++ * 64K page configs, contpte requires 2M (32 × 64K).
+  */
+-#define exec_folio_order() ilog2(SZ_64K >> PAGE_SHIFT)
++#define exec_folio_order exec_folio_order
++static inline unsigned int exec_folio_order(void)
++{
++	if (PAGE_SIZE == SZ_64K)
++		return ilog2(SZ_2M >> PAGE_SHIFT);
++	return ilog2(SZ_64K >> PAGE_SHIFT);
++}
+ 
+ static inline bool pud_sect_supported(void)
+ {
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 2b933a1da9bd..a4ea869b2ca1 100644
+index a4ea869b2ca1..7ffea986b3b4 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -3337,7 +3337,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		}
+@@ -3311,6 +3311,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+ 	struct file *fpin = NULL;
+ 	vm_flags_t vm_flags = vmf->vma->vm_flags;
++	gfp_t gfp = readahead_gfp_mask(mapping);
+ 	bool force_thp_readahead = false;
+ 	unsigned short mmap_miss;
+ 
+@@ -3363,28 +3364,45 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 			ra->size *= 2;
+ 		ra->async_size = HPAGE_PMD_NR;
+ 		ra->order = HPAGE_PMD_ORDER;
+-		page_cache_ra_order(&ractl, ra);
++		page_cache_ra_order(&ractl, ra, gfp);
+ 		return fpin;
  	}
  
--	if (!(vm_flags & VM_SEQ_READ)) {
-+	if (!(vm_flags & (VM_SEQ_READ | VM_EXEC))) {
- 		/* Avoid banging the cache line if not needed */
- 		mmap_miss = READ_ONCE(ra->mmap_miss);
- 		if (mmap_miss < MMAP_LOTSAMISS * 10)
+ 	if (vm_flags & VM_EXEC) {
+ 		/*
+-		 * Allow arch to request a preferred minimum folio order for
+-		 * executable memory. This can often be beneficial to
+-		 * performance if (e.g.) arm64 can contpte-map the folio.
+-		 * Executable memory rarely benefits from readahead, due to its
+-		 * random access nature, so set async_size to 0.
++		 * Request large folios for executable memory to enable
++		 * hardware PTE coalescing and PMD mappings:
+ 		 *
+-		 * Limit to the boundaries of the VMA to avoid reading in any
+-		 * pad that might exist between sections, which would be a waste
+-		 * of memory.
++		 *  - If the VMA is large enough for a PMD, request
++		 *    HPAGE_PMD_ORDER so the folio can be PMD-mapped.
++		 *  - Otherwise, use exec_folio_order() which returns
++		 *    the minimum order for hardware TLB coalescing
++		 *    (e.g. arm64 contpte/HPA).
++		 *
++		 * Use ~__GFP_RECLAIM so large folio allocation is
++		 * opportunistic — if memory isn't readily available,
++		 * fall back to smaller folios rather than stalling on
++		 * reclaim or compaction.
++		 *
++		 * Executable memory rarely benefits from speculative
++		 * readahead due to its random access nature, so set
++		 * async_size to 0.
++		 *
++		 * Limit to the boundaries of the VMA to avoid reading
++		 * in any pad that might exist between sections, which
++		 * would be a waste of memory.
+ 		 */
++		gfp &= ~__GFP_RECLAIM;
+ 		struct vm_area_struct *vma = vmf->vma;
+ 		unsigned long start = vma->vm_pgoff;
+ 		unsigned long end = start + vma_pages(vma);
+ 		unsigned long ra_end;
+ 
+-		ra->order = exec_folio_order();
++		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
++		    vma_pages(vma) >= HPAGE_PMD_NR)
++			ra->order = HPAGE_PMD_ORDER;
++		else
++			ra->order = exec_folio_order();
+ 		ra->start = round_down(vmf->pgoff, 1UL << ra->order);
+ 		ra->start = max(ra->start, start);
+ 		ra_end = round_up(ra->start + ra->ra_pages, 1UL << ra->order);
+@@ -3403,7 +3421,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 
+ 	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 	ractl._index = ra->start;
+-	page_cache_ra_order(&ractl, ra);
++	page_cache_ra_order(&ractl, ra, gfp);
+ 	return fpin;
+ }
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 475bd281a10d..e624cb619057 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -545,7 +545,8 @@ int zap_vma_for_reaping(struct vm_area_struct *vma);
+ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+ 			   gfp_t gfp);
+ 
+-void page_cache_ra_order(struct readahead_control *, struct file_ra_state *);
++void page_cache_ra_order(struct readahead_control *, struct file_ra_state *,
++			 gfp_t gfp);
+ void force_page_cache_ra(struct readahead_control *, unsigned long nr);
+ static inline void force_page_cache_readahead(struct address_space *mapping,
+ 		struct file *file, pgoff_t index, unsigned long nr_to_read)
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 7b05082c89ea..b3dc08cf180c 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -465,7 +465,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ }
+ 
+ void page_cache_ra_order(struct readahead_control *ractl,
+-		struct file_ra_state *ra)
++		struct file_ra_state *ra, gfp_t gfp)
+ {
+ 	struct address_space *mapping = ractl->mapping;
+ 	pgoff_t start = readahead_index(ractl);
+@@ -475,7 +475,6 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 	pgoff_t mark = index + ra->size - ra->async_size;
+ 	unsigned int nofs;
+ 	int err = 0;
+-	gfp_t gfp = readahead_gfp_mask(mapping);
+ 	unsigned int new_order = ra->order;
+ 
+ 	trace_page_cache_ra_order(mapping->host, start, ra);
+@@ -626,7 +625,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ readit:
+ 	ra->order = 0;
+ 	ractl->_index = ra->start;
+-	page_cache_ra_order(ractl, ra);
++	page_cache_ra_order(ractl, ra, readahead_gfp_mask(ractl->mapping));
+ }
+ EXPORT_SYMBOL_GPL(page_cache_sync_ra);
+ 
+@@ -697,7 +696,7 @@ void page_cache_async_ra(struct readahead_control *ractl,
+ 		ra->size -= end - aligned_end;
+ 	ra->async_size = ra->size;
+ 	ractl->_index = ra->start;
+-	page_cache_ra_order(ractl, ra);
++	page_cache_ra_order(ractl, ra, readahead_gfp_mask(ractl->mapping));
+ }
+ EXPORT_SYMBOL_GPL(page_cache_async_ra);
+ 
 -- 
 2.52.0
 
