@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBCF1CC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:38:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B46CC6B03
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:38:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 249ED6B0093; Thu,  2 Apr 2026 02:38:16 -0400 (EDT)
+	id 6DDD86B0096; Thu,  2 Apr 2026 02:38:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FA626B0095; Thu,  2 Apr 2026 02:38:16 -0400 (EDT)
+	id 68DF86B0098; Thu,  2 Apr 2026 02:38:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9476B0096; Thu,  2 Apr 2026 02:38:16 -0400 (EDT)
+	id 5562D6B0099; Thu,  2 Apr 2026 02:38:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F12CD6B0093
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:38:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFA8B13B03F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:15 +0000 (UTC)
-X-FDA: 84612661350.20.F3A4803
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 40A356B0096
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:38:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE8AE1B8017
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:23 +0000 (UTC)
+X-FDA: 84612661686.18.337668E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B4DB7A0005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZmeitZ4S;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2300D20007
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cRIsrKNy;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775111902; a=rsa-sha256;
+	cv=none;
+	b=hMPzr5/ryJxV7//QaSCOdZ04go1C13nycyKuvrWslneyN5Se2ia5fyGM7vGghmuQY0kh7m
+	xizv7dk07GXNBWAxXUq41cfqvvNOuDdhfFTTxeEMjeL+BxcEaVeQ0f0rTfcQctQH6chba8
+	ibHN7J1OBzudUheyH9HJnRpl3+uI/sA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cRIsrKNy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775111893;
+	s=arc-20220608; t=1775111902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6xITEB/o4W7V44LNKdzXwQHA6xAoRTOl1JFgHYsjoo4=;
-	b=cErkITae6CgCz3zZBCf122KqDKza6Rde2Xt8Yz3+MeUGr5gLutMkoVkVmc5zN3GGe0Yfzz
-	xwq6W+S9b7kilHc8cvRVgX4RNoAUjanQVJ71EIS8+7gA3l8+s+O44hCnWBU6aR2NFd1EH8
-	4BeAzw9Z19/bSXE1/6j6OlGWLPEzYqM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775111893; a=rsa-sha256;
-	cv=none;
-	b=NXbHoCo9bEhbGbM7NAGh9z5iY8fgTD4gMMlbwC7yTm0TSyBqxPRACJ9tdIjX2XBv607WY6
-	hl8lkqRibk1vOjArMOjls2s1gO8P1QjE6HlrlljPkLFoaFeCC782YFdMZeaInQnmK5g0OI
-	Hcs6JW3hjyXLsFBQE8NVpAEnnJbUjxE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZmeitZ4S;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+	bh=LSR6JP1MlIyPdrrVRarFMh7ouoNO5yIpt67p9cGm3mU=;
+	b=U1QkYNUAcs+EJaCTzIemAqi4wADVifFqjb8JU7zhvnKPYg3LmqUEil/60oJV8xRwoeq8aS
+	t7AOBetWZFSDCY0yRk8ZqFdO8GbAq7M7zttI24meCUuRFC1KJawb5JSslicAgsqJK3Ibbb
+	VRuIMFlERGSb0nEbF8ZzTp2xZV+LYAA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775111893;
+	s=mimecast20190719; t=1775111901;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6xITEB/o4W7V44LNKdzXwQHA6xAoRTOl1JFgHYsjoo4=;
-	b=ZmeitZ4SjXPzl6futx9FgghW7IZ5y248XPUhIpQ29AwN/hLneGZrqwlLbL3OoKcMynEiqz
-	x0DG5DviYgaogQqoRfIobThZSDiKuRJ8AumZyaofBJOIUPKt3euw2zqEQytvqv5Ecba7Zd
-	Y+829X+dcs8BVhJDIj8Iz0u2mkkizTA=
+	bh=LSR6JP1MlIyPdrrVRarFMh7ouoNO5yIpt67p9cGm3mU=;
+	b=cRIsrKNyugSzRYuV2nzW07y1/WXCoJ9lJvwVq/TilnUzDAW3hx88H48Y0iaHp/qq+JSL53
+	yGALybTRut5JZzS4HnrHBC4d+l+kXfZxbAyDnzr2vFVKSaBRGfi+8SHRoXDX2aTqeZQ4Lz
+	2q9ub16XM/IBpeghkbOl3YwgJqh6fYc=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-6plKfXNYN3SoZcDF2Il8AA-1; Thu,
- 02 Apr 2026 02:38:08 -0400
-X-MC-Unique: 6plKfXNYN3SoZcDF2Il8AA-1
-X-Mimecast-MFC-AGG-ID: 6plKfXNYN3SoZcDF2Il8AA_1775111886
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-Hl_RMtkzOY2MBUzmdjZPgw-1; Thu,
+ 02 Apr 2026 02:38:18 -0400
+X-MC-Unique: Hl_RMtkzOY2MBUzmdjZPgw-1
+X-Mimecast-MFC-AGG-ID: Hl_RMtkzOY2MBUzmdjZPgw_1775111895
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0B6751800345;
-	Thu,  2 Apr 2026 06:38:06 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 694FC1800365;
+	Thu,  2 Apr 2026 06:38:15 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F6F018005AE;
-	Thu,  2 Apr 2026 06:37:55 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2A691800351;
+	Thu,  2 Apr 2026 06:38:06 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -97,27 +97,26 @@ Cc: linux-mm@kvack.org,
 	Muchun Song <muchun.song@linux.dev>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosryahmed@google.com>
-Subject: [PATCH v6 4/8] selftests/cgroup: rename PAGE_SIZE to BUF_SIZE in cgroup_util
-Date: Thu,  2 Apr 2026 14:37:10 +0800
-Message-ID: <20260402063714.55124-5-liwang@redhat.com>
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: [PATCH v6 5/8] selftests/cgroup: replace hardcoded page size values in test_zswap
+Date: Thu,  2 Apr 2026 14:37:11 +0800
+Message-ID: <20260402063714.55124-6-liwang@redhat.com>
 In-Reply-To: <20260402063714.55124-1-liwang@redhat.com>
 References: <20260402063714.55124-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: uP3Wv3VPN7VIlGycFtQ1o3RqnxIqKC1l6Wa9WBaQXcw_1775111886
+X-Mimecast-MFC-PROC-ID: LynSUFwmrXH27vaL6b2t3nZmDb_cw4efzwd5tzcgfSg_1775111895
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B4DB7A0005
-X-Stat-Signature: w5817iia6xcgrbfzfszamjk61iyaspe3
+X-Stat-Signature: tfd8sxy5iej6hk8esnbytnx98ioj9i65
+X-Rspamd-Queue-Id: 2300D20007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775111893-912017
-X-HE-Meta: U2FsdGVkX1+sPz/Zlmto4KyWiMNdfqT0XShNPfBeoT8elxD77kdTyf3RXObu/SIUud7CGjJ7hxsqGsb6HLsl1udlFUS1MKYeQ34lIp2KHjdNNzXlMhez8Cx6ZFMGkaBxZA+dRQQdWzAzW8xTFwe99gEzE9kQYYp34Qi7O7HldtQJ/FzziSOzFzflbUl0dqCETxz8PFjoOH6PlwvdFiXPThcm1FFZjrSxcbdB4xV1nCf+TFdLVqSjHt2m16okjmPNcNJOxrtVYTkISVEXSOjYwOzNv6cJJywIiS49ty4E02N67yLgESfEBIYzB+Xwn6oROvJ02YYTeRdO2oP9DkkUWEDCR8ZGEIgNnnXSr1BD6AubRCWTntBjbaSWm4eeDyRtFKjT8gLfE7SV1oekWNe+4uQJtcdYTaQuS0I8H7bPkpXHohQSqWFEbEnBc1/RqjFeR6SrKvakbCXJ2V+bzkrGEqBV5ScWgle+Zr5Lc9EyeGUTz7h9Ccm9Dh/iP+5WrFEjAPhh0mgNDWgD6+oB5S6XS1+XujQWmnHXWljgGKyNZWlRfzdLCRSzFEJjUUUrT0Po4OVaLocY/hWtnGFyrKt/CtVfsXDUcE7einbq4T5btpR51nBqFf1CBX77zo/yNJxSgp/ez2ZgQ2Kdk/5nZnINU6WVHK7fLe3wcTh5GUDtuZVm70EuBR8r9IuTDzlgQcHcdhnw8BKzjLof7+IDVEdKRPvrGq5HQ1gLqmXRCSjIi/VFGp/fAEeIQlrx847EUfEGpHGsc5bx9PygDdLqJniaK9ylDpe+ae9OGUr4M5lHHtSkl+fOV1vuP5zbe7oG3t32VzFvQBffGB+DBCaq7lyNL/AYwjGjMM3/QiKJANZeh0M7Od+JxJzuktSMBZWKQgDO8zqLaE7u85gO6vusBd+UdCKRk+L1PVXAB0rJ20nwvdQzd8nSfSqUC/uDB9nFdI6YbzCMG7xY8Q1/5LckCpy
- nuszccDY
- 9QzMUKClne4Qxu70yJSk/qUSw6s8siKyhBtG8RAdurg/Z7Qn1DNDHOizdSGfL5mZwdGsiDEx+Vcc8XRvF2KXTBQgjq4UlPoDC8YNvtrkWS3AwuAanzIBs3CMoYNcEvzwhK8SjItZUXb7BOInRaHFP9tP0x8Isi797+Is4bcVZrOvF12RqVr/ywVPKGYOful5nWqAic/l+S32MNYQ56XBG9Bx9ZLFij0sHkspRtptueTnHCvuEKEc6637QEB89qNRZEYTYVPDx/C6IzDPwkYKCedr619eTQn2oBjftd7KD5yGhJgHEiJhOQ2O37RiPq7lD3dQum+K2x11fRlTJqyTXDfOLwMlrFtXVGSpkJ1xggTL4ykh+RG73UpoSOwiyJ38eN0T2mfycEQ+Wx9DM9ccrHdZsrAXB9nOPLhbl5X5vP6febZIoApJy9Xark5jBfsc8xiur94kclQnCRvgxCCHH0hF/yNQEjC0lcVvkHosDuoxr1ZGK0qEDwD9bi5a9P0tzbzKaaz4cRwfdOwg+7i4eFWldfpw79p8Dd0S2NAmijTBPPJW+zxZQzK4HHqQxcFerEA59JB2l2wbCkyu7PMI0ATpqRh4DA/xtFycT
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775111901-457550
+X-HE-Meta: U2FsdGVkX18ny208DCB5US0ateHhMCKS/mHPsJer82WVkGw55Ot5PxkevvfAAgEtAOokxtnkVkjG7n17pYmNCymFkjaH/nSr0dEpiyF3WQWKNHr1wsjo3MvgkbVmUqKLJ2jtOfQFGBt8fz7f8V9XTHjrxPCdcIZyQe2U+zpKuhaAGcz9buT0iAMnxlyxqzt1jrmpLutO4HTWFa7w9GFHy7oajV6ZcX3STdRLCoEq+K1X08D2qDgaX3SH+narrMhgDJlMrEEUje7L9NS4wBNgT/7bVKFq+Myjar34B5YpgsEN6N7snxKlkFBcmRjzKmWMbyy7FzHj61NtUzuOXdS9isVL0kjgEWJeCzLEeVhAGO1f0BkGVvgPVchX9/eMl4UKUylxUGcVpxM9pi7u+kzxsVsQZJHBf9WL7wBQsadKrWspcheiV973ji7uTlgxs+ddwn9nBS39xnEARaAuiOnBPOEh11XTq6k6FmXGE4tuOaIRhLILr6dLsBLpPxBdbeh+ITnOgIKE0HIiNUUAjUFfWbz/Soma9rpHrHeiTQmn8R4pj1B20Wzk9Rf4Yz6ElcQI2bd2cKj7yjblHdVKO7e0DRU6ux+oQziUJNcZZjN9+ZG/JiZ8AXlgIFuCv4M/K0tpqKhRv05hGctoqhGcg9bTQwNB0TVNrp6qrxmrhZS40Xpw+s2sx/H5h8zeOQJ56GvMJLIJwdKyEl71V9TIhSq1ITR1sWc0pTB2jAJvJFdnatDurAzGSsPRDDqyVnXf04Xljym5mwwzX6onVe8Wh5bfplMDuoCkgusjcLgcVF6X9YfvSMTBN5fppAM24zR5xMHhMXK0kvW2b1C6/b5KCaRLwpiuwP2MEiAmQ3IPDOSqJ1uYGRsUUvanF5ZCqWd0CWdyjttsNsHEo/gvjlxZ7oziY4C53lRbjH2YFb9ENDe6FTRkFPlgyNvfF5T/0jOm7rBtuKvwnA9l58v0BVBMKR/
+ VfFkicDN
+ fDGerZTRFHw0+WHk+cmCYXNIxV+8QlMW+CiApKN1D4pbu5GceS/n+l2VHGWplHxNApJDEUlW2JSjUFeWueqGTGRJ3zaQVbe+vWxMGmS6R/cbtdjhJOLkch1LMdk9gdm5lM0EgrTCJYunC9EQPP9LDbZZ23jvFACFriD7ibBCPHBBbG39UEQf1IOTMjJ/xPEewo8XXshlWejKy+ohnxmE4Dk6Qw8ce56OYFe5NFKW21EHC3ml9VW2UVjJ2puPgNiJg5fzcvc29lGp5x/dzV9XfLa32IEg/JOVR/wJcrLjlUjX+9t4gsPGCVenVmJ9pnzB9YXT/UhfoMAuDMDBILQKBCuelNX0UjUFhz//MaeaqbF5kU7aC/NIXlDdZc+idAwotxlsyn51thauwQQvqIhYDM+3IiKErEEM4ElZG7g68DWyA3UrTXsMcdCgk7sZ6pSnyiFZwR5NgbCwScm/LxEW98uud3EdvBgiuUbhpY/1EYf6q/9qwPQ5PHDT9LylXSIfsUSM/oZ47cmXys9iT35mMqujvfGM5KL/8z00IcBp3PncwdIyllRLejnlWHxFEJ98cbkaL0bRxtPFPl9g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,25 +124,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The cgroup utility code defines a local PAGE_SIZE macro hardcoded to
-4096, which is used primarily as a generic buffer size for reading cgroup
-and proc files. This naming is misleading because the value has nothing
-to do with the actual page size of the system. On architectures with larger
-pages (e.g., 64K on arm64 or ppc64), the name suggests a relationship that
-does not exist. Additionally, the name can shadow or conflict with PAGE_SIZE
-definitions from system headers, leading to confusion or subtle bugs.
+test_zswap uses hardcoded values of 4095 and 4096 throughout as page
+stride and page size, which are only correct on systems with a 4K page
+size. On architectures with larger pages (e.g., 64K on arm64 or ppc64),
+these constants cause memory to be touched at sub-page granularity,
+leading to inefficient access patterns and incorrect page count
+calculations, which can cause test failures.
 
-To resolve this, rename the macro to BUF_SIZE to accurately reflect its
-purpose as a general I/O buffer size.
-
-Furthermore, test_memcontrol currently relies on this hardcoded 4K value
-to stride through memory and trigger page faults. Update this logic to
-use the actual system page size dynamically. This micro-optimizes the
-memory faulting process by ensuring it iterates correctly and efficiently
-based on the underlying architecture's true page size. (This part from Waiman)
+Replace all hardcoded 4095 and 4096 values with a global pagesize
+variable initialized from sysconf(_SC_PAGESIZE) at startup, and remove
+the redundant local sysconf() calls scattered across individual
+functions. No functional change on 4K page size systems.
 
 Signed-off-by: Li Wang <liwang@redhat.com>
-Signed-off-by: Waiman Long <longman@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Michal Hocko <mhocko@kernel.org>
 Cc: Michal Koutný <mkoutny@suse.com>
@@ -152,231 +145,162 @@ Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: Tejun Heo <tj@kernel.org>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 ---
 
 Notes:
     v6:
-        - Use page_size instead of BUF_SIZE
-        - Declear page_size as int but not size_t
+    	- Use page_size replace the sysconf(_SC_PAGE_SIZE).
     v5:
-        - Merge Waiman's work into this patch (use page_size)
-    v4:
-        - Use page_size instead of BUF_SIZE in test_memcontrol.c
-    v3, v2, v1:
-        - No changes.
+    	- Change pagesize by the global page_size.
+    v1-4:
+    	- No changes.
 
- .../selftests/cgroup/lib/cgroup_util.c        | 18 +++++++++---------
- .../cgroup/lib/include/cgroup_util.h          |  4 ++--
- tools/testing/selftests/cgroup/test_core.c    |  2 +-
- tools/testing/selftests/cgroup/test_freezer.c |  2 +-
- .../selftests/cgroup/test_memcontrol.c        | 19 ++++++++++++-------
- 5 files changed, 25 insertions(+), 20 deletions(-)
+ tools/testing/selftests/cgroup/test_zswap.c | 43 ++++++++++++---------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-index 6a7295347e90..9be8ac256574 100644
---- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
-+++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-@@ -140,7 +140,7 @@ int cg_read_strcmp_wait(const char *cgroup, const char *control,
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index 516da5d52bfd..db4889bef6d4 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -13,6 +13,8 @@
+ #include "kselftest.h"
+ #include "cgroup_util.h"
  
- int cg_read_strstr(const char *cgroup, const char *control, const char *needle)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 
- 	if (cg_read(cgroup, control, buf, sizeof(buf)))
- 		return -1;
-@@ -170,7 +170,7 @@ long cg_read_long_fd(int fd)
- 
- long cg_read_key_long(const char *cgroup, const char *control, const char *key)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	char *ptr;
- 
- 	if (cg_read(cgroup, control, buf, sizeof(buf)))
-@@ -206,7 +206,7 @@ long cg_read_key_long_poll(const char *cgroup, const char *control,
- 
- long cg_read_lc(const char *cgroup, const char *control)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	const char delim[] = "\n";
- 	char *line;
- 	long cnt = 0;
-@@ -258,7 +258,7 @@ int cg_write_numeric(const char *cgroup, const char *control, long value)
- static int cg_find_root(char *root, size_t len, const char *controller,
- 			bool *nsdelegate)
- {
--	char buf[10 * PAGE_SIZE];
-+	char buf[10 * BUF_SIZE];
- 	char *fs, *mount, *type, *options;
- 	const char delim[] = "\n\t ";
- 
-@@ -313,7 +313,7 @@ int cg_create(const char *cgroup)
- 
- int cg_wait_for_proc_count(const char *cgroup, int count)
- {
--	char buf[10 * PAGE_SIZE] = {0};
-+	char buf[10 * BUF_SIZE] = {0};
- 	int attempts;
- 	char *ptr;
- 
-@@ -338,7 +338,7 @@ int cg_wait_for_proc_count(const char *cgroup, int count)
- 
- int cg_killall(const char *cgroup)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	char *ptr = buf;
- 
- 	/* If cgroup.kill exists use it. */
-@@ -548,7 +548,7 @@ int cg_run_nowait(const char *cgroup,
- 
- int proc_mount_contains(const char *option)
- {
--	char buf[4 * PAGE_SIZE];
-+	char buf[4 * BUF_SIZE];
- 	ssize_t read;
- 
- 	read = read_text("/proc/mounts", buf, sizeof(buf));
-@@ -560,7 +560,7 @@ int proc_mount_contains(const char *option)
- 
- int cgroup_feature(const char *feature)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	ssize_t read;
- 
- 	read = read_text("/sys/kernel/cgroup/features", buf, sizeof(buf));
-@@ -587,7 +587,7 @@ ssize_t proc_read_text(int pid, bool thread, const char *item, char *buf, size_t
- 
- int proc_read_strstr(int pid, bool thread, const char *item, const char *needle)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 
- 	if (proc_read_text(pid, thread, item, buf, sizeof(buf)) < 0)
- 		return -1;
-diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-index 567b1082974c..febc1723d090 100644
---- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-+++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
-@@ -2,8 +2,8 @@
- #include <stdbool.h>
- #include <stdlib.h>
- 
--#ifndef PAGE_SIZE
--#define PAGE_SIZE 4096
-+#ifndef BUF_SIZE
-+#define BUF_SIZE 4096
- #endif
- 
- #define MB(x) (x << 20)
-diff --git a/tools/testing/selftests/cgroup/test_core.c b/tools/testing/selftests/cgroup/test_core.c
-index 7b83c7e7c9d4..88ca832d4fc1 100644
---- a/tools/testing/selftests/cgroup/test_core.c
-+++ b/tools/testing/selftests/cgroup/test_core.c
-@@ -87,7 +87,7 @@ static int test_cgcore_destroy(const char *root)
- 	int ret = KSFT_FAIL;
- 	char *cg_test = NULL;
- 	int child_pid;
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 
- 	cg_test = cg_name(root, "cg_test");
- 
-diff --git a/tools/testing/selftests/cgroup/test_freezer.c b/tools/testing/selftests/cgroup/test_freezer.c
-index 97fae92c8387..160a9e6ad277 100644
---- a/tools/testing/selftests/cgroup/test_freezer.c
-+++ b/tools/testing/selftests/cgroup/test_freezer.c
-@@ -642,7 +642,7 @@ static int test_cgfreezer_ptrace(const char *root)
-  */
- static int proc_check_stopped(int pid)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	int len;
- 
- 	len = proc_read_text(pid, 0, "stat", buf, sizeof(buf));
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 2fb096a2a9f9..acc748f4c878 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -25,6 +25,7 @@
- 
- static bool has_localevents;
- static bool has_recursiveprot;
 +static int page_size;
++
+ #define PATH_ZSWAP "/sys/module/zswap"
+ #define PATH_ZSWAP_ENABLED "/sys/module/zswap/parameters/enabled"
  
- int get_temp_fd(void)
- {
-@@ -33,7 +34,7 @@ int get_temp_fd(void)
+@@ -71,11 +73,11 @@ static int allocate_and_read_bytes(const char *cgroup, void *arg)
  
- int alloc_pagecache(int fd, size_t size)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	struct stat st;
- 	int i;
+ 	if (!mem)
+ 		return -1;
+-	for (int i = 0; i < size; i += 4095)
++	for (int i = 0; i < size; i += page_size)
+ 		mem[i] = 'a';
  
-@@ -60,7 +61,7 @@ int alloc_anon(const char *cgroup, void *arg)
- 	char *buf, *ptr;
+ 	/* Go through the allocated memory to (z)swap in and out pages */
+-	for (int i = 0; i < size; i += 4095) {
++	for (int i = 0; i < size; i += page_size) {
+ 		if (mem[i] != 'a')
+ 			ret = -1;
+ 	}
+@@ -91,7 +93,7 @@ static int allocate_bytes(const char *cgroup, void *arg)
  
- 	buf = malloc(size);
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
- 
- 	free(buf);
-@@ -69,7 +70,7 @@ int alloc_anon(const char *cgroup, void *arg)
- 
- int is_swap_enabled(void)
- {
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
- 	const char delim[] = "\n";
- 	int cnt = 0;
- 	char *line;
-@@ -112,7 +113,7 @@ static int test_memcg_subtree_control(const char *root)
- {
- 	char *parent, *child, *parent2 = NULL, *child2 = NULL;
+ 	if (!mem)
+ 		return -1;
+-	for (int i = 0; i < size; i += 4095)
++	for (int i = 0; i < size; i += page_size)
+ 		mem[i] = 'a';
+ 	free(mem);
+ 	return 0;
+@@ -165,7 +167,7 @@ static int test_swapin_nozswap(const char *root)
  	int ret = KSFT_FAIL;
--	char buf[PAGE_SIZE];
-+	char buf[BUF_SIZE];
+ 	char *test_group, mem_max_buf[32];
+ 	long swap_peak, zswpout, min_swap;
+-	size_t allocation_size = sysconf(_SC_PAGESIZE) * 512;
++	size_t allocation_size = page_size * 512;
  
- 	/* Create two nested cgroups with the memory controller enabled */
- 	parent = cg_name(root, "memcg_test_0");
-@@ -183,7 +184,7 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
- 		return -1;
+ 	min_swap = allocation_size / 4;
+ 	snprintf(mem_max_buf, sizeof(mem_max_buf), "%zu", allocation_size * 3/4);
+@@ -243,7 +245,7 @@ static int test_zswapin(const char *root)
+ 		goto out;
  	}
  
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
+-	if (zswpin < MB(24) / sysconf(_SC_PAGESIZE)) {
++	if (zswpin < MB(24) / page_size) {
+ 		ksft_print_msg("at least 24MB should be brought back from zswap\n");
+ 		goto out;
+ 	}
+@@ -270,9 +272,8 @@ static int test_zswapin(const char *root)
+  */
+ static int attempt_writeback(const char *cgroup, void *arg)
+ {
+-	long pagesize = sysconf(_SC_PAGESIZE);
+ 	size_t memsize = MB(4);
+-	char buf[pagesize];
++	char buf[page_size];
+ 	long zswap_usage;
+ 	bool wb_enabled = *(bool *) arg;
+ 	int ret = -1;
+@@ -287,11 +288,11 @@ static int attempt_writeback(const char *cgroup, void *arg)
+ 	 * half empty, this will result in data that is still compressible
+ 	 * and ends up in zswap, with material zswap usage.
+ 	 */
+-	for (int i = 0; i < pagesize; i++)
+-		buf[i] = i < pagesize/2 ? (char) i : 0;
++	for (int i = 0; i < page_size; i++)
++		buf[i] = i < page_size/2 ? (char) i : 0;
  
- 	current = cg_read_long(cgroup, "memory.current");
-@@ -413,7 +414,7 @@ static int alloc_anon_noexit(const char *cgroup, void *arg)
+-	for (int i = 0; i < memsize; i += pagesize)
+-		memcpy(&mem[i], buf, pagesize);
++	for (int i = 0; i < memsize; i += page_size)
++		memcpy(&mem[i], buf, page_size);
+ 
+ 	/* Try and reclaim allocated memory */
+ 	if (cg_write_numeric(cgroup, "memory.reclaim", memsize)) {
+@@ -302,8 +303,8 @@ static int attempt_writeback(const char *cgroup, void *arg)
+ 	zswap_usage = cg_read_long(cgroup, "memory.zswap.current");
+ 
+ 	/* zswpin */
+-	for (int i = 0; i < memsize; i += pagesize) {
+-		if (memcmp(&mem[i], buf, pagesize)) {
++	for (int i = 0; i < memsize; i += page_size) {
++		if (memcmp(&mem[i], buf, page_size)) {
+ 			ksft_print_msg("invalid memory\n");
+ 			goto out;
+ 		}
+@@ -439,7 +440,7 @@ static int test_no_invasive_cgroup_shrink(const char *root)
+ 	if (cg_enter_current(control_group))
+ 		goto out;
+ 	control_allocation = malloc(control_allocation_size);
+-	for (int i = 0; i < control_allocation_size; i += 4095)
++	for (int i = 0; i < control_allocation_size; i += page_size)
+ 		control_allocation[i] = 'a';
+ 	if (cg_read_key_long(control_group, "memory.stat", "zswapped") < 1)
+ 		goto out;
+@@ -479,7 +480,7 @@ static int no_kmem_bypass_child(const char *cgroup, void *arg)
+ 		values->child_allocated = true;
  		return -1;
  	}
+-	for (long i = 0; i < values->target_alloc_bytes; i += 4095)
++	for (long i = 0; i < values->target_alloc_bytes; i += page_size)
+ 		((char *)allocation)[i] = 'a';
+ 	values->child_allocated = true;
+ 	pause();
+@@ -527,7 +528,7 @@ static int test_no_kmem_bypass(const char *root)
+ 	min_free_kb_low = sys_info.totalram / 500000;
+ 	values->target_alloc_bytes = (sys_info.totalram - min_free_kb_high * 1000) +
+ 		sys_info.totalram * 5 / 100;
+-	stored_pages_threshold = sys_info.totalram / 5 / 4096;
++	stored_pages_threshold = sys_info.totalram / 5 / page_size;
+ 	trigger_allocation_size = sys_info.totalram / 20;
  
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
+ 	/* Set up test memcg */
+@@ -554,7 +555,7 @@ static int test_no_kmem_bypass(const char *root)
  
- 	while (getppid() == ppid)
-@@ -999,7 +1000,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
- 		return -1;
- 	}
+ 		if (!trigger_allocation)
+ 			break;
+-		for (int i = 0; i < trigger_allocation_size; i += 4095)
++		for (int i = 0; i < trigger_allocation_size; i += page_size)
+ 			trigger_allocation[i] = 'b';
+ 		usleep(100000);
+ 		free(trigger_allocation);
+@@ -565,8 +566,8 @@ static int test_no_kmem_bypass(const char *root)
+ 		/* If memory was pushed to zswap, verify it belongs to memcg */
+ 		if (stored_pages > stored_pages_threshold) {
+ 			int zswapped = cg_read_key_long(test_group, "memory.stat", "zswapped ");
+-			int delta = stored_pages * 4096 - zswapped;
+-			int result_ok = delta < stored_pages * 4096 / 4;
++			int delta = stored_pages * page_size - zswapped;
++			int result_ok = delta < stored_pages * page_size / 4;
  
--	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-+	for (ptr = buf; ptr < buf + size; ptr += page_size)
- 		*ptr = 0;
- 
- 	mem_current = cg_read_long(cgroup, "memory.current");
-@@ -1670,6 +1671,10 @@ int main(int argc, char **argv)
+ 			ret = result_ok ? KSFT_PASS : KSFT_FAIL;
+ 			break;
+@@ -616,6 +617,10 @@ int main(int argc, char **argv)
  	char root[PATH_MAX];
- 	int i, proc_status;
+ 	int i;
  
 +	page_size = sysconf(_SC_PAGE_SIZE);
 +	if (page_size <= 0)
