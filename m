@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BC201112242
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Apr 2026 23:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518291112242
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 00:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35C8B6B0088; Wed,  1 Apr 2026 19:43:26 -0400 (EDT)
+	id 7E37F6B0088; Wed,  1 Apr 2026 20:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30E0E6B0089; Wed,  1 Apr 2026 19:43:26 -0400 (EDT)
+	id 7943A6B0089; Wed,  1 Apr 2026 20:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223966B008A; Wed,  1 Apr 2026 19:43:26 -0400 (EDT)
+	id 6AA6A6B008A; Wed,  1 Apr 2026 20:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10F6B6B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 19:43:26 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B611F1B6BD4
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:43:25 +0000 (UTC)
-X-FDA: 84611615970.23.A4B2E98
+	by kanga.kvack.org (Postfix) with ESMTP id 5837D6B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:00:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CFCBB8A928
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:00:29 +0000 (UTC)
+X-FDA: 84611658978.28.D601260
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B4829A0005
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:43:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyesMWUM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id EAD56140013
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:00:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WNY8ajYv;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775087003;
+	s=arc-20220608; t=1775088028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cwufF7ksYwUn+duP8lma9/7dH11oCcCvcaDl9tsS8iM=;
-	b=lW6LKeCvBUZQOfyTa0vTgVpQdNmy9XrBnVV8dBljnNHpoP62pHcUyvz6nj1yJyYBo1dKjS
-	39TmIlNy90jlpYmOBOzcf4IqWy+ugFA9HjWmhTUTPH91ms+3R5E73jHhF6lOq3hTaQLSnJ
-	ezdJ7/jWnd/jt8XN4V29RYxIUe1Mh48=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775087003; a=rsa-sha256;
+	bh=7NnAv2ylWWtqTtbfSSHJxW33XfhptCRWh0W/W5ae+zM=;
+	b=bhtkGCcUjD6R75RMjMnLgqZY3S2RJydCXYbRYzTAaRZ/lKrlIyHpUwEtDnVv6sUH2KON7X
+	q0SJ/HtT8k5gy5FIM/ixH7iKkBtYwXLYsBNNl8TP305GJgFYFduK4N8OAxCIFudZDSqh91
+	UYPQgVZ8xdyX2AbO3I8RSG5BdfOTmF4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775088028; a=rsa-sha256;
 	cv=none;
-	b=XEsTS5Y23s8yCP7ttXaki5EJeWWQ8vKemM6YoKLb5JBjfGy/telfIGY26T8RW8cfJ3P+dQ
-	QdKAmnaXbk+6lSYuxST/zD0AzMJuISFWs2n5QIRYY/UFtFFFmZTYVoxLdnB+wMnCr+J3Xa
-	GQnVR8kFVR5BLpLF1+iS2qwfRmT/PZE=
+	b=WXSlJCqCGYQdQEWj+LVnWdxwpXkQLEjYlnT5YT88Trm9Ox2/rYr0qjR2NXkdBoDd8DreI4
+	3CADmUbHNHSfUMa//whlm/I12tbedTlUd92yaCJZ1zyTs80YQrYez8W3v2JN0p+Gx/7CJ8
+	W+ZTEYilFn4MRuLm5jbHpSFAQ37UE8c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyesMWUM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WNY8ajYv;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6864F44425
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49375C2BCB4
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775087002;
-	bh=cwufF7ksYwUn+duP8lma9/7dH11oCcCvcaDl9tsS8iM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IyesMWUMQNHKoV0gPcD43/xqAXfmn6HmZXVEXUAAfBbBUffDBDd517M0qBMic/6sQ
-	 CU2LbCu/8c2R9sQgKbFx6SLywyxyQcTex8qQbsEv4xZq9WbS76roYmpE4YcrXDy3BM
-	 +YdoWSlaFobpgQtMWEpQwFaEAN0rCB8JNUnJAs+k0X0Y8A4R+Uc35Mo9Rvv+H0YEs5
-	 /Xw7Ik8rXUzUXs4uP2Zya2c1Yoovlr1L7FBoLw46XdX5an4eUVkAjpB0JzyxZYpxyz
-	 AknIdkUegw8BA1u4oeU/j9FgI/8W0Ii0015JZX3tK+5VaMMliqHtHPoUIYzZhQxcDf
-	 5QdyNwggRSK5g==
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8a3970f1a0eso3962756d6.2
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 16:43:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVRdcRu98gO5uxr175eM/XEzwSf1Yw9DLgRSRscystJvXdtTABwEvvkdKkVxl51HVvfv2/10LbDew==@kvack.org
-X-Gm-Message-State: AOJu0Yz9IM4LF5Eb499jP0sLI3pwwGaHZ7H6Br1MRTa7cA+AO0EJ8zeJ
-	CDayzX5r/PZ6YkBA2CYghCSm7ccqbkSOfHQZBgeasNy/MiHuyMcG68OZ7pV5LFmiiASdGh9jzpI
-	jjdNptwzR7GHy1XoLUotAIXAoshKzSbY=
-X-Received: by 2002:a05:6214:6104:b0:8a3:fd22:9fe1 with SMTP id
- 6a1803df08f44-8a5a0032f3emr20815766d6.30.1775087001531; Wed, 01 Apr 2026
- 16:43:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260330071229.14614-1-devnexen@gmail.com> <20260401074753.238053-1-devnexen@gmail.com>
-In-Reply-To: <20260401074753.238053-1-devnexen@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 2 Apr 2026 07:43:09 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xbz62bSVggPdwrELBphto2ZX=OViw2o=ighdY9JhJ_bg@mail.gmail.com>
-X-Gm-Features: AQROBzDnTuVs6Y1sWlh9Xc9UQNNPswEckuzNbieLSEEdLqbZV48sYma910heOY0
-Message-ID: <CAGsJ_4xbz62bSVggPdwrELBphto2ZX=OViw2o=ighdY9JhJ_bg@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
-To: David Carlier <devnexen@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>, David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B4829A0005
-X-Stat-Signature: jyufsbzofoi16xqrhs4ry8gz15d1seuk
+	by sea.source.kernel.org (Postfix) with ESMTP id E9E8B418AC;
+	Thu,  2 Apr 2026 00:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88579C4CEF7;
+	Thu,  2 Apr 2026 00:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775088026;
+	bh=i79hwwT6zKxmRxtFSDcoXB9rUWpTjOucJBix1IQZ/eY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WNY8ajYv0qRM+foPycmGOikUNp4tRrE+Tw6NNGDx/31w5/yIobbybJ5sdxXHvJlBa
+	 uHnbPPB7ojWqEDwL/JUnqMWd1Lvy3k/aF/b0N75ehjK9HDdlGX9ScCGu/2g5bkWysm
+	 lPXHIwuesy1Ws0shpvOLxl22dIPB78+XIzAg9nZg=
+Date: Wed, 1 Apr 2026 17:00:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: zenghongling <zenghongling@kylinos.cn>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
+ kernel@vger.kernel.org, zhongling0719@126.com
+Subject: Re: [PATCH v1] mm/percpu-internal.h: optimise pcpu_chunk struct to
+ save  memory
+Message-Id: <20260401170025.7f54cd75ea7e69eebc2ede30@linux-foundation.org>
+In-Reply-To: <20260327090013.38042-1-zenghongling@kylinos.cn>
+References: <20260327090013.38042-1-zenghongling@kylinos.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EAD56140013
+X-Stat-Signature: h4adgr5xzdh6ob1t4i4gzmr39zfht8ik
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775087003-297702
-X-HE-Meta: U2FsdGVkX1/VoomSEBw5bMicsRXCyvyqgV8fqFztXoq/fx01kUkZWXYQUapTz7Zzp3dRHlrWgfeXE/SVGSaK8BY02LrlZ2OMojWhUHLP+t4aTwJXjsxGR8aS4P9baxjWOYu9x0h9XNR05ca6ezQYY33l3+z0mfZdaj8VwREqeFrEXD5eVmthQjNOAgC8S8NfO0AIRlYv7/pf8FzIeZsL/1t2c2Jwi3N1HivYEX0Eh7gL5FK6E7Ck2ShO0SWGGue9x592tdk6DbgOENXs3aMkL3YTHWTdFcVlDDAiKPUZAq7yAi10ck3la+LLbOqeiyRQOfHZwVkAPZsGZMYb+kFr0M7btE2SlJxrBUxZNHrxs0r2gYSwsuc6jHG1VKEYDhPU7/t1D0CDikRfEjJBaelatGKGfSwh6NEjIB2vsAxnG1fLPzvakqlE8jrjnob3wiZdE5lcCVeOA/RbIUWbmkL0L2pHWfSdl0m0u/gYlMW067kL5Uu+hPCRUdesB8O4CIRjlSEkSaV1HUIkgk3l2pay4F6m1kXN+CY5ymUqNS8eITqi1NREOMbBeABzEzrR6JrnQqZyNnGkiaNHkMMY6T5KMQr+f2LkHXsNPCrEh9A+JVlTvDKdfYiz2aBkPzONG5f01IHYo+Z41TWgkbJx/4D7XxQKevohef3mbO7pnfyVqoCb55e8zzQ/jFa9qjcPrl7SQ4L1iKWofJK/I2DCvwjy7wg+gGMJnj3qyo1L457HoXbbeLEopH3Ju8ON8vXKChQ1+tkCdInpf/Q+Nj9LpxbdIN7wXfMJnzyXTnPZQQ9WfJ6izXvug7ubvLTizUy9IRsGv2OB3eRcm8ynjJ0AI4KH4iBeRXDJFyf+dAV8BV4JWJAutCnJt+9uz2ww9U92oQ/ugx31sHV9DTS3ijeX8F8Tv7hmFlrxFxgYGuBJ58E+vSxRZs1JrtAsjsfwc3Bd34Xs40UM3kG4JisCiRea4M9
- ddmKCHMt
- gK9jP5Ef5uDp5uJlZ9wDif3oOkAraK2SVn3gLB5O1XAdK50SlNmOmI9JfC/agT3gj8heKWOt6FUdTcvkSKnxkdzes7zGYsu65WT0fyz53wTttBWn/p5oXfQvDPcrAZqmYou1Upg7pWiLjGM7qUsa4F9nqWWiR+/UXHJZkpawL3Sr4dZzqETUfkPPAmJGeAylx2gQTfGgGIViWyMhRIdkVFkPkzPJK/dDUtz79Ea7foqlEFW5RJVoyYFscr8383l5XId85UuOHtpLWGmoXdPMTdKxOR1nh6ChMXgTw0X38Tc8nZVfNAgMZAo7yZqgOPL25ad7HfcntrTPsvAIPFWjYa0J72mkdVR20Tzmr1slkrthYIZy5lyOf2zWUi4IXn6tIquQ/F6dt1ztUiYLiC6pNY26ZCg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775088027-864348
+X-HE-Meta: U2FsdGVkX18MqDs7v4jc0G85djsUu6GB11lAzI3nolPsYIj0dlET+rIm7tX0X67u949b+L3yIkPDZPJUSz5JrQ4C8ayedyPuoeS77JChsw6P0zNpG+GSRPsAzwE0vhkQJ749eYleEd3UVfBVD3raL3hnKqG3e6txPf8CXwFPkkF3pwps5q09bJbv8SzTgbqohsMwXfozV/yJRpfukaLtVmSDcQ1zpxa8W5cSQmPPXVCOBxITjzqCpIcFiBdTX4N9rES11PCZ9pN0TINgebM3ICAramVZ/64xq9a7PFlUA2PzhW9b7yAgV4AOkztp+s57UwrEVBrov1D0F2K8TY5vxZMIuEgv3PPjbS9GYCX7snVnfDJxphADJ6SPmkIWOl4sGi1P5P7ezT3MFvc2huuT2EU7Uyqlm55ri4U+X5Ecc244jqF+qW9I7jr/NLdAhXV/0D4tYSi6yxJyEHGKHs6HCMxIm5kGzFrQ1I93v84TAMWL5J3MFEq3ZvWP6pnX7XucBxi3LdwAzEjUqWSy9SmDWi0+Kk22cFUgj05DvZ6n2Qgj0qciEek9Pcb6JL2RnwDNRCdev+z560tHg9CjBhUesYlewjOMus10/KOt3qU2BSjXscMRvXtSAqY4g4TI7VROOGr0uITN+RISGu+F0EnQKuD6lvji3dr0YKCfnI1DQeyBtwr4AgbSPHYtNBlCqAbt/Naz5UerBxaYmQ1iaiSCoO+fssxuXh03VZzRIit0z0gQ4DMjYhASuWv19aU0nSDDmzUYSuVlpcAreV6Sw2IElOgjQDmL9GNejUkADO1Q2a+CNmR4lJWOqa1b/q5i5XYc7RUESmJ7c038bJ11/1Tu/SJ8A1/4SBDuC7sZx8y/vXqlqhARGFVtI+NoDAodBWdhdees1DF421S940xnsyDtGTjpicN0fvI9CQbWUDR8cD4jDDt5+8bY8klbkf/YxdJRjdrF4cD59ugTYcgVv4G
+ 08AcRfnj
+ gMUMo8KSvOr0ueEQqDym2qoUEGNrYFptqQlVuUutHdneu9x5C86wEpeiNASBSPoxHpijSLXqZlGd/KrCHj4KJHknhuNY2VESBr/oiE2475mc+3RJQIet1r2tNs2e+I6k728S25K3bVGa5bnFMi+JqTYuQi9t9Dq2WHG4U9ievxv93wTe6HX1CEypq03HlbrPpZ/Cvv9VUJdVd76nSPF/5LKrzEA2vEF4Ry17IrKTM7Zoa7yTW9xWa2YQawRlaMYGbCmwjs/7XLxG2UQcyRZpb153MSsUEkSz2SMYK5ycVAndwbhQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +90,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 1, 2026 at 3:47=E2=80=AFPM David Carlier <devnexen@gmail.com> w=
-rote:
->
-> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-> but sio->pages tracks the number of bvec entries (folios), not base
-> pages.
->
-> While large folios cannot currently reach this path (SWP_FS_OPS and
-> SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-> is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-> inconsistent with the per-memcg path which correctly uses
-> folio_nr_pages().
->
-> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> count since sio->len is accumulated via folio_size(folio).
->
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+On Fri, 27 Mar 2026 17:00:13 +0800 zenghongling <zenghongling@kylinos.cn> wrote:
 
-LGTM,
+> Using pahole, we can see that there are some padding holes
+> in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
+> can reduce these holes,decreasing its size from 192 bytes to 128 bytes
+> and eliminating a wasted cache line.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Thanks.  There isn't a ton of activity on this patch.  I'll drop the
+previous version and shall set this version aside for consideration
+after the upcoming -rc1 release.
+
 
