@@ -4,138 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EAC4CC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9617CCC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC3806B0088; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
+	id F303D6B0093; Thu,  2 Apr 2026 03:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B83AE6B0092; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
+	id F079B6B0095; Thu,  2 Apr 2026 03:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A99A26B0093; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
+	id E448D6B0096; Thu,  2 Apr 2026 03:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A5A26B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6C861B80F9
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:17:36 +0000 (UTC)
-X-FDA: 84612760512.28.FB77AD9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 07EDFC000B
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:17:34 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D1F9D6B0093
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:18:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A38E5B9B4E
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:18:17 +0000 (UTC)
+X-FDA: 84612762234.19.97502B4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 12618C0008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:18:15 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWNfxyMb;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5ZOSZxh;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775114255;
+	s=arc-20220608; t=1775114296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYzL/L+qEex3BSBVu+Pk9gG5FMiFEUh6MzbgVG55p28=;
-	b=UwehEHD0MT9/78esZyCY0Zn21reh/NtR0H1dVxqXP4zlYvKyz7kRuSMIe3ymvR6aDVAkbi
-	F2a1Wmde30TBfIxBuxXtB309ykZhCkWx1CwuCCOxFR8p73la3+xn12Wd+EHiXy2RwE31Ko
-	EBNPrBMlc0yRrg/fxNq+nOS9qLPiMKs=
+	bh=3J29eyN6EnM5cw8jqpmdLY+onohMKuW8yDrAKoiwFwE=;
+	b=GE3CuXPHbXyj1n70ozg+178lc+OJiEkkKZK23u0qn+hzQABw3HRkfs3VUyRS4N7IyAwm7R
+	ur9EdGCXz7U5nR8OXzKdNBQQIgEcW/0Aj0lvGbfWECgBxxPGicEAco2+2TtG0gtcdnLaqD
+	CY5bY1KKzcuMIHXqrB3qDQGreIZneZU=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWNfxyMb;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5ZOSZxh;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114255; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114296; a=rsa-sha256;
 	cv=none;
-	b=PDOyw9rT+0VL5mqSoM0bE+TaaxWdHh/Zsji334dXO5sMVvMwobX7gDrnq9IJKhlls3uzlJ
-	PGvTk07z9e4nv48HaNf06BOx9RLCEqQ4ZXepEJ57zY/eCk59jbX6H/AOKzCMyRjoed3XdH
-	unSPk0lBT1BjQRKXEmbJBf31vloE/44=
+	b=2Phxajhgyntr8nQi2EuxDw/GKoE3RMV/Wa+St1xSk+Yhu89Hw4AHPJaqFdM1nnqjwRFW7M
+	JMeZ6ODfv6c2DaxwYRUkmutzzTAhlWOpDzsWh3UQCaE58ly5NxJrCI7u1Bb2Lxw8SD7/g3
+	M32ndJqu8zJZfdmaaGJRe4js1epIbco=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0295043C9B;
-	Thu,  2 Apr 2026 07:17:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BAAC2BCAF;
-	Thu,  2 Apr 2026 07:17:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0F14161855;
+	Thu,  2 Apr 2026 07:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6A1C19423;
+	Thu,  2 Apr 2026 07:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775114253;
-	bh=9HsfCw1/4CObUXs5PmJd2vxZ2Vdl+sbQLuV7DH+qT+Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tWNfxyMbnz2IZcdaaFxvmnAzxqHY7cqzBad16XaXaQRfDdcpOTSS/Bg9Km+GrIjbw
-	 bFnKYln9gEeTPGt+IV1wb/8PMRl2wC3aiCx3KCk3FWRCnWgxnWpfNkEDrEEA+OoN46
-	 Bpcw2G//cYWAQ9hA8aWLthqEzLugIgfZ+BbO4qccSsC6Jt9aDUizrzpUmHTqZZ9XpZ
-	 dyH421+ruvurQc7C/WgG54ZvhUaoMDE5sU9Yba5Mi/MMOeRFbMTxasoqxh2jLL7ECq
-	 H0dmUQB3rf+TIRyR+imIolzd3xaEiFT2EkmIpsYFDoaJ/Z0i7ngw+Pxj3Ia45Xy9g4
-	 kTNnsdk9TTB8A==
-Message-ID: <ca14b239-26db-479f-ba58-11e15f2379eb@kernel.org>
-Date: Thu, 2 Apr 2026 09:17:27 +0200
+	s=k20201202; t=1775114294;
+	bh=fy7UMXiTtfEMvHGT15AdWnHodjKCat8W/RCBGjMJU0o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s5ZOSZxhqKvdMeH3P6ArEwlNL7hRDgNzvHh7o5NVZ7IRUdm/vwo20hy3ZY1xelnl/
+	 VUBvmgMcHAk/0d8zlgdVYX0fIDpXf4OQK1f/wzSxp8mIp+KiiO2a5shfPAr6EaaS99
+	 lYnO3+0gv4cVCQyElxFqB1unoRFrj9GLMtjCIqexnXDR9D83xFWqHG4InuPE4EBMls
+	 SBNcFBavPPLfpcZIZmPdXgheiXjwDofF6JZk01Xj4F+rfF3lDU6Kr6taSN7cO/CYZs
+	 lnkoL0I1jUuxycEsBIvO8h6pUzx+xf/Yg5gIK057LK+LCv4rFWt3vqQiPKZZUnHXbS
+	 xyNwuCoh92pwQ==
+From: Barry Song <baohua@kernel.org>
+To: zhanghongru06@gmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhanghongru@xiaomi.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and optimize pagetypeinfo access
+Date: Thu,  2 Apr 2026 15:18:08 +0800
+Message-Id: <20260402071808.41828-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <cover.1764297987.git.zhanghongru@xiaomi.com>
+References: <cover.1764297987.git.zhanghongru@xiaomi.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: fix mmap errno value when MAP_DROPPABLE is not
- supported
-To: Andrew Morton <akpm@linux-foundation.org>,
- Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
-References: <20260402003417.438037-1-anthony.yznaga@oracle.com>
- <20260402003417.438037-2-anthony.yznaga@oracle.com>
- <20260401174440.0f85ea303f0a027b50d99e5d@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260401174440.0f85ea303f0a027b50d99e5d@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 07EDFC000B
-X-Stat-Signature: gwu9kdd8oykobpewhgeucocnffnk6q7f
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 12618C0008
+X-Stat-Signature: y55bjftk6nkauxkepa9efqd5mz6bs7r8
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1775114254-159192
-X-HE-Meta: U2FsdGVkX1+42j/dBxRbYrnaltjTGcsecLUokxXSoXGjItcDVJcVGM/RC3XcrshwkaReaT5xhbIKTXRmc5fFVWuRtWW8kg6GtFLXiMwoYLNGlC0ynq435uOTUhnMOziXsWG/lWIoQQwPfGNapNkIZ9MJlQSH0E2JkZZJolbQkvTjjNk7yEH7edNnsrmoPvoEOlNKQwoLJsdHBIAmiXcL10LF36cl2jZiaIYzM91iGxG3VqeUE/MdgnFVBcVII00+ofeQeIaE+/r60Y0Xxkb+2pP6gExEetY7MzCQ4Z5GJBHnmjbNirH6NRKUJsrta94Tya7whknWGfLrDJX3a+DQSIPE9hDenKYj08/1NGHHkjeRfLoRu+t6NimUgzn6rUsYx5o2EvQKfcUyYhJ3n1sQkJLvmhNb50TsjEMsRiD4nPbk/hkCptk6axZQWs8NT10V9GSrRuWCLxWr5iy1cCLEj94macHoMqogHv0NBN5AKoOLHF/6tQH4C9pn9EQoUQwzxJ2XME53W413xrW9OJWyeYz0xT4kLg+ppbSM8py4/UI1LLHDX7mnvgv7aCx398e5ULgBT38+4nGLLKJHAmFSqFkNiVT9lM7qcmXLeZ9zuWC8yUlE4VVqJmrai1VkAdp3VqBTrzFQhQLC6wm9SRTK1G/BKmE6ja2pW+hDdIYwsyu/neXE49SvlfYl9PSjGAN1fEfPBLjrV0PEWmWEYr/5bDeJIzVCOtZqMoD6Kptgr+O+CzWUor8EZ6Tl0AlOJetwhvYK+95fC5MQxOM8cpgUyH10YedFSwqHYDMBBoLexDjTywZX+CXz//M3IRleetrJl22FNkZ1/mhI/jzZYw0ovG1rcXWppNrVcbJHajPo2rQj4DW8lgxpqbE9yAwHzdMZDwHn4m7psXrkEFKchj9bUcQmo5bU7lBqY99PxnGPwRPlzXxA1R2dXOH8+B1UBH2/9Md42gvOCxyEr02HnBi
- 06nSkK9O
- iJVRu2riTiEDKz/RiroM3iVIaaaMbYEy0z0HetdYa5msoKNw/MTHhiF9JMotZdxH1XwMOcy1lCihT2XxuYnig/UV75SZ+A180D2NT321IZT9pSjTXi4NE6jFhBDHuUBTVvP6Q36gpXs1EIgkxaqlyoyOvd7K10CX1m2wtOrZGHEmBZ7M/Fs6xfN7DlwwoEGeAR5cNf8SzGAyKYEKCJF0DP9gH+YtITvoHPyCom7uJGDj3hg4I3TTR7tVIQ4+imzuiks+UDwDMjPWOhlUlv0MwuF2rynAol4euwGtFbg/3DhQonxh2CFsfxAG4Q3ArzjEZFrIgYmqo6UCq7ynHjR7jc+7oUL0G6hFc+j/n
+X-HE-Tag: 1775114295-112447
+X-HE-Meta: U2FsdGVkX18ky1s2e0/+TcdGlUu6lDO0yI17ZwC0KpXi9QIwtZS5f6jSp9cJq4UQTRvwyYZtUYr/XablF6enBoyROwuMoU0YJId3sxjXevZwZhJJg6ZEYZu1RlX7huDOW4br7t7QlE83rXJi0xkpgJ1qnosrA0gwa0eUN1uwzLbpsgIZUld6etw54yIUkWvve4i5asOIJrCMlPys5T1QZxN57ePExLIiujQ+7n7PxUsqUFHMNwvkBFEIRUBMT7M6kmCLZsF1e4cS9i/bRk9ZOPygWJVEyThEL8If6jn5owqlU68k0xfB6U+iJu1qbLRxSNxrZ9AJoZ8IOeKdYwL8b76OF/U0cmfsT3I4gihJrbOj/CIsOHXdopmPBas8U8K6vw0gPwRT2VQHQg2pb+akbGGOoTPfUFgRgOX6jAJPsq7JZSHYELhhTDkmJfHgdXthrkPpM2X6H8d91x788yV7xJmcUpGygmVAVKRJxoSGJ7HxHGb5sTmP+bXoHrbhJnXmbKMmpOrm06FRzPtMWQlbrb91KrCEaguTXUfJD1iaFyQP4Iyg7U1qVoBgYstNNLHVnwtkX4k3gzDXlVU8+SKiP4znKFaQWD2oQbwEshrrq6NHBJ9Lzsy+IkWDkSpGE/dbAO9aJoOHm6H3/UVabYL2VE8Ao6SAJJUk3Sc5bBGb7h7k/f7nDnKBeOqBHO72HvxpF026gw/lZSQonreNb3rXJV5OKIt70JWqbTNQy99QP88ZbA8loARQ+o5uqpdmYRULVkk4EWgg1jxQ25csNw5sTVTn9OsoSkkR+ZLGOo/l9c315+IT8/9K0jgm108JTr+hPYlZDW8EsIVr6jtcH7B0wkPSmtenH50FeoBF09m3ec9KJyBSIzgIo7iwXw+TIBr8Jo3EjmE4g01GSQOOJN1naTkjB6P/xBDVOP+nxfOtPdCtH4i0pNUFb9Efktp/f6FXXnjfZ4VZyQMaXr3Oc78
+ zo42Fdlh
+ XZXJTFisEVZEsO0pOltZKBqj4JNXWbAtaTQxaXrmEL4s3sBvCf8/fMvgh8bSUFbVwqXRldiLdF7w/m0PuPqFl8+9W/XD9odkUml8dqTLfkSOOFCCYRb/qAELv48YFTsmQdPj2jwQZF+mFsu6pV+SgNx/9pBgYvPxVA7gtOLR+dYpo2wPxvW1p0qI81Dpw3KL5ZNKtTynfNGItcJKeiMh+OlyH4eukIKdyxndX07oWIAqFNsOtOhMtoq+9mPlHLb33fGIxKyW3T0JavNA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,47 +107,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/2/26 02:44, Andrew Morton wrote:
-> On Wed,  1 Apr 2026 17:34:16 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
-> 
->> On configs where MAP_DROPPABLE is not supported (currently any 32-bit
->> config except for PPC32), mmap fails with errno set to ENOTSUPP.
->> However, ENOTSUPP is not a standard error value that userspace knows
->> about. The acceptable userspace-visible errno to use is EOPNOTSUPP.
->> checkpatch.pl has a warning to this affect.
-> 
-> Sounds very reasonable.
-> 
-> EOPNOTSUPP is clearly a networking thing so what on earth is it doing
-> coming out of mmap code?  Our poor operator is now looking at a networking
-> error code and wondering what this supposedly non-networking
-> application is up to.
-> 
-> But just that's a pet peeve - I lost that one decades ago.
-> 
->> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-> 
-> Nearly two years ago so I think I'll add this to mm-unstable for
-> 7.1-rc1 and shall let it trickle back a little more slowly than might a
-> 7.0-rcX hotfix.
-> 
-> 
+On Fri, Nov 28, 2025 at 11:11 AM Hongru Zhang <zhanghongru06@gmail.com> wrote:
+>
+> On mobile devices, some user-space memory management components check
+> memory pressure and fragmentation status periodically or via PSI, and
+> take actions such as killing processes or performing memory compaction
+> based on this information.
+>
+> Under high load scenarios, reading /proc/pagetypeinfo causes memory
+> management components or memory allocation/free paths to be blocked
+> for extended periods waiting for the zone lock, leading to the following
+> issues:
+> 1. Long interrupt-disabled spinlocks - occasionally exceeding 10ms on Qcom
+>    8750 platforms, reducing system real-time performance
+> 2. Memory management components being blocked for extended periods,
+>    preventing rapid acquisition of memory fragmentation information for
+>    critical memory management decisions and actions
+> 3. Increased latency in memory allocation and free paths due to prolonged
+>    zone lock contention
 
+Do you have an idea how long each seq_printf call takes?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Assuming seq_printf is costly, printing while holding
+zone->lock may be suboptimal. A further optimization might be:
 
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 2370c6fb1fcd..f501ca2840a6 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1570,6 +1570,7 @@ static int frag_show(struct seq_file *m, void *arg)
+ 	return 0;
+ }
+ 
++#if 0
+ static void pagetypeinfo_showfree_print(struct seq_file *m,
+ 					pg_data_t *pgdat, struct zone *zone)
+ {
+@@ -1611,6 +1612,63 @@ static void pagetypeinfo_showfree_print(struct seq_file *m,
+ 		seq_putc(m, '\n');
+ 	}
+ }
++#endif
++
++static void pagetypeinfo_showfree_print(struct seq_file *m,
++					pg_data_t *pgdat,
++					struct zone *zone)
++{
++	unsigned long freecounts[MIGRATE_TYPES][NR_PAGE_ORDERS] = { 0 };
++	bool overflow[MIGRATE_TYPES][NR_PAGE_ORDERS] = { 0 };
++	int order, mtype;
++
++	for (mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
++		for (order = 0; order < NR_PAGE_ORDERS; ++order) {
++			struct free_area *area;
++			struct list_head *curr;
++			unsigned long freecount = 0;
++
++			area = &zone->free_area[order];
++
++			list_for_each(curr, &area->free_list[mtype]) {
++				/*
++				 * Cap the free_list iteration because it might
++				 * be really large and we are under a spinlock
++				 * so a long time spent here could trigger a
++				 * hard lockup detector. Anyway this is a
++				 * debugging tool so knowing there is a handful
++				 * of pages of this order should be more than
++				 * sufficient.
++				 */
++				if (++freecount >= 100000) {
++					overflow[mtype][order] = true;
++					break;
++				}
++			}
++			freecounts[mtype][order] = freecount;
++			spin_unlock_irq(&zone->lock);
++			cond_resched();
++			spin_lock_irq(&zone->lock);
++		}
++	}
++
++	/* printing completely outside the lock */
++	spin_unlock_irq(&zone->lock);
++	for (mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
++		seq_printf(m, "Node %4d, zone %8s, type %12s ",
++			   pgdat->node_id,
++			   zone->name,
++			   migratetype_names[mtype]);
++
++		for (order = 0; order < NR_PAGE_ORDERS; ++order) {
++			seq_printf(m, "%s%6lu ",
++				   overflow[mtype][order] ? ">" : "",
++				   freecounts[mtype][order]);
++		}
++		seq_putc(m, '\n');
++	}
++	spin_lock_irq(&zone->lock);
++}
+ 
+ /* Print out the free pages at each order for each migratetype */
+ static void pagetypeinfo_showfree(struct seq_file *m, void *arg)
 
-But
-
-~/git/linux/mm$ git grep ENOTSUPP
-hugetlb_vmemmap.c:                      ret = -ENOTSUPP;
-mmap.c:                         return -ENOTSUPP;
-
-
-Should we fix up the other one as well?
-
--- 
-Cheers,
-
-David
+Thanks
+Barry
 
