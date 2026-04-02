@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F5BD3941D
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB69D39426
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B9606B008A; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
+	id 194536B0089; Thu,  2 Apr 2026 09:44:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1907D6B008C; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
+	id 144E06B008A; Thu,  2 Apr 2026 09:44:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A6ED6B0092; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
+	id 05AF06B008C; Thu,  2 Apr 2026 09:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1136B008A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:42:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0E141B8749
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:37 +0000 (UTC)
-X-FDA: 84613730754.17.5BDDE5C
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E45E5180003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jcv47Cld
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E99D36B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:44:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C6981A06CD
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:44:24 +0000 (UTC)
+X-FDA: 84613735248.12.F5626B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0D047A000D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:44:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GD2w7grr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775137356;
+	s=arc-20220608; t=1775137463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HzUyBSX9B0826rh3H7aiflY6cSvBVcWG5MnMLxb5ifo=;
-	b=eCh0t5ibPzw+e/AbxPi5xvZzfLyPdExhyfMMnyzuEqxQ5U1YjAtspNivYlK71o6e3RfMar
-	oooYnDzFevSCHZmWNiTxMa8MnmFPe7dkQHP06GNjuPmcAVIHqsF7Cd6aM2KHWmGIX3DWNc
-	P+nvCGj5VSKcwFsi87xX7XOBgaMO5oQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775137356; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9FBBIhpGTa/c7qj8p2grOiUf8oqGfURMv4tx+4pz6EA=;
+	b=6mg30lHb9fPeqqxiCAiYXxIIHLEVWyZ5BbMv0+6NX2YQi1HV0gyqfYH6iQOkqs3sLh8dWm
+	F0hVQhuBVLQKQP9ouYM+Q0ygW6dDMgoDb399zuIsPOwqi+W7wiaJrQQQYNWPHJ2IpdmXtF
+	b5Yclq8tkvTmzeDV3ZB4G3ZGZ04fcFQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775137463; a=rsa-sha256;
 	cv=none;
-	b=rfslMAmRjjW6yxpGp6QVRKPqqbQe1eB2Q6c8/5BeVvLKBt2yx999Lqtz/DzsoE14XNwBqP
-	m5knBK8GT82zm9oEnSw+sFjz+zBc1GRHPwbZKPcmN69HXx9sv1OG0JaGWFyOqItpTmCuos
-	YBc8U5DMhqGkHEhMnaxf67MOIw5e8lk=
+	b=QVj8lBozA7cCoU9/6ZmVv6v9jJl/EDk60kElyLFKScRWseTxEgTyJYicKs+W8pn2UnfPhi
+	Xsw1Dn12grxeJyDAbyQ3z4ST1QhovNdWN9KYQWSMCO0f11EmuNpns9fw999NlGUUyXX5tv
+	O9mtckVuZIauI/NM1oPyGQZ/jr0Dnls=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jcv47Cld;
-	dmarc=none;
-	spf=none (imf06.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HzUyBSX9B0826rh3H7aiflY6cSvBVcWG5MnMLxb5ifo=; b=jcv47Cldca7szzNvJ926bHHXv2
-	xWmfzFYuZ7r+nsOCy7qdk6lIegkj0amoWxUE/KP3Qq1fYbW8XqmPVdrEnyIlGWt2oBeBI7VCRmOs9
-	4QtGqG1HJ11ibQySDvtPIk9rd9JY3/rjbBc+RsOPWqxMwg0RqLHQ3JkXC1ru5QodJs+NAJmg9brSJ
-	Rl02Iy01EehBzGK+tNwAPXymlElqHJIc55AFxJedzgpo+zlbLbsLNCQgW1uDlUiFpFxOBWHONW6nP
-	4wKsWYZo/RrqmDnJWtdwAajpbBVK5nsDfPC5uBpseb8hma2w9em7y9jBk3EMFDl+VOOK//oeCM/Nz
-	p1LRSDzg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w8IJP-003ns7-25;
-	Thu, 02 Apr 2026 13:42:18 +0000
-Date: Thu, 2 Apr 2026 06:42:13 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/2] mm: huge_memory: use sysfs_match_string() in
- defrag_store()
-Message-ID: <ac5w-LjEA3gkGHNf@gmail.com>
-References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
- <20260320-thp_defrag-v1-1-6ab15d0d26eb@debian.org>
- <3c2f0e52-0271-4bd7-b3d7-84249c40e2fc@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GD2w7grr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7C88360008;
+	Thu,  2 Apr 2026 13:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B5CC116C6;
+	Thu,  2 Apr 2026 13:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775137462;
+	bh=vWy3Mr67e/mUpyvjLCi1g5zQ4l/TF12eriSgynYdpHc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GD2w7grrtrr/CZlQzleyPPGReQ7JmOI3FDQy9Qnv2i3qEpYQmSmHG2u1tdK9IB55J
+	 27BCM+MqpYGj3aMVBGVj34Zbk7VK93KuJIEJ21BEI6myezF5Z65YwY0pmsoYQLV1pr
+	 4d9HL3CdRGCvOCB6ihzmLaMbHwgnCH+HAzerWviXKkjPvV5JIDCZqtaDNUF/PDmN76
+	 MFTyY8jOGqzZZasYLp/z4HdtVAmMEJhcyja5WjDRtBGeP1Z+Ukhuky019III8aaSU+
+	 VKNl5FxVFjt1XlKqxBuYmt1hd+ZuqNTAEDL+vEnqYxowEHWO50ZQAtH+f50EqJZu+g
+	 RzzZ6fOPXdLLw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Thu,  2 Apr 2026 06:44:17 -0700
+Message-ID: <20260402134418.74121-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c2f0e52-0271-4bd7-b3d7-84249c40e2fc@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: E45E5180003
-X-Stat-Signature: iij61wzxcf8emtpgtngyyncepd56oppq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0D047A000D
+X-Stat-Signature: x3mmotfmcigmpdwoqy656ky3uxzch4g1
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775137355-712419
-X-HE-Meta: U2FsdGVkX19and/CpCVKcq/TaUisj9WCAFBC3o8jDXL9A+fQj8DUX09hmIzcmgXu2wFgi5YZpWCNBsVUedMIdinYvaNEOTTCM1ySw9K3Ozuo0A3Ku+CD8T9ZLsnjN01hXnX885g1JEKfFv/rExKAUnQGTBFVH8I2wzGBEqFSVij0XYOWMS5Q6rRDNMWYxkrVkoTTv/CwWbGYTgRm9ZMDrJsqNSw+RIqzXhpruoigzLJFg7j8JmweBmBpqN6OPYcqTRQAf10exDy7q8KoYvyAUjtK633oYtTMmsvPu6Jtm5a3MjgGGAfG6pHThRQ3Zpc1Q+ArwPXawfcBfCI9l8k4+v/7/8wIvZCzfpF29UOgAYwqjedz8ZVuF1mM2SvxqZqCrJ+sb1Li77HBuogdhKdyvrjqyYs5OJr0nDPaH31eVk51csQsGwHhGYFVOuah7dwRlv71s4fKk4CW/4gUOHlFgcrS1tiEo9o1UsM+L28SxJxiRqrGIpoKu9C2xTu6K9kqv118IW/A0xhNM29CHnJJrWELY+sIaEm5W5CpP2gozHw9uiZ00Yv/hqJwXcQAgRdDUZljoqMRWAhMAAuEXruyou9/kwR7Rtkux29DtoE+pMs+Aw7OKrq2VZK86FaKyyBNjxl0GIOrwaDsE4qXbh2EtVpIYkYgEK6oFSckT+MTJUw1Q0fmgoDfauncBEMm14kDvEPEjFJxPRzQWcZ8ba/DViixymvBFz4Bq/CIirSveFsvlfXfSlSjTY2Ns1SN5RTua1lxrFezj6VhajVd/0WM9yubX3eccQ2lv0xpZu705EViAfbSyrD1BkA5wf1EW068XqL+PenmnRre+FePdHSVZ8QqUv5dPOdIkHCeqpyURTP7GKkA+Y2/5ZMHEMifbgm+eDyIt/c2op9I3iw4x/Oklyz/RvRJGy7ULMY3v7LhD3SFuobH+7YBQlBYZsIR6NybAYO8SENuvzUloYwHIhS
- bDzKxyyh
- ZQuzZ5MmMZqvegsShFrNjHX0GdMR79EvQzMad2Ytp4IPCaguJ9PTRMdt7Pp8Yyh6kVt9eH2pKjTycWGolv6tM17lbA+nce6YA5CVtLDRF/Mva7cG/bpjFz+tHY+kyUDqhEr4Zywl6Um1cNEzDuZzGUgoumQ9WphsSNVqWVWOeAFLOT8hQDdPrlOPgzkyPYJIpp8s6NBUN5heqnBDNlNmw3KQ2+f6/4tiRyUSeIoS5ethp9mZeacRQsy75uK63joieL1eF
+X-HE-Tag: 1775137462-897688
+X-HE-Meta: U2FsdGVkX1+faQ9em4uyMjQHN8W/5pVj5wIFti3R4FP17VyRGN3GXB6Z1I3pDOIRMwnZTa5xowNZyf8lFhRg3yGgNpCjL/9rtuqbeZVshOOJny3XsGN2AIb77wAWnagDo8keuCmVtP+nB7dteOCZFiHSL+5EbJVHXE+uHXzqYI219dQbs+aIdkVuvLZSWu/cr3hGQVUYDnE8FmZkuwqPo0iidg5e805c363DUZTlFNcdPW3QL+5FuL0Buy9akb7Td4gaiWmHU2Isysnjzv/HLK4PjH08q2bm+piIvpYTIOks8f5j6L/K96O4vJ28KiXsDOa68v8Lw/yiwwy6DjqziUUIz8FBIaOcO4dCqV3LNiDp+aQpUCKk9820AjkIn+V23/ZtLKaYdFa5JzvGwrkP+sDjXMyZi6gSXs5YTwf2lJYWBndXn80fMp+gL0DpZhfjB1Ozs62TWI2FIq8ZHgfGRtSPteSU667YKbAQo5HKwNpt+KY8xc2hVVL81vokdJkppAPlx6QvslfytaPjT5cK04Rov4pP4igUum+tftGc0wNnfdVbg7htvEL7wqHRaFmXegc2eUJ40GoTvuRK3vAtVGCW2LR/xXZ5S3a1Ot/rqOdiyphskHq0xYY+xaoXZjm9w7g+OiLXOB3sCh6gYyXZf1hjNBB5AX8iTEo34XUl0GDsxuPg6PCN/wjleYfMte0TXFtm+hRnU0Wxley/9tDxHt8/+GUMTnLscnEuBfkqjaf/ISXP6wCUQ3zd60ecsDPEdD/Qa3T23GrIAd6Fg141Qc5cmsG8YcrPWq3ozqdBx5FCTBWMBXhYlIi/ywgVSXWWVKIqvVPYuWi+NX533pVAEedb8HhqyNPdCT8zKV1Fpe+CAhCWtw/yGYHR08p2NZ3pCepF+gYc9+rhbRumelKzK3Hlzngijd40ugjEYL3htlqFdcKeC7iAdoJGi60qyUYgu5B3c7eM+kcEai1CP5c
+ AHs70Acp
+ m/p1H8kl5mqJZRdZSIkHl3ycFtNo5wtHKk1UXJtsho6Ell7O6R6Ish1MQQ5RReVCH20JCcVKIVMGyzc498jp8eBDIwE5rop5q2Z6QKRdg3EXUmhiCbLAx6O6Vv5Pqyi2kSHFjIrRD944TxYOYlYAZq/LXc+uQh9pMjO61PMdLk3ivgKDHNXordPlU/HkoBig+5zCvFFmN0eq9bTGCULuluDNv3f7z6YofQG4A/lktuH9+1OR/3kzyDPKeRLaU14AdjDMsRUJgczvRlNQZCaQVAMqC9HZskZGlfnXM08TEoGslzHESUajbEVtFpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,30 +92,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 10:21:30AM +0200, David Hildenbrand (Arm) wrote:
-> On 3/20/26 17:05, Breno Leitao wrote:
-> > +enum defrag_mode {
-> > +	DEFRAG_ALWAYS		= 0,
-> > +	DEFRAG_DEFER		= 1,
-> > +	DEFRAG_DEFER_MADVISE	= 2,
-> > +	DEFRAG_MADVISE		= 3,
-> > +	DEFRAG_NEVER		= 4,
-> > +};
->
-> These numbers should get assigned as default (C standard) I think, and
-> can be dropped.
+damon_stat_start() always allocates the module's damon_ctx object
+(damon_stat_context).  Meanwhile, if damon_call() in the function fails,
+the damon_ctx object is not deallocated.  Hence, if the damon_call() is
+failed, and the user writes Y to “enabled” again, the previously
+allocated damon_ctx object is leaked.
 
-You're correct that they would be assigned by default. However, I've
-explicitly set them to clarify that we iterate over these enum values
-using an integer and require these specific values.
+This cannot simply be fixed by deallocating the damon_ctx object when
+damon_call() fails.  That's because damon_call() failure doesn't
+guarantee the kdamond main function, which accesses the damon_ctx
+object, is completely finished.  In other words, if damon_stat_start()
+deallocates the damon_ctx object after damon_call() failure, the
+not-yet-terminated kdamond could access the freed memory
+(use-after-free).
 
-This was discussed in the previous patch series:
+Fix the leak while avoiding the use-after-free by keeping returning
+damon_stat_start() without deallocating the damon_ctx object after
+damon_call() failure, but deallocating it when the function is invoked
+again and the kdamond is completely terminated.  If the kdamond is not
+yet terminated, simply return -EAGAIN, as the kdamond will soon be
+terminated.
 
-https://lore.kernel.org/all/20260308140530.9ab6d1445d0936467eab4aef@linux-foundation.org/
+The issue was discovered [1] by sashiko.
 
-Please let me know if it should be removed here, and I will update the
-patch,
+[1] https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
 
-Thanks for the review,
---breno
+Fixes: 405f61996d9d ("mm/damon/stat: use damon_call() repeat mode instead of damon_callback")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+(https://lore.kernel.org/20260402045928.71170-1-sj@kernel.org)
+- Drop RFC tag again.
+- sashiko didn't find any real issue on this version.
+Changes from v1
+(https://lore.kernel.org/20260402010457.66860-1-sj@kernel.org)
+- Avoid sashiko-discovered use-after-free.
+- Add RFC tag.
+
+ mm/damon/stat.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 5a742fc157e4..99ba346f9e32 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -245,6 +245,12 @@ static int damon_stat_start(void)
+ {
+ 	int err;
+ 
++	if (damon_stat_context) {
++		if (damon_is_running(damon_stat_context))
++			return -EAGAIN;
++		damon_destroy_ctx(damon_stat_context);
++	}
++
+ 	damon_stat_context = damon_stat_build_ctx();
+ 	if (!damon_stat_context)
+ 		return -ENOMEM;
+@@ -264,6 +270,7 @@ static void damon_stat_stop(void)
+ {
+ 	damon_stop(&damon_stat_context, 1);
+ 	damon_destroy_ctx(damon_stat_context);
++	damon_stat_context = NULL;
+ }
+ 
+ static int damon_stat_enabled_store(
+
+base-commit: 4fd04f750d79667937931314ed64c9d79b0d82ef
+-- 
+2.47.3
 
