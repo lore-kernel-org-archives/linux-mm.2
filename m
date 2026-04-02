@@ -4,88 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 318D5CC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C50C2CC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 05:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22AA66B0089; Thu,  2 Apr 2026 00:59:33 -0400 (EDT)
+	id 33DB36B0089; Thu,  2 Apr 2026 01:00:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DBB56B008C; Thu,  2 Apr 2026 00:59:33 -0400 (EDT)
+	id 316216B008C; Thu,  2 Apr 2026 01:00:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 118A76B0092; Thu,  2 Apr 2026 00:59:33 -0400 (EDT)
+	id 22BB36B0092; Thu,  2 Apr 2026 01:00:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F40566B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:59:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9ADF1160432
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:59:32 +0000 (UTC)
-X-FDA: 84612412584.29.590BD10
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0468B4000B
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:59:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQNSxGvJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775105971; a=rsa-sha256;
-	cv=none;
-	b=P4UBSGUj1dtZQueZVSKh7MiM6OjFxbpdDJ9TizXsGDslHXO+4vYguslOW961YruIdQlzvX
-	jDIbzrgbGyCydhecI3svex/0csWfCTU3JBxYScTXqpMZ7LtpS7Hdk+3RcwWvpqwXebYR7z
-	5L9LE4feB1Nbpjh0Qk3V6xMbVPmsQ2s=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQNSxGvJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 104C16B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:00:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93B818B96D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:00:30 +0000 (UTC)
+X-FDA: 84612415020.13.D5EC00A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2846580008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:00:27 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=ZqUll3G9;
+	spf=pass (imf30.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775105971;
+	s=arc-20220608; t=1775106028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I9HJX7G/aT3EsFL57DxQRWUu7jGxvPhUWoMRnfjLbpo=;
-	b=6YX/kXyStprk32ExEAyEhI1q9cA1K8/+wlc/XQfbc9l1vNX4TD3ot7yJo4Pa1/F0/TwKLl
-	ajSDlqKygR7aF1OhH9cww6sHCjDTyvcjrfjXhxwBZpAbDjxzRJPAqlEWlfINvTd4hW/2vG
-	TPL+4Imsjkgh2S1bLlkOyC7ow0AKY48=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E90F41986;
-	Thu,  2 Apr 2026 04:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3824C19423;
-	Thu,  2 Apr 2026 04:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775105969;
-	bh=6b8L0fz6vN2/1FdAdwuuqgyRC2q1kGbwXl4DDedgmOI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GQNSxGvJXNxyEJ8v1iJtxRdhpFpT1UYFKJ2nnOYJl+ulwa6klYQoB6lX5VLEG+JCF
-	 4iGHNsT1VIi/PO83r/d2jEJjs9so9qxp1loeCIPhgDZ5Fcn6FOF4M6Zt5uBSKj5DX2
-	 LDdEXkgxEY7Flg/ZYxqN41UwCVFiOY4w++btd031t1Odw9qIlxV/TP4wzgSAk3Wa50
-	 fVuq9QOr3nyRik1CAnheYNYAHjU3JkiE5g5MtwalsHw0d/Y91Dcf2pwdiCRxmnYdSb
-	 X72Eaifh5mxpADuWsJOClBuFA1CTpt6uBcyCaDLYL5sjLBPpatQko5uXVL9ONmHQRp
-	 75aHoyYgf7eEQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
-Date: Wed,  1 Apr 2026 21:59:26 -0700
-Message-ID: <20260402045928.71170-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DuS59itpNZ6p8un83i/I/bgKIezxGQ4yoKFLnfZOn7U=;
+	b=I5q5aJDPyRz2kUqZILF6bOffKxu68SZzuTxYnNwf+EbcV155+Sf03eBAGAYlJJrifLBrxl
+	9imFo64yfdtABuA49BuWftDYSzWqZ21GjuwkHc2la0BuKrSS+JQ0jdtVKoSiFAnfib+Yv7
+	1qfE3DStCh44cv3HGscO9gHviggoTbI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775106028; a=rsa-sha256;
+	cv=none;
+	b=0IcsMKl07eKuEaczHpoK5iIoww5cxjD+Vj6gxBtHP/vU9cruOumWq9rchd5AffrOdjQlVb
+	Y72ebYxPnI3CIjhzLlxkZHdjEE5YxTVy8dW0f7GbvZiklnGdiUyzgcR3C+g69rGJYAhkXQ
+	r+998cXYQ4iX0EWFMLCDvmvI37AWn28=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=ZqUll3G9;
+	spf=pass (imf30.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631HVxme3226794;
+	Thu, 2 Apr 2026 04:59:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=DuS59i
+	tpNZ6p8un83i/I/bgKIezxGQ4yoKFLnfZOn7U=; b=ZqUll3G9t+c7aTqEwb0kWT
+	xET5F+t3tcMYIk4lAYFykE0Dm+wOxMFGAEeec4fo3Vl2Howz/FdOvKAuxRyK8Uzf
+	RyMDdxrrI5Tanjf3mh+jyxI59Ie82dD/rYx77IXAl2tSOgcJmfnolKU3kxsuiDEC
+	4DtyYFG8Mo50wwFzacJ8UGxS81noPTx+Ee6ly06jdu7xW6Vf8k1fRZRi46TfDMWA
+	gERKazoiKkeTzFBUq547ZYJNkIlVbMZfxK5YcIdcBIaNH8cWaPftgfTW5Z9kzCF3
+	XKdh/jl/VSepIQe7B+lQlXTuZjnNFBi94xtVcrF9KSqluPduhHxf7YkPoKMXXkVw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dcjh1h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 04:59:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6321Pqbm008717;
+	Thu, 2 Apr 2026 04:59:46 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6v11rfy8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 04:59:46 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6324xkkm21758648
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Apr 2026 04:59:46 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A8D95805A;
+	Thu,  2 Apr 2026 04:59:46 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF0E35805C;
+	Thu,  2 Apr 2026 04:59:40 +0000 (GMT)
+Received: from [9.39.16.6] (unknown [9.39.16.6])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Apr 2026 04:59:40 +0000 (GMT)
+Message-ID: <c571bb69-82f2-4346-9f99-6a7258e28a27@linux.ibm.com>
+Date: Thu, 2 Apr 2026 10:29:39 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ybuj6rehinnyx1fnn7hmksfjxog4tnpr
-X-Rspamd-Queue-Id: 0468B4000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] memory tiering: Do not allow promotion if
+ NUMA_BALANCING_MEMORY_TIERING is disabled
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: David Hildenbrand <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+        Ritesh Harjani
+ <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ying Huang <huang.ying.caritas@gmail.com>,
+        Juri Lelli
+ <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>
+References: <20260323094849.3903-1-donettom@linux.ibm.com>
+ <87wlyqt52m.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <87wlyqt52m.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69cdf7c4 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=PC59MWEQhskA4QNmMdsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 1A7z-MPneXxD6XHBHI5OhlkXscWO5Q20
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDAzOSBTYWx0ZWRfX6J8GcRq8Wny0
+ XGC05xrpTSMlK5wFLEh44QRmTqIL76OtJygtCRc0xVI/V0CjpFmYTV3HVXIuLomQtgfcxY2lFKG
+ iWxMACBz6f1J127/lORiCfSKakkk1zf7mTN1Q9CHMlMZSbM9AssQxVVLvcMl+b5DqMI3M+zPwq+
+ T6+xbIvN+2TdIAspZdXKQblxitWlrVtVpH8qrDJhfecZSNrQHvFKFUaEnThw/GGcvp/jqOVoFRG
+ 3cj1j6lIVcYTFqZoJgY7XATxnlwn8/5pFiVFl0cTNpPO7l+AtFxNOCrRgsZtZP4ZTU5ZPK/HWNP
+ ooB0hcLJxvoNvrLRucZIsEdpH/9Hd2kKFHzcdk1aS6lqKqcIuCn4X5VlTv5xuUa6bKadVBIB2sy
+ Zj9hBPM+IoVWErNpj3fvTr2Nek8deH2cltOvTIrK+uSKqUsR/Mb9cqfgcWEAlfT16WJfSiLK8yn
+ 6tMqyH/+yWhxKkZUBOw==
+X-Proofpoint-ORIG-GUID: shFjkzBAttWQwC56Nx4fJRpExUVSVbAF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_01,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604020039
+X-Rspamd-Queue-Id: 2846580008
+X-Stat-Signature: d7x9cymjj3ttp3enb1wys4hstu4uu1tg
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775105970-586626
-X-HE-Meta: U2FsdGVkX1+btjNw9WuRQ5j8/bfngbJsth0eP8Z3P8FRntVdOmiZthg5fACQfjLwPDYpPJcSi0TF4KEVy67Ussd0to74ew2EKngCDUAu+5hQZGE8UlHb94xUb+zLhMKshUS60Jxa9BieWLruNC/FzKQOhhLt3mAEaDNmfRzuj4GWF4blnLS6eg+I65/WiYiwa9NS32yE6BWFr3rXvN+p+e494EvIlQeo1AMeBUG3O9tJK71pLKXwtIWZ8gh+X2tSuTbMpYTKsAUeuQe/1C9k//2iYAA/F/gI3S0qpfx1cfSr9cqtlCn4RV1dsELb5+ZFH7qknqPqtAWl3Uvfj8ZDXp5TcELO4NlnnaXvrvX2jKhiJJlfYfY0jXQQLSHqWbG4QyE3R+MOGdu4ycnH83GyqMl31Gc/k6Gwjw/8M/fJ1zn/3Ax+2Snr8Vkw8Wf/4vXc1Tg5JNo9D4DYPX0+2E3aOQIs2NsrK9lzMk8d9zbiNdJd1B3sysQWzjvYN6BVixvwfZHwbQ6FMKXEHqhhZeqwQh6DOcs2NXosVPSsUOcbxfxhYYWhxVbdi+iESWhTrDgzfkYSxH9dapawTUWrSqkUXBfPeJ9Kb3SaLT3QFH70xSbG45d0VRHjHsrpmyGC1bXq9/T7rXBIUdol8YQGkDOoZ0Bu4RDrWrQjQMoudYS8+dYWeYZD8TpYjbK2czL1vz+P5vf8ZecCQQEE/yFV8wzBdukhfFLtN33lRqp4cIKR0DHD/0cNGCcTucVA8507QQo0wqa+gHA8WMFfHvEjzo9nvj1qEpVu6t185BcVnKdk6gwLFUoJU+m2kyYezWf2PGTPv/hMNgVQJbdmqzOyInRb9wlwKYgg4Q+kTrlSrkaWcx6fUVY9ZoYBhDMfg+YisdP93znt8DiUNAbmADB08FVGgphev/wPopAIo857sE2oUkN08DeuFnpapjwQsb5JYeMyFpkIiflj5znNZv522NR
- ImGyABhV
- AOvjaJ50VlxZgxLXTsZjQA7Xl/bvM6PLEtn5RpQfye1MRUR2oi8xvxyeyJTY6Ci294+N8aHuqszrCYwOhCWvr5eTWZKbBCGPHX41Zr3ZNfsVorto7khbgyv6Le8OdR3JtNem9oNH4UqQ+L1vxS7q7twvtt6JuUeju/8GsmpPiwuMvMRqM4BOvZtDLkppuv7AwBpoTAU4rO0QFROsXXB/iDwlL85QePx2d6gZ1Q2bVZvXABa64+VDTp9ywnGWB1L+aOot4wEWa3FUB5xuo7LM1ID5aTgF3ocLa5WTdQTGSVlCsPvS40qrpGaINMA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775106027-327898
+X-HE-Meta: U2FsdGVkX18YULyc0UkrJeb4U2IWIWr7hNMgVVfbRDdS+t97agrwwlA+EelS4+Z8cl61jKW1Syoj/hKfHvMb8J2cbNmpX5Ry/BIA6RYHNJoamfGNEZuv3rvTz30dtSXEMF0zWFfaRIdWMqIBs0cQdEsWz95W5ZBHVvesfim/UwpyeXItVlWWErn+SvhVpBEN40V4hwMTbVHsB/FMs3cIG1x+vsKcMPcEdpyweO64fA1kCB5jnGkm/HOhxp/EgEcxv31cy/w+ipLV0+yUeEjXxzXbRl23bhompHDTL1CA9D3spahHROBn3VOVZ/w6lOp9TQqrx45s77GzT14sVcR0teum+wDIkZ6BfauC/K0nLBaGo6x7RDOtwnEpVDi7V8h3WPs/QR1VIHZrupLVkaF5xNtnK+QiX9ikgY9jiD3XkURxrzGqxo/X/LKdwAPj0ccqXb7ta2cPjlp1tv1kO3XycYlBJPdqg/EFwQrTvquhk9HM8p6ldLMB8M0gSDJxB+7Gq9V935c7+vF2niWOB60VCB6GjYyyRvWQq3uP+i62CQR5hDyWA2hsh964FfpFGBMQ+M5JobVSrNTmWynYxFIJYeHh1DY4PZL7Z+/lIkJr7Rt2Jpy9xj6UAWmrDEE9LHqbCQ+wBv1b59RAM00LmG1jcYkQdOC5pPw3252BjHJkCuymWcYqgDiVhigJQsdF2cz/8gslczeWe/l9KPrDlG4gkWdiZNXV2UL44ZdrgnYprVNHcJCHIUiGJHhCOoxBbtrUAgrKSyTrsbbqnxwGFsCe1HopW8ft/37W96z1Wc7W7zasR3Yr1Q6qEX1SBg5XaM8nP+bmVFLMjgy8zl968Cz7/881ahbstCSlDSAzmqPcn54+p1z6ndkQ2XEC17EgusOk8X9RZgmNdhz9ZjZE0kMxEP8g/VQiLf1N6dcm9z6KXHPqPSffvUvQGfogfKj2zerOZpcRkV0dp0SelrMt8vC
+ /dAT32Fm
+ 99Aud5rdx9JLiq/KJgBw9AtKnJ9EpNHexJe3O7sGm0v4PlwSj7RdHOvxrEiS6DnIjat7keT2npZLjOJoCxC9INRwTFMc4vsCcrZ6VcN6aU1cX0voza/RyZabCPC13zyN5a34zUYR2FCdVIjv4wIRm5Zo/ynFWiD06h9bv8fXLdzF/4yCkwwvwibV/PwfCVWM85hpZoq959sJaCpX2qIslxWa6B4fv3S4rgiY0x4RDpIfHpIV5EdJDjnkhvfEd97M2CiL5ol9SFHeQMgUUUf3yBFHWjPBvDbpVJokTcNpM5QMF8thXEyybCiB+b7M7Y5ufj/Mcr6rp5pJhLQy44wsUVhCZL/MGw1BC/OsbW//oPZBWRYYEip4TW+HgX8KGF1yvpXfrXhbSR0vDPPvlT/rfF0s0ySoyUeWEFnMqHYrMbGhERDdjdVjdGonMek3x21ijG4levddFfp3y3l7QkJ3UlY90If2bAEWprnWty0NPV5Ff4WI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,70 +151,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_stat_start() always allocates the module's damon_ctx object
-(damon_stat_context).  Meanwhile, if damon_call() in the function fails,
-the damon_ctx object is not deallocated.  Hence, if the damon_call() is
-failed, and the user writes Y to “enabled” again, the previously
-allocated damon_ctx object is leaked.
+Hi
 
-This cannot simply be fixed by deallocating the damon_ctx object when
-damon_call() fails.  That's because damon_call() failure doesn't
-guarantee the kdamond main function, which accesses the damon_ctx
-object, is completely finished.  In other words, if damon_stat_start()
-deallocates the damon_ctx object after damon_call() failure, the
-not-yet-terminated kdamond could access the freed memory
-(use-after-free).
+On 4/2/26 8:57 AM, Huang, Ying wrote:
+> Donet Tom <donettom@linux.ibm.com> writes:
+>
+>> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
+>> disabled and the pages are on the lower tier, the pages may still be
+>> promoted.
+>>
+>> This happens because task_numa_work() updates the last_cpupid field to
+>> record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
+>> enabled and the folio is on the lower tier. If
+>> NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field
+>> can retains a valid last CPU id.
+>>
+>> In should_numa_migrate_memory(), the decision checks whether
+>> NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower
+>> tier, and last_cpupid is invalid. However, the last_cpupid can be
+>> valid when NUMA_BALANCING_MEMORY_TIERING is disabled, the condition
+>> evaluates to false and migration is allowed.
+>>
+>> This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
+>> disabled and the folio is on the lower tier.
+>>
+>> Behavior before this change:
+>> ============================
+>>    - If NUMA_BALANCING_NORMAL is enabled, migration occurs between
+>>      nodes within the same memory tier, and promotion from lower
+>>      tier to higher tier may also happen.
+>>
+>>    - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from
+>>      lower tier to higher tier nodes is allowed.
+>>
+>> Behavior after this change:
+>> ===========================
+>>    - If NUMA_BALANCING_NORMAL is enabled, migration will occur only
+>>      between nodes within the same memory tier.
+>>
+>>    - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from lower
+>>      tier to higher tier nodes will be allowed.
+>>
+>>    - If both NUMA_BALANCING_MEMORY_TIERING and NUMA_BALANCING_NORMAL are
+>>      enabled, both migration (same tier) and promotion (cross tier) are
+>>      allowed.
+>>
+>> Fixes: 33024536bafd ("memory tiering: hot page selection with hint page fault latency")
+>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>> ---
+>> v1 -> v2
+>> ========
+>> 1. Dropped changes in task_numa_fault() since the original changes
+>>     already handle runtime disabling of NUMA_BALANCING_MEMORY_TIERING.
+>>
+>> v1 -> https://lore.kernel.org/all/20260320092251.1290207-1-donettom@linux.ibm.com/
+>> ---
+>>   kernel/sched/fair.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>> index bf948db905ed..4b43809a3fb1 100644
+>> --- a/kernel/sched/fair.c
+>> +++ b/kernel/sched/fair.c
+>> @@ -2024,8 +2024,12 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>   	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+>>   	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
+>>   
+>> +	/*
+>> +	 * Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
+>> +	 * and the pages are on the lower tier.
+>> +	 */
+>>   	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+>> -	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
+>> +	    !node_is_toptier(src_nid))
+>>   		return false;
+>>   
+>>   	/*
+> No.  Even if NUMA_BALANCING_MEMORY_TIERING is disabled, we should still
+> allow migrate pages from lower tier to higher tier via
+> NUMA_BALANCING_NORMAL.  If we have precious DDR, why waste it?  This
+> follows the semantics of NUMA_BALANCING_NORMAL before introducing
+> NUMA_BALANCING_MEMORY_TIERING.
 
-Fix the leak while avoiding the use-after-free by keeping returning
-damon_stat_start() without deallocating the damon_ctx object after
-damon_call() failure, but deallocating it when the function is invoked
-again and the kdamond is completely terminated.  If the kdamond is not
-yet terminated, simply return -EAGAIN, as the kdamond will soon be
-terminated.
+Thank you for the review comments.
 
-The issue was discovered [1] by sashiko.
+One thing I am trying to understand is that page promotion
+appears to happen regardless of whether
+NUMA_BALANCING_MEMORY_TIERING is enabled or disabled. In that
+case, what is the specific role of
+NUMA_BALANCING_MEMORY_TIERING? Do we get better performance
+when it is enabled?
 
-[1] https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
+My initial understanding was that disabling
+NUMA_BALANCING_MEMORY_TIERING could be used to turn off
+promotion. However, it seems that currently we cannot control
+promotion independently. If NUMA_BALANCING_NORMAL is disabled,
+neither migration nor promotion happens, and if it is enabled,
+both migration and promotion can occur.
 
-Fixes: 405f61996d9d ("mm/damon/stat: use damon_call() repeat mode instead of damon_callback")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from v1
-(https://lore.kernel.org/20260402010457.66860-1-sj@kernel.org)
-- Avoid use-after-free.
-- Add RFC tag.
+I was under the impression that:
+- NUMA_BALANCING_NORMAL would handle migration within the same tier,
+- NUMA_BALANCING_MEMORY_TIERING would handle promotion across tiers,
+- and enabling both would allow both migration and promotion.
 
- mm/damon/stat.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+This would provide more fine-grained control. Is my
+understanding correct, or am I missing something here?
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index 5a742fc157e4..99ba346f9e32 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -245,6 +245,12 @@ static int damon_stat_start(void)
- {
- 	int err;
- 
-+	if (damon_stat_context) {
-+		if (damon_is_running(damon_stat_context))
-+			return -EAGAIN;
-+		damon_destroy_ctx(damon_stat_context);
-+	}
-+
- 	damon_stat_context = damon_stat_build_ctx();
- 	if (!damon_stat_context)
- 		return -ENOMEM;
-@@ -264,6 +270,7 @@ static void damon_stat_stop(void)
- {
- 	damon_stop(&damon_stat_context, 1);
- 	damon_destroy_ctx(damon_stat_context);
-+	damon_stat_context = NULL;
- }
- 
- static int damon_stat_enabled_store(
 
-base-commit: 4fd04f750d79667937931314ed64c9d79b0d82ef
--- 
-2.47.3
+>
+> ---
+> Best Regards,
+> Huang, Ying
 
