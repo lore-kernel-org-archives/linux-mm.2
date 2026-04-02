@@ -4,83 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8186111227A
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744891112259
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:08:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC2FA6B0088; Wed,  1 Apr 2026 23:02:57 -0400 (EDT)
+	id A35FF6B0088; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E99DB6B0089; Wed,  1 Apr 2026 23:02:57 -0400 (EDT)
+	id 9E6C16B0089; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD6C46B008A; Wed,  1 Apr 2026 23:02:57 -0400 (EDT)
+	id 8D5746B008A; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CE2996B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:02:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F02E160169
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:02:57 +0000 (UTC)
-X-FDA: 84612118794.04.4646215
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 24EAFC0008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:02:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qAG3p++B;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 788676B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 172681A01FD
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:13 +0000 (UTC)
+X-FDA: 84612132066.22.357ED66
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 241EA100008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNvGaRVU;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNvGaRVU;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775099291; a=rsa-sha256;
+	cv=none;
+	b=kv5fGLoVTLr3tsbvNwx+ynsoao8F34AQnjjJRceDtxfufFyOVDvIHMNFRKFkGBMRN81TYt
+	65H46kDfupnHSQ8n5vqH2mcnJNpTXkLd8kKvLZlwp+90plYdJrvnxMRYG2/MUNmsGOaR/Z
+	fiLX/5de8IkRIGGoKaXQIP44nKRlCRo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775098975;
+	s=arc-20220608; t=1775099291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Bm/iZ2SZCt+AC99FFO20xgoljQ3GBYc4xpX0mliCyE=;
-	b=7sBeXYoDCkgBJAsCMTNcXMyep1AZ+wKigEWqAYqqszQX2k/IoN396qESGph0U241a0QHz8
-	KSy5wUF1P6rVeIhdeK/nzRL9/HoGKgjotBL4dfnsHteLIENLIZ2wZBeAgZfhw8gtEgoYdb
-	/1ARgZb6DzvutiRRIjWkVPUsyaN+Q5Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775098975; a=rsa-sha256;
-	cv=none;
-	b=Qi7guNeOeZ/IdnP7ODs+YeE8a/WlWj4ZMb9ZJWxdgMRe/9wqgBZZPo6xk/RiTSk4gDhtlM
-	68bQCK/dS5W5sOU4dGeRutIkokpwatfgMwegcMAoFrVpI28kuKpGO+30TjqNHVBqyLnWpy
-	7AlkObq5bsMY54Vg8BaMFqRlsts5arU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qAG3p++B;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Wed, 1 Apr 2026 20:02:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775098968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Bm/iZ2SZCt+AC99FFO20xgoljQ3GBYc4xpX0mliCyE=;
-	b=qAG3p++Bsn93CJPXaIZuqnQ12F2PgI1xcdGvaWN9uz51Wg/uVQ+KMak2x006Ut5RGPdaEA
-	6rUxxQD1zapneZCktFQMnMPeqR6jhY599/Ohfe0J90Lup/dUWK7w6fyPdgaEjd6j2St2kH
-	K0DDzCKAdWK3cGmrWYb3ayXGCBfAd/I=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@kernel.org>, "T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Subject: Re: [PATCHv3] mm: remove '!root_reclaim' checking in
- should_abort_scan()
-Message-ID: <ac3cKKNhnFH72nw9@linux.dev>
-References: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
+	bh=jLuGtaRPDG+FvwCXy95DpreG09wLtyRncgpr9wqNaPQ=;
+	b=4p2IchvrmpdmdlnGlj6+1XTeUuU2ljxS1iXGPRlzv6ko+FnVS234LFDdFXTsGmBf69wLty
+	x95r7bZHhf1+ZtoyJZQ++/ABQu8Ks4FvSQjMZuZz/EuDej0gsZJKmKdz7c9Re/LZgnAG6P
+	DNYlf/5eoe7m7ktbdaGB9MDszSNPD8E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1B7044469
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27EFC2BCAF
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775099289;
+	bh=jLuGtaRPDG+FvwCXy95DpreG09wLtyRncgpr9wqNaPQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mNvGaRVU0m+cLfoLXnf/bNCjgHIv7Y8l4HP2MxaLYxwq/XGWdRZnb+COaCEgGRrC0
+	 7GdGMTu2k3Tf+DByfpT9IBuWJWiLLiIwF6zX+uRm/riNcQLhW23KAwQvyHUqhDMXVO
+	 GqL8RVFQn5izhrQIMz6a6xPE2K3qIIJKdBqFmu8KVrOUpGE9Gavf+Z8CvLIfL1VbOt
+	 JZwkcoHItUz82h+3f0LsUoFk0Qc2hhagXzRmlzNWOxB7WPZ59Wbv/vUYpaaEOiyMMH
+	 u72F9XU/wdTkhwhJN/l+Awc3gcFwD2pSawUOqdM43NQjU/t6JU7MFHSCl2avNxzhbw
+	 +yo4xp+Y0ScbA==
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65015facf32so440232d50.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 20:08:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVnYX5nK0XJX+NJu42lh60PKSvsdGYXLBNiy2OV24O8cYcfASqTyiZzL5jQEUckcxnLn3cQrldZsA==@kvack.org
+X-Gm-Message-State: AOJu0YzU8Uivu0DR6Nmswr7jybQ07BRiXbxGGY9LoDwAsRB6DEqRrbh8
+	aw3PBqktJFbyGOQPMAdxXe1rEqwpay7r/xmQVUL/Jk996gC6wmGzd9T57rBzpocm8uuMb5+cN/o
+	vbpE4qcEqhlD5ClG0oKN1ALA8leKVcXJDsODKNDDtxw==
+X-Received: by 2002:a05:690e:d41:b0:650:3431:24c7 with SMTP id
+ 956f58d0204a3-650343127b3mr4063281d50.34.1775099289200; Wed, 01 Apr 2026
+ 20:08:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 24EAFC0008
-X-Stat-Signature: 4heh86dnbq9164qb43radgh7ttmo64gc
+References: <20260330071229.14614-1-devnexen@gmail.com> <20260401074753.238053-1-devnexen@gmail.com>
+In-Reply-To: <20260401074753.238053-1-devnexen@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 1 Apr 2026 20:07:57 -0700
+X-Gmail-Original-Message-ID: <CACePvbUt8iyG+fQ+tDUYNRqGHQgQ=S1AYWiPXZR4C83bBZXTMw@mail.gmail.com>
+X-Gm-Features: AQROBzAPJ5y37-kBPCx9hY_98BAaKjxoB11JTONCA5Vdcqgh2tGqLaGAT5N5tb4
+Message-ID: <CACePvbUt8iyG+fQ+tDUYNRqGHQgQ=S1AYWiPXZR4C83bBZXTMw@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
+To: David Carlier <devnexen@gmail.com>
+Cc: Barry Song <21cnbao@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 241EA100008
+X-Stat-Signature: zgmpyj94m9kiz3wsn1kn6jnhmw8o796i
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775098973-136765
-X-HE-Meta: U2FsdGVkX1/cdsFEYRlWDlq1KzUuUBXto3vhZ3FsXLzjUBzDl1vpTr7aGmi4fOpkcCNV3uf2FKU4+s4w5lp+r36/HP83Fj6KmaFWUWkOqBiPeKAioUBucWq5a4ah/c8eouXQBs0dyxlQpDEKjB2DKigGmi68rsYNLN/UVNDCTdAuPPFZYe+g/9YVTmAJKBRIpNbOnBcP7/KSCAzYgUnN5+jpkYJQFojL22S960ZmBN8JsDCHprrvtO1azyHfLqPrsPKVTR317K50ksTH7yLTzirE0u2BqU+Mj1z2hcOeZgKX6ZFLzF1fcO73rm+rxfyEcwN6TuMxcaLmJyM9pVAJ6jqWGGrnrPSQph9HwRHa/0EpoTY20GT1GlTEars5pBwg/BnjyVfvPd63iOTV+1YBsXtVbWRficUHL2XS17plDHDeF1X+uYptF5ghGpX5cgb8qmLk9ExyRoaSpkNAkFb4xIIZvf8O4wfe29Ye0eLU2Z5MStfKqsIloQDZVwgTJfqlWTLXYhLoo/pSRyNqVUNV33xd2vVxJkrygqMOALzMfAtL+/Z8N/Jzm8k4Ioygwqd7uIEu7O7m4m+l4bI4hUSGAe7nEGP+jZ9ayK5QXEHo/KU71heH+8Uhz+y0PT5WstorVqEeO81Wx9mES6N320hnku7w+mH85uznmtPumz2O33/9nDyRd8xVvaDz3wWbV0Q5+wwBJp+cRErnuv2dzNy9+q4cJpyk+evdGXDq2WPDxhwYAIDothOjZhTAgr9kakD6H4d6oQKnSqUfDD9mRPDBOISJyS0aYgCRJ7MK2gv+LjrfmEvNyFw9hp1GmUHEeM+IurCtr1dq1MK4aG8G+A2xVF92K17HyrTWxWJpFvkJTdqZ1lXtvZBxr0q+12w28ky4IYqD7V7Nx//yyIGZZlbGA1UZsgqB+fXEOlfjnfYfT8uY+fB2mOaVC9o3e26b6f4cF8n3moKQQZdvJx/7J9D
- Rgs6TRMm
- 5HSmq7bWckTYNVoSU5lPQHGX0Ql4tidC4ott3iMW0wKJAPcKxa5ufKQI+Ooa413Opix8F3h6xZFB8q6YsUavEv0B5cFuxehwEukTKuQdxPfyMXs4KaKluPxvzcScBmzx2egqBy0XDWXvuB778CebaOqxrrWA+t/wxUX3jr4LWnVRH+Ro0LVc3FlCWp4Eh/ZrOqUYttVA0FTZgtkf1jsbvWW+4NPB/hWHdNq0wPW6vnC/wPo77loTpNxxBky4G8cb3LwcAaLdAivrhPfPtJ6DOuhpj45QaAEEKTJwBrWmIXU2/W0vC9BazrnHaDXc9kbNkYfgI2K04+mHVB0yS1cmHbiU/BOXrDchq7TNrgV/DnCeY5RzNZbGNJbd2ehTFJnw75LPk
+X-HE-Tag: 1775099290-312781
+X-HE-Meta: U2FsdGVkX19/9sRXSvcyInpxgnmyI1TTrKjUQAgs6UQCHG3L6cPzuUODlOdogHK7c7RhuH24LtX9Oz53oW7MF7WhFw7rrjMfa4nLq4iTtaDzxIr/wfVpbg2DTohRnhvvRwtDKf5nNyRJ3t34k7bPbd6o1R5GsdYcdCbesZfZ+BxPuR710HNSlDAFn0MdDxliHlHP+e3sKObNcLY8PQlaxnlG8M5HbS8GbYMynCjs2l68TwKY8soIaijwcbMp+s1J0W0JSwe7gPG3I92AAadcC4yBtTHlkPPaVu2W9JxOjU8DV4acPlZsu3HDutexo2mxKa7bH45OcQzdM+uclMNyTn/7+R84O8Y6gb1l3WqEcmj0GGuG8t4cDTuQ/HXEH/ZOJKjTfxlfx9iTx3dGWJB3gQuYRQSbFlDqwt0MftK+/Cvzdm5fFJBO+gKpVrFT3h8gZCpYylesZUkgLIWh6pmx4k9UFxChHWoJU/AJFpJY/HyxJH3Zlfoy72CimZdH9A3aezw33tPffDpV5DB89KZ8uTodNkwuGnUIvr8JZC18J1oKyCEjXZ7ITJmYIc4TUsX2yHsUMkgmJNRUYdunkSLSJoC6p7EVlMWPQ1gocWX9ATBvH9b7s4fxsLXM2c4VYbNutaNoV6BinwjxFDMyJt3qpvkz7bIz/BpWKCJXLA79dChgiud+DgYj9jVVRobN2uK8CIV3yG82vq7Asn6h+fgAKBDYq3+Nndd/xU9DhMqFEg+4N0Zj7YorgtSYN29ANmXdtEyYpbbGFQRbvx4eNaekTPKj+UlUlk4aYPzKSDkfxYmRYARvP9vPBGZE7vq/5CQ0dugaQd34w7/hOYBzu/+9sqlHPq2lS8Ik8TLUWwuT78fQmoUELbUjYRIirFmIbeizcCoH7EobX98BtdD+fxenRztYli7dAi+MpA294eL1IbPDsJwgUnG+ARGx5zDRrrQYFt1g0G9OH63oNACWHLm
+ Rq97yv+l
+ qeo75pHVbGECRcstsaIXPJh8uD8jDy2xL18qKWF/qVgIHBO9prGEUkIIz95HYfOCr3fMpaxqzj8OxTrKNr11nIzNFgbzLpWHUycB45OIz1kZC2lZ7u4Pill5Loc++QRRgZvZ/vEBr155fM2m0s+0DlXSW5bjwCynsR7HGQ7ZPYKYWcO6sjuaV7SoAwAlUtzFDEWmb5AewLoPQYJ7XK1hTScqqv15u70vGWVbm4b585vYoaBA1yMndTA/rslzidHYPl5R5aJE/M+Ry9r6jDTVnn/RenY1JJSzl7iypvCN+7Pe/cKg1Xcg12F58yANI+S2T70wi9BL6taA7goXbM9SfTCqPeld6GycjLJyhq9knZHlbM2RQycdke82ID2ZIRHJpaI/ILP7umjOp69LGYdHOPOCU1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,31 +105,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 09:15:58AM +0800, zhaoyang.huang wrote:
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> 
-> Android systems usually use memory.reclaim interface to implement user
-> space memory management which expects that the requested reclaim target
-> and actually reclaimed amount memory are not diverging by too much. With
-> the current MGRLU implementation there is, however, no bail out when the
-> reclaim target is reached and this could lead to an excessive reclaim
-> that scales with the reclaim hierarchy size.For example, we can get a
-> nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
-> cgroup hierarchy.
-> This defect arised from the goal of keeping fairness among memcgs that
-> is, for try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
-> shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
-> !root_reclaim(sc) check was there for reclaim fairness, which was
-> necessary before commit 'b82b530740b9' ("mm: vmscan: restore
-> incremental cgroup iteration") because the fairness depended on
-> attempted proportional reclaim from every memcg under the target
-> memcg. However after commit 'b82b530740b9' there is no longer a need
-> to visit every memcg to ensure fairness. Let's have try_to_shrink_lruvec
-> bail out when the nr_reclaimed achieved.
-> 
-> Suggested-by: T.J.Mercier <tjmercier@google.com>
-> Reviewed-by: T.J.Mercier <tjmercier@google.com>
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On Wed, Apr 1, 2026 at 12:48=E2=80=AFAM David Carlier <devnexen@gmail.com> =
+wrote:
+>
+> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
+> but sio->pages tracks the number of bvec entries (folios), not base
+> pages.
+>
+> While large folios cannot currently reach this path (SWP_FS_OPS and
+> SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
+> is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
+> inconsistent with the per-memcg path which correctly uses
+> folio_nr_pages().
+>
+> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
+> count since sio->len is accumulated via folio_size(folio).
+>
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Chris Li <chrisl@kernel.org>
+
+Chris
 
