@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 493A01112274
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E2BA1112274
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:54:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 933A16B0088; Wed,  1 Apr 2026 22:51:53 -0400 (EDT)
+	id DCAD86B0088; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E4566B0089; Wed,  1 Apr 2026 22:51:53 -0400 (EDT)
+	id DA2456B0089; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA416B008A; Wed,  1 Apr 2026 22:51:53 -0400 (EDT)
+	id CDF396B008A; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BFC26B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:51:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 116FFE068D
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:51:53 +0000 (UTC)
-X-FDA: 84612090906.22.8C62F40
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 38CE81A0008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:51:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RPGZDBq2;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775098310;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B8EC06B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51112160169
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:54:08 +0000 (UTC)
+X-FDA: 84612096576.18.8C16274
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E1CBD180003
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:54:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=iOW9d5Fq;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775098446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6TOWg+Xh5sI9yRDwt9IDvK3x1ZitgasY/GSlaC7Tuw=;
-	b=ET/wPCkV3gvR7OeFtJs6YlT5oRtdiCLi9+Qw1fXh0NoNTq0fW2S3RgtMCgJ8DRjA0nz8tg
-	GKXCaWJ89lTH4SLsiDn13hiHLijHV1KKkRrPiQtgeU0at32Usn1aEUsnLA05gVgX5w186m
-	Jh8MptRpfEf8MJKwsaVzozKfigaYOWo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RPGZDBq2;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775098310; a=rsa-sha256;
-	cv=none;
-	b=aMD9gbdUPvKVb/HY0d4TBQSO7OtrXlMC5iTrM5evbcQnIubFBqzV7Fb+PlNIE/8Bm1V47/
-	/dysPDZiA36qpmCknebWOzKTLFD6/WPpSb+wdo8Wpj8j4V8smCFepZq8bbkv1h+Qsuhm6q
-	nocPQ5goKLony6UxzZR8xPEoyuxIvak=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775098305; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=O6TOWg+Xh5sI9yRDwt9IDvK3x1ZitgasY/GSlaC7Tuw=;
-	b=RPGZDBq2qdefQLpg+OZxgegxatDEKtKZ6bcgd7CBIbUza67fMPhr7J36K9F0wNh+nSKN4j8d9S7xNeLPpz4idkU5FpDv/DG+abiqWrdEh5Z7NNwX9hhtKeKsSAmneOu0GPpCgkx7U+oqiDCjuVMQPjm7huWDQph0wfzpxZvsFBc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X0FcMEl_1775098302;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X0FcMEl_1775098302 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 02 Apr 2026 10:51:43 +0800
-Message-ID: <0498d924-d76a-4d82-8767-e6297442967a@linux.alibaba.com>
-Date: Thu, 2 Apr 2026 10:51:37 +0800
+	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=;
+	b=K67Ng6JVIBg8o218yYsKxrXPgAnVUhyeHT+g7p82R2AznrhbvA6P4g5LBn/6TZMdFsAJ9Y
+	icdQJ2lxzGS0jn1vFJobKc2oLqMMpGY3Zo6O8juneCVM0S5aKKV0+ptSaQwyfnuA21s7HC
+	MklC29wTtZtQncCK5DMBNd4VJfM+2oA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775098446; a=rsa-sha256;
+	cv=pass;
+	b=xEjOgHQlNcBTouUWGV3+yD3LpTzf0jl1Rh/dC4bHd/6bKR3Q35+E6AJmby2ddHa8Qm0jSI
+	oWRKapNwzF4Gi7G8WzBZ8e14Yd+PfQ4x6d1z4mVEqwSy9VLQ0FD31BNK985lwqchTW3SQN
+	5GjAeg0/6yKWY9CdHUtnZhpTg5zMdiU=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=iOW9d5Fq;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1775098428; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=NwyOwYHYF+ovVE/0l1pvR2adoXjoLc8gNdcy18b4kvcNutNZNA379WE5MzjM+VHWHu781n0Y6pmeaZjxZNak3wPCdYglYtGuVisSLdOM0Kd9QtAABd0PjQNc8RJxpKJdAJTFjQa600LwKBQKirlQS7YLkGTb74s1WzA90q5zwp0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1775098428; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=; 
+	b=IhdkbiFPhcCRub5cayeQwS8u1tfnrpQmsFXvJFcoaZyPxk7Dn1EbTM3pwg27vgMDyMtDSq3VwhZ6Pboy1XZjhMXFHh9OHc0S7xYB73poJROlMa9KzM1VrM0mDc/t2n81Pdk1dusMzt3CTIoWZ9LCQNsDH9Z9I4HBzmAJDV9+Dyk=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775098428;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=;
+	b=iOW9d5FqlMGgTSaUTOgo8E7lpVIZ564tvu0ZYzIwm0NbXxVGnq2gQyglw1O/v6dJ
+	JhTB8wokoYrK6WBNWXZ3grOVeou6bkZqfqaGwFB8trzU28KFN7PavTOR5E96odiO7qH
+	PrjDBS4TcwrZF2vcCBfCv0ABA0l6Qc1G+xKiTeiQ=
+Received: by mx.zoho.in with SMTPS id 1775098426451998.3824273067871;
+	Thu, 2 Apr 2026 08:23:46 +0530 (IST)
+Message-ID: <31bb8a8e-2ca0-486b-888a-328e9b748ac4@zohomail.in>
+Date: Thu, 2 Apr 2026 08:23:42 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1 for
- MGLRU
-To: Kairui Song <ryncsn@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
- mhocko@kernel.org, zhengqi.arch@bytedance.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, ljs@kernel.org, baohua@kernel.org,
- kasong@tencent.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Jingxiang Zeng <linuszeng@tencent.com>
-References: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
- <ac18iLvF-nNtxk1-@linux.dev> <ac3Pqq2WrGTJZLB_@KASONG-MC4>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <ac3Pqq2WrGTJZLB_@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v9 3/4] mm/vmalloc: free unused pages on vrealloc() shrink
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+References: <20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in>
+ <20260401-vmalloc-shrink-v9-3-bf58dfb997d8@zohomail.in>
+ <ac2L2VNExpp8t7oF@google.com>
+ <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in>
+Content-Language: en-US
+In-Reply-To: <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: E1CBD180003
+X-Stat-Signature: jzs1q5sitkfq3imjsezhw5tjkfohuy7a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 38CE81A0008
-X-Stat-Signature: idnh13egf7qbkxj6qdj1kc7h9xc874gt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775098308-654879
-X-HE-Meta: U2FsdGVkX1/BcHEtT0JTP1YZCPN79cCAgt6Y6NDZQMcNAWm7ydJN6ilK120QQRAij9Qw/9NnF1RoC4Eo4SNKHGjZ4Kb0SanzlsS3fPYvuClDgvXY7PsgEbWObPKoKX+6UzAY33ibVgSMtBwfkXzuZZMnqSKsrN0KfjCvsWZXzTcrwP250hdcuV9/KXUtPaFA3bzLvJjomAs+HGXcwCaJ1PprK+Cd+bzeMw/83BVeRrAkdU7XsJir7bxNFy1GEIyBlB5SqBVW9m0Csza9t3PyRQ3XvPfHIJB5IfKqQLYDDvmvPRoh/OCrMb0mXFU1IKo7Gm7qsJCZB0qbr6ahacsgzsA2eUKWc7sR2p2QvO7geXPBiRQZthCOqiv1hM3XUMHUJSHjUntXrWWOWMpQ0PeK8kgex+NKbrFHLFiFv+bGA11Bk4cQgp+BcHTKqpzTL5j760idQqkhGEdmPJBu5lxx4nYY2yZOPbm+o2hSkrpzqCePmSVuFB/zGPK/h8pIuSQLwaWKLy7tAkkdY161uzYkblNv8ROVl2+2P/QPyju2HHC2d+7odSmqM7X2Me/vq+G+azjXHfEBdfAcHazE/ELUKz8A3t5kWg+s9zQmHTcH+o3RPizV+V9dQLzPj0C3J05YtY+l+ezmDFFqtUaCpEVf18u8AVcVWoy7lRkybY8rEC2W9bNkT/Nzq3iyF2aR0rOIYOjfBBJHhlehQ1fZGIKBLU0cVQQV7AtUItCqEEyi8gTBeLrpnvAepBp5hzn4DpAHgQqKylAZx7wLTFsY6kPfu/U5CeF9ch5H6s/pgEy+oCoZt7KNmjoY5Ky11cmLAea4Fq3cLudHodxTRnwvIrQmRHHg1qSc7Mr4JSZzjvmszNWP00OdDSi8IpP3jrOR/AGESkcnYSZTbmS7I5TFgDiQeB8TptqpqHvmzdi4yVIGem89jL1pRW8x1MckjzdYnTLH8QMbM8bzQjmaeZMhpSG
- Jz1vTpPV
- vzveqaTF2qeGZVW6ioi9f+d8g7fWVHZwnRNlXLNHX2hQd5G8+vtWyDTNcFI4NpKEW8FKQVlexYm/MmCY1XDTf0IX4g5LbcXtdnldaz3L71oCyL+sMHr0tbrLiKGhovoNWLY/8u2wITdCCH/QThfcGQ2aCpyIzfEGrllXGyGHC0EOLwyVT11D+71LHVLO2pi1KV9kLxNut+asOSWoFHDwuxHD9boHoiblErDICBxz/v0WM/aGKkqaUKp7yh/hqzffslMiC66bgHo10IS0/Xg+GfvDaR5XxkUH4J+CaI3K7vUoUU1s2HZCksgDUFXFayTc3VkvoeGCg5G4YopcHaoQHdSyTYMYdTTGpW1u//LCw8ec6dVOIHhGgE8SPFA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775098445-717866
+X-HE-Meta: U2FsdGVkX1/6S7rE0eGUv+LenRPHJEiS0uAHfhJlQc2kWElKdZVrxObI1JSOltpmRnHCIviXW6S5jH/gn0IiFO4deq1aGlstn7+B+5TXZ4FvOIOegontUC+JSUncfkc2JRtfVuTsUZTxYwa6+VRENbP26he15pJUKzFZpDWUR3h/Gta15LLc/b95U9BKZCshI6xS0pGuwr9MSVLYEwMI0WTLUHUglIxn4pP3YJ2uiYPr2c87n3z/W8QBYtPWqDRfw0TZfNoqDI0/ySvVlnoMdA3o/31nOMA3BYJ4jKXgpx1Kqn8v1yxzpaD3juzG79vtKWLKgyZPTvX6j9n25LEPxA+L72+uscS8gLTEW03x/Gooxhzfrfxk1pQAu9KPp/rxwI8h8Dqb2zik/w/63uffppGp/TOoMkg6caYSrDeoR3Qw4I++5+RUaG4CV+jdfsM7/xR7HH84o+HMkY2jXEL4Yf7sBuqXvTSAgjbv5oSXr23gPFZLMOUVWmkEQF2z2ttYOhGSVv24WmlAlfsi5C3cdFjcrR+mprV1Ydi+R7MlwDvKqIX5rOrGZTLkc0IjnPmgCW0tesqKFGx7YTDFyR8SRlYnazGnJLT8Q4oclAN2aDqbNZCpkyKj/hd5BWtSBENiEZBGK/Oj21MeyE0dAgIM8QaW10UBSNY4g9IwE1uQ9YswtyspJn4yfueJmNe+jaairuijgENOvk0/HkhSiqm3x/MHfCUdD4EnvIPJvKAvYe39K+jzg4NHQkSvc+rbaP0zgTxSyZSKR03zz1lcE4sMVj5Gd5xskMOiYE6L2knLtqGY0NJcsBSQfsiOtB/fJq7h6PLmBxVtHCPpuJWaN+R76HCKAilTcv3UBk6ai0noYgMhQYchfTIokc4J1TCvVmnU/3YmKOJ78ejbbcfdx/kTa7Xd125bs4RBTCL1uNMXR0NXg8YRSR1IKvp/1BI98cyQHogtxYpOW6FiMkMDA5q
+ 718lHfwC
+ Awm9jLSbnXGx13Piu8B4UtnTOPasb6QgIU9bPn6cp+EmmHDVRrJ8qMLON607MeL1h5rkQrE4CGW5a3pFx2SVpQcpXy4tIkgchn1YB78LZ6O0ki8aG7z9tcYiDYnPp28mcZl94BzSqHRHHE5TEZb5w+Uv/DM3a/WjJ/EmfGUz6S2ZCBNMILFNTeXW1FlqMKTRjfXhHeSuLAd2J6AhmLrTrHYt0bkQ8hmYONrKd0ScmMEbz4cW2FPYlzz7j8DXQtrm/6VuntbGZKVWIorLuav+SNV/b+0ZZU/XjSNrwh6W7sAfFGfunuhvIW4d4TkWpJrz51z/KyyCGh8edHx6m6AnPxDbSurxVuKc0ElR24Tx+CSrqd/I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,98 +105,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 02/04/26 07:31, Shivam Kalra wrote:
+> On 02/04/26 02:49, Alice Ryhl wrote:
+> Should we set nr_pages first? Right now, another thread may observe the
+> range being unmapped but still see the old nr_pages value.
 
+Or is this what you mean?
+<snip>
+struct vmap_node *vn = addr_to_node(addr);
+/* Notify kmemleak of the reduced allocation size before unmapping. */
+kmemleak_free_part(...);
 
-On 4/2/26 10:44 AM, Kairui Song wrote:
-> On Wed, Apr 01, 2026 at 01:32:40PM +0800, Shakeel Butt wrote:
->> On Fri, Mar 27, 2026 at 06:21:08PM +0800, Baolin Wang wrote:
->>> The balance_dirty_pages() won't do the dirty folios throttling on cgroupv1.
->>> See commit 9badce000e2c ("cgroup, writeback: don't enable cgroup writeback
->>> on traditional hierarchies").
->>>
->>> Moreover, after commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no
->>> longer attempt to write back filesystem folios through reclaim.
->>>
->>> On large memory systems, the flusher may not be able to write back quickly
->>> enough. Consequently, MGLRU will encounter many folios that are already
->>> under writeback. Since we cannot reclaim these dirty folios, the system
->>> may run out of memory and trigger the OOM killer.
->>>
->>> Hence, for cgroup v1, let's throttle reclaim after waking up the flusher,
->>> which is similar to commit 81a70c21d917 ("mm/cgroup/reclaim: fix dirty
->>> pages throttling on cgroup v1"), to avoid unnecessary OOM.
->>>
->>> The following test program can easily reproduce the OOM issue. With this patch
->>> applied, the test passes successfully.
->>>
->>> $mkdir /sys/fs/cgroup/memory/test
->>> $echo 256M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
->>> $echo $$ > /sys/fs/cgroup/memory/test/cgroup.procs
->>> $dd if=/dev/zero of=/mnt/data.bin bs=1M count=800
->>>
->>> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
->>> Reviewed-by: Barry Song <baohua@kernel.org>
->>> Reviewed-by: Kairui Song <kasong@tencent.com>
->>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> ---
->>> Changes from RFC:
->>>   - Add the Fixes tag.
->>>   - Add reviewed tag from Barry and Kairui. Thanks.
->>> ---
->>>   mm/vmscan.c | 17 ++++++++++++++++-
->>>   1 file changed, 16 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index 46657d2cef42..b5fdad1444af 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -5036,9 +5036,24 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->>>   	 * If too many file cache in the coldest generation can't be evicted
->>>   	 * due to being dirty, wake up the flusher.
->>>   	 */
->>> -	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken)
->>> +	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken) {
->>> +		struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>> +
->>>   		wakeup_flusher_threads(WB_REASON_VMSCAN);
->>>   
->>> +		/*
->>> +		 * For cgroupv1 dirty throttling is achieved by waking up
->>> +		 * the kernel flusher here and later waiting on folios
->>> +		 * which are in writeback to finish (see shrink_folio_list()).
->>> +		 *
->>> +		 * Flusher may not be able to issue writeback quickly
->>> +		 * enough for cgroupv1 writeback throttling to work
->>> +		 * on a large system.
->>> +		 */
->>> +		if (!writeback_throttling_sane(sc))
->>> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
->>
->> This seems fine but note that this throttling is not really the same as the
->> throttling happening for traditional LRU. In traditional LRU, the kernel may
->> throttle much more due to throttling check happening at each batch within
->> shrink_inactive_list() while here the check is happening after full scan for the
->> given memcg's lruvec. So, throttling can be much more aggressive for traditional
->> LRU.
-> 
-> Right, I think Baolin's fix is great, but to improve the whole trottling
-> mechanism we need some rework for MGLRU, currently I posted another
-> series for this.
+spin_lock(&vn->busy.lock);
+vm->nr_pages = new_nr_pages;
+spin_unlock(&vn->busy.lock);
 
-Agree. As both Shakeel and Johannes mentioned, I think we still need to 
-unify the throttling in shrink_node(). That said, Kairui’s series is 
-much improved over before and I haven’t observed any premature OOM 
-issues so far from my testing.
+vunmap_range(...);
+vm_area_free_pages(vm, new_nr_pages, old_nr_pages);
 
->> This is v1 only and I don't care much but what is stopping you from moving away
->> from v1?
-> 
-> For example memsw?
-> 
-> https://lore.kernel.org/linux-mm/q2x4drxpjbxcxgns6bjp446ynsxgl32ckcljqcol7posds4nit@3n3tjq35anvb/
-> 
-> I remember Jingxiang's plan is to improve the page counter first.
-
-Additionally, we still have some existing users on cgroup v1, and they 
-will need some time to migrate to cgroup v2.
+<snip>
+If this is the case, then I agree this will be much cleaner.
 
