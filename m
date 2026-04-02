@@ -4,81 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83661CC6B30
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 08:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADAF2CC6B2F
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 08:25:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB836B0088; Thu,  2 Apr 2026 04:24:16 -0400 (EDT)
+	id 003796B008A; Thu,  2 Apr 2026 04:25:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5BF56B0089; Thu,  2 Apr 2026 04:24:16 -0400 (EDT)
+	id F1D136B008C; Thu,  2 Apr 2026 04:25:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4A7E6B008A; Thu,  2 Apr 2026 04:24:16 -0400 (EDT)
+	id E32F96B0092; Thu,  2 Apr 2026 04:25:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CFE16B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:24:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 552D98BFC4
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:24:16 +0000 (UTC)
-X-FDA: 84612928512.16.1A76EB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9414B20003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:24:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jmhBxman;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CEFB46B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:25:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F4179C1FD2
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:25:20 +0000 (UTC)
+X-FDA: 84612931242.30.66F0A95
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1881D12000F
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:25:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=freCKJAL;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775118254;
+	s=arc-20220608; t=1775118319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYja+zDiIpIeEji2i/cgLJofV+EYUANYKR0gRUHfWss=;
-	b=EqELq+iZnc8hvJsP+gIqguLhF/KePrsNCFfVbQBVn/NLE74f1yuMYvnA6F0M5FXu67Tt7Y
-	3ufJ5pgd/4Jqhv4ZmHXeCE5Q4x/5Q64SYKf6ZIlJdesnHvqtJz9MNUyUxBG28OAgBXPIw3
-	HDKv5ZhHDpmajFTquMBqbdl7UvwMUwU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775118254; a=rsa-sha256;
+	bh=kNTzI8CachCVStswfNgemCfi3inSeAOEUnIhuRRB+kg=;
+	b=aZ3+8SdjBHy8RnEVE1EJ7ZQM/EGER8OQSV8dokZdQchiPMAf4nXtnw1Gu2KC66XbJXoTDN
+	gupfThlMqxWdAyvZzJ0eLbuTmLi4HJJc0dRHQY06RspjcLOUH72+PgPM5S52n/RWHgmByP
+	Re+uYuJkR1CjGMSkTc0y9ZqQSqKn3ms=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775118319; a=rsa-sha256;
 	cv=none;
-	b=r6ygBgW+NRP7UrG8oaEW4qwOz57wZKcrZQpz9T5WixW3jW3Oesrjp33o9A8uJP79kBhfum
-	YtGXpDetjJr8nW6csfWV1gluLfSzFp8nmu9UydFCwU4omiurFScowhtG7fR6l0KV37XUhX
-	UXB7azHs8lcevmuAq6PO4ZxxoqmnXQo=
+	b=d9BHHrgDBpSJWZ17Yvs/zy4/ReIE+6SPyauIA/GF3B2GvPFUe20KA0OhYhlF0XzHwEj+Sa
+	wtMHUea6hq/yrDvfRrLbdjzt2bLL51Oxl5kBTh0+WDcmk6kKki2l4fZTKRGEkQI5ZyT9E7
+	PWSxFz0XkZqpdutAiMjebp91fype4FE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jmhBxman;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=freCKJAL;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB2396186E;
-	Thu,  2 Apr 2026 08:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7F0C116C6;
-	Thu,  2 Apr 2026 08:24:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2025C4061B;
+	Thu,  2 Apr 2026 08:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C2DC19423;
+	Thu,  2 Apr 2026 08:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775118253;
-	bh=jA06gc5Pe4IVkLtx5H9gdixrMkeAfECyoYC1fHc//zc=;
+	s=k20201202; t=1775118318;
+	bh=4nZrhlvGnROpvnnAaCEMgDFtiESx6ozrqiSgxGjxgwg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jmhBxmanWyjZ1Wdt4K2SJ1STrNnEm6Izu97jH+1vmNyGxmieonjfDmBr7jnOoKerf
-	 pwkHp9SgetcYJti68BD+aTcNPmX54eNkuRRWzzesZbjkBpySTA7TR2g6M8i5UcszOv
-	 CJ0gBkHXn8J+f7jyl88XtEW9BejRvQBE48ev7Z5OdMndlU1MB++oYxK7ELFDlCFA6T
-	 NeBCKxIrJh6mWhBW/v9wlq7Og9obDAxq8xK/ZNOS4NZnSfZZBFwnXOi3ww1QVbFOQa
-	 xnM2DPM2UtqtfwqGnsJuXwcAuKBhZdWcfnZjjzbIi6Oyc1KhNW++F4rAoDsxESMSTW
-	 zTyLUSwi2wWMw==
-Message-ID: <03686997-f3d2-4e6a-b4a8-99543a9f8a27@kernel.org>
-Date: Thu, 2 Apr 2026 10:24:06 +0200
+	b=freCKJAL/5srsOPPHnZ1/GheZ0Tp9YRXahDWdvn3iGHCEVxv5gpEWtcN5AZeT/nXM
+	 W6y9p0tMtNiejtHHEP0cZdNjlIj6byDv8RC/sLXE/gbAPVUW78HgVlhKPq7jMxFm5j
+	 5BwBx5sUTnAk6DivwvHKl552uXE8VSJd5Iw/Youfeq+bG7N5x2FxacGqUU+Hv+/Ab9
+	 31LfL2Tywjais5WFKJpGDPN3k6bwZghOFj6k9urCxW8wFmEZLqd3nh04zMDyHNG+P8
+	 qSzNmLFVyDDorL8kSlizEDLy9KP45J9tJoRcb3nGmp3orKXLB70QYu32ikw3XAsvbF
+	 f3Y28yYKvvEPQ==
+Message-ID: <835725cc-1670-45ae-bf58-593aadec6b88@kernel.org>
+Date: Thu, 2 Apr 2026 10:25:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: huge_memory: refactor defrag_show() to use
- defrag_flags[]
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
- <20260320-thp_defrag-v1-2-6ab15d0d26eb@debian.org>
+Subject: Re: [PATCH v2 00/11] mm: thp: always enable mTHP support
+To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, baolin.wang@linux.alibaba.com
+Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <cover.1770675272.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260320-thp_defrag-v1-2-6ab15d0d26eb@debian.org>
+In-Reply-To: <cover.1770675272.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9414B20003
-X-Stat-Signature: uhdrq649ipbi1f8b1thgn9hc9119cghu
+X-Rspamd-Queue-Id: 1881D12000F
+X-Stat-Signature: ymx589587ihnfu37ncsf7gm5z4tu4am1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775118254-900536
-X-HE-Meta: U2FsdGVkX1/B/z8yIzb0XwvTeFuig63r6ZKS80NBIltUXD/Ph+NIF17QTBVtqLSTa6tDDF16/t8G0g+BFdEYMduWat0KAAbZuFRxaUrU5NgoPBkJs1GxK4Ts1t4qmEImDlwuRijh0IdL8c63BeEUVUcHqr4+ZCOX0N8+XyH5tDp2l7Af3MfdFvPx4XBrOVwGNfih2+ySvm+I62kPcQVgUNadv8tKvrBSFJbWZfJ26j+n+kQPoVBiaElyOKN+1IDiEmDdMjrjxkoLuvYPriCEnr1qthX9+fK6ablbLjEd6KOc3QeOfH+7KeMIqUbh4N1VuxWSSJiHY0/QG73hdbblzfanSkK8TdfQFY9IBpnlxcnB7uZYJRLFFK7aBTZEIZkG2Dbhpyh7WoWN1bgO8cebGzjy5xdvfKAYbDa+c8CLmbOgPXrZ1umDtf6JM/swWmFpOWYIjF6zbZaZgK7r233ydSHKfHYFyWXuIOp9grNinD2zPaGzfw9cYz5MP40B49MD7jZbsJBLqOhr2e+uAKPDR5jMDor73TdR1OPFGTC2NfZNbv688zRRvKq0EJ5FJkNLJe+rcYkTHJE6ERPEHrEhYvtMoCrzeJXS63syQ1bsDkS+oZ3SiEOnpf4ytn4WzrVy54egc+qMyWqHjmjw23+MPBiQffYcfACZ8gikoYRQfqQZGSKuTrip/4l/NQ1NawxE5lJUhDsybPdjFVbx0E5g5atApbmYqogzdqkfg6xpTRHoj1oT7N+a9EhxholgaLHvY/0b/W5DH8KQhSQ+Ze3Bl6De1uQsNENyHc/SLUcegcqojRMFUj9V8jG4mtqPZjpPgzlnH6BekojKNRdyuUjIgKdA/GKzRrmOV+CuaTSV6y3wy2V2L+BOlOuN0V+s9guPoyNlucHLUBEG4ubth4ASkFPJ5HTkHjoepw19DlKiwQ2NlPKDg5RSNDWi7aqmxtYXyw+45Jtsg0TdVGd0PCW
- K3uVL8fT
- Xha6jYv0vQKprYmaxZWHTDI3UvJZwKFqFsxp9tWSlP+lAfQKlgF0Mi+58Jed834eGJ0yR20GxIQgesU4dS/jTzSisU3UPHYdVErJNJslRKPWaH/9jN8ejMou8StN1LRzjQRez8uwXgySPA6Udf6lrv6EjjX4h3cnSZRSww5YOvv5AKXk6OU1O4y2txKywBnaJucwNCHP5ZyWelxDm2tEvuXzadA7YB+v6J9fS9F7BcLg7MQLBIzCpX6lgSFETmc7P4zJZB0+sFMwkYCzhgjUfFbu34pu8Fp6z8qNZGXhlYFpVpghyWf8vLLA+1Dq8HnsZFNtKBF2v7xDhFbxW86szhYdUxf3HkuvIVg28
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775118318-752784
+X-HE-Meta: U2FsdGVkX1/TKkmq1XizEDiwZGEfciIRO2HB0Q4VCjobgOJyIxYlTHIlIJSAmJ1qXBv2BnOE/Dhbta/8V7MT3xRn1nGM1v/I6YtbrJpUPccFvoYDIywhADH0pt1wqPNQiuWaJDq33yhg5dwJQ3l8SdP5PYdTjEDe/qS/B6WNJBWw0rBA2kIkjdh6M/aNNJvuQN/JsMOKlNtzE0+pc8RsvKJbf4j4BTU913ADcGafRkieGkClU5PeoFjX13qlcXIaakKu855gSA7Qte2Oj8zp6NkCNWbDxaGwjlaKABg/EWLqTwgAwV9BqlLN3Bi4fWtzfcxvwOnK2XAFqjaxDcivUle3AM7B/Q/+2ghcSjcBGiEK2M7OqIUeir4gPlUKwRO7Asgl2my1aFtL+w0eF8Ldx050UJc7tozoa9z/FPK1cR5vOeBNDof6xSnYqb50KyVhIr9fkk50vP+2f2KWtybT+oqkYKfqMtvhw5kZHwdrWDogEAF4/bHrYv/CsdnWoBlrhPNwEdPxklqAbBMSl9FPafezYBI91IIwn8e2uqWMOsr7IwblBZBtuLkar8SefHAY03V8exccnZo6aU3awAv9uqSSeyxYxnLtCZ3eDcimzAjdCvGkhNE02K9BVRvxuLlmo9jsMZ3wjOY7EeBpSJGN6PemO9spMu+w7CoS8b5tKRV9lrPuvRuptcAUWXpaSzKyFIt1ze49YWJ/rVrsWIcgSako01Nd+duImKqQS5A34bssbpaw3TB9ELxuJaZU1izPOuKnUYfUrZLAvvdvdRvfPv6U8PCJEC008uNE9ic12Nabp4yGjpJ0P80xWsJht6Xrrx/Re1OgZTLneA7d8CM3j1rrSMBlUBSa97ShSpGaxYaiS6iX+6uMUr8LOOmFpeTZFieb/EvLhkn6StBBqosEgXcDu7kyg7KxLozYUNyj2PLt85fqhkDGveT6fDuAqYysvdl6WgdHIVt5QPdp3JU
+ 1EGabiVv
+ SdKllmjqmswVDuR+b653OYJN0ur8YD3vFX4ow8qdgO+1r0bq6Wi8cXNjUp+a/YTe3it86srCLlDiDxBCtLkntT1FoH3P1hmtGMT6Ct1Trc9Gs/GHIkNpMLSUuzRHJx1hIyutZcPMi95Z4oPNqvkPqLRsUnv0v0aXHiE9YoUKCtNHqUMHLZEKURBMu7o9U9taanlKoysBa+rT+aXBr/9iW15Nt/wzip0xnluOA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,72 +138,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 17:05, Breno Leitao wrote:
-> Replace the hardcoded if/else chain of test_bit() calls and string
-> literals in defrag_show() with a loop over defrag_flags[] and
-> defrag_mode_strings[] arrays introduced in the previous commit.
+On 2/9/26 23:14, Luiz Capitulino wrote:
+> Today, if an architecture implements has_transparent_hugepage() and the CPU
+> lacks support for PMD-sized pages, the THP code disables all THP, including
+> mTHP. In addition, the kernel lacks a well defined API to check for
+> PMD-sized page support. It currently relies on has_transparent_hugepage()
+> and thp_disabled_by_hw(), but they are not well defined and are tied to
+> THP support.
 > 
-> This makes defrag_show() consistent with defrag_store() and eliminates
-> the duplicated mode name strings.
+> This series addresses both issues by introducing a new well defined API
+> to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+> new helper, we ensure that mTHP remains enabled even when the
+> architecture or CPU doesn't support PMD-sized pages.
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  mm/huge_memory.c | 38 ++++++++++++++++++++++----------------
->  1 file changed, 22 insertions(+), 16 deletions(-)
+> Thanks to David Hildenbrand for suggesting this improvement and for
+> providing guidance (all bugs and misconceptions are mine).
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 4843e2154038f..eaa6623fa49e2 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -447,24 +447,30 @@ static const enum transparent_hugepage_flag defrag_flags[] = {
->  static ssize_t defrag_show(struct kobject *kobj,
->  			   struct kobj_attribute *attr, char *buf)
->  {
-> -	const char *output;
-> +	int active = DEFRAG_NEVER;
-> +	int len = 0;
-> +	int i;
->  
-> -	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
-> -		     &transparent_hugepage_flags))
-> -		output = "[always] defer defer+madvise madvise never";
-> -	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG,
-> -			  &transparent_hugepage_flags))
-> -		output = "always [defer] defer+madvise madvise never";
-> -	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG,
-> -			  &transparent_hugepage_flags))
-> -		output = "always defer [defer+madvise] madvise never";
-> -	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
-> -			  &transparent_hugepage_flags))
-> -		output = "always defer defer+madvise [madvise] never";
-> -	else
-> -		output = "always defer defer+madvise madvise [never]";
-> +	for (i = 0; i < ARRAY_SIZE(defrag_flags); i++) {
-> +		if (test_bit(defrag_flags[i], &transparent_hugepage_flags)) {
-> +			active = i;
-> +			break;
-> +		}
-> +	}
->  
-> -	return sysfs_emit(buf, "%s\n", output);
-> +	for (i = 0; i < ARRAY_SIZE(defrag_mode_strings); i++) {
-> +		if (i == active)
-> +			len += sysfs_emit_at(buf, len, "[%s] ",
-> +					     defrag_mode_strings[i]);
-> +		else
-> +			len += sysfs_emit_at(buf, len, "%s ",
-> +					     defrag_mode_strings[i]);
-> +	}
-> +
-> +	/* Replace trailing space with newline */
-> +	buf[len - 1] = '\n';
-> +
-> +	return len;
+> This applies to v6.19, but I tested it on v6.19-rc8+.
 
-The old code was certainly way easier to get. But this one here looks
-good to me.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Apologies for the delay Luiz (as told you off-list :) ), I'll try going
+through this soon so we can start queuing this after -rc1.
 
 -- 
 Cheers,
