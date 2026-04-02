@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF9B5D6AAF7
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 18:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2A0D6AAF7
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 18:14:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45B5B6B008C; Thu,  2 Apr 2026 14:14:06 -0400 (EDT)
+	id 1EA826B0092; Thu,  2 Apr 2026 14:14:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4329C6B0092; Thu,  2 Apr 2026 14:14:06 -0400 (EDT)
+	id 1C1FE6B0093; Thu,  2 Apr 2026 14:14:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370256B0093; Thu,  2 Apr 2026 14:14:06 -0400 (EDT)
+	id 0FF6B6B0095; Thu,  2 Apr 2026 14:14:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A70F6B008C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:14:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABD9C160866
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:14:05 +0000 (UTC)
-X-FDA: 84614414850.15.ECD8B71
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E1A60140005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:14:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wZmGPz/E";
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F38E96B0092
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:14:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BBC6F1A0339
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:14:09 +0000 (UTC)
+X-FDA: 84614415018.08.2058DF2
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2DD80180015
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:14:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GCgY7W2u;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775153644;
+	s=arc-20220608; t=1775153648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lRxmwuc22mXtXN7oNLaBJ1zevopumUc49+eNnxlzmvs=;
-	b=X4jeHRRmhD9Bk0CVzzrvKJFR0Hu27B8vsROR+IMAtYfbAmanPi3dK3NrGLyiqQgDdAMWI7
-	EwRHKdb13d/aLB50uc1CE7nD4MEcdblwBUotgWKZ+4a7+I46EELsWPmXNrpOW8ovp5OUcR
-	CWpU5w7n0e0DeV6wAi2nl1jCLQ0hX+Y=
+	bh=xkczfxtSF84VSlTks10/GwIlblAMIDiieRoVjs+yTko=;
+	b=uYKgx1MfKQOci8hueIVt+X7T2tz59DVveXlz5dwnM/Wv6ae8bNpfRcYxh5pD7fFl8W7WyQ
+	sJeBcp9zehRAAmR9SIXaSsX2Go17vu+mydw9hJixFVr+z7VHAGsfTYmnaRwsxTAsrOEzBq
+	2gQxaQ7o43bqlcbPz+7t8I8hbnKDtpw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wZmGPz/E";
-	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GCgY7W2u;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775153644; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775153648; a=rsa-sha256;
 	cv=none;
-	b=2EPG0roIEq3hi6jQluGnENZHD8LvyF6sHqGbHIjP3QG7S4ODy2No7V+xyk2eJVsLhs1JK2
-	MMENGrLeeTq6fuSBRz0h0yPYCCKrF4Ra0jwFrKmIqbOXP3mB2TMEMtIeuQnsDxCplMLv+r
-	F2wB2re6ydcugvnteOYlwda02WIxi+c=
+	b=UyCXBN6SeaqI/nnHIAwkjtgNYOr8a3V4E/bdD7QsRMnC0+oA7e5OHsHE0VOYEJjI6ibEPm
+	LcuDqhXIh5sFR7312wANfhjnrhPd5VjLcolsR9R/68x80IJ56wNe5BT7kKt9XUUlNOYQkO
+	K045INgowMIM4WhxmllqQz+cWYjUs2k=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775153640;
+	t=1775153646;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lRxmwuc22mXtXN7oNLaBJ1zevopumUc49+eNnxlzmvs=;
-	b=wZmGPz/E3h1QCqlt8sX2GdYj4k09LPK0QNGPYb3BVlteyZONPgM/wSFv41PdjD4AUddHEQ
-	oOcjHpYxQzCi1PvsfXC2bhs3iCu2FCmJtm+N1VuxurAiQtvgeWZNr8mav9sHwyKO7sfTw7
-	jxGAuXnrdImExXI92M71xlZAunfPyhg=
+	bh=xkczfxtSF84VSlTks10/GwIlblAMIDiieRoVjs+yTko=;
+	b=GCgY7W2uOZ9JOJ9TKL9rwScooWJa3NSfsWsGckrshtUKYLwLenqw8/WjLx0Z4uA+sAWq/i
+	MP9pHdN5k++FTE7QpoVImIQJ6P5w7BhPS+mm4Ls/yGqPdljUkJoVqO+6UMRhlpVlz5ICYl
+	7egdHS89vNwD+WdCQpSsbvwFDNYj6ok=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -79,22 +79,20 @@ Cc: r@hev.cc, jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com,
 	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
 	leitao@debian.org, kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 3/4] elf: align ET_DYN base for PTE coalescing and PMD mapping
-Date: Thu,  2 Apr 2026 11:08:24 -0700
-Message-ID: <20260402181326.3107102-4-usama.arif@linux.dev>
+Subject: [PATCH v3 4/4] mm: align file-backed mmap to exec folio order in thp_get_unmapped_area
+Date: Thu,  2 Apr 2026 11:08:25 -0700
+Message-ID: <20260402181326.3107102-5-usama.arif@linux.dev>
 In-Reply-To: <20260402181326.3107102-1-usama.arif@linux.dev>
 References: <20260402181326.3107102-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E1A60140005
-X-Stat-Signature: kqdc5unxbchg9h7icm5ek61jfaq79r36
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775153643-853119
-X-HE-Meta: U2FsdGVkX1/NnGt7kGUSZ5ePIJveHa7jiInnJOSVI4ZsuUDhjG2VNTAfF5X8Ek74oMgV6GXa+xI16iLHRF/iHW2kvmFbNb/ljjs7De2FOZIWedSV71DkGHSETs365jkhQ9nQaEecwOdbI99vr+g4J+bt2OOX6B8LzmYKb6ZlhrhS/xezv4J8veVv0LQhCbi9Pgm8brvRrIY840f0Mf6EXpx/jlkBp2TWeuTUZMONILs1/VAOANzAcXLz/Jv55MysmAB+zIARD8lrvvastX/yOga5HFZylX9OfQNO2RTqzvMjYWG0wN2aBYo4aYqbv8gs7kiQP9fh/B0WRPAfUpq9kg7Izy7Nbd68cx7UtREsMAFn5hbGp0+tS57v3nkVaiRd1gL1zqcS0154jCU98BzvnMzxIAtraRDQI6kgmRB9PfJPQ4IQ09AxtfJ8TuAFhzWHSqMVzUw95AdJEKYX3Ks6UIHodLTvdGW1DUQMBKdKGe301qhN+uS3BgnaSXJqy62FNGWBxMEp2KVsVFhwSQu8TcdAm+UwtgPfMRtjucyDWuiHhvAbaKtKYB0e4qEuK3Y5jp69EnIxBhv2TfRFE2ZjwsSKLbcrFGh2Z24d5kdXLpumT54r8tMfkj+tFI7uJ9R3ULRbdOOoZWUaU1mDKQnyMfnUqXxdPg6dyK7ju/mg0I1cZ24c/v68lxbo9FAqSLmRP7EcQUU90r4cTjarm0ZzJ0bXJSt9hUkPa2Jwyx1yD8pKT4Ef2g6Kwi93l9UFiOCUhDydnk/k8bAIj9Y2yL+XEZUU4VHwBk4bzMdO7synMRhLvbmhf64Sb/u1pj54pRp+gsMxZYQSsn62760kEIve6lWOVabW76U070X5A+zP/LOaBVNTe8SMnDyo4bgkPtxjx6PWQ7TwojcZcvm30iN0agbrpEcwue/lpIhwInliqf8rW1Mw+DcCvMkbqDFsaHH84cdOvYQ4xzpD8xg2EwF
- Z7E30QZC
- sUHuQMvi/W0SuVSAI+zElzkNDAWocvrkuKQkO/aDajL3oBKFk+j1QLIqp+kOQSYfVhDdarRfqLJBE4VtWB5v7zWrD6zkt+1QHoI4jvCx0va0u2TSafK6FzX1bszaN6yKOSSZV1XFPTvtNDIFpRmjggjDwA7690jES+l4MlxASwWvBxWSnHovMRmc51W3IDnhG3qb0bBlkL7N6fiV15qEjQteRGj1m+Ha9DQfAe2MaMoCqkz4h8Mz9HwCzKQ==
+X-Stat-Signature: rrmsnnu3g86yuw5kgiif56zob1hu4kzw
+X-Rspamd-Queue-Id: 2DD80180015
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775153647-950491
+X-HE-Meta: U2FsdGVkX1/lXNPvyPcpCtQiH4X8txxXfMvXZJSbAai1fV0yiUJDzfsB0TiuFBMEY37Rq9euH7fNkT/r9Gk+BUmiphTP6JRUX5O03a5ioSqn7Mn0f4Pq1X4EfefWwTkQY0KP2q4uYDM7hWJOZBiR4xO9awE/xWRfGUvXwd8/RrP1bE9jjYeprIDMUbeNFDA1fjSDts0n0M+XEddi0b2wtk48NU6Fhv5ahVvtM4w3coga/jOlldNUj+6+u4MvtLsKoOpAxJCc6ChnR62E0XGt36TcISyZji0M3ZA7Or9T3mTCGC1EPf2/IOK4P29BFAVL6a363Y6go350IV5MUTAI6fZK/RjcdjhpB9rctUItGzFWEM89c3pTLAvGuysNH8OPIVUz0G/b/sCNJXpyxJmgEYHnujO4z/RonQkLQJ62uk2oactuBCRYLwNYA74RHuhuGQRJyp+2lbQedWXsrj8AVxf0MiESKVbT5W/k7RHMLO87amb+R8JGYRzQQdU90tTXMSOI+euJ04oQT1UYw8Du5yw++pxfd0TyeE02WSzrpGtHzzsOtdc5/jKTP5vDimkHxiJtguTGXvIrRz6OZTjVAKij05S5SnMArYaD4tR6Ksq7Jt5IgoSz+N7pQPojgEFlevu4kqe/d5dc9Lv/NvLy7+Oj0+mZJhS/QrljBdn9g09XhryDKrz7HsJWf2bvROUuavN5OkHkjkT8C3Wtx5xTPV7s4Wr34WWss2B0dwSmi2MXYBiWCagV/aq/I5ME6T9WOU85g4Bs/YcOrm0pmQRWsfzlk8rfRCTtQa9CX+ZbHA7gEs2S/J1nP/plrrwZAFs0X7wGrtUwVVluRIHlHGcjK2KNH2DnLZ6glk0MIVzE8SQIyVCsK/50BOZWFelFp6Ct5/C+lc27UlQ0wWIG2tFvdueMx+swa0JVbvBsUarP59sfWDXFtrEgj+2MjoD9vzHNJxTs/qkorOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,111 +100,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For PIE binaries (ET_DYN), the load address is randomized at PAGE_SIZE
-granularity via arch_mmap_rnd(). On arm64 with 64K base pages, this
-means the binary is 64K-aligned, but contpte mapping requires 2M
-(CONT_PTE_SIZE) alignment.
+thp_get_unmapped_area() is the get_unmapped_area callback for
+filesystems like ext4, xfs, and btrfs. It attempts to align the virtual
+address for PMD_SIZE THP mappings, but on arm64 with 64K base pages
+PMD_SIZE is 512M, which is too large for typical shared library mappings,
+so the alignment always fails and falls back to PAGE_SIZE.
 
-Without proper virtual address alignment, readahead patches that
-allocate large folios with aligned file offsets and physical addresses
-cannot benefit from contpte mapping, as the contpte fold check in
-contpte_set_ptes() requires the virtual address to be CONT_PTE_SIZE-
-aligned.
+This means shared libraries loaded by ld.so via mmap() get 64K-aligned
+virtual addresses, preventing contpte mapping even when large folios are
+allocated with properly aligned file offsets and physical addresses.
 
-Fix this by extending maximum_alignment() to consider folio alignment
-at two tiers, matching the readahead allocation strategy:
+Add a fallback in thp_get_unmapped_area_vmflags() that uses
+exec_folio_order() to determine alignment, matching the readahead
+allocation strategy. This aligns mappings to the hardware TLB
+coalescing size (e.g. 2M for contpte on arm64 64K pages, 64K for
+contpte/HPA on arm64 4K/16K pages), capped to the mapping length via
+rounddown_pow_of_two(len).
 
-- HPAGE_PMD_SIZE, so large folios can be PMD-mapped on
-  architectures where PMD_SIZE is reasonable (e.g. 2M on x86-64
-  and arm64 with 4K pages).
-
-- exec_folio_order(), the minimum order for hardware TLB
-  coalescing (e.g. arm64 contpte/HPA).
-
-For each PT_LOAD segment, folio_alignment() tries both tiers and
-returns the largest power-of-2 alignment that fits within the segment
-size, with both p_vaddr and p_offset aligned to that size. This
-ensures load_bias is folio-aligned so that file-offset-aligned folios
-map to properly aligned virtual addresses, enabling hardware PTE
-coalescing and PMD mappings for large folios.
-
-The segment size check in folio_alignment() avoids reducing ASLR
-entropy for small binaries that cannot benefit from large folio
-alignment.
+The fallback is naturally a no-op on architectures where
+exec_folio_order() returns 0, and skips the retry when the alignment
+would equal PMD_SIZE (already attempted above) incase another
+architecture changes exec_folio_order() in the future.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- fs/binfmt_elf.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ mm/huge_memory.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 16a56b6b3f6c..f84fae6daf23 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -488,6 +488,54 @@ static int elf_read(struct file *file, void *buf, size_t len, loff_t pos)
- 	return 0;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b2a6060b3c20..ad97ac8406dc 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1218,6 +1218,19 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
+ 	if (ret)
+ 		return ret;
+ 
++	if (filp && exec_folio_order()) {
++		unsigned long exec_folio_size = PAGE_SIZE << exec_folio_order();
++		unsigned long size = rounddown_pow_of_two(len);
++
++		size = min(size, exec_folio_size);
++		if (size > PAGE_SIZE && size != PMD_SIZE) {
++			ret = __thp_get_unmapped_area(filp, addr, len, off,
++						      flags, size, vm_flags);
++			if (ret)
++				return ret;
++		}
++	}
++
+ 	return mm_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags,
+ 					    vm_flags);
  }
- 
-+/*
-+ * Return the largest folio alignment for a PT_LOAD segment, so the
-+ * hardware can coalesce PTEs (e.g. arm64 contpte) or use PMD mappings
-+ * for large folios.
-+ *
-+ * Try PMD alignment so large folios can be PMD-mapped. Then try
-+ * exec_folio_order() alignment for hardware TLB coalescing (e.g.
-+ * arm64 contpte/HPA).
-+ *
-+ * Use the largest power-of-2 that fits within the segment size, capped
-+ * by the target folio size.
-+ * Only align when the segment's virtual address and file offset are
-+ * already aligned to that size, as misalignment would prevent coalescing
-+ * anyway.
-+ *
-+ * The segment size check avoids reducing ASLR entropy for small binaries
-+ * that cannot benefit.
-+ */
-+static unsigned long folio_alignment(struct elf_phdr *cmd)
-+{
-+	unsigned long alignment = 0;
-+	unsigned long seg_size;
-+
-+	if (!cmd->p_filesz)
-+		return 0;
-+
-+	seg_size = rounddown_pow_of_two(cmd->p_filesz);
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-+		unsigned long size = min(seg_size, HPAGE_PMD_SIZE);
-+
-+		if (size > PAGE_SIZE &&
-+		    IS_ALIGNED(cmd->p_vaddr | cmd->p_offset, size))
-+			alignment = size;
-+	}
-+
-+	if (!alignment && exec_folio_order()) {
-+		unsigned long size = min(seg_size,
-+					PAGE_SIZE << exec_folio_order());
-+
-+		if (size > PAGE_SIZE &&
-+		    IS_ALIGNED(cmd->p_vaddr | cmd->p_offset, size))
-+			alignment = size;
-+	}
-+
-+	return alignment;
-+}
-+
- static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
- {
- 	unsigned long alignment = 0;
-@@ -501,6 +549,8 @@ static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
- 			if (!is_power_of_2(p_align))
- 				continue;
- 			alignment = max(alignment, p_align);
-+			alignment = max(alignment,
-+					folio_alignment(&cmds[i]));
- 		}
- 	}
- 
 -- 
 2.52.0
 
