@@ -4,107 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C839D39418
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 11:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D71BD39418
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 11:45:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 692FE6B0088; Thu,  2 Apr 2026 07:26:54 -0400 (EDT)
+	id 8D0E06B0088; Thu,  2 Apr 2026 07:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643246B0089; Thu,  2 Apr 2026 07:26:54 -0400 (EDT)
+	id 880EC6B0089; Thu,  2 Apr 2026 07:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 559A66B008A; Thu,  2 Apr 2026 07:26:54 -0400 (EDT)
+	id 76F626B008A; Thu,  2 Apr 2026 07:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 42D186B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:26:54 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 653EF6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:44:59 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4EB659DDC
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:26:53 +0000 (UTC)
-X-FDA: 84613388706.12.A55F0EA
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 08F5112000B
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:26:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IwJ+ViV3;
-	spf=pass (imf29.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B88D13B4EF
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:44:59 +0000 (UTC)
+X-FDA: 84613434318.12.0F3CC76
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 51FDA18000D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:44:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TC3BfVx6;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775130297; a=rsa-sha256;
+	cv=none;
+	b=HBHYg4/PRbiFJ6updAtjMWRZDQhqE9I75ZyzG31+OKRIG8L1jGhO6Ggu//9YfWl2Ydj8o+
+	SmsmPqNuxts+ivTi+FbyTwz8d9e3eAtiojYLNs8vL/9OBKE2Hh3NzypGmgVzr4tInQFwp9
+	O5JKx4XDH9WqLKa59zMUZDDadZUTk9E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775129211;
+	s=arc-20220608; t=1775130297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hy/twRPYhbiir+MS1ZezR/NKFm6OHeTxxqJZFQB9PJY=;
-	b=QR/z90On1IzZ5Ei3u8nN27dXpgMbnoP1HY4rkrJ8CuO6DNAQj1hsovBudqGegm5NvfKw3W
-	drDhCyGW0XOdUwbx+InN9Q6GNFGAr1FNVHZTyIc9U2XtDXj4T3TlgZBATYHujrHg5UB3+I
-	bLpjmwwPgFblo0zQVAKzSIesfZ3CJqA=
+	bh=2QHCVOKZe5aOuuGBELCvMiQhEHXDG+VGl4rmeomtG+0=;
+	b=nUVQtOLY1EuftXMpVVz31YhEpuUCUe+Eirx5SplJgjPJdRcglMdroepMSnICA4yDS/tj4J
+	tGqz1V6kPoACIFwtZAcIdklrA01z7gCb4SMJWiTff5jYF1T9A0QnXOQDANbNkTC7wwgEKC
+	4AL8bKhr8D9HLvQ3TVKjXabBGh0CXEU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IwJ+ViV3;
-	spf=pass (imf29.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775129211; a=rsa-sha256;
-	cv=none;
-	b=Nb3URhj/uqPq97MgnqvlvHvPpjEy3QUKhmjGzMCDeZI31kbtl16qV6xWUoxhP0AH4R7h5p
-	mbliyEU1p8ucKQ9xBxCCFCoXKVzeHPxCjqGBg/HWF649osoOD6cXhCw3ifM0gqxUligy2R
-	tIL6fCpAnjBkopXjAoFBA5fEJ9DKJ8Q=
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260402112648euoutp01403ca42bf49d47a421efd202ca6c6e03~ihpxLoeG22288822888euoutp01y
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:26:48 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260402112648euoutp01403ca42bf49d47a421efd202ca6c6e03~ihpxLoeG22288822888euoutp01y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1775129209;
-	bh=Hy/twRPYhbiir+MS1ZezR/NKFm6OHeTxxqJZFQB9PJY=;
-	h=Date:From:Subject:To:Cc:In-Reply-To:References:From;
-	b=IwJ+ViV3fVn8ffILzN1+oSKTdtPlqtT21PrIkH5/BQMaj/8kI/qfGXWbxMYJDctiz
-	 i+YraefNVbY5fJzfoHlOr9B8zKq8rn1DA2V//EveiyX9g3bzwvUb4VC52OoJNuQdrq
-	 82Tb77fuTcDwpqFGKil3reo97r1qMVk14qCuPFk8=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260402112648eucas1p2d6d3dffafe14d15bb776935b734d3e19~ihpwrX8Mr0663806638eucas1p2s;
-	Thu,  2 Apr 2026 11:26:48 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260402112647eusmtip247f6a1ea586e1f285f816be2bae2700a~ihpvrdsMm3271332713eusmtip2X;
-	Thu,  2 Apr 2026 11:26:47 +0000 (GMT)
-Message-ID: <73ef4f64-498e-45a3-bea0-2a5f11e71b28@samsung.com>
-Date: Thu, 2 Apr 2026 13:26:46 +0200
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TC3BfVx6;
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ab46931cf1so13086275ad.0
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 04:44:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775130296; x=1775735096; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2QHCVOKZe5aOuuGBELCvMiQhEHXDG+VGl4rmeomtG+0=;
+        b=TC3BfVx6B3mHGfPY42Lcg/0av5pCI9OdS9+atY2WolOx0oBvEtoiV1ooJIQFCwk5lr
+         JwIjy8nJtoRVP77mL2GxfA4bqNLlRLMZ52sGIKtIjJxs7z2BXEKigc5qCqwJ0pMjUWQj
+         84euJsZMzcQEaAwOwtn1L6s9htmbI3QMadFBksjOI17GgLShkMHhEowyXrxvzM1v8ego
+         9AyPH7GLg0o5uShV55/ugqnUItBgZrnZekt5sr2el/u5AkCTZSPDRuYJDLMuoIbzxLci
+         Vo2alz0QAMxwhQX8ALnuP5h93IYrmDOkSyaLGidCzvUXlQj+3dY2jO5PpLyYoEUmiHzD
+         CcQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775130296; x=1775735096;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2QHCVOKZe5aOuuGBELCvMiQhEHXDG+VGl4rmeomtG+0=;
+        b=LnPDBJD97Yyab/iSBYIK2V44vqRT57JqJdyX5xfC2WtejhIJ75IsZ65r435aFyEO3c
+         CSrHqbqK63J/a6dLS0Fw3hSSwHzwZ+0BGOu7uNMH1w7IFifffwLQTUcwLD09MKFMaf65
+         t6YwZoaisq14QA+WVzNAbwc1wPrMJzupRcaSPmEpMN5ELuHiGH5x/h3pmfZEgr56Zqpw
+         6qdv4vb2v2zkzjWxqln3TEwjzPpmEyVWu+nBLG3+PYLjsxpeoQylt3F/NGTv21yzl5Le
+         6Jthg9cu8/ixTLx6U3WxOHZ/wXuDbHpQjEUVsCe9lcBaoKmNyaSatQbr9JxZ97CFQPUG
+         1dIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoS74st1GImZMN/xIrkixmYQzZMJFES5M3gUnwf9H+Vl2TFuYGtC4mf/ak8iR9LhDZ+PFgRcVwDQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz2mbfS1VHIVDMqJ8j/IrbJhgq8XBkT2XWE9wl5lmmiFRJNlZpX
+	x1YzeYLN3neF1K194qjiGfkLh3JN5fFKalQp751wjO13eU54aI3CwlgS
+X-Gm-Gg: AeBDiesrhiXmVLiWSuTJ7ShyW0/VVAnZJCq6gksHVWc6XaIe6WOU94DgqzOa3ZgInZ/
+	mZJEwKQ5UjOVhUF6JIy9FBd/WZJG+k3DkcO7enr98NdsqltyHYPDFZ0C7hAPvmc8vV+RxksE6fV
+	2wYKzc+GFCHrU2MOCthJMJjweWjl73uBvJaPCwb1hPRRMhHchmsuiZ3Q6/T4K9M1UfKysxaRM8A
+	6up8sO/CYQWzJORxiWnsM9Dmjv/d0i0Q4a4s3eivzRwekrvs/K4U6DUf3eN2Nqr/Hodm3V1CS7b
+	GucdiDn9y9IcnHRi0qq8qhAAkY1jZk5TJu5yc+oF/wfHmJ1ZhgYWzizPNmjEQMLCx5mt9O/J5Ih
+	/eRSTEWjqXI0sB5dFN+//9bjv5PGQmrzVQBG7rcN7aYUVpTsDyIQkXvGR5DKD0scuqiZIC6Q/kL
+	drNrxxnugBKN7foeJ+tNmgyHdpQiVOSM5REDG0qgD5A7Zn8f9GpcTzTEozreoZh5VRpLxbipPNd
+	Fiwc+8=
+X-Received: by 2002:a17:902:da8a:b0:2b2:54db:3e93 with SMTP id d9443c01a7336-2b277e52a17mr19766245ad.23.1775130296027;
+        Thu, 02 Apr 2026 04:44:56 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27478b658sm28523085ad.31.2026.04.02.04.44.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 04:44:55 -0700 (PDT)
+Date: Thu, 2 Apr 2026 19:44:47 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback
+ handling
+Message-ID: <ac44BVOvOm8lhVvj@KASONG-MC4>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com>
+ <ac2rO_ovnIQIeYZr@linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH v2] dma-debug: suppress cacheline overlap warning when
- arch has no DMA alignment requirement
-To: Robin Murphy <robin.murphy@arm.com>, Andy Shevchenko
-	<andy.shevchenko@gmail.com>
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, linux-mm@kvack.org,
-	harry@kernel.org, vbabka@kernel.org, akpm@linux-foundation.org,
-	stern@rowland.harvard.edu, linux@roeck-us.net, hch@lst.de,
-	Jeff.kirsher@gmail.com, catalin.marinas@arm.com
-Content-Language: en-US
-In-Reply-To: <75f65aa7-4f89-4ef8-8941-51b1d54d1ad3@arm.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260402112648eucas1p2d6d3dffafe14d15bb776935b734d3e19
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72
-X-EPHeader: CA
-X-CMS-RootMailID: 20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72
-References: <CGME20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72@eucas1p1.samsung.com>
-	<20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
-	<6270d4f0-85e4-496d-8db4-87ccb791ca4d@samsung.com>
-	<c9ded35b-fc10-47d8-bfaa-cecb4fa91add@arm.com>
-	<CAHp75VdrGk=foAzQBJNRNDZ1yfFY8p-tC_ApM8_gN4EehpmN_Q@mail.gmail.com>
-	<75f65aa7-4f89-4ef8-8941-51b1d54d1ad3@arm.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 08F5112000B
-X-Stat-Signature: up38e3r57iyj8rjxnpgrqsrq3t8ttcx4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac2rO_ovnIQIeYZr@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1775129210-316885
-X-HE-Meta: U2FsdGVkX1/96fqU82RRedIHut23G0bRYz9J2pidJVftWWhWDx/pihSMEN2vr9laahLeD6bVFxtdNM28ZUG3zVyXLzQiy7cgjPZ0sScqEWb3ws4D6ybO1UHt9PEG3x/xcDW0cHmEZJBEA1H8F+LlXSFThULo9cd5p5icWWOCKi0eJLrxFGGRL0LJTdUiPOXIEN4TQdIDUINSgCpsdP3wq0ZNZ1U5nOc1Aw47hNlb0p3K66kVsIrHZSdkGX4eQKaT8oyiZqaBTSlPNgIIs7WZy/4LtN5IYoxUismTQs2rITX8KnSeVMvd1okxfoPPEeYcZqEJiVhPBdFEKK8JLOrwaGSyJRjKawHEJpol4wXM7yaB+tIGowdwQXiJefIjMbbu8TQ+jM6BHGK5cutxQyoKIV713Bf6YMRA9imbCIzoRKcbaPBki56GBW/mfAgIJ7wBTLifMz5d383hKFIBv9buFR/18kbi0X+P5qHcCzteI4z8x4eNolGzwF7WbkuxCinT6OjryFjy8aaBIyTcR3ddXZxlEhwELJ/XSBFfe2K5DyqhnvdEXW1c7QPy3tcB8N6T0690KdWhPHpP8BpA1S+wuAe0FS7S20Af/U/NNtcf8kJZqYGGjyEECW6qJhIG97tyG6Xw262SRVTtw9ti2bznpj6bM2ycgT8P97PDZRFGCiNuRALj3bH1+WMn3T7H6Qa2MFHsu+D+KS+6hiTzJnEawGo/MDJFy81bl+PY3As3nv8Q+JmLBY7t1cILE2EMrzsijtvAlHSF65E8MNNgj3K3P4rVjW9+OwLqvD4uWS7tj1xsUxf/pmJgeX4oEP/xjLZNw0LHwQczHwguFgKA3xhokBHg4ckIe5dMJXStPjcq0oBWFhkaJFHqrSqb/Xc4EjGxI/itkj5jtgxSDI5SvKO9TfDwxuB6zJnKMl06APgcg1741d9uGnsgsoAg+kJsA8j+s9Bq4zEy3sByiEv0mzX
- HMsNUpev
- 5TGJCtVilJgELs5U1+yseV5dKQTH2Law4u+mcPbD9Xv9d9Mu1jdMnvYGoEY15hw/0UOLtZATlOX2FBz1g7gOvT6gNFCZ7MKNc9RxgikhvoVAtBaCe3zLJo/MTmx/jJR+2CnNX3/kHRjFlMP8JF+f81BwLx49Hf6jgCiXrMem3Y3Y94atanIq7vcIjspodxW7vrl7UHcRDNYXmsD8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 51FDA18000D
+X-Stat-Signature: gx8btsuedhztgn49zb13umw4qo1nwd6z
+X-HE-Tag: 1775130297-413707
+X-HE-Meta: U2FsdGVkX18YbniHKovNSLZM5jp3o3w9iDTpuawzl7RMcsFGSwiNvnDp39CRy8l2TJW4yaNm6Fobjs+vHWJEgMhbQNq8xQ6Z566p9oAoYCSrvM1VCqm8kEE7lQ80+cRwXRVNkCSmJGy4MziWKs2JWwUwQ9aHm2lkqcExWmC9zE/zfTZ4sAAAC/X6BpDOBbaVa9j7QKh2JXKrojGsD5yncpZOYmcQ2fxaLhONz/DR/20YANczrMnJByMtLOH+RE3+Sb5yodsuH2l51yNU/xDzGZPGhU22lxEPI5T9qHsDQhv9kI6SOGphpaVQUMVrz+IFTRrsM0ZiPsraUYi1bUAx+I7zSQrkqVRezieEg22KYJnOcrm6Hk8cJ5wPC4x8KXB/NhxryfMc/LIv8TGdXMjV+WmGDA1DhjmhF/j+2a33ytJYAlyv5nZ+C6ekeODOSkATy+n0HgNKtyhRyL30/ywQU4pP3Cy2csJfEmgGOknDPwuwD25N5pQxqxd+CMJjGo2OhGpvLkIeZxbbc0KmmcHiqAO31586Klt+8UZZRH2NW8vrE2KKfVKc/pPFxPDWUxgCkNBaIcpmZ1tFd9a7gfHQrA249/2EDSWYo++WOt41QqUbkgvQ8EKjFGdAJJJLMDoBawEOta343Klw68p7+/eeEdoXtgCKb8KxNsJB5+VMQK+Ja3pnvnki+eyyQ59oL+5cFCxax/9rGqdMJwERELcmNAiz0v0NcVj2B3YJ/j8yYiYbhwfejeJl3wCNkrh+mdUnuAaSugGJ/syvrn918y30nIzPZgm9CWxdG3NWbZouBz6ctFlNfOj7wcKE0dMRMbbLPQHNDgLHaX/XfXBl1H4vyMUIaqB1jaOZyk7R+gQxqzIpOr+SMQbX0XNK/h1xP5xbA2Vblh4oKbXCyp6PDvUxL7/IPh+EJctNEyGjqQiB60+ru9FhwsF20NMLYgk0hDY0Fmg0DkC/s8VULiEZ/cs
+ NW5BSNA7
+ bLjQ3x7qNrDgU0ir8LUBKjGRGfUn8+YQrD6//dPvhFPfL41dX8QeHjZfJzc4FVSYmFkyCUeJTdnK3YdogNog3lbl9InSWNn1w1RytZIdHyPmMWIOhHr+x8ZJtdd53LYJ/KnlIK1D4VJbl+Gi88+VYs59OLF7Q60mYYt+Bz2Dt9aF++eqtIxBgYqD96zm+Cz1RQVQGuYARx/v/8YesSfCxQfnJqphgcuCea+qO4tDyB/QI7HGeKpt647wMkqnYcsRVlpM29y5bFmCN3TQX0DmZL8UNDHncyR/KKcb1GkXJXIHJvMM1CAXSPjxmsMWth9dUBsAq7W35Qlph8ZMxpZz6D+fQwCE0RxNcvuzflLSH1s2/CR5MgsBePphvUNlvntEEnJX7pXWAoUGXGZG3dBl1o/tpsQAk3grGhziRZWY2tM92Sci78S0dYDXT0bTITxFRYP+tGOlA3unNdYa/zENSgY46EMcZrxV1L1e5QqKIj/9w63qyXRoOkS5i96fkcWGwUFK++IhEDR6pZ7/zbprVIbVzTmObJclYjsI6Oyxs4+zBpVzZE3xoZT2fLDKhHRCAhuJF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,127 +130,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.04.2026 17:26, Robin Murphy wrote:
-> On 2026-04-01 2:25 pm, Andy Shevchenko wrote:
->> On Wed, Apr 1, 2026 at 3:11 PM Robin Murphy <robin.murphy@arm.com> wrote:
->>> On 2026-03-30 8:44 am, Marek Szyprowski wrote:
->>>> On 27.03.2026 13:41, Mikhail Gavrilov wrote:
->>
->> ...
->>
->>> TBH I'd be inclined to have CONFIG_DMA_DEBUG raise ARCH_DMA_MINALIGN as
->>> appropriate such that genuine false-positives can't happen, rather than
->>> effectively defeat the whole check,
->>
->> I dunno if you read v1 thread, where I proposed to unroll the check
->> and use pr_debug_once() for the cases which we expect not to panic,
->> but would be good to have a track of.
->
-> I had not seen v1, as I took the last 3 days off and hadn't got that far up my inbox yet - I guess it's at least reassuring to have reached similar conclusions independently :)
->
-> The fundamental issue here is that dma-debug doesn't realistically have a way to know whether the thing being mapped is intentionally a whole dedicated kmalloc allocation - where we can trust SLUB (and DMA_BOUNCE_UNALIGNED_KMALLOC if appropriate) to do the right thing across different systems - or just something which might happen to line up by coincidence on someone's development machine, but for portability they definitely do still need to take explicit care about (e.g. struct devres::data).
+On Wed, Apr 01, 2026 at 04:37:14PM +0800, Shakeel Butt wrote:
+> On Sun, Mar 29, 2026 at 03:52:34AM +0800, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > The current handling of dirty writeback folios is not working well for
+> > file page heavy workloads: Dirty folios are protected and move to next
+> > gen upon isolation of getting throttled or reactivation upon pageout
+> > (shrink_folio_list).
+> > 
+> > This might help to reduce the LRU lock contention slightly, but as a
+> > result, the ping-pong effect of folios between head and tail of last two
+> > gens is serious as the shrinker will run into protected dirty writeback
+> > folios more frequently compared to activation. The dirty flush wakeup
+> > condition is also much more passive compared to active/inactive LRU.
+> > Active / inactve LRU wakes the flusher if one batch of folios passed to
+> > shrink_folio_list is unevictable due to under writeback, but MGLRU
+> > instead has to check this after the whole reclaim loop is done, and then
+> > count the isolation protection number compared to the total reclaim
+> > number.
+> 
+> I was just ranting about this on Baolin's patch and thanks for unifying them.
+> 
+> > 
+> > And we previously saw OOM problems with it, too, which were fixed but
+> > still not perfect [1].
+> > 
+> > So instead, just drop the special handling for dirty writeback, just
+> > re-activate it like active / inactive LRU. And also move the dirty flush
+> > wake up check right after shrink_folio_list. This should improve both
+> > throttling and performance.
+> 
+> Please divide this patch into two separate ones. One for moving the flusher
+> waker (& v1 throttling) within evict_folios() and second the above heuristic of
+> dirty writeback.
 
+OK, but throttling is not handled by this commit, it handled by the last
+commit. And using the common routine in shrink_folio_list and activate the
+folio is suppose to be done before moving the flusher wakeup and throttle,
+as I observed some inefficient reclaim or over aggressive / passive if we
+don't do that first. We will run into these folios again and again very
+frequently and shrink_folio_list also have better dirty / writeback
+detection.
 
-Right, the debug code cannot distinguish them. I'm still convinced that increasing
-ARCH_DMA_MINALIGN when DEBUG is enabled is not a good idea. I also agree that the
-current exceptions for DMA_BOUNCE_UNALIGNED_KMALLOC and dma_get_cache_alignment() <
-L1_CACHE_BYTES are wider than really needed. What we can do about it?
+I tested these two changes separately again in case I remembered it
+wrongly, using the MongoDB YCSB case:
 
-For the (dma_get_cache_alignment() < L1_CACHE_BYTES) case I came up with the idea
-of reducing the check only to the dma_get_cache_alignment()-size overlapping:
+Before this series or commit, it's similar:
+Throughput(ops/sec), 63414.891930455
 
+Apply only the remove folio_inc_gen and use shrink_folio_list
+to active folio part in this commit:
+Throughput(ops/sec), 68580.83394294075
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 86f87e43438c..9bf4b5c368f9 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -418,13 +418,13 @@ static void hash_bucket_del(struct dma_debug_entry *entry)
- static RADIX_TREE(dma_active_cacheline, GFP_ATOMIC | __GFP_NOWARN);
- static DEFINE_SPINLOCK(radix_lock);
- #define ACTIVE_CACHELINE_MAX_OVERLAP ((1 << RADIX_TREE_MAX_TAGS) - 1)
--#define CACHELINE_PER_PAGE_SHIFT (PAGE_SHIFT - L1_CACHE_SHIFT)
--#define CACHELINES_PER_PAGE (1 << CACHELINE_PER_PAGE_SHIFT)
+Skip the folio_inc_gen part but apply other part:
+Throughput(ops/sec), 61614.29451632779
 
- static phys_addr_t to_cacheline_number(struct dma_debug_entry *entry)
- {
--       return ((entry->paddr >> PAGE_SHIFT) << CACHELINE_PER_PAGE_SHIFT) +
--               (offset_in_page(entry->paddr) >> L1_CACHE_SHIFT);
-+       if (dma_get_cache_alignment() >= L1_CACHE_BYTES)
-+               return entry->paddr >> L1_CACHE_SHIFT;
-+       else
-+               return entry->paddr >> ilog2(dma_get_cache_alignment());
- }
+After the two fixes together (apply this commit fully):
+Throughput(ops/sec), 80857.08510208207
 
- static int active_cacheline_read_overlap(phys_addr_t cln)
+And the whole series:
+Throughput(ops/sec), 79760.71784646061
 
+The test is a bit noisy, but after the whole series the throttling
+seems is already slightly slowing down the workload, still accetable
+IMO, this is also why activate the folios here is a good idea or we
+will run into problematic throttling.
 
-For the remaining cases (DMA_BOUNCE_UNALIGNED_KMALLOC mainly), based on the Catalin's
-suggestion, I came up with the following idea:
+I think this can be further improved later, as I observed previously with
+the LFU alike rework I mentioned, it will help promote folios more
+proactively to younger gen and it will have a even better performance:
+https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com/
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 0677918f06a8..f9b6a989ac15 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>
- #include <linux/export.h>
- #include <linux/device.h>
-+#include <linux/dma-direct.h>
- #include <linux/types.h>
- #include <linux/sched.h>
- #include <linux/ctype.h>
-@@ -590,6 +591,14 @@ static int dump_show(struct seq_file *seq, void *v)
- }
- DEFINE_SHOW_ATTRIBUTE(dump);
-
-+static inline void dma_debug_fixup_bounced(struct dma_debug_entry *entry)
-+{
-+       if (IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
-+           dma_kmalloc_needs_bounce(entry->dev, entry->size, entry->direction) &&
-+           is_swiotlb_active(entry->dev))
-+               entry->paddr = dma_to_phys(entry->dev, entry->dev_addr);
-+}
-+
- /*
-  * Wrapper function for adding an entry to the hash.
-  * This function takes care of locking itself.
-@@ -601,6 +610,8 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
-        unsigned long flags;
-        int rc;
-
-+       dma_debug_fixup_bounced(entry);
-+
-        entry->is_cache_clean = attrs & (DMA_ATTR_DEBUGGING_IGNORE_CACHELINES |
-                                         DMA_ATTR_REQUIRE_COHERENT);
-
-@@ -614,9 +625,7 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
-                global_disable = true;
-        } else if (rc == -EEXIST &&
-                   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
--                  !(entry->is_cache_clean && overlap_cache_clean) &&
--                  !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
--                    is_swiotlb_active(entry->dev))) {
-+                  !(entry->is_cache_clean && overlap_cache_clean)) {
-                err_printk(entry->dev, entry,
-                        "cacheline tracking EEXIST, overlapping mappings aren't supported\n");
-        }
-@@ -981,6 +990,8 @@ static void check_unmap(struct dma_debug_entry *ref)
-        struct hash_bucket *bucket;
-        unsigned long flags;
-
-+       dma_debug_fixup_bounced(ref);
-+
-        bucket = get_hash_bucket(ref, &flags);
-        entry = bucket_find_exact(bucket, ref);
-
-
-What do You think about it? Both at least allows to detect errors like multiple,
-incompatible mappings of the same memory.
-
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+For now I can split this into two in V3, first a commit to use the
+common routine for activating the folio, then move then fluster wakeup.
 
