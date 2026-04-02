@@ -4,128 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E27A9D39425
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F5BD3941D
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53A4C6B0089; Thu,  2 Apr 2026 09:42:11 -0400 (EDT)
+	id 1B9606B008A; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EBD06B008A; Thu,  2 Apr 2026 09:42:11 -0400 (EDT)
+	id 1907D6B008C; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D9ED6B008C; Thu,  2 Apr 2026 09:42:11 -0400 (EDT)
+	id 0A6ED6B0092; Thu,  2 Apr 2026 09:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A3236B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:42:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C1527E17E2
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:10 +0000 (UTC)
-X-FDA: 84613729620.30.F6E4FC8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4CAFB40009
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H5oQDE7Z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775137328; a=rsa-sha256;
-	cv=none;
-	b=SBjQ05vmdStSTwzSbyc7U2195kAf6Gm3DLfI5kFx512ZW0KXIG6OPlt5SWPO3sMoIwT379
-	XA0fa6qpTCDhSwTNJAvvZ9WDnNKS1yQjuxmwAC5Cmzhxw/6MeW96Nm+/A+zxBxouXNXKD8
-	yPOG5QrQcnzLVrEJWvEGu6mX6AAXw1Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H5oQDE7Z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EF1136B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:42:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0E141B8749
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:37 +0000 (UTC)
+X-FDA: 84613730754.17.5BDDE5C
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E45E5180003
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:42:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jcv47Cld
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775137328;
+	s=arc-20220608; t=1775137356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yWfsa/6+96oHTl9AiAyQHghAoNdpYCmhSqZ3pWlb3YA=;
-	b=pU2mfo3oFGeW6yvrpjL4b3wREu5eSN7a43c67Yz4sdSDL35ewgwv7YJ6XwHv7+4jWI711S
-	1vLhdu6w0OMW49L657HEyJScdpzeaXwn19kcpCG0EHDWq2+PCMXs4hYBJMQjSjHqOEshKr
-	gp2bURPb9XoP5JNu96zZ4srM5QWu+rY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775137327;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yWfsa/6+96oHTl9AiAyQHghAoNdpYCmhSqZ3pWlb3YA=;
-	b=H5oQDE7Zo8f52DXblldPI73r1OtP8kOJzFo+gC5H+FdGut6vzH+99+XXF/Tc7xANXKquGx
-	aId3pF6npiF+SJfjLznYuay42w47Auhoi+vVoKr9gwswuoI4rF0IvAXm4rH2ZGFVGkl9bQ
-	qK5aUxhBniZKrRwBGmx3bz8pIwnal7E=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-0Nv7gxTgM8yg4IX9SS-Uvw-1; Thu, 02 Apr 2026 09:42:04 -0400
-X-MC-Unique: 0Nv7gxTgM8yg4IX9SS-Uvw-1
-X-Mimecast-MFC-AGG-ID: 0Nv7gxTgM8yg4IX9SS-Uvw_1775137324
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-89fa878662bso43184776d6.2
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:42:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775137324; x=1775742124;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yWfsa/6+96oHTl9AiAyQHghAoNdpYCmhSqZ3pWlb3YA=;
-        b=SyP0++cxcKyuP3cX9XC8IOyh8UMhwS/B6sQcg97kIA69GCznF0AH8rMWUO77hghDwH
-         mZwDaKKftFW8yTOKnCytjdsp90JSuLW1nKxhSEFa7dlCrFkHVWeQOsUgYMYmBHCWpMNK
-         EanVgB5fIY/xomt8rNW6UKMWBgoWqQ3T9XdL3N+cLnWegwTlsHEw7ZRgFKpAGlUJeHMw
-         q5JtvQMJFbZ6FaEvj7h3eYJ/lDzwn14kpT7pG50SNU8ss0/whlYardEBNPucyDfGOTtq
-         xeGUX1Vd8CaIhOND3Y8Hwl60vwYRJ1a0t2ESjnRMRdOYnCP/iXk501uRLWp/hOUOfYes
-         4zKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIdvwTId/AHFa0hrghtxIER9o9SVu2r5rdMjMC7+DL/mYZBboz1FtR4QFrrIpIieprWbvIE14j3w==@kvack.org
-X-Gm-Message-State: AOJu0Yz2uIh8O53En1cAyjChTD2r2OwgpdH9QZ9izf9VejH3xFGTwEWt
-	TPdDIhF7CBc77bsLsbY7gzP0wShsqFTvJlS2dOkrfFgLLn1eBKL0ijoMBXfN43CuA/HCy6w931p
-	qJsr1+P16oGJGomC+yREB8pwVEWIsn8GKP4EL4jZha0kOo3N7bpAOxocV1wuZ
-X-Gm-Gg: AeBDievVa1P2G8HKA2yJhUkEEdmnmhDoEuVg0Clt13DXY2hsyUdOFizfFd7WUgHNX7A
-	D+quJLqGO2aeooOzPo5qeOVZYUtncNRN3uRcBl8ye92Cwj4jgnGtbUrjpsC6oSiczRzzGTUrE1O
-	yVuITZ+geP3WrRK0AzplR1ToEWND3ZoNBTQkqrjCtQp5jnSm2DKPiYKtpOwADJOGrd9eMEjcDop
-	tPyRB+hauS665nh02yGVKGOWNG67m8jD+OJBzMO8ONC8SbfaNq9LGwk5LE9lBR9MDe8A0p9LZ9s
-	D2D34GCHeGxjxAjV4hIigkSbLphQLiccj7yOJx05nVG3EwwTFxQ8bAkWPlq8fYdRIRq3ef69/7G
-	FH8k7ONRr9rrDHbl3+QBSqpV62qVahL7yUNCz1id5pujUaw==
-X-Received: by 2002:a05:6214:300e:b0:8a1:8ddd:e12d with SMTP id 6a1803df08f44-8a43aa44c2dmr109661806d6.59.1775137323593;
-        Thu, 02 Apr 2026 06:42:03 -0700 (PDT)
-X-Received: by 2002:a05:6214:300e:b0:8a1:8ddd:e12d with SMTP id 6a1803df08f44-8a43aa44c2dmr109661226d6.59.1775137323022;
-        Thu, 02 Apr 2026 06:42:03 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a596915986sm25665836d6.24.2026.04.02.06.42.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 06:42:02 -0700 (PDT)
-Date: Thu, 2 Apr 2026 09:42:01 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: David CARLIER <devnexen@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-Message-ID: <ac5yKatsMxNp4G2g@x1.local>
-References: <20260331134158.622084-1-devnexen@gmail.com>
- <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
- <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac3paYh6sPHr3EJd@kernel.org>
+	bh=HzUyBSX9B0826rh3H7aiflY6cSvBVcWG5MnMLxb5ifo=;
+	b=eCh0t5ibPzw+e/AbxPi5xvZzfLyPdExhyfMMnyzuEqxQ5U1YjAtspNivYlK71o6e3RfMar
+	oooYnDzFevSCHZmWNiTxMa8MnmFPe7dkQHP06GNjuPmcAVIHqsF7Cd6aM2KHWmGIX3DWNc
+	P+nvCGj5VSKcwFsi87xX7XOBgaMO5oQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775137356; a=rsa-sha256;
+	cv=none;
+	b=rfslMAmRjjW6yxpGp6QVRKPqqbQe1eB2Q6c8/5BeVvLKBt2yx999Lqtz/DzsoE14XNwBqP
+	m5knBK8GT82zm9oEnSw+sFjz+zBc1GRHPwbZKPcmN69HXx9sv1OG0JaGWFyOqItpTmCuos
+	YBc8U5DMhqGkHEhMnaxf67MOIw5e8lk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jcv47Cld;
+	dmarc=none;
+	spf=none (imf06.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HzUyBSX9B0826rh3H7aiflY6cSvBVcWG5MnMLxb5ifo=; b=jcv47Cldca7szzNvJ926bHHXv2
+	xWmfzFYuZ7r+nsOCy7qdk6lIegkj0amoWxUE/KP3Qq1fYbW8XqmPVdrEnyIlGWt2oBeBI7VCRmOs9
+	4QtGqG1HJ11ibQySDvtPIk9rd9JY3/rjbBc+RsOPWqxMwg0RqLHQ3JkXC1ru5QodJs+NAJmg9brSJ
+	Rl02Iy01EehBzGK+tNwAPXymlElqHJIc55AFxJedzgpo+zlbLbsLNCQgW1uDlUiFpFxOBWHONW6nP
+	4wKsWYZo/RrqmDnJWtdwAajpbBVK5nsDfPC5uBpseb8hma2w9em7y9jBk3EMFDl+VOOK//oeCM/Nz
+	p1LRSDzg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1w8IJP-003ns7-25;
+	Thu, 02 Apr 2026 13:42:18 +0000
+Date: Thu, 2 Apr 2026 06:42:13 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm: huge_memory: use sysfs_match_string() in
+ defrag_store()
+Message-ID: <ac5w-LjEA3gkGHNf@gmail.com>
+References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
+ <20260320-thp_defrag-v1-1-6ab15d0d26eb@debian.org>
+ <3c2f0e52-0271-4bd7-b3d7-84249c40e2fc@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ac3paYh6sPHr3EJd@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NX4P0sl7Rs5_KDx9U5avmhgFrOn_33ab09HWbgpN3w0_1775137324
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: uchpbgdt8zda5tmtwarhw6s4znjn75wd
-X-Rspamd-Queue-Id: 4CAFB40009
+In-Reply-To: <3c2f0e52-0271-4bd7-b3d7-84249c40e2fc@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: E45E5180003
+X-Stat-Signature: iij61wzxcf8emtpgtngyyncepd56oppq
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775137328-621094
-X-HE-Meta: U2FsdGVkX19rJ7mRrGUHcyuFBfXGrhfMdoJam+Zzmj2qzJ8FwRFlU2C50B2QJHwtZHekpoLs2x1AJld7lAFE812PchNx2dZhLLk21KffuyUdOr538hud+2KMuu3pCcGXlIChngen34beD2iIbXrZkgIp8bjnEvvaqTD5CiEPxTxPFeJwMdpBlzDVGPFszNDjS3nmT9nt6lXfxEA78wNTfhaufDTjuMCcJ8pk3ECm9MpoC4KUdfQ4CDywVVMGigHVBVfvXA+N/dRHfEg+Qx1BtWGhcHygJ3vR9rWdlgCv0NPsDHICgV6lWo4D/SQOKPJTwSc/0/5KrM++PuU6ogYfvmlDT/4CL+CzgVndWjtcKNYBI4sr2u5bLrp/RRaIm8Lf/QEh4SYs7xgzPl9IjUsegx5t9zGm/beczFtE7ATQeTJgWDZ7+3VkknkNRJWoGb4mJhJnKbfz/dT6jkXm2M5m0pF6y6/dWuItSBD6lznBViPb9LcRSHcKeE/QItbJlZB3r6VBIKAQyumj0IeEcS91NwoBESUovwv8sHSmefXkm7DHocSAAMUG7oHlQ8NYwUhX/1uqTzlLFW9jKpF+5wKlS0XKZ9EsDID5dAX0DzOXxklKqLHRdnfh/SZNTRQU7LjB3I4bGSC/KrMZkSbgS0ohMjwY7DIsCI2uKtJeM3kkye5N/KSlVCWccYez0lhs5H2DhoWVlEJRa1LQgNXGsAIJr1UyHFyOYiDKj7nWrUtt43p5PlHuzTnbTdZLdcaxMOv4AKxGjQnoUgBsgFShsClCy0SMKdUj7Z9oDt64RmzdtH0U2NLulNch+4kU8TgtQjaqkBsru4DlF1TeqJBV3wL+qSxCi2pVzZk2BkJJaFwC2Y72i64aByRKU7M3UhejvCAHzx/DIEfGMv2SFX8WYTmVnu2Ph/joR//dLwY8szBmB7Ryw5UAJujOwR+ngXz1h4+zVa5TtusW7WUe/bWsgyU
- K4knqWW1
- l3q3eTTGBUFBgaQPFrZLmScKNq5ic3GT0WBpgoRV2B2izBY6iONkii9logrbz6VnGxHFeyxTbS9LraHpgsNpz6Xlacq0hm4YDwMJTLKZLDFRL1oJnPFrrnmun7e0Vn8J/ropXuf7U1iQ6Ok84pXw1NR8mbbkKFV2b4mCO5P+JwDqDseZJsO2tQvpUpS+Qe7MlBsriN6TFNmTiFkB/6t6l7mSg4fmI2LMhJr18N4xFiv2/TBQQ9Qy4QD7aDq3TrXTHuSjZBJMYgPtCgDJdHQNpF/BDWg5yEuYB8y5tTgMkN3OIUVZ4vrOFLY8imG3dUaK2dGFL84KaYOtlypTH6XfRCuhU1CskuHJEnOSV2dc/c/eoA3RjBSh32W+6cESYz8ireH/gkzCh6SDDc1EE1Z4gWgxoW/kG4Xa9kbHETNhNlbVN3X5w/T9M4Pjh0w==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775137355-712419
+X-HE-Meta: U2FsdGVkX19and/CpCVKcq/TaUisj9WCAFBC3o8jDXL9A+fQj8DUX09hmIzcmgXu2wFgi5YZpWCNBsVUedMIdinYvaNEOTTCM1ySw9K3Ozuo0A3Ku+CD8T9ZLsnjN01hXnX885g1JEKfFv/rExKAUnQGTBFVH8I2wzGBEqFSVij0XYOWMS5Q6rRDNMWYxkrVkoTTv/CwWbGYTgRm9ZMDrJsqNSw+RIqzXhpruoigzLJFg7j8JmweBmBpqN6OPYcqTRQAf10exDy7q8KoYvyAUjtK633oYtTMmsvPu6Jtm5a3MjgGGAfG6pHThRQ3Zpc1Q+ArwPXawfcBfCI9l8k4+v/7/8wIvZCzfpF29UOgAYwqjedz8ZVuF1mM2SvxqZqCrJ+sb1Li77HBuogdhKdyvrjqyYs5OJr0nDPaH31eVk51csQsGwHhGYFVOuah7dwRlv71s4fKk4CW/4gUOHlFgcrS1tiEo9o1UsM+L28SxJxiRqrGIpoKu9C2xTu6K9kqv118IW/A0xhNM29CHnJJrWELY+sIaEm5W5CpP2gozHw9uiZ00Yv/hqJwXcQAgRdDUZljoqMRWAhMAAuEXruyou9/kwR7Rtkux29DtoE+pMs+Aw7OKrq2VZK86FaKyyBNjxl0GIOrwaDsE4qXbh2EtVpIYkYgEK6oFSckT+MTJUw1Q0fmgoDfauncBEMm14kDvEPEjFJxPRzQWcZ8ba/DViixymvBFz4Bq/CIirSveFsvlfXfSlSjTY2Ns1SN5RTua1lxrFezj6VhajVd/0WM9yubX3eccQ2lv0xpZu705EViAfbSyrD1BkA5wf1EW068XqL+PenmnRre+FePdHSVZ8QqUv5dPOdIkHCeqpyURTP7GKkA+Y2/5ZMHEMifbgm+eDyIt/c2op9I3iw4x/Oklyz/RvRJGy7ULMY3v7LhD3SFuobH+7YBQlBYZsIR6NybAYO8SENuvzUloYwHIhS
+ bDzKxyyh
+ ZQuzZ5MmMZqvegsShFrNjHX0GdMR79EvQzMad2Ytp4IPCaguJ9PTRMdt7Pp8Yyh6kVt9eH2pKjTycWGolv6tM17lbA+nce6YA5CVtLDRF/Mva7cG/bpjFz+tHY+kyUDqhEr4Zywl6Um1cNEzDuZzGUgoumQ9WphsSNVqWVWOeAFLOT8hQDdPrlOPgzkyPYJIpp8s6NBUN5heqnBDNlNmw3KQ2+f6/4tiRyUSeIoS5ethp9mZeacRQsy75uK63joieL1eF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,91 +97,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Mike,
+On Thu, Apr 02, 2026 at 10:21:30AM +0200, David Hildenbrand (Arm) wrote:
+> On 3/20/26 17:05, Breno Leitao wrote:
+> > +enum defrag_mode {
+> > +	DEFRAG_ALWAYS		= 0,
+> > +	DEFRAG_DEFER		= 1,
+> > +	DEFRAG_DEFER_MADVISE	= 2,
+> > +	DEFRAG_MADVISE		= 3,
+> > +	DEFRAG_NEVER		= 4,
+> > +};
+>
+> These numbers should get assigned as default (C standard) I think, and
+> can be dropped.
 
-Let me also leave my comments inline just for you to consider.
+You're correct that they would be assigned by default. However, I've
+explicitly set them to clarify that we iterate over these enum values
+using an integer and require these specific values.
 
-On Thu, Apr 02, 2026 at 06:58:33AM +0300, Mike Rapoport wrote:
-> Hi David,
-> 
-> It feels that you use an LLM for correspondence. Please tune it down to
-> produce more laconic and to the point responses.
-> 
-> On Wed, Apr 01, 2026 at 09:06:36AM +0100, David CARLIER wrote:
-> >   On Tue, Apr 01, 2026 at 08:49:00AM +0300, Mike Rapoport wrote:
-> >   > What does "folio allocated from the original VMA's backing store" exactly
-> >   > mean? Why is this a problem?
-> > 
-> >   Fair point, the commit message was vague here. What I meant is:
-> > 
-> >   mfill_atomic_pte_copy() captures ops = vma_uffd_ops(state->vma) and
-> >   passes it to __mfill_atomic_pte(). There, ops->alloc_folio() allocates
-> >   a folio for the original VMA's inode (e.g. a shmem folio for that
-> >   specific shmem inode). 
-> 
-> I wouldn't say ->alloc_folio() allocates a folio _for_ the inode, it
-> allocates it with inode's memory policy. Worst can happen without any
-> changes is that the allocated folio will end up in a wrong node.
+This was discussed in the previous patch series:
 
-For shmem it's only about mempolicy indeed, but since we're trying to
-export it as an API in the series, IMHO it would be nice to be generic.  So
-we shouldn't assume it's only about mempolicy, we should rely on detecting
-any context change and bail out with -EAGAIN, relying all rest checks to
-the next UFFDIO_COPY ioctl done on top of the new mapping topology.
+https://lore.kernel.org/all/20260308140530.9ab6d1445d0936467eab4aef@linux-foundation.org/
 
-> 
-> This is still a footgun, but I don't see it as a big deal.
+Please let me know if it should be removed here, and I will update the
+patch,
 
-IIUC this is a real bug reported.  Actually, if my understanding is
-correct, we should be able to easily write a reproducer by registering the
-src addr of UFFDIO_COPY to userfaultfd too, then the ioctl(UFFDIO_COPY)
-thread will get blocked faulting in the src_addr.  During that, we can
-change the VMA layout in another thread to test whatever setup we want.
-
-> Let's revisit it after -rc1 and please make sure to cc "MEMORY MAPPING"
-> folks for insights about how to better track VMA changes or their absence.
-
-No strong feeling here if we want to slightly postpone this fix.  It looks
-like not easy to happen as it looks to be a bug present for a while, indeed.
-
-It's just that if my understanding is correct, with above reproducer we can
-crash the kernel easily without a proper fix.
-
-> 
-> >   Then mfill_copy_folio_retry() drops all locks for
-> >   the copy_from_user retry. After mfill_get_vma() re-acquires them,
-> >   state->vma may now point to a replacement VMA, but ops is still the
-> >   stale pointer from before the drop.
-> 
-> And this is a bug in my uffd refactoring, and it needs to be fixed ASAP
-> with a simple comparison of old ops and new ops.
->  
-> >   > Second, I have reservations about vma_snapshot implementation. What
-> >   > invariant does it exactly enforce?
-> > 
-> >   The invariant I was going for: "the folio we allocated is still
-> >   compatible with the VMA we're about to install it into." Since
-> >   alloc_folio() allocates from the VMA's backing file (inode), checking
-> >   that vm_file is still the same after re-acquiring locks ensures the
-> >   folio matches the inode.
-> 
-> Again, it's not that folio matches the inode, but folio is allocated using
-> the correct mempolicy.
-> 
-> >   The vm_flags comparison was a secondary guard against permission/type
-> >   changes during the window.
-> 
-> Permissions should be fine, they are checked in userfaultfd_register.
-> Some other flags that don't matter to uffd operation may change during the
-> window, though and then a comparison of vm_flags will give a false
-> positive.
-
-IMHO false positive is fine in this case when -EAGAIN will be used (which I
-still think we should), if it only causes a retry.
-
-Thanks,
-
--- 
-Peter Xu
-
+Thanks for the review,
+--breno
 
