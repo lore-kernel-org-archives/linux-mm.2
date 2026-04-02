@@ -4,134 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16633CC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B538CC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7904D6B008A; Thu,  2 Apr 2026 03:19:39 -0400 (EDT)
+	id B8B266B0088; Thu,  2 Apr 2026 03:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7682A6B008C; Thu,  2 Apr 2026 03:19:39 -0400 (EDT)
+	id B63A86B0092; Thu,  2 Apr 2026 03:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67E1B6B0096; Thu,  2 Apr 2026 03:19:39 -0400 (EDT)
+	id A78EB6B0096; Thu,  2 Apr 2026 03:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56DF16B008A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:19:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF27D5904A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:19:38 +0000 (UTC)
-X-FDA: 84612765636.30.70524F7
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0A7BC4000E
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:19:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kOdcQsB5;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775114377;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 95EE06B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:21:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 410701B7FCF
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:21:14 +0000 (UTC)
+X-FDA: 84612769668.14.2CFD39F
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C618E160011
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:21:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gC4Gh9S4;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf08.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114471; a=rsa-sha256;
+	cv=none;
+	b=3Yl320TiY/ZyS5ypdnrzZ/D6akKouG6rt09fIWJh8jgY+WfYVubaJTI4Hwn4q7IH6jzY4k
+	/CGMiAa4O/CGcKOBIpVxIwbB3Ud49nxU5QZOA1MfjhEvJlGuay4qVQdUFVGCKOL5nWJh3Q
+	bS3hv4F/Ixz9iWsj312aYPs5KXNbgkk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gC4Gh9S4;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf08.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775114471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xvCjr3AFvpXbHbK+e8C3R/vbUbM9TuNUFtTfBmp/J94=;
-	b=ow71WmwKZJeCOGFCXT+vqnhEQ1XxWweLj32oGKXNtnRQO6pIFFJ8C0I7EGjW9Nb5rjnXe1
-	V/FBAKTqvtMwrN2275+LfqNEzkB4E8k5/GsckHKqoEHBoLDmP99WMVQ8kQm4E+CH2ildPs
-	RR9Hz+86+5/IktepVIwo/Dx34MI2IHs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775114377; a=rsa-sha256;
-	cv=pass;
-	b=wM+nXJpqZfnws90nKzmGPf51vWOl8ZbBqi92pgJOyD1DXj0InSH0ArjLftM3bKZ8JcgUSW
-	gAQIGcJtO9zRn2sMX04Y0RLcM5nZR56HKhL1sOUtvnVnIGqp+/apuk7UZRTFCuKXYIHjIm
-	Bt5VuLuod+ybFeOQlzjPnl/CGzwx4+8=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kOdcQsB5;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40974bf7781so1564612fac.0
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 00:19:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775114376; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZhyKTYdQOaJtWfrNwubbLhH8p5B+s7XuHgyGYA/2q12fvOb5pxb1e58xVYs3DDYmcl
-         85l69tE/5rNxP6M3tChSjKK093Fw/9QlMhelBmRM/Cm9hSsXI4cZkmlza4VG8FV401UU
-         UJbnaqJC53tIgahQ1VrB+wiZ63HiUF+oUElQ6iidcfna+X5KaDKTY7oFawWzXzr8oq8z
-         1OLmRNS6TItYS2BHEHw0a5ektck5aMACWvAchgGMIl8VJYTl0jJTg9gOhdlRqadrsoyn
-         6VvbYbQXDRImuHFbk37bu3lb9LDz//3sWLVTN4ZirT25GUxD4EG4Mi7c4MV7cAXaHb/g
-         MTIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=xvCjr3AFvpXbHbK+e8C3R/vbUbM9TuNUFtTfBmp/J94=;
-        fh=INbvJ8wvILkMrZ0VbThRP2q0tfshw/D/U7ga+inz/rg=;
-        b=LlvWf62MCVi8s9IlHwL2ZRj5xzNKTjJj4VuJplNB4OPGZeHov17sxNug2vMml1HE2N
-         jcOdcPJuw3IiggJ8l4z4BlwJ355vPJ9a+jY1snAvCjwLikKVDv4O2sNOtOoZ2NK7vf6b
-         dTd4NnyQ/RrESKamBV91uSnluh0W1XWt4ealY5q/BM/wjYF8cQQPJA71lhdmaaAtjUlU
-         hK1QL+CRCGJvrxXioukfYIsfrFZRsuGnJop+4t7812DGp4vUYfW8i5LV0HBWeAjik2C9
-         qb/j4u/HFC6JUii019noF6njOzN+jjXojxy4Qrt9kRS9Fjo5KGncqOTagiGAZBmrYzdA
-         lxgw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775114376; x=1775719176; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xvCjr3AFvpXbHbK+e8C3R/vbUbM9TuNUFtTfBmp/J94=;
-        b=kOdcQsB5Z07ztAbbsYcY/JQBMLJmto/kcMy+WVyXN7uQjJCpd/kTuXVRSfPFZB/eoI
-         CNZZgLbLFZKHxC3FwNk7MscexyPaMqnQ68iNgbYhoZWtNLOvzvbqM6kYVOnQsyeznwPh
-         frUWUdXC7uTSQKXcfjDEVM3IWbOOd/Ctl+lyxWmNyBUb+UG5gtgCIaiPsR0FeQkYGhaU
-         a0o8ll7WlglRigkxrKL6hffsHvIO6yo/dWDnljzNBgzAGcONasefKcvz/r16fD1SERpW
-         HRd02hzEaUR9za3FKHpTCGu1jxwr6BqvpruJSDSAr4MbfLcxlHrWQqI8WYZYsQr+SfZ3
-         osFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775114376; x=1775719176;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xvCjr3AFvpXbHbK+e8C3R/vbUbM9TuNUFtTfBmp/J94=;
-        b=DS3hVuudkq5ARVNjTUo/gbpfLmu6+Y+ozhLYRAsdrXFyLpqx53kVdV/JJhxDNbz82e
-         b/I6TvfppWeC/ZLhvQiEwqWY+VtFjmgIgwPQ3nmPw3td1I9tO+aPSNAokmpC70lcalVP
-         A5h12QNy6C8U3rNMSFYm5XetBH6q0Jj36Ttxn1sTUq1vl0FqfmCn863tGpasIlDpoCNp
-         92qQQAemPdnzOb6u/ynU5KxocMRfKsDbo9w5WU/r/e30X6+kb0KG7Pr1Bj55VvKBx6PC
-         /2e5UkxwD/dz0YqzmCeds/zHGzgXkCL5MBuHoWZh9GICaFm++/P/bNH98U+pb6JbZqR+
-         cTMA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/XAX48ueJhEHAQGocswPOp20ImNocZsviwvsVIG9xIANjfjYKflkiePrO0qEz8GSj69xFoBUTSw==@kvack.org
-X-Gm-Message-State: AOJu0YzdErZFOlx426gVdgT+NOT8qDyPDZjTwwg9nSKGiGCnTPxsvrT4
-	oXRjKcATLAHzWT811RrJ3fmpsBCmXvZlgJioLQcbIR6ej87fSm0KI9LJKtaxy5AcIixHLVGlDx2
-	tY6SdnD4ZZpme7GFKxzJQeTs4JLxdZzo=
-X-Gm-Gg: ATEYQzyWnJRvf97Nqs6HebrT7xGI5hmmX+ZnvLFufCsmAqr32Weg9kimygff4mQ9z8a
-	cxAcGaflV4zF2zIn63cHBVZWM6C1USKVnminK45VgwubJoej3eyjR68qIwWHd2y/qXcAVlfgK0H
-	5BxRmH99xBG9KQIIb0Y0m3kxPY70N96pYR0VHDO/XZezVUqE/+YFCmqYKk23zawroYqaYOja+Tq
-	duDxdgroH0jmDrGufb7Orfoy4GJI9NpX4P0xV6daIDDqy/EV11sCYvK0NEemuUoKVrcVhUQLYIU
-	inBTOenKenDex7SN8ZYnkX8cq9ZbLtid7Lw9IQ==
-X-Received: by 2002:a05:6871:806:b0:3e8:8dcb:cdc7 with SMTP id
- 586e51a60fabf-422f36e8954mr826261fac.20.1775114375886; Thu, 02 Apr 2026
- 00:19:35 -0700 (PDT)
+	bh=SM62b691tWzqzlWo+QGAPYJFbUmDMiobgucC8KUf2RI=;
+	b=0HCmgX5xBrvr/uCuuEzpEeda1u0i6vfkohVHzVuYddk5hywa1V/rdSDImpB2FEUbPexSj3
+	WvbCYJZXGVLTCMo+7T7tUPxE2+ZGXcx/WuGe98gh9laMP4NgaUhnD+gzFpfRNRpGl+5Eei
+	uL9XP1SAsLIXO+s5ZzsDZFzPxDlMGuk=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631KZK7f3948870;
+	Thu, 2 Apr 2026 07:16:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=SM62b6
+	91tWzqzlWo+QGAPYJFbUmDMiobgucC8KUf2RI=; b=gC4Gh9S4hwLGa0PWizvlfC
+	aZiH1NCsW2nMiXhNDr4TYiosBDHxybbwo4QSHIdPZ6RAV9/yv4qNgRAub2OuQqdP
+	fQAxz8mX5pQ2olu7zRmbkffB0sdvnwlvITDYzbGZMJetUBzBCvEshWyfN/jMHXoc
+	suMm9R47auB3ZI94OjM6okke3Q3PxyE21zZdJebHBXcT+8YCLQft367cz5z+iM4B
+	aSm7vWhkIHp3AA2z0myZ6K6ooKedm/Xr8KB9pg1p35Toa7Nu9C7gEHU/ifZfGbn4
+	wFKb9XBDHLcKN+KMRO4dH2p+6HwPjp9VslviaS0chYks8uGbLDOg+qtbO8x38u0w
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d65dcjvpd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 07:16:02 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6326xB6A030995;
+	Thu, 2 Apr 2026 07:16:01 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhk0w42-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 07:16:01 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6327G0gZ32637458
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Apr 2026 07:16:00 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE63E58060;
+	Thu,  2 Apr 2026 07:16:00 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E930858056;
+	Thu,  2 Apr 2026 07:15:55 +0000 (GMT)
+Received: from [9.124.211.187] (unknown [9.124.211.187])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Apr 2026 07:15:55 +0000 (GMT)
+Message-ID: <71424f5e-2d42-4b82-b5d6-4b507c73af9c@linux.ibm.com>
+Date: Thu, 2 Apr 2026 12:45:54 +0530
 MIME-Version: 1.0
-References: <20260402061408.36119-1-devnexen@gmail.com> <20260402061408.36119-2-devnexen@gmail.com>
- <8b6d552e-cdf2-4472-ad26-62cbb575b0fc@kernel.org>
-In-Reply-To: <8b6d552e-cdf2-4472-ad26-62cbb575b0fc@kernel.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Thu, 2 Apr 2026 08:19:24 +0100
-X-Gm-Features: AQROBzC3KD1aWk6FV6Iao5V4nNpEMn7Eukrv9b-0wzpQvmgmeQqBzGsywf2XJRs
-Message-ID: <CA+XhMqwZwjgeochTpBmC=PQfDXHxe5wqpQg2=_RJzPPoKG1+9A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] mm/page_io: rename swap_iocb->pages to swap_iocb->bvecs
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0A7BC4000E
-X-Stat-Signature: ymqneesrdc79yajij97p4auquxbkjp7b
+User-Agent: Mozilla Thunderbird
+From: Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v3 12/13] selftests/mm: move hwpoison setup into
+ run_test() and silence modprobe output for memory-failure category
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1774591179.git.sayalip@linux.ibm.com>
+ <a157c2f91d8fa94b14dff44ce5c0dfcce1f8328e.1774591179.git.sayalip@linux.ibm.com>
+Content-Language: en-IN
+In-Reply-To: <a157c2f91d8fa94b14dff44ce5c0dfcce1f8328e.1774591179.git.sayalip@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RsjI7SmK c=1 sm=1 tr=0 ts=69ce17b2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=Ikd4Dj_1AAAA:8
+ a=i0EeH86SAAAA:8 a=VnNF1IyMAAAA:8 a=BLP2e4f4YfAStYiMnDwA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: SpgGA6LxnPZonV-h0J_pZMbTi0owmqRN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDA1OSBTYWx0ZWRfXzYZLu5HkxuzA
+ 9qO2Q9Yn3X8cossavIunDmLaqJpvESeOc5J4QC3TeRcj5hdMaPhFSJifafL+VysGT44/2ZWpWJV
+ so5esM+oJcnkGwBCi7zvqzDW4kR/QR9UWB6YgcnoMyhSbJoFf0avIvaM438f+mPUtzPrTbE08CD
+ ApMZmfbQb0u8B49qIgHlk3seK0aYJo1ZWjtsSlxJOR94+d9ifbs4yPk2fL1UwU02ceI6n94bV+S
+ 3rdM3kKSzdVFI3Yy+CjWmyx9db4bFPHFE3ROmo6trtmclWpNTk/RkQLbb8QzRDPCALjM3S4ldSh
+ k24jfpc5NKU359vWZmuQ7ndUe9a4wrpr3IgPQ+pU0R0z8/6cZoNn5aH3suE5Yu5jdKYRvCI4oEK
+ bdZU4CptyoUpaHYYH6PoGyMnjNw1eSfD+m+w15sB5V0Hp60BoIqDT28AOHkNwTimrS72VggnyOt
+ w23kRxTQ3vAg45KCiJQ==
+X-Proofpoint-ORIG-GUID: EU480Jai16Dy4ctV4rvv5ArdL-8ArJHw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_01,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604020059
+X-Rspamd-Queue-Id: C618E160011
+X-Stat-Signature: 3enmr6zyz5w3jo9hc7zkh66jumrbgwbd
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775114376-477687
-X-HE-Meta: U2FsdGVkX1/sJmaaOdOp8A9xCMMj5W0ICHhluunrwjYegRKsL8H+Bp6oyTzl/Wlv6brKg6WEKlewDNzZ+x3oDHMLrUK1vcpT/s5Pvc4Q5s/7jZxtmx8xkwUJpL83WRuy7HqCw4hL8QP7w5CWoaO7kVUr2Gos6NZzMasQqFFQfEGyJK/VAYIvi8PagTYrGlZt2C8/EbTqoEhscshdYZM7YUoSCcfqrJi/E0yuY+f9Zh27pcjAGGLqzYLJYcR+nPcoOD1gWRY9EL/6LmuZtjS2+oKMe8cGGnbpwqgPuaPD/7ZClaow5wdRnno5H2QkX1vzWcFDps5a7lhF9rKWB4eK07xcC1JdOzdZYm9wIVutI328qyZyIUKKLijHea+O5Vqm9AgYGk9TZUvEdRPOv2lzDdZ2HEKxBxobRp8a+6D2r3Q9r1IIlrzs2YVheMzMj+6pTxPL5to/BOVqGEFW5M3xvlkF7oh/ionwCkbkEgwkpd+M/kn9VtdwItJeFlz+CxoqWRH/bscSSZbIe475yrE9hqhdcawyG84cUhdOLqNSc4V76bPICebnvhAnlQBVbIVBDj+Is3Swfpa2x31GIF9tBj+RWqmslkss6zdsalYRkUxbpLoBx+WEVCvEk7jOEApdBMX1USe6KmCEMh09e9lKWSLYdIebG/V+nFI4Imu64eKLI/78uTtDk91aMET42iGuY+zmDacp/gRTMhiJaXcZfSpFGepKj2/827buP/wcrOqDQde9fpewokfrfiNXg4rMAgkgKUbap91wJah0zi6SBFqESjsiGKEgha6lw+XW2SDJtXFWSeAbrRQr0qwt67Nruy3thytrLDq8sCbM25oxC3lxolpzk7RqzmWuCeGglRYYHuVM9ArtmdlIUQUi81u1/d4WrjIbM+xOhb4etcmN+84qFaHTxNHti+B6ZhOujRBxEfL9zjlVE+UNKFna8vaKTsLyZQTfZhDsbgdCW2w
- AvPcNwMK
- n5RBLOPWcU0kUxyQxeXQNL+or03F2CV4l9iAvafF+pQdBfz2GoWm2dMu0cCl1ola+seFIyA8cmanwZLpeQjtVQSKJfQ/29/bylsqB9jQMF0QfyIaB89pR3W7K+d6iPhSBUzGQrP7uDz6PeDQdwZBqnPVPwUnKFC+nUkUVNQrclwA2085WImaS/OMNKZxl+vnqQj50j1czkl1Km20KgY6QVX5Q2Fs5XZneUWu2F5YGFemogt6cqOviplF2Li+fZWmH53yCivttZPl8NA4YstOOqgpD04OcvdXQ7Xm2DSnY0TqRNfUdrfMrYbNXVFIWaRMwmaLoCoZZHCQxKEKROd9GkpoGhaWMpO8XY9kcUIZIg/VtaeQ3ihWXzUoH/HxLkuPwdrxBS1/amvzTwXlUyj+uTbQpLOjrQdIqw/Qs6MGZxnz984GE0Sbi8pGFPgPWnH8EzXZZe4AUYjguERY7ZJzfH83PSj+dE3MERsQn6IWrNk7Oeg/4O5/7XHBpv6VZ5xRZIQdhAF2bPOxROXOwyWWmMNnwteIn9YywOOrHeuqBXiyQf28=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775114471-19992
+X-HE-Meta: U2FsdGVkX1/yZmjzGcnZaCh4BswSrQx3Ww4+qAutFx73JS0VwR+IuRJVlE5L7AD3bWuYzuhvUxzpGitWys4eXRXKAdhYA/VOA/AR3JhvqhzGg7TrC5Cm5rmONGKd1x85wjHi8nAoy0TQzSP4gMpnOr0o2xnDjNSRlTYT5kYTUsMTOsScuksVW13Oh9NokfMZRylwKvQilhckkTpdy58Jk176Z9AEI3yAiUej/MoqFtCegIMcPNuTjM4Ca4QoVajBNBNI/7QXRapP3AomDMDU9yCU4wUmVi5nW5R+kdc7EZvm3oQLx2gn/rQ7h5cf2D2JyaTwB0CIN3R2hH3bmeLdnDQKgt2ow38Vxc5HfTudMJtLYexXoj6+ftYLTs40NWY4O4nZ/ayutjp/DNx94Hw2vXKLiFFqfLWJQrHdDgk7J665IjxlLMhurhXeJBWB9bRxDUx7IeMpCCV00I+DXRCwPvtfccQP2mbPWibNKfHdaa63sssQ1P4PINsHZBJPBfu4Co9FG8UbTeE98bNTjwzxyGTbXwLxl51xaNROe8ZbFtIDStSqK9sMqHZuMoRt21/VKTpxFZu9rQ+8Wf0F8Awo/UrydM2FqCAyzUkfFK6vqJ0f2lFZ+er8U7FXAaoMu9f9RrFBfJtWPhtBLkWiPHWjshwszPYdXHN6epaMkigDT6IrdtBKEpQSigzwMsMrkVMwAKMzpFZa5ppM2pjN/+9ZEfTKCaca5ymOmiWgNUSvbzwmRZgUSFqQx7NzRXFIqqN7g6zaWI+9k4NXJfKvWVvmmyrWvdSnYwvuIa6ZS3DmoNUAOO5AjUJIoT5FW3EWqp1+1JR7yZC8eZYzF2g5PKzeMWahgCBDjL5sUgazu4+xi+qciGfWWhla1QqrwRLPh/SChYRfl0Kd4KQPFZwOTc2dkNyAzXQ5sdAgg7tpDwZE9uq3TxOipd4gThS3kj7PcoOZJd5mpMPFYgQGu44rpkH
+ BH55j01X
+ RcQilUWa1PRUKHKAisag5CLLUb4OPQN2fps/DUbXrtGRvSKcrKkw/z4ZPAX3EJ5iXdgcWpagbE+pdMWHP1YI94/D0TveMfhhpAZ1EMg44++rYNrJjSkRCQO3cKkf1/jkXO1WreNYIIsM9zw1GiBi+AABtha4bzzu1nyyGwbfsv1+Nwr6fcjbqlCMSIi+2WBDQGryR6NOYrSHIKURCgcqMJeoZfLNap5L/+Q2cFXThapYORjeNjBZ+UDzBGFqRakNtvE4l/OJCbhRFiwbzxjzBoO8jfM8aivkh5cpVbVPy+7VaR/fFlcfTRLmXKfp295i2XOSDxSWbPT+wbNsPJ+3PpIBM6OWmM7Bkuq8VV6whkAU0GGfF0YjdiHiIpuyMT+CCdzol7TsS53UXqd85G35ujro5XQH9icW6kW1M7DD9IbyZ+aF2ZP/YXMtVS62OKeLUrnewV3yKbn//YIfT5TZE7TANm7+7QvAJkhUuRt5WS0Q8t267oE8eYcI4u9kansAKywVmhf3gjA+4iWzhs3vRaZv9Xg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,43 +151,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I went for it initially but I thought I saw bvecs in a message :) but
-I do not mind it is just naming after all, let s go for it.
 
-On Thu, 2 Apr 2026 at 08:15, David Hildenbrand (Arm) <david@kernel.org> wrote:
->
-> On 4/2/26 08:14, David Carlier wrote:
-> > swap_iocb->pages tracks the number of bvec entries (folios), not base
-> > pages. Rename it to bvecs to accurately reflect its purpose.
+
+On 27/03/26 12:46, Sayali Patil wrote:
+> run_vmtests.sh contains special handling to ensure the hwpoison_inject
+> module is available for the memory-failure tests. This logic was
+> implemented outside of run_test(), making the setup category-specific
+> but managed globally.
+> 
+> Move the hwpoison_inject handling into run_test() and restrict it
+> to the memory-failure category so that:
+> 1. the module is checked and loaded only when memory-failure tests run,
+> 2. the test is skipped if the module or the debugfs interface
+> (/sys/kernel/debug/hwpoison/) is not available.
+> 3. the module is unloaded after the test if it was loaded by the script.
+> 
+> This localizes category-specific setup and makes the test flow
+> consistent with other per-category preparations.
+> 
+> While updating this logic, fix the module availability check.
+> The script previously used:
+> 
+> 	modprobe -R hwpoison_inject
+> 
+> The -R option prints the resolved module name to stdout, causing every
+> run to print:
+> 
+> 	hwpoison_inject
+> 
+> in the test output, even when no action is required, introducing
+> unnecessary noise.
+> 
+> Replace this with:
+> 
+> 	modprobe -n hwpoison_inject
+> 
+> which verifies that the module is loadable without producing output,
+> keeping the selftest logs clean and consistent.
+> 
+> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
+>   tools/testing/selftests/mm/run_vmtests.sh | 46 ++++++++++++++---------
+>   1 file changed, 28 insertions(+), 18 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index eecec0b6eb13..606558cc3b09 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -250,6 +250,27 @@ run_test() {
+>   			fi
+>   		fi
+>   
+> +		# Ensure hwpoison_inject is available for memory-failure tests
+> +		if [ "${CATEGORY}" = "memory-failure" ]; then
+> +			# Try to load hwpoison_inject if not present.
+> +			HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+> +			if [ ! -d "$HWPOISON_DIR" ]; then
+> +				if ! modprobe -n hwpoison_inject > /dev/null 2>&1; then
+> +					echo "Module hwpoison_inject not found, skipping..." \
+> +						| tap_prefix
+> +					skip=1
+> +				else
+> +					modprobe hwpoison_inject > /dev/null 2>&1
+> +					LOADED_MOD=1
+> +				fi
+> +			fi
+> +
+> +			if [ ! -d "$HWPOISON_DIR" ]; then
+> +				echo "hwpoison debugfs interface not present" | tap_prefix
+> +				skip=1
+> +			fi
+> +		fi
+> +
+>   		local test=$(pretty_name "$*")
+>   		local title="running $*"
+>   		local sep=$(echo -n "$title" | tr "[:graph:][:space:]" -)
+> @@ -261,6 +282,12 @@ run_test() {
+>   		else
+>   			local ret=$ksft_skip
+>   		fi
+> +
+> +		# Unload hwpoison_inject if we loaded it
+> +		if [ -n "${LOADED_MOD}" ]; then
+> +			modprobe -r hwpoison_inject > /dev/null 2>&1
+> +		fi
+> +
+>   		count_total=$(( count_total + 1 ))
+>   		if [ $ret -eq 0 ]; then
+>   			count_pass=$(( count_pass + 1 ))
+> @@ -540,24 +567,7 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
+>   
+>   CATEGORY="rmap" run_test ./rmap
+>   
+> -# Try to load hwpoison_inject if not present.
+> -HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+> -if [ ! -d "$HWPOISON_DIR" ]; then
+> -	if ! modprobe -q -R hwpoison_inject; then
+> -		echo "Module hwpoison_inject not found, skipping..."
+> -	else
+> -		modprobe hwpoison_inject > /dev/null 2>&1
+> -		LOADED_MOD=1
+> -	fi
+> -fi
+> -
+> -if [ -d "$HWPOISON_DIR" ]; then
+> -	CATEGORY="memory-failure" run_test ./memory-failure
+> -fi
+> -
+> -if [ -n "${LOADED_MOD}" ]; then
+> -	modprobe -r hwpoison_inject > /dev/null 2>&1
+> -fi
+> +CATEGORY="memory-failure" run_test ./memory-failure
+>   
+>   if [ "${HAVE_HUGEPAGES}" = 1 ]; then
+>   	echo "$orig_nr_hugepgs" > /proc/sys/vm/nr_hugepages
+
+AI review question:
+> > diff --git a/tools/testing/selftests/mm/run_vmtests.sh
+> > b/tools/testing/selftests/mm/run_vmtests.sh
+> > --- a/tools/testing/selftests/mm/run_vmtests.sh
+> > +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> > @@ -250,6 +250,27 @@ run_test() {
+> >  			fi
+> >  		fi
 > >
-> > Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > ---
-> >  mm/page_io.c | 30 +++++++++++++++---------------
-> >  1 file changed, 15 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/mm/page_io.c b/mm/page_io.c
-> > index 1389cd57ca88..e524cb821d04 100644
-> > --- a/mm/page_io.c
-> > +++ b/mm/page_io.c
-> > @@ -327,7 +327,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
-> >  struct swap_iocb {
-> >       struct kiocb            iocb;
-> >       struct bio_vec          bvec[SWAP_CLUSTER_MAX];
-> > -     int                     pages;
-> > +     int                     bvecs;
->
-> bvec (an array of bvecs) vs bvecs. Hm.
->
-> Wouldn't it be cleaner to have
->
->         struct bio_vec          bvecs[SWAP_CLUSTER_MAX];
->         int                     nr_bvecs;
->
-> ?
->
-> --
-> Cheers,
->
-> David
+> > +		# Ensure hwpoison_inject is available for memory-failure tests
+> > +		if [ "${CATEGORY}" = "memory-failure" ]; then
+> > +			# Try to load hwpoison_inject if not present.
+> > +			HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+> > +			if [ ! -d "$HWPOISON_DIR" ]; then
+> > +				if ! modprobe -n hwpoison_inject > /dev/null 2>&1; then
+> > +					echo "Module hwpoison_inject not found, skipping..." \
+> > +						| tap_prefix
+> > +					skip=1
+> Does moving this skip logic inside run_test() mask previous test failures?
+> The run_vmtests.sh script sets exitcode=$ksft_skip when a test skips.
+> Previously, if the module was missing, the script bypassed calling run_test()
+> for memory-failure entirely, which preserved any previous 
+> failure exit code.
+> With this patch, run_test() executes, skips internally, and sets the
+> exitcode to 4. Since memory-failure is the final test, could this
+> change the test
+> suite's final exit code from 1 to 4 on systems without the module?
+
+
+This was pre-existing behavior, however, the concern is valid. Failures 
+should take precedence over skips. Let me address this in v4.
+
+
+> > +				else
+> > +					modprobe hwpoison_inject > /dev/null 2>&1
+> > +					LOADED_MOD=1
+> Should LOADED_MOD be declared as a local variable here?
+> Since it lacks a local declaration, it persists in the script's global
+> environment. If any tests are appended after memory-failure in the future,
+> or if LOADED_MOD is already set in the user's environment, this could cause
+> modprobe -r hwpoison_inject to execute redundantly after those tests.
+
+
+Yes, good point. Let me address this in v4 by making it a local variable.
+
+
+> > +				fi
+> > +			fi
+> > +
+> > +			if [ ! -d "$HWPOISON_DIR" ]; then
+> > +				echo "hwpoison debugfs interface not present" | tap_prefix
+> > +				skip=1
+> > +			fi
+> Will this print a redundant skip message when the module is not found?
+> If modprobe -n fails earlier, the directory will still be absent, causing
+> this second block to evaluate to true. This prints hwpoison debugfs 
+> interface
+> not present right after Module hwpoison_inject not found, skipping...,
+> which might contradict the goal of keeping the selftest logs clean.
+
+
+Agreed, this can lead to redundant output. I’ll update it in v4 to avoid 
+the duplicate skip message.
+
+
 
