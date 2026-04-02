@@ -4,110 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D13CC6B05
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 05:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 180EDCC6B03
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 05:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 969A16B0088; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
+	id 772086B0088; Thu,  2 Apr 2026 01:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91A276B0089; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
+	id 723326B0089; Thu,  2 Apr 2026 01:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 856FC6B008A; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
+	id 639876B008A; Thu,  2 Apr 2026 01:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 75EA06B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12AE2B9404
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:38:07 +0000 (UTC)
-X-FDA: 84612509814.18.C1AA79C
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7C7ACC0008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:38:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="T3rOh/9f";
-	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5579E6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:41:13 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5EFE1B7F5E
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:41:12 +0000 (UTC)
+X-FDA: 84612517584.07.158395E
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 02A321C0006
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:41:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IdK3m4Fd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775108471; a=rsa-sha256;
+	cv=none;
+	b=slApJBLKDDMo4iQEJDWrMbh8HIV7BBIb74EPuOleIFpOIgM2xuFNq13ty0DzEcDKUYRQeq
+	rSIpxoM0/Oqj21NtylXAAH2JJlEOePmRuWHxKj/hJwZF+7kuY1s9cs+DBf1rPl49JJRNVU
+	hxrvlZdtK1G8ePoVihDPo/8T+zDg/x4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IdK3m4Fd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775108285;
+	s=arc-20220608; t=1775108471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
-	b=I4f2IZP7+1Up/jv+PjXPgL0DLL12efAUXliURYoBh3bbvQpzda+oSgkAAbvufzULfgVBk4
-	UCT1GMNtmrr2DAUaq7eG+BdQtBhiO2ES50DWyecRyIDsEqclKDx82GJNKfsBOS4GQkONa3
-	9JrZk0qBo+Y7HPhcTCwwAUGGiUyizug=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775108285; a=rsa-sha256;
-	cv=none;
-	b=N/WvTvPQDD5KPpU6h74rc3UBSoF7Pnznc9kld5DWtKeT8peZ1iVo+vaPSwF90Izj3O4HLr
-	ERBHNUOb5nEx2EzY42HZaUzVtRxiKqS1XK2VWfslJRyK06p6hR0WaN9I+jyRO5k418L/Pr
-	hIwXNlIFn31OVeSQ+1sMBfXsZVIrT7Y=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="T3rOh/9f";
-	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82cdb4ab547so221784b3a.2
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 22:38:05 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dAMd7Am3UKqsECdn5Mtl/PD52Ug27urnzze2wv5G+e0=;
+	b=HLkvezJuSHShFpUMk390SPDMm/6oF6VrBNNKdJOQ7/95ygPR76Chr9bMf/gL7p8XCH1yBE
+	rEzS+mXZAYVcfrbI+ZPZXjLTlaw2ZLxQ84cyYil03fwhaexqY84UwyDtwgGNek19jKyXtn
+	WQ9x4Ir8JF+SYC7+hNkgZlDrpeNo6Sw=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50b266413fbso4574181cf.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 22:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775108284; x=1775713084; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
-        b=T3rOh/9fm+MAUEb7SWZSAeLr87ftXRoExCzciBrp7cL16bU22zVAwJ316lFpLi4Isv
-         1/mU7dUvzZybB9K1aiscevjchniaK2uJvPjf2oO85bGHvR92di2M+6FsSHMwoFkS2vQf
-         v9hmkI59Q1VV6ptqVEyKbbo9esanNHaJ7yOtvawLx5EDeDYoRKrARNCwN52doJwY9umC
-         FEGmJJ12XWSnRZv8A5qr8jFPdw46bylhwxgQlNJ3IasWGKwcaGsVXSUhx8aTjBPKn79m
-         K2z8TFWJvQUoyCs9Q3ZJiJtkv8oXN1nQ5GYAcQIfMQaESjgMbGjYywXcejAvEeRnoUt9
-         FOIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775108284; x=1775713084;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775108470; x=1775713270; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
-        b=fQ/tRiE4fu5sazYxV0qJtE34isvtESuBb0BC9hyteS2GYpgjWNFXAKLOS0pIDxUKm8
-         Gu0yX6ovKKxLAxUWxLSpQ0SpWVZiLJxyp2wEg3AqCWzlVtUZ9yIuXRjVbacd3dhweI5y
-         E4XxN1aoOTxxyGKQjIeH6Ehi8NWiavFIkvPyDq300RwSraZ9toBJz8+xc6TMtTTHOeNI
-         k38A4cmmImyDhxT1uweOS+ywocwontD/kR4oDHDEVRNHMgtfm7bZs9+kSBKJJ+AihOJF
-         CnOCEh9JSwzboN08/ja9YDk6y+jOEnLOdg6OisaxTHzUsh0Ub7tZi2071lM4/f/qebsJ
-         8z5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXMrIMI5Ot37sLkTZkGaUJnUPFoMrgDY8dbegoNbN9pQSmGuI9wGpsmJ9SuDX9TzASOGBAiFONvlQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywooj0Kp7DmBs9xaasXeWXxBijwaqZ0pyUC7vo7XirLW7TeHUOC
-	HSAn+UgfhF16o/m5iDys9itJwgautvoSCLP4Tdw6DJHFZYUnXvCdbRtn
-X-Gm-Gg: ATEYQzzHkigDToefPTVu2+d2V6IHmOMVH5zmoNZRGTYi1Qdrpl4b+sNBhJTqyFJ1BU8
-	Cf6Y8bClyKpyee8nyA6dkPT2Byi8HSx69wXxX1AyHo5NJYakCG7nMHVlxX3CzFE88Oqnep3Cm+j
-	Xb829wYUSB9hEXpIZETZJTfLa/n/ct/UQb9eaguHHCL2KY01D52/I6ELS6LXTdcNXvc6RhN6iZz
-	bcRqZdfXSHqGW4RcuU0s5rFwBuBR1Vnm7cEztX3Bn3SVMBzwd+uDxcj6+PwNof5/p98vNh5eMOf
-	0du39q+YBHd2GGTTgO7GWQZDzg8t37K5lZFpae8lDgfHTpNiD0h+3amCuNykQbBVGk29dKpsZz+
-	VcUGN9w3CuUfgtf5/VRx3KBbpQQttb8WAG5Z7VsHHETnhSwrOwUlAXKN57ONG7Y1Wfv9aD3KWpf
-	7gTJrRsBP+l99GMGGs7RiRvEbAtnhuLkVLyEhIXC9NVtdhpU2bncU=
-X-Received: by 2002:a05:6a00:2e94:b0:823:12cb:f5d1 with SMTP id d2e1a72fcca58-82ce88ea8ebmr6525320b3a.6.1775108284208;
-        Wed, 01 Apr 2026 22:38:04 -0700 (PDT)
+        bh=dAMd7Am3UKqsECdn5Mtl/PD52Ug27urnzze2wv5G+e0=;
+        b=IdK3m4FdJDhVtMaGF/o18P97+PGKp7sRNI5zom9IT1H/97M9dYkO5zgWb0J6a9NSe/
+         Kr/aWvmG/0zHfa2UIPj49Ur1nmoX7ftxtKP/8bE81arY/Lh5d8eXYsGRjMgWstCQfxXv
+         g/VfZboVj0jdyHg4WjaXkmYRoxo9QPloiiZjAThrEc4iey2akkP6plOO0iS1wEGSapiq
+         FySKE57QSjTnLQ/DQBazEiQX0TXt/Q2C3S1zBTDqlRzhUilZE2K+uQFRrmnZ3A598G+c
+         guuQOHSo6A+PkcRSu5BVpyAn3jCdBpEs1/jk5g3PpZC8H77J58Nz+yAtdyQ43roGuvbD
+         0xsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775108470; x=1775713270;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dAMd7Am3UKqsECdn5Mtl/PD52Ug27urnzze2wv5G+e0=;
+        b=jY65CqGbKiHIxgZnd9NGJQ2qYa3BA4VhtmkJC264nAZcAW+kemmIQKc/75NTn3XQhu
+         2pAlQn1JzwtZZHL17K5Xw+Eb2dRQQvCSeuZa4/xNjUh4EXoAo+E7OlI4OxWV+tNEYEYH
+         V/clFtUc40H5dkK4HeJo13kVi5C1FsV8iK7d08FNSjYjVBwXk0Yot9zi3INID0NIsKge
+         66O7oJvGuQZXF+inlD8v76exEx+NLKD9hMBh8KnNHoyahnTbRHF0VT8IedXpiZ8Rndzl
+         B4p85vuCFTXdMQlQx/kopZpgySwWIUABqo31GTTF2nEX+LwcbJNQYRLy7DGqq5HJZScS
+         8nZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmHMr8dpjryOdggKFDpXfLFpurrEwUD1YxwDMULCwnwGkjgn5rrj18HPZTon9ralfPIY31VDVtKw==@kvack.org
+X-Gm-Message-State: AOJu0YxP9gU3d0lSAcQsnLFViMzPCYxoH5pOCYcGeYl4KmQImt1lA8CR
+	qCp2I9vHOuL4yd1IQeY9m1siW1mxoPd+fyFQk/dbdE7uDOvfnGyqy9KOSjPl1g==
+X-Gm-Gg: ATEYQzyqCtn8uZCzzahFsir9msT9h5D71OfR/RuzSSZPMYJywOpvY1A1IFg0Pk6Wgxk
+	tsAY7voNk4+Z1AnBtzSms/ggbXBD0XBtDvSZ1XqWBq6Gf1RPaOif/NBlXJU+D5vE354Hichig4w
+	s8BJYGemq7W1ESW+hAgb81hTQG9bUzJNn78YzGIKhmf6Nc0LSdG3UDDOWknDXCQZQHb8oo2m8u2
+	zoA+EY7r0cf/9jgP6euHs1BySRlaWRXu4ScEv6xaZmnXtE7ToiU2C8Wt5T8mpylEAtysaDl3G+f
+	4iOUUmE1qg86NYJKTfi1TqCqJRS0Mj6mApePkuyjzoBSoaeNFUxh3TjTw0dEmkRd3kxRUJn61Dd
+	C8FqeVI8R+Clj/IENwjqTF6510vv6mewRru6ACqPYN/KVD2vWHZZJl/F8CYT+qMICEkvX3++Ggl
+	Gb4YnuHry1xXf+HvdZ0VVJ6HVbotX2/GuNrwRY/5du2zg60Zi2cdA=
+X-Received: by 2002:a17:903:1250:b0:2b0:60f1:de58 with SMTP id d9443c01a7336-2b275dc23b8mr19612315ad.45.1775108098179;
+        Wed, 01 Apr 2026 22:34:58 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9ca1f28sm1758569b3a.57.2026.04.01.22.38.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27477a13dsm15917055ad.26.2026.04.01.22.34.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 22:38:03 -0700 (PDT)
+        Wed, 01 Apr 2026 22:34:57 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v2] mm/damon: validate min_region_size to be power of 2
-Date: Thu,  2 Apr 2026 13:37:56 +0800
-Message-ID: <20260402053756.26606-1-aethernet65535@gmail.com>
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
+Date: Thu,  2 Apr 2026 13:34:58 +0800
+Message-ID: <20260402053458.26524-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260401154119.67874-1-sj@kernel.org>
+References: <20260401154119.67874-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C7ACC0008
-X-Stat-Signature: 3bmitg64q4dhu93hmygekk53egeadzwd
+X-Stat-Signature: ap9mi45qy1hn1kkfhdb74c17hmttaxtj
+X-Rspamd-Queue-Id: 02A321C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775108285-634093
-X-HE-Meta: U2FsdGVkX1/Uvxa9f4Z5TJsVHqkJAJj6ZLT01+2cwA+Lkp15pBMtykeBq1aVtogJVuUm9xbl6TfbFSI7zZqwAMK+EgHPp5vSDkmBmJMOUywRB6QcVhu1rq60MlWeB2LwRKvqWmwEJ9i2MYkcZrkrGTaGEUd+k7Fic3J4gcGMKu//TGlJsh2WnbOR78KPo8f0/MlPjabhMpqLjGe7hI4GoAjuqizMCZHxdE27s0ci3MoMdaEXdTuNoMp8uSoDXp1e9RfAK3Uzrv6Erb2g7JydKRbZxzV7uuAlfU3qWUSOOpDFytSLd0hKxP8owjLv9Pm3fGxnyJXR2CzLARB/Ads7ynnCqo6jlP4O6KAw2ESgyf6K81P819sfiz6BLbGjMs259AoxB7jgWZM6HG4UgpBfM6nUjEnS1OCXQVKonUV5ncxr9jKFKgEEl6sGVFQf9MHGDO/xw0T4eCTW9WDFzsi10WTfl34Sw8B4J4NmbPfNjpPpTNDDTVeSl2UwpWAqrXeJjswT33ItqTOGtaAnwPC6IXuYOuiQ3+9EEDmtVkpf1RAdq1j3up6nbjBjAA45DOrKevbkdAjWJvpAoMzlHBrDecGGMhWeS4eDZKhc6n1iTqRlAugNO/B3wUaIxNQqAW46DZd8GRaYAO0FBAZOGlCVzy42BxRYV1WZSZWinDYEH/d8QHQiyaYACOZNECVQ5V6P41nGSL39KYqySkiVxGschFIv38NZXfWRvwpGKV/qdp0qpyJAL0IKHYRZumshuTzOzebxQlMT3HDr71g5TwvCWRc80AX3ArxB/yjaD5G3B+PHz2/aoaNMBnotqBJ6VSNunQFq1lsXvE/rPv0Y+TIAope+E/BQxF3c0EIKH4sOJUI1PKOV+FL/LS42+ggWrGhvepqnnieJmGkk5NFZL+uK69ykeuziY/bVMLESOp8DlZZKHbbgsFVixr8bE09+m4x+Y3ST88ngLwA08REOLGQ
- EU2FY+hW
- 8g2pt/z3jS76BqcpAqPfw6Ok1FR9rqjGqjPxPvcaz82Ze28EpcH+yzFsLaJ2S1a6hHRWvl/98Q4GWv2EvP63udosKdABRdd4SISXn
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775108470-326759
+X-HE-Meta: U2FsdGVkX19nc8iRsW/rcKtRiLE4+r7rTlq52Ahr8NJ5xnDN6JNdATDF6m7L7IPcaQDkHkMclThIP8gGyiUQ0/47yZOESFwzRoeJ106X3RSk72r8V5PALpQZ98/03EoLw8kXvjp3uyOKxPbpX2JLprxu3SRPUUVw98yXFAXc+cI4LEGVfrvjd0J7sdZ5SNQ2xdF2Y9hWpqpIZ3MtJgt4MsbpGsDhWO0pC+8oQUAtLl59Yf74qm6mVlEyoHwzBD/Ls856/GD/QPPAAv5VPFFG0PH4VXR6l7GzZrxcwJeKjJLHD9b2ZfOjGtyaNN/1SXcL6bn55rqQf43WcW44eFkTvD63nZdvAFEvBoLcZ8odF2FE6RkaLNAS880A2QdQo8TsSg+UBK9z6S0SDsoeQdoQ4ADjIKEDIiylB+Rb5PR3bitxjwlk4Ge5pqqZIr2CXm5fS5ybSNybe+QVKZdCWdDY/6USkLNRZ1ofFVB5C8apkbs2y9appXqNax0tnC+EJuiJPEESHi1YiSC8dD916TVFG4GYotj3rbzty3iRQXCSY3WynPGH9nY0jNOtxS5D4z5XyyCIh2G/77G0kjU7Wt+s2QAam6Wn83xV00GkayfFMgTV+JdEmzBW5n7eOGbac/Ay9lPHLVSWLeB8bDXRr46JJ/E48OwSBYPY5jU5AFFsq0gsd+IhY3k9m536wUloLEJ5qdX2E8iE1bVlGuNLUmsaQKsfXVxc4gUoEF00uUr+yzEbp6Um7Ef686WKtk9vWQ5xMmi2YztChkThxSbRlddVxjjIo8W+XSzPkM2DcK/y/oS6WJ+xhmkmMADwvSrPrkqHTwco1JRAxL2f/WBdvLo+2kKRsnz7XVLk/+bNiGGQyFmYfOmMbuK7UmpUzz4YALt9R01P0VtjY6nh3fNHdtbpgr+jBETE+UweY2jTbc3ei+p3kuHCV7OVpdcMA5Xa9/I4MtEVZy0Unwx0WEKMQvt
+ 3nBvIQ3v
+ AmozL/gQCDj8xc5IFqYxPUKwbdYvK+ESvx2fb4OOrUskHUj6XgX+CEQZ79KF0kbsguttEksp6affWEG36qnGm16Vy7iJcjMCTo+t468Soov6meGJDeZnRbwSbv8o/h1ju0aCJU/yJI+tShnWedftVx5pVYAf7SzxxVtP96dWizvERHIyK4FVHY4IzUvKmifUnL3pzeIsBUrzb4vBURu1aqHVQhNQ3yZKgmGbjDTWN8NJ/ba2TzLcUMKK+W1N8ge1MKpyNdCL0xe9SaMd44UJx7mqgyIKZAj1nXG/TETK+63DZJPMF2vQQA8Cbx9YjAX8/o5Az/a2zkQqM1+H4lp18uGw0uvmwr0ym9LA1uim0tZnt/sZQFm0hIEUqg8ZC/KEV8dt40pomc3hxgI/iAG3MUGdo9MqLKg3kys04WiSBLAACqMUrSYU4z6JBeSaq5d5zdmGmPhCd3f2NtoE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,66 +118,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-=======
-damon_commit_ctx() checks if 'min_region_sz' is a power of 2. But if it
-is not, kdamond will terminate unexpectedly due to the user's invalid
-input.
+Hi SeongJae,
 
-Solution
-========
-Add the same check to damon_{lru_sort, reclaim}_apply_parameters(), but
-return -EINVAL immediately. This is to prevent user's invalid input
-causing kdamond to terminate unexpectedly.
+On Wed,  1 Apr 2026 08:41:18 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-This patch is a follow-up to the discussion in [1], where we agreed that
-the validation should be done on min_region_sz rather than addr_unit.
+> [...]
+> What about checking if damon_call() and damon_commit_ctx() failures via therir
+> return value?  It seems damon_call() fails only when kdamond goes to the
+> termination path.  damon_commit_ctx() failure always causes the kdamond be
+> terminated.  So if I didn't miss something that could be a path forward.  What
+> do you think?
 
-[1] https://lore.kernel.org/20260330233343.4083-1-sj@kernel.org
+Thank you for the suggestion. I looked into the code and I think
+focusing on damon_commit_ctx() failures makes sense.
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
-Changes from v1:
-- Fix memory leak issue.
-- Link to v1: https://lore.kernel.org/20260331073231.30060-1-aethernet65535@gmail.com
+Specifically, damon_call() is only used in the damon_{lru_sort, reclaim}
+_enabled_store() path, which doesn't trigger unexpected termination. The
+main risk comes from 'commit_inputs', which calls damon_{lru_sort,
+reclaim}_apply_parameters() . When damon_commit_ctx() fails there, it
+reliably indicates that kdamond is terminating.
 
- mm/damon/lru_sort.c | 5 +++++
- mm/damon/reclaim.c  | 5 +++++
- 2 files changed, 10 insertions(+)
+My plan is to add the error check directly in apply_parameters(), right
+after damon_commit_ctx():
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 554559d72976..3fd176ef9d9c 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
-+	if (!is_power_of_2(param_ctx->min_region_sz)) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!damon_lru_sort_mon_attrs.sample_interval) {
- 		err = -EINVAL;
- 		goto out;
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..2747eef5919d 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
- 	param_ctx->addr_unit = addr_unit;
- 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
- 
-+	if (!is_power_of_2(param_ctx->min_region_sz)) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!damon_reclaim_mon_attrs.aggr_interval) {
- 		err = -EINVAL;
- 		goto out;
--- 
-2.53.0
+    err = damon_commit_ctx(ctx, param_ctx);
+    if (err) {
+        enabled = false;
+        kdamond_pid = -1;
+    }
 
+This covers the reproducible case (addr_unit=3 + commit_inputs=Y).
+
+For truly unexpected termination (e.g., memory allocation failure inside
+kdamond), I'm considering a fallback mechanism in enabled_store():
+
+- When the user writes 'N' to 'enabled', if damon_stop() fails but
+  kdamond is actually terminated, we reset enabled and kdamond_pid.
+
+- When the user writes 'Y' to 'enabled', if enabled is already 'Y' but
+  kdamond is terminated, we treat this as a restart request.
+
+This way, even if kdamond terminates unexpectedly, the next user
+interaction will recover the state automatically.
+
+Does this approach sound reasonable?
+
+Best regards,
+Rui Yan
 
