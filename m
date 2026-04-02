@@ -4,96 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C014FCC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A9BCC6B03
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C1AE6B008C; Thu,  2 Apr 2026 03:03:26 -0400 (EDT)
+	id 4EE816B008A; Thu,  2 Apr 2026 03:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0722E6B0093; Thu,  2 Apr 2026 03:03:26 -0400 (EDT)
+	id 498D76B0092; Thu,  2 Apr 2026 03:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC9F86B0095; Thu,  2 Apr 2026 03:03:25 -0400 (EDT)
+	id 3AE976B0093; Thu,  2 Apr 2026 03:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC64F6B008C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:03:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B083AE0DA8
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:03:25 +0000 (UTC)
-X-FDA: 84612724770.10.0705F68
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B2CDE4000B
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:03:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf07.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775113403; a=rsa-sha256;
-	cv=none;
-	b=ISE49wIqYlMPjfpD1ajo2P3EnWIu4jRmR5KgPsTUWmyxo+a34HV4QUGbPOwl95VFJcpe+W
-	q/zWywnzGgQN60sxUxJRv8b9DY1ke4WV2ur58+kBsWPzypNiu7i9qUEeONlLWyTBnWxRNX
-	Tahorde6lBZ2rn5xDDejC70YmqdNr7Q=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf07.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D5C06B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A61A013B0DF
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:08:57 +0000 (UTC)
+X-FDA: 84612738714.02.1D43FD1
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CB8A81C0005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:08:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BjReCUmX;
+	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775113403;
+	s=arc-20220608; t=1775113735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Yr7Ro4gX/ITASP/38nLFFt1P6yha04NKWSuroKoejg=;
-	b=qXCxmf+UwDKmoURVDi5gWde5dHiVn/Qo+i44/LjasUXxlD9AKejpOcRRFIf1p+B+X6SpzU
-	hrU+1qLNzb20x6xS/WRq4BPHaRrKXO2X78ZR4+ucOuf9NdnOXtfUc68D0srCd6KHJw5aVW
-	g8nkXlbRwQnfYM/xTXdm7JkiK/ERwgU=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fmXr571xwz7Qxrt;
-	Thu, 02 Apr 2026 15:03:17 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 632738Qo095033;
-	Thu, 2 Apr 2026 15:03:09 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 2 Apr 2026 15:03:10 +0800 (CST)
-X-Zmail-TransId: 2afb69ce14aeffb-82ee3
-X-Mailer: Zmail v1.0
-Message-ID: <20260402150310775aOAcX92pJLmjcUIRoWFER@zte.com.cn>
-In-Reply-To: <ac32ZQMxSSZ2VsNY@hyeyoo>
-References: 202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn,fz2shejnypqsu74zpoy66senjbpyl2bbvcnoxu6hvfs77c7jtr@o2acnd2hzd4x,ac32ZQMxSSZ2VsNY@hyeyoo
-Date: Thu, 2 Apr 2026 15:03:10 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <hao.li@linux.dev>, <vbabka@kernel.org>, <akpm@linux-foundation.org>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <xu.xin16@zte.com.cn>,
-        <yang.tao172@zte.com.cn>, <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gbW0vc2x1Yjogc2tpcCBmcmVlbGlzdCBjb25zdHJ1Y3Rpb24gZm9yIHdob2xlLXNsYWIgYnVsayByZWZpbGw=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 632738Qo095033
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 02 Apr 2026 15:03:18 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69CE14B5.000/4fmXr571xwz7Qxrt
-X-Rspamd-Queue-Id: B2CDE4000B
-X-Stat-Signature: yursdhharpazq6cwhm45szz8s9eexkzy
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pXqVqKsO/44+sf0WqfVuWAIy8twwlZ1ww6xUKeKYgIs=;
+	b=y7hNyKZurnH7qzLH9dt8Du2WXi15DhzxxD0z0QJez2CHMWu8ksZiZN4IEztYLcxnTATO+0
+	txtiDpgeutYwheirSkQ9Hk76+vNVdDr5og5CtQ0BywhXcaqt1MVX4FujZuFSqnKNfK8NpD
+	8pMnBxuyBLlShUpJFZzDkXg928NZv68=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775113735; a=rsa-sha256;
+	cv=none;
+	b=eUHpJUPo8cD/yHH0ZfGENGJOrcpmcVfsEH0O57WO5eBgO7Ujizwq5BcQNMYNjGn2aqNteh
+	+zMWXsYijt+dTy9UbPugstQSeB37KOTqv2VP94u5/8yO3KeX3k5XvlbCwPUW6qYLp0AdEL
+	KzVJaJSkaGicoSRW8nNPBR718gKIL0E=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BjReCUmX;
+	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c6e2355739dso208978a12.2
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 00:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775113734; x=1775718534; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pXqVqKsO/44+sf0WqfVuWAIy8twwlZ1ww6xUKeKYgIs=;
+        b=BjReCUmXVyb/4XdOpkWYzUDqOd1hQTZZW94B/L5/xodHqw2NDV7/sr44W5ecLq946c
+         DDxf811U2S2yG58SqZKLQ1JFusvzOyKnFfO09d23lkg9pAyLdVqD3u0oOw64ss7Sjumt
+         U29cYc1tPj/W/rQK1EFT7kBtfUeBfqxdvuTRTnx2UzpU2hadt3pFemsC3GgFk33ZXNxB
+         T6BHgu80uMoDG/IfokNadaZ/CWeGgCeNzG8OWNDQgA3xzq78XWgRsrrPp0fnC0C3syHp
+         2cjMdM8PS9D9PkwSZ0ebM96bAiSkMglfzw80sqItva1UIPTQRWVX2U7wuiaxNKdLgKs/
+         WENw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775113734; x=1775718534;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pXqVqKsO/44+sf0WqfVuWAIy8twwlZ1ww6xUKeKYgIs=;
+        b=E7RSHfHsnPrXGX+MeJxN0ooa3/qzKOmI9XItA1te+ueXFsSDebsv+DzqJ+wB4I/P87
+         XCtfgiOqXstqE9lN5iOnRRpDoPbdVWqHyVEZ5HwKvUkSPypplJlSnTzsOCO/U/3qsQYO
+         C+QXEIq+hQ+0cGWfNJHT6O0KKOD9sknBaxCZ3+eKKczGqqbAMcXZIUoEmuviLmG50oUY
+         7JEFUAO61oLN4QpmM1DNhUbQiApnAarBe/LYedlgQglO2PhGbvNY4c0Gc9dfckU/2Jqd
+         nStT8Q6LeTRszATswzEOPf5HELcwysJE0kd0P8g4rhrxtuwT6XR5JdvhC7wIh64r8kT7
+         A1vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCjgNE66z+Lx+igokffbsZeF0uLCQpeirWT3DH0PPsOJU2Q/a0RKue1JDfYbNReKRmIiITzP4XIA==@kvack.org
+X-Gm-Message-State: AOJu0YxHKMIzxeKeY+w/pUg/Xj6jiTWnJZFsQTcAyVVXr69g292ffopd
+	4QmYT3mOYuZb5/FXgr0VvaJW+ZGCG/0E7jAXfQUn0HxDoExcncGIH5kE
+X-Gm-Gg: AeBDiev0QvZRu7uTA5IhqGIPIXThXEItC6LUc8JgSw66qbrdJTvqIEL6yTJlSIHOIZ2
+	Z4U26tmZpJCDnRMcOKtFk08v1c5PdEVr1tlRNPxe4jQdayFD3saSvmWnpA0z/2Fpkg5FQPwr78O
+	DIBFtfhpz3JjkeL58jws+/VQwHQhiImz6l5SVatdVSPE3CBaaR9pjNwecHgybcOVZXxLGQpIJnq
+	rmgjEYF5oCJ7iQlfIROa3hjTldu6Gf2Uy8IEGE/QxYcDXKdR4uqlhffLKkPrK2qr2g8Y9lewBC5
+	PKEr/gseDSf0S6g47sP30hhBr5fxyWhCQj2+AeDaAS8Qx9nurYSJUhFE7LEFZ9AekhQlC7Y/Px7
+	83TDIqfir6CPyGxRaVHsswtMHp1zSHqBZnPtdnlLvU/MqCFAuQCsLwXTspnfD62W0l25/F1kFOY
+	4mmlfzP4d5+rB/yBGLKUvombHxSvxiU7g9r5Ffpd4GgIDVkW3G8Gw=
+X-Received: by 2002:a17:903:2f03:b0:2b2:42f8:1a4b with SMTP id d9443c01a7336-2b269c3f6ffmr63223295ad.27.1775113734366;
+        Thu, 02 Apr 2026 00:08:54 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27478cb4fsm20173295ad.29.2026.04.02.00.08.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 00:08:54 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com,
+	sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko status) [PATCH v2] mm/damon: validate min_region_size to be power of 2
+Date: Thu,  2 Apr 2026 15:08:51 +0800
+Message-ID: <20260402070851.27382-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260402053756.26606-1-aethernet65535@gmail.com>
+References: <20260402053756.26606-1-aethernet65535@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9babgdabuqxgy5cirprb8cqau7xqd337
+X-Rspamd-Queue-Id: CB8A81C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775113401-936504
-X-HE-Meta: U2FsdGVkX19o1T0Inlg74jON+TI9peva0ryA9O8ey0OoxTwud79t2fKW2Q7SHMJsqJR8y+YauH1W2xIf8c9VelHYf7iCA3d02Zra2RIJFkFziIvKmYC/rr/ZPON0VY0P3RMAsMWhXqV0XWmMu4DHKvkrPC5LBzlGsoEXV3zTjOPVXIgHn33AKyw5bL4FXLqpl224desqhta3rr/C7YAYbt6+4Jgl0CbUd0yQPQtG+7Rx7Yi6pletS2Xcqm3Txg8r7j5D2FF+un8UHeeiDr1ZJ5YdnE8H/oqVrYXOZeCcXbayhG5cIABh7WG3YFDMeS4CjF7gg2Ws3Ic51gtsQ5/PLLLoZlJmDyl4ZM+mSeQME/gc24mf/asroEO6J/RfNmwwIN+iGHD22ULXuMcDXtjJoVLiDMLLhIRXS3ulPtQQmesUtyLt/OybvaNiHeAH8Vo33hFz9UariT4gN6pVYJvP5FrZMLHtte9FeSmgImuiKDhgtpkgdEk+ZzdNZGkfU4pOvHKL6lWyMUTnOoXPwaTcrHAXVkCuenbqqXGSD11gis3i8X6iSQMeJ34lUUPZAu3KIRdDuVDUcLgGhRT+1xMVtbOXePIW1VXjn6a/E5Oj2/lV6Okn8d/LWQ/n1zKnl88HUs3IiiDv7oBlC1pcvKlrZWcxD/cjFjWpYP4hvTfXl5+n8S0oZeC1p+c/wiDFCsxAymxcUNVCdM8u1XEJGSR5Buh4UtaM7nhL2AkLgiSGryTRMf4u12G2f38O5SoYL/Qof9iRH9+xjGVuTIOLOJYOq1JQlz8+fBlxicLPh2z6LnymNx4byYd1sHac7c9atV1FGZyVsQgUkUHCtdOLU+qZtG6BjVXj3smjyl8GfhwG2PGrUVYwLIQb7tGGRdzDDV9DxOwU/9dGsd5XJkPvrAGzbIGfJtZU5J+svTbaA3kVgUpbR3ehQDA1F3C4XN2JsI0oyIhxgNxmYl7uvt1qvIW
- CwEXGHgn
- AyXFfVgpa0d53CheBIOh218i0kgAnd+Jpn/nSD0RP0A8aJOYBivFgi2tSvrJZxgBE9m5hSeRPF//9fI1KY6FxJhZyAUbVyuUYTi7Blid5aMuWnKST6R+uNHEyJDimKmQNGXfb72s2Ga0LfUzRfX5igeoiO/Sjh4ZflU+WXnzjAKox9xFPyvZgraBWWIg2+DeowX5XXerB6v8pKnD6XOuNhUyRaUSFBHOyxHaT8gxOmQCTAAiA8rw9Vder39M2FsWy1nQsn+OLf3U2CbJOenmVsI+q0iEEj7q+TV3K
+X-HE-Tag: 1775113735-997379
+X-HE-Meta: U2FsdGVkX1+6k0WRSfNsI7HIMmNjyxJn42yR8QRg6xj3eM+ZL2Ptwf4viMT9btyRBesseO0AgU1IT92U2lWrQ9PlIC4XmMxtyyvMs91JvmpD+rlp3jveg6D2dmLYNlNuydD+5nyz05sTW5d6BNwTLl3U/WvYf4L1SPb5QVPHPvwtkXhH758SdX3+vnFLQT2oMNdam2gLYxTz2M281EOCjaUeXenRMjMVQZVxRzdzInaI12gwkCzfid2I1NgIYTZ4K5C+nDl1UEtCiV1JLHlnCAptHTpweMcjY+hwUmvOatIZhxhQlsv9A6fhork34LOvnkW50KiyV8YNFjnXI2xLHPDDmh2N5pj93xIsHVP1vUlLVTCfujwDB91BXBJ5Lfh/8DBeuOZBKHxvID8dqzkZ6y9l+8JHd1znuoxnFAmA6RO1nLDw171sfK13JGBCQO6Imvpmv5wvorK5GY9QAkYe3YFrHuQjAhCHMSZSTiSP1++XSED87hsHF7aZZZdS/P1HniKG+kulNUOt77YFlxJ9YfNgu1DD0WWoVkhNIoojUSZzqEjJEBcrT5sTvZRh1BPEDP3BEdBvBo6/NbtcglmeP5mm5Sbq2ilf16u0kPp2eZ4j3k6dCs0tVd29Zfzck6Slpof3nTGO9OqaeSWjG1149lgB9ckGnpOYPRbuyETzVPLWm0tnW8YvmZL81Hm4MBhF+HJDm9DiyofDK2vZ4l33N5f+uznbnUBagGj5bWlVDqfIuVQBJDFU9BAAY0HPO1g0BkNyNu/NJ20JG+p2GAFqlcQmn95XblRHNZfVac4KS5t7UJm5T2CsLM0mz+B8LQ2/RrCL7H7o6GtLgAH2SHGAaf8akOyxjxtmftFszDdVjMAT9zMSbkRi2dmycHvyA78duLc+sijM/b/+NUBqclGBc4J8F7bn3T3heVYW+ntvIwZ46O7pSfc9wvVv5p9y1iyG5RGMemqM3JliTgX7YkA
+ I9RIRwIc
+ rxB0q3CgmjWoKdVyXEE7jhoYObZZgpIL6z/xm+5jqDHzktSmxumidNaHeqOjbYNng6lwVYhtLgS4tPo8JhiHqys6kq2BbuXu9AO6m3Guq4On9pvFhoP5NWrgOZA4bzZHDfaDX9vAktgGaR/yit9cfahJSSFzZq7cjurKIOfzPXxGFMU8O5ba+vmiMKu8VGTkmR+PxRmkuM0GvNDV60Ijy+pV3Xe7JmeJj6RIfiYro0hzPYLucuE3IMa/GQcVtsYSBT90omVoos7ZCXF1GZS10yWNlGdCQQrTP/3rUcw6EMxYpm6KU2hRDmnIiF7SDxlH/meVFlL4BUSjp0m02aZ2xwDF+NUZ56wvtkTTJ6dFEEYwl/1BxWF3lGfppl6qMi7YOXoRKk+ZEAKl6HhnnC733ueG2i4HFafHxyRy/j2V8alK8Guh04sL9dLgOhhONdBTJlH7pcCWq2b6FA5mAlf735asjNqmYLZn4K0D80FTWUMWw7t2cPFjWLAHYO0RI4BuB6ZhRHt8OKwnCfOQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,181 +118,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> On Wed, Apr 01, 2026 at 02:55:23PM +0800, Hao Li wrote:
-> > On Wed, Apr 01, 2026 at 12:57:25PM +0800, hu.shengming@zte.com.cn wrote:
-> > > @@ -4395,6 +4458,48 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> > >      return allocated;
-> > >  }
-> > >  
-> > > +static unsigned int alloc_whole_from_new_slab(struct kmem_cache *s,
-> > > +        struct slab *slab, void **p, bool allow_spin)
-> > > +{
-> > > +
-> > > +    unsigned int allocated = 0;
-> > > +    void *object, *start;
-> > > +
-> > > +    if (alloc_whole_from_new_slab_random(s, slab, p, allow_spin,
-> > > +                         &allocated)) {
-> > > +        goto done;
-> > > +    }
-> > > +
-> > > +    start = fixup_red_left(s, slab_address(slab));
-> > > +    object = setup_object(s, start);
-> > > +
-> > > +    while (allocated < slab->objects - 1) {
-> > > +        p[allocated] = object;
-> > > +        maybe_wipe_obj_freeptr(s, object);
-> > > +
-> > > +        allocated++;
-> > > +        object += s->size;
-> > > +        object = setup_object(s, object);
-> > > +    }
-> > 
-> > Also, I feel the current patch contains some duplicated code like this loop.
-> > 
-> > Would it make sense to split allocate_slab() into two functions?
-> > 
-> > For example,
-> > the first part could be called allocate_slab_meta_setup() (just an example name)
-> > And, the second part could be allocate_slab_objects_setup(), with the core logic
-> > being the loop over objects. Then allocate_slab_objects_setup() could support
-> > two modes: one called BUILD_FREELIST, which builds the freelist, and another
-> > called EMIT_OBJECTS, which skips building the freelist and directly places the
-> > objects into the target array.> 
+- [PATCH v2] mm/damon: validate min_region_size to be power of 2
+  - status: Reviewed
+  - review: No issues found.
 
-> Something similar but a little bit more thoughts to unify the code
-> (**regardless of CONFIG_SLAB_FREELIST_RANDOM**) and avoid treating
-> "the whole slab->freelist fits into the sheaf" as a special case:> 
-
-> - allocate_slab() no longer builds the freelist.
->   the freelist is built only when there are objects left after
->   allocating objects from the new slab.> 
-
-> - new_slab() allocates a new slab AND builds the freelist
->   to keep existing behaviour.> 
-
-> - refill_objects() allocates a slab using allocate_slab(),
->   and passes it to alloc_from_new_slab().> 
-
->   alloc_from_new_slab() consumes some objects in random order,
->   and then build the freelist with the objects left (if exists).> 
-
-> We could actually abstract "iterating free objects in random order"
-> into an API, and there would be two users of the API:
-> - Building freelist
-> - Filling objects into the sheaf (without building freelist!)> 
-
-> Something like this...
-> (names here are just examples, I'm not good at naming things!)> 
-
-> struct freelist_iter {
->     int pos;
->     int freelist_count;
->     int page_limit;
->     void *start;
-> };> 
-
-> /* note: handling !allow_spin nicely is tricky :-) */
-> alloc_from_new_slab(...) {
->     struct freelist_iter fit;> 
-
->     prep_freelist_iter(s, slab, &fit, allow_spin);
->     while (slab->inuse < min(count, slab->objects)) {
->         p[slab->inuse++] = next_freelist_entry(s, &fit);
->     }> 
-
->     if (slab->inuse < slab->objects)
->         build_freelist(s, slab, &fit);
-> }> 
-
-> build_freelist(s, slab, fit) {
->     size = slab->objects - slab->inuse;> 
-
->     cur = next_freelist_entry(s, fit);
->     cur = setup_object(s, cur);
->     slab->freelist = cur;
->     for (i = 1; i < size; i++) {
->         next = next_freelist_entry(s, fit);
->         next = setup_object(s, next);
->         set_freepointer(s, cur, next);
->         cur = next;
->     }
-> }> 
-
-> #ifdef CONFIG_SLAB_FREELIST_RANDOM
-> prep_freelist_iter(s, slab, fit, allow_spin) {
->     fit->freelist_count = oo_objects(s->oo);
->     fit->page_limit = slab->objects * s->size;
->     fit->start = fixup_red_left(s, slab_address(slab));> 
-
->     if (slab->objects < 2 || !s->random_seq) {
->         fit->pos = 0;
->     } else if (allow_spin) {
->         fit->pos = get_random_u32_below(freelist_count);
->     } else {
->         struct rnd_state *state;> 
-
->                 /*                                                              
->                  * An interrupt or NMI handler might interrupt and change       
->                  * the state in the middle, but that's safe.                        
->                  */                                                             
->                 state = &get_cpu_var(slab_rnd_state);                           
->                 fit->pos = prandom_u32_state(state) % freelist_count;                
->                 put_cpu_var(slab_rnd_state);    
->     }> 
-
->     return;
-> }
-> next_freelist_entry(s, fit) {
->     /*
->          * If the target page allocation failed, the number of objects on the
->          * page might be smaller than the usual size defined by the cache.
->          */
->         do {
->                 idx = s->random_seq[fit->pos];
->                 fit->pos += 1;
->                 if (fit->pos >= freelist_count)
->                         fit->pos = 0;
->         } while (unlikely(idx >= page_limit));> 
-
->     return (char *)start + idx;
-> }
-> #else
-> prep_freelist_iter(s, slab, fit, allow_spin) {
->     fit->pos = 0;
->     return;
-> }
-> next_freelist_entry(s, fit) {
->     void *next = fit->start + fit->pos * s->size;> 
-
->     fit->pos++;
->     return next;
-> }
-> #endif> 
-
-Hi Harry,
-
-Thanks a lot for the detailed suggestion. This is a very good direction for
-restructuring refill_objects().
-
-I agree that abstracting the free-object iteration and making the flow uniform
-regardless of CONFIG_SLAB_FREELIST_RANDOM is a cleaner approach than keeping
-the “whole slab fits into the sheaf” case as a special path. Your idea of letting
-alloc_from_new_slab() consume objects first and only build the freelist for the
-remainder makes a lot of sense, and should also help reduce the duplicated
-object-setup logic.
-
-I’ll rework the patch along these lines, incorporating your and Hao suggestions,
-and send a v3.
-
-Thanks again for the thoughtful review.
-
---
-With Best Regards,
-Shengming
-
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260402053756.26606-1-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
 
