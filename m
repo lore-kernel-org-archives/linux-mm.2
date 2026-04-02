@@ -4,112 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EA3D39436
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 14:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 385F4D3943C
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 14:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C49416B0092; Thu,  2 Apr 2026 10:40:57 -0400 (EDT)
+	id 201536B0088; Thu,  2 Apr 2026 10:57:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9CA6B0093; Thu,  2 Apr 2026 10:40:57 -0400 (EDT)
+	id 1B2436B0089; Thu,  2 Apr 2026 10:57:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE9346B0095; Thu,  2 Apr 2026 10:40:57 -0400 (EDT)
+	id 0A1C76B008A; Thu,  2 Apr 2026 10:57:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E136B0092
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:40:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A5465A822
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:40:57 +0000 (UTC)
-X-FDA: 84613877754.15.56F49E6
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 789EF120010
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:40:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of yskelg@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=yskelg@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2D66B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:57:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3CFFBAE46
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:57:27 +0000 (UTC)
+X-FDA: 84613919334.26.1DD5F4F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A121414000D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:57:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cB6xcO46;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775140855;
+	s=arc-20220608; t=1775141845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=ImV4Phho1CCTlk2/HembznT8Vxp6HlqSPKT0fvsRtIs=;
-	b=0Rc9y3ws8P2cDFVJh9QzfNH21W4LCoN43nos8BASiCgDTZdOpG0qQWtt6Kd8JeXHie+ZKE
-	kJS2jk0k6rHU4rJcK4rWbs1ucg7NU+bHOJZBRkph4TYSqslxuPlp5b+pZgnDF6X2bbnEC3
-	+/PVDu/ho8PAbSnxfxm1Pwp67UnROew=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775140855; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CvBSyTNXvqof8UX1/oUBnJqMsSDD7wia8djOdxU4wjA=;
+	b=2GugUuei0WPLOtzfrpnUWXFCkRD9tfpM+QkfAFflt6RXMgdAnDJ0r5OEuIYFxutURTEZkG
+	D7q53fB1Cqj6qzBo1xArazeHwoNkkt8sVFPFUURhf97Sy16miazIvUoNWvI84khBpL97XP
+	1LNFgwswc2KvkATrVG4v47bXUtvPoHc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775141845; a=rsa-sha256;
 	cv=none;
-	b=ViYVVrbzLeRMT8Y3OdhtDYWCzlZ4QUAEbh3HxR5k27cXrFvYNafzLTKubl7qkbN/W4McNZ
-	vbs7ulumplZTxRi6HvtUdlhlRJxLWfszcVV34E00l10lZBvhBEmdsOrcgg1fp/4p0qzuaD
-	9GE3S5IR2nBbz9FvktvX+jV+NLksiZM=
+	b=VDN/9zfnVsrM4zgMhOIODWvcMKeGNqPZANruTYL50BfiadTyTsIDO1lDhPpP+KJenCeTzG
+	F0rmcWtQVnT3F+O9nc/O3tLO9ughzy/EZeDOXAZBwUvEeBp87u8ITU2PPxBBPZYOvnojgv
+	rSk77jJBi4QYcMI0hjSv2d7b/9MtmHk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of yskelg@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=yskelg@gmail.com;
-	dmarc=none
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ab1c8fdc40so666905ad.1
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 07:40:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775140854; x=1775745654;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ImV4Phho1CCTlk2/HembznT8Vxp6HlqSPKT0fvsRtIs=;
-        b=mp9maDkGTiLpPbY643NiAqpzSbHFtkF6bgM0umOB9EloTdGIKhQMAzBDFnHhuTm4sX
-         pt4DPkN9vjshYV6+ApvAzGqILJjUodwNDWFfPkJkk4JoyX6XRZgF8kCBhrafzBOZbET9
-         pq6lGk084/rKEMHpnHjoon9F5/3HURZrGEGG9c8iQgGOWOiSbVGNH+NfXbpecowIlZ4R
-         oTmrKIdmDRW8K7bQ6yJslfEg5i/8BfhAhu2qRyFtd0d0F2D0fHkyu9z3gaBWqbX/T/rN
-         8t297xBBnyoeRa6un32W6II2PY+hmE+I4g4AbpzJe+0qudl99+V8ZQ3cxqlDSw9l4ELa
-         KnKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLS3EFssfRGBAvbRDOiduiQtqibHyJnvxGOS4cD3mFRSCa6JGhxabn4KE51UIQx914DWpnhia8JA==@kvack.org
-X-Gm-Message-State: AOJu0Yxr9kYL8KMfC7dw/9stD9jIoxsGul0tqESinp8YgnRU/LHHKPQK
-	qi0BkvGdNJ3+NfSNTdDTBIB7gL4cJVk63ERm0+Vn34xYPpiI4JiMHY5f
-X-Gm-Gg: AeBDietnl1rpQFRNTxYIpv7IsqKndDoKM5zKQeoauPpVEQMyCbn9zHj+WTULeyY6+fq
-	wUhklx1nLLNsMo3sIpCWsks83SHhOD6+PIMJC3wFhRuNttDJyJq4EbDOqP47fzUbLzUUFpCpcIY
-	7UWJ6NYNAq5hpE88OekvEiJ2sy44/57dZQ88q4nt5sLe6mdLgMZ7HvYy/Ggkdu3CYbhjeYK8N7s
-	ZsOR3nJssWT5rTMElMHPCme/37sWb5MmKNOjQSPEGs2TKXTIzz+NP5TIGRiUgnrFdkbkDOXL1QP
-	jzSh8oVnPrFWoW6XgglQp9MAaRNysQPnUOyc3W6oUqGWAJCKV9IlmIs0SUQN9A15vs2GyBbNPqs
-	NxlxFxahH/6o0GmOJYuoNr9qmPDuGOqnaSfMFsDuIRmzcWQqCZt/ItLLFdpaDun5C/lBsY/ukTw
-	NvghVjU3ckA5nDJXM5qHm6HIQRlEFZoZOEAILOa0Ej0nsq3cXMLzTS7Tg5CTpo1AzehBxmgYN9n
-	A2HDRodEwO2FYiJ
-X-Received: by 2002:a17:903:2f50:b0:2b2:42c0:de33 with SMTP id d9443c01a7336-2b269c6edb1mr52876245ad.4.1775140853987;
-        Thu, 02 Apr 2026 07:40:53 -0700 (PDT)
-Received: from localhost.localdomain ([119.206.52.3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27478d329sm31171055ad.34.2026.04.02.07.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 07:40:53 -0700 (PDT)
-From: Yunseong Kim <ysk@kzalloc.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"Tzung-Bi Shih" <tzungbi@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	max.byungchul.park@gmail.com,
-	"kernel_team@skhynix.com" <kernel_team@skhynix.com>,
-	kernel-team@lge.com,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH] lkdtm: Add folio_lock deadlock scenarios
-Date: Thu,  2 Apr 2026 23:39:48 +0900
-Message-Id: <20260402143947.162844-1-ysk@kzalloc.com>
-X-Mailer: git-send-email 2.39.5
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cB6xcO46;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00BC960123;
+	Thu,  2 Apr 2026 14:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE33C116C6;
+	Thu,  2 Apr 2026 14:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775141844;
+	bh=G19qJFmt2AonBprkfDZPrfxmtSWXvwcPHqcht7Xl9Co=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cB6xcO461o97vrayCR3JfcDh/zOPA/q4lbI9o36GawbhDw4YLvOjlSFrpKQRYbjV4
+	 LQf6pwG4+kDcl+MvsPPgPVp2KZvEal5jvAMSBBKsGtdqkGn0pTg2TzMrPInUasiDAV
+	 eORGA6+KZ6Ayv9/CB9cYASBW1ZTaFx+5VzkFxKaHlfGQ4rzq4iaQxQriyti8acQMn0
+	 ALljyrWkubYz9x9oPOYkyU5PEVzbW0abCOarhxxDr+9PPdZV19wy9Yc8ksV7J+rYjh
+	 fOkRg/vZU1xr7M/AH6KlKSik46Nqez/v7Nqax3ei3KeNhEtN74eS19GajlkeOfKmf1
+	 RANirHk/82Cnw==
+Message-ID: <a761a39b-3907-4d88-831f-f9c979802171@kernel.org>
+Date: Thu, 2 Apr 2026 16:57:18 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 789EF120010
-X-Stat-Signature: dm1si4hc8epu7pjixh7tsp3za33ckrif
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+ Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20260401070155.1420929-1-yuan1.liu@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260401070155.1420929-1-yuan1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A121414000D
+X-Stat-Signature: tqygrga5jzhke6ithpiqkdz63xgckpih
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1775140855-293162
-X-HE-Meta: U2FsdGVkX19wafKB14LXzO6bIUmm07hswIdfbLOCyIOczOU04/b6Km+FDbC74jpO/S3XwiMK0A9BfwuRuGX+hVJQSBtJ8y4bHC3iidHMBKFKthivxNW8HiyTW8hADE2PiSyEQ5/CD4vahtvJvluRIhryi2P0/8LAQNPIz7QveFYmypsgC04cRLPmRPzxmKE4jW02HbwHgW5cDF9e60noWJR4En0DYxyyA+iIEyymiAWRhjUqU0mu2KGUWY6oRC7E3g77FRtrSZY8eBpGZDZq6RMlWqfJps3kDnMgujDMfjAPAx2RZ3AYGdxzSXqTBqqVoJuMFw9JkGuLR7eXR5va3loflKWKtb3WyIJVhny+sebyt58HdDiRNC4J5bv0t+hOM8dV7ASlc10lJ5HVsYteI1suRqbNR2yQUQ+SDC48VHf7esSNTzliH+H6u5HMvF5Mfabp4XGiAThsomKvEzIp2AtYoNBtNldjycoP87TOiRmjcy+t2jxWIrehuqDFvLBtFtAEwi0RShMF2yKEXQidgphZjllwKrc402QA528EjeuAkRFLxzKbjwNkikXQ0QTu5ndoan9B6maYaj1tusqUpJNy0h1dQzbQ6MCJXHhUdNIlEBexq0ST0mn3oCMVBnCJBG/hgfrMDLhPlkgC7XyyXygVU8BXXx/iKz8fHsgmTW7F8O93n5n4BYeLOdXHNjIemLfAHmbymmqDX4an9jFoRvXTLs6F2owEpzrLTyTeWZEEeju4O5/z8NAWY9un43wPy6ikMh3qIDGyELWCscV7hfgPuHpEGwkfl0dAMu187ftfjsBgvNp1Ekdea23nkrKaowJPRYmm43Ty3klcordfd+AQpFPlqR05CFd9N2YA9YKt+7Rd8Ac1sHIsFNEC4o4QXxjHf/Sffm9gtQ2e7HRj+E1uiECNpC7eg/ikAegQKTmB9h7RHCizt+NCBQCT+KeHsTKbf8bsvOrim3daKx0
- TsGNkXeU
- im8O6RN5gxl+TmVt23yk76BQftgziz3IFKlSZrhzgf1vVoWP7kWGSm/gvDMPcDfYp4v9k58FMhJaZZex56yN7n1y11TlXSGL84Pyev26GJqnUTJwRMurAcy+Q8aVVmxVIqAndDLfrHINqWH91EDvN4WOng+SiknUQBwDJIdJP7B1v7ZprqfHdYqOAYKCNDBD2iewno3kSOdiSOBfqFsJE8U6LRuhi/OJs6rmuD7sJ9p+EtUcUvWI2E2dJbpqV7DxPYLXZXOshpG8j+HnShylqRXGvkf7WfGWX7fWw7i7Psusf3W8RY53c73p1jm7YZGETqVT5NbJiNX0NDclUdS6MXb04jIxA1ctwoJKiicrfA81BpqQ8EO38FTvTsz77MIA9W8UipE1zrz31LTDBc8sKnI64umfk+H5udQXoXJFoSEO+cLA5uYVzqVIC5p0q0FJZI2lMghmZZwvUI1cIG8Nv9/z2P2DVaiaO2tqXWeVMS9xfFue9ceNpbUveGRGTmM8udpSOzrkFru93mIvUhqpcnbuUADGGJwrTqghyi7Ipzu4YazRoFTdm7q4bZSKD+KJuidoKRH0g/o16DAorIAiW7I+4j6vWpJDmA8/kxwtxp/KutXIu1GRibof5x3b5KBwDk9t/a1rXUUNLEd+2g/9Bs5ufNvK/p0z1d+tz/kxLocJopuFL2zaWdxjqvq05o2NYZzNzs5hN9poM68LMbJ4JhiY4zg==
+X-HE-Tag: 1775141845-839298
+X-HE-Meta: U2FsdGVkX1+iRIv4ulmkwb/FnH8/77ORE5cuyYuj5cVNMY6Pvxc/RL8GV9iXX/WRCD3Q8pBuySOCD8Ms6gNwAgGjGmsXUCZL9lYiUGpl9f5/vgn6PRCxAUBMkOlo4c/FVbzyQ7J3hXpRuXzQZY1emp16IMKV/GwGHKD96DBb06BSlSVRxipnyNKUUOIwfKwY3PdbDQHQboXPhoZczF3kNAFO4d0QTgGIh4WwJeWDXwkiOQKS/G7vXw2Im9sddc1d0Z83axyYCa3KWI7XJTehP7/p8zeCqFskUjXHOe6X6RSKcwH5eQd/QY88/WL7gSUerLnGjHuVoUPbHzIUGUOmgJsXndjbb5Ohst77d3i2can79/Ue75OZFO4kD0mBFmj1DW+nOXmsP+9HVYZpF0EWc56zi7JMXqXOePkPZ/td1Sht0hjDatibjyQSWtCTOLFrwFBP6M4or+YGHJDwY0wbDVoKI8agJgo1m4G7HRiY5AfyegGOUOVZ+VtlT2EmmeSYc/Eh3+48C1ycOXLiLZc+YhB8wFtflXN+VZTnRSzdKqjCeSOl9O0oMJdr577nNgMeUvcTSnrSHLXuB5LUA6rPlfS0xfZlaxEmM6UuQJaU1uIPqAl6mw6NIfiZGpxcqZVt98ldvJdIy52NUWUCXWVxv3Asq+LnlzomtJHDXAYpNjvfmyIsVB1e5cOv7l0MstJv6yAM7V1wmQO6CKSSwLLQsYNljKOGrAYUGPDGDQ3/OcgIbiyHePwzuLSGkbxnUautO8mOH5beTZ/klsoGG6ayGAHQehfYglV0U/TD1eSYFJy9XEL2sjCR92fcSrQAhI1+wSTSThqXKeMfTulOqg1eDGkaWN2OzNhs6t+zjGJGkrBiIhnKJx3xM5XaAqo4DUPMCc0jJJjVNFKWJOFUBXE2XecW7aOQpiOqonYvX5DRa4vViZjNbUkB4jZXaXmaMreuwCSe8K0HG3mc66FGv+4
+ XnDC16Tj
+ XSTs3odxoRCEVZnt078PR+AImE3p6Op2v5fYwyvbdNUHd417PQKDXIPaa+OrMv64wz/CEcqVA9l1OKJ7tV0B/u7idrSrqsz/5OgXMU+4nhOod7pnnp13/pOlqU0BG/97jorCdHmg08vBV+x3Yt6JVQYav3Fik6i/VvVOl9KhmTgaGad25Zw/lxB1xydHx8lzY7TqcNDsxjpXQ1W2kYoW+gNRDbpCJgJ4NZaDAZSq3jwOppAWJodwUTdsf6+2YLg2dk8JL0FBJlJVoGRusR+w6lwr7Grc8NtJehtSoXISleRZZCOakGSJXEM1eamr+BK+rfPybB+VEKvgfoNX012fH/mD7mBsiJ1SABjxKKufPS+wjnsTq3LhbiDiJ2cM6+MLa2WILv58qEyrNjNgk+Uuo6wBCig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,696 +142,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduces four new crash types to LKDTM to reproduce deadlock patterns
-involving folio_lock(), which operates on a wait-on-bit mechanism:
+On 4/1/26 09:01, Yuan Liu wrote:
+> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
+> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
+> to rebuild zone->contiguous. For large zones this is a significant cost
+> during memory hotplug and hot-unplug.
+> 
+> Add a new zone member pages_with_online_memmap that tracks the number of
+> pages within the zone span that have an online memmap (including present
+> pages and memory holes whose memmap has been initialized). When
+> spanned_pages == pages_with_online_memmap the zone is contiguous and
+> pfn_to_page() can be called on any PFN in the zone span without further
+> pfn_valid() checks.
+> 
+> Only pages that fall within the current zone span are accounted towards
+> pages_with_online_memmap. A "too small" value is safe, it merely prevents
+> detecting a contiguous zone.
+> 
+> The following test cases of memory hotplug for a VM [1], tested in the
+> environment [2], show that this optimization can significantly reduce the
+> memory hotplug time [3].
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      7s      |       81%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      9s      |       75%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>     qom-set vmem1 requested-size 0G (Unplug Memory)
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v7.0-rc4
+>     Qemu         : v9.0.0
+> 
+>     Launch VM    :
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>     Guest kernel auto-onlines newly added memory blocks:
+>     echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> [3] The time from typing the QEMU commands in [1] to when the output of
+>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>     memory is recognized.
+> 
+> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+> Reviewed-by: Pan Deng <pan.deng@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> ---
+>  Documentation/mm/physical_memory.rst | 11 +++++
+>  drivers/base/memory.c                |  6 +++
+>  include/linux/mmzone.h               | 44 +++++++++++++++++++
+>  mm/internal.h                        |  8 +---
+>  mm/memory_hotplug.c                  | 12 +-----
+>  mm/mm_init.c                         | 64 +++++++++++++++++-----------
+>  6 files changed, 102 insertions(+), 43 deletions(-)
+> 
+> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> index b76183545e5b..e47e96ef6a6d 100644
+> --- a/Documentation/mm/physical_memory.rst
+> +++ b/Documentation/mm/physical_memory.rst
+> @@ -483,6 +483,17 @@ General
+>    ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
+>    is initialized by ``calculate_node_totalpages()``.
+>  
+> +``pages_with_online_memmap``
+> +  Tracks pages within the zone that have an online memmap (present pages and
+> +  memory holes whose memmap has been initialized). When ``spanned_pages`` ==
+> +  ``pages_with_online_memmap``, ``pfn_to_page()`` can be performed without
+> +  further checks on any PFN within the zone span.
+> +
+> +  Note: this counter may temporarily undercount when pages with an online
+> +  memmap exist outside the current zone span. Growing the zone to cover such
 
- 1. FOLIO_LOCK_AA:
-   Triggers a self-deadlock (AA) by attempting to acquire the same folio
-   lock twice in the same execution context.
+Maybe add here "This can only happen during boot, when initializing the
+memmap of pages that do not fall into any zone span."
 
- 2. FOLIO_LOCK_ABBA:
-   Triggers a classic ABBA deadlock between two threads trying to folio
-   lock two different folios in reverse order.
 
- 3. FOLIO_MUTEX_LOCK_ABBA:
-   Reproduces an ABBA deadlock involving a folio_lock() and a mutex.
+> +	 * we will not try to shrink the zones.
 
- 4. FOLIO_DEFERRED_EVENT_ABBA:
-   Creates a deferred deadlock where a thread holding a folio_lock() waits
-   on a wait queue. By deferring its lock acquisition to a workqueue,
-   the waker forms a circular dependency that blocks both the waiter and
-   the kworker.
+s/zone/it/ ?
+[...]
 
-These tests allow developers to validate the kernel's behavior
-(e.g., hung task detection, DEPT[1][2][3] report) under wait/event-based
-deadlock conditions.
+> +
+> +/*
+> + * Initialize unavailable range [spfn, epfn) while accounting only the pages
+> + * that fall within the zone span towards pages_with_online_memmap. Pages
+> + * outside the zone span are still initialized but not accounted.
+> + */
+> +static void __init init_unavailable_range_for_zone(struct zone *zone,
+> +						   unsigned long spfn,
+> +						   unsigned long epfn)
 
- [1] https://lwn.net/Articles/1036222/
- [2] https://youtu.be/pfWxBuMzxks?si=mW699Yz6dp38diiM
- [3] https://lore.kernel.org/lkml/20251205071855.72743-1-byungchul@sk.com/
+Best to use double tab to fit this into a single line
 
-Below are the call traces from hungtaskd (for 1. FOLIO_LOCK_AA and
-4. FOLIO_DEFERRED_EVENT_ABBA) and DEPT (for 2. FOLIO_LOCK_ABBA and
-3. FOLIO_MUTEX_LOCK_ABBA):
+		unsigned long spfn, unsigned long epfn)
 
- # echo FOLIO_LOCK_AA > /sys/kernel/debug/provoke-crash/DIRECT
- [   26.841460] lkdtm: Performing direct entry FOLIO_LOCK_AA
- [   61.151664] INFO: task bash:915 blocked for more than 30 seconds.
- [   61.152107]       Not tainted 6.19.0-virtme #20
- [   61.152482] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- [   61.152843] task:bash            state:D stack:12536 pid:915   tgid:915   ppid:909    task_flags:0x400100 flags:0x00080000
- [   61.153440] Call Trace:
- [   61.153585]  <TASK>
- [   61.153732]  ? __schedule+0x5e9/0x11b0
- [   61.153941]  __schedule+0x61c/0x11b0
- [   61.154157]  schedule+0x3a/0x130
- [   61.154447]  io_schedule+0x46/0x70
- [   61.154649]  folio_wait_bit_common+0x1ab/0x440
- [   61.154918]  ? __pfx_wake_page_function+0x10/0x10
- [   61.155167]  lkdtm_FOLIO_LOCK_AA+0x10c/0x1b0
- [   61.155562]  lkdtm_do_action+0x18/0x30
- [   61.155754]  direct_entry+0x8d/0xe0
- [   61.155955]  full_proxy_write+0x69/0xa0
- [   61.156157]  vfs_write+0xea/0x600
- [   61.156448]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   61.156706]  ? find_held_lock+0x2b/0x80
- [   61.156902]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   61.157141]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   61.157469]  ? from_pool+0x7d/0x190
- [   61.157664]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   61.157900]  ? dept_enter+0x68/0xa0
- [   61.158098]  ksys_write+0x76/0xf0
- [   61.158396]  do_syscall_64+0xc2/0xf80
- [   61.158599]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- [   61.158851] RIP: 0033:0x7fe2e7d58340
- [   61.159063] RSP: 002b:00007ffc370df3a8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
- [   61.159526] RAX: ffffffffffffffda RBX: 000000000000000e RCX: 00007fe2e7d58340
- [   61.159863] RDX: 000000000000000e RSI: 0000559c6fb13ed0 RDI: 0000000000000001
- [   61.160353] RBP: 0000559c6fb13ed0 R08: 0000000000000007 R09: 0000000000000073
- [   61.160695] R10: 0000000000001000 R11: 0000000000000202 R12: 000000000000000e
- [   61.161032] R13: 00007fe2e7e34760 R14: 000000000000000e R15: 00007fe2e7e2f9e0
- [   61.161490]  </TASK>
- [   61.161639]
- [   61.161639] Showing all locks held in the system:
- [   61.161942] 1 lock held by khungtaskd/116:
- [   61.162142]  #0: ffffffffa2380620 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x36/0x1c0
- [   61.162884] 1 lock held by bash/915:
- [   61.163422]  #0: ffff89af81beb570 (sb_writers#8){.+.+}-{0:0}, at: ksys_write+0x76/0xf0
- [   61.164077]
- [   61.164367] =============================================
+		^ two tabs
 
- # echo FOLIO_LOCK_ABBA > /sys/kernel/debug/provoke-crash/DIRECT
- [  182.473798] lkdtm: Performing direct entry FOLIO_LOCK_ABBA
- [  182.475397] ===================================================
- [  182.475637] DEPT: Circular dependency has been detected.
- [  182.475774] 6.19.0-virtme #20 Not tainted
- [  182.475885] ---------------------------------------------------
- [  182.476054] summary
- [  182.476112] ---------------------------------------------------
- [  182.476259] *** AA DEADLOCK ***
- [  182.476259]
- [  182.476379] context A
- [  182.476463]    [S] (unknown)(pg_locked_map:0)
- [  182.476604]    [W] dept_page_wait_on_bit(pg_locked_map:0)
- [  182.476744]    [E] dept_page_clear_bit(pg_locked_map:0)
- [  182.476884]
- [  182.476943] [S]: start of the event context
- [  182.477055] [W]: the wait blocked
- [  182.477158] [E]: the event not reachable
- [  182.477268] ---------------------------------------------------
- [  182.477415] context A's detail
- [  182.477504] ---------------------------------------------------
- [  182.477652] context A
- [  182.477711]    [S] (unknown)(pg_locked_map:0)
- [  182.477852]    [W] dept_page_wait_on_bit(pg_locked_map:0)
- [  182.477992]    [E] dept_page_clear_bit(pg_locked_map:0)
- [  182.478132]
- [  182.478190] [S] (unknown)(pg_locked_map:0):
- [  182.478300] (N/A)
- [  182.478359]
- [  182.478418] [W] dept_page_wait_on_bit(pg_locked_map:0):
- [  182.478558] [<ffffffff8cf9a5ae>] kthread+0xfe/0x200
- [  182.478698] stacktrace:
- [  182.478757]       kthread+0xfe/0x200
- [  182.478867]       ret_from_fork+0x29d/0x2e0
- [  182.478977]       ret_from_fork_asm+0x1a/0x30
- [  182.479118]
- [  182.479177] [E] dept_page_clear_bit(pg_locked_map:0):
- [  182.479316] [<ffffffff8d989fe3>] lkdtm_folio_ab_kthread+0xb3/0x1a0
- [  182.479485] stacktrace:
- [  182.479545]       lkdtm_folio_ab_kthread+0xb3/0x1a0
- [  182.479685]       kthread+0xfe/0x200
- [  182.479796]       ret_from_fork+0x29d/0x2e0
- [  182.479906]       ret_from_fork_asm+0x1a/0x30
- [  182.480045] ---------------------------------------------------
- [  182.480192] information that might be helpful
- [  182.480310] ---------------------------------------------------
- [  182.480458] CPU: 2 UID: 0 PID: 915 Comm: lkdtm_folio_a Not tainted 6.19.0-virtme #20 PREEMPT(voluntary)
- [  182.480464] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- [  182.480466] Call Trace:
- [  182.480469]  <TASK>
- [  182.480473]  dump_stack_lvl+0x69/0xa0
- [  182.480481]  cb_check_dl+0x6be/0x760
- [  182.480492]  ? srso_alias_return_thunk+0x5/0xfbef5
- [  182.480497]  ? lock_acquire+0x26b/0x2b0
- [  182.480507]  bfs+0x138/0x1c0
- [  182.480511]  ? srso_alias_return_thunk+0x5/0xfbef5
- [  182.480522]  add_dep+0xd6/0x1c0
- [  182.480527]  ? srso_alias_return_thunk+0x5/0xfbef5
- [  182.480531]  ? __pfx_bfs_init_check_dl+0x10/0x10
- [  182.480535]  ? __pfx_bfs_extend_dep+0x10/0x10
- [  182.480539]  ? __pfx_bfs_dequeue_dep+0x10/0x10
- [  182.480543]  ? __pfx_cb_check_dl+0x10/0x10
- [  182.480551]  __dept_event+0x489/0x520
- [  182.480558]  ? srso_alias_return_thunk+0x5/0xfbef5
- [  182.480564]  ? lkdtm_folio_ab_kthread+0xb3/0x1a0
- [  182.480570]  dept_event+0x99/0xc0
- [  182.480581]  folio_unlock+0x3c/0x60
- [  182.480587]  lkdtm_folio_ab_kthread+0xb3/0x1a0
- [  182.480594]  ? __pfx_lkdtm_folio_ab_kthread+0x10/0x10
- [  182.480598]  kthread+0xfe/0x200
- [  182.480605]  ? __pfx_kthread+0x10/0x10
- [  182.480613]  ret_from_fork+0x29d/0x2e0
- [  182.480616]  ? __pfx_kthread+0x10/0x10
- [  182.480622]  ret_from_fork_asm+0x1a/0x30
- [  182.480644]  </TASK>
+> +{
+> +	int nid = zone_to_nid(zone);
+> +	int zid = zone_idx(zone);
 
- # echo FOLIO_MUTEX_LOCK_ABBA > /sys/kernel/debug/provoke-crash/DIRECT
- [   25.744189] lkdtm: Performing direct entry FOLIO_MUTEX_LOCK_ABBA
- [   25.750265] ===================================================
- [   25.750826] DEPT: Circular dependency has been detected.
- [   25.750911] 6.19.0-virtme #20 Not tainted
- [   25.750995] ---------------------------------------------------
- [   25.751098] summary
- [   25.751149] ---------------------------------------------------
- [   25.751252] *** DEADLOCK ***
- [   25.751252]
- [   25.751338] context A
- [   25.751389]    [S] lock(mutex_b:0)
- [   25.751458]    [W] dept_page_wait_on_bit(pg_lcked_map:0)
- [[   25.751652]  ?  [E] unlock(mutex_b:0)
- 2[   25.751781]
- 0[   25.751861] context B
- 0[   25.751937]    [S] (unknown)(pg_locked_map:0)4
- h[   25.752088]    [W] lock(mutex_b:0)
- [   25.752175]    [E] dept_page_clear_bit(pg_locked_map:0)
- [   25.752265]
- [   25.752315] [S]: start of the event context
- [   25.752382] [W]: the wait blocked
- [   25.752452] [E]: the event not reachable
- [   25.752520] ---------------------------------------------------
- [   25.752621] context A's detairl
- [   25.752726] -o--------------------------------o------------------
- t[   25.752894] context A
- @[   25.752960]    [S] lock(mutexv_b:0)
- i[   25.753074]    [W] dept_page_rwait_on_bit(pg_locked_map:0)
- t[   25.753210]    [E] unlock(mutmex_b:0)
- e[   25.753324]
- -[   25.753394] [S] lock(mutex_b:n0):
- g[   25.753513] [:<ffffffffb1989d90>] lkdtm_mutex_/folio_kthread+0x40/0xe0
- [   25.753705] stacktrace:
- [   25.753757]  h     lkdtm_mutex_folio_kthread+0x40/0xe0
- o[   25.753890]  m     kthread+0xfee/0x200
- /[   25.754049]       ret_from_fokrk+0x29d/0x2e0
- i[   25.754175]  m     ret_from_fo/rk_asm+0x1a/0x30s
- a[   25.754390]
- [   25.754496] [gW] dept_page_waiit_on_bit(pg_lockned_map:0):
- g[   25.754678] [<ffffffffb0f9a5ae>] kthread+0xfe/0x200
- [   25.754796] s#tacktrace:
-  [   25.754874]       kthread+0xfe/0x200
- [   25.754981]       ret_from_fork+0x29d/0x2e0
- [   25.755039]       ret_from_fork_asm+0x1a/0x30
- [   25.755130]
- [   25.755185] [E] unlock(mutex_b:0):
- [   25.755254] (N/A)
- [   25.755304] ---------------------------------------------------
- [   25.755406] context B's detail
- [   25.755473] ---------------------------------------------------
- [   25.755576] context B
- [   25.755625]    [S] (unknown)(pg_locked_map:0)
- [   25.755724]    [W] lock(mutex_b:0)
- [   25.755791]    [E] dept_page_clear_bit(pg_locked_map:0)
- [   25.755893]
- [   25.755955] [S] (unknown)(pg_locked_map:0):
- [   25.756039] (N/A)
- [   25.756102]
- [   25.756164] [W] lock(mutex_b:0):
- [   25.756248] [<ffffffffb1989e68>] lkdtm_folio_mutex_kthread+0x28/0xe0
- [   25.756376] stacktrace:
- [   25.756438]       lkdtm_folio_mutex_kthread+0x28/0xe0
- [   25.756545]       kthread+0xfe/0x200
- [   25.756629]       ret_from_fork+0x29d/0x2e0
- [   25.756726]       ret_from_fork_asm+0x1a/0x30
- [   25.756853]
- [   25.756918] [E] dept_page_clear_bit(pg_locked_map:0):
- [   25.757081] [<ffffffffb1989e80>] lkdtm_folio_mutex_kthread+0x40/0xe0
- [   25.757241] stacktrace:
- [   25.757315]       lkdtm_folio_mutex_kthread+0x40/0xe0
- [   25.757449]       kthread+0xfe/0x200
- [   25.757555]       ret_from_fork+0x29d/0x2e0
- [   25.757672]       ret_from_fork_asm+0x1a/0x30
- [   25.757816] ---------------------------------------------------
- [   25.758014] information that might be helpful
- [   25.758180] ---------------------------------------------------
- [   25.758370] CPU: 15 UID: 0 PID: 922 Comm: lkdtm_mutex_fol Not tainted 6.19.0-virtme #20 PREEMPT(voluntary)
- [   25.758381] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- [   25.758386] Call Trace:
- [   25.758391]  <TASK>
- [   25.758403]  dump_stack_lvl+0x69/0xa0
- [   25.758424]  cb_check_dl+0x6be/0x760
- [   25.758454]  bfs+0x17d/0x1c0
- [   25.758459]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   25.758471]  add_dep+0xd6/0x1c0
- [   25.758477]  ? lkdtm_mutex_folio_kthread+0x40/0xe0
- [   25.758482]  ? __pfx_bfs_init_check_dl+0x10/0x10
- [   25.758488]  ? __pfx_bfs_extend_dep+0x10/0x10
- [   25.758492]  ? __pfx_bfs_dequeue_dep+0x10/0x10
- [   25.758496]  ? __pfx_cb_check_dl+0x10/0x10
- [   25.758505]  __dept_wait+0x274/0x6a0
- [   25.758514]  ? kthread+0xfe/0x200
- [   25.758520]  ? __mutex_lock+0xae3/0x1230
- [   25.758532]  ? srso_alias_return_thunk+0x5/0xfbef5
- [   25.758536]  ? dept_enter+0x68/0xa0
- [   25.758545]  ? kthread+0xfe/0x200
- [   25.758551]  dept_wait+0xa7/0xc0
- [   25.758562]  ? __pfx_lkdtm_mutex_folio_kthread+0x10/0x10
- [   25.758567]  lkdtm_mutex_folio_kthread+0x9d/0xe0
- [   25.758573]  kthread+0xfe/0x200
- [   25.758579]  ? __pfx_kthread+0x10/0x10
- [   25.758587]  ret_from_fork+0x29d/0x2e0
- [   25.758591]  ? __pfx_kthread+0x10/0x10
- [   25.758597]  ret_from_fork_asm+0x1a/0x30
- [   25.758619]  </TASK>
+Both can be const.
 
- # echo FOLIO_DEFERRED_EVENT_ABBA > /sys/kernel/debug/provoke-crash/DIRECT
- [  100.907960] lkdtm: Performing direct entry FOLIO_DEFERRED_EVENT_ABBA
- [  100.908476] lkdtm: [Waiter Thread] Securing the folio_lock...
- [  100.908662] lkdtm: [Waiter Thread] Lock secured. Sleeping on wait queue.
- [  100.908691] lkdtm: [Trigger] Calling wake_up() to initiate deferred deadlock.
- [  100.908928] lkdtm: [Waker Context] Atomic callback triggered. Deferring work...
- [  100.909265] lkdtm: [Worker Context] Attempting to acquire folio_lock...
- [  151.210039] INFO: task kworker/14:1:124 blocked for more than 30 seconds.
- [  151.210422]       Not tainted 6.19.0-virtme #23
- [  151.210559] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- [  151.210695] task:kworker/14:1    state:D stack:14344 pid:124   tgid:124   ppid:2      task_flags:0x4208060 flags:0x00080000
- [  151.210880] Workqueue: events deferred_deadlocking
- [  151.210979] Call Trace:
- [  151.211029]  <TASK>
- [  151.211088]  __schedule+0x5e7/0x1170
- [  151.211182]  schedule+0x3a/0x130
- [  151.211256]  io_schedule+0x46/0x70
- [  151.211324]  folio_wait_bit_common+0x125/0x2d0
- [  151.211423]  ? __pfx_wake_page_function+0x10/0x10
- [  151.211563]  deferred_deadlocking+0x68/0x70
- [  151.211664]  process_one_work+0x205/0x690
- [  151.211782]  ? lock_is_held_type+0x9e/0x110
- [  151.211900]  worker_thread+0x188/0x330
- [  151.211994]  ? __pfx_worker_thread+0x10/0x10
- [  151.212111]  kthread+0xfe/0x200
- [  151.212199]  ? __pfx_kthread+0x10/0x10
- [  151.212295]  ret_from_fork+0x2b2/0x2e0
- [  151.212385]  ? __pfx_kthread+0x10/0x10
- [  151.212473]  ret_from_fork_asm+0x1a/0x30
- [  151.212599]  </TASK>
- [  151.212676] INFO: task lkdtm_waiter:916 blocked for more than 30 seconds.
- [  151.212844]       Not tainted 6.19.0-virtme #23
- [  151.212955] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- [  151.213105] task:lkdtm_waiter    state:D stack:14936 pid:916   tgid:916   ppid:2      task_flags:0x208040 flags:0x00080000
- [  151.213309] Call Trace:
- [  151.213372]  <TASK>
- [  151.213444]  __schedule+0x5e7/0x1170
- [  151.213550]  ? __pfx_lkdtm_waiter_thread+0x10/0x10
- [  151.213666]  schedule+0x3a/0x130
- [  151.213776]  lkdtm_waiter_thread+0xab/0x120
- [  151.213869]  ? __pfx_wake_for_deferred_work+0x10/0x10
- [  151.213986]  kthread+0xfe/0x200
- [  151.214077]  ? __pfx_kthread+0x10/0x10
- [  151.214173]  ret_from_fork+0x2b2/0x2e0
- [  151.214260]  ? __pfx_kthread+0x10/0x10
- [  151.214347]  ret_from_fork_asm+0x1a/0x30
- [  151.214472]  </TASK>
- [  151.214588]
- [  151.214588] Showing all locks held in the system:
- [  151.214766] 1 lock held by khungtaskd/116:
- [  151.214878]  #0: ffffffffb676d760 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x36/0x1c0
- [  151.215078] 2 locks held by kworker/14:1/124:
- [  151.215191]  #0: ffff8ee181098948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x55c/0x690
- [  151.215386]  #1: ffffd401404a3e40 ((work_completion)(&deadlock_work)){+.+.}-{0:0}, at: process_one_work+0x1c4/0x690
- [  151.215619]
- [  151.215677] =============================================
+> +	unsigned long in_zone_start;
+> +	unsigned long in_zone_end;
+> +
+> +	in_zone_start = clamp(spfn, zone->zone_start_pfn, zone_end_pfn(zone));
+> +	in_zone_end = clamp(epfn, zone->zone_start_pfn, zone_end_pfn(zone));
+> +
+> +	if (spfn < in_zone_start)
+> +		init_unavailable_range(spfn, in_zone_start, zid, nid);
+> +
+> +	if (in_zone_start < in_zone_end)
+> +		zone->pages_with_online_memmap +=
+> +			init_unavailable_range(in_zone_start, in_zone_end,
+> +					       zid, nid);
 
-Assisted-by: Gemini:gemini-3.1-pro
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
----
- drivers/misc/lkdtm/Makefile             |   1 +
- drivers/misc/lkdtm/core.c               |   1 +
- drivers/misc/lkdtm/deadlock.c           | 304 ++++++++++++++++++++++++
- drivers/misc/lkdtm/lkdtm.h              |   1 +
- tools/testing/selftests/lkdtm/tests.txt |   4 +
- 5 files changed, 311 insertions(+)
- create mode 100644 drivers/misc/lkdtm/deadlock.c
+Best to use a temporary variable to make this easier to read.
 
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index 03ebe33185f9..02264813a346 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -3,6 +3,7 @@ obj-$(CONFIG_LKDTM)		+= lkdtm.o
- 
- lkdtm-$(CONFIG_LKDTM)		+= core.o
- lkdtm-$(CONFIG_LKDTM)		+= bugs.o
-+lkdtm-$(CONFIG_LKDTM)		+= deadlock.o
- lkdtm-$(CONFIG_LKDTM)		+= heap.o
- lkdtm-$(CONFIG_LKDTM)		+= perms.o
- lkdtm-$(CONFIG_LKDTM)		+= refcount.o
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index 5732fd59a227..ea6201861bb7 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -89,6 +89,7 @@ static struct crashpoint crashpoints[] = {
- /* List of possible types for crashes that can be triggered. */
- static const struct crashtype_category *crashtype_categories[] = {
- 	&bugs_crashtypes,
-+	&deadlock_crashtypes,
- 	&heap_crashtypes,
- 	&perms_crashtypes,
- 	&refcount_crashtypes,
-diff --git a/drivers/misc/lkdtm/deadlock.c b/drivers/misc/lkdtm/deadlock.c
-new file mode 100644
-index 000000000000..d859ca096ac9
---- /dev/null
-+++ b/drivers/misc/lkdtm/deadlock.c
-@@ -0,0 +1,304 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * This is for all the tests related to deadlock.
-+ */
-+#include "lkdtm.h"
-+#include <linux/mm.h>
-+#include <linux/kthread.h>
-+#include <linux/mutex.h>
-+#include <linux/workqueue.h>
-+#include <linux/delay.h>
-+#include <linux/wait.h>
-+#include <linux/pagemap.h>
-+
-+static struct folio *folio_common;
-+
-+/*
-+ * Triggering a simple AA deadlock on a folio, Attempting to acquire the same
-+ * folio twice in the same execution context, resulting in a self-deadlock.
-+ */
-+static void lkdtm_FOLIO_LOCK_AA(void)
-+{
-+	folio_common = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
-+
-+	if (!folio_common) {
-+		pr_err("folio_alloc() failed.\n");
-+		return;
-+	}
-+
-+	folio_lock(folio_common);
-+	folio_lock(folio_common);
-+
-+	/* Unreachable */
-+	folio_unlock(folio_common);
-+
-+	folio_put(folio_common);
-+}
-+
-+/*
-+ * Attempting the 'AB' order for ABBA deadlock
-+ */
-+static int lkdtm_folio_ab_kthread(void *folio_b)
-+{
-+	while (true) {
-+		folio_lock(folio_common);
-+		folio_lock((struct folio *)folio_b);
-+		folio_unlock((struct folio *)folio_b);
-+		folio_unlock(folio_common);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Attempting the 'BA' order for ABBA deadlock
-+ */
-+static int lkdtm_folio_ba_kthread(void *folio_b)
-+{
-+	while (true) {
-+		folio_lock((struct folio *)folio_b);
-+		folio_lock(folio_common);
-+		folio_unlock(folio_common);
-+		folio_unlock((struct folio *)folio_b);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Spawning kthreads that attempt to acquire Waiter A and Waiter B in reverse
-+ * order. Leading to a state where Thread A holds Waiter A and waits for
-+ * Waiter B, while Thread B holds Waiter B and waits for Waiter A.
-+ */
-+static void lkdtm_FOLIO_LOCK_ABBA(void)
-+{
-+	struct folio *folio_b;
-+	struct task_struct *t0, *t1;
-+
-+	folio_common = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
-+	folio_b = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
-+
-+	if (!folio_common || !folio_b) {
-+		pr_err("folio_alloc() failed.\n");
-+		return;
-+	}
-+
-+	t0 = kthread_run(lkdtm_folio_ab_kthread, folio_b, "lkdtm_folio_a");
-+	t1 = kthread_run(lkdtm_folio_ba_kthread, folio_b, "lkdtm_folio_b");
-+
-+	if (IS_ERR(t0) || IS_ERR(t1))
-+		pr_err("failed to start kthread.\n");
-+
-+	folio_put(folio_common);
-+	folio_put(folio_b);
-+}
-+
-+DEFINE_MUTEX(mutex_b);
-+
-+/* Attempting 'folio_lock() A then Mutex B' order */
-+static int lkdtm_folio_mutex_kthread(void *)
-+{
-+	while (true) {
-+		folio_lock(folio_common);
-+		mutex_lock(&mutex_b);
-+		mutex_unlock(&mutex_b);
-+		folio_unlock(folio_common);
-+	}
-+
-+	return 0;
-+}
-+
-+/* Attempting 'Mutex B then folio_lock() A' order */
-+static int lkdtm_mutex_folio_kthread(void *)
-+{
-+	while (true) {
-+		mutex_lock(&mutex_b);
-+		folio_lock(folio_common);
-+		folio_unlock(folio_common);
-+		mutex_unlock(&mutex_b);
-+	}
-+
-+	return 0;
-+}
-+
-+/* Triggering ABBA deadlock between folio_lock() and mutex. */
-+static void lkdtm_FOLIO_MUTEX_LOCK_ABBA(void)
-+{
-+	struct task_struct *t0, *t1;
-+
-+	folio_common = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
-+
-+	t0 = kthread_run(lkdtm_folio_mutex_kthread, NULL, "lkdtm_folio_mutex");
-+	t1 = kthread_run(lkdtm_mutex_folio_kthread, NULL, "lkdtm_mutex_folio");
-+
-+	if (IS_ERR(t0) || IS_ERR(t1))
-+		pr_err("failed to start kthreads\n");
-+
-+	folio_put(folio_common);
-+}
-+
-+/*
-+ * Deferred AB-BA Deadlock Scenario
-+ *
-+ * Deferring a lock acquisition from an atomic wake-up callback to a
-+ * sleepable workqueue context.
-+ *
-+ * ----------------------------------------------------------------------
-+ * 'lkdtm_waiter' kthread          Waker               kworker thread
-+ *  [Sleepable Context]        (LKDTM Trigger)       [Sleepable Context]
-+ *           |                       |                      |
-+ *    1. folio_lock(folio_common)    |                      |
-+ *       [Holds Folio]               |                      |
-+ *           |                       |                      |
-+ *    [Waits for Wakeup] <---  2. wake_up(&wq_deadlock)     |
-+ *           |                       |                      |
-+ *           |              3. wake_for_deferred_work()     |
-+ *           |                  [Inside wq_deadlock->lock]  |
-+ *           |                       |                      |
-+ *           |              4. schedule_work() --->         |
-+ *           |                       |          5. deferred_deadlocking()
-+ *           |                       |                      |
-+ *           |                       |          6. folio_lock(folio_common)
-+ *           |                       |               [Waits for Folio]
-+ *           |                       |                      |
-+ * ----------------------------------------------------------------------
-+ */
-+static DECLARE_WAIT_QUEUE_HEAD(wq_deadlock);
-+static DECLARE_COMPLETION(waiter_ready);
-+static struct folio *folio_common;
-+static struct work_struct deadlock_work;
-+
-+/**
-+ * deferred_deadlocking - The deferred task executed by a kworker thread.
-+ * @work: The work structure associated with this task.
-+ *
-+ * Since this runs in a kworker thread, it is a safe sleepable context.
-+ * Attempting to acquire the folio_lock here will not cause an atomic
-+ * scheduling violation, but it will create a logical deadlock and a
-+ * circular dependency.
-+ */
-+static void deferred_deadlocking(struct work_struct *work)
-+{
-+	pr_info("[Worker Context] Attempting to acquire folio_lock...\n");
-+
-+	/*
-+	 * DEADLOCK POINT:
-+	 * The kworker blocks here indefinitely because the lkdtm_waiter
-+	 * thread holds the PG_locked bit of folio_common.
-+	 */
-+	folio_lock(folio_common);
-+
-+	/* Unreachable */
-+	folio_unlock(folio_common);
-+
-+	folio_put(folio_common);
-+
-+	wake_up_all(&wq_deadlock);
-+}
-+
-+/**
-+ * wake_for_deferred_work - Invoking the deferred_waker_work().
-+ * @wq_entry: The wait queue entry being woken up.
-+ * @mode: Wakeup mode (e.g., TASK_NORMAL).
-+ * @sync: Indicates if the wakeup is synchronous.
-+ * @key: Event-specific key passed to wake_up().
-+ *
-+ * Return: Always 0, meaning the waiter is not woken up and
-+ * remains in the wait queue.
-+ */
-+static int wake_for_deferred_work(struct wait_queue_entry *wq_entry,
-+				  unsigned int mode, int sync, void *key)
-+{
-+	pr_emerg(
-+		"[Waker Context] Atomic callback triggered. Deferring work...\n");
-+
-+	schedule_work(&deadlock_work);
-+
-+	return 0;
-+}
-+
-+/**
-+ * lkdtm_waiter_thread - The background thread holding the lock.
-+ *
-+ * It acquires the folio lock, signals readiness to the trigger process,
-+ * and then goes to sleep on the custom wait queue.
-+ *
-+ * Return: 0 on exit (unreachable in successful deadlock).
-+ */
-+static int lkdtm_waiter_thread(void *)
-+{
-+	struct wait_queue_entry custom_wait;
-+
-+	init_waitqueue_func_entry(&custom_wait, wake_for_deferred_work);
-+
-+	pr_info("[Waiter Thread] Securing the folio_lock...\n");
-+	folio_lock(folio_common);
-+
-+	complete(&waiter_ready);
-+
-+	pr_info("[Waiter Thread] Lock secured. Sleeping on wait queue.\n");
-+
-+	add_wait_queue(&wq_deadlock, &custom_wait);
-+
-+	/*
-+	 * Manual sleep logic. We sleep without a condition because we
-+	 * expect the deferred work to eventually wake us up.
-+	 */
-+	set_current_state(TASK_UNINTERRUPTIBLE);
-+	schedule();
-+
-+	/* Unreachable */
-+	__set_current_state(TASK_RUNNING);
-+	remove_wait_queue(&wq_deadlock, &custom_wait);
-+	folio_unlock(folio_common);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Spawns the waiter thread, and triggers the wait queue wakeup mechanism to
-+ * initiate the deferred deadlock.
-+ */
-+static void lkdtm_FOLIO_DEFERRED_EVENT_ABBA(void)
-+{
-+	struct task_struct *waiter_task;
-+
-+	folio_common = folio_alloc(GFP_KERNEL | __GFP_ZERO, 0);
-+	if (!folio_common) {
-+		pr_err("Failed to allocate folio.\n");
-+		return;
-+	}
-+
-+
-+	INIT_WORK(&deadlock_work, deferred_deadlocking);
-+	reinit_completion(&waiter_ready);
-+
-+	waiter_task = kthread_run(lkdtm_waiter_thread, NULL, "lkdtm_waiter");
-+	if (IS_ERR(waiter_task)) {
-+		pr_err("Failed to create waiter thread.\n");
-+		folio_put(folio_common);
-+		return;
-+	}
-+
-+	wait_for_completion(&waiter_ready);
-+
-+	pr_info("[Trigger] Calling wake_up() to initiate deferred deadlock.\n");
-+
-+	/*
-+	 * Triggers wake_for_deferred_work() in the current atomic context,
-+	 * which in turn schedules deferred_deadlocking().
-+	 */
-+	wake_up(&wq_deadlock);
-+}
-+
-+static struct crashtype crashtypes[] = {
-+	CRASHTYPE(FOLIO_LOCK_AA),
-+	CRASHTYPE(FOLIO_LOCK_ABBA),
-+	CRASHTYPE(FOLIO_MUTEX_LOCK_ABBA),
-+	CRASHTYPE(FOLIO_DEFERRED_EVENT_ABBA),
-+};
-+
-+struct crashtype_category deadlock_crashtypes = {
-+	.crashtypes = crashtypes,
-+	.len = ARRAY_SIZE(crashtypes),
-+};
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 015e0484026b..95898de29c57 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -77,6 +77,7 @@ struct crashtype_category {
- 
- /* Each category's crashtypes list. */
- extern struct crashtype_category bugs_crashtypes;
-+extern struct crashtype_category deadlock_crashtypes;
- extern struct crashtype_category heap_crashtypes;
- extern struct crashtype_category perms_crashtypes;
- extern struct crashtype_category refcount_crashtypes;
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index e62b85b591be..0cbd22ff01de 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -87,3 +87,7 @@ FORTIFY_STR_MEMBER detected buffer overflow
- FORTIFY_MEM_OBJECT detected buffer overflow
- FORTIFY_MEM_MEMBER detected field-spanning write
- PPC_SLB_MULTIHIT Recovered
-+#FOLIO_LOCK_AA Hangs the system
-+#FOLIO_LOCK_ABBA Hangs the system
-+#FOLIO_MUTEX_LOCK_ABBA Hangs the system
-+#FOLIO_DEFERRED_EVENT_ABBA Hangs the system
+		pgcnt = init_unavailable_range(in_zone_start, ...
+
+You can also exceed 80c a bit if it aids readability.
+
+> +
+> +	if (in_zone_end < epfn)
+> +		init_unavailable_range(in_zone_end, epfn, zid, nid);
+>  }
+
+
+Only nits, hoping we don't miss anything obvious (or any corner case :) ).
+
+If Mike tells us that we are processing all pages during boot
+appropriately, this should work.
+
+Thanks!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
-2.39.5
+Cheers,
 
+David
 
