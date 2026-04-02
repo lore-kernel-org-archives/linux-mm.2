@@ -4,130 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7534E111224A
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:24:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63157111224A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:31:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF96E6B0088; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
+	id 7CF356B0088; Wed,  1 Apr 2026 21:31:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA5B6B0089; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
+	id 77F5E6B0089; Wed,  1 Apr 2026 21:31:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998F96B008A; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
+	id 66EDE6B008A; Wed,  1 Apr 2026 21:31:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F286B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AC4113A5EF
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:24:25 +0000 (UTC)
-X-FDA: 84611870490.27.244FF5A
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F16CB4000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:24:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EgvnvX4x;
-	dmarc=pass (policy=reject) header.from=soleen.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 52B4E6B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:31:01 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E7056C188B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:31:00 +0000 (UTC)
+X-FDA: 84611887080.08.EE53855
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E964E1C0004
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:30:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=D3ZiSf04;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775093063; a=rsa-sha256;
-	cv=pass;
-	b=VH0d+QetpG7yqC/BPxRf9dVF8MZtek8StpC+h2jcso+6/wA5f9FWfw0HHDdu4KG6QR/sM+
-	1EZKvjrPd7cVYdk07JewIncW8kz1Cy4CcOlWyNwJuc/1W5Ol0Qr5BTBIox/RLj/8k2Vjmb
-	VAz09UYpdWAwnY0EMggTZoxRfh4tIXY=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EgvnvX4x;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775093063;
+	s=arc-20220608; t=1775093459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
-	b=xV4cxq2hsKhqboHcv52JgtaxWpADt2aT4nIe934rD+CJQeh3O9/3f2tAqZfKmb3rAdmV28
-	VXadU7eWUp/4qYOw48XmK/ak+77XTbRGwyEAha+rIjUNtOPy8rZ2zCB+kyQKD8DNn8ZkUR
-	RmyBtjBVWxq9LhCuYwf7wUajuKwjf2o=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b93698bb57aso71053966b.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:24:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775093061; cv=none;
+	bh=Aikrbea8CERSi0owCoJG1V8TXTn9cGO1ItcU8dz6z/Y=;
+	b=yUHoOJ0/fCkE896sfSy3ZNadmeK3kNOBEQ2agY2JpI8M6TY8p0m+rAuUVQCJYXNUpQWJYJ
+	l54QwpD9IrWMDY6VIT9hWPpSGVU8+cUnNisydorUnlcsef7wEXb4xXXUY8r0VFltFZx17v
+	qsjVyOykSouToBOt1iEGkXvuyXzAbvg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775093459; a=rsa-sha256;
+	cv=pass;
+	b=zlgn9igG55+oP+Vr6Ymf3ORk25tOxhQq8OlnzX1tiNWrghgHtWF56uXYlxuxJMzuFLjtux
+	2KrdvZvLpV6VDwzG8cj1SnUnx0xdtnZ6iidst1ejHPqJuy+kwF0rd8f/EKgcZuW2ILlMdE
+	ErYIdwoUHuWrMcI2A++G8/rihIDgQj8=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=D3ZiSf04;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-661b16ac011so679385a12.2
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:30:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775093457; cv=none;
         d=google.com; s=arc-20240605;
-        b=EHjmOeoPzdVDNP/K5XMpWVZTbtj5eN3vbkWuJyHyMPauqv/5IRTfBfYdB1WmAVosvb
-         6WuXn80y6wRVOuM2itpaLzS/js8SqAcoDs9qp8ZSv7rKzxt6/9h8D5rYofcqqZaMY/oS
-         3F1+R0wjtT6dMohNwOHIPlB+PCLMnDTpR8QDBOcqYLm4oNwb200E/W079BaUtcfpinWF
-         Gaeu3kagKPOzKz99vwlwD7NY0Jil6llfXLYMfmcFVcJo+Y+K4DOpQ1isdtotXoSMetk+
-         z9NpD0Z5T5exWdgbAV4DCH1vp1yzQKVTFOtWEQiZQhiG3qQU8phu6MSBPWiD9O2/41vl
-         giew==
+        b=FLDrb+1yBsJyP9BN9CN8PsbwqxtXCOLUG05gSvIwwc5dG7+zRk82Yynu7bXA/Iz83S
+         V14wrroohdXPtwHYC8WGBN4ejuTEW7o11LRrpuhx0+sna01T2QGZE0RkhLwDl0ChKZMe
+         5M/515qjVDbPDUdUDEoLVUTWcwOuowf0xU/q3n2xxYpsuii5GFmVids5vKKW0JgdNA7l
+         WLo8avYytHh0Q01saB/TBMhq8WsrOu3USCyR2lLripClLiUgWqLwvmvK0+Uh4LYoE3RU
+         TjdXmP8QNQuBVRQtWzC0uCYy2kwCg5R/G6/x+gXKlJZgGjWzZz+0bVphvkkRYYuHTZ/i
+         L3lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
-        fh=B/aRUqN/x02Fd80qYLW/2Br0wmGSeqTArqH4+hJW3P0=;
-        b=lSynedkdAqu3EeE//usnBCdLbaA1V5qoU8Y78cR/Apm3Fx1bmV9CowUm8d5mrJe9VG
-         /gOOamvZ2knOn4+sqJJYbnQtf1n+5USMXeF2tmKt8+89WtvosOLKxbtpYFGTNGjQ5O4h
-         2ZLp5OJjO/xb0SYZAu8k7sF70Q0ASvTJj5hWrQp/WiLPLAWzp3UtGVV0adxENXjGhTbu
-         zGvJlrBpGOSvVntHFWXzS3b7NL6Q1FbhnMPahcml9pFk9Zya/Cc88A2MPFA+/13vOCS6
-         HLYOcOx/sT7J2wKAIesOCdExthtkxIdMOT8uKONA/itgdYZWGUTQBAGyHFaAvwdSYptm
-         y7FA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Aikrbea8CERSi0owCoJG1V8TXTn9cGO1ItcU8dz6z/Y=;
+        fh=F5iaSsXcXnWdNcsqjjUYsUyBqePqeFgPsHy9LKtRsPs=;
+        b=lqaxMZz5bWQPzcNtzhiZziPQEz82BpoAjZFi7asfNRULnXJWuxD0ofVg220Vc80LVT
+         YSA8wZLkJO3dmKobGK1Ipn7Ib+iSHUNa8DG9It46S95mjmnen+v6Uz0sAiXPD3HZDMnU
+         KqIM8pK0jmpgFB8vo0T2zWFITYW2fijDAOTam+RuIot08o6b5JxCvmtvI2caC0qfu469
+         PHEqpoLByVUv5AXpXrlv4myfmbcK61plzLS/zdJwR2rMXpDCnpp0qjPnL6AKHfdrBTyz
+         87DV66PpddjcnvMVfT9vmWZMr0C5mKkXSn8oP1bCSBeovUWSWg/Wy2DhowbSDVtjUUFr
+         D0fQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1775093061; x=1775697861; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
-        b=EgvnvX4xJNgN02lGW70jFPquIBJoTbx7jOYSmjbL1yQhhF/9KpZ1As5SSZUq7Bt6q+
-         qSnGvtVk7ecKE23XZOi2uD0MJz48kAefRcT4CmWZjEg7FshXJG+auI6hr+JYztEc3z0e
-         c7Js4DVN4awkASGtqw/WJdXr7Irh4Iqv0g4vpiO79A1d1TGMfBuDTiuCYoKuDcZnkWAt
-         uUCqMU80NLmERqUqc0K2X3lW55QBZ3MB0euFxgcdtjQhO/SzodfWUkIdWNKNIKUqZ4vb
-         iTMqI29g34lP81kZQrdKjljVCFqOMjlWu9p5nj1YovXeRWTQxogLhEh0tY9dfv67P9QA
-         HmVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775093061; x=1775697861;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1775093457; x=1775698257; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
-        b=ORQFxOLqBVK0hyCsPF8L3/Rc/DzuyMVRRdbqo3TvBvL7b01GE8JARqRdzoSIZuq1pL
-         gPKe5jhnTIcNPj77L5RVEItjBmYnm7bKrBRZQ1ztnvlQlA2iFF7cYAMuhC7FHRQI2VW7
-         xemmNYUlnUrgYSjl1SH8FYDU0bRXMHyrBLhgTjpO43wHEPo2SW+gZ5SG15ruCTMF+KIV
-         VQwfUsqabHTNFKB4qArqwbjY1XOekAtErQNh0K+Ynhze6sk9K8lWHsEGhEwCJTWVVHxe
-         9PWXiKw9oGEKJulMrOZLtd/1Diyy/V0hu1x41bN/94hRLVU8hoS+b7Mbngww6bbXFhnj
-         XiIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVMm4F2Vmka/DjmPqlMISJoG7qMic/unxoW2vM2s8Hvalw3pOlM/hnDlpqlTcu6erDGggleY9/2lQ==@kvack.org
-X-Gm-Message-State: AOJu0YzpWxZchWybHl+tJcM8iDjPNF7WYBgladDjnuorTLgrYewQkN6A
-	SkmecRmDDJp+ow1wpcBT1xAABD7BZYScwZWMsKa4a2JUgBR3FeiB3eugnK+4V0/8XSBE5bYDJXi
-	vZ+tSxIri+fiYa0c6zNxFkGY4MZeVaufE/NpMRj1s6g==
-X-Gm-Gg: ATEYQzyVI6gVrvnDUjjb1Vp2jg508tVapc+2p+wkd0tDgRyfa9tlllHiJ22aZYBTJoT
-	QpK7K4frkFSayWvFQ5HT4juoXx1UR6wm0lrIPkLvf7Yk7JJNv8UgTkwjf35S+L/uD3nyckIjR1t
-	fB5GmLUif4vpOtOV16gd6d02LqOxOa9yBOlla1u9kyQYwxdrJ+N2TDGQDbhhX7aSe3ZPBCfSHe1
-	qhxOrY5TKWWHP2ds532ENUO+bVjmPaoQwMw6w248PPixbkoa2n7hePSS5nxHaF+fXxRhV8BI85d
-	d3eU9zeZgoOftfRJwEplc9FpCNAK6PxqPRoWRg==
-X-Received: by 2002:a17:907:6ea4:b0:b9c:11ee:3c2f with SMTP id
- a640c23a62f3a-b9c46de6752mr20619666b.1.1775093060834; Wed, 01 Apr 2026
- 18:24:20 -0700 (PDT)
+        bh=Aikrbea8CERSi0owCoJG1V8TXTn9cGO1ItcU8dz6z/Y=;
+        b=D3ZiSf043eruqA+EYsvhab7QWEeK0N9lmM2wzJb3VGfGGqiAGWUtdSp4/50zWqTq3p
+         bsjLdXN5HaGFCu5B3DYbfqwJXJ3mtwXz7CZFw6uPuWxj858pNFLvysskdk7laZNrd6tj
+         aSXXPmTDCOX22y9/qNGmX/3QM6LC5tV6dsjvfKpeNlu975cgKEqxk9SP3qhnjRriz1g6
+         1lsO/HDLnihBK4e4Ipu55y7PVsWjwLtsggfrnUd46vGL39jz0QI+uDnHmOcL13g8DbNg
+         5r9FKmguro7FreAPcRPERMzY5GPjuqEP5AZvf2Cp1kwTGVcq/n7TQSrVL0FxSx5mp4NZ
+         WTJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775093457; x=1775698257;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Aikrbea8CERSi0owCoJG1V8TXTn9cGO1ItcU8dz6z/Y=;
+        b=idxDtACRKh1CR9Qx+VDIQQJ88wjTc5AOK/a5VEquH1jW8uoRw2f/w7g0MmDkuq//5g
+         WSspfAHHLcs6fbGD/N7zmSU21XiKUiOxTlV7V3lEfoNNiYYX8G7uki/lRDXshKCOLhTY
+         Zqf9zjoVAK1ULkLNUoVGWwu5wKfZ/Xy1E4zHXKJ8iVgQzs4H6J0FpLQt0nulXLCTX54f
+         i/sI4Jz6mjJEyVW25S0sYW6rwX17Q2Z6pKyveXmTwYXnrITIeAQwRRLGtK00bByHToSY
+         nm5YWjNpF2kcVOxevvHY43pb+nYNi9H8mE34z+djDqUmudh54PagiyjzYQkYXE1QQo6o
+         kMrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcm6FutQiyYwSTlR5MdHuDi7WJ2vT2eIRdLSUFrd4rvTpUbho36ToHGbkQ4N9xVqDbGfueA2m/cQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy5L6vJlJC5v6HyBfhr3OeZCghZsvA/bxmspQKglzd6ww5yqhTH
+	8ZGLpg5KW2T6HsROZIgdbQdrrQWwE9oE1w7xJ651rg4JdEOIhgBHwLYBX8dR+o+W4q6Z4r4jCtz
+	pPybkS48wcLxIQ6AbGUxHQqj9/sccGdhijrJVYXUjHA==
+X-Gm-Gg: ATEYQzxu8Q4RJmEPqqpO0X3fodhoS87XqTDB5mG2VVMpmC+H+3x+qxbSD9Ar2tSYR5K
+	P5/nsMtytHUU36zxHI5wqEKSAIPWeGJx/+iaEpXxsD4dferHVLBhL7vdm0fGWTFnC/kMDgYNxLo
+	OAAvnIYNHNVq71Ho3HfLedTiuYXn3IEKaFtPvJ4ahzVcZ/uHeHsQ9ueMKFLFDJ0gKoDn7+FAOqg
+	eQNRb+kJfg3ftDFjxWQ7+f6xdGsSvfZ8eNkntmzRHiPeOqhM+4cKVo9Obeue9k5/UHEuAavFaem
+	IXVkEUvtqWEDg7V+d2PWLd+TDi9JPYMkF/s9eg==
+X-Received: by 2002:a05:6402:13c9:b0:66d:c30:eb29 with SMTP id
+ 4fb4d7f45d1cf-66db09eff23mr3967658a12.15.1775093457253; Wed, 01 Apr 2026
+ 18:30:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-2-duanchenghao@kylinos.cn>
-In-Reply-To: <20260326084727.118437-2-duanchenghao@kylinos.cn>
+References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-6-duanchenghao@kylinos.cn>
+In-Reply-To: <20260326084727.118437-6-duanchenghao@kylinos.cn>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 1 Apr 2026 21:23:43 -0400
-X-Gm-Features: AQROBzBQev2b3aMzYREBWkZ-rH-xOsd0fsiXT1xY1YD3JCunSWuEFkNfDGsMwoY
-Message-ID: <CA+CK2bDPeT-PruiqiBG3EOY1gMQ7DPaW5vapfh9=f2+pk8Aq4A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/7] mm/memfd: use folio_nr_pages() for shmem inode accounting
+Date: Wed, 1 Apr 2026 21:30:20 -0400
+X-Gm-Features: AQROBzB_CNUYmc6uqlxpRcFdzwO_LZojh7kYkRmuDCJOPbDd1rYUlVzPm4yBTKk
+Message-ID: <CA+CK2bBAwMFdvkL6z8P4hMP9xNsuGUcpsEBdQ6zu=y2njGcd+g@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] mm/memfd_luo: fix physical address conversion in
+ put_folios cleanup
 To: Chenghao Duan <duanchenghao@kylinos.cn>
 Cc: rppt@kernel.org, pratyush@kernel.org, akpm@linux-foundation.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F16CB4000A
-X-Stat-Signature: 5rracb813btwykzhzdc5h16tsad85gac
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E964E1C0004
+X-Stat-Signature: d3bqfumws7eu1tdjt3now1f39jsrrmm8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775093062-270268
-X-HE-Meta: U2FsdGVkX18ewP5VjAFn/6eJiUfX/b081wmiNhzWqlN+aMNNHK1P5hLfKz/EYz0VsXMYe8cOVyq9L966uaqQsvmlIAoai9ZVmZN96Nm+yOFeM9UVAhHBHFAeFG1bxS7Osp+4J62Vg1aynV/1ksxnEb27nydMaNVVoHMR41pAKhimJ8FnRJcx9ooNjM5qCGqsPPOlikQsGA5C1Is3/iv7+IJcDRD+DYt31ei3Axg4IpLsdcI33CxHzNTlrk/dAfLwTlalbZyM22bASyTpVm2NZK9duw/9BVkVZjsM6ThgXFABHxC8m058PfNfr3nUxjdJwFMRMQRjNeczuuy/pB3yPxAPZYdvigpqpPf6uSJW5evsBWu8V5o9+G6gtgi3YGdAcfvsy62k/wjj7x8Tref7iA4eMhU/EtvhYZeue2X6HuBaea8v/QF7lJFSmn4UuL7XbH+HWOvtvnqlUK2EryK61cl6krO/8q5xmZg6/iNkfJVuxivP6deC4ztOudarDEE1RLe0lf4i767d4Ro8ahD1SpZn5JO4CTGhL0VwxPAQcbL7zoXRcFERNflcgWbBw5ZFQpXn4XFLy6qL1PCMOLlJXUDspInYR01ehnhkVtp0JIPTFpzihCEIy3yntkEzlHex2/NanZQWdeqTKO8F4TbJkRmqQCp1tR/DrqR1bWlrRBnb6OxdjDhsDqkdqOIr5jw6fqvZYbHaOX+xcvWTVhvkv/r8oxkhrvoU8sgMpYGhLatp7ciNBB4UEj4i2oVwenUTw4RVX5NwkhHWqZJ0DoDmtymbjpTyNKQyBtw1aTvgx/aeNVeQbdii16EluBQriU3p0oAZly6TLt8r9/5uMIp1lRrduncoShAfrBA30aVFowO2450KniUPq/FaCoiK2aBVY5ABUBdpOUpgDZZQnJM+YjbdAlgru1vtyILBsmNHJnCrvMpOG/SMQzG6Oj3rPEeNFDeqFlxp9dfAnDXftEr
- 3Pci+rTK
- 22DKddSXhffCQk3OOhGu3XcLOKriU5tHDtZ44x/CCKgTdWr5ZdGjpZb/Mne0e2Ann3F8PVuYwYnYhOWZiPRphOjJiKeGH9HVeT7iEcWnmVmsSJfrwe+LA+pXV7aq/E0nIe+3p5DkcJlIMjZsDU05o6JnIoJzoXwEiiRmuYCiED3oO+n7dOa6EvSRyq5yv3mnNm5JE3EjrCXK9lcsBeUCj1jhP2j93YAOwhBFfJfAo7JOewC+eZLM/T1IVr17sRpgG4Vc61/usRYCTqxTX1yrzBMxXpuCwpMO4gU31gTaG8CcMEVDKufRIX9noE6yYkxlJbyaBMQ1J5/0d08LBAGRYPPgrYSibKhwxXLX2jp6lwkRqsLCABh3/3o1OxEpOc4Can/cT+tOS4i7RnpzRvpMDEa27ETnVWOONRJngsqua/+iDJdEj3ALNA76NKZ19wV2X30Lzz/crjr6I47A=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775093458-574509
+X-HE-Meta: U2FsdGVkX1+sUxBDly+NAsnh9Ec5PCr4jyY2b0cYQRM1M0S06wxiFE+o0lwvNuhlClWemX/UeYp54dEQl0aXmqXvu5vGvt2KWzMlyW/eLGE2CmqEYyerlKS2LR8RRANNyvtJ5zFfs0E78iA7MIhSxFUgWIzF58eSj8+rDWD28YB9N7Gmle9OGVMCnECIWCG9hZWVsFWzZg/Q99+hqdGpz1itTp5PGFTQHZ6NTEn1b6FnvZotRVFuPd5s3ofyLa2+gb2v7z9qMrR7WEPzGzUsz4FcXyvYGrpU9IVNkkxcSLmi0l3F/JyD1DWC4YoiIlD3ZFN0trcjIRWRHfS3ob/CPXWQSy2zzw0DqwOkAwuZeFG/Vn7RYVQ9LBH9WD/iDCnYhXfzzwIOKo3+1b21VHVE88qSxJrq5rGZ5RMCCv94vAEEz2hQTj932jJP2HUYU2rNh+SoC2tKOay9cO7iuiUaV0zMylpzneL/JaJvb/SE/HUcqZOgw2agoG5/QvZW0CiXZFbgtZz9VzFNiUHwLuws7rrywBT9bihCuIWhaJrobC9jhq1g/WwootRFbydJL0m78PfdgOzMiuy4CEKT0My663MENpuRezycr2BcIpsxpYUCxpFhFqNm80G37gYPSoP8BdttF4sHJLo50GF4hl+tUtMbjjM6ddV1f0SB9NwjJguxZIEA7y8gDKD4fsez7A+mVn9WQCbJTidZwXYDI1r5vPnYH5sfWnBTyc4h+/aO+QhZnJs/R2feBzRKIA1DlaGkpYTQLMr0nQUAb75DwdirJP/Ye8u+ZRyra2+A8lxYLVuKsecPQkwH7OL1xKnjhOE6NQ3cBoahP1mdcJOsvIkq6b5UQ5MRiUuB5ZyosBO/HlcxlqmNS1cg6M8jbbiimd6V3fXpXcFsGpiVk4l0D2e987yXfWTEe0i8UPG2hlIJo9MWvRKi999mK40n6RGNgSHjBx80hREkWgJEr0PRyOE
+ R4nhxFPU
+ XgENaLuTmJz3EehNPRuFby8t35rxE+rUx2Gqk5Ty+36L3UrdpGpRAFtlsgenGSHeqgnFt1FBybZCVTEoYRpi0bFidNc22VsKrHo49Weot7PnpPOuzaIahsJhIKRqTMY59hTmmB2+GOb77lDK040qfVkzwTkRkKbeKcJ1k/vNEoBQAv5MpMu2gkcpc3/jKJagtV05pvfg+S0rFDoBZqmd8cfEDJ0MdVy4zNutxhGW0zn14TObC7F8SLJENnztsE++Ztxj1HCEisgQAe5z3xMr+/XTBuEFt+FGN/jFNb+2m40XF2XF59HBFDJwm0VKDTl7ppNHo2wGOH/xzJIhstTcEk7eOJb6wadcOw93aY/Y/C9gkl/TlTV4GBk08DRw7Ala6CDb34mvC6WkrlDIduFwaS12dnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,18 +139,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> memfd_luo_retrieve_folios() called shmem_inode_acct_blocks() and
-> shmem_recalc_inode() with hardcoded 1 instead of the actual folio
-> page count.  memfd may use large folios (THP/hugepages), causing
-> quota/limit under-accounting and incorrect stat output.
+On Thu, Mar 26, 2026 at 4:48=E2=80=AFAM Chenghao Duan <duanchenghao@kylinos=
+.cn> wrote:
 >
-> Fix by using folio_nr_pages(folio) for both functions.
+> In memfd_luo_retrieve_folios()'s put_folios cleanup path:
 >
-> Issue found by AI review and suggested by Pratyush Yadav <pratyush@kernel.org>.
-> https://sashiko.dev/#/patchset/20260319012845.29570-1-duanchenghao%40kylinos.cn
+> 1. kho_restore_folio() expects a phys_addr_t (physical address) but
+>    receives a raw PFN (pfolio->pfn). This causes kho_restore_page() to
+>    check the wrong physical address (pfn << PAGE_SHIFT instead of the
+>    actual physical address).
 >
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+> 2. This loop lacks the !pfolio->pfn check that exists in the main
+>    retrieval loop and memfd_luo_discard_folios(), which could
+>    incorrectly process sparse file holes where pfn=3D0.
+>
+> Fix by converting PFN to physical address with PFN_PHYS() and adding
+> the !pfolio->pfn check, matching the pattern used elsewhere in this file.
+>
+> This issue was identified by the AI review.
+> https://sashiko.dev/#/patchset/20260323110747.193569-1-duanchenghao@kylin=
+os.cn
+>
 > Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+> ---
+>  mm/memfd_luo.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> index 76edf9a3f5b5..b4cea3670689 100644
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+> @@ -469,8 +469,13 @@ static int memfd_luo_retrieve_folios(struct file *fi=
+le,
+>          */
+>         for (long j =3D i + 1; j < nr_folios; j++) {
+>                 const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[=
+j];
+> +               phys_addr_t phys;
+> +
+> +               if (!pfolio->pfn)
+> +                       continue;
+>
+> -               folio =3D kho_restore_folio(pfolio->pfn);
+> +               phys =3D PFN_PHYS(pfolio->pfn);
+> +               folio =3D kho_restore_folio(phys);
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+
+Thanks,
+Pasha
+
+>                 if (folio)
+>                         folio_put(folio);
+>         }
+> --
+> 2.25.1
+>
 
