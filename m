@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A14ACC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 05:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D13CC6B05
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 05:38:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93AA76B0088; Thu,  2 Apr 2026 01:32:59 -0400 (EDT)
+	id 969A16B0088; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EBE16B0089; Thu,  2 Apr 2026 01:32:59 -0400 (EDT)
+	id 91A276B0089; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DA466B008A; Thu,  2 Apr 2026 01:32:59 -0400 (EDT)
+	id 856FC6B008A; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C8F86B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:32:59 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB088B96BD
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:32:58 +0000 (UTC)
-X-FDA: 84612496836.23.B5A9813
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2D0E3160004
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:32:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dr8H+gES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 75EA06B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:38:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 12AE2B9404
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:38:07 +0000 (UTC)
+X-FDA: 84612509814.18.C1AA79C
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7C7ACC0008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:38:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T3rOh/9f";
+	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775107977;
+	s=arc-20220608; t=1775108285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=VRFBKSpSHKyHlG8XDr6gP3xZPR/EkJqxIz7CoY+pJCs=;
-	b=QEMd3RgNpQ/jbASNtR/z1zPHgFrBuGeoufW8bcy7gU1sSk+vcYWPmHqwkaOHnPRm05xhgq
-	UtwwoXdcP2JqRkw8MWwjDpxn1YfGwlTMAT6bFmD3c6I6U3kK50lF/b6YniB7TJ80dz1rsE
-	wWP0u+nCBUnCtExWPuXI1Ao/h0GnCcY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775107977; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
+	b=I4f2IZP7+1Up/jv+PjXPgL0DLL12efAUXliURYoBh3bbvQpzda+oSgkAAbvufzULfgVBk4
+	UCT1GMNtmrr2DAUaq7eG+BdQtBhiO2ES50DWyecRyIDsEqclKDx82GJNKfsBOS4GQkONa3
+	9JrZk0qBo+Y7HPhcTCwwAUGGiUyizug=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775108285; a=rsa-sha256;
 	cv=none;
-	b=FuWsnTrxE7K6C/DWnc+8RkvS/5HPrOx3UdjTUG7jf2Dmek2vcGXIZ47iARpAPdiiyhs+BR
-	56UX87L/rCRnzrLxHaKuUTLKO/tN5cIQlYnu20Bfx2/eVvDPJXL61w7JcZE5dof29XLMUl
-	n5unJ/TwJtL+LYjcP29lMGzA4XnnHxg=
+	b=N/WvTvPQDD5KPpU6h74rc3UBSoF7Pnznc9kld5DWtKeT8peZ1iVo+vaPSwF90Izj3O4HLr
+	ERBHNUOb5nEx2EzY42HZaUzVtRxiKqS1XK2VWfslJRyK06p6hR0WaN9I+jyRO5k418L/Pr
+	hIwXNlIFn31OVeSQ+1sMBfXsZVIrT7Y=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dr8H+gES;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c76c60c7502so278680a12.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 22:32:56 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T3rOh/9f";
+	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82cdb4ab547so221784b3a.2
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 22:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775107976; x=1775712776; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VRFBKSpSHKyHlG8XDr6gP3xZPR/EkJqxIz7CoY+pJCs=;
-        b=dr8H+gESqSPuWrXUjBnI0zfogPEsTkXZRmj6jJTRYbMmbl2e/yJVSwR4nDbLyHC+kP
-         WMjz3lREkfWUmkUuTXhI6AVBubsQX3F5ArazvT7d5InCTubvkJyUa7pDOyAPU2MLazzq
-         nku8WOhv23biQAkmqk3i5cWqqq9ANnTllqilL4pn1BpKiwusamh3VETSpu19BzzYpEDg
-         2CqwHqN+tbhMuwYbRWUZa2BG+eLrVGRZsN5nuVhUR3/zKEUv4Sy0MZkR1P+Zsltc90HR
-         WrEvDqQiRTqp6g2vWL1jgX3EwP2EyUoHsiRKPbvwXX5ubk9uhSv4Z4peoW0P6T3nO5oL
-         txFw==
+        d=gmail.com; s=20251104; t=1775108284; x=1775713084; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
+        b=T3rOh/9fm+MAUEb7SWZSAeLr87ftXRoExCzciBrp7cL16bU22zVAwJ316lFpLi4Isv
+         1/mU7dUvzZybB9K1aiscevjchniaK2uJvPjf2oO85bGHvR92di2M+6FsSHMwoFkS2vQf
+         v9hmkI59Q1VV6ptqVEyKbbo9esanNHaJ7yOtvawLx5EDeDYoRKrARNCwN52doJwY9umC
+         FEGmJJ12XWSnRZv8A5qr8jFPdw46bylhwxgQlNJ3IasWGKwcaGsVXSUhx8aTjBPKn79m
+         K2z8TFWJvQUoyCs9Q3ZJiJtkv8oXN1nQ5GYAcQIfMQaESjgMbGjYywXcejAvEeRnoUt9
+         FOIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775107976; x=1775712776;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VRFBKSpSHKyHlG8XDr6gP3xZPR/EkJqxIz7CoY+pJCs=;
-        b=J0+1xNbnSXck35SpOJ5jILNvEvUgZd9DaId3cEcyFNEA05+4dtV56KdoYXdCK8KiVH
-         H4qiMDvADERCoINoTqDAVWj0R8d7Wun142V0VV37km+RnzdZNU8u5Jnzszdk6t4Xynsn
-         3+mMZZjdXBDNeJ2XYE7Tli3Y3kQni9Yv4uvFxU8m8y1cGuNjIyuJWkg3Zjd6PMq3NhRa
-         2ex7Ij7+pa2PK7nW64uYF8ZXU/7IJo4CxDmWFU95V7FfbC9+jXjsPS0V7871Jcl2c82m
-         uWNt8pyh8UroDjc3XQZQAmNwWpwjrRJfYyMUb/ViOZI4HUtNt+mDI0NWjKMk2HhT4ckm
-         TlQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAOW59kvhuUUf+5K3toXJWAFYVoVz9A/x3rc4KaalZ2lzHzyOoUv/ZTzcZbIG8Jz6/bY4Vgwza0A==@kvack.org
-X-Gm-Message-State: AOJu0YzV54o+deCn2igRyFgQkxRMQ/4FVSPJ1efIwfiWZCiRFIVwrwar
-	PQeHP8R0jcXncg0ey5wef3+i6GaoRghjaB9r8x33HLTg0Bzi8M+F1ao0
-X-Gm-Gg: ATEYQzzxEsw//Q7AtprhKJcqrzgzAbeYADKTINFzn4PJ2VWxsqJE8SwAG/0xPUhkwU3
-	H9bd7SDydLldiVP163AtjfooxWDGbq50uzEgB4LvCuMuTBvRe41sXRu3Eweei0YdMGG3TUu2fFZ
-	lU/7ZPBOnoLpiXoOz6Ckn4w96AiRVll4hb2bOZYi5Ro31HpthFops8J7QVsexr+ffksWSkfaoIA
-	n6j+HQmDePC2nikpTi3W7mVkFmbWGeSe5X4JnEHdTfMLt8U5JAdt6Bbyd2XIfa1kPisIW1eDh6J
-	8F3UaggMGqNAR4k+oiKw6/i3nJjbuvXv9ZliyrdQlwyYjsJRPdq5gqRTENd6No4ONNLcSHMalgj
-	04KVGMFWJ33WyADmALMseF1QYWDgPFWN++cUZ1887+dH3vT5yWEhWGgNFuA5JImjZ8zATX1RkK1
-	nDKVF4Px4Q05TQDrRP6hx4hl9ObJasJkNU
-X-Received: by 2002:a05:6a20:914d:b0:39b:84c9:3861 with SMTP id adf61e73a8af0-39f16ff7c5cmr1220958637.14.1775107974173;
-        Wed, 01 Apr 2026 22:32:54 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b3e169sm1745312b3a.18.2026.04.01.22.32.47
+        d=1e100.net; s=20251104; t=1775108284; x=1775713084;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wpZU7evQNWPDKH6NxwB4xQqMBTVomSBrqVWkgmSAht4=;
+        b=fQ/tRiE4fu5sazYxV0qJtE34isvtESuBb0BC9hyteS2GYpgjWNFXAKLOS0pIDxUKm8
+         Gu0yX6ovKKxLAxUWxLSpQ0SpWVZiLJxyp2wEg3AqCWzlVtUZ9yIuXRjVbacd3dhweI5y
+         E4XxN1aoOTxxyGKQjIeH6Ehi8NWiavFIkvPyDq300RwSraZ9toBJz8+xc6TMtTTHOeNI
+         k38A4cmmImyDhxT1uweOS+ywocwontD/kR4oDHDEVRNHMgtfm7bZs9+kSBKJJ+AihOJF
+         CnOCEh9JSwzboN08/ja9YDk6y+jOEnLOdg6OisaxTHzUsh0Ub7tZi2071lM4/f/qebsJ
+         8z5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXMrIMI5Ot37sLkTZkGaUJnUPFoMrgDY8dbegoNbN9pQSmGuI9wGpsmJ9SuDX9TzASOGBAiFONvlQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywooj0Kp7DmBs9xaasXeWXxBijwaqZ0pyUC7vo7XirLW7TeHUOC
+	HSAn+UgfhF16o/m5iDys9itJwgautvoSCLP4Tdw6DJHFZYUnXvCdbRtn
+X-Gm-Gg: ATEYQzzHkigDToefPTVu2+d2V6IHmOMVH5zmoNZRGTYi1Qdrpl4b+sNBhJTqyFJ1BU8
+	Cf6Y8bClyKpyee8nyA6dkPT2Byi8HSx69wXxX1AyHo5NJYakCG7nMHVlxX3CzFE88Oqnep3Cm+j
+	Xb829wYUSB9hEXpIZETZJTfLa/n/ct/UQb9eaguHHCL2KY01D52/I6ELS6LXTdcNXvc6RhN6iZz
+	bcRqZdfXSHqGW4RcuU0s5rFwBuBR1Vnm7cEztX3Bn3SVMBzwd+uDxcj6+PwNof5/p98vNh5eMOf
+	0du39q+YBHd2GGTTgO7GWQZDzg8t37K5lZFpae8lDgfHTpNiD0h+3amCuNykQbBVGk29dKpsZz+
+	VcUGN9w3CuUfgtf5/VRx3KBbpQQttb8WAG5Z7VsHHETnhSwrOwUlAXKN57ONG7Y1Wfv9aD3KWpf
+	7gTJrRsBP+l99GMGGs7RiRvEbAtnhuLkVLyEhIXC9NVtdhpU2bncU=
+X-Received: by 2002:a05:6a00:2e94:b0:823:12cb:f5d1 with SMTP id d2e1a72fcca58-82ce88ea8ebmr6525320b3a.6.1775108284208;
+        Wed, 01 Apr 2026 22:38:04 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9ca1f28sm1758569b3a.57.2026.04.01.22.38.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 22:32:53 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Mike Snitzer <msnitzer@kernel.org>, Chuck Lever <chuck.lever@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>
-Subject: Re: [PATCH 1/4] mm: fix IOCB_DONTCACHE write performance with rate-limited writeback
-In-Reply-To: <20260401-dontcache-v1-1-1f5746fab47a@kernel.org>
-Date: Thu, 02 Apr 2026 10:13:42 +0530
-Message-ID: <ikaam0ox.ritesh.list@gmail.com>
-References: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org> <20260401-dontcache-v1-1-1f5746fab47a@kernel.org>
-X-Rspamd-Queue-Id: 2D0E3160004
-X-Stat-Signature: oa6tykd1n7ek73ccpygtpcbxtctd5efa
+        Wed, 01 Apr 2026 22:38:03 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [PATCH v2] mm/damon: validate min_region_size to be power of 2
+Date: Thu,  2 Apr 2026 13:37:56 +0800
+Message-ID: <20260402053756.26606-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7C7ACC0008
+X-Stat-Signature: 3bmitg64q4dhu93hmygekk53egeadzwd
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775107977-23249
-X-HE-Meta: U2FsdGVkX1/Zu7yBphU58f/XqtKNZvZMa8FhLm9f+p+YHzja5ucS4gvwmwcPKEGIQJgpX6wJ0Ngu9QtAJEsHHiZSWw30VToE1rbVr8bkxoYN3y7xPi51Wu8Ox2uaW0JCtNLaZYn0bPVrZE3DI7HDGXkekaMryaBPz7rNoiyXbsWf22vLc0jnDhxIj8L3nlsfZUPLcWD/uo71AGa8qTzD/qYQLEocoFeUit84RBD8AVD5JYS0EJ1kAtr+ZRVLPdOcINMRmilDD22aoSHPciQTuTOy6aUutXTtHh92+Mk6aP6NEA8wVcHHme40GMcGmB/uT52ZM5HPkrq54yPTRrnRhZxs2higWf8FgOKRGTXESKhq34F6LqYlAyOCiaXRn72iOKPlCnBw1PQBJrcxB6xKR6K78vcSipJyRCb9Bw1IomJ+F5LKIlPV9HhN/8r2lk9O5DPbqfFXrDvHjEuTLqZ5oZPY7hsXdU3IZ3nvRSQSvMAQYj3/qIcFDg+Xkz2OWPm12m3hPcRNod6DpVYzn0Qkxd0fofM5oHe5pNybV1DztBt0RuI/+mR9bZBg9+pKACCfQos3IsJE0XAIqi15UHUHnZylxb7WHRXUjLT5d23krCtQKOxBBrmu82u4dQvdmpUBr/PVmzBiLwTYL2UZqe2ls4iCFDo4MQyv3uPYmtyddIr4fIclLuY630KtcLvYW9eW3Sh9Dn4Wlh6HV7J2F8eY4HW6/nPfluwDJRGsAISZVFZXayN9609Gn/xzpBh5kukXuhjWA6jG4ocOBw33uVP1xgNXgih+FH0vbvOx22c3rQwqqUnO42k8Z73CrdUb4q49JN2LQD9tE3IppEcUaSZrwrJVAkxytziDguHN8siOGp1UDhWQ2tJaJjql/u34Furg5fvOxeiug9l3yb63zBXROKQmaNkFRJ9Jnv9fe3jWnHw6FQrsvRX19wABBZIblY3ew1eSVozLlbG/1l7SxaE
- ivD5jrPb
- ajQjR57r9H/yp63AHf8xe6qzKGptAhrvyYgQW8sDFRy1y3l1jTdGIQ40O/RzTK9S6VEuCHh+jZVRle8nCVhDTM746sb5uwhs6UqmJj3vKjkt+DBrKV2YWYRe+WWSJQT63KH6pf6P9Zgk/U4KKghhHXs9+oaXSwOobya3vMY0+p4UpHg8HHw5jjM+a0dzlRVT6JtM76a3z2tjAhREKM/vJPASrAuaeAFqrl36ZVUHUGBwA2DRhphpvOaM4NE9llczV/OlZIWhdkNJHi9mSX+iS1fahxOF47YRQ5Byb1b6KTff/LWFUcvtbngTKVpc4M/KsDOii4dm1vHc2l+CSCT9qcJJPBtvPoEG8qk7wohvu23vRVgZ5WRfgEnH6Hi3GN8+NBcC0ukfum9BNadqsVphMeOsQWnNpHpKCa6aoF0SLSNCEYhuESmyVfMMDeCzWcT/n/PXYTbH4yUlwPOESTxKuul8F8Ho3nqmcphsXg9WSQzrpkq4N0Ki6eClpcEaaSbrPWyY9F4Hb6Z6KkbHdrNi7jizis3GDHjopXYtEw3xZMhqE8tc=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775108285-634093
+X-HE-Meta: U2FsdGVkX1/Uvxa9f4Z5TJsVHqkJAJj6ZLT01+2cwA+Lkp15pBMtykeBq1aVtogJVuUm9xbl6TfbFSI7zZqwAMK+EgHPp5vSDkmBmJMOUywRB6QcVhu1rq60MlWeB2LwRKvqWmwEJ9i2MYkcZrkrGTaGEUd+k7Fic3J4gcGMKu//TGlJsh2WnbOR78KPo8f0/MlPjabhMpqLjGe7hI4GoAjuqizMCZHxdE27s0ci3MoMdaEXdTuNoMp8uSoDXp1e9RfAK3Uzrv6Erb2g7JydKRbZxzV7uuAlfU3qWUSOOpDFytSLd0hKxP8owjLv9Pm3fGxnyJXR2CzLARB/Ads7ynnCqo6jlP4O6KAw2ESgyf6K81P819sfiz6BLbGjMs259AoxB7jgWZM6HG4UgpBfM6nUjEnS1OCXQVKonUV5ncxr9jKFKgEEl6sGVFQf9MHGDO/xw0T4eCTW9WDFzsi10WTfl34Sw8B4J4NmbPfNjpPpTNDDTVeSl2UwpWAqrXeJjswT33ItqTOGtaAnwPC6IXuYOuiQ3+9EEDmtVkpf1RAdq1j3up6nbjBjAA45DOrKevbkdAjWJvpAoMzlHBrDecGGMhWeS4eDZKhc6n1iTqRlAugNO/B3wUaIxNQqAW46DZd8GRaYAO0FBAZOGlCVzy42BxRYV1WZSZWinDYEH/d8QHQiyaYACOZNECVQ5V6P41nGSL39KYqySkiVxGschFIv38NZXfWRvwpGKV/qdp0qpyJAL0IKHYRZumshuTzOzebxQlMT3HDr71g5TwvCWRc80AX3ArxB/yjaD5G3B+PHz2/aoaNMBnotqBJ6VSNunQFq1lsXvE/rPv0Y+TIAope+E/BQxF3c0EIKH4sOJUI1PKOV+FL/LS42+ggWrGhvepqnnieJmGkk5NFZL+uK69ykeuziY/bVMLESOp8DlZZKHbbgsFVixr8bE09+m4x+Y3ST88ngLwA08REOLGQ
+ EU2FY+hW
+ 8g2pt/z3jS76BqcpAqPfw6Ok1FR9rqjGqjPxPvcaz82Ze28EpcH+yzFsLaJ2S1a6hHRWvl/98Q4GWv2EvP63udosKdABRdd4SISXn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,166 +115,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Problem
+=======
+damon_commit_ctx() checks if 'min_region_sz' is a power of 2. But if it
+is not, kdamond will terminate unexpectedly due to the user's invalid
+input.
 
-Jeff Layton <jlayton@kernel.org> writes:
+Solution
+========
+Add the same check to damon_{lru_sort, reclaim}_apply_parameters(), but
+return -EINVAL immediately. This is to prevent user's invalid input
+causing kdamond to terminate unexpectedly.
 
-> IOCB_DONTCACHE calls filemap_flush_range() with nr_to_write=LONG_MAX
-> on every write, which flushes all dirty pages in the written range.
-> Under concurrent writers this creates severe serialization on the
-> writeback submission path, causing throughput to collapse to ~47% of
-> buffered I/O with multi-second tail latency.
+This patch is a follow-up to the discussion in [1], where we agreed that
+the validation should be done on min_region_sz rather than addr_unit.
 
-Yes, between concurrent writers, I agree with the theory.
+[1] https://lore.kernel.org/20260330233343.4083-1-sj@kernel.org
 
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
+Changes from v1:
+- Fix memory leak issue.
+- Link to v1: https://lore.kernel.org/20260331073231.30060-1-aethernet65535@gmail.com
 
-> Even single-client
-> sequential writes suffer: on a 512GB file with 256GB RAM, the
-> aggressive flushing triggers dirty throttling that limits throughput
-> to 575 MB/s vs 1442 MB/s with rate-limited writeback.
+ mm/damon/lru_sort.c | 5 +++++
+ mm/damon/reclaim.c  | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-I am not sure if this 2.5x performance penalty in a "single" sequential
-writer is due to throttling logic. On giving it some thoughts, I suspect
-if this is because, the submission side and the completion side both
-takes the xa_lock and hence could be contending on that.
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..3fd176ef9d9c 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+ 
++	if (!is_power_of_2(param_ctx->min_region_sz)) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	if (!damon_lru_sort_mon_attrs.sample_interval) {
+ 		err = -EINVAL;
+ 		goto out;
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 86da14778658..2747eef5919d 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+ 
++	if (!is_power_of_2(param_ctx->min_region_sz)) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	if (!damon_reclaim_mon_attrs.aggr_interval) {
+ 		err = -EINVAL;
+ 		goto out;
+-- 
+2.53.0
 
-For e.g. since this patch skips doing the flush the second time, (note
-that writeback is active when the same writer dirtied the page during
-previous write), this allows the writer to do more work of writing data
-to page cache pages, instead of waiting on the xa_lock which the
-completion callback could be holding (folio_end_writeback() -> folio_end_dropbehind())
-
-If I see Peak Dirty data from the link you shared [1] in single writer case...
-
-Mode                    MB/s	p50 (ms)	p99 (ms)	p99.9 (ms)	Peak Dirty	Peak Cache
-dontcache (unpatched)	1179	3.2	    103.3	    170.9	    14 MB	    4.7 GB
-dontcache (patched)	1453	5.4	    43.8	    57.4	    36 GB	    45 GB
-
-... this too shows that the submission side is writing more dirty pages,
-then the completion side able to write it... 
-
-I suspect this contention (between submission and completion) could more
-in IOCB_DONTCACHE case, since the completion side also removes the folio
-from the page cache within the same xa_lock, which is not the same with
-normal buffered writes.
-
-Maybe a perf callgraph showing the contention would be nicer thing to add
-here [1] ;). 
-
-[1]: https://markdownpastebin.com/?id=96249deb897a401ba32acbce05312dcc
-
->
-> Replace the filemap_flush_range() call in generic_write_sync() with a
-> new filemap_dontcache_writeback_range() that uses two rate-limiting
-> mechanisms:
->
->   1. Skip-if-busy: check mapping_tagged(PAGECACHE_TAG_WRITEBACK)
->      before flushing.  If writeback is already in progress on the
->      mapping, skip the flush entirely.  This eliminates writeback
->      submission contention between concurrent writers.
->
->   2. Proportional cap: when flushing does occur, cap nr_to_write to
->      the number of pages just written.  This prevents any single
->      write from triggering a large flush that would starve concurrent
->      readers.
->
-> Both mechanisms are necessary: skip-if-busy alone causes I/O bursts
-> when the tag clears (reader p99.9 spikes 83x); proportional cap alone
-> still serializes on xarray locks regardless of submission size.
->
-> Pages touched under IOCB_DONTCACHE continue to be marked for eviction
-> (dropbehind), so page cache usage remains bounded.  Ranges skipped by
-> the busy check are eventually flushed by background writeback or by
-> the next writer to find the tag clear.
-
-Yes, but the next writer may not write the dirty pages, of the previous
-writer which skipped the flush call right (even if it finds the tag
-clear)? Because filemap_dontcache_writeback_range( ) passes the range
-and nr_to_write that means, unless the previous writer dirtied the same
-range, the new writer won't be able to write the dirty pages of the
-previous writer correct? So, it is mainly only the background writeback
-now, which will flush this dirty pages of the writer which skipped the
-flush (unless of course a fsync/sync call is made).
-
-But having said that, I agree, this patch series is a nice performance
-improvement overall :)
-
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  include/linux/fs.h |  7 +++++--
->  mm/filemap.c       | 29 +++++++++++++++++++++++++++++
->  2 files changed, 34 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 8b3dd145b25ec12b00ac1df17a952d9116b88047..53e9cca1b50a946a1276c49902294c3ae0ab3500 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2610,6 +2610,8 @@ extern int __must_check file_write_and_wait_range(struct file *file,
->  						loff_t start, loff_t end);
->  int filemap_flush_range(struct address_space *mapping, loff_t start,
->  		loff_t end);
-> +int filemap_dontcache_writeback_range(struct address_space *mapping,
-> +		loff_t start, loff_t end, ssize_t nr_written);
->  
->  static inline int file_write_and_wait(struct file *file)
->  {
-> @@ -2645,8 +2647,9 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
->  	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
->  		struct address_space *mapping = iocb->ki_filp->f_mapping;
->  
-> -		filemap_flush_range(mapping, iocb->ki_pos - count,
-> -				iocb->ki_pos - 1);
-> +		filemap_dontcache_writeback_range(mapping,
-> +				iocb->ki_pos - count,
-> +				iocb->ki_pos - 1, count);
->  	}
->  
->  	return count;
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 406cef06b684a84a1e0c27d8267e95f32282ffdc..af2024b736bef74571cc22ab7e3cde2c8e872efe 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -437,6 +437,35 @@ int filemap_flush_range(struct address_space *mapping, loff_t start,
->  }
->  EXPORT_SYMBOL_GPL(filemap_flush_range);
->  
-> +/**
-> + * filemap_dontcache_writeback_range - rate-limited writeback for dontcache I/O
-> + * @mapping:	target address_space
-> + * @start:	byte offset to start writeback
-> + * @end:	last byte offset (inclusive) for writeback
-> + * @nr_written:	number of bytes just written by the caller
-> + *
-> + * Rate-limited writeback for IOCB_DONTCACHE writes.  Skips the flush
-> + * entirely if writeback is already in progress on the mapping (skip-if-busy),
-> + * and when flushing, caps nr_to_write to the number of pages just written
-> + * (proportional cap).  Together these avoid writeback contention between
-> + * concurrent writers and prevent I/O bursts that starve readers.
-> + *
-> + * Return: %0 on success, negative error code otherwise.
-> + */
-> +int filemap_dontcache_writeback_range(struct address_space *mapping,
-> +		loff_t start, loff_t end, ssize_t nr_written)
-> +{
-> +	long nr;
-> +
-> +	if (mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> +		return 0;
-> +
-> +	nr = (nr_written + PAGE_SIZE - 1) >> PAGE_SHIFT;
-> +	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, &nr,
-> +			WB_REASON_BACKGROUND);
-
-Was this rebased against some other tree? I couldn't find it in
-linux-next. I think, that last argument is wrong. 
-
-> +}
-> +EXPORT_SYMBOL_GPL(filemap_dontcache_writeback_range);
-> +
->  /**
->   * filemap_flush - mostly a non-blocking flush
->   * @mapping:	target address_space
->
-> -- 
-> 2.53.0
 
