@@ -4,108 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FCF1112246
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 00:11:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344AE111224A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 00:22:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D9726B0088; Wed,  1 Apr 2026 20:11:46 -0400 (EDT)
+	id 62F7C6B0088; Wed,  1 Apr 2026 20:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18A6C6B0089; Wed,  1 Apr 2026 20:11:46 -0400 (EDT)
+	id 5E0866B0089; Wed,  1 Apr 2026 20:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 079806B008A; Wed,  1 Apr 2026 20:11:46 -0400 (EDT)
+	id 4F65D6B008A; Wed,  1 Apr 2026 20:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E3CC76B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:11:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7AD8A160244
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:11:45 +0000 (UTC)
-X-FDA: 84611687370.23.639C428
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D4D56B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 20:22:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 906B557F3F
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:22:24 +0000 (UTC)
+X-FDA: 84611714208.30.9765634
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B6B9080008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:11:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dasTAydO;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dasTAydO;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775088703; a=rsa-sha256;
-	cv=none;
-	b=6DWU5DfZrrxJX7UHHSKNDFGPBs0dyaODBapnAi19SqlKVmeJGT8RFz9sK8wa+OfOvfuCf+
-	RNGnNgu6L/TcRRRbAmpZHhuJ91FuK8dxuaM7f8ERQalFdnr2nfHJpSnKZ4KB8HQVkKJrQw
-	j7dFZr0scWZp0AZcmurWNCAA818hiSw=
+	by imf13.hostedemail.com (Postfix) with ESMTP id ECEBC2000B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:22:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KbJhuiDn;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775088703;
+	s=arc-20220608; t=1775089343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3chbnyH5sBdrZs+s8J7zlSxqF8hLCq4rzHyEyInLHmk=;
-	b=fl1seZKJCtDfw6AYrSG7OCiYlxC2FZtUOSC0bv5R89FJ69I2DENTbhywcPj6+vje6Yq4j/
-	hm4QnOcbOM828W57z9G+VxmjKWhTcQPLd3qv7fj+p7eb3s88+2KfRiViBvcJ5EQ3Xreo5a
-	qS6/Af1jywDHdNyv88jPa+yxK1SWyD4=
+	bh=NZ7SX3eRFZJ1J7/BkXbBpWEJdfZLLi+551b+oWva2Xs=;
+	b=JtjnmoJKjIHqHzFqsA4LDW9v2bEkSQ6jOeM88xDioNKrc4nDILCbPSilzToCuZHMCKWigD
+	tPoK1yceyog6OCmyP0SWAqBYc5wlmUkSCIj9EjXalRcywCE4UX27CM9g4jqkl8n0S9g17t
+	X2VM46VkVMZhNhzEnc/Ah5gV3tzN7gs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775089343; a=rsa-sha256;
+	cv=none;
+	b=MFdF6yjcLXuwqcZkDPDjcA+jE40EvjbFo7ZwCfO0n41MeiRcL0F+opgTYwvWnatyKYQ7Nl
+	T6zNuFTDjUxSUKtUOKz9mxrduJww1p9LXsDZyHs/uLua3nE1JVvlRKdYyxbsVifAkSL9Ib
+	qFum60/PstMopgcqheL3bAvubMBaYGo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KbJhuiDn;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15E3560120
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA43DC2BCB4
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775088702;
-	bh=H5ORe6rReKgq97r/iODnZgZHba2IwZ3RdLCbS1qSkKs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dasTAydOb6qnGQ0J0k+pB20bsXW/tWrNSthh5RrvKoQRRedTKoCTJfzwh7J+Bjs8B
-	 UGk493jbkzLno3xENn/0fYv765VKj2CIdKfcu1JQPslTurS+yOM5UJD02CE7L0iq0d
-	 1nLnOuIrrUc0vNvpNoHoOpYyM0x+kxRpn9bfJtu5OPKPAAlYHxgpiZTdJLlAyvxuDc
-	 00MoFUb5PpZcth2EErqnmmC06LpxZkS7IJG5Vc/2BgUrGMU8sW5nUOF+koNXARas+w
-	 jhcXMffeaMQI5fgvxv67M76+LCMK+fQjFxZoJNpztiwBqBMqBrxNTdqXhzvuHXcz74
-	 WUad+cwISC7hA==
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89cc71f4311so4444226d6.3
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 17:11:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU0Xde5fh4wrTVR6YTdFA8+3+AZHNnygtjJHEmr/M7GLt0KSOW6sAb0jvsDUSbI9PUwLKkz+eshbg==@kvack.org
-X-Gm-Message-State: AOJu0Yzs4SFbhSDVouKomrtGupd8S+VMXxFqvSlRFzYZyG7C8nZ+Lc/S
-	/1fIAbFsccbuSPNJYM4SqW6mFVuRpBgS5BxR4JLlzMsIaZV8nyz5KfvoelrtIFwm1X1rPnwQeuq
-	rEGeqYfj+8xNBwjxjc2q4dKam+gs8ToE=
-X-Received: by 2002:ad4:5ca8:0:b0:899:f845:a29a with SMTP id
- 6a1803df08f44-8a43a2774demr88007146d6.41.1775088701985; Wed, 01 Apr 2026
- 17:11:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com> <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
- <acuNtuf-mv3KJJdn@KASONG-MC4>
-In-Reply-To: <acuNtuf-mv3KJJdn@KASONG-MC4>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 2 Apr 2026 08:11:29 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xQvcDf5hTHa3M74R3xgjGRcfEa4-mrrpyLT7yaRZJ-hQ@mail.gmail.com>
-X-Gm-Features: AQROBzA4KskciQPu3Bmm8LVLb6JgIf9TeNDm-WR_-PRTRI30A8Fz90PO7UexBU8
-Message-ID: <CAGsJ_4xQvcDf5hTHa3M74R3xgjGRcfEa4-mrrpyLT7yaRZJ-hQ@mail.gmail.com>
-Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback handling
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B6B9080008
-X-Stat-Signature: izjjewabe1d45c9azwkrczjc74mi5wtt
+	by tor.source.kernel.org (Postfix) with ESMTP id 42A02600CB;
+	Thu,  2 Apr 2026 00:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C80C4CEF7;
+	Thu,  2 Apr 2026 00:22:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775089342;
+	bh=6AQsnG0JZdnHJ4ld9U9uqtPepg0X3Ro6biYSpZ6g2EQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KbJhuiDnCBiM2FY/KxGIRstF6pSM88+XbZ8r/IihYwoqssckicdLwHVvC7YNutDv5
+	 eUo5+W4iF3BF5+16Sji7MtRwm2NoLEugkfJ2J6BQZ+ZLa4qde0BEnfPcdW5Hd2fC0H
+	 nvnJIw4+2+22Vt0z5bcXJlgYhmeHa8g6D19qMV58=
+Date: Wed, 1 Apr 2026 17:22:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ritesh Harjani
+ <ritesh.list@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang
+ <huang.ying.caritas@gmail.com>, Juri Lelli <juri.lelli@redhat.com>, Mel
+ Gorman <mgorman@suse.de>, Rik van Riel <riel@redhat.com>,
+ ying.huang@intel.com, ying.huang@linux.alibaba.com
+Subject: Re: [PATCH v2] memory tiering: Do not allow promotion if
+ NUMA_BALANCING_MEMORY_TIERING is disabled
+Message-Id: <20260401172220.fff999a33e3ffcd0d1fa8929@linux-foundation.org>
+In-Reply-To: <20260323094849.3903-1-donettom@linux.ibm.com>
+References: <20260323094849.3903-1-donettom@linux.ibm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: eaaxd3gyicpkhw5msjc9ofubz3w9c4pd
+X-Rspamd-Queue-Id: ECEBC2000B
 X-Rspam-User: 
-X-HE-Tag: 1775088703-577488
-X-HE-Meta: U2FsdGVkX1//2YRqQ/jOkSH7/dVJL6bwGouPSH2Ev9USpUX9tPP6jKNW/NatYx6dBUC4RFUlB68/xiIgg663jHaRNrKukh73dZCewJGY6sB0/snQRRedqRJ8DH/oosmmob73mBRacvQXe4HwJMuzdZ3i5UkJ3geTkXk45uDTKPc+2SiU236gJvaZ//fqYxJoqz7QhrVR0XcWhhaN0bKDKP96ydk4rJCWBP2ypRuhyJXCzy5AcJ12MMUBbCRXUS7mh4jk8j1NGNyHAfUr+mJCa4V5LlCUjFVM9iQjxWWg5y3CAHHlVHKi9tqTs79TC/F5CG+mk/gEY6Wango8s49fdxtSeQ3zm2qqro+rHzpXnwU2GF3O8Efp6TtKaiS9FiMJhG0j2pLadgaFf6W0JkayWcVwiJWCZKI+E0jKwkrGrF9TRuqW91HZoTBVw4o5sncXOBrZU9mmncR18PDNPrDyoEMGx4Qpn1QQhuzSTbYz9QUFrHYtS63CyPctMBL2ZW4e/smDw/OM2cLoPzeiY/vc7K0WqR11UABBmpnSkecrLBesyuQKanLp7X2mrzuwz/qemyDUpNUR4BpjcpIuEp7jkMVPM1IvL0ksRhDQdaL/PC+U8rRkzdSgREKt2JDtpgT1r94ioEXs2KNwWWusFUC27Kzj/6xeo79qmE/3zbatOnURtVSVDIGAUpI0yOOQcCdOdGcbc1kw6E5Xu/s+/Z9LHctARz8oDSvKFmgZAFo/xbYuxBNLYfO8NCAvqTda4u/oeRMuD4+GEe6aDj0NslgjZQJyaW5lowyKninjkDaaouecAjpz1LmtdWIQJHbRxGrC4uYW11w0ruAwZOs2FNm942pStYnpEndEMMgYIARj6PbuDyqXAVBFSNKsNZwl83bWueKxSo/mlyemjGx3jy7DYfM7RX9jCAGqif0O3wFPTva28XR+tq1T1DzrWQoB4noN9Rtb1Qz10Lt1d3fPzS4
- KEwhG9Tj
- By2AMA+8g2RERTyye06KuN8f+ha45CHxRYhcERg/sglj5W4TTxn0c3O4L1A==
+X-HE-Tag: 1775089342-685436
+X-HE-Meta: U2FsdGVkX18zNpDSlE0MoG8tOJLYqWp402zGbFIzrIiUOo5bbBRl0gayd21Vclrzpi2XW3EBliXxdTv1ZlZH8ROSQSWcxtehfDzcIcxqU0zYbweqrfwfLntRVpABJbxjEq3odDeIOjMkpXAN4ue00SbuSHRdrDEOOMIVmZUuHEXLtwgYmyL+omNzL10fOlLJiP136K29m1frf8fYdUAQFo+URbQ0y15MgCh8umUcy2rOu/ZaNvSHSSG0XAhz3mug3VIZLmylYcRhiCTZYdKu0CYYpKVx/NufK4CRHdMEjz/cLNncHvcdysHudsbmoZT4ObnouZ2zY66TCIyj46VK2URfTS/Lzq9Xz1GsH5D7n0LxSQY/Vvaet/sbzw8tI1z67TRH6FmyVMrdz+4xyu65T7HmhxwE88JGRiOhhokMc/5LKPWZx9yQ+LECOG5IQLGuEBEF6BsCNOVSCNgD7f3Ouvm2dwqLnm+x1xzYGquMyT57JMJVv/VK0wA8OanwIBk99nVmOjd7pzW7rzkN++6WR0sG/c0r6JaZ37Z4B4MqicJhjDgWP/M/4UaBnTjUU2lUYc/m7snetp3A66ZZWzNz+uOPyvBt3Uh2M575MLgfGRlIor4s/pbuKHjRC0r1oV2BSqBVSqr1Mp54D2LNIxZic0c05NIcsYvfMA8Yvkfar3wWQtUBiivhn/yDgNUpKGS2TbBFqeQJPE8CXVFbj9WDOBiW87iouTuEdTSMps8K2V5LFJ1LMsPu1AficFsGGNXTSrmQVOLqcbXyyo5qqq2n6nGoJI7N9hJES7QSqsCgOLC9LfuaXMzCZSHfgvP5sOu60+IQDW9XzKf/maenSC0202c4ASV4uelpjukEmat8iWmCHudQdNOGC3Qv+V62KYyIVtAqWdIT72WCCh6/NS+lAIle0bJiI7HL8Gp/OxhdvfZeyaQW/jhDbd06THCQ1gMoCmq4L0mCSbl/gm0pUtL
+ iQOCHbXj
+ n+ly48YltUkNdzmOvg92Ccrpv1xolQrRw8FVifcI+/xn2+20xzJ2a9Hgh3iEhSz4YLyTjRzE70NSQ1iz2ixN8UKg9LZvZkoSvrFAyM+j6QDssVOHBEAfJnCDi47Fw8NUFXIZGHBpr8Lw9EzD6R10tTzl69lNZjcGCPc6QXFBtMxiEjpghi3ks7gKj29lC3NYOiey9hBnnMPteg2yytCPdRAkRD4ryzfTC2PZb2rE3bqV6oa5+1UqXnsxJsBhqJyTTqmEeNrBlKQFTlpPyG0g7zjBOTrj92wsMesrbher3H4WidvQxmEmZhxStm7WkcbcLBE86Q7rp4MngucWXSwZl2kZmIHIoVeEm/H6T3T6UlMlLjtoCl5iTPVyA8F0I9tyVBkRGmGf9mleZo32NceDOAzXdqi3lJXrgiZ1aaQx+z9+pq/6sveij0vov5D1NRuKaNE0+4sB6DUjRM7uLFqxk5l4ruhQFfBZ84663RWwTSCYLmgKxXvhOEJlLTaMF/74Hsrcc9N10I/pgvzaJ5VjEGqZBxAF6Bj95SE4kG65XtK74ObN6NZMfa/I5jUH5clOYX7ReGx9Ci6R+vpXZu7t20ix4cLSD7DyxfmYQJMvsgKOJ8ezLUZk7Pid9ljhoXQZqwmBDHcFXOhbWXTLDcb8IM5eNPA2qnm5XkM4amn4NXkKJWhtqLuSWByE0eoxJQW6eulrpzU/7tzdgH5+5bzs7l88ki9k3puE4LuWrk/dygicgQobJWCBAUoTyay3jD5Qjqg0fUMD7/1PDW+XMrfJN5ZiGHCK7v6O3jxIhwp82NzlK8fc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,163 +95,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 5:18=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Tue, Mar 31, 2026 at 04:42:59PM +0800, Baolin Wang wrote:
-> >
-> >
-> > On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > The current handling of dirty writeback folios is not working well fo=
-r
-> > > file page heavy workloads: Dirty folios are protected and move to nex=
-t
-> > > gen upon isolation of getting throttled or reactivation upon pageout
-> > > (shrink_folio_list).
-> > >
-> > > This might help to reduce the LRU lock contention slightly, but as a
-> > > result, the ping-pong effect of folios between head and tail of last =
-two
-> > > gens is serious as the shrinker will run into protected dirty writeba=
-ck
-> > > folios more frequently compared to activation. The dirty flush wakeup
-> > > condition is also much more passive compared to active/inactive LRU.
-> > > Active / inactve LRU wakes the flusher if one batch of folios passed =
-to
-> > > shrink_folio_list is unevictable due to under writeback, but MGLRU
-> > > instead has to check this after the whole reclaim loop is done, and t=
-hen
-> > > count the isolation protection number compared to the total reclaim
-> > > number.
-> > >
-> > > And we previously saw OOM problems with it, too, which were fixed but
-> > > still not perfect [1].
-> > >
-> > > So instead, just drop the special handling for dirty writeback, just
-> > > re-activate it like active / inactive LRU. And also move the dirty fl=
-ush
-> > > wake up check right after shrink_folio_list. This should improve both
-> > > throttling and performance.
-> > >
-> > > Test with YCSB workloadb showed a major performance improvement:
-> > >
-> > > Before this series:
-> > > Throughput(ops/sec): 61642.78008938203
-> > > AverageLatency(us):  507.11127774145166
-> > > pgpgin 158190589
-> > > pgpgout 5880616
-> > > workingset_refault 7262988
-> > >
-> > > After this commit:
-> > > Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
-> > > AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
-> > > pgpgin 101871227                        (-35.6%, lower is better)
-> > > pgpgout 5770028
-> > > workingset_refault 3418186              (-52.9%, lower is better)
-> > >
-> > > The refault rate is ~50% lower, and throughput is ~30% higher, which
-> > > is a huge gain. We also observed significant performance gain for
-> > > other real-world workloads.
-> > >
-> > > We were concerned that the dirty flush could cause more wear for SSD:
-> > > that should not be the problem here, since the wakeup condition is wh=
-en
-> > > the dirty folios have been pushed to the tail of LRU, which indicates
-> > > that memory pressure is so high that writeback is blocking the worklo=
-ad
-> > > already.
-> > >
-> > > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> > > Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingx=
-iangzeng.cas@gmail.com/ [1]
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > ---
-> > >   mm/vmscan.c | 57 ++++++++++++++++----------------------------------=
--------
-> > >   1 file changed, 16 insertions(+), 41 deletions(-)
-> > >
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 8de5c8d5849e..17b5318fad39 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -4583,7 +4583,6 @@ static bool sort_folio(struct lruvec *lruvec, s=
-truct folio *folio, struct scan_c
-> > >                    int tier_idx)
-> > >   {
-> > >     bool success;
-> > > -   bool dirty, writeback;
-> > >     int gen =3D folio_lru_gen(folio);
-> > >     int type =3D folio_is_file_lru(folio);
-> > >     int zone =3D folio_zonenum(folio);
-> > > @@ -4633,21 +4632,6 @@ static bool sort_folio(struct lruvec *lruvec, =
-struct folio *folio, struct scan_c
-> > >             return true;
-> > >     }
-> > > -   dirty =3D folio_test_dirty(folio);
-> > > -   writeback =3D folio_test_writeback(folio);
-> > > -   if (type =3D=3D LRU_GEN_FILE && dirty) {
-> > > -           sc->nr.file_taken +=3D delta;
-> > > -           if (!writeback)
-> > > -                   sc->nr.unqueued_dirty +=3D delta;
-> > > -   }
-> > > -
-> > > -   /* waiting for writeback */
-> > > -   if (writeback || (type =3D=3D LRU_GEN_FILE && dirty)) {
-> > > -           gen =3D folio_inc_gen(lruvec, folio, true);
-> > > -           list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> > > -           return true;
-> > > -   }
-> >
-> > I'm a bit concerned about the handling of dirty folios.
-> >
-> > In the original logic, if we encounter a dirty folio, we increment its
-> > generation counter by 1 and move it to the *second oldest generation*.
-> >
-> > However, with your patch, shrink_folio_list() will activate the dirty f=
-olio
-> > by calling folio_set_active(). Then, evict_folios() -> move_folios_to_l=
-ru()
-> > will put the dirty folio back into the MGLRU list.
-> >
-> > But because the folio_test_active() is true for this dirty folio, the d=
-irty
-> > folio will now be placed into the *second youngest generation* (see
-> > lru_gen_folio_seq()).
->
-> Yeah, and that's exactly what we want. Or else, these folios will
-> stay at oldest gen, following scan will keep seeing them and hence
-> keep bouncing these folios again and again to a younger gen since
-> they are not reclaimable.
->
-> The writeback callback (folio_rotate_reclaimable) will move them
-> back to tail once they are actually reclaimable. So we are not
-> losing any ability to reclaim them. Am I missing anything?
->
+On Mon, 23 Mar 2026 04:48:49 -0500 Donet Tom <donettom@linux.ibm.com> wrote:
 
-This makes sense to me. As long as folio_rotate_reclaimable()
-exists, we can move those folios back to the tail once they are
-clean and ready for reclaim.
+> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
+> disabled and the pages are on the lower tier, the pages may still be
+> promoted.
+> 
+> This happens because task_numa_work() updates the last_cpupid field to
+> record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
+> enabled and the folio is on the lower tier. If
+> NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field
+> can retains a valid last CPU id.
+> 
+> In should_numa_migrate_memory(), the decision checks whether
+> NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower
+> tier, and last_cpupid is invalid. However, the last_cpupid can be
+> valid when NUMA_BALANCING_MEMORY_TIERING is disabled, the condition
+> evaluates to false and migration is allowed.
+> 
+> This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
+> disabled and the folio is on the lower tier.
+> 
+> Behavior before this change:
+> ============================
+>   - If NUMA_BALANCING_NORMAL is enabled, migration occurs between
+>     nodes within the same memory tier, and promotion from lower
+>     tier to higher tier may also happen.
+> 
+>   - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from
+>     lower tier to higher tier nodes is allowed.
+> 
+> Behavior after this change:
+> ===========================
+>   - If NUMA_BALANCING_NORMAL is enabled, migration will occur only
+>     between nodes within the same memory tier.
+> 
+>   - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from lower
+>     tier to higher tier nodes will be allowed.
+> 
+>   - If both NUMA_BALANCING_MEMORY_TIERING and NUMA_BALANCING_NORMAL are
+>     enabled, both migration (same tier) and promotion (cross tier) are
+>     allowed.
 
-This reminds me of Ridong's patch, which tried to emulate MGLRU's
-behavior by 'rotating' folios whose IO completed during isolate,
-and thus missed folio_rotate_reclaimable() in the active/inactive
-LRUs[1]. Not sure if that patch has managed to land since v7.
+There was no feedback on this, nor on your v1.
 
-                /* retry folios that may have missed
-folio_rotate_reclaimable() */
-                if (!skip_retry && !folio_test_active(folio) &&
-!folio_mapped(folio) &&
-                    !folio_test_dirty(folio) && !folio_test_writeback(folio=
-)) {
-                        list_move(&folio->lru, &clean);
-                        continue;
-                }
+> Fixes: 33024536bafd ("memory tiering: hot page selection with hint page fault latency")
 
-[1] https://lore.kernel.org/linux-mm/20250111091504.1363075-1-chenridong@hu=
-aweicloud.com/
+Ying Huang seems to have moved around a bit - let me add a couple more
+email addresses.  Apologies if we have multiple Ying Huangs!
 
-Best Regards
-Barry
+Rik, Mel?  It's a bugfix.
+
+Thanks.
+
+
+
+From: Donet Tom <donettom@linux.ibm.com>
+Subject: memory tiering: do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
+Date: Mon, 23 Mar 2026 04:48:49 -0500
+
+In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
+disabled and the pages are on the lower tier, the pages may still be
+promoted.
+
+This happens because task_numa_work() updates the last_cpupid field to
+record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
+enabled and the folio is on the lower tier.  If
+NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field can
+retains a valid last CPU id.
+
+In should_numa_migrate_memory(), the decision checks whether
+NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower tier,
+and last_cpupid is invalid.  However, the last_cpupid can be valid when
+NUMA_BALANCING_MEMORY_TIERING is disabled, the condition evaluates to
+false and migration is allowed.
+
+This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
+disabled and the folio is on the lower tier.
+
+Behavior before this change:
+============================
+  - If NUMA_BALANCING_NORMAL is enabled, migration occurs between
+    nodes within the same memory tier, and promotion from lower
+    tier to higher tier may also happen.
+
+  - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from
+    lower tier to higher tier nodes is allowed.
+
+Behavior after this change:
+===========================
+  - If NUMA_BALANCING_NORMAL is enabled, migration will occur only
+    between nodes within the same memory tier.
+
+  - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from lower
+    tier to higher tier nodes will be allowed.
+
+  - If both NUMA_BALANCING_MEMORY_TIERING and NUMA_BALANCING_NORMAL are
+    enabled, both migration (same tier) and promotion (cross tier) are
+    allowed.
+
+Link: https://lkml.kernel.org/r/20260323094849.3903-1-donettom@linux.ibm.com
+Fixes: 33024536bafd ("memory tiering: hot page selection with hint page fault latency")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Ben Segall <bsegall@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/sched/fair.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--- a/kernel/sched/fair.c~memory-tiering-do-not-allow-promotion-if-numa_balancing_memory_tiering-is-disabled
++++ a/kernel/sched/fair.c
+@@ -2024,8 +2024,12 @@ bool should_numa_migrate_memory(struct t
+ 	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+ 	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
+ 
++	/*
++	 * Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
++	 * and the pages are on the lower tier.
++	 */
+ 	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+-	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
++	    !node_is_toptier(src_nid))
+ 		return false;
+ 
+ 	/*
+_
+
 
