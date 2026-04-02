@@ -4,133 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D5A71112246
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CB8111224E
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:46:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62F186B0088; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
+	id 54E196B0088; Wed,  1 Apr 2026 21:46:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DFE66B0089; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
+	id 4FE4D6B0089; Wed,  1 Apr 2026 21:46:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A7CA6B008A; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
+	id 3ED1F6B008A; Wed,  1 Apr 2026 21:46:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A846B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8BC3140379
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:40:16 +0000 (UTC)
-X-FDA: 84611910432.20.B955A46
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A4A76160003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:40:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=buP+RANP;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775094014;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1886B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:46:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF2D316031B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:06 +0000 (UTC)
+X-FDA: 84611925132.30.E5DCAD3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E0ADC4000B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OjtUWImp;
+	spf=pass (imf07.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775094365; a=rsa-sha256;
+	cv=none;
+	b=qWRYKFsBgcuve6QHGGnBRr2XMQbe6PWcBeMjRn7aa7dHUloZ5YHT4598WmskrG5vFszUEE
+	6zibyaulGW5P4644ZufGR+/volGtsWUR1mm6fV0WWo1YAcOnuDCmP/2DGy2GSDFt0FlkBH
+	WbEi/jSRZGqoBUEk2pgo50zzrmLU60c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775094365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
-	b=Uh3Oe9zW8tltO+NPxCqDfA3WCXmEAJHOt7XPF/BhmcAKEa+PjRQ7ZTQZMBWsVPeYI4zZg8
-	mQY1jXfk/2ULxCIJbfOU7m7Jcj65Pty+N27jfSF0GVqcalpvH0Uv/CXTPigcGGVLdMgjfN
-	2vFGA/9BnjFxmH46mDa2uuAeN5zOR78=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775094014; a=rsa-sha256;
-	cv=pass;
-	b=24MnjU9yJ1JINeIMJI5lpinYKR8qwPy93ho3Sn7xhDDoMVAmfR9i2RwEZgsUkJP0q24u7H
-	VUx9XZHuIE+MWJMeHAkIOd78tu3gA1KsoM5B4kGAkZF60fteEBnhlsgbh5Lx0V0VC6+N2S
-	KkYYJWNIxgl0zhG+gqZiyUSs4xPfVCw=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=buP+RANP;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66e07d6bba5so236741a12.0
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:40:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775094013; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U7uWS3tQR4SV0xZ9pfx6KOcxB60ckHXfnOcYaPlXEiZtuyZuWTQLaJOK1TmA6MigpZ
-         8Nhc9R9ycTrGFjVZ61Etwpc6/i890TqrRGmeNVFrL23bigqMHmSb5lsPUK9lCK9NCDvp
-         iOF1WAHF+VfHPIDRImlvj2uz9nbO96lq4RbZ8DfkuZXVjPW4PCZv+yI80qI80HaDBv2v
-         vDBOc/uoreeUYnE+ll0TYEAjvTLDVcRrfCP/qhhZ/vLTiyrzvIJqgEkRrjPEjSna+gxG
-         o6faD87wwqIBa7vJpEGU/4cbiaMuS+Zk/x1iYZHee1kpgsEg3aXWPwrDKMR6AAvcY3iU
-         tXvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
-        fh=hrZcizAI7Txq+2/j5uYcx2w2fLChBAzS4+DW/BCFXgA=;
-        b=f31EYoM6hBCvwSHiM/uKCSMFTatPc3o8E1jrgJ6x/JhUsLN9W32S+jNDlkKnaNu1Tq
-         FhnFwiNg8k5xmGQYY0MMizJbSzyegVZFn+qbkn62JaGNHMyBeCuBC45W98Pqdy5MYP8+
-         s0o/a4csDRxsn2wMdzCV/liAGc7do4VBe5yQpm+xoBcXTuVT0a46Yip94WSnx47bvORL
-         qAytO0JznBdx3P6ec00iNUGnE4gW5m2b89zWiLi3U4oo5rObNSdqiTEDmKwWzuwK1qMY
-         mZqzpoqNEzdzuqOyg+82grgwu/bdVAdFi3l8m82EzYL6kdYkjK7H9fOnmfKcph+DXYxn
-         IUMQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1775094013; x=1775698813; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
-        b=buP+RANPAJj9gwU3DbaPoWWxv3ic4M1jxoUzO9ScWwWIUwYozbExhkIcUlPntCwT/c
-         pT32TW1bYwpa2PHpLDIQUPlqIm823y3CraGSdb/32z6qjiMnefKiLy2RGIQg00vlbEcf
-         0ezA9GVPujVYiMN9skO9swYACznjgisZK8EbtlBbMep+H/JW1dZrUnooM+yzNhv1qcDU
-         PCUYKpktXMB97VM2JMTKo2X94xn+gu9nYuoYKb9w/BCROA3vu6MRCpIQuPSa47ru5D+n
-         8xEkHasWo+k8A/cqMmbF+oTVnMlvCfaftcGP49V+ZUwSyvMhvco/IuvLB36onO5NWX7l
-         5KFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775094013; x=1775698813;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
-        b=WbPuEyvcItJ9nW1Xj6GTCxKkbmeCqJlzDW/EOSGiC2tIMPLwHTwlMOeVt2D6jl4llz
-         7/rgEhqM+Bfra0tnHXtZEJ8KMyFM921acR4LLuO55qEW2Z1oY1U7OhOMTXK8jO29yT2y
-         4IhydvpkaPaV/HOhm9sTPLi12gVwUAWGDSiSEZgpxBBfIevlD6Nwb0Bd9T86r3ai6p9s
-         3AiBlJhbfMxX0sArk6VIOiMIUrxGQr0A9mz3LGYJy5YT4w+G+FZ/mCoUg+v3wCcOrw3L
-         QOq4uLMG4d5kmodjrU70e07wjGKNH93GdHSTC2k/A+WRplsKohoJ94Z61vXg8QKf5UWh
-         pC8g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4eszqLLUrBGfG7nUx2Rk2xW3SknDACSxHOSEOgLQ55V+3oMypj2paDpU77eRVXxGr4caYhVbxPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyl7C87PjNlQeHbexEgP/vBfaVSi1EA5A+dpwlCSa6T0dKQHgZX
-	biqozJcdG4UJpsq9+m9C21EcKJhr5DLZeA27a9ZLBc7enfrgLapg9IKT3XUTsX6OtY9urzXYrV6
-	rIzox6qa0jP8a1FGwhPtXA/chjwkJI97uA3EAjpn/FQ==
-X-Gm-Gg: ATEYQzw9d4wj9jIuqrhGrGTUwDK7aw110EDLBGfpaKXrOfaVfJCJXW8nPUqb8bQjj7W
-	Y7Tk84JxSs2FK1Ro+g8sbM46CzuSLt72n//z4bxrsk8CvnEFbC25JGERVyePU4j4Aif+Wt3sFX0
-	Zb3WaNrYcYml+pJPf0gxAhzUVil3rmOlWMMhX/+OUVjqFiCy2dewwbPlJWPhq/qk9x3L8WeQKLL
-	FbIIfY3/JE09JOHfZ6GAFpPlNhi/Njdled86bbygfFOzkzxmWayPFYcWtUg9rqi66qsFXGSuQx+
-	M1RsOjru0ytKWKc4mlN+/iDh1lGu5F5Mlry9EQ==
-X-Received: by 2002:a05:6402:20c9:b0:66c:ecdd:9cac with SMTP id
- 4fb4d7f45d1cf-66db09e75cdmr2789082a12.17.1775094013078; Wed, 01 Apr 2026
- 18:40:13 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=l0Q6r9HPJ8aJ6iX7bMAjVKnNhKfShN4g1Nz0tMndmbo=;
+	b=paoVlP7ObfMBKW86KveDRu27NEKBNpOJvdNCHKig2L7hib8TeXblFAyIUd0ARk9WHo9JVl
+	98rj7LGYlSjJg8GqMkOjG1Q0PY8CPGVxox6DF1C7uelBegc53KZKN3nkIN4tPFCBvbk0ze
+	u1minB8dfKz68QpoPvhG5H1rYytdivU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OjtUWImp;
+	spf=pass (imf07.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775094364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=l0Q6r9HPJ8aJ6iX7bMAjVKnNhKfShN4g1Nz0tMndmbo=;
+	b=OjtUWImpnnehhPcqDh4N1ocTQ+qbwy5A/6jAqahDwXNxCyi4JQlGlqobeEDzX3+McwgQI6
+	myvB81yn32RNKXXGFGJTQdrDSfs5JeILK6kGejtYKFnofyVSrmKuthrHJHMFeVVqif/m9Q
+	oJNbZpsLalf59Ewl30jwOOV96IaF2Mk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-qsMjOyxJMNy_LXPiefNIHg-1; Wed,
+ 01 Apr 2026 21:45:59 -0400
+X-MC-Unique: qsMjOyxJMNy_LXPiefNIHg-1
+X-Mimecast-MFC-AGG-ID: qsMjOyxJMNy_LXPiefNIHg_1775094356
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2A3171955F18;
+	Thu,  2 Apr 2026 01:45:56 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7614C19560AB;
+	Thu,  2 Apr 2026 01:45:47 +0000 (UTC)
+From: Chunyu Hu <chuhu@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	chuhu@redhat.com
+Subject: [PATCH v8 0/6] selftests/mm: skip several tests when thp is not available
+Date: Thu,  2 Apr 2026 09:45:37 +0800
+Message-ID: <20260402014543.1671131-1-chuhu@redhat.com>
 MIME-Version: 1.0
-References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-8-duanchenghao@kylinos.cn>
-In-Reply-To: <20260326084727.118437-8-duanchenghao@kylinos.cn>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 1 Apr 2026 21:39:35 -0400
-X-Gm-Features: AQROBzAVSCiR4lL8xidx1gqAxIaAcOtLfz2MqrBrE39rYeaq1LvBRWmL93x06bE
-Message-ID: <CA+CK2bBVZyZx9L=dxU1c7EAnoT3bdJ0=hq-gj915Fz4zya0Khg@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] mm/memfd_luo: fix integer overflow in memfd_luo_preserve_folios
-To: Chenghao Duan <duanchenghao@kylinos.cn>
-Cc: rppt@kernel.org, pratyush@kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A4A76160003
-X-Stat-Signature: xogt8w1xzi16h5d4fqecu7ww1i176cpr
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: LvRdjz2IULGaVQK8dtEOypP0wvxpi1kL9ZDUDnCXars_1775094356
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775094014-656057
-X-HE-Meta: U2FsdGVkX19LHF6U+jxxtXzY6OLkExavCCUzPUsOU+3BidOyBXV4FNN7+diMx8fn2t7xtEvp7cu1+EMOOYLCs2Y/yZXretRsBYwtdA+yYPSjuU3orDL/KX2Aevnbg0qAWNBaLtEHuxGoxicVhqf12sWP52daj7S1ma5jgtiQN6/UMe/0qpU20jnaMLT+f2T3nhCWIVLDyKdWn6278DruTG86ZjyxG6J5QEzpzWFA7LnkxjD17rdTTQvRdSp3SDNcF7NRNyqLwtRR9gQNyYxe5NiL9v3rUQwj0Qycc0l2T6rz1c8PLjKr/2aAiROb+3W+ukUMkwAxyScgl/dPROeuTZBfcVARVjZxuG4beJdBzZgMbQNunP8YmfkVPLFu0HO7y9JFw3XhtfpLMrONN1wHPZVldibFpB9exTS7kgYfqke3IaAt9D6BwkA8HmlX0pUqxhHU5NJn/GhJcFbLHTx6EEriWkJoapfhADSeOMZVuQHtV35kYAvUgZ/NoRRsxlrxJNfc4LLXpV2y59SUyH16KeNbAQg0TTEfekb43Qi/QDHW3JOEnCK6BSxB/qEI0cPxD0l1jfr/0C/q2VQ4tub1IuhyDJeAaGUqeS4HaRpu8jQxdDyN2roDg8kN1DESj12jYTsmmHOIAGLx0qz04dId9oVIlNkx8uu97cRVABf6dRCC90XPz2ie7R3Yit8lOE3VtPolBmW7ZBYaHbG0mn2SDgjFBo7+c6SXIThwaC6ZaXSoDxMiyfhDEjnfDPeQqpSf3ESkSXUry5kVDVLCY33yAakWZAUPUgNjsnnFH11RnZfnsLK5DS5uvchxgN8kks3025x3S3srkWXVXNuCctzNykMhnvmQXjv8jrRi9GsnCxWVtIZ4NjkUQ4Hnka1W+ygPDrmG7zkB9FtkYEshsyvw8tFSp9MiyPcVC4ol9wF3fJJ1VU2jiUIV9cKcSier3f/IABBnyLjxt7afT+0sCRz
- iKZNIus3
- JVC1+1c0sNWUlV4Xn4hy6mat9+nHQ9y+34f5Zv2d0Tvhx90sxJoG3XleL0zj9RgO3WJNNqLuvQ3u2QBFlC+sdxyM5TbjZVTuGhTGm/iZYylFL4889LKGeQwMry4dJGcoMt3aCLI4vvbMpxCowc80aMv5FMsywLCzDjIp3/nLyPn62A9fE5b/6tuTRyIL186jsFJIA5q9NUALHYCOoAb9bcmG7V/0phjnmPwStKsX0onFqw//jAamys/v0cxwzDGVURhRrP1M4NhJhOseMxbBh/BzTDWJNZucwnCNZxvLn/lTIOrQT2WuCDTEQ6qK7KG5VSG2EabQ1oB+ymVroFG6dezjejw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E0ADC4000B
+X-Stat-Signature: h4yma78w573umcpswozknoupomgmwozt
+X-HE-Tag: 1775094364-740469
+X-HE-Meta: U2FsdGVkX1/V0m8QZyvj+YC9RQIdSLkqvBerH6pC3jIuGHWYzDjkL7DLXY8Qe4NDVpirGE5cPa4pC+JmHyA8i0or4Vd1JmizIjRweJbXN9se8bchHy6M4xZ8ANVb9EHY9xcAf9XE7M7MjBpLkuLHxXBXGZEjB1wo67OpKe1q91UnBV2nmnAj4RWCbqlS41Fi8mQxc8nGb7PlGkxBS6rM37M++J9bELUr9onMcKQi0kGQRIa4ocZR408EaSbVin+n0VsG+tYPxQ/aLXjThPCQ8DkbhzbiC4JTirr0OsPC7F+UvU/y9xCePXRR0CZZgOHJ+h7lEe5s77yx12pEW/D50BtmA0Jjo0FRM7/f2JgMMxZbOxk0dsMjc0icc23VJ9ASh9sXefrTH6d91k75kTOWrLAw/UJOiZfgCeQ5y/H/dmPpWuSZ0523ADCp8xUe8aHhdW44+jVJKGqX5c7AK6slXFRiTMuCKGorXsgprarM5ocS2jVUoG9mX0pxeR/n1pKgHf8d91WaKbbJJGtnNrSIdNPWh2zemasNIyI504xX1sVjE2alB1iWaLobD4XKdx0dupzt3DVXyXz5zjmzKvlT2oqqTT/TsDfc+6sokTPY5vsPeG/6DCgYbZW7GSaT9bacqrqrggZuj6WJJAicfJxwC2G3wIqKy5vGEw9yfV2yj4eglwIls8kdY5HwE/+ZkxE8Qdq2jDz3Wd8epdw3XVYcz5XKTZWbl4U2LXqI85XjFFXd6NpULjYgNXdLQNeqTOngDVw/YKetJQOmtae/yYu1tjjivP5WrbdQAosVppzrjqaOneHBMiyAu5Y7s2Af7qJRgH5PxpyUhjWmXY8ZHESox5sXfQJd+QJoJ9Sgh0JdO31KfLSx5rLm98VNAXsqVpth+peDqi1pzNjtJCOYaiKGLhdkeTok86BpV8eDjW9Ix6ZeL4wyAHLOzL8FEvOdwWCzs3GSuV9QSWgTS2kH8Rw
+ 7cF1tTDH
+ jJSvziVNvpUiLa/iEMCUVSIKaiABtUhGd/Ft5hfz0HBQgxv0s/Yexsajz5IibTb/ZCjn6dtEpCqE/Krj1U/IKN/1x0rqZAVGTbhGW0K8W57HjHEJY2+OVTiKcQVohtz8E4nmsb6lNMl+bpVI7xn4f6VBCi3j/nOO31q9B9akFf/7h0ZSmdMUOw1c5ThudITibTD9qJrTGFmxb5KAmj+ZTtShpLFiDgTyPUh5kVixRZVIILj+yicRTVOpld04edEIdK8LMIZ+VHCBW+itp6M3gYywM0HfCeEB/LLhZwYgJ072EkSDgrBew13Hoo0gXeliCcaIM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,30 +119,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 4:48=E2=80=AFAM Chenghao Duan <duanchenghao@kylinos=
-.cn> wrote:
->
-> In memfd_luo_preserve_folios(), two variables had types that could cause
-> silent data loss with large files:
->
-> 1. 'size' was declared as 'long', truncating the 64-bit result of
->    i_size_read(). On 32-bit systems a 4GB file would be truncated to 0,
+There are several tests requires transprarent hugepages, when run on thp
+disabled kernel such as realtime kernel, there will be false negative.
+Mark those tests as skip when thp is not available.
 
-This is not an issue, KHO only supports 64-bit systems, but using the
-correct type is a good idea anyway.
+Changes in v8:
+  - removed the patch 4 in v7 (make ksft_exit_fail_perror variable length)
+    as no clean way to do it at the moment and ksft_exit_fail_msg could
+    do by printing an extra strerror param.
+  - patch 4 use ksft_exit_fail_msg instead of ksft_exit_fail_perror  
 
->    causing the function to return early and discard all data.
->
-> 2. 'max_folios' was declared as 'unsigned int', causing overflow for
->    sparse files larger than 4TB. For example, a 16TB+4KB file would
->    calculate 0x100000001 folios but truncate to 1 when assigned to
->    max_folios, causing memfd_pin_folios() to pin only the first folio.
->
-> Fix by changing both variables to 'u64' to match the types returned
-> by i_size_read() and the folio count calculations.
+Changes in v7:
+  - patch 1 add reviewed-by from Lorenzo
+  - patch 4 new patch to make ksft_exit_fail_perror variable length
+    arguments
+  - patch 5 change to use %.*s to print the buf when error happened
+    Limit the buflen arg as 2 minimum. Check the error path (numwritten
+	< 0).
+    And use the ksft_exit_fail_perror to print the logs in error path
 
-Strictly speaking, i_size_read() returns loff_t which is 'long long',
-so s64 not u64, but anyways u64 works here.
+Chagnes in v6:
+  - patch 3 add reviewed-by from Lorenzo
+  - patch 4 handle the errno before and after close(), suggested by AI
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Changes in v5:
+  - patch 1, patch 3 updated reviwed-by and acked-by
+  - patch 4 adds new patch for robust write_file()
+
+Changes in v4:
+  - patch 1 update to use thp_available instead of thp_is_enabled,
+    suggested by ai review
+  - removed reviewed-by and acked-by
+
+Changes in v3:
+  - patch 1 update commit message to show the log snippet with where the
+    fail happens, change the 'false positive' to 'false negative'.
+    Update reviwed by
+  - patch 2 update reviewed-by
+  - patch 3 make write_file to void return
+  - patch 4 and patch 5 updated reviewed-by/acked-by
+
+Changes in v2:
+  - replace 'false postive' with 'false negative' in cover letter
+  - patch 1 and patch 2 add reviewed-by/acked-by
+  - new patch 3 to add write_file() in vm_util as a common helper
+  - patch 4 removed the {} in if block, removed the write_file helper
+    rename chunk in v1. Add reviewed-by
+  - patch 5 move the exit chunk to the front of ksft_print_headers() as
+    suggested by David.  Add review by.
+
+Chunyu Hu (6):
+  selftests/mm/guard-regions: skip collapse test when thp not enabled
+  selftests/mm: soft-dirty: skip two tests when thp is not available
+  selftests/mm: move write_file helper to vm_util
+  selftests/mm/vm_util: robust write_file()
+  selftests/mm: split_huge_page_test: skip the test when thp is not
+    available
+  selftests/mm: transhuge_stress: skip the test when thp not available
+
+ tools/testing/selftests/mm/guard-regions.c    |  4 +++
+ tools/testing/selftests/mm/soft-dirty.c       |  4 ++-
+ .../selftests/mm/split_huge_page_test.c       | 19 +++-------
+ tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
+ tools/testing/selftests/mm/thp_settings.h     |  1 -
+ tools/testing/selftests/mm/transhuge-stress.c |  4 +++
+ tools/testing/selftests/mm/vm_util.c          | 24 +++++++++++++
+ tools/testing/selftests/mm/vm_util.h          |  2 ++
+ 8 files changed, 44 insertions(+), 49 deletions(-)
+
+
+base-commit: 9147566d801602c9e7fc7f85e989735735bf38ba
+-- 
+2.53.0
+
 
