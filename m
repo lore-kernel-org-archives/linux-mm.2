@@ -4,114 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06BDDD6AAE6
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 15:45:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6813CD6AAE7
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 15:57:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D0936B0088; Thu,  2 Apr 2026 11:45:52 -0400 (EDT)
+	id 717676B0088; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 381736B0089; Thu,  2 Apr 2026 11:45:52 -0400 (EDT)
+	id 6C7916B0089; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 270DC6B008A; Thu,  2 Apr 2026 11:45:52 -0400 (EDT)
+	id 5DD1C6B008A; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 136396B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:45:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A40AE1924
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:45:51 +0000 (UTC)
-X-FDA: 84614041302.12.3838A87
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A4C2F18000E
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:45:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Io/u5ljh";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775144749; a=rsa-sha256;
-	cv=none;
-	b=SjJhwHEeujPqIwZ1Q84BN5FvfQND3RW63utGz5qxsRXzeGElZ5ujTQ8KeHb+H2GOwdtwgM
-	kCOdO8ALquJRBXAG/uNc9Ekn0db9uAR6TimYav6ftfnnmT/Gil44IJwmrQRGyZn5/eQNFJ
-	lhC+Coz5af/bKXYohQiou9Zg6w5sAzs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Io/u5ljh";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 514786B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 133631A07F5
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:57:48 +0000 (UTC)
+X-FDA: 84614071416.05.786403C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 617C8140007
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:57:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OTULZxMf;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775144749;
+	s=arc-20220608; t=1775145466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kn9LhZDdj5iuA1v5q5IVdjZeWxdxeXHN8k2hwKy76Io=;
-	b=jHXS1PF9FJIIui56RxTV8hctpd+qrlod+8NwoBcQEb5ymzdgBnRr4yi9SlGqtdgxh552l8
-	Eyn/wZyFG6ON88BJ8xXFeZn/jzC74sBDjjhvkz3/MswsBIKJKzNWGFBxM+ighlHmYVRNxx
-	3rNP/NcE51Hbo/SAKPrzeVfqSmpnaoc=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38ad26e3992so9559141fa.1
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 08:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775144748; x=1775749548; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kn9LhZDdj5iuA1v5q5IVdjZeWxdxeXHN8k2hwKy76Io=;
-        b=Io/u5ljhOpT/oaGNUIcv/dxHVub8/WxuIswkjICPLM2l+X38Wrlmox3OzPd7julzGz
-         pLXOC4hmqNDQFQIZNzly62rTO0OcwrW03OxziJaY/zo63b1hD7esWwvMjLXC9hIabAfL
-         jG8zdRzUcsc4FlJ/VVpVoKzEnm/hhQPbnJNHqJlrhvWhQTr4N5zw1SFlNnXklYXFC9IX
-         vBXT182uof4YuqjG1UEwOmzcGlvsr3lp2kUwwu8WAXd/Mx4wjHOy1Qxwrnxj8VULRYq5
-         0KB2i8Ehdsrtqkq5VEWMocZa7gesWXJBys2NVsKvH1xS1FCqE/rYxZu8JT4FUctcVpo/
-         4NaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775144748; x=1775749548;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kn9LhZDdj5iuA1v5q5IVdjZeWxdxeXHN8k2hwKy76Io=;
-        b=Bo1Deixn4MM5CeeWImRDavy//xA8kmD7oePocaFlJ0aDf2pZSBAsy3yv36hlaHVc+K
-         cA9VA6Bp5XN1C9BHXZJ1/WB0C4LFU5uRIcY8nq7/VT2M+96q/SaeenWHA/p4xXmGVABk
-         uqDtapcxMNED3uVViHJrm6BH0MxLzVmxz9zQ40HHlzgK5iAWAYX95M2YzsNmpEAthkPt
-         aE9x/R7pqXbhFK9lG3meKfN7i/Zh660JQHjICnqI5MUb+N8Ls4vMU001radDlqwBTqwm
-         YePVxR9Aji6Z1AVSzgB8rQlzbEMZtg4Uc38K9YX7bQSZy8mHYaXg08ztlnWA2Pz7woGS
-         dTTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxbSfOMudm6wGqXtSjUvAuC6lCy+wafEYOBmt78VmCRGXRw4T33RDF2kjnq0kBcNKhaDaL5yNfrw==@kvack.org
-X-Gm-Message-State: AOJu0Ywp40KiBPUy/qDJPTJH/NWxWbwGVBzktxGv6yZyVceZLnMuNIQs
-	djp2sIoys8F8f1V1kMG9PEf27bxSbqDcQQlcKFhoq7P8CqPKmc4CIAVU
-X-Gm-Gg: ATEYQzzjqeUSuWWhaPTxdAP7anq1V/XR9lxjriCT/p/rt4lKkifQxu+IsdA473Z+fir
-	UpfSHRg+R0JoF7KZnb5K/YFHw/jkcA4/UZZolTsNWiR+nNHN3qVhqgiYLvI0ObfNam1o5Kg0IXv
-	5fkDA3KUGo8zZzCJFxn+Ip0HIxngNe5SQ7x7/OkKTYK+gY285QYdZEoYYhXlxHhsz5pO4eTXY9R
-	JQVtNE7fGm3HeN/yGzxr2tU8SAhLJq7zHGy/mOxlessNRVdiVolaR8Zii6W22/dZsvsTV7h5hfc
-	42B7YiYP1Y7H0aFH8odElNRyjc6SQqpvax6q8QVa7oyMn7MqfDFxN1HpVi4ewEMF0DnthoFwsKQ
-	4PBBQBu13Z4rXSqlUpwby9hb37RUXOoKligAPzXjNpEsbH6+mcK8W0JO6pg2+wfyp
-X-Received: by 2002:ac2:5f1a:0:b0:5a2:a97a:4b5d with SMTP id 2adb3069b0e04-5a2c1f344a1mr2471856e87.35.1775144747272;
-        Thu, 02 Apr 2026 08:45:47 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6c951a6sm750289e87.10.2026.04.02.08.45.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 08:45:46 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 2 Apr 2026 17:45:44 +0200
-To: Qing Wang <wangqing7171@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	bh=k3H3BPlXmbNeqUaFJkuJ0xp02HizktWeZynKSIqmnX8=;
+	b=oiHBKWYxmUEa67UhluDKagjxlbIZWMKM9s0LwAH61cg7JDAQwEZvphvFLV8dovoTqVOPVl
+	wa4oprj7LKzo/tmihI9S3TM/7RgVO3aAsx9YYOO9wetiHpYqVIOE5h8Ccx6spj7FTbRKrA
+	ComLIO8zdbMzRmn/b+5nM7Oo4JLOWzM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775145466; a=rsa-sha256;
+	cv=none;
+	b=5kyk32VQTY8mjLKaGv7jI17kACCsod6jc0BaT4PneB6k4dzh0umQ87zTYfWLbWg6w2S/p4
+	E7UyNAGDEtSUrTGNOshW2N3HMPTFRBQTGV7ypcxj68+CtVUwrXZJsymyAPtWPH9lrwGp5j
+	E23pgF3C5Rpa5JSADAHQNmDzM+3neTE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OTULZxMf;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ABC9060126;
+	Thu,  2 Apr 2026 15:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D12C2BC9E;
+	Thu,  2 Apr 2026 15:57:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775145465;
+	bh=Cctzlt5Opg64VMqk24naaGYNSUhmoxomxZXKX5DKxok=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OTULZxMfEQn9PVoLW7K0LXBdrVffjx1gNhhyW3+NznKze+5HFUHJN2WkiZ88U3gNu
+	 t/SgxHwrWR1J5EwcPtThlgYrTpcB6aFiZzf2uz6ai174I1mMRScq0U6Kk428/R+ycb
+	 8xGIQ9fZHzrp5CNX74ystm9Eam57znEEi0KpgRTTbxvNeijCSWmAGu82ycX0722tat
+	 WHd2SlmWWTTZY5VJRXhWyjecYFMv8uuczxDCFZe1/yYttOXiEgcFOS3ZUc2nU8Yt1Q
+	 aG6vE5JxRAsCOS5eSgfaQJVg98ISJzs04KAwYQdbaz+urTkO0Hm3ZsQBUUC2xpt91i
+	 56cNwutvguOpQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/vmalloc: fix KMSAN uninit-value warning in
- decay_va_pool_node()
-Message-ID: <ac6PKPR8vMlIUdwT@milan>
-References: <20260402081413.1896640-1-wangqing7171@gmail.com>
+	linux-mm@kvack.org
+Subject: [PATCH 1/3] mm/damon/ops-common: optimize damon_hot_score() using ilog2()
+Date: Thu,  2 Apr 2026 08:57:28 -0700
+Message-ID: <20260402155733.77050-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402155733.77050-1-sj@kernel.org>
+References: <20260402155733.77050-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260402081413.1896640-1-wangqing7171@gmail.com>
-X-Rspamd-Queue-Id: A4C2F18000E
-X-Stat-Signature: 6nuwm3tga6xm5nhp73shikyrn61rs8xp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 617C8140007
+X-Stat-Signature: ph7x3c9mtisz1czrhz5ibne8agzxrpog
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775144749-293031
-X-HE-Meta: U2FsdGVkX1+75k4xc+oqC5/yxev40BhjNP7+xrAU/62TnojoQJIInjKPB/K+neiLJoE4LszT3TqS0PxZLT61EBchy/WyK0NW11wOqprS6OlMScrdRWQVUSOId19SNEzQ2kcdArg/On7bFPnBA2wwgOZJ0EvFaCFmwHJ4t23jj0rJlSE5Vc3J2fWOohDOCR9Dm3ZAkW7Sh7B6DwtjHq/BlJwn/OAUVwiZxxQ+y21p39EHba7YLyRNvoqLYQ0DIG47Vo+fHyJDlUTL/ssyZqG+bOg3NiazKwNmcT+uEC7tJw2Ywo3Ujt0YYydXN73DrXZJLWBAexPpA0aHMUb/IT3Dm8W/SOkkuYgXzbAtqrjELC5x1PS/K61vRelt3k3um+e9W70AAkhPHv09b2M2Yhw3DxLj33+HUs+Hvyikvzn4ATlHaIh3ksV7bMkfGbIoG62zn1ccab27LANogblcbVgCt2HGksGTJH5BR3lI/GxqhUCBaTvtrIcIu2JmPAfxeLIFPzCVuMYZsbPx1yBGrPSDEOzZ+WsXLFN4ySE20kQS5DY9UU6WzjXoAIP88BBAHBqfasPq3XBFxiBmOwXswMqyYoSbVfwuE3F5q1eR1Onh4On2NGsQSd4zoZsjCkreoWUouvMqb0sWgs2gyoTht/JJQuWAEe4c6hrRX2xGofQAIcv9soCyEdcU2qJYmundI/0OAQkTuv2tcmXcCGdnLU/+NbsHZvTK8PkQx4gxxUvBrOIqymQg8xGr0Oyavr8UtszOPsE6Q3+B81zOnu8YkB5iGYnxMvq4J/cWHYI3uLbnw6meuycVXnlwYzqqCS6Yx3tfBxYuqw5Lw5bdW791yDZXcd1Qp0+HulC+zADXOEL4KK3QDzUUhfSHDk86kE3TrWV1FWnX93zSKPbV2jhvpb/H/7NXVALWavhesGchmKBPAgjCwaZKUWwa/R4Pv8DT4FzQC+chgasLqdOJx+8PYqN
- eZ/0lfpp
- +cXcu/b9sxYAOH4ceq+G0EG6hyGBwxjmCV4flFgLBPm5P0JdnSggD7oeQyYRiAkCgDawWq9DCDVR5ra4DwFFvQ3UDo6cjbbiZ7+1OFv/KjBGnJ+8/9gRHF+OQS5e0DUxYBFa8yFabsiMlspW4/T0VpQ+pjS5Wft1I4fHcWRk5Dc5dEuonUtFs70ZcZhX6pb87XRf+O+Lsj4EXf9Iua8gSriFRoGe/cGqde42lmiWimBuqK5vmeroNY2QaOaz1GzTIMNkL82uXB1IYztt2QrnpIE6WyZw4AsXiHcH2y1CE/QDWy/aM1ZoWyJQ9eMmRw1HsVL9DOzvdIp6MuWCEGK8mNFBhYxHSJXSZLFYEnKt3zlmmwqrtoVEwdfkoLDTDONbINTHiGQGlUc7msDLBTnvPM5Lj4qJbOUevUjj9ygAFr6h9TUNJ1gHeyNJyI1K2PGnR+663gb+lv6Et3NQpHhwG/vtwFFnsfbOppoRYzuy8eqOwQoSJ9oShlQicU4vg/o0a7qsgaxBX5h8mg4jEzFEJ9sltIugzN2Zy5bHpopeUR74c04ZfAk//TIvhEdcCMN5neH/L4JcTDtEKOMgCiggz01PJaP5VQYTkt1u4Y8jnDZzeh+Uo+Jzindfp9Gov0Y9kq47cZCvPyH53pB5nY6JdAZngS8xQOEFNvkj2QgDwuvhcCbWuUrhPolBPfDEnn6LlSATk5d1he83AO8ISMbgL0D1fz/j+WTNuhtnkC9SfXQ7SF2apHO2vh1bIWoc2TNn8cfPb
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775145466-890496
+X-HE-Meta: U2FsdGVkX18WMojlKTVhCTx8+1gMyYRGBdizUrq/fvFcqtSqhm4vfKnlEdGQbkkRh0rDU9Qp7ORFMZfrksNFRnCb4Cn5Vh7Z4g5QUcrK1ly+xNugpvSzZCAlVzYgi/nTXBLe3GdsigAsoj1GERd8luPoN4tyMZc4r8sUM8B0//DsCQbccilGBiWCtl8nYbrV5iCnkcIjjKFw6zZSg1VPB5W6ZHtqQrbSndLpy4312PnOV081w8tzrczF7/X1YNIdqge6RHP8LkjIN3jhmLMssn5rctTDKCW+ys1moOW2Aj+1SOZThjoshZCE27EGAX46Rc+1+we7YukEmFj/PbLGT4yaBbwDk6cOEmiUvUZCcarMgxOfCUci9PO7eJ4EPLLTMCiEpmH4sbjC/xsFEk4vaBYFfuCoPDS5RanzYkQeuleW231wRnEPRdJPewWwr38//DU7OhUuV1OTwaL/NqqbuGhmUiW3uVLW18DqR38KUCtNYcXeOC3A1a4uNv60gDLXBo49wwx3Wu7BOP4bKm3Fpuv4gIZ2GfqpjIVpOYj4piIlJmF+i3pfyppDqISJGZLDh6r+BSJq28zBn7WF3dzlMYiEGSfd62flKMu9QtdC5U8IyT3sFD63anKccuOT+jwrrksq8cZCjiq8qSXCVQoa44rtqd2K+9WvrLFbFSPtvmT3XgrwkalWA0/oSKUt68wzb0UFfoNGwvbWvcy2iRSUhBkBuE4Xs03TG7oTTHfSvgnf3/KhZAIO2NzNguJN9ygE1N4mOjHYgv871ZLX/+Eq+yONVKdkIhC9LGFjbT2qOFTbIE3oORNoF8rRxDJTGcgNRcUNqc0yQo0CE7ym2wdVaw0MskyQEBlo0Vutz4kvTeL9TeWQqZO77fhLIxEqSM2sS3Yuj3F77yG6uX5geuT5qZkiwAqchbHues2kHa+6BAKpkj26qcnk8dIUXDkXrbJ1CGMmdzPiEQ796tVhXHM
+ HUEJV1yK
+ xPFfbQeCXpU+UgChJt/RHRP2ACrL5L4bm/1uTIPl0JO4sAYOKru7ZEGuEUgXqCx+SglX/GmR3QLx15z9mtW/Xo82qiUSw5YiL4gPD/o6h4XEMYk5kSDZRbyBPW/2N6JMB5Achb0kf49u+Pr3VR1CIBPVqLIBuF8UtbNy74VLl7zNzy6COdA6AaKVaIamCpOBIv1fcmdpsqAFdhZ3gO8C8eZz05mcjz1hlMgXKkjNT/g/AmgVKBHb0BNH13wLOvVfbIIckKdkzxQu7L1F5hceyRZueJDPnsCFIUygBKXVZY1ygx5p8rpLdgCgrfBGSs24vv7cR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,59 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 04:14:13PM +0800, Qing Wang wrote:
-> KMSAN reported an uninit-value warning when accessing vmap_area->list
-> in decay_va_pool_node():
-> 
->   BUG: KMSAN: uninit-value in __list_del_entry_valid include/linux/list.h:-1 [inline]
->   BUG: KMSAN: uninit-value in __list_del_entry include/linux/list.h:223 [inline]
->   BUG: KMSAN: uninit-value in list_del_init include/linux/list.h:295 [inline]
->   BUG: KMSAN: uninit-value in decay_va_pool_node+0xf78/0x1dd0 mm/vmalloc.c:2255
-> 
->   Uninit was created at:
->    kmem_cache_alloc_node_noprof+0x3cd/0x12d0 mm/slub.c:4918
->    alloc_vmap_area+0x327/0x2e30 mm/vmalloc.c:2065
-> 
-> The root cause is that if node_alloc() fail and the va is allocated via
-> kmem_cache_alloc_node() by alloc_vmap_area(), va->list will be uninitialized.
-> 
-> Fix this by explicitly initializing va->list after allocation.
-> 
-> Reported-by: syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=37b7f6cd519f7fb8d32a
->
-I can not access two above links. Are they valid? I would like to have
-a look at report.
+From: Liew Rui Yan <aethernet65535@gmail.com>
 
-> Signed-off-by: Qing Wang <wangqing7171@gmail.com>
-> ---
->  mm/vmalloc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 61caa55a4402..8aebbb51e178 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2071,6 +2071,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  		 * to avoid false negatives.
->  		 */
->  		kmemleak_scan_area(&va->rb_node, SIZE_MAX, gfp_mask);
-> +		INIT_LIST_HEAD(&va->list);
->  	}
->
-va->list does not require to be initialized. Because:
+The current implementation of damon_hot_score() uses a manual for-loop
+to calculate the value of 'age_in_log'. This can be efficiently replaced
+by ilog2(), which is semantically more appropriate for calculating the
+logarithmic value of age.
 
-	spin_lock(&vn->busy.lock);
-	insert_vmap_area(va, &vn->busy.root, &vn->busy.head);
-	spin_unlock(&vn->busy.lock);
+In a simulated-kernel-module performance test with 10,000,000 iterations,
+this optimization showed a significant reduction in latency (average
+latency reduced from ~12ns to ~1ns).
 
-when a node is inserted into list_head, its next/prev pointers are
-properly set by the list_add().
+Test results from the simulated-kernel-module:
+- ilog2:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 1 ns
+     P95 Latency      : 41 ns
+     P99 Latency      : 41 ns
+    ---------------------------------------------
+     Range (ns)      | Count        | Percent
+    ---------------------------------------------
+     0-19            | 0            |      0%
+     20-39           | 2625000      |     26%
+     40-59           | 7374000      |     73%
+     60-79           | 0            |      0%
+     80-99           | 0            |      0%
+     100+            | 1000         |      0%
+    =============================================
 
-Or, am i missing something?
+- for-loop:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 12 ns
+     P95 Latency      : 51 ns
+     P99 Latency      : 60 ns
+    ---------------------------------------------
+     Range (ns)      | Count        | Percent
+    ---------------------------------------------
+     0-19            | 0            |      0%
+     20-39           | 0            |      0%
+     40-59           | 9862000      |     98%
+     60-79           | 135000       |      1%
+     80-99           | 1000         |      0%
+     100+            | 2000         |      0%
+    =============================================
 
---
-Uladzislau Rezki
+Full raw benchmark results can be found at [1].
 
+[1] https://github.com/aethernet65535/damon-hot-score-fls-optimize/tree/master/result-raw
 
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v2
+(https://lore.kernel.org/20260320192020.33004-1-aethernet65535@gmail.com)
+- Rebased to latest mm-new.
+Changes from v1 (actually it was RFC)
+(https://lore.kernel.org/20260320072431.248235-1-aethernet65535@gmail.com)
+- Replace fls() with ilog2() per SeongJae Park's suggestion for better
+  semantic clarity.
+- Move performance benchmark results into the commit message and add
+  comparison between for-loop and ilog2.
+
+ mm/damon/ops-common.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 8c6d613425c1..3a0ddc3ac719 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -117,9 +117,12 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 		damon_max_nr_accesses(&c->attrs);
+ 
+ 	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+-	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
+-			age_in_log++, age_in_sec >>= 1)
+-		;
++	if (age_in_sec)
++		age_in_log = min_t(int, ilog2(age_in_sec) + 1,
++				DAMON_MAX_AGE_IN_LOG);
++	else
++		age_in_log = 0;
++
+ 
+ 	/* If frequency is 0, higher age means it's colder */
+ 	if (freq_subscore == 0)
+-- 
+2.47.3
 
