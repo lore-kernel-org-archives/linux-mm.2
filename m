@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C2EED3942E
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 14:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B4BDD39426
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 14:37:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84BEE6B0089; Thu,  2 Apr 2026 10:37:06 -0400 (EDT)
+	id 9104D6B008A; Thu,  2 Apr 2026 10:37:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 822E66B008A; Thu,  2 Apr 2026 10:37:06 -0400 (EDT)
+	id 8E7786B008C; Thu,  2 Apr 2026 10:37:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760E76B008C; Thu,  2 Apr 2026 10:37:06 -0400 (EDT)
+	id 824F16B0092; Thu,  2 Apr 2026 10:37:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6472C6B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:37:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C91FBE0654
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:37:05 +0000 (UTC)
-X-FDA: 84613868010.03.14A88B3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 21C2A140016
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:37:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvIXmouu;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775140624; a=rsa-sha256;
-	cv=none;
-	b=Zix4MSrKfTgo9IJe2Vjog77iacpBP7emyIm97Tx0XZ41advEmRYinxQzW+ims40joZhkoS
-	CYpETjnnqjhe853Zi6JXbrqPq7t9ygs2tYApyOUUBxKuSnUswVtE/uetBSEjV0FSxhVWB9
-	wH+B+3YAKc83AXoRtGljsCFRoZ+kReg=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 71B1F6B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:37:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27BD2B9630
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:37:51 +0000 (UTC)
+X-FDA: 84613869942.02.7C8723C
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7566B1C0013
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:37:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PAJGAi81
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775140624;
+	s=arc-20220608; t=1775140669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ILl4bqajhS14oy6HYJBLuNTLSLK+BgIsTmfiBH/noI=;
-	b=W4WJB9hxFyFEj+4kSCTGnEQz4qvZVR1K3ZcGpHPZxBQbL46ZFe8yk62VqFQBXtejk+OkAQ
-	LkmyHUEjseSqLrUcim1DX2i0PpQa+ex4nGMuop+EwRvPc2B4SOUvKo3f3DlqQ8e58MPaO0
-	SCqDZY/MJ7ZBF4G76NRIhMGF3cKWGvw=
+	bh=Z5ZRPGNvAMpOcTixcrJlcNRUdg6JCMkwOopqEJi5GRQ=;
+	b=IdhrqbJ6g5BI4dvrxPlocizIAC9hxhskcJxLQXYft2Z7AlD1rO6z/RoaiTXByaMEV6tbAG
+	H1NNNttlrXHSZlvpsWfjx4Gr3b0aKp7HxTTqRpcctO/loF0dl3UweP4TmmuGBqCOj3T9gr
+	8jTvtl+r2a3PZPI+cYE3OJQzV2gdbj4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvIXmouu;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 83D1B60121;
-	Thu,  2 Apr 2026 14:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3F1C116C6;
-	Thu,  2 Apr 2026 14:37:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775140623;
-	bh=QiaYc6bmCawV6VUIowBRoKVqPAmV1+wQMNXQSnjt2ok=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RvIXmouuVV9SqPjGgkGaI1+M8nGHGje1mOdW96Ke2al7DYx06XmM7fv+qUvJIcwts
-	 5DKaFpDJyLkIn+VfwKl/qNFW/V0v3nFb/6Qs8i0S6bF2X3h91n+s+XiARDqfZsob1m
-	 +3OYn+rS2zZjr5eQmrzpRQ1ABk1pEWz2MVZVhFN3mGghdlEVF6+QRwxou0k2AqPOkL
-	 7WNGKHd2Q+pTnGkgIr12TpoIjM/qZdfUdzACaz+T/Ng8+Ve9iHbCYUuQwUTCZD++CD
-	 oJRT20eYUr3HLV4yxi52RQw7nNMLsVdo2dFAzHEvMxI5tGQFqriYwGAkqqAwbiOcyk
-	 ixOyF7fojCEwA==
-Message-ID: <26e81ffe-08ad-4c3f-a360-d45c3cb32ee2@kernel.org>
-Date: Thu, 2 Apr 2026 16:36:59 +0200
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PAJGAi81;
+	spf=none (imf21.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775140669; a=rsa-sha256;
+	cv=none;
+	b=ViwvsF3ACkiwMJd819wImEKeLii52Ew/LUh9Ll2slCcQFkK38U8hUxma3xQ/CSuUcT68Fn
+	uGbilIprUh/23pXxjLX6nockynZ87cD+9fH8nZOOd9tkgWPOZxK9NgZBi7d2G9efGfCGsp
+	x0ijBbKxG4X33dsrv32Ege9OlQJj96A=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Z5ZRPGNvAMpOcTixcrJlcNRUdg6JCMkwOopqEJi5GRQ=; b=PAJGAi81mveUFhKTreIg0VaZ4M
+	Ze7imDFYG9dGUwVISQTHgnRqm9I05OmpasTd+LQEt7hBsnL6qbFWOi/Qf1WcrjcxPrSmiCYypoL3e
+	nKhzZbvV9Pm0wdmbx6l3WHUBYsKPLHQm44UEsBKGQwQcyG5q7ttXkgDEBiVu7pmuRKpGqHfNjShA+
+	HyQLs90DxOPvyMb12KMTGzexbiP2U5a7JlJ9kTMYo1c4lV9zfxDknJd2NBQ3aTG33AiDT/CblTtE4
+	XIpWz77MoERtCtD4coeFLX5f6LuRRfIqIWbb74QNZsaoup2S5Y5YxpVUZmcVZKboQdaYA+PrBcn6t
+	0562CfCA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1w8JAr-003pcd-0o;
+	Thu, 02 Apr 2026 14:37:32 +0000
+Date: Thu, 2 Apr 2026 07:37:26 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm: huge_memory: use sysfs_match_string() in
+ defrag_store()
+Message-ID: <ac55BrZEXDw1Mt7q@gmail.com>
+References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
+ <20260320-thp_defrag-v1-1-6ab15d0d26eb@debian.org>
+ <3c2f0e52-0271-4bd7-b3d7-84249c40e2fc@kernel.org>
+ <ac5w-LjEA3gkGHNf@gmail.com>
+ <1bd5618b-f21e-4f87-85fb-e581d1efb803@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 2/2] lib/tests/slub_kunit: add a test case for
- {kmalloc,kfree}_nolock
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Alexei Starovoitov <ast@kernel.org>
-References: <20260330120517.104743-1-harry@kernel.org>
- <20260330120517.104743-3-harry@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260330120517.104743-3-harry@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1bd5618b-f21e-4f87-85fb-e581d1efb803@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 7566B1C0013
+X-Stat-Signature: whiwc8aef76bj9fu3shxd6oxoti9spgc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 21C2A140016
-X-Stat-Signature: 556s1ndmkgofwk3wzhbjkf8iwamb6s3k
-X-HE-Tag: 1775140623-509316
-X-HE-Meta: U2FsdGVkX1+KVjwtelxXS51ifJ1EtaX9n8vCA1vXsnTbK87H82XdxpFf3ozTcbtKckCkRGeUICNDCN+cFMZwVDoPc8qYaIhHLRzS2DXX0k/r2w8ZbsLLpYeiierI1RN6IUBQSGBO9R68BIVTn3o6h014EtQ8Ck3d9L+JNC7vUSzva6N9A2uO4JoBekfoiCFQsWDTo3OGaTgZE9HIKwXeGIvdtqQVSov829/qN/3ZgSqzKC5oRjugL0EVktIGE2CUYXmidmEh4jH3aS1sf2mdosK/013ZOmPk2G8vymIOpfsEdhH2eD4zAtRqb3XPi7CCzYeG4ACf/MFJvvEZRx7vlJae/YsvO27djaFRwVldY69QXUYlazoaQkK/LwM3W79Z5lPN2dDtbghHREAgriobN6qh5Wfl/RAafOmrMybPrCGBq/dAxp4ZyWakEFDtctEP1FKNZRtFotATZ7zAKXqK+/ohe15dtgi3oz0RPcmcXo65ozrSJqwH4jGCSy7S7DTnzbUYs7BqTV8SmAVhcMyyQUzrN4wGwI7tkMgLpIOUl/2boDmXLd4ULTYmiItuR3nXGm8GoU039wLdXftokC6BBoVTtPitRICXuEp520yecuXkaW2q9GvOFe6Eyv6epZpd5GJpYY9T68/jSo4CUxdTi8inRXOlF/RLn75NyhUT3cc4lAlmWbzvsn9bgqILuWv7sCWiiTTCl4aF8b5NY8SN5vdlrQ8jsTkVKzAQNFEgbqeo20blk5AreJHuWMJjLOQPu/Li6E0WrvNw/ji6410UrGTjzk8QBDI1GMLPrH2byT7Hrx5N0F1R/9cC1kUvQv5BvsRfdaBn45gtRnj+z/y9rJt8TDW9cfpi+VZHz1Lu/FNpwXOmirLz9s9foZvHr+6Qb7IHVXtw8s96m3jLtKxTJMUjTHlDovunvNZEn13TCkZsK0Hf1M6JhxhmZfZR54Uz84kz8VAq/GW1vF+QfCv
- xCJ5wbyg
- cqPuw70wIqDxxhWzJnCcVaTprBZFsCSufJl3gkWjA2adr0fnWb5q3A0D0me8XavYZ4a3STUNETMOcL3au3Gyhw0/Er3TphsnFFnMxY0gyLinVfOM/5Gv1hqgh9WKee7WGuzKhAXxZbKfMJOIcAOtryCY34e6f1Z8qpvYxmKd7fB2I+Ardhw/dTJR3wIo/p8PVSxeOfWXaAp9ehUmpG1jnJiAKe7mJP2jWJmw1wNA9awKic2Xtcj9kd2Cl5Bq314pfnkUtB3gq47k2u0DOo1sCUeZr8aYGszfmYV9s7PBaX+EZqu/KbORMf6yD+gXbB9Rjglg45kFnuzzmG8hDwsBV0Xxq6TY145Q1kmEOPcUA/SF1fMc=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775140669-651807
+X-HE-Meta: U2FsdGVkX1/QNKsXBVftQdD4esNxaebpFNlCMbjr6RGrOfP7vSJnuC3kcHMg9fx7kRAa2D7quXtAucWzdYuW7uzrO7LNJSRqSL5LqwOCjgWpqQHid47MAlmx9KTndoBxYJlnOhT+98Hk+QZEPed8IJZUv/Uk1L/4148VdxsixWEXUIKT8vZDjh6ix8S8Nt0RjXchvCW8UUuqYjDNCS8w51p8p1UkqfUN/kfjUaHlBIyswRstXemu7hlSN48LwCt10VG4y+loL8RczEUQkkVSKxlCCSw+87tGFdakR/9c1zCxFb69OutDBhuyMEfRv83ZOogs1mbpDyYqscgDLFxgHS5e9S35in8BiowiDzToYcOgvKWP6GG0/xX0yfVHnbYXaq/MwUbuabZPS5Iyf18NT98v9H9rj5k8aI2n/lbhMr03DLmT602uCPsDVwfo2Wm+aTwKgggXVPxSFfdWF71jwnvylCp7nkcYN2IW0LlKGaPnTpMBY/moeg+eXPPVl3qcxir7BGOzjdyX4dA3y0hLgQ85pbtNuO2TtfFtNkjvRU355NM8ohGSE4s4GtDWz1Dat/Jbi08XdngvwSENwoYR2f/BvvnW9Dn5mPxiK6/XpJVBSGsYPsiX6yvN+StxVaSiTaWTW/w2ijN/zB/fr2xUsBgATQnCLqGaZ+JRY+XXsje0+gFBePHYbTI6CQZA8mpn0WQ0H+WAP0HxI7aobSWuqTzcpKBVtbJ9bEm1HDx6DDw74VBTnkfbKMNh3gmB+x2vM5dTfUdbrJ5L0cuvrN5yBE0b6LviUdL6kwFC4rW3b8FZY4ajLBZCxtXiu/N1Qy/REF4KN65BOaMEb4PXoCL6Z0jv/rAYH4wtdBgn3fv9LA7EhILu4VZSd2q7hZK5NTwOmNb1+sKl/4jjjc4ZDGUy6x6tMxkEizBpEe7IqvgaN0i77pD+zorsi4qtXUWYnnVdiL8F/e8NSV+HHtv97at
+ x1tGf8/9
+ mvUrupl5FgFoajetu4Dw8CLf5/W5ymCecd/vSZrIp2AmCBJ/gFqPTuCbyTB8y1g1fpyit6TjPokIriGq/Ml0rUfKiNDhiHkA0RgX2FCSavvJytqQ1BdC1NnGHXLginrVV1coq6R8yVOXoyRbnAOwm8C9JHuHcegMeWWMgAxR7aBIDPrHMgcENavPpth1mzwAqGefefbt5KNr/xF7ezA99o6QHxCSl1dhzmGC2JDTR189PzhKJg8agLC5Rz2qKcjPBAPTs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,140 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/30/26 2:05 PM, Harry Yoo (Oracle) wrote:
-> Testing invocation of {kmalloc,kfree}_nolock() during kmalloc() or
-> kfree() is tricky, and it is even harder to ensure that slowpaths are
-> properly tested. Lack of such testing has led to late discovery of
-> the bug fixed by commit a1e244a9f177 ("mm/slab: use prandom if
-> !allow_spin").
-> 
-> Add a slub_kunit test that allocates and frees objects in a tight loop
-> while a perf event triggers NMIs on the same task, invoking
-> {kmalloc,kfree}_nolock() from the NMI handler.
-> 
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+On Thu, Apr 02, 2026 at 03:45:25PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/2/26 15:42, Breno Leitao wrote:
+> > On Thu, Apr 02, 2026 at 10:21:30AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 3/20/26 17:05, Breno Leitao wrote:
+> >>> +enum defrag_mode {
+> >>> +	DEFRAG_ALWAYS		= 0,
+> >>> +	DEFRAG_DEFER		= 1,
+> >>> +	DEFRAG_DEFER_MADVISE	= 2,
+> >>> +	DEFRAG_MADVISE		= 3,
+> >>> +	DEFRAG_NEVER		= 4,
+> >>> +};
+> >>
+> >> These numbers should get assigned as default (C standard) I think, and
+> >> can be dropped.
+> >
+> > You're correct that they would be assigned by default. However, I've
+> > explicitly set them to clarify that we iterate over these enum values
+> > using an integer and require these specific values.
+> >
+> > This was discussed in the previous patch series:
+> >
+> > https://lore.kernel.org/all/20260308140530.9ab6d1445d0936467eab4aef@linux-foundation.org/
+> >
+> > Please let me know if it should be removed here, and I will update the
+> > patch,
+>
+> It's ok to leave it. It's just ... unnecessary :)
+>
+> What I saw in the past is that we highlight it by only setting the "= 0"
+> on the first entry.
 
-perf_event_create_kernel_counter() seems to only exist with
-CONFIG_PERF_EVENTS, there's not even some "return -EINVAL" skeleton
-otherwise, AFAICS. Didn't check the various other definitions, but guess
-we'll need to put some/all of this behind #ifdef's then?
+Understood. You're right that I was overly verbose here.
 
-> ---
->  lib/tests/slub_kunit.c | 88 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 88 insertions(+)
-> 
-> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-> index 848b682a2d70..2ed5f90a748a 100644
-> --- a/lib/tests/slub_kunit.c
-> +++ b/lib/tests/slub_kunit.c
-> @@ -7,6 +7,7 @@
->  #include <linux/kernel.h>
->  #include <linux/rcupdate.h>
->  #include <linux/delay.h>
-> +#include <linux/perf_event.h>
->  #include "../mm/slab.h"
->  
->  static struct kunit_resource resource;
-> @@ -291,6 +292,92 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
->  	kmem_cache_destroy(s);
->  }
->  
-> +#define REPEAT_TIMES 1000
-> +#define LOOP_SIZE 1000
-> +static void *objects[LOOP_SIZE];
-> +
-> +struct nmi_context {
-> +	struct kunit *test;
-> +	int callback_count;
-> +	int alloc_ok;
-> +	int alloc_fail;
-> +	struct perf_event *event;
-> +};
-> +
-> +static struct perf_event_attr nmi_hw_attr = {
-> +	.type = PERF_TYPE_HARDWARE,
-> +	.config = PERF_COUNT_HW_CPU_CYCLES,
-> +	.size = sizeof(struct perf_event_attr),
-> +	.pinned = 1,
-> +	.disabled = 1,
-> +	.freq = 1,
-> +	.sample_freq = 100000,
-> +};
-> +
-> +static void kmalloc_kfree_nolock_in_nmi(struct perf_event *event,
-> +					struct perf_sample_data *data,
-> +					struct pt_regs *regs)
-> +{
-> +	void *objp;
-> +	gfp_t gfp;
-> +	struct nmi_context *ctx = event->overflow_handler_context;
-> +
-> +	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
-> +	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
-> +	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
-> +
-> +	if (objp)
-> +		ctx->alloc_ok++;
-> +	else
-> +		ctx->alloc_fail++;
-> +
-> +	kfree_nolock(objp);
-> +	ctx->callback_count++;
-> +}
-> +
-> +static void test_kmalloc_kfree_nolock(struct kunit *test)
-> +{
-> +	int i, j;
-> +	struct nmi_context ctx = { .test = test };
-> +	struct perf_event *event;
-> +	bool alloc_fail = false;
-> +
-> +	event = perf_event_create_kernel_counter(&nmi_hw_attr, -1, current,
-> +						 kmalloc_kfree_nolock_in_nmi,
-> +						 &ctx);
-> +	if (IS_ERR(event))
-> +		kunit_skip(test, "Failed to create perf event");
-> +	ctx.event = event;
-> +	perf_event_enable(ctx.event);
-> +	for (i = 0; i < REPEAT_TIMES; i++) {
-> +		for (j = 0; j < LOOP_SIZE; j++) {
-> +			gfp_t gfp = (i % 2) ? 0 : __GFP_ACCOUNT;
-> +
-> +			objects[j] = kmalloc(64, gfp);
-> +			if (!objects[j]) {
-> +				j--;
-> +				while (j >= 0)
-> +					kfree(objects[j--]);
-> +				alloc_fail = true;
-> +				goto cleanup;
-> +			}
-> +		}
-> +		for (j = 0; j < LOOP_SIZE; j++)
-> +			kfree(objects[j]);
-> +	}
-> +
-> +cleanup:
-> +	perf_event_disable(ctx.event);
-> +	perf_event_release_kernel(ctx.event);
-> +
-> +	kunit_info(test, "callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
-> +		   ctx.callback_count, ctx.alloc_ok, ctx.alloc_fail);
-> +
-> +	if (alloc_fail)
-> +		kunit_skip(test, "Allocation failed");
-> +	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-> +}
-> +
->  static int test_init(struct kunit *test)
->  {
->  	slab_errors = 0;
-> @@ -315,6 +402,7 @@ static struct kunit_case test_cases[] = {
->  	KUNIT_CASE(test_kfree_rcu_wq_destroy),
->  	KUNIT_CASE(test_leak_destroy),
->  	KUNIT_CASE(test_krealloc_redzone_zeroing),
-> +	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
->  	{}
->  };
->  
-
+Thanks for the review,
+--breno
 
