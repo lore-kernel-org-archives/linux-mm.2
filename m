@@ -4,85 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4943CC6B1D
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63089CC6B20
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 08:05:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04D406B0088; Thu,  2 Apr 2026 03:56:29 -0400 (EDT)
+	id 8E6266B0088; Thu,  2 Apr 2026 04:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F402A6B0089; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
+	id 8701A6B0089; Thu,  2 Apr 2026 04:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E926B008A; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
+	id 7380B6B008A; Thu,  2 Apr 2026 04:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8746B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77B73593AB
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:56:28 +0000 (UTC)
-X-FDA: 84612858456.30.A18CC03
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8A42C000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:56:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDTeZLGe;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CB816B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:05:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E28A48BF87
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:05:45 +0000 (UTC)
+X-FDA: 84612881850.13.C38211B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1788FC000C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 08:05:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tUmyORdZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775116586;
+	s=arc-20220608; t=1775117144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qXkLjBlEHxc7QqWamKYsPiQA76M/zPbmVxeIaau3KHQ=;
-	b=K1ixAgC4dFVbMgv8ckGi8d+q4CxfGqhqC5d2gSW/RR53JNAxZPgSehZr4WAK01bFtlbk7x
-	fMT3aC0s5qwNsbe7MFa4Q3N2/faAvYrw27JKRiPM3M93ehX4fZnj7drnzdtkj5M3QmYlUJ
-	Hb/PzP+bzz0nSNriMooSmhO0n+dNP/M=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDTeZLGe;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775116586; a=rsa-sha256;
+	bh=6F3+WYdY62lPyqVabd9jIhq6PJtHcLN6/yZHJrRzLRg=;
+	b=67ySA73+YrNjwmRtoADC0mwHoOo2FWLJVN54B9qUaRr5vhdqAGkAlGD3qviv0OsGxxbN8+
+	VRVWUAMBkAz1e9EWOu6sQyMEMTXCHI+K4cLeS1msQzop0PmokpzdRH2jqzBHPC2h1SNKCm
+	DkXhK7Yb8I50LKTDMlyYnDhBWn7Yl1U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775117144; a=rsa-sha256;
 	cv=none;
-	b=5RM6F6E+LajwDJ8dDOGKOi29ypYeb9kmSM0BtX/h4claetclcfrc7O0koXenl7ATfTO1MG
-	5hCXl6QOzzkV8Hwy+RQMNfIVCXuZZajUXvdCQ3uY1O7DpfgdNxmRNBdrmsYKlreZ8cqQGH
-	FXly50/NhoZDf5I8y/Ii8Co86Jm40bs=
+	b=KDy7Q1371DMkY6vz0TxgoWV/znJspTxnNSVKzXWknIKSECsCKVKUykPzUq5DlHz5Bj+l/t
+	k3ityEMa1HOrarCetDKbNtLdcFvyLvkdoW2WZZMocMwK7GfDlbLQj/w8DuoKr9ecYbjdR9
+	eivQcR9oZZMRMQEnkdt1oHXTYhp+G2Y=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tUmyORdZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 261FA6186F;
-	Thu,  2 Apr 2026 07:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA8AC19423;
-	Thu,  2 Apr 2026 07:56:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E384402C5;
+	Thu,  2 Apr 2026 08:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E76C19423;
+	Thu,  2 Apr 2026 08:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775116585;
-	bh=lVU9GB5TisBjGeJ2erKFHIxR+nRd7ro74DQMBJO4z7s=;
+	s=k20201202; t=1775117143;
+	bh=pc+hXU7zjHtoaL4Y7vvezeUMOhJ9bchBcqa1OKmwzAI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dDTeZLGe4YVevDNuHBtTRXX+lNU3Rgs5R5/Vp6zvo3sCIyh1SQqdqDZ59xf0iu2VE
-	 Nxb7uV5avzKfPudssph9cjwFDwJqS1+MY8dN7v2vvdhyDjm+NEkEmie76o6sfyscz7
-	 JVExtl/BIviMKq/1DAAR08KceJl/nU2c6MqRCg3oPEim3jt7C9Pa3ABxiOOjffV7av
-	 GQMV4KRsvf5dxEHZB+7OSEDG4qapdAmJaWyZ7IuIM4xqcA+x9ARVdzLh0r949By0ir
-	 edGSntceyGAck1KCKAqK8t1W378pxdsSyotmZs15uSs1auR+nf+tXKiIA12dgUIBXP
-	 eMseknJSESx1g==
-Message-ID: <877d3988-57f3-4f87-8836-85aad5454879@kernel.org>
-Date: Thu, 2 Apr 2026 09:56:19 +0200
+	b=tUmyORdZEQ4TsK52/wjbnKFD+Fd0KI4yTlM+aOVnDNkxtXohyUqkw9Dtee9cAcgxI
+	 FfqgRLwtmY6GapCsqEC7B1puBoDsFh+PiAcln75vRKNNfohE7/SQqRmC/53ea6rw9s
+	 CnJnQ0iGM10Bzul6b3+rU9/nKzJ5d/8ALwcF2Vsz91sLELC0EektvN8lBXwNXElfrE
+	 pFsyB0uGrS2YMvBBOf6U2aqildxygJ9c1QfzYES1KZfZVyDEEwklKNl6SLWWYnPU/M
+	 28Yqq4qlpTo+xN1PGT9Do0ifF4/Ie2x3EuyK7aQf7e7CGDcjAtkUU8X3Jp8Wv0pDf6
+	 RRuPos3tcY3tw==
+Message-ID: <3b853391-11b3-4cca-bfae-c8147a72231e@kernel.org>
+Date: Thu, 2 Apr 2026 10:05:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
- failure path
-To: Donet Tom <donettom@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260331113724.2080833-1-songmuchun@bytedance.com>
- <17246161-f314-45da-933a-770231ef2a49@kernel.org>
- <2183487D-0CED-4BEF-84D7-4439F3386584@linux.dev>
- <bb05187f-2a54-4c5d-aad2-27b462707206@kernel.org>
- <3ab0e5dd-cd3d-4f78-a7ee-01051f200b36@linux.ibm.com>
+Subject: Re: [PATCH v8 4/6] selftests/mm/vm_util: robust write_file()
+To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+References: <20260402014543.1671131-1-chuhu@redhat.com>
+ <20260402014543.1671131-5-chuhu@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3ab0e5dd-cd3d-4f78-a7ee-01051f200b36@linux.ibm.com>
+In-Reply-To: <20260402014543.1671131-5-chuhu@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8A42C000A
-X-Stat-Signature: zb9ioqiejn66nbfdpmgc6cir758sse7s
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1788FC000C
+X-Stat-Signature: mma7bztr3m5jnirrmf4fe7rwigtpc1pk
 X-Rspam-User: 
-X-HE-Tag: 1775116586-800635
-X-HE-Meta: U2FsdGVkX1/jDIxldeKAhofq8Znzv20/wV8d15pGeeYUa6Z2Dq2AUUSoC797y6dNyEe/JNy5Fd7biW/HsCjBvTd/eTugLo8OSVWSUYYM9WkaFwNbaksNaDSueJExQdiodLJ205l/hAsRyWbMSbr28Uf5OkMEyvQTbJdSr/S5AiRwEHdKAPvMvkQ8mlkmNhlMhvjudq6vVtQChZekcaoaiS/+FYYVn4Gj5lfL9G2rSxBhykpbR4C3HVIuwhDZkFvatvyN4JbDs5YzN6HOuIfT8hRIDimtJDH9Uiqx34CJnrwp6xcTklvQsSdiEe9WwqlfFAvC+wgU1lh5uMGP+SE9NJ6/qVIg6kIV1N3EPHvOHlTfmEZDeefgWLWWxwe4tairmyG+C/8Cak9cm1ndkROsCLAHAw0IaBH33eD/ctcn0/QNPHJpkxGBQeWPQbEUukN6Kca170AFEUA+pF+WUprjYMDx5pAdOJFquj2xRMV28d2TEnaNmNZHY97DANCrRTPSc5UJjzcpzz2jVVz0xLnMXKRpYdtqwAvgNjJ/XQFLdZsXRVwE9awWiCHjHcnfTBW50YaLRfeQVdr8Lvo/t/I7NLKU0qlXVeB8oPRcKu7Enf8tvidpsEAihKZ3Dpchx3hHiuy25DRVZIoHqLcnxTMQeN4CPJoU4s7qBGpNZLhqhMiw00ZTPCICcmZXfiqz66Rgnn4n4LhuKspFj+fh84SdTIdr2RahvZEHu49xYPYelO+6k0Y0rjhpUsrZwmGpqgUsC4KhxUOSG5uQPaXEPznOyHAZCqV5H05PhYRkq6LEDu/mSPzOPxR5ogfhnVcNW7tBr/euBhCMF4OjZBw6R0VyVSIFSN8QzNqmLwH0HHCyrijzW0W9bNe9AFMOv9kT2ZSdbJHwhw9nLWD36K2p7SL0jlVSm/3MCTuEzMM6+nSWy5ipkrT1bfqsOdcH58+glIQqCoYt2wHoQk1SR6C/fiF
- xzf1SNJV
- U8pNyN/teErDTvkINQQ6I7hPagD6N9Cf9IUgUKLJFUqC4yED+DpjCTTo9uvHbZKC1vOvYRSOWa3a+W88qseOykuPfUrtOyc+NdHCJu+pVGL9owdWzC+yuGl8VoWgp7w5vTVsVUWMn/G38rzHwAxHt+GWkIAm0miTVj+LJG7Ehl75glgCjrOiS7G/IH7CsBJUWANCt5joqtPJWo+5aNkURSAfa1YJBNtnRdqZjv3AYGkpy+CGuBnoc+8+SD2BgEb3JARuItxPMWfjTvkujdOYWX27trAvo7QwV4N3YexDsG7wIoV1DId6w+GKZQbjy4Y/2oAjB8kciFTZZee0=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775117143-394586
+X-HE-Meta: U2FsdGVkX19CD8DsU9AvaFn+WOr7tccAVh6pIoPA5gYzkCmCqWSjG2V06AeoR0m29d8HJiHDxwlcugQJjA86tBj3BpadQgNr/6/TnAlOKs95cp5Kijr2xpgR1ZZbMP9/D0C4KDhW3WNKpclO7U4LbftdVREltGQLsFUGt/BNRSjHo1wFDt2wx/uOXj0/zIN7u29yxaNXF7qwvBSSQ/C7t7LbrcOY+/0UPIVzhUOrPbdUeGpC9H+FvOtmtNkOJoR+MGUVmg2xruvyWOfN+eZdQFkgUJVo6oaSmDXb06xi1goDwikyyFC30aaopT/JnIUjezH9Rxpd3yvXldOZvFK9BJUaL7cDBK3P4qEmjXIjB9QPh0MrNCG4fqH2uL72OMGZYA2IxVihMgl2QEHlzkcLhPH6aMFESLwt7HqX8cD/BBkNTLPD1JgKQ9zLfONmyxT3mONZIinC5Nbw8MFreZS0kkU1qRpVzvi6OqXs7tlleSy9wRe5MEX+r8fC+INRnEy5vriyeyNsbr4hkLU6NAMAVD1uJpxpnvDx3ilxVKJv4qRVH99twgu8fsiEziQfqFIwy5724m45J1k+2CG7YASdJN9Q+TZRs6daxXCJq3BpMeOTzarXzvLqdvjZahkSaJA6tw91epZrOZc1X0juWByOEt85rVkqWAV/yTjsVxaY8t3TZgsSOC7bHtgOML7NGCaar9Xe/pNHPhICbPCK2qPDMVQgYKzqHcT1iB8kBOAF8yE4hxkCuplTAA952sqZFPKT8OGHPPi8014zLoSJJGWfDyYajT/2tOqk/jM0mqx7lX7lFxdusfYqPJd1JbBsvfuX/1z/Kj6rgHh1Lz0F1tv8vBxnLC2WiMaJDqaeA3TvTgCZELJ8aZDxpddSqyWvqMzXiA7b1PE07vbfxume8J6emBP61IFKBkxO8j1/nHZXWOhVCG10/7iAE2GI8Wp2eQjxt1bHtWmbZGxgKRt0Tor
+ cSr/jDbV
+ 4D4UMkB4Y1ARajEhzzZlQVo7aZC7kq5weu1QJEZeq7gs9kt+NLnXo9lfw2E18dAECcXpZZeJv7UZTjphjrzZCi95WqEfmUGWYBZgjderE6Ph9jXlB79dqPhqsmQZ3A7tNLAeK01JACJOXxTHJpB1U8f9rGXKHx/iCJgUdyJxh2RW0SaQWAO2Lwex8mb3X7I+Z7j2l6Lfu5Y8tanBx/bGRruPB+eMixa4lpNAUCgWqS+mu4yN8FV79a7zEAE4HeLVlsbm6mBAyquZHqfkY9kHxkFVTRIw5IQtBWlkDeAehcot1hH+AI5IYxsF4Mc2MLnFnhjjGS2Ib0w7znBOHNux8JZFrQMETGYOyJRs1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,27 +142,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/2/26 09:37, Donet Tom wrote:
+On 4/2/26 03:45, Chunyu Hu wrote:
+> Add three more checks for buflen and numwritten. The buflen should be at
+> least two, that means at least one char and the null-end. The error case
+> check is added by checking numwriten < 0 instead of numwritten < 1. And the
+> truncate case is checked. The test will exit if any of these conditions
+> aren't met.
 > 
-> On 4/1/26 12:55 PM, David Hildenbrand (Arm) wrote:
->> On 4/1/26 04:41, Muchun Song wrote:
->>>
->>> Thanks.
->>>
->>> It's truly a coincidence — I also have a piece of code locally
->>> that does something similar. Since allocation failure would also
->>> affect subsequent startup processes, I simply made it panic when
->>> allocation fails.
->> Don't use BUG_ON, use actual panic(). :)
+> Additionally, add more print information when a write failure occurs or
+> a truncated write happens, providing clearer diagnostics.
 > 
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> ---
+> Changes in v8:
+>   - go back to ksft_exit_fail_msg in the two error exit path as no clean
+>     ksft_exit_fail_perror that supports va_list
+> Changes in v7:
+>   - add an empty line before the 'buflen < 1' line.  And change to
+>    'buflen < 2 to limit the buflen at least to be 2, so at least one char
+>     is allowed.
+>   - handle the numwriten < 0 case, which is the error path.
+>   - use ksft_exit_fail_perror in error exit path.
+>   - use %.*s to print the buf when error happened
+> Changes in v6:
+>   - save/restore errno before and after the close(), so the log could show
+>     the correct error info on failure. Suggested by AI.
+> Chagnes in v5:
+>   - new patch for making improve on write_file. Add more safety checks and
+>     diagnostics info in log
+> ---
+>  tools/testing/selftests/mm/vm_util.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
 > 
-> Apologies if I’m missing something, but would it make sense to check the
-> section validity in memmap_init() instead of panicking? Is there a
-> reason this is avoided?
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index ad96d19d1b85..db94564f4431 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -767,15 +767,24 @@ int unpoison_memory(unsigned long pfn)
+>  
+>  void write_file(const char *path, const char *buf, size_t buflen)
+>  {
+> -	int fd;
+> +	int fd, saved_errno;
+>  	ssize_t numwritten;
+>  
+> +	if (buflen < 2)
+> +		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
+> +
+>  	fd = open(path, O_WRONLY);
+>  	if (fd == -1)
+>  		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+>  
+>  	numwritten = write(fd, buf, buflen - 1);
+> +	saved_errno = errno;
+>  	close(fd);
+> -	if (numwritten < 1)
+> -		ksft_exit_fail_msg("Write failed\n");
+> +	errno = saved_errno;
+> +	if (numwritten < 0)
+> +		ksft_exit_fail_msg("%s write(%.*s) failed: %s\n", path, (int)(buflen - 1),
+> +				buf, strerror(errno));
+> +	if (numwritten != buflen - 1)
+> +		ksft_exit_fail_msg("%s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
+> +				path, (int)(buflen - 1), buf, buflen - 1, numwritten);
 
-Not sure I understand your question, but trying to handle memmap
-allocations during early boot should be removed. If that ever happens
-something is fundamentally flawed.
+Ah, yes, code we will never trigger ;)
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
