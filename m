@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744891112259
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E94111227A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:18:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35FF6B0088; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
+	id 367BD6B0088; Wed,  1 Apr 2026 23:18:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6C16B0089; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
+	id 3178F6B0089; Wed,  1 Apr 2026 23:18:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D5746B008A; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
+	id 254C96B008A; Wed,  1 Apr 2026 23:18:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 788676B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:08:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 172681A01FD
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:13 +0000 (UTC)
-X-FDA: 84612132066.22.357ED66
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 241EA100008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNvGaRVU;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNvGaRVU;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775099291; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 172796B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:18:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1BE7160389
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:18:06 +0000 (UTC)
+X-FDA: 84612156972.10.95768C1
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8FD9EC000D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:18:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E6hjWsug;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775099885; a=rsa-sha256;
 	cv=none;
-	b=kv5fGLoVTLr3tsbvNwx+ynsoao8F34AQnjjJRceDtxfufFyOVDvIHMNFRKFkGBMRN81TYt
-	65H46kDfupnHSQ8n5vqH2mcnJNpTXkLd8kKvLZlwp+90plYdJrvnxMRYG2/MUNmsGOaR/Z
-	fiLX/5de8IkRIGGoKaXQIP44nKRlCRo=
+	b=Jx3WihM7q46Q/lAcqJJogNdATyGX2LEeh+wgbrEzkcFhB8B8ki/h9KJJTPhUy8EQUJm4WT
+	aL1wJQZyTRLchg63cgO+IlnvTMPJH0I12WoZArqhUa2O4Rg6bQWOLsRGZxIO2tl4sMEPhF
+	bSU08bitD/If/nFfmFWQL64CL32XUP4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E6hjWsug;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775099291;
+	s=arc-20220608; t=1775099885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jLuGtaRPDG+FvwCXy95DpreG09wLtyRncgpr9wqNaPQ=;
-	b=4p2IchvrmpdmdlnGlj6+1XTeUuU2ljxS1iXGPRlzv6ko+FnVS234LFDdFXTsGmBf69wLty
-	x95r7bZHhf1+ZtoyJZQ++/ABQu8Ks4FvSQjMZuZz/EuDej0gsZJKmKdz7c9Re/LZgnAG6P
-	DNYlf/5eoe7m7ktbdaGB9MDszSNPD8E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1B7044469
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27EFC2BCAF
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775099289;
-	bh=jLuGtaRPDG+FvwCXy95DpreG09wLtyRncgpr9wqNaPQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mNvGaRVU0m+cLfoLXnf/bNCjgHIv7Y8l4HP2MxaLYxwq/XGWdRZnb+COaCEgGRrC0
-	 7GdGMTu2k3Tf+DByfpT9IBuWJWiLLiIwF6zX+uRm/riNcQLhW23KAwQvyHUqhDMXVO
-	 GqL8RVFQn5izhrQIMz6a6xPE2K3qIIJKdBqFmu8KVrOUpGE9Gavf+Z8CvLIfL1VbOt
-	 JZwkcoHItUz82h+3f0LsUoFk0Qc2hhagXzRmlzNWOxB7WPZ59Wbv/vUYpaaEOiyMMH
-	 u72F9XU/wdTkhwhJN/l+Awc3gcFwD2pSawUOqdM43NQjU/t6JU7MFHSCl2avNxzhbw
-	 +yo4xp+Y0ScbA==
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65015facf32so440232d50.1
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 20:08:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVnYX5nK0XJX+NJu42lh60PKSvsdGYXLBNiy2OV24O8cYcfASqTyiZzL5jQEUckcxnLn3cQrldZsA==@kvack.org
-X-Gm-Message-State: AOJu0YzU8Uivu0DR6Nmswr7jybQ07BRiXbxGGY9LoDwAsRB6DEqRrbh8
-	aw3PBqktJFbyGOQPMAdxXe1rEqwpay7r/xmQVUL/Jk996gC6wmGzd9T57rBzpocm8uuMb5+cN/o
-	vbpE4qcEqhlD5ClG0oKN1ALA8leKVcXJDsODKNDDtxw==
-X-Received: by 2002:a05:690e:d41:b0:650:3431:24c7 with SMTP id
- 956f58d0204a3-650343127b3mr4063281d50.34.1775099289200; Wed, 01 Apr 2026
- 20:08:09 -0700 (PDT)
+	bh=OedAVzv3pki3zjwyWzevU6Wd3yAWCzqLX9bfFQXON0s=;
+	b=xfDjN1CumUNgthyew5FzRc//baLrVUDY7ZGWFedpPLbJ9SsRSHWY1MnItebIQmBS2AzERx
+	aTHtSn+lM28nH+WrzPfMUjsvYED0ZxkCx2HM3sAF3aqXM+Z4jqO5H/76A5UxGhGXiwRR/W
+	Y8Fn7Au5+qM9GfzSeE6TBCF+2+DieVs=
+Date: Wed, 1 Apr 2026 20:17:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775099881;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OedAVzv3pki3zjwyWzevU6Wd3yAWCzqLX9bfFQXON0s=;
+	b=E6hjWsug1PI27grAK/Tc1n8qBEVC1in18IJCGr/YYmDjZ7Rtm1rWUOvue6H7fjyvTlk0ou
+	ggFN+TL+xAtdP5ylKVLAqgAzpukJnyBAW338EAa3j9rohT36YJg3+ih0bKn+HgEY4cU55C
+	9sxH07TUWdTsmhoJpPFPsJLXZ+WW5Q0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic
+ and throttling
+Message-ID: <ac3fg6LpRCKEpoJv@linux.dev>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+ <ac3VV7h1fuDuUOJA@linux.dev>
+ <ac3YKAh1Kzmpwhi0@KASONG-MC4>
 MIME-Version: 1.0
-References: <20260330071229.14614-1-devnexen@gmail.com> <20260401074753.238053-1-devnexen@gmail.com>
-In-Reply-To: <20260401074753.238053-1-devnexen@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 1 Apr 2026 20:07:57 -0700
-X-Gmail-Original-Message-ID: <CACePvbUt8iyG+fQ+tDUYNRqGHQgQ=S1AYWiPXZR4C83bBZXTMw@mail.gmail.com>
-X-Gm-Features: AQROBzAPJ5y37-kBPCx9hY_98BAaKjxoB11JTONCA5Vdcqgh2tGqLaGAT5N5tb4
-Message-ID: <CACePvbUt8iyG+fQ+tDUYNRqGHQgQ=S1AYWiPXZR4C83bBZXTMw@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
-To: David Carlier <devnexen@gmail.com>
-Cc: Barry Song <21cnbao@gmail.com>, Kairui Song <kasong@tencent.com>, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 241EA100008
-X-Stat-Signature: zgmpyj94m9kiz3wsn1kn6jnhmw8o796i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac3YKAh1Kzmpwhi0@KASONG-MC4>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: c3tjm9z8gh3jq1wnntijfd19mp5sc3po
+X-Rspamd-Queue-Id: 8FD9EC000D
 X-Rspam-User: 
-X-HE-Tag: 1775099290-312781
-X-HE-Meta: U2FsdGVkX19/9sRXSvcyInpxgnmyI1TTrKjUQAgs6UQCHG3L6cPzuUODlOdogHK7c7RhuH24LtX9Oz53oW7MF7WhFw7rrjMfa4nLq4iTtaDzxIr/wfVpbg2DTohRnhvvRwtDKf5nNyRJ3t34k7bPbd6o1R5GsdYcdCbesZfZ+BxPuR710HNSlDAFn0MdDxliHlHP+e3sKObNcLY8PQlaxnlG8M5HbS8GbYMynCjs2l68TwKY8soIaijwcbMp+s1J0W0JSwe7gPG3I92AAadcC4yBtTHlkPPaVu2W9JxOjU8DV4acPlZsu3HDutexo2mxKa7bH45OcQzdM+uclMNyTn/7+R84O8Y6gb1l3WqEcmj0GGuG8t4cDTuQ/HXEH/ZOJKjTfxlfx9iTx3dGWJB3gQuYRQSbFlDqwt0MftK+/Cvzdm5fFJBO+gKpVrFT3h8gZCpYylesZUkgLIWh6pmx4k9UFxChHWoJU/AJFpJY/HyxJH3Zlfoy72CimZdH9A3aezw33tPffDpV5DB89KZ8uTodNkwuGnUIvr8JZC18J1oKyCEjXZ7ITJmYIc4TUsX2yHsUMkgmJNRUYdunkSLSJoC6p7EVlMWPQ1gocWX9ATBvH9b7s4fxsLXM2c4VYbNutaNoV6BinwjxFDMyJt3qpvkz7bIz/BpWKCJXLA79dChgiud+DgYj9jVVRobN2uK8CIV3yG82vq7Asn6h+fgAKBDYq3+Nndd/xU9DhMqFEg+4N0Zj7YorgtSYN29ANmXdtEyYpbbGFQRbvx4eNaekTPKj+UlUlk4aYPzKSDkfxYmRYARvP9vPBGZE7vq/5CQ0dugaQd34w7/hOYBzu/+9sqlHPq2lS8Ik8TLUWwuT78fQmoUELbUjYRIirFmIbeizcCoH7EobX98BtdD+fxenRztYli7dAi+MpA294eL1IbPDsJwgUnG+ARGx5zDRrrQYFt1g0G9OH63oNACWHLm
- Rq97yv+l
- qeo75pHVbGECRcstsaIXPJh8uD8jDy2xL18qKWF/qVgIHBO9prGEUkIIz95HYfOCr3fMpaxqzj8OxTrKNr11nIzNFgbzLpWHUycB45OIz1kZC2lZ7u4Pill5Loc++QRRgZvZ/vEBr155fM2m0s+0DlXSW5bjwCynsR7HGQ7ZPYKYWcO6sjuaV7SoAwAlUtzFDEWmb5AewLoPQYJ7XK1hTScqqv15u70vGWVbm4b585vYoaBA1yMndTA/rslzidHYPl5R5aJE/M+Ry9r6jDTVnn/RenY1JJSzl7iypvCN+7Pe/cKg1Xcg12F58yANI+S2T70wi9BL6taA7goXbM9SfTCqPeld6GycjLJyhq9knZHlbM2RQycdke82ID2ZIRHJpaI/ILP7umjOp69LGYdHOPOCU1g==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775099883-466613
+X-HE-Meta: U2FsdGVkX181zW3Hg+4ExDLUa8sMprZ1KHyaMMXIq9F38dF83fimgdYclnZ3g9BFA8RbKEeeuTdHCuQBSlpozxZRV2/cOq0XtGRSvwSICSWOpZ9ENBRtTcWt4ggYhc36BBi/XD4p4w3RdwpjXX0rP89KtaELf1HI58IBra1hqXw81plj/csi6ppMkftJKMTA9+avqyAueaJUO69J14X8i1SpB0glVfrwQqM8yp7LBbLqbeHvOz9WbD0IAU/MNdHdt6CdnmrcpKsGxpQ+QH8DUCAPNy8V5MW4156LUYeqqB5yxyJRhRCOlMq+UrFXT3d4IV/wanDYXy7JC1j0+7WJ/20D1T+BPmVLVRpTRhVKjO7Kcboxj2u2bo72cQ3bSH2uaxFWjp2jrXmev+GQKBt4IHZsM3wOEwCYeqolTOWf9rOsCElc1hW6433xwrb1BEQ/vyhY2/epYRB92x5mH2Lx8bY+ONnJI4pBE8IH9UbQhvJBXkIZS3uYU/ewW7RtYzsTucemDKSnkTcL4sw/3/oVGlQ82dHTzC737dBkhoChBsmfP5lPOZEcSO/5Aa+Bhl3kCWJKpyJDkl0rqeRuWU1JEQbRhHB2Hka/Wky+JhbFvmzNezWgyNGEybql0+6tzI/ltQQ3bv1Vv392teg1Yp2IcTs9cCbSYret3ZEOToygMVfv/5zi+Gxvqk6vxdOA9Bc/EICF0ej4s5MUsCP6Awq4YPLV6Z7bZnMyoaF9byX/c4Pb6KjtEYC5OdCifP+x7dTf5uRwTw5JPX9ASJfl0zMLoUlAL6QAOaxn+GCPsdgXH6mTpBVaNXn2FIlCwu+a+f0k8HQc/R3o4rRs/+xgzwOz+5TXTMAzOp1+w23BCbw2evv3ef3FF8bYm39VPqZhr4KydJDbObRbViE6h0roM8Lmww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 1, 2026 at 12:48=E2=80=AFAM David Carlier <devnexen@gmail.com> =
-wrote:
->
-> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-> but sio->pages tracks the number of bvec entries (folios), not base
-> pages.
->
-> While large folios cannot currently reach this path (SWP_FS_OPS and
-> SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-> is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-> inconsistent with the per-memcg path which correctly uses
-> folio_nr_pages().
->
-> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> count since sio->len is accumulated via folio_size(folio).
->
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+On Thu, Apr 02, 2026 at 10:56:07AM +0800, Kairui Song wrote:
+> On Wed, Apr 01, 2026 at 07:39:03PM +0800, Shakeel Butt wrote:
+> > On Sun, Mar 29, 2026 at 03:52:38AM +0800, Kairui Song via B4 Relay wrote:
+> > > From: Kairui Song <kasong@tencent.com>
+> > > 
+[...]
+> > > 
+> > > After this commit, congestion control is now effective and no more
+> > 
+> > What do you mean by congestion control here?
+> 
+> This particular case demostrated here is VMSCAN_THROTTLE_CONGESTED so
+> I described it as "congestion control", may I'll just say throttling to
+> avoid confusion, it's not limited to that.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Yes use throttling or VMSCAN_THROTTLE_CONGESTED directly. Congestion control
+gives a networking vibe.
 
-Chris
+> 
+> > 
+> > > spin on LRU or premature OOM.
+> > > 
+> > > Stress test on other workloads also looking good.
+> > > 
+> > > Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > 
+> > There is still differences for global and kswapd reclaim in the shrink_node()
+> > like kswapd throttling and congestion state management and throttling. Any plan
+> > to unify them?
+> 
+> Of course. Let fix it step by step,
+
+Fine with me but better to be clear about the destination.
+
+> this series is pretty long already.
+> I originally plan to put this patch in a later series, but as Ridong
+> pointed out leaving these counter updated but unused looks really
+> ugly. And this fix is clean and easily to understand I think.
 
