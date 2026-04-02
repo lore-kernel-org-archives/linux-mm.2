@@ -4,131 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B31D3941D
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B491D39422
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:32:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D1FD6B0089; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
+	id BE34C6B008A; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883066B008A; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
+	id B944B6B008C; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 771526B008C; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
+	id A82FC6B0092; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 657226B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F13361B8754
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:30:04 +0000 (UTC)
-X-FDA: 84613699128.04.428881B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B43BBA001B
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:30:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W69XV4mE;
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775136603; a=rsa-sha256;
-	cv=none;
-	b=lth0VS8MONFNDm3alTxBYSPXjaooDOFlWJiUMl+ULJRp96RxkrudcdSLTSPn2NtinrDHXO
-	R513TcCGY8wMo9CPCliJkSu3bYIDBgFB7i0AjnBySLc/l92Hp9fdskmNigQzPcw8rWcCDX
-	ufLd2AdPw3gaHKaiLo0oElNjIcwR7Hk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775136603;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9664F6B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D2CA16065C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:32:50 +0000 (UTC)
+X-FDA: 84613706100.28.48C9994
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2595240014
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:32:47 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=e+oVS+QZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf27.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775136768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
-	b=aSw+0brUVY2F8RfTRsj86yr8U39Ry7RKE5fjy6mJIoZN4FZ3p1Akrhgk8Kw2liB6UvdSOu
-	H0RA7A4SzdYsw2xCImz0rN0Mc0mv78ZNvONXjBAiXbjeNT+85ontcnLmajT7Q0CXm/3TAw
-	SLC7fwSnE0AfmyBxCJKjozsrFzvKIEk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W69XV4mE;
-	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775136601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
-	b=W69XV4mES+ILYyjs2HPueiXJWSaRhbSBjm/OhwMdmzyjB/cqA81ojBdO2K5YFs9qzv5rKj
-	GbcrL9sTcpGaVYwWICbiCiKho2KA0cTxxhQxkfiHlkIj4whymGQp9lAdvWSLD7tGsw4uAS
-	2hClXU/JW2u5HWfRPeDUaNPHq4myIe4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-xTrEgh3iOYuFVyHig7cJcQ-1; Thu, 02 Apr 2026 09:30:00 -0400
-X-MC-Unique: xTrEgh3iOYuFVyHig7cJcQ-1
-X-Mimecast-MFC-AGG-ID: xTrEgh3iOYuFVyHig7cJcQ_1775136600
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd781c0d90so509844385a.1
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:30:00 -0700 (PDT)
+	bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
+	b=OS9GnTokvckXxOnhT92maT6g7ywH8OpIpW+F7QGPYuY+buwTNFGo5gKiYRdhI2dTZTOWG7
+	D/HwHwzM5uo6xPulCWQGjaXr2Ovc/yhlSnnDE/BFJKpbK7ZNByslBWiMBPT8RGGhkHzL1Q
+	rdAoV1JtUxta1bbFS+XsRap+FXDc/Tw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775136768; a=rsa-sha256;
+	cv=pass;
+	b=1X9+mVhMaXjLQzTi2a1YDD/evAh0YuWhU3ANK5MPxf2AdhOKPGfF0kpXLD5xF+R6bfNy81
+	Zf7emNxasSx34GmL246drHgl0zHLCvrw0ZwdyEg8RUsrQrT4PZNiqnUSFoJgg4UQMbYLlo
+	xb6/+WEWIMhiDKvCWZ4b+U1/PwSw4C0=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=e+oVS+QZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf27.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b9358dd7f79so168686266b.1
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:32:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775136766; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EArxWWBPX1puFQ8cnTeZ5GnuxwHnTYk2ez/cVsncJgbPMTtmAqbtV6Cob1SuPpH6yh
+         VN0G92bqncv9i9NzfPc3E3RP7HP5wMnlG64tfNNv3eK56YVPUvlwMeBcsdrkpVGvdYRG
+         fYRSsWc1Aqw+MypUpy0SaVxmf57U0YVSLCl4nv+XnocWOAGVRMI5QYbeUAbv0HSmWJbV
+         BAHXksQ5rDsl/O3TNr2HeDtLBlM08sboyV4U2ftu/0zSoUv2E+Vu6zC8AgFYlY7OWy2p
+         0xYKKBmLHg1hOmnRP4ZKWL2cci/TQltkkXzUW+QIwyj5p9pWZMh2zP3+7GHG+dcgeux7
+         O+bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
+        fh=as/MkIjXAqTBak9ydfmlQumAPpesLAVhEH5jqSf0kb0=;
+        b=EHSDgZwsP/jTOUMVXMPhvoVSZYuaI0hfI4KiBrcKea1Li892QQJVJqOTSRuEYvG3hS
+         8Sqz+4TQnDmzm7uP21X4WKiir0A2t7LMhT8gtfwOqUk0gQ8p9Z+phIafJA4X/L8MZnCK
+         y+R5Sj/zvDCKbfNnwiNOkAQkhOWyr+EF2DnGgEEdr/zNzPjZnzp6RkZn1rd2d0XUlpB2
+         zL5DzHZ65vjHC1u35CZfe53BejqhL5FktF5Jdm/xzjSU3WiFWv72Wxbrs3fqzzrAwffw
+         x7ZXvUoCGDTRL3LyUF6EYxQJaG36iYhiUlEldA9zXpWPMA29sF/MTzt2FweSAlwt0hZe
+         LC4w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1775136766; x=1775741566; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
+        b=e+oVS+QZbW4SznNMJFAZ/6Lp5Y78PXJj0dEkahCKJ49OTwWcW5TdwwCgpO8i0RPdvl
+         DHeD7Al+DIB1MbqyIb9rTBlor9tNcJ9Rv5npvbvnZTW9X8/6GMWyypyez4oAA6wTNvTU
+         ftWuSgvwDvzCYM232KbPZtXjCWvZftdI4gAVTldcrFSOu5fRD75N1DHZC7vqt8thD5pd
+         yYMBJ+v5D0Bjt9E0UvCPqkgAt46U8QPckfSW+kdTsdt+E0ylrZcPYIHK0ZRPKtsuXj7Z
+         AeQXHZOWrH/8EEYBRhQOXVoacGfK+AnlPUZjJLpZWA/LrVsOGwpyJdeHdvfnGm4R/ZM6
+         w7OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775136600; x=1775741400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
-        b=jjSTo/kxvo1gps/d3cBIMY15d44n3HUdM88byIXgnTS/yibdCka4jQN9R4qf82M1ro
-         7yT6OvYsU8hYsg6DqUpC+xM6IdIpvlE0NPxkw8WOrMbwOUPNRdibhHji0TSgnkExUL53
-         UHAhU734d63OGtEqiAjgwoU9E4jebnwsiwAePFabe5S6eG3UKsI8b+fVm2hQnM4pDDFs
-         ky2bTXcTeaDL3DJ9N17AZFYxla/q1er/5MQnkugRUy3g0yekvAEdg31pmOuNGbxDgVNK
-         4WHuc2zgaQNDIZtkN11Ki4q7Q4k6VXKN5fD/kb9mxB6zB5wenB6Bn+P2IacngsGYaVvl
-         439Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVRBdRVy9e2xqadSnDLFB6969rmpGs7UIIT3YyR4cGIf7IkjOxH8xjXA+jSt0J65tZn4akr+P7v9w==@kvack.org
-X-Gm-Message-State: AOJu0YzLftHl9sqaUbfecJWfWjCSfkNcFQpD4UKF7FGiVx3gsReEbgWF
-	/cYYFkuDZaEOFPDbq4xH5Us2g5JeAYiWSrij6N6RDi5l0v40f3RLJP7SiaA41lFyzJzMu2+l/Tg
-	mtyIBjc3LQ+XYoIryVlZ7bvbCFm0/KkSTtzbWQd/NIKqCclKkGvyLMNPp/4eu
-X-Gm-Gg: ATEYQzw5TRTIPmKCZJJIUU0wErMgLkdx0JwQBtn9n1xyoBaEa5gNZCGsD6kaG4p28NX
-	5qFjH45+2OqEZULcV5ht4oFAM40jaXnYjJTeqRrTm180PeoxEuytr/Wq2YlxEUui5lGh9bWEaaw
-	P/0AxVNPStpyGhmBo4duv7MacPpHZQXwu1y4sW8dN/R5CWnbjJbUCokzDzKLAYqcaaoIgOdpqVj
-	fQmiW3IcpLzvJb6Izd4BQ5K6QHCDjm3DSbIbbYjyNL/HuNxCA1frok78ABNYR++hSxahmD5zXp3
-	kXNyekXKNGblLNenHoU7Ad03IVByXIns9J+CcDkRooguaC3x3CUiEgfbN7DzS2N1y2Ay8QnYgkw
-	JBjXNdviAV/VdX6qUQuXXY4kqReTwHbLdFr5FwtIEEbK4yg==
-X-Received: by 2002:a05:620a:2947:b0:8d0:907:a318 with SMTP id af79cd13be357-8d30321dad9mr264192885a.27.1775136599624;
-        Thu, 02 Apr 2026 06:29:59 -0700 (PDT)
-X-Received: by 2002:a05:620a:2947:b0:8d0:907:a318 with SMTP id af79cd13be357-8d30321dad9mr264187485a.27.1775136598937;
-        Thu, 02 Apr 2026 06:29:58 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5c5fe8esm217774385a.16.2026.04.02.06.29.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 06:29:58 -0700 (PDT)
-Date: Thu, 2 Apr 2026 09:29:56 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: David CARLIER <devnexen@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-Message-ID: <ac5vVFXgyqODXaab@x1.local>
-References: <20260331134158.622084-1-devnexen@gmail.com>
- <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
- <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac04ZeFdz7yvByRp@x1.local>
- <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
- <ac1wW6LHzzkXBeSl@x1.local>
- <ac3qYA40OW29ibbq@kernel.org>
+        d=1e100.net; s=20251104; t=1775136766; x=1775741566;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
+        b=TL2tBvxBwVA2kKQ/ZbnWe0zjDlqtKlz8nPi7WLHzqY/NBPytecCLVMOPVrmnPbaYob
+         l3OJFVulPFe5An6xp9HTRyBApw83FQQcyvGD49ryFlk+vTgwmsw+WRe5OJnjBkareZkd
+         iBFWC/DXd0QPV+UlljBniun90hSg/jQFoTaHSs1ppmvOIU7rveYBzdl8oOEq7gaNvkob
+         y1r2fCQN+1lUZziKCK5oPhiomWpvrHvGLVgA3rHejR0c8a1I3qmO4lN+yhrD0rH0kvbr
+         jYY7my4zsH0x9SipMw8Orcmwf/i1742WjEfPVRcmKPVaPPd1b/aQCDzVzfTm75v6oc25
+         Du+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNYj/ScEu2j5/pgFSjFtE8PWbNeR7ZYFAsINz3uM2MezZq7V+8loiOh+iKDnPT58dqivc8dLCvig==@kvack.org
+X-Gm-Message-State: AOJu0YxfIUACAEDCVl+f4W/IrViQZMZYY6sXEA90rWwZi1mKgsFFJKuC
+	tyT2b6EMNMPMCWuPjYlZ/fY22p5LkVfNSyIJ7TK15R0gtFpcnZFZaW5ZldguTt3IGvVngeBXbt7
+	6hJXubIwlHfsR7LeJC2t8+JjgIiIn/vjhnOKN3kIkMQ==
+X-Gm-Gg: ATEYQzxQ/bfJCHSkSnPDnf7hChKww2tBHMPwHHPmiPQ7DbC4FAvI7c9vtRCQZnuiXgM
+	KJbW+GLA/cy9sXHUXvovb+A7e/V1PZc61e8H0CWnMjHgL1TZ9iHEJmWqak1Wj9Egni1z/kYfmEC
+	esTF6oRlLaqN5ejbjjQdhDP71dv6YI+Rr3UY13e7bP/N6oht8ZDtmgzpmMWUZ5XyutxXcG9FE6b
+	NdnpqWoaqIXi62D0P37FeYTuBoWDrAtZEFqkXDni2LtErwdUdsWe0Z6pEQZZPp6bx0zGORJiQAn
+	7KkzwLY=
+X-Received: by 2002:a17:906:4912:b0:b98:695:ec53 with SMTP id
+ a640c23a62f3a-b9c138c110amr392586266b.18.1775136766273; Thu, 02 Apr 2026
+ 06:32:46 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ac3qYA40OW29ibbq@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QKxbbvmGHtTCP9_Wla4MDPvL5TLlN4x1EAGx-JynsXY_1775136600
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <CGME20260331100026eucas1p19bdc2aaca4c9a48c6f6ac8fec71478d8@eucas1p1.samsung.com>
+ <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
+ <46397de2-eedf-4e09-a83a-3b683d154fe7@samsung.com> <CAO_48GEFQE_FJjuq1UqP=DC6LJE8jjE3C+4FdAyB4uEZDsnFJw@mail.gmail.com>
+ <20260402-burrowing-fine-bloodhound-afcebc@houat>
+In-Reply-To: <20260402-burrowing-fine-bloodhound-afcebc@houat>
+From: Sumit Semwal <sumit.semwal@linaro.org>
+Date: Thu, 2 Apr 2026 19:02:34 +0530
+X-Gm-Features: AQROBzBU7_o7IRQH6mzOKTP-KDFv7IkPoqq1yaLRTD3AfvGaKguQAkczWk5rypY
+Message-ID: <CAO_48GHzMpKHQxmS9ADd_Z9G56uWOPfJ-qhNek7ubgkk_yjGDg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] dma-buf: heaps: Turn heaps into modules
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2595240014
+X-Stat-Signature: mjayiar6tubkcak787nn67gmoq5195ay
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B43BBA001B
-X-Stat-Signature: zkyqfxz9rjjrzg534gnpyakny4bw8urj
-X-HE-Tag: 1775136602-221760
-X-HE-Meta: U2FsdGVkX18hiG7shnh1rWOMR834+LkkRMNGs/SObCyNzX0dkRJQn/v3R+4/A7RzodpMaUY/sztlMd+5AtJEXVKbJh/1UuW0dKdiCeRRVKm/XgzKJ5dflv7OZVaPz/R+PM6x02OT90ewTyWBUG64844pTxhPLJgG7aqGCqFnimnXH52/4scYfg4Vh78bkZ4D9JmlaWlGUJFtmx3In30+qADtg+WHUm8ZUuk4y01WtF6yACldSEqQy0bXOwZ+VRziLndK3y8fvr4IAqtqg4V/cJ8HUkPNWy8oLFAmSGD9gYhfyF7udGMztlvhinH4DiRIBfQY659SO6zYBB+Mi6zkzbTbsqLH9HU+JIWRULu+z6CZHvcn/PjgIr6X65D49vyDppRPsRtqqLBSgHjmrIDalRViLLG/aL9W/EWJxxgiDFtsqo8gVZw4/o0nUhjgJwh9OpZvyp15ee9NaNMUO2A/y32hQiVSslvZdRgpgutBofxZioKCnxB4Z39Kbn3MfmuesbXHduJB88yxGocNuDEmQw6TMZopsxqFOpPURA2UqA+o7bRs+Uboi4eeLHcmXWxTMX4s1nw41UYNDCGcmBfaF06+QRtG7ut5ZxdNnOVw1qx6OxBhH7JsHfQ/bMROYfSgek4F2c5J1tctwgyrwgPrK4PtBHWV2XLMqzsbJ14pBguGfyfBGcJHapQ1Lxj62hpfH4HqXWq4wy0CAQK3nZCG9ADre31mfBUnSERSgNvd2HAQWYV6mo5UlTMmPnyKVsycf2W3IpmyAGbgplR22XO4+QJA6hUuADEP8i8SHCTPKc9zPqxz8ugvSAHBTuD2iH9cuSQMfH/gse8wcluOudiGXmZusVu+iGDstIbXm98Opt+2kTMzZ80Kxk9gaYSOfUTfVnZDpkHNVhYmupznA0eOXqIt2pdWD9y2TKiUoP08OF6wrtTN2LxgktGhVBm+hR1qnHoPT0uHtILcDHE2ydv
- uXW6HgQl
- 2HtA6zDHD6XRJeUxqxypby5/VunXYLEuwObK/Fx5ZOg2QQJWd7yYagCBDP6Z1GBYVT4TNiOFwW+tk40Plt0gIqSiMegHjtETQDHrXbHqdx2/N1JQ55xS7KdJlXvRzi6etDWPcQ5mcYtXQ0BI=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775136767-319398
+X-HE-Meta: U2FsdGVkX1/loyZmAl5V83sJTw/rHhPu8zYDkxWwMuGnXpgwInf3lzCHFP3tbs0rcB+B8pQaGcm6vYcv73Y9zxOsVkwf0Y9aT/cSF3HC7nlPPbH+RykK3fDFj3F17T4Rzao4IAAeVIdmkvg65iQlN4ynBEWMVxcI2qqD0/XH9WY9jOEOtppwsfB6MOypKSskS+PzQhNBAxcHbkWYoWYHkaHOo9lemT0gPv+Xaf13/8NzfWIluu1nmFxFE/nLbWGC+LDOfeDgtwngivMRCsCSdet4MR2eZ9CE3yhYsyx7DjQyODussp/JgueNx/saHtVOTujNQCGtmAx0g7DccrVn0SCPU1ENG8PT6+QGAAt5AHoJ7gTo6HvBcxkfWIZYbVvym6zMTxG3qkXOpQlQ5toivPC3g2X7w8kNUL6Uc2u85jnVSvuHgHx+XJA25M37oYuDyW8jwvyyLUhsmzIH9rIO9H7vhMdCFBcocmddKfxKlOTlYkwGk8NDHqYhI0/9IoFig0/oTSro/wWHhYFtG8ZkXqND4jx8vBk+aY7pJBqM8q4cAFPlPTeVk4dqz4DR7toXk0cUZ4kkdr4FVxcAEfGr6rw0xBBs092DtEq5a7Tw9/uzzqhRCEj6wKQeb5v2jNV2s+1gwdVLowjq4H4f/AzTNua2KZRydEP2AiHUvkdZ+7uASttwkT93a5FrGRm87S9ugqiS9IpWIvhhVDUWWq/Owbk/ILTHVAlAR0pz3hXvxOiOkK9rM0fbyFzsEfCAlvk3loF2X75JJc4aHISUPUvWDASMZLtiSlT+pRMHGvmeSkSlY2/DyjyZj3PfRkjN7wAQPaL8Xrs+YaeXh4TLkg5JuIx1RLGgSbgMK0Ao65Jgae+f5Y4XDgCP6LY6bOMY1sd+Sgftg0HYIYffhaq6FixAWMHhNC5jSwI13OyWEPPf9FD13hwPGxAzCax8S4M/nwCBuszedGRMcw++Ix9IZ5D
+ Hp1Wz/nt
+ 0Un7Pkaq6uW3tOwrHpKRcXtbtJ+TIHJdU/rqgOUainBPfagvU791/vRHNManePwTOGLM3W/ebVt5S26bQ6SzCuqy8Haoi/ZMGp3FwQn416r4v++BS9vs3Jo80CXmNmVXg55heNyGVhtAyOAUApwdYpNPeETb4NkB54p3YulYIuu8iJqAuIIgmW4Tdbkn1FO3bd9zNQ+0XTjnoum9Zmk7epDPhVnz5vY6pto6jndaX4gT40nbP0ogZbxJfjONatyjOlwCGZ9NYFpWbDiKQzjM3Zz5uHLojEPY0X3jELIGufimMfvb268dOC6djUyR5RAcgD+bl1Gv6jIrFYu0l1xCb12HBOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,40 +147,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Mike,
+Hi Maxime,
 
-On Thu, Apr 02, 2026 at 07:02:40AM +0300, Mike Rapoport wrote:
-> On Wed, Apr 01, 2026 at 03:22:03PM -0400, Peter Xu wrote:
+On Thu, 2 Apr 2026 at 18:42, Maxime Ripard <mripard@kernel.org> wrote:
+>
+> On Thu, Apr 02, 2026 at 10:36:48AM +0530, Sumit Semwal wrote:
+> > Hello Maxime,
 > >
-> > The other thing is I just noticed the err code was changed to -EINVAL for
-> > snapshot changed cases, sorry I didn't follow previously as closely on the
-> > discussion.  I think it should be -EAGAIN.  It's because the userapp can't
-> > resolve -EINVAL failures and app will crash.  In a VMA change use case, we
-> > should return -EAGAIN to imply the app to retry, rather than crashing.
-> 
-> No. The return value should express that the VMA is invalid. -EINVAL could
-> work, but looking now at the manual -ENOENT would be even better:
-> 
->        ENOENT (since Linux 4.11)
->               The faulting process has changed its virtual memory layout
->               simultaneously with an outstanding UFFDIO_COPY operation.
+> > On Tue, 31 Mar 2026 at 18:24, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
+> > >
+> > > On 31.03.2026 12:00, Maxime Ripard wrote:
+> > > > The recent introduction of heaps in the optee driver [1] made possible
+> > > > the creation of heaps as modules.
+> > > >
+> > > > It's generally a good idea if possible, including for the already
+> > > > existing system and CMA heaps.
+> > > >
+> > > > The system one is pretty trivial, the CMA one is a bit more involved,
+> > > > especially since we have a call from kernel/dma/contiguous.c to the CMA
+> > > > heap code. This was solved by turning the logic around and making the
+> > > > CMA heap call into the contiguous DMA code.
+> > > >
+> > > > Let me know what you think,
+> > > > Maxime
+> > > >
+> > > > 1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wiklander@linaro.org/
+> > > >
+> > > > Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> >
+> > Thank you for this patch series; now that it is needed by more folks,
+> > I think we can merge this.
+> >
+> > Marek, I'll coordinate with you on this - thank you!
+>
+> If Marek plans on sending it during the next merge window, maybe the
+> best thing to do for us is just to wait for -rc1 and apply the rest of
+> the patches. Otherwise, we can merge the branch in drm-misc.
 
-The VMA changed, but it doesn't mean the UFFDIO_COPY becomes illegal, am I
-right?
+We could do that. Are we ok to wait till -rc1?
+>
+> Maxime
 
-For example, I wonder if it's possible someone runs soft-dirty concurrently
-with userfaultfd, we shouldn't fail the userapp if there's a concurrent
-thread collecting dirty information, which IIUC can cause VMA flag changes,
-and should be benign, and I think there can be other things causing the
-interruption too.
-
--EAGAIN essentially requested the user to retry.  If the VMA is not legal
-to be operated anymore, it will fail later.  However we should allow legal
-users to pass.
-
-Thanks,
-
--- 
-Peter Xu
-
+Best,
+Sumit
 
