@@ -4,79 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB075CC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:12:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5391CC6B05
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:15:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 478E86B008C; Thu,  2 Apr 2026 03:12:52 -0400 (EDT)
+	id CE1AE6B008A; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4029C6B0092; Thu,  2 Apr 2026 03:12:52 -0400 (EDT)
+	id C92926B008C; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F1EE6B0093; Thu,  2 Apr 2026 03:12:52 -0400 (EDT)
+	id B811C6B0092; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EE566B008C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:12:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0B4DC1D7C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:12:51 +0000 (UTC)
-X-FDA: 84612748542.17.EDC164A
+	by kanga.kvack.org (Postfix) with ESMTP id A54826B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79322B9383
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:15:47 +0000 (UTC)
+X-FDA: 84612755934.20.08E48ED
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C58FB40003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:12:49 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jGfS3F91;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775113970; a=rsa-sha256;
+	by imf10.hostedemail.com (Postfix) with ESMTP id C2F05C0006
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:15:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abkrN80g;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114145; a=rsa-sha256;
 	cv=none;
-	b=PnRQWgxqKJuzA5GcHzQKmT0JINxE9B6lSBJX1mJdzawSd6IfeDg+XsdoA0O3z6O2hwhS31
-	SQcSOy8S0YO9auCU6Dwdb5/7wZ7KY47XkjDvH7baYXQnIjnfjAAdp7NC/jla/jHQr5qBQ1
-	07nyecemuEijlEGqrNa9o+3F6SVKl3E=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jGfS3F91;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	b=qI/PzJ4M5tWWkYoKlhj/0sEgBg1TOBmIkAmXyR2b8LxU1TPr5iw+wtnFhG/tYEpv2XAbSz
+	sWWvEIFdH47tf/JtC5NwQyCFzvhk1j8OHZYQ7PzyxbyZhr/M4UNq69HMj2vsgq5pVOB4ZF
+	ijzp4J1QK6xNxGACKe93qU04geQWlLw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775113969;
+	s=arc-20220608; t=1775114145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jpczcsXZGJIU7Skyb0ZlPOibX4vuqbE4hKW8Bzp9Wy4=;
-	b=j241iW7C/qXrwtnZ7CymjGoqtI8uoP0lWOtLJ81EjJ2+Q3xHpuSvhSdIYwOd3veyYpG6rq
-	ro4ZNp9s0q+Fd6xctiV+VayZBZA3tWu8xhio+TYHL8pG1OXenn7SHG62yX85nx30DL+WSo
-	fmXz1Jm1DnIzSN+DnrGfr3UmjAVV6sg=
+	bh=PCOddpp9DFtN9Ll8S0MEtVB5rAZljK7NGl7kHcED4NI=;
+	b=aeMBUF5wj4ofm8hUgxJc4afVhw07+OyjT5AXB2L+IewScTlm1WPWr81H+6cSpm64s7AohH
+	3ReSUnIOD1saF614msIIiYUmNBCt7eGuJ69iKmvuh78V2smynTQzTOw/zLuKINkBeOSEyO
+	kVCBE0b1x7kXi+RQ/mHExwePGW7SDX0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abkrN80g;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E23B143663;
-	Thu,  2 Apr 2026 07:12:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8AFC2BC9E;
-	Thu,  2 Apr 2026 07:12:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AF69D44401;
+	Thu,  2 Apr 2026 07:15:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2030C2BC9E;
+	Thu,  2 Apr 2026 07:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775113968;
-	bh=BJ7G1vprBsIyT3FYtQ34wj6oP0cMHfpJpEKWCFbgSgs=;
+	s=k20201202; t=1775114144;
+	bh=15Rb82sGNFX6qQyj2zyuism7Uxe43HZFCTwkUrfzpQM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jGfS3F91jc3XZB41jeFJHbPVRBdTx+uHPlKN9ZoudcWZNibkZ+9WoRftLhMGfnMdc
-	 5pRRmelMtFS86VKZxI9qwMLFuUUlJ0R9Iv5kSBPog5LrMaDSQGbLfKYa+tue2UenOD
-	 lFuG0g5mWbPuRSrLGeLpclbo78mF7beDFDLQ/CsaofyJwFUe2Ais7Paqwl16r9U1bv
-	 QIa5ibxk+yeuaUi+9pZ3s6jWbgfBC786WqDGze+R1CL6MgU4PiF03u5Iym8iM18OA6
-	 1tqFyUSTz1KSEPuGEvPXZ9OZkh1ZN3KHvO9r2QRWh9a8KpubYJAe7K4qlTVOGeJX9T
-	 OAODRvDrcQznQ==
-Message-ID: <c41d409b-39d1-48f2-a29b-a90cb94a1094@kernel.org>
-Date: Thu, 2 Apr 2026 09:12:43 +0200
+	b=abkrN80gm/tZE3PUps8yrNSOihn0fsB/AtwSkxwzJDcZNYnRsoFBh+6ibRMeEKlyv
+	 FGcVjr9zbdEasF3+Q55k9/2ic2WjDx+xv8vlOVVRp/F3yv6eJ2SJ85ayX2F5giwLVh
+	 zc3xrcku9aIMyrrNqNplayB39Qhy5b8Asjg5Uf8O7hxL75hGj8HG0Orti7EG4Xfc2H
+	 qjVedD0x6hiBasUaH9q7lYKa14IojUeivNW5FNzZoW5RxcWHzCCS9nB7ANhsAYG/7v
+	 kMwYBQLs6inrRSG+g2v3N1gAkPMhWAfPMi5MnE76B5UiBXM0IuVwafMMfGYXV9KhOh
+	 KqBniwlbsO3LA==
+Message-ID: <8b6d552e-cdf2-4472-ad26-62cbb575b0fc@kernel.org>
+Date: Thu, 2 Apr 2026 09:15:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] mm/page_io: use sio->len for PSWPIN accounting in
- sio_read_complete()
+Subject: Re: [PATCH v4 2/2] mm/page_io: rename swap_iocb->pages to
+ swap_iocb->bvecs
 To: David Carlier <devnexen@gmail.com>, Kairui Song <kasong@tencent.com>,
  Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
  Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
  NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
 References: <20260402061408.36119-1-devnexen@gmail.com>
+ <20260402061408.36119-2-devnexen@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260402061408.36119-1-devnexen@gmail.com>
+In-Reply-To: <20260402061408.36119-2-devnexen@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ciqdwc9eihqkzh4htm3r6ybkio5mhd5a
-X-Rspamd-Queue-Id: C58FB40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775113969-799143
-X-HE-Meta: U2FsdGVkX19azHnAJpPLNYhn1amYjCR9kv+0Cmg/ArCZXrrhulQxN7Edrdx+BCs/SWfs794kxMhWAQjYO9m0td7ayJwrRM8FwpoFjJTgLC+ZrLCUNw2hXFsLHy0mCrpKS9dRURwh6byrMxe6RIiPzLfiZXMeLbsMRFuK9Zwa9vHbray6rhiYv2sD+UEU7ZZFfBzC6VsDAS6kFLmdAKVE+tbZot4F7VPOFTWvqcJDTaxqTIELNScm01X/c/uw3G7wC66tLo/myUvAai/yG6EAbMaQvxH9zG7mT6FSzKKn6jLqPz32gkHrjvmmlr89oRHMNobJwL7ChNevcqJl4jMdldIhcfOsWawSvQFySxqjyTsC/k9HIlulC24V6MvlxyS44jRHcsdc4sO/iM439KbPs9KbnOwwzdbem/9Ij+67dbvTHsvl9EeIa7tyl8G33jnE0kyv5Lb9N9wYOFbyn4RnHpFJ+74Wsr9A/5V8pyiVOEpiPA5tvzCkXWFsAr3hvmlXLLeu76b6Il0VxFS6R1busqR07xAydR8jB6CVW0a267VIuAL3y0TuC78dXNHum1RwLpAr0Liyo+fDqzqH+2aQ2OpIEPX7TG2CmnB63yznzzddxV/72oiUda4aIvUIQlmYEQQh1o4UJIqhfmlw5mcMoPy8XkYI6/p9dSeNQtQYhkaOu3LZlaEdz0C6njrDZMhz+IXpDmFbLPRuxUDBwZX633tcAgy+/t4mgJ7HuHztChvEKp7Kwz44Kd0L7L27WZbm7JxzQMgWekloqySP16XDcnAPUcr/alL7RgMsjzQjhJvSAngoCd28/jv8z/PWOkIeyzL2fzOl9ZHX13SH8G7rmpGRccZ6Vs03kihAOmdthfq4U8MbroWOocDDdd44J8LRscblHz3061+U6myCMNwjMUnyUzd8sERppF2LbTf1DIoAtZqWu0dPTDSngpWHGsU05oHtNgrXOK/D9qRNwew
- buGDD05X
- 3garN9wAGeJ6NbQtgrUgjUas49ylAESRQHxzgwEtxzAPl0m6FmqhkHQAPHNrS4WvUPNfm8y5TXSyXMIlS3h17TwWnoXlejjPTuJ32EKjErRdEb5SlwAFIAw//k8PiFYhhUs6797XxS7Jq42NmAIqZsWP3imWHPGlSTMBpr3yCT95UYp5XIVhzM97AIf9zvc1Uoj/C3qGSDiPTJhLk5NvmGdGC2krLbr7csp37oO8OUhabHRMpTuaFRvun5gvpWmQPVs0i6I41jwHTIUnmshav26++UyoSeFLi2mFZcJuZ58EqCzI7MIJeRRYTsAkTSkFe3yMJfyqjLyZxAQ/jJicojoG09kupuB3NvzqX+jX5ezZhMm7gU0ZhRdF+zQiLJ11UZmpN
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C2F05C0006
+X-Stat-Signature: 53az9ofo6zw4jrzafucmmnjwzp6ohkxo
+X-HE-Tag: 1775114145-953430
+X-HE-Meta: U2FsdGVkX19rP+4shFhXf2TLvwNyHZo6zEyUtxuZTuUmbkW5RQ6MxITvdIlNxqZuG74Egw5tbPecI4j0JgqNtYHBEsuDGV0BOJ4aaLFhBAJakERrszu2DNpi7DVzrzzKdTm2u6qTZtTB+Jha4C7tilUlzrvt9GhDJ6og3sfUl56dvJHOyO62lefljoCHAYGatICiFLZ59ObiZag/jvV2bVAblASD4Z1fBpKSBbPraPJR9DoaM2Ld07sCAsDsYD0BL+oxbh1JfbU9NV6j4iRl5hFDAuki8bKlvTtpG4rqSj03V+Wh333hwptMTVNbdLWgRpXDTSnwfiIyk95FgdOZkszQoGoeiWuMT93UjKCvz66TaPlyk+VIImrOmPhc9e6FKy0Kn6O5vRragD/jiaTJesLOBWSrUZ18kCp40N4E34fTWMs/xnB790jw40oqBkt3ORLwH9TE3VoA1+qa4dAU+PdZQa1nnfr3U8uxECHAd5gjGPDAZlOiPrCxF13Rn+9o16M1NHCgA6L9AhdTtxufItYjdXfK3mZrjvOwOw7zeqhw03RPs5DNV8H43jLzPdVubdIRR9GVOUTIwQ8/UrP9G7VlTebOhZmfUg9CXaq/0BPX7WTU7Hq4rZBoQygwYLyk3b0tSElVY9JtKuXnybfJxdpgdIIoqpGjXdR2UzyPpcQby8s4n5lLk0je62cCAyofsRtd4KhpP7XVjdvMSzFbW5r3QC6k3tB83DPXsQ9M97aetzSLHndi25t8iEGi4rP4OfZXugq25MXCaVAdxMgff7iJSkkofaSQ49a1nbAVD8tQfiyYJi5ZobakapWS3kmEcJj5hxBMYC7puBxcoyxRqaCIyQzUnUJQ6z/3gENRwNTKl6QpWV3YQj98rS4gSSdGTI7Dt7IkB5GplhtwUY4vXuOzKHPTFSJb0qEZZQjvVuS+M1rl5ZpjzX6/FPSRA1USfu/B5FQgc2KtLuI4/Wc
+ MY9ha4ca
+ XDuFQZi7RsF+mmYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,23 +144,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/2/26 08:14, David Carlier wrote:
-> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-> but sio->pages tracks the number of bvec entries (folios), not base
-> pages.
+> swap_iocb->pages tracks the number of bvec entries (folios), not base
+> pages. Rename it to bvecs to accurately reflect its purpose.
 > 
-> While large folios cannot currently reach this path (SWP_FS_OPS and
-> SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-> is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-> inconsistent with the per-memcg path which correctly uses
-> folio_nr_pages().
-> 
-> Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-> count since sio->len is accumulated via folio_size(folio).
-> 
+> Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > Signed-off-by: David Carlier <devnexen@gmail.com>
 > ---
+>  mm/page_io.c | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index 1389cd57ca88..e524cb821d04 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -327,7 +327,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+>  struct swap_iocb {
+>  	struct kiocb		iocb;
+>  	struct bio_vec		bvec[SWAP_CLUSTER_MAX];
+> -	int			pages;
+> +	int			bvecs;
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+bvec (an array of bvecs) vs bvecs. Hm.
+
+Wouldn't it be cleaner to have
+
+	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
+	int			nr_bvecs;
+
+?
 
 -- 
 Cheers,
