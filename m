@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17B24111227B
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0937111227A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79B2D6B0092; Wed,  1 Apr 2026 23:32:26 -0400 (EDT)
+	id 09AD36B008A; Wed,  1 Apr 2026 23:35:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773336B0093; Wed,  1 Apr 2026 23:32:26 -0400 (EDT)
+	id 073AF6B008C; Wed,  1 Apr 2026 23:35:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6899C6B0095; Wed,  1 Apr 2026 23:32:26 -0400 (EDT)
+	id EF2236B0092; Wed,  1 Apr 2026 23:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 586296B0092
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:32:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F11DF8B653
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:32:25 +0000 (UTC)
-X-FDA: 84612193050.12.8392CE4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 216171C0003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:32:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FPYIfzU6;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFB406B008A
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:35:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 91A7216039C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:35:24 +0000 (UTC)
+X-FDA: 84612200568.17.85AECBE
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D6E0F100005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:35:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="IOqE3/V0";
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775100744;
+	s=arc-20220608; t=1775100923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iAp+olFaWBoNIEG9IotAMF77yMkjBypMy5GBRb/hkbo=;
-	b=n8AASZgGarX8HNl+1EGHs1aNY73khBbmc6VLN3egUtggzDyv/r4UvNkKWppYDZ8+zsfe86
-	1NuTo2rvCICAfO1WtR5XRxADTesLocc0FtP3iwUm2OBR7EXqM6DOmtz6OldbUJAqApOxY5
-	wmN9sgg9gsSoPVsStpTRQ3FIX348E8A=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FPYIfzU6;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775100744; a=rsa-sha256;
+	bh=QCAZkr4rLrvAZkOtOmwtWC8aTcZ5AbhS1qyv6RDg3UM=;
+	b=iwpCW/JGzY0qVYmKuonmfbM5jnKqemlguF4FjTy5RUfIMIG10NmLr6RP45dIXTt31ovmIK
+	D/OVhXegDOlIx4EQCRbF3uVJpMzllGg/3Js4noajsqyOWLmplHiOTJRa9cP2Ln4EDjyzxB
+	CJZpTMG4cMTtzwVzUTWn+Rnx0WibGX4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775100923; a=rsa-sha256;
 	cv=none;
-	b=ledUxXjTI+QJZPrzXZT0/wggxmI7VGOWGO5mdv8cuG29skvuNTDHqGlASS4DKl8GLdC+cQ
-	l5bR9w2LvSiWm48GKOIHKKA9vNwfEhRHyngQkw3nUQUk6ShOm92Txs+TU6T2z9hn7I/++7
-	nj8H4pBr35+d6XVCm90xFU5Ud9yni6w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28F5D43443;
-	Thu,  2 Apr 2026 03:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D80C4CEF7;
-	Thu,  2 Apr 2026 03:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775100743;
-	bh=2MP/a40KprMuIlnowfOI0K4jOmpx2qWOmDyzhQunkEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FPYIfzU6oXyMyr9FVChI9F0TI64Va34bKPPujmvrq45d4OOaBz//3vgbSrDG95YhC
-	 l7lZG2zZhV+Gfjg7/mBjsLKw61NIpCqcRa3D6BOfx6BxVigMWHGQZjXGPRgW2E8UO+
-	 fFNKwPLPVcXvoQECyzNJqlukxpZJSEiNIdN+ycHk=
-Date: Wed, 1 Apr 2026 20:32:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH v8 0/6] selftests/mm: skip several tests when thp is not
- available
-Message-Id: <20260401203221.7e192497ba526afe33b9b5ae@linux-foundation.org>
-In-Reply-To: <20260402014543.1671131-1-chuhu@redhat.com>
-References: <20260402014543.1671131-1-chuhu@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=WyCRnTKjwguzS1LerPW66WPr9lJzCbMzGnVBTHB3DrXCs/jaFxOHo0+uqg6+eQ5QXl7tDs
+	lhzfzXxFLVikqUYW2NCQur7rTI2XZHl+RK7VFsuTUXeNdpSCQadH8OOwUKWEz2+vVykktN
+	brbCHxqzJzWbXtRvvE1M7SRWdVdOkD4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="IOqE3/V0";
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775100917; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=QCAZkr4rLrvAZkOtOmwtWC8aTcZ5AbhS1qyv6RDg3UM=;
+	b=IOqE3/V0x971kkvU8eXFyOtMNjZAKwL7G+daSOnhKYBKa23k9G9/pwmDvHj59u5oCiJFmue/J8Cl+e9n3A/aCsg2/VWYatR1ruuPw7NzRPrijMml8Ztt171ISJ/+ZOJ1aE1O9u7OO2R33cRTM8/1K/B5SZlNCSUmIZhDEBXlcV0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X0Fk3TO_1775100912;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X0Fk3TO_1775100912 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 02 Apr 2026 11:35:16 +0800
+Message-ID: <ba39c7b1-ed1e-4cc5-bf1c-ac78946d6dfb@linux.alibaba.com>
+Date: Thu, 2 Apr 2026 11:35:15 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1 for
+ MGLRU
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+ zhengqi.arch@bytedance.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, ljs@kernel.org, baohua@kernel.org, kasong@tencent.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Jingxiang Zeng <linuszeng@tencent.com>
+References: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
+ <ac18iLvF-nNtxk1-@linux.dev> <ac3Pqq2WrGTJZLB_@KASONG-MC4>
+ <0498d924-d76a-4d82-8767-e6297442967a@linux.alibaba.com>
+ <ac3gP_OWXGnejtwk@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ac3gP_OWXGnejtwk@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D6E0F100005
+X-Stat-Signature: tmezobc6m8hndj5nanpmbg37zjxhm1hb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 216171C0003
-X-Stat-Signature: mnkkare8cwuz1bab8pd5ouo99xs1jedc
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775100743-195756
-X-HE-Meta: U2FsdGVkX1/xl+C0RrnsXO7Wb161qV+uRSJfTY+z+zwq8Mn1TNSMYxEyevtZbxZKQFHT0hpeoJ7bm/JAve5f7zcRuBpYQGzL85wFWIOLXGkzb7U0EXqA3n622tIMyLFpW7+VNlG+AqgPymZprsnHtuA2mB1gsquqf/WaeZKufDWs4ljucaVZw89LqY7xPeDXH27KpvZxQYL5mGm3Kh/cTyXAUOE5RWv3w9KQYZ8y/3OfcbvOSKJo2RmhO4N8Ahl9DQhoQH2MtZ+DnAYQOE+P2bsWx4Jx7D+Q6nZQDkAXs9MxQofSVD4JNerAajTOaDOxonJyu7ueMCgbT0oNjMyhyWqNOHLFwYdHmeXJopFrfIKi7H42chxu83sayiPnSHGyrlGJp2xG8kRAxReMzyOKgmWhMOcged5EvMEKx0PVOfoJPBHDssGDI4SpB+MnaXgqDCZ9YS7h1e63c1GC4tmcAoFvEykJFwuQjVhYWwEdngAFzhKdx87viK7cMWguojtjxnF+5yWqCZ+zTBeTsrx4lSLYgl6QM5Y1upEytaO47wkD6H70ehQXsZpKta0MwBAe/SrShzB4YLEnJyOae/OCk39nWEXHG6vJB+h7pfgXAuH8XnEB+lAN5hFrsnUv/Fg7z+wQUIG65J45/8cK8TEF2C1g8B9terX+RxQR4vQGlTujLJd1hv9m0ebjqLMhnasBxP/4Q1PH8irQ4t6wijkc8wizcE+7fPxxki4mMx6SsokMxujqhwEbOoldn2tHTFAbXNULY2sJe5F73DeySwuLk2dovFKmS0OiuWj1MWyaeZK7/rfXcUF8YUe47FlMqDGpHC3qrhMcEX1CkCdsiXuvemk4j2vTx4AkshNyOt28iHrsodIjQmJPAtn1JZTtUgEyDkWdHkds9Y8guswRuj/PSoN+9x3nkqCCjqmyQTRV0cFi6Jaz22bG7Dp4bEia7gy2ziT4wJ/lSY0avoWVqsH
- dRqMge1k
- 84fOM+AYLoCrezLpeQKBnEirE3qGBwaGvjPXazSM2vWXf06SRCECtC8ADSmYfxx/yFCl9QU2s0s6NdMwOVmy5Mm+MnoowOR9HbNlPHtWxDQrNOr6JY4HPV49PeC8E/XqtaJLGTTZG/QilfYsE+OBRGSurwn7lj6iFqdUEXwmvOaBD0BdE+gjHpIyNRqyVeBtavSyN26Ix8TiHk8TchVF9gk8uO3+EeviqgUEVLHpBbI+Ic+8wcOvSXc71zJXQ6rnkKPixmRWmTOPkGbwA/jWgdK++aw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775100921-501338
+X-HE-Meta: U2FsdGVkX1+fRorulX4aAneyWCKFvsZxYO9gH6+q66vC4JVGmEzkVwDvZz+ITf+uoC3nJLEl8bv4e6n6DMye8Od6DsCEsy9aBsj4A1eba12TW1Bff35PNjNGeGUKKZg6ULdaok8TTcF97qV8BTQTrJFVdXJAt5Cwnq2VZLTF2y/7zkRfJ+ARS5uprkXhQNYr5jadPeoNJywqRW1Pey+Ek2Debd8BhaHl8g/OPvZ8b0LLCI6V7sSkszxFnq+8TrbvqoXIHy8OuvJkJkiBjlfTH8JHVf++LjLfURlPyQQHu/1Z+aufE9DwYuvYIf6XskwB5TkDKcQ86PHOEIi7mzVqD+awgiMIklVdZKyMwYE/TQmqw9/PkJxaXdxboU4izBuqLMQFBojdAV2H49hNpW8xMDyGi0hARiqviiTAutZnawha/3ZhHwiMCfEwjdGHuJQiSj03ikkuJdI1cPCWTsbAvRzmkwABei8g1oXLfVD2TD8wp8MREcIgrzVb+Q3hniSII3r2ZhO914ZZfVarPwvoWRhCv9OhGTvZFTTwW5lQAiFvjC4AH/N5mmY0Fv3gLVLZ7A8JD4b2rEzvH9TwsXdfkfA/2RlGTcCaR9dVBIKRLy9qrbK2YKEuyIRc3NrOqNnuh/8jf2m4q978MkrZ2mVcJ2eHiBFMQGCVJtdmeqevCn97kFawuzCuIQ4NknDfMwR+EHV+q1dMaxD94eZcNv2xHkh+Y+MYOYvsAI4yRH9QybH128Ajb6DqC2/i7PMuxfqxBATPHEZhsGZJP97wPhh4PU8nDqEioq49i1pXzqxl82E/oh7TkeLkk0WBVkuFgIwYnpyLvy2MwUHgcXyhqftenUDIgOAC6H+IIhCi7LEkX+yDcaxWT6JdOJ2NYhZP26BTydWr/AfskMEFF+FI0vR3Akf6BsL80ME3gslcag1SfYEvcjR7NnQYPavPLzl8CuC/y6Ev/G613OnUGAuNaZd
+ dL3VtlxV
+ 34iwxVk/UU2mkRo0OekI1k9AE+4fxsfsui/zZ/pnR08AOZ0+1mkDWxLMiFgkBbeHDhY7fz/QcOQz4dl7cmGHlJzvb29HVU/jpMBWlnCoYSS9sWIlnC4Bb/51xYeWVzfefvcZ3SMiWpdFQzB/obX0TWQ3ffj9F/ME2X1Pv58pA+xMaTMZszny+hDE/NZUHBcYwqyG5B+pQ2FLVY03I79KyXO9rGW2dqWH/bEIFGndKYsqjpO9OEu93+qlmd9/47NY81dUlxJPgYioLQrfbCTTSW5yABZ/MqUC6pr1vhD8zRvwXiR/pHy7YNd0a6JQhy3lxu5CrrIJ3Q1eJsb2uZI3W8Z7aYfyISoCtq/mNKhV02Cor0aw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,86 +94,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Apr 2026 09:45:37 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
-
-> There are several tests requires transprarent hugepages, when run on thp
-> disabled kernel such as realtime kernel, there will be false negative.
-> Mark those tests as skip when thp is not available.
-
-Thanks, I updated mm.git's mm-unstable branch to this version.
-
-> Changes in v8:
->   - removed the patch 4 in v7 (make ksft_exit_fail_perror variable length)
->     as no clean way to do it at the moment and ksft_exit_fail_msg could
->     do by printing an extra strerror param.
->   - patch 4 use ksft_exit_fail_msg instead of ksft_exit_fail_perror  
-
-Below is how v8 altered mm.git:
 
 
- tools/testing/selftests/kselftest.h  |   21 +++------------------
- tools/testing/selftests/mm/vm_util.c |    6 +++---
- 2 files changed, 6 insertions(+), 21 deletions(-)
+On 4/2/26 11:23 AM, Shakeel Butt wrote:
+> On Thu, Apr 02, 2026 at 10:51:37AM +0800, Baolin Wang wrote:
+>>
+>>
+> [...]
+>>
+>>>> This is v1 only and I don't care much but what is stopping you from moving away
+>>>> from v1?
+>>>
+>>> For example memsw?
+>>>
+>>> https://lore.kernel.org/linux-mm/q2x4drxpjbxcxgns6bjp446ynsxgl32ckcljqcol7posds4nit@3n3tjq35anvb/
+>>>
+>>> I remember Jingxiang's plan is to improve the page counter first.
+>>
+>> Additionally, we still have some existing users on cgroup v1, and they will
+>> need some time to migrate to cgroup v2.
+> 
+> Time is fine but is there any specific v1 feature which is a blocker for you.
 
---- a/tools/testing/selftests/kselftest.h~b
-+++ a/tools/testing/selftests/kselftest.h
-@@ -43,7 +43,7 @@
-  * the program is aborting before finishing all tests):
-  *
-  *    ksft_exit_fail_msg(fmt, ...);
-- *    ksft_exit_fail_perror(fmt, ...);
-+ *    ksft_exit_fail_perror(msg);
-  *
-  */
- #ifndef __KSELFTEST_H
-@@ -417,24 +417,9 @@ static inline __noreturn __printf(1, 2)
- 	exit(KSFT_FAIL);
- }
- 
--static inline __noreturn __printf(1, 2) void ksft_exit_fail_perror(const char *msg, ...)
-+static inline __noreturn void ksft_exit_fail_perror(const char *msg)
- {
--	va_list args;
--	char *buf = NULL;
--	int saved_errno = errno;
--
--	va_start(args, msg);
--	if (vasprintf(&buf, msg, args) == -1) {
--		va_end(args);
--		ksft_exit_fail_msg("vasprintf failed: %s (%d)\n", strerror(saved_errno),
--				saved_errno);
--	}
--	va_end(args);
--
--	errno = saved_errno;
--	ksft_exit_fail_msg("%s: %s (%d)\n", buf, strerror(errno), errno);
--
--	free(buf);
-+	ksft_exit_fail_msg("%s: %s (%d)\n", msg, strerror(errno), errno);
- }
- 
- static inline __noreturn void ksft_exit_xfail(void)
---- a/tools/testing/selftests/mm/vm_util.c~b
-+++ a/tools/testing/selftests/mm/vm_util.c
-@@ -775,15 +775,15 @@ void write_file(const char *path, const
- 
- 	fd = open(path, O_WRONLY);
- 	if (fd == -1)
--		ksft_exit_fail_perror("%s open failed", path);
-+		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
- 
- 	numwritten = write(fd, buf, buflen - 1);
- 	saved_errno = errno;
- 	close(fd);
- 	errno = saved_errno;
- 	if (numwritten < 0)
--		ksft_exit_fail_perror("%s write(%.*s) failed", path, (int)(buflen - 1),
--				buf);
-+		ksft_exit_fail_msg("%s write(%.*s) failed: %s\n", path, (int)(buflen - 1),
-+				buf, strerror(errno));
- 	if (numwritten != buflen - 1)
- 		ksft_exit_fail_msg("%s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
- 				path, (int)(buflen - 1), buf, buflen - 1, numwritten);
-_
+Nope, I haven’t received any blockers from our customers so far.
 
+> The memsw is a known one and is the same for Google (data center). I am aiming
+> to provide memsw like behavior through my memcg_ext proposal but performance is
+> an open question. I am aiming to have a prototype before LSFMM to further the
+> discussion.
+
+Great.
 
