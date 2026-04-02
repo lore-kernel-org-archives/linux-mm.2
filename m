@@ -4,120 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AEDCC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525E6CC6B03
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:43:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6909D6B00A1; Thu,  2 Apr 2026 02:38:53 -0400 (EDT)
+	id 7811E6B009D; Thu,  2 Apr 2026 02:42:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61A0A6B00A2; Thu,  2 Apr 2026 02:38:53 -0400 (EDT)
+	id 7588D6B009E; Thu,  2 Apr 2026 02:42:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 508CF6B00A3; Thu,  2 Apr 2026 02:38:53 -0400 (EDT)
+	id 66DE76B009F; Thu,  2 Apr 2026 02:42:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6416B00A1
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:38:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0FB321B80A7
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:53 +0000 (UTC)
-X-FDA: 84612662946.07.9A27674
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 39CCE2000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:38:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PWaF/hG5";
-	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 546BA6B009D
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:42:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF4F7160490
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:42:58 +0000 (UTC)
+X-FDA: 84612673236.21.AD20699
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7820EC0009
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:42:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iA5w9u2C;
+	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775111931;
+	s=arc-20220608; t=1775112176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WEqNhVsQrzJKuyttIZRIIhpYJGhdAwnhMqwpTFllafE=;
-	b=vgnfoW4kyckk2Oqt2V+HvdTS67JE0+lulDm/6taYoxKZyfsVQrVbzuaLEh0Mfs5Z2Jcr/a
-	ZAu/ezSux/PsIKcyOS5BqQSJlOEOuU0YPc8/dBFGAkgLqda4VjVrwourI3YZ4x1xZ+iN4w
-	1qomzuFJTD38VpsfSQPnApqvY7WJHHw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775111931; a=rsa-sha256;
-	cv=none;
-	b=ehN03hnYuTt0rMnOfyR45W5Hoeoq4Lo53XhncYB6dQ70NChbf0WusUyec0mD+eZXVLoeQ+
-	eJO9n552kUxNyp0jaKRk0vovEaa3WrwYDj0+VokMcHKKMgzwoVrorg99koiApRPE4DcGS/
-	WiRsWZ48AXsHSkHjYv2mfY0DdB4CrTk=
+	bh=RPTO0DYaY/d8+WLZ/HWMNI0pPLF5PSarA4pYkxdO8nU=;
+	b=dNPjMss6ais1WUX9X9HgqDLiC8+MnHF4ZMTrLG8c3+6qVldyDlHUxVZftezhu+XbzmP8t/
+	Idg0Ee2gGWd+xx/UPRymHZcRs0WHpvQWK76mAb2NVVXguGiXPRPqiNMfwmLsRfmVRNCUJ6
+	BJ9pDIW3QOD+C7ifDKUhnEBnD++/MGg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PWaF/hG5";
-	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775111930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WEqNhVsQrzJKuyttIZRIIhpYJGhdAwnhMqwpTFllafE=;
-	b=PWaF/hG5TI/+eCG70TRrKeW8r85eeAxAF+gDiCE+kpbRiZScHySgPSygz12yMtHo/kTMpX
-	zWPXG1v6W2+w6XSM+8d2eu5+wYdhGrRJgXHe4ahqEFKH1A1P9uwKMAuwYVJE+iTUJ7qQOV
-	sFVGp9EMG9PFIZGExIUgOgIkhabupes=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-E0pFoX1POSO0tnomLtchzA-1; Thu,
- 02 Apr 2026 02:38:47 -0400
-X-MC-Unique: E0pFoX1POSO0tnomLtchzA-1
-X-Mimecast-MFC-AGG-ID: E0pFoX1POSO0tnomLtchzA_1775111924
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F10E2195608D;
-	Thu,  2 Apr 2026 06:38:43 +0000 (UTC)
-Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC9491800361;
-	Thu,  2 Apr 2026 06:38:34 +0000 (UTC)
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	chengming.zhou@linux.dev,
-	longman@redhat.com,
-	nphamcs@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Michal Hocko <mhocko@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosryahmed@google.com>
-Subject: [PATCH v6 8/8] selftests/cgroup: test_zswap: wait for asynchronous writeback
-Date: Thu,  2 Apr 2026 14:37:14 +0800
-Message-ID: <20260402063714.55124-9-liwang@redhat.com>
-In-Reply-To: <20260402063714.55124-1-liwang@redhat.com>
-References: <20260402063714.55124-1-liwang@redhat.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iA5w9u2C;
+	spf=pass (imf22.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775112176; a=rsa-sha256;
+	cv=none;
+	b=M/zhq6eThOCItPQt4Ewdm9YJ4S5fdDbIoqs5wFHW2ndrBwblMKwBEC5upN4+v+11gDw8aL
+	ywQ+Gea+cwbgLpWcdjjBQ9lEHKuYnSCUEV2kQkrQkgxTVibzIx/WoDv4coMqXj0f/yzQxf
+	tEEjRgOOOMmxW73PBZHLF+4tvzL4Bjs=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6322dTke236239;
+	Thu, 2 Apr 2026 06:42:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=RPTO0DYaY/d8+WLZ/HWMNI0pPLF5PS
+	arA4pYkxdO8nU=; b=iA5w9u2CZZuqEdwgPuTLDVdva1NhNNCNLkXcqrZeTENTZr
+	OfpHMTcGe7g/AuI5cZnAVJaO1BDOhA6QtBA/Qx7yWq3BoT1fb96REbO8wyH7B6AG
+	DKlA5q3AxbOdW3KTKCLl1mFctCV/a6Xa5vfayUDG/7dzDiFzrLM4iuzPTySFRnBW
+	qbxu9PN49j+oXpGr4BrjostoF2A2EqjTfTrlLe7mEcUZ9QILaPPDh+tJ69p/om00
+	PjTRyAxjRgjN6n/dg/XjzSgS1uHvDhvAwGXMXZUQHA+YA9U6uWeRo/ZXzCTt+Rz/
+	dbaZ8RYr5CDlZq4MfQuRl6wH4Dy147+3+CnDflXg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q3bk48-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 06:42:42 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63225kVw008685;
+	Thu, 2 Apr 2026 06:42:42 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6v11rrem-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 06:42:41 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6326geAr22872706
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Apr 2026 06:42:41 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D86ED58051;
+	Thu,  2 Apr 2026 06:42:40 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E58F5805C;
+	Thu,  2 Apr 2026 06:42:36 +0000 (GMT)
+Received: from [9.39.16.6] (unknown [9.39.16.6])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Apr 2026 06:42:35 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------LspP04RDqWezW5Pn7kgxlFRK"
+Message-ID: <6e58d73a-fd21-4e6f-b1c5-37dda7e006a1@linux.ibm.com>
+Date: Thu, 2 Apr 2026 12:12:34 +0530
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: lwVrHRoZY4p_mRD6yuQ7PZ1r1n3QQ2e_QO_z93WEANo_1775111924
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 39CCE2000A
-X-Stat-Signature: wk65ke44i1g6jweddm3hamo4ek1g4bh1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
+ failure path
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+References: <20260331113724.2080833-1-songmuchun@bytedance.com>
+ <81857888-b6aa-4f04-bfd7-e9365d62669d@linux.ibm.com>
+ <1ACF04AC-CC9B-4B29-8E3F-6609B5C1B09E@linux.dev>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <1ACF04AC-CC9B-4B29-8E3F-6609B5C1B09E@linux.dev>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: GdFtizFs75ZFdD075faTNMxTinhIm0gu
+X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69ce0fe3 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=r77TgQKjGQsHNAKrUKIA:9 a=VnNF1IyMAAAA:8
+ a=968KyxNXAAAA:8 a=NZoFHl13bqaJ-IwmEIUA:9 a=QEXdDO2ut3YA:10
+ a=ZRGaOfixQ7KW42RQcCAA:9 a=WTK3bPQC7c9GO7MO:21 a=_W_S_7VecoQA:10
+ a=lqcHg5cX4UMA:10
+X-Proofpoint-ORIG-GUID: ghaV165Dd5E7jhx6j-um4nuUH6KENxmh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDA1NCBTYWx0ZWRfX0miuM9m/DlUo
+ cjDhPq1TRyCLXKK/1Hf0lfGiu2It5SeRKk0DfgjQPjdNWAoXxnn+okxS3CCP5bIg/jDT+vcxaNG
+ ejvIETdkWXDRYd1Mij0HTadUPx/XJ2eKwie/mwxgLEBRHM/AC54SKvFiwCR2z7Dhm2HVpZsz5eM
+ L1b1nEOuERKcY8J12C4pM4qf8Calcx5944G3ZfHkYIXLhBn09cpc3YpYuKco1gFqjIWfik/k8K5
+ Zpts0k5b8B28lEuUaqvne2zAdlEFnQmgLCnwkart2UBDD5rhTZn6BUYh3i6VbIOTMc6nQ+Friqy
+ wF+DoHAetw7FJ87KBFHmhWbG+xitTdNqjhnPpn4M5gmT1FUih38LzolTonb3wkByZr97uphBIAF
+ qpvod6+iAgwK8UP3oXpC+8ZYs2448qMOSPq257gMTfL9j8lfJMqGf0r8ixqVeZJEa82swQjesFW
+ khu5e02lVUdEaLzTCPQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_01,2026-04-01_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020054
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775111931-990500
-X-HE-Meta: U2FsdGVkX1+tLFR2ajmgx2NV7KE5LcQBCJXCwE+ctHeG5ogllaSTyPZBm6uZVPaV7zTGemkm+noajkCSDE0BgqHBpZ73kjO0Hr0vUgmbrkqEVThZ/X0Yw4wI4vcWOqNy0HRK/kpAoMnvJAfr0BikK0j/SljM8bkPGd6oA0VFiQfG/2xWds+39dcxadY0UsAQgkCZOUmfrzXuU++aTdWIdKuIhSsz7MM0+ZtcC+lA5erPc6HnRoVBnkddUIxL+9ylrzsj/WUHdmbmSMP3TSbU0xr9R2z60lp7Es2hAD4bQLSXLQE8FTZtD8PUFZvHaLIA1/7WWgCEPFfcywgFveMv07DVKatzTpB7ODqoo7IXoKTKVatnwHJV5kiXm82bJK2X2nhq8svPCnYJLu2KooIwub51cSTMMgJZ+ykogGAPnPw1IudiUtud6ZsmskQCBTIJSgffiVVM6L0Gn8IcGBGNvxHu4qcZe/rovCkOub6dTp63Y8Wbnk2jPIlwQkCxblQ48IQMpcBi69C1wv038NbXRtrjDD5ICf0EpfLoGWCK/pwidLaUW4Q47t6x3m+T7wohhtbsgx4GX+IISnoBasLXnfqPZZmu4YtjgQA+yTiMRLClt//+4BnOvglrVRMALa2GA11/LA/f+L/Qr4rMVZvLQBOcEBcAuDH5qCgaWhIrZB7mNEsutHw4Vq3DVV5xPlhrD5lMDskVBfNo31czYHEeAxKNUUP1c3Vg88o42Iq8kQGaa0TXH2zZfhVjzN8QsxBqu8fg6BLeghGUsjfpcgx+Vl6+DG3hbCFCKW5do9/KNuwsii6B3fuNG5/Zqu71cW1Q9DHU/mhfKvHwleFKDhP/wbT3YMSTlk6rnbB3S2lcnj4acLvEyrm6Jku22JgOqEMIkVSeBevV1dSltlkmXVlipngR65Cu7y8wqLWbuVTy0jViaRDGUxTAhpt4Pt8vIzmT0jQ1xbtnLPZNwBUutVx
- DMOhmfNv
- l3MmSfp5hZuirfHIoMtrH863lRdrrSd8xTfphDIo6oBEx0yYmM8tJNH4tf7ktlevmI/UZOhYrwxmB2sZrnP5e9mI97qqafSXjuOk9130yRgQqc2cUlp5B9VeMINI7jLguZONADAuH8VxMKr2dLvqZhW8ousdO7r9mdraOU8Ki9YPkN1sTpMX5aw7Gi+hFLTPzgl6NhvDEpTBYV4mq+TMge1H7SEWeCFMF1deg8AMuvxEkmzLW7zc9s4q3JpYUQh7f4Hu+WIb/rut83axYkYWXtkb7S6yCvn1y39yZMUgm+cQV0Ods7VT9+vXdnZrV6r10jJHBhudnU9kAEzv0353+0rZXJRQgztE892EpTtI4mFetpr6KNKtM/pqyNu18jwVGu5izMZDyPzAibXoM0DCvI2m1sunfMtbwM7sKfm1LHTKgr0y+35O2N6ogf4CIKtMxavCnKJTZclkVKQJKWBQcvXf6nzxICfN/odR2pCF77ZQEng7q39OsDcoFR+XsbJZ7idsoQFyOUrjqlLhn7FtH9oz0H5IUOl8i9JwmyewglXMLQR2uSpzNpMBePW8nPIlZUCbjlEkLIvPY+wvetImyVBxkXLVAkkj+wyqm
+X-Stat-Signature: 4jrfy1zf6zpneohxaupfusjbyef7d4wh
+X-Rspamd-Queue-Id: 7820EC0009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775112176-391758
+X-HE-Meta: U2FsdGVkX18P0OhvgTfm9uh8rUv5P4o4j0WC5X7kR3VEKEhLzieFNvskjXD42Sjq0aWL+KXQsrC4X5JhqUjXqS/11M4YvRxVubvW6vs37FSi3Kx3//2KDsfP0l6Q2jDxY+DuJk3LP91wOjF7JEivyA3qp0f3z9nHCYz8/zTz6zZEJ5lDqcXmRfMyYf21P3RQqaxI3bXXKSIN2oZ2ZeuAVOrBQj4fpyW9cpNCbhEQ8UoWYzfmLEDymPzXWUWhJk9mM/3Ds1QFxSNgtwMe6gVF0DEW0wTPi+mpN/DUxcVdg55zhalQw06hpWE5LUUuPOp/p8WuWqmiIGf0MDwb6bz0gXr2cPmwAJIVaQ4jGNs6YFM2XQjZh6/Uo99i+WOHPeGNu5KEXXTJLgLdCZm+yiQb1tK46BApgIB1GaNPUleNc5F34mJzWep73xAF0q0XLxdqnx6f3+tyDrqR0B4YyKsycZhznSpG+HxYSCdtNIi/P2tMJpvn/EXvWEoFlfflEBLqBdpzbB9xsZrqVbI96DnTf5vKU1N85nQpqlM+xcc4HU7yFJmHnIR12COxY9d2yaRrcZTNQAZ9LTp3USBc5acQYx68C1beEB0gnhxtlYdBTWGi5lRO+WdLk41Rp1lyZxzBBJeGIOjq37Zet1VhR4vRmrU/qK5yhX0R/QtUT3aiVfsjGVUUJ8pvkn3slsAmFBv72bXoOgd6nQGy4m6uRyXq3Py7tLFmt7wWP+MBzJa4lVc+t2Vz5qr5xm6AXo+XH3Kd31j0t1KDscxRzt99+Q5QDLHYQro1meirRpaPTJaGTjb5EmdlYD0TTo8IoaA/Dark6Xt4QrGHsedltvO2Uxn6qXHMBKy/r6Om8vn3sKik2O1TPVSaQA3YnuqpB/hBeJtSGFG9LwyYhngCZ1/j5d4KUH9wb9kERDMngNHhGrdHe5rMxbneDDehouXdT2vgyfBQdxjfDKBK2b1MahBi4sm
+ X7Rv7X+V
+ FKDSfRvsl/Z6vSjGbPfKsqHiPAmD6iZYSPTmT7c5zRorevk/bwwSgzYx5RFPQam0PKMsI+RNo9xlqA7B710025m49mzv00f/o2tl82SNOyMGgzqLyys9WErnhLVuno0wAnHOzieYui72u0x5UOldGB/WP1O3cvLbB3bhPzXlhycONh8rMZK6cievGVO56l5/c8EqfbNSSKEPhfnylalSX5M2ZN23E2VX4JzWTp5Z2OCSbUpng03zz3mkt77LclfAxwTMZS0i/V4V2s+p4pCK772huiBYlEaTBedJA2yWZoZM34Kw+E9fc6HIxvoblTj8GGr8EaIL7Qzw7j2RfEAMXXjmEh+rb58lWDTcmnTREjSqjMRAVcjYDGyg+6DQq4q/RGsITxt+zaoJ+UENc92jmWLMNpqsXpDFl0ghOjW9rPZKQAY5eVmbLnp9deVOxKCDCHey3258J+sBgMnz8os1vDo5CXwHvXmHTk5sSHvt8kgU6Wyd1Sn1UoLvls1WOtqcZGvbWF7UcGYL8Vthmbs5R+q+CjeXBvd/tSW7v04nLjR0eKJEBDIVqBBJAaRk7J4OVtI6F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,95 +149,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap writeback is asynchronous, but test_zswap.c checks writeback
-counters immediately after reclaim/trigger paths. On some platforms
-(e.g. ppc64le), this can race with background writeback and cause
-spurious failures even when behavior is correct.
+This is a multi-part message in MIME format.
+--------------LspP04RDqWezW5Pn7kgxlFRK
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add wait_for_writeback() to poll get_cg_wb_count() with a bounded
-timeout, and use it in:
 
-  test_zswap_writeback_one() when writeback is expected
-  test_no_invasive_cgroup_shrink() for the wb_group check
+On 4/1/26 7:58 AM, Muchun Song wrote:
+>
+>> On Apr 1, 2026, at 02:34, Donet Tom<donettom@linux.ibm.com> wrote:
+>>
+>> Hi Muchun
+> Hi,
+>
+>> On 3/31/26 5:07 PM, Muchun Song wrote:
+>>> sparse_init_nid() is careful to leave alone every section whose vmemmap
+>>> has already been set up by sparse_vmemmap_init_nid_early(); it only
+>>> clears section_mem_map for the rest:
+>>>
+>>>          if (!preinited_vmemmap_section(ms))
+>>>                  ms->section_mem_map = 0;
+>>>
+>>> A leftover line after that conditional block
+>>>
+>>>          ms->section_mem_map = 0;
+>>>
+>>> was supposed to be deleted but was missed in the failure path, causing the
+>>> field to be overwritten for all sections when memory allocation fails,
+>>> effectively destroying the pre-initialization check.
+>>>
+>>> Drop the stray assignment so that preinited sections retain their
+>>> already valid state.
+>>>
+>>> Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
+>>> Signed-off-by: Muchun Song<songmuchun@bytedance.com>
+>>> ---
+>>>   mm/sparse.c | 1 -
+>>>   1 file changed, 1 deletion(-)
+>>>
+>>> diff --git a/mm/sparse.c b/mm/sparse.c
+>>> index c2eb36bfb86d..3a14b733bf71 100644
+>>> --- a/mm/sparse.c
+>>> +++ b/mm/sparse.c
+>>> @@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+>>>    ms = __nr_to_section(pnum);
+>>>    if (!preinited_vmemmap_section(ms))
+>>>    ms->section_mem_map = 0;
+>>> - ms->section_mem_map = 0;
+>>
+>> This looks correct to me.
+>>
+>> I have a couple of questions:
+>>
+>> 1. As I understand, section_mem_map initially stores the nid
+>>     during early boot, and later it stores a pointer to an
+>>     array of struct page. In sparse_init_nid(), the struct page
+>>     array is stored in section_mem_map via
+>>     sparse_init_early_section(). If
+>>     __populate_section_memmap() fails, we are  clearing the nid
+>>     stored in section_mem_map right?
+> Right.
+>
+>> 2. Another question: if sparse_init_nid() fails for some
+>>     sections, there is no retry mechanism to add them again,
+>>     correct?
+> Right.
+>
+>> 3. when ms->section_mem_map is set to 0
+>>     for a pre-initialized section, does it only affect the
+>>     pre-initialization check, or could it lead to other issues?
+>>
+> Only affect pre-initialization. No other issues.
 
-This keeps the original before/after assertion style while making the
-tests robust against writeback completion latency.
 
-No test behavior change, selftest stability improvement only.
+Thanks for the clarification.
 
-Signed-off-by: Li Wang <liwang@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yosry Ahmed <yosryahmed@google.com>
+This looks good to me.
+
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
+
+
+
+>
+> Thanks.
+>
+>> - Donet
+>>
+>>>    }
+>>>   }
+>
+--------------LspP04RDqWezW5Pn7kgxlFRK
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 4/1/26 7:58 AM, Muchun Song wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:1ACF04AC-CC9B-4B29-8E3F-6609B5C1B09E@linux.dev">
+      <pre wrap="" class="moz-quote-pre">
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">On Apr 1, 2026, at 02:34, Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a> wrote:
+
+Hi Muchun
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Hi,
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+On 3/31/26 5:07 PM, Muchun Song wrote:
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">sparse_init_nid() is careful to leave alone every section whose vmemmap
+has already been set up by sparse_vmemmap_init_nid_early(); it only
+clears section_mem_map for the rest:
+
+        if (!preinited_vmemmap_section(ms))
+                ms-&gt;section_mem_map = 0;
+
+A leftover line after that conditional block
+
+        ms-&gt;section_mem_map = 0;
+
+was supposed to be deleted but was missed in the failure path, causing the
+field to be overwritten for all sections when memory allocation fails,
+effectively destroying the pre-initialization check.
+
+Drop the stray assignment so that preinited sections retain their
+already valid state.
+
+Fixes: d65917c42373 ("mm/sparse: allow for alternate vmemmap section init at boot")
+Signed-off-by: Muchun Song <a class="moz-txt-link-rfc2396E" href="mailto:songmuchun@bytedance.com">&lt;songmuchun@bytedance.com&gt;</a>
 ---
+ mm/sparse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Notes:
-    v6:
-    	- Declear long type for elapsed and count variables.
+diff --git a/mm/sparse.c b/mm/sparse.c
+index c2eb36bfb86d..3a14b733bf71 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -584,7 +584,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+  ms = __nr_to_section(pnum);
+  if (!preinited_vmemmap_section(ms))
+  ms-&gt;section_mem_map = 0;
+- ms-&gt;section_mem_map = 0;
+</pre>
+        </blockquote>
+        <pre wrap="" class="moz-quote-pre">
 
- tools/testing/selftests/cgroup/test_zswap.c | 28 +++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+This looks correct to me.
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index ffc037922e1b..8656130961a3 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -118,6 +118,27 @@ static char *setup_test_group_1M(const char *root, const char *name)
- 	return NULL;
+I have a couple of questions:
+
+1. As I understand, section_mem_map initially stores the nid
+   during early boot, and later it stores a pointer to an
+   array of struct page. In sparse_init_nid(), the struct page
+   array is stored in section_mem_map via
+   sparse_init_early_section(). If
+   __populate_section_memmap() fails, we are  clearing the nid
+   stored in section_mem_map right?
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Right.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+2. Another question: if sparse_init_nid() fails for some
+   sections, there is no retry mechanism to add them again,
+   correct?
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Right.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+3. when ms-&gt;section_mem_map is set to 0
+   for a pre-initialized section, does it only affect the
+   pre-initialization check, or could it lead to other issues?
+
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Only affect pre-initialization. No other issues.</pre>
+    </blockquote>
+    <p><font face="monospace"><br>
+        Thanks for the clarification.<br>
+        <br>
+        This looks good to me.<br>
+        <br>
+      </font></p>
+    <p id="b"
+style="overflow-wrap: anywhere; font-size: 13px; font-family: monospace; background: rgb(255, 255, 255); color: rgb(0, 0, 51); white-space: pre-wrap; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">Reviewed by: Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a></p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:1ACF04AC-CC9B-4B29-8E3F-6609B5C1B09E@linux.dev">
+      <pre wrap="" class="moz-quote-pre">
+
+Thanks.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+- Donet
+
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">  }
  }
- 
-+/*
-+ * Writeback is asynchronous; poll until at least one writeback has
-+ * been recorded for @cg, or until @timeout_ms has elapsed.
-+ */
-+static long wait_for_writeback(const char *cg, int timeout_ms)
-+{
-+	long elapsed, count;
-+	for (elapsed = 0; elapsed < timeout_ms; elapsed += 100) {
-+		count = get_cg_wb_count(cg);
-+
-+		if (count < 0)
-+			return -1;
-+		if (count > 0)
-+			return count;
-+
-+		usleep(100000);
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Sanity test to check that pages are written into zswap.
-  */
-@@ -343,7 +364,10 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
- 		return -1;
- 
- 	/* Verify that zswap writeback occurred only if writeback was enabled */
--	zswpwb_after = get_cg_wb_count(cgroup);
-+	if (wb)
-+		zswpwb_after = wait_for_writeback(cgroup, 5000);
-+	else
-+		zswpwb_after = get_cg_wb_count(cgroup);
- 	if (zswpwb_after < 0)
- 		return -1;
- 
-@@ -474,7 +498,7 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- 	}
- 
- 	/* Verify that only zswapped memory from gwb_group has been written back */
--	if (get_cg_wb_count(wb_group) > 0 && get_cg_wb_count(zw_group) == 0)
-+	if (wait_for_writeback(wb_group, 5000) > 0 && get_cg_wb_count(zw_group) == 0)
- 		ret = KSFT_PASS;
- out:
- 	cg_enter_current(root);
--- 
-2.53.0
+</pre>
+        </blockquote>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------LspP04RDqWezW5Pn7kgxlFRK--
 
 
