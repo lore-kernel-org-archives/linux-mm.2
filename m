@@ -4,103 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87620CC6B0E
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C707ACC6B00
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:29:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA2F86B008C; Thu,  2 Apr 2026 03:28:57 -0400 (EDT)
+	id 073A56B0088; Thu,  2 Apr 2026 03:29:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E53966B0092; Thu,  2 Apr 2026 03:28:57 -0400 (EDT)
+	id 003BF6B008A; Thu,  2 Apr 2026 03:29:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91096B0095; Thu,  2 Apr 2026 03:28:57 -0400 (EDT)
+	id E2DFB6B008C; Thu,  2 Apr 2026 03:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CD2276B008C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:28:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5ACA313B0DF
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:28:57 +0000 (UTC)
-X-FDA: 84612789114.26.227E421
+	by kanga.kvack.org (Postfix) with ESMTP id CD2AE6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:29:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F4AE140539
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:29:35 +0000 (UTC)
+X-FDA: 84612790710.14.3CD7B81
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6732C140004
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:28:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UC0OtezJ;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UC0OtezJ;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114935; a=rsa-sha256;
+	by imf28.hostedemail.com (Postfix) with ESMTP id C56E3C000A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:29:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oEbTGtN4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114973; a=rsa-sha256;
 	cv=none;
-	b=i9M+lrn+vLbKUcY8PsGiEWtL/nQPVLkzEH4ibMQkJ3YqraUharY2GBjUY0OIuXPsJXekaY
-	0BaBkyc2JkKZhPjAVcdZ/5+UtMyc9/RgCSDUVVIR4BVehV+4uGr9Eol1E5uiNP74Yjehht
-	3zCizL8mpaVLjc2lC+Ycu/ZIA3AaJ0M=
+	b=iSCR1ThiK9POp4XZvQiQxXvGFpxgdn+kybWImWqsukmJg2Uvk8f5GrrH9rL6y4xqq3SWCK
+	PPJQvD09fBTp8bV2woQQG41Mtw9kpfCREOj7/v4zypc5esXWdD72CNXfhsppYNRcbcHrzM
+	VjMLd/VQ0uGlcwQDmyMzYgsa7pIli9w=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oEbTGtN4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775114935;
+	s=arc-20220608; t=1775114973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4mCO4oHu8hSU7UWPA1qKrOULI/J9COwYisqjUNjGifU=;
-	b=vlvs5RyNvdlGo/LQzt1hOkt7rifQQor2GvRzu8MNI/IawRbj0j8zCCikFVKy4hTJbvAxjJ
-	sQx+Avr0z3/orPj4ZnI6j00OqMYHvBLLeYfmm7fF4/iUAyOl0RJnzfkKEYSdKCbhfSQvWV
-	p3JQvztN2fGJf9mLLUVtEdd3bwsjwAI=
+	bh=un64eBoe9ZYFwk83hqkbv0LE9gZ/9bC+pH4+wTurOss=;
+	b=TgGdKDzYveqhIpNQRhixhMgPSS4Y7r5NfHxJNQ27SezXkulWCFERnY1t9TCLiJDHr/kWFP
+	RqKeFAjQUY2GQdmx2VKpLkJm9y/LOTFPzFDjP/iFHCR/pfdSO1X4z/tXPIp0S5zdLH7//S
+	/ydsd7YKRy6bIWpClH1sSrOrTEJahhE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BF58441BB
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:28:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A15BC2BCB6
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:28:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F0A004383C;
+	Thu,  2 Apr 2026 07:29:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BD2C2BC9E;
+	Thu,  2 Apr 2026 07:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775114934;
-	bh=8SqcQrKrPoaqAc2XWSd5pIcLYrCmQSpuDeu9nsIhBLE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UC0OtezJmSUHauCrYvNIGBNcYqsKQX0u6ZOT0gLDpC0yamNVqrRdbIH/JUpa6ugqG
-	 RtgZV9Hb2g9KdhyffAbi2h7w+RSqQuPzwpwuQ/tLKZC1K77nbuZhY1PrZLKAa+vlYP
-	 DFYPDvl8cRYZRsPxRtXDRo3k5BSmoGYpU7TTRjweqZ+yDgjmTUjVBTHHGU9AZXnN0s
-	 TRQ5v7yW7VghwghS8Uar91h4HSxOOKwSwV5tjLz5cOtuyZoG0VYTrwT19H6Pfp1XKS
-	 ODLttjD71R73BfNSBRAerqw18E2oltsTpwsTK0PLDTGQGFQK9C/yW9lZ190sD6pZSA
-	 xfjy+9wbxsgjw==
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50d2945e6adso9539261cf.3
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 00:28:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWprLoCX1aN/dyGlG7tiXMChY4HeHHwbiJ3bCyeNoDby6dALLl4bRKovgURry2jF+KKUNLG94wjWQ==@kvack.org
-X-Gm-Message-State: AOJu0YylJVSdb3kq5AgAuOaTw+nelwe1WAAs/m1oTHLqu9vgw6wfJbAQ
-	K7qZ+cCQmD131ZyTROykJoM1Ah9TElowK+j1tqMB1Z3k77dE+jcQhc0L+Bjjc4wtdUJ0Gkbhxsr
-	diZdgxeAYvdRcge++lZgziV8NidVhJ24=
-X-Received: by 2002:a05:622a:5590:b0:50b:3ff3:f494 with SMTP id
- d75a77b69052e-50d3bc8d6edmr96888171cf.36.1775114933529; Thu, 02 Apr 2026
- 00:28:53 -0700 (PDT)
+	s=k20201202; t=1775114972;
+	bh=D3ufA3GvRxNkZ3yB8Lv5bR3IMcCAL7OlgmcDrikRdDw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oEbTGtN44IqKRJuOKKlOiCRRC84kHfq2mQK7+PWn5umKZwWOdqTMdHFsng6uN6OfN
+	 Y/iosafqjhE5MasGteYEquxGpCTBCLFHDfarQnGEvookIFUKG3oDXcow6v04pvWWEZ
+	 J2cld0IT+YsnmklOONXiGq3BT/K8PQ/8QmLvxTPbEg0oQ8h83KsPcQDk9wlWrwJFym
+	 CipGSFex5/XuOH+7XlvWWCcDIMQ1tKZszSGxFQwz5ARh9/2ItoSOChLj1asIuUA5eu
+	 h3Zp7/ZWy7QdK0gxS/pPZxyTZWhUoqH8d33FdzfRVHHUUAmyIi0aBCum7k6+s8aOcB
+	 AuCfRgAL/pwkw==
+Message-ID: <82c05457-d036-46f5-b249-606c4e55f8c1@kernel.org>
+Date: Thu, 2 Apr 2026 09:29:26 +0200
 MIME-Version: 1.0
-References: <CAGsJ_4wCDW=3YdPboinTNUp5qvcSR8LM+6vEhFM5q8FXHVNzHg@mail.gmail.com>
- <20260303082952.477277-1-zhanghongru@xiaomi.com>
-In-Reply-To: <20260303082952.477277-1-zhanghongru@xiaomi.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 2 Apr 2026 15:28:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z_2ytLf8cHZ62-k5D=mKteJBrZjjuOVSqkr9+ugK+uxw@mail.gmail.com>
-X-Gm-Features: AQROBzAq9EepD1wljDys_euGBeW-3GTPay0mnRZwM3qWg1x2kmnjWd9o6XnsOPc
-Message-ID: <CAGsJ_4z_2ytLf8cHZ62-k5D=mKteJBrZjjuOVSqkr9+ugK+uxw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mm: optimize free_area_empty() check using
- per-migratetype counts
-To: Hongru Zhang <zhanghongru06@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, david@kernel.org, hannes@cmpxchg.org, 
-	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, mhocko@suse.com, rppt@kernel.org, 
-	surenb@google.com, vbabka@suse.cz, weixugc@google.com, yuanchu@google.com, 
-	zhanghongru@xiaomi.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6732C140004
-X-Stat-Signature: h58u44gba3jbgd9c5o3h6h91b7uwa6ha
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm/page_io: rename swap_iocb fields for clarity
+To: David Carlier <devnexen@gmail.com>, Kairui Song <kasong@tencent.com>,
+ Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
+ NeilBrown <neil@brown.name>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+References: <20260402072650.48811-1-devnexen@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260402072650.48811-1-devnexen@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C56E3C000A
+X-Stat-Signature: yr5hebpsj3nw9bswatksypmnqskncisd
 X-Rspam-User: 
-X-HE-Tag: 1775114935-720702
-X-HE-Meta: U2FsdGVkX1+742EhF63yM1f5G5oTbJE9VL1voEmPJz0R6sD8hBizORxqm9h5uDSIADOhPn7CljYbAFjynusDmvWhMMuUF/QXgDBTjAtB7nbztWAaUdoS+Lp96Pv1CfZDp4Gk60lYUuXBi8gkqzBhJC12fFkNXhelmb07ESp2Me002qN1GR9SUlYnB0QiuD8mMXa1iin0dNYmZyJKU289K0eLVQty8S4yCezUsbwPb5PvnEquXVVpsx0PPkx7daQNMmk7THx2ito9eyKBQRv4oNQ+zNxRCOmPb5NJNKf8Qj2nZjcBJuVj0ROMZTR0JUgL+8mGbq8JklhEg5AlK/KbXr/xsZfhmjoO/j1ipjkHitoEr9/BpqSTWC5nPpgALB6SZHj4a5nuc+PMF+iLRc/PvgzgsghDiT7aZN+h6CcxNHK2g8Y9UbrKbCzRwdpee1nqAhueCKisLLUQXWPMzaDYDaMvH8w4v+hGMRQQa51SQ9fiyKy+VsOHq/RDtZG5hUD/TjxPGgHfrkPrvkU1ripfq3WDvURZUeylYVzZKsP+4FWiyl/6tyi9KygGDRufoW9A9tz1k1nvWADRPcC8U4lkMyWURX44nc9IYaqAwAYEZS/2QwSeZVIF8op/QUAo6+x0i56C2J6OLTceYA9I3Rb2T04NtPP7GrtRKVQcABSFhcFaMsOYXWIwBVOf+hac1Qs9JRB6nxpLaSaP7yVjTXS795JIJGl1I1wI+UDm607a8oPsp5S5YFdTEmkTOxjyuaQpE1fyCG6gjEAvOmTWG5x2PFkVk2Ml5Vyw4kr1DlEF2YrWBA84ynzQPNWn1QLdolg8oU6B0bA7DwYsOWrB5kkH/IH2EYqSmOqSxMa6WrAPuK+iHJm/vheAWhKOONJdK1/JjZHWxB6WOkbYU3flBRAVLszDvWLCTw1VUBvLBp7Q+CQKA3vra1IWqRLru5DRzNGkAUEyyl+JddQmyK5VGgO
- y8w8/dWn
- GemlNdOK1yiFvwmHhRw7y9wlN0t+6FpxddMv2XjUSyG6g9PkK8jK9o620dFYASL9YbxDiBrjgbq3/MZY5Y3Jx7ZkJu52Hfm2gYfzRXcGS4Boh8wVrl4/s/HHd1StXZbSlD9RHYhG7IG1eRI8W+F009oYforD/5Vt1Tp7Yj5H76DSHzsNKlhluSg22VoDkDPftkVMYEtuenCCeFFVR56gUPJ1Rvvb2Mf1lOSIndNGJ3GXW7bYV0NJwDzVFQAz6SnBF2UOCTT3lN1OvAzkMKLpHyhyty8lu3l2ELHOX8Xv7QzaPOPcAu2XR4k0LiEOVsjL5FumtEMK8s3kwlR1+Qn7oQYnJK83eHDDzvlafMDjOw7o6CcylqBQm/gcWSuGV/J3lXjvPNhqt+qPc3ZQOXcub3RYXwT/SWe/nJz35p6h2xD52IvxrtlVC2gNwp18D16uSP0erqDNlTKTuXXWkxAKwqnzJMkeDV3z9Fq9qJ7c+Oyn6S3Xs/IS0ogJNfIZ3/VRP2rMk
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775114973-799271
+X-HE-Meta: U2FsdGVkX19V+ZU8XDVWyG6KQ3FlNtnZwu3gToK7CHMdeFXVFUXAeIQ5M/MXEaOFfRjEybwRIuWmnmUwRt0pYh12bjBzS/4CalgMRGZL1vOxIbzpt5ouA7Lu78UnzESvBNcAs7sokipyvRkoGsf2iwEhjnv4BoOpPa200puxqx48OQeaOgKCahNthhILdHd89sbunmqpdxTeX7MhO6Cq2pj9IZOFPFlIE8sBHmZL0uNIP6ax0YBpGTIjD5ThHv5sAKVBioikzNSoMgb4R9GShpTBrq/FEs3GnSRRWAb7zzseYdlW2XFsHGcuOkgQoonYXTdv2+t7qW/EAS2uZM4Xra+hSvbg5lGutoni7AaLQjeKIwGrAmCukF+tlInKld97ESQ1aR14ml7WFyiXpTKwsDpcNZTTAjSEomvlwOKW7oDxLI9Hb0kZn8ASEHLKr+X8/6Q5yAYUvbHcRu7yW4gr0VrrPVcFjhVQf7yTBC2V1XfOtHlMQwDmcETAm9exRXa7QSNUhWrnKSlZ7bCTdFjwk4ZPQz0nkOPFfMMPbgUSlONKGHTCBTGBGYHVLTBgkSCpSnRJFP9QbC4u9pcIx6+iLnRFoMPX67y29ITmV11AoPlpzLFQfSPAJtiEJzmskL7ksA1ro+KZHQrXot8cmQtaIV8WfVkONdYT62IUDD2KAxIkI/Dqs7cYseCOmQfGHl7un3PQGgtTRZWVDbQ1v9CdANGkvRmZoB7ROCDiVqu6NhWQ9xyco93JRJqIe2ixpUQaajU8nIx7aVFmDFv4MVfekyk5VSDxcI+3mQ4n90tcRL7jVuOwjJ8rN0Rg0VyGmVFIeuJBUzh+SeyIJqNDO3JLiIkNEzR/hYXE2bsUbopMLeWnwWfMUDz3rsAyaYRkIStxCquUgAqaMPLG9YV3VTwVNZfD+ehHI4aDPKjRggrO1pKbFQcwk120WOwoEGeP7sFH8PxCdIeeJGF0zep+y2S
+ aP7IWn7T
+ S1R0e6t+DI0WLeMV2XPl144akO97rcyWUIx12gMdM1w7sro6mpZjEx+ZVwGr2LpyJMN+kNu1aUbHVOdKmeNz3v3047xXIXxY4AXGhDPCDBBo4hS6Yf6pPf6rlGs7gMBh+hGTeh22ZWHEH3t4bWpfp+S5WjOCILliwla9Qw6WGUsPbW6Y3ED8WCAeqHKa+uAyZD0HgWJHBYruLZrg2qUaHjiaFwkuzXBZQzR9vmbQJnZ1oH1SCg4a1Tp5vCbcgo9752+fCGwDQkWXeFRcCCBaJVPDSodbXjdAMniI/OV/5doyUb4zhwyKDnOwf5jaFt4hW7b4GZnVZ4LLhebWL7RWpIP63YDkqIRzZyEIht3mvfT/7P8s74DmSKpCsq7/Ae7E7baUyd1kQbPQZkbu291g3Zd5gmfywhNDgAhWQLo4mbJWYLiV9rNbMm1TfyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,74 +141,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026 at 4:32=E2=80=AFPM Hongru Zhang <zhanghongru06@gmail.co=
-m> wrote:
->
-> > >
-> > > From: Hongru Zhang <zhanghongru@xiaomi.com>
-> > >
-> > > Use per-migratetype counts instead of list_empty() helps reduce a
-> > > few cpu instructions.
-> > >
-> > > Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
-> > > ---
-> > >  mm/internal.h | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/mm/internal.h b/mm/internal.h
-> > > index 1561fc2ff5b8..7759f8fdf445 100644
-> > > --- a/mm/internal.h
-> > > +++ b/mm/internal.h
-> > > @@ -954,7 +954,7 @@ int find_suitable_fallback(struct free_area *area=
-, unsigned int order,
-> > >
-> > >  static inline bool free_area_empty(struct free_area *area, int migra=
-tetype)
-> > >  {
-> > > -       return list_empty(&area->free_list[migratetype]);
-> > > +       return !READ_ONCE(area->mt_nr_free[migratetype]);
-> >
-> > I'm not quite sure about this. Since the counter is written and read mo=
-re
-> > frequently, cache coherence traffic may actually be higher than for the=
- list
-> > head.
-> >
-> > I'd prefer to drop this unless there is real data showing it performs b=
-etter.
->
-> Under the model described in email [1], with this patch (3/3), memory all=
-ocation
-> performance is 0.36% better than without it.
+On 4/2/26 09:26, David Carlier wrote:
+> swap_iocb->pages tracks the number of bvec entries (folios), not base
+> pages. Rename the array from bvec to bvecs and the counter from pages
+> to nr_bvecs to accurately reflect their purpose.
+> 
+> Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
 
-I'm fine with the data, though my actual suggestion was to place each
-mt_free_area in a separate cacheline to avoid false sharing. That one
-could be separated if you see an obvious performance improvement.
+Thanks!
 
-For this patchset, I feel the main issue is convincing people of the value
-of increasing counters in the alloc/free hotpath. As Johannes commented [1]=
-,
-the new counters should provide more use cases than pagetypeinfo, or as Zi
-Yan commented [2], clearly demonstrate the value that userspace derives fro=
-m
-pagetypeinfo.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Right now, pagetypeinfo is considered a debug interface, so its implementat=
-ion
-is quite poor.
+-- 
+Cheers,
 
-[1] https://lore.kernel.org/all/20251128130823.GA222920@cmpxchg.org/
-[2] https://lore.kernel.org/all/760FBDE3-2724-44A6-A874-BD87F0191C57@nvidia=
-.com/
-
->
-> Detailed data:
-> - https://gist.github.com/zhr250/4439523b7ca3c18f4a2d2c97b24c4965
->
-> Reference:
-> [1] https://lore.kernel.org/linux-mm/20260303080423.472534-1-zhanghongru@=
-xiaomi.com/
-
-Thanks
-Barry
+David
 
