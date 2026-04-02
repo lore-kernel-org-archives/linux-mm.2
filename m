@@ -4,100 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E2BA1112274
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 230DD111227A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCAD86B0088; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
+	id 3E2A36B0088; Wed,  1 Apr 2026 22:56:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2456B0089; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
+	id 394256B0089; Wed,  1 Apr 2026 22:56:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDF396B008A; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
+	id 282556B008A; Wed,  1 Apr 2026 22:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8EC06B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:54:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51112160169
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:54:08 +0000 (UTC)
-X-FDA: 84612096576.18.8C16274
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E1CBD180003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:54:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=iOW9d5Fq;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775098446;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 158736B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:56:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C49AFB874A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:56:18 +0000 (UTC)
+X-FDA: 84612102036.11.44FD02A
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E663D20008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:56:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=biecQxEi;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775098577; a=rsa-sha256;
+	cv=none;
+	b=Iwfo6zCqNvYIJv8qXkNqnNqXlLE3PS+Cvyl9XlRd2FMQI7K1KYyPHO3DBLwJ6lr7umIZaR
+	hmyWyIWClIh8IepxW0VIoJF0UAxWXmJKsuKoINvKsa09HZOhYP+1SG3WMApp+/XHB8ee7H
+	omTeimHDgL3XA0qiJZRe2BqtwvCz5Q0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775098577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=;
-	b=K67Ng6JVIBg8o218yYsKxrXPgAnVUhyeHT+g7p82R2AznrhbvA6P4g5LBn/6TZMdFsAJ9Y
-	icdQJ2lxzGS0jn1vFJobKc2oLqMMpGY3Zo6O8juneCVM0S5aKKV0+ptSaQwyfnuA21s7HC
-	MklC29wTtZtQncCK5DMBNd4VJfM+2oA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775098446; a=rsa-sha256;
-	cv=pass;
-	b=xEjOgHQlNcBTouUWGV3+yD3LpTzf0jl1Rh/dC4bHd/6bKR3Q35+E6AJmby2ddHa8Qm0jSI
-	oWRKapNwzF4Gi7G8WzBZ8e14Yd+PfQ4x6d1z4mVEqwSy9VLQ0FD31BNK985lwqchTW3SQN
-	5GjAeg0/6yKWY9CdHUtnZhpTg5zMdiU=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=iOW9d5Fq;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf24.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1775098428; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=NwyOwYHYF+ovVE/0l1pvR2adoXjoLc8gNdcy18b4kvcNutNZNA379WE5MzjM+VHWHu781n0Y6pmeaZjxZNak3wPCdYglYtGuVisSLdOM0Kd9QtAABd0PjQNc8RJxpKJdAJTFjQa600LwKBQKirlQS7YLkGTb74s1WzA90q5zwp0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1775098428; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=; 
-	b=IhdkbiFPhcCRub5cayeQwS8u1tfnrpQmsFXvJFcoaZyPxk7Dn1EbTM3pwg27vgMDyMtDSq3VwhZ6Pboy1XZjhMXFHh9OHc0S7xYB73poJROlMa9KzM1VrM0mDc/t2n81Pdk1dusMzt3CTIoWZ9LCQNsDH9Z9I4HBzmAJDV9+Dyk=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775098428;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=2chHKO41l61BaF4CaVmJKRvMWpCckYE9lhrVztlILW8=;
-	b=iOW9d5FqlMGgTSaUTOgo8E7lpVIZ564tvu0ZYzIwm0NbXxVGnq2gQyglw1O/v6dJ
-	JhTB8wokoYrK6WBNWXZ3grOVeou6bkZqfqaGwFB8trzU28KFN7PavTOR5E96odiO7qH
-	PrjDBS4TcwrZF2vcCBfCv0ABA0l6Qc1G+xKiTeiQ=
-Received: by mx.zoho.in with SMTPS id 1775098426451998.3824273067871;
-	Thu, 2 Apr 2026 08:23:46 +0530 (IST)
-Message-ID: <31bb8a8e-2ca0-486b-888a-328e9b748ac4@zohomail.in>
-Date: Thu, 2 Apr 2026 08:23:42 +0530
+	bh=YxJh7vY7ymqstvenqv7CWmrOnBh2MKIFs8pONvqJB0Q=;
+	b=yv5+mCA3muc9aD8xEY1LKu+YO9sf+aFrtZ331h4rKMiVG6a9RXTWPN99I1R6GLumOpmAXe
+	mKRCZaY2YeyMHmoq3U2mPcTe8vZUym0eTbII4+GLccnM7Rty9oC/GmYU4OyDtK0TW0kEgf
+	kHdovqvVROWr9ScBtO0/J+g6GlG89z4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=biecQxEi;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ab46931cf1so10692355ad.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 19:56:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775098576; x=1775703376; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YxJh7vY7ymqstvenqv7CWmrOnBh2MKIFs8pONvqJB0Q=;
+        b=biecQxEi5kmIDADitXDK58ak1kvXIb3uumTznadqzHy881eRpE31L/HXTCz5djbjSU
+         ZledT0RSXn26SerB3MKq2QdhI7B4gevdRIWcsI/F3g6sZMb3OD/ldMxrUdwAIZZuyTe1
+         mkEN4hyx7k1aVcgcz4VbY9Jdm5L4BP9VL7mYj+dSsrLTeOWQd/+Jl4AosC30TC792CMz
+         7l9GUY0CMVZ5RvFT4ioroHKT/8qdR50Lt/qSzLOgj14cmXAalAqNRJMvl7JCTcvrSdaQ
+         diXDjFDVX1iPM0l2QeOzBqr3RRDyRufnGuwyQDpOg4aL7dX7Ox2d79gcMb3QTS78u1Bv
+         gF2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775098576; x=1775703376;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YxJh7vY7ymqstvenqv7CWmrOnBh2MKIFs8pONvqJB0Q=;
+        b=cF6VK2nf+Gw4V83jZBj9Z/lJIFbAr/9xNSNgpVrAVYtZJG3NHKTQd2LNI3rJu+RXWx
+         3pGbaCuNxtoN2luQzXxJvoBbYCitKjyR90YY4cf18DRgBj4JDey0I0Hj/a8D/fxhC6mu
+         3re/bskcp+Niy1wuA25IyQIxUAiIs93KPPvUuCbC/3G3VBMVyS8fkLPpEbAfO0xMwKwZ
+         De9VaovDqilGJjKcEawzw630pb0JdRhQ910IWIrlH66C80qjYckT/L+ndRfTkFDi2N0m
+         aJJtoCYvuvWlxRl6C03xBmkSzzv1CMT92g7PbmJwmeBzqSVztOAXjTiKniOdP4X5m3QU
+         R/8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV/7GI0yW1QCBGzRrLvndEVDxV+EkiuSUfVMj9iL0LKA46S7xF772gEVgt9woTKUeoof79/WmaC2A==@kvack.org
+X-Gm-Message-State: AOJu0Yz9jvZag7h4AToJVGoO7b1oF7K5RPr8CcC2KYJ5joRVKqeA3G+H
+	H2hHkaXCFgM32m3hmLiOeVwZIeMhpRNxIl7EzzaXjNnTF9yx2bW3stQX
+X-Gm-Gg: ATEYQzydNuHNa9tL6P0Log/j4dFAg2s0sv75JjTSKBW1TADHI1d8tow86xSe4sPqI9A
+	MTNaNlzMi2IKk1v/DF7s3RAQoC8x+4prmT3J5lOaSmi1o3eiIsc0PEUa05GymzbewhMBZUqHdN9
+	6ewJavYeDEBn9FD5Fv3VCQd8ULQ0zBId91nIoBBMzmjsdtXs8IroXi1LMwSOp4ALBPmNzvqb7m3
+	yECdCl0Uc/cuhQ/M+snig7YvbHO1w3ResRDALTRMg23PB44gKLlZGw6L5VOqrXfve33YehMaYwR
+	GG+BajuuAivW+YwgmOJtwWgwxdlL52isyD+1N5cs70jRzh+FQP9bSNQGUUyu/d1tKlV3oB7htpv
+	+aAY1npUwS31XdkB8up5UVv8zd//2axVCLSLkFBtkIMoLxiXZ0UHV7Se1MI4BxxB1mj8Z1TuA5S
+	bdEPGrITvUhiUpAOFPAEQJHcditF+I+RYlRpgDi5KZXocALwnpHi9uRzP3ZmE//gpGcXa9
+X-Received: by 2002:a17:902:e84d:b0:2b0:5a4c:726f with SMTP id d9443c01a7336-2b277e3745cmr7657965ad.15.1775098575594;
+        Wed, 01 Apr 2026 19:56:15 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27478b84esm10880025ad.32.2026.04.01.19.56.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 19:56:15 -0700 (PDT)
+Date: Thu, 2 Apr 2026 10:56:07 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic
+ and throttling
+Message-ID: <ac3YKAh1Kzmpwhi0@KASONG-MC4>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+ <ac3VV7h1fuDuUOJA@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/4] mm/vmalloc: free unused pages on vrealloc() shrink
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-References: <20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in>
- <20260401-vmalloc-shrink-v9-3-bf58dfb997d8@zohomail.in>
- <ac2L2VNExpp8t7oF@google.com>
- <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in>
-Content-Language: en-US
-In-Reply-To: <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: E1CBD180003
-X-Stat-Signature: jzs1q5sitkfq3imjsezhw5tjkfohuy7a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac3VV7h1fuDuUOJA@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775098445-717866
-X-HE-Meta: U2FsdGVkX1/6S7rE0eGUv+LenRPHJEiS0uAHfhJlQc2kWElKdZVrxObI1JSOltpmRnHCIviXW6S5jH/gn0IiFO4deq1aGlstn7+B+5TXZ4FvOIOegontUC+JSUncfkc2JRtfVuTsUZTxYwa6+VRENbP26he15pJUKzFZpDWUR3h/Gta15LLc/b95U9BKZCshI6xS0pGuwr9MSVLYEwMI0WTLUHUglIxn4pP3YJ2uiYPr2c87n3z/W8QBYtPWqDRfw0TZfNoqDI0/ySvVlnoMdA3o/31nOMA3BYJ4jKXgpx1Kqn8v1yxzpaD3juzG79vtKWLKgyZPTvX6j9n25LEPxA+L72+uscS8gLTEW03x/Gooxhzfrfxk1pQAu9KPp/rxwI8h8Dqb2zik/w/63uffppGp/TOoMkg6caYSrDeoR3Qw4I++5+RUaG4CV+jdfsM7/xR7HH84o+HMkY2jXEL4Yf7sBuqXvTSAgjbv5oSXr23gPFZLMOUVWmkEQF2z2ttYOhGSVv24WmlAlfsi5C3cdFjcrR+mprV1Ydi+R7MlwDvKqIX5rOrGZTLkc0IjnPmgCW0tesqKFGx7YTDFyR8SRlYnazGnJLT8Q4oclAN2aDqbNZCpkyKj/hd5BWtSBENiEZBGK/Oj21MeyE0dAgIM8QaW10UBSNY4g9IwE1uQ9YswtyspJn4yfueJmNe+jaairuijgENOvk0/HkhSiqm3x/MHfCUdD4EnvIPJvKAvYe39K+jzg4NHQkSvc+rbaP0zgTxSyZSKR03zz1lcE4sMVj5Gd5xskMOiYE6L2knLtqGY0NJcsBSQfsiOtB/fJq7h6PLmBxVtHCPpuJWaN+R76HCKAilTcv3UBk6ai0noYgMhQYchfTIokc4J1TCvVmnU/3YmKOJ78ejbbcfdx/kTa7Xd125bs4RBTCL1uNMXR0NXg8YRSR1IKvp/1BI98cyQHogtxYpOW6FiMkMDA5q
- 718lHfwC
- Awm9jLSbnXGx13Piu8B4UtnTOPasb6QgIU9bPn6cp+EmmHDVRrJ8qMLON607MeL1h5rkQrE4CGW5a3pFx2SVpQcpXy4tIkgchn1YB78LZ6O0ki8aG7z9tcYiDYnPp28mcZl94BzSqHRHHE5TEZb5w+Uv/DM3a/WjJ/EmfGUz6S2ZCBNMILFNTeXW1FlqMKTRjfXhHeSuLAd2J6AhmLrTrHYt0bkQ8hmYONrKd0ScmMEbz4cW2FPYlzz7j8DXQtrm/6VuntbGZKVWIorLuav+SNV/b+0ZZU/XjSNrwh6W7sAfFGfunuhvIW4d4TkWpJrz51z/KyyCGh8edHx6m6AnPxDbSurxVuKc0ElR24Tx+CSrqd/I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E663D20008
+X-Stat-Signature: 7eufh1n9az4htb9idcpr3c3wieh3ey1m
+X-HE-Tag: 1775098576-180193
+X-HE-Meta: U2FsdGVkX199n7iNt2AxOBfgXJzb2lak0BwSYZaYcS1ISGbLOicF09/liBKV1gtiTGk8/bj2HraMILqI9rKqJZi4A7hqQkpiVKLwFbZhbV2yEK5itBuD793mq5Ng2/ORvmJykIfahX2gwd4urrroH7k2GS7GGcxj0yXzTIgtSD0L0unHHWpp8SEw/zhqIMKQ5WcO5xOn13Oi49oAm5gjW5TD4JQ4mr8VwHVtp8bLYMf7jst/59aQWMjogQzBXETo0wL5CGxRO76CRsJ8/Vy0fIBUdjku5SYIgPx/rfXKGKgZdMHRnhvFH+FmNGXEo0fCO2m3uWlH/C646fU2ZJb88bFZI5plBCIqSQQLHpcnfn38roBeAXFjhs7z50PbglS++B0iD0ZMH26XGzHtcy1fY1CMHQJEUBVkJKphBaoG6YLO9nA5dAlpBRwPHE7ZdJa+VunNGBbw4itl8M1eMd7n/BJ9nx0rcZ/SYPPOpDdB7X6b7ESF6JIA9euQwhdFUZcBfI0HwIWm4OKvixNWzaOiSvpTXGI6IhOHTzKgGTuhM3075aOSah1MA+caLiIAiCpOiFa15Tm033bewTzcLrJZPhP1qXUphSO93u96jQWPURu1U2txPG4Ag15vnnxHTK9vnQJwV7CVUrqVgEUzqQkbLsjZrFtIez/G/PTgt4x2p8YE5mf8PoYgZaBR4O25itmELRh8kesJ9u9zP9URjJpYYEIMpZX317Rb3X4c2oryOw2qlQPA+6ZbaeLf00hnyIVP4/OTJUZD1b2I71jvLCVfJQRS3rDEAXFtGitvx4JpAh4ELkZcGdeOJ96mUvJynvLjB8UlUzT723tmj6FJAQJ6E9XKhZ9MZtKcsFm3ihDoD+0c+hBExjqPgGCNmuxc8rINPmZ5tEJBenVKWiSAMzk3BIWzQVdEuDxieGE/5wuCKVioucaDPsYayzHXHIIav0MRY99VTjDcmA3X7bAbtSk
+ O44dmrNu
+ Z6VosL5Dpp4VPpvmxOSv3kxgROzSX6FgFZTocA/ADQRp1lUw4rdbABKdx6kbQbb4NbNSnkGsVMcgwgFBnZuKelIkZGcMQZglnMBW7ERdWWjle8bLT8JM7d3GXE4w0LLCYrAUtRnvIWN2+bqh+kNau3ffgoasoD30M6DL8tCdTlcjf1hSHXigjw+71foBdsZ8MKbsdUntr0lpNcgWKenyEG0QJhkcv8Yi8Y6rMjisEoaq4+UQEcELOKzFDZLOgveUAdy9j74DzPSi8pJdKiTohkO37cgI5gJosp8bWPVgM8SFSWiYc13XmR5u19tm/O2g2KqksMcPTkHixDVSUMeCr7FAttVzd28psy9g8CIRudxIVDuyfwRVnUCu6VVTLeF75uEGDD39fNemmXV+mPajV1yDxdb/ltE7HwVyxkiSL4TKjDUqKlAGXGeL7d1tmEbWF8v6RDIMbnvpA82psYq39Tq4rKUjFCALH2b5Rb29KektlKOixoBQWjijROditm88wRWJ34bgnwgqdc+omqlhbDMxy/FRRWSi7Pfw64PF6AQXCBgQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,24 +129,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02/04/26 07:31, Shivam Kalra wrote:
-> On 02/04/26 02:49, Alice Ryhl wrote:
-> Should we set nr_pages first? Right now, another thread may observe the
-> range being unmapped but still see the old nr_pages value.
+On Wed, Apr 01, 2026 at 07:39:03PM +0800, Shakeel Butt wrote:
+> On Sun, Mar 29, 2026 at 03:52:38AM +0800, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> > 
+> > Currently MGLRU and non-MGLRU handle the reclaim statistic and
+> > writeback handling very differently, especially throttling.
+> > Basically MGLRU just ignored the throttling part.
+> > 
+> > Let's just unify this part, use a helper to deduplicate the code
+> > so both setups will share the same behavior. Also remove the
+> > folio_clear_reclaim in isolate_folio which was actively invalidating
+> > the congestion control. PG_reclaim is now handled by shrink_folio_list,
+> > keeping it in isolate_folio is not helpful.
+> > 
+> > Test using following reproducer using bash:
+> > 
+> >   echo "Setup a slow device using dm delay"
+> >   dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
+> >   LOOP=$(losetup --show -f /var/tmp/backing)
+> >   mkfs.ext4 -q $LOOP
+> >   echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+> >       dmsetup create slow_dev
+> >   mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
+> > 
+> >   echo "Start writeback pressure"
+> >   sync && echo 3 > /proc/sys/vm/drop_caches
+> >   mkdir /sys/fs/cgroup/test_wb
+> >   echo 128M > /sys/fs/cgroup/test_wb/memory.max
+> >   (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+> >       dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
+> > 
+> >   echo "Clean up"
+> >   echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+> >   dmsetup resume slow_dev
+> >   umount -l /mnt/slow && sync
+> >   dmsetup remove slow_dev
+> > 
+> > Before this commit, `dd` will get OOM killed immediately if
+> > MGLRU is enabled. Classic LRU is fine.
+> > 
+> > After this commit, congestion control is now effective and no more
+> 
+> What do you mean by congestion control here?
 
-Or is this what you mean?
-<snip>
-struct vmap_node *vn = addr_to_node(addr);
-/* Notify kmemleak of the reduced allocation size before unmapping. */
-kmemleak_free_part(...);
+This particular case demostrated here is VMSCAN_THROTTLE_CONGESTED so
+I described it as "congestion control", may I'll just say throttling to
+avoid confusion, it's not limited to that.
 
-spin_lock(&vn->busy.lock);
-vm->nr_pages = new_nr_pages;
-spin_unlock(&vn->busy.lock);
+> 
+> > spin on LRU or premature OOM.
+> > 
+> > Stress test on other workloads also looking good.
+> > 
+> > Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> 
+> There is still differences for global and kswapd reclaim in the shrink_node()
+> like kswapd throttling and congestion state management and throttling. Any plan
+> to unify them?
 
-vunmap_range(...);
-vm_area_free_pages(vm, new_nr_pages, old_nr_pages);
-
-<snip>
-If this is the case, then I agree this will be much cleaner.
+Of course. Let fix it step by step, this series is pretty long already.
+I originally plan to put this patch in a later series, but as Ridong
+pointed out leaving these counter updated but unused looks really
+ugly. And this fix is clean and easily to understand I think.
 
