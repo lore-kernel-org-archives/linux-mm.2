@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94E05CC6B16
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB4DCC6B17
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:33:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D426B0088; Thu,  2 Apr 2026 03:31:29 -0400 (EDT)
+	id CAE4F6B0088; Thu,  2 Apr 2026 03:33:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECCC46B0089; Thu,  2 Apr 2026 03:31:29 -0400 (EDT)
+	id C876C6B0089; Thu,  2 Apr 2026 03:33:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBC896B008A; Thu,  2 Apr 2026 03:31:29 -0400 (EDT)
+	id B9CF06B008A; Thu,  2 Apr 2026 03:33:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C63B66B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:31:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74D521A0549
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:31:29 +0000 (UTC)
-X-FDA: 84612795498.07.A7EA2F1
+	by kanga.kvack.org (Postfix) with ESMTP id A8C506B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:33:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71BAFC1F76
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:33:40 +0000 (UTC)
+X-FDA: 84612801000.05.6509C8E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BA6F44000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:31:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tMPIrBvK;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775115087; a=rsa-sha256;
-	cv=none;
-	b=jqKfBAeao8cN2x6dR5dxaB+BHqh0MVPKNfGCySSEoa0wD2Fy+PuZIfLdJGFzxRtzQScNTW
-	ZTUaNmFqSSapopb90W46fAThY+Llh5ovHQdw/B2XOC9bqpjZ1FKNNdUJs2JJ1NiVSxBUy9
-	12+oA79o9Qc/xLw4DUcQB0TEy8Dphqc=
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7684180004
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:33:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t7TCNLzn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775115087;
+	s=arc-20220608; t=1775115218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YCN81ehzXnR+NC3CjQc2Em9uv+d5aiIjzDl8gH8+Ews=;
-	b=uWJ6mG1x8dzAVT3XcexTPARg3E09xCfaag21OgkKxm03cNz3N+octKFPtS6IYzX29o4qSo
-	k5p8tlz70ktSIDSrKeFyFU9BjPhOSzGaz6T4SXiFVppcjwMy2mTtDBQrW+F5BT/cKr5edm
-	txKa6D6ZHNJyfvZKWJZCQ8cJbyav+I8=
+	bh=V2KG4RrBO1yuY0XjvnbDZUDU8eo/lAta5/qUGT8UqUY=;
+	b=wIk5EBFp2IsDEhhmqjq0eKVM/sNFQwanyAyvMhjfyuImZ5J77DXL+K82dqfDCVZ4grOf8Z
+	tGpgmXasDzp1f1qOGdbWxeyJeuMFv8PiheHOJ6GEkL1wx/2yw9C9uHqEyKLNOrYGRroe1f
+	SUaPuEkFaoC/X1yFtwOicK7p5zAxw08=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775115218; a=rsa-sha256;
+	cv=none;
+	b=v9WA8Hgc7UGEdTDB6nKvUVQNgaZiVrTUmLYBOV+3P3TTazuhXNmMSG3fY8e6rrPgJCQr0F
+	UE3ueUtdS5iMumxl7bNKOKnJZIy4Nug7C4m255ZLh/PtmWsP6veV0kJli7lgXOW0274TBH
+	os9yxZMrTcgZ40zHY2fv+VYTUYEowGs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tMPIrBvK;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t7TCNLzn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04E1A61861;
-	Thu,  2 Apr 2026 07:31:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B54AC19423;
-	Thu,  2 Apr 2026 07:31:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF34C6185D;
+	Thu,  2 Apr 2026 07:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA868C19423;
+	Thu,  2 Apr 2026 07:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775115086;
-	bh=LB/+oqKlI4VRU5D1rjvBo04nLr5ECYtn29znNNozBBs=;
+	s=k20201202; t=1775115217;
+	bh=R/cIO2BwJHu7sNONJs+MahbX4J5TngFBvxR6D1WjqBk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tMPIrBvKTo40byCvRHv/28b+KqoC03TZRGKKrgRpkMzvXCSuJUdMY/EoIx48skJE1
-	 pAkwb80w8EdBKR3zTVIxlc4RdsMGGm2DgW/R+Me9bVea1VDevoQHRqZOcdF/XGR7Pf
-	 i/KHLYGmyG9qPEVVvgFkKWzdYXCXIP5Jzw+IxQ2PCrsAlDc27p0EAWkb/bPvMB+oyj
-	 ny5NhcJ8nexHxMXECxD0WVtcyHBRSIx61acnotLrQcc5fFiedg95GQOcVvdq9M3bBE
-	 Lszm77bdUctMVWYUQx3IK7mZYZDY757Tv5MuRoh5MrT/0+Z2a9S4zLaqfIq6KT/yfP
-	 J8rwI4BZG+lXA==
-Message-ID: <a1527067-0d49-48dd-85c5-06b628471424@kernel.org>
-Date: Thu, 2 Apr 2026 09:31:18 +0200
+	b=t7TCNLznhEu1vja0NnYDXrVOKmFFxna/Vom0HAPoTOZGSuqAcVT4jGXBER+jNmJ9h
+	 /CNAqy/dORnTLDf8FEuc1hKDb1l6pMS/Mpp1U52NEnLHBmCGHJaC6UdirktXq6Sd9G
+	 JHLm9x2dJ0yO5+WJQHMJgNxZ+0L/ljldDz2GddLcJ8mPpafOKZJc2oaPqO9f5uP0+G
+	 PwWF33kLu4PLXV2ercsZAqG29cW3NQiND/oNiMtf6o43X+aR/dUXj38AheX+qr84GA
+	 J+w3xJ5yhTUAvfQfWSjEbI4oGSpvSIy8XFFSe24FMfDdYQbhs1Fzis4oGSau+g5+cB
+	 rHpt+a+4zsiCw==
+Message-ID: <86889304-c450-491c-8c06-48ca9c973531@kernel.org>
+Date: Thu, 2 Apr 2026 09:33:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/13] selftest/mm: register existing mapping with
- userfaultfd in hugepage-mremap
+Subject: Re: [PATCH v3 08/13] selftests/mm: ensure destination is
+ hugetlb-backed in hugepage-mremap
 To: Sayali Patil <sayalip@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
  Oscar Salvador <osalvador@suse.de>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
  Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
  Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 References: <cover.1774591179.git.sayalip@linux.ibm.com>
- <b3a1760e4583340e767d4045b90784ee41c8773e.1774591179.git.sayalip@linux.ibm.com>
- <142f8c68-43c7-4a6a-bd2c-1c5ebda09b27@kernel.org>
- <7b6652f3-c994-4ef4-87a4-5473cd1254b7@linux.ibm.com>
+ <3b6ffba238a4b59de891acf896fa25d7d3193228.1774591179.git.sayalip@linux.ibm.com>
+ <ee15d52f-45df-415b-b0d9-3d267d147e5c@kernel.org>
+ <b590a17c-13ed-45f4-9f51-ac662d00e7bf@lucifer.local>
+ <066a146b-7dbb-408e-bbc0-542bdcdd6681@linux.ibm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7b6652f3-c994-4ef4-87a4-5473cd1254b7@linux.ibm.com>
+In-Reply-To: <066a146b-7dbb-408e-bbc0-542bdcdd6681@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7684180004
+X-Stat-Signature: f9s7bk3gjksiwrmedge1rf7iis4y4nut
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BA6F44000A
-X-Stat-Signature: ntf6nmtge9yh7ufa7cn6rxgayyy1kdzs
-X-HE-Tag: 1775115087-569391
-X-HE-Meta: U2FsdGVkX19GkmXRQgdsKwLEOOcxOhAQAn5go3gY+JAt9ggk7Wlvf4/prbClAdfdl43neho6mb/IYdUllPjrzn9SszxKRrC8pNIuMNN6HDhTmy+4UA6Z/oNAoNgCPUpgmjh1EtfvYAEuU6ZKChxeF9YaNHAe0QAn/XNRPiZ2O2pyCh/zPl95PHCt/6+LmXAcllgkR8rBkJ4FlRytOULe0gBeufR9Iq3cjGYahbv5bcyHTBJliZj1fHc2WHEvUEyEBLcX0WoJ8asGKG0JwvIbQNM3dG3avAmtF3s+V3hWkxNP8rmjKSI3+jN03c/bnxqfyAo/BmeE6Fl4Sp8klefytChvLfDMJEndKb/zlgYOhHvVLh4wBCBvRJF15GGqWjMemqEt3z/RB9yCSg4fmmnSzM7S7mKJrOW6pQkD62UbA6AJCLjmbwzKIhBAXTLu4apNa1H9nwxp3tCpkHjRT3aB3sHggW2ozefRtfl0gBR1KsVsgHE0vdZB/O5YkFjsmAk2RNKfZ9Q7Fru/6/f+DJfm2PRsLmNFuS3xSGqIo8mIaSNE326bkhq9KsdjFKDBM+vT587rGBWfia28NJhBQ4kEXYKhcSm0vEwQtrr5eAPZS5/NVtQ4KI0THyEfIenQUTwF1ffl1ZTgch6kbZJ6RgLjd4uq/O1iUzJcwKUqxB8A8fmfJ50ebp5MM5CbA/zZ2Ab3ytGj4bmWAeWvVAsG2g5u8Yfx6KxPGKtAAR726mxWKHwSJxM41B+Iu5o/fUwBdKlBzs1QWXuikbfyxX3JkmwGQp7tgKc9GUNI8uveDQrG2vUsvU84rKoYn0qZ0LnBcdkfUoImPB/rSwG0ErwIL9dzETf3zoQtfwMnUlT1eLS66y/zgX+i0ciXQ5s3rHjEb7aShaSEkAkVIly+UZmwRC/GWGXFQp085nAK59lAUsMz6l+qFVFtVFSUTNT7Z1aOc/n4wjaldjXEQfczCFvr3+r
- 3Irok1lw
- fFETbn/socpRJWfKZN3rggrOvP4+pyNPxxDgcco/4AckWm4bhBXMh06olwiGmU/sKtQ8vO1Cepg4blB3SYEmezXKPahVEaWwd4UYpB3QbdxHPOoi0X3FVz6sU1HJtZSyQFZWOOkYk9+1g7q1/EMYtQvHM+r9kI0DFgbAqsB0l3wVTvjiSWmE17/8CeusVpQclmXdaNWA2PZpwSl7JiEAzd/kDPC02qELgMCLQK61+M5NRnS2SJdXenVnOoOxWTiE8wkVZ1Hul62CyZ1nl+44gtHahwryBWkFHOYHxl6QUCtdWPikc0qhQVp4fZPcM+y5o3slN9+S1sIEhs6yhfCaz4AfWWZt10K2Ql4oZ69o4CB8b+uOAoZ4uph3puw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775115218-684832
+X-HE-Meta: U2FsdGVkX18IymFqPQ4d4r5s7QopTWiaHgNovwPjd2ohMupCh4hwCOqVGztQCw9brT4WzxhOlCySocvO/wce0A515z760vx/0hMYAKmNINqMLDj0Wo+8S4qi8kDX9itcAgFyNNf+/oyZGGkv0hlMBS/TaA7n0CWC/KPY1vFECPXKVcz/srhkzbI9AIfPy5EbcjyDiLNTF9Kca5lQh+h0x1SaRkEGD+XImOCNo0Lm1rpeHitb3GtorvBlRJ7czLJrjiXPnyQIrDyugTOBNku9UjCG6wvAWx7JJRjA9cFk66sICH9RA+vGIuPYAhaAj4oQGkKDTKKumxcItgEBK89k6zsUIOKOdgTC6a0aWXd3CcK7QqSsEt2dG4Xz3gxGu6KuT3zYCFmOnuM76b9ecBYsLRhrfpHzYA1THSbWv5KcScXmjp1yVeoWNWGd66J4nX/nu0ehLnBpPBGF5+urxT86Jn+fXeswCmJXdLEOvNFlSA/lefDwHpGCpE6vcjQ3iX1hx7vdxjGH1JBc4BCcGjuUo9O/dk+6IBgp+s37bkeAoTMBCvWbvV8bRAUNaLEScZcpgEavfxh+PBMztWfdMv3GLUSNXY9FtBPQyriuUkkdUnLBMKJdeQ5F+RM7JcJwugg4HFYkBVUykD0t5EllCUGR4bpAQeku8r34t/eqS839MKkKfXVLtA3VuRt4GJLXgF1IIxGlOzCYV4Rw8jEOC3JKmphy29B196S6z+7Nyur8Hjl+xCfEdRbAVTz4V5dXanaEmR4QOMyEYwzLpo2YBZyW8Q6JfR3y6nNBryWU1X+SUAyU+dMAESJNhxDORRicvJn72qxMzoCXtzqxHMhdbZ8L7sxzn9Z7XjRPCi6QHPN/4pjdw2eYgEAFd/Y4PPQZbkhqhD1uBdHKbPg8GtG/oC5w0zmbWgyQuvB8bxTChyjRHI/3x9t1sJzaUYEER4mlzWeAZBceV2LWGz3O2O/iX1l
+ lkLwjqcJ
+ Wdv8h/tmIjaLG+zWGXqzI9yYndcS/mWYQU1E/QTVjH+VtRloXIPLkw5Mn4IvqX0MK89RC4pnrU+QeM9dU7WJglava0ipVtm9Ssje+jpQeWASdIwPD5GJ5AQ4XW/xP60HoX0Kvnq4TbcU9wF5llJyIrhmMQFaomvz5zDr2vMmM8qODSAol7CNc8LLN7UbzGQ83VDhsD4oDRxmLEq0dfGEiBzV+ERmZwUNef2+pNbxbsljr9Tu1xYSfMqA/k6ccumSWVVM/BLM//XUkn980q5hoyiLC1zsZKTKOMnYfQP3+oMLamQFBv2lV0GY3G3urvT2KJvfR0kLaPz1he5JbHD91ZQ/pTmenqr/FQO7R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,131 +149,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 16:43, Sayali Patil wrote:
+On 4/1/26 22:39, Sayali Patil wrote:
 > 
-> On 01/04/26 19:48, David Hildenbrand (Arm) wrote:
->> On 3/27/26 08:16, Sayali Patil wrote:
->>> Previously, register_region_with_uffd() created a new anonymous
->>> mapping and overwrote the address supplied by the caller before
->>> registering the range with userfaultfd.
->>>
->>> As a result, userfaultfd was applied to an unrelated anonymous mapping
->>> instead of the hugetlb region used by the test.
->>>
->>> Remove the extra mmap() and register the caller-provided address range
->>> directly using UFFDIO_REGISTER_MODE_MISSING, so that faults are
->>> generated for the hugetlb mapping used by the test.
->>>
->>> This ensures userfaultfd operates on the actual hugetlb test region and
->>> validates the expected fault handling.
->>>
->>> Before patch:
->>>  running ./hugepage-mremap
->>>  -------------------------
->>>  TAP version 13
->>>  1..1
->>>   Map haddr: Returned address is 0x7eaa40000000
->>>   Map daddr: Returned address is 0x7daa40000000
->>>   Map vaddr: Returned address is 0x7faa40000000
->>>   Address returned by mmap() = 0x7fff9d000000
->>>   Mremap: Returned address is 0x7faa40000000
->>>   First hex is 0
->>>   First hex is 3020100
->>>  ok 1 Read same data
->>>  Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->>>  [PASS]
->>>  ok 1 hugepage-mremap
->>>
->>> After patch:
->>>  running ./hugepage-mremap
->>>  -------------------------
->>>  TAP version 13
->>>  1..1
->>>   Map haddr: Returned address is 0x7eaa40000000
->>>   Map daddr: Returned address is 0x7daa40000000
->>>   Map vaddr: Returned address is 0x7faa40000000
->>>   Registered memory at address 0x7eaa40000000 with userfaultfd
->>>   Mremap: Returned address is 0x7faa40000000
->>>   First hex is 0
->>>   First hex is 3020100
->>>  ok 1 Read same data
->>>  Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->>>  [PASS]
->>>  ok 1 hugepage-mremap
->> Okay, so we tested mremap() of something that is not even hugetlb.
->>
->>> Fixes: 12b613206474 ("mm, hugepages: add hugetlb vma mremap() test")
->>> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
->>> ---
->>>  tools/testing/selftests/mm/hugepage-mremap.c | 21 +++++---------------
->>>  1 file changed, 5 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
->>> index b8f7d92e5a35..e611249080d6 100644
->>> --- a/tools/testing/selftests/mm/hugepage-mremap.c
->>> +++ b/tools/testing/selftests/mm/hugepage-mremap.c
->>> @@ -85,25 +85,14 @@ static void register_region_with_uffd(char *addr, size_t len)
->>>  	if (ioctl(uffd, UFFDIO_API, &uffdio_api) == -1)
->>>  		ksft_exit_fail_msg("ioctl-UFFDIO_API: %s\n", strerror(errno));
->>>  
->>> -	/* Create a private anonymous mapping. The memory will be
->>> -	 * demand-zero paged--that is, not yet allocated. When we
->>> -	 * actually touch the memory, it will be allocated via
->>> -	 * the userfaultfd.
->>> -	 */
->>> -
->>> -	addr = mmap(NULL, len, PROT_READ | PROT_WRITE,
->>> -		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>> -	if (addr == MAP_FAILED)
->>> -		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
->>> -
->>> -	ksft_print_msg("Address returned by mmap() = %p\n", addr);
->>> -
->>> -	/* Register the memory range of the mapping we just created for
->>> -	 * handling by the userfaultfd object. In mode, we request to track
->>> -	 * missing pages (i.e., pages that have not yet been faulted in).
->>> +	/* Register the passed memory range for handling by the userfaultfd object.
->> /*
->>  * ...
->>
->> While at it.
->>
->>> +	 * In mode, we request to track missing pages
->>> +	 * (i.e., pages that have not yet been faulted in).
->>>  	 */
->>>  	if (uffd_register(uffd, addr, len, true, false, false))
->>>  		ksft_exit_fail_msg("ioctl-UFFDIO_REGISTER: %s\n", strerror(errno));
->>> +
->>> +	ksft_print_msg("Registered memory at address %p with userfaultfd\n", addr);
->>>  }
->>>  
->>>  int main(int argc, char *argv[])
->> Yes, that code is extremely weird. I wonder if this was some
->> copy-and-paste from other uffd test code.
->>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>
->>
-> Hi David,
 > 
-> Yes, the test operates on hugetlb mappings created with
-> |MAP_HUGETLB | MAP_POPULATE|and sets up userfaultfd. Consequently,
-> registering it with |UFFDIO_REGISTER_MODE_MISSING| does not result in
-> any userfaults.
-> 
-> Originally, the helper function created a separate anonymous mapping and
-> registered it with userfaultfd instead of the address supplied by the
-> caller. However, the test operates on hugetlb mappings, and the registered
-> anonymous mapping is never used in the |mremap()| path being exercised.
-> 
-> Would it be better to remove userfaultfd registration entirely from this
-> test, since that path is not actually being tested?
+> On 01/04/26 20:10, Lorenzo Stoakes (Oracle) wrote:
+>> On Wed, Apr 01, 2026 at 04:21:55PM +0200, David Hildenbrand (Arm) wrote:
+>>
+>> OK so digging in:
+>>
+>> mremap -> ... -> vrm_set_new_addr() -> get_unmapped_area() -> ... (in
+>> ppc arch
+>> code) -> slice_get_unmapped_area():
+>>
+>> unsigned long slice_get_unmapped_area(unsigned long addr, unsigned
+>> long len,
+>>                       unsigned long flags, unsigned int psize,
+>>                       int topdown)
+>> {
+>>     ...
+>>     /* bunch of checks */
+>>
+>>     /* If we have MAP_FIXED and failed the above steps, then error out */
+>>     if (fixed)
+>>         return -EBUSY;
+>>
+>>     ...
+>> }
+>>
+>> Is presumably where we hit the issue.
+>>
+>>>
+>>> That is weird. An mremap(MREMAP_FIXED) is really just an munmap() +
+>>> move.
+>>
+>> Yeah the weird bit I guess is that we _still_ invoke
+>> get_unmapped_area() but
+>> with MAP_FIXED set to indicate that we want the specific address, so it's
+>> subject to the above checks.
+>>
+>>>
+>>> Are we sure this is not some actual problem in the hugetlb
+>>> implementation?
+>>
+>> It seems the 'slices' check sees if the _target address_ has an
+>> equivalent page
+>> size, presumably hugetlb-mandated, and fails if they're not
+>> equivalent, so this
+>> change is just accounting for that.
+>>
+> Yes, this change accounts for that by ensuring the destination is
+> created with MAP_HUGETLB so it has the same page size as the source.
 
-If it's tested with your change now (which I think that's what
-happenes), this is fine.
+Okay, weird, so it's the right thing to do to cover all odd arch behavior.
 
-It was just very weird before, because it tested something fairly unrelated.
+>>
+>>>
+>>>
+>>> But then the test suddenly requires more hugetlb pages, no? I don't see
+>>> a good reason for the MAP_POPULATE, really. It will be discarded
+>>> either way.
+>>
+>> Yeah I'm not sure about the MAP_POPULATE being all that important here.
+>>
+> As far as I understand, without MAP_POPULATE, memory accesses would
+> trigger userfaults, and since the test is single-threaded and has no
+> background handler for the uffd, it would deadlock. MAP_POPULATE ensures
+> the test runs correctly by prefaulting all pages, but please let me know
+> if I’m mistaken.
+
+So you are saying the test would deadlock if you are not adding
+MAP_POPULATE? If so, please double check if that is actually the case.
+
+And if it's actually the case, please carefully document that in the
+patch description, and probably as a comment above the MAP_POPULATE usage.
 
 -- 
 Cheers,
