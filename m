@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E55111224B
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D29111224E
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7E26B008A; Wed,  1 Apr 2026 21:46:25 -0400 (EDT)
+	id 638E16B0092; Wed,  1 Apr 2026 21:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF496B008C; Wed,  1 Apr 2026 21:46:25 -0400 (EDT)
+	id 6109F6B0093; Wed,  1 Apr 2026 21:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E58B6B0092; Wed,  1 Apr 2026 21:46:25 -0400 (EDT)
+	id 526FF6B0095; Wed,  1 Apr 2026 21:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E54B6B008A
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:46:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA7A8B857E
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:24 +0000 (UTC)
-X-FDA: 84611925888.29.D01CA02
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CDC86B0092
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:46:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4CF1B8292
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:32 +0000 (UTC)
+X-FDA: 84611926224.21.5723A4D
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C8D7C180003
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I9zX92Oe;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+	by imf28.hostedemail.com (Postfix) with ESMTP id 21EC9C000A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:46:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B8u2yBrU;
+	spf=pass (imf28.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775094382;
+	s=arc-20220608; t=1775094391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n94zkV/pmZZJ7k7RKaGT+ic/vcFa4MFeGtug2QtIPI4=;
-	b=Xgzu3hFnfgmCCEn0nKv6D+JX4h0CE/kPovvqtPo9q7HyC4O6m7K3nzyRov0g0rrPjc6W+2
-	tzup5Zhim3hL4VGCuS47BNcHfaXxipleyAop+AEJeYgt5WmGjHU0XY2M5oFilzGLO44pXe
-	qiRj31r8cNGEtRp5h5F9AJgB+ZfHJrs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775094382; a=rsa-sha256;
-	cv=none;
-	b=UVhaMBiYONz4qlnRbsMYicayXVFTiK3Y7NpB969UCOZDEMZbDbcgUAmYqyasWse9HiovIV
-	/3gw8aZSSWPUo9WuKUqZtfdPNW2CBjaFHztGH8i/WSjyhpYSJ5BUWSXzZeYHIdD3hVvtCH
-	qBWQCwPnH9lNmCGmnI1zG3h3YX0Y8SY=
+	bh=9tZowJL8GjFLSw4sIge6Gujv1KBlMa1KFIvCe3PwXUI=;
+	b=gmsbeaYGvcT3ZpD08RymGyJypYPOHTGQYhR96EZNZWMFlP2M2cgqgSGGW5HTicNx+BGmek
+	BI7KowKUQusv+LsNWWsujVGWwhCQM9sBGk0QVuHnAayFONyGhZWYLMkjrPrrrJVhcS43Ij
+	7+vdkqk6qGnoCnXthyacFtVE3rkWa6s=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I9zX92Oe;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B8u2yBrU;
+	spf=pass (imf28.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775094391; a=rsa-sha256;
+	cv=none;
+	b=N6ccPpBwjHP0lK75UZnNvn9KqyrtJLyT5IlzPzFogkPqnNxvZjBtfGbz+Jfmk2fbY6Ke6I
+	+qnlqYPmi0iSAmt6F/rvMEpOEVwdwvwlizfPSPvmsuLQcVvdAX0KPHtcQM5uqSvihk+7Yl
+	t1f79jWRNunq7g8x/grv2g0c9vZAsso=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775094382;
+	s=mimecast20190719; t=1775094390;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n94zkV/pmZZJ7k7RKaGT+ic/vcFa4MFeGtug2QtIPI4=;
-	b=I9zX92OeWpfYV1YcAAQSxusL3PRh7catSqPSL1s1yQWZUzz6rk1ac+DG/Ywl37SiuWrrk6
-	Igob1gb89GlULFlenRpk25/HHL89lPiSJnWMmFpbeufJAzkeGmADyPbgFSUOp/dqkezCa+
-	F4t2EexKIw5elYozZmp7TAutuscPdrc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=9tZowJL8GjFLSw4sIge6Gujv1KBlMa1KFIvCe3PwXUI=;
+	b=B8u2yBrUniFWoUF91KgXl6UqaojZCe3tlq2BBNo+S50ecA9K1b+u8REXAF2RuwgSOrjeAn
+	j53FHIE+rKCHfgxRbblIdTBoBWNLUY8qIrJkkxygjKyINwhGCmKngOMRecyANQK6DhQ6gK
+	8c4rZpP5JHIWKrsnDWTA0/8hRaViwEY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-NNDtiJKwNi2izcF6TcqZvA-1; Wed,
- 01 Apr 2026 21:46:17 -0400
-X-MC-Unique: NNDtiJKwNi2izcF6TcqZvA-1
-X-Mimecast-MFC-AGG-ID: NNDtiJKwNi2izcF6TcqZvA_1775094375
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-CrXok06gMk2u5HjxF2_H3g-1; Wed,
+ 01 Apr 2026 21:46:26 -0400
+X-MC-Unique: CrXok06gMk2u5HjxF2_H3g-1
+X-Mimecast-MFC-AGG-ID: CrXok06gMk2u5HjxF2_H3g_1775094383
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA7F61956096;
-	Thu,  2 Apr 2026 01:46:14 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 70A4F1956065;
+	Thu,  2 Apr 2026 01:46:23 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 666D519560AB;
-	Thu,  2 Apr 2026 01:46:06 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 774CB1955F25;
+	Thu,  2 Apr 2026 01:46:15 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -96,27 +96,26 @@ Cc: linux-kselftest@vger.kernel.org,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
-	chuhu@redhat.com,
-	Li Wang <liwang@redhat.com>
-Subject: [PATCH v8 2/6] selftests/mm: soft-dirty: skip two tests when thp is not available
-Date: Thu,  2 Apr 2026 09:45:39 +0800
-Message-ID: <20260402014543.1671131-3-chuhu@redhat.com>
+	chuhu@redhat.com
+Subject: [PATCH v8 3/6] selftests/mm: move write_file helper to vm_util
+Date: Thu,  2 Apr 2026 09:45:40 +0800
+Message-ID: <20260402014543.1671131-4-chuhu@redhat.com>
 In-Reply-To: <20260402014543.1671131-1-chuhu@redhat.com>
 References: <20260402014543.1671131-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: YAP2qLcqdfWAEVAcXpGusaLwwGwyikqMbyce1LH0b2k_1775094375
+X-Mimecast-MFC-PROC-ID: 6G03JMuY0n1BYws9HOTfuWx268r9LfJDcQpIAz2X8iM_1775094383
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: C8D7C180003
-X-Stat-Signature: 8y6e4q433be4hd8pdbfensxg3aka41fi
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775094382-289181
-X-HE-Meta: U2FsdGVkX19R+HisaGEVaNLdArNeKfPhCSd/fAzPqNp8Wma3FlGGj8BexLkTJTxgRG5DYYE/oY75Gf0sBt+8HHydelDy3VlVjBtoz4eLKCSEMS3ZlgqELzhgXRRKVTOmigTdq0NCdW1n1MPhZZk7dz680lIj6IVyMXtPaO2y3lWOHU/wa9pu9mtsnCfg2c3x48xTku2Xy6dzj/Bz+B26T2ssJQ4dVmpBhaJEwsV7ZSjmIb6Vpxi437kp0R7GU5fvtZkK+Pbo/ulxr72qf4cTpZMtX4KD7q6T/BygwUeKaJ+jCcXDiTTp2Ba2TakKY0kE4rSgSH7nnvHK1OkFf/ir88GUk3OnD1zUjgiL2tSmZDQR00UmaPqj0EH5bBHduaW2kHJMkPeyQ/tnR1QkpEy1Tcxxe7aZhP7loO1IkcQ+JbVVl8LvvsOm+fHi45N53gO8YyCHgwR4toE3nryW01Z8L2noRY7KqRyJA7+BERY4ewpWyAWbUkKLwr4fgxsJFn7kJGFoGpKSTrpT1KBoETCbE2nnr/k31liFLwVOt1dL96dvZOS8MLov+x29/C+9WFxfzuUnDdvpxKkuUscaMdlw4NmGlK2vXvMK3rmTVgbMKG9xvX12QyJ8VlPN04SwweoYI3isZA1ORMkPg9uhNVg1YjbWW6O99D3aE4yUcAzvlV3P2A2TRZ1XcwP0CedVop+YUYCsRMFY6qciu/84pwTDn1X5NdbRJTUj7bCwVXFkED6tnOI9KgOf6y/VbUcyScwv5waVJjncgZN6X447Xx2i8V2mm+c33dyBcEuII713q3H8iq+OpN3KZuCOrJjWt4Quy/kbM8YnqdC6TC9m62ZXGTrynONZtKggyu63jfD5HFgemQoL9ULkIGL+PmvZECsmx0JbgeTnz2sVvaYWr7Ra3fWsjqbLHdAHFvVZZsGyYKAo6aGgBcrhyj29k0UcaUpwzK2O8LKDieQKTHGUdSu
- XoNlGFfY
- ar84k35XjX2vBh20rWcWeBOjQCsWJ3pCL700jFPLwd7m1GXb9T5cAh54BA/GNrKdPWodcIFKAT65aMhjybM4tWD6+e3oN5j3J+CEoMQLRjkbmx0kKVRTLFRACZpXOlnW1bNkBctfhEcS/Ch70huX6lu7Luqx0LSCH9GYP68lTrxJ5M2TS5j2et1SgHGHPj1EjshQQqr+yua3TkbGhytvdf54GG0xH0ZcaOCRObaI6xXlto/PyOCVNFXbWdPF3bnGpR2kTcYeurK3EmGHQXyXhETOmmufkrzeUsgUBfU0rTLg8PJ1GlPE+ZsSl3p7f2YNOV0AMA/L6Zv/9pajKKXtwdYL9f1roYnz+HlA/dEH7/4WMYBshiurT62U94gYfKs2rcwV9tg8h9u9G91c=
+X-Rspamd-Queue-Id: 21EC9C000A
+X-Stat-Signature: momy7qug3rfbshechmiop4jr4wzfeskg
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775094391-964524
+X-HE-Meta: U2FsdGVkX1/b5j1P16n0Fsv7nJVy/Ajlcshyun43NvpChuWumg+udtBl1dFxjg0suFKPm9FhYL7yjDznHi745KhE6SCxN3aUBu0cW1T4gIoOcbHtaNmbIW7QkKOrQlupMpXI5ksIJ0alk48U7Pz5dpJizJa1oyFiA1odGFoQwSIwECTc1d51MqGJLnw+n7ZfMbIRXo01mr+dBPZveCDRp3TEQqxJAj/jUd9kE9EO0plzOhQ5m3WrR+458s03gfl1jLvVXN53vyQdd7w3QUmECx7Ee9tUobKh5xH3OeAxxgtLXel+wMer8f1kXUHCtvLPIYPxTtcGCvoawZoYP5nmBa8s9nK/BQJ87leMEJMpzsArqV0XALVVpec8QzdIxpJQd0KtR4wdcD6UCsRo1GUd24YHdsI6t+6pvh9yOYcAffp3brQyapbf1ZfXZXpi9jDYskl8xW2iD9hutWz2WQ5ylzbwJL4nXeRAsDQ6d3KnDv0HyOPzltElE96D+ErsehUcQKhhsCc2YnWuqvgadSgia1VQNJEQUQ4/35OLb5jKVBc+TQvc1ySzKglfMRSupg1DJ77TfvKoXVTHyhn09jY6qisp6Pref/sXb8DmxL/7qYQ+zgKwTC6eA2O3phfhDb17yiWqH1iCgTnl+1FWKlAMIDHTiBvO5+/TC4mrFLt4gbKt93X2+yQKuZq56qIsEqqY9vvU9Uo+cB0TEeeFEZ6A3WGU1TmYkMpWlOK73TpsAkazzAF+QAGtLVnGwGS+XQq+vXGwnU2Ei47obf197YH76mQmbDwgoy+FeA1bWg4ufQ41zLmQ8SUFKUdIh56PU7NT9SYrin8Z+xL7pdl1/QHWrGsZsujc0GLTYPgephwFovxJupnXXbbHwdS4FLMQC7NC3zfjtfG64tyDP/fp9VuqofOXmSSHfFZRJqu+aPyBVFYo4428rHwb/FTuc6kk7YvrBD9GYp9XKcruPUqYiSs
+ Zf2mVG1A
+ Mnl8wb5SxijrpgQmRWghfE+1xzlsRsUj3wyqfTA6u9XRg8+CEDCtsD540rNvqAgnhr/oiRF1lQFy313YLmV5iENSiPp3dfiZ5m8rE0+UotitTaNh/yTWR8UflBprCRFpg2oLhxrR2WvnsaTR02Y6qPrJ7ojil+gmWzNl3PNp4JaIImnDE+tgSXMZFXuP4RwWoH72gWmgpn8Fp5kzGBiV5tXvSZtYlvnAWn7vZQgIXbaFlxF70NGRYx685R+hJFaJ7SkYTt0zThp3IvG83t3Ni7lhieMF50Hjwu/pG+KCkiSzOuMMbssTNQKUxXOdF/9l+Hx/BodLDOT59ehJZpQ/UNRaWj3am8JKxQ1miba06fWPwAl0JPF9UaOygKeWWduT5IL0MWAIs2qrnd60MJJphLC2zV+W9cauAyJGgys9685iA6qRar7hw5WjeqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,111 +123,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test_hugepage test contain two sub tests. If just reporting one skip
-when thp not available, there will be error in the log because the test
-count don't match the test plan. Change to skip two tests by running the
-ksft_test_result_skip twice in this case.
+thp_settings provides write_file() helper for safely writing to a file and
+exit when write failure happens. It's a very low level helper and many sub
+tests need such a helper, not only thp tests.
 
-Without the fix (run test on thp disabled kernel):
-  ./run_vmtests.sh -t soft_dirty
-  # --------------------
-  # running ./soft-dirty
-  # --------------------
-  # TAP version 13
-  # 1..19
-  # ok 1 Test test_simple
-  # ok 2 Test test_vma_reuse dirty bit of allocated page
-  # ok 3 Test test_vma_reuse dirty bit of reused address page
-  # ok 4 # SKIP Transparent Hugepages not available
-  # ok 5 Test test_mprotect-anon dirty bit of new written page
-  # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
-  # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
-  # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
-  # ok 9 Test test_mprotect-anon soft-dirty after rewritten
-  # ok 10 Test test_mprotect-file dirty bit of new written page
-  # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
-  # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
-  # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
-  # ok 14 Test test_mprotect-file soft-dirty after rewritten
-  # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
-  # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
-  # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
-  # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
-  # # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-  # # Planned tests != run tests (19 != 18)
-  # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
-  # [FAIL]
-  not ok 52 soft-dirty # exit=1
+split_huge_page_test also defines a write_file locally. The two have minior
+differences in return type and used exit api. And there would be conflicts
+if split_huge_page_test wanted to include thp_settings.h because of
+different prototype, making it less convenient.
 
-With the fix (run test on thp disabled kernel):
-  ./run_vmtests.sh -t soft_dirty
-  # --------------------
-  # running ./soft-dirty
-  # TAP version 13
-  # --------------------
-  # running ./soft-dirty
-  # --------------------
-  # TAP version 13
-  # 1..19
-  # ok 1 Test test_simple
-  # ok 2 Test test_vma_reuse dirty bit of allocated page
-  # ok 3 Test test_vma_reuse dirty bit of reused address page
-  # # Transparent Hugepages not available
-  # ok 4 # SKIP Test test_hugepage huge page allocation
-  # ok 5 # SKIP Test test_hugepage huge page dirty bit
-  # ok 6 Test test_mprotect-anon dirty bit of new written page
-  # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
-  # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
-  # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
-  # ok 10 Test test_mprotect-anon soft-dirty after rewritten
-  # ok 11 Test test_mprotect-file dirty bit of new written page
-  # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
-  # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
-  # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
-  # ok 15 Test test_mprotect-file soft-dirty after rewritten
-  # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
-  # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
-  # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
-  # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
-  # # 2 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-  # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
-  # [PASS]
-  ok 1 soft-dirty
-  hwpoison_inject
-  # SUMMARY: PASS=1 SKIP=0 FAIL=0
-  1..1
+It's possisble to merge the two, although some tests don't use the
+kselftest infrastrucutre for testing. It would also work when using the
+ksft_exit_msg() to exit in my test, as the counters are all zero. Output
+will be like:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+  TAP version 13
+  1..62
+  Bail out! /proc/sys/vm/drop_caches1 open failed: No such file or directory
+  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+So here we just keep the version in split_huge_page_test, and move it into
+the vm_util. This makes it easy to maitain and user could just include one
+vm_util.h when they don't need thp setting helpers. Keep the prototype of
+void return as the function will exit on any error, return value is not
+necessary, and will simply the callers like write_num() and write_string().
+
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
-CC: Li Wang <liwang@redhat.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Suggested-by: Mike Rapoport <rppt@kernel.org>
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
+Changes in v6:
+  - add reviewed-by from Lorenzo
+Changes in v5:
+  - updated acked-by and reviewed-by
 Changes in v3:
-  - Add reviewed by from Mike
+  - make the write_file void return
 Changes in v2:
-  - add reviewed by from Lorenzo and Zi
-  - add acked-by from David
+  new patch from v2
 ---
- tools/testing/selftests/mm/soft-dirty.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../selftests/mm/split_huge_page_test.c       | 15 --------
+ tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
+ tools/testing/selftests/mm/thp_settings.h     |  1 -
+ tools/testing/selftests/mm/vm_util.c          | 15 ++++++++
+ tools/testing/selftests/mm/vm_util.h          |  2 ++
+ 5 files changed, 20 insertions(+), 48 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index 59c0dbe99a9b..bcfcac99b436 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -82,7 +82,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
- 	int i, ret;
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index e0167111bdd1..93f205327b84 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -255,21 +255,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+ 	return status;
+ }
  
- 	if (!thp_is_enabled()) {
--		ksft_test_result_skip("Transparent Hugepages not available\n");
-+		ksft_print_msg("Transparent Hugepages not available\n");
-+		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
-+		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
- 		return;
+-static void write_file(const char *path, const char *buf, size_t buflen)
+-{
+-	int fd;
+-	ssize_t numwritten;
+-
+-	fd = open(path, O_WRONLY);
+-	if (fd == -1)
+-		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+-
+-	numwritten = write(fd, buf, buflen - 1);
+-	close(fd);
+-	if (numwritten < 1)
+-		ksft_exit_fail_msg("Write failed\n");
+-}
+-
+ static void write_debugfs(const char *fmt, ...)
+ {
+ 	char input[INPUT_MAX];
+diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
+index 574bd0f8ae48..e748ebfb3d4e 100644
+--- a/tools/testing/selftests/mm/thp_settings.c
++++ b/tools/testing/selftests/mm/thp_settings.c
+@@ -6,6 +6,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ 
++#include "vm_util.h"
+ #include "thp_settings.h"
+ 
+ #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
+@@ -64,29 +65,6 @@ int read_file(const char *path, char *buf, size_t buflen)
+ 	return (unsigned int) numread;
+ }
+ 
+-int write_file(const char *path, const char *buf, size_t buflen)
+-{
+-	int fd;
+-	ssize_t numwritten;
+-
+-	fd = open(path, O_WRONLY);
+-	if (fd == -1) {
+-		printf("open(%s)\n", path);
+-		exit(EXIT_FAILURE);
+-		return 0;
+-	}
+-
+-	numwritten = write(fd, buf, buflen - 1);
+-	close(fd);
+-	if (numwritten < 1) {
+-		printf("write(%s)\n", buf);
+-		exit(EXIT_FAILURE);
+-		return 0;
+-	}
+-
+-	return (unsigned int) numwritten;
+-}
+-
+ unsigned long read_num(const char *path)
+ {
+ 	char buf[21];
+@@ -104,10 +82,7 @@ void write_num(const char *path, unsigned long num)
+ 	char buf[21];
+ 
+ 	sprintf(buf, "%ld", num);
+-	if (!write_file(path, buf, strlen(buf) + 1)) {
+-		perror(path);
+-		exit(EXIT_FAILURE);
+-	}
++	write_file(path, buf, strlen(buf) + 1);
+ }
+ 
+ int thp_read_string(const char *name, const char * const strings[])
+@@ -165,11 +140,7 @@ void thp_write_string(const char *name, const char *val)
+ 		printf("%s: Pathname is too long\n", __func__);
+ 		exit(EXIT_FAILURE);
  	}
+-
+-	if (!write_file(path, val, strlen(val) + 1)) {
+-		perror(path);
+-		exit(EXIT_FAILURE);
+-	}
++	write_file(path, val, strlen(val) + 1);
+ }
  
+ unsigned long thp_read_num(const char *name)
+diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/thp_settings.h
+index 76eeb712e5f1..7748a9009191 100644
+--- a/tools/testing/selftests/mm/thp_settings.h
++++ b/tools/testing/selftests/mm/thp_settings.h
+@@ -63,7 +63,6 @@ struct thp_settings {
+ };
+ 
+ int read_file(const char *path, char *buf, size_t buflen);
+-int write_file(const char *path, const char *buf, size_t buflen);
+ unsigned long read_num(const char *path);
+ void write_num(const char *path, unsigned long num);
+ 
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index a6d4ff7dfdc0..ad96d19d1b85 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -764,3 +764,18 @@ int unpoison_memory(unsigned long pfn)
+ 
+ 	return ret > 0 ? 0 : -errno;
+ }
++
++void write_file(const char *path, const char *buf, size_t buflen)
++{
++	int fd;
++	ssize_t numwritten;
++
++	fd = open(path, O_WRONLY);
++	if (fd == -1)
++		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
++
++	numwritten = write(fd, buf, buflen - 1);
++	close(fd);
++	if (numwritten < 1)
++		ksft_exit_fail_msg("Write failed\n");
++}
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index e9c4e24769c1..1a07305ceff4 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -166,3 +166,5 @@ int unpoison_memory(unsigned long pfn);
+ 
+ #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
+ #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
++
++void write_file(const char *path, const char *buf, size_t buflen);
 -- 
 2.53.0
 
