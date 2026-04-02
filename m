@@ -4,133 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A47A2CC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FB1CC6B00
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:24:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3CBF6B0089; Thu,  2 Apr 2026 02:17:43 -0400 (EDT)
+	id 4CCAD6B0089; Thu,  2 Apr 2026 02:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C15276B008A; Thu,  2 Apr 2026 02:17:43 -0400 (EDT)
+	id 47D456B008A; Thu,  2 Apr 2026 02:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B29EE6B008C; Thu,  2 Apr 2026 02:17:43 -0400 (EDT)
+	id 3BA1F6B008C; Thu,  2 Apr 2026 02:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4B046B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:17:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54B33160497
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:17:43 +0000 (UTC)
-X-FDA: 84612609606.01.D7FFD06
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7475FA0005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:17:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g2TsLGn7;
-	spf=pass (imf15.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775110661;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 28A786B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:24:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE6291A04CB
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:24:18 +0000 (UTC)
+X-FDA: 84612626196.22.649E473
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1CE7120008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:24:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aiWV8iIP;
+	spf=pass (imf03.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aiWV8iIP;
+	spf=pass (imf03.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775111057; a=rsa-sha256;
+	cv=none;
+	b=pPm/I5xh53tBFjpmySSC8oaiaY+kPwg2j8uncjIwEiZ0bBVvrwJ/AEhnKkNgadjLbF1Vi+
+	zcGMJQCFwCah/qimlnjrpYESnYYWl0FU0EV8aCSo0wOujgwTkGIzcT+/trhCbo4Go1rCK9
+	tPkzL2elVKaWTX14M2Dv+QYGKUF7eE0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775111057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SxoP++nGLbNLck2YTlksc13q8UFRTvJ8wOA5jMTO/9s=;
-	b=DHK6PERQwXeK5hLuAd7u1zDsBET6nA/g3A2SGzRNFgCac9Eu0CFyyL+U/NVjqJkqVp+ZDH
-	eDlbIRSoas8RkZmHXqkqQY3Y4ox1QS9XO9AIlris4pLnhkiBDlJHQjPY9BshwgH67xp3zI
-	EJpMY8L58sfJT6vo1RhwWgdK1oDt3M0=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g2TsLGn7;
-	spf=pass (imf15.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775110661; a=rsa-sha256;
-	cv=pass;
-	b=AdnDj6f0/TufGZh4NS2x2aGhDFCg1iIBKy5hPArO/KKLClnVyg8ge92u8CxzHJhTUIUePl
-	M0uCqiPkMRQiTLsR1djXukRw/sClq6ENicRvYfx/yEQspEJq+VpALT4KVKH1SK8ftX9ybd
-	wWqsXw8d/j6k/Yd/+jN9ngFMckxZSEI=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-41576c5c01cso296998fac.3
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 23:17:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775110660; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eVMXZTxTW/855G4QRh7bGuoy9pb8pMovTjLT7udYsXiuOak+UTv9Ig5DcYMq2CyRsf
-         VveKMZqJjSvqB8cH5fWA4/22AO+4OTp6XqX8sZjeLcuZnN9s5jwud42fQqrXY8dN1/An
-         A44ND6330c12NpchqX21w8lP9hVsrBwsA1HcYRTYekWEszPJBcQL2OYN42C4kb4xqot8
-         dgtZytIbL+MkPnhxzqcLyLO5Vti7nTsIKIrzGZph+LxW9Dwv9MN4Yr4h9kkl2pQAAjAK
-         XMuFScy8x9/Vwd6eUb1SZZ7z2YDuafH3rjPebsU1ziSNy0CMHQadpADJJX9oL/HA2eKN
-         fJ6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SxoP++nGLbNLck2YTlksc13q8UFRTvJ8wOA5jMTO/9s=;
-        fh=B+/MDl0SuB2YNu3dv9wFwN3JdHT3VAH1M5J5VHowT10=;
-        b=M/9ClwUfzPtI3VB7C2qZrKkvEDkZChUAK59fKzlRj0M07I15iYGMFiMGsCEdeqUr+i
-         52Q8v9NcY3FPcQJeYkHX+D0K0u5FH/Oxh1KjKsjrPy1+2CMbjaMvvZnVFWsgSO4FlUAq
-         35i7VmQ7/uF229KZ3KLPdOTNAloPwP/n1vewElgXnLGWqLkE+1jWwGQf/zHt+wR5yofb
-         gx0gxfjkJRJZaWSl4SFTGesqSxFHnWOGHSOXGTR+mJhqsfRUIjqQHQr/U0fKzBXm9S6P
-         Aj4MF00tMrnykf4n4NNZ0SdXFuJhSreBSwFJ5BlRB0tOsuOAgkyg1srM1iKugwnn99lv
-         zc7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775110660; x=1775715460; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SxoP++nGLbNLck2YTlksc13q8UFRTvJ8wOA5jMTO/9s=;
-        b=g2TsLGn7bHyWro+dpVHqzjRxrQqN+H9GU18e1ovG3SGo5GrvzNhokOekJ/4W0tStHH
-         DP+4ZkJg2vgl5YGBvnPzSNlboktHVF2hNlyLEVfYLBx2ZaXcMx5UJG84KqubjSNJm4WJ
-         LJjZj6cKFGVo8ZP18CHCP2O5b7/OopYYaV3s9cz68lJSFXdXWXigArXe80D6+1iFf0mu
-         1FBuqKf/liB0nxQq0ec//LW14+JCq++Drbx3/OqM2AZTZIDe52YPvUtmM9otPHBrSqg7
-         5xRWFb6BQ447/fFi9mHdAYAy1qozW5vVqXbMiHzvDMxz91gEaYgPYcs38r1V63ZZOZe3
-         emiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775110660; x=1775715460;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SxoP++nGLbNLck2YTlksc13q8UFRTvJ8wOA5jMTO/9s=;
-        b=bX8IiPouLRGd6HKXGsv5c9ayAq3yS9snL2u/bRnhBep0jOUwNs7oYC/bRSfrbGx3Il
-         mAwVKhO8CiKfeSp2CDzqVqMC91QYasrHu74TFoZ9s6Ia/qnIYltooMGxYoYB8ImvzXXr
-         1Vlm3TESJ1HwWL8yPMhnNGnZx7v2XeI6XFlsxhT0DCZPm9XQ5K5IgyxBE0IzI+OJVmSB
-         WZz33se2u0bOPH0qQjXvn4+bdy7LfEXiFLmoz3EgeF61CQrGtBejerCBWLAWg3JneUXE
-         jBatCIVzbDceh/21/NHxE+BZ94JUUZ2L14ptd8N5/cUgMaZHqQTQJbXyJsgYJAzxIF8W
-         mZdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhjakRwalwTJa0ytUsN7BcZa1MJfXKwPQf+Cv+ILWOqggR8n/cNNDuINRxlCcLGiemx9jTdKYBHg==@kvack.org
-X-Gm-Message-State: AOJu0YzwJpekX73zlp8/ss63c3BZoHEfiDTzL9eneKb8+1yOvcrfkcSh
-	G6+2jnHVKQFG+8Syi9RiGuEuh6COKZ0o61WHnu0yBI88nvVaw5b0XVPZcTj5BLfbc4HT49Cmy2k
-	dIC18fXKga8hz76I3hCYps7WJQm/vNCk=
-X-Gm-Gg: ATEYQzzcj0VtJi2VOuNieKm+U3MjT4ZI+M9omsMc3M8zUgJiy0an8yB4oEL6ggilWcz
-	lph036WN/1ke6vq5f8P9JNCfC73fT3llsqefWIIoR5sr30z9R6kaohdY+n68EpDEOoRESQd5Gee
-	BghnkEwRHL/hyAHVKjmvxejL/pUSsNyf6WHAXgTlNb6JZxlV8qxJzlCuiX56eNJgpnQFUnLymkY
-	N3rhIGoZG2ts7Bz23lT5W1ote+25Aa8Mx0Mox8GGns3RdeewHcZGYcXn8Gkz7h8h9GuoHbZA+8G
-	q+/nb4Pabt6dsq3nCq4sjSn2lh/Xraf8Lrcftw==
-X-Received: by 2002:a05:6870:d6a0:b0:417:51a0:23b1 with SMTP id
- 586e51a60fabf-422cff84e39mr3914326fac.41.1775110660340; Wed, 01 Apr 2026
- 23:17:40 -0700 (PDT)
+	bh=YMbp+sYgjyqgg8Rmn7tnpa9mpV75dW1kYsbpBQmfGWo=;
+	b=SLphsrp1xWKL6DcTImQ+kOSHBZJeAc42XjnBTKnXWFkCM7WpRiUp6jUumvUHloh/fyKA7J
+	LcwQGv3tNK4/mXSaiPe5L84HmukqP16fPoiaKqqy143/CkYPkBlgSE6LDUdM5C2ilugngb
+	AqLeqNVXvDtpoklbn4NYn1+Yv+4FLZY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775111052; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=YMbp+sYgjyqgg8Rmn7tnpa9mpV75dW1kYsbpBQmfGWo=;
+	b=aiWV8iIPf+un6mrBrqQFSroikJgvnL06r417vwRRtOv+bMTymPLGwXa5LTqn/mr1gtihbdBLuBwcrCfFecdUjCS5PSuEDboIlrX+mECtfOxPKXMkIhhy7yDRHijHocEDlPy+GjIui2wxpnx0NRCZsMPyFKsohv7gNvatiGll7Tg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X0GC4RJ_1775111051;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0GC4RJ_1775111051 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 02 Apr 2026 14:24:11 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Ingo Molnar <mingo@redhat.com>,  Peter
+ Zijlstra <peterz@infradead.org>,  Ritesh Harjani <ritesh.list@gmail.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Baolin Wang
+ <baolin.wang@linux.alibaba.com>,  Ying Huang
+ <huang.ying.caritas@gmail.com>,  Juri Lelli <juri.lelli@redhat.com>,  Mel
+ Gorman <mgorman@suse.de>
+Subject: Re: [PATCH v2] memory tiering: Do not allow promotion if
+ NUMA_BALANCING_MEMORY_TIERING is disabled
+In-Reply-To: <c571bb69-82f2-4346-9f99-6a7258e28a27@linux.ibm.com> (Donet Tom's
+	message of "Thu, 2 Apr 2026 10:29:39 +0530")
+References: <20260323094849.3903-1-donettom@linux.ibm.com>
+	<87wlyqt52m.fsf@DESKTOP-5N7EMDA>
+	<c571bb69-82f2-4346-9f99-6a7258e28a27@linux.ibm.com>
+Date: Thu, 02 Apr 2026 14:24:11 +0800
+Message-ID: <87o6k1ubg4.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260402061202.35097-1-devnexen@gmail.com>
-In-Reply-To: <20260402061202.35097-1-devnexen@gmail.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Thu, 2 Apr 2026 07:17:29 +0100
-X-Gm-Features: AQROBzAbXudyDxpcERfyC4rHqEDDn7g3uBanUJ0KPo7KlpVh9HeLQvzV22k_ixg
-Message-ID: <CA+XhMqwXe89x_QYjsbUtf7rdRt47tSGGGy-QnFBMsYJU-ohOxw@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/page_io: rename swap_iocb->pages to swap_iocb->bvecs
-To: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7475FA0005
-X-Stat-Signature: izreo88duphdzf9ei3a3b63ra14p96xr
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1CE7120008
+X-Stat-Signature: jd6ren41unr6b9dbccug7s9genfgdc75
 X-Rspam-User: 
-X-HE-Tag: 1775110661-864458
-X-HE-Meta: U2FsdGVkX1+W/HjigmUnDkaavWxqQOqxvV5VFDJcbsw42hpxrn8TrMAo9x8IYN5yP+/4jKyZTo1okdZfEYlP1z8zufeJig03VR1CVSRgmf5AA/a1qjb/uT8ZtNsAJHw1q7TcnfxKheZnprw021i9jE4ox88LIod5GU5Wh9lrJubJzz69GrLMZSYiqp62GwKQya4DUoDg9OigRACKc0fKRNPF1i4wyFKaMg9zyi25B0RwcZqf7ecjFZC1iKS18kh0/stD/Pu0gkq4beP7uZiX+prffJNyvW9ysG+89gb+gTB0jaNhbdBa62q4UooJytnAxC/ZjYsJ4EWSv3f+wFTfCNVTM4FQJanK5QJ3re5UuEXZAjz/KvkgQTqGUHEPxaOu+xRt9V3+69EzdVHHiz/+MeCBRUYo0oZs6YuryvQAoWWzVrvNzpJ/tpntsYSgmecR2HkiHcBoSwg2k8WtF6b6ZIbkl3O0Vdjgtzmaz4Mfbx4ES9SnGOE4bq4auwEhYHB6NeGPdT2JdL/xUFAz4Kft3fSnc/4IkC7zwxM/Y0i3MX7YksXGCB4QC3fJLhsBpe5n2E7cWM3nbgFblad9huMZbgjM6J7lRdKoeIvZ41gqBwEtvRScVJ/7jSXTFchYJws5e1xApppVsnDIC4voOTTWEYkqdMWNpFtbW6U0ObYM+80jOy0fbp1fcOwXs+O3DQx39Tj00JQVWIkTJFjDAi88cdwFvuLTsujwsVo5xP/Ryw4YpkMEWWvqgAknyhY8FDe3c/iPtAfHT53wnBje/XLej+IEnlp/6FXd3LbLjSuOuqzx+CR3iqy1UwNHaewAiaZ0v7I0MUltlUI8m3x/fLsojbXgVcbjdIywBP8EVdTHhhxmFrgwwrLnUqnBMovyYRDB0tECaX99UUowyAKCt+7OCdyebg1Cgvygueiy1fEdgqaiAJKSiOaCCGExaQmelbJMSSJiPo8k4RreiLmsnZN
- sfwY9qJI
- yNLALzDxfgz/sTQ5oVJwp5PEL+YdXmMjHs0Xw7qUUK6DI6ZF5CZtcH3qXiLK6ZApMQaRbehsV5McozHYNqAJAEXYzflamupv4Eb2Rq7v8ax1vvKw=
+X-HE-Tag: 1775111055-825512
+X-HE-Meta: U2FsdGVkX18BTx0D1tN81zWNQat5FyCQ59s5YOacJNaUYue+ntMNvFrwKhKVTMHpL80kPczNux5AuXWR/7nLf2EUztE3KUUAAnPnpfQkaG9TM1Tl4l7MOL83g2t09UEI+11MOYeZnziJq4zDO4S6ZkkpyQtKW/GkJW8M3kRrs1xQvG/g5svYwRZHFip0vMsB6NQ7fz5IVj4pydrCLecnE7aj7zkjejvamONboB2GShILj1cHl6S080Rej2MCLUd5CyxC/hnfGJYJU9m4G68azTsGl0ezMu1iNEg1oJgxniG3+7OVthxLOemar9lHwtLpXKWXQaPy8Z2XvWR5WuBjKzTMYqBIxpeSgaxVr3qYEid9YSwNrEcIdVUzHOn29IN77BUwwfFEvBXcJilhY9p/DlGBwdE9RLEN5BHbs3kn2/9//9Hdef0R40Lezov0Fhr+fwt+udxE21Yf/CHMcv8E9gVUV8YL0PLpKQu0OnlPr020bbk/mWUOppKRywAm0N78fnxaQsxdfy3eo5NXYgHsM/AHKsp62VddfH2ZythajzDZu8mioFwCTrkKLCSgdXE6VbOJjC6aWQLYk23Ql2tzovWn6SmvCsMWE0oGkZ92I7Y9vAOufTV+7F6eyx+XQo5vj3fAnXtiJgpMEtVqD8LipdB/53rlv9bdxZvQJ3kxZX1esh910y6gdxzkWMWfOVKIn7xApSXiHvrfb9ukIr4n+jgB9+zrqF0c6di68yxHT3fS4C9KUrvCk5V4K6h7iQWUIqxgk7wwuTrjL6FUvvcPoe6EGqifUirMlMedlgGjCnzBojac/0B1CuawuH0w+GKpKc6EykLNFgDKTBTexBy1tsihZTbq5f3ytXrBDO7z63taGBIY5KKbFuJLwYNcSgKbRsV8ksyYOB4fqaL7xWCmM3jx8MFEjJBMqqUuNkVUIUEjMrdPgwqqZz0pQxxW1Qgk+/MS6/3kdmtV4Dp5ekR
+ lI7RLmHD
+ 9qlDJdY56pcB6DDTSsbzPCC7wriphLGv+UGzTNiW9K8bBq1d0uZxZlRGGT4Kxgw/aiXcFOCnh2VbrfSIsei/83ZbNPT+p2EHTh3GaZGUFDOlBUoYilVPg67QJq/ZLOPMHyf4/YIffD8I2vpTr3lcUUDtXhaY8kmK/8nJ05BuYoq2F+QLzdqmI/pQfSnFtJbS4Q2NwcrrVrBfr8shx0GKSzIWC3PFtI0MtvG0dyORD5baoMUV29hMaOfuB4zECYWmTXXHOWppv+whkU8lNb8pqRXbB0lNQ23stZdJLaZmuP11WwU48vcbH5/QixrZeLiyLv1aulT1TOpp+piNH2NTm8S7dTFQ0ue+28CvBGBaDqoDqYyUUdj5uI3vUxUBvcdvZwiJeazThSvkha6v8xiiXd/7nB02zhSzCsHMN1mqPEuvxF8KNQCaMjpmVqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,125 +93,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-please ignore this one, I resent after. Cheers.
+Donet Tom <donettom@linux.ibm.com> writes:
 
-On Thu, 2 Apr 2026 at 07:12, David Carlier <devnexen@gmail.com> wrote:
+> Hi
+
+Hi, Donet,
+
+> On 4/2/26 8:57 AM, Huang, Ying wrote:
+>> Donet Tom <donettom@linux.ibm.com> writes:
+>>
+>>> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
+>>> disabled and the pages are on the lower tier, the pages may still be
+>>> promoted.
+>>>
+>>> This happens because task_numa_work() updates the last_cpupid field to
+>>> record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
+>>> enabled and the folio is on the lower tier. If
+>>> NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field
+>>> can retains a valid last CPU id.
+>>>
+>>> In should_numa_migrate_memory(), the decision checks whether
+>>> NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower
+>>> tier, and last_cpupid is invalid. However, the last_cpupid can be
+>>> valid when NUMA_BALANCING_MEMORY_TIERING is disabled, the condition
+>>> evaluates to false and migration is allowed.
+>>>
+>>> This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
+>>> disabled and the folio is on the lower tier.
+>>>
+>>> Behavior before this change:
+>>> ============================
+>>>    - If NUMA_BALANCING_NORMAL is enabled, migration occurs between
+>>>      nodes within the same memory tier, and promotion from lower
+>>>      tier to higher tier may also happen.
+>>>
+>>>    - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from
+>>>      lower tier to higher tier nodes is allowed.
+>>>
+>>> Behavior after this change:
+>>> ===========================
+>>>    - If NUMA_BALANCING_NORMAL is enabled, migration will occur only
+>>>      between nodes within the same memory tier.
+>>>
+>>>    - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from lower
+>>>      tier to higher tier nodes will be allowed.
+>>>
+>>>    - If both NUMA_BALANCING_MEMORY_TIERING and NUMA_BALANCING_NORMAL are
+>>>      enabled, both migration (same tier) and promotion (cross tier) are
+>>>      allowed.
+>>>
+>>> Fixes: 33024536bafd ("memory tiering: hot page selection with hint page fault latency")
+>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>>> ---
+>>> v1 -> v2
+>>> ========
+>>> 1. Dropped changes in task_numa_fault() since the original changes
+>>>     already handle runtime disabling of NUMA_BALANCING_MEMORY_TIERING.
+>>>
+>>> v1 -> https://lore.kernel.org/all/20260320092251.1290207-1-donettom@linux.ibm.com/
+>>> ---
+>>>   kernel/sched/fair.c | 6 +++++-
+>>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>>> index bf948db905ed..4b43809a3fb1 100644
+>>> --- a/kernel/sched/fair.c
+>>> +++ b/kernel/sched/fair.c
+>>> @@ -2024,8 +2024,12 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>>>   	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+>>>   	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
+>>>   +	/*
+>>> +	 * Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
+>>> +	 * and the pages are on the lower tier.
+>>> +	 */
+>>>   	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+>>> -	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
+>>> +	    !node_is_toptier(src_nid))
+>>>   		return false;
+>>>     	/*
+>> No.  Even if NUMA_BALANCING_MEMORY_TIERING is disabled, we should still
+>> allow migrate pages from lower tier to higher tier via
+>> NUMA_BALANCING_NORMAL.  If we have precious DDR, why waste it?  This
+>> follows the semantics of NUMA_BALANCING_NORMAL before introducing
+>> NUMA_BALANCING_MEMORY_TIERING.
 >
-> swap_iocb->pages tracks the number of bvec entries (folios), not base
-> pages. Rename it to bvecs to accurately reflect its purpose.
+> Thank you for the review comments.
 >
-> Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
-> v4: renamed swap_iocb->pages to ->bvecs (Willy)
-> v3: use sio->len for PSWPIN accounting
-> v2: convert sio_write_complete() to folio APIs
->  mm/page_io.c | 30 +++++++++++++++---------------
->  1 file changed, 15 insertions(+), 15 deletions(-)
+> One thing I am trying to understand is that page promotion
+> appears to happen regardless of whether
+> NUMA_BALANCING_MEMORY_TIERING is enabled or disabled. In that
+> case, what is the specific role of
+> NUMA_BALANCING_MEMORY_TIERING? Do we get better performance
+> when it is enabled?
+
+You can search NUMA_BALANCING_MEMORY_TIERING to find out what it does.
+We can get better performance as the original commit message says.
+
+When NUMA_BALANCING_MEMORY_TIERING is introduced, we didn't change the
+original behavior of NUMA_BALANCING_MEMORY_NORMAL because we had no good
+reason to do that.  In fact, you change its behavior, so you should
+provide some supporting data or bug report to justify the change.
+
+> My initial understanding was that disabling
+> NUMA_BALANCING_MEMORY_TIERING could be used to turn off
+> promotion. However, it seems that currently we cannot control
+> promotion independently. If NUMA_BALANCING_NORMAL is disabled,
+> neither migration nor promotion happens, and if it is enabled,
+> both migration and promotion can occur.
 >
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index 1389cd57ca88..e524cb821d04 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -327,7 +327,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
->  struct swap_iocb {
->         struct kiocb            iocb;
->         struct bio_vec          bvec[SWAP_CLUSTER_MAX];
-> -       int                     pages;
-> +       int                     bvecs;
->         int                     len;
->  };
->  static mempool_t *sio_pool;
-> @@ -362,14 +362,14 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
->                  */
->                 pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
->                                    ret, swap_dev_pos(page_swap_entry(page)));
-> -               for (p = 0; p < sio->pages; p++) {
-> +               for (p = 0; p < sio->bvecs; p++) {
->                         page = sio->bvec[p].bv_page;
->                         set_page_dirty(page);
->                         ClearPageReclaim(page);
->                 }
->         }
+> I was under the impression that:
+> - NUMA_BALANCING_NORMAL would handle migration within the same tier,
+> - NUMA_BALANCING_MEMORY_TIERING would handle promotion across tiers,
+> - and enabling both would allow both migration and promotion.
 >
-> -       for (p = 0; p < sio->pages; p++)
-> +       for (p = 0; p < sio->bvecs; p++)
->                 end_page_writeback(sio->bvec[p].bv_page);
->
->         mempool_free(sio, sio_pool);
-> @@ -397,13 +397,13 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
->                 init_sync_kiocb(&sio->iocb, swap_file);
->                 sio->iocb.ki_complete = sio_write_complete;
->                 sio->iocb.ki_pos = pos;
-> -               sio->pages = 0;
-> +               sio->bvecs = 0;
->                 sio->len = 0;
->         }
-> -       bvec_set_folio(&sio->bvec[sio->pages], folio, folio_size(folio), 0);
-> +       bvec_set_folio(&sio->bvec[sio->bvecs], folio, folio_size(folio), 0);
->         sio->len += folio_size(folio);
-> -       sio->pages += 1;
-> -       if (sio->pages == ARRAY_SIZE(sio->bvec) || !swap_plug) {
-> +       sio->bvecs += 1;
-> +       if (sio->bvecs == ARRAY_SIZE(sio->bvec) || !swap_plug) {
->                 swap_write_unplug(sio);
->                 sio = NULL;
->         }
-> @@ -477,7 +477,7 @@ void swap_write_unplug(struct swap_iocb *sio)
->         struct address_space *mapping = sio->iocb.ki_filp->f_mapping;
->         int ret;
->
-> -       iov_iter_bvec(&from, ITER_SOURCE, sio->bvec, sio->pages, sio->len);
-> +       iov_iter_bvec(&from, ITER_SOURCE, sio->bvec, sio->bvecs, sio->len);
->         ret = mapping->a_ops->swap_rw(&sio->iocb, &from);
->         if (ret != -EIOCBQUEUED)
->                 sio_write_complete(&sio->iocb, ret);
-> @@ -489,7 +489,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
->         int p;
->
->         if (ret == sio->len) {
-> -               for (p = 0; p < sio->pages; p++) {
-> +               for (p = 0; p < sio->bvecs; p++) {
->                         struct folio *folio = page_folio(sio->bvec[p].bv_page);
->
->                         count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
-> @@ -499,7 +499,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
->                 }
->                 count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
->         } else {
-> -               for (p = 0; p < sio->pages; p++) {
-> +               for (p = 0; p < sio->bvecs; p++) {
->                         struct folio *folio = page_folio(sio->bvec[p].bv_page);
->
->                         folio_unlock(folio);
-> @@ -559,13 +559,13 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
->                 init_sync_kiocb(&sio->iocb, sis->swap_file);
->                 sio->iocb.ki_pos = pos;
->                 sio->iocb.ki_complete = sio_read_complete;
-> -               sio->pages = 0;
-> +               sio->bvecs = 0;
->                 sio->len = 0;
->         }
-> -       bvec_set_folio(&sio->bvec[sio->pages], folio, folio_size(folio), 0);
-> +       bvec_set_folio(&sio->bvec[sio->bvecs], folio, folio_size(folio), 0);
->         sio->len += folio_size(folio);
-> -       sio->pages += 1;
-> -       if (sio->pages == ARRAY_SIZE(sio->bvec) || !plug) {
-> +       sio->bvecs += 1;
-> +       if (sio->bvecs == ARRAY_SIZE(sio->bvec) || !plug) {
->                 swap_read_unplug(sio);
->                 sio = NULL;
->         }
-> @@ -666,7 +666,7 @@ void __swap_read_unplug(struct swap_iocb *sio)
->         struct address_space *mapping = sio->iocb.ki_filp->f_mapping;
->         int ret;
->
-> -       iov_iter_bvec(&from, ITER_DEST, sio->bvec, sio->pages, sio->len);
-> +       iov_iter_bvec(&from, ITER_DEST, sio->bvec, sio->bvecs, sio->len);
->         ret = mapping->a_ops->swap_rw(&sio->iocb, &from);
->         if (ret != -EIOCBQUEUED)
->                 sio_read_complete(&sio->iocb, ret);
-> --
-> 2.53.0
->
+> This would provide more fine-grained control. Is my
+> understanding correct, or am I missing something here?
+
+You can change this, if you have some supporting data or bug report.
+
+---
+Best Regards,
+Huang, Ying
 
