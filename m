@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2912CC6B35
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 09:01:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C45A7CC6B33
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 09:04:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57456B0088; Thu,  2 Apr 2026 05:01:09 -0400 (EDT)
+	id 1000E6B008A; Thu,  2 Apr 2026 05:04:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2ECE6B0089; Thu,  2 Apr 2026 05:01:09 -0400 (EDT)
+	id 0B0F06B008C; Thu,  2 Apr 2026 05:04:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44C26B008A; Thu,  2 Apr 2026 05:01:09 -0400 (EDT)
+	id EE1846B0092; Thu,  2 Apr 2026 05:04:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B35926B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:01:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54873C20CF
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:01:09 +0000 (UTC)
-X-FDA: 84613021458.24.4270A26
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0F3EB12000E
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:01:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XMoeXPTV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775120467; a=rsa-sha256;
-	cv=none;
-	b=N8lvGrPgnAv1a7ylzcgYUTW1GlDkm3iTVBkSWh7YtkV8QyAPnGF+bbhkeeh7ItRL1hTOEe
-	t1FmSUHJp+6gNYKfGuPYwc4fwS5Xlr/4WUYXVDdf776VDOen+zvqx3nrnuvDCN6LQ6SB+e
-	2l6P3cC+nzzdrtkBJqQRpuRmmSzckZk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XMoeXPTV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DAA7A6B008A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 05:04:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74138BA13E
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:04:16 +0000 (UTC)
+X-FDA: 84613029312.18.7D0D675
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1A4EEC0010
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:04:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="MLRrh/he";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775120467;
+	s=arc-20220608; t=1775120654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OdtWjXiRlBkB7nKEXP3cSbCZsVWVuOVA4JJ6xkb7YsQ=;
-	b=nDcbXmVcuI2QYG7G8qRMC5gWKH/nG1g914YcnBSeQ4LNejNMGLa6fhHCEpln/ltllmEI2t
-	XPohHN+AbWarEDWvGc3TpOJ99IynMrPMW9NLe6d0aFXZw+Rm8fNZh/MxW9j7Xy+DYAHmSf
-	Txji5btn3ElRNIhNirt0AU4T8bA1nTI=
-Date: Thu, 2 Apr 2026 17:00:26 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775120454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OdtWjXiRlBkB7nKEXP3cSbCZsVWVuOVA4JJ6xkb7YsQ=;
-	b=XMoeXPTVwcCUTNEk8ka56+erJ+NWJW1vsTU3fdi67noxzwABtyFIDq8EVK0znbC+w/yuIC
-	rfZNPnUf2o/fzZ5GqMmaCxMspG9XUQjQsFht4MdwQFHP6TrWRdze7nxVmbJ8fhWsnJJHTc
-	tD/mWKGwAqeiaDfBgeA7hQY4eAQkxzg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
-	xu.xin16@zte.com.cn, yang.tao172@zte.com.cn, yang.yang29@zte.com.cn
-Subject: Re: [PATCH v2] mm/slub: skip freelist construction for whole-slab
- bulk refill
-Message-ID: <k2cytuzrmrtzxd36faxp2apfpzrctzuthaifhifitilbddsczu@lfv4hvsien6d>
-References: <ac32ZQMxSSZ2VsNY@hyeyoo>
- <20260402150310775aOAcX92pJLmjcUIRoWFER@zte.com.cn>
- <ac4k5yhq3zok6m1u@hyeyoo>
+	bh=ljCLK1n3LaFmfszoZ16bgND1HFfZ1L3Yb7sqg/Z63d4=;
+	b=s0ARLEt95FjBUfluvUmmfiaozylybg01YEzw/QC2nkNo5eojrbIjMvZrb4pkwTZYYe6G3H
+	f4i6dSXpkY5RJfdE856wu5GTkUEsiiDcn4iorS4UAtgNFGarpj7Zy2CrXJnMlME+l37i4Y
+	3ZxK+nYDCQ7wAWbqYVBJwAq9j4l+THc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775120654; a=rsa-sha256;
+	cv=none;
+	b=6HkvQNvu9i0xsqnChlO54fO30zCpPqv8wcLglStLnzyAPhaWNlyjufhs7+hBc1THcQnZ1Z
+	spnnRgo3YnmAvTmPxm80ccwRhl8mDalUWlzaCA3H+PjLMhQ5d6nqFPCgiXAvSyG65QlZwL
+	y1FN8UinKvIKgrS89w7tu0aviV3PD74=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="MLRrh/he";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 631Gu6YP2411380;
+	Thu, 2 Apr 2026 09:04:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ljCLK1n3LaFmfszoZ16bgND1HFfZ1L
+	3Yb7sqg/Z63d4=; b=MLRrh/heog20pFLyd9IEpnPBgWpCDdNZbMmXF5ycXIA47+
+	IMf4hBbE59qK3VWW3623ugaHqrrxjjoJicXCwMJ0Y0rjsdZe2kAxEx1HrdaJ78nj
+	v4jOWfne8qLi44uI1lMdeZdbUX0I27RBBXLTaPPBB5I22deI2Lu0lgZZgiJrg7Ic
+	CLlNhDkRlAAeCIhD8XrsUWwg3IZY+uwC0pLC4h5bXwcwdDJMl7vXxyII4JMqCx0j
+	14ktX5a3GD89jdn8MOUHv1BgSkljqljoC6O7iwGtm9fzh6K2vETbgWrUYsKQ0Rbc
+	1d/7EDbZxaqZVh4yYQUQK7nkuun9qAp5hzM+nfkQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d64dgubqc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 09:04:11 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63271ZwB031034;
+	Thu, 2 Apr 2026 09:04:11 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6uhk173w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Apr 2026 09:04:11 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63294AAj26346164
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Apr 2026 09:04:10 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F337258052;
+	Thu,  2 Apr 2026 09:04:09 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52F9D5805A;
+	Thu,  2 Apr 2026 09:04:08 +0000 (GMT)
+Received: from [9.124.211.155] (unknown [9.124.211.155])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Apr 2026 09:04:08 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------84Vf1evSfAI0RhKT98wnVP5b"
+Message-ID: <3c402987-a222-450f-bff2-d76a51e7067e@linux.ibm.com>
+Date: Thu, 2 Apr 2026 14:34:06 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac4k5yhq3zok6m1u@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: a5j4pe1dmbp11buiii6zghbiyh9yihj6
-X-Rspamd-Queue-Id: 0F3EB12000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/mempolicy: fix memory leaks in
+ weighted_interleave_auto_store()
+To: Jackie Liu <liu.yun@linux.dev>, joshua.hahnjy@gmail.com
+Cc: akpm@linux-foundation.org, gourry@gourry.net, linux-mm@kvack.org
+References: <20260401005702.7096-1-liu.yun@linux.dev>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260401005702.7096-1-liu.yun@linux.dev>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDAyMDA3MyBTYWx0ZWRfXx0oCwogWHvcW
+ idPAzrmR+1JfgDKKw6cBwjiZJ8JerbUwzOFt0NVtb+hpRts/h2x3jMPoY88LelRyRvR83MXRakk
+ BwDF7SxeO1ohEtpy7v59t/kZ/ZvZ2EkNRHOMYrycwlYoDp8EE/dMpiAvP0ujduRtUuwCqcxKLY0
+ pvq1xsgDpuncPYggClAYPzYskM5IXV2uDvHRBNuxS7ORYW868CLvOHJzhbbPQ/DvFNW5UzPEkPL
+ CFEIUW7LlXha4xXiXNV1pWZHtiP3datkzJkyP5xp3rP5pktgMB8q5Ps6mBXuFj0dWOkr9b9RDy9
+ ECqDhfrs4miIdm0HLXYhpqkkuWsSeklS7dv2m4E7+LkvJlhSdDUSPfK3xq8WStzX4+8Kw1NcgEG
+ b7b3Q8/cjxir7yqWlQpvkF10l0Pj4HZmh8JeylSeh7A8xituA9clqK/GY0wsjvr/IXxoYsoKH1R
+ fJBCvXSJE7J7wZ68LIQ==
+X-Authority-Analysis: v=2.4 cv=QKZlhwLL c=1 sm=1 tr=0 ts=69ce310c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=r77TgQKjGQsHNAKrUKIA:9 a=c92rfblmAAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=GQcx1SM-jIvEHJ7Fg4QA:9 a=QEXdDO2ut3YA:10
+ a=U-TS657aZtpQBjwn5IQA:9 a=pSCpfNTBJinxRP1e:21 a=_W_S_7VecoQA:10
+ a=lqcHg5cX4UMA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-GUID: _PqZXvNoDnETpYKAIRDp3IAcIl8EtU1d
+X-Proofpoint-ORIG-GUID: xr3FLwWgkM4Y1gNYRtHD9bmQGP729GJ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-02_01,2026-04-02_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2604020073
+X-Rspamd-Queue-Id: 1A4EEC0010
+X-Stat-Signature: obanp63bkzyh8ek4tqtput1r1a5m3h7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775120466-985503
-X-HE-Meta: U2FsdGVkX18hXTpkH85oSXfcpEgtYllp3xovCgDqkT7Ov4i1/Hku3aCP1KEDSa+aJNfVsj1X2RcHu1HKc1tJZDEw7ErOYzERrar27nv9yv+DmMAJxeenVU9AUcMjaXzVC5z5EugM6abXR+O1tyyPEt3inMltZHS7AYxlueUfAHRBRVk1EjbcJnq5/O+NMS8hRR/AhxEXIAIZhGTsVKwg3qUY/Ov3Hbmy5LHsxqFDF7J7ykJ+4nXI9F8qNp53RgDb6aht/yYPCL6tUCurLsl0VXzRvf8g9oT3/vZrnennJ1Xt827b0wi56MlWendSd3xfMymzje5WJrNv/SiiMq+y2oS6gZ+sp3Mdw/dJIX8QQxYKryGfUvgsXHuOcnp2l1lYGwdlZu6lKL/h/+dS8BMLFkHG2LGzHqdojcjljr1ALUnRUpK2CE6QYmc0cdRLoTJbJEn6EkUFiJqNNpqR9oMkznorv61Jh907izqeM3+icu7rWJ8NoWxsmtXLcMZtj0hXrKpgOjO0Pq332dm530IoyAllp987m6Pa0cOCQ5oC8GDVUrQdHFIS76to8LyUiKk5zQRocS/APz/sYL8WHao69Ei43U+wpJ6+gG9h1LolTpd0IbN0xZCamA+EWHZJXUMho0OkvnNcJd9DFVVNmaZweARPhtV9dTjrRGUWRL1Ryi6w6B6IMlVnmMI/WQv0VrbKLk2TcLTj7bMK2Qu5S3vEQ11BCDXExaAMsHFjTtxPFmo1t4OalTGtx/bKLYKMF4w2Ukt8KLXysojB45ABsokPhEf3Vc9MMbJsIXt7THI8nvZkXJ3UwPQ2tJ/NzRmt5ZiTduIpOC5XQnKBmwWlSaIRRiWYCG89aSebMNnd9Z53O7uqmU1p9cJQmihLSI3f+lYm6oHrIeGnT/QD24DByFVAc1g1PTdyrpp+13o2f3gdXg0p2C7OhTEMLGGDPn1v88/msagj9nqTqf33NqmGQ2x
- pplVmFtb
- na6zPCsUIJ+Bfax7euhwJhOfyyl6nvkdI5d4pK95f/cgyXKAfqsR201SCg8kqqOUE1KIDTFVFtWYx3wPRANpR25Rl7+w59pbh/OMjDrfvssXeViJ6ZGuZpJQaousWObfY2mrIHrkzVZAK+oVIym4+kBcywB3I5jpQJUPWfcTxZKnrW7sofVXX7VuxJ8oFxNtEasEykRgonhEdsYgX6QLGYhI4LPD15MPEMRT85Dp6DPt5QE5deAArsm6cTBbYZiJzJvNxP1Ps7wICCVaHI2oYJcrAaKQcGUGPS+WHLPpsLaLQf/8=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775120653-454191
+X-HE-Meta: U2FsdGVkX1+X+m0nZqmXpQbeKCrJ/ir+PNnf/aid2w/jbZWTZysg+W8QDTlRH3R6uVd55W+H83o0AbdRaOgUahnMrrOAbuqWwHE1F8bINZEVpNrP4v3j6dnzi9SbVZJCfu75ZBn+rbi8cn5RWPDy5QQ2RIEbnXWTC9XfBqxdCCjI+SZj6ekikLNqGAsCdRCxml12cDggm0cm9EANIL6gbZ9Mk5YqBx0H4euuBMd0/0MNtAxHx0OohrR2TSz9dufnSjSl/CNUHSI18ug9iv6JXe1topJGwvGYEYUrli+zM1CaRWypam6RN/kuA/0KyCSlJ4OWcFfan8BLIyT4apcinYZYKypzi3St1JUd4YZh5Rp7OWwot1RKsO3Y+EaH/zeDVTZDPymzbTIkM1ODQhwMxyLbfvyXKRlX+WE90xMUA1cEvk9CTcNSBmTzt3Bbzd6dYeqh/ElbJ03UMKI+ULTZhIrfGAOmvRyzO3/8cZSYiqSwy1Gru3OhXnYyMqBFoYeCsSeeVX9/xQZnqCpZGEAlmLaIq+GinFNhNNpvHLmAx5WrciVYKbOgWj316UzQWu7W7MKcTD5jJqIXerOUZabFXEheNCl4hmKullLNMF7t3+NvwQRRggYKaY5TsDNqhEC8eBw5TVjV6DKMfzL3uJD4TmIYsroJCkbq+7W9Z5N6iuIWvlEFuQC1UwDdb9q4SjXvJDlKAb6llTOpdkniVlXcQ41zUYqwsFt15Hgb4TBzTVKWOdcetfkqHYCrYZrDYxlQZXsUDLr0Ak7pnqapOH34G1PPRQuuLOltAF/DKLhbSw4VmAtmEXIjNBurPPFaQvrXuev+HQUhrLgsZSiaEd0D1BUd+Hd6dNpnCf6BC+T/oUck+ogpf/RtnPjxqkgl3LWlPS/gvf5t2co417Dq3PZ6VK6ODwPqvRpQ2e9bEOqt2mNW97CdSSsJizsbkrkEsa+21BEiMB30Nf6f4Ochnma
+ tCZd6Sxb
+ bQTFNAEzm+FI5IOURpw9r8co4wk98MKhlTkQKhZwLCycuv5WM3cRNl7QrlEfcAK4TcaNgBnYkHk3WXQExp7vyow4I3zQUTOsGs+x4SCbKAD2u+3AjsuS028zfYGTrv/4BWiXYdg8Q9QiMRl53kyeiUBOBlDiu8Zr28Th+4DtyZiksOCNzCSw8/oQVXlmUpOkxT/uIv/+/XiWQct5OMql6QYuBhXakNRb+VdlJW8d8Fa6NO3Vhe9nGP3k7U6oVcY7W85xVcGYNi9z//03ruEcurKif3dl88Q9CQLQT9u7SSMMUBFstgx422S0q4ubqPOBJYzwcUZJIVARaumI2S+uB+NaoV8UxdE/jCI7jxj6ymy+4Kx1XtgkK5vL43w1OsmU/xGgH/GoKJGHQXRVwz6hzL4nW26G++NZpG8s5wSAvmTKTgOVs1B4PvoLdv09n7hHzYXpjP5KXB75smaqH1C00TFohW2FThkXEIuUy7jLUs7D4Nvun82kKwVzk9mK1LWHJ9EaAUNBZAEdikZeztuxAPxM+t1z4jlOXXrvfn3OwIaa6DgM2zm63vs3bCqhyggfbkOX9lnOM58G+Q2r31c9cTCChxeS9ZZpfZW7cBxl0yibqfQ/y60s39sFwdYbjZj4gEtWZgjjvxluwbX3baAvLA0GmzxLVcBPKFCYo4ze0UXEhbO1x9zkCs9eyLP0BVq5GFS7IL/LF4UkbNlQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,217 +140,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 05:12:23PM +0900, Harry Yoo (Oracle) wrote:
-> On Thu, Apr 02, 2026 at 03:03:10PM +0800, hu.shengming@zte.com.cn wrote:
-> > Harry wrote:
-> > > On Wed, Apr 01, 2026 at 02:55:23PM +0800, Hao Li wrote:
-> > > > On Wed, Apr 01, 2026 at 12:57:25PM +0800, hu.shengming@zte.com.cn wrote:
-> > > > > @@ -4395,6 +4458,48 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> > > > >      return allocated;
-> > > > >  }
-> > > > > +static unsigned int alloc_whole_from_new_slab(struct kmem_cache *s,
-> > > > > +        struct slab *slab, void **p, bool allow_spin)
-> > > > > +{
-> > > > > +
-> > > > > +    unsigned int allocated = 0;
-> > > > > +    void *object, *start;
-> > > > > +
-> > > > > +    if (alloc_whole_from_new_slab_random(s, slab, p, allow_spin,
-> > > > > +                         &allocated)) {
-> > > > > +        goto done;
-> > > > > +    }
-> > > > > +
-> > > > > +    start = fixup_red_left(s, slab_address(slab));
-> > > > > +    object = setup_object(s, start);
-> > > > > +
-> > > > > +    while (allocated < slab->objects - 1) {
-> > > > > +        p[allocated] = object;
-> > > > > +        maybe_wipe_obj_freeptr(s, object);
-> > > > > +
-> > > > > +        allocated++;
-> > > > > +        object += s->size;
-> > > > > +        object = setup_object(s, object);
-> > > > > +    }
-> > > > 
-> > > > Also, I feel the current patch contains some duplicated code like this loop.
-> > > > 
-> > > > Would it make sense to split allocate_slab() into two functions?
-> > > > 
-> > > > For example,
-> > > > the first part could be called allocate_slab_meta_setup() (just an example name)
-> > > > And, the second part could be allocate_slab_objects_setup(), with the core logic
-> > > > being the loop over objects. Then allocate_slab_objects_setup() could support
-> > > > two modes: one called BUILD_FREELIST, which builds the freelist, and another
-> > > > called EMIT_OBJECTS, which skips building the freelist and directly places the
-> > > > objects into the target array.> 
-> > 
-> > > Something similar but a little bit more thoughts to unify the code
-> > > (**regardless of CONFIG_SLAB_FREELIST_RANDOM**) and avoid treating
-> > > "the whole slab->freelist fits into the sheaf" as a special case:> 
-> > 
-> > > - allocate_slab() no longer builds the freelist.
-> > >   the freelist is built only when there are objects left after
-> > >   allocating objects from the new slab.> 
-> > 
-> > > - new_slab() allocates a new slab AND builds the freelist
-> > >   to keep existing behaviour.> 
-> > 
-> > > - refill_objects() allocates a slab using allocate_slab(),
-> > >   and passes it to alloc_from_new_slab().> 
-> > 
-> > >   alloc_from_new_slab() consumes some objects in random order,
-> > >   and then build the freelist with the objects left (if exists).> 
-> > 
-> > > We could actually abstract "iterating free objects in random order"
-> > > into an API, and there would be two users of the API:
-> > > - Building freelist
-> > > - Filling objects into the sheaf (without building freelist!)> 
-> > 
-> > > Something like this...
-> > > (names here are just examples, I'm not good at naming things!)> 
-> > 
-> > > struct freelist_iter {
-> > >     int pos;
-> > >     int freelist_count;
-> > >     int page_limit;
-> > >     void *start;
-> > > };> 
-> > 
-> > > /* note: handling !allow_spin nicely is tricky :-) */
-> > > alloc_from_new_slab(...) {
-> > >     struct freelist_iter fit;> 
-> > 
-> > >     prep_freelist_iter(s, slab, &fit, allow_spin);
-> > >     while (slab->inuse < min(count, slab->objects)) {
-> > >         p[slab->inuse++] = next_freelist_entry(s, &fit);
-> > >     }> 
-> > 
-> > >     if (slab->inuse < slab->objects)
-> > >         build_freelist(s, slab, &fit);
-> > > }> 
-> > 
-> > > build_freelist(s, slab, fit) {
-> > >     size = slab->objects - slab->inuse;> 
-> > 
-> > >     cur = next_freelist_entry(s, fit);
-> > >     cur = setup_object(s, cur);
-> > >     slab->freelist = cur;
-> > >     for (i = 1; i < size; i++) {
-> > >         next = next_freelist_entry(s, fit);
-> > >         next = setup_object(s, next);
-> > >         set_freepointer(s, cur, next);
-> > >         cur = next;
-> > >     }
-> > > }> 
-> > 
-> > > #ifdef CONFIG_SLAB_FREELIST_RANDOM
-> > > prep_freelist_iter(s, slab, fit, allow_spin) {
-> > >     fit->freelist_count = oo_objects(s->oo);
-> > >     fit->page_limit = slab->objects * s->size;
-> > >     fit->start = fixup_red_left(s, slab_address(slab));> 
-> > 
-> > >     if (slab->objects < 2 || !s->random_seq) {
-> > >         fit->pos = 0;
-> > >     } else if (allow_spin) {
-> > >         fit->pos = get_random_u32_below(freelist_count);
-> > >     } else {
-> > >         struct rnd_state *state;> 
-> > 
-> > >                 /*                                                              
-> > >                  * An interrupt or NMI handler might interrupt and change       
-> > >                  * the state in the middle, but that's safe.                        
-> > >                  */                                                             
-> > >                 state = &get_cpu_var(slab_rnd_state);                           
-> > >                 fit->pos = prandom_u32_state(state) % freelist_count;                
-> > >                 put_cpu_var(slab_rnd_state);    
-> > >     }> 
-> > 
-> > >     return;
-> > > }
-> > > next_freelist_entry(s, fit) {
-> > >     /*
-> > >          * If the target page allocation failed, the number of objects on the
-> > >          * page might be smaller than the usual size defined by the cache.
-> > >          */
-> > >         do {
-> > >                 idx = s->random_seq[fit->pos];
-> > >                 fit->pos += 1;
-> > >                 if (fit->pos >= freelist_count)
-> > >                         fit->pos = 0;
-> > >         } while (unlikely(idx >= page_limit));> 
-> > 
-> > >     return (char *)start + idx;
-> > > }
-> > > #else
-> > > prep_freelist_iter(s, slab, fit, allow_spin) {
-> > >     fit->pos = 0;
-> > >     return;
-> > > }
-> > > next_freelist_entry(s, fit) {
-> > >     void *next = fit->start + fit->pos * s->size;> 
-> > 
-> > >     fit->pos++;
-> > >     return next;
-> > > }
-> > > #endif> 
-> > 
-> > Hi Harry,
-> > 
-> > Thanks a lot for the detailed suggestion. This is a very good direction for
-> > restructuring refill_objects().
-> > 
-> > I agree that abstracting the free-object iteration and making the flow uniform
-> > regardless of CONFIG_SLAB_FREELIST_RANDOM is a cleaner approach than keeping
-> > the “whole slab fits into the sheaf” case as a special path.
-> >
-> > Your idea of letting alloc_from_new_slab() consume objects first and only
-> > build the freelist for the remainder makes a lot of sense,
-> 
+This is a multi-part message in MIME format.
+--------------84Vf1evSfAI0RhKT98wnVP5b
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi, Harry and Shengming
 
-I just finished understanding the new detailed code skeleton, and I think the
-idea looks really promising. It seems to unify the handling of shuffle and
-non-shuffle cases, while also naturally covering scenarios where a new slab is
-not fully consumed. It looks very nice. Let's see how v3 performs going
-forward.
-
-> I believe Hao is working on trying to allow consuming all objects (from new
-> and partial slabs) to fill sheaves when possible,
+On 4/1/26 6:27 AM, Jackie Liu wrote:
+> From: Jackie Liu<liuyun01@kylinos.cn>
 >
+> weighted_interleave_auto_store() fetches old_wi_state inside the
+> if (!input) block only. This causes two memory leaks:
+>
+> 1. When a user writes "false" and the current mode is already manual,
+>     the function returns early without freeing the freshly allocated
+>     new_wi_state.
+>
+> 2. When a user writes "true", old_wi_state stays NULL because the
+>     fetch is skipped entirely. The old state is then overwritten by
+>     rcu_assign_pointer() but never freed, since the cleanup path is
+>     gated on old_wi_state being non-NULL. A user can trigger this
+>     repeatedly by writing "1" in a loop.
+>
+> Fix both leaks by moving the old_wi_state fetch before the input
+> check, making it unconditional. This also allows a unified early
+> return for both "true" and "false" when the requested mode matches the current mode. Cc: 
+> stable@vger.kernel.org # v6.16+ Link: 
+> https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev 
+> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> Signed-off-by: Jackie Liu<liuyun01@kylinos.cn>
+> ---
+> Changes in v2:
+> - Move old_wi_state fetch unconditionally before the input check,
+>    instead of just adding kfree() to the early return path
+> - Also fix an additional memory leak when writing "true" where the
+>    previous wi_state was never freed (Sashiko)
+>
+>   mm/mempolicy.c | 23 ++++++++++++-----------
+>   1 file changed, 12 insertions(+), 11 deletions(-)
+>
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index cf92bd6a8226..ebe4bc8220b1 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -3706,18 +3706,19 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+>   		new_wi_state->iw_table[i] = 1;
+>   
+>   	mutex_lock(&wi_state_lock);
+> -	if (!input) {
+> -		old_wi_state = rcu_dereference_protected(wi_state,
+> -					lockdep_is_held(&wi_state_lock));
+> -		if (!old_wi_state)
+> -			goto update_wi_state;
+> -		if (input == old_wi_state->mode_auto) {
+> -			mutex_unlock(&wi_state_lock);
+> -			return count;
+> -		}
+> +	old_wi_state = rcu_dereference_protected(wi_state,
+> +				lockdep_is_held(&wi_state_lock));
+>   
+> -		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
+> -					       nr_node_ids * sizeof(u8));
+> +	if (old_wi_state && input == old_wi_state->mode_auto) {
+> +		mutex_unlock(&wi_state_lock);
+> +		kfree(new_wi_state);
+> +		return count;
+> +	}
+> +
+> +	if (!input) {
+> +		if (old_wi_state)
+> +			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
+> +						       nr_node_ids * sizeof(u8));
 
-Yeah, I've had some work going on in that area too, and I'm trying to keep it
-from stepping on the changes in the current patch :)
+Yes, these are valid issues. This looks good to me.
 
-> but it'd still be nice to
-> do this as long as it keeps the implementation simple.
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
 
-Yes, exactly.
 
-> 
-> > and should also help reduce the duplicated object-setup logic.
-> 
-> Yeah, less code means less tokens, so better for the environm... oh wait,
-> April Fools day is over! (just joking).
 
-Oh, I didn't even realize yesterday was April Fools' Day. I guess my clock must
-be broken :P
+>   		goto update_wi_state;
+>   	}
+>   
+--------------84Vf1evSfAI0RhKT98wnVP5b
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->  
-> > I’ll rework the patch along these lines, incorporating your and Hao suggestions,
-> > and send a v3.
-> 
-> Thanks for working on this.
-> 
-> > Thanks again for the thoughtful review.
-> 
-> No problem!
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 4/1/26 6:27 AM, Jackie Liu wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20260401005702.7096-1-liu.yun@linux.dev">
+      <pre wrap="" class="moz-quote-pre">From: Jackie Liu <a class="moz-txt-link-rfc2396E" href="mailto:liuyun01@kylinos.cn">&lt;liuyun01@kylinos.cn&gt;</a>
 
--- 
-Thanks,
-Hao
+weighted_interleave_auto_store() fetches old_wi_state inside the
+if (!input) block only. This causes two memory leaks:
+
+1. When a user writes "false" and the current mode is already manual,
+   the function returns early without freeing the freshly allocated
+   new_wi_state.
+
+2. When a user writes "true", old_wi_state stays NULL because the
+   fetch is skipped entirely. The old state is then overwritten by
+   rcu_assign_pointer() but never freed, since the cleanup path is
+   gated on old_wi_state being non-NULL. A user can trigger this
+   repeatedly by writing "1" in a loop.
+
+Fix both leaks by moving the old_wi_state fetch before the input
+check, making it unconditional. This also allows a unified early
+return for both "true" and "false<a class="moz-txt-link-rfc2396E" href="mailto:whentherequestedmodematchesthecurrentmode.Cc:stable@vger.kernel.org#v6.16+Link:https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.devFixes:e341f9c3c841(">" when the requested mode matches
+the current mode.
+
+Cc: stable@vger.kernel.org # v6.16+
+Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
+Fixes: e341f9c3c841 ("</a>mm/mempolicy: Weighted Interleave Auto-tuning")
+Signed-off-by: Jackie Liu <a class="moz-txt-link-rfc2396E" href="mailto:liuyun01@kylinos.cn">&lt;liuyun01@kylinos.cn&gt;</a>
+---
+Changes in v2:
+- Move old_wi_state fetch unconditionally before the input check,
+  instead of just adding kfree() to the early return path
+- Also fix an additional memory leak when writing "true" where the
+  previous wi_state was never freed (Sashiko)
+
+ mm/mempolicy.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index cf92bd6a8226..ebe4bc8220b1 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -3706,18 +3706,19 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
+ 		new_wi_state-&gt;iw_table[i] = 1;
+ 
+ 	mutex_lock(&amp;wi_state_lock);
+-	if (!input) {
+-		old_wi_state = rcu_dereference_protected(wi_state,
+-					lockdep_is_held(&amp;wi_state_lock));
+-		if (!old_wi_state)
+-			goto update_wi_state;
+-		if (input == old_wi_state-&gt;mode_auto) {
+-			mutex_unlock(&amp;wi_state_lock);
+-			return count;
+-		}
++	old_wi_state = rcu_dereference_protected(wi_state,
++				lockdep_is_held(&amp;wi_state_lock));
+ 
+-		memcpy(new_wi_state-&gt;iw_table, old_wi_state-&gt;iw_table,
+-					       nr_node_ids * sizeof(u8));
++	if (old_wi_state &amp;&amp; input == old_wi_state-&gt;mode_auto) {
++		mutex_unlock(&amp;wi_state_lock);
++		kfree(new_wi_state);
++		return count;
++	}
++
++	if (!input) {
++		if (old_wi_state)
++			memcpy(new_wi_state-&gt;iw_table, old_wi_state-&gt;iw_table,
++						       nr_node_ids * sizeof(u8));</pre>
+    </blockquote>
+    <p><font face="monospace">Yes, these are valid issues. This looks
+        good to me.<br>
+        <br>
+      </font></p>
+    <p id="b"
+style="overflow-wrap: anywhere; font-size: 13px; font-family: monospace; background: rgb(255, 255, 255); color: rgb(0, 0, 51); white-space: pre-wrap; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">Reviewed by: Donet Tom <a
+    class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a></p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:20260401005702.7096-1-liu.yun@linux.dev">
+      <pre wrap="" class="moz-quote-pre">
+ 		goto update_wi_state;
+ 	}
+ 
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------84Vf1evSfAI0RhKT98wnVP5b--
+
 
