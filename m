@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F0B7111224B
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:01:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F59C111224B
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:07:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 564FF6B0088; Wed,  1 Apr 2026 22:01:35 -0400 (EDT)
+	id 658D66B0088; Wed,  1 Apr 2026 22:07:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 515D96B0089; Wed,  1 Apr 2026 22:01:35 -0400 (EDT)
+	id 60A166B0089; Wed,  1 Apr 2026 22:07:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42BAE6B008A; Wed,  1 Apr 2026 22:01:35 -0400 (EDT)
+	id 51F7D6B008A; Wed,  1 Apr 2026 22:07:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3217D6B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:01:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3F27B835F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:01:34 +0000 (UTC)
-X-FDA: 84611964108.15.5B7FE7A
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0E1B018000E
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:01:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=uhEkm1jV;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf06.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775095293;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 429976B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:07:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9567160304
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:07:49 +0000 (UTC)
+X-FDA: 84611979858.30.83B8A78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7ABBB40008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:07:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pSbYePcU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775095668; a=rsa-sha256;
+	cv=none;
+	b=7X9DNrTJ24hQ9tWizU4uJHIjV1JZKWoyWvjT+rfrwMC4tbGE5xXXisiebfBXDX+fhNfqaX
+	LeuRdE72GGOfkCp1URh0hMQLEjoyIpsbgmShkmIg8zXiDkI2GMP0KcxxlMPUvR/F5ix8J6
+	CYdGO8CBkA9WemIe31OmhR9gfzEGOP0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pSbYePcU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775095668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyQ2HgQdC5wspVAf2OjejzOyJAL3/rLH1bt4Ed9la48=;
-	b=u8ID36zotug4FmumG0sP0bxULfsI1Mrhs54m4EP2OqMtm7FfMj9qiQeN8feVSiARqrYKkI
-	iHDh3NIz2lUp5VdRrctg8QpM9wb0THe3kzU9/ifSWw7I90zgzzZ/FBW5FssIIvr0EZxKcW
-	pXmJBKyGX+/QGwNY7XvThnr6V1IX12M=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775095293; a=rsa-sha256;
-	cv=pass;
-	b=J3L3hUoFaUFwZJQvLHGcFBgL2bcEu2sIVXFt0XHskIeLu0A52c0tnPwT25KAhAdWpFvcOm
-	7/+BOswZ8zKgdJ4jai08Uh0Sf1SeREZpEbKIHEEVJ0WuR3C/PZS4DXvM0k/pDhf5/WvwiD
-	QLpZjv/a+iP+NLjWxNLqgemoHNSoRSI=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=uhEkm1jV;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf06.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1775095268; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=LewQDIUAGP/X2uvT3+RRX2g8PWpZWSbScAFx0pgRkcx8kCfPelnsZ41HVJlo/F7ZVMh+ec1XZ24UTUM9dLhiZSZU2YSLMl6a73MelR7f3ZVSXSn+1Ko6NO8Au0W3x3/VtBl6+U8bbIufe+D//n4I0fzyNV9PVhQjGRMAJR7xOn8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1775095268; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UyQ2HgQdC5wspVAf2OjejzOyJAL3/rLH1bt4Ed9la48=; 
-	b=VtjBnBcgoZDnMQT/4Iyk2mjywaKtWGXzUp57UJtDYJpyalH5HT+NErv5CnL4vhDCLIV3ybUG+WYdvPePVh2hZ62+LFF8xis050pPV09LZK2fcQSPu7T88ynfubHqTJgWDLfKozrHrsQPt+Qj3hjm+oP/ouaM/jYDU6Jpy1FUJik=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1775095268;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=UyQ2HgQdC5wspVAf2OjejzOyJAL3/rLH1bt4Ed9la48=;
-	b=uhEkm1jVxhbXJQoRHPd4YOa3NhEudV6kT9YOf44i5vP9XA+xQIEqrBNTL0EMF0vj
-	+Q+wfYWqYOeOnDOhFTisbhHFECli6WEvAK2eecCTzyj83NtAfHt6aqmqLl5U8jMyUrq
-	a875m9LnC8llisU8UgZSXElZvM1IWLLcK+/28sZ8=
-Received: by mx.zoho.in with SMTPS id 1775095266475417.7375448390844;
-	Thu, 2 Apr 2026 07:31:06 +0530 (IST)
-Message-ID: <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in>
-Date: Thu, 2 Apr 2026 07:31:05 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/4] mm/vmalloc: free unused pages on vrealloc() shrink
-To: Alice Ryhl <aliceryhl@google.com>
+	bh=xRdErPSCMRxCQhMA6/+fFtC5ZZMUNCI+gfAPHU4CojM=;
+	b=ZfA9K8uzAE0actiiVPO64JU3GdD9bXBcsSHQs+ES/h9Hlvm2lf7zCoUrPVWl11QQ3jNF8g
+	f9jUjCxUlHqqQtHIXBjJ3fpgQMZE8BasOue1dre4YNnHo2KXvjDxVYKTlLPQy/GX+ujtMa
+	HJGnef+wKqtqr+ivxDdnXMhnNKKtKtE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 82E5661843;
+	Thu,  2 Apr 2026 02:07:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE1C4CEF7;
+	Thu,  2 Apr 2026 02:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775095667;
+	bh=7fWpk4Gb6mbBCpnHLamijCOUzylF/piEazB2Sm2XryY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pSbYePcUY+Qt+QuSS5KrYUfKigRw7zQGPLR7J2Kldh27J8+A0Vn/ST2v3YvTJ5Pio
+	 JTB96YQ3t4ES/UK//c5Kic324Idu+t5CygT3Yh4FEnsmXWxg8YWPDygSfaIlwjnMJR
+	 Rb5+pE96AgpXfmFgxVkYFb6UCK+G9bPZyTIe5+uJJKmfDKjmq3bxLFgw1sQAtv6GO/
+	 oB921pAGMCysuTxzf0t8dQF01o+vrwHpJCBIbr1DCY6qDc6aE7XfMyam0buLcHxqZw
+	 3RP4hEqME3uL89XZRxeFIPPPC0j2vpBA+DWcquCfRgD8iNvSnxOT4C1QMaUkZNT2ae
+	 cGM/PimH3Sh5g==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-References: <20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in>
- <20260401-vmalloc-shrink-v9-3-bf58dfb997d8@zohomail.in>
- <ac2L2VNExpp8t7oF@google.com>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <ac2L2VNExpp8t7oF@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 0E1B018000E
-X-Stat-Signature: mmu8ohsa5p47f6qz9xphiw8pnecemt9c
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH] mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+Date: Wed,  1 Apr 2026 19:07:44 -0700
+Message-ID: <20260402020745.68554-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402010457.66860-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9jrced3keqrewzrsz67xchnc9krtfkrf
+X-Rspamd-Queue-Id: 7ABBB40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775095291-726338
-X-HE-Meta: U2FsdGVkX1/Knm4cBqxhyz79/1BgdR0ncOr89tYrTnFdtVIq0ESvMCF85eZz2eEV0P2AfLCisy7vsB3jkvYHSYDBCpZO/90M9OXeZEvh860x5FLwv2PlCD6rTXt2vbw1wj69/I9OHiShq0GGYCzFA6g30e1NtuqxOwPTM+e2v7YpI/p13zTi+m6bm5TBtmmYAZ+awETVEAynCqYiWrPT2oXErvxD24qGmPrhbpQ9Hh1PcOWBgZ6T6XhjXL52qEoMtVQqlZ/zOxZkQhqI3DBVbfahEuCI0QuZ3K8hNt1vS7incRrSlnAgGpgh65VWtgd5gALLI2rYmt2vnB4iBiEIf5uTxigpp1Uuf6NonwN6cxmK6CqgEzcy9sw0VgVnanIZIgzCfS8QB9X5JRU2uzC4wcryoqNHfwvDKyMU8VZqsVdYVQvvEsBa3geHUx/wgzJbTc/Ev1lNIcIirlaFdRql2XTiiVwSvanN8KKlmtWN8NBz38U4jPEI2tWzLgLQZXSQeN7afQAZssrynENwE/HOJkUwpZMFF5d6goyaOx6l6QHmM0GCRH8FfTBBaj5qRKT6aYUqn/cOa+35iq0jHOfVYk22Kz3rMDBwn8bqHU+WZdvckcKgzM8jOdn5+ztLFfsteUwOWcC+JFJ/5ILnEByxLDey1kY2oAsyp5fOQgxvFg1OegPCZLH+vePBzDXy14b1ublEttzmfcasHRAuNI+jEnZor3Qmlr32wJYbKnWV8pdHU3vFVVOUUT3wTn3Zc/bRCaF+laZTrfmvB2p2I6EYlFwnGOrbbEuow6Peik5wjzD1Ag1ac+0mPI4j3hKkQuWI62NWj0isNzI0OoD2+orn/0K4DhsH4mg9IpSQzSh51M/38SSbFpqQopvQqSg+ptW2a57o8/N4pk/Nq1ox7xUuoLcpOYxk9JURnCelJG7gRoOYllREybAhctFrzB3QGiyA+tWZxBaHkp49xBTvj2p
- OcdGDVuf
- Ts8XCPE5Q1d1jdeyTHFcD+QXN3vf/rn5O+RqquGnAYvSqdAaSArYxTzGIb+rs6tBqsMnVJa36nEO00ifPwrMjjTA/aRNRdBCjel3VDCd6/7rIVkw5pMVct8yTsTkBgYROYgzbnzxaWgdhpFyj2KvSktxzNEdiMRFuRf8WGwRFbX+Y3s6NJXi2HTz1PPF5byFRQoLH+9+9BnGlBH7pEo0Vv0uVWg1rJunlLUiElq8LUQ2o+yDCVPETiL2HaD3pZcAqOaOXTs0iDd0NWIK2s0W55aUb35Up3U41FGvASewtDyRoR1CSdWX2TNoj//gVDw4uxxpjiAFUYrYLP2nMgxDFyHg/4Wo6LLIJRGyHthoGZqU7Uvs=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775095668-637881
+X-HE-Meta: U2FsdGVkX19ze0QSVuM/AUf2FWNq0CajoQjKyrFqt4DxFjV+MBBvXvBar3iNZ+5D07hPzBk11sEn4JuA3dL8F+poh+e0Tj8ci/MjjlCEryJ+XkUwGeQQmrYtQWvLyzUWWfKMRNT3xaD/X0v6wYrMaRl90i1bHPg8w/gBaldZlBYi4s0MvgMjRgu4rOwuE0W4Qxz85cYo3fTOoD/d14DDcO5ErPELj9QeaH3wsFlR1BV6mmzqf0R2sOmuZmJQGcJ4dq1ltad1OiKoJKgnhh28TchpsWnwfECnLJpHfZGc6iUEfBKcv9CB73PPjSYuKGl65djoz+Ms9Z5h4X+L89RKgKTfe8A9oWPD9ySSXVlNnz1V9i5y5NgIkt1T10ZXt0cwQraoXDBzNrjdi8PT5raDAq/4bw7uundOfW4dSRIwU5q/09iHRavbFrxcjkVS3XFPcM0cKCZz40qi3/AbmXk3M1/HMpjtlRiWuQFFXq+wvwHfXxjmToLK/sWE5AFYk0nDzsD7sg3BEClWMKQL8pf/2cB3Dzq0a2k9ypyWdLjsCWm/R+EuD9xYX6v7W3i8N1e04Xj+J08fyPIpvDZbbB416mPU+XbSGTcRkH5pREKByDWr3sU5NMnhqHHkh8wwclTfRYnYGkvF1yCPQx7qPIIPuN3pa5QL4lfZR7Jv562r04NGaCfuU+4HMLHDQ5DSnaAX9yGoig7xmRai5DE4rwWnowPz2BvrXN+g2Qk9Jk2ZA3C5FaivVoO2+x19GqYlksPMzWXooxzuT2CuILr0a1ppxtDkAMlLhoZWFeNDDV6/MRu7DjKKVF0fgemTqFFP2qHbTVXiklaTwoRV2WX28rphKndr5fzs0UyDVof8eTBCqJTbnO7Nd3QJKCWhm0zI7/OvidB5Zy3FW3lo9/mtsIU4Ip3W0mw2LKcnkT1nPx6Y12CaFNdRkHyKM2JcgkdE1ZORecVXzD1RwdztPSC1kum
+ IZrJ6Wqo
+ aF6Jx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,12 +93,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02/04/26 02:49, Alice Ryhl wrote:
-> Should we set nr_pages first? Right now, another thread may observe the
-> range being unmapped but still see the old nr_pages value.
+Andrew, please drop this patch.  sashiko found an issue, so I will respin.
 
-Isn't this exactly what the spinlock is for? The observer is supposed to
-free the lock after they are done observing the value.
-Can you point out the code where this might not be the case? Or am I
-missing something?
+More details below.
+
+Forwarding Sashiko review in the usual reply format with my inline comments,
+for doing discussions via mails.
+
+> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 1d53bb9291d3fde393f37b143e637f0d25b6634e
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/stat: deallocate damon_call() failure leaking damon_ctx
+> 
+> This commit addresses a memory leak by deallocating damon_stat_context if
+> damon_call() fails during stat startup.
+> 
+> Link: https://lore.kernel.org/20260401012428.86694-1-sj@kernel.org
+> 
+> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> > --- a/mm/damon/stat.c
+> > +++ b/mm/damon/stat.c
+> > @@ -257,7 +257,12 @@ static int damon_stat_start(void)
+> >  
+> >  	damon_stat_last_refresh_jiffies = jiffies;
+> >  	call_control.data = damon_stat_context;
+> > -	return damon_call(damon_stat_context, &call_control);
+> > +	err = damon_call(damon_stat_context, &call_control);
+> > +	if (err) {
+> > +		damon_destroy_ctx(damon_stat_context);
+> 
+> Can this cause a use-after-free?
+> 
+> Earlier in damon_stat_start(), damon_start() is called, which creates
+> and starts the kdamond_fn kernel thread. This thread actively uses the
+> damon_stat_context.
+> 
+> If damon_call() fails, the kdamond_fn thread might still be running or
+> in its teardown phase. If we free the context directly using
+> damon_destroy_ctx() before the kthread has fully exited, the kthread
+> might access freed memory.
+
+Nice catch.
+
+FYI, I initially thought damon_call() of DAMON_STAT cannot fail, because it
+synchronizes its damon_start()/damon_stop() calls with module parameter
+handling function, and it doesn't update the context internal state, which
+means the damon_ctx->maybe_corrupted cannot be set.  If that's true, this patch
+itself is not needed since the memory leak cannot exist.
+
+But, kdamond can fail for its internal memory allocation failures.
+Specifically, if ctx->region_score_histogram allocation is failed, it will be
+terminated.  So, yes, sashiko is right.  There is a chance.
+
+> 
+> Should we call damon_stop() here to wait for the thread to safely exit
+> before destroying the context, similar to the teardown sequence in
+> damon_stat_stop()?
+
+Seems that is a workable option.  But given the fact that kdamond is already in
+its termination step, it feels odd to me.  I'll take more time to think about.
+
+> 
+> > +		damon_stat_context = NULL;
+> > +	}
+> > +	return err;
+> >  }
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260402010457.66860-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
