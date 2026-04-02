@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DBCA1112250
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEB21112259
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B43C36B0088; Wed,  1 Apr 2026 22:13:37 -0400 (EDT)
+	id DCBF86B0088; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACD486B0089; Wed,  1 Apr 2026 22:13:37 -0400 (EDT)
+	id D7D326B0089; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 995506B008A; Wed,  1 Apr 2026 22:13:37 -0400 (EDT)
+	id C93336B008A; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8502E6B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:13:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 355D01B74B9
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:13:37 +0000 (UTC)
-X-FDA: 84611994474.27.99A53FA
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F2FB140007
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:13:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="x5/1ZzSQ";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf09.hostedemail.com: domain of yangyingliang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yangyingliang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775096015; a=rsa-sha256;
-	cv=none;
-	b=Xn7cqd+6M+4N2pgXosm+lmGNrXCR9lYAwnOaF3dF/ZJ13yXlCGAAgmP3VeA1OFbVO/LHGX
-	wd22F+dHnKET8+YloXjcXGxwGEu/G5HiBasKVfSreBhufaAwvWbgQapq/YyeQxKFNCQjAx
-	kQAT3c+9LQvftUsOGjVMTGJ+q783duc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="x5/1ZzSQ";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf09.hostedemail.com: domain of yangyingliang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yangyingliang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB2426B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4808FB819F
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:29:28 +0000 (UTC)
+X-FDA: 84612034416.16.30612BA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2049580008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:29:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=mMxnb0PN;
+	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775096015;
+	s=arc-20220608; t=1775096966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5qLEOXfUTk8DL9LxyouvXtAoe4C1SePsVgMFt8tP36U=;
-	b=HvNQL7fN+Gt3Vr4m6WUZ6Dqc51cHCdeI8oQDAg0ERkQal0F/pWojN6V+H7xX7XgVGwJA/D
-	TOwpIoRaMIN7ad55vh7bm4+NihIdRDmNStoB9RW0/+p4z0gkRNxYHvwX/bIkWEvqcJy5dp
-	TS2r0qQLaUZa4LM7/3bGHMhmnllUtp4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5qLEOXfUTk8DL9LxyouvXtAoe4C1SePsVgMFt8tP36U=;
-	b=x5/1ZzSQzLqAmm/k2nYixO7Fiucl0o4zNrB4VGXu1c8j3JxBNMoU2iY9qb3LMIGhUNEgNKofO
-	FQnK44C4GyeskgGgtCe/r6uabtMKVGlHsAF9Z/25Y2Gufp5RmAomN9/EzRax+N6yDrsd9EO3PQd
-	wBVC9NQ1UH6yp54CW38t1e8=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fmQGz5b0XzpT0L;
-	Thu,  2 Apr 2026 10:07:39 +0800 (CST)
-Received: from dggpemf200002.china.huawei.com (unknown [7.185.36.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id 08EEB203B2;
-	Thu,  2 Apr 2026 10:13:29 +0800 (CST)
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemf200002.china.huawei.com (7.185.36.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 2 Apr 2026 10:13:27 +0800
-Subject: Re: [PATCH -next] mm: vmstat: make refresh interval take effect
- immediately
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<ljs@kernel.org>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<liushixin2@huawei.com>, <hucool.lihua@huawei.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Yangyingliang
-	<yangyingliang@huawei.com>
-References: <20260326075546.3357901-1-yangyingliang@huawei.com>
- <f65f3910-f444-40bf-9d15-42a8b6215a56@kernel.org>
-From: Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <e72e2b72-d408-8af1-9316-2f3ddcaacaf3@huawei.com>
-Date: Thu, 2 Apr 2026 10:13:26 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	bh=wmnqoq7XLaeqt8PJvJDnQ8Shu5xBBzwbtKsYJ5s3QfY=;
+	b=2bjGcClHS7zhI1p40VwCqssMpKaoO794EVB0nJj7/UKCLZESTM4EYRIECj1+EFeo529mKy
+	PzEtF84m0EBmzLuzqAAS8nCFofYKhqDW6rWt6By4Cp8qL3o6pnG863fxJUMEQxUxdRqAlr
+	8LgxRxMyEXDE6H8rC+yyh9Lc7BAr1Dc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775096966; a=rsa-sha256;
+	cv=none;
+	b=OjVCNATVPpMZflJEj2oC/9Y893ZV5QdVdA+2F1oz/qLCRmMM4paa9jr0uAtjbDWb9MUoHl
+	rMklycmB9q9Tr0KBVC1JDvy7mfrecBEGgpo21bBRHgL10Vx4Cb7QWnl5a5n3kQcTfK2km5
+	OYNRMCH+H5CgdwqKk3qkaV+elmG4l4k=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=mMxnb0PN;
+	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 046031C14;
+	Wed,  1 Apr 2026 19:29:19 -0700 (PDT)
+Received: from [10.164.18.48] (J09HK2D2RT.blr.arm.com [10.164.18.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB36F3F7D8;
+	Wed,  1 Apr 2026 19:29:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775096964; bh=nGSbM6iWNi54IURbVCZil/MROs/YoY4WcW5y3ipipU4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mMxnb0PN+5JHowx4quU5bYmHMjpVXMzynlXHrEmgDoIIX/TbQNMvcmrGa76T5AesX
+	 ilGG7tqqffCV+tINYeGIA1qANdhTxsWdyXKzzA22uMUyfcWl+2gH2nFMPJB2RCLgTc
+	 qnnN/SpUEGFmWY4FB3gtH/J3h+t2gLQENg+Nw8ts=
+Message-ID: <a766efa7-90e9-4867-b908-1f2073e59735@arm.com>
+Date: Thu, 2 Apr 2026 07:59:18 +0530
 MIME-Version: 1.0
-In-Reply-To: <f65f3910-f444-40bf-9d15-42a8b6215a56@kernel.org>
-Content-Type: multipart/alternative;
-	boundary="------------AEE0935252EE36F7617A5695"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in
+ alloc_pages_bulk_noprof()
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
 Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf200002.china.huawei.com (7.185.36.244)
-X-Stat-Signature: 4pe14bakh5hnrr6bmnjcyfyty576qcy3
-X-Rspamd-Queue-Id: 4F2FB140007
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9qexd3pjsoq5jyi6mdhkfjuff8p7h36y
+X-Rspamd-Queue-Id: 2049580008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775096013-584804
-X-HE-Meta: U2FsdGVkX1/0kUtNiVn7RDRZoIhLJhUE9BmhkMsFwEa0oUEB/2FxMDEkR4MUHy84Xq0Z6g5Ba/aJc9ZPmFbTAxW5FEEFH26HgXTcoEQVu6mQjQiwkjUyiTQSoOrzvavr0ngqEz8BEBhjUaG6TvhJDenzA68XA9XmjFPsWxxkro54zNomH+E6kVEa9HMOMRtfWqXxhj7/s5jDzUmyIZgqH9KCYqiKYqIkbs40DZUgAqVu7zp7xnL4qz+eI47WHt/LRj4qNjY+bA9Ybza4A8O7iN72kfuOHXQDxWLTSrjwhcC6eSTAuiGkLAIV8n5jmKseDZecp1FGFfQBN6hSY1fGbBqJVXhJsf1omv7qmg1U9IexzeB0X8g6ZrkEUWR8cSLqIojRVEI86ONLdPsoTR8/umswtBYK2/keCBFtvalSFUWWGut8OZF4Mr7/yZ/gSGgRs4NNyjl65wnMAKsPU6KC7ynqVrs+sFs/EKVgZ7eiY7DJl0OJUNdi54fywAg/TfFi33wXMuQQzvP4EUHRIowTCu/5u4gJCUh6DavaaUNlGX6RoscDdhg8Ctaih6Cq5IqWAfXOlizSesHodHbYjaFJDQIK89CqKlFZlnHE3erHBcwIofU14xDjX20mQjhp/8HTO+UUUvY3QpNP8y5umUWK47+yVpPx+AA2/r4/az4jJpvA8R4G6o5kWXhBImlQr3N6aDDthipehy1qpUNkueT9Vmr4bqBEGqYS9JGfazCglZi9CZENEDHgwdbU2FZ315K+gIbho/Vtu0FoQMCyPR9HTRswfuttxBcMOJHDKRldL8lorw0kkTQzl90QMvJUqSh+q6l8/2eOi6aDFeXcydQs1vOHrtgRS5bAjhlGFRZAw2OmBU0f5EF9nAivFy7lXExI4pP0UPqOdAV07jKS1ByRsgq5puv7dJSMcMieotFmwXTpjkS3BiNXsN8nq1/zcfoaeIKwj8N0pzcGxe7emZK
- /l1z11lK
- 4ZjFOil0H99vNAvzyootai+xsIaOZlcg//VWOTXsDPp9ZTP8E0AoJ8sbbVyhYfIg8uzo53N7A3oNrqTLkGtTkUm9aVSw13HrkiKyQhtXbXD0DrR/EKbuMGpDm8lsS+T2MobBzRz3GqM2nDqIrQON3XmEAvTJF6g2ljchoFBk8Gvp8jv7SKcfMhv5DwYUihJsVDipvw8YvOHcuP9veT6lxkFxTIwCLiO3kwFJwrdrjXPH96vO3FW21w2OUxMJ0w5Bfer7NyoNo+yfPorKIzAQwih1SBfLc+Z8TkDG92y0FUTbv6gHM4BCdOBSEmOuLW5cj/DQxxhOJGx8QBmkbUlnE7V4kWr3BTbPrWYr8b0DEaXvjAsf4iOyIbLQCmdFrojBqrVaUNeUMAkfxI86xK2GkPnsQ/Q==
+X-HE-Tag: 1775096965-829946
+X-HE-Meta: U2FsdGVkX1/ktcrDuDoPoMr0zfyQH1KauOCygCQUDJozAOA8X0n5DWXQbvzre3LFCeeKN/hm8LX6qjxAtRJVD+0S8YaHfFn1CdRgbqeEuw9/i8o6xRiNCRM9llQjbtsMKW1q+n6W4UPQ485tfnCjYVVtUT8/8SWkzPXi4MnfIPvVdjyhkbUrgJXmRQmHLgI9S6nD0NTaVH2EKa5mJaYnAkpmGhARTrQgiKcUuhmkbBJLiMLc7sWo1NPfl2JgT3TQaY2COum0+fucjPZfULKL2x48TczT3XTNtxHcaVopU2xglk7Y2nUZRkPluA/FndBd81A+vkR7ifop0xK88gyXBwr0O42lcR0jU+emcJ5vZ5LIiXYtDP16BtUFHYxb8HwxrTMBbRt/pPPVB9j1m7FjagS1XCTgiy+lVAi99A1MkBfq71vhy7zyBKbBXCjlQ3/E5UXw1qa3JIWXN/PdZeECPUWBQSmr6RxkptorNb+5oUSsHr9jVLZSydRufx2wEnoOLaZyPSk+BMAHYIwaZ25qIylEi0vkT+q0eBbxsctS6Py/u7RNc0jdQ+AOm6izHeDmFadStpFVxbmzX00aRI9ExKoNRYoBCaCDcBtf+e2CstyQrX7es3EeuYYSHjOOL80fTG+c3h/Jk/9dOJg8xrSVlIIRvSonDp04bczXt0jJ6Vu/ITtRhr8FcxXFgMa3erRr0OjBdbso8NwN5anfXAjAgqv91DFqXIiC7e7nN2/HtFaE5qsLogVi4ucVbcDT/zZ/ttRVqX8g6l4S2EUs4nWwVispNNBEXF7SU2SP4QskyFZ3oAk/KyQO4DFNga8W1huL7G+cOJqreYo/JyWk3osuI/HRYPR+QjSynG3CiXp1dmFdH23n78tqzvuLop/hr2zoo2Lb+8pFLT78bWeIxS2GsqRtn8E45GB3fPBYPelkkFYIKkKCC9VCfLMQ3NoosIvcqBX75ggp2rvSiFfAUxh
+ mDOU1QFY
+ qRrEZj4GvE/7gUg54RSd7c4vS6fyoXoIrSh5o8ECSuG1NxT5SMZI4Hq4W43GBC1sVMcOAOWgT6ZMH7OpBrTaYkLY3QQwqdpoxBz/G3IEFrq8N1rKLRMVqsdpzDP/ATwZyG4vz0AP8/sRZTSOEZv3iXLWuRvfcFXDIht6hixb7TlbNcCbrQHKITQAhy+3+I+ogN4dABDtVQwRJHaHDA9wFwks6aS86+RxEPQyWJsCV/V1ydvGWgJ1JNoMdKFHKPkmVU08cKk98nuHfd9DIAMKiRPeEUHRyYWOX4DNDdZ/iUKYzrUEVRkRInSQuMys2Rac8ozPthvSoANM/F849vYjzISfhENDTeOoO/hVhrfKznXK4CqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,90 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------AEE0935252EE36F7617A5695
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+On 31/03/26 4:22 PM, Brendan Jackman wrote:
+> These two variables are redundant, squash them to align
+> alloc_pages_bulk_noprof() with the style used in
+> alloc_frozen_pages_nolock_noprof().
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/page_alloc.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 111b54df8a3cb..5e280ded6e7ac 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5051,7 +5051,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	struct per_cpu_pages *pcp;
+>  	struct list_head *pcp_list;
+>  	struct alloc_context ac;
+> -	gfp_t alloc_gfp;
+>  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+>  	int nr_populated = 0, nr_account = 0;
+>  
+> @@ -5092,10 +5091,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  
+>  	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
+>  	gfp &= gfp_allowed_mask;
+> -	alloc_gfp = gfp;
+> -	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &alloc_gfp, &alloc_flags))
+> +	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
+>  		goto out;
+> -	gfp = alloc_gfp;
+>  
+>  	/* Find an allowed local zone that meets the low watermark. */
+>  	z = ac.preferred_zoneref;
+> 
 
-
-On 2026/3/26 18:09, David Hildenbrand (Arm) wrote:
-> On 3/26/26 08:55, Yang Yingliang wrote:
->> The refresh workqueue is re-queued after last timer is triggered, so when
->> the refresh interval is set, it doesn't take effect immediately.
->>
->> It leads a problem like this: if current interval is 8640000s (100 days),
->> and we want changing it to 1s, the new interval can't take effect until
->> 100 days later.
-> Well, yes. But, the default is set to HZ. If you set the default to
-> 100days you are probably doing something very wrong in the first place?
-It's a fuzzy test.
->
-> What's the use case that warrants the complexity? Even when set to, say,
-> 30s, waiting 30s is not that bad.
->
-> Would we maybe just want to set an upper limit to which we clamp? That
-> would be a lot simpler.
-
-Is this too strict ? If someone want to set 1min or more, but it's 
-limited. Some existing
-
-scripts function may be broken.
-
->
-
---------------AEE0935252EE36F7617A5695
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 2026/3/26 18:09, David Hildenbrand
-      (Arm) wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:f65f3910-f444-40bf-9d15-42a8b6215a56@kernel.org">
-      <pre class="moz-quote-pre" wrap="">On 3/26/26 08:55, Yang Yingliang wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">The refresh workqueue is re-queued after last timer is triggered, so when
-the refresh interval is set, it doesn't take effect immediately.
-
-It leads a problem like this: if current interval is 8640000s (100 days),
-and we want changing it to 1s, the new interval can't take effect until
-100 days later.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Well, yes. But, the default is set to HZ. If you set the default to
-100days you are probably doing something very wrong in the first place?</pre>
-    </blockquote>
-    It's a fuzzy test.<br>
-    <blockquote type="cite"
-      cite="mid:f65f3910-f444-40bf-9d15-42a8b6215a56@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-
-What's the use case that warrants the complexity? Even when set to, say,
-30s, waiting 30s is not that bad.
-
-Would we maybe just want to set an upper limit to which we clamp? That
-would be a lot simpler.</pre>
-    </blockquote>
-    <p>Is this too strict ? If someone want to set 1min or more, but
-      it's limited. Some <span data-slate-fragment="JTVCJTdCJTIydHlwZSUyMiUzQSUyMnBhcmFncmFwaCUyMiUyQyUyMmNoaWxkcmVuJTIyJTNBJTVCJTdCJTIyaWQlMjIlM0ElMjI5VnFubDNROTVHJTIyJTJDJTIycGFyYUlkeCUyMiUzQTIlMkMlMjJzcmMlMjIlM0ElMjJzb21lJTIwc2NyaXB0cyUyMGJlaGF2aW9yJTIwJTNGJTIyJTJDJTIyZHN0JTIyJTNBJTIyJUU0JUI4JTgwJUU0JUJBJTlCJUU4JTg0JTlBJUU2JTlDJUFDJUU4JUExJThDJUU0JUI4JUJBJUVGJUJDJTlGJTIyJTJDJTIybWV0YWRhdGElMjIlM0ElMjIlMjIlMkMlMjJtYXRjaGVzJTIyJTNBbnVsbCUyQyUyMnRyYW5zbGF0ZWRCeSUyMiUzQW51bGwlMkMlMjJtZXRhRGF0YSUyMiUzQSU1QiU1RCUyQyUyMnRleHQlMjIlM0ElMjJleGlzdGluZyUyMiU3RCU1RCU3RCU1RA==" style="white-space: pre;">existing</span></p>
-    <p><span data-slate-fragment="JTVCJTdCJTIydHlwZSUyMiUzQSUyMnBhcmFncmFwaCUyMiUyQyUyMmNoaWxkcmVuJTIyJTNBJTVCJTdCJTIyaWQlMjIlM0ElMjI5VnFubDNROTVHJTIyJTJDJTIycGFyYUlkeCUyMiUzQTIlMkMlMjJzcmMlMjIlM0ElMjJzb21lJTIwc2NyaXB0cyUyMGJlaGF2aW9yJTIwJTNGJTIyJTJDJTIyZHN0JTIyJTNBJTIyJUU0JUI4JTgwJUU0JUJBJTlCJUU4JTg0JTlBJUU2JTlDJUFDJUU4JUExJThDJUU0JUI4JUJBJUVGJUJDJTlGJTIyJTJDJTIybWV0YWRhdGElMjIlM0ElMjIlMjIlMkMlMjJtYXRjaGVzJTIyJTNBbnVsbCUyQyUyMnRyYW5zbGF0ZWRCeSUyMiUzQW51bGwlMkMlMjJtZXRhRGF0YSUyMiUzQSU1QiU1RCUyQyUyMnRleHQlMjIlM0ElMjJleGlzdGluZyUyMiU3RCU1RCU3RCU1RA==" style="white-space: pre;">scripts function may be broken.
-</span></p>
-    <blockquote type="cite"
-      cite="mid:f65f3910-f444-40bf-9d15-42a8b6215a56@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------AEE0935252EE36F7617A5695--
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
