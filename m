@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5391CC6B05
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EAC4CC6B03
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:17:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE1AE6B008A; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
+	id BC3806B0088; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92926B008C; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
+	id B83AE6B0092; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B811C6B0092; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
+	id A99A26B0093; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A54826B008A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:15:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79322B9383
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:15:47 +0000 (UTC)
-X-FDA: 84612755934.20.08E48ED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A5A26B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:17:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6C861B80F9
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:17:36 +0000 (UTC)
+X-FDA: 84612760512.28.FB77AD9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C2F05C0006
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:15:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abkrN80g;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 07EDFC000B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:17:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWNfxyMb;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114145; a=rsa-sha256;
-	cv=none;
-	b=qI/PzJ4M5tWWkYoKlhj/0sEgBg1TOBmIkAmXyR2b8LxU1TPr5iw+wtnFhG/tYEpv2XAbSz
-	sWWvEIFdH47tf/JtC5NwQyCFzvhk1j8OHZYQ7PzyxbyZhr/M4UNq69HMj2vsgq5pVOB4ZF
-	ijzp4J1QK6xNxGACKe93qU04geQWlLw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775114145;
+	s=arc-20220608; t=1775114255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCOddpp9DFtN9Ll8S0MEtVB5rAZljK7NGl7kHcED4NI=;
-	b=aeMBUF5wj4ofm8hUgxJc4afVhw07+OyjT5AXB2L+IewScTlm1WPWr81H+6cSpm64s7AohH
-	3ReSUnIOD1saF614msIIiYUmNBCt7eGuJ69iKmvuh78V2smynTQzTOw/zLuKINkBeOSEyO
-	kVCBE0b1x7kXi+RQ/mHExwePGW7SDX0=
+	bh=VYzL/L+qEex3BSBVu+Pk9gG5FMiFEUh6MzbgVG55p28=;
+	b=UwehEHD0MT9/78esZyCY0Zn21reh/NtR0H1dVxqXP4zlYvKyz7kRuSMIe3ymvR6aDVAkbi
+	F2a1Wmde30TBfIxBuxXtB309ykZhCkWx1CwuCCOxFR8p73la3+xn12Wd+EHiXy2RwE31Ko
+	EBNPrBMlc0yRrg/fxNq+nOS9qLPiMKs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=abkrN80g;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWNfxyMb;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775114255; a=rsa-sha256;
+	cv=none;
+	b=PDOyw9rT+0VL5mqSoM0bE+TaaxWdHh/Zsji334dXO5sMVvMwobX7gDrnq9IJKhlls3uzlJ
+	PGvTk07z9e4nv48HaNf06BOx9RLCEqQ4ZXepEJ57zY/eCk59jbX6H/AOKzCMyRjoed3XdH
+	unSPk0lBT1BjQRKXEmbJBf31vloE/44=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF69D44401;
-	Thu,  2 Apr 2026 07:15:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2030C2BC9E;
-	Thu,  2 Apr 2026 07:15:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0295043C9B;
+	Thu,  2 Apr 2026 07:17:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BAAC2BCAF;
+	Thu,  2 Apr 2026 07:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775114144;
-	bh=15Rb82sGNFX6qQyj2zyuism7Uxe43HZFCTwkUrfzpQM=;
+	s=k20201202; t=1775114253;
+	bh=9HsfCw1/4CObUXs5PmJd2vxZ2Vdl+sbQLuV7DH+qT+Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=abkrN80gm/tZE3PUps8yrNSOihn0fsB/AtwSkxwzJDcZNYnRsoFBh+6ibRMeEKlyv
-	 FGcVjr9zbdEasF3+Q55k9/2ic2WjDx+xv8vlOVVRp/F3yv6eJ2SJ85ayX2F5giwLVh
-	 zc3xrcku9aIMyrrNqNplayB39Qhy5b8Asjg5Uf8O7hxL75hGj8HG0Orti7EG4Xfc2H
-	 qjVedD0x6hiBasUaH9q7lYKa14IojUeivNW5FNzZoW5RxcWHzCCS9nB7ANhsAYG/7v
-	 kMwYBQLs6inrRSG+g2v3N1gAkPMhWAfPMi5MnE76B5UiBXM0IuVwafMMfGYXV9KhOh
-	 KqBniwlbsO3LA==
-Message-ID: <8b6d552e-cdf2-4472-ad26-62cbb575b0fc@kernel.org>
-Date: Thu, 2 Apr 2026 09:15:38 +0200
+	b=tWNfxyMbnz2IZcdaaFxvmnAzxqHY7cqzBad16XaXaQRfDdcpOTSS/Bg9Km+GrIjbw
+	 bFnKYln9gEeTPGt+IV1wb/8PMRl2wC3aiCx3KCk3FWRCnWgxnWpfNkEDrEEA+OoN46
+	 Bpcw2G//cYWAQ9hA8aWLthqEzLugIgfZ+BbO4qccSsC6Jt9aDUizrzpUmHTqZZ9XpZ
+	 dyH421+ruvurQc7C/WgG54ZvhUaoMDE5sU9Yba5Mi/MMOeRFbMTxasoqxh2jLL7ECq
+	 H0dmUQB3rf+TIRyR+imIolzd3xaEiFT2EkmIpsYFDoaJ/Z0i7ngw+Pxj3Ia45Xy9g4
+	 kTNnsdk9TTB8A==
+Message-ID: <ca14b239-26db-479f-ba58-11e15f2379eb@kernel.org>
+Date: Thu, 2 Apr 2026 09:17:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] mm/page_io: rename swap_iocb->pages to
- swap_iocb->bvecs
-To: David Carlier <devnexen@gmail.com>, Kairui Song <kasong@tencent.com>,
- Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
- NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-References: <20260402061408.36119-1-devnexen@gmail.com>
- <20260402061408.36119-2-devnexen@gmail.com>
+Subject: Re: [PATCH 1/2] mm: fix mmap errno value when MAP_DROPPABLE is not
+ supported
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
+References: <20260402003417.438037-1-anthony.yznaga@oracle.com>
+ <20260402003417.438037-2-anthony.yznaga@oracle.com>
+ <20260401174440.0f85ea303f0a027b50d99e5d@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260402061408.36119-2-devnexen@gmail.com>
+In-Reply-To: <20260401174440.0f85ea303f0a027b50d99e5d@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 07EDFC000B
+X-Stat-Signature: gwu9kdd8oykobpewhgeucocnffnk6q7f
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C2F05C0006
-X-Stat-Signature: 53az9ofo6zw4jrzafucmmnjwzp6ohkxo
-X-HE-Tag: 1775114145-953430
-X-HE-Meta: U2FsdGVkX19rP+4shFhXf2TLvwNyHZo6zEyUtxuZTuUmbkW5RQ6MxITvdIlNxqZuG74Egw5tbPecI4j0JgqNtYHBEsuDGV0BOJ4aaLFhBAJakERrszu2DNpi7DVzrzzKdTm2u6qTZtTB+Jha4C7tilUlzrvt9GhDJ6og3sfUl56dvJHOyO62lefljoCHAYGatICiFLZ59ObiZag/jvV2bVAblASD4Z1fBpKSBbPraPJR9DoaM2Ld07sCAsDsYD0BL+oxbh1JfbU9NV6j4iRl5hFDAuki8bKlvTtpG4rqSj03V+Wh333hwptMTVNbdLWgRpXDTSnwfiIyk95FgdOZkszQoGoeiWuMT93UjKCvz66TaPlyk+VIImrOmPhc9e6FKy0Kn6O5vRragD/jiaTJesLOBWSrUZ18kCp40N4E34fTWMs/xnB790jw40oqBkt3ORLwH9TE3VoA1+qa4dAU+PdZQa1nnfr3U8uxECHAd5gjGPDAZlOiPrCxF13Rn+9o16M1NHCgA6L9AhdTtxufItYjdXfK3mZrjvOwOw7zeqhw03RPs5DNV8H43jLzPdVubdIRR9GVOUTIwQ8/UrP9G7VlTebOhZmfUg9CXaq/0BPX7WTU7Hq4rZBoQygwYLyk3b0tSElVY9JtKuXnybfJxdpgdIIoqpGjXdR2UzyPpcQby8s4n5lLk0je62cCAyofsRtd4KhpP7XVjdvMSzFbW5r3QC6k3tB83DPXsQ9M97aetzSLHndi25t8iEGi4rP4OfZXugq25MXCaVAdxMgff7iJSkkofaSQ49a1nbAVD8tQfiyYJi5ZobakapWS3kmEcJj5hxBMYC7puBxcoyxRqaCIyQzUnUJQ6z/3gENRwNTKl6QpWV3YQj98rS4gSSdGTI7Dt7IkB5GplhtwUY4vXuOzKHPTFSJb0qEZZQjvVuS+M1rl5ZpjzX6/FPSRA1USfu/B5FQgc2KtLuI4/Wc
- MY9ha4ca
- XDuFQZi7RsF+mmYQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775114254-159192
+X-HE-Meta: U2FsdGVkX1+42j/dBxRbYrnaltjTGcsecLUokxXSoXGjItcDVJcVGM/RC3XcrshwkaReaT5xhbIKTXRmc5fFVWuRtWW8kg6GtFLXiMwoYLNGlC0ynq435uOTUhnMOziXsWG/lWIoQQwPfGNapNkIZ9MJlQSH0E2JkZZJolbQkvTjjNk7yEH7edNnsrmoPvoEOlNKQwoLJsdHBIAmiXcL10LF36cl2jZiaIYzM91iGxG3VqeUE/MdgnFVBcVII00+ofeQeIaE+/r60Y0Xxkb+2pP6gExEetY7MzCQ4Z5GJBHnmjbNirH6NRKUJsrta94Tya7whknWGfLrDJX3a+DQSIPE9hDenKYj08/1NGHHkjeRfLoRu+t6NimUgzn6rUsYx5o2EvQKfcUyYhJ3n1sQkJLvmhNb50TsjEMsRiD4nPbk/hkCptk6axZQWs8NT10V9GSrRuWCLxWr5iy1cCLEj94macHoMqogHv0NBN5AKoOLHF/6tQH4C9pn9EQoUQwzxJ2XME53W413xrW9OJWyeYz0xT4kLg+ppbSM8py4/UI1LLHDX7mnvgv7aCx398e5ULgBT38+4nGLLKJHAmFSqFkNiVT9lM7qcmXLeZ9zuWC8yUlE4VVqJmrai1VkAdp3VqBTrzFQhQLC6wm9SRTK1G/BKmE6ja2pW+hDdIYwsyu/neXE49SvlfYl9PSjGAN1fEfPBLjrV0PEWmWEYr/5bDeJIzVCOtZqMoD6Kptgr+O+CzWUor8EZ6Tl0AlOJetwhvYK+95fC5MQxOM8cpgUyH10YedFSwqHYDMBBoLexDjTywZX+CXz//M3IRleetrJl22FNkZ1/mhI/jzZYw0ovG1rcXWppNrVcbJHajPo2rQj4DW8lgxpqbE9yAwHzdMZDwHn4m7psXrkEFKchj9bUcQmo5bU7lBqY99PxnGPwRPlzXxA1R2dXOH8+B1UBH2/9Md42gvOCxyEr02HnBi
+ 06nSkK9O
+ iJVRu2riTiEDKz/RiroM3iVIaaaMbYEy0z0HetdYa5msoKNw/MTHhiF9JMotZdxH1XwMOcy1lCihT2XxuYnig/UV75SZ+A180D2NT321IZT9pSjTXi4NE6jFhBDHuUBTVvP6Q36gpXs1EIgkxaqlyoyOvd7K10CX1m2wtOrZGHEmBZ7M/Fs6xfN7DlwwoEGeAR5cNf8SzGAyKYEKCJF0DP9gH+YtITvoHPyCom7uJGDj3hg4I3TTR7tVIQ4+imzuiks+UDwDMjPWOhlUlv0MwuF2rynAol4euwGtFbg/3DhQonxh2CFsfxAG4Q3ArzjEZFrIgYmqo6UCq7ynHjR7jc+7oUL0G6hFc+j/n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,35 +143,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/2/26 08:14, David Carlier wrote:
-> swap_iocb->pages tracks the number of bvec entries (folios), not base
-> pages. Rename it to bvecs to accurately reflect its purpose.
+On 4/2/26 02:44, Andrew Morton wrote:
+> On Wed,  1 Apr 2026 17:34:16 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
 > 
-> Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
->  mm/page_io.c | 30 +++++++++++++++---------------
->  1 file changed, 15 insertions(+), 15 deletions(-)
+>> On configs where MAP_DROPPABLE is not supported (currently any 32-bit
+>> config except for PPC32), mmap fails with errno set to ENOTSUPP.
+>> However, ENOTSUPP is not a standard error value that userspace knows
+>> about. The acceptable userspace-visible errno to use is EOPNOTSUPP.
+>> checkpatch.pl has a warning to this affect.
 > 
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index 1389cd57ca88..e524cb821d04 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -327,7 +327,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
->  struct swap_iocb {
->  	struct kiocb		iocb;
->  	struct bio_vec		bvec[SWAP_CLUSTER_MAX];
-> -	int			pages;
-> +	int			bvecs;
+> Sounds very reasonable.
+> 
+> EOPNOTSUPP is clearly a networking thing so what on earth is it doing
+> coming out of mmap code?  Our poor operator is now looking at a networking
+> error code and wondering what this supposedly non-networking
+> application is up to.
+> 
+> But just that's a pet peeve - I lost that one decades ago.
+> 
+>> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+> 
+> Nearly two years ago so I think I'll add this to mm-unstable for
+> 7.1-rc1 and shall let it trickle back a little more slowly than might a
+> 7.0-rcX hotfix.
+> 
+> 
 
-bvec (an array of bvecs) vs bvecs. Hm.
 
-Wouldn't it be cleaner to have
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
-	int			nr_bvecs;
 
-?
+But
+
+~/git/linux/mm$ git grep ENOTSUPP
+hugetlb_vmemmap.c:                      ret = -ENOTSUPP;
+mmap.c:                         return -ENOTSUPP;
+
+
+Should we fix up the other one as well?
 
 -- 
 Cheers,
