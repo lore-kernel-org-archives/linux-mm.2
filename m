@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C75D6AAE6
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 15:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009AAD6AAE6
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 15:57:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 961BE6B0089; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
+	id C475F6B008A; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9399B6B008A; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
+	id C20186B008C; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F9E6B008C; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
+	id B0D836B0092; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75FD56B008A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7866B008C
 	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 11:57:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2580714076D
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F05D1B897C
 	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:57:48 +0000 (UTC)
-X-FDA: 84614071416.30.0D6FA5A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8D9B41C0005
+X-FDA: 84614071416.22.1339055
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C54C51C0016
 	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:57:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pc4H8f/X";
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TnmIJMVs;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1775145466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=P+Z6LsxhiXs5Lqvje0OcflwO6w89vcTrYdim7WTySEQ=;
-	b=PU09e04ymYjiUWQKYzBRykFnH3ffoO3LFsy2OcZOA6DXDvgXBfgMViUn41OCGFZa7OtmqC
-	QEdnCjnrmexP21/9ymQ3665fedpi5SMtXIhpGzQnP6ibma8Ja75qDwPWV5sU+gVXmNRKyh
-	Dpxn0+hQbGfsFp4bKyZoHYtMOybC9m4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B7Ut2FzxLY60GeyJbs7JjIJHFcXnMuqUcOxv5eRiwkQ=;
+	b=2TZ7G2NnZV1wvdH7ZfGv9K6cHMPd8e0yqxp3H+pszaE9WaCJOZGcnUExfCJsGQU9VqohZS
+	rhiOXsU5ds3IAEiLO7/3hCFh7YZ5HpikwbxWdv7zG3WH+OO69mOgWziy9F3J9aXHt0QkY+
+	bXUxU0xwgWvhngd6wthAsm7TJAs+Xdc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TnmIJMVs;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775145466; a=rsa-sha256;
 	cv=none;
-	b=N+HjfPv8Ct5TXC6NDeDDY078bUkIf35CtfOgZBJU0n/orMH0zQubzbFgray+z0sgz2DACV
-	ZEJ5mDJcBxnaOlQK3V5pzMJxN3RK14rNuJ/fVKkNUnwaIjcunxqpiX+Q0906FH5lLm+hUE
-	sC2+Wz4GME542T7FsYZ9xFYIu9GyaYE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pc4H8f/X";
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=WDn65ZGIs/0YVc3y+ba2F68pnfnmUCCOy25LxSuadR26ShJky0FiFb7of2Rn0Vy5n31l0B
+	vyggAj+4HggXwlmHjlyRHz4HfIa5SKwOe18ZmhMCuHaFKnvoqWu1Z4UYLahMA00cf4ry+N
+	rY4JQbp7y0EtsNkI5KucSJEwV/JBnZY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E39840D93;
+	by tor.source.kernel.org (Postfix) with ESMTP id 21FC760123;
+	Thu,  2 Apr 2026 15:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F29C2BCAF;
 	Thu,  2 Apr 2026 15:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD62BC116C6;
-	Thu,  2 Apr 2026 15:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775145465;
-	bh=mwE+127Wtx47haHMcKL32qgQUWoqYHGLXcy7Op4nYG4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pc4H8f/XTzomCfYZ59jP3MuLzWi2yBWgSaIqmouyIFvuL2sGNeJF+/2gQuReQs/e3
-	 iTNA6s4/ZcA2Ltrxd0luVTkktrxBGYi3ZjH2FwVGz9PYz9xyzWrppXcmUc+dzfE2Uk
-	 jgfg/UkK4yCANQoszttBaIjrFWbcfWJTHuDV6ZCzOn3iQYdrcjGBql7HWwRsdqNyxw
-	 RCWs+5Eajl0psUVPKMMfiTson2FI69xlEWnFt5V6TRgmpSElwieZ65kBVtNoWkHRtS
-	 kMQ/QO+YmxGyJ3Le/uom4NK0HyxPV75x3F7JIbPMMcJGXgLBviGJUkPegsKKXS9wpF
-	 PpTIlBUANSOMA==
+	s=k20201202; t=1775145466;
+	bh=NWZnwPLlZwgRijh5GHeOqBVHlZCMjzzOn/iStC0SCqM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TnmIJMVsupwRCAUIRtEW1A3hNDQOcVCalkG+q6c808nPcowDdO7ca/2WcJ+cqpRKO
+	 HVWT0vNR0H7ScK2iQVAOKXJOuWMefJcVudADsb5Ao+kdqnE5YMsHRZAAPrmSKj9nzB
+	 lmSaxkf/avHo7S/LNoTJtMqSPp/2rW9KlzMkEd1bxuWPrmZjHF31ZYZH62WwubBF3h
+	 t2P34vHoounwhjZioul4dh1PXJwakQ9yGK6j+fO33UR1ZPlL8iz9trO0aIXjxHL//u
+	 MCElcbNYpN63Fqdx19qV31xyn5ivQQnSw78gGkWaMPldV+IwPbeOIRxf05WGFqnwJi
+	 Ypr/jPREyPA3w==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
+Cc: Cheng-Han Wu <hank20010209@gmail.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -79,20 +80,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/3] mm/damon: non-hotfix reviewed patches in damon/next tree
-Date: Thu,  2 Apr 2026 08:57:27 -0700
-Message-ID: <20260402155733.77050-1-sj@kernel.org>
+Subject: [PATCH 2/3] Docs/admin-guide/mm/damon: fix 'parametrs' typo
+Date: Thu,  2 Apr 2026 08:57:29 -0700
+Message-ID: <20260402155733.77050-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402155733.77050-1-sj@kernel.org>
+References: <20260402155733.77050-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bkea13zocf7pi4jx9y4ewbmuibbr69iy
-X-Rspamd-Queue-Id: 8D9B41C0005
+X-Rspamd-Queue-Id: C54C51C0016
+X-Stat-Signature: 3g96ddw56i1eftfiq6nayh6nc8ire86i
 X-Rspam-User: 
-X-HE-Tag: 1775145466-142362
-X-HE-Meta: U2FsdGVkX1/5NNXiiWHspPv7g574SmcRIMvhCCPwMQcG/z/dOS0PI/jB8EAq63W2C2QBZSREzAwwgfq+1F6nA4K1uTa4ymYOP06HeQedLLeK8wwq9gxCJ6BWepFQzHi5rJDZZomDqKN/MEO8m86Q/ZDgN6OT10721G9YfJ7hfYQRNoW7NT3SLQ1XmnglDu86JkNj3eIRBAl3llxIJvoy7vfur1kvx978vUVVs4tjSLmqhcuNlXLWwy4zQC4cWDZR0XJcCxFZOInb8GNCLIEdPCLeLUecNpRG14iH9zr0Jrb1wcte9hlwSqDszpIixtG6AB28BOgSI/hD2z+gbultj5TxHgEBavzdzKS6paFUJQZMLthexxy6HCzBYnyrh1KoODqm0KDLMBnOAAC+4AxYsxCpKdvyaR+aJSK+TeWjoji5gMcFFQaCZFvnz9zc3g3HXoVY0kIaqJ/VdkaEvbhdDKDkGL8sK2GpKfpWgndifmMbQ9AEFbRYgLghUPh6JNs37yyiB0h3SBIS0XrUyQG/KHOK1TBU67k9GKngIv5/p0alNIjfkVxa0Mlr1mAxVlw6Yty/Vs9sYkGDS8h3YOormtB96KZOKdxiGxyyzkM+WTwoJ0Affo4/C+rPMAXOLAHbB37+K2iqbyRZSrfwdeVA9vrod26CfB5sKV2mCOnYbbv5ip/UwY1U9ld5yloTrjbV7KYfLq8kryUh54kfJMsa2NgOJYTE8ewqxGX/plkKglDrSMw5X/xU8PR+OYQQ2ZWQQPQVVCqjLPcoVWuA2mrka+7I0UhgGgO5Np9SKiasnXvs/0iK+Dwh9OGIDov2tWv4iMDlOncFnfu/8mq/tZQy4q7ly31K0Us0MSSexvqgQK2TUhWlLOp6nMKKLtrgeXIzg4jKjKF2gOZYxRICZNej9ftv0PvsI7NPnW33jnOUcaLUUswTFhK1Jv9LfxM4J1SgB656wwxSbtqIKFhySfA
- NsrLMEr/
- yrq3vamJvl2nrrMMdFcbM6tx8LDajYDYUp33+Zn1G0l2wwbL2r2GmPr4DxBtTd06PP8Zb8eNqKtj4Bg2Y6nApzjg6aq7URFG5XHx2uuYV954bIVvatTq1+b0DAaRrRKxDFWFNaxT9qk8gaQqfJtfsA+/tomiYf+LJuNPsfI3bbmNEa4vbjl7Hd1gcJEqf1ho9Mp+gCPJ7uGdVzMA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775145466-157555
+X-HE-Meta: U2FsdGVkX18aObm4u+1qLdTC52x0tFK+T9MSUCbfA4mqIo64kDvl3rLTWjOORkETOkx/6Q7sCW0VkmQOQejBylIcokpNF+MMzW8RxUMXgrBO7JZYvtk6naN9a7XBxFOOq12K9EwmFl4Fwy2p+YpAeDCsJHxu+H6jjzzW0fexNcZenPlF4Jh8YgHDvGhv9+sSRMqg+HVU8T6B9e2FyZ1tXdZz6IlT65GMlnZLxvHYc/Wz82nOKTDsrgsPESpnA8PDIFKtJqURQBHwpQ0cwLJI8A75gAP4hg8NC7oTd2H7OzCxfUSRXO45RZ+v1NsVW/5/rRWpcQekPTAM0TLXF8NMO25az6x39Usq/hckYmn30rf48Kp/EEntlFlBEoS+BV/7Vq/4pZ6p1ylYsx9ejkmI4mExj3oCZ4m92rmqfJ9EOuc+orvb9KQQgLUfe+xlduP1IOXYeEpBkQwiwFlmXu8ncpsIoSxgZTyrHpGCin2B0XVmYQzvxdSKBT8t8OGmi8e6jSG54fC55YnctgZ+OSxonUJI4QhG9MyhtLdMo4u/pd+Qf/KBt/F4uLeLo1NbtYvUJLnn9uQeGNg5cISlfQl6IMYe0S7Xx/aWChmVZKMjpE+8VDMp1SitxYQB42Ofx6Qe4+6TfC6LzJMcxTkg5jDZX7HFzqNXPiZl9i/M9B3hpQyEzaTMIZL+LehPXS5UsFg2uW2MiiW6vZ++ioqayFv1jxPCLE7KASD/iNTyS/hb3LbwyNvxP5OEB8ppUdfz9B+0VJTeHhiG3qF4B7psxujtdx2NdBNDDwhbiaLSf6+KtzTZG9v6zlVsMRyQWzqhQPE+dEmrUIPS41vP4ucdhX9TZk5Nn70YpxouhjbYqoeFx7V29cNXD0IAAQwM4QGBwKmlzs0EDa3hCuM8lEJbIfi3tvI8myA3DtYJKKk7pNkjbq9Xy9k97Ckwx+8ZzdK9L0KVc4TcNbWpCjYq28PXcXs
+ /kXgYIW6
+ CdsvaUwHi047dDBVtI76cckr6cDzAO1MbitWmFzszQxsKmA5lMiFUOVVbfDkCMQbcjXn77XSKYjsNeCDaDUdZYGj0ogAHtUY13bbzKPEtfhOtowhAAyZvaI2m44uvTr3sw3T80Xguzs6+r2StZeie+c3RI6p6jLI8VWYwbhJrubk7Gfj+u953pXUECSnnzL2CNw/T0JNOEKoUO8G4km3ZD+WWdr7W47cyFObjO7pddPuayiLSCzW7tuYRQ+QGVyHzXU6b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,39 +103,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Re-posting non-hotfix DAMON patches that reviewed by DAMON maintainer
-but not yet merged into mm.git.  Those are not urgent, so it should be
-ok to be merged after the next rc1.  This is just a headsup.  I will
-post these again after next rc1, if these are not merged into mm.git by
-then.
+From: Cheng-Han Wu <hank20010209@gmail.com>
 
-The first patch from Liew Rui Yan add a minor performance optimization
-using ilog2() instead of inefficient manual implementation of the
-functionality.
+Fix the misspelling of "parametrs" as "parameters" in
+reclaim.rst and lru_sort.rst.
 
-The second patch from Cheng-Han Wu fixes a minor typo:
-s/parametrs/parameters/.
+Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from v1
+(https://lore.kernel.org/20260324144851.12883-1-hank20010209@gmail.com)
+- Rebase to latest mm-new.
 
-The third patch from Liew Rui Yan make commit_inputs operation of
-DAMON_RECLAIM and DAMON_LRU_SORT synchronous to improve the user
-experience.
+ Documentation/admin-guide/mm/damon/lru_sort.rst | 2 +-
+ Documentation/admin-guide/mm/damon/reclaim.rst  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Cheng-Han Wu (1):
-  Docs/admin-guide/mm/damon: fix 'parametrs' typo
-
-Liew Rui Yan (2):
-  mm/damon/ops-common: optimize damon_hot_score() using ilog2()
-  mm/damon: add synchronous commit for commit_inputs
-
- .../admin-guide/mm/damon/lru_sort.rst         |  2 +-
- .../admin-guide/mm/damon/reclaim.rst          |  2 +-
- mm/damon/lru_sort.c                           | 46 ++++++++++++++++---
- mm/damon/ops-common.c                         |  9 ++--
- mm/damon/reclaim.c                            | 46 ++++++++++++++++---
- 5 files changed, 86 insertions(+), 19 deletions(-)
-
-
-base-commit: 2c5f83f56c4a5ec75db054510007baaa1fbe4ad5
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 14cc6b2db897..25e2f042a383 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -75,7 +75,7 @@ Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_LRU_SORT is running are not applied
+ by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
+-of parametrs except ``enabled`` again.  Once the re-reading is done, this
++of parameters except ``enabled`` again.  Once the re-reading is done, this
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_LRU_SORT will be disabled.
+ 
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index 2068f1346b9c..17e938c319e3 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -67,7 +67,7 @@ Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_RECLAIM is running are not applied
+ by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
+-of parametrs except ``enabled`` again.  Once the re-reading is done, this
++of parameters except ``enabled`` again.  Once the re-reading is done, this
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
+ 
 -- 
 2.47.3
 
