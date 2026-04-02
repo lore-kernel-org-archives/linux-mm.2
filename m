@@ -4,134 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FB351112246
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D5A71112246
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07FA86B0088; Wed,  1 Apr 2026 21:33:21 -0400 (EDT)
+	id 62F186B0088; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 030486B0089; Wed,  1 Apr 2026 21:33:20 -0400 (EDT)
+	id 5DFE66B0089; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60AE6B008A; Wed,  1 Apr 2026 21:33:20 -0400 (EDT)
+	id 4A7CA6B008A; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D72956B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:33:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E224C16EA
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:33:20 +0000 (UTC)
-X-FDA: 84611892960.13.10D5982
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A17D6A0012
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:33:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=k2O90M6Y;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775093598; a=rsa-sha256;
-	cv=pass;
-	b=cDvgQ1yDHXZj3BQ0QBjOvnaVwEeFSeqVbE12onN9eDXbdDK8OY2i1OboKjbcRj50fSIWc9
-	KxsdQGiIYN96VFiLCH9ccd/pXbKVoyPg3q+eDG6n5ZcmhbJ+enkubeNUkP3fU6QBLtR9A3
-	JCeX/M/ROEAmZHPSRyoQ5X33qfyYZr8=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A846B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:40:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8BC3140379
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:40:16 +0000 (UTC)
+X-FDA: 84611910432.20.B955A46
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A4A76160003
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:40:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=buP+RANP;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775093598;
+	s=arc-20220608; t=1775094014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edKahf5UUbO88q7wEt3iOK5tjqiyruS8L1sTpfQLPpo=;
-	b=qtAA+XXvTa38s3rD3UThTb83+NphyQadYv7aI0CJr9lFFl2O7egPFlgkNbD+3cJRKWJnIy
-	bDyoYl11uGaBUbXLqVsnzFVGzoaIuqJjcjE2wTFxzuOWmldk8OJ5xnVUvQ4SROTiydFoNB
-	/q5Wbtz3dswBSAAMJB3z0VQfqjj5g3U=
+	bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
+	b=Uh3Oe9zW8tltO+NPxCqDfA3WCXmEAJHOt7XPF/BhmcAKEa+PjRQ7ZTQZMBWsVPeYI4zZg8
+	mQY1jXfk/2ULxCIJbfOU7m7Jcj65Pty+N27jfSF0GVqcalpvH0Uv/CXTPigcGGVLdMgjfN
+	2vFGA/9BnjFxmH46mDa2uuAeN5zOR78=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775094014; a=rsa-sha256;
+	cv=pass;
+	b=24MnjU9yJ1JINeIMJI5lpinYKR8qwPy93ho3Sn7xhDDoMVAmfR9i2RwEZgsUkJP0q24u7H
+	VUx9XZHuIE+MWJMeHAkIOd78tu3gA1KsoM5B4kGAkZF60fteEBnhlsgbh5Lx0V0VC6+N2S
+	KkYYJWNIxgl0zhG+gqZiyUSs4xPfVCw=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=k2O90M6Y;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6634bb959a2so496701a12.1
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:33:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775093597; cv=none;
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=buP+RANP;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66e07d6bba5so236741a12.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:40:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775094013; cv=none;
         d=google.com; s=arc-20240605;
-        b=HWRTMTNkyg67eyJii0hZF5b4IlLpHzrT/KpNJty0FpdMjnGIznhwz0vb55hM/BwwZY
-         Lws1Qy53nss2bzOZpzLFF5itbp0Y3JLxdnev0aGh4xlQa2BIzhJQCjTHK9+FVbuCRHeY
-         I/IyiXCxTbPpNBPAk60FI74oCDJU1kNxeGnwa5qjYUN6EP0mOnj+TyqGfrgPocvPOlli
-         FvmkLC0dGR3+SE/YID1DIDHUweBUsCDeh/SIC7H7DH3O3tXvX33Cd97Cjg51Nqc3ZnU1
-         l08s/RbIv5tIyvKZ13+hYgwSRNWtrNPWBDcpfdBFyrNkNT/XJEuXeQdNADJabr78lVP6
-         5VPQ==
+        b=U7uWS3tQR4SV0xZ9pfx6KOcxB60ckHXfnOcYaPlXEiZtuyZuWTQLaJOK1TmA6MigpZ
+         8Nhc9R9ycTrGFjVZ61Etwpc6/i890TqrRGmeNVFrL23bigqMHmSb5lsPUK9lCK9NCDvp
+         iOF1WAHF+VfHPIDRImlvj2uz9nbO96lq4RbZ8DfkuZXVjPW4PCZv+yI80qI80HaDBv2v
+         vDBOc/uoreeUYnE+ll0TYEAjvTLDVcRrfCP/qhhZ/vLTiyrzvIJqgEkRrjPEjSna+gxG
+         o6faD87wwqIBa7vJpEGU/4cbiaMuS+Zk/x1iYZHee1kpgsEg3aXWPwrDKMR6AAvcY3iU
+         tXvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=edKahf5UUbO88q7wEt3iOK5tjqiyruS8L1sTpfQLPpo=;
-        fh=rEg8sXr3a3aungC2yrLD/mcIhbCY1w5OIriRPcsYQxE=;
-        b=IzoU/8fdUR7xJtcDVKt5HI4ix+PeI46VoWfuOOKs/VhI/F+aFelFEQQJKc13W6/bsD
-         Al1/tTQtGvNhjxKgjUiRAAeil1e5Av1HXqkSv91ztGZfQSCJ5JI0PMzR//o4LFYckWhg
-         QbVtRTh4jVFa9opSu1iSELEvJaVB4afHOtIaC6YSg4KBg9+cUlKpRBWg7mzYBtldb1M0
-         973nvoKhUc2ymr28mTn6ML7g/ce2X4btscOTp9lMhFVHX2566sDbEfdGyX7dtQQSHtB+
-         u7ojifm9jIVnEHBAmhdliyX6GP9/YvvLE1gdoKhJa7JsqgetsCUsNdC/Y73ceYQQfdv2
-         KJ9g==;
+        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
+        fh=hrZcizAI7Txq+2/j5uYcx2w2fLChBAzS4+DW/BCFXgA=;
+        b=f31EYoM6hBCvwSHiM/uKCSMFTatPc3o8E1jrgJ6x/JhUsLN9W32S+jNDlkKnaNu1Tq
+         FhnFwiNg8k5xmGQYY0MMizJbSzyegVZFn+qbkn62JaGNHMyBeCuBC45W98Pqdy5MYP8+
+         s0o/a4csDRxsn2wMdzCV/liAGc7do4VBe5yQpm+xoBcXTuVT0a46Yip94WSnx47bvORL
+         qAytO0JznBdx3P6ec00iNUGnE4gW5m2b89zWiLi3U4oo5rObNSdqiTEDmKwWzuwK1qMY
+         mZqzpoqNEzdzuqOyg+82grgwu/bdVAdFi3l8m82EzYL6kdYkjK7H9fOnmfKcph+DXYxn
+         IUMQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1775093597; x=1775698397; darn=kvack.org;
+        d=soleen.com; s=google; t=1775094013; x=1775698813; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=edKahf5UUbO88q7wEt3iOK5tjqiyruS8L1sTpfQLPpo=;
-        b=k2O90M6YRULL+mx4gXpJNTUwU+iAHAEOc4jR1mVxAvQtv2rBNnD3ZnDKGejlFf4h3M
-         rqxU7YXcUrGUp3LgPzm4ARGb1flugiJdkGaf+DZ948qn2QFZonSFH5Zg5XvJpjNvj/9M
-         BvAv6WY91LzhMaNKX38O8qmnN8figrdA1Y7MqKSATMaEwDUogPVvbL3TTWMftSkG7gJH
-         XmvGwT9k0Y7HzZ5u/ewFUV+7fdf8To3PhNUYuSd2qNzBew2QCJ23TdAjF2wJXKqvRuLE
-         j0r9dg9n5uzx22gsjQI425NmIxm+w1kiifaeho61TkoDlmCzgUUGSHMlWlm9j4azzPbX
-         pQwQ==
+        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
+        b=buP+RANPAJj9gwU3DbaPoWWxv3ic4M1jxoUzO9ScWwWIUwYozbExhkIcUlPntCwT/c
+         pT32TW1bYwpa2PHpLDIQUPlqIm823y3CraGSdb/32z6qjiMnefKiLy2RGIQg00vlbEcf
+         0ezA9GVPujVYiMN9skO9swYACznjgisZK8EbtlBbMep+H/JW1dZrUnooM+yzNhv1qcDU
+         PCUYKpktXMB97VM2JMTKo2X94xn+gu9nYuoYKb9w/BCROA3vu6MRCpIQuPSa47ru5D+n
+         8xEkHasWo+k8A/cqMmbF+oTVnMlvCfaftcGP49V+ZUwSyvMhvco/IuvLB36onO5NWX7l
+         5KFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775093597; x=1775698397;
+        d=1e100.net; s=20251104; t=1775094013; x=1775698813;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=edKahf5UUbO88q7wEt3iOK5tjqiyruS8L1sTpfQLPpo=;
-        b=GsXPfZnCJxIXKJWZDdgbMqg6DtF4WT7L3tbxpkuStAQwLvT06430qipmweHxt1LQD4
-         UJEiXp0S4+V6QY6CLfVFX4BK06Qd1mx4eA2H8GSx2uJosZsO7LMgGtDGOS0E5pAeuNPm
-         QL462+v7yOGhPHXP6jQEWvT4nXykSO7ti6Z9CSG1Np/GX40FYS/jxjRodXNzOOcHHMSa
-         GiQ8Jn31gXR1GMYMI910C5nDK43z55rZxCIRD3wMI5EYJperjysTx9HyBlBlcKj5Gssf
-         pH0xJ+3Jz9PpkRdo3iLQMYH7A69cfozKdWTYHR0fi7EpKYwOInEFnAeHFKyWRy0vw/Co
-         r6TA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9elt0J8w6IlNpq0RqcNa6xxDTufPw8rkdPz3i041kr6E9w5xxR/g/FD0YIc5IKsPSv7N0+wLUYQ==@kvack.org
-X-Gm-Message-State: AOJu0YwYQVIHz/AmZQhmM/Gw/ayTtMOQO2ORjyEq7WNMwxLwtlj3Npz8
-	31+Fr3BTD2WLw7/kTm6qNYH/rasNprExKO3pGmKOu50+hllPvvhxW331nu869rOaOyqDxohkJng
-	8AObCMB9WZkirlskZvO2pWxD42bPZaI3Rjd7q9JSbhWinQD6sTVa9
-X-Gm-Gg: ATEYQzysO30Huh22DYUx8Ibzww7olrGWAk2I5da7X0lCL5WmYzQag3N1KIDg2cqhCq9
-	UqiOuUOLgCF1Q7BhoKfaZFVaCM8k7QARTWZ1YDtinVU2LSLcWaCJoaJolnkz+1HagPEA3diOcP/
-	eCX5Cr1shRO8ZN4wpR+9+C0os64lEMNkkqcxS2p6cOxuaeMlS6+hKgdS+D1lURLoGn5X17rpf7t
-	p67+pTsKF3nDdUMC5RyDGwKtznp+zosvq8ES4ei4FMWUVvv9qWdts93OjEa2S/X3PetpTNtmqwt
-	nlwzKabLjmnu5Kn/KBWj1YrcFweNboo55k05yw==
-X-Received: by 2002:a05:6402:52cb:b0:66b:f0b3:42b1 with SMTP id
- 4fb4d7f45d1cf-66db09e1daemr3014562a12.15.1775093597054; Wed, 01 Apr 2026
- 18:33:17 -0700 (PDT)
+        bh=PFKZLOJ7zu0qyyyaj1iMj9idfs+8EqfH6rE7k5I6Po8=;
+        b=WbPuEyvcItJ9nW1Xj6GTCxKkbmeCqJlzDW/EOSGiC2tIMPLwHTwlMOeVt2D6jl4llz
+         7/rgEhqM+Bfra0tnHXtZEJ8KMyFM921acR4LLuO55qEW2Z1oY1U7OhOMTXK8jO29yT2y
+         4IhydvpkaPaV/HOhm9sTPLi12gVwUAWGDSiSEZgpxBBfIevlD6Nwb0Bd9T86r3ai6p9s
+         3AiBlJhbfMxX0sArk6VIOiMIUrxGQr0A9mz3LGYJy5YT4w+G+FZ/mCoUg+v3wCcOrw3L
+         QOq4uLMG4d5kmodjrU70e07wjGKNH93GdHSTC2k/A+WRplsKohoJ94Z61vXg8QKf5UWh
+         pC8g==
+X-Forwarded-Encrypted: i=1; AJvYcCV4eszqLLUrBGfG7nUx2Rk2xW3SknDACSxHOSEOgLQ55V+3oMypj2paDpU77eRVXxGr4caYhVbxPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyl7C87PjNlQeHbexEgP/vBfaVSi1EA5A+dpwlCSa6T0dKQHgZX
+	biqozJcdG4UJpsq9+m9C21EcKJhr5DLZeA27a9ZLBc7enfrgLapg9IKT3XUTsX6OtY9urzXYrV6
+	rIzox6qa0jP8a1FGwhPtXA/chjwkJI97uA3EAjpn/FQ==
+X-Gm-Gg: ATEYQzw9d4wj9jIuqrhGrGTUwDK7aw110EDLBGfpaKXrOfaVfJCJXW8nPUqb8bQjj7W
+	Y7Tk84JxSs2FK1Ro+g8sbM46CzuSLt72n//z4bxrsk8CvnEFbC25JGERVyePU4j4Aif+Wt3sFX0
+	Zb3WaNrYcYml+pJPf0gxAhzUVil3rmOlWMMhX/+OUVjqFiCy2dewwbPlJWPhq/qk9x3L8WeQKLL
+	FbIIfY3/JE09JOHfZ6GAFpPlNhi/Njdled86bbygfFOzkzxmWayPFYcWtUg9rqi66qsFXGSuQx+
+	M1RsOjru0ytKWKc4mlN+/iDh1lGu5F5Mlry9EQ==
+X-Received: by 2002:a05:6402:20c9:b0:66c:ecdd:9cac with SMTP id
+ 4fb4d7f45d1cf-66db09e75cdmr2789082a12.17.1775094013078; Wed, 01 Apr 2026
+ 18:40:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-7-duanchenghao@kylinos.cn>
-In-Reply-To: <20260326084727.118437-7-duanchenghao@kylinos.cn>
+References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-8-duanchenghao@kylinos.cn>
+In-Reply-To: <20260326084727.118437-8-duanchenghao@kylinos.cn>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 1 Apr 2026 21:32:39 -0400
-X-Gm-Features: AQROBzCS31uWP5y4CqkTkJfp04_UGwN3CIhXDqOPtQUrKSoDcWS8ICGtvciBwnU
-Message-ID: <CA+CK2bA+atHg_Eae7+MO8n99yV2eWvD=mxjReqNUFW=7E-XAbA@mail.gmail.com>
-Subject: Re: [PATCH v3 6/7] mm/memfd_luo: remove folio from page cache when
- accounting fails
+Date: Wed, 1 Apr 2026 21:39:35 -0400
+X-Gm-Features: AQROBzAVSCiR4lL8xidx1gqAxIaAcOtLfz2MqrBrE39rYeaq1LvBRWmL93x06bE
+Message-ID: <CA+CK2bBVZyZx9L=dxU1c7EAnoT3bdJ0=hq-gj915Fz4zya0Khg@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] mm/memfd_luo: fix integer overflow in memfd_luo_preserve_folios
 To: Chenghao Duan <duanchenghao@kylinos.cn>
 Cc: rppt@kernel.org, pratyush@kernel.org, akpm@linux-foundation.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A4A76160003
+X-Stat-Signature: xogt8w1xzi16h5d4fqecu7ww1i176cpr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A17D6A0012
-X-Stat-Signature: eras6cw88bwmffzow9stfg8tbyccwo3u
-X-HE-Tag: 1775093598-733329
-X-HE-Meta: U2FsdGVkX18o+n/JXLOcyNivf1tt22WmBvEDzfIg+MBhf0V9FYwglQeBIho5kEnD9qtZVGdd+xNMAIDs3NNLw3Bic8KP5a4tPH4h3t1BmVF0+l3LWXvfhwqrLdcgtHUaJdrkkEpTXj0KZWkJ9dDxf8YhtnbB3TYPda20gfGbJNpm+ifJXPQ1njm5p5D9AJBVoFJtXbPlnCg2YTuHa7C8RL66ddrlA6szf9GqNAhiWP0ezvTb/OolUKn9GusGqnmWNMSZ0LeUywlzDffYx+XsxDRg5K2zagbcoL0lj8Exo5cck95hE920be/MZopZb0RozkD+6VRHFpVZmEgBT1WbARln2G0jlns3LTvShyF7Ql8+zEVjrLdENR00ph98s73pk34xQ/YtWewYGPGIWTOq6Y2TD8Wtb3JNMlyflX5f+13PZUVQxsINv7Wjwbxib121Ck+oBdQffoKIS/aTn3B9hn8/SDBRLjQ3v+alw1gPD5dQ/drwp7fOZLhpPgjyEAPT2lkh5Vyj58tt5gEcrF5Dn+tDu/miHjcl1GFoJ7DuTyPP8ANUo9vlPGSpejFDdY2v5JN4qyGIA9JDLwQ8SnXLgxYzhs4wbKgryexECrbhJ7wGIDm5sYAvCIQvuXSwdFzfawavJkCQe9CKvH54tksgBoihbwNcR1p6IcPTpYUhd2FxL2TCt5I6FZD95G5bcfIfqO4feWiIfO+7ZFtQ0/4PNf7zoDaa3NqqXWNGoVMoFuMpH1KRAF1v8eWnzHahahtyh2Z+nJ+1MxrF7oISuMP7WElTXGuEMHu/QRyMJaYEq2IilJZYQ+Z6KWlh0VqAtm0uiZggo2aJlLx30KNJYTLB18kPsO6F+4CrfRqNnM7uB1e1FSKMVIfTBB94cgpQNEf2wmuVNDnDAzAPXeZ1wKF/0xaIrhYRun61JR+xv0VDVKUzyrOUJB17MRi63X0i3S03prrNZF4qJIY82Kwq7yu
- mLBvxNKZ
- sqOHq9d8D8QeCgTl6Rn3QZeC0XQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775094014-656057
+X-HE-Meta: U2FsdGVkX19LHF6U+jxxtXzY6OLkExavCCUzPUsOU+3BidOyBXV4FNN7+diMx8fn2t7xtEvp7cu1+EMOOYLCs2Y/yZXretRsBYwtdA+yYPSjuU3orDL/KX2Aevnbg0qAWNBaLtEHuxGoxicVhqf12sWP52daj7S1ma5jgtiQN6/UMe/0qpU20jnaMLT+f2T3nhCWIVLDyKdWn6278DruTG86ZjyxG6J5QEzpzWFA7LnkxjD17rdTTQvRdSp3SDNcF7NRNyqLwtRR9gQNyYxe5NiL9v3rUQwj0Qycc0l2T6rz1c8PLjKr/2aAiROb+3W+ukUMkwAxyScgl/dPROeuTZBfcVARVjZxuG4beJdBzZgMbQNunP8YmfkVPLFu0HO7y9JFw3XhtfpLMrONN1wHPZVldibFpB9exTS7kgYfqke3IaAt9D6BwkA8HmlX0pUqxhHU5NJn/GhJcFbLHTx6EEriWkJoapfhADSeOMZVuQHtV35kYAvUgZ/NoRRsxlrxJNfc4LLXpV2y59SUyH16KeNbAQg0TTEfekb43Qi/QDHW3JOEnCK6BSxB/qEI0cPxD0l1jfr/0C/q2VQ4tub1IuhyDJeAaGUqeS4HaRpu8jQxdDyN2roDg8kN1DESj12jYTsmmHOIAGLx0qz04dId9oVIlNkx8uu97cRVABf6dRCC90XPz2ie7R3Yit8lOE3VtPolBmW7ZBYaHbG0mn2SDgjFBo7+c6SXIThwaC6ZaXSoDxMiyfhDEjnfDPeQqpSf3ESkSXUry5kVDVLCY33yAakWZAUPUgNjsnnFH11RnZfnsLK5DS5uvchxgN8kks3025x3S3srkWXVXNuCctzNykMhnvmQXjv8jrRi9GsnCxWVtIZ4NjkUQ4Hnka1W+ygPDrmG7zkB9FtkYEshsyvw8tFSp9MiyPcVC4ol9wF3fJJ1VU2jiUIV9cKcSier3f/IABBnyLjxt7afT+0sCRz
+ iKZNIus3
+ JVC1+1c0sNWUlV4Xn4hy6mat9+nHQ9y+34f5Zv2d0Tvhx90sxJoG3XleL0zj9RgO3WJNNqLuvQ3u2QBFlC+sdxyM5TbjZVTuGhTGm/iZYylFL4889LKGeQwMry4dJGcoMt3aCLI4vvbMpxCowc80aMv5FMsywLCzDjIp3/nLyPn62A9fE5b/6tuTRyIL186jsFJIA5q9NUALHYCOoAb9bcmG7V/0phjnmPwStKsX0onFqw//jAamys/v0cxwzDGVURhRrP1M4NhJhOseMxbBh/BzTDWJNZucwnCNZxvLn/lTIOrQT2WuCDTEQ6qK7KG5VSG2EabQ1oB+ymVroFG6dezjejw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,55 +141,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Mar 26, 2026 at 4:48=E2=80=AFAM Chenghao Duan <duanchenghao@kylinos=
 .cn> wrote:
 >
-> In memfd_luo_retrieve_folios(), when shmem_inode_acct_blocks() fails
-> after successfully adding the folio to the page cache, the code jumps
-> to unlock_folio without removing the folio from the page cache.
+> In memfd_luo_preserve_folios(), two variables had types that could cause
+> silent data loss with large files:
 >
-> This leaves the folio permanently abandoned in the page cache:
-> - The folio was added via shmem_add_to_page_cache() which set up
->   mapping, index, and incremented nrpages/shmem stats.
-> - folio_unlock() and folio_put() do not remove it from the cache.
-> - folio_add_lru() was never called, so it cannot be reclaimed.
+> 1. 'size' was declared as 'long', truncating the 64-bit result of
+>    i_size_read(). On 32-bit systems a 4GB file would be truncated to 0,
+
+This is not an issue, KHO only supports 64-bit systems, but using the
+correct type is a good idea anyway.
+
+>    causing the function to return early and discard all data.
 >
-> Fix by adding a remove_from_cache label that calls filemap_remove_folio()
-> before unlocking, matching the error handling pattern in
-> shmem_alloc_and_add_folio().
+> 2. 'max_folios' was declared as 'unsigned int', causing overflow for
+>    sparse files larger than 4TB. For example, a 16TB+4KB file would
+>    calculate 0x100000001 folios but truncate to 1 when assigned to
+>    max_folios, causing memfd_pin_folios() to pin only the first folio.
 >
-> This issue was identified by the AI review.
-> https://sashiko.dev/#/patchset/20260323110747.193569-1-duanchenghao@kylin=
-os.cn
->
-> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-> ---
->  mm/memfd_luo.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index b4cea3670689..f8e8f99b1848 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -446,7 +446,7 @@ static int memfd_luo_retrieve_folios(struct file *fil=
-e,
->                 if (err) {
->                         pr_err("shmem: failed to account folio index %ld(=
-%ld pages): %d\n",
->                                i, npages, err);
-> -                       goto unlock_folio;
-> +                       goto remove_from_cache;
->                 }
->
->                 nr_added_pages +=3D npages;
-> @@ -459,6 +459,8 @@ static int memfd_luo_retrieve_folios(struct file *fil=
-e,
->
->         return 0;
->
-> +remove_from_cache:
-> +       filemap_remove_folio(folio);
->  unlock_folio:
+> Fix by changing both variables to 'u64' to match the types returned
+> by i_size_read() and the folio count calculations.
+
+Strictly speaking, i_size_read() returns loff_t which is 'long long',
+so s64 not u64, but anyways u64 works here.
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-
-Thanks,
-Pasha
 
