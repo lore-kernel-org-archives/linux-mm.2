@@ -4,114 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0E8D6AAFA
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 18:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0F2D6AAF9
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 19:09:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4C336B0093; Thu,  2 Apr 2026 14:53:48 -0400 (EDT)
+	id 106806B0005; Thu,  2 Apr 2026 15:09:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5FA66B00A3; Thu,  2 Apr 2026 14:53:48 -0400 (EDT)
+	id 0B74A6B008A; Thu,  2 Apr 2026 15:09:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A03A6B0093; Thu,  2 Apr 2026 14:53:48 -0400 (EDT)
+	id EE7C76B0095; Thu,  2 Apr 2026 15:09:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 68C216B00A1
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 14:53:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 336228C701
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:53:48 +0000 (UTC)
-X-FDA: 84614514936.19.7AE0856
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 05EA5120008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 18:53:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E19776B0005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 15:09:24 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A4EC8C7AB
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 19:09:24 +0000 (UTC)
+X-FDA: 84614554248.09.70A3BD4
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8458512000A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 19:09:22 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gVr75AyE;
-	spf=pass (imf29.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775156026;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	dkim=pass header.d=google.com header.s=20251104 header.b=jLOFBMmp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775156962;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNRtAckyhnAZjICWjM5R+TxiggFURVFf2J6b81CFOSs=;
-	b=gKSM/mPxutFVlufNL/8xWe5QBz+9PnsElRjM8Bhn1u2qZtIlRBqrXXdLyegt+6htDCgL/5
-	yRdNhjv2xjQ6UgWxhMRVySpaokXLgxOr43hoNNfU/NDnq4C+L7XDhJIMToAdwx5djiASqM
-	RO11khF3NaKlPdnpW8Z4kCowjudwRP8=
-ARC-Authentication-Results: i=1;
+	bh=26jnDOH9sfu0NBZTRbOR7+Wdjzvvt/AkBoHu3e7kTgM=;
+	b=RpNM0npZR9epHwQp9carCQDJGDgiYN1TFVSFcNrNLPm5G5XbtxrhQgyj7yWVFF3bQarivS
+	ZpkRCUFHcqzvKT8ljyyrL4yHjnQAeqO7hA77RCXpB7i6p6mfS8ODMoyMpIzlG/VGTFZCyR
+	NUCLajKWtYYwFGMh4jhqbwKXGaIO4xM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775156962; a=rsa-sha256;
+	cv=pass;
+	b=sZP2/x/Alwt5SCpqkrmGJsN/5xme4lRB+RBqRFvE8gpnl5ZKxWgDgWa1/PlixCrXsMNLNr
+	HvpvOF+t94Ng4IioFHLmnIh8avEJ5RatthYl939LMb/x1svGCYnUDkaBBPFWbHga057PFR
+	r6SL+fTA+7xMn2wSmyyE7mL3/NBbYMs=
+ARC-Authentication-Results: i=2;
 	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gVr75AyE;
-	spf=pass (imf29.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775156026; a=rsa-sha256;
-	cv=none;
-	b=foSFmqvPtwnyEVv2YXLhObDKA9kfeJs1qUr1r3E3HkDyviqkdObBreGqFcD9gVYKHhNl+l
-	4QqPwmAuLXdhq08jDG2O0wUxEmcQMftlporzih3VzM4BpC+Q+9nNGAMWXiT4Y7Sz9lbBol
-	h3kydJp7kTn873bAPoZVdApagW/2gu0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BC4F4456B;
-	Thu,  2 Apr 2026 18:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 262D0C4AF0D;
-	Thu,  2 Apr 2026 18:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775156022;
-	bh=JoTw5aUvhkz8VaY5u7uxlkTbs6iUI9G/SuKSxLly8S8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gVr75AyEWfcWQQbAhTlTTpzLKx2kdHlCTcHTM2xLbqqgR3ZaRP5htaPh68nXTf2w8
-	 BV4r2W6gNxrQeNlMaur5pbAjfppLSLwRxiV1z+V8tjfjUIRuJnsnOO37Y+Wfovxi6/
-	 2gvlf52QkMhDIKJKLLj+ggJFRn3G+A8a1M2RJOn7EXIAbo2x2SynEBSu/8C2OECFQE
-	 +3Uoq4xUia1jkynUjqaglnqCuE6Uw+DpP4AMowftC216LNeaRUQ7uLp3bMkC+D+pE8
-	 kctf95m4/HSFTNkUWMknFxfr5YrmbwJtkENP/NzwtRujfMGrbt8T8qHNp9/5V7AmL5
-	 IIYTeicS1pmrA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D70BD6AAF8;
-	Thu,  2 Apr 2026 18:53:42 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 03 Apr 2026 02:53:40 +0800
-Subject: [PATCH v3 14/14] mm/vmscan: unify writeback reclaim statistic and
- throttling
+	dkim=pass header.d=google.com header.s=20251104 header.b=jLOFBMmp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12732165d1eso1884860c88.1
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 12:09:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775156961; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CdwU+HvEiZMsPo0H+VWvIGlxEy05v/qsG17KuH/KpcNTFw2vIJhqtHIXjkbthPQCB3
+         AbTBaz21K6Pp1/jS45pT8S6iS0lEzYtbonxBmgcDI/qfqQTCLlwHXKs5ZkYEDFcPpDcR
+         OXNKX4KYi/G14iI4rSZubppcnlLHQuccWdQ69NNMmgCKCJup8SCQz/O2O5ytHX0hEMAl
+         Pcr4PQ16sT/aalkmv1lmNQNbEE1sp1Vdc9rVFY3qtgglvtw809M4mdRPRTlnAGFrXbrX
+         oRm0yyAzKqViwaRqiX0e5HwHKC11NDcCP1CNr7j1XvD6OVWZShxvHT3rHDo5396gXGdq
+         QeZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=26jnDOH9sfu0NBZTRbOR7+Wdjzvvt/AkBoHu3e7kTgM=;
+        fh=QnMYgJ7GQ5S0j0gjxumrLz+aBhF9bhCEvBloKoEx3xI=;
+        b=NEzY1l5yUAVzvZMxQg5ttsvXTW6En2TABT2a/aywkpxHSHKeyHOU2XrW7XFCtcP18O
+         apDcq+inyHAVmiepBpj/7oaOScy6zWwzwQ4boyKioGUWHTkhorAFdSZgSOceRWJIk+PB
+         ZinTBt+3GK0Sol5tXvhhr8rAStMq5/edhn5cJrWQxma+IGc93LdZ9FTtAusD9qBZlFRh
+         ae2V1tBmgpZpQyvrw8uAoMwDw1a8eTlHKQ2TZEoM56AdKnAljfAMhoqLuwwFlIqQBb+4
+         E2gtq8QoLH1Kp4RiGQvbGoCrn5jtswpa4ECz3ZKrxDXbkBXwLdJwCK7+71N6lbHkIpGr
+         jNIg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775156961; x=1775761761; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=26jnDOH9sfu0NBZTRbOR7+Wdjzvvt/AkBoHu3e7kTgM=;
+        b=jLOFBMmpnXJb46r2YTbl1Q0CNyBJrY7pk+0dKGmum4bAofFFXsF3MIyf6tg5qrj11O
+         EqBNHb/6dzyv4Hj7Im923umLU4/kWgDGhbFTppPNN+r8LE4lPVURgKrOBYSVrY1oRghn
+         OxtkZZHMg/PFxN+FmVeStcrLvlPjZJMxlSecSB+CONOtj1LaEa15/My/0nXiyvo2BtRM
+         uo8vo0BIDuGpx+CXIvewAn9RyIEQRLXhhQ/NnHGsI8B+sYhzYt/Jgh/OhHaf1BB1PZ0l
+         hOaVOC1VT3uKRmp2exO322wiJ/jicS8TtMFY+AlIrm+a+XHSdcpH4JV55JsfFI2sEGOA
+         r+XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775156961; x=1775761761;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=26jnDOH9sfu0NBZTRbOR7+Wdjzvvt/AkBoHu3e7kTgM=;
+        b=UWzVo67iGdWbpR5wWDTCyQ49UOo2lQqMmjI8NLhQg1/yagDCkM2fFWPaVOo6/FtNFV
+         fbLSD4fghsWhiFk5WNPaoCuz3NrfNG+KLgGlzgXV+0Oqk4T5XC920B1YlPxspZrvHpPe
+         eh63TimxuURx79FHy+XP85Y+np5rip3NxNiA/5eMlsvE4YLOyaVVl+tXPD7QCxUC25iP
+         /YzI5AMKX0bcR265+CK+HDiCdawkBYC2p9pQ16NI043J/QrTLVdHNxgIshKscWNYzqPG
+         oSK++D6HEa/28HFEMFiCsZeLbAM1dE43mPLq9D6vuO+mAXV/v4SRiyz+jzmWARfBzCbg
+         13CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRPP7FCV2+Lzuu8F2pDwCxlQgB04sTiGEkFTSVscjDHL2JnD1MxheQXVd6auC26sDrVA7kGUmWLQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz3TpF5It9vqGdrlGlusJ5/fUhjp5as3fuywLM2ZsjszPeDSfW4
+	mtH4X4ifsMy9ElvHhqOFeedJAwg49xgjBi60phRbdODo8aQ6mu5HWnhju04K+aU2K4rPIbD62tt
+	dLSgAFPD70db6yAxwCJIevpWT602MBKjglIuBcSom
+X-Gm-Gg: ATEYQzz5Pozk+5UIzjA+HQia5dALXe1Ra1HDJt6VGMSbzJy6s72AmlFR6Z3Oe7AXybs
+	PI6joyWlH4qWb3cOUX1GHjz6R1sy4OdSjXCC/2wZ4/vwXSRJVGg3Azj7HqAJy64WIQfEDaRH3Gz
+	t54Xnf0rpwoOZNgNImYQj/wpRwKs1PjBlU86N4WeHSQKBVYsbIXaSMw4nikIh2K9vizkwVz67Hm
+	ZrKNZ71sOA0T97CKVFn3GH3QqbaujGWzLxegYNWKA6u4QzEYI9Czg7A+qCpXUCRQXZRrVk3b1dm
+	2MaKGZhC8bOtkG0qUvucvk51WGwWG8C/i2E/f8wOShLe3ZJAOA==
+X-Received: by 2002:a05:7022:ec17:b0:12b:ebb8:e518 with SMTP id
+ a92af1059eb24-12bfb779d53mr79037c88.35.1775156960783; Thu, 02 Apr 2026
+ 12:09:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260403-mglru-reclaim-v3-14-a285efd6ff91@tencent.com>
-References: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com>
-In-Reply-To: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <zhengqi.arch@bytedance.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
- Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775156018; l=6627;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=HRyVJumaRGlmjmg7giWQoM7fAZ1aA3IIuyfVBBx3wZY=;
- b=xD+AQD0knA28MQKrusASwXm7UtsaKfBTKC9JBS15D+CeEKYFqH1uJ/6ScHUKnKVujGRyMe3N0
- WvZa1Tu3h3iD8Aw8A6T62YMuetjGpPZWi00ERRjqfPGa5cpR9bK+k7t
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Rspamd-Queue-Id: 05EA5120008
-X-Stat-Signature: ib3azsc3zye86dghha44o11wcmug3e17
+References: <20260331111240.153913-1-elver@google.com> <202604020400.jEq32K95-lkp@intel.com>
+ <CANpmjNOsM1e8jMvRKtEizMmZgPCCZ9YqpuZKad61Zg7PAGW7RA@mail.gmail.com> <ac6h2jF-KJ5pm1WM@stanley.mountain>
+In-Reply-To: <ac6h2jF-KJ5pm1WM@stanley.mountain>
+From: Marco Elver <elver@google.com>
+Date: Thu, 2 Apr 2026 21:08:44 +0200
+X-Gm-Features: AQROBzAm7ykm8zO9ipWjQHBso2-gdwz4n-a0cr85SYjLzctukNDeZ0kKGTltKIc
+Message-ID: <CANpmjNPME07RK+jKnw233BYHX7wVMqCzFYpB2cSN4+DMgTSpuQ@mail.gmail.com>
+Subject: Re: [PATCH v1] slab: support for compiler-assisted type-based slab
+ cache partitioning
+To: Dan Carpenter <error27@gmail.com>
+Cc: oe-kbuild@lists.linux.dev, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, lkp@intel.com, oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, 
+	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 8458512000A
+X-Stat-Signature: cp73dizuekk8tfm6gg9z18grbeds9855
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775156025-99783
-X-HE-Meta: U2FsdGVkX196UmBP5kWORbXg2p07y5zM/xoihM1x7SKjamsrWb7immK7zvNmKrnoZju55WLzPcoZaU6OaizKwCB3zJoQuAx1UoWOBWa49iNk7kxfQmhFU1r9VEzS9CZn1qV6mxy9DUx10LWXeXafUTN803KUQCDbQ+tXGjbG9LJE1kUZQtFqg97vtX4WSCZ+BA9JFKx9qg1WxC1RnISbnlZQA45AWqgksv++utP+HwDNJwEetfyCDL1yLIFM8TDFfXYnUHHrWfoF0mN2ddILQKVtjjMTHW9WV88N+rhKUgPDJuyzhUDZwOEZdfm+vMNNpWp4+N1viX7tR6l2qyRChYjWVj+n2Zx4VTgjTz+2mQ83jdF+9OAHJmRHWWjybQiAe52nvsZt2Ob7mC6dgYsYVA/PNvuKHv99eKFU+s2Spma5gifdV6syt3/KleNuneN5rtYMTXNesCEwRfCRgUHFWFD8IBndC3bSWNfRrL+L3QdK+RHsIUAZCmw6A3nmDsh3tUvqfXvgSwPI8AswkuyJOJd7l8CalXYcQPq+di08AxJxwXp003Whi+fHb+EWhm62LT12TO4983deQia8LC35vVFBzY5FeO0AQHzetKFjDwKD4bbfMhSZxFfrRKJcHOTbY+41PkIKNoqihlR2rRFHQ8HQ13xA4lrE9iix4xIhB2SW1QqxdbejFG2qP9VNmGAd1IZrY59GyGsVmtW8DVjZFyPCi6FjTarLXZWTpBYlPlXFVqE8K3fa58oqGNARqPAp4cdkzsWMjOdwtljQ2Z7iVUsEgAB3kmYURexJvMVFtXD8rMhJeCDCVqrDGvlh3w4mMSX4YxHjwYmCo2nm893kvdWv9jnGsM7c7XOlRQZ7v31Ersp/rh24d0vZ3cRhnmK6zF0YqS+N/Bcbb3xDxTOAuKFN9MW13MBjPDaWg44zCFZlJ/Q30kCxZoNlIDkU5040SEg9OkcP9uBOqoXJR5K
- OiTQFXep
- K9TtPLVXQuemQTmrXl5Gp5ZW6bUR8ZQJvvUHDtmF0BbYD3t4KGkdyX0ENQPZJRCiGodHDj8TWMgIU3Le54H2VACe3bZJT3wkrjelV1ql7+uxtHHMhMOIZKIKOsqnZHfhVFDCNHBgFpRimGyWNvhTqXG39nxz/FSERkf6GhMky4nFBXlRccEEMkanNk0lfPCVe/h6lbIKUqvy2WAMVARD39aMl2y/xS2Vsht4B8Fvog3X7Bk2cjFeCgUMBSnTmRHTroTFB0NFnK1eZN11OGKLo0XqnXOcjoVtFZzECpNprVaAWOPdx8r050Qm/dAUotzAOGz8H8FCPPwquk7oh/yVffF4Uxam10g8nwPmMep6/wF+uYNtdiNOkyKNuxqkaRsCtkcNByYBcWKDVngCR7d2dxiDYZDhdSw40Wa0jEQmc/rdPPQO6TWKp8u2KUVdrnLA4gGGUutKe2s2HsMSKzLYUbcXmoECs/jkEf2B6QhrqYdIBNSQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775156962-583907
+X-HE-Meta: U2FsdGVkX1/m6UZaIdb8/0s0VclfxptIyNr03BcxzAlFyoFjITxDUW3cPvi3Oj7vS6j+3noyDjHXVOb4fereT/7n4fZB5TMhEUt9D4y5oQa0QfMfV1aY4nU+KA5Ek5jycHRQKTCWKcEfcle6nS+IBvN9dS70hZXtJ4AuCFFu6rQgqq1/e6Mhw/fT5AeV4tKHoPET8zeruW8BLYaz+74oS/td8aZPbDkdBZp8jiiJ0RbckzHch/6bTCFOcA/wfCHuX+y0dprxufQN4CKr1J7gYYnBinkFrbWeIBmE/e/kG3D/nTGC9WpBe7mmBTf+a2KfgEUcjWyyzp/ZBVtKXV0Faiwxh9uVtisIlfINFuuubDpnrlo5cOWUpcEM0OG0tQUS8PKYDugGOmmI6ppFjT4IxokWLxpSBjz0SwURZwl7adTwsSz6FsCKoz7AKZYEzqDlicytJpfsfxTgEm1yQpEGSNxo83trY1DVCdOYQy5mQmErvxWJlwKGgQaGjxlqA6bHJKyIkRNfd17n64JgmuaCGpJ+dsQhk5vmEYPxZQJwlGs9i0S4WpYCIPwEMoN/GBqxnQwfL2o99VNpLF+fj9jwOI5vTUgzK0uUEd/TDIyptRQ8ioqaWsCWarEvJPgamIISZdf2f7uRidBZJbRg8f+LPdJ1h9TE9w1fzQyluFdbeMzYdrlfIT3wwjP1fAhXCujZKl6wAqz2qwm9KPIzXpnJz2mA1wj/umfl8fOQ7pQJOv1pxDiLu2KYqyJ7C6/7TfRD3/lqp50pSM1/4KzobPpBCYIJbfqmyqwdl27dHnu9tdHijF/QiPDHfTvS383EKfkNweAiG8gG16PdQXcbqTlAbWM4eIpU8lZr+zmlRbHG118RuAceDnomEpcNzleToLtBb8OHCAhlydwfVj1OuQMZ/jENNru2fUg5Dm4xvSS+yotZRvxVRXPsMA93AoQB3EbsWVhxt/SNoYU03APNlRh
+ zeYtfXr2
+ tyDmS6bKD2QrtUOdHXLM8wU/tpSxgs8vsKGN/nRJQ4ry2uZ4Af5dXODlvAS9FcIFHQpJSl4INiOjPmuQThqsgTls0+GxeHNi40zf6XTxUVqcfdm9BCQokeZ8YGOTWA7Ra/dD1L4BbrLz52icZY4Y0TjUQ16hJRafeL86lpHFIqYp1R7kpM68Un/+dy7oigLCto0pyKg3Mem/kCqIHh0JmV3IMvPx14cNQ1pzMIB1RmFbHmRMBd01kng0rQ914efyB5W0qBCtpb8WBNdfuQPoYEEvWT4Vk15YG0gs0kqnaZ8Lyegg0c0/yhKvOhCCSaAbK3xmuD7g/p0xsw5La+vv4SvvU4qSIUA5X0DoFUES/KP/nWNsZ41i3T4bR6+iFl0VUUrHMRyy3V+zKZbBbBnmuzNPK5MgppCeSFbyaqOs7oboisxaw/0jK6ifELosswonhxYnRm2UrmfyfSWc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,182 +150,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Thu, 2 Apr 2026 at 19:05, Dan Carpenter <error27@gmail.com> wrote:
+>
+> On Thu, Apr 02, 2026 at 03:48:20PM +0200, Marco Elver wrote:
+> > On Thu, 2 Apr 2026 at 15:33, Dan Carpenter <error27@gmail.com> wrote:
+> > >
+> > > Hi Marco,
+> > >
+> > > kernel test robot noticed the following build warnings:
+> > >
+> > > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > >
+> > > url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Elver/slab-support-for-compiler-assisted-type-based-slab-cache-partitioning/20260401-035608
+> > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> > > patch link:    https://lore.kernel.org/r/20260331111240.153913-1-elver%40google.com
+> > > patch subject: [PATCH v1] slab: support for compiler-assisted type-based slab cache partitioning
+> > > config: um-randconfig-r072-20260401
+> > > compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> > > smatch: v0.5.0-9004-gb810ac53
+> > >
+> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > > the same patch/commit), kindly add following tags
+> > > | Reported-by: kernel test robot <lkp@intel.com>
+> > > | Reported-by: Dan Carpenter <error27@gmail.com>
+> > > | Closes: https://lore.kernel.org/r/202604020400.jEq32K95-lkp@intel.com/
+> > >
+> > > New smatch warnings:
+> > > drivers/misc/lkdtm/heap.c:118 lkdtm_READ_AFTER_FREE() warn: potential pointer math issue ('base' is a 32 bit pointer)
+> > > drivers/misc/lkdtm/heap.c:169 lkdtm_KFENCE_READ_AFTER_FREE() warn: potential pointer math issue ('base' is a 32 bit pointer)
+> >
+> > How is this related to the patch I sent? Did the <linux/slab.h> change
+> > force rechecking of all these files and it found latent issues?
+> >
+>
+> Oh, crud.  It turns out that for this check Smatch allows
+> integer_array[sizeof()]so long as we know that the index is within
+> bounds.  What happened is that your patch renamed the kmalloc()
+> function so Smatch stopped knowing the size of the buffer.
 
-Currently MGLRU and non-MGLRU handle the reclaim statistic and
-writeback handling very differently, especially throttling.
-Basically MGLRU just ignored the throttling part.
+Oh, I see. Smatch doesn't respect the __alloc_size attribute then?
 
-Let's just unify this part, use a helper to deduplicate the code
-so both setups will share the same behavior.
+> For these zero day bot warnings, the emails are automatically generated
+> so I don't have any context outside what's in the email.  I saw that
+> Kees wrote the code, but I figured maybe you forwarded it or something.
+> Sorry about that.
 
-Test using following reproducer using bash:
-
-  echo "Setup a slow device using dm delay"
-  dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
-  LOOP=$(losetup --show -f /var/tmp/backing)
-  mkfs.ext4 -q $LOOP
-  echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
-      dmsetup create slow_dev
-  mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
-
-  echo "Start writeback pressure"
-  sync && echo 3 > /proc/sys/vm/drop_caches
-  mkdir /sys/fs/cgroup/test_wb
-  echo 128M > /sys/fs/cgroup/test_wb/memory.max
-  (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
-      dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
-
-  echo "Clean up"
-  echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
-  dmsetup resume slow_dev
-  umount -l /mnt/slow && sync
-  dmsetup remove slow_dev
-
-Before this commit, `dd` will get OOM killed immediately if
-MGLRU is enabled. Classic LRU is fine.
-
-After this commit, throttling is now effective and no more spin on
-LRU or premature OOM. Stress test on other workloads also looking good.
-
-Global throttling is not here yet, we will fix that separately later.
-
-Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
-Tested-by: Leno Hou <lenohou@gmail.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/vmscan.c | 90 ++++++++++++++++++++++++++++---------------------------------
- 1 file changed, 41 insertions(+), 49 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9120d914445e..a7b3e5b6676b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
- 	return !(current->flags & PF_LOCAL_THROTTLE);
- }
- 
-+static void handle_reclaim_writeback(unsigned long nr_taken,
-+				     struct pglist_data *pgdat,
-+				     struct scan_control *sc,
-+				     struct reclaim_stat *stat)
-+{
-+	/*
-+	 * If dirty folios are scanned that are not queued for IO, it
-+	 * implies that flushers are not doing their job. This can
-+	 * happen when memory pressure pushes dirty folios to the end of
-+	 * the LRU before the dirty limits are breached and the dirty
-+	 * data has expired. It can also happen when the proportion of
-+	 * dirty folios grows not through writes but through memory
-+	 * pressure reclaiming all the clean cache. And in some cases,
-+	 * the flushers simply cannot keep up with the allocation
-+	 * rate. Nudge the flusher threads in case they are asleep.
-+	 */
-+	if (stat->nr_unqueued_dirty == nr_taken && nr_taken) {
-+		wakeup_flusher_threads(WB_REASON_VMSCAN);
-+		/*
-+		 * For cgroupv1 dirty throttling is achieved by waking up
-+		 * the kernel flusher here and later waiting on folios
-+		 * which are in writeback to finish (see shrink_folio_list()).
-+		 *
-+		 * Flusher may not be able to issue writeback quickly
-+		 * enough for cgroupv1 writeback throttling to work
-+		 * on a large system.
-+		 */
-+		if (!writeback_throttling_sane(sc))
-+			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
-+	}
-+
-+	sc->nr.dirty += stat->nr_dirty;
-+	sc->nr.congested += stat->nr_congested;
-+	sc->nr.writeback += stat->nr_writeback;
-+	sc->nr.immediate += stat->nr_immediate;
-+	sc->nr.taken += nr_taken;
-+}
-+
- /*
-  * shrink_inactive_list() is a helper for shrink_node().  It returns the number
-  * of reclaimed pages
-@@ -2005,39 +2043,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	lruvec_lock_irq(lruvec);
- 	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
- 					nr_scanned - nr_reclaimed);
--
--	/*
--	 * If dirty folios are scanned that are not queued for IO, it
--	 * implies that flushers are not doing their job. This can
--	 * happen when memory pressure pushes dirty folios to the end of
--	 * the LRU before the dirty limits are breached and the dirty
--	 * data has expired. It can also happen when the proportion of
--	 * dirty folios grows not through writes but through memory
--	 * pressure reclaiming all the clean cache. And in some cases,
--	 * the flushers simply cannot keep up with the allocation
--	 * rate. Nudge the flusher threads in case they are asleep.
--	 */
--	if (stat.nr_unqueued_dirty == nr_taken) {
--		wakeup_flusher_threads(WB_REASON_VMSCAN);
--		/*
--		 * For cgroupv1 dirty throttling is achieved by waking up
--		 * the kernel flusher here and later waiting on folios
--		 * which are in writeback to finish (see shrink_folio_list()).
--		 *
--		 * Flusher may not be able to issue writeback quickly
--		 * enough for cgroupv1 writeback throttling to work
--		 * on a large system.
--		 */
--		if (!writeback_throttling_sane(sc))
--			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
--	}
--
--	sc->nr.dirty += stat.nr_dirty;
--	sc->nr.congested += stat.nr_congested;
--	sc->nr.writeback += stat.nr_writeback;
--	sc->nr.immediate += stat.nr_immediate;
--	sc->nr.taken += nr_taken;
--
-+	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
- 			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
- 	return nr_reclaimed;
-@@ -4824,26 +4830,11 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- retry:
- 	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
- 	sc->nr_reclaimed += reclaimed;
-+	handle_reclaim_writeback(isolated, pgdat, sc, &stat);
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
- 			type_scanned, reclaimed, &stat, sc->priority,
- 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
- 
--	/*
--	 * If too many file cache in the coldest generation can't be evicted
--	 * due to being dirty, wake up the flusher.
--	 */
--	if (stat.nr_unqueued_dirty == isolated) {
--		wakeup_flusher_threads(WB_REASON_VMSCAN);
--
--		/*
--		 * For cgroupv1 dirty throttling is achieved by waking up
--		 * the kernel flusher here and later waiting on folios
--		 * which are in writeback to finish (see shrink_folio_list()).
--		 */
--		if (!writeback_throttling_sane(sc))
--			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
--	}
--
- 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
- 		DEFINE_MIN_SEQ(lruvec);
- 
-@@ -4886,6 +4877,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 
- 	if (!list_empty(&list)) {
- 		skip_retry = true;
-+		isolated = 0;
- 		goto retry;
- 	}
- 
-
--- 
-2.53.0
-
-
+No worries and thanks!
 
