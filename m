@@ -4,139 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 191E1D39406
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 10:20:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6694D3940D
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 10:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282586B0088; Thu,  2 Apr 2026 06:20:07 -0400 (EDT)
+	id EBD336B0088; Thu,  2 Apr 2026 06:23:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233976B0089; Thu,  2 Apr 2026 06:20:07 -0400 (EDT)
+	id E9A756B0089; Thu,  2 Apr 2026 06:23:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122556B008A; Thu,  2 Apr 2026 06:20:07 -0400 (EDT)
+	id DD2196B008A; Thu,  2 Apr 2026 06:23:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02B466B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:20:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71D5859BF0
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:20:06 +0000 (UTC)
-X-FDA: 84613220412.17.26AC2E0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 009F44000F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:20:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UrT0u4aJ;
-	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D1E5A6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:23:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F8A813B4E8
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:23:48 +0000 (UTC)
+X-FDA: 84613229736.15.8F19BC7
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B6582C000F
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 10:23:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=DGzIUMpL;
+	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775125204;
+	s=arc-20220608; t=1775125426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R9FNAq6JXxyYmLFJe3V/l1GPxm6IdqNxZH3xpVlwE3k=;
-	b=psR8jrwA8BYZ2VsswxdrH3XxPbPw9DhByJpiGgbOpMqpjt2t+2iFDh9bGjsnY9CqzcA2fD
-	rgEyWYKKxy0/y7hmpJZ9pdjV3hj8pFemSGgvPv0jfXf/csfvpxkEwU/nxAvwMwFo8UW5uE
-	8XMn6fMhkURLC9Xwfd0k9fZ49t4W/qk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775125204; a=rsa-sha256;
-	cv=none;
-	b=NcjAKRrWXG5A9Ax8WOmemzEm1AAEtmv0lQ7WMFhChZoERhNKvGsO8S3USgmHiiGP8xs8fi
-	h7DrLCP4vS98rN7paYQ5CvorAKyC0Y6DyhBvvATo9zHrGsN6j+VfNBVQcTE4X0PegqdB09
-	k4Ngd7TSl6b9daBWh515TwquNz7TxUQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=grFJ78WqgRZrgeWWNHnn4Jx3/rkbuOWgiFKj5zXSxpU=;
+	b=aRKnKGie41uqJE2G4K64DNy431OfSp1NyPg2/wPStYvmMYcxFwNceu+vsOxNtv01OHR59X
+	OCY3vYDRAFc5bfiN0Gf4l5ULWCXSB4UQu/CvXhzn7kFy2SkHjSwWqz7ssNNQov3zOEvatT
+	NuT3I5MEqK+6/IhvaqgIHN5rpR10YyI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UrT0u4aJ;
-	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775125203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9FNAq6JXxyYmLFJe3V/l1GPxm6IdqNxZH3xpVlwE3k=;
-	b=UrT0u4aJcIEPHUOf9domdQgQG91IqHo2qLmEA3CoKX8d12wCdO0bxHz8OnvSxU/HF60B6H
-	evRU6gJsHS7haYKMymEiXceMM4bsJcQQIerYf6gAMXL/rTS3oEe+uReMvCqfBTEZDlDNex
-	dsl8e8CZqqcBXhoCOPuqoaT1L0XYSVA=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-SIwnMoKWO3mc5Vju_HBiHg-1; Thu, 02 Apr 2026 06:20:02 -0400
-X-MC-Unique: SIwnMoKWO3mc5Vju_HBiHg-1
-X-Mimecast-MFC-AGG-ID: SIwnMoKWO3mc5Vju_HBiHg_1775125201
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2b2523e0299so19858975ad.3
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 03:20:02 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=DGzIUMpL;
+	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775125426; a=rsa-sha256;
+	cv=none;
+	b=Qju1eE3Dn6b31u1Lg5y+QE2Gpe59UD1E+0pS+K9yWkY2iz3LgEKZcZivDg1TvLk6QXNfsb
+	9AM0/fMqZ4epxg4yDai+vbz2tZWefn8Ddi+B+GveIUfABHESkcdrEh6S6twICLjn3c62pG
+	Jo7r8kqahqayg63+zCHmDs0deoQNxd4=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ad9a9be502so4570775ad.0
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 03:23:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1775125424; x=1775730224; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=grFJ78WqgRZrgeWWNHnn4Jx3/rkbuOWgiFKj5zXSxpU=;
+        b=DGzIUMpL45A6sLRQ4JT7T3i4iYTbIRFKp4NGaQ+iO9DXBsqGr4jvPLKOqJHB5rO8J3
+         ExOZTndOsiyku1R8iy+g5HZnyKWVxbHzXF532onFuEhcvtEbH62XZVY7/Flx1YzN0aSi
+         1z6kJ2VtsbP7tAfHiyk87Wmhkzd0vLD1Tx+e02jL5HkVQQ/6nI76g31w9+razoYU0Sqt
+         omQPX4EYXEjX3L8HetdAa55glyjyeelkkho249uqO64cFaVSOQ9PwDAKVp7g5UDUp2mw
+         KV8lRMXCn3MEGM9pcByaTvNASFoWwHtbUd63FqgFSLxYj37bjD7dl5EoO6Q/mtiV5+Yh
+         M/VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775125201; x=1775730001;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9FNAq6JXxyYmLFJe3V/l1GPxm6IdqNxZH3xpVlwE3k=;
-        b=C6PZWUJsbZFHWBu5T7D7Aajf6bybYGWXmF+4kscWnQuau3wsZfCsVNgw6/Ro+f4DFq
-         PcnJ+3LeyLk1DGEhHNBasMWgS1ysl2E/LhrgwJ9prMKsGzrjkh7f7SAL+ic+XKBGvuOA
-         eo8w7yhri88fOva2gCl2eHNUlFjamB/S6iOSNop7a7V0/yFPUWfnfpZ4TcGhFgVKZ/n9
-         ruJ7b1mz/ahLbtXn7tVY+pk9EHTr1ZY9MpEHsIaW6w5ftXSAX2Azwx+AnU3gu9/5SMzu
-         6WSVlTH6DAxdVhxI3/YdhOdKMjRvsA1QRvx2RZigA87n+9vrG8nerLPuDAe4FnOjZhSK
-         Gzmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWF2eD243OHfyZjAJYGz6kURCoDurISfQPfkOnKEiIrYrpPYrQ1w1e+5IUP6ZfJAGi5pv4dg+akLA==@kvack.org
-X-Gm-Message-State: AOJu0YzSEPWc+pHFdGVMOUyaaFL1cfRCX3XNQSsUrEZIxxEO0cF/+51J
-	TkP2fSUP6WYA6VT6pqzfa6jQEan182H4VCGLnPsa4jhbu4hq59RXvfMXyxJfFa97LFtc6oGShgi
-	GPtDsG/LdZhfW5l1V6j6565vYOLzSZkiwlCd+gMgrfp9/mijyNuIo
-X-Gm-Gg: AeBDievdwqt0cbxYiZ+dqgLa4hGsBN6pb1n+HFXricH/RZ+KQzfDCggU9cvXok9sKq2
-	hDmtUYh4WmpuQjfZ81QO7q5d0HA32q+CYeIZCEZblH/6fgyAqHWxEs/uTtNm1KpThjv8mO4KjjL
-	hvnk014AoTjDXp20d0IxQGIp1eyl4Busi6ejMfVSMTY+3ABi94ZjmCNRn6iC6gWJSFvtc7b407F
-	l5fiVLn9ugXescq/BtW3vqvqY0Rj9YcWmq1YZHn2YBEU1im502r14Q4ogfkyHVYOOBsmlMd+TDI
-	y75Ska5lsLMLxJ/LuDmJo8FXryXVqpUVK8ILor//zjXy56mA44cHYABlGhPKo9P15B2v5IpEFyu
-	Bq3haNJ1AcmvAN9XCDA==
-X-Received: by 2002:a17:903:248:b0:2b0:af2f:b26a with SMTP id d9443c01a7336-2b269ce75dfmr68411205ad.48.1775125200954;
-        Thu, 02 Apr 2026 03:20:00 -0700 (PDT)
-X-Received: by 2002:a17:903:248:b0:2b0:af2f:b26a with SMTP id d9443c01a7336-2b269ce75dfmr68410865ad.48.1775125200433;
-        Thu, 02 Apr 2026 03:20:00 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749cada2sm22687075ad.71.2026.04.02.03.19.59
+        d=1e100.net; s=20251104; t=1775125424; x=1775730224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=grFJ78WqgRZrgeWWNHnn4Jx3/rkbuOWgiFKj5zXSxpU=;
+        b=VmF4Qxw86Uzn4RwKnTjC8selWMHf7+OVTC3IhqOUFRhUexqXTSghYytzGWqCO0tzxU
+         yKrzvsayZ1+E/HTHGzhHLOvwaer1Hc/2NwlDtU0gLucWDVTZ54SHoOXIuRJPj+ri8bZB
+         ASMef3g82goYWaNIyLRNk5kU9TcmltPG2nI9wbPiPXsiDVXtjgAK5crMynw4A9XcSwDp
+         7mUcukcLsQb7HePCebCENk035J9JkR4zfEBw6NddAlYLvJ7frOFAKbRSlNRCEYUxSQ7r
+         vqX/Dt8v7jBVA6GHzGUGEIYef1taDqqYWLI2/bll4Sy35tjFMxRbVHTX9lkiPGETkUoN
+         8lrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0D5a6Nc6NyUcchkR5tiKk+ArNqcS582GO0HRLjAC/ae51gVaa0LmbSaT8X0aA9FuHDY/Jmh+uxA==@kvack.org
+X-Gm-Message-State: AOJu0Yw+qRA8DFY4TH5BJdajNQ2bIF87qYpXb8sKWxHR2TqfxQ8YmnKz
+	T4oLKfWwdgP/yJXErv+AlZH9uyg60PkctPmH/BT/Q0q9032rQwGfwqfiyhS00i6adOI=
+X-Gm-Gg: AeBDietkZ7shaqrx32Ja+0MXPNMAw9/waGdYgRV/DBsBFPzyDMlMrBzpy4H/BgBLeqk
+	r+IrPyciqU8VHeCvxx3/tQF1gpc4ggZfAJjzKuC30OlyLcVNfTtLXI38hTdU5breme1YttoF9YH
+	ad45V+FItppZ5OhernY/ho24NwPqe8pkpi1bEDswbPTCl5ZVrneKEvELvGz4E3XQw745YueXLYD
+	ZfH8BFcLV7gctBGkYh/P6eNCJVcefVd+7zREYAI5i8EOZEESzY8m+0gzngFPzwtwijqIBrWZFJI
+	rc3fvECV2KdDa+OTzbv7027t4uZJj0d5XMSIN4BphEJTVnn4XMKUc/Y+ufsys9WTsl0Bf3NgPj9
+	TKq9q98RkOYQ0uJFqJorZ61Hhbc3MjelibDIKOWx2OoasgB0ER4BXQvy+fClfsvjAfNFrPtpE4Q
+	r3f/gAOTCcE5svYYnWkw==
+X-Received: by 2002:a17:902:ce05:b0:2b2:5428:ead8 with SMTP id d9443c01a7336-2b2699880a8mr71112325ad.0.1775125424197;
+        Thu, 02 Apr 2026 03:23:44 -0700 (PDT)
+Received: from n232-176-004.byted.org ([240e:83:200::348])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a475fsm23018775ad.61.2026.04.02.03.23.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 03:19:59 -0700 (PDT)
-Date: Thu, 2 Apr 2026 18:19:56 +0800
-From: Li Wang <liwang@redhat.com>
-To: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Waiman Long <longman@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Sebastian Chlad <sebastianchlad@gmail.com>,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
- int_sqrt(nr_cpus+2)
-Message-ID: <ac5CzJ5S0kp71rrs@redhat.com>
-References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-2-longman@redhat.com>
- <n6mhkjsxsami3qmczkdh57eep4lmcgbtyl7ox3ajzveke44yf6@m4bjevvsr47k>
- <ac42aIDVaGim5moO@redhat.com>
+        Thu, 02 Apr 2026 03:23:43 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2] mm/sparse: fix comment for section map alignment
+Date: Thu,  2 Apr 2026 18:23:20 +0800
+Message-Id: <20260402102320.3617578-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <ac42aIDVaGim5moO@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tvS1TQ-a8UCaJDG0-CN9XEpbss7fb_qy2m6kLdUPRDI_1775125201
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ecc9ttumctc61cnice5h8jefyotnwk96
-X-Rspamd-Queue-Id: 009F44000F
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B6582C000F
+X-Stat-Signature: c3m4xxa51m1cmb16tyy1a3uakmq4tu1c
 X-Rspam-User: 
-X-HE-Tag: 1775125203-837390
-X-HE-Meta: U2FsdGVkX1/s6P8fGWjZP9w0jE7I5SdeqoLZxy9z+z8nhx6RNz4pMbxf7HTdquuLOR5BNG+jc3DjEkz7nQPi/xM818KfqcajtPkM/WtM30koKf1SmX5hpCa0m/xWzDsRK0cFzIBMUu9WnbISxbc9cAdm3JQzm7tE9sVmpwN9DO1fTxa1ppSgbDy+JIiciTIaDDEaX5DWntzv7PaBDS7o++qn3nQJsg2Sh5s0ODnoR/3xzku8ZNwE84c83Usbgnv6ZtjUSxyABHMZm0Nm3Jg2kXeSiUGVrYemJOa9oejkb6B2WcuyxKMO46BhtttNeBdTYOv4p36lmapC90vr3FkTXC/YdK4wwEqNdD6ZsfDSO7SrtyN63uYpsbJNAAwsDeE5DTWqi3/wg9231gE6e3EdnMfQypU3F1W3jXmF3ybU/49t47UiTGi8z4ijyAVbMN2qPqa5oW7wJjur9Qbid4a7PfJe+fiCBlMO88wnB7gT6Agj9UeB3g1HlPExE/P5/jORqbddGVKwBqCHNzQW+5YpAjXqw6FphKJ1LRklgL4A98VoYWGwMsjTYctujgTkmzZKc6DC17tA9HFmbwKkIj3kBgOr6WwLOAqNeCwMH9C+1R6/4la8A/P4y1BwKPKy9t9KFoZBxe+2NV+BdabLy99R/cpkNgYmz1BJYTMPVT8UrpsJfrwNxN55tT19yDJVr7qb4I1wG/dykXFpFEbtsMacjdq7m9OfhNvohX8s80+LxruerARYDdvLt1+OyQGToNqvmwaSx5/003KdWFswmEhf4ANUEF5rzc4ytmFOpGts7YhMqh/sQrvJ0yTLpI08UQ1nfUTjHtk1L1gkDdMezdvmKxA6+fXlNA1/W+HH+mwp7IaqaANvcy70St9biNE7YdWCI0VA4fzh4Oo+yvPgtNz5H5fDYNywHnYX18zeMJ9YyV0A7Gt36c9WG0JD7LDsSTWhplYqdR20LlH40Yv1zQq
- +zSRyXEW
- hnWZDNxG3igIPAU6M4Ylmwx3laTuVBtaOHjDTxp+a1kAvJQrcCLLb/t4tGnJhITBSrPxo+f54awm9OeCNSAyvA0ZJAAX4tP85JTVOkEr9htBQwvLXB3NiAy17M30tzLjnoZT3GI+5BaVxzK5W6gsrXhZyu7yGejfBzNLyuGmMufiB3BilCTnKarIUDHeBbrXUuDjzWCmQDOb5wNbI/G/b7xjtJkmGj+7Z8jVmnX9QKf9UsbNb71Yo6E2pHcechCUcIJMFVUSqan6fDul+tM11r69gdVqz4hRJ+0zFbbRVILs3raAVVYjQWDitV4QwghRnmGJnsscKuBNSVwCgn/KKK9q58xBrIpCRMvZ5m8QJTjxtCDOHkw26YVPiWSU0TwkKYMTl9siLQXGMl34PgKzB8ngh9wR8y9GDxIfWDByaXFDFOfe4rAfDCeBNC1dZWUF/0ghvnBLbBBqj6Br6iU+R4HeOBq8m2Vlept1fI+/Yk6dMPXh/4rpPcbL1eA==
+X-HE-Tag: 1775125425-611170
+X-HE-Meta: U2FsdGVkX19Gm9mKJSvlymIOdIjsKP5rJ399yLDzR8TKCo2nLtvOCnm3xWKBQb1okcTF1xHAP0SHGvzWX3ZNIg72RThQhxtI1vXQ2He4mMXW9aC10EKHJPdjOr2UihfufgRrkhV5wD0z3vaXEXNu5EQWHHbng+U69qWAG54r+iy5lrMCiqGRbekjkMGv3F2on9hQ4S16ahLynJYvnsvF0CDUA6M3xCODeoe4qzWlnu/r0cO2vYL5H1sWRb2qkifVTU4hL/LRRwXvRMocoASJl/MXB/54RC7PrFEjKAOVcgmzg42+ZNs9sdIDnkmCopZngl1+RRZ4P7s7vuuSop5LOCsvTZQsrd7bUFnCUH66SGLGHKWvx1MohDOXszTGT7KohNOgNnvBphmXVj6yk1Rqmcu97enlnG8IjhDTPTerO/9RmUerHOBaPsWQGbfTnbeCRsQ9uLp9DIbMpEc2cLH6o/dou6LJ24oWGUz4tcJE7FJVyokznb4vRVFdGPmOI/IQikSPmygID9j8E52dqJP0woqf/EvZ1moDxgyM9fuNbhaqQ8TqDEx7y5uiINkAg7A1wQcf05NRHXd0hYnTB1tfkb/wxb1jLwuPd6roaystHQv2e0K1nStbUFDD8uT93QO/B1ZigFsPnoJI0p9yZS3GQbwAraOLPq/SEt1ZABNQQzK/C2C2/e68FzJq4L06Tzp4TwH9f5IZY7wBqid/pylwcmWOsYc5/KJfcFUaXFNQumJm9IflQ9riTymnlohxl/fanB4Ebzzr4WInoYF2PNm+qV1p8geno0yOCjZobQsEx6f4ogfvOM9aYgUKGnmSsblKpMTYqEd+9DIR8CJ2LDfS2S1MFumH8OMFyke8RjYgKnhHZH7iXyhuNWQLNBzrekYkx5ZfzNeTqFGmNkgqO4LJL8V1g3L8i6OBuN4S+0K18ft0RhAvE9ZhTLRo87du+fcBSPNIVLXld5Rao/bx/v2
+ woKvyzr1
+ 4vIkjDIsXYllZvvACGOeEJQ8RmKKsoDGt3FZqPnjDvZOgwJHMY5zj3X23fhEFeZjfp26Qv5JKUoRBKIgegjx7WgLSrgBFrCdVrowYaPpdbwU8yu+PR9Vu25L8eavMcpvQvajPTJBkvciczaQDrhw1PpH85ojQNBpXdfg8noynZKJmQ9qY/SmaXnD2vDAAH3HdoXnNUXfJVulYarzK90JOHkyQZHyHLRYMN1ExVjKl3YxeuaPgIia4yTcJrhRZQxja/RayAtzYzcMWFsbNIDe2aoMYMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,21 +124,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > with kernel functions:
-> > 	var1 = 65536*nr_cpus / (45426 * ilog2(nr_cpus) + 65536)
-> > 	var2 = DIV_ROUND_UP(65536*nr_cpus, 45426 * ilog2(nr_cpus) + 65536)
-> > 	var3 = roundup_pow_of_two(var2)
+The comment in mmzone.h currently details exhaustive per-architecture
+bit-width lists and explains alignment using min(PAGE_SHIFT,
+PFN_SECTION_SHIFT). Such details risk falling out of date over time
+and may inadvertently be left un-updated.
 
+We always expect a single section to cover full pages. Therefore,
+we can safely assume that PFN_SECTION_SHIFT is large enough to
+accommodate SECTION_MAP_LAST_BIT. We use BUILD_BUG_ON() to ensure this.
 
-Consider a 1024-CPU machine with a cpuset-constrained cgroup using only 2 CPUs.
+Update the comment to accurately reflect this consensus, making it
+clear that we rely on a single section covering full pages.
 
-Its unavoidable batching error is just 2MB, yet the global threshold imposes
-256MB (harmonic-mean) or 32MB (sqrt) of additional error — 128x and 16x
-overprovisioning respectively. Both overshoot, but sqrt stays bit closer to
-the ideal.
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+---
+v1 -> v2:
+ - Drop the actual BUILD_BUG_ON logic modification (keeping the simple
+   comparison) and only simplify/clarify the mmzone.h comment.
+ - Add explanation explicitly noting that a single section is always
+   expected to cover full pages, per discussions with David Hildenbrand
+   and Andrew Morton.
+---
+ include/linux/mmzone.h | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7de42be81d4b..a071f1a0e242 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -2056,21 +2056,16 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
+ extern size_t mem_section_usage_size(void);
+ 
+ /*
+- * We use the lower bits of the mem_map pointer to store
+- * a little bit of information.  The pointer is calculated
+- * as mem_map - section_nr_to_pfn(pnum).  The result is
+- * aligned to the minimum alignment of the two values:
+- *   1. All mem_map arrays are page-aligned.
+- *   2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT
+- *      lowest bits.  PFN_SECTION_SHIFT is arch-specific
+- *      (equal SECTION_SIZE_BITS - PAGE_SHIFT), and the
+- *      worst combination is powerpc with 256k pages,
+- *      which results in PFN_SECTION_SHIFT equal 6.
+- * To sum it up, at least 6 bits are available on all architectures.
+- * However, we can exceed 6 bits on some other architectures except
+- * powerpc (e.g. 15 bits are available on x86_64, 13 bits are available
+- * with the worst case of 64K pages on arm64) if we make sure the
+- * exceeded bit is not applicable to powerpc.
++ * We use the lower bits of the mem_map pointer to store a little bit of
++ * information. The pointer is calculated as mem_map - section_nr_to_pfn().
++ * The result is aligned to the minimum alignment of the two values:
++ *
++ * 1. All mem_map arrays are page-aligned.
++ * 2. section_nr_to_pfn() always clears PFN_SECTION_SHIFT lowest bits.
++ *
++ * We always expect a single section to cover full pages. Therefore,
++ * we can safely assume that PFN_SECTION_SHIFT is large enough to
++ * accommodate SECTION_MAP_LAST_BIT. We use BUILD_BUG_ON() to ensure this.
+  */
+ enum {
+ 	SECTION_MARKED_PRESENT_BIT,
 -- 
-Regards,
-Li Wang
+2.20.1
 
 
