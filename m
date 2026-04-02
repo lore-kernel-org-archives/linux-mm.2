@@ -4,112 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EAF0111224B
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:17:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7534E111224A
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 01:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA1996B0088; Wed,  1 Apr 2026 21:17:21 -0400 (EDT)
+	id AF96E6B0088; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79006B0089; Wed,  1 Apr 2026 21:17:21 -0400 (EDT)
+	id AAA5B6B0089; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98E5A6B008A; Wed,  1 Apr 2026 21:17:21 -0400 (EDT)
+	id 998F96B008A; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 89D966B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:17:21 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0E176140272
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:17:21 +0000 (UTC)
-X-FDA: 84611852682.21.6133006
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D3682A0013
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:17:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CNqm4JIv;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775092639; a=rsa-sha256;
-	cv=none;
-	b=u4rBLxCiqnbM27jarsjkaJZHgxfr/7dXB3ggvrez2uT5rMF4faFuJkPK0wi1Qxj5hovKq2
-	JbFwqt/Rezhvgihwo0XE1+vUnwcUNkxnviNvobpRhl9/ZG7yM0HqSrZnVBPvbSR5yevq6p
-	hUn4Xeh2KELswLsdUqRbuKUvhYJ3QmI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CNqm4JIv;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775092639;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 83F286B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 21:24:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AC4113A5EF
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:24:25 +0000 (UTC)
+X-FDA: 84611870490.27.244FF5A
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F16CB4000A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 01:24:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EgvnvX4x;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775093063; a=rsa-sha256;
+	cv=pass;
+	b=VH0d+QetpG7yqC/BPxRf9dVF8MZtek8StpC+h2jcso+6/wA5f9FWfw0HHDdu4KG6QR/sM+
+	1EZKvjrPd7cVYdk07JewIncW8kz1Cy4CcOlWyNwJuc/1W5Ol0Qr5BTBIox/RLj/8k2Vjmb
+	VAz09UYpdWAwnY0EMggTZoxRfh4tIXY=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EgvnvX4x;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775093063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESlYIolGBSFH6AWVL5HUwn+hc6w8VfR5MT+DXBPeS+0=;
-	b=gOI4qXEjYqrKpMUNdW+Yuj+vfncupU2bhXnin3jWCutFRSd4A+ftj0E1OmWpJvcsvq16Tp
-	04ncGgL9r27StFGg5Wi347akruYHc1+ti0mcsYreOm0KvM+SdDfUdP8q97m7lqZE9VGIiD
-	k9zvSUUAkosU6x096xW8AGYY8cyBnQk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775092638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESlYIolGBSFH6AWVL5HUwn+hc6w8VfR5MT+DXBPeS+0=;
-	b=CNqm4JIvhdhzLgSz9i5ArIgsdfIMvrWYjXOuba/z0/uZ0gTlBh7qRPSrypEWsryYa5mUEp
-	FG/Al1a+RbRnX0SSi4afTEx/6MCkAabYalS/T67aC30MimXDvj93TGX1NlkHtcmS+wtpS4
-	M19V0+hZojSzd11oQnkEoEnnvGAGXks=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-1QYFvXvBMOGBxgNU06fP0A-1; Wed,
- 01 Apr 2026 21:17:16 -0400
-X-MC-Unique: 1QYFvXvBMOGBxgNU06fP0A-1
-X-Mimecast-MFC-AGG-ID: 1QYFvXvBMOGBxgNU06fP0A_1775092633
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8BE9E1800281;
-	Thu,  2 Apr 2026 01:17:12 +0000 (UTC)
-Received: from gmail.com (unknown [10.72.112.80])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 43EC430001A2;
-	Thu,  2 Apr 2026 01:17:00 +0000 (UTC)
-Date: Thu, 2 Apr 2026 09:16:54 +0800
-From: Chunyu Hu <chuhu@redhat.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Mark Brown <broonie@kernel.org>, akpm@linux-foundation.org,
-	david@kernel.org, shuah@kernel.org, linux-mm@kvack.org,
-	ljs@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, Willy Tarreau <w@1wt.eu>
-Subject: Re: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf
- style arguments
-Message-ID: <ac3DhrTIcxvAki3X@gmail.com>
-References: <20260330151503.670415-1-chuhu@redhat.com>
- <20260330151503.670415-5-chuhu@redhat.com>
- <efbad6c5-8d5e-4774-8d0a-d455e6e2c182@sirena.org.uk>
- <c6976e34-54b7-42a8-968e-9ae967c52968@t-8ch.de>
+	bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
+	b=xV4cxq2hsKhqboHcv52JgtaxWpADt2aT4nIe934rD+CJQeh3O9/3f2tAqZfKmb3rAdmV28
+	VXadU7eWUp/4qYOw48XmK/ak+77XTbRGwyEAha+rIjUNtOPy8rZ2zCB+kyQKD8DNn8ZkUR
+	RmyBtjBVWxq9LhCuYwf7wUajuKwjf2o=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b93698bb57aso71053966b.0
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 18:24:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775093061; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EHjmOeoPzdVDNP/K5XMpWVZTbtj5eN3vbkWuJyHyMPauqv/5IRTfBfYdB1WmAVosvb
+         6WuXn80y6wRVOuM2itpaLzS/js8SqAcoDs9qp8ZSv7rKzxt6/9h8D5rYofcqqZaMY/oS
+         3F1+R0wjtT6dMohNwOHIPlB+PCLMnDTpR8QDBOcqYLm4oNwb200E/W079BaUtcfpinWF
+         Gaeu3kagKPOzKz99vwlwD7NY0Jil6llfXLYMfmcFVcJo+Y+K4DOpQ1isdtotXoSMetk+
+         z9NpD0Z5T5exWdgbAV4DCH1vp1yzQKVTFOtWEQiZQhiG3qQU8phu6MSBPWiD9O2/41vl
+         giew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
+        fh=B/aRUqN/x02Fd80qYLW/2Br0wmGSeqTArqH4+hJW3P0=;
+        b=lSynedkdAqu3EeE//usnBCdLbaA1V5qoU8Y78cR/Apm3Fx1bmV9CowUm8d5mrJe9VG
+         /gOOamvZ2knOn4+sqJJYbnQtf1n+5USMXeF2tmKt8+89WtvosOLKxbtpYFGTNGjQ5O4h
+         2ZLp5OJjO/xb0SYZAu8k7sF70Q0ASvTJj5hWrQp/WiLPLAWzp3UtGVV0adxENXjGhTbu
+         zGvJlrBpGOSvVntHFWXzS3b7NL6Q1FbhnMPahcml9pFk9Zya/Cc88A2MPFA+/13vOCS6
+         HLYOcOx/sT7J2wKAIesOCdExthtkxIdMOT8uKONA/itgdYZWGUTQBAGyHFaAvwdSYptm
+         y7FA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1775093061; x=1775697861; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
+        b=EgvnvX4xJNgN02lGW70jFPquIBJoTbx7jOYSmjbL1yQhhF/9KpZ1As5SSZUq7Bt6q+
+         qSnGvtVk7ecKE23XZOi2uD0MJz48kAefRcT4CmWZjEg7FshXJG+auI6hr+JYztEc3z0e
+         c7Js4DVN4awkASGtqw/WJdXr7Irh4Iqv0g4vpiO79A1d1TGMfBuDTiuCYoKuDcZnkWAt
+         uUCqMU80NLmERqUqc0K2X3lW55QBZ3MB0euFxgcdtjQhO/SzodfWUkIdWNKNIKUqZ4vb
+         iTMqI29g34lP81kZQrdKjljVCFqOMjlWu9p5nj1YovXeRWTQxogLhEh0tY9dfv67P9QA
+         HmVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775093061; x=1775697861;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W7ra+u3TlfOgeZlAAT4yfsMYCpyqTLL7DQZc241he+c=;
+        b=ORQFxOLqBVK0hyCsPF8L3/Rc/DzuyMVRRdbqo3TvBvL7b01GE8JARqRdzoSIZuq1pL
+         gPKe5jhnTIcNPj77L5RVEItjBmYnm7bKrBRZQ1ztnvlQlA2iFF7cYAMuhC7FHRQI2VW7
+         xemmNYUlnUrgYSjl1SH8FYDU0bRXMHyrBLhgTjpO43wHEPo2SW+gZ5SG15ruCTMF+KIV
+         VQwfUsqabHTNFKB4qArqwbjY1XOekAtErQNh0K+Ynhze6sk9K8lWHsEGhEwCJTWVVHxe
+         9PWXiKw9oGEKJulMrOZLtd/1Diyy/V0hu1x41bN/94hRLVU8hoS+b7Mbngww6bbXFhnj
+         XiIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMm4F2Vmka/DjmPqlMISJoG7qMic/unxoW2vM2s8Hvalw3pOlM/hnDlpqlTcu6erDGggleY9/2lQ==@kvack.org
+X-Gm-Message-State: AOJu0YzpWxZchWybHl+tJcM8iDjPNF7WYBgladDjnuorTLgrYewQkN6A
+	SkmecRmDDJp+ow1wpcBT1xAABD7BZYScwZWMsKa4a2JUgBR3FeiB3eugnK+4V0/8XSBE5bYDJXi
+	vZ+tSxIri+fiYa0c6zNxFkGY4MZeVaufE/NpMRj1s6g==
+X-Gm-Gg: ATEYQzyVI6gVrvnDUjjb1Vp2jg508tVapc+2p+wkd0tDgRyfa9tlllHiJ22aZYBTJoT
+	QpK7K4frkFSayWvFQ5HT4juoXx1UR6wm0lrIPkLvf7Yk7JJNv8UgTkwjf35S+L/uD3nyckIjR1t
+	fB5GmLUif4vpOtOV16gd6d02LqOxOa9yBOlla1u9kyQYwxdrJ+N2TDGQDbhhX7aSe3ZPBCfSHe1
+	qhxOrY5TKWWHP2ds532ENUO+bVjmPaoQwMw6w248PPixbkoa2n7hePSS5nxHaF+fXxRhV8BI85d
+	d3eU9zeZgoOftfRJwEplc9FpCNAK6PxqPRoWRg==
+X-Received: by 2002:a17:907:6ea4:b0:b9c:11ee:3c2f with SMTP id
+ a640c23a62f3a-b9c46de6752mr20619666b.1.1775093060834; Wed, 01 Apr 2026
+ 18:24:20 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <c6976e34-54b7-42a8-968e-9ae967c52968@t-8ch.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: Lh8NmVM65wwPpiujxPHQVK3HYB_0CZ7hm3E0h2s3260_1775092633
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D3682A0013
-X-Stat-Signature: zqpfsperks5jn65u6swjzitz1r3q8yxr
+References: <20260326084727.118437-1-duanchenghao@kylinos.cn> <20260326084727.118437-2-duanchenghao@kylinos.cn>
+In-Reply-To: <20260326084727.118437-2-duanchenghao@kylinos.cn>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 1 Apr 2026 21:23:43 -0400
+X-Gm-Features: AQROBzBQev2b3aMzYREBWkZ-rH-xOsd0fsiXT1xY1YD3JCunSWuEFkNfDGsMwoY
+Message-ID: <CA+CK2bDPeT-PruiqiBG3EOY1gMQ7DPaW5vapfh9=f2+pk8Aq4A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] mm/memfd: use folio_nr_pages() for shmem inode accounting
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: rppt@kernel.org, pratyush@kernel.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: F16CB4000A
+X-Stat-Signature: 5rracb813btwykzhzdc5h16tsad85gac
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1775092638-50449
-X-HE-Meta: U2FsdGVkX18/Px7J98PNQLyMS9SN2hBypRBn0qBaaZPRClKfGTqjLnUsxN98MUX0KiDUcOg8gogGnZOJs+agrUA3itApz5Brijqupo6rLIaEW7Sd1ORx9YzUB9PJ1ni+gdnkTA7ncb69572SfYeb7aetFFBARl1DsDiE9/tfOMAxX5J4ow7fWxJXmiZgJPU3ZI1kIH5S4PjnJudWjHGmc0Rs2LLn9XvjsvBND1DShL/qn9l4chDIk1HqTn3pUnc228SMKIcR0NIL7EZFKBeBXZ3lhwMbgWVpcMQPimX1rqznxotBKecHvmJKQzZf1SmW857ODIRmKl7pep070ym6a54dxGEULXVjrJg0j5KAaOLosKg6BUegtFlX6A7SL6iKY2R31i1MXw1qCR1k4xzgIrjnJ359yzyoSVfka4GYuu6MbO/lUHF+haFzZFx4VUrPPB56BOS/ufjik62KVd4gea+V04hvrAiYUhBsb3wuMpuaDYMgYs9AM7cRXa2GFYayAf6+yL8S+TGYRn1Kk3Bc5ROq4o8H1SFwlBK/QGLQ3GLNY4IDuuREhxw6OAEn/e4V33C0TcXDg4L7olXb4iPeJoCwPPHVCM5TNoIRewo0nzlEeVV2egfKFiA55qmemmS6Cqcvsoe/+YLpNnLbVQQ1D19rz1GQDWACgTJwuzm1ku3ynm6dH0K6nEv1a41n6sChcZvkgSQfgmUbIQxa32ZEfhjRHkScVrKx7vCpTrYSUyqP2W4aNlThL9PS4ECJarwd4fYwbbKj+7YRxfAwcYgIbKyeqB1hEYIT5AxPIXyknpAICX9vh/L/GRlImrtbJUwbIJB0MIUzVbG12el1T8fl6UI84UutPIhM8Vy2NnSAWd2UzqOAJSwRJjZaHbfuyG8QpEem/3dWS1VmSEQHS9B3LGCO6Lm1qgSuqQ022y6Bjc5gHziGbrWfpOuiaAkFnN2wjQPDPnkjzV/JK2+yY/K
- DWeYnqza
- iuyzF2BcXbaaNqa/z3sI9jj/m7MmuVmOZtJRif5e14a9IWOwLOoG3WZPqAkqn9P0y1UY6nsLPgG0oK3sJbaEpBbcZlBL4kbMDdc3bIXvLwjsr2dUMNPOnk8ViMXxvqYtJZYoWqW9x3b6oRelnPTy+33bpgZdT2ZudISCmlAjhzb0VTyOgjhS7XyQueowXsWQeSDIsy09YJiNSOasvpbwOofkOr+16u7vBmkma5Mtlpj40JlN2x1SBAcY8TiTZH90eibin7b+0powvHJ957ZgjzKoSKhfpJ1Af7b4/UWbSvsROXBeLGp0Yu2aPqstGHkTJvdpipWwy8fRJWhs2zDtyYAVP+ni3DJUL5P0l
+X-HE-Tag: 1775093062-270268
+X-HE-Meta: U2FsdGVkX18ewP5VjAFn/6eJiUfX/b081wmiNhzWqlN+aMNNHK1P5hLfKz/EYz0VsXMYe8cOVyq9L966uaqQsvmlIAoai9ZVmZN96Nm+yOFeM9UVAhHBHFAeFG1bxS7Osp+4J62Vg1aynV/1ksxnEb27nydMaNVVoHMR41pAKhimJ8FnRJcx9ooNjM5qCGqsPPOlikQsGA5C1Is3/iv7+IJcDRD+DYt31ei3Axg4IpLsdcI33CxHzNTlrk/dAfLwTlalbZyM22bASyTpVm2NZK9duw/9BVkVZjsM6ThgXFABHxC8m058PfNfr3nUxjdJwFMRMQRjNeczuuy/pB3yPxAPZYdvigpqpPf6uSJW5evsBWu8V5o9+G6gtgi3YGdAcfvsy62k/wjj7x8Tref7iA4eMhU/EtvhYZeue2X6HuBaea8v/QF7lJFSmn4UuL7XbH+HWOvtvnqlUK2EryK61cl6krO/8q5xmZg6/iNkfJVuxivP6deC4ztOudarDEE1RLe0lf4i767d4Ro8ahD1SpZn5JO4CTGhL0VwxPAQcbL7zoXRcFERNflcgWbBw5ZFQpXn4XFLy6qL1PCMOLlJXUDspInYR01ehnhkVtp0JIPTFpzihCEIy3yntkEzlHex2/NanZQWdeqTKO8F4TbJkRmqQCp1tR/DrqR1bWlrRBnb6OxdjDhsDqkdqOIr5jw6fqvZYbHaOX+xcvWTVhvkv/r8oxkhrvoU8sgMpYGhLatp7ciNBB4UEj4i2oVwenUTw4RVX5NwkhHWqZJ0DoDmtymbjpTyNKQyBtw1aTvgx/aeNVeQbdii16EluBQriU3p0oAZly6TLt8r9/5uMIp1lRrduncoShAfrBA30aVFowO2450KniUPq/FaCoiK2aBVY5ABUBdpOUpgDZZQnJM+YjbdAlgru1vtyILBsmNHJnCrvMpOG/SMQzG6Oj3rPEeNFDeqFlxp9dfAnDXftEr
+ 3Pci+rTK
+ 22DKddSXhffCQk3OOhGu3XcLOKriU5tHDtZ44x/CCKgTdWr5ZdGjpZb/Mne0e2Ann3F8PVuYwYnYhOWZiPRphOjJiKeGH9HVeT7iEcWnmVmsSJfrwe+LA+pXV7aq/E0nIe+3p5DkcJlIMjZsDU05o6JnIoJzoXwEiiRmuYCiED3oO+n7dOa6EvSRyq5yv3mnNm5JE3EjrCXK9lcsBeUCj1jhP2j93YAOwhBFfJfAo7JOewC+eZLM/T1IVr17sRpgG4Vc61/usRYCTqxTX1yrzBMxXpuCwpMO4gU31gTaG8CcMEVDKufRIX9noE6yYkxlJbyaBMQ1J5/0d08LBAGRYPPgrYSibKhwxXLX2jp6lwkRqsLCABh3/3o1OxEpOc4Can/cT+tOS4i7RnpzRvpMDEa27ETnVWOONRJngsqua/+iDJdEj3ALNA76NKZ19wV2X30Lzz/crjr6I47A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,55 +135,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 02:08:53PM +0200, Thomas Weißschuh wrote:
-> On 2026-04-01 12:03:09+0100, Mark Brown wrote:
-> > On Mon, Mar 30, 2026 at 11:15:00PM +0800, Chunyu Hu wrote:
-> > 
-> > > The ksft_exit_fail_perror function previously only accepted a single string
-> > > argument, which limited its flexibility for providing specific context to
-> > > failure messages.
-> > 
-> > > This change updates ksft_exit_fail_perror to support variable arguments,
-> > > similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enables
-> > > compile-time checking for format string correctness.
-> > 
-> > This is causing build regressions on the arm64 selftests:
-> > 
-> > /arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
-> > In file included from za-fork.c:12:
-> > ../../kselftest.h: In function ‘ksft_exit_fail_perror’:
-> > ../../kselftest.h:427:13: error: implicit declaration of function ‘vasprintf’; d
-> > id you mean ‘vsprintf’? [-Wimplicit-function-declaration]
-> >   427 |         if (vasprintf(&buf, msg, args) == -1) {
-> >       |             ^~~~~~~~~
-> >       |             vsprintf
-> > 
-> > This is because za-fork uses nolibc which does not implement
-> > vasprintf().
-> 
-> We can add vasprintf() to nolibc, I'll send a patch later today.
-> But it will be fairly inefficient, as our malloc() implementation
-> is *very* simple. Not that it would matter here.
-Thanks! 
-> 
-> That said, I am not a fan of the new ksft_exit_fail_perror().
-> What about this:
-> 
-> #define ksft_exit_fail_perror(msg, ...)	\
-> 	ksft_exit_fail_msg(msg ": %s (%d)\n" __VA_OPT__(,) __VA_ARGS__, strerror(errno), errno);
-> 
-> A similar treatment might be done to ksft_exit_fail_msg().
+> memfd_luo_retrieve_folios() called shmem_inode_acct_blocks() and
+> shmem_recalc_inode() with hardcoded 1 instead of the actual folio
+> page count.  memfd may use large folios (THP/hugepages), causing
+> quota/limit under-accounting and incorrect stat output.
+>
+> Fix by using folio_nr_pages(folio) for both functions.
+>
+> Issue found by AI review and suggested by Pratyush Yadav <pratyush@kernel.org>.
+> https://sashiko.dev/#/patchset/20260319012845.29570-1-duanchenghao%40kylinos.cn
+>
+> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 
-Thanks for the suggestion! I would use ksft_exit_fail_msg directly for
-now, and we don't bother to make it that complex just for saving two
-parameters.
-
-> 
-> > I need to look at why this managed to pass the build testing I do in
-> > -next...
-> 
-> 
-> Thomas
-> 
-
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
