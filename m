@@ -4,86 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 698D8D3942C
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B58B7D3942C
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:55:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CFA36B0088; Thu,  2 Apr 2026 09:54:45 -0400 (EDT)
+	id 28FAA6B0089; Thu,  2 Apr 2026 09:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8804C6B0089; Thu,  2 Apr 2026 09:54:45 -0400 (EDT)
+	id 23FF86B008A; Thu,  2 Apr 2026 09:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7963C6B008A; Thu,  2 Apr 2026 09:54:45 -0400 (EDT)
+	id 12ED86B008C; Thu,  2 Apr 2026 09:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A1756B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:54:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEB378C377
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:54:44 +0000 (UTC)
-X-FDA: 84613761288.24.9C23A43
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3FEC51C000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:54:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mZVhN5Kl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 005116B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:55:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A49DE1B8816
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:55:29 +0000 (UTC)
+X-FDA: 84613763178.07.4968F0A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5C28A40008
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:55:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c5FAMHWb;
+	spf=pass (imf17.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775138083;
+	s=arc-20220608; t=1775138127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ay4X9snrGVCLWTt8S00mKJF82OGzsWfXAgwhomAhao=;
-	b=0jXgI5jwVm8KFZ3N4Sum0LxPEFhIOyVlPKJpZ1veuisoM+GUku0Ohsk3hglBOsU3UN98Aj
-	ORFwtDMge5pBFiXfvNCBk76jY7pS/PihJvqmleTDLcVZjV0jw4YSv3a/e/oKDHbEcjsQO/
-	X82juMGPjJ/bBAvQ4NYXIh+61W5zJ+k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775138083; a=rsa-sha256;
-	cv=none;
-	b=7rciZ/AlmxIdKl9f4GD1a5j/agkGtNFHVj+54Yhi51FLrQDpih+URGMyCh8hxB8gYfwOTT
-	ARmY34unpKxy9NxVu1I9NYKVr7ZoKJPWEOvtwzUfqLFO+8vEHipWOGMkfNquqlnoKjJcsv
-	kVYRW8jJKqOAw/MOHQhuPRCNMDsVXDc=
+	bh=FeIbfN/s6PXb3NeX5Bb/Ugx+YZHVHhzx7Yq3Hex0Bdw=;
+	b=pGiVZHg4M2VONJcQQdpbm1iLdJ5w/t83UGQ1zV0Qj9PIR37tNOphKbsQNIFwXuXXH6koZP
+	Td8k31bqWjHm6LBxC5js/HAhxkCvmYFzoDs85ZheyKrv6j1TzpD0XNI/YWwLAhpkfEIYaA
+	rAUyUA/E89QBPSL3IAnm1Xt+Q5BJ+L8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mZVhN5Kl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52C2360008;
-	Thu,  2 Apr 2026 13:54:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71BAC116C6;
-	Thu,  2 Apr 2026 13:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775138082;
-	bh=jit+uHKm3XCP/g5cWvTSmT120u1mtEgOpbGBxwaH+XI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZVhN5KlL11K88wefykFNw4z0BUVVaYN+y7IX2XX1QMgigoA+xMSnAjA61UnQT+rd
-	 vemx26JRp2EEMsXbJDnOVg4t0JlQxKF86RJ84qZJuRigcnmixLwXajrPFQp2ARiekJ
-	 kBL2aAHsuryGKnwU1ozP++iK8aK4els6QMxWiq6YkcECh2oLlH93urvXwe/yH15IIb
-	 tBTnl8yZlXbNQeV0cxiI4IUS8/jcPqwj0WNdaZ1KMkT/9kCZuV1NwbZWHdfM0QRb6f
-	 wnyFkUWB3uaDe4OJqv202bnVbc2P+fVGfPNtI6Q5ro4FO+XjydWdbxCip3rGi7wwsp
-	 y6O85Rk62cy0A==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
-Date: Thu,  2 Apr 2026 06:54:39 -0700
-Message-ID: <20260402135440.74339-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260402053458.26524-1-aethernet65535@gmail.com>
-References: 
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c5FAMHWb;
+	spf=pass (imf17.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775138127; a=rsa-sha256;
+	cv=none;
+	b=srveaS/CKVDl1VZ0znAz5gx2BC+sQsOvddbBzAIhsDBI58sx4vFn45tXvYchEw7VmZK7ty
+	Rz29CVq/oOrBwMKBZtsHF49UwYKS6KgZkJv+pNYdIkmi3PfRL8pUjaX9YfHSf3vzHjUU7Y
+	8yI6dNsrYhfJYbE6KN4oIzMbk4PPk6U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775138126;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FeIbfN/s6PXb3NeX5Bb/Ugx+YZHVHhzx7Yq3Hex0Bdw=;
+	b=c5FAMHWbsQzUO3fOKh7nAnjIF6azVpMggri6HiPT6opUSC+FmJUoS15+d7chri1dkYye8l
+	MwmD5+XiqceQ7yjv+sZyTfd2SlS+gUnZdOek8gj/K9vXZEEkT9t/0Bo+vZguod6yr9Vs/5
+	SUbmm9cY7nE1BHGXeB+uARFAPcBSL4s=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-sx-phgEYMCKf09AsAeRg9A-1; Thu, 02 Apr 2026 09:55:23 -0400
+X-MC-Unique: sx-phgEYMCKf09AsAeRg9A-1
+X-Mimecast-MFC-AGG-ID: sx-phgEYMCKf09AsAeRg9A_1775138123
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-799003e8a77so16233847b3.2
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:55:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775138123; x=1775742923;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FeIbfN/s6PXb3NeX5Bb/Ugx+YZHVHhzx7Yq3Hex0Bdw=;
+        b=DVzzRzW584Xfi1SaBIl3mWLxaJpxdyGs3p8Ez36MYUYHxxKG2NzUt+LfNat6zjz0jb
+         1Y1MY+ugx3eaW5gcXlqjpH6d8mF7bZ93armWHM8+03+mGi344ptg/eOB4dhB6Z/6Xncn
+         hhC3z07cmEbTljs65VMiiMSUyHR0QYFG2318zpguqk9lDwpbbaT6Ptci+vD1kPBOObPf
+         TEyj7ko9V5cBkLREjSHRBa7B4xsvueVvBV3rqECJudN4Bo7mOOqT/HlGbCP+1HGX3lMZ
+         82J5WXEBy4+gUjAeBMCzgEEG6SHuw9Jk1AeCck2AfEG9/UNBFRihl9ictNy9984s1KY3
+         sPxw==
+X-Forwarded-Encrypted: i=1; AJvYcCVolYxlh5LIDjEWCrcy7NYqMtwXTbUOaajoklVMfygkwY/kCZxebnc+RGFa3hqEvT4dPfBYWDhMeA==@kvack.org
+X-Gm-Message-State: AOJu0YxXpebIE+15VBjm9MnYCpkpGDeG+ZWX44MQ1+Bwimxv2MY3MpLa
+	g130tOYkTtsQe+fGF4nDAJLiK7NnTaUKtnXLw260eKlXW5/lwURl8bz74bw+buyucTmRy3JGJwT
+	B7MYOyRPyx4m+P2ScHU5Ieg23mA4FLB8aHeLGt8G1JD9WTL09VMigKff+1W81gF4+pQfD870RwY
+	j8r0/IWnm6I7iPcvMzm2yTMsuB3NQ=
+X-Gm-Gg: AeBDieusenEelZmwrrFVl4W8CgCOD5dnAl5q50khmvQkrmIIxuJdD3ergjg3dYjWOqt
+	sqUhH1mw3DmE9jTkzyagY9t266POwaMBafq+6zE5Fe5qhT1vo471jCtd+uIAHjCianEe9EV2VDk
+	p8C3QNmqMk+3Drvc81bjmry8FG0cEXqDF2A6/dT+Imewek6mhu6yB6ZrEPCee1mvZa4vLYYgGyn
+	ABmkdo=
+X-Received: by 2002:a05:690c:83:b0:79f:4a72:ebd2 with SMTP id 00721157ae682-7a211943d68mr82211037b3.28.1775138122986;
+        Thu, 02 Apr 2026 06:55:22 -0700 (PDT)
+X-Received: by 2002:a05:690c:83:b0:79f:4a72:ebd2 with SMTP id
+ 00721157ae682-7a211943d68mr82210707b3.28.1775138122529; Thu, 02 Apr 2026
+ 06:55:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3FEC51C000A
-X-Stat-Signature: x6r99xb5aw3frzmd6r17demh3b79nnac
+References: <20260324154342.156640-1-pfalcato@suse.de> <CAL2CeBxT4jtJ+LxYb6=BNxNMGinpgD_HYH5gGxOP-45Q2OncqQ@mail.gmail.com>
+ <vss5mbyhbf756jieb227fh6yu6vvvsggagll3ru4cmlhbbwo25@xv54cwfx7klf>
+In-Reply-To: <vss5mbyhbf756jieb227fh6yu6vvvsggagll3ru4cmlhbbwo25@xv54cwfx7klf>
+From: Luke Yang <luyang@redhat.com>
+Date: Thu, 2 Apr 2026 09:55:11 -0400
+X-Gm-Features: AQROBzAYJ8nuWHjSXu2gfqWWatebXCy0HhbCcLYyR1Tc9RoS0Iy2RujMAH5VB2I
+Message-ID: <CAL2CeBxOa8ETNw-uP7vX7dikCty0QrFSUpdTSrmF6oAKkLk-ZA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mm/mprotect: micro-optimization work
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, jhladky@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Nico Pache <npache@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7PbjuEEufCIoq5mrK2RNOIXlErLVpUKpJmEv766KXb8_1775138123
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5C28A40008
+X-Stat-Signature: syaxipkwomi361fcb1ogxmg5qgko9aba
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775138083-423394
-X-HE-Meta: U2FsdGVkX1+0VRHuCRp2lpsQB9CGq/9Lmc/LXMp9Gb79oicVslkjvqiJscuguTyb43A5lwLaqEtUhx1uiEvPwYCEtcf1wRUGc00qVUxl6FSXiAKt+KEk1tMzyPVShtQ+kOxGrB2F3S20GKrs26fS7dhRLiwPTaTnHQbarQ/S2sAmCdH6Lyn7qPaJ2CmjxwSMyR6ebYRHL1BHeGvDqYpjxPUPVw7Tts8h22pDE1BLcO7IGGD8Iy7aPDBNUi+rxzqB3tvutmQgzkLfhqcJukjTaFdpF5rzp0jR7HMBsm1jyZb97WfeW+fCNU00scVhYSo7sWyal4PanqYtX6E6rInp7y6DInsubXrECIkkiksJk0QAvvo6ma2A8aZZG1uzXlyBaRuWWZL8+ob7uhRaayq+inITjNuC7JGF/nfH42fWOAhaRvR1hBX2zidY9iYa60EvavAMMAou83BCpoVQ9OtWA1dkhGIKFIRDiFaKN7iqx3JxVX9HztQcUn+kwZiV2FY3IX1+uDZDO6IXLIVpYc65hxcXsk/jouYbEpURQBNiYc6HJzwu2ND/QyXsGx0gg70AHm2lT9INCKYHlUrSf5fG20k/H1MB83JgHHPZaidHGftS+lK9qne89Nw6L/kgqjw+ttgF98BC1RCv8+ROzUCBHnelHrklOgP66/3CQhAh+VK3zY3PDGC4voX28/rnjPY7QyA2S8WznmINy0MuWoDgWLRcUdT4x5DKwx3mtmAfJqLfpYShgfMPl4qUqZbCecJJM8RxIGwVkxa0fbsVtgER94g9sxd1ua1eVPpukJY53mj5ctmoGexFisOdFKTAEFZls4trUvdvHcGkNk7MJrSdAk5mwOziufPruB7jT2zEYUn5o3GMvU3NATHvImnoj0LmFqxi4ziYyhXW1NNv8HWqVksDoq16uz/yXAsxxKPVpH0eBg/i+9qp1RUhbtVK3PQ+vhZ1XNU6Mhbdw0K0Ff4
- ws//0qFf
- 8V9EO3MHGZK2wUtPeU/7Te8wec3pkMier+CofhqMaMKlvThIQoWKu+NH9p2LQ4lL22vpKeUf46uAnjQ2lFhyZPe045OjuvlaMA1MFkddkb0Ck2M84Qt4X/S6cDh3eBH36Enk8MZcPMNKJSmEm70M4iSLMpods2xRkp/Xq8jPPzPEnsnJSKYv7MU8fDTk1lgXxnso0Bsvz2V8OmBLiw0MjSDgbnmEZZVvpycij0WgZ3N7GSJzmY+cU5lJZct6YIWArP7Kz
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775138127-986277
+X-HE-Meta: U2FsdGVkX1+PwfDDCIUwhh28wE0UMYGuOkXl2I6wxBpKAsWaVuFfSjihAGXcPWNfoITHlcLV/GChMGgTMZke7l4MSUDegMm7HTWZDRdDJeZdlq1qCuypzaEsSC17EZgGEJh9XFruQHvYGES8u0TseBLazs0RR+XO7UnKlxZ3uJaEmrZFi7saFLv1sZYcXgAM/vu70e5cpffNwQd6TP1UVdItJqgWxQOzqdPYlO2YA17cMIvUarUOV3J/gGLa7dnuHAju5w1S/apJJB+b6TaYxn+O53H/xkKfVEyeS12Lshxh8N+CjcMulo4Pz12gLPu/LerzYcJ0GTp9NGhNa3nMJKmuilYftRP/svpVeKTJFH53sWgNAvB9W9GPB46y/qdA2N5r+c+IhjIzLzJoucbAjmkWSf//SLTrscaaGsxdi8zQ0KQ1NxNaq55Up2sFydqHPXtQmNK1sNIp3qUpl99ySyr61zaomeeux4g4BCz/TEWjARP8aRfcYVaG03rEOOfexq45sdbgh5RjNtp4HkmJbvvdxdIEDfgy5X+/jdaGE++h/Wq+ef8kfqLk58RI8+h7VTQqPQqJHlT1IXECjEdjBcQ74MBYQb6kaJdErXMOfgQaS+TUg6UrkiCYEuesJl3EHdyzuQwZBJv5ZLR9kMKxHq32IUZnwLx20Ci+MJh1Eyd8v0WUZwrHP11Hx3JRBM0uesMEKAxiXBw89p2a3wcXcVHQhxBm0vRPyn9ukpZHid6wIHYd6t8JhqyMzKobsmQVqZjioOTmYjznebsX7mIImigOHtJ7ILG2uCFMZoi+g3CeY5XdxT9N3uB7j0czUM1Al2ZWKVDsROkKYZkGGdMbcZHMPCsEnyOhGszjNLpcEyvkPJMlf8jCYl/4Bg7qlYV5TC7C4Jdtpa+owSWYiIq+fpA3XjrsAh7NeZgHs0eYmXg9oMILr94tJhRAghy3IS82faJ40qyLtXBQHvdsenP
+ bd/pN2IF
+ 2cuD4HHMudVCJoTNicH9XomMUuRD/91njmWXJ/iNKJtzUXpPGOr5P0XLDtFkeAI2cpyWJAnCKEdzQBUAsJc19a6A+jZgEyfjWFO+DD5gR85eQbqcCcQnRn4ffL18aCqGXzDOd/XnFpGymB8WV/EVhDxhQi/+s4aILm9Wz6wzCwUx1MYpP1qtA+nWBvYfsYCxyK8L2KpSFi7IJlacsdqEEY9DglvdIdpxDesNC16p0syGiS8T48+hTdtirIjj5ZjXmXhoIgz0+3+ezQtA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,69 +128,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Apr 2026 13:34:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Wed, Apr 1, 2026 at 10:11=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wr=
+ote:
+>
+> On Mon, Mar 30, 2026 at 03:55:51PM -0400, Luke Yang wrote:
+> > Hi Pedro,
+> >
+> > Thanks for working on this. I just wanted to share that we've created a
+> > test kernel with your patches and tested on the following CPUs:
+> >
+> > --- aarch64 ---
+> > Ampere Altra
+> > Ampere Altra Max
+> >
+> > --- x86_64 ---
+> > AMD EPYC 7713
+> > AMD EPYC 7351
+> > AMD EPYC 7542
+> > AMD EPYC 7573X
+> > AMD EPYC 7702
+> > AMD EPYC 9754
+> > Intel Xeon Gold 6126
+> > Into Xeon Gold 6330
+> > Intel Xeon Gold 6530
+> > Intel Xeon Platinum 8351N
+> > Intel Core i7-6820HQ
+> >
+> > --- ppc64le ---
+> > IBM Power 10
+> >
+> > On average, we see improvements ranging from a minimum of 5% to a
+> > maximum of 55%, with most improvements showing around a 25% speed up in
+> > the libmicro/mprot_tw4m micro benchmark.
+>
+> Nice! Thanks for the tests. I'm wondering, what CPU saw 5% and what CPU
+> saw 55%? Or was it just inter-run variance?
+>
+> --
+> Pedro
+>
 
-> Hi SeongJae,
-> 
-> On Wed,  1 Apr 2026 08:41:18 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > [...]
-> > What about checking if damon_call() and damon_commit_ctx() failures via therir
-> > return value?  It seems damon_call() fails only when kdamond goes to the
-> > termination path.  damon_commit_ctx() failure always causes the kdamond be
-> > terminated.  So if I didn't miss something that could be a path forward.  What
-> > do you think?
-> 
-> Thank you for the suggestion. I looked into the code and I think
-> focusing on damon_commit_ctx() failures makes sense.
-> 
-> Specifically, damon_call() is only used in the damon_{lru_sort, reclaim}
-> _enabled_store() path, which doesn't trigger unexpected termination. The
-> main risk comes from 'commit_inputs', which calls damon_{lru_sort,
-> reclaim}_apply_parameters() . When damon_commit_ctx() fails there, it
-> reliably indicates that kdamond is terminating.
-> 
-> My plan is to add the error check directly in apply_parameters(), right
-> after damon_commit_ctx():
-> 
->     err = damon_commit_ctx(ctx, param_ctx);
->     if (err) {
->         enabled = false;
->         kdamond_pid = -1;
->     }
-> 
-> This covers the reproducible case (addr_unit=3 + commit_inputs=Y).
-> 
-> For truly unexpected termination (e.g., memory allocation failure inside
-> kdamond), I'm considering a fallback mechanism in enabled_store():
-> 
-> - When the user writes 'N' to 'enabled', if damon_stop() fails but
->   kdamond is actually terminated, we reset enabled and kdamond_pid.
+5% -> Ampere Altra Max
+55% -> Ampere Altra
 
-Sounds good.
+Personally, I can't conclude at the moment if this is just inter-run
+variance. However, let me re-run the tests a few times on these two
+machines to see if this is consistent.
 
-> 
-> - When the user writes 'Y' to 'enabled', if enabled is already 'Y' but
->   kdamond is terminated, we treat this as a restart request.
+Luke
 
-This sounds bit odd to me.  User shows enabled=Y and kdamond_pid!=-1.  Why they
-would write 'Y' again?  Yes, they would notice kdamond is terminated in real,
-using 'ps' like tool.  But even in the case, I'd imagine users would write N to
-enabled first, and then write Y to enabled.  In other words, this could improve
-the user experience, but seems not really necessary to me, at least as a
-hotfix.  What do you think?
-
-> 
-> This way, even if kdamond terminates unexpectedly, the next user
-> interaction will recover the state automatically.
-> 
-> Does this approach sound reasonable?
-
-Yes, the plan for the next version sounds good to me.
-
-
-Thanks,
-SJ
-
-[...]
 
