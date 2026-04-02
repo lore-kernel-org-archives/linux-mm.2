@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A379FCC6B01
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE24CC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:13:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122606B009F; Thu,  2 Apr 2026 00:13:04 -0400 (EDT)
+	id D09246B00A1; Thu,  2 Apr 2026 00:13:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F9F66B00A1; Thu,  2 Apr 2026 00:13:04 -0400 (EDT)
+	id CE0C66B00A3; Thu,  2 Apr 2026 00:13:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 036BC6B00A2; Thu,  2 Apr 2026 00:13:03 -0400 (EDT)
+	id C1DBB6B00A4; Thu,  2 Apr 2026 00:13:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E92FC6B009F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:13:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B16B18B7B8
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:03 +0000 (UTC)
-X-FDA: 84612295446.30.5616D8B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B357D6B00A1
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:13:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A3D1B8DA5
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:10 +0000 (UTC)
+X-FDA: 84612295740.23.C35349A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 084B520007
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NIZNqIdp;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775103182; a=rsa-sha256;
-	cv=none;
-	b=OouN+MSmmiA92nLjdnjXsefPwZJHcotZohAr5pg8m9hZaSKpk5aTbkaOeIJrV0SCgBXzVB
-	6dXk5zbmvi9ycDuvn2eeJEGathL1D2qH2aKTmfP7ij7hq5hyeZk2vaeSi89R44xhbeuEKm
-	MG9iz7jWTOGh2neLy/cCWZE0rE7Tbtw=
+	by imf05.hostedemail.com (Postfix) with ESMTP id B877D100005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jRmA6e+4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775103182;
+	s=arc-20220608; t=1775103188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b3O3nTbzGihVtxjjI/2f4S+asSKC/YGLteudu0vZgmM=;
-	b=BNptT+P61bPwrpdHVNrhHTUSbUs5nvyuHTWpzAipHtog87wHJO5uYTDllcft2X1/9EWFkg
-	ssi34LdIJPnzVsC6OzsUuO2MbL3YNQg47QROsYnXTrxX73+t01/F6RxxtqshHWVVqSyIAJ
-	mkLHMRaNOoAmKuTszV/2Lwm0Ssh6LEU=
+	bh=J6OUUEyWX874G1Pjz6/BYPXra+/59w4Q5cUZOgY1teM=;
+	b=OE8R6e1/l3sXxwCkzoqv6fwsG9pD9cloxkKSETiYKJNNA6LP5KuQDB6lk7HajaWnIL2Ev7
+	+l9wUfjqPKI5BXn/EjXhd7tbEJC/fNMej2ysDx0jRxWfinwZY+3pEXy/Vj570A/bgiRqh7
+	ejRSIp9r8WN74u0uTrJQbHrhyaspiSM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775103188; a=rsa-sha256;
+	cv=none;
+	b=REMmffLKY2tK/hYLIRI0NA/IdQKA1SY8Eo+8+9ZffEbsjWUpaqCpN99E4RlUahP6a6LiQN
+	Vk+z3O9ADZY+bnF9se1kuWfSmyp2Tf725XpbHBenehhp7V4ORmlAaYTj5IdBYu/IrDx5Q4
+	F7UKh1eG1WD0ujn6Q/uNRJCTx8HGG1s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NIZNqIdp;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jRmA6e+4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 23E9B437D5;
+	by sea.source.kernel.org (Postfix) with ESMTP id E35D2435E2;
+	Thu,  2 Apr 2026 04:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829EFC19423;
 	Thu,  2 Apr 2026 04:13:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D5C19423;
-	Thu,  2 Apr 2026 04:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775103181;
-	bh=lxXvlQh8xQ0EBf3to4Jw9wikE7NXPrSIjYbQ7Uoyt4w=;
+	s=k20201202; t=1775103187;
+	bh=Ye6Z7TrGAOPgV52cgsTw8VTKwOK2VRWtWU0AJXFZvYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIZNqIdpzm6+W6HPk4rUKciovxte+Ir8R8/epNSPXK4ip3mfFRx//HB3VsV4IcxxY
-	 grhk26iS3k+sEk5UN3RQPGXSmhhMYLSeaXHgHVluotjZ6QucMngudS0xvMQNTYyXnd
-	 fPX67hTxkQB0+QkM0QhDxLlU5z8oq1o45ObGQwWRFVtkvVRHiPuW5c45f/knY49Lxo
-	 bz+Svo6RhYvPkYQaPWYDCZy5cAXqxiuCP3BS1sV6yFr0lF3y+Fv8D/EX7kM03kDhdP
-	 d6LWFm8CkHHdTroVD7ewqX5/jlazhuinnayqlFjpEcdv3LiuGb8upVQNvMeIAdvlqF
-	 nsIyaZ2SbjyKg==
+	b=jRmA6e+4sI6CWSR9vvx2sEwae/Tyg7OdWgDWdkkAJFLADbySZ3w+Kc8qIHWijyYyt
+	 td9MCBLaKdb3hyaXy02gu20EvmzZBDuuI0ToIaNoDa+tsc0I9v+0G5ugQIk24cNKD+
+	 AJF3CpeE0Pa5rXKocaVkb7XlBwvPjSJso9uiDvDfRIAuidLrSvXdo3p4FoVSHkr/Yt
+	 akIdcT4DA/H5AlfRVGz0Vt7EXbuoIIz4Z81yyg0DtMVnL+sNHatuHUsw4idz+ja8Nu
+	 P205Jo18lZ8hRXOvp/l/MPYLlQlGN1Q3CFHpgbgac7eCwkc9AUEYgtNg4dlcYwLa81
+	 DzwMaDHl0HrlA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -92,22 +92,22 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 08/15] shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
-Date: Thu,  2 Apr 2026 07:11:49 +0300
-Message-ID: <20260402041156.1377214-9-rppt@kernel.org>
+Subject: [PATCH v4 09/15] userfaultfd: introduce vm_uffd_ops->alloc_folio()
+Date: Thu,  2 Apr 2026 07:11:50 +0300
+Message-ID: <20260402041156.1377214-10-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402041156.1377214-1-rppt@kernel.org>
 References: <20260402041156.1377214-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B877D100005
+X-Stat-Signature: 4fef7d7zourbnkh466tynem33kkn9w6b
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 084B520007
-X-Stat-Signature: pe1cmuig9b4de3u49p1zehwuudhii7fk
-X-HE-Tag: 1775103181-487897
-X-HE-Meta: U2FsdGVkX1962jPzqTHPB2sfKY5oD35eWe+TTUwxRlgpte1KAE2gOX792RpZFXDgiBvfAqLHDZDakyrlI1V2P7/g5Ck3ae2IkzOcDKvLmROktgylYFfI0ROMnpuLjkc7GjWtrGOiI3IXYbYI4U7VDYotZrPNUP6TzaS2R3sfvhx8qH3liyLmERTL5xoQ0uVTwZ9YRgpGQfkRo5YpAFVzI9C0/gTkuODXPmOeSThdikFpS5uYQqTK6MtCd6ek4K1udwhYdxj/uJentCoj9Ar3U2A9B5+3rm8KtClFq2wwJ8ymHHh2PcP73YourvxX2/HTXU5De+9TEOGdjZ32Of76LEFFGMDZvyJ9t2TwrgX9HCmBySNbfVrqr5ZWguOiYRk0M56OZ5mRszENda6G6fjt9l76mSNFesdr0S3mopl20JeodFDtG2dfkVMrVBjwbhdNbQ+gxn5gedEhhl8h5IEq472+/seGzKRl7eKIFN78Yezy2e3nlT6cR6rAemc5bO0SToC5GQJ5rZSZpcIcfkvlZ1qZ4NbT1gBTbXLO3oFYOQacSm3gUW3tSaJY/qQKfWjks8TKuosznYuM/I2ATqoakvGMWsqkGNHTDax2gygmQx7uJdEfbqsA6luvDdaycVZu875N9McwWUMeL7XrTIeBsfEk6WgdMNCtfpGCaVSoi+n9tQZgetxg2Zr0ikPLM06+ycnmoCAWQlNH7UlyXnXfRHj8EjnLrLj3yCSGyL5FPrkS9khstA2jLgjLxz+FdDRRfGutyjX1j/PUZFg0riRC0vZgpiemm9b62a7KSPJK1zLj9Kl8iKqa6VP1L73pXN7/kan85ZH8wFwem2FtRksmZXnFv5i/7qH+oMwyUWbtTuDWF8/Lsp/u8WK60KtCeYcJ0ZGDF7dYJC9m/oVQ/3QEAPB2POeLeRCprM7i9AU5jzFTn9ngZaILAdaWEHm3iSohA03BOpCmbuObrxX18cT
- jGXuEB8B
- OzWR0X0/O4m/5W6RWkkA15kSnuyaC9so+rGTENQStVw6iq3JLfNgBCEG5GFTGuE5NZy50SSg+/bhPTgjtg/rWK6FAEX9dZDS6gKCLVHLkDmK1MYoUX676aBrTIycXCXAvcky5W00K6mIrgCREpL4wnTEc49Zztl0avIheJ6rVcEcrckIzA4Tr+xyEhb0mH2MBwKzuJP/NaXqcMEA3VUsNtSKUrTTOgCNyc+vRacgsLdwsL1GphDT8/9DCnwjGrjr8AJRpvoN+9Lee6zcLx/t67EaWOOXBvNO4k7Ah0LMrKa/JKel2xC4EFpYe7w==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775103188-129844
+X-HE-Meta: U2FsdGVkX18wjYo3fX8bdlN/d4bhgTSBtVzyYqnXMnf7qJmAAz6UBzLvYn+8x+OPilIINEo2IPqHRBkr2wmjOI99bZIjtPOnTf7HJNUmjyXXexbXD75aZfOyvcUzqSFN9Nwdm1RKweGbv15g9QdCZYj/lzNc7Oh4d+op8lCerc9tEoojtHPWkdN7prTeyxM6qggxg9Xmuza9XVvlgP6aNij/J0HEQA+LYU0m7imQwiOi6DTZrEQSb5dwIrGt01U7vKRoY5Y+sTHu5WvZyHX1kQL86fjAaS1LkTIMQWwoqPr6FSDk8qRRrWPODstMDmUdwtPFusfJb8mwdmHK16hdLUAyDIV7JgMlrYeuwPWiD91rv3LUkhGHj52rwK5669HNmBIcU9VuhpYjIocfA2YkuvrtyabW8HbRAPsdUkmTbe+TajqA8wgpBpmHxmz9CUqjnAne71b9twxjtn52BUiaJmc26HBrEwWFoeEUbRlJSsiLmLQDq7L255Ch/V6WHWajOQjQFAdvWAlTjrsgnkh7dDBSixYDYggk50C8ZbOlWAz1dCpqRsK4McIEfHmriRrePE7hl4uaIYAkXj2c7mGtWwfdzDlFTn3dopIGfftX1KZac8l0bTiD6zhqjfxF2W4zkCuTj+Sbk1JrxlhY5BVC7ytzjtB66Ub6le0ldG1oQT5vWQ5vSWkdhpeaf68V5FUt0NJGnuoeXjJo26UULqUmJOz8NEN7cWCzYhMNgy/TJnimQs6+Wt/I4UCW3K5cgK51RW7ouF0e+MkDpomRFOpqoa+DcGHHRDwc4GAZMi0/1xUEYP6FXT/4rmRHGAbF+V9FxCXJKZQJIeFPyk2NKVhmfiSH3NGQinOR9cB3LrHUsUcuX0biYWqrZ4/f2Qk0pDzHMxmDRPmDuvpwkpBt/fNnxlNTShIaH985CmiaPaLig8eoyaY1GVY+NS48I8wDtrlI+T/b6RxDskoz5yhR4aR
+ Kp848jxl
+ Rnr0iWF5mBMSxBzqLbaIFyI8TwqlBd8H7LoLzjRI+koKgYTGRE8Ih0eNSmzv/puJAt0aXiHL+b/N/5PoJh/9ZbLHz1psQrT0xXwwf/uEIFH8Mc5ne6HL1zZefSYLdpZUz2GCmEFjGzfa9Zby6M9/0W/sDXiLmBT7O4LYsw5TkGyYbnMa6xV797dg3q3gC/LFcuHtIdwuv6hYP8H794AkEkcDbXqHAot+dm9MG1cDAUXl1JxfOWqZUmRHRg5IYD2+goObVlTfe0/9dTVx42W62M9io+60+YN7o3e9OkZqg6CA5s1BSCc4YxZ2ODw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,155 +117,200 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
-it needs to get a folio that already exists in the pagecache backing that
-VMA.
+and use it to refactor mfill_atomic_pte_zeroed_folio() and
+mfill_atomic_pte_copy().
 
-Instead of using shmem_get_folio() for that, add a get_folio_noalloc()
-method to 'struct vm_uffd_ops' that will return a folio if it exists in
-the VMA's pagecache at given pgoff.
+mfill_atomic_pte_zeroed_folio() and mfill_atomic_pte_copy() perform
+almost identical actions:
+* allocate a folio
+* update folio contents (either copy from userspace of fill with zeros)
+* update page tables with the new folio
 
-Implement get_folio_noalloc() method for shmem and slightly refactor
-userfaultfd's mfill_get_vma() and mfill_atomic_pte_continue() to support
-this new API.
+Split a __mfill_atomic_pte() helper that handles both cases and uses newly
+introduced vm_uffd_ops->alloc_folio() to allocate the folio.
+
+Pass the ops structure from the callers to __mfill_atomic_pte() to later
+allow using anon_uffd_ops for MAP_PRIVATE mappings of file-backed VMAs.
+
+Note, that the new ops method is called alloc_folio() rather than
+folio_alloc() to avoid clash with alloc_tag macro folio_alloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: James Houghton <jthoughton@google.com>
 ---
- include/linux/userfaultfd_k.h |  7 +++++++
- mm/shmem.c                    | 15 ++++++++++++++-
- mm/userfaultfd.c              | 34 ++++++++++++++++++----------------
- 3 files changed, 39 insertions(+), 17 deletions(-)
+ include/linux/userfaultfd_k.h |  6 +++
+ mm/userfaultfd.c              | 92 ++++++++++++++++++-----------------
+ 2 files changed, 54 insertions(+), 44 deletions(-)
 
 diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 56e85ab166c7..66dfc3c164e6 100644
+index 66dfc3c164e6..55a67421de0a 100644
 --- a/include/linux/userfaultfd_k.h
 +++ b/include/linux/userfaultfd_k.h
-@@ -84,6 +84,13 @@ extern vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason);
- struct vm_uffd_ops {
- 	/* Checks if a VMA can support userfaultfd */
- 	bool (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags);
+@@ -91,6 +91,12 @@ struct vm_uffd_ops {
+ 	 * The returned folio is locked and with reference held.
+ 	 */
+ 	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
 +	/*
-+	 * Called to resolve UFFDIO_CONTINUE request.
-+	 * Should return the folio found at pgoff in the VMA's pagecache if it
-+	 * exists or ERR_PTR otherwise.
-+	 * The returned folio is locked and with reference held.
++	 * Called during resolution of UFFDIO_COPY request.
++	 * Should allocate and return a folio or NULL if allocation fails.
 +	 */
-+	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
++	struct folio *(*alloc_folio)(struct vm_area_struct *vma,
++				     unsigned long addr);
  };
  
  /* A combined operation mode + behavior flags. */
-diff --git a/mm/shmem.c b/mm/shmem.c
-index f2a25805b9bf..7bd887b64f62 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3295,13 +3295,26 @@ int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
- 	return ret;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 832dbdde5868..771a1e607c4c 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -42,8 +42,26 @@ static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+ 	return true;
  }
  
-+static struct folio *shmem_get_folio_noalloc(struct inode *inode, pgoff_t pgoff)
++static struct folio *anon_alloc_folio(struct vm_area_struct *vma,
++				      unsigned long addr)
 +{
-+	struct folio *folio;
-+	int err;
++	struct folio *folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma,
++					      addr);
 +
-+	err = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-+	if (err)
-+		return ERR_PTR(err);
++	if (!folio)
++		return NULL;
++
++	if (mem_cgroup_charge(folio, vma->vm_mm, GFP_KERNEL)) {
++		folio_put(folio);
++		return NULL;
++	}
 +
 +	return folio;
 +}
 +
- static bool shmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
- {
- 	return true;
+ static const struct vm_uffd_ops anon_uffd_ops = {
+ 	.can_userfault	= anon_can_userfault,
++	.alloc_folio	= anon_alloc_folio,
+ };
+ 
+ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+@@ -456,7 +474,8 @@ static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio
+ 	return 0;
  }
  
- static const struct vm_uffd_ops shmem_uffd_ops = {
--	.can_userfault	= shmem_can_userfault,
-+	.can_userfault		= shmem_can_userfault,
-+	.get_folio_noalloc	= shmem_get_folio_noalloc,
- };
- #endif /* CONFIG_USERFAULTFD */
- 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e3024a39c19d..832dbdde5868 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -191,6 +191,7 @@ static int mfill_get_vma(struct mfill_state *state)
- 	struct userfaultfd_ctx *ctx = state->ctx;
- 	uffd_flags_t flags = state->flags;
- 	struct vm_area_struct *dst_vma;
-+	const struct vm_uffd_ops *ops;
- 	int err;
- 
- 	/*
-@@ -232,10 +233,12 @@ static int mfill_get_vma(struct mfill_state *state)
- 	if (is_vm_hugetlb_page(dst_vma))
- 		return 0;
- 
--	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
-+	ops = vma_uffd_ops(dst_vma);
-+	if (!ops)
- 		goto out_unlock;
--	if (!vma_is_shmem(dst_vma) &&
--	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
-+
-+	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE) &&
-+	    !ops->get_folio_noalloc)
- 		goto out_unlock;
- 
- 	return 0;
-@@ -575,6 +578,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
- static int mfill_atomic_pte_continue(struct mfill_state *state)
+-static int mfill_atomic_pte_copy(struct mfill_state *state)
++static int __mfill_atomic_pte(struct mfill_state *state,
++			      const struct vm_uffd_ops *ops)
  {
- 	struct vm_area_struct *dst_vma = state->vma;
-+	const struct vm_uffd_ops *ops = vma_uffd_ops(dst_vma);
  	unsigned long dst_addr = state->dst_addr;
- 	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
- 	struct inode *inode = file_inode(dst_vma->vm_file);
-@@ -584,17 +588,16 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
- 	struct page *page;
+ 	unsigned long src_addr = state->src_addr;
+@@ -464,16 +483,12 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 	struct folio *folio;
  	int ret;
  
--	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
--	/* Our caller expects us to return -EFAULT if we failed to find folio */
--	if (ret == -ENOENT)
--		ret = -EFAULT;
--	if (ret)
--		goto out;
--	if (!folio) {
--		ret = -EFAULT;
--		goto out;
-+	if (!ops) {
-+		VM_WARN_ONCE(1, "UFFDIO_CONTINUE for unsupported VMA");
-+		return -EOPNOTSUPP;
+-	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
++	folio = ops->alloc_folio(state->vma, state->dst_addr);
+ 	if (!folio)
+ 		return -ENOMEM;
+ 
+-	ret = -ENOMEM;
+-	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
+-		goto out_release;
+-
+-	ret = mfill_copy_folio_locked(folio, src_addr);
+-	if (unlikely(ret)) {
++	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY)) {
++		ret = mfill_copy_folio_locked(folio, src_addr);
+ 		/*
+ 		 * Fallback to copy_from_user outside mmap_lock.
+ 		 * If retry is successful, mfill_copy_folio_locked() returns
+@@ -481,9 +496,15 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 		 * If there was an error, we must mfill_put_vma() anyway and it
+ 		 * will take care of unlocking if needed.
+ 		 */
+-		ret = mfill_copy_folio_retry(state, folio);
+-		if (ret)
+-			goto out_release;
++		if (unlikely(ret)) {
++			ret = mfill_copy_folio_retry(state, folio);
++			if (ret)
++				goto err_folio_put;
++		}
++	} else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
++		clear_user_highpage(&folio->page, state->dst_addr);
++	} else {
++		VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
  	}
  
-+	folio = ops->get_folio_noalloc(inode, pgoff);
-+	/* Our caller expects us to return -EFAULT if we failed to find folio */
-+	if (IS_ERR_OR_NULL(folio))
-+		return -EFAULT;
-+
- 	page = folio_file_page(folio, pgoff);
- 	if (PageHWPoison(page)) {
- 		ret = -EIO;
-@@ -607,13 +610,12 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
- 		goto out_release;
- 
- 	folio_unlock(folio);
--	ret = 0;
+ 	/*
+@@ -496,47 +517,30 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ 	ret = mfill_atomic_install_pte(state->pmd, state->vma, dst_addr,
+ 				       &folio->page, true, flags);
+ 	if (ret)
+-		goto out_release;
 -out:
 -	return ret;
+-out_release:
++		goto err_folio_put;
++
 +	return 0;
 +
- out_release:
- 	folio_unlock(folio);
- 	folio_put(folio);
++err_folio_put:
++	folio_put(folio);
+ 	/* Don't return -ENOENT so that our caller won't retry */
+ 	if (ret == -ENOENT)
+ 		ret = -EFAULT;
+-	folio_put(folio);
 -	goto out;
 +	return ret;
  }
  
- /* Handles UFFDIO_POISON for all non-hugetlb VMAs. */
+-static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
+-					 struct vm_area_struct *dst_vma,
+-					 unsigned long dst_addr)
++static int mfill_atomic_pte_copy(struct mfill_state *state)
+ {
+-	struct folio *folio;
+-	int ret = -ENOMEM;
+-
+-	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
+-	if (!folio)
+-		return ret;
+-
+-	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+-		goto out_put;
++	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+ 
+-	/*
+-	 * The memory barrier inside __folio_mark_uptodate makes sure that
+-	 * zeroing out the folio become visible before mapping the page
+-	 * using set_pte_at(). See do_anonymous_page().
+-	 */
+-	__folio_mark_uptodate(folio);
++	return __mfill_atomic_pte(state, ops);
++}
+ 
+-	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+-				       &folio->page, true, 0);
+-	if (ret)
+-		goto out_put;
++static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
++{
++	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+ 
+-	return 0;
+-out_put:
+-	folio_put(folio);
+-	return ret;
++	return __mfill_atomic_pte(state, ops);
+ }
+ 
+ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+@@ -549,7 +553,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+ 	int ret;
+ 
+ 	if (mm_forbids_zeropage(dst_vma->vm_mm))
+-		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
++		return mfill_atomic_pte_zeroed_folio(state);
+ 
+ 	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
+ 					 dst_vma->vm_page_prot));
 -- 
 2.53.0
 
