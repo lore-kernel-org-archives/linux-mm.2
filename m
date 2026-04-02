@@ -4,129 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 527E6CC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4943CC6B1D
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 07:56:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 796BA6B0088; Thu,  2 Apr 2026 03:49:49 -0400 (EDT)
+	id 04D406B0088; Thu,  2 Apr 2026 03:56:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 747126B0089; Thu,  2 Apr 2026 03:49:49 -0400 (EDT)
+	id F402A6B0089; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 635F26B008A; Thu,  2 Apr 2026 03:49:49 -0400 (EDT)
+	id E2E926B008A; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E8EA6B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:49:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F32FFE0748
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:49:48 +0000 (UTC)
-X-FDA: 84612841656.17.1112955
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 37E7C4000C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:49:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XsNLcciS;
-	spf=pass (imf27.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CF8746B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:56:28 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77B73593AB
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:56:28 +0000 (UTC)
+X-FDA: 84612858456.30.A18CC03
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8A42C000A
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 07:56:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDTeZLGe;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775116187;
+	s=arc-20220608; t=1775116586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hr2k/7x2iF+eHeC+QDLgLpQnsMX7glQGr6i0KUtTTkQ=;
-	b=R6sSn91548oBfN9UcT3vVukOHaAY/MqOvFMSmr0AfVRPxCsHXpKATbTZ2DhvlulacUmjRU
-	y/4Xg6OL2JIBqSheJb2HJerwak6MFmwncbdevMBTDpQj89HHVcqVUL3Q/VXQQZFpS47doJ
-	a5p2CzRxXPx4Rstt2dB+5vPgqEwOPx4=
+	bh=qXkLjBlEHxc7QqWamKYsPiQA76M/zPbmVxeIaau3KHQ=;
+	b=K1ixAgC4dFVbMgv8ckGi8d+q4CxfGqhqC5d2gSW/RR53JNAxZPgSehZr4WAK01bFtlbk7x
+	fMT3aC0s5qwNsbe7MFa4Q3N2/faAvYrw27JKRiPM3M93ehX4fZnj7drnzdtkj5M3QmYlUJ
+	Hb/PzP+bzz0nSNriMooSmhO0n+dNP/M=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XsNLcciS;
-	spf=pass (imf27.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775116187; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDTeZLGe;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775116586; a=rsa-sha256;
 	cv=none;
-	b=o0tub29QH9ivrD26qpJ9PBhD2DoOIvGlbPekd5wS7pfcLekaB9NzchCFuUGl2eEpgckfQk
-	vPEL1s6vyliYD/R+wL5u27WYJl+pJjIlNSwfdnHazYKVBuLA+qFuqYtbPyqufqjGF0musZ
-	wwpKBH/bQedn+YLlpvUJMWUCz8+AMlg=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2c7e5f38b37so882578eec.0
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 00:49:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775116186; x=1775720986; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hr2k/7x2iF+eHeC+QDLgLpQnsMX7glQGr6i0KUtTTkQ=;
-        b=XsNLcciSRjCLgQ1z07Tm0S6l0W0d0m5sQqYuZ4shnQxopVQOeTuxE+Hyhi84FGKPSh
-         UY7bLBkUzwiCsGjljr7diE4u2tlQdWp59/C39blGESvw0w1KOGTeNZa5LuuIsraR+AuW
-         nRiQp0NxhwOsfr2lBq3esupimR9j1WLWH2hBlWyMM/iia2oq/2GwmKccXvn6xNpkWqws
-         6nb3B6sBk9WbwVYZKpWQxuHoel4pn8F1q3ef63jsTJdd1DndEgtAK6M4tlDwWHPnLXF0
-         zL7LMm65tYROHyqaODvIPMutSY16o+ntRCrUKjG+ErFXwdsyetQshacsqX0vDf7iUSO/
-         vXag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775116186; x=1775720986;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hr2k/7x2iF+eHeC+QDLgLpQnsMX7glQGr6i0KUtTTkQ=;
-        b=ioUicIeXfTA0CoTf+Q2qL18gcqaJlap+wabvIv8hFCRAkR/6rrF2t7JaDPPi+6xqaU
-         iFgpV+ATqMAPi9VNCermMSun+5HtxplyYop3/n/QD2sSkTEAm76v+ndmWYE5WXns8X7S
-         T5eUtEjqcZrWRKNdSMzmoSpA4VSu4psuPihlQc4Y/b61WQkoCXeO0+/MNJzC0HAi4U3t
-         Wt7yMld3/SB3H3ZPGUIa9o6p19GSiai7DxYYrHvwY6aIvgomWi5vrj5fhg/n0r3mqSLd
-         bN0hSgArmQucyMgllq6MFYH6fhS0BTLpWmownl3VGzJwnqGvaLS426kxxVso6kC+I8oh
-         icRg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/xNDp/+ybxkQenxDikDB9cLKw2pDwxlDI5KPbyxl2ly1G+7XNEnzY7RU4DHFksgLFOErQKNMFJg==@kvack.org
-X-Gm-Message-State: AOJu0YzG/Knmnxk5a9MvwanJkJCuCL8er5l1Do8AlXAh2na1WNielyOH
-	6j4JCkzmtvcs+46SKxnHYGlHSXWgPJTMN6pNMteFs2V6akBczMbmUTTa
-X-Gm-Gg: ATEYQzyj6s9FL2h1Yuzt+t/PVxT5xdEGCSccYeyXnNo9geLRa9OtY3bsumBIobmQ6w1
-	Aza2qbRYKS6saQxxYhRf1wKlKqHw7JtPWJTQjhspWLthAv49NkVUn+Jw1bxSeCOgPHp6Ua1salU
-	V3pw6gBHc4nvfO2QGqT870DDlgseGaA6YxftAZtwTYFy06bmVU6zvkMfz+DZbe4JfC8+v/HOrSl
-	VwnEPVeE1WhRgorn/Cm75881g6bDkfQEftzoJ6RKuuMC4hwNkEeqcqMzIbcXozxwrvj3tRhq0xw
-	2So9QarwNHP+FDuwJpJuhyANhhtMTonphhHaZ64+nITg+pY8HkNJ+S3atYiPnM8tobCU6vB+ESB
-	PcICbjUFnQnnWdNzS8X45QgEL2Qyo0d1qCMrEzkLE5Co+DCVCVLqiAQxDSZporcMRmSZIpHqiXN
-	hNIKX5+AAMCVzYjN0D6ZpyGrkw1SZf9+NepvWVuepKkBXu6ln7ap7OYTUgMPWctsgZA9sQYt57r
-	jCShA==
-X-Received: by 2002:a05:693c:2b15:b0:2c8:7172:3b97 with SMTP id 5a478bee46e88-2c931170d0dmr3594312eec.13.1775116185778;
-        Thu, 02 Apr 2026 00:49:45 -0700 (PDT)
-Received: from [127.0.0.1] ([154.17.3.126])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca7c9df90asm1650202eec.21.2026.04.02.00.49.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2026 00:49:44 -0700 (PDT)
-Message-ID: <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com>
-Date: Thu, 2 Apr 2026 15:49:35 +0800
+	b=5RM6F6E+LajwDJ8dDOGKOi29ypYeb9kmSM0BtX/h4claetclcfrc7O0koXenl7ATfTO1MG
+	5hCXl6QOzzkV8Hwy+RQMNfIVCXuZZajUXvdCQ3uY1O7DpfgdNxmRNBdrmsYKlreZ8cqQGH
+	FXly50/NhoZDf5I8y/Ii8Co86Jm40bs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 261FA6186F;
+	Thu,  2 Apr 2026 07:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA8AC19423;
+	Thu,  2 Apr 2026 07:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775116585;
+	bh=lVU9GB5TisBjGeJ2erKFHIxR+nRd7ro74DQMBJO4z7s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dDTeZLGe4YVevDNuHBtTRXX+lNU3Rgs5R5/Vp6zvo3sCIyh1SQqdqDZ59xf0iu2VE
+	 Nxb7uV5avzKfPudssph9cjwFDwJqS1+MY8dN7v2vvdhyDjm+NEkEmie76o6sfyscz7
+	 JVExtl/BIviMKq/1DAAR08KceJl/nU2c6MqRCg3oPEim3jt7C9Pa3ABxiOOjffV7av
+	 GQMV4KRsvf5dxEHZB+7OSEDG4qapdAmJaWyZ7IuIM4xqcA+x9ARVdzLh0r949By0ir
+	 edGSntceyGAck1KCKAqK8t1W378pxdsSyotmZs15uSs1auR+nf+tXKiIA12dgUIBXP
+	 eMseknJSESx1g==
+Message-ID: <877d3988-57f3-4f87-8836-85aad5454879@kernel.org>
+Date: Thu, 2 Apr 2026 09:56:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
- has_deposited_pgtable()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774029655.git.ljs@kernel.org>
- <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
- <41b1ff54-c120-42ae-8b74-54767abf3554@gmail.com>
- <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
+Subject: Re: [PATCH] mm/sparse: fix preinited section_mem_map clobbering on
+ failure path
+To: Donet Tom <donettom@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260331113724.2080833-1-songmuchun@bytedance.com>
+ <17246161-f314-45da-933a-770231ef2a49@kernel.org>
+ <2183487D-0CED-4BEF-84D7-4439F3386584@linux.dev>
+ <bb05187f-2a54-4c5d-aad2-27b462707206@kernel.org>
+ <3ab0e5dd-cd3d-4f78-a7ee-01051f200b36@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Yin Tirui <yintirui@gmail.com>
-In-Reply-To: <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3ab0e5dd-cd3d-4f78-a7ee-01051f200b36@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B8A42C000A
+X-Stat-Signature: zb9ioqiejn66nbfdpmgc6cir758sse7s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 37E7C4000C
-X-Stat-Signature: dwsw9y7s4e8yi3o8hbc4ui3uf8spbubf
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775116187-380034
-X-HE-Meta: U2FsdGVkX18LjAo+DAz5sxVaB11l1Au8Ck8zJ3RGKd/D/JQbUdGdGb34T0HYxNLPnkPtVlFzwBM3T4MgFEyvQpAEtmdIK4NffVRBAVsceV1dWc2AJGv2q4t+EEj8U9vK++YxsRjLdHQ4luG89YQgzlFuuZGKrK7p1bjNtAkUcUH+hqq6w4kFJ7s+Mmh+Edjy79JLTh4WL0hpH8ukduSdf71Amf/FEP9MY3GFXKMzZEbO3iIkV2fuLDHVvSa6eCcgLqclWeiOtFrFzO1Q6dgYttIt71cGOQuiDHkn3r7MGtNRVjb/crUttK719O5i7GJ01BEyocIbHHkCKeou78+5n8WDG4/RYCN4YEWGz1T0+NCTOyNfJnONq7fvqB4tlTovuAbQiM1MbJJa+hLkGhtEbSpsUe8liyeVpqMkd/jbN+VJ8OZTlcMotBpxToxZNYO0msqY55zpDRIvQtqeGDDeg7RolnyW3Sfl0WGAPFUDL5QMGoO2yBEJyY9NV885gU59OZz3Kk8oAX02MBqMzRMUZoQXFWqPg+S2k+F/fqmncHqPV69hmKNYX7W7MJdLym0uqOQPoSMeuuxT9w7xUx6h2j/d9o7ONQ1hZ3AygJY92Xz/BB2jBcOlXBZbvc1FScKmOt/NusOvsUspOKh2ZdKZ9Z8ouVT34guaW52VX8qKcl4Esa22l3vRT97YLK6B7ohnI9OAvKD6Oyh3ljuV+81xcde8/H9JAdYZ8VjntxN40b0itSqtVRkmC+anJ/K9SHKafAb04CCf8qbs7Z/UB9hZXJpvlfsGgeBoe+FyJG7aZRpDf1/OWiJXA/PCLBqNAsgLHav7hTfXdz6ycU4PoxFAyHXqNvBO4Dl46OLIKg5mdPP8oOJU7j3H15gFOWlF1pk4MGPK2QCC+PBZ2AuGZDp95q0eTlZqr/HApL8kEGUAWCpDpPtbuuxOh4QFHudvgkVoVMb9H8VR9ued30PK105
- IlgoE384
- 33IKZ5VMRNvT7nGQ0Xug420sefkk0CHwYtSM6LZxJE/SRU+pThYi4V6ewxzi5htN60rX616RYfB3bHONNOOHV/eY1YhEgEUsAWVUU56aWosQgWbOfNRHhnYxKTz6iQACW0V1VOe0eQxPRvdg3Rz5HSehaxJhT8VgY+o4sMkXsIgzLnqnlYqiTb9nAvieXKUS0cH1L51XuReh8UFBKubgWdzdFviCb+7w/1FC5AmDmhnM2DyU=
+X-HE-Tag: 1775116586-800635
+X-HE-Meta: U2FsdGVkX1/jDIxldeKAhofq8Znzv20/wV8d15pGeeYUa6Z2Dq2AUUSoC797y6dNyEe/JNy5Fd7biW/HsCjBvTd/eTugLo8OSVWSUYYM9WkaFwNbaksNaDSueJExQdiodLJ205l/hAsRyWbMSbr28Uf5OkMEyvQTbJdSr/S5AiRwEHdKAPvMvkQ8mlkmNhlMhvjudq6vVtQChZekcaoaiS/+FYYVn4Gj5lfL9G2rSxBhykpbR4C3HVIuwhDZkFvatvyN4JbDs5YzN6HOuIfT8hRIDimtJDH9Uiqx34CJnrwp6xcTklvQsSdiEe9WwqlfFAvC+wgU1lh5uMGP+SE9NJ6/qVIg6kIV1N3EPHvOHlTfmEZDeefgWLWWxwe4tairmyG+C/8Cak9cm1ndkROsCLAHAw0IaBH33eD/ctcn0/QNPHJpkxGBQeWPQbEUukN6Kca170AFEUA+pF+WUprjYMDx5pAdOJFquj2xRMV28d2TEnaNmNZHY97DANCrRTPSc5UJjzcpzz2jVVz0xLnMXKRpYdtqwAvgNjJ/XQFLdZsXRVwE9awWiCHjHcnfTBW50YaLRfeQVdr8Lvo/t/I7NLKU0qlXVeB8oPRcKu7Enf8tvidpsEAihKZ3Dpchx3hHiuy25DRVZIoHqLcnxTMQeN4CPJoU4s7qBGpNZLhqhMiw00ZTPCICcmZXfiqz66Rgnn4n4LhuKspFj+fh84SdTIdr2RahvZEHu49xYPYelO+6k0Y0rjhpUsrZwmGpqgUsC4KhxUOSG5uQPaXEPznOyHAZCqV5H05PhYRkq6LEDu/mSPzOPxR5ogfhnVcNW7tBr/euBhCMF4OjZBw6R0VyVSIFSN8QzNqmLwH0HHCyrijzW0W9bNe9AFMOv9kT2ZSdbJHwhw9nLWD36K2p7SL0jlVSm/3MCTuEzMM6+nSWy5ipkrT1bfqsOdcH58+glIQqCoYt2wHoQk1SR6C/fiF
+ xzf1SNJV
+ U8pNyN/teErDTvkINQQ6I7hPagD6N9Cf9IUgUKLJFUqC4yED+DpjCTTo9uvHbZKC1vOvYRSOWa3a+W88qseOykuPfUrtOyc+NdHCJu+pVGL9owdWzC+yuGl8VoWgp7w5vTVsVUWMn/G38rzHwAxHt+GWkIAm0miTVj+LJG7Ehl75glgCjrOiS7G/IH7CsBJUWANCt5joqtPJWo+5aNkURSAfa1YJBNtnRdqZjv3AYGkpy+CGuBnoc+8+SD2BgEb3JARuItxPMWfjTvkujdOYWX27trAvo7QwV4N3YexDsG7wIoV1DId6w+GKZQbjy4Y/2oAjB8kciFTZZee0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,87 +147,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 4/2/26 14:46, Lorenzo Stoakes (Oracle) wrote:
+On 4/2/26 09:37, Donet Tom wrote:
 > 
-> I mean you would have needed to handle this case in any event, since this change
-> is strictly an equivalent reworking of zap_huge_pmd().
+> On 4/1/26 12:55 PM, David Hildenbrand (Arm) wrote:
+>> On 4/1/26 04:41, Muchun Song wrote:
+>>>
+>>> Thanks.
+>>>
+>>> It's truly a coincidence — I also have a piece of code locally
+>>> that does something similar. Since allocation failure would also
+>>> affect subsequent startup processes, I simply made it panic when
+>>> allocation fails.
+>> Don't use BUG_ON, use actual panic(). :)
 > 
-> But it seems that doing so has clarified the requirements somewhat here :)
 > 
-> I haven't had a look at that series yet (please cc this email if you weren't
-> already, I do filter a lot of stuff due to how much mail I get daily)
+> Apologies if I’m missing something, but would it make sense to check the
+> section validity in memmap_init() instead of panicking? Is there a
+> reason this is avoided?
 
-Hi Lorenzo,
-
-Thanks for the quick reply. I will definitely CC you on the v4 series.
-
-> 
-> So if this is a PMD leaf entry it will be present and PFN map, so I'd have
-> thought simply adding:
-> 
-> 	/* Huge PFN map must deposit, as cannot refault. */
-> 	if (vma_test(vma, VMA_PFNMAP_BIT))
-> 		return true;
-> 
-> Would suffice?
-
-Here is the dilemma:
-
-Currently, VFIO uses vmf_insert_pfn_pmd() to create huge pfnmaps on page
-faults. This sets VM_PFNMAP in vfio_pci_core_mmap(), but it does not
-deposit a pgtable (unless arch_needs_pgtable_deposit() is true).
-
-To resolve this,
-
-Option A: Force VFIO (vmf_insert_pfn_pmd) to also deposit pgtables. This
-unifies the VM_PFNMAP lifecycle. However, since VFIO can refault,
-depositing pgtables here incurs unnecessary memory overhead.
-
-Option B: Introduce a new VMA flag set during remap_pfn_range(), which
-we can explicitly check in has_deposited_pgtable().
-
-Option C: Check vma->vm_ops->fault (and huge_fault). We would only
-deposit pgtables for mappings without fault handlers. However, this is
-fragile because a driver might still register a .fault() handler that
-simply returns VM_FAULT_SIGBUS.
-
-Do you have a preference among these, or perhaps another idea?
-
-> 
-> By the way, I am wondering if the prot bits are correctly preserved on page
-> table deposit, as this is key for pfn map (e.g. if the range is uncached, for
-> instance). That's something to check and ensure is correct.
-> 
-> I _suspect_ they will be, as we have pretty well established mechanisms for that
-> (propagate vma->vm_page_prot etc.) but definitely worth making sure.
-> 
-
-Yes, they are correctly preserved!
-
-During a PMD split in __split_huge_pmd_locked(), we populate the
-deposited pgtable like this:
-
-    entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd));
-    set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
-
-The newly refactored pmd_pgprot() correctly extracts the exact
-protection bits (including crucial cache modes like UC/WC for device
-memory) from the huge PMD, strips the hardware-specific huge bit, and
-returns a pure PTE-level pgprot_t.
-
->>
->> [1]
->> https://lore.kernel.org/linux-mm/20260228070906.1418911-5-yintirui@huawei.com/
->>
->> --
->> Yin Tirui
->>
-> 
-> Cheers, Lorenzo
+Not sure I understand your question, but trying to handle memmap
+allocations during early boot should be removed. If that ever happens
+something is fundamentally flawed.
 
 -- 
-Yin Tirui
+Cheers,
 
+David
 
