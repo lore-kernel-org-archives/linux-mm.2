@@ -4,91 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DB9FD39421
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B31D3941D
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B0286B0088; Thu,  2 Apr 2026 09:27:20 -0400 (EDT)
+	id 8D1FD6B0089; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438FE6B0089; Thu,  2 Apr 2026 09:27:20 -0400 (EDT)
+	id 883066B008A; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34F666B008A; Thu,  2 Apr 2026 09:27:20 -0400 (EDT)
+	id 771526B008C; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 228C76B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:27:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B513BBA66D
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:27:19 +0000 (UTC)
-X-FDA: 84613692198.11.91D2F1F
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D69B780014
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:27:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=WQzXvC5U
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775136438; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 657226B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:30:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F13361B8754
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:30:04 +0000 (UTC)
+X-FDA: 84613699128.04.428881B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B43BBA001B
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:30:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W69XV4mE;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775136603; a=rsa-sha256;
 	cv=none;
-	b=6B3a+4XGkhapWND7t2mJWO5lAUZgpx9NglhA6CZ2640Hqkhr9AuBJs7OqJVu5k4tDLKVTt
-	HBUHW/9wrmJlP/JMf3SkxY+kzfScX+Rnh+LiNaCKxyglVyLAY2VWwhGoTk0H2zwDHxQ9u1
-	VMWjrJA3KX/Cp3YVx20bnP4f5rKrbeg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=WQzXvC5U;
-	dmarc=none;
-	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+	b=lth0VS8MONFNDm3alTxBYSPXjaooDOFlWJiUMl+ULJRp96RxkrudcdSLTSPn2NtinrDHXO
+	R513TcCGY8wMo9CPCliJkSu3bYIDBgFB7i0AjnBySLc/l92Hp9fdskmNigQzPcw8rWcCDX
+	ufLd2AdPw3gaHKaiLo0oElNjIcwR7Hk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775136438;
+	s=arc-20220608; t=1775136603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdzKOxQ14nFM98WmcIU2Nw6FkbUtmbmQLtarAg5LvJQ=;
-	b=6Hf/uP2D+V1VpUtfwExrOUpTYKSUUaRik8GWvVLOvNa23uF7cCfCxK7na51IfnP7yGe1Xc
-	/3yP9MknoqfwKcaND/MQoZfSz2YubysIG+wMVHreBYhxT7beal4uXeaF7pnUo3ceI/PrIE
-	eUiB9uUoiH80DVOb7jDfKzqO4jxcAVY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AdzKOxQ14nFM98WmcIU2Nw6FkbUtmbmQLtarAg5LvJQ=; b=WQzXvC5U4kKkengYyoy3/e56db
-	5XhOFTIn93mcIWLxbiaNfhlpaoA7/DfBvD3+dKxmQ2BeK0DJw1eGUesltdTYmVYVGBkM1ejORX0yt
-	DFb829iyymGdDPX3kRQSVk0HTMmU6BDbQfHSsnP3L6C/fNxaNq08lHaxUG/ue5IJeQOTwqz1DvdF+
-	xYCGlpd+Kbtu1Ihpq6bcErhETwebjuILwvFeFjW9GIRaNoaT0k6ieu85Lt9iiJ9v6ia+V8J/Ddk6b
-	3iPVLnHCO5GCXe5lz3iQOjQKtn0rOCsg0/eRRmgBgbX0JRUlZ5Lf9AFoGDJfuZMhE/KVMyj+u2zXA
-	Ls0veUbw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1w8I4e-003nP9-0M;
-	Thu, 02 Apr 2026 13:27:02 +0000
-Date: Thu, 2 Apr 2026 06:26:56 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <ac5trb9T6A8XLnOw@gmail.com>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <ac5l3myFf_dxtRji@casper.infradead.org>
+	bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
+	b=aSw+0brUVY2F8RfTRsj86yr8U39Ry7RKE5fjy6mJIoZN4FZ3p1Akrhgk8Kw2liB6UvdSOu
+	H0RA7A4SzdYsw2xCImz0rN0Mc0mv78ZNvONXjBAiXbjeNT+85ontcnLmajT7Q0CXm/3TAw
+	SLC7fwSnE0AfmyBxCJKjozsrFzvKIEk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W69XV4mE;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775136601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
+	b=W69XV4mES+ILYyjs2HPueiXJWSaRhbSBjm/OhwMdmzyjB/cqA81ojBdO2K5YFs9qzv5rKj
+	GbcrL9sTcpGaVYwWICbiCiKho2KA0cTxxhQxkfiHlkIj4whymGQp9lAdvWSLD7tGsw4uAS
+	2hClXU/JW2u5HWfRPeDUaNPHq4myIe4=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-xTrEgh3iOYuFVyHig7cJcQ-1; Thu, 02 Apr 2026 09:30:00 -0400
+X-MC-Unique: xTrEgh3iOYuFVyHig7cJcQ-1
+X-Mimecast-MFC-AGG-ID: xTrEgh3iOYuFVyHig7cJcQ_1775136600
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cd781c0d90so509844385a.1
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:30:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775136600; x=1775741400;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oab+9bmugFMLkp4c4nxmqbTKnHGTJUk1xqQPbFv513o=;
+        b=jjSTo/kxvo1gps/d3cBIMY15d44n3HUdM88byIXgnTS/yibdCka4jQN9R4qf82M1ro
+         7yT6OvYsU8hYsg6DqUpC+xM6IdIpvlE0NPxkw8WOrMbwOUPNRdibhHji0TSgnkExUL53
+         UHAhU734d63OGtEqiAjgwoU9E4jebnwsiwAePFabe5S6eG3UKsI8b+fVm2hQnM4pDDFs
+         ky2bTXcTeaDL3DJ9N17AZFYxla/q1er/5MQnkugRUy3g0yekvAEdg31pmOuNGbxDgVNK
+         4WHuc2zgaQNDIZtkN11Ki4q7Q4k6VXKN5fD/kb9mxB6zB5wenB6Bn+P2IacngsGYaVvl
+         439Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVRBdRVy9e2xqadSnDLFB6969rmpGs7UIIT3YyR4cGIf7IkjOxH8xjXA+jSt0J65tZn4akr+P7v9w==@kvack.org
+X-Gm-Message-State: AOJu0YzLftHl9sqaUbfecJWfWjCSfkNcFQpD4UKF7FGiVx3gsReEbgWF
+	/cYYFkuDZaEOFPDbq4xH5Us2g5JeAYiWSrij6N6RDi5l0v40f3RLJP7SiaA41lFyzJzMu2+l/Tg
+	mtyIBjc3LQ+XYoIryVlZ7bvbCFm0/KkSTtzbWQd/NIKqCclKkGvyLMNPp/4eu
+X-Gm-Gg: ATEYQzw5TRTIPmKCZJJIUU0wErMgLkdx0JwQBtn9n1xyoBaEa5gNZCGsD6kaG4p28NX
+	5qFjH45+2OqEZULcV5ht4oFAM40jaXnYjJTeqRrTm180PeoxEuytr/Wq2YlxEUui5lGh9bWEaaw
+	P/0AxVNPStpyGhmBo4duv7MacPpHZQXwu1y4sW8dN/R5CWnbjJbUCokzDzKLAYqcaaoIgOdpqVj
+	fQmiW3IcpLzvJb6Izd4BQ5K6QHCDjm3DSbIbbYjyNL/HuNxCA1frok78ABNYR++hSxahmD5zXp3
+	kXNyekXKNGblLNenHoU7Ad03IVByXIns9J+CcDkRooguaC3x3CUiEgfbN7DzS2N1y2Ay8QnYgkw
+	JBjXNdviAV/VdX6qUQuXXY4kqReTwHbLdFr5FwtIEEbK4yg==
+X-Received: by 2002:a05:620a:2947:b0:8d0:907:a318 with SMTP id af79cd13be357-8d30321dad9mr264192885a.27.1775136599624;
+        Thu, 02 Apr 2026 06:29:59 -0700 (PDT)
+X-Received: by 2002:a05:620a:2947:b0:8d0:907:a318 with SMTP id af79cd13be357-8d30321dad9mr264187485a.27.1775136598937;
+        Thu, 02 Apr 2026 06:29:58 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5c5fe8esm217774385a.16.2026.04.02.06.29.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 06:29:58 -0700 (PDT)
+Date: Thu, 2 Apr 2026 09:29:56 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: David CARLIER <devnexen@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
+ retry in mfill_copy_folio_retry()
+Message-ID: <ac5vVFXgyqODXaab@x1.local>
+References: <20260331134158.622084-1-devnexen@gmail.com>
+ <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
+ <aczOCqrCx7Xd5HIF@kernel.org>
+ <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
+ <ac04ZeFdz7yvByRp@x1.local>
+ <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
+ <ac1wW6LHzzkXBeSl@x1.local>
+ <ac3qYA40OW29ibbq@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <ac3qYA40OW29ibbq@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QKxbbvmGHtTCP9_Wla4MDPvL5TLlN4x1EAGx-JynsXY_1775136600
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ac5l3myFf_dxtRji@casper.infradead.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: D69B780014
-X-Stat-Signature: t7w3c17agspiu7tw5k8gm1767yn9cmp3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775136437-589594
-X-HE-Meta: U2FsdGVkX1+WDMmkJVV0eJKpYcuEAsdkzqtq+H+egfn2xW2QqImLR3Mk32mu9KAjcvRcgjjxMkgJ8/OJqh9E5Qjo9nw8UNUoY7hxori81iqeTKdWciwoe52qPlFA9mpNajhRtNpzgXAheSbqD6E4zlNMDBhF6tquIC1qW9pCfAUZ0HW01BAW9yRx9IvPCiQG8akS1gUeCzwh67x9sXOFahe+w2QbVhg/EjwdFrmuotoB2ejt+15ZCvbZKyi0tGAckax0JJy3tD+HOn9wEdm5oeA2mDBhP3nHzKHorN4BxmmHM7E5ZTfg0uCc8ln42ujv4FtKPlJwAxEjelsm9sZmAFvHNteS3L33imVSfEJRw7vGpawk0TQD3Gsen/9D/kVizBqvTcdxsWbvlSpmnOaXXbBu1CoONdTMGhdYvBqa+RDohjZyWC+nPIyvP5Cw9bTCvFiy2EkT8OpdDrKwbrpVLQGM3qTO4bwwjEtR/6SJv1uvsQD/NnsCwrA+hNRTmpTd7xROvi9YIeOse/WH4wP1WECssGUShimXZn3h9+DnoCgWCrpAdhEJf2XpFKSUde3lVK7jqAX8B+IeWhUZmTjFbGj9Q26VVU3CBcKye0X0wqSMVhFztvf16hG+Z4MYG4QUPXF66VaBvH9KGYiTz0oTwgHccibcjSnbnHb4wUBgJJSCnx5nSJXYSRj8fcXQ/Hdq+NcXq1d6tHdIJCuONo3IQT5ep0UZdXlymr1hYSBmi5flMtjo4vU4b/0d9FAZKQ8XwwMto34ZWvAJRkwBy3LBkQ5m3ZdgPdjIuoOB9U2zb0NahGzXCYNoJKbWM4ZRd3h9Pv/YpDsQqCOwTm8hJV5xUZgW4Ohv9gH/QtD9zK1aWCB6JQshRP6D5FpeThOCle+nEmn+u0k9Pzxqa5EbvzoRSfVmE0Z22OP/lucpwVaTZ6jLkOJzTKpzIZGINa4BeTtdBr78y48vgC1xhhh4YOz
- hPAkrnJD
- kk8i9fhQ9XKVtJ5r2k01o3ZSFB/4Y2BwFZ8GPo0ZnUD6YhLNUmkPqfENNx/41m5Y4zUg6XLx5vA4rbQW/i0FZmU/cRLw0vFwaWLDfnkBQM+VAQ2C0xyZLdFgQPulskyJ3SohAR9sxSAOopVSLRXP2mlajXAHE8VMsGq2fiEGKufEGTyWqQcFhzCXCDw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B43BBA001B
+X-Stat-Signature: zkyqfxz9rjjrzg534gnpyakny4bw8urj
+X-HE-Tag: 1775136602-221760
+X-HE-Meta: U2FsdGVkX18hiG7shnh1rWOMR834+LkkRMNGs/SObCyNzX0dkRJQn/v3R+4/A7RzodpMaUY/sztlMd+5AtJEXVKbJh/1UuW0dKdiCeRRVKm/XgzKJ5dflv7OZVaPz/R+PM6x02OT90ewTyWBUG64844pTxhPLJgG7aqGCqFnimnXH52/4scYfg4Vh78bkZ4D9JmlaWlGUJFtmx3In30+qADtg+WHUm8ZUuk4y01WtF6yACldSEqQy0bXOwZ+VRziLndK3y8fvr4IAqtqg4V/cJ8HUkPNWy8oLFAmSGD9gYhfyF7udGMztlvhinH4DiRIBfQY659SO6zYBB+Mi6zkzbTbsqLH9HU+JIWRULu+z6CZHvcn/PjgIr6X65D49vyDppRPsRtqqLBSgHjmrIDalRViLLG/aL9W/EWJxxgiDFtsqo8gVZw4/o0nUhjgJwh9OpZvyp15ee9NaNMUO2A/y32hQiVSslvZdRgpgutBofxZioKCnxB4Z39Kbn3MfmuesbXHduJB88yxGocNuDEmQw6TMZopsxqFOpPURA2UqA+o7bRs+Uboi4eeLHcmXWxTMX4s1nw41UYNDCGcmBfaF06+QRtG7ut5ZxdNnOVw1qx6OxBhH7JsHfQ/bMROYfSgek4F2c5J1tctwgyrwgPrK4PtBHWV2XLMqzsbJ14pBguGfyfBGcJHapQ1Lxj62hpfH4HqXWq4wy0CAQK3nZCG9ADre31mfBUnSERSgNvd2HAQWYV6mo5UlTMmPnyKVsycf2W3IpmyAGbgplR22XO4+QJA6hUuADEP8i8SHCTPKc9zPqxz8ugvSAHBTuD2iH9cuSQMfH/gse8wcluOudiGXmZusVu+iGDstIbXm98Opt+2kTMzZ80Kxk9gaYSOfUTfVnZDpkHNVhYmupznA0eOXqIt2pdWD9y2TKiUoP08OF6wrtTN2LxgktGhVBm+hR1qnHoPT0uHtILcDHE2ydv
+ uXW6HgQl
+ 2HtA6zDHD6XRJeUxqxypby5/VunXYLEuwObK/Fx5ZOg2QQJWd7yYagCBDP6Z1GBYVT4TNiOFwW+tk40Plt0gIqSiMegHjtETQDHrXbHqdx2/N1JQ55xS7KdJlXvRzi6etDWPcQ5mcYtXQ0BI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +136,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Matthew,
+Hi, Mike,
 
-On Thu, Apr 02, 2026 at 01:49:34PM +0100, Matthew Wilcox wrote:
-> On Wed, Apr 01, 2026 at 06:57:50AM -0700, Breno Leitao wrote:
-> > vmstat_update uses round_jiffies_relative() when re-queuing itself,
-> > which aligns all CPUs' timers to the same second boundary.  When many
-> > CPUs have pending PCP pages to drain, they all call decay_pcp_high() ->
-> > free_pcppages_bulk() simultaneously, serializing on zone->lock and
-> > hitting contention.
-> > 
-> > Introduce vmstat_spread_delay() which distributes each CPU's
-> > vmstat_update evenly across the stat interval instead of aligning them.
+On Thu, Apr 02, 2026 at 07:02:40AM +0300, Mike Rapoport wrote:
+> On Wed, Apr 01, 2026 at 03:22:03PM -0400, Peter Xu wrote:
+> >
+> > The other thing is I just noticed the err code was changed to -EINVAL for
+> > snapshot changed cases, sorry I didn't follow previously as closely on the
+> > discussion.  I think it should be -EAGAIN.  It's because the userapp can't
+> > resolve -EINVAL failures and app will crash.  In a VMA change use case, we
+> > should return -EAGAIN to imply the app to retry, rather than crashing.
 > 
-> But, uh, round_jiffies_relative() is _supposed_ to do that!  Look at
-> both the documentation and implementation.  Why isn't it working?
+> No. The return value should express that the VMA is invalid. -EINVAL could
+> work, but looking now at the manual -ENOENT would be even better:
+> 
+>        ENOENT (since Linux 4.11)
+>               The faulting process has changed its virtual memory layout
+>               simultaneously with an outstanding UFFDIO_COPY operation.
 
-The documentation is a bit trick on me,  sorry. This is what I read:
+The VMA changed, but it doesn't mean the UFFDIO_COPY becomes illegal, am I
+right?
 
-  "By rounding these timers to whole seconds, all such timers will fire
-   at the same time, rather than at various times spread out. The goal
-   of this is to have the CPU wake up less, which saves power."
+For example, I wonder if it's possible someone runs soft-dirty concurrently
+with userfaultfd, we shouldn't fail the userapp if there's a concurrent
+thread collecting dirty information, which IIUC can cause VMA flag changes,
+and should be benign, and I think there can be other things causing the
+interruption too.
 
-This is the full documentation:
+-EAGAIN essentially requested the user to retry.  If the VMA is not legal
+to be operated anymore, it will fail later.  However we should allow legal
+users to pass.
 
-/**
- * round_jiffies_relative - function to round jiffies to a full second
- * @j: the time in (relative) jiffies that should be rounded
- *
- * round_jiffies_relative() rounds a time delta  in the future (in jiffies)
- * up or down to (approximately) full seconds. This is useful for timers
- * for which the exact time they fire does not matter too much, as long as
- * they fire approximately every X seconds.
- *
- * By rounding these timers to whole seconds, all such timers will fire
- * at the same time, rather than at various times spread out. The goal
- * of this is to have the CPU wake up less, which saves power.
- *
- * The return value is the rounded version of the @j parameter.
- */
-unsigned long round_jiffies_relative(unsigned long j)
-{
-        return __round_jiffies_relative(j, raw_smp_processor_id());
-}
-EXPORT_SYMBOL_GPL(round_jiffies_relative);
+Thanks,
+
+-- 
+Peter Xu
+
 
