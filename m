@@ -4,86 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E89111227A
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E0FFF4936
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09DD16B0088; Wed,  1 Apr 2026 23:37:03 -0400 (EDT)
+	id 9F6F76B0088; Wed,  1 Apr 2026 23:44:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04E896B0089; Wed,  1 Apr 2026 23:37:03 -0400 (EDT)
+	id 9A85C6B0089; Wed,  1 Apr 2026 23:44:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE416B008C; Wed,  1 Apr 2026 23:37:02 -0400 (EDT)
+	id 8BDEA6B008A; Wed,  1 Apr 2026 23:44:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6C26B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:37:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8850F8B653
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:37:02 +0000 (UTC)
-X-FDA: 84612204684.02.85DC64A
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9F10E1C000A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:37:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Rdrc7/V3";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 75EA46B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:44:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BD9B588B3
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:44:24 +0000 (UTC)
+X-FDA: 84612223248.01.4BA07D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 54A99100009
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:44:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yM2SJakF;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775101021;
+	s=arc-20220608; t=1775101462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZXLx++acdRu8DhYwcXdDHVnQSYFW5gNE6CjD6mZNEg=;
-	b=tMkxls+cnvOMPM9tckRQUSio9RnV8fhife91yYBUt+8qv8oRkVdub4A4GL9nrFFKONIZHs
-	I5InWXrIgs4oGPb1hAU7skcP0XET5rGZja3MisfKyPmUTjSPTKYOrGTNeCl4HLBxWPWqBw
-	AlSPYU8G0upOGo9ETweSsxpUWPjYr8c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775101021; a=rsa-sha256;
+	bh=uSlOUi5I27vy2NB31VsjxrLbzp7TT1QoiSy97jKvhDY=;
+	b=js0TehijByVeUdg75nXA9WblOHuR/RDFr5gtoKpSKCLVogKRion1NK3wh58Xr83nfjiVqZ
+	PH4sK5VxhKFsOiaY5vcparFSMo4+ATnD2QcXF2HwetjQzlFytRxWfxZxe8jvz9lrjVjh3j
+	tepRgkVS/iKaU7f3WsDS8RnC+dtWuI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775101462; a=rsa-sha256;
 	cv=none;
-	b=Eo+x56TcRPfObIqDK52M08mpgy+344ts8l9AnWsIMhAd97YAhD1BKgfDgrGEr/bHMbYeFM
-	WJ4f+SyvkilNjmyjXnRIiKTOjVw1Gn5QMCFU53QeM39a0lCUgUZ2sIkI6cM07O/e/xwuXJ
-	dyu7wXplRgZ45zWl52Cbn5QkHEL7CiQ=
+	b=iLKemA5YRKKcF25lqHEM0TyIIbpdYWsnU3owDXpsan14jyCtyuzrTTrTyeRo/Wqb7aaApr
+	WiRa1n8bO8oYOFkAuBhFrNX5meAmlcQgDA2fF+VOPcFBQIrV6S16PCmU0McLqkT+slOwaW
+	zlRctlEy4QgPK8Fd+HGAPHo6+kBVZK4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Rdrc7/V3";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <fde3e132-0d4c-4f07-8668-09811574adf6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775101018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mZXLx++acdRu8DhYwcXdDHVnQSYFW5gNE6CjD6mZNEg=;
-	b=Rdrc7/V3J+g4G1hURcA5Rg95YbY0ikwaqnfhQNX2QctZiT0N3cDnkq7PpgSO/xGMDkSRJG
-	fSe9cqix0AR8oioa4p3gXDf0KAwzNszKbwrAROrWDhgUYUEkqHckloPm/shNd8O5dLreu/
-	dCFlB494z+E61qRfin3ezUdlWcp8kVU=
-Date: Thu, 2 Apr 2026 11:36:50 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCHv3] mm: remove '!root_reclaim' checking in
- should_abort_scan()
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- "T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>,
- steve.kang@unisoc.com
-References: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yM2SJakF;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F3F4417E0;
+	Thu,  2 Apr 2026 03:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4809C19423;
+	Thu,  2 Apr 2026 03:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775101461;
+	bh=utH2DEUZc14sIH1OkP4isvD4gLN0I0jn3rJSKnIZ6X4=;
+	h=Date:From:To:Subject:In-Reply-To:References:From;
+	b=yM2SJakFdW1YNAdT3Rnday936jebe94aPki1dRwx+af/C1Ma/8+0woyCSIc+zufFV
+	 lrMNiwUmBX3W3T4DPTOBWv5sMTkfog1wYa0aO9UIsnCKCjEvWFZktGeIJKOzjjGFJu
+	 Q0CJj2gI0vIcCbWy7SOuu0cVyJPZaSLBfyQ+YobY=
+Date: Wed, 1 Apr 2026 20:44:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Pedro Falcato
+ <pfalcato@suse.de>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo
+ Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
+ <jannh@google.com>, Dev Jain <dev.jain@arm.com>, Luke Yang
+ <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/mprotect: special-case small folios when
+ applying write permissions
+Message-Id: <20260401204420.9e7342b7054a5809b8bdfa40@linux-foundation.org>
+In-Reply-To: <20260401170931.9e455bbf679792b039d9770a@linux-foundation.org>
+References: <20260324154342.156640-1-pfalcato@suse.de>
+	<20260324154342.156640-3-pfalcato@suse.de>
+	<fbabc728-a87b-48e2-87dc-68ac21eb02d4@kernel.org>
+	<dccxy3i3kaprljloxbyo2u346bu6xwev42cpvt5lfbbli2hbap@6n2rd5mftffh>
+	<a7a903bf-10c2-4d2c-872d-9b31fefb5d1f@kernel.org>
+	<20260401170931.9e455bbf679792b039d9770a@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9F10E1C000A
-X-Stat-Signature: e8zebsg6iuecjii3r7qfbuqhcq4fch6h
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xyw4484xuqrfjew8fkzp8nwyg441buuz
+X-Rspamd-Queue-Id: 54A99100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775101020-841761
-X-HE-Meta: U2FsdGVkX18XQQ7IQ7bIc0tHA9hJnUnP7MSLUov7M6/qDHQQUs6pjIB6aiperiDjm1+xgwFe0rd07whkapgzN6YCWP8HRPKxN5AlRPWTfCpgDpKad7x3GSRFs/g0fAX/6Db6Q+Y9I3U/7hlCzdfxp1fGmw7tj+bAGgtDsAzprAfW/UaoczdqIdfnaZXH/lb96LVM7ok39y+89ITLXrQHhC20kgbx/0bqSWKj9urv5ATN7Ve5CsyalJuxQGYWYFa1yqPMANB14HWJOBD7vC6j9MEg94RLMGM3UZoEvt2ZUF8oLVvwTMQJqIYm8G6eY4Ly2QrmbmtifKFXFQXljapQM57dDLuRyjp0eqXXQ8sGYaxK78CgOLAM9fznBw7V5kPjWQ8+wZlBItWIb1i13un47fs/C5D1eoR85f3oLybPG7gRXHXH2kpL4JnCUBFs4vRbGOWfCWlVGkbrtl9+v27Ym0wNufrX9Vl3yyWetConJIHJFkpgkF9JLJPphCq0jTvKTYLrcbesVgxTyxclyUQvCIntVYPhpqLQrY7CaW8+P1mtRUDs5JzMwmb7V6VROc7f+FTu9dFI5gHTJaZ3n8YAMAE/JJZ32Scp+brS59/4K+HHx91NG43XT9ZWSYgVZXZ9oaHCF4AoZ1jBd83qu23iIru3nI4WBkOXR52xyVGjB7ix18Bmmj1BT/qohCw69wezBI8gfqJsSuDcGWktCpbQwsvFddkIzCcW66L+CYTJEGAJfkOrZ1na+0M72m7LE5IsiZdcTtGJcTMkXohnCWLjbZVUCD5nwu06TntD3j6rQDAZ8IP1SZa0WYcKr4U9w+gGgxRMJj2+b9P4TVT9UUUWvqJ3J2sb1CZ9tDtAayJQtE9c0YEJ8vopJ0xDWlSZB51wb/Kjd0rGc1v7BBS6F2mgnCwCbmNsnUsclQqxvlGhkOdss/cRIbSfhFW85Y7SQAnv0QviODa0L56WfYsweqC
- irBSkSRa
- YBG1bVkoJ1fssiFM/cmUZzRmDIVdfC/6KgKtkZX0rTWAFq3DpKwhAvkd+ohZ0oXEHjPwfZ8S59fke47JCq+G0C11sOlIlcPfnpW96fISml4b3GzvoUXoXGN1XoAQNgEUaCkOHO+bzrlD0qqdX/KQ+p3oqBke0O2Y7fVFVWqr4VMyi1I9/nnkl0Pfn9PBv631Ho0TMzD91M0YHiOS64y2Fr+g6T5J77V+WvHtprT2cXwJOpt4Cb55YnGy+wxmRb0m1pu+DMckfq2pr3ewF6kw+dGGrhNnu+A/yyKr+3WEwZCSbaNTdDUyaz5p6EwfIx2+cTVpIodujeCZLCwGgBOhMm9z1aOG7dlB/SENzRtLYzYskb1UKzNntFqMCn7NInuSd39WO
+X-HE-Tag: 1775101462-329578
+X-HE-Meta: U2FsdGVkX18jbBBViTJmjJWXNrbeNBSa5GUGV4U/FJVQgWoG3QPfWcfxjMb1SRA9aW7duJ+eScrvieS2vav6zjkkFtBoIpzyUAISttkYLyKG8wqGh2R67XhlL/kfIR5TJv11axXyeq1P6CrYnolEdqLYdhxnDtnaruyF3ehgEQZj6PtTFaUySbI1A0XyH4w+zFqmfXUDQQKV6r3D8Lm4AkvxnZzf5oeB14vHpv7CqCGP4gUXM3fZieKY4JNUFpb1ioCogCaZQrXAhP0IsmRYa+TgUgo8l82xzasoGj0QXuFtqkP3XxeV5bEM4VQB7uyM2czGtLEb79vCfJ/P4keCRZpGI6hvgAVlgiYx1wFzALF8XeDKt9jNaHZIF8aK8Q5r4qot+p179Zme/f57ucrk9BI+D/jNr/+LXLkFmOW6A2c89D5cLv0tXPYreYJjlzZgK+861p/QbtOyYa0OI7v6HF3PhlbaTtFDQeq8KSJhnDqo21rxeYUKp/GzCzYGwuvJgHSukeMZYbKdDWJxb8qaqK/TRrKHGKuj3DpW72Iqi2JnrjhpcdzAkGa7c6QLsprRUfOxAIkdP6BfiiWicGzvh0Omb8v7vPMu8GvAssgM+8c5eav5CwJhvYJkfuQCr1adnK4vjtSPKj5kXywruop5mRhTgfzD6ERRXmgSADw3WXU+ZIJHcINO8waOgA1vjsvcTCLLfN4L1qTYlKSidZmjgGpRR+kTW8kdwUFLHRlVOdL3aJUrRx6ZKXHDaek57wH1uH6+g6kgy3UGTrES/yDW+rpbXF6meL+bEIAHNwn/AMfaw9MzOftGUmoYAu0Lms6gf8itAf4H3/g2NOwRHmsp79zjamUKQPXKqZdICQ0z8BRmE73/risAP2A87ARZtv97+HAnP6DqG4VY8ny52d5i9FUASszCAusZosjHY/AiQy3SpbCFGZkbZNzuQOmevbYPjknXdeXzgKcpD15Okcw
+ P/spJIUb
+ 1oE1tXNCV3vt7oCKnoPKhr3zuMWmUINvSPa1hSSDlIdw4aRp55CREX1INg4SV9AZnJppYkHw8qVz1b6g0CBUtDexhF255terUVLWRzSibfGRUA+g2Xcrg3+Mi1/Apuns0+W9uMLXFPS2oYqCLIfoDKNmf2hb6YlDliaOttoJsy/NcydWxf4Bz0NSRU9i9yuwgiwwpmCb3qyuCk8JvhBhKV0MD7KKZYhOq7qWcSv3k7pUWkMzWqBlMr0Qp9XAQR9KwjnZ9mZPooDJQqfCZ2xkJ6n6wHK7o2tr7JMfX+/37ZJOX8giisMMcOM02nhegUA4Rhl7+k9Lm3vM4I58=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,62 +98,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 1 Apr 2026 17:09:31 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-
-On 3/18/26 9:15 AM, zhaoyang.huang wrote:
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> > I can easily extending
+> > 
+> > 	https://gitlab.com/davidhildenbrand/scratchspace/-/blob/main/pte-mapped-folio-benchmarks.c
+> > 
+> > to have an "mprotect" mode. I had that in the past bit discarded it.
+> > 
+> > Then, we can easily measure the effect on various folio sizes when
+> > mprotect'ing a larger memory area.
+> > 
+> > With order-0 we can then benchmark small folios exclusively.
 > 
-> Android systems usually use memory.reclaim interface to implement user
-> space memory management which expects that the requested reclaim target
-> and actually reclaimed amount memory are not diverging by too much. With
-> the current MGRLU implementation there is, however, no bail out when the
-> reclaim target is reached and this could lead to an excessive reclaim
-> that scales with the reclaim hierarchy size.For example, we can get a
-> nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
-> cgroup hierarchy.
-> This defect arised from the goal of keeping fairness among memcgs that
-> is, for try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
-> shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
-> !root_reclaim(sc) check was there for reclaim fairness, which was
-> necessary before commit 'b82b530740b9' ("mm: vmscan: restore
-> incremental cgroup iteration") because the fairness depended on
-> attempted proportional reclaim from every memcg under the target
-> memcg. However after commit 'b82b530740b9' there is no longer a need
-> to visit every memcg to ensure fairness. Let's have try_to_shrink_lruvec
-> bail out when the nr_reclaimed achieved.
+> It sounds like this is all possible future work?
 > 
-> Suggested-by: T.J.Mercier <tjmercier@google.com>
-> Reviewed-by: T.J.Mercier <tjmercier@google.com>
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
-> Patchv2,v3: update commit message
-> ---
-> ---
->   mm/vmscan.c | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 0fc9373e8251..10f1e7d716ca 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4839,10 +4839,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
->   	int i;
->   	enum zone_watermarks mark;
->   
-> -	/* don't abort memcg reclaim to ensure fairness */
-> -	if (!root_reclaim(sc))
-> -		return false;
-> -
->   	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
->   		return true;
->   
+> We have Lorenzo's R-b on this [2/2].  I'm reading this discussion as
+> "upstream both"?
 
-Make sense.
-
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-
-Thanks!
-
-
+Sorry, please ignore.  Reading skills.
 
 
