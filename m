@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D844CC6B03
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D47F0CC6B00
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 06:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 532F96B0088; Thu,  2 Apr 2026 02:14:16 -0400 (EDT)
+	id 0C73A6B0089; Thu,  2 Apr 2026 02:14:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50AAB6B0089; Thu,  2 Apr 2026 02:14:16 -0400 (EDT)
+	id 09DB56B008A; Thu,  2 Apr 2026 02:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447F86B008A; Thu,  2 Apr 2026 02:14:16 -0400 (EDT)
+	id EA75F6B008C; Thu,  2 Apr 2026 02:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 364C86B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:14:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 702EA1404B6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DB1326B0089
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:14:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A25159019
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:14:17 +0000 (UTC)
+X-FDA: 84612600954.10.F48464C
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9259580004
 	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:14:15 +0000 (UTC)
-X-FDA: 84612600870.02.66CA0B3
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 99F2AC0002
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 06:14:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DAJYgNsj;
-	spf=pass (imf22.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="N6/Gg5tu";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775110453;
+	s=arc-20220608; t=1775110455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-	b=sntBdPSSEi1p9OcsGPcO5d/kbOs8AJ+1BXl4dGfcEPWkJPf5uhYCaE29p1QYxtyK2aD0Ei
-	vyeQZ9R736JBBQncReM2QIgHAA16B9ytk2+2rtKIwBJI6z79NVNqx8PLaJSOBQmNTs5IDS
-	gpDHKL3haxWa6OUOCQ0KfVwsxi61m1I=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DAJYgNsj;
-	spf=pass (imf22.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775110453; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GVqIzm8m//ymXBpB0pyluskL8sS6UcY+x4y2VchiXAs=;
+	b=eKsSpXmBbt+cFE1Z2cMkf5EfULPhsLJ40ahzHCDw0eCLaTQ6lfqk3pXA2WrXkEs3cJpy6Z
+	A4tPP/7aPFdOhXIPi/er9D+E2YA8qrWSei+vuZ5ojdYN9PoWk7cVyqa2F9D6+nm7uWzu+8
+	7l526Ieoi+vXsiVrQ7Edj7OK8E+diS4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775110455; a=rsa-sha256;
 	cv=none;
-	b=X9XQfjsMSHvOR8rI0ol4CGMRDygj0nAZ6aHypP7y2IBRVSLKC2Z71mdAzr4bAwhCHJjfd6
-	Zoo0wD56Gn1/rlOaHAY2nPedR8Bu8QyBFjLLrF2gBHZmAiIpqLcs4IZh/J80qZGpljhlVy
-	NECkLvRy8nvQEjO43Kj1b67H/4tMOt4=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-486b96760easo5020045e9.2
-        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 23:14:13 -0700 (PDT)
+	b=5IxKNN+UV9wX4Kfrd1Zmrl6/hn6S82VuZ3RHmHT/pGwk7d3fS1UWHJPyuobuBTddLY2CBw
+	c0K+PwuSLv/WyN40YHlVMYj4HozzpAcNUhAGg7zAXELsdRELNJ6e6PFhDEZOAAIGYZvo5S
+	cf+kixNJFAocQvXwoRTYoH3ikRDxP1M=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="N6/Gg5tu";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486fd3a577eso3795585e9.1
+        for <linux-mm@kvack.org>; Wed, 01 Apr 2026 23:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775110452; x=1775715252; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-        b=DAJYgNsjs7aio7g+au1xx0OFhSRp1fqh/sndVht2wa8YuCKz6l173V9AsfqxQZQfIK
-         LhL92RUWbCu6SSqS6hyNp1TQ5k0hRuDMqFPL0B/RCUpQ3orkToBlB3gpeEXJPpmYm03h
-         hxtHH53d+LthRRF5QY89MSRBIaTKzCuY9dEQBh8qBeHqRIPF4XeQpa6Bh1MJHNRWzNqS
-         VUUQhgFFqwP5Q7yn8siNIRsrt3+cIWlS0YrsQIzQBuKvAbrFiNjCLHRkw3u/ibKXSqEg
-         hqUatuMGXMqUnk73ABqkRwzSneCsTLywzXWNyzmJFyiJcb8sJvkaVbbFpckADQPJDDXY
-         r+KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775110452; x=1775715252;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775110454; x=1775715254; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7XA9auQdQyCrvAgPefJTXScmZp4GU2aYW4S5DL3KDZo=;
-        b=mqn2Lwrc39z1Av637hzwzv1fH2t4Mncmyz30QdNHrf9h+rWPOsdZ3ySas2L6cZcKP/
-         PSyt1RfMupxnoo105ZQrDM23q5ij//BUENYCRc1mGDCbimqvEYkwX6dKHBG2GBHH3LGt
-         ZJN8Wpp0H37BSVTNOxsahDaND3kHJo1cEWo4QvMvuhmCkYwokQr4umWPx1rAoDrD2pwk
-         zLV9xPxkzu0rY4sDkS2VUOLpSn57UoF1svNgqjtGPYSw77nrxX9uL9ZicSEQEulFSnzq
-         Wyu8dPXlpTznBFPrwP2eh2ZHc6RlqTouP3Iuu3O10A54Jvjn0okTlZpWcjcHXcxiP/eU
-         e9VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCR4JDK381JzLJzVyd+ORfR0cpIhECTdTIvUZtplMJ2Kv9cS46YySEgxsx1wYqDs9Kny0P9LiBzQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy/vaLx+KdbYHQBz0vEWJtIJkoa7VAAhEpx5pjjgl0QrV2n+zcc
-	A8w4ub4GDRRuNFKfAv8oEzzWOUlhGuHVvnuZce6D1B2UapUtfb/nSsNT
-X-Gm-Gg: ATEYQzzFb4iop426hnD4IkOJGkbKotfxcmlt5XkOTvEHz9hdg/QCGGyRynOQLK97kXp
-	mV4gMdf/lTQgzVNB9fzi5ILcIlaFr5kDs6uD0Iz1mTi3q+ioCKUxn3K2m5xEMP/nZdmohVumEHb
-	cB40Y+Jhq3DvZfR+akoLn/8ntrgkgoptUfwHddQilknQigmH1CxVwe0MpnQcv3Lx73XpC2jWm7t
-	ihpr43HL8UQk5S69Xf6uC1FH6s3iQW1O3idC+MnkM5/Qc6Xmyfvz9TITCmDA3i2BGnIbyVjUsSp
-	1e9dBtaMEeDPCsw5ewKy3yDZaJYEIxDQ2vX7me52qoMhd89clUd8fbdrx/ebJNKQKoArbKc7beM
-	ruYsfZYjJvR2R2JRRCGCV/bMUJZnRXMhHpjRQLIHRrxK7YdPCHUyfnmqKBQ5SmugiG3W8aq9Lk4
-	mDxGEymQWS7nyAaE0cEcfQ7gZqyApf7l9tTf54w76V5NekFh73ZL9/WjSoIyyb8iiuYkVHzg/wH
-	CMMd2DwhQuG
-X-Received: by 2002:a05:600c:8903:b0:485:4533:9c47 with SMTP id 5b1f17b1804b1-48883595155mr80505475e9.22.1775110451858;
-        Wed, 01 Apr 2026 23:14:11 -0700 (PDT)
+        bh=GVqIzm8m//ymXBpB0pyluskL8sS6UcY+x4y2VchiXAs=;
+        b=N6/Gg5tuInXtlhm91ROnKyjM1o86/f2e2T2qpv4TAbXa6sYK4nSOuZDAcPwHV2yaC2
+         eePpkMRX2Mp7vFjFew2FJigHKRHcYUNHkJbSmZ/2tZIrZdMpFvW3NhezNPeIT//pSJZO
+         9PdRY4iVvZ8K14i8mdw8uhZhnkZDNF5qEUGXGoWdOXw9nMhMl2CSZsuwAMWQnCnX0qPt
+         K4Tkw/prh4RoWUfUO5UhWQnkT7KPmxMInkfBtkNaK4ZhhGl82Lu02/NVExV5uwB2+3SU
+         6rnj5mGdBZMk5I+4h0MPToFfDFk/+vSHcivPlnriPg+luOFKB1QfLy5y/6JnR+J0/CBg
+         klhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775110454; x=1775715254;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GVqIzm8m//ymXBpB0pyluskL8sS6UcY+x4y2VchiXAs=;
+        b=XiKao6g4ctez/wSkaqYcDKp5VMktltB+RpDcwdER/iiToWYBspBhVTGaCsUmcDM9xO
+         HfskQryPjK0f1ZrXDUZfnJS3OTgyiEoGkMD9bNEb3QeOECybk6BLORRncFM2YbSx434a
+         YTYbAFCaS4lNzYAVT1K3UFUUYXjwKj8KYT+CCVoMz+2zS9xv34kB5L2Rli+H0qEMzjna
+         83yLbnoN3f4GGNeinzTKWNveGG0Qm6Xy1gqAXWmxTRvahcT7JbUDTFBxXbuhRuQRyNkM
+         SYTWA9OmSkXtLl1cZfBmT49TGtMCH2qXm1EUBV6M6TrJYfA7TbNQjXzcGGfUGpyHzCov
+         MrYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbrTFDLrjFVSbAaOvTCJPAePLg92+LakRSmI91xMbogMartcY4rwePnbg6Z8q2895ZSe3+20cMKw==@kvack.org
+X-Gm-Message-State: AOJu0YxzRBAi3hwmNjfryM27H9q79LoxvHgWDLeAbQXVie2e5dsCbsM7
+	jWD3T+efji7P89yO+gdhMEx9/XU5a/U5pL/APdCXTYtiOBdKkuNHldyf
+X-Gm-Gg: ATEYQzy21g5pY5P54t+Yao9x2MwYojC3KBqrtaFckzFyO6P18XuGNQ5U1A2mUVKZvNG
+	mqSDrWHcf7fyz1P5ha56fNouHLI0xEdgy3QuXmYFGGBgix3QQ4Ql/w+uFL+VrxppzzSUiOPau0m
+	N9mEo/ulyLDyjAv1pOyRq71YXnkEHvlnpvwIgOJ0hX5RY40PaUikaoWAUSRdExFvoMPZKxNINtq
+	jnLM5d5Bq8NXHfiQLlBdtDzC+jjVHtPbDHmj5IlXATTV5iaI+5MoaGLi6tr2XuoSPofFa+b6Bh7
+	Wd2lN9BkZooooVo/QvZoRszoElHWBRuh3gXusmuz93P/+CKJJtXofBIKv2Wim19zIWYiuoVEr+A
+	Y9NtqfT4kBf/J3CicjsfztXJTayyPP2CDkNZyv2slbfxc67GArrJzc2kLYJBuRPrtu6Flr3r0Xa
+	CNfpr7s0V+2JOyno2zURqRWgRSz/J0SNpz/BSaL40wcAN452zN2lY6StYfmZ8r0J5iGnYF02b9Q
+	0mlMta7naui
+X-Received: by 2002:a05:600c:1f11:b0:485:39d1:b4dd with SMTP id 5b1f17b1804b1-48883575eb7mr100478095e9.10.1775110453857;
+        Wed, 01 Apr 2026 23:14:13 -0700 (PDT)
 Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8ee2d3sm61916095e9.32.2026.04.01.23.14.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4887c8ee2d3sm61916095e9.32.2026.04.01.23.14.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 23:14:11 -0700 (PDT)
+        Wed, 01 Apr 2026 23:14:13 -0700 (PDT)
 From: David Carlier <devnexen@gmail.com>
 To: David Hildenbrand <david@kernel.org>,
 	Kairui Song <kasong@tencent.com>,
@@ -102,21 +103,24 @@ To: David Hildenbrand <david@kernel.org>,
 	NeilBrown <neil@brown.name>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v4 1/2] mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
-Date: Thu,  2 Apr 2026 07:14:07 +0100
-Message-ID: <20260402061408.36119-1-devnexen@gmail.com>
+	David Carlier <devnexen@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: [PATCH v4 2/2] mm/page_io: rename swap_iocb->pages to swap_iocb->bvecs
+Date: Thu,  2 Apr 2026 07:14:08 +0100
+Message-ID: <20260402061408.36119-2-devnexen@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260402061408.36119-1-devnexen@gmail.com>
+References: <20260402061408.36119-1-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 99F2AC0002
-X-Stat-Signature: z4tqfrx1xjrdkzkgxs15e9zh4ntppi6z
+X-Rspamd-Queue-Id: 9259580004
+X-Stat-Signature: isoobs1fzcyk8941w6h6jtainyyeqisb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775110453-483918
-X-HE-Meta: U2FsdGVkX1/A4iKTOpu1dwaEukUE+ruLzvaBpDbbaquYRpSV16Y+u4MfVsZzFshsORwv8PvAI+NAjqiN7g4b36Beip9TgAj0pLNT+fwj0SNtibSoAEQ/Th7pHkR43HTImOy+3e6Isx+wIflLXg0PSVsNMwGUFhJ8Wfn+wOGJE28UEQsBtAnn/mUtZgE2z3vjH/6XQ9P8bMlWOjb3tJeFBmgXbdQrSSCpfGEcs3uT4sw8Uqf3m9NlJWsxohw+BDCbxK1fvM4NOw3ee3iKXNEzTtPs+rXlQbpsMWSvzICQfF74f2968rAS0jwrDpyY0Rm8rkT1gZtC/Rw+P8DlOen6BIeignVS3BU6W4qXbriBEipIa4HIgZuJkIz8SYQisfDb2j0B5K3trPRPxSaAw8G46u6lon40CC+8q/qnTGqWWjn+dxCQixwPYQEq4HzyJvwfWxkZuTDtgRCgWsw802zK5BUMtGuwK/vT8iNNtd3MEEHVzJgnq0csyvxV+IVe8DRS7Xs0JuG6lHQkzqPHIF6VQzMHNpbBvyu0VrJqcoJAZfBcpEpku5sXmwNhiLcZqgElPiDCJZRquySvO4+EOqbL1faKcFH0EgBdRKUHHiyRasMh2UII3sykY4cXVAtgNfcbRDyavALPOuSgNBhD5Nv7I4xkEKEwKJR/kE+ENgt19uaH4ylki0gCsMwb0ESvlEGkVqVCmnhBsP30+Ef62TZGmxQqhqUBWSnZr/VPvOuPGuAMOzoVtLJ5PTj4ib3bKsb7K7GlZnJVJeRRCQTt13JCWcWZnbT2FTmCfSkuNC5emwNJ6zLiJtU6PhcUi8SVlTCokJe/mL/Nd+CuJe3Rd1aT1xv+eSJrFrvs0nYQDClKjNzFZZHJ+eKLt7oCxMLVkHQruBhiN0Fbef5EBBEe94IyJyznaGvJGBoUx+P5oaDrTK4Okd7zVmqvd9BrAC5+SZh32Cvnix6Wm8OgOPlD+aA
- wMxozWD9
- XYj+Vn+RY0Pqou7KiWt/zgZipJgCHPwG1GakFjRBKHzU/MJko8ZO7vdOObb0MNWmPuzyCQVBPCOpGT4uOn0CMnIcWnQeNtdvdUvgyBrNBiMpiJ7YY3QBUVCvNk6coaHSTFRWu0q0De7VfCp+VIt+iCmK/jdx/iRWjHukVs1H3xa/osbZLw+q1SGNs0qa53Q2jBiEuSUgXth+ugqiHJI0WiY/f7RjkAODAofzBmR6WNmRnUl44G4qQ+tjV5GPRFSc3yUEl4zUCSwVmKvhGLpv2ciY4qk1Rf4lxghkBlZMqDv/4y3yrn7q4WqUGBVihhBZDkipuN5hwJqxHvb8j98VoYzxBG079XDL9v4NXincTuRmURXehrxaxFnYevpPRyf9DewG9xiheG2PNCRA09qQqZUECH51GqcSfYwONQ+pkK7vqFwKSXPhx5NsTr7mIg+HeqEVB2zJ2hSqJHjF28+D4e3lteMtzMahyQ/uQn4yRlSiaqxUInOQiz8iIpBuXzpjxR9aTAuO6Hw6gfRGRFb4z26Hjvrtffb+aeGodLvvE5C+OoSs=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775110455-904525
+X-HE-Meta: U2FsdGVkX1/fwG3lTY/SOSTJ+slv+6M2W1ihXWTYUZhzzQXbyfcU5iKrfwKGOZ0YHnY2xuGbdEqnPZ4u1KWrH7Z6bm+7TQEDWE5sdppNueICpdLWIQymmV7HLNUr8AepQ+uK7Qy69QkoFOHRlbAYuqlvZ2DQIAZbOGbNHQJHEWQqozfY1u8tSA4JEhsWVgSWG5IYhVlh6hep6mGtwgmdS6+cb+Gam4WEGcBYFICbNfp2UVnrtzGeKBTZ8Y7bGv9JUqawD7TI3wK0nHYfjY6qt5A8ZmmC7w6QTPSKq5avxtsLfPmurAu4zXXDHbikzGqjOKQQpQL4QR+AelabvX8eQIhNwXqu+QOPxBF+Xkw2hW09W0HePB4xKzbRRHzfeXNGusq5+qYqZSp5IrPB4sUsipH9XYSeE09vIeC/czjCA8X9/8uutXiZqKrK2caucLLY+1bR7vBegHIqlO0U7vn412gmek2AVjeLFREpb+UDg986FFJhr7oS4pW3v5m7B53J5S2KOfXSiuDNXgEB+f2sv2fl0boX+BOFnKgFyHCbws53Mx3cdo7iwRmIRu+UlV/TtBAQSywj87Q1d0IsRvsl8je3yUpsBBh8KgVA/oyZUOw+nSLJ1qVPe9/mMBRBT4FGDCYdO4SsRu2R6KFldps1PVNdSlnRQ62mpedl5UBkjijL9qiJGMJ+7T51RLCnkhJasZEaaJBNOtSNbhuKEBKtD3DrdKun25Kx2ce/QdTLuI/c/Bta9/POQnzmuQeda43mbDsdldhZo0gAhYy8uxC9OF8P/R3NX82ZC7tznaefW+7C9yx8q7mYSe/zdJVyUFmp/tpfR7z+LxTYlFYUBDNZoxBo9reJP96bqHlSCukeHQ5CFHb21zbTk9yeJbz/t24HL5MuKpsmRXOi7lDOxOt0unJgVnmn1Vkx6cIunVpVhIiQtrFVYprV0DpzvkdPTsGXCQOq8NDpMAkFq2zknDL
+ X+E/S/zI
+ OJyKP9dveIQhRHpG53WXfMPKbbfEUYihM/+C7PLfR2TCbYUmmDJmE87qIddBoCbPPZ3gNpvVltCBu1+YEgFazk3ohxLuS+roJURadBnerSSzhsZgzbf8fQPNBnnmIlrlmcpv7jnwwnbNsSSf8fyM95HGIkFNPtq3vWuLJiWUfZDHPuFWUvbrvF7RFe5AlZZFbCqYpBe2sSipXl8l7HjtK9BCzeSZ39fgxEQVmIFgXcmkuKiFQdCSD/cIFgQQvuKb9xFBDtRYo/7tQHuNP3XS9AuhGH++kFe4TGNvFKQ2ARRCIpZZWmgJZKUN2FVIpI7405Di/WiEcB0QWd2lBbuCaV3JRL41GW2edJb/80/N4ts0xbMNzhu43vSAbAvg2a4a2o2wf19i5yNXIpaUEkaWeL6LBMNbKJ2XUrXfj+66xLer+if8aFG5Ut0T7yK612hdDTrvyaZT8UPU3W4gKst5uISsBKz732LDf/xPGKv/WMBHQuuCJwzavnKMFvI5fyEG/7eBGN6QjVUA5nXM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,37 +128,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-but sio->pages tracks the number of bvec entries (folios), not base
-pages.
+swap_iocb->pages tracks the number of bvec entries (folios), not base
+pages. Rename it to bvecs to accurately reflect its purpose.
 
-While large folios cannot currently reach this path (SWP_FS_OPS and
-SWP_SYNCHRONOUS_IO are mutually exclusive, and mTHP swap-in allocation
-is gated on SWP_SYNCHRONOUS_IO), the accounting is semantically
-inconsistent with the per-memcg path which correctly uses
-folio_nr_pages().
-
-Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-count since sio->len is accumulated via folio_size(folio).
-
+Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- mm/page_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_io.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/mm/page_io.c b/mm/page_io.c
-index 63b262f4c5a9..1389cd57ca88 100644
+index 1389cd57ca88..e524cb821d04 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
- 			folio_mark_uptodate(folio);
- 			folio_unlock(folio);
+@@ -327,7 +327,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+ struct swap_iocb {
+ 	struct kiocb		iocb;
+ 	struct bio_vec		bvec[SWAP_CLUSTER_MAX];
+-	int			pages;
++	int			bvecs;
+ 	int			len;
+ };
+ static mempool_t *sio_pool;
+@@ -362,14 +362,14 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
+ 		 */
+ 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
+ 				   ret, swap_dev_pos(page_swap_entry(page)));
+-		for (p = 0; p < sio->pages; p++) {
++		for (p = 0; p < sio->bvecs; p++) {
+ 			page = sio->bvec[p].bv_page;
+ 			set_page_dirty(page);
+ 			ClearPageReclaim(page);
  		}
--		count_vm_events(PSWPIN, sio->pages);
-+		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
- 	} else {
- 		for (p = 0; p < sio->pages; p++) {
+ 	}
+ 
+-	for (p = 0; p < sio->pages; p++)
++	for (p = 0; p < sio->bvecs; p++)
+ 		end_page_writeback(sio->bvec[p].bv_page);
+ 
+ 	mempool_free(sio, sio_pool);
+@@ -397,13 +397,13 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+ 		init_sync_kiocb(&sio->iocb, swap_file);
+ 		sio->iocb.ki_complete = sio_write_complete;
+ 		sio->iocb.ki_pos = pos;
+-		sio->pages = 0;
++		sio->bvecs = 0;
+ 		sio->len = 0;
+ 	}
+-	bvec_set_folio(&sio->bvec[sio->pages], folio, folio_size(folio), 0);
++	bvec_set_folio(&sio->bvec[sio->bvecs], folio, folio_size(folio), 0);
+ 	sio->len += folio_size(folio);
+-	sio->pages += 1;
+-	if (sio->pages == ARRAY_SIZE(sio->bvec) || !swap_plug) {
++	sio->bvecs += 1;
++	if (sio->bvecs == ARRAY_SIZE(sio->bvec) || !swap_plug) {
+ 		swap_write_unplug(sio);
+ 		sio = NULL;
+ 	}
+@@ -477,7 +477,7 @@ void swap_write_unplug(struct swap_iocb *sio)
+ 	struct address_space *mapping = sio->iocb.ki_filp->f_mapping;
+ 	int ret;
+ 
+-	iov_iter_bvec(&from, ITER_SOURCE, sio->bvec, sio->pages, sio->len);
++	iov_iter_bvec(&from, ITER_SOURCE, sio->bvec, sio->bvecs, sio->len);
+ 	ret = mapping->a_ops->swap_rw(&sio->iocb, &from);
+ 	if (ret != -EIOCBQUEUED)
+ 		sio_write_complete(&sio->iocb, ret);
+@@ -489,7 +489,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
+ 	int p;
+ 
+ 	if (ret == sio->len) {
+-		for (p = 0; p < sio->pages; p++) {
++		for (p = 0; p < sio->bvecs; p++) {
  			struct folio *folio = page_folio(sio->bvec[p].bv_page);
+ 
+ 			count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
+@@ -499,7 +499,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
+ 		}
+ 		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
+ 	} else {
+-		for (p = 0; p < sio->pages; p++) {
++		for (p = 0; p < sio->bvecs; p++) {
+ 			struct folio *folio = page_folio(sio->bvec[p].bv_page);
+ 
+ 			folio_unlock(folio);
+@@ -559,13 +559,13 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+ 		init_sync_kiocb(&sio->iocb, sis->swap_file);
+ 		sio->iocb.ki_pos = pos;
+ 		sio->iocb.ki_complete = sio_read_complete;
+-		sio->pages = 0;
++		sio->bvecs = 0;
+ 		sio->len = 0;
+ 	}
+-	bvec_set_folio(&sio->bvec[sio->pages], folio, folio_size(folio), 0);
++	bvec_set_folio(&sio->bvec[sio->bvecs], folio, folio_size(folio), 0);
+ 	sio->len += folio_size(folio);
+-	sio->pages += 1;
+-	if (sio->pages == ARRAY_SIZE(sio->bvec) || !plug) {
++	sio->bvecs += 1;
++	if (sio->bvecs == ARRAY_SIZE(sio->bvec) || !plug) {
+ 		swap_read_unplug(sio);
+ 		sio = NULL;
+ 	}
+@@ -666,7 +666,7 @@ void __swap_read_unplug(struct swap_iocb *sio)
+ 	struct address_space *mapping = sio->iocb.ki_filp->f_mapping;
+ 	int ret;
+ 
+-	iov_iter_bvec(&from, ITER_DEST, sio->bvec, sio->pages, sio->len);
++	iov_iter_bvec(&from, ITER_DEST, sio->bvec, sio->bvecs, sio->len);
+ 	ret = mapping->a_ops->swap_rw(&sio->iocb, &from);
+ 	if (ret != -EIOCBQUEUED)
+ 		sio_read_complete(&sio->iocb, ret);
 -- 
 2.53.0
 
