@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86158CC6B01
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3BCFCC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:11:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A88446B0088; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
+	id DC9ED6B0088; Thu,  2 Apr 2026 00:11:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A39306B0089; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
+	id D7AD26B0089; Thu,  2 Apr 2026 00:11:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94EDB6B008A; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
+	id C90876B008A; Thu,  2 Apr 2026 00:11:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 811CA6B0088
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39A371A0398
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:02:49 +0000 (UTC)
-X-FDA: 84612269658.05.3A53E55
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D283E140007
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:02:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiA0a3IG;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiA0a3IG;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775102567; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB40C6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:11:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5797FC1ACB
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:11:47 +0000 (UTC)
+X-FDA: 84612292254.12.6E98BB9
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0CDAA40013
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:11:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cy90xzIh;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775103106; a=rsa-sha256;
 	cv=none;
-	b=0gW7kZNgAiKJEsWE2x26X8D8k3HAV9ryxfV/5V8XJAoHPnngyicrznltb03Y240dDhyCPX
-	NpjxngMCCUyP6GB8Glf+izxkWLXVXl6a9SJUu+ad05+VYYL/qcz2w9z5zZp/a6xAxU3K2R
-	jkb0DORlKscwnp6UICSEHJXYSGUv7sk=
+	b=6y4bRKsfh6+3xDgUXnqR8y7JcgD2KvSMycOOjoLuXZrbpLmnmY1U/mWDEkU+3P5B9XOXgv
+	rReoGyMuZbrHhxih4IDlTMu03FTTb+LMJ/5B1ufUsKd9dSg0dW41BB4cUlTIymP1eT69K0
+	UMCG6SLNgjME69q0Gj1njHDr81eiQBE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cy90xzIh;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775102567;
+	s=arc-20220608; t=1775103106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lm90Qq9Cm5RCcVEpvAMpruorcfH9KoxwoU7piv7WLz4=;
-	b=CfjMKWcMD8AsF/F5nypqvXXFkKwbBiEl10/720zXu2Ou0jMY5XK3AGpUGxaW6ajS/Xt3xF
-	i16v+kbZPnrxUsKsoAuqY4KQB39P1JLBcr3NyWXXCRk9b10yQ74HNiCXvagFIcdzC37P/n
-	frFhpOlsvbwNoW6WysH3PkVelz2xKpY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43ED861855;
-	Thu,  2 Apr 2026 04:02:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10346C19423;
-	Thu,  2 Apr 2026 04:02:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775102567;
-	bh=9+/dwINtJN/cpLno+AS/FdsNHwehhVrZYUkBkuZRdV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eiA0a3IGgNwJ4HH3TnA6dyjb9dEiE9csmalxo3g235EFn4BNVs1OVmMMFeA7ns8Y6
-	 6B5y4hj47Lgh0IVXGvpD7kIqbLP0/cclM1/3/8lXLq9PAaAOL+dBoMsUMZ3Iuc1frV
-	 2VZhWJrO/voB3qaPoleaiUt38LLLJNw+Md1flLGM7wtGyNKYxKqBBsK6ea3zn+lrce
-	 +b3HT6pWP6ffo5oBbPB0VRsnxc0OYfj8XXm9GcGKoCn2ztxOKLry7K4s43bdVd9TZK
-	 G+Aq430kB4cIf+ZFWQGpUVSNGwEb3CALBTyXu/xpmzv3z1TPHD1R1JpO0xdoi8CAT3
-	 AS7Vs94KysHaQ==
-Date: Thu, 2 Apr 2026 07:02:40 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: David CARLIER <devnexen@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-Message-ID: <ac3qYA40OW29ibbq@kernel.org>
-References: <20260331134158.622084-1-devnexen@gmail.com>
- <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
- <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac04ZeFdz7yvByRp@x1.local>
- <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
- <ac1wW6LHzzkXBeSl@x1.local>
+	bh=gjN6IPgIWc9pLcP7hLhiuTVm/LCpSc0jwe3SrPuO8QE=;
+	b=w5Vir9zSZdKDkHK+9sTzXpBPFf8yeZUBzm+Z0Kd/wU4ag7zFh9Yq19YnnFvC2tc90uKwRY
+	gfR985tP+QThzMz/4gttb2KP1MueulzEyNW06ASsn7JQ5nE2WviyLqRfM8goMc/MYkRL50
+	/0gvVt5ASfjaM92c550te1Ox9WwtbeY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gjN6IPgIWc9pLcP7hLhiuTVm/LCpSc0jwe3SrPuO8QE=; b=Cy90xzIhfidaefZ3g7xz0/UTnC
+	wFQ3ETt2ilQ9TJjGIysb64yV7cu/DWdIujOZ4I4+1yUxK8t0FS6ogeGNNS94HoymPGIlq5IjoOKep
+	XixJKYms5xZ+/vf1DuYKVtS0Bd9NggGGYNHLWavxeIJVV7RMdkZiywQ8b/gOT9MIqfaYeyPAg8+6Y
+	e+EESsgBVQy93/Ez+a2vs8hoM8MYthikBKYUdPUq90F+DL8s8eOgMy0T6G8TCAZwD41GR3dOC8BKV
+	/xvVege9scxNVgghIvKQrRsT5EMiVsMlJTKoFt3Gca9ZlfcYXwoKT+evyHSjmHxWgWsUUw6BtncIk
+	hj7PM+qQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w89Ot-0000000BYOc-18Az;
+	Thu, 02 Apr 2026 04:11:23 +0000
+Date: Thu, 2 Apr 2026 05:11:23 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Barry Song <21cnbao@gmail.com>, Kairui Song <kasong@tencent.com>,
+	David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Youngjun Park <youngjun.park@lge.com>, NeilBrown <neil@brown.name>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm/page_io: use sio->len for PSWPIN accounting in
+ sio_read_complete()
+Message-ID: <ac3sa2GB79LGADpY@casper.infradead.org>
+References: <20260330071229.14614-1-devnexen@gmail.com>
+ <20260401074753.238053-1-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ac1wW6LHzzkXBeSl@x1.local>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D283E140007
-X-Stat-Signature: qh9p6snnf4316ic9zu9faqnzh3ftgfdk
+In-Reply-To: <20260401074753.238053-1-devnexen@gmail.com>
+X-Stat-Signature: qcisz4w1aur31ykh1zngy5f3f1yus3sp
+X-Rspamd-Queue-Id: 0CDAA40013
 X-Rspam-User: 
-X-HE-Tag: 1775102567-7916
-X-HE-Meta: U2FsdGVkX18AhmrOcOTuWUh9FgzKEBqOT/P4Hln0zgb3XAzsSEveHMY2OjUFASf1JkuZSgYeYgNK9NPWNYOsNR3FyupTB5fqeUuaJ4i7HPqQDlHErhQzFvaVXNVZtYc+r0fpokaeN8C2AU246/MZZPy4//05pNTb5c3w/RdYylPtkOysu0W7SfEsKe+rC/VPKv7YxOJBkcfDyyHiW5Xnrfr4hU7hTb8oOHfX2S3dWqgaBQqPRDEjysjSL21VVb3POATMr1opKxQGHbAM+sG9D2CBRpgb0tQn34jF0M2HYTQRGbBDYFgDRhGPtS6tkh41/tIe4o/agNOD7yIaRiph2MJJG3z9oqCHnkn53xClRdYltoEgthSJPKim36minfYzcgRiJOYmPYHMn5pIJ2khGL6EhPi7UfACvUYT1h3DGhpjE2mgEXtaTi2BcrFWsKl6BXRvDau/IXbMG269PaEQ3ldWAjzWxN6HMq/rfhf/42WUpF07OqWPzm8GTOaVxH2AOu7oq6C01qtuY+3jZI6YfflVT++MiiQDVdLp4zvjh1fnpe9rpK3hJRbnWZXcL4Xs5UvRTZAy8rdl0R10C+79l+FudZKvGIZDh6u2i0Pgd5V760zI51qD/SCoVNaNmzKRGPUSEhAbXkZdBq8UWisPrSmh650Wzh50fKRK6f2s0HF4W918RnzRP+H/i7SLBotGgjdIYBsLRhzyCxEg+R3INSOqHKc6Ffn5xpRo841QDAEw99Heah4v3IoclY6IL+KwEjKUbDi0yCHYAqBTypc6K02pV+Lt+gG38sHUzI9HyZvzaGdGDdzekkryYmYHD9IAKKiovxnLrWuFnujkwsjDEvImVUoyfiKPy7L9qzPX2HJQ+0XihdbXGi743/HHo0tB9w7niD9VLe/ww8GFbh+alGpenHah9zGp8uEK/hcAnyKhV1VOBCMU7YZpxw25dhXVagPUOTvhCerLXUfuMvn
- pLaxQxyV
- DpPP2
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775103104-886336
+X-HE-Meta: U2FsdGVkX19X+GczlE1SLKQTCo5oW9SbA901a5OXAbPOy/MnNJBPtBB6mSEvFewrlIOkNGwnz2AbJiEYX/2dN6ROAc3dHixILYWDaolWp+HlOG/D/1o9mePS/DvfDhDBMVF+TDs773xdOks4YLV+H/y0M4ss+6OyDCdXi0TOKSsRNnnefMO02zJ7YQ6ryNu5Pim6DygUrYn9nDPrAZYysVpE6DbcyeOQbLnqgUIvE8/eraA/9af+WNz2EJtnpFJ1i6cVUBTfkSQyNwRoyjrs6GdctZroV4oZ79OnYslutTSGnyeHJnoUXQ2KwiV9d3AL8JEGWrPhkwiV4uu57zlzJ3215ojvczOlAPDgkYVuE1Fnt+hSuSVMPg+Zc7DdwKMvMnyTXKNW/TPPiD0YLKCfd69QnDhndl+71edUMxoBjFb9FF346sWBxm5RldVcL/EwlHfijHfwzOC5iwR6Yue4CpSokj5b6T1t6b7b4nC/hYmwSJebduB/yoEfl5aM02L3FG3RiZONxK54YWQL+FQeUd/JFePMlmji0zyFHvm1Zw5B6Fzjy11xqifeRHu6Ly1+bVGzyFBNfD+ZJAGpC652GBEtFHKLuG9SRLHyB/4kpClQIVTdivCed2OBfa89Gkn0lBRzfFQ7K4aC7aDI0F/zBKlRyFwyfZMSM6yYPApq0+p1SjLd9lbxQ1c+RVEHffEo/c5kS0NVHGrZa7W3si22X6BF5OMSuee+NHtvz4eRTHtkDyVeUxxKgxSmPbnE7FImc3R1tMKMwDg+Vnlym69MmmVJ7hzffTv3+cFFEkw+dfAxQagfo292WOXs5LukpMMB+dOfBZYMLFoYjFSyFpsjtqSlXA01PnmHfWeVXUkaxldJBxeE0JW5goOJCdSunV/fXqgzQPYpgoTsHrKXO0gj3o6SgIAb5nZxihnV2JoLOz3LKD5/ljzZUf9ZhL//NEz5UHzb4p7OU96EMRZ1uFI
+ XXVTzSfA
+ Ep4FS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,26 +95,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 03:22:03PM -0400, Peter Xu wrote:
->
-> The other thing is I just noticed the err code was changed to -EINVAL for
-> snapshot changed cases, sorry I didn't follow previously as closely on the
-> discussion.  I think it should be -EAGAIN.  It's because the userapp can't
-> resolve -EINVAL failures and app will crash.  In a VMA change use case, we
-> should return -EAGAIN to imply the app to retry, rather than crashing.
+On Wed, Apr 01, 2026 at 08:47:53AM +0100, David Carlier wrote:
+> sio_read_complete() uses sio->pages to account global PSWPIN vm events,
+> but sio->pages tracks the number of bvec entries (folios), not base
+> pages.
 
-No. The return value should express that the VMA is invalid. -EINVAL could
-work, but looking now at the manual -ENOENT would be even better:
-
-       ENOENT (since Linux 4.11)
-              The faulting process has changed its virtual memory layout
-              simultaneously with an outstanding UFFDIO_COPY operation.
-
-> Thanks,
-> -- 
-> Peter Xu
-
--- 
-Sincerely yours,
-Mike.
+Since you're messing with this file anyway, do you want to submit a
+third patch to rename swap_iocb->pages to ->bvecs?
 
