@@ -4,142 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B491D39422
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:32:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE5E0D39423
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 13:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE34C6B008A; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
+	id 46A946B008C; Thu,  2 Apr 2026 09:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B944B6B008C; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
+	id 441CE6B0092; Thu,  2 Apr 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82FC6B0092; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
+	id 37EF66B0093; Thu,  2 Apr 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9664F6B008A
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:32:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3D2CA16065C
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:32:50 +0000 (UTC)
-X-FDA: 84613706100.28.48C9994
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2595240014
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:32:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=e+oVS+QZ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775136768;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1BC6B008C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 09:33:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA46EBA9E9
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:33:31 +0000 (UTC)
+X-FDA: 84613707822.08.A6BE2A4
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 27527100009
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 13:33:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="iR6thK/Z"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775136810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
-	b=OS9GnTokvckXxOnhT92maT6g7ywH8OpIpW+F7QGPYuY+buwTNFGo5gKiYRdhI2dTZTOWG7
-	D/HwHwzM5uo6xPulCWQGjaXr2Ovc/yhlSnnDE/BFJKpbK7ZNByslBWiMBPT8RGGhkHzL1Q
-	rdAoV1JtUxta1bbFS+XsRap+FXDc/Tw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775136768; a=rsa-sha256;
-	cv=pass;
-	b=1X9+mVhMaXjLQzTi2a1YDD/evAh0YuWhU3ANK5MPxf2AdhOKPGfF0kpXLD5xF+R6bfNy81
-	Zf7emNxasSx34GmL246drHgl0zHLCvrw0ZwdyEg8RUsrQrT4PZNiqnUSFoJgg4UQMbYLlo
-	xb6/+WEWIMhiDKvCWZ4b+U1/PwSw4C0=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=e+oVS+QZ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of sumit.semwal@linaro.org designates 209.85.218.47 as permitted sender) smtp.mailfrom=sumit.semwal@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b9358dd7f79so168686266b.1
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 06:32:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775136766; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EArxWWBPX1puFQ8cnTeZ5GnuxwHnTYk2ez/cVsncJgbPMTtmAqbtV6Cob1SuPpH6yh
-         VN0G92bqncv9i9NzfPc3E3RP7HP5wMnlG64tfNNv3eK56YVPUvlwMeBcsdrkpVGvdYRG
-         fYRSsWc1Aqw+MypUpy0SaVxmf57U0YVSLCl4nv+XnocWOAGVRMI5QYbeUAbv0HSmWJbV
-         BAHXksQ5rDsl/O3TNr2HeDtLBlM08sboyV4U2ftu/0zSoUv2E+Vu6zC8AgFYlY7OWy2p
-         0xYKKBmLHg1hOmnRP4ZKWL2cci/TQltkkXzUW+QIwyj5p9pWZMh2zP3+7GHG+dcgeux7
-         O+bQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
-        fh=as/MkIjXAqTBak9ydfmlQumAPpesLAVhEH5jqSf0kb0=;
-        b=EHSDgZwsP/jTOUMVXMPhvoVSZYuaI0hfI4KiBrcKea1Li892QQJVJqOTSRuEYvG3hS
-         8Sqz+4TQnDmzm7uP21X4WKiir0A2t7LMhT8gtfwOqUk0gQ8p9Z+phIafJA4X/L8MZnCK
-         y+R5Sj/zvDCKbfNnwiNOkAQkhOWyr+EF2DnGgEEdr/zNzPjZnzp6RkZn1rd2d0XUlpB2
-         zL5DzHZ65vjHC1u35CZfe53BejqhL5FktF5Jdm/xzjSU3WiFWv72Wxbrs3fqzzrAwffw
-         x7ZXvUoCGDTRL3LyUF6EYxQJaG36iYhiUlEldA9zXpWPMA29sF/MTzt2FweSAlwt0hZe
-         LC4w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1775136766; x=1775741566; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
-        b=e+oVS+QZbW4SznNMJFAZ/6Lp5Y78PXJj0dEkahCKJ49OTwWcW5TdwwCgpO8i0RPdvl
-         DHeD7Al+DIB1MbqyIb9rTBlor9tNcJ9Rv5npvbvnZTW9X8/6GMWyypyez4oAA6wTNvTU
-         ftWuSgvwDvzCYM232KbPZtXjCWvZftdI4gAVTldcrFSOu5fRD75N1DHZC7vqt8thD5pd
-         yYMBJ+v5D0Bjt9E0UvCPqkgAt46U8QPckfSW+kdTsdt+E0ylrZcPYIHK0ZRPKtsuXj7Z
-         AeQXHZOWrH/8EEYBRhQOXVoacGfK+AnlPUZjJLpZWA/LrVsOGwpyJdeHdvfnGm4R/ZM6
-         w7OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775136766; x=1775741566;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nsx2hYjw+sV8/0qohJ1DlKPwBoo2zkp1J5PdzUN8MV4=;
-        b=TL2tBvxBwVA2kKQ/ZbnWe0zjDlqtKlz8nPi7WLHzqY/NBPytecCLVMOPVrmnPbaYob
-         l3OJFVulPFe5An6xp9HTRyBApw83FQQcyvGD49ryFlk+vTgwmsw+WRe5OJnjBkareZkd
-         iBFWC/DXd0QPV+UlljBniun90hSg/jQFoTaHSs1ppmvOIU7rveYBzdl8oOEq7gaNvkob
-         y1r2fCQN+1lUZziKCK5oPhiomWpvrHvGLVgA3rHejR0c8a1I3qmO4lN+yhrD0rH0kvbr
-         jYY7my4zsH0x9SipMw8Orcmwf/i1742WjEfPVRcmKPVaPPd1b/aQCDzVzfTm75v6oc25
-         Du+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWNYj/ScEu2j5/pgFSjFtE8PWbNeR7ZYFAsINz3uM2MezZq7V+8loiOh+iKDnPT58dqivc8dLCvig==@kvack.org
-X-Gm-Message-State: AOJu0YxfIUACAEDCVl+f4W/IrViQZMZYY6sXEA90rWwZi1mKgsFFJKuC
-	tyT2b6EMNMPMCWuPjYlZ/fY22p5LkVfNSyIJ7TK15R0gtFpcnZFZaW5ZldguTt3IGvVngeBXbt7
-	6hJXubIwlHfsR7LeJC2t8+JjgIiIn/vjhnOKN3kIkMQ==
-X-Gm-Gg: ATEYQzxQ/bfJCHSkSnPDnf7hChKww2tBHMPwHHPmiPQ7DbC4FAvI7c9vtRCQZnuiXgM
-	KJbW+GLA/cy9sXHUXvovb+A7e/V1PZc61e8H0CWnMjHgL1TZ9iHEJmWqak1Wj9Egni1z/kYfmEC
-	esTF6oRlLaqN5ejbjjQdhDP71dv6YI+Rr3UY13e7bP/N6oht8ZDtmgzpmMWUZ5XyutxXcG9FE6b
-	NdnpqWoaqIXi62D0P37FeYTuBoWDrAtZEFqkXDni2LtErwdUdsWe0Z6pEQZZPp6bx0zGORJiQAn
-	7KkzwLY=
-X-Received: by 2002:a17:906:4912:b0:b98:695:ec53 with SMTP id
- a640c23a62f3a-b9c138c110amr392586266b.18.1775136766273; Thu, 02 Apr 2026
- 06:32:46 -0700 (PDT)
+	bh=mXyOffJoj0vx+EAUo0TPbuyn0MsrVCVYwm7k2LD6NB4=;
+	b=yA/vg5nEXe1jotuQTvfGUiUDwWUssYwR8uzpxqSpbOx3tDFLi5IJGiXDsd10djZuGuuRc4
+	fd9MybgJugEKhEKZ/It06s9/JhBc0tCW2ntafb/3O9dHx8rFlBOd4qpdGReMu7zdNjVm6H
+	uDueeKp3eU+VjEOsWupQWqOvU940M8E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="iR6thK/Z";
+	spf=none (imf05.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775136810; a=rsa-sha256;
+	cv=none;
+	b=uBGyjNgJ8v74VeCH2zLHtQVCgYye+eNYBa506ogotbozql8AsiVt0RqI+LgxlrPgiur4E4
+	yXPwI+JLRDUZUIxJAooC0XpOzcgA1wiwhSQgTqPbuMb5Z5qvUote/DBPi80ea0/rMD7ee3
+	mDPZ2zm91U/wymS9dl0qfWGzFidcQqk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mXyOffJoj0vx+EAUo0TPbuyn0MsrVCVYwm7k2LD6NB4=; b=iR6thK/ZdwjgK0rBw2kjZfO7Cb
+	Q8I5RMdOlfyerfFcG/qmotSlAa2KUkvL8qU/LQhRcbQWOo5mmVfQVcUoCMTnNUSNGb6qOwOpxDYZ5
+	rYUqGFOoixppN4JTIJ+ypg01OZckpJHQXH18aZdekUJ/J8hMmQ979x0vNZ6WacqW+TvltAZzXGSja
+	6s2k+QtWd+dPpo6mT92ptbvvOA6/O0Xqn7YfP2AOmqge3h/snaWu3RMKGxD4lbdOWYqqJNfeQX3rl
+	LFxqXaALOBADek5BmQGfRbGsc/u4N/L4iLoLvcgC/ynKAQDKu2Sl2CbLV6b09UzUFHyq9yvJ6x0KC
+	I5yy/BSQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1w8IAl-003nZv-1c;
+	Thu, 02 Apr 2026 13:33:22 +0000
+Date: Thu, 2 Apr 2026 06:33:17 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Message-ID: <ac5urCFeEB9oyUiD@gmail.com>
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
+ <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
 MIME-Version: 1.0
-References: <CGME20260331100026eucas1p19bdc2aaca4c9a48c6f6ac8fec71478d8@eucas1p1.samsung.com>
- <20260331-dma-buf-heaps-as-modules-v4-0-e18fda504419@kernel.org>
- <46397de2-eedf-4e09-a83a-3b683d154fe7@samsung.com> <CAO_48GEFQE_FJjuq1UqP=DC6LJE8jjE3C+4FdAyB4uEZDsnFJw@mail.gmail.com>
- <20260402-burrowing-fine-bloodhound-afcebc@houat>
-In-Reply-To: <20260402-burrowing-fine-bloodhound-afcebc@houat>
-From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Thu, 2 Apr 2026 19:02:34 +0530
-X-Gm-Features: AQROBzBU7_o7IRQH6mzOKTP-KDFv7IkPoqq1yaLRTD3AfvGaKguQAkczWk5rypY
-Message-ID: <CAO_48GHzMpKHQxmS9ADd_Z9G56uWOPfJ-qhNek7ubgkk_yjGDg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/8] dma-buf: heaps: Turn heaps into modules
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Albert Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 2595240014
-X-Stat-Signature: mjayiar6tubkcak787nn67gmoq5195ay
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 27527100009
+X-Stat-Signature: qbjsq9ggofw5zcy4oenoeyrihqzpdzd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775136767-319398
-X-HE-Meta: U2FsdGVkX1/loyZmAl5V83sJTw/rHhPu8zYDkxWwMuGnXpgwInf3lzCHFP3tbs0rcB+B8pQaGcm6vYcv73Y9zxOsVkwf0Y9aT/cSF3HC7nlPPbH+RykK3fDFj3F17T4Rzao4IAAeVIdmkvg65iQlN4ynBEWMVxcI2qqD0/XH9WY9jOEOtppwsfB6MOypKSskS+PzQhNBAxcHbkWYoWYHkaHOo9lemT0gPv+Xaf13/8NzfWIluu1nmFxFE/nLbWGC+LDOfeDgtwngivMRCsCSdet4MR2eZ9CE3yhYsyx7DjQyODussp/JgueNx/saHtVOTujNQCGtmAx0g7DccrVn0SCPU1ENG8PT6+QGAAt5AHoJ7gTo6HvBcxkfWIZYbVvym6zMTxG3qkXOpQlQ5toivPC3g2X7w8kNUL6Uc2u85jnVSvuHgHx+XJA25M37oYuDyW8jwvyyLUhsmzIH9rIO9H7vhMdCFBcocmddKfxKlOTlYkwGk8NDHqYhI0/9IoFig0/oTSro/wWHhYFtG8ZkXqND4jx8vBk+aY7pJBqM8q4cAFPlPTeVk4dqz4DR7toXk0cUZ4kkdr4FVxcAEfGr6rw0xBBs092DtEq5a7Tw9/uzzqhRCEj6wKQeb5v2jNV2s+1gwdVLowjq4H4f/AzTNua2KZRydEP2AiHUvkdZ+7uASttwkT93a5FrGRm87S9ugqiS9IpWIvhhVDUWWq/Owbk/ILTHVAlAR0pz3hXvxOiOkK9rM0fbyFzsEfCAlvk3loF2X75JJc4aHISUPUvWDASMZLtiSlT+pRMHGvmeSkSlY2/DyjyZj3PfRkjN7wAQPaL8Xrs+YaeXh4TLkg5JuIx1RLGgSbgMK0Ao65Jgae+f5Y4XDgCP6LY6bOMY1sd+Sgftg0HYIYffhaq6FixAWMHhNC5jSwI13OyWEPPf9FD13hwPGxAzCax8S4M/nwCBuszedGRMcw++Ix9IZ5D
- Hp1Wz/nt
- 0Un7Pkaq6uW3tOwrHpKRcXtbtJ+TIHJdU/rqgOUainBPfagvU791/vRHNManePwTOGLM3W/ebVt5S26bQ6SzCuqy8Haoi/ZMGp3FwQn416r4v++BS9vs3Jo80CXmNmVXg55heNyGVhtAyOAUApwdYpNPeETb4NkB54p3YulYIuu8iJqAuIIgmW4Tdbkn1FO3bd9zNQ+0XTjnoum9Zmk7epDPhVnz5vY6pto6jndaX4gT40nbP0ogZbxJfjONatyjOlwCGZ9NYFpWbDiKQzjM3Zz5uHLojEPY0X3jELIGufimMfvb268dOC6djUyR5RAcgD+bl1Gv6jIrFYu0l1xCb12HBOw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775136809-851750
+X-HE-Meta: U2FsdGVkX1/HGEM44ySEiBXlDr1WjzF9pZqEcQ0/MTkE4tv7fGAqPsjc5PpWO6qQ1qdurzwWkSLUcv5fVCEctTYrYafncO7ElIInX3FC36S3e6qOMJJw6ci49625EwDYBHTuN5wk9IiAQV9HwwsMhnMLWjlLZdbR57o9lb1xQ87uKBfj3Yx+Qnkaze1eSCqBLkWXLUFx2xjudS3BdFSla1WTRUrK5fS3imQeXR1eENR8GsF9FGYR6hAt6vlgaAV1j3gso59GtniYv3/i+H9ZbM/yhZRgH8A3EHx2iJlo4jJUpATX5ZtvbgQVFl8H+6UDassXJGv74thAgQMuc4JUXaW5BFwlkdTd1qmqinb0VNmB38Ytn7Tu0GJjDehe9WZ5xlEC/EXA1lKHZCv473qqNwG1Rf5/G+Tze+fvPn8s3bEZcVLiGWFePd1YFRevFrBNOFeZqW2hAioWWnnafcQjPGRKKJ9k+TQpf+n6GoW1fdBzzm5EacSnUY1C3ZJ0WjBanWuXyUDby6B3dDrHgQmO57+lvGG4NktuNg/8k5Pl+ngPfHU2fWVpShPE7FAQVFiuYFNATpWH6FHExhH5/bTBONm6AF+dhwqoAyWnx769ZRwknOGPBe3fxZOYrt5jxbhbbQQ9t/AScWzVZZwkhJ+XLHFvWXNUAooBuYbTn/Q/JDMJoaOsZMbBa4hE2XmG5abWwpX38IaErG0vWGVfhCfSVlGyhPlaVNW7Mvr+cgK/3Cj4q47NKTcc/HgjFu+20LZm0Y700AsAOi5f7H4AvkZEjfI28F4vY58/Ef4iuXnoB0wWJWWsLVftqY0jgICd1DllLyEDhGS6l6gAgVGXKJgPbxwtzlWMmL8X+CodGEIb+QkgWbWGPFI3pBuIgC42aUY3Tchy4ARdO08SS5Q4jeVF1iye9Si318pKT1SaUTTG4qJ5oCjN011qALsc71JmmZXqN1GHMN3M37ccMN6NZ2l
+ cBBxy2P8
+ R6CISrXBQoqvi5JexENXDUg/+fJPG70mbmXiZfu4OxbxUOCYxoYbNdNHhJrxt8vcZAWzBHKXSqfXlTudBbMPP2BRPGXkLNT4KbpSYwwVzLCtTpbCS8yjX5cWMIrPxxoyey96q4HA8DJAz0bs18+F0nKIui3uY9/j4YMg9f9qKoIji2A85svOCl7Cgag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,47 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Maxime,
+> > 
+> > Cool!
+> > 
+> > I noticed __round_jiffies_relative() exists and the description looks like
+> > it's meant for exactly this use case?
+> 
+> On closer look, using round_jiffies_relative() as before your patch
+> means it's calling __round_jiffies_relative(j, raw_smp_processor_id())
+> so that's already doing this spread internally. You're also relying
+> smp_processor_id() so it's not about using a different cpu id.
+> 
+> But your patch has better results, why? I still think it's not doing
+> what it intends - I think it makes every cpu have different interval
+> length (up to twice the original length), not skew. Is it that, or that
+> the 3 jiffies skew per cpu used in round_jiffies_common() is
+> insufficient? Or it a bug in its skew implementation?
+> 
+> Ideally once that's clear, the findings could be used to improve
+> round_jiffies_common() and hopefully there's nothing here that's vmstat
+> specific.
 
-On Thu, 2 Apr 2026 at 18:42, Maxime Ripard <mripard@kernel.org> wrote:
->
-> On Thu, Apr 02, 2026 at 10:36:48AM +0530, Sumit Semwal wrote:
-> > Hello Maxime,
-> >
-> > On Tue, 31 Mar 2026 at 18:24, Marek Szyprowski <m.szyprowski@samsung.com> wrote:
-> > >
-> > > On 31.03.2026 12:00, Maxime Ripard wrote:
-> > > > The recent introduction of heaps in the optee driver [1] made possible
-> > > > the creation of heaps as modules.
-> > > >
-> > > > It's generally a good idea if possible, including for the already
-> > > > existing system and CMA heaps.
-> > > >
-> > > > The system one is pretty trivial, the CMA one is a bit more involved,
-> > > > especially since we have a call from kernel/dma/contiguous.c to the CMA
-> > > > heap code. This was solved by turning the logic around and making the
-> > > > CMA heap call into the contiguous DMA code.
-> > > >
-> > > > Let me know what you think,
-> > > > Maxime
-> > > >
-> > > > 1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wiklander@linaro.org/
-> > > >
-> > > > Signed-off-by: Maxime Ripard <mripard@kernel.org>
-> >
-> > Thank you for this patch series; now that it is needed by more folks,
-> > I think we can merge this.
-> >
-> > Marek, I'll coordinate with you on this - thank you!
->
-> If Marek plans on sending it during the next merge window, maybe the
-> best thing to do for us is just to wait for -rc1 and apply the rest of
-> the patches. Otherwise, we can merge the branch in drm-misc.
+Excellent observation. I believe there are two key differences:
 
-We could do that. Are we ok to wait till -rc1?
->
-> Maxime
+1) The interval duration now varies per CPU. Specifically, vmstat_update()
+   is scheduled at sysctl_stat_interval*2 for the highest CPU with my
+   proposed change, rather than a uniform sysctl_stat_interval across
+   all CPUs. (as you raised in the first email)
 
-Best,
-Sumit
+2) round_jiffies_relative() applies a 3-jiffies shift per CPU, whereas
+   vmstat_spread_delay distributes all CPUs across the full second
+   interval. (My tests were on HZ=1000)
+
+I'll investigate this further to provide more concrete data.
+
+Thanks for the review,
+--breno
+   
 
