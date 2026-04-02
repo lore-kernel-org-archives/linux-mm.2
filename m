@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E222CC6B01
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F381CC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5CC96B00AB; Thu,  2 Apr 2026 00:13:44 -0400 (EDT)
+	id BF8D16B00AD; Thu,  2 Apr 2026 00:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34566B00AD; Thu,  2 Apr 2026 00:13:44 -0400 (EDT)
+	id BD0F46B00AF; Thu,  2 Apr 2026 00:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A716D6B00AE; Thu,  2 Apr 2026 00:13:44 -0400 (EDT)
+	id B0D726B00B0; Thu,  2 Apr 2026 00:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9769F6B00AB
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:13:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32E848B85F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:44 +0000 (UTC)
-X-FDA: 84612297168.04.B9EB81D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 968A414000F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j3JlmQ5U;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A37B46B00AD
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:13:51 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4468D58A9C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:51 +0000 (UTC)
+X-FDA: 84612297462.25.4FF69C2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 875CD20007
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:13:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J3swZE2Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775103229; a=rsa-sha256;
+	cv=none;
+	b=agQWnymEECcyhdZv/qr1KZIchtjz5oxvN98RdDe3IVmx5yyVyRHat840lPHfUrigk9kV0O
+	hZMgW35dJFsQzPa+30r1U9edTfcYjYmzkYmQgLHLqp9eEjDKDdFVZ7JSTW434ksfDzEi/R
+	cPsJwYLVtjIjFBQL2OtLixA7aB5Il9A=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J3swZE2Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775103222;
+	s=arc-20220608; t=1775103229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bj/m8TNOzP7qOzavXuSIEO8AJVi44udp9x7i1Rj/N3Y=;
-	b=rhcC3D92UgXzExYTnpdcqTSD7gAMYT29FnTHulXKDDLCU/+diGmJdJcgDdFOr32zgUB1lp
-	otFvfT+DPfKLinKvLadHVe3qGNOhnx15ZE5GWW7Ypv6vMB8GpIji8jH6NcNSwdE7ZqpHGN
-	Gv95jTBXa9uqKFkrS2yyFyrejfx4J4U=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j3JlmQ5U;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775103222; a=rsa-sha256;
-	cv=none;
-	b=K1Rrw/EFoyNwE/1wwhq9SMeKyEpqlFcxu4M86SBVRy6may/lhwkNr2dkndRbYT6fGPAWf7
-	kN6Sy5TU7wK8UpZ4n0hHVkrVHfJ8VGUkA24EJ0pcjCW9FxbKiU0Bhj6k7oQLtEQHl+cv6a
-	JO9+njn4wqCTbKceVfg46dodEOx84y8=
+	bh=awGkkm2OWaLy5ex/oeihGcD8JB0EhmX9CKfQ3dh92HI=;
+	b=5dFouzX8X+Qj7/vlRKI4doVtKoE6SfEWLQ5vMN0W8507FIh5hsvykvxAxKvDPOTj4pdG6N
+	QJ+pzRBkuyv8YMyRO5cKNgHr71Pm9GGxV7yhUYq4MeQl8oqJWnH6GIi+dw4WfRaD78Kjup
+	R/uShdNXvTlwjddqS8xysnkr7WAMv3M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01C6B61862;
+	by sea.source.kernel.org (Postfix) with ESMTP id 96FBD43DF9;
+	Thu,  2 Apr 2026 04:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37256C19423;
 	Thu,  2 Apr 2026 04:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC8EC19423;
-	Thu,  2 Apr 2026 04:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775103221;
-	bh=vrai7iUOkplMitPBGsDeCd9GnVnwQZI906Ju/ms0Utg=;
+	s=k20201202; t=1775103228;
+	bh=z+HQ68nm/PN2NlXH0rkdfjkI55JODdIviAntTrnHsgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3JlmQ5UKZxGjgiCtzC0W6uqZcmLn2kyTfoJnQiKz2i/pv/SwtJGFtCAOUeOROnDk
-	 /vKD7hQ8UjLfaJDLtV80QgDLvF9ZgGOtuAnQ8cmLEagcaBhFg21F2yBipSLqHYRpoc
-	 Djwy3xo5w6pyA7bJM/+AQAG45GKkRXg+ylI4dkiiAsY51DvQXT+c9DMZ/EyT3iqIgh
-	 20pYyx0b9tLquYgScpjI4KvD6qufTJygxWNYGwZCEYITj0sawuNF1ny3VzCrKyt298
-	 Iwu4iHRrlOtzjKFPQbtoJh8L8JfKfG7Mus4CG4OFJ2/hSKNa1HxVWRMWtjbTEfGX3p
-	 QyQs0CoaHZ52Q==
+	b=J3swZE2YyH+2pVU1N5DjDD0TDSZ1KNCz6a4Nu7f6LjmQzi0SwxCUvgzT5USIMVc9X
+	 BgSZs0ognCJH2fM7GMkGPxOQ6ozAUdeZZOM4Im2vQOWQp5udB+LyEss9fBrJeZ2+N+
+	 kvzlxOjYOJh/UAmNuJMoF02Gu4ey/B6DEVvfzWqpsdPBjIRBEIu09fEE7Zt7xmtiEA
+	 olaAmOrM1jgq5/OIe3GLLQ6FIS4cqOgT+KTV8MOy09Wi0YfV6WVZvX52QkSC6tNn3+
+	 PEObeLaOxTOGniECbLzDzzPSmCul9xI4ymX3Aacbun+ZL5oyTFkO+T9imVEdL+WUZh
+	 BToHP/KPtvuyQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -92,22 +92,22 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 14/15] KVM: selftests: test userfaultfd minor for guest_memfd
-Date: Thu,  2 Apr 2026 07:11:55 +0300
-Message-ID: <20260402041156.1377214-15-rppt@kernel.org>
+Subject: [PATCH v4 15/15] KVM: selftests: test userfaultfd missing for guest_memfd
+Date: Thu,  2 Apr 2026 07:11:56 +0300
+Message-ID: <20260402041156.1377214-16-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402041156.1377214-1-rppt@kernel.org>
 References: <20260402041156.1377214-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 968A414000F
-X-Stat-Signature: 9n3wgdhjop91ntkxnmgrc97s8mo7jzpk
+X-Stat-Signature: sba8a5idixd9ud6wd95zbqirkpw4wsrb
+X-Rspamd-Queue-Id: 875CD20007
 X-Rspam-User: 
-X-HE-Tag: 1775103222-687260
-X-HE-Meta: U2FsdGVkX19NKvpqY42aEXU2dBYQ9KwfOZ1+e3F9st5ea+OGwzDwL7h74R1zTGRzkFuUNkPLMZMmCZTJFHC2nk/SZh2+JdeZfmJOC6uzwHpCxw5IyHOCaGl6kiLzFfUvBj1ya34nI29B3KQRtRLfSYf4BXTpZOtG2XEabrpxPDysYFhWmDOsMCxwnG5MeFicADO3dSdlZ1wi46ZXqfYoAK5RwGZmF8oX2YdU5g+63Eh9ScHcSpDAGjUfXOEtCdlscgCuQ6qRrEYUCLLIPZ9NxK46MfF2zS59S77Ckj62LfOkfW1xf12k6zfghca6P0+Cm9s/O1HK9dV+uMu7PYuBLT/F+aRNN0B6Kqlb7fXiQh9QrCfIyZApthh/4Q6GbJ/p8jwCFATR7+aUkZOTm+vPeWstJ2YL0OjFoN8PxvrqEJV9sd1G+V/nGBSNZ8/HHACHNX53KC+2VMKGzgWxp9YKH2b5HAI2Z1nBcyT57v1SwEKFB7x3QiBg8CPoVzyUVkWPmKMOiR+ltdH3ISFx2qgxhrUCt5lN0VQaiu4sqglO7m09yGEUBBRJ7J2ZrFAsEyJQdTdNb1YvRd16DCeWflKzdHl80Vx7+5mGrSIpze+xhVZrie27hVElgGNICTHXiC2p7Si/Gult8JTadCxoILvBULg3QOhuTQabQZ7BQXKGp+WCLDuOBuE5Y+T0KWXSORLq1mOHVUPvdRQGN/OLZaqa9AalA8Ccy49zH6U3XKM9Igi6PrDExtMU/Ka62X7uBlgBLPZFHwGn9U+SgIWZHXOlkACX6UGNh3QLdvtUUV1KyNuo9eZA7F4rwIO1/8dyTSsiPvJ0xRg5lDjeDwN9u/Mu9NTcrsQ1yyNr+aVkgORW1cf2ERZ7OhXviJHXVbravlUfw92mvHkZNRZGY+/nTY37ckSWzlzi8qdClTRRVzDBMalmOmcfJ2XiVc4qe1d1qNGzoroeeTkFGz4L3IxjNpW
- VlRJbFwl
- ejbxHsMwi7QS8YmzD+S7Zqyov/XC/CDTsQ1frZe9YvIIuZwvZ/V3/6Q8Alfvr3Pkza1Tvsw1RDbjYKE1okdHYOaBY0Z1WRiV+Cphns+gPMzUHlX6tNHThoMupMew7yfNKr5dhWYlUACiZ/bCu3k5zjgroX4R28uRDsvLDcqI4xOP+az9Nub7hnJtKkIe8v7Ib7nsuoxg5sqQu9jBanK8DmRwfCxJVZhjF7extGTsBN452qrBjXCTi7lIKAXToHZC23gDxezqiwjiaZkQs2U5o+Xu1fie2C+f3M32vkxOpWPhbzcTjUE0jVcUFUw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775103229-135893
+X-HE-Meta: U2FsdGVkX18af0AlBsb0YiN7CJBnpG+dlzdG2wcIF58x1IipIJ1TdwnHCRlWC20/MILcjh8KCL75L2c/9r83d7kKP5hw/JUmkRieyGYxtCKvjd9iEmOIuXcXMbKQsyXJiMK88zjaRDh404KTNKdCFwT5r/ZUM9kzROS00IfjL6JSaIStidIvCnXwvGHQDldT9nUdRyX1uuh2fTMpwKVWnYxnmAkOi5Hv7jTQwD19vrVoSwQH3DFXUpJgyernWZhrYo0du0QT0U4fBYTs2rCW1qx2b+lZH4jRkG9zGqYmSL2CIQe4H0iPXzG0K/CKHhZK7pfF3hgboiQNRgA8xeleHfqkT1LgIVNFjDBeGbc/WPRocgVT8OKyTZ6c2n97E8b9JBCgr79bLFtgch+ezEXmK89I2wr8ZrBb7+loPuWuMEKwgLBS/ZnjBtftuvsuFZpJqFe9w9PUi4kO95R7SweavkWPCXHsZmxWAfdsaxt4IgJOdW6m2v7pnliteo4JS4CXQxBL9xtEWcjGXNK9At83ex97SUxg0Pr4WhLZ49M26h5kyGtc5Sbxt9/Gss7CbgxgvlPVegJlxO7MZx1bNyF+6cIsocDlS4kcq71CAoiHCgf1Mpt+1EXxulGrXVJiUhBWbo8nrSrrcIteXE15C0FmYHBm5Aym5gECcaNy0G1YUvhrTeQ8CFabjmMj2h0dnEcRK6+JE2iP3rcOAJcveOf/4aF4SLaiSI320T5ii5A3rT9fwn1sZ60f9Yiv5vTt+c1hw8cTUrZpYGJybi6gopu1YrzXSuX4VOP8CXCcggjB8G/yux5GBxS/oGcjmgPwSswKLBsjbUT73BJL2iTumBcnzIFhnRuO+M0FG0zDF8+tku1ER6PTkGP/2nhSgDIQWg/EXEij9cxbG0jQ4CpsFisGEoebPw6SIDG0ywilrqsZ5hqD1Xh893egMgXxeEwCqRC+7iqMRS8CvgjJjw0JusG
+ 8cPFSvnF
+ Z/qiIvzqQy9r2/A0AgJcGKjXQaijens59fuOSVVmvgafvsWeiHEYQXELILfPE05rc16CA77mRPCE2U69EmBBeDaqSlIWl6FUQ9dFpP3lBLL/sCQ/uXbXuKvnhgtHJ3t3vsxtAYeQ+LJ2BNcZFl3Xk2Kp2t9xVeaowxRSZ+z33wOAZ5fRIItaO8wsrY/tGa/3TS2cNSzStEyDRVD09PjwFDrddRfgMz0IRsFWRWTmMt69RgFtUQcX7cDe2jBFd2oiYSySUnkXTg7bzPksTVdgLTR+G0BBUGBATdQKO9h0XkOruW3zUNtZsxTI0Ow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,67 +117,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Nikita Kalyazin <kalyazin@amazon.com>
 
-The test demonstrates that a minor userfaultfd event in guest_memfd can be
-resolved via a memcpy followed by a UFFDIO_CONTINUE ioctl.
+The test demonstrates that a missing userfaultfd event in guest_memfd can
+be resolved via a UFFDIO_COPY ioctl.
 
 Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- .../testing/selftests/kvm/guest_memfd_test.c  | 113 ++++++++++++++++++
- 1 file changed, 113 insertions(+)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 80 ++++++++++++++++++-
+ 1 file changed, 79 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index cc329b57ce2e..29f8d686c09f 100644
+index 29f8d686c09f..eb29ee5d2991 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -10,13 +10,17 @@
- #include <errno.h>
- #include <stdio.h>
- #include <fcntl.h>
-+#include <pthread.h>
- 
- #include <linux/bitmap.h>
- #include <linux/falloc.h>
- #include <linux/sizes.h>
-+#include <linux/userfaultfd.h>
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/ioctl.h>
- 
- #include "kvm_util.h"
- #include "numaif.h"
-@@ -329,6 +333,112 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
- 	close(fd1);
+@@ -439,6 +439,82 @@ static void test_uffd_minor(int fd, size_t total_size)
+ 	close(uffd);
  }
  
-+struct fault_args {
-+	char *addr;
-+	char value;
-+};
-+
-+static void *fault_thread_fn(void *arg)
-+{
-+	struct fault_args *args = arg;
-+
-+	/* Trigger page fault */
-+	args->value = *args->addr;
-+	return NULL;
-+}
-+
-+static void test_uffd_minor(int fd, size_t total_size)
++static void test_uffd_missing(int fd, size_t total_size)
 +{
 +	struct uffdio_register uffd_reg;
-+	struct uffdio_continue uffd_cont;
++	struct uffdio_copy uffd_copy;
 +	struct uffd_msg msg;
 +	struct fault_args args;
 +	pthread_t fault_thread;
-+	void *mem, *mem_nofault, *buf = NULL;
++	void *mem, *buf = NULL;
 +	int uffd, ret;
 +	off_t offset = page_size;
 +	void *fault_addr;
-+	const char test_val = 0xcd;
++	const char test_val = 0xab;
 +
 +	ret = posix_memalign(&buf, page_size, total_size);
 +	TEST_ASSERT_EQ(ret, 0);
@@ -193,31 +161,15 @@ index cc329b57ce2e..29f8d686c09f 100644
 +	ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
 +	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
 +
-+	/* Map the guest_memfd twice: once with UFFD registered, once without */
 +	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 +	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
 +
-+	mem_nofault = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem_nofault != MAP_FAILED, "mmap should succeed");
-+
-+	/* Register UFFD_MINOR on the first mapping */
 +	uffd_reg.range.start = (unsigned long)mem;
 +	uffd_reg.range.len = total_size;
-+	uffd_reg.mode = UFFDIO_REGISTER_MODE_MINOR;
++	uffd_reg.mode = UFFDIO_REGISTER_MODE_MISSING;
 +	ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
 +	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
 +
-+	/*
-+	 * Populate the page in the page cache first via mem_nofault.
-+	 * This is required for UFFD_MINOR - the page must exist in the cache.
-+	 * Write test data to the page.
-+	 */
-+	memcpy(mem_nofault + offset, buf + offset, page_size);
-+
-+	/*
-+	 * Now access the same page via mem (which has UFFD_MINOR registered).
-+	 * Since the page exists in the cache, this should trigger UFFD_MINOR.
-+	 */
 +	fault_addr = mem + offset;
 +	args.addr = fault_addr;
 +
@@ -229,28 +181,28 @@ index cc329b57ce2e..29f8d686c09f 100644
 +	TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
 +	TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
 +		    "pagefault should occur at expected address");
-+	TEST_ASSERT(msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_MINOR,
-+		    "pagefault should be minor fault");
++	TEST_ASSERT(!(msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_WP),
++		    "pagefault should not be write-protect");
 +
-+	/* Resolve the minor fault with UFFDIO_CONTINUE */
-+	uffd_cont.range.start = (unsigned long)fault_addr;
-+	uffd_cont.range.len = page_size;
-+	uffd_cont.mode = 0;
-+	ret = ioctl(uffd, UFFDIO_CONTINUE, &uffd_cont);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_CONTINUE) should succeed");
++	uffd_copy.dst = (unsigned long)fault_addr;
++	uffd_copy.src = (unsigned long)(buf + offset);
++	uffd_copy.len = page_size;
++	uffd_copy.mode = 0;
++	ret = ioctl(uffd, UFFDIO_COPY, &uffd_copy);
++	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_COPY) should succeed");
 +
-+	/* Wait for the faulting thread to complete */
++	/* Wait for the faulting thread to complete - this provides the memory barrier */
 +	ret = pthread_join(fault_thread, NULL);
 +	TEST_ASSERT(ret == 0, "pthread_join should succeed");
 +
-+	/* Verify the thread read the correct value */
++	/*
++	 * Now it's safe to check args.value - the thread has completed
++	 * and memory is synchronized
++	 */
 +	TEST_ASSERT(args.value == test_val,
-+		    "memory should contain the value that was written");
++		    "memory should contain the value that was copied");
 +	TEST_ASSERT(*(char *)(mem + offset) == test_val,
 +		    "no further fault is expected");
-+
-+	ret = munmap(mem_nofault, total_size);
-+	TEST_ASSERT(!ret, "munmap should succeed");
 +
 +	ret = munmap(mem, total_size);
 +	TEST_ASSERT(!ret, "munmap should succeed");
@@ -261,13 +213,15 @@ index cc329b57ce2e..29f8d686c09f 100644
  static void test_guest_memfd_flags(struct kvm_vm *vm)
  {
  	uint64_t valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
-@@ -383,6 +493,9 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 	gmem_test(file_size, vm, flags);
+@@ -494,8 +570,10 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
  	gmem_test(fallocate, vm, flags);
  	gmem_test(invalid_punch_hole, vm, flags);
-+
-+	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-+		gmem_test(uffd_minor, vm, flags);
+ 
+-	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
++	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
+ 		gmem_test(uffd_minor, vm, flags);
++		gmem_test(uffd_missing, vm, flags);
++	}
  }
  
  static void test_guest_memfd(unsigned long vm_type)
