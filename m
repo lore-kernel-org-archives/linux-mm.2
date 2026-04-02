@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 559EECC6B00
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 03:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86158CC6B01
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 04:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 441976B0088; Wed,  1 Apr 2026 23:58:43 -0400 (EDT)
+	id A88446B0088; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F22F6B0089; Wed,  1 Apr 2026 23:58:43 -0400 (EDT)
+	id A39306B0089; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B9856B008A; Wed,  1 Apr 2026 23:58:43 -0400 (EDT)
+	id 94EDB6B008A; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FFC66B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 23:58:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD3091603C1
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:58:42 +0000 (UTC)
-X-FDA: 84612259284.07.1E5AF22
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 811CA6B0088
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 00:02:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39A371A0398
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:02:49 +0000 (UTC)
+X-FDA: 84612269658.05.3A53E55
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4DFB940007
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 03:58:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRm1Dv2H;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id D283E140007
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 04:02:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiA0a3IG;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eiA0a3IG;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775102567; a=rsa-sha256;
+	cv=none;
+	b=0gW7kZNgAiKJEsWE2x26X8D8k3HAV9ryxfV/5V8XJAoHPnngyicrznltb03Y240dDhyCPX
+	NpjxngMCCUyP6GB8Glf+izxkWLXVXl6a9SJUu+ad05+VYYL/qcz2w9z5zZp/a6xAxU3K2R
+	jkb0DORlKscwnp6UICSEHJXYSGUv7sk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775102321;
+	s=arc-20220608; t=1775102567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z0UR8Rxxhq+pF86gIZ4q0vSCFlGIryaCr3yZJRgbLYc=;
-	b=7dDZoyyhH2K9fViqfO9ISp5lBBwSi776oRu7L6OwBlG8TtUZuh+5FEdnHR4FerRMh2tnPZ
-	3z100cUCM403sDAgAkAFXzapAuKMxWY9155PowSMsQYPJxF0n2bSwWguefnxob2YKXQ1OP
-	lBzMmNUciTCMcAkkVE0aPs9u5Yr4QUo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRm1Dv2H;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775102321; a=rsa-sha256;
-	cv=none;
-	b=g7pBj7oLJqNyfcMt3eujRhOFwvwitN6CuyNBOcPi8eYhC/c3f5V+dOeCi8POmn8vhdGnH2
-	iLheNAQEp9iVeZ/yxzOpZkhxNDmvFXCInyl6rZfssEgafTsrUXE5G+7prspTifiuA28LNC
-	mE7e74vo6GC5H09XYf3zNgfHX1DyxMw=
+	bh=Lm90Qq9Cm5RCcVEpvAMpruorcfH9KoxwoU7piv7WLz4=;
+	b=CfjMKWcMD8AsF/F5nypqvXXFkKwbBiEl10/720zXu2Ou0jMY5XK3AGpUGxaW6ajS/Xt3xF
+	i16v+kbZPnrxUsKsoAuqY4KQB39P1JLBcr3NyWXXCRk9b10yQ74HNiCXvagFIcdzC37P/n
+	frFhpOlsvbwNoW6WysH3PkVelz2xKpY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 794D36185D;
-	Thu,  2 Apr 2026 03:58:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B7BC2BCAF;
-	Thu,  2 Apr 2026 03:58:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 43ED861855;
+	Thu,  2 Apr 2026 04:02:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10346C19423;
+	Thu,  2 Apr 2026 04:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775102320;
-	bh=zmuodQKqPXnJljN5/Z/DtZcXm4ZNdE8k6tsXe4+G1cI=;
+	s=k20201202; t=1775102567;
+	bh=9+/dwINtJN/cpLno+AS/FdsNHwehhVrZYUkBkuZRdV0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tRm1Dv2HmLCxo2uNB6VvMEFQo+V7D47Hcx80cMrWftIsXT20xG41Y8n1kHimrKZVJ
-	 4ql3gx6G8X7ICK5gpKMx7CQqxSesYY/QknDH5RP4F1sV+vvQ6T434en11R+GrqU5m1
-	 edB3D+ZABFVSpv9+/1t1QN+edIGFzNjspP6Vy/k3shYFUbcF4/giu71eBBUW26uVcK
-	 X0Hc30lInPezEyDmcoxe+3/IznjWVJyP0IH3DwhXlv7SBDrxPVZJYW2kleKc0o1MP6
-	 2u2qcww/wm8wvFLzlI7+Lths10620sqNiFyYd3KrALXHTjuSuyZM0CiwSLKAuDnPFG
-	 BgZ+wf7pRNQbQ==
-Date: Thu, 2 Apr 2026 06:58:33 +0300
+	b=eiA0a3IGgNwJ4HH3TnA6dyjb9dEiE9csmalxo3g235EFn4BNVs1OVmMMFeA7ns8Y6
+	 6B5y4hj47Lgh0IVXGvpD7kIqbLP0/cclM1/3/8lXLq9PAaAOL+dBoMsUMZ3Iuc1frV
+	 2VZhWJrO/voB3qaPoleaiUt38LLLJNw+Md1flLGM7wtGyNKYxKqBBsK6ea3zn+lrce
+	 +b3HT6pWP6ffo5oBbPB0VRsnxc0OYfj8XXm9GcGKoCn2ztxOKLry7K4s43bdVd9TZK
+	 G+Aq430kB4cIf+ZFWQGpUVSNGwEb3CALBTyXu/xpmzv3z1TPHD1R1JpO0xdoi8CAT3
+	 AS7Vs94KysHaQ==
+Date: Thu, 2 Apr 2026 07:02:40 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: David CARLIER <devnexen@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
+To: Peter Xu <peterx@redhat.com>
+Cc: David CARLIER <devnexen@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>
 Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
  retry in mfill_copy_folio_retry()
-Message-ID: <ac3paYh6sPHr3EJd@kernel.org>
+Message-ID: <ac3qYA40OW29ibbq@kernel.org>
 References: <20260331134158.622084-1-devnexen@gmail.com>
  <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
  <aczOCqrCx7Xd5HIF@kernel.org>
  <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
+ <ac04ZeFdz7yvByRp@x1.local>
+ <CA+XhMqz083g8D5xQ5bWNrWguwdBhFv9miMooDhDf1+862ggzNg@mail.gmail.com>
+ <ac1wW6LHzzkXBeSl@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
+In-Reply-To: <ac1wW6LHzzkXBeSl@x1.local>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D283E140007
+X-Stat-Signature: qh9p6snnf4316ic9zu9faqnzh3ftgfdk
 X-Rspam-User: 
-X-Stat-Signature: 69ghia4dunabyu8gfawewbf9h9aarokh
-X-Rspamd-Queue-Id: 4DFB940007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775102321-288381
-X-HE-Meta: U2FsdGVkX187GeF8lHfLBRo9RsiwPx24oCgKJqK5hCafpbcusPxBcj+xZ1nDFmfIlV0riOvI04JC8PEHHtZ+ejSvKFlOt/mrxReW8qvRoZGNXDmt0MRdUPvjoUFywHKDJcEg9ODr2zlQRnRDfvhVQwWU34c2RJg01qkYpTsYzdXQm3ZPPh2tbkfCZ2KdEU2dk8IcRhxIINY79D85dpIfnf/7Ym0kTq/oYNxb5GU3ilyCftbQRVE6jEDt5TYxQcj3Nbzso78ieA4njJJNwCkRPvpCpH9hMIDuyUPoFPnjBdtclerY4/QgVlYf/QVamOK8rErjusgZ7WXMENMlhLffg/9NG6WSN6X6sfy2pn+vsVG5DcCC7Ogcr1C2KkWwMnIYrCq12WKyKGbuQaeKQsoFpb9+kCwRJET65boCMJQGneG3cVOC5QMO4BRo5TfmmxiwgiCBvimr/74cDn6IVldW2C8jZaoiFQonwbMInekmGiCme62U7o7X+rxLXMlZcURccnNU9RaXWsKH/zvpLzTRrTXt968hSufmq8P3dfmls640wIuNDzfFPOlUeyM3M8/iQ8k2vcH8u+kFQqeQBbkwXKvM+jwsoh3ReE7hwsbT7H99drQjwZzPAg4x+TyFYPQY4C2Tb3UImkfk+pz8NCCgZTq/F849NaE74pJIdLuzUxZPtth3j0l4wBp7iwP19ztyp9eTH7psqz/eG8wSNfqhek7QLfm9qBjwmOqkrChsHppQ8YIXdW9x0FuJalTBldURyO8/UcI7AQ68z4MJrgM26f0ALU4AiEIkbjxLrRI148Qmd4IrdFk9PZf1gbdIV/ZTt9e5hxTvOz5HsrCbEh/cDUCHBBs1vlAb45X3yEFnG2KypNtc6IFZIzOqO2R8gcDzd17S3TWXtxfxYtQOZeO6LiYWEBkUcdGrmELvIK4soVoR3g+X7+Mo5N0eoB/6XRqMfAawB/IX2TkfI+bWM4G
- 3CmOhk64
- wtIta
+X-HE-Tag: 1775102567-7916
+X-HE-Meta: U2FsdGVkX18AhmrOcOTuWUh9FgzKEBqOT/P4Hln0zgb3XAzsSEveHMY2OjUFASf1JkuZSgYeYgNK9NPWNYOsNR3FyupTB5fqeUuaJ4i7HPqQDlHErhQzFvaVXNVZtYc+r0fpokaeN8C2AU246/MZZPy4//05pNTb5c3w/RdYylPtkOysu0W7SfEsKe+rC/VPKv7YxOJBkcfDyyHiW5Xnrfr4hU7hTb8oOHfX2S3dWqgaBQqPRDEjysjSL21VVb3POATMr1opKxQGHbAM+sG9D2CBRpgb0tQn34jF0M2HYTQRGbBDYFgDRhGPtS6tkh41/tIe4o/agNOD7yIaRiph2MJJG3z9oqCHnkn53xClRdYltoEgthSJPKim36minfYzcgRiJOYmPYHMn5pIJ2khGL6EhPi7UfACvUYT1h3DGhpjE2mgEXtaTi2BcrFWsKl6BXRvDau/IXbMG269PaEQ3ldWAjzWxN6HMq/rfhf/42WUpF07OqWPzm8GTOaVxH2AOu7oq6C01qtuY+3jZI6YfflVT++MiiQDVdLp4zvjh1fnpe9rpK3hJRbnWZXcL4Xs5UvRTZAy8rdl0R10C+79l+FudZKvGIZDh6u2i0Pgd5V760zI51qD/SCoVNaNmzKRGPUSEhAbXkZdBq8UWisPrSmh650Wzh50fKRK6f2s0HF4W918RnzRP+H/i7SLBotGgjdIYBsLRhzyCxEg+R3INSOqHKc6Ffn5xpRo841QDAEw99Heah4v3IoclY6IL+KwEjKUbDi0yCHYAqBTypc6K02pV+Lt+gG38sHUzI9HyZvzaGdGDdzekkryYmYHD9IAKKiovxnLrWuFnujkwsjDEvImVUoyfiKPy7L9qzPX2HJQ+0XihdbXGi743/HHo0tB9w7niD9VLe/ww8GFbh+alGpenHah9zGp8uEK/hcAnyKhV1VOBCMU7YZpxw25dhXVagPUOTvhCerLXUfuMvn
+ pLaxQxyV
+ DpPP2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,58 +100,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Wed, Apr 01, 2026 at 03:22:03PM -0400, Peter Xu wrote:
+>
+> The other thing is I just noticed the err code was changed to -EINVAL for
+> snapshot changed cases, sorry I didn't follow previously as closely on the
+> discussion.  I think it should be -EAGAIN.  It's because the userapp can't
+> resolve -EINVAL failures and app will crash.  In a VMA change use case, we
+> should return -EAGAIN to imply the app to retry, rather than crashing.
 
-It feels that you use an LLM for correspondence. Please tune it down to
-produce more laconic and to the point responses.
+No. The return value should express that the VMA is invalid. -EINVAL could
+work, but looking now at the manual -ENOENT would be even better:
 
-On Wed, Apr 01, 2026 at 09:06:36AM +0100, David CARLIER wrote:
->   On Tue, Apr 01, 2026 at 08:49:00AM +0300, Mike Rapoport wrote:
->   > What does "folio allocated from the original VMA's backing store" exactly
->   > mean? Why is this a problem?
-> 
->   Fair point, the commit message was vague here. What I meant is:
-> 
->   mfill_atomic_pte_copy() captures ops = vma_uffd_ops(state->vma) and
->   passes it to __mfill_atomic_pte(). There, ops->alloc_folio() allocates
->   a folio for the original VMA's inode (e.g. a shmem folio for that
->   specific shmem inode). 
+       ENOENT (since Linux 4.11)
+              The faulting process has changed its virtual memory layout
+              simultaneously with an outstanding UFFDIO_COPY operation.
 
-I wouldn't say ->alloc_folio() allocates a folio _for_ the inode, it
-allocates it with inode's memory policy. Worst can happen without any
-changes is that the allocated folio will end up in a wrong node.
-
-This is still a footgun, but I don't see it as a big deal.
-Let's revisit it after -rc1 and please make sure to cc "MEMORY MAPPING"
-folks for insights about how to better track VMA changes or their absence.
-
->   Then mfill_copy_folio_retry() drops all locks for
->   the copy_from_user retry. After mfill_get_vma() re-acquires them,
->   state->vma may now point to a replacement VMA, but ops is still the
->   stale pointer from before the drop.
-
-And this is a bug in my uffd refactoring, and it needs to be fixed ASAP
-with a simple comparison of old ops and new ops.
- 
->   > Second, I have reservations about vma_snapshot implementation. What
->   > invariant does it exactly enforce?
-> 
->   The invariant I was going for: "the folio we allocated is still
->   compatible with the VMA we're about to install it into." Since
->   alloc_folio() allocates from the VMA's backing file (inode), checking
->   that vm_file is still the same after re-acquiring locks ensures the
->   folio matches the inode.
-
-Again, it's not that folio matches the inode, but folio is allocated using
-the correct mempolicy.
-
->   The vm_flags comparison was a secondary guard against permission/type
->   changes during the window.
-
-Permissions should be fine, they are checked in userfaultfd_register.
-Some other flags that don't matter to uffd operation may change during the
-window, though and then a comparison of vm_flags will give a false
-positive.
+> Thanks,
+> -- 
+> Peter Xu
 
 -- 
 Sincerely yours,
