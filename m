@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEB21112259
-	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FBE1112279
+	for <linux-mm@archiver.kernel.org>; Thu,  2 Apr 2026 02:39:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCBF86B0088; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
+	id AA7026B0088; Wed,  1 Apr 2026 22:39:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D326B0089; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
+	id A57AA6B0089; Wed,  1 Apr 2026 22:39:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93336B008A; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
+	id 96DD96B008A; Wed,  1 Apr 2026 22:39:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2426B0088
-	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:29:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4808FB819F
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:29:28 +0000 (UTC)
-X-FDA: 84612034416.16.30612BA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2049580008
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:29:25 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mMxnb0PN;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 826366B0088
+	for <linux-mm@kvack.org>; Wed,  1 Apr 2026 22:39:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12911139503
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:39:15 +0000 (UTC)
+X-FDA: 84612059070.26.16780FC
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1E49EC0007
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 02:39:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sAxkuYR9;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775096966;
+	s=arc-20220608; t=1775097553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wmnqoq7XLaeqt8PJvJDnQ8Shu5xBBzwbtKsYJ5s3QfY=;
-	b=2bjGcClHS7zhI1p40VwCqssMpKaoO794EVB0nJj7/UKCLZESTM4EYRIECj1+EFeo529mKy
-	PzEtF84m0EBmzLuzqAAS8nCFofYKhqDW6rWt6By4Cp8qL3o6pnG863fxJUMEQxUxdRqAlr
-	8LgxRxMyEXDE6H8rC+yyh9Lc7BAr1Dc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775096966; a=rsa-sha256;
-	cv=none;
-	b=OjVCNATVPpMZflJEj2oC/9Y893ZV5QdVdA+2F1oz/qLCRmMM4paa9jr0uAtjbDWb9MUoHl
-	rMklycmB9q9Tr0KBVC1JDvy7mfrecBEGgpo21bBRHgL10Vx4Cb7QWnl5a5n3kQcTfK2km5
-	OYNRMCH+H5CgdwqKk3qkaV+elmG4l4k=
+	bh=j3m3jQtL7qDYgpW+vrpvI9VfgnJDYp7uTduhdYR8zOE=;
+	b=khBStBI5luJRKHSTiPzw/vCGq5EZpkX+YlYKr6rkV/EAeknhv7DnXvm1MtqzJZcBxszkbS
+	D5VFWymQw/cRElysmqAhY+14ibK2K0T0f9e7IMd83R5ZHuFNIt1P7tqqbsAAk731o1+5AN
+	4Gm/YSlReKdSXxaU9a7mpYacUKHDYLs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mMxnb0PN;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 046031C14;
-	Wed,  1 Apr 2026 19:29:19 -0700 (PDT)
-Received: from [10.164.18.48] (J09HK2D2RT.blr.arm.com [10.164.18.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB36F3F7D8;
-	Wed,  1 Apr 2026 19:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775096964; bh=nGSbM6iWNi54IURbVCZil/MROs/YoY4WcW5y3ipipU4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mMxnb0PN+5JHowx4quU5bYmHMjpVXMzynlXHrEmgDoIIX/TbQNMvcmrGa76T5AesX
-	 ilGG7tqqffCV+tINYeGIA1qANdhTxsWdyXKzzA22uMUyfcWl+2gH2nFMPJB2RCLgTc
-	 qnnN/SpUEGFmWY4FB3gtH/J3h+t2gLQENg+Nw8ts=
-Message-ID: <a766efa7-90e9-4867-b908-1f2073e59735@arm.com>
-Date: Thu, 2 Apr 2026 07:59:18 +0530
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sAxkuYR9;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775097553; a=rsa-sha256;
+	cv=none;
+	b=ULlq8W7uoEtkHtWKMa4IGOkzMrZqchcBrImIndvdLZcJUKXTjNVl52jhYYgIR5xM2gBi9w
+	3OEna0QKkB9iXKUbikXZBcFN7+CTtOJQ8jfpOnuwKyDpZLGnoq06poQBmlNdrEMKDWwajP
+	o7xDpyubZD8/mwiv97U3jtqj6LypIKI=
+Date: Wed, 1 Apr 2026 19:39:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775097550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j3m3jQtL7qDYgpW+vrpvI9VfgnJDYp7uTduhdYR8zOE=;
+	b=sAxkuYR9DbGtdMhP/b5j/9a1xBzaSQQky3hhK4fbJndRUz0w+hB5f3aG8Dqbxq0Ltgsgw7
+	tj3gBwwKl7JE9D4JY+O1IsYR7u67zKQBxwaYC5hIXK0xLrenr5sMbbpqAB/S9XWTxVqgiR
+	61aDdEtITtihjrCnbCClOZR8StGp0ls=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v2 12/12] mm/vmscan: unify writeback reclaim statistic
+ and throttling
+Message-ID: <ac3VV7h1fuDuUOJA@linux.dev>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: cleanup flag vars in
- alloc_pages_bulk_noprof()
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260331-b4-prepare_alloc_pages-flags-v1-1-ea2416def698@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9qexd3pjsoq5jyi6mdhkfjuff8p7h36y
-X-Rspamd-Queue-Id: 2049580008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260329-mglru-reclaim-v2-12-b53a3678513c@tencent.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1775096965-829946
-X-HE-Meta: U2FsdGVkX1/ktcrDuDoPoMr0zfyQH1KauOCygCQUDJozAOA8X0n5DWXQbvzre3LFCeeKN/hm8LX6qjxAtRJVD+0S8YaHfFn1CdRgbqeEuw9/i8o6xRiNCRM9llQjbtsMKW1q+n6W4UPQ485tfnCjYVVtUT8/8SWkzPXi4MnfIPvVdjyhkbUrgJXmRQmHLgI9S6nD0NTaVH2EKa5mJaYnAkpmGhARTrQgiKcUuhmkbBJLiMLc7sWo1NPfl2JgT3TQaY2COum0+fucjPZfULKL2x48TczT3XTNtxHcaVopU2xglk7Y2nUZRkPluA/FndBd81A+vkR7ifop0xK88gyXBwr0O42lcR0jU+emcJ5vZ5LIiXYtDP16BtUFHYxb8HwxrTMBbRt/pPPVB9j1m7FjagS1XCTgiy+lVAi99A1MkBfq71vhy7zyBKbBXCjlQ3/E5UXw1qa3JIWXN/PdZeECPUWBQSmr6RxkptorNb+5oUSsHr9jVLZSydRufx2wEnoOLaZyPSk+BMAHYIwaZ25qIylEi0vkT+q0eBbxsctS6Py/u7RNc0jdQ+AOm6izHeDmFadStpFVxbmzX00aRI9ExKoNRYoBCaCDcBtf+e2CstyQrX7es3EeuYYSHjOOL80fTG+c3h/Jk/9dOJg8xrSVlIIRvSonDp04bczXt0jJ6Vu/ITtRhr8FcxXFgMa3erRr0OjBdbso8NwN5anfXAjAgqv91DFqXIiC7e7nN2/HtFaE5qsLogVi4ucVbcDT/zZ/ttRVqX8g6l4S2EUs4nWwVispNNBEXF7SU2SP4QskyFZ3oAk/KyQO4DFNga8W1huL7G+cOJqreYo/JyWk3osuI/HRYPR+QjSynG3CiXp1dmFdH23n78tqzvuLop/hr2zoo2Lb+8pFLT78bWeIxS2GsqRtn8E45GB3fPBYPelkkFYIKkKCC9VCfLMQ3NoosIvcqBX75ggp2rvSiFfAUxh
- mDOU1QFY
- qRrEZj4GvE/7gUg54RSd7c4vS6fyoXoIrSh5o8ECSuG1NxT5SMZI4Hq4W43GBC1sVMcOAOWgT6ZMH7OpBrTaYkLY3QQwqdpoxBz/G3IEFrq8N1rKLRMVqsdpzDP/ATwZyG4vz0AP8/sRZTSOEZv3iXLWuRvfcFXDIht6hixb7TlbNcCbrQHKITQAhy+3+I+ogN4dABDtVQwRJHaHDA9wFwks6aS86+RxEPQyWJsCV/V1ydvGWgJ1JNoMdKFHKPkmVU08cKk98nuHfd9DIAMKiRPeEUHRyYWOX4DNDdZ/iUKYzrUEVRkRInSQuMys2Rac8ozPthvSoANM/F849vYjzISfhENDTeOoO/hVhrfKznXK4CqA=
+X-Rspamd-Queue-Id: 1E49EC0007
+X-Stat-Signature: z6pzirmjdisf4j5gpjxdynyqxrdjdikq
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775097552-652236
+X-HE-Meta: U2FsdGVkX1/IWzurKt2vzzhvGIIm4oCz4PbaxB/GmnDN4Raqr1+dHoEQiZ9PfVnon6o5geDzbq6QsLR0DCRGeDHgU/1GZ8YysOHKaWwK/3KT0vn/bVmnfoqzsZSARKipCDG0srE9EqWM+bdEruQ8Z8kP5iPin2ydJdzU+igQTIoLASCx8iSjUgMTR2yXAoOiaL48W3vNdUkFk+5crWJs7EJibvfhO95csdOibhsYjvnSViCRmGwnakOWkfvJd7mg4H3WO/6pgWqdr8gM3+PgNk4f3VHhv9DXxlGMLVqctn0CQNcUID8idnSgleooH4YGwmW2tAkBaIi17z26PprW/BGYE25nXcJ5fqJD1xST5ss0UHDUcg0cvFia8n8mo4qSRH/1E3WLrZG6xd6K3aQGhvbr2rdhd4u+hL05vwLI/v8cMieUW30Jt1HHsoi6ZhrAz6oxy0o8qNT5zE6G/1/pfS8WOF+pLeVXkMnh7Lkbz5fjC4C8ohhrDB/HXHu7YuLHXqO91AMdtf7SXf1kkLDQHImSp4HJadpVj+/6RVopIiJFN+2YPQ0JWCl2azx/IjGYfPJyKqN6Ob62TetwFs8JcmakJ9L0OPDnemi9G8y4bYgX1lyulu31fzx9ldJa1mi1g/mMwWrPPiZljnKwKRS/JkUZpMyilOsYbYDZj4llZgsjQ1ay27crfMci6AFkgX53vVV+CK+SRDMlFpbFWvf5+iUYAfvHcteq2EZ8+dqf0aPEl4bO6xMTc3G8eWklsuPZ01vlE9FKTCT69UZTwI8ouKz8AK87FdJ2B1Ykj4M3VHQpR9RbDjrYj0vDyrJajFwnG4OJbrgV2vjjvBTLn2VJc8eh2juk7xWi5x4yHv+h+OJHEFazrolWebFlQteVrIR1mwpLFD7ptRlCYbFrK8PZ0lLmi0A1T4ksUAyMz+H6nfDsEMfJILrZHzmHiupV1vkrfuBzEcDzd/Egf9F5y4I
+ 8sMFs01y
+ Pylf3jpGZ9qaVr6SFl5UzEV6HrGSOMUhrtz71OKO+RmrwspXVH9lTBg6V1m6ZsTvllAvos0T2Etx+Fmyq2Xx+7p/nQzlHWsDF/IhE3tq83WpBmq8oiq15XzGINNcS1MFgpmbM6Ac6V+ijN0VJ30EzWMJ+QeYKkBz+PwplSDzpfyaB1yMJ13EEaAJ8WsC/7hBqX115bLZ4Sd8pm27/0PqGtlKLwql+cTvTKvYobMTo1290dgIF1ypIfwWUwyQy+ABkGc0GI8S5cXDGmZWNc2RiL8A51qXO/yDRUpgZaSmRihFHWeBidGByMLi1hM/sCGUkVIewG1ONsCsZ+Aw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +97,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31/03/26 4:22 PM, Brendan Jackman wrote:
-> These two variables are redundant, squash them to align
-> alloc_pages_bulk_noprof() with the style used in
-> alloc_frozen_pages_nolock_noprof().
+On Sun, Mar 29, 2026 at 03:52:38AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  mm/page_alloc.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> Currently MGLRU and non-MGLRU handle the reclaim statistic and
+> writeback handling very differently, especially throttling.
+> Basically MGLRU just ignored the throttling part.
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 111b54df8a3cb..5e280ded6e7ac 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5051,7 +5051,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  	struct per_cpu_pages *pcp;
->  	struct list_head *pcp_list;
->  	struct alloc_context ac;
-> -	gfp_t alloc_gfp;
->  	unsigned int alloc_flags = ALLOC_WMARK_LOW;
->  	int nr_populated = 0, nr_account = 0;
->  
-> @@ -5092,10 +5091,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  
->  	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
->  	gfp &= gfp_allowed_mask;
-> -	alloc_gfp = gfp;
-> -	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &alloc_gfp, &alloc_flags))
-> +	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
->  		goto out;
-> -	gfp = alloc_gfp;
->  
->  	/* Find an allowed local zone that meets the low watermark. */
->  	z = ac.preferred_zoneref;
+> Let's just unify this part, use a helper to deduplicate the code
+> so both setups will share the same behavior. Also remove the
+> folio_clear_reclaim in isolate_folio which was actively invalidating
+> the congestion control. PG_reclaim is now handled by shrink_folio_list,
+> keeping it in isolate_folio is not helpful.
 > 
+> Test using following reproducer using bash:
+> 
+>   echo "Setup a slow device using dm delay"
+>   dd if=/dev/zero of=/var/tmp/backing bs=1M count=2048
+>   LOOP=$(losetup --show -f /var/tmp/backing)
+>   mkfs.ext4 -q $LOOP
+>   echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+>       dmsetup create slow_dev
+>   mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
+> 
+>   echo "Start writeback pressure"
+>   sync && echo 3 > /proc/sys/vm/drop_caches
+>   mkdir /sys/fs/cgroup/test_wb
+>   echo 128M > /sys/fs/cgroup/test_wb/memory.max
+>   (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+>       dd if=/dev/zero of=/mnt/slow/testfile bs=1M count=192)
+> 
+>   echo "Clean up"
+>   echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+>   dmsetup resume slow_dev
+>   umount -l /mnt/slow && sync
+>   dmsetup remove slow_dev
+> 
+> Before this commit, `dd` will get OOM killed immediately if
+> MGLRU is enabled. Classic LRU is fine.
+> 
+> After this commit, congestion control is now effective and no more
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+What do you mean by congestion control here?
+
+> spin on LRU or premature OOM.
+> 
+> Stress test on other workloads also looking good.
+> 
+> Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+
+There is still differences for global and kswapd reclaim in the shrink_node()
+like kswapd throttling and congestion state management and throttling. Any plan
+to unify them?
+
 
