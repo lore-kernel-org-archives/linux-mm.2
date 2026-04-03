@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C4F7E7E375
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41454E7E36C
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 12:02:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B8526B0005; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
+	id 80A2B6B0005; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568C26B0089; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
+	id 7E1F86B0089; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457386B008A; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
+	id 71ECA6B008A; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 34CA06B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B666F13A8F6
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:57:03 +0000 (UTC)
-X-FDA: 84617093526.19.AA61189
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 63DAD6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 082C0C2453
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:02:27 +0000 (UTC)
+X-FDA: 84617107134.17.8CD34AD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 26F031C0003
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:57:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WExiF/lE";
-	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4009420015
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:02:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ul3iLkil;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775217422;
+	s=arc-20220608; t=1775217745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hlI1RBQqJjfpWuFZsCc6c4R0ASQxP62EyBGuIa0hpOs=;
-	b=utIql5saTYzrxaPMlZsk1H8dlaluO5luPNwiF8ZauIYd8tQ1TI7rSw1Sgp2A96xQmkw7Wi
-	QWp8WqgtDIHXobSPg6SC897rm6zzgJaicTtfT5WwqHtwVScPrEdSXLRLgsItjI0pcxcwvs
-	kzxtFuSgn9xHSTYIo2rbTndv4bfRB54=
+	bh=jsx1GuxijVxW+bBqj2lr+ewqYcPYLj2e+o4huqXxtD0=;
+	b=Y4BNlZJGhC+4GEFBnRe4dNUunhuapb2WK3R/9YcePMuZ3LaVWcSpHU/vPWcK7tPA8j/unD
+	BKgUErKINtlu63OGy65JtrWdBRzLk5Gl1bd0ny4RZKYTx9nrLs2vLGWAunjf121Lop6zft
+	7wTKi9PCtGyPO2a1IB3SzMniXPKCyls=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WExiF/lE";
-	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ul3iLkil;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775217422; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775217745; a=rsa-sha256;
 	cv=none;
-	b=YvTDKLlb9QlJ/++LWXd0W+YhV8LYvcIRuOzBRLIUSR15TETDwNhRczGZN1SWUVrLk5c1ul
-	Vhw4kzK7fqGc8cnPaGMfRgTr1PffzIzXPFWrSDvVMq9PR7RCwmMXTEFX1AKf/Ovmbw0fRf
-	3OI/FmJTUaEc3HGLcz3NLWWq13TsKzQ=
+	b=G8mkK38cpCToJZ8NAUiaITZglfOTBEE1HC+aU7zk51iBEQeIX/0Hsr3X3raPzj0b2OK4c9
+	ExMbIud5/gKdyFfWHD7QWEMMf8ivUUGAh825paG/0L4UKI7BZXxwa3RbO9AAAx97YbX7IY
+	f3gdPd6LtBHsafJ/pYthMPGoCUtdBCQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 975CF60121;
-	Fri,  3 Apr 2026 11:57:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F48C4CEF7;
-	Fri,  3 Apr 2026 11:56:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 92E1260125;
+	Fri,  3 Apr 2026 12:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A190C4CEF7;
+	Fri,  3 Apr 2026 12:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775217421;
-	bh=hlI1RBQqJjfpWuFZsCc6c4R0ASQxP62EyBGuIa0hpOs=;
+	s=k20201202; t=1775217744;
+	bh=VmzjbV92+0hYtn6qtVAWC6sPODyuGXfidretO/w7HaA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WExiF/lER3/HxYWRZ7/VYGGhEbpEpz9xoEPNjcsCFvTGNpufubq1/grWFEw4iuMUy
-	 OoXV5ZN9cvTpw+MrimzFf6s9HmUgEebMHP6rxEPoVqpOak+AAKYreCCI+aI8f5Gcf8
-	 zd3TXBgf41BbeUDYgDIMBFsxjCPG+plKws+G4eTYF97BpuDvffRy9f5yT7XQBVGQbe
-	 XqHjaEsIVjnSBX+EIpGZbUC6lXfkWCjygMqGuZgL2M9uFpPhtTcBQ2hiVkdvbT8xp0
-	 yn+PYHPMRpNNVo0RArrBjXz2Wp47lKN2V/BGSRUsMLv3YU6gYJZRfQsOsmZPjmN+O6
-	 y2sPDI66WCWpQ==
-Date: Fri, 3 Apr 2026 12:56:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Paul Burton <paul.burton@mips.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Eric Dumazet <edumazet@google.com>, Toshi Kani <toshi.kani@hp.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Johan Hovold <johan@kernel.org>, ardb@kernel.org,
-	catalin.marinas@arm.com, chleroy@kernel.org, david@kernel.org,
-	driver-core@lists.linux.dev, kees@kernel.org, kevin.brodsky@arm.com,
-	lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, maz@kernel.org,
-	miko.lenczewski@arm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	osalvador@suse.de, oupton@kernel.org, peterz@infradead.org,
-	tglx@kernel.org, will@kernel.org, yangyicong@hisilicon.com,
-	yeoreum.yun@arm.com
-Subject: Re: [PATCH v3 9/9] driver core: Replace dev->offline +
- ->offline_disabled with DEV_FLAGs
-Message-ID: <57452867-60be-4292-9bc5-4e2faf1f3cb4@sirena.org.uk>
-References: <20260403005005.30424-1-dianders@chromium.org>
- <20260402174925.v3.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
+	b=ul3iLkilKYa6CqF52Uxgm/E7xbB+YQGSCpMxX3q7K52q4NPOuhWWm9NYssRVlxWA3
+	 vg+RQIN8ItHom+SqyEde78040apH7Y9sKL1xWgKmsSiX3s/hj0btv7wt3Nhf8D9vbg
+	 o+C916r6YtFFBTfcptc1A5LDKralPmFD8ELuZfCt5SVJCtLU9+jeqpOLauxT64Gbzn
+	 q6PwvKXoEB0pnYHBpTnkNdAPWW2Pl2tsrNyNmtmWkj28GBOGYQol31PBCWYZPceJNW
+	 1lGnouwNf9nuP2KRsV2xw3g4eEG8IIwgE8ynE0w0okPCor55B+KZ7ydgwhM1kT64kR
+	 MJLhYnNX+VjDg==
+Date: Fri, 3 Apr 2026 21:02:22 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] slub: use N_NORMAL_MEMORY in can_free_to_pcs to handle
+ remote frees
+Message-ID: <ac-qJ7tYQ-ybegOw@hyeyoo>
+References: <20260403073958.8722-1-hao.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="AVRN0JUTTuR+6v5a"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402174925.v3.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
-X-Cookie: The Korean War must have been fun.
+In-Reply-To: <20260403073958.8722-1-hao.li@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4009420015
+X-Stat-Signature: i61jq7gamfc6jdcwu17umjjd3bgtxgsq
 X-Rspam-User: 
-X-Stat-Signature: ey834rhaocaopc7dnxymk4mmuqge7dsx
-X-Rspamd-Queue-Id: 26F031C0003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775217422-876186
-X-HE-Meta: U2FsdGVkX19vr+/XLtGH9OVxRJRdsBP4bcDj14gebhllXanojuKkVcHU7U5ciURQb/mMFu/ZYOHYIQAtvcZHfAXukNzZ5it5uEiwH8v84JYOjr59uRinIoLWc9opuxfRnHSpemQ1RzItx2STr8r6Q3zb1dZO3ibOUzs4t1W6VNTlDRU5Mobc4IHyOfFFJUmJ0cYcDe1UN18DsUu2+Dho0Ac3LJKbxoFBttMZ7Lxp+qMTBqbJk9GtV+PLjEYo00LnfVwO3pAVhO26FcsHTmJcUrwS2oiPbnchCKll3cHlvG8t00MGDInenCsl9j+Ol664jz74ri0BzOOCVfkDOIH+ae0R9qw/lO3qR/+CA1zZoY/zYjVgOl+GzOJFkDlGHQ4zPgBcQzTb7Xusl7G4uwwIXHg9krKumvNFWOnb8L9BMO86TyTikf8HPRyXbZbEPYfQXR+MeF7ruHA6T3j+dhEntzWnYf5ELterTqzkXQ9AdG7z60cVCnw5gQ4SAQTRPUfu+ZlpLtwCslV2Iem7PlZz2amS6yc5sk3Z7dPePtOl4ib9XLLmb2Y8oB7qK17PR1Yq1WccWmWN5PYvcwB+uw1Inc8etH1dtupL8HSTAuWBJYf6oCwuEMlYAZ2wYGMXc3oP9/hKILJxedC6OcuEXGbaUYAkaqFM1fHcQ/3LfT8x6yxNaXMfECY57IjsWyk/CltKQp0iKiusuWZ2OyNEThxGlnxVj0T13RJQQ6A1tZZSoywltMapwR7gad2bkA2opbRVMqFQSrxnFUGvv8vp39XeGKQzoSpRVqwLBc6qyuTNxQIvM+qK0J3MTNTpBLJ9SERgfE9JVJWdA68D7vTaLDJQTMI3QtYgtURMkE2uLDW2pS3dhlBx5LULLKdacw5oyZ6aJxMov+fedZlsK8rx0pl9Pt2/UFT2zVosY/sMRyLML3Kq/Xn10LYDUPNr28g61vX47tbjY9Z6t5fCabRWWed
- h7ar+rwo
- v7tqvPeewerCHQR1A1dADSeNzroVK/8+0/Hp9ZfVGvLNNh7WWrcCjOy7VNN7BKLWQFIwJXTI2p7XAOEFSBMV9zb48rfwLzH997ZE9CvANkbveuBlEpZ+Rv/idxHrRh92BTnggfXu69crZoOwP54dsiNfatbbFxVnlOZqU3xJyf20MiB2RhfZjrAovs/y9CyWj5riDC0HpsdChgREDP5SY5YvShuGszgzTgTo1xAJnh2JTUmPezsZxwagUuNYdWf5h3jGReMR2qWs2I1ISOCkrXIVtLeC2P8zRWeVmAoRNg1kI7f1Ni7M4uaLy+3rvg690o/K0chNRkrJe7HGeOjrbO2s47qUyAJHPlzBLbcHJm/XiwL/hfedGcofgHs08xUQzgp/s79eNZqhhQ9QuudapLpW4BN4Z865rJhVE
+X-HE-Tag: 1775217745-683899
+X-HE-Meta: U2FsdGVkX1+G8zL281NBYlrnejnXFstig8hc7DTFuBoQGAR96C5FZaPNXhRgzO/CZQFtlqoGrAzq8uqQhRhmqRKGDgq+BXv6IuYoSN8zSGgGEFni2Nd3vDbiddIwNOPLJXgYP3EGTLvqUPtufS3GxefUHs2Y/P+nCn3NRTSrh+NLM41ha3PZrupFl0vcJcNJlUJWgiu517zb9/0ke9cXHuvj0n+574OXWzu3e+/WsftR9OfP7W6HdM70FeN8Nc+kUoCqa4kJmSMky3Xle6G8pJNs82P5nHhP1JqWHQMX+wbRO5Gow01DUcdt7MpAukIn1/XyNNRiReZdhPKN7T6YuCj47wWvIvM4PMtB301on0gramJDLh7ag1qMbHh3cVWlfvwFkA9Sjz5SDPPxkPM7uSEaCT1V3o0P1L8EyzMRjadwH8sqsHgAYdjVaWfruXdWPpEUbqHBycro0rVgfpw0ERryNH+Y8KaIhUbyK6uk8CeTOv7+Fit9O1J54Hvy11Vkk0i8lFFgRQ2QqU9MNXVC3l+baLPz7+6LVqzjTxN3gPb9NUUt5bafMSMK588KLSORgVj+9FemAN+wCrsEc/HBbtxs7XF3qpKGQqk2qioqBF+Zf1yfF4OmuAhcgPCUZiOFurOaaDXxK54eC48f1bbJCpePHzHadrTiMkYrOhOkJ87ORuQmqZifpuBDyI+xAfXKWavgINk4BXoXfFtMYTRSuOqAM7aSXRdocvdB2eyuQVMFLkqcgrXJq6cg8IO+3QdjAECHBI+kLduK+mmCFNWVJDzM1ly1+N2hsa8NU5GeS1KtvlIQNoUzxHUiesPPDe2dAzkXJDs7LrFVhagMIngi1km8oe0b9OhPRoOcaMLikAWR1PizHjEFAyzEHtmA79Xzz0Jn+0HbnGaO/mmgzJsmgnf+f/O86jW1hs+4iqHnpcrZtokLH7kLRF3hTrW+OJfiWxVackd/p2Z3iIGxe8k
+ try/n2FO
+ IJZcAEWxde5Yrf2g61mgSWUbxKSY+cnq/2I87IlOqBWve0UxYiMcCTQAn1fl3To44+SVhsmD8SkQDKgwPMbptdWPpoWTKUY+CXlLWt7VV0hu8IpnG7y+rDx5OwAl3j6+xc2IAWjSmSth0JIdjjIHAoU4NYcDAsud62We9vxMXRtJ+3UtMfoDg8/Hijfgzh8YIe/MDQaiT/j42B+I36eC3XW7+BwuRC+bPlPPzJvRRoDr+uQjoaLhJeBpJ7+KPsdxi7ch26tTLgbKIxAGD964udh8K1q+nJrqB7DPzlvD8Al63CyIJL+uS9a0M+xrK6qQBtcj1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,32 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Apr 03, 2026 at 03:37:36PM +0800, Hao Li wrote:
+> Memory hotplug now keeps N_NORMAL_MEMORY up to date correctly, so make
+> can_free_to_pcs() use it.
+> 
+> As a result, when freeing objects on memoryless nodes, or on nodes that
+> have memory but only in ZONE_MOVABLE, the objects can be freed to the
+> sheaf instead of going through the slow path.
+> 
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+> ---
 
---AVRN0JUTTuR+6v5a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-On Thu, Apr 02, 2026 at 05:49:55PM -0700, Douglas Anderson wrote:
-> In C, bitfields are not necessarily safe to modify from multiple
-> threads without locking. Switch "offline" and "offline_disabled" over
-> to the "flags" field so modifications are safe.
+> Hi Vlastimil, this patch depends on a prerequisite patch[1] from a few days
+> ago. I'm not sure how this should be handled.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+> I wonder if Andrew might put them in the same tree.
 
---AVRN0JUTTuR+6v5a
-Content-Type: application/pgp-signature; name="signature.asc"
+But it also depends on the patch series
+"[PATCH 0/3] slab: support memoryless nodes with sheaves".
 
------BEGIN PGP SIGNATURE-----
+So perhaps better send it to Linus after 7.1-rc1?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnPqwIACgkQJNaLcl1U
-h9DTzAf+NmJvooER0KUGxju0cXbQLPzjhe+zmzezOQJa1zXjXfgBycnhieaqK7ny
-S+ZKb3sGXOFz1uf62w0rkTigz6ZBhVej2811kP/v6hOK59NgZZTJQfO8dQuSxEnT
-a/yLND6ngy2gm9svEKalKOxPy9JbUJjkq+j/fHmoGQtgZJzi3MQgf8Dj9JD9Hi9K
-CfKa+1VEAm39ijM8hfGOPXIHopw7PmdFfwGHkxLjmh4CRnWEhvWLFCPR+FiBQ0Sn
-XrkEJ4xDFRK5m2nxMzIK4mnPEH5oNBFredP+/WQ/ak8W69Tqy7XcVG1E5yZLgzci
-4Y9/xe7D3PUt6PvteNaqZANk/e1zpA==
-=qXM/
------END PGP SIGNATURE-----
+Thanks!
 
---AVRN0JUTTuR+6v5a--
+> [1] https://lore.kernel.org/linux-mm/20260330035941.518186-1-hao.li@linux.dev/
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
