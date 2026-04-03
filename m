@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE1FE85379
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 16:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0257E85379
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 16:20:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89B856B0005; Fri,  3 Apr 2026 12:19:11 -0400 (EDT)
+	id 3E36E6B0088; Fri,  3 Apr 2026 12:20:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84C6C6B0088; Fri,  3 Apr 2026 12:19:11 -0400 (EDT)
+	id 393976B008A; Fri,  3 Apr 2026 12:20:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 761FE6B008A; Fri,  3 Apr 2026 12:19:11 -0400 (EDT)
+	id 2A9DC6B008C; Fri,  3 Apr 2026 12:20:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6329E6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:19:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03EB81B747D
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:19:10 +0000 (UTC)
-X-FDA: 84617754102.07.5A194BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5EF8C140002
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:19:09 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gElMBkaZ;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 167FC6B0088
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:20:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6E071405A0
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:20:54 +0000 (UTC)
+X-FDA: 84617758428.16.E9A7AF7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1D837100008
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:20:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jBzEjqFJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775233253; a=rsa-sha256;
+	cv=none;
+	b=LGIuLapJMNGRX2+gmK+0CTI6tn7XZfJ3AFI/wDWXl1rhLFDCGfbyGZudu1o4ER585S2an6
+	op1yCz5NsfnE8JyCxmRPAhp339uq++8fUgANaxAL6t4onquDjaUyu0SyrVOVhTgVx7T9xn
+	jzSaFXIRQ8nfMkXJWXXZHU903RFrBXo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jBzEjqFJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775233149;
+	s=arc-20220608; t=1775233253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/x6PubSKBcYK5CvmIxhFsGwLhN/3AOBJI+MPs9EAl5U=;
-	b=UX/rlvFrTIvD5PORi9LrKl6nHVaNg/Ko/g1UnfaBUtz5ReNCnS7UF0IrdW7Xwn6PtmB1kv
-	1SP9LzZmv73tBJYd98iEq0bQVIrXUKY1M4xi2DlmiWLEFgPp8OiApmKivFzXBS7s/eO491
-	QRJaC4KzrT9pL4NvZBl5Li+iSZsyZeM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gElMBkaZ;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775233149; a=rsa-sha256;
-	cv=none;
-	b=l7erjN413kWOd8t5xwyfssaNbDlB1ztM5na1ORECZ8GJesjyIVQRNLMbFtK/ENn+vJ1xoE
-	e7+HstPkqpvAGY/mX/sUL8q+7yXp1mxNIahzgyPvgITNBZBsEwb+uMOrERLXeB0Cx7dapW
-	quU6LpjxuHb9fQsl91ZNlwY8/B/f1h8=
+	bh=WyWwbywyFG2+6tMdPjxz63AeloBrH4vXhuyqAGdaDK0=;
+	b=dZu6042GnWSdGMiY9Tr4qHcoYgaGmKIYQYxaoHGvb1Z4mdA1S0e5u5K+TqkHVqbWCaePGy
+	aYRUaT2ZnjkOzaL3xmKpN6ABQ+UYMfYSEu8pF1iRg4mEUNQMeCkx+n/dD4YlfLdpw5evHg
+	H3t68pC1D/MYTI5sbb5Pn6bQvT6rtCw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 731554411B;
-	Fri,  3 Apr 2026 16:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25748C4CEF7;
-	Fri,  3 Apr 2026 16:19:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6EB4E60008;
+	Fri,  3 Apr 2026 16:20:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9875C4CEF7;
+	Fri,  3 Apr 2026 16:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775233148;
-	bh=7zNWqrKWKBGHhtfMs4MAPonKRcJZcjaQjimH+qICKwo=;
+	s=k20201202; t=1775233252;
+	bh=Ds4Y+cyyYXN24nPdjxMnzx1viX9Vnik98lXxpbdexNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gElMBkaZhsPp2UQD5QMhiSn6Gi1LPsK7W5mjeWHtrWDbbuWe/vzrR2H7suSKrSSxE
-	 yVTIKTnEodC+Fjb5DcS9YA+YgcjSQ7PdoAcFzUpHJu7z4IKApte6IXAL+eBQnAlqDL
-	 dbUDB7i7YNZadu1LkjrQTtoS9vi9gvZvlptx5XDJSZ3MIcVXXhdhuuV0I8Ow3TX+K0
-	 AOscofgmFB1h6N54lzj+7hrUifWij/dPRQgH1xk+gL9RPohd0jYjUEEHOBAsxgswms
-	 iwTloVCgj1rZDBqk4tWxGI8OV4TPIWDo64W6QJNYceZ7M3+io3VtGuMkzHnL4seJ+4
-	 7cm0rwp5B19lA==
+	b=jBzEjqFJ1M2qH9kDhXArAiBA52bw9oPlUpcxKq2q+U/lWvaDw3J8QC8jOFGh/G/lf
+	 KfdobvROy4Jj/QIhPTA1+wq8v2MxUx8UyMZS6zYFcxoLUzvEJrV800sceWdXm1rHxT
+	 JrJ1siN49rXwG/EHOhrNymsDa6vV9ExazJceml+wMWRIKeYha4V7yZI61dItQbTA4w
+	 rUz5HMe401+QZvGMqjIDijYrgVYdLUVF1q6PY81MiaJlC+DK7wqsz2/PUPLVjxqH3E
+	 kpo0I1RnHUnYlVgtOsfaadZJVGoGVS0vlmGy2rNsekQRKmMC4/yLa7U4mMrS/ORDIE
+	 T+xNsYlufIonA==
 From: SeongJae Park <sj@kernel.org>
 To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 09:19:06 -0700
-Message-ID: <20260403161906.65008-1-sj@kernel.org>
+Subject: Re: [PATCH v3 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
+Date: Fri,  3 Apr 2026 09:20:50 -0700
+Message-ID: <20260403162050.65121-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260403052837.58063-2-aethernet65535@gmail.com>
+In-Reply-To: <20260403052837.58063-3-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5EF8C140002
-X-Stat-Signature: etpjgox4ysouybcos5ynekxhtomhd74m
+X-Stat-Signature: xiejmgp6fp5fmt54oty57zr5emro7n9h
+X-Rspamd-Queue-Id: 1D837100008
 X-Rspam-User: 
-X-HE-Tag: 1775233149-819904
-X-HE-Meta: U2FsdGVkX18Df+FrL+PkLlPIBCItmraLaOItHcoJh61gwPn1eKfuC+Neil5h/S8zZ5xOXuz2kYk3AwamivD4Y/nX5HOQM7rHnawEWsoAZjdtUm1bE+3Ml4J6BcW7HipROBs8zr/iwS5fHvU7UQAtHD0V/wLVdEB6hDAxBD4c4PPathQA6VauYJS55Sv5l9Dl2Udb7R6aoCIHsz0DJJw1FfIpezsSEe4ATKC2cgZJMWd11ZHCl5p3NLiEkEs5if2LF3seVM3mVhVGgg/ZYkfHxBjb/uVQOph/80Ua5y1ImaUHbQvTQ4Zj0cZh5lRNiBkukhJ2fkfPQNge2U7s211CJDmaq4z2zlF4fttWTtNf4BrGvPbfue9bUrZnZs30A6F1StO0RwJrrCWwgWlo7CBNIkJI4XIclbaLhyUdKEtR3U/PiXO/Mzs4h31Z+Ij+SnRQkMKx8p8V+sUKNrFWB78/7EYtlsmX+VRF9Qvf/oZ4eRM/WinPoA1O/S1HDds8NyWzB6bXn5SJ3IC2fkO4kV0rNIvcAu30DC5yUdKVv357nrKI586NVr9HqBCDeSupR1Rt08VnmLdd58iEmZ4imqguqxhmZMPls5Ob+6tzDbz1KiBXNTR98hmgjLsucvBjxc+mo+jeXeDRTVj49vBudzUVy0mQdC2RaI21vsXYLRtVS4L/Yyi4CLYei5kcyl5y/ectpTb0Oc3pzFhd82ZBQ8Bo/D8EQ5l60R8tciRPhDvpDtVG0bxnJV1ifLm8yJw3uPWMpR6Bp0aEerggh6N2AvILzHlREHYL7NpyM5ZC5ojfK6RyTewGyWGjF/UBh2UggcbJhgokwnjdwayCOUugDxPvaTGu8M5pXahz256MRgMwzySzMjnrT06SYYxR2gtsWnWPprEXVLTIvTKpOfPkZ+qBD0/GkfN3atFM5oq4EgMOOsSX2tdUCR58Ri4jaBFjwfwITi/ephC0Y+UjI0TLJED
- V6nIAg1i
- +NlzGc3XXw3sXINvqu3Eppq7Fu4F23EivmgVViwAbetFI4GpMlLWwHccMES8YqNd4o6YIgxMPyZzdmozmAaEFXgVDBw0dNcrTgZ+PKsQa7WxasjZAc0qlLhbUGZoMxDUF40b+1tGM52q+GtjEcmsFUJZTId51SlLsY0kSn05hPa/ASarSfiLm00+D80D+PflFLgn2mFScnmm4u1VuU3QE2zJTsckybE6k41KQkXpkGtNKwnOnViYU/cP/ljl0b79ZGq4+HF7Vv7oDTRsHEH3lfh0PYBkOWgPXSWzjgqqrND1wdiQ=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775233252-814170
+X-HE-Meta: U2FsdGVkX1+Zfx/Qu7UhNtNItCcEV+PI3YJYL04jbg3ElYBLmqQchlmlVGLdSzi7niYNLREUjWE5O5Lm5+oCKZ823DAkh/eCW5ZQ8Td6CcmlI7mwybwEUbPvsUCODKk8G8wSFayZ2Nk0EHtSbyj3b5vtS+MfnJmdvQwg5uZmHeIgbpY2+OmgzMopJOqmU4U56yqXb9HEEp308diozCHoOh1hFuh1iCUr9FS1o7IFGM/aHCPYUyKUD78g5uEtBKCzt6x2n1aNzdngnI5EY6GIqAd1Jf62+EobHybqfRWP8iwtRLOmgAGqPDF9mi4oS0AWImyDCFXcGCLsc9JtdkF9vNEYFsIH0XDIdQ/kwoQ885C3OeX05Z3lCwEWm7SBqWL/EG7gQpUr7BXwBQWmcxlrAktG27xChAYuCbQ9T9Wc7mp/SQcNSEMbEXOG69BaoBcR3CDLDdHBmC7KRf70MXMfC70VpYSZOtq21vGruNzZ+c5caqALX3FGYk9VPQdo2u6nRvaT00DX7j7CHQcoI665Cz//P+hfdqQEtKKNLV4tT3MnhrdkQhIkSDN113oA+EJLWqGEo2TY4sQjh0wiDlHOZGWEYE17sv6wS1gaeqS4rhgljXlrsZRrRxxJUu3zGik1M7h8otpGD6iAs/ewnjU6H/4EAVI+xbp05LgCDWER6mjpolQs6ztRcwJBLXiRKd8SbW66gk5ITeyKLgKtI/nNoXVwmWmwSq/BwLXLaCfolHk8MhpjVbhUvFA/qycPPlmrRcSxkD521XqnsYR8n8bQcBhPepN8fen6Jmr99pi4vajPyKsypUEaqT38uegHz8NsrpTZC1ifxFlAV8E/7sOWYcToDclLIOqnnOoR+xJKHLs5v/MHrhOXKeIs5iFd3CSq2WH6LOf5fC7JhSn8r6UzRo+SFvXdOBbI4RejYpDKCi9ARBGcwSBiOCiaZaTBFYKEUSmsJn9aTT9PEpUXT2w
+ H/EoaXue
+ xlA0nwIJ/NVWoE4axNar52xJKp/sc5I86H3w9MAC+70asrvUQ4Gng9pbiUe6Y8NjxXAgaZIvz0V6zCTSRaFebf0Df4OsHvaScusp/ipGtPt0hsELcJV/2Q4wvY+aar8i+o/0xQ5yWkAphYlcsXva0Pb6S7UOzUBms2oOyBCr1qj5P4nP/BCTDQ5cXPhDZUuOgmso/ixwKgGEz5F4+01mSOvtiMqfHEwr3loBs8SRoBoLJdp7PZoGlcKh0+otSGSIuoqj6dNxmZg8NPaQpM0rVOZE198P93RXV9zFb7dK1CEdJJ0s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,66 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Apr 2026 13:23:49 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Fri,  3 Apr 2026 13:23:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
 > The damon_commit_ctx() checks if 'min_region_sz' is a power-of-2.
-> However, if an invalid input is provided via the DAMON_LRU_SORT
-> interface, the validation failure occurs too late, causing kdamond to
-> terminate unexpectedly.
-
-As Quanmin also asked, clarifying the unexpected termination would be nice.
-
+> However, if an invalid input is provided via the DAMON_RECLAIM interface,
+> the validation failure occurs too late, causing kdamond to terminate
+> unexpectedly.
 > 
 > To reproduce:
-> 1. Enable DAMON_LRU_SORT.
+> 1. Enable DAMON_RECLAIM.
 > 2. Set an invalid 'addr_unit' (e.g., addr_unit=3) so that
 >    'min_region_sz = DAMON_MIN_REGION_SZ / addr_unit' becomes
 >    non-power-of-2.
 > 3. Commit parameters, and observe kdamond termination.
 > 
-> This patch adds an early check in damon_lru_sort_apply_parameters() to
-> validate 'min_region_sz' and return -EINVAL immediately if it is not
-> a power-of-2, preventing unexpected kdamond termination.
+> This patch adds an early check in damon_reclaim_apply_parameters() to
+> validate 'min_region_sz' and return -EINVAL immediately if it is not a
+> power-of-2, preventing unexpected kdamond termination.
 > 
-> Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
+> Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
 > Cc: <stable@vger.kernel.org> # 6.18.x
 
-I remember I suggested adding stable@, but only if you think it deserve.  I'm
-now not very sure if this deserves Cc-ing stable@.  As I mentioned before,
-there are multiple patches to review in parallel (you are also having such
-multiple patches in the queue).  Please don't expect I will follow full
-contexts especially when a single person posting multiple patches in parallel
-every day or two, and bear in mind with me.
+I'm not very sure if this deserves Cc-ing stable@.  I posted more details on my
+reply to the first patch of this series.  Let's discuss further on the thread.
 
-Sorry about the limited bandwidth from my side.  You could also simply slow
-down your pace, though.
-
-For stable@ Cc-ing patches, more clearly describing the user impact would be
-nice, and helpful for judging if it deserves that.  Could you please elaborate?
-
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-> ---
->  mm/damon/lru_sort.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> index 554559d72976..3fd176ef9d9c 100644
-> --- a/mm/damon/lru_sort.c
-> +++ b/mm/damon/lru_sort.c
-> @@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
->  	param_ctx->addr_unit = addr_unit;
->  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
->  
-> +	if (!is_power_of_2(param_ctx->min_region_sz)) {
-> +		err = -EINVAL;
-> +		goto out;
-> +	}
-> +
->  	if (!damon_lru_sort_mon_attrs.sample_interval) {
->  		err = -EINVAL;
->  		goto out;
-
-Code change looks good to me.
+I will skip reviewing this patch until the discussion on the thread is done.
 
 
 Thanks,
