@@ -4,115 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F4FD7308D
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 03:14:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7234D7308A
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 03:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A3C36B0005; Thu,  2 Apr 2026 23:14:20 -0400 (EDT)
+	id 4A7CA6B0005; Thu,  2 Apr 2026 23:17:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 455156B0089; Thu,  2 Apr 2026 23:14:20 -0400 (EDT)
+	id 458EC6B0089; Thu,  2 Apr 2026 23:17:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36ADF6B008A; Thu,  2 Apr 2026 23:14:20 -0400 (EDT)
+	id 36EC56B008A; Thu,  2 Apr 2026 23:17:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2616A6B0005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 23:14:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA086C1868
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:14:19 +0000 (UTC)
-X-FDA: 84615776238.17.6F39298
-Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DB9ED160003
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:14:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DVqd2ugt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2731B6B0005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 23:17:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DF6EE160341
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:17:08 +0000 (UTC)
+X-FDA: 84615783336.04.B74325F
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 15627140004
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:17:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IGdeedKl;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775186057;
+	s=arc-20220608; t=1775186227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjuCA5EyuG86gFxLDox8xz+38SgKGb+1fMuVvb5vj0E=;
-	b=XWUzVGXfjy+D3TXAp36BY9jsyE3i6LpK/6WNYmDymAz84gbZuVZ3Suy45PTCYVH3V71gdP
-	/9Xt8uogufUDZ8WIo+J6CIt+ZuRWbefB05DHAAPyYJxWeleWvU2wX50mRxGQUyJZFOgFRu
-	mYgYdgsK5i+Y92Ct/DDtaYBVC90mAgw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775186057; a=rsa-sha256;
-	cv=none;
-	b=5OIk5uyFBQJtE8xJQcznI2+tDrD/6+eQBGIe/RITg9+7q4qtN8lCeRVthyKe3VR82ZRi6f
-	VcRsI16hflOWVmgdM/wbFIcRwyCVYVR13DKHnHx8islZFKQFaix/O5Vzr2oufdYotQh2SE
-	DjxQ81K57uJ9fT799pP24vHlbnaWnlY=
+	bh=dFnDoZvmaKZS9xl10TAAVVbDQeroSu+kZDSt0MQ8jME=;
+	b=LvB/gJRDjAtLBrZhSsHeiOM+O5cvfK++t/1UgT3TCW1ald6LmUD7ULhwzO2eCOeG5UhoB7
+	+2hl/JY5yYa7S6J56I3uorEm7yu3O0mTPRe3waL0Ga9FqFOzlslacCtAcmjSNAGny6HhEn
+	l7gM++hvuFSaneAAg/0wgq6s5a0TalQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DVqd2ugt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.195 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com
-Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-82ce0a9b3f7so691522b3a.0
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 20:14:17 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IGdeedKl;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775186227; a=rsa-sha256;
+	cv=none;
+	b=e25YxpqBvm9bcqnWGAbuLjv+bWb7ZBWlSJ1WMNsRnR1uZtlW93e77N28cJ4VVvSlcOrHVP
+	z7yOxyko3wgoIe4k119j20iPzff0R/whBCsTmBuY2J9DkYc9CH1Fldxg/4eTFuwwsslJsT
+	MoIJliJsjeWrAWIXiaDaW9c/KJf7ZBs=
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so974640a12.3
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 20:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775186057; x=1775790857; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kjuCA5EyuG86gFxLDox8xz+38SgKGb+1fMuVvb5vj0E=;
-        b=DVqd2ugthuMoxxPiw1VpymEnY9ni/84DYKGd2zU+5cxEqGxxROyB/rhcMySml7cFkp
-         C50hJ+314nXJvhpH31T012AMGM/2A0SZgiXX+kx0VrPUp9mLvWQ0Eo06P40u3tiIcqFV
-         ceutII4BHLJf0TNdmvyLlCpmtGazOUrlAwIp2KYFJXrWqdN1Ra56JBFaYxO1hylwofLp
-         7HWjiRltZlBEXtbV8sV7wSoOpzJWtLOPtzftELEsN2K/hhE9MIXqDfCJ7DSRdywrwVPB
-         7yvnHgEDSKklk5zd+cgoczz1fsbEL1xTlOJmlSGmy3bxDTBLtmwvzcJLBgfQ2IlMgO1m
-         CFZQ==
+        d=gmail.com; s=20251104; t=1775186225; x=1775791025; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dFnDoZvmaKZS9xl10TAAVVbDQeroSu+kZDSt0MQ8jME=;
+        b=IGdeedKlIKVA9v7SarVYaAyhrWwSPyXogMGG3V3mCpO4G4xlUOMvzCzaNUATpjELlE
+         AlvWrfHYTVOA5F5/ZBoNSaQ93aAt2K/PNGU+XJ3pUm6a6nHTBF3QvBpEbwOfcZEAZLQT
+         jRy60OUhetyoW+57UJ+WYI5x+W22pA/HatcxB2LmrrFIGr9hhe0RFINWEl1qGK+jDIgs
+         u555MQhnE7hNRqjRzsq9FoKAh8HMWt6q3mzF1W6z9pVSYUzCYdyk0Dv16adhzoWWfPR1
+         SODtUJJ6XPTb1ccMaBbv+da7e/7Avy2DSP+nu0dNbNS4AuI6B97qEbeAIhfbeky79YCp
+         seFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775186057; x=1775790857;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kjuCA5EyuG86gFxLDox8xz+38SgKGb+1fMuVvb5vj0E=;
-        b=JRtA57XiJxgNeDjsmf5gCj2m+kAD8ClzHm/ssBxwulVy+3/kYKPRVuy8mUp1Nb/FEo
-         YFvI9upiXZla0Nh2+nbrW5GTjmBnQCLy1H9zOKV3eV+fM2slQURU8+Vu5U7WGLqELFOG
-         sUXbRI/QLpqxsMvK0YJgI0niLqqt3YWXNlUqG6D1d9n0q3vxdXXJJP9FGDdCSEvcZVaF
-         Pywqq/KfykLSWUa6gZTLGcznAj4OVvobyMDX7TNYI2UbBk28/ZTaIE8QOLUzQL+1iuzW
-         nqrAo4jPKtjogAELYm67EufjNNhS85as5DNZNSgekuhL83Loxf93M7fXP/QcMfBV3w/j
-         guWg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3JkruRMwfhtm06eIYRiRAOtXXBbO2QfRsqXJrCCVGgiQDOpRL561i+8j8B9AV9gg/jHfRQbpK0g==@kvack.org
-X-Gm-Message-State: AOJu0Yx4AcmH62PhkAy7PkkEyZgKZ2LBgtER8OOFOwjdT0vW2TdihTxc
-	uyjJvi4VoIuR7Z/IjDfuklu3H92XLO88xdmdtykVMkyNIhNaUw++pu1u
-X-Gm-Gg: ATEYQzwIgxB1wlVlwBjEcZfKpgZbvo+XUQjkPPvwWzbDaIlUhRJiysUATC8mfktoQ43
-	pEcylBEbwt2Q2qd7hLM9og9iccpXZh+XuJf79MKIvJ3Xc0fvV84cUqBaJ3X0G5PgYvK5jy9yOAX
-	+AdaVZXvzIMRKgXo2SCBjrt0Fw7xWiwWovJZgduJEiKogjwV+U/RWjWLmB9rt3/8I8OokMNeY8A
-	lg1tAx1Qq4Dw5sCvfyyeMl62hYYdtjwvZPDGoTqPBjMFTGgGb3Q5o5YaeRV5a/CFMjSfpPQmmm8
-	mH7HgKR4HLN0jYRd9m8phzDzyh69V06xC0oKdSjHjzW0zQafeF8eZgNIa+hx26NG411V2Hzd75+
-	/3ej+FjnKnwpd8b1/q+pJhh6MohbfCnShQp3pLuFkGTUQJU1ifU0pqOyUQDgIfYK3DgdIJFWnUd
-	+IHRSOnEHbAJteC32+djpaBnkKTps3HFzcnOa+wTgdbjXfDg+kpg==
-X-Received: by 2002:a05:6a00:3902:b0:82c:7876:a027 with SMTP id d2e1a72fcca58-82d0da8edd7mr1326298b3a.18.1775186056528;
-        Thu, 02 Apr 2026 20:14:16 -0700 (PDT)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.223])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c41a2asm4857141b3a.37.2026.04.02.20.14.13
+        d=1e100.net; s=20251104; t=1775186225; x=1775791025;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dFnDoZvmaKZS9xl10TAAVVbDQeroSu+kZDSt0MQ8jME=;
+        b=mVWNDbMPuC4t3Os1K/gomtO1QQavOj6S0KeI49pz5q3bjLMzuQPzb0hBP/73x7KunG
+         pV33aAvKpMQpbQq4MYItxLfm5r+RhOstY5/aUHram7mSTZf/XrPx6ZSA88vFEakZNMGo
+         gNyPpLEcIZkg8LJC9B73WAVJKgFo7SpgLzO0hBu86MOaEUkZ8PflvHmKIAOl5IHCt/gw
+         7GYAIaC64AR2NqWUeVnDwd+IqzqTUGPDMxcUwXp22A7TXFaJATmlvYtF+Z7pVh91exfE
+         IDIzjupklWgmQ5F2tfyZFMlcE0Z8TMTpTawKvmzMpzQC8mV3pVloKCFJ4vFDq01qZ102
+         TAbA==
+X-Gm-Message-State: AOJu0Yynaa8ITISq1Yx4AEy0dqC7oJz3rUpfVOb8Zs1pEr95WQiZo+sh
+	f3+y6Sije8GwYioO4nYzcunoqv6O1oe5kKmEMOyYct0hew3jPWfXaVuTsU9EdrABpp4=
+X-Gm-Gg: ATEYQzxzP9dYMPkoZ7/zLiBXd4aLvbJ/kmdJETMOpEwSVEgTfSIYXafPvRkshGsLvmX
+	o12++6NDrTWr+8KyTO/ZSibuH2TuhGyTWwwVRL70p1RnwTybsqSTf+N2SRx2IZ6nuYtkX2ZmCD8
+	XykjmNZoImuFDX2iaHR596+bDDaSIZ3qtL0NtidKEkerRlfSrOz56qTu5bqxbsk7TOuuUmEfy6q
+	fU95PMScVaKD/abI9Gsy5oaC0SB5C9qRCJdCmme2K57sV4/UiPThW55w70SoiEE+nBYeES/LRpp
+	+S9Pq8MUHz9RNyA4FUuYENWc/NnhJE5J+TRYIymwMWhIsvvNm4WMS31IylCJgghkfPXHnDV/Nok
+	HZ5L3572iifyYq7MDDlSXYuZfbCbG7P2c6lrYj5qoLLQ8UTmztoXyBD3Xn25XKwyEVr+mbNw3Oj
+	Zn3TrKjz5B1Viy8Th7tWlCQIKcBFfIwkaU3s8MdPis1swG9kwWsZMd629Y4y8UCJYMBH6I9pTAW
+	9GRiOU=
+X-Received: by 2002:a05:6a20:7d8a:b0:398:8f2a:5dd4 with SMTP id adf61e73a8af0-39f2ed97df6mr1324370637.8.1775186225496;
+        Thu, 02 Apr 2026 20:17:05 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c3d67dsm5237029b3a.33.2026.04.02.20.16.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 20:14:16 -0700 (PDT)
-From: Qing Wang <wangqing7171@gmail.com>
-To: urezki@gmail.com
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com,
-	wangqing7171@gmail.com
-Subject: Re: [PATCH] mm/vmalloc: fix KMSAN uninit-value warning in decay_va_pool_node()
-Date: Fri,  3 Apr 2026 11:14:09 +0800
-Message-Id: <20260403031409.2038306-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ac6PKPR8vMlIUdwT@milan>
-References: <ac6PKPR8vMlIUdwT@milan>
+        Thu, 02 Apr 2026 20:17:04 -0700 (PDT)
+Date: Fri, 3 Apr 2026 11:16:57 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Kairui Song <kasong@tencent.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v3 01/14] mm/mglru: consolidate common code for
+ retrieving evictable size
+Message-ID: <ac8jTW_WABzGxNnF@KASONG-MC4>
+References: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com>
+ <20260403-mglru-reclaim-v3-1-a285efd6ff91@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DB9ED160003
-X-Stat-Signature: ror7nh6q5qzcioxa58ogccpbfdepphck
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260403-mglru-reclaim-v3-1-a285efd6ff91@tencent.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775186057-892271
-X-HE-Meta: U2FsdGVkX19sflMqmK3rK2FXR9LLKXFsZdsKxhyQK81tH3kJBERtlShzLD+3XbJxqIn++8ZjyfMjgFsmE8KHKsb/cenHg8gjcNgWwZnEiMoRpkRtMDK8yi5Te78peByExzfMJ5eQDQS2gU/YJyXB8jBpmoN3dfAf3xqsCMewiEszrLuXel8P+XuG4VbkslUlHH8ih5b0fjcxSOla8Cs2iIvoSulpAhkNBMEso6p5feeekgJuTncymWt8a6BxpdRndc63q7ejieglIuV1w7waOcpZz8tSEIAW6j+8/Uxw+LgAPTeww1XDYp6BOFB2FJf+Pto39YbiDuShypNTF1w7+s+Fp2YsmkgES3nmDmCGfLyS6TupEe9RPBd+It74RKQkhgrVNsNXS9lJDAQCmvNwNbuZl6/y5o/D7X+Ez44Z3hVX0JABmziRaXuQlo0E+NOQymGo79/rK5LkJSQAkr3bDh8vma4GlY/IiVqjzJeOxzlg654AyXsA8JvfTbgoOFVAbWr4t+Ze3z27eIX5889SNvwbob+W4GtM96Jri2ixw0T7EHb0CtQdRYaKbFUaweZaZ6iVx2WxMMwk6kqRl5IvFRM8Bj7E3wDmaNrP16251L6xJzQC/I6B/Eu9Q5XNlnSqOz5p5ONk1uY+8Is3aXuzy6T4ps5lTTKuI3+ntn4LT8aubkKsrOCzEXLhBMddYaZVUcm4CWlMqTktGp/OMmcBwWrgg/XLUOkiAVockZv5G22tUFe8GEI/0swoLmmPvuhzzA8hy0ndqDKx+c8i8zOIUakRNy+T5srpjizAFj2DFJ//7H9as0sVcYM2MaaRJyyCbUd/VB6b8tITfR1zoqfN+dqEPkLBZ4QeDpcHHAua2Ut0J6Qk+QySkg7TWzeotNvtn8rHWcFjXovfCb6kTfCiF6AD9SbuxdRQhe9nchIxyVHQIz5SfXYalFhl1KBLG48osEUOHwJamsAkdSixdWd
- DHAwIKG7
- rEK/lc/YjLl+JqZelDxcAaiU++tLOMQgk9QOiXMzx5QwFJcgbOT1DnUEzIm7h/yxjoggrZXq5TMOzgdZCWLyw6oBnlKXOMcAuPxOaa4bnrROcLneSk72NSeQInFRREa7Uz9HbWeIc5byL/hKD7nIJHBYi3Llr7tWBnZe8JOgitd25mfCB/mU/W/PXc7zB43TfBNnZ1t0kIWadfyO5FGM9xQu1Bke10ZvrFvCFmlcuhZPT0+nWdxEfJCo8DQNfyqLpHEowRpG64tvFxRJADRbUNMdwToAlAdq/9HMA0Q9BTBcSwGX4a15AGxPOz7LJTYS4T2RT4ftAWwp3exQZKLoDVMazi+AgqSeN5uPP+u9Ixfx2wF4dP3q5/JLi22+jSO4RLXJi5PoZP1zXlDZbmReAqzb1g3xH+u+MK25X12mAr56AKYEk46qzBKDZ3tScA1Y/BGZ38GD84siqyOkEOFJT6a1OnM+ztYRkrusn/k+wNFJ25hUAEcU14hHITKkh3uBab0LNtcKndRAoq1p01bMnttNR76XyPcD2VHijKgtGvFtt19BQtQly0a2ra/MvreTxAucKkhbm1grRkN669WiDIrArvjtV9x3nALlvFfpkFVCG/uYwNuowqlPLuxTdmSsLfInUl6eDHRvD8COjezwQWZZJZ+qVDKOVxT5aE2JmMghFhtn9icjE0b8Euk82WS1FaIVe2hnml1U2+Khjf4BAFTxg4uT6DbzNQk+JwdHXacRHxZxGsBVMtuffOsFGAOVcGekE4E/7568MZ+M=
+X-Rspamd-Queue-Id: 15627140004
+X-Stat-Signature: egeno6z4dr7ejjrg6gosdtw8qu4o38j1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775186226-10862
+X-HE-Meta: U2FsdGVkX1+nIVdVoqMAhKdD7PbnzAFXOdgAO1Ij2YmJr1AWdnpCHiwqHrLDsD4BzbST4C/r86y9iMOzjTGxf/VAuQlAbi6GgYjCGJULXC6fhPyeb1i4gbeOl098zmJn+vkuObr5kfvMqyqjzaqjw2w+0ChB6ASubJVAE14xufPvE+3yyKRpBeU5KONMVC33XH07qNbzcDRGfwWgp80eKwfDYwhqPaNngYeU7qu6Xy9yJ9cFvJ9D3VhYnOAt2yAzKkFdOQXLqYQ3uqkyu58208ziMBFxlyKzgE4q4oFeYCfSgTL6BJGYpwHVaTtBvkV7yxa4MfrOUoAC2cjfHcZgqzzVoq0oxmbJLUiWagtfdgdH6EuBlR7sg50RhxMSg0OtU8byzj1I0hREAAALw2hoMcLDd0aPiqb8ivqgi7nb6LVDwCiZ6DunvwQHc0cS1lKAguMWSnW2hF9pXFt54AOQiSDoT8HbE/gLJFdZll3CFo/lzFfiQ8editDMTQPtx+E3tmu5tGUnGX69XW6ttRIPBPbvV1diL2KuINA7c51EJlBEYJdSigTY9OEYa1+Bwyh4JO2hcxz6DBEbAFX9NYvzfdIRl3Z4ENUUFlfha1XtSPXOp8GFpClTWs9U6dgj+SqyPMvkh65sz+Bk9S9CK2WyWQV/Lmx28HuaRAFoqkXNvnK/290zeEImjxNLXDWKXqYlEW42BVfOup2VOEDVTEV1rxQk59KHez1oKo3aZpZgRYYlTFc82GZ4Th+QExyCsA9JSoNmCNQhonocRIsbCONVbc02KUrNYCv1o/nRfdbUU5bZY26y+rl6dSZYRi8i0FUz9PczqSXUfQ9cbXjV0nCxW9WuTKtFq7eoqD9Y+gsJXHTa8Im2gWD4WEkalJxXvnKLUVOzAddEf+3UXq4/8mWMqT/TqsVfAKWPT6jdxRi4RWSHe8NopwP7N6fsIQbcKH5nC1mYITHw/us8d8zH0N0
+ EloF1S6c
+ +dUSCmwz8K4VcOsMbD07GjC66kFcX2W82EL/yYU7v13cosOddCeQpF+sYokTNwUACuwT1S1ENA3gjHLSglFx6F6E1mCgAOww5/QeD8j5HRnCBNDFlfcTt6e5wtIg+0ddaZDqQmqAJjf95pnAmOyDJF5LGmSoTYiKYtNzkLGeE8TcbuDXDscVmVQliqqg+eGTJLU7VZO0bXHVJwPbzRyV0Ucf3wVO9mgLwbT2UyNLPykeRhFJHYG8kd6eaBYGrWBbHjUmI/oJXRey0sOsAcmwaS2BFQZ5K3/lBoFap5tDSt9ILY4pYpIqtgUHjLtaxN+CR64hEFn3rpCRvu4z9cjBf0QUWSO88bTQXINYNSSmVwlNCFUhjeEVoNMRuKhAn2Y9gXXz5YMAXIHYDqgh+NnZGMfh9g6wZhcDLlPKSR+kNTgh60BHylL51dyPe7ziU5JsOzixYYR0mv88nPISw9TA6LZtvhymm4MqeK1EhOW1RLxfKnfTXOJ55Pa4tZvFOScCKHmIV0MZR0KjLxrfwy4UuuRrBLwJNIPbZkT/DlyprUKa2Nfh0hpj4lgMgrTYbo3v13E1xj6mN3zHKAXcKTf7Q1wmWAMGZNNS9JdXmTOh52q/vg1YIbvOZQXdqkqA0l47Q9MmYtNf3Er7MJ84JFnsxeoXB98pDeE1eu3esg3l0a4ANrNU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,31 +128,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 02 Apr 2026 at 23:45, Uladzislau Rezki <urezki@gmail.com> wrote:
-> > KMSAN reported an uninit-value warning when accessing vmap_area->list
-> > in decay_va_pool_node():
-> > 
-> >   BUG: KMSAN: uninit-value in __list_del_entry_valid include/linux/list.h:-1 [inline]
-> >   BUG: KMSAN: uninit-value in __list_del_entry include/linux/list.h:223 [inline]
-> >   BUG: KMSAN: uninit-value in list_del_init include/linux/list.h:295 [inline]
-> >   BUG: KMSAN: uninit-value in decay_va_pool_node+0xf78/0x1dd0 mm/vmalloc.c:2255
-> > 
-> >   Uninit was created at:
-> >    kmem_cache_alloc_node_noprof+0x3cd/0x12d0 mm/slub.c:4918
-> >    alloc_vmap_area+0x327/0x2e30 mm/vmalloc.c:2065
-> > 
-> > The root cause is that if node_alloc() fail and the va is allocated via
-> > kmem_cache_alloc_node() by alloc_vmap_area(), va->list will be uninitialized.
-> > 
-> > Fix this by explicitly initializing va->list after allocation.
-> > 
-> > Reported-by: syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=37b7f6cd519f7fb8d32a
-> >
-> I can not access two above links. Are they valid? I would like to have
-> a look at report.
+Forwarding sashiko review in case anyone has concern about it:
 
-Try to it?
+https://sashiko.dev/#/patchset/20260403-mglru-reclaim-v3-0-a285efd6ff91%40tencent.com?part=1
 
-https://lore.kernel.org/all/69cdff26.050a0220.2dbe29.0001.GAE@google.com/T/
+> commit e0119c3e147f68096f59fb96e1e69e83ecdfce40
+> Author: Kairui Song <kasong@tencent.com>
+> mm/mglru: consolidate common code for retrieving evictable size
+> This commit merges commonly used code for counting evictable folios in a
+> lruvec into a new helper function lruvec_evictable_size.
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 5a8c8fcccbfc9..adc07501a1375 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> [ ... ]
+> > @@ -4909,9 +4915,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+> >  static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+> >  			     int swappiness, unsigned long *nr_to_scan)
+> >  {
+> > -	int gen, type, zone;
+> > -	unsigned long size = 0;
+> > -	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> >  	DEFINE_MIN_SEQ(lruvec);
+> >  
+> >  	*nr_to_scan = 0;
+> > @@ -4919,18 +4922,7 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+> >  	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+> >  		return true;
+> >  
+> > -	for_each_evictable_type(type, swappiness) {
+> > -		unsigned long seq;
+> > -
+> > -		for (seq = min_seq[type]; seq <= max_seq; seq++) {
+> > -			gen = lru_gen_from_seq(seq);
+> > -
+> > -			for (zone = 0; zone < MAX_NR_ZONES; zone++)
+> > -				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+> > -		}
+> > -	}
+> > -
+> > -	*nr_to_scan = size;
+> > +	*nr_to_scan = lruvec_evictable_size(lruvec, swappiness);
+> The commit message notes there is no behavior change, but does delegating
+> to lruvec_evictable_size() introduce a subtle state inconsistency?
+> Previously, should_run_aging() evaluated the aging conditions and iterated
+> the generations to calculate the evictable size using a single snapshot of
+> max_seq (passed as an argument) and min_seq (read locally via
+> DEFINE_MIN_SEQ).
+> The new lruvec_evictable_size() helper re-reads both sequence numbers
+> internally via its own DEFINE_MAX_SEQ and DEFINE_MIN_SEQ macros. If the
+> sequence numbers advance concurrently, the calculated size might be based
+> on a different snapshot than the one used just lines above to determine if
+> aging should run.
+> Could this lead to unintended behavioral changes during concurrent
+> execution?
+
+This is totally fine.
+
+Right lruvec_evictable_size re-reads max_seq - and that's really trivial,
+I don't think anyone will observe any different in any way. The time
+windows is so tiny and even if a different value is read, the updated
+value is more accurate for getting the LRU size.
 
