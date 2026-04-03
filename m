@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B83FE7E365
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB25E7E36C
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:41:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D65C6B0005; Fri,  3 Apr 2026 06:21:05 -0400 (EDT)
+	id 87C966B0005; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 687C76B0089; Fri,  3 Apr 2026 06:21:05 -0400 (EDT)
+	id 80C5F6B0089; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59E7C6B008A; Fri,  3 Apr 2026 06:21:05 -0400 (EDT)
+	id 6F6116B008A; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C5166B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:21:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03348E0DCD
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:21:04 +0000 (UTC)
-X-FDA: 84616851690.07.0C68E9D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B7B26B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05971B9FBD
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:41:45 +0000 (UTC)
+X-FDA: 84616903770.22.2D5CFA0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5DCD312000B
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:21:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mxEl3XFX;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4D7CBA0002
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:41:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4DoXENk;
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775211663;
+	s=arc-20220608; t=1775212903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a760oxxxOLaQW4dSBczI6dKIh47ybxbWXdBIMBPc9j0=;
-	b=ihb8lmhzFPglgk/q6H1eKq2EUwnb+RlHucS/3NQ5yDY/oknCrX5Yohp4UVTiUFUUkA2C4c
-	K2KW48uJREkmtK1G6JbtmmGG1a8z6dJSwGYM0hGH7VcpPd2ymlYzv+6uDwLV4vOTuJXip6
-	SArYG+GvoiMKbKRidrmwXsgCcEP5Qbs=
+	bh=2w4PGdeK7+Ke3UVn2aJ1lDy1dtsUNB97CETQSTZzgsw=;
+	b=By+T6lu2A7MhRBZWp4LmISoUOtt5U2wElrxrqugjEPIhmddA4iiwPd273UG/fdayXD8+/c
+	fBl+HIoCCOMM76E1U7qhweETheJmdle+dZx35sv5XLLOYkvVLDBAonjTIMPI9abfJE6cSP
+	W77vtDwY/vlG5C+03dB98alfFQumjEI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mxEl3XFX;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4DoXENk;
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775211663; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775212903; a=rsa-sha256;
 	cv=none;
-	b=xnljpgdTlUPwEylTdM8qLS8ZcGocdnqPFKJIypuZoJI7w9CkBq1kpJzIzCFH6fzmNFT+qo
-	wMYbPqtwl6dNuEswAdZPUb2Weffy9ZOD7mmxDQmoIGYKvQVtBWQQuNT68PffKRKFIU/YD4
-	dVNzvv216hTaXUV/QW9V2tLc9QT+cgo=
+	b=No2tHj8Bz2LKN2lc4Q82dNC5eFYdP9feJYiVqOI4bWIMSWkJSw3C/bacDRUK7Z14uuKyS9
+	VMo3eM9V94mmMoKr9b8cdyrdd0DsD20mgYf14wgN/udfQ2vhl9pnUHverHA61tRfGkU7aM
+	cgjKOtoaxJ6fGQFdLCyfsYELBvgH/oU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 300A5419B4;
-	Fri,  3 Apr 2026 10:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C9EC4CEF7;
-	Fri,  3 Apr 2026 10:21:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2344E43ED7;
+	Fri,  3 Apr 2026 10:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47117C4CEF7;
+	Fri,  3 Apr 2026 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775211662;
-	bh=rZjVCA+ZmnKNs7JcGv32uV1seTHFWhw6bGD9OcNlYuc=;
+	s=k20201202; t=1775212902;
+	bh=dXwc6I3MCgb2B6MkMoWoOOmtFq9auKmn0yCFwXi1vmQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mxEl3XFXnkgN7eukpKzh1Ooc432bZb0W6xnC9Jq5K41j0v/QrjsycF+jFrsa8/pkL
-	 IL5VCyW9HbNp0jKoo8Lxolp5+Myhq/Or25AbSIbLHaGlhRrw5nfOpSfQhfsibntZ1v
-	 1ujbUxAwpHUOQ6PxQAwljbnp7coom0Bu1VJe+QJZpSzEm1JpoLDjWyIgi4ZAOnIRlF
-	 GMpjIfqmPVdLBGbgf7HDgz2EI/yU8vo6NxHKQXkHRiHkZ+Pv7mZ0B9xeEoWhpIC95d
-	 8UuzyD1OKKB1cIvbpnM2I7MP9qjr8hqTMgcOBJrsQRIttWIsCdsq7HvZowtG+uSiRU
-	 WCXIMUwgsCxuA==
+	b=Z4DoXENklwq7aPUqZHn1E0zZ7gGp4I89MaDD8hlP9gX2Dr4MTtDxp2/0PgRtpWi5Q
+	 1UrJdBo7BcHX+8TFPAIB2nvYguReYfgOsmk6ZbGTgPoHILitmMU4+lnWKLZ348LrSv
+	 7dfA/5oQaCxh1QYAK1DANjyu/17A0S/IUXVP0y6hjQJyA8U4dObpIGZLAWwTyOJO3Y
+	 NWu+UYHrNcCKze/eqCnqC4pFss/PKKpHI1QrN25n3XmgUwm86sJdw5TtVbZoRBH7xZ
+	 pyTpiuHWsHu3s0ncwJS+XNwPXNUNaGCkmwJ+N7u/bjjouvumSP8Xkk25h03SnW1/gn
+	 WGVFtqBQJDxvA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: rppt@kernel.org,  akpm@linux-foundation.org,  linux-mm@kvack.org,
   linux-kernel@vger.kernel.org,  dmatlack@google.com,  pratyush@kernel.org,
   skhawaja@google.com
-Subject: Re: [PATCH v3 08/10] liveupdate: Remove liveupdate_test_unregister()
-In-Reply-To: <20260327033335.696621-9-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 27 Mar 2026 03:33:32 +0000")
+Subject: Re: [PATCH v3 09/10] liveupdate: Make unregister functions return void
+In-Reply-To: <20260327033335.696621-10-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 27 Mar 2026 03:33:33 +0000")
 References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
-	<20260327033335.696621-9-pasha.tatashin@soleen.com>
-Date: Fri, 03 Apr 2026 10:20:58 +0000
-Message-ID: <2vxzeckwe451.fsf@kernel.org>
+	<20260327033335.696621-10-pasha.tatashin@soleen.com>
+Date: Fri, 03 Apr 2026 10:41:38 +0000
+Message-ID: <2vxza4vke36l.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4D7CBA0002
+X-Stat-Signature: ei11eo3xi7ho8zcbjhdxokc9769byh4z
 X-Rspam-User: 
-X-Stat-Signature: h89g7grzfj96iu1owc9ppydf5s3ms6de
-X-Rspamd-Queue-Id: 5DCD312000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775211663-844617
-X-HE-Meta: U2FsdGVkX1+vcKgFPfOMJyII3b6pVJVe9iyH/86859icdONFGRfvnqhpFeobwOrQmEzsGNIa00IaNH02z6ua2rBce3u//xBH2mr7CCMXUqFAHcAeuvBAhLZdyMwIfw9gJ+IFS9fJBsLMPvCDgTEkMe4LoY41B/X94tP5auKPq6haWxCXRKMgm6wP/anw5JuWJmIkT6tjFvJaNXS374OA+jcTqv8Hdq98rjHX2chnJcF7Lf8q/LZfp7+9Oi7NieBzCCoyV8OAOOyVkYm6ABqbhM3ZoUbf63HxeEthSJiL+LfSjrDiOL72yT2njk2nPSOhYwjO45ikthb9Mv6OBTv5PFapl6XLcCMWXvqH490UZlT2VKVUPd755U9UgBhEhjmwK6Hs2DUyxjb90+wg+T6P4EIDpayuS2QRHnT+h658QjH8alO+NXQtMQnFx0ZcNNczgQzR9vFz9BSNuAgrRHoxU+9RVwlJ6I2foYTXuh9JUhBzLoBxiZmbxYvoKti6m2UfnBRnG8qDyM1MMQNFXhPS58c9smIzsMEC9lvh1dRI4ngdEV3Axqth/ryofBhdei2+tyj+j++k2Enjc+/X/8G+8MKy1VyN3tYprg4rvfz5cIucXE3CojGENet3V/sO6lpBB87jNaEACOpdNa3SR+YI4KL+nlbZzOzkcQTR/ngJMxDK9lxEI4vsTbuX61qhfkftIYZJ6MUoXSaxmOUGfDhSXqYdRUw2Z3ljKHceEcvW98YM7PdpckDG9pkMQuvke6V+mrBI5yfQ5KEfAfpgtLk2yVgEQaIzbXhHcmsj0ynXEFGgZZBGoACmrFxwbJy+BQQQ2/t+0V70ntI3MwUaf5wt5l6RElLBzN3q0xSy6ZBVBGoSmotQwV0cpifwYuSPyNZWtgBjQkFa02n1A9pjWMWifOeMZW1uTGa8w6aNj/3k+Q6hCwFsGA35+mfgTJ/EzoIpHkddWn4/xgV7V4u6mPk
- str0C5bG
- z0VBbkYUFsNdca2gELcnwSwZldaPIJMk79mkY+RX+TWgGkQdJFxm5TJgZ1ZV/ZuKJqAej6l/hBGlvp93L5S+ezmA/FRWnqcA3YKJd9EQhC/pGRkDmmkKBj/heL3WqDMyo2X1+DJ2/2nMw8pO6AJpPCF8KU4FaxRBlC8SjNPWa2k1w3fryLYu7Wi2LFNQ9CSSaoykiJuIWWsph9yOF7AeFh/2EnuuxS3fSjJp37T49s6LtxVOMNhn9syCsYR0EbaKx+6GieE1B6AP3KoVb1DKIcxQZRh0/4IJCBZ6bfyVpiXjNyvY=
+X-HE-Tag: 1775212903-235441
+X-HE-Meta: U2FsdGVkX1/BJnmS5VWEqZd1XALWhVQZWecBCuLl/fkmpnuvolp2oDwCBEPYR5G2GZukwJqNVe0yMXWw4uscLRuTX+5clnCjkkIxqDxgqBQr+eAS963MvatfqyC8GZwulMPQ6jr6l+gFpUR5sgWxYDqnRj2UqEpKVx4ybfr9xYCM+4er9nMV9lBK0s0Fg3vKaQ1Wcg9wCwu3hyMLGvvkUgEAsDeQ7QEcJkJu5bu/nADiM8TeyVIpYrp0qlDvwdtsv06K/rKAckgh5MV7D8haje/LqlM26KpZRyEz8TOnEH5R4wq6rq6lF5S5zgK6a48GdHGvb4KWUONa96vsnC4rNKonQIo5dyK6pjQOMokW2/mKw3QccFCAGCw+2UHPvjXq3BZcxZssm04VFwBozzsfAoWZnjDz7PNUcre4w72zxiKqJwwZ22SZMpVAsfHZd1kqcNC+m6OQtP5dxJbaF8+TCkVG4s2oGJev0cBTgp2G+D/nuVUaduzNyBkRF/omd18R89KdsB7ic00ZdnVabeSEAXrcWEEU2pzSJ+kCTJ02p+/V1KtcoOZuFf9q0s8IyXoBo7wSl4YHtfSUIIwJkHbxKEXRySfKCtvTTpQhM3IGdwrMXsOY+9V8SO8acNAz2u4XQmIo8AEFR8SMnrzwB5XM2jLuNuPeNrxV+Vg7ZoL+wT/5rqCwW8Iqsl1py2em9f72QAOBQnvKf9UzLIGc85kRoFVLkdFKFKsntanhu6UonlQBPY9WFXZg1LUFGB9VSMospikojH0caCcraA600lTxNp4GLH8R8diWvtxC3DBkpa/UWaOFf/+hNdCFBo0eBesGF+Kh0I1lmoZLMhZbG27yZcbpC04Z1JYvpvsYpdD5gXUUvgZ3QU93CWlxhs6GepA4IZ/5q6uIo5J8AI25anyMa7fm499C5a8pe1+sdY2xtl2iK4UBCHBpcvzfZ0LKMw+qb7LKhJeJsRu3lGZCotd
+ /6Nr2rBQ
+ B7Kwp2FGD97PMiFzYqLqhDyffDiYMTSop0g74jFXdZQ5VoR8H7zbGLTK8YhTY7MTgWk40rSAKQnWeCmJpTCkTOfJaaQZdhTVfVyibVFodaEzvimgKyf6MuhWs4Ff6NCmF/anBztkMOi/1LF/8t1zyhPOBWsDRmBVnsYr0Rlu/uSh/BCjTGCyrz7/n7E/s0C/5LyaanlYZ+lfpwZXQSuf9zRXUJ1jXvDdoCUofkHw+9MCw6YRVNm6ckEuYC7TFeeD2zbJG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,10 +95,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Mar 27 2026, Pasha Tatashin wrote:
 
-> Now that file handler unregistration automatically unregisters all
-> associated file handlers (FLBs), the liveupdate_test_unregister()
-> function is no longer needed. Remove it along with its usages
-> and declarations.
+> Change liveupdate_unregister_file_handler and liveupdate_unregister_flb
+> to return void instead of an error code. This follows the design
+> principle that unregistration during module unload should not fail,
+> as the unload cannot be stopped at that point.
 >
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
