@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89A4E7E350
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 09:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DF8FE7E350
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 09:07:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7D396B008A; Fri,  3 Apr 2026 05:06:53 -0400 (EDT)
+	id 641556B0092; Fri,  3 Apr 2026 05:07:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2EC46B008C; Fri,  3 Apr 2026 05:06:53 -0400 (EDT)
+	id 5F3066B0093; Fri,  3 Apr 2026 05:07:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D454C6B0092; Fri,  3 Apr 2026 05:06:53 -0400 (EDT)
+	id 507EA6B0095; Fri,  3 Apr 2026 05:07:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C51186B008A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:06:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 826EA1403CD
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:06:53 +0000 (UTC)
-X-FDA: 84616664706.08.4D220E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C3D7B180002
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:06:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8uxI9t;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 416AC6B0092
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:07:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD5FA13B3EA
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:07:45 +0000 (UTC)
+X-FDA: 84616666890.06.27A8B3C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 45A384000A
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:07:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZbGkZ0Q7;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775207211;
+	s=arc-20220608; t=1775207264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=glA10DNVCJ/0IxJjW4eigd5qWorxfgQ/klhE+VT1a2s=;
-	b=xyhRxAK6HSvmT6F+aL8xhkZJQRuVEFQQKQRxbGOz29suPwEgbBippjU75yx9AolS61g2sg
-	mjPg4m29U40jg1y/u/B81qcpdrbW2+GsW3H0izUvi9Oyom6HIXm5/VZ9J9GnUMBGAr5dqW
-	sBgfVlEbPXsiqsCl2+8voizMGcyuaRc=
+	bh=OBiPr/LPaDiI/+Zua8YLdBj4vw+9Uuswp0D8BLXsUFI=;
+	b=wMkeULVy0ZTeLxbhL7IRF8Dz/gKuSosiZU6QgslRvKiK5LgN3BmeFS1oEdPh6uWAmLosJe
+	TtRczqZIfRmYsIO1ZVi5c8lH6QhNfJeadUKqVqdXm/zLV/YepJJzAgreLsIcDJVhhlwqwm
+	IOaaQNJFjMtIRzzmmij2OXpsbCLawl0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8uxI9t;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZbGkZ0Q7;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775207211; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775207264; a=rsa-sha256;
 	cv=none;
-	b=5YWyCob5z6wkATfR/rsgLWR3lP7CbSvhbnEfMoLRINt9oYyJL+u4Y4CdlFSsn0MOHwYPCb
-	bdF6JOQ6eM5Gr5LHiY+sargLz44TXtvKa2fvmsR+hhkIjkMyyIf8+UKvm9yfEwQnpAhokt
-	3TCCFEge5CC4FStPYxEDWfau+2DmEC0=
+	b=mJhnn77f+7jodLVvuwgMmJ5OLTYRtjppOfwYELzwpW8lSq3hmafg+tj/mnSt4oqP0emQFQ
+	5h8+R9S+vwbUu83uQvUpwYW86dRFxSm0okvUGhgUqmx/DAN4mplWT6f0wBl3HeEKbzbdq0
+	KJbMZqHnqwwY1UNejJXzGFiXsFXpaDs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73CD7418AA;
-	Fri,  3 Apr 2026 09:06:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFA2C19424;
-	Fri,  3 Apr 2026 09:06:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A59BE60123;
+	Fri,  3 Apr 2026 09:07:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F5DC4CEF7;
+	Fri,  3 Apr 2026 09:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775207210;
-	bh=8VNTsNLwh4pYRGyy7ABwzKsrV8s7jJb34VRUNiKfiXk=;
+	s=k20201202; t=1775207263;
+	bh=vowq8IJG+Pp2R7a0Oh6mtSU+uGeLVlIHd8LF45mK0xs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MS8uxI9tVsBgWSxJnntJydZYFQUQRYXC1WVZESGMXFMpfLJ9kWzZanXanp5F24u4U
-	 46bggIW0yFZPfhymOcEmbxf5hQw44F/GldAe0aN9PRwbvhWWni/585TjhxIsFWhb/q
-	 AccmqfCVCcUqWmmJioOaPcKQWLg4eAxEVq5W9MHAxU4ZkDqIw8rWRQM5GHY9hE0Egh
-	 JoBuEiV8Tscb1fOVnof4rS6DdRcgbL7sHOkYR+iI94nEY696sd0ZsV/J0/pA0p1THN
-	 oF/4gbTwrmte+i8+VX72e7fzcklktB6dQ6bE8Wy6CyaFxNyogYdcdz5efjqligZYLI
-	 qzXk5Pys8Zi2w==
+	b=ZbGkZ0Q7Wk0WPub9h3c7r3PS2r9Vw3NwWoZYE5qjFuloFWkpL5AKiZRBNYzRPOxMf
+	 MCf4Ys4+VxjB5HngHaw3w7nqPXqolsGMYiASr4sLtTF9bWoPnWvQTuabABEEJDPNjP
+	 e8/N/KHwOav6EUpEnj5xjk9sGbtGK8QtIbn+o+tH1xipTdaihQ+LDhKo4/z+n8ThrZ
+	 cpdQ/dWiuhTNdTdD4H1uJPqWTW+pqNUrNtmIoquk5kRTDUyqMOcM8NNWC117GO+RBL
+	 gpbxXq4cJJJGyygnWOMoOk+MKgrAXsXKGWx4mwNMRXmJx+wcm9PaGkTV8cYKd50l9g
+	 crSv8Ou/q9ysw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Pratyush Yadav <pratyush@kernel.org>,  Chenghao Duan
  <duanchenghao@kylinos.cn>,  pasha.tatashin@soleen.com,  rppt@kernel.org,
   linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
   jianghaoran@kylinos.cn
-Subject: Re: [PATCH v3 7/7] mm/memfd_luo: fix integer overflow in
- memfd_luo_preserve_folios
-In-Reply-To: <20260402105845.f4d375734c0b21a1203fb9c0@linux-foundation.org>
-	(Andrew Morton's message of "Thu, 2 Apr 2026 10:58:45 -0700")
+Subject: Re: [PATCH v3 6/7] mm/memfd_luo: remove folio from page cache when
+ accounting fails
+In-Reply-To: <20260402105417.b495f2fbe9069caa19ea7b05@linux-foundation.org>
+	(Andrew Morton's message of "Thu, 2 Apr 2026 10:54:17 -0700")
 References: <20260326084727.118437-1-duanchenghao@kylinos.cn>
-	<20260326084727.118437-8-duanchenghao@kylinos.cn>
-	<2vxzv7e9ftwd.fsf@kernel.org>
-	<20260402105845.f4d375734c0b21a1203fb9c0@linux-foundation.org>
-Date: Fri, 03 Apr 2026 09:06:46 +0000
-Message-ID: <2vxzqzowe7kp.fsf@kernel.org>
+	<20260326084727.118437-7-duanchenghao@kylinos.cn>
+	<2vxzzf3lfujq.fsf@kernel.org>
+	<20260402105417.b495f2fbe9069caa19ea7b05@linux-foundation.org>
+Date: Fri, 03 Apr 2026 09:07:39 +0000
+Message-ID: <2vxzmrzke7j8.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: C3D7B180002
-X-Stat-Signature: 4d97ydbzb7uirnoo97hd79rcg7qtozqk
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775207211-555486
-X-HE-Meta: U2FsdGVkX19YGmESQwpsZFVv7BmtV1MppFT/5lRB1m0qvdDRzG7TsO/QChC+/Ep81smBYfMda14oDrpE0In3coQ3m9GTnb6hLOPiU4W5U+LHMqqACz24N9wxG+E0Pp3RxJX0pU30TnLMvF6AoNX0EwJlGGeM+I+WusS+QQpAv1gWhySredkUzIuxHAwuw6pDjm186fomim7EKuf3xuMboRHztDqKMkt4kSQ7NKmLTHEMJvRbQWBwsCSDcGO4JzgA5lLhbiwcqfeS3p1uGDMeWrfBI1rT0sJTiq7VtjeYRv7K2wuOhWrpHET2VprWsWABJxEo2MCNqG5NT9Vu0um0YfIk/oehDh5rij/f7EqEo2YgQoO/pDVvT7/9hOw7ZS217seGpJTLYh9DjOc4+y0Cuft2/hT6n/7Yo2elPvhyfqs28eHfTpp2I2c4b37KJmBK/m3rXNJ5HTJSQp7pDbvj6Txck6Puws3LG0fHUplphm0CiateHUvulitbJh7kY5rbt95mTJ9qihzYQMucdVptsWCjSXUAP+sKDKinM+4j3FuMcMPeAXdmjUV7/VgW8vDfU05a4eOUjPA+mOjvzjFYIdC7vdBF431GdRaN/eZtIeGPh+o7rWKyPKcPdij540CE0/MesoH3p5xuMMUnV9Z4Luk2M76ijj4eQjGZNlz/N10y6+Xc7+ZcGX3BAKuBKSEsq1tVc5Zdgq96mtgvHb4lTJfRzEnTtK6JY5Ac1Mg+UwD/C6aktjYtHaaMA6gRgX1LrhaPOhYv+N4U8GT2w+nawwCMQzJeFzdgtOMFfxYnYX9kDpqBK1+YOyUOuAulAlulJZmki28bGXAtooDjmii4+eICvLRWmIGrADTpxKbnDinQmlYk/zNwiCdOYGdwoSceWvVgwtY5kLF9IgSNKPUhUz4+nUsZF7a/Y38vn0B0JCKNaokd8+ut32UbUZxesS53LAYKOQggZhRzSeFgMcG
- nR2wEmkW
- 6OP8wiv7115kQl2MbqM/Kr1vxbrBUUfldhWdOVCksgSXMVy3TIh1CJEL5a0/pXSRL5KlVr6PtBgC1XOKQYjEPm0YV3E6+K2IExgi7cJiIRQYHAaBaXr72T12ndtvB8l48qGl3S2GKg2dl8JVS2K/Uxy/4k6YHOwmD+SXYTGbO8PgvvhJADqCDZWjrPVJ4l9SsH5S4pp2Ckc3tmVQ/mYK200vSDRE6H6GCDaM5Axgy9ah2HnigT45yqZCbZw==
+X-Rspamd-Queue-Id: 45A384000A
+X-Stat-Signature: 5ekwdetsnagi8cqmnczxssjdtkn9nwpz
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775207264-567692
+X-HE-Meta: U2FsdGVkX1/taZWptIx5PB2Df6rANq4vy/AxSv8ulzDSoQRh6R8tIl/o7BKw4Kon1M0yW7y/yes8cuO35DdT6isaAE8GFi9tCkahhVGnNLC+mSQfnngUCbLe1Ibe6CJLSqQMPD0nGc3ocPuEcguYaCnibxXPQ1b6m0f6J9CteBuN38C0dGzyoqTltLmZAQbJiqglaKFIc+JUK5BtmoKYmnpWXJ996+mzzknQ9aWlNZVn9eDt29zWBx1Aq+vOBoYejKE0Vr4Otv9zPRC+tCX2kEYDpiD8cNUZHuKgjAIO/xCjBF/I1UvA+0wmLwLgaaccl1E57qnkXbpj9FdWy95x0wQqVp+DFDYPVIS/xqjM4PuOoLQBoCwLyqFTU73GkfPmkPcONC0YkJzHX1iRcMrE6mG1CsOU3c1v4WdzlMr5s+Nl8toVnwozqQZ4UJiEACRv/eUkTBP3BWNEAlYb/wcaJKM4Z7Vxv8MQ+/vl79EltQuWf0UoK6GCboJ5bl9r7UF1+CHxu5sU1UGyGLqvgcvw+XZERTGi7YtyESXQGWogYyZUbgkt+SEF9Id+BLUAR4o8v98WlY3U6C6FrbsU7bstd2w8iTXKe9+ewDOv3kQiiAj7QPvf3+qmc1CB2tTCECECvNJXks4c/90/8WBa7Q94qYOd4XBBLkAhNoMEiOzTduv1exEugtvT1kNI3dAil7r+A9My73VvTCssVm8CQy4uBafhRhzEIRwel1O3zxfqAoGRgivw4C4OXr2hdHrfXtRhuzKX5sLr83YfHyBhPG95w2mzwyR1uMt1G8NqdALD90sakd2gyqUty8QnAJaHLdWhybZoWm3PFX5MWO4p4AFCaa+WY77Hdx2JjE3S0gHEjqEvBipqc7POn1zyNmmN1ej0DZa0Ss+yDhp+TfF1lQMbujVvcZGHUOAQ9VbWvN+hOJy0XgNH6FPK6N2Nlf5EOiPG6Yy0aRmwisWK1o/tmSJ
+ 67yVg1Z+
+ 9GFCgQ6gn5AeEj/GxU4Y3HSzv6Q/MIkku0oY0c63laF+NcN6MdnKmj4zBnekI5uGzBKwXLIrDStyrkHprG/PXsgwwF3qdU5My6BcBzGiwo2rfykvmA1MIIp3IQf0Mc9O1LWnqp+18Etc0yrO1NObpr9H1zcW8fsR44DYrTY8jf19DhrFcrJVIhs3omjZeLY2URc4F0RkOhhpL91P4W1ndeL7xZGxIN7e5hl+QJ206muD2Lp2JGza14RxWWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,51 +99,22 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Thu, Apr 02 2026, Andrew Morton wrote:
 
-> On Thu, 02 Apr 2026 12:06:58 +0000 Pratyush Yadav <pratyush@kernel.org> wrote:
+> On Thu, 02 Apr 2026 11:52:57 +0000 Pratyush Yadav <pratyush@kernel.org> wrote:
 >
->> On Thu, Mar 26 2026, Chenghao Duan wrote:
+>> So I think the commit message needs reworking. Perhaps something like
+>> the below:
+>>
+>> ...
+>>
+>> With that,
 >> 
->> > In memfd_luo_preserve_folios(), two variables had types that could cause
->> > silent data loss with large files:
->> >
->> > 1. 'size' was declared as 'long', truncating the 64-bit result of
->> >    i_size_read(). On 32-bit systems a 4GB file would be truncated to 0,
->> >    causing the function to return early and discard all data.
->> 
->> As Pasha said, KHO and LUO are not expected to run on 32-bit systems.
->> Plus, since i_size_read() returns loff_t, why use u64 when you can just
->> match the type and just use loff_t (which on 64-bit is long anyway)? I
->> don't get why u64 is any better than long or loff_t.
->> 
->> >
->> > 2. 'max_folios' was declared as 'unsigned int', causing overflow for
->> >    sparse files larger than 4TB. For example, a 16TB+4KB file would
->> >    calculate 0x100000001 folios but truncate to 1 when assigned to
->> >    max_folios, causing memfd_pin_folios() to pin only the first folio.
->> 
->> Using unsigned int was intentional. We pass max_folios to
->> memfd_pin_folios(), which expects an unsigned int. So this change is
->> pointless unless you go and update memfd_pin_folios() too.
->> 
->> I think making memfd_pin_folios() use unsigned long for max_folios makes
->> a lot of sense, so can you please go update that first before making
->> this change? And when you do, please match the type of the argument to
->> the type you use here instead of using u64. This can be a separate,
->> independent patch series.
+>> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 >
-> Thanks.  I'll drop this patch.  The preceding six patches are looking
-> well-reviewed and ready to go?
+> Thanks, I did this:
 
-Yes. The first six patches are good to go.
+LGTM. Thanks!
 
-I think the changes in this one can be split off as a separate series
-since it will be a bit more involved.
-
->
-> Chenghao, please prepare any update for this patch against the
-> preceding six.  Or against tomorrow's mm-unstable or mm-new or
-> linux-next.
->
+[...]
 
 -- 
 Regards,
