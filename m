@@ -4,87 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41454E7E36C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 12:02:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACF0AE85363
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 12:54:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80A2B6B0005; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
+	id 5E69D6B0088; Fri,  3 Apr 2026 08:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E1F86B0089; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
+	id 597146B0089; Fri,  3 Apr 2026 08:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71ECA6B008A; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
+	id 4AC996B008A; Fri,  3 Apr 2026 08:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 63DAD6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:02:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 082C0C2453
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:02:27 +0000 (UTC)
-X-FDA: 84617107134.17.8CD34AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4009420015
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:02:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ul3iLkil;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 399346B0088
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:54:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00F36E1422
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:54:16 +0000 (UTC)
+X-FDA: 84617237754.11.B4AD550
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 556F0140007
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:54:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k5RK7Uaa;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775217745;
+	s=arc-20220608; t=1775220855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jsx1GuxijVxW+bBqj2lr+ewqYcPYLj2e+o4huqXxtD0=;
-	b=Y4BNlZJGhC+4GEFBnRe4dNUunhuapb2WK3R/9YcePMuZ3LaVWcSpHU/vPWcK7tPA8j/unD
-	BKgUErKINtlu63OGy65JtrWdBRzLk5Gl1bd0ny4RZKYTx9nrLs2vLGWAunjf121Lop6zft
-	7wTKi9PCtGyPO2a1IB3SzMniXPKCyls=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ul3iLkil;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775217745; a=rsa-sha256;
+	bh=0bIy2HvjHd6HUlRNa8SxmkAxBp5y9HcpkcsUQNLKfGU=;
+	b=7uOy2Wi1Y9+S08/4nGprL8ZOC+4SBvK7SwiB7GJtCFSr7syqN+XyO2iCR0T5q3ojQzqRPf
+	Eu87znTJCP9sDhXdkBNAJUIWqkxvxhFOtP6p507U0h099wFndxQp3Y07ru0RFBmVk4z/ZE
+	w9n+DQxLGRy9b5AZqJ/X3Dr6zosNtvs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775220855; a=rsa-sha256;
 	cv=none;
-	b=G8mkK38cpCToJZ8NAUiaITZglfOTBEE1HC+aU7zk51iBEQeIX/0Hsr3X3raPzj0b2OK4c9
-	ExMbIud5/gKdyFfWHD7QWEMMf8ivUUGAh825paG/0L4UKI7BZXxwa3RbO9AAAx97YbX7IY
-	f3gdPd6LtBHsafJ/pYthMPGoCUtdBCQ=
+	b=jIQPvp0CN30CrshxeYlyBkAxGv2QY7jlKk1Lkd83YIui1lbJqH9ohFIAU/m/o19KAULjU2
+	T9/T5uFv5J1vEp5IapIvO1wadlZ+TRwypmTVEfcvADo2D7HfTCOC4yMIfpdYJtZzz9jIu6
+	r2F6EWq+Z7Qvr7Liu+ytvseyUE7iis8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k5RK7Uaa;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92E1260125;
-	Fri,  3 Apr 2026 12:02:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A190C4CEF7;
-	Fri,  3 Apr 2026 12:02:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F1CD34442B;
+	Fri,  3 Apr 2026 12:54:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D305C4CEF7;
+	Fri,  3 Apr 2026 12:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775217744;
-	bh=VmzjbV92+0hYtn6qtVAWC6sPODyuGXfidretO/w7HaA=;
+	s=k20201202; t=1775220853;
+	bh=JSDMZ50zmxlMSJSrQFbFqlAhhbTJtyO9Jz1PP7WSjUw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ul3iLkilKYa6CqF52Uxgm/E7xbB+YQGSCpMxX3q7K52q4NPOuhWWm9NYssRVlxWA3
-	 vg+RQIN8ItHom+SqyEde78040apH7Y9sKL1xWgKmsSiX3s/hj0btv7wt3Nhf8D9vbg
-	 o+C916r6YtFFBTfcptc1A5LDKralPmFD8ELuZfCt5SVJCtLU9+jeqpOLauxT64Gbzn
-	 q6PwvKXoEB0pnYHBpTnkNdAPWW2Pl2tsrNyNmtmWkj28GBOGYQol31PBCWYZPceJNW
-	 1lGnouwNf9nuP2KRsV2xw3g4eEG8IIwgE8ynE0w0okPCor55B+KZ7ydgwhM1kT64kR
-	 MJLhYnNX+VjDg==
-Date: Fri, 3 Apr 2026 21:02:22 +0900
+	b=k5RK7UaaStNBNTjrkkZugF9FaAH48CF6+MsNeYxjXQJlBC11UeEqtJTn54kJtCCye
+	 y12jGio1VmWi5qVjhGjcIVZh4mPy92MUaurFatCaP3hySoPLwib1lCfZxz64Mgobtp
+	 AZOHruz4CeULWx789vkplewzZ3kQYGU0JF3+OHtIgExCPlGrGqciiQ9LvGX820GCXZ
+	 hJl+MrErarKqqdiKWR5RmQvOJCTOn7IWv+8ULi73jY1BqPAc3RFN97UCoGFY2/3+zs
+	 Sr/POPOu9BZPg8GOJDuSAeESXxv8AMAqWcUkoREqPTA7yx3M5oVQTA1itREe5cyGmP
+	 XZ8WLJxiE4s5Q==
+Date: Fri, 3 Apr 2026 21:54:11 +0900
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] slub: use N_NORMAL_MEMORY in can_free_to_pcs to handle
- remote frees
-Message-ID: <ac-qJ7tYQ-ybegOw@hyeyoo>
-References: <20260403073958.8722-1-hao.li@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrei Vagin <avagin@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 04/15] userfaultfd: introduce mfill_get_vma() and
+ mfill_put_vma()
+Message-ID: <ac-4c0hlgdrxktvJ@hyeyoo>
+References: <20260402041156.1377214-1-rppt@kernel.org>
+ <20260402041156.1377214-5-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260403073958.8722-1-hao.li@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4009420015
-X-Stat-Signature: i61jq7gamfc6jdcwu17umjjd3bgtxgsq
+In-Reply-To: <20260402041156.1377214-5-rppt@kernel.org>
+X-Rspamd-Queue-Id: 556F0140007
+X-Stat-Signature: 4qkktnqn67bif7p8a6z7aerahwa7bfwu
 X-Rspam-User: 
-X-HE-Tag: 1775217745-683899
-X-HE-Meta: U2FsdGVkX1+G8zL281NBYlrnejnXFstig8hc7DTFuBoQGAR96C5FZaPNXhRgzO/CZQFtlqoGrAzq8uqQhRhmqRKGDgq+BXv6IuYoSN8zSGgGEFni2Nd3vDbiddIwNOPLJXgYP3EGTLvqUPtufS3GxefUHs2Y/P+nCn3NRTSrh+NLM41ha3PZrupFl0vcJcNJlUJWgiu517zb9/0ke9cXHuvj0n+574OXWzu3e+/WsftR9OfP7W6HdM70FeN8Nc+kUoCqa4kJmSMky3Xle6G8pJNs82P5nHhP1JqWHQMX+wbRO5Gow01DUcdt7MpAukIn1/XyNNRiReZdhPKN7T6YuCj47wWvIvM4PMtB301on0gramJDLh7ag1qMbHh3cVWlfvwFkA9Sjz5SDPPxkPM7uSEaCT1V3o0P1L8EyzMRjadwH8sqsHgAYdjVaWfruXdWPpEUbqHBycro0rVgfpw0ERryNH+Y8KaIhUbyK6uk8CeTOv7+Fit9O1J54Hvy11Vkk0i8lFFgRQ2QqU9MNXVC3l+baLPz7+6LVqzjTxN3gPb9NUUt5bafMSMK588KLSORgVj+9FemAN+wCrsEc/HBbtxs7XF3qpKGQqk2qioqBF+Zf1yfF4OmuAhcgPCUZiOFurOaaDXxK54eC48f1bbJCpePHzHadrTiMkYrOhOkJ87ORuQmqZifpuBDyI+xAfXKWavgINk4BXoXfFtMYTRSuOqAM7aSXRdocvdB2eyuQVMFLkqcgrXJq6cg8IO+3QdjAECHBI+kLduK+mmCFNWVJDzM1ly1+N2hsa8NU5GeS1KtvlIQNoUzxHUiesPPDe2dAzkXJDs7LrFVhagMIngi1km8oe0b9OhPRoOcaMLikAWR1PizHjEFAyzEHtmA79Xzz0Jn+0HbnGaO/mmgzJsmgnf+f/O86jW1hs+4iqHnpcrZtokLH7kLRF3hTrW+OJfiWxVackd/p2Z3iIGxe8k
- try/n2FO
- IJZcAEWxde5Yrf2g61mgSWUbxKSY+cnq/2I87IlOqBWve0UxYiMcCTQAn1fl3To44+SVhsmD8SkQDKgwPMbptdWPpoWTKUY+CXlLWt7VV0hu8IpnG7y+rDx5OwAl3j6+xc2IAWjSmSth0JIdjjIHAoU4NYcDAsud62We9vxMXRtJ+3UtMfoDg8/Hijfgzh8YIe/MDQaiT/j42B+I36eC3XW7+BwuRC+bPlPPzJvRRoDr+uQjoaLhJeBpJ7+KPsdxi7ch26tTLgbKIxAGD964udh8K1q+nJrqB7DPzlvD8Al63CyIJL+uS9a0M+xrK6qQBtcj1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775220855-749941
+X-HE-Meta: U2FsdGVkX1/VKCfF9LijIv9GhbV1gXlvNcy1fGn3df3kpD6dzIktwDmaboHjgWe145EGgsUd40QF3XgC5i4opQydzUIjFG5cSPTdP4AIQI++HZciN20sD9ZVhW0CrR/9is+cfTd+KisXjtBNWILb0J2KeTpcZLhZUysc3TzsvfZ2j075bG9Lg9U3LF0psw1bkaOJ1729UmM2hZ2YquiJg+PzHqojVJZe07Xg8s5oKKw6JYyhCTdQ/yCitTmMgKV2u/CeqFgvKs2azGUTNoWzGar90KxRoSvW/4Mlj/2F2M5/GCnc6UtA5N5GCC7nRgns+nWz/vNr54wiKHzSfkKJ68txkIxhy4MHFM8kZOryRNCwgnTZATszvxTarzA5hLaQPSxaH5LvW4jaAbHMLmMGbD+iJWgJFyxZYbdc857mCQGSsUXhcn819yqFW20SwcRzt6ZITKNR4DQuBjK/kj9ytfx5fDXO7AaUyMAxTKqkqrt/D8U/rSkvqTa+4E2k4BIwQlcbwRcVAlY3q+yJzpKOzWvR+37UGIZx0UW5ZqnZK1atRcM03JdlBpbyuM82MG5+LQ1L3EafCsJG9wZ5+WYvFmtOYYGxBcdPrcPSxELhhGwluQEYfT9HcEkZm08UD6RFyoHXRGF9jooSFUTxoUeC6GSshRonWXcJAI7ruSIspeaWO1O0lZdnnBlfe9yNWClkS8feQws2mMJX7w11T+q3BGhGlMVaXuZp7/5FrC/oBx+rkFUH/6icLIqGPfVB4HGyR5Y2g/i38NW4nAWfSfWgENCpjZWbHL6DQfakLY5noftv/fO/mnmBoffq1S9BEo3WICm6vfjyhq0NG2TYZlhsP1T5BrwFxpHUO+z9Ie644YE49fP6TpZ4qO05KTrnkSV0izbeJ82dHYxO8+0z9i5wxhUdDITxbESHUEay9HMk6U1R/9ON3+Fs7+Al7XxMN4Dt8a6TSeSLBZ8dSQEmYYc
+ k4s0SWK5
+ ERYho8O9rOzDwaSQtLswjvLWbaIpeh9nqyMdfjbPx4Dms23gJRFtTNw9fK3wmc7IrElcgcajl3i7544sL/vMW/Xe9TnghgKE44MjWWzpAITTB64hxzZyQhvhV4kxa5cT88ejf5aDnsxh/1FoEEDlA+Ch4rjZUb7gu9p5oO69wNwKSppgnSGYe5X0YOTHo8Ce0FOzfR36mZG3Z78ZwqsXz/RimLX9xenWNvMD/STaCGUkOCLk5BbL0/uhubbWNiEe6O1bgsnNdOtT7xcMRuYLIFs7my/gPIzex44VonIJj8BAptO8gLZl0s7hABk8WC+scUXWPV8LEM0qyhO5axQVHNOxTRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,32 +111,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 03:37:36PM +0800, Hao Li wrote:
-> Memory hotplug now keeps N_NORMAL_MEMORY up to date correctly, so make
-> can_free_to_pcs() use it.
+On Thu, Apr 02, 2026 at 07:11:45AM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> As a result, when freeing objects on memoryless nodes, or on nodes that
-> have memory but only in ZONE_MOVABLE, the objects can be freed to the
-> sheaf instead of going through the slow path.
+> Split the code that finds, locks and verifies VMA from mfill_atomic() into
+> a helper function.
 > 
-> Signed-off-by: Hao Li <hao.li@linux.dev>
+> This function will be used later during refactoring of
+> mfill_atomic_pte_copy().
+> 
+> Add a counterpart mfill_put_vma() helper that unlocks the VMA and releases
+> map_changing_lock.
+> 
+> [avagin@google.com: fix lock leak in mfill_get_vma()]
+> Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Andrei Vagin <avagin@google.com>
 > ---
 
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-> Hi Vlastimil, this patch depends on a prerequisite patch[1] from a few days
-> ago. I'm not sure how this should be handled.
-
-> I wonder if Andrew might put them in the same tree.
-
-But it also depends on the patch series
-"[PATCH 0/3] slab: support memoryless nodes with sheaves".
-
-So perhaps better send it to Linus after 7.1-rc1?
-
-Thanks!
-
-> [1] https://lore.kernel.org/linux-mm/20260330035941.518186-1-hao.li@linux.dev/
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
 -- 
 Cheers,
