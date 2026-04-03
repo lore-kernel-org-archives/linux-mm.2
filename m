@@ -4,111 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A65BD7309C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:29:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA19D730A5
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:29:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 964A36B0005; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
+	id 287136B0089; Fri,  3 Apr 2026 01:29:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 915DF6B0089; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
+	id 210D96B008A; Fri,  3 Apr 2026 01:29:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8045E6B008A; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
+	id 1267D6B008C; Fri,  3 Apr 2026 01:29:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A7816B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D47A9C1E3E
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:17 +0000 (UTC)
-X-FDA: 84616116354.07.819BF75
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 191D9180005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HWm8vjTQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F3C1F6B0089
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:29:20 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B080C1B8073
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:20 +0000 (UTC)
+X-FDA: 84616116480.24.DECD477
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CE328140005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bvP3DsBI;
+	spf=pass (imf26.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775194156;
+	s=arc-20220608; t=1775194158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
-	b=rRSPaiLInZIlmAXOVAVcEDXtAYosS1yGviaR2W2z5V4sH85MSrPcF5s5fkNBvGEJLcT07q
-	JwvBQaLS0JW9tAtKGNl0QOCd9Lkb1lskybv8V1a6quskKp9qWmlCXE5CTn40rE3SE5l6yq
-	kkG9HaaPheIIHNNCyVep36veO42WCWQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775194156; a=rsa-sha256;
-	cv=none;
-	b=UPHSNxVtEEdAXqSYiJz26PxySf5gYZiDNUz7IS/NSg+ucJtkI6oHEIaZyQNYSrJsiIC6i6
-	wHnTTmjDMawRCWh13jjuLKZB3l36HlA98iiViutsigkgty/NT/HUkP36shNr9eEIjeJe3o
-	vdl8cvISvma6iU2aP59mXBY9YbEirXA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mI7v9qZF+UUx3+2SXpVgBfGXsaFsLAnRc4Dei9eFP8E=;
+	b=xIWvMvW/Pdd54td5JPHST+JxL7W9n+x8YEU1o6F6YhI7wwj5BXf7XJ6Be1HSLVdrE9pG0z
+	K0iWORl0cXJhGv4lnBhgjYkUCRxvWE6PxKWQlCX39K3f93VMkLIeF+UKFR1tjzBjXN7Gj1
+	ggYqoLEf9LyB6MjDhHfgHYJaIhKD0mQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HWm8vjTQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82a7ebc729dso668945b3a.3
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 22:29:15 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bvP3DsBI;
+	spf=pass (imf26.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775194158; a=rsa-sha256;
+	cv=none;
+	b=rAARYGU87O8rCdB1VvFABFIMfGjyV/217bOx7ZW8ySXBsu8H1KkyNZY1EzgUK6Hw1XSEg9
+	JjCe0qAaR5q9YVP9FDEI+nAkI6+v7ysOLAI6rzcypHyjkalHB5MSZEvIffZVXBdXOIMj1p
+	5NnoPORFHlkEz0LDqpVZxxnmUeCYhAA=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82ce49785a0so701362b3a.2
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 22:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775194155; x=1775798955; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
-        b=HWm8vjTQXqw82bjNlIhiaUJUTxwRUbRCDPPtaLGH4lVHGYkf5uppuV2R59ezBW0CJZ
-         ubPvwV/mKT1somxWjrWFrNxBC2WMgMODfeikc35ghEiFr9oM8KWHSiVfzcYZxMvmmHOY
-         udgZBFcRvachBUv0KdMvvkhpP9A8Gua45crP4wHPSM5a4r2vKQOI8vkjncN1V89mP/HR
-         CXN10XCLpzp8K1Df6a2dYsPCqK59LDDOpZPxKiIQIgxGbuBjnwPU4j5bBrGcRrCQ43Yc
-         ZaTfI3/fVocpi+FAlbsMld5t8d2lVyiCLu7Br+1c7jhFPcsjkdSgF+eeL8VdrgogZnLI
-         p7Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775194155; x=1775798955;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775194158; x=1775798958; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
-        b=A5PM1vQZeeFT7ZnStdY62c7tYhWNq7tufBDnyUKsSXBnSGcDychKgKRJd3lzBRI1dd
-         KjlqNWqqx5I3d64l7+OX/phuksoVd3x/BVFrMN0Q5fHBbtA8gBE0co4KMUnBx4eTv9Yq
-         lXkWiVM88F3FpFxj1Lzfdg9r5ZCs732HcXXpSTWeWeGNoXdWInSyw3fUT9BXV4zd/UU1
-         q1xXKUnM1yrUGWkDyaB9CIxyB0rIEpDeNfVELXeIQzKGaNywFAQHHsq0uqC8T/ejpMon
-         SY3kIWom1FcI479guCbgMTHhWz178AjIVh+xxOFB62OCfaZ5OfvVhxH2mlBuRNnSv+0R
-         tqoA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2Xv+XC2p4lCkjgA1kZLfNk0lkdOaF/m6ZuoPVvGiHY05qFhCPNAkr0mdDPBAKy4iYiqsfNecrWw==@kvack.org
-X-Gm-Message-State: AOJu0YxsKIjiIlkZV9jHDtPZMWi5lFcJbq1OJpLMDhJPBNYefgHJvBQP
-	uiOQtiB/dSa4iTCi7XsBzAantUerOA/saN6ijnYRVmZtbPLptUz/uNtx
-X-Gm-Gg: AeBDievFr9QiBK+lUzNTQeRE/ewrlaIeBubi8HW51SXPLVjzJSuhZ7queEL50Qsb1YZ
-	g7XhRTLyeisQu1gf6d0EuwodGGpq7x1oCR6sxJNY6MV/9ZO4DSxHUclwMtgrqBFw9CXavEwDbAx
-	jGdOHAW/w2plX+wOTJnCptcFq+V9HFSefbIGe6dWcNPffEqmy9yo5ws0L07iJBmvayAjvLQfKRX
-	ajLr8rW20OlEHCluh3jxG06aKzPSB6b7M5+sPDTK9XQDr8RTsg0k/t8Dqtd4b3rd+2K3dvdnx99
-	owVNkstaWWGmKDLPNJqLOw69qioeZNJTNeUBg5sP6c3LbIqa5TtDrEEClSWZXiTUhS8LRGPnldF
-	eUR/6itTy3sfUaIV90P8tzADG5D9ueWb14CyoGTvpaueDpe5xItNIUHPMXSm8HdoGOjH2NnZcl6
-	Yc0bxUI36nd2aK0O0rYA/Mr4jWMHY=
-X-Received: by 2002:a05:6a00:4c16:b0:82a:78c0:6b75 with SMTP id d2e1a72fcca58-82d0dbabb59mr1887722b3a.44.1775194154839;
-        Thu, 02 Apr 2026 22:29:14 -0700 (PDT)
+        bh=mI7v9qZF+UUx3+2SXpVgBfGXsaFsLAnRc4Dei9eFP8E=;
+        b=bvP3DsBI6dtlHGQGCvq8btJwaFe6Vmtm5laNnknBQkJd+qqDw7DrRaqBMvEupucD5t
+         ClK3jnAVPBz987aqtD2HD9ZCV5k1KoovPa//knwrmqVn34H05OPl+z1txQulZFlmYcGw
+         v18vu2TzCMg3Lqk9Ir7XjlROMHFfI9q6r4z6PRPQ0z7ILkLTZ5gU7jqPeSBPQaUbJOvs
+         7piLQmkcXXOkaiWVWpOwjHop0vF7wbW2Po9X6drX3Fi5nFbLNV71qpWt6uzC3kOPh9TZ
+         sIKjGytW5vO2VoMPMLU2ekOzw0F7Zd0YunxlDrx7BEMF4wBkqUF8OE4gvYFN6dyjLD1P
+         Jwcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775194158; x=1775798958;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mI7v9qZF+UUx3+2SXpVgBfGXsaFsLAnRc4Dei9eFP8E=;
+        b=jAYg9tNCWDgUMB/+KeVazxc/pJFcFE2yYRJH7lg++va0qvX+TyoHQbr7QT30GLz6g/
+         7SkJ5yo+/TiUop5XiVIbUaQlUKXXCPbWu3VEz3VjI/RxtQ73Na4xYmmjTr//RXcdEA43
+         POkAuEIPdreAZCA0BpQzff69WOpX8/ikpEYo4iiRRlJAAENjkwYU+a9HMo/FNvGN0H/n
+         UPTyLcFQIOFFAw6fpuGL9Vs7ynXBF/EWcQoXxKzOqzDkTgM8y3+4bsbTo+EyODhGUzs0
+         8SpOja3wYntiuEFmDFz6ex4qwnezOEGpbBTkYtg8CXo3db8N7OP2amj8u1qJ5EDUqVzL
+         UHOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwRHCalib3KakszOvGsCIcbrC1JzTW5J1DISleJjTE/sJdNPvzW+fhEh90GVHJTTz3F5zQsZAMsQ==@kvack.org
+X-Gm-Message-State: AOJu0YzBy56tvww+kjdakpSCOQTSyFBuIzjMm8lMWZ/E77CjozXYgHAE
+	ZInVJ8ezjTMarsL7zoVK5RHEsuiXBoSB3weM8Dc+1gpsXLxuUopzG04DMbVotA==
+X-Gm-Gg: AeBDies0Vk74EP1BxoRr7pACsWAOPyIZ0vZa7b0765Sz79nBVhBNi5iEvGI6yjfNAeg
+	s3CCrkhadosnMkgkk6Qq92ax4dJlNbpKwdlD9AM5ma/FBsS0egFRiNeZq/MUXiFSpj6uxYmAHaJ
+	MaKXOiXLKyX6M3f6U8BlhQ5SUGxFVXq2WoGoN8b18i5VuNYltUVlame2JQMN6odazeuPXyHKqND
+	BTf7gmlU06Dsm1es/MBjuPCP6ExKkJOXTYNzZFvV7vKwcNIunf5W9CB6jGtAtmlvGt7KFyzeWWV
+	L/wduf0ovSd1aSzqkrbYsqa8laLIWe8fY/L1jShq4PeyViiVFtF04ozgGxVRMDMChlp1/F5mGyx
+	eVN9S3k5jWwbk4POkuyDcGlwdFWuH7+u4dqD71srshun/G+ClxH6keOPTE8Ee0zxIM5LqC81i9m
+	MZuhtqxxj32TMuZiFRhwb9+AoOFcU=
+X-Received: by 2002:a05:6a00:2d02:b0:82c:6cbe:7935 with SMTP id d2e1a72fcca58-82d0db53ea7mr1762098b3a.28.1775194157683;
+        Thu, 02 Apr 2026 22:29:17 -0700 (PDT)
 Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82d11cd2ce2sm782120b3a.6.2026.04.02.22.29.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82d11cd2ce2sm782120b3a.6.2026.04.02.22.29.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 22:29:14 -0700 (PDT)
+        Thu, 02 Apr 2026 22:29:17 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
 Cc: yanquanmin1@huawei.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v3 0/2] mm/damon: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 13:23:48 +0800
-Message-ID: <20260403052837.58063-1-aethernet65535@gmail.com>
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Fri,  3 Apr 2026 13:23:49 +0800
+Message-ID: <20260403052837.58063-2-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260403052837.58063-1-aethernet65535@gmail.com>
+References: <20260403052837.58063-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 191D9180005
-X-Stat-Signature: qqhhd9tfzwd7rqmp6zuajnzmankt3e8q
+X-Rspamd-Queue-Id: CE328140005
+X-Stat-Signature: 3ehkgr8xk1zm3rtdeo5imrhm566fut7k
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775194155-266086
-X-HE-Meta: U2FsdGVkX19lVrI8E/TEH4Kw6pyjPyxWJWzwcsg3VAJQjccH4rwgdE7mj47nEQHAHmn7syFKNcX/Mk4u+NOm53R4/9iAfqqdkMESeStPUbEizptVmZrJS0Jvp1ISBobmOIMBPqgW9r6iP/pj+V6BE27d1lBc4K6xEHwhCF9jzsU+V5puGWJnhJkyfWU69q/LsdfdV/vPBZshx0TajouAWL/G6+AxvqN+EJq8I1TqxO5Nhaes4WdGz7JymWK4l07i4EzfqWgvbiBsjq9BDzM7ZG/1ZYCmYz6MyNQMIwBA2AxAfb0Dq70RzDJ7Fpza2agBppDxzDvHGiUm/axf7gavQG6PNIKdbu8EekEjueFpLSUaapHy44pHtuBw0+PN3di9LNrvEmCj4UClW6xjDIiDJ5dZmm4oZYb/jAF5z79pUEOjaLh1T/cng9GVqjSROUDapEL55aaJ79e0R1IVvzA1KThQlJGbbuehcJSjlO8qpMvdAYPCcJLrQRmBWBTFqCwG0ph7ulmbam87RNbvP1KsBGx9GL1JrZUdUla9uB1K0CP+BP6Tm7YFgx5zzBVoL9eE5BJq4o6uFwRJxJWHnXzbZnVxB/Q00jwzKaCAXIpV3R5gEicGadGHyN176WF2RbxrTdnzKPwIcGxwvWZEDaIyD72qsEkRyhwp1j/9GiABYpxxqqp1A1tbYPWsJalwTUHpLie2v1uGc6e2XBZEUCUzx7vhGBKxXYPAmH5GTcPZb8qaUl/2mZT0qdczcg2LyAx/rfjPmURwT0tiuMg/g1d+bEZ7zNS9WudXnYK+t0/xmJTdUCtB47hrGHcGWVesKtccLbfO7+Mwx4RKo2rbBnuGLzQPpaSKWF/CczAv3X7eekYv490RkERcOQfXB0Z4U5MkmiGihDVUetrxsdTCkjHWxoRFdqjM50SUjXbCFu0FcP8xKoelA2TE4kc50THlQ+wOYW2VyJaKiwJpIoKoAzA
- ksh+ojI7
- QuJF2vWHPdQUPLOisWI8xf6MxZ+J245WNkXrf8+Gx0uZtAS5bxn2kf6MpjgRJBNEngjvPl1lrfWnLyrRVot33as3c22ueUwaosh2iQr15Cmf+DPOpbnLEbI/O8i9Ntf+v6Wj76k8wXi9fhfx1iMOJec8kwaUmRmFcV2WPc8RJDS0h9QTlW0or0CGU4CISFyu3aaUzZ/rirEe0l+vfEtAImoZO/qgH9gMJtHFl7VKzGP6VHZcBOj3S60I+iPxyb0mRCty8NiHFMue+9uebclgN6dE9r6yQ9kwcaRtYUEO/eEGQsGM6S1T7VSVsVVvSOYmKFeO4cT/fg/uyzu+GPeDfG+z0UGq65jcufIJn0G/Q+NYHZBNUXAg/48v5+cVPHaU4TKrI2NFtcDrVtept8UYfTbATgOUO29Tj6SYGUfrsHLxIaojZEv5MSfmocTOJWdu03x8lMubdE00XkZMApUZ/RLR5A4txAAiPCKpE5rr3+QliGiU=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775194158-995977
+X-HE-Meta: U2FsdGVkX1/uhd6Z4c1jrUhBPDWgR7iJvy25D0fX0E+qPT3wMagLq2OOV80P2kGfojfdBF7HU11GW6GGg0WgI/SO4HzA0FT87JA7RZVqOf0zlvdBUadLJ5VSqFcQIT9PHkFzS4GyNJLgaYP6xG1CkUH4qe+KgEa4oRkocIKVGymvg6LtNUuMrDybZV2lUB8Kwm2u+GJg0BflhKI/k42/0LQ/1RKf6uMqfei+fBbExGzTRqHt0yxPuICjrqJYCgsg1FfQo5oYzPJ8xhvzrQLLoRDwTM7AMy+OOm2J2YOJMl5dLa4Vda5S5y9wbp49UELGYKP77qi65ATjUfWXgH72ayXrjCDCkia3ITJ+ORjkyjQ5oPmXnoOhYf0x0Kqs/fzhWe94GrRsP7TQsn+UsRNYW7NCJi38NXpZiu55Lx8kf5x5w9W7oKdGIWa1s+eP1eOUGAOK8xxBh27dLpl3y7SnT90Y5iNoeMYhuUrICnEGnQtQ1/JJrCt+SnJ7ShNa0zgcki9nZ2CooKO5etW7RARBAsPcAM4FXulUr/MNQ0xclGISRiNS5stNwyJyBiYYm+Ve9mzKjqfU3ZExCjGGJBSNF35bolJE+TyOz98ZlsiPmRbCaybZXw1WbvIxeEdb03zxc2+Yd5lgWGkzhtVveXJ31xU0Vpv+vy8kkJFbQJLr5sX5bkYthIVKtpZ1UnidwJa3ZxJ2HoWjEDTc7/z00rwMGjSUbYuoZjZdhpw0dsp6uYXwcU9/xf3ahUtxZbUwNeMLGawbtv5j1lIEwwWhTfIf9yErsKt/+kO4rl42MjA6YvWTlOtb11hB61rW7t4PnoCW2cu/vLluj+izSPN/B6mpLaun3TL2S+3pB8QaefcnzaBTRf8tfD21BLtQ52nwTFFrDrMULcqZ1VdrObPSjkXJjIMuB0LePm0roXY1MNdPDkZcOyMUnf/FQIL77xRuznxcrse/0ZL8cW2qtlhc6As
+ ndMQrkyC
+ rg78sQo2mIvvNeeTgHgirvePerp2/MtZLioZwr452ulBIiEmAJY+Zup5NSDNHK/RdynRh+/bsFvE2oe/9QkzJgedyy72N3Oi/8Y2KP2/GW32Ysaxn3J+MFQHbabA3PkOlkCPj94dmZaEaERZOP0nATwdnaJ1bPIjZeEsPAfGekiIpfd3n3AWQ9fuvoR0R3GMwvQ4WWHxykYlUTHovJJcMbxhIfX27ocf5KCKZJHQe99Yh+b9muv2TqWUDgax2jE8k2k/ca603Um/a3uOYlyOrLkQaeLGS3Q3dsRCS2ktSpQWLyre2GcUekpdVqyGmtIJFUQLei7G1bMgnSfG0UFqVGnraO0SfLHg1zO3Hav6sfqct/xdn27TDw7g3XluIIttdDJJOkDME7HTNKA582FjvdG9NjsJTQuvaFI9v2EGHNkX2pA2HSbgJ1TMF0GKR6SYV+F8qM6D79nu7YlyD2R9c5e3O46Xz6Ntq0UpAUFWvQjNRYQE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,49 +120,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-=======
-When a user provides an invalid min_region_sz (not a power-of-2) via the
-DAMON sysfs interface, damon_commit_ctx() fails the validation, which
-causes the kdamond to terminate unexpectedly.
+The damon_commit_ctx() checks if 'min_region_sz' is a power-of-2.
+However, if an invalid input is provided via the DAMON_LRU_SORT
+interface, the validation failure occurs too late, causing kdamond to
+terminate unexpectedly.
 
-Reproduction steps:
-1. Enable DAMON_LRU_SORT or DAMON_RECLAIM.
-2. Set an invalid 'min_region_sz' by setting 'addr_unit' such that
-   'DAMON_MIN_REGION_SZ / addr_unit' is not a power-of-2 (e.g.,
-   addr_unit=3).
-3. Commit the parameters via 'commit_inputs'.
-4. kdamond terminates due to the validation failure.
+To reproduce:
+1. Enable DAMON_LRU_SORT.
+2. Set an invalid 'addr_unit' (e.g., addr_unit=3) so that
+   'min_region_sz = DAMON_MIN_REGION_SZ / addr_unit' becomes
+   non-power-of-2.
+3. Commit parameters, and observe kdamond termination.
 
-Solution
-========
-Add power-of-2 validation in damon_lru_sort_apply_parameters() and
-damon_reclaim_apply_parameters(), return -EINVAL immediately.
+This patch adds an early check in damon_lru_sort_apply_parameters() to
+validate 'min_region_sz' and return -EINVAL immediately if it is not
+a power-of-2, preventing unexpected kdamond termination.
 
-Patch 1 fixes the issue for DAMON_LRU_SORT.
-Patch 2 fixes the issue for DAMON_RECLAIM.
-
-Changes from v2
-(https://lore.kernel.org/20260402053756.26606-1-aethernet65535@gmail.com)
-- Split the patch into two per-module patches.
-- Add Fixes: and Cc: stable tags.
-- Elaborate user impact and reproduction steps.
-Changes from v1
-(https://lore.kernel.org/20260331073231.30060-1-aethernet65535@gmail.com)
-- Fix memory leak issue.
-Changes from first attempt
-(https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com)
-- Renamed the subject.
-- Validate min_region_sz rather than addr_unit.
-
-Liew Rui Yan (2):
-  mm/damon/lru_sort: validate min_region_size to be power of 2
-  mm/damon/reclaim: validate min_region_size to be power of 2
-
+Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
  mm/damon/lru_sort.c | 5 +++++
- mm/damon/reclaim.c  | 5 +++++
- 2 files changed, 10 insertions(+)
+ 1 file changed, 5 insertions(+)
 
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..3fd176ef9d9c 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+ 
++	if (!is_power_of_2(param_ctx->min_region_sz)) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	if (!damon_lru_sort_mon_attrs.sample_interval) {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
 2.53.0
 
