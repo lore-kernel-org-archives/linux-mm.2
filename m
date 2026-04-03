@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F800D6AB1B
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 00:17:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76D5D6AB1A
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 00:23:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87AF96B0005; Thu,  2 Apr 2026 20:17:03 -0400 (EDT)
+	id EC6BF6B0005; Thu,  2 Apr 2026 20:23:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82BEC6B0089; Thu,  2 Apr 2026 20:17:03 -0400 (EDT)
+	id E781A6B0089; Thu,  2 Apr 2026 20:23:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 741C16B008A; Thu,  2 Apr 2026 20:17:03 -0400 (EDT)
+	id D8D9C6B008A; Thu,  2 Apr 2026 20:23:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 612BC6B0005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 20:17:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 998EE1401CE
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:17:02 +0000 (UTC)
-X-FDA: 84615329484.29.3FC7381
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 02DD3C0008
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:17:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ELVrL166;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775175421; a=rsa-sha256;
-	cv=none;
-	b=C+GRnrxLxg0bv9R/SjYm3JGVLaebbxn7oZ6QEicYCO4yKFENH+0NKuRv49Z9x1Q2jI0HH3
-	KRxa5l1gOQrFpB5ZXG0z72YJMICOGNBs92udAVjvyjULIgjoxzWI9is5udbmakoKXX8eFi
-	IKTOx9xgZynnRvZENJpqTyt3fSWyKz0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ELVrL166;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB2686B0005
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 20:23:47 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BFBF1401AC
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:23:47 +0000 (UTC)
+X-FDA: 84615346494.08.88DAD3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9E5A8160008
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:23:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HkS3gNYg;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775175421;
+	s=arc-20220608; t=1775175825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/k+UW+KcNpXrUvxHRMECXLW5E6ljNh2I/FB3F3JcE88=;
-	b=sGtvd2jfAe5ry4jHuBWRSTdibJFutYshCQbLpI8SOFfG1oumLxdfqx03HIA2sYmgu3m+3X
-	4S9E0hHYB8NI4e+Yf0BtKBzjyTTk54skJxv1SfJ5XeynIoa7BIED7o3ZphBhc1ykoY7f8H
-	bYBODXxo5+KEONLMVmTUVO9MPHqvY2E=
+	bh=vePxxbnVvlHmE6DCXTrUaIxwIx0l6ZXjghA8xO08XRI=;
+	b=obeZe3Tk3s0lr96bdRiuJG6pry2I/MZZmVlM6/igxzFN+7kCXYXvkUhCJ+t2deIhKJg3Tu
+	ezRADVCThFSuBHr1NmojQBpSN9CCB867/UxRKqgeQkUqSjAeVbYrCtFGBeShVovPFI9u/S
+	dbywusMaCbTveXSrr8jRDz7GAaWTbHA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HkS3gNYg;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775175825; a=rsa-sha256;
+	cv=none;
+	b=d5m3SDC4byV6oYJXRGJuM6jQi3zU6W53P4Wez0S4mOzFLCdFUvB09w2axZh7VX7/90ysOy
+	HZ6dbHlsmhyHA7Q8jKRsxLwsNkIdGA7eF5jjgVfympsPAcqTPqV9svYuey9teDGAZH1COj
+	j7NUieDIcTK2mxMNNQSTMsEAvr0cxNM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B6CE60121;
-	Fri,  3 Apr 2026 00:17:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767C8C19423;
-	Fri,  3 Apr 2026 00:16:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 647C743500;
+	Fri,  3 Apr 2026 00:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D97C116C6;
+	Fri,  3 Apr 2026 00:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775175419;
-	bh=G6deAPR3LX44+jdQ75wNRcyM0FcG1HTaX0DBHFp77B0=;
+	s=k20201202; t=1775175824;
+	bh=9qp9nWLMF6bx5eFIYhMlWNqj58aGJrCruOeJrkADFtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELVrL166n9hqhE3T/Pu9JB47LFzgNwWbtM+heqapekFShmlxAhZDkFKYf0uQEd0GD
-	 GY/OaKlRXMY/ncvggFCAio7fkpQrriF2IPx+sXyFLPDFXxRSp/6FzEKAKubJ9RxGN8
-	 a5KVmtcc67tgBN6mx+gJ1I6nAhANxl96GkpU7ImxSX+kHb+PuQBi9hytRWRysT72Wn
-	 qCxCHOTl6NQKxm/4dSVL2OefVZgcdAymeEef9/iCZow+QjT11DlLg807UBtDoEmgBQ
-	 QNtdkilNaCBs3c+Rl6mzwedevJ5cAuWRam2n9IxW9kwo/SyvnPnj7jmAaj00vaOQXI
-	 rQqUe6tAQTsnw==
+	b=HkS3gNYglurK0mCpjTEHZ/9Oj3xnLCxpWH6ktD59IkY7q3vxybcCMpIVHOooGk7Jw
+	 yT6HKfCedJv8d0VezXASTPLZbXKkOfSxsLqqgwjoTQ2mu8lUIdhj52tOZUbmMfzO4T
+	 a4YpgIzKczHoyqom0to8NTXQ+KloT2PISunlwnCNYDCAg8QjWeB414034KeZVxNHr7
+	 NonVEG/tfQ2lbajwfAbTbuC+uS8ay5RHn1dFOknPuoJDaD+YTwEVPXFUABdTQJX5GO
+	 mHJCTXlbnUYr9h138D8jMuakyXSoc8CMujga+CE1IeMyrMcV0+WTkiFfHwMXiuJXwS
+	 gBRZJMYKXEugQ==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -70,22 +70,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH 1/3] mm/damon/ops-common: optimize damon_hot_score() using ilog2()
-Date: Thu,  2 Apr 2026 17:16:57 -0700
-Message-ID: <20260403001658.46229-1-sj@kernel.org>
+Subject: Re: [PATCH 3/3] mm/damon: add synchronous commit for commit_inputs
+Date: Thu,  2 Apr 2026 17:23:41 -0700
+Message-ID: <20260403002342.46476-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260402155733.77050-2-sj@kernel.org>
+In-Reply-To: <20260402155733.77050-4-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ib5tfmrkxxiigegchfey9zoz9kpuit1f
-X-Rspamd-Queue-Id: 02DD3C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775175420-123377
-X-HE-Meta: U2FsdGVkX19gVua8MWzo5Ho3js+uWIqFl6sdgvkntlCgJJ/tU1uFF2PSBvMz20DlwVEuqQ8UC97UomqwxIka1SC111uwGc3ioECTUvazrqtDFrB1do+pdH4+0TCTP4Jf6vteB+sB6v8n2ULjvTNtkDKkakGNi+hQMxryyOsvXtd8FcfA8IB2k9ci0f53PtMBcQQJbFYkOxl+w90y/zwLfXdA42dK+2xO7tuViQOqKFV6kl4p/Um3stpKtlXVSuf/IhwqN710VuIwssfvqIpFn2OQzdTewhQ5nSdHrHdqKFP84n1To+7WYWWp63Q8M6A1pmNBD7O6dM8j0CXG1VDqcu9/XyR9Ci7gfz/WjruvjegRRFjneibJCTZ7TBK3Nvfon3lyPk20ITI7aV8oSC/kN/2d7qDUmA8Sdnk61VKbchfijdJsApDnIrxpTD0rc1wCG0SCRoukEf800GvtmVIM1KgXB5GkSHHsUFuaPUj3OT2lRKsFJedxZ2fF8A/s+pkJEcaeObJsoQDdktB+VXtg2Tq8qyFCijMSoQiTAX3/aAvLtzhOSO+uRd+NTQHm0kZcI/GBcsa0smqo+7xNmtuN4GSnPIDtgxUX5x7+2X6k4zDMh3QNW0t+p21RkVAhv6zw4N3rm2QpX1bVL0tjX3g3uWGC7RWBzwNWjSyKeRy2SqY2KedPUnahBhoBHl3oARvedKW6O5MyQwYn7TdpcpWFymQhWeh/K47o8XfsYn2ZxOaiFo2SX1uejkT3bwktWKBwuP578/t18zkyW4jtleLcd7TjwwN8/uOc/W2p1jdrnsskSzYs2x1ViRcTwLZSlKrSQQC28poO1YhtqjbLPCs8Uo6Fp7giPfcW2bJs4n6zV75nkyMBvU4KQpR+8FofTqDoI7BAQF3Cnblku4+9cms1dTna99rngtW+i2iF+OhHFV0qB2MGNJ/1B5py3xv887ILaDhF3jMEwIocTtWR6U1
- LrzfMTsE
- cvhjtNBaza7F9NTBrRSRLvmBFCgkmuww4QqF2F1c1BNgLezYkC8ypGst7ZRPW952ELT0B5I19yeV1052AUgG/OJxkOJmg3JOFIMMk3mHwzQU0WYgAwcAeH+S7KAu6rJyM4eCcAjTaoioMbrcEsS0SDrHcilMw0+5YfNPoRR0XmJ5icDbPIuppZu7qiLR/jhftBncrlVS2umRYgSBwQE8WKUggLkXFmp1ehp/YXO4xvvmiLkNN8GWr2HJm+5FmlOmRFSlF/l64te4UC54NQ5msegZyofUb37dznm1x5Hv7zP7Ed8UFZGLNL30LgLPP/cfz49kl9/D9TtTkKIxohEinaqS9ppBNLURsO9WT
+X-Rspamd-Queue-Id: 9E5A8160008
+X-Stat-Signature: bo69ptncafsiutkp1kfb3neh3zodwpu5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775175825-18810
+X-HE-Meta: U2FsdGVkX1+f1SSSNTLzxNSZxDFrzRp/bZydGa9U0zrbGqyoOnG6tpg3YDHkQlMy8p0C6wNrNHuReNCHL+BQ4I/BzvsZojjbQjB72XlIWPIkk7tWs2YNC2Wrg6P1LYwTOedwDMO+CF9usmk2l4tl2RPBsxcioAI6CtAKYQcwJbtN5tgbbM3R+cM0ulne7JNfWlANz1Zqf9Aob8InyLuSs6zPG0QprAbiaEdh03Sp633pH3TG/JUYN9xvjodIaOr6R3n0PgTNvTjosoYfTdSHn96SjzByIbDB/Epxwv3hn34pJDqoPN21SQXDeMfjAUpENN/R6ugYdVlyasSI5HKioUYtLw4A96O+AaZZnkBlB0LzeuYiRwjyKCPKmhIjJVzRalM4iNQRhQAH6wg5CCx/TGkj9jawqA3Hi3MHwFo/3N7LfwWXNxzzRKJKuOOUfMEtH5mZkErNpMbHgOJEOJuvU2FUVd4yaY/yL4xsHbVjpqUHiXcygS/w6a3S627Fkz9nSDxzLrmgMZoejzpg7TmC06nkiS1YnYGjeN7dMF5DJ2/iYSglLh7qVoz/a38eD1VV1FXmHQRNlSU/xACBArzk5Fe/ys/oULy4mu5I4MniK2MJVhIcKi3ErmpR3+nvq7GxIjyabpeMpNTg0kXQlKerNvr8a+Ld9V+ChHmVUUOTGgtg5W8sNxGkcJBPblhUSx1Avtm/Oe5+d5lpZyhPzDj4T+/uyVQgJvUXBNmLBWI4CJndFV7hv/t7Yq0RBIhKep7NyH4HkJO5vhYKawxUVbPUE5sXRz4JLE6/ZGeirs8xIPR9AEhI4KAEJcKfMaU7MN9mO+OWjLrjGm8BN3DVw9nGOmOMx9bK2fEEFNOZaiWDpR8OqIee0JTH2YDGmqhSay8b94XKlL11lkomIvong8VFlkO2vnXWYWU6dNr4oYotrJX5ZD3zTTFSuK4C9AZDyD1lg4Urx1u3YY6ET0ZXr2O
+ B3Ew5s2d
+ bEO9Gq7EXGE7tkw4qkiwovBK/FlQIkGWHI/OV/rG/hfQ64HjNqe/FJfMAy9PMrOriBuItsto4O0K14F9M40oFpT2bHlIAQonFfPvkaBn5PQj6/U4S5W1erJIasvT1xOOnY3bCq974UQ74Azfq9uLWsttYfJQEBmaNImzSrxHoCoUdvPNQ6X2dLmt3YeF+AvJlMWBknUolaSQ5tB2EYlB4dVl4QMepax0F/5zE72fPRqfvJzYqmH2QxPPLjXKdBlJBNoMJN7vO7sdM6gwfL49S+UEUgevoF1PnBrAQesrNyWlzCRYxvHl91DOPJUQQ/j5p13tB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,61 +93,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: sashiko didn't find a blocker for this patch.
+On Thu,  2 Apr 2026 08:57:30 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Forwarding Sashiko review in a review format with my inline comment, for
-sharing more details of my view and doing more discussions via mails if needed.
+> From: Liew Rui Yan <aethernet65535@gmail.com>
+> 
+> Problem
+> =======
+> Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+> silently (no error returned to shell), because the validation happens
+> asynchronously in the kdamond.
+> 
+> Solution
+> ========
+> To fix this, the commit_inputs_store() callback now uses damon_call() to
+> synchronously commit parameters in the kdamond thread's safe context.
+> This ensures that validation errors are returned immediately to
+> userspace, following the pattern used by DAMON_SYSFS.
+> 
+> Changes
+> =======
+> 1. Added commit_inputs_store() and commit_inputs_fn() to commit
+>    synchronously.
+> 2. Removed handle_commit_inputs().
+> 
+> This change is motivated from another discussion [1].
+> 
+> [1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+> Changes from v2
+> (https://lore.kernelorg/20260329075415.36775-1-aethernet65535@gmail.com)
+> - Rebase to latest mm-new.
+> Changes from v1:
+> - Restore the KERNEL_PARAM_OPS_FL_NOARG flag to keep the compatibility.
+> - Link to V1: https://lore.kernel.org/20260328084524.5451-1-aethernet65535@gmail.com
+> Changes from RFC-v6
+> - Removed unnecessary assignment (repeat) in commit_inputs_store().
+> - Change the return value; if an error occurs, return the error code.
+> - Removed the RFC tag.
+> - Link to RFC-v6: https://lore.kernel.org/20260327062558.66392-1-aethernet65535@gmail.com
+> Changes from RFC-v5:
+> - Removed unnecessary assignment (data) in commit_inputs_store().
+> - Return -EINVAL instead of -EBUSY when 'commit_inputs' is triggered
+>   while kdamond is not running.
+> - Link to RFC-v5: https://lore.kernel.org/20260325013939.18167-1-aethernet65535@gmail.com
+> Changes from RFC-v4:
+> - Rename the 'yes' variable in commit_inputs_store() to the more
+>   understandable 'commit_inputs_request'.
+> - Return -EBUSY instead of -EINVAL when 'commit_inputs' is triggered
+>   while kdamond is not running.
+> - Link to RFC-v4: https://lore.kernel.org/20260323021648.6590-1-aethernet65535@gmail.com
+> Changes from RFC-v3:
+> - Added checks for 'ctx' and 'damon_is_running()' to prevent NULL
+>   pointer dereference during early boot. (Found by Sashiko.dev)
+> - Removed handle_commit_inputs() and its associated polling logic as
+>   they have become dead code after moving to the synchronous damon_call()
+>   approach.
+> - Ensure the 'commit_inputs' is properly updated.
+> Link to RFC-v3: https://lore.kernel.org/20260322231522.32700-1-aethernet65535@gmail.com
+> Changes from RFC-v2:
+> - Removed damon_validate_attrs(), now using damon_commit_ctx() for
+>   synchronous validation in the kdamond context.
+> - Following DAMON_SYSFS pattern for synchronous commit via damon_call().
+> - Link to RFC-v2: https://lore.kernel.org/20260321140926.22163-1-aethernet65535@gmail.com
+> Changes from RFC-v1:
+> - Remove question from commit message area.
+> - Added synchronous validation for DAMON_RECLAIM.
+> - Rename damon_valid_attrs() -> damon_validate_attrs().
+> - Exported a new function damon_validate_attrs() and declared it in
+>   damon.h.
+> - Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
+> 
+>  mm/damon/lru_sort.c | 46 ++++++++++++++++++++++++++++++++++++++-------
+>  mm/damon/reclaim.c  | 46 ++++++++++++++++++++++++++++++++++++++-------
+>  2 files changed, 78 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 554559d72976..641af42cc2d1 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+> @@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+>   * the re-reading, DAMON_LRU_SORT will be disabled.
+>   */
+>  static bool commit_inputs __read_mostly;
+> -module_param(commit_inputs, bool, 0600);
+>  
+>  /*
+>   * Desired active to [in]active memory ratio in bp (1/10,000).
+> @@ -349,18 +348,51 @@ static int damon_lru_sort_apply_parameters(void)
+>  	return err;
+>  }
+>  
+> -static int damon_lru_sort_handle_commit_inputs(void)
+> +static int damon_lru_sort_commit_inputs_fn(void *arg)
+>  {
+> +	return damon_lru_sort_apply_parameters();
+> +}
+> +
+> +static int damon_lru_sort_commit_inputs_store(const char *val,
+> +					      const struct kernel_param *kp)
+> +{
+> +	bool commit_inputs_request;
+>  	int err;
+> +	struct damon_call_control control = {
+> +		.fn = damon_lru_sort_commit_inputs_fn,
+> +	};
+> +
+> +	if (!val) {
+> +		commit_inputs_request = true;
+> +	} else {
+> +		err = kstrtobool(val, &commit_inputs_request);
+> +		if (err)
+> +			return err;
+> +	}
+>  
+> -	if (!commit_inputs)
+> +	if (!commit_inputs_request)
+>  		return 0;
+>  
+> -	err = damon_lru_sort_apply_parameters();
+> -	commit_inputs = false;
+> -	return err;
+> +	/*
+> +	 * Skip damon_call() if ctx is not initialized to avoid
+> +	 * NULL pointer dereference.
+> +	 */
+> +	if (!ctx)
+> +		return -EINVAL;
+> +
+> +	err = damon_call(ctx, &control);
+> +
+> +	return err ? err : control.return_code;
+>  }
+>  
+> +static const struct kernel_param_ops commit_inputs_param_ops = {
+> +	.flags = KERNEL_PARAM_OPS_FL_NOARG,
+> +	.set = damon_lru_sort_commit_inputs_store,
+> +	.get = param_get_bool,
+> +};
+> +
+> +module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
+> +
+>  static int damon_lru_sort_damon_call_fn(void *arg)
+>  {
+>  	struct damon_ctx *c = arg;
+> @@ -374,7 +406,7 @@ static int damon_lru_sort_damon_call_fn(void *arg)
+>  			damon_lru_sort_cold_stat = s->stat;
+>  	}
+>  
+> -	return damon_lru_sort_handle_commit_inputs();
+> +	return 0;
+>  }
+>  
+>  static struct damon_call_control call_control = {
+> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> index 86da14778658..4fc4a54b5e54 100644
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+> @@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+>   * re-reading, DAMON_RECLAIM will be disabled.
+>   */
+>  static bool commit_inputs __read_mostly;
+> -module_param(commit_inputs, bool, 0600);
+>  
+>  /*
+>   * Time threshold for cold memory regions identification in microseconds.
+> @@ -255,18 +254,51 @@ static int damon_reclaim_apply_parameters(void)
+>  	return err;
+>  }
+>  
+> -static int damon_reclaim_handle_commit_inputs(void)
+> +static int damon_reclaim_commit_inputs_fn(void *arg)
+>  {
+> +	return damon_reclaim_apply_parameters();
+> +}
+> +
+> +static int damon_reclaim_commit_inputs_store(const char *val,
+> +					     const struct kernel_param *kp)
+> +{
+> +	bool commit_inputs_request;
+>  	int err;
+> +	struct damon_call_control control = {
+> +		.fn = damon_reclaim_commit_inputs_fn,
+> +	};
+>  
+> -	if (!commit_inputs)
+> +	if (!val) {
+> +		commit_inputs_request = true;
+> +	} else {
+> +		err = kstrtobool(val, &commit_inputs_request);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	if (!commit_inputs_request)
+>  		return 0;
+>  
+> -	err = damon_reclaim_apply_parameters();
+> -	commit_inputs = false;
+> -	return err;
+> +	/*
+> +	 * Skip damon_call() if ctx is not initialized to avoid
+> +	 * NULL pointer dereference.
+> +	 */
+> +	if (!ctx)
+> +		return -EINVAL;
+> +
+> +	err = damon_call(ctx, &control);
+> +
+> +	return err ? err : control.return_code;
+>  }
+>  
+> +static const struct kernel_param_ops commit_inputs_param_ops = {
+> +	.flags = KERNEL_PARAM_OPS_FL_NOARG,
+> +	.set = damon_reclaim_commit_inputs_store,
+> +	.get = param_get_bool,
+> +};
+> +
+> +module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
+> +
+>  static int damon_reclaim_damon_call_fn(void *arg)
+>  {
+>  	struct damon_ctx *c = arg;
+> @@ -276,7 +308,7 @@ static int damon_reclaim_damon_call_fn(void *arg)
+>  	damon_for_each_scheme(s, c)
+>  		damon_reclaim_stat = s->stat;
+>  
+> -	return damon_reclaim_handle_commit_inputs();
+> +	return 0;
+>  }
+>  
+>  static struct damon_call_control call_control = {
+> -- 
+> 2.47.3
 
-> # review url: https://sashiko.dev/#/patchset/20260402155733.77050-2-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 3d1d9600685998aeba66926091d5a11897567bd0
-> Author: Liew Rui Yan <aethernet65535@gmail.com>
-> 
-> mm/damon/ops-common: optimize damon_hot_score() using ilog2()
-> 
-> This commit replaces a manual for-loop with an ilog2() based calculation
-> to optimize the derivation of age_in_log in damon_hot_score(), improving
-> latency during performance tests.
-> 
-> > diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> > --- a/mm/damon/ops-common.c
-> > +++ b/mm/damon/ops-common.c
-> [ ... ]
-> > @@ -117,9 +117,12 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
-> >  		damon_max_nr_accesses(&c->attrs);
-> >  
-> >  	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
-> > -	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
-> > -			age_in_log++, age_in_sec >>= 1)
-> > -		;
-> > +	if (age_in_sec)
-> > +		age_in_log = min_t(int, ilog2(age_in_sec) + 1,
-> > +				DAMON_MAX_AGE_IN_LOG);
-> > +	else
-> > +		age_in_log = 0;
-> 
-> This isn't a bug, but could this logic be simplified and the branch avoided
-> by using fls() instead of ilog2()?
-> 
-> For non-constant variable arguments, ilog2(x) internally resolves to
-> fls(x) - 1. By evaluating ilog2(age_in_sec) + 1, this code essentially
-> calculates fls(age_in_sec) - 1 + 1.
-> 
-> Since fls() natively returns 0 when the input is 0, using fls(age_in_sec)
-> directly would remove the need for the conditional branch entirely and
-> reduce the block to a single expression.
-
-We decided to use ilog2() since it makes the code easier to read in my taste.
-So, this is not a blocker for this patch.
-
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260402155733.77050-2-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+Sent using hkml (https://github.com/sjp38/hackermail)
 
