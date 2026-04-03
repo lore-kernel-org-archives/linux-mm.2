@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35569E85368
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 19:40:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B86BE8538E
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 19:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38DDB6B0005; Fri,  3 Apr 2026 15:40:29 -0400 (EDT)
+	id CDD796B0088; Fri,  3 Apr 2026 15:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33EBC6B0088; Fri,  3 Apr 2026 15:40:29 -0400 (EDT)
+	id C66426B008A; Fri,  3 Apr 2026 15:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2549C6B008A; Fri,  3 Apr 2026 15:40:29 -0400 (EDT)
+	id B07806B008C; Fri,  3 Apr 2026 15:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 177F86B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 15:40:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A29761B6CE0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A3F206B0088
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 15:40:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 571EF138E10
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:40:30 +0000 (UTC)
+X-FDA: 84618261420.26.5238072
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F3C312000A
 	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:40:28 +0000 (UTC)
-X-FDA: 84618261336.20.11F500A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 16592140012
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:40:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HN7jXapC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775245227; a=rsa-sha256;
-	cv=none;
-	b=Z1y+O4kNh7jnp6dpTif06dGHU9Bx3Y/xx3TgpEuXrg5Brq+57Cqs/0SnWhKIWZOBVXiMZT
-	alUBnMcoHs9jeMJ2j0r0G5qlj/orFt6q4Tw9TI10P1KMBTXFNSQXQeXsHhQnAVzLHADT1k
-	blF96MC0HlJynQv2erQS+LeoEZGUeJ8=
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZoTiwGe1;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HN7jXapC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZoTiwGe1;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775245229; a=rsa-sha256;
+	cv=none;
+	b=fV6hxdml9dcu3VuSOnCE+wz098sMj0WvrL83kQ6ayMs8AhbjakiN2JoatT+mDtPdjWE0Iz
+	fjS42JMfPMUFmk9VulUC8JK3csmhpBygQhH95FzlLpQq+A2EzvU4vVVcUyy2iuWcE59K4n
+	ecfBMYZx344mzw1LPEEj218YAYYiFmA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775245227;
+	s=arc-20220608; t=1775245229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mImRxwwl9HR1JcgO1qH6AH7Gz4TaSedlJCD9OUVooFo=;
-	b=Tg/xG13MtKPZZ2w1g0ON2oZyLb2owgHNE7S/iAD7kw0AAZXfhVL+WyqNdhfru64haav3Eu
-	z9uN+/YGqg0/JSY0ybDfWRR958s7vu7o71W7JRkt3BLaFFxWlbTk58fJw1ckDSMW0yOGQU
-	iy38ML7sTVbr3glClB7v8PG4P1Mersc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mmoJNEQ0FJTshMy+4cXa+1gXV7M7gLfgBSqHHocoRU0=;
+	b=NgW+NKNBmrnCvWVXAygEpSdeQtO+iF2Hz7+YUUcdaSSDsYfMZ/lfaTUo5KhXg0PAJ6qY7m
+	sQbum6Azv/ZxL/Qap1E/DE8CEXUcveGJs0HBdVnvSn6RK3wwqno/D3SPPWLiGTOuNT4aVC
+	ldWCOZZvUgkTBZgqop6Pue9CSguQBFY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8F0843902;
-	Fri,  3 Apr 2026 19:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DDCC2BCAF;
-	Fri,  3 Apr 2026 19:40:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54A3460121;
+	Fri,  3 Apr 2026 19:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD8DC19424;
+	Fri,  3 Apr 2026 19:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775245225;
-	bh=DPjrTtifdEBaKQw6NVui1Rhd5/iW96MpvVNjDyfpF7I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HN7jXapCcwFpY8190StoaiGbRmNWC5lrpQPE7K9FY3j74OKrf02qlfkIoV/aXzCA6
-	 R+nnTVkUO6QMUcxegDG+Pc6SmfC7Tx6AxLh5CqNKzcTBEDvdSD1qwyg0G4H0+Y43S/
-	 VfIcZY91k75ZfgO/u8RBtYkGz7TzWbqGUO2GfnzaqJG2yo2rVbX6wTFgj1B704EtUv
-	 g1K6aMRViO5wcJhyRzgkvvvKOH6Wa5U+kEs58byvRX5pdojALzwqzF/mRLfHIh61MC
-	 gb6OBmWhOMkWgKd/Qc2Q9GQLXSqm2OJ+vhSmApAeuT27X6wpzzW2TBzfLVJU2YYaPY
-	 I75l0R3sRRcWg==
+	s=k20201202; t=1775245228;
+	bh=VK1HcPC/3wExF1FoSkZi5ZUUe6b5gm8f6ww+D0kO+o8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZoTiwGe1QmwvyLreS4Iwrj0r8ah0hPBXnXkDtoGieRWHthFimFGI/8HyOb0NfseHn
+	 U3Rfy1sk15IcwoJLlpi32RaU6sx0F/WIfS49RxgHFJmI2SxvbSHZm5RmndtmsNjjy5
+	 9JIiG6ShZO2+U8SlhLW2qp5Wz8yI6r6dhBeJP+RSJae8qbTkIhHVjLhE2QHfY6aWaa
+	 C4lj3ERuasJB+zfR4KTOLQqnwPHge8yRiNX736KKPZ3jlpcDYTuNkk+HAo3Q3X6n5h
+	 pztj4dQayog8j5amMJ2fQgbBklDTkb0hQVeL0ucoCZF8M2p6iXp7ZJWxrIrUZlnYVp
+	 v2TCiAAEh4yYg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -73,20 +73,20 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 Cc: linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 0/6] selftests/liveupdate: add memfd tests
-Date: Fri,  3 Apr 2026 19:40:06 +0000
-Message-ID: <20260403194014.3704180-1-pratyush@kernel.org>
+Subject: [PATCH v2 1/6] selftests/liveupdate: add framework for memfd tests
+Date: Fri,  3 Apr 2026 19:40:07 +0000
+Message-ID: <20260403194014.3704180-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+In-Reply-To: <20260403194014.3704180-1-pratyush@kernel.org>
+References: <20260403194014.3704180-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 16592140012
-X-Stat-Signature: ydxpso5wiyqm5o1iod4w8y6pamqztkk3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F3C312000A
+X-Stat-Signature: otiead8iggp9xi19c4mefse3ceg55icu
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775245226-954930
-X-HE-Meta: U2FsdGVkX1+8y0cK7tHOBUwy7+/6N2SmisSN01L5gC/tBY0gg30IaU7/PgeIzkMzttejknH/IKnPws6luXEUHPPVv6Jph3QuXX3dr/0Hym9D7qqti3pdq4H7xhBApIVnAfLL5/mUOK4jhfKxRipS4lt4qI4Hj6SISF91t1knbco0Z1QfmSnOe9rYERPxjl5t/p8QgA08Kttv8OXxkblM7C/5yS/DjQ2mMIQS3KJitNBU+zQ010JAlg6Sp/ebEtxpNsqQVVF2g7MxwMpsc3v5IkcmsnqRiRL0v3T0etccfI3bmF/LZ5vUmcLLSnLL2ssCeGAeXsXvdu+t20oig3sQFkVaWPxAOO7t64PVHP2AqEr186au/BqHsW43HLOHGI01i8vPbW3FV+whvM4KOGX/u8n4sQTQMwjq55MoWsDG8wBbAjW43Hz8XjkilUi4Wxhes1gzIpkjZwejEGvFc2mBPh695KLhjd9SZ8Q7u7mdIaaxyIOIq6JqT7jUV7b5GyFcK4rRlIc1IlXCVEznS22cYnTwcGIYmtGlocg4WCHqZLogweOWaDy0NpTfjAKNzYecjXQDUqOa+9Wx9hLtmwqx3naxJ4GU7RJuGx5WZTuRc7AOQCKyKgPv3NRyelwOQ/hT8HOzI8P7LT+xAqYd6OAsSawWSbwiqeuVeaYhB+v7tt+TcMN3gtAEMzXwRqJB4BwWghvoga6ISObbX3FF/4cGVvjNlsXdUQbZmbpJMeKMXBZhPa3bJ8yQN80haShnd9EHtrZcCklij7qyFohgHuI5DNk3+Ytyx8PeUIijlcYHkcN5bMd78fqkrBcKHRCizLvMn8l7ZgkQL9UByNhDtrrbACV8qaP+4BF9p9sTIhdOQB3x8tQipj11QNEYTLj+o30w1NTgqDwKLaYeJgHV5NKa6myd5XL5e78ZCxzdFBcNzX2aB+VWpPDTTV0ZO5FKxOb2XYcmR1/ad9QaXWM7Y3H
- Y9+BUSlo
- muTaQlKloGF1yvPmesNsgst+1/HagsHE3mHkg5bMj+TYeGT5GyuKZW0y+mzE7mBHWfngUQUjifJ0POX3mKFE/tFy8yFICuJ2yHjlYmE37eTqbtYGuMeWII7BSxfiNQawqxikKHqQcgUJUKVGT2e5Sl1t6MRNEAfeFn4XdMwetk+a2isnERlp1tZEa3Fm5iyq9KeHqSFDzdluNrK874qPsuLCmpVlRl2owLSlgBUZwcnW8mu99HY2D8vIpj1G5p+M0HE2nvinW8SUZevevKTszF3Pj9vv3BW1ZNWH6
+X-HE-Tag: 1775245228-633550
+X-HE-Meta: U2FsdGVkX1+zqW1GiyGkQ8e8KheLG3JkWJnXeYKeMgr2iX41jCkc2UileN3CPT4AgouzCIJJi9rS6V8pjrXmhbxEjNA2QkbeDsf8SHnmp3PORCGlWdFIGTv99sGTq20jZ7G80WdKgufxO0VdfOYH0TZx4nYmAxCPBE5GgyWfQvz4qJJKYwjHBwSwIoQBEV6hUbN1EMc5yJzkFQWHOo475gUSO9b7u53wBdaBc0XkQBmI5wi2PqRxIYgCMePe3JZm+pTPWkiAzFbnDh0zxiEo11ayGC99sjfUUxYh4uX2LJOPk6krGHDSP84W47P5uln6VxAkRdIjztL/Ubyusw9oAHa5auySxGqDGNay5ctarSlJHUhPJYHYSz3qiMfXDoa6VsEMZaalzX+OuUgOzc7Gozs1tFx5PVCdtfhoqBcZF8dSim9HSHQH/CRnQuv97d8MmQV/tIZUpcoqt2wNKOBfugiXkoQUaZMPBpJBAzeZSTK0FDlYQncAAkLjsscnA7qO8Senc13TPGHztWKmHgsbxcHz9BBk06+O7WrP3paBLLkEDiphQcdu+XPRICKwSrSovpLk2FRNGjx05FX35JcUKeOakFXcST4kOizCrReMdWgc8Xs0DkyfoQMsUoWPo2fKmWvQboXunll3t1UqF6DsknkPMHJgseeGm9ZLts61YmdBBEMarBmhAb1vTv3ZuJ9UAby/Kx5KpAH4I6t8xYLAfpOdrWKax1hfrB5Prd2EMrcHkACCqbqfridXZWwzxIdJbAD6j9bk8UJtdy2jP2158key1cTJUwwDwwfVL2bNzN7T0hlpsCahl1cl/wjEXS9GgyXtBtnztUyLYzPHGPRNt7VvPr1BM+KkKRJ/LXk096vOpEHAEoi5eI2nN1kYCGc4RlWNcV8d8Mo+yp2JVhrf7ZUYv0SIlq0oIRUBVGV/hhcr5UN3FmOzTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,52 +96,134 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi,
+Currently memfd preservation using LUO is only tested indirectly via the
+luo_multi_session or luo_kexec_simple tests. Their main purpose is to
+test other live update functionality.
 
-This series adds some tests for memfd preservation across a live update.
-Currently memfd is only tested indirectly via luo_kexec_simple or
-luo_multi_session. Add a dedicated test suite for it.
+Add a framework for writing memfd tests. The framework hooks into the
+kselftest harness, but adds some things on top to make it suitable for
+live update.
 
-Patches 1 and 2 are preparatory, adding base framework and helpers, and
-the other patches each add a test. Some of the code is taken from the
-libluo patches [0] I sent a while ago.
+The LUO FD (/dev/liveupdate) can only be opened by one process at a
+time. Each test runs in its own process. This means the LUO FD must be
+owned by the main process and shared to children. main() opens the LUO
+FD and shares it to child runners using a global variable.
 
-[0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
+Live update tests run in two stages. One before kexec and one after.
+Detect the stage using a special state session. If the session is
+present, it means the test is in post-kexec state.
 
-Changes in v2:
-- Drop LIVEUPDATE_DEV since it isn't used.
-- Split luo_fd and stage declaration on separate lines.
-- Split all 2-stage tests into helper function for each test.
-- Fix wording and argument order when LUO_DEVICE fails to open.
-- Rename verify_fd_content() to verify_fd_content_read().
-- Advance buffer pointer in {read,write}_size().
-- Add a check to make sure current working directory is not on a tmpfs
-  mount. If so, skip the tests since saved data files will be lost.
-- Rename RANDOM_DATA_FILE and RANDOM_DATA_FILE_FALLOCATE to
-  MEMFD_DATA_FS_COPY and FALLOCATE_DATA_FS_COPY respectively. Also
-  update the file names to reflect this naming convention.
-- Collect R-bys.
+Additionally, take in an optional --stage argument that lets callers
+specify expected stage. This is useful as a safety net to catch LUO core
+failures. If LUO core fails to preserve the state session properly, this
+option can help detect this and fail early. Since the option is not
+recognized by the kselftest harness, remove it from argv before calling
+test_harness_run().
 
-Regards,
-Pratyush Yadav
-
-Pratyush Yadav (Google) (6):
-  selftests/liveupdate: add framework for memfd tests
-  selftests/liveupdate: add helper functions for memfd tests
-  selftests/liveupdate: add test for memfd content preservation
-  selftests/liveupdate: add test for zero-size memfd preservation
-  selftests/liveupdate: add test for operations on a preserved memfd
-  selftests/liveupdate: add fallocate test for memfd
-
- tools/testing/selftests/liveupdate/Makefile   |   2 +
- .../testing/selftests/liveupdate/luo_memfd.c  | 355 ++++++++++++++++++
- .../selftests/liveupdate/luo_test_utils.c     | 189 +++++++++-
- .../selftests/liveupdate/luo_test_utils.h     |  10 +
- 4 files changed, 555 insertions(+), 1 deletion(-)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ tools/testing/selftests/liveupdate/Makefile   |  1 +
+ .../testing/selftests/liveupdate/luo_memfd.c  | 78 +++++++++++++++++++
+ 2 files changed, 79 insertions(+)
  create mode 100644 tools/testing/selftests/liveupdate/luo_memfd.c
 
-
-base-commit: 98ddd87f9704ef2fc837ec2ca38877c364d8dada
+diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
+index 080754787ede..051daae55eec 100644
+--- a/tools/testing/selftests/liveupdate/Makefile
++++ b/tools/testing/selftests/liveupdate/Makefile
+@@ -6,6 +6,7 @@ TEST_GEN_PROGS += liveupdate
+ 
+ TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
+ TEST_GEN_PROGS_EXTENDED += luo_multi_session
++TEST_GEN_PROGS_EXTENDED += luo_memfd
+ 
+ TEST_FILES += do_kexec.sh
+ 
+diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
+new file mode 100644
+index 000000000000..47d2c3163b62
+--- /dev/null
++++ b/tools/testing/selftests/liveupdate/luo_memfd.c
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pratyush Yadav (Google) <pratyush@kernel.org>
++ */
++
++/*
++ * Selftests for memfd preservation via LUO.
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <unistd.h>
++
++#include <linux/liveupdate.h>
++
++#include "../kselftest.h"
++#include "../kselftest_harness.h"
++
++#include "luo_test_utils.h"
++
++#define STATE_SESSION_NAME "luo-state"
++#define STATE_MEMFD_TOKEN 1
++
++static int luo_fd = -1;
++static int stage;
++
++int main(int argc, char *argv[])
++{
++	int expected_stage = 0;
++	int session;
++
++	/*
++	 * The test takes an optional --stage argument. This lets callers
++	 * provide the expected stage, and if that doesn't match the test errors
++	 * out.
++	 *
++	 * Look for the stage. Since test_harness_run() doesn't recognize it,
++	 * once found, remove it from argv.
++	 */
++	for (int i = 1; i < argc; i++) {
++		if (strcmp(argv[i], "--stage") == 0) {
++			if (i + 1 < argc) {
++				expected_stage = atoi(argv[i + 1]);
++				memmove(&argv[i], &argv[i + 2], (argc - i - 1) * sizeof(char *));
++				argc -= 2;
++				i--;
++			} else {
++				ksft_exit_fail_msg("Option --stage requires an argument\n");
++			}
++		}
++	}
++
++	luo_fd = luo_open_device();
++	if (luo_fd < 0)
++		ksft_exit_skip("Failed to open %s (%s) device. Is LUO enabled?\n",
++			       LUO_DEVICE, strerror(errno));
++
++	session = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
++	if (session == -ENOENT)
++		stage = 1;
++	else if (session >= 0)
++		stage = 2;
++	else
++		ksft_exit_fail_perror("Failed to check for state session");
++
++	if (expected_stage && expected_stage != stage)
++		ksft_exit_fail_msg("Stage mismatch: expected %d, got %d\n",
++				   expected_stage, stage);
++
++	if (stage == 1)
++		create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
++
++	test_harness_run(argc, argv);
++}
 -- 
 2.53.0.1213.gd9a14994de-goog
 
