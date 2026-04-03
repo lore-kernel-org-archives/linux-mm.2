@@ -4,108 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DF03E8538E
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 18:29:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 822A6E8538C
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 18:32:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC206B0005; Fri,  3 Apr 2026 14:29:34 -0400 (EDT)
+	id E75776B0005; Fri,  3 Apr 2026 14:32:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AD0D6B0088; Fri,  3 Apr 2026 14:29:34 -0400 (EDT)
+	id E26876B0088; Fri,  3 Apr 2026 14:32:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2D26B008A; Fri,  3 Apr 2026 14:29:34 -0400 (EDT)
+	id D3C566B008A; Fri,  3 Apr 2026 14:32:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D25A6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:29:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6C8B13B8D5
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:29:33 +0000 (UTC)
-X-FDA: 84618082626.27.867F9EF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C4D9B6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:32:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4CE7AE1CD3
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:32:10 +0000 (UTC)
+X-FDA: 84618089220.09.16C0CF3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 156844000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:29:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JFfoe+Od;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id B8A0D1A0008
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:32:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UPoCO5jm;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UPoCO5jm;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775241128; a=rsa-sha256;
+	cv=none;
+	b=21i/xpddNiZeK7+los+O4E5uTOeqrteb48mgtpiACdza52IBj6jIJQe+u05i6g0b1LnBR9
+	tvRgtMEfMNjIRSlopNCjAbYdOjs7p6j9SEggWQS+STzojeeISrTcm3dHwvI6bm3+5UpyMF
+	MnIrd4NHCpdJmcUkiOuPjxNupTKoab8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775240972;
+	s=arc-20220608; t=1775241128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R454VoLw6DJXh4n5wKZhGkeuayF8+zdiVAOeU7+29qM=;
-	b=6GFu6NMmIpMie+hC59YCbLr1hTPjTYAItSJxeLcnLJwnfvXS5oiAUNZB6Xdh0nEBzlkGcF
-	TdpXJIrayuZEFOLWcJ9gxgzm6os7pttSwU0hdUVLyzsdKhUbK4QdQAS0WItD2ITf3Cfu3n
-	c6kDMuihkvzwFFeJeJfUW/bUYdCp8V8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JFfoe+Od;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775240972; a=rsa-sha256;
-	cv=none;
-	b=cCsDaz7hcOfj8jDzNp2zN5gJHPy2rPZ5f43B9bCDQLByPBGByLLfA84Tk1hoDS2lqMobZf
-	Kp9zcdB+zlq3Q/kkdX5yqFEcPDbDUlVbnlJGo6FzSoNIfpVQ8In8SV1ARSJQxT69VwWkZD
-	tqP1RAb+4bvrG9/RhuXCsbGnSH0D658=
+	bh=dMazjs+V4JMvxkZG9IF++8mnYc4SK9agSqWjhv0zmig=;
+	b=F74b4i3cDdaYafv3EZ+w3W3xYLmLv3fSbFwRSqY9YtrgwwLzSKidOzS7OZNgm0bDhFQ9MO
+	AiZIo3SrdvIaNEH6B0O1S1CSi10gs4tvmu0B5/HqwYPJuQ9EynvN1rj2A7hoOGfa42z8s2
+	w8GtIplJKpjNeoROio9O4MRVoCdZ7ZA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E35160008;
-	Fri,  3 Apr 2026 18:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7854CC4CEF7;
-	Fri,  3 Apr 2026 18:29:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1117260008;
+	Fri,  3 Apr 2026 18:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DBAC4CEF7;
+	Fri,  3 Apr 2026 18:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775240971;
-	bh=2LaCesgEqKearbmEy0CIdH1OxXGy3hFRgnwk7wdkISs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JFfoe+OdYtwOwBNifEpqm7IRcYHNx8GK/H/UXt4zENrJ40+pbi/suVM7tB5nwYUoz
-	 43CneCDysSjvSJwT+97osxUozGqQ+k5rrR2f4w2qfF4s2/ynhOqo4sYElxPb4UicWQ
-	 Cxamq9EAHCCoyEZydeL5mxRYYT6UjLxLmnLPyHwfsKR1qDviIVBuTYbLnjyXeef3pv
-	 eOVagQAWx/m+AoA6Y8ONDtRjXtl8nMq62cTqwkYwaJAFUYDxK/FKCjy+W25DGNIwUH
-	 s+We36PVVj6YWendwlyyYb0TQpiVfCOj+MvYwC5WWcCxerl2j/g3bwHB3jnNoFPC/W
-	 fYMAxj+aKPE2A==
-Message-ID: <d0fe363c-2e8f-44a4-9b64-3fa3ba9a5773@kernel.org>
-Date: Fri, 3 Apr 2026 20:29:22 +0200
+	s=k20201202; t=1775241127;
+	bh=TvVC+nwUPJvPfGBp3UoDRWVZctwPeVAHVfxSvR91lDg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=UPoCO5jm3FOOHMaZv5E407upgpxENY+rmKh42fDTdDe1Z4+7ItgYWs3eU+5Nw5ZGh
+	 2LOhA8vpaoNz5JqDcrqykaE6lKC9J+cUa0oROkuT/CfPnr/+cAoKK8Aag4txVJG7Y5
+	 xJk3kp0QBZnle/Hb2VnOb4N9eVMrDrJyi7ledMTLN4YezVKisZMSpSaXGlwepsrt7s
+	 BEEukhsGVVAA73c9XmZlg19IOMSnVuyh7U8Nn4zm3K0MwQrekeZTLCU7T9UBuXjJkM
+	 KaYu59syDU5GhjJf25Bu8fYl1Hexh35N98fYRDCfiFwAMLblZ3WgSW+EvpHtyvFovs
+	 RDcLGCSPyBENg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  dmatlack@google.com,  pratyush@kernel.org,
+  skhawaja@google.com
+Subject: Re: [PATCH v4 2/3] memfd: implement get_id for memfd_luo
+In-Reply-To: <20260326163943.574070-3-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Thu, 26 Mar 2026 16:39:42 +0000")
+References: <20260326163943.574070-1-pasha.tatashin@soleen.com>
+	<20260326163943.574070-3-pasha.tatashin@soleen.com>
+Date: Fri, 03 Apr 2026 18:32:03 +0000
+Message-ID: <2vxzpl4fc2u4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] slab: support for compiler-assisted type-based slab
- cache partitioning
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>, Marco Elver <elver@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- kasan-dev@googlegroups.com, llvm@lists.linux.dev,
- Andrey Konovalov <andreyknvl@gmail.com>, Florent Revest <revest@google.com>,
- GONG Ruiqi <gongruiqi@huaweicloud.com>, Jann Horn <jannh@google.com>,
- KP Singh <kpsingh@kernel.org>, Matteo Rizzo <matteorizzo@google.com>
-References: <20260331111240.153913-1-elver@google.com>
- <ac9d5O5XehnXRc5A@hyeyoo>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <ac9d5O5XehnXRc5A@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 156844000A
-X-Stat-Signature: u8q89frcyazpodf4mrt39m8ssoyg8bsh
+Content-Type: text/plain
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B8A0D1A0008
+X-Stat-Signature: qxie7hx9fh78doop6o33jxrfqe9rzyxh
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775240971-156151
-X-HE-Meta: U2FsdGVkX1+hGrLQOnFHz4df+Lxkd/vaPMBHOpx+eh3Tx+LfCuMnSRWgjuG6ftejzvrX8gxz7mU4SYM1BcYkpRJe7K2aoS24qe6hA4InzwNdRqvngx5U9VZ/XUR1hAsl7c0s3Kdx3bVAYvX/KJOw0jyUg1+q6AlupWx6JjTnPZ6mdkh9O1j0qYwrVYQ/QNQ6oNfBQAV0hzH4N9Y6Bk6HAaFZXvQYUxECdqVAB9rvFzK1ub2rgeScEJ4/C7swG9k8WAIHOdHhxd5ssIL2jQH+0gVBDMOY9qhu6XkHmF0UjSag8ZeFRILLYr9Q5pRk2jAusIzBd/MxIBsugwss7H4GF+2nhm79TrJkNiO76sx42RJkKKKWnfFqnjR1ptNirOKF8Jb3fM28hvxSt2Y1RhC9fcqR3k9P8NjMqbikWzfTLEMLSc7YDG8Slwhap1pxCIX3s2QEZY+lGvCzgFKgtOL7jzrMFDzmd4IaE1EiTG6fKC4vM2CC+1ysqecjk/unjAAy9pqsWZnpdoB9posfxaoNryxMW+QUEm9iDLaf0+mZOaFc3pJYoIcDH7J196Bfo7fPHKrQeB7nijNZpJGaLzRqFB6jza1SAMiwm4Uv/8MHSU2ozVtIAiY/V3LeeOU7ICK0xYMGVDxKjzXADeiUzIBdAGZrjkyiDBpSf4dkAEAvFR7U1CS7cw9YS8puyk0hneKtmDgqtAoL+YXQEQrcdru+KSZZGzzvoGf9TiGWLmajoHRmopfnvuBs1i0FTObLHyWT1tVFhVaEGNZCiOBEqjVE5X6815MON86mFXy3Q5zZNPnrNrz8y5E5kNjxJap4T+jJQDWD3nW3oUBVVdfO31MDhbn1pd5N+rRlKMsavjLKgZLrNX2YHXNjWT8x4dl00TQPrfoZ8PCD6A4xve5dVCMx/3V9bYcbqJd+mC587osIoTem5OiodJ08EkGtl+SsnBWUNDeMqTiUvEnNVRnx6K5
- H0NHK9u6
- e0dpe84bKb/FdJ2DlJpCRYpggv3PjNCv3X4dFeilODf+Rr5+uWC0HYfm/Ewbhq3knpGSFzZxbUIwm2mgAyI2c9vGrCHOssBLs8QkCKvFeUs6VXG4xhwyyiHco2gb32g+HUAptzl2AzNuKCVAtIFfyWrG4pzcJy3easDjggheobtwrwE5s+JgBtJw2yp9eWjOR4Wmvjq0irq+PrnLPlL+Quend817Ym6NUppDy1pNaltcKLoY7AztOVvyOdHBXtQkU35zt/qp1r1h4NDWWppSBbFF8q+s9LGo1o+ICSfVJ+lwJ8Io=
+X-HE-Tag: 1775241128-766291
+X-HE-Meta: U2FsdGVkX1+WlCKSgBIvMOfdPKlleqpBdaVgIaHKzmPv78LSxEitDfpFveCwPp8k8mbHOE9PIpwKOPEXwyZlEb6HZou98/E20b1HGwAmQp2ozIW2ZSj9MbsLT4QXqr4XHvqhLvl274VBCMMhQzkceoZ5Sy10g2XZl4nTXYyq4CN0yqYy3DJfGna8nkwBDjYwjIKBVuF2nZ0GYF1p/xt1iRiMahK085ZJKpXVNrARkUzqMAiQFn9ZQRnEf220TeIACumR576qL0XHMsORCplHu9X90uBDkxQTRFx1HRtJuTSnSAhDsJUQW9kubEsYphZI6IMGB8cOnUXc8Tsf3GTybbn7q02sO6U5SlyeyPb4O9MeN4BGKB0ODOVgLmgcWmsvyFZGgrtf2hL5hkL7yN0Bovn//Q2MjG43m6aHAd4FGU1iqDV5VbG/5VAucMs0wov/9ExbOE7fZYVv0580h9Q7EovIB7DRRKp7UFeHekp961bLABHEDktnt0f5eUjKNRDLYt0LA8XKz/R9p1BYYqXSNAp+0tj0BlGlF3zgn6amzIZ3YW+yvlGxMcovfu0+sRUnAfj1w5BxRt6DrKBlQFdJis/Yp01l5ef0gq1p2IwamswF8pNYVVPKg2aiOAhiKqQK1X98tDarXu4D6Wi3zZfT7vfwjlvrwXAH/Rr5w3ihi8Iit379uY6U+159CWuDPo2XWidMjIvg7gOQxqM38vWvodSH9+0qPdaoPEselHkoCEcGz3zJTpRz2pZtZ9R15x2DyMsiqQUguOA3d2UG3y8YfkfADia10ThdDmH7sCASDK9RdpdWeryW2imDB2zq23tLymLspVamhztsodgrxorBLq0TMOizBZwP/uBD5bCooR60w5nOaTZGSSHPcVf4LdZTeRU0Ia9/3cQb/AUMNB9I7ndan5m/6oQr554KmEU/Lx6JVvO1oAMWKLYwWGcMumc1kcjB+DnfTTk0cXqrmYP
+ 1+dkGWrT
+ KH50p820dyA4VHohEK6nGU0T/kYixdFbyedV+wLOZfekDHHuzJEES3VJHe7guUuhXlylpKMDW67KcsUWH94Si7ErswiMEhAB54lMalWPDrRXffSj6zT3he2P4xLiI2Ovain4405piKT4QlFsqzPthS6MiG6XinWMfWKUZpbDKksh/WLePIM9CVG7ZaN7ceKlss92qz1T4MkbDZmzxOTEsE525sM8tMG6qqq6+EUIHxJKacdgtvaCldAUY25jypdqUhmhN4MdsGNmnsGmFWP1lWSrL5Sz+h379U96X9tkh3vcmHY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,32 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/3/26 08:27, Harry Yoo (Oracle) wrote:
->> diff --git a/include/linux/slab.h b/include/linux/slab.h
->> index 15a60b501b95..c0bf00ee6025 100644
->> --- a/include/linux/slab.h
->> +++ b/include/linux/slab.h
->> @@ -864,10 +877,10 @@ unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf);
->>   * with the exception of kunit tests
->>   */
->>  
->> -void *__kmalloc_noprof(size_t size, gfp_t flags)
->> +void *__kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
->>  				__assume_kmalloc_alignment __alloc_size(1);
->>  
->> -void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
->> +void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node, kmalloc_token_t token)
->>  				__assume_kmalloc_alignment __alloc_size(1);
-> 
-> So the @token parameter is unused when CONFIG_PARTITION_KMALLOC_CACHES is
-> disabled but still increases the kernel size by a few kilobytes...
-> but yeah I'm not sure if we can get avoid it without hurting readability.
-> 
-> Just saying. (does anybody care?)
+On Thu, Mar 26 2026, Pasha Tatashin wrote:
 
-Well we did care enough with CONFIG_SLAB_BUCKETS to hide the unused param
-using DECL_BUCKET_PARAMS(), so maybe extend that idea?
-I think it's not just kernel size, but increased register pressure etc.
+> Memfds are identified by their underlying inode. Implement get_id
+> for memfd_luo to return the inode pointer. This prevents the same
+> memfd from being managed twice by LUO if the same inode is pointed
+> by multiple file objects.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
