@@ -4,121 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF57D7309C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3F6BD7309D
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:09:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C9BF6B0005; Fri,  3 Apr 2026 01:01:05 -0400 (EDT)
+	id 1310F6B0005; Fri,  3 Apr 2026 01:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A796B0089; Fri,  3 Apr 2026 01:01:05 -0400 (EDT)
+	id 0BBE26B0089; Fri,  3 Apr 2026 01:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5692C6B008A; Fri,  3 Apr 2026 01:01:05 -0400 (EDT)
+	id EF1586B008A; Fri,  3 Apr 2026 01:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4556A6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:01:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF4C714048D
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:01:04 +0000 (UTC)
-X-FDA: 84616045248.23.3B8622E
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 14C00160007
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:01:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LmwyqTMk;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LmwyqTMk;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775192463; a=rsa-sha256;
-	cv=none;
-	b=pQXJDVyep29DHHfIGrwqgds98UMwj4cZFA6fh3pjLl1hj/m/fhKQ6tkiorim4RO5EReWly
-	63qcx37DfxBzAt/5+YYJbjA9SuOXWPV9bhVoE6EyupkBiuH9/iINMvpbfdXnXsqFmi/0mj
-	ZSqYrssJoqz9X7R/Jvz8Ci6qI/RuFWE=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D8E416B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:09:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6AE8A58E53
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:09:21 +0000 (UTC)
+X-FDA: 84616066122.26.B71D397
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 96CFF12000B
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:09:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p2FhMQJk;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775192463;
+	s=arc-20220608; t=1775192959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RQJtFaNwbncbMp+SaMn+f9Z1Y6W2kUOXpEOhhAKm3G8=;
-	b=0CrHSef7bGSQc5Q5lInh5wNEc80QFPArgI96E3Ljlna9OZclow1CU13dnZfotoSOaifL7l
-	IBrzoWqAxzgB5d4oavfwLrod6sH5YIi7AzrunvPZGCdrXxknL5JeS6o2+3Va6u8cJQTrfC
-	JGc90LnCnwdQpV6TseGDMxfi3StXsbU=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35d96be7c13so963153a91.0
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 22:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775192462; x=1775797262; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQJtFaNwbncbMp+SaMn+f9Z1Y6W2kUOXpEOhhAKm3G8=;
-        b=LmwyqTMkB48dl5BZAUwdKyMe74xnibfbuAP9iQB8YDfVqkzdEHx17nMOebtC2r4iSm
-         J9g3duvw3DOnHKLNlMUIkhd+DYHPfKoHNWn21YCfx4iO6EdTBCWgCnRfdo1DDYU+PiCd
-         10Ht13gvRONywMn+VfPM7AHicaaxPfDsFaJH3modLIkrFT0DeOPdCSRKagR41p0igHnw
-         VTQmXrfW8CHiibexnDY6rLZQvz3yWCe/Gk9eaVGXGIWzZFwb1fkIge0V23SAItmu8q1F
-         nJfra9WWpJsV+6XCbHvwhYT0pW/wELUG+NW0X2R7OjfW21Tfb8FlBF7FfQLlLvWZ3+4/
-         n0xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775192462; x=1775797262;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RQJtFaNwbncbMp+SaMn+f9Z1Y6W2kUOXpEOhhAKm3G8=;
-        b=nikxbATbkVSMrBemwDvoORZzqjz1BXR9rEpRTW1upUOQnVmpVfb4BkcZesoiV74mNm
-         E0dksdr1EJHR9ouztQsYGfG/w981STFPCHydMlZItA5oa7BeZsYMUV4QdaK6K4Ufunvu
-         uYou1WM0QGfo4hGa2b2/ndKacFHuzlkm6dpTZ8xPE+75Hzzi1SnEAM2BeYctyu6E/NKj
-         /EMw2mt6I16HW1Is9NLZmyKZ9aB941LlfLm2IWHyhYGV+M1W0VOdefR22hsoPCvBwf2o
-         UJF7s/XVv16jH+O4rYk21n7X0qN6vxuvz8+u7bZLCzGpuQ47hmY/7l48zAN6Cf9vdFGf
-         +o6A==
-X-Gm-Message-State: AOJu0YzhJMO5vAPr6DaidC1LIufxFijPi5k20lM/6HdE+4mZ28QVys/0
-	4C5e9eYQsqKVN/CvjlnTV7AMqO0o8rpoEkun0IrhWmS1OYl913YYTTwE
-X-Gm-Gg: AeBDiesMsM87doL80pK6pi8rmHlyF5w9/Pw2WIDQr1N2wDgoFjOYB3Ly24YVwr7SdXG
-	FW8aQPYXbFM4+rV3+G8V+1k+rKiFDwHrMYHY7fe9wsGofBNe+BSBlvoGg8hV5K1mlA+TYQTtNRC
-	RjYb034a3T3Bzc42CPukzzKbzsq+Yn0yhrADeqbl+Tw4cAuoM34xAtqG1wVLFChm0CxKcVprGnq
-	WfLNiOvV679RPiqhLUtp/LeefX8McPjrYcFA9NOLXsT1MjcErQmeIxo42iumNjdOpODlSIqsoBE
-	c1OU6k4UX/pq0nTO4IOKlZqCI2bTKjkv7FL8msbPMkI7qpF1yD5p2IMPnleDeO+lpo5Urq9YPW/
-	IVOtwbMxW1AGRGRp8hNSsXqcGBh1lNx+ebcV9kDB7kPv8UB+PnojNVXJZ9abBF0TLT7eK6Xxoog
-	LrtrkvwsGpLWxkXtVHwxSpuHI+DV1HTn5Ks7MTcaRM492V/Ea51oDrvmouGi1AuQ0kY961
-X-Received: by 2002:a17:90b:314b:b0:35a:2ed:9b6f with SMTP id 98e67ed59e1d1-35dd65b05e0mr4834473a91.0.1775192461715;
-        Thu, 02 Apr 2026 22:01:01 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c647792bsm4474251a12.6.2026.04.02.22.00.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 22:01:01 -0700 (PDT)
-Date: Fri, 3 Apr 2026 13:00:53 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v3 09/14] mm/mglru: use the common routine for
- dirty/writeback reactivation
-Message-ID: <ac9GVguKyK44aYUk@KASONG-MC4>
-References: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com>
- <20260403-mglru-reclaim-v3-9-a285efd6ff91@tencent.com>
+	bh=3EO3KZcrJUWPCB4Hstcu+7wwY1J06Wb0Uds4H2tFoho=;
+	b=JOl4VKfmaZkdceyEvED9kyu5fgEXY7vWYwW86p+vYTy7PGMwCbq3ONJeVNk4XJARFBYuVa
+	t8xQTXf7EcWeVAFwhl2v/NplIvJN0vT4A62GErDC7kPyz+Lx4eJOSn9Bw4MeaGi/tAICtx
+	21b0zs/HdrcbkI1/y/7ijuDO/fn5/vo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775192959; a=rsa-sha256;
+	cv=none;
+	b=ihvi7CslcfxyPI74F35K8CStXhkdmtiaHdGl0li5TxIyE+SGuG5DDx6vpo2AfpjHbV2q/h
+	C7dpYmOvdfRU5KnZWliVUlpfwdmOpS3OkBZehvwOkBvNwbvqFZYt2ONE1PouNmtxE4f1vG
+	Fi/Q4f4qpwfdjuNpHRyFep/sPh9RMN4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p2FhMQJk;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <0be813e8-1117-48c1-aeba-c584cda9aa31@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775192957;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3EO3KZcrJUWPCB4Hstcu+7wwY1J06Wb0Uds4H2tFoho=;
+	b=p2FhMQJknXonfhMlg8x6dU8op9V7lepg5A5gFInMx8Eir2oQv8LJ2Lpj8S0mZdnlkH2nvs
+	xYtAj7FODrkAuYpa48E6xc6SNkjXtuTpxq7//mVesG9nIGt0s+yIzmWbm4ICpIEXyWmF8u
+	c2v1B3ogQ8VvF4CwQDjn397mu3xFcaM=
+Date: Fri, 3 Apr 2026 13:09:05 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403-mglru-reclaim-v3-9-a285efd6ff91@tencent.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 14C00160007
-X-Stat-Signature: cragt36qwdixra79oewra7mo6q5oxhu5
+Subject: Re: [PATCH 1/2] mm: huge_memory: use sysfs_match_string() in
+ defrag_store()
+Content-Language: en-US
+To: Breno Leitao <leitao@debian.org>
+Cc: linux-mm@kvack.org, Nico Pache <npache@redhat.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@kernel.org>,
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
+ <20260320-thp_defrag-v1-1-6ab15d0d26eb@debian.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260320-thp_defrag-v1-1-6ab15d0d26eb@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: pcg1j41tj6ex33jebzo96xh5bkubo7qi
+X-Rspamd-Queue-Id: 96CFF12000B
 X-Rspam-User: 
-X-HE-Tag: 1775192462-30683
-X-HE-Meta: U2FsdGVkX1/9ZsI+zGnOX/nJylkEoZVaKY6Rt40xh9K6zg+LdNEestb5d5OaQU18T1DZOUs3ELTSrGdx54Nn/qMbc4sP5TVyg0JeQz5zPbpPgdtboukiQsAmCgnm0OrVeBWXAjBXbZryo4razup1EUEN5sBg8SRFUrvFdxChyOazqxGE8mEdUjpH63mFZxyo3wy6ZPJY+NrXJRBsBq8IKbwL0O6fCtb76ZkcGnqWR/tPVRaZiQ7kO5OSy5xmkRrIhdr4RSFD1O77jtQMiOvSAskY3uG3vAd0VTIyFs0h5zTliCPyKiW+FCL5dTdEamf6p0OfeIUhfvxPBgGcvq+wIZOiXVeERoT55x1Jnhy6B7BgxsqRTeuP2q/ZujkNnWtnqQy9IdWqTL4TeQlDdEdlK6jiA/ArCZrGCXyQ/Ezdp2ncozclVvjbvwtxBT6CYdrljbyJIMfvihqveOi5m8HRNA34LA/WufKo4DPZkG6S9Wr67ZAkFM7SjRigUR5gXLmpT73Wjmy5lz66mk6V5xbCx4lvID+R2AzbkTqzGWGCo5rctFLPoW9uyz5k5oyy66gpbOhYTnSKpAh4jLVdBQfXcvbvEtYQzsrLYHxDLA0fRg5aV4zz80JGgvSZhHL09rOaLj50BMC4qNulvJpVxO3hMX1gFngB11mIvpLMfyc3Ks0gWvqKUdsOj2KUi5cdnYu7nmZMfTUCeqKC2R7fwzSEBwzg9domMlljZ0+giZeTlFth3PEzorDhOaiaMFALZKz6zbi95UOn571d1uimLWyqyhqJGL8H3g2VYUsQApjq97uesKuHH0d2+jdqk/dx8gbQZalUrGLBPQHqEaiKEHkznBwJPQ+9qcfsxbuIPIArF+iTz5MrtBuRNRUvlqeFoFm31gTsebnopDEBk13Z87LEXHT4lXt9ylYEVsFjxbTi7kwrlL+uoWkUEbwXCrMS6jJchs822NT0LTFYZUydzrd
- cBPrkUlZ
- QqRVcROG2ed9R2qjdQ6PSPDr/4VwwUmiN7TuDb2j5/p+d6XZUTHPTKzVKoodQs3XWwsn4gD6TFoiTG97Aw7dPGH4OXgzRBnJr4a1XmysXvdvPV1MUKCV3HGvHAv0qDpYHGniOgAmfPxaWsICpsXOlk8AK51mfsmA41IOFkHWwC8vB/Q/kAWL0GkUl9wQoGn5fnlfY2f+rn+a67U+sKhVbUrYrUQNnOKTZHh/NnS99TzuF93VyJdxJgPb94Clt7zLoF8y/rA4PaZExOmwv3ukVGeJgxSRU2beVGLyHFH3SW0DSQ9ascl+Sxs2MefKAYKHQEj1gTOWnzvhdjv+IO1GZX4gWR2tGM6pKddstFTB0A6dG++Q7KXKxoXVDIij7kW8EtVesEe4EkeEfKLHgihrIaRwwre4sdRy+tLvvYHGZYzT4vt4D301QwGLuZKiGJ+BFPUPxNrlDa7FUdinY0kB6NppNqnusa2HoL2sVzKOQJRzH8LblA9XZz6Fl+mYyn7shQTS5FJZqABgecyZe2AJ9S+kgRVWADG5qFNGKR7PGKWp7wPuDKsUW9ELLA0v53TGAgHe6OOkRdgU7v1AjWedzlsnvEj6RngvhFI0blO6a0HBcCxg=
+X-HE-Tag: 1775192959-733338
+X-HE-Meta: U2FsdGVkX18y/KhpUc4Oddbys5ZZgWYyIIB0ERJACAHc6KXsU15U1lZANhxnL9B1C5b1DQQXh0IHNpV2KJAMIjjQzlXdcA+ZU2kraIFew/ivrA0/t1XZMYXueTF0PbqvRBbUSn8Wn1B2wOHtMFLjCrB3CoLwxHSPWfj/ka2tBbekM97PWUSwrj+sG4gFwqMYyjFEl+NMF2u6kcwDpG7UM9S+BCmlAmELZvNaKGwyTVnTdxwn2kZjTUZBgi2dB6Z7TkRjLH2hWvHuFwnkc/K25iQf6/t7AyCXj7GWMBoiERvQ5rIirAWKnBs/w9Gy3IYqVy8hk6OHcu5Zl9ZZSEv66DibE0jOIcCf4jd9Vz6//sJii/PGbl5aEsBUl4V9cTJist+AQGAReO7aBPNXWcMTFtBmu0TvUvqZIS3HfCtdoGiD0IYDPqKI77BLUy27ida9YajwHczRpWH0yzMszOra+PxmIZlXUm9cUTWiKCPzg0GxSYisSp9RFVAqd31Uw2SzzN7Jf1fb0c8pEKPtvzmkqrbOaM3cxeDfGWn/Vaeg+rtCOPVeNnpXppEmx47aFDha3OFNZkZf8KaOLOq4GimE7fN8PioenwkPkULld2bdjdGnMaQ7cesSFXAQVkNVCAZgX/1f39fb2fmL3coL2AtDqz4Yd5YGHBF3kGH7rIMk2SDLAkFrm1S3/U1+LNyLgf6T/CbX3Vdt8GcD2Sn9Cuj6RgSjLRGZoPvdlabilR13RVtyX9MwEhte6CoicGweSVQVj49n4OFlXFqbHWnUaC1IpjDCupx50HIzP//JGjecRmKT7Mr2W11OCnMet2UbPzhAjRHkIiTrvoDH2hi4AZ1iz8/TSj9NOCKRcFOz2Qw+9IfgqD/XFYQxlPEqhsunFXpJjpwW1lOo9a47bMAgof4vTj1T+CaQbDMCBnov/N3TNE+KrHIGT2goesGPnDRiIRFZUU7oFn5ySJJqree7tr8
+ 09HxmnCS
+ ehg9lFjyPXnmwpae6wL2y0wsmR821MDCekRXsiZaXpBKGmKxrQQzd5rbWczfmMHSX1X64dv3XJ5c9PylprgNeYs1xmQfi9QvHtQ/bGsWY2A57nhdTmkFLjpHnuCLOpt9NAHY1UMHiP6WG1TmqZY7b4z7SAIgJaH/7K5khTia8etD3dN0yHTKr6DkviyGSc/oyuVA7C5b8i+rMVhKcBZcXMTIjpUfX2sj9/Yuo8kHzwUNbxnyquk2kyMgi6eU/Arn92Yo9C9/VS56ID8gRhMCMw71D0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,64 +96,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko review, which seems not a real issue but just in case:
 
-> commit e6160f371a1c25f6b49b0a6639582d0636d9905b
-> Author: Kairui Song <kasong@tencent.com>
-> mm/mglru: use the common routine for dirty/writeback reactivation
-> This commit drops MGLRU-specific handling for dirty and writeback folios,
-> instead allowing the common shrink_folio_list() routine to process and
-> reactivate them like the classical LRU.
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 9f4512a4d35fc..2a36cf937061b 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4628,21 +4627,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
-> >  		return true;
-> >  	}
-> >  
-> > -	dirty = folio_test_dirty(folio);
-> > -	writeback = folio_test_writeback(folio);
-> > -	if (type == LRU_GEN_FILE && dirty) {
-> > -		sc->nr.file_taken += delta;
-> > -		if (!writeback)
-> > -			sc->nr.unqueued_dirty += delta;
-> > -	}
-> > -
-> > -	/* waiting for writeback */
-> > -	if (writeback || (type == LRU_GEN_FILE && dirty)) {
-> > -		gen = folio_inc_gen(lruvec, folio, true);
-> > -		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
-> > -		return true;
-> > -	}
-> Does removing this explicit promotion and instead falling back to 
-> shrink_folio_list() cause these folios to retain stale tier bits?
-> When dirty and writeback folios are processed by shrink_folio_list(),
-> they frequently hit the activate_locked path, which sets PG_active on
-> the folio.
-> When these folios are returned in a list to evict_folios(), it tries to
-> clear stale tier bits by checking if the folio is from the oldest
-> generation:
->     if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type])
-> Because PG_active is set, lru_gen_folio_seq() calculates a younger
-> generation, so this check evaluates to false and the tier bits
-> (LRU_REFS_FLAGS) are not cleared.
-> Later, the folios are added back to the LRU via move_folios_to_lru() and
-> lru_gen_add_folio(). While lru_gen_add_folio() clears PG_active, it
-> intentionally does not clear LRU_REFS_FLAGS.
-> Could this sequence leave the folios in a younger generation with stale
-> PG_referenced and LRU_REFS_MASK bits, artificially inflating their access
-> counts?
 
-Actually the new behavior is better I believe, clearing the ref bits for
-dirty folios make no sense. We even previously had a commit locally to
-disable resetting the refs bits for folio_inc_gen unless it's getting
-protected by ref bits (MGLRU's PID).
+On 2026/3/21 00:05, Breno Leitao wrote:
+> Replace the if/else chain of sysfs_streq() calls in defrag_store()
+> with sysfs_match_string() and a defrag_mode_strings[] table.
+> 
+> Introduce enum defrag_mode and defrag_flags[] array mapping each mode
+> to its corresponding transparent_hugepage_flag. The store function now
+> loops over defrag_flags[], setting the bit for the selected mode and
+> clearing the others. When mode is DEFRAG_NEVER (index 4), no index
+> in the 4-element defrag_flags[] matches, so all flags are cleared.
+> 
+> Note that the enum ordering (always, defer, defer+madvise, madvise,
+> never) differs from the original if/else chain order in defrag_store()
+> (always, defer+madvise, defer, madvise, never). This is intentional to
+> match the display order used by defrag_show().
+> 
+> This is a follow-up cleanup to commit 522dfb4ba71f ("mm: huge_memory:
+> refactor anon_enabled_store() with change_anon_orders()") which applied
+> the same sysfs_match_string() pattern to anon_enabled_store().
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
 
-The access count contributes to the PID protection, refault tracking
-and things like PSI, leave these counter untouched should help them to
-track the folio hotness info better upon the real reclaim when the
-writeback is done.
+Thanks.
 
-I better mention this in the commit message indeed.
+Tested-by: Lance Yang <lance.yang@linux.dev>
+
+With David's comments addressed, feel free to add:
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+Cheers,
+Lance
 
