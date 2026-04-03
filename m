@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB32E85367
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49032E8536F
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:12:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 172E36B0089; Fri,  3 Apr 2026 10:09:47 -0400 (EDT)
+	id 98E1D6B0005; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1236F6B008A; Fri,  3 Apr 2026 10:09:47 -0400 (EDT)
+	id 917616B0089; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 060C86B008C; Fri,  3 Apr 2026 10:09:47 -0400 (EDT)
+	id 805D26B008A; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5B36B0089
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:09:46 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B449C2710
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:09:46 +0000 (UTC)
-X-FDA: 84617427972.10.50445D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EF4E912000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:09:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WdojIXK6;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AE2E6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BBD01A0360
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:12:46 +0000 (UTC)
+X-FDA: 84617435532.07.A39F37A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 760FBA0013
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:12:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owPM0zQQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775225385;
+	s=arc-20220608; t=1775225564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4DXnUZO/vknJJGNhS/C1TAd+WrjtU/dUhSwQh2DLOc=;
-	b=hRaPEMNSkBkgOmjb0lVUpMcb3WhXi04y1PVaTfr16QK7PFqTsKu9LrY9uIn8uzMDaq/FMj
-	3HTAC2/DJW8LQheIBPf5Ih4LdDNr76rur77r5rZtRaC3DyWjEsuI+IBCyRZcY/vQh/hsiB
-	Y6Hntr2bLNFZCYPeRRxHmq0qZcKIqeM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WdojIXK6;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775225385; a=rsa-sha256;
+	bh=jIkGGXbQv/txYqXGkFoSltua+ZK9+VXm570t0dxiTBk=;
+	b=wJccP502v0HobcZ+0BdJrU+KuYHJJp/oMmwuLyYwbpIHcu4XzJR75cL3oNvakHHDcP+aGp
+	Msoq2T24LsUWJ2SHky1K07alD5v+zTVluB5FxnfU43UEgKBIEhRQ5VOXUTt3CrOvnj6Pc7
+	OnDks22fs9STGw6QKeW2eaVmrbtcnTI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775225564; a=rsa-sha256;
 	cv=none;
-	b=rXlcYflDFyqLoxbSD2qVgrfk+RxNWwe8da9DAo97lzZhPCuuYGEsdbWrFbiO6kuGQjJFEq
-	eWbAvpQk4+WTBeE+V03YWuVAwldQjDB+FJts1ZtlTj8rE/qdKH61RP0+LWeEmxTa2M31pM
-	PGRvSyB050EvloUYQvsb9S/DRiJ7ytQ=
+	b=nD4JgwJihYtNg1KRHeFr732AW+KfbrHvg0iNNspvFyd14x5IxMz8jJcCr2wMrYu4/Y2xvZ
+	O6Ftg54XPbQDFngAo+YEAYei5k395/WwCMd5swEXCJG8t00O3tyCCH2ZR/iRJyn0YdZ9KB
+	keb4L6pQk+Dbur23/XhJJSAGluQGnfo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owPM0zQQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AC5E43C10;
-	Fri,  3 Apr 2026 14:09:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6170C4CEF7;
-	Fri,  3 Apr 2026 14:09:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8DC1060121;
+	Fri,  3 Apr 2026 14:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13583C4CEF7;
+	Fri,  3 Apr 2026 14:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775225383;
-	bh=njgCd5TgApSbLqL2BVaGVJE3A23Q9YuPZCEfrjmffPs=;
+	s=k20201202; t=1775225563;
+	bh=Wp0rUchgEfo3aH/vpLC2bON7hvYn0ruFcpGR7D1KSbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdojIXK68rUNezxrGuDGVTF3irivnY5fZ8XHKrTzsat3/aLEvV9fF3cCHdrHorOZQ
-	 +Ps2Rsy4srNp/ZNqQExGzLtmp/SmyfrcczIjrpOQxk6gju8amDXnFKqqaZ2JSrj25I
-	 PGGnIKnixUABwe+9jyY5pN/ldpsWGXX+O5q1RKT8hq+FvDzORCX3vpx93UuorTh6wB
-	 8XFzGu83cCurtM+5SPl1Pdau1bAVWW3ERiD52MeiaNih0xMeAsyFLCEjgLSCMyZlvK
-	 Y0zh2AB+UwInJn+614qY2KvWhNNrzcTtiZvBkNECAzlGxhYAaUINHauGHFx1zQ1NDZ
-	 6ilPBo5pnDAdg==
+	b=owPM0zQQokQ22BSvz35J3xN2jUybaeYxIuZW0oHmducsrHIcOroyklEND2AJZw9sy
+	 1zFg8l3G5oIsbSykmZNmyIrRSW6x+Ws9IIoerf0cXKFP3dtI/4c7gOtX9oMFMU8CDg
+	 Z3DX+Jyz/T3YZKxyol4IKcVXrtbFGcRpRt3Wj0NSvFHdGXCBthD99a8hM/0+1WQhD8
+	 naJRAAFL6ha+Ln/VW40ixEcDvWO6rCAnkgdyCL8ooUDEhwdU2IW1vy1HeWdvF8g5hH
+	 L9zP9CVBrXTCBH49QfdzicHNKPD0bB/VZpy9WWFgEqcUa2vF4Wg5vf5985COZDgO89
+	 LUNLU4/d9eJAQ==
 From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
 Subject: Re: [PATCH v2] mm/damon: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 07:09:41 -0700
-Message-ID: <20260403140942.50643-1-sj@kernel.org>
+Date: Fri,  3 Apr 2026 07:12:41 -0700
+Message-ID: <20260403141241.50759-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260403082910.5346-1-aethernet65535@gmail.com>
+In-Reply-To: <20260403140942.50643-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EF4E912000A
-X-Stat-Signature: 5o7cchnsmetceke9atpyw3x6ibfbkudy
+X-Rspamd-Queue-Id: 760FBA0013
+X-Stat-Signature: h6mnank7nzry5thtwr3jsd8zyseqy13z
 X-Rspam-User: 
-X-HE-Tag: 1775225384-497243
-X-HE-Meta: U2FsdGVkX1+gkFXEZtwns2H+cUJUEeZsFNYNjczNBMecB+YLfXaQYyq74wijTJUyV2GTC4uQlJD1404/avvIPnRb7IiMwB8kKT1q03opn5u/bh8phGwTrMSEQRQc0x9fVL9XvBq0YQWy6mYxRI9g3Yluh/wUQzqSyqdQsxCkupOOMj+CJHRmeLa4udOpL42Q631UNrOy5pDSwaQWPjNs6Og7SbJB9AeinNnz/XB7VX0aF5Gsva7VwEvtVKcGCOeaTRl2WJJ14E/fx8DurhWT5+h0b5F1NDOQ2q5xUIk7bKYMN6LiBdbaj1rVXVD+B2qqTLvY88Z7k7PiIDMlJKg6lPO6nJfetjFcbc+qIGW6EbGwY/sjN/FUcITxP1oRXf0ISUcEfduZdKQTfN7H26yTrBeoXN1Gjf+/JrLBEXfUsaoqD/6uSeuUuXAaoA6B0DYTb+XVEi5UgqhTU8qij6AC1GIn3O9USKWoiYBuUb33KkDS8O38ZbnuHtcP1QvELGbQEcrmljKlvX3glxEZ77s5u9MPbJ/8A6vPLyAwF9+xJYrPyE5bEw5gItENsYnXJZ0LEpnrbvF2WC74RLLDETQ1xlD3K2bvZzPGGetxPUKRed0i8pin57ki/M1BHMC8OFifjmK1Mo5MkUGSca+fswUF+tScspdVJkDFgaTGq2daE0Dyw8j3mgzbelYVBiNSpH+ZpSchHmMPiDhxrV5SikjZL/428f37SImqCCgSSFCa227ose5OTvFcwIOg15dULEakOE7B6Bnk85gfu8kcmbGl9BrWwGgKZ2+CqaeJwnBJY3Zv/y623nAFZqI+6PWTK0JWyInhU6dwpKuoH29e8y63nLjSsCgFeqSjT1HGPZgmEmU4E0WlOyFRnMVy4DomTD0Jycs++8Nj+9HwmEWyarhuf8SiKAo/dPD/PKqBCB2V4LPQe2QC96KqVWTGael78sktS6t1x/4QXrQlAclVkF/
- P9pmahF2
- Sc0OEoSXrvWSZ2MN/tIftAjU0kihTF9nP1YcZLIfJYitJbAkMs7zHPHjFSZQopBrxtaxfXi/GnP+ezyZzG5onEp/GWxlji/BPMaOj2zjx1+C52IOYH1hrz0zlqTh3kWzX4W9x+RxlMUM9eh+N5OPCKXjnZ2Bpk4Tu186Ld/XCDDgxFav+i6gec31pByF7tbf4X4wnKazvGOubn78s2sXniudnzruU+hUneHZgBr2BDjrzM1429cL1wbPujzABt5bXRNyjiY5DqiVqynEd2i/xZ3iaYDArHzbgqG5gKdp9vh6HUHI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775225564-496518
+X-HE-Meta: U2FsdGVkX18WW/91+uruuRwDaqi/L2VjpZUpRlGVGx3OnOCNfZwJWii6I7yB2wR4/y0luWHbN946F2y6pCBiTdjxHS/C6TokdmGUoQpqe453ENPrG6UJWDrw/bFwD8yoEX8QGKdmsxbXaamZpR2dPaXSRLmBTcIMd8eqxqy553L++qfE4Jnbg2H7NNFjvuXy2DqUa0pSGITCvWjvY8HEhUJPVa8R5CCnOqvK6SpMDps5svv3yn/3maZ/8HAfSW53s1G5cDmsi7VH6EGfHtonhKXk6H8Iqgq5yZ1rVSjQ3NccXbsRX4F9U4C3bQTM0zrznEpnFnL9RMX3yxhaiJg6OAH1WgmKIlGZurpX5iV1sk2FDzjrw1zyMIjmXuLDG+FNO8/BoifuTnL20kQazQ8oAvKqx6ATiYXkIfYhtV1CPvaFGuAv7Fg4W3IsO5OsR02ivkD3V7zkkkpypN1IHfrzbx6MFy9Hh5TIwzB5Njd6i8gFWAlFPnLkAKh6722y8+zDDd51A03gxTwrfug7eGVb108P5DfZaDUfHNXhOe8M+7D02jlWJn8qAkUkal86yYL5aS2t4H9xchpcs+qRhtYryxbSpx0J6c4ljR6vntbw4oPgA4dvOCrvGbfFqukyjQ+/CE3dyOSfHj1qzS5ti9j7pAaOvcOcY0nfanNWSphpXniczjIpjLCCFb2rr2ZxIg7CD2XlPYjBBDOFHWdikIbmR5zWtPs3NKwedLtk6Bc6dd3wKNyTMm2ljROpTiXi+8XDezwBOi2oQMbi1pEOJWVwrTWn9NVUwzPQIylz3ZLJn3Fus0L6x/0PRUTbTcOVwoBi3Kd4IbgDn71tu7ZFpSRBq64vChgwQV4kHbNyG6UnhL4yVr+kwNSu2Y+UoXKK3j2fgnMSh+W0XXF2djRX1EsNeA9x6agzLF+fwdfXOXIjR8sfTt7/thRZJF21VnGQsSCtARLZBDmNHTMGlXdgCvO
+ etMekjpS
+ mKcK+/5fNItofHqV0z1N6KTztgI1VwN1ZX/hKO6uFv1gJgQ8WT567O8hfLITfSOK7p74eMS9orDFsrgBkKUySnn3Fjr5iJlEW1tezs06d2Bc4FcqjdWSd1s2qZKawfJqfCDJHIwgpgE6HpMXtrKqnZsVnyKxsne1D0IbL2urnPjrZmMEKbRI7HwyLNsAtW/aMIta8G1jSsm48tVEbRD0iuTxUHcQ2IGjlEjWRAJMzcTHvzFFz94NcpZ0xpyQeWjzOcmYa5BO5fEYq4vEr4qz5ZlL4Rw3rxyCxWhxPRbu5rWzslCyVJ7JS1VhKMmv3RzorZiCP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +91,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Apr 2026 16:29:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Fri,  3 Apr 2026 07:09:41 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Hi SeongJae,
+> On Fri,  3 Apr 2026 16:29:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> Sorry for missing the discussion before sending out v3. I was too
-> focused on the code and missed the context of your questions.
-
-No worries.  From next time, please ensure discussions on the last version is
-ended, by replying to questions and waiting about one day for giving others to
-chime in, before sending the next version.
-[...]
-
-Thank you for all your answers to my questions and requests.  That all make
-sense to me.
-
-> 
+> > Hi SeongJae,
 > > 
-> > [...]
-> > 
-> > The code changes look good to me.
-> > 
-> > [1] https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com
+> > Sorry for missing the discussion before sending out v3. I was too
+> > focused on the code and missed the context of your questions.
 > 
-> Thank you for your review and patience.
+> No worries.  From next time, please ensure discussions on the last version is
+> ended, by replying to questions and waiting about one day for giving others to
+> chime in, before sending the next version.
 
-You are always welcome.
-
-> 
-> [1] https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com
+Also, please don't rush.  Let's take enough time for both writing and reviewing
+of the code.
 
 
 Thanks,
 SJ
 
-[...]
+> [...]
+> 
+> Thank you for all your answers to my questions and requests.  That all make
+> sense to me.
+> 
+> > 
+> > > 
+> > > [...]
+> > > 
+> > > The code changes look good to me.
+> > > 
+> > > [1] https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com
+> > 
+> > Thank you for your review and patience.
+> 
+> You are always welcome.
+> 
+> > 
+> > [1] https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
