@@ -4,95 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28593D7308A
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 04:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59691D73095
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 04:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E9BF6B0005; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
+	id 3BCF26B0005; Fri,  3 Apr 2026 00:34:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A946B0089; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
+	id 36DAF6B0089; Fri,  3 Apr 2026 00:34:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B0336B008A; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
+	id 25C836B008A; Fri,  3 Apr 2026 00:34:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 07FDE6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B68A58B5C
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:24:26 +0000 (UTC)
-X-FDA: 84615952932.15.F49056E
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8C51F180005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:24:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NHnh5hQY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 106CC6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:34:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99DC21A04AD
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:34:53 +0000 (UTC)
+X-FDA: 84615979266.24.E4CF2D6
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C2E3A40009
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:34:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UShXKNLg;
+	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775190264;
+	s=arc-20220608; t=1775190891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cErbKdi32QMH2dzlzoL5zUK31mzqGlUsJK8tpfLDBsY=;
-	b=C/CxKJ3Yxl1B1VsZpy+xNTPTNGqH+K6k6JAlxjzlEFHrxgA2krZIXl5hgi/46qwNoUAjI4
-	WbgvQUU+8OeXo5q7WXYjUACRVRyKSFB4DOt/17KZfEk0C1+p4aQxlekqilOOt+JKqf5i4c
-	AkA3hGs6uR1gvtE8SP/v9SF+2zZJdQ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775190264; a=rsa-sha256;
+	bh=tLs2A1L5ldKsuvkAuvcT7bLQaCWLBYPhhpzCbHMmRto=;
+	b=hxd55F/9kh1tc61CPB6G+aCrjZLZQyVQO6jeyJPQ0L4VvYx+Zy0Du9f/wEOrkewMzhZVg6
+	gRvVgNKmRG/VNBEZpBGq8EEYQfzMibDOgk692pCz8IciFvb74dKQijhLu3+E5AIZF9tCDn
+	wIXWDH60T1+CogaK9b45PnPOZ9iADHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775190891; a=rsa-sha256;
 	cv=none;
-	b=xJ9FbWxvsORrEBlj8pbEFnFrQRukcucbZz1cOdEb7qjmTuoyycYt3Dj1mQgzfMv4bzcBoc
-	BHivRO1SbJcMoHL+rp3CiZiZwIefeKpROngJErouFcIyK+yzli6dU4C5bOBr/vE+TBibIs
-	9hudWGDyC6A8mkR4cL+4elAMI2pCYlU=
+	b=wTi3nQWSoBtz6fMw4dumChYAghMytrIzbWMlvCSk/kFOcsy1t1hZD79i46EYZlP08EvHNz
+	mZ/JsHlXrJiPFHcgttZJNGzIJBQx4gGabz2bUl5x4XmDVYVoQFpaKZFt3GVgBPn5DPQWB/
+	ApuYFxmdvAlp58KjI2PquljqwRjGY3A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NHnh5hQY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <4bb6d46b-afc8-4d35-952e-8301df5026ee@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775190258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cErbKdi32QMH2dzlzoL5zUK31mzqGlUsJK8tpfLDBsY=;
-	b=NHnh5hQYagWyfnu4knCBFIoHSA96++GT6HlgM1Q+86YOBBRPB6jqSGhB95MtgzUu+S5E57
-	HJW4NldnRpgAWyHkf16HAfxbMYbu3uSBws19t8jIhLOP4Bwy0NUIPUB2PMl9SYeFYL4dgz
-	PrlXplwDn3JxTrfML6rm4xQxqk6T1GY=
-Date: Fri, 3 Apr 2026 12:24:04 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UShXKNLg;
+	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35da9c0c007so1309623a91.2
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 21:34:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775190890; x=1775795690; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tLs2A1L5ldKsuvkAuvcT7bLQaCWLBYPhhpzCbHMmRto=;
+        b=UShXKNLgR5kYKtSS5i21SQkECC6XZ6vTMbXINcbV8ETT2tNpZXi60Igw9Ytmiwla1i
+         sqscm8tcEGtlMCTTPDKMpa+ypK+LlZ2kYiQiBIJEQ8efItgYqhqsHOjlrtwo2NIA/1Tb
+         MkI3bh6UioeoBY0ALNUTM9Vw+lcXp66WfC9YYJ96lYLrCJFF41f24g12/XrAL9gJJXkt
+         OzpJK4uxksq85sjDM+aIozbRclDOOBT2TJgUKvd/XbdGZh7KZ1MVIjdyd1l2BimO/254
+         O3Vmcb4JuoAMJgMtsywFuB0/Kx6Z+I2RsmLnc3D+D1RuPVFXYz1rEe9ySb39Z24qNo1F
+         fMjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775190890; x=1775795690;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tLs2A1L5ldKsuvkAuvcT7bLQaCWLBYPhhpzCbHMmRto=;
+        b=B/DEN3TJmmpaCSbL+CV4GHCZGujGHbBWalJIrG41i7lonCWY9ubnswEVy3x9dmW4Q9
+         yCUvuqxCXGb+++G6uBmztELKqv6yuKIJxujakve4BDomwoYmtqaTVyM22t83ikZ3m6zc
+         i1KgxjU/iWXJVOKO2yMZSon6ZFolPIB8Db9MixwXDwHdm7O2oCdTYevsJA9ex4okzXbL
+         pKzwUg4WirnB1yZ8utxd3n6uCO0aAo5gkl6BD0KzFPxQZSGhknoBQv6GPaMHOsX06UCh
+         TMLdmXFeOyl2pp4SD7Jh6mRC/aIZ5FA7AU5GHy+04QPyMRy/uDheP1IVZwkmdV9H0Eml
+         pfHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIdxKjXLGqbO6bnd6zxsE7xdZDog35OpYE3A1XkNR+XH1UWjEKlccKcuokJTtJK6lzytGYVtEXuw==@kvack.org
+X-Gm-Message-State: AOJu0YyVygut5cv4s055g6cXRwexUzAn55eGwjjHoOinNFJz/T0vz8Ha
+	0NUgoxJt7zYq6UTa1iZAHW0St4+u4ooqkqOmIDRR4fhF+0QyPgK36Bnm
+X-Gm-Gg: AeBDiet/+mToNXawRBCefSyhKmp4+1aKp+DOSpF4U3Dev94hkI0r7yXuXL7YRaZSREK
+	ZCOCxN/ulkF/j+Wy/m8DnQYVqYG60Iw998Yj/bwM4tggzRjcf/kOCG2Z+xL0YeAcv4hcJsCkpDr
+	QKBhGoChoGjF8yz2FCbIOc7BsIRmxHEkHwCezQwid+5jkzrLTwLlIPmqAArfuNoLH03ysFpmSiA
+	RvjN/alj9CRRhFpJFWBO6+VNls6CNX7U27zgVzmUQiyozJZFmO+7Wtr0ZV2cvNnHk7vpB0uOblT
+	kP+Io3Tn5KaWcDPnd4rVTbngpf8M4v1u36rqJbS/FEb8iP5b/KdkLFA8zPnBKfUiM2udq49n4OY
+	slAMfLswQoIR/BB15qhtu8R8NB4lbgEeth4+cKckVGCmZQO+G2t6rL3zOjQMNweAfQVIJ2AOr8F
+	jH2EFrPyOXzXCB57WpC44oxbmWk38=
+X-Received: by 2002:a17:90b:3a4f:b0:35c:1c77:fac8 with SMTP id 98e67ed59e1d1-35de6957963mr1434066a91.30.1775190890455;
+        Thu, 02 Apr 2026 21:34:50 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de4ff7c91sm396760a91.0.2026.04.02.21.34.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 21:34:50 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
+Date: Fri,  3 Apr 2026 12:34:48 +0800
+Message-ID: <20260403043448.53045-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260402135440.74339-1-sj@kernel.org>
+References: <20260402135440.74339-1-sj@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races during
- migration
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- david@kernel.org
-Cc: ljs@kernel.org, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, richard.weiyang@gmail.com,
- usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kartikey406@gmail.com,
- syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260401131032.13011-1-lance.yang@linux.dev>
- <C4A8301D-C76B-430B-A6A6-8B642B80FE2E@nvidia.com>
- <FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com>
- <20260401161958.38ab50f44e7629e6475d3eca@linux-foundation.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260401161958.38ab50f44e7629e6475d3eca@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8C51F180005
-X-Stat-Signature: ywmic8m3f14gou8ij5fh887rh68j111w
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C2E3A40009
+X-Stat-Signature: px3umssepub5hbazr4hhewq5wu5fsj8g
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775190262-955857
-X-HE-Meta: U2FsdGVkX18z9JEGo5/lOdtH6aAFtJ83YE+VurOXa84Lzo1NkNv0ukIpX1MLQoTgANwG2+zq/02vBppcKUfJim3kJ/MLKvmgceyYMuOqJ127MjV+o0+o77mrtOpXl/oXm49j9eIwTybVU0g3wihiOaxFXLXvZfTszzyOkSAPaK1mpD/gkjaNbVCvy3y36DTTx2k6iQs5hZYtd4eHrGiLxhYbH8LN/uczobUfZTPbLhtNVHRD9cZaNBT12D7u8FWTI/un8gC/+eEVZ7z/oocjpFBRlTIf9uq9TyG9P+82WquI34b/WpLoAI38sGkUVIXNrme4XAoG9xFjUeXjeWpmy0tR81rddjT+uXpsbW6IJg/gggR/iNAs12vDCA7XDTX79f1oI3KoEXqJadGWS1LZfxEAY+uLcl5lfh3ibwO6ZG2tjubwx7+tAmu6tV3fceT4QYcC1c+kTOIws5sckQSUI980W2/knzZDPaQ5jO6aJV4+OyJyB2jn56s0VTP/4j2oYtCDgGz6s5tcI+B1YdLpygLg1Z72BGT4sFe2OuQZuDhhTUvcMGuGqnAkz4t67RYnek2AsKuqHfGnZy28Dc21RPzRl0TMf72rnDj82vKUv4OcnlxJxDV3TyK4nP0VmJF2qecHixJQxFWS8GKUI426FUCxQS1pzDZLlT9r+9ryi1QXQPE5zkoA0bseZwfVnd8UPbnKFhgIUuZsGN4kHbv9PONjCr7dcPeZgaxRnrgxQBxMgUsL+Dl2xED7bbtQdob1E9rn8pri9rb3alj4nTr0l1h5e54xVheX4sFG8gULczkJadaimM05VFbtKWz767+rkm4As4Ake6cS4uVf2rhrrlKvxh8L56UWfWunKX/ON+4FakzNnA+ZpZSwMLGpwIXVI5jaHf+TQdfRPvHOJWZ4lqiT1n0jwhEJPafvk7KO1cZtCqxftWThIa7/o8pL1R/ZrPA0tJPw7hASaQG/KjW
- RVX2e76X
- S4Ga/Q0zt3Tq+U8ll4QlzXNph5v7Gs1sKMHpoh3ZZLgUACmokL2mjbEwZ4CB5YeX1SHRjUty7kAgowbmv+RdOrCIaiX8J18SiWhWVUMlkoe89j6CiIva1YGSCyYi7uMq7KVEXQasM5Yks9+z8uWJf3OgUIyaiIVYOl+V1I8dCAapPP4N0uALDccj2FPAH2QpZfXaDsus8TdfhnajfF9Lt5V3Cg6hIOGm7+XrynqNPMMEYMj8Hs8vL1dnlyBAAuvk6sha/VbX/mOwP6OJAnjgpNipDqYwlar8izzoaTULOQIo2gCjG060Js/XdHZcxNsYiY9jfl5XUZ/5qiQu0BdBRrDHkl44IcM0T3fIUIH+uJqhDGU9hLQopFYtOZ3QLiJYfVdDYby9+fi+cKFSaK/MgkeXe5gokgF4Gg+UDKskpJJ7TtSCkgqnKVbJeBJdlDdNCp7+ZafAHRQgU7DoW6VerrBl9AE/+ZJu6oMFXsQy50gAawV/ka7IGn79awxUpnJz6mFewkct6+UDS/FzINWd0UCU8kFkNBHwvKz6TFNO/FHrKAdNQxgtwwfNWSJhffalpj0dAXrrd9Hd4wgTCjdod+ujZ+p8Y1SOLCUh5/EGwPu+g82HGNzfVCBfzB6nj+WKXVzjsyPWHkOSf4D8Jy/BwU3TrGHsRKyjWqJrfhXLOdVrOJNwb0CKzK0F8jyULtZajMQySMRSaFajKPx+RHX9w902Z1OymMwGZHM1LL1WJblnK5wL0Pf+t8NPrXLAEo+TulKlxkCI36pLb3OEtPHtGsJ1oK+14sEh2zmylEs3+c9LCrjnxlDlpnrrDjhKgfbJXDVp3iSEBDvnYAWycvmDQ8DBssA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775190891-103165
+X-HE-Meta: U2FsdGVkX1/e72pU0JfQDreuo1azd7A/xXOT+4671hbonz+HvHkuysQ7hfDqY+TDIS2QseeAKjXBaGC3ENqyfoXFKmnI3wiPocb+zLh711nxJTeOPf2s4HvkJywC0iRovHmSb2xAP31Y3ekus4fYtcOqLEJxmyWvhVX4eGuMXpXiGNQSqxs+6HaAYzWzYTe2liKE02O8kC/ygPJnWvhEF2mqfSQMviR9UONRJiaO1p7ZjgRIi167O3XO9lxFYOLZxpOCpiM8TdKrirgJC8ECE4aWYg3O/8lX3I2CiWV2WDZCZY0SavMJhlFBaXvh7aUCZui8RDRVTa7mLJUBrEi6AOtwHzEyrRLdEP6YTYq80rqszXihVspiaf1BNHz/eTx6hBG/0RqNUtdmZZZr41YANcdmYH3F5mTtaFrRvjJRfmbJgiCks7w//mxojkNtoQvZMMoVU5xcriJAqkmi/nnmZ0gaX/nQW8DDBwlqvFUVrJJODiA/cnONIlj/4m9BhQvygL4PgHg1kHuDjZXPV/AeP4f9Yv1yQd1E9Zc1bkryg20/so9ap9JsJFvJfbq8vVH2TfOgN9GkKCImVMCw5xk3Low0T1hFclsKgXDdQdZd+kgMwH0VUKNH2Q7C5wsOqc1cw6ixtuP3ZZXm72lbozpWvF0WeytKhIULawDdrduMMyksMD6b5zdoGoM2ljskKRDRQYF3TgdvsQzYGDDBXfjzBmvpMzl1kEwUPB04qz5TcO/WzOwqteXBHOcpLMoVFQNgd2Y3hTOFxZTIBj14EeJNMq0KRv+bBP3dnCQ4CrCdGFI+x8/Q64KeXVFHMzmFTCoucnZxgGwoCT+h4oB+rlxCXxU1wOUCYbKWOb1vhAJNu5Atd2E0RBqKwaG3E+iCGlGIWYwUG81BVyQvwZud2yirVaXz3P6AErVOy8ODCiIzkXnyeaQywAL8tSnnxUOIGjY+j9dv4HhMmWoAUivTg9y
+ GX2W4LrB
+ 8tRqKrV6Xr1C7xPHYorjlw8FFQoaKIRoz6K+ZIWDgnYos1PDnbiZ9wTdcIH9gY78DRRXbVK8x0Xa9s99TbADBQe4gQMjJDONPp0VqnPsgkT+7mnB5H063yY3+l0+EHuSQ6csc9l/U5BKvA4aWy8zokAj8Ukyr9Tme+Qb9VaYiGKHXL7vxHk362DFnux48Omaokjhqr2vDt1ljzcF5vNOq5fPfxzMS0gSc7ES/e742mFh82J41rcLp9kKTq+5cwaCYqBiWaU0g0pK8Rkg3UgPMXvIv/8XvJwBA/1VcpKAFAOiSnptD1Na0py68m2AJPqv+DkZCbgk10I8jFwvpmwzo2GRwI4DSfzNTfXABwIY+Y9zCIt8mUxRuc6BXQ00uDlG9m9sP4JiyphUKznc0AYKg2Py/K1tR19SWM/pJ2/UmzUxpW6j4aiPtdG4a6b7+J1NZoDFq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,149 +118,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu,  2 Apr 2026 06:54:39 -0700 SeongJae Park <sj@kernel.org> wrote:
 
+> On Thu,  2 Apr 2026 13:34:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > [...]
+> > My plan is to add the error check directly in apply_parameters(), right
+> > after damon_commit_ctx():
+> > 
+> >     err = damon_commit_ctx(ctx, param_ctx);
+> >     if (err) {
+> >         enabled = false;
+> >         kdamond_pid = -1;
+> >     }
+> > 
+> > This covers the reproducible case (addr_unit=3 + commit_inputs=Y).
+> > 
+> > For truly unexpected termination (e.g., memory allocation failure inside
+> > kdamond), I'm considering a fallback mechanism in enabled_store():
+> > 
+> > - When the user writes 'N' to 'enabled', if damon_stop() fails but
+> >   kdamond is actually terminated, we reset enabled and kdamond_pid.
+> 
+> Sounds good.
+> 
+> > 
+> > - When the user writes 'Y' to 'enabled', if enabled is already 'Y' but
+> >   kdamond is terminated, we treat this as a restart request.
+> 
+> This sounds bit odd to me.  User shows enabled=Y and kdamond_pid!=-1.  Why they
+> would write 'Y' again?  Yes, they would notice kdamond is terminated in real,
+> using 'ps' like tool.  But even in the case, I'd imagine users would write N to
+> enabled first, and then write Y to enabled.  In other words, this could improve
+> the user experience, but seems not really necessary to me, at least as a
+> hotfix.  What do you think?
 
-On 2026/4/2 07:19, Andrew Morton wrote:
-> On Wed, 01 Apr 2026 18:55:48 -0400 Zi Yan <ziy@nvidia.com> wrote:
-> 
->> Can you apply the fixup below to move the comment? Lance told me he
->> would be away for a while, so he could not send a fixup to move
->> the comment.
-> 
-> Thanks.  I folded that into Lance's base patch so here's the whole
-> thing:
-> 
+I see your point. I wasn't thinking of this as a hotfix at first, but
+you're right - for a bug like this, simple and backportable is the way
+to go.
 
-Thank you all!
-Lance
+So I will drop the "Write Y to Restart" logic in the next version. I
+will only fix the state in the 'N' path and after commit failures.
 
 > 
-> From: Lance Yang <lance.yang@linux.dev>
-> Subject: mm: fix deferred split queue races during migration
-> Date: Wed, 1 Apr 2026 21:10:32 +0800
+> > 
+> > This way, even if kdamond terminates unexpectedly, the next user
+> > interaction will recover the state automatically.
+> > 
+> > Does this approach sound reasonable?
 > 
-> migrate_folio_move() records the deferred split queue state from src and
-> replays it on dst.  Replaying it after remove_migration_ptes(src, dst, 0)
-> makes dst visible before it is requeued, so a concurrent rmap-removal path
-> can mark dst partially mapped and trip the WARN in deferred_split_folio().
-> 
-> Move the requeue before remove_migration_ptes() so dst is back on the
-> deferred split queue before it becomes visible again.
-> 
-> Because migration still holds dst locked at that point, teach
-> deferred_split_scan() to requeue a folio when folio_trylock() fails.
-> Otherwise a fully mapped underused folio can be dequeued by the shrinker
-> and silently lost from split_queue.
-> 
-> [ziy@nvidia.com: move the comment]
->    Link: https://lkml.kernel.org/r/FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com
-> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
-> Link: https://lkml.kernel.org/r/20260401131032.13011-1-lance.yang@linux.dev
-> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Deepanshu Kartikey <kartikey406@gmail.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Liam Howlett <liam.howlett@oracle.com>
-> Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Usama Arif <usama.arif@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->   mm/huge_memory.c |   15 ++++++++++-----
->   mm/migrate.c     |   18 +++++++++---------
->   2 files changed, 19 insertions(+), 14 deletions(-)
-> 
-> --- a/mm/huge_memory.c~mm-fix-deferred-split-queue-races-during-migration
-> +++ a/mm/huge_memory.c
-> @@ -4542,7 +4542,7 @@ retry:
->   				goto next;
->   		}
->   		if (!folio_trylock(folio))
-> -			goto next;
-> +			goto requeue;
->   		if (!split_folio(folio)) {
->   			did_split = true;
->   			if (underused)
-> @@ -4551,13 +4551,18 @@ retry:
->   		}
->   		folio_unlock(folio);
->   next:
-> +		/*
-> +		 * If thp_underused() returns false, or if split_folio()
-> +		 * succeeds, or if split_folio() fails in the case it was
-> +		 * underused, then consider it used and don't add it back to
-> +		 * split_queue.
-> +		 */
->   		if (did_split || !folio_test_partially_mapped(folio))
->   			continue;
-> +requeue:
->   		/*
-> -		 * Only add back to the queue if folio is partially mapped.
-> -		 * If thp_underused returns false, or if split_folio fails
-> -		 * in the case it was underused, then consider it used and
-> -		 * don't add it back to split_queue.
-> +		 * Add back partially mapped folios, or underused folios that
-> +		 * we could not lock this round.
->   		 */
->   		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
->   		if (list_empty(&folio->_deferred_list)) {
-> --- a/mm/migrate.c~mm-fix-deferred-split-queue-races-during-migration
-> +++ a/mm/migrate.c
-> @@ -1384,6 +1384,15 @@ static int migrate_folio_move(free_folio
->   		goto out;
->   
->   	/*
-> +	 * Requeue the destination folio on the deferred split queue if
-> +	 * the source was on the queue.  The source is unqueued in
-> +	 * __folio_migrate_mapping(), so we recorded the state from
-> +	 * before move_to_new_folio().
-> +	 */
-> +	if (src_deferred_split)
-> +		deferred_split_folio(dst, src_partially_mapped);
-> +
-> +	/*
->   	 * When successful, push dst to LRU immediately: so that if it
->   	 * turns out to be an mlocked page, remove_migration_ptes() will
->   	 * automatically build up the correct dst->mlock_count for it.
-> @@ -1399,15 +1408,6 @@ static int migrate_folio_move(free_folio
->   	if (old_page_state & PAGE_WAS_MAPPED)
->   		remove_migration_ptes(src, dst, 0);
->   
-> -	/*
-> -	 * Requeue the destination folio on the deferred split queue if
-> -	 * the source was on the queue.  The source is unqueued in
-> -	 * __folio_migrate_mapping(), so we recorded the state from
-> -	 * before move_to_new_folio().
-> -	 */
-> -	if (src_deferred_split)
-> -		deferred_split_folio(dst, src_partially_mapped);
-> -
->   out_unlock_both:
->   	folio_unlock(dst);
->   	folio_set_owner_migrate_reason(dst, reason);
-> _
-> 
+> Yes, the plan for the next version sounds good to me.
 
+Great! Thank you for helping me scope this properly! :>
+
+Best regards,
+Rui Yan
 
