@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06655D730B7
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 07:50:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F62DD730B1
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 07:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35D7A6B0005; Fri,  3 Apr 2026 03:50:53 -0400 (EDT)
+	id C3A046B008A; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3352D6B0089; Fri,  3 Apr 2026 03:50:53 -0400 (EDT)
+	id C11126B008C; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B036B008A; Fri,  3 Apr 2026 03:50:53 -0400 (EDT)
+	id B292D6B0092; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F8C56B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:50:53 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3EE951404FB
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:50:52 +0000 (UTC)
-X-FDA: 84616473144.18.77A2802
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3BDE0180009
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:50:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hQFXIiQS;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A05606B008A
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A56C59700
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:52:27 +0000 (UTC)
+X-FDA: 84616477134.24.89F8DD4
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CBC34140007
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:52:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=aT1oaND+;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf23.hostedemail.com: domain of chenyichong@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775202650;
+	s=arc-20220608; t=1775202745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HGNk4bDYC1wCO/6RaBZaw2UNtyNik6pnk0IPcENeIyw=;
-	b=qhkKcJnxt/bsxjUYwXPsf16wYyDcdIpcpWp9m+lM8ZKFGwH/8Yp7nr9WTSEUKQhYXWL7DL
-	68jDGDYT4xHpRgm8LKqJYTGxUjvFGPvvYoEmF5ISdtVPyVKoL8HjW3d/7HvBEvqgjnzMOh
-	GvQB9mvFIL9FESojix0tBUvaqsa5eEA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775202650; a=rsa-sha256;
+	bh=Ua6TXToexFuNdMYzgJkRu95qFBaQ1rvNnGJAFP7WrwY=;
+	b=303Nsmvo1vQj0P/ke+BqCIA9vo1LbII0ADiKvXUSuN5bWcruT0M+T2iKrmrOYVqTCPkBYV
+	m9egZZCIPAAwlCV18OlVxaI/lU5XiQedLz+RjVa/BVt2/PxNdAHFytLyETREsxLdA9QUTK
+	PbeF2WKhXzO/3IzoU8GiV4xjsX3jmho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775202745; a=rsa-sha256;
 	cv=none;
-	b=xGGh6YNfM4+KfxPCPL1ly27QManARwTkvRYFXgDbMfeM3znUPepdNKtHl5h44Wg3rXmm/n
-	uiHo1RejJ3pb+Gts2iyd4/MCZPkk79PeDUzShHtL86siTwhQBS+I1759m/7M/m+YqyO3l7
-	JYBKR6nUHM5yBUN9jCyr1CpsO0m8D1U=
+	b=8P7up0vhutwGmOPZMx7a84v4T2/ZlDU+VmDcjbxWEJScygzGiSOs1sQZzr2uBQI+CixZdP
+	ZdwtiJut1V+mnS6m3KsUE2zOKFJVUaGxNU6guS1+skNppEDIc72r25tGkUtSd+uDmJ63vU
+	47xTELta2r3GnkORzrgq1ExQCCbq8zs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hQFXIiQS;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0D284437E
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:50:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCABBC2BCB1
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775202648;
-	bh=j3xpS4Ssh2WK/+YGbvbewpflo5zi8qwo/O40OEA5xrg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hQFXIiQSrjNQgvzMsUI7V/iDLppGeaos/RzidiRnLm3HkGxUQuXzYism9vboh+MOU
-	 QrUqktN6sDhoq5VIgBjPMM+BLjdZes7Iy7mb8MqTTBjZGptq8dYct9nisIu4x8EzNU
-	 N54mTgyUszdYaURsCGIyA9ryhUP8YjkU8IIyQdQVA8YC+K+eY9S4tPmO4m7Y02gFMh
-	 uwsH6ykUZUHSOIrOV8J8l4KAaSM9MgHmJQk8l0mr406Bmm1bEXr0kGJFvt3+JZ1zw/
-	 q25vjQZNv9SCaC9RlY4BM7KecTbzA9yVKBWE6vR21p+/BAXxAEds1lM/a6H4+BVlTP
-	 s4gFcP7EpbXAw==
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a068db9989so26992426d6.0
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 00:50:48 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxjwugBkhxj9Z5hAXIroR8w2QLmyGyN4RCmpGUKZrslwouNCSi5
-	jrNRngdkfv5iCdV76KC5OzCPSLNYsAMaiqWl6HgyXEHnERCRrz/eh49JEEpIeHCrwPe3UGenzKl
-	EdVgNG+6Czdc+M+Z5g5ofUFhUEnTKUV0=
-X-Received: by 2002:ad4:4ea1:0:b0:89c:6692:1d83 with SMTP id
- 6a1803df08f44-8a7033657a0mr30043926d6.3.1775202647917; Fri, 03 Apr 2026
- 00:50:47 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=aT1oaND+;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf23.hostedemail.com: domain of chenyichong@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1775202731;
+	bh=Ua6TXToexFuNdMYzgJkRu95qFBaQ1rvNnGJAFP7WrwY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=aT1oaND+t1sU/b6MpLaW+ox8G+686JwvEL7FlWeuyTAUdghqhavkuxm62tgOSI3W7
+	 EnMc/uYvIq9RHZvnCpemhJaBoLXC4P4V787FEWBvi4qG5LaZaktHryh8Dy2AD8Pd3o
+	 V58HrUEAFLWklUDRaZwj2KLOUPG+OoU1ASpjq5sM=
+X-QQ-mid: zesmtpip4t1775202727te98f80b9
+X-QQ-Originating-IP: u28J8+j+Xf+Aatf+I4a6ZT8GoQYhyaSmCdRTLXJYTmI=
+Received: from Shurima ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 03 Apr 2026 15:52:05 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9212431654302830342
+EX-QQ-RecipientCnt: 7
+From: chenyichong <chenyichong@uniontech.com>
+To: wangqing7171@gmail.com
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com,
+	urezki@gmail.com,
+	chenyichong <chenyichong@uniontech.com>
+Subject: [PATCH] mm/vmalloc: fix KMSAN uninit in decay_va_pool_node list handling
+Date: Fri,  3 Apr 2026 15:52:03 +0800
+Message-ID: <B7281353F876D424+20260403075204.894243-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260402081413.1896640-1-wangqing7171@gmail.com>
+References: <20260402081413.1896640-1-wangqing7171@gmail.com>
 MIME-Version: 1.0
-References: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com> <20260403-mglru-reclaim-v3-6-a285efd6ff91@tencent.com>
-In-Reply-To: <20260403-mglru-reclaim-v3-6-a285efd6ff91@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 3 Apr 2026 15:50:37 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z2=Wrm0NAfpE_98rKqEgncBceVscqFRGDPeuR0eCxQCA@mail.gmail.com>
-X-Gm-Features: AQROBzAc891xIGlkBXUm0CKD8CgJdoALXMRKHxHiBPNM7YZLQ35BGrFB1mU9lXk
-Message-ID: <CAGsJ_4z2=Wrm0NAfpE_98rKqEgncBceVscqFRGDPeuR0eCxQCA@mail.gmail.com>
-Subject: Re: [PATCH v3 06/14] mm/mglru: use a smaller batch for reclaim
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 7ifkhu1ds953k1936ftmmozies1upnzs
-X-Rspamd-Queue-Id: 3BDE0180009
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MdDSduxpyAb9ILKvWW/jHHNz2KR4Qtin86AyAqu0KrjW0sUvgxyFFv3D
+	rw/M3/DxIg0DbxRqdFlj8MtzPVobEzudHbFmAtxHj1wQy5DmBMRGAodut3AZH5rLqUZ6bbr
+	6BUfuOLA+s539J7LppWcYreC0BQ4Bhw2Rh0k9j4uRwoF+bYprM4vW+XVkiet5sXgOKqrjfr
+	cjuJPcgOIV05Yffbag9nX2b0PdEsbZaFgUBYW1AUDjzjzN3XPq9RuZtn4NLiaW2lnC9yjNN
+	XZE+uvft+fBxlRA9SLBaxWIVPJfJL03nmf2LB5j8qm96PfMZQUR1H7ed2ZcNMKbzRFxzz8l
+	Y8SoLl/Ya50nyMvaumIWDLVEP54/zqxJuuvxALDtpLGW756bbO7LOOLfHnvLxSDTGvB1xf4
+	UaEBinGx/kjDhpoFqBFSb2ikKx/FmTsER0a9+e+p4yoL4Gyy3IgktmIjXxUoW+RFtbqIkZc
+	yLcppRoLNLoX+11Jlv9iqt2sMluIhQLWQX1br1DOunYlbZ0AQg7ewtq6NkkTX9cpeW/ojgf
+	3pY4CeTEGfycRW4ebIY99l75GxdmX5kUJfWJOWixCcdmDAaw1Kw4espHsTJYukI4dY3zPcv
+	+tDjG8ZCesJSBysW54wL0vAdzabdyusCqobDyMnLO/ljW3qN/uJ+rjUV61oBfETfgyZSL8t
+	WmUpZd+nZDPiVZ8vJeOF1MUhBZZKb5/S73/Juj1pX47dysl4JFGjCZimDSMvmElSGMUXsXl
+	nZ8E2Z8XE5JctBzsho6Y7CH0IZfrgsHdFN+ldb+b6XLsznQM3bvn/CCmkIkBNgYbEAsNWJh
+	OXPAiaMfnKrML7PCeXxvDEEy1QhNWB8B9cDAKN8nLrukZxYnCy+5EBoDGWx99+0NVaiRbrf
+	rMccMRxvc5EuBjzIsnIzviYxK00oipSTW7f4CrYviK2UOV0oJYL40PwIKAentDJYm7wd5mX
+	5hDcJ/Eac6FvoLhGRyaL89jUMDgirzJWOvkpqXWvNeHvwFe5e7sK2955wxZae/5KjMWcBxf
+	U8+9bpJnq/Ef1Z560s
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: CBC34140007
+X-Stat-Signature: 4sjbmx3t9ki5mk8k4q1itjscatmm5u8p
 X-Rspam-User: 
-X-HE-Tag: 1775202650-902314
-X-HE-Meta: U2FsdGVkX18VnoMN9jJhZkWH5nK8R14U3aZ+BtirscdFdcQ8NoqPl9RKYM9O9Pi8OGoYFsrdw/VASd4t2BWeD6e2Cq6Sj00LUql7Kre00Kws/ImhCWp6sGbA/gYHrkeqYfgrr4UhYIiG1yYvJgNub/VhR6OfxwDs68zMEHoTNixrB0s0JS0vv1JS2BVltW2/Y2E1oTdA++kcgJu73Y/qPL29K/sGX1TTU6w8v13dQep8agz1MDxpu0440kEZ33ixYtBoInqnTOC51vC5jZUrTxrj9WGnr6tbLON6yEAMYYdirTz8kZpNBDB1GSlVjxUzwTyXkxMin01lqTLuZelj7PLKc/QrzRYt615ZQmBuzzmIykgMIsD78pjfSqizkbAMe0XU31whmriZjXL8An4is6RP7fQ2OOp9fBvxyuTwDiIXU2nNGRsSPYQEfNplvXQZy+6jc955NiRQcFZN66i0gLfUzZByIUtIOXvJ6VeYlQyfOly9iWBUZA7LZnwPeLSUhcdlEOBBjtzUgTERMaQvjxCCOLCa+1YMxaU+j+IAidam7eXCm0L13gSUTnQR57kn398i0ABLF58I39C+qxnJeosvUqyOCxvQg2dJGbcc9+OuJEKKmFmBqGGW+i+uUs4X90W7B43+jDLGjilBf40e/kqfFKLBlCsYPkI26hu1Zlmsnh/gawks1cBdAt6h94I5DYRlVWA4W2KEivISwiaXTFM5zUXeMIsBmUwinGdKMvKQcqzHN+D5HGjQcv+iXvm/Gct6a/llrRnYMhEpt8H9T/PEsNUiXKlcLyyPHPSJOku+i07i87d2QI5b405p5hkP+Ri4XqqpNqCyZk4aHrmUQQdI/yzQv1/ytTMif0hlbHlmwwSAndwdEkPaRnSMQOaX4mS1QtMVLQy8vHB3NxeBUmKrDwMkMAzTd803t03fWzhzxp+d4uXniSK6oWvb44OwSECyxkOVSEija4hPE/6
- MrHP+GEj
- VEz7Mz0aR1TrT0aw7qFubCZInrxsBsgVsRljFhTrpalzm9vDEu0SQHm45rVLtMHCLOK4y0q48c8fqGbljTcKxD3/mKbdPbA3S+cQW3qNRNE0mWXoNrtFcvHNExrQ6Kp8akYmKvh8yrqPFF2QWqAr+vmpkK3jZWNDqMtf3CcLk7rVFGTpzWrDeP4SMmrJ1SGuLutRAUUbi5as5TbYPt6237FCVNG7ywc9cpM8sCQ4mabcrsopxDLrOCdsANd12WbW1nduOjXaxIQ8Ct0VIPXcluduk6mmG7CWtT8jPOCkublUSAt4TqRz1rFFJycRM3E0OGCNgbxa6Qs99ktiv2Kx9dIz92H28SFWMD3UlckB8OXPLg1hO9C2KuzC6ALUQqGSAsWh8737CGE7ia028MyBADYox6dcDZ2X02KuxwFwJLi4bqKnKAHH+WgkRgeQQB2+QJmN2gnUHi/ODS5pGMH8b3dEJ3g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775202743-321452
+X-HE-Meta: U2FsdGVkX18I/AXcHyukSouJ/yNeDDB1C143749GOW/dJotDnvGIMHgy6Q3MbwAI9paOwe/B7CF7M+KFqkHqHmCxgidz29FjJ4W8kHbgfrIZyphHmKSlkvT0ZENbb5Jm8WB7GFQxbBfUeim5z+C9iJ24rlHq+KKOd475ZviWFfQRsxyySk9Hmy/aKoLmR0WE6hoJpdfpn1PAdLgQ9oyZwjSOQ+x7Y3IIbNvEL8D2t+WEhLqjWW/xtAWFzdgRhNFVjRmgnyiQ6MGBexM1Sz5GSJ9n0whAAh54PBemcCnhZ/nintySEFrCQ3uvslckn0RFHsOUGZzTJoR2q4kyPnZ2QpbCHNLGAudUwvBhqmyV5KSP5QkZKasWyOgxSnwOST24JDv/zh5BD3+V9r5n4rB3IJ0XvLCF5ULlvqGNZc2G0x8Px2NlKtvZ1BNZBK2PGbp22Nuf1fbxTYZtetM6KTW3tyw3AhZbd7sGOCcSMMlmHZselAW8Fk4LpBoPXabeI5su7FM3NWA6bNbBLJfVU4wKqWkfuVqRGDiNOc0LImKba/pa6WPka+Sb5SjIltWDXhXzrxNURCS+kpncrBZWN3tS3FSZuB93ImRreVUEij+LM1LcVFbaMY+iT0Oh2mkwLbASR7JUrD8bl63fRglI6qi+hUXLXFc/vgP3+J2MZehPlTTzPpkHzZFX6sdU88mGXPGek0yupgLbaR2ewpPf1LVjDLYLTjvO7GE4eok9H/YX/yUaZz07htq+VBbtdaJo42Ltw1Yqf/2c6pHtAl6Lyl+SJQrwpvY8M7+e7/8NoZaWmSBPdWaTrhm4Eq7PHbEyAJ7gXfLFcv8c+BME5CDyiNDe/OL8qLkcr6ulHudRfWEpFWh9Pgn+XMTDXdTH5w27PvFXhdLRMcTj1fs4AYidyurFBR0YQkJyj0Aqh/Su/7bxUI4MoKuWcPl7SGd9Ra85xIO9GsgFkD9i8/1mpUWYFQD
+ RHJzid/a
+ p3g2JOhTVfrM/nBt/yCBlZBd66opO+4c/+xGmtWtDGp+HH6vIPlpc2hQ/tLhsGqpMReCdIruj4Q2XzafTZgMRXC1gXhQ71vqi5wizhnPg7rcP2jWnPuKcqyxg/zGakORKWMZTdUqA46UEDmeD6RcfKKeBQ6KT7xiWGSxhCPh1LkkdYf1q1nY+s9M+NXeSEcb+jMkixbHuXwPt1uEJSKo4fz85QUZ/aQ2ZEKMoQmFPnMnkrDuRLhJ1ZDrEdv1FZRD3ut+5s7/7GxxI2f9CmA1yASUkzR1Bk53Zb1BoTVCLOTxBalYQzVOYUUGfDybP7pFoy8MB64wCX6T/gsOdiI/q385Yf8xGszgjGdGj+tB7JFHNpSbaQQgeDR9VX6gQz8S0J42/ZMrWLNkcH/u06aZZziaV1JgMlUmwH3hiQdt6Ef4oM5px8UpFoynqHGDKdVz0kLCM1ZLUIuNjOvvr1kkRXFsKLtP24G6megRV83iWsLP1CnP2JIQu5Cht7qxzZgcPEgUQqP8MaCSo90jtd1+FL/1oEdWl5BtZfTJwn9P5l42FpvllPBLyo1KUgwNDMplOpUgF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,47 +115,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 3, 2026 at 2:53=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> With a fixed number to reclaim calculated at the beginning, making each
-> following step smaller should reduce the lock contention and avoid
-> over-aggressive reclaim of folios, as it will abort earlier when the
-> number of folios to be reclaimed is reached.
->
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 643f9fc10214..9c28afb0219c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5008,7 +5008,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lru=
-vec, struct scan_control *sc)
->                         break;
->                 }
->
-> -               nr_batch =3D min(nr_to_scan, MAX_LRU_BATCH);
-> +               nr_batch =3D min(nr_to_scan, MIN_LRU_BATCH);
+Prevent decay_va_pool_node from overwriting concurrent repopulation of
+vmap_node pool[i].head while purging. Read/reset pool[i].len under
+pool_lock and splice leftover vmap_area nodes back into the pool
+instead of replacing the list.
 
-I=E2=80=99m fine with the smaller batch size, but I wonder if
-MIN_LRU_BATCH is too small.
+Reported-by: syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=37b7f6cd519f7fb8d32a
+Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
+Signed-off-by: chenyichong <chenyichong@uniontech.com>
+---
+ mm/vmalloc.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Just curious if we are calling get_nr_to_scan() more frequently
-before we can abort the while (true) loop if reclamation
-is not making good progress.
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index ecbac900c35f..72fb60553a71 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2233,10 +2233,9 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 		/* Detach the pool, so no-one can access it. */
+ 		spin_lock(&vn->pool_lock);
+ 		list_replace_init(&vn->pool[i].head, &tmp_list);
+-		spin_unlock(&vn->pool_lock);
+-
+ 		pool_len = n_decay = vn->pool[i].len;
+ 		WRITE_ONCE(vn->pool[i].len, 0);
++		spin_unlock(&vn->pool_lock);
+ 
+ 		/* Decay a pool by ~25% out of left objects. */
+ 		if (!full_decay)
+@@ -2259,8 +2258,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 		 */
+ 		if (!list_empty(&tmp_list)) {
+ 			spin_lock(&vn->pool_lock);
+-			list_replace_init(&tmp_list, &vn->pool[i].head);
+-			WRITE_ONCE(vn->pool[i].len, pool_len);
++			/*
++			 * Merge leftover areas back into the pool rather than
++			 * replacing the whole list. A concurrent allocator can
++			 * repopulate vn->pool[i].head while we are decaying
++			 * tmp_list, and replacing would drop those nodes.
++			 */
++			list_splice_tail_init(&tmp_list, &vn->pool[i].head);
++			WRITE_ONCE(vn->pool[i].len, vn->pool[i].len + pool_len);
+ 			spin_unlock(&vn->pool_lock);
+ 		}
+ 	}
+-- 
+2.50.1
 
-Assume get_nr_to_scan() also has a cost. Not sure if a
-value between MIN_LRU_BATCH and MAX_LRU_BATCH
-would be better.
-
-Thanks
-Barry
 
