@@ -4,113 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C756D6AAFC
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 08:29:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 339B8E7E340
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 08:31:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 767716B0005; Fri,  3 Apr 2026 04:29:14 -0400 (EDT)
+	id 71C3B6B0005; Fri,  3 Apr 2026 04:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 718816B0089; Fri,  3 Apr 2026 04:29:14 -0400 (EDT)
+	id 6CD996B0089; Fri,  3 Apr 2026 04:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62F1F6B008A; Fri,  3 Apr 2026 04:29:14 -0400 (EDT)
+	id 5E3196B008A; Fri,  3 Apr 2026 04:31:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FB726B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:29:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1FA1E1275
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:29:13 +0000 (UTC)
-X-FDA: 84616569786.09.F5C6900
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F102210000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:29:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rptwbTJo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BD726B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:31:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD61C8C070
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:31:28 +0000 (UTC)
+X-FDA: 84616575456.26.D1980C9
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 33D9F180005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 08:31:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EOiUhSgU;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775204952;
+	s=arc-20220608; t=1775205087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PWARIkwYvEXgfZYjG+Wr74suArYFrPWiR7izLuuH3rU=;
-	b=QCRaCMBd3iZLaHp4Og+8O4xaqgfKeV+ShhLZok3M4qF5AmUltSuIWXHL3YTH+NeSxhSw91
-	/RKzMmQVrYkeFjOH8r9vXrJZetK6LcGVN8y+SGSw1Y2gkJA/GP6x5ePPPi+lYbuzLjGTbS
-	0L4CwI7Te09faVdHilt4J3wBdLOchsk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775204952; a=rsa-sha256;
-	cv=none;
-	b=qWWjmAB6jeE0MX1FNxQ4rIpIqAingGK5poZUtOznVLztSIGYqiN+cylRIhjZwRPr4RjcW8
-	AsuvyjXQ45OuXIRZkIPXT37y2ywxCrh/rtzxO5CrkJKWOb8AOM2u7t+By8G6wVU7ItjxcC
-	F+XJ6saUkDD/rcxM7u/DzQji8y6Xgas=
+	bh=vPHnX95L4zARAb9iKb7/VH3eLKj/XM5UcYBpATOx7fI=;
+	b=uYAZ5SWU7rfPe2KwqlpEPYcvwOFWqsQRnF+VXDv5QXNS+vjbnYn1OigdDF6MTDbZpDv12K
+	yZaxMzJReGTLB0mbQtzdxeA/iQllvjurK2vvTgmhInzrNjJkmDJBPj+dEjCAdqiC+7SFdE
+	oeo8L3Tl0Cj1O5uRzx2eF0YpTtZBQQU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rptwbTJo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b0afa0210bso7931595ad.2
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 01:29:11 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EOiUhSgU;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775205087; a=rsa-sha256;
+	cv=none;
+	b=2UtIx+e39JrO59vdnp3/0WLFBLOSBxGNxAiaPc1KuIVOQVh6EQeemY3O96xq4+vZjnRB4B
+	htWUxxfrocyft5fkpHQgA3Abo54O0vH/SYEOSCkNRmXAQSpwFOj3kFWi9tIV3/zSZQfTsS
+	eMpFt7iPIkEKZiBGTzxldoOH2L0V27Y=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b23f90f53aso15940305ad.0
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 01:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775204951; x=1775809751; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1775205086; x=1775809886; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PWARIkwYvEXgfZYjG+Wr74suArYFrPWiR7izLuuH3rU=;
-        b=rptwbTJoEpOWe1wYtZ1VgH2z5nS7l8BLLPhqOuuFGw9HjQiclqch6SIo6Svws8uaQy
-         fHNg+jhhXKJQoNWYhmvco2eDHmYZAncyPwXe4TaLe7GZv7EbnH8qmot5jOHUJJVA0H4u
-         qJuEIbR0UwbU9+Y+Z+SGkh1fWW86oU9FNL4KG8uJVHtchOD+/sU9FFvG/UgdpmBMy1/X
-         RydUaMORI9JPOlgD5G5tRxBQ9yYtM98OvF5mHjCuSL8IImuQo3Bbk3vZSbNf126iubeN
-         26fSBIX9m+0zMVl2DCeHX3vBuW2mY9L01WzwUqXH9iIG3VDHl/q/PxZ6jlSBcjhF/xyA
-         EkYw==
+        bh=vPHnX95L4zARAb9iKb7/VH3eLKj/XM5UcYBpATOx7fI=;
+        b=EOiUhSgUl1pmteyDEIMSQolvqQTlMaxwi8bhj7DN7Hr7MwK//kwp3cUvMq4OXvqjHg
+         vSIN141iWNtHYnEy/TvgPbsrxMCbegNuUnn9W3egmqLDYHsf950GTBOMr4NkMdKSSba3
+         oMdXFUFUA2G3Ekud0lBxwDlcLgakQyobGvQD0rU3judwI+FSaQKZ5KnXHjaloy4zM+3S
+         KK0yf+yOXdttEBePna79935gkLAFNwQIYRc2mheOd9Z9p7WO8wVN3oJHtqiQYScNWTXM
+         4wPQr4d+KwT1YRRVzpmqPYjOo6icMyns1iraruCqHpOjz12/qj+aXA8zoPirZjxPaMZR
+         dqFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775204951; x=1775809751;
+        d=1e100.net; s=20251104; t=1775205086; x=1775809886;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PWARIkwYvEXgfZYjG+Wr74suArYFrPWiR7izLuuH3rU=;
-        b=o8nuGPimLuccF0ZQhFuoOJXdMxC9Q2lt9sYFQDiOY80CHjNVFQNx/xAgpq5l7HkmJJ
-         Evi3PuxsjPf+LGnawtFOAOTCUmL6pnuWWu596l+1MyJzrfUZW8J9+dEl0zaiI/WKqTIA
-         V+LXOOTR2MPKQLA0Le23W0zzGVF2r4KhjwjdOW16YCyrappsq1Hm8vypB2YgLPwhfdF9
-         ebrr3S4rGiLufypXL/jZxyBpGM6wyFqFrYMv0TvW5/EZlracKscLBK+WswhNpsHGSpZW
-         RYFIBNGDZGKZ2/OY1payOM4BL5qyTPSd93nMP7OMUvwQN1pg6I4MXHRvAJBennxyJbBf
-         5U/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVd5eHapMLbLpMElDZNu0n5+wVE52nmCCM3Nwt7ZIrV7J893NeAKFkUSmT8N7B6soRryBI8IMDkDA==@kvack.org
-X-Gm-Message-State: AOJu0YyO7JNX2mOq3GvfPmy/g9KIBQN/fDPS3BFkJAsIvNwnGgR6Al4N
-	uWs+1Eh1xBouMgwLDEczkv3bn/6DqOJ/2I2x7nX0xp6Cc0IoErSVvHb5
-X-Gm-Gg: AeBDieuw3p3Po4FjtQ78qCbDX6c1rCVxccNzc7cKFkSGobBn7340PT/KgaIT00kEvBt
-	sxkYTP4Kr5joi2vR6O9E/VLKvHIpQwp12RdEnIELWOYU4Hs6sqI571oI2KXqsnYxSeT8w9AHQWt
-	vJOUehd+I+g6xzhOcOuFUHDphdcxkxy0Ne9r1TxiJ9UWxGvpory4x6a0emLPcnrvNu8wWRiHkWA
-	QFOxdfCeiROYLrcIwnATEoK9m3yhVOANHjLtRRklyi3eNXpkB8WYJfksFnSUKZC4mGdivd31VZo
-	aR+fzb+SeGKviBTIducjHBLyVKlkA+eDj/ZYuu8YhWGxiFmfDPTnTDQ7F0bpMuKeShTvIo1TIcv
-	UdFrrNnoKSd1GXzYQenDAAD50OuUywrsf0JSLU6ay0mS2UYxyrkFeIZkvf+Hw2XrY09tJ82S9mS
-	DnrN2upn4OrXdLHyA9XPMIU858ZIwVNOv7BoKxMs/D1dHxrgK2YFQ=
-X-Received: by 2002:a17:903:22c7:b0:2b2:5203:acd3 with SMTP id d9443c01a7336-2b2818b3dfamr22641545ad.26.1775204950671;
-        Fri, 03 Apr 2026 01:29:10 -0700 (PDT)
+        bh=vPHnX95L4zARAb9iKb7/VH3eLKj/XM5UcYBpATOx7fI=;
+        b=f+68bX5mlGbsGgFmsbQUop7l5CO/qTD8+yrICCPsyribSMQ4GTMVKLU6VuEnJWuQOj
+         EQf80mxFbdkIX5h4nrSs0fl4z80Ihb0aFivg9yGPPzyk6OH1383dhxfKRqRb62QKujXd
+         eoRuWFR/AUoExZWSAQ09XmVnHQPoQXQYdJP5o4GVvesA84fKPaRUC3q1JLGok+owDBUu
+         DRU94Dt7aY6r1nhpdjSxxxrAumVbFx7iCT9uxdFIZXiCt/qAX3QrFONiV9TzI0GuHs8C
+         6PsN8p57TEeq/IEcn+cwoUE+j+cjwIg86B5kpQRPFTApDEYGrtgrmXO56CCpgOrWtN2J
+         wFCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcaQJ79C+Bs7l64uhAvbzfcNh53B24UdzrayL8RcJoxRibWdY4u3SLIU5aDLcgbFMrLJYhOMtv4Q==@kvack.org
+X-Gm-Message-State: AOJu0YwzV8/lflDOnS5xGseTIjRoM1f7inglB1Savd4LDLKmwpniLkl7
+	AhgmnD2L3JmJ0UaeNTeBqN0j/bf1cSxVhLZk3dv0Y+0DNFC4WrMCXlmH
+X-Gm-Gg: AeBDieuGQbexDdmG5SUBZ9trTfiGkBhouWDbD66Ol6zb7LmptwihSguzU3Mv3sOd2fn
+	CSMdO6D0eVEPEFTmQWH9GNNcuqhgd4INY48ld2GnyC9KeKzk46lcSnCUFZnXcVpcDRFYmUtmsjh
+	stmw6I9XBtPI4vcy/+7hH/b4ocVbmxsaskm94zrmkTfZsw9+IJeLK+C6yrXJJK/JlurPICUJeFc
+	d3JDs52x+iUqIi2jnWILwJlUt9D2WRxg1Vi4TIHM4Fml2KU31fGH5eGp+w4aqFtkPo1q4KrTbnZ
+	y6JqpXKGXP/jUwazKOX0jE3lVNYa4D+gpPXHdjZ50CmbFPR1FnI5aqREElp1cbDDuT4OaBxf2PG
+	waznBmooedwm80vTwISbeuJR/N5Jr9SFzWcbkCtTu1niz8RmRpxh6VIIb9id5NG2TlR7+i+wzKL
+	HPnihjr1y8VXePBeid7OnAnlI0Nr9JNGw53W7Hlr3EZyvPzvrQt/A=
+X-Received: by 2002:a17:903:4b07:b0:2b2:51ed:4522 with SMTP id d9443c01a7336-2b281833d68mr24607425ad.47.1775205086057;
+        Fri, 03 Apr 2026 01:31:26 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749a3a1asm50469845ad.62.2026.04.03.01.29.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27472d280sm54193015ad.17.2026.04.03.01.31.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 01:29:10 -0700 (PDT)
+        Fri, 03 Apr 2026 01:31:25 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/damon: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 16:29:10 +0800
-Message-ID: <20260403082910.5346-1-aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org,
+	stable@vger.kernel.org,
+	yanquanmin1@huawei.com
+Subject: Re: (sashiko review) [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Fri,  3 Apr 2026 16:31:25 +0800
+Message-ID: <20260403083125.5654-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402140314.74600-1-sj@kernel.org>
-References: <20260402140314.74600-1-sj@kernel.org>
+In-Reply-To: <20260403052837.58063-2-aethernet65535@gmail.com>
+References: <20260403052837.58063-2-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F102210000A
-X-Stat-Signature: 9gzzdap6cggi511y6yaftuitemos4aqm
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775204951-639315
-X-HE-Meta: U2FsdGVkX1/EjfxM/XdBeXAmV5kDygAs2tXya9IigJOwoVD0KYcZL97TjlDDqnHVNQToJy75N82TvWEbDQDnJ0Rspm8iKE63ZHIFs/A+4agnfuAXMCm9+t57jaMnSkd0LZKIa4c8BmvPzML+tyjrGU52cm4RfgZ5Vh/outoDmKKDNcKJB7euCun7xmM2QkrHMRH3mdRPhZ7CnXPNMS4dOPKMZSJFpQkLi5JHViBRbnkg9QG3x3QrVgL8AGBIFkCLPaOlVNaOK/I2WTiLq2YkG5LLkMr0qhmue5DlSJW9Ldb0c/HjIVLuDJXp2zLiCchTW9qSkBTFejAFORPTq2XJeuWBdWZbIkT8PVF3PX/SvZgiZY9CSVQjBLcQ7A9XbC+Z5RcdlqEXojhYPceK0p6q8bgtGM9kOL0ko+RbcJmOku8imxuuUTrupJQv/ozrApPQiBh97e2DXznoaAkZ01kKzehNYIXmypipRPRKyNzQDYv4yHM/0fB+biiZegDbAKDMpvr3/FCtZZkVtV5eo6CsqfvwrHwJnYAGnm/Fj9RUGIOrbviVvJc3bQFJKd2C8XaeOJ/169DucKSzcx9JOWTffd4T1zM6QrahBA70cFyFlw9nzu6B3LMr8mL8cJyndYjwCjtteLui+l1gGKK4rWe30G2J7YpbDdQVwhT0Cvsz9G+ZES7nKEvUl+2HYOIjLxMCaKEvbNKgb03QErurc4Ay8EvaQS2Ip0TwGky8SQXZGPI6oWawM7Ev8FYTzoKvb31yBr3mh6uQZKtqBWP7yon9/+M1i0Qg4JO3iGf2pcdesq7Fiub+n1zdich0uR9p0u5KxOsIPyqqY2lv/HdnvB+DwVTuuKBr1SXeEFm/7bd6+8XrmpDFf0DsAmUfnfUaLFtlqSyZxFqrtCTNbbkHMiOesptNUDFDw7TNUUtvzfN+y2KbSq2+bEyRqRrt8jCy5w48R5+WvSeGncR3/IyHcuA
- zGV8Rc8V
- m2Io575NKa+/HDdrx7XsnOQvWX9VzWQ/L0VPJ8/FnvycLcPI2UtKSIlV7pgIo5hQOaALxm6mA9x6pgZNoJiMTmpQbGRspn5eSlKmQBqthYQIFfSkXFy6hzTSiR/porS5NeF6nUSCC5mSMbx9Y4NYG75+qY9/pjGI20o/qHjpvSrS+ZI8b7K76CvSs+gWMjhEdD5Aw4lYV9QYaYwY7zOjczbzRR65wdDp2VyNjzS7wVdb0/pnY8OrQuH4NtTfmNl85q0goGHJtX/u6GgZ8EeGoSZPy9eVbWiIrARQC5JqacNTm2cJAdZAH9IRNwJQvxEP62eSOcfQxHbN1dBUFDxpvBp/qSudKYm5aT0vM/oFdIDD1VY3WE+IRuaOwmaH9gQsrquEXQFGqYzS8+2CyvPHSM9m7D9Fv1+gRu6gqjWGe7dRCxi4sY95GSIkJztoc80x8EqTxDE6INjgjgYLOEd2ENmbxHVO1+gZnQORKCWBjabk4kjY=
+X-Stat-Signature: fmgkdmfph9izemzyzofo8y6op3a4ho6r
+X-Rspamd-Queue-Id: 33D9F180005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775205086-902159
+X-HE-Meta: U2FsdGVkX1/wqjqHcutI3RvEp7257kU8F+59G886BaSKfKVFM9Dk9sqKdwIsoNe/P76qEFBQFvFlvWdaHLaIM1mRhuMTO2WE4p9nFD9ZAX5LO0PsQtRxTUvVWeICjOQP6mKyDX/UjfvFGNwSvQc9kmmDlfDqmzEfezhvFLSntV4PXcerFb+zOYals0vC9egalphA7/2i6xc7iOTunC6f3VvycbRX9Rk4tCCqepJD7agD9PtgFutPP7VjtsGHIY5YCHkxAxkZO5oB5ay2WqDENZOSMuCjxE6GVBCfvaqaL866tr1N9Ocg5br1EtJ5nr4LcNb5kyfdn4BdhgF3rR383ez2mGYEMiIR6f+jZF6Q51UZbwxafNxOwpnuxzidmY4/CIyQn2OTsxg6++7nKR13KQFUspSgbbuf48UdI1yQjMYtP6C19ht1r/9VQUUp5f2BDSWlwfChbe8opqMylu245qyOy5y/3yaWmiK6JBMXk23iEpglNVb/giBTZfKzf+pSk8bAX6NWXZzY6w+h8nQ1rZcFedrUQoOLrd+KMJfCucH0nvHK10afr/xnkmwe6wSSjG3lKPZ9SLt8ZGZjJtqYTJYmPCmzS5CN1n+5oocoNyXwXwv1OtV3WgttPFJdXTQ/WnQl7Fnnchqpe2tkRfz/3cfGWaZEMX3/PXlafrU4/Nih6o8TvQCZM+/VzuWMFReg1w7W1qJTYeopeMCe9+LLKA6MCvGRoZbppGcEa+QAg92E/ZOg16/X1xCZtsPnARE+9GWDd6S56AHofta0Z+FEz4aNK2UJbqHb8fIpwAvHHHcOkEPWWak8zDE0GKlgv9cYW3P2dDwIki2MTUPImMPI1zkzYAHEC3+zodocjYR6wbr5aHbKzZfQ+IcaE1VcOUB0mtvgfNvoIZvFXR+qkCoMRRF/z5rfv99uqHCkhvSTR1eMm3Nk8led44ORXpk57xWFunm7nxxLrlqR0/ugTHW
+ mI0sNwW9
+ MHfma5fj6vHQpsNLBDZkcND4Mhxnq62Np2RsBFkuFPBXTRs1lp5x5a+byiMbNH+jw6DkW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,57 +120,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+Forwarding Sashiko review for doing discussions via mails.
 
-Sorry for missing the discussion before sending out v3. I was too
-focused on the code and missed the context of your questions.
+# review url: https://sashiko.dev/#/patchset/20260403052837.58063-2-aethernet65535@gmail.com
+# start of sashiko.dev inline review
+commit 525a0116b6d91612e679b30ae84e489a7540edbf
+Author: Liew Rui Yan <aethernet65535@gmail.com>
 
-On Thu,  2 Apr 2026 07:03:14 -0700 SeongJae Park <sj@kernel.org> wrote:
+mm/damon/lru_sort: validate min_region_size to be power of 2
 
-> On Thu,  2 Apr 2026 13:37:56 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> [...]
-> 
-> Could you please further elaborate visible user impact of the problem and
-> reproduction steps if available?
+This commit adds an early check in damon_lru_sort_apply_parameters() to
+ensure min_region_sz is a power of 2. This prevents kdamond from unexpectedly
+terminating when given an invalid addr_unit.
 
-Yes, I have provided it in the cover letter of v3 [1].
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 554559d729760..3fd176ef9d9c1 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+> @@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
+>  	param_ctx->addr_unit = addr_unit;
+>  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+>  
+> +	if (!is_power_of_2(param_ctx->min_region_sz)) {
+> +		err = -EINVAL;
+> +		goto out;
+> +	}
+> +
 
-> [...]
-> 
-> Should we add Fixes: and Cc: stable@ ?
-> 
-> If we should Cc: stable@, and if the changes for DAMON_RECLAIM and
-> DAMON_LRU_SORT deserve different Fixes:, I think this patch is better to be
-> split into two patches, one for DAMON_RECLAIM, and the other for
-> DAMON_LRU_SORT.
+Instead of adding this early check here, could this be resolved by fixing
+the stateless validation in damon_commit_ctx() directly?
 
-Yes, I agree. I have split the changes into two separate patches in v3
-[1]:
-- Patch 1 Fixes: 
-  2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
-- Patch 2 Fixes:
-  7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
+Looking at damon_commit_ctx(), it currently sets dst->maybe_corrupted = true
+before checking if src->min_region_sz is a power of 2:
 
-Both patches are now CC-ed to <stable@vger.kernel.org>.
+int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+{
+	int err;
 
-> [...]
-> 
-> Seems you forgot the patch [1] before renaming of the subject.
+	dst->maybe_corrupted = true;
+	if (!is_power_of_2(src->min_region_sz))
+		return -EINVAL;
+...
+}
 
-Thank you again for reminding me, I have added the missing references
-to the changelog in v3 [1].
+When this validation fails, it leaves the active context marked as corrupted
+without making any state changes, which causes the kdamond thread to terminate
+permanently. Moving the stateless is_power_of_2() check above
+dst->maybe_corrupted = true would resolve the regression for all current and
+future callers without requiring duplicated validation logic at every
+call site.
 
-> 
-> [...]
-> 
-> The code changes look good to me.
-> 
-> [1] https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com
+Does this missing validation also affect mm/damon/sysfs.c?
 
-Thank you for your review and patience.
+When a user starts DAMON via state_store() -> damon_sysfs_turn_damon_on(),
+the code calls damon_sysfs_build_ctx(). This calculates min_region_sz and
+then directly calls damon_start(), bypassing damon_commit_ctx() entirely.
 
-[1] https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com
+Because this bypasses the is_power_of_2() checks, kdamond can actively run
+with a non-power-of-2 min_region_sz. Core DAMON operations like
+damon_set_regions() use ALIGN() and ALIGN_DOWN() with min_region_sz, which
+perform bitwise masking that requires the alignment parameter to be a
+power of 2.
 
-Best regards,
-Rui Yan
+Could this allow userspace to trigger incorrect address boundaries, massive
+unsigned underflows, or infinite loops during region splitting?
+
+>  	if (!damon_lru_sort_mon_attrs.sample_interval) {
+>  		err = -EINVAL;
+>  		goto out;
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260403052837.58063-2-aethernet65535@gmail.com
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260403052837.58063-2-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
 
