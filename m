@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29080E7E358
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 09:26:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93C04E7E360
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 09:50:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9F36B008A; Fri,  3 Apr 2026 05:25:59 -0400 (EDT)
+	id D10E66B0005; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28B4E6B008C; Fri,  3 Apr 2026 05:25:59 -0400 (EDT)
+	id C9B326B0089; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A0FA6B0092; Fri,  3 Apr 2026 05:25:59 -0400 (EDT)
+	id B62E76B008A; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08EC46B008A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:25:59 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B06A71B7144
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:25:58 +0000 (UTC)
-X-FDA: 84616712796.17.AA08324
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D729320003
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:25:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YrFAJ0rF;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A1C2C6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A0291A0557
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:50:24 +0000 (UTC)
+X-FDA: 84616774368.09.47684F1
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 72006140002
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:50:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3DCqepo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775208356;
+	s=arc-20220608; t=1775209822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V8rwvXnVBjuHbJpTYFqSEoeoIulBrF4TUgcT6yi5HCk=;
-	b=2Zme6qlwXyPKZ+hmaBjHxoJSSf9TLaYDDUuwCkv7eqOAwNetT6CXyW9AvaeWz4bkU8vEdb
-	vyGDFzYxkhJxmeXJNd0/PpApmskta48xf/+pPevR1LiLTclLnnvvG7Nf3e8hdHBlPIAiic
-	wZZ//EzCDjOMBdUQ3HXunhO121A5578=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YrFAJ0rF;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775208356; a=rsa-sha256;
+	bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
+	b=Duv/Emv5mgbf7nkDXHrLOBgioMlrYwxlUz9gU2X/Bei7aWcP1K2bDPLhPvBT4nBuSx7+/n
+	dYWFcKy2j61oT9CdJxyi5nLe3P9T8eJsubUVj0nzSRRy7bW5N5WvbFJrO8r8yvbVrFu2GA
+	HvLwfGzqp9f5Tr+1Nw1EFY53RDGnFlo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775209822; a=rsa-sha256;
 	cv=none;
-	b=WZDpU+ozxsSylGgEXyAMLEnIyeRUQGe0drIaB/F4w1/41HNSf2IBDqrv4/PljPc/Gq8Th8
-	7QHxhxA/jOnE0bpuYqsrQiKEPBJIg1wc+M+z7QtdgIdyi71xiZMf2qMiluO3C+nUrbEvN0
-	Ab1pu4rQ5ahD1Gz4xsfRKHy0LuiWVG8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 50B0560131
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDA1C2BCB5
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775208356;
-	bh=WyI3r5saJuWJFnyYMaWsOg209eedBKVgYTU8sw7H+BQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YrFAJ0rFH9D0TTmhuiSQaSzdsikJatB5bmaXZ/PXVLqcct6ss/gjdYAG+DnUP4Tgr
-	 C/hkpAEZ6i8HcbGESJiiDgEeA/0/3XizWvgdY9aLeXya5r7bCZuIxR1fKPaGpqgcxO
-	 3zE5isZCCZ0cbIf2J7eCiAIM+/2gDW859OGl+whzEVZlysWNrOCV+CKUtwOxoxu3z3
-	 HQI30B5lOPdP2LJ8TSf+iNEmgfLJX4Gc6fOoKjxZ1yqLQRtWbfZNfLX+QA6LTyXoE5
-	 FwvhGF9+2mfDUbMNjqrHI9h+qW2TENxTOvEu8i7iJWZaUJ2+cETETEqAM8TYKYbCl8
-	 IdL4OK1uAU3WQ==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8a08fa355a1so25983536d6.0
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 02:25:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUgmzR+1ELqAx2Egw+ysdaDCLig98ZJcJXojUqQpu6gh84rIG7Hey0lf4yVJNVB4qrxHvPACnKMZw==@kvack.org
-X-Gm-Message-State: AOJu0YyQlnkU1HtZ11alzCgJgZeZUYX9gdOsjTN0dSju0IoZztepQ7DD
-	9V00DON1rbHa6NILTQ+DH87A/C/72LncB0/+lVIMJv6c+coHFum0TBshU4rPYjxd/Ia+e9Xzbfp
-	kFYdSKwPr31hxF7JeAtMMqU13Pm7VuYA=
-X-Received: by 2002:a05:6214:2f08:b0:899:f993:f2a3 with SMTP id
- 6a1803df08f44-8a70326f35dmr36663106d6.23.1775208355111; Fri, 03 Apr 2026
- 02:25:55 -0700 (PDT)
+	b=MSDjv+ItpVv5q3FpGPUrmcobfPro73/KMhTMHsH5jGjQNI2y/MtAWm8zSlSk050VqYmbY+
+	qhYUKYy6NMnI2FwHtxGOVCp2d5FVcng6hLdrTceW8PfhvUdYj7EOvBPOHx73lWbgqM7NXf
+	8gCxIKdnvRClMtYSXw2ocNVat2LUk2Y=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3DCqepo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c76c067bc51so669674a12.0
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 02:50:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775209821; x=1775814621; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
+        b=e3DCqepob0B89kaDDM1MH3mh6VIhxUGwYavuntr/KOLoD63KdOS2JfGDvFGLFuyU0J
+         ckEwFzcDarMwcPdfvJPxl7AgoRpe5KM6KgkwnibLDatig0UQF1ztafxW6kaJ6dtko8Eh
+         s5ablzMWjgXEvLbIWPonb5/2C8TjCMtFmNjZ+/HJR1Wn/uQCa3xg76P21iLRzMG4qPPn
+         qdqYkcyvuK29ORlKra4MErHdTyPWMiWTH70dPxpOHLcNLzYs+IexU5wwIaG+PEY9DoFj
+         GufqnjpqBx/FPJL+dZ4S7FBvxXFOnl2afmMCA6rewyl6myGoWgyqmNDxBgU7sKoNXvIa
+         YUbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775209821; x=1775814621;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
+        b=bM5O8AP/sVDJXCjYDaWbv+FxEOwZJUA3aZ+/2sy+fTvU7mhQKMHt6kFIyx1XJSFcfJ
+         EYafagwAhVl9dy4YgxWxgxg/XtP4Mx9VDA1rOAbNTQQT6fDXGxt8nHKde+n//zQPQqmQ
+         Xde3otnG54TStnjdW62+VzrgY2pkNNqcNkAoeaWSqTRWXuUSjabRI1424D09BCuF00wl
+         EhJtw7Wq/M8jgckOjNMWp7F5/zfXKdbNtGykO9GImJyIa3YwoiKtr44yEWE43sUcRg6o
+         Mv57IL/YjDjmCSaTbtQajymRAzi4VwdZWo2gZhBLg722v4IwVUxc7iZcr5sovum8TkD4
+         QLxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXT8A/v1xMsa1NwXxRVo0W+Y+31QLLBE0x32UhiBeieE4yKBeSNM+o2HstkoQ1bs0mq1JM91mIfpw==@kvack.org
+X-Gm-Message-State: AOJu0Yz0uoiwBXyp9tVAOSt00JTbdTB1eEwd4jzfLWylXb/phI/9cbw0
+	+OkHKlP5w7Lfjj7MNtoBRt5clti477OpWfiyyYhrT5Q2iQ0N1GZFJl3N
+X-Gm-Gg: ATEYQzyqToc6xR46RNREvam9VOm7bFyMN20uqFgYKKbgSdhBhPt92krnBE7Y7IF5bjA
+	qYMH6vPwQDj65gn8zUMHtzm6gCFWCiEZzkbGLHNzmQWbssq8suUCOGHHV5scUKkkRb+ugY+XPRj
+	r9M6eYMVvMXD/SZL1ayS88/+Vw0FEpvLePK7qSyGlZ6bPHYgjGSEW/xEUPDgchl8Cwmf+dRr2DR
+	XoGQI1Gyd62CZUNJ65OH+x2LdlM6NB07DbwyFfExGeTebanjv08fic0XraeYSR7Red7emYmiTgL
+	pxNdmDo2JxiMHvOjYvChNla6+ANImRQUOl2XLMFD9T6Xhce4F2OazIQlJDy4KVdMuQy6K4PNvsx
+	cmAePKUtR/qWzRG/45lRETN2Rj2x4cQAQAGF16itZe4PUrD3q3tDCSNCWbLbtELoaLWGAwgER0a
+	2rPwaF+ZSn+LwO5/MaT9LORHSPBRLzZTDMkPTFso2AfnddI4BtceQ=
+X-Received: by 2002:a05:6a20:7d8a:b0:39b:81bf:15ed with SMTP id adf61e73a8af0-39f2f3358c6mr2215246637.52.1775209821060;
+        Fri, 03 Apr 2026 02:50:21 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c6561fe9sm4612331a12.15.2026.04.03.02.50.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 02:50:20 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: yanquanmin1@huawei.com
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Fri,  3 Apr 2026 17:50:19 +0800
+Message-ID: <20260403095019.29222-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
+References: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
 MIME-Version: 1.0
-References: <20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com>
- <20260403-mglru-reclaim-v3-6-a285efd6ff91@tencent.com> <CAGsJ_4z2=Wrm0NAfpE_98rKqEgncBceVscqFRGDPeuR0eCxQCA@mail.gmail.com>
- <ac9xnv1Opj6cVS2R@KASONG-MC4>
-In-Reply-To: <ac9xnv1Opj6cVS2R@KASONG-MC4>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 3 Apr 2026 17:25:43 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ynA85H56LqOAS6WS25a1a2ZJnLP-3iM2A5fL5JoohPog@mail.gmail.com>
-X-Gm-Features: AQROBzBqeKpmV9nPNwHwPLXAMT7Ro5sEV8nFj07A_4sJczJQF-xsX0bMlUjBiU0
-Message-ID: <CAGsJ_4ynA85H56LqOAS6WS25a1a2ZJnLP-3iM2A5fL5JoohPog@mail.gmail.com>
-Subject: Re: [PATCH v3 06/14] mm/mglru: use a smaller batch for reclaim
-To: Kairui Song <ryncsn@gmail.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 72006140002
+X-Stat-Signature: w86a14b4qtzcnxb6mfyognfwsa6u6um1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D729320003
-X-Stat-Signature: heapyuh6fs94ykeig4hwcqnj8fs9xj4g
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775208356-697939
-X-HE-Meta: U2FsdGVkX19Z7Z/IKQ45HKy4rF3timT1AxzuWVk9LAQ3862w0wWRFXhMT4SSIBkHxWQPXPNudOuWvZO8eoS/zCZmNGZESD4sPjIAy4xbs4B8lIIIxWC3NPLFyR7fZPkI8u6xTwnmnVuu6hqnNmVzKxh+eLecv9Tw5+I+irz2bn93bV5teZw+wrVM1Dw0M+Pzji7L93UBCce5q68UdDAdV3LAwn2zZVbiAbvHMsbRnvru3pknZKhpQwmahTWOS7nfiBi9LfR0qst2/vLZQOPobLwOCO5DhzTov4M58GpjqITYyqTB3lkLb24kHsIZjapqkOjFF7tOElMBZ8a5AyXp1u9ImVLZN6kGhE4jkWmIX6kseP4V8m0xIorjmQjIFGwzfUyb/xlcQhLPHMePD+GqZ8TPv3qRY5+XN5Cz+Xa4IKR+AdTWsHpsXDEwXoW80DNBeQh+v2FC9xG3akaCqUmSm5hLzt8ntzRevC+8GjLe05qmjdyvGdG6O2xysPqJvBpCJ0ZQ4rGhkE/2LHBiQ9m0ex66YqFYtWVbkZDDnDyFDOAG8EuDaCL/Rw/pBcsUC3ZimO7+B1oqlpfVMtuFF7kqtZ+pnXYG7nOCq3FloZDSfM1RaI79f4BMBCSpyo0MtIx/dlT7Mlsm5xwgLAeG7ewkkTEk1ONd/XHDeUY6ENiaW5v7Vvj4QX+9CLrLoTUid6HaFPieGrQn2doAhfpn+R/n07zMBhEI/DgRRKuXPL2S4a3f3VlBfwl+5MhRTHqo/6GCYFJlLfrabmahBfF5fbzDUN5BTeuJcDsysL5j6Cr62GrGNWT6NANIASzna7y62mx0syRIPhiHnD5WVaa6pNfKlyMFcP1VEkQg4JvqkwnjqCiotvF7KghTSTjAJfHIyhq9HdK/cpRs9toDCc3G9ysqI+gH5FpoVPC4N+8NMDoXI0farQVM+IwDapGfjg8deaVk3CcVgGkveGRdJ8F7vNN
- KuUsasKm
- b3zW6JOxGPMoUEi0IcqYpsycI+m4ZMwi6G6P8+7aiqIpvrwGXKh2FuXhBTjdxt3u4Zp9/phUq0YzRRVGqk4pz4RKKFmduT270Q8hqNGmTXKq9nihaMGAxkMCpIa773Uh3rkxEbcLpwTaRK+qWmcnFRfzzXvCykmcrmGOyJ9adJ14Opn36UUrQf8ncMxG33XUTxPH6GxaPLt7sBY9rZNuK0WS/FEeAv2mMqgeDMeXZUZ/4lCFYzqyWcnydeEHTU9PGLz+i3nEJPtEu66oi5PV8KCq0z+D4T6wJC71njtG+t/YBuklVUJ41y0TPQcIkRgLH8vn6AO2wjc8z43ffAWMnvvjYwzfcVLais6aE9Q1nyWtZPgpRdKf+zFqQG9bIez8Co/IsA8ljezCTclhnENumQJtoT7D7MgTQdRQ7YUtdQb2UnIUY4vcjYHiPv8RNeyB048MYHuz0XFUTYRZme0BwkZPxPDiTleIfwrpSc/KmK5ecDKs=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775209822-143726
+X-HE-Meta: U2FsdGVkX1+1xeDtUNySNbtVYasXz1LDyGt/AGMvuaCoTJR3Kv3zEC93WztWo5fybUlXXTx6wkaz+xxGENdasBeTPVhLUtWLi6NW9D3B7/oHqO7oNp9HGB2ZfM+l6woNvG22SZ50SO0pF7F4UoTULiSmKCuJEe3KZ8P128Kf6/+7r/FcH2By+fLEaUHrr9ngnLPgR6JQnYzg2nOQf6eZA5hvJjwvCa2z9MlFtmLQY+cs+ZKoY4uyh532wse5t6ZH7bD5GFyjYTX4krpOsDxgRx7HCv+t4qq0nD3JWiAEvHuJ4vPngvy8FNe0rIXPnjn2g1AAbuBsm3T35GMV0l2MGxN9lffM0N/1bbcqyrFWYNBSAsemGXGiuVPTJFTxi5lzIVQfN5z/RdArrXhahSkcEB890hb9xUT3V3Ns++vIVBIp2qaTVT+8LABKJ8468mA4ZkezVjgFr/tyDbajGTGbT82KC1ZtANz6N31Aed7EZjzZnjsVyaJyj5gIc8TNsiFRJxf6fnhP6T5dmeewJ+ZAocQ7Lazy3kksiMnZLCw4ZsOFeX2zacNHYz03Wqrp9Z/zDwuhYgVB9vtyp7zIE1ZRFir4sok2egPaFPYNVMYoIb6R+9HDYsGqXmgkqVH0j9VOREsNOZycswvri3b6nB5obT+e+P1xcgfn9U5DtCXzrOAIpVr0UasEwcZCjq8xN57koByZTRy0SZCWKv3F3ogRCZjtlpr3IR67YE2n4E1r2dyJs0FTdLRZvGAbfXRcqmIeuBsSiL8KAE+JrWPcbU0rQ3cq+qYTttpAqglkuqgNMoeJo2LO8FciqiiyKJ8ujBnKHlPNHnlMY5km/x+YYGWABs/2I4HebnK4xtFdVDczyoRdCxGzLf+hR2beQIPhg9envwe3FTsEFOxHJ6ADvg1gG9vkywyC1Jaj3jBaWiMUMMBUxv8FS5OkZCEdUpxeJ3K6sK6VMQ9VqqJ+B2TRzId
+ SiE4Ql9i
+ y1UJCQECxgJmez2VenOUNJbFY7kT+Z8AxlfjJTJK6QkQ+V7pHNywkQpoEtIZbh+I4pu59GlfuvkeUqrHb0E8qjC0FsaEYHlTRnra3B8TvbEe20eVYVa3qhJWMxV8eHFrMTLNoi85T2SfUaEHerroBU1beX8KXQ7ag7tQi2pGr97q+lH3kMDTPBFnwANIxsBLct9YzNhWW5pbXPXKw8SicLqZYCGaZ8hMbWCy9twONk9goJBJ6AvfExkNokXvg80oD0gIKAeSbLmjfrPPqqlvBTutGY1n+zb8bsSIh6VyYO4QU46XgSofE5LmV3R1HHkMUfvGKWudVdDuxm5LFp430210SKqBf58Jrlmaydq4xuNbdDln65SLT7onodV1obTq4SjEHTXwLrvyaz6aIW8TZsWcqSAGoN1feSHSk7eU2POy9mAMcgFusfs/KWwt9f7hdvE98dIMDphSZR9Zq2H+7lZjSKauPo6iawB5+yETf8OmORWZv7WGom7sTdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,86 +120,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 3, 2026 at 5:09=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
-:
->
-> On Fri, Apr 03, 2026 at 03:50:37PM +0800, Barry Song wrote:
-> > On Fri, Apr 3, 2026 at 2:53=E2=80=AFAM Kairui Song via B4 Relay
-> > <devnull+kasong.tencent.com@kernel.org> wrote:
-> > >
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > With a fixed number to reclaim calculated at the beginning, making ea=
-ch
-> > > following step smaller should reduce the lock contention and avoid
-> > > over-aggressive reclaim of folios, as it will abort earlier when the
-> > > number of folios to be reclaimed is reached.
-> > >
-> > > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> > > Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> > > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > ---
-> > >  mm/vmscan.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 643f9fc10214..9c28afb0219c 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -5008,7 +5008,7 @@ static bool try_to_shrink_lruvec(struct lruvec =
-*lruvec, struct scan_control *sc)
-> > >                         break;
-> > >                 }
-> > >
-> > > -               nr_batch =3D min(nr_to_scan, MAX_LRU_BATCH);
-> > > +               nr_batch =3D min(nr_to_scan, MIN_LRU_BATCH);
-> >
-> > I=E2=80=99m fine with the smaller batch size, but I wonder if
-> > MIN_LRU_BATCH is too small.
->
-> Thanks for the review, Barry!
->
-> It's quite reasonable value I think, for comparison classical LRU's
-> batch size is SWAP_CLUSTER_MAX (32), even smaller than
-> MIN_LRU_BATCH (64).
->
-> I ran many different benchmarks on this which can be found in
-> V2 / V1's cover letter (it getting too long so I didn't include these
-> results in V3 but I did retest). The new value looked good from large
-> server to small VMs.
->
-> It's also a much more reasonable value for batch throttling and dirty
-> writeback IMO.
->
-> >
-> > Just curious if we are calling get_nr_to_scan() more frequently
-> > before we can abort the while (true) loop if reclamation
-> > is not making good progress.
-> >
-> > Assume get_nr_to_scan() also has a cost. Not sure if a
-> > value between MIN_LRU_BATCH and MAX_LRU_BATCH
-> > would be better.
->
-> We are calling that less frequently actually, in a previous
-> commit it was moved out of the loop to act like a budget
-> control. That's also where using a smaller batch start
-> to makes more sense.
+Hi Quanmin,
 
-Sorry, I missed your earlier change of moving get_nr_to_scan()
-out of the loop[1]. It makes a lot of sense to me now.
+On Fri, 3 Apr 2026 16:59:38 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+> [...]
+> 
+> I'm a little confused, what does "causing kdamond to terminate
+> unexpectedly" mean? The damon_lru_sort_apply_parameters function will
+> eventually call damon_commit_ctx, and the power-of-2 check is always
+> performed. Is the early check here to prevent some more broken case
+> or am I missing something?
 
-It seems easier to review if moving it out and decreasing the batch
-size are put in the same patch. Anyway, I understand the story now,
-thanks!
+terminate unexpectedly means - termination not initiated by the user.
+(e.g., not by echo N > enabled)
 
-[1] https://lore.kernel.org/linux-mm/20260403-mglru-reclaim-v3-4-a285efd6ff=
-91@tencent.com/
+The issue is not about whether the check exists, but about when it
+happens.
 
->
-> The overhead of other function calls also seems trivial.
->
-> I also wonder if we can unify or remove some
-> SWAP_CLUSTER_MAX usage, that value might be no longer
-> suitable in many places.
+In damon_commit_ctx():
+
+    dst->maybe_corrupted = true;
+    if (!is_power_of_2(src->min_region_sz))
+        return -EINVAL;
+
+Even though -EINVAL is returned, the 'maybe_corrupted' flag has already
+been set. When kdamond sees this flag, it terminates.
+
+My patch prevents this by rejecting invalid 'min_region_sz' before
+damon_commit_ctx() is called, so 'maybe_corrupted' never gets set for
+invalid inputs.
+
+Best regards,
+Rui Yan
 
