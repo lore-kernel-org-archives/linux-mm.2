@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93C04E7E360
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 09:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ECDAE7E361
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:01:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D10E66B0005; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
+	id 66A666B0005; Fri,  3 Apr 2026 06:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9B326B0089; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
+	id 6438C6B0089; Fri,  3 Apr 2026 06:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B62E76B008A; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
+	id 581A26B008A; Fri,  3 Apr 2026 06:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1C2C6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:50:24 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A0291A0557
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:50:24 +0000 (UTC)
-X-FDA: 84616774368.09.47684F1
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 72006140002
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 09:50:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3DCqepo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 45C3C6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:01:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 636D3160593
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:01:22 +0000 (UTC)
+X-FDA: 84616802004.20.0701BC0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AEB2B120011
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:01:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKH8v1zs;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775209822;
+	s=arc-20220608; t=1775210480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
-	b=Duv/Emv5mgbf7nkDXHrLOBgioMlrYwxlUz9gU2X/Bei7aWcP1K2bDPLhPvBT4nBuSx7+/n
-	dYWFcKy2j61oT9CdJxyi5nLe3P9T8eJsubUVj0nzSRRy7bW5N5WvbFJrO8r8yvbVrFu2GA
-	HvLwfGzqp9f5Tr+1Nw1EFY53RDGnFlo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775209822; a=rsa-sha256;
-	cv=none;
-	b=MSDjv+ItpVv5q3FpGPUrmcobfPro73/KMhTMHsH5jGjQNI2y/MtAWm8zSlSk050VqYmbY+
-	qhYUKYy6NMnI2FwHtxGOVCp2d5FVcng6hLdrTceW8PfhvUdYj7EOvBPOHx73lWbgqM7NXf
-	8gCxIKdnvRClMtYSXw2ocNVat2LUk2Y=
+	bh=kC437FZ28/dmK/b/RRN7l4LCBGZyIecJtnj1c7YP3Tw=;
+	b=URAtvp58p6vJPZldh4/osZ7rJFSH2s+oBQj5rXmST9lc2jQM2bQswsapaBZm9JM25A6r5T
+	SgW2px1etFo1rBUBvjCpmhG3MsHdEVbgnUCVq/O3xmtzzF4CjhaRrv5jz/DzQa8Q0OgPjk
+	JDgTL46n7zA4Q2yJeDyslyxBxfrmTrA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e3DCqepo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c76c067bc51so669674a12.0
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 02:50:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775209821; x=1775814621; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
-        b=e3DCqepob0B89kaDDM1MH3mh6VIhxUGwYavuntr/KOLoD63KdOS2JfGDvFGLFuyU0J
-         ckEwFzcDarMwcPdfvJPxl7AgoRpe5KM6KgkwnibLDatig0UQF1ztafxW6kaJ6dtko8Eh
-         s5ablzMWjgXEvLbIWPonb5/2C8TjCMtFmNjZ+/HJR1Wn/uQCa3xg76P21iLRzMG4qPPn
-         qdqYkcyvuK29ORlKra4MErHdTyPWMiWTH70dPxpOHLcNLzYs+IexU5wwIaG+PEY9DoFj
-         GufqnjpqBx/FPJL+dZ4S7FBvxXFOnl2afmMCA6rewyl6myGoWgyqmNDxBgU7sKoNXvIa
-         YUbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775209821; x=1775814621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4KReXkppPG3uNOMveoUqnh+3H0YwKOe6D48GuF2fODs=;
-        b=bM5O8AP/sVDJXCjYDaWbv+FxEOwZJUA3aZ+/2sy+fTvU7mhQKMHt6kFIyx1XJSFcfJ
-         EYafagwAhVl9dy4YgxWxgxg/XtP4Mx9VDA1rOAbNTQQT6fDXGxt8nHKde+n//zQPQqmQ
-         Xde3otnG54TStnjdW62+VzrgY2pkNNqcNkAoeaWSqTRWXuUSjabRI1424D09BCuF00wl
-         EhJtw7Wq/M8jgckOjNMWp7F5/zfXKdbNtGykO9GImJyIa3YwoiKtr44yEWE43sUcRg6o
-         Mv57IL/YjDjmCSaTbtQajymRAzi4VwdZWo2gZhBLg722v4IwVUxc7iZcr5sovum8TkD4
-         QLxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXT8A/v1xMsa1NwXxRVo0W+Y+31QLLBE0x32UhiBeieE4yKBeSNM+o2HstkoQ1bs0mq1JM91mIfpw==@kvack.org
-X-Gm-Message-State: AOJu0Yz0uoiwBXyp9tVAOSt00JTbdTB1eEwd4jzfLWylXb/phI/9cbw0
-	+OkHKlP5w7Lfjj7MNtoBRt5clti477OpWfiyyYhrT5Q2iQ0N1GZFJl3N
-X-Gm-Gg: ATEYQzyqToc6xR46RNREvam9VOm7bFyMN20uqFgYKKbgSdhBhPt92krnBE7Y7IF5bjA
-	qYMH6vPwQDj65gn8zUMHtzm6gCFWCiEZzkbGLHNzmQWbssq8suUCOGHHV5scUKkkRb+ugY+XPRj
-	r9M6eYMVvMXD/SZL1ayS88/+Vw0FEpvLePK7qSyGlZ6bPHYgjGSEW/xEUPDgchl8Cwmf+dRr2DR
-	XoGQI1Gyd62CZUNJ65OH+x2LdlM6NB07DbwyFfExGeTebanjv08fic0XraeYSR7Red7emYmiTgL
-	pxNdmDo2JxiMHvOjYvChNla6+ANImRQUOl2XLMFD9T6Xhce4F2OazIQlJDy4KVdMuQy6K4PNvsx
-	cmAePKUtR/qWzRG/45lRETN2Rj2x4cQAQAGF16itZe4PUrD3q3tDCSNCWbLbtELoaLWGAwgER0a
-	2rPwaF+ZSn+LwO5/MaT9LORHSPBRLzZTDMkPTFso2AfnddI4BtceQ=
-X-Received: by 2002:a05:6a20:7d8a:b0:39b:81bf:15ed with SMTP id adf61e73a8af0-39f2f3358c6mr2215246637.52.1775209821060;
-        Fri, 03 Apr 2026 02:50:21 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c6561fe9sm4612331a12.15.2026.04.03.02.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 02:50:20 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: yanquanmin1@huawei.com
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 17:50:19 +0800
-Message-ID: <20260403095019.29222-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
-References: <8a902208-675d-4564-bb31-fdefcaebb752@huawei.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKH8v1zs;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775210480; a=rsa-sha256;
+	cv=none;
+	b=zuIFYIy3jUaeEhjpvWXgB+pD0Kq5kpYHzDbOKhy1XvUltIGI7ywOZUKBsMnUXt92m1NbwQ
+	3pmPY9A/FNdZLYkmCGT8xSHYYNcWU7Jx6BkX5j+fCfu9F3mHJWBlRIr8gsrQZDeQf4paHP
+	obTFdWZZ2s4xoIXpQMGClN9wL1RljnQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C581A44259;
+	Fri,  3 Apr 2026 10:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478CEC4CEF7;
+	Fri,  3 Apr 2026 10:01:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775210479;
+	bh=nSCRqLQnM6uFzcHt8+OMxjPYivIsJJkDMf1sy24GPZ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oKH8v1zsyhD+mcjNRFIOjLFDK0MSXlNzvKI9BgeiburBCk1IfEIhL668l8xWeVVmc
+	 P7xneHP5f9vcfK5kggJAmFrMRb40j9kE0/sW63ZEiu1fJs+iGDBOKyhRfYbhpNKIgp
+	 gOsNTLqbrYhW77uNHbbyJq0jYfyEPeIIv+K4hem8g0wNT/RuEB4xMyb7tk6vRUT6qu
+	 3ctZXOD5mKvnBgbeprlsZraJhajIsPZTPUHGGA0eoIPz+ODcC1GIH+4Ol0otJugL0Q
+	 cRpWUSnhiHqsoUQTeaGZxnPaBxODyTA2bQYtTPZYBzUVQgqRRq3z15GJVaNKBk4rT0
+	 G1wCEj7k+DqLw==
+Date: Fri, 3 Apr 2026 19:01:16 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH V1 2/2] lib/tests/slub_kunit: add a test case for
+ {kmalloc,kfree}_nolock
+Message-ID: <ac-P7LlFgbNTBxsc@hyeyoo>
+References: <20260330120517.104743-1-harry@kernel.org>
+ <20260330120517.104743-3-harry@kernel.org>
+ <26e81ffe-08ad-4c3f-a360-d45c3cb32ee2@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 72006140002
-X-Stat-Signature: w86a14b4qtzcnxb6mfyognfwsa6u6um1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <26e81ffe-08ad-4c3f-a360-d45c3cb32ee2@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AEB2B120011
+X-Stat-Signature: 9jgb97i45otposy7mkiosg6keqiqpi7n
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775209822-143726
-X-HE-Meta: U2FsdGVkX1+1xeDtUNySNbtVYasXz1LDyGt/AGMvuaCoTJR3Kv3zEC93WztWo5fybUlXXTx6wkaz+xxGENdasBeTPVhLUtWLi6NW9D3B7/oHqO7oNp9HGB2ZfM+l6woNvG22SZ50SO0pF7F4UoTULiSmKCuJEe3KZ8P128Kf6/+7r/FcH2By+fLEaUHrr9ngnLPgR6JQnYzg2nOQf6eZA5hvJjwvCa2z9MlFtmLQY+cs+ZKoY4uyh532wse5t6ZH7bD5GFyjYTX4krpOsDxgRx7HCv+t4qq0nD3JWiAEvHuJ4vPngvy8FNe0rIXPnjn2g1AAbuBsm3T35GMV0l2MGxN9lffM0N/1bbcqyrFWYNBSAsemGXGiuVPTJFTxi5lzIVQfN5z/RdArrXhahSkcEB890hb9xUT3V3Ns++vIVBIp2qaTVT+8LABKJ8468mA4ZkezVjgFr/tyDbajGTGbT82KC1ZtANz6N31Aed7EZjzZnjsVyaJyj5gIc8TNsiFRJxf6fnhP6T5dmeewJ+ZAocQ7Lazy3kksiMnZLCw4ZsOFeX2zacNHYz03Wqrp9Z/zDwuhYgVB9vtyp7zIE1ZRFir4sok2egPaFPYNVMYoIb6R+9HDYsGqXmgkqVH0j9VOREsNOZycswvri3b6nB5obT+e+P1xcgfn9U5DtCXzrOAIpVr0UasEwcZCjq8xN57koByZTRy0SZCWKv3F3ogRCZjtlpr3IR67YE2n4E1r2dyJs0FTdLRZvGAbfXRcqmIeuBsSiL8KAE+JrWPcbU0rQ3cq+qYTttpAqglkuqgNMoeJo2LO8FciqiiyKJ8ujBnKHlPNHnlMY5km/x+YYGWABs/2I4HebnK4xtFdVDczyoRdCxGzLf+hR2beQIPhg9envwe3FTsEFOxHJ6ADvg1gG9vkywyC1Jaj3jBaWiMUMMBUxv8FS5OkZCEdUpxeJ3K6sK6VMQ9VqqJ+B2TRzId
- SiE4Ql9i
- y1UJCQECxgJmez2VenOUNJbFY7kT+Z8AxlfjJTJK6QkQ+V7pHNywkQpoEtIZbh+I4pu59GlfuvkeUqrHb0E8qjC0FsaEYHlTRnra3B8TvbEe20eVYVa3qhJWMxV8eHFrMTLNoi85T2SfUaEHerroBU1beX8KXQ7ag7tQi2pGr97q+lH3kMDTPBFnwANIxsBLct9YzNhWW5pbXPXKw8SicLqZYCGaZ8hMbWCy9twONk9goJBJ6AvfExkNokXvg80oD0gIKAeSbLmjfrPPqqlvBTutGY1n+zb8bsSIh6VyYO4QU46XgSofE5LmV3R1HHkMUfvGKWudVdDuxm5LFp430210SKqBf58Jrlmaydq4xuNbdDln65SLT7onodV1obTq4SjEHTXwLrvyaz6aIW8TZsWcqSAGoN1feSHSk7eU2POy9mAMcgFusfs/KWwt9f7hdvE98dIMDphSZR9Zq2H+7lZjSKauPo6iawB5+yETf8OmORWZv7WGom7sTdg==
+X-HE-Tag: 1775210480-508563
+X-HE-Meta: U2FsdGVkX1+yEIN9L8kh9VjDnGRIzS+DoKvl9kOLfH3j88cQFqbmvj2QBXPleuAlRXYYHwqwlYyiotwE1GrmBYnVMm736p7zk678CRCRcXgrEZPPFBphZn/Df1E7oh/Z81HAHWld5YvCHJKSoYExm4NvCMXPE5xqc1MiRmm5N6MJbSsAOmk2nssd70S/cWvwOiDYV4hce7xjged43Ueu8GvaMHnpE8z6KohmXZO0MyF4xrvdAWAnCHl3z714JKSDcwBdOf4qPQi0XhTQgWPA8hTJ7vwDvKPpVPfCdc8XRExSgUdxi8W7aAGq1j4VgQhjJCW0wes55pSgOUwMlMjjsJWM2RVtOCZedUY8sYo873uhFAM4yPJ7SjNUl5kMZAJPq7PnaInIcoeGmaIKD70OdWFXL7OovXGmCiaPGtzzPBRt3DFhnQRh7/J3BXkK+sJz9EuBS7T2A/Y4xmFmWHpB8YhHA8wW0vxAjwVOZciRv0hBAsHCO9tp3pYsSQfpXZdemd64+3rmLSVpZXrt72UnhUCEMRsIGhRtUliTov1SrL0Dm13qLfTT8Zr44svXQr8CW3/t/fyTJqExr9edN6ZWepw8iG/2czY8lQnRcmGn8xEEFGeNPYRV41/k7lHwtd4Cx/FR35ME6CwC33TSnOLzy4Ks+Lf64PJ7FABVDIdjOlbjkOwHXI8klNkXVXuBhCGBJcVZWXXhQittA98e+C5xxK6r+VZbXcqxxtUn3wYViEsDDnswQLt9uc6aOtxJ8gIsiO9OGsyRGbYr3dkNkWQTNyLuYq6R5QGwiRHNAom+ZJzX2DLCXyAegrshHUO9YfkYLYOJmNfkgxLfuB6FgH7uAGvuD2q3/7+8gRiGxoUq2biLCMx6zVhsgbIdm0JJL8Veu2DLUWdAzXBH02AzuFDWQGgTH/Lgq+Tm3pm+RDl6n9xFar7qleFR04hUgSn6ct0ReDcrogOs/3nM0QoRzCV
+ Ju28ScMX
+ L7syVFpKHIfcctx73JMUFShTJLDhOPow0Ki/hmisRTdIBGxwFylxpRZvPiRtunhu1IKsvL9AmyXaWy5Vkyn8doJ7iYhrevtO1URZKWWxZTBxbJAh0JZpoKmKy7enVT1Wcj6OL1yNOS7p5ldsyNjmNfF4xveeSR7mfCY4RjJaqSxNTDkZ9GVzicRxErdRZl2KbwgrJS9tBBXAwwuQlCmG2d8cNSa865VrNo81pak+5d/J6iYz7WmVFxpmITNIr/7EEKdjN11YwVtDY+HZSSLqif0dFfjJMuJXsnxi3NbYoFuSfve1JjbcVgQWHT4BCyV5Sq0UV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,36 +97,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Quanmin,
-
-On Fri, 3 Apr 2026 16:59:38 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-> [...]
+On Thu, Apr 02, 2026 at 04:36:59PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 3/30/26 2:05 PM, Harry Yoo (Oracle) wrote:
+> > Testing invocation of {kmalloc,kfree}_nolock() during kmalloc() or
+> > kfree() is tricky, and it is even harder to ensure that slowpaths are
+> > properly tested. Lack of such testing has led to late discovery of
+> > the bug fixed by commit a1e244a9f177 ("mm/slab: use prandom if
+> > !allow_spin").
+> > 
+> > Add a slub_kunit test that allocates and frees objects in a tight loop
+> > while a perf event triggers NMIs on the same task, invoking
+> > {kmalloc,kfree}_nolock() from the NMI handler.
+> > 
+> > Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 > 
-> I'm a little confused, what does "causing kdamond to terminate
-> unexpectedly" mean? The damon_lru_sort_apply_parameters function will
-> eventually call damon_commit_ctx, and the power-of-2 check is always
-> performed. Is the early check here to prevent some more broken case
-> or am I missing something?
+> perf_event_create_kernel_counter() seems to only exist with
+> CONFIG_PERF_EVENTS,
 
-terminate unexpectedly means - termination not initiated by the user.
-(e.g., not by echo N > enabled)
+Thanks for catching that!
 
-The issue is not about whether the check exists, but about when it
-happens.
+> there's not even some "return -EINVAL" skeleton
+> otherwise, AFAICS.
 
-In damon_commit_ctx():
+Right.
 
-    dst->maybe_corrupted = true;
-    if (!is_power_of_2(src->min_region_sz))
-        return -EINVAL;
+> Didn't check the various other definitions, but guess
+> we'll need to put some/all of this behind #ifdef's then?
 
-Even though -EINVAL is returned, the 'maybe_corrupted' flag has already
-been set. When kdamond sees this flag, it terminates.
+I'll make sure it builds w/o CONFIG_PERF_EVENTS and send v2.
 
-My patch prevents this by rejecting invalid 'min_region_sz' before
-damon_commit_ctx() is called, so 'maybe_corrupted' never gets set for
-invalid inputs.
-
-Best regards,
-Rui Yan
+-- 
+Cheers,
+Harry / Hyeonggon
 
