@@ -4,133 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CA7E85367
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C51AE85367
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8B5A6B008C; Fri,  3 Apr 2026 10:13:19 -0400 (EDT)
+	id 72E256B0005; Fri,  3 Apr 2026 10:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B14006B0092; Fri,  3 Apr 2026 10:13:19 -0400 (EDT)
+	id 6DECF6B0089; Fri,  3 Apr 2026 10:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4C16B0093; Fri,  3 Apr 2026 10:13:19 -0400 (EDT)
+	id 5A5E46B008A; Fri,  3 Apr 2026 10:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A43F6B008C
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:13:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E3E914065E
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:13:19 +0000 (UTC)
-X-FDA: 84617436918.26.CF4C05E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1A2471C000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:13:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mvw43mvB;
-	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775225597;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4297F6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:50:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76051C27D0
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:50:21 +0000 (UTC)
+X-FDA: 84617530242.19.CA44E63
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6CF1A1C0012
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:50:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=sOCWyImO;
+	spf=pass (imf18.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775227819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q7VPU0rCKfWfvPJl/4bosCPDJZ8iv97Cw6zG7IjIUB0=;
-	b=3/tLeYV3gUzFL43aZMeomsN0opyreIBQ9URYf5mfF2WuofVOBPVlkAp8dZypINNYIvztEW
-	jQb3IQqMBu/K8EqoabsisE4tIM/VRUEzTczQoNA55/s2Pu5Gocww+MsCj9deilcYuNrvYi
-	ASapfCGnubLNqqw49E0OwDIaRVPqZL8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775225597; a=rsa-sha256;
-	cv=none;
-	b=OKjAW/Ecvn2tJcVEtrG76cb1mhrjLZlvFjDS80ugCZsmhGrqIustKw/feqbUckwxpQK04L
-	6yeusn+12AP3YuodTKchwtgzts/AkIR52K95TNU8Ar7ONc60f0Ak5fE/BG/UcvsMsiS9nO
-	xz21Nzeqd0/dJWlwGxtATjhscFyVgb4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mvw43mvB;
-	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775225596;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q7VPU0rCKfWfvPJl/4bosCPDJZ8iv97Cw6zG7IjIUB0=;
-	b=Mvw43mvBveue6wUU4etsmb4EtRnjUYBj4bo1UKsZTpKeKvmVuZm46xXPF53caUFMCjLtzv
-	pqARb/hvVXm1ylR5iG1HVzIU2/DAQuo8ioQQaI4Mpd80hKEd30DeVtw3QVhC32C3/MZU5u
-	QgpXzoBRFvlbNp2kUIIU2dGjORILyVk=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-LrsZzz7tOqaGUbxsyqSfsw-1; Fri, 03 Apr 2026 10:13:15 -0400
-X-MC-Unique: LrsZzz7tOqaGUbxsyqSfsw-1
-X-Mimecast-MFC-AGG-ID: LrsZzz7tOqaGUbxsyqSfsw_1775225595
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50d63962d83so23980501cf.2
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 07:13:15 -0700 (PDT)
+	bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
+	b=BN6t2FvvxKDsB2akpg2O//pockZoI/+nAS2TZ2tgyDxo2whgrXCfqUSf4og4/L837VKiZm
+	u5sRSmKAxnbL/gy7OIw3GwDFEZnT1TuG15VKP9Q7A26kzXpbantk9V3bBp4pXQGaF85iRW
+	yMcz5EOuOs7Q8quwrad9vzy0DJYGplI=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=sOCWyImO;
+	spf=pass (imf18.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775227819; a=rsa-sha256;
+	cv=pass;
+	b=NHnipjmpPKd+aeJU9i+kFZxESa06s9KlkDs647qA/uuL55rppS/MF6gkMfrKOW2IrQYqOo
+	uVVfzw3dOwFRpgkwoQ1sXIWR/4alt2Dp9RZZHkmOrkAFRct5iChJj9KOcn8ETNWkqkz67m
+	GwvcmAdJon4oiVw95kisqltKbV3GN4U=
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-953a44f8404so570194241.0
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 07:50:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775227818; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i1iRR5kRak3rBaAWDtngkipTL7BxSbwkaGf+6pYAViacdaBZyzEUbuFkb7Kg5NI9Pn
+         OtVpvo3e186tEeXpl0Ra7D5y/D+jDLcUe+pwpET7NHu/3IuZ4AxHxy+0fnQRvoJc8aC3
+         8LR5vHnrMJS57bIyIWgyPG9Qrl853bHf5ccz5RLoZLlTz4AoH2I/WPYqao66eVuERFJI
+         bbqKI8t7IMwOpfsDylyX32Gvn/Z7SWdc1XF1Q6QpM7XGTjGxfjMjBJC6KJf35DtLW5RN
+         AbCuO6Z4mCpwRMHtfyDoicFMzK06tH6BVdI3hIqyNyt1N4dMdt2RYmHXprA3SjPncI5G
+         UD5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
+        fh=43WQnFOcGf624DEfJ82pqnhyXg+dzwIBA9RSOa8oe7k=;
+        b=hm1qALr0agI++XxT2bpVcyBdJm6MrVGkJvZqJ/uItVn489uIV1uE6KuVRBpg94CTBZ
+         t20RXkUITtlYvlFJamjqcsk5F4kC/2imASU9oegD7MMt0n/EOBSS9t1E1sFOd5HABxxD
+         YdxUe3heJbKrdWHLfm6AUPZrkTMHcNRIAtdtElfM61bmcqdeAYWJ2kMBzyZ7kljVttTk
+         zfnMWrgJEurRFL2lyge4TKwf90gg2L0HWtJLIxWdJ0M7RRU9+vYC94Ib2F5g9osuI8Pi
+         QnCQYbdvnlvPTNYaIkcUbn2AyBZQbGEH5NgE8OUhYmJCV5RYU2KL/aVi3Cvv1Tskwc5p
+         pONw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775227818; x=1775832618; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
+        b=sOCWyImOjMxP8N44VDfFL3Fx8lB9Ho/nEt87rCYb2Hz79PhnqJho70O+3aZ9GHt4o7
+         28q+ys9+EXXInUdd4UYMzqOcrlKEoZ5Z9WlN5pfFqTo3YPj2BABghck42MyVZuO0lyXh
+         MH1CK/dMofbpxaLK07QxTHDEoBVuZQETFn5rP/bh7Qu/I+qEQ4tYiOLOdTXkzBdBIEXP
+         bdnuoypwSM7Mi+TasVDGV3jrsR6IcB9+E5UxZ1muc3UVTOLQL0Cuo4zSUOeY9WZJAYXo
+         Q626dof8xzCLEJVKjxLOSLKS1aAaSBw6FIPXBQbVFxWwEBRIgkDSAgLLl94tOWA5mNUp
+         8HyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775225595; x=1775830395;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Q7VPU0rCKfWfvPJl/4bosCPDJZ8iv97Cw6zG7IjIUB0=;
-        b=HBT4gsRCIueuXb8vdBTB2GPNLwI21oZ/cf8BZBNy441pyhKiUvuMe2NGP1KToAA7Sj
-         KISNn7EA59AM4+DQRkStP+EtTyPhftJ/DCts6dqJdEODXvrTEMdom8zjp4JqeyHhSBJs
-         RXK2wTG8FWO6IoZnkj1P2Lk6bbXkxOCZoBWOYhGfLsFnMe2qgo2IjgoKl+Qp51l9isFW
-         nVD83psI4Kbs3nfmKryeKeDLzc6uGB9nv/4x1BswSojwtZTc4gAfBldjWZWKtszrHLEW
-         J/zpmAryPndPf5o1VsatDHN5URO9Y30eWzIVa5BA9WXLsmA22/onJM5nb7cyG+Vh/u6A
-         VVuw==
-X-Forwarded-Encrypted: i=1; AJvYcCVIcp3tLsCWCyk8sKFftXjp9zXC9SiGUsbQ1i6Mz8B1ibyi8A8XS9hnMCRjhD2FlF091KqbTJ0nFw==@kvack.org
-X-Gm-Message-State: AOJu0YxwQ2NrQNf1kk+NHXQjsG5pqBYVpCIT/GKi7UeiYMaXrL4XguxJ
-	ZBJ6CnD24QWBWqmaIWOCX0cmuhAbI2XuOgk9u1r48mQ3CZoRI86/jBELyAG6OAnOy/F1ds0XmKi
-	GELrgdN0iiaghClUre83fKGzNwrWRm3yLEwhQH505BbPvlHc3h42V
-X-Gm-Gg: ATEYQzwkVDs+rM2AR8piz4F1cOG8CdbBwlqBMgxPLwIIpiIJVA6r0sGI4wRu6XWZOu3
-	5NE38lvWXjkxeb4dHP15nExQOkz39yj6cOUsRO3ASO9EDS2k/HzFcPxFAVJMAqC++a+LxxqiHIh
-	9Qi6D0E6x/lVg7lBL30aacWGwqvyyicS3Hf7BKDs33McR6mhr2ycknTYDFOT2DO7NfFTT5saTrN
-	cYkI2s2rPUs5tj5psjFCWBvrPCAwNP5xt7lTQiiq6Yok92b39wJHu0RDCfdyqJFNpBD9l8vvRI4
-	0nTxhMPKHpL+srVhu4Vf+mD2A5J4xKkog9R+DKYzPKMi893P4iXlwFIhN8Y1P37U57vAA0RfT2i
-	jmosHtb6sl0lpaz4G15MliZEMI+k3ueZChzD1bVvClhQlULIfpl/TJWeT12n0Xow=
-X-Received: by 2002:a05:622a:1922:b0:509:2ef7:7048 with SMTP id d75a77b69052e-50d62cd74e1mr43969891cf.66.1775225594379;
-        Fri, 03 Apr 2026 07:13:14 -0700 (PDT)
-X-Received: by 2002:a05:622a:1922:b0:509:2ef7:7048 with SMTP id d75a77b69052e-50d62cd74e1mr43969031cf.66.1775225593742;
-        Fri, 03 Apr 2026 07:13:13 -0700 (PDT)
-Received: from localhost (pool-100-17-19-56.bstnma.fios.verizon.net. [100.17.19.56])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d4d9ad4b6sm40723031cf.15.2026.04.03.07.13.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 07:13:12 -0700 (PDT)
-From: Eric Chanudet <echanude@redhat.com>
-Date: Fri, 03 Apr 2026 10:08:36 -0400
-Subject: [PATCH RFC 2/2] cgroup/dmem: add a node to double charge in memcg
+        d=1e100.net; s=20251104; t=1775227818; x=1775832618;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2nO332cdhj8pkWKcB2XgZGKk4lKtIFb9kXIiefVqdlI=;
+        b=BSdBR/7veJPZPHinFBB5RJ5aLps7xmdZpG5V8eIfDKNwGck+BJ9gORU2B5iGW0WAb5
+         ZxRSUJ9kBhg0cbDzlmdmjqxMLvuLiDfw5kQ86gMUtjWIfXGZDcq/U1HLARavZmQodkHh
+         dqRdMrNqOd02iwSVMP13aRAnDlJXDZbo1mJuqMQ24e3SgnQaBPsgOWTxtA1cCbc9fdIe
+         28hgQue50kPF7qoDriWQPGvuioa7r+SKmnoo08XzjgCdYiu+PTJPcLweyc3RCVCWy+gp
+         DbsBuhkPwq8BZhz0bQUpvGgxq4tgP9Hpo7sPJdBx1O2/dQEPbisWSSgEfempXRx3GRYL
+         vWzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWB0FIjarQLWWSDaUGBwzwA6Ui3sdc6htogJ9UBGrKRcV6FvVoSkaH6oXkgt9SJZVXDdItiMjLq3Q==@kvack.org
+X-Gm-Message-State: AOJu0YwatYMIxvfDoV4hexoBHLrLbg+7k/z0I4SwobyByQznK2GSf8WJ
+	7fiNGfyAbDgUO8+22yFmA54rNZPJHZxwsMhEGUxE+QtkKVF7C9PHRjB3GtD4C3RYGdxU6Zv4gmK
+	UPt3yi8QkqWRr0vqbh1SSeTEqNANJOHWLl4oeLCbo
+X-Gm-Gg: AeBDietARfKG4cObMGOU3R/Ogf1q1C7BYPtyfHN1lGXJIXRNhAGeP2t42aY60UuzoO6
+	UR+F35c8Uxo+G/CmXEwzONDZjfSkl78VZoDjcVooju8C+RfzIFHq+6BN5Zdzh8LnQV66mvT4bZM
+	ycow70aToSwRWBTIIC9haTsMEt5tG9afbUA74avIc/1M9JIGbPNA24JgoZ/5hZPmwgB3WpKt4iF
+	vR1PFceNg+J+Snlns/tyKfbhLA18btIzKluGAS/iGzbGGLB64JK9NGz+L6i61yLE8FxWWwcPEmT
+	cRxdHU2jVKbnB4KO3OfR49rTKTnvASlIhsbniQ==
+X-Received: by 2002:a05:6102:5a92:b0:605:8280:5e68 with SMTP id
+ ada2fe7eead31-605a50e2a2bmr1113935137.16.1775227817848; Fri, 03 Apr 2026
+ 07:50:17 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 3 Apr 2026 07:50:17 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 3 Apr 2026 07:50:16 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
+ <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+ <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com> <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
 MIME-Version: 1.0
-Message-Id: <20260403-cgroup-dmem-memcg-double-charge-v1-2-c371d155de2a@redhat.com>
-References: <20260403-cgroup-dmem-memcg-double-charge-v1-0-c371d155de2a@redhat.com>
-In-Reply-To: <20260403-cgroup-dmem-memcg-double-charge-v1-0-c371d155de2a@redhat.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
- Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- "T.J. Mercier" <tjmercier@google.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
- Dave Airlie <airlied@gmail.com>, Eric Chanudet <echanude@redhat.com>
-X-Mailer: b4 0.14.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vAumKdwholjm8VvSGzBTRLA-VFCHLxL30YGenE2AG5o_1775225595
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9yr4rcuf6obgcss9p8fw5w3co4x5caw3
-X-Rspamd-Queue-Id: 1A2471C000A
+Date: Fri, 3 Apr 2026 07:50:16 -0700
+X-Gm-Features: AQROBzCC-hVilK2nAfJ3eE8zmQqqNa0fWthx2SZG4jgOFPeFQ_7rmzXurA8c2f4
+Message-ID: <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+To: Michael Roth <michael.roth@amd.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1775225596-226349
-X-HE-Meta: U2FsdGVkX18s/it2CrKHtVtewgO6D6GIpopsadGLNzg2I1cR3+GS+ECFvUPnvkazuW4o7BcOBeDGbzKODAUYEQBZOI1G7q+rdp7y8Q51bvKIevfyu43Jb1tknsYPEFHe0Zvbz9rRXdeD8kpxrJ5uJSu7+ed94sW1VzeCpBPCm61/IEfAOPNNuAVvaq7PFk/MusxtPkcfp4ZaFsI6AZxWjk7LUK7dEh+lbJZJNY69m65yKCZ2JOqs1d0cJTtU4o1UMuY2l6xhddnVb8/V72z/UyFQ4TzKBgAQh7dqIezQ9WOISAK8H4hPCe+GQonmoaYt30X48LnQo7jgrjKvCS7/bTVmEM3YuxBp1jSWs67ZW3nj1p7+ZhZySD5Mm/sjXl9fVX2g8aE3Rt+EtnRp7bqkOTYTl+k1FlA3dy8NWYbMVHwe0JeHXDgl3KRkwSxPYnsD6xFC1zzoened4Ytc/9aYX02N/qpncxEM874+e2NSfrsbG07liJ80rbnrhQMIYK+w6ft98m54RIg3RMcRw4tkAGoO2eJNILi8e9TWvItf1ZWSzahF8caiJiAcbspqvk16819PcietPn0LuuRr+DkbRv6KOgvh8zEBA0OsxrVD1uq2T/Ajkm2yy1RrRY4VNZUuT+RrJCvCRNGcK5M3T2w1dWJadDE+opdsNrIzdtH/dCzZScqiINsPeUJeOhefOz+gOrVDdNoDXbEhz5WvSySNqjXOeLGvHtaQb+NLnvGFHXWC4N2zXoiHEDoolVDOom/Dye5id+d9qsOlG6fzM+GhlM81V3QzVgvnzI5lR6q+2kfWbMaSD2aQhtjz+S5fsufm6ZBK6Ui/QbUdIPiFzKuzlFvfn6biNjJpxMPPOd8HGbnAkugIjDZcgr41xU3dqFM/hqiOl6CYFw7IqbWjvEoztOA0XAlp4dBNysXB3vWLkao2o1LPRBxWMeuQ4iMW31Mio4Le81kmJR73xtIYt6e
- lfYataIw
- vwTlpWJ7FW+ha0bG1sEhcY3ET3hY5sMrO9HcBVMJg/HHVyYhP3G64QVVkyzZjuq9r0nu8E2/BTKElse1r9cXKIpVUc6XK4MviSJgvlP1kCKbTCBhCsHtJBs67ikuICKF6hBqgY1CtmPqTob71txu0qDcnCM84WgiDMoeHQO9o1bhitTnRhlmxbcb6FJpnPjmz2+tBvu5Fmu4ETUpSJ4o3AqGd6gxa4AWWvRMbS0s7K4m5sXq0F8eW3Y0Voop71MxayZMYMvt/iuSk3P7wCRs8P3sp6zZIhkry0tMYBAjOJFcbMH2irflcyPZTeLTG1CO+u61R/T4B01PoQSm9Aa6YTaci6hLkYtRX7389HoPVz9o52EOToVZAbVc/ppNUAVEubHmNJTm13kwxWqFfrQf7D+dMp3uyX+LdFwlucIxe3BkxEJzGQiVkCYx0Daiec2AAQC9bfpVsN1VHecj3m1mynAJWIcK9ci8kcNang4ygCQLiLJN2+kiT7ZmkJg==
+X-Stat-Signature: xj55u858nonzfwpz7t3ubgr6c6j1cyi4
+X-Rspamd-Queue-Id: 6CF1A1C0012
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775227819-889232
+X-HE-Meta: U2FsdGVkX18JgKzTWtvqEbRL14D787Eo63ucJMevGza00SBJyIQyrc9fVgI15/6clovmT0+y1jRf8dWU9VE1C+UokpJa7jX83J62UJ/mhBcFJ+MkbpWYHivSJO3/3PVK132b1ON9F+H4AHexk7+VFIzwBDqDBiMbmea8IDRTewwldCJE50oAJHOUM+Jw1313x/LoCA0JiD0W8ePJT9XYNfMnGvtMQ9j0+CtfdCAbv74nNgZK1II0uMJvw1oVfUt18IozGRDCEFfFyKh4/CNoIuHnAlJLrEzneRXsRZqyH8xWRptLPu53XIkyOgrg2pJSiORlFC1ECJPMeMmwx7kQ6XUsWFSIvtRGOUsdrBVL+knghK+a71DqS4T9G7Iw2Qg+9Q0hCHHXY793csvJvlr0kTU43kcDsecDqzHcHUQU7rcWQeqpi/2lUon4vA541XFMqj4mD7yNy2PkIF7/yODZYba4pEAyQXe0K4kV7xjaPk9L0XLv+Xqc1h0P1GTe27TxHP+KQGEwibnuc+kk+tlmJONtJUqs+NVxsixcui8xzW+RdSkNLtzg/Y1A8bJY6Rbne3SeyCmREbPQdHenEpuA/Cl1Q1j64whlClCIfyNeIgNu52y+RW1DOR7Nzaa+mxqy43H+XAxMyOvu8R4qVbnaKWVh3k2U5Sw4mNQPVvd2IMfxji9B1NKXrhSE07EgTocwbFZeU+/yXADTl2n7YsDjI1gup9EljtsvN4Bpn3Hop26ma3PBxf3hvnGSeST4Wpt0tiFGlD5ginyzp/ThEAZHpb/k7sRsKTIi0g8tJ9rlnDsjkbNyqrsp2Ag++Ceq9RorOEdEPBT7/gHhJMLMCo2ZYGFnx82iU/StCYceOYfl8dyqfu8ncpf0Sx4R76ZU3wCtvA02XOcT03xHLHlrr35qWWiH0yYUcVEt87zYPpiYwinDDh5nzKacTYQc7Qd6H0e/M2mADSAoiFa0GvPjeYo
+ n6zgZ2uJ
+ JtXc/tovmPzw7xyEA3S14n/+UjY9dnX9zGqq51JoWm9EFNwCULrHo7E1fjgxNfz3pdhw+iU8XOF3aw6a00Ss8SbQrYjYlE6Y227G9g1CtICHNWoiseOq/GEmmBAz8ihACa+8f1hWSTXOB80XoxGx6NLPDaJeDhDXSrp9V7J2WDykgbELzpFxOJy2UZqBJr1MNT8ADSmG6WuFLQY1cjUe9YTk5ed+uB950bYKw9U2/RmeJO/Zs7bWdCA7BTmMyxcB+h4HKO/Ti6f/8lyyyowr/Mde2s/2E0zg7+ls2NqNLCEBiZvyaQgOFXgVWY3L8F8PC0iWhsp7nMFgA1Cg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,206 +163,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce /cgroupfs/<>/dmem.memcg to make allocations in a dmem
-controlled region also be charged in memcg.
+Ackerley Tng <ackerleytng@google.com> writes:
 
-This is disabled by default and requires the administrator to configure
-it through the cgroupfs before the first charge occurs.
+>
+> [...snip...]
+>
+> guest_memfd's populate will first check that the memory is shared, then
+> also set the memory to private after the populate.
+>
+> [...snip...]
+>
+Looking at this again, the above basically means that the entire
+conversion process needs to be performed within populate.
 
-The memcg is derived from the pool's cgroup, if it exists, since the
-pool holds a ref to the dmem cgroup state keeping the cgroup alive and
-stable.
+In addition to setting the attributes in guest_memfd as private, for
+consistency, populate will also have to do all the associated
+operations, especially unmapping from the host, checking refcounts,
+and the list of work in conversion will only increase in future with
+direct map removal/restoration and huge page merging.
 
-The behavior is quirky. Since keeping track of each allocation would add
-a fair amount of logic without solving the problem entirely, disable the
-memcg switch once the first charge is issued. Having this as a dynamic
-configuration doesn't seem relevant anyway.
+The complexity of conversion also means possible errors (EAGAIN for
+elevated refcounts and ENOMEM when we're out of memory), and error
+information like the offset where the elevated refcount was.
 
-Signed-off-by: Eric Chanudet <echanude@redhat.com>
----
- kernel/cgroup/dmem.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 83 insertions(+), 3 deletions(-)
+It doesn't look like there's room for this information to be plumbed out
+through the platform-specific ioctls, and even if we make space, it
+seems odd to have conversion-related error information returned through
+the platform-specific call.
 
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index 9d95824dc6fa09422274422313b63c25986596de..b65ae8cf0c302ce3773a7aa5f0d6d8223d2c10c9 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -17,6 +17,7 @@
- #include <linux/refcount.h>
- #include <linux/rculist.h>
- #include <linux/slab.h>
-+#include <linux/memcontrol.h>
- 
- struct dmem_cgroup_region {
- 	/**
-@@ -76,6 +77,9 @@ struct dmem_cgroup_pool_state {
- 
- 	refcount_t ref;
- 	bool inited;
-+
-+	bool memcg;
-+	bool memcg_locked;
- };
- 
- /*
-@@ -162,6 +166,14 @@ set_resource_max(struct dmem_cgroup_pool_state *pool, u64 val)
- 	page_counter_set_max(&pool->cnt, val);
- }
- 
-+static void
-+set_resource_memcg(struct dmem_cgroup_pool_state *pool, u64 val)
-+{
-+	/* Cannot change once a charge happened. */
-+	if (!pool->memcg_locked)
-+		pool->memcg = !!val;
-+}
-+
- static u64 get_resource_low(struct dmem_cgroup_pool_state *pool)
- {
- 	return pool ? READ_ONCE(pool->cnt.low) : 0;
-@@ -182,11 +194,17 @@ static u64 get_resource_current(struct dmem_cgroup_pool_state *pool)
- 	return pool ? page_counter_read(&pool->cnt) : 0;
- }
- 
-+static u64 get_resource_memcg(struct dmem_cgroup_pool_state *pool)
-+{
-+	return pool ? READ_ONCE(pool->memcg) : 0;
-+}
-+
- static void reset_all_resource_limits(struct dmem_cgroup_pool_state *rpool)
- {
- 	set_resource_min(rpool, 0);
- 	set_resource_low(rpool, 0);
- 	set_resource_max(rpool, PAGE_COUNTER_MAX);
-+	set_resource_memcg(rpool, 0);
- }
- 
- static void dmemcs_offline(struct cgroup_subsys_state *css)
-@@ -609,6 +627,20 @@ get_cg_pool_unlocked(struct dmemcg_state *cg, struct dmem_cgroup_region *region)
- 	return pool;
- }
- 
-+static struct mem_cgroup *mem_cgroup_from_cgroup(struct cgroup *c)
-+{
-+	struct cgroup_subsys_state *css;
-+
-+	if (mem_cgroup_disabled())
-+		return NULL;
-+
-+	rcu_read_lock();
-+	css = cgroup_e_css(c, &memory_cgrp_subsys);
-+	rcu_read_unlock();
-+
-+	return mem_cgroup_from_css(css);
-+}
-+
- /**
-  * dmem_cgroup_uncharge() - Uncharge a pool.
-  * @pool: Pool to uncharge.
-@@ -624,6 +656,13 @@ void dmem_cgroup_uncharge(struct dmem_cgroup_pool_state *pool, u64 size)
- 		return;
- 
- 	page_counter_uncharge(&pool->cnt, size);
-+
-+	struct mem_cgroup *memcg = mem_cgroup_from_cgroup(pool->cs->css.cgroup);
-+
-+	if (pool->memcg && memcg)
-+		mem_cgroup_uncharge_pages(memcg,
-+					  PAGE_ALIGN(size) >> PAGE_SHIFT);
-+
- 	css_put(&pool->cs->css);
- 	dmemcg_pool_put(pool);
- }
-@@ -655,6 +694,8 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
- 	struct dmemcg_state *cg;
- 	struct dmem_cgroup_pool_state *pool;
- 	struct page_counter *fail;
-+	struct mem_cgroup *memcg;
-+	unsigned long nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	int ret;
- 
- 	*ret_pool = NULL;
-@@ -670,7 +711,22 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
- 	pool = get_cg_pool_unlocked(cg, region);
- 	if (IS_ERR(pool)) {
- 		ret = PTR_ERR(pool);
--		goto err;
-+		goto err_css_put;
-+	}
-+
-+	pool->memcg_locked = true;
-+	memcg = get_mem_cgroup_from_current();
-+	if (pool->memcg && memcg) {
-+		ret = mem_cgroup_try_charge_pages(memcg, GFP_KERNEL, nr_pages);
-+		if (ret) {
-+			/*
-+			 * No dmem_cgroup_state_evict_valuable() could help,
-+			 * there's no ret_limit_pool to return.
-+			 */
-+			ret = -ENOMEM;
-+			dmemcg_pool_put(pool);
-+			goto err_memcg_put;
-+		}
- 	}
- 
- 	if (!page_counter_try_charge(&pool->cnt, size, &fail)) {
-@@ -681,14 +737,21 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
- 		}
- 		dmemcg_pool_put(pool);
- 		ret = -EAGAIN;
--		goto err;
-+		goto err_uncharge_memcg;
- 	}
- 
-+	mem_cgroup_put(memcg);
-+
- 	/* On success, reference from get_current_dmemcs is transferred to *ret_pool */
- 	*ret_pool = pool;
- 	return 0;
- 
--err:
-+err_uncharge_memcg:
-+	if (pool->memcg && memcg)
-+		mem_cgroup_uncharge_pages(memcg, nr_pages);
-+err_memcg_put:
-+	mem_cgroup_put(memcg);
-+err_css_put:
- 	css_put(&cg->css);
- 	return ret;
- }
-@@ -846,6 +909,17 @@ static ssize_t dmem_cgroup_region_max_write(struct kernfs_open_file *of,
- 	return dmemcg_limit_write(of, buf, nbytes, off, set_resource_max);
- }
- 
-+static int dmem_cgroup_memcg_show(struct seq_file *sf, void *v)
-+{
-+	return dmemcg_limit_show(sf, v, get_resource_memcg);
-+}
-+
-+static ssize_t dmem_cgroup_memcg_write(struct kernfs_open_file *of, char *buf,
-+				       size_t nbytes, loff_t off)
-+{
-+	return dmemcg_limit_write(of, buf, nbytes, off, set_resource_memcg);
-+}
-+
- static struct cftype files[] = {
- 	{
- 		.name = "capacity",
-@@ -874,6 +948,12 @@ static struct cftype files[] = {
- 		.seq_show = dmem_cgroup_region_max_show,
- 		.flags = CFTYPE_NOT_ON_ROOT,
- 	},
-+	{
-+		.name = "memcg",
-+		.write = dmem_cgroup_memcg_write,
-+		.seq_show = dmem_cgroup_memcg_show,
-+		.flags = CFTYPE_NOT_ON_ROOT,
-+	},
- 	{ } /* Zero entry terminates. */
- };
- 
 
--- 
-2.52.0
+I agree with the goal of not having KVM touch private memory contents as
+tracked by guest_memfd, so I'd like to propose that we distinguish:
 
+1. private as tracked by KVM (guest_memfd/vm_memory_attributes)
+2. private as tracked by trusted entity
+
+
+Currently, in TDX's populate flow, KVM doesn't do any copying, it only
+instructs TDX to do the copying.
+
+"TDH.MEM.PAGE.ADD Operands Information Definition" in the TDX module
+ABI spec says the source is accessed as shared, the destination is
+accessed as private, and in the case that source and destination are
+the same, the "In-Place Add" section says the source will be converted
+to private.
+
+In SNP's populate flow, SNP-specific code in KVM does the copying from
+shared memory into the destination, then makes the destination address
+private in the RMP table before telling the firmware to do the
+in-place encryption.
+
+
+I think we should think of the populate ioctls as being
+platform-specific ioctls that, when called, accept
+
++ destination address: private (as tracked by guest_memfd)
++ source address: shared (as tracked by guest_memfd) or NULL
+
+KVM doesn't touch private memory contents, even in this case, because
+it's really a platform-specific ioctl that handles loading, and the
+platform does expect the destination is private for both TDX and SNP
+at the firmware boundary.
+
+Since SNP (platform-specific) only allows in-place launch update, and
+KVM had to provide an interface that allows a different source address
+for support before in-place conversion, then SNP has to continue
+supporting the to-be-deprecated path by doing the copying within
+platform-specific code.
+
+For consistency, guest_memfd can continue to check that it tracks the
+destination address as private, and sev_gmem_populate will then hide
+the copying code away just to support the legacy case.
+
+
+The flow before in-place conversion is
+
+1. Load memory (shared or non-guest_memfd memory)
+2. KVM_SEV_SNP_LAUNCH_UPDATE or KVM_TDX_INIT_MEM_REGION (destination:
+   gfn for separate private memory, source: shared memory)
+
+The proposed flow for in-place conversion is
+
+1. INIT_SHARED or convert to shared
+2. Load memory while it is shared
+3. Convert to private (PRESERVE, or new flag?)
+4. KVM_SEV_SNP_LAUNCH_UPDATE or KVM_TDX_INIT_MEM_REGION (destination:
+   gfn for converted private memory, source: NULL)
+
+
+TLDR:
+
++ Think of populate ioctls not as KVM touching memory, but platform
+  handling population.
++ KVM code (kvm_gmem_populate) still doesn't touch memory contents
++ post_populate is platform-specific code that handles loading into
+  private destination memory just to support legacy non-in-place
+  conversion.
++ Don't complicate populate ioctls by doing conversion just to support
+  legacy use-cases where platform-specific code has to do copying on
+  the host.
+
+>>>
+>>> [...snip...]
+>>>
 
