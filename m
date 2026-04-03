@@ -4,122 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4867E85399
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 18:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFA2E8538E
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 19:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6016B0005; Fri,  3 Apr 2026 14:41:25 -0400 (EDT)
+	id 15E086B0005; Fri,  3 Apr 2026 15:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86E36B0088; Fri,  3 Apr 2026 14:41:25 -0400 (EDT)
+	id 10EDA6B0088; Fri,  3 Apr 2026 15:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B758E6B008A; Fri,  3 Apr 2026 14:41:25 -0400 (EDT)
+	id 024626B008A; Fri,  3 Apr 2026 15:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A47A36B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:41:25 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29A1257F3F
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:41:25 +0000 (UTC)
-X-FDA: 84618112530.03.BCFF5D0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CD929140013
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 18:41:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KvPv3BAq;
-	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775241683; a=rsa-sha256;
-	cv=none;
-	b=KTsObUn8zY/hRGGQRg+3j5RJSfObeHjW7f0kRqfRCIWSnZWNNYflsRPMuPWuIsoADmAcvW
-	jl2qskC+tAXcP4ETDb/BO+0m8XQK/YGxx1YiViq6Byn44BYpeW9aSJSFmEnyxVspy1p2Ft
-	IlSYtrZ/eB4lR6mltI/ghGhlemqOTj0=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E2C1E6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 15:31:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14F22B7620
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:31:24 +0000 (UTC)
+X-FDA: 84618238488.06.00380FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 49EA4C0007
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:31:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EGIz2L4c;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775241683;
+	s=arc-20220608; t=1775244682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/pkxQv8Zx0QU1qKF94RTpNcNIriqGqgTPjn5xnCC+lY=;
-	b=48Q5u/4n/BLo7CllSJPHCflbkcw5id60+XBtuUacIURB3a93m8A5mlaqADhGtPQBBGU6To
-	4MnDHtbaJTrcnvOGU+9jvqAEWeV420nieg+mT9ALqAHf8diRfyPLQLkw8ZC7HKZM6tv6jW
-	E6GIjk0G0ABlYJT/3k3oCopd1sikfPg=
+	bh=azW6hIaAj7pYHIRevixecPca3fqcRek5lijsb5xtcdM=;
+	b=XPAdiZxgUuISKEFfHGTtV0T4kjHmdCs1wWzxrTHonkUvyAxY+m+c8GGTL1WGUp4zBqiRYA
+	GCm0LHEO6mNLh1A1hR/s19A6YCo+53kauLsftqQ3+d2KreoKS+/RkqJBJhWgX1GuhvsRG7
+	BPAZfCvpyqscEjZHAyzKnC+yZFETsJg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775244682; a=rsa-sha256;
+	cv=none;
+	b=10wu6Lu8tjngOTpaJ4qxS/HfhYJAfg+X6CftMYuBjzIeWWAIGFnLB8SkcZxCt5oGczjiGw
+	zgOJoUrDBibt35ii4jh5Ouqsi60wH5zeY+LJkeIdYICZ0Huo6WChN+duwONijsP9DxLqsg
+	q27HQmRIeNEdnZ14AZ63z6zdwaU1who=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KvPv3BAq;
-	spf=pass (imf23.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775241682;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/pkxQv8Zx0QU1qKF94RTpNcNIriqGqgTPjn5xnCC+lY=;
-	b=KvPv3BAq3tXwS5YqVyyPD+CEngy1OOB3Y2yqh3H7gBRW2i46zBgKICqIrm8vwoDsBwkOnZ
-	VGFcibZBEn2rdgEJWPY3vJOD3VY0JQfvxwpB05VBhhJ+XcCZceCe41mr2BKg1wzsyKmCT4
-	VajkaxtLgUxEY0rRNRhVNR423XXb5Sw=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-etgQwqdIMwCG6Swb_eKUKA-1; Fri, 03 Apr 2026 14:41:21 -0400
-X-MC-Unique: etgQwqdIMwCG6Swb_eKUKA-1
-X-Mimecast-MFC-AGG-ID: etgQwqdIMwCG6Swb_eKUKA_1775241680
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50917996cfaso69615561cf.0
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 11:41:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775241680; x=1775846480;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/pkxQv8Zx0QU1qKF94RTpNcNIriqGqgTPjn5xnCC+lY=;
-        b=gTYT4x0VLue8OamN1mSI5fRCc+OHrJEQIwijCY/95wFYO7QaVeX73PtciQjKYO4Tve
-         YKbz11GrKiMRo8Dv1vpc538qBTQxFLtWZt4LSDRdOWF9KorhUMCteAYYMxZHuGvUb65I
-         /9YYnPNVO3h5zHjnEnrT413A/jgGcApCjhw6hXu90bcbNAxDEOJ7I1R/iuS6TLWypINK
-         v7Lap+wtnvFNowW5N51TsBR+E6UuAa6PTpEAC1xI32XXAcqZAwONb19X8+m3/+SBubg5
-         T2svIpqZsAO60f0pvYCYgphm6pOXZZsnZ1/GLQORk0y2/J40D8IkpNFOAZClEq/P1wpo
-         FIKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXw2w+sCdZqa5zb4iwR0AZSsar+V5/b3+iveHLe/+lX2e3hLwi0hmzRdFdMZuYiK1DtkV9x4X3EjA==@kvack.org
-X-Gm-Message-State: AOJu0Yyfi51OaF8wQbc/LiWGHrtvTKhy0jNq/jW3oCYVf7FPYixq0+Uo
-	XblWn9cctXGXw8KfPrSJ56OnjNHeiTknkuUZju4r3g/jGidI1Ua3qBBNe4UZyw5faAYVx5u05va
-	yKikcgpfasLLxUMxs4NFnLXuaEPFSSCkD2wRN3luYXkUP9gfq4/RR
-X-Gm-Gg: ATEYQzyozz9MrVoLRBwqMojFLIMEPyaJ1dxG7OkSW+9ivIJEJWfPIJ3fCTeIOVDgmpd
-	/r5jHpwnOd7PcFcbia64NYp+RJUGJIlgVnxcUrNExwUp6rM3hTtMrZ735kaIneqNqbQ7C2Np+EG
-	b3vxfWnGCQDH3egFUmUmtpSOQq8h++k6kG8Ll8mS8TuSM4IdB+nCcYAY82O78YYrK41N8M8zkVm
-	fEZT9D2SrAWyidiq3NDIytmTP0SNvPH4O8p8FWTFql3aL+6ORojdOkigLewsoxoEoxNkomzHBK+
-	fpJsHuECztgwvy7G9k46XLvTNwNCVGgmynxVXeGbnLANyZO016b2Fc5naOCUj+iXx6dGdRrgg2i
-	oOZ4SZR1n37/OPviIxNsPzXmNr4I8uWX07VKIX7AR/XH+COA=
-X-Received: by 2002:a05:622a:5e8f:b0:50b:567a:e915 with SMTP id d75a77b69052e-50d62b7069emr52453641cf.64.1775241680330;
-        Fri, 03 Apr 2026 11:41:20 -0700 (PDT)
-X-Received: by 2002:a05:622a:5e8f:b0:50b:567a:e915 with SMTP id d75a77b69052e-50d62b7069emr52453311cf.64.1775241679789;
-        Fri, 03 Apr 2026 11:41:19 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a593908b47sm62337136d6.11.2026.04.03.11.41.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 11:41:19 -0700 (PDT)
-Date: Fri, 3 Apr 2026 14:41:18 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Denis M. Karpov" <komlomal@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [BUG] userfaultfd: UFFDIO_REGISTER fails on low addresses
- despite CAP_SYS_RAWIO
-Message-ID: <adAJznD2zpA1brmz@x1.local>
-References: <CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 11Zd4Sv64OSByjQvNeqYda3Cqm6krrFMhb9ULVyFrDA_1775241680
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EGIz2L4c;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EDDB60008;
+	Fri,  3 Apr 2026 19:31:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5C1C4CEF7;
+	Fri,  3 Apr 2026 19:31:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775244681;
+	bh=SHFHqC8w2kUQwRe6EmPocABGOxkTrKhHh+l6fkBMYbY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EGIz2L4cevKoCrFnVhvj8ZfWMeuWaRcR8OymVhhZlE8vpRocla36JkC8xjsx8VMfr
+	 8REMVw2/Ie79jv89WKQ6WJGmUTs7V2HHK24HZ/0p592YfA5nscObDDbCMVB4lzVUyW
+	 Y8aBIRMPqursfMdncdS49L5OSsbJzfkBBXFY1nIM=
+Date: Fri, 3 Apr 2026 12:31:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, david@kernel.org, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
+ Jason@zx2c4.com, shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot
+ be locked
+Message-Id: <20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
+In-Reply-To: <20260402235933.10588-3-anthony.yznaga@oracle.com>
+References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
+	<20260402235933.10588-3-anthony.yznaga@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 49EA4C0007
+X-Stat-Signature: 8m9zipes1csnag3n5hf1y7xhgzka8cqu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD929140013
-X-Stat-Signature: tbg4ogq4zbkpfg4kxithf48omkqoqsrq
-X-HE-Tag: 1775241682-968005
-X-HE-Meta: U2FsdGVkX18D4Tkn5WTFLmcUos2MOalM0c5lc73HH8NIRZ9AjVxCKpem/RoICA1Tu3Xl//Y2QtwtrFatjYNgpvehZfF8EfmYme8EGDNQamQMhtE71SgDArmkriqM7nSccAd+N1ua5dJwc1kd28mdALiP5//AHuH5E8lx8SnAbZJgKt39wm03LhaV0ZP2Ze4ktc6gNyVQYRVAuAEzenNZPnA5MGdCJzDL/0QK3D3ze/MgZo6+ZOQ6hFbPFd2tC9y8pXjizULA0byT/FIeVx7HEa99l9Prn+QTxY7BBjY7InptcTVYJowxHbi8UiYi+s9n+hwutoSxLtEtlbUPTYAS9juZ3VsXKumOYeiteinXW8gfBpcmzD90p/jNAyAVkAV39FzbRULwGUJwSNWR9Ptrh8kHIWEulokuulr/q8Xujp3Ws9dX6/uuWTLEnhypgGN9tsU/QPMGwH7F+/VeTujx+M9YkPNxWcvW3ClME5ddfclvkf5Jhx8HkXGn73CuG6Rb0Ry6xWtQowv322GJw8/E74oeXFQKdawSjNTKfY+2S8cpvDBMQcaC0bxXjiPzlt690gOVNfGQaDEjtWM8leUMAUiSwk+XTivGiXOTNcy5wMdmPk4PJiRHWvDf25KxgDKhnaevJv5GAH8pgilmIqoylkfR96Y/k435W24qoaPimnDD7dEDv0TeudHCYgn7pGcb6O+U3YlYlLZ6Oe1h4aloxWVvNp9d+Dy/KnqHuvP79/X7keSClgQsPqTOJGQ/jYLeVKu8Hz4lNhyCNhv2ETuw6YZ7xmvD4+V40DUadDeb5Wm2EMocBEyH5GWVO+KnlJTap2qPlrm6mpFmRJtHX9rO/rdw9vEAapJ5G5WSMf/tuy83QElZm/jDMObZ0by1K9ya9vdAHSXT0N5DuFRBYV5qfgTl+AiKkUZxIYHOfJIQKZEhAMBKlsgO7D5aOyVRD7vUNUj5nVM60Tljo7ox9xN
- wkV6MBpg
- 6Bkw3QB20VeoV2pqJl/A3pF6UHREiWjJLxgdZfGASh9XMfbkDgHPGczBgvZpZv2yn4QdZB6AqAC9mBxHQJqGtjBZ1fPVUb+ZtVArl4dNQYXVY9qzqP+LtvbaCZWVbMaGK90rbmLxkqYO3QFdV+mkOzFCGhElGpNtjT7O9tNaFNkUNdAc0pIe2dMnV1LUzlHbtVr7D8sxt7yC35zWcE9aylKB+nToaKb31uNPclhvlaq75steplBdySrZPzI1LTDuzP3ya9k04LrD8L6NL3D5MFfKVnd956iuyQAVAWoNvb8VM+6/9tTWnq7IFrpqqAz90SGq2Lf5xzEnaKvuTomsbdJ4gp9upqiNaZuwbGjfsOSj9m3sYYLlCwNbR++fkg0nDLy/cd1kHv+KBcr278V/HuhBxTYSHEzj2ah5GlLl3zf33XxmN1QdMUMuZsg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775244682-450234
+X-HE-Meta: U2FsdGVkX18sXXEpSBTbOfIK+1aAB0sO0esj+XAC9O5Pmfis4zIcFqL80h/IQW375ZGX8B6KPNmiBATw73K9tcMDycqEIXEKJXmEpXmaEZlj20YojLmslpNEOnHpyD6zuz8cw62AxB354+vJzmGhoEkcADM8TRT3iXvCsgW2i39FWW7McU+EvuqUK1A8XT4ZzjhtM4ENvK1r6VwNpoKA6kwR2Xilyy4D6TGZyj+jEWaVn5lpqIloDjkxK/w++kvBUZAZPX8D5OHFw++ZGqrs3L6PWJmI0tYUA28BRqTHdq+lkjQtL4wcADtEFXBFpF+E8U/CL3jyLgctL0k7c/00hvQWT/daE2KoAV0bT8ZCVBAolDWsAkv1LuZPIWvIlAkf6gFjsX+bzMwfpkssU5T9i/KjGrcCesR1GZW8Vv/I9YjuDhmJRxGXalzQUt/oDvw00mibZSNX/EJOVo0eWYVzF6Iumg+7UFD2EA3BTIc6pwgfh91A81Bs326413PXH/bPkiyqe9nNdlRrZ4PtgklsPG5vF3VFgz1dKEwRe/N5MaLwofWzPXMwWWqCVE/LiOYQTckeBBLCTPoFluINpZnBXo9Bloc1ubldmy9P5QWi7ZudrZXKQR09m10YizQp9uKku7V4HgL0bEUQ1ekmwXTigqzd4JorGbBUyUJQHY1M17Hq5Pk9PwG+iavJjBJ0aW7BrObW/bnkN3u77wWhsdt5NBd9mj+45VY4eLpKGSQFX0CHzkF09dR4snDgy7E+/31AxXabaYkFGGV3vzvpFRbB2DwFAxNUHr0HFKmvWcoyXLEbn5yn/Gk5hN1B775kGINj/j56Klh7fmIHy1junuuiBGTzZTX9rXXHj0ZbiuDzXTmNkGczCyH4qizQybA4+xgtOjX7HWdB5EGVo01Sh4woeRei4CnwSpGNolb2BbaX1DmsP5pbCNS26gSt+PO91guvyc3m9n9M8sb7vWiu5h3
+ NPUks8q5
+ 6vciRdL6dtBSi6keApYSxFpNLO5aHIGdGmFVdZnijm6lXxRT8r8meX3znLj6cF4+dTTxDBU3K9g1PiTjVsxBmjaLtUrJ8fqj91YhPluxOC6i+j9P+BODYlKgvypku24I5S/ul3/+nV9E2bCh1Ov+zFQo8UKzD6kkIVURatFrYZiAmpK742flzAejutqPakrPNLfk7CfmiMocqmwnXPrevfgGXuWkBqJ7eNxFMyFVdQpXyBlVFq2oDHCCDUeUeaepkd9Dxxftuo2TwLJv/LiBvd/GbjpRos4H0F38XeVlNZ5CiSdF6zzjVE8CH5whzl+F6JimMVML6a6a0uG8lgbRi++J+/JQ9gQew5bWA84sOGiDlTmJVln+8hYyGncC0Oe3LSSzT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,47 +94,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 02:24:05PM +0300, Denis M. Karpov wrote:
-> Hello,
+On Thu,  2 Apr 2026 16:59:33 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
 
-Hello, Denis,
+> For configs that support MAP_DROPPABLE verify that a mapping created
+> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
+> be locked if it's created after mlockall(MCL_FUTURE).
 
-> I am seeing an inconsistency between mmap() and userfaultfd's UFFDIO_REGISTER
-> logic regarding low memory addresses.
-> Kernel: 6.12.63+deb13-amd64 (Debian 6.12.63-1)
-> Description:
-> As root (or with CAP_SYS_RAWIO), it is possible to mmap() the low-address area
-> (below mmap_min_addr). However, UFFDIO_REGISTER fails with -EINVAL for these
-> same ranges. The issue appears to be in fs/userfaultfd.c:validate_range():
->     if (start < mmap_min_addr)
->         return -EINVAL;
-> 
-> While mmap() uses cap_mmap_addr() to allow privileged access to these areas,
-> userfaultfd performs a hard check against mmap_min_addr without considering
-> capabilities. This prevents binary translators/compilers from using UFFD on
-> valid memory areas mapped by the application.
-
-Indeed.  I believe the current behavior existed since Andrea introduced
-userfaultfd, and it makes a lot of sense when starting from a stricter
-semantics with a new system call like it.
-
-When there's an explicit demand of using it under mmap_min_addr, I don't
-see an issue why we can't consider enabling that, as long as we do at least
-the same level of security check similarly to mmap() here.  So to me, it
-looks all reasonable to replace that check with cap_mmap_addr().  I can't
-think of any bad side effect except starting to enable your use case which
-seems a valid one.
-
-IMHO you prepare an RFC patch and copy some more people to collect
-feedbacks.  I would suggest at least the ones listed in MEMORY MAPPING
-section of the maintainers file.  Btw, Mike Rapoport is now the official
-maintainer for userfaultfd, please remember to copy him too when sending.
-
-PS: it's holiday window (Good Friday) so please expect delays for replies.
-
-Thanks,
-
--- 
-Peter Xu
-
+There are a few queries from the AI reviewbot;
+	https://sashiko.dev/#/patchset/20260402235933.10588-1-anthony.yznaga@oracle.com
 
