@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337E0E7E378
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC07E7E378
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:37:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67F836B0005; Fri,  3 Apr 2026 07:33:32 -0400 (EDT)
+	id A56D66B0089; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6092D6B0089; Fri,  3 Apr 2026 07:33:32 -0400 (EDT)
+	id A07D76B008A; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F7B66B008A; Fri,  3 Apr 2026 07:33:32 -0400 (EDT)
+	id 91DBD6B008C; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6576B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:33:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B95E114059D
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:33:31 +0000 (UTC)
-X-FDA: 84617034222.18.7975076
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3304C20011
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:33:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pmfS6Fen;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D63B6B0089
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13CDAE1565
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:37:53 +0000 (UTC)
+X-FDA: 84617045226.26.E374375
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7E0EF1C000A
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:37:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF4VvpD3;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775216010;
+	s=arc-20220608; t=1775216271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/arDm3ImxeL0GvbAOnjBuF0Adz5BzOJKD+OUyROEO8=;
-	b=ax03DbwXjLZd3OC8U4aJiC+LZxyVX7czOX7gneDc8XafbvV4ECOXr03E6tfjIt0DPJNqQY
-	5gL7yQXkTlaIhhT1NQbQCID+g3OYEAe4aEPVDTx7TJVV65MvN6X/7CC2CE8NGFr/EERmDH
-	qNmJkqLDpwA+61X2JmzeggmY1a+hnHg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pmfS6Fen;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775216010; a=rsa-sha256;
+	bh=BjMlsWhY6jfzYb+mCsmE6mk1gxbFqx16MLVYx9pqxPo=;
+	b=euw+N6gVXhSGzcFguUlw+U4I5DSt4Rn0nGal+ucDzrOZdaUqnhD5tfBUXlLfUkdpumJ+MZ
+	b3DjEhVy73Ktz3qoCgUUf3RLVi5UJwvhq/lwdlQIAxxlzT6fEpsW4+cBeiL/e2N9E11dMY
+	1DsaGJ/8/6k2XoD7zSU43PvgN36XlyM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775216271; a=rsa-sha256;
 	cv=none;
-	b=uySuE1bDYGD1L0n3EVko3p8fZ9YXHX6ODQRtpNEcGfEGqSiRJElLBFQSxblK23HKXbv17I
-	aXIC1ALRKW0QVyri/kV7qb2Qurm7568qypwlx0kqZIrSKQSTnhV7gDp7FLhdYHcmC64SBg
-	/psynW+M8wFaG8xEc85usIrRLwT4enU=
+	b=erCyBQMt5Oxwer7IfWJIYw4wwGG4BwhjnUstQmtPs9eLm3oxE8BrRGF1cToM7gHyLZgTC0
+	S/s8MoDvBcayQgawRJHEri7OVeu62fIKJnb1/gGAxgDPMogNsKEzoS1iHe1YdFNG9yR4QT
+	QOx9BdoGbDk9mGMS5dEhzSKLyzgePXg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF4VvpD3;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB4D060008;
-	Fri,  3 Apr 2026 11:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072BCC4CEF7;
-	Fri,  3 Apr 2026 11:33:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5065B4345A;
+	Fri,  3 Apr 2026 11:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE964C4CEF7;
+	Fri,  3 Apr 2026 11:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775216009;
-	bh=MOa8QwYDPq/SXAl8Xjaj96vm9q5sOGqWl/i71Rc47Ws=;
+	s=k20201202; t=1775216270;
+	bh=vMKZ7un5FtqzmkKApMQD7+RG0CoGlZexiI3kSh6AhSw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=pmfS6FenCMhHu+Si513jQqk03iN3KcvNvCYMo67y5M0mrFTLalxKgbME/ljU6ovlb
-	 4cNutnZddi1UerKpbU+o45vr24FFbHHvBZ1A//YyJmsmNqBA6rK3Ek9enZotqQf0RR
-	 mXUl18KPqbVW8SVLA2xHexUsP0P0hai+Ba7TgxuzSdBfyAPNVLcJTNEGaxwa7pM8av
-	 14DnyjU42GpelIzK4Rzm/7jmlRHR+p1MLWixJaKdrzPeRPfaTmYB1ECRJl06Pm+t04
-	 WXmRtYUTJx2XWtqW8nlPS2Tw9B3FXPLaekVl3E1nkrxuASZBdyYCebpTKIycNV/Ebz
-	 1S4CVPs2TTXDw==
+	b=EF4VvpD3Kmcyx1KhggtAUGhgjtIw5v6tzk2xv79niXA5bmlH3LYJ3kaGdNHsQZ1Uh
+	 jB6YxwxWbPghSDe+IRCLThjS8klKx5YLsuz/eiIuWzqDVsxj3fmWPjT25jTKv/CgpJ
+	 BdqCh8N8na0fwP66eFQexPrB7QLIVN9YCaPAAipiZmxCUHm4onD5OQiyqLsN57AnxU
+	 ZonVZemsLWRkZUUhgZQXQUDdHs+AaOFBhUpZZR4AonfiVrOc5nlbDxmYVyuxHt5sns
+	 LvnnBsk6PY84Xn/SqUmukQe6kCcEYc52FYTMg1w7jp+LIapurVe7ssuL4+L0nIv/ar
+	 j2h7Ya9bAE0Ug==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  usama.arif@linux.dev,
-  SeongJae Park <sj@kernel.org>,  kernel-team@meta.com, Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH v9 0/6] kho: history: track previous kernel version and
- kexec boot count
-In-Reply-To: <20260316-kho-v9-0-ed6dcd951988@debian.org> (Breno Leitao's
-	message of "Mon, 16 Mar 2026 04:54:30 -0700")
-References: <20260316-kho-v9-0-ed6dcd951988@debian.org>
-Date: Fri, 03 Apr 2026 11:33:25 +0000
-Message-ID: <2vxzeckwcm7u.fsf@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
+  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
+  SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
+Subject: Re: [PATCH v8 3/6] kho: persist blob size in KHO FDT
+In-Reply-To: <abfkVOjq1ngZb-Nm@gmail.com> (Breno Leitao's message of "Mon, 16
+	Mar 2026 04:09:43 -0700")
+References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
+	<20260309-kho-v8-3-c3abcf4ac750@debian.org> <2vxzbjgsgk41.fsf@kernel.org>
+	<abfkVOjq1ngZb-Nm@gmail.com>
+Date: Fri, 03 Apr 2026 11:37:46 +0000
+Message-ID: <2vxza4vkcm0l.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 3304C20011
-X-Stat-Signature: xpm41a9ericwymn36f3h3q5rtrsup33e
+X-Rspamd-Queue-Id: 7E0EF1C000A
+X-Stat-Signature: m3o1zn745efy6f9uq3pz5cpt1u94eqaf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775216010-715319
-X-HE-Meta: U2FsdGVkX1+sI5Q9QeumBNkBVn2H2OdoYJsHHHUzM39VsIL6TvV+3AYI0ZLlDy7Q6876UxCT3v5jdG++ky29Q7vnw+37nhJmPwW4IqTf9b3e2AMBeB5SbHVyPWakexBq8dRGJmZ74DRuLYNJllSAA9dpnp+MYqosU3fLkSOylzrTt1kLBp0bWhm1zF5l+/Zv74hOPaeAf0QUo7L39v5Iqp4MtM2qbSN++GorkN+3DKrqs3iXE/JHVdbC4LtKQosFyDiMYoxkP5zuyogJUoCaZYdt41x3X0uEPvEkBfaBGQD7KG3FPkXowUK+bZbTne4vqFe1xQmPM2b1zXTU539FFrSDf4uRYC78rb9PZg5GQ038YtzVdMSjGOEFxcDNdPqgyIBJj8JZlaOVkC6zjXhiMwuGK5r6qMdCBgsmzuVCi40hBnfIGWDU/kY60X8d+F1/PUIj6UZFSPdeHfv39Ut3yOKbMX8kaIoTjeZGOpJ2Q0LxXHjEt5T0sP1ZMNraseB46blClEDFnvoPImKAqx3ANjODzHZFOYtwF0sE7utn+4VeglhONXq7J3LwyqByHpASyfEhbjX+nxXzWFotsXlc88467Bg+jzarE4r7/ssHWBunAc6EetEHNsOlyuxjimm0RIfJWR+9a7kjKMo8bhpW0S9m2mBd0bq7CnLLtyX4to6vKYkXpb4jshZY4GS+/vwgRG830fzPtM7814uksCNDAPFYfPD3/L2orUnxNwbt2CsgTcNLyFDA4dRrQawQaHlfu68yKqi62vLP8bRFlUCroBYckpFeBEk+rI7wE5CE9yABfH/DrMKWvKXR3IoMU1dCJPvlFU5IiFjkcRgjH1HarfnihkwGOIXEMH6fmiQ+1pxdpqNWYmpD6RJ3AGuX+TR/Bca1A9P2AG7AGlT5CL7hk2wy3C6mL+zIpbRjfobUcCig5wmk2kByMNHbVBWP9XRavq9Fyj5yIVPuUFH08xe
- /k19F6wG
- etif2/Q7qK9eyJazrOQ1X+kCqw9yKErVQZ6obZud2negfLDrw6hXsqPXOyF3RZ+ZswZp+F0XzXBnQyPmwqplMhi3LpS3Wd8OPoaX/pFPz3nMASr+gh0nX5odzv/uf8Heoq7ZeqHjVLSkt9syKl1qFJ1WMckLCl0WMtezM5J13nKjI/w8=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775216271-676360
+X-HE-Meta: U2FsdGVkX1+fYEfLPR0ShW0sBzjVTQ3HEMtOuZyZVm6JHkGy42Rww9ditM92S3iEzFyLwE8LnJcsVIWr1mOFcXy6RW0RSrGvzifVQpXe+w2XT86OOc7LPTe/wykJ4v7KkiI0rJ2o1A9HudwkIRjvPg5IqN8I+K7aOs6/+oF6dNjEDCV72DdhWFTXHth/Uit7c+m9rl9VXRS7YF7AQwqYnRbhwkdMve9z7LQe/Ekg7QTyi/DZHvsviLkZUFCDe8X6QqJInGS5FHpYAaLMF5P0upNEgMCAU2yqNxT09tDkW+cEGm7yxeVUn53AaAQ+/1l2oJgU+9403fSB39Yy3XiriXDWCiJQNM4qYy7/2Vjjzh2b2TH2dK7mzisNyo6/vmyKHbakn73p+W0qAwvFD9orNelPRPfnt708e0tqr8eHtLb975sf2+ifXftyPXwNa5jbNHj1jPoJFMVCwduT16YuzskYAbnEVG1blzDaEuJrlj1zU0ibmzltAnQEhF3f17VMncwPtTRKuhfOlqakZeKhGcWtG7k0MGI7AMbu5J3PzMiDifO6jqxA7GH9Iz1GVhKn9cLegrC046jCrAmlJBriQvZu0WlyGIjBmeu+VZSbIRLU5gI8FaA5biRITEwyU3VLzRn8FY/JHgikF4A8xOxtNv+UbL3/7nS+NHYjhlSAe1bpT0hA1iHwnqQ+IO0oZsZRw5KbbL/XwqLyYYNDj05dqdhBC+JRXOGvNzRxIImiVAz2S007QMwDX0t8bewatkcmSbKz5R2iOWNJEaSITpco0Zvj+BtZJO2yq3heXoSYXHGp2b8sZubdwKkTMzueRZXo1ZxZ0+78TaKRokoG4ThfTMHZgT9n4e+IR+BkKyIH+r9jwxOuGoTW9TGvQmyYu3PwOAkkuv2h4/A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,16 +94,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
-
 On Mon, Mar 16 2026, Breno Leitao wrote:
 
-> Use Kexec Handover (KHO) to pass the previous kernel's version string
-> and the number of kexec reboots since the last cold boot to the next
-> kernel, and print it at boot time.
+> On Fri, Mar 13, 2026 at 09:21:50AM +0000, Pratyush Yadav wrote:
+>> On Mon, Mar 09 2026, Breno Leitao wrote:
+[...]
+>> I noticed that the error handling here is a bit broken. We open the
+>> subnode for the subtree, but then if we fail to add the "preserved-data"
+>> property, we don't remove the subnode. So the next kernel gets an
+>> invalid FDT (per KHO ABI) and might as well refuse to parse it.
+>> 
+>> Similarly here, the FDT might also be missing the size and then the next
+>> kernel might reject the FDT.
+>> 
+>> Also, we directly return the FDT error code to the caller, which
+>> wouldn't make sense since it probably expects -errno.
+>> 
+>> Not something this patchset has to fix, but I am pointing this out in
+>> case someone (possibly also future me) is interested in fixing this up.
+>
+> That is a good point, do you mean a fix like the following? 
+>
+> commit 633d0cb01ed959676b60de8b1851dad1757d8fe5
+> Author: Breno Leitao <leitao@debian.org>
+> Date:   Mon Mar 16 04:03:51 2026 -0700
+>
+>     kho: fix error handling in kho_add_subtree()
+>     
+>     Fix two error handling issues in kho_add_subtree():
+>     
+>     1. If fdt_setprop() fails after the subnode has been created, the
+>        subnode is not removed. This leaves an incomplete node in the FDT
+>        (missing "preserved-data" or "blob-size" properties), which violates
+>        the KHO ABI and may cause the next kernel to reject the FDT.
+>     
+>     2. The fdt_setprop() return value (an FDT error code) is stored
+>        directly in err and returned to the caller, which expects -errno.
+>     
+>     Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
+>     out_del_node label that removes the subnode on failure, and only setting
+>     err = 0 on the success path.
+>     
+>     Signed-off-by: Breno Leitao <leitao@debian.org>
+>     Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 62b1b8a9aa337..8d2d30119f6d4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -787,19 +787,24 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
+>  		goto out_pack;
+>  	}
+>  
+> -	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
+> -			  &phys, sizeof(phys));
+> -	if (err < 0)
+> -		goto out_pack;
+> +	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
+> +			      &phys, sizeof(phys));
+> +	if (fdt_err < 0)
+> +		goto out_del_node;
+>  
+> -	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
+> -			  &size_u64, sizeof(size_u64));
+> -	if (err < 0)
+> -		goto out_pack;
+> +	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
+> +			      &size_u64, sizeof(size_u64));
+> +	if (fdt_err < 0)
+> +		goto out_del_node;
+>  
+>  	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
+>  					  size, false));
+>  
+> +	err = 0;
+> +	goto out_pack;
+> +
+> +out_del_node:
+> +	fdt_del_node(root_fdt, off);
+>  out_pack:
+>  	fdt_pack(root_fdt);
+>  
+>
+> Given this is not strictly related to this patchset, I am planning to
+> send this fix separately.
 
-This series is good to go I think. Please include it in the content for
-the next merge window.
+Yep, looks good. Please send it out as an independent patch.
 
 [...]
 
