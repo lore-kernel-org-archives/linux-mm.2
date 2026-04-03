@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A2CE7E371
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 640A1E7E373
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:28:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC9C16B008C; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
+	id 7145F6B008A; Fri,  3 Apr 2026 07:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7A5F6B0092; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
+	id 6EB756B008C; Fri,  3 Apr 2026 07:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB70C6B0093; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
+	id 628AB6B0092; Fri,  3 Apr 2026 07:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4446B008C
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40C648B5E9
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:49 +0000 (UTC)
-X-FDA: 84617012298.06.C8B5FF3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BEC7D20009
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPnN5Dlu;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 545186B008A
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:28:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DADF41405B0
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:28:05 +0000 (UTC)
+X-FDA: 84617020530.24.936706F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 18259C0010
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:28:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBvAbrlT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775215487; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775215684; a=rsa-sha256;
 	cv=none;
-	b=xAV4yEXiDJdLDz3yA4hZweyrQs9SC5bFISqm0FBn2a885SvuW3XEVK1p3xCUVCrwB1AhDg
-	Ws5RI/0ic13WRlO6iezql2ROLluLwkS+0FMcutSNpvaKvBY+Zn6omasOifoNcJfrkISzOA
-	li+E6crjkE4UU0hWHVbMZl6Rmrq4538=
+	b=BeT4Ve02hYScj6h47Uco5nJGKGEA/W6D6TYVk2RIcWnmRn6ikpACraDBj/g3INz1u7Bqih
+	gJ6UBu+TzSCjgWR5E1hof+/UunhIdnBUAitm5ydQhgdfQRcLcOxX9gZlzbvHD+XNXRET3A
+	ve9wCcN5QEI8KeeQfpejT1du6pH0Zjs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPnN5Dlu;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uBvAbrlT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775215487;
+	s=arc-20220608; t=1775215684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FKfl9TdVDizzlO2LSkdlwxuYXtAA09Pi4B9rN5R3bSs=;
-	b=KoaVK/Q0Tahk5PExz4JQzliyL65oNuyxtD3nbngR1ZRqWCt+/pfuKChkhCs33oQtxzm0tO
-	GsI2a0TYo1429Q2OGDCXEmCHKaTYCihA2afxgMFYD1ZTEq4Ushf0WSEQq4jO8CuPogZiwO
-	RbZRFCb+4AwGt2P8EZEBx9o6CZ+H91c=
+	bh=YH1Zm0pdIauW53+MKVBdPUDWUtbtD9Skg5FcwhJhtQ0=;
+	b=EEuN7i6mc4bDpGnMzX0y8dHZ17cHkP+9NXbQcWtUiVwR3O88by/i+cNmki7HqqO9g/mYhI
+	rqAwBgaw/alB2G6jf4fm/egYo4FLEvrPbeIJu8lzRfy2ySvto/UJewstzS+HBBQU07NSUR
+	ADI5nUbqnpbKbH2hJk/Cj/uuvswE8FA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3CD1D60121;
-	Fri,  3 Apr 2026 11:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5912C4CEF7;
-	Fri,  3 Apr 2026 11:24:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A48CE44100;
+	Fri,  3 Apr 2026 11:28:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA9EC4CEF7;
+	Fri,  3 Apr 2026 11:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775215486;
-	bh=n2kIfPcxv9fpCDmESjetmPVIXXSHk10QB/niw+4zBdk=;
+	s=k20201202; t=1775215682;
+	bh=MabZ8ZNxlfCbCNmRDlhcdrRriNXoWOt9AGIbHCeoMZo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MPnN5DluGKOUu49y7lrQ31VECTcn+7zuVK939IQ5sR/OYJUUpHW5cHhN86TpjW4ZO
-	 GWAnpWC9hE3EaJmqVEmgKjv3EI7JPlNNtKzt9viRA+HTBDfMkDoih68tiF8CTXXb/d
-	 y+M3nDSw/J1tEGuM6JqsqQgdoSNuw1ddWxE6tUE6FZyqtuonPwaE0L8RIUHlnjkB0a
-	 g3UBF2uo+2owZ0fVzaZAnY5b2wDOxiwaRcF+79st1pSStTkWc+3CIDSh17AFfji0+/
-	 IKrp5d0S0voXE2VTuh4ICx0KqwvSLDAqAshzULkTs16KdZEm15RW4ltzMWiPQBaEBl
-	 Q47Y4/9dxpbTw==
+	b=uBvAbrlTeTRt2+30VJbA5n2wjqDEx6Y995UcLZKvOhxPUEqt9Ea/BEaDo7MYuOO/8
+	 vEKvhY+w8cpNON5DPGwQsrTq9Uw0YWxNLCfXZUH+vLLwKGTpVsChEZSNF4sN4I56cC
+	 ES0kSoQhuSWJt4anekYaIuTx2YLkGbKvhTRR+gQtItlkZZf4p89S1bdMdaO+/9moZB
+	 vUXSW5X0CexGi0LLcIdzFf3PzgAL/zkFbJr9QyllIdBwUxg2CYoRMKrnzhU9LBQ+G6
+	 6CDpwqeU9YncpUaRpYDJnG1EjWwqp185HKLkSNniPBj7PNu6Tst0FThD0l8Et1Ksse
+	 Q97kGfkJHKfkg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Breno Leitao <leitao@debian.org>
 Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
@@ -70,22 +70,25 @@ Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
  <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org,  usama.arif@linux.dev,
   SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
-Subject: Re: [PATCH v9 3/6] kho: persist blob size in KHO FDT
-In-Reply-To: <20260316-kho-v9-3-ed6dcd951988@debian.org> (Breno Leitao's
-	message of "Mon, 16 Mar 2026 04:54:33 -0700")
+Subject: Re: [PATCH v9 4/6] kho: fix kho_in_debugfs_init() to handle non-FDT
+ blobs
+In-Reply-To: <20260316-kho-v9-4-ed6dcd951988@debian.org> (Breno Leitao's
+	message of "Mon, 16 Mar 2026 04:54:34 -0700")
 References: <20260316-kho-v9-0-ed6dcd951988@debian.org>
-	<20260316-kho-v9-3-ed6dcd951988@debian.org>
-Date: Fri, 03 Apr 2026 11:24:42 +0000
-Message-ID: <2vxztstscmmd.fsf@kernel.org>
+	<20260316-kho-v9-4-ed6dcd951988@debian.org>
+Date: Fri, 03 Apr 2026 11:27:58 +0000
+Message-ID: <2vxzmrzkcmgx.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Stat-Signature: o1nj3rentkqhxntj5rryxw5skzfdf6ju
-X-Rspamd-Queue-Id: BEC7D20009
+X-Rspamd-Queue-Id: 18259C0010
+X-Stat-Signature: 3pkdrnd7kxkfi4tqagdtxdwuju6bia9c
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775215487-483079
-X-HE-Meta: U2FsdGVkX1+5hg4d5+Re1vE8kTa5rZRlGagTnB+280N3O5jvFbUlaRy0Uz479j/pOaxZ+nM95IU9ys2q7NpZE/658k7ULWTZbD1ENuTa1i32XbcijKojxe9AJ3Yqw7e6cCU1WuteQCzacmq+xJNoGOfZZO025g1xlfJS4uETMjWudXDiv9DVRLeyzBDAb/O46b6ySiwp99z/XQ54DMQEXvZaqfgdmtCgtsZPjAUzHspt64s90PNW431v/jQ7ivusv88zBelckYJ1S6GOoUwIGcWSAA5A3XdjSBUQKuxA9jcx6u3/EpfsdXTnrJtlDa3LCJ9t07lXcLfSpBx9qf/ukCt7A4+qpOrap2NGhnhVtSEdB463oL//vT+FDkwUJLkjyRKVSlVR4dDWHY6dQ9uxwdk/D/eoJdDrvE1jh1F9wjKy72sCcX1xwatb+MPZVM4lEYHRa/v+eh38P4q4rOSaWmqcaGd7R8GFwl6DMIabViulQFQw0w1p0jIdumyNuFVn2nLiYQ3muqLfUwQfwlKiOy2pZl4xc2++5AcqbjDigsbviyXNYFyTPpXo5cG52HvfE4DpuWMhjsKzhQto29AkLFXtl7tePvC9sfzzzGH2MkMrG7GD8wmVyPJGLdClPGUgTszQzEgZSYJ5Ph0VKNhs2uq/GM+sNSFMexQTFEXdb6V7JmNdyNh+TW5GfpPRZBcpl0wlyMGNXf/llofWgkclYRo7FLGkNoeD8ufeide5mDo5uCqK8xaRRvwTTic+lT58H2mbTZcLvOBHyWVskizBbX84fCy7ncNGw4yqnVFClBUXQbJHkgyHIh+3tIAUcdgQeZjhDVIRm8P8Uasja6WepGVFfbDb9eieFYSJfYa/xD0MTnChEFHgADZU0UYj+DLFCUyMC5NQDvA=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775215683-285396
+X-HE-Meta: U2FsdGVkX19gEV2+styjp9CXtaUrSQwafzWdbbOIh/Lg2c6CMt4rFmZF4yiTiCTvS9/Fes3MkxuMFvQPdaafTsaALh2z7jMzuPtk2VW8gXAtDBZWNca6VsS6B6xLI174T3iU+TrgdCVBqABpAhjld/VOaeUrGfi2z5h+SjzgsLojfdu1yHsRpIxVqKEfGAOTXhgKzSrlxT0EWWJodG2OcR3WMHX+hC6wBNg3reBZBPzJVfZxkYM5LcMdt130OjVz9/hYkyz+kDzJ7lTjNDGyD1acJxPckxpNZcBv8ppuekb9bo5STBI0mvje2ZWF+2hgWMYR4lxg8RBkjDaQ0l6mFFSoAdry86Fm6xej32RC1Gpe2/dNy5yhGoBYFAsZmdpoy8T8vm1+YzFU9wuqk+VGqWGt7BxqRv9GcA/I4RZq3+MMaLXtw5GJt7RIbEC/I7B1DpB6VQ/yIEbRkYlSfYo0k+pg6Soa1WXmZZ9t/+JuP0ip5lotnealcbDSQ8g7rDXR3gj4jo2T1VVpjsPXthnixUl+Ui+O1PZIXVVwI2Xog3Xc1q425lVmvS2EqaYufp5bR8lJyGIEE2hjjHZLDZ+lOcp4lYV6g+ODiXj/TQwcPpcEGkDVkHrbxC5zVYRXMgXXcZgmjT2sgh/ZXbGaCRMAliWI4qKNqm0y015Iv0Cr9zH/mtOpAFXC1Tu+MqjfJeVStfotNbJkQHLijJRpFxxcwstK+jFYvle/eOdWUaBnoEVcdbErzsOOgtcKGWajmwqnvuWkhPe8BEGSwU4Ij3bZq16yG3fARviBOXthFkskffPM1/iYpdl/gV7gP4qSJD8JQ8F2V2Q52gAfy1GRIlmAuA/PpO5NDto5JxdTdDrQZWlPJ968XAwi+CGSoDhWwFpLPftyVHDUWPphpkqrWlvh8XLGs1jAeLFXnU9SjXMeYDhIakLGK2f45MBMO6nLc5iQwjn5MWNXQbr8EaqGl+0
+ mpnj+Fq7
+ v4KB3TWlZk4URmHlPULJfUmyWUIto6JidA/BwD6P4ookrN+tYUDAVnEcSprcli8Aer1r1n7P0szLPUbZwWyGLbAskZ3qjuVUh2sDBUjIr5SXd+7Ib1HqnmaDvVgJW5M3KffiOjUoLwdlv6a3Ibc5tYyPkcBFBadIcy4nC7IMDSQQ3hnAn6cbHX3h9Q7UjinZHXMQLWKpAIZW3AgykDdveSEhgs+9o+URBPYQOAbP985Mn+ttu+Mmi29VZvPsrKsFiCU50PE+jZ7qfHXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,21 +98,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Mon, Mar 16 2026, Breno Leitao wrote:
 
-> kho_add_subtree() accepts a size parameter but only forwards it to
-> debugfs. The size is not persisted in the KHO FDT, so it is lost across
-> kexec. This makes it impossible for the incoming kernel to determine the
-> blob size without understanding the blob format.
+> kho_in_debugfs_init() calls fdt_totalsize() to determine blob sizes,
+> which assumes all blobs are FDTs. This breaks for non-FDT blobs like
+> struct kho_kexec_metadata.
 >
-> Store the blob size as a "blob-size" property in the KHO FDT alongside
-> the "preserved-data" physical address. This allows the receiving kernel
-> to recover the size for any blob regardless of format.
+> Fix this by reading the "blob-size" property from the FDT (persisted
+> by kho_add_subtree()) instead of calling fdt_totalsize(). Also rename
+> local variables from fdt_phys/sub_fdt to blob_phys/blob for
+> consistency with the non-FDT-specific naming.
 >
-> Also extend kho_retrieve_subtree() with an optional size output
-> parameter so callers can learn the blob size without needing to
-> understand the blob format. Update all callers to pass NULL for the
-> new parameter.
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Breno Leitao <leitao@debian.org>
 
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
