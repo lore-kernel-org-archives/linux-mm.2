@@ -4,91 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC40FD7309C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A65BD7309C
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 05:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E0046B0005; Fri,  3 Apr 2026 01:13:09 -0400 (EDT)
+	id 964A36B0005; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490B16B0089; Fri,  3 Apr 2026 01:13:09 -0400 (EDT)
+	id 915DF6B0089; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A6906B008A; Fri,  3 Apr 2026 01:13:09 -0400 (EDT)
+	id 8045E6B008A; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 226296B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:13:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF3061A04DB
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:13:08 +0000 (UTC)
-X-FDA: 84616075656.18.B6C2C69
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D5A731A0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:13:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CjcTJNjm;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7816B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 01:29:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D47A9C1E3E
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:17 +0000 (UTC)
+X-FDA: 84616116354.07.819BF75
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 191D9180005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 05:29:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HWm8vjTQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775193187;
+	s=arc-20220608; t=1775194156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HN5h5FdNM37VqfSBYSeye0NtBdmBLpRNeMxz+rjKDZ0=;
-	b=GpOebaeDGbHI2SNYdFLFBP4U304V7yqMLOfgFM8tceXpU0treKRh3P81UXVgt0eeq9XeA3
-	HVjem6+pi5xoMQFyWWFuRH/JqAt2e+9b5dRR//976sZBkw2VzvO9NR/jOToSeljUQwmvt4
-	iVKuygybUbWXU5iy4q9iWZd+uEnKO8w=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CjcTJNjm;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775193187; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
+	b=rRSPaiLInZIlmAXOVAVcEDXtAYosS1yGviaR2W2z5V4sH85MSrPcF5s5fkNBvGEJLcT07q
+	JwvBQaLS0JW9tAtKGNl0QOCd9Lkb1lskybv8V1a6quskKp9qWmlCXE5CTn40rE3SE5l6yq
+	kkG9HaaPheIIHNNCyVep36veO42WCWQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775194156; a=rsa-sha256;
 	cv=none;
-	b=CWss3BPiF4BNbffCSwUScsgrCuMXUY2zP/Q/b1X3Vm53uZo43iVpQFiyRbGPhSwcxUGtMF
-	T6Ig0QHd1ulN58iF9PHBHCGQgf4LR8LxV27KHeImpDrDQzxH+LBnb6slD0aY/v1uW53zGx
-	/OZ4qwoazaFkfyyHRXeoVUI41CzdtWs=
-Message-ID: <a0cad1c0-f6dd-46f0-b9f3-f028d7dabe6e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775193185;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HN5h5FdNM37VqfSBYSeye0NtBdmBLpRNeMxz+rjKDZ0=;
-	b=CjcTJNjm6He+RoQ+Cap9jx/S6dbw7eLv/GAVPkgtzshFWNvryj/kYWMzlE6s/PAeBZjmh3
-	tMO1slLwg9W6WCXVihbds49aKI6M7Ejduvzx9IuxppfSHOFEizSejaKHtDBubYiv95LAor
-	Xk1TkPZl7Y5u4jZgWoeYx9BGH7LX90E=
-Date: Fri, 3 Apr 2026 13:12:56 +0800
+	b=UPHSNxVtEEdAXqSYiJz26PxySf5gYZiDNUz7IS/NSg+ucJtkI6oHEIaZyQNYSrJsiIC6i6
+	wHnTTmjDMawRCWh13jjuLKZB3l36HlA98iiViutsigkgty/NT/HUkP36shNr9eEIjeJe3o
+	vdl8cvISvma6iU2aP59mXBY9YbEirXA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HWm8vjTQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82a7ebc729dso668945b3a.3
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 22:29:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775194155; x=1775798955; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
+        b=HWm8vjTQXqw82bjNlIhiaUJUTxwRUbRCDPPtaLGH4lVHGYkf5uppuV2R59ezBW0CJZ
+         ubPvwV/mKT1somxWjrWFrNxBC2WMgMODfeikc35ghEiFr9oM8KWHSiVfzcYZxMvmmHOY
+         udgZBFcRvachBUv0KdMvvkhpP9A8Gua45crP4wHPSM5a4r2vKQOI8vkjncN1V89mP/HR
+         CXN10XCLpzp8K1Df6a2dYsPCqK59LDDOpZPxKiIQIgxGbuBjnwPU4j5bBrGcRrCQ43Yc
+         ZaTfI3/fVocpi+FAlbsMld5t8d2lVyiCLu7Br+1c7jhFPcsjkdSgF+eeL8VdrgogZnLI
+         p7Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775194155; x=1775798955;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PwVEBTN2pqE65yckg0LJLlK41X4ju08angcIWHyFOv0=;
+        b=A5PM1vQZeeFT7ZnStdY62c7tYhWNq7tufBDnyUKsSXBnSGcDychKgKRJd3lzBRI1dd
+         KjlqNWqqx5I3d64l7+OX/phuksoVd3x/BVFrMN0Q5fHBbtA8gBE0co4KMUnBx4eTv9Yq
+         lXkWiVM88F3FpFxj1Lzfdg9r5ZCs732HcXXpSTWeWeGNoXdWInSyw3fUT9BXV4zd/UU1
+         q1xXKUnM1yrUGWkDyaB9CIxyB0rIEpDeNfVELXeIQzKGaNywFAQHHsq0uqC8T/ejpMon
+         SY3kIWom1FcI479guCbgMTHhWz178AjIVh+xxOFB62OCfaZ5OfvVhxH2mlBuRNnSv+0R
+         tqoA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2Xv+XC2p4lCkjgA1kZLfNk0lkdOaF/m6ZuoPVvGiHY05qFhCPNAkr0mdDPBAKy4iYiqsfNecrWw==@kvack.org
+X-Gm-Message-State: AOJu0YxsKIjiIlkZV9jHDtPZMWi5lFcJbq1OJpLMDhJPBNYefgHJvBQP
+	uiOQtiB/dSa4iTCi7XsBzAantUerOA/saN6ijnYRVmZtbPLptUz/uNtx
+X-Gm-Gg: AeBDievFr9QiBK+lUzNTQeRE/ewrlaIeBubi8HW51SXPLVjzJSuhZ7queEL50Qsb1YZ
+	g7XhRTLyeisQu1gf6d0EuwodGGpq7x1oCR6sxJNY6MV/9ZO4DSxHUclwMtgrqBFw9CXavEwDbAx
+	jGdOHAW/w2plX+wOTJnCptcFq+V9HFSefbIGe6dWcNPffEqmy9yo5ws0L07iJBmvayAjvLQfKRX
+	ajLr8rW20OlEHCluh3jxG06aKzPSB6b7M5+sPDTK9XQDr8RTsg0k/t8Dqtd4b3rd+2K3dvdnx99
+	owVNkstaWWGmKDLPNJqLOw69qioeZNJTNeUBg5sP6c3LbIqa5TtDrEEClSWZXiTUhS8LRGPnldF
+	eUR/6itTy3sfUaIV90P8tzADG5D9ueWb14CyoGTvpaueDpe5xItNIUHPMXSm8HdoGOjH2NnZcl6
+	Yc0bxUI36nd2aK0O0rYA/Mr4jWMHY=
+X-Received: by 2002:a05:6a00:4c16:b0:82a:78c0:6b75 with SMTP id d2e1a72fcca58-82d0dbabb59mr1887722b3a.44.1775194154839;
+        Thu, 02 Apr 2026 22:29:14 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82d11cd2ce2sm782120b3a.6.2026.04.02.22.29.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Apr 2026 22:29:14 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: yanquanmin1@huawei.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [PATCH v3 0/2] mm/damon: validate min_region_size to be power of 2
+Date: Fri,  3 Apr 2026 13:23:48 +0800
+Message-ID: <20260403052837.58063-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] mm: huge_memory: refactor defrag_show() to use
- defrag_flags[]
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>,
- Barry Song <baohua@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>
-References: <20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org>
- <20260320-thp_defrag-v1-2-6ab15d0d26eb@debian.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260320-thp_defrag-v1-2-6ab15d0d26eb@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D5A731A0005
-X-Stat-Signature: 1c8msqdqpzo6t9ebhioh6b586k33fwjm
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 191D9180005
+X-Stat-Signature: qqhhd9tfzwd7rqmp6zuajnzmankt3e8q
 X-Rspam-User: 
-X-HE-Tag: 1775193186-266150
-X-HE-Meta: U2FsdGVkX1+zPEYE54JGbkYsoyu/FwhZPJQ8+4e3/2UpHvW5UpXl71FTpQZmfYtAIIwcXIxtJGPbkV1TKHFt7k9hJ+DCXcaQlYyurSLCXMuUaVDr2Nu2AkgTLkQSl11axoTNO1i2byjIso8u7cxxhdhdb5l0wN7k4L6zg3EyVmzMH5XlfUjePxoiL1KaYrFLRVUEMoKqfJTwofu5CTI46tibMJ3K/R6YyWU39IP8DPA7Mb7Mq7EJweqlO6TG3pa+r2fBrZwiKOuiNG/nFurRQ2zOKbYQXoKSJmBYphdTN3q6nqKuYJSKt+dsFO4d9GhFw5MYrUDMVRWxweNyjWi1824+SvWA8PD0S3XPgQOAuOuTX6x+fZGYjUKoSfmAEHBxpkCUBTGklut4PmisQ10Arzik2J/kx6r8tgwla9KdZA97TQkcD4YEfwafcX7bs22GEJuB+GVs46MWhJnywsZQVQhYF2ZdNrX7pXxQXGrHwVcdu44ZNUgR5aH69IiSb/941xtM5fk++XS7k0+POO/bwQTX/NNibI4vBMxl1eEmiMr4FLGvqIq2YoZuyor4FkPyx94Z7+sRtrTwZPRFruyloZzopxCTaIRvANABYn8ufO+8rG7Ok0yePev3VMJm5NMe5j0zi53XM0uAusnGnZ509yz0upDkaa3zN7uL5PG47SKFXRtb/7fCHDjIxF411dgUh3PjqV3l+tSrJ7xVBMYWh9SsugbVziSHiZtHZ3HrGe2g3xVwZlE05S/eb11gxjqkPtXeYaJYx8GFprEy2Iua9WFqkBMm+Aedt64a3ZccgqRm3p1Vh4lxJnKlStLJbVEQsSFqU14iTZHPb+4RHmSSowkP1eK/x8JaN/h8HE+8WHzjIpqEhPmD9daBShUKAemZTHXYG8bOylNIWXWlEatjCjFkFVl7Fk6Lh+Nvdg7LsAWmsszNjtf+qhEPSP30aHCHyPb7Ve8zL3ON/jmzMS+
- yWCwVuqI
- QatPq76IkmHGt55MnoaBrZrzNyB/msIU89veeRfqFhQH7/en6/GFdsddnpEN/wAmOL6eJTJvCIQO30pTxsAVtyXzfp2zyL4F347Lk7+BsYh2ZxP3sw74yjdjFStkcbDUKZk1tD0deCWa67ywk8hlfd9VnW4TVGZCagNv6npt42ozAf+ehmRJ/n32jfXinjNiSUj9Ea84bLjJ2LhxuYTDfpi21I+JTyfBSvHmwjXONuFvxT7aaZbRmH/MteWRmAVgO6qGteatmw9+g5jcUs5Vu4leEvA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775194155-266086
+X-HE-Meta: U2FsdGVkX19lVrI8E/TEH4Kw6pyjPyxWJWzwcsg3VAJQjccH4rwgdE7mj47nEQHAHmn7syFKNcX/Mk4u+NOm53R4/9iAfqqdkMESeStPUbEizptVmZrJS0Jvp1ISBobmOIMBPqgW9r6iP/pj+V6BE27d1lBc4K6xEHwhCF9jzsU+V5puGWJnhJkyfWU69q/LsdfdV/vPBZshx0TajouAWL/G6+AxvqN+EJq8I1TqxO5Nhaes4WdGz7JymWK4l07i4EzfqWgvbiBsjq9BDzM7ZG/1ZYCmYz6MyNQMIwBA2AxAfb0Dq70RzDJ7Fpza2agBppDxzDvHGiUm/axf7gavQG6PNIKdbu8EekEjueFpLSUaapHy44pHtuBw0+PN3di9LNrvEmCj4UClW6xjDIiDJ5dZmm4oZYb/jAF5z79pUEOjaLh1T/cng9GVqjSROUDapEL55aaJ79e0R1IVvzA1KThQlJGbbuehcJSjlO8qpMvdAYPCcJLrQRmBWBTFqCwG0ph7ulmbam87RNbvP1KsBGx9GL1JrZUdUla9uB1K0CP+BP6Tm7YFgx5zzBVoL9eE5BJq4o6uFwRJxJWHnXzbZnVxB/Q00jwzKaCAXIpV3R5gEicGadGHyN176WF2RbxrTdnzKPwIcGxwvWZEDaIyD72qsEkRyhwp1j/9GiABYpxxqqp1A1tbYPWsJalwTUHpLie2v1uGc6e2XBZEUCUzx7vhGBKxXYPAmH5GTcPZb8qaUl/2mZT0qdczcg2LyAx/rfjPmURwT0tiuMg/g1d+bEZ7zNS9WudXnYK+t0/xmJTdUCtB47hrGHcGWVesKtccLbfO7+Mwx4RKo2rbBnuGLzQPpaSKWF/CczAv3X7eekYv490RkERcOQfXB0Z4U5MkmiGihDVUetrxsdTCkjHWxoRFdqjM50SUjXbCFu0FcP8xKoelA2TE4kc50THlQ+wOYW2VyJaKiwJpIoKoAzA
+ ksh+ojI7
+ QuJF2vWHPdQUPLOisWI8xf6MxZ+J245WNkXrf8+Gx0uZtAS5bxn2kf6MpjgRJBNEngjvPl1lrfWnLyrRVot33as3c22ueUwaosh2iQr15Cmf+DPOpbnLEbI/O8i9Ntf+v6Wj76k8wXi9fhfx1iMOJec8kwaUmRmFcV2WPc8RJDS0h9QTlW0or0CGU4CISFyu3aaUzZ/rirEe0l+vfEtAImoZO/qgH9gMJtHFl7VKzGP6VHZcBOj3S60I+iPxyb0mRCty8NiHFMue+9uebclgN6dE9r6yQ9kwcaRtYUEO/eEGQsGM6S1T7VSVsVVvSOYmKFeO4cT/fg/uyzu+GPeDfG+z0UGq65jcufIJn0G/Q+NYHZBNUXAg/48v5+cVPHaU4TKrI2NFtcDrVtept8UYfTbATgOUO29Tj6SYGUfrsHLxIaojZEv5MSfmocTOJWdu03x8lMubdE00XkZMApUZ/RLR5A4txAAiPCKpE5rr3+QliGiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,24 +116,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Problem
+=======
+When a user provides an invalid min_region_sz (not a power-of-2) via the
+DAMON sysfs interface, damon_commit_ctx() fails the validation, which
+causes the kdamond to terminate unexpectedly.
 
+Reproduction steps:
+1. Enable DAMON_LRU_SORT or DAMON_RECLAIM.
+2. Set an invalid 'min_region_sz' by setting 'addr_unit' such that
+   'DAMON_MIN_REGION_SZ / addr_unit' is not a power-of-2 (e.g.,
+   addr_unit=3).
+3. Commit the parameters via 'commit_inputs'.
+4. kdamond terminates due to the validation failure.
 
-On 2026/3/21 00:05, Breno Leitao wrote:
-> Replace the hardcoded if/else chain of test_bit() calls and string
-> literals in defrag_show() with a loop over defrag_flags[] and
-> defrag_mode_strings[] arrays introduced in the previous commit.
-> 
-> This makes defrag_show() consistent with defrag_store() and eliminates
-> the duplicated mode name strings.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
+Solution
+========
+Add power-of-2 validation in damon_lru_sort_apply_parameters() and
+damon_reclaim_apply_parameters(), return -EINVAL immediately.
 
-LGTM.
+Patch 1 fixes the issue for DAMON_LRU_SORT.
+Patch 2 fixes the issue for DAMON_RECLAIM.
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
+Changes from v2
+(https://lore.kernel.org/20260402053756.26606-1-aethernet65535@gmail.com)
+- Split the patch into two per-module patches.
+- Add Fixes: and Cc: stable tags.
+- Elaborate user impact and reproduction steps.
+Changes from v1
+(https://lore.kernel.org/20260331073231.30060-1-aethernet65535@gmail.com)
+- Fix memory leak issue.
+Changes from first attempt
+(https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com)
+- Renamed the subject.
+- Validate min_region_sz rather than addr_unit.
 
-And also,
+Liew Rui Yan (2):
+  mm/damon/lru_sort: validate min_region_size to be power of 2
+  mm/damon/reclaim: validate min_region_size to be power of 2
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+ mm/damon/lru_sort.c | 5 +++++
+ mm/damon/reclaim.c  | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+-- 
+2.53.0
+
 
