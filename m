@@ -4,86 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49032E8536F
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05292E85372
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 14:13:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98E1D6B0005; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
+	id 6F7336B0089; Fri,  3 Apr 2026 10:13:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 917616B0089; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
+	id 6A6FD6B008A; Fri,  3 Apr 2026 10:13:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 805D26B008A; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
+	id 56F686B008C; Fri,  3 Apr 2026 10:13:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AE2E6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:12:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BBD01A0360
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:12:46 +0000 (UTC)
-X-FDA: 84617435532.07.A39F37A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 760FBA0013
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:12:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owPM0zQQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 474B06B0089
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:13:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D90288C1C6
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:13:15 +0000 (UTC)
+X-FDA: 84617436750.15.B000E0B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9937C1C0004
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 14:13:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FLTvtaiS;
+	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775225564;
+	s=arc-20220608; t=1775225593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jIkGGXbQv/txYqXGkFoSltua+ZK9+VXm570t0dxiTBk=;
-	b=wJccP502v0HobcZ+0BdJrU+KuYHJJp/oMmwuLyYwbpIHcu4XzJR75cL3oNvakHHDcP+aGp
-	Msoq2T24LsUWJ2SHky1K07alD5v+zTVluB5FxnfU43UEgKBIEhRQ5VOXUTt3CrOvnj6Pc7
-	OnDks22fs9STGw6QKeW2eaVmrbtcnTI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775225564; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zCsOheHk8XlC9CSFSmzc3izuiVKcS+6jE7o78F0/vE0=;
+	b=J0UZC3WhRQ7wL5CPfrhLFQQ38XY8DKfT3oZzc5hp5unJuwyku69OLcNYbOMd5oBNnw81oK
+	xjMVGAWlPaxUQmpRxCudSSrl4UTkJvSfokyT6zPxOvWWr77jdVNrZqs3d8ydih7EtatyEH
+	dgTZOTubcoxj6bMo1H6/cOjuxT64VxE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775225593; a=rsa-sha256;
 	cv=none;
-	b=nD4JgwJihYtNg1KRHeFr732AW+KfbrHvg0iNNspvFyd14x5IxMz8jJcCr2wMrYu4/Y2xvZ
-	O6Ftg54XPbQDFngAo+YEAYei5k395/WwCMd5swEXCJG8t00O3tyCCH2ZR/iRJyn0YdZ9KB
-	keb4L6pQk+Dbur23/XhJJSAGluQGnfo=
+	b=4wL5HvB2ZAMcni9IZVxjqPovRGhlmc4n5E+pzRWLTflwFfoCcPyFNQGONdCO7te7J0GRqs
+	/NfCyKh6K/n6JmCVcDMdiNAgYRjketiMP0+iZyeeVWXTkvzQKGtsAUSfSu3x0hcWlq8fcF
+	9Zhujb4S2YoomwH1HCSf8YcIfsPcPT4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owPM0zQQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DC1060121;
-	Fri,  3 Apr 2026 14:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13583C4CEF7;
-	Fri,  3 Apr 2026 14:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775225563;
-	bh=Wp0rUchgEfo3aH/vpLC2bON7hvYn0ruFcpGR7D1KSbQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owPM0zQQokQ22BSvz35J3xN2jUybaeYxIuZW0oHmducsrHIcOroyklEND2AJZw9sy
-	 1zFg8l3G5oIsbSykmZNmyIrRSW6x+Ws9IIoerf0cXKFP3dtI/4c7gOtX9oMFMU8CDg
-	 Z3DX+Jyz/T3YZKxyol4IKcVXrtbFGcRpRt3Wj0NSvFHdGXCBthD99a8hM/0+1WQhD8
-	 naJRAAFL6ha+Ln/VW40ixEcDvWO6rCAnkgdyCL8ooUDEhwdU2IW1vy1HeWdvF8g5hH
-	 L9zP9CVBrXTCBH49QfdzicHNKPD0bB/VZpy9WWFgEqcUa2vF4Wg5vf5985COZDgO89
-	 LUNLU4/d9eJAQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/damon: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 07:12:41 -0700
-Message-ID: <20260403141241.50759-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260403140942.50643-1-sj@kernel.org>
-References: 
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FLTvtaiS;
+	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775225593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zCsOheHk8XlC9CSFSmzc3izuiVKcS+6jE7o78F0/vE0=;
+	b=FLTvtaiSWxQviBvxU4h7/A+XbG3am7WWlQ2wB8YCHyn0ClAEPCQJiSUrj17HebJrE994mN
+	MVgSQo+1wfZ87acCzH6H5WqYi+C/ZyaRqFaJrt5SEiCVGDvyKidPVbDqttZYp8ozVMknBl
+	3P03nWtE9B90+xBCTBBglUItlOuFaOI=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-JDXRzgMIPlug_z9UOfECuA-1; Fri, 03 Apr 2026 10:13:11 -0400
+X-MC-Unique: JDXRzgMIPlug_z9UOfECuA-1
+X-Mimecast-MFC-AGG-ID: JDXRzgMIPlug_z9UOfECuA_1775225591
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8d3e4c19307so278700085a.1
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 07:13:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775225591; x=1775830391;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zCsOheHk8XlC9CSFSmzc3izuiVKcS+6jE7o78F0/vE0=;
+        b=BLsqzMdJxRBM6nyR7PTe9hOS0G2aafhOuQIuNPYMTOS/s7qsmuZpMX06XoUdG0Ciyh
+         SyIA2tk4vWI0UsSToWdxg4HTvcDT1igYGoOedn+HYfAhRMt98v9LvU3Q6UjJY6KMrROk
+         wSHKakeTekpnEbDYFSyoroNoQGbnQzBBRlsf1kQiDr+m91iJlDDG5XA5PMm6KxJw/OLb
+         R5Uyl7Rj+4l9xRz73vB7UiJdItYmlzQFuxLuVWzy+WgXi9c9hF0XasuwUBTB3FgGAHxn
+         x6fCptUI41Kdf5Z+Z2D+5Ii252zVqy1RANzwQuZ1c5V72DfCAuK1y5cA4YFdypWWShcG
+         xtKw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5mRXJmCUmOmPnI+fele3TruoPdX6c2ZSi4v9W0cves1EjsaG/gk7zqRHZr+JicPFAMnfWOxkTNA==@kvack.org
+X-Gm-Message-State: AOJu0YwSv4mhT81OOrODs7lKmavCEoyG5YKPmlpg0g1rlP1nbmAd89Cz
+	SiY4u7VK02aFQxjxnJ4TVJsDKCgYbVWoEpZThCJRSyXjHBbk09vU7ulH2OulE/ZMu60OptPT0wX
+	4up+KcWFantfPxzL6bzPuUTxfVEKQNXnN0GJXeRI0AG2tsmGyQKSh
+X-Gm-Gg: ATEYQzwIdQ0NtF//cNe9ZvYDt7RZ5treDvw3E4oU2G5I9Kk5s8qsI3u4X9xGAB2yEt8
+	4z+UpvbAVsbRwvrK8AoggxyTX1rDGvKODsXkzdKgrN/u32R7Xlr4CXszCxETCPPaUt7wT+AYA16
+	6XA9QcjOwh8JIKQMvuZnNH8sFcNlBQ6ng4rCHbF04Rihy3yZN+mkGaj9fBU6RCI9vDH0i9wDUJ9
+	hCyPRZiJoOKF2+x0dBjVsC1wvjNTTqKEYfaxRUnsqvKWjRsyW9QAv2NiRMM+MOOUSsB4YXlJsDt
+	iRhatns58WdzBEnJ2LPcjgwv7FBcNycspzZ7+r+Ww4QBBo9eadodl77d3v5ODTxVsjxf8Dxx23F
+	+PUoSabmJKu/+1rKjhCIc2Jnn5LN+EKSKKJqBXoNnKv1RQWu0yOjzdL4Mzbf0cAA=
+X-Received: by 2002:a05:620a:470d:b0:8d0:176:58bf with SMTP id af79cd13be357-8d41ec0d06emr460637685a.63.1775225590897;
+        Fri, 03 Apr 2026 07:13:10 -0700 (PDT)
+X-Received: by 2002:a05:620a:470d:b0:8d0:176:58bf with SMTP id af79cd13be357-8d41ec0d06emr460628785a.63.1775225590198;
+        Fri, 03 Apr 2026 07:13:10 -0700 (PDT)
+Received: from localhost (pool-100-17-19-56.bstnma.fios.verizon.net. [100.17.19.56])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d5336aa9f0sm21287085a.28.2026.04.03.07.13.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 07:13:09 -0700 (PDT)
+From: Eric Chanudet <echanude@redhat.com>
+Subject: [PATCH RFC 0/2] cgroup/mem: add a node to double charge in memcg
+Date: Fri, 03 Apr 2026 10:08:34 -0400
+Message-Id: <20260403-cgroup-dmem-memcg-double-charge-v1-0-c371d155de2a@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 760FBA0013
-X-Stat-Signature: h6mnank7nzry5thtwr3jsd8zyseqy13z
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYyNz3eT0ovzSAt2U3NRcXSBOTtdNyS9NyknVBSovAio3SDM0MEi0TEt
+ LSjNSAppSUJSallkBtiFaKcjNWSm2thYATWgic3YAAAA=
+X-Change-ID: 20260327-cgroup-dmem-memcg-double-charge-0f100a9ffbf2
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+ Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ "T.J. Mercier" <tjmercier@google.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
+ Dave Airlie <airlied@gmail.com>, Eric Chanudet <echanude@redhat.com>
+X-Mailer: b4 0.14.2
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2t97aGZZlZ_iPLl3j1Sh6ChL_742KvDSKSI1WZ1yGY0_1775225591
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 397bab69bu6w7jxfzkfs6gnckztfbe4m
+X-Rspamd-Queue-Id: 9937C1C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775225564-496518
-X-HE-Meta: U2FsdGVkX18WW/91+uruuRwDaqi/L2VjpZUpRlGVGx3OnOCNfZwJWii6I7yB2wR4/y0luWHbN946F2y6pCBiTdjxHS/C6TokdmGUoQpqe453ENPrG6UJWDrw/bFwD8yoEX8QGKdmsxbXaamZpR2dPaXSRLmBTcIMd8eqxqy553L++qfE4Jnbg2H7NNFjvuXy2DqUa0pSGITCvWjvY8HEhUJPVa8R5CCnOqvK6SpMDps5svv3yn/3maZ/8HAfSW53s1G5cDmsi7VH6EGfHtonhKXk6H8Iqgq5yZ1rVSjQ3NccXbsRX4F9U4C3bQTM0zrznEpnFnL9RMX3yxhaiJg6OAH1WgmKIlGZurpX5iV1sk2FDzjrw1zyMIjmXuLDG+FNO8/BoifuTnL20kQazQ8oAvKqx6ATiYXkIfYhtV1CPvaFGuAv7Fg4W3IsO5OsR02ivkD3V7zkkkpypN1IHfrzbx6MFy9Hh5TIwzB5Njd6i8gFWAlFPnLkAKh6722y8+zDDd51A03gxTwrfug7eGVb108P5DfZaDUfHNXhOe8M+7D02jlWJn8qAkUkal86yYL5aS2t4H9xchpcs+qRhtYryxbSpx0J6c4ljR6vntbw4oPgA4dvOCrvGbfFqukyjQ+/CE3dyOSfHj1qzS5ti9j7pAaOvcOcY0nfanNWSphpXniczjIpjLCCFb2rr2ZxIg7CD2XlPYjBBDOFHWdikIbmR5zWtPs3NKwedLtk6Bc6dd3wKNyTMm2ljROpTiXi+8XDezwBOi2oQMbi1pEOJWVwrTWn9NVUwzPQIylz3ZLJn3Fus0L6x/0PRUTbTcOVwoBi3Kd4IbgDn71tu7ZFpSRBq64vChgwQV4kHbNyG6UnhL4yVr+kwNSu2Y+UoXKK3j2fgnMSh+W0XXF2djRX1EsNeA9x6agzLF+fwdfXOXIjR8sfTt7/thRZJF21VnGQsSCtARLZBDmNHTMGlXdgCvO
- etMekjpS
- mKcK+/5fNItofHqV0z1N6KTztgI1VwN1ZX/hKO6uFv1gJgQ8WT567O8hfLITfSOK7p74eMS9orDFsrgBkKUySnn3Fjr5iJlEW1tezs06d2Bc4FcqjdWSd1s2qZKawfJqfCDJHIwgpgE6HpMXtrKqnZsVnyKxsne1D0IbL2urnPjrZmMEKbRI7HwyLNsAtW/aMIta8G1jSsm48tVEbRD0iuTxUHcQ2IGjlEjWRAJMzcTHvzFFz94NcpZ0xpyQeWjzOcmYa5BO5fEYq4vEr4qz5ZlL4Rw3rxyCxWhxPRbu5rWzslCyVJ7JS1VhKMmv3RzorZiCP
+X-HE-Tag: 1775225593-919707
+X-HE-Meta: U2FsdGVkX1/F/ire6KMcUZ5AcFDeyrCxlFJVT1KD1iyBgjuAGiXVQITA1GUE9KzMM3BUix6QrOVUcJKwELIdjzKjDpKuqZIpdJ1u8X27fmGR7rgfwEgf8xTEKcZDdHcmSxGaabk8tRN+rGC+vYqPMADkxDUaowBTxe/MCyuVzj3xTViBw0BSEXar37R1wltwZ7DG+x1cYDDHu0HCaROgeaUJziT3rZEFT0smv7KJn+160jxVttOEznP+xBs8VP7hCErul8MEAY1r5eoN1umyD77y8c2FMOGQX9R7x0hc/DGOwjCC0gWQmIP17yvIIuCwjy3uoYFk4N4Wf/ypy6p2RBedd/P1DI7h6MSxych14kTyQPu+GEN8DOI2s+MUgxVDphUdvI6dZvHwfKCCUJ1/5ruUCGGmV+xmgwyhBUyXVrN9OWzzIUu0jnDrrJGkw8B53a6nbkpSHsXT1Vgkjw0lHKIPjvGhz61EtnbbiocHNb9gLPszhURuaZyrghzmd/78ae5jpmQL7PdDpUDoyPWKPjKInJ1xm616hIgZTij5DXfAYXKx3k4UZ0WWCIhuagJ2/miULYUbBll7ND5+etvU3LPR+ByeNQUTN2nzjFRlAslWgHZyEg30ZAKm/FUzLlPqxvbh68vCrlJ4csjDCeZmzS3bmkXEUYNODfUoZHtqE61ZmaMKEsA+qbZ9RL3tXSbdwOcuz4trNUGXrYPACOiha3X2OVTgyd+cnyg1guC+PBhcQhsnXOPu04+u6AVl585HPNUks6rNoF8TCY/Uykvm7fxB+pI4qtWG8wvPjE5pGlPesPzA0t5MZzDDI2jNZ5HZJ/dZ8i7LiHKq9ow8ZUAUZhHx3nsp0wPjmybRSkObXoK4ICepnV0oFfh9kz9RXu6QoUD2TlcI/J9Mbji7lh2bdGhEEePn8JzmQ1/NuUA1TLnylAfEflVCuNcXfL0CnXkHzQb+kQSEu+GUA4orPK1
+ DUjUBb99
+ vnIXtL0w+gjmU3PKMvmF7jzmhzH6BI2LmthF4odDT/1FzXt5Hg6LkYv4w02C9ivSQRKc3RcFYVVyL94kAFL7LA1RJYqcCkO+dnaH0vtRb9GkDnwRMKi7unaoyOm3G4T2j14Uqjkbgdd8NJ1U/ayIALB8Weaka2RK6EiPb8jvkwUdT23F2BKfcO6P61SybAS9vYu7cGL9D5d/ndI91ZH9Kn6faIXF150vCbJMUYYVlE5qssCanhelVwzWbmouCC/u7fcOI8xIUxT3vPO8NjRltxbrOckSsYlthb9gAh/pHvv12QItZ3Zi5cuquqWonI163fmiAUKnDg+tgXE5+JKrtIbpTfujR+Q/lJubGUGrgLIa8oRmFF9XxPeHPQm2Hg8h4rkP4kKf53JRlu0VFsPblk9IR+bU+0OvnxblbhwCgGGow3ygdaX0cxFywudnTHOdmN/UInNRCVwmnbbR+6SL3VrvhAwSbTxzfb7b7axlSJnwqMeYlmwTUHMtuSZvPxymyKDfL8wkMNbHz0l1QILo8z682hsWY2CuHUTmt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,52 +138,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Apr 2026 07:09:41 -0700 SeongJae Park <sj@kernel.org> wrote:
+It was suggested previously[1] to introduce a knob for dmem region to
+double charge dmem and memcg at the will of the administrator.
 
-> On Fri,  3 Apr 2026 16:29:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> 
-> > Hi SeongJae,
-> > 
-> > Sorry for missing the discussion before sending out v3. I was too
-> > focused on the code and missed the context of your questions.
-> 
-> No worries.  From next time, please ensure discussions on the last version is
-> ended, by replying to questions and waiting about one day for giving others to
-> chime in, before sending the next version.
+This RFC tries do that in the dmem controller through the cgroupfs
+interface already available and walk through the problems that creates.
 
-Also, please don't rush.  Let's take enough time for both writing and reviewing
-of the code.
+[1] https://lore.kernel.org/all/a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com/
 
+Signed-off-by: Eric Chanudet <echanude@redhat.com>
+---
+Eric Chanudet (2):
+      mm/memcontrol: add page-level charge/uncharge functions
+      cgroup/dmem: add a node to double charge in memcg
 
-Thanks,
-SJ
+ include/linux/memcontrol.h |  4 +++
+ kernel/cgroup/dmem.c       | 86 ++++++++++++++++++++++++++++++++++++++++++++--
+ mm/memcontrol.c            | 24 +++++++++++++
+ 3 files changed, 111 insertions(+), 3 deletions(-)
+---
+base-commit: 4b9c36c83b34f710da9573291404f6a2246251c1
+change-id: 20260327-cgroup-dmem-memcg-double-charge-0f100a9ffbf2
 
-> [...]
-> 
-> Thank you for all your answers to my questions and requests.  That all make
-> sense to me.
-> 
-> > 
-> > > 
-> > > [...]
-> > > 
-> > > The code changes look good to me.
-> > > 
-> > > [1] https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com
-> > 
-> > Thank you for your review and patience.
-> 
-> You are always welcome.
-> 
-> > 
-> > [1] https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
+Best regards,
+-- 
+Eric Chanudet <echanude@redhat.com>
 
-Sent using hkml (https://github.com/sjp38/hackermail)
 
