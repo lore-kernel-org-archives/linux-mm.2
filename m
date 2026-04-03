@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 924C6D6AB1B
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 00:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71FEFCC6B3E
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 00:52:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 072A86B0089; Thu,  2 Apr 2026 20:51:51 -0400 (EDT)
+	id DB9486B008C; Thu,  2 Apr 2026 20:52:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04A5B6B008A; Thu,  2 Apr 2026 20:51:50 -0400 (EDT)
+	id D69B56B0092; Thu,  2 Apr 2026 20:52:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA2D06B008C; Thu,  2 Apr 2026 20:51:50 -0400 (EDT)
+	id C59276B0093; Thu,  2 Apr 2026 20:52:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D72446B0089
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 20:51:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84E251B71D0
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:51:50 +0000 (UTC)
-X-FDA: 84615417180.08.D0E119E
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BE0141C000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:51:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=C7AhoVcN;
-	spf=pass (imf20.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.172 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B422E6B008C
+	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 20:52:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BCC01A0276
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:52:08 +0000 (UTC)
+X-FDA: 84615417936.05.8A9D23D
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6C96B80004
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:52:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=DqMM7NSa;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.173 as permitted sender) smtp.mailfrom=dianders@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775177508;
+	s=arc-20220608; t=1775177526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HM9+eAkKdOrABgkFmwCHnBiWfkCG9uPNCsfKJXOxWMI=;
-	b=HoJaeT/oHKka0JxJRTAa7/95Rfi+GIG48gn/M4BhEvAVZ7o+jyXOMMI4anMDFJln3/hUyb
-	OcR74NeO0F1M4vDzaZXXgtFza9WjtcI6bBE/hU1/zYZZ53lOqoyhraY8dHzhPb++0itV2c
-	7G0DVi8GL8N8JkLjo0JlmODqWDH3llM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=C7AhoVcN;
-	spf=pass (imf20.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.172 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775177508; a=rsa-sha256;
+	bh=VEt3hSd9EKLTT0Wo55fxgtHBJYKHT3uVPRy+V8bzYNY=;
+	b=Ek8N9Ku+Bu8zK0CPDHOi49IZVGeZm1QCVd9Ni6EvgKBfR84SzWkfaoDYHZcf327b6yZS39
+	nsaxWyFJyriEFHH4DuWJOcdemAvBopBmIVK/j17X5sugSRF9oIH+piTHMIsOXQWr3tyugl
+	yVTYcuKeLJI7aoGRoSnI94TosBnEEko=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775177526; a=rsa-sha256;
 	cv=none;
-	b=mz/PK+cKmhxF9yeaK91IstTABfwZBtgcQjIivq4rxJK2z+4oGyIyvr7TQOh8eoKIMZjgQ9
-	b7EMqSg4bS+rdjcDq34lmxRViRWj4+Ui4sLFjYi5QiQwC7wY8ksDhqhOzYIK7HX7Q8ryP1
-	OVVFF9KQLzdPagHPZ/3PUBid25iie88=
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2c54c68db4dso2775235eec.0
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 17:51:48 -0700 (PDT)
+	b=8SCAagmO826HGpWNApdSyOQNUwyPCVL82z+pBmmp3Wm+DmXGuipcM5sjkSJqqgL2Fm8ReN
+	jvfSP/PkZw/IQ9wYS/+1y1w7gGUlQo81/U1t9ysi7PZ6fbeNDhKGhEGlnPAKyRVNtSmQK8
+	fZ0/Gvg1NbX2s+OCiyVCAUC0X7p8Nhc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=DqMM7NSa;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf02.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.173 as permitted sender) smtp.mailfrom=dianders@chromium.org
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2bdd40d3c61so1322704eec.1
+        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 17:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1775177507; x=1775782307; darn=kvack.org;
+        d=chromium.org; s=google; t=1775177525; x=1775782325; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HM9+eAkKdOrABgkFmwCHnBiWfkCG9uPNCsfKJXOxWMI=;
-        b=C7AhoVcNBfdYmStSTEsySS8OC62X+xmCg+ABXamKZx7tmf2OZkdStJlvlv9ku1xrz8
-         AQAJ28NIkedjQETwLh0RTa7PLPIL7zFZMGmsCQdwty2MeL5Libbxmnv9jzuYpOXNBLr+
-         sMQN7pPRQpF8yfr8yvhNNs7O19cHUvhj3tiUc=
+        bh=VEt3hSd9EKLTT0Wo55fxgtHBJYKHT3uVPRy+V8bzYNY=;
+        b=DqMM7NSaFy3NRqG+4vT72k4JtmPoLlp1I4PSUmbtayNqlzNcgHCWkpKM57ObeiQo4Z
+         +oQKIjLZe01F256CMvN5jBi7V01sR5o1mqLHH23FgXHY0wjCmNAMmKnAs3xG5uqe1QYg
+         umXoCo+2eDz3iVDHI+02fSELf8W6OnVEJQZDo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775177507; x=1775782307;
+        d=1e100.net; s=20251104; t=1775177525; x=1775782325;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HM9+eAkKdOrABgkFmwCHnBiWfkCG9uPNCsfKJXOxWMI=;
-        b=IpKIGC+JjLfFlFN0798WBhd66+sifyDIQS/zEIZZsCKCJ+yXncv+O6Vq6Xeu9FDlD2
-         zAocaXzdOPqgC5ilIxqXigt5+JOgrUifmvzEV2vE/310lS8ZpbIxJGJzb7pzkqvrYOiC
-         nv2bzuQoywKItsdt3C1nrydS0kNDm/R4j57na2NkQhryUdxpAjrC9yfVv7Xyl4y7EDe/
-         vDb/oxIcI+dk3eVp/LoUAZFiD2H6u97TLPjAQphN2h/Td7n/uA4GvIbZA9Mq8swLIEAJ
-         bmjDEpecuUORe1Zm5r4MI7qIv+iIZBKaVJYRMEPTv/0+v4sQxYzjdCtJZdPRKtSme9J1
-         c9zA==
-X-Forwarded-Encrypted: i=1; AJvYcCWL62FuVSGvHgsC3DcCBZsKg9TwPIB5pOTjN9+SNqyg5vGqiuWrKkhCIe/mHqtfWemvAzyIJsTHHg==@kvack.org
-X-Gm-Message-State: AOJu0YzfK9Pvs/hXiBR9Oovd5IRrt9GTiuFpxDF4fSzcokZTPE8PB1nM
-	KMhFvcRY0jeXgcUacTQV/yR82TivlexYnwsbK2yugk7mVkIPNHcxkY3UQuLuvIYD6Q==
-X-Gm-Gg: AeBDievkKyxUhDoAgJX4v6UeeKsD5GL/uNwc3iZVbDWt47Ztam5o7jLwpDOV9RUl9AA
-	ljRfttybAZb1141kO+5vgG17hmWTU2Qv142YDW2y7peeIAtZBpHbTS6lMiLWAx40kqaQwPi+CTW
-	CphmFpyseEuT5X4YWxo38g9scykxL6Axo24qGdciYsJP/lTCDEymYrZ5mUiRePMjX+iWXnYOij+
-	OXbSeAFiuszQ/iR23YuxejzRCTOoN0bxvV+qDRKtziGdxeRx80RqLQbMrlJZOSLflWxgFd1xlAD
-	OHk5mZBkjt7qta/KpJb/qvg2vHFWhlVJeWGjSaM9RabgVXAMBbUQpUTJv+mfQB/iIKsppmiDmhH
-	tHi+HCufxscIlWevSXzlrfLBTmvAYJiTdSJK/fv3UkSw9htOfz1h5D11Vyxx/K/hNiTd22nw9xC
-	9n2Cy/X29ei8KNOvXt7zK11+Q5m8oIItidHy0E+p/3DaDpRwM08H5ZvOrb03vWHDZYXmOGriMdZ
-	q+/cgqf9pw=
-X-Received: by 2002:a05:7300:a506:b0:2c5:50fe:c786 with SMTP id 5a478bee46e88-2cbfa2ce19dmr720875eec.9.1775177507537;
-        Thu, 02 Apr 2026 17:51:47 -0700 (PDT)
+        bh=VEt3hSd9EKLTT0Wo55fxgtHBJYKHT3uVPRy+V8bzYNY=;
+        b=UoaKiw3W/GaWmXyE3wsXxvJAUVP/mL/9VfFqVuly6kyKNVeP6PssIyfHrIdoJfOAl3
+         yzoxYy5Kd01elTRuSByD1GGJjpiav/mDov0Q4ChaHhOiSeoC7OUhhyjG0qy5ziJohckp
+         8fQsrQMKjbMUxNr/0/WN69+TQtsfva6QQjLudnv1M2a7WmFj5Ka94aYyx/kIlUwVx+KL
+         Q55yUeaghoxnsXT6DTW1blkIFDIXQi/YTy6Gk1GL4jTpDfDMsGJd15Kne6eukQt8rhgJ
+         xYAnwBcSQsiztoD2CqAQl4wqMtVWOh9ganwWFr++O1rJJRa7MG186GOLqzxmoQE5zMq7
+         rJsg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8bMSpCNAWHALydU+BcLbQ35ChF0HuH6RqKqIXxKXs/tVz7Yp8HwBj0e0LAjfUXSisTyJjVbC6Xg==@kvack.org
+X-Gm-Message-State: AOJu0YzNMWrxkdxJ9Yd80IZgrM6MNw6IrITjFl2sDNs7ceaNsYmWhZ2z
+	+obnQdLiHVv6vGtbRGXozfIoefD6sScWc5B2h5b2C9d4hianzHz1kNAE/QumfnBLEg==
+X-Gm-Gg: ATEYQzzMj1dDH37zIFYQo5AZmSi60lfEy/UIz+6uYLpsJut2CVkVNBgk3o9sTmoUZEj
+	TczNEbgItXtd4f47Bu+QnFkhP62QmkxdNgHlKNVS4hjeOX33ZssJQp3OuMbZzs8gCb9KF539oYb
+	x4jaCfUxgliQnfYLzQB+T7PMKcSxbRbsxjr5bI5tdI3rxe1a5nUPrJ934mj0RGrQm1+ykfZcjWT
+	/N2gkvj9eWnkiRlu3GBWbF9oQvw3PMUOt3LHvNFXRo3CG1xS0Dn8O1ZI3Vk+TKhycpztWzX93K6
+	M1z9FoUwSDU99u8VHkQVGVN6fGNjwTa4anLmwRt6RvHYK1yk4qIcCYdk1fiE0k2KpWiGIZfEJaP
+	7EhNdtf/hMfncaF9+BSYyQlBrGp8z4iD9PcpKkRVAvywOH1YcDMYN4+c1QdE0seAFEKB+/UFsgO
+	B4JG/GRIToiYJ6YUCIAcQmg3jjfIW+2YgzShW1C7PKUJekMTn/RHI4xROWaPLp+M6FhoLaLl9xm
+	Wt5Rr8wlt4=
+X-Received: by 2002:a05:7022:423:b0:119:e56b:91ec with SMTP id a92af1059eb24-12bfb75ee38mr560487c88.29.1775177525063;
+        Thu, 02 Apr 2026 17:52:05 -0700 (PDT)
 Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:5db3:7542:a530:f43a])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca78df3b84sm3630074eec.5.2026.04.02.17.51.45
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca78df3b84sm3630074eec.5.2026.04.02.17.52.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 17:51:46 -0700 (PDT)
+        Thu, 02 Apr 2026 17:52:04 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -104,29 +104,49 @@ Cc: Robin Murphy <robin.murphy@arm.com>,
 	Alexey Kardashevskiy <aik@ozlabs.ru>,
 	Johan Hovold <johan@kernel.org>,
 	Douglas Anderson <dianders@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
+	ardb@kernel.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	chleroy@kernel.org,
+	david@kernel.org,
 	driver-core@lists.linux.dev,
-	iommu@lists.linux.dev,
+	kees@kernel.org,
+	kevin.brodsky@arm.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cxl@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	m.szyprowski@samsung.com
-Subject: [PATCH v3 4/9] driver core: Replace dev->dma_skip_sync with DEV_FLAG_DMA_SKIP_SYNC
-Date: Thu,  2 Apr 2026 17:49:50 -0700
-Message-ID: <20260402174925.v3.4.Icf072aa4184dd86a88fa8ca195b09d1651984000@changeid>
+	linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com,
+	maz@kernel.org,
+	miko.lenczewski@arm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	oupton@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	will@kernel.org,
+	yangyicong@hisilicon.com,
+	yeoreum.yun@arm.com
+Subject: [PATCH v3 9/9] driver core: Replace dev->offline + ->offline_disabled with DEV_FLAGs
+Date: Thu,  2 Apr 2026 17:49:55 -0700
+Message-ID: <20260402174925.v3.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
 X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
 In-Reply-To: <20260403005005.30424-1-dianders@chromium.org>
 References: <20260403005005.30424-1-dianders@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BE0141C000A
-X-Stat-Signature: 1dcu5kmgpmbiekmxbxxkeryqdtinw8ik
+X-Rspamd-Queue-Id: 6C96B80004
+X-Stat-Signature: r4k8jokejzw8okkrrdzpxh5yaqcobbrr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775177508-601381
-X-HE-Meta: U2FsdGVkX1+QdIpMFYfw4Ebs+j8R/500p/GWi+JRoFWS9XpvARseF2MsthIEK9/82wAC0HkoK5gBan6LTFOq9uko6aNm8cnRSLibaI+0rJIndaIPdgCdU0GL8SwaH8f1nyN2RqsTpvZP1kJOElj8Q4pUqnRw7D/5cUMIIcrzuHQDRuluvuF4kIK4+MWSLBui4AbRisNrJuj7aFSpt8gYrkR8JcC+l5j+q3jUKhWU81WnP2MrIEdeqSP1Ozgt6MENyeIcCWcV2ZVgDnL+Mv0DSbVKfN7aQ3QI5UOaKNMca+b9i+0qI8mpwi4cFDa+21igPdalWVpHY30H0W+ai78ssUkfBKaJZZb/D7/PdeMzxp2oKCSHkIKjDGAonEwFzlBZOx17+4kyUSu1BMv056KfNDWj5mvKmZMJepNNkoxp3ljBNt7GZ1paq7OrkwKXPBZCy9mwxyqvu0KhMyIFwHiqNNlkh7MZvKm0/fDLLWiWloOaMAPEPNzHlM2FNcaiDaQS3BbmXhE5hiCfPIuLv8FkVgIREr5OTqBwF4DNO8UmprSBD+sCv8U8irxmkwVRrwjun7yFiTp4NjScoH94/LnL3y0ypWJimBwLLP7O0/vIGM8JWBJds/K4/i4JVYyYwBHnQHT8OxvR6bg2UNneUaitsaNDFXidw0kM1C1PWfFFkM7vkM5TjVYZsQUv1JokQgu7ng5enanci/+DpBjadVvf00wDZEya74PeMMjp0PyNl2qGu9klw1yyujm+SevIj392LPKbxJj8Bfm524Xs80I7T9skXtFUbVN71njrXzLNjAk8X4cAMLK7lSYs3TF+ljP/JBSg43ivfGM5UvRoDsYRabz+aCySaqoo7r/QtjfvJ9764ZBrqBa056TBd4Ccl3Qfq9bZvqfusvCuT35v7pRlRQ29ul8GfPwBz6zOaXpTgzY7GZDXF69rrOpKfIna9+KvqpRSAnk6yxRIgiIs0eF
- X1LcPh8y
- e0XivkZP36Yi9pzq6yUKtbJ2QVkAb3W9LIE8eC0H5p6ujRptx3/u14wfmnqa8T0fQOLp3cVEnjqfW9yOOq6PUn//yUi2Oi9E8JOKR5e8+flCGXCxw++GvzoNuJBCbjkGZwrz4HrozZmPskFU8ZUQSg0bRRWrDkUd3w7+C
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775177526-514827
+X-HE-Meta: U2FsdGVkX1/sUgRsAxH5Tu7nyQFfQ/YxY/F8kphBBq5hJxw25mecqqDr8Ya5V+Qx4q197bY0abcC4+eCRnfKbbxXVOui2KkPtYyaWN1jgrwCjhuCXeWW/yeXgnjDtcXROMXjez/Uh5NLp+iBNk3iSoo6AGIRyVo+ahoi6eSHsZrKtOk+KeQVBn0O3hMBYVJ1+zGysJ49ytO6bxC4nvXQcBOCt6ugjIOLazZuneI/RlxWedrOgx7F/7x5tB4xm4CvjXPs0TPvnPg8BgnAUkx+sst5FPQFfMt3mAzPplyMAW6Kn+K0kczSq9RPq8SmgoHB+UUoiN8DhNhtzIB2cbWorPLgk7mPAOM1QcF5MZhwDqHSIfuU1qyPpZ+GKJ/UZbQrWBYG69Yc1f2upy19LjnGv4RnosT3lzf1ohi5G+KsdyQLO6+nBAdDkfv61t16Mqt8+qVqa+azbTpZMhUmQuqjkKomEktUiW+bWFw0MGEZBha5AvpC97ebF2xwMXGuet2GuL75AGUY00Mlz5tPfnkzfiGVswXFJN2oDw+xelj7LOpUnihpQV8yJQuaEMcnSlZY7hOymIXK3tyab+PI25uZDF+vmsMCeqICJD1BhbMXIfoLvpzkNO0u6CA0bB3sNNh73IEKp6gWYVUGTMpd28lKX20d2YJmPHPYbcphjtLL2AwnVN6rCg3XX6wNgwYQQ/zwm6E9q+QVzTSlq+zuqEVCJSAfd3InAV8wLy3s7HQw0vMKKy+UgH2MbkjXzguZ02YEdrGJobsrYNGDCytIH+rkSpv3LY0osvMepmmEy/7uyrd/1F/Ntu/cv/gFWGy5PIGkxij3I6BqMEzhh5otQLjVLpa7E4lThUUEjSfO8sgyEoP3VqaHNJf4rTihtD2F1b7GuRjIVhp8I1c/5cV2i2AUnKnjrNmOwjx6nzhCcFNhIICuu8SiwNwOUedj0TO3oDCnR6nadCPp9wem71FmM5S
+ hzssnn/l
+ Nme7QU2a7JFXdYTl/yOqd+D5361TDhFQJqQKtK8sX06j62/WD5XwGc9XuOdC6caqrxwl0lVLM8gtzmUeCBRqqUZgnkvJIDKCwzevcXXSjYf51IRIQY9J1keT7Xt8CK+F5Xfmmm8tWD2m5Oth89hg3m2zkarHKRrSee/9PDvaUnos7ssJrYaxIEW+6uzKoHElbJPTslgYTm9qtlrm8OqPXNkJIN48vtlcvHpr1mukFLWl+ue2WCgzkQOBczTJnDDO/nHSucCcqKI2GgtjIc1MRTJh8OGXXA82s4t6mwl+zXa5a0D6PnBUp4qfoBJL8JKvyQ27BMtOvkGC1Hugm+H3yBBN5PzrsSaEicTtoiu8d28PIr2dLKvcubujWiqFtNjtwuet/UPvH7df3fsaGddNR+G8YzxqVnqWBBL8kLAhTvnF5tSzcbLU04F9UVngN8svLW1Q6aanudK49FbCZmD2UjYP0n95xSkDKyUva
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,145 +155,244 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 In C, bitfields are not necessarily safe to modify from multiple
-threads without locking. Switch "dma_skip_sync" over to the "flags"
-field so modifications are safe.
+threads without locking. Switch "offline" and "offline_disabled" over
+to the "flags" field so modifications are safe.
 
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Christoph Hellwig <hch@lst.de>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Toshi Kani <toshi.kani@hp.com>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 Not fixing any known bugs; problem is theoretical and found by code
 inspection. Change is done somewhat manually and only lightly tested
 (mostly compile-time tested).
 
-NOTE: even though previously we only took up a bit if
-CONFIG_DMA_NEED_SYNC, in this change I reserve the bit
-unconditionally. While we could get the "dynamic" behavior by changing
-the flags definition to be an "enum", it doesn't seem worth it at this
-point.
-
 Changes in v3:
 - New
 
- include/linux/device.h      | 7 +++----
- include/linux/dma-map-ops.h | 4 ++--
- include/linux/dma-mapping.h | 2 +-
- kernel/dma/mapping.c        | 8 ++++----
- mm/hmm.c                    | 2 +-
- 5 files changed, 11 insertions(+), 12 deletions(-)
+ arch/arm64/kernel/cpufeature.c                |  2 +-
+ .../platforms/pseries/hotplug-memory.c        |  4 ++--
+ drivers/acpi/scan.c                           |  3 ++-
+ drivers/base/core.c                           | 19 ++++++++++---------
+ drivers/base/cpu.c                            |  4 ++--
+ drivers/base/memory.c                         |  2 +-
+ include/linux/device.h                        |  9 ++++-----
+ kernel/cpu.c                                  |  4 ++--
+ 8 files changed, 24 insertions(+), 23 deletions(-)
 
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 32c2dbcc0c64..f6f7c35b7a93 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -4042,7 +4042,7 @@ static int enable_mismatched_32bit_el0(unsigned int cpu)
+ 	 */
+ 	lucky_winner = cpu_32bit ? cpu : cpumask_any_and(cpu_32bit_el0_mask,
+ 							 cpu_active_mask);
+-	get_cpu_device(lucky_winner)->offline_disabled = true;
++	set_bit(DEV_FLAG_OFFLINE_DISABLED, &get_cpu_device(lucky_winner)->flags);
+ 	setup_elf_hwcaps(compat_elf_hwcaps);
+ 	elf_hwcap_fixup();
+ 	pr_info("Asymmetric 32-bit EL0 support detected on CPU %u; CPU hot-unplug disabled on CPU %u\n",
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index b2f14db59034..d9a0a75ada46 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -213,9 +213,9 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (online && mem_block->dev.offline)
++	if (online && test_bit(DEV_FLAG_OFFLINE, &mem_block->dev.flags))
+ 		rc = device_online(&mem_block->dev);
+-	else if (!online && !mem_block->dev.offline)
++	else if (!online && !test_bit(DEV_FLAG_OFFLINE, &mem_block->dev.flags))
+ 		rc = device_offline(&mem_block->dev);
+ 	else
+ 		rc = 0;
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index e8cdbdb46fdb..f2707b704468 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -122,7 +122,8 @@ bool acpi_scan_is_offline(struct acpi_device *adev, bool uevent)
+ 	mutex_lock_nested(&adev->physical_node_lock, SINGLE_DEPTH_NESTING);
+ 
+ 	list_for_each_entry(pn, &adev->physical_node_list, node)
+-		if (device_supports_offline(pn->dev) && !pn->dev->offline) {
++		if (device_supports_offline(pn->dev) &&
++		    !test_bit(DEV_FLAG_OFFLINE, &pn->dev->flags)) {
+ 			if (uevent)
+ 				kobject_uevent_env(&pn->dev->kobj, KOBJ_CHANGE, envp);
+ 
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index a87bd40499b6..63d724ece384 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2789,7 +2789,7 @@ static ssize_t online_show(struct device *dev, struct device_attribute *attr,
+ 	bool val;
+ 
+ 	device_lock(dev);
+-	val = !dev->offline;
++	val = !test_bit(DEV_FLAG_OFFLINE, &dev->flags);
+ 	device_unlock(dev);
+ 	return sysfs_emit(buf, "%u\n", val);
+ }
+@@ -2914,7 +2914,7 @@ static int device_add_attrs(struct device *dev)
+ 	if (error)
+ 		goto err_remove_type_groups;
+ 
+-	if (device_supports_offline(dev) && !dev->offline_disabled) {
++	if (device_supports_offline(dev) && !test_bit(DEV_FLAG_OFFLINE_DISABLED, &dev->flags)) {
+ 		error = device_create_file(dev, &dev_attr_online);
+ 		if (error)
+ 			goto err_remove_dev_groups;
+@@ -4179,7 +4179,8 @@ static int device_check_offline(struct device *dev, void *not_used)
+ 	if (ret)
+ 		return ret;
+ 
+-	return device_supports_offline(dev) && !dev->offline ? -EBUSY : 0;
++	return device_supports_offline(dev) &&
++	       !test_bit(DEV_FLAG_OFFLINE, &dev->flags) ? -EBUSY : 0;
+ }
+ 
+ /**
+@@ -4197,7 +4198,7 @@ int device_offline(struct device *dev)
+ {
+ 	int ret;
+ 
+-	if (dev->offline_disabled)
++	if (test_bit(DEV_FLAG_OFFLINE_DISABLED, &dev->flags))
+ 		return -EPERM;
+ 
+ 	ret = device_for_each_child(dev, NULL, device_check_offline);
+@@ -4206,13 +4207,13 @@ int device_offline(struct device *dev)
+ 
+ 	device_lock(dev);
+ 	if (device_supports_offline(dev)) {
+-		if (dev->offline) {
++		if (test_bit(DEV_FLAG_OFFLINE, &dev->flags)) {
+ 			ret = 1;
+ 		} else {
+ 			ret = dev->bus->offline(dev);
+ 			if (!ret) {
+ 				kobject_uevent(&dev->kobj, KOBJ_OFFLINE);
+-				dev->offline = true;
++				set_bit(DEV_FLAG_OFFLINE, &dev->flags);
+ 			}
+ 		}
+ 	}
+@@ -4237,11 +4238,11 @@ int device_online(struct device *dev)
+ 
+ 	device_lock(dev);
+ 	if (device_supports_offline(dev)) {
+-		if (dev->offline) {
++		if (test_bit(DEV_FLAG_OFFLINE, &dev->flags)) {
+ 			ret = dev->bus->online(dev);
+ 			if (!ret) {
+ 				kobject_uevent(&dev->kobj, KOBJ_ONLINE);
+-				dev->offline = false;
++				clear_bit(DEV_FLAG_OFFLINE, &dev->flags);
+ 			}
+ 		} else {
+ 			ret = 1;
+@@ -4715,7 +4716,7 @@ static int device_attrs_change_owner(struct device *dev, kuid_t kuid,
+ 	if (error)
+ 		return error;
+ 
+-	if (device_supports_offline(dev) && !dev->offline_disabled) {
++	if (device_supports_offline(dev) && !test_bit(DEV_FLAG_OFFLINE_DISABLED, &dev->flags)) {
+ 		/* Change online device attributes of @dev to @kuid/@kgid. */
+ 		error = sysfs_file_change_owner(kobj, dev_attr_online.attr.name,
+ 						kuid, kgid);
+diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+index 875abdc9942e..e4e6a399def4 100644
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -422,8 +422,8 @@ int register_cpu(struct cpu *cpu, int num)
+ 	cpu->dev.id = num;
+ 	cpu->dev.bus = &cpu_subsys;
+ 	cpu->dev.release = cpu_device_release;
+-	cpu->dev.offline_disabled = !cpu->hotpluggable;
+-	cpu->dev.offline = !cpu_online(num);
++	assign_bit(DEV_FLAG_OFFLINE_DISABLED, &cpu->dev.flags, !cpu->hotpluggable);
++	assign_bit(DEV_FLAG_OFFLINE, &cpu->dev.flags, !cpu_online(num));
+ 	cpu->dev.of_node = of_get_cpu_node(num, NULL);
+ 	cpu->dev.groups = common_cpu_attr_groups;
+ 	if (cpu->hotpluggable)
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index a3091924918b..7f42727dde81 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -697,7 +697,7 @@ static int __add_memory_block(struct memory_block *memory)
+ 	memory->dev.id = memory->start_section_nr / sections_per_block;
+ 	memory->dev.release = memory_block_release;
+ 	memory->dev.groups = memory_memblk_attr_groups;
+-	memory->dev.offline = memory->state == MEM_OFFLINE;
++	assign_bit(DEV_FLAG_OFFLINE, &memory->dev.flags, memory->state == MEM_OFFLINE);
+ 
+ 	ret = device_register(&memory->dev);
+ 	if (ret) {
 diff --git a/include/linux/device.h b/include/linux/device.h
-index e74c7d0813ce..e900748d3038 100644
+index f6ca067bacca..fd53aa04cad9 100644
 --- a/include/linux/device.h
 +++ b/include/linux/device.h
-@@ -470,11 +470,14 @@ struct device_physical_location {
-  *		until other devices probe successfully.
-  * @DEV_FLAG_DMA_IOMMU: Device is using default IOMMU implementation for DMA and
-  *		doesn't rely on dma_ops structure.
-+ * @DEV_FLAG_DMA_SKIP_SYNC: DMA sync operations can be skipped for coherent
-+ *		buffers.
+@@ -484,6 +484,8 @@ struct device_physical_location {
+  *		architecture supports non-coherent devices.
+  * @DEV_FLAG_OF_NODE_REUSED: Set if the device-tree node is shared with an
+  *		ancestor device.
++ * @DEV_FLAG_OFFLINE_DISABLED: If set, the device is permanently online.
++ * @DEV_FLAG_OFFLINE: Set after successful invocation of bus type's .offline().
   */
  enum struct_device_flags {
  	DEV_FLAG_READY_TO_PROBE,
- 	DEV_FLAG_CAN_MATCH,
- 	DEV_FLAG_DMA_IOMMU,
-+	DEV_FLAG_DMA_SKIP_SYNC,
+@@ -494,6 +496,8 @@ enum struct_device_flags {
+ 	DEV_FLAG_STATE_SYNCED,
+ 	DEV_FLAG_DMA_COHERENT,
+ 	DEV_FLAG_OF_NODE_REUSED,
++	DEV_FLAG_OFFLINE_DISABLED,
++	DEV_FLAG_OFFLINE,
  };
  
  /**
-@@ -566,7 +569,6 @@ enum struct_device_flags {
-  *		and optionall (if the coherent mask is large enough) also
-  *		for dma allocations.  This flag is managed by the dma ops
-  *		instance from ->dma_supported.
-- * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
+@@ -571,8 +575,6 @@ enum struct_device_flags {
+  *              should be set by the subsystem / bus driver that discovered
+  *              the device.
+  *
+- * @offline_disabled: If set, the device is permanently online.
+- * @offline:	Set after successful invocation of bus type's .offline().
   * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
   *
   * At the lowest level, every device in a Linux system is represented by an
-@@ -683,9 +685,6 @@ struct device {
- #ifdef CONFIG_DMA_OPS_BYPASS
- 	bool			dma_ops_bypass : 1;
- #endif
--#ifdef CONFIG_DMA_NEED_SYNC
--	bool			dma_skip_sync:1;
--#endif
+@@ -677,9 +679,6 @@ struct device {
  
+ 	enum device_removable	removable;
+ 
+-	bool			offline_disabled:1;
+-	bool			offline:1;
+-
  	unsigned long		flags;
  };
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index 60b63756df82..4d9d1fe3277c 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -245,8 +245,8 @@ static inline void dma_reset_need_sync(struct device *dev)
- {
- #ifdef CONFIG_DMA_NEED_SYNC
- 	/* Reset it only once so that the function can be called on hotpath */
--	if (unlikely(dev->dma_skip_sync))
--		dev->dma_skip_sync = false;
-+	if (unlikely(test_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags)))
-+		clear_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags);
- #endif
- }
  
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 99ef042ecdb4..23273b0fe84e 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -419,7 +419,7 @@ bool __dma_need_sync(struct device *dev, dma_addr_t dma_addr);
- static inline bool dma_dev_need_sync(const struct device *dev)
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index bc4f7a9ba64e..15a873ad8025 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2639,7 +2639,7 @@ static void cpuhp_offline_cpu_device(unsigned int cpu)
  {
- 	/* Always call DMA sync operations when debugging is enabled */
--	return !dev->dma_skip_sync || IS_ENABLED(CONFIG_DMA_API_DEBUG);
-+	return !test_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags) || IS_ENABLED(CONFIG_DMA_API_DEBUG);
- }
+ 	struct device *dev = get_cpu_device(cpu);
  
- static inline void dma_sync_single_for_cpu(struct device *dev, dma_addr_t addr,
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 6d3dd0bd3a88..f50b648ed460 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -467,7 +467,7 @@ bool dma_need_unmap(struct device *dev)
+-	dev->offline = true;
++	set_bit(DEV_FLAG_OFFLINE, &dev->flags);
+ 	/* Tell user space about the state change */
+ 	kobject_uevent(&dev->kobj, KOBJ_OFFLINE);
+ }
+@@ -2648,7 +2648,7 @@ static void cpuhp_online_cpu_device(unsigned int cpu)
  {
- 	if (!dma_map_direct(dev, get_dma_ops(dev)))
- 		return true;
--	if (!dev->dma_skip_sync)
-+	if (!test_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags))
- 		return true;
- 	return IS_ENABLED(CONFIG_DMA_API_DEBUG);
+ 	struct device *dev = get_cpu_device(cpu);
+ 
+-	dev->offline = false;
++	clear_bit(DEV_FLAG_OFFLINE, &dev->flags);
+ 	/* Tell user space about the state change */
+ 	kobject_uevent(&dev->kobj, KOBJ_ONLINE);
  }
-@@ -483,16 +483,16 @@ static void dma_setup_need_sync(struct device *dev)
- 		 * mapping, if any. During the device initialization, it's
- 		 * enough to check only for the DMA coherence.
- 		 */
--		dev->dma_skip_sync = dev_is_dma_coherent(dev);
-+		assign_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags, dev_is_dma_coherent(dev));
- 	else if (!ops->sync_single_for_device && !ops->sync_single_for_cpu &&
- 		 !ops->sync_sg_for_device && !ops->sync_sg_for_cpu)
- 		/*
- 		 * Synchronization is not possible when none of DMA sync ops
- 		 * is set.
- 		 */
--		dev->dma_skip_sync = true;
-+		set_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags);
- 	else
--		dev->dma_skip_sync = false;
-+		clear_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags);
- }
- #else /* !CONFIG_DMA_NEED_SYNC */
- static inline void dma_setup_need_sync(struct device *dev) { }
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 5955f2f0c83d..137450e096bc 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -709,7 +709,7 @@ int hmm_dma_map_alloc(struct device *dev, struct hmm_dma_map *map,
- 	 * best approximation to ensure no swiotlb buffering happens.
- 	 */
- #ifdef CONFIG_DMA_NEED_SYNC
--	dma_need_sync = !dev->dma_skip_sync;
-+	dma_need_sync = !test_bit(DEV_FLAG_DMA_SKIP_SYNC, &dev->flags);
- #endif /* CONFIG_DMA_NEED_SYNC */
- 	if (dma_need_sync || dma_addressing_limited(dev))
- 		return -EOPNOTSUPP;
 -- 
 2.53.0.1213.gd9a14994de-goog
 
