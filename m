@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23268E85371
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 16:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D500E8537A
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 16:08:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 556946B0005; Fri,  3 Apr 2026 12:07:23 -0400 (EDT)
+	id 88CA66B0005; Fri,  3 Apr 2026 12:08:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507936B0089; Fri,  3 Apr 2026 12:07:23 -0400 (EDT)
+	id 83D446B0089; Fri,  3 Apr 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41D836B008A; Fri,  3 Apr 2026 12:07:23 -0400 (EDT)
+	id 77A226B008A; Fri,  3 Apr 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 303F36B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:07:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB5A7C2926
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:07:22 +0000 (UTC)
-X-FDA: 84617724324.04.F2EA078
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 679D66B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 12:08:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D1C7E1C15
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:08:50 +0000 (UTC)
+X-FDA: 84617728020.26.0ABAE40
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 05AC810000C
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:07:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+VDOUh4;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 521A81C000E
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 16:08:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aeiwlwZq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775232441; a=rsa-sha256;
-	cv=none;
-	b=2BZfoL4cN/ueoXAlVFrkgQt2LnTZqU36Hu4xjDN7TlJRK1wWsOMqpuOoWaGVzozzJA+Akk
-	z/G4xaMixTxDLVFWNDKW/OmeiRaUo2356eIJNzv7kFV6yFkyHpe1Weu+frRgSyjW/iX8M3
-	UWvUqcyB8Z2iNf40QTziwKakOstctgo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+VDOUh4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775232441;
+	s=arc-20220608; t=1775232528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0U6P1BfL3fhrENY/o8w5coHJgenAjbt5noCNM9JX3Gk=;
-	b=dfP3XWYlquSAOvNLJPxdDJn3pQkni20jzVTXjynLtk9e86wnTwKsvka8GDOAPW5ZDp/O9P
-	6351jK9ydiScOxyeLOLiJ0DePWOyQMBuX+xyCnoJOEfmPFtmLUXGQ7bXytyyrPQm5L0E8n
-	kwvC8IOJWrsWlLEIOUZzoiuRRv/6Na8=
+	bh=IGbBI18wVzLFyxt3QsRT6i38t9eZVxhcIhIZ+QJTAIk=;
+	b=rJrThKv7g9zj6csX/mw0pDskNVT4RHFXMt47OGWVoWJyAncC1qZZzvq1w61TfUSFVdZSc9
+	uZcfVwXEr80sv62y91TH3GtPkYRvI3qdfI9m5YA93/dtSPVEwIlbPHknFlmOrLpwYplN9E
+	tnXJMJERuO8Za4t8mURfUeCRBUVdCcI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775232528; a=rsa-sha256;
+	cv=none;
+	b=wVlEe8BGXR5J4M1DJ98x5JvK/N2Wv+yjXC6MKpY9E7MgCb2S+lbh5qHcPUopSJLU/W2nN+
+	JlpY4WVqKbUoO7YuESsJy+EDpDUqi8k36eAkEHf51J2ssCGfxpVebgIGdP1hDuuRkt1T98
+	AlMCiQSXCxqRAyA5rQ4ZacTuJfkHQl8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aeiwlwZq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1DBE240560;
-	Fri,  3 Apr 2026 16:07:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE285C2BCB0;
-	Fri,  3 Apr 2026 16:07:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E205409B3;
+	Fri,  3 Apr 2026 16:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C01C4CEF7;
+	Fri,  3 Apr 2026 16:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775232440;
-	bh=yiZAer4B+Df7oT6oPMOUvuxuzVXn5cYPBlwjj/3ncjU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+VDOUh4MQY1aqMLAw4ONYHLzJ7fR39k7VLpOxQjQWtmfbgQ9riJlp/YBNEQseYMf
-	 8Rh5N71qNsGCMIaVf5pUgOuRB6ardpJ5Xhufunf7Q3L0W+v8elf0BEH0ms4p0wObnJ
-	 VQkbmM6LFT0Y8wOjWqQrRVXULcyUHc1ItTsygez08bmRfmomkmmSs8v+0ku8O8pRsC
-	 PLEQGj20UJFLaYNXIcrcJmqhwg6tGEj+N8lXP1hJ/0OZXEXHmQ/mwJ7adgbaRMxTD1
-	 BTn9XIu45liq53A2dXRjHzsLe5kaOJxCIiUYBa+sCSVeU/AFSsuMs1HWOQ5EbgJYMs
-	 HEePceITgLhmA==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v3 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
-Date: Fri,  3 Apr 2026 09:07:17 -0700
-Message-ID: <20260403160718.64832-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260403083322.5852-1-aethernet65535@gmail.com>
-References: 
+	s=k20201202; t=1775232527;
+	bh=VypwSWNnwhAnxziBrzK7w7AlYaT+GC1ix3L+HwsKnPI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aeiwlwZq2d4EHooxsbiD30vbJoWhfP670Jcs1U161O3MNaQcnYdL119IrMWJZ1Sid
+	 RM+qsTBhxYAhskPSDVDeE4wM8/o+dN2yfi003VMNbzvVdM6UbnyO4EWr4PmCQlp59U
+	 QaXxvFwFXKpXdw3ktRdOT/Rp9KI173qnyUtqyXpPUgGVcQ+/pNkffB7GBAwJIFdURS
+	 UhxfEm9MY1+X6GOJtUQyKghbYu69SNCaDfM3iXqHE4zLSkl8MUhe3yZfpzC2l1cdom
+	 uyxavX9Ry4Ot08+lrR0USLpItFlYRiQCQT8Axu6SfVhRexqHqqhQa60FTV+vS6fjAT
+	 nbJQtTKKc2T1A==
+Date: Fri, 3 Apr 2026 19:08:40 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] tools/testing/selftests: add merge test for partial
+ msealed range
+Message-ID: <ac_mCIUQWRAbuH8F@kernel.org>
+References: <20260331073627.50010-1-ljs@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 05AC810000C
-X-Stat-Signature: 7i3xch7kf86ndpake4hmtbmdyq6bui19
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331073627.50010-1-ljs@kernel.org>
+X-Rspamd-Queue-Id: 521A81C000E
+X-Stat-Signature: 5i3drr3rmcx5xeo4d5beh9dhpmkdn6ts
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775232440-479914
-X-HE-Meta: U2FsdGVkX1/Sdo8zdA2UoAkza3DgLA4GQv1qyCw2ICBBhudpjQv4milAIKjobtwHOkDWTh6mgX+R+yLzGFVHOyq8cDCeST1qAwaadbncg/ilXaJceHtUfUN+2xtjs03gks0DcNjBhk3/BemQIfVjHBgLOzKhWuEm4U/6+/CAYeUoBUMQB5MqqmsZ/jaZPKCAeUUOgUXob/yo0YU3Fm5lPiT8w92WNUQgn1nmHqCRnrXeuIfLH7+OvZ2tLhTMvRku1uC7vgdsxVO4moePDxXouWZXZhwL7c9u0NpsZUtPI0CoepTENy750FEIWHSntsvREbGdweMtOGFsdT7y3G1uJBWO95JCcCu8PjDzsCVAeqxrwstHO5vykuU+Dw9AmAyMWkA7OkderLxa7oBbXiZytPAqgmeInO7yGUuO9dW0j9gi3KK8vIpiAy+pfpiNwNGLExvb3PZXel6eRlSpCHVWRfBoIc+eue+NOY7sHppB7EiDIebiu1QM9w7IwsXFdI+dIxMCVO+ijqcU3nZnZiEv0rUVWMh6x0ZEYYBr06DxptuQVCL3AQqaez2ZTQdTC4tfqENwYxQv+cjmgOfN+DY5cnARdVI7/gaW1bl4Al31I5vV6detJLmzR0pix19VvfQ1SELHEMLMGxxKmLQw+W9jbTwPuMFYoCXduDRIHkrLWeVAHok1rUy/4gjv8jbVfFNaBneDfpr1nPyPFC4Cb4043HlO59wmfqHR3WggKU/7EiP+zROxSgZLoc26VRJoumgh9miOFNKERGP0536+J0k33LZVYuqYVC+cQapoGrQQ65xGrb72zaSPki+lEWs0B+a6EKpKIk00PIKcv1rZpoo/pjGt2OiFD5vi0sc6u7ZBtlBugdk/jmfis2FywBa5mZv78BMvAu1CGv9QJD/yiFYvp4yF125jhjI8M4tW2qT8goKZv1aya1awirABxnr46ssgE2tDG3MwoYFuBXMwYPT
- 8KgOIPeg
- R4mHlyR/GnBHskC3EN9tWPTXk/lsI2EyeoR137cDrtEUjZY+YOcepm6ORrSZas55Qm8+fX5tEoaacmVciESBffE4TWU3A+fUgD7WVXY1r2SzhpSEyVHLZL5F2X8xryHRMVRGDpTZs4c6IqkJR7m0V6GnJikKms6UbDit0/nh3aMmCnkl+k7iPbS3qZjcipB8EM8ZHIuS+cPpdxKShTg+4TgCQypxDZtRdA29UyyPDQK9lRr7KrvGyJ+rayq3UCYO9ZGMZ794XhkJoJtxZpY22jRnEsALfQZgEjU2W6aGwiXHN+If+0UBvgsU8a6Z5jdqdvypHjt3DX6Jsl8pY2kgeSGaZ27CBEbOm6pFH0LJZdB94J7s=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775232528-449448
+X-HE-Meta: U2FsdGVkX18MMDynTGjOw0c4d4lIbiwSRHSKRQ++UFRhJ6CWtP935Eu+yB2impJMy8BThN9ynuU1Ac9t/J20uN9EWqk7jTxHPEW0Gys6nG4RcuaVDcVsHdHuwR5Tpl9wDZMimlaTZxGSKG+lfHG/wjzPpshT3PGEwMSAUXaUooPvQUmIkFMHqeR0kblLRoMe41+eYuRN6vVzq7VmTCxxzs9lJIsVRghH74CzRGTutoZV6DtObrjum52qs52n9B3THy6s1ouq0XTNh5qeGxzxqDbSmfCM4epP30lAZ5dUE1OOIE/d5bfw2M/oUAWnvpbTyYkY/m0Nxc1AYagw29F75MDgegi6oSkfIOfdYJAjZ2htqNBGHPCBGiTf/t2ujVmZIhQ8PaA1fNyIf1bC6KB3X7kv2hY9klEUNH/HDlKVTEeM8ukv4T2fPK387MC8UX8mxXo9DiA90aA3ikl3XsSzlRIsa/Ii4Rs40e3WwKuGjDrsCqsnptre6Mm818yY0Ou0ADKlnaQbHQwsc+mftDSnQixeuFhbs8MBewocTzDFoMoBk/VwxxrXJ4xTWjZoTyQtqXbqKZv7zn37pkbnhmTneF22YQzrlK70knMXqlvoTvQUrTfN10dvXp7DvxY5xa1KAAj9zl38Y1bcPpH58T4j6cf+LaGd12Jz01wlxYZw1VlLbcKEVoamZ6LJPk4L+zEPbwr5W0h4eUrc3BnBlODtP2uXoDuIZM+eiQ8f33lfsChQHd1MaWtQtF/4l3Lnl3mTXv7tqSxV5lbNxdavabLr8sG3/8zo7Hh/QUs2Ii04M581V1GprEWQ2dvIQPPdT0rUmXOhys1G+44Or1IFafDfAwQShCMHC47XoKYoEnPP3r0TWC10tOhujl6zTDTMO/YeQGQ/5fsCCJy8rRJxgqcbrgnMgG0dqisLkmTIg7TbaAL/4XVzIKBBddD/9rhzLT0Kt2SiJtd/7S8I+9CkZ5N
+ 88m71BS8
+ 7otvTo+dlNQe4gKZxnOMfvUQkwDKQsbD6qesl8zN663exx+0XTpNBk2J/ouYusmxKmOAamskOTxf/Swy5LcaqyoVlidcJT7WVscRrgyDfHwEpAdN+RdAuYMj1Luj4hK8lehlTEAOVr0SOEhvP6cw8B3elqWbDauAEhVBgpjZ85mynz/JF67KZyakhtga4bCX4iicrNjqEZwbLYI6ySIE7SGvDqi0XUPoY0GqDc1O/dpQ5WbnwVkHIkoZZSkU6xF0DtxVhOqMO/FyZ3AYKs4Vs9NHCfKQaZaCq7sj1KWaGmcpxomlcKeI6HydIqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,162 +97,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dropping stable@ and Quanmin from the Cc.  Read my reply to the sashiko review
-sharing for the first patch of this series to show why I do that.
+On Tue, Mar 31, 2026 at 08:36:27AM +0100, Lorenzo Stoakes (Oracle) wrote:
+> Commit 2697dd8ae721 ("mm/mseal: update VMA end correctly on merge") fixed
+> an issue in the loop which iterates through VMAs applying mseal, which was
+> triggered by mseal()'ing a range of VMAs where the second was mseal()'d and
+> the first mergeable with it, once mseal()'d.
+> 
+> Add a regression test to assert that this behaviour is correct. We place it
+> in the merge selftests as this is strictly an issue with merging (via a
+> vma_modify() invocation).
+> 
+> It also assert that mseal()'d ranges are correctly merged as you'd expect.
+> 
+> The test is implemented such that it is skipped if mseal() is not
+> available on the system.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+> v2:
+> * Added tools/ based header so __NR_mseal should always be available.
+> * However, for completeness, also check to see if defined, and assume ENOSYS if
+>   not.
+> * Thanks to Mike for reporting issues in his build on this test!
 
-And I find no blockers for this patch from below sashiko review.  Read further
-if you are interested in details.
+Unfortunately it's not the only one :)
 
-On Fri,  3 Apr 2026 16:33:22 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+The header inclusion actually causes handle_uprobe_upon_merged_vma() to
+fail because of mismatch in definition of__NR_perf_event_open in
+<asm-generic/unistd.h> and the correct definition from
+/usr/include/unistd.h
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260403052837.58063-3-aethernet65535@gmail.com
-> # start of sashiko.dev inline review
-> commit 28b6de17622e17753e02ff606413650ad898f09d
-> Author: Liew Rui Yan <aethernet65535@gmail.com>
-> 
-> mm/damon/reclaim: validate min_region_size to be power of 2
-> 
-> This commit adds an early check in damon_reclaim_apply_parameters() to
-> validate min_region_sz and return -EINVAL if it is not a power-of-2.
-> This prevents kdamond from unexpectedly terminating due to late
-> validation failures.
-> 
-> > The damon_commit_ctx() checks if 'min_region_sz' is a power-of-2.
-> > However, if an invalid input is provided via the DAMON_RECLAIM interface,
-> > the validation failure occurs too late, causing kdamond to terminate
-> > unexpectedly.
-> 
-> Is the root cause of this unexpected termination in damon_commit_ctx()
-> itself?
-> 
-> Looking at damon_commit_ctx() in mm/damon/core.c, it sets
-> dst->maybe_corrupted = true before running the is_power_of_2() check:
-> 
-> damon_commit_ctx()
->     dst->maybe_corrupted = true;
->     if (!is_power_of_2(src->min_region_sz))
->         return -EINVAL;
-> 
-> If the check fails, it correctly returns -EINVAL but incorrectly leaves the
-> running context permanently marked as corrupted.  When kdamond_fn()
-> observes ctx->maybe_corrupted is true, it explicitly breaks its main loop,
-> terminating the thread.
-> 
-> Would it be safer to fix this regression by validating inputs before
-> mutating the maybe_corrupted state in damon_commit_ctx(), so that other
-> callers remain protected from unexpected daemon-crashing denial-of-service?
-> 
-> Also, does the DAMON sysfs interface bypass this min_region_sz validation,
-> allowing kdamond to run with invalid alignment?
-> 
-> In mm/damon/sysfs.c, a user can set addr_unit to a non-power-of-2 value via
-> the sysfs file. When turning DAMON on:
-> 
-> damon_sysfs_turn_damon_on()
->   -> damon_sysfs_build_ctx()
->     -> damon_sysfs_apply_inputs()
-> 
-> The code calculates ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1)
-> but lacks the is_power_of_2() safeguard. It then calls damon_start() directly,
-> bypassing damon_commit_ctx() entirely.
-> 
-> Since DAMON heavily relies on ALIGN() and ALIGN_DOWN() macros with
-> min_region_sz, could a non-power-of-2 value produce corrupted mathematical
-> masks, leading to overlapping bounds and memory corruption?
+With the patch below handle_uprobe_upon_merged_vma() passes again and I
+think it's not needed for mseal tests as well.
 
-I answered above two questions on my reply to the sashiko review sharing mail
-for the first patch of this series.  Please refer to that for details.
+diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+index efcb100fd865..519e5ac02db7 100644
+--- a/tools/testing/selftests/mm/merge.c
++++ b/tools/testing/selftests/mm/merge.c
+@@ -2,7 +2,6 @@
+ 
+ #define _GNU_SOURCE
+ #include "kselftest_harness.h"
+-#include <asm-generic/unistd.h>
+ #include <linux/prctl.h>
+ #include <fcntl.h>
+ #include <stdio.h>
 
-In short, the first behavior is intended one and we don't want to change it.
-For the second finding, I will work on it.
+> v1:
+> https://lore.kernel.org/all/20260330135011.107036-1-ljs@kernel.org/
+> 
+>  tools/testing/selftests/mm/merge.c | 89 ++++++++++++++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+> index 10b686102b79..f73803b3679a 100644
+> --- a/tools/testing/selftests/mm/merge.c
+> +++ b/tools/testing/selftests/mm/merge.c
+> @@ -2,6 +2,7 @@
+> 
+>  #define _GNU_SOURCE
+>  #include "kselftest_harness.h"
+> +#include <asm-generic/unistd.h>
+>  #include <linux/prctl.h>
+>  #include <fcntl.h>
+>  #include <stdio.h>
+> @@ -48,6 +49,19 @@ static pid_t do_fork(struct procmap_fd *procmap)
+>  	return 0;
+>  }
+> 
+> +#ifdef __NR_mseal
+> +static int sys_mseal(void *ptr, size_t len, unsigned long flags)
+> +{
+> +	return syscall(__NR_mseal, (unsigned long)ptr, len, flags);
+> +}
+> +#else
+> +static int sys_mseal(void *ptr, size_t len, unsigned long flags)
+> +{
+> +	errno = ENOSYS;
+> +	return -1;
+> +}
+> +#endif
+> +
+>  FIXTURE_SETUP(merge)
+>  {
+>  	self->page_size = psize();
+> @@ -1217,6 +1231,81 @@ TEST_F(merge, mremap_correct_placed_faulted)
+>  	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
+>  }
+> 
+> +TEST_F(merge, merge_vmas_with_mseal)
+> +{
+> +	unsigned int page_size = self->page_size;
+> +	struct procmap_fd *procmap = &self->procmap;
+> +	char *ptr, *ptr2, *ptr3;
+> +	/* We need our own as cannot munmap() once sealed. */
+> +	char *carveout;
+> +
+> +	/* Invalid mseal() call to see if implemented. */
+> +	ASSERT_EQ(sys_mseal(NULL, 0, ~0UL), -1);
+> +	if (errno == ENOSYS)
+> +		SKIP(return, "mseal not supported, skipping.");
+> +
+> +	/* Map carveout. */
+> +	carveout = mmap(NULL, 17 * page_size, PROT_NONE,
+> +			MAP_PRIVATE | MAP_ANON, -1, 0);
+> +	ASSERT_NE(carveout, MAP_FAILED);
+> +
+> +	/*
+> +	 * Map 3 separate VMAs:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RW     |    RWE    |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 */
+> +	ptr = mmap(&carveout[page_size], 5 * page_size, PROT_READ | PROT_WRITE,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr, MAP_FAILED);
+> +	ptr2 = mmap(&carveout[page_size * 6], 5 * page_size,
+> +		    PROT_READ | PROT_WRITE | PROT_EXEC,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr2, MAP_FAILED);
+> +	ptr3 = mmap(&carveout[page_size * 11], 5 * page_size, PROT_READ,
+> +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> +	ASSERT_NE(ptr3, MAP_FAILED);
+> +
+> +	/*
+> +	 * mseal the second VMA:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RW     |    RWES   |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 */
+> +	ASSERT_EQ(sys_mseal(ptr2, 5 * page_size, 0), 0);
+> +
+> +	/* Make first VMA mergeable upon mseal. */
+> +	ASSERT_EQ(mprotect(ptr, 5 * page_size,
+> +			   PROT_READ | PROT_WRITE | PROT_EXEC), 0);
+> +	/*
+> +	 * At this point we have:
+> +	 *
+> +	 * |-----------|-----------|-----------|
+> +	 * |    RWE    |    RWES   |    RO     |
+> +	 * |-----------|-----------|-----------|
+> +	 *      ptr         ptr2        ptr3
+> +	 *
+> +	 * Now mseal all of the VMAs.
+> +	 */
+> +	ASSERT_EQ(sys_mseal(ptr, 15 * page_size, 0), 0);
+> +
+> +	/*
+> +	 * We should end up with:
+> +	 *
+> +	 * |-----------------------|-----------|
+> +	 * |          RWES         |    ROS    |
+> +	 * |-----------------------|-----------|
+> +	 *            ptr               ptr3
+> +	 */
+> +	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
+> +	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
+> +	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
+> +}
+> +
+>  TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
+>  {
+>  	struct procmap_fd *procmap = &self->procmap;
+> --
+> 2.53.0
+> 
 
-> 
-> > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> > index 86da147786583..2747eef5919d1 100644
-> > --- a/mm/damon/reclaim.c
-> > +++ b/mm/damon/reclaim.c
-> > @@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
-> >  	param_ctx->addr_unit = addr_unit;
-> >  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-> >  
-> > +	if (!is_power_of_2(param_ctx->min_region_sz)) {
-> > +		err = -EINVAL;
-> > +		goto out;
-> > +	}
-> > +
-> >  	if (!damon_reclaim_mon_attrs.aggr_interval) {
-> >  		err = -EINVAL;
-> >  		goto out;
-> >  	}
-> 
-> Can concurrent modifications of damon_reclaim_mon_attrs.aggr_interval via
-> sysfs cause a division by zero oops?
-> 
-> The global parameter is checked here, but it can be concurrently modified by
-> root without subsystem-level locks.
-> 
-> Subsequently, the function calls damon_reclaim_new_scheme() which executes:
-> 
-> damon_reclaim_new_scheme()
->     .min_age_region = min_age / damon_reclaim_mon_attrs.aggr_interval;
-> 
-> If a concurrent sysfs write sets the interval to 0 immediately after the
-> check, could this re-fetch trigger an unhandled divide error?
-> 
-> Further down in damon_reclaim_apply_parameters(), the code calls:
-> 
->     err = damon_set_region_biggest_system_ram_default(param_target,
->                     &monitor_region_start,
->                     &monitor_region_end,
->                     ...);
-> 
-> Can a data race on monitor_region_start and monitor_region_end bypass
-> bounds checking?
-> 
-> These global variables are exported as module parameters and can be
-> concurrently written by userspace.
-> 
-> When passed to damon_set_region_biggest_system_ram_default(), the function
-> validates the pointers:
-> 
-> damon_set_region_biggest_system_ram_default()
->     if (*start > *end)
->         return -EINVAL;
-> 
-> Without READ_ONCE() wrappers, could these values be modified right after
-> the validation, satisfying the forbidden state where *start > *end?
-> 
-> If this happens, the invalid boundaries are blindly assigned to addr_range.
-> When the region is later sized, damon_sz_region() calculates
-> r->ar.end - r->ar.start, resulting in a massive underflowed unsigned long.
-> 
-> Could this cause an unbounded OOM loop inside kdamond_fn(), where the
-> region split condition while (damon_sz_region(r) > max_region_sz) executes
-> infinitely and constantly allocates new structures?
-
-Again, not this patch's business.
-
-We addressed [1] this sort of races by defining updating parameter during
-commit_inputs processing as a wrong user behavior, and adding warning for
-stable kernels.
-
-Also Liew's recent patch [2] will remove the races in the mainline and new
-kernels.
-
-[1] https://lore.kernel.org/20260328133216.9697-1-sj@kernel.org
-[2] https://lore.kernel.org/20260402155733.77050-4-sj@kernel.org
-
-
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260403052837.58063-3-aethernet65535@gmail.com
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
