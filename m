@@ -4,91 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39D5E8538E
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 19:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8ED7E8538E
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 19:45:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 563646B0096; Fri,  3 Apr 2026 15:40:43 -0400 (EDT)
+	id EE0D66B0098; Fri,  3 Apr 2026 15:45:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53AD86B0099; Fri,  3 Apr 2026 15:40:43 -0400 (EDT)
+	id E914A6B0099; Fri,  3 Apr 2026 15:45:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42A0C6B009B; Fri,  3 Apr 2026 15:40:43 -0400 (EDT)
+	id D58466B009B; Fri,  3 Apr 2026 15:45:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 324D26B0096
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 15:40:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B85A21401E6
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:40:42 +0000 (UTC)
-X-FDA: 84618261924.02.D20011E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EFCCD180005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:40:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dIPziEqe;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C20786B0098
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 15:45:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6213E1A02C1
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:45:40 +0000 (UTC)
+X-FDA: 84618274440.18.7CC1C99
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6CECE40006
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 19:45:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=FqSQOXC+;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=FqSQOXC+;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775245538; a=rsa-sha256;
+	cv=none;
+	b=miX+9Pca5lAmHNPAtsgOmfTFn1tmgL/yR4gappqg9bfDOCgHde64+euIb8SeBR89jqjulH
+	3XSPdeRyYEp13QM9MN6/O4CTzFfjjJRjQUEePwE+fRwfV1DkXdy4cCev6zOd9ymOA4+n25
+	TpuXLNrF1H7diSgiUxNykSyEQKl0SuM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775245241;
+	s=arc-20220608; t=1775245538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6bUcpQH60YW+JjRXCirKvU4VYPvJvicfeah63AyAjJU=;
-	b=c1LojYQh8C9g6E3gBv6oJS2BNIhUmnCG+WeNF2UJ7swNbpYiIm7ZZRcEKb6AQxD3SleVmi
-	OFZ/MTt48NZvd+izRk75dStWILyIYmj1l8TJmHDqt6ONF288ygYZf0AMy4lXUp5p//MHLU
-	1AiVuWKkDIj5Z9DgyQPtbGE6B1hiacA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775245241; a=rsa-sha256;
-	cv=none;
-	b=y5vW8Ge1RlHFFqYg7kxxWjRuOoQl1C/3f4clhGAgbPEEwLOgXhfBv3B0spu6h+JwUoehJL
-	5AZ1H75QccS6NpuLT6krd6ObpW0L+SSyHk/332CdD6M+yH4rMdPHb/02jRCKApbkCzfluL
-	HwMU55TG/o09PWKic8R8Vh9L7f4kkEQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dIPziEqe;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 150734194B;
-	Fri,  3 Apr 2026 19:40:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C21C2BCAF;
-	Fri,  3 Apr 2026 19:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775245239;
-	bh=CUyr5fNZuY4RKq1OLQXkrBMqLq0EWre1SrQk+TC1ABM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIPziEqeVeRPRUf4x4dKXgETATxg/MOMCYRoLEjhgV8QqBul4R0BXSVDkR+Bj4atL
-	 60u03+RgXPzKHlpyTtqMgHuraKDXu1UbtDtkvlz8aA2DPEAgrLXwEafafyB5n1nu5L
-	 GBmrAEGKPzhW5UxwVcfYjCPcob+fgZab75SHf9oMpcvmc1pQg5MFCil3RFvVla1/4b
-	 NHrofvyYG8y52AWHiZJyf1Chrsbs43bQaaFYTuJVTHM+W6Kk363WBZIm1MfMjZdBFp
-	 ZXrfd5PK2CsWXen6CjqDW/aFNZ6ZWw3emXkj8gD+0+zCVSCZJly7hhQaaRy5Roldry
-	 ieEgLRH/JLpqQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usama.arif@linux.dev>
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 6/6] selftests/liveupdate: add fallocate test for memfd
-Date: Fri,  3 Apr 2026 19:40:12 +0000
-Message-ID: <20260403194014.3704180-7-pratyush@kernel.org>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-In-Reply-To: <20260403194014.3704180-1-pratyush@kernel.org>
-References: <20260403194014.3704180-1-pratyush@kernel.org>
+	 in-reply-to:references:dkim-signature;
+	bh=MkCnZMc51A5ktMZ7NvfpuZ1Tvt5XekG9z+r9y+GS9pg=;
+	b=MCjKZMMuAOoYPdAaUuhka/rckoX7q27BS3JOaE0u8xAbEIFEpRJfGXxvZzmXBPh/Lsm9J2
+	zBg5Epz4+jyxW/5Yzpq2ltBPBpQxwBOugppVcjk5Jd32dM93+oIL1GLrxy5jwHJ8iGu/Yo
+	qH1BgvYUJES6Q/TXypd4HtJhxXJaavI=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50b2b289925so20029141cf.2
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 12:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1775245536; x=1775850336; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MkCnZMc51A5ktMZ7NvfpuZ1Tvt5XekG9z+r9y+GS9pg=;
+        b=FqSQOXC+/LFywVau0/He2XC7niJWiSUGakNpz5UO0ZZaLB0G2SsdG9uQysPDJpsEwd
+         vkQrjkERE+SIlqDL3vubxBPtD/Xkf7/H18UOINdNKyJBiahyBX9ISSXbwkYtw4Eig6Uu
+         JC8X8qAnwsEQxzhabOedFe5TrRzY8gu4cmBNJgePv6QMewAbCjRpO2whJeukC0h0S6Jx
+         zfF7lW5rRdqVqd2G46ZkMlMyh2U7kuLEi9izmu4Ix6/mXFK+OfYzihJefc+ASW1eSmUb
+         OC7eMoeAtlZym6ZyiufOasX8PezVfpQaS3iWbcI9E5mv4iYk9NO7Dzw5YSW6jdnyJcc0
+         Np1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775245536; x=1775850336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MkCnZMc51A5ktMZ7NvfpuZ1Tvt5XekG9z+r9y+GS9pg=;
+        b=WsGlxCpWUcJ6Jg4bVZ65CjqAzvwgaTs48OaXpJw9WDMiCRht27NLM1Uyh9pNpjK0b2
+         1TCkfci/ODJbf4KX48EB5LLuH5LZVeUuMR76aKzCJrGTBOcqjrkghVjWo89DBGE78jLM
+         MR6J+r5PRbC6dbVLfab2e+/fhGg+N966FdSAZYu8sqSYiQCjc15vAAsxpvzzCnUIuTlq
+         cNgbaQ71E+KeAjIsizrWZkfa1rcYg6h3E33XUWdPMb+Oqny2FAACPuHYP3PpDNQGVLJQ
+         nwsBdQ5jGuyzGWrMI76gbtkpb2n3V4YInvKnXKsBV6CC1blwNzM6Vy0dmka35Aw9ha5B
+         reVQ==
+X-Gm-Message-State: AOJu0Yy0aHOMdAyMiD9/IyiKIEp1M8g8+mVP8IVdnDUTAZNyCktJyZOm
+	S6ySV5RHQ05pwNa7WgGxsTlhWtQd0gfHUdKK2GT+1bxQzoEPX2qKUJEuhff6pGc6Xna/BYex5KV
+	HjbOx
+X-Gm-Gg: ATEYQzzEW8ilU62LACXOKD/ldaslZ5wugQooVLXjJMSXxa+GtoVbxbxujYz+SyFCU1c
+	p+s3w7+7O7GKVchG+TggzCXKFnGnUgCBZggqxVvQHokBrRI/mSpLo7RItowE5zsVG0KtewaEIAu
+	2iukZLicmUkT94MOqi+KF7Ziup6hivMzs4g9c59atNLuRgKrEW1or5Z5qYOPtf4whhdPC+HK7Q8
+	5XJU5/sslabSx4NO8a5+IngpkN3kdo3zx+FqbD3XPgrukNrkouxFQt18Xg6sUbQ4IT3Ffz/6+fR
+	cR0wJH77LjFu1NDn6cJApXzrGCi/bE6GP3aNUiazd6cEGE/hDEEyDWXZcE9KW5We/3gVzFOpjl8
+	vTjrWyDLn/xdJtVsZccKdmmC9m/mCOz5MYzrTOGuyBHuiYScKGTq+UIbl5Ged9/lKO+b+iLnLrr
+	bOxkWqgGeA4mVkU7YSD9QRlxQPLBmj60zo
+X-Received: by 2002:ac8:6e8b:0:b0:50b:8689:bd4f with SMTP id d75a77b69052e-50d62b0bf34mr47427901cf.55.1775245536394;
+        Fri, 03 Apr 2026 12:45:36 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8a5976e223dsm65418606d6.45.2026.04.03.12.45.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 12:45:35 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: linux-mm@kvack.org
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Rik van Riel <riel@surriel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC 0/2] mm: page_alloc: pcp buddy allocator
+Date: Fri,  3 Apr 2026 15:40:33 -0400
+Message-ID: <20260403194526.477775-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EFCCD180005
-X-Stat-Signature: yno6mnic5yrtow8g1sb3y7m4q7uaeyht
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6CECE40006
+X-Stat-Signature: fxa8tpxxoh7btggycctts56t5jcq5wf4
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775245240-134274
-X-HE-Meta: U2FsdGVkX195ReF8cImws/uTF70eIGhhc9UH3YqiPYnl5//PielJLIkliVKFgcRN/lblt1umt/c6DZDDvXgeIEUWdk9mNa6hrLpX5rswT6hj3wgTcqz4b+JAVYUwC3ZxIWH+3v3cYmvN8AT++1eGOt8Zl3YoGajCCEQgIQ18QUZ6UhgaEjxFJeODo5qa1Yj7RF1vdYGq1+q3+GFa42SHTX6XRC0gI6HvLXoYGvVK+hinM/I44lXQXwczHqJg3SQ5t3mTuXaptd4OIxtinxh7T2FWLDx7+gXvnyjOdQ/9cN9J6rsxR/LMRLCf/TgtE899RwhgnDIIC1eZxXQiQBiBgfsf1PN2CRfcSu11jkPe/EWtVlBaRNPqnbnWSN3JpuM8ESA5lHVkD+nSutm/f7398ngKGnNQEzdtbhFFjo2vdly3sxVqNpQiAcPEMcjltQMQ7lyRDuDipxv2UxeoMvsTE2N6TA+N3XKmpDkQZTgyaTUbSE0FCfKWNnj+LQYX79eYe7bvragaZeYda1MCp2poaLyNPtPW93V45m+YVBJZGBsMopY/mVK5TqG4TENkGGZRmB83Z1+aI0FH1YKEcL6wLtmLccCit74IhOq27HB//1pGGzgwS2EL9jN3O+TYpe+dwZjNx2Bphd7r5zF0hiOdL+6YpQe6HfFIp7ZN4BcvgPcdhrUHHEnDkSh0mAltGFafPFGX1LZrX+Ye9jcS1nOdnm16JXCgwJs1Uc5wwp/Ahx8gzPDvy57tPB790Yrek935F76oVDd4Otsrs9nQSyfA/Gi2Hx9c9gf51SYoIdMipp8cSBQmUEigwTDY7qyR5eG8cJSQQWFsenGZqYGZf102XzpcCzZM4OocQR8rvKTuzyU8z39f8D5cbdzRrlHJd5Bqe3EmEHbDUaRiI6ZwguEMOFnXopPlNQIinyVe36ssVKjZCX8MMxgOCzR3hPE8ZvEy980IPCyzblCHsDG5ad3
- STICO/en
- s7ywwFYmPMzpo0QgimRBc6MZVJW9zeX3g1idHFhDhR1UWaoUi+Qlo6OetLZw2Sjb+2A5F1rA/bYOAl3ackOEaCYdoby3CNFBjXu4IWttd/99ySsCHmugPk4b5GU7aTlkarf3k6KnD7hDMxFBJNcfXYW1n54c8Su8RAhHbu4IDZdWr7C2MJ6BrtWyOWOze/HwAlsp3sxizOF8EdMulSgsf7pH9z25CElrymG2Q9SXEmtGaU48=
+X-HE-Tag: 1775245538-829577
+X-HE-Meta: U2FsdGVkX1/AuEdZ5BVI5gAc6jF0KDtRV+uCpwEdxnKb0Bu3C0yqRQnznO9F9p9pvrLmVaQvECkDQRfCB9R2CqOEm/1597sszbI+hSGgUpaauM32Cj70VbkYw0vR7Qg8LG7lHAuMXmi1hfBBv/cr3FBQO2wa2ON4xNW9uRwfHI4Jdat09FwZ2bbPtccqc5edYzY3KgsvAczkzTiqtQj9lppmGAJ6qghHZzZOMLWCsxplphaJaZKV/XISpYk1xJ16tGhqrlWy8cXTBEdG68E8xOUUACHyrXOMjUyV62nP4qqfJRP6sUvPF8g8ZfHONejUsFRjY0pisjwoVIiOvHbIIbbStggKOiH4/O0WgP1NP1zqUwMTQ25MRQSgH+0KHHm4QcXvRonKor2Oed26/yUVtmm6RgjP22iS5BAOEujsbPZl6zOq2aG098oxU/P89vMh8+VNafK6YwbPz/DrZo1+h0/LztyiivNaqOJghxRNQnt8GTo/3FZeH34pOa0G2Wi+kMhJg6dZof8++V8BT1QJNzwJs5kX5sY18gtHKzzTuNGyuZMwc6sipXxpL5w4Ebbuq1wbgCHkavr+AdeUUucDGJgC400oH9AkLqL85OadUpbBVte5xc5Qnrf0dOFsiTlCA8V5dZjsz/5LKA2uTYtHBESuzDjYyZTI0+TF/TSM1+6mAd4ayciWJyc0XEA0jEYi5PNWRgqXHpjC2tXsaku6EhmVmYHnU5Fh2rMzkQ8Zh3t830dkdeUq4ny52HtUMWKLubzp7w4C32VRN1EYAFZ53Lkhag+T4ZcfhwFdDboMQ47X2LD0Jmahyt2hN3xcIZu1TXcZZWzw3ltSJxQXuE6MMv48mJALh7xgW4wWXRQNlHRpajI0ysxfNL18zt+Wmb7GL4tUcG1taBCk5dWZlJSV3P4fa4DMO5+nsoDFmtcJSm31ZrmqlE5g8ogqtaoxcnQlFH/aQM60hCudXQHTFky
+ WllchcFK
+ 4jqO21ilD4Wykidmwh+X3sq4JrUzBkoZNCiLUGPQF+hxCkc9u25oLFsv9jnNxCnckbm0qtTdXDP67NYRCR/bJ5kTP7T0z2WzxQciyuY4yk6yCkNaeieGeMnI9v0Rumoj+IoFw69zOc+6fVRuxhdPOI6NjUp3ytpMKBVIK44VtHycEb0J8okgQmSX3fwk+vEHek7mpfpJGMvbHzQDYoI5NI/WWJEs3/tYQ4vbKWmVBhdjnbYy4DEpJsz+TdA1kM83jDdMFt448zSC441WG9YHIz4ogQ0/httZk4GZNZEyUQXmT4XCQfVOA5I2TJHUqDVaf1A725/2wJ7pHkpIWCsKQaUGHxB086ZpKXLTagDKOUof7ci9lzYb9C/OJdDYAdWLGSpWfrobqbFhiE24DEldBoBKalw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,126 +119,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+Hi,
 
-When memory is added to a memfd via fallocate(), it does not get zeroed
-immediately. This is tracked by the absence of the uptodate folio flag.
-Initially, memfd preservation simply saved the folio flags at preserve
-time. This led to a bug, where all writes to un-initialized fallocated
-memory after preserve were lost after live update. This is fixed by
-commit 50d7b4332f27 ("mm: memfd_luo: always make all folios uptodate").
+this is an RFC for making the page allocator scale better with higher
+thread counts and larger memory quantities.
 
-Add a test that fallocates some memory in a memfd, preserves it, writes
-to it. Then in stage 2 it verifies the written content is still present.
+In Meta production, we're seeing increasing zone->lock contention that
+was traced back to a few different paths. A prominent one is the
+userspace allocator, jemalloc. Allocations happen from page faults on
+all CPUs running the workload. Frees are cached for reuse, but the
+caches are periodically purged back to the kernel from a handful of
+purger threads. This breaks affinity between allocations and frees:
+Both sides use their own PCPs - one side depletes them, the other one
+overfills them. Both sides routinely hit the zone->locked slowpath.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- .../testing/selftests/liveupdate/luo_memfd.c  | 83 +++++++++++++++++++
- 1 file changed, 83 insertions(+)
+My understanding is that tcmalloc has a similar architecture.
 
-diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
-index a1e9f34da006..bc6ab063363f 100644
---- a/tools/testing/selftests/liveupdate/luo_memfd.c
-+++ b/tools/testing/selftests/liveupdate/luo_memfd.c
-@@ -43,6 +43,11 @@
- #define PRESERVED_MEMFD_TOKEN 1
- #define PRESERVED_BUFFER_SIZE SZ_1M
- 
-+#define FALLOCATE_SESSION_NAME "fallocate_session"
-+#define FALLOCATE_MEMFD_TOKEN 1
-+#define FALLOCATE_BUFFER_SIZE SZ_1M
-+#define FALLOCATE_DATA_FS_COPY "fallocate_data_fs_copy.bin"
-+
- static int luo_fd = -1;
- static int stage;
- 
-@@ -222,6 +227,84 @@ TEST(preserved_ops)
- 	ASSERT_EQ(lseek(fd, 0, SEEK_END), PRESERVED_BUFFER_SIZE);
- }
- 
-+static void fallocate_memfd_stage_1(struct __test_metadata *_metadata)
-+{
-+	int fd, session;
-+	char *buffer;
-+	struct liveupdate_session_preserve_fd preserve_arg = { .size = sizeof(preserve_arg) };
-+
-+	buffer = malloc(FALLOCATE_BUFFER_SIZE);
-+	ASSERT_NE(buffer, NULL);
-+
-+	session = luo_create_session(luo_fd, FALLOCATE_SESSION_NAME);
-+	ASSERT_GE(session, 0);
-+
-+	fd = memfd_create("fallocate_memfd", 0);
-+	ASSERT_GE(fd, 0);
-+
-+	/* Fallocate memory but do not write to it yet */
-+	ASSERT_EQ(fallocate(fd, 0, 0, FALLOCATE_BUFFER_SIZE), 0);
-+
-+	preserve_arg.fd = fd;
-+	preserve_arg.token = FALLOCATE_MEMFD_TOKEN;
-+	ASSERT_GE(ioctl(session, LIVEUPDATE_SESSION_PRESERVE_FD, &preserve_arg), 0);
-+
-+	/* Now write to it after preserving */
-+	ASSERT_GE(generate_random_data(buffer, FALLOCATE_BUFFER_SIZE), 0);
-+	ASSERT_EQ(save_test_data(FALLOCATE_DATA_FS_COPY, buffer, FALLOCATE_BUFFER_SIZE), 0);
-+
-+	ASSERT_GE(lseek(fd, 0, SEEK_SET), 0);
-+	ASSERT_EQ(write_size(fd, buffer, FALLOCATE_BUFFER_SIZE), 0);
-+
-+	daemonize_and_wait();
-+}
-+
-+static void fallocate_memfd_stage_2(struct __test_metadata *_metadata)
-+{
-+	int fd, session;
-+	char *buffer;
-+	struct liveupdate_session_retrieve_fd retrieve_arg = { .size = sizeof(retrieve_arg) };
-+
-+	buffer = malloc(FALLOCATE_BUFFER_SIZE);
-+	ASSERT_NE(buffer, NULL);
-+
-+	session = luo_retrieve_session(luo_fd, FALLOCATE_SESSION_NAME);
-+	ASSERT_GE(session, 0);
-+
-+	ASSERT_EQ(load_test_data(FALLOCATE_DATA_FS_COPY, buffer, FALLOCATE_BUFFER_SIZE), 0);
-+
-+	retrieve_arg.token = FALLOCATE_MEMFD_TOKEN;
-+	ASSERT_GE(ioctl(session, LIVEUPDATE_SESSION_RETRIEVE_FD, &retrieve_arg), 0);
-+	fd = retrieve_arg.fd;
-+	ASSERT_GE(fd, 0);
-+
-+	ASSERT_EQ(verify_fd_content_read(fd, buffer, FALLOCATE_BUFFER_SIZE), 0);
-+
-+	ASSERT_EQ(luo_session_finish(session), 0);
-+}
-+
-+/*
-+ * Test that an fallocated memfd is preserved across live update and can be
-+ * written to after being preserved.
-+ */
-+TEST(fallocate_memfd)
-+{
-+	if (cwd_is_tmpfs())
-+		SKIP(return, "test saves data to rootfs, cannot run on tmpfs");
-+
-+	switch (stage) {
-+	case 1:
-+		fallocate_memfd_stage_1(_metadata);
-+		break;
-+	case 2:
-+		fallocate_memfd_stage_2(_metadata);
-+		break;
-+	default:
-+		TH_LOG("Unknown stage %d\n", stage);
-+		ASSERT_FALSE(true);
-+	}
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int expected_stage = 0;
--- 
-2.53.0.1213.gd9a14994de-goog
+Another contributor to contention is process exits, where large
+numbers of pages are freed at once. The current PCP can only reduce
+lock time when pages are reused. Reuse is unlikely because it's an
+avalanche of free pages on a CPU busy walking page tables. Every time
+the PCP overflows, the drain acquires the zone->lock and frees pages
+one by one, trying to merge buddies together.
+
+The idea proposed here is this: instead of single pages, make the PCP
+grab entire pageblocks, split them outside the zone->lock. That CPU
+then takes ownership of the block, and all frees route back to that
+PCP instead of the freeing CPU's local one.
+
+This has several benefits:
+
+1. It's right away coarser/fewer allocations transactions under the
+   zone->lock.
+
+1a. Even if no full free blocks are available (memory pressure or
+    small zone), with splitting available at the PCP level means the
+    PCP can still grab chunks larger than the requested order from the
+    zone->lock freelists, and dole them out on its own time.
+
+2. The pages free back to where the allocations happen, increasing the
+   odds of reuse and reducing the chances of zone->lock slowpaths.
+
+3. The page buddies come back into one place, allowing upfront merging
+   under the local pcp->lock. This makes coarser/fewer freeing
+   transactions under the zone->lock.
+
+The big concern is fragmentation. Movable allocations tend to be a mix
+of short-lived anon and long-lived file cache pages. By the time the
+PCP needs to drain due to thresholds or pressure, the blocks might not
+be fully re-assembled yet. To prevent gobbling up and fragmenting ever
+more blocks, partial blocks are remembered on drain and their pages
+queued last on the zone freelist. When a PCP refills, it first tries
+to recover any such fragment blocks.
+
+On small or pressured machines, the PCP degrades to its previous
+behavior. If a whole block doesn't fit the pcp->high limit, or a whole
+block isn't available, the refill grabs smaller chunks that aren't
+marked for ownership. The free side will use the local PCP as before.
+
+I still need to run broader benchmarks, but I've been consistently
+seeing a 3-4% reduction in %sys time for simple kernel builds on my
+32-way, 32G RAM test machine.
+
+A synthetic test on the same machine that allocates on many CPUs and
+frees on just a few sees a consistent 1% increase in throughput.
+
+I would expect those numbers to increase with higher concurrency and
+larger memory volumes, but verifying that is TBD.
+
+Sending an RFC to get an early gauge on direction.
+
+Based on 0257f64bdac7fdca30fa3cae0df8b9ecbec7733a.
+
+ include/linux/mmzone.h     |  38 ++-
+ include/linux/page-flags.h |   9 +
+ mm/debug.c                 |   1 +
+ mm/internal.h              |  17 +
+ mm/mm_init.c               |  25 +-
+ mm/page_alloc.c            | 784 +++++++++++++++++++++++++++++++------------
+ mm/sparse.c                |   3 +-
+ 7 files changed, 622 insertions(+), 255 deletions(-)
 
 
