@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB25E7E36C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:41:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21F6E7E36B
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87C966B0005; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
+	id 65B506B0089; Fri,  3 Apr 2026 06:42:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80C5F6B0089; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
+	id 5E4E16B008A; Fri,  3 Apr 2026 06:42:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F6116B008A; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
+	id 4FBB46B008C; Fri,  3 Apr 2026 06:42:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B7B26B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:41:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05971B9FBD
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:41:45 +0000 (UTC)
-X-FDA: 84616903770.22.2D5CFA0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4D7CBA0002
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:41:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 40AA96B0089
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:42:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E5EDD1A03C7
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:42:55 +0000 (UTC)
+X-FDA: 84616906710.18.90A43FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 50188A0002
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:42:54 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4DoXENk;
-	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I5tu38M3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775212974; a=rsa-sha256;
+	cv=none;
+	b=Wmp+UHzof9YG/p3sGuEzGngxrPXG9AW/Ygn7m/vGnQ8poXGSs8LwyQbCAroKPoog6POAV/
+	HzWww/MXGaKTXlV/v6hlextNWZQqET6gtGnThsX/aCYcopX3FNo1SjaayQzeGchlzvNX8n
+	nTniOzmxjzvbw84cSbmg2Qxw0n5EUG8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I5tu38M3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775212903;
+	s=arc-20220608; t=1775212974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2w4PGdeK7+Ke3UVn2aJ1lDy1dtsUNB97CETQSTZzgsw=;
-	b=By+T6lu2A7MhRBZWp4LmISoUOtt5U2wElrxrqugjEPIhmddA4iiwPd273UG/fdayXD8+/c
-	fBl+HIoCCOMM76E1U7qhweETheJmdle+dZx35sv5XLLOYkvVLDBAonjTIMPI9abfJE6cSP
-	W77vtDwY/vlG5C+03dB98alfFQumjEI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4DoXENk;
-	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775212903; a=rsa-sha256;
-	cv=none;
-	b=No2tHj8Bz2LKN2lc4Q82dNC5eFYdP9feJYiVqOI4bWIMSWkJSw3C/bacDRUK7Z14uuKyS9
-	VMo3eM9V94mmMoKr9b8cdyrdd0DsD20mgYf14wgN/udfQ2vhl9pnUHverHA61tRfGkU7aM
-	cgjKOtoaxJ6fGQFdLCyfsYELBvgH/oU=
+	bh=KSJMt4Vv67OiQnUoBlmsKG03y/UPJXzXaedLUuRi0lI=;
+	b=3HM7SZxGzo5oPSG+/Y1RvUhbyXklUgdYALttqIXiOtRHMpxIJNe+sX8uljo2wXkllzKliO
+	BdZlFq56CVZCOz121YDtYJyif6fBGv1dpX9CUW78EFyUTWNwi8XMw4kr4xDJ0Llzbu3h4Q
+	rgPi1bNlDKH5WO1ZkztCNVCyP1PWhL4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2344E43ED7;
-	Fri,  3 Apr 2026 10:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47117C4CEF7;
-	Fri,  3 Apr 2026 10:41:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 96FC560121;
+	Fri,  3 Apr 2026 10:42:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A0AC4CEF7;
+	Fri,  3 Apr 2026 10:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775212902;
-	bh=dXwc6I3MCgb2B6MkMoWoOOmtFq9auKmn0yCFwXi1vmQ=;
+	s=k20201202; t=1775212973;
+	bh=0Pl0tHJSa+A8FXUPv/ufuLndsXrmGd/m2WDATXYEx24=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Z4DoXENklwq7aPUqZHn1E0zZ7gGp4I89MaDD8hlP9gX2Dr4MTtDxp2/0PgRtpWi5Q
-	 1UrJdBo7BcHX+8TFPAIB2nvYguReYfgOsmk6ZbGTgPoHILitmMU4+lnWKLZ348LrSv
-	 7dfA/5oQaCxh1QYAK1DANjyu/17A0S/IUXVP0y6hjQJyA8U4dObpIGZLAWwTyOJO3Y
-	 NWu+UYHrNcCKze/eqCnqC4pFss/PKKpHI1QrN25n3XmgUwm86sJdw5TtVbZoRBH7xZ
-	 pyTpiuHWsHu3s0ncwJS+XNwPXNUNaGCkmwJ+N7u/bjjouvumSP8Xkk25h03SnW1/gn
-	 WGVFtqBQJDxvA==
+	b=I5tu38M3oFHgkgWPDyV5WIKLJABhtseeHrYFB0jULisjiuksVT+0dX9n1/dxNY168
+	 SPErUpYGMQVZ7ZrV+yYTdDiYTTz3K8q4Ti0q9EJkTxx8efyZA25jPJCi1U7CTTJoog
+	 nbNGJHgigqDP25YGmUsvkJq40M/YMPlBtNFpmGcipHhDcEMRBtFCnIl7NHQKSp3p8d
+	 4Y0e2vmJlQSkZlryK+boJQQ+ww6m6fJxSFIICvPrq9cI0bu9F9QrcAwJYcHzyHV/cQ
+	 1lbVb8CF9jlEfLjxOffJzkbbKCmJ0XRSNgAdAr/g6xpiC7mxwbTkwSr/5QTQSmQmlS
+	 88Xk1livNIz5w==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: rppt@kernel.org,  akpm@linux-foundation.org,  linux-mm@kvack.org,
   linux-kernel@vger.kernel.org,  dmatlack@google.com,  pratyush@kernel.org,
   skhawaja@google.com
-Subject: Re: [PATCH v3 09/10] liveupdate: Make unregister functions return void
-In-Reply-To: <20260327033335.696621-10-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 27 Mar 2026 03:33:33 +0000")
+Subject: Re: [PATCH v3 10/10] liveupdate: Defer file handler module
+ refcounting to active sessions
+In-Reply-To: <20260327033335.696621-11-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 27 Mar 2026 03:33:34 +0000")
 References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
-	<20260327033335.696621-10-pasha.tatashin@soleen.com>
-Date: Fri, 03 Apr 2026 10:41:38 +0000
-Message-ID: <2vxza4vke36l.fsf@kernel.org>
+	<20260327033335.696621-11-pasha.tatashin@soleen.com>
+Date: Fri, 03 Apr 2026 10:42:49 +0000
+Message-ID: <2vxz5x68e34m.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4D7CBA0002
-X-Stat-Signature: ei11eo3xi7ho8zcbjhdxokc9769byh4z
+X-Rspamd-Queue-Id: 50188A0002
+X-Stat-Signature: 36d6xob788qhrmeew6h1pg88g9gepe6z
 X-Rspam-User: 
-X-HE-Tag: 1775212903-235441
-X-HE-Meta: U2FsdGVkX1/BJnmS5VWEqZd1XALWhVQZWecBCuLl/fkmpnuvolp2oDwCBEPYR5G2GZukwJqNVe0yMXWw4uscLRuTX+5clnCjkkIxqDxgqBQr+eAS963MvatfqyC8GZwulMPQ6jr6l+gFpUR5sgWxYDqnRj2UqEpKVx4ybfr9xYCM+4er9nMV9lBK0s0Fg3vKaQ1Wcg9wCwu3hyMLGvvkUgEAsDeQ7QEcJkJu5bu/nADiM8TeyVIpYrp0qlDvwdtsv06K/rKAckgh5MV7D8haje/LqlM26KpZRyEz8TOnEH5R4wq6rq6lF5S5zgK6a48GdHGvb4KWUONa96vsnC4rNKonQIo5dyK6pjQOMokW2/mKw3QccFCAGCw+2UHPvjXq3BZcxZssm04VFwBozzsfAoWZnjDz7PNUcre4w72zxiKqJwwZ22SZMpVAsfHZd1kqcNC+m6OQtP5dxJbaF8+TCkVG4s2oGJev0cBTgp2G+D/nuVUaduzNyBkRF/omd18R89KdsB7ic00ZdnVabeSEAXrcWEEU2pzSJ+kCTJ02p+/V1KtcoOZuFf9q0s8IyXoBo7wSl4YHtfSUIIwJkHbxKEXRySfKCtvTTpQhM3IGdwrMXsOY+9V8SO8acNAz2u4XQmIo8AEFR8SMnrzwB5XM2jLuNuPeNrxV+Vg7ZoL+wT/5rqCwW8Iqsl1py2em9f72QAOBQnvKf9UzLIGc85kRoFVLkdFKFKsntanhu6UonlQBPY9WFXZg1LUFGB9VSMospikojH0caCcraA600lTxNp4GLH8R8diWvtxC3DBkpa/UWaOFf/+hNdCFBo0eBesGF+Kh0I1lmoZLMhZbG27yZcbpC04Z1JYvpvsYpdD5gXUUvgZ3QU93CWlxhs6GepA4IZ/5q6uIo5J8AI25anyMa7fm499C5a8pe1+sdY2xtl2iK4UBCHBpcvzfZ0LKMw+qb7LKhJeJsRu3lGZCotd
- /6Nr2rBQ
- B7Kwp2FGD97PMiFzYqLqhDyffDiYMTSop0g74jFXdZQ5VoR8H7zbGLTK8YhTY7MTgWk40rSAKQnWeCmJpTCkTOfJaaQZdhTVfVyibVFodaEzvimgKyf6MuhWs4Ff6NCmF/anBztkMOi/1LF/8t1zyhPOBWsDRmBVnsYr0Rlu/uSh/BCjTGCyrz7/n7E/s0C/5LyaanlYZ+lfpwZXQSuf9zRXUJ1jXvDdoCUofkHw+9MCw6YRVNm6ckEuYC7TFeeD2zbJG
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775212974-452792
+X-HE-Meta: U2FsdGVkX1/hRNfYx+GOtoo0/+DAxuzXMWrJ34K8qXhjiz2iF9kkLjCjPjaUpfJvNeMUY8//4xz42fE0Y0vLJZhAncFxEgPCb73f7w0ckA+vGtgaQcsnmZ6PkeWlh+3Phsh5cJ7nCsCr3zY83Q/daezR9R3lQB1mwfvmxEZR+OBpO880UoFnqPIUjMqFhT25zZCuWwM//BbhPXAEM5izPxlSo5Qg7zfLebdDvZXWmLkV7uwluA+u5/zwPpsu5yRGsqVY/1PpHviCJrPgAid/E/i1SMzlx5xddaFGfXMYs0OJvltw6fcCn25vYxB71ck8dPxsTFPmHNXh+tckME52C/rdsXtpWZU9x+A6/7I8mMuM3i+S2C+Pg65Qsux2o6pqzKJN0uq7pRedKOGvezr9MqaAb5RN1t0tk4b0ByvSRwT8HCpfVUDicddp6KuDRgab0ob9Uzh+kTbU8aXenLKU3atvfjojUVgp13BXhvWX/yOnzzOEJza7Mlu5V56sH5Q11t+7pN2kppDwL+9eDK4rHjtDZA7gptoR0aqtYTiaMRbwF0bLSCx5q7B30sXMC0l0m6dCjW1f+q6BCzIUufzCBeHlSwhbSK59Q9n5lFzdCz2elH86FKJ8wg0rlbqwu3hVHMKkMKQPcHK6Wrxn/JRElkRH9oB0vFbkQNKREVoHGAIjvDA5hebe+aIGXXA3yWHZuaUP/hh9ge02NqtsBe187yymHU7PLpEbjoMVg12/zZViJ5wWPB1oGsCSP/9hRFgZejMUHSvBf2HA+ML7/Rh4nZjrDylRJ6KVUxJ2/UmseX1ry0B1PAs0BEBanWJVWSvDcbjrfMW6NVIWi8Q3ayQf0yPCB9g4uCb5lLy5f8uL7B3OnIgYMhbgvVIjUf38luj+UH9ORcESvj7PoPRpdJ4dor6CeiMQD7NImiCHnCniRIbPyd/dsCQNOSQhZ4IDS+LQKXqB57HiUdnIfUvywSt
+ CsRfq6lg
+ 5hkVFhvCWqYB8MasokUVTarVHnffzvWfgwqsGyMk/FXb+iER+p/GP/eKB0R4odI5OEAfWx+cLfuMZjCA9YLSvLNoVePFUzw9Ja67wwzYiQ4hTlT1uysLjgeD3SoKK4yUK9m/EoKgSZaU3hX0jTlp4f8EGIFF9IS8KpcB7oA7knd4W3PMqqcI73r22FeDp9IshSB4kGk6msbOLNh16d/gwXhsTclAc+JZ3hqb0lFoF961n6rgnUPgySnIodg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,10 +96,13 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Mar 27 2026, Pasha Tatashin wrote:
 
-> Change liveupdate_unregister_file_handler and liveupdate_unregister_flb
-> to return void instead of an error code. This follows the design
-> principle that unregistration during module unload should not fail,
-> as the unload cannot be stopped at that point.
+> Stop pinning modules indefinitely upon file handler registration.
+> Instead, dynamically increment the module reference count only when a
+> live update session actively uses the file handler (e.g., during
+> preservation or deserialization), and release it when the session ends.
+>
+> This allows modules providing live update handlers to be gracefully
+> unloaded when no live update is in progress.
 >
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
