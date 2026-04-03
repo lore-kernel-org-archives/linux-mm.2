@@ -4,89 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC07E7E378
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:37:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C4F7E7E375
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:57:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56D66B0089; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
+	id 5B8526B0005; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A07D76B008A; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
+	id 568C26B0089; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91DBD6B008C; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
+	id 457386B008A; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D63B6B0089
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:37:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13CDAE1565
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:37:53 +0000 (UTC)
-X-FDA: 84617045226.26.E374375
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7E0EF1C000A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:37:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 34CA06B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:57:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B666F13A8F6
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:57:03 +0000 (UTC)
+X-FDA: 84617093526.19.AA61189
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 26F031C0003
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:57:02 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF4VvpD3;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WExiF/lE";
+	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775216271;
+	s=arc-20220608; t=1775217422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BjMlsWhY6jfzYb+mCsmE6mk1gxbFqx16MLVYx9pqxPo=;
-	b=euw+N6gVXhSGzcFguUlw+U4I5DSt4Rn0nGal+ucDzrOZdaUqnhD5tfBUXlLfUkdpumJ+MZ
-	b3DjEhVy73Ktz3qoCgUUf3RLVi5UJwvhq/lwdlQIAxxlzT6fEpsW4+cBeiL/e2N9E11dMY
-	1DsaGJ/8/6k2XoD7zSU43PvgN36XlyM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775216271; a=rsa-sha256;
-	cv=none;
-	b=erCyBQMt5Oxwer7IfWJIYw4wwGG4BwhjnUstQmtPs9eLm3oxE8BrRGF1cToM7gHyLZgTC0
-	S/s8MoDvBcayQgawRJHEri7OVeu62fIKJnb1/gGAxgDPMogNsKEzoS1iHe1YdFNG9yR4QT
-	QOx9BdoGbDk9mGMS5dEhzSKLyzgePXg=
+	bh=hlI1RBQqJjfpWuFZsCc6c4R0ASQxP62EyBGuIa0hpOs=;
+	b=utIql5saTYzrxaPMlZsk1H8dlaluO5luPNwiF8ZauIYd8tQ1TI7rSw1Sgp2A96xQmkw7Wi
+	QWp8WqgtDIHXobSPg6SC897rm6zzgJaicTtfT5WwqHtwVScPrEdSXLRLgsItjI0pcxcwvs
+	kzxtFuSgn9xHSTYIo2rbTndv4bfRB54=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF4VvpD3;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WExiF/lE";
+	spf=pass (imf21.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775217422; a=rsa-sha256;
+	cv=none;
+	b=YvTDKLlb9QlJ/++LWXd0W+YhV8LYvcIRuOzBRLIUSR15TETDwNhRczGZN1SWUVrLk5c1ul
+	Vhw4kzK7fqGc8cnPaGMfRgTr1PffzIzXPFWrSDvVMq9PR7RCwmMXTEFX1AKf/Ovmbw0fRf
+	3OI/FmJTUaEc3HGLcz3NLWWq13TsKzQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5065B4345A;
-	Fri,  3 Apr 2026 11:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE964C4CEF7;
-	Fri,  3 Apr 2026 11:37:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 975CF60121;
+	Fri,  3 Apr 2026 11:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F48C4CEF7;
+	Fri,  3 Apr 2026 11:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775216270;
-	bh=vMKZ7un5FtqzmkKApMQD7+RG0CoGlZexiI3kSh6AhSw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=EF4VvpD3Kmcyx1KhggtAUGhgjtIw5v6tzk2xv79niXA5bmlH3LYJ3kaGdNHsQZ1Uh
-	 jB6YxwxWbPghSDe+IRCLThjS8klKx5YLsuz/eiIuWzqDVsxj3fmWPjT25jTKv/CgpJ
-	 BdqCh8N8na0fwP66eFQexPrB7QLIVN9YCaPAAipiZmxCUHm4onD5OQiyqLsN57AnxU
-	 ZonVZemsLWRkZUUhgZQXQUDdHs+AaOFBhUpZZR4AonfiVrOc5nlbDxmYVyuxHt5sns
-	 LvnnBsk6PY84Xn/SqUmukQe6kCcEYc52FYTMg1w7jp+LIapurVe7ssuL4+L0nIv/ar
-	 j2h7Ya9bAE0Ug==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
-  SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
-Subject: Re: [PATCH v8 3/6] kho: persist blob size in KHO FDT
-In-Reply-To: <abfkVOjq1ngZb-Nm@gmail.com> (Breno Leitao's message of "Mon, 16
-	Mar 2026 04:09:43 -0700")
-References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-	<20260309-kho-v8-3-c3abcf4ac750@debian.org> <2vxzbjgsgk41.fsf@kernel.org>
-	<abfkVOjq1ngZb-Nm@gmail.com>
-Date: Fri, 03 Apr 2026 11:37:46 +0000
-Message-ID: <2vxza4vkcm0l.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1775217421;
+	bh=hlI1RBQqJjfpWuFZsCc6c4R0ASQxP62EyBGuIa0hpOs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WExiF/lER3/HxYWRZ7/VYGGhEbpEpz9xoEPNjcsCFvTGNpufubq1/grWFEw4iuMUy
+	 OoXV5ZN9cvTpw+MrimzFf6s9HmUgEebMHP6rxEPoVqpOak+AAKYreCCI+aI8f5Gcf8
+	 zd3TXBgf41BbeUDYgDIMBFsxjCPG+plKws+G4eTYF97BpuDvffRy9f5yT7XQBVGQbe
+	 XqHjaEsIVjnSBX+EIpGZbUC6lXfkWCjygMqGuZgL2M9uFpPhtTcBQ2hiVkdvbT8xp0
+	 yn+PYHPMRpNNVo0RArrBjXz2Wp47lKN2V/BGSRUsMLv3YU6gYJZRfQsOsmZPjmN+O6
+	 y2sPDI66WCWpQ==
+Date: Fri, 3 Apr 2026 12:56:51 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Paul Burton <paul.burton@mips.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Eric Dumazet <edumazet@google.com>, Toshi Kani <toshi.kani@hp.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Alexey Kardashevskiy <aik@ozlabs.ru>,
+	Johan Hovold <johan@kernel.org>, ardb@kernel.org,
+	catalin.marinas@arm.com, chleroy@kernel.org, david@kernel.org,
+	driver-core@lists.linux.dev, kees@kernel.org, kevin.brodsky@arm.com,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, maz@kernel.org,
+	miko.lenczewski@arm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	osalvador@suse.de, oupton@kernel.org, peterz@infradead.org,
+	tglx@kernel.org, will@kernel.org, yangyicong@hisilicon.com,
+	yeoreum.yun@arm.com
+Subject: Re: [PATCH v3 9/9] driver core: Replace dev->offline +
+ ->offline_disabled with DEV_FLAGs
+Message-ID: <57452867-60be-4292-9bc5-4e2faf1f3cb4@sirena.org.uk>
+References: <20260403005005.30424-1-dianders@chromium.org>
+ <20260402174925.v3.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 7E0EF1C000A
-X-Stat-Signature: m3o1zn745efy6f9uq3pz5cpt1u94eqaf
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AVRN0JUTTuR+6v5a"
+Content-Disposition: inline
+In-Reply-To: <20260402174925.v3.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
+X-Cookie: The Korean War must have been fun.
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775216271-676360
-X-HE-Meta: U2FsdGVkX1+fYEfLPR0ShW0sBzjVTQ3HEMtOuZyZVm6JHkGy42Rww9ditM92S3iEzFyLwE8LnJcsVIWr1mOFcXy6RW0RSrGvzifVQpXe+w2XT86OOc7LPTe/wykJ4v7KkiI0rJ2o1A9HudwkIRjvPg5IqN8I+K7aOs6/+oF6dNjEDCV72DdhWFTXHth/Uit7c+m9rl9VXRS7YF7AQwqYnRbhwkdMve9z7LQe/Ekg7QTyi/DZHvsviLkZUFCDe8X6QqJInGS5FHpYAaLMF5P0upNEgMCAU2yqNxT09tDkW+cEGm7yxeVUn53AaAQ+/1l2oJgU+9403fSB39Yy3XiriXDWCiJQNM4qYy7/2Vjjzh2b2TH2dK7mzisNyo6/vmyKHbakn73p+W0qAwvFD9orNelPRPfnt708e0tqr8eHtLb975sf2+ifXftyPXwNa5jbNHj1jPoJFMVCwduT16YuzskYAbnEVG1blzDaEuJrlj1zU0ibmzltAnQEhF3f17VMncwPtTRKuhfOlqakZeKhGcWtG7k0MGI7AMbu5J3PzMiDifO6jqxA7GH9Iz1GVhKn9cLegrC046jCrAmlJBriQvZu0WlyGIjBmeu+VZSbIRLU5gI8FaA5biRITEwyU3VLzRn8FY/JHgikF4A8xOxtNv+UbL3/7nS+NHYjhlSAe1bpT0hA1iHwnqQ+IO0oZsZRw5KbbL/XwqLyYYNDj05dqdhBC+JRXOGvNzRxIImiVAz2S007QMwDX0t8bewatkcmSbKz5R2iOWNJEaSITpco0Zvj+BtZJO2yq3heXoSYXHGp2b8sZubdwKkTMzueRZXo1ZxZ0+78TaKRokoG4ThfTMHZgT9n4e+IR+BkKyIH+r9jwxOuGoTW9TGvQmyYu3PwOAkkuv2h4/A=
+X-Stat-Signature: ey834rhaocaopc7dnxymk4mmuqge7dsx
+X-Rspamd-Queue-Id: 26F031C0003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775217422-876186
+X-HE-Meta: U2FsdGVkX19vr+/XLtGH9OVxRJRdsBP4bcDj14gebhllXanojuKkVcHU7U5ciURQb/mMFu/ZYOHYIQAtvcZHfAXukNzZ5it5uEiwH8v84JYOjr59uRinIoLWc9opuxfRnHSpemQ1RzItx2STr8r6Q3zb1dZO3ibOUzs4t1W6VNTlDRU5Mobc4IHyOfFFJUmJ0cYcDe1UN18DsUu2+Dho0Ac3LJKbxoFBttMZ7Lxp+qMTBqbJk9GtV+PLjEYo00LnfVwO3pAVhO26FcsHTmJcUrwS2oiPbnchCKll3cHlvG8t00MGDInenCsl9j+Ol664jz74ri0BzOOCVfkDOIH+ae0R9qw/lO3qR/+CA1zZoY/zYjVgOl+GzOJFkDlGHQ4zPgBcQzTb7Xusl7G4uwwIXHg9krKumvNFWOnb8L9BMO86TyTikf8HPRyXbZbEPYfQXR+MeF7ruHA6T3j+dhEntzWnYf5ELterTqzkXQ9AdG7z60cVCnw5gQ4SAQTRPUfu+ZlpLtwCslV2Iem7PlZz2amS6yc5sk3Z7dPePtOl4ib9XLLmb2Y8oB7qK17PR1Yq1WccWmWN5PYvcwB+uw1Inc8etH1dtupL8HSTAuWBJYf6oCwuEMlYAZ2wYGMXc3oP9/hKILJxedC6OcuEXGbaUYAkaqFM1fHcQ/3LfT8x6yxNaXMfECY57IjsWyk/CltKQp0iKiusuWZ2OyNEThxGlnxVj0T13RJQQ6A1tZZSoywltMapwR7gad2bkA2opbRVMqFQSrxnFUGvv8vp39XeGKQzoSpRVqwLBc6qyuTNxQIvM+qK0J3MTNTpBLJ9SERgfE9JVJWdA68D7vTaLDJQTMI3QtYgtURMkE2uLDW2pS3dhlBx5LULLKdacw5oyZ6aJxMov+fedZlsK8rx0pl9Pt2/UFT2zVosY/sMRyLML3Kq/Xn10LYDUPNr28g61vX47tbjY9Z6t5fCabRWWed
+ h7ar+rwo
+ v7tqvPeewerCHQR1A1dADSeNzroVK/8+0/Hp9ZfVGvLNNh7WWrcCjOy7VNN7BKLWQFIwJXTI2p7XAOEFSBMV9zb48rfwLzH997ZE9CvANkbveuBlEpZ+Rv/idxHrRh92BTnggfXu69crZoOwP54dsiNfatbbFxVnlOZqU3xJyf20MiB2RhfZjrAovs/y9CyWj5riDC0HpsdChgREDP5SY5YvShuGszgzTgTo1xAJnh2JTUmPezsZxwagUuNYdWf5h3jGReMR2qWs2I1ISOCkrXIVtLeC2P8zRWeVmAoRNg1kI7f1Ni7M4uaLy+3rvg690o/K0chNRkrJe7HGeOjrbO2s47qUyAJHPlzBLbcHJm/XiwL/hfedGcofgHs08xUQzgp/s79eNZqhhQ9QuudapLpW4BN4Z865rJhVE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,96 +115,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 16 2026, Breno Leitao wrote:
 
-> On Fri, Mar 13, 2026 at 09:21:50AM +0000, Pratyush Yadav wrote:
->> On Mon, Mar 09 2026, Breno Leitao wrote:
-[...]
->> I noticed that the error handling here is a bit broken. We open the
->> subnode for the subtree, but then if we fail to add the "preserved-data"
->> property, we don't remove the subnode. So the next kernel gets an
->> invalid FDT (per KHO ABI) and might as well refuse to parse it.
->> 
->> Similarly here, the FDT might also be missing the size and then the next
->> kernel might reject the FDT.
->> 
->> Also, we directly return the FDT error code to the caller, which
->> wouldn't make sense since it probably expects -errno.
->> 
->> Not something this patchset has to fix, but I am pointing this out in
->> case someone (possibly also future me) is interested in fixing this up.
->
-> That is a good point, do you mean a fix like the following? 
->
-> commit 633d0cb01ed959676b60de8b1851dad1757d8fe5
-> Author: Breno Leitao <leitao@debian.org>
-> Date:   Mon Mar 16 04:03:51 2026 -0700
->
->     kho: fix error handling in kho_add_subtree()
->     
->     Fix two error handling issues in kho_add_subtree():
->     
->     1. If fdt_setprop() fails after the subnode has been created, the
->        subnode is not removed. This leaves an incomplete node in the FDT
->        (missing "preserved-data" or "blob-size" properties), which violates
->        the KHO ABI and may cause the next kernel to reject the FDT.
->     
->     2. The fdt_setprop() return value (an FDT error code) is stored
->        directly in err and returned to the caller, which expects -errno.
->     
->     Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
->     out_del_node label that removes the subnode on failure, and only setting
->     err = 0 on the success path.
->     
->     Signed-off-by: Breno Leitao <leitao@debian.org>
->     Suggested-by: Pratyush Yadav <pratyush@kernel.org>
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 62b1b8a9aa337..8d2d30119f6d4 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -787,19 +787,24 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
->  		goto out_pack;
->  	}
->  
-> -	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
-> -			  &phys, sizeof(phys));
-> -	if (err < 0)
-> -		goto out_pack;
-> +	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
-> +			      &phys, sizeof(phys));
-> +	if (fdt_err < 0)
-> +		goto out_del_node;
->  
-> -	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
-> -			  &size_u64, sizeof(size_u64));
-> -	if (err < 0)
-> -		goto out_pack;
-> +	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
-> +			      &size_u64, sizeof(size_u64));
-> +	if (fdt_err < 0)
-> +		goto out_del_node;
->  
->  	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
->  					  size, false));
->  
-> +	err = 0;
-> +	goto out_pack;
-> +
-> +out_del_node:
-> +	fdt_del_node(root_fdt, off);
->  out_pack:
->  	fdt_pack(root_fdt);
->  
->
-> Given this is not strictly related to this patchset, I am planning to
-> send this fix separately.
+--AVRN0JUTTuR+6v5a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Yep, looks good. Please send it out as an independent patch.
+On Thu, Apr 02, 2026 at 05:49:55PM -0700, Douglas Anderson wrote:
+> In C, bitfields are not necessarily safe to modify from multiple
+> threads without locking. Switch "offline" and "offline_disabled" over
+> to the "flags" field so modifications are safe.
 
-[...]
+Acked-by: Mark Brown <broonie@kernel.org>
 
--- 
-Regards,
-Pratyush Yadav
+--AVRN0JUTTuR+6v5a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnPqwIACgkQJNaLcl1U
+h9DTzAf+NmJvooER0KUGxju0cXbQLPzjhe+zmzezOQJa1zXjXfgBycnhieaqK7ny
+S+ZKb3sGXOFz1uf62w0rkTigz6ZBhVej2811kP/v6hOK59NgZZTJQfO8dQuSxEnT
+a/yLND6ngy2gm9svEKalKOxPy9JbUJjkq+j/fHmoGQtgZJzi3MQgf8Dj9JD9Hi9K
+CfKa+1VEAm39ijM8hfGOPXIHopw7PmdFfwGHkxLjmh4CRnWEhvWLFCPR+FiBQ0Sn
+XrkEJ4xDFRK5m2nxMzIK4mnPEH5oNBFredP+/WQ/ak8W69Tqy7XcVG1E5yZLgzci
+4Y9/xe7D3PUt6PvteNaqZANk/e1zpA==
+=qXM/
+-----END PGP SIGNATURE-----
+
+--AVRN0JUTTuR+6v5a--
 
