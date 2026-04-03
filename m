@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C369D73090
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 03:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28593D7308A
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 04:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290326B0005; Thu,  2 Apr 2026 23:50:38 -0400 (EDT)
+	id 2E9BF6B0005; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 241406B0089; Thu,  2 Apr 2026 23:50:38 -0400 (EDT)
+	id 29A946B0089; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156F86B008A; Thu,  2 Apr 2026 23:50:38 -0400 (EDT)
+	id 1B0336B008A; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 034C26B0005
-	for <linux-mm@kvack.org>; Thu,  2 Apr 2026 23:50:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6272A8B919
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:50:37 +0000 (UTC)
-X-FDA: 84615867714.03.9F1864E
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B7334140006
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:50:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qnUDlCPy;
-	spf=pass (imf26.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.194 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qnUDlCPy;
-	spf=pass (imf26.hostedemail.com: domain of wangqing7171@gmail.com designates 209.85.210.194 as permitted sender) smtp.mailfrom=wangqing7171@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775188235; a=rsa-sha256;
-	cv=none;
-	b=z7qrae/Ogrc5NsHJZzZ/7wgS4nCDxFB+8Xhm/3vJVvRlatUVZTtjTywadWJJJiTo3ijm/f
-	N9T21NspoTrxl65p+79g+w1P8V30uGr45ZSju/0uwCZ181p263YcTFeKdZDIDvXfh7SKOF
-	K/MvckbRJfB2zMzmaqerYU750AOvmw0=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 07FDE6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 00:24:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B68A58B5C
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:24:26 +0000 (UTC)
+X-FDA: 84615952932.15.F49056E
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8C51F180005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 04:24:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NHnh5hQY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775188235;
+	s=arc-20220608; t=1775190264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HQPI3LrOqxlbsCY21LUJwyhyqeC+P+kOUutUODQJ9hw=;
-	b=x4db5Ai2R69xk0uEPkAiRsSt8HuDCf0ibM8IbGMmY84ltDFgk6GauzgzfE+AjrB4z/hXsF
-	Wa/DjVvqQg15bXiyQx01PTUH2TaMmqsRr4kGUxWXX2sOIK7KbS9O51yUN4RX+bSrlCiX9o
-	1V3CaS/eEqwfL5g2OkZlQmB30sdjX+8=
-Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-82a7539851fso691844b3a.1
-        for <linux-mm@kvack.org>; Thu, 02 Apr 2026 20:50:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775188234; x=1775793034; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HQPI3LrOqxlbsCY21LUJwyhyqeC+P+kOUutUODQJ9hw=;
-        b=qnUDlCPyFKmCFTs6mraFpoKgrJyhRB16uin8Ik460EVmtRQ4ynVUqMyQilpnr7B9FW
-         XVeYPbhPubaqYJ5SFrMkzC0jPcUbHFzxyUjh04Q2ZrZPBP4i3t4iqI26KdFZ1mU3Xrr0
-         etHzrnCX5KpScJPLoxrn9IaBcUruS0PtWP6RXUgOmTP6YGJ1cynrR3AhRwC5GC4w6MnV
-         pUqfAKp8NDo+qz7JJUIYzmXkP7uYL/rEtb7rJJLECAUHu4uPWUTvEFx83tL6MIEGd4K0
-         Mf/ZVWgVC/kS4Mowt1nV2uhBxmGCaNFXYT8Z3saD2hU3pHdeuO4x8+HPKL1uEKzpGkgp
-         FZ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775188234; x=1775793034;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HQPI3LrOqxlbsCY21LUJwyhyqeC+P+kOUutUODQJ9hw=;
-        b=OqA6u/zW2PyMfhMPeO3XMvVjzWKzpJumSWU6rLAfXyIcwHQJT1KnjzVm5HyAK6FRH6
-         5Vp+HicNKgtpwqQQkN05LfGrJr70LpMQ87Er7+19be7+wdkmbeuA7OtCxmcvDvGhS7sY
-         KnKeXxi4CkfrLVb14mXUghh/tjFuirEFU4Dp92vaCSpdJWSyFINa3PYXPL76rOUSwu4u
-         4TmjXOqHcxrHkaky6TXuaFP4TxwDZcKAm1dllrU+HYW4HlfLxq2FGGwoP/LQubnJzmMW
-         bvoUQNDWsjebXTAUWtZ9SbL9dkVZd4b570CJM//R5EJBVKsRz6T7/eTwQQt6yoZ5bPqi
-         lLzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPI6Aj2+iOobQYu0WbekTN0rZSkAIjk3te3yJhoBcJ736r75le+UFBjdr4PK95xZomyjopiB7Yrg==@kvack.org
-X-Gm-Message-State: AOJu0YzzVrYf/6ppQYAn78B1AgUHfxruACMFkmKokwG3Y1NF813puw2i
-	gX2Xfrkv0yk5T2u8ZEl6GnJehuniERxXRBrdv2NNz8DCm42muiOdny3e
-X-Gm-Gg: ATEYQzyaTa45pK+/sTZZmHf58tRQfxuMCafpKwEtcgt43OkZF1LdzCtKzUT7LdydxWl
-	5xx001oN2dneK4XeNcoCGIMDAIhFb9zNeyV7+tBtSTPsBeZthJHRNoVUHsOoGeQEedly05h4tnm
-	uxrbpBBMXNp4PmI3sABMwASNl8JoXB+lLthhk4gx11D7mfYPOu9KiW6WAc5xymRTSyXtB+v/B8v
-	uH2+m9kJXl+JOUpwaSFDCAfUSynqhEnSh7Bu/G3nknA8hGYnOoEFGmKaOT8BUsVTSFqGs7UKC8H
-	CmKX3MS7tYj8bZ2nCUae78EwGIa8NNNSiYisoPOxGVXfJ4FMuDBqaJUxCikdXx/+LqKTSR2VGr1
-	qsmOm3WEyvzigi1xOd5A2eymqoG9XFGOicvRH1mjWU6M2DDJvUoehaGWxfcTQzgVU8AOc/rlyOQ
-	xehlH5DcNrFccXlTUNEqQq7P5ybEehl5aOj9j0Ql6afCwH0KLYyKyRdGcroVmN
-X-Received: by 2002:a05:6a00:4fc6:b0:827:3ff6:fb72 with SMTP id d2e1a72fcca58-82d0dbc3143mr1571310b3a.51.1775188234433;
-        Thu, 02 Apr 2026 20:50:34 -0700 (PDT)
-Received: from lima-ubuntu.hz.ali.com ([47.246.98.223])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c9cbf6sm4919005b3a.52.2026.04.02.20.50.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 20:50:34 -0700 (PDT)
-From: Qing Wang <wangqing7171@gmail.com>
-To: zhangdandan@uniontech.com
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com,
-	urezki@gmail.com,
-	wangqing7171@gmail.com
-Subject: Re: [PATCH] mm/vmalloc: fix KMSAN uninit-value warning in decay_va_pool_node()
-Date: Fri,  3 Apr 2026 11:50:27 +0800
-Message-Id: <20260403035027.2052972-1-wangqing7171@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <DFF3B3301CBB8797+20260403033017.23370-1-zhangdandan@uniontech.com>
-References: <DFF3B3301CBB8797+20260403033017.23370-1-zhangdandan@uniontech.com>
+	bh=cErbKdi32QMH2dzlzoL5zUK31mzqGlUsJK8tpfLDBsY=;
+	b=C/CxKJ3Yxl1B1VsZpy+xNTPTNGqH+K6k6JAlxjzlEFHrxgA2krZIXl5hgi/46qwNoUAjI4
+	WbgvQUU+8OeXo5q7WXYjUACRVRyKSFB4DOt/17KZfEk0C1+p4aQxlekqilOOt+JKqf5i4c
+	AkA3hGs6uR1gvtE8SP/v9SF+2zZJdQ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775190264; a=rsa-sha256;
+	cv=none;
+	b=xJ9FbWxvsORrEBlj8pbEFnFrQRukcucbZz1cOdEb7qjmTuoyycYt3Dj1mQgzfMv4bzcBoc
+	BHivRO1SbJcMoHL+rp3CiZiZwIefeKpROngJErouFcIyK+yzli6dU4C5bOBr/vE+TBibIs
+	9hudWGDyC6A8mkR4cL+4elAMI2pCYlU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NHnh5hQY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <4bb6d46b-afc8-4d35-952e-8301df5026ee@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775190258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cErbKdi32QMH2dzlzoL5zUK31mzqGlUsJK8tpfLDBsY=;
+	b=NHnh5hQYagWyfnu4knCBFIoHSA96++GT6HlgM1Q+86YOBBRPB6jqSGhB95MtgzUu+S5E57
+	HJW4NldnRpgAWyHkf16HAfxbMYbu3uSBws19t8jIhLOP4Bwy0NUIPUB2PMl9SYeFYL4dgz
+	PrlXplwDn3JxTrfML6rm4xQxqk6T1GY=
+Date: Fri, 3 Apr 2026 12:24:04 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B7334140006
-X-Stat-Signature: xkhaacuoo8wzstuecykxgeubqhppm5jh
+Subject: Re: [PATCH mm-unstable 1/1] mm: fix deferred split queue races during
+ migration
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ david@kernel.org
+Cc: ljs@kernel.org, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, richard.weiyang@gmail.com,
+ usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kartikey406@gmail.com,
+ syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260401131032.13011-1-lance.yang@linux.dev>
+ <C4A8301D-C76B-430B-A6A6-8B642B80FE2E@nvidia.com>
+ <FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com>
+ <20260401161958.38ab50f44e7629e6475d3eca@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260401161958.38ab50f44e7629e6475d3eca@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8C51F180005
+X-Stat-Signature: ywmic8m3f14gou8ij5fh887rh68j111w
 X-Rspam-User: 
-X-HE-Tag: 1775188235-559854
-X-HE-Meta: U2FsdGVkX190YmX8XH7frm1BmjbWzZXcQuOwHwIcBwgcYztPIWAyyr7EqDOoEWYSGSc3/mFJUMRiTr5xpaB+iNfyGSV66CVjYU+M3CDfCU/agyTZQzCJcnKnxfMsuWmmleisdCemkJ4AISDbSIpaSG6Udmt+YpKOwEBmDum/1bMtpMIXCv+sOcQizwbPtQmzcSSx73fYBK1BD1gEgkIKVqd4l5Ro9mGScZFNExAPYkxkZkawCpdofFVA+Z/AcWabTH23/O8y3fMQwwicUSTllMDTmtWvagYx1zorpd8vdr3DydmUSVgUKg4iBFy/eAnu2bvrnIazjlKWljgSGxgS2XhA6YQjuPs939Hxph1zG8CJ4BsJIXUxRrtCvov6SXnQwSpZ+sPhxYBE8YVcm8EV2E1oyHAWyzbrMYoYCZjA3OPf4p7M949DD+TYMpb++SnOk8kR0PE33BreH76UJZ2nuPuGeL8WntaDH0B/yS3zyZZSmh2KeBReX/Sus97HUumvldOh8ov7h8Qr6RM4qXX0vUGQlaxxLBiQQL1tUj2VfMd7CbJbzXLK1AsyP/t7v3raki5PbeAx23b/CiHVmeXmS0Ib2FF8sH8pQWKZ11PSKJWxUcV1VVk9W8Ja9t1hIDfaHNACt34Pf3e7CklhgQ4hHOm4GdYdYTZpFlomes8kXjowUTGe/mYZI9009qI3EYCJv560QdowYpqKtvYghUsIrlzn9tDcm8HgQyq7MOeLDOUsaTXbood6l1Q1BygM120D+cjzG4jBW9TO8S/xlEpPSQZw9K6Oc9mpdtMHU+E/wG7W7Jnl7vOEcvLNorYW39+qAEBEiHHU0qqWtKA1/3nYmNsl58kdFRFx6JFDkgzN5u+ZuplAWISnlSSlfnBKBjLDwWQ0SmlTaudwY0hFX1VjLhBJxm3JW70toJGrEkajqK6k/w4HRM8Et+SabXsZYObS4mSuOPS3f7TuI4WGZqS
- LRRkYf71
- 2BrUWGDSLKYpEISMtHhXUJvrdUp01EFlcclyXT4+rnPkG6Ia1HeUNMpC3rBUxMA6NSbrsOkziXq/xgKptHa3shPU3FVVFgzpGBwh1DhqnE364JHxBpV4GSJLn6G3B9vd4n0mQXh3xWhH5ZoTvbgnfHG7XPEma6tL6W3zQFL21UMWU6S9Hk9JRM0vQX6yofPsfhLOHePg6hTiJ6R1Uu9bQ30G3mwmJ6foAvrAIxeM2s1CIbWMM74g5nKeosw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775190262-955857
+X-HE-Meta: U2FsdGVkX18z9JEGo5/lOdtH6aAFtJ83YE+VurOXa84Lzo1NkNv0ukIpX1MLQoTgANwG2+zq/02vBppcKUfJim3kJ/MLKvmgceyYMuOqJ127MjV+o0+o77mrtOpXl/oXm49j9eIwTybVU0g3wihiOaxFXLXvZfTszzyOkSAPaK1mpD/gkjaNbVCvy3y36DTTx2k6iQs5hZYtd4eHrGiLxhYbH8LN/uczobUfZTPbLhtNVHRD9cZaNBT12D7u8FWTI/un8gC/+eEVZ7z/oocjpFBRlTIf9uq9TyG9P+82WquI34b/WpLoAI38sGkUVIXNrme4XAoG9xFjUeXjeWpmy0tR81rddjT+uXpsbW6IJg/gggR/iNAs12vDCA7XDTX79f1oI3KoEXqJadGWS1LZfxEAY+uLcl5lfh3ibwO6ZG2tjubwx7+tAmu6tV3fceT4QYcC1c+kTOIws5sckQSUI980W2/knzZDPaQ5jO6aJV4+OyJyB2jn56s0VTP/4j2oYtCDgGz6s5tcI+B1YdLpygLg1Z72BGT4sFe2OuQZuDhhTUvcMGuGqnAkz4t67RYnek2AsKuqHfGnZy28Dc21RPzRl0TMf72rnDj82vKUv4OcnlxJxDV3TyK4nP0VmJF2qecHixJQxFWS8GKUI426FUCxQS1pzDZLlT9r+9ryi1QXQPE5zkoA0bseZwfVnd8UPbnKFhgIUuZsGN4kHbv9PONjCr7dcPeZgaxRnrgxQBxMgUsL+Dl2xED7bbtQdob1E9rn8pri9rb3alj4nTr0l1h5e54xVheX4sFG8gULczkJadaimM05VFbtKWz767+rkm4As4Ake6cS4uVf2rhrrlKvxh8L56UWfWunKX/ON+4FakzNnA+ZpZSwMLGpwIXVI5jaHf+TQdfRPvHOJWZ4lqiT1n0jwhEJPafvk7KO1cZtCqxftWThIa7/o8pL1R/ZrPA0tJPw7hASaQG/KjW
+ RVX2e76X
+ S4Ga/Q0zt3Tq+U8ll4QlzXNph5v7Gs1sKMHpoh3ZZLgUACmokL2mjbEwZ4CB5YeX1SHRjUty7kAgowbmv+RdOrCIaiX8J18SiWhWVUMlkoe89j6CiIva1YGSCyYi7uMq7KVEXQasM5Yks9+z8uWJf3OgUIyaiIVYOl+V1I8dCAapPP4N0uALDccj2FPAH2QpZfXaDsus8TdfhnajfF9Lt5V3Cg6hIOGm7+XrynqNPMMEYMj8Hs8vL1dnlyBAAuvk6sha/VbX/mOwP6OJAnjgpNipDqYwlar8izzoaTULOQIo2gCjG060Js/XdHZcxNsYiY9jfl5XUZ/5qiQu0BdBRrDHkl44IcM0T3fIUIH+uJqhDGU9hLQopFYtOZ3QLiJYfVdDYby9+fi+cKFSaK/MgkeXe5gokgF4Gg+UDKskpJJ7TtSCkgqnKVbJeBJdlDdNCp7+ZafAHRQgU7DoW6VerrBl9AE/+ZJu6oMFXsQy50gAawV/ka7IGn79awxUpnJz6mFewkct6+UDS/FzINWd0UCU8kFkNBHwvKz6TFNO/FHrKAdNQxgtwwfNWSJhffalpj0dAXrrd9Hd4wgTCjdod+ujZ+p8Y1SOLCUh5/EGwPu+g82HGNzfVCBfzB6nj+WKXVzjsyPWHkOSf4D8Jy/BwU3TrGHsRKyjWqJrfhXLOdVrOJNwb0CKzK0F8jyULtZajMQySMRSaFajKPx+RHX9w902Z1OymMwGZHM1LL1WJblnK5wL0Pf+t8NPrXLAEo+TulKlxkCI36pLb3OEtPHtGsJ1oK+14sEh2zmylEs3+c9LCrjnxlDlpnrrDjhKgfbJXDVp3iSEBDvnYAWycvmDQ8DBssA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,27 +100,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 03 Apr 2026 at 11:30, Morduan Zang <zhangdandan@uniontech.com> wrote:
-> While adding INIT_LIST_HEAD(&va->list) in alloc_vmap_area() would indeed
-> silence the KMSAN warning, I'm concerned that it might only be masking 
-> a deeper issue rather than fixing the root cause.
-> 
-> It seems that the uninitialized access in decay_va_pool_node() suggests 
-> a potential race condition where nodes from a concurrently repopulated 
-> pool might be lost or the list structure could be incorrectly overwritten 
-> during list_replace_init().
-> 
-> Instead of just initializing the list head to satisfy KMSAN, should we 
-> consider modifying decay_va_pool_node() to avoid using list_replace_init() 
-> which might drop concurrent repopulate nodes? Perhaps using list_splice() 
-> or a proper merge of the leftover VAs would be a more robust fix for 
-> the underlying synchronization issue.
 
-Thank you very much for the reminder. I realized that my patch does not fix
-the real issue(concurrent corruption of the list). Please ignore this patch
-and let's focus on analyzing this concurrency issue.
 
----
-Best Regards,
-Qing
+On 2026/4/2 07:19, Andrew Morton wrote:
+> On Wed, 01 Apr 2026 18:55:48 -0400 Zi Yan <ziy@nvidia.com> wrote:
+> 
+>> Can you apply the fixup below to move the comment? Lance told me he
+>> would be away for a while, so he could not send a fixup to move
+>> the comment.
+> 
+> Thanks.  I folded that into Lance's base patch so here's the whole
+> thing:
+> 
+
+Thank you all!
+Lance
+
+> 
+> From: Lance Yang <lance.yang@linux.dev>
+> Subject: mm: fix deferred split queue races during migration
+> Date: Wed, 1 Apr 2026 21:10:32 +0800
+> 
+> migrate_folio_move() records the deferred split queue state from src and
+> replays it on dst.  Replaying it after remove_migration_ptes(src, dst, 0)
+> makes dst visible before it is requeued, so a concurrent rmap-removal path
+> can mark dst partially mapped and trip the WARN in deferred_split_folio().
+> 
+> Move the requeue before remove_migration_ptes() so dst is back on the
+> deferred split queue before it becomes visible again.
+> 
+> Because migration still holds dst locked at that point, teach
+> deferred_split_scan() to requeue a folio when folio_trylock() fails.
+> Otherwise a fully mapped underused folio can be dequeued by the shrinker
+> and silently lost from split_queue.
+> 
+> [ziy@nvidia.com: move the comment]
+>    Link: https://lkml.kernel.org/r/FB71A764-0F10-4E5A-B4A0-BA4C7F138408@nvidia.com
+> Link: https://syzkaller.appspot.com/bug?extid=a7067a757858ac8eb085
+> Link: https://lkml.kernel.org/r/20260401131032.13011-1-lance.yang@linux.dev
+> Fixes: 8a8ca142a488 ("mm: migrate: requeue destination folio on deferred split queue")
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reported-by: syzbot+a7067a757858ac8eb085@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/69ccb65b.050a0220.183828.003a.GAE@google.com/
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Deepanshu Kartikey <kartikey406@gmail.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Liam Howlett <liam.howlett@oracle.com>
+> Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Usama Arif <usama.arif@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>   mm/huge_memory.c |   15 ++++++++++-----
+>   mm/migrate.c     |   18 +++++++++---------
+>   2 files changed, 19 insertions(+), 14 deletions(-)
+> 
+> --- a/mm/huge_memory.c~mm-fix-deferred-split-queue-races-during-migration
+> +++ a/mm/huge_memory.c
+> @@ -4542,7 +4542,7 @@ retry:
+>   				goto next;
+>   		}
+>   		if (!folio_trylock(folio))
+> -			goto next;
+> +			goto requeue;
+>   		if (!split_folio(folio)) {
+>   			did_split = true;
+>   			if (underused)
+> @@ -4551,13 +4551,18 @@ retry:
+>   		}
+>   		folio_unlock(folio);
+>   next:
+> +		/*
+> +		 * If thp_underused() returns false, or if split_folio()
+> +		 * succeeds, or if split_folio() fails in the case it was
+> +		 * underused, then consider it used and don't add it back to
+> +		 * split_queue.
+> +		 */
+>   		if (did_split || !folio_test_partially_mapped(folio))
+>   			continue;
+> +requeue:
+>   		/*
+> -		 * Only add back to the queue if folio is partially mapped.
+> -		 * If thp_underused returns false, or if split_folio fails
+> -		 * in the case it was underused, then consider it used and
+> -		 * don't add it back to split_queue.
+> +		 * Add back partially mapped folios, or underused folios that
+> +		 * we could not lock this round.
+>   		 */
+>   		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+>   		if (list_empty(&folio->_deferred_list)) {
+> --- a/mm/migrate.c~mm-fix-deferred-split-queue-races-during-migration
+> +++ a/mm/migrate.c
+> @@ -1384,6 +1384,15 @@ static int migrate_folio_move(free_folio
+>   		goto out;
+>   
+>   	/*
+> +	 * Requeue the destination folio on the deferred split queue if
+> +	 * the source was on the queue.  The source is unqueued in
+> +	 * __folio_migrate_mapping(), so we recorded the state from
+> +	 * before move_to_new_folio().
+> +	 */
+> +	if (src_deferred_split)
+> +		deferred_split_folio(dst, src_partially_mapped);
+> +
+> +	/*
+>   	 * When successful, push dst to LRU immediately: so that if it
+>   	 * turns out to be an mlocked page, remove_migration_ptes() will
+>   	 * automatically build up the correct dst->mlock_count for it.
+> @@ -1399,15 +1408,6 @@ static int migrate_folio_move(free_folio
+>   	if (old_page_state & PAGE_WAS_MAPPED)
+>   		remove_migration_ptes(src, dst, 0);
+>   
+> -	/*
+> -	 * Requeue the destination folio on the deferred split queue if
+> -	 * the source was on the queue.  The source is unqueued in
+> -	 * __folio_migrate_mapping(), so we recorded the state from
+> -	 * before move_to_new_folio().
+> -	 */
+> -	if (src_deferred_split)
+> -		deferred_split_folio(dst, src_partially_mapped);
+> -
+>   out_unlock_both:
+>   	folio_unlock(dst);
+>   	folio_set_owner_migrate_reason(dst, reason);
+> _
+> 
+
 
