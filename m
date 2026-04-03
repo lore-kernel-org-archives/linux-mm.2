@@ -4,123 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC06DE7E36C
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:24:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A2CE7E371
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 11:24:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D9C06B008A; Fri,  3 Apr 2026 07:24:21 -0400 (EDT)
+	id BC9C16B008C; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38A0D6B008C; Fri,  3 Apr 2026 07:24:21 -0400 (EDT)
+	id B7A5F6B0092; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2797A6B0092; Fri,  3 Apr 2026 07:24:21 -0400 (EDT)
+	id AB70C6B0093; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16B976B008A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:24:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 982E413B53F
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:20 +0000 (UTC)
-X-FDA: 84617011080.23.13CFA3E
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B6BE780004
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BhCm9CCL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf02.hostedemail.com: domain of komlomal@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=komlomal@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775215458; a=rsa-sha256;
-	cv=pass;
-	b=J0AJlw5cFJImc0Gd+A7N4G5sohhjk4qFzA4phVIoBaTXWbsbMPPeIu5jBECUFjZ2Tld6SA
-	P/7GbNpgI1vLXwZat9wNE0aZyI5RQgP3CdxOqDS/OHLSVV2VPUuMoFLolw7rnAAua2D9yF
-	+a6w1KhyWbNtWLaJSwTLZnV3BRgBvqs=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BhCm9CCL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf02.hostedemail.com: domain of komlomal@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=komlomal@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775215458;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4446B008C
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:24:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40C648B5E9
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:49 +0000 (UTC)
+X-FDA: 84617012298.06.C8B5FF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BEC7D20009
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 11:24:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPnN5Dlu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775215487; a=rsa-sha256;
+	cv=none;
+	b=xAV4yEXiDJdLDz3yA4hZweyrQs9SC5bFISqm0FBn2a885SvuW3XEVK1p3xCUVCrwB1AhDg
+	Ws5RI/0ic13WRlO6iezql2ROLluLwkS+0FMcutSNpvaKvBY+Zn6omasOifoNcJfrkISzOA
+	li+E6crjkE4UU0hWHVbMZl6Rmrq4538=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MPnN5Dlu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775215487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=umLjIPh2y3/m32zCEtyZ2cjg2jY6XyXKS2zVJEijcNM=;
-	b=Z3RC80VlFAxX5LLy9fL3ldSHrVbnDFAtbso2BEzRaq0tAsA27CvEAZKJRHZ00wJclWg4kq
-	YLO6ASoPLGLJfc4c7lgiLpZgJd690+360xHCmFwmQNOBp0r9nzIqL3xCMv9xryRtbP737L
-	NVszqyJ9TTWGdnw1qkAQplqFfh8m218=
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a3af1b7549so568839e87.1
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 04:24:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775215457; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ewXlIdne8S7x/PcU6+uWI8R+//sKTsnmgMS4HDqQFu6nu2jlwdLIvS54uYs4lOHoOH
-         sJGh/CXlR4m2x1qfpVAYDBmxR5K9tKNKrVNHKxgmQ5LHfIjkyz4iIEWhB7E2OYZ7Yv5t
-         pFr5VyQO+VASnR9dQGSUlvcNLqyXjYQkNGCsUA7JtOHnH4Wu/3CjEBL9ULirRo3O+3ak
-         C5R6xvL1ocwrKq0s2DMhlF96wL1rG2oM2QxkiUxc7XEeO4Gi0ku3x4D7RjVBK7+SUAbR
-         aOyAUIzEh40EYP17QLgt1aOgehLDxnj6hq3ke6jfTIbtWFARR6IXeOCTSF+h7DyLoW7m
-         RDAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=umLjIPh2y3/m32zCEtyZ2cjg2jY6XyXKS2zVJEijcNM=;
-        fh=o/EohVIMWGK2qkmZgmhuJVzvgDBzSQjtxrRcy+o9i2U=;
-        b=jmFlTQ5SQIxWJLlHSYAXWsOQ9wqML+KMwtk7eB9Xf6nqwBLDhFTd7OHTW3VfdLxdlK
-         XDoXC3E5IcNPGgRpmD7IRMXDYYIkfGI+rYRSLWz+DlPTjMIJyhlbcrQH4Y3qyLQds4DK
-         nUlDFIgshbbYhZL4FJHDYYRP1E/KfODx4ukZ+msmOsWmeLPolcG+Mo93wi0HLfaPUshe
-         37v2HaedNmaszkhwBVBVryYFKh1OLIs0gzoY1+fW0E1iOA0OhVT4MYbHxUyl/8qhZ/+P
-         14j5/EmDAj3np9eBwI/DnR1JRm4lsL4YRn69FHPcvgbz74b/vUhlhoKle32I3AUmELzt
-         VbAQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775215457; x=1775820257; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=umLjIPh2y3/m32zCEtyZ2cjg2jY6XyXKS2zVJEijcNM=;
-        b=BhCm9CCL+X3d9RthCcg7+Q2vNx5Peyu2DF88WLypFcJLdszjJ46unNSvEIFxVetKge
-         RIWFoNjZM72+KGKsUn5WHh61M9byg9tFgvkfmxtd5uWkEipSKA+6WtzvacPyRj9uuSFE
-         yR0w/6j0iykNA1SLmF1Jgvvhnt9FT+eqP9vS1fvHWN7t+PzexDXc7tGX2aqL4mPOMfb0
-         1EfGCWSszlL4cUwrSQufESCWIoMJRrZ3ucvT13buDMMmAcRYXo+KSkW9h/z2eZKaxs06
-         6j93uh/ArKCRO2UsNEYBuYDfPkvv6IvJktWUuxCsikOIq0pvtnOXel7UTuE1cc9eJUfs
-         1xIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775215457; x=1775820257;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=umLjIPh2y3/m32zCEtyZ2cjg2jY6XyXKS2zVJEijcNM=;
-        b=hDn2XcUdmKO4LHAJRoLmtF+WVUpvc889D8M30r1cdbl1BLtJSA1tTJXgCfVTUXfIvI
-         20NON/8//9XE42z+KU086cCKSo5U7IjUlON2NLlsGPs0paARi+sngVT11aGFoqGYoglP
-         3b9WKbbnRXEHutUjFcAohNlYigVtvXhCZA+qjMtImHO7S0/Euar/FetP6toI5ee2KNdr
-         eBxSSFGEpL0ctS5AHJxc315GWvueqI8U7rJ/zU+9lvq/W7ncerKvZnfE+Ow7OjR39dS0
-         3+cDO1W6rIJUHQ2IvlFh0puR1dGOQBNHFr9lcxPM0fILfP0I+qH0qVHRcWi/3SBvqpWn
-         0utQ==
-X-Gm-Message-State: AOJu0YyVs6oFEsbGpMp4fJDu0gk6mTFR+kVS77wiAaj9eZfEGAM5aT2R
-	5Bo0niG9VTWVQU3u72HjiBya61ewz653Z8I1dohammHBdBz2LnCxwtFiY2tbWVQyayfIdjqtdAj
-	Q8CSTUOaK8YkRiK6Y8HlIbiRsbqJRPoMDi+WYwoGWqzTZ
-X-Gm-Gg: AeBDiesRMecsR8Bd4sa3yVD7A7MuHU6pOyDMiUiGQH1ouFLp3cFRyenttDCLnN5UIMm
-	TUuCEXe7CNaUL1Dax8FQMgFnN9p7xdW9m7JWU4NYIMNmIKa5W1Hn7b4zjqSbVwp6tXy9HfADvkw
-	1AGkKl7Fn5f7VpyC7M3ZAWml12meqx9UA8Ykv6/5clnP/4IqyUxr/hooDPu7BEzNcbChIxsxbEk
-	IY9/sEcg3uM0jxgDxfMuaDbacWOdjYcoSoncUTvQWlH1I7PpMqaXivwBzu9DIN9bMhHWfBGXNyJ
-	RTDZw94=
-X-Received: by 2002:a05:6512:3da2:b0:5a2:961a:f7c6 with SMTP id
- 2adb3069b0e04-5a33758bb66mr745347e87.39.1775215456740; Fri, 03 Apr 2026
- 04:24:16 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FKfl9TdVDizzlO2LSkdlwxuYXtAA09Pi4B9rN5R3bSs=;
+	b=KoaVK/Q0Tahk5PExz4JQzliyL65oNuyxtD3nbngR1ZRqWCt+/pfuKChkhCs33oQtxzm0tO
+	GsI2a0TYo1429Q2OGDCXEmCHKaTYCihA2afxgMFYD1ZTEq4Ushf0WSEQq4jO8CuPogZiwO
+	RbZRFCb+4AwGt2P8EZEBx9o6CZ+H91c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3CD1D60121;
+	Fri,  3 Apr 2026 11:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5912C4CEF7;
+	Fri,  3 Apr 2026 11:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775215486;
+	bh=n2kIfPcxv9fpCDmESjetmPVIXXSHk10QB/niw+4zBdk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MPnN5DluGKOUu49y7lrQ31VECTcn+7zuVK939IQ5sR/OYJUUpHW5cHhN86TpjW4ZO
+	 GWAnpWC9hE3EaJmqVEmgKjv3EI7JPlNNtKzt9viRA+HTBDfMkDoih68tiF8CTXXb/d
+	 y+M3nDSw/J1tEGuM6JqsqQgdoSNuw1ddWxE6tUE6FZyqtuonPwaE0L8RIUHlnjkB0a
+	 g3UBF2uo+2owZ0fVzaZAnY5b2wDOxiwaRcF+79st1pSStTkWc+3CIDSh17AFfji0+/
+	 IKrp5d0S0voXE2VTuh4ICx0KqwvSLDAqAshzULkTs16KdZEm15RW4ltzMWiPQBaEBl
+	 Q47Y4/9dxpbTw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,  usama.arif@linux.dev,
+  SeongJae Park <sj@kernel.org>,  kernel-team@meta.com
+Subject: Re: [PATCH v9 3/6] kho: persist blob size in KHO FDT
+In-Reply-To: <20260316-kho-v9-3-ed6dcd951988@debian.org> (Breno Leitao's
+	message of "Mon, 16 Mar 2026 04:54:33 -0700")
+References: <20260316-kho-v9-0-ed6dcd951988@debian.org>
+	<20260316-kho-v9-3-ed6dcd951988@debian.org>
+Date: Fri, 03 Apr 2026 11:24:42 +0000
+Message-ID: <2vxztstscmmd.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-From: "Denis M. Karpov" <komlomal@gmail.com>
-Date: Fri, 3 Apr 2026 14:24:05 +0300
-X-Gm-Features: AQROBzACmaMWgICk8NsIfGh0tb7vXMdWkgVTd5i_Co-eVxh4e8ZrIgLeQAlCWVk
-Message-ID: <CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com>
-Subject: [BUG] userfaultfd: UFFDIO_REGISTER fails on low addresses despite CAP_SYS_RAWIO
-To: peterx@redhat.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: twrp1n7ya99rdwqao4jyff3zqe11ocma
-X-Rspamd-Queue-Id: B6BE780004
+Content-Type: text/plain
+X-Stat-Signature: o1nj3rentkqhxntj5rryxw5skzfdf6ju
+X-Rspamd-Queue-Id: BEC7D20009
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1775215458-991859
-X-HE-Meta: U2FsdGVkX1/7s8Dc4UZU4plzlhZcnd1+YeflF6rHcjBcfQs7bVTof8yDHQbRq4QQP+7JSI5gN7vAhSX83mhwtMnhw0OhTNuv4qcBEZfO0++zA8okeDuNASHbY5n2VnENyKCZzE+LMvTaM0ewacSpdB2stB3qZxz8lwd32qaA/XzY0zwMObFkDyLVP3SSRmV0MCKf48uHj1KfHRbc3awMdBmR2OZUHswdO52LAZXLtt1tS5Z/oswQFdl9KLUbFJ2vLeoV7nMPi4h6/bkXPgX4a5obhfGVWe6D2NZulqfigVXBxWRXxZcRjluMVg9UeAnI+7nDywQAsqV5SRSEp4zTU2JNsrkqsi8Hop1Weq7c3pJzUKCOQZC+e5oRfTeoCIRnStOMV+0//1Rij4yKfqRYIFKXKPe75Y4yPq3/6fzSjfdgJ3D01oll/uMsbrQZGAmZasDaZVwpQn2dnQI/FplECpulYKYFgpppj7JxtOfKw4XG0/nOzkn+cv71tGYFOTSqfl10WK8Rec10sT3Z5e6kBP8edjWNGfBCh3XImhS0AKQmB7CcjQDqaT69YzISzE8YdIhu93XLFzdnio8l1xG5rFWTdrTRBfDlDr1Wpjw/WKj4+BMmAZL8B5EpuClYEWo9n7ORN3K0mR+xUuhF0FNFWUs0/978GU4vUodG2pvTi1GxHs04oSmOxBQyOKyTHxuTF7KpsHVUIy0f+Z5Re8tfdMqToxBNHF9SI30RzLXzNUZaK1O7yyikXArdw069R2Cjbd7ftmbZNRZW/WAl+sYljO24IjZVY9MykFjv2eqiSbUMJ29nZdkwHwZSecnmQJW4TcCNKK3O7rP6EmyfOqxheg5iPebKUsaP7caKsreNZyeNGX1dvm8oCFNx/RgSsRyIlAiUqy/oVEIvFzXvdagPK6gnrkKF7sFDvitVcry9NodOncfsLe9UzVMs/FJHhKAvSda9hrbfrG4lOyYxWAM
- eJRDAy3e
- P5nm63xQHWR4rIB8Z5swDNX5Brt3b5NVlVQ6WZXwh46qTWGq1PK0JAJQymfeEeWM46cbPCOW71p/yCpHnxWqSGlVUjiY8V16pkTv8IqMPqmtGTBiAYLFBt/HQ+3i+xzZobF0Kp0dtSMYmNY0rq7NLlp9npphOCod2vCkFtuZ1S6kA0IA41T4Gp+e+aMxhw/3CWmuUSXZOfH8SYoLMa6Ac23Kc5GcxZ9djwA44fiqGPgitphMVLJRgU8skD7Ic/lZzC4u58ilYxO7EvFpy6PXLxsx4JYdbwwGYeJFfe0qw0uE449uSRjz68EIuzcppjVPySKF7kCs13NCI4wPa9waiWnAElPHf4wGKU0xf7anDSPKXQoGIAZda3o/RuVZPtszRbYG/jIr6e3PGw4QjRSCtw92JkNUmabGMuhK/OLeiGndSdfQj2sXP3Umhugkcry9gxgl7SL6SnolO9imcxz5ZKRU6uhyHCRnLdzYIV7CxXBwY4cf0V9B0BdqTsHykGD8nxrXXttjHRF1JnGu+YI9vZRZJPg==
+X-HE-Tag: 1775215487-483079
+X-HE-Meta: U2FsdGVkX1+5hg4d5+Re1vE8kTa5rZRlGagTnB+280N3O5jvFbUlaRy0Uz479j/pOaxZ+nM95IU9ys2q7NpZE/658k7ULWTZbD1ENuTa1i32XbcijKojxe9AJ3Yqw7e6cCU1WuteQCzacmq+xJNoGOfZZO025g1xlfJS4uETMjWudXDiv9DVRLeyzBDAb/O46b6ySiwp99z/XQ54DMQEXvZaqfgdmtCgtsZPjAUzHspt64s90PNW431v/jQ7ivusv88zBelckYJ1S6GOoUwIGcWSAA5A3XdjSBUQKuxA9jcx6u3/EpfsdXTnrJtlDa3LCJ9t07lXcLfSpBx9qf/ukCt7A4+qpOrap2NGhnhVtSEdB463oL//vT+FDkwUJLkjyRKVSlVR4dDWHY6dQ9uxwdk/D/eoJdDrvE1jh1F9wjKy72sCcX1xwatb+MPZVM4lEYHRa/v+eh38P4q4rOSaWmqcaGd7R8GFwl6DMIabViulQFQw0w1p0jIdumyNuFVn2nLiYQ3muqLfUwQfwlKiOy2pZl4xc2++5AcqbjDigsbviyXNYFyTPpXo5cG52HvfE4DpuWMhjsKzhQto29AkLFXtl7tePvC9sfzzzGH2MkMrG7GD8wmVyPJGLdClPGUgTszQzEgZSYJ5Ph0VKNhs2uq/GM+sNSFMexQTFEXdb6V7JmNdyNh+TW5GfpPRZBcpl0wlyMGNXf/llofWgkclYRo7FLGkNoeD8ufeide5mDo5uCqK8xaRRvwTTic+lT58H2mbTZcLvOBHyWVskizBbX84fCy7ncNGw4yqnVFClBUXQbJHkgyHIh+3tIAUcdgQeZjhDVIRm8P8Uasja6WepGVFfbDb9eieFYSJfYa/xD0MTnChEFHgADZU0UYj+DLFCUyMC5NQDvA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,67 +93,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-I am seeing an inconsistency between mmap() and userfaultfd's UFFDIO_REGISTER
-logic regarding low memory addresses.
-Kernel: 6.12.63+deb13-amd64 (Debian 6.12.63-1)
-Description:
-As root (or with CAP_SYS_RAWIO), it is possible to mmap() the low-address area
-(below mmap_min_addr). However, UFFDIO_REGISTER fails with -EINVAL for these
-same ranges. The issue appears to be in fs/userfaultfd.c:validate_range():
-    if (start < mmap_min_addr)
-        return -EINVAL;
+On Mon, Mar 16 2026, Breno Leitao wrote:
 
-While mmap() uses cap_mmap_addr() to allow privileged access to these areas,
-userfaultfd performs a hard check against mmap_min_addr without considering
-capabilities. This prevents binary translators/compilers from using UFFD on
-valid memory areas mapped by the application.
+> kho_add_subtree() accepts a size parameter but only forwards it to
+> debugfs. The size is not persisted in the KHO FDT, so it is lost across
+> kexec. This makes it impossible for the incoming kernel to determine the
+> blob size without understanding the blob format.
+>
+> Store the blob size as a "blob-size" property in the KHO FDT alongside
+> the "preserved-data" physical address. This allows the receiving kernel
+> to recover the size for any blob regardless of format.
+>
+> Also extend kho_retrieve_subtree() with an optional size output
+> parameter so callers can learn the blob size without needing to
+> understand the blob format. Update all callers to pass NULL for the
+> new parameter.
+>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Reproducer (must be run as root):
-#include <stdio.h>
-#include <sys/mman.h>
-#include <sys/syscall.h>
-#include <sys/ioctl.h>
-#include <linux/userfaultfd.h>
-#include <fcntl.h>
-#include <unistd.h>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-#define SIZE 0x1000
-int main()
-{
-    void *data = mmap((void*)0x1000, SIZE, PROT_NONE,
-MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0);
-    if ((long)data < 0) {
-        perror("map failed");
-        return 1;
-    }
+[...]
 
-    int uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-    if (uffd == -1) {
-        perror("syscall");
-        return 1;
-    }
-    struct uffdio_api uffdio_api;
-    uffdio_api.api = UFFD_API;
-    uffdio_api.features = 0;
-    if (ioctl(uffd, UFFDIO_API, &uffdio_api)) {
-        perror("UFFDIO_API");
-        return 1;
-    }
-    if (uffdio_api.api != UFFD_API) {
-        fprintf(stderr, "UFFDIO_API error\n");
-        return 1;
-    }
-
-    struct uffdio_register uffdio_register;
-    uffdio_register.range.start = (unsigned long)data;
-    uffdio_register.range.len = SIZE;
-    uffdio_register.mode = UFFDIO_REGISTER_MODE_WP;
-
-    if (ioctl(uffd, UFFDIO_REGISTER, &uffdio_register) == -1) {
-        perror("ioctl(UFFDIO_REGISTER)");
-        return 1;
-    }
-    return 0;
-}
+-- 
+Regards,
+Pratyush Yadav
 
