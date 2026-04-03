@@ -4,107 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E0FE7E364
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:16:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3BCDE7E365
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 10:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E6B6B0005; Fri,  3 Apr 2026 06:16:39 -0400 (EDT)
+	id 1A1136B0005; Fri,  3 Apr 2026 06:17:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 437466B0089; Fri,  3 Apr 2026 06:16:39 -0400 (EDT)
+	id 178E66B0089; Fri,  3 Apr 2026 06:17:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 373BA6B008A; Fri,  3 Apr 2026 06:16:39 -0400 (EDT)
+	id 0B6436B008A; Fri,  3 Apr 2026 06:17:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2844C6B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:16:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02FE3160547
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:16:38 +0000 (UTC)
-X-FDA: 84616840518.04.9262D43
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A4A40C0014
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:16:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VBN+FCYd;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EFA1B6B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 06:17:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B8CBE158B
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:17:21 +0000 (UTC)
+X-FDA: 84616842282.30.2440823
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3BF18C000D
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 10:17:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okwIfj4P;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775211439; a=rsa-sha256;
+	cv=none;
+	b=xBaE9mboJYjOeRUVs1c/wL0iUBD2miYhxecF8Lv80Dst4CxvBwNhWiynrv8iOQUXSIRhpU
+	TkwlrAwzQCXRq16VSClOeIJDT3uVsGk2+6W0Ro91rWbrGbkErI4SSJD61b5eS8k/F7YoGZ
+	sKXtvbpj2ZdoWppE+be35yg8O3C9KDo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775211397;
+	s=arc-20220608; t=1775211439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wB3xWKnFPRk14Pj+ZETrjYXM+zDjSVsbFfZk63XbbDs=;
-	b=5zl8oyXduuNZiyhANSwPwDBrnBw5mdO9KP0i9Wng/r3+FcUODY/cPxH8MxvdYTEmNSzngZ
-	+ulSh0PNfB35eaa47HFbL8f6ME2qITgllL7dl9EYqUvvAdPhOwzhChQqbu/HmB4prpAtiC
-	4Z65FU5ewFZr7aQ3ShZlP3Brpz8dJ5I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775211397; a=rsa-sha256;
-	cv=none;
-	b=Yw0wMOVBUkv98pagSef2pnAoEYgSaCWpNG2B4Cq34kkv5ZdAg6UMwfwThj9NjcOq8DAH3q
-	g9KYyhcCB3har4MOl0VRkUs4DdYQRd03dJYbMmYBEJrzTKQxU6eUsbVaxBM5YeOq2BqOJg
-	uy1uX75bHxE6MYIhSR50azFyM3ZFBwA=
+	bh=QlFQh0P6GbnwvheqUCO4RCSbN2lvOgTe9ptYXuR19B4=;
+	b=VQe45bXeFwjg6cdqz43YdeLMsHygnIikMJoPAzsKXnHPCu5ug/cry6xDFTE/BBqjlrbL2W
+	1SbBy85A/Wx36G89YjDysvpNF6neB4k0SbJ5o2c2VqPXrHPZy2IgQ4cXKd77TYAcR5IAB0
+	JdYxdYxEgz0HdU7DWO6V4Kp1TP133+4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VBN+FCYd;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775211396; x=1806747396;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zlVyks2Np9aQk5iEmOrB5Me5s80heOMsW2q1P0Pc6hY=;
-  b=VBN+FCYdrjrFdlzmhzOCUJAanCGuElzaL3vGqmO8nxQJzs0iYfyIyY9o
-   X/3dpq03YMzhiiHe3naWWnnVfgfEHD+9JD9OPgRQoUsGDwwYqOtIlPTgz
-   soitcvHd0E98tymOMm0wnQ+D/o/OmyYfMynJnmgJeI7NiDu+l2tM9XZvg
-   SGaGno5sfGM7Ue0yq5FrZTpgxFWOHIJGJPC6oXLKTvHdscteP+9dilFQ2
-   T73VtdVClD6UZDnSkiXldDE/1a2kbaJAR493lcQTtrv6mLhnuitjxQJHZ
-   w9myzijjCTKKiAAcTOsBoUqxJ1y9zdPX2qIFroGgqfa8OFe519Xkp/zwh
-   Q==;
-X-CSE-ConnectionGUID: RE18T8D5Qqqiaxwn7sd7Yw==
-X-CSE-MsgGUID: Sm1hso/yS/ynuZevlc4mpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11747"; a="76338220"
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
-   d="scan'208";a="76338220"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 03:16:35 -0700
-X-CSE-ConnectionGUID: FWZHu/aGQJewoPi3Dpx8ug==
-X-CSE-MsgGUID: 0XvFpW2WTICgLDTLnuslTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,157,1770624000"; 
-   d="scan'208";a="222867827"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa010.fm.intel.com with ESMTP; 03 Apr 2026 03:16:33 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w8bZm-000000009H1-2wBT;
-	Fri, 03 Apr 2026 10:16:30 +0000
-Date: Fri, 3 Apr 2026 12:15:42 +0200
-From: kernel test robot <lkp@intel.com>
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH v7 4/6] mm: setup device page migration in HMM pagewalk
-Message-ID: <202604031253.Wm8UgWnQ-lkp@intel.com>
-References: <20260330115611.347988-5-mpenttil@redhat.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okwIfj4P;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 47E2560008;
+	Fri,  3 Apr 2026 10:17:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478FBC4CEF7;
+	Fri,  3 Apr 2026 10:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775211438;
+	bh=XHL8TaSjsnHgKt+DxB5y+u9IjO2D1o2h4k+YjvwDOp0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=okwIfj4PXWp0FtNFyJm/O1vTiBK5ex1H0qxKdjJfCdQ0DzVeAOTgDrFUNmjJue46M
+	 6js9z4Gi942KjxxZSuJ9Q4f21WZiH9CxUp0BIgVOQXvbfQuuzVX2M/HMTwts5lYRs6
+	 EUwQl1dKuj+xxeHpafmXiwprFo2N3mgP0SlRFbNJtmKnWY4BEyvE1SW3xI4QNt+yhn
+	 SfzRu3aXhvv8EMuhN12AWhHidZn5I9Q+8rC3SSaA88HYWBdjbumKPwG7YrF/y2aVBY
+	 NuF3jWEpTTHkdiLgdo+TyS3TSN561vygzK9LTRYP6Lo71JmWTaj5sSgkmUBHeo6/XG
+	 c+70RXX/zDSwQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: rppt@kernel.org,  akpm@linux-foundation.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  dmatlack@google.com,  pratyush@kernel.org,
+  skhawaja@google.com
+Subject: Re: [PATCH v3 07/10] liveupdate: Auto unregister FLBs on file
+ handler unregistration
+In-Reply-To: <20260327033335.696621-8-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 27 Mar 2026 03:33:31 +0000")
+References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
+	<20260327033335.696621-8-pasha.tatashin@soleen.com>
+Date: Fri, 03 Apr 2026 10:17:14 +0000
+Message-ID: <2vxzika8e4b9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330115611.347988-5-mpenttil@redhat.com>
-X-Rspamd-Queue-Id: A4A40C0014
-X-Stat-Signature: unmzb89fezzu9w1kqo363x1d1pstbje6
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775211396-458366
-X-HE-Meta: U2FsdGVkX18E8k/mromYmpFtkTAyDR165VUnBMUzkoQB2ty1IuKI8DK2sa+vKdyvlKgM9dgmGknil+bXHKWMLdvYYwQ6AVg9mefexRWYNzcsJza6xt6ArrPlU6NoreUB+QJoblw8M0cFghHVstMPM+E/smfl66XXmQ2f5jSGaqcIPdY6DKSZ2BbMcd2p3NLSr7/OgiGy7GkKfHIxfSw9SYdGwqZLSbgQyN50KFD2RyK5ngppnY1mxb9lKVcqROyspGDp4T1H7jbGCVFMNV0x3pZzqf7MftTz/ynht0ZP3oy3kHrk9YOBEuGFQJQuKxDFVPMsQNPMucxIm99El1795yotA9yGsU4TnYblPZz/yOYwp3VtdM8rhmzvTyAwvrdrSeMyI4oFp3w2crlAdpIhb5ab6raEz9T5GIBWPATgBhAInWPZB8LQrDkzNT3jQil/Zu425CvFqrICXz0axVqWEXMxcbNizirmjzKxA0nxFuVcVntk1M1PL8/GrJ+UIZxGOrww5WAt3JW6jaAku2c4MvghLrgbUeR+oqQsiZ3dbehtGvoFETs4wkpivRDca7Nd0Gg1rz4lSQ4GFUD6ViZelyAbWCVTwIxZ/BJ9YKOXTN7pAzthTfxCUcaUO9g2FB6TXyuiJ6ltaKmZSnigRTrnpqcEBM4G8W6s0Jvyi7fdoSqg0CW99hT2VpQVrAFV31kv2r8EqSm6QufnJN3bddh0NDbkWFsFrAvaS8vB1ahR0yowtkSMY4weeetnXIXhjULcfiAS8PDsPO6EOP9ZMXU3lLs91pdH4vhjFcWuIJtbxyHiadSUwq40Q38SDFtM98oZ5hQCA5pDYcawzz0Y4+oKz68GEKfdfzFBhmeZcdRAgRpvVB1jHwfzpnblCHXD2s2zklGC8Cz68kNDyIiadzwXexLjwtMVThKDC8lt46m17s10+nn8PRvEkY28k9HrjR0LtvlVQ7hVTRtK4Y3a1CW
- mouWgJeW
- d4wAgxErIAnWBGTmFcUidJsnkOiTKlIFHFsXn9mg0E1n8weA+yJRoV7rFBZv4dMAaRBZwcj2ZmzFUjcTRxKIaj1C8pWduZgN+Gx/gYELqTqT/spwEVSvGCZFanq+AuUSpaq/yV/j6ABBieeBfBNx6oghVR3FKOWBE7GoKTlQwd50w3uJBnydjUM6AFyrX6kSZ/fstF1v5mHJCEENu+xVBtyhFt0cPbRV2R6IXSdt8gd4aSHdO7cRqyiophPGLRNtqBXCaGmQJCB+OgHbk9KRpPWRT2IySYQ64VxWn4lYLHKK/WTXKKF4FBhzMZ39r6ZpGsWEtnsYz+ZN9aO2L3Ccr6Gdf/nWpsrXLOtmN
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3BF18C000D
+X-Stat-Signature: xk7k6wpj56g1rimkkiytrpmgk7w7bm43
+X-HE-Tag: 1775211439-836746
+X-HE-Meta: U2FsdGVkX18l3j9K0fBY6K7AtQWRXDvqgeM2cnixUL6sJtoT9tjviM86FrDtNU5QwcBSflaNVFXjN+cgK4spVbaQs+IHdcpD8N274s4mpmXz3cKjr+/P7BlTxM0CsbInGLaMVPPakfnzlzb1OQyewoRLHr+Gt6/r9y8WeZ1PDE2NdSA26oQxmQVuBD/Ipb8cck+SdtimuvJr+L8fp0Yy+zwtHaiG4sjWdg1k3IH1n/YJsSWdXQM0snTRQJ+fHHNLoYYK8Fh0fpPyuKBtbcQtKbjVY7YPR8HoL72WNA9Mu4vDM+65PDMs/HQ7YEILagp7V9Ub30jILZI9sowLFnIRWDMmAbwJeDTnYiXVIxPd5Hx0NMBVOJnk9XHiJ0h0/vbjTiS/Qz2p8sS/uHyAtsQRVzazu4uhn+YIO3E2MK9Uik9h+Q+PDURbq40pGhKSr1n+WIYRKxcaEhYvvOh0zG0y3RAPzwG5mM009pyF0WFoq4TWCvj2tIknyHU00krbvJm2o32eRYzBDcUfu0eQoSiem06/PPrgISp908XMEyyukZ3KgBqgLxBCD+zuA1G7bYt7VZsHga/TB13UUgEdyPQasXK9Vmdx9yZarH2gQGXsIvKFMs5j7dL913/TgS/pdR7K2AuqqJCnvsQJ1I4MhI/U5jKmGMt/14TqpAe72gAP+QTPr6QmknMJQsCPEOwWzqQVfC5FyAwWUSdKP2/1hG9kRxMy7/Igcfe1Qz6VulLtHIARNleNO748CS6fOoJTwkfZBY5DfkCwSM1U5jSGORBF4gat3BYl1HCNe8ILqKiQcpfSAwsPxotp4v69zn/mn3Peoou6sjO5F6INHfYUz8TAjaKhtdzx1GVxClroQtg4786h7B9hV0GYIhl4aNCJqYr9JpAKOhKJEpwxMOVShcU0nfaNdYrIZqb6+kwnZxT+RTst83+8qtX2wKIzqDcH4M1SrQgp2dFXqbRP+5zzlF6
+ NGoqMfGW
+ E015Q9RNlEusiKYir2LmJojgxHyK7fIDO9HB31I08g5yxD4iB5QNlFl7nXkYzFZz5+BsVvDhPKx5roFM0/xS+yddkmljBH7CdKwJBkdZVl7hspFxaI6BKLT7KgU8aAjKCeV2KMQ+n001MjiSumN4p+H9WB/Mtv7eo1iZZlMkVqQjVn/+wtY1nTLei1DiCS/vIRTKiYV23sHQ28HkjyDmtPZa8n5lbRLrWqmG19+/TqqaGEp2VUdFqAR1USg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,66 +94,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Mar 27 2026, Pasha Tatashin wrote:
 
-kernel test robot noticed the following build warnings:
+> To ensure that unregistration is always successful and doesn't leave
+> dangling resources, introduce auto-unregistration of FLBs: when a file
+> handler is unregistered, all FLBs associated with it are automatically
+> unregistered.
+>
+> Introduce a new helper luo_flb_unregister_all() which unregisters all
+> FLBs linked to the given file handler.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/luo_file.c     | 14 +-----
+>  kernel/liveupdate/luo_flb.c      | 84 ++++++++++++++++++++++----------
+>  kernel/liveupdate/luo_internal.h |  1 +
+>  3 files changed, 60 insertions(+), 39 deletions(-)
+>
+> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> index 439177c10723..80f4e3b796a6 100644
+> --- a/kernel/liveupdate/luo_file.c
+> +++ b/kernel/liveupdate/luo_file.c
+> @@ -895,26 +895,16 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+>   */
+>  int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+>  {
+> -	int err = -EBUSY;
+> -
+>  	if (!liveupdate_enabled())
+>  		return -EOPNOTSUPP;
+>  
+>  	liveupdate_test_unregister(fh);
+>  
+> -	down_write(&luo_register_rwlock);
+> -	if (!list_empty(&ACCESS_PRIVATE(fh, flb_list)))
+> -		goto err_unlock;
+> -
+> +	guard(rwsem_write)(&luo_register_rwlock);
+> +	luo_flb_unregister_all(fh);
+>  	list_del(&ACCESS_PRIVATE(fh, list));
+> -	up_write(&luo_register_rwlock);
+>  
+>  	module_put(fh->ops->owner);
+>  
+>  	return 0;
+> -
+> -err_unlock:
+> -	up_write(&luo_register_rwlock);
+> -	liveupdate_test_register(fh);
+> -	return err;
+>  }
+> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> index ac6fa5b34b43..f8348138de70 100644
+> --- a/kernel/liveupdate/luo_flb.c
+> +++ b/kernel/liveupdate/luo_flb.c
+> @@ -335,6 +335,62 @@ void luo_flb_file_finish(struct liveupdate_file_handler *fh)
+>  		luo_flb_file_finish_one(iter->flb);
+>  }
+>  
+> +static void luo_flb_unregister_one(struct liveupdate_file_handler *fh,
+> +				   struct liveupdate_flb *flb)
+> +{
+> +	struct luo_flb_private *private = luo_flb_get_private(flb);
+> +	struct list_head *flb_list = &ACCESS_PRIVATE(fh, flb_list);
+> +	struct luo_flb_link *iter;
+> +	bool found = false;
+> +
+> +	/* Find and remove the link from the file handler's list */
 
-[auto build test WARNING on 7aaa8047eafd0bd628065b15757d9b48c5f9c07d]
+Nit: it would be nice to have a lockdep_assert_held_write() here to
+clearly show that the luo_register_rwlock must be held when modifying
+the list. I know that luo_flb_unregister_all() already has one, but in
+case we refactor later or add another caller.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-Kconfig-changes-for-migrate-on-fault-for-device-pages/20260330-202258
-base:   7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-patch link:    https://lore.kernel.org/r/20260330115611.347988-5-mpenttil%40redhat.com
-patch subject: [PATCH v7 4/6] mm: setup device page migration in HMM pagewalk
-config: x86_64-rhel-9.4-kselftests (https://download.01.org/0day-ci/archive/20260403/202604031253.Wm8UgWnQ-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260403/202604031253.Wm8UgWnQ-lkp@intel.com/reproduce)
+Other than this,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604031253.Wm8UgWnQ-lkp@intel.com/
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-All warnings (new ones prefixed by >>):
-
->> mm/migrate_device.c:508:13: warning: 'migrate_vma_collect' defined but not used [-Wunused-function]
-     508 | static void migrate_vma_collect(struct migrate_vma *migrate)
-         |             ^~~~~~~~~~~~~~~~~~~
-
-
-vim +/migrate_vma_collect +508 mm/migrate_device.c
-
-76cbbead253ddca Christoph Hellwig 2022-02-16  499  
-76cbbead253ddca Christoph Hellwig 2022-02-16  500  /*
-76cbbead253ddca Christoph Hellwig 2022-02-16  501   * migrate_vma_collect() - collect pages over a range of virtual addresses
-76cbbead253ddca Christoph Hellwig 2022-02-16  502   * @migrate: migrate struct containing all migration information
-76cbbead253ddca Christoph Hellwig 2022-02-16  503   *
-76cbbead253ddca Christoph Hellwig 2022-02-16  504   * This will walk the CPU page table. For each virtual address backed by a
-76cbbead253ddca Christoph Hellwig 2022-02-16  505   * valid page, it updates the src array and takes a reference on the page, in
-76cbbead253ddca Christoph Hellwig 2022-02-16  506   * order to pin the page until we lock it and unmap it.
-76cbbead253ddca Christoph Hellwig 2022-02-16  507   */
-76cbbead253ddca Christoph Hellwig 2022-02-16 @508  static void migrate_vma_collect(struct migrate_vma *migrate)
-76cbbead253ddca Christoph Hellwig 2022-02-16  509  {
-76cbbead253ddca Christoph Hellwig 2022-02-16  510  	struct mmu_notifier_range range;
-76cbbead253ddca Christoph Hellwig 2022-02-16  511  
-76cbbead253ddca Christoph Hellwig 2022-02-16  512  	/*
-76cbbead253ddca Christoph Hellwig 2022-02-16  513  	 * Note that the pgmap_owner is passed to the mmu notifier callback so
-76cbbead253ddca Christoph Hellwig 2022-02-16  514  	 * that the registered device driver can skip invalidating device
-76cbbead253ddca Christoph Hellwig 2022-02-16  515  	 * private page mappings that won't be migrated.
-76cbbead253ddca Christoph Hellwig 2022-02-16  516  	 */
-76cbbead253ddca Christoph Hellwig 2022-02-16  517  	mmu_notifier_range_init_owner(&range, MMU_NOTIFY_MIGRATE, 0,
-7d4a8be0c4b2b7f Alistair Popple   2023-01-10  518  		migrate->vma->vm_mm, migrate->start, migrate->end,
-76cbbead253ddca Christoph Hellwig 2022-02-16  519  		migrate->pgmap_owner);
-76cbbead253ddca Christoph Hellwig 2022-02-16  520  	mmu_notifier_invalidate_range_start(&range);
-76cbbead253ddca Christoph Hellwig 2022-02-16  521  
-76cbbead253ddca Christoph Hellwig 2022-02-16  522  	walk_page_range(migrate->vma->vm_mm, migrate->start, migrate->end,
-76cbbead253ddca Christoph Hellwig 2022-02-16  523  			&migrate_vma_walk_ops, migrate);
-76cbbead253ddca Christoph Hellwig 2022-02-16  524  
-76cbbead253ddca Christoph Hellwig 2022-02-16  525  	mmu_notifier_invalidate_range_end(&range);
-76cbbead253ddca Christoph Hellwig 2022-02-16  526  	migrate->end = migrate->start + (migrate->npages << PAGE_SHIFT);
-76cbbead253ddca Christoph Hellwig 2022-02-16  527  }
-76cbbead253ddca Christoph Hellwig 2022-02-16  528  
+> +	list_for_each_entry(iter, flb_list, list) {
+> +		if (iter->flb == flb) {
+> +			list_del(&iter->list);
+> +			kfree(iter);
+> +			found = true;
+> +			break;
+> +		}
+> +	}
+> +
+[...]
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Pratyush Yadav
 
