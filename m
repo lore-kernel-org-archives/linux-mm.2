@@ -4,110 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F62DD730B1
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 07:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B0DD730B8
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Apr 2026 07:58:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3A046B008A; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
+	id D2B026B0092; Fri,  3 Apr 2026 03:58:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C11126B008C; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
+	id CDC956B0093; Fri,  3 Apr 2026 03:58:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B292D6B0092; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
+	id BF2E16B0095; Fri,  3 Apr 2026 03:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A05606B008A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:52:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A56C59700
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:52:27 +0000 (UTC)
-X-FDA: 84616477134.24.89F8DD4
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CBC34140007
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:52:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=aT1oaND+;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf23.hostedemail.com: domain of chenyichong@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+	by kanga.kvack.org (Postfix) with ESMTP id ACDF46B0092
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 03:58:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59BD713B2C4
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:58:00 +0000 (UTC)
+X-FDA: 84616491120.02.C13664D
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D9EF40007
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 07:57:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=nPE8SjAn;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf12.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775203078; a=rsa-sha256;
+	cv=none;
+	b=iL0V4RgsG8pVhLKBHpLn3XSSAJguBEC8B4cyLUAfzUyOQUSPMgaWbcLJ3svoMhV9wzqeUS
+	8eiNnJC580zekOVuZ0GK71reB5pMGgbFgRxuM3M128uC/tdg9xs/znQOcaTZnasrt7TSMP
+	875lQblKkWCSlQNYrbXHwkruPpV6hq4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=nPE8SjAn;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf12.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775202745;
+	s=arc-20220608; t=1775203078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ua6TXToexFuNdMYzgJkRu95qFBaQ1rvNnGJAFP7WrwY=;
-	b=303Nsmvo1vQj0P/ke+BqCIA9vo1LbII0ADiKvXUSuN5bWcruT0M+T2iKrmrOYVqTCPkBYV
-	m9egZZCIPAAwlCV18OlVxaI/lU5XiQedLz+RjVa/BVt2/PxNdAHFytLyETREsxLdA9QUTK
-	PbeF2WKhXzO/3IzoU8GiV4xjsX3jmho=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775202745; a=rsa-sha256;
-	cv=none;
-	b=8P7up0vhutwGmOPZMx7a84v4T2/ZlDU+VmDcjbxWEJScygzGiSOs1sQZzr2uBQI+CixZdP
-	ZdwtiJut1V+mnS6m3KsUE2zOKFJVUaGxNU6guS1+skNppEDIc72r25tGkUtSd+uDmJ63vU
-	47xTELta2r3GnkORzrgq1ExQCCbq8zs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=aT1oaND+;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf23.hostedemail.com: domain of chenyichong@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1775202731;
-	bh=Ua6TXToexFuNdMYzgJkRu95qFBaQ1rvNnGJAFP7WrwY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=aT1oaND+t1sU/b6MpLaW+ox8G+686JwvEL7FlWeuyTAUdghqhavkuxm62tgOSI3W7
-	 EnMc/uYvIq9RHZvnCpemhJaBoLXC4P4V787FEWBvi4qG5LaZaktHryh8Dy2AD8Pd3o
-	 V58HrUEAFLWklUDRaZwj2KLOUPG+OoU1ASpjq5sM=
-X-QQ-mid: zesmtpip4t1775202727te98f80b9
-X-QQ-Originating-IP: u28J8+j+Xf+Aatf+I4a6ZT8GoQYhyaSmCdRTLXJYTmI=
-Received: from Shurima ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 03 Apr 2026 15:52:05 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9212431654302830342
-EX-QQ-RecipientCnt: 7
-From: chenyichong <chenyichong@uniontech.com>
-To: wangqing7171@gmail.com
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com,
-	urezki@gmail.com,
-	chenyichong <chenyichong@uniontech.com>
-Subject: [PATCH] mm/vmalloc: fix KMSAN uninit in decay_va_pool_node list handling
-Date: Fri,  3 Apr 2026 15:52:03 +0800
-Message-ID: <B7281353F876D424+20260403075204.894243-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260402081413.1896640-1-wangqing7171@gmail.com>
-References: <20260402081413.1896640-1-wangqing7171@gmail.com>
+	bh=VWZZ9yA2sx+5wSb0UKG5WAEUj7zMGwtI+CTZ4fIDzsM=;
+	b=MFmdcfTUj6Gxc+3v+0NQVgpCGgh2dPCIkNvhnkHpQHkycTCrq7dhbkWSGLOufVlN3OY1Y7
+	bZ/MHDIMskcIRERYIrz9Ot0xBH6ZFwBmfc7WTDIa6T4HSOWTJ1l+LXBIMB/zfTRk18N1X9
+	+Kc6osV5DB1oKQYDlc1u3Q1/83lYzzY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1775203075;
+	bh=YoTFrjLkGAflEy1qRaxjWbCJiKRCH9HY1UiBdJlgevw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nPE8SjAnEZBbJgABAw3FhSWYZmzKwhs2mme9AMCx9PAn6Cn/Slk4Y4m9Jyg6MlNaP
+	 9e8q0xE8h88QNwZ5b9wcjvXN5W2del+Vsa4dCgVP0SrZE/cOZ3XKxeCNlxbKO4bLDO
+	 /RVuh1FR7t67aQstwvfvqPpZ/LkExksNsKpdIRAspq39jm7kJd5cpKWUgjznLImqeA
+	 WdSg2FDY6l6rejIBPzI85vgHTvZGzbTQ7x4tAAfsLJ6CDHMjVa9hnMc/OQ5uhc+t/J
+	 awcn0oq1k8y8eatl0dhihjtCtGng34XNmZu1bxuaC2vR/2tieG/FKpf1wqvBnFeofM
+	 TfrVgpPkB2UxQ==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id C0BE317E8683;
+	Fri,  3 Apr 2026 09:57:54 +0200 (CEST)
+Message-ID: <1268c6cf-f3d7-4085-baca-796526125f44@collabora.com>
+Date: Fri, 3 Apr 2026 09:57:53 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/shmem_helper: Make sure PMD entries get the writeable
+ upgrade
+To: Boris Brezillon <boris.brezillon@collabora.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ dri-devel@lists.freedesktop.org
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, kernel@collabora.com,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+References: <20260320151914.586945-1-boris.brezillon@collabora.com>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <20260320151914.586945-1-boris.brezillon@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MdDSduxpyAb9ILKvWW/jHHNz2KR4Qtin86AyAqu0KrjW0sUvgxyFFv3D
-	rw/M3/DxIg0DbxRqdFlj8MtzPVobEzudHbFmAtxHj1wQy5DmBMRGAodut3AZH5rLqUZ6bbr
-	6BUfuOLA+s539J7LppWcYreC0BQ4Bhw2Rh0k9j4uRwoF+bYprM4vW+XVkiet5sXgOKqrjfr
-	cjuJPcgOIV05Yffbag9nX2b0PdEsbZaFgUBYW1AUDjzjzN3XPq9RuZtn4NLiaW2lnC9yjNN
-	XZE+uvft+fBxlRA9SLBaxWIVPJfJL03nmf2LB5j8qm96PfMZQUR1H7ed2ZcNMKbzRFxzz8l
-	Y8SoLl/Ya50nyMvaumIWDLVEP54/zqxJuuvxALDtpLGW756bbO7LOOLfHnvLxSDTGvB1xf4
-	UaEBinGx/kjDhpoFqBFSb2ikKx/FmTsER0a9+e+p4yoL4Gyy3IgktmIjXxUoW+RFtbqIkZc
-	yLcppRoLNLoX+11Jlv9iqt2sMluIhQLWQX1br1DOunYlbZ0AQg7ewtq6NkkTX9cpeW/ojgf
-	3pY4CeTEGfycRW4ebIY99l75GxdmX5kUJfWJOWixCcdmDAaw1Kw4espHsTJYukI4dY3zPcv
-	+tDjG8ZCesJSBysW54wL0vAdzabdyusCqobDyMnLO/ljW3qN/uJ+rjUV61oBfETfgyZSL8t
-	WmUpZd+nZDPiVZ8vJeOF1MUhBZZKb5/S73/Juj1pX47dysl4JFGjCZimDSMvmElSGMUXsXl
-	nZ8E2Z8XE5JctBzsho6Y7CH0IZfrgsHdFN+ldb+b6XLsznQM3bvn/CCmkIkBNgYbEAsNWJh
-	OXPAiaMfnKrML7PCeXxvDEEy1QhNWB8B9cDAKN8nLrukZxYnCy+5EBoDGWx99+0NVaiRbrf
-	rMccMRxvc5EuBjzIsnIzviYxK00oipSTW7f4CrYviK2UOV0oJYL40PwIKAentDJYm7wd5mX
-	5hDcJ/Eac6FvoLhGRyaL89jUMDgirzJWOvkpqXWvNeHvwFe5e7sK2955wxZae/5KjMWcBxf
-	U8+9bpJnq/Ef1Z560s
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: CBC34140007
-X-Stat-Signature: 4sjbmx3t9ki5mk8k4q1itjscatmm5u8p
+X-Rspamd-Queue-Id: 5D9EF40007
+X-Stat-Signature: yxbwioehne7jf79kseqhbgz4zqewq4na
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775202743-321452
-X-HE-Meta: U2FsdGVkX18I/AXcHyukSouJ/yNeDDB1C143749GOW/dJotDnvGIMHgy6Q3MbwAI9paOwe/B7CF7M+KFqkHqHmCxgidz29FjJ4W8kHbgfrIZyphHmKSlkvT0ZENbb5Jm8WB7GFQxbBfUeim5z+C9iJ24rlHq+KKOd475ZviWFfQRsxyySk9Hmy/aKoLmR0WE6hoJpdfpn1PAdLgQ9oyZwjSOQ+x7Y3IIbNvEL8D2t+WEhLqjWW/xtAWFzdgRhNFVjRmgnyiQ6MGBexM1Sz5GSJ9n0whAAh54PBemcCnhZ/nintySEFrCQ3uvslckn0RFHsOUGZzTJoR2q4kyPnZ2QpbCHNLGAudUwvBhqmyV5KSP5QkZKasWyOgxSnwOST24JDv/zh5BD3+V9r5n4rB3IJ0XvLCF5ULlvqGNZc2G0x8Px2NlKtvZ1BNZBK2PGbp22Nuf1fbxTYZtetM6KTW3tyw3AhZbd7sGOCcSMMlmHZselAW8Fk4LpBoPXabeI5su7FM3NWA6bNbBLJfVU4wKqWkfuVqRGDiNOc0LImKba/pa6WPka+Sb5SjIltWDXhXzrxNURCS+kpncrBZWN3tS3FSZuB93ImRreVUEij+LM1LcVFbaMY+iT0Oh2mkwLbASR7JUrD8bl63fRglI6qi+hUXLXFc/vgP3+J2MZehPlTTzPpkHzZFX6sdU88mGXPGek0yupgLbaR2ewpPf1LVjDLYLTjvO7GE4eok9H/YX/yUaZz07htq+VBbtdaJo42Ltw1Yqf/2c6pHtAl6Lyl+SJQrwpvY8M7+e7/8NoZaWmSBPdWaTrhm4Eq7PHbEyAJ7gXfLFcv8c+BME5CDyiNDe/OL8qLkcr6ulHudRfWEpFWh9Pgn+XMTDXdTH5w27PvFXhdLRMcTj1fs4AYidyurFBR0YQkJyj0Aqh/Su/7bxUI4MoKuWcPl7SGd9Ra85xIO9GsgFkD9i8/1mpUWYFQD
- RHJzid/a
- p3g2JOhTVfrM/nBt/yCBlZBd66opO+4c/+xGmtWtDGp+HH6vIPlpc2hQ/tLhsGqpMReCdIruj4Q2XzafTZgMRXC1gXhQ71vqi5wizhnPg7rcP2jWnPuKcqyxg/zGakORKWMZTdUqA46UEDmeD6RcfKKeBQ6KT7xiWGSxhCPh1LkkdYf1q1nY+s9M+NXeSEcb+jMkixbHuXwPt1uEJSKo4fz85QUZ/aQ2ZEKMoQmFPnMnkrDuRLhJ1ZDrEdv1FZRD3ut+5s7/7GxxI2f9CmA1yASUkzR1Bk53Zb1BoTVCLOTxBalYQzVOYUUGfDybP7pFoy8MB64wCX6T/gsOdiI/q385Yf8xGszgjGdGj+tB7JFHNpSbaQQgeDR9VX6gQz8S0J42/ZMrWLNkcH/u06aZZziaV1JgMlUmwH3hiQdt6Ef4oM5px8UpFoynqHGDKdVz0kLCM1ZLUIuNjOvvr1kkRXFsKLtP24G6megRV83iWsLP1CnP2JIQu5Cht7qxzZgcPEgUQqP8MaCSo90jtd1+FL/1oEdWl5BtZfTJwn9P5l42FpvllPBLyo1KUgwNDMplOpUgF
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775203078-857799
+X-HE-Meta: U2FsdGVkX18SQL7NA6yNFE09N3RuTkDnXExMoAtyQcLOsjHXhfAqNxFw16fdk2Q6+5rugAMyTBkatjbOaKh4ewWi/gIn2rAHls007lKjbhsa02KyLc9OPijbXjCohznsmFCUQ0ue3zItswlet9XDuhaFw+dElXnQBN6qrrFz3TJsRn6YEyKz63y7PR8PUzTmrG3cvwvkCHfEBJU1Tj6Vua8TnVLLhCpmWyMg75179kvHwEq6UOzhVjAYr2uSJZbZDz+A9rkSmaTkgzmlSED6h8FkSkWTfSshaqqWYd5GxdpXTsaQQbgI8i5NKrqy0Bb83NbBQyNLRjrxQuXtQ6i/tw/n4LGmbjEdWp7xcS1rgNZ6CaXv7m4ljaIUF+ME7gXl1nyeAidutQT55wjGwNB8tapPQ14maHSqouYWtUDxLSO/FlRXccKIfWLrXx/7VPS7qJ2VfUQhZX/UGB0FM9UeOwyxgSVdu+J/Og/kY78H3q4tRsTaMShLB7y/s+S1p2E+dWHdBhJ1uf682XEk2oSgYjGH+cTkKVfC8iGMPQTL6fpeZ3T2M/qFpxoU0UXr6Pu58l+iXMBfDk/ws1YEKhMb1oGwdJwhE2eSeMsvwkmDPuWq3I4Pirg60pq1BGPuHi8ce+WGdCmXhHC7hBzFXchyuAp/Goo3+DDS0Wk7cPt7n8ZV05t42GFoBX9l2dyXy08rzoiEngaPHWZTaQQKFZOQ/MFbm3BVQI68BffcljX293abQF5byyII4lypHySlEdXi0yf+IDl4KJuiWrZmqQjG7PORCFfRMlOFCuI2TtR8kxQHtIWQPD3XmjLw694ORP3lz/NXxQ5omAflVrmlKxpCth4kz3Ggz481jqRdsh46Oy9BW8tdhRfd296yD190no/Sc4VEb4aP1CHt7S/WK7yEW/jNIKOWktOqtuWgl5aQ+t7+bivTHh9Pd5zWAmh9AqaPDQf++360v+bvobYJegD
+ Pa+DiZ7g
+ U2kmlyjsXlbK9d0QDxEVw9PI322eOMlMTAa+gHfDm2//Dq/hf/DYlgFFYHNW6NxVbQPHDOdaNp0a/vZLKHJDmCaYT8WJm6NaWjJt8uuVZuX7yK4hKTqhjEfT3q6dCoK0ZrLwcG5XGN5PwacffzTYZODfBSJ1tm95jsoFM5j2Z9Fy2o29oyJsNsOXFX26OtfPMUAnmJSmvknYIbtj57drUrVtksdvT1zCNMhq+2Ot2Gusoeod4q1QfWRVK4N4vXQvHHSrlhDTt1rGBUsIVIZCTzA0xdpccdinbDJ6TLj1mGEIx2qDp0PHPWz+NS0i8fsU78MescUZHZHlBjo5JV0PX1WugUW1oKI7G7C4kQbIIQQ9f0+1eTjBVo1sDEOwT9Ike+NJslQqTrj9O/mn7DRp4f8qlovbr3PTstl3+o9wN4sHh1hx0W1rXGUmmPOyu/S4i/xc8YSDfKynbZVdMNeyW+Fc7XUluZFs6hrgAAnF2PznRo5bobK/cTKPuACG6CQFAoKxSa5+Nn9bASi5rNkv+Kv9BLa4XcsTmEx2UE9psd68/pJFkPEXyDByP4d3Ar7bu8rcoTuECVl0ktIsrBVdb5W1J6LDUInk2s7HPLCaUlr7PkixPu9We8CBzoUgdB13wYMC/vofRjx8jjEQn8moXJX+Qo55pR0thNceuG/oq+FHz8JN2LTUFDfixCafs0TFoK5ZgM7IS9XpwyDB88KsAO4z4jB/XEucJtmEAocHJgkq0/RlrWyulJAyOY6ufscJuVabV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,53 +109,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Prevent decay_va_pool_node from overwriting concurrent repopulation of
-vmap_node pool[i].head while purging. Read/reset pool[i].len under
-pool_lock and splice leftover vmap_area nodes back into the pool
-instead of replacing the list.
+Hi Boris,
 
-Reported-by: syzbot+37b7f6cd519f7fb8d32a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=37b7f6cd519f7fb8d32a
-Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-Signed-off-by: chenyichong <chenyichong@uniontech.com>
----
- mm/vmalloc.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+On 20/03/2026 16:19, Boris Brezillon wrote:
+> Unlike PTEs which are automatically upgraded to writeable entries if
+> .pfn_mkwrite() returns 0, the PMD upgrades go through .huge_fault(),
+> and we currently pretend to have handled the make-writeable request
+> even though we only ever map things read-only. Make sure we pass the
+> proper "write" info to vmf_insert_pfn_pmd() in that case.
+> 
+> This also means we have to record the mkwrite event in the .huge_fault()
+> path now. Move the dirty tracking logic to a
+> drm_gem_shmem_record_mkwrite() helper so it can also be called from
+> drm_gem_shmem_pfn_mkwrite().
+> 
+> Note that this wasn't a problem before commit 28e3918179aa
+> ("drm/gem-shmem: Track folio accessed/dirty status in mmap"), because
+> the pgprot were not lowered to read-only before this commit (see the
+> vma_wants_writenotify() in vma_set_page_prot()).
+> 
+> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Cc: Biju Das <biju.das.jz@bp.renesas.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> ---
+> 
+> This patch is based on drm-tip [2], because that's the only branch
+> that has both [1] and the dirty tracking changes that live in
+> drm-misc-next.
+> 
+> Also added the THP maintainers in Cc, so I can hopefully get some
+> feedback on the fix. For instance, I'm still unsure
+> drm_gem_shmem_pfn_mkwrite() is race-free (do we need some locking
+> there? should we call folio_mark_dirty_lock()? should we call the
+> fault handler directly from there and have all the dirty tracking
+> in this .[huge_]fault path?).
+> 
+> [1]https://yhbt.net/lore/dri-devel/20260319015224.46896-1-pedrodemargomes@gmail.com/
+> [2]https://gitlab.freedesktop.org/drm/tip
+> ---
+>   drivers/gpu/drm/drm_gem_shmem_helper.c | 46 ++++++++++++++++++--------
+>   1 file changed, 32 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index 2062ca607833..545933c7f712 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -554,6 +554,21 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
+>   }
+>   EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+>   
+> +static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
+> +{
+> +	struct vm_area_struct *vma = vmf->vma;
+> +	struct drm_gem_object *obj = vma->vm_private_data;
+> +	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+> +	loff_t num_pages = obj->size >> PAGE_SHIFT;
+> +	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+> +
+> +	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
+> +		return;
+> +
+> +	file_update_time(vma->vm_file);
+> +	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index ecbac900c35f..72fb60553a71 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2233,10 +2233,9 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 		/* Detach the pool, so no-one can access it. */
- 		spin_lock(&vn->pool_lock);
- 		list_replace_init(&vn->pool[i].head, &tmp_list);
--		spin_unlock(&vn->pool_lock);
--
- 		pool_len = n_decay = vn->pool[i].len;
- 		WRITE_ONCE(vn->pool[i].len, 0);
-+		spin_unlock(&vn->pool_lock);
- 
- 		/* Decay a pool by ~25% out of left objects. */
- 		if (!full_decay)
-@@ -2259,8 +2258,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 		 */
- 		if (!list_empty(&tmp_list)) {
- 			spin_lock(&vn->pool_lock);
--			list_replace_init(&tmp_list, &vn->pool[i].head);
--			WRITE_ONCE(vn->pool[i].len, pool_len);
-+			/*
-+			 * Merge leftover areas back into the pool rather than
-+			 * replacing the whole list. A concurrent allocator can
-+			 * repopulate vn->pool[i].head while we are decaying
-+			 * tmp_list, and replacing would drop those nodes.
-+			 */
-+			list_splice_tail_init(&tmp_list, &vn->pool[i].head);
-+			WRITE_ONCE(vn->pool[i].len, vn->pool[i].len + pool_len);
- 			spin_unlock(&vn->pool_lock);
- 		}
- 	}
--- 
-2.50.1
+Unless we're sure the folio can't be truncated by another CPU, maybe we 
+should use folio_mark_dirty_lock() here. This is what's done for pages 
+(not PFNs) in mm/memory.c. Let's wait and see how it goes without 
+locking for now.
+
+Reviewed-by: Loïc Molinari <loic.molinari@collabora.com>
+
+Regards,
+Loïc
+
+> +}
+> +
+>   static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+>   				 unsigned long pfn)
+>   {
+> @@ -566,8 +581,23 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+>   
+>   		if (aligned &&
+>   		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+> +			vm_fault_t ret;
+> +
+>   			pfn &= PMD_MASK >> PAGE_SHIFT;
+> -			return vmf_insert_pfn_pmd(vmf, pfn, false);
+> +
+> +			/* Unlike PTEs which are automatically upgraded to
+> +			 * writeable entries, the PMD upgrades go through
+> +			 * .huge_fault(). Make sure we pass the "write" info
+> +			 * along in that case.
+> +			 * This also means we have to record the write fault
+> +			 * here, instead of in .pfn_mkwrite().
+> +			 */
+> +			ret = vmf_insert_pfn_pmd(vmf, pfn,
+> +						 vmf->flags & FAULT_FLAG_WRITE);
+> +			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
+> +				drm_gem_shmem_record_mkwrite(vmf);
+> +
+> +			return ret;
+>   		}
+>   #endif
+>   	}
+> @@ -655,19 +685,7 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+>   
+>   static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+>   {
+> -	struct vm_area_struct *vma = vmf->vma;
+> -	struct drm_gem_object *obj = vma->vm_private_data;
+> -	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+> -	loff_t num_pages = obj->size >> PAGE_SHIFT;
+> -	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+> -
+> -	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
+> -		return VM_FAULT_SIGBUS;
+> -
+> -	file_update_time(vma->vm_file);
+> -
+> -	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
+> -
+> +	drm_gem_shmem_record_mkwrite(vmf);
+>   	return 0;
+>   }
+>   
 
 
