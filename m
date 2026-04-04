@@ -4,95 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE070E88D78
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 03:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D2CE88D7B
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 03:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C40D56B0005; Fri,  3 Apr 2026 23:08:09 -0400 (EDT)
+	id 235EA6B0005; Fri,  3 Apr 2026 23:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1626B0089; Fri,  3 Apr 2026 23:08:09 -0400 (EDT)
+	id 1C0186B0089; Fri,  3 Apr 2026 23:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADFC66B008A; Fri,  3 Apr 2026 23:08:09 -0400 (EDT)
+	id 087786B008A; Fri,  3 Apr 2026 23:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99AA96B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 23:08:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EA0114039F
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 03:08:09 +0000 (UTC)
-X-FDA: 84619389498.07.134E75C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 42FF410000B
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 03:08:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dFtWWoR3;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id E5BF16B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 23:38:50 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 944BE5820E
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 03:38:50 +0000 (UTC)
+X-FDA: 84619466820.20.90C7BF4
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C3CA41C000C
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 03:38:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVyOiCYF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775272087;
+	s=arc-20220608; t=1775273928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=EUIOPvz+1bi4BxG513T7dn1UHcs4HyiyP/u/sXRKG0U=;
-	b=LsuIsG1Sx0gEFeZQxjC97fnOD8uaKXWSqaTTjoHTq2/5Ots4TIZTEUNwF7UpIS7zxA244d
-	7FOcuRJ5oHjCVuQATZvywGEsLa08DTcjp5W9YgF4v/jtopJwmnX4mvofu/WE2PHxs+W19n
-	dShzQPgUu3eqYaz1QKv13pnk+GVHm2w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775272087; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UnK6OH8b4keQaVFK/5OEkwznTAbTC+vEuBT5MrB5GfA=;
+	b=CvRwRkO9/LvpMg3QTQv3gHBQdeZeL+Gs1eksuHXjja2hVuw90mHDgpACpuZTRQBi2RQ4If
+	iOgv6Fu9EiK1rrW3sEagUB0M5b939xVDJULn5SvXL+6G0jXQ2Gyo8AxfvEh5XaqSGnFG/A
+	uQdjfJGepdjlJJt91agETzMJQ0SqaCI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775273928; a=rsa-sha256;
 	cv=none;
-	b=JtEuWnCK6YMJCBsO0bf9dK4yEk3jWA9XDhzEprg0sZzOdJlZ1VZm2EfLgiwoG7LgtQFGgc
-	sgZpW8CA+aOKNNhCEgW5lnTppA/3FBWWL7WlYxjoDcV+4n6k1xgzqTX5FWsUxkfarFdgzw
-	J9nyB6f0AFkw/pr1CD6MkqkAnwsLYho=
+	b=02tg68W5ylT9yMc/ho8nTs91fKYmoQb6Whs+jU/tjIacRm/qJN1uIJui10RKD5wv6kzfOK
+	n92UDSe9mXG1t6hn52EpIm0XPTqK7MNF+8SoDzJppgWmZ/LQOSczdDKDDw671rSEqBmvaM
+	Yjef07JxYLA4a3PEMCNX3QNefzFDDZA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dFtWWoR3;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775272086; x=1806808086;
-  h=date:from:to:cc:subject:message-id;
-  bh=oY9dm+h5Y0NS7r/8ImnxZO88mvG+6thZzYzRQzlmA0A=;
-  b=dFtWWoR3qoTBsyD2Wv53ERRAoHIx+e0bYUSYGX5kSTNQfsVBRj52Q1Ub
-   ZC3lW3j4KpMCJWkAjmbbLUjfeP6JV+rXpG7plcONyxaafmXAPk+giUuCO
-   1M63K+5AwzODk2wa4VLDeo12k1Tfs/t98eTl2i87tyZUlJjxbNWzsc7lm
-   sOAdqsfTx+ZCf83GTZ8wsy6GPj8mi7yiohACsCtl5WoG4OtEsUkZIIJN2
-   86YwSIiiHkhrbU4JcLes98c5TQ8Fj1mmuTfOZ9cpSSPyOgdS7zC1D/9te
-   I9tSetjwRvRivgTbJp2tfHI5P0spX+fFa8VIf92TSc0+dj7O7MWYZsFLC
-   g==;
-X-CSE-ConnectionGUID: ZiegTcE9TJSmM0kW87Wajw==
-X-CSE-MsgGUID: If3RD7mPR3idihKz4zG21A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11748"; a="75499024"
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="75499024"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2026 20:08:05 -0700
-X-CSE-ConnectionGUID: wPfH6a88Qt6fZPAThp4MBg==
-X-CSE-MsgGUID: X7XQ0DkbTI+J6YWvK3SAjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,158,1770624000"; 
-   d="scan'208";a="257870807"
-Received: from lkp-server01.sh.intel.com (HELO 3afb7d003cac) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 03 Apr 2026 20:08:03 -0700
-Received: from kbuild by 3afb7d003cac with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w8rMe-000000000SH-1SoW;
-	Sat, 04 Apr 2026 03:08:00 +0000
-Date: Sat, 04 Apr 2026 11:07:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [rppt-memblock:for-next] BUILD SUCCESS
- d5759519805c54786c00765ca1303e6d7a0676ca
-Message-ID: <202604041117.DyqGQyC2-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam12
-X-Stat-Signature: x5w1zbpe4tme1k9btt65ch7jmnn8ir8w
-X-Rspamd-Queue-Id: 42FF410000B
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVyOiCYF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d7653db148so1487750a34.2
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 20:38:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775273928; x=1775878728; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UnK6OH8b4keQaVFK/5OEkwznTAbTC+vEuBT5MrB5GfA=;
+        b=OVyOiCYFozd6Vd53AZu5WdyfMxdoIFldvY51WyaYww66S6H+AYKoV+oVWezVHOGpSe
+         hiMqquF2BzLx7Yx4Lrwalxp+YxkvwE+FNdBpu7fpPAUOHkuCSZm+robuB0BrWl1qZMz6
+         3pThfkRnjAQ0vHpNlP/C5D7DR6r/XyVp+OVDrQyGJfAtwylxV9VQ7VLDM4XVBup1sSxL
+         quBwZ+XYd2M9iIx6deWDamoHgPOhGJQZyagVtkam1dIfBbT6VV8NfL3nOOrSnOwHsD3E
+         EOiCvkyTNPHK2KbMQR/7SAWISnHxCXCP0qVi/vPzs+xTeHmYJ7+FjpePXMygqa7XuAfq
+         DYQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775273928; x=1775878728;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UnK6OH8b4keQaVFK/5OEkwznTAbTC+vEuBT5MrB5GfA=;
+        b=oLYLm6m6W/Stdw/39gTnYKnzlFosFo0tDqkdVCoy1WNyTt585vHovmEPIr9v0FseXO
+         2zTREHeBgmHlgzBUmV3SXNddqCnX3swxf7qLmnysqVoGo3Bkqv24nsUwxAPns4JNJOGW
+         HlNQ7uRquwRUmWGJnIdx6Ptc8B5sZASYiWnT9DgJ8m24vyRxdd6LtWFSDFSw7eN7qzeC
+         2tqsky5iaiRb1BshbGON6ynGG05HnkDnXQIcByAA+l1umgPV9UPMDWXv2TvfaLXt4vES
+         pvuHcDfUTA8/kWuuHK0N4c0F/8Orf8kAKWy5UJHuWIGU+5aaJgHvdT8FXRZUXmKvYgbF
+         gOgA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9WMvlUxP028LQZP9gjCv1SOE2b1wGNYzXSiU81kwPU17RYYA30tzpDLf88AlX5pOFgma9i6AHFA==@kvack.org
+X-Gm-Message-State: AOJu0Yz1STTE4059i6U7w7VVKgqcruDRknGJfjBE9opw4RUIKpzKdKKP
+	FYyQILGbA/6DX7sj7JIURPs6J7wzaBY2v+eQS0N1qB7G4iVFEkAGgjlK
+X-Gm-Gg: ATEYQzyAg2SJw+oLd9eeELm5+U2scmXLbD11G973wiLlqgb0buL0mJrhxnbU+I5JiOB
+	6QkNMrAqnHqd+a4btixj4LPx2KXLVo0kxK+XV5M1OKvmTcNCSl6Rx354V/XI0k4YLHczv6exE/x
+	s0/Bp0AIsqIFvqITTww1hdt1kB9l41I9mwn3CreGHmmWWKFNmZmJMeYUhjqQgrILnqXLtgOM2+P
+	ID6uD2wAZjGEIeQBZQdt31ZV/yIYGUs0ZELT7BaEH0lE/twiGuDDbQLMDpjShO4L/CscGRXPCuL
+	npMKx4+qMN9GlpaUemT86jAkRuzXr4M3S/BYv4ejLGcWhIT4ui0fzz7m5ZgAeYV4bpDFRccHRgZ
+	dTLbquzHKtgc0bq7H7ZSi1oXnDRwQoOPaLMRGPKw7BI6wsRlX/g7MnnKg4f0oGU8jrQiHVx0Y+/
+	gnRukeMt7PbDTY98x7UqF2
+X-Received: by 2002:a05:6808:6f91:b0:467:2652:b29d with SMTP id 5614622812f47-46ef5001816mr2779936b6e.8.1775273927383;
+        Fri, 03 Apr 2026 20:38:47 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:6::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-46d8f9609bfsm4224118b6e.3.2026.04.03.20.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 20:38:45 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Yosry Ahmed <yosry@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Date: Fri,  3 Apr 2026 20:38:43 -0700
+Message-ID: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C3CA41C000C
+X-Stat-Signature: ddeindmmewxaskkqw591wy9rxmm3s3fa
 X-Rspam-User: 
-X-HE-Tag: 1775272086-628123
-X-HE-Meta: U2FsdGVkX19vHS6fl7TP6IosbqmUDFbyGgqPRAa3hf6XzO4ZUtqVpavlkQx3ObWdxcJ4bgZVewHxprAcQkovQkpOiV5E6n7EGoAFZRARm56RuZD/+zTFPTpXKJ0OYD10YsqzKAf2ghEkaiT1qe/QClYOEgS4PBloIlYE9IzsyWWlWqzixho8tqkGkrRNqINhooOJ0QqTE5O/MtRCer1VsDAC+PQujgCQKv6aFWlEQet8dz8k0YeDUvkfhu7X1AvLn8ZPFTHb7ahkeJo6oEI29fcB+oR09uzjhhJH42YTMRJ3x8PgUdH/1f02fxi1pRBPBNsHDrh43fhbc3va3bUWjLLgoRn5zQV0qlFhgA0k8LnkKKzQSj2zdVYshUkkxX0eHWvZEsPxNjSuR2aHyMWdbH8YFYvhvjEA04MMpVlwg/fZlt5OvRnH5ugEWue3SIaVsTNg+rJR/NwUUCi+q0JGlmuu7rD1Ywryj0lXOnGtVhPmo5Hgsnu+zrBATw89naWFNPhkRayWaZWy/NiZowwC9lSQC05uBHu7V/mQsPLIy/c7kPqRbSD1kBcuJmAtSKTcNvXZIKlzMKNfYLxcH2jAHv+tue4vXi89tGabPSH7RfE+aGsLGLDxRh4Ic+w8rN8gUSE3yAudQgNB4GIoGu2pMvCdf5oTTpAHv+Dk8mMtjgFtt/WEs6rqdHKc9WeBB2tMOfYzMWFjYk4E8IBAEieo5xh/frLi+omnL+99CYnosbu7axPSrXhVFiurto/gytaV/M+IxCLStPn/sBzci8146CmsjSygbPoBuvVHlZzFLwN1pYPccMwfLaVJn0f6DmqyN5XkPSjMkQcTIoXugyzd/CF1/7qydq4x5G4yv2pU50mFpL/d8GMK8PzBUzbVWUdwWBImaW0id0VxTnO+ZXe8W0OCkddM4iVMRdXT02vmx6zBbWl/rnpDc8u4VRg/JyYrGTy2pu542CzBdeCVyf5
- p9j9kVUp
- qjV684zlmdemDpEgUg1rsVwtIlTHAAF2Y1VMEzSNxTBx5ujAIGz8W9U1goJ+wA5ZLsQhPW7a/XTidu7hEOWfiNPj1Rh3mG7aiTw8zsvgCwG1WkX0DFy7g2d3uZsTukulYnurUwQS0tJdjHbRf52RoP0ZnUpYmzWaWF5N/
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775273928-13921
+X-HE-Meta: U2FsdGVkX181gOK5Eo3RdP5++foa9ovF6efDrgDcSAiGHfiqvCe8K6aliQhzUt9olTBqN1faTgIhpW2kEMQBFmZM/lSH/wdYqlOhaoufWUo6yEe9qXQvzVAneRm2e/8IdXjkWVAVl3h7IehVu2jKbNPcQaYpR6t7dse3dcKZVgaqKDwLw/gVRq22/HWhbwVzj0owtxrAkoVFlvqKyoN4L29/cCyuk2jp9w91Ko0EwAD8obq+QsnNb5l3aGo5vBiNJmqqC0BvBp0g3QXR2DtA22aqL9Qp2254BrO7DIAQPKCVOwXeONWCAlPqnJ1T5DZg/U+rR691sdMDi5VRi9nuSmhqL+ezELgKNiLatJJCH6AskHCK6Lzz67bnmMIREuQSidwVjoUa4D6OxNLuVqa8Jl+kfENCrAASiICeA7B2Nx8TFmMDgRhV5LO7EZ60VceAZnJme6/7nHl2/y/hkbg8clVibwqRsfRs5vYpilzG257G1Cyn67HueEhu4KQ4DWOkGz7z6JLcqBwx4F4SYlE7uRIvzeXpucuTmlMVTISeXBrGZEIkHXfusfbVqyyNAk6cyrhgpKQ3Lv99Q7XNMmLyH9iUIy6rlDFpkUPtVia+A+HlOFoi0CTB+gxs0aG4lMhiYtoD5Pm3SV2nB7lXa6zBSBqg7cjH0DrfREAqHxPr8cEUDmc+Ash8l1AdB6chDgSgDvb29rRjslFzGxIfSHHburPm5JUG3utuXzZveSpw3HB07rimYeCVQ2QxhwJl4rOxcePwEgQj9emOasOVaTv7k9CsdyHo6aBg7oOqKGbJKhYuo7Us90j5U+uTMVs6H3xZ56BKjccDuKiZ/8NuHhuFMsggL/64hSQCcphwAbbQD7FGmrq0bmONAXxwIQrK7XvI3FYakEXDCg3pxAqYKRWYAJcAE320UbVqKaJnqUcEwWcBqQbAoohbhLi+iiOh72ScaXlBjbDxJv6QwkVgC34
+ G8+QWqTH
+ nW8YaN+xG6qgxZ5CcCz6+Z3eE9EeQDSa4PhItUm1hoE6iFjEPxEHhCAIaFF5JD6DQBnfrovBtw/5kgCncjwPg+/sMRUtCKfuXDHx4oKvOA+62IPJrGnstNscQPxLo27OmucULIIRe8n+vEuA6BS94G39e0RgM+RNDfwc46cKloseVRK4+EyFn5E/fKspC4jl7+g5F10+IujxWt8qn0CTwe1pUXr1HCssCqTc1q4taR0asuLJwQUA+4AQzvMFZhjt+t7Xe5KK2IvubkRJ3YBSnFLIe9bi2Vd2jUNc0w2M36VxTBXXRCtTLvPWuQrjMbxY41t5J9mA/Otw6MBYaKQK1Si/LqPYn7j844iGiwA3r3+idssOcrNfHNlEKs3zSwPk+Q0CkrdRlbx6QZbbieQcAdZZYTsM9E2Gj0L1IF2AHHMiiVz82e2roeKFBDXms+UzslpQWGyUoYQDCchkCppBBBU18VqR3XEqJtZxp03BdAcGcjrN+c2XFMubR9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,213 +128,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
-branch HEAD: d5759519805c54786c00765ca1303e6d7a0676ca  x86/alternative: delay freeing of smp_locks section
+enum memcg_stat_item includes memory that is tracked on a per-memcg
+level, but not at a per-node (and per-lruvec) level. Diagnosing
+memory pressure for memcgs in multi-NUMA systems can be difficult,
+since not all of the memory accounted in memcg can be traced back
+to a node. In scenarios where numa nodes in an memcg are asymmetrically
+stressed, this difference can be invisible to the user.
 
-elapsed time: 739m
+Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+to give visibility into per-node breakdowns for percpu allocations.
 
-configs tested: 193
-configs skipped: 2
+This will get us closer to being able to know the memcg and physical
+association of all memory on the system. Specifically for percpu, this
+granularity will help demonstrate footprint differences on systems with
+asymmetric NUMA nodes.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
+account node level statistics (accounted in PAGE_SIZE units) and
+memcg-lruvec statistics separately. Account node statistics when the pcpu
+pages are allocated, and account memcg-lruvec statistics when pcpu
+objects are handed out.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-23
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260404    gcc-15.2.0
-arc                   randconfig-002-20260404    gcc-15.2.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260404    gcc-15.2.0
-arm                   randconfig-002-20260404    gcc-15.2.0
-arm                   randconfig-003-20260404    gcc-15.2.0
-arm                   randconfig-004-20260404    gcc-15.2.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260404    gcc-15.2.0
-arm64                 randconfig-002-20260404    gcc-15.2.0
-arm64                 randconfig-003-20260404    gcc-15.2.0
-arm64                 randconfig-004-20260404    gcc-15.2.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260404    gcc-15.2.0
-csky                  randconfig-002-20260404    gcc-15.2.0
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260404    gcc-15.2.0
-hexagon               randconfig-002-20260404    gcc-15.2.0
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20260404    clang-20
-i386        buildonly-randconfig-002-20260404    clang-20
-i386        buildonly-randconfig-003-20260404    clang-20
-i386        buildonly-randconfig-004-20260404    clang-20
-i386        buildonly-randconfig-005-20260404    clang-20
-i386        buildonly-randconfig-006-20260404    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260404    clang-20
-i386                  randconfig-002-20260404    clang-20
-i386                  randconfig-003-20260404    clang-20
-i386                  randconfig-004-20260404    clang-20
-i386                  randconfig-005-20260404    clang-20
-i386                  randconfig-006-20260404    clang-20
-i386                  randconfig-007-20260404    clang-20
-i386                  randconfig-011-20260404    clang-20
-i386                  randconfig-012-20260404    clang-20
-i386                  randconfig-013-20260404    clang-20
-i386                  randconfig-014-20260404    clang-20
-i386                  randconfig-015-20260404    clang-20
-i386                  randconfig-016-20260404    clang-20
-i386                  randconfig-017-20260404    clang-20
-loongarch                        allmodconfig    clang-23
-loongarch                         allnoconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260404    gcc-15.2.0
-loongarch             randconfig-002-20260404    gcc-15.2.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-microblaze                      mmu_defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                        omega2p_defconfig    clang-23
-nios2                            allmodconfig    clang-23
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260404    gcc-15.2.0
-nios2                 randconfig-002-20260404    gcc-15.2.0
-openrisc                         allmodconfig    clang-23
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260404    gcc-10.5.0
-parisc                randconfig-002-20260404    gcc-10.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                     mpc83xx_defconfig    clang-23
-powerpc               randconfig-001-20260404    gcc-10.5.0
-powerpc               randconfig-002-20260404    gcc-10.5.0
-powerpc64             randconfig-001-20260404    gcc-10.5.0
-powerpc64             randconfig-002-20260404    gcc-10.5.0
-riscv                            alldefconfig    gcc-15.2.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260404    clang-20
-riscv                 randconfig-002-20260404    clang-20
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260404    clang-20
-s390                  randconfig-002-20260404    clang-20
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                        apsh4ad0a_defconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                    randconfig-001-20260404    clang-20
-sh                    randconfig-002-20260404    clang-20
-sh                           se7751_defconfig    gcc-15.2.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260404    clang-20
-sparc                 randconfig-001-20260404    gcc-15.2.0
-sparc                 randconfig-002-20260404    clang-20
-sparc                 randconfig-002-20260404    gcc-8.5.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260404    clang-20
-sparc64               randconfig-001-20260404    gcc-14.3.0
-sparc64               randconfig-002-20260404    clang-20
-sparc64               randconfig-002-20260404    clang-23
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260404    clang-20
-um                    randconfig-002-20260404    clang-20
-um                    randconfig-002-20260404    gcc-14
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260404    gcc-13
-x86_64      buildonly-randconfig-002-20260404    gcc-13
-x86_64      buildonly-randconfig-003-20260404    gcc-13
-x86_64      buildonly-randconfig-004-20260404    gcc-13
-x86_64      buildonly-randconfig-005-20260404    gcc-13
-x86_64      buildonly-randconfig-006-20260404    gcc-13
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260404    gcc-14
-x86_64                randconfig-002-20260404    gcc-14
-x86_64                randconfig-003-20260404    gcc-14
-x86_64                randconfig-004-20260404    gcc-14
-x86_64                randconfig-005-20260404    gcc-14
-x86_64                randconfig-006-20260404    gcc-14
-x86_64                randconfig-011-20260404    gcc-14
-x86_64                randconfig-012-20260404    gcc-14
-x86_64                randconfig-013-20260404    gcc-14
-x86_64                randconfig-014-20260404    gcc-14
-x86_64                randconfig-015-20260404    gcc-14
-x86_64                randconfig-016-20260404    gcc-14
-x86_64                randconfig-071-20260404    gcc-14
-x86_64                randconfig-072-20260404    gcc-14
-x86_64                randconfig-073-20260404    gcc-14
-x86_64                randconfig-074-20260404    gcc-14
-x86_64                randconfig-075-20260404    gcc-14
-x86_64                randconfig-076-20260404    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-23
-xtensa                randconfig-001-20260404    clang-20
-xtensa                randconfig-001-20260404    gcc-11.5.0
-xtensa                randconfig-002-20260404    clang-20
-xtensa                randconfig-002-20260404    gcc-13.4.0
+To do account these separately, expose mod_memcg_lruvec_state to be
+used outside of memcontrol.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The memory overhead of this patch is small; it adds 16 bytes
+per-cgroup-node-cpu. For an example machine with 200 CPUs split across
+2 nodes and 50 cgroups in the system, we see a 312.5 kB increase. Note
+that this is the same cost as any other item in memcg_node_stat_item.
+
+Performance impact is also negligible. These are results from a kernel
+module which performs 100k percpu allocations via __alloc_percpu_gfp
+with GFP_KERNEL | __GFP_ACCOUNT in a cgroup, across 20 trials.
+Batched performs 100k allocations followed by 100k frees, while
+interleaved performs allocation --> free --> allocation ...
+
++-------------+----------------+--------------+--------------+
+|    Test     | linus-upstream |    patch     |     diff     |
++-------------+----------------+--------------+--------------+
+| Batched     | 6586 +/- 51    | 6595 +/- 35  | +9 (0.13%)   |
+| Interleaved | 1053 +/- 126   | 1085 +/- 113 | +32 (+0.85%) |
++-------------+----------------+--------------+--------------+
+
+One functional change is that there can be a tiny inconsistency between
+the size of the allocation used for memcg limit checking and what is
+charged to each lruvec due to dropping fractional charges when rounding.
+In reality this value is very very small and always lies on the side of
+memory checking at a higher threshold, so there is no behavioral change
+from userspace.
+
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+v1 --> v2:
+- Updated commit message to be more explicit about motivation, suggested
+  by Michal Hocko.
+- Added performance and memory impacts, suggested by Michal Hocko and
+  Yosry Ahmed.
+- Instead of completely dropping the "extra" overhead of obj_cgroup
+  pointers, they are now distributed among the nodes, proportional to
+  the number of CPU each node has.
+---
+ include/linux/memcontrol.h |  4 +++-
+ include/linux/mmzone.h     |  4 +++-
+ mm/memcontrol.c            | 12 +++++-----
+ mm/percpu-vm.c             | 14 ++++++++++--
+ mm/percpu.c                | 45 ++++++++++++++++++++++++++++++++++----
+ mm/vmstat.c                |  1 +
+ 6 files changed, 66 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 0861589695298..96dae769c60d6 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -34,7 +34,6 @@ struct kmem_cache;
+ enum memcg_stat_item {
+ 	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
+ 	MEMCG_SOCK,
+-	MEMCG_PERCPU_B,
+ 	MEMCG_KMEM,
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+@@ -909,6 +908,9 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct task_struct *victim,
+ 					    struct mem_cgroup *oom_domain);
+ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg);
+ 
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val);
++
+ /* idx can be of type enum memcg_stat_item or node_stat_item */
+ void mod_memcg_state(struct mem_cgroup *memcg,
+ 		     enum memcg_stat_item idx, int val);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7bd0134c241ce..e38d8fe8552b1 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -328,6 +328,7 @@ enum node_stat_item {
+ #endif
+ 	NR_BALLOON_PAGES,
+ 	NR_KERNEL_FILE_PAGES,
++	NR_PERCPU_B,
+ 	NR_VM_NODE_STAT_ITEMS
+ };
+ 
+@@ -365,7 +366,8 @@ static __always_inline bool vmstat_item_in_bytes(int idx)
+ 	 * byte-precise.
+ 	 */
+ 	return (idx == NR_SLAB_RECLAIMABLE_B ||
+-		idx == NR_SLAB_UNRECLAIMABLE_B);
++		idx == NR_SLAB_UNRECLAIMABLE_B ||
++		idx == NR_PERCPU_B);
+ }
+ 
+ /*
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a47fb68dd65f1..b320b6a426966 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -377,6 +377,7 @@ static const unsigned int memcg_node_stat_items[] = {
+ 	NR_UNEVICTABLE,
+ 	NR_SLAB_RECLAIMABLE_B,
+ 	NR_SLAB_UNRECLAIMABLE_B,
++	NR_PERCPU_B,
+ 	WORKINGSET_REFAULT_ANON,
+ 	WORKINGSET_REFAULT_FILE,
+ 	WORKINGSET_ACTIVATE_ANON,
+@@ -428,7 +429,6 @@ static const unsigned int memcg_node_stat_items[] = {
+ static const unsigned int memcg_stat_items[] = {
+ 	MEMCG_SWAP,
+ 	MEMCG_SOCK,
+-	MEMCG_PERCPU_B,
+ 	MEMCG_KMEM,
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+@@ -920,9 +920,8 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 	put_cpu();
+ }
+ 
+-static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+-				     enum node_stat_item idx,
+-				     int val)
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val)
+ {
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	struct mem_cgroup_per_node *pn;
+@@ -936,6 +935,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 
+ 	get_non_dying_memcg_end();
+ }
++EXPORT_SYMBOL(mod_memcg_lruvec_state);
+ 
+ /**
+  * mod_lruvec_state - update lruvec memory statistics
+@@ -1535,7 +1535,7 @@ static const struct memory_stat memory_stats[] = {
+ 	{ "kernel_stack",		NR_KERNEL_STACK_KB		},
+ 	{ "pagetables",			NR_PAGETABLE			},
+ 	{ "sec_pagetables",		NR_SECONDARY_PAGETABLE		},
+-	{ "percpu",			MEMCG_PERCPU_B			},
++	{ "percpu",			NR_PERCPU_B			},
+ 	{ "sock",			MEMCG_SOCK			},
+ 	{ "vmalloc",			NR_VMALLOC			},
+ 	{ "shmem",			NR_SHMEM			},
+@@ -1597,7 +1597,7 @@ static const struct memory_stat memory_stats[] = {
+ static int memcg_page_state_unit(int item)
+ {
+ 	switch (item) {
+-	case MEMCG_PERCPU_B:
++	case NR_PERCPU_B:
+ 	case MEMCG_ZSWAP_B:
+ 	case NR_SLAB_RECLAIMABLE_B:
+ 	case NR_SLAB_UNRECLAIMABLE_B:
+diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+index 4f5937090590d..e36b639f521dd 100644
+--- a/mm/percpu-vm.c
++++ b/mm/percpu-vm.c
+@@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+ 			    struct page **pages, int page_start, int page_end)
+ {
+ 	unsigned int cpu;
+-	int i;
++	int nr_pages = page_end - page_start;
++	int i, nid;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		for (i = page_start; i < page_end; i++) {
+@@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+ 				__free_page(page);
+ 		}
+ 	}
++
++	for_each_node(nid)
++		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
++				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+ }
+ 
+ /**
+@@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+ 			    gfp_t gfp)
+ {
+ 	unsigned int cpu, tcpu;
+-	int i;
++	int nr_pages = page_end - page_start;
++	int i, nid;
+ 
+ 	gfp |= __GFP_HIGHMEM;
+ 
+@@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+ 				goto err;
+ 		}
+ 	}
++
++	for_each_node(nid)
++		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
++				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+ 	return 0;
+ 
+ err:
+diff --git a/mm/percpu.c b/mm/percpu.c
+index b0676b8054ed0..51c160deca01a 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1632,6 +1632,45 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+ 	return true;
+ }
+ 
++/*
++ * pcpu_mod_memcg_lruvec - update per-node memcg percpu stats
++ * @objcg: object cgroup to charge
++ * @size: size of pcpu allocation
++ * @sign: 1 for charge, -1 for uncharge
++ *
++ * Charge percpu memory across NUMA nodes proportional to per-node CPU count.
++ * Includes the obj_cgroup pointer overhead (see pcpu_obj_full_size) from the
++ * chunk's obj_exts array, but spreads proportionally across all nodes to
++ * avoid attributing it to a single node.
++ *
++ * The "extra" size calculation is best-effort but deterministic.
++ * Charges will equal uncharges, although there may be small discrepancies
++ * due to rounding up/down.
++ */
++static void pcpu_mod_memcg_lruvec(struct obj_cgroup *objcg, size_t size,
++				  int sign)
++{
++	struct mem_cgroup *memcg;
++	size_t extra = size / PCPU_MIN_ALLOC_SIZE * sizeof(struct obj_cgroup *);
++	int nid;
++
++	memcg = obj_cgroup_memcg(objcg);
++	for_each_node(nid) {
++		struct lruvec *lruvec;
++		unsigned int nr_cpus = nr_cpus_node(nid);
++		long charge;
++
++		if (!nr_cpus)
++			continue;
++
++		charge = nr_cpus * size +
++			 mult_frac(extra, nr_cpus, num_possible_cpus());
++
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
++		mod_memcg_lruvec_state(lruvec, NR_PERCPU_B, sign * charge);
++	}
++}
++
+ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+ 				       struct pcpu_chunk *chunk, int off,
+ 				       size_t size)
+@@ -1644,8 +1683,7 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+ 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
+ 
+ 		rcu_read_lock();
+-		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-				pcpu_obj_full_size(size));
++		pcpu_mod_memcg_lruvec(objcg, size, 1);
+ 		rcu_read_unlock();
+ 	} else {
+ 		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
+@@ -1667,8 +1705,7 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
+ 	obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
+ 
+ 	rcu_read_lock();
+-	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-			-pcpu_obj_full_size(size));
++	pcpu_mod_memcg_lruvec(objcg, size, -1);
+ 	rcu_read_unlock();
+ 
+ 	obj_cgroup_put(objcg);
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index b33097ab9bc81..d73c3355be715 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1296,6 +1296,7 @@ const char * const vmstat_text[] = {
+ #endif
+ 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
+ 	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
++	[I(NR_PERCPU_B)]			= "nr_percpu",
+ #undef I
+ 
+ 	/* system-wide enum vm_stat_item counters */
+-- 
+2.52.0
+
 
