@@ -4,92 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7EF1E88D80
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 11:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FACE88D80
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 12:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4EB76B0005; Sat,  4 Apr 2026 07:12:03 -0400 (EDT)
+	id CC80F6B0005; Sat,  4 Apr 2026 08:21:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFF926B0089; Sat,  4 Apr 2026 07:12:03 -0400 (EDT)
+	id C78F46B0089; Sat,  4 Apr 2026 08:21:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A15436B008A; Sat,  4 Apr 2026 07:12:03 -0400 (EDT)
+	id B677D6B008A; Sat,  4 Apr 2026 08:21:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 92CD66B0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 07:12:03 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 357D81A07DD
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 11:12:03 +0000 (UTC)
-X-FDA: 84620608926.24.D252C46
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A37E918000D
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 11:12:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gIv6D33+;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E7C6B0005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 08:21:22 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DEB5EBB597
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 12:21:21 +0000 (UTC)
+X-FDA: 84620783562.10.19856DF
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 85BD816000A
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 12:21:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gpBSgGj6;
+	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gpBSgGj6;
+	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775305280; a=rsa-sha256;
+	cv=none;
+	b=33FJ8kfqtoD8mrAXB3RjeBtqL5aGRDQP+S4PEZDs2q8cvSsCX1vx4AasmrlEJX+figMMZl
+	UAVeootMI8OlidFgjBf3XKQLDzg71tKFoZbBdXBwHViopCmHPbmQI3uYe4oBDkNliU7obm
+	1cA28gUvSt47+R5KkeGo+vGNUmKllko=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775301121;
+	s=arc-20220608; t=1775305280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BadJi0nidtwgCNaokDKKZKawBS5mJDPenXLBKBjTJpw=;
-	b=JceHAP6ig1ugLqPFq/K5Gq+6KFe9RsfbCMp3+Y60y9tX5g67Nznf+Zbi76DgsfUYFnhZzD
-	uybiDMSP/aZNAsapjIDqCjQ7ueRTGBKY2EerbvsqEu+ceq+fQ2k/Hvx9US303YcaAEnTS2
-	yI2Duw9kYRib8RIUZuZZc4HOw7ZJQzs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gIv6D33+;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775301121; a=rsa-sha256;
-	cv=none;
-	b=eX/tFi4IfhUgIhoiCUz6IckA7jM+k8AeNYDULrKa5jI7iRjGP3crMjxppGQWF46GCwtzs5
-	TGj6ZS4PvMZxImv4Hxhh+v2iczVHp9ABemexXXAOAsSswQ50rXd9ZpxF4RIe237lsWOrhJ
-	cpVXZI5eTdHD5BbPOSq9HXP7SwJvHDQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1CA9460008;
-	Sat,  4 Apr 2026 11:12:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AF1C19421;
-	Sat,  4 Apr 2026 11:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775301120;
-	bh=upjC2amcChzNkJvjB78yT+nyj/Ctg5hG5pkRSw8QFPU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gIv6D33+nZsaQW3qEMSmPdTuvPhm55MyusGZPe/mhf/rnqzMA+MK7R4UzVn2B6N2d
-	 a4cg+dLsOjHKVSZm6DutiPdxwf8DNHomGOwnwNn5CKkM3nReXQcXy0M+eLcXJbNTmf
-	 rh1FY8NhGEw1N9imYU0e8VuxM8iU2h7g+qY0oyJ/FL3LTo3gSxoTWV5buDGi0gGWtB
-	 UiaLZes5ET1xmmU0qWqgsqVSZ+J+r1B0yBTm7nl3WBy/03F2aqknMed2OMulnloMG+
-	 H5e4Wv3i6bbL4aVl3U4XbrRBhgXSn8A0x/L/0l4pZQpjjtSPdAEk7pa0484KSIsg8U
-	 yUfZmXg8pEWEw==
-Date: Sat, 4 Apr 2026 14:11:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-Message-ID: <adDx-FYHY-si07mW@kernel.org>
-References: <20260401070155.1420929-1-yuan1.liu@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XmD+wUZmRVhtkrDT5Nt1vWAFME2ljMO3CvkEWHIVAgE=;
+	b=G3wosGY0ZXtVuYugd7vuNhLHy9RfwZjWD+grGfUyk2oWN8Po123bYPU4+aYAIzCl+oRR3/
+	wcofVVojhE4UX8E/gBwcQDPEiyl11snicCXNsLtphc/5odG/1HQLfmCd5DVcknxuA14yj/
+	tlrXhziqqdcmVemiQPfUirF4zRkr2kg=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82cf83bf375so1058386b3a.0
+        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 05:21:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1775305278; x=1775910078; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XmD+wUZmRVhtkrDT5Nt1vWAFME2ljMO3CvkEWHIVAgE=;
+        b=gpBSgGj6swRCTj/D7qoDxLyqYvqI5fvSmQ3/gndy3y8lutoBTpzXAE4g5wl+gUMQzD
+         7Kjn/fRuKmS+AQO4UBVLdAO6vIollc57daXP1Ycc1p6YJerLwpF+o2lWvf7oEfRbQtZe
+         aqRHN9O8SxW06Luqr86Gs6L7AsQluhN2R6MRdbRe0VA4VpFUkvV40gjaN9dTFoivsYZ2
+         wqkFU90/YO2cWohW+PAR+AOB8Db+oPb0E6eNlFCcUKs7LiVmdkt6L3NcNDJ4chGm8Ih+
+         Caerj2YfZut41wsSpC6PzvGGTDtc/UKlKMuvjlbHkWFcU25fRXrTNeHwoV+84ljXuhFI
+         ppbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775305278; x=1775910078;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XmD+wUZmRVhtkrDT5Nt1vWAFME2ljMO3CvkEWHIVAgE=;
+        b=A4u6Y5wrIImGe7SMeJgeCOL5QHRFm9tGgQ6MjCNb6QAOcJdd6eBvjSwq95xwjpHTHx
+         Cga0xfKbYRlN8fc14U6Ih66Nn1593fHCnvUvXoBBki0Ga+sryjmaqS5Bd1z2RzNunJD8
+         Ne5a85PMDcmddbpd6p8cp0D3MRUJHefuNx5MPS1S41pI2ZmG+5QQorHtgwSHyXFZkrnW
+         IRBnMQPWmqRAEX1Zo8sByJClhLMWQYn9NGprdhY663M9lCn4Z88y98sS2LV4OqgL/GKc
+         n4+s31O4FXS6b6aeuhEnc3DCCRd9/Rm+/JOkFlNIeCazSu00k+bCljNENxsM3Oyux50y
+         PnHQ==
+X-Gm-Message-State: AOJu0YxTQT8PV4erieTA1S2YIojDJ/7wLf+Z1qk4HzCZLLaF6kKbV4UD
+	knHcP+FLnb/vbHGr5wZqYsQpFvOYzpRn5lI4yldaouFYvzR1l3jFxbezmHfnqP+VZVw=
+X-Gm-Gg: AeBDiesY9Jr8y0AG7DXvmQ1ERwhCgKCzXA3iCDpI6xTwusN/N1Qpk+QEFzNKP3n/bPB
+	NRfmeXFOHw8eJxaVca0WrqoSjMCnZo+VNkSbdCAsVMO7WSeu0i6TJ5Rkj1bnvgBoKRR7A6WHRm9
+	qneaSHaoEMn+Pnx4JNXq3meAJ88BHghNu/Kw3+W2nC7YSENtk4suOM4Tvgf2+bx1jxppxYInvQm
+	gyxEToURKsCSNyGVTAk3vv33OF0fe7chmpIKabsTniYgPyAZazEc5h/dSkStPLz7b/Bk9MWftS7
+	tlJ3oANHTUzaQTawuX2J89qs36D2Ic4x5bBJ8Smg+C1FBIE/e1/1+qifzV1l3hz5Go5zT/EPVoZ
+	RFJpcza9XcFM1KU6Lnx10uLFDn2vVt3iJ0t1wqLRLBiztNPmMrGqqSx/zEL9HMG3TFpDbeybfbp
+	fkeKsNdTDUCYdYmLZjgDxxcxZqWNgviCWppj8XgYoDs7Qe8FMZ4pVI1g==
+X-Received: by 2002:a05:6a00:ab87:b0:82c:24a9:d5f1 with SMTP id d2e1a72fcca58-82d0db3f376mr5931662b3a.30.1775305277918;
+        Sat, 04 Apr 2026 05:21:17 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cfebe5b23sm8327063b3a.59.2026.04.04.05.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Apr 2026 05:21:17 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Junhui Liu <junhui.liu@pigmoral.tech>,
+	Austin Kim <austin.kim@lge.com>,
+	Chengkaitao <chengkaitao@kylinos.cn>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alex Shi <alexs@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	sparclinux@vger.kernel.org
+Subject: [PATCH v2 0/5] mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and vmemmap_check_pmd()
+Date: Sat,  4 Apr 2026 20:20:53 +0800
+Message-Id: <20260404122105.3989557-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260401070155.1420929-1-yuan1.liu@intel.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 85BD816000A
+X-Stat-Signature: 5xdz6oc64jspbqny6qw44arc1hw7eth5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A37E918000D
-X-Stat-Signature: bdhw8wae8fijfuquhubsjacxtwgymk18
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775301121-864692
-X-HE-Meta: U2FsdGVkX19HSTVxHM7pnIaknVCVSHKgvykOenHApKEOwGqaBg3m/+ROLcY4/GRfBCIvLRrCyuAGUB4mqfdxBtxsqCECf7QqffforniNuSR/iZTN2/4BZone/UgA7yrQzoI4VeKAw5bKFCxDWbkS/hsgSkJ6vwNkGpizGC2vRuWgJUxWaiBWZ4NcEk4hOGKPwq6oZHuMVmO0o3eeAxh5rHuB4p6z5DG9VoStP8qRFnjsLUKK8bn5XVW/UP+G6KTvgTOpOHGCl5qAjeyeI3zCr04Wn9/0fBGrVSL+fKgTOeJg5cGwam9JgMapkAPF/PPWeFDGxwjo6eoDlheHIiAL28sYUVYO0UmjoOgspHYxzVWAbj1B+TnNWJekEDlmsTbVxiIgbikdOJJvHqjInlGtHWKBpM3njCq61n3aM2B77vYvMROWNN6k/OBwp3NtOz0kQq72r1Q9lH2H8C7DYWqAPL34xPustzL8Vfn+X5IsB2uclTWtnvk+uruxapdcXQFiYsWoXIQFsdSJOuFGkymuA0AAzAdw1j5iYJslO8zKJHSOQPdC6slryGWuacqID+E6hmhCK5xZmpcVmlbOtoac5jDRy2E0+FzBJc2dGlkIcD039ogOa55uS8YLa8BF7O/EKWpFvvZmkni3yI+c5dIu6351QS6zZM8mVYhftGuxaprX9vJhkHr/JtVd73bqFS/Czy8vbbucxQDUyAqv2e9NvpDCX4OnYbNUibVeKZ/ooaaOrZwwb5YhslIBGfvJl9Z2eAuALB5cHOyGsoTUeH//VP6Krp2h5NaCzfBHpgWzBDu0sw4RSqlKWOrXYX1+UnF+42sE1aP0QMLsIwil2dYTtirMLBNvDWZc5Hb/N0USF0qseMRzov+eLViIa1idW286Fx2tCjJfWg69lyVjs6j2E5ylxvW+idMgEn3gtxiS5mQ/KcxtUYhXAbq/qt71XnfkAikbts9+aewqadNpD1A
- 1s9ETQLH
- IFoDdMzyeNMMYWW4o4ZdM1l9bsIu1RnOkH/uhwzrmt0aqncOgXJvzxXkV0VfDKdV837ZTqZADv78UPtdo24KQEL00Gdka29Zjy8eczRXmigpp5PPolRONA78KxTzkgGlSVSa9j3YhWieTkWdVCkxgDiAEooknF7KOECG9GQJoRJ4J0jFB6JNY22X2aPPbNt4zuaWst09gXBsG7Zb7qf+PrL90F6keY8XTyDun0uVUUP5TV7DZtYSnc+gLFrtFh0fIwCTbGiElvC+lzr8Y7ZACnn6yuM7eWRbNzBq0fwMteJcfy7doTO0OT5r15NGXYf12Z2cp65MzNDjfmLE=
+X-HE-Tag: 1775305279-487432
+X-HE-Meta: U2FsdGVkX1960Sds66TfiJXijK7yvaPXhRmcIPu6a/AM7hALQjtkWkGglmdtZvpuoPil6tu89Zr3mlFMJFlLcH2lIRjqXkPeTtylLZeUegWwTuL6gBNGyMh5CZciWQWt9kx6wejtu/t8NtbdKFtwQbgSUFtLrrtfXg9+TAQZO+MZblb5EN1vJxThlsul7mhMUnFNT2ZlgIqISe9eQCS5VMAYg6zgxCSVrryELgSAYEfj7WGtc4poYZdsoSNSONVN3MaEcDUuOgzCRzdg1IsLz9ryTPucsMVzzXyZ4/Sa05pk39lq0TgRlyWnvknFG13vvq8GLkqaEEE66KjoNkYy1HpxsP0V0Gp6mwHtrMm9kSB2HiTaJQe1qL3BWa0MMcCI1wlRUEaIZd+5axCSQ5W/IgBqSv6bPVZiZ7ICe2KrsYVji590piV7MwFRTBKS4+FuiWdINyD3G37R/gS/RAfcASFzQNi7tfBTXkgoNZilHq0zfAkcq+tj4za9f1GF9H5yxCW270L3iv3UW9RhlkBiI5c7/DgYcUEUWLcbmOEihukOM3HhP6PDwWNuwmr7X+u7Xh0Ur/bd1d1S/OfXxfCf2rqv3EzDeF1yC827vnFfhUE0wh21ebnaKNdwv6C46SnYmOIa8DhEL3zpYoGHMh/zn2pWvLvtfSEG0pzSXAZz3IOAiRBX3bF+ZXE5QPPUVe67eUb3BCu2HqhN1At4XY+6oTsFffOak2dnQzM37A/DwY5djnXOtF4+7BeEiLuA1Kfm/UsRVFk9Q19VvS0V0kQOi7IV87cecmMZLghbp3+GzNviCnCNfepwPlvprJ9hElt5JoMJwa0vw1qS6QX0mQQSt18SUS2LYxbqQVcz1dAVkN2di1zTdaIGPTd+o6m5i26/GQfp0xT/MSm5J5JMfgUV6nsqv06OIm2UgK8yvfBWSW9HKJwQ+EM8q1EpTxRmMa4H6M2VWqGiyYlh5aT5288
+ bkX3sdSE
+ +Itx5fa7AlLef1Zec6CcDIRUWZNcoaZHB+eiIUPSgd7JDzHu3gNZqXWwHbiUWccfsvgnxYK7fvCmnFYf6ti0fpLP4dkhx8QBoQOyeWXSl2ddUi2KvhiUooiS1ZQpMJ+Pe7wkFeuRvsb6r8l/LB7g9yDkxg6lvFS2K0V5C1I96RMEkIJgVaWHED2U1PflqYhDIQjq3GRqZKj3t1osuGYu2H3ZoEKzjtMk9f4+8soOg3JuJWvP/9zRIe3CXPxcLUwYuwI7p7ZEE2aKXUBX2zgsWolOLrBI7JyYH08kKya9ND+ny96o9oPszOR4Vhv1ILuKeUb13837cTcs+4UcAtxHTEoke6Bjf3KOzp4YbWHh25SAMOW242H7UNMedR+ft2IoNTPlWaH/XvVDY4P2r/5TjiTl0wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,109 +149,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 01, 2026 at 03:01:55AM -0400, Yuan Liu wrote:
-> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
-> to rebuild zone->contiguous. For large zones this is a significant cost
-> during memory hotplug and hot-unplug.
+The two weak functions vmemmap_set_pmd() and vmemmap_check_pmd() are
+currently no-ops on every architecture, forcing each platform that needs
+them to duplicate the same handful of lines. Provide a generic implementation:
 
-...
- 
-> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-> index b76183545e5b..e47e96ef6a6d 100644
-> --- a/Documentation/mm/physical_memory.rst
-> +++ b/Documentation/mm/physical_memory.rst
-> @@ -483,6 +483,17 @@ General
->    ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
->    is initialized by ``calculate_node_totalpages()``.
->  
-> +``pages_with_online_memmap``
-> +  Tracks pages within the zone that have an online memmap (present pages and
+- vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
 
-Please spell out "memory map" rather then memmap in the documentation and
-in the comments.
+- vmemmap_check_pmd() verifies that the PMD is present and leaf,
+  then calls the existing vmemmap_verify() helper.
 
-> +  memory holes whose memmap has been initialized). When ``spanned_pages`` ==
-> +  ``pages_with_online_memmap``, ``pfn_to_page()`` can be performed without
-> +  further checks on any PFN within the zone span.
-> +
-> +  Note: this counter may temporarily undercount when pages with an online
-> +  memmap exist outside the current zone span. Growing the zone to cover such
-> +  pages and later shrinking it back may result in a "too small" value. This is
-> +  safe: it merely prevents detecting a contiguous zone.
-> +
->  ``present_early_pages``
->    The present pages existing within the zone located on memory available since
->    early boot, excluding hotplugged memory. Defined only when
+Architectures that need special handling can continue to override the
+weak symbols; everyone else gets the standard version for free.
 
-...
+This series drops the custom implementations in arm64, riscv, loongarch,
+and sparc, replacing them with the generic implementation introduced
+in the first patch.
 
-> +/*
-> + * Initialize unavailable range [spfn, epfn) while accounting only the pages
-> + * that fall within the zone span towards pages_with_online_memmap. Pages
-> + * outside the zone span are still initialized but not accounted.
-> + */
-> +static void __init init_unavailable_range_for_zone(struct zone *zone,
-> +						   unsigned long spfn,
-> +						   unsigned long epfn)
-> +{
-> +	int nid = zone_to_nid(zone);
-> +	int zid = zone_idx(zone);
-> +	unsigned long in_zone_start;
-> +	unsigned long in_zone_end;
-> +
-> +	in_zone_start = clamp(spfn, zone->zone_start_pfn, zone_end_pfn(zone));
-> +	in_zone_end = clamp(epfn, zone->zone_start_pfn, zone_end_pfn(zone));
-> +
-> +	if (spfn < in_zone_start)
-> +		init_unavailable_range(spfn, in_zone_start, zid, nid);
-> +
-> +	if (in_zone_start < in_zone_end)
-> +		zone->pages_with_online_memmap +=
-> +			init_unavailable_range(in_zone_start, in_zone_end,
-> +					       zid, nid);
-> +
-> +	if (in_zone_end < epfn)
-> +		init_unavailable_range(in_zone_end, epfn, zid, nid);
->  }
+v1 -> v2:
+- Fixed a tooling issue in v1 where duplicate/conflicting patches
+  were incorrectly sent to the mailing list. No code changes compared
+  to the intended v1.
 
-I think we can make it simpler, see below.
 
->  /*
-> @@ -956,9 +986,10 @@ static void __init memmap_init_zone_range(struct zone *zone,
->  	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
->  			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
->  			  false);
-> +	zone->pages_with_online_memmap += end_pfn - start_pfn;
->  
->  	if (*hole_pfn < start_pfn)
-> -		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
-> +		init_unavailable_range_for_zone(zone, *hole_pfn, start_pfn);
+Muchun Song (5):
+  mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and
+    vmemmap_check_pmd()
+  arm64/mm: drop vmemmap_pmd helpers and use generic code
+  riscv/mm: drop vmemmap_pmd helpers and use generic code
+  loongarch/mm: drop vmemmap_check_pmd helper and use generic code
+  sparc/mm: drop vmemmap_check_pmd helper and use generic code
 
-Here *hole_pfn is either inside zone span or below it and in the second
-case it's enough to adjust page count returned by init_unavailable_range()
-by (zone_start_pfn - *hole_pfn).
-
->  	*hole_pfn = end_pfn;
->  }
-> @@ -996,8 +1027,11 @@ static void __init memmap_init(void)
->  #else
->  	end_pfn = round_up(end_pfn, MAX_ORDER_NR_PAGES);
->  #endif
-> -	if (hole_pfn < end_pfn)
-> -		init_unavailable_range(hole_pfn, end_pfn, zone_id, nid);
-> +	if (hole_pfn < end_pfn) {
-> +		struct zone *zone = &NODE_DATA(nid)->node_zones[zone_id];
-> +
-> +		init_unavailable_range_for_zone(zone, hole_pfn, end_pfn);
-
-Here we know that the range is not in any zone span.
-
-> +	}
->  }
->  
+ arch/arm64/mm/mmu.c      | 14 --------------
+ arch/loongarch/mm/init.c | 11 -----------
+ arch/riscv/mm/init.c     | 13 -------------
+ arch/sparc/mm/init_64.c  | 11 -----------
+ mm/sparse-vmemmap.c      |  7 ++++++-
+ 5 files changed, 6 insertions(+), 50 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.20.1
+
 
