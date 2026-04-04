@@ -4,127 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFDDFE88D82
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 05:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 658DAE88D87
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 07:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BD756B0005; Sat,  4 Apr 2026 01:03:56 -0400 (EDT)
+	id 498716B0005; Sat,  4 Apr 2026 03:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06EA86B0089; Sat,  4 Apr 2026 01:03:56 -0400 (EDT)
+	id 449046B0089; Sat,  4 Apr 2026 03:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC68C6B008A; Sat,  4 Apr 2026 01:03:55 -0400 (EDT)
+	id 337776B008A; Sat,  4 Apr 2026 03:17:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DEA1E6B0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:03:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C035160786
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 05:03:55 +0000 (UTC)
-X-FDA: 84619681230.30.BF9FF3A
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8F22040003
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 05:03:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VYh1wBbs;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775279033; a=rsa-sha256;
-	cv=none;
-	b=v5zhnrrJNTNTAeReY1s0pKmZ2vE6n9CZWjdi+W8NIFrWIPXusdreGBi8WditP+G9FwrNQK
-	vGngpLU2sxBb5buvWByBuq5tyyVtYVMKai9LpCW1gVFolELKo1udEH3v3lgTBR9DdCzM26
-	uimsvwTFD4U4ewxxrMoHGJFtcz+v040=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VYh1wBbs;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 22C3B6B0005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 03:17:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 740DCC1EDD
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 07:17:38 +0000 (UTC)
+X-FDA: 84620018196.12.940C560
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C681BC0004
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 07:17:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=QqU1bXRO;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775279033;
+	s=arc-20220608; t=1775287056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfHSpbLXBsMlAl1URSV/gwiOLc9oaa/SNwCNcyDSw4o=;
-	b=hFbkRoGbPhjVteR8eKGXl4ra6U3E9cKKWFsRGatuWtPk+e12E967qE3czuiWK8moXfQSCb
-	0fXVPRTgvqTztSly/4yMUZCS6JZxv68AbfrxtqY/sOw+MQ8rLsLx5X6aeF5cTPD/W+G5Ah
-	yTekqFXiDPcUlihjCjP/0bMLiUL8xWM=
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7d9d929e27aso2258168a34.2
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 22:03:53 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=vxHSxQTiSROLSCEz/HR/Hur/9my7UlNa+rqcrvgfgaw=;
+	b=55ErvkJONt5eGyQEHglPiYClae9mRkeWYkXaI8+n0JLjf0WyMgEayy8fRxwD/thLDkyT7e
+	bHalikX9aBzK4IznwHmLj9x07kOOQ9sauB1YOjby9K+cV1X3E58gK16uQyf6uyJ5aYA0aq
+	ZUTfxkMJvK+2egJi9e6GWIfCTkJhFhA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775287056; a=rsa-sha256;
+	cv=none;
+	b=TrTYaHiGLFt4TRZpnJ9/vCpeBoBdfmMplW5KeRsENzJT8RBGjFuB061nJz93EA1tUWimg7
+	eQ3sdLun8neNYfEsOo4DiA4zkhUKaofG0dG1NMxyoJY9T529K80d9FKpeXLGGZsvFgPw+1
+	+mPKNoheCXFCyMFQOnqkHzU4SGzDIPI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=QqU1bXRO;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ad9f316d68so10337175ad.2
+        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 00:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775279032; x=1775883832; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sfHSpbLXBsMlAl1URSV/gwiOLc9oaa/SNwCNcyDSw4o=;
-        b=VYh1wBbsBMtxtitr278j0aJ3+7o4ec030jTDnYRuKSZZMI/CvDYjfvDA0fFyca6/SR
-         dFFSb7jsU5+8aQ0d/qUNW7n8B10goK0PouIkcWVUQsC6LnIfBD+aR7W69NgL8l0Lp3o+
-         rnXdB4bl0xqa3qryyDAR/hyc5ONxtUyTCnjjUeED2G9FsURvbgc+TvJR2SOulhdEfK8X
-         cPbkWa1WvlaZTti48EEqUvzOuTm6AuE1pXSm9VrLFa4AmmaInjpAzi/EEv27sCuvOS9a
-         NZT6W4FUUMongXZCcC1Dx+Pme8BIRBH3jEnaGKKxZ/mLmbxi2uN6FmmwBpJv4aVLxUzb
-         u20g==
+        d=bytedance.com; s=google; t=1775287054; x=1775891854; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vxHSxQTiSROLSCEz/HR/Hur/9my7UlNa+rqcrvgfgaw=;
+        b=QqU1bXROeccnav8okm7ZNxmP5UTZySEGcbeOaL5l/xpVkvmF104sr7ZnXTXFx7vbdT
+         Qy7fJeXl6V8puf1S2Me3nr6O5qKtHnK6FuoRFna1CkVMpzbQk2nTIWdm3BSIX0dw9vL3
+         jmcdB749rtWbK4c1TCJuVIG9I7qYD/aYvNjuesINhWqmfZihZeHTR6+Mc0B52r+lJ5DQ
+         TKr0wqErCmLuXRMmTKoX6u/KUWJFMhi8OA3XIjP3qQUZlGd29h84C24HGEkJIO8XhWo0
+         hz1qbUkG2Ol01thX3B0s9l7kf9va9rlb3AurV0wcGp1vQGNQD6Zmy0fcQ7Vmobe5M5nR
+         yUJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775279032; x=1775883832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sfHSpbLXBsMlAl1URSV/gwiOLc9oaa/SNwCNcyDSw4o=;
-        b=idylskr3dbsLoyYBOLHnOykhNsz2jWQAzaZIJc8WKHIUWrvtVCWywgUkWi503hSwJA
-         9R9HwYb/OQU6B7DoVJ5e7gfrykqPbCy19SILBuTQgjBKLnp7veNRJjelXHVBEHGMKm+E
-         HVmqju5qAQYnNFG+87I5aU6Z4UxSj1BSVlLQWd6TcizBQZtAsZZpwSnPYoUZ+RJ17USk
-         WsQhUeh8rsFFmLSiBITALBxdnkCxLITuTnGlq6+4qkfWu0XTAH9sU6Q1kzsTtKvZsWzt
-         miVAbyyKQbV7OMWHyTl4fg2OlPMrZRC7aWlJQ51jmC/MSODJVK0NFee+wd6PD3OeUyek
-         zk6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWRbO1OPIIeVXwTrfldt27kh743Fdncj5cA+L//N7N7hRWFQIXaLUfdaavvI3eTkIMFRFzKIZcgsw==@kvack.org
-X-Gm-Message-State: AOJu0YwVW0OxQuAH8uwV571L6i9m4nu+ZyLEsF7bNPbXBfMi7RfxTxuI
-	Ws/XnHofPGRaQGhmZ/0bi3QBzwb/m2fMUiQ0moSIDgnwX4H7E/gVtPce
-X-Gm-Gg: AeBDievBZwCyKS3GRL37ZJOisJmrPcwA3u0nMBXBNhYv7fp/4AVcPevdAnwvEXpgVFv
-	Pm4R4O7v4+Zrc37ts4XCPHitqVMdmUrtZMukIBqEs+RfOiKK1vVTUS9JccBe8dbfB7iBqR+dXoL
-	pUJmx9HF7uviFJZ1If0zze+j/vb7+Ct456/9izYMg9BJvX4a7YSycmfIRr64GUzd6TtRNr9xzjc
-	69WZXFVYCe0hv2+n4HgYLi4jWkspzM+CS8/+qltXfbeAMpjQcyVNmy1d0m0Mhe5pqG9cpsfO+NG
-	1TlM1RukZsnWvwF6Mgy3eds6qH2OGMabgCLg7F8ysm8dVyI2oUB4joOU8SFnHHEf2uD+34XSTwX
-	CR+ovi6iqlWF7VaNPiLH/e5mOcOaKLmAuxk2eggtZBT4msx2nmayhUe6vpXm8EphmtEYNIiaR/W
-	d8k4dgkwkwdqTXwiJcCOWL2w==
-X-Received: by 2002:a05:6830:6203:b0:7d9:d2b6:155c with SMTP id 46e09a7af769-7dbb6ee7f3cmr3593469a34.2.1775279032484;
-        Fri, 03 Apr 2026 22:03:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:45::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dba715bd95sm5622147a34.8.2026.04.03.22.03.50
+        d=1e100.net; s=20251104; t=1775287054; x=1775891854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vxHSxQTiSROLSCEz/HR/Hur/9my7UlNa+rqcrvgfgaw=;
+        b=PdiiWIEZOdJxltfZN/VCbtSM3//L2RQgi5ldLLOr7L6hwhCjWWXmilAczUYz4HBveY
+         Zhx9Pk0CgjqBoj5fmnNdPg37aPiEBuw54EIrZDOtQSkc7I0BjMqUuB2n5A7dXRhCc4HI
+         vNNhkzJHxidxZjgwKg1DuWwUdjUqn2qbioVCt/t8UG8Aa0zxGRKe41DFlVc/joFFKgWP
+         972Cs0It41akPKar21JOCJBV+7FN3oERUg8dqYMhikFpv+VRMRVrT+jl7A8nkcE3NAea
+         8joK1+597N4gWZ72WeYevZ2o0eXe8eR32Gksw7fAqvpISiW/9NMYX3JDWbD00Veve63J
+         VgpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrLDKFZ/5biiuoydbr3nmmYeIDW6oHook4dJfYXjvBSF5/S1efDh36Y2GGJnTAK5IuKTZfk+OoTg==@kvack.org
+X-Gm-Message-State: AOJu0YzxRkMC+xJH4j1L4t8YO1qSgbUvYyS3B4m9nmRFErEqg6R6GNR3
+	XHy3supauZqqldiH5f4v5Zds/+WJZS8jWJdR2/RjpmsggqFiDVDsPQyeg2QrrkXSnWg=
+X-Gm-Gg: AeBDietEefI+ZqfG5fJNcsdPYPtjE7JvNg7Y8s71buJLfv0oGfCDe+NIMJp8SpPFwRS
+	weWSn2wlLnq1j8hRK2ass6Pmh0mFs/UXSNqQDxS5ZYHFQrN7/UfZcan5b28udvVWNqRV9b6zI/h
+	jGhbzJQDHTL3uf/P/4Pwjvm3NvDQM+XLLr2ht+cjZBefVzg17JlnWqXoch42oqgPOSg4Q2fzgEf
+	t41fspdpjank6xyOehqbswOnLXZfQ9ajE3oaRe4UQnr+pQKU9QhWc7j7p+CI2496oICbbtv1YBI
+	NCNAjPDuyh2du811uvLXCBitLlOrCPBkq35tU1IFHq5PNspFfnBcC//BBU4R2DAURRqKsG1B+XG
+	rru7fZAsN86QrCJYNlfVTMoVHWKukb+c4WLcPJUWqFVvNk2mKqnX45rlks4ICj9SEfVIIu5MfWA
+	U08/EU7hW0Ax8HCuJhQskrW0cOjfI3MBPd1L0fkwZV3IuXkhU2J9XJ2w==
+X-Received: by 2002:a17:903:2808:b0:2b2:539b:d29a with SMTP id d9443c01a7336-2b28178ad30mr37104585ad.23.1775287054199;
+        Sat, 04 Apr 2026 00:17:34 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.99])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b274979525sm94675115ad.45.2026.04.04.00.17.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 22:03:51 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
+        Sat, 04 Apr 2026 00:17:33 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Alexandre Ghiti <alex@ghiti.fr>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Austin Kim <austin.kim@lge.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Junhui Liu <junhui.liu@pigmoral.tech>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alex Shi <alexs@kernel.org>,
+	Chengkaitao <chengkaitao@kylinos.cn>,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Fri,  3 Apr 2026 22:03:48 -0700
-Message-ID: <20260404050348.2787292-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <adCaF0jpayWn6-FR@casper.infradead.org>
-References: 
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	sparclinux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/5] mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and vmemmap_check_pmd()
+Date: Sat,  4 Apr 2026 15:17:04 +0800
+Message-Id: <20260404071720.3577290-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: afgqqa1h1xhf9ig9qb8s9nti7mxx7pao
-X-Rspamd-Queue-Id: 8F22040003
+X-Rspamd-Queue-Id: C681BC0004
+X-Stat-Signature: iswg35e1ko8w5nqe1fdxbtdzsmpna97r
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775279033-679818
-X-HE-Meta: U2FsdGVkX1/xRkKB6okUJgjSvDceLKcRLrDoGeOFXrk5VM08O8iUArvA0C8zRhX15+UOODTA36yyg4HoUwCa3jqW6WB9dvEu24gfRmBPf7GuPcjS8KV/GArVSNa5tIffhqH5DjlCko04dmMl9+od8ls8fAlx5r4v6NMY/Jh2QGnCXp2sNcOlWRdCqcqsY5gYAbvEyOUa9IhORE0ntB2iWOSRJzw56j19RGZxfWXBSJijeeZ9dTrzyxlj5f6fRfknwo4LMoFcMq2mmhCu+IdOpMCLUNpD5N2W9OkXHsaSnBYqUUezCV/CpOvO/mY5a8A9RjxT7O5mAnAWJ8EJst4DBRFmtaMtQD3xooM8e8X2gmIrfDfK+g3lcywfH2wjQ2dPOivM+6/9G94jxDs9Ui9nZz2Lwk1MXYuNTs7+bEW0jEDQ6gSJYZkFOz4tcrEeNZR5m2Y4S3RcrugepAz87sTo2y+ytaLJS5Po4l3X3I83ZQS3sUnkYxrvABWfNhqWptoYAoxPXUMbFVuhT4CFwvjoFxefN8vAgdJTLc5F4dAkqRBIWt9UxS4wO6xBK9boRzI8anlJMBl7riTimE4PdqF9dT0lwpFIxlQvSS8vbxH8Lagwr9X/JTfsQqUol0m7BCu29MahfdTT2yrX2CJdUj2ZfvBNromsPs/ldtoTOOIpnPu8i6ofmMSwjMylgkIcjcQ5G39YL8R8eTmA03cj1ij+1Ma9LPpgJAs+VhJrptFRW0dyzhAg8q2M3q5eW+drJRNuGhH4BgQfNWdurNPycjAehr8vNaRSJZVqGQFv9y3XdgriLCrX6AB5dlhZeMBgNhIGanSuifLUnnAAhhCbS6nqeKloFaI9/0lkmpDoBvSRKP48+S7xxSTifypT/HfxCaVll1YSundhKbEaGuiYB4hWXvoJQmoAivf/foVwUOXmOanRKCComjV5yNNUxVH7ODwxQ9Z7lBGMrzNmtkzFwz0
- 0IJsuFTH
- t2CAksirEEol4Ln8SK4fduYS+E0f0zjxqcNArHjMoNUe06zR6YNR7cZVI3VDj3dY+1BkIU+EzPihLL374aGwDWMrJ9FU3IX1yawqfOjzk5cv0cas3t++fHF9JrQkTwGF0uuAZQlHXsqH28+sebEssXPUInNSCSRVYSMvWQzUKEwQgKnKT64Wuk02yR+PBgWeUABIPUuKXJ3Ex662XGK4xzBc/n1GZRJ9g8jzMiUoN9li33Po4srgPO7dS6kbLSIoEQyYsPnyBvs4gInRNz+V8cfjOxgC00JIqIK5iLEL0P5qaSY32rlnQnrLAtz2pdIJJGSdi5LmDpay6W3ihCkHXOrfjwy/1JTbFEovSMe/Xgk5ScCDKQ5PZnWamcTVNEU5TJdd790LHfrSmkGufu52XEzBgkMxApI+e8iB8fxBz7SlB6IZXUUmyJ4JlbbdqFA19VvGVwIwWQ8qNejl3wOtRvFPUrcakeSGZ9/Ci4Z+7p+O0r/X4ZuKxrCYxmNhqgegtD94LiE/nQ8jcSsW8vGAM2uMtA5CxNhZDL6T19uHp5Xt7bF4Zos/+Ew1XIjHUUz9DT5e32cY5D9L/DgA=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775287055-906107
+X-HE-Meta: U2FsdGVkX18eKtnnGjlLRTJj+AP1+926n6LXnyfgShUnJIpQyHwrql7RW99tEeyyNLbWCvBFu/DlqtQpKgMcQaXeuNjQxl525tEs/hOU+ywcv6XbP/LDHFvuAzlzcM3DtLbHD1ZLpma45s2DNtUUu5t55v9OVQyhdnirJ0AIDNZ7OOha20maa18Jh+I+gEVEwbZUNRGHmeDB3FOQgQqlTRdjFNI9ujrQdh+MHPpjHZiBDKtoEonk0ASKzX6aJ4hy67FkAAQZWaLweFNQQhleqNQS2wrrSbGuCs+zAI8Mt8YLbiGWmVbd/hlAJxiMybffB3kyqiUqtG9qGfZLzbnwm6GknvBfcdSru63GxI0xFloZH3ZdkuevQ2zsyEMazbssKX3kzyZzsT2uL6+7HT3wfU1rbKYaVcGhjVQ6QzF2j71aaDODvcnrF6Pm401kNRuJ10FMHpHXqMoc9lMfYTjjKWTcEA/glFOiwaaM9RWMzFzUM1l1+xkFVO1bvEsKqOW6zjcSt0Ne3oVaPO1Huar1b1lWSV2TQY9h9iGKtwEDa3bppeg4X+OXVy4Ap6ySIhDcsJRHHjaCOb8LPbaurVHZM5neBAXUhYTdaqewV5XqelysnlqyXp0z+W/iGfhQgzEvtEC/sn5mDIw89IuDmHBLXdG2ppgWi23Mdb7udL6s7DoG7ew6Duy5XTC0p/QYyh2GeUpALK7F/h9+PGjrqD4i52nhHoSQNq2LOzfJJcPVdwZVHQA6huhdc6FBqFnhpl+ltCdc8amQz5ZFohS6m5CKCg/Sb6hntneHUW5c3rk9DDFZzTfIj0cnXl5NmZ9uGquD++Pt9WhzbAqdkBu7xPG6RTSCuaMuG8pP6chaEnGE3YVw360Q3XEntCAxil9sm6enbb23c0lewiVUdATCFyssLOoEkbdKZR4VK1PeJMHe/4cJ/fvQO9NUYjaAVFmszB+sIGYEcVBuPUafOZUDpK3
+ IJ2zynQq
+ kmf/moSytU50QtFjFqxQywgrLZBqUJEo4o0SC7UAgi2F0IIhADUNsjvORyiBoPwKD4MG2l2RGqjQlkMlh+U5+XuBOAwkWV+JgK3aXUjWmOPjapI3c+WQZKfjwi+aiCG9pv3cW4E/sPdeY0qKfTAFvOAXFHPFaMoKoPZ3bWWW+HX8pkBuBVMkdqPwdsIYR244oWnEfx3R+Yc/UeF/lezOxKE7ZhD6g/0LOc7v7e+Hrl0i3/wR6gnN0Z/CxyE8ZDLWdryPhei1p3vOeMxGv2st8j0ZswxfZT+VMojmnYkMQ/NQOBFcgUVIxZr2eo3yC/vyexMRubNcy7rF0xJBTmxDOSNIzZq9iJiPGWlVYReM3vL4ATw8kmNVo85ELcYm6XAVw3AmJP/DWmxEUeTDc22aa6hAMXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,25 +151,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 4 Apr 2026 05:56:55 +0100 Matthew Wilcox <willy@infradead.org> wrote:
+The two weak functions vmemmap_set_pmd() and vmemmap_check_pmd() are
+currently no-ops on every architecture, forcing each platform that needs
+them to duplicate the same handful of lines. Provide a generic implementation:
 
-> On Fri, Apr 03, 2026 at 08:38:43PM -0700, Joshua Hahn wrote:
-> > +EXPORT_SYMBOL(mod_memcg_lruvec_state);
-> 
-> What module uses this symbol?
+- vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
 
-Hello Matthew, thank you for reviewing my patch!
+- vmemmap_check_pmd() verifies that the PMD is present and leaf,
+  then calls the existing vmemmap_verify() helper.
 
-Whoops, no module uses this symbol in this patch. I was working on a similar
-patch series (accounting zswap statistics on a per-lruvec level [1]) where I did
-the same thing, and needed to export this so that using it in zsmalloc
-wouldn't break if zram was built as a module.
+Architectures that need special handling can continue to override the
+weak symbols; everyone else gets the standard version for free.
 
-Obviously there's no need for exporting for this patch but I forgot to drop
-that part when copying this over from that series. Sorry for the noise!
+This series drops the custom implementations in arm64, riscv, loongarch,
+and sparc, replacing them with the generic implementation introduced
+in the first patch.
 
-Thanks again for catching this. I hope you have a great day!
-Joshua
+Muchun Song (5):
+  mm/sparse-vmemmap: provide generic vmemmap_set_pmd() and
+    vmemmap_check_pmd()
+  arm64/mm: drop vmemmap_pmd helpers and use generic code
+  riscv/mm: drop vmemmap_pmd helpers and use generic code
+  loongarch/mm: drop vmemmap_check_pmd helper and use generic code
+  sparc/mm: drop vmemmap_check_pmd helper and use generic code
 
-[1] https://lore.kernel.org/all/20260311195153.4013476-10-joshua.hahnjy@gmail.com/
+ arch/arm64/mm/mmu.c      | 14 --------------
+ arch/loongarch/mm/init.c | 11 -----------
+ arch/riscv/mm/init.c     | 13 -------------
+ arch/sparc/mm/init_64.c  | 11 -----------
+ mm/sparse-vmemmap.c      |  7 ++++++-
+ 5 files changed, 6 insertions(+), 50 deletions(-)
+
+-- 
+2.20.1
+
 
