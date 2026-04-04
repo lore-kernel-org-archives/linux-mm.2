@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 089D9E63FF9
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 21:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D922E63FF9
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 21:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45C966B008A; Sat,  4 Apr 2026 17:01:28 -0400 (EDT)
+	id 9DF2B6B008C; Sat,  4 Apr 2026 17:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40DBB6B008C; Sat,  4 Apr 2026 17:01:28 -0400 (EDT)
+	id 980DF6B0092; Sat,  4 Apr 2026 17:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323DF6B0092; Sat,  4 Apr 2026 17:01:28 -0400 (EDT)
+	id 87E766B0093; Sat,  4 Apr 2026 17:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 20E266B008A
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:01:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAF991A090F
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 21:01:27 +0000 (UTC)
-X-FDA: 84622094214.16.D87ED73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 11D8E1A0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 21:01:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=djJY5HVr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775336486; a=rsa-sha256;
-	cv=none;
-	b=BfTIc0xZWvqITwJaQGV1Bm5BhCPqwtPACixgpLJrso/Hq/CU9nK12f7sAvMopmAcB4Q7Bl
-	nbvAfSNTAB+BFQB4f8NZPvSoQNayhVLqBYWFA6udSD9lPTMFjXvosEl2UKK/OrEv2Z/kdE
-	yGhANumnZjxaAy+UjiNEYUGoK3/5TT4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=djJY5HVr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7681E6B008C
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:04:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 400DCBBAA5
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 21:04:01 +0000 (UTC)
+X-FDA: 84622100682.30.B3091CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7651B180004
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 21:03:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l7gwgdGm;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775336486;
+	s=arc-20220608; t=1775336639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2oHcJXx3yGLx5B5xG+6VmaBPueARtArg3mxO0g1ASg=;
-	b=qkjSt8c7Ru2rdO/Ha61xKLEGrCTPtDQ6ix/MWe8dOdwCn4uc7Qdg5Pz2GWGejWS63U9LBk
-	cuGQNPVNZ9BGKbcNVv6VyRe70eXZa0oDogCUgz57yQteM6EZLVN/3gHi6ItIjciArvkWgd
-	UCs9WICOTt8VMnxP88emZYP107674pY=
+	bh=cK5W96KGksJ+r2R9HxFQK4sshY94KqWEh1NWlcu8/ko=;
+	b=EE9bcWqe1sStOf8tOkfcfeqcfLOSxWa4b2w5nghe34LqbwQTein9ay9uYA2Vvv0mTblVom
+	mxU/xBPNHJTNhlyt4Dk4m7lH0Q0fNglAk6GMP2mqZwKjGLn1IsPHBrVI28TQrOdCx6Ad7J
+	cqERktcUy7GIkwY9CLxcyTZo/lpqO04=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l7gwgdGm;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775336639; a=rsa-sha256;
+	cv=none;
+	b=SgBEJEEgLtthoaevhDrNWGkqM3pGXS8ayYgovqauyucBYmhwqep3Uap2XLuIjNPDR1Sx8Z
+	er3Y8rGj9JbCw1GTks4k2huPS+j46ib48TNQCIg2Axk2XjSJspTn6CcjJw+4e3OhOjaKCc
+	rtv12dbaeBTSPLsI1imn5ifqJ1l4SWk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D7A660008
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 21:01:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E307CC19421;
-	Sat,  4 Apr 2026 21:01:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44D8643FC3;
+	Sat,  4 Apr 2026 21:03:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FAEC19421;
+	Sat,  4 Apr 2026 21:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775336485;
-	bh=BE7WCOjZCyh3D0O3nA0Pw0gvP5pQ6dq1vt184ZQYo8o=;
+	s=k20201202; t=1775336638;
+	bh=iQs01XvDwKT3CkjOSudgaloppKITn+Eg0BEFKBlfobo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djJY5HVr7Z5Iz/LPL7rFSferVpA/SvHCZN3DD9pCOxHKKFnUgEkj5z7wcMMCuwWFD
-	 FVXmBVGBZ/EqUaUzmBTPu0PmmJhyFodz9TMjVeHj2uLXL93WLFxNhx4LFUCm2nTWfB
-	 c/XyfM+qqIG7nbG7sCEO4LZVrebBrjpXHR5jJoBRPJn4CDEp1aNggi7zhilMvECetD
-	 R/YfQKXHTXGTIErUNqvttWPacVb83Q+0hAygiOof20RiEXXM8CXsHpAVl/1jHryAyi
-	 3Ki9lTMMFUJ1YjKE6+hRn3P/tCTvACkCwAvp4TNCazoTqiTJ9Pm0pOgpkKdZzrrY4U
-	 to08EN6ITZUhg==
+	b=l7gwgdGmADNUUwD/aekEvGhbZcy9Gm3bBU9ogAusLr5f7uCqsg8fNcKswtJEYoulX
+	 vPwa9EjkCwIDt/WkIPejq+XZ4w3o29502Ql3nDj52KZqzDenOlDcEtHRD/+No/SekF
+	 rmVq++WQPi6tiwM1iOpqg/Q2pBJYqtNqyM29LZa/BM4ciEUo162sQ0CBEjSzr+FflG
+	 P1zc8pUJpknk2dDuyRX+2XNpnkFToRrrfYCN66XtwsaTEkwCdXHpBslfZwt4iqXxRY
+	 PdBlAvE+eAkRrMHfUMGJZY6XxgVMQVs4LGNT408+yakhfZvOgE4lGwep+FRj+tZ0jm
+	 0GtVpvKNG1+dA==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH 4/9] Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom} files
-Date: Sat,  4 Apr 2026 14:01:15 -0700
-Message-ID: <20260404210116.87508-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH 6/9] mm/damon/tests/core-kunit: test fail_charge_{num,denom} committing
+Date: Sat,  4 Apr 2026 14:03:50 -0700
+Message-ID: <20260404210351.87638-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260404163943.89278-5-sj@kernel.org>
+In-Reply-To: <20260404163943.89278-7-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: f54b5kgpyibf7pykm9hb5n91z31yjwxf
-X-Rspamd-Queue-Id: 11D8E1A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775336485-569509
-X-HE-Meta: U2FsdGVkX189HpoLrpxHoS2gBMkc8tQn02+su4PvHlHymxLpnfMzwaC49aJpGOx5/HK7nIufqJZf1PcLTQN1kAy3g2IRi8kMYmReAQoEisFniUk3+jIgqxMxFHH5c2fVmXbur/NXQY5+dohxrQ/gEtoSZ3l8AjxaWgKP+F9k67ajx/PmRER0xdSkzzq8jDDCjzoZfH1dsTdnf4L4c15HbBc5YJuELI8VGQcKZdrs3nj7ht8S8RLJTmzoc4sO3I4TYP4AO+7QKzxdbT13djYRkaBGmgIzKU31Xs3ZTus0YHbrDtjbH5gkc0b1YCV9upSzQDLmNSa5nkTpH/4sXFSmdLgs317jdLrtoIZKswKdxIAgbp/ZLh3cOFAWAQcJo4jUo4x8z0CD0lrSvrDmviHUhDwGrlF+y0T37CRofx9bxfeJzv58jPB3YBSubRizIWppOfzDX5Rjai5ZtT1v1nH1lAk2dEWix8xuusHyr+GpunIvPF9PDY5Pks16/GLBkggcUALmtB/BOhMZO/CBfJbMWdelMzB5p4te9vxJjZ2zUUi9oWcN/4QeWcNLSL/xHT/G3aHUjSyHSv/B2jo6Z9IZ/gXUaYuoh8nfEneNZTGAViUgYQoDsqW2NclCqbCx+dhJJXGgHOvS+N0g9IfdGAJE80JfWUD0pSETycL0O/efIsQseylZsZYvbAHkN0GSLRm5UiAf9LAbkWbMmE98CkB25+lTzO+QWX1tXtdhCmz1Ea8GVL1ephEY57nsuheM7QzbdB9lFQaA2iC5lzaM25T++Zy/Qjm947FljKBqDG70lY45KqQKvsZ5MqxM9VT3dUwNlCi/JkmxX8LR/zBHBmr0XKzNqnAyUIWImqsBjuNDCh5oq5c61gKqz9Ct8plrDAobwyrf/g5QXUESyZrDpdUKwJhuJJIP/nta3I1DzM34DsUWS/xk5xUMjJvPmsxivAdj6sIN2grzZaP791xWSeD
- qD4/FAyn
- SE/r5jaUpaom/iV7QiqxjQmOVrgG6zIgOAzdql3heQ+oqk5Tyb6oOMSalXduWHMcw+XuL01+G/0DKBmg2yUCSmVGELhkdVav0felkhydKaQS/Jc283+y+ESfVmc8qFG61hpJAzqYHfZ0f3slXp3kZeTaDhEHP4JHbvsNySQ+P/n7kmMr88/VI/hyUXePuGHpGt056MgnjGvb/jJeHDkGOfd5ygVKOvTf4LLsAeP195/mWr5uoWrvk9bCqCutk+NyZzibKp+QG0ENifhBHK60QDzo9y9BpQTifdELUZ/Tl+jNP9RXDDHCQSRQ0QfBVE0DwcqXAPkxR+Jp4pqmHudo7xp+uX9aIo33jQ77aQy+Ss6JbJluHga2BzXxxsp+br9eyx8hNotHxz3jlD/LalREHg5ZTBPCqFdEJg0hakKuoAiHHXb4=
+X-Stat-Signature: 6mjcikut58sm1q7ujue7ky6d4m3wcqrb
+X-Rspamd-Queue-Id: 7651B180004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775336639-865559
+X-HE-Meta: U2FsdGVkX19PRcAxMWwVbwW+ZAjsP1pcocSMbjryrph/ot1B/K84+qA2aOH5FmF5AN/cW7R0WNiqbW1WcAlZ9frslwBzimsACyiiSHLiGVi2VNml8GIt4UyGqOJxO4qVu6dtv8s3vuwdxw9b3gTPZEAL6yf7Z4OLYQ7wzx7E5Ce2DCVjPwu5meSr9KCUc5K79yh9MPePp69izFrAFSmEcvvGFc/abr0QhVZ5VSpE1WnshnNyGeQlM+tnPpKw6jv2t0gRxAmg9cPf7u5YqZIFL6Ntjol8rbdwtZjmJmihTlmEyJdc2voy1qWquShtIlOS+IR8JmzHGXoBFR8BDFEh5v7ZQXofMIpyVEsztSVZGQyP4QANzs7PsBB39wkd6dFnZQF0gSkdUbZfrsAn2yWIb+RPDH1AkqyNzRSlWpaH5arH6MX2tpjNX0ba/egJD4HvWsuEaljotKsgwDbFaTXkRTHsTiATzPYfLrqURyLQG9w5WqoHgSxMHhdmLnZ3NBs0syWCX9vJORLgObtKt0nYSRW5FFQTirOo88F+Dp+8sTi+gx8F1WO/WYQdLVFcv8GS6zoRKYlfaKxk/W5PyqS5kHYwmXC1vP9tT+vTX0NKLI4zTugraAezhPYl9zc9oWRvBdvwsrxM8W/A8MwwzPRlgs5mjWSGU4i9dnYzTaTFJmmT7rHy6wZZbUbPpl2Gpownyvq1Luk9eodmg7tLF6ODArKzUo+gqnGTiQ3fIdhpPAu6/QAtob6g0RZfr1rJKetLmKcpRzlYl8ArLczQRTKf/gv5deGA/MiQt/unMsMC+xdu2mjyvPm52tvKFsUnnQ5az/PRgLFWlIofeUs6BZVXCs9QMmwhgV1AXmY/SA8v5tURRqrooLr3bg88BZkvKLfY9KAnGQ0P0gJzIfsdA62k8/YkZ0MPVONDhfJ45iRYvHljyLpRpScXavrtaK5yxHN1jK2LSPVp2TxQYQ8CbBE
+ ebbPqLSV
+ JSFmCe/hIzLZuwzNplwS9ZsG+vlaucl6zL6vwY0JBFgybYL9SQMNZUIwA9163+Km/fRKJ8ym8qYjEXHt5TcNkhHZMvwgbn6bkWc1ssxTWvozCJl4LK/ARzoBhNPupmIIqP9sAbuzchZMvvwr1MywzTKi9oaQwVAmaIdoGF/6/e51F5PgH1xXwVDGy8em5TyTvUXcZJP1PILN+kBWY0fk0sMnthUMcTpMVNYYQvEmnuz4/Ns2laywcR/5l/JFfphDxRl4Sog266RK4SeLE2QOcv2CYt5KlCrKem/wZJ8pfHKULYeLmYAyciIyUJrpZloyYerMe6+8usGun9C9/kzb+T/bcs7ZjvMhzFbBNu2ww23/klzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,64 +93,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dropped individual recipients from Cc list, to reduce unnecessary traffic.
+Dropped individuals from Cc list to reduce the traffic.
 
-TL; DR: sashiko found real issues.  I will fix those in the next revision.
+TL; DR: sashiko made a good suggestion to improve this patch.  I will do so in
+the next revision.
 
 Forwarding sashiko review in a reply format with my inline
 comments below, for details of my view and doing discussions
 via mails if needed.
 
-> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-5-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-7-sj@kernel.org
 > # start of sashiko.dev inline review
-> commit 5f8a4cfde3d93d0a4d4ac3d9a57f14f310c43e02
+> commit 2c875b613d1b0d252222336af28714d95bf57930
 > Author: SeongJae Park <sj@kernel.org>
 > 
-> Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom} files
+> mm/damon/tests/core-kunit: test fail_charge_{num,denom} committing
 > 
-> Update DAMON usage document for the DAMOS action failed regions quota charge
-> ratio control sysfs files.
+> This commit extends the damos_test_commit_quotas() kunit test to verify
+> that damos_commit_quota() correctly copies the fail_charge_num and
+> fail_charge_denom parameters.
 > 
-> > diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-> > index 534e1199cf091..3d6af6ce72d82 100644
-> > --- a/Documentation/admin-guide/mm/damon/usage.rst
-> > +++ b/Documentation/admin-guide/mm/damon/usage.rst
+> > diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> > index 9e5904c2beeb2..1eb70f721d1e1 100644
+> > --- a/mm/damon/tests/core-kunit.h
+> > +++ b/mm/damon/tests/core-kunit.h
 > [ ... ]
-> > @@ -398,6 +401,13 @@ the background design of the feature and the name of the selectable algorithms.
-> >  Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
-> >  setup.
-> >  
-> > +You can set the action-failed memory quota charging ratio by writing the
-> > +numerator and the denominator for the ratio to ``fail_charge_num`` and
-> > +`fail_charge_denom`` files, respectively.  Reading those file will return the
+> > @@ -717,6 +721,8 @@ static void damos_test_commit_quota(struct kunit *test)
+> >  	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
+> >  	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
+> >  	KUNIT_EXPECT_EQ(test, dst.goal_tuner, src.goal_tuner);
+> > +	KUNIT_EXPECT_EQ(test, dst.fail_charge_num, 1);
+> > +	KUNIT_EXPECT_EQ(test, dst.fail_charge_denom, 1024);
 > 
-> This isn't a bug, but fail_charge_denom has a single leading backtick and
-> double trailing backticks.
+> This isn't a bug, but should these assertions use src.fail_charge_num and
+> src.fail_charge_denom instead of the hardcoded 1 and 1024?
 > 
-> Additionally, should "Reading those file" be "Reading those files"?
+> Using the src fields would keep this consistent with the surrounding
+> assertions. It would also prevent the test from becoming brittle if the
+> src structure's initialization values are changed in the future.
 
-Good catch!  I will fix those in the next spin.
+Makes sense, I will do so in the next revision.
 
 
 Thanks,
 SJ
 
 > 
-> > +current set values.  Refer to :ref:`design
-> > +<damon_design_damos_quotas_failed_memory_charging_ratio>` for more details of
-> > +the ratio feature.
-> > +
-> >  The time quota is internally transformed to a size quota.  Between the
+> >  	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
+> >  	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
+> >  	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
 > 
 > 
 > # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-5-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-7-sj@kernel.org
 
 # hkml [1] generated a draft of this mail.  You can regenerate
 # this using below command:
 #
 #     hkml patch sashiko_dev --for_forwarding \
-#             20260404163943.89278-5-sj@kernel.org
+#             20260404163943.89278-7-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
