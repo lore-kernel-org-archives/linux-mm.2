@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A5DE63FEA
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F18E63FF8
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:46:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5246B0088; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
+	id 1D4206B0088; Sat,  4 Apr 2026 16:46:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B568D6B0089; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
+	id 1845E6B0089; Sat,  4 Apr 2026 16:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6C846B008A; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
+	id 09A3D6B008A; Sat,  4 Apr 2026 16:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D8B6B0088
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27BC21B8B96
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:30:51 +0000 (UTC)
-X-FDA: 84622017102.01.EBEB849
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 51FDD1A0007
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:30:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyCj31tI;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED2F36B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:46:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9623713BBF2
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:46:41 +0000 (UTC)
+X-FDA: 84622057002.11.45FE90B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0E1C8C0006
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:46:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jr6NkcAX;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775334649; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775335600; a=rsa-sha256;
 	cv=none;
-	b=S5APMFTv8FAaWkjcEpJh3l/6STqG7y2Y3WVRaZJlBIZbSVWeb3L4PjGBcQSHBpMYMxYs80
-	h5ex4tZ/vFEgoU85TDIdutPRYfNXT6tZyFzf6u4R8qNsLueOO6dPRmcjU8AS/ZV9zttZ+9
-	FXxJvZq4osVHDVw49ldvfiIT73F7ltA=
+	b=6EetUV2bQj4OE7x5TxtIYMXW6OlXEBA97TjFAxAZPiP0rpn/Zsvc+7zBBt0l6ztvvz03mh
+	Bbri8aoroKS/uvtrISv+2sjtdArnpGMZb5/b1ZIk1bUoqBjtx59PXNF7yfjVl0Tl9HvCBf
+	1nwoumZKFEeDGsP3vtAT/qEbBsK2Nqs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775334649;
+	s=arc-20220608; t=1775335600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5sW1dSERzOWcRphiHoPGWOIs6s+M/xXjhSO4m7qejjo=;
-	b=cerqEZT7e0qK6unXz53nupxFYmXczhnP2Ps5jdh2Jvk520cGEcxY7DEcIMaMn/4VhpEHan
-	1OgJEuvEgb8obO7T30xZu06wJn19T6rF2WCvx3XUtIuVT/afhExfMo95/gCkDvpzpM8bbP
-	5ms2u/O9CnRlnQBP+z9gMGi4aTz/Hhk=
+	bh=Mn0LyPfwipRufIZF0xtYAgIwZ5iSBV4GygpXoFoQ6zA=;
+	b=UFInIZcYIQkACswAs5H8fRP9SHcvIXL4E4oX6W6B3k98+S4TOMoCTW90yeCo+CirEH5uYM
+	kVvmz5DxqXqWabTWDwwAVcgSttMpUxQm4iPXBx35A1/mc0JJg1hvisWkmaWXhLaAtGxwTT
+	fF+K7d2HKs1zcfJrEuzMMjj1euZhM/k=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyCj31tI;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jr6NkcAX;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 287E5416E0;
-	Sat,  4 Apr 2026 20:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18E8C19421;
-	Sat,  4 Apr 2026 20:30:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E6D160008;
+	Sat,  4 Apr 2026 20:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029FBC19421;
+	Sat,  4 Apr 2026 20:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775334648;
-	bh=eyo7n4gEymA/anCOsd3jdjhMzGS2OqiPLSgYmJnzpss=;
+	s=k20201202; t=1775335599;
+	bh=6GEw/iIRX2vINOzRBZ3YUzKWU86XOSxMizIY4SGJ5bI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyCj31tIAacXS19WGcdqw44RoN76uMuppNOsyscTfV4QRF2xieP4DTjIOPVmlrSAH
-	 WkHplbMoOZP7cBGzgouaWtjmPQ1PVvQ/ubOYyhfayJH4/d0Ufp9YvoRtsgTmOFcaNe
-	 6Kr43RvwqcZKeDGCoN7aDCwgdizJXHtjyUK5Eu8/hVE9yFRS1QO9iXhfwTqwIrv2AL
-	 mpAZtSIbxduxR/xB7uiMA8TJV4xPZX3DcAg74DpXXIz1WccJGPpTViT2fHpuHwUhfN
-	 vZKtrv0YJwnVQzVjFluTO1jNEmZCLSvkmymRDXpUY9r8+8RT11ef+rWeJcI1uW+28W
-	 wvXutwVHglfIw==
+	b=jr6NkcAXjAPrvjLqWnxTPge4Drw898+ubhpIP31rdJX9Oo/nED0eLm8CFupNM3UNM
+	 PhIumEKc8CZOUTA4Ev8KwpFeL23XrvCVas2sz7h3ZHajeDNPn4TyyQHyYMKyrtKQ7k
+	 OkIyykgs1hvhXTqkaDfxF0INvNhTVjSlsIm1ExNuJSQRBFX5MvKOlSusQtsq7CZwEp
+	 QdAVIc1U0t6nBwkMan5sflw25KOvOHYZF20RjLfrnmUjVp7iFDzLiBIROveHUZCQOw
+	 zKdmnO5Wi+/2DXT+kAI2DZX+/DWdXUq6RmwMxg5aSyJlQALATAvYg2EcITxN0jmeNp
+	 voViktedxF8cg==
 From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Sat,  4 Apr 2026 13:30:43 -0700
-Message-ID: <20260404203044.86655-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH 1/9] mm/damon/core: introduce failed region quota charge ratio
+Date: Sat,  4 Apr 2026 13:46:30 -0700
+Message-ID: <20260404204631.86853-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260404091122.6255-1-aethernet65535@gmail.com>
+In-Reply-To: <20260404163943.89278-2-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 51FDD1A0007
-X-Stat-Signature: xhdgojeeadmsjcom94d39o7x1s7tnnzj
-X-HE-Tag: 1775334649-63048
-X-HE-Meta: U2FsdGVkX18ieu8OxvqpRH/ZwJpT7/XG9dRmPmG+cDvrCBrkZGe9CAXZzB0WMxd/tUD2eGh7yUDuBy28mxPMcbWbEWxE0AgHHk7tzZKxExDiOxixMSnkNtCHkey91BabMPDvnKGRvTfwBSyE3NQGZUFabnMmK4U3iBO1JkIqCwER8m/vd7w+n5yHVHX8K0cv8UKWQmug07b/XJt4hwH/mHlDNVMnYcjXPjzAsIPQQChwqCXWDX/0jItlmKZOHI7hcZzIf97iVP5h8SV5yFVaMqqxbuL4V4OfxD8Im8wZurxF/qP5drCfFfQVsob8ygyJcGfHZ8pJoyIZTALNSYRbS5paVZD1UtoZpMtYUHNhJkNz53hixrF0o8g7pOPbG+FzsGWYICpwihqE/8G5kXEGk/9iU86Kvn+x81hgOlKw4d/Oiax1XTsdbuEnrErY1nbQXiuwD/yWa8rRkhplNopnC8b8EN5eVddR1DNkPTRSHDUej/zMm9DejYd9CdFBPgNw7XIHeCGFFEtpP03nzS/gSXMDonayU/5YU86XgD1dpG32FihZrBTn+LfdyFqaMfzj6JMVJE1w5GCEUXWKU7afM2spN6fGGQ+1EGWnq7l7DYyq1xtiJrKi3QOKlMuiWQcJPoukBwHreKa+uZ0DJW6Lu/sgZwjacBa8ldXTTOQ2tbmXpD58m4G/yoNE/nKOSbZtZpRRWOH5lrSv8klXOolJRafWOjqt6efN0My6ZaMn/9JsIo+UcH7F6nzjnYopLrL2UzcM/XpEONZOrXRkXkcmEDoOehFfCDbKtE9Mgkm1LwADPdyt0Ii8iX/te9keVTfXuIZiravw2jAfN7BE1fIo4mHfbOmTp237BmeR3jEZ6UsfMFy+6t8EOfz2yBWiN24C9d+wSbPKPRRrqFNeMPPYXYK4rbaOcHMvnwKdiqdxU7ov80hvz8SxX6zYr01E0/Q/7MZmEzZ/Nix5W1vCvci
- OdWw0qs4
- AFqT2kDXcDfW33SsC06DX5N9Czl9srV7gU8+1BQ3nOrfNtzqdAq5JLgUkKixMkh/zyHGqKoX8QZCdMaJ7XV3dzn4cAlNaz7h+JgcAe3RLBHmgF+uAuWsk5aM0SHDR7EfwFuoiX6RZ1Xok0Afc3TEaLihXK8JeWieRGzSRfpWefOq2xRzcGz9ekNZvC+VeE/pAXPW2ColcLRfFnDaM6EP1ORVB7kBPBoBcdJkV4OHW+vNUjF/XaA6W8b05+6TPLZCFhw+C8dPOBBuCfTo27teZty/+IHV5bv6qbyZ5otht60tMpq0=
+X-Rspamd-Queue-Id: 0E1C8C0006
+X-Stat-Signature: wm5mawk4rsnufy4798k6oe4xsiktixxd
+X-HE-Tag: 1775335599-142474
+X-HE-Meta: U2FsdGVkX18TqykcvHuwD0jShURoSlthEqGRKlxS7liJ+w/mbn6tF4X4sZp7Zy9YhrsPttQY0CCBQ88M+Md+bsn3SraJmS9iKKbREwb+yrRKkXM9ebbr80CFwzy34XIka1485oXdRKL0Qm+FDBAO3NGNjZopj0bNBp0sugS5jpT9RAj6fMCnG0/sgHb5K62mhLrLkLADEhvhr1LLhkWioq+OmETlvfIhbs2kPscMWQVvRNzGowVv7zZlUi6ESEwKZxS6fQSrGDePZlpOow1o8Tvt/KtHcyAZIsfBuB6MlwWX+ym5juq1i5UU4lCGZAwQOrO3ZM47h30Jxj8/hyy2wyfmSRB+D6jimm6oEDmS4Fq6fscCJ92GsVCJr+N++CHDohPuP7Ixn7RdUfTtP/iOSXB51M/eEk5pSawz/iHvfH+mtOk8qgHe2yhh5HL0+I3sd1NOudppG2NBUunlF69llpb9f3htElwEjT7xCjhybiibe114ibPTO7SB3/Ie+nly3zBKGA8iDzefW6vv6bai69DFSGfTXzDUTjJ/ptOhx97+67/9Nuw2AFMqy/fgLAKMQAlFe4Fpgme65aKGmn2pf0refuIkv4ohoQ3hE956X8pz6sMGbVnaMmBlUvuSxgzUBZJof4qSzmOzoSH1i+po82YdlaGRgCYUC7LNkdFlmYJZ1AVBXNDkhEEFwvLjMMAx6/EvUrQIsaZfCx8ObLjOrojnDrqb5lv/2MG5XBe7izCThrHcFd7OmIiqb6w2AuzIef3JQfT3tsqIxIQ+8n/GCqQkJLrpAzTB7L3TYa1HyYrbTzcvqRkeVupka6HQMTytTFBfkaIMwHNVt/yo8Z7N1sskd0UQc2hD5yfSYXtKTLlTuX5mLfb+6VY0ZmKE0jXrIhG7C5d5lJB9QCROQmkCGjfaedx/sWVgmB0PkmtiomO8j89AqheuFhUtAPgHQb8zhzsA8RuvvRDgYjnGk31
+ 8W3p0KNv
+ igbH1k0/Yx6QuMaum954pNjdMLfQJnC8ItEpZLca+Eum1zHLmhXA1/L8gwJ+yJ9l1NVlmh59rgtGhIFTbpgrOMakhvmfWWyb+3DE0P5qP8Jt6LetZxSbnJWGt6WAIimthHd1UVAngb1rS+i+krI6g6+1GMjC1ZZVJdd0AWmGs+P8759KmC1pDp8aCL9CfSsglMIIetLEC6A/KDtlg3wERem0+rbL3yAOiTzUH6J45fIEkLQYFyfPkX7M70gHsEueDMjXwXk6+Eq/IEGH1YpU6k43rbzu9RbBmwDDMrp6bWVTcokMRd+7/t5jE1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,79 +92,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  4 Apr 2026 17:11:22 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+sashiko found an issue that better to be fixed.  I will fix it in the next
+revision.
 
-> Hi SeongJae,
-> 
-> On Fri,  3 Apr 2026 09:19:06 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > As Quanmin also asked, clarifying the unexpected termination would be nice.
-> 
-> I will clarify "unexpected termination" in v4's commit message:
-> 
->     "Unexpectedly" here means the kdamond terminates without the user
->     requesting it (e.g., not by wrtting "N" to 'enabled').
-> 
-> > I remember I suggested adding stable@, but only if you think it deserve.  I'm
-> > now not very sure if this deserves Cc-ing stable@.  As I mentioned before,
-> 
-> I think this deserves Cc stable@ because:
-> - The issue can be triggered by accidental user misconfiguration
-> - It causes kdamond termination and hard to recover/restart. Once
->   triggered, kdamond remains in an unusable state, and I have not found
->   a way to recover/restart it through the sysfs interface without a
->   system reboot.
-> - The fix is small and low-risk
-> - It improves user experience on stable kernels
+Forwarding sashiko review in a reply format with my inline
+comments below, for details of my view and doing discussions
+via mails if needed.
 
-Thank you for elaborating this.  I now think this deserves Cc-ing stable@.
-Let's make sure the user impact is clearly documented on the commit message.
-Also, the code change itself and the current commit message is not clearly
-explaining how the real problem (DAMON cannot be restarted) can happen.  Please
-add the description in the next revision.
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-2-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit a0c4b65226ecf5534b53ebac64430db94a861d2c
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/core: introduce failed region quota charge ratio
+> 
+> This commit introduces a mechanism to specify how much of a DAMOS action's
+> failed memory should be charged to the quota. It adds numerator and
+> denominator parameters to allow flexible charge ratio configuration.
+> 
+> > diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > index f2cdb7c3f5e6c..df7b0340965f9 100644
+> > --- a/include/linux/damon.h
+> > +++ b/include/linux/damon.h
+> [ ... ]
+> > @@ -276,6 +282,9 @@ struct damos_quota {
+> >  	enum damos_quota_goal_tuner goal_tuner;
+> >  	unsigned long esz;
+> >  
+> > +	unsigned int fail_charge_num;
+> > +	unsigned int fail_charge_denom;
+> 
+> Is there a guarantee that fail_charge_num is less than or equal to
+> fail_charge_denom?
+> 
+> If fail_charge_num is larger, the added charge will be greater than sz.
+> When a region is split to exactly fit the remaining quota, could this make
+> quota->charged_sz strictly greater than quota->esz?
+> 
+> If so, would the remaining quota calculation in the next iteration underflow
+> and lead to corrupting the damon_region boundaries when splitting?
 
-> 
-> But I'm open to dropping it if you think otherwise.
-> 
-> > there are multiple patches to review in parallel (you are also having such
-> > multiple patches in the queue).  Please don't expect I will follow full
-> > contexts especially when a single person posting multiple patches in parallel
-> > every day or two, and bear in mind with me.
-> > 
-> > Sorry about the limited bandwidth from my side.  You could also simply slow
-> > down your pace, though.
-> 
-> I will try to adjust my pace. I've also noticed that the quality of my
-> recent replies/patches hasn't been ideal, and I will try to be less
-> rushed in the future. Thank you for your understanding and suggestion.
-
-Sounds good :)
+No.  Existing charged_sz vs esz comparison code allows charged_sz be larger
+than esz, using '>=' operator.  And when the next charge window starts,
+quota->charged_sz is reset to zero.  So I show no problem here.
 
 > 
-> > For stable@ Cc-ing patches, more clearly describing the user impact would be
-> > nice, and helpful for judging if it deserves that.  Could you please elaborate?
+> > +
+> >  	unsigned int weight_sz;
+> >  	unsigned int weight_nr_accesses;
+> >  	unsigned int weight_age;
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 3bc7a2bbfe7de..f468c0257a3ec 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> [ ... ]
+> > @@ -2097,7 +2099,12 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+> >  		ktime_get_coarse_ts64(&end);
+> >  		quota->total_charged_ns += timespec64_to_ns(&end) -
+> >  			timespec64_to_ns(&begin);
+> > -		quota->charged_sz += sz;
+> > +		if (quota->fail_charge_denom)
+> > +			quota->charged_sz += sz_applied +
+> > +				(sz - sz_applied) * quota->fail_charge_num /
+> > +				quota->fail_charge_denom;
 > 
-> I will add a "User Impact" section in v4's commit message:
+> If memory management operations backing apply_scheme (like damon_pa_pageout)
+> process whole folios, can sz_applied be strictly greater than the region's
+> size sz (for example, when a 4KB region overlaps with a 2MB THP)?
+> 
+> Does this cause the unsigned subtraction (sz - sz_applied) to underflow
+> into a very large positive value, exhausting the quota prematurely?
 
-Yes, please add this kind of message that make clear what is the user impact.
+Good point.  The premature quota exhaustion should not be a critical issue, but
+better to be avoided.  I will fix this in the next revision.
 
 > 
->     User Impact
->     ===========
->     Currently, if a user commit an invalid 'addr_unit', kdamond may
->     terminate abruptly. Once terminated, it cannot be easily restarted
->     via sysfs, pontentially requiring a system reboot to restore DAMON
->     functionality. This patch prevent such termination by validating
->     parameters (addr_unit and min_region_sz) early.
+> Could the multiplication (sz - sz_applied) * quota->fail_charge_num overflow
+> before division?
+> 
+> On 32-bit architectures, or with a large fail_charge_num, could this wrap
+> around and result in a much smaller charge than expected, allowing the scheme
+> to bypass the quota limits?
 
-You mentioned it cannot be restarted above.  The above message sounds like
-there is a way to restart it via sysfs, though it is not easy.  Please make it
-clear and consistent.  As I also requested above, please add the internal
-mechanism of how that makes restart unable.  This itself doesn't explain it.
+I will use mult_frac() to avoid unnecessary overflow.
 
+> 
+> What happens if an action fails, and fail_charge_num is set to 0?
+> 
+> Does quota->charged_sz remain unchanged while the region is split to fit the
+> remaining quota?
+> 
+> Since the remaining quota stays the same, could this cause the subsequent loop
+> iterations to continuously split the remainder of the region into identical
+> small chunks, allocating a massive number of damon_region structures?
+
+That could happen, if that's what the user intend to.  That's no problem.
+
+> 
+> > +		else
+> > +			quota->charged_sz += sz;
+> >  		if (damos_quota_is_set(quota) &&
+> >  				quota->charged_sz >= quota->esz) {
+> >  			quota->charge_target_from = t;
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-2-sj@kernel.org
 
 Thanks,
 SJ
 
-[...]
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260404163943.89278-2-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
