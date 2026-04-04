@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2BECE63FF6
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A5DE63FEA
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDDAC6B0088; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
+	id BA5246B0088; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67D06B0089; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
+	id B568D6B0089; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C56516B008A; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
+	id A6C846B008A; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3806B0088
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5168C140863
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:18:28 +0000 (UTC)
-X-FDA: 84621985896.29.D742075
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C2DC9100005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:18:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ek8unC4z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 98D8B6B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:30:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27BC21B8B96
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:30:51 +0000 (UTC)
+X-FDA: 84622017102.01.EBEB849
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 51FDD1A0007
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:30:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyCj31tI;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775334649; a=rsa-sha256;
+	cv=none;
+	b=S5APMFTv8FAaWkjcEpJh3l/6STqG7y2Y3WVRaZJlBIZbSVWeb3L4PjGBcQSHBpMYMxYs80
+	h5ex4tZ/vFEgoU85TDIdutPRYfNXT6tZyFzf6u4R8qNsLueOO6dPRmcjU8AS/ZV9zttZ+9
+	FXxJvZq4osVHDVw49ldvfiIT73F7ltA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775333906;
+	s=arc-20220608; t=1775334649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xSpH/h0LjZAC5HGhtYYa0aIBfXgwtDHD86HOxIOfkbo=;
-	b=iIsmTAEi7UCf95AudtX9+VY6nZJ82idMuaequE0gQbigOwvvjXpXit37zAXONjmBDOPgV5
-	cIsUr0zHMxk9i3n6uL/+slPrtJMHhnA99wMDiNOnLENj7/Kni8mh7COwzDQSPC5qC0fVBy
-	Mo0DtfDL24ch+cqxJIb9T5JIvhYEIKw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775333906; a=rsa-sha256;
-	cv=none;
-	b=n6YJtCu4Oy6iVTbN2Oh6iRzjBJJh1SlPStD0Pj1cYsYQdQyfpVw/guG0BQKjZ5gNeJhJaS
-	kuOD28mK12r+JSNBOTAcav2r9nUScOko68OOoAJMNv2VTKGbrEsTwf4ViE9rGvH0qTIoJQ
-	8x/FXgH9Ji/+T3QULu2GZrJ8BjB6IeY=
+	bh=5sW1dSERzOWcRphiHoPGWOIs6s+M/xXjhSO4m7qejjo=;
+	b=cerqEZT7e0qK6unXz53nupxFYmXczhnP2Ps5jdh2Jvk520cGEcxY7DEcIMaMn/4VhpEHan
+	1OgJEuvEgb8obO7T30xZu06wJn19T6rF2WCvx3XUtIuVT/afhExfMo95/gCkDvpzpM8bbP
+	5ms2u/O9CnRlnQBP+z9gMGi4aTz/Hhk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ek8unC4z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyCj31tI;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48C6560008;
-	Sat,  4 Apr 2026 20:18:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55CEC19421;
-	Sat,  4 Apr 2026 20:18:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 287E5416E0;
+	Sat,  4 Apr 2026 20:30:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18E8C19421;
+	Sat,  4 Apr 2026 20:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775333906;
-	bh=K6O4i08ap+LxKyMLBh3GuSwkcMBslt2u7/g+pm5nHNc=;
+	s=k20201202; t=1775334648;
+	bh=eyo7n4gEymA/anCOsd3jdjhMzGS2OqiPLSgYmJnzpss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ek8unC4z3EgITSjggKAHQB7m5LIA5qkhMQrgOAp9HyruoyzSCFZ+cttIS+GHuXphO
-	 8s1OiCEVoYyxfMZarOvxWzm5zNhiaCGyg9C8JwFi+nR6MXnf7oPFFnwd4zKwTtcCWO
-	 OnMJo0KoKOFts8kyF/zqnLXbq0jBwItQsRCuv+sHkRm7pK7Jrg8bK0Ez48IlMXsCWL
-	 4r7VZOtFykyH6Q2OnEsppFPfhHWAIyidvmnqLklxlmt23NTU7UCq3u2bfR3C0YlvDp
-	 dpBeBAX9vM1NM9Edc0DKBhQqqUSCbRooqESFb2PFnxu1QTCVIE4wcrIsiOT6i0noMI
-	 TdN4SNCJWUstw==
+	b=XyCj31tIAacXS19WGcdqw44RoN76uMuppNOsyscTfV4QRF2xieP4DTjIOPVmlrSAH
+	 WkHplbMoOZP7cBGzgouaWtjmPQ1PVvQ/ubOYyhfayJH4/d0Ufp9YvoRtsgTmOFcaNe
+	 6Kr43RvwqcZKeDGCoN7aDCwgdizJXHtjyUK5Eu8/hVE9yFRS1QO9iXhfwTqwIrv2AL
+	 mpAZtSIbxduxR/xB7uiMA8TJV4xPZX3DcAg74DpXXIz1WccJGPpTViT2fHpuHwUhfN
+	 vZKtrv0YJwnVQzVjFluTO1jNEmZCLSvkmymRDXpUY9r8+8RT11ef+rWeJcI1uW+28W
+	 wvXutwVHglfIw==
 From: SeongJae Park <sj@kernel.org>
 To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Sat,  4 Apr 2026 13:18:21 -0700
-Message-ID: <20260404201822.86511-1-sj@kernel.org>
+Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Sat,  4 Apr 2026 13:30:43 -0700
+Message-ID: <20260404203044.86655-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260404090927.6055-1-aethernet65535@gmail.com>
+In-Reply-To: <20260404091122.6255-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C2DC9100005
-X-Stat-Signature: qu8ndqoxyw6n85u4h1b1x6yjahshidhd
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775333906-866707
-X-HE-Meta: U2FsdGVkX1/GGPgwN9PMkPVsSwQ8+NyKFE0JH53KFiwzFOpevgOEkufq+6N9+UMK6Y0l9K3TzCeWLrTkE/H5TIFMsN/Ht7mMySPsyHwNA1QysD9T6uPvMHG0iH7n9kvWD6GH3hPPxv8hlFmpkE4zlTnyQyLcHq2AwXftaNrqMgfkoaggZCgPuvFIbU5965UvjZjpXCEzNLy/ahECxGM55+Jr3xxp1Wf9/ev/yxeh8r0MviNFXrW4RuLwMxGpd1g+AtXixL2fEyxohS752WqA1jRWy8qHTLtgu+JTRpbBooKTl5jWil0JfvZwyMDEZ+vrHtwhCcMHc7mgv5E9aDMkrK1XS3m60N0du2lsO8npgROe8II+Q9AXD056EHMfI8CJcYTBX4qXKxEkUyV9q4Kc3HrZy2xnylsQc0Dr3WdwkwhkGwf3waF6OifNw+VKVlPyCYU3N3CKGa3/rUgxkgm7ZxXsoFahudVPifjNIIdHrrArAruFFkRyEbwca1XbtdwnDNMq8XDhWCSCTadppefynNBDEk/DK7cRZChbEQyd+Wh35MJzjVb3oXiYYT5xXLjS79YueZRH7XIdMtMWPFcuAtW13DeKnvh++mY1ohDaJ6WgAotJ0UdyPtFA61ZS7xo66sQ3HjnhiFlhe2oqcl8PAwT/zwhERmUsv75fILol45B2dPYR4jLyHIZLbdAjwtMweKRWC1pg3BymhNO2PAiQRZ1WPzOglO0DFl1M8L23feVxzunBJKagAUnbnu9cC4T4LytBvvh/p/6jXkps07xE4Z+LIOIqJDmmv5PPW/9Qo2STgQHJpGR0HgK2AjAM0no2+vT/0IhF/LMnCO081s93ccEJp2QRjyhPjheaOPgM/U+7qDKzbJYFMcqUbp8RuJvJPoGuxN6bkPCUtCluHSRyrITKe1Cqm5BpTxwdiHlpFOG152KqGrOLy2HtAw7QBa25W6ElRlAUDgW8Rn9UJ0M
- eu4P5fu5
- VWoFMEx5dfdjNtxkSMiOBONm5gFwcYj8FqOLEPwW1aTQkKdqVOlomBLMtSvnOKO6pI4E5wLGMnva2V9gG10YJ0ggqskATUwtz7F/iEOZkM11A3GT3QJMfE1Vw2gtz2mMDzyc4+KBHO4RIns2TFZVK9YqIM2jnljWUsuIA1QQ4ZmGG+4ysNjoyz0Jr4NPegIxyDs2bR7vY1GJP+7nHeH9DjmHqWAWMomM+3oMcTu65xocDptGp9iNTcOI0/VRCcYiVymHSbVDSwvd85RQ7CsaifTPSf7AuFExyBlMXDJsg6w+oqm3CAyhR3sQW06LNjCz2oVtdjp9WRjlrXVlhTB1k8/V/6RmqLJ3KfF1zXhiZoOmupnM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 51FDD1A0007
+X-Stat-Signature: xhdgojeeadmsjcom94d39o7x1s7tnnzj
+X-HE-Tag: 1775334649-63048
+X-HE-Meta: U2FsdGVkX18ieu8OxvqpRH/ZwJpT7/XG9dRmPmG+cDvrCBrkZGe9CAXZzB0WMxd/tUD2eGh7yUDuBy28mxPMcbWbEWxE0AgHHk7tzZKxExDiOxixMSnkNtCHkey91BabMPDvnKGRvTfwBSyE3NQGZUFabnMmK4U3iBO1JkIqCwER8m/vd7w+n5yHVHX8K0cv8UKWQmug07b/XJt4hwH/mHlDNVMnYcjXPjzAsIPQQChwqCXWDX/0jItlmKZOHI7hcZzIf97iVP5h8SV5yFVaMqqxbuL4V4OfxD8Im8wZurxF/qP5drCfFfQVsob8ygyJcGfHZ8pJoyIZTALNSYRbS5paVZD1UtoZpMtYUHNhJkNz53hixrF0o8g7pOPbG+FzsGWYICpwihqE/8G5kXEGk/9iU86Kvn+x81hgOlKw4d/Oiax1XTsdbuEnrErY1nbQXiuwD/yWa8rRkhplNopnC8b8EN5eVddR1DNkPTRSHDUej/zMm9DejYd9CdFBPgNw7XIHeCGFFEtpP03nzS/gSXMDonayU/5YU86XgD1dpG32FihZrBTn+LfdyFqaMfzj6JMVJE1w5GCEUXWKU7afM2spN6fGGQ+1EGWnq7l7DYyq1xtiJrKi3QOKlMuiWQcJPoukBwHreKa+uZ0DJW6Lu/sgZwjacBa8ldXTTOQ2tbmXpD58m4G/yoNE/nKOSbZtZpRRWOH5lrSv8klXOolJRafWOjqt6efN0My6ZaMn/9JsIo+UcH7F6nzjnYopLrL2UzcM/XpEONZOrXRkXkcmEDoOehFfCDbKtE9Mgkm1LwADPdyt0Ii8iX/te9keVTfXuIZiravw2jAfN7BE1fIo4mHfbOmTp237BmeR3jEZ6UsfMFy+6t8EOfz2yBWiN24C9d+wSbPKPRRrqFNeMPPYXYK4rbaOcHMvnwKdiqdxU7ov80hvz8SxX6zYr01E0/Q/7MZmEzZ/Nix5W1vCvci
+ OdWw0qs4
+ AFqT2kDXcDfW33SsC06DX5N9Czl9srV7gU8+1BQ3nOrfNtzqdAq5JLgUkKixMkh/zyHGqKoX8QZCdMaJ7XV3dzn4cAlNaz7h+JgcAe3RLBHmgF+uAuWsk5aM0SHDR7EfwFuoiX6RZ1Xok0Afc3TEaLihXK8JeWieRGzSRfpWefOq2xRzcGz9ekNZvC+VeE/pAXPW2ColcLRfFnDaM6EP1ORVB7kBPBoBcdJkV4OHW+vNUjF/XaA6W8b05+6TPLZCFhw+C8dPOBBuCfTo27teZty/+IHV5bv6qbyZ5otht60tMpq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,69 +91,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  4 Apr 2026 17:09:27 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Sat,  4 Apr 2026 17:11:22 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> On Fri,  3 Apr 2026 08:55:29 -0700 SeongJae Park <sj@kernel.org> wrote:
+> Hi SeongJae,
 > 
-> > I recently learned not everyone is interested [1] in sashiko review.  So when
-> > I sharing sashiko review, I now try to drop recipients who are not necessarily
-> > interested in the review.  My choices at the moment is the author of the patch,
-> > maintainers of the subsystem, and the mailing lists of the subsystem.
+> On Fri,  3 Apr 2026 09:19:06 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > As Quanmin also asked, clarifying the unexpected termination would be nice.
+> 
+> I will clarify "unexpected termination" in v4's commit message:
+> 
+>     "Unexpectedly" here means the kdamond terminates without the user
+>     requesting it (e.g., not by wrtting "N" to 'enabled').
+> 
+> > I remember I suggested adding stable@, but only if you think it deserve.  I'm
+> > now not very sure if this deserves Cc-ing stable@.  As I mentioned before,
+> 
+> I think this deserves Cc stable@ because:
+> - The issue can be triggered by accidental user misconfiguration
+> - It causes kdamond termination and hard to recover/restart. Once
+>   triggered, kdamond remains in an unusable state, and I have not found
+>   a way to recover/restart it through the sysfs interface without a
+>   system reboot.
+> - The fix is small and low-risk
+> - It improves user experience on stable kernels
+
+Thank you for elaborating this.  I now think this deserves Cc-ing stable@.
+Let's make sure the user impact is clearly documented on the commit message.
+Also, the code change itself and the current commit message is not clearly
+explaining how the real problem (DAMON cannot be restarted) can happen.  Please
+add the description in the next revision.
+
+> 
+> But I'm open to dropping it if you think otherwise.
+> 
+> > there are multiple patches to review in parallel (you are also having such
+> > multiple patches in the queue).  Please don't expect I will follow full
+> > contexts especially when a single person posting multiple patches in parallel
+> > every day or two, and bear in mind with me.
 > > 
-> > So if I was sharing this review, I would dropped stable@ and yanquanmin1@ from
-> > the Cc list.
-> > 
-> > Please consider doing similar when you share sashiko review.
-> > 
-> > Everyone including myself is learning how to use sashiko well, so it could be
-> > confusing.  Sorry about that.  I'm planning to make a guideline for sashiko
-> > review usage in DAMON subsystem, and update hkml to embed it, hoping that to
-> > help reducing some of the confusion.
+> > Sorry about the limited bandwidth from my side.  You could also simply slow
+> > down your pace, though.
 > 
-> Thank you for the guidance, I will keep this in mind for future Sashiko
-> review forwards.
+> I will try to adjust my pace. I've also noticed that the quality of my
+> recent replies/patches hasn't been ideal, and I will try to be less
+> rushed in the future. Thank you for your understanding and suggestion.
 
-No worry.  I just pushed hkml change for this.  The latest version of hkml will
-add the guide to the forwarding mail draft and make the format easier to add
-your inline comments together, by default like below:
-
-    $ hkml patch sashiko_dev 20260325013939.18167-1-aethernet65535@gmail.com --for_forwarding
-
-    Adding your opinion together with the sashiko review sharing
-    is a recommended practice for reducing traffic.  Will you
-    do so?  If so, I will adjust format to be easier for that
-    [Y/n]
-    # sashiko review suggestions
-    #
-    # 1. Consider reducing recipients.  Maybe the author,
-    #    maintainers, reviewers, and mailing list of the
-    #    direct subsystem and parent susystem mailing lists
-    #    could be a starting point.
-    # 2. Add short summary of your opinion at the beginning.
-    #    For example:
-    #
-    #      sashiko found an issue.  I will respin this patch.
-    #      sashiko found no issue.
-    #
-    # Please don't forget removing this comment block before
-    # sending this!
-
-    Forwarding sashiko review in a reply format with my inline
-    comments below, for details of my view and doing discussions
-    via mails if needed.
-
-    > # review url: https://sashiko.dev/#/patchset/20260325013939.18167-1-aethernet65535@gmail.com
-    > # start of sashiko.dev inline review
-    > commit 60ccea4154b0c58741fae2323454a5a9496b67fa
-    > Author: Liew Rui Yan <aethernet65535@gmail.com>
-    [...]
+Sounds good :)
 
 > 
-> > Anyway, seems sashiko found no blockers for this patch.
+> > For stable@ Cc-ing patches, more clearly describing the user impact would be
+> > nice, and helpful for judging if it deserves that.  Could you please elaborate?
 > 
-> And thank you very much for reviewing the review! :>
+> I will add a "User Impact" section in v4's commit message:
 
-I'm happy to help :)
+Yes, please add this kind of message that make clear what is the user impact.
+
+> 
+>     User Impact
+>     ===========
+>     Currently, if a user commit an invalid 'addr_unit', kdamond may
+>     terminate abruptly. Once terminated, it cannot be easily restarted
+>     via sysfs, pontentially requiring a system reboot to restore DAMON
+>     functionality. This patch prevent such termination by validating
+>     parameters (addr_unit and min_region_sz) early.
+
+You mentioned it cannot be restarted above.  The above message sounds like
+there is a way to restart it via sysfs, though it is not easy.  Please make it
+clear and consistent.  As I also requested above, please add the internal
+mechanism of how that makes restart unable.  This itself doesn't explain it.
 
 
 Thanks,
