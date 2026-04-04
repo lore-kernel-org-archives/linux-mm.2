@@ -4,118 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFCB0E88D6E
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 01:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629D8E88D6E
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 01:44:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 335D86B0089; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
+	id CAC766B0005; Fri,  3 Apr 2026 21:44:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30DB06B008A; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
+	id C84386B008A; Fri,  3 Apr 2026 21:44:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223436B008C; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
+	id BC1D06B008C; Fri,  3 Apr 2026 21:44:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 12BEE6B0089
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A38A1A05D9
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:43:27 +0000 (UTC)
-X-FDA: 84619176054.15.6F27D6E
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 033DBC000D
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:43:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Ol9lcwub;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775267006;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PHW+k8KQfaTNE2WRP5tjhicsFjNo+SBioyXM4XMu8gk=;
-	b=bZsgdNi+sp0laOHBUnbXTzhVhI+DKOJja5/0UhmpvFxr2Z5CSKIHjjBuyNkRYUoG+firt7
-	BMNiPGu3Vok0PYrBmWgA9I97fwI3UcKG90cC6x/nBRo75jSdS5HGMbmu/ODv/5PQtStEVm
-	Xzpr5mwUoUcMAPEkMKM4i5n4eaR4VDQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775267006; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ACB796B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 21:44:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 601DE1A05E8
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:44:00 +0000 (UTC)
+X-FDA: 84619177440.06.751C3A4
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A583E20003
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:43:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdqWqxJi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775267038; a=rsa-sha256;
 	cv=none;
-	b=nxDiNsgkoZcS/ADutf9RV91YabykA/QXg5BYzpZFXGCsPxi2gcobIw6C8hoApg6yA9ryYD
-	ofC5bporOql1T0XXOJdYm0e96VHHpYB7ziC5BsX+SMaJMTFOcxQ4Gq60uxYPq8YYlHD+Cm
-	fbwsanVCEoja35a3RS639Qd81TodlEo=
+	b=1YAUxKdf6uLFae++vDzv5NX2vxUJO+r7uSoX4+bmeElyKxyuGS/FZ+ytomxVtU/xfB8LqQ
+	v8b42kNH710e3V3oPcAS8yToviaInvW6TlPTg5qt7Z8tcZpGqr9hCRh9tBxp8HO3qHllep
+	kydXpLi5T+9xGqEdkY+jXDaeSL0+mb0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Ol9lcwub;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=PHW+k8KQfaTNE2WRP5tjhicsFjNo+SBioyXM4XMu8gk=; b=Ol9lcwubolhlRoTGwUL3kna3nS
-	CaFpulKcuPIwmTn18FC17gPDwtLY6JBEgpPbBLzJ9+9GfPHxrk5LZ/Nw99JkxAhzESbGuMsMtPTqP
-	UWlIeokYe3aOrAHWLsgOOtzwBNi9x/1rGV6UPYXX5VtYlHB3r9p3IxWgwpOU4uK5wSiADHH6Xr4nU
-	G/2WmgcvYRTfh0dlJGiBt/hyPeQJL3igMCVgP9pAryYGlKuH09FwLQAkKcUDV/S8uCNyIu5OCMzcB
-	A6JDQu338+ydTWEOmt8gPveb0xnUXJGO5Ies3QIHyEUZ/aj8AvqHj9WUtrxMbt2k/ckCsxzrkNxVS
-	g/a01vLA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1w8q2l-000000000cl-3M6u;
-	Fri, 03 Apr 2026 21:43:23 -0400
-Message-ID: <901716dddb748bd91a107cce1f95a8eb44ebeeae.camel@surriel.com>
-Subject: Re: [RFC 1/2] mm: page_alloc: replace pageblock_flags bitmap with
- struct pageblock_data
-From: Rik van Riel <riel@surriel.com>
-To: Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett"	 <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, Johannes
- Weiner	 <jweiner@meta.com>
-Date: Fri, 03 Apr 2026 21:43:21 -0400
-In-Reply-To: <20260403194526.477775-2-hannes@cmpxchg.org>
-References: <20260403194526.477775-1-hannes@cmpxchg.org>
-	 <20260403194526.477775-2-hannes@cmpxchg.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-MIME-Version: 1.0
-X-Rspamd-Queue-Id: 033DBC000D
-X-Stat-Signature: myewf66anpwjpwn8aquj6zffyr75ir5s
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdqWqxJi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775267038;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=mSmUlQx+7wcM8hvk6KgWAN6mYWx05Ua8pH5lZ6mYZjw=;
+	b=XxLc/m07UtUGaSfPT2Mlf5zs8H0OsFUD8d5zFCRce6wqpOLnVznShcoQFL+vTQZjzT7YJp
+	VuzU2XjKghHoATUHmIgFFuzdGFui+xIhnNaqqOPZpexEmo+sFL9+/4XunL/u8SE2enJsG7
+	W64HbAeHpO9vPiiyCaYG4ZNBbHOwcOs=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ad9f316d68so9807135ad.2
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 18:43:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775267037; x=1775871837; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mSmUlQx+7wcM8hvk6KgWAN6mYWx05Ua8pH5lZ6mYZjw=;
+        b=kdqWqxJiR6nKGY46Dk6oUYQYcmqIFM1M3axUdoed1FGxzCwKxadOIUh/Qn1mB0ZXYK
+         YHpnJ4LcG/OVYmKf19otACd2cp33/qybF4Amokct0el8+pUQefTCKi72ogZLkSSOQ7JP
+         I4zpS0oKbvyvygxG3vgC54kFACzVPVjt2gNujvCaHkb3SAbIzggGhNdp6rOVKNmDX9/C
+         FzVN2X6nhe6YFi55MuOT0QhcY75dn7R/efay8oJ0IR5FZf8IBArYGYk1ddAijGs1aCYt
+         In/wfGfIfeh7Ov6hAM2rdqCswIMiMFexpHRaGifql020dx8d7Tox14Fsi0p7KuSHqpAT
+         2ZLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775267037; x=1775871837;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mSmUlQx+7wcM8hvk6KgWAN6mYWx05Ua8pH5lZ6mYZjw=;
+        b=YXpPRW0689CtJTohaPYt2/2AOxr4d1Na2Af7F0lxE/+2FQGVKrB8eV4IBSWXJi3uj0
+         PTViOv3S62BjvpHluUyCVEzuZtSQN1Q8ogB7oVD4t/eLh4FjhV3eBMoHQn2hEC8XSa95
+         SnDYZaary3DlDdHtY4vU2nUu21LR37MP9hHz5mo2hMXgVKTawlqaSerJE+invVMMghst
+         82xCmBhks+XAUNJYtuIl7gaW1ZVyoR6vu+aWA6FjjJEwkXXZ4Pi4jM+UoDOXi8THWdDK
+         tkMCin5m1wZ3+M129qP0L2nHoKwRbIRgyheDF9fwX1CA/iOWhPyeoqDy4m13+Dn6k2tb
+         gHnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUAU5f+KK1bbpVfl6suXZFWIApujZrvKfALlDHKBpGUbfwrCb8Lep48B4AS5ToIQYrofrV7AznfA==@kvack.org
+X-Gm-Message-State: AOJu0YxD7Y6eP8zFFg0NPfn2s0BuRBwsTPzHRnftMLRgOFkLSYRgLud5
+	5QBnHPmNYsyN/L8ARCMReUjFMlnG2O3vapRIu408NWVbscW9xzKRbCWKTYSmiBR6
+X-Gm-Gg: AeBDievBg7a/orpIBc2waa8zrK/oFtHlDDXuCMDCkmO+DaboFASqFhDKWdGR99jTWNQ
+	fKI5r9SKVHW1YwILUBsCpLR0pyFwymRY4GqQxJ9rPHnwzwOd46fXvQ9RNLuKeoUsz3WYMe2kkjH
+	8Jw+QFfuu/2LrlbC3ZW5wBp8zAUPmUknGOHgMX9XyI9wblodeuqO5u2GZQs/KdpDbiCvnsjPAvd
+	JQY3WJcXfDoadmI5WqczXyIxLzAyeY8bOCN+ZtRvKHFa+qNt0lFSYgnTtQQPxu8XtfTVLQJjMi0
+	DDjbZbYbIiiv+62XdXBpW18tbKqZDGUOhyQmlav7fQKYnAWzhCwZXhzx4QgAtygcUYE1r7i6ddk
+	sM7ed6buVc/GQb61X/xS1FXAgC49/7mTj8U5i8bAo6SIiQ0RBwmyKLgKOhCoQQcagfod2IoSIlL
+	AwHVIklk7GA4bHKHF7UqyMHeWdoKtbc0SR
+X-Received: by 2002:a17:903:1ae3:b0:2b0:afad:7aad with SMTP id d9443c01a7336-2b2818016c3mr52841215ad.45.1775267036795;
+        Fri, 03 Apr 2026 18:43:56 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749cbca2sm65157255ad.73.2026.04.03.18.43.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Apr 2026 18:43:56 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Salvatore Dipietro <dipiets@amazon.it>, linux-kernel@vger.kernel.org
+Cc: dipiets@amazon.it, alisaidi@amazon.com, blakgeof@amazon.com, abuehaze@amazon.de, dipietro.salvatore@gmail.com, willy@infradead.org, stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, "Darrick J.
+ Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
+In-Reply-To: <20260403193535.9970-2-dipiets@amazon.it>
+Date: Sat, 04 Apr 2026 06:43:06 +0530
+Message-ID: <bjfzmst9.ritesh.list@gmail.com>
+References: <20260403193535.9970-1-dipiets@amazon.it> <20260403193535.9970-2-dipiets@amazon.it>
+X-Rspamd-Queue-Id: A583E20003
+X-Stat-Signature: 78gtxfxj7sfaicfc6aonfu5hrsjngq8z
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775267005-299945
-X-HE-Meta: U2FsdGVkX1+djCthJJCRF+opLR/usxy1/ecz8hugV8Hxum3rVGhgfCQOSVjvxBvTUpUXGw7iEpQG5b8QU71M2MiMOqaAYfeRwsYpXPKv6IuA/LOjUcnBP+EwueRECKNJd1yCe0Xh8iYV/HMouqwCodAu5IXL/IcEXDlG9Mx7oLnRPrW325kRp3Eyl7o9VRPqCOFRCi9XcEe8CSWV1ZyO/xBM03JaZJ0OAwhshx8hZepnLe3bLXlfrPoVYFlmdmF1MNY4Gjk4rm1PNu0TRVrxEbV36UnBRbk5x8O31FUZi1SuUZZh5NwMYl+ONp55EJnJToHFPIac9Z/Z7aDxWi2ifJ5XsxVOU5kEk8jpSDxAqhMSi5uqtzz/qDQMzg9AbE3nj6p1LIq80LkJjY3W95tMNEqyr7HuO+XW1ze1Vqz5/35qv8Qz7l8jzE+B9x9MDftj9KTGLQj3PjGF8nWlP8EROEeMptQALKXTmqqrGBOKLkuzFqVTgvteCRoe0xdYaRBPBxJP6FPKL+aQJQPNjJ9cZMlP7xJpTIzoz3Z+e2YSKwL8jIOS4L+mPDcgkpx55ms0SY15heN/c2dV7iBk7n73I9IiEBAFAGI464H3ec5lI3/5FMLsSYanLDzKxVDFTt0Pt4fIutOYMS2NtcQAPpCGbKm1Auh2kDm+I6PSLlNkuc87QWpou09EheHuWoDIa/uZjoDM4Up+TfmH2lVcbPc9+2FkG8u1bd5ir9sdwHbL3Llhtsd/w80sa6Wt9toGj797YZ9lgroWf5nPprBdcY4thIrG9KgilKQGdabdcaSnhoK/bIeEe6xocqtH8laRWEDJ48vNS3UFQjcf4GGF5QOtiRZdCSC9Oiy5kErayHCK9izblPEMAkY9a3K1eXnT1FC02//P4NcmGJesrwbxrQdom5xXQm3/3fRLwUk2xAh7VW/AM2+ZUVANAPB98Fj+BUnC9fvcdgkJPU9luOPlJSo
- ybglyV8m
- GIX+fRoznGM3DDw4JBL6vZ1E1E+t/GiHyIUw3GHhLAgqYk2A/1r6Hk0VscnL0/nNVtaY0UN+qroHQ/DKRVI2IBxf3mba99kAA1FVT6oS8do7a4wn4MjI1Kb4J+2oNg/9bjs7xfuCss1993URvxtaLXp9f0HT1G4j7TDndqq+q70yenoO9DhtKZqky3Grnc13fqnO+9tq14vsoOT8ihxfDD2stwVAfwZacbmUJK0HfwkDcbAq8C3aatVxTI3ZcDUshA2deFAjUqk7J3kxvxzLOpTJB1s7ZeHrlBydonUEwj0dONLadyMK7LhNxPGxQfIsIIYjhvcErVoZA162wtA5eaMSozz5a+9Gr2AhVASQF3Hf4LGq3rNPjTIrepKXkssgQ9Ib6Ew8xyeCEio1bU++5D0VDlRhFeOqmCrFNr12y5fOYCHozAIOmYpEp49AjB764cxsR
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775267038-493701
+X-HE-Meta: U2FsdGVkX18U+tT8SYwZZIEwofumadVeUkLcfvRFHV4omxkaehmnsrD/RzoLdvc+5/8PJn++STFHGBBBMFj+18bX7jGEQATZyn4bi/QatsZtwVDvM9beJa7vE5GNwBIZHnmpl1u6wzpWGKaPCXqhw89+odxPa6M6NB+zNcLUFZFU8EhhjfkFpzcpH6jYfgpT3QSRCZ9vzCGaAR/Ta6iekPXSCaeyq5+T5oM631Mv4xw4Ba+WUKOGXlBv+mDpm9k3R4voSGgziEDXe9zw6KTRY/MbeD70MbMJrN4wFbTSFOWD/BKOf7Dz7+0EthQFZwJODcqYkmx+X73e6OzNyzHf26y1mppoFbuMY0hsUzVhZEA1Fc5OyoogkRCKbAzvZDhrc7n5k3ZDSg9nZiYeI04DdPpF2OshwvkQWftKHmekEMIKqBB3z6aEdFUUw1TjpgkFyEGD5inLWfmjh2qirS5quB6L5n30IgVUY9BcHQL+1grl0dNLr/EBX+4e3aYbud50LOBjKxJuO55aTQFl9R1LpzJ8p2TFwvtpG8hd1DAk2LwYgUQd0pXr3dPi7NsnJjUWHG81JS2CmmsBeaj+nQGtCs5b+f5jjbkQPhCcowtGYGjT09MXvYDgtXDMNP4+571FBs3XCl2/CSN9dWjsLO9nWr/7AkMAn91ywODFGM9/lqb5qkwOxH+m3l6sxxigLhjLDVvVETKcl5bZska2d8lL6XDEbIbCUR8MKdzNR4OAiknD1gLUBEgmqeMQwFTTL7OPHD4c4JBhrKYFO6vQVSqclfSYiDfzD17g0v8xPUo525nki7OPRC/ZIePu4kp9EzcYXs7HZb8DFsqCKB6Uepj9d2m4Xyzx38LNMPnBsRwxAZ7omCn7AAa+4gtVa/sqE0XXOcomG6i2ltRxVA+MiYx/41fgwTCmvnyj7PsLtI6fUa9czR2hCiOFOzEEit96DxPMC33wmwCrWpUGsi0ryPf
+ GVMrXlys
+ aXLyBSsS9KL5YsraHlYRGFc5lLj+DnM57GCXGNdO2jm6eEW6MXcFYZnrgJ0MKTJkMDZCx/dvZGMwLnIFfUpq/S1HWwbtw/oGSyn/yrT9O4oaqafnFmRX9lkI3OaYabmFdva3o4XYl9gbYCtxIb2WK6Dcrcv/4KHSACprpyPQ4V1pwhN46v+X6WMCBImDSONsI30s0NvMUK+9kheOUMR2GOzi6nIcwfg3xDxVD6WcXAyzKK6OL58Ib04pGZHmKHEsVBTLJtDbl86DCbMcQGG2wlIVuq+pSaBkoAyqT7ePeQVJH8bgthN9KlCVAtvAXJag2xJv/R5BW0/fRHzQu0zek/nSIcT1ACHkkY/uQbptwVtJYrJPRWM/W42nO3hv4A6hsbIGTQfDo9IR3VJGMCGJP8w0ht7nbb5C9o8f5eeTfwZepHEhUhBDdz32sWfQibTpMcf5MFd+TVKnjjfoErvv9ksMKLJnyFgSu0cGYQjfUUpePL38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,21 +112,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-04-03 at 15:40 -0400, Johannes Weiner wrote:
-> From: Johannes Weiner <jweiner@meta.com>
->=20
-> Replace the packed pageblock_flags bitmap with a per-pageblock struct
-> containing its own flags word. This changes the storage from
-> NR_PAGEBLOCK_BITS bits per pageblock packed into shared unsigned
-> longs,
-> to a dedicated unsigned long per pageblock.
->=20
 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Let's cc: linux-mm too.
 
-Reviewed-by: Rik van Riel <riel@surriel.com>
+Salvatore Dipietro <dipiets@amazon.it> writes:
 
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the buffered write
+> path. When memory is fragmented, each failed allocation triggers
 
---=20
-All Rights Reversed.
+Isn't it the right thing to do i.e. run compaction, when memory is
+fragmented? 
+
+> compaction and drain_all_pages() via __alloc_pages_slowpath(),
+> causing a 0.75x throughput drop on pgbench (simple-update) with 
+> 1024 clients on a 96-vCPU arm64 system.
+>
+
+I think removing the __GFP_DIRECT_RECLAIM flag unconditionally at the
+caller may cause -ENOMEM. Note that it is the __filemap_get_folio()
+which retries with smaller order allocations, so instead of changing the
+callers, shouldn't this be fixed in __filemap_get_folio() instead?
+
+Maybe in there too, we should keep the reclaim flag (if passed by
+caller) at least for <= PAGE_ALLOC_COSTLY_ORDER + 1
+
+Thoughts?
+
+-ritesh
 
