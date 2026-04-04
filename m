@@ -4,106 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 727B9E63FEA
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 17:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9519E63FE5
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 17:53:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B07DC6B0088; Sat,  4 Apr 2026 13:24:54 -0400 (EDT)
+	id A48116B0088; Sat,  4 Apr 2026 13:53:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8836B0089; Sat,  4 Apr 2026 13:24:54 -0400 (EDT)
+	id 9F89C6B0089; Sat,  4 Apr 2026 13:53:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A7506B008A; Sat,  4 Apr 2026 13:24:54 -0400 (EDT)
+	id 90E776B008A; Sat,  4 Apr 2026 13:53:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 890446B0088
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 13:24:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3A73C1403C7
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:24:54 +0000 (UTC)
-X-FDA: 84621548508.19.C4BF0A9
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 86D6A40005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:24:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=THdSAnve;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775323492; a=rsa-sha256;
-	cv=none;
-	b=oMLHUGV8eBg1cecpq9FzadccZRksWNzLI2+0SBFWrIDz/KFAgouUTNRDN78dbHCDe0YZ0V
-	azwx8o7bdQf8nf18YFEDSQf9kjsJq0mBV8LnqeLHcRCtq40z4uHpVtuLwXWGWrLMo6laJo
-	gk97OXR8EV+R+vQCJSDN5QqW9MwnI7M=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 840756B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 13:53:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9B42BBA39
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:53:56 +0000 (UTC)
+X-FDA: 84621621672.05.937E4E9
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf16.hostedemail.com (Postfix) with ESMTP id DD25C180007
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:53:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mN8FEh5q;
+	spf=pass (imf16.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775323492;
+	s=arc-20220608; t=1775325235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=1oGf/F8Zl1olrj7LHwmAzkM6a8hyoOTJaO/XdIoQa0M=;
-	b=zTsIOC8VplCq0Y7983IR60fwoQfkF+PJIWExscalQtoO/bdLhLrQj5s+RGSJLwplNsmCBX
-	4g3UBEWQ+qw99d0KZ3LLvvks8EAa8kJ0xZ4PhxTtINxPTVkFBQwmZLNDLRiFqOOmO39NbR
-	PddBgqWfK+9MJmK7OqorUfComkpzlJg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D9/n0xOrVIg4JzXNz87bIfUmI/ls7SmA5Keb0MGw30A=;
+	b=NcgL4/vKgeiC0n7p1duShti2liTbSW6Lhw/7zqTKGyBmdJ+WnHvcNwA/yycav2TlntjmPR
+	audSQx6h+Esn36TdpAluzGpphHF1CNivCPX2cvylTGKMNpoWCSlJYRfMpxoRwca6ZSafww
+	3EGbSA+g03pJTvp24Y6d5myp4YaErM0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=THdSAnve;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c76cce85bd9so897897a12.1
-        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 10:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775323490; x=1775928290; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1oGf/F8Zl1olrj7LHwmAzkM6a8hyoOTJaO/XdIoQa0M=;
-        b=THdSAnvekZHes7vbAhHd+KVkyNBqt+MAEKeTqtb0KuDXncO3Z1mzo+vWIggtMsRjDc
-         e8PEIjKvOyte5JvzaVYUYxCWrjeGJsWSeKe0Gj8VaVDkjs9sd+RdEjLsBxSnzezyF+xT
-         gwD+V62dCeaJSMLeLrG9F11qUkVHBSUHQkY9/zp1XCxDvDp4oeWT6HrZVeukzTrg9Tue
-         qNMLvdpH6RMIWF5gG+ijz2ByRQZuvcuSRx5pjDmDtGVID+UIXUy3Gk4x/LA0qQzM582M
-         OxIPkpvHzKM2Now/7kBBNmv3jbuM4dQntJ1hWLh+pV7O6Jk9+KxciZS6q1C2VfyyCXmd
-         Gv8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775323490; x=1775928290;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1oGf/F8Zl1olrj7LHwmAzkM6a8hyoOTJaO/XdIoQa0M=;
-        b=X6tDiQL48c9MrrLRdHsYd3PDUyuJ/k1FlS60EgM5MysLzEgGuOSm6uxXIetxqIuA9T
-         bRV6ZkXn7u5PKkrMiBbeZDhRfM+cFDEVApfrT8JsJh25Jd4xldMGsC+pNd8ASrrHxisw
-         jcc8XIYetqb53/XoOfBLmU/20t9+XA/oo/hSUdd01OlWYG9jLQr/P68b8xMWEVOj5W+B
-         NvUwk8gVOLtRHCpebHR/fyxWX4XPc2umQ9vZ+tGCskAMmKLoWvFEIwlzMr8uSyi8CEm0
-         FOV9xp6IyZLBAlcQL50ULA7iufkFnjgXmifU8OKueQ7ahpZvxC/TEUlL9XCaeisA9DGb
-         Jung==
-X-Forwarded-Encrypted: i=1; AJvYcCWiBIX9KHaaHE/w94uDANGuQCKwSJNqJ2ij2NaCrrDYDPlt8E4N6KWoZY+MjOSLSx3uqWaoX8KyAQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyecx5ApfK1oGqALZmKHzt9m/G4PZDYeOvFKPM1hZmUxGPDKFDE
-	XldJUR/5n2NTmFDIaIj4qbqvER0VU0JbfD57+zRz4xD0D1sC6wly4cRJWZC4fQ==
-X-Gm-Gg: AeBDiesHxhcLMtN5q12+CxionlYuKhQOpOwgBkIt/7ya3WTfJ5bEd0nFCt08iUc+u4v
-	tkU7zvgcVrdzGLh7Td43pYzIvEB/psNsrnVUTdG4f70BDRs3bRtKq5/gvfz7dDgQbscsHfkj1yR
-	a1Ue25makybdL3GfjocjXquUFgjUqbsDfMiiUjDsHZfTIA8RD6tfqBO8d1R0GD1e5vlKmvzu3J4
-	8ksbSg3TsXg0Yd5LUzSJorviSOyKGmsdEYOJe5nMaR8/Rnx/K5d59W/lbysUAV6jcx2wHhWCtBS
-	/usxXXBFLougUz0vGfaSyB/uXAZNUtEBvxi4A5FYzNSq3ExADl5RpbYvycbVRMQ6zPplO+PVs5f
-	YoeqkQ5cWZsEvm+8eILbnelzvGUWi2ctY9CEV0bqgzhYrocqNIP10a/P6vGW6sm8KMZfi7Jw290
-	jDp7PnZjtA4ZRrlNO5dPEjJw==
-X-Received: by 2002:a05:6a20:2454:b0:39b:8dcb:f37d with SMTP id adf61e73a8af0-39f2ee01ce5mr7551700637.17.1775323490281;
-        Sat, 04 Apr 2026 10:24:50 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c657e703sm7990160a12.22.2026.04.04.10.24.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 10:24:49 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>, Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, alisaidi@amazon.com, blakgeof@amazon.com, abuehaze@amazon.de, dipietro.salvatore@gmail.com, stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-In-Reply-To: <adCQTF1PQnlbNMO8@casper.infradead.org>
-Date: Sat, 04 Apr 2026 22:17:33 +0530
-Message-ID: <5x66n04a.ritesh.list@gmail.com>
-References: <20260403193535.9970-1-dipiets@amazon.it> <20260403193535.9970-2-dipiets@amazon.it> <adCQTF1PQnlbNMO8@casper.infradead.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mN8FEh5q;
+	spf=pass (imf16.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775325235; a=rsa-sha256;
+	cv=none;
+	b=twc2yPCC15PV2A+FzcEmYLKCFSAkkwqAX/WYJrMijZzXw+O7ULgPU9hbMg11eW7rbQbAku
+	WJSVQaBHfJQS9RByGPUhnuUNBFTcwnsU9xX6HDVSc7zAGELsdWG+S4WY1jcykWb709jzHd
+	5zflm0aT2RsDp65raLovkk7AH6zrx4o=
+Message-ID: <c783bc1b-3327-422f-9191-11550513b13c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775325232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D9/n0xOrVIg4JzXNz87bIfUmI/ls7SmA5Keb0MGw30A=;
+	b=mN8FEh5qtk/m7/N1JG0dCSTSUfbBYtfsGQLC016NC56eKf8FDTo54FA5xQa6vXB7CU6IIE
+	+/5t19o4gpNyK3Ns7deKkwEODR7xY81tgJM09f5N8YduC8lZjx73YRa/uKDjaQUGxB5pl0
+	ahysqUd6FYgcWlEVpEanB9b76mME9ZI=
+Date: Sat, 4 Apr 2026 10:53:47 -0700
+MIME-Version: 1.0
+Subject: Re: [PATCH v3 2/6] selftests/liveupdate: add helper functions for
+ memfd tests
+To: Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260404102452.4091740-1-pratyush@kernel.org>
+ <20260404102452.4091740-3-pratyush@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260404102452.4091740-3-pratyush@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 86D6A40005
-X-Stat-Signature: th1bzj75b649rineyu9qi6hqb9nppbpg
-X-HE-Tag: 1775323492-857592
-X-HE-Meta: U2FsdGVkX1+/eD57PGKNTVil4VncA0QQcuKe6wygd1qrpjpq4BLcpRhov5DVeUzTOa5AoRKXSNnuQANwZ07F7S9rZBkr9EggoMwjuarZFDPdu2eZ3OyRsj9xY8JYOUZNFrY1J5gNLml7yvbxCwztP29m9GL4hOvHmABt8xkM4+xXvto4INSBVMx2AEK7FrUPXatWsLsQAhYPXd1B+vkh3g5lxYqk4Rb9k9hPwh7Xqg+yoR+D4hNBrLcSGcEXW6lJUd3u5sxXHmV21+6JisoLbXweD/h8BVNRmLYwfxZnLgYNnp3jImyG8K9SNK20zqISKBaC1blhRDtU8h5bP8hj34TP8f1W2WqtnCFClPZspTNKgN6msuJTXrf/rniKu4DVfyGxrQwxa8BfHb4T9ViXyjb6sBazHRWiHtpemArogVrjfKVl8O/WVYpDlT273Aafa+s49g0dUWfai3r8TFUgR5rNGSjhg+ABq3otrTEN/ra+XW71bw9ndQE7nfWHDOAnVf/mnff250tKIdY0wW0ZXvg9LenY532St4OIVcUcaulepC9OuQ2qBPbN1kJLMMMLuWY90DE/yJjqIJE/q/7Iv0g+tmrOdGYWr3fqQ1mfKOOZJUp9hkBzdl+a/M95Yv3sZHulgYEIGPEVaFzqg95j++5L/26Yi6USP4kRE94nAs+vdv8uvLZoiRf9X3ahW0YayUoFHS0sXsthzWO5OPtxFtQekZLyKZ7pGKbVJj+BQYxKdjb8eGojWh6wqkOhJ1uu5KshH1xf9jP5RSrkOBYVmHkTbtWZcv4V2Dmvzp1HDweM5vb+aNIUQp8SMbdHjdZSBPjnIChNMi7JVSo0MUgAIbOfuTsVcn961aCe12JlzW42bD2N+PWe0lsODU4ti6qOK7fLlhGraSmTm46UppsTLePxtfYEMKR8RsqeXc5JouV67sI8ThTF7JKF55tO/mvhsIOYPzVT8EOZ/q/QIJo
- 22vAqydB
- GrDDCePKzX0fIgpN5747iNGrt8k979H7LSW7hlYJPXuAxttP8ZMfnwR+i0k4BdqPhnzHND3mGBQB4gl+ukRWcTH8SYwxKkc0sFPQd9FbuRSgvGgqUrpLFB1lFNmaipNZekPoy6Q78ebrwWZVx9cu8OvIgnMDm/eF6XbyoBin6umxHuvEAzfZYDw+XXGO0P/mof+5GLKgEHQotWgZA2kxkH/jzoHQv4qXlYwCvtnxoqZBBn2VuepnFxpKgMdLg2TefRzfbUcJCElBT58Y2wTS+3QiMbQxGQjLpMPWRPmxMsnKsBT2n7qg0b9f9WvhUEHumRdWhC/3SHIoUeIKHJnDA9Un1vHmlog1he5yGFiSHQrEFZSYEzV/0gR8YjPfusjgj9Vk/4KHx9M9sT16zSuhcrM2Ec6hN2Gr+WpOwvT04/Ryd/1tQ1q7xvIvDSeD+RPY7loLIrJMqeMWO47BzDZv9nDEcV0SU5477TNAtgje8OyqQig4dSRyXY/ka6PzZv2TeS5zeddSiKsmRernRa7sZyxPcWd55SXUjv0f2gGMHd1kvlrs=
+X-Stat-Signature: zfp9tc71xzuhw3z453963p7ziwyfdi65
+X-Rspamd-Queue-Id: DD25C180007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775325234-496766
+X-HE-Meta: U2FsdGVkX1/+1K6OBilbvccFJ/3QjD3Cuu/7hwNyGa6ICWWMmQ5HSlLhMcVicJoHRx6JbhH+ZijVM4pRXIUhLdXnQ7SuPa4EuUTLAGJoPKC72uvLE9DQFodlcUe+C3JA1/UAs8qSmmCXpb2os/r7JrfP782/8apic73ViNIDTl3RZP92x2m4a6eJ5ub7hWHYhA56mNhxB4U2zJ5tJzr9ABbPgacNQC/DpT0CAyWwQN84VXTnJOrs5I4L3r4dgsHT1UNP0bHX0Yb/hVztbUVP5RhnVpsNVtE84Iz/pg51uiVOFwLYJRTbNrVxspPIXf3bF8poGV0nR6sO6TMMUY5qGmr9JYOCFgTBhnp6WrCu6DqRQA3cutB+cxtYjAgEqNw5DPaiUb0ZRfbtWXGRfFc6+vxNpYuchR1Jo+g0kdv4OeN0/muAOyvB4kknJ8ldThbHqddFcagN81LeffVe5v0KLgxsHcUhbZ3G5KvhFWA/UnqujZNSxE4i3omIuObF8Gw4hD7qSuSO0DJWDLlv8cDyHHuOOxflSl2RwlZQBTrOhHhwIXpZFd4v6JQ1oPoaUqmjIYvZPV7kdJfg7GlvqcVuE/3vbeN283Gwfe65RyRt7VV3KH3XQF/eIhWrj6lfdT084sPXrldsgo6bLk26v2h2E6ZBSRf+wWJo0d+wGL12bm8zdCHY14XCzdPZ/cKfwSgfW5hDdwP8DqGn4flr7x+g6VOjftQ4XFM7FKz81dGR/ZrEmDTpZXC0EprloPhogB/lFFs3UYeIpm/YhAWW6t1KfyspMSK/sa89Gp+ly7eoUT95KotQHHPGeQNO/W9gO1Ts+H/6e9ERM+A/fmmi8VkrAuTiXhM5e2zwFboQ65VGemXkUHuTKBA35Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,59 +91,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matthew Wilcox <willy@infradead.org> writes:
+在 2026/4/4 3:24, Pratyush Yadav 写道:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> Add some helper functions that will be used by memfd tests. This moves
+> some of the complexity out of the test itself, which results in better
+> test readability and less code duplication.
+> 
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>   .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++++++++++-
+>   .../selftests/liveupdate/luo_test_utils.h     |  10 +
+>   2 files changed, 200 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
+> index 3c8721c505df..ceb918ef9813 100644
+> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
+> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+> @@ -1,8 +1,12 @@
+>   // SPDX-License-Identifier: GPL-2.0-only
+>   
+>   /*
+> - * Copyright (c) 2025, Google LLC.
+> + * Copyright (c) 2025-2026, Google LLC.
+>    * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + * Pratyush Yadav (Google) <pratyush@kernel.org>
+> + *
+> + * Copyright (C) 2025 Amazon.com Inc. or its affiliates.
+> + * Pratyush Yadav <ptyadav@amazon.de>
+>    */
+>   
+>   #define _GNU_SOURCE
+> @@ -20,9 +24,194 @@
+>   #include <sys/stat.h>
+>   #include <errno.h>
+>   #include <stdarg.h>
+> +#include <sys/vfs.h>
+> +#include <linux/magic.h>
+>   
+>   #include "luo_test_utils.h"
+>   
+> +int cwd_is_tmpfs(void)
+> +{
+> +	struct statfs buf;
+> +
+> +	if (statfs(".", &buf) < 0)
+> +		return -errno;
+> +
+> +	return buf.f_type == TMPFS_MAGIC;
+> +}
+> +
+> +/* Read exactly specified size from fd. Any less results in error. */
+> +int read_size(int fd, char *buffer, size_t size)
+> +{
+> +	size_t remain = size;
+> +	ssize_t bytes_read;
+> +
+> +	while (remain) {
 
-> On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
->> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
->> introduced high-order folio allocations in the buffered write
->> path. When memory is fragmented, each failed allocation triggers
->> compaction and drain_all_pages() via __alloc_pages_slowpath(),
->> causing a 0.75x throughput drop on pgbench (simple-update) with 
->> 1024 clients on a 96-vCPU arm64 system.
->> 
->> Strip __GFP_DIRECT_RECLAIM from folio allocations in
->> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
->> making them purely opportunistic.
->
-> If you look at __filemap_get_folio_mpol(), that's kind of being tried
-> already:
->
->                         if (order > min_order)
->                                 alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
->
->  * %__GFP_NORETRY: The VM implementation will try only very lightweight
->  * memory direct reclaim to get some memory under memory pressure (thus
->  * it can sleep). It will avoid disruptive actions like OOM killer. The
->  * caller must handle the failure which is quite likely to happen under
->  * heavy memory pressure. The flag is suitable when failure can easily be
->  * handled at small cost, such as reduced throughput.
->
-> which, from the description, seemed like the right approach.  So either
-> the description or the implementation should be updated, I suppose?
->
-> Now, what happens if you change those two lines to:
->
-> 			if (order > min_order) {
-> 				alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-> 				alloc_gfp |= __GFP_NOWARN;
-> 			}
+while (remain > 0) ?
 
-Hi Matthew,
+> +		bytes_read = read(fd, buffer, remain);
+> +		if (bytes_read == 0)
+> +			return -ENODATA;
+> +		if (bytes_read < 0) {
+> +			if (errno == EINTR)
+> +				continue;
+> +			else
+> +				return -errno;
+> +		}
+> +
+> +		remain -= bytes_read;
+> +		buffer += bytes_read;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* Write exactly specified size from fd. Any less results in error. */
+> +int write_size(int fd, const char *buffer, size_t size)
+> +{
+> +	size_t remain = size;
+> +	ssize_t written;
+> +
+> +	while (remain) {
 
-Shouldn't we try this instead? This would still allows us to keep
-__GFP_NORETRY and hence light weight direct reclaim/compaction for
-atleast the non-costly order allocations, right?
+while (remain>0) is better?
 
- 			if (order > min_order) {
-				alloc_gfp |= __GFP_NOWARN;
-				if (order > PAGE_ALLOC_COSTLY_ORDER)
-					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-				else
-					alloc_gfp |= __GFP_NORETRY;
-			}
+Zhu Yanjun
 
--ritesh
+> +		written = write(fd, buffer, remain);
+> +		if (written == 0)
+> +			return -EIO;
+> +		if (written < 0) {
+> +			if (errno == EINTR)
+> +				continue;
+> +			else
+> +				return -errno;
+> +		}
+> +
+> +		remain -= written;
+> +		buffer += written;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int generate_random_data(char *buffer, size_t size)
+> +{
+> +	int fd, ret;
+> +
+> +	fd = open("/dev/urandom", O_RDONLY);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret = read_size(fd, buffer, size);
+> +	close(fd);
+> +	return ret;
+> +}
+> +
+> +int save_test_data(const char *filename, const char *buffer, size_t size)
+> +{
+> +	int fd, ret;
+> +
+> +	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0666);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret = write_size(fd, buffer, size);
+> +	fsync(fd);
+> +	close(fd);
+> +	return ret;
+> +}
+> +
+> +int load_test_data(const char *filename, char *buffer, size_t size)
+> +{
+> +	int fd, ret;
+> +
+> +	fd = open(filename, O_RDONLY);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret = read_size(fd, buffer, size);
+> +	close(fd);
+> +	return ret;
+> +}
+> +
+> +/* Create and initialize a memfd with random data. */
+> +int create_random_memfd(const char *memfd_name, char *buffer, size_t size)
+> +{
+> +	int fd;
+> +	int ret;
+> +
+> +	fd = memfd_create(memfd_name, 0);
+> +	if (fd < 0)
+> +		return -errno;
+> +
+> +	ret = generate_random_data(buffer, size);
+> +	if (ret < 0) {
+> +		close(fd);
+> +		return ret;
+> +	}
+> +
+> +	ret = write_size(fd, buffer, size);
+> +	if (ret < 0) {
+> +		close(fd);
+> +		return ret;
+> +	}
+> +
+> +	/* Reset file position to beginning */
+> +	if (lseek(fd, 0, SEEK_SET) < 0) {
+> +		ret = -errno;
+> +		close(fd);
+> +		return ret;
+> +	}
+> +
+> +	return fd;
+> +}
+> +
+> +/*
+> + * Make sure fd contains expected data up to size. Returns 0 on success, 1 on
+> + * data mismatch, -errno on error.
+> + */
+> +int verify_fd_content_read(int fd, const char *expected_data, size_t size)
+> +{
+> +	char *buffer;
+> +	int ret;
+> +
+> +	buffer = malloc(size);
+> +	if (!buffer)
+> +		return -ENOMEM;
+> +
+> +	/* Reset file position to beginning */
+> +	if (lseek(fd, 0, SEEK_SET) < 0) {
+> +		ret = -errno;
+> +		goto out;
+> +	}
+> +
+> +	ret = read_size(fd, buffer, size);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	if (memcmp(buffer, expected_data, size) != 0) {
+> +		ret = 1;
+> +		goto out;
+> +	}
+> +
+> +	ret = 0;
+> +
+> +out:
+> +	free(buffer);
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Verify fd content using mmap. Returns 0 on success, 1 on data mismatch,
+> + * -errno on error.
+> + */
+> +int verify_fd_content_mmap(int fd, const char *expected_data, size_t size)
+> +{
+> +	char *mapped_mem;
+> +	int ret;
+> +
+> +	mapped_mem = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+> +	if (mapped_mem == MAP_FAILED)
+> +		return -errno;
+> +
+> +	ret = memcmp(mapped_mem, expected_data, size) ? 1 : 0;
+> +	munmap(mapped_mem, size);
+> +	return ret;
+> +}
+> +
+>   int luo_open_device(void)
+>   {
+>   	return open(LUO_DEVICE, O_RDWR);
+> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.h b/tools/testing/selftests/liveupdate/luo_test_utils.h
+> index 90099bf49577..a69dce2649b0 100644
+> --- a/tools/testing/selftests/liveupdate/luo_test_utils.h
+> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.h
+> @@ -35,6 +35,16 @@ void restore_and_read_stage(int state_session_fd, int token, int *stage);
+>   
+>   void daemonize_and_wait(void);
+>   
+> +int cwd_is_tmpfs(void);
+> +int read_size(int fd, char *buffer, size_t size);
+> +int write_size(int fd, const char *buffer, size_t size);
+> +int generate_random_data(char *buffer, size_t size);
+> +int save_test_data(const char *filename, const char *buffer, size_t size);
+> +int load_test_data(const char *filename, char *buffer, size_t size);
+> +int create_random_memfd(const char *memfd_name, char *buffer, size_t size);
+> +int verify_fd_content_read(int fd, const char *expected_data, size_t size);
+> +int verify_fd_content_mmap(int fd, const char *expected_data, size_t size);
+> +
+>   typedef void (*luo_test_stage1_fn)(int luo_fd);
+>   typedef void (*luo_test_stage2_fn)(int luo_fd, int state_session_fd);
+>   
 
->
-> Do you recover the performance?
 
