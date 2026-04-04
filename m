@@ -4,90 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4895E88D9C
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 13:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B354E63FE0
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 16:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D03B36B0005; Sat,  4 Apr 2026 09:00:13 -0400 (EDT)
+	id EE6906B0089; Sat,  4 Apr 2026 12:39:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB42E6B0089; Sat,  4 Apr 2026 09:00:13 -0400 (EDT)
+	id EBBCF6B0092; Sat,  4 Apr 2026 12:39:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7BAD6B008A; Sat,  4 Apr 2026 09:00:13 -0400 (EDT)
+	id D83DD6B008A; Sat,  4 Apr 2026 12:39:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A78FC6B0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 09:00:13 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3EE2A8C4ED
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 13:00:13 +0000 (UTC)
-X-FDA: 84620881506.15.AB086FD
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A4B2B40009
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 13:00:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="o39tLpN/";
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="o39tLpN/";
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775307611; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C77BD6B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 12:39:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 032A68C6C6
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:39:56 +0000 (UTC)
+X-FDA: 84621435234.01.94D07A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4F7DCA000E
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:39:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CQCD1ufc;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775320795; a=rsa-sha256;
 	cv=none;
-	b=NZknJ2slxp+yN/+Oq/6wgxPimok/o/bVzk8m1JQmQWhFynb8Q+675QkasiwLBjWfp5lYFC
-	VNyvI4jcQCtE+WZsZYuKsUOktWSPt/0R17MSfVwKD+n4sHGVQWu++KsizWaLrNRAk03lAy
-	YTCTACmfmbzHF7R2X4WBfydMyXBKQH8=
+	b=1+Xp3WIFVJR7OogggJ06lXCzTO5w6jcnvYKqoxFht9JakJD7BpSH/NzEBAO2AKzpLS3kxK
+	X+hiV1PljJBj23WILyqgfYM79xjQFB73nIZUe8QtZ5uePYaZMZG/RUdi95vzNlEyHzOwmU
+	9f22W6N/Sz7MLmRUubVaegobBnqMR1Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775307611;
+	s=arc-20220608; t=1775320795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+/xCFsixabF/oYHDluWmOQqI46QTrRWpFhihHLF3f6w=;
-	b=CVg+Ss3AVvp2pyxt9oSA5aC8V/ETD+k7Xxt1RjL2+O0InlEWQuaHIUF+FHx2r9Bsmqh18/
-	D1XfNSoos50AaeXk4bSZZr3GuWh4UKqN1H/aeDGBKLHVKMs5LPhF0DHsFSfS/9bly/49Do
-	EVbRGJbuWiJUps5eVb+CjswjAsHZFnc=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775307608;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+/xCFsixabF/oYHDluWmOQqI46QTrRWpFhihHLF3f6w=;
-	b=o39tLpN/X1/ghIr3SpkvRvoAfOqlCyzm7GTaiBFhBY90D+7jvG6B8D8jg8fCn6yXJKMxbA
-	j4q9WKRLEtu1oWfFCVkkTWFGlDV/3j6QAxqJKeb3p3l6jOXtXplsd3/K1cEQL5/owIdvpn
-	wr5A04yiVv/SGp8tA9domOBWJf43wJU=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
- hugetlb_mfill_atomic_pte() resubmission path
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260322052120.14021-1-devnexen@gmail.com>
-Date: Sat, 4 Apr 2026 20:59:11 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- YueHaibing <yuehaibing@huawei.com>,
- Mina Almasry <almasrymina@google.com>,
- linux-mm@kvack.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
-References: <20260322052120.14021-1-devnexen@gmail.com>
-To: David Carlier <devnexen@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A4B2B40009
-X-Stat-Signature: fquw3hgxewmjq9wm99inu7exd3rdmcrq
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iBFaktkMWgD/KY6cXABUDEHmmxdlbuvXx2RR//V5WkQ=;
+	b=hA0ls6M0lj5Sgehwq2xJon8WdmQpjyONKSCon8K0DpS8AKBq8Bca591R2ku7ObPZmTNgJ0
+	v8x+I/2bVodQPtVAVZg94yxCMclBSYH2tFF1nWz2XLneyUvMZ2ulFrjuvOByLT0chawElC
+	ISepiFS3tJ6htwZZOCNuLMH31ladYJc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CQCD1ufc;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A2C541A78;
+	Sat,  4 Apr 2026 16:39:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EECAC19421;
+	Sat,  4 Apr 2026 16:39:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775320794;
+	bh=KzxK3rvPiuMB+ti6vCCvi2SSTcuZGc9NqWsNLvX++LY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CQCD1ufcoT2sNfl14CV+BXfVwOhjEugdBVoPIwKN3E5OK8jEiEaZWY9oPBq0PPipZ
+	 85wJ26hTX7pThMVAXt2/vTCo7+MHK8M44yrbG437v/cbGihk4JtGZUNGk60kLt/2aF
+	 L6+4q2H+EacWiWLjBYrVdBhf3oTLh2rcI+AZ8zqZ+5TOao/zN4p2VfVXTVvuWApKtX
+	 thxllPbiEy/aUML12ywtSNDnJyHqSfgLJmR00JCFzwmLzUTCyWDY5/hItIhXaP8Rpb
+	 VXIx9Q3ZB5SMmLfeGhOHLe11Hokl1T2tyIi6GPjSLcsxdumnhi95kX7aS3trqmMeOm
+	 LOS6N7rXmKF+Q==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/9] mm/damon: introduce DAMOS failed region quota charge ratio
+Date: Sat,  4 Apr 2026 09:39:30 -0700
+Message-ID: <20260404163943.89278-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1775307610-16155
-X-HE-Meta: U2FsdGVkX1+g//HAnH+AtVCW+Youw25fnd+cTmN3UjYkWfqyJNVczOf33yPUEtnHbiV9RE6Uq0/thqGRwaVoH1QHBiAGW5qd5oTXk14UjPnf9rw37tcG+Vn+wfxYHoR0quB5oI/a/J6ruqJ6i/7zJxPC+Slecoqs0Lz/PCtiT7aVuW4gTYVkcd0Cxk5LzU1MokSftV3zJ+Mi0bKYAOATb47dRwQBNEMcyS/nufUMA9renf694/5Lr7Cb78RprIG7nmhsABK0wGh5Ooe0ngXvynzulzUCRrMJ7YvkXCMjK6WWLVbcXXA6sXa5CzY1Mai9E70HmorLGfkNtzplsDycKUnS7T3uW2yGOGTmbEYP9qWNjnqi6EsRfisbmKGHCiFeFUQES4RZ+NxP3fRcMcRpXUOyO17wMKi2fXDMwfsNhw5QSruLJzAbXEqOW6Q00q8JyUhhuMyDV2KWG907U/yp1nImtDIK0snssI5vzPgON95SB3+Yu3jNpKcAK4S2FKpGaSf0BtJRVLmNr4ytzYamNN9w0cTFJprRy0Nw3DMiQk0PqGHfd16aPdQWsWXJb0LnJXFkb0ZKXfe0LOYlLgxXbZrjodS9rkEeNM3c9CD1NA5OkubZlGYu23tIvSYzXaNAaPh3uxHC/SZiFPaZerU4aOd3S+YSmp5zslnPuZluFr+8pm8CGMFBQVQyZJUwPjg5YZC4/S1kGD76CWz7a/UeRuhpYUFjqFA/qWq9+FJauenQWicS+aAQGoZVyLrSwLD1wJRtnpFUi07nnN1ityDL78PTkiCNiNn8oF/++PIIO/ny+dsGyvf4mU/Px9SWQp6cIacU9G8UaLTmpKoXXV4uWjzBc4MOmyCFgjOu/sWoVrG1CXc4SD9ackg8fME0u8O/YCrkALsfTAdrkOHZKaN9E5ChvbINauzldb1VUSPTZboLxHHYXYYPl/XBk8JYroL9gAWIu0nukxZFPHcZ/iZ
- G/05zx7c
- 3eZ7t+AzY15PfOEyMJDAMGKVfyk22lqsieGUR4YM2TQ0OqW1nz94PDM38rUp0zTYiIvU4jU+v6A56YnNRHXTY7LzYpYlu6ilaLMPPzBmXdWZ5Hvtmjlc1FV6tc6uB8nL8aFfIR2MALSd2EZnj96iEqegkwu5UHqc3R/ll2u32il3f4q2H4mKSiuITBYYHvWDbM9S5Pu6C9EYcWtxjxOTnbOIuqVFyYr4FxDQZtmEofvoed76D0cTeuHDQdMz0Zj0T0NTF8u68z2//uX59P0cH0mwINd3cNZtyxg7zuoFrERSKb3mMOcfwpwEkCNYVmuLNIr5wqPDecGZ8ED+cC2S+bLl25yHmArpABSAkqqC3ZF72ua8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4F7DCA000E
+X-Stat-Signature: nnafwsfu5eyqghk9s49q85gyxaefrx8n
+X-HE-Tag: 1775320795-33925
+X-HE-Meta: U2FsdGVkX1+kxavPBnD7+UYLW7Fc4665iSvQ0NslFp/sTO4KBCxh7q02lGcK2BzVfVGXrlZjYpyXx8mLpJBD7dLObYgP9JDRdkg79OzI/Y0DIvaDx27xjI29fbPQ+V0XBUULTn/GhHu2+ebZ4TfMiJ5Ne76E2WIwhFBUPcUZhjfqRjOAiafUKw7SDZfA9i/ZYEWg73fhONENqWD7VzjNUDTPvomrwlFYCKP6Xjymjx/EEPgTCmCUPqu05RGBORw+YJpfzuuHik8CeBgPGID8Ll3zIxvO8aV3066AtfgcUXDokd2UfappmXMsZL/PWgMGN3ru4E7s3Uua/+R+njoe1Vfum54WcsLviLLXctEeWVyalRFLc6xBGuLjvwTp2ZwN+98UmyLwN7egOc2cm3rBaa20AyR82HNNe3mCPWYGcGgA6yThwUiV8w/bDAw/bubUutnaY66kG1cqFMQ1M52iQ957A3hzI9UR9R4pC0yGcN59WVfWk3MsQf9XlIlIRWf4qNI/Sp8ZOk/OhlnbAUEp60XhD0/k2ktF7VIF/rLWdAGfg9u6ugg/F622rPFDpV9AOVx5byas1Z+Wpj8/uG5rC0ahHGpzlayGQobmpSqCY2nkOvegQk8gbQResVwwydb5y131iTliZtvx1iakd+FIkI3tHaIQSLTZKXjxYT17izej7yqZOPEDLel81uW1YB8lP/SoQJaUhTI3szWAb+xSpAuyTU4RQ4vqefFWoEIG5CAllheZm5iYeZi6BVIDeKss6bxf/9ZdT+CihiQcjNsVlNEtQ0xENeAY2SukZp5KKQVe/gInvwWcBK6QaHIv21B+Z7BABtYm7g3d+xLSUTGlwrJfkHg4d33Y3Ve3I5mM1XmejNKds2zKu6gJbAJfShwH2VX+pq4R+KUew56kdjRdfaBFuaNuSRhWb09fJa/hNBIVvQctZSqPYbHg2cvWmqcaATTlYsb0mdrIJjv1Ri6
+ Gq5VCmVo
+ tnir24eU/20kRIeB2mqWbb5BE18DG5zg0cuv5QFQrrRDYhN9E0W9T0HDGUKG1L3lBYtVZEwAjzPvYyvJdxfUyXhOpcxNYdqsMs2hkjLzLXTMg1YOSc+v2E6TLEiaufITJ+EwX7WIIFWzY3RR/x3Y7ipe+P1nhSp7bb/kRLwtgDp+2G1gdIfqXjGJy7kKJjl6WT1hNYjdjCNhdCTXkrFqJEU9H4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,88 +106,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+TL; DR: Let users set different DAMOS quota charge ratios for DAMOS
+action failed regions, for deterministic and consistent DAMOS action
+progress.
+
+Common Reports: Unexpectedly Slow DAMOS
+=======================================
+
+One common issue report that we get from DAMON users is that DAMOS
+action applying progress speed is sometimes much slower than expected.
+And one common root cause is that the DAMOS quota is exceeded by the
+action applying failed memory regions.
+
+For example, a group of users tried to run DAMOS-based proactive memory
+reclamation (DAMON_RECLAIM) with 100 MiB per second DAMOS quota.  They
+ran it on a system having no active workload which means all memory of
+the system is cold.  The expectation was that the system will show 100
+MiB per second reclamation until (nearly) all memory is reclaimed. But
+what they found is that the speed is quite inconsistent and sometimes it
+becomes very slower than the expectation, sometimes even no reclamation
+at all for about tens of seconds.  The upper limit of the speed (100 MiB
+per second) was being kept as expected, though.
+
+By monitoring the qt_exceeds (number of DAMOS quota exceed events) DAMOS
+stat, we found DAMOS quota is always exceeded when the speed is slow. By
+monitoring sz_tried and sz_applied (the total amount of DAMOS action
+tried memory and succeeded memory) DAMOS stats together, we found the
+reclamation attempts nearly always failed when the speed is slow.
+
+DAMOS quota charges DAMOS action tried regions regardless of the
+successfulness of the try.  Hence in the example reported case, there
+was unreclaimable memory spread around the system memory.  Sometimes
+nearly 100 MiB of memory that DAMOS tried to reclaim in the given quota
+interval was reclaimable, and therefore showed nearly 100 MiB per second
+speed.  Sometimes nearly 99 MiB of memory that DAMOS was trying to
+reclaim in the given quota interval was unreclaimable, and therefore
+showing only about 1 MiB per second reclaim speed.
+
+We explained it is an expected behavior of the feature rather than a
+bug, as DAMOS quota is there for only the upper-limit of the speed.  The
+users agreed and later reported a huge win from the adoption of
+DAMON_RECLAIM on their products.
+
+It is Not a Bug but a Feature; But...
+=====================================
+
+So nothing is broken.  DAMOS quota is working as intended, as the upper
+limit of the speed.  It also provides its behavior observability via
+DAMOS stat.  In the real world production environment that runs long
+term active workloads and matters stability, the speed sometimes being
+slow is not a real problem.
+
+But, the non-deterministic behavior is sometimes annoying, especially in
+lab environments.  Even in a realistic production environment, when
+there is a huge amount of DAMOS action unapplicable memory, the speed
+could be problematically slow.  Let's suppose a virtual machines
+provider that setup 99% of the host memory as hugetlb pages that cannot
+be reclaimed, to give it to virtual machines.  Also, when aim-oriented
+DAMOS auto-tuning is applied, this could also make the internal feedback
+loop confused.
+
+The intention of the current behavior was that trying DAMOS action to
+regions would anyway impose some overhead, and therefore somehow be
+charged.  But in the real world, the overhead for failed action is much
+lighter than successful action.  Charging those at the same ratio may be
+unfair, or at least suboptimum in some environments.
+
+DAMOS Action Failed Region Quota Charge Ratio
+=============================================
+
+Let users set the charge ratio for the action-failed memory, for more
+optimal and deterministic use of DAMOS.  It allows users to specify the
+numerator and the denominator of the ratio for flexible setup.  For
+example, let's suppose the numerator and the denominator are set to 1
+and 4,096, respectively.  The ratio is 1 / 4,096.  A DAMOS scheme action
+is applied to 5 GiB memory.  For 1 GiB of the memory, the action is
+succeeded.  For the rest (4 GiB), the action is failed.  Then, only 1
+GiB and 1 MiB quota is charged.
+
+The optimal charge ratio will depend on the use case and
+system/workload.  I'd recommend starting from setting the nominator as 1
+and the denominator as PAGE_SIZE and tune based on the results, because
+many DAMOS actions are applied at page level.
+
+Tests
+=====
+
+I tested this feature in the steps below.
+
+1. Allocate 50% of system memory and mlock() it using a test program.
+2. Fill up the page cache to exhaust nearly all free memory.
+3. Start DAMON-based proactive reclamation with 100 MiB/second DAMOS
+   hard-quota.  Auto-tune the DAMOS soft-quota under the hard-quota for
+   achieving 40% free memory of the system with 'temporal' tuner.
+
+For step 1, I run a simple C program that is written by Gemini.  It is
+quite straightforward, so I'm not sharing the code here.
+
+For step 2, I use dd command like below:
+
+   dd if=/dev/zero of=foo bs=1M count=$50_percent_of_system_memory
+
+For step 3, I use the latest version of DAMON user-space tool (damo)
+like below.
+
+    sudo damo start --damos_action pageout \
+            ` # Do the pageout only up to 100 MiB per second ` \
+            --damos_quota_space 100M --damos_quota_interval 1s \
+            ` # Auto-tune the quota below the hard quota aiming` \
+            ` # 40% free memory of the node 0 ` \
+            ` # (entire node of the test system)` \
+            --damos_quota_goal node_mem_free_bp 40% 0 \
+            ` # use temporal tuner, which is easy to understnd ` \
+            --damos_quota_goal_tuner temporal
+
+As expected, the progress of the reclamation is not consistent, because
+the quota is exceeded for the failed reclamation of the unreclaimable
+memory.
+
+I do this again, but with the failed region charge ratio feature.  For
+this, the above 'damo' command is used, after appending command line
+option for setup of the charge ratio like below.  Note that the option
+was added to 'damo' after v3.1.9.
+
+    sudo ./damo start --damos_action pageout \
+            [...]
+            ` # quota-charge only 1/4096 for pageout-failed regions ` \
+            --damos_quota_fail_charge_ratio 1 4096
+
+The progress of the reclamation was nearly 100 MiB per second until the
+goal was achieved, meeting the expectation.
+
+Patches Sequence
+================
+
+Patch 1 implements the feature and exposes it via DAMON core API.
+Patch 2 implements DAMON sysfs ABI for the feature.  Three following
+patches (3-5) document the feature and ABI on design, usage, and ABI
+documents, respectively.  Four patches for testing of the new feature
+follow.  Patch 6 implements a kunit test for the feature.  Patches 7
+and 8 extend DAMON selftest helpers for DAMON sysfs control and internal
+state dumping for adding a new selftest for the feature.  Patch 9
+extends existing DAMON sysfs interface selftest to test the new feature
+using the extended helper scripts.
+
+SeongJae Park (9):
+  mm/damon/core: introduce failed region quota charge ratio
+  mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
+  Docs/mm/damon/design: document fail_charge_{num,denom}
+  Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom}
+    files
+  Docs/ABI/damon: document fail_charge_{num,denom}
+  mm/damon/tests/core-kunit: test fail_charge_{num,denom} committing
+  selftets/damon/_damon_sysfs: support failed region quota charge ratio
+  selftests/damon/drgn_dump_damon_status: support failed region quota
+    charge ratio
+  selftets/damon/sysfs.py: test failed region quota charge ratio
+
+ .../ABI/testing/sysfs-kernel-mm-damon         | 12 +++++
+ Documentation/admin-guide/mm/damon/usage.rst  | 18 +++++--
+ Documentation/mm/damon/design.rst             | 21 ++++++++
+ include/linux/damon.h                         |  9 ++++
+ mm/damon/core.c                               |  9 +++-
+ mm/damon/sysfs-schemes.c                      | 54 +++++++++++++++++++
+ mm/damon/tests/core-kunit.h                   |  6 +++
+ tools/testing/selftests/damon/_damon_sysfs.py | 21 +++++++-
+ .../selftests/damon/drgn_dump_damon_status.py |  2 +
+ tools/testing/selftests/damon/sysfs.py        |  6 +++
+ 10 files changed, 151 insertions(+), 7 deletions(-)
 
 
-> On Mar 22, 2026, at 13:21, David Carlier <devnexen@gmail.com> wrote:
->=20
-> When the resubmission path in hugetlb_mfill_atomic_pte() allocates a =
-new
-> hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is =
-consumed. If
-> copy_user_large_folio() subsequently fails, folio_put() restores the =
-global
-> hugetlb pool count through free_huge_folio(), but the per-VMA =
-reservation
-> map entry is left in an inconsistent state.
->=20
-> Add the missing restore_reserve_on_error() call before folio_put(), =
-matching
-> the first-attempt error path which already handles this correctly.
->=20
-> Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow =
-on UFFDIO_COPY")
-
-Hi David,
-
-Thanks for this fix. The patch looks good to me and clearly solves the
-reservation leak in the resubmission path of hugetlb_mfill_atomic_pte().
-
-However, I'm a bit curious about the Fixes tag. While commit =
-8cc5fcbb5be8
-did introduce this code structure and the retry path, it seems the bug
-wasn't actually introduced there. At that time, copy_huge_page() =
-returned
-void, so the failure path simply did not exist.
-
-Instead, looking at the git history, the failure branch `if (ret)` was
-added later by commit 1cb9dc4b475c ("mm: hwpoison: support recovery from
-HugePage copy-on-write faults"). It modified copy_user_large_folio() to
-return an int and introduced error handling paths that unfortunately
-missed restoring the reservations. Should the Fixes tag perhaps point to
-1cb9dc4b475c instead?
-
-Furthermore, if commit 1cb9dc4b475c is indeed the root cause, I noticed
-it also introduced similar error handling paths in other places. For
-example, in copy_hugetlb_page_range():
-
-        ret =3D copy_user_large_folio(new_folio, pte_folio, addr, =
-dst_vma);
-        folio_put(pte_folio);
-        if (ret) {
-                folio_put(new_folio);
-                break;
-        }
-
-Here, new_folio was allocated with alloc_hugetlb_folio(), which consumes
-reservations. But if the copy fails, new_folio is freed via folio_put()
-without calling restore_reserve_on_error() first.
-
-Does this imply we might have similar reservation leaks in other error
-paths touched by 1cb9dc4b475c? I'd love to hear your thoughts on this.
-
-Thanks,
-Muchun
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
-> mm/hugetlb.c | 1 +
-> 1 file changed, 1 insertion(+)
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 88009cd2a846..d6ea11113f1d 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
-> 	folio_put(*foliop);
-> 	*foliop =3D NULL;
-> 	if (ret) {
-> + 		restore_reserve_on_error(h, dst_vma, dst_addr, folio);
-> 		folio_put(folio);
-> 		goto out;
-> 	}
-> --=20
-> 2.53.0
->=20
-
+base-commit: 9e634d6813be2e3d1cb023a0b83619fd2bcdd13b
+-- 
+2.47.3
 
