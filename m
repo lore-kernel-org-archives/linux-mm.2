@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E709E88D66
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 10:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25537E88D66
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 10:25:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20DAE6B0005; Sat,  4 Apr 2026 06:02:22 -0400 (EDT)
+	id 452576B0005; Sat,  4 Apr 2026 06:25:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5836B0089; Sat,  4 Apr 2026 06:02:22 -0400 (EDT)
+	id 402976B0089; Sat,  4 Apr 2026 06:25:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FB496B008A; Sat,  4 Apr 2026 06:02:22 -0400 (EDT)
+	id 318336B008A; Sat,  4 Apr 2026 06:25:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 020C86B0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 06:02:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D5DF14031D
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 10:02:21 +0000 (UTC)
-X-FDA: 84620433282.29.90BD474
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 00BA21C0004
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 10:02:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f+7nfSJi;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775296940; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CD186B0005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 06:25:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD22F140784
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 10:25:05 +0000 (UTC)
+X-FDA: 84620490570.10.B481F00
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4760D1C0005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 10:25:04 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ARqHXi/t";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775298304; a=rsa-sha256;
 	cv=none;
-	b=7g7XjHY9RprQ4cXaIlUMwZor38/irlVdI3OxIQww7lOGTP0jIGRGV7GaorU7MaIKRPghtQ
-	64SLvRkJBJUSQD4BHiUUb5Ff6i+EEdTtIs3tIU3+Qbf3/+A5sLlyZoO2hCoRu1aCutOoSG
-	DRfZ5pQkzCuUkCnXEjotyhrCQf5BscI=
+	b=Y0ieI7KqU4xDzKShNjNNCUrOCPiOJmQDM9qHc97V+2cQs1251Dy3WcwnKYYXpDqInfdyzB
+	uJwTVeHpngiE3jYKKC3XkiH7/5I+51DqYDkgBEAwEOtJhXasiu0DTgoEuz4YCbN2FIo2h5
+	yT9+ylhVr+2iltaxiaHA37As4qZdpjY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ARqHXi/t";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775296940;
+	s=arc-20220608; t=1775298304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bj8GY8uxMfSQCrxRw3zkFeoAncweoq0o/+nHlRO48Fw=;
-	b=mtOcCYe2CORugE+5mytCgfyaUF+o6fdliGS3tHD5/WB2hQ45vpoOtLgV6L3pZV7XM96dNH
-	6vwN308Pp1UegnoL6UrnQ+h5T1zBUX9HHgrh21qI/D9baJLKzpg1M+CYZK8Gwp3yeW90UK
-	QKCmvGgYAOl8ft+owjgCJwTwyQZNw6w=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f+7nfSJi;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HRa6VAXSr5p5/uTzpHiQHPWlAGVlH1z7tXnisXSclb0=;
+	b=AFKdIKnZ6H8LruR6TbxyxJbRqlfCqXTooGVj2JfpkuXcFkx9Rnszs0XzRAXRtxTDL1RAjw
+	spSQICyyYS8ZvIUgXonm/mEhkm+QV2xmwuqB12P021BA35pLFwQPCezmrAVseUfq/p/l1F
+	xuHQTGdqzBEMIHYm70XecU6wsUIDXtc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B92C842D54;
-	Sat,  4 Apr 2026 10:02:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAC9C19421;
-	Sat,  4 Apr 2026 10:02:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 68C6760008;
+	Sat,  4 Apr 2026 10:25:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F80C19421;
+	Sat,  4 Apr 2026 10:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775296938;
-	bh=snSMIj4ZyzLySoCeSAr8jE8/ngtAvFRBuQqkvK8jZT0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f+7nfSJi+F9GCY34zDpGrAXBlx5ZoRW+/sKBWW2fcdNzLklZtfPnBiRiA0Y+YUjpF
-	 DdR9n9zgO9qZuTvxpF83au36YdgsacIIfza8a2l4sQci9PHxsPBY0dvphdTNPxeClC
-	 OvjInO4t1Cg+OoE6RisEbYEX3V3YihzJRY13aZazHQHsK2m0N73Y6CWV5FKfZssaCa
-	 mUmVr0YegANZ7YetPvvjgBfJiuHA2sV5hW5jIPMTbezDMuWDFetYop77L65A17BC7F
-	 LC/xEixA9tersbmA8KbPwGp6cAkT/5mIc+/pk+q6AS/DXXYYFbKC0/YTVlIy+mmdlD
-	 SSXqNQwGnvbGg==
+	s=k20201202; t=1775298302;
+	bh=ByOnS4HzfTTQZAhJJz0SxZtaNSu6NrKjsBAusN0AUIs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ARqHXi/txN5TnqjmiEtATZ5YeyNFtrgSqgAOXqm2MIXFiMtNrcNH4JY8A6iuwObax
+	 KBBcbC2KKFqd9QnITYW7rB4TVbeSb7xvC9sFCxKuoBL4gA6N8DivPVHO/peSMLTD/+
+	 gQ3zDiN4pjSoZCcqJhBr4+zI8yJWGLd3wt0QKQ4P9AkHz7JLhvHQqTtx5SZe763dWj
+	 qxxGiayspP6LgIGcl7D7Amrc3O/+leWsUJ2GWKOCQfG8IOYQxRWkjRQZxGdb1UIWBt
+	 VSkizps2OPJYNz48d60nT5uUKCHuNFLwH3gby/k2Ssc8LwNMEbOcey0tpWBaN6Z1X8
+	 n6AUEN1OxBn3w==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Usama Arif <usama.arif@linux.dev>,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/6] selftests/liveupdate: add memfd tests
-In-Reply-To: <20260403150801.f42e27896fd2da5db6ca3425@linux-foundation.org>
-	(Andrew Morton's message of "Fri, 3 Apr 2026 15:08:01 -0700")
-References: <20260403194014.3704180-1-pratyush@kernel.org>
-	<20260403150801.f42e27896fd2da5db6ca3425@linux-foundation.org>
-Date: Sat, 04 Apr 2026 10:02:14 +0000
-Message-ID: <2vxzldf3avrt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/6] selftests/liveupdate: add memfd tests
+Date: Sat,  4 Apr 2026 10:24:43 +0000
+Message-ID: <20260404102452.4091740-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3nrabi5gw7eqpnfzs4nmdmrbkga4czif
+X-Rspamd-Queue-Id: 4760D1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 00BA21C0004
-X-Stat-Signature: fqcw66mpjbqznftppokopfocr17gk4j4
-X-HE-Tag: 1775296939-237400
-X-HE-Meta: U2FsdGVkX18jo4u1EG144xfFLS4WOaRHhICnx/hFshYX5qfqGZYGLJpqKkgxJyjuVU6OqmpFPdiOPnPwt9QqGSCcSlqXK6BXeUF59LpCxWV+TdQFGaebmzQtNZtU0eH1rJm8KuAaZ97sYOvfLjORid3jg6P/uwJL+PD/DXzJfDRCpwbksm+9JK0rjFOqkMAIP7fvO8h0YGHF4fWsqjrWti5Lb5+ypO8y+EAG71tAoQQdpeXBC5QeILShuGBbblfZY2bPVnkmdD21qiIzqvkrApX/VJqkUOJcBpYvnu47nlfZqrVJEseZ63fkZbv4jAysDIsVPbdXt7YpeJ6v3FElKXyZYWMseXDEBCeqqA1pVwozvoseI8G/VRwrejVBreosjU+2ZmswYka8jOmdF/DmYP1rRSdT4pAgBVW9E3+e/Zd6L0jIYtjTLW4DYXlqo6MGdmG9cQt+KVEP1HFdsMcAFyii3QNto0p1BZURowcyhjwov/hvdZ1OwD0y+FcA0YNXyE1JUDTR0HQOcDwoX60NWFCmAsBzVLY1cSkwsIb3gVDFSI2Ocu6/m2zEISljqA1mZgX6GnQCzK/OZk2PhF/PwwR46CErtkIA7qeMqMliZldxpxJsT/x6UGoyg68Mxeda3Xa57jHpAzVcaL/PtTCrbUihQSMazwBXri5MJr2Ba/9q9bBdMgPJy/JiB2Lk3nKGXYNAc0PgywRw2jrU/7wFRYkGEHjGpJDeVvmNjcuicdk+czxsCst3IWkA3ppditZvXqfeyMEsLd9N/Gj2FaEAkeRdyygknbQx9PAJzPqlIM54/KFoqGYsG28S/i4FSHx83R+/T8iqMs8xn0xGZ1aN6faXlLao9U3gmhCvs9TtP9WSDaa5Oe56tNoiIy5KACNoYgtVGpN13cbUOxHzjZS798rFfH6tnpFCqYCR7LadJ26klc2Srpy1RW2juCpoGhGIY3WIF1LdYH8lQQyRMmU
- sAt/Wg5b
- OhPSY+kOv6st0JQDdioY7MHz7Ikg/oMxXFweuI4+vXcm6mydofoxCkZo1mES7wkgQXqA3cRNW7qH4ipG9olDssSwN9/fIp7O4t9e/DKqn4InfreAANZhwzaPZOP94W21omvzAzMh5s/ebdWL2py70hEL8eAQoWQJi7ovkrEJ7spfhJNUJo39uFjXBAh5UEo7Vntutf+18hP8CjGsQKd8ctUS187V0q5TU6mtP784AD6fO+nmMzqaKxPWiTZ9lWSRj7FRi
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775298304-316043
+X-HE-Meta: U2FsdGVkX18V3KTuv24FdoSWL5HQ/zhqGPDiB3T9+2uokVAS0Boku5osdHAdP3Zqy6+/V0LIOTYAGXok23JjfmRcVMdui/mNf+961xKWwHofs42jbXH/3kLvQevQa5Z8NA0t82m0l1hZ9WxXJfF3IgOIHbWHDrWqdIHzXIyJIoH+57Qi0zj6qlgC2qimW4eL504AR7DucS8e1BiFD4oMrO1wshwJxmk9bfBoZVrmsnTv77weKLNrQ+6+GpW5xczc1/kI/cAuLnUOytDgxZHfbIl0FUAn4gVoyyFk/6Z1cIe873qGO9zJBf9G+wcTFo5WcdiEV2diB8P33YJhgJMJXteLwKDLC6wapRkKo0Uwz9lJokpsJyQt2iPXbWAOtWxsXcwEFnmKCkQhlj6j9jCWOBlVNCRhSCeyvgrYWoh1afS0mDB35x6v6eSS3dmBCuQi1GIc+Hk8GIU2Hj6B43ZQ0HZIGIX31XOu1jSjH4jcBoMkk1Dhbyzh2+pFwbwwZawGRW7EYBKoT11KZbAag4dCy7S4dY5GZYehw0p2wAOxKiZAzEEC9PxWCB5BGmkdcbgkcPXr2enwapI9MQx1oNI5Xt8+NaF2Q4lE/pKlcyoN1CYK/5nO8Dop09e9sKqpblz1jsy2TjPcvpgrIVwFypfuPeJ+DwFSApijACQX9++Iz+fIkKts0sre55Nsnkor4cIjhtEBkgKMi1X6il7EzIEb12AjAvb0l7a+Dn4Y3UGhKQaFG8iQYXAaeIWgpx/aJ2JcgAuM6EWEY2ISC6An08fFJ3GqnbkjsL10n4uCWgikxQGl3axWx5as/gcLz8bC+G0puPN/gjoWWCbsc+DCFmHeVO5tnO2Cj0Q1ZO6eujOMzRoFa3Pu5NOl3gcOJFkYswxhfRWAulJdqzAOqE2nXeDgUlyPQ5XPmMAJS3Braz1jzvK0OiR3424I/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,32 +92,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03 2026, Andrew Morton wrote:
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-> On Fri,  3 Apr 2026 19:40:06 +0000 Pratyush Yadav <pratyush@kernel.org> wrote:
->
->> This series adds some tests for memfd preservation across a live update.
->> Currently memfd is only tested indirectly via luo_kexec_simple or
->> luo_multi_session. Add a dedicated test suite for it.
->> 
->> Patches 1 and 2 are preparatory, adding base framework and helpers, and
->> the other patches each add a test. Some of the code is taken from the
->> libluo patches [0] I sent a while ago.
->
-> Look like a nice series and it comes well-reviewed.  Maybe my "we're
-> all full" policy-making should have a selftests escape clause...
->
-> I see that the malignant gaze of Sauron's eye fell upon your work:
-> 	https://sashiko.dev/#/patchset/20260403194014.3704180-1-pratyush@kernel.org
+Hi,
 
-Nothing escapes His Eye...
+This series adds some tests for memfd preservation across a live update.
+Currently memfd is only tested indirectly via luo_kexec_simple or
+luo_multi_session. Add a dedicated test suite for it.
 
-It does raise some good points for patch 2. I'll send a v3 shortly. It
-would be great if this series can go in with this merge window. Since
-these are only minor bugfixes and no fundamental changes, I'll keep the
-R-by.
+Patches 1 and 2 are preparatory, adding base framework and helpers, and
+the other patches each add a test. Some of the code is taken from the
+libluo patches [0] I sent a while ago.
 
--- 
+[0] https://lore.kernel.org/linux-mm/20250723144649.1696299-33-pasha.tatashin@soleen.com/
+
+Changes in v3:
+- Retry on EINTR instead of giving up in read_size() and write_size().
+- Use O_TRUNC in save_test_data().
+- Return the value of write_size() directly in create_random_memfd(). No
+  need to check errno since write_size() already returns -errno.
+- Save errno before calling close() in create_random_memfd() to avoid
+  overwriting the value.
+- Use memcmp() instead of open-coding the comparison loop.
+- Return value of test_harness_run() from main().
+
+Changes in v2:
+- Drop LIVEUPDATE_DEV since it isn't used.
+- Split luo_fd and stage declaration on separate lines.
+- Split all 2-stage tests into helper function for each test.
+- Fix wording and argument order when LUO_DEVICE fails to open.
+- Rename verify_fd_content() to verify_fd_content_read().
+- Advance buffer pointer in {read,write}_size().
+- Add a check to make sure current working directory is not on a tmpfs
+  mount. If so, skip the tests since saved data files will be lost.
+- Rename RANDOM_DATA_FILE and RANDOM_DATA_FILE_FALLOCATE to
+  MEMFD_DATA_FS_COPY and FALLOCATE_DATA_FS_COPY respectively. Also
+  update the file names to reflect this naming convention.
+- Collect R-bys.
+
 Regards,
 Pratyush Yadav
+
+Pratyush Yadav (Google) (6):
+  selftests/liveupdate: add framework for memfd tests
+  selftests/liveupdate: add helper functions for memfd tests
+  selftests/liveupdate: add test for memfd content preservation
+  selftests/liveupdate: add test for zero-size memfd preservation
+  selftests/liveupdate: add test for operations on a preserved memfd
+  selftests/liveupdate: add fallocate test for memfd
+
+ tools/testing/selftests/liveupdate/Makefile   |   2 +
+ .../testing/selftests/liveupdate/luo_memfd.c  | 355 ++++++++++++++++++
+ .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++-
+ .../selftests/liveupdate/luo_test_utils.h     |  10 +
+ 4 files changed, 557 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/liveupdate/luo_memfd.c
+
+
+base-commit: 98ddd87f9704ef2fc837ec2ca38877c364d8dada
+-- 
+2.53.0.1213.gd9a14994de-goog
+
 
