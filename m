@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28269E88D73
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 01:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFCB0E88D6E
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 01:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 381EE6B0005; Fri,  3 Apr 2026 21:42:18 -0400 (EDT)
+	id 335D86B0089; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 333696B0089; Fri,  3 Apr 2026 21:42:18 -0400 (EDT)
+	id 30DB06B008A; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 248916B008A; Fri,  3 Apr 2026 21:42:18 -0400 (EDT)
+	id 223436B008C; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15BF86B0005
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 21:42:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B3B428BE53
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:42:17 +0000 (UTC)
-X-FDA: 84619173114.14.A84CFDC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 12BEE6B0089
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 21:43:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A38A1A05D9
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:43:27 +0000 (UTC)
+X-FDA: 84619176054.15.6F27D6E
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F010840011
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:42:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YyV9bMh3;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by imf28.hostedemail.com (Postfix) with ESMTP id 033DBC000D
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:43:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Ol9lcwub;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775266936;
+	s=arc-20220608; t=1775267006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dYjD008uL45StMHqrlooOIeCYoBnE9PF9EGqwf09wio=;
-	b=pCQToWhZD/ZeDYsNORWaz9CFL3+PPPJ9T9NeakSwtDMcbOGT2TIwd7ZFkcEjQEyqvUihFD
-	5ELjRDTqO/6cVdoWo8SlM9E861XggX/X0kOWz7rbFnfj4hBZjaIjWTWlvB1J3G3Oym+7RZ
-	HXabhKk2eeYZGN5jtlaNfCo9SrKOEJ8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YyV9bMh3;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775266936; a=rsa-sha256;
+	bh=PHW+k8KQfaTNE2WRP5tjhicsFjNo+SBioyXM4XMu8gk=;
+	b=bZsgdNi+sp0laOHBUnbXTzhVhI+DKOJja5/0UhmpvFxr2Z5CSKIHjjBuyNkRYUoG+firt7
+	BMNiPGu3Vok0PYrBmWgA9I97fwI3UcKG90cC6x/nBRo75jSdS5HGMbmu/ODv/5PQtStEVm
+	Xzpr5mwUoUcMAPEkMKM4i5n4eaR4VDQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775267006; a=rsa-sha256;
 	cv=none;
-	b=LOhSr4Pli9T9zD+F1Ak/t8diga9xWcXhL9m+l98qTHFVvnhrW6LG1uphNd7GaRLjTNqOT/
-	9eaxLSVYgiJbR74wtk8s3WLRGlDI60Z5DnSWqAl7U+AU8l8ha5aE71JtjRzC8fEQSvP+Mk
-	2dQXJAUkueVAKQrViPe6MXdXQeysU8Y=
+	b=nxDiNsgkoZcS/ADutf9RV91YabykA/QXg5BYzpZFXGCsPxi2gcobIw6C8hoApg6yA9ryYD
+	ofC5bporOql1T0XXOJdYm0e96VHHpYB7ziC5BsX+SMaJMTFOcxQ4Gq60uxYPq8YYlHD+Cm
+	fbwsanVCEoja35a3RS639Qd81TodlEo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Ol9lcwub;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:
-	Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=dYjD008uL45StMHqrlooOIeCYoBnE9PF9EGqwf09wio=; b=YyV9bMh3yUvgXsBWT3wVQGlvn3
-	Bm67bQUPDrQFkjAxNV/LZvF47hKwmb2mu2tviUiIjoF+9fGH9+B9xXB9/PZKXHbPmZGgacO/XhXW0
-	IHFCUKc+Uzua0euEAmyJVPKOlP7o91Ko8YVdMASaeiCLZ+o+0P8tbq3qV5LGef4Ye7QtKipKEVprf
-	jN2sunLo/2k6tI5QDPDpC4XcU6U2q2Ql3p6XrijeQmsg1y0TjPa+ySm0H5xiTJHUvebdnAZnvdV5b
-	FOj4DD8jWbPO4mkDCyPvUsAqZBtq1uAlq/8jE2O9UB2/Rl8dngQAvlda5kiyT1DumbebMw+hqgPWq
-	D1Tp6yqA==;
+	bh=PHW+k8KQfaTNE2WRP5tjhicsFjNo+SBioyXM4XMu8gk=; b=Ol9lcwubolhlRoTGwUL3kna3nS
+	CaFpulKcuPIwmTn18FC17gPDwtLY6JBEgpPbBLzJ9+9GfPHxrk5LZ/Nw99JkxAhzESbGuMsMtPTqP
+	UWlIeokYe3aOrAHWLsgOOtzwBNi9x/1rGV6UPYXX5VtYlHB3r9p3IxWgwpOU4uK5wSiADHH6Xr4nU
+	G/2WmgcvYRTfh0dlJGiBt/hyPeQJL3igMCVgP9pAryYGlKuH09FwLQAkKcUDV/S8uCNyIu5OCMzcB
+	A6JDQu338+ydTWEOmt8gPveb0xnUXJGO5Ies3QIHyEUZ/aj8AvqHj9WUtrxMbt2k/ckCsxzrkNxVS
+	g/a01vLA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1w8q1Y-000000000bq-3o6A;
-	Fri, 03 Apr 2026 21:42:08 -0400
-Message-ID: <984aee1a7af2ea4b576a0114a367402537d3deca.camel@surriel.com>
-Subject: Re: [RFC 2/2] mm: page_alloc: per-cpu pageblock buddy allocator
+	id 1w8q2l-000000000cl-3M6u;
+	Fri, 03 Apr 2026 21:43:23 -0400
+Message-ID: <901716dddb748bd91a107cce1f95a8eb44ebeeae.camel@surriel.com>
+Subject: Re: [RFC 1/2] mm: page_alloc: replace pageblock_flags bitmap with
+ struct pageblock_data
 From: Rik van Riel <riel@surriel.com>
 To: Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
 Cc: Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, David
  Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett"	 <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org
-Date: Fri, 03 Apr 2026 21:42:08 -0400
-In-Reply-To: <20260403194526.477775-3-hannes@cmpxchg.org>
+ Howlett"	 <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, Johannes
+ Weiner	 <jweiner@meta.com>
+Date: Fri, 03 Apr 2026 21:43:21 -0400
+In-Reply-To: <20260403194526.477775-2-hannes@cmpxchg.org>
 References: <20260403194526.477775-1-hannes@cmpxchg.org>
-	 <20260403194526.477775-3-hannes@cmpxchg.org>
+	 <20260403194526.477775-2-hannes@cmpxchg.org>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -101,17 +104,18 @@ Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
  QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
  c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: multipart/alternative; boundary="=-G84DnAen4wjH2efzQkyl"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: F010840011
-X-Stat-Signature: t7bcnxxhexgkokwpc1ypb31uj3jw5o5e
+X-Rspamd-Queue-Id: 033DBC000D
+X-Stat-Signature: myewf66anpwjpwn8aquj6zffyr75ir5s
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775266935-305062
-X-HE-Meta: U2FsdGVkX1+UI7YumRyC0PRHYO4DRCTkoPJKwpr6oTBbLNKnaRJen5An4YF050bLGgrNeqKMJy82X9ThbVO/sLPubnLJMssA8U1hl0res1xs1siAXkVgSsy/kOLH2RHg3rvjhXQHa7uPyqiB1ZunHNM3goLdcEWjXiKMNiHrFuQswFjlHWQV3X7ngCI3jPWo4H3UKtly+K60kPCmhrRtAw/XE53pp8dfOaiRDe6rTHs/WJVS9+1sKhFWIYD135GXhBix814nKWubt26oOmp1O3TXtAn2cvbSfufOj5uaIZl9nf6TWDti0+TuqvnKbrPeKavqhhIfGc+V59t/tKbPg2spSy+BkToKA+1RKWm9klabgnXi7104/RLyAXm/NUE9CmoSEQDDn6rRi7paXoAqKtOaW+KFpuqrtUROFcQangZ1heSq7jmLxgHudJPCHcuZLt9KNtpQVNncGTD6XL0TiPn1t0UM29lbGDhjjsVUnAU8YvHeAGdiCa8M/lw4cTxI27p5SPutJzcpoSsxBz7EUOe6V8efUyMoz8ddot9Z0mNM+LJVe7Fd4grCA6A7Lc6g6Hx4NRZfg1juJ1aznkqmDOt779F2I6vOci9vVW2wxayAPhi7ELYwwhjbJay42Hy7afQVf9n/bmifXGADm8RdlSNDPsYKLnVO14h/tuuIs1ub2pzf3wMl7UNHNoxIqCuX/sI45uS/0hlMp9dP5GFMNfK02RNc2M9NhRFbT2HrtuMsEPKDu8Dzhd117hPD7zUERjk9sFuJDcMikpcCgdJI2SGy/FjECB6hehItqizPJcqVjdnSFUdTrK/ajhCcyhepOSnlW5eP2ue6fK5vmtZhVURpMy304dfNqm4XHNOvuxrJ7aZg3eRFzJovs5+Z7DHCLgKxnWlga34av3DtSU2pcg2I80/GuKwZ0tyFEA466P745vlVKlXYALpiTgsUPv8epN+DTAcJ9XDrPXsLZ3t
- UQfxS5hg
- jkMz+ggYf1qdPaiigCjQi/c2BGK91m80C+nbVP19GKeNMG0MhDJYzE3/UY6sAjWONTr5J3RqoSqErU0ZWeP3ug5aepTiCpgd+B3JyNDs7AaWnQ6QKNfIMXl8Jm1GtrCvKUwY1g1JOcWDPXQzJ4CsP5KxnNyOAdTZp1KeWkZHMLTWm79oFUCRC1IkGQSEE1Rp5xmyfg07Qf5L1+Qor1V0YpEiVMnUT6uwgCgrALDSQC5TnMtFmJmw/GAFDILJo1W5lt8zY73kLJAbreK1Srg2wHGYneRUsHvuyQivkR7m9xXwbInOyaLzXQNYfb9e3c0t9zNM22mH79whB0NTMKwasBvaZfp7gBx53BYSkVM8Apxkxac6XJ35pGXoTqA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775267005-299945
+X-HE-Meta: U2FsdGVkX1+djCthJJCRF+opLR/usxy1/ecz8hugV8Hxum3rVGhgfCQOSVjvxBvTUpUXGw7iEpQG5b8QU71M2MiMOqaAYfeRwsYpXPKv6IuA/LOjUcnBP+EwueRECKNJd1yCe0Xh8iYV/HMouqwCodAu5IXL/IcEXDlG9Mx7oLnRPrW325kRp3Eyl7o9VRPqCOFRCi9XcEe8CSWV1ZyO/xBM03JaZJ0OAwhshx8hZepnLe3bLXlfrPoVYFlmdmF1MNY4Gjk4rm1PNu0TRVrxEbV36UnBRbk5x8O31FUZi1SuUZZh5NwMYl+ONp55EJnJToHFPIac9Z/Z7aDxWi2ifJ5XsxVOU5kEk8jpSDxAqhMSi5uqtzz/qDQMzg9AbE3nj6p1LIq80LkJjY3W95tMNEqyr7HuO+XW1ze1Vqz5/35qv8Qz7l8jzE+B9x9MDftj9KTGLQj3PjGF8nWlP8EROEeMptQALKXTmqqrGBOKLkuzFqVTgvteCRoe0xdYaRBPBxJP6FPKL+aQJQPNjJ9cZMlP7xJpTIzoz3Z+e2YSKwL8jIOS4L+mPDcgkpx55ms0SY15heN/c2dV7iBk7n73I9IiEBAFAGI464H3ec5lI3/5FMLsSYanLDzKxVDFTt0Pt4fIutOYMS2NtcQAPpCGbKm1Auh2kDm+I6PSLlNkuc87QWpou09EheHuWoDIa/uZjoDM4Up+TfmH2lVcbPc9+2FkG8u1bd5ir9sdwHbL3Llhtsd/w80sa6Wt9toGj797YZ9lgroWf5nPprBdcY4thIrG9KgilKQGdabdcaSnhoK/bIeEe6xocqtH8laRWEDJ48vNS3UFQjcf4GGF5QOtiRZdCSC9Oiy5kErayHCK9izblPEMAkY9a3K1eXnT1FC02//P4NcmGJesrwbxrQdom5xXQm3/3fRLwUk2xAh7VW/AM2+ZUVANAPB98Fj+BUnC9fvcdgkJPU9luOPlJSo
+ ybglyV8m
+ GIX+fRoznGM3DDw4JBL6vZ1E1E+t/GiHyIUw3GHhLAgqYk2A/1r6Hk0VscnL0/nNVtaY0UN+qroHQ/DKRVI2IBxf3mba99kAA1FVT6oS8do7a4wn4MjI1Kb4J+2oNg/9bjs7xfuCss1993URvxtaLXp9f0HT1G4j7TDndqq+q70yenoO9DhtKZqky3Grnc13fqnO+9tq14vsoOT8ihxfDD2stwVAfwZacbmUJK0HfwkDcbAq8C3aatVxTI3ZcDUshA2deFAjUqk7J3kxvxzLOpTJB1s7ZeHrlBydonUEwj0dONLadyMK7LhNxPGxQfIsIIYjhvcErVoZA162wtA5eaMSozz5a+9Gr2AhVASQF3Hf4LGq3rNPjTIrepKXkssgQ9Ib6Ew8xyeCEio1bU++5D0VDlRhFeOqmCrFNr12y5fOYCHozAIOmYpEp49AjB764cxsR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,111 +123,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---=-G84DnAen4wjH2efzQkyl
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
 On Fri, 2026-04-03 at 15:40 -0400, Johannes Weiner wrote:
+> From: Johannes Weiner <jweiner@meta.com>
 >=20
-> @@ -755,6 +752,9 @@ struct per_cpu_pages {
-> =C2=A0#endif
-> =C2=A0 short free_count; /* consecutive free count */
-> =C2=A0
-> + /* Pageblocks owned by this CPU, for fragment recovery */
-> + struct list_head owned_blocks;
-> +
-> =C2=A0 /* Lists of pages, one per migrate type stored on the pcp-lists */
-> =C2=A0 struct list_head lists[NR_PCP_LISTS];
-> =C2=A0} ____cacheline_aligned_in_smp;
+> Replace the packed pageblock_flags bitmap with a per-pageblock struct
+> containing its own flags word. This changes the storage from
+> NR_PAGEBLOCK_BITS bits per pageblock packed into shared unsigned
+> longs,
+> to a dedicated unsigned long per pageblock.
 >=20
 
-> + /*
-> + * Phase 0: Recover fragments from owned blocks.
-> + *
-> + * The owned_blocks list tracks blocks that have fragments
-> + * sitting in zone buddy (put there by drains). Pull matching
-> + * fragments back to PCP with PagePCPBuddy so they participate
-> + * in merging, instead of claiming fresh blocks and spreading
-> + * fragmentation further.
-> + *
-> + * Only recover blocks matching the requested migratetype.
-> + * After recovery, remove the block from the list -- the drain
-> + * path re-adds it if new fragments arrive.
-> + */
-> + list_for_each_entry_safe(pbd, tmp, &pcp->owned_blocks, cpu_node) {
-> + unsigned long base_pfn, pfn;
-> + int block_mt;
-> +
-> + base_pfn =3D pbd->block_pfn;
-> + block_mt =3D pbd_migratetype(pbd);
-> + if (block_mt !=3D migratetype)
-> + continue;
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-GIven that you just skip over blocks of the wrong migratetype,
-I wonder if it makes sense to have a different list head for each
-migratetype in the per_cpu_pages struct.
-
-Not that I should be saying anything that would slow down
-the merging of these patches, since making the buddy allocator
-more of a slow path is pretty much a prerequisite for the 1GB
-allocation stuff I'm working on :)
+Reviewed-by: Rik van Riel <riel@surriel.com>
 
 
 --=20
 All Rights Reversed.
-
---=-G84DnAen4wjH2efzQkyl
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><style>pre,code,address {
-  margin: 0px;
-}
-h1,h2,h3,h4,h5,h6 {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-}
-ol,ul {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-blockquote {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-</style></head><body><div>On Fri, 2026-04-03 at 15:40 -0400, Johannes Weine=
-r wrote:</div><blockquote type=3D"cite" style=3D"margin:0 0 0 .8ex; border-=
-left:2px #729fcf solid;padding-left:1ex"><div><br></div><div>@@ -755,6 +752=
-,9 @@ struct per_cpu_pages {</div><div>&nbsp;#endif</div><div>&nbsp;	short =
-free_count;	/* consecutive free count */</div><div>&nbsp;</div><div>+	/* Pa=
-geblocks owned by this CPU, for fragment recovery */</div><div>+	struct lis=
-t_head owned_blocks;</div><div>+</div><div>&nbsp;	/* Lists of pages, one pe=
-r migrate type stored on the pcp-lists */</div><div>&nbsp;	struct list_head=
- lists[NR_PCP_LISTS];</div><div>&nbsp;} ____cacheline_aligned_in_smp;</div>=
-<div><br></div></blockquote><div><br></div><blockquote type=3D"cite" style=
-=3D"margin:0 0 0 .8ex; border-left:2px #729fcf solid;padding-left:1ex"><div=
->+	/*</div><div>+	 * Phase 0: Recover fragments from owned blocks.</div><di=
-v>+	 *</div><div>+	 * The owned_blocks list tracks blocks that have fragmen=
-ts</div><div>+	 * sitting in zone buddy (put there by drains). Pull matchin=
-g</div><div>+	 * fragments back to PCP with PagePCPBuddy so they participat=
-e</div><div>+	 * in merging, instead of claiming fresh blocks and spreading=
-</div><div>+	 * fragmentation further.</div><div>+	 *</div><div>+	 * Only r=
-ecover blocks matching the requested migratetype.</div><div>+	 * After reco=
-very, remove the block from the list -- the drain</div><div>+	 * path re-ad=
-ds it if new fragments arrive.</div><div>+	 */</div><div>+	list_for_each_en=
-try_safe(pbd, tmp, &amp;pcp-&gt;owned_blocks, cpu_node) {</div><div>+		unsi=
-gned long base_pfn, pfn;</div><div>+		int block_mt;</div><div>+</div><div>+=
-		base_pfn =3D pbd-&gt;block_pfn;</div><div>+		block_mt =3D pbd_migratetype=
-(pbd);</div><div>+		if (block_mt !=3D migratetype)</div><div>+			continue;<=
-/div></blockquote><div><br></div><div>GIven that you just skip over blocks =
-of the wrong migratetype,</div><div>I wonder if it makes sense to have a di=
-fferent list head for each</div><div>migratetype in the per_cpu_pages struc=
-t.</div><div><br></div><div>Not that I should be saying anything that would=
- slow down</div><div>the merging of these patches, since making the buddy a=
-llocator</div><div>more of a slow path is pretty much a prerequisite for th=
-e 1GB</div><div>allocation stuff I'm working on :)</div><div><br></div><div=
-><br></div><div><span><pre>-- <br></pre><pre>All Rights Reversed.
-</pre></span></div></body></html>
-
---=-G84DnAen4wjH2efzQkyl--
 
