@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4BA7E88D8D
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 09:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0B5E88D94
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 09:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDDB06B0005; Sat,  4 Apr 2026 05:09:30 -0400 (EDT)
+	id 8ECE46B0005; Sat,  4 Apr 2026 05:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8E1E6B0089; Sat,  4 Apr 2026 05:09:30 -0400 (EDT)
+	id 89E176B0089; Sat,  4 Apr 2026 05:11:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA40E6B008A; Sat,  4 Apr 2026 05:09:30 -0400 (EDT)
+	id 7B39E6B008A; Sat,  4 Apr 2026 05:11:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC9596B0005
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 05:09:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46E2314078B
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 09:09:30 +0000 (UTC)
-X-FDA: 84620300100.25.62EF50A
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6999580008
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 09:09:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGbOOlK7;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6E1B56B0005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 05:11:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0DE7AC29FD
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 09:11:25 +0000 (UTC)
+X-FDA: 84620304930.19.76064B3
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 36FEB1A0007
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 09:11:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hATXEiHR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775293883; a=rsa-sha256;
+	cv=none;
+	b=mDhx8kIg1Z/LB82WGyky6d12EY5N+4y6uHV4lIW90+V+D1A4ZGKJJZQKLrWjnA6LxRblkX
+	LAfdccnS+kO42Fsw5vOo3l5ANX5u9PM4UxdeWK13uPUN4XGvD8prZPyitAWfuMjKdGE66R
+	AN+oKuBgBZ0V2anK/ig/ckQvi4TfU7o=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hATXEiHR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775293768;
+	s=arc-20220608; t=1775293883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SX1j2jpOZX0PU8n9tvbFhEKNcKUBE7L3QlUnR0eBVu0=;
-	b=xivquqffG0T+5n7JH0oU1NzprMcWu9k1aQXqN5UrzrzjxRcIUFSHr597S9cL7iY7Fe9dQ4
-	GZtKAew2GmG4lSibm2vFuX6tOWic1ZRBy+x+RbXdvuSu6KHvQleSlQl/oUMcVZjndZ/8RP
-	FQS6z5iL/TjQfrXKtobrtdRW9QV1VUI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775293768; a=rsa-sha256;
-	cv=none;
-	b=FxBJdbxYmUMgYgF/Lth7baD2RRthpXGSE4vmeR0UsWLvoyqLBvMN/5MGmeugcXp5Y5eP0Z
-	0DifeBT+ny8voFrCrvM2iuUhIGA1XqcXxDK8i5Qdx4IEo0zqM8okU5f8Z1HF8Ie/rZDZbK
-	whBwe9c094CFFmpZoZ42oYe2MG7XLUA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGbOOlK7;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c76c067bc51so911741a12.0
-        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 02:09:28 -0700 (PDT)
+	bh=/mKCgOtEX6fdxiOnTa/jmRynhm9AIpzYWnO4gPE67L4=;
+	b=7KgBkutwZu63bpnzkoWIjVPsS17h3sW4TiyOMNOT7oSzw7Amp5qFXnERLB7nVcHw8gD4bg
+	K8yg35ti7s6CISadw7GmvW9Sa9DY8HLZf5A/gPem3S0al1ulw7NGC1d5+tsqf0keH1TZw3
+	6v8nRkJqayy7+I7gfmSyAPX5vAN/CFQ=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3590042fa8eso1757992a91.1
+        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 02:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775293767; x=1775898567; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1775293882; x=1775898682; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SX1j2jpOZX0PU8n9tvbFhEKNcKUBE7L3QlUnR0eBVu0=;
-        b=PGbOOlK7TUEklFmNxxWyiTbeALuCjLHLP8DQhD08BFMV2mTLCTcBOQXKuGOTG5hslP
-         1KHI+Ge8i0Xayc6EDq0lSGADmrT54QpehSoDO6g46fY2iEaHvfgMU8V6BKwV9JpH8BPF
-         IsuYB88Oes15FyVEYAYaQWPyQWC5UT6UdugFGhRnqGF9DB1yMmjVvDOpcM9x081H/C9R
-         ZopOS6ah5/B4F2AxgjmDjjByS48t0Zu7ZvR4VP1Q/r9ZIFIu+op3b4Gwimq4M4BUzFFC
-         TQpiSlwCybYiEpW1+cHcffZ92szrS0tpGEpo0sD5eOAhaTF+m+P2eucPalMnpeIHkO3W
-         1pyg==
+        bh=/mKCgOtEX6fdxiOnTa/jmRynhm9AIpzYWnO4gPE67L4=;
+        b=hATXEiHRRlxoRdjLDhacxL7qEiLfUaLPKOX7DS159sJ+sZziB0Z0SZZBWxvS2CP+5W
+         7oLCdjzSuMfFB6dQW1RO1Ie9Pq3GGe1iADUl8veUit+fHwzSVZ9RveCrKrqiYZ35MD6t
+         aDFoB5IhP73KqHmng+BKEPp63TDX+KG6158O2HQ4q33eD8eWlp8CCWO3EGYqMY6sw/1o
+         NoTrpoPrhqY/iE7DkRLkPhl3tOXBnkz4uup6eZ92ed/AXLWznQAFKic7o0EVvUqGS98C
+         1J25nzDWA1r3BUs1UWRoRYlO78QtY+LahMPbfUEirKunQoh5xo6yN1M68CjI32eRV1n2
+         Gsiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775293767; x=1775898567;
+        d=1e100.net; s=20251104; t=1775293882; x=1775898682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SX1j2jpOZX0PU8n9tvbFhEKNcKUBE7L3QlUnR0eBVu0=;
-        b=nA+tTiQwOYLC5d6UmrmowEYhokM9hCLPG3jPm1ntWxmfAvoleceyMGHtLaaQnFXg0/
-         m3wt4HFeFOrloqiBnyxskqg/GAeATdCFy0BPHQInr+PEe1o+iF/BW0vxPWFsUVl1kbRQ
-         Ooz9jkphf+KZ55jNbQVPeOAeK7G9oen6GfsoHRZhCeN5IJi0xjHfashnl+bxTtBnjAKv
-         wbHlI5surTq1ciAJfn0joUOSW7sdB9CtovJsN9szt8Jr3VdlxNSmV2wEFAK3SyKgUWgA
-         BWf3mgJhxZiAkQeVn0bdUoSdX56gmOinboo1XOLlu4cscJjOtwxfiFEcCnIkvf4Icf8t
-         mRcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSDTXO9dlKbh2p2roTatPhRXE2nL7NlKuF91DZHkj8qHYOefHQsRbDut0gAS0unJcNf/ToL1gNUw==@kvack.org
-X-Gm-Message-State: AOJu0YwxpUBLyoxTJXv/5FD2f2VLmU4xmWFhiXdnb5mLwTxsMRs9nPi6
-	IID0ZgklxKh6V8y3Vlb27+CE9JtK41TDxzOfxoiaCkq/UPl1W98yBncO5pJYzg==
-X-Gm-Gg: AeBDieu6hV3clLOdRkmD2/8aRfqfUgJsr2G8r8v/gQbGBDn78NX0kg/zZt4KvtTjQbY
-	jXczLR0QvdHVhsReb+CN7vV8BMHN5utXHckJsBHvTYuGli18sG4lJJCTaH5wpi7lQTPQRZFwNpr
-	qJTBwm7ni3B8xDJv94WlFJ3/oe9QsxtJnlwyXlBfETgL0rwIzxmqneOKK4x43ZLEQaVLSqazIEz
-	xc77PkkaHuwU/dHyrhXnlpoKccBTxfEt9tCgHwoLt22rI2SQOrD+k8NAFv+iyRsPSWgkM49yiOF
-	HX78Wi9BUhIE1HKh+u3E4XfnO05fgb3p8vEfqbY7gvPoCU98jNm4+iPczSqqwr2Eh9lSpa2d99Y
-	xg3GfZJeJwZLPrCnLPg1hijYFic6Gom32fGOjzh4OjLXWEP7D/bXq96Hh/vBtdVxjGPEHQdwCHc
-	u/aE+upcXt/MtBCn5PGn0LYPcvWy7UUUymtW2S+XNpYLyv2PYLsqU=
-X-Received: by 2002:a05:6a00:1bc8:b0:81f:4529:83a7 with SMTP id d2e1a72fcca58-82d0da47b1fmr5129179b3a.15.1775293767146;
-        Sat, 04 Apr 2026 02:09:27 -0700 (PDT)
+        bh=/mKCgOtEX6fdxiOnTa/jmRynhm9AIpzYWnO4gPE67L4=;
+        b=eUIFUeo2C3OcLNdMpUDklmy0V4gsxBTRSO8/7ad4tyNiSthwtS+kn0qwPPGPxjBRPk
+         afl1j5E8Japi0gESaKJ9mMUTmFadkuRDKemB1yrfgY8ZVmCcXDI6p4Xd9DhK37uhVya6
+         G/EnVLE5KDjaPB/ZSN+RNTwlcIJcW89sYpJJhVqj+Vww9vqRX5lXzQ08oZ6b3a8rhNnH
+         J6Yu0CF3P52Ri/kqxGLAgsLu6zsgJ4mQRbZOhEYWwmovdX/5ti8AK+Rc8ve6kctQYSiq
+         GvpiMBmvmA8ViFl95NT08OmPV3J8djYvhZRSMcOtsQX0PINKptgN/c5PVOHbFgJcLMoo
+         A6xA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUZXiFrUC/EvrmDBRYeJprevivc7eK6I4nadHyNtt5S/UswX19ccA1XIkdBegPTdrvja0Eu/wgSw==@kvack.org
+X-Gm-Message-State: AOJu0YxeMthyyPRdk7TQXS+DJ26vH+yp387H0xiVHPLAa4YbdB8a9OXi
+	OG27iwhDBuj/M1oktxzqR7Nh5/AAWJqBoFmi+dsf4tnOTeUUc6d07R09
+X-Gm-Gg: AeBDiev28YVQJjKhSJj/oN5qkV6HvsHTc+JBZD38Vo11TMkgwlYUBMuP3ubHP6VFQX3
+	h9IR0O2ADgv4EGvHOqY/04Ugjckx0iwiAX4XKHwef+Ukd6Nt9e8j8eGQ0AvMb8aomg91rNpMbdN
+	yKCpuiiiPymMjW9cPcCP5Qm2jBGJ4inJxjJob8UNGB5AS2eKJv+A+5NPXzz19/pdLkbx5S7lUba
+	Od5qdL6QGll63UvMRvG3obsfossmg6kwkPeEPeJUF2ACggEW+vxydrO3rgc5i1F2t+Xg60wNZhS
+	brgqctm2DoHmje1j1QquZmgYRJd++T9i8yl20Vy0a4MGsTjZ3Zl5ZprWdp9RZC7Bg5JLdJjqd7d
+	HfBV6MnzW3wyPgxpN1o1qTTwXxmqIm7z1BbkR2pbXFDOnSGDUbX2ELKn4nAs8UFJsPGXnZazNfk
+	jOMizaf2iYv8Mmorp4uUZl1stCry7pIOvKN8PuanJDOWsgaY9d7L8=
+X-Received: by 2002:a17:90b:6cd:b0:35d:9560:3f09 with SMTP id 98e67ed59e1d1-35de69a5c3fmr4674889a91.24.1775293882050;
+        Sat, 04 Apr 2026 02:11:22 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9b2694csm8185779b3a.2.2026.04.04.02.09.24
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35dd35e34f9sm7710233a91.1.2026.04.04.02.11.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Apr 2026 02:09:26 -0700 (PDT)
+        Sat, 04 Apr 2026 02:11:21 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
 Cc: aethernet65535@gmail.com,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Sat,  4 Apr 2026 17:09:27 +0800
-Message-ID: <20260404090927.6055-1-aethernet65535@gmail.com>
+Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Sat,  4 Apr 2026 17:11:22 +0800
+Message-ID: <20260404091122.6255-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260403155530.64647-1-sj@kernel.org>
-References: <20260403155530.64647-1-sj@kernel.org>
+In-Reply-To: <20260403161906.65008-1-sj@kernel.org>
+References: <20260403161906.65008-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6999580008
-X-Stat-Signature: 5fi39bdb398t6acm35tit35zt1w3g3wo
+X-Rspamd-Queue-Id: 36FEB1A0007
+X-Stat-Signature: 11zdns87zpnyk18a6fdipk5zf1u4zonc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775293768-844984
-X-HE-Meta: U2FsdGVkX1+hu31DCHsBLJjgvSB38yRHUDmmLWLKgzeg97V4nqNHAe5tzegMyb5IHbehzuVJyPISdkiYjF+C+QC0uCJxgHeNzFrItykUBA7g2KUEj9yw/WaEmuw1qxKFRfRnTeH4rI/3sV3FR/clS8RK3Z+Ep6t9Df0v3WtWme45QhjxG8n/1Juum5q7um10D2EvIdNXQlYiERpf1DYZtgvNLuYmcOuxsDDraH7i0jL7lIc9eyxPZneCZWcwwuHuQcOWlLRuT7b3TzLkwin3LW/UeqoCKiZcK+PIdf2evOcxMFHrBmP3BLchgVX1Km8Y9Zjiak2n1tIJrCKPIxI3dc0D6fAdlxZHP//HQhE7qVrPyOCJEyi6FpGBwXcmVKEGV7Nz4GxszPaViv2++saKeN6kj9m7/oXAOI8SH1A24dADa4xDWEnmFDHvyyfkGhWkCrqkOsQC8XgFlYSNoFR9EJQ/TAWZ00USy8bwrmXAFN0nmAS+kN0KX5OKeGzYF2WdjrodR4iOdAK1ylZbHT0mHSEFv7BSxnixk7uEzYFbGb6AvHHZsFCQ1/gt8YIjyTtR9ghnRtRxEuyvb/uGBknOcLewt3yBIYzNjbd1MbF/TmpyTItw1q4Spo2Ma9lnOLuB4DJCIHoewD5xb34smBN7j97hP50LJMng4RPAXLZo7m6CwFOnCsbISTGFLVQCbT1+8eEpwrUk0BcEBTsiMx31nh1TwHb43XxLCi2SnIoEwTukBqC6duBFry0em7j9aLJDkYY1jBgWLeGvC6L5gqP+qGZLanq0jdeSHlrh4gxurhWEySQ7np1krwShPqeVgbseVFHLX1yN+wC7YyGiHT5u1cwiZEjhUuRrAMpTy4EZIoyVHWkO4AWy0sZhybCG6u1vV0FPWAKuWHB9jE/SU0ulR2kvxwB05PQuz86hCEDHo18WqeOg6beA4ta6jsRukz+lh49mKAfljpT2mzjyA+C
- BRspGHq8
- BBaL4p48LKOe44cjCzKV1VPDrIwq5QzcEuXeoHOW9bqJnxD62NjhEM7W9C63XEBPzdmz5qWPymvu+OEmvzqX/KMqTXx8NL00VefZ86KO+yzP70VcM1rhPyl4x2e9lWVoL3dTaxCQBvCSLShzMKXBzOR3UmrD3pNo0Sj0W4kcGBBjhknWiMZ4rPivt1t9R1oHesWH/JMFpwUi/+gX8wGKt8p8pO4RV0z05HXmYccRckFMj1X3Up1kp7PJ9C+HXdKS9GWsQtC64hM1SRa7Y1x1Wq55jHIzB9SZgm723X0DE9HBn5Djcg6GIzWHdL7l4t8eVJqgZd+mW8Z/8qVrjWen5ybygUMkX5jiOMQ+/uUcpJJjUIZ3UinUteObJPFY85SbLRVwwihDgIkDULA7moc4ZDR1Ewl2PAb3uA6f8azdFBtYdw/RjqMr2nkwGtM3nSUh5JTl0BHKpaf7SBcD0wYIdZvNTUQfZoHdRZDVnqFihWI0Kysg8/Z6NCpcniw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775293883-267487
+X-HE-Meta: U2FsdGVkX183wJXuLzX0wqjAem0BghhbjOhA0OvRc7lnS7rpY0xEdKxv5f0GyrW06CGEqC137LXtH4U1KCrjhhJyr9r1mRt+EYZST5TbrQaiYjX8d7P0Y45WviNQhxnva/OXy9SJNNtN2WV5c1RdFJ4768z5TOaLwc0yE9H79DsT+3if4OsEeBQaCQ6CJotFNrjRTJwNU7ANiUdcpKwr3hGNAfmeu07dStFbwHw9TQXchqyjO0+t2oZgIQX0D98xMI9Wi7xRNnsVx/iqLNlU5Wt5NRp+mNzZX8e5/6bsPULGZxSY5gvNzQnI+dOM+M0Coqmj+V49buFJrdw8hW9lM/MNdD3WG0VJqGnFS7ZBzy0PwbqzyJxSYPJQ0LViA+cJFfKC8PNt0USnCPq/IJVIO1awpk4NuFXKxZYOwvmUdXJtanQj/X/L5VIkGqh1QbHevtqQVsqL4GzRehWManzKVT3uRdOGi+7i7zqe8V+oSu/iJ4KWr9nlKxktD9rPFKWzhF9Ftm5EbqX6h5+7CCK0XbF1qsc9g3yJyAoQJBTfxaQrBBE6BeeFtWcizD9lcun3De9iyjA1PYOX1Nme8247xNk3qFS5b9Q41nmvkZtJe4u4TObCeeguNnfVoMmLc/wPXtqtWQ2YRj7+/iXkrNHjGcXybxw5mQniWOniQYGBT8ySD4npZc7NKW2gnSYdqcU2ZjoGoE8GqES2Y4QUb1HznedWtqytgyzBLpUSjqQbAEGkx+6aJ61QZwm1SOCjsx6DWH1i5fXe/MQPGXnPdIMKyRrzW92f8a3rdK0MWD/NQEUxlAUoXNj73wpiS+4ps0gzZ/Z+BAdOzkLtacdOYQravG6ndnePpgoJOqr73m4V1yzwWrGqcmfm0Hc0pKpfAd/hD2w4zEhY5psbSxAtV3IxD6pfbtrlGrLc4JSYvLRJTygr5alBWKrAVYRceQdmEKm02SQGCs/oo1j1Tr4XW+H
+ LHwa/nzV
+ 1T8dnhnwHKf5z4E3xXjjmjLnmAExf+a3uoh7xA5hc8WcmTsPAnkAXx16d7WU36S3Pv3tjJoHnEcERj9aMi6BkUwYIeepfRZzOEiFwPKGNwuMqLCY+b7Hu6mXNvHFvmY6vU/8kvxp98aWC2iRS/6E7IF3Zd+fhHKr5sZI13WZuMqGY+BF8EIPD1qstupI6sMS5a6OZz12GuPT8qKmglYVXmVKXXn2kjYpFSGEBsdo39B65O1YLQhrq0dcPNovex1mNruGyh95bqQc6I5uOMfxhc6R48pICEwY14Z31ATqPf3Wjgx+XTyZCsiGmO4C34aeqyoRAYbbXodp672KwdOVn+vVLKEIC7jE93Gp0JfUaDXXBaEwsVoeJwiYs5Ohxlrfw3eFl4QxBhw8G4xp0hVzMcByxWfRbY25C+amjoUxLW4vZQEOlIFyV0CFenIqz/X+TDjZPVOUnLaeUTRz9HTnMsfgmsMdZazW7EXetBiWXRuJkuMn1VSqdUcl7BA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,29 +118,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Apr 2026 08:55:29 -0700 SeongJae Park <sj@kernel.org> wrote:
+Hi SeongJae,
 
-> I recently learned not everyone is interested [1] in sashiko review.  So when
-> I sharing sashiko review, I now try to drop recipients who are not necessarily
-> interested in the review.  My choices at the moment is the author of the patch,
-> maintainers of the subsystem, and the mailing lists of the subsystem.
+On Fri,  3 Apr 2026 09:19:06 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+> As Quanmin also asked, clarifying the unexpected termination would be nice.
+
+I will clarify "unexpected termination" in v4's commit message:
+
+    "Unexpectedly" here means the kdamond terminates without the user
+    requesting it (e.g., not by wrtting "N" to 'enabled').
+
+> I remember I suggested adding stable@, but only if you think it deserve.  I'm
+> now not very sure if this deserves Cc-ing stable@.  As I mentioned before,
+
+I think this deserves Cc stable@ because:
+- The issue can be triggered by accidental user misconfiguration
+- It causes kdamond termination and hard to recover/restart. Once
+  triggered, kdamond remains in an unusable state, and I have not found
+  a way to recover/restart it through the sysfs interface without a
+  system reboot.
+- The fix is small and low-risk
+- It improves user experience on stable kernels
+
+But I'm open to dropping it if you think otherwise.
+
+> there are multiple patches to review in parallel (you are also having such
+> multiple patches in the queue).  Please don't expect I will follow full
+> contexts especially when a single person posting multiple patches in parallel
+> every day or two, and bear in mind with me.
 > 
-> So if I was sharing this review, I would dropped stable@ and yanquanmin1@ from
-> the Cc list.
-> 
-> Please consider doing similar when you share sashiko review.
-> 
-> Everyone including myself is learning how to use sashiko well, so it could be
-> confusing.  Sorry about that.  I'm planning to make a guideline for sashiko
-> review usage in DAMON subsystem, and update hkml to embed it, hoping that to
-> help reducing some of the confusion.
+> Sorry about the limited bandwidth from my side.  You could also simply slow
+> down your pace, though.
 
-Thank you for the guidance, I will keep this in mind for future Sashiko
-review forwards.
+I will try to adjust my pace. I've also noticed that the quality of my
+recent replies/patches hasn't been ideal, and I will try to be less
+rushed in the future. Thank you for your understanding and suggestion.
 
-> Anyway, seems sashiko found no blockers for this patch.
+> For stable@ Cc-ing patches, more clearly describing the user impact would be
+> nice, and helpful for judging if it deserves that.  Could you please elaborate?
 
-And thank you very much for reviewing the review! :>
+I will add a "User Impact" section in v4's commit message:
+
+    User Impact
+    ===========
+    Currently, if a user commit an invalid 'addr_unit', kdamond may
+    terminate abruptly. Once terminated, it cannot be easily restarted
+    via sysfs, pontentially requiring a system reboot to restore DAMON
+    functionality. This patch prevent such termination by validating
+    parameters (addr_unit and min_region_sz) early.
 
 Best regards,
 Rui Yan
