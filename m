@@ -4,147 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38ECCE88D74
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 00:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E93BEE88D73
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 01:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73B696B008A; Fri,  3 Apr 2026 20:07:49 -0400 (EDT)
+	id B53826B0005; Fri,  3 Apr 2026 21:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EBB46B008C; Fri,  3 Apr 2026 20:07:49 -0400 (EDT)
+	id B2B5E6B0089; Fri,  3 Apr 2026 21:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565CF6B0092; Fri,  3 Apr 2026 20:07:49 -0400 (EDT)
+	id A1A766B008A; Fri,  3 Apr 2026 21:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CA966B008A
-	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 20:07:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DF016B0005
+	for <linux-mm@kvack.org>; Fri,  3 Apr 2026 21:22:24 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFBD414069C
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 00:07:48 +0000 (UTC)
-X-FDA: 84618935016.17.6F41848
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 098BE4000A
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 00:07:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=djx7bvJM;
-	spf=pass (imf11.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1FE8616040B
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:22:24 +0000 (UTC)
+X-FDA: 84619123008.17.9C28C8A
+Received: from mail-oa1-f68.google.com (mail-oa1-f68.google.com [209.85.160.68])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 61F5DC0008
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 01:22:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hhJb57Qa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.160.68 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775265742; a=rsa-sha256;
+	cv=none;
+	b=J0wUe+q2JZ09K9cXzzNN4y8hnsrxh9ZmfWwIErGZ/O4pRPrV/uKFSB9NNiW7CWW2Q1fUpP
+	N5M+k/cbu9as2HJKphe2EE3U7oA7sozso61gaU5GIzWwOx1X3pnZ4gVfg6L1CP4iPtEb8I
+	fK5yphNr0Zb3RJcRn5MoMccNXQKO+6o=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hhJb57Qa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.160.68 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775261267;
+	s=arc-20220608; t=1775265742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5WbWNOKgJimgI9xjyvoHzw2TjM6jyvThEk+IUd6YUTg=;
-	b=TC32WePntvEqcqooeMI/1CwK0B+xofGj0zRFt/ak4CyeLIOe9Vns5bBPGxAPzJxumVTj0v
-	dUVjKzr2angGhvpt4j2y4xAgdYCPpha6MUo8JNMeIr3hay+TOtLq8Eqk7D1Q72IDpR9C+B
-	BfbiZ6cHMadSV+stzeCzNpAEegNwgxo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=djx7bvJM;
-	spf=pass (imf11.hostedemail.com: domain of dianders@chromium.org designates 74.125.82.170 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775261267; a=rsa-sha256;
-	cv=none;
-	b=yyv7T6JggPnZyD+B6BZfSpFNCHTJ79PimgYugRbGyrfYNFOhO76s58GyDGr6PlbaJT3tja
-	IyTiNGk5S7xWD7dVuZPCbJ6rKe214sq8rW3qvZMTOxG9htN+VDTdqSrlnTAxMjY2MuMqSn
-	Qp+/+Kt4EvazvFbxSKs5+iSkMT68T+E=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2cbdd9852aaso1681533eec.0
-        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 17:07:46 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=pcK6sHgPs6gP5Y6uAT692eRrV9NjZEVTLIRYHBLXl5s=;
+	b=WzJPS23HvV06c3wToqMCjNULEgs+rjjEH8zwIgTXMZV134+o64eW7QTbmaTChYzGxjKc9r
+	53UoWOxKT+K0foK4F1jGt1/J76Wc3wzqdaGlcClkJFIp4PJdxL3Th4MuZVjv+QH50hQqNp
+	YM1SLECvK46jUcI2CfoUa9rOFFZbzDE=
+Received: by mail-oa1-f68.google.com with SMTP id 586e51a60fabf-4152698e745so979347fac.1
+        for <linux-mm@kvack.org>; Fri, 03 Apr 2026 18:22:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1775261266; x=1775866066; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5WbWNOKgJimgI9xjyvoHzw2TjM6jyvThEk+IUd6YUTg=;
-        b=djx7bvJMk+oN7xJhAgbCKYgGOGLPBaE95skn8gdW0GUZEgWhBoug2opIwKmrXwFoRp
-         oGfrPUBylKeNZro5wnYig402yUGfc09eAfv+Ln11vS5CwK/qfng1KRR+wKslH7OvwDkr
-         6BquBNoR+im1d2hLIRmSjeHFqvy0VfSR6BGNA=
+        d=gmail.com; s=20251104; t=1775265741; x=1775870541; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcK6sHgPs6gP5Y6uAT692eRrV9NjZEVTLIRYHBLXl5s=;
+        b=hhJb57Qa/Y9PWHh8xGlDxG3d3UAY6/Ktjrl/1JSlD6V6z/+/GeXnC/oTtwX4CPC3Ol
+         vI5uRNH983eHhg1KEs4w5jUjfgEJduC37iB3t00Brk6lkGJKctuYPiJT4/rbMNZdQEec
+         pPrcxSnQWIFQYocoNS0OanmOX9g8bnkvdiYopyv0e+zxkaMdJwYP9Z2hMzz+ebtDOmwU
+         xWFMQW4hks/RcB6N27zxRTt8UIznCo/TKDjTyM+T4WNs7aLzWQoY8OjjWnqvDa6TJZme
+         VZ4AoXljs2sTMJ2ZXOv8M7Lu3MfgOJUXgqwaMXa62LFLhuAvHIYfi90eTS1gL7+Q6lZW
+         QT/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775261266; x=1775866066;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5WbWNOKgJimgI9xjyvoHzw2TjM6jyvThEk+IUd6YUTg=;
-        b=EDHhTwR/BGDX1tLAxssuEg9wntxn7k150UjyYDIuB1S1le5KCHwY9HTOIXq1RlhkNc
-         ZgLEOsxKW5SsrDJF3vg7ASTkQaOIPbaYvY1taJW8j0MMQgTZDo+Oh7rGEClvm6+YZRF5
-         jWl7VpAPuj68ivA3hjaHaqV0dbuY+7+R9JvOaEb9GEyuHNT5SjSoI7i8I1YwH9dsq3H9
-         rCg2P4N+53KoVzO8MLNvns35o6tzb1GMrLg9tT0p0lVtuXi5x2vuLBBbYsX0KMmd4n76
-         HBxawx82GUz77GgFZ7MZUyCEQS9Bzo4mg3DT7hoZqNAJFFk81O7tv+8eCpdW4ntKFajV
-         2fYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKtRVgEsi7u0uOwGSCVwlMkMzfxbtRozJ9z/PHMTKU3V8VVrqH8j69LXkoaH+TQp8LUNQZ4rAeFA==@kvack.org
-X-Gm-Message-State: AOJu0Yz8s45SdsqkTzQ8GHZuh3CfWNXBLG6IVI5TMQG8JppHh2sYPeBW
-	Y8DsZvF6xeYSv/iMNT1D4KryCRo2Us0c2zgQnVhkf2UzudsqYmj/qaVQxe2p0dGklg==
-X-Gm-Gg: AeBDiesb7VSWPglCEzuCd8j0ak9wOXzfzLnrgYRAJ3H/s/oWFQGD/gPHSsWZRyhWRus
-	VbIheNH7L2PAiyJqW7fbhSq/gF6Zd3jqXb/zLFjIXdLUuooxSPxIYgdzTjbx1e0ugNnw4CAc91O
-	wF+ybHcntdMk58C/OCBRwG+oKXe1+rnC+CZKElstIckOpZvpHbC1N37gepfQTXFjHMVDgZJGelF
-	ohhBPbKpnEf0lMNswFv9fa9SzGCYeUA9XpKNmVVc3Z9CSAL3FAEWaLxpzaMN8RCIfRKV+jjZXE1
-	H4CUq05d8fCWdKRDilG9/kVVIGNOaq7bVZRKW9L20URwp4vkJIl9ieZ5BnopiTQIvxdXjF2pKRW
-	EEqE4LoxfENa+nge83v1FZhaQ53RavDz+3TPVFQ7LkHcwaNX3u0rfnRJxsShcdbsHhQ1glJShsO
-	q/P22psKWulJOL+E2az9wb1AftqJnPK1/tXWQtS1EI8XoQaESrcblaX3EWqhUeupbFSW3kaVvaM
-	Ixah8EDQxflbUtZpQ0ZbA==
-X-Received: by 2002:a05:7300:dc88:b0:2b7:b7e7:9025 with SMTP id 5a478bee46e88-2cbfcb5580fmr2229803eec.31.1775261265791;
-        Fri, 03 Apr 2026 17:07:45 -0700 (PDT)
-Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:a8b6:55b2:3eb6:2c0e])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ca79e1d93bsm6520716eec.12.2026.04.03.17.07.42
+        d=1e100.net; s=20251104; t=1775265741; x=1775870541;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pcK6sHgPs6gP5Y6uAT692eRrV9NjZEVTLIRYHBLXl5s=;
+        b=ZVHMRHMVH1FGQ73mZstJtKbitOP4Y+6fhBYzOQEsEIIoEtYBx2DI8kB4wTFjQAzifn
+         YgLtTFsHQcdfO+nozR74iG40jd53XS1c6wbAFIo3IjRz+hA6wSyaFtTWN+6CEmZiCaLB
+         kV5wE+fuf0E8AmpiY3ENZRbMVk5Xr+d50C+Bpcsjjcrn8fQYYsNZyUGDUhuXmW1dnPxj
+         hEA2b2tPjyYf7Wu1Z7m8Agvv5k+HU1HyCaUiqpWU/YJ6Vraefj7sWFhS75ONDdICON7f
+         TwZp001iP1dXkN2flQLjB6A3d6R0846jiIgEPjtybLKdjqtOVClMIBvkz+zE9pxEk8vv
+         IkFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnNzxS6OLQbs558Dya+Lp7BBgOTHFWqElgDQt/+4qGvM6SAWJzVfODAd0mHWqn5ul6Ez7P/C0Usw==@kvack.org
+X-Gm-Message-State: AOJu0YyRB3oyu9EjN1LHC1t1379tqRUCk866+Z0WTf313ch0UU15r7/V
+	yZ0QrEtbNBG/6+DJsmTFChIn4JqizaaHsl/GL43oMisEKuEINblI/PU=
+X-Gm-Gg: AeBDiet4TDw4iZKDuf9zmnkvjHzvMi5JaC7rlKV+ZkdqmfjyQnqNOQTMSCMaCQSykSO
+	JUyvXF6yl5G3MxIPt8coVymHe0xU19Am8jd2m+2E1BQaDHtYoNi4B6Zsv3ztFOgDJJWL4pa8vZP
+	zfvSaB819fwJZpnqF1plSkM8yRuKRtg6pEij66r1/mvTZh2lqHHMm2Hyegu4By5zvSofNbvFPbk
+	u5YspDjJNjW/rm0B7DYhdPBBFnlAfbwmPgNxsLpnYk3yeDBmnBhY++aiRa681RzI5y2kWjKfocC
+	ShIUnwT0G8ZwNKLzPwziN53WUSn2/dpD+Wjm2z40g2a9sn9sk2kXnVndB7ygHfFfHvpqo3/psyM
+	PiSiuQ/WqsbU2ZRSZwo0svkBXquxr32egyt+Uk9lSbRFZPpI/QOU3Ikm1bg81oMjpiTPWyxUa40
+	/V7FqWLnBznQ86RJR0s77UOg==
+X-Received: by 2002:a05:6870:1718:b0:41c:b780:93c with SMTP id 586e51a60fabf-4230fbedf40mr2606467fac.8.1775265741311;
+        Fri, 03 Apr 2026 18:22:21 -0700 (PDT)
+Received: from localhost ([108.147.99.33])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-422eb3c8282sm6117376fac.13.2026.04.03.18.22.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Apr 2026 17:07:44 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Cc: Saravana Kannan <saravanak@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Johan Hovold <johan@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	ardb@kernel.org,
-	catalin.marinas@arm.com,
-	chleroy@kernel.org,
-	david@kernel.org,
-	driver-core@lists.linux.dev,
-	kees@kernel.org,
-	kevin.brodsky@arm.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+        Fri, 03 Apr 2026 18:22:20 -0700 (PDT)
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: sj@kernel.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	maz@kernel.org,
-	miko.lenczewski@arm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	osalvador@suse.de,
-	oupton@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	will@kernel.org,
-	yangyicong@hisilicon.com,
-	yeoreum.yun@arm.com
-Subject: [PATCH v4 9/9] driver core: Replace dev->offline + ->offline_disabled with accessors
-Date: Fri,  3 Apr 2026 17:05:03 -0700
-Message-ID: <20260403170432.v4.9.I897d478b4a9361d79cd5073207c1062fd4d0d0e4@changeid>
-X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
-In-Reply-To: <20260404000644.522677-1-dianders@chromium.org>
-References: <20260404000644.522677-1-dianders@chromium.org>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	ravis.opensrc@gmail.com
+Subject: [PATCH v5 0/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Fri,  3 Apr 2026 18:22:14 -0700
+Message-ID: <20260404012215.1539-1-ravis.opensrc@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gyjqdbsnwmyjdy45hrb9a9nx3docz1sz
+X-Rspamd-Queue-Id: 61F5DC0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 098BE4000A
-X-Stat-Signature: x5sq3cfuactf9p681e7h5w97aasz3so8
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775261266-104357
-X-HE-Meta: U2FsdGVkX1/X737OtuNEYfoBJin3N9hbzj8YItjJ6J5zjkUqlb20j3OQ7L4oX0Yx/Fj4kofmTqa+UquEAI79ldbv67FnAqoYS7hE/L7KuNYBey+NwaHBfRliWN8ZWq/zp+fxy9Qw/VgokKEpgJIWMVRcOuEUmNVd9ZhkArRNQpYskaAa1rzHricGOVlgHvG7EDI/mV/EjJexJBtVO69NL7NdC6VUCCvFwQKXZ3ooqholRqu11ihGcaZPvJsQt+RWD9QLyQcB0B1qaAnNvBXR1ML0W0LMEpVemWBdY+pqeKlQDeviXLPExNwD6atyFefClv8PthJXLHYCNPIop4UdwQIoS4c/joT1KmpbZbNnI47RW6v9sK+9FMrT416VEza/9faHZAi2IeC0TwQ8YwdGdEFOIu0n/WgOtRGZik2ZE7UkzClMNOYaaK4GWDanMrJXv1DsiqXAfoofSmPsbDFjWSBVVQ9PP2RQKFoz/jFLG1XbGDiRCd33ayK0vi7abzslPz09kzgHQDJ0ehu6pN31RdfzhpSPbj7F9b+FovQAzv5VLJ3cGI0MjoJEEUv7sNZ54kPbz6iz9vkq+eNYJ3zcWPuzThs1x8scbrqU4c7TQUrGfUv5hxMJ9IprkY9i1uMWP3CGx+ZdrQIWLyKGHCWV0q/iuknaWuMW4iPvcbm04UxuVZEvvPG6BLqda+BOs9VSrLNMmmdWlOcTWznFYw2hJjVboy6mIpFgXHJzPmrzgBm0xP67htKvp9wRLaRjaxgNlu5L9RJaWe1YZxTNa147p6xo4MYUiJui0BqIl5utP0MbLhDf6aGrzbCjUlk2s4ym0yrpztAVqpx2E/2JmRjXqnmqUUL4pugSOJZAWIVd54QG2f7ZAPpuhCqdoSmYREVmV9gw4duKw0SlN/GRsYNbAaeX0GVdB9c4liHkUDpwNX5W62YSIcTrs92D9csQzV/gvH36PhTqIdS8SgqLgwd
- Djfs6Vx+
- fZcDFwriGZY4Wy1i8pw7RQTof5nDBVBFH5OjImWb/q+cVlx2rnyYzvS3FeI2VJBMmv/PWnE27Jf9lO6/Vl35HDhOd3T/mhqj8nPYPyfPc31UsG1rumdsg6BCVXRDG2JuRTO5FegOkDqYHfLQTEGM9NMP0agWKJy/30QYQNXu5sZa5b3VKjn9/FaaRT5VquApjX4EM6GV4tayhAKiSlwDMXStwcvCRf0POyzLLFEcNRRdY0KqR40i3FSYinvBq6Aoq5yEbp+sdY8ZTX6BLOIrhKtWdVz4y9MJIlA+JXBg369p6hpCQp//B3PMqVlqrFfahKk9UCcAtlzmAUEmBbz+GVvL1dAjUHYh7H7HzQnUE/Bo3iUNm4le0f5nJ1P61ioDRcg2kulwE1gBvQj23odj7MN+lrkDBHrceCu393jQ0ld8GekiGL4V0uPpmxu0BKd98sTLB+lU382qXRoc=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775265742-894141
+X-HE-Meta: U2FsdGVkX1+rRiVVOwYMI6pISYSIugHUX6qVYOAww0VNZfFAzHiCjOED0XnR9pB03dWug61Uh0zrCxSKEMbdbnG6moX8KBzFeXp7fL/q/kMoEszu+dOdRT0SogZKbRRqjf+ZnL+jV/IXDIQn5hAqqG1S5TufxQE5ToSipG2cjhQhk7yyWgm2o0VK+MVX5CPUaW8sO5On44CiHCvgxwva2+YIyVvINdJKmTAECIobufewvgvOtlrqFAWaiUrMogWL/GjuBtkvv21+rmpIvUpzy1TAYcvBocd/uj6PZCl1OLtAGba3yHq1XvowW5LwstgtiZckSY3c/mPtAGCZVh1HRK6zv1jCJbEm94R0GsfYNNZMbc3zdqvSbJg8ZxOAT0YXJGUdtJmelhFE2cix4CWqh8DQayAeqtxBFioeQTlFzHfrAESFVFD/rSeP5Ni4wNXnRgrHUtPgBux6klF9H2dhYb2XN9kKlcHwBjdoA8gnv64EYYwkiUgkM15lJb/pEsypZcW8wF7OMTPZER2KjDpYL1yrGsbNA5fUFlw6KzwPMjpJMpdbUc8zqWqKJoL83yNCdM9wzWAJwS4gZgTwVHlVGbt5I2RBYo5V4lzel5gmuEjkFfXr79Yj8doVTbCT4s5720LM31060pUHtzIGGuoJkWtV6pcHaNi1b07/VGYtl4dEq8PcafaMbDYi7WJLfG7wD5nPRQbk4PC4H6thu7wpLyW4rwra4s2Fz6Oi2c87Nd/MttWP8Ufjf2gbYq1ufiH8eBOiVLlavVrDGKZW6Nu0iIqMrx/KSPjNvifeHDCIKzpl2YGLRr4mwx0aZXA8GRhbhkUzTLfHFf4bc2T4/M34Lrk+FP79q3tmvJicU+iYBl3vppLQQqqH/mbBMkeS1s+dSNUiBkl+wUe/4nLAg/ToVuzYH/cWUBhPPz+v78VOhhaQUeBxW2OrNltlo4wbBcqV8xf0EjTuAuQlBeAp3Jd
+ Uq7tgGkq
+ C7BxYHymvHLufrraqc6KKTrB35o3t6hQ9L9o1Tit4dGvWS3rZ8DYVLSFmrzuAUvsrwIzwwcEXr9aUFM2o3R4jbWiq6iETeXRaM1o2bMHrfHfsAxHNlw/CThecxOEgNAF/K+fcJfTTDh93/jFJOXqbRuyaRq9VVI1f+O643n6Pqi46U+3YXkWsoZxxIi9ciLkdF1h303OvOZaxzFMTgztBmaM1Z9hXZVNA4pqUGjP3BG3lUTGlkEhxybPH8aMjzx7luf2uD5uikY6lma6m73DvwWDpAnsRzAHDjykIhVzymADkpNxeHEJZJfvXOr8WI0hvGYKf9g4DCY6hAH2Ee7Gd+myJ4Z9dQnaBRn+6v5/UV79GCCTOI8YSgY7otUI72Ycy+T7wM5nnRy48KYEzePhRnibaPmmd/i3ursVITPzC7Y9KNKC8MDHsJWbfbqsbDLi64s30s1IUPPD9qzUYjEH0GpA3ga44FXbSuBXCgN2UEOy7clU+W0FHX+JmYl7JXQl03iFtFbTOLSGYo/dytRrKZF/8KGrfXL1oIPXVMSwISgU94vhZcYOE3KN2BlGwQvpScIEbVPLRl2eF8K9g2a04cMojeOM/LZ5MH1RJClK2mUsJVGCTq7BWTle2WNKVJfmkVfUav7gszzwW5mM1elexMuURLJjNlKbZNBDCs6AIVxBKd3M3KZ2qFVuinGTEyx/JXX8P108e/Xi/evJV/01k+3ZWenkiPmMcpDPL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,257 +123,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In C, bitfields are not necessarily safe to modify from multiple
-threads without locking. Switch "offline" and "offline_disabled" over
-to the "flags" field so modifications are safe.
+This patch introduces two new DAMOS quota goal metrics for controlling
+memory distribution in heterogeneous memory systems (e.g., DRAM and CXL
+memory tiering) using physical address (PA) mode monitoring.
 
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-Not fixing any known bugs; problem is theoretical and found by code
-inspection. Change is done somewhat manually and only lightly tested
-(mostly compile-time tested).
+Changes since v4:
+=================
+https://lore.kernel.org/linux-mm/20260320190453.1430-1-ravis.opensrc@gmail.com/
 
-Changes in v4:
-- Use accessor functions for flags
+- Fixed commit message description for DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP
+  per review feedback
+- Added clarifying comment for ops-common.h include (for damon_get_folio())
+- Fixed build error when CONFIG_DAMON_PADDR is disabled by adding
+  #ifdef CONFIG_DAMON_PADDR guards around functions using damon_get_folio()
+- Dropped RFC tag per maintainer feedback
 
-Changes in v3:
-- New
+This patch is based on top of damon/next.
 
- arch/arm64/kernel/cpufeature.c                 |  2 +-
- .../powerpc/platforms/pseries/hotplug-memory.c |  4 ++--
- drivers/acpi/scan.c                            |  2 +-
- drivers/base/core.c                            | 18 +++++++++---------
- drivers/base/cpu.c                             |  4 ++--
- drivers/base/memory.c                          |  2 +-
- include/linux/device.h                         | 12 ++++++------
- kernel/cpu.c                                   |  4 ++--
- 8 files changed, 24 insertions(+), 24 deletions(-)
+Background and Motivation
+=========================
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 32c2dbcc0c64..c832aa565dc2 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -4042,7 +4042,7 @@ static int enable_mismatched_32bit_el0(unsigned int cpu)
- 	 */
- 	lucky_winner = cpu_32bit ? cpu : cpumask_any_and(cpu_32bit_el0_mask,
- 							 cpu_active_mask);
--	get_cpu_device(lucky_winner)->offline_disabled = true;
-+	dev_set_offline_disabled(get_cpu_device(lucky_winner));
- 	setup_elf_hwcaps(compat_elf_hwcaps);
- 	elf_hwcap_fixup();
- 	pr_info("Asymmetric 32-bit EL0 support detected on CPU %u; CPU hot-unplug disabled on CPU %u\n",
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index b2f14db59034..75f85a5da981 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -213,9 +213,9 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
- 		return -EINVAL;
- 	}
- 
--	if (online && mem_block->dev.offline)
-+	if (online && dev_offline(&mem_block->dev))
- 		rc = device_online(&mem_block->dev);
--	else if (!online && !mem_block->dev.offline)
-+	else if (!online && !dev_offline(&mem_block->dev))
- 		rc = device_offline(&mem_block->dev);
- 	else
- 		rc = 0;
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index e8cdbdb46fdb..1353adbcc234 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -122,7 +122,7 @@ bool acpi_scan_is_offline(struct acpi_device *adev, bool uevent)
- 	mutex_lock_nested(&adev->physical_node_lock, SINGLE_DEPTH_NESTING);
- 
- 	list_for_each_entry(pn, &adev->physical_node_list, node)
--		if (device_supports_offline(pn->dev) && !pn->dev->offline) {
-+		if (device_supports_offline(pn->dev) && !dev_offline(pn->dev)) {
- 			if (uevent)
- 				kobject_uevent_env(&pn->dev->kobj, KOBJ_CHANGE, envp);
- 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index f12f3b53b4d0..79c85dbcffad 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2788,7 +2788,7 @@ static ssize_t online_show(struct device *dev, struct device_attribute *attr,
- 	bool val;
- 
- 	device_lock(dev);
--	val = !dev->offline;
-+	val = !dev_offline(dev);
- 	device_unlock(dev);
- 	return sysfs_emit(buf, "%u\n", val);
- }
-@@ -2913,7 +2913,7 @@ static int device_add_attrs(struct device *dev)
- 	if (error)
- 		goto err_remove_type_groups;
- 
--	if (device_supports_offline(dev) && !dev->offline_disabled) {
-+	if (device_supports_offline(dev) && !dev_offline_disabled(dev)) {
- 		error = device_create_file(dev, &dev_attr_online);
- 		if (error)
- 			goto err_remove_dev_groups;
-@@ -4178,7 +4178,7 @@ static int device_check_offline(struct device *dev, void *not_used)
- 	if (ret)
- 		return ret;
- 
--	return device_supports_offline(dev) && !dev->offline ? -EBUSY : 0;
-+	return device_supports_offline(dev) && !dev_offline(dev) ? -EBUSY : 0;
- }
- 
- /**
-@@ -4196,7 +4196,7 @@ int device_offline(struct device *dev)
- {
- 	int ret;
- 
--	if (dev->offline_disabled)
-+	if (dev_offline_disabled(dev))
- 		return -EPERM;
- 
- 	ret = device_for_each_child(dev, NULL, device_check_offline);
-@@ -4205,13 +4205,13 @@ int device_offline(struct device *dev)
- 
- 	device_lock(dev);
- 	if (device_supports_offline(dev)) {
--		if (dev->offline) {
-+		if (dev_offline(dev)) {
- 			ret = 1;
- 		} else {
- 			ret = dev->bus->offline(dev);
- 			if (!ret) {
- 				kobject_uevent(&dev->kobj, KOBJ_OFFLINE);
--				dev->offline = true;
-+				dev_set_offline(dev);
- 			}
- 		}
- 	}
-@@ -4236,11 +4236,11 @@ int device_online(struct device *dev)
- 
- 	device_lock(dev);
- 	if (device_supports_offline(dev)) {
--		if (dev->offline) {
-+		if (dev_offline(dev)) {
- 			ret = dev->bus->online(dev);
- 			if (!ret) {
- 				kobject_uevent(&dev->kobj, KOBJ_ONLINE);
--				dev->offline = false;
-+				dev_clear_offline(dev);
- 			}
- 		} else {
- 			ret = 1;
-@@ -4714,7 +4714,7 @@ static int device_attrs_change_owner(struct device *dev, kuid_t kuid,
- 	if (error)
- 		return error;
- 
--	if (device_supports_offline(dev) && !dev->offline_disabled) {
-+	if (device_supports_offline(dev) && !dev_offline_disabled(dev)) {
- 		/* Change online device attributes of @dev to @kuid/@kgid. */
- 		error = sysfs_file_change_owner(kobj, dev_attr_online.attr.name,
- 						kuid, kgid);
-diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-index 875abdc9942e..19d288a3c80c 100644
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -422,8 +422,8 @@ int register_cpu(struct cpu *cpu, int num)
- 	cpu->dev.id = num;
- 	cpu->dev.bus = &cpu_subsys;
- 	cpu->dev.release = cpu_device_release;
--	cpu->dev.offline_disabled = !cpu->hotpluggable;
--	cpu->dev.offline = !cpu_online(num);
-+	dev_assign_offline_disabled(&cpu->dev, !cpu->hotpluggable);
-+	dev_assign_offline(&cpu->dev, !cpu_online(num));
- 	cpu->dev.of_node = of_get_cpu_node(num, NULL);
- 	cpu->dev.groups = common_cpu_attr_groups;
- 	if (cpu->hotpluggable)
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index a3091924918b..5005654f44fa 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -697,7 +697,7 @@ static int __add_memory_block(struct memory_block *memory)
- 	memory->dev.id = memory->start_section_nr / sections_per_block;
- 	memory->dev.release = memory_block_release;
- 	memory->dev.groups = memory_memblk_attr_groups;
--	memory->dev.offline = memory->state == MEM_OFFLINE;
-+	dev_assign_offline(&memory->dev, memory->state == MEM_OFFLINE);
- 
- 	ret = device_register(&memory->dev);
- 	if (ret) {
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 8132aab17e04..65fc6c566cc6 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -485,6 +485,8 @@ struct device_physical_location {
-  *		architecture supports non-coherent devices.
-  * @DEV_FLAG_OF_NODE_REUSED: Set if the device-tree node is shared with an
-  *		ancestor device.
-+ * @DEV_FLAG_OFFLINE_DISABLED: If set, the device is permanently online.
-+ * @DEV_FLAG_OFFLINE: Set after successful invocation of bus type's .offline().
-  */
- enum struct_device_flags {
- 	DEV_FLAG_READY_TO_PROBE = 0,
-@@ -495,6 +497,8 @@ enum struct_device_flags {
- 	DEV_FLAG_STATE_SYNCED = 5,
- 	DEV_FLAG_DMA_COHERENT = 6,
- 	DEV_FLAG_OF_NODE_REUSED = 7,
-+	DEV_FLAG_OFFLINE_DISABLED = 8,
-+	DEV_FLAG_OFFLINE = 9,
- 
- 	DEV_FLAG_COUNT
- };
-@@ -573,9 +577,6 @@ enum struct_device_flags {
-  * @removable:  Whether the device can be removed from the system. This
-  *              should be set by the subsystem / bus driver that discovered
-  *              the device.
-- *
-- * @offline_disabled: If set, the device is permanently online.
-- * @offline:	Set after successful invocation of bus type's .offline().
-  * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
-  *
-  * At the lowest level, every device in a Linux system is represented by an
-@@ -680,9 +681,6 @@ struct device {
- 
- 	enum device_removable	removable;
- 
--	bool			offline_disabled:1;
--	bool			offline:1;
--
- 	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
- };
- 
-@@ -716,6 +714,8 @@ __create_dev_flag_accessors(dma_ops_bypass, DEV_FLAG_DMA_OPS_BYPASS);
- __create_dev_flag_accessors(state_synced, DEV_FLAG_STATE_SYNCED);
- __create_dev_flag_accessors(dma_coherent, DEV_FLAG_DMA_COHERENT);
- __create_dev_flag_accessors(of_node_reused, DEV_FLAG_OF_NODE_REUSED);
-+__create_dev_flag_accessors(offline_disabled, DEV_FLAG_OFFLINE_DISABLED);
-+__create_dev_flag_accessors(offline, DEV_FLAG_OFFLINE);
- 
- /**
-  * struct device_link - Device link representation.
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index bc4f7a9ba64e..f975bb34915b 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2639,7 +2639,7 @@ static void cpuhp_offline_cpu_device(unsigned int cpu)
- {
- 	struct device *dev = get_cpu_device(cpu);
- 
--	dev->offline = true;
-+	dev_set_offline(dev);
- 	/* Tell user space about the state change */
- 	kobject_uevent(&dev->kobj, KOBJ_OFFLINE);
- }
-@@ -2648,7 +2648,7 @@ static void cpuhp_online_cpu_device(unsigned int cpu)
- {
- 	struct device *dev = get_cpu_device(cpu);
- 
--	dev->offline = false;
-+	dev_clear_offline(dev);
- 	/* Tell user space about the state change */
- 	kobject_uevent(&dev->kobj, KOBJ_ONLINE);
- }
+In heterogeneous memory systems, controlling memory distribution across
+NUMA nodes is essential for performance optimization. This patch enables
+system-wide page distribution with target-state goals such as "maintain
+30% of scheme-eligible memory on CXL" using PA-mode DAMON schemes.
+
+What These Metrics Measure
+==========================
+
+node_eligible_mem_bp:
+    scheme_eligible_bytes_on_node / total_scheme_eligible_bytes * 10000
+
+node_ineligible_mem_bp:
+    (total - scheme_eligible_bytes_on_node) / total * 10000
+
+These metrics are complementary: eligible_bp + ineligible_bp = 10000 bp.
+
+Two-Scheme Setup for Hot Page Distribution
+==========================================
+
+For maintaining hot memory on DRAM (node 0) and CXL (node 1) in a 7:3
+ratio:
+
+    PUSH scheme: migrate_hot from node 0 -> node 1
+      goal: node_ineligible_mem_bp, nid=0, target=3000
+      "Move hot pages from DRAM to CXL if more than 70% of hot data is
+       in DRAM"
+
+    PULL scheme: migrate_hot from node 1 -> node 0
+      goal: node_eligible_mem_bp, nid=0, target=7000
+      "Move hot pages from CXL to DRAM if less than 70% of hot data is
+       in DRAM"
+
+The complementary goals create a feedback loop that converges to the
+target distribution.
+
+Testing Results
+===============
+
+Functionally tested on a two-node heterogeneous memory system with DRAM
+(node 0) and CXL memory (node 1). A PUSH+PULL scheme configuration using
+migrate_hot actions was used to reach a target hot memory ratio between
+the two tiers. Testing used the TEMPORAL goal tuner available in
+damon/next and mm-unstable.
+
+With the TEMPORAL tuner, the system converges quickly to the target
+distribution. The tuner drives esz to maximum when under goal and to
+zero once the goal is met, forming a simple on/off feedback loop that
+stabilizes at the desired ratio.
+
+With the CONSIST tuner, the scheme still converges but more slowly, as
+it migrates and then throttles itself based on quota feedback. The time
+to reach the goal varies depending on workload intensity.
+
+Note: These metrics work with both TEMPORAL and CONSIST goal tuners.
+
+Ravi Jonnalagadda (1):
+  mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal
+    metrics
+
+ include/linux/damon.h    |   6 ++
+ mm/damon/core.c          | 186 ++++++++++++++++++++++++++++++++++++---
+ mm/damon/sysfs-schemes.c |  12 +++
+ 3 files changed, 190 insertions(+), 14 deletions(-)
+
+
+base-commit: 97eefd14af390e1921f1fc5507140025095634e0
 -- 
-2.53.0.1213.gd9a14994de-goog
+2.43.0
 
 
