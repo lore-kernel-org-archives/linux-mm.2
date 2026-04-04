@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B9E4E63FE3
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 16:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8489E63FEB
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 17:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806936B0098; Sat,  4 Apr 2026 12:40:00 -0400 (EDT)
+	id DB4F96B0088; Sat,  4 Apr 2026 13:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B9436B009B; Sat,  4 Apr 2026 12:40:00 -0400 (EDT)
+	id D65CB6B0089; Sat,  4 Apr 2026 13:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F1DA6B009D; Sat,  4 Apr 2026 12:40:00 -0400 (EDT)
+	id C54D16B008A; Sat,  4 Apr 2026 13:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 550A26B0098
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 12:40:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 19F951A07EE
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:40:00 +0000 (UTC)
-X-FDA: 84621435360.21.A2A41A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 91CC3A000F
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:39:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZQUJmd2X;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B4BA16B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 13:12:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 403C81B8B2A
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:12:16 +0000 (UTC)
+X-FDA: 84621516672.10.6896A79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 71F8C40002
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:12:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GcgJMoZ0;
+	spf=pass (imf04.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775322734; a=rsa-sha256;
+	cv=none;
+	b=MjZ/lo6xhOJDVFiQSZuF5ckp/dKCfWldm+Dhv+5ZrgpY1sfDWwb5/Clt7aVwM1rkbqHIoK
+	sHtaI67i91SEV1KxzixS0HSdaTKgg0D9rO/oGoYRdSxvZUS4RCJYOzg/HN3664pWABfx/L
+	1Wky3ziQPPdCvsZ0nDO4lZiGD/Xyrno=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775320798;
+	s=arc-20220608; t=1775322734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QO0HMgZR6Q1HucKxNFx50+mXtq1QtftwQyXEIAQyxA=;
-	b=VoYb6Yc6hLeaExsUsQv1Iv8w9xKX2MQwm9ByV70lyjjEHrxr5PMQRFBimTBVYYLPgXvt2H
-	AEaQPGGZykih5NAcH7WGMTM55PMBP2ockIRgVlb4Y7JeuCHjCbGhUFv0DXywJNl58DDN02
-	XNvDEIPifLinvbPqxzkwUBrU3SNPCss=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775320798; a=rsa-sha256;
-	cv=none;
-	b=MM8hRI7ayqkqUV4r4tIuu6h0DfTnoui2vMe22Jn9YuI5G4Lm9ErjmsOZqr7mk+lMxXAcQo
-	eiUfMIPY5k8l2c/RgRycmtD9LwJZ+bnizPZ/Nak60mhqIMetKhmp8obnmwiSr4B1gUzMte
-	nsTcGOQ2ZGiD+HlalcGpXe9MlEUUSaA=
+	bh=rjMH1/SsUECEYlZino7gffNjLbrHGi2A1dFabhVdjMs=;
+	b=GwV87RALCBe3rOKq1OCB+inT7Jz2WW9EbFeqDSsw8VLnOjJZTYYE8Fw44Jo4c8bFoiftuH
+	Cana9KdcbkDJqNCoGWxJkjhIgcftt10AMjnxTZ5RD8XKYxCvK96Frb/PburKLZnWSeh1rF
+	vuGMHoGSWF1xYbUTc2iH/mBanttgETU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZQUJmd2X;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GcgJMoZ0;
+	spf=pass (imf04.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BD7660054
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:39:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80035C19421;
-	Sat,  4 Apr 2026 16:39:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 614ED4455B
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:12:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEB8C2BCB9
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 17:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775320797;
-	bh=6J24o91UAsIJGEgFo2jYtnFEeYvJuiRUU82+7XJIPqI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQUJmd2Xs9M6NmI0n1SDk8BUYsVgCqaSaiNWNu70aAJi2l3s6ppw+2vDbfzGCQZvA
-	 Bp2nlhzoASKNWldlyeab3ffe0LXbIgPQbbKQX4kSHkL7k//sNISwgSUUR0DK+XqroU
-	 tGKc5Gmv01Kd6SROExK1U05lQzJtgYcdhu3pFT619YC6l+1v+XQImoDQkWKVC4K0b4
-	 7EDG0g0bUrYBThu7eQ9S94p4l0zPdjXAXGzpzQlkh7eQB/aBCpSJTdAIYOxaeZFqcd
-	 sKF0jmy5nS/42uN47SK4pA1cARMWIVNV3n2HgWaSg5wKMh9W3VrrWnFNv0Udi295s/
-	 Od9vjjHXQ+Jyg==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 9/9] selftets/damon/sysfs.py: test failed region quota charge ratio
-Date: Sat,  4 Apr 2026 09:39:39 -0700
-Message-ID: <20260404163943.89278-10-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260404163943.89278-1-sj@kernel.org>
-References: <20260404163943.89278-1-sj@kernel.org>
+	s=k20201202; t=1775322733;
+	bh=6HWbdXTvY5ARCKQw/mJejk6jJkYYvhLGzuFZu/CMKrk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GcgJMoZ0JuCk1oE2p1uOznAEPZR6CrHmU63ZoUxVtxnX8mJab0r4uPFFxlAmTqcZA
+	 myj15f5ytltHO0slbfE7HO6gmrYbw3URX3zm5Ch5rWSlVdR401ec5dfg7RfsH5oBN4
+	 PnqK3oN/0RY4LZWR+knx2bZtXfIc8cep3MmTai8iVDgIiE9nPWWVN8CVFPKdI3F70S
+	 gC8kQiqGR2CuAUPcJ/9Yaydp3RzrBUC+10/bPsY353+aL5ufFQEdpAgg8xvos3Up3I
+	 owNuHEnPhFIkScgSgy7tm8cpYaSl2vK6VDp57FI0G+Yzb2m579C7WS8lt58GdxocpN
+	 fGfJdiBZK7yLg==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-40ede943bf0so1601773fac.2
+        for <linux-mm@kvack.org>; Sat, 04 Apr 2026 10:12:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUWLiOqHMDv2iMno8Wk36yGrgOrNjKNW50Vte9FvTESYcRKm3+YLNyh9dv6lCidHWWFtAA5WAad0A==@kvack.org
+X-Gm-Message-State: AOJu0Yx61OVphaSgSncyFRZSuFfU7y4yYJmNpa7MA+5VoO7OfQUEnLlj
+	coo2xs/3zBA/hXzP4qb/fMqb+W5fDIacU/MjLHtSLJOflM8NWWSl/Ng0tY4c0jNsEFOHP759szu
+	INZeELgzjA1ua6kphuxWBgqTXF9uQrzo=
+X-Received: by 2002:a05:6871:581e:b0:422:cd76:929d with SMTP id
+ 586e51a60fabf-4230fd2d9e4mr3996409fac.18.1775322730928; Sat, 04 Apr 2026
+ 10:12:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3b3w8hqesow7tdib3gt88m48yibjkudi
-X-Rspamd-Queue-Id: 91CC3A000F
+References: <20260404000644.522677-1-dianders@chromium.org>
+In-Reply-To: <20260404000644.522677-1-dianders@chromium.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sat, 4 Apr 2026 19:11:59 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hRKyPesMGKGoDZEMDCX-GVw6Z-dxMLhNhwy6Kjz=7MCQ@mail.gmail.com>
+X-Gm-Features: AQROBzCS1sK1yep87rT-2xolltVfQ4j4qlt-9lHai0wQJnu4V3tzUHOX8_7jVCo
+Message-ID: <CAJZ5v0hRKyPesMGKGoDZEMDCX-GVw6Z-dxMLhNhwy6Kjz=7MCQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	Saravana Kannan <saravanak@kernel.org>, Christoph Hellwig <hch@lst.de>, Eric Dumazet <edumazet@google.com>, 
+	Johan Hovold <johan@kernel.org>, Leon Romanovsky <leon@kernel.org>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
+	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Frank.Li@kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>, alex@ghiti.fr, alexander.stein@ew.tq-group.com, 
+	andre.przywara@arm.com, andrew@codeconstruct.com.au, andrew@lunn.ch, 
+	andriy.shevchenko@linux.intel.com, aou@eecs.berkeley.edu, ardb@kernel.org, 
+	bhelgaas@google.com, brgl@kernel.org, broonie@kernel.org, 
+	catalin.marinas@arm.com, chleroy@kernel.org, davem@davemloft.net, 
+	david@kernel.org, devicetree@vger.kernel.org, dmaengine@vger.kernel.org, 
+	driver-core@lists.linux.dev, gbatra@linux.ibm.com, 
+	gregory.clement@bootlin.com, hkallweit1@gmail.com, iommu@lists.linux.dev, 
+	jirislaby@kernel.org, joel@jms.id.au, joro@8bytes.org, kees@kernel.org, 
+	kevin.brodsky@arm.com, kuba@kernel.org, lenb@kernel.org, lgirdwood@gmail.com, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-serial@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-usb@vger.kernel.org, linux@armlinux.org.uk, 
+	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com, maddy@linux.ibm.com, 
+	mani@kernel.org, maz@kernel.org, miko.lenczewski@arm.com, mpe@ellerman.id.au, 
+	netdev@vger.kernel.org, npiggin@gmail.com, osalvador@suse.de, 
+	oupton@kernel.org, pabeni@redhat.com, palmer@dabbelt.com, 
+	peter.ujfalusi@gmail.com, peterz@infradead.org, pjw@kernel.org, 
+	robh@kernel.org, sebastian.hesselbarth@gmail.com, tglx@kernel.org, 
+	tsbogend@alpha.franken.de, vgupta@kernel.org, vkoul@kernel.org, 
+	will@kernel.org, willy@infradead.org, yangyicong@hisilicon.com, 
+	yeoreum.yun@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1775320798-161543
-X-HE-Meta: U2FsdGVkX195Mo4+A5meDDw1DlYqV8nC3YgHEeeZ0r5di7xK7guyLYLTiMMJxtyKcrzq1ujvyu339I8WljnUek4lsiSzWDMLrvayGdf+PbNa+a3w4q6DycbJjUDzSaEaydtASY/S/83FwhCscqvDsUwZOwVYkaXMHtbh9u7Zgd/o4Bq7PxioQ7RLrZHyTtSgVz8pz6Wx8IVNQ/wL0YbTXHrMsIV/Xh/Oc2ENaGGdmNwRIO9EaBM9cJESrKY+JcEswrJThqQLFapqioFI8O6q78XxMg/RxjOcTJmIW8PY2DN8e5wekLgEoVcawQVBjrNekkVRaVezZIepfgmqUTBLt0M3EXCamB0d/qmWtolKMlpvd4W90t2dHBijzc2AwchtRMxgsskhXvTIJ9UnhpnLJDCvIj2wCwIOBE8BJJOJMWZs86C71mIv1AfxqAWG35mRQf8P92mSaMSrn8u8xhxWNLgfzZf4k4jL+ntRcPZgkhv6Dpb6/gXLj5UwFavsXhAP5a17odNz+EVqP/5aFqCQMybAKr4R789fZOcYLaylaRIPP5rllVl9y+/CuPw14UtvO6qJA4gjXPo40YDSKCHKnTOl3GXXoFObk/LuWw13JlRNxbCD/z9GOo327lhtGzPjWdmMU6yzZy6t51JgApnCX0JA6KK2LI1sCU3C/AqpZQAk1disA0R5NMztnNR1wJE5QXNZfNB05j2jlP6G6o+bbnTvtRjD2xeSIJJoLqAA5CMN7N+lrSaG4rM3UENXCl70fpgEGpqm/buUC+SWTWRY1JyriiKePj5vOQQM2T4pi8QVCDK7gFXZrjxw4ps8ZcV3ZnZqCejiLHygaqCgnuyrVrvL2w6bcaFn2h2nAJSqbyT8iDogeOm+S3k45+jVyN+/Jlz1tU60ovTiAjjAEKkK2j1SPFK0zeJxT+GG3A6w2qZkJz1OB9WkQU+dqfiNRpdB//gmYWgd1MJ0v12ItLf
- 17hat6DU
- tqCcRksnQyVfUAsUI1lYXnAbUMZHDcqdZxGHqPb16eixJtGyCYvwybsCqLBB9JwBoPhJ3m0/A7l84co0qu9BHduJcTlTjxaSuqUXISSxsHiC+qe002E0WwKagCESei7QkGd/SwhLQPZTlsJiObSgRQFvIU+4smKu7kRkv2etZhiKmw2hlnT6Yn75hF17/hrhaamjVT05a52bueAOaCcUasc0rZJ4kdcyu9iT1DX1hMkMG48LJN7gLFBDepSaUEv0elSIdV+uX17N7vMjgxdaE7SEm0dC+EIx/mg40b3MrACh0WQU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 71F8C40002
+X-Stat-Signature: epm1zha7k5mqzr14m8okf93qi9inwgk4
+X-HE-Tag: 1775322734-71862
+X-HE-Meta: U2FsdGVkX18lfe/RXj/AFm6GmR9YJu/phEeaLpHfbCLxA12e+KciGmhFHMSEPIzKv44YyeqkqSy6auZn51BvlpPUbQP1h8yhvhHRf6ts1eUk/jqevQ8ubAoiNWy2P+q4PEhwRiV8BvbxFf3ea1bwj5UzzyFeEn7hKOkYgwmI2EEo6qFf7FUEoJ5Q/SGDZPSwL0yYTpVlaAisrjE5aVDqI60ruQrVGujztwBatLcn+aYrp6RIvIWxpXDwKOxGZtahQHJlMWTPgJYBBE7ZeN8Mgb3Gvhs/gcFfwDKkg0/ydK4XQduSfv4miPz9a3Rb/J0aqLUqVF7/DoKua3XLZO1RncZ4047q0FDwiGtGIN9Xn4sIBmpqsMszjR2ROqn9UvXB/ZVlz9gXMQOonE9UqKrNrMz1aPqEUG2JOgaFndNjjA0bvPTQ42AvlTnHAJvxc31g9mpjyiPPs7KoPHJau4o03jEeuZthtcgZej01SguEPtH70YGb6uVZb7DceReHWGAOqNilk8z+/QXkExzsOkNqrELnv2DjK9/acvl07Hnqj5+gbwYsLLGwxZVfZZ57T0Y7dOcfKmhMo1boMH3LrRusKSb9ZcMYqC4hhFlz9rAnfx4aMIgfuROfrE/TAxgWAVgA5/DnnxQcmW2geYyxkjgGhsUMCs3KF1GRpvtUvxJci/G66u7cz0Gng74pwQx/K6NtNN+/tklryRgKxb2Iuo5YRZkCViQVNDGfmx/9wVxqQ9u8KhN+itATkoIQtnd8kekwjljAW1AvAS1KKIHS48AZ96RSoABsIkFReGDJuCx9mRmkcWuqRwrHHD57fnMnQ4cR3UlAyDo+3I7tc4PRP3VPfz6Q1+d5k0Kv88CkWCwhPYXgbKUBwzvOPH4FbDUIcJCeGBFM837dWUo3LcW9zZHnAVeIBitgZJpnkOE7AxJRNClOg4G2xHYyDj2MxJGjZfz1Fz7ylM3Tjz2tabZQkvU
+ daGytuJY
+ VmvkfrDfV3h0ukRkDLNKKmt7SIgtyeVTWNuYh/0Lc67jb8WOFANiDm69VyqZ5o+h+n7vN0pShUP8Fl+BkHCTbaxTy7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +131,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
-charge ratio and assert the setup is made into DAMON internal state.
+On Sat, Apr 4, 2026 at 2:07=E2=80=AFAM Douglas Anderson <dianders@chromium.=
+org> wrote:
+>
+> The main goal of this series is to fix the observed bug talked about
+> in the first patch ("driver core: Don't let a device probe until it's
+> ready"). That patch fixes a problem that has been observed in the real
+> world and could land even if the rest of the patches are found
+> unacceptable or need to be spun.
+>
+> That said, during patch review Danilo correctly pointed out that many
+> of the bitfield accesses in "struct device" are unsafe. I added a
+> bunch of patches in the series to address each one.
+>
+> Danilo said he's most worried about "can_match", so I put that one
+> first. After that, I tried to transition bitfields to flags in reverse
+> order to when the bitfield was added.
+>
+> Even if transitioning from bitfields to flags isn't truly needed for
+> correctness, it seems silly (and wasteful of space in struct device)
+> to have some in bitfields and some as flags. Thus I didn't spend time
+> for each bitfield showing that it's truly needed for correctness.
+>
+> Transition was done semi manually. Presumably someone skilled at
+> coccinelle could do a better job, but I just used sed in a heavy-
+> handed manner and then reviewed/fixed the results, undoing anything my
+> script got wrong. My terrible/ugly script was:
+>
+> var=3Dcan_match
+> caps=3D"${var^^}"
+> for f in $(git grep -l "[>\.]${var}[^1-9_a-zA-Z\[]"); do
+>   echo $f
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} =3D tru=
+e/set_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} =3D tru=
+e/dev_set_${caps}(\&\\1)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} =3D fal=
+se/clear_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} =3D fal=
+se/dev_clear_${caps}(\&\\1)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} =3D \([=
+^;]*\)/assign_bit(DEV_FLAG_${caps}, \&\\1->flags, \\2)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} =3D \([=
+^;]*\)/dev_assign_${caps}(\&\\1, \\2)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var}\([^1-9_=
+a-zA-Z\[]\)/test_bit(DEV_FLAG_${caps}, \&\\1->flags)\\2/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var}\([^1-9_=
+a-zA-Z\[]\)/dev_${caps}(\&\\1)\\2/" "$f"
+> done
+>
+> From v3 to v4, I transitioned to accessor functions with another ugly
+> sed script. I had git format the old patches, then transformed them
+> with:
+>
+> for f in *.patch; do
+>   echo $f
+>   sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev=
+_test_and_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_t=
+est_and_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_\\L\\1(=
+\\2)/" "$f"
+>   sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_\\L\\1(\\=
+2)/" "$f"
+>   sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_set_\\L\=
+\1(\\2)/" "$f"
+>   sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_set_\\L\\1=
+(\\2)/" "$f"
+>   sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_clear_=
+\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_clear_\\=
+L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags, \(.*\))/d=
+ev_assign_\\L\\1(\\2, \\3)/" "$f"
+>   sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags, \(.*\))/dev=
+_assign_\\L\\1(\\2, \\3)/" "$f"
+> done
+>
+> ...and then did a few manual touchups for spacing.
+>
+> NOTE: one potentially "controversial" choice I made in some patches
+> was to always reserve a flag ID even if a flag is only used under
+> certain CONFIG_ settings. This is a change from how things were
+> before. Keeping the numbering consistent and allowing easy
+> compile-testing of both CONFIG settings seemed worth it, especially
+> since it won't take up any extra space until we've added a lot more
+> flags.
+>
+> I only marked the first patch as a "Fix" since it is the only one
+> fixing observed problems. Other patches could be considered fixes too
+> if folks want.
+>
+> I tested the first patch in the series backported to kernel 6.6 on the
+> Pixel phone that was experiencing the race. I added extra printouts to
+> make sure that the problem was hitting / addressed. The rest of the
+> patches are tested with allmodconfig with arm32, arm64, ppc, and
+> x86. I boot tested on an arm64 Chromebook running mainline.
+>
+> Changes in v4:
+> - Use accessor functions for flags
+>
+> Changes in v3:
+> - Use a new "flags" bitfield
+> - Add missing \n in probe error message
+>
+> Changes in v2:
+> - Instead of adjusting the ordering, use "ready_to_probe" flag
+>
+> Douglas Anderson (9):
+>   driver core: Don't let a device probe until it's ready
+>   driver core: Replace dev->can_match with dev_can_match()
+>   driver core: Replace dev->dma_iommu with dev_dma_iommu()
+>   driver core: Replace dev->dma_skip_sync with dev_dma_skip_sync()
+>   driver core: Replace dev->dma_ops_bypass with dev_dma_ops_bypass()
+>   driver core: Replace dev->state_synced with dev_state_synced()
+>   driver core: Replace dev->dma_coherent with dev_dma_coherent()
+>   driver core: Replace dev->of_node_reused with dev_of_node_reused()
+>   driver core: Replace dev->offline + ->offline_disabled with accessors
+>
+>  arch/arc/mm/dma.c                             |   4 +-
+>  arch/arm/mach-highbank/highbank.c             |   2 +-
+>  arch/arm/mach-mvebu/coherency.c               |   2 +-
+>  arch/arm/mm/dma-mapping-nommu.c               |   4 +-
+>  arch/arm/mm/dma-mapping.c                     |  28 ++--
+>  arch/arm64/kernel/cpufeature.c                |   2 +-
+>  arch/arm64/mm/dma-mapping.c                   |   2 +-
+>  arch/mips/mm/dma-noncoherent.c                |   2 +-
+>  arch/powerpc/kernel/dma-iommu.c               |   8 +-
+>  .../platforms/pseries/hotplug-memory.c        |   4 +-
+>  arch/riscv/mm/dma-noncoherent.c               |   2 +-
+>  drivers/acpi/scan.c                           |   2 +-
+>  drivers/base/core.c                           |  53 +++++---
+>  drivers/base/cpu.c                            |   4 +-
+>  drivers/base/dd.c                             |  28 ++--
+>  drivers/base/memory.c                         |   2 +-
+>  drivers/base/pinctrl.c                        |   2 +-
+>  drivers/base/platform.c                       |   2 +-
+>  drivers/dma/ti/k3-udma-glue.c                 |   6 +-
+>  drivers/dma/ti/k3-udma.c                      |   6 +-
+>  drivers/iommu/dma-iommu.c                     |   9 +-
+>  drivers/iommu/iommu.c                         |   5 +-
+>  drivers/net/pcs/pcs-xpcs-plat.c               |   2 +-
+>  drivers/of/device.c                           |   6 +-
+>  drivers/pci/of.c                              |   2 +-
+>  drivers/pci/pwrctrl/core.c                    |   2 +-
+>  drivers/regulator/bq257xx-regulator.c         |   2 +-
+>  drivers/regulator/rk808-regulator.c           |   2 +-
+>  drivers/tty/serial/serial_base_bus.c          |   2 +-
+>  drivers/usb/gadget/udc/aspeed-vhub/dev.c      |   2 +-
+>  include/linux/device.h                        | 120 ++++++++++++------
+>  include/linux/dma-map-ops.h                   |   6 +-
+>  include/linux/dma-mapping.h                   |   2 +-
+>  include/linux/iommu-dma.h                     |   3 +-
+>  kernel/cpu.c                                  |   4 +-
+>  kernel/dma/mapping.c                          |  12 +-
+>  mm/hmm.c                                      |   2 +-
+>  37 files changed, 206 insertions(+), 142 deletions(-)
+>
+> --
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+For the whole set
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index b8d6e0f8fd906..d8d4717128898 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
-             }
-     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
-                 'goal_tuner', dump)
-+    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
-+                'fail_charge_num', dump)
-+    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
-+                'fail_charge_denom', dump)
-     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
-     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
-                 'weight_nr_accesses', dump)
-@@ -277,6 +281,8 @@ def main():
-                         nid=1)],
-                     goal_tuner='temporal',
-                     reset_interval_ms=1500,
-+                    fail_charge_num=1,
-+                    fail_charge_denom=4096,
-                     weight_sz_permil=20,
-                     weight_nr_accesses_permil=200,
-                     weight_age_permil=1000),
--- 
-2.47.3
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
