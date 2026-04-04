@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D842E63FEA
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2BECE63FF6
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9E736B0088; Sat,  4 Apr 2026 16:02:08 -0400 (EDT)
+	id DDDAC6B0088; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4F4B6B0089; Sat,  4 Apr 2026 16:02:08 -0400 (EDT)
+	id D67D06B0089; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3DDE6B008A; Sat,  4 Apr 2026 16:02:08 -0400 (EDT)
+	id C56516B008A; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3856B0088
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:02:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C51DE039F
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:02:08 +0000 (UTC)
-X-FDA: 84621944736.17.E4927A0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3806B0088
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:18:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5168C140863
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:18:28 +0000 (UTC)
+X-FDA: 84621985896.29.D742075
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D1E94180007
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:02:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lrA5QUGy;
+	by imf05.hostedemail.com (Postfix) with ESMTP id C2DC9100005
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:18:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ek8unC4z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775332926;
+	s=arc-20220608; t=1775333906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Tli4XlqxojwH4ywuXK0tkk9B9+2jjd5GDQh9MG3Zf4=;
-	b=of37pHeNpnLUpdDgxAGn6E3lK/egrFU6LVsSdDdRnFMkQiw9eim3zbDgOchpaBv5XhgwE7
-	wc2ABfg2EE7TmpVvwiK6ga34VWThGdQC7hgQ5bO9EIrwdI0nH4dwAnDxddLy35CaGRhju/
-	AVoy72w86nLtc6XtXHJwd6tCuKGwuHY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775332926; a=rsa-sha256;
+	bh=xSpH/h0LjZAC5HGhtYYa0aIBfXgwtDHD86HOxIOfkbo=;
+	b=iIsmTAEi7UCf95AudtX9+VY6nZJ82idMuaequE0gQbigOwvvjXpXit37zAXONjmBDOPgV5
+	cIsUr0zHMxk9i3n6uL/+slPrtJMHhnA99wMDiNOnLENj7/Kni8mh7COwzDQSPC5qC0fVBy
+	Mo0DtfDL24ch+cqxJIb9T5JIvhYEIKw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775333906; a=rsa-sha256;
 	cv=none;
-	b=YbvoxyWwQC93EEgrEiKzvpQfAfDxBiRYip9PE9hjjWTSgLdj6+EFzb77g+Yn8UPHOVZmka
-	N0jcIdZ21nzmpldUE5Q8O7keSvMo5zjhNYQwVP96CHMkgNyVNDGjcpmRtBLMj2SfXGxARb
-	UpYP9wcgNbH0JK441ri1IYapIuWLmDE=
+	b=n6YJtCu4Oy6iVTbN2Oh6iRzjBJJh1SlPStD0Pj1cYsYQdQyfpVw/guG0BQKjZ5gNeJhJaS
+	kuOD28mK12r+JSNBOTAcav2r9nUScOko68OOoAJMNv2VTKGbrEsTwf4ViE9rGvH0qTIoJQ
+	8x/FXgH9Ji/+T3QULu2GZrJ8BjB6IeY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lrA5QUGy;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ek8unC4z;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2B89860008;
-	Sat,  4 Apr 2026 20:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560C5C19421;
-	Sat,  4 Apr 2026 20:02:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 48C6560008;
+	Sat,  4 Apr 2026 20:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55CEC19421;
+	Sat,  4 Apr 2026 20:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775332925;
-	bh=/JiyVizUMe9wSdqRZWW6fVbbnNxTVMDWZytcmkzNmcU=;
+	s=k20201202; t=1775333906;
+	bh=K6O4i08ap+LxKyMLBh3GuSwkcMBslt2u7/g+pm5nHNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrA5QUGyJQ8bVQcBRmkgwJI7ZwBM9sJNU5eBGGV8qZnyWKaSUSqyBzu6LpN9GvD2U
-	 6PWqlaeorIT4jytNB3eRyedgLHY4vnZ6k6bamJalIPDMDVKAkMXdqMHg8VkCPk0dEQ
-	 qwq2SnCL0oc8kudZeUxGXqaFCTXar2+nndGXZcRnaxRguhK5GF4JD8E9XaMQvYQqZC
-	 EC3Tb2Z2do5VI+617ig9E5WWJc7V2bUnhUoVMAxoyrAwK/SW3I+5+Du2twxoMyWjf9
-	 cXG8+wX5CFQV5LXDpLImwNq0Qy+fCoBrWJbb4+EMp0GEby3i0RtmKpBUCX1He7oBSi
-	 jW3NCs6DwbfUA==
+	b=Ek8unC4z3EgITSjggKAHQB7m5LIA5qkhMQrgOAp9HyruoyzSCFZ+cttIS+GHuXphO
+	 8s1OiCEVoYyxfMZarOvxWzm5zNhiaCGyg9C8JwFi+nR6MXnf7oPFFnwd4zKwTtcCWO
+	 OnMJo0KoKOFts8kyF/zqnLXbq0jBwItQsRCuv+sHkRm7pK7Jrg8bK0Ez48IlMXsCWL
+	 4r7VZOtFykyH6Q2OnEsppFPfhHWAIyidvmnqLklxlmt23NTU7UCq3u2bfR3C0YlvDp
+	 dpBeBAX9vM1NM9Edc0DKBhQqqUSCbRooqESFb2PFnxu1QTCVIE4wcrIsiOT6i0noMI
+	 TdN4SNCJWUstw==
 From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v5 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Sat,  4 Apr 2026 13:01:57 -0700
-Message-ID: <20260404200158.86020-1-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Sat,  4 Apr 2026 13:18:21 -0700
+Message-ID: <20260404201822.86511-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260404012215.1539-2-ravis.opensrc@gmail.com>
+In-Reply-To: <20260404090927.6055-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D1E94180007
-X-Stat-Signature: zdn5yo6dpfa47rumoqeb1srprfs3c5em
+X-Rspamd-Queue-Id: C2DC9100005
+X-Stat-Signature: qu8ndqoxyw6n85u4h1b1x6yjahshidhd
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775332926-672196
-X-HE-Meta: U2FsdGVkX18XDrKA0lRXsip8O5az12OeoyzXja1bAiQAzYPOxyuwhiHGDs0vf+UdsklcxN9LPdZvHXGAsOjkYKZ8OXnpEo+qh59WT9Oul0h3CxFytCyXKPICbRRSTSg7WlRw3fV600up1yws0pAdV714tUqQzVkzlsWqkBzBcgLvE1ZTb8moFwBTtEpiHIGB7iwbCFbl/2qlaQDbz98MXBS3eyJINA6uoT0sZBWB/9ow7DOHwY1prH4YfZp00iMdZJFhZNi3+iYHKm8EzCJhf2FyM8eKoCn/sIOUlFN4MsyC8Cx+Ukg/67W3VbrWvL2Y6G6HX5ao3lFT00cIAYOfvz7vNAyWQNnygiZTNRxLbvRqEYxf0exU+MY5Whmb2gZfLNcGjlpwKl99FOKJCgBrrEcei5LLkDpZHxekMY5c9GI8EcFdqF0NtQUI0/J2JT2axBr3LxcZ88b063Un1dFz371UscF9WB7B9gq7aCPTC6XIeNWVdRrh3eDmOlKTaNmHj94kWwnqHiChLs1EGYV9N9QG2wX/WtlryflvgBfLfFm6AOR9CYo7OZvbXbXPeBwahxF4lNnllgCtaRtJpkEEABtocX/LdchOxlKyW0y7ameuhL+E1C0AcKBI7EsiCUnH31nkssDa93VyQSGVOFC/dPrErzRlX71Mi+3o5zSLSvVrvWmNaOPmnUUw8hxILHI1kMcbBzhIC/WV/AKKod79c9JkA9ryRFyRNmG25KIcVr92UAskK5Yd55EY+gSF2QPVbDS/ESODunxiLkscM6Lft1F2vU738cfY/yBUyQmusq6PMyOp+TiagEb06fk/bEfibl3xMqG5Us/I3pHW159ButQth1arvG/5kJAnNFMVifa3f6XmfzigR5wQRAwV4G9UFvIkZbQ5ntBj+d3y9GMmFweagC1/2Xe+cblX9DDL6KB/isvu8ncYzk3+qXsC91oEPDSEed3BjmNcXAENvw3
- p67wHuH/
- FJNJAjPNDiaSzcXIqH9tqEKGBrJl2zQfp4eB2uKv34lzr9QILQsu/orNC8SkypCvDPuSCC6qIW24wFAQMqPHBzuiXFk8y4xLJLF1LDaff/QCSx12XQpT6YUp/2lfoQDeM3R+0Q0IvqVPloI4m72gks0ch9Hid8BlwRh/cMpYUoeZ5hdigh50sPPxepPzI5ieE6NqiN3a81Os/bd3VlXbCnIoBFvAVvUS2TumxqeSTomqFwlKKCH/liB+1psTJmKzp3y1Dd1YwLyCc2RhtSLbdeaHZvZX/WFy08lEfEpQKvvr+nrXHgyfC8TKBopPcUiCw0ipy0lPyL6HyQQPOcV2WO4AI44Mp85IFmXpTTAEc8CgpaXs2MNkR1tmci5ZhMd1UwXwYQLR61W3zMyI=
+X-HE-Tag: 1775333906-866707
+X-HE-Meta: U2FsdGVkX1/GGPgwN9PMkPVsSwQ8+NyKFE0JH53KFiwzFOpevgOEkufq+6N9+UMK6Y0l9K3TzCeWLrTkE/H5TIFMsN/Ht7mMySPsyHwNA1QysD9T6uPvMHG0iH7n9kvWD6GH3hPPxv8hlFmpkE4zlTnyQyLcHq2AwXftaNrqMgfkoaggZCgPuvFIbU5965UvjZjpXCEzNLy/ahECxGM55+Jr3xxp1Wf9/ev/yxeh8r0MviNFXrW4RuLwMxGpd1g+AtXixL2fEyxohS752WqA1jRWy8qHTLtgu+JTRpbBooKTl5jWil0JfvZwyMDEZ+vrHtwhCcMHc7mgv5E9aDMkrK1XS3m60N0du2lsO8npgROe8II+Q9AXD056EHMfI8CJcYTBX4qXKxEkUyV9q4Kc3HrZy2xnylsQc0Dr3WdwkwhkGwf3waF6OifNw+VKVlPyCYU3N3CKGa3/rUgxkgm7ZxXsoFahudVPifjNIIdHrrArAruFFkRyEbwca1XbtdwnDNMq8XDhWCSCTadppefynNBDEk/DK7cRZChbEQyd+Wh35MJzjVb3oXiYYT5xXLjS79YueZRH7XIdMtMWPFcuAtW13DeKnvh++mY1ohDaJ6WgAotJ0UdyPtFA61ZS7xo66sQ3HjnhiFlhe2oqcl8PAwT/zwhERmUsv75fILol45B2dPYR4jLyHIZLbdAjwtMweKRWC1pg3BymhNO2PAiQRZ1WPzOglO0DFl1M8L23feVxzunBJKagAUnbnu9cC4T4LytBvvh/p/6jXkps07xE4Z+LIOIqJDmmv5PPW/9Qo2STgQHJpGR0HgK2AjAM0no2+vT/0IhF/LMnCO081s93ccEJp2QRjyhPjheaOPgM/U+7qDKzbJYFMcqUbp8RuJvJPoGuxN6bkPCUtCluHSRyrITKe1Cqm5BpTxwdiHlpFOG152KqGrOLy2HtAw7QBa25W6ElRlAUDgW8Rn9UJ0M
+ eu4P5fu5
+ VWoFMEx5dfdjNtxkSMiOBONm5gFwcYj8FqOLEPwW1aTQkKdqVOlomBLMtSvnOKO6pI4E5wLGMnva2V9gG10YJ0ggqskATUwtz7F/iEOZkM11A3GT3QJMfE1Vw2gtz2mMDzyc4+KBHO4RIns2TFZVK9YqIM2jnljWUsuIA1QQ4ZmGG+4ysNjoyz0Jr4NPegIxyDs2bR7vY1GJP+7nHeH9DjmHqWAWMomM+3oMcTu65xocDptGp9iNTcOI0/VRCcYiVymHSbVDSwvd85RQ7CsaifTPSf7AuFExyBlMXDJsg6w+oqm3CAyhR3sQW06LNjCz2oVtdjp9WRjlrXVlhTB1k8/V/6RmqLJ3KfF1zXhiZoOmupnM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,47 +91,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Apr 2026 18:22:15 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Sat,  4 Apr 2026 17:09:27 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> Add new quota goal metrics for memory tiering that track scheme-eligible
-> memory distribution across NUMA nodes:
+> On Fri,  3 Apr 2026 08:55:29 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> - DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP: ratio of eligible memory on a node
-> - DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP: ratio of ineligible memory on a
->   node
+> > I recently learned not everyone is interested [1] in sashiko review.  So when
+> > I sharing sashiko review, I now try to drop recipients who are not necessarily
+> > interested in the review.  My choices at the moment is the author of the patch,
+> > maintainers of the subsystem, and the mailing lists of the subsystem.
+> > 
+> > So if I was sharing this review, I would dropped stable@ and yanquanmin1@ from
+> > the Cc list.
+> > 
+> > Please consider doing similar when you share sashiko review.
+> > 
+> > Everyone including myself is learning how to use sashiko well, so it could be
+> > confusing.  Sorry about that.  I'm planning to make a guideline for sashiko
+> > review usage in DAMON subsystem, and update hkml to embed it, hoping that to
+> > help reducing some of the confusion.
 > 
-> These complementary metrics enable push-pull migration schemes that
-> maintain a target memory distribution across different NUMA nodes
-> representing different memory tiers, based on access patterns defined
-> by each scheme.
-> 
-> The metrics iterate scheme-eligible regions and use damon_get_folio()
-> to determine NUMA node placement of each folio, calculating the ratio
-> of eligible memory on the specified node versus total eligible memory.
-> 
-> The implementation is guarded by CONFIG_DAMON_PADDR since damon_get_folio()
-> is only available when physical address space monitoring is enabled.
-> 
-> Suggested-by: SeongJae Park <sj@kernel.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202603251034.978zcsQ2-lkp@intel.com/
+> Thank you for the guidance, I will keep this in mind for future Sashiko
+> review forwards.
 
-I think you don't need to add the Reported-by: and Closes: for bug that found
-before this patch is merged.  Could you please drop those?
+No worry.  I just pushed hkml change for this.  The latest version of hkml will
+add the guide to the forwarding mail draft and make the format easier to add
+your inline comments together, by default like below:
 
-> Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-> ---
->  include/linux/damon.h    |   6 ++
->  mm/damon/core.c          | 186 ++++++++++++++++++++++++++++++++++++---
->  mm/damon/sysfs-schemes.c |  12 +++
->  3 files changed, 190 insertions(+), 14 deletions(-)
-[...]
+    $ hkml patch sashiko_dev 20260325013939.18167-1-aethernet65535@gmail.com --for_forwarding
 
-The code changes look good to me.  But, as I replied to the cover letter, I'd
-like to get sashiko review before giving my Reviewed-by:.  Could you please
-rebase this to the latest mm-new and repost for getting the sashiko review?
+    Adding your opinion together with the sashiko review sharing
+    is a recommended practice for reducing traffic.  Will you
+    do so?  If so, I will adjust format to be easier for that
+    [Y/n]
+    # sashiko review suggestions
+    #
+    # 1. Consider reducing recipients.  Maybe the author,
+    #    maintainers, reviewers, and mailing list of the
+    #    direct subsystem and parent susystem mailing lists
+    #    could be a starting point.
+    # 2. Add short summary of your opinion at the beginning.
+    #    For example:
+    #
+    #      sashiko found an issue.  I will respin this patch.
+    #      sashiko found no issue.
+    #
+    # Please don't forget removing this comment block before
+    # sending this!
+
+    Forwarding sashiko review in a reply format with my inline
+    comments below, for details of my view and doing discussions
+    via mails if needed.
+
+    > # review url: https://sashiko.dev/#/patchset/20260325013939.18167-1-aethernet65535@gmail.com
+    > # start of sashiko.dev inline review
+    > commit 60ccea4154b0c58741fae2323454a5a9496b67fa
+    > Author: Liew Rui Yan <aethernet65535@gmail.com>
+    [...]
+
+> 
+> > Anyway, seems sashiko found no blockers for this patch.
+> 
+> And thank you very much for reviewing the review! :>
+
+I'm happy to help :)
 
 
 Thanks,
 SJ
+
+[...]
 
