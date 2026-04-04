@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78A72E63FEA
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA22E63FF8
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Apr 2026 20:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD5376B0089; Sat,  4 Apr 2026 16:46:55 -0400 (EDT)
+	id 86D0F6B008C; Sat,  4 Apr 2026 16:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAC4E6B008A; Sat,  4 Apr 2026 16:46:55 -0400 (EDT)
+	id 81EB96B0092; Sat,  4 Apr 2026 16:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C3796B008C; Sat,  4 Apr 2026 16:46:55 -0400 (EDT)
+	id 734056B0093; Sat,  4 Apr 2026 16:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C1856B0089
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:46:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E5EC8C5E1
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:46:55 +0000 (UTC)
-X-FDA: 84622057590.18.D5F4368
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F3902C000C
-	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:46:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YQ4CNywE;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 647D86B008C
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 16:52:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1DABE1607DF
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:52:43 +0000 (UTC)
+X-FDA: 84622072206.14.0C0D5C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4EA958000E
+	for <linux-mm@kvack.org>; Sat,  4 Apr 2026 20:52:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3RuPKPe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775335613;
+	s=arc-20220608; t=1775335961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hsCkEyNl1lnp1czfTsQmmel5+1299ohDP+2LAG1kJTw=;
-	b=BCEIFiYX10ZFonTBh1paTTZ2xmPvubP5PxyQA6J2kP4c/upsoXA9KRorn/LUDokCOuESkf
-	uJMnGQGS950kVC7CBAzPMzkExRsb5S8lPaXxIz+sI+HSQLWPJ72OnxrkSvJKBdcjRDhhPM
-	oEee8/UlLzR+z0ysR781qTjJoAXB9uU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775335613; a=rsa-sha256;
+	bh=zUhXiByf92F2XGnnvpdSzyjYQO+oi2cqnSVXhH7ttw8=;
+	b=Rg4FxIQuppTb4tqZD+BYReK8Z7IjYjZMVgg2eq1Jb5c2EIlL+1uD4p+CBG8bffQyj0L9+v
+	WYdhWnvUi79nrpPRkw+7QTmBqTDt2JDRO0hwy5zN5oVbmOZNHUQjX58oJp2JOibMc6I04u
+	iSFDf0XzGzK84BNwkmO6O50lX3snAeI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775335961; a=rsa-sha256;
 	cv=none;
-	b=kcoQ+Wvceh8Bt7IJvMONMut7WxpYKAD9cKss8tuTsFv818dBAJVaql1zaLLx9u97QgC7mK
-	0oSqj0820+VsCO6c5u73Jws4rhVvDVUUVhXROf4LK7yKqAj5e3FCziOwSk9gHysbpYLb/a
-	2SqPuc6Gus+HGyL5uJsELBNl4eUXlSI=
+	b=i2n/j5ymxsTDFlUW6DPjjr4F3TmTk1p0UiiUnwQUhR7nB24F0fW08eZnsrOhSQUw6wcckp
+	ZiAFgygAYuBfW17I9bAx4TwALI2pMONg2L23zailAud4936ahsCF+6vbrcOkF/MoU6MKqP
+	3kyMLHfQFb2wWW6XnMuXMesf0ylxhgk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YQ4CNywE;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hsCkEyNl1lnp1czfTsQmmel5+1299ohDP+2LAG1kJTw=; b=YQ4CNywEPe47yEr9rMZ/tGxSAf
-	vBBrL5CLil1pMIQhxdubKnoQUdmUnLbS5NoUbezngMT/EaxGSGpOfBO7DCsgFWwVgDdrZcIYUbaqA
-	FLqTDwGStPdCw3tiTutzFqbKKGUEpbPfuyBd3Xn7PVermVrMcgfEiXjddNQIY6xj+lq1CSIv89DaX
-	GIiyGil5Lyvz3VmGEHgtbC1DuNsJJqTqLn5Tw0DPBl19vd6PZz0JiYoHj5RqCsiJaWWs1rbFBIXrO
-	9FepSaecvQo5S1O5foXjHHOb9zOmfxt3EnvuGjNt8PYPl0xHNAo37D/HB2pS5kr4w2RkaXzwjV5E/
-	AOyB2mtg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w97tJ-0000000GNZd-3hHD;
-	Sat, 04 Apr 2026 20:46:49 +0000
-Date: Sat, 4 Apr 2026 21:46:49 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Salvatore Dipietro <dipiets@amazon.it>, linux-kernel@vger.kernel.org,
-	alisaidi@amazon.com, blakgeof@amazon.com, abuehaze@amazon.de,
-	dipietro.salvatore@gmail.com, stable@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order
- allocation
-Message-ID: <adF4uWa0pikq9Vea@casper.infradead.org>
-References: <20260403193535.9970-1-dipiets@amazon.it>
- <20260403193535.9970-2-dipiets@amazon.it>
- <adCQTF1PQnlbNMO8@casper.infradead.org>
- <5x66n04a.ritesh.list@gmail.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3RuPKPe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 21CAB40926;
+	Sat,  4 Apr 2026 20:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99F0C19421;
+	Sat,  4 Apr 2026 20:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775335959;
+	bh=7kjl5Z0GP1aijdZFzpfKWtsCIIOBoEr3kfUnJsk2E94=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L3RuPKPekgG2Q5g0yCtbfxBxUqXoJ5xUVdvpsj+/LFLyVlr7U+uhFpmRoyWVpybGU
+	 Cl/cTXJyKftSZS4xo8DiBWBt+y8RKTFW/PwrRfuSRybVgNIaAfOcnyIdtDZOqV9c8b
+	 MH9CSNRULfIQAgCWNoz8mwY6Rks+iEYZ1mdC+osb1DYCKXXnYdrONwig/i7JctBoyo
+	 TwtxH/YicsQyAHPzGgZQhQLJxcmY/8CMfKPbJYF26DU9Akw7smNcGtZEcd8s5Zqo94
+	 Org6Bgqr2jqsRJQfQAEkcbcO8MjcrFurVPfcvxE4kqYv9IcsQns5IHZjSLh9FVqs9F
+	 foFB3xZZ1600A==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH 2/9] mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
+Date: Sat,  4 Apr 2026 13:52:35 -0700
+Message-ID: <20260404205235.87148-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260404163943.89278-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5x66n04a.ritesh.list@gmail.com>
-X-Rspamd-Queue-Id: F3902C000C
-X-Stat-Signature: 74n99s7hjdkkyue4yzjkdg8dzhodq3td
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4EA958000E
+X-Stat-Signature: 386iz6t8pkpq4fr5c87rk9cr4z6smbud
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775335612-890730
-X-HE-Meta: U2FsdGVkX18+A2UxgNPZacA/4IJCAmpnr6vfychIPRn4CO6+7pdcO0ZEkew9zDgTc1+lGEhEcKnoR98hhXBHj1aM+SysHSA0LIF6zLeoTw58PAkn07LZdXEJdcDtOLb8/1JlC/0imHKvm/2SHrcbAAI6d38xJbkLNeMWv6tgGXruhNHE5S0VlOBSim1p7dr8lPq3sfgNMiR5cLGGwqt7jw7131i3IQ8oD1t/qaOrT8PlDSSwy5FJ//RqNmLSDt3bayNBPge2AV7D14lHXoFnPQ6PFhjL7/OYYRGbDlMLlI3AHTNwNgO+hws86D5ybhpiEtsnvbvKQJLEpIg6pQ52jMlCTIihgBVpydxtCnMlphBtm/+IVaRunNC0/mzIAw94y6C5eVvY6CdF5xvJhIOqMCRLSVsYJOBDgorkayiVnKPubmhaWl2+nBm5MG6oCKsK/sUCjhMLJfitJI5zx7autcdJnR6EsrrS5gyKx/ng7poV2AXeTB0FHgjrZ1QYvlRtw4giO6yZLSRZ+iHNyfD6lY5T6q0cxPuc+ihUEIE0ddysu5DTc7TEc84g4wg+LOT58QzyA49qQRflg8XZdzZkNNkj1lQMkFLJkoGeIaqHsU/1EFTqO6pEXN0N2v5Ki1li/g9ma5uT1mj0zo3oCzP0d67oY6cUYOjt1/YFhHh74adjS8JSoidc/L9I3TJPaPHNLWeFxjVNH8uFN8mxsDnqZMLeGVjCbnzMKooiJ/O5BjsCuDzBRICd3rOkd5L2t8RNohCEXcOMPK7Juvl/qoqmT3nPw94aTt+iS5AC8xZdQS2G+WQVduHd0Z45JSffqd+CxlC7z+UyOcRSiqkfIrTPPlWGvsFCWp1vJF9NN9FHdU8EcymRcEQiY44s7hmEK7JgbUoDHhXE+zsXT+dJm9NiYBsxNIG7W5q+wMasblth7SxEEtcv9R1ybTvNGTLedbMZjP9x2oQt4ISuD+aOvUN
- qoiBAPX9
- T0kjJv12Z7JyvPH304flsZodwtA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775335961-610792
+X-HE-Meta: U2FsdGVkX1/P81TMDlatF0yJA216sE4vgDBPtOLxAhmUhat/yAOZiq4D3rLeHIDTSI5aIA9ot0nvMbOd/QqNZHmNK/p/5+lFhrRw1OEYWHttCckQosLoSfwOJj+gJ99iyNRPdg9kvMJLBkyDljgQgOVDa34QuZ/2suWCXgy58uy6Se3lkwYJOeRIjX08CMDTjIPeZ1s2saqeGojVGfssVlRawONuWF53413C2O2OnCmKMzCO9n5yVoFt75x3IThnnkCNgJMxKGSK7D3RryNE+Z8oAYF/98mxfo4CLhq92G8mr6Z/leGem11JaxVQDFjxPYyWXObEdblwLz/C4SUzr4lgek/GSXbpeYpXZz2r0gYYwVno6/bE0kYHpVYswLAZgc1qsCYIWbuldmeKJ6xj5EWfeTQlXQwZkhZiUNRW8D6jCaOJXXOiL0g2xvpqFxmZOHsm3al6CEJQcvYHbqsLQLD5FKSUkcNvIZ04hceae0noN82toKcI0PZIao069YSmF4m+p8Ka0+VaWy6xMXx/aNlQtqEAIz6m47wkuiYrcqv5+TQTjFq+0/lMaT2R9TW7DNOLqJvNCb7aTwJG0aaaOyq8I45mx+SFLjHnoUFD1n38ItAgyGHgCw5r1s1XzX20RqI65EJ3+afDmU7ONKzd1S33JM5GRqabuq2VTQcTkXh1nvrrQKr8HQXCd1dyqtV16LLosEcHH/7lgX2m9ORajyLpsVF+D7un8Zgq0fEcKXQQp8uahDhAE+caKOak5AjHp75L11Ld9h+RBdLT6YbQ0Hifx+ds44L684wosfDVeaSnjcEYvLVhVsk/Ep7lA9zIhfhUAh3VaPfRkeBNJUdzERhIwmh6/QHDVy3B6DFZkT6w5NWEeRxf9oUE9NgIpG7KeLdtYGp68AxtzgCiLNJzpGrW9ZwMWl2lrarp9tNe0yAdDmyiD0dILGTbZlPsleZSQEgCjxnbxHqXZ0PyroV
+ q8K3D3Dh
+ lajnWgkpb1QEx0VgZZxdTIYq8epkuIVTbuveigpfaEQhQh1MIltm8AaBxYobWeImhv6/vz+Ed2AqevraXh8FeBBM2RPqoasBgqZgKJRmc+m5xuFXBlbmZ9UK14Gv0o2dTpjKz9TFQd8vOYM+xcmBeaqqhTXkHPoI7KVueWt7h648VxBbAHikVGlP4fSB9nS07njSQKVwyHA5z8Ujl8SOHPH9bWZCWiErhfZHmk/kaICLDofU/FK948GKbxZPluoveA6bBi3iyOjhkxCZsjScCjihJ5KWZPnSKJBIjZyClKyWnvkfKbzBXojvbwGZS9VJtw1KxU4mgZ1sTuXg184YnhoiwS0EZWHSWWiazxV1UteSpeks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,60 +92,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 04, 2026 at 10:17:33PM +0530, Ritesh Harjani wrote:
-> Matthew Wilcox <willy@infradead.org> writes:
-> 
-> > On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
-> >> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> >> introduced high-order folio allocations in the buffered write
-> >> path. When memory is fragmented, each failed allocation triggers
-> >> compaction and drain_all_pages() via __alloc_pages_slowpath(),
-> >> causing a 0.75x throughput drop on pgbench (simple-update) with 
-> >> 1024 clients on a 96-vCPU arm64 system.
-> >> 
-> >> Strip __GFP_DIRECT_RECLAIM from folio allocations in
-> >> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
-> >> making them purely opportunistic.
-> >
-> > If you look at __filemap_get_folio_mpol(), that's kind of being tried
-> > already:
-> >
-> >                         if (order > min_order)
-> >                                 alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
-> >
-> >  * %__GFP_NORETRY: The VM implementation will try only very lightweight
-> >  * memory direct reclaim to get some memory under memory pressure (thus
-> >  * it can sleep). It will avoid disruptive actions like OOM killer. The
-> >  * caller must handle the failure which is quite likely to happen under
-> >  * heavy memory pressure. The flag is suitable when failure can easily be
-> >  * handled at small cost, such as reduced throughput.
-> >
-> > which, from the description, seemed like the right approach.  So either
-> > the description or the implementation should be updated, I suppose?
-> >
-> > Now, what happens if you change those two lines to:
-> >
-> > 			if (order > min_order) {
-> > 				alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-> > 				alloc_gfp |= __GFP_NOWARN;
-> > 			}
-> 
-> Hi Matthew,
-> 
-> Shouldn't we try this instead? This would still allows us to keep
-> __GFP_NORETRY and hence light weight direct reclaim/compaction for
-> atleast the non-costly order allocations, right?
-> 
->  			if (order > min_order) {
-> 				alloc_gfp |= __GFP_NOWARN;
-> 				if (order > PAGE_ALLOC_COSTLY_ORDER)
-> 					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-> 				else
-> 					alloc_gfp |= __GFP_NORETRY;
-> 			}
+sashiko found no real issue for this patch.
 
-Uhh ... maybe?  I'd want someone more familiar with the page allocator
-than I am to say whether that's the right approach.  If it is, that
-seems too complex, and maybe we need a better approach to the page
-allocator flags.
+Forwarding sashiko review in a reply format with my inline
+comments below, for details of my view and doing discussions
+via mails if needed.
+
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-3-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit ee565644ac37e8bfceab5e62746d85906fb91b43
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
+> 
+> This commit implements the user-space ABI for the DAMOS action failed region
+> quota-charge ratio setup. It adds two new sysfs files under the DAMON sysfs
+> interface for DAMOS quotas, fail_charge_num and fail_charge_denom, which
+> allow reading and setting the numerator and denominator of the failed regions
+> charge ratio.
+> 
+> > diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> > index 5186966dafb35..d5bfba79f105f 100644
+> > --- a/mm/damon/sysfs-schemes.c
+> > +++ b/mm/damon/sysfs-schemes.c
+> 
+> [ ... ]
+> 
+> > @@ -1663,6 +1665,48 @@ static ssize_t goal_tuner_store(struct kobject *kobj,
+> >  	return -EINVAL;
+> >  }
+> >  
+> > +static ssize_t fail_charge_num_show(struct kobject *kobj,
+> > +		struct kobj_attribute *attr, char *buf)
+> > +{
+> > +	struct damon_sysfs_quotas *quotas = container_of(kobj,
+> > +			struct damon_sysfs_quotas, kobj);
+> > +
+> > +	return sysfs_emit(buf, "%u\n", quotas->fail_charge_num);
+> > +}
+> > +
+> > +static ssize_t fail_charge_num_store(struct kobject *kobj,
+> > +		struct kobj_attribute *attr, const char *buf, size_t count)
+> > +{
+> > +	struct damon_sysfs_quotas *quotas = container_of(kobj,
+> > +			struct damon_sysfs_quotas, kobj);
+> > +	int err = kstrtouint(buf, 0, &quotas->fail_charge_num);
+> > +
+> > +	if (err)
+> > +		return -EINVAL;
+> 
+> Could this lack of upper bounds checking lead to an integer overflow when
+> the scheme is applied in the DAMON core?
+> 
+> If a user provides a large value for fail_charge_num up to UINT_MAX, could the
+> charge calculation in damos_apply_scheme():
+> 
+> (sz - sz_applied) * quota->fail_charge_num / quota->fail_charge_denom
+> 
+> overflow the unsigned long value?
+> 
+> For example, on a 32-bit system, an unapplied region of just 5 MB multiplied
+> by a user-supplied numerator of 1,000 yields over 5 billion, which exceeds
+> the 32-bit maximum limit. On a 64-bit system, a 10 GB region multiplied by
+> 4,000,000,000 would similarly overflow.
+> 
+> When this overflow occurs, does the charged size wrap around to a very small
+> value, causing the DAMOS action quota to be drastically undercharged and
+> bypassing the user-defined limits?
+
+That can happen, but shouldn't cause a real problem.  Meanwhile, adding such
+overflow check would make code unnecessarily complicated.  I will keep this as
+is.  If it turns out this causes a real problem, we can consider making this
+better documented or updating the code later, after the report is really made.
+
+
+Thanks,
+SJ
+
+> 
+> > +	return count;
+> > +}
+> 
+> [ ... ]
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260404163943.89278-3-sj@kernel.org
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260404163943.89278-3-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
