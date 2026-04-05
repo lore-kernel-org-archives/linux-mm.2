@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F756E9D827
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 22:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666C8E9D828
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 23:06:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E12C06B0088; Sun,  5 Apr 2026 18:54:52 -0400 (EDT)
+	id BD8B16B0088; Sun,  5 Apr 2026 19:06:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D75336B0089; Sun,  5 Apr 2026 18:54:52 -0400 (EDT)
+	id B89F06B0089; Sun,  5 Apr 2026 19:06:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C64166B008A; Sun,  5 Apr 2026 18:54:52 -0400 (EDT)
+	id A9F676B008A; Sun,  5 Apr 2026 19:06:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B128A6B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 18:54:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51E89E0250
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:54:52 +0000 (UTC)
-X-FDA: 84626008824.07.A29A36E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CBA444000A
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:54:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U0aMKT9g;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 981FA6B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 19:06:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 425371B6AFA
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 23:06:13 +0000 (UTC)
+X-FDA: 84626037426.03.E08E058
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 99C7C100002
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 23:06:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=URmIvhmr;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=URmIvhmr;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775430371; a=rsa-sha256;
+	cv=none;
+	b=f4N3eOiMTLmdHM0CRS06t/LwGW4JnWae9o7njLU+6fUL9oytk3QAB/cMmwOAEGcocGvVZ8
+	BcktE1Ynd2Wv0EgWMkotupYP5U+ciropIh2VAuBBD3yNQ3UTVetvSnd8bn3sfGFbM7MZdL
+	fS59LOXrCMoTJOgy8gIrZo4o8kFfykM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775429690;
+	s=arc-20220608; t=1775430371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n4B/zdQikZt9oAfdOXcCF/bsM6aWoDAb+7LqD4fXasY=;
-	b=ksPMgq+iVhqw86WJyL+u2XIrCgWjMR9QwbMbzaCYWZcaN8UBcVqDd5nmHfFUI83GM9dVGj
-	FBoH4g6qoj28qZI/SZg7UaHu07Nyj8x55tunOSRsqzoR7mC1eYnCRpLZnp5wKM8Tv8KfCf
-	fMmYS9bbp080+AZimVIGrFPmZNYEV1s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775429690; a=rsa-sha256;
-	cv=none;
-	b=dBde/3Vl+95G1VsSKV+C7wJGsHJG4f9zyhTjQSYpsspl/qkG1hrH26lu1OQDnIZ/XIWmZQ
-	IYOcvpJ8vJX4GqxAFKf2OTGxmpXZJ9Atzb/ulz2gmHvQ5bvrLmb1mTdNBaxeI7KTKUH4np
-	kqPJ8T2WhVdwDBhrhuf9qq5eoEuVXS4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U0aMKT9g;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L/2zD7w+Lpl+V/M49I6KSIsTJoy8VbK3b15DgoUgogI=;
+	b=fEZO+6w/ExWVTn+6g72pPScDSewiI1G+IiilBpUohwNQgzNHD13jeOiKmlDMWKrkqt/50K
+	oiFmRDWippToNMDlqDevyLmvAzR8FkXT1UiO8SSsY/OiWQ4TYZzz59REFJinCJm+06ZWUi
+	apcq59nySNBHsIhtDNuOpBdl/xRvBmc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31F48600AC;
-	Sun,  5 Apr 2026 22:54:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72609C116C6;
-	Sun,  5 Apr 2026 22:54:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8904F4077E;
+	Sun,  5 Apr 2026 23:06:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41287C116C6;
+	Sun,  5 Apr 2026 23:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775429689;
-	bh=uGhQilv6HZyt2+AVfLdJ6PyST+KHCobYzLvRtNH2bKY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=U0aMKT9g8leGqzvSZQLfC6Cko+kdjQ5Htb8YAW3t7Z3IGPzJ5XQ0uNM7/yJAfqjmr
-	 79KZ+hs6tROxELPB3xABOf5AKT0yfu60vic8lS/8OaiVKhvmaFem3Wd03JPxgfGH2J
-	 0nIKyWWgnnMlmRNWV6KIAqFWktOhYR2JpDT+PTattN/UVTMeHffr85sq4feVplV++y
-	 XpJUJZ23wgGUzdMCx+9nHAYUrFgkevazZT6pULyVS8mLw+jGQFH8B0YCrcCSbI2Jsg
-	 khzRjeC9qAZD70UUT736Qxb1FC52L28g7TXP6TUtR7QcO8+a0IvYTLwLi5rJqI9Y8h
-	 wwG79IK/pWJIA==
+	s=k20201202; t=1775430370;
+	bh=pP6Lsj6XqQDkF7uu3oeV1rYB/xOwRq5U4UDN4zrHvtM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=URmIvhmrOUP/ERm1/oiysBSdneWuMSjg4ZZWcidG+FATwxXRAl3hP+aNiUKkFhaRD
+	 RciBUIYsdyoWuXw8tUXQ8NwdE+B2U27El6OU9rTl7wuOxYVOW7/PPJ1KumY0OC4Mlw
+	 JQd8eRgv4FIi2aM4dFhCiqWapwvvo3KRy0ytOCdEx0PtlbhPQ1AhVAWczlbYZMEaiE
+	 oCSH0DQ8WO8jWCnfHFzXJPqphIknoiFlwaAnjQmUN4JOR6W2xqTCGRvTCZ2+utlF6y
+	 OuxgzzKkKAx8c6iOpW5xhUCSY5VlJvNgT3I/7ps37WoAmeCXlmlpkaqfulEqVz2JSO
+	 FMaYYpFjZ3CFg==
 From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 16 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/core: avoid time-quota permanently disabling scheme
-Date: Sun,  5 Apr 2026 15:54:38 -0700
-Message-ID: <20260405225440.76827-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH v5 01/10] mm/damon/core: introduce damon_ctx->paused
+Date: Sun,  5 Apr 2026 16:06:01 -0700
+Message-ID: <20260405230602.118036-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260402011043.67218-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBA444000A
-X-Stat-Signature: 1eychsbes89nxmbrtf1ygx8tk5nahqq7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 99C7C100002
+X-Stat-Signature: m1umnke51fpcc1qf9bbf466sp5j5tkwo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775429690-258848
-X-HE-Meta: U2FsdGVkX193JR/QzgXt5QUjG29dfgkCEESPT9GOFt6JkUNbg6eFMEsCTLSfDP1mpsEAUPaduop8ngj8cfnsSzTa0MUrKttQPkVt3ioIkhw4fsI3/Dd7PJgBnuSw23ebgRsl4A5W0XA6D/JvSGg3OZQjCLD5Kj8AYyxUDQbnTao9wWWO+h5DUW3uC4b7ordyCmf8o5D0M8gsBIGemeRzOuodVeA0h3fhZPYUjdpQfMRWtJjzXFvI9Wsp5NAKOei8sAB+vlx/MFQPqKllu9IN9aEc94vlDcKAYDmFxKuMYN6iftYxMmY8VvT249Rq9e0hv099OQdN1gOJ3/ZIWU9pwpwjl4R/S4/yZ84JyndVqP6y0rxQmTKEcgWB/MToSsyO9ouAROQFRDZKuklUD+k7X8Sg45N4WcGI2RGs/xe9zPEOZpbefmpNmFPKAliaCnpfHGetIoXHgBJDIgjaNVjgLRyZGwYC+EUVmBulwXjnVNkXiHjzLhroyfahboA+u05yPFxQBU243uTWDJOp0T7Q09jf6H0Ljwqdm3esPkjQYGNm8tB6OkKZ9JzI6i2qo6Js8ECTXjJTreR9MU4cRLolsA01ULQhyRN3HAm34cu+0PsseOGx/VLeNwGbwCOETN3XH2drFyeDeM4I7/pWZ5BsD1Q9IN3gBfpAQ9AwFPdSq3OudEA0meJNgwEfTc2FXMwipBtSzq5bqfJN2V9lny7Dyn3jdicQTTBUS1yjckKmQaKEoOlBJmP/NGQx+njee+SD+xlNjBP/E03fpevve6ZqpWQD46pTIhXGZKibWPJ2+yu4QqWjyY+gLijkbvF1nWxfWBGsgPNGFkoJGrX3l8R2fMNkTnEP8GDt5MmS/BnIZ+Gqq/4oQV323jwCI8DOX6DJuoD217ERBKMlqgDJmq77NANJdxfu/mvCVUa3+XG+gHWIVT77ENJkh5HvCBdwN/o0UaGlVzrarba9M7RfWQB
- s9FNhNG7
- h3fo7ipnQGwQZHgWy3VhqkyOxv9+a/dUU+IKvp5kGVPVeCwleKQtTTZ73otWX6hi89xk7QY27cndbkOPOOvMACxCekSa73h4fXigC89QsKf3+HtsLfh5AOQ+BgC9xxFaUCRiCbwG3hUMQ9OrqngIK3UeM3JydCaNbXErL9KN0u+uTTyRV6DkaQpuMKP6NpV/9M4MJr1/Xrx8OMKasy5CyYD3dwdc/msOwfRb+rxdG8EawSMtRZ/fLDfap/QTGJGbTDlz2KCLDKbVkoHs=
+X-HE-Tag: 1775430371-71982
+X-HE-Meta: U2FsdGVkX18JiHBqKUvprlOCEygl31DTAPxTcyuzqB2ia/rm+VOAjaPsBG8fm/IDyB1ijx7hYJz3ed/kUrYme5SF/+O5yoT5/vqRCrsyO2tXpdGt+B12rwhQNJoN0N18teC/HsVPXxZ6WCZscN2aW547vnA7GGH35QthOHQC4kOEoZO5i2uJNSNmmBdyZeJZgST1gfCWRFa+njbTzh7uzaVE76vSw/pIvcjSue31S6S9ecoXFcwQnhO+B0rNfKcTWt0YSfPbz8YDsW4VpQJA4Dro9FYX1MeVymJ9y34m7AS6/kntSf90yDJXsvQOsREOrqyfBTX+30AqxB/SRx4xIvcVzIzzJx/pUSH9ERLwaJ5VQmKsDTHMpjYGmC1PDPP3FuIfGSWB7EEX3SfwWNe48PqtH6zfDufE+sAFO4uxNtoV1XHW+83gC5m/7foyu5YTKHdRIN9haoKMa3NWQNy0bCrjVkIZARgpoPOvV2q67HEu4N6H64csPV0T+R/o9loHFz9lay+Cu/59bXhCmHwaTVWcvBziqVlKO5ET+X2sSUUUPOnm35Vl/U0JOGEWffkPE/1hAZmi+gqOqvMA7joiWN7GN/gdAYbw1Ctypni4C+CWfXk4QwmARTddJq+FpwgpzMEAdbGxEKUdTK0RZG8pBHFrbNC1SWURNsxYs96i0Nl4fRZTu47IxrRH4C8+7RZZEZ5UTlSw5WPGZ1T5rCfT9sA8W22cvEPI93y7o+VVPpTjR0ZGIMdBExk35m7MEH9N44vNVs5X3OiwxKbE+2SjKMkJ7nxiWm77wL3ABM56JB83w4gdy6cIBAYHdbxAx4st+fUywmQ8I4aYiMULSp5120JmTpI82G9MbAOP0xXX3FlRbm7RgFEtU2+4mVRyzQKUJPK9xUPUFHZ6Rcvx7sh5YJWEslI+rA3GeWtSuxFV5LesfrQqPkE5GTxqZT8yKbxTYr+/Oqu7g68JZ7o/OPH
+ Ehp6Vbfp
+ XYtGhxpuZIGU0gsOujvWibjc4FJfe8Dq5igJdeGsuuwcijQ69MhuEoj0iZF2/SdfvPtWLydl1duuNAK4k8Ts6JWngxpQG1T8ZVVhV+wh1Robx73meT6WPdxfRXuHeVwHAtgZbg8Gh2RSuoIPzTJgEHkqeNcjbVl2gDZxnhbSluqxMstmfd6SZ0qsV2cYEojIFszf+TQ/Z+bn0F0NBpps+df3aEOL4Qe/1laBmvkorNhSYDOomOb46T5T+da7ybBdvk5oH7pwa7rswtOmxwxRMsllDqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,88 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the throughput of a DAMOS scheme is very slow, DAMOS time quota can
-make the effective size quota smaller than damon_ctx->min_region_sz.  In
-the case, damos_apply_scheme() will skip applying the action, because
-the action is tried at region level, which requires >=min_region_sz
-size.  That is, the quota is effectively exceeded for the quota charge
-window.
+On Wed,  1 Apr 2026 18:10:42 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Because no action will be applied, the total_charged_sz and
-total_charged_ns are also not updated.  damos_set_effective_quota() will
-try to update the effective size quota before starting the next charge
-window.  However, because the total_charged_sz and total_charged_ns have
-not updated, the throughput and effective size quota are also not
-changed.  Since effective size quota can only be decreased, other
-effective size quota update factors including DAMOS quota goals and size
-quota cannot make any change, either.
+> On Mon, 23 Mar 2026 21:07:21 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > On Mon, 23 Mar 2026 18:28:00 -0700 SeongJae Park <sj@kernel.org> wrote:
+> > 
+> > > Forwarding Sashiko review for doing discussions via mails.
+> [...]
+> > > Additionally, when the context is paused, kdamond_fn remains in this sleep
+> > > loop and skips calling damos_adjust_quota(), which means quota->charged_from
+> > > is frozen.
+> > > 
+> > > If the pause lasts for more than LONG_MAX jiffies (e.g., about 24.8 days on
+> > > a 32-bit system with HZ=1000), will system jiffies wrap past the half-range
+> > > limit of the unsigned long type relative to the frozen timestamp?
+> > > 
+> > > If this wraparound occurs, time_after_eq(jiffies, quota->charged_from +
+> > > interval) would evaluate to false when unpaused. Would this cause the quota
+> > > window to not reset for another 24.8 days, accumulating charged_sz and
+> > > blocking the scheme from being applied?
+> > 
+> > That's a wild corner case, but I agree it is better to avoid the problematic
+> > case.  I'm still thinking about the good way for that.  Anyway, I will address
+> > this in the next spin.
+> 
+> The root cause of the issue was introduced before this patch, so I fixed it
+> with another hotfix [1].  So next spin of this patch will have no change.
 
-As a result, the scheme is unexpectedly deactivated until the user
-notices and mitigates the situation.  The users can mitigate this
-situation by changing the time quota online or re-install the scheme.
-While the mitigation is somewhat straightforward, finding the situation
-would be challenging, because DAMON is not providing good
-observabilities for that.  Even if such observability is provided, doing
-the additional monitoring and the mitigation is somewhat cumbersome and
-not aligned to the intention of the time quota.  The time quota was
-intended to help reduce the user's administration overhead.
+FWIW, I'm planning to post the next version of this series only after rebasing
+to the latest mm-new, after the all MM pull requests for next -rc1 are merged.
 
-Fix the problem by setting time quota-modified effective size quota be
-at least min_region_sz always.
+> 
+> [1] https://lore.kernel.org/20260329152306.45796-1-sj@kernel.org
 
-The issue was discovered [1] by sashiko.
 
-[1] https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org
+Thanks,
+SJ
 
-Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3bc7a2bbfe7de..12544c60531d3 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2384,7 +2384,8 @@ static void damos_goal_tune_esz_bp_temporal(struct damos_quota *quota)
- /*
-  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
-  */
--static void damos_set_effective_quota(struct damos_quota *quota)
-+static void damos_set_effective_quota(struct damos_quota *quota,
-+		struct damon_ctx *ctx)
- {
- 	unsigned long throughput;
- 	unsigned long esz = ULONG_MAX;
-@@ -2409,6 +2410,7 @@ static void damos_set_effective_quota(struct damos_quota *quota)
- 		else
- 			throughput = PAGE_SIZE * 1024;
- 		esz = min(throughput * quota->ms, esz);
-+		esz = max(ctx->min_region_sz, esz);
- 	}
- 
- 	if (quota->sz && quota->sz < esz)
-@@ -2445,7 +2447,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	/* First charge window */
- 	if (!quota->total_charged_sz && !quota->charged_from) {
- 		quota->charged_from = jiffies;
--		damos_set_effective_quota(quota);
-+		damos_set_effective_quota(quota, c);
- 	}
- 
- 	/* New charge window starts */
-@@ -2460,7 +2462,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 		quota->charged_sz = 0;
- 		if (trace_damos_esz_enabled())
- 			cached_esz = quota->esz;
--		damos_set_effective_quota(quota);
-+		damos_set_effective_quota(quota, c);
- 		if (trace_damos_esz_enabled() && quota->esz != cached_esz)
- 			damos_trace_esz(c, s, quota);
- 	}
-
-base-commit: 8c08ea3625d4fa8c1c74b208c0c630fce76e14a9
--- 
-2.47.3
+[...]
 
