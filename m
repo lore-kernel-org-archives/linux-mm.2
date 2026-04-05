@@ -4,94 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 011D0E9D828
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 22:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B1FE9D827
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 22:50:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B45AA6B0088; Sun,  5 Apr 2026 18:45:59 -0400 (EDT)
+	id 929486B0088; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6776B0089; Sun,  5 Apr 2026 18:45:59 -0400 (EDT)
+	id 8DA1E6B0089; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0CA26B008A; Sun,  5 Apr 2026 18:45:59 -0400 (EDT)
+	id 7C8CC6B008A; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 902536B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 18:45:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1CC016016D
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:45:58 +0000 (UTC)
-X-FDA: 84625986396.21.C369932
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0E8DA40003
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:45:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndOVHOh1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C4436B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E3B21A0124
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:50:09 +0000 (UTC)
+X-FDA: 84625996938.13.5E6A066
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D7D281C0002
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:50:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=iuVp+LYQ;
+	spf=pass (imf18.hostedemail.com: domain of dianders@chromium.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=dianders@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=iuVp+LYQ;
+	spf=pass (imf18.hostedemail.com: domain of dianders@chromium.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=dianders@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775429407; a=rsa-sha256;
+	cv=none;
+	b=BOZuL08ms1aRp7S8EFo2drrZF+zIQDatXMzPxbqZR2CSVMLTb1QHFK28jbatDd0tzx5Ha0
+	F3sDjNQv0KzfdR3ZoAehhAF3eD7YRvdhKteITEkxxUdwJzQhDwJr1u2SwWZgZ9zZscym4n
+	2Kw8jK1vceeS5ohH3idfpZsUKumwIt4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775429157;
+	s=arc-20220608; t=1775429407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W+296tyyATEOtPbc5rAw/394OnEpsDRAvFFA9PPsyjw=;
-	b=JUIzOL8g8hmwHv6y0kRddEviGq8DpH1vW8dhbYeEnuhUuaHkgRX5+NBJq637jPf/E+oPj9
-	N8i1h1WfxvXD0NSkx0lSB5Tfj4AuecD1sMLKEgg3FszUwMpbSOgScjX00UU8k2bK9bTsYg
-	n+L/dW7CqELcEvIat5K82Cr6/+rlp2w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775429157; a=rsa-sha256;
-	cv=none;
-	b=6G1faMEc9Ey8i5WOJWo5JB87NjqE4P484cqJeXDaf5t7aGpqGm3s1Y5mWpWLka8Pb+ddGF
-	CMuEhpHnnIVThgGJyGbyq0NcGT2DrmcX2jgiCd+gDCzrx5xRRPMG5CJcZhS5IQkcfn+kiy
-	cYRbgudljhzDvexmSpS5y4+oSQ5mCLI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndOVHOh1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C284843847;
-	Sun,  5 Apr 2026 22:45:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E18EC116C6;
-	Sun,  5 Apr 2026 22:45:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775429155;
-	bh=XxJGbynt6Kw4uHZTfIMV+Njj+5Q3VK3ljHd+gNKJnwo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndOVHOh1ksuOCP5L8Wom95mQQaFUhWMwsL+zRzfR9mj2rsbiP/QUqTpQ/IAbfxTyY
-	 6VYibvBj6T1VNok5hOWGs9qwGdQkRxGJ1DJNXiUBrwrqsbg8YrHi/3muEYza7YZ9Sn
-	 NZVwQE61v/i6jBgsCSTjvsamAFpcWk27hDD9lk5R0JZ6UD3FozPhehKuCp0XJHb68V
-	 85xzVzNji8XGFwu8pT3SLeJAxAh39nogKtZP2XrLKfFJBtetaDzLJHQoc2yqIZMavb
-	 RuybkY8Rkx4ehZPaAPCK3t6UbGZ1NNJcpQi0FJ8UXknYTNuMgaUxXXib8YGoCAHFva
-	 RbJdHYTuptrdA==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: (sashiko review) [PATCH v6 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Sun,  5 Apr 2026 15:45:50 -0700
-Message-ID: <20260405224550.76218-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260405184247.2690-2-ravis.opensrc@gmail.com>
-References: 
+	bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
+	b=gjEkK7tnsgao8pqSNRRLejzWnfDHonLUaAMpXP4r9bIofcAermUVoKn5KhRkImkxyjBgBy
+	sgxyzuOr3Lr8p/mxp5lld6fVBowIBvxFqXGamSHtgydwyDB+Pzao6+JWz/tI3ibUhpMWsV
+	kyfsCk3IDyHxeX1ZY0mC9Ai45rzv0dY=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66bb6eb28acso6182807a12.0
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 15:50:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1775429405; x=1776034205; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
+        b=iuVp+LYQMgz3Er3wAVE5Hkx3CXj0PEs8gSyqHgBLbV29aGw6o96/MDUYuPw++gV/9r
+         LbkvhWWsEsfLl3x8iNI/lwJnRCUAboOGJI1uKHc79ynMyHweHsTELZWqq8Z0Caz6q+xv
+         hm9SgV3ZyaleAthDZN9I7qqNI2V445hOqjR+w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775429405; x=1776034205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
+        b=lWuPIMd2fI6jMYDjqgSgPmiSC4kh8fLExIdwAgNggXnLNvnshwnJZp2zPDHix9+NGs
+         RO6e5XfLgJSnodKOBndt2Rk9imGmH1RqS+nBzg0jvdv53Z8DGzbnT6MlH9MHxh9fNJvK
+         gMjdU6CTMdSqzc5M5U/FoZsDS28Iza2n4BilYz2ZyNww8lYv7kBmO7YlBYrj7NZsIj8K
+         pT5AeR+olPkB2CuyrNTbzGBnCtwt7o/W4d7SGMmtEsUeP6y5rj0ktfP7++E1kaPigIZT
+         TkJchFyBirSdyZDiKCvSBDm6++FvHYJkxRvyM/Uau55UqqE4IfS+GuIxO8gA8lDNY3js
+         YIfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNZz1sauBxDYoEAmhWCIGHKDIj3NNwAIGGCX2jIK4S9YZwm0c8kJa9Dqz+8+tSTWQjkkxAUY635Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw+K3ZPP3iFGZcyFvtGD28LAE+npfr5IBXzlUpJJH6ivOyKEjZ0
+	7c0VdXY1noEVuuXlr7q2rnyIgq9HlaVRwAFUWivHDhfkS+0sVUoQnFQ0IOYjnBUBcPabgUk5lo7
+	Mjv7Xr6KW
+X-Gm-Gg: AeBDiesbi7JIUDIuu46qjVvgFGGJMycDjnfI7pNajMqaTvmB/xZzFrCRZ293bOnqQKa
+	3oO/T7/HHnHpv+kAxiT03sunXGVwwMXlEkrtmJdjdeuqCn4C0tlBMo+QBVoJFkOP0t3UrSakYgw
+	jhyY19mx8SHq8sG90V5v4Jh20rHD0AIPwNYiKB/sFe873FkzlJYFg7kvMTC4MayVNAZPNp//40e
+	jzQuQHcAbjdvHCFM7GDfsT94EwSEW8YA8o4bNTWjfIyeKyW6QlWsWK5bQUplScB4MLmMPgRIZY4
+	zrKqvhbd9x2x4yQJ44bh+RwZfjoh3tr+NfXZS4kNyojllH7Yir+VnO5VYa+Ld0/5NgNmzLqMqYP
+	cv8oiunOOcpo97WE3+iRxn08FtQOSrjB/eWJ7/O14g347AGiHRKbPRPH+HSW2FyWj0RQq4omYvf
+	BSKjuaYA+akDJZhGXcNAZUc7oNcvY0ejMCIsCwrTnSupnka6eGs8dEq7zoPhH61g==
+X-Received: by 2002:a17:907:3d4b:b0:b9c:513e:34db with SMTP id a640c23a62f3a-b9c676a2d7bmr589066466b.23.1775429404433;
+        Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cfeedc2sm425646766b.42.2026.04.05.15.50.04
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-66bb6eb28acso6182793a12.0
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUGoQeyiofoNRpSaMyKlmKlRWirW2S7ysi5oBOW9J3v+JVxkMML7hR+ZO7A7C1bI5vDH9Cu2OaI8Q==@kvack.org
+X-Received: by 2002:a5d:5889:0:b0:43b:47ee:4586 with SMTP id
+ ffacd0b85a97d-43d292d34e1mr14051064f8f.29.1775429026066; Sun, 05 Apr 2026
+ 15:43:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E8DA40003
-X-Stat-Signature: ns6siqzu56ztjhy4rafosgmq9yxjynbu
+References: <20260404000644.522677-1-dianders@chromium.org> <2026040539-sponge-publisher-2b42@gregkh>
+In-Reply-To: <2026040539-sponge-publisher-2b42@gregkh>
+From: Doug Anderson <dianders@chromium.org>
+Date: Sun, 5 Apr 2026 15:43:34 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=X6DRHV6k7G=p5Mno22na75G-69F-EzMkisSxMoxuvJcQ@mail.gmail.com>
+X-Gm-Features: AQROBzBHjVedWun0AWH98b5RajBbraAAaRvLQSenEhaNEY8p1Czch8mAczvPiQQ
+Message-ID: <CAD=FV=X6DRHV6k7G=p5Mno22na75G-69F-EzMkisSxMoxuvJcQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Saravana Kannan <saravanak@kernel.org>, 
+	Christoph Hellwig <hch@lst.de>, Eric Dumazet <edumazet@google.com>, Johan Hovold <johan@kernel.org>, 
+	Leon Romanovsky <leon@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Alexey Kardashevskiy <aik@ozlabs.ru>, Robin Murphy <robin.murphy@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Frank.Li@kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>, alex@ghiti.fr, alexander.stein@ew.tq-group.com, 
+	andre.przywara@arm.com, andrew@codeconstruct.com.au, andrew@lunn.ch, 
+	andriy.shevchenko@linux.intel.com, aou@eecs.berkeley.edu, ardb@kernel.org, 
+	bhelgaas@google.com, brgl@kernel.org, broonie@kernel.org, 
+	catalin.marinas@arm.com, chleroy@kernel.org, davem@davemloft.net, 
+	david@kernel.org, devicetree@vger.kernel.org, dmaengine@vger.kernel.org, 
+	driver-core@lists.linux.dev, gbatra@linux.ibm.com, 
+	gregory.clement@bootlin.com, hkallweit1@gmail.com, iommu@lists.linux.dev, 
+	jirislaby@kernel.org, joel@jms.id.au, joro@8bytes.org, kees@kernel.org, 
+	kevin.brodsky@arm.com, kuba@kernel.org, lenb@kernel.org, lgirdwood@gmail.com, 
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-serial@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-usb@vger.kernel.org, linux@armlinux.org.uk, 
+	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com, maddy@linux.ibm.com, 
+	mani@kernel.org, maz@kernel.org, miko.lenczewski@arm.com, mpe@ellerman.id.au, 
+	netdev@vger.kernel.org, npiggin@gmail.com, osalvador@suse.de, 
+	oupton@kernel.org, pabeni@redhat.com, palmer@dabbelt.com, 
+	peter.ujfalusi@gmail.com, peterz@infradead.org, pjw@kernel.org, 
+	robh@kernel.org, sebastian.hesselbarth@gmail.com, tglx@kernel.org, 
+	tsbogend@alpha.franken.de, vgupta@kernel.org, vkoul@kernel.org, 
+	will@kernel.org, willy@infradead.org, yangyicong@hisilicon.com, 
+	yeoreum.yun@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D7D281C0002
+X-Stat-Signature: d885y6duhwxmpd9oh4zw7y3acanes8t9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775429156-544763
-X-HE-Meta: U2FsdGVkX1+voCm5gcohWoZIn/tGJn65lh/O6XKwfPC3/Yu+jsa//zqp/yV9mY+JpP4sL6IzgFENlbGNAOlRtETG3WfL9wxe/NrqkGKAB3b1iaNvr3ijo+UGXMia9PpWpLf3gNZYkkYfDOZjYSniVMAFfamLe8COhyFsB6BNhQq0EWK17F1WAeRuynJp5AoMXN9huP/FkRKMuaz6ASsvN7Na346Zhme873eK8w5LAcwh5vUba5O1lMkoILHxkfuGdL73ON8rrXun90qTwYQNhTljKuLCa5brFspU+ylSpGcvsXdv3B+6OtV/b1C/7t7mZHUetUDje0JfqjnvkBrfQy0ez8xsLuDOdNDzfERIXw4CSNT1oz80TxAH4TMBTtrZZyoYwERkbpaJQRm6zr0ixVALhFJ8otZBECOVgtFZjyq4t4pqX0FyJlwSNGuEHSHHkpaKfpPZmh5BBPUGRGrgsaxHhWy5unF7eoqxKCIIRMgdEQNccDFpVXL4TfHTzc5x75u1niQtHyCByQU/+OGaTs5/TiIdUtkDoiL/B14xbpQH5l+KP78K/LmrhVK8bWk6qxLfKOU5QtyfLkp3SZvSO8atJeVA8vASLJMozPDpxUuc6ZKwvKrpfJFjiMNrbPwYw8RBjutxTKhgXCCrSA9Rk0QBBnEEgKEmeJQxLigw7b4w8G1fl67G31H3XJmwE3vvG5SLONNAxlyPhqoArJmPU2PT2C7xmcaW3Ex6kO3baonQhIMXprlLAHO4E+wefBvTxwTQFJ21CzKww3OL/QVoE3Ep0q/GvP21Wc72Zi8WnBS2brfDcArRWaL2r59hjgCk6m9uTa4xELes4Qt7n3ixWkjQqFCn+m+EumxZoeb0gzjdJqSy9m5WLuCfhr0ZklXpU3pNG4fP6x7nRruqzgv+mT6bnNBNh3HiPNdRSZAbfs9BwBaALUt7N36P1M+6RFsKBy8WiHBDkEXU4kWoR8P
- iAyPXrPR
- Ds9yQMVesFTlREKcy/fr80OcbPHqsRd0yHcQo8J8/3TGv+dY+Y0fMWWvkmv9FBbmVdiHuJtDFIujTwWU=
+X-HE-Tag: 1775429406-622778
+X-HE-Meta: U2FsdGVkX18aofhMInXrSjOPlRmTHL6PsVPUA8TzstX2SVSQIh6+7JUieAY6juSInzh8+RfDrB7Fg+ISeKDQt1BfC7i3ybGa56yKdfWyH67GJVL3HKTjImACrbvJunlqtBxdK3QbzJbPEqPr4jYGI7Gj/GaupSSh4jm92MAzApaBlb29ChBe+7PiWhYUy8Z5gzbDnv4E9thPhaynFAfwMx+OzCsi4O0O5Fjra2Eae8xQPMHkSkpXGbERKdzrv3P0J1TMDa55jQ2ggltJXMdpsg8kMTpzVlCm8eBlE0JFCdMYSLcmx1rYsr4L41K4o5n7XeXJNHYUqUd/2WGo6lMnoI22GOXSNLpfnkaExx8z4JT3B59V4ftQv4Idf8iNbPJqxOFj4nYHlIXik27IMrt/1UwMRioD91EBTfZu/dPhQ320QSDqQAP5TQB/X8cmc8MP0fDeNfsoJdA02No/jDNiU/ZZvaxhXtbSMdvBA0wJvsw/94TKnCL+ARtCNwRH8I8WsaKWfVZXLiMMlRbcoO3KR/aQ+bdVyqLhNFs+iX7e96m9a05+BZN1DWdsa35xFUzqIE3QcVQIpR24I8akBtfOMQTMdJ/Qu+U7JrXTJLNyMjK86IIgcfuvFIYH00CFg7XR7LuejiX69xIXu/VZULJXffMps2imbix/Zg79AZWQaqYZBBf889K1YcNV1bmafrKcuM5erlwFjJ0ZzN6A60GeW+CCStEQvEGcSEnSW9V3h+9KbzvUhsv7IK1q3xIFtxqegLlbfWXHwiuXnznVqr02CBQ/swORDRpQ+XLffJipmk71A0NV6B44BANrfa7uF91tqg88hZyLPIs0fR19BkWuW3g9d3d/z7fq1Gkq2HzpK7v0RM1h17kIN4/S5fu0Zo+tVN6espN4Y/rKQ8QnzIHHHfyX+vjxcLyOX9anjKt2yUgkrR24NGuF5GbMnaDr+UhmqvU0me8dO7zZyGkLJzw
+ u0vlwpPd
+ Dhi8zOGkhaSKpg091mQMyTqUa8hx8U80fZu3GVGwGtjUSpVnTacCYSexlfF4QVNI11HRYjmmaatbSKavEDSpT7UHbcO1J0nSaIrSvBpkUZ/Rr5zlyX+G9u4Xt1UwtjWWGlJ5a7koXzQVhA3OSX1R32dY5ln6wIr64KtvgcJ+bMG5KXEvrbcwISCZzvSCXazYBH4c0IoHWrvZUoWRvxxy9QXKehp5uU6QynqADcbgLFw3ct3E38eXagpiOB7CHErbMtGOrRNNlo0bagoN7BfTiIv/Z8Vl/VH+pl2x+t/+wZQbWYM1qaaEVbqgC1QHGY9NOgCc2I8jqXLJhY7yzqqZoZlKCT0AHgqP4VQTJr63xFkD1oexGesdIQFZckmv6q4XzR0ts/Ha6GiKGLuCwveVMB7lisSHE/IY3aVzq3TqdRgjGhCWqWBRGW0o2DjPkDMlIsQn1freuaJUoTx8VDGLMkUV6IB4ie58HvYEs/ezzlX7o2hm1SH5GqVohJC8e5radQAhA03230va44nZvE8aI5MGKfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,214 +154,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
-Ravi, thank you for reposting this patch after the rebase.  This time sashiko
-was able to review this, and found good points including things that deserve
-another revision of this patch.
+On Sat, Apr 4, 2026 at 10:28=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Apr 03, 2026 at 05:04:54PM -0700, Douglas Anderson wrote:
+> > NOTE: one potentially "controversial" choice I made in some patches
+> > was to always reserve a flag ID even if a flag is only used under
+> > certain CONFIG_ settings. This is a change from how things were
+> > before. Keeping the numbering consistent and allowing easy
+> > compile-testing of both CONFIG settings seemed worth it, especially
+> > since it won't take up any extra space until we've added a lot more
+> > flags.
+>
+> Nah, this is fine, I don't see any problems with this as the original
+> code kind of was doing the same thing with the "hole" in the structure
+> if those options were not enabled.
+>
+> > I only marked the first patch as a "Fix" since it is the only one
+> > fixing observed problems. Other patches could be considered fixes too
+> > if folks want.
+> >
+> > I tested the first patch in the series backported to kernel 6.6 on the
+> > Pixel phone that was experiencing the race. I added extra printouts to
+> > make sure that the problem was hitting / addressed. The rest of the
+> > patches are tested with allmodconfig with arm32, arm64, ppc, and
+> > x86. I boot tested on an arm64 Chromebook running mainline.
+>
+> I'm guessing your tests passed?  :)
 
-Forwarding full sashiko review in a reply format with my inline comments below,
-for sharing details of my view and doing followup discussions via mails.  Ravi,
-could you please reply?
-
-> # review url: https://sashiko.dev/#/patchset/20260405184247.2690-2-ravis.opensrc@gmail.com
-> # start of sashiko.dev inline review
-> commit 5f6ea8da06d136b84d97827777acf2b07047d42c
-> Author: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-> mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-> 
-> This commit adds quota goal metrics for tracking scheme-eligible and
-> ineligible memory distribution across NUMA nodes. It iterates over
-> scheme-eligible regions and uses damon_get_folio() to determine placement.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> 
-> [ ... ]
-> 
-> > +static unsigned long damos_calc_eligible_bytes(struct damon_ctx *c,
-> > +		struct damos *s, int nid, unsigned long *total)
-> > +{
-> > +	struct damon_target *t;
-> > +	struct damon_region *r;
-> > +	unsigned long total_eligible = 0;
-> > +	unsigned long node_eligible = 0;
-> 
-> Can total_eligible and node_eligible overflow on 32-bit architectures? 
-> Since these accumulators track raw physical bytes, regions spanning multiple
-> gigabytes might wrap around the 32-bit unsigned long limit. Would it be
-> safer to use u64 or track the counts in pages instead?
-
-Makes sense.  Ravi, could we update these to use phys_addr_t?
-
-> 
-> > +
-> > +	damon_for_each_target(t, c) {
-> > +		damon_for_each_region(r, t) {
-> > +			phys_addr_t addr, end_addr;
-> > +
-> > +			if (!__damos_valid_target(r, s))
-> > +				continue;
-> 
-> Should this loop also check damos_core_filter_out()? By only checking
-> __damos_valid_target(), it seems memory explicitly excluded by user-defined
-> region filters (like target ID or memcg limits) is still counted as
-> eligible, which might inflate the total and affect the quota tuning loop.
-
-No, we intentionally defined "eligible" based on only the access pattern.  We
-may be able to extend this to apply filters in future, if we find a use case.
-But, for now, I'd suggest keeping this as is for now.
-
-> 
-> > +
-> > +			/* Convert from core address units to physical bytes */
-> > +			addr = r->ar.start * c->addr_unit;
-> > +			end_addr = r->ar.end * c->addr_unit;
-> > +			while (addr < end_addr) {
-> 
-> Could this unbounded loop cause CPU soft lockups? Since DAMON regions can
-> span hundreds of gigabytes, executing millions of folio lookups sequentially
-> without a cond_resched() could monopolize the CPU.
-
-Good point.  Most DAMOS action implementations are also doing cond_resched()
-per region.  Ravi, could we add cond_resched() per region to this function,
-too?
-
-> 
-> > +				struct folio *folio;
-> > +				unsigned long folio_sz, counted;
-> > +
-> > +				folio = damon_get_folio(PHYS_PFN(addr));
-> 
-> What happens if this metric is assigned to a DAMON context configured for
-> virtual address space monitoring? If the context uses DAMON_OPS_VADDR,
-> passing a user-space virtual address to PHYS_PFN() might cause invalid
-> memory accesses or out-of-bounds page struct reads. Should this code
-> explicitly verify the operations type first?
-
-Good finding.  We intend to support only paddr ops.  But there is no guard for
-using this on vaddr ops configuration.  Ravi, could we add underlying ops
-check?  I think damon_commit_ctx() is a good place to add that.  The check
-could be something like below?
-
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1515,10 +1515,23 @@ static int damon_commit_sample_control(
- int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- {
-        int err;
-+       struct damos *scheme;
-+       struct damos_quota_goal *goal;
-
-        dst->maybe_corrupted = true;
-        if (!is_power_of_2(src->min_region_sz))
-                return -EINVAL;
-+       if (src->ops.id != DAMON_OPS_PADDR) {
-+               damon_for_each_scheme(scheme, src) {
-+                       damos_for_each_quota_goal(goal, &scheme->quota) {
-+                               switch (goal->metric) {
-+                               case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-+                               case DAMOS_QUOTA_NODE_INELIGIBLE_MEMPBP:
-+                                       return -EINVAL;
-+                               }
-+                       }
-+               }
-+       }
-
-        err = damon_commit_schemes(dst, src);
-        if (err)
-'''
-
-> 
-> > +				if (!folio) {
-> > +					addr += PAGE_SIZE;
-> > +					continue;
-> > +				}
-> > +
-> > +				folio_sz = folio_size(folio);
-> > +				/*
-> > +				 * Clip to region boundaries to avoid counting
-> > +				 * bytes outside the region when folio spans
-> > +				 * region boundaries.
-> > +				 */
-> > +				counted = min(folio_sz, (unsigned long)(end_addr - addr));
-> 
-> Does this accurately calculate the remaining bytes if the region starts at an
-> unaligned offset within a large folio? folio_size() returns the full size
-> of the folio, so this calculation might overestimate the eligible bytes by
-> not accounting for the initial offset within the folio.
-> 
-> > +				total_eligible += counted;
-> > +				if (folio_nid(folio) == nid)
-> > +					node_eligible += counted;
-> > +
-> > +				addr += folio_sz;
-> 
-> Can this pointer advancement overshoot the end of the current folio? If
-> addr was unaligned, adding the full folio_sz will skip past the beginning
-> of the next contiguous physical memory folio.
-
-Above two points make sense to me.  Ravi, could we fix these?
-
-> 
-> > +				folio_put(folio);
-> > +			}
-> > +		}
-> > +	}
-> > +
-> > +	*total = total_eligible;
-> > +	return node_eligible;
-> > +}
-> 
-> [ ... ]
-> 
-> > +static unsigned long damos_get_node_ineligible_mem_bp(struct damon_ctx *c,
-> > +		struct damos *s, int nid)
-> > +{
-> > +	unsigned long total_eligible = 0;
-> > +	unsigned long node_eligible;
-> > +
-> > +	if (nid < 0 || nid >= MAX_NUMNODES || !node_online(nid))
-> > +		return 0;
-> > +
-> > +	node_eligible = damos_calc_eligible_bytes(c, s, nid, &total_eligible);
-> > +
-> > +	/* No eligible memory anywhere - ratio is undefined, return 0 */
-> > +	if (!total_eligible)
-> > +		return 0;
-> > +
-> > +	/* Compute ineligible ratio directly: 10000 - eligible_bp */
-> > +	return 10000 - mult_frac(node_eligible, 10000, total_eligible);
-> > +}
-> 
-> Does this return value match the documented metric? The formula computes the
-> percentage of the system's eligible memory located on other NUMA nodes,
-> rather than the amount of actual ineligible (filtered out) memory residing
-> on the target node. Could this semantic mismatch cause confusion when
-> configuring quota policies?
-
-Nice catch.  The name and the documentation are confusing.  We actually
-confused a few times in previous revisions, and I'm again confused now.  IIUC,
-the current implementation is the intended and right one for the given use
-case, though.  If my understanding is correct, how about renaming
-DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP to
-DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP_COMPLEMENT, and updating the documentation
-together?  Ravi, what do you think?
-
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260405184247.2690-2-ravis.opensrc@gmail.com
+Yup, all the tests that I've run have passed. I also threw in an
+"allnoconfig" compile test just for good measure.
 
 
-Thanks,
-SJ
+> Anyway, this looks great, unless there are any objections, other than
+> the "needs to be undefined", which a follow-on patch can handle, I'll
+> queue them up next week for 7.1-rc1.
 
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260405184247.2690-2-ravis.opensrc@gmail.com
-#
+Thanks. As per the other thread, I'm happy if you or Danilo want to
+apply it, and I'm happy if you want to make minor fixups when
+applying.
+
+When I see the patches applied, I'll send a followup patch to address
+the "needs to be undefined" comment, unless Danilo makes that change
+himself when applying.
+
+-Doug
 
