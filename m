@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50558E6400F
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 05:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9625BE64014
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 07:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E21D6B0088; Sun,  5 Apr 2026 01:28:19 -0400 (EDT)
+	id 438E06B0088; Sun,  5 Apr 2026 03:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691A46B0089; Sun,  5 Apr 2026 01:28:19 -0400 (EDT)
+	id 39B5F6B0089; Sun,  5 Apr 2026 03:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 580206B008A; Sun,  5 Apr 2026 01:28:19 -0400 (EDT)
+	id 23C556B008A; Sun,  5 Apr 2026 03:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 43B926B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 01:28:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CC6ED1A0A11
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 05:28:18 +0000 (UTC)
-X-FDA: 84623371476.25.4977F98
+	by kanga.kvack.org (Postfix) with ESMTP id 104926B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 03:07:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72A38BBC6D
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 07:07:25 +0000 (UTC)
+X-FDA: 84623621250.24.996E876
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 146E940006
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 05:28:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bejAtE4V;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id C0D0C1C000A
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 07:07:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9O82ylM;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775366897;
+	s=arc-20220608; t=1775372843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h2UHsS7SqYYqTozJjfBj6V37VjS+eOmJpA6kFDwrClA=;
-	b=7DqeEMhfdC5FcYwdzBa0fyYvu2RwOgpA5hQte+nDdfcMOgaupmSq5Z3lovuIjSMEp6SBf9
-	bhOAZjkfYpRSqAp33bxPRGWMJEsQTagM+3mhanR9mNDgFuGKN/6dUVGDB3wlf4XzhwS+v5
-	g/YZ9AAIRMYu2+tYPDMGCad2aRKxr88=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775366897; a=rsa-sha256;
+	bh=hpL4ijEbUECggDcqUNUkDOyu4qSsZc537hx2cfM4pKw=;
+	b=SaRwof64BCTaJTsu5ahPhv6IdUbzBeZlhUMpRyzHPtShiDpVCb1CPHr2BG6gzMkuxQPPwv
+	WF5FIM3Bn4o5sZJH3W5CsU2SFAZL6BB1aoavJmK4wl/X52M3b7p+SirqbFTxULdsZ1Ky4x
+	Zh0+tyesf65nqUOhTe92i3NbRSJde64=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775372843; a=rsa-sha256;
 	cv=none;
-	b=jKfhVZumur1V1CWoFkArLkxe7frOAmf0yD4/6vpBvaJTd4ScAwyaY12vnIXazkuTrb+vwh
-	dBjhL8FhLBEe5NuQ5GXH9dXFS7lFdRQpqWYkYp9pSAvlMC7QcEnIGC2sdiJXfqCMoZa0to
-	/1v+Qo8w89Pm5Hp7bc5UCbewqmmOJ1o=
+	b=WLMEEfLucMOGILiJZf1Y+QPf07D4CV6xDSZrhZK4r1kXdTXz8NotH6ofpFe8wv5mBS5+TN
+	UPiZOjTcb1ifEtvzcefxc1KEBACLWALqA2k2a8akC116JcRFAhhICUP6vhyAq/Qepc00bG
+	wcCowjy4Htyc7DNW5h8EYYc0dH8VAA4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bejAtE4V;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9O82ylM;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3662A4385A;
-	Sun,  5 Apr 2026 05:28:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B7DC116C6;
-	Sun,  5 Apr 2026 05:28:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1775366895;
-	bh=ophk+hp6kRAG0U/TAGAhUuOrKmitf0U0PYwWZuudius=;
+	by sea.source.kernel.org (Postfix) with ESMTP id 797C741728;
+	Sun,  5 Apr 2026 07:07:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71541C116C6;
+	Sun,  5 Apr 2026 07:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775372842;
+	bh=ohaCCzJ/OyCQHyLoFW3oiQ6UbSpvt0apq1+Vo/peCVs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bejAtE4V1Hz3lTSKLlyBcIyR+JNRKDGMc/G8Z0GN4ZPNsCF585rejSzukgcFioxub
-	 QUbiyQrTx+RcM6s1+Zu0oaI1vfJoHXTXgrhOUb/YXCMVVE2KZgd+scb35TQsQF7wMb
-	 a7Wf9qe7CdkvcplKMPdPqmr9WcFeVQib8uJGDZ1Y=
-Date: Sun, 5 Apr 2026 07:27:46 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Eric Dumazet <edumazet@google.com>,
-	Johan Hovold <johan@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Frank.Li@kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>, alex@ghiti.fr,
-	alexander.stein@ew.tq-group.com, andre.przywara@arm.com,
-	andrew@codeconstruct.com.au, andrew@lunn.ch,
-	andriy.shevchenko@linux.intel.com, aou@eecs.berkeley.edu,
-	ardb@kernel.org, bhelgaas@google.com, brgl@kernel.org,
-	broonie@kernel.org, catalin.marinas@arm.com, chleroy@kernel.org,
-	davem@davemloft.net, david@kernel.org, devicetree@vger.kernel.org,
-	dmaengine@vger.kernel.org, driver-core@lists.linux.dev,
-	gbatra@linux.ibm.com, gregory.clement@bootlin.com,
-	hkallweit1@gmail.com, iommu@lists.linux.dev, jirislaby@kernel.org,
-	joel@jms.id.au, joro@8bytes.org, kees@kernel.org,
-	kevin.brodsky@arm.com, kuba@kernel.org, lenb@kernel.org,
-	lgirdwood@gmail.com, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-serial@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-usb@vger.kernel.org, linux@armlinux.org.uk,
-	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com,
-	maddy@linux.ibm.com, mani@kernel.org, maz@kernel.org,
-	miko.lenczewski@arm.com, mpe@ellerman.id.au, netdev@vger.kernel.org,
-	npiggin@gmail.com, osalvador@suse.de, oupton@kernel.org,
-	pabeni@redhat.com, palmer@dabbelt.com, peter.ujfalusi@gmail.com,
-	peterz@infradead.org, pjw@kernel.org, robh@kernel.org,
-	sebastian.hesselbarth@gmail.com, tglx@kernel.org,
-	tsbogend@alpha.franken.de, vgupta@kernel.org, vkoul@kernel.org,
-	will@kernel.org, willy@infradead.org, yangyicong@hisilicon.com,
-	yeoreum.yun@arm.com
-Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
-Message-ID: <2026040539-sponge-publisher-2b42@gregkh>
-References: <20260404000644.522677-1-dianders@chromium.org>
+	b=i9O82ylMyOl+wffziX6EHyuKjfZRNOtXBwBb6x2Hg7c6kPg80cHo7ELy/0MCqL7hM
+	 zzJgRcwLV/uuF/9OKHmDyL77CuR9VDSx12X/updR8lgoF6BSDTtPvgF27mrBLA42YZ
+	 CFFehpXSQqNLVVCdEnRvKBvi+rExumtbNx1Wj+1up9LfvMSwI0YpDP7d4ScIyBzM9x
+	 yfR5FMLbQ1atusilXnxq32F7XNd7iU/5SwKgCH6URQBKQ71r5hxIzqA1/6vwLjUzNY
+	 kzqgWRyHCBokcS+i9cmrqJ2yVxXMFNOA/XKsXXGVZ0iEINkynHLLaopjI1tX4qEA2W
+	 sYWRmBmFLsEdA==
+Date: Sun, 5 Apr 2026 10:07:14 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] mm/sparse-vmemmap: provide generic
+ vmemmap_set_pmd() and vmemmap_check_pmd()
+Message-ID: <adIKIhRL6q2NIgnj@kernel.org>
+References: <20260404122105.3989557-1-songmuchun@bytedance.com>
+ <20260404122105.3989557-2-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260404000644.522677-1-dianders@chromium.org>
-X-Rspamd-Queue-Id: 146E940006
-X-Stat-Signature: mseq6w5zzg1pbnzyqeju5uq1eyttrimw
+In-Reply-To: <20260404122105.3989557-2-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8n3wmr8t735q3h418p7i9ipamr4jnn7s
+X-Rspamd-Queue-Id: C0D0C1C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775366896-286254
-X-HE-Meta: U2FsdGVkX1+vsB6skoBpmdKLE026vbdQxhoME7s3EVbD/l7RvmtopiIq/aFTTGiGPw7YRqIuRgRQFbULvyV4dVmMKhlq6/Bo6Pyss5tYAAl38DfxBPIahYmpj/cTLJWDFI5u1QNY7T12cDRCU4JzQTxW/EqxyrAbEdHJ3zbdT9oNEjtQGHZ5KU/BqpZfEddUEdpON6LdNEboB9L4xUFSmoH+BKAiBfwy95yJEMcul9gliKkhgeznotpaKTqWTuKvL1VToRBCgwmk9UNCuJv3eGSfLuE7w8Jb+TsfWc/VDNH70GYta0FA2Xk5zifZDZYeIeertXlpNKopkx9SVNNosGoj74C6MsVidUF51zB+/ihoO09lferP7DJdnBa+O/9+VCpAkNb/BjUtirKakRkxM+8p/6R63NoSrKNBcu5OX5nkqUy50MnFLS/4MKpaTXsu/c/dcpRDyFe0Bi3Q6Lp0sIC6+QUO2pML/inrxvq7YZ7UTAoNTAeuuPhte8hpCK20X8miIXv4cTYJhwWj1YZNaOjqekLkXO4qenM5KuGFmhG+I+lXaz6cRif6IocpmtoRnBnEq8V3niL+5dOf+ROdkQgGRAXrfS856wweSlHZNCUgcn29SZ8QJdOIhV7WZWqj9v2Nx6+vsb0C7vxzjBdPAADiorMcivUu4a6e7BYKvChlzhD+ThQK5Sch3MCguqN/CQiaFGSVnceY7jXMVgncsDpEvn5bUG1qJlRtSIIIyv65tt+hn0dvKwjtYoYr7Q92p8JoKatJ/v4yLT2mVMHeAUEk/B1zzD/91lj0Nfh5iInr8XKCCA5gla7ZUoDyHVWxlNneENLyBJqsx0lYpL8tnQbuEGz7AWGpZq2rsftsUZPLSb253oorth/TaS5hbbcAPwRIci5f1pmkQ/d+ZaWJFtOug//Ga7UumgwgzCuEj3rkaMBrC3ZJlgfra97wsRwDsxxTVxYgiakVmZkBLR3
- myx4rvB1
- 4VFSEWMyZHv5IElTrOMaQLp0cp7irdbzd3H37H+o5UcCZwZ1KHHYMorlXd/LAwVF3FoVa6CMVhBbb9BDr5ewS3p2szIhYIfwWPNJ2AXUxaBv4pACIis2jnYIkA1QFX56kMTD/c6KCu8x/G+zt8XS4Xiur9oBdtu+meV2M1DWaqIYSvR/jiaWWmn/WLyZn6+iPlr0eNCnrbibz+Xxh9RqVLRkOZKzdeJkV2VFQyAWdLO+k7uoVXpdXhqwoI2cyIIbTyldSf2b6mdNMycgk3m7EhmEX4WTJt6kE5kaMwVdRMDqEFztAOXP1MC8zokF59zkERWA08jrQtgcfnihZdnFJb+98oeG5JM2tNhA+/4GR18BbExih3qsxKF7PPFrBEWwpZXuMemaMiy66Jo0=
+X-HE-Tag: 1775372843-402620
+X-HE-Meta: U2FsdGVkX1+Z1NuX3aKYclrk+19Z6xFBNNCCqQWPem7bs/92eRZODYZNCxwPwR3uwKsT3Q3a2NxynMeSOFJJdpTxb/gPioklqg0e1vKyF1yJ0ELQZeHgVmFEirwBMC93fNe04t1nEIxsNsHupKRfpy9PodKI3mnxAsZNDtq22z6K640eoNeZojL74sQ2AHO5DPv4DGxyKX1SaIHUPUW4rlGPhE8CaE0o187NG6gUzbVNWyFSlTKlwXJNTr5ErYEbazJiKdyDYABhRvwQDHXQgq870sQRR/Uh4wEFbymDAuQRZPJAaEAIuyF7SwB/uDLkvr2olRZfy0Rba9qal5Suh65u2ItQ7n/Fd8AxZ3gTbEHiO0482HArmnUX+S75dLb9XCbBH2PNyXo3c0Ajmxi6NztVBPHQHm/usIYl4IA11aWymU+a4b5SP303Tp/YMOWpoNe1E7hEbo8o+iTcDKramYtpORI24zdlyaua2eZDJvrEqLXcKOkAyioy6Sl+Jkj4MBiKnYrAyo2lWDiAzclkfrFNM3uV1AXt+V7A6WhGrAs8bbZ3Eum8xUVXJ/I14BSSP0qOZjgv/BbLDbJ/1lX8mwh+H8+mlbcsWkrq+bUiH+uhPWKCVZQrdkESssFnC4CfNBTln4+Lg8PFjdKZikwANSV8qx+dGsXjuYCb3llg/pPJ8L4YNvHQVs7s/xdsx+V4KjyQQC9YJAtZR0EMOGOcSYWSIE3kcl/Uhr2iIPfuh0BjLxXsMcvLRTmvQNljlE4eQFBsisJwBuH0KHbZnEqrunb0KUVXTSCs5sFHwv4YA/KqM4Pgy8+TYmTROlfSzmxdAD23X3kkYD35zHv0Mvw3obV9RuaYJzkDBwXKhZ6iyGDMn3MaFGImSzX9KW6uSaI31d50uepLqwrVYy2vE7fK26m99yoBYwpICqG47jaiB1hZNlNGCkksJMo46wCZ8KY9YBp4adOLqGEObP1d0Wd
+ XTn4UZa+
+ cJV5hqTMuBrhi+vlUlzez4vPZT0OQbnVLQ8mqk1XqsofulE69TRBF2Jrw7Sd7JMEKCsZwEwuwiMTCtpVpJV0t7np+ixB1T4BLrZ5dDsmceGEc+WDnYpXvFe0fN38bSHcASszieXr8VW5LCA7gv+tsHMP4BT0QiHBRRckWCiFRUiGajAtxGLbE4IjeXhW9LsIYiY7Sl2ec/TeF+70ZMec9qiMe3QV8QfOLFIytepGerZP8XwDvCBW/G5zAS5mzTO+wxngQSNuMsj7+sOuDeiRTTTZfoNu1ZI8SGRAxqwWpjkxKdydLKInIMsFgE4zp/iWAPjZwTwqwGqMFOh0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,36 +98,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 05:04:54PM -0700, Douglas Anderson wrote:
-> NOTE: one potentially "controversial" choice I made in some patches
-> was to always reserve a flag ID even if a flag is only used under
-> certain CONFIG_ settings. This is a change from how things were
-> before. Keeping the numbering consistent and allowing easy
-> compile-testing of both CONFIG settings seemed worth it, especially
-> since it won't take up any extra space until we've added a lot more
-> flags.
+Hi,
 
-Nah, this is fine, I don't see any problems with this as the original
-code kind of was doing the same thing with the "hole" in the structure
-if those options were not enabled.
-
-> I only marked the first patch as a "Fix" since it is the only one
-> fixing observed problems. Other patches could be considered fixes too
-> if folks want.
+On Sat, Apr 04, 2026 at 08:20:54PM +0800, Muchun Song wrote:
+> The two weak functions are currently no-ops on every architecture,
+> forcing each platform that needs them to duplicate the same handful
+> of lines.  Provide a generic implementation:
 > 
-> I tested the first patch in the series backported to kernel 6.6 on the
-> Pixel phone that was experiencing the race. I added extra printouts to
-> make sure that the problem was hitting / addressed. The rest of the
-> patches are tested with allmodconfig with arm32, arm64, ppc, and
-> x86. I boot tested on an arm64 Chromebook running mainline.
+> - vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
+> 
+> - vmemmap_check_pmd() verifies that the PMD is present and leaf,
+>   then calls the existing vmemmap_verify() helper.
+> 
+> Architectures that need special handling can continue to override the
+> weak symbols; everyone else gets the standard version for free.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  mm/sparse-vmemmap.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 6eadb9d116e4..1eb990610d50 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -391,12 +391,17 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+>  void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+>  				      unsigned long addr, unsigned long next)
+>  {
+> +	BUG_ON(!pmd_set_huge(pmd, virt_to_phys(p), PAGE_KERNEL));
 
-I'm guessing your tests passed?  :)
+Do we have to crash the kernel here?
+Wouldn't be better to make vmemmap_set_pmd() return error and make
+vmemmap_populate_hugepages() fall back to base pages in case
+vmemmap_set_pmd() errored?
 
-Anyway, this looks great, unless there are any objections, other than
-the "needs to be undefined", which a follow-on patch can handle, I'll
-queue them up next week for 7.1-rc1.
+>  }
+>  
+>  int __weak __meminit vmemmap_check_pmd(pmd_t *pmd, int node,
+>  				       unsigned long addr, unsigned long next)
+>  {
+> -	return 0;
+> +	if (!pmd_leaf(pmdp_get(pmd)))
+> +		return 0;
+> +	vmemmap_verify((pte_t *)pmd, node, addr, next);
+> +
+> +	return 1;
+>  }
+>  
+>  int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+> -- 
+> 2.20.1
+> 
 
-thanks,
-
-greg k-h
+-- 
+Sincerely yours,
+Mike.
 
