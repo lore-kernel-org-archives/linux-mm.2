@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D5B3E9D80D
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 19:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B896BE9D812
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 20:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29F4C6B0005; Sun,  5 Apr 2026 15:50:02 -0400 (EDT)
+	id DA1DB6B0005; Sun,  5 Apr 2026 16:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 250A36B0088; Sun,  5 Apr 2026 15:50:02 -0400 (EDT)
+	id D53286B0088; Sun,  5 Apr 2026 16:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 166236B0089; Sun,  5 Apr 2026 15:50:02 -0400 (EDT)
+	id C68826B0089; Sun,  5 Apr 2026 16:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 036526B0005
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:50:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69CE251F36
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 19:50:01 +0000 (UTC)
-X-FDA: 84625543002.11.5DFC6F1
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A6F30C0003
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 19:49:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=daTTzxKX;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf22.hostedemail.com: domain of create0818@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=create0818@163.com
+	by kanga.kvack.org (Postfix) with ESMTP id B0FC46B0005
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 16:21:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60E32B3AF6
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 20:21:01 +0000 (UTC)
+X-FDA: 84625621122.22.D166472
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B916E4000B
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 20:20:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C7mL6Zq3;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775418599;
+	s=arc-20220608; t=1775420459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=a1v6SBEW7jZZiNgfw9iPh4ktsxTNNEqcra3qAv6zZ9U=;
-	b=OQ6j03GVM2hq9hxoJ7Z/5YS89R6FvNO/S8XFKau1d0CQTC7N1TmMmCFNrRxKqwhNw9L6dR
-	9LxFAU+5Fm07eBeKt/fSEd+TCgBNWQ6/I+eBVRMXl/lHL4e+h0wpAsw/Caamio2Ap26gaL
-	6M+FwhEoAbXEiiIyuKYEzvIyswI1ZIY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775418599; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=esAOhrYsBJl4/B+9cIQnNRfmu31OzJ0rintMp1np0FU=;
+	b=8PpIP/9GKCn8Ydq3iPKrSSfuFm/TD13H82EKoIxO9QBjo4at2ytwBfSSVkOEqMQUQe9Yit
+	SU5MrTOkY/cM1sbavnr9WwbpeS4of9VH3o1Q9EAL+HtpE+6n9nEXsK3Q+mZ5JJYuYC0/f2
+	6cyBPrCKERrEueqNFsnJ2DD4b5belZg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775420459; a=rsa-sha256;
 	cv=none;
-	b=yp4shgxoU8k6nIpKrC99xeOEEL1yWQlHb5RAWWSqVDW4r0n6/HdmGcYTEGn7JVQ/7Pm1yC
-	tJimUrnIjHHTKoHRDc0CIKoTjqsO/6U3QDSAL3zzd0mPSu77IZ2MxB4gOw1s341+PXvglj
-	+Yor+rmbGcqz82UPpIAQ2cPBsf+zwl4=
+	b=tTmDd64u+mHpk9MstyU3hlv3T866X3qofUsBrMMKFyJGySO1O2ZL33ZmtFmrxi+B6HJE0D
+	IKcpNzMpEbQ3Ai36ns82vzBf9JCfOC7wAGvtqzgiwh24ZiW2GiXGb9zH8Zn+1dfG3y5WNg
+	NgLjy4QCi0v5BGVDP6UxztvdJvjej5g=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=daTTzxKX;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf22.hostedemail.com: domain of create0818@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=create0818@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=a1
-	v6SBEW7jZZiNgfw9iPh4ktsxTNNEqcra3qAv6zZ9U=; b=daTTzxKXaJaZ33L8LJ
-	p343hehtYXZw8BfAG/r56ypsZ27oQbHk5UNt7CD0K9VcLsoVnBRAqFGGRlhzqakM
-	l3ztCe7lemnr1YFI4+S9sDWZTxqSWG7MpvTmTJZt1x1f0ujkeOg06KOf76Yh7U21
-	NAXV9SefEH8Dv7si2VIYFpEqA=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgCHMbAUvNJpqEGECA--.186S2;
-	Mon, 06 Apr 2026 03:46:33 +0800 (CST)
-From: CaoRuichuang <create0818@163.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	CaoRuichuang <create0818@163.com>
-Subject: [PATCH] selftests: mm: capture write_hugetlb_memory.sh exit status
-Date: Mon,  6 Apr 2026 03:46:23 +0800
-Message-Id: <20260405194623.84218-1-create0818@163.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgCHMbAUvNJpqEGECA--.186S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw13GF4xKrWkZFWktr1DJrb_yoW8AF1kp3
-	4fKFn0kryvyFZrJr4kJF4UZr4DuF4SvrW2qFW8t3y7ur13Gw42gF1jgFy7Zr4furWfJ3yf
-	ZF4jv3WkC3WDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRR6wJUUUUU=
-X-Originating-IP: [39.156.194.234]
-X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC6BlEfWnSvBknIQAA3Q
-X-Rspamd-Queue-Id: A6F30C0003
-X-Stat-Signature: gzs1gmiytjw38n9m54wjx55tn7ygchpg
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C7mL6Zq3;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7019A42E36;
+	Sun,  5 Apr 2026 20:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA2EC116C6;
+	Sun,  5 Apr 2026 20:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775420458;
+	bh=rocj01UV7BIqAUTcND10h4o/563Z1X6DhrT6J4DgXzE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=C7mL6Zq3D8NjVhvUHH4xW6YUJTJq+Kt/xW9f/ZvzxSM1s3HbZ3Zwsd0PQjaM5zpLq
+	 PaWy9pOvBRSOwWd3f9cSexpZozXNoDyk2ucDP0bnXxFEqmnABJoA1u5AVNqO4Qy1lY
+	 z9a9ngqvdZXG92K0E6/C084DZ0cdUmlu4C72jlQ4=
+Date: Sun, 5 Apr 2026 13:20:57 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: CaoRuichuang <create0818@163.com>
+Cc: david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mina Almasry <almasrymina@google.com>
+Subject: Re: [PATCH] selftests: mm: capture write_hugetlb_memory.sh exit
+ status
+Message-Id: <20260405132057.c1ae7267911c5657cd5a3fe9@linux-foundation.org>
+In-Reply-To: <20260405194623.84218-1-create0818@163.com>
+References: <20260405194623.84218-1-create0818@163.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: e7ya66kxhqq1kok5419zis16sxbc1e6d
+X-Rspamd-Queue-Id: B916E4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775418598-969187
-X-HE-Meta: U2FsdGVkX199qOxqWzDIEpxTfeG4X23FhE68k3U71maCxKxD4MvdW5yTk18rHwiGb9pujUURUps95/gFmMXUaG0gKSzA0/xke+rQOt5paMQhc2f9H6O3Dduj+iIkAI1/mV8O8emxg99CSgoI+bmGBpHG4NerbIf+uy6iDVw9qteohZKe8FwGbif/OCRMv/799CBqTalW+T8GGbNzQvYHEqMYpzo5um524WarIeUQSQo8/fe5rUE3bJYurcbx5iLSiFfyWY7q6hi1MK+3OWuuIm9D1TuKd+j8PRouf/UJr3KQSrpujXNgEcWy6KowyvHDM3NWPcudRX9gbxWsP+uZmUXL5m+qZAeJtde58pQsXsF+SOWQlk5tlI9wm8ll0HbHep/zaNKMpnzT+zCVxn54rH6IfzzIm66kaVt393PTXuf1wumiNAtGhFRy67/Nab1mH0lbl2ZPsDm2Zj551qhXpXcBgbhGpguYklbSMUGjf072wM48HaYvVlmzT1qX2/pZQz5uRcLJYlrKycjyz1lUeDs/0nZ8wzvBpqUfwqEEj8u2gDJvCuD1YNtywqZlTEPRv5xnWhAgzmXu0gYNCH4bFKAhNpMyL4lL4XW/r3ag+6fPUS/Vhlzburx1wfddRWXiMMFl4va9i1dB4NkkPzXiGUStbxLeo65PFJYXa5zjUBWCDG2FHs0t6549AxQ5hoNLPynrXn679NpEJH3mz5a6BsQSc3TlxEhsnZeci66+zScYvKLJj8XBzexAXW616UnA5gW9NvhWqlPrK0RYs1dk/pIgFdoynyACE8DEqj4DB+cUiKGznk7SXPUh2RRxCHeCEnrYFzlkD/dvwmjPpyQIb1cY7W2UECzwN6O3uL4B8yyKEFKi7DSNlWjUbCDyHKEtSKfwH5Tlq1SeIh5LFdtfDEIEdOScpzMFmqEzaDi47azo7sXHGJ93AUO/rLUSheuEpoM7xsH/W6rYnCUVAiS
- sJH9XLf4
- bHg/Ky7Uxg0VXrMqO/Lls5oTt+gCQ2LFBPXv42byCeztJ401M9n7K8rgCR5yYKm2Ctzmyg9SzCe3aY2VECMZ0h2agxY44RkWMPuUMZfNtNlXiI1X1ZNk8T2wFBa/4/EMcBRAnJwQ1KvEt03x5PRzcbEza5fs9vhm87CvdMQG58T6+hcarir537SDwO0Ec2XX8erVXGSNxwTEsgsy9X9xjJ+8uS1Ie9Yx75gpfIA6/fAktk+wfDrv/siNhRkoJzB0+OKDGTBBZLKMr4nmQERJW3OOrqS7wff4K+U1EGKe/4HF5mOFn8pB75EMB3/JNbyIodOP0EEjV7gyRnk+Gj8MpG0SLLgwiz30eaI52u8/YQQmBzZFEBtwODqf2o5c8kTYZmLzF3+KGloiw3SdV/HOmqokY8z23YobfYxXq
+X-HE-Tag: 1775420459-827451
+X-HE-Meta: U2FsdGVkX1/A7dSGs0dDjbaymluFDYvhDyLrZyf/0U/BpFr0/Hbj2qiTXM4WBbZik+YpGTQSD6heZzpLEC9IJE9O3Z8aqUuFNAoLqVH2xjL0y0HudzIiX8YtfE57vJE/KRRjVIDGmE8a6HhNmGr4bFwSkbf1H20Lf5n2IX5JTfzux/rsRflONVbZx+LPgkW72/nV0HuB+zqbGfQC5BnnJ4/DWN/CjSUCipEubd6HAOzNz1kSPIL7ZqBKggc40YZjnRQ29yXrmoumkPoP+t8vIup6iWR36fODShtJ/+GQ12t4asW2t6rF61+wN0iLTb1rh0TFbp5bwev0151NLQWImZmzBapYRjpvCO5L3WMWcAIRKzmBfGg+jeBBOPeDYmKOH6ruony1kcugIMdfrCsN0oY4RXGXdQAlhsRNewvQkJmCCtnYkkTAijZ9c37sfskOg+CaY5I11IjLEXtYUTSL5RY5WX/mapvrsVpg/KD4P2zMbjaGHkfPcZiV58Z1ZC+fo9WZYdDxDXirzcAHORAAoY+Q30RPWBJZpq6g5G4mu5BYd8/ANQl0F2YFqzUw1x1t3C/NuoYzlh+sbzNnglVDoElvOuHPrLe8j8diLSVpDlYcUfzYhjglpOpt23j7e4JtKadPVg+fePuSpc6r5IUFt2flQ927pDEVupnbSNLxUvFJtdBC8XOto2MJPXZ09H3Z6SAlNnmnCNwaF9ZzaTjqnv7vlnyiGaCByLAgk67Idz7Bu6NFQqt1DZIwl1as+lRULJUOYcxs7qjpf90n2ZDni3XgQ66o6XSIaf+HzSTK9cT81swUq0R9elIIha2CrYkVZTuo9AOuU92fqcDhjhKFx4KK3Tm3Du3SdIGKTD0NSe/yXyjvElb8xw6YqN4v4My1QqTO10aCKKo3FxuftjwDVoEj5eYqbLsSzzlCo+RCRam5E7MNJ/ws843Q/oK2Pg6aqkw2eah4Er8KrNoqTRH
+ JU/P1Wsn
+ GZM4s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,43 +92,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-charge_reserved_hugetlb.sh backgrounds write_hugetlb_memory.sh and immediately stores $? in write_result.
+On Mon,  6 Apr 2026 03:46:23 +0800 CaoRuichuang <create0818@163.com> wrote:
 
-That only records whether the background job was started successfully, not whether write_hugetlb_memory.sh itself later failed. As a result, the test can miss reservation failure and OOM-kill outcomes that are inferred from the writer exit status.
+Please word-wrap your emails!
 
-Redirect the writer output straight to the temporary log file and wait for the background process before inspecting write_result, so the test records the actual exit status.
+I fixed it.
 
-Signed-off-by: CaoRuichuang <create0818@163.com>
----
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> charge_reserved_hugetlb.sh backgrounds write_hugetlb_memory.sh and
+> immediately stores $?  in write_result.
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index 447769657..2f52ad7c8 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -193,9 +193,9 @@ function write_hugetlbfs_and_get_usage() {
-     [[ "$private" == "-r" ]] && [[ "$expect_failure" != 1 ]]; then
- 
-     bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
--      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" 2>&1 | tee $output &
-+      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" \
-+      >"$output" 2>&1 &
- 
--    local write_result=$?
-     local write_pid=$!
- 
-     until grep -q -i "DONE" $output; do
-@@ -223,6 +223,8 @@ function write_hugetlbfs_and_get_usage() {
-       sleep 0.5
-     fi
- 
-+    wait "$write_pid"
-+    local write_result=$?
-     echo write_result is $write_result
-   else
-     bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
--- 
-2.39.5 (Apple Git-154)
+Yes.
+
+> That only records whether the background job was started successfully,
+> not whether write_hugetlb_memory.sh itself later failed.  As a result,
+> the test can miss reservation failure and OOM-kill outcomes that are
+> inferred from the writer exit status.
+
+Seems that way.
+
+> Redirect the writer output straight to the temporary log file and wait
+> for the background process before inspecting write_result, so the test
+> records the actual exit status.
+
+Looks good to me.
+
+It appears that this code is from 2020.
+
+Question is, will this change break the selftests because it discovers
+previously undiscovered failures!
+
+> index 447769657..2f52ad7c8 100755
+> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> @@ -193,9 +193,9 @@ function write_hugetlbfs_and_get_usage() {
+>      [[ "$private" == "-r" ]] && [[ "$expect_failure" != 1 ]]; then
+>  
+>      bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
+> -      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" 2>&1 | tee $output &
+> +      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" \
+> +      >"$output" 2>&1 &
+>  
+> -    local write_result=$?
+>      local write_pid=$!
+>  
+>      until grep -q -i "DONE" $output; do
+> @@ -223,6 +223,8 @@ function write_hugetlbfs_and_get_usage() {
+>        sleep 0.5
+>      fi
+>  
+> +    wait "$write_pid"
+> +    local write_result=$?
+>      echo write_result is $write_result
+>    else
+>      bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
+
+Do we actually need to play these backgrounding games?  We run
+write_hugetlb_memory.sh then synchronously wait for it, polling its
+output.  Why don't we simply run write_hugetlb_memory.sh synchronously?
+Do away with that grep loop and the replaying of
+write_hugetlb_memory.sh's output.
+
+The 29750f71a9b4c changelog doesn't explain why it's done this way. 
+Maybe Mina recalls?
+
+
+Thanks, I'll set this aside for consideration after -rc1.  I expect a
+cc:stable will be wanted.
 
 
