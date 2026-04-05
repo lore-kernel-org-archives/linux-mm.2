@@ -4,117 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A555EE9D812
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 16:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F33DE9D800
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 17:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B85DA6B0088; Sun,  5 Apr 2026 12:56:50 -0400 (EDT)
+	id 2F2B76B0005; Sun,  5 Apr 2026 13:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E5B6B0089; Sun,  5 Apr 2026 12:56:50 -0400 (EDT)
+	id 2A2AE6B0088; Sun,  5 Apr 2026 13:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73DD6B008A; Sun,  5 Apr 2026 12:56:50 -0400 (EDT)
+	id 1B8976B0089; Sun,  5 Apr 2026 13:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9682A6B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:56:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AA1B6B0005
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 13:18:20 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2928213B474
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 16:56:50 +0000 (UTC)
-X-FDA: 84625106580.17.3CC0A84
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 232A31C0003
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 16:56:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M7zv8SV4;
-	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41977BC9BA
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 17:18:19 +0000 (UTC)
+X-FDA: 84625160718.17.A115EC9
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3D0D8120007
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 17:18:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TuZa3fjD;
+	spf=pass (imf29.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775408208;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1775409497;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IFvtQF/EQRNqZnPTUPg67LAGyHPrcqrBHQ7jLg4MTF8=;
-	b=fxx4GUSp2BpwLc37BQPRYogobrh8f2prtEedODlq8LxZ+WwiYKXmTro5hSFPWTHSnrYLNc
-	uu5GJhUhCPgBhK2pfSV+ZYcO8lyEqak0JanME9h74MREZ2XDq0J0xyulmgePXpi2a+NeHb
-	dFslJkl5qSa2u4O269+HIxJUCAJzFjo=
+	bh=21tVDycDW9dNNLzoeZHHgavbeTlgtwmlBmn8/EZct60=;
+	b=nr+OA7aH8v9D8ZOLuqMDj5Vx6Js3HYItOOyazMKNHChTP8Mr1jhgWn8THC8xNEVELLWwwX
+	cWHezCCeod6BmXPrqd72AsK6s5SofPUEzmFYhU9EV8O0kQ3MmwKDSh9qhFsgtQ66MTrnRi
+	Tw7grsig8SIaB1Jd36ZqlLxe829oWOw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M7zv8SV4;
-	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775408208; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TuZa3fjD;
+	spf=pass (imf29.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775409497; a=rsa-sha256;
 	cv=none;
-	b=qY2uuEoshk2rNQ+hbQes+G0OlYZNbtmf7K2+4YbyNRNCckvdj6CSC1g7Q8ZZcPupZfA1IL
-	5FgqMFwQj7aDFvfpYjGsfJW5yFRwESD8sgcx/6qJNEpIZqiA2yRkQ0qGyfmPWvmG6rsKwl
-	cOMvSv/p0TNY76fG2VRY3skW2df/V0I=
-Message-ID: <c4138f66-edf2-4689-b5fe-16dc4839e9c3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775408205;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IFvtQF/EQRNqZnPTUPg67LAGyHPrcqrBHQ7jLg4MTF8=;
-	b=M7zv8SV4cjrjb+YyPeE71EssW0qE0pL4fOJ+Nfy2dOQw7qKT75gTxWwXd3t7VJ7pQv+MzR
-	doi0hOcDMnXCCO/t3Cbdhxa59++qaLFBiSpFWSPaIh/M5gWLB9BHkiJSGHEqWF/2+6Ab90
-	Am2CiF8y5Sv3KMSrbLHOexlLh/l+4JY=
-Date: Sun, 5 Apr 2026 09:56:37 -0700
+	b=OhBrpsCafOsjzIoQ2tNVSuJy/NpmdvrL0XapylE7E41uQKOwRf78BGVBsHX1rp8/DKGl7l
+	gDC4rGl8aj5/eowEtl5cfmSwOKxiHH4AJ7zeNRbo51lXDWzNriBa6yyu8pVvN6DHuUvZoT
+	ojEfQtAUIj/J8rxt39L7zQhhKlZFoJ0=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4853c1ca73aso33709855e9.2
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 10:18:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775409495; x=1776014295; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=21tVDycDW9dNNLzoeZHHgavbeTlgtwmlBmn8/EZct60=;
+        b=TuZa3fjDoJraGlK6IcCptepjQp0iAGyAVnnWMava7+pB5s3HjEZvFJsxFI4uWhcl1E
+         +hmp0Wgh7Ah8c9flTmWrinnj3oxvXmDgJ02/hq1rLZHewYLdi0ZddECtNH2oZ2iM+QIF
+         jcQwFx+VDEZ68L13vqxwZ9PUXOqZZmi1lpHAf9tjG/JrYsPIcVvBzwV/M7dhucYGlwUS
+         8IRPpfu60r8JhdE2aOx4B98XJLyulMag0OwR38IVK9CE9fS00qoh4F5XYcLQ59Kid0m2
+         WDVFNTzEx3YboW+btfpZIY1b7BxiDqlDx2aydfqI4D0VQAAU/XFBaWfZDnGhEQarrBHK
+         3MEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775409495; x=1776014295;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=21tVDycDW9dNNLzoeZHHgavbeTlgtwmlBmn8/EZct60=;
+        b=Mdn551SbvASPXhm7jvKEuL2ncA3p8mLbZXlYqdmYZ4kFmHmKxJixzO3RxUywusk8UZ
+         +i+IChyVR/b272D9fWrYsHr4Il1tBjAc+DfiODLVlJv48KtK/FFO1KwTyTYns71GuxDy
+         T+vUeh/6NmwfWvoVAmbh4oRp2XHGS/o1jwkFBtUCyzk98riwS0WkE+7rh3GsOwN5TXP5
+         Vv8mrCjSC/fnxXPOPIbdWJzKOSAx8DQ215KnpnlcUfUfU5M+WwHXer+vVlKgdtFv5xda
+         VW7W5WrdA9kKAIyuy5GsEVU3HF4V1ax8J0KKcd+8jHdF++oyMcV+mmWNcsgvGSd4gxE4
+         6AMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVAIKf77OzalH6TNYfXHcTF4sjSlPhOISAlYvDlxc/KmXWYTSxoi0p3Z8CVhiYIlu6WaKpWL3y2kg==@kvack.org
+X-Gm-Message-State: AOJu0YwQegFwUk0n/LaayXpOa/qgGIHDs0eTnsJpW2VUxgknoOiVhmHp
+	fL2QpNEXcxkTn+5XFsx1V2atqhE9XhzhdCXxIoTDukCehIUqUg43xIDL
+X-Gm-Gg: AeBDievqwVZPneb/KDATRMxqfWL2tZ6P9IvCtumn99SSxAWmwoiHqeH0o/6J/AyfimV
+	tg93rMeUt1c4BGDClEGlEPnmwIUu91xGE1rjirKVR/FzeyIWwworDSLw0poPiMCscfHXgkgzlBr
+	LTEps96L1mXXXlg8iRS76KUn9Qs3jPYfiUeEzqisxSaKTfDX9Ikq+wWCyW2PwAV7yebIMnqfvNN
+	WARatyPFKbc438sWPhf4NaZF4Cg5zA9FXbAHmpi8s9GSKdLnsCP6+hTnQvw/x37983xae9gQ/RY
+	DH38+SIT4MoaF9nzP1lYd8yQbqD9faxw/YjntJiiFDPaSwCvrNQf+eGhLhCix0jU70quANsGq3A
+	QoTELL3EZvT/ifZrA5I8VA/6jNfqz16wQHv8bRNWmu1wR1EDWslU1TI8j52J3bseSKiHpEdJe56
+	yorlpJUa+enE7EAfE49FWRCAZfOpapM/dpqvEiqx6SlazuHv6ykhucTnkn1Q==
+X-Received: by 2002:a05:600c:138f:b0:47e:e076:c7a5 with SMTP id 5b1f17b1804b1-4889970e3c4mr142911865e9.11.1775409495511;
+        Sun, 05 Apr 2026 10:18:15 -0700 (PDT)
+Received: from [10.128.11.51] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488a8d6e27csm143362005e9.6.2026.04.05.10.18.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Apr 2026 10:18:15 -0700 (PDT)
+Message-ID: <3cf0c280-e5bd-4e5b-884e-6c734619b821@gmail.com>
+Date: Sun, 5 Apr 2026 18:18:14 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-To: David Matlack <dmatlack@google.com>,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
- Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal
- <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
- Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Feng Tang
- <feng.tang@linux.alibaba.com>, Jacob Pan <jacob.pan@linux.microsoft.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
- kexec@lists.infradead.org, kvm@vger.kernel.org,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>,
- Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
- Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
- Yi Liu <yi.l.liu@intel.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-3-dmatlack@google.com>
- <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
- <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 232A31C0003
-X-Stat-Signature: ihim9zorr8yoaob5a1noqwb1ix7tjb1p
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/thp: dead code cleanup in Kconfig
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: vbabka@kernel.org, hannes@cmpxchg.org, mhocko@suse.com,
+ surenb@google.com, rppt@kernel.org, Liam.Howlett@oracle.com,
+ david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260331070730.33915-1-julianbraha@gmail.com>
+ <bfdfdb05-77e2-455d-b68d-9da3fd9d1c0d@lucifer.local>
+ <20260331173744.925a6ee6fac299f86a07a7eb@linux-foundation.org>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260331173744.925a6ee6fac299f86a07a7eb@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775408207-848408
-X-HE-Meta: U2FsdGVkX18m8oTZpHIp+i27Adw45mOs9xMfXPmY30FAKpoe81nh8ERntlqcq9ApdYNEZiBk3hiI65HlFzrgsgNtejISafq89RuOegiiqxcdYGSyW916AoGKzE+J4xOkFUkKYh8OZ4B+Zk+MA4Jy5nrvNbIRmXOWGFxL2LwVJDr1ksvqMGdtEvctIP4Qt0xbq+ry94x6pvFTVnYGWPkW5rOxcdvkm4EJ5IfMCHt5d6xy6Mx78Vd6xkU0Q3FZOsPMs3aZGF7y/IOqqNMIWeJACOBkzv/CtfnoqxyzjcrewAKVj37TYkkliczdqodYd94zQU0UBxgILcTBKCu3mnfu53o+LmmdI7oy47ARrEvxU/W1Cye4gro1cskTt4jU+b1j5NpmAWhmF0ky5aszZwKYqvTpOom1wRf5HDBtpsBFbGYCy+EKHzq0HBNhuabjNIMoQtiPadjZQub/BU8ugCznLxFpKPlpl97lpqmTqBevadlbwCN5yUwliKPVObzwsjgYSlvkYcIc250P7STH++v5R7JKkHyYhpcu1MBTCqu+CqZJK0AvwIn88d8B4rcwP/Luwk1ny6KxTMEaVO6TTbe26mhunfIRqGPY0FIEv5MII57PuFElZ5CwUgyTDNGybpMLPiT1DAgvD8QC9Rs3Cj5x4sYorrx1ZWmOXwlwtgivFKXxnbNlCerqwm91MQ2tD2lFUhTgHWcJDdSPeFNVXiccaYonofkx2eUtOxmqFiNlBCRfINWZrhnq0qz6EnnshjQS/pbXeEtWFSMgBjKRYe0cgdNpk2yq6J6lxph0YgH/8sxloLxsYCRA4eHd3+1Wbk7OAkwSx/32TDjAvtHfbgIPytc1XlxvrGvWLU6gKshrdb5U0hdaNdB1k+Mbd8mOPBUQLI4XGetREWDDI/I3yno7gBEbTH5rcw9GSYBzhrnhHjnQAr0ZA51yPDd0z/naevpQxHY7SEJgIrs4ESGiaIf
- wgToLXXd
- j4XcV+SCPH8oIQSUFmDORK3ccY1boTrv4nebMG/lrSpe3s80wr5srNq9yKeXymovwDY68/IYwdAybfSdA2BNmLGBeDo2DxtF3eI5otES8q/VMzvfHPGIKlBF6UPdFG1kf02KJUrC11lQF4uqRpzkDohDy7jRr7tvH8gpKrLWY5kbuzzEN1C63NDZwKojuDNgNvjfeFK8UYVAiy5GA9Xqb5AqprItLtz97adhvqbwZsP0QvhFLvrVXqvJOdwNZyRpQ3erRQbz+LPweb9jw77wB2Xym1A==
+X-Stat-Signature: usrogt63zzq5e4rz7in8f7mpks11oh8f
+X-Rspamd-Queue-Id: 3D0D8120007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775409496-366517
+X-HE-Meta: U2FsdGVkX19Emwvi8t0/aTSzeLp833sQK9wQfElTR8oXqLGXXx6w1MC6aTtPqdciSBC18IY37dnLgYem3qnBC2vcWGXka8Cej3N+2TBStcwQkOSdi4mHgeP2VJcp86CvZwHlMlA8OpbZ5z22prub6HLDx9lfiXlHNocEqJWNgsQwITNLnVZrOHWlpgSuYcjjlbKJpMBA71LfIgDbrVEh83ykndsVcl5OfpvscTpS/OWoB4Y2y1M5e0eOIaspeUO/Y/jJWGKe56SkeG5vdXwwJNwn4dK8geltCzA5wZiqliIYKsLq1jminSnKxpY0Ai5e3s1ZazkqqBt6s3enAmmYRAkR5H0dqIICB+sRmRcJ0ne/Qv4R2btvYTz4FpOSqzvAuVJX5zbv/a+4fxsBVfFVwEcIpm3/uR25dofFcdnYvN3W0ssOUHHxlhLHJ77Pbdx477YzfNrMGj8PReOtNeoN9OxCVl1WWHlXLs5elkkKyi27Zcr8NSRUY+huDumTAs9x22rG0hrW7l/uy8QgsyqwKcFXc7ZyMYGPMnGNqGEbnqZYbEk18+tWSyFA3VOaLcmVn+Lx5v5T4sCQoh3zuIZhS/WAGfE6NuqtALuWGsq+eRrVktxdaMk4zk7HIqSmkXGBgUrHlu0xAE3naRf/U9sdlabukmO3b4YLmUvdsIOyU348rB/DgrQnVmOGBMPL8qBesSI9M49nn36qkZi3FLeXHWJ9SI+DDlfWadPEtIvtY3Yvj1ZVSk1NqazT54S1Itefp8Y8gX4RUIw0RzmnbjyOw6GR4swSe2iSco1iQj7R1T+bTxfaFzeQ63Zs1JW/cwelpnFPXyzLy7IxB6+loKdvoWwVZRDmSbMYB+VJloEhZ0tCLIYNiJ0C+2wlnw/Vkx45Y1SVXJ0Ak86i7lDrS5QcFiwaCK4wob8jgMNvDAkX3kJUpCOY2PcKM4Q0YDPqpKzmuH6eGNVclCRBUHMKL2g
+ 1eECo5Iv
+ KYtD6yDEN5rVWWzOMpHXf5FH4cAXTLb0OLvd1QqsQDvhfDD7pTSBCvvtdqyJRP/g9NxLvCSvcZYQYArAPWiaATZyEBepdPXC+XBOpHetXLkGlMl7NxqicQxbUlig3PIvm9uXPx1tiXDE6r1juXso6JubhfxVSgj5SRxwN7CR8AC5M7qWLKtMfNcrDYiyMpIGwFd3ur5k38BUI/JSiF6/gXqYzGozjD0VI0u8EKAgpqhoCW+OLJiPB43y/O/zDsTSFNhLLDp8FvRUQSg1rx9dxgtU0mXyATi+nnOpOdrhvfaVxctj5FieQ5MxxRk2wRP8UfmjWwUuzdAMGucS9h7QXqGgtfi3kciva/KawGHfiI4xaL31CbVl8LkCcZPkzO5ZqZK8TkURMbgJoKh4TNVroiUkoNFDeC64PG+aG9apV9qH6SlNM1is1P/lGsuezc1ZMJu2q7UILlVeCJh2r3jPzfOZqSfo0Obas13OkgRRbjnyuR3YIubJGqyd10XwzaZ7aKBDskvRj7NNlMCPDw+C8wV08Bglfd6PQMSD/gBOK7Y2fcy2lKjikWtKVGd0kfuP8hWunpqFwPodZgtQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,240 +125,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Andrew,
 
-在 2026/4/3 14:58, David Matlack 写道:
-> On Thu, Apr 2, 2026 at 2:29 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
->> On 3/23/26 4:57 PM, David Matlack wrote:
->>> +config PCI_LIVEUPDATE
->>> +     bool "PCI Live Update Support (EXPERIMENTAL)"
->>> +     depends on PCI && LIVEUPDATE
->>> +     help
->>> +       Support for preserving PCI devices across a Live Update. This option
->>> +       should only be enabled by developers working on implementing this
->>> +       support. Once enough support as landed in the kernel, this option
->>> +       will no longer be marked EXPERIMENTAL.
->>> +
->>> +       If unsure, say N.
->> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
->> (modular support)?
->>
->> This would allow the feature to be built as a kernel module. For
->> development
->>
->> purposes, modularization means we only need to recompile a single module
->>
->> for testing, rather than rebuilding the entire kernel. Compiling a
->> module should
->>
->> be significantly faster than a full kernel build.
-> I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
-> pci_setup_device() (which is under CONFIG_PCI) needs to call
-> pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
-> module. This call is necessary so the PCI core knows whether a device
-> being enumerated was preserved across a previous Live Update.
+I've just made a proper announcement of kconfirm on the mailing list:
+https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/T/#u
 
-After the following changes, the liveupdate.ko can be generated 
-successfully.
+Additionally, the code is available here:
+https://github.com/julianbraha/kconfirm
 
-"
-
-# ls drivers/pci/liveupdate.ko
-drivers/pci/liveupdate.ko
-"
-
-
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-
-index 05307d89c3f4..e172c31b33fa 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -335,7 +335,7 @@ config VGA_ARB_MAX_GPUS
-           multiple GPUS.  The overhead for each GPU is very small.
-
-  config PCI_LIVEUPDATE
--       bool "PCI Live Update Support (EXPERIMENTAL)"
-+       tristate "PCI Live Update Support (EXPERIMENTAL)"
-         depends on PCI && LIVEUPDATE
-         help
-           Support for preserving PCI devices across a Live Update. This 
-option
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index c1251f4f8438..71bab8ecba85 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -413,3 +413,26 @@ void pci_liveupdate_unregister_flb(struct 
-liveupdate_file_handler *fh)
-         liveupdate_unregister_flb(fh, &pci_liveupdate_flb);
-  }
-  EXPORT_SYMBOL_GPL(pci_liveupdate_unregister_flb);
-+
-+extern void (*pci_liveupdate_setup_device_hook)(struct pci_dev *dev);
-+extern u32 (*pci_liveupdate_incoming_nr_devices_hook)(void);
-+static int __init liveupdate_module_init(void)
-+{
-+       pci_liveupdate_setup_device_hook = pci_liveupdate_setup_device;
-+       pci_liveupdate_incoming_nr_devices_hook = 
-pci_liveupdate_incoming_nr_devices;
-+       pr_info("loaded\n");
-+       return 0;
-+}
-+
-+static void __exit liveupdate_module_exit(void)
-+{
-+       pci_liveupdate_setup_device_hook = NULL;
-+       pci_liveupdate_incoming_nr_devices_hook = NULL;
-+       pr_info("unloaded\n");
-+}
-+
-+module_init(liveupdate_module_init);
-+module_exit(liveupdate_module_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("PCI Live Update Support");
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 979cb9921340..93f76500cb0d 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -1434,18 +1434,12 @@ static inline int pci_msix_write_tph_tag(struct 
-pci_dev *pdev, unsigned int inde
-         (PCI_CONF1_ADDRESS(bus, dev, func, reg) | \
-          PCI_CONF1_EXT_REG(reg))
-
--#ifdef CONFIG_PCI_LIVEUPDATE
-+#if IS_ENABLED(CONFIG_PCI_LIVEUPDATE)
-  void pci_liveupdate_setup_device(struct pci_dev *dev);
--u32 pci_liveupdate_incoming_nr_devices(void);
-  #else
-  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
-  {
-  }
--
--static inline u32 pci_liveupdate_incoming_nr_devices(void)
--{
--       return 0;
--}
-  #endif
-
-  #endif /* DRIVERS_PCI_H */
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 165056d71e66..4880302bca43 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1369,6 +1369,9 @@ bool pci_ea_fixed_busnrs(struct pci_dev *dev, u8 
-*sec, u8 *sub)
-         return true;
-  }
-
-+u32 (*pci_liveupdate_incoming_nr_devices_hook)(void) = NULL;
-+EXPORT_SYMBOL_GPL(pci_liveupdate_incoming_nr_devices_hook);
-+
-  static bool pci_assign_all_busses(void)
-  {
-         if (!pcibios_assign_all_busses())
-@@ -1389,7 +1392,7 @@ static bool pci_assign_all_busses(void)
-          * numbers during the initial cold boot, and then that topology 
-would
-          * then remain fixed across any subsequent Live Updates.
-          */
--       if (pci_liveupdate_incoming_nr_devices()) {
-+       if (pci_liveupdate_incoming_nr_devices_hook && 
-pci_liveupdate_incoming_nr_devices_hook()) {
-                 pr_info_once("Ignoring pci=assign-busses and inheriting 
-bus numbers during Live Update\n");
-                 return false;
-         }
-@@ -2030,6 +2033,9 @@ static const char *pci_type_str(struct pci_dev *dev)
-         }
-  }
-
-+void (*pci_liveupdate_setup_device_hook)(struct pci_dev *dev) = NULL;
-+EXPORT_SYMBOL_GPL(pci_liveupdate_setup_device_hook);
-+
-  /**
-   * pci_setup_device - Fill in class and map information of a device
-   * @dev: the device structure to fill
-@@ -2091,7 +2097,8 @@ int pci_setup_device(struct pci_dev *dev)
-         if (pci_early_dump)
-                 early_dump_pci_device(dev);
-
--       pci_liveupdate_setup_device(dev);
-+       if (pci_liveupdate_setup_device_hook)
-+               pci_liveupdate_setup_device_hook(dev);
-
-         /* Need to have dev->class ready */
-         dev->cfg_size = pci_cfg_space_size(dev);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 27ee9846a2fd..aaab6adb487e 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -592,7 +592,7 @@ struct pci_dev {
-         u8              tph_mode;       /* TPH mode */
-         u8              tph_req_type;   /* TPH requester type */
-  #endif
--#ifdef CONFIG_PCI_LIVEUPDATE
-+#if IS_ENABLED(CONFIG_PCI_LIVEUPDATE)
-         unsigned int    liveupdate_incoming:1;  /* Preserved by 
-previous kernel */
-         unsigned int    liveupdate_outgoing:1;  /* Preserved for next 
-kernel */
-  #endif
-@@ -2876,7 +2876,7 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  
-pci_ers_result err_type);
-         WARN_ONCE(condition, "%s %s: " fmt, \
-                   dev_driver_string(&(pdev)->dev), pci_name(pdev), ##arg)
-
--#ifdef CONFIG_PCI_LIVEUPDATE
-+#if IS_ENABLED(CONFIG_PCI_LIVEUPDATE)
-  int pci_liveupdate_preserve(struct pci_dev *dev);
-  void pci_liveupdate_unpreserve(struct pci_dev *dev);
-  int pci_liveupdate_retrieve(struct pci_dev *dev);
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index 874830f8e44d..33fbdc6c417c 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -461,7 +461,7 @@ int liveupdate_register_flb(struct 
-liveupdate_file_handler *fh,
-
-         return 0;
-  }
--
-+EXPORT_SYMBOL_GPL(liveupdate_register_flb);
-  /**
-   * liveupdate_unregister_flb - Remove an FLB dependency from a file 
-handler.
-   * @fh:   The file handler that is currently depending on the FLB.
-@@ -487,7 +487,7 @@ void liveupdate_unregister_flb(struct 
-liveupdate_file_handler *fh,
-
-         luo_flb_unregister_one(fh, flb);
-  }
--
-+EXPORT_SYMBOL_GPL(liveupdate_unregister_flb);
-  /**
-   * liveupdate_flb_get_incoming - Retrieve the incoming FLB object.
-   * @flb:  The FLB definition.
-@@ -525,7 +525,7 @@ int liveupdate_flb_get_incoming(struct 
-liveupdate_flb *flb, void **objp)
-
-         return 0;
-  }
--
-+EXPORT_SYMBOL_GPL(liveupdate_flb_get_incoming);
-  /**
-   * liveupdate_flb_get_outgoing - Retrieve the outgoing FLB object.
-   * @flb:  The FLB definition.
-@@ -552,6 +552,7 @@ int liveupdate_flb_get_outgoing(struct 
-liveupdate_flb *flb, void **objp)
-
-         return 0;
-  }
-+EXPORT_SYMBOL_GPL(liveupdate_flb_get_outgoing);
-
-  int __init luo_flb_setup_outgoing(void *fdt_out)
-  {
-
--- 
-Best Regards,
-Yanjun.Zhu
-
+Best regards,
+Julian Braha
 
