@@ -4,149 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B1FE9D827
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 22:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3836E9D828
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 22:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 929486B0088; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
+	id D23086B0088; Sun,  5 Apr 2026 18:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA1E6B0089; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
+	id CFAA96B0089; Sun,  5 Apr 2026 18:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8CC6B008A; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
+	id C37806B008A; Sun,  5 Apr 2026 18:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C4436B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 18:50:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E3B21A0124
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:50:09 +0000 (UTC)
-X-FDA: 84625996938.13.5E6A066
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D7D281C0002
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:50:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iuVp+LYQ;
-	spf=pass (imf18.hostedemail.com: domain of dianders@chromium.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=iuVp+LYQ;
-	spf=pass (imf18.hostedemail.com: domain of dianders@chromium.org designates 209.85.208.46 as permitted sender) smtp.mailfrom=dianders@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775429407; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B6EDC6B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 18:51:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6631EB50FD
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:51:15 +0000 (UTC)
+X-FDA: 84625999710.16.DFA897A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CFBFE1C0003
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 22:51:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZMifXabe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775429473; a=rsa-sha256;
 	cv=none;
-	b=BOZuL08ms1aRp7S8EFo2drrZF+zIQDatXMzPxbqZR2CSVMLTb1QHFK28jbatDd0tzx5Ha0
-	F3sDjNQv0KzfdR3ZoAehhAF3eD7YRvdhKteITEkxxUdwJzQhDwJr1u2SwWZgZ9zZscym4n
-	2Kw8jK1vceeS5ohH3idfpZsUKumwIt4=
+	b=wjab4908A5ththUA9RZdeBTv+MWqcYbjmmB7ooE4M4iUf/BAwF9RWu2SQ5ihkVnkvS9Sdv
+	46lBtXJ1cH74ywQFuGI4jumkUAcWmqxYXrpR9/30wW1H8K2TYnftE4Y84mUXAoJQNa/9PG
+	gELBTeOZGzzQK2OdNp7f80HGTcfRmXI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZMifXabe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775429407;
+	s=arc-20220608; t=1775429473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
-	b=gjEkK7tnsgao8pqSNRRLejzWnfDHonLUaAMpXP4r9bIofcAermUVoKn5KhRkImkxyjBgBy
-	sgxyzuOr3Lr8p/mxp5lld6fVBowIBvxFqXGamSHtgydwyDB+Pzao6+JWz/tI3ibUhpMWsV
-	kyfsCk3IDyHxeX1ZY0mC9Ai45rzv0dY=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66bb6eb28acso6182807a12.0
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 15:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1775429405; x=1776034205; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
-        b=iuVp+LYQMgz3Er3wAVE5Hkx3CXj0PEs8gSyqHgBLbV29aGw6o96/MDUYuPw++gV/9r
-         LbkvhWWsEsfLl3x8iNI/lwJnRCUAboOGJI1uKHc79ynMyHweHsTELZWqq8Z0Caz6q+xv
-         hm9SgV3ZyaleAthDZN9I7qqNI2V445hOqjR+w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775429405; x=1776034205;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jzjlDiAhhtCwD9FkXK7yFaosCzkOtMCSogVYlSJljQY=;
-        b=lWuPIMd2fI6jMYDjqgSgPmiSC4kh8fLExIdwAgNggXnLNvnshwnJZp2zPDHix9+NGs
-         RO6e5XfLgJSnodKOBndt2Rk9imGmH1RqS+nBzg0jvdv53Z8DGzbnT6MlH9MHxh9fNJvK
-         gMjdU6CTMdSqzc5M5U/FoZsDS28Iza2n4BilYz2ZyNww8lYv7kBmO7YlBYrj7NZsIj8K
-         pT5AeR+olPkB2CuyrNTbzGBnCtwt7o/W4d7SGMmtEsUeP6y5rj0ktfP7++E1kaPigIZT
-         TkJchFyBirSdyZDiKCvSBDm6++FvHYJkxRvyM/Uau55UqqE4IfS+GuIxO8gA8lDNY3js
-         YIfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNZz1sauBxDYoEAmhWCIGHKDIj3NNwAIGGCX2jIK4S9YZwm0c8kJa9Dqz+8+tSTWQjkkxAUY635Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw+K3ZPP3iFGZcyFvtGD28LAE+npfr5IBXzlUpJJH6ivOyKEjZ0
-	7c0VdXY1noEVuuXlr7q2rnyIgq9HlaVRwAFUWivHDhfkS+0sVUoQnFQ0IOYjnBUBcPabgUk5lo7
-	Mjv7Xr6KW
-X-Gm-Gg: AeBDiesbi7JIUDIuu46qjVvgFGGJMycDjnfI7pNajMqaTvmB/xZzFrCRZ293bOnqQKa
-	3oO/T7/HHnHpv+kAxiT03sunXGVwwMXlEkrtmJdjdeuqCn4C0tlBMo+QBVoJFkOP0t3UrSakYgw
-	jhyY19mx8SHq8sG90V5v4Jh20rHD0AIPwNYiKB/sFe873FkzlJYFg7kvMTC4MayVNAZPNp//40e
-	jzQuQHcAbjdvHCFM7GDfsT94EwSEW8YA8o4bNTWjfIyeKyW6QlWsWK5bQUplScB4MLmMPgRIZY4
-	zrKqvhbd9x2x4yQJ44bh+RwZfjoh3tr+NfXZS4kNyojllH7Yir+VnO5VYa+Ld0/5NgNmzLqMqYP
-	cv8oiunOOcpo97WE3+iRxn08FtQOSrjB/eWJ7/O14g347AGiHRKbPRPH+HSW2FyWj0RQq4omYvf
-	BSKjuaYA+akDJZhGXcNAZUc7oNcvY0ejMCIsCwrTnSupnka6eGs8dEq7zoPhH61g==
-X-Received: by 2002:a17:907:3d4b:b0:b9c:513e:34db with SMTP id a640c23a62f3a-b9c676a2d7bmr589066466b.23.1775429404433;
-        Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3cfeedc2sm425646766b.42.2026.04.05.15.50.04
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-66bb6eb28acso6182793a12.0
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 15:50:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGoQeyiofoNRpSaMyKlmKlRWirW2S7ysi5oBOW9J3v+JVxkMML7hR+ZO7A7C1bI5vDH9Cu2OaI8Q==@kvack.org
-X-Received: by 2002:a5d:5889:0:b0:43b:47ee:4586 with SMTP id
- ffacd0b85a97d-43d292d34e1mr14051064f8f.29.1775429026066; Sun, 05 Apr 2026
- 15:43:46 -0700 (PDT)
+	bh=CNxpOAGXoMfJKCkcwSESgtWHc+hGTRttwmMAHFPTbQA=;
+	b=SZeXHO3si90rDImeZ5hO91XX2fo1LFUuylqiW7XsInu1L7tqwMXp5+w8US6/5iO72+QRcF
+	OTJGXNY8Yo0j112rv7JQIjg9qWHPnMqAZUCP4TkBwCASqgBC7as0tsxf+hQ17gIL/4Dfga
+	VkJdga0Swy3yBZe7krHpMD8mE1K0eJQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F36B9600AC;
+	Sun,  5 Apr 2026 22:51:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DE5C116C6;
+	Sun,  5 Apr 2026 22:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775429472;
+	bh=icJXO+dguzj3tCxQ2UENNDdkRp09jjDpXJo1shy09+0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZMifXabezcDMLwlpRLIpwF7kD3ghLvBeRwLysSukzn3w8Spq7tYh9KsnafrMuoco3
+	 Zg0EOqnG1ezOGuRQfMm1BGHQsMswc5/G0ToV35eDla+yV8cEbAxpjG200nJv5MVE41
+	 lfMy8iZmq8GVPws+H/ltiNGg3IrJRx1otbOtyfzydaYPd8SqCqQUkbaa6ncA8p7aDu
+	 5bD4gXcfeQvjtr1PiuTtFddG5aUyWvy88C1bvtqIVy6rNNGa8w26JAI44e3gA1iQA+
+	 XcYbD9goI0DPTGt9hFJCkK42ZTzquF32DTAuz2mhyK9bKSuiz7IzaFVtSueY0tbSSJ
+	 DzDSlhYJKuzhA==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [PATCH v6 0/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Sun,  5 Apr 2026 15:51:04 -0700
+Message-ID: <20260405225104.76350-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260405184247.2690-1-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20260404000644.522677-1-dianders@chromium.org> <2026040539-sponge-publisher-2b42@gregkh>
-In-Reply-To: <2026040539-sponge-publisher-2b42@gregkh>
-From: Doug Anderson <dianders@chromium.org>
-Date: Sun, 5 Apr 2026 15:43:34 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=X6DRHV6k7G=p5Mno22na75G-69F-EzMkisSxMoxuvJcQ@mail.gmail.com>
-X-Gm-Features: AQROBzBHjVedWun0AWH98b5RajBbraAAaRvLQSenEhaNEY8p1Czch8mAczvPiQQ
-Message-ID: <CAD=FV=X6DRHV6k7G=p5Mno22na75G-69F-EzMkisSxMoxuvJcQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Alan Stern <stern@rowland.harvard.edu>, Saravana Kannan <saravanak@kernel.org>, 
-	Christoph Hellwig <hch@lst.de>, Eric Dumazet <edumazet@google.com>, Johan Hovold <johan@kernel.org>, 
-	Leon Romanovsky <leon@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
-	Alexey Kardashevskiy <aik@ozlabs.ru>, Robin Murphy <robin.murphy@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Frank.Li@kernel.org, 
-	Jason Gunthorpe <jgg@ziepe.ca>, alex@ghiti.fr, alexander.stein@ew.tq-group.com, 
-	andre.przywara@arm.com, andrew@codeconstruct.com.au, andrew@lunn.ch, 
-	andriy.shevchenko@linux.intel.com, aou@eecs.berkeley.edu, ardb@kernel.org, 
-	bhelgaas@google.com, brgl@kernel.org, broonie@kernel.org, 
-	catalin.marinas@arm.com, chleroy@kernel.org, davem@davemloft.net, 
-	david@kernel.org, devicetree@vger.kernel.org, dmaengine@vger.kernel.org, 
-	driver-core@lists.linux.dev, gbatra@linux.ibm.com, 
-	gregory.clement@bootlin.com, hkallweit1@gmail.com, iommu@lists.linux.dev, 
-	jirislaby@kernel.org, joel@jms.id.au, joro@8bytes.org, kees@kernel.org, 
-	kevin.brodsky@arm.com, kuba@kernel.org, lenb@kernel.org, lgirdwood@gmail.com, 
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-serial@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-usb@vger.kernel.org, linux@armlinux.org.uk, 
-	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com, maddy@linux.ibm.com, 
-	mani@kernel.org, maz@kernel.org, miko.lenczewski@arm.com, mpe@ellerman.id.au, 
-	netdev@vger.kernel.org, npiggin@gmail.com, osalvador@suse.de, 
-	oupton@kernel.org, pabeni@redhat.com, palmer@dabbelt.com, 
-	peter.ujfalusi@gmail.com, peterz@infradead.org, pjw@kernel.org, 
-	robh@kernel.org, sebastian.hesselbarth@gmail.com, tglx@kernel.org, 
-	tsbogend@alpha.franken.de, vgupta@kernel.org, vkoul@kernel.org, 
-	will@kernel.org, willy@infradead.org, yangyicong@hisilicon.com, 
-	yeoreum.yun@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D7D281C0002
-X-Stat-Signature: d885y6duhwxmpd9oh4zw7y3acanes8t9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CFBFE1C0003
+X-Stat-Signature: nu5zh77aje1x4zfhmr1aqbyybnbzs389
 X-Rspam-User: 
-X-HE-Tag: 1775429406-622778
-X-HE-Meta: U2FsdGVkX18aofhMInXrSjOPlRmTHL6PsVPUA8TzstX2SVSQIh6+7JUieAY6juSInzh8+RfDrB7Fg+ISeKDQt1BfC7i3ybGa56yKdfWyH67GJVL3HKTjImACrbvJunlqtBxdK3QbzJbPEqPr4jYGI7Gj/GaupSSh4jm92MAzApaBlb29ChBe+7PiWhYUy8Z5gzbDnv4E9thPhaynFAfwMx+OzCsi4O0O5Fjra2Eae8xQPMHkSkpXGbERKdzrv3P0J1TMDa55jQ2ggltJXMdpsg8kMTpzVlCm8eBlE0JFCdMYSLcmx1rYsr4L41K4o5n7XeXJNHYUqUd/2WGo6lMnoI22GOXSNLpfnkaExx8z4JT3B59V4ftQv4Idf8iNbPJqxOFj4nYHlIXik27IMrt/1UwMRioD91EBTfZu/dPhQ320QSDqQAP5TQB/X8cmc8MP0fDeNfsoJdA02No/jDNiU/ZZvaxhXtbSMdvBA0wJvsw/94TKnCL+ARtCNwRH8I8WsaKWfVZXLiMMlRbcoO3KR/aQ+bdVyqLhNFs+iX7e96m9a05+BZN1DWdsa35xFUzqIE3QcVQIpR24I8akBtfOMQTMdJ/Qu+U7JrXTJLNyMjK86IIgcfuvFIYH00CFg7XR7LuejiX69xIXu/VZULJXffMps2imbix/Zg79AZWQaqYZBBf889K1YcNV1bmafrKcuM5erlwFjJ0ZzN6A60GeW+CCStEQvEGcSEnSW9V3h+9KbzvUhsv7IK1q3xIFtxqegLlbfWXHwiuXnznVqr02CBQ/swORDRpQ+XLffJipmk71A0NV6B44BANrfa7uF91tqg88hZyLPIs0fR19BkWuW3g9d3d/z7fq1Gkq2HzpK7v0RM1h17kIN4/S5fu0Zo+tVN6espN4Y/rKQ8QnzIHHHfyX+vjxcLyOX9anjKt2yUgkrR24NGuF5GbMnaDr+UhmqvU0me8dO7zZyGkLJzw
- u0vlwpPd
- Dhi8zOGkhaSKpg091mQMyTqUa8hx8U80fZu3GVGwGtjUSpVnTacCYSexlfF4QVNI11HRYjmmaatbSKavEDSpT7UHbcO1J0nSaIrSvBpkUZ/Rr5zlyX+G9u4Xt1UwtjWWGlJ5a7koXzQVhA3OSX1R32dY5ln6wIr64KtvgcJ+bMG5KXEvrbcwISCZzvSCXazYBH4c0IoHWrvZUoWRvxxy9QXKehp5uU6QynqADcbgLFw3ct3E38eXagpiOB7CHErbMtGOrRNNlo0bagoN7BfTiIv/Z8Vl/VH+pl2x+t/+wZQbWYM1qaaEVbqgC1QHGY9NOgCc2I8jqXLJhY7yzqqZoZlKCT0AHgqP4VQTJr63xFkD1oexGesdIQFZckmv6q4XzR0ts/Ha6GiKGLuCwveVMB7lisSHE/IY3aVzq3TqdRgjGhCWqWBRGW0o2DjPkDMlIsQn1freuaJUoTx8VDGLMkUV6IB4ie58HvYEs/ezzlX7o2hm1SH5GqVohJC8e5radQAhA03230va44nZvE8aI5MGKfQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775429473-955795
+X-HE-Meta: U2FsdGVkX1//gp6ehfugOva2BAoogPzECzy+H2hkV51T4VWE+hCtFkWFm4xqu994eOB4hXh8amfTVOZ00fboWq4wWn4ec+JjPCGg8qPuwuuapUcxC3MOijTmrHKdHWLkhvZyOwzxCodR7jgjYV4fe4eaMkZVc+XQilkxX42oJsbh9GgTw8eLWtFSP1Aj/g6gZcI0xcOBO6lrcAjayJuKNN21WPhJlGYL3W3q6714aXlTWi/wu1vMr/3eI2XguNQcbodyut5KoKiq+Cb9wEXZZdbUmBqZOMIq8/qjdpCTmD0LGVh3+Cn7Pz4gRF8bNBuQCZEih35S5pisXo/38IB6yQ9TpScg6nO2eJUSpwCgHyd0vXpNVKeJG7M6Sp9vdWC4jMiyYyMZO6ageKVArUdYSr5rjD/1sXgzi4jDM8IWgyJIHuvPJTh3koeU3TgZqXIBrnVEzmJJnr2c0P6+mc3rpzBTKA0eZOzKGp4m4bdTMbzyD3IZHyvS5gmhppIdvtQwigvnxDGO0VmqIrTH0Pugv6YbBFEuQp53EC9t/2F4eR3dNWs2+yKqGZI3GRsKKMQ+FtmO8JlmGp+kVYPST9p/Tz8YRYp4MsOeVbBqejy4xk3sc0WdrAlKgbzxQ2y04rOvGx1RUQOhaUSdf88HfmE1WVImFQAghabkCCP8nB9RxXytrbLjydfguWcxEqj/iEL8chTmiPu2esjm4/VNHipZvuL8Z4iDBEYAaxioKmS1eyDnh+m5K+VDLcuWnmDW/CLR7wrAA3JI09oQed+Zijl+jN5WIfCmQCcv9eXsMIam7Hswa2e+eOxSU2dAmlAo7Scos1EEjqDo6ax5wvf52ZyIak6PEojMOF5cJVHPUMNuBahgcBlmQHntUdkjq67Vda6gCqUGrHfMi9YVrY6fBHUSOlAZimwsrGHsIdCQYxm9S0h5HRy3n5z0Bf4AuH3Xxm5LJO5iRFQftrS85mtzKlH
+ oiR+PQZ4
+ 2kIINO5cI8oCwsmEcEcvuyewmoKha35db/rgNCFWuxwQmWr3XVDQy+2+Cb8bSQpHGzFmdXI2GxKT4t9JCh3Sc0TJWdZxxwhnOXd50nEg8rAMTkqe4yukrUPfFzIQUP0M3XKs3yRUGiztR5pcLOD+gXqfQvoacrHKAGJQzmlJ9xd4XA+Oap7TZhhb5KS+Q8UlRdHwAXr07ojNWapIa1KT/rBAiFP0VLOfau+J7k+m2P+ttyebyiqyHBVz2tUvtdsZ4omSQgO85+zE69src5natQM5UpDrFE9qYQhYnAXeeTURrA/pChpxrs/VG5EwWLwOL9QIYZPb71HtyKD3k+98cMWUnhOa3ahHD6SOxDSXXiaODJWPAwEN6ZCExag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,51 +99,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hello Ravi,
 
-On Sat, Apr 4, 2026 at 10:28=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, Apr 03, 2026 at 05:04:54PM -0700, Douglas Anderson wrote:
-> > NOTE: one potentially "controversial" choice I made in some patches
-> > was to always reserve a flag ID even if a flag is only used under
-> > certain CONFIG_ settings. This is a change from how things were
-> > before. Keeping the numbering consistent and allowing easy
-> > compile-testing of both CONFIG settings seemed worth it, especially
-> > since it won't take up any extra space until we've added a lot more
-> > flags.
->
-> Nah, this is fine, I don't see any problems with this as the original
-> code kind of was doing the same thing with the "hole" in the structure
-> if those options were not enabled.
->
-> > I only marked the first patch as a "Fix" since it is the only one
-> > fixing observed problems. Other patches could be considered fixes too
-> > if folks want.
-> >
-> > I tested the first patch in the series backported to kernel 6.6 on the
-> > Pixel phone that was experiencing the race. I added extra printouts to
-> > make sure that the problem was hitting / addressed. The rest of the
-> > patches are tested with allmodconfig with arm32, arm64, ppc, and
-> > x86. I boot tested on an arm64 Chromebook running mainline.
->
-> I'm guessing your tests passed?  :)
+On Sun,  5 Apr 2026 11:42:46 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-Yup, all the tests that I've run have passed. I also threw in an
-"allnoconfig" compile test just for good measure.
+> Changes since v5:
+> =================
+> https://lore.kernel.org/linux-mm/20260404012215.1539-1-ravis.opensrc@gmail.com/
+> 
+> - Rebased onto mm-new instead of damon/next for sashiko review
+
+Thank you for doing this.  sashiko was able to review and find some good
+points.  I shared the full review with my opinions as a reply to the patch 1.
+Please check and reply.
+
+> - Removed Reported-by/Closes tags per maintainer feedback (not needed
+>   for bugs found before merge)
+> 
+> Changes since v4:
+> =================
+> https://lore.kernel.org/linux-mm/20260320190453.1430-1-ravis.opensrc@gmail.com/
+> 
+> - Fixed commit message description for DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP
+>   per review feedback
+> - Added clarifying comment for ops-common.h include (for damon_get_folio())
+> - Fixed build error when CONFIG_DAMON_PADDR is disabled by adding
+>   #ifdef CONFIG_DAMON_PADDR guards around functions using damon_get_folio()
+> - Dropped RFC tag per maintainer feedback
+> 
+> This patch is based on top of mm-new.
+> 
+> Background and Motivation
+> =========================
+> 
+> In heterogeneous memory systems, controlling memory distribution across
+> NUMA nodes is essential for performance optimization. This patch enables
+> system-wide page distribution with target-state goals such as "maintain
+> 30% of scheme-eligible memory on CXL" using PA-mode DAMON schemes.
+> 
+> What These Metrics Measure
+> ==========================
+> 
+> node_eligible_mem_bp:
+>     scheme_eligible_bytes_on_node / total_scheme_eligible_bytes * 10000
+> 
+> node_ineligible_mem_bp:
+>     (total - scheme_eligible_bytes_on_node) / total * 10000
+> 
+> These metrics are complementary: eligible_bp + ineligible_bp = 10000 bp.
+
+As I mentioned on sashiko review, I now think node_ineligible_mem_bp is a
+confusing name, and thinking a new name, maybe node_eligible_mem_bp_complement
+is better.  Let's further discuss on sashiko review reply thread.
+
+> 
+> Two-Scheme Setup for Hot Page Distribution
+> ==========================================
+> 
+> For maintaining hot memory on DRAM (node 0) and CXL (node 1) in a 7:3
+> ratio:
+> 
+>     PUSH scheme: migrate_hot from node 0 -> node 1
+>       goal: node_ineligible_mem_bp, nid=0, target=3000
+>       "Move hot pages from DRAM to CXL if more than 70% of hot data is
+>        in DRAM"
+> 
+>     PULL scheme: migrate_hot from node 1 -> node 0
+>       goal: node_eligible_mem_bp, nid=0, target=7000
+>       "Move hot pages from CXL to DRAM if less than 70% of hot data is
+>        in DRAM"
+> 
+> The complementary goals create a feedback loop that converges to the
+> target distribution.
+> 
+> Testing Results
+> ===============
+> 
+> Functionally tested on a two-node heterogeneous memory system with DRAM
+> (node 0) and CXL memory (node 1). A PUSH+PULL scheme configuration using
+> migrate_hot actions was used to reach a target hot memory ratio between
+> the two tiers. Testing used the TEMPORAL goal tuner available in
+> damon/next and mm-unstable.
+> 
+> With the TEMPORAL tuner, the system converges quickly to the target
+> distribution. The tuner drives esz to maximum when under goal and to
+> zero once the goal is met, forming a simple on/off feedback loop that
+> stabilizes at the desired ratio.
+> 
+> With the CONSIST tuner, the scheme still converges but more slowly, as
+> it migrates and then throttles itself based on quota feedback. The time
+> to reach the goal varies depending on workload intensity.
+> 
+> Note: These metrics work with both TEMPORAL and CONSIST goal tuners.
+> 
+> Ravi Jonnalagadda (1):
+>   mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal
+>     metrics
+> 
+>  include/linux/damon.h    |   6 ++
+>  mm/damon/core.c          | 188 ++++++++++++++++++++++++++++++++++++---
+>  mm/damon/sysfs-schemes.c |  12 +++
+>  3 files changed, 192 insertions(+), 14 deletions(-)
+
+Btw, having a cover letter for single patch looks odd.  Why don't you add this
+cover letter to the patch's commit message?
 
 
-> Anyway, this looks great, unless there are any objections, other than
-> the "needs to be undefined", which a follow-on patch can handle, I'll
-> queue them up next week for 7.1-rc1.
+Thanks,
+SJ
 
-Thanks. As per the other thread, I'm happy if you or Danilo want to
-apply it, and I'm happy if you want to make minor fixups when
-applying.
-
-When I see the patches applied, I'll send a followup patch to address
-the "needs to be undefined" comment, unless Danilo makes that change
-himself when applying.
-
--Doug
+[...]
 
