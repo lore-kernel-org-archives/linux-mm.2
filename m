@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECCFF3D5E0
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 12:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C0EF3D5E0
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 12:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 005356B00AC; Sun,  5 Apr 2026 08:54:57 -0400 (EDT)
+	id 276C26B00AE; Sun,  5 Apr 2026 08:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF7736B00AE; Sun,  5 Apr 2026 08:54:56 -0400 (EDT)
+	id 24D836B00B0; Sun,  5 Apr 2026 08:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0DA56B00AF; Sun,  5 Apr 2026 08:54:56 -0400 (EDT)
+	id 163A46B00B1; Sun,  5 Apr 2026 08:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D20F36B00AC
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 08:54:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A77461606A0
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:54:56 +0000 (UTC)
-X-FDA: 84624496992.23.BBD2D0A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 084086B00AE
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 08:55:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBEA0140A70
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:55:03 +0000 (UTC)
+X-FDA: 84624497286.05.413EE28
 Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BCC811A000C
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:54:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=MMfgEUgV;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 22CC0140006
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:55:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=JBSGpgjZ;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775393694; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775393702; a=rsa-sha256;
 	cv=none;
-	b=L25RtX0PNUUIfajPGk1DAqFj9cNl6ARyhhnNT7BlL1OoBY4m+Q7/ZxyUc543c2lFXg05GU
-	es17tgiEcN8bE7QFzmBJ4ySZEuH5F6xRidNB84KxTbjYqbH+WX2j37S+WnhETJm9YlWrzT
-	ueUjmPkguggHeCWr+gfGHIKRY3BO+Ks=
+	b=3YsN8B4quSfji381UqBBz0UapygG20IduqOFN8xiqRBLG2/h8RSg7E++3q7K0hOf96i87E
+	DTqeN0nXCvlKxsmPGodRhCvaAjy9mK2TX1ZxmVvvJm9emj44yZHf38TorzxQMJ8jFc4Hni
+	5zGZyXr0EqsSPWKNsk45nzqh6/1hwIk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=MMfgEUgV;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=JBSGpgjZ;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775393694;
+	s=arc-20220608; t=1775393702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjgvWFWYEgCOLeyYyMsHcBGvGVNPbR5pUUyMN0Stxt4=;
-	b=E7UXG+d1JS4gmLNkD6w2uGIqwW/Kdyrk2ViqhZA/BWEPmJ1n3yxzPNAdJOwIOkDXdrgMtr
-	QIeGM3EdHPSLYKkHXXk22NwKvmEIjoCGg6a/kjZKgdwEzXeBfwkNjUmYALdxgDpw+2ETVR
-	+XGZEPTWFEcTCojswYNywYce4WpPQRA=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-358d80f60ccso1933608a91.3
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 05:54:54 -0700 (PDT)
+	bh=QwFPS6YUW38IEMACgWNvn97a3hFqhS5O4/kjgd2aI1E=;
+	b=yzevOftNxXYqMEH09S7jYBnFa8f9DBDDM5XiRPXWPht487lXwFb2JL0WnGdngwu2GXL8JW
+	PB372SCOlfyFbfDtiUpYwqr3pXvWTtJXMUJX+nz6PgNkHxnAoVnBQ1y6iO8nTaduj/iXOX
+	+CbJgRAExvwzml3Da4P0P2XMYTXPLz8=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35c2fe0d90fso1787957a91.1
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 05:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1775393694; x=1775998494; darn=kvack.org;
+        d=bytedance.com; s=google; t=1775393701; x=1775998501; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TjgvWFWYEgCOLeyYyMsHcBGvGVNPbR5pUUyMN0Stxt4=;
-        b=MMfgEUgVmmbWKroR51WUCueL/JAb5X55Az9uzH75LsA7MuITfOckLiBITwjwywxRoN
-         gkJ5PWIqqoj6KD14JBNgXYblibXN89Agfwrgu2RkwEuRgXyemp/bSP6vH8E6nJWScHNO
-         ICyM5K91Ey9O97/mqd9ZmIFI4/hgXciHXQLsqMFUuikFo5luOkeaiCg0u0iuT3VRezmj
-         hzjqhM2QhXjsbczIkp2W6UGrlkhtpP6bYhJihVt7jpPOvGzrbz81zajcyv9gfriG7LN2
-         JyRg8xglkjF1qqGdawOPiOD4RdoFwNR/AIdd9iIJlW0IzxwQdanvcfT2iU6GnVFuObYA
-         WWcQ==
+        bh=QwFPS6YUW38IEMACgWNvn97a3hFqhS5O4/kjgd2aI1E=;
+        b=JBSGpgjZdiazzJ7uofLlgMjLbTa115VI8zxKPPXHcCwV0vapPTSyUAJu+886MQhVMQ
+         gAT06hPscHd6Tqh92oLQYi1aF1ENsq+kKYEJLD2FaOxRdFMtmpbAfDtZRS5lRy4LdCWy
+         XHy+PW6q7XRS3FJSXI2YaxVu777G+WoOeA52xTSwp7sG+IGx1pC5iNXHWbCr3MSLTfmq
+         llW2gqyMUKfP1f2wGsz4s4ZfOlJ99aIjTG2IH7HZQsekhVSLvvy5DPUV9FBoVis88FmA
+         GmQ/GAkU3R/MBfk34oMayvscdO48WpCmwT0Rnbn2Uj6WEWFKbkHkz7zu5VK3//kjQCCS
+         00yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775393694; x=1775998494;
+        d=1e100.net; s=20251104; t=1775393701; x=1775998501;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TjgvWFWYEgCOLeyYyMsHcBGvGVNPbR5pUUyMN0Stxt4=;
-        b=KIjMAc2BOfDIFYUaPVcA069CcB6fWxLR11lIWDc8GxIvAFQGyu+cRQnDhQOscIrMwn
-         J1EFpaBGKWhy9BwMrj4wxBzUSr05/6M4XrWzP27hqdx6Kb6LwmQR4SNsk+GoAX5U1+G7
-         7PUrc0w/q8d/aKRsFvQoAdmhUw0GBl/qFEHrcNP5the6yYE6ypPiH7q0qmxnfbH7di18
-         oD6qSbEBz+5LTnAUcIfKz8MKaHnytihJlkYty+cw13uNb+yl/Sqv4rgTjUjkGewvgJnN
-         XlcJd51sqCknhWcUoI4De5DVWWt+bXKXeji9FPz4viybHvXzaKb4vnDm0Ta+3Dyguq3k
-         DUfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDUK3fp+MuZgS+WMo2ensHi6P0hbD1vOM+WeiYt+gwopHoAMtaXM9jYewn1wjm2ARjB50qn6oaig==@kvack.org
-X-Gm-Message-State: AOJu0YzUecD4hDn7ybmi9c7/fETGsbg3ylEmSZ/kOjwxNf3NkRkey/S8
-	Oyx9PbDzojraPCDoOlq40v/wjI/2GWHTKP2Mu9RPlzd9hynuP6DUkSqO5IOqYTlASfQ=
-X-Gm-Gg: AeBDieschbf2yidy35Mz33BhfCVfkejvTahTuGBwywqijBOxwoD5pngLJ6BpOXE3l7L
-	P8DRNBtODTU6q6ACjc5K5cdiQlB7vikB/2bVByNMsa84seEknXB8HoE8wXXnvad/Rv/Gk/EI25M
-	1MWigAk4SortZG9e6uNihpXV0I/nFizR+a45dw5pKHXf/BaIkvAshhWjgY+Eoeruh9Sotp+DN7o
-	AYY3VSnzs2vsYWN9A1wkj5qhPmz6ulmydkoYEplRcWLWWqJ6OPiKHLl64ep1i0kMB1P8AZW/5xw
-	E9OMTvWXkSlsKR9zXz0QGOu0Ek6K2lDsngpvSoEIu7bg6Vv1d6Xn3Xw/EZ5Uz29ByWabfuEIY82
-	AieXIU8JS1HDuq6gmI+jwc3LEDV2ir4PViyy8/+74rb2M9wf4n22nyZuxqh08ymf03vtdFYSOxX
-	/W041HVB3rnB6jd3mSqmVhMroeWkaz3CqxY+I9Hc0JMyM=
-X-Received: by 2002:a17:90b:1344:b0:35b:90e7:c453 with SMTP id 98e67ed59e1d1-35de67d6677mr7866778a91.6.1775393693495;
-        Sun, 05 Apr 2026 05:54:53 -0700 (PDT)
+        bh=QwFPS6YUW38IEMACgWNvn97a3hFqhS5O4/kjgd2aI1E=;
+        b=YlX4WwvwSisB+awjlJMHJYLsWhczcEcenwzH1NQuuzyLAPZGkkjzCJ0FsPGfmJQRZi
+         emtb6kNSdyfOUSNc7wgwP/o4YVrQhm/MYBLbEiV+xXjBT3UMR99GUNzqYidaO99riTBy
+         3SchKc10VhF7CA2+qPTFkQ2wM9EtQiuX0IkEZ4bDXQ8BvN3nunYGpe+X+8FDdJMrAMGb
+         kRwb4HBOS3VRwlBgR4/KKiYnI2fFgrEv9HfFEZEabjFAig2z/4/pl7eIpiF1JxGm/XeP
+         sTTEipvxrxYC3H17PFOQ95DjOw8Y2ZwsRxQN4gA1TohwmLf6fAug/6odEMIlvEyDr4Y/
+         2uxA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpusDALmMy1VH+YCsn4uxbedJOMjz24FOMPSSFdOFemJcRZy0MOJHRBSI3h2VNlbYE0s4m9spF3w==@kvack.org
+X-Gm-Message-State: AOJu0YzO4mEr0X+IRNcqmgWlQioEBZIKjjgwZB9hFL76bsReiNynTnmy
+	HPJaFWroJN3dzwHStfzP4r/ky7XRB7guhWpPZQZb8EbtsMk1hAwdQa2UH3nFlegYffk=
+X-Gm-Gg: AeBDiesSzGoPJMhlEXEHZzWjF/crkWSikAgZOj0LLR4vJqUyDq4RwLGNC9Gd5UHX5U4
+	5yaAfjKiZsF02z8bCSMRQ53hNgJrUnj3i2FXlWeqWasC/xXNUAaVyyNAtHWvlABaEbo9bOuLvKW
+	g1AZ0RqibaXsZpsT/3aQhXGNVIz6guYwmoPCDcgr8cG9aqU9PpMhWwsTweXClsjgnGGJwguFLZZ
+	r0S2r5BwQOUxTywMx3Jt3rMvF7apRowqMciOp9l7PPF5qQLZsXDEsSuF7EwFrj0wEghBkFeW4LD
+	yINd3pikbyyxhD1sTpunMs7eU7loiuB+0EKXjVkBoRIKceeRGPvvRyfVRVIz84lPc42Ggtkn1kI
+	g7kVS9/bGpGM5tZt2/Wd0SVJUG5DLbKZTQzh8OzyFyiSK2FMoWABw4oJjPWiZSXsjh6geWdUoVW
+	3CAYvdf4oGtFz7fprYVBmWoqwPzeh3akLM6QozMYFfjok=
+X-Received: by 2002:a17:90a:d406:b0:35b:945d:752a with SMTP id 98e67ed59e1d1-35de68f82damr8709011a91.17.1775393700794;
+        Sun, 05 Apr 2026 05:55:00 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de66b4808sm3748505a91.2.2026.04.05.05.54.48
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de66b4808sm3748505a91.2.2026.04.05.05.54.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2026 05:54:53 -0700 (PDT)
+        Sun, 05 Apr 2026 05:55:00 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -111,22 +111,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH 14/49] mm/cma: validate hugetlb CMA range by zone at reserve time
-Date: Sun,  5 Apr 2026 20:52:05 +0800
-Message-Id: <20260405125240.2558577-15-songmuchun@bytedance.com>
+Subject: [PATCH 15/49] mm/hugetlb: free cross-zone bootmem gigantic pages after allocation
+Date: Sun,  5 Apr 2026 20:52:06 +0800
+Message-Id: <20260405125240.2558577-16-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260405125240.2558577-1-songmuchun@bytedance.com>
 References: <20260405125240.2558577-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BCC811A000C
-X-Stat-Signature: iij3be78uihs46cm7di76g8yzq8fuc6y
+X-Stat-Signature: 49axteajcget39a1ezsxea7pkbetjeef
+X-Rspamd-Queue-Id: 22CC0140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775393694-779557
-X-HE-Meta: U2FsdGVkX1+zRRtYMIIkUpOBS6KrF36fHNVm9HgzarV7W5SVV/EyACS9PYCGOy54t2MXINetQsRex8Sxc6fgzaVxDni0CRjnwHsAPjnEjfy9ECx1ZlXRUMkmHSe88J/8zkL+gfX9tfxt3TMU/Xqazjma8LeOh2FIq7cFWqZ3fiTeQSwqQp+uHLAHLKtHAPZVGWow4+VEbh5GLYbAgzNnezPDZ61xeKpZ96CQQ7qHBlbT27xvwAZORxJg+8KMAxHazsExzyZoorj4X/R6yANOU8ZJ2jSwBLfu3q95MD1tmEKD1cJAW/ajSZX0WRtZb1Xe2lLtAHWAlXYfiEWclpRN3iry0rXfdyIEUn8IH+8lRXUlQPV3GiZTWj7Scq7AnRkioPxu0hCPW7iJGNfo7tDu9pgyPnkGX/9nRZNx5yNSxihnzQ4SiADnobFzCfcIquClIutPQ9ZDvVH2tAnEx/bhR1uk/7eaT/IgMn/sZJ/MI15T1I713PvwJXpCR0tPPDTENMaTccd7zym/2Yrbkpc7ZjxfSYnTV9nt7O4naiaUKQwds1lCiCh8xli7PTPRcUXmuSTIQ0jTrH9hfjwbsz37O9gLuixDEK6BM3ZtEuvyhCUpaeyRw1gl137Z4i6y6ND9r2CDAjeric5aixKAzrOZ2Vf3CTRDE+nVWJR1EFu1ZF8XZWSif9uSGOq9pJ25jW2gwIX+XkzmpBFHA0zTv/UYTAkAapwS7qFoA9uEDmMKgnD2GyX+Nax+l6720kWT5aS8oVydwt9vnJ1MqdvwOiUVlzYmGl7tQvsgQ+mcyI+2z75lwi5G933faDQCi5OX6MoFm9HAc/+4WbTFM5fjO2R6Mg0miSMc2PYy9hEFmssAnYbm4ntJ/NE/MguAoYtotjWyFyK1Q4MCv8QD1wPE38+qhVrQuPguwmqka3uKThKK80OBei6udH+A1Ja430ZLHp/tyZeCvzk2LGMEl5epkas
- /DnfJpeL
- Xcg7OuvW+0VUB9VSKumxnyHFXoKfWMemxxNS4IVYAXq8Ii45qDcBfqzWY74WQoo0DHC1+XyJ8uyucEUmiGmxpPFoS2LSplu3HTzGyJh6JbX3tGYwo/+yY06NaTT/HtkuhdBmuUDkguQGQy22Blkc9gXqqeWoftTNcX0hkCI/5Gfdp/IzvYZ2RyC+swBoiemi+us/NcI+FiHWAhQMAdsDlCaJyc/ceFNBmNm93v+sunelOvnbqNA1AJbuq+UClArCwYFT8SrbzYMm7++9ibeHM0hp4WRH9xK/1RdgkUOah4DRcbFvT/+TiGqdCDQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775393701-401601
+X-HE-Meta: U2FsdGVkX1+5olOF4HyjNminbZGMLfATRMUSE7oYgE3O5TAWQkxfoBOYVrrssxftHEXVmqpXb5XiJeQzw+7lJDHt49kAXLhk7hH8+lfB7G8/kyaJ0fJYQcExjnYQkRa3Ckr7WME3kNUTfCRss/v/DOvTau9B1KWkZ31DRs4tlW/81hHle1M2EOK089H3osAp7vCJZAORzvBI0DZbiKGCcEleDuXB9fu6p0SrjckxjKp2Z3UbVNqp6AXdCyRXfgcunTcauuyCE97vPL4b4y6NHJ+svYAPzLedng/6cJMEfyUO6tQFwdiA5xBWBCxZZShPgGmxgUAzMTOSP5i/sR9zrGq2WZTq0HzDSGmwbYmLUUhsL1+e5ZClTOtQ0jIV83qZMWCfdAejgctK4PcCVYwoY1Ri1aGpovJNO7PMeaf6DIgSSyIxUckiskViXOWBhR1VfyHWdt7ktHz+GvSb4XxnPZrgmSWNmGyBlaxIlPfbQv436CSDI+FyZd+qhJ7QQL6DJucG+ZTRpbpN1oMRTjXPTpd+nkkgq8B7MpJGW7KBYwoHb5jfudQ7Z3CCZjAumI0OvCsGqfdCFKPSiJrl6JNrboTteo4wY515t5bI+x+nWW4RMSal5wk3VYqZv0FLstYMpCIH17bHeSJard+rcYWzi6QW2qUKLbaSFnKDM9vhGB9wUyirQmfiyT7U5NUTS6gW94LUvAT26Hemim3WWoKMMKeunA2TbTHTox3nkmkcHkbtFtGxe8x6kQNCn7Ou2re24uZ58FPVMdIfC5srcAC3+KEjiNdDwwrqOo8YiodepJfMqAtAsEC7hxJ6wP8hB/fLylguMoRz4U90Y3BWYlulOmQ5eqA7jVfSx/1vjkM+j1nXx/gvJ6FXmamjycHDL0wQS5vSXK91siF+ETPcF2nLGv/Tr1HQYnVfGRlvnAfBmwJK5gvX9jMfh/WU3/ykAxVO/7tZ7Ef0TmCTNwCqyib
+ oWvKX27s
+ MwgBrhZ4xnCDXJIW7oPFFRZ3m06t7sjKq8+Wy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,60 +134,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During hugetlb_cma_reserve() we already have access to zone information, so we
-can validate that the reserved CMA range does not span multiple zones.
+After moving hugetlb reservation after free_area_init(), zone information
+becomes available during bootmem huge page allocation. This allows us to
+identify and handle cross-zone gigantic pages more precisely.
 
-Doing this check up front allows future hugetlb allocations from CMA to assume
-zone-valid CMA areas, avoiding additional validity checks and potential
-fallback/rollback paths, greatly simplifying the code.
+During alloc_bootmem(), pages that intersect multiple zones are added to
+the head of huge_boot_pages[nid] list (without ZONES_VALID flag), while
+pages with valid zones are added to the tail (with ZONES_VALID flag).
 
-The pfn_valid() check is removed from cma_validate_zones() because mem_section is
-not initialized at that stage and it can trigger false warnings; keep the
-sanity check in cma_activate_area() instead. This is preparatory work for the
-follow-up simplification.
+After allocation completes, hugetlb_free_cross_zone_pages() iterates
+through the list and frees those cross-zone pages (entries without
+HUGE_BOOTMEM_ZONES_VALID flag). The count of freed pages is subtracted
+from the allocated count to ensure the final number reflects only valid
+huge pages.
+
+This applies to both per-node allocation path and the global gigantic
+allocation path, simplifying the code by avoiding cross-zone checks at
+later stages.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- mm/cma.c         | 3 ++-
- mm/hugetlb_cma.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ mm/hugetlb.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 6 deletions(-)
 
-diff --git a/mm/cma.c b/mm/cma.c
-index 15cc0ae76c8e..dd046a23f467 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -125,7 +125,6 @@ bool cma_validate_zones(struct cma *cma)
- 		 * to be in the same zone. Simplify by forcing the entire
- 		 * CMA resv range to be in the same zone.
- 		 */
--		WARN_ON_ONCE(!pfn_valid(base_pfn));
- 		if (pfn_range_intersects_zones(cma->nid, base_pfn, cmr->count)) {
- 			set_bit(CMA_ZONES_INVALID, &cma->flags);
- 			return false;
-@@ -164,6 +163,8 @@ static void __init cma_activate_area(struct cma *cma)
- 			bitmap_set(cmr->bitmap, 0, bitmap_count);
- 		}
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index d6ea11113f1d..238495fd04e4 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3049,6 +3049,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	return ERR_PTR(-ENOSPC);
+ }
  
-+		WARN_ON_ONCE(!pfn_valid(cmr->base_pfn));
++static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
++{
++	return m->flags & HUGE_BOOTMEM_CMA;
++}
 +
- 		for (pfn = early_pfn[r]; pfn < cmr->base_pfn + cmr->count;
- 		     pfn += pageblock_nr_pages)
- 			init_cma_reserved_pageblock(pfn_to_page(pfn));
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index f83ae4998990..b068e9bf6537 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -233,9 +233,10 @@ void __init hugetlb_cma_reserve(void)
- 		res = cma_declare_contiguous_multi(size, PAGE_SIZE << order,
- 					HUGETLB_PAGE_ORDER, name,
- 					&hugetlb_cma[nid], nid);
--		if (res) {
-+		if (res || !cma_validate_zones(hugetlb_cma[nid])) {
- 			pr_warn("hugetlb_cma: reservation failed: err %d, node %d",
- 				res, nid);
-+			hugetlb_cma[nid] = NULL;
- 			continue;
- 		}
+ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+ {
+ 	struct huge_bootmem_page *m;
+@@ -3092,7 +3097,14 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+ 		 * is not up yet.
+ 		 */
+ 		INIT_LIST_HEAD(&m->list);
+-		list_add(&m->list, &huge_boot_pages[listnode]);
++		if (pfn_range_intersects_zones(listnode, PHYS_PFN(virt_to_phys(m)),
++					       pages_per_huge_page(h))) {
++			VM_BUG_ON(hugetlb_bootmem_page_earlycma(m));
++			list_add(&m->list, &huge_boot_pages[listnode]);
++		} else {
++			list_add_tail(&m->list, &huge_boot_pages[listnode]);
++			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
++		}
+ 		m->hstate = h;
+ 	}
+ 
+@@ -3186,11 +3198,6 @@ static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_page *m)
+ 	return m->flags & HUGE_BOOTMEM_HVO;
+ }
+ 
+-static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
+-{
+-	return m->flags & HUGE_BOOTMEM_CMA;
+-}
+-
+ /*
+  * memblock-allocated pageblocks might not have the migrate type set
+  * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
+@@ -3393,6 +3400,34 @@ static void __init gather_bootmem_prealloc(void)
+ 	padata_do_multithreaded(&job);
+ }
+ 
++static unsigned long __init hugetlb_free_cross_zone_pages(struct hstate *h, int nid)
++{
++	unsigned long freed = 0;
++	struct huge_bootmem_page *m, *tmp;
++
++	if (!hstate_is_gigantic(h))
++		return freed;
++
++	list_for_each_entry_safe(m, tmp, &huge_boot_pages[nid], list) {
++		if (m->flags & HUGE_BOOTMEM_ZONES_VALID)
++			break;
++
++		list_del(&m->list);
++		memblock_free(m, huge_page_size(h));
++		freed++;
++	}
++
++	if (freed) {
++		char buf[32];
++
++		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
++		pr_warn("HugeTLB: freeing %lu cross-zone hugepage of page size %s failed node%d.\n",
++			freed, buf, nid);
++	}
++
++	return freed;
++}
++
+ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+ {
+ 	unsigned long i;
+@@ -3423,6 +3458,8 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+ 		cond_resched();
+ 	}
+ 
++	i -= hugetlb_free_cross_zone_pages(h, nid);
++
+ 	if (!list_empty(&folio_list))
+ 		prep_and_add_allocated_folios(h, &folio_list);
+ 
+@@ -3496,6 +3533,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
+ 
+ static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
+ {
++	int nid;
+ 	unsigned long i;
+ 
+ 	for (i = 0; i < h->max_huge_pages; ++i) {
+@@ -3504,6 +3542,9 @@ static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
+ 		cond_resched();
+ 	}
+ 
++	for_each_node(nid)
++		i -= hugetlb_free_cross_zone_pages(h, nid);
++
+ 	return i;
+ }
  
 -- 
 2.20.1
