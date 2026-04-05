@@ -4,129 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E08E64002
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 09:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B2D8E63FE8
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 12:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 397CB6B0088; Sun,  5 Apr 2026 05:33:01 -0400 (EDT)
+	id 423C26B0088; Sun,  5 Apr 2026 08:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36F736B0089; Sun,  5 Apr 2026 05:33:01 -0400 (EDT)
+	id 3D4C06B0089; Sun,  5 Apr 2026 08:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 285F36B008A; Sun,  5 Apr 2026 05:33:01 -0400 (EDT)
+	id 311C46B008A; Sun,  5 Apr 2026 08:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 190396B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 05:33:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD0F8C313B
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 09:33:00 +0000 (UTC)
-X-FDA: 84623988120.23.8CAE989
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EC8A014000E
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 09:32:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=f+xPGqq8;
-	spf=pass (imf23.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 22E8B6B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 08:02:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DAAFE22D6
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:02:53 +0000 (UTC)
+X-FDA: 84624365826.01.6E239E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 87A65A0008
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:02:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qQwwCeNj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775381579;
+	s=arc-20220608; t=1775390571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZwR1TIu4jDce0hEncRINH/njuTEZeMfTqNu8l/0YXY=;
-	b=vcBP2dujpUTDTqDzHU9uPH0YJ9WMlHWpLHWaJvj2LWzXHPu1JM9xFflYluDpwnTt10DDqI
-	h/2fMG1ISSEM7wlKro45Z3fzMwSnsXWD4pHyR1tvtL5ATt/svIZF+tE+pZuSw/E0eQfGvg
-	TkSrkXoHDxpmzUa1qt596GYJEbpvorI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775381579; a=rsa-sha256;
+	bh=VwXIPBbp0EIzPNtpB2Kh8OUpJCymQVJw7CRWHLQnyH0=;
+	b=2IUzgKZRcvxtSBHums3FpPt7WQOONAkg9vKdxxAK4qerF9G1QhOJvkdQhBiDai1F8FzcqH
+	owvHk1mTsIMSmUfcfucd7IEobdYU5XVE16Vcm5T8jSE3b0zer+xyBT3Wu7TKl9KJ5LsXUm
+	Y//XZjdV0JoHcrRdjmuRwCcPSAQN5k8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775390571; a=rsa-sha256;
 	cv=none;
-	b=8K88HCmW2KH/fAbUZWTysgI0vWaNI/lW+sL42BHWiyWwgadRWN57qBHao/4R2qxNehMSdJ
-	P0UqUSD5eB73NAsjC+JBLWREZ80kKb2PWzUv6nfMzTeRSs9SDwBKDX5TLq7rY6CQQZ2FoJ
-	tdgn2KnrTWHVCTfa1XHPsO1H/OepPP0=
+	b=G/pzC1UyGnjDYXC2iuuHssMaOrZNvgcJcqp+4yNBHqKaJT3oOXfg6VDO8HtB/se3wz8S71
+	TZutwT8tVc3ejIQTJpnvn7vJg8yiiG8Gfk9Qx3FuF+Q1G2lE+sc99OfQ9CX76j4GxpMMP6
+	FFjHRhwPya7KMSdlWuwBpKk6nFXKWkE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=f+xPGqq8;
-	spf=pass (imf23.hostedemail.com: domain of zhanghongru06@gmail.com designates 209.85.210.196 as permitted sender) smtp.mailfrom=zhanghongru06@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-82cebbdbdccso1531745b3a.1
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 02:32:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775381578; x=1775986378; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OZwR1TIu4jDce0hEncRINH/njuTEZeMfTqNu8l/0YXY=;
-        b=f+xPGqq8S8c0XSk13WVPNvReKarHBgu44xv+op/mswp0Xo98xhq4jlT0XcZGBh0QTa
-         1FvyTP4ngx0fL3ZaZzm622HJOChgjUQ9ZyjTBwOQVpi5kJ+fFGT9EPLSyKfXM3GvHRBs
-         JUze0S98fJbyrqDQxHi1Ah3m/CR5xFXJkzJIByMxkQ1R2D3CCnrUwHxdzLaF44iu+tGp
-         ZTq2Uv0jXrhu++JdQcrwnJZXJZWzZ7lVLrqJ9r7E1gajBZt8+XGJjqk9svZl0Tmu+hLp
-         BoeGxEoQ5HEM8Q0D7ciiI8aIqz6ECWW5GSE8K0AA8Uhz+cYj1z5q2vxx/6fJRiUnGEPq
-         +A8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775381578; x=1775986378;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OZwR1TIu4jDce0hEncRINH/njuTEZeMfTqNu8l/0YXY=;
-        b=DuIuDUK18c38abo5ugVN+ywkaq5ZiJ1EdAGAbeOi7DeakCUDgMUq2hfDHRDTpXhz2E
-         +L4zG4vSCqNv3+29OcP/xQE2/FWFl0dP+FLP7mS3c/10C3otaAPKIk1CVjYAGFF4/YTt
-         B2y1aQojfCszu8dfzTLtPp/gxlfYETQHDXCMKuaLS08lTvCZmvqqQltiLfvNK75VrfkO
-         GMmTwzrZGNLj6KHDSfMkBiBP6c9DZ4IpqAldSQU16REU0CAalWZuM5SH26fMyotdtliT
-         G91UBmVFBHYWMxU5kbKhNBbHHy87iodftfxNy1BdEt9snOM0HB2kYna9X6STOiRLFB4q
-         JRjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTadkvjDIU69jKPOPqkVl/gmAXapsCyW8iGKVA9h5wTg07uNCuMdd6CUgkGNC3B8YxHcxtOzqsVw==@kvack.org
-X-Gm-Message-State: AOJu0Yz4s2vsYu8ZxUpS7BTg3l0x4ZkuCvbJ5G9ndjUOT9RnBIEqxJDY
-	kKwWX/1dszdglqtx1IwErVmZml0RCP7YqJ6SYDR+rTrpgk021HUVpemG
-X-Gm-Gg: AeBDieuE/ewIGxH40jp0+8t16Pw70OWkU6Uxkq5q+SgpD5Nwhtf6rDIItOnPfYCGAZ1
-	de0E7FNQJy7MTck9pIb+sA2pSjuccCEIkHLJ8yQERltxKeyV+BgDwZD3Z70rRIQT5m40H54EtNA
-	bOx4Hm+Z/j29mhymLW7PC8P+yrAWXnc+1/SIjbLWDT1dz/CxG59uHo2fUMnamvGKIHiPb6DX17I
-	KstSNSprdDwTgIiDMxUY4ifMAMS5ZpTuLsoAzoak6pwl7kV+8wtL8Hc50QscfZFS4dSGY+jM8cZ
-	cUkZnB/SIayHI8AwXR1jzdQCwCG8qmzUbGTWrVaw2JF+QxcGfaBQ76ZmoNox3wF1KHLcgkV8FF5
-	pVjHF0lpD26vZtMM+Am6330dtXeECb+puIo5UBxux+JwuZRN3cZ0yC2vuswkal7yOki7pUWU5o8
-	vDLJ30KPheCID3VKBH6ApOMnUcxYWvM+vDELBLrThlgkvMzUk/
-X-Received: by 2002:a05:6a00:340a:b0:827:2d7b:5038 with SMTP id d2e1a72fcca58-82d001e9e7amr10744846b3a.5.1775381577787;
-        Sun, 05 Apr 2026 02:32:57 -0700 (PDT)
-Received: from zhr-ThinkStation-K.mioffice.cn ([2408:8607:1b00:8:d64:6e36:31e4:3a82])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c9cbf6sm11547942b3a.52.2026.04.05.02.32.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2026 02:32:57 -0700 (PDT)
-From: Hongru Zhang <zhanghongru06@gmail.com>
-X-Google-Original-From: Hongru Zhang <zhanghongru@xiaomi.com>
-To: baohua@kernel.org
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@suse.cz,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhanghongru06@gmail.com,
-	zhanghongru@xiaomi.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH 0/3] mm: add per-migratetype counts to buddy allocator and optimize pagetypeinfo access
-Date: Sun,  5 Apr 2026 17:32:24 +0800
-Message-ID: <20260405093224.3892321-1-zhanghongru@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260402071808.41828-1-baohua@kernel.org>
-References: <20260402071808.41828-1-baohua@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4x49p4tezkxxywp3x9ccrdiq59f5qkae
-X-Rspamd-Queue-Id: EC8A014000E
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qQwwCeNj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E0569436C8;
+	Sun,  5 Apr 2026 12:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E64C19424;
+	Sun,  5 Apr 2026 12:02:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775390569;
+	bh=VwXIPBbp0EIzPNtpB2Kh8OUpJCymQVJw7CRWHLQnyH0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=qQwwCeNj+saJT57yAG47jboL8X78w4/j6WpBJ1RZ4sp8PWbMz7XsL9EDbWtj55Eiv
+	 28aGEHxX84zqCSRKzt5WxDYhK2mKne18FSkXEYY++OZ6+IBYaBKFZkA86MS9bLh9Oc
+	 BYyORiDakrz6RnLk4LVZHvUx8P1LQpa7pCp8fHnA1nA9F6ZvrAlepEALLMXhhTHNG5
+	 7JaVWay0RJB3NcEhdmqtS8VF3DnUGPXm4QkCgawXIaUT/QfRxlFCiXeEIfDZt6r6xg
+	 I3uj6fM0ROLbqxk5+qZJNhPISl9Q1iNQvp6vF94UFTOtVMPHy01bKsqbxAmGzThrrM
+	 mtqWeRGNpMg3w==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 05 Apr 2026 14:02:33 +0200
+Message-Id: <DHL7FCNQ20PA.2K03T8MNSO9TT@kernel.org>
+Subject: Re: [PATCH v4 0/9] driver core: Fix some race conditions
+Cc: "Douglas Anderson" <dianders@chromium.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, "Alan Stern" <stern@rowland.harvard.edu>, "Saravana
+ Kannan" <saravanak@kernel.org>, "Christoph Hellwig" <hch@lst.de>, "Eric
+ Dumazet" <edumazet@google.com>, "Johan Hovold" <johan@kernel.org>, "Leon
+ Romanovsky" <leon@kernel.org>, "Alexander Lobakin"
+ <aleksander.lobakin@intel.com>, "Alexey Kardashevskiy" <aik@ozlabs.ru>,
+ "Robin Murphy" <robin.murphy@arm.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, <Frank.Li@kernel.org>, "Jason Gunthorpe"
+ <jgg@ziepe.ca>, <alex@ghiti.fr>, <alexander.stein@ew.tq-group.com>,
+ <andre.przywara@arm.com>, <andrew@codeconstruct.com.au>, <andrew@lunn.ch>,
+ <andriy.shevchenko@linux.intel.com>, <aou@eecs.berkeley.edu>,
+ <ardb@kernel.org>, <bhelgaas@google.com>, <brgl@kernel.org>,
+ <broonie@kernel.org>, <catalin.marinas@arm.com>, <chleroy@kernel.org>,
+ <davem@davemloft.net>, <david@kernel.org>, <devicetree@vger.kernel.org>,
+ <dmaengine@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <gbatra@linux.ibm.com>, <gregory.clement@bootlin.com>,
+ <hkallweit1@gmail.com>, <iommu@lists.linux.dev>, <jirislaby@kernel.org>,
+ <joel@jms.id.au>, <joro@8bytes.org>, <kees@kernel.org>,
+ <kevin.brodsky@arm.com>, <kuba@kernel.org>, <lenb@kernel.org>,
+ <lgirdwood@gmail.com>, <linux-acpi@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>,
+ <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mips@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-pci@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <linux-serial@vger.kernel.org>, <linux-snps-arc@lists.infradead.org>,
+ <linux-usb@vger.kernel.org>, <linux@armlinux.org.uk>,
+ <linuxppc-dev@lists.ozlabs.org>, <m.szyprowski@samsung.com>,
+ <maddy@linux.ibm.com>, <mani@kernel.org>, <maz@kernel.org>,
+ <miko.lenczewski@arm.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
+ <npiggin@gmail.com>, <osalvador@suse.de>, <oupton@kernel.org>,
+ <pabeni@redhat.com>, <palmer@dabbelt.com>, <peter.ujfalusi@gmail.com>,
+ <peterz@infradead.org>, <pjw@kernel.org>, <robh@kernel.org>,
+ <sebastian.hesselbarth@gmail.com>, <tglx@kernel.org>,
+ <tsbogend@alpha.franken.de>, <vgupta@kernel.org>, <vkoul@kernel.org>,
+ <will@kernel.org>, <willy@infradead.org>, <yangyicong@hisilicon.com>,
+ <yeoreum.yun@arm.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260404000644.522677-1-dianders@chromium.org>
+ <2026040539-sponge-publisher-2b42@gregkh>
+In-Reply-To: <2026040539-sponge-publisher-2b42@gregkh>
+X-Rspamd-Queue-Id: 87A65A0008
+X-Stat-Signature: tpojg9zpp77h3ps4no93kcjuyahnf4ab
 X-Rspam-User: 
-X-HE-Tag: 1775381578-806268
-X-HE-Meta: U2FsdGVkX1+HQcrXZhS+fDjwddbIC21WZ/BlzqR2n3fEvz8zAfsTUiUrSQqvtT4ifp1TqwxUm9iDv0xrqAd6iImCRdDFc7AiUlz4VQIaZESw9VLmSVE9XR+IAeeGatxiNWrZ0Y05LWk4JQ/6oR+6oh1L2LUa+h1+4SnxB003xvfAx0VJXKiNjdSY0byM8p6ep76n15LgnF646Bh2XVXKq7ItsjwLWrVrPfadSUOgW/ffS3rbmMXrvXBJxCSXIfTcx9V7ZzFDfO5PYsBv0/kjbqpHokosITd8PH3dgPAVUu9tg4k4la4vmhh5DClcPtDn5UgJ788/hfAfQq6JU93YczTmaX1AG4P+eyVGDsYWvh2cSt2kfhG1ljtZuofEdG8ZqnDQLQ/ddEOQJ2FrW8qZ/u4OgDoGiFHsYI7xfR+QT3t3+GXmSObNIDkbsSG9a2ihE5wBd95b4xBd25ue6Bc4yK0D0jacACbuWviauITu4416v5XTOzZWwB4seMlTFGHTn8jh4+uaQiORGMbLa+BIGoiw6VcYCDXy8DIuml+VS0xFi/myg7vMjyC3sz472isIFd826H1bZLrgW/+vcwnEHWB18Y35eQgERfzBopQXAHcv7S5PiNliCZmuT54vWV6LUiGNxdYgoi5Nfap/1y5bdgISg4uimIbuAU4TLd6WQc265n1Ye0yNssjULEtQndzu5eIYAgj3B2ek7C9FWASdvrzTCoq26l7yDw4ZON74ck2UK3G/JW6o1swg2X2WDYz75bSBtHFKK8a0/pHTi5Ysw4+FfHm7ZMqWGO+D/uct1CanTQbtjnOUKAenfSJtFNz5GITRo9w6/xXAQop8z1Qwa6wJqUAlibCC25x/gYIr1MwIH1wP7eVe6BDGg1xHdiazwTU/QZ0bWzkEfhPTDPAcTcwd8cMIu2ZkqzjrgGKd+VyFwW7MGFqfRQ0OakmXu/4Ql+yy7PpvvW1cmDlz6IY
- dLgKXbn2
- zvoebZuB7l/RgsG30j4tLZ6fd18qgxDvdoWMB99qTGQqmxHF0KTEB8sWfXZVN8O6e0pNcPDP4G/b/7Wj2/WX8fMC72jt5bQNLTzDhwUBXyqHfvBgNO/Rj+KJqhPrCM72SnM8Q0fdbDZw+Sg/nXYgxlwoQo6rGMCrZSJMe122Lfpi5drwkIlYhWhGkaMiXJHJPyTqJmHKANcSGp8kwkF6gkeZgL/L2slfOz8ZkC8HvjICs/GPOC3FH2laPYpcbd6lLEp089JlQQ9rLRxNxGa8+6i/PUpVoDvLmKKde8BHnytMn/GVGJy5l8/tuXtZ/bQj1hyNZjUqs85jaLM5Z+1r853NR0Jjf2EAxuYeYqk3aesLkjIUZOR8u4XcgmIn/LBNwtek9hrZxKgl5aiMpkdC78Cr/FJ+mkmyM6938YjdoOPvP24uONrh9ZziUohf+MAWYjlLTSx34IHERCGzsHTruCmUlxr7AERH29KZ9c1b/aN+zf6mab7+OL4kTosCKldE31rJa2btZ8kDMXrI=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775390571-82864
+X-HE-Meta: U2FsdGVkX18ipKvrwoUbb9ZXyt7nHMfo7HeOT4+IeXeBZiRiX4bgG665V9+hgXbfwYJP1jHHWW69Hcl3C0uqXJ6UZ3RmFDxjRsoZ1t7lu9MsH4xAJiTrUbBsojoIKYLQdTWlXUYpJT2lT49e2MpBtKO3cduUog3ck7AztZCWK/bH2O4pi1LkA4oOnb5xLOmPvkGL/9706jF3CBor+k49axfDtGSaNzZcC7/o7cs1QyGneL3FVFkiPJvb1e1rCGPAjN9xZBk6YJlGyj9/NLfitDZuHMicJVy7/R/OfqmzX06cynst2rBhYmTf403lnz66nUx/Kw92G9uQvkrlok6omhdLguwIroSXj+vgjZfkz++aHV69kyMFMusinO1wLWpKJ6P91ZD0eBZldmjAC1O8n9aOfolmP4zu0t1FBNAB0IwfO4AlxDkTyCqKoq0qWTVaw9ynwTwjxClMWx7TyHsTOVE4Ljz2EZ7mHE5jgUMxecqPNkwxNTk89QpJeJPyEH+VEUTA7jtrSPIeJWGxzFiCTql7ZYUEMOSbZX2iw3+o8q2bXtuCPOtkwkoOc5pBD2exb+uBS22xtAIgRql2F+LY9j1hLFZCvs+fqdt8BgHfMe23+YQV0ZFo7e6q3HbqSDUQ9DhKSbHU7OBZ5YmgQw4708CfU1w4eirNkiImRathuFG9SINRHu7gk1ETZIhriFYVzE+8+JEFKZFETlJdzLo8VEAJmkDM7u7uS5dFjoxB3QhjeO0sOBsaDvxqW/s/Pc9o7U2kGVSRm9LS2BwuKt454SMhgMv44urO+lCsiJBWSoXfD2ZmDMgs+2DIIHmf0X9xgN1usWhbrFy7gpQz/RhV5mPqNbc9UGHrrF1DDnFGo6Hs0aaM9tTlJePFmgcKDNdUrO309w+TqUvfrRTFIewmBKegRNdhabzxN1vi10cKLei9Rvt3+5ncC3iRFXxg4I/E+lHR64T45zPQCZdwMtL
+ bIvrIyD9
+ HCQzHvih/rcxwomoyvwFcjzrJfhi8kFhYXoAPDG1ce8yxGJRejcwDCJJs/SVYTQdtETAcexHnZS8jdM3UoAgWbmlaUPoKX2YJFjEYd3I721zszq8vsvpqLA812Oru4MdmlmqL874prqkjdYl+uE/DYghinVX7Hntpmo239fk55qaTQUNM17ciDBg+NjX4YXoFIONrI5s2sj90sHDR7HDbcFtmhQJyigFYjXaD6aF9DmSNLcWIlxMH/JO/uguG7DQR/q0aHP/EzP8XBDbwflTVRN059e73aBIHEeS98P/0yjzNEDq3JRAv+90ZKwAXojxSjQvMtFA5L5/WNZWd/VFfsnp6R+p+0xcxLmWWTv4MtkNTjUkn0SvmIyULnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,109 +126,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Fri, Nov 28, 2025 at 11:11 AM Hongru Zhang <zhanghongru06@gmail.com> wrote:
-> >
-> > On mobile devices, some user-space memory management components check
-> > memory pressure and fragmentation status periodically or via PSI, and
-> > take actions such as killing processes or performing memory compaction
-> > based on this information.
-> >
-> > Under high load scenarios, reading /proc/pagetypeinfo causes memory
-> > management components or memory allocation/free paths to be blocked
-> > for extended periods waiting for the zone lock, leading to the following
-> > issues:
-> > 1. Long interrupt-disabled spinlocks - occasionally exceeding 10ms on Qcom
-> >    8750 platforms, reducing system real-time performance
-> > 2. Memory management components being blocked for extended periods,
-> >    preventing rapid acquisition of memory fragmentation information for
-> >    critical memory management decisions and actions
-> > 3. Increased latency in memory allocation and free paths due to prolonged
-> >    zone lock contention
->
-> Do you have an idea how long each seq_printf call takes?
->
-> Assuming seq_printf is costly, printing while holding
-> zone->lock may be suboptimal. A further optimization might be:
->
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd..f501ca2840a6 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1570,6 +1570,7 @@ static int frag_show(struct seq_file *m, void *arg)
->  	return 0;
->  }
-> 
-> +#if 0
->  static void pagetypeinfo_showfree_print(struct seq_file *m,
->  					pg_data_t *pgdat, struct zone *zone)
->  {
-> @@ -1611,6 +1612,63 @@ static void pagetypeinfo_showfree_print(struct seq_file *m,
->  		seq_putc(m, '\n');
->  	}
->  }
-> +#endif
-> +
-> +static void pagetypeinfo_showfree_print(struct seq_file *m,
-> +					pg_data_t *pgdat,
-> +					struct zone *zone)
-> +{
-> +	unsigned long freecounts[MIGRATE_TYPES][NR_PAGE_ORDERS] = { 0 };
-> +	bool overflow[MIGRATE_TYPES][NR_PAGE_ORDERS] = { 0 };
-> +	int order, mtype;
-> +
-> +	for (mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
-> +		for (order = 0; order < NR_PAGE_ORDERS; ++order) {
-> +			struct free_area *area;
-> +			struct list_head *curr;
-> +			unsigned long freecount = 0;
-> +
-> +			area = &zone->free_area[order];
-> +
-> +			list_for_each(curr, &area->free_list[mtype]) {
-> +				/*
-> +				 * Cap the free_list iteration because it might
-> +				 * be really large and we are under a spinlock
-> +				 * so a long time spent here could trigger a
-> +				 * hard lockup detector. Anyway this is a
-> +				 * debugging tool so knowing there is a handful
-> +				 * of pages of this order should be more than
-> +				 * sufficient.
-> +				 */
-> +				if (++freecount >= 100000) {
-> +					overflow[mtype][order] = true;
-> +					break;
-> +				}
-> +			}
-> +			freecounts[mtype][order] = freecount;
-> +			spin_unlock_irq(&zone->lock);
-> +			cond_resched();
-> +			spin_lock_irq(&zone->lock);
-> +		}
-> +	}
-> +
-> +	/* printing completely outside the lock */
-> +	spin_unlock_irq(&zone->lock);
-> +	for (mtype = 0; mtype < MIGRATE_TYPES; mtype++) {
-> +		seq_printf(m, "Node %4d, zone %8s, type %12s ",
-> +			   pgdat->node_id,
-> +			   zone->name,
-> +			   migratetype_names[mtype]);
-> +
-> +		for (order = 0; order < NR_PAGE_ORDERS; ++order) {
-> +			seq_printf(m, "%s%6lu ",
-> +				   overflow[mtype][order] ? ">" : "",
-> +				   freecounts[mtype][order]);
-> +		}
-> +		seq_putc(m, '\n');
-> +	}
-> +	spin_lock_irq(&zone->lock);
-> +}
-> 
->  /* Print out the free pages at each order for each migratetype */
->  static void pagetypeinfo_showfree(struct seq_file *m, void *arg)
+On Sun Apr 5, 2026 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
+> Anyway, this looks great, unless there are any objections, other than
+> the "needs to be undefined", which a follow-on patch can handle, I'll
+> queue them up next week for 7.1-rc1.
 
-Yes. I included the data in [1]. This seq_printf loop costs about 5 us on my
-machine. I'll look into optimizing this in the next revision.
+Sounds good, for the series:
 
-[1] https://lore.kernel.org/linux-mm/20251201122912.348142-1-zhanghongru@xiaomi.com/
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
