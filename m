@@ -4,100 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77257E9D805
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 15:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4037E9D800
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 15:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 014866B009E; Sun,  5 Apr 2026 11:12:42 -0400 (EDT)
+	id 656B76B00A2; Sun,  5 Apr 2026 11:12:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2D7A6B00A2; Sun,  5 Apr 2026 11:12:41 -0400 (EDT)
+	id 62DF86B00A3; Sun,  5 Apr 2026 11:12:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF5466B00A3; Sun,  5 Apr 2026 11:12:41 -0400 (EDT)
+	id 4A6D66B00A5; Sun,  5 Apr 2026 11:12:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1966B009E
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 11:12:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8CEA4C3718
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 392A26B00A2
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 11:12:42 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7F3813C05C
 	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:41 +0000 (UTC)
-X-FDA: 84624844122.13.D040F2C
+X-FDA: 84624844122.15.B75E24F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D81A940002
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HqRwPwfr;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4744916000C
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:40 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fvmM9ifR;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fvmM9ifR;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775401960; a=rsa-sha256;
+	cv=none;
+	b=uH/D58SAVkP/9f9oyIuVeQgvt3Sv8+QE3XLtNLPv0YKK8uSoH33fy6XyXGb5HUIDsVpOre
+	5LZbnn4yFOXWB7Wb0LYLnZU52ZK1L35OxQBGcy0gHxqMPK82VAqd+0AyqBg88Z97sQCgCc
+	ZWXS8gwc91ZjwZpSl4JQDdT/wdFHqyY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1775401960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=21sdvKbt5sXQeuruY4QQjY84kL9SegytBsvmB53RIu8=;
-	b=nQ3UYZe2VEsJOnvOBshIN04OKhhNLpXFrQwF2Tf5teS3gFLbh1iRmlCD5BiWXsOvIVCWL2
-	7fq4ly+BzWLN6IRxI0lZuS7HigAUMxaJfCbpHMWhB3/hAPXMTdkJMyNPC/W2yRo56iR0eo
-	zlce4oagf5zWDTlQbqfxy3FS3Duxlqg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775401960; a=rsa-sha256;
-	cv=none;
-	b=bnt2Q/Hf2sLzYVfwSQJD1RQLpl1B8vHYL20ij+elIuoDVyW7TTok8dLzs4z8MOLb6ZifTU
-	xcqX5JpSSvHW6eVi9qCl9E19fc4mxGoLfVfxJ6V7JcW9eGvIhRbSc4Fkkof6t5ENM0iJJ9
-	cHyUK8FfyB330ubclphXIGi/d+G+L+0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HqRwPwfr;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=GMUCrJ+gvGwaDfmPiXkEDkPCzQINbFEnETxptdhOtNc=;
+	b=nR894MpdkEKoERy1pH7dLeBoF9C2GtuVruryOftKHIy07V/W2aDqs5tSzk2C3ukCwrGifg
+	egWvRtocSzorcZyCgAyUWEJSKs0rmebXFg9CrUrHUzjefnyNDCNQRZcGhdPkvAgEK6BzTl
+	5AXwG0leBbhPT34FUFr43x0aJBQzCE8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 139A64453A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6121E44521
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E84AC116C6;
 	Sun,  5 Apr 2026 15:12:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC7CC2BCB4;
-	Sun,  5 Apr 2026 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775401959;
-	bh=fJkIAWWlo48QPdeJ9YXUoXHCIlYHiM9shoj6TYfrLSQ=;
+	bh=WgiRHi50zFvHwjFSQiNfyV/FQHY8WOkdhFM9Jv3jqj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqRwPwfrwhJ/63bWf2vkpgwtkqVRe3uYLDEi9gGJjlNCVqjoJxIB7gNGzAHTGUeaR
-	 IJzmDqV4oRrrK4Z+gWcpaOCTvUcOUe4iZ6sKXbM4b9LHyRNqoei4lOB6tykPPvvp5I
-	 wLDVwCDwFzE+Wd6P9kS1G9yusffe7qEPtk3JgeJcdK7SSVynnN3AlqCqDP8iTe9oz5
-	 oWb2YLy1+3Vu2JXTgFnGC5l/Mc661y4XggMFuhR/vHhntoLSXafb57tlyQpmlgB2aQ
-	 kiC5LH5wMM29/RPepVQdkAg1w1L117gR0OrwlXh5xAPTx6DN8c+Q2DzmRha+X6GU5W
-	 Og9lNrWXGZ2fQ==
+	b=fvmM9ifRdqTUlbXZYONJVHYmVCM4l2anuYGYIg+r2Pviuj0/hKVDWOlJGIOcqIG9k
+	 vI4PTFaOH3/jsI2TQMiIqX01w60c8fAhKHQLAKftkWzSS3q5+uZnMuxTa8FGn7ZBzB
+	 Btd3uLanbnFzBXAIdusN+gZNVIdpI7bOkdBIAgITYVoiT6aYlg74KxroWgm5wCY+UW
+	 faP86iiDJA2elH6BylyItD6jnqXtJQmE9kbt1mHC37RI9swAoYm42ZXtAUgZxtT89M
+	 xy6nJE7GMlRC0GQBQX9wjOQH4kyw+Vq9XtmpKp4svvWRVGu5A0l46YUbfTqvmZh4bM
+	 o5jjGIjPyMm5g==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 4/9] Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom} files
-Date: Sun,  5 Apr 2026 08:12:22 -0700
-Message-ID: <20260405151232.102690-5-sj@kernel.org>
+Subject: [RFC PATCH v2 5/9] Docs/ABI/damon: document fail_charge_{num,denom}
+Date: Sun,  5 Apr 2026 08:12:23 -0700
+Message-ID: <20260405151232.102690-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260405151232.102690-1-sj@kernel.org>
 References: <20260405151232.102690-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: aczzjmwmntek7b8fb4sewog8mu3nqkez
-X-Rspamd-Queue-Id: D81A940002
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4744916000C
+X-Stat-Signature: kjszxx91gruyjg7sq7eqtbyj7o6ksk1t
 X-Rspam-User: 
-X-HE-Tag: 1775401959-268504
-X-HE-Meta: U2FsdGVkX1+0kwVps3Vvpl5wBtiaex1uRagO4wSL6FxsCtLDjwtRmie0JDmKSqgk9Rt8kIVfkyeGoVG0kUyOp2sN1p2laHWInFYYglh2wATSh1V5/iEPm4afCipVKMo0VEd33BnPfhQuw52s3pcC87HFJcmdo31pN7arBdaQsGPLT+rPUFDgbxOI82PNK62rwaczRaDcFxGTX4+RwdADrjgv0SSFAJ3F4jhXnAjtDfEtFJMZaV6D+ad1pvxy1OqJs9Sq6Sjx+yV6ORCdAX8Of9ymUBqzBoDkrDYLNoVsNHctV3TqiA4Gz821ipvKJGv0S9YEwB86oO97Qx9Bs7AAP/CT+Kow2XsDaahVf7od2Yl2L8swXAtlxU0GySFE/wsWOC47jEtTcsa9ghbl2skokt6CnmPIWTv3Hv4vT9cRmpKdnk2Sg/hrFYZtdtH3iHEqNiLuRUT5DJYcpeaux8XUOfg3pCkAcWnnOg0fz2HVosMvzBFhNYVISBesYhzr+KNuQbexDfUwep4+QnxjA4gySoKy3bj0Qvz/DFErhSi4xAIaSIzzR5AnW8ZENMNdenv0BwHGV++guQ+39xYskebtSrgOPj+XpAbLvuodg68HUK3JMFuRVQdH6P9ckD6ZwqWtmo3tuvQ0XymoKlPlD7socHhJxR46iNMJU4429I6nn0lwh/DnGq90veLMrJ5tBfvmMDahBi2AF+cpunJtttknxkcfsbP5CpXTqcfj1BcbJ1Os5Msa7MZq2g97bu7b6UjDJmiN3MCgwhpVVaXHMqdLCUKD4TNqtWMDQ0pH7pt7SOa6YdDalj6Reqdu4c+GbkLRVrALZWMLygFpuKJ7I2gist8bzSPLPITupVwdAJ6BXZXpYoK6DpCvmW4NK3q6LV116/m8TXLpMpU605lxUXAtHd3VExIwv/O8jBWPEi8QrA7Xb0tLbWSBJyTKVt8x+YRYbNrXH5Ozy6unSliME4l
- G80jMwph
- ZZQPnEk2joOB7xSdtBbmVXBZD2R3Nwek5E0qtWar8k2R6sh3ySA3yVolQowJvsAjWsFBwiV5pbBrGWXU3rkJedjYJLw5JMIKwCLKM+k28PUsW+Yj18fuJTlWSew0YDQgutr2DBJqvwTmg3fmOLjvG5gy+qs3JPZryGGT7qNzjP4Lpwgou3wmrCusLHzLvouuaaipWC+bGAOrdMCPwVdI8dO6njHAsG3Z6+ZpAniD0rNlGoOfsvgq4niq8wjtdwOxRyfq5MyJOaY4Xt1uUprdJGMKbkrcU1E5mbzOD8HTu0ggZRq2kK1PC7taxJQ9dY3VIXAmg7qzZ+uCDZQFzoB63t8IgWBVCJY5L7BnwWHmNZqFNCNuX6l/jwc8Kww==
+X-HE-Tag: 1775401960-162391
+X-HE-Meta: U2FsdGVkX1/PQXiHsuoQ7I1TeBCfEh8yq3qvkDVv59PIiuWpFVfznw2Gu4L01EMAoEtLqZDLCNYmxaPlIsAAcmHUAxz74aSJZqpSFhvZbDXiGlPaynW6oRhJ5wN4PA0Ls7P/axuyCHJdRL8THu6/bgnFeRrIdberadv3Tip8hK0CbB7eRrtsrscVF73HjDhryFDFVK2+XcVI1usUz8Fcd5M6yHqdl9VVQh8fF8BNBNsLOR+Sp12dPRAffb7uCDfnEqUEWf8RmTBH5VArdNmfgEK+5IQyfZ7/CclFgeODdieTzE8gAHpZEoxXN9Jf8cIjoA7uwN2SEkmbDt6nX9CD8QtGIHAlgaygINWoUzSrtQ2Ir1M18diQbOB5cqdbl5Jlc3q1UBPVUcODT4HAUu8bB42KseyebNjaDHLIpUBZx5Fd4Nx6hs0wp05SlBhif7dXP6iz+xmV9mgv5HEHiOIYHEcY5sBgoWFAdiPVjcmiMuE26RV5NBhPr+AkqlRgDV95ovQVh9cTb15ea09/sx0csLx5oJp59WF8dnYz9NS1p/WVPA4LRWR5onh13xLT31D8I2CnVzqX6NMXXgNoN/Ys4CIcMPPp4seM0X/R51ZJS62tjKJXLORjfKq5p4FaiDu3wYiPhEAHcmYkKi6Ld0768qadsj2gVtDrjytq9n+J6Xa8BSyv7QZ92UB0ZLTpPB2pmexLhA11I9GxkPlj+j9ToY6PVcXtbqlJR2L4pe/zOg2XzLJK5b0OaDFp7IaI0/vSjHv5D4QragEuzJbwlr5+5Kpdy8m8rfBwn0F6NiTrjyzzwKGaVIAdK1ibWjxe3S1DCigt5T+qiLGHWyDsOmwia0Hg3s2oPiwp2lxcw3cgu9LAFiwYlIDY444DDp3ryyf/didhM7cyLvIQ0bQeePWxCAVTLfpbtZZYf0Ss9vuQm8LwQVW7exOwFT5VeATzU0sEM5fc8qQljJ0HmF22P9p
+ SwxasV1s
+ Ry+gaFgLNivlbvIk2Qtb6J2ktk/W4hzsLQepjPi4kUPhX3hrvgMr6Jmzffbhj9MHfVZPyDSiiD2TMnfWQr8eVGkiL2yymFvvgunYB0XBKGOlEJKBN/Wrwnfh3rxlq7/OSvGAKg6YDEP0LZRxSQUXRKR8RluPzQKA9oK4zw3xm5vnkhom2qEPY/eLRd0vZffa/xHn1AUk+JTxvf1bg35quKa74z0aP1TCKNyUsMQExp748BHhGfB8plSZ1BLZFFYETL5AKh2qUn92fz1eygNMzhINKMkBQiI1ZmE5UMcXz8hhIJaPQ+7cwS2u29nPKngog44EddhAGcnILOB7PybY2+m6u5bGGCJNkSCl9lL/FpszPwpwzcgIBLfuRRXnaQjIWlmgu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,57 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the DAMOS action failed regions quota
+Update DAMON ABI document for the DAMOS action failed regions quota
 charge ratio control sysfs files.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ Documentation/ABI/testing/sysfs-kernel-mm-damon | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index bfdb717441f05..d5548e460857c 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -84,7 +84,9 @@ comma (",").
-     │ │ │ │ │ │ │ │ sz/min,max
-     │ │ │ │ │ │ │ │ nr_accesses/min,max
-     │ │ │ │ │ │ │ │ age/min,max
--    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes,goal_tuner
-+    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,
-+    │ │ │ │ │ │ │     effective_bytes,goal_tuner,
-+    │ │ │ │ │ │ │     fail_charge_num,fail_charge_denom
-     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
-     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
-     │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
-@@ -381,9 +383,10 @@ schemes/<N>/quotas/
- The directory for the :ref:`quotas <damon_design_damos_quotas>` of the given
- DAMON-based operation scheme.
+diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+index 7059f540940f0..971c22e34e722 100644
+--- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
++++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+@@ -329,6 +329,18 @@ Contact:	SeongJae Park <sj@kernel.org>
+ Description:	Writing to and reading from this file sets and gets the
+ 		goal-based effective quota auto-tuning algorithm to use.
  
--Under ``quotas`` directory, five files (``ms``, ``bytes``,
--``reset_interval_ms``, ``effective_bytes`` and ``goal_tuner``) and two
--directories (``weights`` and ``goals``) exist.
-+Under ``quotas`` directory, seven files (``ms``, ``bytes``,
-+``reset_interval_ms``, ``effective_bytes``, ``goal_tuner``, ``fail_charge_num``
-+and ``fail_charge_denom``) and two directories (``weights`` and ``goals``)
-+exist.
- 
- You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, and
- ``reset interval`` in milliseconds by writing the values to the three files,
-@@ -402,6 +405,13 @@ the background design of the feature and the name of the selectable algorithms.
- Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
- setup.
- 
-+You can set the action-failed memory quota charging ratio by writing the
-+numerator and the denominator for the ratio to ``fail_charge_num`` and
-+``fail_charge_denom`` files, respectively.  Reading those files will return the
-+current set values.  Refer to :ref:`design
-+<damon_design_damos_quotas_failed_memory_charging_ratio>` for more details of
-+the ratio feature.
++What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/fail_charge_num
++Date:		Mar 2026
++Contact:	SeongJae Park <sj@kernel.org>
++Description:	Writing to and reading from this file sets and gets the
++		action-failed memory quota charging ratio numerator.
 +
- The time quota is internally transformed to a size quota.  Between the
- transformed size quota and user-specified size quota, smaller one is applied.
- Based on the user-specified :ref:`goal <sysfs_schemes_quota_goals>`, the
++What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/fail_charge_denom
++Date:		Mar 2026
++Contact:	SeongJae Park <sj@kernel.org>
++Description:	Writing to and reading from this file sets and gets the
++		action-failed memory quota charging ratio denominator.
++
+ What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/weights/sz_permil
+ Date:		Mar 2022
+ Contact:	SeongJae Park <sj@kernel.org>
 -- 
 2.47.3
 
