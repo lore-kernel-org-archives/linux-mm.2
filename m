@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4800FE9D81F
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 21:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC495E9D80D
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 21:32:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F2916B0088; Sun,  5 Apr 2026 17:01:36 -0400 (EDT)
+	id D6F1B6B0088; Sun,  5 Apr 2026 17:32:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A3936B0089; Sun,  5 Apr 2026 17:01:36 -0400 (EDT)
+	id D1FDF6B0089; Sun,  5 Apr 2026 17:32:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B9E56B008A; Sun,  5 Apr 2026 17:01:36 -0400 (EDT)
+	id C35E66B008A; Sun,  5 Apr 2026 17:32:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BDFA6B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 17:01:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C33CFB3798
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:01:35 +0000 (UTC)
-X-FDA: 84625723350.27.15A367F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EF4F7C000D
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:01:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WAiib2j4;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8456B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 17:32:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F6B01B557B
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:32:03 +0000 (UTC)
+X-FDA: 84625800126.18.A674C96
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 820AD180004
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:32:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=mj0ITPIW;
+	spf=pass (imf06.hostedemail.com: domain of create0818@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775422894;
+	s=arc-20220608; t=1775424721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xD2ijl6kjU9Jufm4HD2R+RdNN77vrLnwYQ35SAmnE3E=;
-	b=7mA1VBAaOc4UtjstsZkspDB5/MC/vx8o4I84FAY4LygQNrIEh4Apqhf8Ij0t0RyUXRM52B
-	mHNOuPK+l09pRQlp58jIiuDS47w7nv2PQQKr3Y28OmV4Gl4FIgyAPyfv3BL8CDMxQiyWLA
-	qUNstpTI5PsSjRspZEMDheVC/AniSIU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WAiib2j4;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775422894; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fTm8Ymb+Z1XqMTFD8Vp9OWwDvEBHALKL1c3yKJxhXAE=;
+	b=ZfxVwwIdwz7i2fWnNY30b+wz6CPiBiOuU5xQK5/Vy1owlxR3Pb6s+0HEPhb2JJf0RYLk8/
+	kytZi5OO+5RjtCaHNhc56usazZWoXi/LAXlGfbeefojEcVtvYgxw0QZpH8p7ayIkL3zRbz
+	Qx5w0UOAZFDwWVq5dC1epVgi+SIHH0I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775424721; a=rsa-sha256;
 	cv=none;
-	b=UUiunabd/qrndLhqhtsUECUQpS1+Hj7EiarHERR2xm9gUr66f/acJtba0Lbti134g07m0C
-	3AUjewqaRtZWo96fSk6c7mlvLvXwJS6B3Z3314agbWfvwZrEvH3fz/UIE6Kr5gWAUsQy3D
-	Raq1T/lDg/wsa7/oTA9JImFuwActqeA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5561F600AC;
-	Sun,  5 Apr 2026 21:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE279C116C6;
-	Sun,  5 Apr 2026 21:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775422893;
-	bh=oFxLOMzSfEmFuQzpbU2wJsRXZ/L4FJB5kjwFD8u82vI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WAiib2j4dceJ0uQ6xwL4ELoWHNM3mk0p6lKI3lcYW3qRukS3sgrwt4wlrfBcwN6m+
-	 P/uk3Ur9qCeFo29pVB5J9R7WvkGxVPrT6hI/BzSTeXbDNEsvRr+QY5uPinFM5OOaFi
-	 uKp6uh+6wiYXfB1ptl0Mr/ddZSHIb1si9yBC9/rs=
-Date: Sun, 5 Apr 2026 14:01:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: xu.xin16@zte.com.cn, david@kernel.org, chengming.zhou@linux.dev,
- wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, Michel Lespinasse
- <michel@lespinasse.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a
- suitable address range
-Message-Id: <20260405140132.3a518740c6c1d68843f44aaf@linux-foundation.org>
-In-Reply-To: <02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com>
-References: <20260212193045556CbzCX8p9gDu73tQ2nvHEI@zte.com.cn>
-	<02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EF4F7C000D
-X-Stat-Signature: omemu7dqwexm9yq6x1pp8ncyxbts8zpp
+	b=opMxPBqcK/ywdph7ZrHr2tTLE/ndJbe65fSxvTR9pwi8iHjmAbxmReuxbXsJQtXkyoTQH9
+	xsQFxEbCyY6Y5MFK3NyRUkdnX7Z8d8AKfXRHWo9OExJAo7jjImNHivIpQs7nOIQL1HNylD
+	91hmSD3uJW9IEU39MHxoJ0R+2KFiwmg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=mj0ITPIW;
+	spf=pass (imf06.hostedemail.com: domain of create0818@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fT
+	m8Ymb+Z1XqMTFD8Vp9OWwDvEBHALKL1c3yKJxhXAE=; b=mj0ITPIWmn/Oo/KYTd
+	BB06VyFwUBQSIie+Djgp6+w0psQewnDP+VYPP2J/uAIoNPqQ2QEEAUbA1v+138B5
+	feQoSFc7z5qyqWcZkJpmqVeKhRRx/c7UPurwy2W79bgVQ0dU1kFNBQsSMvrkEz2q
+	W+I2JdkVfYsbFjbmw7tKnT3JE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCn_iy01NJpqzIwDg--.39331S2;
+	Mon, 06 Apr 2026 05:31:34 +0800 (CST)
+From: CaoRuichuang <create0818@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	CaoRuichuang <create0818@163.com>
+Subject: [PATCH] selftests: mm: stop relying on killall in charge_reserved_hugetlb
+Date: Mon,  6 Apr 2026 05:31:26 +0800
+Message-Id: <20260405213126.1161-1-create0818@163.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCn_iy01NJpqzIwDg--.39331S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCrWDWr1xGFWDXr4rKw4xCrg_yoW5Zr1rp3
+	4xK3Z8Gryrtr9rJr4kGF4UZrn7Gw4kXFyIqF4Fkr97Zr13GwsrKF1j9Fy7XrWxurWaqrWf
+	uw4Fvw4v93WUAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_zuWDUUUUU=
+X-Originating-IP: [39.156.194.234]
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC6BdxqmnS1Lce3gAA38
+X-Rspamd-Server: rspam12
+X-Stat-Signature: khfe5csq8grwmfg3qwk7ajkkmtcbxh4k
+X-Rspamd-Queue-Id: 820AD180004
 X-Rspam-User: 
-X-HE-Tag: 1775422893-609963
-X-HE-Meta: U2FsdGVkX1+TJpEFG8TJ/HNSx1RvxonYicELmevUukQNQDs4w7ErHB2dEQyPdcHTiWwKK1R6TNrAUhTfLCaghOu9yMHV14ewStC9Nun5t5micD8nniDDcsfemnQLqAeT2HO9XD9SlW9ynC7bL+A9+y6OkZcsnRlnfopRDWR85o+heAMcoq15MZqD3zWI5JXbPAI7tnxuY+wmWy7abfO47N/uSaL4X8ojYBMJ9NzBxKlDLx82THWAUcZY3PP1Q7u+UMnVPzotRxrEx5+DzpL/hAHvSdL7KyK35kgEx8sWMgjgLpmyFeUvXXwQFEes+S/F0ARX8+oKY/GbCf2cNihtK9bO73KUDvN60puxjiLvf6AW1dqwv0fop12+ImBeTZUj+ZGjKsteyc19d5UpjLs903UeUvO1vo0qiPm7iwaQsIO0/fDf42fDDPCwvthtjvhrXZFhuy5n92j07z/lBhkrEqxWhru+X+JCBmX8eXgriyJ31Jo3xriZNy33tbZF7prujU51R39OO/+d7vbnRO3ZNrLtqAwFotLGzLAOd36W7zbc1L/TJ2+tCrktLe/I4f4PE2nSspzMvlBtGAe/1HVqYOxDYErZbFlp8p/KTFaD8viulzxcm9lHpC+RYFYupTNWPS7KBsybTkFZuRjmm0uxmPK1us+Y2gehSuwwXNgNGRMue6e1KQKfmfx6o69ZBZ1C+Fc1E1fVF3bZIYn8zp5SeOw2YjtZRHPnQ7aD0shvc7U9yahkvTZFWWPWA4jb0ayTy834PXXV34dURdvEo46hM/wOFlg3fikUUv4I+/nU69tUxPnhntmqUdmKYKTpAWW84s/APnF6CIfaxGoIbMzSras3kJ7M9gblRhu/UfU8k/GP3Vx0+BkJXsUY6QB5FXWNJah/MjUYvn5KukzoDZ5j08UCnuxhmvZf6aGEOQdyoqYHxUio1EWqP32/OWLgImbCWgD/FGlHDCCxWM2vwc8
- BdBEUhWn
- 1BHZK0YSK8ZYDlY0U6LW240hPrd/va8iDd8LvJxYJyVBFKa55V5lzaB9+blkM64yGJ8dgNuhvd2bC9u6reqOzZgQdIOPK2HbBxlmosbSsaePK9ScR1z+jcT+5lc80WpoaRZ2E/M5m0aYjsHkLl6/x6uKcUSfc0KeM6q2P/s6gKr3vUpEIfZzmnqCQxqMai/DxPhbwOdFm/IiKE5kni6aWzNwbg21oStvVhzIPfko8H5xuTWw6poVusaUF9fw7ZhpmL5IVhp1CMbYqkUCsd0c+zzUq8LJsMrG7b2e6gMquxf7DbQ/hTzEQ/ErQmfQjIu+6l3zM
+X-HE-Tag: 1775424720-850901
+X-HE-Meta: U2FsdGVkX1+H6lGDVCh3bgqqSOy9OFLU7f+z40snSDxL9B+ymdciIHdhGOrR42g1/JYIcTSU7fcaKpKr6k/NSBIMvKEKAdUHmMe7fVoiXi17NrCza9xnnhRDTDDsJ4ZRgM3tesP83yDwNFvSvFadlD77vC2wcOJj2snHccClkTnpJXyMzrp0z3MIctiwH1i2c0qzpjz2pKH1m7fbXlfMd2e+JnphsQ85cPDHXnugF2t5PNQiHpc4A5xbmYT09L0/7CIXMSMlZxgAwfSeKM8CIJ51oek1YNBXz8ruihNJm10hQS1qU94/hXxunCRqw77njra9udyAzVmEeiYEpfubEAsp7XaeY20QgSbHqj4syjnvgO6VB9FARu+ySHR9xxuXSgNO59qkVCFmnM4aeE2H4KO2zm6UyCVcU3jivb7ZMqBYLiVBft8OmFkX+BO7ddX3cagxXM0aUIfht2WzFNX1tHX6YCAYf/+nWdJpvV6g7BXJSRAhOMTNgAKspTrzOXNQK3YXWCuJTyBSQ/jVbLS1c4AX3z3DJs0kHIx84UB0rEyf827woQ+qXSbFUEYjfj1cEmtZt50vtNj1McrRZw7+SBA7xDwrNqMB8dDd0vMjIkGUOQBl93lB0gpmqPBHjQBFjN6j6gVjnChO5/4bzN81DRHBLuk6poJEGBLAkgslonxuyBskCcc8ZErFuNPNALWGhwTzCxzepBg9J4zoyTp3oSkye0O5c2Ey4GXwlX+vxRkYWM2u/O1JltK2pDkkvqTi9YQhvSO3N/q54f52LxrD8IZ+Ol9BpIbN43wPOTkDSi3whAlhexjuTBr5QaYaDMRNzbFnRgEulzA3DpEpZ+sRk9L/aZ7pjXNZnxiUY24+bVzbGFdg9ARBG01IqPGHDOLI0PWdTVafeex/MwtTjRw5jzyWlyL/lMoVWmDUIBXHljTCTlDuvF8dMPwrsWtpCc/rnJPdOyG0ksZDVn5/f0G
+ af1N/l/2
+ d4nxSdQxaIgQO5yPpmwH9KuOeo34+T9PcoqcYm34/NrR8BbHnm7Btsp8oRohfqK4dCrNl8llkdLYKSo93/yosM4al9EDAjzfpFAU33/+q/nvGWQgd2bZuDSbDTnInDeHOY1mcFrb8XJhUPUJkNoyS4IQOr7kr65uBNS6L+EPvaJOT8Acuf+a75H4VYdK3Me27QKtY5rO/w9/r3CQ3FF+Fg4MKh0plyMeDTobGJN1zKCTnSiOj27OrhegCWKGZY/g097lAk7Kc1hwIYa2bBRE06kls6K8aEWSn78vPoP45ejoTLMqgPfZNPfaFmxjRqCFmFzNhfE22kpDGJaGnFy+2Sw89oJo7Xg+fB+0QatUI/ohRdtjAIJTc3NMlSiW4FDfnwuU0P/mng480h75JoUOubJCbRd69TsV/zGyn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +99,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 4 Apr 2026 21:44:14 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
+charge_reserved_hugetlb.sh tears down background writers with
+killall -2 --wait write_to_hugetlbfs. That depends on killall from
+psmisc, which is not installed on minimal Ubuntu images, so the test
+fails in cleanup with "killall: command not found".
 
-> This is a very attractive speedup, but I believe it's flawed: in the
-> special case when a range has been mremap-moved, when its anon folio
-> indexes and anon_vma pgoff correspond to the original user address,
-> not to the current user address.
-> 
-> In which case, rmap_walk_ksm() will be unable to find all the PTEs
-> for that KSM folio, which will consequently be pinned in memory -
-> unable to be reclaimed, unable to be migrated, unable to be hotremoved,
-> until it's finally unmapped or KSM disabled.
-> 
-> But it's years since I worked on KSM or on anon_vma, so I may be confused
-> and my belief wrong.  I have tried to test it, and my testcase did appear
-> to show 7.0-rc6 successfully swapping out even mremap-moved KSM folios,
-> but mm.git failing to do so.  However, I say "appear to show" because I
-> found swapping out any KSM pages harder than I'd been expecting: so have
-> some doubts about my testing.  Let me give more detail on that at the
-> bottom of this mail: it's a tangent which had better not distract from
-> your speedup.
-> 
-> If I'm right that your patch is flawed, what to do?
+Track the writer PIDs we start ourselves and signal them directly
+during cleanup instead. Make write_hugetlb_memory.sh exec
+write_to_hugetlbfs so the recorded PID names the long-lived test
+process, and redirect async output straight to the temporary log file
+instead of going through a tee pipeline.
 
-Thanks, Hugh.   Administreevia:
+Signed-off-by: CaoRuichuang <create0818@163.com>
+---
+ .../selftests/mm/charge_reserved_hugetlb.sh   | 25 +++++++++++++++----
+ .../selftests/mm/write_hugetlb_memory.sh      |  2 +-
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
-I've removed this patch from the mm-stable branch and I reworked its
-[1/2] "ksm: initialize the addr only once in rmap_walk_ksm" to be
-presented as a singleton patch.
-
-For now I've restaged this patch ("ksm: optimize rmap_walk_ksm by
-passing a suitable address range") at the tail of the mm-unstable
-branch and I'll enter wait-and-see mode.
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index 447769657..757df4878 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -44,6 +44,8 @@ else
+ fi
+ export cgroup_path
+ 
++write_pids=()
++
+ function cleanup() {
+   if [[ $cgroup2 ]]; then
+     echo $$ >$cgroup_path/cgroup.procs
+@@ -193,10 +195,12 @@ function write_hugetlbfs_and_get_usage() {
+     [[ "$private" == "-r" ]] && [[ "$expect_failure" != 1 ]]; then
+ 
+     bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
+-      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" 2>&1 | tee $output &
++      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" \
++      >"$output" 2>&1 &
+ 
+     local write_result=$?
+     local write_pid=$!
++    write_pids+=("$write_pid")
+ 
+     until grep -q -i "DONE" $output; do
+       echo waiting for DONE signal.
+@@ -261,10 +265,21 @@ function write_hugetlbfs_and_get_usage() {
+ function cleanup_hugetlb_memory() {
+   set +e
+   local cgroup="$1"
+-  if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
+-    echo killing write_to_hugetlbfs
+-    killall -2 --wait write_to_hugetlbfs
+-    wait_for_hugetlb_memory_to_get_depleted $cgroup
++  local write_pid
++
++  if (( ${#write_pids[@]} )); then
++    for write_pid in "${write_pids[@]}"; do
++      if kill -0 "$write_pid" 2>/dev/null; then
++        echo killing write_to_hugetlbfs pid "$write_pid"
++        kill -2 "$write_pid"
++        wait "$write_pid"
++      fi
++    done
++    write_pids=()
++
++    if [[ -n "$cgroup" ]]; then
++      wait_for_hugetlb_memory_to_get_depleted "$cgroup"
++    fi
+   fi
+   set -e
+ 
+diff --git a/tools/testing/selftests/mm/write_hugetlb_memory.sh b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+index 3d2d2eb9d..49164bbfc 100755
+--- a/tools/testing/selftests/mm/write_hugetlb_memory.sh
++++ b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+@@ -19,5 +19,5 @@ echo $$ > ${cgroup_path:-/dev/cgroup/memory}/"$cgroup"/cgroup.procs
+ echo "Method is $method"
+ 
+ set +e
+-./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
++exec ./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
+       "$private" "$want_sleep" "$reserve"
+-- 
+2.39.5 (Apple Git-154)
 
 
