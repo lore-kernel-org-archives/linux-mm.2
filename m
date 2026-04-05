@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FFA6E9D800
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 15:13:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0C7DE9D800
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 16:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2362A6B00A7; Sun,  5 Apr 2026 11:12:44 -0400 (EDT)
+	id A4E9A6B0088; Sun,  5 Apr 2026 12:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C0016B00A8; Sun,  5 Apr 2026 11:12:44 -0400 (EDT)
+	id 9FD7E6B0089; Sun,  5 Apr 2026 12:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FCBA6B00A9; Sun,  5 Apr 2026 11:12:44 -0400 (EDT)
+	id 8EC5A6B008A; Sun,  5 Apr 2026 12:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA63B6B00A7
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 11:12:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DB8F1B90CF
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:43 +0000 (UTC)
-X-FDA: 84624844206.02.169D350
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EA668140002
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h2kMOVNR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7909A6B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:30:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09CB3160AC5
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 16:30:28 +0000 (UTC)
+X-FDA: 84625040178.28.4C8D9E3
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EBBB31C0006
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 16:30:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzDC4aie;
+	spf=pass (imf18.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775401962;
+	s=arc-20220608; t=1775406627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QO0HMgZR6Q1HucKxNFx50+mXtq1QtftwQyXEIAQyxA=;
-	b=79sZ4C82S+BSBSRdo+ivdR7M7NwxNq0219RrgYM0EGtgxkWQdApyKT4Knoet0IlW49nthk
-	4B+ogiIflXLnUB3tz8jyCpR1oa48gr/2dIKKzYCziOjQw2KyiCyz+IAG8/vgiCR3f4YFUm
-	RO9xdk9L9uDqLgGN6o/Knp2jZOKjbnU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775401962; a=rsa-sha256;
+	bh=LjUD/kLWetoMxCJ3PxzmkFjU0TTr1mOWnhqJ2E1tbHo=;
+	b=mdNhbfC7SeNoy3u2F+fDckPV44ZgcaPO/Sw1uteEdwUGOSLtFsLgjahb4xunkj3aPxgxuk
+	e7QjQmHE1rltCDrzazfbN2hibH1YNCs9ADwXgUUAo3yiZQ/YY2mMddUzYAJDzN/P8gdo+2
+	rem+Az1yVJeQDsLqkqX1aF48MoUWw20=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775406627; a=rsa-sha256;
 	cv=none;
-	b=u57ogvhtNMhaCn/g28lUdhn6urDlnzVm+IRsDVv3+POGeeH4xaJAe3J6ZyyhRkQJVeQa3z
-	VSvbJHCvhk6Qy78oCkLJwOWCMQdkEn6wcZLzMA9siLQJihENDtpkekrpuiCRuaxFU8EjaO
-	ubZsA6AFnhLpesOEZn1vdBJulZPWtuk=
+	b=HG1qZhTTO+SAlxOJT/fy9QjkVusi/B17yYGFZHoifw+JiPV3nQ0KPillkU2lFGWI7oRJUi
+	yIxoeDYOAaDZNSywV/8ZqgSN0yli/1eoADIJjSUbYza3m8S18evg4mJStjlmhxiZZbUl5b
+	9KGkzjOsugz1FSmcxfe5aMzbTpZcPdA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h2kMOVNR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 109DF44221
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 15:12:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93460C116C6;
-	Sun,  5 Apr 2026 15:12:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775401960;
-	bh=6J24o91UAsIJGEgFo2jYtnFEeYvJuiRUU82+7XJIPqI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2kMOVNRWSW6XjBLcKnf8r1Yhmubg+RSZg8ZAJ5XrBACZASdZwQHw2VvOMI5n08Pl
-	 QDu+yi2V86xvB7440s527202C9AyrCoNXba+rdi3JqH2m9KFnfYbkJcYdg7Pky2eF0
-	 m3sQvq6g6cIeTrCG9j/jA3P5QKqsjHlnZgbl8dx8e+V4F+srMV/e3vWOTiVcLU79yS
-	 N9ZxL7Ci9yAZGNs5tecXu2efi8n/WPMmCqkRnvkmt+XkTogY7LTrzFZq9gBLGq5rUK
-	 R4rJ3ArHQaMavK8CSvNssWb6gObIrf+fAcwMb5g5+0ZDD/sN+3YO4DhGreOjizWoDU
-	 KGx7iYhCbmF6w==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2 9/9] selftets/damon/sysfs.py: test failed region quota charge ratio
-Date: Sun,  5 Apr 2026 08:12:27 -0700
-Message-ID: <20260405151232.102690-10-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260405151232.102690-1-sj@kernel.org>
-References: <20260405151232.102690-1-sj@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzDC4aie;
+	spf=pass (imf18.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <b7af6516-1593-4e2b-9149-fc839e2b88bd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775406624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjUD/kLWetoMxCJ3PxzmkFjU0TTr1mOWnhqJ2E1tbHo=;
+	b=dzDC4aieMPnCPXwj7TE0O257iG4gwpW1KkFDZSb87AyYWIQFJUNBBSvlCdKGM9ThMJk4Iy
+	7CEHbAOQbccjlFxMy1NmWRmj77N1XEtD0WcflqatHKS//m+Zd58m8m2B56dyKEiM3nJ2ml
+	XKFcOceEg/l8Hw3+jRJDeZy+2BZcJM4=
+Date: Sun, 5 Apr 2026 09:30:17 -0700
 MIME-Version: 1.0
+Subject: Re: [PATCH v3 2/6] selftests/liveupdate: add helper functions for
+ memfd tests
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Mike Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Usama Arif
+ <usama.arif@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260404102452.4091740-1-pratyush@kernel.org>
+ <20260404102452.4091740-3-pratyush@kernel.org>
+ <c783bc1b-3327-422f-9191-11550513b13c@linux.dev>
+ <2vxzecktc13r.fsf@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <2vxzecktc13r.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA668140002
-X-Stat-Signature: ytsih8dpy5dgd5iujakb9heuiqpsb7xf
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: EBBB31C0006
+X-Stat-Signature: n1dwft6kmgjn9kar8adceacqmpjb34c9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775401961-738765
-X-HE-Meta: U2FsdGVkX1811fHaRVtzQjPc0BAPOaa0/j85CmW9lOzb0ophf3xf1tHoE2BgQ/Ubd2kybRvt+HwhXRs9XaM8vL39IJsNqmGLRkTZyfhpRwTpGClZPiLb6JWxfCDET1A/rQQqu2VDhoOHZxvIEpkBn6jrD0sGWkcd8h8kQzpIP+qDWToIC3IXkdbnkmnqYA0TPwR4skN9A2F+txkN/g9qr6FN4bPlyeYkqyyxSLr5iXO3yDXHJCjNehOfmbsI9Rnx6JTt1K1eFYQV7jOD078jmd2qkCCbsxgtjNzr/A5QsdRKyoCF+pqbp0mdi6h6BF9DLpFPUdjsFNamkILTl1RLWnTBMaAQpZRRy5hX9Zd6m/8znrnrP9IL/XFQzo8x1mcJSR7CYfQKxtXPE1mm/6TwLQKgeV2IwG1NY4wlLG9+4CAlpceZQPtzRHM1Ug51YahVPu7NI7MKjVWgE6odY+xPRXfM5jA5+4t43We9Cfhfod3YWpPK4rDtUV4hZs5XXnIFIyyUmVwCYA/OuRRxvHZo5j5VWBgQHTpNZ3ZnbIsn2cWj0yjbfrbhiToCxThKCNGfevPb7o6J6Q2sEIxzg67MEArfimbBoZD1zDU1DJWYVzdZPJAKOdIG7z/q5dSFroRhU7rIUuETCRJBAWt3pnROIKsIxQ78qvb9dzIhIHFSihcjrDaJ0hk4wwdBTnMOHRjoQZsSz0ndm8SmeUF7WmNa98Y2Jwn+ILUwSG9PIqzYwCW9c4j2rz9gzjFMDKZyg0ppIy4+TR96bcf2BGx/cTqyZ0okI5QlY7KwA7czJ0sF8GycIV3H5jd6BHN7zfjcsgxlZX62Q956X8gvHymRX1TZhu2URBMbzpjYqcCEOY7Y+JzEu00rv23kFFdRcUoMD/xds1TxPCeCUpL1kF7zpB6KJqFICBkdDrxSrQfWS9V5zgaph3fKch/7qrhznUakb/kngUYKo7ksv7Zcu+6QLqy
- exBQwphp
- BsstEVJkvMvRpAHjtj3tnLuXaxLSl9LJE+PxZusTkJKIvNmomDK0Pte//zbSk5IzI39LkBS7dEKEf7moENu0YAyow7lKigyfs/1gxToGX4QfmWb/PUZYAz1WBgU/5b7Ja7xf+hMrX0Cm9porubiI1wg3f9Pj3N7oLETMliudHmv3gCXQ2fYsBt2c68B9lQpR7jA0kA4rPXJqz+ilkoxTtMgjRcPd1IwMOSLZpdE0fLgKabEdpQ6hC/ZW3BMXOnrLL/cy8af778ZkXPk61cePuHNgZcsYoBDeTQD/eVfwO0PzzB7g=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775406626-206541
+X-HE-Meta: U2FsdGVkX19SeA1T6mqcyt3pNiow8J8A0z8BJZvA604EOmHPb31goh+F/6Zb4/a24Nhsy+WHgtwmqrhVrUCTQiIKgmDsjmUTaE3OalhPEgvyyzKyOqRDYKcapXBCMfmydD+YrNl6Qe/YXwmxjCGs/dE7c818GS23tcdHB309MOsRDiE3K75s/t4gGk724PvtmLfRmyVxICKqdFjLDKd7HY4zYHx+3QQ8ciz6ffs6azNVnLddbD+vMVMxra/GCylrhjE0OuyKp53RPybLMWSssD2EfAJ5zJoq6wpOFRHcBIA+mo8ZPAuCdbPnQa252G8sJSe8fuBzBe4AKqwOk4NNhrUDXLlbkDzm7mrpyu61vt488Si/mONBEBB6EGO/Z4NMHowKdxAd9wXKivPLjutvyGv+3s7jGnvflwy50Jgd9XL790j6s3foaHkYXVM4thVb5iK1RP9oQw2rCH9GExbvsWY6OlnOcwKMS7irJARQPyhuVWg/5Kay2J+f0cu2ayscqk4gkI3pAHcFnQFRVgabA1V/g5x0JG0YOAD61apifhrWTzI/oaAtyUeFHEI/cSwzKEBIlqQvS4zRTeSXXs1VJN1KTnimrJsp8O32M2txiNNwlqQZbdu65/DRtyM/cBriXKveYWcS3fc+jRSaxgg4cZBa4ZzDMB2sJQXPiX9TBh7Yr4BRUskncfVB2c6o0e8H/uXE0RJmpVaW4IPn/0yPZ9HIQx6AUSoAyhqaAq9eQLzkLK3jd+kKMyQp3xwZIIljhY3SHsf0V3exbxia/MAvYD+VfBk7BYfcNb+sGhLa9xG9orIT7dUAvEyRBKfCwZahv8UVTZU7ocQx0j2BUN4PHHf1pgaEyPjvrd8JdgsnGiq7b2Gx5hgUI8ypFeQ9ZbVrjIgIcxGaG7sWYqXx3EBO5ULK8cF+KeKrKVaj3IDXaPbdbB8t0rPfFXHm+xGImVSyVMdb2TbRmlnpSKuqFp8
+ hiPV58UP
+ ZY94OXf9WOW+gV7ACCa340G/7jzrEH484CDneVUrkmci3nsnKyeJscFnXCmb4ZhbjQN/fFll24DMZQ9bIDNCyf9/ewX9tmZZVQAaY7FFDRMM1oo85V1pZBdG8NOgFekLd0XtIb//MGFWXPZRa8Zz9NBYRD4zhQLuu0huAYEsMPg9eapE+2ghjnUUX6XHbpFSIRqGa5Y62Wm+q6HBHPptWzwaaDm7xQY6JsLKw5bn3WQyJa6SdnrIDQvrHN8+VIFvwOW+IV9UbSAEyks3ETJmCODqr5vWQlVD9s6BB1cDg9hqHizE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +95,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
-charge ratio and assert the setup is made into DAMON internal state.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+在 2026/4/5 0:34, Pratyush Yadav 写道:
+> On Sat, Apr 04 2026, Zhu Yanjun wrote:
+>
+>> 在 2026/4/4 3:24, Pratyush Yadav 写道:
+>>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>>> Add some helper functions that will be used by memfd tests. This moves
+>>> some of the complexity out of the test itself, which results in better
+>>> test readability and less code duplication.
+>>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+>>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>>> ---
+>>>    .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++++++++++-
+>>>    .../selftests/liveupdate/luo_test_utils.h     |  10 +
+>>>    2 files changed, 200 insertions(+), 1 deletion(-)
+>>> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>> b/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>> index 3c8721c505df..ceb918ef9813 100644
+>>> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>> @@ -1,8 +1,12 @@
+>>>    // SPDX-License-Identifier: GPL-2.0-only
+>>>      /*
+>>> - * Copyright (c) 2025, Google LLC.
+>>> + * Copyright (c) 2025-2026, Google LLC.
+>>>     * Pasha Tatashin <pasha.tatashin@soleen.com>
+>>> + * Pratyush Yadav (Google) <pratyush@kernel.org>
+>>> + *
+>>> + * Copyright (C) 2025 Amazon.com Inc. or its affiliates.
+>>> + * Pratyush Yadav <ptyadav@amazon.de>
+>>>     */
+>>>      #define _GNU_SOURCE
+>>> @@ -20,9 +24,194 @@
+>>>    #include <sys/stat.h>
+>>>    #include <errno.h>
+>>>    #include <stdarg.h>
+>>> +#include <sys/vfs.h>
+>>> +#include <linux/magic.h>
+>>>      #include "luo_test_utils.h"
+>>>    +int cwd_is_tmpfs(void)
+>>> +{
+>>> +	struct statfs buf;
+>>> +
+>>> +	if (statfs(".", &buf) < 0)
+>>> +		return -errno;
+>>> +
+>>> +	return buf.f_type == TMPFS_MAGIC;
+>>> +}
+>>> +
+>>> +/* Read exactly specified size from fd. Any less results in error. */
+>>> +int read_size(int fd, char *buffer, size_t size)
+>>> +{
+>>> +	size_t remain = size;
+>>> +	ssize_t bytes_read;
+>>> +
+>>> +	while (remain) {
+>> while (remain > 0) ?
+> I don't think it is needed. bytes_read will always be smaller than or
+> equal to remain, so remain will never go below 0 anyway. And while
+> (remain) is nicer to read.
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index b8d6e0f8fd906..d8d4717128898 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
-             }
-     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
-                 'goal_tuner', dump)
-+    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
-+                'fail_charge_num', dump)
-+    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
-+                'fail_charge_denom', dump)
-     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
-     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
-                 'weight_nr_accesses', dump)
-@@ -277,6 +281,8 @@ def main():
-                         nid=1)],
-                     goal_tuner='temporal',
-                     reset_interval_ms=1500,
-+                    fail_charge_num=1,
-+                    fail_charge_denom=4096,
-                     weight_sz_permil=20,
-                     weight_nr_accesses_permil=200,
-                     weight_age_permil=1000),
+If a wrong number is transferred, this makes remain less than 0. Then 
+this loop will run again and again.
+
+This while (remain > 0) will avoid this kind of scenario.
+
+ZhuYanjun
+
+>
+>>> +		bytes_read = read(fd, buffer, remain);
+>>> +		if (bytes_read == 0)
+>>> +			return -ENODATA;
+>>> +		if (bytes_read < 0) {
+>>> +			if (errno == EINTR)
+>>> +				continue;
+>>> +			else
+>>> +				return -errno;
+>>> +		}
+>>> +
+>>> +		remain -= bytes_read;
+>>> +		buffer += bytes_read;
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+> [...]
+>
 -- 
-2.47.3
+Best Regards,
+Yanjun.Zhu
+
 
