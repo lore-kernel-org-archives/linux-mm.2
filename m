@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFF37F3D5E0
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 12:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 062F5F3D5E0
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 12:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A2F76B00EF; Sun,  5 Apr 2026 08:58:54 -0400 (EDT)
+	id 51B476B00F1; Sun,  5 Apr 2026 08:59:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 252F06B00F1; Sun,  5 Apr 2026 08:58:54 -0400 (EDT)
+	id 4C4A66B00F3; Sun,  5 Apr 2026 08:59:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11B0E6B00F2; Sun,  5 Apr 2026 08:58:54 -0400 (EDT)
+	id 38CAC6B00F4; Sun,  5 Apr 2026 08:59:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC356B00EF
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 08:58:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C781D1A0336
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:58:53 +0000 (UTC)
-X-FDA: 84624506946.14.57F3F10
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B9336C000C
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:58:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=AB9Sny2D;
+	by kanga.kvack.org (Postfix) with ESMTP id 20AD76B00F1
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 08:59:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BDA808CB85
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:59:00 +0000 (UTC)
+X-FDA: 84624507240.02.748EA83
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD88A140005
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 12:58:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=a5V1y4Fe;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775393931; a=rsa-sha256;
-	cv=none;
-	b=UO9tGVxAMeUjl1YuZH0VibV4eDy07cRt1nQ5Vs1Ul2a2XJ6ZUTd45kfdeQIPuBeeSqSI9E
-	k+I05wxaGCQ0hRHLhWLIwluPLZ4RHE88rCylMG8dMwfXxxPdVAfQSxkFuQnZTCkw2Xpi7B
-	3Fc/CDKUlMuEPXyhDk8P9nZz5garG+M=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=AB9Sny2D;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775393931;
+	s=arc-20220608; t=1775393939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydW451GMW82JpMBYkjDYyQiyHYoh54ssuDXhIqDFdlI=;
-	b=hxaucmWuHsaYD614/ZNNWvYp+NE/NtuKxRlPwNK4PKJEkQV0MnIPCCbj7smJTUCuALUaVK
-	IueoGsWwDzcwm7JIYbJOQmMDfMCqZGftZ9tKATEzwuiuPUTRu4Xb+BLdqO7ogz1CAV4U8d
-	PDCaBFF2xCH99prPLOfdyiF/KlUl+ck=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35c2fe0d90fso1788567a91.1
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 05:58:51 -0700 (PDT)
+	bh=5OTMoz77Yb7VHAB553cXlMYhsYoA1Jus+1lDf2tDpdk=;
+	b=s46qfwv3nDxbP2pt0smy4XWJDhgoL56B/xqlOH0Q8pgToeIwTnvYDFIKKaW+OGKJGi2y+H
+	MnkXA2RjNDgY3dxV5VTqGw7xDkyh5PvEtQodcadFkcMPLU98p+PS4Rulcof40FliHw6oJ1
+	imbX/fyi5Hi4ViL85te7/oRWEzEmJaU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775393939; a=rsa-sha256;
+	cv=none;
+	b=Ff9ClztMqL1evdGyoEFVRaVYBVN0vGHOhHBXZlHRqZd61UluVoyDnOxE2faNk2kjp/JQGJ
+	lDY65mKBwFJkuKWwdPj4SEJz/GQ61ePpgFk+MviI0NPpq0tEwgLV+QVKMQdmQwGJKm07UN
+	vpeYTeHz6nVmQaqde9jxsFps6rnlR1o=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=a5V1y4Fe;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35dac556bb2so2064938a91.1
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 05:58:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1775393931; x=1775998731; darn=kvack.org;
+        d=bytedance.com; s=google; t=1775393938; x=1775998738; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ydW451GMW82JpMBYkjDYyQiyHYoh54ssuDXhIqDFdlI=;
-        b=AB9Sny2DhzgOGHGOBqka49bV+TM3xiRLGSwEb1HgAbdVr6IeIzwBgsE/1aIzAGR2iS
-         PT9BwpEqhiR083M/JsFmGDRPad4DRkFMnZssXBL4pJtb0tkqj1RMA5u5BZwZofRK6HZs
-         AHSHfgm7H6/sGSyw/ent5S4W+0/Dqg8jx8ANbCCs/NQQcZnu46KLBTxJ7yaysb68UpFL
-         tTwTZy/f/pYOWBm0NFLWnEgXiP1j83rjCYoFW4gYS5LQ5tn8HGFj3lXwdsexJrjs4CiE
-         FVUowyd5GT/Ib4bU8ULh/PHxOMos2uQvM15QrzvG0IaTQdNiO5PnA4KZb7qRbtpXEZLl
-         vpfw==
+        bh=5OTMoz77Yb7VHAB553cXlMYhsYoA1Jus+1lDf2tDpdk=;
+        b=a5V1y4FedZK014z7BrsQ7zbBBHQ/keIzGGUszZ+JM314twUsSlPS7txdWNiRkRJFHO
+         PidK85vKeBs+nuN6nKUB2Y9vuvHRmj60aH6u1RVM3CKEu/4/LKIaYKWAG8BTxnWlPxRd
+         rC6Eo7eBUblGwwHpF/Qcn9S3WPONxsye6fYTYRc1txGEOtbwlWsXqse58F47lVpXqk9n
+         mhRlDgoI0hXI8fNoUgB2K3Cz7EQNTE8JX9Nljb7DglTogD5H9l2pVEW7Fb2zayr9bMzy
+         AIbBb8AG48IPmEQsgrK35jUYI5S5cpzpwjmJxhWc5j0nvpoRwxblSZw+YHr3tn8tXfAX
+         3m+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775393931; x=1775998731;
+        d=1e100.net; s=20251104; t=1775393938; x=1775998738;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ydW451GMW82JpMBYkjDYyQiyHYoh54ssuDXhIqDFdlI=;
-        b=tNv9kHitsYI0ITUUIZm2LdJd9D/SwwqSMT2CcTBr+5xWDqzkOYvzwtUYkmeALxJvAx
-         qXwQ+eUgeq7zFEMQ3tZZbti0dRpIuRK73ulkX1TqnrOc2hHWpgBZ2HDMa8I1ckwQZetW
-         X7x6mdjT2L74SfmWUDVPrOcxugOqpsqPvE7S/PIXuhRIZK6KrvpZpHthZepG5ce8Kw50
-         QQBg7nKzm2854z+I4La9MN6LW3V238IA5n/8sLHT44hizN1QgeYOFuqLK7BbCJ8iOuPl
-         EOMCGtLrNc+E0+HfKZ0QMba3luiKHPKlF5hSzFUq8EXEiVpwCZ0tgVIld1E/B4M9vYl5
-         0Gqg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOPma20CdYcnC98XsngngMt/E6/Loa4+x59igJm/uSlmnRQbOXm3faP1/pE0xyC7CVCsRsSWGVEw==@kvack.org
-X-Gm-Message-State: AOJu0YxmqbPnr6yW8hCyNpJNtd8nyEHgiwMKMyHJXZoTUX49TemD+eUt
-	a5DcQ298yFY+MKX0jEXTSvVVRb+L6GkHq9fXeYiktO+gnKCcZue+j+78VRCj3Tw89s4=
-X-Gm-Gg: AeBDiesH+OuFcQeWkt0e/0jWV/fpwnk3bMM3d2q5JR7PlIAggkbXa/NL7TykkagwXfX
-	e6f63bOPSTSpf5YAuYo4k3ceazPSxkQSVCinRv42HI9UvvlGK8KQTmt6DaWMJcxTlfHOpob7ino
-	phxQFNSbr+ikUfv67R4ESAkmcEZtj6q1VLZ2gUzT10kojodOSTAbGFjDMuP3FYs1OBVoXbH1CaL
-	xjzhB6bcxCHllr3oiQWNHlKRsQE1HikRY2lknhacDd8d/kITpSAzr2urHIp7/9dH2ETtx8wYOXf
-	/4i7i2Dn6Tb7y6x4UcEHyZd7zvpw/TtCe67NgWBDJV1fdG+GJjx6ZVJT5QOaNIa5hQQfUmCrvzf
-	D3hJPCFlg5QenurWJ9rkiq2tjsCTuURcOspWGcgQJlyP1oih/z8oWIvmmTLU1plfLWgTluXQiy5
-	2GSnH6rQ3sl3pTnMUB058FrA5oVAikAyGhrXP+h6TuQh4=
-X-Received: by 2002:a17:90b:2688:b0:354:a332:1a61 with SMTP id 98e67ed59e1d1-35de678f2b0mr8914364a91.5.1775393930429;
-        Sun, 05 Apr 2026 05:58:50 -0700 (PDT)
+        bh=5OTMoz77Yb7VHAB553cXlMYhsYoA1Jus+1lDf2tDpdk=;
+        b=Jy1UfS5c9xu3CMXRWbCEGpRnz9BFkakj7usgbDm0GuryyoQwADjzStjEcLzwUFgV8E
+         HwTEtLpoBkuCx7DLJnLS4zmbXBAqZRuWg08eGtoP6j3QFHmkxZAt40p+27u3umaNW7wk
+         /mD74G7wKI31eumEwiXaZe7c8pNVu0KiDPVHYC5nZT1fMMmGjebM4Sqd5LgI5l+T6DyG
+         rBUtZB5M0FxeNvVlf+nZxRWZlVlnUlw4Yst0xcQ5+o1B42n4YMeS/HV0oPJhVMSKchGc
+         Bc33FnAgIQIzP6JNZrZeKYDPU+i+vNDKkie9wrKp6NuhlckGHyjEBVncCPvY8FKh8oTi
+         evYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAJAP0MQuXpHkl24H+1SWGTRdV1wdWHx79JTdTqoyXGKA/KhdukmF1DGegCp31GdeKivFLHtTcIA==@kvack.org
+X-Gm-Message-State: AOJu0YyqOkmWGPQUPmAmpr/enulKH0Z7Z3Q9DvyYxBNWXbscztQj9JCy
+	UhwoA20XixEBtBWoXiHE1GB6KYr7ONLiRjbcE3g0AyUH/eBL/uwMQTWm3a7Ob5+rduM=
+X-Gm-Gg: AeBDietBqlFlXJcfot8BIRGzYjbR5BANS5kWIq9KogeL3iTMLw/S99aNSthm68qdD1z
+	TdYShvymC1Pqrt1uVOca19fRx1JQsK6PpjoCE2teemZ+5NxyzGenetI8BhcE0ItkhhMpjWLCx2S
+	iqCSZKE1NNogGGdbgesN+Nj6U+n9sXdKm2x/Orv+lGm5l87BONRb7/1NJHTa1HcsGgGSVlzc63j
+	8Qhy4LOlS/aK605cg5vsBPYYHAPuvc4sXC6kDirLGEXk1VNG+Kz1fkxuK4dpS72aXTwpXgf4lN0
+	Q1Rno8yQetXZ/+MApo0nS5eoZMukHgNAJUVL1zS8MhUiNuYa2iNNx0zwXMPvwqHhZ48bdpGSFEE
+	HXWU4lXS3r9UuCmVMKj7rgS5mcaCaidhJVLIlthWlH6Vmvusxi7Zld3r6p4MM43DXb1YknG8dDy
+	fIOvFly0C3Wpr33S+S6D1bcrHzpik6gsm5MwzQCpIyWrA=
+X-Received: by 2002:a17:90b:2b4e:b0:356:35a5:4a64 with SMTP id 98e67ed59e1d1-35de6842dc2mr8500150a91.4.1775393937697;
+        Sun, 05 Apr 2026 05:58:57 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de66b4808sm3748505a91.2.2026.04.05.05.58.39
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de66b4808sm3748505a91.2.2026.04.05.05.58.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2026 05:58:50 -0700 (PDT)
+        Sun, 05 Apr 2026 05:58:57 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -112,23 +111,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH 48/49] Documentation/mm: restructure vmemmap_dedup.rst to reflect generalized HVO
-Date: Sun,  5 Apr 2026 20:52:39 +0800
-Message-Id: <20260405125240.2558577-49-songmuchun@bytedance.com>
+Subject: [PATCH 49/49] mm: consolidate struct page power-of-2 size checks for HVO
+Date: Sun,  5 Apr 2026 20:52:40 +0800
+Message-Id: <20260405125240.2558577-50-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260405125240.2558577-1-songmuchun@bytedance.com>
 References: <20260405125240.2558577-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hkcitemtw1oz7duxcaiqg7zajiujbzm1
-X-Rspamd-Queue-Id: B9336C000C
+X-Rspamd-Queue-Id: DD88A140005
+X-Stat-Signature: cjsgqkq5w6aid36uzm9fsco4pwkap8xi
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775393931-784292
-X-HE-Meta: U2FsdGVkX18LXkLHu0DlvPQdut0F25MPwIMmr8rrnh4xVF4mM7qmWSxA5D3JMho9RSBId1t8UBFcz9n0VnEaLbHdq1cvFick7b1QWtMWJCBT7pVM01KQlIjxaSttHZQEa5/cg5uwocTs/5OPfztFXTMAN4sSSKV2xtzC3wmyNUi7+CCgD/T0tx0dhXDsGpTjOwyS7ceql0wd2zjaBXXJ2CCgR7Doosy6kqe0L27Ey8s4lJzkZro09BjzlG3GBArPXReMqmqBnZ7d71bnpMmus5G/CkY3fQ0eO4VG47A4i24iawjWlDw2PJOxRiigYPc9zBO+GvesdCs4sqFIKWJNyL4hEtGRFDvwi+ngwTsLLNpGUbSZu+e92NJc6wtIRV8wxaocPZ8UF57WUBOG/pqMBAdXSxWbhm30D3WHLRcVU8OUiY1JWAENBVg8+sl/Qcr5DD0d/Gox6mw005S8LXrv1/3i6imyFyI9OL22FC9hz13Dd+O8RHLNbf+Q+yTkY2HndinO6GMmYWJvrzaBYFpZb1gOosGIqx1HdTwJS1/qgs5To5rRjHr3rxkf3ujfFf8t9VODU9KeWpBIm00Lp+tjkIz+dGuove9IoUoXwZB4Fsdjoe2XRw6BpmJnyGQQHevnGMaIUdERBu8ien+nIeeX+CJ9dnBPXpw+BaTuP5kWEBa0OMtmoIg4g+kbpmlDMblSOnqHZCIVYgSOHrUfltNef/X/G/8rt68xNGIJn5SR10MfzN0YQXgBfZJm4No0oWbbcUTZMVpJ3AleLhrhfPPw47GxtV96b/ug9j46zDiaQEMshuJdZefmCzNST3jjyQYaTVxF92+DesJYLxsr22R9mERiGYdbnoURcDvZraNgcjVN52f1Y9fUEc1q8fmvSdB1MmOC+DUypgQ6v7Ej0R8Muj/C/2Z/w56fLVIR+fQ4IESXFSEfGqafXP8tYXdeM6f+AgGB63DqIvsPlprUums
- XLufTLyb
- zHqNumNEK9Z14+sdjLFyw+m1KrXDW/PCWzgbCermMcJglbYW/ShnwdyQo03tk+vNT28Z9hiCN2al5Lt6K1EAktGWlRoQDGYGHUo2OtOZuwmuZF97KRThhLSbNrV7WuS8026uEsxtza6ld3b8dA5im6lO+oRp24a8BhK87PsERHWRnQB4Ugnft5pP4GWghNE7Wi+ty3O+dj+aP32vFsKQaWk6UcjaO1EL/qsT9auM3yHlsa2dEFa0Ia0cBXNr6ysz2p1CzyfTQhWG1SlgwrAlV5UIWzExaXQPk2r69QkhriUAxRN2MYiWdUufR1dCfYHaZoRcS033TyhJDpDnzBpqlpbB2J2o56QhV7Y7un7tYkQjphBE4qWI673wMikOlwpOjSaRU+oFBwILDPAly+T29HnXpdBHx6cQEDFxy548ewwmsfZY=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775393938-281176
+X-HE-Meta: U2FsdGVkX1+W5aaBASuRuAXCN+ULTo3gS9kCajrV5puobLR7OfoCxnJjqu5b3KRVHR3zs/6qkjpnQK3P4FYWYYy3X2sY34fFf8FFV+zTgI7ZNE5YM0H+pnJhyT4TUsQ5/KFO5mgofO/XRCOTJyaBClw5ODIQnHh9kG/3n4h5y8c5ywVigjl53AEtD5smnTsfGro1MKB6XszOV+XAm+euaKbSY963aKf4GzuFGIf69uryrsXXfEJ/plrGKhI/RiSUD0TtGJG5S6JlHkSSXTIK421jQjoOE2rrAKJHeoH31rorlus0mhvXWzf7EB64cBG0lmOMW8cKD8TLqZYKP5vWScYGdG4BqIsipwbNePflwpes2kexMJ4CM2NbRHBGtnu75d1D2zaIWmuxa5MEo1HOEl9kbJPVbPNimJwA741rJgu3JLfdRtaGpvzkhoqp4kdBXOVVlOuHQJP9EYetgoSus5/t+TB9VYWZ3LsaHLEZqwl+JoOfnZgdXeYiPK4DroSWkb6GlhAvCNa5G7e3/w5xOjsNLWT7syljDAkpuxHOR26+98qMgj2noMxnDYUtKtfOeBSnf0dFlPtzHklDA8gcUWLIJnGnoxVHysrrbGq9MrmiUFzNusjCTX8YdWWGpadCTg+0ulCWIeEkK1GjC50GzaY0k79Q7v8ohB3Q+83h/z+Bluapz022lvbNEdouw8wcOk2jPmi0ghddedZSJa4Dna2+JQqjNt/NWz3VUmZRolEuRl5qQcOoT5xQ5eYg95QVMSxN+sSF7UT88qTz7ox8iAkGK5jnk3mQ2D7QdhcnCUvBBc8V0f9MMjM0iBHs1hdvnO9CjxvwRRHbyVZX1NqV3Fyqlu6rnJBCHzlBembssTxds1jlFthwBPESgQ2lD2z4DEFfgI3CbjxJdNiM3PcEucy67fZWby1EkYZb1NMc3kNqTvN1cpzJSO/AHzrcFQknxxIBd8VJ4a9nu1/I5cL
+ 8xGYPAD4
+ 3g+Wrzaoi31xjkJ3Q9OCAqULHxbjhlHjbaDOVzVBUpLGHssDveoeGxlNHeM0qUyMcL9mTj0Q/0mJGtDHpy8QL6jNe7SZ9zX/yDvQyogBMchKmOOgyP3LCZ2R/WR9cs3pXRgpl9FYdorVfg/X3qNHsA7E50KdFzP8hBeUBGHD4cOGDK8GS7QgfGpHUHcyFe0oYw9XjTwkyszWi13rYIHqsq1XeKCrFkMfavIclPfZE9hFWgM6wQ+6mDiPK+8TPLze/rWwWNzhYlgg9Gv8zktiD5Qirjtzrqq352XBBvVqPm0HcJHNG8e+QSX7FKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,292 +134,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The documentation Documentation/mm/vmemmap_dedup.rst is slightly
-outdated and poorly structured. The current document primarily focuses
-on HugeTLB pages as the main context, which fails to clearly communicate
-the general principles of Hugepage Vmemmap Optimization (HVO).
+The Hugepage Vmemmap Optimization (HVO) requires that struct page
+size is a power of two. This size is evaluated by the C compiler
+and currently cannot be natively evaluated by Kconfig. Therefore,
+the condition is_power_of_2(sizeof(struct page)) was scattered
+across several macros and static inline functions.
 
-To make it more logical and readable, refine the document. Specifically,
-introduce the general HVO concepts, principles, and calculations that
-are agnostic to specific subsystems. Remove the outdated and
-subsystem-specific contexts (like explicit HugeTLB and Device DAX sections)
-to better reflect the universal applicability of HVO to any large compound
-page.
+Extract the check into a preprocessor macro
+STRUCT_PAGE_SIZE_IS_POWER_OF_2 evaluated during the Kbuild process.
 
-This reorganization makes the documentation much easier to read and
-understand, and aligns with the recent renaming and generalization of
-the HVO mechanism.
+Define SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED as a master toggle
+that is 1 only if both Kconfig CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+and the power of 2 size check are true.
+
+This allows us to completely remove all scattered sizeof(struct page)
+checks, making the code much cleaner and eliminating redundant logic.
+
+Additionally, mm/hugetlb_vmemmap.c and its corresponding header are now
+guarded by SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED. This brings an added
+benefit: when struct page size is not a power of 2, the compiler can
+entirely optimize away the unused functions in mm/hugetlb_vmemmap.c,
+reducing kernel image size.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- Documentation/mm/vmemmap_dedup.rst | 218 ++++++-----------------------
- 1 file changed, 42 insertions(+), 176 deletions(-)
+ include/linux/mm_types.h      |  2 ++
+ include/linux/mm_types_task.h |  4 ++++
+ include/linux/mmzone.h        | 32 +++++++++++++++-----------------
+ include/linux/page-flags.h    | 28 ++++------------------------
+ kernel/bounds.c               |  2 ++
+ mm/hugetlb_vmemmap.c          |  2 ++
+ mm/hugetlb_vmemmap.h          |  4 +---
+ mm/internal.h                 |  3 ---
+ mm/sparse.c                   |  6 ++----
+ mm/util.c                     |  2 +-
+ 10 files changed, 33 insertions(+), 52 deletions(-)
 
-diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-index 44e80bd2e398..a21d84fcbe24 100644
---- a/Documentation/mm/vmemmap_dedup.rst
-+++ b/Documentation/mm/vmemmap_dedup.rst
-@@ -1,107 +1,33 @@
--
- .. SPDX-License-Identifier: GPL-2.0
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index a308e2c23b82..6de6c0c20f8b 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -15,7 +15,9 @@
+ #include <linux/cpumask.h>
+ #include <linux/uprobes.h>
+ #include <linux/rcupdate.h>
++#ifndef __GENERATING_BOUNDS_H
+ #include <linux/page-flags-layout.h>
++#endif
+ #include <linux/workqueue.h>
+ #include <linux/seqlock.h>
+ #include <linux/percpu_counter.h>
+diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
+index 11bf319d78ec..09e5039fff97 100644
+--- a/include/linux/mm_types_task.h
++++ b/include/linux/mm_types_task.h
+@@ -17,7 +17,11 @@
+ #include <asm/tlbbatch.h>
+ #endif
  
--=========================================
--A vmemmap diet for HugeTLB and Device DAX
--=========================================
--
--HugeTLB
--=======
--
--This section is to explain how Hugepage Vmemmap Optimization (HVO) for HugeTLB works.
-+===================================================
-+Fundamentals of Hugepage Vmemmap Optimization (HVO)
-+===================================================
++#ifndef __GENERATING_BOUNDS_H
+ #define ALLOC_SPLIT_PTLOCKS	(SPINLOCK_SIZE > BITS_PER_LONG/8)
++#else
++#define ALLOC_SPLIT_PTLOCKS	0
++#endif
  
--The ``struct page`` structures are used to describe a physical page frame. By
--default, there is a one-to-one mapping from a page frame to its corresponding
-+The ``struct page`` structures are used to describe a physical base page frame.
-+By default, there is a one-to-one mapping from a page frame to its corresponding
- ``struct page``.
+ /*
+  * When updating this, please also update struct resident_page_types[] in
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index a6900f585f9b..3a46cb0bfaaa 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -96,27 +96,26 @@
  
--HugeTLB pages consist of multiple base page size pages and is supported by many
--architectures. See Documentation/admin-guide/mm/hugetlbpage.rst for more
--details. On the x86-64 architecture, HugeTLB pages of size 2MB and 1GB are
--currently supported. Since the base page size on x86 is 4KB, a 2MB HugeTLB page
--consists of 512 base pages and a 1GB HugeTLB page consists of 262144 base pages.
--For each base page, there is a corresponding ``struct page``.
--
--Within the HugeTLB subsystem, only the first 4 ``struct page`` are used to
--contain unique information about a HugeTLB page. ``__NR_USED_SUBPAGE`` provides
--this upper limit. The only 'useful' information in the remaining ``struct page``
--is the compound_info field, and this field is the same for all tail pages.
--
--By removing redundant ``struct page`` for HugeTLB pages, memory can be returned
--to the buddy allocator for other uses.
--
--Different architectures support different HugeTLB pages. For example, the
--following table is the HugeTLB page size supported by x86 and arm64
--architectures. Because arm64 supports 4k, 16k, and 64k base pages and
--supports contiguous entries, so it supports many kinds of sizes of HugeTLB
--page.
--
--+--------------+-----------+-----------------------------------------------+
--| Architecture | Page Size |                HugeTLB Page Size              |
--+--------------+-----------+-----------+-----------+-----------+-----------+
--|    x86-64    |    4KB    |    2MB    |    1GB    |           |           |
--+--------------+-----------+-----------+-----------+-----------+-----------+
--|              |    4KB    |   64KB    |    2MB    |    32MB   |    1GB    |
--|              +-----------+-----------+-----------+-----------+-----------+
--|    arm64     |   16KB    |    2MB    |   32MB    |     1GB   |           |
--|              +-----------+-----------+-----------+-----------+-----------+
--|              |   64KB    |    2MB    |  512MB    |    16GB   |           |
--+--------------+-----------+-----------+-----------+-----------+-----------+
--
--When the system boot up, every HugeTLB page has more than one ``struct page``
--structs which size is (unit: pages)::
--
--   struct_size = HugeTLB_Size / PAGE_SIZE * sizeof(struct page) / PAGE_SIZE
--
--Where HugeTLB_Size is the size of the HugeTLB page. We know that the size
--of the HugeTLB page is always n times PAGE_SIZE. So we can get the following
--relationship::
--
--   HugeTLB_Size = n * PAGE_SIZE
--
--Then::
-+When huge pages (large compound page) are used, they consist of multiple base
-+page size pages. For each base page, there is a corresponding ``struct page``.
-+However, only a few ``struct page``
-+structures are actually used to contain unique information about the huge page.
-+The only 'useful' information in the remaining tail ``struct page`` structures
-+is the ``->compound_info`` field to get the head page structure, and this field
-+is the same for all tail pages.
+ #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
  
--   struct_size = n * PAGE_SIZE / PAGE_SIZE * sizeof(struct page) / PAGE_SIZE
--               = n * sizeof(struct page) / PAGE_SIZE
-+We can remove redundant ``struct page`` structures for huge pages to save memory.
-+This optimization is referred to as Hugepage Vmemmap Optimization (HVO).
+-/*
+- * Hugepage Vmemmap Optimization (HVO) requires struct pages of the head page to
+- * be naturally aligned with regard to the folio size.
+- *
+- * HVO which is only active if the size of struct page is a power of 2.
+- */
+-#define MAX_FOLIO_VMEMMAP_ALIGN					\
+-	(IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) &&	\
+-	 is_power_of_2(sizeof(struct page)) ?			\
+-	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+-
+ /* The number of vmemmap pages required by a vmemmap-optimized folio. */
+ #define OPTIMIZED_FOLIO_VMEMMAP_PAGES		1
+ #define OPTIMIZED_FOLIO_VMEMMAP_SIZE		(OPTIMIZED_FOLIO_VMEMMAP_PAGES * PAGE_SIZE)
+ #define OPTIMIZED_FOLIO_VMEMMAP_PAGE_STRUCTS	(OPTIMIZED_FOLIO_VMEMMAP_SIZE / sizeof(struct page))
+ #define OPTIMIZABLE_FOLIO_MIN_ORDER		(ilog2(OPTIMIZED_FOLIO_VMEMMAP_PAGE_STRUCTS) + 1)
  
--We can use huge mapping at the pud/pmd level for the HugeTLB page.
-+The optimization is only applied when the size of the ``struct page`` is a
-+power-of-2. In this case, all tail pages of the same order are identical. See
-+``compound_head()``. This allows us to remap the tail pages of the vmemmap to a
-+shared page.
++#if defined(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) && STRUCT_PAGE_SIZE_IS_POWER_OF_2
++#define SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED	1
++/*
++ * Hugepage Vmemmap Optimization (HVO) requires struct pages of the head page to
++ * be naturally aligned with regard to the folio size.
++ */
++#define MAX_FOLIO_VMEMMAP_ALIGN			(MAX_FOLIO_NR_PAGES * sizeof(struct page))
+ #define __NR_OPTIMIZABLE_FOLIO_SIZES		(MAX_FOLIO_ORDER - OPTIMIZABLE_FOLIO_MIN_ORDER + 1)
+ #define NR_OPTIMIZABLE_FOLIO_SIZES		\
+-	((__NR_OPTIMIZABLE_FOLIO_SIZES > 0 &&	\
+-	  IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION)) ? __NR_OPTIMIZABLE_FOLIO_SIZES : 0)
++	(__NR_OPTIMIZABLE_FOLIO_SIZES > 0 ? __NR_OPTIMIZABLE_FOLIO_SIZES : 0)
++#else
++#define MAX_FOLIO_VMEMMAP_ALIGN			0
++#define NR_OPTIMIZABLE_FOLIO_SIZES		0
++#endif
  
--For the HugeTLB page of the pmd level mapping, then::
-+Let’s take a system with a 2 MB huge page and a base page size of 4 KB as an
-+example for illustration. Here is how things look before optimization::
+ enum migratetype {
+ 	MIGRATE_UNMOVABLE,
+@@ -2015,7 +2014,7 @@ struct mem_section {
+ 	 */
+ 	struct page_ext *page_ext;
+ #endif
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
++#ifdef SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED
+ 	/*
+ 	 * The order of compound pages in this section. Typically, the section
+ 	 * holds compound pages of this order; a larger compound page will span
+@@ -2208,7 +2207,7 @@ static inline bool pfn_section_first_valid(struct mem_section *ms, unsigned long
+ }
+ #endif
  
--   struct_size = n * sizeof(struct page) / PAGE_SIZE
--               = PAGE_SIZE / sizeof(pte_t) * sizeof(struct page) / PAGE_SIZE
--               = sizeof(struct page) / sizeof(pte_t)
--               = 64 / 8
--               = 8 (pages)
--
--Where n is how many pte entries which one page can contains. So the value of
--n is (PAGE_SIZE / sizeof(pte_t)).
--
--This optimization only supports 64-bit system, so the value of sizeof(pte_t)
--is 8. And this optimization also applicable only when the size of ``struct page``
--is a power of two. In most cases, the size of ``struct page`` is 64 bytes (e.g.
--x86-64 and arm64). So if we use pmd level mapping for a HugeTLB page, the
--size of ``struct page`` structs of it is 8 page frames which size depends on the
--size of the base page.
--
--For the HugeTLB page of the pud level mapping, then::
--
--   struct_size = PAGE_SIZE / sizeof(pmd_t) * struct_size(pmd)
--               = PAGE_SIZE / 8 * 8 (pages)
--               = PAGE_SIZE (pages)
--
--Where the struct_size(pmd) is the size of the ``struct page`` structs of a
--HugeTLB page of the pmd level mapping.
--
--E.g.: A 2MB HugeTLB page on x86_64 consists in 8 page frames while 1GB
--HugeTLB page consists in 4096.
--
--Next, we take the pmd level mapping of the HugeTLB page as an example to
--show the internal implementation of this optimization. There are 8 pages
--``struct page`` structs associated with a HugeTLB page which is pmd mapped.
--
--Here is how things look before optimization::
--
--    HugeTLB                  struct pages(8 pages)         page frame(8 pages)
-+  2MB Hugepage                  struct pages (8 pages)        page frame (8 pages)
-  +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-  |           |                     |     0     | -------------> |     0     |
-  |           |                     +-----------+                +-----------+
-@@ -112,9 +38,9 @@ Here is how things look before optimization::
-  |           |                     |     3     | -------------> |     3     |
-  |           |                     +-----------+                +-----------+
-  |           |                     |     4     | -------------> |     4     |
-- |    PMD    |                     +-----------+                +-----------+
-- |   level   |                     |     5     | -------------> |     5     |
-- |  mapping  |                     +-----------+                +-----------+
-+ |           |                     +-----------+                +-----------+
-+ |           |                     |     5     | -------------> |     5     |
-+ |           |                     +-----------+                +-----------+
-  |           |                     |     6     | -------------> |     6     |
-  |           |                     +-----------+                +-----------+
-  |           |                     |     7     | -------------> |     7     |
-@@ -124,34 +50,27 @@ Here is how things look before optimization::
-  |           |
-  +-----------+
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
++#ifdef SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED
+ static inline void section_set_order(struct mem_section *section, unsigned int order)
+ {
+ 	VM_BUG_ON(section->order && order && section->order != order);
+@@ -2267,8 +2266,7 @@ static inline void section_set_compound_range(unsigned long pfn,
  
--The first page of ``struct page`` (page 0) associated with the HugeTLB page
--contains the 4 ``struct page`` necessary to describe the HugeTLB. The remaining
--pages of ``struct page`` (page 1 to page 7) are tail pages.
--
--The optimization is only applied when the size of the struct page is a power
--of 2. In this case, all tail pages of the same order are identical. See
--compound_head(). This allows us to remap the tail pages of the vmemmap to a
--shared, read-only page. The head page is also remapped to a new page. This
--allows the original vmemmap pages to be freed.
-+We remap the tail pages (page 1 to page 7) of the vmemmap to a shared, read-only
-+page (per-zone).
+ static inline bool section_vmemmap_optimizable(const struct mem_section *section)
+ {
+-	return is_power_of_2(sizeof(struct page)) &&
+-	       section_order(section) >= OPTIMIZABLE_FOLIO_MIN_ORDER;
++	return section_order(section) >= OPTIMIZABLE_FOLIO_MIN_ORDER;
+ }
  
- Here is how things look after remapping::
+ void sparse_init_early_section(int nid, struct page *map, unsigned long pnum,
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 12665b34586c..bea934d49750 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -198,32 +198,12 @@ enum pageflags {
  
--    HugeTLB                  struct pages(8 pages)                 page frame (new)
-+  2MB Hugepage                  struct pages(8 pages)           page frame (1 page)
-  +-----------+ ---virt_to_page---> +-----------+   mapping to   +----------------+
-  |           |                     |     0     | -------------> |       0        |
-  |           |                     +-----------+                +----------------+
-  |           |                     |     1     | ------┐
-  |           |                     +-----------+       |
-- |           |                     |     2     | ------┼        +----------------------------+
-+ |           |                     |     2     | ------┼
-+ |           |                     +-----------+       |
-+ |           |                     |     3     | ------┼        +----------------------------+
-  |           |                     +-----------+       |        | A single, per-zone page    |
-- |           |                     |     3     | ------┼------> | frame shared among all     |
-+ |           |                     |     4     | ------┼------> | frame shared among all     |
-  |           |                     +-----------+       |        | hugepages of the same size |
-- |           |                     |     4     | ------┼        +----------------------------+
-+ |           |                     |     5     | ------┼        +----------------------------+
-+ |           |                     +-----------+       |
-+ |           |                     |     6     | ------┼
-  |           |                     +-----------+       |
-- |           |                     |     5     | ------┼
-- |    PMD    |                     +-----------+       |
-- |   level   |                     |     6     | ------┼
-- |  mapping  |                     +-----------+       |
-  |           |                     |     7     | ------┘
-  |           |                     +-----------+
-  |           |
-@@ -159,65 +78,12 @@ Here is how things look after remapping::
-  |           |
-  +-----------+
+ #ifndef __GENERATING_BOUNDS_H
  
--When a HugeTLB is freed to the buddy system, we should allocate 7 pages for
--vmemmap pages and restore the previous mapping relationship.
+-/*
+- * For tail pages, if the size of struct page is power-of-2 ->compound_info
+- * encodes the mask that converts the address of the tail page address to
+- * the head page address.
+- *
+- * Otherwise, ->compound_info has direct pointer to head pages.
+- */
+-static __always_inline bool compound_info_has_mask(void)
+-{
+-	/*
+-	 * The approach with mask would work in the wider set of conditions,
+-	 * but it requires validating that struct pages are naturally aligned
+-	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+-	 */
+-	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+-		return false;
 -
--For the HugeTLB page of the pud level mapping. It is similar to the former.
--We also can use this approach to free (PAGE_SIZE - 1) vmemmap pages.
+-	return is_power_of_2(sizeof(struct page));
+-}
 -
--Apart from the HugeTLB page of the pmd/pud level mapping, some architectures
--(e.g. aarch64) provides a contiguous bit in the translation table entries
--that hints to the MMU to indicate that it is one of a contiguous set of
--entries that can be cached in a single TLB entry.
--
--The contiguous bit is used to increase the mapping size at the pmd and pte
--(last) level. So this type of HugeTLB page can be optimized only when its
--size of the ``struct page`` structs is greater than **1** page.
--
--Device DAX
--==========
--
--The device-dax interface uses the same tail deduplication technique explained
--in the previous chapter, except when used with the vmemmap in
--the device (altmap).
--
--The following page sizes are supported in DAX: PAGE_SIZE (4K on x86_64),
--PMD_SIZE (2M on x86_64) and PUD_SIZE (1G on x86_64).
--For powerpc equivalent details see Documentation/arch/powerpc/vmemmap_dedup.rst
--
--The differences with HugeTLB are relatively minor.
--
--It only use 3 ``struct page`` for storing all information as opposed
--to 4 on HugeTLB pages.
--
--There's no remapping of vmemmap given that device-dax memory is not part of
--System RAM ranges initialized at boot. Thus the tail page deduplication
--happens at a later stage when we populate the sections. HugeTLB reuses the
--the head vmemmap page representing, whereas device-dax reuses the tail
--vmemmap page. This results in only half of the savings compared to HugeTLB.
--
--Deduplicated tail pages are not mapped read-only.
-+Therefore, for any hugepage, if the total size of its corresponding ``struct pages``
-+is greater than or equal to the size of two base pages, then HVO technology can
-+be applied to this hugepage to save memory. For example, in this case, the
-+smallest hugepage that can apply HVO is 512 KB (its order corresponds to
-+``OPTIMIZABLE_FOLIO_MIN_ORDER``). Therefore, any hugepage with an order greater
-+than or equal to ``OPTIMIZABLE_FOLIO_MIN_ORDER`` can apply HVO technology.
+ static __always_inline unsigned long _compound_head(const struct page *page)
+ {
+ 	unsigned long info = READ_ONCE(page->compound_info);
+ 	unsigned long mask;
  
--Here's how things look like on device-dax after the sections are populated::
+-	if (!compound_info_has_mask()) {
++	if (!IS_ENABLED(SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED)) {
+ 		/* Bit 0 encodes PageTail() */
+ 		if (info & 1)
+ 			return info - 1;
+@@ -232,8 +212,8 @@ static __always_inline unsigned long _compound_head(const struct page *page)
+ 	}
+ 
+ 	/*
+-	 * If compound_info_has_mask() is true the rest of the info encodes
+-	 * the mask that converts the address of the tail page to the head page.
++	 * If HVO is enabled the rest of the info encodes the mask that converts
++	 * the address of the tail page to the head page.
+ 	 *
+ 	 * No need to clear bit 0 in the mask as 'page' always has it clear.
+ 	 *
+@@ -257,7 +237,7 @@ static __always_inline void set_compound_head(struct page *tail,
+ 	unsigned int shift;
+ 	unsigned long mask;
+ 
+-	if (!compound_info_has_mask()) {
++	if (!IS_ENABLED(SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED)) {
+ 		WRITE_ONCE(tail->compound_info, (unsigned long)head | 1);
+ 		return;
+ 	}
+diff --git a/kernel/bounds.c b/kernel/bounds.c
+index 02b619eb6106..ff2ec3834d32 100644
+--- a/kernel/bounds.c
++++ b/kernel/bounds.c
+@@ -8,6 +8,7 @@
+ #define __GENERATING_BOUNDS_H
+ #define COMPILE_OFFSETS
+ /* Include headers that define the enum constants of interest */
++#include <linux/mm_types.h>
+ #include <linux/page-flags.h>
+ #include <linux/mmzone.h>
+ #include <linux/kbuild.h>
+@@ -30,6 +31,7 @@ int main(void)
+ 	DEFINE(LRU_GEN_WIDTH, 0);
+ 	DEFINE(__LRU_REFS_WIDTH, 0);
+ #endif
++	DEFINE(STRUCT_PAGE_SIZE_IS_POWER_OF_2, is_power_of_2(sizeof(struct page)));
+ 	/* End of constants */
+ 
+ 	return 0;
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index d595ef759bc2..0347341be156 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -21,6 +21,7 @@
+ #include "hugetlb_vmemmap.h"
+ #include "internal.h"
+ 
++#ifdef SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED
+ /**
+  * struct vmemmap_remap_walk - walk vmemmap page table
+  *
+@@ -693,3 +694,4 @@ static int __init hugetlb_vmemmap_init(void)
+ 	return 0;
+ }
+ late_initcall(hugetlb_vmemmap_init);
++#endif
+diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
+index 0022f9c5a101..bd576ef41ee7 100644
+--- a/mm/hugetlb_vmemmap.h
++++ b/mm/hugetlb_vmemmap.h
+@@ -12,7 +12,7 @@
+ #include <linux/io.h>
+ #include <linux/memblock.h>
+ 
+-#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++#if defined(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP) && defined(SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED)
+ int hugetlb_vmemmap_restore_folio(const struct hstate *h, struct folio *folio);
+ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
+ 					struct list_head *folio_list,
+@@ -34,8 +34,6 @@ static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate
+ {
+ 	int size = hugetlb_vmemmap_size(h) - OPTIMIZED_FOLIO_VMEMMAP_SIZE;
+ 
+-	if (!is_power_of_2(sizeof(struct page)))
+-		return 0;
+ 	return size > 0 ? size : 0;
+ }
+ #else
+diff --git a/mm/internal.h b/mm/internal.h
+index 02064f21bfe1..121c9076f09a 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1026,9 +1026,6 @@ static inline bool vmemmap_page_optimizable(const struct page *page)
+ 	unsigned long pfn = page_to_pfn(page);
+ 	unsigned int order = section_order(__pfn_to_section(pfn));
+ 
+-	if (!is_power_of_2(sizeof(struct page)))
+-		return false;
 -
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | -------------> |     1     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     2     | ----------------^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                   | | | | |
-- |           |                     |     3     | ------------------+ | | | |
-- |           |                     +-----------+                     | | | |
-- |           |                     |     4     | --------------------+ | | |
-- |    PMD    |                     +-----------+                       | | |
-- |   level   |                     |     5     | ----------------------+ | |
-- |  mapping  |                     +-----------+                         | |
-- |           |                     |     6     | ------------------------+ |
-- |           |                     +-----------+                           |
-- |           |                     |     7     | --------------------------+
-- |           |                     +-----------+
-- |           |
-- |           |
-- |           |
-- +-----------+
-+Meanwhile, each HVOed hugepage still has ``OPTIMIZED_FOLIO_VMEMMAP_PAGE_STRUCTS``
-+available ``struct page`` structures.
+ 	return (pfn & ((1L << order) - 1)) >= OPTIMIZED_FOLIO_VMEMMAP_PAGE_STRUCTS;
+ }
+ 
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 77bb0113bac5..7375f66a58d5 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -404,10 +404,8 @@ void __init sparse_init(void)
+ 	unsigned long pnum_end, pnum_begin, map_count = 1;
+ 	int nid_begin;
+ 
+-	if (compound_info_has_mask()) {
+-		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
+-				    MAX_FOLIO_VMEMMAP_ALIGN));
+-	}
++	VM_WARN_ON_ONCE(IS_ENABLED(SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED) &&
++			!IS_ALIGNED((unsigned long)pfn_to_page(0), MAX_FOLIO_VMEMMAP_ALIGN));
+ 
+ 	pnum_begin = first_present_section_nr();
+ 	nid_begin = sparse_early_nid(__nr_to_section(pnum_begin));
+diff --git a/mm/util.c b/mm/util.c
+index f063fd4de1e8..783b2081ea74 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1348,7 +1348,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ 		foliop = (struct folio *)page;
+ 	} else {
+ 		/* See compound_head() */
+-		if (compound_info_has_mask()) {
++		if (IS_ENABLED(SPARSEMEM_VMEMMAP_OPTIMIZATION_ENABLED)) {
+ 			unsigned long p = (unsigned long)page;
+ 
+ 			foliop = (struct folio *)(p & info);
 -- 
 2.20.1
 
