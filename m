@@ -4,114 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDEDCE9D83C
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F19E4E64006
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:44:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A08686B0088; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
+	id 275066B0088; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B95F6B0089; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
+	id 22B836B0089; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F68F6B008A; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
+	id 13C056B008A; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 810896B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B04531B7405
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:35:51 +0000 (UTC)
-X-FDA: 84627019302.28.35508E3
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E426B40006
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:35:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YHD3aSbE;
-	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YHD3aSbE;
-	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775453750; a=rsa-sha256;
-	cv=none;
-	b=dty5VkMlTFXp+VmV3nIhcSwp2vt6FAK8wE59JL2YCWGIG5W6/lFI2g15Rndr08BSktcJWW
-	l3+XCzrSQ5+hiKtYuS8NUP/7blb8E4VIULzbS8H9tjsoJoq4g5xfhMGHnpHpqgCufNPp1+
-	9DjNvWIPI/J1R03CriVssb6u8ZGbFIc=
+	by kanga.kvack.org (Postfix) with ESMTP id 003EB6B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:44:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8970413A264
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:44:47 +0000 (UTC)
+X-FDA: 84627041814.03.E8AD4A8
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1A2D614000C
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:44:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ys78b5N4;
+	spf=none (imf23.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775453750;
+	s=arc-20220608; t=1775454285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
-	b=hp/1+7V8rqX1WHjNzmCu4m/ZhGwnIF/MDDF8gSS5GgHtQJZun2KDzgxb7e4zeU+kVoSn5v
-	WNteOo4Enc89QQIdEttMx1td0cXkf3KSSc2p9LMLzpfPjO/ABgTykulumqZuqpc4pgeYpG
-	hA0gkFWu0Gz9eWNDjnNfddmZ2JahnR4=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79a74765703so26877797b3.3
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 22:35:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775453749; x=1776058549; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
-        b=YHD3aSbEwzw0fr8AY1DoevNvc8eqOmOqaLReS/X5o3lntdlneZhCAWTS2t6lx28jYh
-         SvILspik8XJi38m9Wwm2rLGJY/08lzwknPH37aqqxCOci6KCa7NOhd49+xhyx2KDLUSg
-         ithtMAH49xCzKmJVf/FgC+U6BLOt3JPxcLP12qq4kMNispqbX/hPsirr2oV2C+GY6ndm
-         Y7OMedbUNF9pEG1BQpqTsCmcdCdbHYjTvV8z8z/Z4ChmgD/vEnlTAnGo1zslB4nWUTNF
-         byhRsaqH09Od8IteoJ9Yo0o8BtsRIClffe1MafVrdRquPV0v7EQaK+f2h5nODKDOnYya
-         VZLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775453749; x=1776058549;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
-        b=TV+FQjrgGDLnhtj0bRuyHLfOx48NLpD8Kz2/CKcEb71pDEy+QWU+56KJmV+Lq+fZdl
-         lhTMwiZTpLhrZQNLvL/S/ypA5Qhbhw6R0H0vVaHt/b+Ge2x2uzUZRJ8KAgGjpm04fYri
-         ++VaNRnvU5j9E/FlSone3wTZQoSw/rjjpOZ5SJFZrJkgVYunsS5rXShKBy4WN58gYP2L
-         pe56uShV8JRhc68TZdjjbMtdPyOvOjuTPx5EaSq5SYndU57oq6xX2Rr2sXD/T9QMVhoE
-         OfatFZltDuoTGGL9P0SUtoOxzg5iSyYR6bmnVl06/8E0kXbVFNLBuJ02Y2IaWE9BSVqV
-         flew==
-X-Forwarded-Encrypted: i=1; AJvYcCWcZnFF+hJSEK/sVq7VAjy3gKZwxSN05vw9pDw6g6Qq2bE+dmODJGqAW0pS7i0z7WCjGEnStQagaQ==@kvack.org
-X-Gm-Message-State: AOJu0YwwojlkvNixlAIOuwepTEGpfkHw1QpLBfFr5vcEIz1b4YLnj6W4
-	p3LFl561UrKsMzGqLU7i+lq5EA5xa6OemdDtvF4ASuWvaGUwQHz/p/2k+LV9XbcoqQ==
-X-Gm-Gg: AeBDietT4iut8T3RSJkqxsL2xq0Up2ZIWV7TLONUs51Hlg97ZkSWD8AZyMbGLe14NBG
-	IeuTaj5klJW5OdECUyOybRGfn9ktauI1d7BCeHtfUNiEjdXf7il0BKzfH8s879XblvdBsD5Bys/
-	YU/V1l4baCFg2ncSX1Rn9ao+1N1qYUH55MMHjFWMJyxTYotF00r2D+RlS1OxwlweZAZU2WQkY9g
-	MJCfi0fgWr6R6N9pw015kXLji6/oMf6OqAfXSbnPmHn/8yUtWrZGd6Fpo/x9tGU4tp7RlQX1EfM
-	YIt8s7oMOZ3mWdqpebHd86ewNMlzNG4R4tZkIBVzd4ojC6OBaCJq3llXnm0EhcRydL/wCRZvEID
-	uXEBvKthq5sOrqpQRLk6MgEeO6KKLuWqDh1E5h9VjD3ioOLBmw6T3wnKDLNqd4rHZT/lS9+xVld
-	tgeQMDPXOEzpf5GlNY4z54OVXRv4iijXcoaTE6t6jyawjO7baMxA1wx+e2NTfKtZMFF97cqyv6s
-	8uma3UQ7yU=
-X-Received: by 2002:a05:690c:e4d6:b0:7a4:db43:c1da with SMTP id 00721157ae682-7a4db43cc17mr88182507b3.0.1775453748466;
-        Sun, 05 Apr 2026 22:35:48 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a370901513sm49673367b3.29.2026.04.05.22.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2026 22:35:47 -0700 (PDT)
-Date: Sun, 5 Apr 2026 22:35:35 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: xu.xin16@zte.com.cn
-cc: hughd@google.com, akpm@linux-foundation.org, david@kernel.org, 
-    chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, 
-    michel@lespinasse.org, ljs@kernel.org, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
- address range
-In-Reply-To: <20260406095804589iRP1BCGrNX3DviT29nv2O@zte.com.cn>
-Message-ID: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
-References: 20260212192820223O_r2NQzSEPG_C56cs-z4l@zte.com.cn,20260212193045556CbzCX8p9gDu73tQ2nvHEI@zte.com.cn,02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com <20260406095804589iRP1BCGrNX3DviT29nv2O@zte.com.cn>
+	bh=M5LxlInPJ7/UGCLgthuGl+ND/trl20UHwe3EP42gW3U=;
+	b=I8KXCKnPQQnPDks8nQquy/5e1BqJEOWFm3TsDhEi/oeENsWCf7aXeQUudVf/8atysfUSqp
+	Yz/vvmw7rLVLDG0DC6Z4sPi1BhT1JIjAwjPYuHKWcfU5shRDzl7j3sdywleO59y5bdBBRY
+	goVJ+8KBJknYOOebth/qFAvgndvfkbs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ys78b5N4;
+	spf=none (imf23.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775454285; a=rsa-sha256;
+	cv=none;
+	b=kN38wUlcls8bC/fz8HoNhi8L83lddgLGCSz7xdgZwOksdVcxJDY90LVd4IRhzqRMFKfDPA
+	Wd8nWxLQ6X05/Lr4i9WTXbe59v9rJsSwA86YW93xYlKrGL/6SM7K0vd6yN7ETI2AG5fanH
+	F4CGBDOtmK1oVv658YbO2nYdbEB7E1Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M5LxlInPJ7/UGCLgthuGl+ND/trl20UHwe3EP42gW3U=; b=ys78b5N4ODFhtd/VHJZKyPEIEZ
+	CAcNY121v6nTNVo9GQQ+SlfrgslNKsqT2ERk4mnIwvtl7Bmx2Sl1mc5SK0TrcAEJoRBVwT/klowrG
+	CFVwVrIhadbiNGNhHpGjTO8LuZ9Et76aN6pSvfxqM/eSUeFVn3llD/d7f9nUNEfykhyetHqnsVzDJ
+	AE5MFa1K1MD1h6GcM2fxQDeP7Zj+RhV5rEdRbQHk+tSBNjW66F9azNPTorQCr6BzpJg/TQRa11kd4
+	BPV3nVQuU7ybNBrZfv3NujPJp2MqsopoNsN9JOgGvx1z9vm5egOwOtaCC8gj++QdHNty6Plcdxesl
+	DPS6KcZw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w9clL-00000004ozj-0Jpu;
+	Mon, 06 Apr 2026 05:44:39 +0000
+Date: Sun, 5 Apr 2026 22:44:39 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/4] mm: fix IOCB_DONTCACHE write performance with
+ rate-limited writeback
+Message-ID: <adNIR8atJj38IL9p@infradead.org>
+References: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org>
+ <20260401-dontcache-v1-1-1f5746fab47a@kernel.org>
+ <ac385Il8l-krKEOQ@infradead.org>
+ <01dd135adf38e35492d957a35e22c4ba5c2283d1.camel@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E426B40006
-X-Stat-Signature: rd175m9f1d5sz8u4ekpihkqfen5z873q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01dd135adf38e35492d957a35e22c4ba5c2283d1.camel@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1A2D614000C
+X-Stat-Signature: escet37bfx4q9wy813g6xh8obzk4bctw
 X-Rspam-User: 
-X-HE-Tag: 1775453749-554348
-X-HE-Meta: U2FsdGVkX1/ypJHIe33veXI1UpghXpFbqJGRfOQGG/z9l+UANYXM0zOZIQ2bY7inbFy6x+pwHCTZxAaVGLnA9/bhDBLHGKLmdoZYc9iCNqraxTR2YUYT/Q/BrNjLYtblRF60R0nxKUmoPYIUTOuFpHsdGkawzm6p2xDtheyPu9OSbULktn5YacfdGXDTa2cyjnrAw9kiUHAn07X9+oupNopsF8McVFBMbXhGtlal9z7AbJv17atpm7ZLz9AHPrMv101z+tMhQ27TRNMpBGX8UuVTrWIJmKKm5bbjvWwWTfDXNXM6bPqX4woqWGUdb//5N4FcydeTJJeBM0uCXjiDbB4YMPWG7RqqWsugvhQYdTI4+f9GHcovERlhQs34TIBPnofRxOOkTFHkYKdf3M621qF1QdqbtrNJcyb9KOEbLWuPJp3HNgCYrw9oWNdWMGa4oDCQ4CU25Sj5vvqcPuPKx6spVX64YeWv1cQHgwsQLXHgKgudEhKpa1pyszUnjFKrtcSg7/3CLjcocIgEdtxqoYpC3fMzQwgRyv0UB2RWXDRb3Ul/PTubQa88GZ9Ue+u3gvf4MMmkaCIAOKtUJ8CWjBf7r0fVFUDJqE9r8G1KKcsDG1Tbzbeik7Em/rVVmGz9Ce2HZwhIShHVC6BJfmMF6VNGIF6IPxdLOok9wII1/8dphGuztXMeyvc9gwhGZ4Djf9DmDdNyWVZLfIiGvlebPqqvxXWbXohHZSRLn8pYlLHMhg5NUM6SUxr1jlIVQveyDZaI4uWsAbz+r+yGlI0RNduJv4PM/dKYjYXt9jR4MoH4VIoG/imhkje/VXphyrjdgDGf+FPczbK2jOyCOi5ks54fOKx5OykzCmsllYi3x9c9SKk3D7Awj/uzkt0gAzh/Q7hdfXcEN0CnSCOkLj99M+Ja9Poezty0TnhEsnMQLeF0/iIGU2AEZK+BxgrCR19vIuPuVB4otHoY3KCpRiO
- iPyaVQ4N
- gSm3P3lZsoNZX6FQZFcNpUVK26LDbVTLREE8hxQ91FX/GN792wf5AvgC2T7U9sjugDpnPiBgEGindfAnVicx5KPBW5gNtbNPIg6nP/woY71L6pxe63GJF5QLqp2R2CHRzG7l/dfM1DqU7VMGINGGykQ6pJurBhcYqHjeb8R8VF6MhxC0vaI9f8zUZ35ObL3PRRqNBVht0nQCaJpJM4s2iwWxwpZJwLBuHRY+SSnFqQb5LDG693AAGT8rRhjU6LxeKV2SfSXL80BdRAIiQ97Fo/1nhVTQzgROpBrzW3IDqQGjwgIYTJ8XF7JR28HKeev6G5emiy66KDuInEelTZWPp1Qw2S90y3ELSJlzEFjzggXO4qjS1Yj5rUZLXs3FiwsMt/dz6kk4mHeDdEdInMIPCIZhiTE7SFRD+bcD5lCW8jSGYXx1FhzN3SjfF7CdUhgpCLlLWjrTZubGMccz8c1oe1BiQXw==
+X-HE-Tag: 1775454284-581253
+X-HE-Meta: U2FsdGVkX1+vEqJUoyWP+X7uYEijfgkCJoKWL8Tc9a6sfQ3tXI1QXH8JAnFPSjQnI7+6MGgiFSZubugXVejGD88VQDH6mw8/U56jDo+JsRH1uSfEU/8geYWqTXffYbn7mW7CH1zuaq2FQ/T+c7S+VRrN1CYka5xLu22eJ/QmSrv6Vilyb/LGtC/aGc+MyoEi7Ja+MM5vruLgQcyLV6inY1UwS81Wtq7bUk0vHzN9nMNv5ZTMlzDhR3PfxY/NUY3ZFHFFDEMMfercN5ZWwJkjyJnRomIg3YcvGrAydGnWaygIkrR3OqCQJbT6POlqAt3PfzU8gHemFwodblZCVQdNtuQm6MbdDz0Y0ZKN7yKqx67Y7d8sc0eooCa1dPMlTlrpfILq5oefm4tJo0mM1h/verzWdxZ1ywJebl7ZVhIodWQA+Q5+VX9LkT9tNEEHhZidV85QthZjdseMrQIAmUrQgjIv+ZuFx9cJDPQjgky29hZ6JZ4apRDinUbvJF2g6gqHGVHOwchLR9oTWEbWWA4LuRJoQdLjjDGFKA0x9xse9tLa7IC9QGG6QR96aQCjQ8dkdfMcDbTZPgxo4KQx8QZ5EOYJeg3xcIOdBni7ygzyytAAJmJJI/AA/aGU9EP/2PFg9hyJ+Fe7or7cfSxQxR79bb1H7zEK4Zq2SnAS7TN8irpUyVUj9DxNQOhmxViPQm0dQKlHSr661X6JzGk35sKCqJiUncKukzxS9QoqEcd2V2U7b1JSL5mpjdd5VlZXLYtF3vDV9nk5dpjXTBn/frxUMoP+i0ia8qFn9dJO6Z8eSsMnVzzMIIblPlWUamhoZeWSnB/qJ3jRCnNPMeZOV7c53HZJzEUSnR7djxqPt7uwYPA89uhBN9CjX+YPqZ7Jjd6o7/ViDE6oFwf5ZaEGrHKZLk6PeTx9Cgg02qXQ9GEN620ZeN29f5nXbed/nz9+8cPNsiAUGgJjiJOW6W0zFlF
+ SYdJCo9W
+ mfb3OlHXHaROMqrtsnco/HFGut0G3x2AldfhBagM1vNpN910fXsb1uiRViqO891P6B8xOx2YV4/bzFg2jFlo29nqbya6xmyTWmItgzEXgQvPHz+6XoDStmSAJUHH6OUjE9WYn8rPEeJm9K9Rqlkf4XQ6RjK5IF5Hm4Ko9OtNe4o6YTjjqwcc3yjpMx2t1HGtUHzXX+MsNQQnLIsVOZqLOvyjBC5NA+Ur5jV968BxnNvCwo9GdRxYP/ECON4CNhGgv9aG6xXV7w7x6nQU3e9FjUj6e/fSDkMocy/znyZYhv4rKarxzdCQ9oWIcyOZGMLVZuDfy/odqTuC2ECey/RcTi9XRXAr4Y9mYvLXc+3h9RPfUU9kxNWPlmZaH5BUwbWRQQtEoFHI27RioPh5sYUbh0/DL3MCSG7pZJKTMBs52GnU8HeVDHr8ag1Jc5nNYACbJUutvS0XlBVf/VLkyRSf6sVDlupjEbk/YXkDl+kXbT97MMMwN6lAumYDuX+0jjpMTvfLjnXj/hSGZDxl/GP8/mkCMp8pqDWJpS2hLew+0uyXhEVw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,57 +106,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 6 Apr 2026, xu.xin16@zte.com.cn wrote:
+On Thu, Apr 02, 2026 at 08:28:42AM -0400, Jeff Layton wrote:
+> > On Wed, Apr 01, 2026 at 03:10:58PM -0400, Jeff Layton wrote:
+> > > IOCB_DONTCACHE calls filemap_flush_range() with nr_to_write=LONG_MAX
+> > > on every write, which flushes all dirty pages in the written range.
+> > > 
+> > > Under concurrent writers this creates severe serialization on the
+> > > writeback submission path, causing throughput to collapse to ~47% of
+> > > buffered I/O with multi-second tail latency.  Even single-client
+> > > sequential writes suffer: on a 512GB file with 256GB RAM, the
+> > > aggressive flushing triggers dirty throttling that limits throughput
+> > > to 575 MB/s vs 1442 MB/s with rate-limited writeback.
 > > 
-> > But it's years since I worked on KSM or on anon_vma, so I may be confused
-> > and my belief wrong.  I have tried to test it, and my testcase did appear
-> > to show 7.0-rc6 successfully swapping out even mremap-moved KSM folios,
-> > but mm.git failing to do so.  
+> > I'm not sure the first how you think the first paragraph relate to
+> > the second.
+> > 
 > 
-> Thank you very much for providing such detailed historical context. However,
-> I'm curious about your test case: how did you observe that KSM pages in mm.git
-> could not be swapped out, while 7.0-rc6 worked fine?  
-> 
-> From the current implementation of mremap, before it succeeds, it always calls
-> prep_move_vma() -> madvise(MADV_UNMERGEABLE) -> break_ksm(), which splits KSM pages
-> into regular anonymous pages, which appears to be based on a patch you introduced
-> over a decade ago, 1ff829957316(ksm: prevent mremap move poisoning). Given this,
-> KSM pages should already be broken prior to the move, so they wouldn't remain as
-> mergeable pages after mremap. Could there be a scenario where this breaking mechanism
-> is bypassed, or am I missing a subtlety in the sequence of operations?
+> The belief is that under heavy parallel write workload on the same
+> inode, the writers all end up stacking up on the mapping's xa_lock.
+> However as Ritesh points out, I should probably confirm that with perf.
 
-I'd completely forgotten that patch by now!  But it's dealing with a
-different issue; and note how it's intentionally leaving MADV_MERGEABLE
-on the vma itself, just using MADV_UNMERGEABLE (with &dummy) as an
-interface to CoW the KSM pages at that time, letting them be remerged after.
+But nr_to_write should not change anything.  If .range_start and
+.range_end are set in a writeback_iter() loop, writeback_iter will try to
+get and writeback every page in the range.  Setting nr_to_write in
+addition to that could only reduce the amount written if it was less than
+the size of the range, which in your patch it isn't.
 
-The sequence in my testcase was:
+In fact we should probably have a debug check to never set both a range
+and nr_to_write as that combination doesn't make sense.
 
-boot with mem=1G
-echo 1 >/sys/kernel/mm/ksm/run
-base = mmap(NULL, 3*PAGE_SIZE, PROT_READ|PROT_WRITE,
-		MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-madvise(base, 3*PAGE_SIZE, MADV_MERGEABLE);
-madvise(base, 3*PAGE_SIZE, MADV_DONTFORK); /* in case system() used */
-memset(base, 0x77, 2*PAGE_SIZE);
-sleep(1); /* I think not required */
-mremap(base + PAGE_SIZE, PAGE_SIZE, PAGE_SIZE,
-	MREMAP_MAYMOVE|MREMAP_FIXED, base + 2*PAGE_SIZE);
-base2 = mmap(NULL, 512K, PROT_READ|PROT_WRITE,
-		MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-madvise(base2, 512K, MADV_DONTFORK); /* in case system() used */
-memset(base2, 0x77, 512K);
-print pages_shared pages_sharing /* 1 1 expected, 1 1 seen */
-run something to mmap 1G anon, touch all, touch again, exit 
-print pages_shared pages_sharing /* 0 0 expected, 1 1 seen */
-exit
-
-Those base2 lines were a late addition, to get the test without mremap
-showing 0 0 instead of 1 1 at the end; just as I had to apply that
-pte_mkold-without-folio_mark_accessed patch to the kernel's mm/ksm.c.
-
-Originally I was checking the testcase's /proc/pid/smaps manually
-before exit; then found printing pages_shared pages_sharing easier.
-
-Hugh
 
