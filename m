@@ -4,101 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE41E9D83B
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C5D0EF4EA4
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 08:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F1936B0089; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
+	id 2CE776B0088; Mon,  6 Apr 2026 04:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A26B6B008A; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
+	id 27F256B0089; Mon,  6 Apr 2026 04:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B86F6B008C; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
+	id 16DB16B008A; Mon,  6 Apr 2026 04:28:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0983C6B0089
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C5121B7474
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:49:29 +0000 (UTC)
-X-FDA: 84627053658.04.70A679E
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F1F9440008
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:49:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aMkntTdZ;
-	spf=none (imf17.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aMkntTdZ;
-	spf=none (imf17.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775454568; a=rsa-sha256;
-	cv=none;
-	b=b8Ohq2UpE4b/Q7Km90CeyTKP5RJf1gf/lWeCLdQKdU0Neqo3uj7xU6l86FDgZ1mZxWlBrC
-	wcaVfQuAIgL7h5LlKPspGjII2Bw4rvvVTk+nGTbripEn76X/E2GuPu/3xGsAX697y32Lwa
-	Oc9T8XWPnL0J3m6sNat8ZRbISRpXxrY=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08BA46B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 04:28:23 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA3211A0333
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:28:22 +0000 (UTC)
+X-FDA: 84627454044.19.413EFE8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 866691C0009
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:28:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ub7t4q+6;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=r+MergYi;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ub7t4q+6;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=r+MergYi;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775454568;
+	s=arc-20220608; t=1775464100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6WWXWZMI41Am3IOMc7V4QgXpbUSV0Yys/y4z2vFj0+U=;
-	b=40QDHJ6kyB+tgoBqYvEvV4kOgCYaHJNRQF4hwtzImEfAog62LhtCYkjlkfZP+C4ZxzpNiV
-	Fruspy24iIX+vS36w5LoYIGMNNb25lBvBRVsbsw63SWEku5rrewLJNwpfaM2Hwl2Xkj6NN
-	+BrNYc17I0wIjQ5opVUt9X2qrnwEqfQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6WWXWZMI41Am3IOMc7V4QgXpbUSV0Yys/y4z2vFj0+U=; b=aMkntTdZNJnKIOOxVJAW0Dcitj
-	5A3rbsHMazHEWugGsyUSoquIwVRWzA+1t4rpE1kiP7C2zi0C+12p3Mg0321M3Gspnxbie8PkrchOf
-	YL5gPP30MTxuVja7u8F2A3zQNDCJDMLkZz1MqPrSy930AE6sMtFBo2oRZBRQKzBX+L9M0EpToOCa1
-	ociP97dZmUvsZXgZh46Wp+XTT7xCh8Pz6PTJlnZ5owTujnFESE/ni8q27LKuU2dkmlRfwygAqwyC4
-	dRFU/zZ0EZ7mtyjztdyfi3muuDiWGVwAAmr3M+AxcQ1zgRt7fIoDGatFJqeUKLRu3nuYUm3KRJKx6
-	E8ikz8MA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w9cpw-00000004p6U-2Mgw;
-	Mon, 06 Apr 2026 05:49:24 +0000
-Date: Sun, 5 Apr 2026 22:49:24 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/4] mm: add atomic flush guard for IOCB_DONTCACHE
- writeback
-Message-ID: <adNJZBXeJomWmhdf@infradead.org>
-References: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org>
- <20260401-dontcache-v1-2-1f5746fab47a@kernel.org>
- <ac3-SU7BElHJVCEL@infradead.org>
- <629f21c6591903512eb2f3f3c4d6b14a9ac7b91a.camel@kernel.org>
+	bh=v8Mt7rFXT5oAxL2iQ7KvzpaNx1Zy8Z1vBa8E6u9Iymo=;
+	b=xKfa9Or4Y53t9djQKeC9N+mgsb//DepNG+537YjC6t+xaXL/KicIRAPqF8qrBOeGbYDFeq
+	Py0d78YW3buNlDkBgTZA2t6WWv6MtfwgDRXiVM85CxLFLO1jzop7w+kYasIqPeREHcJ9VI
+	XgGeXMmm5KcNUDBaVBpRUtbrT7iDjeA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775464100; a=rsa-sha256;
+	cv=none;
+	b=7Fs/7OjF2H82JVydfzOZzgRfHDdRVnQqcmH5c+hCIm3ziJ2EuFpzDGrEOgsiN+XkoOk+Ft
+	jHXldxIDJEKKeSlMZy7mzenWQqUCfTfvSorr0Nj8OUxTTTlv/XIFUBwrkvXq0qd9CKKehS
+	Dw2V8uBMsRfMpZRMZl1vV8gDh1zJDkk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ub7t4q+6;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=r+MergYi;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ub7t4q+6;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=r+MergYi;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8628D5BD43;
+	Mon,  6 Apr 2026 08:28:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775464098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v8Mt7rFXT5oAxL2iQ7KvzpaNx1Zy8Z1vBa8E6u9Iymo=;
+	b=Ub7t4q+6zkXOd1Vw9OvvdWhI60A9ZbRpH6vVCONIrfq6jjwqMJNRJHu3huHvHifHAcLWwl
+	AmaB5Vrhi0YJ8EjwXHzFIoR+vlU9iT142OQaf3nML3rkvsoNuMdXSb4/aKOcob8gR214wy
+	W7fB5gx9H58T2OjpuIYPmLrjtTj+AGw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775464098;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v8Mt7rFXT5oAxL2iQ7KvzpaNx1Zy8Z1vBa8E6u9Iymo=;
+	b=r+MergYirw+ndyC+oUZFBsMyCGe2NLnwl8vBcCQbHZTKlsKhz49ThuHFUelqgZY7Uf7vRj
+	lEh3PzDBTDMdiHBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775464098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v8Mt7rFXT5oAxL2iQ7KvzpaNx1Zy8Z1vBa8E6u9Iymo=;
+	b=Ub7t4q+6zkXOd1Vw9OvvdWhI60A9ZbRpH6vVCONIrfq6jjwqMJNRJHu3huHvHifHAcLWwl
+	AmaB5Vrhi0YJ8EjwXHzFIoR+vlU9iT142OQaf3nML3rkvsoNuMdXSb4/aKOcob8gR214wy
+	W7fB5gx9H58T2OjpuIYPmLrjtTj+AGw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775464098;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v8Mt7rFXT5oAxL2iQ7KvzpaNx1Zy8Z1vBa8E6u9Iymo=;
+	b=r+MergYirw+ndyC+oUZFBsMyCGe2NLnwl8vBcCQbHZTKlsKhz49ThuHFUelqgZY7Uf7vRj
+	lEh3PzDBTDMdiHBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BCDBF4A0B0;
+	Mon,  6 Apr 2026 08:28:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qiPBKqFu02lZGgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 06 Apr 2026 08:28:17 +0000
+Date: Mon, 6 Apr 2026 09:28:15 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
+	Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, jhladky@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mm/mprotect: special-case small folios when
+ applying write permissions
+Message-ID: <udewn6uzvw6rwohicw4bhgwyyymx6tqe3mgmmyih74e32n6kwr@6a5bp3q3eud4>
+References: <20260402141628.3367596-1-pfalcato@suse.de>
+ <20260402141628.3367596-3-pfalcato@suse.de>
+ <3rmcbafb3pwq6endpfpgh3kzygolhvpal2xwg5sgq4pw3toikf@t3jx5uorfzxs>
+ <20260402112959.e8f079444a8c15086f5f578c@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <629f21c6591903512eb2f3f3c4d6b14a9ac7b91a.camel@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F1F9440008
-X-Stat-Signature: ogczxiz46isp75nmtbu3xji9drdpgcty
+In-Reply-To: <20260402112959.e8f079444a8c15086f5f578c@linux-foundation.org>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 866691C0009
+X-Stat-Signature: 37d13ny4f9ftdho9wqtt9j88jzzony5t
 X-Rspam-User: 
-X-HE-Tag: 1775454567-357269
-X-HE-Meta: U2FsdGVkX195s9uGp+Bj12RlqrRUQKapRTGkeKUOGt+zKVbJ6G41yL1Qe8VGTUMOSAvrJWlWHA2cs2CzGOIsiAivoRs9lwtnvzuuyJGTSCxuYe8tmwKdhcCEnTImpFW9e6vfG/1CY6OCkuQrWkWptB0OqTkuSeep0/ao5s36kQ3Ss6qU2U1wgkfpjXD/WLjsbMlwt/WNBOXaF+wTqteuzyCGrkrds+nhmSeuNJo5IJrY2RoDG1MODlrvxxB+OhmZ5SZaFYZVwy/ybXQrB/AZFIjedJ1jFQr02vgRwWSASGamJtFNp6yVnNL/aWTviHl96XhGZ/RuYdwmNngm1EjGrVMWCooJ5Sd9P1zV/fSE7vyfPIOaC7O0sM6sqBuBm4JMt6yIyfpYqJJiy3z/GTdyBocfhmcnJJChh3kGDjvC+bwoefC23PYs+66KFk7loKRcYYzt/qu+8odt6Ld9IJPqk1hGffkmp+p48e6EvBOYS0OWaUcMyzj8iPUHYpKUT/bd5qLErHjp4wy7XUOodgONXyqvO+AAxw9U0H/T06tLIIem809k5qugYjqyzRfEkc9VW8nl7W2EAoV6iceBr5vDq37p/oOH7SYsFad8EIEIXtp8MtkUo7tdES1R+fxtXLCWZBtNbFyK8ecdzSxwiEcH7NhYgjT9behaFuqIdU4HO9ueZgYesbjAURtirwKqYZ15bUBHlfLPpC3mCn3VpsLnkyQBN+p1zPORjKrhg4EBE8W76T7OLS1ppB9IYJWCOUdNmek1Jn8mmQXlepvex3Y2JdwvpNdV0SRibFShZwJmknnYGOrus/La6imbRjeVRrUY4ynhXxqQUZU73Na/Xx50m88yZRm4UDKdzlnvZQprSJ/+6Vf/wwNTWN+dTVEnikRMKcW4TQEQkOCdL2wcwfQfHObgzToGaqpLfYoaBDmeHBORTd4MLxQfkzRf7AQ7J+cJRNLY9dTJld90NdXTZI9
- PV15L+QF
- ROP0Fbf1YyxUb2Uhe8bcYZelOJgMmtr0EpTaPMEIvDsI1HgsS0JSJIM/0sonIYMyQoO//QlA/ITu0Z+zDWB2ahLIZlTd5t8CbtyS1nZrXG5klcO6tymL+8Khj7fcfno5R0g6WMZErxyp9n7w4AuMG1EMQAqc88EkkiVF5L8LKmdxhfiLjAQULCeqpNliG0QZZFFHsa7CIX0m7DmrZJI964IbuLd8b87F39ccGqnZvaXDilNx+fLQaYxMdvEoukhKvkQ0kui/IaiwU3hv+o5k2h07PqZx3UW0Elk+hN0oM+WxkYdw2MqumfJhGmSgPujbVyVl5dSTbFfoswQoZ5vcYFIwWRnYMPSINDa9zVUK3ChmnYTPl7HebjwRc8x+yrPYLDIdFWKYkd6E/BqfKRYImaP/Atjpbf1f3ATGDHg3+tbXiFzp3ABk5ccC2Di+I0QEOrjwJjCuCkHk4sdmupUS3jDAvB2l1EIUKJLoRVKMUA6IBls29zHDwWMnrH7umSSwEUq7Ap7z1JMlfLAncGclEOG/m+mpAufktLGRN9NIJ6I3MKCI=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775464100-748128
+X-HE-Meta: U2FsdGVkX1+LS49mIJDQDRlxojnEeuGAU6QpPeXV7LlxaQ0yVqS38UjPfh/FrOv8Q4UJWjWgK9dYMy9mKRm59hJhnmPuEFCrs+qm4ixnll6WZYbPR3xgZuW1Os0GfEcU1Wj7E5Ub481qhr9ZY1FiOoVosPLIPoscWdyE3/7spPfsCpniSoN3QVOuX+49Oa2uN7OuN8ZVqxvcbJuQFjiRGQVKRPVGEINfS9E4KJBt0PrtSlAvG2g/2g/472/1Ngpk3HK4oOaJVJzmJbFIMH4fHmxbUKUHDfAcDeV2kaiyqpEUAW9b7b9Pi8yH27TvYE9iubYN+YdjmHGE7nGbS1eVl0o1nSYLMuFiV8Lh7xPIWGw/vLS62ckad73BlIgDLiFkBuJaiwePmMelKYLhh7wrJNeSQTV96EvPI1iAHrWnKX6543i4LMH16NyjwDuOl/mpHtkpnOekPYJV1VYP8ktwXdDcAoCTJOMu9UChw85zsPxyvpbcfiIzF9NEZNmIf0ZnrIT4WOl3gRth7SsdwuHAQIFy37Wdw3vI0kGw2xweILeIBCamVkmEsmGr5f6IBrDWCJCUM2hJGQnol2hPpRqjgbKChi5QUGP2nBnfDHldW90uyrU/MAYaPJTJEdzZt2Ej9jyCDEIp2KHjPrW7wziFMnjbEjyUy19t9STu0nlWUkZH+TDL2DOBNV9a4CwtYpReiKWnxaDsLlG+4l0c746SpOsBRNjwcyShk40fGmwJdKCXSIX0wQ4nE/GZirxvbO8zjjhAN3zEgDVz8yP9WTMUKETrWpMCNpdcdBX2oKk6t8tMZZE9SKaS+DfhJyp7q4HlFuTDCtS9eI+IIF8G5ELBFm99MC7QCs1+sTmpK7LrIQV64vNlSPid9PWGe8k5L+vt3X76Iv+nLH1ClT1C7RknhWcbLfVebcf3zDvebOipiaeqPW4uy41K7zhHjWiKYWb0IIJmpeRJv2j+NAVBWfG
+ ehCKEzx6
+ Jt3DKd652mLolPFssMv9ZmoKqGXhLiX6dupdF2e3BHw3VnDS6d9cbS9Q2CIit7BH5/BOWx3JzBftT4fwTtay/GbmJ0C1OgrFe+74iP6QkF5Nf+uwneVwhsU8GL+vzz+YZWWU3whaB6TPYeicBwvkiUNqcuwkmbR3VQ74cWmaELkKYRt75RSAmF0KP1b4rD3NWduckJMysC1WdskT4FcKFk1OEZjclBekWIux/hnTyzvOGIURm0Pe2nEh+iHTE9QlbTFzH6rAWRO3oCMuYXHyRn6P8nOQQvVM4/hR2WyQWRCosxcE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,50 +137,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 08:49:45AM -0400, Jeff Layton wrote:
-> > Have you considered stopping to do in-caller writeback for
-> > IOCB_DONTCACHE vs just leaving it to the writeback daeon?
-> > 
-> > Either by totally disabling the writeback and just leaving the
-> > dropbehind bit, or by queuing up wb_writeback_work instances for
-> > the ranges, or by just increasing the pressure for the writeback
-> > daemon.  Note that with all schemes including the one in this patch
-> > we might eventually run into writeback scalability limits, which
-> > will require multiple writeback workers.
+On Thu, Apr 02, 2026 at 11:29:59AM -0700, Andrew Morton wrote:
+> On Thu, 2 Apr 2026 15:21:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
 > 
-> I did test a "dropbehind" mode that just set the dropbehind bit without
-> doing the flush at the end of the write. It was better than stock
-> dontcache but the tail latencies were still pretty bad.
+> > Ugh, of course right after sending I notice a small problem.
+> > Andrew, can you patch up the commit title to something like:
+> > "mm/mprotect: special-case small folios when applying permissions"
+> > (or protections, whatever sounds best)
 > 
-> I think having each writer do some writeback submission work makes a
-> lot of sense. It helps keep the dirty pages below the dirty thresholds
-> and doesn't seem to tax each writing task _too_ much. The trick is
-> avoiding lock contention while doing it.
+> np.  After scratching my head over the difference and not being able to
+> discern any, I went with "mm/mprotect: special-case small folios when
+> applying permissions"
 
-Well, an any time you hit a shared resources from multiple threads you
-create that lock contention.   Which is why in file system and writeback
-land we've moved away from random user processes hitting both data and
-metadata (e.g. XFS AIL) writeback as it leads to these scalability
-issues.  At some point we might run out of steam in a single thread,
-although so far that's mostly been because it does stupid things
-(e.g. writeback on file systems doing complex allocator stuff).
+SGTM, thanks!
 
-> I think what would be ideal would be to have some (lockless) mechanism
-> to say "there is enough data touched by the range just written to kick
-> off a write that's a suitable size for the backing store". Each writer
-> could check that and then kick off writeback for an approprite range.
-
-And that is called the writeback thread.  So what we should do there
-is to make sure we queue up writeback on it for each dontcache write.
-Initially queuing up a wb_writeback_work for each range might be first
-approximation, although we should probably find a way to just increase
-a threshold if going down that road.
-
-> I think this even could be beneficial in the normal buffered write
-> codepath too.
-
-Yes, we've had lots of observation that the current 30s timeout is
-actively harmful.  Especially on SSDs, but even on HDD just keeping
-the active might make sense.
-
+-- 
+Pedro
 
