@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CBE8F46C76
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 19:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9EAF46C76
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 19:32:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB6DC6B0005; Mon,  6 Apr 2026 15:16:08 -0400 (EDT)
+	id 96EA06B0005; Mon,  6 Apr 2026 15:32:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A67326B0088; Mon,  6 Apr 2026 15:16:08 -0400 (EDT)
+	id 91F7B6B0088; Mon,  6 Apr 2026 15:32:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97D0D6B0089; Mon,  6 Apr 2026 15:16:08 -0400 (EDT)
+	id 80E5B6B0089; Mon,  6 Apr 2026 15:32:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8698E6B0005
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 15:16:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71BEB1B8372
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 19:16:06 +0000 (UTC)
-X-FDA: 84629086332.01.6490783
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70A8F6B0005
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 15:32:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DD7E140596
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 19:32:25 +0000 (UTC)
+X-FDA: 84629127450.12.F0DA90C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A8B32C0007
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 19:16:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="i1zGF7/s";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id 63054180004
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 19:32:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TZgXA6u/";
+	spf=pass (imf06.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775502964;
+	s=arc-20220608; t=1775503943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6lMzqJHprahTOpy9CHnlrkWwJ+Vs75Vcnnlup22qKYQ=;
-	b=vqWwv/3pbdt+LGH95j8ZcgQveB2gaH9BPQQcB0Yk6jr++Xs4UIJx+NnOpFgwATqNqioDzD
-	0D1iNzxWmH8vArSp3cZ45zwKu3uJ+/+luuXuu5CXyGdy16nR7u7T1lFET0T1mIWIL261Us
-	eNa75gf45GHpKI5jenCIaqQQb11pry0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775502964; a=rsa-sha256;
-	cv=none;
-	b=4C4VGszC1tHDnRUB8YwOo8DIMZE14WvHGCxXcgu3yBYV+7SToBMCpfvpWrmSwQ5As79QQK
-	u+D3DSsmPj8k0Vas1E6h01LU4aeKoz1vnlLOLPN9K9ncvQ2lWKHLQX5zx+1hOi69TcyM4a
-	3xIY2Qeyy5r9JYLylzkgWPA/FM3+e5A=
+	bh=1lxqA5xtdggPK71cUpidpioON5ZmOnGn1W4+sdll+fA=;
+	b=jCnM3w1gkxRwiG94kMO3hPInJ7pXAzMd/VqqPf+ri2TkzfE/D3JY3HvXww6Bu0/Whvx5DZ
+	4aJ3MdORlOkEqEwMNTdQkvQ58XlKJZUZSFNNgKHQZ6khEftjru7h1Q4/GVc/j7UpEb43QY
+	Aa8BpQDnJq1N+xWHsyoX7/mF3FaKAQE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="i1zGF7/s";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TZgXA6u/";
+	spf=pass (imf06.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775503943; a=rsa-sha256;
+	cv=none;
+	b=hFK+zrmPQ4ZUkjEYm71GhLUHN0ptVetg/mfb6AA3Gs9tzzp+v98aB+PkCZxIVBLw36fnTn
+	hNCsHHwGeJ/Gk55DKpHMVAR/NLccQa87cpij58OvyioLXhZU3VtVJ9ERDhoEH2fA6W1K4D
+	4J3RsPSJ/tAWGKY/HfuQ/pBVsfixPMc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C347407B6;
-	Mon,  6 Apr 2026 19:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EC6C4CEF7;
-	Mon,  6 Apr 2026 19:16:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775502963;
-	bh=QFs5zbLdbLvzwCzJF46KTmdJhGKCTNp3PQe/c6FVWuk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i1zGF7/sXDGh16efrnNHdWmhZTD0x2pFwIZOavKSuFz2N2xtPiz89vS+Sy1zhba7b
-	 FEnT9pU71iW1MyZNNXcGc+cGkz+XnfIw0RzpAiskj7GY1Gg75WAsOQ82daAXmiW+Cc
-	 aCbidToP7gn37uvs/LYVIM08JTBfpfHPMoaPEVSs=
-Date: Mon, 6 Apr 2026 12:16:01 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, willy@infradead.org, hannes@cmpxchg.org,
- david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, riel@surriel.com, kuba@kernel.org, edumazet@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] mm/vmpressure: skip socket pressure for costly order
- reclaim
-Message-Id: <20260406121601.0f4f3a6886098371e40d6711@linux-foundation.org>
-In-Reply-To: <6a41259c-bf69-49d5-9cba-80a5feb8ee8a@linux.dev>
-References: <20260406174425.61692-1-jp.kobryn@linux.dev>
-	<20260406105417.28fda9587146a011af2fb876@linux-foundation.org>
-	<6a41259c-bf69-49d5-9cba-80a5feb8ee8a@linux.dev>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A8B32C0007
-X-Stat-Signature: k86e335tqzcawb4xqe7q4m3adhqasm35
+	by sea.source.kernel.org (Postfix) with ESMTP id 2AAC04049F;
+	Mon,  6 Apr 2026 19:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE19C4CEF7;
+	Mon,  6 Apr 2026 19:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775503942;
+	bh=S1NtRgmwq+0XbhEiNinw7Ck9uZDk1ciSXDTvz8fK038=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TZgXA6u/Rbx6lf/95MWpUXpuI2+lS6JsMpaLTOjqAAppxZXy9cxUfM3m4nZHoXgci
+	 MmRiIXUjP3/joOORsIt3iCmgJpoeOScCPNDPpXaaHRg/YA8YY5T/ZNDKPqY/mniQ9Y
+	 rJ3xnZ+Xwa45BAPEaZopp8jUaKPZLi30umCLkATvD3qs4G6rp1axN2uhx12d0TamBP
+	 7nLo0JLUYntAcFMSktSd9rhbyaJY1a18urvKHjqMJWPAqIr2fupe5TyEZDk3xovGul
+	 LKv3HhIajyijJO90T3efA6twfKyV0Si/65B5nkygmZsoVbdECwN5g5e+mmLQ4Lubiw
+	 5vdyu0tuILU0g==
+Date: Mon, 6 Apr 2026 12:32:16 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Li Wang <liwang@redhat.com>
+Cc: nsc@kernel.org, akpm@linux-foundation.org, david@kernel.org,
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] selftests/mm: clean up build output and verbosity
+Message-ID: <20260406193216.GA1319599@ax162>
+References: <20260331094402.144131-1-liwang@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260331094402.144131-1-liwang@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775502964-754166
-X-HE-Meta: U2FsdGVkX18PLl6Q9FQbe/WAtGkQKrtFffzFlFnZsw65xhADU0K3mUUfUpkrElj7EzmhYX45dh1xEc9XsRC1u0l0scTDYb30vU/POvlTTtrtgbN/svQ93mmZsgYaq9dA8HZWVE+mEke5QWsXx8ooTZ0yWPMyn+EYnWJyefxAlH8y3QY2JP7Z1kQVts/aqRZurauDmxCoGTeUJZgu2FhDg+H6IPDcaYgdM+sD1rIrGZHFecjUEMx/eLt7Xewvso9lgHV1vWVIlrgVALfT7Rmbl+EHjz9xTnE8YGLy44AHdIbWo6nmZn7/HMC+f6ARVLuBZDSFwlU3iLeIv8nS6JPYQICZDs4ueBYQ0q2cCvJUG62igQZ5Ty+mai6Af+3TREK3YZ4nIrBQ28Wv+y3Kp9H+iA9EfzoH+M26SBLtfwmKhrO7wSh1DvTmIvssC+zfABZ3tEfu9HtH+hvu6tBoBqoXQwALUs0a0QZYY5AzO9fbklrrLc6oGXtVMt73Z96o6iS8P9Ds9G9xnukNnFhYAYKhTeN7TWWVWm98WiPjmKILjThiNWdPpD7LIPNs/WcJcIPnrhAUKmHnwR8DcHhfgfCBMJid/m6mCIpN9fvSg8hkXcCkK98Np5JV3BaaEfjOYRj18ROup4ooUV7RY4M0/8Ain5ROOAXvkrufjF2UDdmTzg8m9u8Li9ZDlK1IVylHJk4K8zd20LFSLhTJpU7SKKm1DORSytso0MsGb6QZHGz/sOeCRO0uw8oiCk4thV2w2cWy10kohhA1sgOI0zOV2ahRtPXdgy9nVodcRSnr1aj5yBJbOZ6aD+2Z1ZVyFrG5xXuR8kWwal0lJExzxeTlMpehzwiXEltjOl2X+8wxGtZXlTc9omyx6Ovy3EgV4Xham6Emy5BnjndUH1+H/VikeT5bGL+iFX150ovy/TsE9eFkgBNOFJ8tFQ6u8jUkyMjTdaBRHx1iN4VOqmaeTwdKSDk
- 4dM1HdpY
- i4U4rc4Sx+LXMKyl0E7fdEGPWn3K+U57TRCegF2jv7YvoHWARPRDXmxMeJ/d2LAbJx39zDi+ftQ/sma0sZEWUP3A3jpk28uaOpnXsEHLwK8BQ4YKwphMaCqFVbHf+JvB8PZt2u0wZ+5MEcF82DIMJU46M1WZJRbkI2F8EoG1PGh6xo/ygXZhwLgJ+70wIVIhzG2ydPYEnkXElKrBM4j9OHyjRMSzR27rpgy2bqhP1bhKPyKS1R42xxz7+R2wwJYJX+L7t
+X-Rspamd-Queue-Id: 63054180004
+X-Stat-Signature: 3f8gwuf41nkom3ifwr3mb1yi7fyncruh
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775503943-921375
+X-HE-Meta: U2FsdGVkX1/fjffTLasKzMtL6/D3MzymZeiIRi5UsbwNw6rp4jctUg5ikvARoLBPwz+MFi8uU33LpCFjKRFLUqTgIDKqgsWHd8Zd6xwq+rxNZL059lHNEVw5GLkTZfFC2AwhkhPjar3ry/fcf1PLrlP9eVnOvED2jzut8HhJyyhQ5JFkp9gCbGsSU9y2cctoNM5oyCasAO9JUM9d17CLDbR95qH1UkV1B/ETV1TItoDwv+lryo0DkI1ACZVYqMUgoss8iY0o1iZkAPaDi0eLfDgH8wEsmclia2zAJMQbC3kD2LUzbHCUlr4hw6/o6GHLz41ysCMq6BctifQ8cVMNq8zir7x0w+dGxVYTzfCslXzfNJ06q+VMfIH8CR703hk82eGiUQqg42NS/bv2tz3igCOfLmFx3cICHp3thf0sAjxkFMduVrAQ4EQO8iNpWKTeQi1MN76Q745P2APDbLVP3LpH/8K1sgLr7x85nEuKCLYN6YwgVLtRLBcVFC6/cddJPBrR/HTANkUIN2d7pBrE9eXUYhiAbrZPcf+kxUm5KduWbwy3JDkq+CsJ0zDuj+jCLBztinDsdvdQE+MPubebnUl4VCkxGuBuhxDbNVRlQS1FX9j1jANbR86RlIttPxLJCNdFOZwPtltuPGgrc/EmulLvAsv8LFD7XS7KiPph/MI+3or4rS3trHY2okalgMP5ePk2KTLNwyQqZ52bBWDWILNmX+HvFJgp+RT1iFpYc/epztdWJzzDHODrcDkFDSPVddd6BYAgMtwnuBYaG9GoItDLE781P8zriCUVjG3NxPzerXelfZL5xsWbZQ24KMfxa7IUkiC8vMsxFo1mdX/QUGgrQI0eRGrJrgRr/clotqJoPokRChOQvDaBuQEnd+BPmNHoJEWF04mk5WiYWxPwU3/LRRNpn0N/9pdJbBTf7LYlAxhz86oDJeE1GR3GNCP30ifhaJkhS9xWpwc7HT8
+ Pm5GeWnl
+ 9i0NYJHZM8nDJc/eoXXBC1g8bAOZsdeLfFurDxtXQgWrm07n87/UOfuanGDjOyfVroan1DU4Geq5omcpSIbqQ3PGTsuQcIfXanqO+5G0TTjV6DamF9aJFj0Lz3KP0q6R++CroNOtXan4+5gtTZ3I+WKz287lx4x5niZUo22tHNkqZYv5OW4DM5f7QQYhuFRWm1C2a18XYR2/8kv+9F6vB3V+1JEsTAB55zF8pVHNe0b3MgODksOk2njVs1LI7o68g507MT+Gq15cTB8/vwT51XRU2Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,37 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 6 Apr 2026 12:07:57 -0700 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
+On Tue, Mar 31, 2026 at 05:44:00PM +0800, Li Wang wrote:
+> Currently, the mm selftests build process can be quite noisy.
+> 
+> First, it leaks raw compiler errors during the liburing feature probe if
+> the headers are missing, which is confusing since the build system already
+> handles this gracefully with a clear warning.
+> 
+> Second, the specific 32-bit and 64-bit compilation targets ignore the
+> standard kbuild verbosity settings, always printing their full compiler
+> commands even during a default quiet build.
+> 
+> Notes:
+>   Andrew mentioned he hopes this patch merge into kbuild tree, so I resend
+>   to linux-kbuild@vger.kernel.org.
 
-> Let me know if this data helps, and if you'd like this added to the
-> changelog.
-> 
-> On one affected host with impacted net throughput, the memory state at
-> the time showed ~15GB available, zero cgroup pressure, and the following
-> buddyinfo state:
-> 
-> Order FreePages
-> 0:    133,970
-> 1:    29,230
-> 2:    17,351
-> 3:    18,984
-> 7+:   0
-> 
-> Using bpf, it was found that 94% of vmpressure calls on this host were
-> from order-7 kswapd reclaim.
-> 
-> TCP minimum recv window is rcv_ssthresh:19712.
-> 
-> Before patch:
-> 723 out of 3,843 (19%) TCP connections stuck at minimum recv window
-> 
-> After live-patching and ~30min elapsed:
-> 0 out of 3,470 TCP connections stuck at minimum recv window
+Kbuild does not maintain anything in tools/, so this should go through
+either the mm tree or the kselftests tree.
 
-Well I'm impressed ;)
-
-Yes please, it's a useful thing to include.  When people look at a
-contribution, question #1 is "why should I spend time on this".  A
-clear (and tasty) description of userspace benefit is the ideal way of
-answering that.
+> V2:
+> 
+>  - Drop 2/4, 3/4 from v1 to v2, since Andrew wasn't able to confirm the
+>    patch works for the rarely happening issue now, so I decided to just
+>    hand on the process of the parallel issue.
+> 
+>  - Refine the 4/4 patch only to hide compiler errors when missing liburing.
+> 
+> Li Wang (2):
+>   selftests/mm: respect build verbosity settings for 32/64-bit targets
+>   selftests/mm: suppress compiler error in liburing check
+> 
+>  tools/testing/selftests/mm/Makefile        | 9 ++++++---
+>  tools/testing/selftests/mm/check_config.sh | 2 +-
+>  2 files changed, 7 insertions(+), 4 deletions(-)
+> 
+> -- 
+> 2.53.0
+> 
 
