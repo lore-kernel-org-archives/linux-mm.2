@@ -4,91 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E8EEF4EC9
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 09:09:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5922FEF4EC9
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 09:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3296B0092; Mon,  6 Apr 2026 05:09:17 -0400 (EDT)
+	id 8C2926B0088; Mon,  6 Apr 2026 05:20:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55096B0093; Mon,  6 Apr 2026 05:09:17 -0400 (EDT)
+	id 873936B0089; Mon,  6 Apr 2026 05:20:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF76B6B0095; Mon,  6 Apr 2026 05:09:17 -0400 (EDT)
+	id 761F36B008A; Mon,  6 Apr 2026 05:20:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE4566B0092
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:09:17 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 65FFF6B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:20:29 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9086E16039E
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:09:17 +0000 (UTC)
-X-FDA: 84627557154.06.C8EB6BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D1C4410000B
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:09:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UftitZ1R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775466556; a=rsa-sha256;
-	cv=none;
-	b=Ql47WX0aXdJk+tWiwcVuWaZ3BcbOymW2u90fMUVudAM14AFNhlGf5xNm391HYH4VTBRO1T
-	8x8ajqiXUeI1Rty53WU4Lb0WBqXRLzPNPgECgoDQFUkiBIqWm5rKusGxO6yAXM+Z8YJr8E
-	W2q4xDQWLwPm+qa5cwN9BsBGWrcbKuA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UftitZ1R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4252C188E
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:20:28 +0000 (UTC)
+X-FDA: 84627585336.06.AD62D7A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6EADD1C0004
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:20:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gjg7yGsB;
+	spf=pass (imf20.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775466556;
+	s=arc-20220608; t=1775467226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v9ovt/ZDquhAJa2x9016L1imB8FrjN/G6n9PkbMP+2o=;
-	b=ZXHIZyEfSfuKxgPkIyF1+sYW/xc/4uiRvq8fzENHliTFS48za1v+aju9A/huS1lRHxLB+B
-	ivfC/9KhH+Q6k7FQesnJInJp7LndWtyt37ALqQ5UeOtYe44xKuWn1jtuckHUO1udlQS7Jd
-	7KO6m/8MeSv6ttB8jkoGNr6kYTHGmh4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 067F144560;
-	Mon,  6 Apr 2026 09:09:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB5BC2BCB0;
-	Mon,  6 Apr 2026 09:09:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775466554;
-	bh=+68CRKEHG6u9hyAJFuc4nQLarNYDPrsDi1eLDIKNsuQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UftitZ1R+MbUtt7YHFOlyqSgkadiccGJBtvvAWSc+yh9VoDNaWjExtLtlq/8txg13
-	 h04D0mP1XHvGngk9G3KfEtVZ+HrXa7eF68hEsazic/bjqGv4Cn0BhHozChIki+huQa
-	 tjfhJjrFDDECkJ541aLXY4GnJEdf5WK1kZJSR8oGWwCjvuWfN2+unzeHgIXjVeFf/4
-	 gR8xRsQDZLdcW3RwTMiutZ2nNVf30lxuNJGejAKl2698EvTnoA4xYaJYMNJA9T/NCq
-	 d+rUaG5sRHuhoWu49JYvOrxwUPoFA8mFuTkbOSQHw7KifR8rjEQBo7uakK0aEaS+Ah
-	 lWVSViuop6dHA==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH V2 2/2] lib/tests/slub_kunit: add a test case for {kmalloc,kfree}_nolock
-Date: Mon,  6 Apr 2026 18:09:07 +0900
-Message-ID: <20260406090907.11710-3-harry@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260406090907.11710-1-harry@kernel.org>
-References: <20260406090907.11710-1-harry@kernel.org>
+	bh=BE2EUKU/McYWqo37ghWd6Kx9zwh5R4g+dFW5eL2I394=;
+	b=L0/TtnwBNQ6X/w/t2TQ4g8D4Z63FmPV6Gjq8Ubp95OjMGrww9gkJFlpPl/TrKlfPM6XVuH
+	LAkk5eH17j3Iyo8hT68nZttd9J5TjL4U1QbMfiZ4xmiaiG4wwlQRHrY+WAckTFKXjk13Sh
+	2V491uYAyCyFymfNQ56nezdd0erGxE4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gjg7yGsB;
+	spf=pass (imf20.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775467226; a=rsa-sha256;
+	cv=none;
+	b=Prkgf0k2+yQbZen5LOaFhtxTxbfEB2ioYXNyGBl13zYgl4unONdwq1HdP66G1mnI3Gs2On
+	IFA3BBMCiA7fN6tMGWQlPER8rK7R8oStJ+T1lnxiAKab/9rQZjg20dqOENtMvT3QAGxp5n
+	VG0PtQ6uVgnjtRGVPSlAOvJWPMmqTzM=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 635NsWYM3879301;
+	Mon, 6 Apr 2026 09:20:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=BE2EUKU/McYWqo37g
+	hWd6Kx9zwh5R4g+dFW5eL2I394=; b=gjg7yGsBRkoF7CHo65fX+pLrIWM+OOSgy
+	zqlDQhYqlezV2pGIRoepQHzM43iQWNXysqWSXzK6l4JEHdeeq7QshpAiN3DUkigh
+	DNhXnSuBfsJICk58vGs5LswJEmg6KjSOGiSSw9zUYOR6zIrd6Yb1XGhF6PTnBCv/
+	8VLR3BBne7RDQp9jIz1B8MX2OuIn8fTVUQcvaE5jJmZLlQcIVQULBei69Uc0odHZ
+	VmBtiR6S/lJngJz909fbkUTg01cDfqzNyckGO6fkezmBVdAJy/VYURxgSn2i70ma
+	NMMkoO86qIy5Sj//A2XrXX8ZGkDFG565A8nYZ7/OsKvuCfVqVZdxg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dat9rdems-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Apr 2026 09:19:59 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63646psp018571;
+	Mon, 6 Apr 2026 09:19:58 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dbcysv7b0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Apr 2026 09:19:58 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6369JsKr42729738
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Apr 2026 09:19:54 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 447AA20043;
+	Mon,  6 Apr 2026 09:19:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7762B20040;
+	Mon,  6 Apr 2026 09:19:50 +0000 (GMT)
+Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Apr 2026 09:19:50 +0000 (GMT)
+From: Sayali Patil <sayalip@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Sayali Patil <sayalip@linux.ibm.com>
+Subject: [PATCH v4 03/15] selftests/mm: restore default nr_hugepages value via EXIT trap in hugetlb_reparenting_test.sh
+Date: Mon,  6 Apr 2026 14:49:22 +0530
+Message-ID: <e148e4232d4b802795751a7766fcce8884c6e3c7.1775466329.git.sayalip@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1775466329.git.sayalip@linux.ibm.com>
+References: <cover.1775466329.git.sayalip@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4n3etg9tdn8j4x7q8k5geuhh3gddc1m7
-X-Rspamd-Queue-Id: D1C4410000B
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: W7LetLeRBK4_w-4UpW93fUvAyuxjOU07
+X-Proofpoint-ORIG-GUID: G6LyCCgjL_tmGz3AUnWmYTvfJ_jmTIYE
+X-Authority-Analysis: v=2.4 cv=bLYb4f+Z c=1 sm=1 tr=0 ts=69d37abf cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=dU9eaedoi-733nYHt2kA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDA5MCBTYWx0ZWRfX41v18ENz44Zy
+ r2Qcb5Z0AFbmVskgq/xuF2WLv8FzVjzo/Dvz6OSGz4RHEbYvZdgZPmIfnGSaOUi38C7/0ib0bsl
+ bXwYTHdAaBxhwM9aOXnAEMKo//dOnm8AkVYynRa2Dg1vYFHa9ttw0IHprVYEvHkHex/3oJpm+la
+ 1/GcOS3fCt/DExCJlCPxKAJb1lVi6UL6vdQN6MBvlvy1zmhQ15gHTg52tgmDfvLgEUp8plCADgG
+ 212iGeaOWIyKSpCPTuN/F3m/76OyCYv7GDcPlvqv67tv7CRAVQsaJei9eK0ytLkJnr7ee5XYkw4
+ KSqW2XyUdRSvSle6yTziS+/rfJ7TP8XwNuQ1+8EK9vkEXxdWHHjg3RwkqnaQWHIBk05IL16jRVF
+ 5SgWdUf1fpGsBM7pR5eoBM6l46QslyoTiS2cegLSEI3dusjc/C/U6nehmmX2V0QzIfYk92aOJbX
+ TLSkaT3fxMiJO4JLiSQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-06_02,2026-04-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0 suspectscore=0 phishscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2604060090
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6EADD1C0004
+X-Stat-Signature: rmn4m1hfpwb98ka5cdyaznnxw86zgnga
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775466555-334445
-X-HE-Meta: U2FsdGVkX19HY+ZrddcExJBUUGY7nNKJTt+73UAeDiHVLBhWNb5NDYW+9B0t31LC9HoIt6pOwa506Dt2qZlBtzhQjGa4hvgiMn9rPWDAE+gCtcRQiIsws/EB7SsCXpQMV58scJ9FKjcCfcwTMrIjbXmBaXFIbqpEvL5Ek7Q7LkCUZLmprymGct4MzXWb85+4CYqKMWHrqim8fk7OYSwDuhdroX0AUI3QFF2VjWMpXnuR5Ti9evTLBTsz+Qgw2v0G5TRGKIRa3bGAAoOzmQRLGdO2zZH7s73ljExzhwrrr8zW3PSDrLKcgKfzqM0cnVu5JaMOSpNmKNTYFd30s0aqG/3gu1PlmNVldPrLxx+DwuT+cklAZg4+fIxsKq/cqxXS3FzH1cl3/Z0NOKtvzN4mE3RtA1KwDnlx9FNzWh1tYknsARTQ6feaplh2g8/KsJpBebctpz6aI7yl0lb0eyy48sihsCJIeyAdUXuUGPkck3dTFmz6GqhPgBV8YfaUzR7vX0amUFF/v7oi89fSU0UxC6whzVFqrctnPJRDydtc/tiz/w7+q4H50gG7So725WuTJW35bXIa2EvrLMcvR8txCedmpPpbTTtjGf28u+d6L3WzKx0q6UFCFe24sfQUO9pPE7KTve363xUsHkiNdEGshge+n1HZ+Rcmyi7bXCgMGTKsSINg3Fy3nwo6b+FlJnF4Ek3mTk2da2nJtV06btu71npZUO6U3/ajCHNHmYw9R/5BJ1iZyS0zROws9nm6DTWfM09ioIakea7XL1CbDshp4dLVf/hjL/oWT3h2dQxlJljsmA5SVZcnW2zdYQ5gIKQ2Ime16VaCRKisJi6XRBc4KpfVx2cEE+nL+s8T2x2x6SLmG82Vb7wPsKRQ5CllFzMUaB8BHlnpIf/feHh1XD8f7y6rPnJd5vyC3bQxoMlINRT+77oo2UvP9XXiqpH6n7wvwMifvjz7L66MWttqWro
- lozG0oHP
- OI/YzUnOt5/oX5J5PTNGcFujbEY6EOFfkk3TZeiM/UtSwQpT3zmsGUFCFa6ZrRGhIiSIUrDFdJvS9ItjUnqnk9aWIpn+DG7y1a917FP1yBq7whLYzpf5zIMdvUNYS/bak1ZBC46h+Qad3W0FXkPbZoukJtdxP/YVuViGLV0izs6+9jqOvRLW0z1WbJTbRBlIjKJWA8MdLBK6gJdbCbHKL+mRWdyZKvW4MUsXBQxPx16W9GQsKKBylIi23VW4gXQMfYjD05peKtXYst49OqGD0UFSj229vpn08L1PSctqB6siKDdg=
+X-HE-Tag: 1775467226-875006
+X-HE-Meta: U2FsdGVkX18RnSCA6YpIcm9mFTb/qCV7vxuE7DJKbjh/PPYV3N17zwyLhrVotyvB9NueE52yVHLS+ImPB/Ld0e8qtRr7b8NGz+PVWvJSPahWjht5nQoIsiEz/FGD92wgtvHgwO9x10f/3WMt/M8ZkQ6isx+yoQxLQj9A0fNta1Tty9dTj0BspySCSZL6gtSp8vd8bzSr72SlZtEWp3JsxllTBmVjU0dsBk0hpyVfkthWgbdtJHzZBCL4V3LVw9798iKpBTR9Szhv5NApXZXZ87usircTPyu4wLj3vlS1hRpHqoHZguj20vIwkNzbqmjPVn+tYpagqNM9uWc6I0Vj3qBt24FYHA3Dys/0AU4PtQ6B3zxhTW1LpnLH9nDNwCrNn1D9CuUMXg1xWZlL6E0jPBo6bX8Lz0QeU+m4H17iYO7f17i87NDcu/Fur3D66gr02SNf9Vy2AqAyvk+rSdSxWOFNCilJM9sidN92pIgHOE66brIqvNitOAmsCb1/WjiLccwEbaaiKCqolIUd4UWq6FTF8XRNukf/nuzwfZlAZlWBlUaB5WE+8GvrdTE1vAAS4X9waTop65G2cG3R+JpwiXQxphlAqgQJ1nWlC6crToMz53s96yf1+8AvKzqx+d4wcGOMaktCWd/BuGv16ASTdzZEc8T02/APCHEP/Jt0DmkZUlsXspxpxZcbkOywYefxRne/XLhpziFDULWNqMxtLbH6ekaD5nj8qt93nyIg2B4Rfwwv83dF9xlThyDBosiQ35GeTA8lQ61SAh7RWNguOywQTCMfidsfcPug4fgWMhybGBXBc1camoyIc7uzUSZ2JY8p28ppdr1ZQATVohUq/c5KlUcMXcCDhLAkNx5ZTB08QDg7Wjz7XeYkdA31RxL2G3cTcStMknC7v6vH0ZXQm+JlUsAlJ3WzTTgrZ+QZbEbOxm72pHAQynu3OMKTbfuswwp/AOj/qiFrqHl2duI
+ rhLPOWoi
+ ayo5uVSv89WsGqGMn0+ch3fHsEJaft/cHvRbQk41ZUrfVbJMMKlicen3kx3iRjwhdBWyW7GHomZrvnYC6N5rkCTapmgRgt1j6Z75z4vgDa04NQTTGnmyupXbo5jLYc0oTDVmspRawQlC+dt7K/6mPTLJUlNRWNdh+0Q2GU4XR4I0lTqHLM8sWFT+rDWoj5cN/hoelZg3kkoK5KwOwJ44VeycRN86F+e6u36G1O58i8WDQmGhEUtFsikTsIHE69eI4dijb5DFrlTKcAWkrmlpfYqeZushWn9j9hWYQipEu94nWo+9XHJ/ktLuCNxeefgH8V5EzAPZQobfzA8xhhxhFprZO6qWPNNG/e3+3ysJ0oHaeoXRojziB1d1HrKFlsE77cIs2w+LRqzbEYTpSiWyTd5yL1ssDobATz3YE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,141 +144,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Testing invocation of {kmalloc,kfree}_nolock() during kmalloc() or
-kfree() is tricky, and it is even harder to ensure that slowpaths are
-properly tested. Lack of such testing has led to late discovery of
-the bug fixed by commit a1e244a9f177 ("mm/slab: use prandom if
-!allow_spin").
+The test modifies nr_hugepages during execution and restores it from
+cleanup() and again reconfigure it setup, which is invoked multiple
+times across test flow. This can lead to repeated
+allocation/freeing of hugepages.
 
-Add a slub_kunit test that allocates and frees objects in a tight loop
-while a perf event triggers interrupts (NMI or hardirq depending on
-the arch) on the same task, invoking {kmalloc,kfree}_nolock() from the
-overflow handler.
+With set -e, failures in cleanup (e.g., rmdir/umount) can also
+cause early exit before restoring the original value at the end.
 
-Acked-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+Move restoration to a single EXIT trap so the original value is
+restored reliably on all exit paths while avoiding repeated churn.
+
+Fixes: 585a9145886a ("selftests/mm: restore default nr_hugepages value during cleanup in hugetlb_reparenting_test.sh")
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 ---
- lib/tests/slub_kunit.c | 92 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ tools/testing/selftests/mm/hugetlb_reparenting_test.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index 848b682a2d70..fa6d31dbca16 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -7,6 +7,7 @@
- #include <linux/kernel.h>
- #include <linux/rcupdate.h>
- #include <linux/delay.h>
-+#include <linux/perf_event.h>
- #include "../mm/slab.h"
+diff --git a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+index 0dd31892ff67..7ddb370e1572 100755
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -12,6 +12,8 @@ if [[ $(id -u) -ne 0 ]]; then
+ fi
  
- static struct kunit_resource resource;
-@@ -291,6 +292,94 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
- 	kmem_cache_destroy(s);
+ nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
++trap 'echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages' EXIT
++
+ usage_file=usage_in_bytes
+ 
+ if [[ "$1" == "-cgroup-v2" ]]; then
+@@ -56,7 +58,6 @@ function cleanup() {
+   rmdir "$CGROUP_ROOT"/a/b 2>/dev/null
+   rmdir "$CGROUP_ROOT"/a 2>/dev/null
+   rmdir "$CGROUP_ROOT"/test1 2>/dev/null
+-  echo $nr_hugepgs >/proc/sys/vm/nr_hugepages
+   set -e
  }
  
-+#ifdef CONFIG_PERF_EVENTS
-+#define NR_ITERATIONS 1000
-+#define NR_OBJECTS 1000
-+static void *objects[NR_OBJECTS];
-+
-+struct test_nolock_context {
-+	struct kunit *test;
-+	int callback_count;
-+	int alloc_ok;
-+	int alloc_fail;
-+	struct perf_event *event;
-+};
-+
-+static struct perf_event_attr hw_attr = {
-+	.type = PERF_TYPE_HARDWARE,
-+	.config = PERF_COUNT_HW_CPU_CYCLES,
-+	.size = sizeof(struct perf_event_attr),
-+	.pinned = 1,
-+	.disabled = 1,
-+	.freq = 1,
-+	.sample_freq = 100000,
-+};
-+
-+static void overflow_handler_test_kmalloc_kfree_nolock(struct perf_event *event,
-+						       struct perf_sample_data *data,
-+						       struct pt_regs *regs)
-+{
-+	void *objp;
-+	gfp_t gfp;
-+	struct test_nolock_context *ctx = event->overflow_handler_context;
-+
-+	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
-+	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
-+	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
-+
-+	if (objp)
-+		ctx->alloc_ok++;
-+	else
-+		ctx->alloc_fail++;
-+
-+	kfree_nolock(objp);
-+	ctx->callback_count++;
-+}
-+
-+static void test_kmalloc_kfree_nolock(struct kunit *test)
-+{
-+	int i, j;
-+	struct test_nolock_context ctx = { .test = test };
-+	struct perf_event *event;
-+	bool alloc_fail = false;
-+
-+	event = perf_event_create_kernel_counter(&hw_attr, -1, current,
-+						 overflow_handler_test_kmalloc_kfree_nolock,
-+						 &ctx);
-+	if (IS_ERR(event))
-+		kunit_skip(test, "Failed to create perf event");
-+	ctx.event = event;
-+	perf_event_enable(ctx.event);
-+	for (i = 0; i < NR_ITERATIONS; i++) {
-+		for (j = 0; j < NR_OBJECTS; j++) {
-+			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
-+
-+			objects[j] = kmalloc(64, gfp);
-+			if (!objects[j]) {
-+				j--;
-+				while (j >= 0)
-+					kfree(objects[j--]);
-+				alloc_fail = true;
-+				goto cleanup;
-+			}
-+		}
-+		for (j = 0; j < NR_OBJECTS; j++)
-+			kfree(objects[j]);
-+	}
-+
-+cleanup:
-+	perf_event_disable(ctx.event);
-+	perf_event_release_kernel(ctx.event);
-+
-+	kunit_info(test, "callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
-+		   ctx.callback_count, ctx.alloc_ok, ctx.alloc_fail);
-+
-+	if (alloc_fail)
-+		kunit_skip(test, "Allocation failed");
-+	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-+}
-+#endif
-+
- static int test_init(struct kunit *test)
- {
- 	slab_errors = 0;
-@@ -315,6 +404,9 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
- 	KUNIT_CASE(test_leak_destroy),
- 	KUNIT_CASE(test_krealloc_redzone_zeroing),
-+#ifdef CONFIG_PERF_EVENTS
-+	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
-+#endif
- 	{}
- };
+@@ -240,4 +241,3 @@ if [[ $do_umount ]]; then
+   rm -rf $CGROUP_ROOT
+ fi
  
+-echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
 -- 
-2.43.0
+2.52.0
 
 
