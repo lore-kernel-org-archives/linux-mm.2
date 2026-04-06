@@ -4,106 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 678BFE9D814
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 01:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20673E9D814
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 01:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 144D86B0088; Sun,  5 Apr 2026 21:54:26 -0400 (EDT)
+	id 401C66B0088; Sun,  5 Apr 2026 21:57:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EFC26B0089; Sun,  5 Apr 2026 21:54:26 -0400 (EDT)
+	id 3B3166B0089; Sun,  5 Apr 2026 21:57:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1FC46B008A; Sun,  5 Apr 2026 21:54:25 -0400 (EDT)
+	id 2C8DF6B008A; Sun,  5 Apr 2026 21:57:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DEEA96B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:54:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 79D4FE0276
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:54:25 +0000 (UTC)
-X-FDA: 84626461290.26.0276DFE
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9666B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 21:57:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B703E041B
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:57:27 +0000 (UTC)
+X-FDA: 84626468934.18.749B439
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0EB27C000A
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:54:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pCp/eFA1";
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id F3E8A140006
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:57:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TGqJbu8J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775440464;
+	s=arc-20220608; t=1775440646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7i0m5IAXL06rNchShDJiw5fum4CPgk9sAr2TZM0AJs=;
-	b=ib/O6902xMukpEAWhSK7cxPAvwiU36Vb8TjNRxJV3aD2e+CLU+SbenjhqwckVr+5LkG7c0
-	KLdFjE1tk8a4ZnXwoL/+sC+0Caor0EV+tgI+5N0eU2w64jIx2i29Vrk8Vm0n7nzr2GvEMX
-	ChKNKKkgf1c9o5Eo3VOX8X3kJ/Ea6so=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775440464; a=rsa-sha256;
+	bh=KQPcHeRYPxGNonVpdLzAgw5skiFBr6/vrOGtJ0U0oKE=;
+	b=jwjp001I9wLMuOlVhD+0sIyKQIj1z7LqqkvhMbwWzZ9A2RUK0z/9NTtllrF2dzou1i0VdC
+	RWJ+Hj5Oy2O9ILY+mUM7qKvnXQiOY2iJGtxyx3O2+yOKI70vHK0S1mduA0Ewvh964RQp12
+	r8Zd+7UUq2IlhyuNjTXbDk2zYio+L9s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775440646; a=rsa-sha256;
 	cv=none;
-	b=d6ecPeFXjej4QC8MznrlHn0DwtocpM3yNL3db+T5Dw83I/uc4LShuFmEUVOONonWmhZS8Y
-	LJ1kg8vqy7DxRNf0xK2MtC2jKBabm/Gsz6mv1INtKc6CBZTmcYFk9ggFWyG2bmGATqzHjk
-	B9CO7LAvgFAmHUGxNv/fZay7zQFhEKA=
+	b=nN5ufaf5slQayEfoWgv+ctO12LnTy/j8YKM9y3R1gJ2of8tXjkX8dHsiNpaXDt8P+MjPFL
+	fBBze22jc0Z1yTtvawhilzbvfG1LEITytUZ4BSkkDmTG/J3Ode4QT1gzxkITLvIkkSgnt9
+	Z3l3I8AScTv5ILcyk67aA2qjAwopXAo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pCp/eFA1";
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TGqJbu8J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23A40600AC;
-	Mon,  6 Apr 2026 01:54:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73543C116C6;
-	Mon,  6 Apr 2026 01:54:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 57A95600AC;
+	Mon,  6 Apr 2026 01:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77631C116C6;
+	Mon,  6 Apr 2026 01:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775440462;
-	bh=i3tkyONMstJd7/bB4kFhKh47p0J+DD4A0sqUFsz1AKg=;
+	s=k20201202; t=1775440644;
+	bh=nN6LiSaJDmaX3AIKdlv3OdZUJN6OsquxMb79cgLmeAs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pCp/eFA19HIS+NAFw7U11vCNfNTYBCc+LISNDwQwpselRC0UaA21FrMIuos8xo9cV
-	 4kfOJuZ8biK/kakJnm2xHEos8e0XArbBzRUKqQZ8+/KhYZwFUa185NiHdCyMTWggum
-	 e/yvAZzxSkAD6BLjhaLU2RzvoybgovlPurAQeMR1qUFNSaS/Fc7fBsWdceSk9rWIC6
-	 4tKWCWRh16r8TAS1dKdtnd7ZjreW8tCsgDYjcP4PEYkXtO3fsM+NGB8a3Og/llrpjE
-	 CmxfE1GwW0Inqg4Lmz1ynYR3Hl13kLFkBlTLJR11PNm0oWfYxBHj2ieORA8GqYDakE
-	 h1Kmk6mfhBaag==
-Date: Mon, 6 Apr 2026 10:54:20 +0900
+	b=TGqJbu8JaC83GOpFcRjTbZBckqldmJUEeDBTvTjZMrJwxZ5ShUt7YTqs1tMSbx57a
+	 L5RikvhG0u+Kt0lWYH8bq92WFwEXvmZOEfGCf8VeEY6CKy/+33d3AqUV4112PaN6Zo
+	 zQXk5XgNWLVKlYHik86SCasM9J53RcfXUxee2LIJ3bmWnSzA0bWCruicJTIQQRAJsM
+	 jlAA86i6mbIKsm+C4csw08zDqeRcO0bLpqJRYtjhhhYdAaa/f6cVLnZfGc9HbQtJ2A
+	 Ug8sq5cUX4dd8FFqILYTbUesmQbI0KMzLr+qpZMpuzIcN8VVj+rD668YEwS/LtmkAO
+	 UR2Ry4GwIvZDQ==
+Date: Mon, 6 Apr 2026 10:57:23 +0900
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrei Vagin <avagin@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 05/15] userfaultfd: retry copying with locks dropped
- in mfill_atomic_pte_copy()
-Message-ID: <adMSTB35f-ki15fj@hyeyoo>
-References: <20260402041156.1377214-1-rppt@kernel.org>
- <20260402041156.1377214-6-rppt@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] slub: use N_NORMAL_MEMORY in can_free_to_pcs to handle
+ remote frees
+Message-ID: <adMTAxEuUVlc-dhv@hyeyoo>
+References: <20260403073958.8722-1-hao.li@linux.dev>
+ <ac-qJ7tYQ-ybegOw@hyeyoo>
+ <6c90c152-3341-4a46-bffa-3cfaca66fdd1@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402041156.1377214-6-rppt@kernel.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: cmuui9bze8pf8pwr8qg8pkw3s6snykdd
-X-Rspamd-Queue-Id: 0EB27C000A
+In-Reply-To: <6c90c152-3341-4a46-bffa-3cfaca66fdd1@kernel.org>
+X-Rspamd-Queue-Id: F3E8A140006
+X-Stat-Signature: sa8c5hjqrryqidno87kz9iodcx7u89yf
 X-Rspam-User: 
-X-HE-Tag: 1775440463-362562
-X-HE-Meta: U2FsdGVkX19psX++DmxE+IvMi+WIAg6iQnhB1EbipoM6RhFQMU/As9mcwwtfKIUXcrveNX1K9bS5jkD5cy6mf324VKh+hkqSiAuQBf/Qe6A/rYG/QO9NBrFFWbWrwpRqTGnaIECCPR/qiZ3yHjCjBNkl9a7/j8pvzfZjGgEYd7xv1xSChEKZFNcufnlCM+//JEAsttlpaWy3dQvmCTM4aQ/GUs5LDI9EPLgzpGLGK84VEjLaguFuPHE+fEnvhIZ7Y2U9RCPVvemRe3kP584PhimoOntrcaOCVdxrCRs1a5gVnM5rghYKgO2fP0yMp+9JIyaK89JpgMWQJt4f+KyTqknV5PisPb5ZIFCQ0R/yqiFoYSszIEn2f9eILD3uyOJqiKt1aaEVfVoRLam/EjfvHUdxmxEQ0CqP8tj1OnweLRafLc+JDRSZ8cFm8caBLEFYT+pC7RSNsX1nOsGOmJaP87RBgyjELM2PBJxaL+SRx4ZgIf1WIew7h5gXInxT5uQgjHiybq7uiWp1Kz4Wg2eqmsuGh5OckK1XuE3m2Y0jIRora5ykxsvbnjH0+gF2Bg8QNbMEhwLLQQOP64dC+QSEh90qbugfxqyUpq9ueo5XAbp1umN3FmzYPn4lHt2O7/pewiZyF8rDcVHuyiakHTiyWQ7488yYPbof6metvSQ65wSwmB4kNeHv32HM38bW8/+6G1wa9RgtE5oYwkK0LeVQcKIjkBwlP/3l/njX20uUuOYZ7n/DBtNpGze17zggOWOE/WjxDk5k161wtoG0TzWxq3FMwYY2pAiaIPi+VkA7iYwvEH2jDq7JCQwdXAc3SnrSWEdAGjHfM+CiDv6OY73RZargX77t8mEvSHS+ex+yw3UMYds5UCkRx4+KSElESKxfRSDLfHv0uGzeLPCo/azKrBf70q0SFrAmtKoleulNOISnwL+FkIoGOn12c3hXCTaomx2GfTWvp6JXOf/N73o
- BjUfwrcu
- sdv+g
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775440645-694743
+X-HE-Meta: U2FsdGVkX18z/j4fVAObRA0swuHwLCDmpSV4p7nN/IwLImIng/VEeN/oeYP3ANITZgZ8srjsWs9k/yD5OF6TfImmoRcvOfquYdnMu7vmOLvGyyCTTVIYxiMewNst1Kno65QboC9cgV36iFsfIcdmAH5cw+Pk2y0zZstOVP+Qpl43sOayGcH4u/qn3MsZBl8i9/ptutETSML+ocvt1uAQIKQcCHRsW1YZGfPDju0COS9Kt8EmqNvRDNf/5Mb49V5VxDCNEJkr/tDBHhX9qeAMoPGQlC5IiEeai9A+qH7ogLLJQn8x2zTlNdUdWy/Cw7ttJGxPe/WygYIVFvQNDmX5ulXcG3mlOLpHqAI+vS4WvqwV3sWtVRbGXTsGpMVJsHXLa3od9rE44Jop/5G5oPjR06bVqZ4ztR/qH0wPTpmgxzKMNgT1/9pqzqyRZxCzfOQRUz48gk6THNELnvn6d1SKpyMN6NIgMxfGxaOMorTl75LlU1cxDa27TkNxtzXXkeQTXIL9MNNygc+R37twFcTk2Gju5j45QwwNliTObqhJCxi/k/qb3Ks3JTMWh/aD46/IWEKns1ek/e6uF7eHN8x6d04k6YsK54OCxwIgdNgSeJAUy4/2ELchx3roXegimLPEFrCejqKBvtzJXEYyZG5n0ei3I5C6O3Y8t45g3MoYUE4EvM6lDuKDT+xhZu6O+RmxvcQs31wesCoVE8figuHw7o4DoyxGHsb0xVeN4XBEFuPtf149oidfMBIFjgl2p4yVN/AB01FWHYzlohpfkN88GNcRvgvV7SbpbDvS/joEyZtfN93JBR1XXDEnWOJin+DK0WPYofsTILPVO3k/9TAX5lITHwsbG6YK98Bk0FKcq0KNhfetyLqCd9IF2JN30/JuibOtrSmyVIrRE0l7oxKPV5HID3FrVeWoR7BaPPOqByuDPAWMZIqLsZU/cakdEVTlBk+TiVCpOGs+RT8qMnV
+ Z8finD9K
+ qIXS+IfEXbIsEMu3fNfmPoLf4NyqOQfG33w/oYWNIjHF5NM9kp54CfZxYp5ZSg0IWoU9J1VVzh9o33QeiJpYbuSJCDx7A1TCdMlhpbmOOde6K+elC6RUaVKpKimjJIJZwP7VEAQK3timsZGR4X3pRyubSfc6HO0bo2ZxhzlafCqgkeMmeKjP4STo6sgLkMMwTyHxIowwdItLoPi5rLAnI6qKnk5XzN4kYLkZDSoT5gByvRhpjO4uj1oFqSiAM6hKeT243WyN8E6uzfshYxUFvoYKhJ+Tm12TGxOqufeAd7D/jAVnCFAiyKDFTSnjQcWBzYdGd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,99 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 07:11:46AM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Fri, Apr 03, 2026 at 08:14:11PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 4/3/26 14:02, Harry Yoo (Oracle) wrote:
+> > On Fri, Apr 03, 2026 at 03:37:36PM +0800, Hao Li wrote:
+> >> Memory hotplug now keeps N_NORMAL_MEMORY up to date correctly, so make
+> >> can_free_to_pcs() use it.
+> >> 
+> >> As a result, when freeing objects on memoryless nodes, or on nodes that
+> >> have memory but only in ZONE_MOVABLE, the objects can be freed to the
+> >> sheaf instead of going through the slow path.
+> >> 
+> >> Signed-off-by: Hao Li <hao.li@linux.dev>
+> >> ---
+> > 
+> > Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+> > 
+> >> Hi Vlastimil, this patch depends on a prerequisite patch[1] from a few days
+> >> ago. I'm not sure how this should be handled.
+> > 
+> >> I wonder if Andrew might put them in the same tree.
 > 
-> Implementation of UFFDIO_COPY for anonymous memory might fail to copy data
-> from userspace buffer when the destination VMA is locked (either with
-> mm_lock or with per-VMA lock).
+> > But it also depends on the patch series
+> > "[PATCH 0/3] slab: support memoryless nodes with sheaves".
+> > 
+> > So perhaps better send it to Linus after 7.1-rc1?
 > 
-> In that case, mfill_atomic() releases the locks, retries copying the data
-> with locks dropped and then re-locks the destination VMA and
-> re-establishes PMD.
-> 
-> Since this retry-reget dance is only relevant for UFFDIO_COPY and it never
-> happens for other UFFDIO_ operations, make it a part of
-> mfill_atomic_pte_copy() that actually implements UFFDIO_COPY for anonymous
-> memory.
-> 
-> As a temporal safety measure to avoid breaking biscection
-> mfill_atomic_pte_copy() makes sure to never return -ENOENT so that the
-> loop in mfill_atomic() won't retry copiyng outside of mmap_lock.  This is
-> removed later when shmem implementation will be updated later and the loop
-> in mfill_atomic() will be adjusted.
-> 
-> [akpm@linux-foundation.org: update mfill_copy_folio_retry()]
->   Link: https://lkml.kernel.org/r/20260316173829.1126728-1-avagin@google.com
-> Link: https://lkml.kernel.org/r/20260306171815.3160826-6-rppt@kernel.org
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
+> [1] is in mm-hotfixes so it should get to mainline before 7.0 final,
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Right.
 
->  mm/userfaultfd.c | 75 ++++++++++++++++++++++++++++++++----------------
->  1 file changed, 51 insertions(+), 24 deletions(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index c6a38db45343..82e1a3255e1e 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -405,35 +405,63 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->  static int mfill_atomic_pte_copy(struct mfill_state *state)
->  {
-> -	struct vm_area_struct *dst_vma = state->vma;
->  	unsigned long dst_addr = state->dst_addr;
->  	unsigned long src_addr = state->src_addr;
->  	uffd_flags_t flags = state->flags;
-> -	pmd_t *dst_pmd = state->pmd;
->  	struct folio *folio;
->  	int ret;
->  
-> -	if (!state->folio) {
-> -		ret = -ENOMEM;
-> -		folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, dst_vma,
-> -					dst_addr);
-> -		if (!folio)
-> -			goto out;
-> +	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, dst_addr);
-> +	if (!folio)
-> +		return -ENOMEM;
->  
-> -		ret = mfill_copy_folio_locked(folio, src_addr);
-> +	ret = -ENOMEM;
-> +	if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
-> +		goto out_release;
->  
-> -		/* fallback to copy_from_user outside mmap_lock */
-> -		if (unlikely(ret)) {
-> -			ret = -ENOENT;
-> -			state->folio = folio;
-> -			/* don't free the page */
-> -			goto out;
-> -		}
-> -	} else {
-> -		folio = state->folio;
-> -		state->folio = NULL;
-> +	ret = mfill_copy_folio_locked(folio, src_addr);
-> +	if (unlikely(ret)) {
-> +		/*
-> +		 * Fallback to copy_from_user outside mmap_lock.
-> +		 * If retry is successful, mfill_copy_folio_locked() returns
-> +		 * with locks retaken by mfill_get_vma().
+> so then it's fine to add this to slab updates PR for 7.1-rc1
 
-nit: mfill_copy_folio_locked() -> mfill_copy_folio_retry();
+Sounds great!
 
-> +		 * If there was an error, we must mfill_put_vma() anyway and it
-> +		 * will take care of unlocking if needed.
-> +		 */
-> +		ret = mfill_copy_folio_retry(state, folio);
-> +		if (ret)
-> +			goto out_release;
->  	}
->  
->  	/*
+> >> [1] https://lore.kernel.org/linux-mm/20260330035941.518186-1-hao.li@linux.dev/
+> > 
 
 -- 
 Cheers,
