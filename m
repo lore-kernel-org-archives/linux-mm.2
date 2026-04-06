@@ -4,101 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE76F46C44
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C61F46C46
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:32:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 759DF6B0100; Mon,  6 Apr 2026 10:28:07 -0400 (EDT)
+	id C42C46B00F0; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3686B0101; Mon,  6 Apr 2026 10:28:07 -0400 (EDT)
+	id BF3406B00F2; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D1B06B0102; Mon,  6 Apr 2026 10:28:07 -0400 (EDT)
+	id B09256B00FA; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 478DB6B0100
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:28:07 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C322E1629
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:28:06 +0000 (UTC)
-X-FDA: 84628360572.11.D99E1C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9447E1C0009
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:28:04 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pQD9n4RC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775485684; a=rsa-sha256;
-	cv=none;
-	b=SQDbSMcwJg0+1ODmrcXzBF2jcI7iSmG6u4JtQoXC9x1QcsgyDLaeJtpOsIfjc31i5wnK4i
-	H51Yuq5EE2kj1l/kQ7SmOJl62TnIObZ/kaaSfUrU12TMGVN0TMnE+Lam83hb6o+NlWhNF4
-	79D2h8NVt0kY6PsRE/65Yz7qS2NhV5g=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pQD9n4RC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E73F6B00F0
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 425F214045E
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:32:41 +0000 (UTC)
+X-FDA: 84628372122.29.D6F525F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 089FE20008
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:32:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W8z0NGYY;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775485684;
+	s=arc-20220608; t=1775485959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8Xi4s8iXLizZRK/r1OTp+Fx4n1QNttYePV16IrhLCk=;
-	b=1S4q+j033GR5Zdf5npSBFaG+JUEvuUnyG7nqWFSrBd2xYiFEa/i5wEb8y9gZFQANwpjDMc
-	BWTtTDGg0j8Smq5fgNHDO8p9TKM1Wrb1ZYw7Pp5HjFd2kKOs7uYMSzrjX82zHmgyfRcqIK
-	5I83WXE/EIUL/+6lPcjogPnA7xvW1tc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9786943C3F;
-	Mon,  6 Apr 2026 14:28:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2C2C4CEF7;
-	Mon,  6 Apr 2026 14:27:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775485683;
-	bh=Jgs8OcyaNYF6N+1kAZCcYjNNqypzJ8NmBV0NzOlPQYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pQD9n4RCELRdVba2kMQkSyXgQDtf++kFban9FsTWhEPNtWk8XBv4Hv50YyIcWXKWW
-	 k2aUlrPJnRh4ZF+1BMORV5+PsSEP5dWJQMxr0WmBDQndC/ElOpccsR9PwABv4MQoDq
-	 Gr+h0KW2woti0uV8U2vwJ0Jep6d1dQNRafoAJkmTQz+xI3+MlRqDZOurUJ/rk45PX8
-	 Y3HaZWKAbHNPFzDvwniINwiVeZfjj6eI3ANDOws8+pK1Uw+/HdZQu0Xvcf2m5Gswwc
-	 ii2tTWBzTdVpGt0EoJA9MAeLAaImt7LaydMRExvFqAOPFhwMRNvjT4xLXmo1Tk1sa0
-	 26eTuce+7N0Jw==
-Date: Mon, 6 Apr 2026 15:27:50 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 07/53] selftests/mm: hugetlb-shm: use kselftest framework
-Message-ID: <8fac53c1-f7c3-43dc-9389-07cb60fbbda5@sirena.org.uk>
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-8-rppt@kernel.org>
+	bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
+	b=Day+8ywt0kWE4yifOtccivXF8DkFbu/fnFZcmCw3CxiLzKXFHVwDZES+vUznEHVczSUyqP
+	A5onaw88m2JPXjAM9l2t66AhBeZGggslytzvyI5AP7dUwV7YduAYTyhf/a3maBsVPOT9yN
+	0tDmaIHM8hxEWiQURr2NSiCAuyM+Ohk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775485959; a=rsa-sha256;
+	cv=none;
+	b=azJrVtKLwBsiLZoxaMI3B36Z244Z5NKUOA1mF3nWpgWNGYheiGArelFGMsDxkjWyM4Yxw+
+	nhuU2RVqq+oiHvZIcWcqMnwIa5zEuPwFWyYrsTlZLLsLJT7Hsrkq6vXMvCRnT4ovj3c4A4
+	XF/Yy9YUkVONFl2dFTbkjpwjwuSTpf4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W8z0NGYY;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775485958;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
+	b=W8z0NGYYrJT+5ZDUUkvRZDkRlC55zGPtCqps8usmFwNuEsZb/OtXuNVKOMQOYea7A6ieVV
+	hIiHHvQVmEIfDTjXgAD8zn0WbDstDBn8tdDZcyVgz+mpXIUO+jyRxkk1lD3PGuxT+WKepZ
+	u4EOfg4ha3uuhbCCxl/46B+0ON37c+s=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-miLzkPDFNFS1M4HgDPV_7Q-1; Mon, 06 Apr 2026 10:32:35 -0400
+X-MC-Unique: miLzkPDFNFS1M4HgDPV_7Q-1
+X-Mimecast-MFC-AGG-ID: miLzkPDFNFS1M4HgDPV_7Q_1775485954
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-794b240c0d3so101409347b3.0
+        for <linux-mm@kvack.org>; Mon, 06 Apr 2026 07:32:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775485954; x=1776090754;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
+        b=MPuwQ3Z0lgisgNdAB/F/VjwJn0VBikqYMPqei99kPSQ1G4yWnjZIzhqHsfnDLYbCzS
+         az7gtb89fc3P2xXJJTwn10GoGUbG9ISz8+gRJzE5ABbs9VLgLbvK/7OlDsrXgtFSIIIj
+         dz2QoXnRvrV07gAlY8neUfY4cXK7NYeVf/A6pksRpMmfGhK9bQEHHAigkynPQhjb+3Wv
+         HENs/+5MSe1vtdss2k0DbQ0iPqj49olQjdbewjpj6kfBHDmTov53cBKOke6ZuY0qaJHr
+         ReobKZRxN9od3+SqFKGJMBtBt8hhJreTfHAbuTv94dIco0Pqw9dH+RetRGlOFla8byM7
+         qw9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0hQNf5CMTB9PHi0RvDU668JmLGZ2YV/1e8MW8bQ0n2iwo/fqWfKQExaXtXeMqxZLDVWFnc+XP/g==@kvack.org
+X-Gm-Message-State: AOJu0Yy5KS757gpyci82GzFNxJf12UNIYUWLcyKyJ0QhE1v7D7dGn6PU
+	exZpyLMSk1ozH1FvTMDDbg+rL3ceksOGSm1qufSxtD5aA4gmz73f03dvaXbbvv5qUF18MbmwaKr
+	vpuSVWmoNqo5JchAsIZHjaTSOmje6HF6C0vMOkiz0Feq2mOOajP8d4N/2qWJTYW6QzUkkCBrqXS
+	tYAkuokthukwNFE0nH2y6yt5f9vvI=
+X-Gm-Gg: AeBDiesQ7PA3LQGz0pSJ56FNfBjDAXTuljYNa3eKK3U0Kpal0ELBDIDpwMO4Alz9Q9p
+	+uUcEQ9Rb2FJbxRpRIdrnyu/0BOSx/4tn1VsrEGmJAahkDlti3haJ+0vv+mCB/tdq+0kJrQ0lNT
+	W/aEZlx78UFrG062FI/mx84poHm/NjyEgbvROcN82fr016Y7wa2cG+Sd4FeTWvXuG+PQc8pZ0jB
+	RP4boI=
+X-Received: by 2002:a05:690c:4903:b0:79a:cc5c:23d0 with SMTP id 00721157ae682-7a4e1e31b2bmr97819807b3.27.1775485954447;
+        Mon, 06 Apr 2026 07:32:34 -0700 (PDT)
+X-Received: by 2002:a05:690c:4903:b0:79a:cc5c:23d0 with SMTP id
+ 00721157ae682-7a4e1e31b2bmr97819557b3.27.1775485954002; Mon, 06 Apr 2026
+ 07:32:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1MwePQTqQaQ8/AtX"
-Content-Disposition: inline
-In-Reply-To: <20260406141735.2179309-8-rppt@kernel.org>
-X-Cookie: Does not include installation.
-X-Rspamd-Queue-Id: 9447E1C0009
-X-Stat-Signature: 33mipia9qybmpcq6w9p8omxsfccb3t1z
+References: <20260324154342.156640-1-pfalcato@suse.de> <CAL2CeBxT4jtJ+LxYb6=BNxNMGinpgD_HYH5gGxOP-45Q2OncqQ@mail.gmail.com>
+ <vss5mbyhbf756jieb227fh6yu6vvvsggagll3ru4cmlhbbwo25@xv54cwfx7klf> <CAL2CeBxOa8ETNw-uP7vX7dikCty0QrFSUpdTSrmF6oAKkLk-ZA@mail.gmail.com>
+In-Reply-To: <CAL2CeBxOa8ETNw-uP7vX7dikCty0QrFSUpdTSrmF6oAKkLk-ZA@mail.gmail.com>
+From: Luke Yang <luyang@redhat.com>
+Date: Mon, 6 Apr 2026 10:32:22 -0400
+X-Gm-Features: AQROBzDw8K6DwnKzwMUtKNPatLfRZ1ihy1Fdhyk-H1KQHhTn5ciCPdBwIbK2aXE
+Message-ID: <CAL2CeBxH+9=_vwfChs3w7af2_8iy8Kzrjx+fmy+Y6=9inBuFyg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mm/mprotect: micro-optimization work
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, jhladky@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Nico Pache <npache@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Stn5UpSqjscVFZPi2npjt0gRLoyCb9x1zg4y8Hdyxok_1775485954
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 089FE20008
+X-Stat-Signature: j61f9s68g1rqabjfr6r6itrjbte3qd4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775485684-437434
-X-HE-Meta: U2FsdGVkX1/B2zEG+mSDHj/tdxirnA9hYqXeepQkDZQ3fYDB6uY+E9BPHePKGIS/zaTh+yOtPkHOhxRsvfR1N33YqPl3cyM/zAolq1izNIYJof0pRaBhD+iLPMWHuNiVpKhLMBADAvIoIjVFWcwD6GKT8KXtKLq+UWHSn9peqUseUpQk/IbXpdu0SuC7RkwpmrT0EmKA956lS7ud+GrR4GK1xOyqCC3yyL7kHTXFgWNs+IbjG0Fnb6gSU7+cyiSxnvhtbhG2KLZVI1WuxI4cKFNqFYhPq/3iUXX5Yjnm64h2zH7Sw9WW7fU/aKPMGApC7Bes5PFX9UiADkhdAsKv49v2T2cqYURPXqS+6wfqBJFgra5Dlvx/VnAEnu3Eb0OkGF6lYQz1dv+PqPumZHvqMWjlWZ5P8hc/rAGtMdq80iPvH+ONdYbR9saEYS6mKLjc8SQfAo7ETpaYt93T3vBZ9i497ZeuK53ywQ0bLpvsuH114V6IwqwKMJWMFn/1SAtlMk9G9pcDToH26HdkDPaE3I5FwQ2gKH86JgzBvs8cPyQUmYW4HYM9q9js3WTISLC4FgIxfV8xpvzgl3clW+6yPhEJUq/+VhQhhbXHAKzo9PBp7v67w0oBbp02jS79AziX1EhqonjOlpmXBSaA6u0GKE5S4tZqKPRzZh+GFGqvBDuGnCE9JXi0e7p5vCRZQT/ZKEFMv8TICEUbHZ32bejVbG8d/gphNxvB9T4/tNFcJtUoAdSYZCJdsAVRYoQ0K5SU2GaaIl5aR4htn8mUqgCQL1zXIlD/HLcwQj8dTerG//0rd8Q0XZTBanaD+vustJDcoh/ezWEhk/FgBLT9nWnSiCYUAE+vJvTbZCVOnS3eyMRFP1NvUbWF2VIYibJ5K2qi31QthNAntVY3/Z9I+Lunu2BKgEO0otHh3SFjZLJxZzrhxl0vVyQRllVrt3BXE8pxgGLEpnbDJIvDCKrKsel
- pWjj+EXW
- 5jckk+TsOA9YE2qOGqiGQcjU7Kav0x7ZUL/DsdD+Ykn98Ak9fjqwxkguE+hW8WXizGF8nI3FGvf1+gOzE5nIz80h/BBOOROnpsrQeoLhemtdtgSyV3To6l1qImjxPFEwU2gmqbANlMjPtFyzBn2pdB8kbx8HNahPE4SUvJSa6UIQ5As/If6LLWv27iS0D99STxMSleS+plJ48KKct+xrFw1Dck+7S0RYTMHs6ge1RGDAR4Lu7SzhZQxLPs4XidrwwpKMbzQOb6zHBQ3G0HmeDeI2ZWj0y52rZeeZZmbpGqoIwcB2guDSroJ0eEmID6RgFMkQYcerQ+KaNnpd9Kou0aVUciA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775485958-959162
+X-HE-Meta: U2FsdGVkX18nDA3P81jdMU6ZkbRydM2cDAvtS7vCIV5B8m8hcHFTNlLlmbQQ6uezevTQLOW6oIl3ld6iiuU0VYLe/j/rrUzQGCW6V+1Cxd3rDwc27GGRZy4r4dIiJLnnQwZEuZmjrXCkukw7EybEnIcgaypzzNS1L44ezPAjbW8kbBu2yWqsf+EAvRaQARy25w5jPGLUL3aJeKC6jX89Qt8yplLNjdS2GPF/0ixJl37lAqjA4D/hdPOhmrwuYK7Q6xtoXCnK/PFoRueVXjWaF0ikSKGO3az9JPH639b31o0XwxkagNTO3JwKADAaQRMhtue0zBQ4CkeIUcd7dWQcfFeFT4acnITGzEvs1JT2yz5E9OZmSYG9OZ4WNvJeP/WxerzJIxt3JEt6t5RG/DvLhe/Y3TVvkX1jhFaMz6NUuUCxMxjAQJBiEIk9sijQmY2CN0dCVI6LKrjSLQZl/HVSu+yyDrPddy9hTWZMRhyQekpBtgyMGUO7eL2+WtXbLnzIeVRBttfKxCiZYHbYxFTLTbVHqzOVJi/3ILzhxX3/HWkHx4eVTyn0XbXa8+p95tX8xnl+hBwz/KnWcj1/FhKGEeOoLPvladcyNNPnms7kYCTnN/2+hChXAQLvCeAR2tZyD0p5yvDunEH+JB8wRF7iGeruFpMwOV02wD9WEL5YlnfWx9sZx1Mij+UouG8R58IQxDKUTiQuncwfWTpUCpX8FlHn5l7ZGTG4bX1tBMMEolRCH4MbeeaOdsrKy0MhHC+wAdvoBOR6DgE7udPSLC/fQj/cy6NLxfg7yfudZ+uMhIxapUV1tzlxZMoPCDHi4GJEfOp6+5AEeXBzLTCc4mAiJa7Q7B89YQx3zGAX0EQUdNlO/eXTUi2ut3cXtMLkYpPAMmz8O2NTlaFp5tXZeuxu/Zkd/1xDkDFLBTXP+nLOvjrgYfcjPH5bmJa3D9Ia+w94llrgoeGJgHejL396JUN
+ JI3EY9PB
+ CSi5f7yOlqN6kUAZqDLQO7VmrlcosURuF34wzxEG18pUHvdacmqeECjzc8uWrl6vfsNQNhGhBpQpHm/QA47Qwclkf8aEMD96M3+d9bT1lspdtUtBgep7RaSWSKR0l3Y0FyOpxjBX7WpqNdQ6xxd+B7cDVHUz9XWCvv+DiVnB5digBPBI06Sor4F3orre8D5A7j04rQPpihWLn64DW5b7kUPY6AbFnwtVz8TrAe+TDvD+4nvl76przvb+HHRQuJjxWvUmI4MdnESXvkFhOCbJ6WZgWB+IljBc7CB6I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,41 +128,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 2, 2026 at 9:55=E2=80=AFAM Luke Yang <luyang@redhat.com> wrote:
+>
+> On Wed, Apr 1, 2026 at 10:11=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> =
+wrote:
+> >
+> > On Mon, Mar 30, 2026 at 03:55:51PM -0400, Luke Yang wrote:
+> > > Hi Pedro,
+> > >
+> > > Thanks for working on this. I just wanted to share that we've created=
+ a
+> > > test kernel with your patches and tested on the following CPUs:
+> > >
+> > > --- aarch64 ---
+> > > Ampere Altra
+> > > Ampere Altra Max
+> > >
+> > > --- x86_64 ---
+> > > AMD EPYC 7713
+> > > AMD EPYC 7351
+> > > AMD EPYC 7542
+> > > AMD EPYC 7573X
+> > > AMD EPYC 7702
+> > > AMD EPYC 9754
+> > > Intel Xeon Gold 6126
+> > > Into Xeon Gold 6330
+> > > Intel Xeon Gold 6530
+> > > Intel Xeon Platinum 8351N
+> > > Intel Core i7-6820HQ
+> > >
+> > > --- ppc64le ---
+> > > IBM Power 10
+> > >
+> > > On average, we see improvements ranging from a minimum of 5% to a
+> > > maximum of 55%, with most improvements showing around a 25% speed up =
+in
+> > > the libmicro/mprot_tw4m micro benchmark.
+> >
+> > Nice! Thanks for the tests. I'm wondering, what CPU saw 5% and what CPU
+> > saw 55%? Or was it just inter-run variance?
+> >
+> > --
+> > Pedro
+> >
+>
+> 5% -> Ampere Altra Max
+> 55% -> Ampere Altra
+>
+> Personally, I can't conclude at the moment if this is just inter-run
+> variance. However, let me re-run the tests a few times on these two
+> machines to see if this is consistent.
+>
+> Luke
 
---1MwePQTqQaQ8/AtX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ampere Altra Max seems to consistently report ~5%.  Ampere Altra seems
+to exhibit more test variance. I now have some test runs that report a
+5% or 10% gain.
 
-On Mon, Apr 06, 2026 at 05:16:49PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->=20
-> Convert hugetlb-shm test to use kselftest framework for reporting and
-> tracking successful and failing runs.
+Luke
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
-> +	ksft_print_header();
-> +	ksft_set_plan(1);
-> +
-
-There's not a huge advantage where it's only one test but still, good
-practice.
-
---1MwePQTqQaQ8/AtX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnTwuUACgkQJNaLcl1U
-h9CBbQf8Cl2vPXTZJB8sRNcTWsB0R9qT/5VUc3ynOeQWV3/yZvAfG+ztF2cfIzyq
-kxxdAgubXGfwFxee+9gr09hJLBTBFEt2y7yWxL+xSM6BeDqt0NA4xjeYW1ECUg+3
-5STEM/g3eJiuxNOAYnjbquFE9GcKf9AyvHpPKGMnvADpNbDfYnYIrZ4u5Frkqh3H
-6HqnaJ/a9xUSw7tNV3PbLdIekE4Ttw0SGpvO3TXha86ix8PW2GXXvrq3Qll6u7cF
-KunndEVCG2GKjcgdtnBukVJA1BfIVhjQdBNW2yGoYZnxBuMVuRvLyYar7Dmg8T8z
-dCCxEtiq3xGNm0mHEMHJPETv/pwAow==
-=bzJF
------END PGP SIGNATURE-----
-
---1MwePQTqQaQ8/AtX--
 
