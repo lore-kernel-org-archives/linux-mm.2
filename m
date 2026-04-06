@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F19E4E64006
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE41E9D83B
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:49:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275066B0088; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
+	id 2F1936B0089; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22B836B0089; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
+	id 2A26B6B008A; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13C056B008A; Mon,  6 Apr 2026 01:44:48 -0400 (EDT)
+	id 1B86F6B008C; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 003EB6B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:44:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8970413A264
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:44:47 +0000 (UTC)
-X-FDA: 84627041814.03.E8AD4A8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0983C6B0089
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:49:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C5121B7474
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:49:29 +0000 (UTC)
+X-FDA: 84627053658.04.70A679E
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1A2D614000C
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:44:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ys78b5N4;
-	spf=none (imf23.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id F1F9440008
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:49:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aMkntTdZ;
+	spf=none (imf17.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aMkntTdZ;
+	spf=none (imf17.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775454568; a=rsa-sha256;
+	cv=none;
+	b=b8Ohq2UpE4b/Q7Km90CeyTKP5RJf1gf/lWeCLdQKdU0Neqo3uj7xU6l86FDgZ1mZxWlBrC
+	wcaVfQuAIgL7h5LlKPspGjII2Bw4rvvVTk+nGTbripEn76X/E2GuPu/3xGsAX697y32Lwa
+	Oc9T8XWPnL0J3m6sNat8ZRbISRpXxrY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775454285;
+	s=arc-20220608; t=1775454568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5LxlInPJ7/UGCLgthuGl+ND/trl20UHwe3EP42gW3U=;
-	b=I8KXCKnPQQnPDks8nQquy/5e1BqJEOWFm3TsDhEi/oeENsWCf7aXeQUudVf/8atysfUSqp
-	Yz/vvmw7rLVLDG0DC6Z4sPi1BhT1JIjAwjPYuHKWcfU5shRDzl7j3sdywleO59y5bdBBRY
-	goVJ+8KBJknYOOebth/qFAvgndvfkbs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ys78b5N4;
-	spf=none (imf23.hostedemail.com: domain of BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e35ce2fa15ba15168fb2+8261+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775454285; a=rsa-sha256;
-	cv=none;
-	b=kN38wUlcls8bC/fz8HoNhi8L83lddgLGCSz7xdgZwOksdVcxJDY90LVd4IRhzqRMFKfDPA
-	Wd8nWxLQ6X05/Lr4i9WTXbe59v9rJsSwA86YW93xYlKrGL/6SM7K0vd6yN7ETI2AG5fanH
-	F4CGBDOtmK1oVv658YbO2nYdbEB7E1Y=
+	bh=6WWXWZMI41Am3IOMc7V4QgXpbUSV0Yys/y4z2vFj0+U=;
+	b=40QDHJ6kyB+tgoBqYvEvV4kOgCYaHJNRQF4hwtzImEfAog62LhtCYkjlkfZP+C4ZxzpNiV
+	Fruspy24iIX+vS36w5LoYIGMNNb25lBvBRVsbsw63SWEku5rrewLJNwpfaM2Hwl2Xkj6NN
+	+BrNYc17I0wIjQ5opVUt9X2qrnwEqfQ=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M5LxlInPJ7/UGCLgthuGl+ND/trl20UHwe3EP42gW3U=; b=ys78b5N4ODFhtd/VHJZKyPEIEZ
-	CAcNY121v6nTNVo9GQQ+SlfrgslNKsqT2ERk4mnIwvtl7Bmx2Sl1mc5SK0TrcAEJoRBVwT/klowrG
-	CFVwVrIhadbiNGNhHpGjTO8LuZ9Et76aN6pSvfxqM/eSUeFVn3llD/d7f9nUNEfykhyetHqnsVzDJ
-	AE5MFa1K1MD1h6GcM2fxQDeP7Zj+RhV5rEdRbQHk+tSBNjW66F9azNPTorQCr6BzpJg/TQRa11kd4
-	BPV3nVQuU7ybNBrZfv3NujPJp2MqsopoNsN9JOgGvx1z9vm5egOwOtaCC8gj++QdHNty6Plcdxesl
-	DPS6KcZw==;
+	bh=6WWXWZMI41Am3IOMc7V4QgXpbUSV0Yys/y4z2vFj0+U=; b=aMkntTdZNJnKIOOxVJAW0Dcitj
+	5A3rbsHMazHEWugGsyUSoquIwVRWzA+1t4rpE1kiP7C2zi0C+12p3Mg0321M3Gspnxbie8PkrchOf
+	YL5gPP30MTxuVja7u8F2A3zQNDCJDMLkZz1MqPrSy930AE6sMtFBo2oRZBRQKzBX+L9M0EpToOCa1
+	ociP97dZmUvsZXgZh46Wp+XTT7xCh8Pz6PTJlnZ5owTujnFESE/ni8q27LKuU2dkmlRfwygAqwyC4
+	dRFU/zZ0EZ7mtyjztdyfi3muuDiWGVwAAmr3M+AxcQ1zgRt7fIoDGatFJqeUKLRu3nuYUm3KRJKx6
+	E8ikz8MA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w9clL-00000004ozj-0Jpu;
-	Mon, 06 Apr 2026 05:44:39 +0000
-Date: Sun, 5 Apr 2026 22:44:39 -0700
+	id 1w9cpw-00000004p6U-2Mgw;
+	Mon, 06 Apr 2026 05:49:24 +0000
+Date: Sun, 5 Apr 2026 22:49:24 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Christoph Hellwig <hch@infradead.org>,
@@ -79,26 +79,26 @@ Cc: Christoph Hellwig <hch@infradead.org>,
 	Chuck Lever <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 1/4] mm: fix IOCB_DONTCACHE write performance with
- rate-limited writeback
-Message-ID: <adNIR8atJj38IL9p@infradead.org>
+Subject: Re: [PATCH 2/4] mm: add atomic flush guard for IOCB_DONTCACHE
+ writeback
+Message-ID: <adNJZBXeJomWmhdf@infradead.org>
 References: <20260401-dontcache-v1-0-1f5746fab47a@kernel.org>
- <20260401-dontcache-v1-1-1f5746fab47a@kernel.org>
- <ac385Il8l-krKEOQ@infradead.org>
- <01dd135adf38e35492d957a35e22c4ba5c2283d1.camel@kernel.org>
+ <20260401-dontcache-v1-2-1f5746fab47a@kernel.org>
+ <ac3-SU7BElHJVCEL@infradead.org>
+ <629f21c6591903512eb2f3f3c4d6b14a9ac7b91a.camel@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <01dd135adf38e35492d957a35e22c4ba5c2283d1.camel@kernel.org>
+In-Reply-To: <629f21c6591903512eb2f3f3c4d6b14a9ac7b91a.camel@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1A2D614000C
-X-Stat-Signature: escet37bfx4q9wy813g6xh8obzk4bctw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F1F9440008
+X-Stat-Signature: ogczxiz46isp75nmtbu3xji9drdpgcty
 X-Rspam-User: 
-X-HE-Tag: 1775454284-581253
-X-HE-Meta: U2FsdGVkX1+vEqJUoyWP+X7uYEijfgkCJoKWL8Tc9a6sfQ3tXI1QXH8JAnFPSjQnI7+6MGgiFSZubugXVejGD88VQDH6mw8/U56jDo+JsRH1uSfEU/8geYWqTXffYbn7mW7CH1zuaq2FQ/T+c7S+VRrN1CYka5xLu22eJ/QmSrv6Vilyb/LGtC/aGc+MyoEi7Ja+MM5vruLgQcyLV6inY1UwS81Wtq7bUk0vHzN9nMNv5ZTMlzDhR3PfxY/NUY3ZFHFFDEMMfercN5ZWwJkjyJnRomIg3YcvGrAydGnWaygIkrR3OqCQJbT6POlqAt3PfzU8gHemFwodblZCVQdNtuQm6MbdDz0Y0ZKN7yKqx67Y7d8sc0eooCa1dPMlTlrpfILq5oefm4tJo0mM1h/verzWdxZ1ywJebl7ZVhIodWQA+Q5+VX9LkT9tNEEHhZidV85QthZjdseMrQIAmUrQgjIv+ZuFx9cJDPQjgky29hZ6JZ4apRDinUbvJF2g6gqHGVHOwchLR9oTWEbWWA4LuRJoQdLjjDGFKA0x9xse9tLa7IC9QGG6QR96aQCjQ8dkdfMcDbTZPgxo4KQx8QZ5EOYJeg3xcIOdBni7ygzyytAAJmJJI/AA/aGU9EP/2PFg9hyJ+Fe7or7cfSxQxR79bb1H7zEK4Zq2SnAS7TN8irpUyVUj9DxNQOhmxViPQm0dQKlHSr661X6JzGk35sKCqJiUncKukzxS9QoqEcd2V2U7b1JSL5mpjdd5VlZXLYtF3vDV9nk5dpjXTBn/frxUMoP+i0ia8qFn9dJO6Z8eSsMnVzzMIIblPlWUamhoZeWSnB/qJ3jRCnNPMeZOV7c53HZJzEUSnR7djxqPt7uwYPA89uhBN9CjX+YPqZ7Jjd6o7/ViDE6oFwf5ZaEGrHKZLk6PeTx9Cgg02qXQ9GEN620ZeN29f5nXbed/nz9+8cPNsiAUGgJjiJOW6W0zFlF
- SYdJCo9W
- mfb3OlHXHaROMqrtsnco/HFGut0G3x2AldfhBagM1vNpN910fXsb1uiRViqO891P6B8xOx2YV4/bzFg2jFlo29nqbya6xmyTWmItgzEXgQvPHz+6XoDStmSAJUHH6OUjE9WYn8rPEeJm9K9Rqlkf4XQ6RjK5IF5Hm4Ko9OtNe4o6YTjjqwcc3yjpMx2t1HGtUHzXX+MsNQQnLIsVOZqLOvyjBC5NA+Ur5jV968BxnNvCwo9GdRxYP/ECON4CNhGgv9aG6xXV7w7x6nQU3e9FjUj6e/fSDkMocy/znyZYhv4rKarxzdCQ9oWIcyOZGMLVZuDfy/odqTuC2ECey/RcTi9XRXAr4Y9mYvLXc+3h9RPfUU9kxNWPlmZaH5BUwbWRQQtEoFHI27RioPh5sYUbh0/DL3MCSG7pZJKTMBs52GnU8HeVDHr8ag1Jc5nNYACbJUutvS0XlBVf/VLkyRSf6sVDlupjEbk/YXkDl+kXbT97MMMwN6lAumYDuX+0jjpMTvfLjnXj/hSGZDxl/GP8/mkCMp8pqDWJpS2hLew+0uyXhEVw=
+X-HE-Tag: 1775454567-357269
+X-HE-Meta: U2FsdGVkX195s9uGp+Bj12RlqrRUQKapRTGkeKUOGt+zKVbJ6G41yL1Qe8VGTUMOSAvrJWlWHA2cs2CzGOIsiAivoRs9lwtnvzuuyJGTSCxuYe8tmwKdhcCEnTImpFW9e6vfG/1CY6OCkuQrWkWptB0OqTkuSeep0/ao5s36kQ3Ss6qU2U1wgkfpjXD/WLjsbMlwt/WNBOXaF+wTqteuzyCGrkrds+nhmSeuNJo5IJrY2RoDG1MODlrvxxB+OhmZ5SZaFYZVwy/ybXQrB/AZFIjedJ1jFQr02vgRwWSASGamJtFNp6yVnNL/aWTviHl96XhGZ/RuYdwmNngm1EjGrVMWCooJ5Sd9P1zV/fSE7vyfPIOaC7O0sM6sqBuBm4JMt6yIyfpYqJJiy3z/GTdyBocfhmcnJJChh3kGDjvC+bwoefC23PYs+66KFk7loKRcYYzt/qu+8odt6Ld9IJPqk1hGffkmp+p48e6EvBOYS0OWaUcMyzj8iPUHYpKUT/bd5qLErHjp4wy7XUOodgONXyqvO+AAxw9U0H/T06tLIIem809k5qugYjqyzRfEkc9VW8nl7W2EAoV6iceBr5vDq37p/oOH7SYsFad8EIEIXtp8MtkUo7tdES1R+fxtXLCWZBtNbFyK8ecdzSxwiEcH7NhYgjT9behaFuqIdU4HO9ueZgYesbjAURtirwKqYZ15bUBHlfLPpC3mCn3VpsLnkyQBN+p1zPORjKrhg4EBE8W76T7OLS1ppB9IYJWCOUdNmek1Jn8mmQXlepvex3Y2JdwvpNdV0SRibFShZwJmknnYGOrus/La6imbRjeVRrUY4ynhXxqQUZU73Na/Xx50m88yZRm4UDKdzlnvZQprSJ/+6Vf/wwNTWN+dTVEnikRMKcW4TQEQkOCdL2wcwfQfHObgzToGaqpLfYoaBDmeHBORTd4MLxQfkzRf7AQ7J+cJRNLY9dTJld90NdXTZI9
+ PV15L+QF
+ ROP0Fbf1YyxUb2Uhe8bcYZelOJgMmtr0EpTaPMEIvDsI1HgsS0JSJIM/0sonIYMyQoO//QlA/ITu0Z+zDWB2ahLIZlTd5t8CbtyS1nZrXG5klcO6tymL+8Khj7fcfno5R0g6WMZErxyp9n7w4AuMG1EMQAqc88EkkiVF5L8LKmdxhfiLjAQULCeqpNliG0QZZFFHsa7CIX0m7DmrZJI964IbuLd8b87F39ccGqnZvaXDilNx+fLQaYxMdvEoukhKvkQ0kui/IaiwU3hv+o5k2h07PqZx3UW0Elk+hN0oM+WxkYdw2MqumfJhGmSgPujbVyVl5dSTbFfoswQoZ5vcYFIwWRnYMPSINDa9zVUK3ChmnYTPl7HebjwRc8x+yrPYLDIdFWKYkd6E/BqfKRYImaP/Atjpbf1f3ATGDHg3+tbXiFzp3ABk5ccC2Di+I0QEOrjwJjCuCkHk4sdmupUS3jDAvB2l1EIUKJLoRVKMUA6IBls29zHDwWMnrH7umSSwEUq7Ap7z1JMlfLAncGclEOG/m+mpAufktLGRN9NIJ6I3MKCI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +106,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 08:28:42AM -0400, Jeff Layton wrote:
-> > On Wed, Apr 01, 2026 at 03:10:58PM -0400, Jeff Layton wrote:
-> > > IOCB_DONTCACHE calls filemap_flush_range() with nr_to_write=LONG_MAX
-> > > on every write, which flushes all dirty pages in the written range.
-> > > 
-> > > Under concurrent writers this creates severe serialization on the
-> > > writeback submission path, causing throughput to collapse to ~47% of
-> > > buffered I/O with multi-second tail latency.  Even single-client
-> > > sequential writes suffer: on a 512GB file with 256GB RAM, the
-> > > aggressive flushing triggers dirty throttling that limits throughput
-> > > to 575 MB/s vs 1442 MB/s with rate-limited writeback.
+On Thu, Apr 02, 2026 at 08:49:45AM -0400, Jeff Layton wrote:
+> > Have you considered stopping to do in-caller writeback for
+> > IOCB_DONTCACHE vs just leaving it to the writeback daeon?
 > > 
-> > I'm not sure the first how you think the first paragraph relate to
-> > the second.
-> > 
+> > Either by totally disabling the writeback and just leaving the
+> > dropbehind bit, or by queuing up wb_writeback_work instances for
+> > the ranges, or by just increasing the pressure for the writeback
+> > daemon.  Note that with all schemes including the one in this patch
+> > we might eventually run into writeback scalability limits, which
+> > will require multiple writeback workers.
 > 
-> The belief is that under heavy parallel write workload on the same
-> inode, the writers all end up stacking up on the mapping's xa_lock.
-> However as Ritesh points out, I should probably confirm that with perf.
+> I did test a "dropbehind" mode that just set the dropbehind bit without
+> doing the flush at the end of the write. It was better than stock
+> dontcache but the tail latencies were still pretty bad.
+> 
+> I think having each writer do some writeback submission work makes a
+> lot of sense. It helps keep the dirty pages below the dirty thresholds
+> and doesn't seem to tax each writing task _too_ much. The trick is
+> avoiding lock contention while doing it.
 
-But nr_to_write should not change anything.  If .range_start and
-.range_end are set in a writeback_iter() loop, writeback_iter will try to
-get and writeback every page in the range.  Setting nr_to_write in
-addition to that could only reduce the amount written if it was less than
-the size of the range, which in your patch it isn't.
+Well, an any time you hit a shared resources from multiple threads you
+create that lock contention.   Which is why in file system and writeback
+land we've moved away from random user processes hitting both data and
+metadata (e.g. XFS AIL) writeback as it leads to these scalability
+issues.  At some point we might run out of steam in a single thread,
+although so far that's mostly been because it does stupid things
+(e.g. writeback on file systems doing complex allocator stuff).
 
-In fact we should probably have a debug check to never set both a range
-and nr_to_write as that combination doesn't make sense.
+> I think what would be ideal would be to have some (lockless) mechanism
+> to say "there is enough data touched by the range just written to kick
+> off a write that's a suitable size for the backing store". Each writer
+> could check that and then kick off writeback for an approprite range.
+
+And that is called the writeback thread.  So what we should do there
+is to make sure we queue up writeback on it for each dontcache write.
+Initially queuing up a wb_writeback_work for each range might be first
+approximation, although we should probably find a way to just increase
+a threshold if going down that road.
+
+> I think this even could be beneficial in the normal buffered write
+> codepath too.
+
+Yes, we've had lots of observation that the current 30s timeout is
+actively harmful.  Especially on SSDs, but even on HDD just keeping
+the active might make sense.
 
 
