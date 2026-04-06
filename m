@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F66BF46C45
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE07F46C45
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68AB6B0093; Mon,  6 Apr 2026 10:18:06 -0400 (EDT)
+	id 575B96B0095; Mon,  6 Apr 2026 10:18:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3FCE6B0095; Mon,  6 Apr 2026 10:18:06 -0400 (EDT)
+	id 54C566B0096; Mon,  6 Apr 2026 10:18:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7D006B0096; Mon,  6 Apr 2026 10:18:06 -0400 (EDT)
+	id 48A3A6B0098; Mon,  6 Apr 2026 10:18:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 990DA6B0093
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:18:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68EAA1B7FB7
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:18:06 +0000 (UTC)
-X-FDA: 84628335372.22.E9A5C73
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9EB8720003
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:18:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R5TQWUnp;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A9586B0095
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:18:12 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFA431B7DD4
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:18:11 +0000 (UTC)
+X-FDA: 84628335582.06.0E6A0D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 453F514000E
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:18:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eELZP2t5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775485090; a=rsa-sha256;
+	cv=none;
+	b=uYGqtMj0iPG7u2getQJQGqzE0c4FY/zcwkHn9+m8aFGLt0QQEx4x+gIqqDdrPUe1RYU/kQ
+	6xlDG7OJstzdukqQif/6gHHg5QsoDZF5KC/adFTmoha8ufnp+ry68K5SzSaUt/rd1TbihV
+	yY+2jzNmenzqnwJtf7LvwY3q6WYTPmA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eELZP2t5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775485084;
+	s=arc-20220608; t=1775485090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xHO0zDv2NXIV7yF62QUaPdX+GkZ+AzrvV0Qr4epyNeo=;
-	b=NSFAAdpjqdYhasjoB0IuOVGDnJzcadYnQbxiHEXAPj8ZltdETJivp6iOTNm1w08yDmiqTA
-	ganoQwv4YiW2aqohoMUY0bntnKeBKpjzfPsvXV+/Jjcpr1O28z602lpegFavk0NrVLB6j2
-	sv00/VGv9sxpNzq6T2cDOWLksbOa2Q8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775485084; a=rsa-sha256;
-	cv=none;
-	b=AeNmoYdrreYI1gpMSgX/L3Gjr1Ykcu2iRzMMf/UIQD2JosZdoX+0M+vKrNSnU1xSh8UaTr
-	M9wMuFc280FwVzXZwd2AWJLakj3gWxal28SsIC/8JK55KQcGusCsjMxSoOCZDZipLjpJtD
-	n1m0ve5nDjK36oJMUR2vClyObRczvxA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R5TQWUnp;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=3HHTatSrX/E1NRUlbwJ9Tx1FoI84G0Q2QWeNK6Lnnic=;
+	b=HWSBoXeqxE6uPhL2tbJqKUJyCNYWkCkVUiVlPX7D7zN+gwuXaHbqUTwpaTfG/VYH2tw6n3
+	C9o2ydyxlYR52v/jteSuaHF8xhESqTis0fgM4jjx83yCfcuCFdFrC/h7Zwk+XXKvILj4J2
+	HKMIR+ool1STUFZ50KwWYgV1X0bU1aE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF17042E28;
+	by tor.source.kernel.org (Postfix) with ESMTP id AF42260131;
+	Mon,  6 Apr 2026 14:18:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2644CC4CEF7;
 	Mon,  6 Apr 2026 14:18:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BB5C2BC9E;
-	Mon,  6 Apr 2026 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775485083;
-	bh=ZunzhmESrw/FYLfIvxz1F/zRnAmBbpTHiht0efTR3bI=;
+	s=k20201202; t=1775485089;
+	bh=HP6NlM6bvsHL46OUqlPVamucjfq0ryG8JPKt7QsDS+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5TQWUnpGRw5gFKB++Upg4UCfhIJL9e/HjKz3+SmlmDR4drQCTNCOgzMoOd23EWpJ
-	 MwMaYYq9o0e2XZ0hBs+P4pAzOacOZsRANW4AAIncObmA+ChFRnDzZTDqNSwJnU3SNo
-	 kYeLhr+8qZ7mp7+w7CKNFRK27NRx/phR5sTRmgDF0zzTKHzSNYc/lcKOTdGmXBGdHU
-	 KitznWBZu1UD545br+AHcFi+m+UINl1R9KvdYx2B/Sg8yifW9Ye+pzyYYowHdl2lKa
-	 MpZ5MFboKhVw8Su1j5AnoX45eXQq46zt5FC8XOu7+du4oCsOUFqwzlbjGL+7vnIyvQ
-	 BeBIkOf4tdkNQ==
+	b=eELZP2t56SEYYr6dEjupCpgolItnOiDrwIk1wz0W5Vy9Ch/B1tOSnB4OzpnrymdFU
+	 R/J/THWiCmNjAJJ5/tsILSLComfIP7fi+rE0pZmtDQ47sziKEIVLrGFOwXjV3gtS0m
+	 cSQuLnAxofX1UE8/gPLwyEdwRTVh8Wu+47cNS8PnMkSjgE4cR4Cm4HnmoLhvx/xmGv
+	 fGc59rO9V8vM5RcbKdvRaUjgD69N8Tv8roXoKyr0HQMfMOZ1h/zrJn7qeCPSn+jGwO
+	 lpRSl6K6wKW5ZqoOTLvAS+aZ1ST4dh14P2sKeeVZ6BLUGyGPseW1OggOX1b4ueNrrQ
+	 PEwKZ/Turz28g==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -88,20 +88,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 03/53] selftests/mm: migration: don't assume hupe page is TWOMEG
-Date: Mon,  6 Apr 2026 17:16:45 +0300
-Message-ID: <20260406141735.2179309-4-rppt@kernel.org>
+Subject: [PATCH 04/53] selftests/mm: run_vmtests.sh: don't gate THP and KSM tests on HAVE_HUGEPAGES
+Date: Mon,  6 Apr 2026 17:16:46 +0300
+Message-ID: <20260406141735.2179309-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260406141735.2179309-1-rppt@kernel.org>
 References: <20260406141735.2179309-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: xx3g3jcgy8reh9hd46a9ko478oxye4bj
-X-Rspamd-Queue-Id: 9EB8720003
+X-Rspamd-Queue-Id: 453F514000E
+X-Stat-Signature: zwm55dmaemf8ch5mhapmnyb6qe5oa5g3
 X-Rspam-User: 
-X-HE-Tag: 1775485084-497768
-X-HE-Meta: U2FsdGVkX1/7UQL01biHC3FIu9vYvrBPY+2ymoJpgDUldslV+aryLeisQsmLciwvkHzygqkl0Jw+bId1muWNQG9OqEWzrtEC6fn6w0sZxv0WXXUtvpK+VOvfnMsTUpAyWNLES4dWzYxh6YlE6XjzTdbBdysXCStOowmrK5vh1s0l9VJjpmqVDGacHiWywjNwx2ofl+riU4b1dhHTxhMU0rUimFLsyw7+hKNrqjFtthx+wDrsmZBm9r2N0GGtIIuu47PzIze1b3yM9klXZZCG9XiOaEZoKHVbwImz2GhsTI9bw4EXHdDoj8EBTIjTEPX+8QjKsoEEKmf3bfmOwwr5jfWPeyKu/3bsTPhJbIjMMcZEJXcBQp5UJNTENRKWgDGm7M7HEbs7moWOloPR4SbInfX7E7BtAzNR6G3rbITg16ntxN0uEs21VIehfbvPCaxwOpOQwk/pFuk/k57T9pNnPhyfdBKOtZzYSRK8hb2A5TKSofq8u290PhYtcQhieFUqhoSYdHAv4LdIegN+yyOwuVxAqrmiZbVG3yi/fNYoIFoFsXw+NO2CPOgL2hmiuD+tXjw+yawI4zUS6nrByQfc9wQQgydctJ9Z+eU/crHagUe/snYqPKU2PXqTRP0jORddyYswLuM3QJV73SIoD7eL4XY3Alllk1qNug8vF376CGk0fizHKC+c8Nhvfju/IgYAkWghOZlwhJSPVdmACk5+zuA7s762IVZw0tP57+iqi7WvQMYkVjRMGzS2wLz0VPxEIU0sGymfKuzXuhJ0GWRviHciNv1S1N9uTZpQpMZ3GuOF22htAQ0bvOQjzYZv73H1pwPF9l1MJQPmoLtI9n4eeApZh+6ldjbdBUYNAlAMb5NyemGpQGDVeZn17KCL+bU9l/rB1VIE3EtphnkRGeos5+/1chNtO7A6pi2zdQ0KS0cBrB8KDRsQcw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775485090-825619
+X-HE-Meta: U2FsdGVkX1+lSSg01P4COniuuc+LGMqm8TZDD2nvPEZxgbn4oJhxk0YwBlXeZylvr8JoMP6gkT5AtN0QwhXde/eSnG+1ecNyJyv4t+xpNJbGhB/s9MHdE4ztsSutxsPrywGQUcp2K5nRWfC7vY3n+QE/hwdH7GUM8eSnb9MekBbQME8xt/zvAJpK3zWnXYjhiVNoyDGdmmhg5DTbo7bIhzAha4pgOy1SIkCERl8jSTJtgEUnwfoXYw30V1NqrWyTwwobc3BJUaTdNcR/omq3y1IiMMdoqlvuiSqWEU0piJzFOiz+5dPiO51Yj6S5ZVzPh5XLrr6sUpw/fvkR9fpvz/dyOPh58N8peXu/MWAm0EgzmXU6hEsBmh5WQFzWGCFWDtXLSSM7ntAzQ1C74edhrUkLS5pcK9AiLDjLVH/PbF4cq8EWLM0UUH2thSgqiu0BhZ++Iao66NA/2nlvyVJjWwr+eDktbiWdbecyuTaHq8gfhhr23TScSpJRNfCfoG5DgB4KLej9gsL2IIYL1Jm8d8w2YQ8hHs6REyCwItmloKDnKvHsNLpKetFnPwXQ3bK4Wnaxip6dhRGLwWbsypc80E1i+cM6GiudHeTBOH2lSLgp2+yqYkPOcTvpvuRs4aj3b1KwI5W30Z4Tf9eugIc5Q7J4weFd7OUZKsA7vZHSpFieIRhdtUvo4ZGSi/qsuQvs1IOg2+8vzxN+eoTr35LyuICDrsN6kePvMRN4gx9x4yI4wROtsBAkrgkgxAO823Y4HrfsOIU3KF7GpzJmjZYgYwihM58N0ogNwp4P7jkFHz6JdhUrMARz/sez43HDK4AMwggdq5hsG6r2+h9NwK5HFeXCZo0hkjKGnaHkt1V+m0G4sgz2I0XI4yUn2+aRj/ctoG+Q/EofTBtUZsdy3FWmgvRYd4v0G4betEBNOLlmlVgHZd7EH+AMmKDdMZzGLU5F4+rg+ZVvwIDrEpHaPhG
+ dpyP+MGl
+ Y3bxN1f8IqKJbSuPCmgN69aMBTvpwDxQ4Tr6QOMO3dlXijFMQUpNsFKQhQmJr9WdSc6kf5w+lFsAqgGpYfCFio8WV+k3/SlNjuhkbZUaMjsR0PQeco+Yl+Gg8wdUYcKZmRl2PQPAkISTtKlupNidhdrcRWk/5u7V++QxZP1Ys+cVb1eEqVKk3x9aIAExqQk9EF3dzfnClew/oAmcBXlUqqFmewRqDzac7/04v7fZm2pT+Xoah761v9Z4fjZywkvBvZ0R7QWWDMPD7xAvJaFwDhsF8OA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,137 +113,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-migration tests presume that both THP and HugeTLB huge pages are 2MB.
+HAVE_HUGEPAGES indicates availability of free HugeTLB pages. It should not
+be used to gate KSM test that merges transparent huge pages or
+split_huge_page_test.
 
-Add dynamic detection of huge page size with read_pmd_pagesize() for THP
-and with default_huge_page_size() for HugeTLB.
+Remove check for HAVE_HUGEPAGES when running these tests.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
- 1 file changed, 32 insertions(+), 12 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 60e78bbfc0e3..e3c2f831e15a 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
-  */
- TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
- {
-+	unsigned long pmdsize;
- 	uint64_t *ptr;
- 	int i;
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index d8468451b3a3..e2dc9ac87bfc 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -436,9 +436,7 @@ CATEGORY="memfd_secret" run_test ./memfd_secret
+ fi
  
- 	if (!thp_is_enabled())
- 		SKIP(return, "Transparent Hugepages not available");
+ # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+-if [ "${HAVE_HUGEPAGES}" = "1" ]; then
+-	CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+-fi
++CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+ # KSM KSM_MERGE_TIME test with size of 100
+ CATEGORY="ksm" run_test ./ksm_tests -P -s 100
+ # KSM MADV_MERGEABLE test with 10 identical pages
+@@ -493,16 +491,14 @@ CATEGORY="thp" run_test ./transhuge-stress -d 20
  
-+	pmdsize = read_pmd_pagesize();
-+	if (!pmdsize)
-+		SKIP(return, "Reading PMD pagesize failed");
-+
- 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
- 		SKIP(return, "Not enough threads or NUMA nodes available");
- 
--	ptr = mmap(NULL, 2*TWOMEG, PROT_READ | PROT_WRITE,
-+	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
- 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
--	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
--	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
--	memset(ptr, 0xde, TWOMEG);
-+	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-+	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
-+	memset(ptr, 0xde, pmdsize);
- 	for (i = 0; i < self->nthreads - 1; i++)
- 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
- 			perror("Couldn't create thread");
-@@ -215,6 +220,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
- 
- TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
- {
-+	unsigned long pmdsize;
- 	pid_t pid;
- 	uint64_t *ptr;
- 	int i;
-@@ -222,17 +228,21 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
- 	if (!thp_is_enabled())
- 		SKIP(return, "Transparent Hugepages not available");
- 
-+	pmdsize = read_pmd_pagesize();
-+	if (!pmdsize)
-+		SKIP(return, "Reading PMD pagesize failed");
-+
- 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
- 		SKIP(return, "Not enough threads or NUMA nodes available");
- 
--	ptr = mmap(NULL, 2 * TWOMEG, PROT_READ | PROT_WRITE,
-+	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
- 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
--	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
--	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
-+	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
-+	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
- 
--	memset(ptr, 0xde, TWOMEG);
-+	memset(ptr, 0xde, pmdsize);
- 	for (i = 0; i < self->nthreads - 1; i++) {
- 		pid = fork();
- 		if (!pid) {
-@@ -256,17 +266,22 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
-  */
- TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
- {
-+	unsigned long hugepage_size;
- 	uint64_t *ptr;
- 	int i;
- 
- 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
- 		SKIP(return, "Not enough threads or NUMA nodes available");
- 
--	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
-+	hugepage_size = default_huge_page_size();
-+	if (!hugepage_size)
-+		SKIP(return, "Reading HugeTLB pagesize failed\n");
-+
-+	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
- 		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
--	memset(ptr, 0xde, TWOMEG);
-+	memset(ptr, 0xde, hugepage_size);
- 	for (i = 0; i < self->nthreads - 1; i++)
- 		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
- 			perror("Couldn't create thread");
-@@ -281,6 +296,7 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
-  */
- TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
- {
-+	unsigned long hugepage_size;
- 	pid_t pid;
- 	uint64_t *ptr;
- 	int i;
-@@ -288,11 +304,15 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
- 	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
- 		SKIP(return, "Not enough threads or NUMA nodes available");
- 
--	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
-+	hugepage_size = default_huge_page_size();
-+	if (!hugepage_size)
-+		SKIP(return, "Reading HugeTLB pagesize failed\n");
-+
-+	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
- 		MAP_SHARED | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
- 	ASSERT_NE(ptr, MAP_FAILED);
- 
--	memset(ptr, 0xde, TWOMEG);
-+	memset(ptr, 0xde, hugepage_size);
- 	for (i = 0; i < self->nthreads - 1; i++) {
- 		pid = fork();
- 		if (!pid) {
+ # Try to create XFS if not provided
+ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
+-    if [ "${HAVE_HUGEPAGES}" = "1" ]; then
+-	if test_selected "thp"; then
+-	    if grep xfs /proc/filesystems &>/dev/null; then
+-		XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
+-		SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
+-		truncate -s 314572800 ${XFS_IMG}
+-		mkfs.xfs -q ${XFS_IMG}
+-		mount -o loop ${XFS_IMG} ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
+-		MOUNTED_XFS=1
+-	    fi
++    if test_selected "thp"; then
++	if grep xfs /proc/filesystems &>/dev/null; then
++	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
++	    SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
++	    truncate -s 314572800 ${XFS_IMG}
++	    mkfs.xfs -q ${XFS_IMG}
++	    mount -o loop ${XFS_IMG} ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
++	    MOUNTED_XFS=1
+ 	fi
+     fi
+ fi
 -- 
 2.53.0
 
