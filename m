@@ -4,113 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FE7E9D831
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 04:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDEDCE9D83C
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 05:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC4A26B0088; Mon,  6 Apr 2026 00:28:19 -0400 (EDT)
+	id A08686B0088; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4EBA6B0089; Mon,  6 Apr 2026 00:28:19 -0400 (EDT)
+	id 9B95F6B0089; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A16656B008A; Mon,  6 Apr 2026 00:28:19 -0400 (EDT)
+	id 8F68F6B008A; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D08A6B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 00:28:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7965B7701
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 04:28:18 +0000 (UTC)
-X-FDA: 84626849076.14.9E7D84F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 42E4C140003
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 04:28:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LrIhyVRw;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775449697; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 810896B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 01:35:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B04531B7405
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:35:51 +0000 (UTC)
+X-FDA: 84627019302.28.35508E3
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E426B40006
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:35:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YHD3aSbE;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YHD3aSbE;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775453750; a=rsa-sha256;
 	cv=none;
-	b=1DawGjTwyRy/W/TR4mIHpzU3oV28F1s9MYMFWEt22NAtwq8clQEkiQnpzXACeIuzhO1R5q
-	/gE8/FMDgCxehdjUUTmEjQkQjT7eMoaXV+MjcFa6qASFL4Wm4OmCCMNUAxFwE58GVKqJIO
-	FL54uU93yMnGbaeuSM7gDdIvajiuln4=
+	b=dty5VkMlTFXp+VmV3nIhcSwp2vt6FAK8wE59JL2YCWGIG5W6/lFI2g15Rndr08BSktcJWW
+	l3+XCzrSQ5+hiKtYuS8NUP/7blb8E4VIULzbS8H9tjsoJoq4g5xfhMGHnpHpqgCufNPp1+
+	9DjNvWIPI/J1R03CriVssb6u8ZGbFIc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775449697;
+	s=arc-20220608; t=1775453750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J2hURVLDrM6B8hIf5RW31VyEqW/sq/fQ8CbDDCGZjN4=;
-	b=bol8uctx3Orck1ujpgchJc3b3XLC3PGyG5b+xIb3HrQ9WEvN9nWVTXKOsFQMeOwrhiI8mY
-	u+5CpScgZClQnRZeF20hnXUv66lp6pJpMeN4fRks5tvRmDq1NhrQyLH9dSmaL7YYoaXvSo
-	H7vNZkn+iPSTGHicVfUNFRMgv7Of4Bo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LrIhyVRw;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 381D1600AC;
-	Mon,  6 Apr 2026 04:28:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD13C4CEF7;
-	Mon,  6 Apr 2026 04:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775449695;
-	bh=uYGceNTzNuZmnfMgHyxFjYMImRSA6EY2IdzY776syzU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LrIhyVRwlhPr2buj/spqkEinh0TSUCphFFxWRJXa2SZtyWFV6c4MxfuD5ms92G8Gl
-	 vF2Xwudli8dgQTWDDFEh2TVvmX9GKFpLuavPEKdvydy+HtFjT5cJUef0ABrMCT60Bh
-	 7jGHLax2sgOPSsQvn0dFRvioqMBwroi6D1bIVOv3zMa8uJc1tQU4nXJY0ouygzxw4d
-	 BSuRScIDayM5+b1FbWHSly4IL1lsYndWt71ihRoSN3F/8njW79cQ5nAfOC8QuJgyYW
-	 JRi2kSAo5UKGNlmcsgsdFWu0K7wAXftMgPVNCSFAi5N4Xegxsa1y1AlDGKWok42OFq
-	 MW/UF3hsWgP/w==
-Date: Mon, 6 Apr 2026 13:28:13 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
-	Florent Revest <revest@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>
-Subject: Re: [PATCH v1] slab: support for compiler-assisted type-based slab
- cache partitioning
-Message-ID: <adM2XVZf1DekahlY@hyeyoo>
-References: <20260331111240.153913-1-elver@google.com>
- <ac9d5O5XehnXRc5A@hyeyoo>
- <d0fe363c-2e8f-44a4-9b64-3fa3ba9a5773@kernel.org>
+	bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
+	b=hp/1+7V8rqX1WHjNzmCu4m/ZhGwnIF/MDDF8gSS5GgHtQJZun2KDzgxb7e4zeU+kVoSn5v
+	WNteOo4Enc89QQIdEttMx1td0cXkf3KSSc2p9LMLzpfPjO/ABgTykulumqZuqpc4pgeYpG
+	hA0gkFWu0Gz9eWNDjnNfddmZ2JahnR4=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79a74765703so26877797b3.3
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 22:35:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775453749; x=1776058549; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
+        b=YHD3aSbEwzw0fr8AY1DoevNvc8eqOmOqaLReS/X5o3lntdlneZhCAWTS2t6lx28jYh
+         SvILspik8XJi38m9Wwm2rLGJY/08lzwknPH37aqqxCOci6KCa7NOhd49+xhyx2KDLUSg
+         ithtMAH49xCzKmJVf/FgC+U6BLOt3JPxcLP12qq4kMNispqbX/hPsirr2oV2C+GY6ndm
+         Y7OMedbUNF9pEG1BQpqTsCmcdCdbHYjTvV8z8z/Z4ChmgD/vEnlTAnGo1zslB4nWUTNF
+         byhRsaqH09Od8IteoJ9Yo0o8BtsRIClffe1MafVrdRquPV0v7EQaK+f2h5nODKDOnYya
+         VZLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775453749; x=1776058549;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9FJme28X6M+hpI3k7xxHy5T5VcxdI3tFo8G0ICpt4XA=;
+        b=TV+FQjrgGDLnhtj0bRuyHLfOx48NLpD8Kz2/CKcEb71pDEy+QWU+56KJmV+Lq+fZdl
+         lhTMwiZTpLhrZQNLvL/S/ypA5Qhbhw6R0H0vVaHt/b+Ge2x2uzUZRJ8KAgGjpm04fYri
+         ++VaNRnvU5j9E/FlSone3wTZQoSw/rjjpOZ5SJFZrJkgVYunsS5rXShKBy4WN58gYP2L
+         pe56uShV8JRhc68TZdjjbMtdPyOvOjuTPx5EaSq5SYndU57oq6xX2Rr2sXD/T9QMVhoE
+         OfatFZltDuoTGGL9P0SUtoOxzg5iSyYR6bmnVl06/8E0kXbVFNLBuJ02Y2IaWE9BSVqV
+         flew==
+X-Forwarded-Encrypted: i=1; AJvYcCWcZnFF+hJSEK/sVq7VAjy3gKZwxSN05vw9pDw6g6Qq2bE+dmODJGqAW0pS7i0z7WCjGEnStQagaQ==@kvack.org
+X-Gm-Message-State: AOJu0YwwojlkvNixlAIOuwepTEGpfkHw1QpLBfFr5vcEIz1b4YLnj6W4
+	p3LFl561UrKsMzGqLU7i+lq5EA5xa6OemdDtvF4ASuWvaGUwQHz/p/2k+LV9XbcoqQ==
+X-Gm-Gg: AeBDietT4iut8T3RSJkqxsL2xq0Up2ZIWV7TLONUs51Hlg97ZkSWD8AZyMbGLe14NBG
+	IeuTaj5klJW5OdECUyOybRGfn9ktauI1d7BCeHtfUNiEjdXf7il0BKzfH8s879XblvdBsD5Bys/
+	YU/V1l4baCFg2ncSX1Rn9ao+1N1qYUH55MMHjFWMJyxTYotF00r2D+RlS1OxwlweZAZU2WQkY9g
+	MJCfi0fgWr6R6N9pw015kXLji6/oMf6OqAfXSbnPmHn/8yUtWrZGd6Fpo/x9tGU4tp7RlQX1EfM
+	YIt8s7oMOZ3mWdqpebHd86ewNMlzNG4R4tZkIBVzd4ojC6OBaCJq3llXnm0EhcRydL/wCRZvEID
+	uXEBvKthq5sOrqpQRLk6MgEeO6KKLuWqDh1E5h9VjD3ioOLBmw6T3wnKDLNqd4rHZT/lS9+xVld
+	tgeQMDPXOEzpf5GlNY4z54OVXRv4iijXcoaTE6t6jyawjO7baMxA1wx+e2NTfKtZMFF97cqyv6s
+	8uma3UQ7yU=
+X-Received: by 2002:a05:690c:e4d6:b0:7a4:db43:c1da with SMTP id 00721157ae682-7a4db43cc17mr88182507b3.0.1775453748466;
+        Sun, 05 Apr 2026 22:35:48 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7a370901513sm49673367b3.29.2026.04.05.22.35.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Apr 2026 22:35:47 -0700 (PDT)
+Date: Sun, 5 Apr 2026 22:35:35 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: xu.xin16@zte.com.cn
+cc: hughd@google.com, akpm@linux-foundation.org, david@kernel.org, 
+    chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, 
+    michel@lespinasse.org, ljs@kernel.org, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+In-Reply-To: <20260406095804589iRP1BCGrNX3DviT29nv2O@zte.com.cn>
+Message-ID: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
+References: 20260212192820223O_r2NQzSEPG_C56cs-z4l@zte.com.cn,20260212193045556CbzCX8p9gDu73tQ2nvHEI@zte.com.cn,02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com <20260406095804589iRP1BCGrNX3DviT29nv2O@zte.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0fe363c-2e8f-44a4-9b64-3fa3ba9a5773@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E426B40006
+X-Stat-Signature: rd175m9f1d5sz8u4ekpihkqfen5z873q
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 42E4C140003
-X-Stat-Signature: 4fo85jhusmwksuqbhy1j88jp49a5opu3
-X-HE-Tag: 1775449697-886719
-X-HE-Meta: U2FsdGVkX1+KAL27QruHnM1G/HT5wNWR9b9xKqqTpX35YtbqjXy1eWMW+3KYJXRaqgxaFj026QV+mxmDOYbcPEJdkw5bJ1/3qsVS/m/ulbeTCrcl37gbeBbXZEj63um1bTHhuLVresaYCepQGlck5rMZScYIX5VWtoKLJWhGCXi6YaB33d3pLtY5QAl2m6PSzLtUt9JSlowtu9dGT0udL26pcrkmfT14550obfxkxuchrvcZdda1faXe4wgghI7R63bae+Tr7m+ArJ2csT6kS3aw2OXAkmtCjWQzNSytiP7B9dqLlVP1BQi2E4U4/ds0HQgrcMdhm3C5U9Od/vY2dmf3R/cRoGPKrvQhNkfcYB122/eQ9tpvk6QA5nSl4sxE57a5FXJWAoTemT6EsGjLdS/cBhwV0Jch0fA8zN6GmfamzqapdwE1oSGPgWcla12YZrpT5P4e2W6rzh+eoWZGrYOi73ZujG7I/iTbfWPNZwrUjR+UTCR8Z5aJadt+SylUallEg5/PHftSNhG6zimRjjWMH4Vc5XDkv8uhdyAaCI1CXrGrooDOgrd2V1okEwqsELmqnDNzi6tbG3VRNy7yjwPJTtSQCEQUjfrAQ0FYLw550cQpBtBozifvHBfxps6y0TLgIEaMZWWySBwilkQ+FPuCupV/uCSLH68ZehGwtYzmOHfmdbfEbEJq2rl6QZp5EcI1Aayf5NexHhztZ/9zmUPUl1jjGAWCbmyBuJ+yTlzNXFXbabgee2CF5RNQOTAQx2Uc5B/cYrMXLni+JpTx/oZnp3IqiX66mFuz8TooiutnPBaedOatxar9y012aGcovfuD9LuHryG2QGRIxlCSV8upomF5mzWMPEYKTEwb1TAHvmcUofVvJJ2ls5JbvPxGb/f0Vxl94OUY4u3Wk9zgQdIvrHlZCEJ0LCxHJ2alC0cZhPbtuG8QhFlOJ0d3ElyP9zyP8NvRGY9B1hGl31C
- MArmJhAl
- j3WOMS64s0OI3o1ZRzSwdDfI7MxYANenjDFyQ20H6zDspKW71OMVVuIxm+M6r0hLaWIarEV4QuPa0VfuHUMYZBucohTU70v8lBJRwPGACUc91wpMKF1Be0TeN8tvvTfbv4Qim3TI2CpT2VfBWGlktpA9Tt2JZG3XtgnIYa1QNZOe/YEaDCkxNNmazX7+ufXUw2uWzbWVMuZFq1o7Uilxx0PWWXentUruab9aGzNrl/VVm/wbgGjAI7eEeV70NU21GjFsiVgNrZBy+NLrOF8qWi5H+PKOTJ4q3kOAfHh+//yQglDeaPCOfSWuQudsm2SHbJDQ1Go4ZZTn5hBo=
+X-HE-Tag: 1775453749-554348
+X-HE-Meta: U2FsdGVkX1/ypJHIe33veXI1UpghXpFbqJGRfOQGG/z9l+UANYXM0zOZIQ2bY7inbFy6x+pwHCTZxAaVGLnA9/bhDBLHGKLmdoZYc9iCNqraxTR2YUYT/Q/BrNjLYtblRF60R0nxKUmoPYIUTOuFpHsdGkawzm6p2xDtheyPu9OSbULktn5YacfdGXDTa2cyjnrAw9kiUHAn07X9+oupNopsF8McVFBMbXhGtlal9z7AbJv17atpm7ZLz9AHPrMv101z+tMhQ27TRNMpBGX8UuVTrWIJmKKm5bbjvWwWTfDXNXM6bPqX4woqWGUdb//5N4FcydeTJJeBM0uCXjiDbB4YMPWG7RqqWsugvhQYdTI4+f9GHcovERlhQs34TIBPnofRxOOkTFHkYKdf3M621qF1QdqbtrNJcyb9KOEbLWuPJp3HNgCYrw9oWNdWMGa4oDCQ4CU25Sj5vvqcPuPKx6spVX64YeWv1cQHgwsQLXHgKgudEhKpa1pyszUnjFKrtcSg7/3CLjcocIgEdtxqoYpC3fMzQwgRyv0UB2RWXDRb3Ul/PTubQa88GZ9Ue+u3gvf4MMmkaCIAOKtUJ8CWjBf7r0fVFUDJqE9r8G1KKcsDG1Tbzbeik7Em/rVVmGz9Ce2HZwhIShHVC6BJfmMF6VNGIF6IPxdLOok9wII1/8dphGuztXMeyvc9gwhGZ4Djf9DmDdNyWVZLfIiGvlebPqqvxXWbXohHZSRLn8pYlLHMhg5NUM6SUxr1jlIVQveyDZaI4uWsAbz+r+yGlI0RNduJv4PM/dKYjYXt9jR4MoH4VIoG/imhkje/VXphyrjdgDGf+FPczbK2jOyCOi5ks54fOKx5OykzCmsllYi3x9c9SKk3D7Awj/uzkt0gAzh/Q7hdfXcEN0CnSCOkLj99M+Ja9Poezty0TnhEsnMQLeF0/iIGU2AEZK+BxgrCR19vIuPuVB4otHoY3KCpRiO
+ iPyaVQ4N
+ gSm3P3lZsoNZX6FQZFcNpUVK26LDbVTLREE8hxQ91FX/GN792wf5AvgC2T7U9sjugDpnPiBgEGindfAnVicx5KPBW5gNtbNPIg6nP/woY71L6pxe63GJF5QLqp2R2CHRzG7l/dfM1DqU7VMGINGGykQ6pJurBhcYqHjeb8R8VF6MhxC0vaI9f8zUZ35ObL3PRRqNBVht0nQCaJpJM4s2iwWxwpZJwLBuHRY+SSnFqQb5LDG693AAGT8rRhjU6LxeKV2SfSXL80BdRAIiQ97Fo/1nhVTQzgROpBrzW3IDqQGjwgIYTJ8XF7JR28HKeev6G5emiy66KDuInEelTZWPp1Qw2S90y3ELSJlzEFjzggXO4qjS1Yj5rUZLXs3FiwsMt/dz6kk4mHeDdEdInMIPCIZhiTE7SFRD+bcD5lCW8jSGYXx1FhzN3SjfF7CdUhgpCLlLWjrTZubGMccz8c1oe1BiQXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,233 +119,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 08:29:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/3/26 08:27, Harry Yoo (Oracle) wrote:
-> >> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> >> index 15a60b501b95..c0bf00ee6025 100644
-> >> --- a/include/linux/slab.h
-> >> +++ b/include/linux/slab.h
-> >> @@ -864,10 +877,10 @@ unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf);
-> >>   * with the exception of kunit tests
-> >>   */
-> >>  
-> >> -void *__kmalloc_noprof(size_t size, gfp_t flags)
-> >> +void *__kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
-> >>  				__assume_kmalloc_alignment __alloc_size(1);
-> >>  
-> >> -void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
-> >> +void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node, kmalloc_token_t token)
-> >>  				__assume_kmalloc_alignment __alloc_size(1);
+On Mon, 6 Apr 2026, xu.xin16@zte.com.cn wrote:
 > > 
-> > So the @token parameter is unused when CONFIG_PARTITION_KMALLOC_CACHES is
-> > disabled but still increases the kernel size by a few kilobytes...
-> > but yeah I'm not sure if we can get avoid it without hurting readability.
-> > 
-> > Just saying. (does anybody care?)
+> > But it's years since I worked on KSM or on anon_vma, so I may be confused
+> > and my belief wrong.  I have tried to test it, and my testcase did appear
+> > to show 7.0-rc6 successfully swapping out even mremap-moved KSM folios,
+> > but mm.git failing to do so.  
 > 
-> Well we did care enough with CONFIG_SLAB_BUCKETS to hide the unused param
-> using DECL_BUCKET_PARAMS(),
+> Thank you very much for providing such detailed historical context. However,
+> I'm curious about your test case: how did you observe that KSM pages in mm.git
+> could not be swapped out, while 7.0-rc6 worked fine?  
+> 
+> From the current implementation of mremap, before it succeeds, it always calls
+> prep_move_vma() -> madvise(MADV_UNMERGEABLE) -> break_ksm(), which splits KSM pages
+> into regular anonymous pages, which appears to be based on a patch you introduced
+> over a decade ago, 1ff829957316(ksm: prevent mremap move poisoning). Given this,
+> KSM pages should already be broken prior to the move, so they wouldn't remain as
+> mergeable pages after mremap. Could there be a scenario where this breaking mechanism
+> is bypassed, or am I missing a subtlety in the sequence of operations?
 
-Hmm yeah.
+I'd completely forgotten that patch by now!  But it's dealing with a
+different issue; and note how it's intentionally leaving MADV_MERGEABLE
+on the vma itself, just using MADV_UNMERGEABLE (with &dummy) as an
+interface to CoW the KSM pages at that time, letting them be remerged after.
 
-I wasn't sure if we could do this without hurting readability,
-but perhaps we could...
+The sequence in my testcase was:
 
-> so maybe extend that idea?
-> I think it's not just kernel size, but increased register pressure etc.
+boot with mem=1G
+echo 1 >/sys/kernel/mm/ksm/run
+base = mmap(NULL, 3*PAGE_SIZE, PROT_READ|PROT_WRITE,
+		MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+madvise(base, 3*PAGE_SIZE, MADV_MERGEABLE);
+madvise(base, 3*PAGE_SIZE, MADV_DONTFORK); /* in case system() used */
+memset(base, 0x77, 2*PAGE_SIZE);
+sleep(1); /* I think not required */
+mremap(base + PAGE_SIZE, PAGE_SIZE, PAGE_SIZE,
+	MREMAP_MAYMOVE|MREMAP_FIXED, base + 2*PAGE_SIZE);
+base2 = mmap(NULL, 512K, PROT_READ|PROT_WRITE,
+		MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+madvise(base2, 512K, MADV_DONTFORK); /* in case system() used */
+memset(base2, 0x77, 512K);
+print pages_shared pages_sharing /* 1 1 expected, 1 1 seen */
+run something to mmap 1G anon, touch all, touch again, exit 
+print pages_shared pages_sharing /* 0 0 expected, 1 1 seen */
+exit
 
-Something like this should work? (diff on top of this patch)
+Those base2 lines were a late addition, to get the test without mremap
+showing 0 0 instead of 1 1 at the end; just as I had to apply that
+pte_mkold-without-folio_mark_accessed patch to the kernel's mm/ksm.c.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Originally I was checking the testcase's /proc/pid/smaps manually
+before exit; then found printing pages_shared pages_sharing easier.
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index c0bf00ee6025..0496d2e63f5e 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -871,16 +871,32 @@ unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf);
- #define PASS_BUCKET_PARAM(_b)		NULL
- #endif
-
-+#ifdef CONFIG_PARTITION_KMALLOC_CACHES
-+#define DECL_TOKEN_PARAM(_token)	, kmalloc_token_t (_token)
-+#define _PASS_TOKEN_PARAM(_token)	, (_token)
-+#define PASS_TOKEN_PARAM(_token)	(_token)
-+#else
-+#define DECL_TOKEN_PARAM(_token)
-+#define _PASS_TOKEN_PARAM(_token)
-+#define PASS_TOKEN_PARAM(_token)	((kmalloc_token_t){})
-+#endif
-+
-+#define DECL_KMALLOC_PARAMS(_size, _b, _token)	DECL_BUCKET_PARAMS(_size, _b) \
-+						DECL_TOKEN_PARAM(_token)
-+
-+#define PASS_KMALLOC_PARAMS(_size, _b, _token)	PASS_BUCKET_PARAMS(_size, _b) \
-+						_PASS_TOKEN_PARAM(_token)
-+
- /*
-  * The following functions are not to be used directly and are intended only
-  * for internal use from kmalloc() and kmalloc_node()
-  * with the exception of kunit tests
-  */
-
--void *__kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
-+void *__kmalloc_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags)
- 				__assume_kmalloc_alignment __alloc_size(1);
-
--void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node, kmalloc_token_t token)
-+void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node)
- 				__assume_kmalloc_alignment __alloc_size(1);
-
- void *__kmalloc_cache_noprof(struct kmem_cache *s, gfp_t flags, size_t size)
-@@ -964,7 +980,7 @@ static __always_inline __alloc_size(1) void *_kmalloc_noprof(size_t size, gfp_t
- 				kmalloc_caches[kmalloc_type(flags, token)][index],
- 				flags, size);
- 	}
--	return __kmalloc_noprof(size, flags, token);
-+	return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
- }
- #define kmalloc_noprof(...)			_kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
- #define kmalloc(...)				alloc_hooks(kmalloc_noprof(__VA_ARGS__))
-@@ -1075,10 +1091,10 @@ void *_kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node, kmalloc_tok
- 	__alloc_flex(kvzalloc, default_gfp(__VA_ARGS__), typeof(P), FAM, COUNT)
-
- #define kmem_buckets_alloc(_b, _size, _flags)	\
--	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE, __kmalloc_token(_size)))
-+	alloc_hooks(__kmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE))
-
- #define kmem_buckets_alloc_track_caller(_b, _size, _flags)	\
--	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE, _RET_IP_, __kmalloc_token(_size)))
-+	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE, _RET_IP_))
-
- static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, gfp_t flags, int node, kmalloc_token_t token)
- {
-@@ -1093,7 +1109,7 @@ static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, g
- 				kmalloc_caches[kmalloc_type(flags, token)][index],
- 				flags, node, size);
- 	}
--	return __kmalloc_node_noprof(PASS_BUCKET_PARAMS(size, NULL), flags, node, token);
-+	return __kmalloc_node_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags, node);
- }
- #define kmalloc_node_noprof(...)		_kmalloc_node_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
- #define kmalloc_node(...)			alloc_hooks(kmalloc_node_noprof(__VA_ARGS__))
-@@ -1154,10 +1170,10 @@ static inline __realloc_size(2, 3) void * __must_check krealloc_array_noprof(voi
-  */
- #define kcalloc(n, size, flags)		kmalloc_array(n, size, (flags) | __GFP_ZERO)
-
--void *__kmalloc_node_track_caller_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node,
--					 unsigned long caller, kmalloc_token_t token) __alloc_size(1);
-+void *__kmalloc_node_track_caller_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node,
-+					 unsigned long caller) __alloc_size(1);
- #define kmalloc_node_track_caller_noprof(size, flags, node, caller) \
--	__kmalloc_node_track_caller_noprof(PASS_BUCKET_PARAMS(size, NULL), flags, node, caller, __kmalloc_token(size))
-+	__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(size, NULL, __kmalloc_token(size)), flags, node, caller)
- #define kmalloc_node_track_caller(...)		\
- 	alloc_hooks(kmalloc_node_track_caller_noprof(__VA_ARGS__, _RET_IP_))
-
-@@ -1183,7 +1199,7 @@ static inline __alloc_size(1, 2) void *_kmalloc_array_node_noprof(size_t n, size
- 		return NULL;
- 	if (__builtin_constant_p(n) && __builtin_constant_p(size))
- 		return _kmalloc_node_noprof(bytes, flags, node, token);
--	return __kmalloc_node_noprof(PASS_BUCKET_PARAMS(bytes, NULL), flags, node, token);
-+	return __kmalloc_node_noprof(PASS_KMALLOC_PARAMS(bytes, NULL, token), flags, node);
- }
- #define kmalloc_array_node_noprof(...)		_kmalloc_array_node_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
- #define kmalloc_array_node(...)			alloc_hooks(kmalloc_array_node_noprof(__VA_ARGS__))
-@@ -1209,10 +1225,10 @@ static inline __alloc_size(1) void *_kzalloc_noprof(size_t size, gfp_t flags, km
- #define kzalloc(...)				alloc_hooks(kzalloc_noprof(__VA_ARGS__))
- #define kzalloc_node(_size, _flags, _node)	kmalloc_node(_size, (_flags)|__GFP_ZERO, _node)
-
--void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
--			     gfp_t flags, int node, kmalloc_token_t token) __alloc_size(1);
-+void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), unsigned long align,
-+			     gfp_t flags, int node) __alloc_size(1);
- #define kvmalloc_node_align_noprof(_size, _align, _flags, _node)	\
--	__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, NULL), _align, _flags, _node, __kmalloc_token(_size))
-+	__kvmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, NULL, __kmalloc_token(_size)), _align, _flags, _node)
- #define kvmalloc_node_align(...)		\
- 	alloc_hooks(kvmalloc_node_align_noprof(__VA_ARGS__))
- #define kvmalloc_node(_s, _f, _n)		kvmalloc_node_align(_s, 1, _f, _n)
-@@ -1225,7 +1241,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
- #define kvzalloc_node(_size, _flags, _node)	kvmalloc_node(_size, (_flags)|__GFP_ZERO, _node)
-
- #define kmem_buckets_valloc(_b, _size, _flags)	\
--	alloc_hooks(__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), 1, _flags, NUMA_NO_NODE, __kmalloc_token(_size)))
-+	alloc_hooks(__kvmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), 1, _flags, NUMA_NO_NODE))
-
- static inline __alloc_size(1, 2) void *
- _kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int node, kmalloc_token_t token)
-@@ -1235,7 +1251,7 @@ _kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int node, kmallo
- 	if (unlikely(check_mul_overflow(n, size, &bytes)))
- 		return NULL;
-
--	return __kvmalloc_node_noprof(PASS_BUCKET_PARAMS(bytes, NULL), 1, flags, node, token);
-+	return __kvmalloc_node_noprof(PASS_KMALLOC_PARAMS(bytes, NULL, token), 1, flags, node);
- }
- #define kvmalloc_array_node_noprof(...)		_kvmalloc_array_node_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
- #define kvmalloc_array_noprof(...)		kvmalloc_array_node_noprof(__VA_ARGS__, NUMA_NO_NODE)
-diff --git a/mm/slub.c b/mm/slub.c
-index 5630dde94df0..84f129d79c99 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5293,15 +5293,17 @@ void *__do_kmalloc_node(size_t size, kmem_buckets *b, gfp_t flags, int node,
- 	trace_kmalloc(caller, ret, size, s->size, flags, node);
- 	return ret;
- }
--void *__kmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node, kmalloc_token_t token)
-+void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node)
- {
--	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node, _RET_IP_, token);
-+	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node,
-+				 _RET_IP_, PASS_TOKEN_PARAM(token));
- }
- EXPORT_SYMBOL(__kmalloc_node_noprof);
-
--void *__kmalloc_noprof(size_t size, gfp_t flags, kmalloc_token_t token)
-+void *__kmalloc_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags)
- {
--	return __do_kmalloc_node(size, NULL, flags, NUMA_NO_NODE, _RET_IP_, token);
-+	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags,
-+				 NUMA_NO_NODE, _RET_IP_, PASS_TOKEN_PARAM(token));
- }
- EXPORT_SYMBOL(__kmalloc_noprof);
-
-@@ -5394,10 +5396,11 @@ void *_kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node, kmalloc_tok
- }
- EXPORT_SYMBOL_GPL(_kmalloc_nolock_noprof);
-
--void *__kmalloc_node_track_caller_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags,
--					 int node, unsigned long caller, kmalloc_token_t token)
-+void *__kmalloc_node_track_caller_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags,
-+					 int node, unsigned long caller)
- {
--	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node, caller, token);
-+	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node,
-+				 caller, PASS_TOKEN_PARAM(token));
-
- }
- EXPORT_SYMBOL(__kmalloc_node_track_caller_noprof);
-@@ -6812,8 +6815,8 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
-  *
-  * Return: pointer to the allocated memory of %NULL in case of failure
-  */
--void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
--			     gfp_t flags, int node, kmalloc_token_t token)
-+void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token),
-+			     unsigned long align, gfp_t flags, int node)
- {
- 	bool allow_block;
- 	void *ret;
-@@ -6824,7 +6827,7 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned long align,
- 	 */
- 	ret = __do_kmalloc_node(size, PASS_BUCKET_PARAM(b),
- 				kmalloc_gfp_adjust(flags, size),
--				node, _RET_IP_, token);
-+				node, _RET_IP_, PASS_TOKEN_PARAM(token));
- 	if (ret || size <= PAGE_SIZE)
- 		return ret;
-
---
-2.43.0
+Hugh
 
