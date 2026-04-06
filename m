@@ -4,87 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE80FF46C4E
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 15:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A9FF46C53
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 16:06:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F636B010C; Mon,  6 Apr 2026 11:57:52 -0400 (EDT)
+	id D91FA6B010E; Mon,  6 Apr 2026 12:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE72C6B010D; Mon,  6 Apr 2026 11:57:52 -0400 (EDT)
+	id D42AB6B010F; Mon,  6 Apr 2026 12:06:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24786B010E; Mon,  6 Apr 2026 11:57:52 -0400 (EDT)
+	id C30DA6B0110; Mon,  6 Apr 2026 12:06:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF01C6B010C
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 11:57:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CE82E13A6
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 15:57:52 +0000 (UTC)
-X-FDA: 84628586784.24.A33035A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C8C7F100002
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 15:57:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QP9Fuyij;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775491070;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B3B0F6B010E
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 12:06:49 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65872B9931
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:06:49 +0000 (UTC)
+X-FDA: 84628609338.17.08CEC2F
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 377AC4000F
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:06:46 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lRm6yYF5;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775491607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YaYGeAf+yPeBi2AUf7QAKJz5aCviAEGeg2Z5KJNsUC8=;
-	b=aKMM1uREhiV+EoODGoKz/5r4lyr1CDpruBZ5zq9ccPJfmbepk7HH5LvstaRdGBt9MX0j8G
-	Ho+B2qI7gkd5pgyye2Aer/e3WKe4Md5ktTkNECkVp12kmaimLXxic0gFbHOrsPIrjf/v3q
-	fL8iYt1J0cfISyrXiBZmXcfEvkujd90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775491070; a=rsa-sha256;
-	cv=none;
-	b=NCstt7Li789S85OwTUEiYmR43c7RD3tFd1/TiLtouMnFtzR+zIHBTf5/EkUU/Mlm+v17gy
-	um7MMsnUrAns3t9uESwrVNDKs9TEVkiVpim/FREdAIJjzyHxIZHWK5abuBq63WAS96m/P/
-	kEpGsHzA4QvVfvbX2vTv1sAX+2fe+uo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QP9Fuyij;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 452AF60135;
-	Mon,  6 Apr 2026 15:57:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C33C19421;
-	Mon,  6 Apr 2026 15:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775491070;
-	bh=NCB1kgwid+pok6sSzkYM/5mK7H+v09Z6Ios74HEuHEA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QP9FuyijbcXPqLMKmRvw16mvM5ODOoL5M9/xJSRoUpw3CWq7gw1jbKVXgBnswfxa6
-	 5TXJBSLlRdwKir6iuahHu+/5H7XkWYDhQ7LvZATpRykI3uS3pxLNULdiIZ2l6U4ZpL
-	 /qAX6xLL2U/dWf5OGT/N1NH8t4WpeeS1jbZczHYWEEROv126R7s0g+LAjP04560Vh7
-	 hILkS2Gs/mN8QmUBXUhQXvVmoxi712JjtMDXvfZ5/hz+xCnDvjNy5H2FLjDmPgTO8D
-	 fr+aXyULN/4XHMyedsoXyN0oWClo/yemqFPUGB23xaXcZ43Y4pgaQLio1CIafPEfX4
-	 sKTi0VJ53iAXw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH] mm/damon/core: avoid time-quota permanently disabling scheme
-Date: Mon,  6 Apr 2026 08:57:48 -0700
-Message-ID: <20260406155748.47893-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260405225440.76827-1-sj@kernel.org>
-References: 
+	bh=cOKcd1E+kh/rgDmBatc+5AEkevvJqYiqh34IKuXZ368=;
+	b=YiJgoywOdVGxRVoxku9dHsZtOWxMGM7AUK/wkjLfueW65nZUnt1g/QfeoG1phdN+aJCDs2
+	MiJcCdoV0DThy/tnzqGQOC95vpwnSSA2KXT9YeYKyMWdJ8D1cxsEn+evLCFkSpRC0pwswp
+	nVMTSUk37ov1pd8gCWUgTq540egNm2M=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lRm6yYF5;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775491607; a=rsa-sha256;
+	cv=pass;
+	b=Gig9l/2GOCStPPmwro4VeYacC8bBOpSy3hTPHYugspT14YYRxZ7isTJOAmblPlEKKyaRV9
+	q9xJd6hVzMguaDLBqfx9Px6m95sSdbv6iTlM74SP9RwAip88+YAcioBFWJklVzENw6PnYl
+	M1IaD/StSdnjB4Aofg8aMvOGEPnhvcs=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a3af1b7549so3457371e87.1
+        for <linux-mm@kvack.org>; Mon, 06 Apr 2026 09:06:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775491605; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Etqc92odMT+OlyMhqfrJ6dz9WvvrdEMZ2Udof7vWYeJ2dvUcSx2tpKqSwmlMZtbPml
+         ro3wCbqBGs+EGLKO0QiwSQItn4G8vb3fCNVSpaxp9Rv4E9r+MfqPEee9gOyG0HZo4TkW
+         WqZKITgloj5cZKD7GSBKdBNTF78nB7cwicbDiJvYhBaBkCCrS7Ugsvh1JeewJ5crW9vx
+         sjIcvd0KaFoXJenTq0uK0+w41WAjAq3iDlOkAGiAzmOaItRAREsGlisX8nd6WlHO2u4E
+         OqmL5/sh1JbOrI+WLT8xbDHamnsTWmN83kBrwiBUkeGnwMUDFv5AZD1GH/izNhn9hIrL
+         jjkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cOKcd1E+kh/rgDmBatc+5AEkevvJqYiqh34IKuXZ368=;
+        fh=AG0z8IN0ZHEpj/WZRtmJcA9t9kzB//rLfCwPtQEyu0U=;
+        b=e+Mru70D0qGDFSzUKc9/YqZUhQ/fh3seICCjd7HzsUDPk4kN7xkBvOnyD2ltgGVlWl
+         aU10clWTyrqQ++vh74ReBDw4Hkj4HHAg6mbFSyaUyY+1qw9nabPMIkISl2++iGpLvHAj
+         4MofbCbKtFZyKL57ov9b06huXEe/ij6TJXg/QtjQ0Tdolpokeob5f+8GjEBAaKyQ+Ty5
+         rPR9W+NZQXDLPtex7ON1AyQtZle8lox12ji+2aMN7QQO+HZqi6IQ25Joog57ptmliMw3
+         yVHDdscwBmRRDwM0jYVyl2GhROpMKjczbOvllG75t8THs8czEf2JG46A3f635tCfLHfk
+         2Gsg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775491605; x=1776096405; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cOKcd1E+kh/rgDmBatc+5AEkevvJqYiqh34IKuXZ368=;
+        b=lRm6yYF5eHEpSDWb4j+kumzv4vRsA50wFMtWQBz3CYgtXpKr4+hE28RQA88bhjO5tK
+         LZbm5cGvE7YdGMLDYwtBP1lxsQs0VrcrhIkXqcSvT0fOWBKsWMbve4k8flWEr6C7UnZj
+         ve9C1zOuXziuJ6HoWZQZ3H0UL1N4AC0lHvX8DeOb9y+RYHo40sT9hxK/BusCjwf+TdWA
+         FbTwfyFW+1yVt1p2XLH2NQtFZJu1H49TI9mg+m/+nbfDg+gbCfkwbXxkwkJLogoD/Mw/
+         Crb4xDdXFsrSUa6dc2EB54EjNgsq1Ks3yRu0VOcR8IYzJrKBi0QZZIOtHc6mQu9rSmQw
+         6J5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775491605; x=1776096405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cOKcd1E+kh/rgDmBatc+5AEkevvJqYiqh34IKuXZ368=;
+        b=pNYf1jahE0pwoxpfv9dRqRGA/ePnq5Wx969Yv1ajRN8UTIWVb9w8cKx2iYaGFmLQWf
+         2yrjZo9vWfTBYYzyyfERAn7cm8Dp6bqiDcq/8I+cMijvzqEpITRBJv5lqLpWxyEWC+xU
+         gjIPadT13jmxVCboU2ZLmxar1HD7mIPVkw+Ibm+iIDa6ZR5erAwDNVGCqXsnLLLx1u92
+         2kNBweYFbaTZLEdZ9Q18ThAQUV1OfMaUjcj45WMUO+V2suJyTfKlZCLsU7QeZb13GEI/
+         jqzwBjGHa10JFzYIHJw1bd7Y7Y534+ghTqHIp3BX9EAXXibAVkvGM0bQwa+0u4z8tJy/
+         xyGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrmeTD32i6dVZSV+LDrL8IwEh0SmpbFjb2kamsiTYF3VbyjJXSa4vtG+3xttC6T1qak6TCDk8A8A==@kvack.org
+X-Gm-Message-State: AOJu0YzrH9rcdbT+GWzLLqgHJHhBDLU1axki12Kmk0si0i6J0vWgRmPL
+	eJrt6YaOW5IsAz/Z1hoTjFwfvh4MM005l+brb39tGsSqTdujdTL6qC+elo9T0Y/s+rQYwguLTTL
+	d5z9EpIO6t9EBO0kiqkdK0it2Wkllv9Qz0yNJMKlK
+X-Gm-Gg: AeBDieu3m/P8NRMdVw4brCGr0DYA7FKUGqa5sOxhoQQaqVvhfK7CnjY0bc6dAFviiLT
+	b/tWMYyq+VhCzxhvOZVwbo8Ozb56iSA7Dg0FmALs9kez3UmopBMVDIac2OmoW4T3IcSlasPE61u
+	QzG70e9/J6oknqDgKCs4GAq0beQdgLBTfpxcPdvwa1KSHzc7RbPgps3MyEuUYPSQ5CXNLOZzMvq
+	KcbV6hiqkgMjvaNVhD6XB6+X8ddwv3qBoXaJ3Gsw4qWl6LJka3qDT1KT7Y8PTE29ldiE+XpiALX
+	680/oL77
+X-Received: by 2002:a05:6512:33cd:b0:5a3:d2ef:2f93 with SMTP id
+ 2adb3069b0e04-5a3d2ef2ff2mr3364086e87.30.1775491604807; Mon, 06 Apr 2026
+ 09:06:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C8C7F100002
-X-Stat-Signature: a7su3hjnp15xz7cymkmrhsyhjmgnyrmp
+References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-3-dmatlack@google.com>
+ <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev> <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
+ <c4138f66-edf2-4689-b5fe-16dc4839e9c3@linux.dev>
+In-Reply-To: <c4138f66-edf2-4689-b5fe-16dc4839e9c3@linux.dev>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 6 Apr 2026 09:06:15 -0700
+X-Gm-Features: AQROBzBbHlG2eO4NjewlbX-rvy8OZhgqlWaRP6spr5d6_KAEWYAdDGH-j6HkrWs
+Message-ID: <CALzav=ei_xSfM0MTdPFhGDjNwe3EQ0vHPiEk=vszFX-Xi_KjQw@mail.gmail.com>
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
+	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775491070-46862
-X-HE-Meta: U2FsdGVkX19aKAsevJT+xtL+rpsHhnHG1ek435Vkmv19TPcNh9bUIsv5sYyk8s25cf7Z44vHceDwdBtFx6Uio39EH+h3rWzfo5ial3FunvRGUHJs84ut4nayBSrkUArr4QDztvjB8HOrAOpiNutNa5H1J55HOTLWQuoHpoIiJXmg7ilAHFKGYn/rS7/zPrMYV/plSUixZtag+81G4qWqMbzINbtelOFvmJWMO/waBfhFe+gahEon0op0he5WD0PT5aD9RSPzFmXmCpm4/6NDYJ93VmEbnp+Hxsnk99YST89qTd1gKjggJj5mqrMzBeGvpJqee9+TNW9/6x6UHOHQmWn+tqggd6XkP/CJ4WKm6LnNNRRdNqkjBVRQC/SbqblrDxXyrjV3Hs1P+jorqynZma8lg6sYbN5xNYWcqvYDNQzghyr5hapW4pf/jMWoiVQpaS7YfFMvPLSbK52oATo0h7f8ZtrjTfuh0YNoi9x7lm/pdjLndWxJ+Pmi1Eg3hR/zLcv/5Q4Eer+uXpdufnixziy+jjZ6eEd0Ab9CwVyyY+3ZfXnkB3iHfbys01JZtM2Hf6ghA5StR/mkWW6nBkKSmKJ0Kuv3K0KMUA/T3sJNbEbo4mabuxylC28PmIYhoJ/EIt7aXOYKmtr4DyXn5/dtvYswduf60xFIZdEtY3sKeAwyxudPkKt3KyIGucCX1y/ZrXMYMSBJvqFQDpYC6GF9ss3vLDIvsN5zwdu8RIyUVg6ATVCQFVMUeUc9kK69uzaQBwkV6SWxRcd/I2DaRqt6p27VeBO1cuD+JEOCv3dK2pvAP0T7vxLh4K7xON0vYgBKfILqFwrTTpJjcJO3N7cmbP33VyNMuP1tgeGtL32ZmBKrb6wDylrqLKSDmWv+RVXI2VBra7cm8L2543pLrqkjGq86YLvjDACqy+w9CWCRmOlAONrevZu8jer/kK1jjEPeipMBjw2+xSf7tJwGXVH
- gaPdCIWo
- LbZrexEfLJW+MfkAE+heyzxANxnGSVNxXgrSfZ4aTvOh1DqGMI1NlMYVy3LePcMLy8yvUZ0dLMjy6jrbykglMgawJHmZAiuaOtCLcIVoCiJf5kcjL8rCcm8CZs5/KCDP+P5o7WAQj7nbxnVajbBokyKgOOpXqoSKV9QofLDGPZ5oYlZEtm9+x5YrkGH1t/TrcdBQomwDgBBMJFCo7ISCKuLV2AhmwZmhQV0A6XrG7FHK54/tv3QmqfT6kj6DB+06oz63mDiOiB9wZJoR0oFreGkDerhGr6G13LUmu90sgB7cEl/oBtuKvYbpdrg==
+X-Stat-Signature: rypm43ni9psoojx8yegxnp83b3jkp43h
+X-Rspamd-Queue-Id: 377AC4000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775491606-14363
+X-HE-Meta: U2FsdGVkX1+2vDPMZSrUzr/I5x2byVfggp2QBN40aZISRncFAukHYZoHzz2wynjwkpwMtfYYDf1zN2dsJ4zmko2Y9FZUKhD6jNll//cwGFfIimy1tE4VRJiKTAfSyFfo94ej55SpEVN3x11g3Yk8ifflypQ9NiLS7M8HrA0kO/6YGzsahPg/bQsUYhjbX3zPq9AezEgqxANPADopfbnurxYkVP83mXr+f9H8QpAhBmv+I0ecM6DFJBcQu5qXnLtKS2V1bYzygJmky4aYkOabqkYItJ/StQLZ7j/AXMueq6wAknREAOeJkCK797CDzezVDZwXdAKMEBvKQ8L95Wvxr4pFVnDHsGkWi3TiFBIw0CpPRDTAoAbo1DD/VlBEDPaI40JHIYHIvXNKGa6EpY7MnH1azw39zzVJqoh7dl5Tf4641HBtl9JZeNSfDgI0RwEGCqWMHbIfjKahzpnRTue1/MQ0Z09JNxeT/uAAynGj4gdjiNLQlCz6ITYC165aUal4SQu+E90S9LFwRvbjT9Mhpl1uK2o/+Cv7JI2mHgZqYcL6YNhhxukChVq9Tn58L8rNBFJn3jTQ6zF1xq4iBaSd2xFowiACiqv1pTQtB/fmHU+IV8lgek+ojb0Rm8rxPizwta7g9hpRigItf8L6VAODfH5xqff9l/RSS5dVIX+fNWkiN1BHkzDoPtIAGpVrxvS6ix8liNIoCIBjjhv/nfH3JvbVcziGcdcaQOYCCvtwfq9fwa5j2xwrIQwrIXVo4IqWUmXYvdKj3u2nl9+mq64H1BAifuXRmamRZ5cfIRbqnBhdETTSCDTZBwsp658tHXiAheFvrIZSIiam8FYLrehUEkoDAe8ffiVOX0tKrQZhI4y9bmQgzp/l+mWarmvZoMMsMlBUd2ViIlsSRm+2oiJQzUi6ptD1BV5012npaN/7GZdhRjn2Bx44TVRX6pEavfjJmKgFAhZbB5pGsv4zDmP
+ l7TCNvok
+ YJVL0iCkm/K737k2cGr135T/8VWWEkOB6hcXrDv4k3UmH/7Xjlp7tUuvMdi3T1el5loMWGje8HYOOXyZRQ00xAnA2lccr6FNkK05ce8wDm+K16qK2NmmjXwXdboJW9UG9kx/5QJtEegxot+pDl2ezQxT//cXtA8bhy0Li4zXDtB6OD90QF9gKqalPIOXAG93dDmqjtnqRYLusUBnmXD8zd+9flyei+lRhWQMgtwggeg2aU29qNNtuc+j98S2s8T+bRQRzE4LAPU7AZdDWVHokghRpLpkFga+O6FctICQs6cIS/lvNIjmZe3vF3jk/mQwsf0p8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,89 +163,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: sashiko found no issue in this patch.  I will repost this patch after
-dropping RFC, soon.
+On Sun, Apr 5, 2026 at 9:56=E2=80=AFAM Zhu Yanjun <yanjun.zhu@linux.dev> wr=
+ote:
+> =E5=9C=A8 2026/4/3 14:58, David Matlack =E5=86=99=E9=81=93:
+> > On Thu, Apr 2, 2026 at 2:29=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev=
+> wrote:
+> >> On 3/23/26 4:57 PM, David Matlack wrote:
+> >>> +config PCI_LIVEUPDATE
+> >>> +     bool "PCI Live Update Support (EXPERIMENTAL)"
+> >>> +     depends on PCI && LIVEUPDATE
+> >>> +     help
+> >>> +       Support for preserving PCI devices across a Live Update. This=
+ option
+> >>> +       should only be enabled by developers working on implementing =
+this
+> >>> +       support. Once enough support as landed in the kernel, this op=
+tion
+> >>> +       will no longer be marked EXPERIMENTAL.
+> >>> +
+> >>> +       If unsure, say N.
+> >> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
+> >> (modular support)?
+> >>
+> >> This would allow the feature to be built as a kernel module. For
+> >> development
+> >>
+> >> purposes, modularization means we only need to recompile a single modu=
+le
+> >>
+> >> for testing, rather than rebuilding the entire kernel. Compiling a
+> >> module should
+> >>
+> >> be significantly faster than a full kernel build.
+> > I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
+> > pci_setup_device() (which is under CONFIG_PCI) needs to call
+> > pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
+> > module. This call is necessary so the PCI core knows whether a device
+> > being enumerated was preserved across a previous Live Update.
+>
+> After the following changes, the liveupdate.ko can be generated
+> successfully.
 
-Forwarding sashiko review in a reply format with my inline
-comments below, for details of my view and doing discussions
-via mails if needed.
-
-> # review url: https://sashiko.dev/#/patchset/20260405225440.76827-1-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 93dc55170095d9a174cb626df2cde4fe5e49b9a6
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/core: avoid time-quota permanently disabling scheme
-> 
-> When a DAMOS scheme throughput is very slow, the time quota can make the
-> effective size quota smaller than the minimum region size. This causes
-> the action to be skipped, freezing the effective size quota updates.
-> This patch sets the time quota-modified effective size quota to be at
-> least min_region_sz.
-> 
-> Link: https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 3bc7a2bbfe7de..12544c60531d3 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> 
-> [ ... ]
-> 
-> > @@ -2409,6 +2410,7 @@ static void damos_set_effective_quota(struct damos_quota *quota)
-> >  		else
-> >  			throughput = PAGE_SIZE * 1024;
-> >  		esz = min(throughput * quota->ms, esz);
-> > +		esz = max(ctx->min_region_sz, esz);
-> 
-> Does this minimum region size bound incorrectly override DAMOS quota goals?
-> 
-> In damos_set_effective_quota(), esz is first initialized based on
-> quota->goals. The goal tuner can legitimately reduce esz below
-> ctx->min_region_sz (for example, to 0) to completely pause the scheme if
-> the system is over-achieving its target limits.
-> 
-> Because the max() operates on the combined esz instead of just the time
-> quota component, it artificially inflates the quota back up to
-> ctx->min_region_sz. This forces the scheme to process at least one region
-> per charge window, overriding the goal tuner's request to pause the scheme.
-> 
-> If quota->ms is 0, this block is bypassed and the goal is properly
-> respected, leading to inconsistent behavior depending on whether a time
-> quota is configured.
-
-That's correct, and it is an intended behavior.
-
-It's true that it is bit inconsistent.  But I don't think that will cause any
-real issue, since the difference is quite minimal (min_region_sz quota).
-
-> 
-> Could the lower bound be applied exclusively to the calculated time quota
-> before it is combined with the goal-based quota?
-> 
-> For example:
-> 
-> unsigned long time_esz = max(throughput * quota->ms, ctx->min_region_sz);
-> esz = min(time_esz, esz);
-
-Maybe we can later improve the behavior by doing the time quota based esz setup
-before goals based setup.  But that's not good for stable kernels hotfix in my
-opinion, so it is out of the scope of this patch.
-
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260405225440.76827-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260405225440.76827-1-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+Sure but you've broken the feature. Now devices can be probed before
+liveupdate.ko is loaded and the PCI core will have an incorrect view
+of which devices were preserved by the previous kernel.
 
