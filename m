@@ -4,90 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47341F46C62
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 17:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D8BF46C69
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 18:09:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24C266B0124; Mon,  6 Apr 2026 13:54:22 -0400 (EDT)
+	id A047F6B0126; Mon,  6 Apr 2026 14:09:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FD066B0125; Mon,  6 Apr 2026 13:54:22 -0400 (EDT)
+	id 9B5B36B0127; Mon,  6 Apr 2026 14:09:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 112C96B0126; Mon,  6 Apr 2026 13:54:22 -0400 (EDT)
+	id 8CBC26B0128; Mon,  6 Apr 2026 14:09:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 038006B0124
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 13:54:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1AEDC1989
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:54:21 +0000 (UTC)
-X-FDA: 84628880322.28.944B74C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E8FD7A0008
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:54:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K61I7HDy;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775498060; a=rsa-sha256;
-	cv=none;
-	b=mfLrTxo63cOjqFK94GURayjqYa8oL+KBnmxqMtVyyEZnVCPguRvS//xIlIsyigYCeu5PIM
-	MbS35K+fx2/hao26oCIBsm+dKVi4iQKvYtsrzPzhPzmQ3KwyXKsIFfvxIv0kDk80UzRVTS
-	af6VIvjR3yYoPthNHZVfuCjQMsmcQ7k=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K61I7HDy;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F6C46B0126
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:09:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3A8F140571
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 18:09:55 +0000 (UTC)
+X-FDA: 84628919592.02.7F23A72
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F16F912000B
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 18:09:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HrKy4i01;
+	spf=pass (imf29.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775498060;
+	s=arc-20220608; t=1775498994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sZWs/4XaveoPpQeX5L4+wkfkaU/E7x08yQDSu/f90S4=;
-	b=XBcdFMysCVBn7r0c7w/vxNPMqW7sHbS7BEBs+o2oPDWgFOZuBnBjw5dmCxwgOjJgh+AkTj
-	dQ8hXZx3wvQuttI0BlwpM582xNUA7AMKURycVOAxiY9NOw56Bfd/5YCewCUM7gdzgotiQa
-	hzMfVNHcf6y+pZRb5kde6rLm1YyUoqs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 017A760103;
-	Mon,  6 Apr 2026 17:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBD5C4CEF7;
-	Mon,  6 Apr 2026 17:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775498058;
-	bh=bJaqfa/gqe5hwOumVtDeoBhAL1x7A6nlQ0A9z2WKb6U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K61I7HDy5O7GcGISve4miyGDAiyRNr8PSrYE1uJUq3cKg+RzdTcLuQ4n2sXaWeSK/
-	 l9q5xzvMPUduw5G32AGCokoXyk3bIGihJtBI0dQE4wU9xq0C9I6ENYIdgz8fwXMZ8u
-	 MlxXw8nUNNAWHKWp0u/3U0pEcm//25OMWBNdTEeY=
-Date: Mon, 6 Apr 2026 10:54:17 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, willy@infradead.org, hannes@cmpxchg.org,
- david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, riel@surriel.com, kuba@kernel.org, edumazet@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] mm/vmpressure: skip socket pressure for costly order
- reclaim
-Message-Id: <20260406105417.28fda9587146a011af2fb876@linux-foundation.org>
-In-Reply-To: <20260406174425.61692-1-jp.kobryn@linux.dev>
-References: <20260406174425.61692-1-jp.kobryn@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6frfbzq8xa1j6w9hki19an95f33sttdq
-X-Rspamd-Queue-Id: E8FD7A0008
+	bh=85/sv/Jd+nnLebgu7yOJ82/6JMUXxVcSgRKO3WW/KJM=;
+	b=TsZQXjYTkc4gIIE1O52E74B7Law1nj+j5q3PcMu+WFPHhjaxk0+ycQhmPa0klNmuWaEDmJ
+	/IignZ0Vrj4fjS34gmyhhAZtK7IyFqjmnH5WLY13GjSUDlVkn9sSqNGxGjVewbdcTR12H1
+	d4bso3yhe/5Cos1hrx9wrfvGKZ9Sof0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775498994; a=rsa-sha256;
+	cv=none;
+	b=bXeoIuN1jGXYrrMvUd0dJwA9sRvuancLPQ1DJjVsuU6xYcyqIqqELNLXPI5Z3pNGYQeEMv
+	Z6S1mT1NTNoYwJ/Tnq7V3GtiBVpqkmit5TonbPRfZA2mCthdvSdkV1RyKfQ7ERSyn64qDL
+	YKEQCvoLBg2oKwivKQGThtoDPVsUhlM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HrKy4i01;
+	spf=pass (imf29.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <1c5fd907-f610-48e4-89cc-4040aaef2674@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775498991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=85/sv/Jd+nnLebgu7yOJ82/6JMUXxVcSgRKO3WW/KJM=;
+	b=HrKy4i01v27KUFcXt/1w2kf+yZsl5MXCFBmMdpuBla2c4B2kFG8UdHSH93UsEojRTPjWIJ
+	RVbUZS7qtBOUTvf1Fe92L2hJ6/CpkB4KYvevqVhozqjWCBottlm/LzMr5DomESqDJznrrj
+	NsvzlhYZFx9aBwmc2y/0M9aHDJw9o8k=
+Date: Mon, 6 Apr 2026 11:09:37 -0700
+MIME-Version: 1.0
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+To: David Matlack <dmatlack@google.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal
+ <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+ Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Feng Tang
+ <feng.tang@linux.alibaba.com>, Jacob Pan <jacob.pan@linux.microsoft.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+ kexec@lists.infradead.org, kvm@vger.kernel.org,
+ Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>,
+ Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>,
+ =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
+ Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
+ Yi Liu <yi.l.liu@intel.com>
+References: <20260323235817.1960573-1-dmatlack@google.com>
+ <20260323235817.1960573-3-dmatlack@google.com>
+ <e3fe7085-1297-47b8-bb17-a48196e8f37f@linux.dev>
+ <CALzav=eyf4XRTi8MfE_GBNSm+tjmfX7=d0M8Aj5Hh0vJn7huew@mail.gmail.com>
+ <c4138f66-edf2-4689-b5fe-16dc4839e9c3@linux.dev>
+ <CALzav=ei_xSfM0MTdPFhGDjNwe3EQ0vHPiEk=vszFX-Xi_KjQw@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+In-Reply-To: <CALzav=ei_xSfM0MTdPFhGDjNwe3EQ0vHPiEk=vszFX-Xi_KjQw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: uw1zxjhigjo3m48pxyn4ur9tuap8yghd
+X-Rspamd-Queue-Id: F16F912000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775498059-819167
-X-HE-Meta: U2FsdGVkX1/qhORn6CL5KjIlLOmXpdtQ5jzwM276OFIvrdKRrU57He7lOC3PXsxjcTWCRRtm8FVmwyg7Oa2GdAQ0kC8cyZRUWlXshypKb2saGGdM/K7TlhNnm+Hw14LNxVPiiFs7/A+tL1FFzWexOwdoqANo2KxVB7S51I9EUq/eKLoa0S5dw8Fwj+EycYuU+XAVzQ3+s5Vz9Ft37qPIM+FxcHZ+7/lUMWVNv9L/Y9V068rZ9Lvl5Hk5vdafqH7+KK9gggP4lRmWXoLX1q19XSfcyvYTpBwE8JTtKHldxANJYS/iKl/cYFXJxKKZFr66BsHu5Hn1a9eq1UWVaWibUxGO2m3t3s8MSeJYOeCnniZVdtRJcmi895e8u4xbULezjOTKmetjPK5KIyIKOOduGTz2LEl7DSdqs0Sn3AJeUiOWv9F7SEfd/N95oPiupcEelF9a6Nq52gZrM4KwivjmuUFnEJTUvST5kou9em4DjdEc0X2Q46cxE/EMW+TgOKMt4RuZ2E5NYDGuypm11+e7YODmPn0tpI/Wwt/g7BjbQslNlHoAjpzuBJ8FC4aeKFp1tEVG9L2j+50T4XlE83XwhZ5ROd0Mb3t4ptNtCrGVuajSoD2SXECYU78pg/yiYcYrfaI6hbSO1VqfQQKEfGzroiOlDXaxOixA58KoOjfLWOQj/PvntPLOlYdp0NEjDCBlH3regPpBmPN3u4KCmhyMLWxkMWuL+mKvHYB0wB5QVQfW8sWfGi9G0rgrnglEMBiphuE0xyH2g6NRKveEGoeIO02SAWlCyaCvQtlwWIbzK57mk/s592yjso19j3KsKeALAAf9LtkIsIl8DSFqb64b9NSCZ1hj7Rr91VNKfC+5ZZ49G9ke5BDzAWH1S50KSfu4ZEwBnLHACJ1XxLF0ot2Ygv7X/NCy5qRHQAzShL3waCBkON7ODg4DDzag5MrXpxzbv+8IMT0VKLOmJSwd/r+
- f9zsIjFl
- xoxj8iwJ3N+Uv7kGf/p1b4cuBgPMjcBwJv6VXlJNG8ugQPteJv6mKw8L8kC3YWXc4kyZwKmVEllE/uaankvfL/ZchTNDauvreKvncaZp/0Tp3PB29CghOYOX5p3zwwC9CDQlnFRU3D3zDVpwd34ofxm7A2KOQPDA0W5CiOVvze8OuwyvkZ9DQDghcOCl/eEwWYf6iHER9nImXkTUTnhv5aecXyPv6kKFvprUE5Fy5v+2FJbMoh1xUXnMt0StLNL9/WBjM
+X-HE-Tag: 1775498993-327893
+X-HE-Meta: U2FsdGVkX1/GBXr/hpN2ZC6rdFE64PmuNjc/M1FHgVWpfIypILlUhVcK4Bwuu5cznm48i+qFijhjtok2HhZ41Nv4x4LBuq/3cbVgyh1E2j0Vp1MBaNy59Lb3BQHjlcuJ6Ofi3lvp/ejcTkJNwYzlZQgu+kvwlT54JSUOibHR9MZTTsKmXaPZOY9t5V6heh0s6sBFBN0u9L3ldo4l0JepD4nKbjfMdmty4sJeEpIXldXFty46R0dpgxTDpwRHWS4lSX3010ShoZKX0kkTlEcnmBqH9jOh4shLXaS2IyX08RfguGYiLqUTAn3UQbezuc7cyhRuY0GxjU2llj9kf4dp95OEDOmkTWXSmpcynS3CIDsaD7lRn8UWUJG+laDYqJufPJ/QaS+7FDceWekbbiPvr5L28fa7Y5sZyBWz3rJzuebUwJwrqhocvY83Jz37NlH6M5vZGEeqgm9c8Li5CB6AslBdEmawrB5oXp5XTwcMynB3W1ky7W2bSM56FohhIT9cgTQW7Clc1LuRsG3iJS0bISjHla0awnoWbLRvLQMYRgv6wTCVIArrBWN06yJm3EdampGsTnB3QXsO0k41jj1NUOsZekpBSRf1tH6KTzKlefOwTBCx45X4rMFyoLX+9Ajux4csviBDXToSYuhWxuj6AJZ86WBxYTGzVTuMeD5/aGZqjiTulICmlJPDvi6lRZ+imIez+lCyG7QdWC7nHQT4A+SjY8u7Voh5r9qwe8S5v2Q4i5RMXRZ5DVnOkvMsMV8d5l30ddx4z2bnEZaeDAAFSzhrZ93zX6DRbo0+/drf9INuNa+7rOH4YodUtjmbxkXiRa/m1yECtRGabfZXN1mEIhiaChtD1tv01o7hU5wENYhBuhkBVci5MD2w/wncb/CWx5JosJDyUavaz2Kvk3OtdUdgsO+/lwYw3+JWHOKUzp/9+LBxgB8kM277FUPyRNkXkPr38FvtNX1pgP4dXl2
+ G/DSvvUc
+ VUXDswv0vkOsbwKTM27D3MqEGppiUbPC5eTqE5/TUV7cRGZ+gbzd4oCIiDkTMOdKGt8f0RxM+6VIq6Zw8LeT+PThwncacVUeHvHlkc0RKCBR0geoaS+9QXT209HdpEMr93q0yMlzdCnnNXfjPXuEQGIPYCbcPesH6ZCmWXLNYIyU9RtlXlYCXV4w1rMbrMzNE2ImqRAyXtxhuGT/kWvX1YrlXvHZdQAU32BF1IxJogWRAUa0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +124,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Apr 2026 10:44:25 -0700 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
 
-> When reclaim is triggered by high order allocations on a fragmented system,
-> vmpressure() can report poor reclaim efficiency even though the system has
-> plenty of free memory. This is because many pages are scanned, but few are
-> found to actually reclaim - the pages are actively in use and don't need to
-> be freed. The resulting scan:reclaim ratio causes vmpressure() to assert
-> socket pressure, throttling TCP throughput unnecessarily.
-> 
-> Costly order allocations (above PAGE_ALLOC_COSTLY_ORDER) rely heavily on
-> compaction to succeed, so poor reclaim efficiency at these orders does not
-> necessarily indicate memory pressure. The kernel already treats this order
-> as the boundary where reclaim is no longer expected to succeed and
-> compaction may take over.
-> 
-> Make vmpressure() order-aware through an additional parameter sourced from
-> scan_control at existing call sites. Socket pressure is now only asserted
-> when order <= PAGE_ALLOC_COSTLY_ORDER.
-> 
-> Memcg reclaim is unaffected since try_to_free_mem_cgroup_pages() always
-> uses order 0, which passes the filter unconditionally. Similarly,
-> vmpressure_prio() now passes order 0 internally when calling vmpressure(),
-> ensuring critical pressure from low reclaim priority is not suppressed by
-> the order filter.
+On 4/6/26 9:06 AM, David Matlack wrote:
+> On Sun, Apr 5, 2026 at 9:56 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
+>> 在 2026/4/3 14:58, David Matlack 写道:
+>>> On Thu, Apr 2, 2026 at 2:29 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
+>>>> On 3/23/26 4:57 PM, David Matlack wrote:
+>>>>> +config PCI_LIVEUPDATE
+>>>>> +     bool "PCI Live Update Support (EXPERIMENTAL)"
+>>>>> +     depends on PCI && LIVEUPDATE
+>>>>> +     help
+>>>>> +       Support for preserving PCI devices across a Live Update. This option
+>>>>> +       should only be enabled by developers working on implementing this
+>>>>> +       support. Once enough support as landed in the kernel, this option
+>>>>> +       will no longer be marked EXPERIMENTAL.
+>>>>> +
+>>>>> +       If unsure, say N.
+>>>> Currently, it only supports 'n' or 'y'. Is it possible to add 'm'
+>>>> (modular support)?
+>>>>
+>>>> This would allow the feature to be built as a kernel module. For
+>>>> development
+>>>>
+>>>> purposes, modularization means we only need to recompile a single module
+>>>>
+>>>> for testing, rather than rebuilding the entire kernel. Compiling a
+>>>> module should
+>>>>
+>>>> be significantly faster than a full kernel build.
+>>> I don't think it is possible for CONFIG_PCI_LIVEUPDATE to support 'm'.
+>>> pci_setup_device() (which is under CONFIG_PCI) needs to call
+>>> pci_liveupdate_setup_device(), and CONFIG_PCI cannot be built as a
+>>> module. This call is necessary so the PCI core knows whether a device
+>>> being enumerated was preserved across a previous Live Update.
+>> After the following changes, the liveupdate.ko can be generated
+>> successfully.
+> Sure but you've broken the feature. Now devices can be probed before
+> liveupdate.ko is loaded and the PCI core will have an incorrect view
 
-Thanks.  I'd prefer to park this until after next -rc1.  I could be
-argued with, but....
+ From this perspective, I think it makes sense.
 
-What I'm not understanding from the above is how beneficial this patch
-is.  Some description of observed before-and-after behavior, preferably
-with impressive measurements?
+Zhu Yanjun
 
-
+> of which devices were preserved by the previous kernel.
 
