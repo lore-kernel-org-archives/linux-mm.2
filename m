@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 000AAF46C53
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 16:18:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4D7F46C54
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 16:19:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD6C6B0112; Mon,  6 Apr 2026 12:18:20 -0400 (EDT)
+	id 31C946B0089; Mon,  6 Apr 2026 12:19:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A4916B0113; Mon,  6 Apr 2026 12:18:20 -0400 (EDT)
+	id 2F5026B009B; Mon,  6 Apr 2026 12:19:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BAF66B0114; Mon,  6 Apr 2026 12:18:20 -0400 (EDT)
+	id 232176B00A1; Mon,  6 Apr 2026 12:19:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09B476B0112
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 12:18:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A4E38C1AD1
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:18:19 +0000 (UTC)
-X-FDA: 84628638318.20.EEEB10D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 59A6CC000A
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:18:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RlLkC7yg;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775492297; a=rsa-sha256;
-	cv=none;
-	b=HG/LVFxwNvLmlz8ggaJ22v8TBNfyctWnhN7P1zhWQ7CdDvsRnaZAHB69grH9YdjgPit0Ou
-	G3pTx1ibINWiHaAPoWintyer/FwQJseXagP0MQLhNDtvwZmirG1GPO5cpacwkeVO/volm2
-	2xqNTQNmOYBIRwepFqCoLPQdrZOuZlQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RlLkC7yg;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 132576B0089
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 12:19:12 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 977BA1B8091
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:19:11 +0000 (UTC)
+X-FDA: 84628640502.15.FE3FD3A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DD26F1C0009
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 16:19:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oRonesBm;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775492297;
+	s=arc-20220608; t=1775492350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6y77XvnI+Mo2VOk5fqGJ7LyYJ/iXdioOpfeqZJmaEik=;
-	b=p9XedG703y2VcZ5IgOwPvHpLXuCRMsFjxIjs9zzwb0QoAF3vxCfMAH6ko93MNexdf7HLcW
-	eE4jy9RFLH6ETZULHnGgBKZOgo+k7Rghi3ZXSh9MDhJY9+PBAUCH3wrP3PGALSXovKogdk
-	TZF4lK48z1my/j4If78Qi4W5OtH1C4I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775492296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6y77XvnI+Mo2VOk5fqGJ7LyYJ/iXdioOpfeqZJmaEik=;
-	b=RlLkC7yg4IBd7ns0ST/m+OmUaBgr6RrzcA8EYdQnEM0n+PZcNsSgiMF1vUmN4nUo1eesbA
-	A07CviY2y30c7CZJw0PztQYFjfbOytVeqUA7cSG+Fq6zv/fGaFq2P5ZKwhvJ/FkxolIALG
-	uAHqFCD4Wsnp9hM33qIWmOr1/w2rh2g=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-KUwoV0oDNsiIlQ6jBsQJ6g-1; Mon, 06 Apr 2026 12:18:15 -0400
-X-MC-Unique: KUwoV0oDNsiIlQ6jBsQJ6g-1
-X-Mimecast-MFC-AGG-ID: KUwoV0oDNsiIlQ6jBsQJ6g_1775492294
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-65079af211aso97077d50.3
-        for <linux-mm@kvack.org>; Mon, 06 Apr 2026 09:18:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775492294; x=1776097094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6y77XvnI+Mo2VOk5fqGJ7LyYJ/iXdioOpfeqZJmaEik=;
-        b=EhlSYho0jcrQcQ32EZDzxKCxN2NLZOpsN2JLWylsroUSD5YQ5uv/SKemFVDe33rNkd
-         zHKIxTcTyvNke0xNGQ40hzorvRu7zCLygCiQzMt6uH8dMeBUOig9n86o7+n0QjlWScFj
-         gR9GQByDZhm/dMjWM+cN4oqdLKCl98B8FAPDKxgz6pgZX4WjPf0+CR1zs/xXH5rswbM+
-         WlRhrmxPDEcTtweJdS0Fc3HPicp1AJDbK6ZbE3S3rnxedbfszzfdyEEVxxOUbABrVCnK
-         LBtGYlQxwKZBVQ1W+VJKBep/QVlGSUMSIyOHPFKAGbWmUgNnj5sck+becjloz0edrgq8
-         elQw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1JgfmCzlhsKSgkSilaY33cFUh5DmQ4stQR8IoWTTUtd7a7AwqLj9RHVR/7Dy+e7PYft3oZbZWaQ==@kvack.org
-X-Gm-Message-State: AOJu0YzrQ68I/cPU1tXYoabcd57pytI63fU9GMNflv5DELGDHwGH7iY1
-	pfoBrHcuZWMa61xxkbGDKGGapi6IdfkQYHUxsh8jihsv2fYp6O4z1aUzfkv5VL/DqmkYFGBfzPK
-	z7dLvO+wD1dmkIWLI6IxSSS4EgvkCcweoB55vvcxFeb9gxDdtcR3xaNC9twedhpRhtCS5rlxjj9
-	Eu6nvG/uHtdQZBX56XuUR36jfhbuE=
-X-Gm-Gg: AeBDiesNMroCSixX1qGUTm+2K32Je00v2bfQPb1fHLKMaZgy8VS0phWEm3gMZAYcwt5
-	e1fu2VMKCob6P0ZpOG9W4mLP3oNKYJRyx/GBUkcWV7dPugUEC4IWmwzd1u3ccoQ8BI/UB9M9LVi
-	TCrlgqfKOxIxlPoYj6zRqZvsyIq3Ii4/A+MJdY5ttnqWPb38W+cL+91Mr8+qYOOLtHz8h3zQNEt
-	PMhoGju
-X-Received: by 2002:a53:d9d1:0:b0:64e:a3c4:aabe with SMTP id 956f58d0204a3-6504873ee85mr9904458d50.26.1775492294236;
-        Mon, 06 Apr 2026 09:18:14 -0700 (PDT)
-X-Received: by 2002:a53:d9d1:0:b0:64e:a3c4:aabe with SMTP id
- 956f58d0204a3-6504873ee85mr9904421d50.26.1775492293619; Mon, 06 Apr 2026
- 09:18:13 -0700 (PDT)
+	bh=HdIBiyz71lXmkEGm0gWWfPw+6wnk6xgQa6Xm/MflakI=;
+	b=SkAvziD26p/68g1TuhCL2tlBlmYqrkcv4zb2ECGptwVdYoPjPw2BKYII2+1kJOkRjIybjt
+	JWNiD+6yvwbjGjX4U2rxteAMW1Zk1zgJf6LYdf2nEacj6JAY3F3XlvxjbfrGqv7Cu005Gw
+	xwZ2dt0dxZ+o59SH3JWPKHRuvcAU/1s=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oRonesBm;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775492350; a=rsa-sha256;
+	cv=none;
+	b=oDcqIc5aBkteV530sUEPiwmf+1bWeM/0+7OACQoVg5HUVEsZJG7UE2BLpm+E6/XzVDJqE1
+	KarV8uiCrSmfdLUqjZ1FiNQmEZlrDrOBgHMwlGB0c9MNy0OGePghL2MkwHXhhupGJmTxAx
+	b5R2qz0uAuvljXtxY7/wNednMkkUiC4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9FA9D41AE1;
+	Mon,  6 Apr 2026 16:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4D7C4CEF7;
+	Mon,  6 Apr 2026 16:19:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775492348;
+	bh=HdIBiyz71lXmkEGm0gWWfPw+6wnk6xgQa6Xm/MflakI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oRonesBmZ+vF6cVprCooMPQn8Ik/F4Zb6jcQa4i2DVQOhAA4SR6hsNx1PH+qt6rmS
+	 f45xpus1EQ9xhJ3Niw5M22ipPT8YoIxEMW7qNdtntudtwSQp/LQmw0fem7nyVkIhFy
+	 nmCln1JANZbv4RuzwG8DCE1kmCit6oGVg7svAjuzRIAaxK07SB26lzAPBniStgkVH/
+	 ZEiDRQSte1/A0a2qHbuvLwbrw4Y6flq+IDUX1dbgKCh/dZUnDWTDWc3jwVqByC4Mr3
+	 qRsWxKLMWwfeGXEhZKWWe4v+Gli9RbNHAoiLMzCHcCwpPX2de+2yHmhCo2akMmM3lv
+	 aDsZ6ZPLE97pg==
+Date: Mon, 6 Apr 2026 17:19:01 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 11/53] selftests/mm: hugetlb-read-hwpoison: use kselftest
+ framework
+Message-ID: <c0407e11-5e89-42ae-8bf0-8d36dff1fce5@sirena.org.uk>
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-12-rppt@kernel.org>
 MIME-Version: 1.0
-References: <20260327014255.2058916-1-ziy@nvidia.com> <CAA1CXcCmue7iX3O9RLo7wR5EqASvJGCLraw1+iQMZ98BiMJwrA@mail.gmail.com>
- <737AA503-E522-4F01-B78E-AB6C6B2E89B0@nvidia.com>
-In-Reply-To: <737AA503-E522-4F01-B78E-AB6C6B2E89B0@nvidia.com>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 6 Apr 2026 10:17:57 -0600
-X-Gm-Features: AQROBzCfrg9zP5e6CbYyk2TsG4-q8UqeZvpk1DLrJKBq311IS7ZVoH1gcE7n3p0
-Message-ID: <CAA1CXcC-vggwd-Z3h_PAfSk8U0ZvoQH-FpwhD=9XZHUnEGkcTg@mail.gmail.com>
-Subject: Re: [PATCH v1 00/10] Remove READ_ONLY_THP_FOR_FS Kconfig
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NZKvAIgZx5uTfm1R9KhXJXj_cU4IdpAGPtnYyuHtxWs_1775492294
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 59A6CC000A
-X-Stat-Signature: zdcwc1a61temgbfnjxijsqjyj5zfm49o
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0GHkfvRsn+CDD4Oe"
+Content-Disposition: inline
+In-Reply-To: <20260406141735.2179309-12-rppt@kernel.org>
+X-Cookie: Does not include installation.
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DD26F1C0009
+X-Stat-Signature: qw7q1urf78s8u6npai4jru94eqa35kag
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775492297-790004
-X-HE-Meta: U2FsdGVkX1938pJO06rC1QkqSs2CUxNgjp2bx+YTzhe2IJ/yEKJyZTWR6Qa7PFxPZr17rXNPZ22sVSGS5WXiTqn5UxpxP+q+VQU1/EzIXFTZaOt1q9mCb09szqUoEWzc2MpF7SPQFDGVf19GlJ4z239aaEpZYMkbeX/1rBvMpUmMDhbCG/T+rsbF3JkaTAQOo9ou2EBTldr6jOp90y6wk2PdQf+7Lq3LgrmfD+bOpqvGmpyiYvb+VGML26Azd1c8HGtt7VEZdUNxrMu4UxE1BWQ0CXKJtATOvDHAHuBwh2BSFqKlScU+1a1o4FMR490W2jet1a5O+FMfotf0sle1ilxsZhGVKrmIEewQctgqHeXg27l3JXMzqgCnRNgt6j3yNun/pG52Jw/plLeCmDxM84mlMOo5J9b8aqwLKk+P9HQAVNQfYkbzsN+wRvBtUTpvmhiZmG/fgE871mELzcYa7A1Dp0VPb4xDi3EaFMiG4yr9iXeOT8RGpMpfaYEu+z6zMOgTlSxu9v8fodwfIuws8mu8cVYwX+qenpNVtAPZBzn4eAEK+4pf74f9zcB5EqqZQFN1djr98epnToTc8P2wa23WH/7iQq96AY1n3/fo1bj9dgOTLRG9rEwED2F6fJCK3lhJ2MRBzttznjIy/1cF2lRevW9YVdThx1wT+Z1hsOX1i/5puG1LxGbRiUwRBcY22fyiSC6y5HQMFSKw+oH99v4arUrJdAmCO4S8U1MDtlayChEHWkEwwnO4dKgAa9IpqjXDr7r+RlsSki35oE+T+cEXwNeYWtYMVdzQYxps6FQnE/wAgVEwquPJPycadVLxKmkPuGyGH9bPuW/T/vHo860ML8V2EUK/80pBXeH8iiYItF2PEyhI0wGeTNapLX9WE/GH2jomluI1yIa7GAlEpphy7hHkdeYR7IAb54EtvlUCrAyNrfga2VFx5KoHoTk/tl3wx7/rKlZQLihNLNW
- jYMqwza9
- U0YHKy/jUdoiaMnrFtbCVAkDjoB7P82GDXsa5mkqkBq+J3FRhMuewH20WxwBhHwtRRi2+sOJXO2F4jGT9zlXT8oxUbJW1qRUcV8v1V1gy3N5Wghnd6ZHU70RI5cetIrbd7whJN1l53dljlbROmjDbgt6kaV+v2L0fhlLbg4sWL2/E43/eBYiybs8ZzCDk4AOzXeePqn5/4dTqP3osVmufWJ4dwJDCCqdxCJOEej2IfqIKq3NZaGHOTMjeVzY4Nr424y4GEL2I51JJZuAVow6Z28ejdRCbFBU2c51Z6Y8Mp5XVCpM1xajzqj3DZEkvzu20BlpNBflToPb/nujVuGEmt71ZdrlbDDIiGpw0arK5oixu9EYxqVMJYk6pkpPcrEXwkK36inCKvL5DZJE=
+X-HE-Tag: 1775492349-179988
+X-HE-Meta: U2FsdGVkX1+SAPCOIXVTeuFqGl1XygzRCR3YftcxDS6PCQ7D43Wwy4sH8oDaqSMSRv0HGMQL5FRvHOOBXUK68Po98+7AWYXiixjnY+Uiw+aKQ0ktsiornRl7WSG3/95Yv7H++J7pPATRvM+yo/BtkDm6hZrb51+/j8nWl4z2bCV2FTptCxYQK3tfDk3YhsuFS8OOXB4Jvl/I1PJh2ZD74gRJGo9IEHYs09vi0QwBpIaJqBm8K7CPWGvITRhySwTiXVikAUPlwrHz4uOT9g/HpIOz5ote5x6lars6g/GeM7idZq04eBiLwa03HyOJQCbabRBf2v2oG9i0jnmEJVxqPLxM2c3s1G3+/jva46B8hMR+drmhY2DSo/ucFzYul2bc2fSQeyULd0M76t/2R3422KB/6cHx44GeyQz/jr5ASEOcf5d7qgVbTUa/KSTst9KisxRt/n+f1b5e5kzLaAqLGKmHdz2RkHGKI/QiVTBr0Ylf0k0SpDJIekvWh+DdC6ENxvwGLO/L+4b6Q1iJOD2qyny2VnQAkwtabtLi0ierSkY7DHPztyQB3lCnLPtU3Bi7Kz+1tdMgv1mWO1HCFa/xwRY7IlWuK/SnxUnpbZmdXBvOvLWqyQuMJQoNz7hbfPeiLtJs+vsjL4vJkMlYYn7Pcg0+GO+em/pyyqHNDcVTqMLtkl7QYyj+D+ND6i4GUxsbl19B8VvyLJhTpkCqmnsi+37Mz5kUxUFirYUdYrSh/vZ9nbUQmEzXyXdbQwJdMFwISrqg1DNOjy9b1NcHuVUuEcRfq5b5TZexE/9g1NDX4oF3KBF1ejhySrKkwDFDdu3Ke//UKhZd/lbjXnqk3ReRirZF3SEnUdQHm5Td2SN1TND0QSLLbTNQS62xMD0xrJOhLrOb/IcRenYXlFqXVpRK5iC9paiacfGYG5Pw9sLwRoarMY51paw3InPAnss/2IX7vX5OuMW6E1AAOyWY8xP
+ Rxk5+ZQv
+ 4JFbclEbgjEtdOWbc9BUbWXaUF+mx4pb8HIhtR/zVCZR8EbUhl0nVYlOt4DHNBjxtaWcKF/R8Plgn40vqfqKwhvt25u7O7PphrY9v/8In0lkf1jfpYp/7Qf/E5fodHDY20TmiKbMu3mi3fywC0XyOXkWS92Np6RhhOsUeEqKx8ImSg7rbDk0/0nC5Fv50wXPiA8QVWLQkwsaAL564zqeCSh39bysfkq5cScbNnoIwuab65W0XLEhP9fqnfwFCW6q4uE+DE+1cn4b4tq+fuQ/QJZhZ8mVbG1mnpbg2i0ugG/4StEGe2UbssLb70ivxvch+4hwPOa9cXbbCiC23FT8nRe/4G7W7rQcpt2Cmzdt++xEPZsw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,144 +107,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 5, 2026 at 7:59=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On 5 Apr 2026, at 13:38, Nico Pache wrote:
->
-> > On Thu, Mar 26, 2026 at 7:43=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
-> >>
-> >> Hi all,
-> >>
-> >> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creatin=
-g
-> >> read-only THPs for FSes with large folio support (the supported orders
-> >> need to include PMD_ORDER) by default.
-> >
-> > Hi Zi,
-> >
-> > Thank you for tackling this :) Ill try to review the next version as
-> > I'm a little behind on this thread.
->
-> Sure. Thanks.
->
-> >
-> > Should we guard collapsing READ_ONLY_THPs with a sysctl? My fear is
-> > workloads that convert READ_ONLY THPs into writable pages (assuming
-> > this is common/possible; my understanding of FS is rather low),
-> > leading to storms of thp splitting. Do you think this is a real
-> > concern? I guess this is also true of read-only-->writable fs-THPS
-> > even without khugepaged, correct?
->
-> Why would a read-only THP need to be split when it becomes writable?
-> After this patchset, a read-only THP can only be created on a FS that
-> supports large folios (to be precise PMD THP). That means any write
-> to that read-only THP would just change it to a writable THP.
 
-Ah, okay. I was misremembering some stuff.
+--0GHkfvRsn+CDD4Oe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The concern I spotted earlier when investigating read-only THPs for
-khugepaged was this:
+On Mon, Apr 06, 2026 at 05:16:53PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>=20
+> Convert hugetlb-read-hwpoison test to use kselftest framework for
+> reporting and tracking successful and failing runs.
 
-For frequent yet short-lived writes on read-only pages (e.g., package
-updates, log updates)
-Wouldn't we get destructive cycles of cache invalidations and refault storm=
-s?
-Imagine such pages are shared (library, execs, etc) across many processes.
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
-When these files are marked for writing we must invalidate all of
-their mappings, destroying their Page Tables and PageCache. Now all
-processes must refault these mappings.
+--0GHkfvRsn+CDD4Oe
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Once the write is complete, they are eligible for read-only promotion again=
-.
+-----BEGIN PGP SIGNATURE-----
 
-The part I didn't understand (thanks Claude) is that this truncation
-path in do_dentry_open is only taken for mappings/Filesystems that do
-not support large folios, as only those filesystems track
-mapping->nr_thps. Furthermore, with FS that natively support large
-folios, khugepaged does not need to re-collapse these pages, as even
-if this was the case they would be refaulted as THPs.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnT3PQACgkQJNaLcl1U
+h9AwIgf/V7Y2RmIqUM1Jd40HZGxkQeK7dhdkp7oqV1IYgkS8MTIayeFiAUpSAp93
+CdlhlIE3Q2DB1ilnVoNTF90vynAf2p9Rpn2qOsGHzfY10qBsBSpitKCwKZplz8ib
+IagSoK/2wvJYu9MnhqBxHTiVlPCwLUbDj1n/0KCic/1fXbWAkIwh2NabqqM3zxKL
+LF0UqMMrLrppfXJgkOpAE2lwJTOV4vOSivp3nEejV58tZJH6iSQCQvta+e0phrz4
+m5pYab4x6GYf5Tfq7y7VH8FTzayXFhzOC5MMmS7LCJCxblHTm+i1MLsxE94g/Yd0
+Z5cBYEZHvn0SqRWlPsFQ3A5KtTuHnQ==
+=8YFA
+-----END PGP SIGNATURE-----
 
-TLDR: My concern is not a real concern.
-
-Cheers,
--- Nico
-
->
-> Let me know if I miss anything.
->
-> >
-> > Cheers,
-> > -- Nico
-> >
-> >>
-> >> The changes are:
-> >> 1. collapse_file() from mm/khugepaged.c, instead of checking
-> >>    CONFIG_READ_ONLY_THP_FOR_FS, makes sure the mapping_max_folio_order=
-()
-> >>    of struct address_space of the file is at least PMD_ORDER.
-> >> 2. file_thp_enabled() also checks mapping_max_folio_order() instead.
-> >> 3. truncate_inode_partial_folio() calls folio_split() directly instead
-> >>    of the removed try_folio_split_to_order(), since large folios can
-> >>    only show up on a FS with large folio support.
-> >> 4. nr_thps is removed from struct address_space, since it is no longer
-> >>    needed to drop all read-only THPs from a FS without large folio
-> >>    support when the fd becomes writable. Its related filemap_nr_thps*(=
-)
-> >>    are removed too.
-> >> 5. folio_check_splittable() no longer checks READ_ONLY_THP_FOR_FS.
-> >> 6. Updated comments in various places.
-> >>
-> >> Changelog
-> >> =3D=3D=3D
-> >> From RFC[1]:
-> >> 1. instead of removing READ_ONLY_THP_FOR_FS function entirely, turn it
-> >>    on by default for all FSes with large folio support and the support=
-ed
-> >>    orders includes PMD_ORDER.
-> >>
-> >> Suggestions and comments are welcome.
-> >>
-> >> Link: https://lore.kernel.org/all/20260323190644.1714379-1-ziy@nvidia.=
-com/ [1]
-> >>
-> >> Zi Yan (10):
-> >>   mm: remove READ_ONLY_THP_FOR_FS Kconfig option
-> >>   mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
-> >>   mm: fs: remove filemap_nr_thps*() functions and their users
-> >>   fs: remove nr_thps from struct address_space
-> >>   mm/huge_memory: remove READ_ONLY_THP_FOR_FS from file_thp_enabled()
-> >>   mm/huge_memory: remove folio split check for READ_ONLY_THP_FOR_FS
-> >>   mm/truncate: use folio_split() in truncate_inode_partial_folio()
-> >>   fs/btrfs: remove a comment referring to READ_ONLY_THP_FOR_FS
-> >>   selftests/mm: remove READ_ONLY_THP_FOR_FS in khugepaged
-> >>   selftests/mm: remove READ_ONLY_THP_FOR_FS from comments in
-> >>     guard-regions
-> >>
-> >>  fs/btrfs/defrag.c                          |  3 --
-> >>  fs/inode.c                                 |  3 --
-> >>  fs/open.c                                  | 27 ----------------
-> >>  include/linux/fs.h                         |  5 ---
-> >>  include/linux/huge_mm.h                    | 25 ++-------------
-> >>  include/linux/pagemap.h                    | 29 -----------------
-> >>  mm/Kconfig                                 | 11 -------
-> >>  mm/filemap.c                               |  1 -
-> >>  mm/huge_memory.c                           | 29 ++---------------
-> >>  mm/khugepaged.c                            | 36 +++++----------------=
--
-> >>  mm/truncate.c                              |  8 ++---
-> >>  tools/testing/selftests/mm/guard-regions.c |  9 +++---
-> >>  tools/testing/selftests/mm/khugepaged.c    |  4 +--
-> >>  13 files changed, 23 insertions(+), 167 deletions(-)
-> >>
-> >> --
-> >> 2.43.0
-> >>
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
-
+--0GHkfvRsn+CDD4Oe--
 
