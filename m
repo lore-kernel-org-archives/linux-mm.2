@@ -4,129 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1467AEF4EC4
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 08:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBCA0EF4EA4
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 08:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B456B0088; Mon,  6 Apr 2026 04:29:46 -0400 (EDT)
+	id 090066B0088; Mon,  6 Apr 2026 04:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2331A6B0089; Mon,  6 Apr 2026 04:29:46 -0400 (EDT)
+	id 0199F6B0089; Mon,  6 Apr 2026 04:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122286B008A; Mon,  6 Apr 2026 04:29:46 -0400 (EDT)
+	id E23276B008A; Mon,  6 Apr 2026 04:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 067B46B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 04:29:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5133E03C5
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:29:45 +0000 (UTC)
-X-FDA: 84627457530.06.8F72E70
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6C1E714000C
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:29:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WD0HTpYG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EmZOkFvV;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zw+aL3x2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Lcjrtsff;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775464183; a=rsa-sha256;
-	cv=none;
-	b=DLKw3FWn5Cy7GNVH7EO2g0JtHwyofbfIyJazOcnxzRIX4WmRFhI1UqhgYjty8qkz+4WZX0
-	aOUI5pIbR9NrFqYwrV/MaLM2ZGDv9oHts0Z4NFzvYXmU5Jvq/tcTDr3adQZP4BbYB00JH2
-	rb7Tm0aUoz1T/278ZWw6kz3FIkdB5w8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WD0HTpYG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EmZOkFvV;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zw+aL3x2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Lcjrtsff;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD7146B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 04:35:47 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C6AD1B78A8
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:35:47 +0000 (UTC)
+X-FDA: 84627472734.02.92BD097
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1A4B1C000C
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 08:35:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EuZWg+9w;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="2pmHk/tH";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EuZWg+9w;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="2pmHk/tH";
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775464183;
+	s=arc-20220608; t=1775464545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L5U5F001QquqLRy0TkEuVWz/fK0dQaCWrwRN7alLbgs=;
-	b=ButOAjdnXsJl3AU3yd6D7YH116/FXEUIxjmQpQKfaLb241OXvrI2mI1zgOHrTIWk+mMEd+
-	4rY0yTu+l5nSL1A92ILFgaANyYKAGtygm1Z5WsjzxWtYQ2J4A6ENoqKlDfVytJk5qT3Cpf
-	h4hU847EfiMt134bxMSdmbprXQTIxBI=
+	bh=mGn3YqVusQfcpkRlU/Al/6e+9PEsnYlLqJj0S0m0v7k=;
+	b=ixq1gelksFDQfZ4VnD3GRNM/4BOEQkCSy3HNqBN1nElYi+Ytyo+HnI0Vhk0eL3fuWCmsYd
+	/MlhpPxdrMuNK2X4morxMi/DU3LfMAfRU6iAJEh8mCP52VfEXX2jhZvpVrVQvrEI9anj60
+	/39t8HDVszitTHThkoLH/zqOFw2Adzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775464545; a=rsa-sha256;
+	cv=none;
+	b=AJX/pxmsEYGhJ+BuFODPqGabqwL2Ikct+H9upy069fzPyZ0dRH/7uuvVnCvJE/WvD6TBag
+	/83EG0RIKRnSZVreqhTEVRf2Alw7jPbfgh8mmz8R/ZgKJx8JPDGqK2yKdqPu/FJP4W8auP
+	xtD2NPSmDv1Fr+XnoZpLqllokMOyO2U=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EuZWg+9w;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="2pmHk/tH";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EuZWg+9w;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="2pmHk/tH";
+	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BE4774DDE0;
-	Mon,  6 Apr 2026 08:29:41 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 71BF35BE07;
+	Mon,  6 Apr 2026 08:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775464182; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1775464543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L5U5F001QquqLRy0TkEuVWz/fK0dQaCWrwRN7alLbgs=;
-	b=WD0HTpYGlq0Hh8HZeyq0JqhYi7iZN5H7XG/uZKUhFpYzF9c0b/wxUU0UXi8z+p4700u7kv
-	OgXfPxs1TtP60MlurP0oG/j+hb+qLmDiLAfVt280UG+L1KW4ABg0fE9T6ozYJQjNdlonJa
-	AnT3sAerkTKVb0qDtsJhLO1pBnvlaaY=
+	bh=mGn3YqVusQfcpkRlU/Al/6e+9PEsnYlLqJj0S0m0v7k=;
+	b=EuZWg+9w9RbxXJp7OB9syQGDnt7KHZL/sl66NwO23c4RFBz5ZbCkTNm3hL6DjjaqLEYFWB
+	V0/nZXDKgdxj6xfp0CxSNQAq+14C4k5es56AUo3FWr/sUG1m5gIX/pSSkqh2y7Bj0bAkuX
+	8qqAxStk17fFzBZ3XgJJ/T90zi+IiyE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775464182;
+	s=susede2_ed25519; t=1775464543;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L5U5F001QquqLRy0TkEuVWz/fK0dQaCWrwRN7alLbgs=;
-	b=EmZOkFvVDy2ic6xjW6fQE/Nlc3NemD39hLDJuYFn0YAZdfjE23a/yxRqEDL/F5TjbCXdqx
-	sfCwUq6JlfTS4dCA==
+	bh=mGn3YqVusQfcpkRlU/Al/6e+9PEsnYlLqJj0S0m0v7k=;
+	b=2pmHk/tHwbWs0sP75f6badDDoruGdJKfNjFLA86DRWalUIEu20DhzpkMPXjoyKlJYus5rA
+	VN74UsBnsBS2cWAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775464181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1775464543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L5U5F001QquqLRy0TkEuVWz/fK0dQaCWrwRN7alLbgs=;
-	b=zw+aL3x2bVWTRFUwfBXURIJ5rxW70zrwbKSQuXtc0xiTiXm9if+9RbY4Ll5WxHqTaRRdlD
-	C9AcSWpP6BGxCZ6Vwrxf8rt3gnZCyM28M1tJqNzHXAemqlDPaYBZpvLk4a/J2PZOUznJb/
-	NpUA2XKkz/pHZuafmAcEujoA1qEk3lg=
+	bh=mGn3YqVusQfcpkRlU/Al/6e+9PEsnYlLqJj0S0m0v7k=;
+	b=EuZWg+9w9RbxXJp7OB9syQGDnt7KHZL/sl66NwO23c4RFBz5ZbCkTNm3hL6DjjaqLEYFWB
+	V0/nZXDKgdxj6xfp0CxSNQAq+14C4k5es56AUo3FWr/sUG1m5gIX/pSSkqh2y7Bj0bAkuX
+	8qqAxStk17fFzBZ3XgJJ/T90zi+IiyE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775464181;
+	s=susede2_ed25519; t=1775464543;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L5U5F001QquqLRy0TkEuVWz/fK0dQaCWrwRN7alLbgs=;
-	b=LcjrtsffYtqiNr+ZC51/R2XgcKbD9X8y31SISfulsKBvNtZr8SU7d/kD8dyKK5sB3VsO7C
-	z1YYEIdKDzqKslCQ==
+	bh=mGn3YqVusQfcpkRlU/Al/6e+9PEsnYlLqJj0S0m0v7k=;
+	b=2pmHk/tHwbWs0sP75f6badDDoruGdJKfNjFLA86DRWalUIEu20DhzpkMPXjoyKlJYus5rA
+	VN74UsBnsBS2cWAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F25D94A0B0;
-	Mon,  6 Apr 2026 08:29:40 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 778D34A0B0;
+	Mon,  6 Apr 2026 08:35:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vF+qN/Ru02lhGwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 06 Apr 2026 08:29:40 +0000
-Date: Mon, 6 Apr 2026 09:29:39 +0100
+	id hTG7GV5w02lYIQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 06 Apr 2026 08:35:42 +0000
+Date: Mon, 6 Apr 2026 09:35:40 +0100
 From: Pedro Falcato <pfalcato@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>, 
-	Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, jhladky@redhat.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/mprotect: micro-optimization work
-Message-ID: <6bl5bzq742c522nmhlshlnf6ho6y6a747l3zh63aagp7kfxymv@s2c6fsuikn4m>
-References: <20260402141628.3367596-1-pfalcato@suse.de>
- <20260402113328.fd0a6f0e28cf74a651fa2291@linux-foundation.org>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jannh@google.com, Jason@zx2c4.com, shuah@kernel.org
+Subject: Re: [PATCH v2 1/2] mm: fix mmap errno value when MAP_DROPPABLE is
+ not supported
+Message-ID: <aa5xuslgioyrxko7lmkwp6y25v7smyihjcbsnj62lvc37otec4@74bk6pmugq7w>
+References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
+ <20260402235933.10588-2-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402113328.fd0a6f0e28cf74a651fa2291@linux-foundation.org>
+In-Reply-To: <20260402235933.10588-2-anthony.yznaga@oracle.com>
 X-Rspamd-Action: no action
-X-Stat-Signature: 5cz98fn1eiicujpgqdwk8bpdz4o57es9
-X-Rspamd-Queue-Id: 6C1E714000C
+X-Rspamd-Queue-Id: 1A4B1C000C
+X-Stat-Signature: sspypu8jmypup8usdx7jqujfjex1xyjg
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775464183-383479
-X-HE-Meta: U2FsdGVkX1+4Bj0btDghZPPo5iDO6f1vjJKVsRgEt3Vp+uoBUstkgBOdaPvk+66p3QJEd6ixVXaNX2+g+/GoxFM4GzmxVMQd9qJxP+MLB1BVEpDvDITIFjck9U96l9tEVhfIVP2ciSOyBRdQe4JVufWoPH9fOmnONWxX1XPjG56e0aWhlzN5L3XmAMS4wPqsB4TCR7efOfkDHupWxF+d2JRJX+pfdNXCIAMRVJlD8S2uXrwtcG6N6JzY5PVulNUOuXJvmI6m1n/wl3C2LOLov3Y7wiGTvRkDE0czFWNuuxUn500NdAyY6qGZ/5DqCPy/JdUzPLi+XHJlXmFwNjYMC8PVp9cz761DIoqm7Wfap2cc1AFvxXdWMGS9E0zjQ8aOe0h9K6NK2Lj87wi6J5dU0YaJFfm/W9TtcvF60Sr8BCJ5hRcuRoFM1yN4HxEojN14FkjNkmUZMe1wGImam8WTWIQn9iRoB5eqk/MYcmbyfbhmSV0TtqxBT0SeaZUsefYz7nhBmsz8QTGpCypxqRGjBmu9puqLstYdwHIfiz8Bqq36TWIFWZ9JsPWOknpE8N6tom3KvLLm5QTZo+sfcjduR9Jaa4fsnZmy1PoSmB66XlAKtiRq3MkTndz095yAd9XvwVMma4JcOekIZjp+i8tdj4Le82a0RPfVcCf94UOAqFYTtNNkuCw5Z3+awe27TDK+LSS04Se4DQoaXsGnDNjirwWlouo/YWDHBhiQgZC90qpupzCEQtxLFytoDLaOoc+mpAWz6GPBRJNXSRQghySKUxLia1DvjS/trKeN574T5dAuRO46SHV4TZqMmoZCVfEK5U5xKqibStJBp4psY7nvEwGKXIPZM8oAtu53Za06ZaBz4mwyyUuSz0919AtYskN/6rHKy4jpfPnlIBLFYDsx8GW4Nalut295jw9W5UW7/+NFtMn7wkv5OaHlUZel3eSTsXNeJymp+JrFJNSf4bI
- qzTWBVB8
- 3QmuurkX2rDcSdpgVON53cpaR70Ss+h+oT89eoWovEDXQQ+kVpN3l0FEzJvEQzDXZlN3LBxi8CJQ+RV6N5/LSAoP9lnvuuEqNDN61gWQY9BtE6lqqZcp9SO739kL8PvfSQ1dErAFNwtMMiW+dTfVIaU5JVpvsHms2a8VyR+v1RydqMWXxfcZl6OO/6zSeLqvbeHb5+CG2msnRTxE/WzuO7q+iEf0UyEUGbD6lNF5hE/SrHl4PG1ZFcINGIWIbG6caU2MbbqvpJBKfPSvc+si8BOHxHOWCYBYMUQkdjCTWOVBjsdc=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775464544-131017
+X-HE-Meta: U2FsdGVkX1+fAA9o2X4XKOESSzL/24j6EvlZ66sNcWLzB8xc24KEc+UmZ2NP2jDgZqTrBLT9JH2B7XWrlfTy3SZ3Ut3YnS3adlBt68+cwiAFf1xCvA41gvvLbIEL1a/+06TsutScfqrU41FWVAh9NSsYbcvDBm9i+yBdQ4r5Kraala5t2dEgQzkOdOjryhjKxreiMghYo1OXh4f5k9B1/mfFzElLk8XSl9JlRBX4Np9oJC++Q8HEKH83ygffpSyXxK8g7dWcImVXCd5S3Siqa0MHUW37HbvjxeBVxihgc/NHoxFghco9fduGVIDM2mTrq30I2eW6lvZ8N6Sj/Xjfq3HtowaH+jh/pjv+jH5UbomvVG/oIRzwm1ecMpEXCYdzYv08kauWWYTFwyN0TKDDsk4ST4t4wgzJofD6CprFsNDPZhjkwHweAoMFs/b/NqeF0RaEKzf89oyHOC1ViPcLw70GjWtQeZU7RFiKqtzqExupJDu+JIHtySbzwEG2IzwW+8WO7wDykqxHcd5Ir0bCiDnalHL05G00k1irFdXExmaGOU/RTbvgRXqDpWEXIhxlWP/O+geszqeBwOqahzQ2luPHRw1L+Y5/R2Z3LyGVTh7vouLFmpK0QQYQw0q21dtPAtQqHls8YI2iFZmRB+rI6mv/AxHohSPHCyavV5BIW2WyW0IGfQoSsd4g6Tx7Tz44ohCzfTpZjN2gqT7tVHexgqRQlq29x5d7NCZh0sUp1winENMcrU/83cs/TZwYwTTz5mJlqqwnla0MGC8Yuzhr127B/76rjRyxuevrqxVP+0KHqQLyAu7hVUc7LQBW92iXbqpHxJGv5oVIHyr5SfHuXPTDGPU+mS7nhvrPnSY0tGnNBVooeDQf6Y+RLzm9p6NFJ8u0tmQvAzT5FA+XO8/o5MFRN7sHfCVcSVeMbWCe9lflr5/qd7E8nD7i1QqOqetCqFM+C0csZsijmgu6svB
+ A1BDJZwF
+ wUYdSIp54Gsdv0MNGmpcZRPYrIRUgFCNGAIaB2fpAV4AySlliFIsSWuW9sLClSEtOBJvxmNwnydR2xWhewFdYEF8lDtf6ncnUZqUnGx9IayLklzVeSH35bXOWDhRtIXDJeJ1H8KOrul1//W6K5BL2eb1ok3mhx9yihmRe4qxBoKCY/zSYlkjXGzAld60FOEizRuz1Ma8wtPoCi45xEE3FbS1/oUOqedIfxsJ76svHQgLkOGIcE80yDntR4EpPKBUomXIaRwt9e2LpHoLkqo2SUm/mhsPrwIGA7ne5m9tdbv+HfY2grYBI4anmUT/gvmH9UoQ5bAtWp/L3ZRbPxBphAkKdw2dfBRqfK4VV9lO6o7sw5ZYbiydbkfd/FCOTevSYzvfaeb7B27itl1gR4LDXalUXCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,21 +134,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 11:33:28AM -0700, Andrew Morton wrote:
-> On Thu,  2 Apr 2026 15:16:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
+On Thu, Apr 02, 2026 at 04:59:32PM -0700, Anthony Yznaga wrote:
+> On configs where MAP_DROPPABLE is not supported (currently any 32-bit
+> config except for PPC32), mmap fails with errno set to ENOTSUPP.
+> However, ENOTSUPP is not a standard error value that userspace knows
+> about. The acceptable userspace-visible errno to use is EOPNOTSUPP.
+> checkpatch.pl has a warning to this effect.
 > 
-> > Micro-optimize the change_protection functionality and the
-> > change_pte_range() routine. This set of functions works in an incredibly
-> > tight loop, and even small inefficiencies are incredibly evident when spun
-> > hundreds, thousands or hundreds of thousands of times.
-> 
-> Thanks, I updated mm.git's mm-unstable branch to this version.
-> 
-> The update is rather large.  If people think it best to spill this work
-> into next -rc1 then please advise.
+> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 
-I think it's a fairly safe change for 7.1, but I'm biased :) Perhaps others think
-otherwise.
+FWIW I'm not a huge fan of EOPNOTSUPP here, because there's no precedent for
+EOPNOTSUPP (it would perhaps normally be EINVAL, but the kernel does recognize
+the flag, it just can't implement it...)
+
+Anyway,
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
 Pedro
