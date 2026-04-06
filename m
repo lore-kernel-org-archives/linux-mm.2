@@ -4,139 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E7EEF4ECA
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 09:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2E74EF4EC9
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 09:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5486B00AD; Mon,  6 Apr 2026 05:25:26 -0400 (EDT)
+	id 6E7C56B0088; Mon,  6 Apr 2026 05:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBCF26B00AF; Mon,  6 Apr 2026 05:25:26 -0400 (EDT)
+	id 698A46B0089; Mon,  6 Apr 2026 05:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD36B6B00B0; Mon,  6 Apr 2026 05:25:26 -0400 (EDT)
+	id 5AE996B008C; Mon,  6 Apr 2026 05:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE69A6B00AD
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:25:26 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89E43B84CB
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:25:26 +0000 (UTC)
-X-FDA: 84627597852.26.789E722
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4A2FE20005
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:25:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=R1qgUStS;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D6106B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 05:41:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E00EF140396
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:41:18 +0000 (UTC)
+X-FDA: 84627637836.18.C97C81F
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 135C040009
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 09:41:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p0LERH7P;
+	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775468477; a=rsa-sha256;
+	cv=none;
+	b=B2G0U0wJyvn4dhLcg3AB9yvPhVcJenbqga79AXDw+DtI+7sZ2SLfgX8PcCpXVEFSbad4Cb
+	ML3gf1VEqVz7Gp7C4nLradubdYzpv5KxkmBTgZxZuDplUjcquAD6VgaJPAWUR+8yZZ0qWI
+	9Y4DDSdjd8xRhcmzm2E6o1L1hVcV26I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775467524;
+	s=arc-20220608; t=1775468477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CSvmaAj6V5ARHCiQk029wh6wu3HanW0BDVcs/Uzd7Cs=;
-	b=QoIK9YLPIWfGCregV+t8W9Z4/ulteU1tObqIimQCUip0vwoabhQCPfVcwFFwPYa9g+YirU
-	Nna8Ln5q5l2xsH/RIFve1nmTOtBHGVFl0mqgXMTf/yRVgWL0B7CaQC7risODY0bYuRbG8Z
-	TFIFQAL7Uu8XbYlQ+iUVeOAYYX6HDrM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775467524; a=rsa-sha256;
-	cv=none;
-	b=rFzFjBDFWkqJR+te3dEXvQDBNoU1S1vMn9FJwaZVUFjZ7erFo7PiIQ2NUnjUjN4FJvzNNI
-	m5AoWPPY0zPa9fMRs3tBEya2kPSJQawG0YfGhq3jFCIB91tI72m7jYLoMyZyPdH6/mUClM
-	EitCkRsjEVY8RRU/MMcrk7STYTJilBc=
+	bh=naM+8vOUYX4BBsuu2hLmww3vg6bSX9RuihKL6tlmdKo=;
+	b=gTs+ufTc/JLpkV40qw8F5BQAJU0MkTUVRlLtWLpbNB/Aej++/FfeSo2Pa/quKxacI69e8F
+	2rP/pxN3FoV3J/Sn3qdxVu+HT33gPgWav45C1W52zkBKDvA5qASw7YgdFTlsR9hLaGHokM
+	/IAFwDJ4RX4epP+24xEawYyIZMK94Qo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=R1qgUStS;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 635EQPZC2819363;
-	Mon, 6 Apr 2026 09:20:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=CSvmaAj6V5ARHCiQk
-	029wh6wu3HanW0BDVcs/Uzd7Cs=; b=R1qgUStS8RZ/VnFx9mLUUtsH5+qq1crIO
-	pCMadfppUhwV15dRgz/CWGWT4LzSc0Zt6pO2abE+WoBj0QZKpC6bWU0M22vkUcMf
-	p+rydwoDZdi2P1TURTA4LMhNlgXSZ5RFe4l+5POR5ohQVfiH4hQd/IP5OjBi2Y3/
-	o45x6CLsiqEXRqh6Wd0fl6XfF28m4GKw3qFGkLjCTBLUDNCDIhwPkhw8fl+dkUvp
-	Ye5DwitGqJDQTusMKkyJ7yjOFIHa+AE00zbeop/DnzZ+6Ja7Y9vXSp6Z4IldWnZA
-	Rgm4F1HYAwC/cI9cVxALrFgEXjSjd1MgKOIvMmW5FORd+ETkpcEbA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dat9rdenx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Apr 2026 09:20:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6365xCrv020514;
-	Mon, 6 Apr 2026 09:20:13 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dbdync2w9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Apr 2026 09:20:13 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6369K90R24183080
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Apr 2026 09:20:09 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A1B620043;
-	Mon,  6 Apr 2026 09:20:09 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CFBC320040;
-	Mon,  6 Apr 2026 09:20:05 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Apr 2026 09:20:05 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH v4 07/15] selftests/mm: free dynamically allocated PMD-sized buffers in split_huge_page_test
-Date: Mon,  6 Apr 2026 14:49:26 +0530
-Message-ID: <a61c264c824d140a948db64b2e1036bc4229d163.1775466330.git.sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1775466329.git.sayalip@linux.ibm.com>
-References: <cover.1775466329.git.sayalip@linux.ibm.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p0LERH7P;
+	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2adff872068so16485565ad.1
+        for <linux-mm@kvack.org>; Mon, 06 Apr 2026 02:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775468476; x=1776073276; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=naM+8vOUYX4BBsuu2hLmww3vg6bSX9RuihKL6tlmdKo=;
+        b=p0LERH7PwgUkR/7K3W1XKVnqxfBvXnhpJm7ZI56xQkzhPnK3PPMVX/PVGdiA7eFYVK
+         iohWsW19lOxZPOI9stsTCfG+r1nzYS1NwCUa6fgUlYRT5pGmyphsDvzYWDP191DMlec5
+         M99wgvnYC83Tta1E3mCc8eQEBNoyGvp5/BwlIazs/BVv34tjCzr6Yp085gmzrmTLvwY+
+         9uuEFYcQcra7Dci97E6NdWziGDArLw0t4yq9uVsvIDczsrnTXR1+K5zBGvSmCF3b/wxZ
+         n7/q10pSYk0Zb7rwsnU/uOP5ndyfVbwE0PUVYPspvXrqKfP3+au6RsP0ASFR5JWJ1RkI
+         5IIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775468476; x=1776073276;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=naM+8vOUYX4BBsuu2hLmww3vg6bSX9RuihKL6tlmdKo=;
+        b=J/UjATSHI8bHd/FYR4xTdjUUHVdOronjGPP0oKcRY2SF//IxcGfJ0le2p9eudUA2HT
+         pHLmosgtBEoVzawmSWNOGlhrccf3RcjmzFjECgdSEnCo9XRMa5GhEZPBrpjRak5OkJVZ
+         VGSfPYJrr9JpwTy5oW8U+eNWoz8txcLMGslBIbgA0CYQt7/gtplyx4J8GCIYTB/3VQ2p
+         vjd6B/EQWoisImQGMUmFudmHXpiw+OvUwrC/SD4w1+I9bLqaBOFXujkT6/Lwjb4IL1XI
+         BnnkdHAxCG06qJqYK4OZ+Jmt+br3muJyfUBI89JYNj8TIMozvNmFocjrmascMvTRre7F
+         8Hfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwPLIEXqeVgWkRGfD8jLwKrbHpzI50BBIoxzVGOSl+IYSd6R4Bv2/VHe+f3AAr07aV3grzhupZbQ==@kvack.org
+X-Gm-Message-State: AOJu0YyXxKnsy/inXKftHNJ7K8YOe1lxL81/3EQFpFiF/8BH2CogNXR1
+	RYaPvcsWdebLs/H4CHQJVZKtgiM9C8NUVcGRKHczQgHOO+uytxWqODmM
+X-Gm-Gg: AeBDiesYv6OXVreahmaQ1mnH0Pxj7V378wDqyMM2vVQ5Z0LaByiS/Gfn1I0M69FxUrK
+	n9V1zbStCvfVqYEXLPZuf6i3sHdgay363D9nJdUzEsFjcuR3gqK7qsd9h26J7YiIC3zmN4u6n1u
+	i55EwXET6K3d4CdYN/eqSh2DJk67IzekCFT23dijgvpUrRSjVTvKKCtMoWAM4NcThdX/rxm2C9/
+	0RMa5NuVg7haaGUExf+iAaf/6Ini3+YbblSvlSgKxta+C+zxBbUtw4TgTJ6rY/YHThezAshrTGT
+	bQ6T1sb8yN352HMBaK/qsi+Rfc/1swxW/96ZA0xsDir0J9wG+ONxI9waDlKUBn/AKrUYYAJn7hh
+	RGjVy51NBVNFBA5E4WKrKMsODXTeMBxRZNkhsFXDMERcmGjT5U3iuuckFgGmQP4MofpQUuxg//S
+	XcpuurEtFHLjVrjP+qXUocHKWB6GbmTPBS9+Hw0IFGpcWhGhPIplg=
+X-Received: by 2002:a17:903:1ae5:b0:2b0:6ce3:8f7 with SMTP id d9443c01a7336-2b281927e08mr117023575ad.43.1775468475827;
+        Mon, 06 Apr 2026 02:41:15 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b27477736dsm130327805ad.24.2026.04.06.02.41.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2026 02:41:15 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Mon,  6 Apr 2026 17:41:16 +0800
+Message-ID: <20260406094116.13164-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260404203044.86655-1-sj@kernel.org>
+References: <20260404203044.86655-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: F0fUoqfGsny2Ii1mqseYYZJuov0AU2po
-X-Proofpoint-ORIG-GUID: -BTSCnmXb2KuszdYrQuMq8hlBjmqgjBL
-X-Authority-Analysis: v=2.4 cv=bLYb4f+Z c=1 sm=1 tr=0 ts=69d37ace cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=-_7HawjV-lAcONoB0f4A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA2MDA5MCBTYWx0ZWRfX45R/R63BZB0M
- N4kN9iZYf2Wd+fJiNbYB/PkWr4elj9brr2+1sQtJQE005JXM9XEWNh8HrZd6/GH44+1HWXr+RFK
- yC8rrT2gu8plX5gpd9SW+M9otqvQbpsTuAtjVVjoE1O5exeMMw6PPN8ecQDE3ftUW4Ytx6dqcij
- xrsDCPeYndmpS0ridYE5GalFNlU84cARlDhF7hqh5SQRQpF6PSAMDM4XodRjXBtuYJ/VYFMC82i
- U+tmYte0KC5TJ8erW88J5uAuc2bOcZEqp9Bf6EwghwC9Wgo/DLc3QZfX1P95dqu79ug9c64lr61
- UeFrwgC6PpqsLmj4eCDoZbEO77AZKzAIhPr1FNKd/NW7N+29IsuQVtqJir2JPZca5IvldW0uTOl
- 5161Swyfhv8IxppT1By0JxBsyVsQazRa+3uOgJRiww4rH7nrsgKru+X2B2dYf8dX//RYjlc8YN/
- zkmcqyMJNs+0kqWw7Eg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-06_02,2026-04-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 suspectscore=0 phishscore=0 bulkscore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 malwarescore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2604060090
-X-Rspamd-Queue-Id: 4A2FE20005
-X-Stat-Signature: swr6pcbxezewj4qjea948tftx9h75gd6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775467524-302949
-X-HE-Meta: U2FsdGVkX1/8XkLi8XRJp2z/tfmZcACkxykbufGH/9/WuUYzZTE4ymJYxKhIci3HDjf2baNRMHdFr2EJacmii9j74FLfO8q6+ipwWG55jI4BJCmtIoXf4MST39LzhPIrA0KcIoSCmcK0O7paqIIl4pJJL5sP/93ktsKfNdsB4Pj0eRtofi9g8AlhvZZ7Yrs3c1fQ1wbsC8Q3DRKrMqrcbEnZYdl65BkjecDc8W1XcekDG/fkRhZIkRUGKVmhh5UIAJXXIYMTqAVo+ioYe6Qgl/mOCStarJXKS1XbSIMH7G1Or3ULgz6YmOiTf7ePwIUi6YUzdnpk4P82MJh+RlNtIezk95xdJZend/SCdKjqNOH5bpSP9R0DVCjCRO0k8hGuD9ffBCyLUudp7tsNhK2Q6dDViDChODKxEaHjJJfyixN1bY7OVDw4TCDmEvmtvGnfOud2CumIxTXgah/d2N7lGl/oaLE194ZZriYACtbbmGYGthRwTp6U4blRPoI1mowE+cw494PvnYpBnMQ0yatRmo8tXGc8kz+rEaqUXRTSGxoADWiRfbNGFXhn+F1zhuC/N/DYwT4EBNO6RcTOnbtyVGdmSgUoN/SQRux/m4Xo7Cf1Kqhf2NlVKVk/s9phhWTFKAWG9L2++Rj9MqD92Lvdc0pPMFmpdJigBwCiA6vV/kl4gPhtHGFCCk2gbq36pHYMTPltXs5+3a54a996KpcdjDl6L1idI1p56LkLlKCm5mPHHSxOAB+fT/S6OSPg8Z3phgUpYW5RYVjavctj2VFm4pmrYUOoQT6jXzB9TPBnMiz9z0zyeK1hDM2lOfFnS+8zadkSOCCicx+mi6OMcsMF5MqzoUeKe3eaYw1vbHdGGOa92xuYNzNstVvw+aDOgRQehIFfRLltJsH6oVlYuXXeTgh8F7Oyf/JfZ9URneWKEFuaOhfQTEqOfw5p3u5AdPT1PJKtvN7TKXs9ruUYZ/V
- wdMfKIUY
- 2APIKugNv84rwl/FJFrfzoSgtiWTP6BpZp88CuXdkb9AY4eBhXyw6gGp4MTBjBaS1sgr8IUER9wdp9Bgz61VjAsYS8LLf/OiCudfVjdRF7YyAiY07Qc0eUmzaAiwtbfYIgt3tsVLvnmpMHyqViOHwJRBHVVL1v0UUaOV+09UT5nfwCh1ducoG07/5Y31BRh9kh52DM+ltaOsxzHxWDFC6R0S5eU2DnMP+OzRXpAt6Sq7AgEH9H26+1T+L0zaKdJ9O3SjPIMLLkHj6Tfa1ho58PFj3SKASp0PiRPNbMGMOIIdcPWsVlC0hBU54qIoRVFZYwpvu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 135C040009
+X-Stat-Signature: eegu3ozbhogxo3nzgzsafpeo78pshmmz
+X-HE-Tag: 1775468476-525253
+X-HE-Meta: U2FsdGVkX1+eJGRXkNm8Ac3e2jgUzd1TP6BwC8DvP9JFsrllOvGpPKvR2pDW6Zmb1O/+bJHygCasggKgBOl0PbMrrFjX0CIIctmgJybQMmVKvsXg+WrFZ0E6rwJqkidlFGuK+Ls3RiDVoXQTghaHsNqD3FAiRBoR6KWrsB5iJcOX2Mck3w25eBt4TMHVuITbHtoZzwUdO9GMRCLaiOFCfL7kBTYUq6BAdbx/9YcSVkPN/ugQMpbPw+UKC6p08SHFocmDDQNqbHkZF0niLcyORcQCvvQ9q5xSobmt79QNQLQTcvZrzRZsoE/6c1mmrsP/pmmdNzy7gQhuOuwBBGcWw1tjGqpgAhS5GPXa2RIn2ccrQv38rI+01chW1gIzha5rCvLBrJYaKIsLVjVZTKZDd89zixnt8wYoZqy3ePej9vNsKO679ljV5dGtGK76McmTwGLihnJzO8yv3jHULj3W84mYbCh73XzXEkBdF+uLEg7O94yKr9MZ6ssG5atiidalFWSfeXOcQ8ZyDAT2t/5k5XT03VXESjs2sn9B/ttTxfxcKsx3kLUAc0ii3HnAZoEx7ee+cCoCArvJ6PRJjALlFRnNmD8Q8JOs7bGp9r6KFdh71fMa1WQ6e/E9Hm2/Q+ywetbrRK0CD5KJBxtlUkBqyT3saMsi+diVdLTtIZGMXBiIGcI4AUZ7kaqncQovXHgVlbDRTw6py6n2NxuJLSz4CskhIBLVxDgCoC3HoEL0FY2HDBSmTNbmijwsF06jxOreVtezr+ZC0RX7w+eL9cVDwRC4EaafS8eOBq42VZ12pvOp8sYQ744PoFKfnXJTV+WfAgL8nEO5xtvXxSrK/4E64WJdkYJn+w8ZYVfPcuG/lHD+TTavbc1evBQZi1SVW3/gZ2ZqTgAryBCR285N7KNwGfy2KLnsxyLL8UOijksc3+kpCbsKV/OJc9wjQbr7Gt+Zdp/FyWRK9YgMSJTXTFh
+ qcojq7NK
+ mbSTjK8t2Wpzv15hUq1HybOwyMSQFz9GXi1OdzKqAuEefdOfnxTlUXvmWJrPhQ3Ze1MLyugJXBLtwaCUrFyfvn+wxpPiHEmPmD+v6CHW2kZ+/lJEnpcCLKlcxG3ouHkNPGfxoEy1NTbuzUPNFPAz2Rz8pFeP4dyc8JSRJ4IpCW+lBNVFE5U+LNGs6jFpZ4b6puzqGCMUOQ/tRonTtrsxd9APvmILWdeu2Sv6MWxynsTlDHfx5Nh4gu8Oaq/r+DaO7t0TqS5J04HEFSfaLoOZFb4kjanjR1na6tS2ZFh8dXOWRmPLOffqHNcodu+pDcTQrkFYFhhjT3Bd8cuPsvliBkm8ka3G46UqG7MXGmiyJ5SVUKTYi/FV35V6vjHKwsW9S0J6ikDgzJdzwPSp5Pn8o4DMeEJo6721PpiL62hJZ0slExFsaVLNJGjVuq4SI5hMgNMHSIkQErxCbb8ibuGQlEjnPd+3ow36aq2ebCueyH4jwg5w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,88 +118,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dynamically allocated buffers of PMD size for file-backed
-THP operations (file_buf1 and file_buf2) were not freed on
-the success path and some failure paths. Since the
-function is called repeatedly in a loop for each split order,
-this can cause significant memory leaks.
+On Sat,  4 Apr 2026 13:30:43 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-On architectures with large PMD sizes, repeated leaks
-could exhaust system memory and trigger the OOM killer
-during test execution.
+> On Sat,  4 Apr 2026 17:11:22 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > [...]
+> > I think this deserves Cc stable@ because:
+> > - The issue can be triggered by accidental user misconfiguration
+> > - It causes kdamond termination and hard to recover/restart. Once
+> >   triggered, kdamond remains in an unusable state, and I have not found
+> >   a way to recover/restart it through the sysfs interface without a
+> >   system reboot.
+> > - The fix is small and low-risk
+> > - It improves user experience on stable kernels
+> 
+> Thank you for elaborating this.  I now think this deserves Cc-ing stable@.
 
-Ensure all allocated buffers are freed to maintain
-stable repeated test runs.
+Thank you for agreeing to Cc stable@.
 
-Fixes: 035a112e5fd5 ("selftests/mm: make file-backed THP split work by writing PMD size data")
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- .../selftests/mm/split_huge_page_test.c       | 22 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 6 deletions(-)
+> Let's make sure the user impact is clearly documented on the commit message.
+> Also, the code change itself and the current commit message is not clearly
+> explaining how the real problem (DAMON cannot be restarted) can happen.  Please
+> add the description in the next revision.
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 57e8a1c9647a..98319cfaf9a8 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -487,12 +487,15 @@ static void split_file_backed_thp(int order)
- 	unsigned long size = 2 * pmd_pagesize;
- 	char opts[64];
- 	ssize_t num_written, num_read;
--	char *file_buf1, *file_buf2;
-+	char *file_buf1 = NULL, *file_buf2 = NULL;
- 	uint64_t pgoff_start = 0, pgoff_end = 1024;
- 	int i;
- 
- 	ksft_print_msg("Please enable pr_debug in split_huge_pages_in_file() for more info.\n");
- 
-+	if (!tmpfs_loc)
-+		ksft_exit_fail_msg("mkdtemp failed\n");
-+
- 	file_buf1 = (char *)malloc(pmd_pagesize);
- 	file_buf2 = (char *)malloc(pmd_pagesize);
- 
-@@ -508,8 +511,10 @@ static void split_file_backed_thp(int order)
- 	snprintf(opts, sizeof(opts), "huge=always,size=%lu", size);
- 	status = mount("tmpfs", tmpfs_loc, "tmpfs", 0, opts);
- 
--	if (status)
--		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
-+	if (status) {
-+		ksft_print_msg("Unable to create a tmpfs for testing\n");
-+		goto out;
-+	}
- 
- 	status = snprintf(testfile, INPUT_MAX, "%s/thp_file", tmpfs_loc);
- 	if (status >= INPUT_MAX) {
-@@ -561,10 +566,13 @@ static void split_file_backed_thp(int order)
- 
- 	status = umount(tmpfs_loc);
- 	if (status) {
--		rmdir(tmpfs_loc);
--		ksft_exit_fail_msg("Unable to umount %s\n", tmpfs_loc);
-+		ksft_print_msg("Unable to umount %s\n", tmpfs_loc);
-+		goto out;
- 	}
- 
-+	free(file_buf1);
-+	free(file_buf2);
-+
- 	status = rmdir(tmpfs_loc);
- 	if (status)
- 		ksft_exit_fail_msg("cannot remove tmp dir: %s\n", strerror(errno));
-@@ -577,8 +585,10 @@ static void split_file_backed_thp(int order)
- 	close(fd);
- cleanup:
- 	umount(tmpfs_loc);
--	rmdir(tmpfs_loc);
- out:
-+	free(file_buf1);
-+	free(file_buf2);
-+	rmdir(tmpfs_loc);
- 	ksft_exit_fail_msg("Error occurred\n");
- }
- 
--- 
-2.52.0
+I will add an explanation of why DAMON cannot be restarted in the next
+revision.
 
+> [...]
+> 
+> > 
+> > > For stable@ Cc-ing patches, more clearly describing the user impact would be
+> > > nice, and helpful for judging if it deserves that.  Could you please elaborate?
+> > 
+> > I will add a "User Impact" section in v4's commit message:
+> 
+> Yes, please add this kind of message that make clear what is the user impact.
+> 
+> > 
+> >     User Impact
+> >     ===========
+> >     Currently, if a user commit an invalid 'addr_unit', kdamond may
+> >     terminate abruptly. Once terminated, it cannot be easily restarted
+> >     via sysfs, pontentially requiring a system reboot to restore DAMON
+> >     functionality. This patch prevent such termination by validating
+> >     parameters (addr_unit and min_region_sz) early.
+> 
+> You mentioned it cannot be restarted above.  The above message sounds like
+> there is a way to restart it via sysfs, though it is not easy.  Please make it
+> clear and consistent.  As I also requested above, please add the internal
+> mechanism of how that makes restart unable.  This itself doesn't explain it.
+
+Thank you for your correction. I will make the description clear and
+consistent, and also explain the internal mechanism 
+(the 'maybe_corrupted' flag and why writing to 'enabled' cannot recover
+it).
+
+Note: 
+Please excuse my slower responses in the coming weeks, as I have
+upcoming exams. I will be most active and able to follow up during
+weekend (Friday/Saturday).
+
+Best regards,
+Rui Yan
 
