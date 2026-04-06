@@ -4,121 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F5FCE9D828
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Apr 2026 23:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91B05E9D828
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 00:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD9756B0088; Sun,  5 Apr 2026 19:35:04 -0400 (EDT)
+	id 7DC4A6B0088; Sun,  5 Apr 2026 20:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8AE76B0089; Sun,  5 Apr 2026 19:35:04 -0400 (EDT)
+	id 78D106B0089; Sun,  5 Apr 2026 20:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C79376B008A; Sun,  5 Apr 2026 19:35:04 -0400 (EDT)
+	id 67C266B008A; Sun,  5 Apr 2026 20:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B23406B0088
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 19:35:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FFE514016F
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 23:35:04 +0000 (UTC)
-X-FDA: 84626110128.03.34A385A
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9181A140003
-	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 23:35:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YvYjte0m;
-	spf=pass (imf23.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775432102;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 577A16B0088
+	for <linux-mm@kvack.org>; Sun,  5 Apr 2026 20:20:31 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93967B65B4
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 00:20:30 +0000 (UTC)
+X-FDA: 84626224620.15.FB32C3D
+Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A08C8180004
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 00:20:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVyChbFA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775434828; a=rsa-sha256;
+	cv=pass;
+	b=EZY3MxEss+UXt3KekyzVRgUvMTvMMHQHaeZ8yasmxFC6vQ1l1t2+x+eJUwgnJCRzk4iz/X
+	7L2Ah4s7fWGS7p9Y8rAWwDIMj5ysPgkptf49tQAYs38ovjb586TW892B7tfsZuXWVE/y62
+	EqfYv2JHGnXWQHBQ8iKLaWUKhqRAqaI=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVyChbFA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775434828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lzm3/9j9sm7zHb61fOGxB4CuuzgAL6dQcGBwWJvxxMk=;
-	b=PnLzm7mMHytUSp+by++iFGPtXE2zM1ARhEclvKvXuu8rRKNSL645jbRDYt2SJzIfmzm31B
-	PfQ/Ja3mNBmYk/VV3jIFDHx1yPYX58lzitlPmKfcb3AoKo7HXcfTsbAtq7xv791JWwWFzj
-	xPKba+koEeMwOPSpfsRIA0CPpUpcPtY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YvYjte0m;
-	spf=pass (imf23.hostedemail.com: domain of hughd@google.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775432102; a=rsa-sha256;
-	cv=none;
-	b=02YipmKbPEFV/aCGycviOUD5CpQSLD7K/Ogw/klmed4JSerHm4VuOIFWeUlTLgtoESzgF+
-	CGXb0qTtDr828ZD51344CHp4wahjRsPNiD+n1VSnf8TxjzSceG/gUKcFOOR6fv/VXOIGtv
-	8fXYCqOe33L4YEXyq8e1QFWSGBK8Ktw=
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6501547d7edso3338142d50.0
-        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 16:35:02 -0700 (PDT)
+	bh=OA8Fi+9OlJxfgdRXqcqY7SnyfOEw5ihy8ZJDjJD2zZY=;
+	b=qv2ggXUyCz5dk9naTtkYEMIw9DNv3AgJl+zJnLpEvoRb5ZrHJt845wBzOkGRxmKPCYpfn5
+	tOK3MRClN3aicDZH2hsNK+DREClJkjX/9qZiKaCs2r8V4xp3WnRcmuSuuevrigtpgrLd0/
+	CQ0iOxXI5sTrtCiMmd6xitJDmlhnQ3M=
+Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-12732165d1eso4698169c88.1
+        for <linux-mm@kvack.org>; Sun, 05 Apr 2026 17:20:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775434827; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RCZ/fH0JNaGGk06D9roMWj4TpzMMqdA1nlKZeLU61qeP6zr2ABMtGH5TbbXRXGgrET
+         SP47gxb4XdWhgQFwV2iKcWL5zUUEBh2k4In5oJLkNNj1gzGBslhc+wiMEHazSRkEIwe7
+         +G8g3l+FE9hgbx5pc1Pmwu1i0O3EhRVVBWm4reCdVI8igx6ehGbjRtU0ftHLbPApv+aj
+         CuU0tS/k65ZId/Dmmlhov8iyNMSHDt/xsjnB9sJPYkVfZ+jkZJha2EpKWeQofG1OIXM2
+         +Z7kzLcg/9Gaf7vhA08TD011T713Wuny9uN9p8UoVUfnXpQauq195lH4gzxVSNwShuSQ
+         DJbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=OA8Fi+9OlJxfgdRXqcqY7SnyfOEw5ihy8ZJDjJD2zZY=;
+        fh=tB95l0t4cG/E1YlDrPQyVpT5x++lIpTIBENW8c+Eb0g=;
+        b=KwZ4d1PYzPi5iUM0Tteb1zFeRRhGnFuvimAYp0q7QCnpxgjrxVF+vQS/rKM3DwcYkq
+         4MSV8sEaXEFSyJtwldNB84Tfjm4qH9gszrzKx9bGqizDp9CufnMgyXRVFxTnZewoHwr6
+         Rt6Xp3I3ZPBQlkSGeP0t/HApgKbyM4cI0pql28CwQx1M9lwmImF2jr1Qkwt9d91UYa2s
+         k845kgzERpmly8SLF8U2bg8Bj8YIrqV5gV3zcDtdJSTCmpC+AiuKJtm13eJVPdoQsXxc
+         cPltWa6NK5K0nV7ppCKgK6DTg0eljr02YPjW0QyNLb56c1oaGGqUa15nWj2hPDsMNwzd
+         PjEQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775432101; x=1776036901; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lzm3/9j9sm7zHb61fOGxB4CuuzgAL6dQcGBwWJvxxMk=;
-        b=YvYjte0mHRoZt4yXUFBIWaFuqRJiLB9qbMa/tiM19By6JLLXHlDOL9Wv4mtlR9s/h2
-         l1xi/w2yW6qCvKGwDUImI4DOm7DskiePlni2skUJJ9luGbqC+Fha8baxuqOgBOKjvQMD
-         IEWHWRuhjt09Y4tef1ev6JKBScEMJyTPWeWgkH6sWCLQktOuycyHPqjjNfc0PYxkIpzv
-         Lar1UfQOFUFk9hYNYVSaz4Nk2fJ3qHyt0I3z6ZAZxt9QCzSmdZTDfllyvDBLWjYPp0O3
-         dwcBJWrSZdpA8HTrEOpJgcV6SIS9epuV9RSfbNo68Dn/nlgbX2oHAAy5Eo5KuPouWJtZ
-         3/FA==
+        d=gmail.com; s=20251104; t=1775434827; x=1776039627; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OA8Fi+9OlJxfgdRXqcqY7SnyfOEw5ihy8ZJDjJD2zZY=;
+        b=QVyChbFATgUtx1FLWuJXAMyC3NqRMa9qmGNK4uNlNtblhQC4xg9LPIEmASxXdh3epL
+         7OCxnoTJWzXm9WEdgYD+QXkTRwpl6wY7a677TJoyfchkQ+DuBrMjDkFzrEgB2exAqQyf
+         a+t585rzhRyvZvJ4kOSXQqmiBMRRjbEYTZUS+P3YSUFbTwNqY+9rZyhzbRgxaHmdKqGT
+         rEm/ecx6TL/+qegAx8ZXiExXLnCUkSdMOkLH+0i/cV5VYJ7FZ1fTQgMpdBZTl4qB/uMC
+         OgPOfRQoh1LEDLNzCxkGWmKdDZkV0SA6hPFBrEBLC8No2iTva9KtWE6c1dxVlJ914tOZ
+         SGhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775432101; x=1776036901;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lzm3/9j9sm7zHb61fOGxB4CuuzgAL6dQcGBwWJvxxMk=;
-        b=tZlP7nHox5SSzqzYslOrEmLIZXDuqwZA8dle6Nc+ocHw8duj97LJC8igFT8A4qBela
-         23EdTDWOQpv4DKnt4I9T3tOCOt6qQihCcQY6eiAP9T/XFsm636NVkACYFfLvgdl8+NII
-         lAk3frwJ7CVl9GoK3cRathslKfLi8KIRIwU/mR3cviV0/lNAZX4cRLo8JFvs0MTV9Lc5
-         q+9cbHG+19jLd3Co+UzDs0zhk5ygJ+qO9G1dPC7dA77QWTbsWQzdXfz/Lr/3C+m8Lrbx
-         lkEDH+OPk8MEK9b1sJRoYuIOiPK66vS3CPQ1A/UMTT7bFRSrqvizebrWMoFtzID0eo1r
-         V4Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXpDqV/Aq/rm/buk7aggSEJ0ycAXfv19QTZqYZjzXpy5Q/uKII0UYqOm0R9/QNds/8hVgLdl1FKQ==@kvack.org
-X-Gm-Message-State: AOJu0YwsoXqBakYXtxoP8RdIC+8vM7tQVi2T/Dd10WrfIgSASJBYdl4b
-	hXfUFLFmYw8SiITCfxbW/p7XchZd2U/MIhtQyzHkWv/VjWExLjte7jB7w2+Cm56LAA==
-X-Gm-Gg: AeBDieudW5nNjUOfv3+hmxSxpoHz05GqiQhqwPyYXUhLUMhuxRR4Ub/Cy7Zfy+gb+Jg
-	VyWdkmNJgTcPXEMk8sP+5fmz7Wxr4/TFx9fqrAhkmQ3y0stPV1jOyDp466dqVwIBXWMM1B4mkOq
-	NBJzLP0MiqehZNZkfCBeEmso5sff9579bf/Gr+5j1HKWrk4krvWjh/2TSQy45sw8AixK6aezVBp
-	MoHvUhyAUnTHK/o9z/ggdIrGwx0VPrpe3DJAga3eQZkgCzZW6JljNfZlsPuvQAOKanPZ1S+PLZl
-	P4W+JOkfpYnJtEEjvzzEQQ3cA+jxIedYLDwNUnGGN9F7q/A1LCaablQV1a5ondqwlm2KfWX3vFA
-	S1Wrsrmu9KLAR19fgZjdubt59h0OIJjLNc/RP0R0dSK3pVjZl4HqYjeVHKdj2TCuBSaz4gVdqpJ
-	e/qiC8o9dpm+KsUCwtrBsUxmlreGN4y077hohhccmpyzLvlvNYaij62BJ3UCR3+crSvKeWd4fZT
-	uKOlRqsD+w=
-X-Received: by 2002:a53:b009:0:b0:63e:2715:5ac6 with SMTP id 956f58d0204a3-65048828b7fmr7933343d50.35.1775432101086;
-        Sun, 05 Apr 2026 16:35:01 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a83adc3sm5317274d50.5.2026.04.05.16.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2026 16:35:00 -0700 (PDT)
-Date: Sun, 5 Apr 2026 16:34:46 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Usama Arif <usama.arif@linux.dev>
-cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-    Lorenzo Stoakes <ljs@kernel.org>, willy@infradead.org, linux-mm@kvack.org, 
-    fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com, 
-    shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
-    dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-    Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
-    Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
-    linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
-    mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
-    gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
-    svens@linux.ibm.com, linux-s390@vger.kernel.org
-Subject: Re: [v3 00/24] mm: thp: lazy PTE page table allocation at PMD split
- time
-In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
-Message-ID: <6869b7f0-84e1-fb93-03f1-9442cdfe476b@google.com>
-References: <20260327021403.214713-1-usama.arif@linux.dev>
+        d=1e100.net; s=20251104; t=1775434827; x=1776039627;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OA8Fi+9OlJxfgdRXqcqY7SnyfOEw5ihy8ZJDjJD2zZY=;
+        b=NhH/inblDJjCajSgm9bldt4ndDQj/ldvbLNg0fYu8mpfjVcRtKUGOmc3kVuouHcU9o
+         Cf2ElOloDoKndbwRQA7AFhqC+4AhU8IhkQNEmHM29CFv5UWwaKkgXpLLHGvkv8knnoSc
+         Ofr1zm3OH3PHhuyffLBuCr+uxlqw5/VI4EwX3Qvr8x/5oLabyY261Hwr2HtbvELWDgzb
+         o73VdlnF+LdSOSTznj6PvVWq7CvW/+0Sjir6rl6diqBBRvblMtlaXYMWiYtjUzC/TEMJ
+         aFrpzFfNnFXj+HYNIJ9OQ+P7nezFbAg8g3lDuMpmSFzoA9c/XtdhTn7Ewibw4ffOVN0k
+         TE3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVPMnArK7/HRgfrUBscBu2y/z7rgg1Ynu0WA648yMuIfYe+TlY2pVWAQtO0MV5ZTCDjAKPF1M/6Iw==@kvack.org
+X-Gm-Message-State: AOJu0YyMOFAyxgzSxxhXskoHQfV8ESDHf4SPYYIhJVAzZpGtJBaO/U9h
+	UOZWAOe5ZGTDJOpu0rGqOwyhywRqSt1rprOsqHyhXgWHB2oJ48ev1l9FxmhKz90Xf3Lppa3vLII
+	My6yeFVI5iQkWF39GF7+MgD26ZyekwA==
+X-Gm-Gg: AeBDies6xiiWmMKIu2qLYB8ddXN8Mja1LU+rWIMi1DbhaRZdK8sRb8ySP+VbCM8/jSB
+	4//g6s08G2+OSFI9omoULM1s2ojHAiq01h/OyFi/W+Rmu0bTC8dAi+beqbwcW3OA4j+nYng8zWd
+	zfhejxhrHkLkW473KdCjR5uWKhwbkTwUmnj4JjElauoYbjP4x7ZQ0iP69hG+6Y/Znnn/4BOldEY
+	Ppc8OkBmn7LH6bQd1l2tmJwkviGrLs6v7ZG7NpLOx4Wg8SqZNt1e93NNyIl764rY6OYWYWdlkMx
+	3Dxk2VDpb1hD83NsA1vwJIcsC3zRENBrS/NydMQT
+X-Received: by 2002:a05:7022:6713:b0:12b:ec15:69d3 with SMTP id
+ a92af1059eb24-12bfb74944dmr4310086c88.19.1775434826335; Sun, 05 Apr 2026
+ 17:20:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463770367-802286629-1775432100=:17421"
+References: <20260405184247.2690-1-ravis.opensrc@gmail.com> <20260405225104.76350-1-sj@kernel.org>
+In-Reply-To: <20260405225104.76350-1-sj@kernel.org>
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Date: Sun, 5 Apr 2026 17:20:15 -0700
+X-Gm-Features: AQROBzCWVpdEY0WBMi7IBXTwiTJnSWTMEGwi4Tb25j1mBUP3F3FjPzxVowT81aw
+Message-ID: <CALa+Y16UKvw3tL1GraUhkef2durBd8a+p8R8m7p3GtPyC-pvKA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/1] mm/damon: add node_eligible_mem_bp and
+ node_ineligible_mem_bp goal metrics
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
+	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
+	yunjeong.mun@sk.com
+Content-Type: multipart/alternative; boundary="000000000000254bd1064ebfa23b"
+X-Rspamd-Queue-Id: A08C8180004
+X-Stat-Signature: 9ofnarph9a78ottu3hxt9gy19ynkuoc8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9181A140003
-X-Stat-Signature: syj3qdtg5k6dw1zetcjku3hae9jkq8qp
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775432102-583275
-X-HE-Meta: U2FsdGVkX18udzzhHdWUYoo8d6HtGHfqZ7I1g7rTELjsJNHUYLBYYpOq569xgtVgRqTT0vwl4aq1wRntxUjtjsbBnujxq5+zwzYljZvicWgMSnamlHxwGrDfcUtozd0TqksbRvLh02UirFlroxe7nKvbTX1C3NQvZb9hjbshq4tuo8SrRq5PTW50p3QkTeA1Wo/fmWO3yLpXOLjWB0g6KEmlvPfthZoC68wQ7joxIhGj2LPCgFZHWmYRYnEvveNnE947BXO+7vB+WyFfqiAKhXaJnxN6rxwz9G96fZKMHnKuKFj5uZDbwKheQvYRwMcmvIeQfsNN/cXaGVvWnBdh2aH0oywj/ii/6jdH6bwLNYw4YC+F0LbcQLrYhEaKl7LmZc18c5+dh6eUuGyBO/WM0FWFfR2/5j5aWFMbsGpDjLstgMhS7oBHt+JAeAP+UhFYM6cK4dtsyR3TAFoZxY7TemLV4gLlsSBYbut6SppQm5VveD2eE9nlGijEwsZxBQyCkNeO4l1H6drd7HWDe+hpoKm/fJrzfyFEGKbqPkhqS+G+zHbylQVXHC3VFvAeXVD3eUcx/Nfdzs4+Wogdcr+6eOm0oAxyl9I/HvnxyIxBFv6EbDiM1pilikxZLgEVWKx0oaOrb+l0NNWT0ontAb5k0fVfGqs4gSTF5IWccsEII6WfmrDiAq+ZjMoDlR64N97Lky7oODA6HhDK69i1lod26dq7JSO/OQmHJ3cNE6vhIY7ANv76aI1HQamNGdIRG136jjri7uQ4p1qPUpLOItYTBLJpl0CEuU6VssiRR1gtz6ncdl+PencErpF0sxcdaSRf9t3Z7IfblW/SpI79G2PhzWqeXjbOe4xb5pdwgeS4+nfKQLhizVuWkcVlgqnTakSBHwfvKjNxNkAMRFVwyHnfYoCKyKTlsQzgveaFumq+BNiELyBRF6EzqD7FwGWq65Nj9Fmh99ZWR1FFPoSnKTm
- Qk9cqDHh
- tvbgO+3x7S8MPInZf2Vvwlij0RAQO+8+E45OYZ4kqc6wFG4R9i/Ld7vq70reNJvR/b3opHg3jAiNRV1Uovoa+ttWGdGzL/lMDaJrjP/BkdTdnNtyjf/W9FjNSsLumX6tQSnurT9AIovbSJaQcKMDOz4E9u4lqT0L0zXDRoEbjYQDbc/hPLwtIedArsNJoR0IlYfUGg2W0BoP7XFiG6V5ik+uOtBZndcyi3HoKLLq1uC8vHZ64Z2Eu6xpyVTeQIBsLkdYMhqU7pDx7lM3OwOzkS2HCcyVBf23QXDQw4AkpByqUTfWEH+gLIaHUsgKd3f483UCqflzlo+mTcCjOJyvzrfEoXSFxL1XmFzYAoFOlOcA5jHMRaDoygKkPKokqW0/6osp0z74TCVFIqoUbUjGKY/k9/51cmkEAKHR8Yeb5aZD+aW7ESj8M/vbnuQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775434828-9165
+X-HE-Meta: U2FsdGVkX19DnkFQXFS/xjKXEkErcnjc7b2MYnux29UJUNDx5wvSIEHajiLzYwT+8L/LW3auvGtULirt3ho71GqfpZV5xuk7As0D8YKzwMeQWgQCPNGSMIP4ZEZaC0MPLcurcJjB1nKDv1vEx4ffOoSBV7tyvhPh5fxxlSWJG0Ir8/PyzWFMyvgJtM/x37WtTsytWFujfXFwwcSZsCB21yFYR9Q7YZ410XkzBqdZuK56iRn7xE4mHK+Hv4znxA+b5fMc+fdutL7w6mGhqWlcRJ9z1IdgxWtHKDlDhDauty90qhwM15TgrDX+i7i56gEkO0wZUJTuRthlEIojhtZyYuhYF5ca6SXUfxuOrkoYE6fDl1xDJBuOMU0im0nBosiI+al13EGcOLihQja97ZNZWCM6/H+yVfirkW3/7CuR3/Ck2Px8mDsYLDA+l7oByogIDOu8YJDFhCOUBBQ2/ChhXBBztiokDXWjYegs1RvncbMeA6au+nXTEm9ltzx8TE1n90LzR+SZG1wRd7a79q90qYLgN2hMFWBlhyXGH62QBo2MVSPympucjP03+z/89G85ybnY8kmSiktqjmvBoUzC9wCsA1y3G0EKE5JEPn84vVl5uV5zrwhanZwZcqEvNlaO5XAHNSeGxzkBc2tfeXZe1yCp0FBZ/q6kumrwduH75WowXd/fO1WJ1Ifwrk9/vCr30RfwMrdC2vR5cXZPyj2oJSUP6ie8yBUTB1817abxZSLhtOROan9JVj5BgIHgbJSxqCO2Lmm4mAfsm1rXtksgQt/w8yVNlTIBxy1WxTL6KNieY1p7fBkv0isAZZloLmsxsFt8IPIKpKI9iL8h/x8YOrQbCoT5PRryCKAj+q2bqNFMvvP0vjh1YLiL5nyw6kOj+ezSFW9HH7b3m9O0dDoSlczhKIvRfK0XuxjssZawefeHcAteuzhC1m9nfKy8G7h3zWdJEuXBQ2NHkgSqVeG
+ viAAbEZM
+ u5SJgQn4Vxj0kXJPdJXEi9iYUN0GlEYYVulTVWq3tpXF7nC6JtDQgvVg278fLn0NFduWihK91LIwSwJEQLItlDUMmH1cZ9wl92u+RHqp+g9Q6C3GiXUDcmHFCVjuK2yUMiSsCwEAVcJ8D9XMbAXY3z6Dp6lnpksav1ebB/UcUaX2M44U9ytJN8/Y7nVegFNeQnjdEjmv/dkChmKIDbZIw1pCc+LMpqHPHc7tA1iTeHndhADhuAS/8LSd51RE8HdY+ouyTMRM8cyyR0HjyylUcMeOCSaDZIhhSv/9D7fl3FIrVHMCS1LLYGga09L2nTFMg8bTmIWKdAKg7NxVo1KwGuFn7/WVMD7ZWYlZojvDhLIHz9dzEAoJFBujoNa+iD+/rJ1PAUyC1/e5gq3urxceC3z9V13PxR9PKrCb4Ps1Wi9UWkgrYO3cNH2UtLdfzPUGiQGy6YJZ5M5vgFRKWQPPXimpKOyLQ/mZ0xSusVoyDUwH9OxvmoIxpQdwqsMX5re9PO0ETD8bt5LQztMzFPpJb/UW8uMYFVmOMh5GwCCUM6JxIVq6ehv7lRPkn250mIKx0VvlkUmQE1IuLS8T2+ImSTQdJGVfHKtVkd2sGCktA3zzN0is6vHrEhiFK5Cs0W3UkWeLAqUVkPJOu8bX2ffouZOWrW4VMMxSu0/TAfp0IMclWbck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,95 +138,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+--000000000000254bd1064ebfa23b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
----1463770367-802286629-1775432100=:17421
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Hi SJ,
 
-On Thu, 26 Mar 2026, Usama Arif wrote:
+I will address your comments and the feedback from sashiko's review in the
+next version of the patch.
 
-> When the kernel creates a PMD-level THP mapping for anonymous pages, it
-> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
-> page table sits unused in a deposit list for the lifetime of the THP
-> mapping, only to be withdrawn when the PMD is split or zapped. Every
-> anonymous THP therefore wastes 4KB of memory unconditionally. On large
-> servers where hundreds of gigabytes of memory are mapped as THPs, this
-> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
-> could otherwise satisfy other allocations, including the very PTE page
-> table allocations needed when splits eventually occur.
->=20
-> This series removes the pre-deposit and allocates the PTE page table
-> lazily =E2=80=94 only when a PMD split actually happens. Since a large nu=
-mber
-> of THPs are never split (they are zapped wholesale when processes exit or
-> munmap the full range), the allocation is avoided entirely in the common
-> case.
->=20
-> The pre-deposit pattern exists because split_huge_pmd was designed as an
-> operation that must never fail: if the kernel decides to split, it needs
-> a PTE page table, so one is deposited in advance. But "must never fail"
-> is an unnecessarily strong requirement. A PMD split is typically triggere=
-d
-> by a partial operation on a sub-PMD range =E2=80=94 partial munmap, parti=
-al
-> mprotect, COW on a pinned folio, GUP with FOLL_SPLIT_PMD, and similar.
-> All of these operations already have well-defined error handling for
-> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
-> fail and propagating the error through these existing paths is the natura=
-l
-> thing to do. Furthermore, if the system cannot satisfy a single order-0
-> allocation for a page table, it is under extreme memory pressure and
-> failing the operation is the correct response.
->=20
-> Designing functions like split_huge_pmd as operations that cannot fail
-> has a subtle but real cost to code quality. It forces a pre-allocation
-> pattern - every THP creation path must deposit a page table, and every
-> split or zap path must withdraw one, creating a hidden coupling between
-> widely separated code paths.
->=20
-> This also serves as a code cleanup. On every architecture except powerpc
-> with hash MMU, the deposit/withdraw machinery becomes dead code. The
-> series removes the generic implementations in pgtable-generic.c and the
-> s390/sparc overrides, replacing them with no-op stubs guarded by
-> arch_needs_pgtable_deposit(), which evaluates to false at compile time
-> on all non-powerpc architectures.
+Regarding the cover letter, I originally included it to provide context on
+the general methodology. However, I agree that it is unnecessary for a
+single patch. I will move the relevant content to the commit message and
+drop the cover letter in the next iteration.
 
-I see no mention of the big problem,
-which has stopped us all from trying this before.
+Thanks,
+Ravi Jonnalagadda
 
-Reclaim: the split_folio_to_list() in shrink_folio_list().
+On Sun, Apr 5, 2026 at 3:51=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote:
 
-Imagine a process which has forked a thousand times, containing
-anon THPs, which should now be swapped out and reclaimed.
+> Hello Ravi,
+>
+> On Sun,  5 Apr 2026 11:42:46 -0700 Ravi Jonnalagadda <
+> ravis.opensrc@gmail.com> wrote:
+>
+> > Changes since v5:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> https://lore.kernel.org/linux-mm/20260404012215.1539-1-ravis.opensrc@gmai=
+l.com/
+> >
+> > - Rebased onto mm-new instead of damon/next for sashiko review
+>
+> Thank you for doing this.  sashiko was able to review and find some good
+> points.  I shared the full review with my opinions as a reply to the patc=
+h
+> 1.
+> Please check and reply.
+>
+> > - Removed Reported-by/Closes tags per maintainer feedback (not needed
+> >   for bugs found before merge)
+> >
+> > Changes since v4:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> https://lore.kernel.org/linux-mm/20260320190453.1430-1-ravis.opensrc@gmai=
+l.com/
+> >
+> > - Fixed commit message description for DAMOS_QUOTA_NODE_INELIGIBLE_MEM_=
+BP
+> >   per review feedback
+> > - Added clarifying comment for ops-common.h include (for
+> damon_get_folio())
+> > - Fixed build error when CONFIG_DAMON_PADDR is disabled by adding
+> >   #ifdef CONFIG_DAMON_PADDR guards around functions using
+> damon_get_folio()
+> > - Dropped RFC tag per maintainer feedback
+> >
+> > This patch is based on top of mm-new.
+> >
+> > Background and Motivation
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> >
+> > In heterogeneous memory systems, controlling memory distribution across
+> > NUMA nodes is essential for performance optimization. This patch enable=
+s
+> > system-wide page distribution with target-state goals such as "maintain
+> > 30% of scheme-eligible memory on CXL" using PA-mode DAMON schemes.
+> >
+> > What These Metrics Measure
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> >
+> > node_eligible_mem_bp:
+> >     scheme_eligible_bytes_on_node / total_scheme_eligible_bytes * 10000
+> >
+> > node_ineligible_mem_bp:
+> >     (total - scheme_eligible_bytes_on_node) / total * 10000
+> >
+> > These metrics are complementary: eligible_bp + ineligible_bp =3D 10000 =
+bp.
+>
+> As I mentioned on sashiko review, I now think node_ineligible_mem_bp is a
+> confusing name, and thinking a new name, maybe
+> node_eligible_mem_bp_complement
+> is better.  Let's further discuss on sashiko review reply thread.
+>
+> >
+> > Two-Scheme Setup for Hot Page Distribution
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > For maintaining hot memory on DRAM (node 0) and CXL (node 1) in a 7:3
+> > ratio:
+> >
+> >     PUSH scheme: migrate_hot from node 0 -> node 1
+> >       goal: node_ineligible_mem_bp, nid=3D0, target=3D3000
+> >       "Move hot pages from DRAM to CXL if more than 70% of hot data is
+> >        in DRAM"
+> >
+> >     PULL scheme: migrate_hot from node 1 -> node 0
+> >       goal: node_eligible_mem_bp, nid=3D0, target=3D7000
+> >       "Move hot pages from CXL to DRAM if less than 70% of hot data is
+> >        in DRAM"
+> >
+> > The complementary goals create a feedback loop that converges to the
+> > target distribution.
+> >
+> > Testing Results
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > Functionally tested on a two-node heterogeneous memory system with DRAM
+> > (node 0) and CXL memory (node 1). A PUSH+PULL scheme configuration usin=
+g
+> > migrate_hot actions was used to reach a target hot memory ratio between
+> > the two tiers. Testing used the TEMPORAL goal tuner available in
+> > damon/next and mm-unstable.
+> >
+> > With the TEMPORAL tuner, the system converges quickly to the target
+> > distribution. The tuner drives esz to maximum when under goal and to
+> > zero once the goal is met, forming a simple on/off feedback loop that
+> > stabilizes at the desired ratio.
+> >
+> > With the CONSIST tuner, the scheme still converges but more slowly, as
+> > it migrates and then throttles itself based on quota feedback. The time
+> > to reach the goal varies depending on workload intensity.
+> >
+> > Note: These metrics work with both TEMPORAL and CONSIST goal tuners.
+> >
+> > Ravi Jonnalagadda (1):
+> >   mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal
+> >     metrics
+> >
+> >  include/linux/damon.h    |   6 ++
+> >  mm/damon/core.c          | 188 ++++++++++++++++++++++++++++++++++++---
+> >  mm/damon/sysfs-schemes.c |  12 +++
+> >  3 files changed, 192 insertions(+), 14 deletions(-)
+>
+> Btw, having a cover letter for single patch looks odd.  Why don't you add
+> this
+> cover letter to the patch's commit message?
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
+>
 
-To swap out one of those THPs, it will have to allocate a
-thousand page tables, all with PF_MEMALLOC set (to give some
-access to reserves, while preventing recursion into reclaim).
+--000000000000254bd1064ebfa23b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Elsewhere, we go to great lengths (e.g. mempools) to give
-guaranteed access to the memory needed when freeing memory.
-In the case of an anon THP, the guaranteed pool has been the
-deposited page table. Now what?
+<div dir=3D"auto">Hi SJ,<br><br>I will address your comments and the feedba=
+ck from sashiko&#39;s review in the next version of the patch.<br><br>Regar=
+ding the cover letter, I originally included it to provide context on the g=
+eneral methodology. However, I agree that it is unnecessary for a single pa=
+tch. I will move the relevant content to the commit message and drop the co=
+ver letter in the next iteration.<br><br>Thanks,<br>Ravi Jonnalagadda<div><=
+br></div><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Sun, Apr 5, 2026 at 3:51=E2=80=AFPM SeongJae Park &=
+lt;<a href=3D"mailto:sj@kernel.org">sj@kernel.org</a>&gt; wrote:<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex">Hello Ravi,<br>
+<br>
+On Sun,=C2=A0 5 Apr 2026 11:42:46 -0700 Ravi Jonnalagadda &lt;<a href=3D"ma=
+ilto:ravis.opensrc@gmail.com" target=3D"_blank">ravis.opensrc@gmail.com</a>=
+&gt; wrote:<br>
+<br>
+&gt; Changes since v5:<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&gt; <a href=3D"https://lore.kernel.org/linux-mm/20260404012215.1539-1-ravi=
+s.opensrc@gmail.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.ker=
+nel.org/linux-mm/20260404012215.1539-1-ravis.opensrc@gmail.com/</a><br>
+&gt; <br>
+&gt; - Rebased onto mm-new instead of damon/next for sashiko review<br>
+<br>
+Thank you for doing this.=C2=A0 sashiko was able to review and find some go=
+od<br>
+points.=C2=A0 I shared the full review with my opinions as a reply to the p=
+atch 1.<br>
+Please check and reply.<br>
+<br>
+&gt; - Removed Reported-by/Closes tags per maintainer feedback (not needed<=
+br>
+&gt;=C2=A0 =C2=A0for bugs found before merge)<br>
+&gt; <br>
+&gt; Changes since v4:<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&gt; <a href=3D"https://lore.kernel.org/linux-mm/20260320190453.1430-1-ravi=
+s.opensrc@gmail.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.ker=
+nel.org/linux-mm/20260320190453.1430-1-ravis.opensrc@gmail.com/</a><br>
+&gt; <br>
+&gt; - Fixed commit message description for DAMOS_QUOTA_NODE_INELIGIBLE_MEM=
+_BP<br>
+&gt;=C2=A0 =C2=A0per review feedback<br>
+&gt; - Added clarifying comment for ops-common.h include (for damon_get_fol=
+io())<br>
+&gt; - Fixed build error when CONFIG_DAMON_PADDR is disabled by adding<br>
+&gt;=C2=A0 =C2=A0#ifdef CONFIG_DAMON_PADDR guards around functions using da=
+mon_get_folio()<br>
+&gt; - Dropped RFC tag per maintainer feedback<br>
+&gt; <br>
+&gt; This patch is based on top of mm-new.<br>
+&gt; <br>
+&gt; Background and Motivation<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D<br>
+&gt; <br>
+&gt; In heterogeneous memory systems, controlling memory distribution acros=
+s<br>
+&gt; NUMA nodes is essential for performance optimization. This patch enabl=
+es<br>
+&gt; system-wide page distribution with target-state goals such as &quot;ma=
+intain<br>
+&gt; 30% of scheme-eligible memory on CXL&quot; using PA-mode DAMON schemes=
+.<br>
+&gt; <br>
+&gt; What These Metrics Measure<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D<br>
+&gt; <br>
+&gt; node_eligible_mem_bp:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0scheme_eligible_bytes_on_node / total_scheme_eligib=
+le_bytes * 10000<br>
+&gt; <br>
+&gt; node_ineligible_mem_bp:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0(total - scheme_eligible_bytes_on_node) / total * 1=
+0000<br>
+&gt; <br>
+&gt; These metrics are complementary: eligible_bp + ineligible_bp =3D 10000=
+ bp.<br>
+<br>
+As I mentioned on sashiko review, I now think node_ineligible_mem_bp is a<b=
+r>
+confusing name, and thinking a new name, maybe node_eligible_mem_bp_complem=
+ent<br>
+is better.=C2=A0 Let&#39;s further discuss on sashiko review reply thread.<=
+br>
+<br>
+&gt; <br>
+&gt; Two-Scheme Setup for Hot Page Distribution<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&gt; <br>
+&gt; For maintaining hot memory on DRAM (node 0) and CXL (node 1) in a 7:3<=
+br>
+&gt; ratio:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0PUSH scheme: migrate_hot from node 0 -&gt; node 1<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0goal: node_ineligible_mem_bp, nid=3D0, targe=
+t=3D3000<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Move hot pages from DRAM to CXL if mor=
+e than 70% of hot data is<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 in DRAM&quot;<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0PULL scheme: migrate_hot from node 1 -&gt; node 0<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0goal: node_eligible_mem_bp, nid=3D0, target=
+=3D7000<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Move hot pages from CXL to DRAM if les=
+s than 70% of hot data is<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 in DRAM&quot;<br>
+&gt; <br>
+&gt; The complementary goals create a feedback loop that converges to the<b=
+r>
+&gt; target distribution.<br>
+&gt; <br>
+&gt; Testing Results<br>
+&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&gt; <br>
+&gt; Functionally tested on a two-node heterogeneous memory system with DRA=
+M<br>
+&gt; (node 0) and CXL memory (node 1). A PUSH+PULL scheme configuration usi=
+ng<br>
+&gt; migrate_hot actions was used to reach a target hot memory ratio betwee=
+n<br>
+&gt; the two tiers. Testing used the TEMPORAL goal tuner available in<br>
+&gt; damon/next and mm-unstable.<br>
+&gt; <br>
+&gt; With the TEMPORAL tuner, the system converges quickly to the target<br=
+>
+&gt; distribution. The tuner drives esz to maximum when under goal and to<b=
+r>
+&gt; zero once the goal is met, forming a simple on/off feedback loop that<=
+br>
+&gt; stabilizes at the desired ratio.<br>
+&gt; <br>
+&gt; With the CONSIST tuner, the scheme still converges but more slowly, as=
+<br>
+&gt; it migrates and then throttles itself based on quota feedback. The tim=
+e<br>
+&gt; to reach the goal varies depending on workload intensity.<br>
+&gt; <br>
+&gt; Note: These metrics work with both TEMPORAL and CONSIST goal tuners.<b=
+r>
+&gt; <br>
+&gt; Ravi Jonnalagadda (1):<br>
+&gt;=C2=A0 =C2=A0mm/damon: add node_eligible_mem_bp and node_ineligible_mem=
+_bp goal<br>
+&gt;=C2=A0 =C2=A0 =C2=A0metrics<br>
+&gt; <br>
+&gt;=C2=A0 include/linux/damon.h=C2=A0 =C2=A0 |=C2=A0 =C2=A06 ++<br>
+&gt;=C2=A0 mm/damon/core.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 188 ++++++++=
+++++++++++++++++++++++++++++---<br>
+&gt;=C2=A0 mm/damon/sysfs-schemes.c |=C2=A0 12 +++<br>
+&gt;=C2=A0 3 files changed, 192 insertions(+), 14 deletions(-)<br>
+<br>
+Btw, having a cover letter for single patch looks odd.=C2=A0 Why don&#39;t =
+you add this<br>
+cover letter to the patch&#39;s commit message?<br>
+<br>
+<br>
+Thanks,<br>
+SJ<br>
+<br>
+[...]<br>
+</blockquote></div></div>
 
-And the worst is that when the 501st attempt to allocate a page
-table fails, it has allocated and is using 500 pages from reserve,
-without reaching the point of freeing any memory at all.
-
-Maybe watermark boosting (I barely know whereof I speak) can help
-a bit nowadays.  Has anything else changed to solve the problem?
-
-What would help a lot would be the implementation of swap entries
-at the PMD level.  Whether that would help enough, I'm sceptical:
-I do think it's foolish to depend upon the availability of huge
-contiguous swap extents, whatever the recent improvements there;
-but it would at least be an arguable justification.
-
-Shared page tables?  Generally I run away, but perhaps
-manageable in this limited context (a store of not-present
-swap entries, to be copied on fault).
-
-Hugh
----1463770367-802286629-1775432100=:17421--
+--000000000000254bd1064ebfa23b--
 
