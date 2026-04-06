@@ -4,123 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C61F46C46
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03C4F46C44
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 14:40:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C42C46B00F0; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
+	id E4A1B6B0104; Mon,  6 Apr 2026 10:40:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF3406B00F2; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
+	id DFB006B0105; Mon,  6 Apr 2026 10:40:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B09256B00FA; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
+	id D3E846B0106; Mon,  6 Apr 2026 10:40:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E73F6B00F0
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:32:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 425F214045E
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:32:41 +0000 (UTC)
-X-FDA: 84628372122.29.D6F525F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 089FE20008
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:32:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W8z0NGYY;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C63386B0104
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 10:40:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B3961404AA
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:40:22 +0000 (UTC)
+X-FDA: 84628391484.03.F5C5A4C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8030840007
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 14:40:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OOoOPAma;
+	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775486420; a=rsa-sha256;
+	cv=none;
+	b=8Uitt+b2aE+6jirUqVSPh0BAvELR+9HdEtZvhme6yWeFnN2nSzOXYkNTEx+V8WkpnHVsqK
+	xV2gawDhyYICn9/63P2i15coLBQoPWwfwXj6MBkUFUeIAme9cCxpV+cZGw86ZoxjW+9dqa
+	pQiYnhZ+wsODrr922Hhb6+q98VTO6b8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775485959;
+	s=arc-20220608; t=1775486420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
-	b=Day+8ywt0kWE4yifOtccivXF8DkFbu/fnFZcmCw3CxiLzKXFHVwDZES+vUznEHVczSUyqP
-	A5onaw88m2JPXjAM9l2t66AhBeZGggslytzvyI5AP7dUwV7YduAYTyhf/a3maBsVPOT9yN
-	0tDmaIHM8hxEWiQURr2NSiCAuyM+Ohk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775485959; a=rsa-sha256;
-	cv=none;
-	b=azJrVtKLwBsiLZoxaMI3B36Z244Z5NKUOA1mF3nWpgWNGYheiGArelFGMsDxkjWyM4Yxw+
-	nhuU2RVqq+oiHvZIcWcqMnwIa5zEuPwFWyYrsTlZLLsLJT7Hsrkq6vXMvCRnT4ovj3c4A4
-	XF/Yy9YUkVONFl2dFTbkjpwjwuSTpf4=
+	bh=HscdZE1jDaO1VYvJpYRdXQ9Wi5iKVDR3QAVSOFgAsBo=;
+	b=GOcr9AIvbpF7mupu6aa74IC3S4BA/L09o6NcyWFqj0Y7qKTM5w4SUbYIWZW+PDx+z2cbz3
+	g8yOKVkJbYGDgHYnBRH4tCuUQCttGL5jFywjvyKzwj2DffV0Si7HFRvGjT9uMU3Ms1kM0b
+	XS130zwjH08r3F12ijTjvAu1HrecJEs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W8z0NGYY;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf13.hostedemail.com: domain of luyang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775485958;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
-	b=W8z0NGYYrJT+5ZDUUkvRZDkRlC55zGPtCqps8usmFwNuEsZb/OtXuNVKOMQOYea7A6ieVV
-	hIiHHvQVmEIfDTjXgAD8zn0WbDstDBn8tdDZcyVgz+mpXIUO+jyRxkk1lD3PGuxT+WKepZ
-	u4EOfg4ha3uuhbCCxl/46B+0ON37c+s=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-miLzkPDFNFS1M4HgDPV_7Q-1; Mon, 06 Apr 2026 10:32:35 -0400
-X-MC-Unique: miLzkPDFNFS1M4HgDPV_7Q-1
-X-Mimecast-MFC-AGG-ID: miLzkPDFNFS1M4HgDPV_7Q_1775485954
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-794b240c0d3so101409347b3.0
-        for <linux-mm@kvack.org>; Mon, 06 Apr 2026 07:32:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775485954; x=1776090754;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+BB7ZzVFvKFtoUpkj9mTwdFiRZFNEpH/aMohX/LBLbM=;
-        b=MPuwQ3Z0lgisgNdAB/F/VjwJn0VBikqYMPqei99kPSQ1G4yWnjZIzhqHsfnDLYbCzS
-         az7gtb89fc3P2xXJJTwn10GoGUbG9ISz8+gRJzE5ABbs9VLgLbvK/7OlDsrXgtFSIIIj
-         dz2QoXnRvrV07gAlY8neUfY4cXK7NYeVf/A6pksRpMmfGhK9bQEHHAigkynPQhjb+3Wv
-         HENs/+5MSe1vtdss2k0DbQ0iPqj49olQjdbewjpj6kfBHDmTov53cBKOke6ZuY0qaJHr
-         ReobKZRxN9od3+SqFKGJMBtBt8hhJreTfHAbuTv94dIco0Pqw9dH+RetRGlOFla8byM7
-         qw9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW0hQNf5CMTB9PHi0RvDU668JmLGZ2YV/1e8MW8bQ0n2iwo/fqWfKQExaXtXeMqxZLDVWFnc+XP/g==@kvack.org
-X-Gm-Message-State: AOJu0Yy5KS757gpyci82GzFNxJf12UNIYUWLcyKyJ0QhE1v7D7dGn6PU
-	exZpyLMSk1ozH1FvTMDDbg+rL3ceksOGSm1qufSxtD5aA4gmz73f03dvaXbbvv5qUF18MbmwaKr
-	vpuSVWmoNqo5JchAsIZHjaTSOmje6HF6C0vMOkiz0Feq2mOOajP8d4N/2qWJTYW6QzUkkCBrqXS
-	tYAkuokthukwNFE0nH2y6yt5f9vvI=
-X-Gm-Gg: AeBDiesQ7PA3LQGz0pSJ56FNfBjDAXTuljYNa3eKK3U0Kpal0ELBDIDpwMO4Alz9Q9p
-	+uUcEQ9Rb2FJbxRpRIdrnyu/0BOSx/4tn1VsrEGmJAahkDlti3haJ+0vv+mCB/tdq+0kJrQ0lNT
-	W/aEZlx78UFrG062FI/mx84poHm/NjyEgbvROcN82fr016Y7wa2cG+Sd4FeTWvXuG+PQc8pZ0jB
-	RP4boI=
-X-Received: by 2002:a05:690c:4903:b0:79a:cc5c:23d0 with SMTP id 00721157ae682-7a4e1e31b2bmr97819807b3.27.1775485954447;
-        Mon, 06 Apr 2026 07:32:34 -0700 (PDT)
-X-Received: by 2002:a05:690c:4903:b0:79a:cc5c:23d0 with SMTP id
- 00721157ae682-7a4e1e31b2bmr97819557b3.27.1775485954002; Mon, 06 Apr 2026
- 07:32:34 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OOoOPAma;
+	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F405C60123;
+	Mon,  6 Apr 2026 14:40:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3768C4CEF7;
+	Mon,  6 Apr 2026 14:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775486419;
+	bh=HscdZE1jDaO1VYvJpYRdXQ9Wi5iKVDR3QAVSOFgAsBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OOoOPAmaH1Y8DegRrnnfMlzu+H6uGHOagyI2JNc7CoxCD+c9DD0ZB2C6W/3ouIbV6
+	 suOx8cQJWFQtD6FMADAyAy4txgJvztbqUwP2hIuFfcfClvMMw8J3QH4WrwGAHpgb1Q
+	 cP5XgMjU1dU6/iLu5OU5AQDbCVpHKspw+uTE3YZoDg0P05NHOxSmiIw413uKfsWblx
+	 0pARqVMuF8LW1WL4RibikVC5q8i4Hi3qkMn9kGzKbP1QSktqExaw4UtJiDGgbyBN/l
+	 0kmIZ0V9IclCQj7+ngUtlHI1VYj2dqU30LhHhrW5jOf35b3Aqbs2T5GuwFdL37Aejq
+	 IA5IKGqKdVRpA==
+Date: Mon, 6 Apr 2026 15:40:12 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 08/53] selftests/mm: hugetlb-vmemmap: use kselftest
+ framework
+Message-ID: <4bab29d7-7c19-4c82-872e-18b88f07d7c0@sirena.org.uk>
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-9-rppt@kernel.org>
 MIME-Version: 1.0
-References: <20260324154342.156640-1-pfalcato@suse.de> <CAL2CeBxT4jtJ+LxYb6=BNxNMGinpgD_HYH5gGxOP-45Q2OncqQ@mail.gmail.com>
- <vss5mbyhbf756jieb227fh6yu6vvvsggagll3ru4cmlhbbwo25@xv54cwfx7klf> <CAL2CeBxOa8ETNw-uP7vX7dikCty0QrFSUpdTSrmF6oAKkLk-ZA@mail.gmail.com>
-In-Reply-To: <CAL2CeBxOa8ETNw-uP7vX7dikCty0QrFSUpdTSrmF6oAKkLk-ZA@mail.gmail.com>
-From: Luke Yang <luyang@redhat.com>
-Date: Mon, 6 Apr 2026 10:32:22 -0400
-X-Gm-Features: AQROBzDw8K6DwnKzwMUtKNPatLfRZ1ihy1Fdhyk-H1KQHhTn5ciCPdBwIbK2aXE
-Message-ID: <CAL2CeBxH+9=_vwfChs3w7af2_8iy8Kzrjx+fmy+Y6=9inBuFyg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] mm/mprotect: micro-optimization work
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, jhladky@redhat.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Nico Pache <npache@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Stn5UpSqjscVFZPi2npjt0gRLoyCb9x1zg4y8Hdyxok_1775485954
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 089FE20008
-X-Stat-Signature: j61f9s68g1rqabjfr6r6itrjbte3qd4q
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fpQPRiuMKCXEzmVa"
+Content-Disposition: inline
+In-Reply-To: <20260406141735.2179309-9-rppt@kernel.org>
+X-Cookie: Does not include installation.
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775485958-959162
-X-HE-Meta: U2FsdGVkX18nDA3P81jdMU6ZkbRydM2cDAvtS7vCIV5B8m8hcHFTNlLlmbQQ6uezevTQLOW6oIl3ld6iiuU0VYLe/j/rrUzQGCW6V+1Cxd3rDwc27GGRZy4r4dIiJLnnQwZEuZmjrXCkukw7EybEnIcgaypzzNS1L44ezPAjbW8kbBu2yWqsf+EAvRaQARy25w5jPGLUL3aJeKC6jX89Qt8yplLNjdS2GPF/0ixJl37lAqjA4D/hdPOhmrwuYK7Q6xtoXCnK/PFoRueVXjWaF0ikSKGO3az9JPH639b31o0XwxkagNTO3JwKADAaQRMhtue0zBQ4CkeIUcd7dWQcfFeFT4acnITGzEvs1JT2yz5E9OZmSYG9OZ4WNvJeP/WxerzJIxt3JEt6t5RG/DvLhe/Y3TVvkX1jhFaMz6NUuUCxMxjAQJBiEIk9sijQmY2CN0dCVI6LKrjSLQZl/HVSu+yyDrPddy9hTWZMRhyQekpBtgyMGUO7eL2+WtXbLnzIeVRBttfKxCiZYHbYxFTLTbVHqzOVJi/3ILzhxX3/HWkHx4eVTyn0XbXa8+p95tX8xnl+hBwz/KnWcj1/FhKGEeOoLPvladcyNNPnms7kYCTnN/2+hChXAQLvCeAR2tZyD0p5yvDunEH+JB8wRF7iGeruFpMwOV02wD9WEL5YlnfWx9sZx1Mij+UouG8R58IQxDKUTiQuncwfWTpUCpX8FlHn5l7ZGTG4bX1tBMMEolRCH4MbeeaOdsrKy0MhHC+wAdvoBOR6DgE7udPSLC/fQj/cy6NLxfg7yfudZ+uMhIxapUV1tzlxZMoPCDHi4GJEfOp6+5AEeXBzLTCc4mAiJa7Q7B89YQx3zGAX0EQUdNlO/eXTUi2ut3cXtMLkYpPAMmz8O2NTlaFp5tXZeuxu/Zkd/1xDkDFLBTXP+nLOvjrgYfcjPH5bmJa3D9Ia+w94llrgoeGJgHejL396JUN
- JI3EY9PB
- CSi5f7yOlqN6kUAZqDLQO7VmrlcosURuF34wzxEG18pUHvdacmqeECjzc8uWrl6vfsNQNhGhBpQpHm/QA47Qwclkf8aEMD96M3+d9bT1lspdtUtBgep7RaSWSKR0l3Y0FyOpxjBX7WpqNdQ6xxd+B7cDVHUz9XWCvv+DiVnB5digBPBI06Sor4F3orre8D5A7j04rQPpihWLn64DW5b7kUPY6AbFnwtVz8TrAe+TDvD+4nvl76przvb+HHRQuJjxWvUmI4MdnESXvkFhOCbJ6WZgWB+IljBc7CB6I
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8030840007
+X-Stat-Signature: rpt8k8fwumqwsbkqejomyi7kkyp5zuss
+X-HE-Tag: 1775486420-933899
+X-HE-Meta: U2FsdGVkX1+KD3rLGPATRh7jrqsbxwFqt6PfOgj5V5/RkevTDnL5ycUjcgspQon5pEC8XLGVknjkWfOiBBhvkJn4C9YWDkRpzi8yRR4huEhT/LQ7M7OSLF+aEdrd/p9zMEaY6w4SRwx7vO7cW3Z9XXmQxrjCLt9r6Jjy0bfGvFE+diCDChhJiwQGyJdWjj6plazSBXb51TJF11m32A+QIixoJ7umq0eNyaTgeHBZUEHtW7ekZ7M7o4NeiT1smWoRzgGkkbHe36VwBJjicpnG6+uswan3Dj65typh1fV7a2GMLXATQGt9nlYsYxiQQU/I6QtTN2Bem6lXc+OCLMCCHyMMG/Asouseywbq1BRZl75/lZPxqzr/0bSRlkQc5bKtYE0tF91eMKEG7A/e9xkPpWjyZgEa9DrrrqFwGibkticrs324rqpXn2RQaenilSmbmIpZIw3Z6BAR3gfzYuz31ZBHcDzJLZL+BmUOlYkpLtYOYu8nuh/0ljBHVnUH0DK8lEQ3YZ713L+gb+VbayYRIS0aC/9MhNKFBbhT24nuc8p0Fdb0lWqKhcmF8d/Wp/ipS1sTnxlKQDbswfSLXnZr3nWj0H8Q2MYT8c+oA84jn7GDz2ANA13wH7uYlSwn3LNCHHcIpXjV/DiGpdAPeTW8U9CbtiooL0nnh+1GE9yrDvlmG97lpkfNipml3HPL0I+/90kg3BvdU2vTc3p+BbPnXOBHkJbUzpi+IO1bSnptOwkqkXbCBljxXF17JNeJgufaNoe6JfQzImNVCl2gtLmLs32ZB1wI1u6D19HQ2N2ilgM3J7bjnRuGDPVvID5IfDjjqBe7vl4CR0vdZKo1qYpLhVPLsBfswItNlMUcY7nrh6L4923PWE/JknpmS6XEdz0ieHHoSLMlGiOv+UmmcB9BW5I9z8hJcbaBkW0SfnmU9RoQ94JCtwjT1O2b34yj6yDlNyL5Ry+W67gBGFgvYil
+ 018kbwWc
+ E+xa55rHXl8r2Qno6FtXF25ACUoI2PKlqjMnVOr0DfIvHcwwj5ZgrFkhWWKD3y6LcysIB3eBUt0kG0edNU6eRGbME+mAhPUcDCTCMWo45OLjWoJYt+PnHf4SzrF4w4/Ig8z+HIJs8Tg+VWddtMeXgb0oBsA1EyEMq4G0+BnNRBDVCHS1/G/3urdmL+zqk7EPOKPKUZ1aK4GChaYRHr9uM/19fLUH9vBCfbaJS76OV8yxCqoCJILDDPXmUjSZ1IU6Gk+swgzd0cifwmTrbPgaakaRUWMQEXztoANT/ciWXQS3MBw3YQp4+ADMImCmWtrK+lroS1yyK9PWiRcbBYPZuZEhtLIyMrC10I9SNUTU2VCuYPMo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,63 +107,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 2, 2026 at 9:55=E2=80=AFAM Luke Yang <luyang@redhat.com> wrote:
->
-> On Wed, Apr 1, 2026 at 10:11=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> =
-wrote:
-> >
-> > On Mon, Mar 30, 2026 at 03:55:51PM -0400, Luke Yang wrote:
-> > > Hi Pedro,
-> > >
-> > > Thanks for working on this. I just wanted to share that we've created=
- a
-> > > test kernel with your patches and tested on the following CPUs:
-> > >
-> > > --- aarch64 ---
-> > > Ampere Altra
-> > > Ampere Altra Max
-> > >
-> > > --- x86_64 ---
-> > > AMD EPYC 7713
-> > > AMD EPYC 7351
-> > > AMD EPYC 7542
-> > > AMD EPYC 7573X
-> > > AMD EPYC 7702
-> > > AMD EPYC 9754
-> > > Intel Xeon Gold 6126
-> > > Into Xeon Gold 6330
-> > > Intel Xeon Gold 6530
-> > > Intel Xeon Platinum 8351N
-> > > Intel Core i7-6820HQ
-> > >
-> > > --- ppc64le ---
-> > > IBM Power 10
-> > >
-> > > On average, we see improvements ranging from a minimum of 5% to a
-> > > maximum of 55%, with most improvements showing around a 25% speed up =
-in
-> > > the libmicro/mprot_tw4m micro benchmark.
-> >
-> > Nice! Thanks for the tests. I'm wondering, what CPU saw 5% and what CPU
-> > saw 55%? Or was it just inter-run variance?
-> >
-> > --
-> > Pedro
-> >
->
-> 5% -> Ampere Altra Max
-> 55% -> Ampere Altra
->
-> Personally, I can't conclude at the moment if this is just inter-run
-> variance. However, let me re-run the tests a few times on these two
-> machines to see if this is consistent.
->
-> Luke
 
-Ampere Altra Max seems to consistently report ~5%.  Ampere Altra seems
-to exhibit more test variance. I now have some test runs that report a
-5% or 10% gain.
+--fpQPRiuMKCXEzmVa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Luke
+On Mon, Apr 06, 2026 at 05:16:50PM +0300, Mike Rapoport wrote:
 
+> Convert hugetlb-vmemmap test to use kselftest framework for reporting
+> and tracking successful and failing runs.
+
+Reviewed-by: Mark Brown <broonie@kernel.org>
+
+--fpQPRiuMKCXEzmVa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnTxcwACgkQJNaLcl1U
+h9B5CAf/XdUXfquEQHZ5DM2V/kApM++qoDQKaMD7fdZ5l8Xp5RNeZiYWwDSdnV4y
+BzN2kujxbiutqc0bxY7+zKjitcMX+CRVtTNtW1XgThNQ+OfohcV6dL/A1ssDQ3Sz
+wfdtlbNpr3HuSeVJE6qhhAWcRqYwcbOPByaAx6jCWgFJiw1Na8vcv5HUV2ZjPJaA
+u5q4yUUu5v+/5NyctEg1l+PVkX7jrv2X+nPreiUmrUYHHpdNLqd70zX3tMysRo48
+hLIJFUlk+70HNYaez6k3ErRUXXcbQhjPplmIgZ79hEYlJDt0p3Xdf+3s7ZWRguZc
+KtvvAihTywn7/0j7iXx50d7PalSG3g==
+=gqnL
+-----END PGP SIGNATURE-----
+
+--fpQPRiuMKCXEzmVa--
 
