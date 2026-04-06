@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470C1F46C69
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 17:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7195F46C69
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Apr 2026 17:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 786826B011E; Mon,  6 Apr 2026 13:34:37 -0400 (EDT)
+	id F2ED86B0120; Mon,  6 Apr 2026 13:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7378C6B011F; Mon,  6 Apr 2026 13:34:37 -0400 (EDT)
+	id EDF046B0121; Mon,  6 Apr 2026 13:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64D956B0120; Mon,  6 Apr 2026 13:34:37 -0400 (EDT)
+	id DF5C16B0122; Mon,  6 Apr 2026 13:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5660C6B011E
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 13:34:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E05D2C011D
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:34:36 +0000 (UTC)
-X-FDA: 84628830552.13.CDF9916
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 851251C0013
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:34:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VAfNgKcS;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C96756B0120
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 13:38:59 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DEC48BC24
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:38:59 +0000 (UTC)
+X-FDA: 84628841598.19.9067C22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A700D20005
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 17:38:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SpvmHrXa;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775496875;
+	s=arc-20220608; t=1775497137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DodrdiUpriuDp59DhRdN5UuAknsgE+ERRDCHM8OyPpE=;
-	b=CN3t6oy/ox0t2zrSDlqWX20/edFb6HRsUre5U4k4iZI9bi3qyDm3p/DmVR0ad+uvb6R5KN
-	deA5vvOq3Km/6/Me3jiBiJNdDGpNv2tXbP80KSvtlKgACZDXfLgAlyzsAHl0NdsX2cQ8s2
-	nMkqmrph8ZCljqaCXgySIc0j9+TeNos=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VAfNgKcS;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775496875; a=rsa-sha256;
+	bh=PV3kuVo26724tWcQQf08thGuSWeUZ9veuE/NMIQGJRE=;
+	b=nqYmiZtpmPpETxf+QnyB/UYYu6nd0M0lQfgZ8dZr/CONH02Yk322UasHmpuS9JD3cs43hh
+	yP1GsE1VNZvWlHgDLXz8OXktuzM5RoQ7haTsHKdHrakITBuSCnvdMxf7QxjZLMXxKam0Js
+	htfu3TbzvKbNBPQ93dirxpGilAZbT9M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775497137; a=rsa-sha256;
 	cv=none;
-	b=TKcsjwDahIP7UcoYRlVl53sPX9qMLNHKdSnLlBpjy3NmWBTYVXqP11XmZQoe0X4HD4GAlH
-	7ao2jSRn+SD7DwglsKW6hlfsAqqlXaKIUh8Wbr5Jc9me5Bc5WrsxT3Yr5Ov85cer7TqaXp
-	UepKvVna98qq3hw06Y4/4kGof39iYlc=
-Message-ID: <5bb568ea-d025-49ae-880b-a053f79cb8ff@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775496869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DodrdiUpriuDp59DhRdN5UuAknsgE+ERRDCHM8OyPpE=;
-	b=VAfNgKcSAJjZEZko0Jw2TSBjsZ5UMbZ0fqzXUZFVqAbq5oudvBg/NQrQNTnt77jdbqbrws
-	KyIHmV6bdh+ka/Wi4q+BVyAdFUZvFLcEUFdzTAg6Ks1ljONpr0UIgAZgJDKlwFd5FT+9dq
-	cIhX7VoNzipf9xA+82rCuUrl6eldgAg=
-Date: Mon, 6 Apr 2026 10:34:03 -0700
-MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/vmpressure: skip socket pressure for costly order
- reclaim
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, willy@infradead.org, hannes@cmpxchg.org,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, riel@surriel.com, kuba@kernel.org, edumazet@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260402232511.17246-1-jp.kobryn@linux.dev>
- <ac8DEuZhb_aQA4ez@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <ac8DEuZhb_aQA4ez@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	b=nkfE5gx1dE1vJDg/fksKkJbltzPQaFOqY/kzUW9RqHx7PhfGafx6Xljnb6L/i7I2jNThFF
+	KQO5a+7T+CU64yVaeHHFt3o0+6y9E37AIiHP0bn5ZAj1iB1bJwipyAKkhBG5n0Qrv3RB3S
+	sSKVBC5FVViwhpk9tbMNIDDkz6pPLEE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SpvmHrXa;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24A9F440EB;
+	Mon,  6 Apr 2026 17:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941EBC19421;
+	Mon,  6 Apr 2026 17:38:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775497135;
+	bh=AEZp5fDRQAY9KyEO2S76uYsWeMZLHYwUHfXcyppdE+U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SpvmHrXaWUSIteK9NQmMmAVmsS7wA+YILEzBBFJ66TGzP0474F624CRO7b2RR/LoX
+	 ojkRLNVX1047HXicU8yldtMLhQfo/5PcI1WkvKx4llS9UO9YEU/rAu9EqQMXWLi0FI
+	 07dHxiYEIxBDPApS1z11jh+x0ZZudoTIMn/l4/N8=
+Date: Mon, 6 Apr 2026 10:38:54 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (arm)" <david@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain
+ <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, jhladky@redhat.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] mm/mprotect: micro-optimization work
+Message-Id: <20260406103854.f48c27d7709beb680268d388@linux-foundation.org>
+In-Reply-To: <a3ace37b-b75b-47dd-ad7c-c7c3f799dfdb@kernel.org>
+References: <20260402141628.3367596-1-pfalcato@suse.de>
+	<20260402113328.fd0a6f0e28cf74a651fa2291@linux-foundation.org>
+	<6bl5bzq742c522nmhlshlnf6ho6y6a747l3zh63aagp7kfxymv@s2c6fsuikn4m>
+	<a3ace37b-b75b-47dd-ad7c-c7c3f799dfdb@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 851251C0013
-X-Stat-Signature: 539p79fdq7pnz363quq9w6e1e83yjcer
+X-Rspamd-Queue-Id: A700D20005
+X-Stat-Signature: bqm8rsy6bnfwosjnecuu7zuwetiwt9sj
 X-Rspam-User: 
-X-HE-Tag: 1775496873-864202
-X-HE-Meta: U2FsdGVkX1/dN+WM90Mr+Y+IA/FTKeX+bC95h4UKAPLZ/pGkx6dCYIqKpXeVBGDkuxwaJT4Ah1UR/devnKB5sjwRi2NROMLwriuRuL5YON/cSZ3g3hbF1VUWwdfS+wXm3ma77V/JiMWaw+fyn9xg1gDoGoWZklVzTqgVulv54xi+PiRwhyRcarUJ4x7orAXEvo9esIybwslOcugixVuavvQDSQC5S8GFwmj9hjzi6rGjAg4DgDK9LdldfcWtgfB+x2oaeUIuWHGuCMCFcB/idKCB84Z18FrN2xaUOygOyhXx82ZSpAslNdpAcH8/WDxMhgLjrJr6eRIhjX8vHu6p3vcUZ6dvDnR/Hx7OUzY9UBVbcoAkGXn1rFO/pLf4cnjByH+dGj1gUmQqgXpXP3SABVgFOAsKOmUn/SD75O5+12fCM++z/YlwGX4Qq89/i7YYi3AF597Hb4Q+o1XgL+olQ4X27QmqWytBhsKZe7zU9RkGQjyR0Mdy/19AWcPSBsI4+We5wLGv0CAKr/y93CKmS8uerC1+iEmMCKqElh8Y8nLA2+vQua7UAmX2dqa6Sk2qQJgRASMXbczxtGTeu5wYlrkdDQktP/aoWHZYBj8m65YzkgRzd3ZTuJZvBI3os99jdcVi6nW9FIpcMGkfG5dCK3JgiOQI8Um2bYeUBn0vnb/0A3zIpe/KmmHeGWXjSTA/hDbFASW3iy8JVgBDdXOmDaT/V7N6ifZGY6HWlPaN11c3wAKg5yjdE5BDFwcLOguCxwfsnW9Hnv1U8uMfeLliIHhYqpKu8KTRoKjFAZn5NQxCeSh3k68hqtSlvc26lGAJ1HOQ2PZ3cQfxSyX8+1xMf727qiIqt/HopE6jDtOC7c2n3DOJmzjI8g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775497137-169904
+X-HE-Meta: U2FsdGVkX1/iMqblpOG/fnFuJDhE6LTqgI4hoNlMEWxVPt5JOXHYxdyMQywzCWU3J2yQny/LPXdZmoShxEs0BhRfBy8rzd+8x5HHy8NgRIIG0QYFopR5WKmcYQBRQdavtt2NAO+yh5T54Myr0/VeWhfQAx3A2kyZrBn1npix1lXLgcQgOxCP+XxGE4ic/4ctTVj1Sd8E1nOvgqbyCwgu2smr8oNFR8fK3Do/bu0FDfsE3Fisf5d/oQFqCAAqXl5aRMyeXWxPmXTye9sdoV31pavx9PYRgYCSM2yIhmBjGO1beyEj6L7k8i/zFhjULbAi1WxlE1BTD+3qGRne/IGn+K+VfH9zKpCgWA6C0MgceS3lqM+shynUtgE0Ehpadl+7gKV9ldIiWzRjIHnqsVvOzgms/wmf+C4vasGR5TCbv4s24tanOLP9cFn8qdbIrGmD5Q/S4WeCIhBxWpS/JJPCd4H1wgpTi4hhLmtvV9Jo6J+F8LtzXW1XIn+IhaYzoBPFDwgY6HLBL1nACpg7QZ6gmufbIX3UBhjBWWdkqL6mmrIvcbhnEGhntt23mAo9SmNl0jNqUHMtavpgxOdajDW+S3LDMg7LojsE+ZqyUuTAl21sgBG9SVzf1svgpIVUmSnR6AnDVMWbOGaVLlWxvuBH5FGL0mL8n06NZLYq+5E3z+mJKJN7yxt9505iyB8NCpMMQ8OaEAq/ZlCkQTntFsnnVA3YgVktR2Y/7avwHog4jQChjI0OknqtWLEL+K3d9ZfDna7x8e7sn3iIuwyv0mJAzBLR0wc3YB2LWBnGf8ZTnnZy28r5LzlcRzL9fQZdl3zCiAKObWKUiw2/N+5GWRVAF4/TQv6fRkdRn25k1CmHtX4jWOBdSi+jHLGNQusnEuvlTmEllAqKRIihDMlTi1H2Jd05HsG02pn1LQUeJ0dOiHO1Qusl6EzXe3SfI3rLke4DatSHdh+UPltza+dfNk5
+ ejDCAvvv
+ lhG5kcKUVUGy2Zsd8c5O/HQEJfOQaDJ0E8P3zwKQw3OKejC81k9PAYqvV85QrfcA+9GMrl2YDmy0uDdI+k7n/wOFchAKMhCl2EQ0Klg4Dy0xHk/Lou0BhOZ6+3pvvBx3UJpYr8OGwK/b6CmMD1vHe8Q62QHWEr706dLRrJrg5Q7FWEcrGOkcWJEwUqVM9CZ2/Jp6CFGTUWAHDo6ZNqlsVu7fmVfrr7BpAZtycHEsoZGxwKviwICY7QMcCVHNVrycTBtdlXx9N8u/f/0dXaVU1GqBLBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,55 +95,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/2/26 6:03 PM, Shakeel Butt wrote:
-> On Thu, Apr 02, 2026 at 04:25:11PM -0700, JP Kobryn (Meta) wrote:
->> When kswapd reclaims at high order due to fragmentation,
-> 
-> * kswapd is woken up for the higher order reclaim request
-> 
-> But this can be direct reclaim as well.
+On Mon, 6 Apr 2026 11:09:01 +0200 "David Hildenbrand (arm)" <david@kernel.org> wrote:
 
-Good call.
+> On 4/6/26 10:29, Pedro Falcato wrote:
+> > On Thu, Apr 02, 2026 at 11:33:28AM -0700, Andrew Morton wrote:
+> >> On Thu,  2 Apr 2026 15:16:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
+> >>
+> >>> Micro-optimize the change_protection functionality and the
+> >>> change_pte_range() routine. This set of functions works in an incredibly
+> >>> tight loop, and even small inefficiencies are incredibly evident when spun
+> >>> hundreds, thousands or hundreds of thousands of times.
+> >>
+> >> Thanks, I updated mm.git's mm-unstable branch to this version.
+> >>
+> >> The update is rather large.  If people think it best to spill this work
+> >> into next -rc1 then please advise.
+> > 
+> > I think it's a fairly safe change for 7.1, but I'm biased :) Perhaps others think
+> > otherwise.
 
-> 
->> vmpressure() can
->> report poor reclaim efficiency even though the system has plenty of free
->> memory. This is because kswapd scans many pages but finds little to reclaim
->> - the pages are actively in use and don't need to be freed. The resulting
->> scan:reclaim ratio triggers socket pressure, throttling TCP throughput
->> unnecessarily.
->>
->> Net allocations do not exceed order 3 (PAGE_ALLOC_COSTLY_ORDER),
-> 
-> Net not doing costly order allocations is irrelevant here. IIUC you want all
-> costly order allocations (like THPs) to not raise vmpressure as those don't
-> necessarily represents the memory pressure.
+Thanks, I've firmly added these two to the second-week-of-merge-window
+pile.
 
-The supporting context I included was based on the investigation that
-led to the patch. But as you and Rik both noted, the patch has
-greater implications.
+> It's mostly code movement, so it should be fine (unless we messed up 
+> passed parameters somehow :) )
 
-> 
->> so high
->> order reclaim difficulty should not trigger socket pressure. The kernel
->> already treats this order as the boundary where reclaim is no longer
->> expected to succeed and compaction may take over.
->>
->> Make vmpressure() order-aware through an additional parameter sourced from
->> scan_control at existing call sites. Socket pressure is now only asserted
->> when order <= PAGE_ALLOC_COSTLY_ORDER.
->>
->> Memcg reclaim is unaffected since try_to_free_mem_cgroup_pages() always
->> uses order 0, which passes the filter unconditionally. Similarly,
->> vmpressure_prio() now passes order 0 internally when calling vmpressure(),
->> ensuring critical pressure from low reclaim priority is not suppressed by
->> the order filter.
->>
->> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
-> 
-> The patch looks good. I think we can ask Andrew to just adjust the commit
-> message and then you don't need to resend.
-
-It's no problem for me. I'll send a v3 with an updated commit message.
-
+This (or an earlier version thereof) have been in mm.git since March 24.
 
