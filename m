@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959A6FF510C
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 16:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC95CFF510C
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 16:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07D236B00BC; Tue,  7 Apr 2026 12:05:52 -0400 (EDT)
+	id 11EBC6B00BE; Tue,  7 Apr 2026 12:09:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 054F06B00BD; Tue,  7 Apr 2026 12:05:52 -0400 (EDT)
+	id 0A87D6B00BF; Tue,  7 Apr 2026 12:09:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3D96B00BE; Tue,  7 Apr 2026 12:05:51 -0400 (EDT)
+	id EB26C6B00C0; Tue,  7 Apr 2026 12:09:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD38C6B00BC
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:05:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 889708C677
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 16:05:51 +0000 (UTC)
-X-FDA: 84632235702.13.2203511
+	by kanga.kvack.org (Postfix) with ESMTP id D6C4D6B00BE
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:09:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8EBB48C6AA
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 16:09:18 +0000 (UTC)
+X-FDA: 84632244396.18.7D24890
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5E8254001C
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 16:05:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r6qAumRZ;
+	by imf14.hostedemail.com (Postfix) with ESMTP id D8393100008
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 16:09:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zg0VQW9G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775577949;
+	s=arc-20220608; t=1775578157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31FSVCx0zavKn3TOv6Wj4ou81ownTB0RmFya2us7M4o=;
-	b=5oLd/OO8JJQIW790dT1lCGPssFgbdveAiDS4niUez0KHQb9x5ZIiai7+0e+HAjudUmlNTU
-	JxblJF8XjBLogssQ3wqEzUUJ5Pl6+CTrSPNA1YR+6xZLBeKlTIaYZF8xJxf/N1EdfN9yYR
-	eb9Xvx5+mG/fPFmjIvoFQs4dMYkgFmU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775577949; a=rsa-sha256;
+	bh=qlJveMDYEKfKVQwJqQFhg400ubL5f912Md3XDsqP01E=;
+	b=nkpbrzGiSqyPIdYx4Ulr3XJELwkP96gaKLedL71IHw7I7/dYwZnfC4OBjHooxoqS0N3J2g
+	FnfBSk3u40GX5KhgHA7cCYDhRdt86xayYk/1JdDdAiV+RUgruA5avEsR/XI/9SjoqfeCyU
+	Qyqgy+dkI0o2jX3lzZeVf6Iegho42cs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775578157; a=rsa-sha256;
 	cv=none;
-	b=W1JMO4B4bwqFVi/TS/HMGp6WPHppLI7H+iDF+clv5SNJgPfXbtRsqCquxiuJ902ccIHAxO
-	yZGiU9qhiqQKJrC6qfZ7e20FtYjum+s+QLpVsG7B18LkVTTPA3Ar3DvmXXj5UbzxmZbgkG
-	aOndN8lFyGa5k58BLUs4igD3a7Dxz7E=
+	b=BYdorPTwxQjGd+EQWfEBhnrr6tnzhCpYTCch4H8chLBYRVWaJR0GzO9V3tgy3RMMzXX69r
+	xqT1+64jcfyu0sux9yPBLJBRJaXpXCYT8JYLoqwFuYgnvl282cJ59Kirk1zQ8pNHJKQUFJ
+	ENLG9F1SkXC3vU0XroqKyx+cotw3FNs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r6qAumRZ;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zg0VQW9G;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F6E24347B;
-	Tue,  7 Apr 2026 16:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79CCC116C6;
-	Tue,  7 Apr 2026 16:05:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7D4143429;
+	Tue,  7 Apr 2026 16:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54141C116C6;
+	Tue,  7 Apr 2026 16:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775577948;
-	bh=lGp2BtsUVRO4kNlYByDjsk197DjKNjmTVw9N5OE+1r8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6qAumRZuItcevNi0kQNK4pSGc27B0Y8Xwnz8s57+37OFqzCCESt3MMoiygqirtnw
-	 76HCx2amLkWNSAInP56KZ5SopwltsZqvtnnIAO+PwbIDiEZGAcSwuYYujAm9C4OtU/
-	 3C1F9Bh99630PZwZuTY/tutKggi0JcBrbD722tucAGNQqLbtWFonOMoGJ1uCkB7E/r
-	 Jm4vZiQlT78m2MkpEjjzLHUlu+jx9Zs0a1Nvho66qYlCyiYbJsvEteSoEFsFnCGr1c
-	 2g0y2gF/xLdBjFCy7tLCCO4vH9JC11qF3zOMSL6z2aQEeI6jt9sxR3JRzHKve4C0xa
-	 JSpmkBw/4lrEQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: (sashiko review) [PATCH v6 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Tue,  7 Apr 2026 09:05:44 -0700
-Message-ID: <20260407160546.52220-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260407001310.78557-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1775578155;
+	bh=IZq3eFoH971hNaQ5fWFSLPAm17OKpP60ehLVeEyCFXs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Zg0VQW9GzIUTKfH117MbdYQt2PE9Sc4Wr1nEsCmi3Da/xmvEFGTxKHShSUU0LWHX8
+	 X2geS/H8OmV15mGL62gAEYxqx7j55Uw+TapBNrvWuX6xrpgmzbAhiTdKywdkj8tiaj
+	 E8d54gLfpkyftc6CjHlXn3HGKymPd3h+4tFOlbQu2KoLSABJlooA6bzhKTwFTCOS+C
+	 Tcq/vALCBfoRSHWjIakzvJMjPMt/SY2UfHf/23DhBbCo8lVzCiKXUmYheuxryZqLrT
+	 NIPyhEcg9hC4LIqiCuL3J1wXroInDAn7coPgaBhrDN3N+2Mfww22UGKsEbj/VYHGRH
+	 tGrftCCULKaCQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Michal Clapinski <mclapinski@google.com>,  Evangelos Petrongonas
+ <epetron@amazon.de>,  Alexander Graf <graf@amazon.com>,  Samiullah Khawaja
+ <skhawaja@google.com>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v7 1/3] kho: make kho_scratch_overlap usable outside
+ debugging
+In-Reply-To: <CA+CK2bCSoKGxfV+0QL46p_GqC=rj0YhcvP__bLrM2rVTgTNr=A@mail.gmail.com>
+	(Pasha Tatashin's message of "Tue, 7 Apr 2026 10:18:24 -0400")
+References: <20260317141534.815634-1-mclapinski@google.com>
+	<20260317141534.815634-2-mclapinski@google.com>
+	<abptg2AObfxkkxKf@kernel.org> <2vxz1pgravke.fsf@kernel.org>
+	<CA+CK2bCSoKGxfV+0QL46p_GqC=rj0YhcvP__bLrM2rVTgTNr=A@mail.gmail.com>
+Date: Tue, 07 Apr 2026 16:09:11 +0000
+Message-ID: <2vxzse96ah20.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5E8254001C
-X-Stat-Signature: g89fw9g51esn515h5k3gd8t43cb5cy71
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D8393100008
+X-Stat-Signature: mu388wbz7qyhw8gwweia8jeoxkhk8smi
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775577949-590883
-X-HE-Meta: U2FsdGVkX19A8KOC4rYJNqyyGpVhaxYDiDBUHAXaYBKp+tJLQYjiCRL1JoYOUeElIE1ilsppXyPIjkqPwRaZHACd2kNsvoaaVKZVm9A7NxKE6bOvwSE7LH4M1kNKkf/Rd//s4GDL/beSjRHLPkp3YsS9JpVS2IlLC5h9giSAbLd51DoU3Q/OsgvEf8cEZHLdNWXk80Pb9cFq+F7mums7nsobUoexF16GVfOJT/Uzheggue3QsmPa+ud+ZU4sH3MS73samWANQU+sBmKqT1RDdA842GYSYlFCbPHvInxQkuHFuaRHBo1ZzMXvfcb3PC9rJDGdO/7bwY8FOC8qf8PrMMzX4wYGU2mNtHI9ydyEEnHwBo7gMJZr5f5bRrY/Fe7oUQeJaj8+3oaktKm4Uww2l6igCngeExrBAqlmWEveKkbSAikT19ipNAIZ7epFDQ3mIKMLOmzXSYmzuoRXZlVj+vd08aN+3aJZi5SR0QyAbhKzlj2sc+SvAqHwVclmDBvFoJmNjKbojlC7iOZFHeC/GSfvcVCMQWtywHGRkXMajKbUwXNephJPKxspyPidoWjoKZZhS1aiYIQtoNfT5Y72L5osbRunGJRj5gSMP0otYU2r2Opr9MMQ7xXi21FtoZHgGp1O20QWkAva+vnHd2G2XivSW0W2r/7Bg0sv8PllJqSuWpetUmcUbERRO7CSSHTKzAXiE4zwIXo0ZjGjswzd8kAnIAZKp6EB614kHILv9xAWc7F85RocGC/GKYuuO1rihSl9BPmlUvHHx6k0k4Z5QZiSADHAgyl23RLwU3eu84wZDclGx/SR0d4g6uEEiaqjEDT9zvs6sixKIDGrc54zwVGwPLyXmkqMfvfHiCZgZHHSMOd12SDEKSGIYtf/mSHDm/ojkDQT7Pt6Vjjf8XIZ6mDD3GfrsgpiBzGxuQV2NMVacLzHuB6JK/0ZWaaYfv9C1Mcx2kUc9mpYLeuiClR
- 7Ph6cEJj
- DQ/8MgdRpWknHTxHQWswCCzNvBF55bttc2B35C+Dow+DMa2FW8dcH/yblQaDfe1rv9up0sKflRhaq3IivhUXhqqeqamPFde3/M6pAt2xM/DqBU1MjsmDvRVtCASLs40R8/H4fHDtX9nkysaVpTHwo+B/5iO0wcb4WMddC7Gz6eJ8hNrBsCcLfc5c0bqbfzT7mYUG8zDH4vctaLJkA1t3EnRuHbKUaxaxv93YPPefvcOIte/aD/wSS2yQH/iu4OcD7yokZI3Jgh46OIYwCSJxtaPssi1bQ+E7xesWVHKPQ6sc2ogbY3z0H158ufm5Op3f3BEWpAAfRUirWBoMF7XA7a1BpAUCUthF/5qJe35qq+nJWbZ+BlfuOoebslzDeakeOyxhf9++aTNLpsNFNT/9Upq4S7sUTvGuRqGZD
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775578156-865908
+X-HE-Meta: U2FsdGVkX183sbLBGpno54gC0/zcVJQresA4kYjrQzI5VFLkuyF8XhRIVTNdbQEnLDt7aHsRRcqs6gno5JCX9WqcAk7E8L6hJPyc/6w4sW9t30V4hqsEN3MlHthJxcn94Dq21nbTZMuIU08Dn2yRVx/OeOXueV8ito7Rcki0g6CHS2/mEdTUtiSbqHtJEtOpLctPV/tv8bvUHE+9gJU5fxtsDS+cOfZj7m85lf/2uJ5bIcD7Osu77Lc09WsOfIL/AjwgDrJw678V5nRsb46qkrQKVWwsuvnVPnqOQJ+N7occtmQC7yG+VJgp6ajhA99ZFswei7p4KSWoP0xPqsMtdVw3vXh6E2y8zdQSXFM4+OCEkmLkx9WQOJT34/GQOM650UF/yPK7ZDkopUbLgkB/jDp49A2BH26XSyI6yUyHGLTAQAIN7WsQUrhDR7RR4lfDQfv0JpMhASA3yHm7pUOEfGxJBnj1DACLghL/dlqi17LHL1fPyNFJ/wKPxrbjj76KkHlOIUUObEf8YNg4BQmbis9OE0tsjxIpx6CoDi/ZL/cIYgWNClomTFVWdT+2PjZv/3KcdnIpe9f5OJ21O4g0OHeUks20n8tWA5l1PlCzjH9tnnipZThiwOjRHUkALSDamQcy+BQg7zrP5q3t0y2O36ZcXWhn5j5dIcmQeyAm2gzDK1Rm0wJ/d1DCVxw3lrYNJrNIJSIwHf8eCMQORhF9mDYvsmieLKgQFbDUxx6nkDUO65qevqQbeAKTafvHQG9w1mvUE5E4CWllQnrQ0HFlurhoSdYf5HVfy8oOJCNVTxbhwoOo2aEoGxpe+nGCwtGXFtXZTRY+3ZR5CxsmLSmrMSK7M7E0BHwOVaIFtwnCH6Nd5pfPG0XlOd9RcbyEnPFYPZmXd2iH/6QmZ7tnVJ6Mf2vYOY07tYCUh3HtSnwp0Pr5ulBI/xmoPTYlhNwWE1A7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,187 +98,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adding another thought at the end of the mail without cutting the previous
-unrelated questions, so that Ravi can answer all my questions at once.
+On Tue, Apr 07 2026, Pasha Tatashin wrote:
 
-On Mon,  6 Apr 2026 17:13:08 -0700 SeongJae Park <sj@kernel.org> wrote:
+> On Tue, Apr 7, 2026 at 6:55=E2=80=AFAM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>>
+>> On Wed, Mar 18 2026, Mike Rapoport wrote:
+>>
+>> > Hi Michal,
+>> >
+>> > On Tue, Mar 17, 2026 at 03:15:32PM +0100, Michal Clapinski wrote:
+>> >> Also return false if kho_scratch is NULL.
+>> >>
+>> [...]
+>> >> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+>> >> index d2f779cbe279..dc352839ccf0 100644
+>> >> --- a/kernel/liveupdate/Makefile
+>> >> +++ b/kernel/liveupdate/Makefile
+>> >> @@ -7,7 +7,6 @@ luo-y :=3D                                           =
+                  \
+>> >>              luo_session.o
+>> >>
+>> >>  obj-$(CONFIG_KEXEC_HANDOVER)                +=3D kexec_handover.o
+>> >> -obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)  +=3D kexec_handover_debug.o
+>> >>  obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)        +=3D kexec_handover_debu=
+gfs.o
+>> >>
+>> >>  obj-$(CONFIG_LIVEUPDATE)            +=3D luo.o
+>> >> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/k=
+exec_handover.c
+>> >> index 532f455c5d4f..c9b982372d6e 100644
+>> >> --- a/kernel/liveupdate/kexec_handover.c
+>> >> +++ b/kernel/liveupdate/kexec_handover.c
+>> >> @@ -820,7 +820,8 @@ int kho_preserve_folio(struct folio *folio)
+>> >>      const unsigned long pfn =3D folio_pfn(folio);
+>> >>      const unsigned int order =3D folio_order(folio);
+>> >>
+>> >> -    if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << =
+order)))
+>> >> +    if (WARN_ON(kho_scratch_overlap_debug(pfn << PAGE_SHIFT,
+>> >> +                                          PAGE_SIZE << order)))
+>> >
+>> > Can't say I'm fond of kho_scratch_overlap_debug(). How about we make it
+>> >
+>> >       if (IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG) &&
+>> >           WARN_ON(kho_scratch_overlap(...))
+>>
+>> +1. And we can get rid of kexec_handover_debug.c, for now at least. We
+>> can add it back when we have something else to put in there.
+>
+> Are you proposing moving kho_scratch_overlap() into kexec_handover.c?
+> That would make it uglier to have #ifdefs in the C file. If you mean
+> removing this function entirely, I think that is too dangerous because
+> we have already had a memory corruption issue [1] that was challenging
+> to root cause, and having this simple check prevents this from
+> occurring going forward. The problem is that changes to defences such
+> as kfence, kasan, and asi are happening outside of the core KHO code,
+> and it is very easy to miss when something unexpectedly causes a
+> preservation from the scratch area, as we have seen this with kfence.
+> Worst of all, some of those mitigations use randomized or sampling
+> approaches and might not be reproducible on every try, so having a
+> CONFIG that tests it every time in a debug build is the only solid
+> defense against that.
 
-> On Mon, 6 Apr 2026 12:47:56 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-> 
-> > On Sun, Apr 5, 2026 at 3:45 PM SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > >
-> > > Ravi, thank you for reposting this patch after the rebase.  This time sashiko
-> > > was able to review this, and found good points including things that deserve
-> > > another revision of this patch.
-> > >
-> > > Forwarding full sashiko review in a reply format with my inline comments below,
-> > > for sharing details of my view and doing followup discussions via mails.  Ravi,
-> > > could you please reply?
-> > >
-> > 
-> > Thanks SJ, providing your comments on top of sashiko's review is very helpful.
-> 
-> I'm glad to hear that it is working for you :)
-> 
-> [...]
-> > > > +static unsigned long damos_calc_eligible_bytes(struct damon_ctx *c,
-> > > > > +           struct damos *s, int nid, unsigned long *total)
-> > > > > +{
-> [...]
-> > > > > +                           struct folio *folio;
-> > > > > +                           unsigned long folio_sz, counted;
-> > > > > +
-> > > > > +                           folio = damon_get_folio(PHYS_PFN(addr));
-> > > >
-> > > > What happens if this metric is assigned to a DAMON context configured for
-> > > > virtual address space monitoring? If the context uses DAMON_OPS_VADDR,
-> > > > passing a user-space virtual address to PHYS_PFN() might cause invalid
-> > > > memory accesses or out-of-bounds page struct reads. Should this code
-> > > > explicitly verify the operations type first?
-> > >
-> > > Good finding.  We intend to support only paddr ops.  But there is no guard for
-> > > using this on vaddr ops configuration.  Ravi, could we add underlying ops
-> > > check?  I think damon_commit_ctx() is a good place to add that.  The check
-> > > could be something like below?
-> > >
-> > 
-> > I plan to add the ops type check directly in the metric functions
-> > (damos_get_node_eligible_mem_bp and its counterpart) rather than in
-> > damon_commit_ctx(). The functions will return 0 early
-> > if c->ops.id != DAMON_OPS_PADDR.
-> > 
-> > That said, if you prefer the damon_commit_ctx() validation approach to
-> > reject the configuration outright, I can implement it that way instead.
-> > Please let me know your preference.
-> 
-> I'd prefer damon_commit_ctx() validation approach since it would give users
-> more clear message of the failure.
-> 
-> > 
-> > > '''
-> > > --- a/mm/damon/core.c
-> > > +++ b/mm/damon/core.c
-> > > @@ -1515,10 +1515,23 @@ static int damon_commit_sample_control(
-> > >  int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
-> > >  {
-> > >         int err;
-> > > +       struct damos *scheme;
-> > > +       struct damos_quota_goal *goal;
-> > >
-> > >         dst->maybe_corrupted = true;
-> > >         if (!is_power_of_2(src->min_region_sz))
-> > >                 return -EINVAL;
-> > > +       if (src->ops.id != DAMON_OPS_PADDR) {
-> > > +               damon_for_each_scheme(scheme, src) {
-> > > +                       damos_for_each_quota_goal(goal, &scheme->quota) {
-> > > +                               switch (goal->metric) {
-> > > +                               case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-> > > +                               case DAMOS_QUOTA_NODE_INELIGIBLE_MEMPBP:
-> > > +                                       return -EINVAL;
-> > > +                               }
-> > > +                       }
-> > > +               }
-> > > +       }
-> > >
-> > >         err = damon_commit_schemes(dst, src);
-> > >         if (err)
-> > > '''
-> [...]
-> > > > > +   /* Compute ineligible ratio directly: 10000 - eligible_bp */
-> > > > > +   return 10000 - mult_frac(node_eligible, 10000, total_eligible);
-> > > > > +}
-> > > >
-> > > > Does this return value match the documented metric? The formula computes the
-> > > > percentage of the system's eligible memory located on other NUMA nodes,
-> > > > rather than the amount of actual ineligible (filtered out) memory residing
-> > > > on the target node. Could this semantic mismatch cause confusion when
-> > > > configuring quota policies?
-> > >
-> > > Nice catch.  The name and the documentation are confusing.  We actually
-> > > confused a few times in previous revisions, and I'm again confused now.  IIUC,
-> > > the current implementation is the intended and right one for the given use
-> > > case, though.  If my understanding is correct, how about renaming
-> > > DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP to
-> > > DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP_COMPLEMENT, and updating the documentation
-> > > together?  Ravi, what do you think?
-> > >
-> > 
-> > Agreed, the current name is confusing. How about
-> > DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP_OFFNODE?
-> > 
-> > The rationale is that this metric measures "eligible memory that is off
-> > this node" (i.e., on other nodes).
-> > 
-> >  I think "offnode" conveys the physical meaning more directly than "complement".
-> > That said, I'm happy to go with "complement" if you prefer.
-> > both are clearer than "ineligible".
-> 
-> Thank you for the nice suggestion.  I like "offnode" term.  But I think having
-> "node" twice on the name is not really efficient for people who print code on
-> papers.  What about DAMOS_QUOTA_OFFNODE_ELIGIBLE_MEM_BP?
-> 
-> But...  Maybe more importantly...  Now I realize this means that
-> offnode_eligible_mem_bp with target nid 0 is just same to node_eligible_mem_bp
-> with target nid 1, on your test setup.  Maybe we don't really need
-> offnode_eligible_mem_bp?  That is, your test setup could be like below.
-> 
-> '''
-> For maintaining hot memory on DRAM (node 0) and CXL (node 1) in a 7:3
-> ratio:
-> 
->     PUSH scheme: migrate_hot from node 0 -> node 1
->       goal: node_eligible_mem_bp, nid=1, target=3000
->       "Move hot pages from DRAM to CXL if less thatn 30% of hot data is
->        in CXL"
-> 
->     PULL scheme: migrate_hot from node 1 -> node 0
->       goal: node_eligible_mem_bp, nid=0, target=7000
->       "Move hot pages from CXL to DRAM if less than 70% of hot data is
->        in DRAM"
-> '''
-> 
-> And the schemes are more easy to read and understand for me.  This seems even
-> straightforward to scale for >2 nodes.  For example, if we want hot memory
-> distribution of 5:3:2 to nodes 0:1:2,
-> 
-> 	Two schemes for migrating hot pages out of node 0
-> 	- migrate_hot from node 0 -> node 1
-> 	  - goal: node_eligible_mem_bp, nid=1, target=3000
-> 	- migrate_hot from node 0 -> node 2
-> 	  - goal: node_eligible_mem_bp, nid=2, target=2000
-> 
-> 	Two schemes for migrating hot pages out of node 1
-> 	- migrate_hot from node 1 -> node 0
-> 	  - goal: node_eligible_mem_bp, nid=0, target=5000
-> 	- migrate_hot from node 1 -> node 2
-> 	  - goal: node_eligible_mem_bp, nid=2, target=2000
-> 
-> 	Two schemes for migrating hot pages out of node 2
-> 	- migrate_hot from node 2 -> node 0
-> 	  - goal: node_eligible_mem_bp, nid=0, target=5000
-> 	- migrate_hot from node 2 -> node 1
-> 	  - goal: node_eligible_mem_bp, nid=1, target=3000
-> 
-> Do you think this makes sense?  If it makes sense and works for your use case,
-> what about dropping the offnode goal type?
+I think you miss the context here. This patchset uses
+kho_scratch_overlap() during MM init to set the migrate type of
+pageblocks. So it will no longer be gated by
+CONFIG_KEXEC_HANDOVER_DEBUG, but by CONFIG_KEXEC_HANDOVER instead. So
+there is no need for any #ifdefs. All we need to change is to have the
+debug checks gated with a IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG).
 
-Now I recall I suggested the offnode metric because I suggested to run a
-kdamond per node.  That is, having one kdamond that monitors only node 0 and
-migrate hot memory to node 1, and another kdamond that monitors only node 1 and
-migrate hot memory to node 0.  And I suggested to do so because I knew it is
-suboptimal to run DAMOS schemes with node filter.
+So the function stays around, and so do the debug checks. Since core KHO
+now uses this function, we just move it out to the main file. And since
+kexec_handover_debug.c has nothing else, we can delete it for now.
 
-We made a change [1] for making that more optimum, though.  The change is now
-in mm-stable, so hopefully it will be available from 7.1-rc1.  So I believe the
-single quota goal metric should work now.  Ravi, could you share what you
-think?
+Anyway, based on the discussion it looks like people want to ask
+memblock directly and not use kho_scratch_overlap(), so the next version
+might not have this patch at all.
 
-[1] commit e1ace69c33ec ("mm/damon/core: set quota-score histogram with core filters")
+>
+> Pasha
+>
+> [1] https://lore.kernel.org/all/20251021000852.2924827-1-pasha.tatashin@s=
+oleen.com
+>
+>>
+>> >
+>> >>              return -EINVAL;
+>> >>
+>> >>      return kho_radix_add_page(tree, pfn, order);
+>> [...]
+>>
+>> --
+>> Regards,
+>> Pratyush Yadav
 
-
-Thanks,
-SJ
-
-[...]
+--=20
+Regards,
+Pratyush Yadav
 
