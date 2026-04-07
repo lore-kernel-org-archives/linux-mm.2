@@ -4,101 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C52E3FEEF29
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 396ABFEEF29
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35ADC6B0093; Tue,  7 Apr 2026 08:32:06 -0400 (EDT)
+	id 902736B00A8; Tue,  7 Apr 2026 08:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 332386B0099; Tue,  7 Apr 2026 08:32:06 -0400 (EDT)
+	id 8B3786B00A9; Tue,  7 Apr 2026 08:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26F406B0095; Tue,  7 Apr 2026 08:32:06 -0400 (EDT)
+	id 7A26B6B00AA; Tue,  7 Apr 2026 08:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 17CD56B00A5
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:32:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5C711407E8
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:32:05 +0000 (UTC)
-X-FDA: 84631697010.22.DEE5ECB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 37E501C0007
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:32:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1B36B00A8
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:34:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 343E4C27C6
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:34:00 +0000 (UTC)
+X-FDA: 84631701840.25.84B6DE3
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 33C311C000E
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:33:57 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FbCml44R;
-	spf=pass (imf18.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775565124;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="cjSMbF/S";
+	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775565238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tt15GGoXp/TGSIxh5bRlz7i0yNHqkJhNq6grYas05/M=;
-	b=neMMi1vloECPbMFmv1IJvFUBakQQmzOSYMgX6pdq1ChKaJLqzziqtUeHANOpGu9cp/6f0R
-	w13/Y8+ve/T7IsQNnufRANy0f2fcsUojkeX4d/Yk6ViLB1tLEehsM0Q+vdK0eDMjGwp7jU
-	mozZNoLv7jYsVEvKWb4JW0bPc4+UJSY=
-ARC-Authentication-Results: i=1;
+	bh=AZHsJ8d7UeNxDVKyDSMqMJlOMAtv9o44F8YV8qS5530=;
+	b=pHn5zpA464nD0UCxmYkFOxT5bu70S/QT+YTkti4esvea+7lefIvKAJ0knVWqZ+SX0ck0nb
+	sigrCReuIsS4RT/z39Vsuz9YfXF3RAngpX+hNXlP//gE7N0kzHa6KlpS5nKDHyz4wZVgli
+	B+YeIgp2bLggfDzSovg9RvlTZ/yIe5I=
+ARC-Authentication-Results: i=2;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FbCml44R;
-	spf=pass (imf18.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775565124; a=rsa-sha256;
-	cv=none;
-	b=6Xb5UU8cED9EkTgtByL18yEThfNwvwC1oyECVmXbSc+dqhbMeHbdTw9Cq7GPRC6DHTwjK7
-	FokdM41WiJywytMLsq0RhTvue6A8XnZY7kgUUIHvNA5LkRBDEoZQETaDRIVNQT6KEh+ajB
-	aZatTUTeg1w3ioRaetcamb5g3hZ+JlU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96FD8600CB;
-	Tue,  7 Apr 2026 12:32:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAC2C116C6;
-	Tue,  7 Apr 2026 12:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775565123;
-	bh=E3V/mC4oz9GJDgxzY0OoQ1w+qOnILhdk7/LORFd17jU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FbCml44R5kyvcb1qhy4ev90hWUk4djZ8TUrfXthivSW3tQzehmMzHzHMQtR6z0XEy
-	 R8r9ACjTb2QtMFeiEC3+1KNPkhd9NLm724l1ahX1EkjD23c3Vm5AsnvcDQuVlzFcVf
-	 lo8KLwiaWkBr0ddMS9b6lCwvCT4y3jsruVqC4TyyV4iSahUQ6rYERdlFhMonSK0FCV
-	 DJTFhrCnIE2/U0qamATWOQIrr0MNifGt+XxwxA7aCdwMU5Qb77G7RN5toDXM6hMGjF
-	 qk6tpRUoojYAczUUq4ri9mikcZOcxZWxSeiROcu8ynfrQ32g92J5c+xT4ZoyyjrjFT
-	 HGmUkhjpeBSng==
-Date: Tue, 7 Apr 2026 13:31:56 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 17/53] selftests/mm: uffd-stress: use kselftest framework
-Message-ID: <013a8bc7-722a-4d50-8a7f-d6e48a70792d@sirena.org.uk>
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-18-rppt@kernel.org>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="cjSMbF/S";
+	spf=pass (imf18.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775565238; a=rsa-sha256;
+	cv=pass;
+	b=GknzIDqfn1G1wNL5ak92MipzPfYnxGb2mBNoz+/om3WAbNPpf5xSyBXTmwdsLH70/S9IDm
+	foezqAy6C11zOCcHueHMQE0ACsjvNhmaS4gZ8mWkYa0VI0Sq2CJzV/nMLO+LQGjWKwcDbK
+	iKV3EyMiJ/qQYRGER82zUKb38p8pea0=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a2967e5de4so6747498e87.3
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 05:33:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775565236; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dEwvWK3B9ZytVcEkoIEXaZ2Er9psy5m6xv+Ejbr9l4+De2ypvpUbi5vhEXQdPttS/a
+         iBrqBpVRxRvdk27M61vGB/jmIsf40Ek+epdF2lpJGH2wqmQ+3IKPqxCGwxdKHEo4jJZh
+         kbTpFENkyVLdtM+Zom9Z+/Fp0VH+e0D9xecduxKH30fK/QqbFa8eRsZJnv2Z4i+BzKCv
+         dEB7zh+wjJLGZYwX4MWsOLwP9SMgoPl6rpreIitkfdEoZpiPK9gyCPlIsOmeYJdxlBLM
+         feP8aZ4Sp5O6BNfn7vUeA+6A0o5hGIn8h5ies/zdCXyAOOVaa1bATnBIkSOCKZZKBfpv
+         oCuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AZHsJ8d7UeNxDVKyDSMqMJlOMAtv9o44F8YV8qS5530=;
+        fh=1vckipBj+3MY/aNVjUy12ybEcFje2u4HSxU1i57A0g8=;
+        b=EtzjEguTp8dp3sDeu/qcct4m6w0SeUoTk2+guubx+fK1Jakce6/+8ikbKMCWjocTxq
+         Z3BcEMyTiJEIYlQ9fXr65NtRlKT1MZFk/6Lu88gTVhVd7xgcejAZfiq35qQrD0n25PJn
+         lWGmTzS4AoRiY8b8cWA6XI7XU5ckAVAqrik3TstDwHwF4eWkmugPCIS+DvvpQ7l+HKXu
+         gV0do6J+fN9aECT1w+pgrT0dNVoJfQeOkQFlSYGKbwjQkKPJ9btqGWul9l/bpwyMC2p/
+         pNeyYhBGkz64KOwCygFF6RY+t8L2R1sreFzZGzBMgId/e5AtGe1myeXd7uKVZ1BcjaH7
+         p9Uw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775565236; x=1776170036; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AZHsJ8d7UeNxDVKyDSMqMJlOMAtv9o44F8YV8qS5530=;
+        b=cjSMbF/SOJ56OxIdYqvSyZLgojNiOQMBn5ZilRwVAi6My5iGaWN54wrLrZvRfyu1Zv
+         LGQRU5HKovYUdPB2DuGYIbb+iPl5y0v1pc3m/RRZhz4ZtDK4/ACn7puqWqsCzpEvBbQ8
+         vUiBGC2WZmkgxGFhkVWOWubjlBH2bZ6mTi2LaEpdtmxSMut8fbiswTKpgJcIm07zokDC
+         vuUHN6I/D7HhCs58KH7hf34c8XxaHy+DOIpDCY5RnqwNJ6bs75XSEAVUkhwjZyC9lZB4
+         HwrWlbOPu1UzzyH1nOhXDjqa+3KOLfB+CEqRgd63uyqqv4gzChRO8GvfwcKJ6H/4Bikh
+         mAAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775565236; x=1776170036;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AZHsJ8d7UeNxDVKyDSMqMJlOMAtv9o44F8YV8qS5530=;
+        b=c8DwDPq/oYTb9cviqdDmieyQ5+kg6BrkfXGEzy+1XzhD8i2Zu7qewovwHzWYxZ/pUT
+         W0sljZjTNCNUzDK9Ya0w80QW4A37Ze7f3xViA8o1M6zyYbKYqE9FhtgdvjxFy6RhnA+U
+         aqPhgRoYY7Z2QhAnvvpt6cYDSHulztm7tWmnvGSiv6/BhzRU2+hDiN0YWEG9ow8gSFVH
+         dzGD0OJfw0Ukfo++A01wg4xlMA4YZYhdgoiIYkTSbhEY+1r3+EAG2YaaGh9Z+r9uIlIU
+         JpPcfnb7UcBZ10ps9QPZsNbCQq/lvq9ktsWbLY8Eh3CGmoWoReQqv3I6Tzleq8Hegrb/
+         BaUg==
+X-Gm-Message-State: AOJu0YxI5l95YRlVQfgbOO+1MolU5YB3F7doqPRbjKUMfSAjDfzVddK6
+	XKoua7f28bquJBA7YZF7BzkQuhUwtN09h5uHOMVIoo/IhS+GGEpcRA7xYasCYK8yWZBNP5Zv0Wn
+	eCjGGkOouN0wDCrvvn0NHKgDv7buHyYI=
+X-Gm-Gg: AeBDietd8EOkKPn7M6ACTYw+0F2s+PQCrJbQgnle5HZ/vmJKb5fNCF7tumllxjpGuVS
+	1Dp91MSE6y2Lw3IOvNGePkBK6FIA+eK0QcLkL9z3Gs7XAnApwtbkRsimsKyY8hgM3UIHoh2MstK
+	VuSE1iWd+CydlCidKZiogmZP/LFzQ+7DwBWuuhKUDobc4Yp6DJUDP2mFDddN7SYOX0R+DXHBdUZ
+	x7HSD/3WrzIa1gHLTh8qPtB4KMpEdQBo4a7x9/I5f+5ku9KtkjfFIa3pVlqc+DIuVssi8SKe7M2
+	zgtO
+X-Received: by 2002:a05:6512:3b86:b0:5a2:b156:8496 with SMTP id
+ 2adb3069b0e04-5a33757c307mr4780277e87.20.1775565236122; Tue, 07 Apr 2026
+ 05:33:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xv739QkPGomL9e4F"
-Content-Disposition: inline
-In-Reply-To: <20260406141735.2179309-18-rppt@kernel.org>
-X-Cookie: Now, let's SEND OUT for QUICHE!!
+References: <20260407110002.204755-1-wujianyue000@gmail.com> <83bca4c7-ab12-4788-ac91-5ae1736b031e@kernel.org>
+In-Reply-To: <83bca4c7-ab12-4788-ac91-5ae1736b031e@kernel.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Tue, 7 Apr 2026 20:33:46 +0800
+X-Gm-Features: AQROBzCbhO753qRjubFDt6hd3DX7-zNPR7qVOrMNkuIDyw6tMI8ChuQMmCsZxvQ
+Message-ID: <CAJxJ_jjrFWrgJVAwx-K6p85WKkGi9tWvcHpdnVnMksjSg1aB5Q@mail.gmail.com>
+Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	mhocko@suse.com, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
+	lorenzo.stoakes@oracle.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org, 
+	bhe@redhat.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 37E501C0007
-X-Stat-Signature: am4fo7g5c719tdbrysq4p8h6dyo3kfih
+X-Rspamd-Queue-Id: 33C311C000E
+X-Stat-Signature: mq8z4kn6t36kqcqttjsdwkxhhidmotiq
 X-Rspam-User: 
-X-HE-Tag: 1775565124-621088
-X-HE-Meta: U2FsdGVkX1+/m7JddgxFOVffqYlD6WnUL2KntBuJ3cvFnS710xfN2iyyoGSJAutHf5nEDpe6v/GwQbPM+3C+hHx7nosAyBOjJQr1JILMrm9icgnPe8LiMnINYcpkOJlK79x8FZBS2PWNuk/8srqrFkQi11bpD6yRop0ruiIUQpjuR2NG27dI/FVmJVHtD0FhF3/uySkfyFO+Dpth6Or3/RCi0cR/ohxjUmtPsKvXAHBYCJL7oE8aDK2MaS/QC/EZg/8ui6QOHunuYgaDdSONiRF85xsbW9gqvSIc81VwYtBWgfJD53MkHM40NoASYp01cMqBXSVXSGzoRcZJJJHEA5zhdMaH6AGt0kMCbZRv+7CZPB3g2MsaPWAj2ICixu3M4OlXncif47ia+CLrEzsnOFW6u+hACXQufHem+UtbA37by1wvuhuCUweHiL0URi0j2udw3pnG9g4QRfxJgKuVTRArB85htopNaZD/yCpNUKiSvTwQAiq/fIqIeF4HK0o7hD5zKpDmgQZWdnImOdI/rkwl4H1hrTBrpQbrysRXC0rMMUdhcR16yWtO/enTmOqKuPwq5Tml1Hh5gQh7zvVmI1I3mTxw+58vB//iLZ0yE9Hc9CazHHWKF3rOt2Pyu3ySEq9tJMk8q11VLmo0FS7W7DExL1HJjd0RbZYnOlQ9wawFTMjI3O+TH3OGAkmhtN3l4k85+oi88GhEhIFsdpdBkr9IV0SKMmsIVn9u3yJxzM5stQvj5/S8K1HY0uuIAL2LagnNCxtwFd/BXGlBRF3TOn5ySXn9qip3o6qbUhq7Cj/oQMTJmQXwsC+/IRebEWWLft8NSuHCm5uRKXbETlpcKMlNhrEKBpw3v1+wYUnIQ3KjfaNawETEAVcov9hIUWMTeLCZfvZjiI6bFEN9NP+DjR5eEy4phocjgigA7HXlPG8Im2C3cNXxCaChOobxWdZ7AM2J5fLK472PIvDnAxr
- Q5FrO0uN
- my4vba12c339G7vTOCn5ssSpy5/D3SfrNXoSOMP+1BiSvQibA8qKEoXnkF87L6/9/XSfxdWp2iw2vsGDnkCet/54FBALSAMZVi7Lf62ALisQc8TsrdF5T20GofEGNcu1KwyOXzgNpq63ZXfkDTw2SaUWIi9di8cQlcxY3HX2YU/gnfDehlaFJwxEX23++5WUolAuh8JZGC84qrhmBCriNBM2QN2nzPrq1jXadoI7rxDU/CEzXOOTyTUN+d++OWHSA0tJxMwACXS+gINLXGr5pr2PsWFkses8ZQtnCPQGU5XeWZeJQyvhsx8mz+g==
+X-HE-Tag: 1775565237-43591
+X-HE-Meta: U2FsdGVkX19LKLszSlj+an7M0g4aOc9l8pI7CcWuHGKeJ5wfcYnclBJtm4DenzBREykfxyD0fb9XsdyiHCp7aLiUpLs9+pbl07LbrkZ5BXBqi5MF9SZ1Zu91hVVvB2ydJfa4T5wx+5MH8UENpRfIrnGdro5H/K7VZ6UyLQPpwegEUP8TCn6HOAn06CTid8d2iGitEXHH1ulAf1MSAKEo70Jr5Jby6LDdU+fHqjUi9vGJWo7PV9SsPFr2g/qETtFSPch2j6glNuTE6r6dUKwEAH119ATrRMYTBxnw/PptiWfdSU8oWXH4hOZinxkrElH7M6XuS0DgTbxy5crRsOqIUWbEUTR5XW1lfbos1axyuk2mbobePnhtgiS+J7rzgV+9kZzPCOnbNrCrHBH9wzSWkp7U36x5oZF5V61syMIkjVNG+QhkA19XlgPkoHCuJ3QwIm3KS99Z4DFpjh65FXCvRxmu/R8YPasLAyi/7h0zpM4udyG8LmJf2N7sTpqK/pkJ2q3cUvlDoq85x9ITlV3+8bOx10IysewGW+lK9Sjfo70K/n6UYyX5grkBuRAayp1E+EWpKySuK/AOK8wVlGUxk82wSVbQ5ms1zRdqqiX/R0nb3BjYBjE3Dr2HOvfpSoSeQ1kQYVV3dE6NYAm2OxHzEknppaPpzQ1HTTT7sKv+Wl4/ghxvtN8T1atkKCpAWplRNOlzcKnclDCSvP1HnscTxs603qReUqup+iRu0WaGUpXGwpx2TLG7JIh4P3cay6F08QR6v4pq1cOttKS3M7bD8w29YHDFv0X4HdnjtkOPfNcw2/k4feJtR5f/VTnKGKi13MVhPd27gASo8tradtzXRhWVYjzGIPH6t7svT0UIWqTyTkHuF/G/KMAfVy/GK+7+IYv/tbsyvmzzqO42xCNi/gApTLbgmUWtc4PrVFtOhkEgixJbb9H9+yBcI35ASgkEYMXLZNwA3V970iVXnrt
+ wEWsVgMn
+ GuBsrfWynxv3yEE7Sq+iZ1d54kHrL2wJskyH/zLEIZWl3Qg8vPRq5AeZL26s04vN92RK5SFt/+XRsfcnRLfepaxRX/5ZEUheOcLaqQ5nTMZS/Y6ucP3Cnt4JmjzFyoKMnENHwqKsMIvz87Teop5ab0G5F6WrNT127y/4y4c2Ex3wLMg0+eaHKnL6x0UaJTPgkF2sefgeA0K5VnThGJYNGpHm+5g6bXnvmTTpnUYrhV3GUTOgKMfX9IA3ERqv9UKiiSOdqmaDY+wN7l0AIBxr23/YCFAfPn8JDxHwbClj5S05/HuNi7qOHzE63kpxir0zpkOZKg3VnXnL+LMi91Rz7r2yQfuja4ulNGvcD4DTMjNK/zgNlESUkRe80edkcgtpk6DDdcrFyl/MmfKVJz2CqcDAiiboreSyCw/EdX9//Rw4zzYpMrJaWCINemArgBZrRKuZW7OxC/bLJrrrBZwWdJK+SDLVMh11wj9yIqZjozaxysGCVAx13x0VfhJbaZwlimFrP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,52 +140,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/7/2026 7:42 PM, David Hildenbrand (Arm) wrote:
+>
+> A note that shmem also uses swap.
+>
+Hi David,
 
---xv739QkPGomL9e4F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for the hint. I agree shmem participates in the same
+anonymous/swap-side paths. I'll fix the commit message in the next
+revision to say that clearly.
 
-On Mon, Apr 06, 2026 at 05:16:59PM +0300, Mike Rapoport wrote:
+Best regards,
+Jianyue Wu
+On 4/7/2026 7:20 PM, Michal Hocko wrote:
+>
+> All that big churn is really worth it? Are there any other reasons than
+> "not so appropriate"?
+>
+> Really if this is not a part of a much bigger plan then NAK.
 
-> -		printf("bounces: %d, mode:", bounces);
-> -		if (bounces & BOUNCE_RANDOM)
-> -			printf(" rnd");
-> -		if (bounces & BOUNCE_RACINGFAULTS)
-> -			printf(" racing");
-> -		if (bounces & BOUNCE_VERIFY)
-> -			printf(" ver");
-> -		if (bounces & BOUNCE_POLL)
-> -			printf(" poll");
-> -		else
-> -			printf(" read");
-> -		printf(", ");
-> -		fflush(stdout);
-> +		ksft_print_msg("bounces: %d, mode:%s%s%s%s, ",
-> +			       bounces,
-> +			       bounces & BOUNCE_RANDOM ? " rnd" : "",
-> +			       bounces & BOUNCE_RACINGFAULTS ? " racing" : "",
-> +			       bounces & BOUNCE_VERIFY ? " ver" : "",
-> +			       bounces & BOUNCE_POLL ? " poll" : " read");
+Hi Michal,
 
-This is going to result in the output of a nested line start "# " at
-every print, is that desirable?  I think it might work out OK given that
-there's a stats report each line which will print a newline but the
-whole thing is kind of hard to follow.  Some comments might help.
+The intent here is to keep generic LRU/reclaim helpers separate from
+swap-specific code paths.
 
---xv739QkPGomL9e4F
-Content-Type: application/pgp-signature; name="signature.asc"
+The LRU helpers are shared by both file and anonymous memory, whereas
+swap.c is meant to host logic tied to swap devices and swap entries.
+Placing LRU code there would blur the boundary between general reclaim
+and swap, and make the code harder to follow.
 
------BEGIN PGP SIGNATURE-----
+Separately, I=E2=80=99ve been looking at routing zram=E2=80=99s swap-slot h=
+andling
+through swap-owned hooks (e.g., swap_ops / swapon probing), which
+would involve swapfile.c and swap.h. That=E2=80=99s likely orthogonal to th=
+is
+LRU move, but it=E2=80=99s driven by the same goal of clarifying the swap
+boundary.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnU+TsACgkQJNaLcl1U
-h9CZXwf+J2YrNrVT4p52lqejfuS/3b6Zy++BrtXR8nKcyiouVov9y48jsqwl/dfy
-sv09vtmbtb00shlFbawnMzLZZ47c18p9sxXZcIZBiXtgOItUehI5LdAV1wpC9K2K
-4AF59vBgfbLOXT3MvNvv5v320WRZExc7fOuT0SId+hCYs7FNb9nOzW9DDDjn5Hke
-wtMW2lKe+Zw1eZiFVlb3b5SdsCAvA35P8GF7yewHZBSdw6RG7oh2EH65QsySz4BP
-HFuR0pTneH0H81YU0MVDjd52KrLojI7OUfkvy8tlzMhhP8YDXJ65KySbK14pklrW
-jodMVXPx/2C0319Go+dXY4hw7Nks1g==
-=nkoY
------END PGP SIGNATURE-----
-
---xv739QkPGomL9e4F--
+Best regards,
+Jianyue Wu
 
