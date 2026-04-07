@@ -4,81 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B9FFEEF31
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5253EFEEF2D
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE826B0089; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
+	id 68ED16B008C; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3327E6B0096; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
+	id 618706B0093; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8176B0089; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
+	id 46AFA6B0095; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC006B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:04:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 666141607BC
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 245606B008C
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D1D945A78C
 	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:04:54 +0000 (UTC)
-X-FDA: 84631628508.14.0DF74E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4A7E1A000B
+X-FDA: 84631628508.27.DEE1C8A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A14A71C0007
 	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:04:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jnKWEjEQ;
-	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l6wMaEo3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775563492; a=rsa-sha256;
 	cv=none;
-	b=A8kPQ/dIOnbWbriRj/0tEV6YUtPMQa36vhfy8CplYjX3B7hrjLp0/G5qDMjj+yAE5PqxNT
-	64/gL8myFZe4MpjGw5BLKbQ2pYB+TIk4s6BIRA1q86NtgaYBuSgxmFLLjadygBY+As8+rf
-	233oRIL/L1RVrFGfIfQBeT3oH+gGbOs=
+	b=bevzFTFBLf36BQ8QleGmn50UWUijEQFnevjBPN8nkLUCg1IMke0tW6G8zDtmPYAlQfsoeW
+	GNIXxgMhyPycYsA6f1f665kj/s6SJ9eFOV+xd1hVKmTnAJcvHiMYdgdlkXVnmSLhkowJwS
+	/kpeh5FSyiiYamfZDU2bJLIfpTRbO/o=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l6wMaEo3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1775563492;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ojp3ecTA8eXo4rSjwC/yB2vYE7Fl9YQLxfGHgQ1K/qo=;
-	b=Q8CsM9FqZy8K0lH3VClJpyhae5Sgo+N5Yp7aHgjJ2hyR1f6MpUyrPCksq1MVOiKjh41Zzo
-	6axdPwlYHAKj3gFcJ0rPmCYdHn4W1KSm0CjtDsPG6ofv1cwqsc54RCOu9SlNlpGnjW+Zbb
-	YcYNPYPSdke+mynbGbEbghJM5n9BJWs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jnKWEjEQ;
-	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RCgn41vKVh7UTi3tzbMonHYV9Lpi7YIgy9WqLSO2mes=;
+	b=FxGz/2R3id/jKrvblRNf0wubaiz5QwLj62vsuuIP9k0PpANegIqg9ib14lhnKynG9PFfNi
+	Q6/LGK1vyoPP3+/zaR4CS8nDbZSimg6C9TTaFOoC1uPnyPQY0zvomyJFcdLWyKfCmfdece
+	pAh7PDj8hjh/8vuKesSpDWftiEHj/3U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 54B66600AC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 65FF944571;
 	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F0C22C116C6;
-	Tue,  7 Apr 2026 12:04:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3886BC2BCB1;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775563491;
-	bh=rnAsMYHwApiMDeBMLFGLCyhssTjSfYoF694jSDRdeA8=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=jnKWEjEQVYgpExdziuGwn74RCObtReD1Mu4cp0gFJTdfmXjzXJqEMClHFe7QvzSkm
-	 UKyPqOMN+f0Hv4zWp05XT2Dw6CU2RLDrciu4ilYkHK8LjvHqW1xZWP+SIHZgNHJeKq
-	 SJBUkk8RxUZ6ABpk/zzZluHkjlGlmJ4UdonoirSywcUL9uUdp5AHeI9v/i7rGPgUwm
-	 7MPlySW7mro+yKb3VRwCM07wxsbpCPBSYK9ckRYo6wcpHWvmdWdBHi438RDwuu2khz
-	 HsqX8Ggn94Pc1jkNqfpAD+R27VpRm/AL9JxgmYRSgQ6d8gti4iA30W8wwp6SO7xEoB
-	 q99HNhTXjdWWg==
+	bh=VkpgFkQP9kSm8dY+9afCyPiICs3NYwoC96e7crLfYA8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=l6wMaEo32KUG6A0ABd7g5ETkXEUy3+Yo/M9sZPKNMUKtPPjLx3q1AkLCPmUudMxKo
+	 11qOKqetdlRMkDjPYW0MCud731+IF0J19HYqkepi+H3v+YocOaI1HJsn6O7+ChYcDw
+	 ef88Fo0dj5vLFwxmlmq5IwlMvxbsRwT+r5TIfnMRMV0/NTrT4aSMwVWlkHAJkY/NnR
+	 PjVa2bVhbG9fS1TAdqENDm0EMTZR92a/6os9hQfVV7Gcv11slm/B4LtHcythWOamzE
+	 FbjgY4c0XKh38PycAkSCGMGa/t2uKYfDWfCGpmjEq8Za3dR8FdLDmCzlzbF96uageO
+	 VZ7A9xImjAX7g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBF2CFEEF21;
-	Tue,  7 Apr 2026 12:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C765FEEF2D;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH v4 00/14] mm/mglru: improve reclaim loop and dirty folio
- handling
-Date: Tue, 07 Apr 2026 19:57:29 +0800
-Message-Id: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+Date: Tue, 07 Apr 2026 19:57:32 +0800
+Subject: [PATCH v4 03/14] mm/mglru: relocate the LRU scan batch limit to
+ callers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XMSw6CMBSF4a2Qjq3pm9aR+zAOSrmFJjxMQaIh7
- N1CYlQcnpN8/4wGiAEGdMpmFGEKQ+i7NMQhQ662XQU4lGkjRpginArcVk284wiusaHF1JlSSOt
- k7hVK5hbBh8fWu1zTrsMw9vG55Se6vu+S3pUmiglmTihvoCCS6PMInYNuPLq+RWtrYl+emb1ny
- ReSW65yLSl3/55/vCB873nylmkJvlTeG/rrl2V5ARQoZQ0sAQAA
-X-Change-ID: 20260314-mglru-reclaim-1c9d45ac57f6
+Message-Id: <20260407-mglru-reclaim-v4-3-98cf3dc69519@tencent.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
@@ -95,25 +93,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775563488; l=11034;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775563488; l=3260;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=rnAsMYHwApiMDeBMLFGLCyhssTjSfYoF694jSDRdeA8=;
- b=FEiyJ6uCKhhGZABd/ZodvKKGBMfd59J6hZI9YyfOpXGvpC7AkXgqfff2CBAssKHI4YBRO4tMb
- KQXU11Puhn2Bnxefxcq5GjSrbXOsZBDrG/7rBYnVuEgSmqpKqgFNJnN
+ bh=t1HUAx5d1QFG9Hfnk5BrzG1D63onxNMjgtf1TQ7zmGc=;
+ b=G/LAzVsgXa9uyC3AuUSyPm/Favo6TWapBfVT01cdZ+N2E2hSeUNPHof52gt/swak2Zegh5DwO
+ TfpBpNKQD14CjIXlof4cclpmFDr6LD44KvOENP/dUYvCCYezKnFfds/
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Stat-Signature: 143x7poih88wqqc1gd4n8ic5rj7xyn8b
+X-Rspamd-Queue-Id: A14A71C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4A7E1A000B
-X-Stat-Signature: 9ocxco7o73ygbzest3ieui3oep57ahs9
-X-HE-Tag: 1775563492-563809
-X-HE-Meta: U2FsdGVkX18sDmG+RqeAx1E6Sza3aekdJHbHoTxo3uvuKqvqtFnCiwO2GXSDt3cuB1Uww4bFmuImM+5BCWO4H7TqaY8Wz5M3aDb7X7VhB0MQ77QLFDfSUWc2XVt+Ph36tgov9mT1wJJe66+V9Yu6CgwtoweXymjXgTH7NWSl7atyD/+/5vinfgab67prnf+sS3OqqiEsDVGE/sY+Eq9PNsnfcFFM8vJuZ1PNosYn/3xU/FmL5k2KQjy/K+DOOqCS0IM/0crux/Vmh/vyqN8R4S4YYUmrSPvA6upq+2VVSpsHEXRKhE6yNXdetDgNkOH/OJQYYP41sUUNdCk67yHgcY+fC9hAB6bhv3cO5kHj47zYqDbBPI3CBEdYAczq1wbqgi+9qShdxpsiZv2xPPOVH+ZvY2hnuLeq0UZl2BYPBtnkH9B9eOrsa+4JE6gu6DaxDa9Jjc9RQ9ha8qlmBag99FSZX1Ik0+DOWcf3dpuBJT/Ujg6p0L7k4JnXN8v4F2Hr3gbpM03/po6Ds9aoU8WHhZb002qJqMamnn7HOWq+FYInivGVYmRqeQGPLZIDWWNU8oVYaGaEupzLgEqdJ0zxEANYd+bqYZoJHF7moG43p80ch+GpOsWU3E2hS4JKwEhc00BYjoYk6uc8aKgnCY8hPI0EEg1eUqTQqe28EMSpMQ1XkB+JEpMJBk7jDVTS2jzE/6KCWbzZ0txFGFQAMAZWpA9DJfCaz5Nop8Qn/bbj2/e1HCcHdl+orTrgrcZarvwTH0NiAmd2CPFmlm5jRVySjZ2ihlhTuQEP/T68DphYEvTmZrabirj32rubqPGs9g25ldsDlCfAZHDm/n5cvoHaBQLJ/ewzQPhfcKWWxlksb6I0F4eAb02mKWujapRpDo7EHR+tubzwaEk2hc78manRbZrWSsM2bkLRRYJ9cchrf4k+RsVA/ls3nS0r+0iQ0VC5esSspCLtw2/cIuuny2U
- r+k1sexS
- YksDbZE6ZBZvDtP6BpeNwxOSn416MmC7nCAbWX0CRCEWgIuLxwrye+BWwgBZSzIQSpiPb5DdUJ07kP1Ihgit6qT/EDlz/gfSYIMu/qNwCnt3bYBkXtpcOz0cPgMzc7GZW79efKfbYYUbxEOkL8WjcuQsXeluyx+A/VXY5836qBCF1olE/b0SQT/TcR/TQ19fSs+TaIH1sVpzcBHRtyGHPgRsOnS3OLbZnxSUTfiGFWRUPvJamV6EWUT9stufaA/ULrwaCRxmvFNyIFDge6FZDirI+XXzpcTJpHbi560hw08nlUbEyUw8kYrDylmHYKR+irjyO2Pk6EtAeBNU1TvVPKMCKp+6iMHXtRT+L+9vrgGNwJom73Z3EoQ+V3ueDg99H4b6aexGtMh44y0W5KXNkYob4tQ/cSovKCXp44NwJ3u5EJAUplCC8KMyfvhn85sE3VtZ5znGnIHFTxpAhEAEMEZiOmAcab90vuHDhNrvLfSy9YJklsV5EFuPZKg3mauV5JQnz6ogtEV5Xcg7HIjzivmnlr7wYu+P4fCUJ5vwUPXo2t9nLUtcVcwuVejyPvy0bUeyFJ03yCIsCqwqZhK0yPvmLI+5YkYIMJo+/I5WN30+dug3j6Rquz3uwuurLuQ3EXusK6Hu+ETZjc/YOCvl7hhiwzv3tmwStAiys99YPa7ZQsZs=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775563492-602583
+X-HE-Meta: U2FsdGVkX1+vyFxUdRHqQxgZ9CKZnfM/p47ryxTKEfBsJTs63LBUCEFDrsqBPRFhVaBfG7W6fUva8adrKjgOae+E9WhU6HY3OY1QwbnxkhqGEPlIzdSTvZB0mxE+DcKPbRpEH7Cr1KcJ4HbIZJT8kMhCyJ2gwvi7SfqAUxahuOuQ1OExRuBt2WV3lLqMcxIBvC/Kn67bYbkSm+zqqLIC8HXBJFyfH2sMVXzbe3QtFqLxhJNxzkN3vzvs8NmTMGYXD/qpi3oMvIpJNAjd75hsfiRmb4wJihuTtqN2nV6qSD5GQI2+dXAu/swK73hM7nFPnYR9oGlb9JxnCIYAlKtpdNdyllFy80HK63A7cj+0uLPs2FMkfMQfH8P0wgZe3K6lUl8/FjkSjk8EqmEKvSkO2Hdmu8MkxkoG+S4t9dTP5Lg+FryvE8zhjbPpY8xGSTWT9Y7VrlVX4CRx+ZAID38vf1y6HzyPdIunLqPR8cOTI7rxHtQ+YKAe4JSWwXsG+Prmpwo6ENO+29GQ+GDR/6gApEDKid+5CUjziZDsgTsw4sAQ4KYNCiZWhTVFOj7QLVB7SpAbK6vTHoKMFZPpQw82bg2grP+7VpplC+jMzLearwWNe1Ndjvhv/yKETMVVWjZPVL+ZokfSZa2lNOp4xUVe/bKLepnUoK31mhrNaRAXZZ5xJJghfEkEpb8MWhH5IaHv04NAO7JG3PFy/L3nt7XLSK38QweaRaw8DAhJwxcsokrJCoEStoCJ1hHNMg6062b0xH2/0oc2vmFLHvHvmWZlRdO3PBG2MnN1bGbgqwYVcobSG+dkWdqxWEJxqe9V0BJtzA1/IeUlxqIbQYzwRanLhsEG1iGfxwldfzPXmC+9lryU8c7CHW/57PFCh6meYzERA+QUzaOaXAN0CnVPSLRbYg1oaxPqWu4odHPklcZaw3sMD0Y/7jJ2LpWgb4M5iq1s9shlO1QAsS/cJfF0QyJ
+ P9+r0xU2
+ 8ON7X0fUmpWGax8Wak64tfFnea6QxqXa9HAXXkM7cQZZaWsTnwBpbxMBWfC6sJ0r4ZJ6y7xDmhO/ImEeuMQzf5EhkYT9bl1LWw5afVksvmMjFrmIdTykL4I9c4MMZV2wwNm5cXxZnzQ/GqsEBeybjJ1jm8pzzeJPLISPDmXbQbnmnMR4eEih35OAjc208EnHKsPMLM3MpzGnzuNDWLO+N7taFfBV31tRdJkiA2isAW/1KBpmKTNsDPpw/LTst4BIrYOc036OYTJ2EZB54OE+nFfTjCOB16RMIWEFIkOwOPMO/ViPyLbNBMyLpctKxv9iKsk4LBAaBWZf0p4tZhF2tJCykTjyaIrbtnDtu3EAVNLbne4v3sWB67xiqxEemVczcxOrN14PWWH1n3XQ2EIjSu4084c5nsRR7NK5EG3vjpwEuBab+JgwUWkpIsxCeOvy0OQBhjG+wbCPFrY5nnBLcr/HfJUSLSlmbifyiaejHJ1XcSspJ5YuNJ5sQOIh8bm7pjvEh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,261 +119,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series is based on mm-new, also applies to mm-unstable.
+From: Kairui Song <kasong@tencent.com>
 
-This series cleans up and slightly improves MGLRU's reclaim loop and
-dirty writeback handling. As a result, we can see an up to ~30% increase
-in some workloads like MongoDB with YCSB and a huge decrease in file
-refault, no swap involved. Other common benchmarks have no regression,
-and LOC is reduced, with less unexpected OOM, too.
+Same as active / inactive LRU, MGLRU isolates and scans folios in
+batches.  The batch split is done hidden deep in the helper, which
+makes the code harder to follow.  The helper's arguments are also
+confusing since callers usually request more folios than the batch
+size, so the helper almost never processes the full requested amount.
 
-Some of the problems were found in our production environment, and
-others were mostly exposed while stress testing during the development
-of the LSM/MM/BPF topic on improving MGLRU [1]. This series cleans up
-the code base and fixes several performance issues, preparing for
-further work.
+Move the batch splitting into the top loop to make it cleaner, there
+should be no behavior change.
 
-MGLRU's reclaim loop is a bit complex, and hence these problems are
-somehow related to each other. The aging, scan number calculation, and
-reclaim loop are coupled together, and the dirty folio handling logic is
-quite different, making the reclaim loop hard to follow and the dirty
-flush ineffective.
-
-This series slightly cleans up and improves these issues using a scan
-budget by calculating the number of folios to scan at the beginning of
-the loop, and decouples aging from the reclaim calculation helpers.
-Then, move the dirty flush logic inside the reclaim loop so it can kick
-in more effectively. These issues are somehow related, and this series
-handles them and improves MGLRU reclaim in many ways.
-
-Test results: All tests are done on a 48c96t NUMA machine with 2 nodes
-and a 128G memory machine using NVME as storage.
-
-MongoDB
-=======
-Running YCSB workloadb [2] (recordcount:20000000 operationcount:6000000,
-threads:32), which does 95% read and 5% update to generate mixed read
-and dirty writeback. MongoDB is set up in a 10G cgroup using Docker, and
-the WiredTiger cache size is set to 4.5G, using NVME as storage.
-
-Not using SWAP.
-
-Before:
-Throughput(ops/sec): 62485.02962831822
-AverageLatency(us): 500.9746963330107
-pgpgin 159347462
-pgpgout 5413332
-workingset_refault_anon 0
-workingset_refault_file 34522071
-
-After:
-Throughput(ops/sec): 79760.71784646061 (+27.6%, higher is better)
-AverageLatency(us): 391.25169970043726 (-21.9%, lower is better)
-pgpgin 111093923                       (-30.3%, lower is better)
-pgpgout 5437456
-workingset_refault_anon 0
-workingset_refault_file 19566366       (-43.3%, lower is better)
-
-We can see a significant performance improvement after this series.
-The test is done on NVME and the performance gap would be even larger
-for slow devices, such as HDD or network storage. We observed over
-100% gain for some workloads with slow IO.
-
-Chrome & Node.js [3]
-====================
-Using Yu Zhao's test script [3], testing on a x86_64 NUMA machine with 2
-nodes and 128G memory, using 256G ZRAM as swap and spawn 32 memcg 64
-workers:
-
-Before:
-Total requests:            79915
-Per-worker 95% CI (mean):  [1233.9, 1263.5]
-Per-worker stdev:          59.2
-Jain's fairness:           0.997795 (1.0 = perfectly fair)
-Latency:
-Bucket     Count      Pct    Cumul
-[0,1)s     26859   33.61%   33.61%
-[1,2)s      7818    9.78%   43.39%
-[2,4)s      5532    6.92%   50.31%
-[4,8)s     39706   49.69%  100.00%
-
-After:
-Total requests:            81382
-Per-worker 95% CI (mean):  [1241.9, 1301.3]
-Per-worker stdev:          118.8
-Jain's fairness:           0.991480 (1.0 = perfectly fair)
-Latency:
-Bucket     Count      Pct    Cumul
-[0,1)s     26696   32.80%   32.80%
-[1,2)s      8745   10.75%   43.55%
-[2,4)s      6865    8.44%   51.98%
-[4,8)s     39076   48.02%  100.00%
-
-Reclaim is still fair and effective, total requests number seems
-slightly better.
-
-OOM issue with aging and throttling
-===================================
-For the throttling OOM issue, it can be easily reproduced using dd and
-cgroup limit as demonstrated in patch 14, and fixed by this series.
-
-The aging OOM is a bit tricky, a specific reproducer can be used to
-simulate what we encountered in production environment [4]:
-Spawns multiple workers that keep reading the given file using mmap,
-and pauses for 120ms after one file read batch. It also spawns another
-set of workers that keep allocating and freeing a given size of
-anonymous memory. The total memory size exceeds the memory limit
-(eg. 14G anon + 8G file, which is 22G vs a 16G memcg limit).
-
-- MGLRU disabled:
-  Finished 128 iterations.
-
-- MGLRU enabled:
-  OOM with following info after about ~10-20 iterations:
-    [   62.624130] file_anon_mix_p invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
-    [   62.624999] memory: usage 16777216kB, limit 16777216kB, failcnt 24460
-    [   62.640200] swap: usage 0kB, limit 9007199254740988kB, failcnt 0
-    [   62.640823] Memory cgroup stats for /demo:
-    [   62.641017] anon 10604879872
-    [   62.641941] file 6574858240
-
-  OOM occurs despite there being still evictable file folios.
-
-- MGLRU enabled after this series:
-  Finished 128 iterations.
-
-Worth noting there is another OOM related issue reported in V1 of
-this series, which is tested and looking OK now [5].
-
-MySQL:
-======
-
-Testing with innodb_buffer_pool_size=26106127360, in a 2G memcg, using
-ZRAM as swap and test command:
-
-sysbench /usr/share/sysbench/oltp_read_only.lua --mysql-db=sb \
-  --tables=48 --table-size=2000000 --threads=48 --time=600 run
-
-Before:            17260.781429 tps
-After this series: 17266.842857 tps
-
-MySQL is anon folios heavy, involves writeback and file and still
-looking good. Seems only noise level changes, no regression.
-
-FIO:
-====
-Testing with the following command, where /mnt/ramdisk is a
-64G EXT4 ramdisk, each test file is 3G, in a 10G memcg,
-6 test run each:
-
-fio --directory=/mnt/ramdisk --filename_format='test.$jobnum.img' \
-  --name=cached --numjobs=16 --size=3072M --buffered=1 --ioengine=mmap \
-  --rw=randread --norandommap --time_based \
-  --ramp_time=1m --runtime=5m --group_reporting
-
-Before:            9196.481429 MB/s
-After this series: 9256.105000 MB/s
-
-Also seem only noise level changes and no regression or slightly better.
-
-Build kernel:
-=============
-Build kernel test using ZRAM as swap, on top of tmpfs, in a 3G memcg
-using make -j96 and defconfig, measuring system time, 12 test run each.
-
-Before:            2589.63s
-After this series: 2543.58s
-
-Also seem only noise level changes, no regression or very slightly better.
-
-Link: https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com/ [1]
-Link: https://github.com/brianfrankcooper/YCSB/blob/master/workloads/workloadb [2]
-Link: https://lore.kernel.org/all/20221220214923.1229538-1-yuzhao@google.com/ [3]
-Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure [4]
-Link: https://lore.kernel.org/linux-mm/acgNCzRDVmSbXrOE@KASONG-MC4/ [5]
-
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Changes in v4:
-- Remove the minimal scan batch limit, and add rotate for
-  unevictable memcg as reported by sashiko:
-  https://lore.kernel.org/linux-mm/ac8xVN82LBLDZpIO@KASONG-MC4/
-- Slightly imporove a few commit messages.
-- Reran the test and seems identical with before so data are unchanged.
-- Collect review-by.
-- Link to v3: https://patch.msgid.link/20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com
+ mm/vmscan.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-Changes in v3:
-- Don't force scan at least SWAP_CLUSTER_MAX pages for each reclaim
-  loop. If the LRU is too small, adjust it accordingly. Now the
-  multi-cgroup scan balance looked even better for tiny cgroups:
-  https://lore.kernel.org/linux-mm/aciejkdIHyXPNS9Y@KASONG-MC4/
-- Add one patch to remove the swap constraint check in isolate_folio. In
-  theory, it's fine, and both stress test and performance test didn't
-  show any issue:
-  https://lore.kernel.org/linux-mm/CAMgjq7C8TCsK99p85i3QzGCwgkXscTfFB6XCUTWQOcuqwHQa2Q@mail.gmail.com/
-- I reran most tests, all seem identical, so most data is kept.
-  Intermediate test results are dropped. I ran tests on most patches
-  individually, and there is no problem, but the series is getting too
-  long, and posting them makes it harder to read and unnecessary.
-- Split previously patch 8 into two patches as suggested [ Shakeel Butt ],
-  also some test result is collected to support the design:
-  https://lore.kernel.org/linux-mm/ac44BVOvOm8lhVvj@KASONG-MC4/#t
-  I kept Axel's review-by since the code is identical.
-- Call try_to_inc_min_seq twice to avoid stale empty gen and drop
-  its return argument [ Baolin Wang ]
-- Move a few lines of code between patches to where they fits better,
-  the final result is identical [ Baolin Wang ].
-- Collect tested by and update test setup [ Leno Hou ]
-- Collect review by.
-- Update a few commit message [ Shakeel Butt ].
-- Link to v2: https://patch.msgid.link/20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f336f89a2de6..963362523782 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4695,10 +4695,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	int scanned = 0;
+ 	int isolated = 0;
+ 	int skipped = 0;
+-	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
+-	int remaining = scan_batch;
++	unsigned long remaining = nr_to_scan;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
++	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+ 	VM_WARN_ON_ONCE(!list_empty(list));
+ 
+ 	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
+@@ -4751,7 +4751,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	mod_lruvec_state(lruvec, item, isolated);
+ 	mod_lruvec_state(lruvec, PGREFILL, sorted);
+ 	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
+-	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
++	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+ 				scanned, skipped, isolated,
+ 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+ 	if (type == LRU_GEN_FILE)
+@@ -4987,7 +4987,7 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ {
+-	long nr_to_scan;
++	long nr_batch, nr_to_scan;
+ 	unsigned long scanned = 0;
+ 	int swappiness = get_swappiness(lruvec, sc);
+ 
+@@ -4998,7 +4998,8 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 		if (nr_to_scan <= 0)
+ 			break;
+ 
+-		delta = evict_folios(nr_to_scan, lruvec, sc, swappiness);
++		nr_batch = min(nr_to_scan, MAX_LRU_BATCH);
++		delta = evict_folios(nr_batch, lruvec, sc, swappiness);
+ 		if (!delta)
+ 			break;
+ 
+@@ -5623,6 +5624,7 @@ static int run_aging(struct lruvec *lruvec, unsigned long seq,
+ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_control *sc,
+ 			int swappiness, unsigned long nr_to_reclaim)
+ {
++	int nr_batch;
+ 	DEFINE_MAX_SEQ(lruvec);
+ 
+ 	if (seq + MIN_NR_GENS > max_seq)
+@@ -5639,8 +5641,8 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+ 		if (sc->nr_reclaimed >= nr_to_reclaim)
+ 			return 0;
+ 
+-		if (!evict_folios(nr_to_reclaim - sc->nr_reclaimed, lruvec, sc,
+-				  swappiness))
++		nr_batch = min(nr_to_reclaim - sc->nr_reclaimed, MAX_LRU_BATCH);
++		if (!evict_folios(nr_batch, lruvec, sc, swappiness))
+ 			return 0;
+ 
+ 		cond_resched();
 
-Changes in v2:
-- Rebase on top of mm-new which includes Cgroup V1 fix from
-  [ Baolin Wang ].
-- Added dirty throttling OOM fix as patch 12, as [ Chen Ridong ]'s
-  review suggested that we shouldn't leave the counter and reclaim
-  feedback in shrink_folio_list untracked in this series.
-- Add a minimal scan number of SWAP_CLUSTER_MAX limit in patch
-  "restructure the reclaim loop", the change is trivial but might
-  help avoid livelock for tiny cgroups.
-- Redo the tests, most test are basically identical to before, but just
-  in case, since the patch also solves the throttling issue now, and
-  discussed with reports from CachyOS.
-- Add a separate patch for variable renaming as suggested by [ Barry
-  Song ]. No feature change.
-- Improve several comment and code issue [ Axel Rasmussen ].
-- Remove no longer needed variable [ Axel Rasmussen ].
-- Collect review by.
-- Link to v1: https://lore.kernel.org/r/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com
-
----
-Kairui Song (14):
-      mm/mglru: consolidate common code for retrieving evictable size
-      mm/mglru: rename variables related to aging and rotation
-      mm/mglru: relocate the LRU scan batch limit to callers
-      mm/mglru: restructure the reclaim loop
-      mm/mglru: scan and count the exact number of folios
-      mm/mglru: use a smaller batch for reclaim
-      mm/mglru: don't abort scan immediately right after aging
-      mm/mglru: remove redundant swap constrained check upon isolation
-      mm/mglru: use the common routine for dirty/writeback reactivation
-      mm/mglru: simplify and improve dirty writeback handling
-      mm/mglru: remove no longer used reclaim argument for folio protection
-      mm/vmscan: remove sc->file_taken
-      mm/vmscan: remove sc->unqueued_dirty
-      mm/vmscan: unify writeback reclaim statistic and throttling
-
- mm/vmscan.c | 327 +++++++++++++++++++++++++-----------------------------------
- 1 file changed, 138 insertions(+), 189 deletions(-)
----
-base-commit: 96881c429af113d53414341d0609c47f3a0017c6
-change-id: 20260314-mglru-reclaim-1c9d45ac57f6
-
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
+-- 
+2.53.0
 
 
 
