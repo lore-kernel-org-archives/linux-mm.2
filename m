@@ -4,114 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A27FEEF55
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 21:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76532FEEF55
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 21:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D71786B0088; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
+	id 8E4D76B0088; Tue,  7 Apr 2026 17:48:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB4F6B0089; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
+	id 8960E6B0089; Tue,  7 Apr 2026 17:48:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2C46B008A; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
+	id 784E06B008A; Tue,  7 Apr 2026 17:48:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A3AC56B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66CD06B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:48:03 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34F3F1B88E9
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:43:05 +0000 (UTC)
-X-FDA: 84633085530.30.8639597
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 881351C0007
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:43:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D26D8gOg;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB6CF16098F
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:48:02 +0000 (UTC)
+X-FDA: 84633098004.30.527662C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B2EF340009
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:48:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pmWQgkHj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xv+MegjU;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="pf/oVFrX";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wmetIu8h;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775598183;
+	s=arc-20220608; t=1775598481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iLqfXsQT+5ZRmm6D6bg+MxhQkz+CgjvQnqxf7aaBrxQ=;
-	b=fj1pJJ0e4wlcekTi30FRuOej+F5HK/NIjMuzrHxIjfNQhS1ec+UzR3IHo8T75565FxHpVp
-	I+XiOSD88KFkxs+VHdOjkQcyiIzYrspofbPUrgoS2eNT4Jo7Gi88iLfg2wUugOiyFqFQvc
-	Gv75PSxuedAtr0kQFVgAxvlznuBlNqE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775598183; a=rsa-sha256;
-	cv=none;
-	b=2jD19Mv9dBEsHuH3KapTjY2nglxj2HG50himmv+R5XqOepRKU13wnJYI8H62ohlHbmTrpJ
-	1TXcehyqohEs1tpgqPIe9lR/dkxfQdR0mgZIJGOKier4frgFI4nrXxeMtze7FxBIiieYPr
-	jWIun9FzpRC08FD7DpJ2yeCr+hz0JVA=
+	bh=A0WdEE2sofiVhBLyKr3CUDsGmwnWEPkI4p70h7A90Dg=;
+	b=RbLXzx2RoVfpaQfZXi54131hB9IgOB6nLoXHzRLQiv2jNzllhmR3K3IaiiIkqFb7K1Kth2
+	T8JqBeG2lDSIxa4oxEPd+Xfm0KE/4Ki5Q2wjZUGOr2uomVvC+RUm/+2EY2E6T6leGL9P0/
+	xJauK4tuZnGOu6tZl7HBbTHGGCHIVvw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D26D8gOg;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B9136013F;
-	Tue,  7 Apr 2026 21:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8C8C19421;
-	Tue,  7 Apr 2026 21:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775598182;
-	bh=Jzj9VL/ne4HAC8Uu0kWPWPs9BChKAOI+YBOIl8kJd7A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=D26D8gOgBYtI9taH8eQ4kzyi2d8YxkZt8dSUwKgAIsKyai5Pvavyf/lTEVNg0+rSx
-	 qXAiAuDFxir6oTPrOR+KcHn93C4TOIONsOi6a9mfJaFjrtAXVoEHVVpTDpDfwaCinp
-	 zB6ialuk5Pk2obvLcr9QSOS73hKuFBvypa2DqZMU=
-Date: Tue, 7 Apr 2026 14:42:59 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, "David Hildenbrand (Arm)"
- <david@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-Message-Id: <20260407144259.011a26666eff9c96d74e39a2@linux-foundation.org>
-In-Reply-To: <adTCJ8NQHGNMqR1d@lucifer>
-References: <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
-	<0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
-	<fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
-	<26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
-	<440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
-	<37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
-	<9d5a4703-a15e-4be6-926b-af2d98db40c0@kernel.org>
-	<CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com>
-	<87b83f7b-f0b1-4184-93a0-3b4b574c813b@lucifer.local>
-	<20260401133145.90b094a7b87bdceb0013b5af@linux-foundation.org>
-	<adTCJ8NQHGNMqR1d@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 881351C0007
-X-Stat-Signature: mbc9ozj5kx1q319qfkfm4kwzsetfwu6s
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pmWQgkHj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xv+MegjU;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="pf/oVFrX";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wmetIu8h;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775598481; a=rsa-sha256;
+	cv=none;
+	b=ktqykLVq4Yor8ZDct6Xc7ZgoZFR5yd3VwbUbiEWO1biIi0CHDW9n5UooRsM+vBa5rqtQqU
+	9P4/xMidfEG/8W+SSkrNj0i5qCfVtYkW4+iDv4HMwbrlAAl9rH/2ZYDOjIQRoIlTS+/nm1
+	r+WuRosFOUOoImkFSwcorHDJLPJIkGs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BFE9E5BD51;
+	Tue,  7 Apr 2026 21:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775598479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A0WdEE2sofiVhBLyKr3CUDsGmwnWEPkI4p70h7A90Dg=;
+	b=pmWQgkHjmko9fi36qMFD2dcdJy+suAXLE80dCtjd9AXWiX81eu55S5bP8WoH3lIC79AHVY
+	sUe4B7ZMgNhBT9w1dad7yHqzXd+KhFsQZBCJ6g09xO8xjUZHcBtx8MDRpebV3WgLyFwWaw
+	F06vLHiIhCUqe7QRUNxpRkryyODuVEc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775598479;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A0WdEE2sofiVhBLyKr3CUDsGmwnWEPkI4p70h7A90Dg=;
+	b=xv+MegjULAnyn9cY+7UGn2GhJJ5GN9YvHfmY4jqdDfVNTSm2hGROadMMTSZHHEIHgny1nJ
+	/XLAEGQ9MdmLzaDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775598477; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A0WdEE2sofiVhBLyKr3CUDsGmwnWEPkI4p70h7A90Dg=;
+	b=pf/oVFrXDhaxZA8+Ov37+7idTlMU24lZt6V7roZlDF79wXhnS/00ZY18zGkuHCk+VmMYh/
+	C1ODS+uKUy2GxGk/OJk0Bmbfo/UZQ1yJ+QY2e30elNJJmzMZZROrMYCIgsjc2UrvW34V/s
+	ZQi5UUupD/cmg+6fuuAMRtJDUPoGzrg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775598477;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A0WdEE2sofiVhBLyKr3CUDsGmwnWEPkI4p70h7A90Dg=;
+	b=wmetIu8hAI2rVJUNivRPkMr0eU0xcf0qGr3sbzUVs/uQE1SExMrc7JrAVkQEsQQcjaAwfn
+	SMiCG4qvUzCTySBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA3B24A0B0;
+	Tue,  7 Apr 2026 21:47:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DMWFLYx71WkxRwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 07 Apr 2026 21:47:56 +0000
+Date: Tue, 7 Apr 2026 22:47:55 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Joseph Salisbury <joseph.salisbury@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
+ contention in populate/unmap paths
+Message-ID: <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B2EF340009
+X-Stat-Signature: uen6jch7zefz5uqowssjohaqe4ojx47k
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775598183-491284
-X-HE-Meta: U2FsdGVkX1+Tz3LfYOdrPg+isMSLOmzLpj95igCnDBw6Q6TEsgI3fWsZVxqcUz4653lTOwg0hQNxnO0RhU51iaSy/7a9TvjuDvKNn12LGuGO3z/j8zncvqJEgWw0QyuKvGQwOjKRuyOSCGOcVkeT5vTfe2eqSDlJhZtgyNXbIVitGA+qcM6/0LgNs+ITuhd4RtnVIOv1m3VtmIvu9ov1Awe4jvkuKYvv4DGB83JnxUwEihSVFwS5uu5nCAr3aPWvyAZwkPbOsfjOjcMYfDqwKqBo2QHnlG570M9hYnQSVLYH30cdzm8Jz/Lud8u3YxKYRXOlFC9IWrwBf1HSVKVRqwK666NcMbpQoIPqfhwVh0oTvn1oQzEa7YqAFx0BNH6yGFECXIbEWFbm5SEV5q+SQx2I8va78pBdKsRszVZI1or/OWmnAOT7f89XNv8zIK+4X5kgkB9Nts+CwfWCvUB89GVv893qyTs4/pdzW9v8KUsSxzyk9j32seNgrb3//TX4TwCV5kwuop0EohOdidsDiElvGGb/hXDQohD+gBFOzAeOs2Asw+a+AfpxS9Bg6Kb851BrQy+bwAUnrwkJ6qefYLwD5fFMvt7kCu0OA3MdbB8XzHxSlERbGmTKmAeaknEmnFpGOttarCwDcRCjCPZUbNGDuL1Uyi1DUxx8Za7sgoz6si1gN3bcy5cYF0uyUIpGRTL2VOQJl9ci7wrtcIHNt3IFMog7r4MbhbzpHbNkOX5hMzONfVQI+zSSyBDD3NGnw511Ym0QEiReWQkLQaRarw1QYlpXLMgUSt9aaEoSHzp6+rXHQM7KAGH+FO9QhQsclZpt0MTqn4uByD0wWEs8o0bWS7OfdAXcuRTeOzGlVLR/jyuTH0yb10h1xHLV3BWzzfSA+gn3Ykx2BpL1r/vThTR/Jc+JMJJA66iYQ632iySdEa7bFEfmXCJnJF6myNkXAhkDB26wDzLeiguqIIm
- DLh/Q5bk
- v5qDFgtp/gMcJmyaD3NESVEc7dJvd02ufPxN6Z6s7XONNy/DT/gM9LuOjTPfb+DQFToWyLkufa0cVspFC5/M75Gx8XuruZA66jYQS5AOwzv+iRG5JL9h8pZrJU4rEvGHrTEE8c2i+BtgXxaWqdj4OU1giMyRE66ykSQDc7+/ffihra2hgmQH57CKuNzGmxmlZchiEtDtbqoGy83MYafXZU7EkadWNG1fcoQRyJskBgqBAW/CUy1HbH/zvKRqnKYineuUYdP+d3kKofBpJRETbACfnVkC1SQUPWH2lhQvI61rzHqbyEY+56uCbs3YtZrC/lj0rTCiwytRP/3kYp/CScHSor4OsdFgFLf0aXVm1LB5yMn86SmHgsjNFpM9B1bLRFjrkvO7HSiT4Qy/fG69x/HPwwX5ggXdiYKW1c/JW+WBTWI/rlXYr6KvOuCzIZW1fVrxrbDtVOHUxzoeOw5OsCpw+WgW1tDRWOQQ5XqMKYv/FN3bHVdLoh9/6VAcTDIJU7GHgFLgeCkFPn6qMY/Hz7RWlUlr2+V0E1TtiWWyxueaznetU/gwtLiKA0ESbK8LP79yiL7Pijp3JNFR4WSS0ekIpEweueT0qKgmPFYLHEhxgz2sPNC2i53CNqIWEgqjfdQr6yROxlehCjEQK8Qj4CoXU+NVVxo03KEkozypOpEjb+evkfPg61SKFxQ2snZJwz8T23v+WL/mlIpix9rPMXHQtmOl2puvXb3s58Udg0HqBIXP4NcHqWcxh+KrgYmCy+ezmj7E4sKeMKftkyFMGP48jflvKbf1JMLDYjKHJoGcW/7rorjhBvd2hov0nkv0pBznBcTQSdM1PxImwRqBsad+FuSaIqPubmI4t5FBDClI70emXJMjrzAafgGUgm/HN3+mFsChAhIJueVBKY2n+8qdAVnfUCl/GwETOJQheumihsUAl5cHOQETbv8wNMyqeflPCkPzQ1ED0NPHtbS+4scTvUs4E
- zjsCcWPN
- jp+hXVa1D2+BUpcINqrJbM58v+4S120cW8Lh4XQFkT+txdlfImdwpoTlONaNDc9waRxofwuuEAvC8T4JF/35ZKBBP3CCm4K5B2y9ktWXEoMuVj1K3maaKtGdSYlfeP4IGOg/DL96LI6xr5B94LAnq7VLOsB8fCQNzltcE87q7O4kKmxA4Ptb3nia+sDQEwJ04pkvhDBmQ04KaRbUY+uOtMuC1jGhjJn6TJSzx6RcVRjSNT9N55/lqqqf9otG9SbkXVBWGPhFn/7MjmUzig8fqw==
+X-HE-Tag: 1775598480-146479
+X-HE-Meta: U2FsdGVkX18NaxsjzH3L2mvu/riKlSB0iGuiotHNoos5iljaGDxZ0tH6utRhWaEGr4UCYgRLTlIzSoj8I6fUZx9wTMWSsBGDBuJOf/umfolUqfgIhf2QfysCTwuJXtxx+LXxQjaEPFC3+fbwCmIFHx4U0wzkz19oQqiZzHYaQ0UN6zZTLkRP5s47ntXCH2VYpJ9+zUHU9IM/kY0EOnWLSkVOiKQqe8fx5X+lYgN6PMIK0j+EVZ3hPepXSQw7NiaENgYeL/W6e//Q1RS4LtRwM/OGsk3YCyu/J6jBzHdL8VgDJy/m1XnjNEdIEwa9BsFbwqBBXiHDGAFj/wVIkh6r76r2lusT4vkuydsBVoeHr/FtS+bsKVxWn8u1V279Jm4aA1Rjo+YqcWyQ+Yy/HpQ/l4LUhK/9i3dsuRe5+QsSYYDfyPmdX3b3GRNEbE8D84Ku+yMQSBkRwTefMqNXk8FbNIxpogUtSRZ2oMp0cF5m47KQ1cxHk1Z6t+DSODDdUUTqsXVHaS3Q15/rq7wWLsvUkai4AlZWA8aC1yyedvQOoHZl6Yvn2juw72ckSMR9jqLQSr/k6pR4uC252MN8jTRR0QIeaMGhI3F2bwThctshJBtoJbJ5/uXimnntY+3DZApjTASipEeJPYvCpTx+6TRVYpJ+QwFifVs0AmYA25SlH68VdbMgATVVf/vYNeVmJfnX2FMCBpe0hTfW1j9P4HD7hXFE7ehjIF/MAX6aKqwh29pO4izrRJWK76cfQCfv3rZQYvjDwmt+L8SmthHdE8QH/Zycre3zHiMDKtbNFziVC3yE1bXYXy4NmOjbsukI2sh37Bfcg71uqMcFDfXoU4fHvFKh8rFDysqDIRklW4ItobZbTdboofRcAaM3nEy8wuduyRpeAuSxwbwjNxp4IS8fKgOLEnu4EvHyuDCetae4L5JMYUZojL0vCgeRD2aQ6eAOFjwpnmcOySHHqxKzKRj
+ wCCnKFP2
+ Lyy7/jPgHagDDtDVhZvoy8NkZ0mObSz1/rYZXjC2cCrwzZXhSsel1DbDjmomMV5CvKXjlSvpYlHasSGtZyxbcxu4nDijbG1Jx7mB6nCBybyaMTC/XwQWtITcRuLV0fnMoxccEQWCV46jzdWNpPsvA0Tuyefhi2LHFOcptyIpHoAxXS7Gz9Fw+rMKVHS6fvdtYjJ+KwM2GO0OSKrxWklq4AEoZdziy2SHIaeFERw5UB7LbFocas7sSQXXQ+wc+OqhgErwJTiT+ljfZYJTd0dcULURyURTZ8FkFt5T99is+X+ipXSjIHxDmUJAX2fRyv1fGRyHLV3QBp4G8M2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,166 +139,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 7 Apr 2026 09:38:19 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kernel.or=
-g> wrote:
+Hi,
 
-> On Wed, Apr 01, 2026 at 01:31:45PM -0700, Andrew Morton wrote:
-> > On Wed, 1 Apr 2026 09:14:35 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kerne=
-l.org> wrote:
-> >
-> > > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> > > Date: Tue, 31 Mar 2026 13:11:18 +0100
-> > > Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
-> > >
-> > > We are incorrectly treating lock_dropped to track both whether the lo=
-ck is
-> > > currently held and whether or not the lock was ever dropped.
-> > >
-> > > Update this change to account for this.
-> > >
-> > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> >
-> > Not sure if I should add this?
-> >
-> > Should it have
-> >
-> > Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse
-> > with collapse_single_pmd()")?
->=20
-> (Sorry only just noticed this)
->=20
-> I mean we do need this patch, if you plan to do this as a fix follow up t=
-hen
-> should have a fixed tag, but I do worry about bisection hazard by leaving=
- this
-> as-is.
->=20
-> We definitely either need this patch folded in or as a fix that gets sent
-> alongside the change.
+On Tue, Apr 07, 2026 at 04:09:20PM -0400, Joseph Salisbury wrote:
+> Hello,
+> 
+> I would like to ask for feedback on an MM performance issue triggered by
+> stress-ng's mremap stressor:
+> 
+> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --metrics-brief
+> 
+> This was first investigated as a possible regression from 0ca0c24e3211 ("mm:
+> store zero pages to be swapped out in a bitmap"), but the current evidence
+> suggests that commit is mostly exposing an older problem for this workload
+> rather than directly causing it.
+> 
+> 
+> Observed behavior:
+> 
+> The metrics below are in this format:
+>     stressor       bogo ops real time  usr time  sys time   bogo ops/s   
+>  bogo ops/s
+>                              (secs)    (secs)    (secs)   (real time)
+> (usr+sys time)
+> 
+> On a 5.15-based kernel, the workload behaves much worse when swapping is
+> disabled:
+> 
+>     swap enabled:
+>       mremap 1660980 31.08 64.78 84.63 53437.09 11116.73
+> 
+>     swap disabled:
+>       mremap 40786258 27.94 15.41 15354.79 1459749.43 2653.59
+> 
+> On a 6.12-based kernel with swap enabled, the same high-system-time behavior
+> is also observed:
+> 
+>     mremap 77087729 21.50 29.95 30558.08 3584738.22 2520.19
+> 
+> A recent 7.0-rc5-based mainline build still behaves similarly:
+> 
+>     mremap 39208813 28.12 12.34 15318.39 1394408.50 2557.53
+> 
+> So this does not appear to be already fixed upstream.
+> 
+> 
+> 
+> The current theory is that 0ca0c24e3211 exposes this specific
+> zero-page-heavy workload.  Before that change, swap-enabled runs actually
+> swapped pages.  After that change, zero pages are stored in the swap bitmap
+> instead, so the workload behaves much more like the swap-disabled case.
+> 
+> Perf data supports the idea that the expensive behavior is global LRU lock
+> contention caused by short-lived populate/unmap churn.
+> 
+> The dominant stacks on the bad cases include:
+> 
+>     vm_mmap_pgoff
+>       __mm_populate
+>         populate_vma_page_range
+>           lru_add_drain
+>             folio_batch_move_lru
+>               folio_lruvec_lock_irqsave
+>                 native_queued_spin_lock_slowpath
+> 
+> and:
+> 
+>     __x64_sys_munmap
+>       __vm_munmap
+>         ...
+>           release_pages
+>             folios_put_refs
+>               __page_cache_release
+>                 folio_lruvec_relock_irqsave
+>                   native_queued_spin_lock_slowpath
+> 
 
-I added this to mm-stable a couple of days ago as 5a62019807da
-("mm/khugepaged: fix issue with tracking lock"), below.  It does have
-the Fixes: so I think we're good.
 
+Yes, this is known problematic. The lruvec locks are gigantic and, despite
+the LRU cache in front, they are still problematic. It might be argued that the
+current cache is downright useless for populate as it's too small to contain
+a significant number of folios. Perhaps worth thinking about, but not trivial
+to change given the way things are structured + the way folio batches work.
 
-commit 5a62019807da4a7add0717c962ac83b23dd12b2c
-Author: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Date:   Tue Mar 31 13:11:18 2026 +0100
+You should be able to see this on any workload that does lots of page faulting
+or population (not dependent on mremap at all, etc)
 
-    mm/khugepaged: fix issue with tracking lock
-   =20
-    We are incorrectly treating lock_dropped to track both whether the lock=
- is
-    currently held and whether or not the lock was ever dropped.
-   =20
-    Update this change to account for this.
-   =20
-    Link: https://lkml.kernel.org/r/7760c811-e100-4d40-9217-0813c28314be@lu=
-cifer.local
-    Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse=
- with collapse_single_pmd()")
-    Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-    Reviewed-by: Lance Yang <lance.yang@linux.dev>
-    Reviewed-by: Nico Pache <npache@redhat.com>
-    Cc: Alistair Popple <apopple@nvidia.com>
-    Cc: Andrea Arcangeli <aarcange@redhat.com>
-    Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-    Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-    Cc: Barry Song <baohua@kernel.org>
-    Cc: Brendan Jackman <jackmanb@google.com>
-    Cc: Byungchul Park <byungchul@sk.com>
-    Cc: Catalin Marinas <catalin.marinas@arm.com>
-    Cc: David Hildenbrand <david@kernel.org>
-    Cc: David Rientjes <rientjes@google.com>
-    Cc: Dev Jain <dev.jain@arm.com>
-    Cc: Gregory Price <gourry@gourry.net>
-    Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-    Cc: Hugh Dickins <hughd@google.com>
-    Cc: Jan Kara <jack@suse.cz>
-    Cc: Jann Horn <jannh@google.com>
-    Cc: Johannes Weiner <hannes@cmpxchg.org>
-    Cc: Jonathan Corbet <corbet@lwn.net>
-    Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-    Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-    Cc: Liam Howlett <liam.howlett@oracle.com>
-    Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-    Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-    Cc: Matthew Brost <matthew.brost@intel.com>
-    Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-    Cc: Michal Hocko <mhocko@suse.com>
-    Cc: Mike Rapoport <rppt@kernel.org>
-    Cc: Nanyong Sun <sunnanyong@huawei.com>
-    Cc: Pedro Falcato <pfalcato@suse.de>
-    Cc: Peter Xu <peterx@redhat.com>
-    Cc: Rafael Aquini <raquini@redhat.com>
-    Cc: Rakie Kim <rakie.kim@sk.com>
-    Cc: Randy Dunlap <rdunlap@infradead.org>
-    Cc: Ryan Roberts <ryan.roberts@arm.com>
-    Cc: Shivank Garg <shivankg@amd.com>
-    Cc: Steven Rostedt <rostedt@goodmis.org>
-    Cc: Suren Baghdasaryan <surenb@google.com>
-    Cc: Takashi Iwai (SUSE) <tiwai@suse.de>
-    Cc: Thomas Hellstr=F6m <thomas.hellstrom@linux.intel.com>
-    Cc: Usama Arif <usamaarif642@gmail.com>
-    Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-    Cc: Vlastimil Babka <vbabka@suse.cz>
-    Cc: Wei Yang <richard.weiyang@gmail.com>
-    Cc: Will Deacon <will@kernel.org>
-    Cc: Yang Shi <yang@os.amperecomputing.com>
-    Cc: Zach O'Keefe <zokeefe@google.com>
-    Cc: Zi Yan <ziy@nvidia.com>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> 
+> 
+> It was also found that adding '--mremap-numa' changes the behavior
+> substantially:
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index d21348b85a59..b8452dbdb043 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsi=
-gned long start,
- 	unsigned long hstart, hend, addr;
- 	enum scan_result last_fail =3D SCAN_FAIL;
- 	int thps =3D 0;
-+	bool mmap_unlocked =3D false;
-=20
- 	BUG_ON(vma->vm_start > start);
- 	BUG_ON(vma->vm_end < end);
-@@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, un=
-signed long start,
- 	for (addr =3D hstart; addr < hend; addr +=3D HPAGE_PMD_SIZE) {
- 		enum scan_result result =3D SCAN_FAIL;
-=20
--		if (*lock_dropped) {
-+		if (mmap_unlocked) {
- 			cond_resched();
- 			mmap_read_lock(mm);
--			*lock_dropped =3D false;
-+			mmap_unlocked =3D false;
-+			*lock_dropped =3D true;
- 			result =3D hugepage_vma_revalidate(mm, addr, false, &vma,
- 							 cc);
- 			if (result  !=3D SCAN_SUCCEED) {
-@@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsi=
-gned long start,
- 			hend =3D min(hend, vma->vm_end & HPAGE_PMD_MASK);
- 		}
-=20
--		result =3D collapse_single_pmd(addr, vma, lock_dropped, cc);
-+		result =3D collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
-=20
- 		switch (result) {
- 		case SCAN_SUCCEED:
-@@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_struct *vma, uns=
-igned long start,
-=20
- out_maybelock:
- 	/* Caller expects us to hold mmap_lock on return */
--	if (*lock_dropped)
-+	if (mmap_unlocked) {
-+		*lock_dropped =3D true;
- 		mmap_read_lock(mm);
-+	}
- out_nolock:
- 	mmap_assert_locked(mm);
- 	mmdrop(mm);
+"assign memory mapped pages to randomly selected NUMA nodes. This is
+disabled for systems that do not support NUMA."
 
+so this is just sharding your lock contention across your NUMA nodes (you
+have an lruvec per node).
+
+> 
+> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
+> --metrics-brief
+> 
+> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
+> 
+> So it's possible that either actual swapping, or the mbind(...,
+> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
+> system time.
+> 
+> Does this look like a known MM scalability issue around short-lived
+> MAP_POPULATE / munmap churn?
+
+Yes. Is this an actual issue on some workload?
+
+-- 
+Pedro
 
