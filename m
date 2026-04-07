@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41571E9D814
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:48:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C44F0E9D814
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D64F6B0088; Tue,  7 Apr 2026 02:48:30 -0400 (EDT)
+	id F15726B0089; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 660246B0089; Tue,  7 Apr 2026 02:48:30 -0400 (EDT)
+	id EEC9A6B008A; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 527866B008A; Tue,  7 Apr 2026 02:48:30 -0400 (EDT)
+	id E29F86B008C; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3546B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:48:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCD32BA73D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:48:29 +0000 (UTC)
-X-FDA: 84630831138.30.3B0953F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D913840004
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:48:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OwWWkCfm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D16706B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AD871406D9
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:49:19 +0000 (UTC)
+X-FDA: 84630833238.23.7ABDEB7
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5D9281C000D
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:49:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WERdu//K";
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544557; a=rsa-sha256;
+	cv=none;
+	b=HPkS9b3S4Zzw+7ffM+tJO8hkt+KyQqvu3BzbuSW14edAuCKjBUHQXMU2UX9tsMaoyhCvSP
+	GUQVALtE4WMcm63ETg/Rjs+RBUupkJKuRN3XawJJpCxrqrz6WlKUR+rPjhFx4q+ipYFInH
+	Ku4mmpsGPNV1HRClsB5n2KWVlCsbyBo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775544508;
+	s=arc-20220608; t=1775544557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G2REtVLzfbKTZwlcXPoL9Kjye42KBw5yeH74+Dc8Jo0=;
-	b=M14BE8xageEeAOsRwSBhVBIzOkpxU3okPcAId+ggEuaOEQ0caUUZlmHJehHZ0mUaoA3HVM
-	LRwnwiEINOpG4wMqduYCdsBZfARWjVIx7RTYTcNSQRir6xGzMe2FTagGUjfOvRNj5FrDlU
-	4Y2in1HqWpN8zZv2iq+yoAN/0K3wuoE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544508; a=rsa-sha256;
-	cv=none;
-	b=K4hHbzCqu15rV0cydil5dhQBOAKUXoHwzVeSU6MczDu1Tbhgu0v5eiadiDgivkvYpAOjyN
-	dGF6N9nGDYPCMEbsxQSr30U0mwoeJURX9Zug0Sn3mIrAaqUrHCitn6a/pff0d5dZzn0wBy
-	OgdlQraKKiJvB1ZZZ23v685SbDMdRl8=
+	bh=XZeY293QSxwS94/+8C2N9QAoOiUfZiEZF2lGyKP5AKE=;
+	b=BrTCjTVHNNWSKJX9Xi/7mfNba4AWXk3nuuZvKsAgZs/Ut8FgEKKevpGYiLJ951C2BXYTL7
+	TmblYv2lIMF2kfuepaG+xSQZ6B0M7a1jCI0WvIqtxHgtcylO19xtSc/zsNlFKNrCD71eaT
+	rCnZKhAooh4sTdNEx1RI9CjnZsVsr5Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OwWWkCfm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEE66441C6;
-	Tue,  7 Apr 2026 06:48:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9A1C116C6;
-	Tue,  7 Apr 2026 06:48:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775544506;
-	bh=Ea/dgNWMCtrFcxVc9JR8+cREFl164xqobHdGsxImfvg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OwWWkCfmwSJazt6Bl6SPLtj1PCppUfp38Lf0p9XHHEmjjh+JRHXNZTlPpsgc5ZrT6
-	 HF+hnGowGlh0El7GD1dmDRBlKTxRvoTUeWng9Rq3yL8XQuBOeoIU6iWV+mwHe1Vc1G
-	 s6bsMuyDSlGRZgPHPI8oVfsOJm9b60+dLlml5UJlLxfA8cZkXEpj//0bws9rzxFROB
-	 Q+kXxxzJWzLIrR9OWXap6yZEKiQqz5V05GJ6xUCl9Ew6kfI3c3h/A/tTZgC6DIxOEk
-	 HYaMxGcUDSJXHfSqy7m/5WebBws7TkYXq5NePlRWkGnxGMSTQGUOFGMm3/nR7mJ8ar
-	 ROnSXMmw13vqA==
-Message-ID: <c7688962-d10c-49e1-a434-ab7ae2c64cdb@kernel.org>
-Date: Tue, 7 Apr 2026 08:48:22 +0200
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WERdu//K";
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775544555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XZeY293QSxwS94/+8C2N9QAoOiUfZiEZF2lGyKP5AKE=;
+	b=WERdu//KTfuanPQswZOKAavLD5SrF/saVav3K5wcfXSgigtMYYuOALt64YernykprSFtXw
+	i6mFsg7QITLNACQ68Yf6b8XHZqhXqSBB4xHFlQ9UfOi3vFvZVPltkhALZ5vTUoXQl+OyL8
+	Jt17LZjfw2Dt1Pu2fMhJm5px5C1wyKk=
+From: Lance Yang <lance.yang@linux.dev>
+To: baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org,
+	hughd@google.com,
+	willy@infradead.org,
+	ziy@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: shmem: don't set large-order range for internal anonymous shmem mapping
+Date: Tue,  7 Apr 2026 14:49:03 +0800
+Message-Id: <20260407064903.69017-1-lance.yang@linux.dev>
+In-Reply-To: <cd5c563db32507c9c090a0ae8287e1851cb0a5d3.1775541661.git.baolin.wang@linux.alibaba.com>
+References: <cd5c563db32507c9c090a0ae8287e1851cb0a5d3.1775541661.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf/events: Replace READ_ONCE() with standard pgtable
- accessors
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260227062744.2215491-1-anshuman.khandual@arm.com>
- <1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D913840004
-X-Stat-Signature: m59exs1m4it61e9pajk8jxbh9jhztqny
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775544507-548337
-X-HE-Meta: U2FsdGVkX1/DWQCdKjlGjzYtKayGgiS7JxyRfwLTGeFd8jxWL4pvachf4sS0Xd/hUT88RaVmWgjzdalxcCixc6w41VyrQ76lrwZzdkz42t6O1I9bO0gcUO1nVTRlq5yD2s7cbk2P/HaMVXKGUccVROIONgTSZtykBJGJGrTHL8yfsTKoMQ73rnQPnvqx7GhRKtZFU6/CSNlPyMs5/sKGxUJYkHQq3Pe/Dr2oKwat3y8G6MKunPvg0DIvcZscLprUomTuERHmbpkOGHiJ9rHCEmz18ovw770gf4/dxxnamIz6GHNkAURAz2daZ6EyLHT8/9FMusgstaFIJ7dPq4lFH0m45BocG9Rk60KZomp6JAsbCBNcINDiLpjK+lsauPH7vnwr/DSVpLp8wTrwV+4Q0ogGe++2BmYinGo0c55z2pNnzntjMNOY7lKQJ32t9LNWJGCYipTDGS9/m5EK61JU2C6i2NuN1R+Z5wBIP8blTuBTSPlBS4GZTMCLYrDYmzRTnzzEwmF0UFLsEQrXiuntTqvPcoIZCGnurqc2X4ADVWhkH8x6x1Cvdp3s8syq3fD7oDYe/+o1LpeJAxKslivdZgw5LCvCIVak+C/YxlJIWNpZ/CmEx3hcjQciWvfTsYzevCHHIDT+pDeLS3MlJ8BTb52tSo44T30wQqmwMMJyIed+LkuyFD+aFa6tUBQiR9t5409vFh9KuEWTnuNm+E93TJVrGE/E6OT97V2ajxoFbEJ9+i5t/KJLvZM+OcMO5S9u7RJfquHrfCi9hBr11SEXApfSl0HZlorS9u2DA6zAWtp3Aa7gY1qQt1R7KbIUMuwLcykzhaHcmv5WMkT6ZTpzqDhGTiSDa+phkYLKzEhluYyH2onh9Rq4dHtPrWGSFVUnbe6tPcsqMfHtAXr43y1jLEr4Y8Bm55eZlskQqNWs8th49lBgS4nuvC+e31b576nrY2JAXzH9TGoWC24zLMS
- tBpeN/nJ
- M1V1f9e5rjXf9R+QwU7is9teXAVJeA6H4ebqMzvNt4w/7NKY/x7oBbwFqCipKiZe8XEHYpmZA6SkW2g2VfChodWjkXnbRZjhva7sa9f8a/kaa8xpW0pHvXwrGjy+hw9YXTzcy/wvQjTsMPe+MPnF+LnFwwGwbdzn5yz3UeTvpXSyMJ/LvaBOKDIJZRv9q64budxGez2y8MECCCetT28NWMsT/xMuoJVJ6tjsrE1qEgMCgd5J28Y7KsSaezwwgsQxCXzdYs+fQ+DpCtwuBa3sPXgowNzpK06QtqJHJFg4TDh2qsNWG9lpKt4sJm7YUeMUOep/6DA13+c0g1P191yUp5ID0F5VWYvzsvm+wVkkYp9/7J1/3cm3nJwuLNppNvhYD6onkxA84q3v0TLiKIDorB/kDRudwNbFMijCtC7vwH/pj+pF1fXR8vl/+ZuDtPxMYW6SNNGpB1ORArou3AkI9uDX9V5zdPE0gkmAxYh99oUQnegHamt3KQr+X467X4Y5n7XbAEvwZI7/eTIzQt0ezJGBkQMFFIQ1mJPWzXdTRqzQ6sgyk4HoDDgoVMRWI3rw+mShwfl2oBRqyaKo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5D9281C000D
+X-Stat-Signature: qkgc5pfeu8m51cz4hdjf3qd7qsrenwnr
+X-HE-Tag: 1775544557-922868
+X-HE-Meta: U2FsdGVkX19rZo/ldOQbsZJjmZNBY+UgV06kLeT2t25YU/X2Qnxf2P0rhQZWC1zviwdhh/qLHQQCpmuyZAokazMN7Bz5VjSHSPNCQMwsgi8zlzyCaKOV+XbFgw377yI1NpTauG4tQnnalXyK+S5sR58c0SI9UNqbVJ6e0IocpheTIcITKWRi+y2dsV4ilZv+I27f0+aBUJCHCwTo1wWAq0ab0SPMbZROeqE+In/0o0BfnTcloYJUjIF+jT0jGobJVTtkhqHpbiSkjC0D50rqTG5wonOihkdX84BFuSAHChtO/oGBk8MOvfzWjIiRmybtJ3w5UHeDJuAMge3kMZuiyxUfGG4OGHQI4O8lqstTsVEayZoHRFmHaRtmaNcnZ8jDnXQ4tMncxz85ZyI83tjFcatB+HHT7Jp/sknyJWL1OgJ+hRge9VTTW5/incNwAwYZ1DtEfvncP1s5UuJYUDFBtbXYn1vYvi8cm1AkN2ORXTKmAwlo9XJQhuUbzdSIiMWfKTjqsuKZB5HDIii35Q5S8ufNTdMvYxeZeKZioDZLQzbv2IqIFA+1hghPsqEiNG6r6L527vQaTxah64t39VtS8kEh7mnpe60DoGOGhmJwqbeJNoRjSWM8KXwQTZ8WlB+21oliDEg6AKdBm4FMxs7C8WhNfVAbBHQyHerl6MxDdCKCi99r0mMqqIhVdNy49R2fLstL2oVagPh8R7mkYK/4LMXwAuCABFb9rLxM6XnmokabQCp+bV/0J8zBSw9wiCS8yGA1Ugln4V6gV8QRpKY18qRYWs3OfQqDuDiICUit5hqymT9FcEv26f+jLWKW2WpI1YUnisSRbyHhSK/oYz7GLrLOU066hYg6Xi0r/0EseunuAB+8COwTOm3QS0xnJnQV4ZTZHIRiwSGyWhApjhReZMQbKnmmwgVQsbVjLgeqq1ux9Cuodn2I4skAuqFmVm0ncehW+/CeV9AqCt+pqlr
+ OZ3mQMye
+ 3URoLndLHDjRB3l8uESXMH8mOE/1Xm9IsajNks+lxwUZA7pAvrCJMMws5/EAO2sL+KzMI+zwmKgq89XiQ4h7e86rmdrxVoseY96Mr+l63NLanlBX0Ac+vRSzKPBPqX5ASJdn5C9yK9Ngs1dw2QSVCOLnHBMCF2CCVOlvOIz+YE71gHwWVay9TUkg8Zs6FTczAWhROaFffYu2z2ADVKP0EhCUeyCDF++fon8+ZYQaAFE/xfM8fqQmkDsntgtyCWEYhV7lH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +95,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/7/26 05:28, Anshuman Khandual wrote:
-> 
-> 
-> On 27/02/26 11:57 AM, Anshuman Khandual wrote:
->> Replace raw READ_ONCE() dereferences of pgtable entries with corresponding
->> standard page table accessors pxdp_get() in perf_get_pgtable_size(). These
->> accessors default to READ_ONCE() on platforms that don't override them. So
->> there is no functional change on such platforms.
->>
->> However arm64 platform is being extended to support 128 bit page tables via
->> a new architecture feature i.e FEAT_D128 in which case READ_ONCE() will not
->> provide required single copy atomic access for 128 bit page table entries.
->> Although pxdp_get() accessors can later be overridden on arm64 platform to
->> extend required single copy atomicity support on 128 bit entries.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: David Hildenbrand <david@kernel.org>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
->> Cc: Namhyung Kim <namhyung@kernel.org>
->> Cc: linux-perf-users@vger.kernel.org
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->> This patch applies both on v7.0-rc1 and mm-unstable.
->>
->> Part of the D128 series but independent. Hence could be considered on its own.
->>
->> https://lore.kernel.org/all/20260224051153.3150613-5-anshuman.khandual@arm.com/
->>
->> Collected Peter's tag from an off list conversation.
-> 
-> Gentle ping. 
-> 
-> Still don't see this patch in latest next-20260406. Hence just
-> wondering which tree and branch this patch is being picked up ?
 
-It's a trivial change and the last generic code change required for you
-arm64 D128 change, right?
+On Tue, Apr 07, 2026 at 02:07:27PM +0800, Baolin Wang wrote:
+>Anonymous shmem large order allocations are dynamically controlled via the
+>global THP sysfs knob (/sys/kernel/mm/transparent_hugepage/shmem_enabled)
+>and the per-size mTHP knobs (/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/shmem_enabled).
+>
+>Therefore, anonymous shmem uses shmem_allowable_huge_orders() to check
+>which large orders are allowed, rather than relying on mapping_max_folio_order().
+>Moreover, mapping_max_folio_order() is intended to control large order
+>allocations only for tmpfs mounts. Clarify this by not setting a large-order
+>range for internal anonymous shmem mappings, to avoid confusion, as discussed
+>in the previous thread[1].
+>
+>[1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>---
+> mm/shmem.c | 13 +++++++++++--
+> 1 file changed, 11 insertions(+), 2 deletions(-)
+>
+>diff --git a/mm/shmem.c b/mm/shmem.c
+>index 4ecefe02881d..a60fe067969c 100644
+>--- a/mm/shmem.c
+>+++ b/mm/shmem.c
+>@@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+> 	if (sbinfo->noswap)
+> 		mapping_set_unevictable(inode->i_mapping);
+> 
+>-	/* Don't consider 'deny' for emergencies and 'force' for testing */
+>-	if (sbinfo->huge)
+>+	/*
+>+	 * Only set the large order range for tmpfs mounts. The large order
+>+	 * selection for the internal anonymous shmem mount is configured
+>+	 * dynamically via the 'shmem_enabled' interfaces, so there is no
+>+	 * need to set a large order range for the internal anonymous shmem
+>+	 * mapping.
+>+	 *
+>+	 * Note: Don't consider 'deny' for emergencies and 'force' for
+>+	 * testing.
+>+	 */
+>+	if (sbinfo->huge && !(sb->s_flags & SB_KERNMOUNT))
 
-I would assume this to go through the tip tree, but if Peter agrees we
-could route this (mm) patch through the MM tree.
+FWIW, SB_KERNMOUNT is broader than "internal anonymous shmem" and covers
+all shm_mnt users too.
 
--- 
+So maybe "internal shmem mount" would be a better description of what
+this code is actually checking.
+
+> 		mapping_set_large_folios(inode->i_mapping);
+> 
+> 	switch (mode & S_IFMT) {
+
 Cheers,
-
-David
+Lance
 
