@@ -4,96 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E289EFEEF33
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 13:02:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B831FEEF35
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 13:09:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229E36B009F; Tue,  7 Apr 2026 09:02:33 -0400 (EDT)
+	id 9AE7D6B0098; Tue,  7 Apr 2026 09:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DB7B6B00A1; Tue,  7 Apr 2026 09:02:33 -0400 (EDT)
+	id 985F66B0099; Tue,  7 Apr 2026 09:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F1A86B00A2; Tue,  7 Apr 2026 09:02:33 -0400 (EDT)
+	id 874DF6B009D; Tue,  7 Apr 2026 09:09:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED8466B009F
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:02:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9595FBB396
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:02:32 +0000 (UTC)
-X-FDA: 84631773744.18.6D92780
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B883F14002D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:02:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 75E1E6B0098
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:09:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BA4B5AA0A
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:09:22 +0000 (UTC)
+X-FDA: 84631790964.16.8BD7D8F
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 90CA61C0008
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:09:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EtvohyZF;
+	spf=pass (imf20.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775566950;
+	s=arc-20220608; t=1775567359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qleby9DODNbNhJ2I4eOSo+5h9fl+V9pt5dPXALCFaiM=;
-	b=tLYw7BvDcrzyqq8fnPVbdmUpZkBC4vR9Tcau597QQclgBE9tO9aOr6DSAefCVJDXj2WVUm
-	HvV/44UHHZ3Mu5Pz6LEgCTCMO6OuhINoqvQjR/bZnjURm+WWkYYN8cqwRe3es/udrFe+RJ
-	e1zTHRTRCDUAmLXNtg3Ymf9LGF5fo40=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566950; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FItEFcj0rTvSsv8dNr4j3B9MFFiOFkMEo1S6fzbKUeY=;
+	b=5BhxmcZBTSqpT6++nvWyPqg9tvtDtvTBt8Xf8Fe7DbA/B2M97MUVMTmVTwK+kAb2mWEalU
+	hvM4jSfvwEaLgGtPI/oD12yDhPnYiLrCmSR2X2BJITGvGjkDoFIRB8QHeoYEMOTbjzMgk+
+	j27aFTDmVGGhJK26LPHFtDo+YcfEoSg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775567359; a=rsa-sha256;
 	cv=none;
-	b=0GAnk5j1YJeyKPHGq9Wv95jjHFUsEG/GBHAw/irQuZonvRhiIWsA7xcMUT3ETLeEXuwiS0
-	KD6EY4kR7vbz2HltEXTP7VEpDh5CMNDGVWY6MHdXeN8OpFSVreFSs17S3NUz5CSxzEE2TE
-	1bRsC/vJtFbJ/ksSoPiCIh0+yNEIZwE=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fqmZ60SYrz8Xs6v;
-	Tue, 07 Apr 2026 21:02:22 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 637D2F6V003314;
-	Tue, 7 Apr 2026 21:02:15 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 7 Apr 2026 21:02:16 +0800 (CST)
-X-Zmail-TransId: 2af969d50058bcf-9a1b7
-X-Mailer: Zmail v1.0
-Message-ID: <20260407210216761qrDj8RR7pN-ycbvYmA69v@zte.com.cn>
-In-Reply-To: <adSFyyFWlLy177rB@hyeyoo>
-References: 202604062150182836ygUiyPoKcxtHjgF7rWXe@zte.com.cn,adSFyyFWlLy177rB@hyeyoo
-Date: Tue, 7 Apr 2026 21:02:16 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <xu.xin16@zte.com.cn>,
-        <yang.tao172@zte.com.cn>, <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogZGVmZXIgZnJlZWxpc3QgY29uc3RydWN0aW9uIHVudGlsIGFmdGVyIGJ1bGsgYWxsb2NhdGlvbiBmcm9tIGEgbmV3IHNsYWI=?=
+	b=P7YWUVpeu1jtSE93rH0wrOHQ/S5VlVp1RfAJ48sHEFg6Ts7mFi2duE6wM9eA6a/1x5r1Pg
+	26etsquOTd1r8JfegM7HsNQlMe4F166/ucT3J6+u8a1c6y+hy9f9DJDsDAwRLGp2ncNc7K
+	WkiRnsk/WjN6M6KLE1EH/tzP8euVEpA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=EtvohyZF;
+	spf=pass (imf20.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636LmvGM2212549;
+	Tue, 7 Apr 2026 13:09:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FItEFc
+	j0rTvSsv8dNr4j3B9MFFiOFkMEo1S6fzbKUeY=; b=EtvohyZFpZqHp5LtqmW+jI
+	Rk2YZAqXZ3Ge2dylErZdACDpvwbMur3JhYiZTzozAdClEv8YWexLCXXUneBEWWPT
+	ItAzvwcrsfwbu2UeGjndO3S06hbixT49cT5L9UjxwWUH+Gs5MKADxDA69FdphI5S
+	tzik5zyq7v8Y3IaVwX/us/jvDdB1aGmVH6ogfZ/IdflSIylQ2rvG5ge5nqBkf8ia
+	DIftP86yageKmUAIeMtJL1UdntSkLdYkrMHLjeD5PGJN3bNRpL9ezDPaj5SK9/Cl
+	UeLvq9fpM4j//q/AKzMWGwHoneESYbtpeplJXMD/+A3k4wjf7TpQlrWoJds3N+FQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2hasyt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 13:09:05 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637BQMZM013902;
+	Tue, 7 Apr 2026 13:09:05 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmf438yr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Apr 2026 13:09:05 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637D94gv8323876
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Apr 2026 13:09:05 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD64758055;
+	Tue,  7 Apr 2026 13:09:04 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 387D05804B;
+	Tue,  7 Apr 2026 13:08:59 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.247.154])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  7 Apr 2026 13:08:58 +0000 (GMT)
 Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 637D2F6V003314
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 07 Apr 2026 21:02:22 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69D5005E.000/4fqmZ60SYrz8Xs6v
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v4 00/15] selftests/mm: fix failures and robustness
+ improvements
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <cover.1775466329.git.sayalip@linux.ibm.com>
+Date: Tue, 7 Apr 2026 18:38:46 +0530
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2CAD5B1A-7FD2-4C5C-9279-A3131EF60D86@linux.ibm.com>
+References: <cover.1775466329.git.sayalip@linux.ibm.com>
+To: Sayali Patil <sayalip@linux.ibm.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDEyMCBTYWx0ZWRfX1ak3vKXmOqHg
+ g2dbfUiNW5cdhKvh7bMuFP6rK7s65G7isGJ77Uvw+TDXQTVNTIY1t6I3iKoXdI6uCI8iiVNwhpA
+ KPJK9PRsu5BWtPLNQ1bWSS8zNe+PBZ7Db/P502/GRaRXn3wqzkWsffFv4Z51rDviyftnwRA6oI9
+ 5huuHs89lPYdaodJ1rOAUVgI2I2GaJDMB2I0sYWaHisj4bXxmEiAKkdTPG/p039zmITgwXJfAAf
+ uwgyzOePSxrwHByR/J7uYr7UturMTUR3pq6P4QWrV2WD9bOr1R6EO0rpp+6ZE9nvQkZEFK6FaMN
+ t3JN0BHhe5440zxKU+bmETvrd+bvkDW3RSikAH/spVd74t73RMNg1fK+31/6Gu/34tO9/9NSray
+ QRbJ2Yrsyvk3SnE9lBGLGjXyaZOIzN7lyQiPltUZIGYnRO3rd0vQFiHYw7uYEejhOwO6eAm3k2P
+ Noz1thdoH0niTjadW2Q==
+X-Proofpoint-GUID: 36-U94uf4L4vh9ztE91hE3oUw1FjIAGo
+X-Authority-Analysis: v=2.4 cv=a/wAM0SF c=1 sm=1 tr=0 ts=69d501f2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=UB1gz0I0rgZDmcXxxXkA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-ORIG-GUID: CvfsEvoqX-LOpTSFK1gUxWWMwfWEeSSw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 spamscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070120
+X-Rspamd-Server: rspam12
+X-Stat-Signature: emd79yh9t6k1pjr7ijzhyy16y18gnphs
+X-Rspamd-Queue-Id: 90CA61C0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B883F14002D
-X-Stat-Signature: 7cgurx1k9o3gmeay516fyknaiz5i6gpz
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775566947-837615
-X-HE-Meta: U2FsdGVkX18sNs1naK5ctpJL0MHqVg8F2vKik9nEKltlv5bkFZmNpd3cUbCQpzhQ2cEfWUhcXOA93Lkdr3Md37ogv//EoxEZ9ssTwHqdTpGfIlZv6ayUnbkLlJW/D4zQ6wWuWIghdn/castniNaZM2yQk9lh6DPTFBjt0WWHsIoIfXPEKl+cOzrOapjw991OSG5IVI+uugGTlS12/M66sOaPuyT/UlbGS1XxV+WjuhtHbLgBnQN8I4Bs9n0xR0wzL0Zc40ljUHvJtbvb3QDzdREZ8PS6Hd1VuPx/MItD2AH3+W9LRwzXljRaHhBPys3HUe2dbMkmtz83p8k9NnPi96ieBgQgDkqZP0yGT1IK/YE5Gll4Q2DSCGcxiyF52ey2IcKxkA7Rb7oTSLnKgqQTFmBYXmwhfXC5JeqoB8n3/eMJ09m3fb5M9yzFo58FZJDji4s4L/2k6jEqhIRGQt+KP2Fu3T9ADtGp/vFM8t8nDWPNMAcFyf9TwMaO3D4vxBnSSK8rLFvgp3Uc1kUZ2/4SWJzydZoO/+c69oO05DK/s7fGCtfr5JFJnDoYmceOIM4jzuGXQ0Ql9NT9+009muUKq858ReWOMoRzE/XpeKEjucUruSFsbsKY9FPaM6cfxnZGnnGOt+APU1M+w3oNHRFEkz1CtXKNUVuz4P6J9OXjh2FAy13ZhzzXsqN27QL6QaK+RSRYi9YSGUy8bvUVqFM1JzzyR877zCHmM/SuU6ovacGZtWQeHljLqSKA7+ZYsojGOt7LYKsOfBJ8AcSgAKhMKhkyJ2eGeg+odjlj5I6t62QENd2M1ZC5UaDKNHyMjQPo5i/QyPmiSxYDobuOB9y22m7CcZnN50bz4iK3e1bSzTKbYG0lqYyshp81cFGqa6zlNua3ywmI6Jg7cuz1EKJJhqgavp8SFes31sTWnkb4fFM09wEHl9De5vLzDm74Go9Wx855eoAywWqv9BAsVDa
- H7HiYFSx
- ANVtFwYmFK5cxHxaiPvJjJF+7L2FTR0zvqmjxvg5lZfqSLO1SYjNrnHgbuMuHpWde/ONWLV3PlINAGO9cahM6oIE08eOQqHJVfiGgu5Vma582ITJ0pTGfdVRROF1KH+j6wpOOkWwWygF337AopXE8PvghrtO+Imas4EOJfNsU38U5JPbwUgeZy0fq1TDfn4kJMIxd+ypUCEsyfA99bK8SouUeGHJ7VE/QZjAuf22TlNz77i/NbyXjhJ9z9NJVP10+2gHQ8floIyLJdJcz2fARYgiGwHFGfYcd2NFKvxTUIompTTY=
+X-HE-Tag: 1775567359-136485
+X-HE-Meta: U2FsdGVkX1/aT7DTWIlSONMlIdwMHSEjgR3yZqq0jQm8r4g3vlCqR6KytqSQaD9VYz0iewl3tnKwhkl1f91X+vid1GH7z/9WCctXMJi4sidN3lzaPpSfl73l4hjDHOaVdud7pnCuBQyP5g31xrscq4vlK2VYeu1rFjzyr3qlaaR/6ltH5Y20wpg9nG9ex3UwDRIXYNMjhreWkUUto6vlVQrBfVA3iF40xMbq8/lnReLG30ZtEIRzRNZtGdHu5L/1AzlaFVXC+EvC3gSiAJRLHAL3T/o4AsGcI78zGM/opmSfO28Dm/4jbbhDhPEX+a18iLx9E08tnZdnEifb3MeWYWKhkgKhY3urc0qpY1BZJW3Veu+PTg+G6/zYrFkyXiWsnFQTFsd8scM+D6p3tUj4xLWoTcGdx6xAdDcpHNH6t2B8XzsEkoumTlzmpdj5QwWT9F1LsnBp9uvSFYUC5LhsQCfpo3iI6SqDrE1Yyaywq4IRfuKvX3lmyxgQGS0qwDbxJdPBl+Zdpwn/KzmeRvOpii9urLanhsU7ELJCjVrj4ZNS9hIGVs66U3Bv0pMDRac9/cHmegjKGIGHn9z4K6kDlFmwwvaV5XV8FkyaSMXAHeaUm2enuW19vbVrIjkeh2OG5qfkslLwTpQU6midzzIaq/E0nzr/mXQc2Xmwo6SFRRAhXXnWPNN464/Np3diYD12NaacG/05pJaE+V9AcIavdssMfJorxTLp+b+OPiZd1Yptt3TEDmX+SK4srvTNDkoumytieiP3wuB+9H8+QpJzQrrkTTZBBxQBYaBkXPbbJ8rSSrEUIPZREkqC0lx/MTi4pBv38Cruo0gA6dgZJWiA3p86aIAyPiuNHn28Pz4er8c5sY2e84RfDSeblgRYXtKcQskCWiWUodZo4Wck7J4i7SdNQJSNCw6z0eMMa/TvF3u1B7Y18GH6R6PExQdmI9jpOqVoY9MnOjcPJ/EZ6Qz
+ LeXXe+9v
+ LIv3KGwIHNZ46ooaDTASQsFovi2qDsjH9RNaMQV6Fue4ZWN4iz0OB2BySM5BstKpLtBvyErWaHmzVYcg9KHl8K971p83wk+LboARoYDuw+XAVAc0liZFkBmqQPN03JMzln2HNugd+HaCDUWOZSz7W6nKBYJUAxFBL4s82XMJcy0H81t1CK+Jm6gkbtV7zKjTf/HLo8PgfBz0VXbqLl3YHgodxtvD4WKAfcHFynRlTo8pqGIU35nWz9eMod7fVJlHkRB/Tm2nueHC7EZgNrbtDC8P/IW9AqIz/8UXbvbNZ2zjG4V/vpxlMAvpy1MDq9PSv4jDJvzdesxdNnxV3qwU06s2Z8RKfZB/G5fkr+ejd8+V3V1o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,398 +148,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
 
-> Hi Shengming, thanks for v3!
-> 
-> Good to see it's getting improved over the revisions.
-> Let me leave some comments inline.
-> 
+Hi Sayali,
 
-Hi Harry,
+I tested the full series, and overall it looks good. In particular, the
+series resolves the issue reported in v2 [1], and the other patches in
+the series behaved as expected during my testing.
 
-Thanks a lot for the detailed review.
+[1]: =
+https://lore.kernel.org/all/cf815c21-138e-44c8-986d-d8496503ee32@linux.ibm=
+.com/
 
-> On Mon, Apr 06, 2026 at 09:50:18PM +0800, hu.shengming@zte.com.cn wrote:
-> > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > 
-> > refill_objects() can consume many objects from a fresh slab, and when it
-> > takes all objects from the slab the freelist built during slab allocation
-> > is discarded immediately.
-> > 
-> > Instead of special-casing the whole-slab bulk refill case, defer freelist
-> > construction until after objects are emitted from the new slab.
-> > allocate_slab() now allocates and initializes slab metadata only.
-> > new_slab() preserves the existing behaviour by building the full freelist
-> > on top, while refill_objects() allocates a raw slab and lets
-> > alloc_from_new_slab() emit objects directly and build a freelist only for
-> > the remaining objects, if any.
-> > 
-> > To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
-> > small iterator abstraction for walking free objects in allocation order.
-> > The iterator is used both for filling the sheaf and for building the
-> > freelist of the remaining objects.
-> > 
-> > This removes the need for a separate whole-slab special case, avoids
-> > temporary freelist construction when the slab is consumed entirely.
-> > 
-> > Also mark setup_object() inline. After this optimization, the compiler no
-> > longer consistently inlines this helper in the hot path, which can hurt
-> > performance. Explicitly marking it inline restores the expected code
-> > generation.
-> > 
-> > This reduces per-object overhead in bulk allocation paths and improves
-> > allocation throughput significantly. In slub_bulk_bench, the time per
-> > object drops by about 41% to 70% with CONFIG_SLAB_FREELIST_RANDOM=n, and
-> > by about 59% to 71% with CONFIG_SLAB_FREELIST_RANDOM=y.
-> > 
-> > Benchmark results (slub_bulk_bench):
-> > Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
-> > Kernel: Linux 7.0.0-rc6-next-20260330
-> > Config: x86_64_defconfig
-> > Cpu: 0
-> > Rounds: 20
-> > Total: 256MB
-> > 
-> > - CONFIG_SLAB_FREELIST_RANDOM=n -
-> > 
-> > obj_size=16, batch=256:
-> > before: 4.62 +- 0.01 ns/object
-> > after: 2.72 +- 0.01 ns/object
-> > delta: -41.1%
-> > 
-> > obj_size=32, batch=128:
-> > before: 6.58 +- 0.02 ns/object
-> > after: 3.30 +- 0.02 ns/object
-> > delta: -49.8%
-> > 
-> > obj_size=64, batch=64:
-> > before: 10.20 +- 0.03 ns/object
-> > after: 4.22 +- 0.03 ns/object
-> > delta: -58.7%
-> > 
-> > obj_size=128, batch=32:
-> > before: 17.91 +- 0.04 ns/object
-> > after: 5.73 +- 0.09 ns/object
-> > delta: -68.0%
-> > 
-> > obj_size=256, batch=32:
-> > before: 21.03 +- 0.12 ns/object
-> > after: 6.22 +- 0.08 ns/object
-> > delta: -70.4%
-> > 
-> > obj_size=512, batch=32:
-> > before: 19.00 +- 0.21 ns/object
-> > after: 6.45 +- 0.13 ns/object
-> > delta: -66.0%
-> > 
-> > - CONFIG_SLAB_FREELIST_RANDOM=y -
-> > 
-> > obj_size=16, batch=256:
-> > before: 8.37 +- 0.06 ns/object
-> > after: 3.38 +- 0.05 ns/object
-> > delta: -59.6%
-> > 
-> > obj_size=32, batch=128:
-> > before: 11.00 +- 0.13 ns/object
-> > after: 4.05 +- 0.01 ns/object
-> > delta: -63.2%
-> > 
-> > obj_size=64, batch=64:
-> > before: 15.30 +- 0.20 ns/object
-> > after: 5.21 +- 0.03 ns/object
-> > delta: -65.9%
-> > 
-> > obj_size=128, batch=32:
-> > before: 21.55 +- 0.14 ns/object
-> > after: 7.10 +- 0.02 ns/object
-> > delta: -67.1%
-> > 
-> > obj_size=256, batch=32:
-> > before: 26.27 +- 0.29 ns/object
-> > after: 7.54 +- 0.05 ns/object
-> > delta: -71.3%
-> > 
-> > obj_size=512, batch=32:
-> > before: 26.69 +- 0.28 ns/object
-> > after: 7.73 +- 0.09 ns/object
-> > delta: -71.0%
-> > 
-> > Link: https://github.com/HSM6236/slub_bulk_test.git
-> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> > ---
-> > Changes in v2:
-> > - Handle CONFIG_SLAB_FREELIST_RANDOM=y and add benchmark results.
-> > - Update the QEMU benchmark setup to use -enable-kvm -cpu host so benchmark results better reflect native CPU performance.
-> > - Link to v1: https://lore.kernel.org/all/20260328125538341lvTGRpS62UNdRiAAz2gH3@zte.com.cn/
-> > 
-> > Changes in v3:
-> > - refactor fresh-slab allocation to use a shared slab_obj_iter
-> > - defer freelist construction until after bulk allocation from a new slab
-> > - build a freelist only for leftover objects when the slab is left partial
-> > - add build_slab_freelist(), prepare_slab_alloc_flags() and next_slab_obj() helpers
-> > - remove obsolete freelist construction helpers now replaced by the iterator-based path, including next_freelist_entry() and shuffle_freelist()
-> > - Link to v2: https://lore.kernel.org/all/202604011257259669oAdDsdnKx6twdafNZsF5@zte.com.cn/
-> > 
-> > ---
-> >  mm/slab.h |  11 +++
-> >  mm/slub.c | 256 +++++++++++++++++++++++++++++-------------------------
-> >  2 files changed, 149 insertions(+), 118 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index fb2c5c57bc4e..88537e577989 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -4344,14 +4245,130 @@ static __always_inline void maybe_wipe_obj_freeptr(struct kmem_cache *s,
-> >              0, sizeof(void *));
-> >  }
-> >  
-> > +/* Return the next free object in allocation order. */
-> > +static inline void *next_slab_obj(struct kmem_cache *s,
-> > +                  struct slab_obj_iter *iter)
-> > +{
-> > +#ifdef CONFIG_SLAB_FREELIST_RANDOM
-> > +    if (iter->random) {
-> > +        unsigned long idx;
-> > +
-> > +        /*
-> > +         * If the target page allocation failed, the number of objects on the
-> > +         * page might be smaller than the usual size defined by the cache.
-> > +         */
-> > +        do {
-> > +            idx = s->random_seq[iter->pos];
-> > +            iter->pos++;
-> > +            if (iter->pos >= iter->freelist_count)
-> > +                iter->pos = 0;
-> > +        } while (unlikely(idx >= iter->page_limit));
-> > +
-> > +        return setup_object(s, (char *)iter->start + idx);
-> > +    }
-> > +#endif
-> > +    void *obj = iter->cur;
-> > +
-> > +    iter->cur = (char *)iter->cur + s->size;
-> > +    return setup_object(s, obj);
-> > +}
-> > +
-> > +/* Initialize an iterator over free objects in allocation order. */
-> > +static inline void init_slab_obj_iter(struct kmem_cache *s, struct slab *slab,
-> > +                      struct slab_obj_iter *iter,
-> > +                      bool allow_spin)
-> > +{
-> > +    iter->pos = 0;
-> > +    iter->start = fixup_red_left(s, slab_address(slab));
-> > +    iter->cur = iter->start;
-> 
-> It's confusing that iter->pos field is used only when randomization is
-> enabled and iter->cur field is used only when randomization is disabled.
-> 
-> I think we could simply use iter->pos for both random and non-random cases
-> (as I have shown in the skeleton before)?
-> 
+The only concern I observed is specific to patch 15/15. On systems using
+1GB huge pages, I noticed below failure.
 
-Right, I introduced cur only to keep the non-random iteration close to
-the original form, but I agree that using pos for both cases is cleaner.
+  ./test_hugetlb_memcg
+  # Hugepage size: 1048576 kB
+  # memory usage should go back down.
+  # expected memory: 4194304
+  # actual memory:   8388608
+  not ok 1 test_hugetlb_memcg
 
-> > +#ifdef CONFIG_SLAB_FREELIST_RANDOM
-> > +    iter->random = (slab->objects >= 2 && s->random_seq);
-> > +    if (!iter->random)
-> > +        return;
-> > +
-> > +    iter->freelist_count = oo_objects(s->oo);
-> > +    iter->page_limit = slab->objects * s->size;
-> > +
-> > +    if (allow_spin) {
-> > +        iter->pos = get_random_u32_below(iter->freelist_count);
-> > +    } else {
-> > +        struct rnd_state *state;
-> > +
-> > +        /*
-> > +         * An interrupt or NMI handler might interrupt and change
-> > +         * the state in the middle, but that's safe.
-> > +         */
-> > +        state = &get_cpu_var(slab_rnd_state);
-> > +        iter->pos = prandom_u32_state(state) % iter->freelist_count;
-> > +        put_cpu_var(slab_rnd_state);
-> > +    }
-> > +#endif
-> > +}
-> >  static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> >          void **p, unsigned int count, bool allow_spin)
-> 
-> There is one problem with this change; ___slab_alloc() builds the
-> freelist before calling alloc_from_new_slab(), while refill_objects()
-> does not. For consistency, let's allocate a new slab without building
-> freelist in ___slab_alloc() and build the freelist in
-> alloc_single_from_new_slab() and alloc_from_new_slab()?
-> 
+Apart from this case, the rest of the series tested cleanly for me. =
+Based
+on that, it seems that dropping patch 15/15 independently makes sense.
 
-Agreed, also, new_slab() is currently used by both early_kmem_cache_node_alloc()
-and ___slab_alloc(), so I'll rework the early allocation path as well to
-keep the new-slab flow consistent.
+Hence for the series,
 
-> >  {
-> >      unsigned int allocated = 0;
-> >      struct kmem_cache_node *n;
-> > +    struct slab_obj_iter iter;
-> >      bool needs_add_partial;
-> >      unsigned long flags;
-> > -    void *object;
-> > +    unsigned int target_inuse;
-> >  
-> >      /*
-> >       * Are we going to put the slab on the partial list?
-> > @@ -4359,6 +4376,9 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> >       */
-> >      needs_add_partial = (slab->objects > count);
-> >  
-> > +    /* Target inuse count after allocating from this new slab. */
-> > +    target_inuse = needs_add_partial ? count : slab->objects;
-> > +
-> >      if (!allow_spin && needs_add_partial) {
-> >  
-> >          n = get_node(s, slab_nid(slab));
-> 
-> Now new slabs without freelist can be freed in this path.
-> which is confusing but should be _technically_ fine, I think...
-> 
-> > @@ -4370,19 +4390,18 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> >          }
-> >      }
-> >  
-> > -    object = slab->freelist;
-> > -    while (object && allocated < count) {
-> > -        p[allocated] = object;
-> > -        object = get_freepointer(s, object);
-> > +    init_slab_obj_iter(s, slab, &iter, allow_spin);
-> > +
-> > +    while (allocated < target_inuse) {
-> > +        p[allocated] = next_slab_obj(s, &iter);
-> >          maybe_wipe_obj_freeptr(s, p[allocated]);
-> 
-> We don't have to wipe the free pointer as we didn't build the freelist?
-> 
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-Right, maybe_wipe_obj_freeptr() is not needed for objects emitted directly from a fresh slab,
-I'll remove it.
+Regards,
+Venkat
 
-> > -        slab->inuse++;
-> >          allocated++;
-> >      }
-> > -    slab->freelist = object;
-> > +    slab->inuse = target_inuse;
-> >  
-> >      if (needs_add_partial) {
-> > -
-> > +        build_slab_freelist(s, slab, &iter);
-> 
-> When allow_spin is true, it's building the freelist while holding the
-> spinlock, and that's not great.
-> 
-> Hmm, can we do better?
-> 
-> Perhaps just allocate object(s) from the slab and build the freelist
-> with the objects left (if exists), but free the slab if allow_spin
-> is false AND trylock fails, and accept the fact that the slab may not be
-> fully free when it's freed due to trylock failure?
-> 
-> something like:
-> 
-> alloc_from_new_slab() {
->     needs_add_partial = (slab->objects > count);
->     target_inuse = needs_add_partial ? count : slab->objects;
-> 
->     init_slab_obj_iter(s, slab, &iter, allow_spin);
->     while (allocated < target_inuse) {
->         p[allocated] = next_slab_obj(s, &iter);
->         allocated++;
->     }
->     slab->inuse = target_inuse;
-> 
->     if (needs_add_partial) {
->         build_slab_freelist(s, slab, &iter);
->         n = get_node(s, slab_nid(slab))
->         if (allow_spin) {
->             spin_lock_irqsave(&n->list_lock, flags);
->         } else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
->             /* 
->              * Unlucky, discard newly allocated slab.
->              * The slab is not fully free, but it's fine as
->              * objects are not allocated to users.
->              */
->             free_new_slab_nolock(s, slab);
->             return 0;
->         }
->         add_partial(n, slab, ADD_TO_HEAD);
->         spin_unlock_irqrestore(&n->list_lock, flags);
->     }
->     [...]
-> }
-> 
-> And do something similar in alloc_single_from_new_slab() as well.
-> 
+> On 6 Apr 2026, at 2:49=E2=80=AFPM, Sayali Patil =
+<sayalip@linux.ibm.com> wrote:
+>=20
+> Hi all,
+>=20
+> Powerpc systems with a 64K base page size exposed several issues while
+> running mm selftests. Some tests assume specific hugetlb =
+configurations,
+> use incorrect interfaces, or fail instead of skipping when the =
+required
+> kernel features are not available.
+>=20
+> This series fixes these issues and improves test robustness.
+>=20
+> Please review the patches and provide any feedback or suggestions for
+> improvement.
+>=20
+> Thanks,
+> Sayali
+>=20
+> ---
+> v3->v4
+>=20
+>  - selftests/mm: restore default nr_hugepages value via EXIT
+>    trap in charge_reserved_hugetlb.sh:
+>    Updated to use an EXIT trap to restore the original nr_hugepages
+>    once at script termination, ensuring reliable restoration on all
+>    exit paths.
+>=20
+>  - selftest/mm: fix cgroup task placement and drop memory.current =
+checks
+>    in hugetlb_reparenting_test.sh:
+>    Updated to use a deterministic synchronization method by migrating =
+the
+>    workload process within a wrapper subshell before calling exec() to=20=
 
-Good point. I'll restructure the path so objects are emitted first, the leftover
-freelist is built only if needed, and the slab is added to partial afterwards. For
-the !allow_spin trylock failure case, I'll discard the new slab and return 0. I'll
-do the same for the single-object path as well.
+>    ensure correct cgroup accounting.
+>=20
+>  - selftest/mm: align memory size to huge page size in hugepage-mremap
+>    test:
+>    Update test code directly to align memory allocations to the =
+hugepage
+>    size, rather than modifying run_vmtests.sh. This replaces the =
+previous
+>    commit =E2=80=9Cadjust hugepage-mremap test size for large huge =
+pages=E2=80=9D with
+>    a cleaner, direct approach in the test itself.
+>=20
+>  - selftests/mm: ensure destination is hugetlb-backed in =
+hugepage-mremap:
+>    Updated to remove MAP_POPULATE flag for the mmap call as per review
+>    comment.
+>=20
+>  - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is =
+unsupported:
+>    Updated as per review comment to initialize features to zero and =
+exit
+>    on all uffd_get_features() failures, avoiding spurious test errors.
+>=20
+>  - selftests/mm: move hwpoison setup into run_test() and silence
+>    modprobe output for memory-failure category:
+>    Declared LOADED_MOD as local variable and avoided a redundant=20
+>    skip message when the module is not found.
+>    Updated logic to set exitcode to ksft_skip only when no failure has
+>    been recorded.
+>=20
+>  - selftests/cgroup: extend test_hugetlb_memcg.c to support all huge
+>    page sizes:
+>    Updated to skip on memory constraints instead of returning
+>    EXIT_FAILURE.
+>    Updated the logic to fully account for the scenario when the
+>    per-CPU stock is empty and a refill charges MEMCG_CHARGE_BATCH.=20
+>    Updated to avoid overflow on 32-bit systems for memory.max value.
+>=20
+>  - Included "selftests/mm: restore default nr_hugepages value via
+>    EXIT trap in hugetlb_reparenting_test.sh"
+>=20
+>  - Included "selftests/mm: free dynamically allocated PMD-sized
+>    buffers in split_huge_page_test"
+>=20
+>  - Included "selftests/mm: clarify alternate unmapping in =
+compaction_test"
+>=20
+>  - Dropped "selftests/mm: fix double increment in linked list cleanup =
+in
+>    compaction_test":
+>    The behaviour is intentional.
+>=20
+> v3: =
+https://lore.kernel.org/all/cover.1774591179.git.sayalip@linux.ibm.com/
+>=20
+> ---
+> v2->v3
+>  - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is =
+unsupported:
+>    Rename function to check_uffd_wp_feature_supported() as suggested =
+in review.
+>  - selftest/mm: fix cgroup task placement and drop memory.current =
+checks
+>    in hugetlb_reparenting_test.sh:
+>    Drop memory.current validation from the hugetlb reparenting test.
+>    Keep tolerance at 7MB (reverting earlier increase to 8MB in v1).
+>  - Included "selftests/mm: allow PUD-level entries in compound =
+testcase of hmm
+>    tests" patch:
+>    Extend the compound testcase checks to accept PUD-level mappings.
+>  - Included "selftests/mm: replace hardcoded THP size with runtime PMD =
+page size in
+>    hmm tests" patch:
+>    Use read_pmd_pagesize() instead of TWOMEG and cap maximum THPs in
+>    benchmarks to avoid integer overflow.
+>=20
+> v2: =
+https://lore.kernel.org/all/cover.1773305677.git.sayalip@linux.ibm.com/
+>=20
+> ---
+> v1->v2
+>  - For "selftests/mm: ensure destination is hugetlb-backed in =
+hugepage-mremap":
+>    update FLAGS definition to MAP_HUGETLB | MAP_SHARED | MAP_POPULATE =
+and
+>    used it for mmap() calls as suggested during review.
+>=20
+> v1: =
+https://lore.kernel.org/all/cover.1773134177.git.sayalip@linux.ibm.com/
+> ---
+>=20
+> Sayali Patil (15):
+>  selftests/mm: restore default nr_hugepages value via EXIT trap in
+>    charge_reserved_hugetlb.sh
+>  selftests/mm: fix hugetlb pathname construction in
+>    charge_reserved_hugetlb.sh
+>  selftests/mm: restore default nr_hugepages value via EXIT trap in
+>    hugetlb_reparenting_test.sh
+>  selftests/mm: fix hugetlb pathname construction in
+>    hugetlb_reparenting_test.sh
+>  selftests/mm: fix cgroup task placement and drop memory.current =
+checks
+>    in hugetlb_reparenting_test.sh
+>  selftests/mm: size tmpfs according to PMD page size in
+>    split_huge_page_test
+>  selftests/mm: free dynamically allocated PMD-sized buffers in
+>    split_huge_page_test
+>  selftest/mm: align memory size to huge page size in hugepage-mremap
+>    test
+>  selftest/mm: register existing mapping with userfaultfd in
+>    hugepage-mremap
+>  selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap
+>  selftests/mm: skip uffd-wp-mremap if UFFD write-protect is =
+unsupported
+>  selftests/mm: skip uffd-stress test when nr_pages_per_cpu is zero
+>  selftests/mm: move hwpoison setup into run_test() and silence =
+modprobe
+>    output for memory-failure category
+>  selftests/mm: clarify alternate unmapping in compaction_test
+>  selftests/cgroup: extend test_hugetlb_memcg.c to support all huge =
+page
+>    sizes
+>=20
+> .../selftests/cgroup/test_hugetlb_memcg.c     | 90 ++++++++++++++-----
+> .../selftests/mm/charge_reserved_hugetlb.sh   | 45 ++++++----
+> tools/testing/selftests/mm/compaction_test.c  |  3 +
+> tools/testing/selftests/mm/hugepage-mremap.c  | 42 ++++-----
+> .../selftests/mm/hugetlb_reparenting_test.sh  | 59 ++++++------
+> tools/testing/selftests/mm/run_vmtests.sh     | 52 +++++++----
+> .../selftests/mm/split_huge_page_test.c       | 27 ++++--
+> tools/testing/selftests/mm/uffd-stress.c      |  6 +-
+> tools/testing/selftests/mm/uffd-wp-mremap.c   | 13 +++
+> 9 files changed, 220 insertions(+), 117 deletions(-)
+>=20
+> --=20
+> 2.52.0
+>=20
 
-> >          if (allow_spin) {
-> >              n = get_node(s, slab_nid(slab));
-> >              spin_lock_irqsave(&n->list_lock, flags);
-> > @@ -7244,16 +7265,15 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-> >  
-> >  new_slab:
-> >  
-> > -    slab = new_slab(s, gfp, local_node);
-> > +    slab_gfp = prepare_slab_alloc_flags(s, gfp);
-> 
-> Could we do `flags = prepare_slab_alloc_flags(s, flags);`
-> within allocate_slab()? Having gfp and slab_gfp flags is distractive.
-> The value of allow_spin should not change after
-> prepare_slab_alloc_flags() anyway.
-> 
-
-Agreed. I'll move the prepare_slab_alloc_flags() handling into allocate_slab()
-so the call sites stay simpler, and keep the iterator/freelist construction
-local to alloc_single_from_new_slab() and alloc_from_new_slab().
-
-I also have a question about the allow_spin semantics in the refill_objects path.
-
-Now that init_slab_obj_iter() has been moved into alloc_from_new_slab(..., true),
-allow_spin on this path appears to be unconditionally set to true.
-
-Previously, shuffle_freelist() received allow_spin = gfpflags_allow_spinning(gfp),
-so I wanted to check whether moving init_slab_obj_iter() into alloc_from_new_slab()
-changes the intended semantics here.
-
-My current understanding is that this is still fine, because refill_objects()
-is guaranteed to run only when spinning is allowed. Is that correct?
-
-> > +    allow_spin = gfpflags_allow_spinning(slab_gfp);
-> > +
-> > +    slab = allocate_slab(s, slab_gfp, local_node, allow_spin);
-> >      if (!slab)
-> >          goto out;
-> >  
-> >      stat(s, ALLOC_SLAB);
-> >  
-> > -    /*
-> > -     * TODO: possible optimization - if we know we will consume the whole
-> > -     * slab we might skip creating the freelist?
-> > -     */
-> >      refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
-> >                      /* allow_spin = */ true);
-> >  
-> > -- 
-> > 2.25.1
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
-
-Thanks again. I will fold these changes into the next revision.
---
-With Best Regards,
-Shengming
 
