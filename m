@@ -4,102 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28390FEEF2E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4808EFEEF33
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 13:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 753DE6B009F; Tue,  7 Apr 2026 08:58:20 -0400 (EDT)
+	id 7A56D6B009E; Tue,  7 Apr 2026 09:00:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704F56B00A1; Tue,  7 Apr 2026 08:58:20 -0400 (EDT)
+	id 77D566B009F; Tue,  7 Apr 2026 09:00:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F36A6B00A2; Tue,  7 Apr 2026 08:58:20 -0400 (EDT)
+	id 6B9A36B00A0; Tue,  7 Apr 2026 09:00:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD6D6B009F
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:58:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2688BB23E
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:58:19 +0000 (UTC)
-X-FDA: 84631763118.01.1586099
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CB696B009E
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:00:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 525EB16080A
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:00:22 +0000 (UTC)
+X-FDA: 84631768284.07.E0F370F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4AC3E160008
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:58:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L7glko9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 77F5040020
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:00:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ALLPTejs;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775566698;
+	s=arc-20220608; t=1775566820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCzEs3qg0xnSM36RtrcEwzUDKBZJSI/6EEeAkBM9P4A=;
-	b=B3ak9GpwG8MMrDb5GEHM8kc4j1OZGCztcYgVSNy9LthGG8riGK8WDf4zqjpguaVprIr3CG
-	mLlZ0xUJ2HwAYzGz2vHos3o+fB05Iz0sgYjM46FPG0pQRHBDAseMGOIB2lTKylSYaxmt6L
-	wW5NCB8tTN3Mqgkte0bqjyN3SMkWVlY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566698; a=rsa-sha256;
-	cv=none;
-	b=DcAZcvMms2RjsOXZv53l4MgUvEt2KI1UdLOkdIWpzW7oPlwh0GHqRV3nHtv6VxVCMXcEDV
-	Brcb+cyBeDNB53Wl7d+/+zpu2ZS0CbsEtTdW7hOaK2I8ph8kw4JVIA4P4ozUIjYDZ96ITQ
-	uOAxKz8WEwGqeL8UMeLBFc2nKQQctEY=
+	bh=o1FBI+wtuHGT0zPtkQAGQzN9vj5bi2AjmiJ3d0GKJZs=;
+	b=1R1xY27ICAGFoP97A5/BPU4p/vif3ES2bvj0jIX4+0kpmICvzDaBC7pqKWGOsbIlUut1ap
+	kidQhNQx5xAtAbXwM+S875hNXIcsXRTSJZq92oKHwLpqjqls6kWg+Dj+49hdJOD4AwAlgB
+	y020HHVva9OycFfqY9gM2n7I01C1cR4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L7glko9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ALLPTejs;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566820; a=rsa-sha256;
+	cv=none;
+	b=w9yWP4ANbkB4XSx6pFQirD8EcnYJbM8GzCs+qvic9T5/LWnINeU7t/jiqEmZYZq24vFJWE
+	UA6+VXHe8iOrHMOL510W+QpkRSLPejfq12hBTbpbmICyBHIzX4adfrYtBcr1MrKXhqw3JH
+	AqiN5bHoD9ipwIpBKJRTjCra1DLw4pI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B64DC600AC;
-	Tue,  7 Apr 2026 12:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4B5C116C6;
-	Tue,  7 Apr 2026 12:58:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B8E2F600CB;
+	Tue,  7 Apr 2026 13:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F93C116C6;
+	Tue,  7 Apr 2026 13:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775566697;
-	bh=Vuo8khsjxbN2TIURS/5kdF2MhqjcznQQ2wx/2ImFzvc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L7glko9aAohDzvAn7OqsI+J4uDM2pUX3oJQTUL3L9iPAE8bEACZR/wFPmeVFnMSbR
-	 97baR5iGmZbOiCGtwp8nv83FX75zrcNoDStHgR3YKejPU1hhULTn/8gUz0gaqBUFXf
-	 d9DlHtCR92PKVmymj7Lalmk4VOklwWWA0vPnZ5QfoejbQtgFrkgp6vzG58rP3pO2iv
-	 PujV58T2UXEcDOaNnxEz5BqGS7v/M2nGXYIuIQSsoMxlg3NG/+DX6Vnu4yWoJQc1ND
-	 25dQvmkMmmNB6IBLiGbLmcpJ7zubOPGKE3d4aYcIxXt1efPbqcIevg79ncUIULDJt+
-	 KNGlW5P3nPcfA==
-Date: Tue, 7 Apr 2026 13:58:10 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 18/53] selftests/mm: uffd-unit-tests: use kselftest
- framework
-Message-ID: <f07f4e35-227f-4dab-8e05-b6d20f38c60d@sirena.org.uk>
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-19-rppt@kernel.org>
+	s=k20201202; t=1775566819;
+	bh=9g/6ivrb0RmDwR1PLMYmA4o5ry8IP2rIJPVEZipn8ms=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ALLPTejsosvRriKbnB0ft7zoKwKMrNmPb9R7yn9v4aqH6tALqAm59I/a0idyPZzZY
+	 p0r3OE8wsv2cwLzpJkH6MkDcj8ubu4/Lor5PmhZpS7SWeQg/QesdCpek6WJcKOMWaB
+	 wIWFQDp6vXIuNYzDDQ3atwxN/DLZ7LrMg0J/MKeXDrGH5CHQmk8SMXZEE3rZ74zNhs
+	 oWalmvV5KEDqe893ikKqLdd0Y/VT1TuoKEuAJzm4GJYT5qOPUMgLNxwDbTlCV7feHu
+	 LPWJMWFXqGKgAzDGdFze7n1MHuyTNh20mLKMK9NYA+F8MuNK5AAkNlBwh270IvLq7q
+	 h+SP5S92+rFpw==
+Message-ID: <ba56af16-c326-4abe-b1e5-3eb5015e14d7@kernel.org>
+Date: Tue, 7 Apr 2026 15:00:15 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ikVDHGOE2eekYHG+"
-Content-Disposition: inline
-In-Reply-To: <20260406141735.2179309-19-rppt@kernel.org>
-X-Cookie: Now, let's SEND OUT for QUICHE!!
-X-Rspamd-Queue-Id: 4AC3E160008
-X-Stat-Signature: gqgxzrz3s4zgb5yoz3gqynztkcme9ffi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
+Content-Language: en-US
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260407125133.564182-1-kevin.brodsky@arm.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260407125133.564182-1-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 77F5040020
+X-Stat-Signature: 1gi3brnsjb8mzuaf1rq17rdh6mofwjb4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775566698-850376
-X-HE-Meta: U2FsdGVkX197TGJRwTLX5WqIODvtq1cldYB8/ZVxuFQqntSPZHBk13tTziFTxNyzGF4iHZGsvjeC100GD6tgPG40Y6H9NRP32nbGTa1WLqCZHH1VzCkc26gviDLH2uQcoU3IsKpQvoy43w+4gcROZM1tc0ecaWmjYhqb7vcEdLx7ymPXhuCvsEevU7IKUtscCWy4dmjHVVNOmmHpSZsWhykevFkL+KU0LK4kdVea4J5GZ4uZrWRSK6773OlzsE9jy9YezWKmyRd+FpBc8jriLv7YBZCKIIk8XSKGja0t2S0B4IWP4jZM5dC9hYnWrjCkDg33bvT5MyDRKwUUVjGMnstY6dZftEFN1V7nsBK/2gFJZEsVuCHRBmmSRIwfdUTmtq1AlVJvL3xDABTDXQZqNtgSChowzoPq1x/ETw8m/WEIDhzKceBt7BhQTBb7DS6OdpoeKZdKgZ05eb9XO8sUCic2+mzRII4d8c5GMLBNYVUm0LR5DO6zGaP3972UxBjnGTidvLYE33QJE+0Ja17/384gtmeFkLOvmPrxKGAlXQt9rmXFWGPqGTI7uHrezw4gUXQYmc69JgY5p6ezPZsfn4aTC2tmGm3zO8id2wqKlD+kjRbFWrR2ultCkguCFx4kElP7hYlOVc2faOqbCmbadhURax04WcsDDx4/l6KNqqa5DIrdh5xNAuzOPlSvfdfGKOEMqTIVFqveroph2iBO1E1C7VVdPlk9YFCc5Xuv/IzJsLu8hHN7yvPylV6jSkvWyRlSVX5fy5MpCq5dFOW4mpB1S8JiDenT77Vt9VJXmPE7iyJNyPIYKV4thjWdb2SCf9PFjklzIM4if0OMnhppc4FNh7rgSDSRl0vhxNB7sgNduPJLC1vE4DKiEzI1CfLKGFFPQ7fgikuv5HRSZYxZOI8CC+hmUweGFyFhaocENCEr4PVI4hxDLCoFJsM8EOd3jXeJJeBOth761H9BEk2
- R1CUIud+
- YZ4tq2uAs+4nrNhqBpvm9ATJdMRbAK467J8c/+mZ+2np66h3Xli1Sni1oiOWOedt57J5qao8gkPpvRBldASft5SwloaVzl4MIUVCHZfukWOjhfIFLPIKBUqjjB+B4EXkPHMX8aVgGfLPIfkEldGZvWBAMB+Gk4Zrq30R5Ywp61MBv+RnpXnW9MLtzpPu/BsfEOBXyGm6t6zy2wiwv6OnRRC2PMCFJm3YlzuVajcO+RTdPRKXEE4k9KkZQBuP7+e4dpouDdpoiHXpGTnt7464icZQBiZ+Kg+QUTWePURmvtw28KWtXRmORyCagSg==
+X-HE-Tag: 1775566820-888860
+X-HE-Meta: U2FsdGVkX1/E/BG9XpZ+zZAcoT0KwqYtS7cm2Wansdz5/THvkAasaGRIlF5xPS8Dg+BTPcMkLDQ+ElaKVM7SJchoLasdmzAl1bJ3Dcf7KH04AsL0JC/okdQA86u/yTXcLdn27NRFrOQqcCtO7AuJ0LyI81MjYtNtPRDGfmEpF2JEDw0nrr8QAovr2iqxfBQM45jeEfPFVPbwBkZvU2gLsZ5Q+sekAFXYfIPkPzRBeauzke7KLZn1medp+v303fuAyXu0fBrbWZh+A2ylrzMa5brAINOUeQPIJhf3MBxChXs92rdmpmTk9QsP2IErmeEFyrQNZyEEF6oVI6Dl9oM9AVjuV33JVt8CqLY5+UbTd/j38VE1THgANO3rAaS2Pb3E9FO/oPoEJX8s2vUiVdtl7PZq43CADVmK/eptrmyKvJ7bWy1UUCxUGhUJzd67jld4iY7LnY7AlaWXrYgBzSyekuFy780Q3LToux0l1vMnKVnCZxivRgpb6ILEPJCNr6bEWycNhXFxKTunlV5wuoZxy4FIephbqAwFuI2pi1+HJ7XUykmL/zIqCU6tbR5YMtSOrJ+acbseGccMk/rJRcdCtLhglmhm6asF0ljhViDgwhSSvyyu3Twa167rH2VS8pKhpfpBZNZWfs6w29wZM5Uf2hh58Vr3+1vgsCxVrumrfkNMs37X/Ccw0HrOmgjVSHZRjxfInBeealMDmXlQ9VmCXymkWf+xNKBQ4rAvpLh8KqX0/rWpMGbB/VjDXsQMnZSDA+XFp5v5IbDxTb0uIA/AzzlUAbDhIdusCFX4dJqtd4t+qh0IPdVD73IEtB0GhGOSNdddARIRPQ4L6VxybIz0tj3jW51ZYXNkP6VfiDv3JzUb4JlyeRGqnN2w0Vhhh9Nk5zIa6Q3l16b7CnE4C9GdWC7aQLC93XIvLooRV0xb/icQcIv/aOLLr43TmYw8KInusuQ3tZlylN8eH7Yg4ax
+ TMlYeYap
+ t0RTODFmFhpHiE7n7XeA2vkV+fYd6Hxf8PG3HIWE9muXF1c/dl507vL3YyRKiLWe3wf6NFH7b+WC74eyjJQoutNfTZhG0i8nrwOZVLJ516GG6OjsXxyVuCwqt5zrdM55wDMbFzzGoIVeXh+AaKG2wBOEem0x0Leg/bExBTiMyXXA+WuD4it33GDmBU66bRITO338ue5R1j6r+JAOmc3Xq0UIqSPOJHgCeiuOFoGPDJpZnCcxwFEmobSIKqL736Fu9am7JeAGRDFA8XfmHYDYEWDuzB4Y9FQ78J5lts1S8ygecn/K4BTCs8rDLo9pMrF26OpHlfNL/X/73S4UaponDg86RIJlolJ0hMsyhGSCEv7QbHypXEqS39Stj38Xq7rN2EhmMSHcJ8jjxztQjbtMA0QRj37sRMpQwjrCNU2y/a2zEoHjLTcyhve3CbUP0y1BrWJ+g3zjAYdsOd0RMVXp76CvjQt+o8gNGEY9/TfLtN++HauPEzW4SCMoeMMj43epg4/LzuBEfz+BoyD0AzD4ZGQFKXE9kWwyLG+1x7O5cHUQF+LyyFzoG4/94hg16zH6n8wwy96wNCyh57jZna71rKEtkGSEWdHDYnEhY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,38 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/7/26 14:51, Kevin Brodsky wrote:
+> The ProtectionKey entry was added in v4.9; back then it was
+> x86-specific, but it now lives in generic code and applies to all
+> architectures supporting pkeys (currently x86, power, arm64).
+> 
+> Time to document it: add a paragraph to proc.rst about the
+> ProtectionKey entry.
+> 
+> Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
---ikVDHGOE2eekYHG+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-On Mon, Apr 06, 2026 at 05:17:00PM +0300, Mike Rapoport wrote:
+> ---
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Shuah Khan <skhan@linuxfoundation.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> ---
+>  Documentation/filesystems/proc.rst | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> index b0c0d1b45b99..d673cad7dbe4 100644
+> --- a/Documentation/filesystems/proc.rst
+> +++ b/Documentation/filesystems/proc.rst
+> @@ -549,6 +549,10 @@ does not take into account swapped out page of underlying shmem objects.
+>  naturally aligned THP pages of any currently enabled size. 1 if true, 0
+>  otherwise.
+>  
+> +If both the kernel and the system support protection keys (pkeys),
+> +"ProtectionKey" indicates the memory protection key associated with the
+> +virtual memory area.
+> +
+>  "VmFlags" field deserves a separate description. This member represents the
+>  kernel flags associated with the particular virtual memory area in two letter
+>  encoded manner. The codes are the following:
 
->  static void uffd_test_skip(const char *message)
->  {
-> -	printf("skipped [reason: %s]\n", message);
-> -	ksft_inc_xskip_cnt();
-> +	ksft_test_result_skip("%s (%s)\n", current_test, message);
->  }
-
-Parsers are just going to take the entire line after the test as an
-otherwise unstructured test name so get confused here.  The usual thing
-is to print the reason as a separate print.
-
---ikVDHGOE2eekYHG+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnU/2EACgkQJNaLcl1U
-h9AMTQf/Tjoyf2v7TI04cRn0gqsSlJNBuwtdBCBJwY8oUBwToDrVM1CY1f6Tr8t7
-GWz1fwqJYEoES7UgyunaglPklV1xmSwIAJuLsvQmW32dWP1P2kfSpwHfxe1fvKqp
-IzRu8dHdFV2BXcIHXttGfXJkQSG7YDu+WEnTkwt3T7mOb8ReEjz9n2Zr97uiN9pr
-2lSYRVO+s2LTgff3qpjBU4UJ0J5Jt18E2vUJm8qI1iBbyHqdAsoPmazLI4EDXG6p
-a2BLjsoTK2Gy6Rt6/5JcrUQNt1o/3RzyVbCgOrYRbkw+4O4sJOdn3psgY5ESZmKn
-XoVkNn07wuBfDleIpCP8uGXD3NG8cQ==
-=johM
------END PGP SIGNATURE-----
-
---ikVDHGOE2eekYHG+--
 
