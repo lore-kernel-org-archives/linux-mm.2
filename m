@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A98FB5188
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 04:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CF63FB5191
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 04:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95CB76B0088; Tue,  7 Apr 2026 00:00:45 -0400 (EDT)
+	id B0A236B008C; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90D186B008C; Tue,  7 Apr 2026 00:00:45 -0400 (EDT)
+	id ABB1B6B0092; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 823126B0092; Tue,  7 Apr 2026 00:00:45 -0400 (EDT)
+	id 9AA2E6B0093; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 710EA6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 00:00:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E15EEBA45B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:44 +0000 (UTC)
-X-FDA: 84630408408.24.BDD8B80
+	by kanga.kvack.org (Postfix) with ESMTP id 895EC6B008C
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E79E1B85A3
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:47 +0000 (UTC)
+X-FDA: 84630408534.26.36EEB76
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A8DE3120015
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:42 +0000 (UTC)
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B5AD12000E
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:44 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OBxiGZG0;
+	dkim=pass header.d=intel.com header.s=Intel header.b=itU8Xorb;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775534442;
+	s=arc-20220608; t=1775534445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zhe+pnDxki//VXYby/7B+HiopyizJ8dOdWA43pSzcv0=;
-	b=lNKJacMAHYvxL3+SZS2RSHWrjUHrd8+1ZpYR9qtR4lDBJMQhnWt14D3/qXdNsWm+k1zeme
-	Tig8979qjjClLSffEW/FBWv97XPLZE/sK+YjCyObRtk96xJsMXm3HDTfHnD2T7D6qwp9pl
-	IuGddseQib13FYpdWUY5QWIH/IiPxO4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534443; a=rsa-sha256;
+	bh=Ii1Ea1UkZAmfOAWtXKmsQJdWOCx9znCqyuDUx0gRxRQ=;
+	b=XuCX/j6YTEXcoj/KhnGC4R+9Mdft5PmlQ0ocv8mh2tKDrgOjmLgVm7LDdEz/iJdWfvNZB3
+	Kl2vRqCYnb0pPbMZCVOb+ajuh5TbUJDQmxF0xcdDlKDKtd4Y9OnUOgClUCueYsAL5Mun0i
+	A3TgHTlJi2xnVz4+SyJn1mciXdD3Srk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534445; a=rsa-sha256;
 	cv=none;
-	b=JuwmRSgKJ1ylsA3uaAHiFWOCyyLcVkDwqGgCZ0hTBu1Bm0uaCTKm4X3GUGDeTt+4+Gj4Wa
-	i/i1RtzD3OWTCmZQvwWGaH2x+98XxAp5btXeBQ2p3kHTXNSW9VsPzBFSD/kMunEIGnVks3
-	NGcNL/VCbelUkzz2Rq7VP4niOKV/clU=
+	b=EO3lZOumqAFZ5j7eWq1H7+Skxwnuv4IfDN9NAg+vALVeVbzLcOKx0BWaxtSamVJ1TXx03g
+	ut6Hov3YqMFv0nLsF/id6b5qAcUcSZiqpBdUdvhnecLn0nd7HpOm+77bXCwHJAXAy27Bmt
+	Arg0RVkbIH6I+dfPEzPG/Kzhc0tgdXs=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OBxiGZG0;
+	dkim=pass header.d=intel.com header.s=Intel header.b=itU8Xorb;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775534443; x=1807070443;
+  t=1775534445; x=1807070445;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JqFdJQvh+85MPvdIPOcWvJHfvP/feCTUskARF7qj5uI=;
-  b=OBxiGZG0Coa3pIQCeXunlI6Gnqgmk6KUg6ID0bhb2ZXmx/GUGdG/G1jf
-   imDqV/UN/Fi5IctD77St3Hy6qtamFVW1lVBjG8gBEdKos8kiQCadYeb5t
-   1F/0hi2/UbJEyBkniupJR7sVcqawh7hviHj9NOsOJcHApnKMZphi35Gf7
-   lNbzdrzp0yI5Y6xnx9cvIAdJUtyDvmb8JX7uwr5fJb1yGJ34N0DzdVTp7
-   hQwcDm6WFB+lbkEUweisrD3UFsIh4LD7BUedJnmIdV/jE2zseky1VxGLY
-   Zj3KU4JTW/OHgqKTe6Nx7L5v0JPfFetYYefPafRfvyuH/mmKlJycMn6SE
-   Q==;
-X-CSE-ConnectionGUID: zgZVAbGTT268Ietw6ewIrg==
-X-CSE-MsgGUID: fzWwyI3VRJaz+YRy7kGjuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="86782279"
+  bh=1er2E8TY9Tpy2Qwo99UK/oBDNc6k2nZpUyVSIYodlfQ=;
+  b=itU8XorbtQ6fA4iQmwlcRYfMJTVw5q2NepnLS/nnKs1mxvLKvVTNmHRp
+   XwKJ8uqpJEMwakb5bYAQMCgmyyHEb5YgbqnK0v+bKZ+X7wpcQcSemSEaI
+   4OzI9hYDIb5hhOPHj2LICh+UkQ5wpnp7zPbjkLa8rxGK/z2gSAc71h1ZX
+   LdUFuHX2SpokfdrtyXWMHfqQ2Z6mVHljzsJ+QnSsXqh9PiSJH3htQlNWX
+   iTVW6pIpEELSHHPn7HrKMWHEeiuTvwTLT8dpdKrfmfOOzD5Y3OsQoJWyG
+   y2ggrsJF6mMhZnWdzlGTXoDHKMpkWepFpnlg19Hj7JQc/WXGWTgzuvV+G
+   A==;
+X-CSE-ConnectionGUID: LcILIVVYRMuVYV/JOjU7xA==
+X-CSE-MsgGUID: E+zajpTYSQ63lz2BxYo0+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="86782289"
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="86782279"
+   d="scan'208";a="86782289"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2026 21:00:41 -0700
-X-CSE-ConnectionGUID: wDIAC8YER5KdCC0LiDS5wg==
-X-CSE-MsgGUID: +3YWodOqRAGptbgPT5PLSQ==
+X-CSE-ConnectionGUID: 8S/r5/AsRyunzJ6lfbUhWQ==
+X-CSE-MsgGUID: Js3bgglnQXerX3pfS9bH3A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="224844901"
+   d="scan'208";a="224844899"
 Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
   by fmviesa007.fm.intel.com with ESMTP; 06 Apr 2026 21:00:37 -0700
 Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w9xc9-0000000007F-1hKX;
+	id 1w9xc9-0000000007J-1v7Z;
 	Tue, 07 Apr 2026 04:00:33 +0000
-Date: Tue, 7 Apr 2026 12:00:22 +0800
+Date: Tue, 7 Apr 2026 12:00:24 +0800
 From: kernel test robot <lkp@intel.com>
 To: Yunseong Kim <ysk@kzalloc.com>, Kees Cook <kees@kernel.org>
 Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
@@ -95,20 +95,20 @@ Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
 	Byungchul Park <byungchul@sk.com>,
 	Yeoreum Yun <yeoreum.yun@arm.com>
 Subject: Re: [PATCH] lkdtm: Add folio_lock deadlock scenarios
-Message-ID: <202604051743.4BM8o6lT-lkp@intel.com>
+Message-ID: <202604051847.ywz0arFk-lkp@intel.com>
 References: <20260402143947.162844-1-ysk@kzalloc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260402143947.162844-1-ysk@kzalloc.com>
-X-Rspamd-Queue-Id: A8DE3120015
-X-Stat-Signature: au7mjwmpj6fqsqh1ope46ma4tfi775po
+X-Rspamd-Queue-Id: 0B5AD12000E
+X-Stat-Signature: 45hpbtm6krh4bamsyzmpp79fm7rm5uxk
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775534442-406042
-X-HE-Meta: U2FsdGVkX1+Po1rK5qDXztZF1859g8DyWTHzw9L5hmWKoPYVIbmkn8ILYOo5aS1Motz912R22ZU+dmKg0wE7GbEw4U4D7Ynrxw3w1weCabEjQvWSiumY6/sXHpjf90lid+04UDgQM8D0pBOpTsx3yJCkB/XaloGgiGZxJteuNzwbWycatPtMRtJY8kE/0ha4cAown65KuhQQkzIQtvNB0zoLoAJyv2HeKF0GT/TKpzZU5Rd+rZVh1v0NbntEEBEu1RWY8wnYPGmp1pMUDlT/k7dNnzvmcIXeW487s+w89wVpuY04vYU+2kiHIC+lgJMW+L4Dv1ZCUOcMDYvVV3CPvoK3t8FlxUmu/hnEu7X+AF8zhy3AzQ1Q206iXxnuKMxrIApkQU4AfoR9EBX1tcHom2xFwqHmiMcjdKXkTbHpaAGI+D9W4mH7kzIvLQ+UOJNRPDFQcuJqM63u28napRxWYlyQkHJd9xn3Me7ZbZ70PY6v4pj2zyoxOyOMKiOCFtwsY7XCgxnCMz6SJneZpG9NJZNEh2Og2Q3hNiN8xFhh16qTChqjbujhPbjjDo0Ydmq9S37Zl0sA4YDbKm3vBKSkjhY1HcQ9PiRyrbnopkRqb2ugMqRCllzmfTws9Rzzuk1K+arOq7/VwbVe6SXyJ2Brxq03NIEfmOhbRhDSjSCstwFkQO6M2H7a8lNeokD57QZsWGI881BV6ebx6/ehWi+AdKIzJvoNf7ypNUvQ0hxIlb/nHwJeviGMCKgLqiLGTbmeOH0weUi/lZAojpjTp+h2t/EKc7NIAopKs6pFHi1qVTureg7ky4Em5cS+qZmuhbj30Kykbz7L6PiQHb5CwKogMKR6Ccnvo/DZQTRNCmQExbQip2uqYi6YHh774gMBahr7bdn5ybrwdynZYz0BPTt9k3zpHxOxMu2laC/d8u8z4h6DpI8aqmaY1EHW+qLLdYOsvBLiQJiJSjbnwYTEcrG
- dcHkru/i
- b1oebpgLpQtcaGGWOKaN1fWMhgJIaonHjEgDbid+ZAjbQFyDESfFbgVEQmYEbRxlmCiUgvipMW+KXbf0bUsQDvsN2w5zpMAsDgsyR5B/i6gL0kNAgAP0xRa+Bkvyp0lHJ9hWB+ZA5au/+w52GtF4z1W3x1ldvutCzs06LymZKBxoYgl7E2USa6N06AlCS/tvz3x7e1FoUzgle0BrW1z6i9v9/cA9/9OpB5F0szp1gA10HVK1Qi9C7VeIIqQ0fe6Qo4Wr9SvEompWh9fj6nbHwhplVdJlux3tbW2JwlVHIaZyj3MmS3BL87kTAylNu0v/fqIWTpssPIDdPYXG3A/6QrvAwm3B70O4nG8YSSATouaKDNX+/QouKsq3Y2hUV/pNlFVPHv2fmS7pvY3E/zzsGiCgKO8H7dktpF2RjuQ5JW4ACSXrUIwoc2NiS5meW0WMK3Uzr0he63SCWNec8QQQzHTIfScuTq9rCnbZrrx3bAoufFUmW9Psp55vXdaKAxwoVA0MFVoDqI/pSE+8LcKu1m0QVn9NKvLSQdN69wD8LE0JN0/vkjCdBW/PP/JWugbN2We5x
+X-HE-Tag: 1775534444-414449
+X-HE-Meta: U2FsdGVkX1/2Ky0pqcOpsFiwB4NmboCLRcxEtZEoXEqeT8RiY7bqvijANrt1SbTT86/lI7xRKUAMMlMgtNtAA+Hm0a0AnGP3vggIRfJ0uDdcwEPfYcVHh1AO1wqKPT8PRfsiFmASLecgbQ8iVZ/wyvuRQ1IKdknTt5PSfeUHIutW5pK/iINjGBmnkc2ASaqdaDbq2QbJkG0Ua4r3j+/djeDlXhZK31yh/YOKwcKXPGFAq2O1iZ0xJ4uJ9S4WBG8cQlhLEemUTvFXMNfCDuiyDjGNkbdKBs0n4t1a4wWf9a1xghIYryjO2jYxvPjLUroO+xi8tPFlvcVrlHX4fMNUWYu9oxHY3e1eYz/VYRvd9O/Tloj807VjuQmhsBlV89YyPSTBXRlxBGrpGYVkj+Un+fBnvmkcDcozmjuXOafaLfUh+zg9k8z36lY0RG8cVWNtcqAsMYH/gDBKzIgjWVf8tAIYp/xoh3oJ2VhsGWQvey+fCURCbh/obuSX5wv6xblpif79pEvhfX2F3d+Z3GIog/duKGpHJPHLOfjKZ2/d5/mQ2ryNW6Ll48G5Fij1kX1AQyHWxABDVlw34J1gDu3AJ66l1wkxvkTjSHvBQ/7boGozLYga9beC061LNqLvrl+DrYIphbQjg8WLJCM51HzVzQthaJFdWBkyVwIRB7babLGlwR+Ci9hkdm/dLU7OTuXRw3fEkqASjvldHzXDjz3QdoqA+JfU8rFrKTo04780VOTBN2OuWfctYMiJZoDeHNRy0RUqTDY7EIOL0dke76jAUu5LAYGuDv/x+3Ghb5yecS0fs8xUWdgNHek0kpoXrtyo+3IEYDQmndtG+XAU20IBezy7h0tWGSevfwBeJC8rvswR0PiiAPTFknAQpKBeXwxXgMJApM7jWU4iDALPPGI36IukjJgNUS9aVN7rXB1w0kdENmTMwJq6XkEybGuwasDEYvbRV45awuHCOCRomKn
+ 6L+go6m4
+ tgPejrIJCaIUMsXonKKrOUMyXVT9ufXQ/DB3dj80G5SkKk2iP8/1FqZL6iVzL8Sy41Ld7xN2vFJ6QEWl+WArq54qKpxJqOvix1lpbPAAWSlLyslcEyK0yHCKmtBkD50Swlk5f8EWav1A2WmcHU0OIYUj30rS9QrU4SXoRThcFqAm0OmLHi1H0scbOIPNPZDoah6jWzctad4OimI1aEWqXXp5rNTvV57YwrQVFAM1JT5hEE3seUmkOF6ERQksKno6bxf8ndgLNaEO2EAVjbyjpVDx2ML29BvdJ4T2OIFWEVzAeZKcx+awEuiBsBQLhC1UpQ0ZpXGtvQUgtleUHvIc5TYIqCwAuX8ppMerEokKk85fXfJqjKEb8Ape1mUBeihemlgAjlRo9Xb8vj0AdsqCWNdhlEYEMZocNFDc6BiMWD6kSJa2GcKLFBoTh42XEQzs3YORr1rd6XckhahsKdbuEkqPNbnpjDO6SGg7YNq7W6v61bBplW5kOG6lM1OGYnSUEhQnv3ohSbMyOi0jqpuQL9LsmfymguompzhxaLoIb2WuOAnfi6uDth6z9lnoL05ul6ttY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,10 +118,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi Yunseong,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on char-misc/char-misc-testing]
-[also build test WARNING on char-misc/char-misc-next char-misc/char-misc-linus kees/for-next/pstore kees/for-next/kspp shuah-kselftest/next shuah-kselftest/fixes soc/for-next linus/master v7.0-rc6 next-20260403]
+[auto build test ERROR on char-misc/char-misc-testing]
+[also build test ERROR on char-misc/char-misc-next char-misc/char-misc-linus kees/for-next/pstore kees/for-next/kspp shuah-kselftest/next shuah-kselftest/fixes soc/for-next linus/master v7.0-rc6 next-20260403]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
@@ -130,25 +130,47 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Yunseong-Kim/lkdtm-Add-fo
 base:   char-misc/char-misc-testing
 patch link:    https://lore.kernel.org/r/20260402143947.162844-1-ysk%40kzalloc.com
 patch subject: [PATCH] lkdtm: Add folio_lock deadlock scenarios
-config: s390-randconfig-002-20260405 (https://download.01.org/0day-ci/archive/20260405/202604051743.4BM8o6lT-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 14.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051743.4BM8o6lT-lkp@intel.com/reproduce)
+config: riscv-randconfig-002-20260405 (https://download.01.org/0day-ci/archive/20260405/202604051847.ywz0arFk-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 9.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051847.ywz0arFk-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604051743.4BM8o6lT-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604051847.ywz0arFk-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
->> Warning: drivers/misc/lkdtm/deadlock.c:228 function parameter '' not described in 'lkdtm_waiter_thread'
->> Warning: drivers/misc/lkdtm/deadlock.c:228 function parameter '' not described in 'lkdtm_waiter_thread'
+   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_folio_mutex_kthread':
+>> drivers/misc/lkdtm/deadlock.c:99:38: error: parameter name omitted
+      99 | static int lkdtm_folio_mutex_kthread(void *)
+         |                                      ^~~~~~
+   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_mutex_folio_kthread':
+   drivers/misc/lkdtm/deadlock.c:112:38: error: parameter name omitted
+     112 | static int lkdtm_mutex_folio_kthread(void *)
+         |                                      ^~~~~~
+   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_waiter_thread':
+   drivers/misc/lkdtm/deadlock.c:228:32: error: parameter name omitted
+     228 | static int lkdtm_waiter_thread(void *)
+         |                                ^~~~~~
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for OF_GPIO
-   Depends on [n]: GPIOLIB [=y] && OF [=y] && HAS_IOMEM [=n]
-   Selected by [y]:
-   - REGULATOR_RT5133 [=y] && REGULATOR [=y] && I2C [=y] && GPIOLIB [=y] && OF [=y]
+
+vim +99 drivers/misc/lkdtm/deadlock.c
+
+    97	
+    98	/* Attempting 'folio_lock() A then Mutex B' order */
+  > 99	static int lkdtm_folio_mutex_kthread(void *)
+   100	{
+   101		while (true) {
+   102			folio_lock(folio_common);
+   103			mutex_lock(&mutex_b);
+   104			mutex_unlock(&mutex_b);
+   105			folio_unlock(folio_common);
+   106		}
+   107	
+   108		return 0;
+   109	}
+   110	
 
 -- 
 0-DAY CI Kernel Test Service
