@@ -4,107 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F44BFEEF4A
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08208FEEF4E
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62CF36B008A; Tue,  7 Apr 2026 10:01:39 -0400 (EDT)
+	id 10D4D6B0088; Tue,  7 Apr 2026 10:13:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603E56B008C; Tue,  7 Apr 2026 10:01:39 -0400 (EDT)
+	id 0BE0A6B0089; Tue,  7 Apr 2026 10:13:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 541426B0092; Tue,  7 Apr 2026 10:01:39 -0400 (EDT)
+	id F3D726B008A; Tue,  7 Apr 2026 10:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 463DD6B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:01:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 09E85C28B0
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:01:39 +0000 (UTC)
-X-FDA: 84631922718.11.19977CE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0792140009
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:01:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tFqVVOxr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PgiGJC1H;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zRrfbvXH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/3zVSRaZ";
-	dmarc=temperror reason="query timed out" header.from=suse.de (policy=temperror);
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B20974E48D;
-	Tue,  7 Apr 2026 14:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775570480; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zphuR49ZgxD27f4MeQaLTuj00hwvlLjv/AVtSqgU2j4=;
-	b=tFqVVOxrilz4dSZwqfS3MU5fUGLsxZciJHpep5v5nkhBRqkkpTb/Anu9OS44icVS/Y+jau
-	nwKv/oT7pnwmRHGlw9ahZ28zVTyBWGM+Vdb3dCKoaJxItQJFAseSxd3PtiYMDBytiFRx6j
-	oMm6HwgtNAOdTujI5c7uCTyc0HZ8GeE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775570480;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zphuR49ZgxD27f4MeQaLTuj00hwvlLjv/AVtSqgU2j4=;
-	b=PgiGJC1HSkGUfqgVrhAtKOMu1J0Bs0VH08W2HvRf1HVbDOebl4ZbEzYVsuGvvs0ih7nh75
-	vr/Kg47QgMLEynDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775570475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zphuR49ZgxD27f4MeQaLTuj00hwvlLjv/AVtSqgU2j4=;
-	b=zRrfbvXHs4+kvXL80+ocphL/gaRd8NwayIPvqrEcZdI+kmPif1Tu2u9C/yIknLG0bSGGjA
-	R80dGt7fC04CEdw5wVP7TWOVIwerPOrUrkpEgHNi+V0Lr0y1LEtVtR3y/gFm67fDJ51OUR
-	KSZGyfBqhVD3tOCXYgiJzs3YwWJypmM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775570475;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zphuR49ZgxD27f4MeQaLTuj00hwvlLjv/AVtSqgU2j4=;
-	b=/3zVSRaZkbTKNQT445h4Oo7TWPRyQSCkSnY6NI0IbQA53eTrepiZszzVwf/dut/SQWjqxV
-	HtS5KNPpYuHySdAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBDF74A0B0;
-	Tue,  7 Apr 2026 14:01:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Zz1VNioO1WmncwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 07 Apr 2026 14:01:14 +0000
-Date: Tue, 7 Apr 2026 15:01:13 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>, 
-	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, 
-	jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] mm/mprotect: special-case small folios when
- applying write permissions
-Message-ID: <nl7yfkp2d5lburcweyyg76izfjbpr3hllu3ttbuggbja433aky@hn5uyub23755>
-References: <20260402141628.3367596-1-pfalcato@suse.de>
- <20260402141628.3367596-3-pfalcato@suse.de>
- <e4f0923a-f2c4-497b-895b-4e83a09b2f04@kernel.org>
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E4D786B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:12:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 72011140834
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:12:59 +0000 (UTC)
+X-FDA: 84631951278.20.F73C1B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0F3C3A001C
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:12:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gdGdYFEa;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775571178;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eAEy1QFg2lfEUwq/z8ka3yNfBEf3DnaTVSHu1b2JIqE=;
+	b=OFvWfLWxVm63QbYpq4teeSpw/EI4RXSBp9Xkx7ds6OSyFyvzMJp9TG0U9k6AzkJVVXpiWu
+	XbDuAJHd2PsUN/m7pNXDCYdIVyLp0PlAFzhcAVJ/qvO2q2QMF+k3Zc1ZV3ASLxWIs8iodR
+	uXM6FyXkc2+5XFWn4bhPwyAuz4N0iuA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gdGdYFEa;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775571178; a=rsa-sha256;
+	cv=none;
+	b=YZhpQ11TKCqHPVIP5yPJ4vbwpgn+DBnZClt0tYhL1b1eFASyLte8xi/WL/GTVZ7V6yOhvN
+	FkhAykpJ9NA2CkgH06u5oWHPVpUfkVEHJ4ojoTIfTJ34M1l/wPSkaMGq4qpKwKf75AanL1
+	FYQ8EJoK5EQqYcaUlO8ckwtAz7687Ko=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A630600AC
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:12:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E159CC116C6;
+	Tue,  7 Apr 2026 14:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775571177;
+	bh=MS0m8nMGspG08RoJrEU0oKcfTPJQs58xLWX4xYfRgMQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gdGdYFEa6gghQfdbhVjD7GqBJ9B+eFgrZ5chI8Mk8EA7pJyWesIGoPvGAwLOKrOpR
+	 1Q51jMk7ilzE0PUsy/wU2WhjDHcvwyyJ7VXwYHUH9gOztcXwGz91fNdh/Ogr1El6Qh
+	 sGW92pUd6uuP0HLM6hPt+HApVou5eu6pCrEHnZRXQ+B1M6stCAvxa7azVzx7shJSNm
+	 J4czQZLZetFbMlpUlcK9lmZh3Jis7qVHVW3e9FnFBJf5IdaHab1hBk0sklmb63y2dr
+	 Biau05eSnwXxtcXBFxpLstqY8Et4O64Ogs9vuYoSN4RA4MavCHIbLp7Fye/NDd91ZV
+	 vqSqBOYpNr+GA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH v3 01/10] mm/damon/core: handle <min_region_sz remaining quota as empty
+Date: Tue,  7 Apr 2026 07:12:46 -0700
+Message-ID: <20260407141247.86747-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260407010536.83603-2-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4f0923a-f2c4-497b-895b-4e83a09b2f04@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 0792140009
-X-Stat-Signature: fsfhocuuac6fpgaf9i4uxutkmcxyiybp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775570482-796497
-X-HE-Meta: U2FsdGVkX1+g0QymRmg/LiHwZ61Ie/OOPLH4jQHBc33dJlxCuUydj+U4Ccqegad14QRHleXLs4qt1xdEhAIF58IpyyM5a5EeYpZZhDGxi+eajsjQUsX5kI0ErSNhqBVdcTCwDu6yIEzPlPeKB8ya21EXNo3J4BnLFVY+iWDR1kNgx+5EaM3tajMQjk7NzGC1TPQGiV4AL2Xs67oTl/WLq6KHYe9Pz6nlEhQJWBgxfrAxKvO32rvfAx4H0sriTXPKS1eUXzyLurKzdMRW4pu1vWymrut5jc5LuPLWHBGoMW6s2wAVSInZEg+mIJ80Wrc0Xb3aveAG9+zJCxWEW7IwinFC/GMzAfWWtELoLPtQjiQwiWR6f7MZEN2hitgPPe3fBluc4mhUTskQlgMVVxVXfbRQ46fN6FCCOtj5t5dSYV6vt/10KkqUyOio/E4szawEz1x467LXVwGQv/ABqknuVo+/zhLHOMXjTmstBi8KDVz6/P/bshrv2kylj5UhnS8xdjT0/hpUYtepKCe33u9eBnPpl8GBF1alTVXfpnpPf9gjhwUPwp9a+a05ILwoJMbuw5HRcokMo/q5ypbWbhQ6o4tv6BM6yObZF0GU8C78hVncOEc7mnWkf0WWCnOG6uA9tl75pAO1TGsuRAInyDqwP9jm492xGu81jby4C9Ei+JVYPiBE7jJr/xvX7AU/wJPyuEVRk03KnFroUgjp2bYl4YL33iUdPy6eI7gk5ZUuCmaU5nN03aXwAh7lJ0fGfhpDoeo92KJBdc3naymRK5g7I+YDFZwbOcU1MFtFGzvNeOQicIPdwCmpPHDxSdEyfoMqbLSp8UJXmdDgDsM9f/X8340OMKFRc4C0ujgRlACDGKJdDO63IJ+OAUxb0CGxCKVZWJ1g2YuThC+VD/uTAUB1JzJoHgBoCcgZNugj0pBoOSs84S1o4oWurSarCDBt54mnF1LtGVedpCmqs9NXdwY
- UcYBvG4m
- czBa8s8bPN1TYINBHSapZwVPfJo1zpru2C1KA7MwRgproKiKj5Bx5OPzLuo3f8ksH2E2Bf1g4voD3z0UI9UIgI1mGE2wYy/KWncIQfWOSMGHB0DV4HECcB+Lb9Nxk8i+d0khukuVFvdPvnEef6qu7rHLmfynqpw7oeq96dXV9F5IWJzyj91H5fW//MSojdjJNJk1y7XJ6uSnL0vJCJ6cFnqbXsAacRiXfmPkIb6EhB5M68viOmE7PfPtY7mj8CJvdpjQS/jTw9fe7XKf1GlpwWu6osd+iUJW3C0+o
+X-Rspamd-Queue-Id: 0F3C3A001C
+X-Stat-Signature: 8ac6ztwjea7iy8t6tnz7zyx6s8nw4u5t
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775571177-974030
+X-HE-Meta: U2FsdGVkX18V09lu7tpdByxIL9++pf7fMBjnzGERs+Jp+56GqtBRr4B6QgLwkgDLTZoe1gO3XcTw8swAuUBrs4gKR5EhZmHUAyTK0BAijSRybDClKn2wckYROKPWb86dBXG92WBuPV/LFprOA9k5tr9wJQ7qjm096toW/atpYBa1kDphMmvVGJolyFg1/EPZJA2fOfbVOq18t6HNZ/FffjXkyYp+LDVnu2uhjmT9bevgGYr94y56nKI8rRjjCVxjLvaNwWjsJNubaRkfcCGnRsyVR7nL10P8sC/Sv27VKdtKID9Pe49gmH9cL8rCbCtZbdo4cDQRH/ZQ7/wG7DsS22ZQfjoUUv+/A+bSF0hsm5Vz1rU4KW93pLyIBnEnlj08dtJTXBQTd3BkdJZxjEUdEsKDrxMZQGTyAKiIX3zy2XDVrAM7OXYoj6cLH3Nuwo9ZAeeRsnB9iDGf4OXvnxvxhVnPehFIi8+uSKJEC23XA8a720lIm0vRbyO3mvGpPoThQj0UCNU5fF3xkuUHcX9I9xzO0vCl4grVkwaxtaRuG5SNDDVmNC6OL6XOpWkPCHb3cOWaCKRh61eVbVh8LryD7mlxM1AirBO8WvaCN5051Fw+9IPzFw9hSAj41MND7qs5Mkw2w1HOUIYWOQnVeBrRh4vrdqW4XakkwpKRYQVZ3ljNaCoKpEc41ExigajgMh5mgexBQYHKL+11KXNYDZ18MZlqSTJh9cN2A34jK9Ntbz5Xg1JOPfjvH+ecXQt1EVqdrBWiYMDW2DlbFBms4bUL617KXIvcHnfQjEtHSUKNA+OvQd+lg4d6Xip1VNqiCOfEudSMmTOa5MWgzrfw1ED5RBRkTb9XxhTCLqgPGFfH+AInhtXgUhhkiw1dKV7xJWvZ2CqcNtg4yuxItBltj06qPZc65otQExsyNLQqgx2AzJ2cHaY3LMzgJkfvLe0f9+JwOTgzhvr5zorIb62+RNv
+ 4XoEspKw
+ yelzZhpHLHFAWzQVQ1YdriLPz+QmRBKIbkoO+he/zqV4CJti3fYuxGQOXp9dLCJ4hRMm4N2y+6V9ZsS8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,44 +91,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 02:31:29PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/2/26 16:16, Pedro Falcato wrote:
-> > The common order-0 case is important enough to want its own branch, and
-> > avoids the hairy, large loop logic that the CPU does not seem to handle
-> > particularly well.
-> > 
-> > While at it, encourage the compiler to inline batch PTE logic and resolve
-> > constant branches by adding __always_inline strategically.
-> > 
-> > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> > Tested-by: Luke Yang <luyang@redhat.com>
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> 
-> Can't say I'm thrilled about these hacks, but seems to work, so
-> 
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> 
-> > +			if (likely(nr_ptes == 1)) {
-> > +				change_present_ptes(tlb, vma, addr, pte, 1,
-> > +					end, newprot, folio, page, cp_flags);
-> > +			} else {
-> > +				change_present_ptes(tlb, vma, addr, pte,
-> > +					nr_ptes, end, newprot, folio, page,
-> > +					cp_flags);
-> > +			}
-> 
-> I wonder if there's anything about this trick that ensures the compilers
-> will not eventually stop compiling it the way you intend. Have you talked to
-> compiler people? :)
+TL; DR: sashiko made a good suggestion.  I will address that in the next
+revision.
 
-These kinds of tricks are pretty ingrained across kernel code, e.g:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/include/asm/cmpxchg.h#n65
+Forwarding full sashiko review in a reply format with my 
+inline comments below, for sharing details of my view and
+doing followup discussions via mails if needed.
 
-and similar. In these cases if it fails to do constant propagation you'll
-get an actual build error. In our case you just get a regression back :)
+> # review url: https://sashiko.dev/#/patchset/20260407010536.83603-2-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 3657261e42ea1ce93233b322fabf0d2c5c335a35
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/core: handle <min_region_sz remaining quota as empty
+> 
+> This commit updates the DAMON quota checks to treat a remaining quota of less
+> than min_region_sz as fully charged. It introduces a new helper function,
+> damos_quota_is_full(), and replaces the existing explicit quota checks with it.
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 3bc7a2bbfe7de..c29f70bcce894 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> [ ... ]
+> > @@ -2041,6 +2041,14 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+> >  	mutex_unlock(&ctx->walk_control_lock);
+> >  }
+> >  
+> > +static bool damos_quota_is_full(struct damos_quota *quota,
+> > +		unsigned long min_region_sz)
+> > +{
+> > +	if (!damos_quota_is_set(quota))
+> > +		return false;
+> > +	return quota->charged_sz + min_region_sz > quota->esz;
+> 
+> Can quota->charged_sz + min_region_sz overflow here?
+> 
+> Since both variables are unsigned long, if min_region_sz is configured to a
+> very large value via sysfs, or on 32-bit systems where memory regions can
+> naturally be a large fraction of ULONG_MAX, the sum could wrap around.
+> 
+> If it wraps around, it would evaluate to a value smaller than quota->esz.
+> This would cause damos_quota_is_full() to incorrectly return false even when
+> the quota is fully exhausted, bypassing the DAMON action quota limits.
+> 
+> Could this be written using subtraction to prevent overflow?
+> 
+> return quota->charged_sz >= quota->esz ||
+>        quota->esz - quota->charged_sz < min_region_sz;
 
--- 
-Pedro
+Good suggestion, I will do so in the next revision.
+
+> 
+> [ ... ]
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260407010536.83603-2-sj@kernel.org
+
+
+Thanks,
+SJ
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260407010536.83603-2-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
