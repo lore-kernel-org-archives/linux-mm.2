@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C44F0E9D814
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4CBBE9D814
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F15726B0089; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
+	id D94676B0088; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEC9A6B008A; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
+	id D6BA96B008A; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E29F86B008C; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
+	id CA89C6B008C; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D16706B0089
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:49:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AD871406D9
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:49:19 +0000 (UTC)
-X-FDA: 84630833238.23.7ABDEB7
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5D9281C000D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:49:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="WERdu//K";
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544557; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A2D6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CACA1406C6
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:52:45 +0000 (UTC)
+X-FDA: 84630841890.12.013173E
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9444A40010
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:52:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FB9sNIVL;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FB9sNIVL;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544763; a=rsa-sha256;
 	cv=none;
-	b=HPkS9b3S4Zzw+7ffM+tJO8hkt+KyQqvu3BzbuSW14edAuCKjBUHQXMU2UX9tsMaoyhCvSP
-	GUQVALtE4WMcm63ETg/Rjs+RBUupkJKuRN3XawJJpCxrqrz6WlKUR+rPjhFx4q+ipYFInH
-	Ku4mmpsGPNV1HRClsB5n2KWVlCsbyBo=
+	b=G5/sp64C7Zz7UnS25uq5mbM8KPPBQuJFO9J3xjQ7SKAMgrHZxXY8XZHu9QnCpzs2Q+6qlw
+	SztMP30rU2HQQDwcfrycM9kBSwNYEDa6Vyuc735BCBpYw1ERJTtv5uFaFQqB1hz+M4Fb61
+	yiJJtsY8IdXlzOlCBx8XqD2+2JsXoiY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775544557;
+	s=arc-20220608; t=1775544763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZeY293QSxwS94/+8C2N9QAoOiUfZiEZF2lGyKP5AKE=;
-	b=BrTCjTVHNNWSKJX9Xi/7mfNba4AWXk3nuuZvKsAgZs/Ut8FgEKKevpGYiLJ951C2BXYTL7
-	TmblYv2lIMF2kfuepaG+xSQZ6B0M7a1jCI0WvIqtxHgtcylO19xtSc/zsNlFKNrCD71eaT
-	rCnZKhAooh4sTdNEx1RI9CjnZsVsr5Q=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="WERdu//K";
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775544555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XZeY293QSxwS94/+8C2N9QAoOiUfZiEZF2lGyKP5AKE=;
-	b=WERdu//KTfuanPQswZOKAavLD5SrF/saVav3K5wcfXSgigtMYYuOALt64YernykprSFtXw
-	i6mFsg7QITLNACQ68Yf6b8XHZqhXqSBB4xHFlQ9UfOi3vFvZVPltkhALZ5vTUoXQl+OyL8
-	Jt17LZjfw2Dt1Pu2fMhJm5px5C1wyKk=
-From: Lance Yang <lance.yang@linux.dev>
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org,
-	hughd@google.com,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: shmem: don't set large-order range for internal anonymous shmem mapping
-Date: Tue,  7 Apr 2026 14:49:03 +0800
-Message-Id: <20260407064903.69017-1-lance.yang@linux.dev>
-In-Reply-To: <cd5c563db32507c9c090a0ae8287e1851cb0a5d3.1775541661.git.baolin.wang@linux.alibaba.com>
-References: <cd5c563db32507c9c090a0ae8287e1851cb0a5d3.1775541661.git.baolin.wang@linux.alibaba.com>
+	bh=4+YRbn5xz4gzMbT7dbOS4IA4ueE8oXOrYHLytz90mcI=;
+	b=XBHbBXOTAnbmAPwkrvOIoVdSYmT2XScrY1K5wHelbA/15fq8Ew5YSZiCcMic3CwlhJDHV/
+	jQenWR1CfK7hPqefvnq8ZHdmKLKCpQE7pd/MDzVKLtPHhd3BmAn7r7qmCgw6o3lsExNcbN
+	iAYvOA+rpqeYMjoCmcuMRuvH8c7BYN0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775544759; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=4+YRbn5xz4gzMbT7dbOS4IA4ueE8oXOrYHLytz90mcI=;
+	b=FB9sNIVLkrzoQF4E5z2WfPJo9q4aAcPoBszFxmFABr9BlZOgDc9o1f0aW05EtRFKJSgOLF/7CQzw0xRQwALN6ugfr16ToZVGW7EDmRjqBCO4MmYhv/8hfvhg0X1P7XidDWp/5EJf3IxONozNb/BD+M/SlSwt1SuLTIFXKQuJXAo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0X0azT3w_1775544748;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0azT3w_1775544748 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 07 Apr 2026 14:52:37 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: akpm@linux-foundation.org,  david@kernel.org,
+  lorenzo.stoakes@oracle.com,  Liam.Howlett@oracle.com,  vbabka@kernel.org,
+  willy@infradead.org,  rppt@kernel.org,  surenb@google.com,
+  mhocko@suse.com,  ziy@nvidia.com,  matthew.brost@intel.com,
+  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
+  gourry@gourry.net,  apopple@nvidia.com,  dave@stgolabs.net,
+  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,  vkoul@kernel.org,
+  bharata@amd.com,  sj@kernel.org,  weixugc@google.com,
+  dan.j.williams@intel.com,  rientjes@google.com,  xuezhengchu@huawei.com,
+  yiannis@zptcorp.com,  dave.hansen@intel.com,  hannes@cmpxchg.org,
+  jhubbard@nvidia.com,  peterx@redhat.com,  riel@surriel.com,
+  shakeel.butt@linux.dev,  stalexan@redhat.com,  tj@kernel.org,
+  nifan.cxl@gmail.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [RFC PATCH v4 2/6] mm/migrate: skip data copy for
+ already-copied folios
+In-Reply-To: <3e1f520f-e3d8-4ef2-b474-ca4e988bbf2d@amd.com> (Shivank Garg's
+	message of "Fri, 3 Apr 2026 16:38:32 +0530")
+References: <20260309120725.308854-3-shivankg@amd.com>
+	<20260309120725.308854-8-shivankg@amd.com>
+	<87wlz1zlf8.fsf@DESKTOP-5N7EMDA>
+	<3e1f520f-e3d8-4ef2-b474-ca4e988bbf2d@amd.com>
+Date: Tue, 07 Apr 2026 14:52:30 +0800
+Message-ID: <87pl4bfej5.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9444A40010
+X-Stat-Signature: 5szof9mynsddpuzbd3b1yhz7crnr7xa9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5D9281C000D
-X-Stat-Signature: qkgc5pfeu8m51cz4hdjf3qd7qsrenwnr
-X-HE-Tag: 1775544557-922868
-X-HE-Meta: U2FsdGVkX19rZo/ldOQbsZJjmZNBY+UgV06kLeT2t25YU/X2Qnxf2P0rhQZWC1zviwdhh/qLHQQCpmuyZAokazMN7Bz5VjSHSPNCQMwsgi8zlzyCaKOV+XbFgw377yI1NpTauG4tQnnalXyK+S5sR58c0SI9UNqbVJ6e0IocpheTIcITKWRi+y2dsV4ilZv+I27f0+aBUJCHCwTo1wWAq0ab0SPMbZROeqE+In/0o0BfnTcloYJUjIF+jT0jGobJVTtkhqHpbiSkjC0D50rqTG5wonOihkdX84BFuSAHChtO/oGBk8MOvfzWjIiRmybtJ3w5UHeDJuAMge3kMZuiyxUfGG4OGHQI4O8lqstTsVEayZoHRFmHaRtmaNcnZ8jDnXQ4tMncxz85ZyI83tjFcatB+HHT7Jp/sknyJWL1OgJ+hRge9VTTW5/incNwAwYZ1DtEfvncP1s5UuJYUDFBtbXYn1vYvi8cm1AkN2ORXTKmAwlo9XJQhuUbzdSIiMWfKTjqsuKZB5HDIii35Q5S8ufNTdMvYxeZeKZioDZLQzbv2IqIFA+1hghPsqEiNG6r6L527vQaTxah64t39VtS8kEh7mnpe60DoGOGhmJwqbeJNoRjSWM8KXwQTZ8WlB+21oliDEg6AKdBm4FMxs7C8WhNfVAbBHQyHerl6MxDdCKCi99r0mMqqIhVdNy49R2fLstL2oVagPh8R7mkYK/4LMXwAuCABFb9rLxM6XnmokabQCp+bV/0J8zBSw9wiCS8yGA1Ugln4V6gV8QRpKY18qRYWs3OfQqDuDiICUit5hqymT9FcEv26f+jLWKW2WpI1YUnisSRbyHhSK/oYz7GLrLOU066hYg6Xi0r/0EseunuAB+8COwTOm3QS0xnJnQV4ZTZHIRiwSGyWhApjhReZMQbKnmmwgVQsbVjLgeqq1ux9Cuodn2I4skAuqFmVm0ncehW+/CeV9AqCt+pqlr
- OZ3mQMye
- 3URoLndLHDjRB3l8uESXMH8mOE/1Xm9IsajNks+lxwUZA7pAvrCJMMws5/EAO2sL+KzMI+zwmKgq89XiQ4h7e86rmdrxVoseY96Mr+l63NLanlBX0Ac+vRSzKPBPqX5ASJdn5C9yK9Ngs1dw2QSVCOLnHBMCF2CCVOlvOIz+YE71gHwWVay9TUkg8Zs6FTczAWhROaFffYu2z2ADVKP0EhCUeyCDF++fon8+ZYQaAFE/xfM8fqQmkDsntgtyCWEYhV7lH
+X-HE-Tag: 1775544762-826847
+X-HE-Meta: U2FsdGVkX18TJGXjp3w+hDSMl0QVj22PUQLNr2gKLqGGIKAm2YT9EUFdEcLBUiF2iyg3fAivSZ3LV+CEUkLqweg8+tzHajkQAfHwdlsiKoSsKN5WMTooQxnY5cvFcQlE8CItAFRgt/pqrxs5lc1t62njlJ87EfGhxGZAYeFsiyZ4/6nd1xLch4ICttgvBk/gFyaZEMjyf/aHuZohJ1LgrZQJ/Z/lUhrTaJJa7tRAZkHr6zT10Evqb9+6KHq9EpRWnmfSrQMy2hEh+otoncozIbrY+3qOnynEXZys5Wl4ccXmlU33fZfKbuDUmphct2Us33Ba9m0g9s5tGRqf0h5+zs7ycLEBfGNceWQQuUxtm7XiMyrmg5AhBF/tXoLBuEcWkt4CV6gxjHkeSNq7xcx/s0LQwWOnQTWt/PbL99Vp+Dp04aHQKiwDJ8evgIuiD5m9x1sGISl3YMNa0iny4EP7wgF/sRYUOL6A9bXZnscAdhch4CD2CfbJumLsLtyu8fJAU1JfOXeFVNsyXWSuprsQdVsQ57KJZ+VFGeqFWTSaM2Pn57a/cKOmFEc8yJkBi5ErNZj+DI7UAtvdNVTnMPoYtd6B7Tt/6N+tVcYoJPXXtDU2LfHqRXsLvUCv9SyTSkHyjwfh4M+Eo2vWkiGfp1CfNzxhH9lXXiZ0ZSglyJz0D9r+OWSNCbYv0HWG2ihAXlf0VFonLi21Zxidvy+Mav4O9NLbG/R4nRcEptXjOzwYRzlNcAxqOeSxxECx6SAw+Cff6s/yG0sK7avjtBgXW1dlWbvUPVWgK+l7/tV3l6Qh5AHCfMpNkYpl/ShxgLUwGawkTEjQRLXa0LQdDo9H3UhfOagaUD9io+C8TofLe4YXoIm/FbEx9BuZedlCaNDlVv9UDEEFNd7jb6tjszAn0fMOzQ3Y8M8tif6rOi6UdLJpZxyUTgoytMMDEybja8/0tbw0sikDi8ytLELtg+tQXOO
+ Ri7yEQ95
+ +Py0lkgJxQj8/0CtSyido3bobmF3um06ONud6Tbnn5Y/UVNsDRnxXsSDA06Wh+aVnmPil7joXGVtwx+WFoJtwTRy36XFiOzOGwpbsSaTKnG9p3Fly/RjHJzQFlXXPR9K7WsYqSl4czHaHCbNvXlh50QiSO3xugmuF9RiU+b9zthLw7yxQFhuPfnw5cZ8O03sqDBzCz/69zL5gvRE+V4bixNCRnysH1q5WoiWTy7PLaQWpbIFw1yS8T6aoehvesROyspp27faquTrP0S14B3gMMptkMSTI3aNEedNb4MCyFVWVwpVy8kFOe4sNiOu6LlCTFpLya0qLZlI//qe782ueyt7dQ7iiWwCIMa3PnNWU0HJAugGsG0p+hmI4Vy2XJ9Pxsiu1bgZ+6aojb2c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,57 +100,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+"Garg, Shivank" <shivankg@amd.com> writes:
 
-On Tue, Apr 07, 2026 at 02:07:27PM +0800, Baolin Wang wrote:
->Anonymous shmem large order allocations are dynamically controlled via the
->global THP sysfs knob (/sys/kernel/mm/transparent_hugepage/shmem_enabled)
->and the per-size mTHP knobs (/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/shmem_enabled).
+> On 3/24/2026 1:52 PM, Huang, Ying wrote:
+>> Shivank Garg <shivankg@amd.com> writes:
+>> 
 >
->Therefore, anonymous shmem uses shmem_allowable_huge_orders() to check
->which large orders are allowed, rather than relying on mapping_max_folio_order().
->Moreover, mapping_max_folio_order() is intended to control large order
->allocations only for tmpfs mounts. Clarify this by not setting a large-order
->range for internal anonymous shmem mappings, to avoid confusion, as discussed
->in the previous thread[1].
+>>>  static int move_to_new_folio(struct folio *dst, struct folio *src,
+>>> -				enum migrate_mode mode)
+>>> +		enum migrate_mode mode, bool already_copied)
+>>>  {
+>>>  	struct address_space *mapping = folio_mapping(src);
+>>>  	int rc = -EAGAIN;
+>>> @@ -1096,6 +1114,9 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>>>  	VM_BUG_ON_FOLIO(!folio_test_locked(src), src);
+>>>  	VM_BUG_ON_FOLIO(!folio_test_locked(dst), dst);
+>>>  
+>>> +	if (already_copied)
+>>> +		dst->private = (void *)(unsigned long)PAGE_ALREADY_COPIED;
+>>> +
+>> 
+>> IMHO, this appears to be an unusual way to pass arguments to a function.
+>> Why not adjust the parameters of migrate_folio()?  How about turning enum
+>> migrate_mode into a bitmask (migrate_flags)?
+>>
 >
->[1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
->Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->---
-> mm/shmem.c | 13 +++++++++++--
-> 1 file changed, 11 insertions(+), 2 deletions(-)
+> Using folio->private, keeps the change self-contained in migrate.c
 >
->diff --git a/mm/shmem.c b/mm/shmem.c
->index 4ecefe02881d..a60fe067969c 100644
->--- a/mm/shmem.c
->+++ b/mm/shmem.c
->@@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
-> 	if (sbinfo->noswap)
-> 		mapping_set_unevictable(inode->i_mapping);
-> 
->-	/* Don't consider 'deny' for emergencies and 'force' for testing */
->-	if (sbinfo->huge)
->+	/*
->+	 * Only set the large order range for tmpfs mounts. The large order
->+	 * selection for the internal anonymous shmem mount is configured
->+	 * dynamically via the 'shmem_enabled' interfaces, so there is no
->+	 * need to set a large order range for the internal anonymous shmem
->+	 * mapping.
->+	 *
->+	 * Note: Don't consider 'deny' for emergencies and 'force' for
->+	 * testing.
->+	 */
->+	if (sbinfo->huge && !(sb->s_flags & SB_KERNMOUNT))
+> David suggested adding a dedicated unsigned long migrate_info field in the
+> folio union. I'll switch to that, as this is cleaner and avoid hacky use of ->private.
+>
+> https://lore.kernel.org/linux-mm/27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org
 
-FWIW, SB_KERNMOUNT is broader than "internal anonymous shmem" and covers
-all shm_mnt users too.
+That's good for the original usage of folio->private.  That is, to
+record migration related information for a list of folios.
 
-So maybe "internal shmem mount" would be a better description of what
-this code is actually checking.
+>
+> Changing the migrate_folio() a_ops signature would touch nearly every
+> filesystem for something that only core migration cares about, and does not look
+> practical. We can't add to migrate_mode enum either as currently those values are mutually
+> exclusive and ordered levels of increasing synchrony (ASYNC < SYNC_LIGHT < SYNC)
+> And there are checks like this (cc->mode < MIGRATE_SYNC) or  mode != MIGRATE_SYNC
+> This could break it.
 
-> 		mapping_set_large_folios(inode->i_mapping);
-> 
-> 	switch (mode & S_IFMT) {
+IMHO, code readability is more important than limiting the scope of
+changes. The migrate_folio callback of most file systems shares a few
+common implementations in migrate.c. So, I think it is doable.
 
-Cheers,
-Lance
+---
+Best Regards,
+Huang, Ying
 
