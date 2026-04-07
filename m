@@ -4,144 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D7D0FEEF2E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D572AFEEF25
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 959986B009D; Tue,  7 Apr 2026 08:13:08 -0400 (EDT)
+	id 3DF5E6B0088; Tue,  7 Apr 2026 08:16:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90A4A6B009F; Tue,  7 Apr 2026 08:13:08 -0400 (EDT)
+	id 3B7D26B008A; Tue,  7 Apr 2026 08:16:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F9166B00A8; Tue,  7 Apr 2026 08:13:08 -0400 (EDT)
+	id 2F52E6B009E; Tue,  7 Apr 2026 08:16:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EBC06B009D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:13:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21013BB015
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:13:08 +0000 (UTC)
-X-FDA: 84631649256.17.283AA45
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A671E10000F
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:13:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=glgXtlKx;
-	spf=pass (imf14.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9D26B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:16:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA82E1407A0
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:16:07 +0000 (UTC)
+X-FDA: 84631656774.10.8DF6A2A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A553940013
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:16:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APiuz0Wh;
+	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775564165; a=rsa-sha256;
+	cv=none;
+	b=EpQAbuVVgBlmap9Zc1sr4rJkqpsCW1SBu7HzvYkVOGHgxLM41kx6mpMo9qUbBuBfmSSRFU
+	ziNdvrs36XUYwuNhJ2lcE5aVT5XwUptGwVFNiQtYTZZ0gs0FItnnV56R35uCXhTzNFkTcr
+	wjrLVmISYnA9IWkNJlnZw2FT9ejh4uk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775563985;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1775564165;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9Rjl/2FypYtJRATJktQ2F/Wjw6qbjbKb2kazb+K+eA=;
-	b=zqGkQXMsHZregO212fLnOYDaTlvPyTDsc8VfvV3neyqQlyN81zsRyvoezCjmslpBNSDVVp
-	yVHEY+0CWGJv6m6/OQ0F4E3dfVs+bVUwL7Ub7RES71rNN9kvx6yUEfy9UgHVSUxNgRhSIc
-	kDOcfbtgHs+4AxYTEgAxxkb1fUwExCg=
+	bh=XJDV+p+u1Gf8ukD1Wr62sgCjDA970X0eY1nRBodJDTI=;
+	b=KEMjw8VYNt1/fw5LZwrcowqdhBYvItOIDSDCMB2YfI/3PMKz4JEH+3Z0e+IH9SClMdl3mO
+	svmgHBuBbn8XxfWIWXP8v9tsxioJF2FNTr/8fkyPRXoINtVWRWQfvmS0RZiY4SyiSOOr9V
+	1+UZNE0BcOk5rOrFFyKSNSHD1QTyzBI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=glgXtlKx;
-	spf=pass (imf14.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775563985; a=rsa-sha256;
-	cv=none;
-	b=kTNVu/vuEMBt4V/N/6IhyISxI5krDRCUc80iZ+srLbaH6gllw4KGazrC0SdeoR901+yrsv
-	G+6SUPL0ZRciRg9UCXfxPMdx8SSBNIXmKtUOoHYWNYkpkgufCKSG/AQYxO+cIx8vm89SCO
-	5AqDifx8PrGXD1yYXDKV4Ky8fo90OZ4=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 636Llk8W2297410;
-	Tue, 7 Apr 2026 12:07:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=f9Rjl/
-	2FypYtJRATJktQ2F/Wjw6qbjbKb2kazb+K+eA=; b=glgXtlKxuoGJz/svviTcPD
-	pxoVSvZtst3jPDE/8bQy+QAhCK39xNXMouvzc5R6Ookfs64iAgTbMepJUXK+r4LT
-	cfOXTcyxjRbjGcuvaSl9n5cD1QWcmqCZoZpOtfefjr9DGZuwaazzbeDhr4UKNBFy
-	4trRh/RHr1tXKPkSnh7pah1I76+fBSrq1HYq+QH8KE54CQpPh8tBLzBVUBUM3LWb
-	9yYx4qeULbZYdGSphzwX5nDVQbd8lnf8QwJiFGbe+CgqG+OdQTP+ubAaHBJOiUdA
-	yuF8VrP587Gi8eXYYvc0E1J2FiaWKAiBbsgE73jtXHlpxS6vfWwtJkIU9iHWo7ig
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fthbj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:07:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 637BMXhV019113;
-	Tue, 7 Apr 2026 12:07:50 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcme9b129-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Apr 2026 12:07:50 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 637C7nkI33096362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Apr 2026 12:07:49 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 975775804B;
-	Tue,  7 Apr 2026 12:07:49 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6458158059;
-	Tue,  7 Apr 2026 12:07:44 +0000 (GMT)
-Received: from [9.39.22.34] (unknown [9.39.22.34])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Apr 2026 12:07:44 +0000 (GMT)
-Message-ID: <53758376-14e9-4b52-89de-6d68e8c0c6f8@linux.ibm.com>
-Date: Tue, 7 Apr 2026 17:37:42 +0530
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APiuz0Wh;
+	spf=pass (imf01.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8106644585;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 60EB7C2BCB5;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775563491;
+	bh=VeX2URpxMMmGWllvQVRgejcYCV7xVkIbhcuL9oWF31M=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=APiuz0WhkwozV/Mf+a8ttzoZUscDS/xdAoU01q2HuHT6BUL2f00ZBWwxkuj39aRZs
+	 DGLN4N9HVkE8mKSHcjPJ/PfVB74ZpVf272ZPjcXng89YGkkvrDXuOcmnJoiV4ZO4kQ
+	 4LI0I0l1L8ik8SqinBwUIpTXayfVAvDoy5F50NHzradcqOS1Xc1mCYmToAf5t0VDw6
+	 CHUf4RSlHZc5ZWr/kEZuxroGxNItXLa3/2uiYECcIxX+JmsUATUdmanJZBlZPXtQFe
+	 A3EGCqJSE+8fEGwMO3DkbtvkZLvYuN5NmrfCOJBvqkWLkZPkaCI1/vg55CeBoym1TA
+	 AqEiWpVprSWwg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58080FEEF2F;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Tue, 07 Apr 2026 19:57:34 +0800
+Subject: [PATCH v4 05/14] mm/mglru: scan and count the exact number of
+ folios
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/15] selftests/cgroup: extend test_hugetlb_memcg.c to
- support all huge page sizes
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <cover.1775466329.git.sayalip@linux.ibm.com>
- <fcc9eb99566af8f37e63924a77dc633c5f200417.1775466330.git.sayalip@linux.ibm.com>
-Content-Language: en-IN
-From: Sayali Patil <sayalip@linux.ibm.com>
-In-Reply-To: <fcc9eb99566af8f37e63924a77dc633c5f200417.1775466330.git.sayalip@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=KeridwYD c=1 sm=1 tr=0 ts=69d4f397 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=OnH-2HpHgaBoKrgXaAgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: _Yc1ZjkGqeJWOo5dZWrc8kO9K4BwHWcq
-X-Proofpoint-GUID: kPQ1rpvp1ZJu1sNFeEirtjwQFQsrvGUw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA3MDExMCBTYWx0ZWRfX4x464uJZ4ocp
- PKH7r0+oe+nLTBo/pizyILwSl9wzhG6FzPbNsBtGIlKS2jvGvKZp1mR5HxBsRR4erpU42GNn3qc
- lb6ilHwf8Q+S0VSXmHW7YJaE9thwnzpHOc2uFklBz0jjHeQ1wLcr2KXon8O9EM5TpHOFk9iMurI
- 2v2T6epXGCsAlrJVpfk3QlDbmMc5UfAIuZEvbwHN1ZN1CQx5EIy6csg7E81sJ+/HC+qoOxwSK8j
- lJVzOXQiNc72xmVIejSRiAoj+mTmIL6AkPSYcR3Tyy6wTplckY2DG6UdF2go0hsuVAJzUGsgwU3
- 1S3RKUAFXSeOM+AcMcB6cpfux/GaWj+x4xIRuqYQ4vv1gKh9Idh404zst562RsJ4nswfBq3xL1r
- JnC0Q+G5KYN53h9SW7g6nKmkG9nZ6gz/PrvmIScMt5UgAydhuMOPFBoI4UUijv0fiPPkTCR1pNe
- gXdeoiPsiAH78eNwvUA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-07_02,2026-04-07_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
- clxscore=1015 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604070110
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260407-mglru-reclaim-v4-5-98cf3dc69519@tencent.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775563488; l=7136;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=UDYibubK9+mNaaKcoZWIyk0t6953xzxxj2pTQxfJro0=;
+ b=YXO8JjkjkrfocrFlEvhEFxqIX20w/vp8dngiroR6Ax/4g69p7qgqjoMV66o64VM0HNeAbOfWP
+ axontquOEfbA/RPuCELfYqFuqrb4vbyLFZMYtlf6kY8ndpbLOqUln5A
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A671E10000F
-X-Stat-Signature: 4xnrbb948g5phc7kkf7sajux935k6pyt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775563985-792803
-X-HE-Meta: U2FsdGVkX19U5uJbEtCLqoftYG1DuPM9S3Vlq0k6x08B2c5YAL2saG8QqpzpRn9qMA7ibkeBlRcQTpW47MikqvcpPezPuwfkDtlhY17fGKhJ8wDPRJlDVesrMqwrrAwjgMRsrEUfyQD4QY+UbpDaAxoNuXUvKgcKtsrFbLjrR8IqGrHur2yIhDy0/90suoc65QB2I5bQELO1aj55NOaJ3OfBdMjQyQ1UNp8b78LUHctzXi7zLH9RcguMpjhsF9hs+Ko2vvr9Ia7Whr4GtWaEAXvDoz/wBWtHyUPVN/l3juITyejJ4W3wMJ9c6vgxk4DdtyrZa6Kby/4oARVCRRMfTBfr3uEgRZRPl4HUydrt/dOMPuyetQs9IliK1wB+6LW8URPeaMvv/r/xM+5lU9BmR7+jhX1ggkFpSKk89W8QTDrjv/XOW8tCf64fRIvtg0/jPsdqbsgxf/bSRhj7byruzUdDk1UAwscnuquit7JH7EPjMjdUNTvHtsmoSQ74On76lfLFJc9zyalSkllMfCsKxiak+J2aTFngsxiuKVgLzo2gS/JTiYrE7xAOhgl9uGz7qc+EGrdo7hQ+BlMYCAxxQdk7CoPVnNNy+7cW8Ag2/4hJsm872eWAoAyEkJ16BgPY38mFYJAurXB3TsYpVfU3u+VqDcmZx46e7RTGH7PXINnM75yBsS/+9DyLLSITisNvb2ZLwODH/Tk8u6f6CIlg8jDCJdst6kQMe5qec5ds6sprnABT9tlL2LRGWIJeeNph46W343iK/wDYusorCAwYW754X5TNs9zPvtLbZ+g9jLg3nNf3AcG/Zn8UvOHEICaYbmjO6HYo4iSsoXDTNr3BmokaIERRniXS7ufaRDgcQ+74hwjLSYPbN/4UjWEpRv3w/zNSNvNyaaUvFM2oXIdTDrchx/JatEHf3SEunposfhXj/i+sH2h9cfpTAL/uM1kf/M1iTZzI2m7VvBXV0cT
- 1xviY8Tz
- ngqBGIyk/o8Gonwg2WdMtG81h7ndEf83riHbgzxs8cI7k7fzOaTqZZ+d6Rp+sS5BYzbTLIsuXzZiYNkFEuOUj6wyX/ia+dU0T+c2jn9Hy04E1AAXLw/JBBwqLEobqxSnAWwSKtzj16vqfxBFABs5t91hcLqVkbk0Npp/19ZoKwlJ5HL82ZN/pqXBpFO3CYtZOQa/TXUEzaSeBuMspJObwX9x+G0G9oo7Ocno8E/y5p+yxn0bI6ZXZePKqhLJ0zw3PGOSs56IL6+y7ABDAzMRA/C8J1ep19iWoA+XCypmOhVeY6W3nqTLNTr+f9piW+7itQ5J5GOK2NTsSYKsnXR4QF6guw7PJI9mcpYXo+2PGnRTStV8Jl/B1HMRD4512qPmfJFFCuUttw1la+pVSGZRibLfuFZygFI+MnbHD8eXbtG7oycGTrzcpU6OpTKY/VjW/NNRR7vapy8cm2cY79beLg+nW+BN+wsAbNgP3sVzhhG9XmRQC8beb585I5kE25BaN+J+g9alKr1HpYUM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A553940013
+X-Stat-Signature: kgbkyyb8pfxo35q8pjuzk38i83ynqq49
+X-HE-Tag: 1775564165-424837
+X-HE-Meta: U2FsdGVkX18FdGzoqPCdL0SPCSxm0gYoUO7uDyyOJe5thKYNop5ZJliEGsNROlq0AuviTDuECEOgNp7tRpUqQXufLznJX9Q5iyqytiWmaUfSC4Du1aFRUGl3gcmXoMvrFp7zWRbs0BLg0/1BPXq2rFTJ9QdmDdVjeZqSj1uQOFl3nt//dbqzDFa38p85XfrscTdiuKLyfFpRmfZb3Pf2LG/haEUYOwydsLqZiL59/gZv7Ww/9itVInTXBpsPPDouBissPVAkQWjX7XlIj9CVqe8wZRpEMeFCD1ZJCDpRiaC5EAPBqaDJCQQqtspXXQKzx0WC2Lfa45Uv/WoaI6ENBZMnNaL8BV3M6t60ZWoFXcNqdy9RPmZQWVCWap9g0lbFJ1gijP9M1g7QnphNvrn7r/KmQCa6kuXO6Vq5EyLOyabMQONb69fzXGziKPar7KYM4pHwycd3ecY3jbwYBGZGPceEOStxftefQswU2PmVYiDGKsmzTMEv1pLEWkRNC2uGDC7jO5ELDiPcyzIG7xnft5HNcS69KuXwQCdJa9iJDZzIcLYc+2bNqTqHK3oPvKcNOWI9gdV5jie8Svb4c2Gt8znT2ed540kgfpyjwmyHfBugi4peT3vZjqglk4yTCFUzxGVP/kROc4GX17HRWT9XKhIQ25+71ZkofxknoWHMmcdcy9HUQfONbPRdYy/1HoT5zII3OAJlcedYLWYcoQXnQjkyDgDLb14aMc/QLNeoYNVND2o+H93M+Jj91QaLYes+llxwUYtC+L0qi/T3/bxpMEf0ypYCc1pTONWOBg8oN5JEqSjiExW9dalxw0gQvtlabYMaz3zM5LbW6IdSr4e16Pt+Q+GLK+3p85opKXITPXDXf7YKB660rbiXs75+qECPAj8OPLyXvtmNmRMof8E/KmO/pWNmBr9KvbxGsFd3ns4jBYmn1t3g0Vu4okll6rBimbEMFRPXFUr/ERVsKxR
+ XeOkeY/a
+ M2IEK0jDfm2BxI+0yDnnGqEjz7+ikbJk+UxgpWvoshYqnFeQuCBvfbjPDYacL/dSQvSjrSq75B6HUzZCgKOghNasw4kNValugts310WRswNfyIK0zJTfOO2qnolg2avgRpJC0pu9uPg2pZ9F68zP3ulKkbLRyafwrH+21yonP2lTZF5i0ic94mGQ3XWx6agMebDT38y3qwnwp+4ZEmbpAecHPDTU1eUAeXbeNt1B9Rzgu2+9w59CGA7ivDitdsqnmhHAtHAd84cnck78GmiJjRWLlf00KHGiD2DTadIQOx9rqr9s5dUY+FVbqOLr+kLBa7nDhNZu774t/dCPwenC+sBiWuyoUyDDDUtNm3y7oVb8aBb0GKJ/qzf4qm2QMYPMMHPxkjYxDJUSPwfsmpzRxGW7VcKkX52FWStKCKeNt5EKVyexNU+SAMmUO3IkcOf+m4UxUD8h01SbOExsi5YgxnRz/qQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,233 +119,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Kairui Song <kasong@tencent.com>
+
+Make the scan helpers return the exact number of folios being scanned
+or isolated. Since the reclaim loop now has a natural scan budget that
+controls the scan progress, returning the scan number and consume the
+budget should make the scan more accurate and easier to follow.
+
+The number of scanned folios for each iteration is always positive and
+larger than 0, unless the reclaim must stop for a forced aging, so
+there is no more need for any special handling when there is no
+progress made:
+
+- `return isolated || !remaining ? scanned : 0` in scan_folios: both
+  the function and the call now just return the exact scan count,
+  combined with the scan budget introduced in the previous commit to
+  avoid livelock or under scan.
+
+- `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
+  scan count was kind of confusing and no longer needed to, as scan
+  number should never be zero as long as there are still evictable
+  gens. We may encounter a empty old gen that return 0 scan count,
+  to avoid that, do a try_to_inc_min_seq before isolation which
+  have slight to none overhead in most cases.
+
+- `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
+  the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
+  naturally returns 0 when only two gens remain and breaks the loop.
+
+Also change try_to_inc_min_seq to return void, as its return value is
+no longer used by any caller. Move the call before isolate_folios so
+that any empty gens created by external folio freeing are flushed, and
+add another call after isolate_folios to also flush empty gens that
+isolation itself may create.
+
+The scan still stops if there are only two gens left as the scan number
+will be zero, this behavior is same as before. This force gen protection
+may get removed or softened later to improve the reclaim a bit more.
+
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/vmscan.c | 60 ++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 462ca0fa2ba3..d3fd5bb56cce 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3878,10 +3878,9 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 	return true;
+ }
+ 
+-static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
++static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ {
+ 	int gen, type, zone;
+-	bool success = false;
+ 	bool seq_inc_flag = false;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	DEFINE_MIN_SEQ(lruvec);
+@@ -3907,11 +3906,10 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ 
+ 	/*
+ 	 * If min_seq[type] of both anonymous and file is not increased,
+-	 * we can directly return false to avoid unnecessary checking
+-	 * overhead later.
++	 * return here to avoid unnecessary checking overhead later.
+ 	 */
+ 	if (!seq_inc_flag)
+-		return success;
++		return;
+ 
+ 	/* see the comment on lru_gen_folio */
+ 	if (swappiness && swappiness <= MAX_SWAPPINESS) {
+@@ -3929,10 +3927,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ 
+ 		reset_ctrl_pos(lruvec, type, true);
+ 		WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
+-		success = true;
+ 	}
+-
+-	return success;
+ }
+ 
+ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness)
+@@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+ 
+ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		       struct scan_control *sc, int type, int tier,
+-		       struct list_head *list)
++		       struct list_head *list, int *isolatedp)
+ {
+ 	int i;
+ 	int gen;
+@@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+ 	if (type == LRU_GEN_FILE)
+ 		sc->nr.file_taken += isolated;
+-	/*
+-	 * There might not be eligible folios due to reclaim_idx. Check the
+-	 * remaining to prevent livelock if it's not making progress.
+-	 */
+-	return isolated || !remaining ? scanned : 0;
++
++	*isolatedp = isolated;
++	return scanned;
+ }
+ 
+ static int get_tier_idx(struct lruvec *lruvec, int type)
+@@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+ 
+ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			  struct scan_control *sc, int swappiness,
+-			  int *type_scanned, struct list_head *list)
++			  struct list_head *list, int *isolated,
++			  int *isolate_type, int *isolate_scanned)
+ {
+ 	int i;
++	int scanned = 0;
+ 	int type = get_type_to_scan(lruvec, swappiness);
+ 
+ 	for_each_evictable_type(i, swappiness) {
+-		int scanned;
++		int type_scan;
+ 		int tier = get_tier_idx(lruvec, type);
+ 
+-		*type_scanned = type;
++		type_scan = scan_folios(nr_to_scan, lruvec, sc,
++					type, tier, list, isolated);
+ 
+-		scanned = scan_folios(nr_to_scan, lruvec, sc, type, tier, list);
+-		if (scanned)
+-			return scanned;
++		scanned += type_scan;
++		if (*isolated) {
++			*isolate_type = type;
++			*isolate_scanned = type_scan;
++			break;
++		}
+ 
+ 		type = !type;
+ 	}
+ 
+-	return 0;
++	return scanned;
+ }
+ 
+ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			struct scan_control *sc, int swappiness)
+ {
+-	int type;
+-	int scanned;
+-	int reclaimed;
+ 	LIST_HEAD(list);
+ 	LIST_HEAD(clean);
+ 	struct folio *folio;
+@@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	enum node_stat_item item;
+ 	struct reclaim_stat stat;
+ 	struct lru_gen_mm_walk *walk;
++	int scanned, reclaimed;
++	int isolated = 0, type, type_scanned;
+ 	bool skip_retry = false;
+-	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 
+ 	lruvec_lock_irq(lruvec);
+ 
+-	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
++	/* In case folio deletion left empty old gens, flush them */
++	try_to_inc_min_seq(lruvec, swappiness);
+ 
+-	scanned += try_to_inc_min_seq(lruvec, swappiness);
++	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
++				 &list, &isolated, &type, &type_scanned);
+ 
+-	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
+-		scanned = 0;
++	/* Isolation might create empty gen, flush them */
++	if (scanned)
++		try_to_inc_min_seq(lruvec, swappiness);
+ 
+ 	lruvec_unlock_irq(lruvec);
+ 
+@@ -4861,7 +4861,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+ 	sc->nr_reclaimed += reclaimed;
+ 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+-			scanned, reclaimed, &stat, sc->priority,
++			type_scanned, reclaimed, &stat, sc->priority,
+ 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+ 
+ 	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+
+-- 
+2.53.0
 
 
-On 06/04/26 14:49, Sayali Patil wrote:
-> The hugetlb memcg selftest was previously skipped when the configured
-> huge page size was not 2MB, preventing the test from running on systems
-> using other default huge page sizes.
-> 
-> Detect the system's configured huge page size at runtime and use it for
-> the allocation instead of assuming a fixed 2MB size. This allows the
-> test to run on configurations using non-2MB huge pages and avoids
-> unnecessary skips.
-> 
-> Fixes: c0dddb7aa5f8 ("selftests: add a selftest to verify hugetlb usage in memcg")
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> ---
->   .../selftests/cgroup/test_hugetlb_memcg.c     | 90 ++++++++++++++-----
->   1 file changed, 68 insertions(+), 22 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
-> index f451aa449be6..e6157a784138 100644
-> --- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
-> +++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
-> @@ -7,15 +7,21 @@
->   #include <stdlib.h>
->   #include <string.h>
->   #include <fcntl.h>
-> +#include <stdint.h>
->   #include "kselftest.h"
->   #include "cgroup_util.h"
->   
->   #define ADDR ((void *)(0x0UL))
->   #define FLAGS (MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
-> -/* mapping 8 MBs == 4 hugepages */
-> -#define LENGTH (8UL*1024*1024)
->   #define PROTECTION (PROT_READ | PROT_WRITE)
->   
-> +/*
-> + * This value matches the kernel's MEMCG_CHARGE_BATCH definition:
-> + * see include/linux/memcontrol.h. If the kernel value changes, this
-> + * test constant must be updated accordingly to stay consistent.
-> + */
-> +#define MEMCG_CHARGE_BATCH 64U
-> +
->   /* borrowed from mm/hmm-tests.c */
->   static long get_hugepage_size(void)
->   {
-> @@ -84,11 +90,11 @@ static unsigned int check_first(char *addr)
->   	return *(unsigned int *)addr;
->   }
->   
-> -static void write_data(char *addr)
-> +static void write_data(char *addr, size_t length)
->   {
->   	unsigned long i;
->   
-> -	for (i = 0; i < LENGTH; i++)
-> +	for (i = 0; i < length; i++)
->   		*(addr + i) = (char)i;
->   }
->   
-> @@ -96,26 +102,33 @@ static int hugetlb_test_program(const char *cgroup, void *arg)
->   {
->   	char *test_group = (char *)arg;
->   	void *addr;
-> +	long hpage_size, batch_bytes;
->   	long old_current, expected_current, current;
->   	int ret = EXIT_FAILURE;
-> +	size_t length;
-> +	int pagesize, nr_pages;
-> +
-> +	pagesize = getpagesize();
-> +	hpage_size = get_hugepage_size() * 1024;
-> +	length = 4 * hpage_size;
-> +	batch_bytes = MEMCG_CHARGE_BATCH * pagesize;
->   
->   	old_current = cg_read_long(test_group, "memory.current");
->   	set_nr_hugepages(20);
->   	current = cg_read_long(test_group, "memory.current");
-> -	if (current - old_current >= MB(2)) {
-> +	if (current - old_current >= hpage_size) {
->   		ksft_print_msg(
->   			"setting nr_hugepages should not increase hugepage usage.\n");
->   		ksft_print_msg("before: %ld, after: %ld\n", old_current, current);
->   		return EXIT_FAILURE;
->   	}
->   
-> -	addr = mmap(ADDR, LENGTH, PROTECTION, FLAGS, 0, 0);
-> -	if (addr == MAP_FAILED) {
-> -		ksft_print_msg("fail to mmap.\n");
-> -		return EXIT_FAILURE;
-> -	}
-> +	addr = mmap(ADDR, length, PROTECTION, FLAGS, 0, 0);
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_skip("mmap failed, not enough memory.\n");
-> +
->   	current = cg_read_long(test_group, "memory.current");
-> -	if (current - old_current >= MB(2)) {
-> +	if (current - old_current >= hpage_size) {
->   		ksft_print_msg("mmap should not increase hugepage usage.\n");
->   		ksft_print_msg("before: %ld, after: %ld\n", old_current, current);
->   		goto out_failed_munmap;
-> @@ -124,10 +137,34 @@ static int hugetlb_test_program(const char *cgroup, void *arg)
->   
->   	/* read the first page */
->   	check_first(addr);
-> -	expected_current = old_current + MB(2);
-> +	nr_pages = hpage_size / pagesize;
-> +	expected_current = old_current + hpage_size;
->   	current = cg_read_long(test_group, "memory.current");
-> -	if (!values_close(expected_current, current, 5)) {
-> -		ksft_print_msg("memory usage should increase by around 2MB.\n");
-> +	if (nr_pages < MEMCG_CHARGE_BATCH &&
-> +	    (current == old_current ||
-> +	    values_close(old_current + batch_bytes, current, 5))) {
-> +		/*
-> +		 * Memory cgroup charging uses per-CPU stocks and batched updates to the
-> +		 *  memcg usage counters. For hugetlb allocations, the number of pages
-> +		 *  that memcg charges is expressed in base pages (nr_pages), not
-> +		 *  in hugepage units. When the charge for an allocation is smaller than
-> +		 *  the internal batching threshold  (nr_pages <  MEMCG_CHARGE_BATCH),
-> +		 *  it may be fully satisfied from the CPU’s local stock. In such
-> +		 *  cases memory.current does not necessarily increase.
-> +		 *
-> +		 *  If the local stock is insufficient, it may be refilled in batches
-> +		 *  of MEMCG_CHARGE_BATCH base pages, causing memory.current to increase
-> +		 *  by more than the allocation size.
-> +		 *
-> +		 * Therefore, Treat both a zero delta and a batched increase as a
-> +		 * valid behaviour here.
-> +		 */
-> +		if (current == old_current)
-> +			ksft_print_msg("allocation consumed from local stock.\n");
-> +		else
-> +			ksft_print_msg("memcg charge batched via stock refill.\n");
-> +	} else if (!values_close(expected_current, current, 5)) {
-> +		ksft_print_msg("memory usage should increase by ~1 huge page.\n");
->   		ksft_print_msg(
->   			"expected memory: %ld, actual memory: %ld\n",
->   			expected_current, current);
-> @@ -135,11 +172,11 @@ static int hugetlb_test_program(const char *cgroup, void *arg)
->   	}
->   
->   	/* write to the whole range */
-> -	write_data(addr);
-> +	write_data(addr, length);
->   	current = cg_read_long(test_group, "memory.current");
-> -	expected_current = old_current + MB(8);
-> +	expected_current = old_current + length;
->   	if (!values_close(expected_current, current, 5)) {
-> -		ksft_print_msg("memory usage should increase by around 8MB.\n");
-> +		ksft_print_msg("memory usage should increase by around 4 huge pages.\n");
->   		ksft_print_msg(
->   			"expected memory: %ld, actual memory: %ld\n",
->   			expected_current, current);
-> @@ -147,7 +184,7 @@ static int hugetlb_test_program(const char *cgroup, void *arg)
->   	}
->   
->   	/* unmap the whole range */
-> -	munmap(addr, LENGTH);
-> +	munmap(addr, length);
->   	current = cg_read_long(test_group, "memory.current");
->   	expected_current = old_current;
->   	if (!values_close(expected_current, current, 5)) {
-> @@ -162,14 +199,17 @@ static int hugetlb_test_program(const char *cgroup, void *arg)
->   	return ret;
->   
->   out_failed_munmap:
-> -	munmap(addr, LENGTH);
-> +	munmap(addr, length);
->   	return ret;
->   }
->   
->   static int test_hugetlb_memcg(char *root)
->   {
->   	int ret = KSFT_FAIL;
-> +	int num_pages = 20;
-> +	long hpage_size = get_hugepage_size();
->   	char *test_group;
-> +	uint64_t limit;
->   
->   	test_group = cg_name(root, "hugetlb_memcg_test");
->   	if (!test_group || cg_create(test_group)) {
-> @@ -177,7 +217,9 @@ static int test_hugetlb_memcg(char *root)
->   		goto out;
->   	}
->   
-> -	if (cg_write(test_group, "memory.max", "100M")) {
-> +	limit = (uint64_t)num_pages * hpage_size * 1024ULL;
-> +
-> +	if (cg_write_numeric(test_group, "memory.max", limit)) {
->   		ksft_print_msg("fail to set cgroup memory limit.\n");
->   		goto out;
->   	}
-> @@ -200,6 +242,7 @@ int main(int argc, char **argv)
->   {
->   	char root[PATH_MAX];
->   	int ret = EXIT_SUCCESS, has_memory_hugetlb_acc;
-> +	long val;
->   
->   	has_memory_hugetlb_acc = proc_mount_contains("memory_hugetlb_accounting");
->   	if (has_memory_hugetlb_acc < 0)
-> @@ -208,12 +251,15 @@ int main(int argc, char **argv)
->   		ksft_exit_skip("memory hugetlb accounting is disabled\n");
->   
->   	/* Unit is kB! */
-> -	if (get_hugepage_size() != 2048) {
-> -		ksft_print_msg("test_hugetlb_memcg requires 2MB hugepages\n");
-> +	val = get_hugepage_size();
-> +	if (val < 0) {
-> +		ksft_print_msg("Failed to read hugepage size\n");
->   		ksft_test_result_skip("test_hugetlb_memcg\n");
->   		return ret;
->   	}
->   
-> +	ksft_print_msg("Hugepage size: %ld kB\n", val);
-> +
->   	if (cg_find_unified_root(root, sizeof(root), NULL))
->   		ksft_exit_skip("cgroup v2 isn't mounted\n");
->   
-
-Observed intermittent failure on some systems, particularly with 1GB 
-huge page size, where the memory.current does not reflect the expected 
-usage.
-
-I will drop this patch from the series and will take a look at it 
-separately.
-
-Thanks,
-Sayali
 
