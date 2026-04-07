@@ -4,105 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87AC7105D986
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 21:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A27FEEF55
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 21:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC7496B008A; Tue,  7 Apr 2026 17:22:17 -0400 (EDT)
+	id D71786B0088; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D77666B008C; Tue,  7 Apr 2026 17:22:17 -0400 (EDT)
+	id CFB4F6B0089; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8EB66B0092; Tue,  7 Apr 2026 17:22:17 -0400 (EDT)
+	id BC2C46B008A; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9A736B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:22:17 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 425BD14068C
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:22:17 +0000 (UTC)
-X-FDA: 84633033114.18.2202DC5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0A9CA40003
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:22:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gWKwdp+E;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A3AC56B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:43:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34F3F1B88E9
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:43:05 +0000 (UTC)
+X-FDA: 84633085530.30.8639597
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 881351C0007
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:43:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D26D8gOg;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775596935;
+	s=arc-20220608; t=1775598183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=08oaNpMk0ZvV0Wt0jg05aCMOjVRxzil+ZF5ABphc55M=;
-	b=vyIeOHtaulDDo4d6IdWRUUjRiu2AumK6DyPKtqpwCz9zuG8bTgvN0+uYBZ2/GUbelpsqj+
-	1LDbF9fnXZed4ninuXiksXZtcww+wG5akWm6uDNnH9ZiaZJBW0EY3FVceOwPMURdY4CJDJ
-	1eEW+Vv8uy8w5zQ6xcIXsBYofikLTmE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gWKwdp+E;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775596935; a=rsa-sha256;
+	bh=iLqfXsQT+5ZRmm6D6bg+MxhQkz+CgjvQnqxf7aaBrxQ=;
+	b=fj1pJJ0e4wlcekTi30FRuOej+F5HK/NIjMuzrHxIjfNQhS1ec+UzR3IHo8T75565FxHpVp
+	I+XiOSD88KFkxs+VHdOjkQcyiIzYrspofbPUrgoS2eNT4Jo7Gi88iLfg2wUugOiyFqFQvc
+	Gv75PSxuedAtr0kQFVgAxvlznuBlNqE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775598183; a=rsa-sha256;
 	cv=none;
-	b=Nd3O0hWZcU2tXoVc/Icy43g4JUDkDHwxyahL+FtSRmaTXXN2s0nEZ6YdPPo4VnjIi3l6Ht
-	Awlit8SE3hcmowU4jhwEOgf7h97fRUbA108LjtuHBP+pC8HcoDqnsOuwak112bNAt6xgwP
-	5YUDPGE4e64YFNW+OkUzkUy3KzLfbkI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775596934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=08oaNpMk0ZvV0Wt0jg05aCMOjVRxzil+ZF5ABphc55M=;
-	b=gWKwdp+EGtgx2xwbn8QHqmq2SG1ghuggMHDXTzgehm5+taxaqPL/QJ7yRDoCUDc5yACH0k
-	ESp0gxNxS7NfttSLg+XK9axHs349d6FPqs/4y/EGYVtbTZTLwMLaxPFt9VTooQPlBIOqfn
-	r4tUBv88o/SkRGWFmlBz7uHsci7NIOA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-mQHGT6mpN9GXzYVFdNKmBw-1; Tue,
- 07 Apr 2026 17:22:13 -0400
-X-MC-Unique: mQHGT6mpN9GXzYVFdNKmBw-1
-X-Mimecast-MFC-AGG-ID: mQHGT6mpN9GXzYVFdNKmBw_1775596931
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 534FF19560A2;
-	Tue,  7 Apr 2026 21:22:10 +0000 (UTC)
-Received: from fedora (unknown [10.44.32.11])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 5EEA4300019F;
-	Tue,  7 Apr 2026 21:22:05 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue,  7 Apr 2026 23:22:09 +0200 (CEST)
-Date: Tue, 7 Apr 2026 23:22:04 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kusaram Devineni <kusaram@devineni.in>,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Jens Axboe <axboe@kernel.dk>, Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH] signalfd: don't dequeue the forced fatal signals
-Message-ID: <adV1fCyvANv4h2dH@redhat.com>
-References: <adKJMRkQJXEwHs-j@redhat.com>
- <202604080450.mkKRp9Mk-lkp@intel.com>
-MIME-Version: 1.0
-In-Reply-To: <202604080450.mkKRp9Mk-lkp@intel.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: xbbU3UYelGdIuCOMoCKKhIVh6F--HDJPfHbkGE8uZhs_1775596931
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A9CA40003
-X-Stat-Signature: sox36zhak1n155a197e5sgyfnsmrxdq9
+	b=2jD19Mv9dBEsHuH3KapTjY2nglxj2HG50himmv+R5XqOepRKU13wnJYI8H62ohlHbmTrpJ
+	1TXcehyqohEs1tpgqPIe9lR/dkxfQdR0mgZIJGOKier4frgFI4nrXxeMtze7FxBIiieYPr
+	jWIun9FzpRC08FD7DpJ2yeCr+hz0JVA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D26D8gOg;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B9136013F;
+	Tue,  7 Apr 2026 21:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8C8C19421;
+	Tue,  7 Apr 2026 21:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775598182;
+	bh=Jzj9VL/ne4HAC8Uu0kWPWPs9BChKAOI+YBOIl8kJd7A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=D26D8gOgBYtI9taH8eQ4kzyi2d8YxkZt8dSUwKgAIsKyai5Pvavyf/lTEVNg0+rSx
+	 qXAiAuDFxir6oTPrOR+KcHn93C4TOIONsOi6a9mfJaFjrtAXVoEHVVpTDpDfwaCinp
+	 zB6ialuk5Pk2obvLcr9QSOS73hKuFBvypa2DqZMU=
+Date: Tue, 7 Apr 2026 14:42:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
+ madv_collapse with collapse_single_pmd()
+Message-Id: <20260407144259.011a26666eff9c96d74e39a2@linux-foundation.org>
+In-Reply-To: <adTCJ8NQHGNMqR1d@lucifer>
+References: <7760c811-e100-4d40-9217-0813c28314be@lucifer.local>
+	<0223d45b-e8b4-49a7-882b-477250d0c14d@kernel.org>
+	<fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
+	<26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
+	<440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
+	<37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
+	<9d5a4703-a15e-4be6-926b-af2d98db40c0@kernel.org>
+	<CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com>
+	<87b83f7b-f0b1-4184-93a0-3b4b574c813b@lucifer.local>
+	<20260401133145.90b094a7b87bdceb0013b5af@linux-foundation.org>
+	<adTCJ8NQHGNMqR1d@lucifer>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 881351C0007
+X-Stat-Signature: mbc9ozj5kx1q319qfkfm4kwzsetfwu6s
 X-Rspam-User: 
-X-HE-Tag: 1775596934-827931
-X-HE-Meta: U2FsdGVkX18jhvLuvafV/2rALMm2Fn06wzGJZ2zzyseUtradxepHS0Lj9amWvzEeKkB0isHXfG6e20wHYquMzPwYlh88bMpuc+VTLhNFDs9gm/daXfSYepsSB78CBEHRgkaYUg8IQicPIE7o/MPOZhD8kluuv6fnmQDw9da52Iwm18grFd2aqOiEyrMwVOb0y9dKR6xTxXJ7KNcQ6pnFS2EQwUxkbK2rewbe56exUmfTdnb6qAfzd6kmHabJAZgkhC4mCQkeR+IuzRxj9A+AKdIOiLQ8VysnSkuuA1FVEGHwLlouVw4I7dHZ8bL4CX5stb9jh5l2xZ3lovndEm8LtBLxF2WdbW8FGMsBFVFUvVKczw5XtM97Th6uHG6e2pRn8cls96IuH14hWFzinPPTjD46oz57C0vfIV6tGmOgNv+iMoAOiN2FNpSQDuc104LNwvKqLcsLBDfPrAegsR4vx83ArJkw388YsOLYLT+CLn+6C1J7cS7t5y6UUpFbMR3b58noha/upxYmKk2BMWEehQoowruu3EzCsVK021D+y0kvYxoicFqwVMRbUppXraV9CTHUbfKyajDggJzyMak7w7RIiiamD4cKMG+hAxNu3PNDM+xaL16a8KRcI/t4JE7CLXpwxAKb6GgD6Ww+ytVvnlNGicRCHp9Blz/qiYXXYDpm1I4GR4kFGzf91aSciw++d6qi2GWrLhDLhgyPhbpPg4sakMTy07HKK6stBZW8U28lq+/5P7o58drWR5MoJVz3Bub/mFqwuvOhYs2BxO2KA4NXeeBeEQ19dGPnD8/3reZLQjiDrlMwTOl5LVxEdNYbWMMJgA3xdXm0xc3LLGW6VRfjoV6q8+QdlJ5vvU0uTs7Cv0k8NbSjSKLoxay+1jxBt64XogjyRWg5HjNfae3tR1YKbxGVwC++sELN+YaMBYCCjEm6fpjAIP7WQhSqvasTFXo7Eqc1r2ZHWJSMmd3
- D3fk+s3d
- IsNAo7Jl2fx3P5Rw4LQqpCNAbr0Is4FEXr7HJc/sGz98TokvPdYtpT0iTzW4F3U16xX1GEDyl5o+dnCKwKQ7qa1IES7UaMTV6rDaOJz275B3KKdoMDvWxQGFbEN4tduSmV8axDcsePU6oO+ihlrdxuj+iktJBIqcnTNJ0wuGTlP6ObohHpjXRt7geTg5NaftL6SoffAkVnsIZru7kDFfBWbrQ3MGEBL2FChIFU7geas7OhvlKmeWD3zdHgAEmY/jCCDBFUIEXR0hSpQN+cm6QsVQ1ve1RLrDw3CN3g1JYzOG7cDrkrXEbDeI/J6e6C0AHan85oJBZzIy+O2KzkBVa5d+ZgkAo0GdZig8z
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775598183-491284
+X-HE-Meta: U2FsdGVkX1+Tz3LfYOdrPg+isMSLOmzLpj95igCnDBw6Q6TEsgI3fWsZVxqcUz4653lTOwg0hQNxnO0RhU51iaSy/7a9TvjuDvKNn12LGuGO3z/j8zncvqJEgWw0QyuKvGQwOjKRuyOSCGOcVkeT5vTfe2eqSDlJhZtgyNXbIVitGA+qcM6/0LgNs+ITuhd4RtnVIOv1m3VtmIvu9ov1Awe4jvkuKYvv4DGB83JnxUwEihSVFwS5uu5nCAr3aPWvyAZwkPbOsfjOjcMYfDqwKqBo2QHnlG570M9hYnQSVLYH30cdzm8Jz/Lud8u3YxKYRXOlFC9IWrwBf1HSVKVRqwK666NcMbpQoIPqfhwVh0oTvn1oQzEa7YqAFx0BNH6yGFECXIbEWFbm5SEV5q+SQx2I8va78pBdKsRszVZI1or/OWmnAOT7f89XNv8zIK+4X5kgkB9Nts+CwfWCvUB89GVv893qyTs4/pdzW9v8KUsSxzyk9j32seNgrb3//TX4TwCV5kwuop0EohOdidsDiElvGGb/hXDQohD+gBFOzAeOs2Asw+a+AfpxS9Bg6Kb851BrQy+bwAUnrwkJ6qefYLwD5fFMvt7kCu0OA3MdbB8XzHxSlERbGmTKmAeaknEmnFpGOttarCwDcRCjCPZUbNGDuL1Uyi1DUxx8Za7sgoz6si1gN3bcy5cYF0uyUIpGRTL2VOQJl9ci7wrtcIHNt3IFMog7r4MbhbzpHbNkOX5hMzONfVQI+zSSyBDD3NGnw511Ym0QEiReWQkLQaRarw1QYlpXLMgUSt9aaEoSHzp6+rXHQM7KAGH+FO9QhQsclZpt0MTqn4uByD0wWEs8o0bWS7OfdAXcuRTeOzGlVLR/jyuTH0yb10h1xHLV3BWzzfSA+gn3Ykx2BpL1r/vThTR/Jc+JMJJA66iYQ632iySdEa7bFEfmXCJnJF6myNkXAhkDB26wDzLeiguqIIm
+ DLh/Q5bk
+ v5qDFgtp/gMcJmyaD3NESVEc7dJvd02ufPxN6Z6s7XONNy/DT/gM9LuOjTPfb+DQFToWyLkufa0cVspFC5/M75Gx8XuruZA66jYQS5AOwzv+iRG5JL9h8pZrJU4rEvGHrTEE8c2i+BtgXxaWqdj4OU1giMyRE66ykSQDc7+/ffihra2hgmQH57CKuNzGmxmlZchiEtDtbqoGy83MYafXZU7EkadWNG1fcoQRyJskBgqBAW/CUy1HbH/zvKRqnKYineuUYdP+d3kKofBpJRETbACfnVkC1SQUPWH2lhQvI61rzHqbyEY+56uCbs3YtZrC/lj0rTCiwytRP/3kYp/CScHSor4OsdFgFLf0aXVm1LB5yMn86SmHgsjNFpM9B1bLRFjrkvO7HSiT4Qy/fG69x/HPwwX5ggXdiYKW1c/JW+WBTWI/rlXYr6KvOuCzIZW1fVrxrbDtVOHUxzoeOw5OsCpw+WgW1tDRWOQQ5XqMKYv/FN3bHVdLoh9/6VAcTDIJU7GHgFLgeCkFPn6qMY/Hz7RWlUlr2+V0E1TtiWWyxueaznetU/gwtLiKA0ESbK8LP79yiL7Pijp3JNFR4WSS0ekIpEweueT0qKgmPFYLHEhxgz2sPNC2i53CNqIWEgqjfdQr6yROxlehCjEQK8Qj4CoXU+NVVxo03KEkozypOpEjb+evkfPg61SKFxQ2snZJwz8T23v+WL/mlIpix9rPMXHQtmOl2puvXb3s58Udg0HqBIXP4NcHqWcxh+KrgYmCy+ezmj7E4sKeMKftkyFMGP48jflvKbf1JMLDYjKHJoGcW/7rorjhBvd2hov0nkv0pBznBcTQSdM1PxImwRqBsad+FuSaIqPubmI4t5FBDClI70emXJMjrzAafgGUgm/HN3+mFsChAhIJueVBKY2n+8qdAVnfUCl/GwETOJQheumihsUAl5cHOQETbv8wNMyqeflPCkPzQ1ED0NPHtbS+4scTvUs4E
+ zjsCcWPN
+ jp+hXVa1D2+BUpcINqrJbM58v+4S120cW8Lh4XQFkT+txdlfImdwpoTlONaNDc9waRxofwuuEAvC8T4JF/35ZKBBP3CCm4K5B2y9ktWXEoMuVj1K3maaKtGdSYlfeP4IGOg/DL96LI6xr5B94LAnq7VLOsB8fCQNzltcE87q7O4kKmxA4Ptb3nia+sDQEwJ04pkvhDBmQ04KaRbUY+uOtMuC1jGhjJn6TJSzx6RcVRjSNT9N55/lqqqf9otG9SbkXVBWGPhFn/7MjmUzig8fqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,41 +119,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/08, kernel test robot wrote:
->
-> kernel test robot noticed the following build warnings:
+On Tue, 7 Apr 2026 09:38:19 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kernel.or=
+g> wrote:
 
-...
+> On Wed, Apr 01, 2026 at 01:31:45PM -0700, Andrew Morton wrote:
+> > On Wed, 1 Apr 2026 09:14:35 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kerne=
+l.org> wrote:
+> >
+> > > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> > > Date: Tue, 31 Mar 2026 13:11:18 +0100
+> > > Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
+> > >
+> > > We are incorrectly treating lock_dropped to track both whether the lo=
+ck is
+> > > currently held and whether or not the lock was ever dropped.
+> > >
+> > > Update this change to account for this.
+> > >
+> > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> >
+> > Not sure if I should add this?
+> >
+> > Should it have
+> >
+> > Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse
+> > with collapse_single_pmd()")?
+>=20
+> (Sorry only just noticed this)
+>=20
+> I mean we do need this patch, if you plan to do this as a fix follow up t=
+hen
+> should have a fixed tag, but I do worry about bisection hazard by leaving=
+ this
+> as-is.
+>=20
+> We definitely either need this patch folded in or as a fix that gets sent
+> alongside the change.
 
-> sparse warnings: (new ones prefixed by >>)
-> >> fs/signalfd.c:53:40: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct k_sigaction *k @@     got struct k_sigaction [noderef] __rcu * @@
+I added this to mm-stable a couple of days ago as 5a62019807da
+("mm/khugepaged: fix issue with tracking lock"), below.  It does have
+the Fixes: so I think we're good.
 
-...
 
-> vim +53 fs/signalfd.c
->
->     50	
->     51	static void mk_sigmask(struct signalfd_ctx *ctx, sigset_t *sigmask)
->     52	{
->   > 53		struct k_sigaction *k = current->sighand->action;
+commit 5a62019807da4a7add0717c962ac83b23dd12b2c
+Author: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Date:   Tue Mar 31 13:11:18 2026 +0100
 
-I am going to ignore this new warning...
+    mm/khugepaged: fix issue with tracking lock
+   =20
+    We are incorrectly treating lock_dropped to track both whether the lock=
+ is
+    currently held and whether or not the lock was ever dropped.
+   =20
+    Update this change to account for this.
+   =20
+    Link: https://lkml.kernel.org/r/7760c811-e100-4d40-9217-0813c28314be@lu=
+cifer.local
+    Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse=
+ with collapse_single_pmd()")
+    Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+    Reviewed-by: Lance Yang <lance.yang@linux.dev>
+    Reviewed-by: Nico Pache <npache@redhat.com>
+    Cc: Alistair Popple <apopple@nvidia.com>
+    Cc: Andrea Arcangeli <aarcange@redhat.com>
+    Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+    Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+    Cc: Barry Song <baohua@kernel.org>
+    Cc: Brendan Jackman <jackmanb@google.com>
+    Cc: Byungchul Park <byungchul@sk.com>
+    Cc: Catalin Marinas <catalin.marinas@arm.com>
+    Cc: David Hildenbrand <david@kernel.org>
+    Cc: David Rientjes <rientjes@google.com>
+    Cc: Dev Jain <dev.jain@arm.com>
+    Cc: Gregory Price <gourry@gourry.net>
+    Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+    Cc: Hugh Dickins <hughd@google.com>
+    Cc: Jan Kara <jack@suse.cz>
+    Cc: Jann Horn <jannh@google.com>
+    Cc: Johannes Weiner <hannes@cmpxchg.org>
+    Cc: Jonathan Corbet <corbet@lwn.net>
+    Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+    Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+    Cc: Liam Howlett <liam.howlett@oracle.com>
+    Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+    Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+    Cc: Matthew Brost <matthew.brost@intel.com>
+    Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+    Cc: Michal Hocko <mhocko@suse.com>
+    Cc: Mike Rapoport <rppt@kernel.org>
+    Cc: Nanyong Sun <sunnanyong@huawei.com>
+    Cc: Pedro Falcato <pfalcato@suse.de>
+    Cc: Peter Xu <peterx@redhat.com>
+    Cc: Rafael Aquini <raquini@redhat.com>
+    Cc: Rakie Kim <rakie.kim@sk.com>
+    Cc: Randy Dunlap <rdunlap@infradead.org>
+    Cc: Ryan Roberts <ryan.roberts@arm.com>
+    Cc: Shivank Garg <shivankg@amd.com>
+    Cc: Steven Rostedt <rostedt@goodmis.org>
+    Cc: Suren Baghdasaryan <surenb@google.com>
+    Cc: Takashi Iwai (SUSE) <tiwai@suse.de>
+    Cc: Thomas Hellstr=F6m <thomas.hellstrom@linux.intel.com>
+    Cc: Usama Arif <usamaarif642@gmail.com>
+    Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+    Cc: Vlastimil Babka <vbabka@suse.cz>
+    Cc: Wei Yang <richard.weiyang@gmail.com>
+    Cc: Will Deacon <will@kernel.org>
+    Cc: Yang Shi <yang@os.amperecomputing.com>
+    Cc: Zach O'Keefe <zokeefe@google.com>
+    Cc: Zi Yan <ziy@nvidia.com>
+    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Yes, task_struct->sighand is __rcu. Not sure this annotation makes a lot of sense.
-
-In any case. current->sighand is always stable. Plus task->sighand is stable under siglock.
-
-We have a lot of (correct) non-rcu deferences of ->sighand.
-
-I think that only lock_task_sighand() needs rcu_dereference(tsk->sighand).
-
-Say, __exit_signal() does
-
-	sighand = rcu_dereference_check(tsk->sighand,
-					lockdep_tasklist_lock_is_held());
-
-To me this just adds the unnecessary noise. I do not want to add another precedent.
-
-Oleg.
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index d21348b85a59..b8452dbdb043 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsi=
+gned long start,
+ 	unsigned long hstart, hend, addr;
+ 	enum scan_result last_fail =3D SCAN_FAIL;
+ 	int thps =3D 0;
++	bool mmap_unlocked =3D false;
+=20
+ 	BUG_ON(vma->vm_start > start);
+ 	BUG_ON(vma->vm_end < end);
+@@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, un=
+signed long start,
+ 	for (addr =3D hstart; addr < hend; addr +=3D HPAGE_PMD_SIZE) {
+ 		enum scan_result result =3D SCAN_FAIL;
+=20
+-		if (*lock_dropped) {
++		if (mmap_unlocked) {
+ 			cond_resched();
+ 			mmap_read_lock(mm);
+-			*lock_dropped =3D false;
++			mmap_unlocked =3D false;
++			*lock_dropped =3D true;
+ 			result =3D hugepage_vma_revalidate(mm, addr, false, &vma,
+ 							 cc);
+ 			if (result  !=3D SCAN_SUCCEED) {
+@@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsi=
+gned long start,
+ 			hend =3D min(hend, vma->vm_end & HPAGE_PMD_MASK);
+ 		}
+=20
+-		result =3D collapse_single_pmd(addr, vma, lock_dropped, cc);
++		result =3D collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
+=20
+ 		switch (result) {
+ 		case SCAN_SUCCEED:
+@@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_struct *vma, uns=
+igned long start,
+=20
+ out_maybelock:
+ 	/* Caller expects us to hold mmap_lock on return */
+-	if (*lock_dropped)
++	if (mmap_unlocked) {
++		*lock_dropped =3D true;
+ 		mmap_read_lock(mm);
++	}
+ out_nolock:
+ 	mmap_assert_locked(mm);
+ 	mmdrop(mm);
 
 
