@@ -4,95 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0048CFF5104
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 15:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A1CFF5109
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 15:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B4586B00B3; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
+	id 8A3E96B00B6; Tue,  7 Apr 2026 11:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18C186B00B5; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
+	id 82D886B00B7; Tue,  7 Apr 2026 11:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A1756B00B6; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
+	id 6F4F26B00B8; Tue,  7 Apr 2026 11:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF63E6B00B3
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:39:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A756B1408B2
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:39:17 +0000 (UTC)
-X-FDA: 84632168754.13.B3870C9
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AD6CD1A0009
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:39:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eLVGqBBi
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 599946B00B6
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:51:15 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D98B1B8C08
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:51:15 +0000 (UTC)
+X-FDA: 84632198910.04.7246861
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6731B20011
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:51:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZC7Jh9Z;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775576356;
+	s=arc-20220608; t=1775577073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xUraNMpir2RYmF7SdU6Sk5XYdPYUrZgrKlbGzzDcLkM=;
-	b=X5IBkAxqQbOlCJRVGmuX29b57/zEUOMBiCjzeydzgLI0Wbo5X/scC4AZIhS7WC8Qs2iiiw
-	b/HGrVnqnKFzDb1+qlWZzb0fT5LD42MQMuqudzizzbuWegADrecQc7L7ne8urkbdKQduxk
-	b4E9Ap9nRULLWGIE+rlO96ks6lMX2kg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775576356; a=rsa-sha256;
+	bh=XpXiaySqyR7vLnbBM0FTJayRSz9w3B7Mzgl6a0u5EA8=;
+	b=io5RZ9gbhwF/UoRWxznkPtba7wzFwJRFe4Xwzvy2oaINDGi4SKzsk1WR9ibm3NBCpQWSyZ
+	o9CiXc2iUHTd5e/Wrjc96r3o2vlYiEvUB8q1BWY2RdCfP7o2b05/x83jouSjqJX7qpEgjK
+	lPuA8FFEqQbLMMoPTKm5luzjZzyCbCc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775577073; a=rsa-sha256;
 	cv=none;
-	b=Np5gN/UYVLLv5m5CK7wdbfcbg+rojU3FA70nyyJjEvirV8aPl+I7KxwYlYDrD921YvD94t
-	zUKyQfMemm6xfR7F1O/QU6qyhQRlTIvWghlxqDA8pOTmue7GqXnpiGt/eE51byGqPJlmRZ
-	6ClVlHhgr1IkRV9uJywML4dvOawnw1w=
+	b=FFpT8oKOo2dPLYbbPfX4ONrhb1PqGLQkHnWfH1c2Sw78w/mrw33WO7jsl6bwUxwYmgeUJA
+	uC50qH/y3tmh5RpWPgJRFcrnzetZpGhrWxRXJ/AZF54Xj7yw3oJWgO7CbqD4JwcVSDQbpQ
+	a1fgMIt/3Om7jpeUpvitN7QZUV3omWM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eLVGqBBi;
-	spf=none (imf19.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=xUraNMpir2RYmF7SdU6Sk5XYdPYUrZgrKlbGzzDcLkM=; b=eLVGqBBiZiy8YRBAvIZxY8wsoP
-	d4qMwlS2/8M+zQOm0mQ51yeOSiB9mhw6sOWAiGsAtt7EuGHsyZQgHoR0VRrF9aeeVskP6H7PiSgkI
-	PtATK+fi5tJn8Bqt9awUgXGPSavRe1G2jl5khZYe+zwImmTnQX6nfnIN/nijq8FJgPwwCHkOESBGd
-	L96VSBnw0JGDRZkPT+8xSoyXLIyLfp+PvsvYCi5e7ZlGh27FZQ3x/Fw+6i47fI97EW6cgPHmHiPjg
-	zYhLALrdEQ07e/V5YWA8bkvrqkwqhbGONJ50OxYaPNHcmXNLVv2XpErvJd4t5pPLDtHpqdBQPVo6F
-	1KPefvAg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wA8WB-007k9Y-2Y;
-	Tue, 07 Apr 2026 15:39:06 +0000
-Date: Tue, 7 Apr 2026 08:39:00 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <adUhtrhU7c1TJQww@gmail.com>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
- <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
- <ac5urCFeEB9oyUiD@gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZC7Jh9Z;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D93C1600CB;
+	Tue,  7 Apr 2026 15:51:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9F1C116C6;
+	Tue,  7 Apr 2026 15:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775577072;
+	bh=PVB4oUNgvplVh0sIGtSAENl6g2YTWKTdP79gh7Iu9MI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HZC7Jh9Z2fhH5MT81IG8BgioiW8NAjCj+YxlgMIis1KBye0qobofQtyEJ1f1m2WFW
+	 Vb/6Y23No4Cj+UyhgnTAOyZ7qleIrHa2B9+PpVVX5qWOlH+5UprHT4W7kdsyqG2YNf
+	 3e4+Nj2S+QgNhZyyjoJHJCRAPlXacBOtF1T3GxWU/4hXde3XXks8EVI3wBuwG2xvWg
+	 rCngPYOyBtoMn9hqKarg+xkfgF85v0dp3gPJ+cxOYtgOkLH61DVPUidhVw5sY9vGk/
+	 bIZ+ngZit2BfycvFCt3VKus/v32eosGgSNak3qNlfFS4Pf+dmgQJ8YIdL9wdhIrRBN
+	 ZQINORuobxLMA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH v3 02/10] mm/damon/core: introduce failed region quota charge ratio
+Date: Tue,  7 Apr 2026 08:51:10 -0700
+Message-ID: <20260407155110.51749-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260407010536.83603-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac5urCFeEB9oyUiD@gmail.com>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: AD6CD1A0009
-X-Stat-Signature: kqc3awodzu6bhkt4endyuyw3q6dncern
+X-Rspamd-Queue-Id: 6731B20011
+X-Stat-Signature: 9n1tmgzpf46eorffoownmiejuqwyacmr
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1775576355-695831
-X-HE-Meta: U2FsdGVkX182p+6e24Yu6dYo2XEHdf7QhLwzs22Yw26gpMRUTv66arWWtqp2uDAQKf7q341QLHnfYVVcqRdXyGoOerJPPBIPYisV37g8dyXWjBRkpXjWyYrdP+INCFGUXAHYK1cfeUYeXhTFmJ/932FwsCrnlDYA6iaTagXAwrTMpdJO5Q+Mza+HNLj2NnO8CFQgmP/blVtjZXkiglXPNzdHr1VQvvkPbf+LOcLp/NfMTQkcsRQmftqTFa0Xu76AKKz4PfIodm6F2K8g348vnB3bpSHLkMvizD8Q0s7tjwepLON73qLXjiDytqm2TAPo2DNG1OHsxpBdNWOHUi55Zm+jRkK+VS6m7h9vkqpgPDXxlznuRaHpaOEZ+x4eqbPYNM1ZaI2mcCi9Go33RfTMJMUnQBU/dlmI1G4C/Ex4syT/JMZUK5yuh4MwHKV4VgjyTzse4gg3JguQ/YfIB+wX3i/muxWfF/a+3Pd4fyX3r3ce7GQ7k9iWADJTv9Kkq4svcKagEDcReSLJrha3p/ubpkJGu9uRVFOP1/GnImbhO+JWh/B9WxPNSqvXKSQx+cOMEDzySzsiL688siqnFrwbtgXr15zWSpbP0qYcllDSFO+htI6wgWiX8SmXDqxEGKoSMa9MDrGJYaaML9h5xTg4o51Y7IY7gwVWhGvVSjdqIbRL+b4XixwLIfdi7OPyBz0ZPrgIATyHqs28UUhhTJruJMzcUZaTde0EvhZGoiSW9ElmgLoI7Sip53nuFNWKaEBnPF5P3UlXKhm3FC9oe+p4VkDy+jDpgrBTLBIFzRfrIFO1SUpFtK220Ok0dIbzbNXPT3SLYOuyMnmUtFd9obLC66Xn+3DC1aO4varIRTRh5HnhHOqeehJA1j5FIYFUr9xB9Nr1yMW/uv/ILnrU4WtXU9JOiucxRosXjfx8SVlXtCH3b0ozO2jxVLLV871TxSjtLdBQAXcAcK7q/M9Q+cG
- ccgP2R8X
- N/xkxWiNzR0XUDUmaY0qYNILsAIoqGUR8ewHzUIMI1r3BO04rEUSTaSm9LhF8FHxHqhSqvB9bPmx323FUemB6z8usXJWq++qGOqN/QuBp0TcskUgmitkRhMZPhC3g4GR5A5JQURhxFayqHkI9z7Qdr98dlPiQnqQcfQ25R1Zm4bw7F4bOAUbJ7Bhh4mBoOK//ClBv2aLP8CvU5o+jd/ix9WCJ8O648OaEi9VrQ2zRlJ4XurtLjJU4C+TbxQ==
+X-HE-Tag: 1775577073-179209
+X-HE-Meta: U2FsdGVkX19aPJMBZq9mxjBfBv2bz5Sbf5kNmfUhg4aMGqu19hd0j2DhFNqlJW3U/HXzqs6NYnzqDG4zyN28h5qmNVdcLQllYrdRIvEVlrWbu7PCFEVRymUaH0hTKs+/MGoeyWbaJBTEaYyAMr1QaWRdrcagf4ENOlbswxxFajR1iqfkwJI6wDmpiXG77I1vMgelfETdfyM2iBbbeG62pfWRbXu6nkmWLv5i9jUWQqGkQ1Ep4SZtXpqZ1JIaSuurVAK6FZx9w2eEwrZmktzzWtMnu1wjE8fl+91L1NFCD0wXdIAkKL68TRwSJnV8n7n/eHXC8NEUrEoSD8/5I5y5sZJWt/EbMdnVTeS+SbaZvcW7RKpgq7Ue0jZS78jp+kMumyJhzadjx1vTeFNuin1eYFsdks1YGkUAukGDb4sTfPGPyFgwVBIeRRI5H7gJJtEMSeCZri5qnL+fsvU/ho5xjfqZQTMT+gGQxjAwb/s2XgN5ZH1Zyx1GvzEdonh+Fkeu73csQlIPBrjsXd5EKNCLoxR3YapE+cZO9o/PUk2tqzjAh1CX31ZVLiMSCeGtY165thQyT5JV4jK0/muCk4nPFjJ2AruOUdIlkLbiVMo94mbBzJ01ruRjeqe2cCa/TE4keGIfxbI3TgKds5W7AEJcegI2UXBj+JYuhmJSPxAs+G/bHi+G6IR2jbZoIgR5qoxiHM4Z/ksZQg4BMLGYi9v2sKj/6zhvscU6PEGe3hMzMHw/cZ/PQT592jt39K8KgPbK7Hd5W5esndZ2990/SDqb1jmAND3lw49Yku9G/MuSqXAGgoB2hZQuWxQtbrOsasYPsy0ileOuN1S1+7GmsbQxd9FFSxkkKS0WkLC7NrrVQVy1NMq3M5W0F0iwzLbftm+saf5uG4QoBsT4eWM3NmOBTiBm48sdsS9bkVh5vNpm/TYZVBi+3cUgUh20YLWqb/nuwR/mV6j3RW7rsGlxp2H
+ hXwATj4j
+ CUzhju1rJK+32HHoKdcagaF+EkKYoplykg9Gb6XCDT2Qb+r1+redzxFN1Quw+wJ0zc3HAH4eU3OVrgaBRszpEjTO8mnu5klG8IbgXmID8+RNyMAgyjpoIfQcgrVgIqpptpJTJiFG/SLgxhhkBhpwe2KxXJGWXohK0wVOLryTvUWa6qgjeyBwARUiwdkIinu4DN84g6idz4NpKXAbYfzVHg82xZ85XLnnK2HiqISX2VnphQflgIKCe181gdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,160 +92,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 06:33:17AM -0700, Breno Leitao wrote:
-> > >
-> > > Cool!
-> > >
-> > > I noticed __round_jiffies_relative() exists and the description looks like
-> > > it's meant for exactly this use case?
-> >
-> > On closer look, using round_jiffies_relative() as before your patch
-> > means it's calling __round_jiffies_relative(j, raw_smp_processor_id())
-> > so that's already doing this spread internally. You're also relying
-> > smp_processor_id() so it's not about using a different cpu id.
-> >
-> > But your patch has better results, why? I still think it's not doing
-> > what it intends - I think it makes every cpu have different interval
-> > length (up to twice the original length), not skew. Is it that, or that
-> > the 3 jiffies skew per cpu used in round_jiffies_common() is
-> > insufficient? Or it a bug in its skew implementation?
-> >
-> > Ideally once that's clear, the findings could be used to improve
-> > round_jiffies_common() and hopefully there's nothing here that's vmstat
-> > specific.
->
-> Excellent observation. I believe there are two key differences:
->
-> 1) The interval duration now varies per CPU. Specifically, vmstat_update()
->    is scheduled at sysctl_stat_interval*2 for the highest CPU with my
->    proposed change, rather than a uniform sysctl_stat_interval across
->    all CPUs. (as you raised in the first email)
->
-> 2) round_jiffies_relative() applies a 3-jiffies shift per CPU, whereas
->    vmstat_spread_delay distributes all CPUs across the full second
->    interval. (My tests were on HZ=1000)
->
-> I'll investigate this further to provide more concrete data.
+TL; DR: sashiko made a good finding that better to be addressed.  I will
+address it in the next revision.  sashiko also made two findings but I will
+ignore those.
 
-After further investigation, I can confirm that both factors mentioned
-above contribute to the performance improvement.
+Forwarding full sashiko review in a reply format with my inline comments below,
+for sharing details of my view and doing followup discussions via mails if
+needed.
 
-However, we certainly don't want scenario (1) where the delay varies per
-CPU, resulting in the last CPU having vmstat_update() scheduled every
-2 seconds instead of 1 second.
+> # review url: https://sashiko.dev/#/patchset/20260407010536.83603-3-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 09593130776383947d3d32b60b59b00c4bc2e692
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/core: introduce failed region quota charge ratio
+> 
+> This patch introduces a configuration to charge a different quota ratio
+> for memory regions where DAMOS actions failed. It aims to improve fairness
+> in quota accounting between successful and failed actions.
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index c29f70bcce894..2a09d6bdf5f3e 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> [ ... ]
+> > @@ -2041,6 +2043,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+> >  	mutex_unlock(&ctx->walk_control_lock);
+> >  }
+> >  
+> > +static void damos_charge_quota(struct damos_quota *quota,
+> > +		unsigned long sz_region, unsigned long sz_applied)
+> > +{
+> > +	/*
+> > +	 * sz_applied could be bigger than sz_region, depending on ops
+> > +	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
+> > +	 * the region size in the case.
+> > +	 */
+> > +	if (!quota->fail_charge_denom || sz_applied > sz_region)
+> > +		quota->charged_sz += sz_region;
+> > +	else
+> > +		quota->charged_sz += sz_applied + mult_frac(
+> > +				(sz_region - sz_applied),
+> > +				quota->fail_charge_num,
+> > +				quota->fail_charge_denom);
+> > +}
+> 
+> Can this cause an integer overflow on 32-bit architectures?
+> 
+> The fail_charge_num and fail_charge_denom are unsigned int and can be set
+> to arbitrary values by userspace.
+> 
+> If a user configures a large numerator (e.g., close to UINT_MAX), the
+> multiplications inside mult_frac() could overflow the 32-bit unsigned long
+> boundary on 32-bit architectures, leading to an incorrectly truncated value
+> being added to quota->charged_sz.
 
-I've implemented a patch following Dmitry's suggestion, and the
-performance gains are measurable.
+sashiko is asking a same question again.  As I replied on the previous version
+thread, I will keep this as is for simplicity of the code, unless a human
+argues differently.
 
-Here's my testing methodology:
+> 
+> [ ... ]
+> > @@ -2105,7 +2124,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+> >  		ktime_get_coarse_ts64(&end);
+> >  		quota->total_charged_ns += timespec64_to_ns(&end) -
+> >  			timespec64_to_ns(&begin);
+> > -		quota->charged_sz += sz;
+> > +		damos_charge_quota(quota, sz, sz_applied);
+> 
+> Could this permanently disable a scheme if actions completely fail during the
+> first time window?
+> 
+> If fail_charge_num is 0 and all actions fail across all regions in the first
+> charge window, quota->charged_sz evaluates to 0.
+> 
+> At the end of the window, total_charged_sz becomes 0, while total_charged_ns
+> records the actual time spent attempting. The calculated throughput
+> becomes 0, which sets the effective size quota (esz) to 0 for the
+> next window.
+> 
+> With esz = 0, damos_quota_is_full() always evaluates to true, causing DAMON
+> to skip applying the scheme to any regions.  Since no regions are processed,
+> total_charged_ns and total_charged_sz never increase again, permanently
+> bricking the scheme.
 
-1) Use ftrace to measure the execution time of refresh_cpu_vm_stats()
-   * Applied a custom instrumentation patch [1]
+sashiko is asking a same question again.  As I replied to the previous
+question, this is not cuased by this patch.  So I'm working separately for the
+issue.  I recently posted the fix:
+https://lore.kernel.org/20260407003153.79589-1-sj@kernel.org
 
-2) Execute stress-ng:
-   * stress-ng --vm 72 --vm-bytes 11256M --vm-method all --timeout 60s ; cat /sys/kernel/debug/tracing/trace
+> 
+> Does this code create an infinite region splitting loop if an action fails
+> near the quota limit?
+> 
+> In damos_apply_scheme(), if the current region size exceeds the remaining
+> quota, it splits the region into sz and the remainder:
+> 
+>     sz = ALIGN_DOWN(quota->esz - quota->charged_sz, c->min_region_sz);
+>     damon_split_region_at(t, r, sz);
+> 
+> If the action on the split region fails, and fail_charge_num is less than
+> fail_charge_denom, charged_sz increases by less than sz (or by 0).
+> Because charged_sz did not increase fully, the remaining quota remains at
+> least min_region_sz, so damos_quota_is_full() evaluates to false.
+> 
+> When the scheme loop proceeds to the remainder of the region, it will split
+> it again by the same sz.  Could this repeat until the entire target memory
+> is shattered into tiny regions, causing a massive increase in allocations
+> and a kernel lockup?
 
-3) Parse the output using a Python script [2]
+Good finding.  Yes, this can increase number of region splits on the code path.
+I think it should be safe from lockup, since each DAMOS action implementation
+uses cond_resched().  But the increased number of regions makes me worried.  I
+think we should merge the splitted region back, after DAMOS action is applied.
+I will add the change in the next revision.
 
-While the results are not as dramatic as initially reported (since
-approach (1) was good but incorrect), the improvement is still
-substantial:
-
-
-  ┌─────────┬────────────┬────────────┬───────┐
-  │ Metric  │ upstream*  │    fix**   │ Delta │
-  ├─────────┼────────────┼────────────┼───────┤
-  │ samples │ 36,981     │ 37,267     │ ~same │
-  ├─────────┼────────────┼────────────┼───────┤
-  │ avg     │ 31,511 ns  │ 21,337 ns  │ -32%  │
-  ├─────────┼────────────┼────────────┼───────┤
-  │ p50     │ 2,644 ns   │ 2,925 ns   │ ~same │
-  ├─────────┼────────────┼────────────┼───────┤
-  │ p99     │ 382,083 ns │ 304,357 ns │ -20%  │
-  ├─────────┼────────────┼────────────┼───────┤
-  │ max     │ 72.6 ms    │ 16.0 ms    │ -78%  │
-  └─────────┴────────────┴────────────┴───────┘
+> 
+> >  		if (damos_quota_is_full(quota, c->min_region_sz)) {
+> >  			quota->charge_target_from = t;
+> >  			quota->charge_addr_from = r->ar.end + 1;
+> >  		}
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260407010536.83603-3-sj@kernel.org
 
 
-* Upstream is based on linux-next commit f3e6330d7fe42  ("Add linux-next specific files for 20260407")
-** "fix" contains the patch below:
-
-Link: https://github.com/leitao/linux/commit/ac200164df1bda45ee8504cc3db5bff5b696245e [1]
-Link: https://github.com/leitao/linux/commit/baa2ea6ea4c4c2b1df689de6db0a2a6f119e51be [2]
-
-
-commit 41b7aaa1a51f07fc1f0db0614d140fbca78463d3
-Author: Breno Leitao <leitao@debian.org>
-Date:   Tue Apr 7 07:56:35 2026 -0700
-
-    mm/vmstat: spread per-cpu vmstat work to reduce zone->lock contention
-
-    vmstat_shepherd() queues all per-cpu vmstat_update work with zero delay,
-    and vmstat_update() re-queues itself with round_jiffies_relative(), which
-    clusters timers near the same second boundary due to the small per-CPU
-    spread in round_jiffies_common(). On many-CPU systems this causes
-    thundering-herd contention on zone->lock when multiple CPUs
-    simultaneously call refresh_cpu_vm_stats() -> decay_pcp_high() ->
-    free_pcppages_bulk().
-
-    Introduce vmstat_spread_delay() to assign each CPU a unique offset
-    distributed evenly across sysctl_stat_interval. The shepherd uses this
-    when initially queuing per-cpu work, and vmstat_update re-queues with a
-    plain sysctl_stat_interval to preserve the spread (round_jiffies_relative
-    would snap CPUs back to the same boundary).
-
-    Signed-off-by: Breno Leitao <leitao@debian.org>
-
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 3704f6ca7a268..8d93eee3b1f75 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -2040,6 +2040,22 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
- }
- #endif /* CONFIG_PROC_FS */
-
-+/*
-+ * Return a per-cpu initial delay that spreads vmstat_update work evenly
-+ * across the stat interval, so that CPUs do not all fire at the same
-+ * second boundary.
-+ */
-+static unsigned long vmstat_spread_delay(int cpu)
-+{
-+	unsigned long interval = sysctl_stat_interval;
-+	unsigned int nr_cpus = num_online_cpus();
-+
-+	if (nr_cpus <= 1)
-+		return 0;
-+
-+	return (interval * (cpu % nr_cpus)) / nr_cpus;
-+}
-+
- static void vmstat_update(struct work_struct *w)
- {
- 	if (refresh_cpu_vm_stats(true)) {
-@@ -2047,10 +2063,13 @@ static void vmstat_update(struct work_struct *w)
- 		 * Counters were updated so we expect more updates
- 		 * to occur in the future. Keep on running the
- 		 * update worker thread.
-+		 * Avoid round_jiffies_relative() here -- it would snap
-+		 * every CPU back to the same second boundary, undoing
-+		 * the initial spread from vmstat_shepherd.
- 		 */
- 		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
- 				this_cpu_ptr(&vmstat_work),
--				round_jiffies_relative(sysctl_stat_interval));
-+				sysctl_stat_interval);
- 	}
- }
-
-@@ -2148,7 +2167,8 @@ static void vmstat_shepherd(struct work_struct *w)
- 				continue;
-
- 			if (!delayed_work_pending(dw) && need_update(cpu))
--				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-+				queue_delayed_work_on(cpu, mm_percpu_wq, dw,
-+						      vmstat_spread_delay(cpu));
- 		}
-
- 		cond_resched();
+Thanks,
+SJ
 
