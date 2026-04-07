@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF1BEDB7DF
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 09:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69865EDB7D4
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 09:43:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 790016B0088; Tue,  7 Apr 2026 05:43:21 -0400 (EDT)
+	id CE7B36B008A; Tue,  7 Apr 2026 05:43:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73F426B0089; Tue,  7 Apr 2026 05:43:21 -0400 (EDT)
+	id C97686B008C; Tue,  7 Apr 2026 05:43:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 655A36B008A; Tue,  7 Apr 2026 05:43:21 -0400 (EDT)
+	id B86EF6B0092; Tue,  7 Apr 2026 05:43:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 541AB6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 05:43:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2D36B7A4B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:43:20 +0000 (UTC)
-X-FDA: 84631271760.11.2E33E71
+	by kanga.kvack.org (Postfix) with ESMTP id 9F8896B008A
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 05:43:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FAEBC2601
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:43:44 +0000 (UTC)
+X-FDA: 84631272768.21.5374CAD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 43976A0011
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:43:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M8vGXNiL;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 801FB1A0006
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:43:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u211mTq6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775555022; a=rsa-sha256;
+	cv=none;
+	b=NtKOCA7unAhhx8gO6UPoUwqMx9n1eLjQ8uB+ehaot4FnoI9u9L9yuT5RPFp5b/C4Bex1SK
+	ceo0vD4NDwvpdqz6vnvYraP0fdISAKr2lGL6bulz8oEpxYMZGrE2YgWdn5cfY7EAqxLXBd
+	zEAiar+h0U4DhBjmVcEtwDY82Hx8Vgw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u211mTq6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775554999;
+	s=arc-20220608; t=1775555022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D3G/mnukwt+jo7r3Qp7QylKY9PKqMEjE6FLsH5b6yA4=;
-	b=fQpDGET9WY7vjUG5WoYugv7faKQ8LakmHmCjVI3W6iShA7FtMaLt2VQHwNK6jnVSMPxeju
-	ZHaGGrys6zJPWvJAU5yes08xSa54YdFvysxPrfr59FmIf7viL4IhwZH3LXLWCh44xWB/63
-	D2WXYU35UOIHYXKOGs2jAkEfEYusGuw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M8vGXNiL;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775554999; a=rsa-sha256;
-	cv=none;
-	b=3I/i1+nxhjVFQa54XOsMeHmJiG2blbc0Uatgt0RTxfjwpJg7Ctkkrz7BViLeJk2pxgb5r2
-	/AxpSp4xiJn7dIEGmuKHd9JajmrCXhY69YLjAueMjRDVbPM4iGvKwiEkiTetEMw9V6WgYo
-	eEWmyn078bABXzk8fZztqIWN0E+U2tA=
+	bh=ccPaUVosaysI/9L3c9MAwJRD6nsxAIfmGysZ2xx0HYI=;
+	b=5PMTUePgs/TpGLBOpC2FbdrkawP1D03TJqa7UKXorvyZqpOPT2g/BK7d8IO6Hix07ycq5A
+	N7sDGrQQw2EU1aIMp2V0ONHhzsKfWsHs46s30H0pFzKpkxLMzeuFh4MVCbaF2xaelwfNuQ
+	YvPHd6nOI3t2ubjFthVhgEhc+LXUfZ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14A24416FE;
-	Tue,  7 Apr 2026 09:43:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D096C2BCAF;
-	Tue,  7 Apr 2026 09:43:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9EE65409A8;
+	Tue,  7 Apr 2026 09:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994F5C116C6;
+	Tue,  7 Apr 2026 09:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775554997;
-	bh=YgnbCZ/PlXqZfBNZylsy/NQmWaxBLGRGqWF3Vx8vf2M=;
+	s=k20201202; t=1775555021;
+	bh=5swpGJLLM7ocCgxAbPQMvQ1UNSary/VO1SavUaPUMLc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M8vGXNiLZ4uoTTuW/1OzIrvqrP8aTwkJHYrLRW4RN0yvsEeEf4sa7nmL9znUdjY2h
-	 /COUlUvjP4OIf5nBqcmLqJbEGgEYxO6R61Bl8KJ9fE58urltoaB/ndm7+0FDrn7x/N
-	 oBp/wjqkhzAehzr9B18xzI6h2RY9Rzm3iUJuilnjGx/vsKVqAplg3SWuabgoQUuIYZ
-	 B83yy4zFM2SHk9Y0KESVhA5TvrgPwNi1b9Z2jwZlPE1RTo9uNxOGpYgEtIujH5AuSk
-	 vqubOBW0cweY0Aug77PlDNAesXkjZ9xXLD+AiexEmli11drGK9ZaQypvkdEnqvgxwk
-	 kN01hq29VEWqQ==
-Date: Tue, 7 Apr 2026 10:43:12 +0100
+	b=u211mTq69k4LSK6Rv7+fzWLZarJSqC5osrmVd+KLmbKe0cqzDhF590TmZkeAYvqab
+	 12wT5CjAmXhYY/iV2g+MwMRlRv29TmixuVaIaOfDncXkmtapNVZ9G5a5OAGS7XIdOK
+	 69gs4/uM53bYVm/eSOYymWH0HEHLB2+HSEup6y+rNLZyeWMOQxrSpLjPWT4vFUoPOC
+	 iFR83Cvy82FXSqaFrRnMC6wzPxqaC9b7mFxdComnDGfSbOV9dWt/rOxqoFKNfIv6ll
+	 w1841iIYmd3amDMp+gdzvQgI+e4zYmZO/LiR7E1axsYOvTfy4ARLvKT8l+10VocDv/
+	 ZmeB/6eKaZaPg==
+Date: Tue, 7 Apr 2026 10:43:37 +0100
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hugh Dickins <hughd@google.com>, xu.xin16@zte.com.cn, david@kernel.org, 
-	chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, 
-	Michel Lespinasse <michel@lespinasse.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
- address range
-Message-ID: <adTRPwNMzogT1OYO@lucifer>
-References: <20260212193045556CbzCX8p9gDu73tQ2nvHEI@zte.com.cn>
- <02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com>
- <20260405140132.3a518740c6c1d68843f44aaf@linux-foundation.org>
+To: xu.xin16@zte.com.cn
+Cc: hughd@google.com, akpm@linux-foundation.org, david@kernel.org, 
+	michel@lespinasse.org, chengming.zhou@linux.dev, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: ksm: add mremap selftests for ksm_rmap_walk
+Message-ID: <adTRADN09XjTB57n@lucifer>
+References: <20260407140805858ViqJKFhfmYSfq0FynsaEY@zte.com.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260405140132.3a518740c6c1d68843f44aaf@linux-foundation.org>
+In-Reply-To: <20260407140805858ViqJKFhfmYSfq0FynsaEY@zte.com.cn>
+X-Rspamd-Queue-Id: 801FB1A0006
+X-Stat-Signature: oais8jnczs3cidnrykabkgn5sc3wg1wr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43976A0011
-X-Stat-Signature: u4a97n67mi8dwb3ajdwze3a74a85ksxy
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775554999-884580
-X-HE-Meta: U2FsdGVkX18AQLmmHH1P/xg9DAeg1BTPb/tuaV/OuHGT2rTWJCsJFlSReEKwwrSc5iHufzY9C1AXM5fU5jsqmb36LYar42e+JPft004zTHJmUoNZCuBwXWQpP46qxncBy+SR7JGGz7EkYy/pLE+mBd1SwSfjHOP3Wfb6lrksZa5rBNxAyHrxIHxFQGJPfG5y63tUvZRwJae6nzGy01bW0tPyRtUU47b/0bWqXp2l+6D+Z8QPj58zhYDhT6y+nin70u9abqJrd921GsN/khYqD2fR/DQZ35crvSAN8QRpTHy088HWCt8jgz2IddQhLVOc8irjRSY/egyAVv8E00q/q9EzRytua42t6rBw2hIQVmniosgkM+Cu6QK2lXUL17/VmNnIAzMbBK0Ny0Mitc2Ut/ey2qx/m6IOIFIqnniZRKGqcVEp//RUiTtSWx4Z2qnNJtvg9qL7LYFeHjrGYkTz2UdMNSzE6pxlFzXBxs4aEGGBarO9d4DmhXUUVU9E6FgQNdyoQYeSaXJ3jfJhuODhm3sik9JTyClbkNQTJU3rLaJ2nwrUc0IvBG9MQQ8krvBTjW245Z5R2af5ZxHp5A2KfjULJcrVDyJfl8XXjIIzIkaQmGU5u5OboQ61LhqLLMPZYPqS3MBNspLvFFI+9H+FT15bB/dcPRJZ1FYPFGZ/C+A46m5YY1W5h/S7yuxkbA0n7PmQSuZ94LWFdK+xDJBvaW5q+I5NVIWwQQ1XKIqvB076bb3lo+Pq6eaP9BZwJgpjGHtEqu62N2/3zgkeZmPQyaNJoK40th0FCMVaLjojDKiiE2mZ3qmfQLMmzwBPfHvNE8h24Q8cAjj/dt2006ss/7uybYAVBKJuCAhiIJOjMsu2I75lssmqeFOSmYrpMUjeZkksMWsI+fgwsT15E1goLS5GjaDO3gnrF0VKkerXejGqWiqimHUkHCJGHajrpR9YO5mGbF/iENvtL4DyaFd
- jYGPO2rN
- ZggqS61ShpZCdidtqIaaLjNtlPuqGzicXAcCd6A4O5/y8GsbhfeQYPJ4UqFUz/+gJZLWZqpYyAnijD/GrO6DnP7hYrwCDZ5r3OgJvMEzbq5+MD7BrfeDo671xQllCO2bHKAr/Dlnh+lSltzA2UltpRtJvu93hjMjh3TEkMP6S2nAQYUnP6zyw/PYxz8IUW50AS+Nr0yn3bIvC2OTFUlqFU0kgjq8+9TrqS3avxPsx7eDT6FXvIo6PeLz0cOU2YgqRtm2mEXDqR+LkPb2h7QT6xsRWJpDJcvZdPeafpsBD621xZ9/FNIw3M2+pPa0L4sEeBeIR+n+pd8o+AiPBMIXEFjLCaKB0U7ZynShioO0RlOWI/JsKCkxrNNUFy+/xFGheYyG72ONcAkpJ3bA4ykwROxthaQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775555022-213418
+X-HE-Meta: U2FsdGVkX19z2BOjRmtXyPcYO2+oCVNr69oIs2sLy76AEMoN0eLvljBXGrE80iHAjspsDIQqukcH6Gk+xmx348osvV4JgjVdeedikFHYWY4vYmDNFAPjEV2c9TsY9dcYvir1WFXBdMUy4Z7n6fP51D0G4N4EeeMxwe3V+70h53nnSUFU0ISh+f497F2xSrksWcz4CHbbojElU7SnwrPOrcfzAC0vjsyMlqYgZp2AIdmbsRaddZnwjxLMKyMVvQEa6ZCpU+cb+5Wyn45nCxwllsNpcBLLyOBcTu8HYW6UjHKEFGF3FbKfligEbMGhD/55mWzvsAAfs98UrNVGd1ksDToagu4HY8mptw9akygxyfZzDm+Uc03uzFpmtXryNP8jzkQBhgOpHBFtYYOzAErkn9Ln8b8nVBEmUc3BemoroWT9+CdZ8/u6QqCn4KAyZ+2fhiW0I++MPRAIG90J6jjv07EKccvpmltfluiRQTbZLpsB5FpmGj33TSV2roqiPN4I9qSEMzgg0rKAbDvDgw5jJLBahK+ZdQrWzpMJrNtGXthIS9f7hUNwkaVfRmaorihdOldnrNXbZ6+tM9CzRH8MEpWCAdf2bvOu7XOTDWV1pQNixt+CHPKT37NzHuvvMm3IHkBUXpCEQNZTJQj6ODCBmh/t8qH+dE2Qhjsea5k+cRHuUqjVN+Yt2EFQpt0bDbLnlBqjtv+a/njLaScoM3H3WdkDwihW7KTz6ynV/3oIFLMQ/GUTEpOut5sRwvJN+0nlyNM2eFpJYsY3yo3Su7/2vWeNkIIqYkr3L19JXMYlU7rMfB4Vil/Iqrs5+ZkjDo/zXLLjghGBkTCV+vWg97HjGFLbeisWQmRqv9Fwrvm8+O8/hnyz71ujv4DM5eQh0YvMrFMeNifXto+n6vdeQKQcbk9w/h1J40O05mYTEThJ6d7nXkXQd+BhHpsz6C4+6vlb7722iVl4mF4FO1X1pH6
+ y//3LUR8
+ 1i+/nhcmL8KjQAVSDbQHkLePsBcGpEJr/JbXUuxVqSrfSUdIzMVHvZlOB5iXfwjxkyth+P1s40I52UOwHVtX9y13WRlIaW22zR31wJp00y9tC2+x0NBN+Zqh5TE70mepaeKK/Z21q05S5gA0POtfMkuY/ITdMLckDQuwamB6zI8dCagqjspD3J7HYFkclgllxN5CgWtlwqHpdLQWj0psW6o8exuSuLMe7SUoN3VDheXYh+JmP813qAtTQifJEPm8YgzTrI2e+HvouRMjCxdfQI5oZeHu2rYAhfbBv1gMJzrhxy3YWBLDGBpBavDDfr2pyG0Pk7/IpuC1al2ySO0jqQxUwQnUlsRLFOd/cIe0DTAhmv2y9CmNRO6JPGVRJFXIPMwcb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,52 +91,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05, 2026 at 02:01:32PM -0700, Andrew Morton wrote:
-> On Sat, 4 Apr 2026 21:44:14 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
+On Tue, Apr 07, 2026 at 02:08:05PM +0800, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 >
-> > This is a very attractive speedup, but I believe it's flawed: in the
-> > special case when a range has been mremap-moved, when its anon folio
-> > indexes and anon_vma pgoff correspond to the original user address,
-> > not to the current user address.
-> >
-> > In which case, rmap_walk_ksm() will be unable to find all the PTEs
-> > for that KSM folio, which will consequently be pinned in memory -
-> > unable to be reclaimed, unable to be migrated, unable to be hotremoved,
-> > until it's finally unmapped or KSM disabled.
-> >
-> > But it's years since I worked on KSM or on anon_vma, so I may be confused
-> > and my belief wrong.  I have tried to test it, and my testcase did appear
-> > to show 7.0-rc6 successfully swapping out even mremap-moved KSM folios,
-> > but mm.git failing to do so.  However, I say "appear to show" because I
-> > found swapping out any KSM pages harder than I'd been expecting: so have
-> > some doubts about my testing.  Let me give more detail on that at the
-> > bottom of this mail: it's a tangent which had better not distract from
-> > your speedup.
-> >
-> > If I'm right that your patch is flawed, what to do?
+> The existing tools/testing/selftests/mm/rmap.c has already one testcase
+> for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
+> of page from one NUMA node to another NUMA node. However, it just lacks
+> the senario of mremapped VMAs.
 >
-> Thanks, Hugh.   Administreevia:
+> Before migrating, we add the calling of mremap() to address mapped with KSM
+> pages, which is specailly to test a optimization which is introduced by this
+> patch ("ksm: Optimize rmap_walk_ksm by passing a suitable address range")
+> https://lore.kernel.org/all/20260212193045556CbzCX8p9gDu73tQ2nvHEI@zte.com.cn/
 >
-> I've removed this patch from the mm-stable branch and I reworked its
-> [1/2] "ksm: initialize the addr only once in rmap_walk_ksm" to be
-> presented as a singleton patch.
+> Result:
+> TAP version 13
+> 1..5
+> ok 1 migrate.anon
+> ok 2 migrate.shm
+> ok 3 migrate.file # SKIP Failed in worker
+> ok 4 migrate.ksm
+> ok 5 migrate.ksm_and_mremap
 >
-> For now I've restaged this patch ("ksm: optimize rmap_walk_ksm by
-> passing a suitable address range") at the tail of the mm-unstable
-> branch and I'll enter wait-and-see mode.
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+
+Thanks for this, tests are always good, but I think we should bundle this in the
+same series as with the rmap_walk_ksm optimisation, assuming we can be sure
+whatever-form-of-that-we-end-up-with is ok.
+
+I currently share Hugh's doubts as to correctness, so let's put the two together
+I think.
+
+Cheers, Lorenzo
+
+> ---
+>  tools/testing/selftests/mm/rmap.c    | 69 ++++++++++++++++++++++++++++
+>  tools/testing/selftests/mm/vm_util.c | 38 +++++++++++++++
+>  tools/testing/selftests/mm/vm_util.h |  2 +
+>  3 files changed, 109 insertions(+)
 >
-
-Given we're at -rc7 now, I think we should delay this patch until 7.2, unless
-I'm much mistaken wrt Hugh's concerns.
-
-I'm concerned this is a subtle way of breaking things so we really want to be
-confident.
-
-We should also bundle up the test at
-https://lore.kernel.org/all/20260407140805858ViqJKFhfmYSfq0FynsaEY@zte.com.cn/
-with this patch (should we find it's ok) as a separate series.
-
-Really overall I think safest to yank until 7.2 honestly.
-
-Thanks, Lorenzo
+> diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
+> index 53f2058b0ef2..65470def2bf1 100644
+> --- a/tools/testing/selftests/mm/rmap.c
+> +++ b/tools/testing/selftests/mm/rmap.c
+> @@ -430,4 +430,73 @@ TEST_F(migrate, ksm)
+>  	propagate_children(_metadata, data);
+>  }
+>
+> +/* To test if ksm page can be migrated when it's mremapped */
+> +int merge_mremap_and_migrate(struct global_data *data)
+> +{
+> +	int ret = 0;
+> +	/* Allocate range and set the same data */
+> +	data->mapsize = 3*getpagesize();
+> +	data->region = mmap(NULL, data->mapsize, PROT_READ|PROT_WRITE,
+> +			   MAP_PRIVATE|MAP_ANON, -1, 0);
+> +	if (data->region == MAP_FAILED)
+> +		ksft_exit_fail_perror("mmap failed");
+> +
+> +	memset(data->region, 0x77, data->mapsize);
+> +
+> +	if (ksm_start() < 0)
+> +		return FAIL_ON_CHECK;
+> +
+> +	/* 1  2 expected */
+> +	ksft_print_msg("Shared: %ld (1 expected) Sharing: %ld (2 expected)\n",
+> +		ksm_get_pages_shared(), ksm_get_pages_sharing());
+> +
+> +	/*
+> +	 * Mremap the second pagesize address range into the third pagesize
+> +	 * address.
+> +	 */
+> +	data->region = mremap(data->region + getpagesize(), getpagesize(), getpagesize(),
+> +			 MREMAP_MAYMOVE|MREMAP_FIXED, data->region + 2*getpagesize());
+> +
+> +	if (data->region == MAP_FAILED)
+> +		return FAIL_ON_CHECK;
+> +
+> +	/* Check if we can migrate this region successfully */
+> +	ret = try_to_move_page(data->region);
+> +	if (ret != 0)
+> +		return ret;
+> +
+> +	/* Wait ksm scan two turns at least */
+> +	if (ksm_start() < 0)
+> +		return FAIL_ON_CHECK;
+> +
+> +	/* 1  1 expected */
+> +	ksft_print_msg("Shared: %ld (1 expected) Sharing: %ld (1 expected)\n",
+> +		ksm_get_pages_shared(), ksm_get_pages_sharing());
+> +
+> +	return 0;
+> +}
+> +
+> +TEST_F(migrate, ksm_and_mremap)
+> +{
+> +	int ret;
+> +	struct global_data *data = &self->data;
+> +
+> +	/* prepare KSM interface setting */
+> +	if (ksm_stop() < 0)
+> +		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\") failed");
+> +	if (ksm_get_full_scans() < 0)
+> +		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\") failed");
+> +
+> +	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
+> +	if (ret < 0 && errno == EINVAL)
+> +		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
+> +	else if (ret)
+> +		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
+> +
+> +	/* Start to merge same pages and mremap one of the three page area,
+> +	 * and test if ksm page can be migrated when it's mremapped */
+> +	ASSERT_EQ(merge_mremap_and_migrate(data), 0);
+> +}
+> +
+> +
+>  TEST_HARNESS_MAIN
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index 9428f4d7bf55..47402b771ef8 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -646,6 +646,44 @@ long ksm_get_self_merging_pages(void)
+>  	return strtol(buf, NULL, 10);
+>  }
+>
+> +long ksm_get_pages_shared(void)
+> +{
+> +	int ksm_pages_shared_fd;
+> +	char buf[10];
+> +	ssize_t ret;
+> +
+> +	ksm_pages_shared_fd = open("/sys/kernel/mm/ksm/pages_shared", O_RDONLY);
+> +	if (ksm_pages_shared_fd < 0)
+> +		return -errno;
+> +
+> +	ret = pread(ksm_pages_shared_fd, buf, sizeof(buf) - 1, 0);
+> +	close(ksm_pages_shared_fd);
+> +	if (ret <= 0)
+> +		return -errno;
+> +	buf[ret] = 0;
+> +
+> +	return strtol(buf, NULL, 10);
+> +}
+> +
+> +long ksm_get_pages_sharing(void)
+> +{
+> +	int ksm_pages_sharing_fd;
+> +	char buf[10];
+> +	ssize_t ret;
+> +
+> +	ksm_pages_sharing_fd = open("/sys/kernel/mm/ksm/pages_sharing", O_RDONLY);
+> +	if (ksm_pages_sharing_fd < 0)
+> +		return -errno;
+> +
+> +	ret = pread(ksm_pages_sharing_fd, buf, sizeof(buf) - 1, 0);
+> +	close(ksm_pages_sharing_fd);
+> +	if (ret <= 0)
+> +		return -errno;
+> +	buf[ret] = 0;
+> +
+> +	return strtol(buf, NULL, 10);
+> +}
+> +
+>  long ksm_get_full_scans(void)
+>  {
+>  	int ksm_full_scans_fd;
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index e9c4e24769c1..b0dd190f83e4 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -151,6 +151,8 @@ void *sys_mremap(void *old_address, unsigned long old_size,
+>
+>  long ksm_get_self_zero_pages(void);
+>  long ksm_get_self_merging_pages(void);
+> +long ksm_get_pages_shared(void);
+> +long ksm_get_pages_sharing(void);
+>  long ksm_get_full_scans(void);
+>  int ksm_use_zero_pages(void);
+>  int ksm_start(void);
+> --
+> 2.25.1
 
