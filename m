@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCD9FB5188
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 03:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43540FB518B
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 03:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED7396B0088; Mon,  6 Apr 2026 23:58:40 -0400 (EDT)
+	id 9321F6B0089; Mon,  6 Apr 2026 23:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E881A6B0089; Mon,  6 Apr 2026 23:58:40 -0400 (EDT)
+	id 8E3326B008A; Mon,  6 Apr 2026 23:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9DDD6B008A; Mon,  6 Apr 2026 23:58:40 -0400 (EDT)
+	id 81FFD6B008C; Mon,  6 Apr 2026 23:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C834B6B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 23:58:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 706DFBA3E8
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:58:40 +0000 (UTC)
-X-FDA: 84630403200.14.C6246F2
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 71E8C6B0089
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 23:58:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00D82140144
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:58:42 +0000 (UTC)
+X-FDA: 84630403326.19.1112A55
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AEDDC80004
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:58:37 +0000 (UTC)
+	by imf30.hostedemail.com (Postfix) with ESMTP id CEF5C80004
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:58:40 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Lokwcdk1;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Di8i1osz;
 	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775534318;
+	s=arc-20220608; t=1775534321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5NrHVy0gR2yuwkZg3tfjA3qW91OgO52NK8uK9Ms6gE=;
-	b=UIe4P6/qaCgFxO+In0EPK7dNeQull3sell1HfHT2wqeQmFd/SmVovvKjENeIwGMQFr5Jc/
-	OOxU440U7I14uG9i9Quqy6PkRKQgimewHXWHaF/hi/VmXkxhLjtrZBPFaBoADqh+s3/ZIn
-	omRq7690vxEAE8a2CTPdPHaeP97hyeM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534318; a=rsa-sha256;
+	bh=uPCL4SYEOTpsuntIyjkFcDI45PGxbT6xpxDCsKLiz0k=;
+	b=1tBowHW2MW0IF/OJcgLWlu14U/fMsTEv5I9o4XgRexm/ksNnwHbitt4UuvPoQ3ok75op/n
+	jMVsQ2cBgSSr0A4sEgl7/t7P9H7//tXq0C4QIpm/xPuwhq+e5p5zQu+y1c2dRc2BxreFbV
+	0KtFI2Owg2po4FRFEvrT03TNfOy9w8E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534321; a=rsa-sha256;
 	cv=none;
-	b=d/HMY/Vn0tbsPkyyoj0+hpgc3oADD9f2wWlxU22n6Z2c7dBR3vi0RoNcAjke2xwQG1B35f
-	JyfqCop5qdNP38MhBymR9Xy4urnQtSz/bRaWiibS1MGmsJkufRz3e1/zNx2mmhsIQ65P6G
-	krT/52n84T34LF7BDJaxxqrNSC+6iNw=
+	b=pZXeZ8ds1Bp6DEPSqk1RGhrCwAIDcATU06ddsxfBQRQLfFZYqgHbw48vWkiIRiJUH68xMl
+	WEaUyOa4/bS12Nu/7RduCl0FBFP/o8fW6QkB+dvcCtlVcKW2mR/amG8tbTOywTjiCISimE
+	AVi3DgGCQ4Q2HT0ZjyNe4SnCUeBK3ok=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Lokwcdk1;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Di8i1osz;
 	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775534317; x=1807070317;
+  t=1775534320; x=1807070320;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=QN5hVQr7wvBrglI7joKcuDjYCJsKaHYMtvZCofb88iI=;
-  b=Lokwcdk1Qv+1YiVP2foh3yyWsmweNhFVn1NHQkCQLqwI2O9JDR8I1j1w
-   wrVQVZSPNu088jEHMFdvlwRIgHopAzH8G0ldx1O+zGeZy4NsKlGIES+Zu
-   XfvB4BVq6KUU4LkCA0yj3yZgqVqedLbUAcPHI0pGPY1ishu+i+jDGpHp/
-   EWDpuwMcdhsds3x2g7PULPmjpAt6rVCDzhYfE716f4RHY0rUFveaBxXwC
-   ZAn1ad1YCFrGh9y/F5day6J4c5c7qQ8QIoE/Vw/mHeMWM6HX7VIL922BZ
-   abZy5hkZvHM0ro29juYeW3ts9pvZGT/+oDJLLsQpGSif4nzaDuvfqhz43
-   Q==;
-X-CSE-ConnectionGUID: 4FFs1+sbSHCudKkFXNpXWw==
-X-CSE-MsgGUID: oJpc03gBSiWnzJYkx/M+iA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87114182"
+  bh=XfcgHmHjRHl1GSGL66oSlMGazVU+tCu6zO0GxM0fWNU=;
+  b=Di8i1osz/XvQx3lM207WyYkkRu4WWWjXL9P2P3lCTs4TU9siereC6C/N
+   hOVUyDTx4qS+dnZRaP5Ks9Sgpg6AbQ1QuBhhPBzEI6S1TfNEeSNaaQxBA
+   xNAt212ndpT01WRkDyVKr6zmagtxeAIih83VN/bWq4BmyHeSFu4aaT0FS
+   71CObPtsVmXcsYtdXCnbjJJBmVmM0TUrfWN1d8KJ+EPGVr7DMKUckzq0J
+   cUpy3QktIb9tKWyNPfD+SdZuNvaOEWIyySUFA8SOjvHE3PDYitCFn+oQX
+   GXBj8NVJdnfg4U3pjW2Boj6Y0c8y5n4mv6xbBRgoF7IPhA933X8RQJfwt
+   A==;
+X-CSE-ConnectionGUID: 3nJObMSERRGyrz9o1iy/yg==
+X-CSE-MsgGUID: eLTIRlKDTs2k5vDAp8IT7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="87114186"
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="87114182"
+   d="scan'208";a="87114186"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2026 20:58:36 -0700
-X-CSE-ConnectionGUID: tBUY8QMjQO281LmK5gol5g==
-X-CSE-MsgGUID: +bH34ASzQbKZB2NBbJTiCQ==
+X-CSE-ConnectionGUID: 3QVANTy5RSCNmBvKYCAZ9Q==
+X-CSE-MsgGUID: UIln/iEMSIKL1QWWSOi9gw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="223259657"
+   d="scan'208";a="223259658"
 Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
   by fmviesa006.fm.intel.com with ESMTP; 06 Apr 2026 20:58:35 -0700
 Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w9xaC-0000000005x-4BPx;
-	Tue, 07 Apr 2026 03:58:32 +0000
-Date: Tue, 7 Apr 2026 11:58:04 +0800
+	id 1w9xaD-0000000005z-073C;
+	Tue, 07 Apr 2026 03:58:33 +0000
+Date: Tue, 7 Apr 2026 11:58:05 +0800
 From: kernel test robot <lkp@intel.com>
 To: Mateusz Guzik <mjguzik@gmail.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, Mateusz Guzik <mjguzik@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Mateusz Guzik <mjguzik@gmail.com>
 Subject: Re: [PATCH] execve: block Emacs binaries
-Message-ID: <202604051143.qdWe0OAE-lkp@intel.com>
+Message-ID: <202604051155.fCOdDQwL-lkp@intel.com>
 References: <20260401131226.4011156-1-mjguzik@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260401131226.4011156-1-mjguzik@gmail.com>
-X-Rspamd-Queue-Id: AEDDC80004
-X-Stat-Signature: fo1m455hbkbgsmiun9nsut9wsdija9pp
+X-Rspamd-Queue-Id: CEF5C80004
+X-Stat-Signature: 9n9woaz1me3honwukiqxc5dho9n5bfm1
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1775534317-515352
-X-HE-Meta: U2FsdGVkX1/R2/sCWYNXq9sXb3CImCXaal79R8vfKKKFO6bO6Z2SjFeBsxQXjlEvUCSa9pDxuPv3bT+F3ZYB8FPTOr1lYcnYN0uuMsdpnyUBIDgwA3khJZkd7W6Up37+nDU5M/FAIkxlsAbf3+CUN9jXFQTLietcOSRtRFOGRJcm4NtjP/rQ46SDSQwVZaAuaZ66Nu0xtV6Go44VLjtMBS1FYD15OGNxLFqs2WpNw9BrnPPyc3Jt4u1Nkpo28sNEsiF15nuaKArSZ5fdxzq2UR3LWYkgNfSBMExHVTl7LLMUJLwliTqfZ5zuw+05OZgXFR561xpVCQ+PN4q/BlEb7a0qu4rH+naEKtBsSIQWSAE4Kh0Kah1+3i2zjJgO2nA8tiFQbENl7G1gOFUoXkhbIgax7Cqv7H+M5SfmPLcn8GFWVS5feF+OcB2sIVBumJ8t/nn/WxjGOxXSF+w/cXEK2IJjU4cb7Mr0xXfFt0QE26ZI0gNLPmfNcaS86xNaPmNYbTHtcS2o3mqRCio2ue4WWCuV6jyb4CXb/aXrhMzYin7MxM3mEQZrD+KTQjIJuW5ynjpku9Peyvvo/s40cBiRIK9tStewI+zCMqKzJYz4Eu4n4R2bkY7mh+ahYgMmHVOLJ0SUlIVEd2Ugb8jitC+NU4GjpSEnLJaJZk6GgGQyiWwI9xhUuG0J4jnIuyo7shE5GSDlxX9mA6c1ZRQIZL3uB+1ZbeMwYWzJhNYgngVuWnIF7HMhmaIU3JUgg3lU5rpXlAatyN6amiem+1CDlZmHaLIwfMXkJOIBK3fTqQ6JAO4K7UvA7WzJIoPA2wBGslPTh92VYSnmqLAtMk7qwFFCXaGFH5UHpDikxo+fJj3WHOJBMABLR5WBMAFRpiAoDIvz4gfdktQomt67RY/FK0VrppqD34xEOc061ARWi4KNVS7ckJzbsrBcCwWodMcOEBnTIQrbm+2dHQfStATBLOl
- hsqoLsaK
- JJw/Q9q4HIyrtQRJ6YQzA81SbOHTlgtB75OyBcBBIiBxA+4PU9unqq1n6fGfsvgV2W06rNxW8irOaG5eRQzyzBdp/8af+wLHnNOXE+Iyru/AB6EI8Mn6yuzvJk9O5YYAnZ50wG5NhzXI+GJRLFu3s2m6xttqsjnffOHYxQnvuJUuxYZdzmA1Z7V23bOxcnDGNrJgk5x36UhNPPdeumFi3clC7M64mhILC5Atbt2axKkBlch+Ox6sJ+/S17y8sHjRXC9vpjLkRVtMwpM0aNTaBkY98kHQpmFB2etzTkcYsUIkxQktEuJARkfTelViyN1bdMfNSIEihHSU7mJAGA1J0WzT1lB9uRS0FA8UEnZQ9HYvx3OD/rcmDl495V79Tw2BNPIvx04vT6Pg1NGgFHwqaBZCiJpS0CkDUbA1kfvxCoL+7B489vPS0z8vRSg==
+X-HE-Tag: 1775534320-611803
+X-HE-Meta: U2FsdGVkX1+Jm60SegtSfNgnUFAkl9+77voYN2s61WH8RQh7dv5QsD2Q6CKwT9rrcoao7UiDtmi4IDp1xvX6rPw9sWoqNtCq5/lv9ALJNdHlSRtchKeBsGF51TOCAdcBxXqxQSoD8IFWD4nkSVn87yWzHuXyUcR5yjjX4emCiYXhTnMJosVnuYRVdZfwnw+x64pckGAtx+t3d1IVktxZ37hxu55Xc+cFix/RYk2lydGM6h5Crxowh+aoPkBRx33JCz1nwjiYe0TYLjJP1hTmiOZM1IPZKmgG8U8U2Mu7Jl6CONf2U+VJVWig4h6aJKRT7le0DvtB2P1HX4I918tL7Vrza/UcFnf1spsi47xbwCO+ZD+9HPCo+F8Bx7UKhe1WbgElBrFHWX+6IJHI0FIXYrLCKi/GPfwQ7j2UtLojnUHioGhJSGAl9mtD8KPPzS7ZY/PGOj1zvyuCsfofDPLpagJa3fZ/+ZK+SBCrOPjMVgTcZVj8sRszeFRSJGKwH+4dZylE0KJymbvLaOFB357P8qN7w76Z8jVIIpTix1RdBc1NX3NPiZxsOeXGUoIIIH/A/unuCaZt1NtlBh+X9cX88kVK7CNzTmkKjmvZgEitEEHyaW5GgBhXJ5HAy5WFnN8p1xZzG4ui+S7LJu18IPbnmyWqw9iQ7LbL5sFHkHTx5uHIU/M9dnsViDIinxJzv+sP3adTjoTZDGcIZGz8G46Sh9rTPOqWm8neCmjuTWzPvsnP7gKli7Md4rndMDcQ7A/xX9s0+MlLTRX/RA8ECC/7ExeDG7jd2rf+i7Pwyv1PA3TbwfW180ay9jC+ermSPQgz6i5eIJTTgXuJCWA6uiRWf8QvtcXshvtYESrkcRtWpqOM/3xFYXY/QzzbQQ+MY6fZL2/1hem6r+DwhB3mGJ2Q7UsB7oCyVhhvhXzcumWDqxWkZZxd8uIsIhWKqfZLOlR771NrZ2zI1kS5Xl6ZCZf
+ qNhTCxW2
+ joa1LDtH23+2xl915lBlMXhRxWI//aWoDGZNVAnjl8Ng5y+wUVLDIrIsZTe1E0kgbipe6VbjB+Jxp7oGgvazxeenIUyvGxcftZyqaG6AOJWmx2vayYXRCC6jPdHGRoO75AIn+lI9jAqcdPm+2HocYu8m6ZHUSNV/o4iZI83ubcJTcLZFwZZYnZxlIOD5IYyH8VaQf9AYCkh8JZ5xRQRMi7OWaNtL6dataeGdDWlc5bZqvQbCOkPaOyjycvDFa/IXqNHvgC3HqaRMlC+UL+WncyD7tmF/RPBwq3CAwzIxdHio1/Zp9FXzzQ74+vQ+RfQxnDkH0PMT1Q8Zt9tgMSs2MLP1VpkqrpTyfvgsLmPYXJ1q1NLHN2sC9KswwVOH6pTnoNfk59oj43zsb+BPX+VMg0Q0X1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,22 +121,21 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Mateusz-Guzik/execve-bloc
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/execve
 patch link:    https://lore.kernel.org/r/20260401131226.4011156-1-mjguzik%40gmail.com
 patch subject: [PATCH] execve: block Emacs binaries
-config: parisc-allnoconfig (https://download.01.org/0day-ci/archive/20260405/202604051143.qdWe0OAE-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051143.qdWe0OAE-lkp@intel.com/reproduce)
+config: sparc64-randconfig-002-20260405 (https://download.01.org/0day-ci/archive/20260405/202604051155.fCOdDQwL-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project c80443cd37b2e2788cba67ffa180a6331e5f0791)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051155.fCOdDQwL-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604051143.qdWe0OAE-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604051155.fCOdDQwL-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   fs/exec.c: In function 'bprm_execve':
->> fs/exec.c:1741:25: error: 'EMACS' undeclared (first use in this function)
+>> fs/exec.c:1741:11: error: use of undeclared identifier 'EMACS'
     1741 |                 return -EMACS;
          |                         ^~~~~
-   fs/exec.c:1741:25: note: each undeclared identifier is reported only once for each function it appears in
+   1 error generated.
 
 
 vim +/EMACS +1741 fs/exec.c
