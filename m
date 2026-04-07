@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B6A2EDB7E8
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F28B7EDB7E8
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2FD6B0088; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
+	id 3C0686B0088; Tue,  7 Apr 2026 06:10:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73A86B0089; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
+	id 371696B0089; Tue,  7 Apr 2026 06:10:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9896E6B008A; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
+	id 286CD6B008A; Tue,  7 Apr 2026 06:10:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 85F9E6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 476E5C1789
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:08:29 +0000 (UTC)
-X-FDA: 84631335138.27.C51E306
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7C01C100006
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:08:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OjqNwhS0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B0D6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:10:17 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3B8FE2413
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:10:16 +0000 (UTC)
+X-FDA: 84631339632.26.DE4B44E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1FCE1C0010
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:10:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nkumau9Z;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775556507;
+	s=arc-20220608; t=1775556615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cfar0aBz7g5t2ZOqLZ+P2js5EhdQh95PA1bgX64PG+4=;
-	b=sbDPf9VCCF5dlTICUKu0aHhePc4DWJlJ6YVEumBC0seP0ptIyEPhveE8Z+0ywB2+Cclvgq
-	my8wIwvOnbFssHVF1thNywiagSc4Xa3smOkoEjdxDo9qeRfVuGXC0H4JZE7n2kgxA1uEPL
-	9YponLFHmXNnGelMrOViCyV4InPFO6o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775556507; a=rsa-sha256;
-	cv=none;
-	b=4TrIvNXHtM1+oC2a6hQnydj9i25wzmputjhm/Cl8D7d/cXjSkQ4YF/WMJ0MqbZZ/fihsGg
-	ZT9tMEKYX8DBzHVvKgFBHRzybZpSEePHjSFOEEu+nruq1k05E/fYMZRGzNOeJCaScFYmJ2
-	IQQoyYQ5H13VTmjtJv1+BTi2ghs1fTw=
+	bh=uJwhrCZ5DVi1XGiVE85l7GZb0X3pCioNotmsUsRYefE=;
+	b=Jo4cmyCobmbTETZxmSoY8Ye8EHbbo3vTOdzAoDCFNT6oEndfyfADe4KMkTIhRYxYAvKKeO
+	FpmU94a4FcKSBmozkN+ZLoqDevX0mFraX+LooVd7bN3r9K+Tdfh1Zx95HeEFaS/qn+BooP
+	KhJeOzFgkckhzKEjgQ7V0GVFYmCBskY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OjqNwhS0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nkumau9Z;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775556615; a=rsa-sha256;
+	cv=none;
+	b=dvtlmzca3KEkP7dcxGOyrFU9WgbpJSkQRAar1sOKllGQ4g69Nd60yYLA3A252NcGKpPJZD
+	Odb1vQKXYO83GI1dmiSehu/r0Q7wivT6X9h92SCtrajJ2NMyH3pPKCLIittvFKMaUgsVVD
+	Uk+8VuMRDWRnCJ0eSzI7KuUBuOwUSCo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 524A044504;
-	Tue,  7 Apr 2026 10:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC99DC116C6;
-	Tue,  7 Apr 2026 10:08:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 991BF600AC;
+	Tue,  7 Apr 2026 10:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF52C116C6;
+	Tue,  7 Apr 2026 10:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775556506;
-	bh=LJPJyFP0f2YfeF5uUdY6JnT5FwY6kPTuyJbRkKuNSVw=;
+	s=k20201202; t=1775556614;
+	bh=uJwhrCZ5DVi1XGiVE85l7GZb0X3pCioNotmsUsRYefE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OjqNwhS053IkVX8CBweRCuteB09IAJKrQK8Ve61pjglln2XH0KA8YzqYFWl2vT056
-	 gsVk5hHrcG22Fl9h2ynZVl2HYMCVmlV2abyBDoUheXBZOU+uxILBN6EXItMSgwJVhh
-	 5ISkLxxSUYayF2Xw4UeAxAl6vj7tHxcoXTsWKK0fNBX8GgJgWlVNL/gjhc+xXZ03bN
-	 zIymO/Qxm/ZpqSYTn5VLUZgUmmYc1Yy2Pn8nCa15Uv6hLIZQXTBY4rFOv7Qx2EZ4t3
-	 GJK0LeeIYNzqeTtTiZoAj2IBsSb5fh4tdc62U6PIyO/aiXFzROR5ugvwXvm1v0Gpof
-	 /RFVVQtZLajkg==
-Date: Tue, 7 Apr 2026 11:08:21 +0100
+	b=nkumau9ZkicHGxV91qxYWjPubXMFULLZk3pPmXQ7EZvc6i+zLYpzG1V+ahiER9OHH
+	 BR5AHjlnw6nKN9it8TN9PvZR63KdbXLwqng9rQ+UGRcVw8LeYS/qsFHwfRFzJQ54w+
+	 tYI+dvFq5PhS+fszRDxi4GsTLjolDl+T59NdJz/T7VqPArV9p/+waErCWpJZP8A1qc
+	 RqecKtM08KUOQRJihnsNRHncdPa1Th4gfCJZl3zKWr1gq/ZWljZIh3ouGYcehbBbto
+	 r2v6KzKZTzc5eTJTEOjYLm1TxZ6Wrbof2WBXKtY+FurfLniwKd/dPAW4Tpqi7LJXhV
+	 vGupcfnvlxl+g==
+Date: Tue, 7 Apr 2026 11:10:05 +0100
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (arm)" <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
-	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/mprotect: micro-optimization work
-Message-ID: <adTXZTApsalskiZU@lucifer>
-References: <20260402141628.3367596-1-pfalcato@suse.de>
- <20260402113328.fd0a6f0e28cf74a651fa2291@linux-foundation.org>
- <6bl5bzq742c522nmhlshlnf6ho6y6a747l3zh63aagp7kfxymv@s2c6fsuikn4m>
- <a3ace37b-b75b-47dd-ad7c-c7c3f799dfdb@kernel.org>
- <20260406103854.f48c27d7709beb680268d388@linux-foundation.org>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	intel-xe@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>, 
+	Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>, 
+	Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+	stable@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <adTXtnJs_Rnl_pTD@lucifer>
+References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+ <adOqU0UDzpxvQuwA@lucifer>
+ <adOtS_q1MuFOawGM@lucifer>
+ <adQFYAVGLqv6amZK@gsse-cloud1.jf.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260406103854.f48c27d7709beb680268d388@linux-foundation.org>
-X-Rspamd-Queue-Id: 7C01C100006
-X-Stat-Signature: thitabwrjbfw9uacx1ct6yithzt7dhq4
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <adQFYAVGLqv6amZK@gsse-cloud1.jf.intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775556507-949946
-X-HE-Meta: U2FsdGVkX1+O/c3eINqvwNUXF6ZI0cpAiY23vefNfupaMMrQ275QKPeYHhm3rKwzfxs0o+39vnxJOKXwaE2Vwrka1Quj2i58wHcAYPwFepfFuljCm7ZNrAreyuSSqW8uiK5689mNCziGTQQGIl7AQVfi3nck3Vt4mTT1NRTdXB/8Gd6FUZyWHvHLzwWWznWS72PZOvpK1Y84qv9k6cItsCAHNua8USLBtWoLFTde2o03GCs372mNgh33mtqaHJXRYk7s13mHB+hP8kJFA2TGv3J/AAD+K9BF0S3Nntcdyqd3v1Sm+dB79fdMWEPSZMLmpS5Qrg8Jl/LhypyZEbeYpbKwfR79HH+yuj1k6aChrxf5ltvvsK2iLvXgAWs6wKZXNVHgXMs1WeqfJ6EhgXCqMSJF24A/5pNnZo+fo08Fd10SQZkF3xDio+JYqnjF1Jkh9s7A9mNTFlgBC0j1hL+r2jIwXQ0i+M8y0Ov8PeHAIS5Jnq5WdXlGFPmSl6Z65z78GEhJHPJbfoTpVDxX8kEWpvMt14ive7/Ha37Wpc0EOtQNO451PGlpVMsoWfXTNo9fZox0OmTxk405SFE24H1+n5cOd1yVaahjruffrayqeHE8+A8oBaLk3cYCzDMHGytyzjfXpkT29u9N1Ph3pPFEqfHy6ZmFhrqxWKPtt1DqfRjslFpTlEn6qaiu4LXSWcKoby4mJ7OflcPkGhgjP2qkxdIKQA3EX6exQtKAQN+RPKIonPvSmDKzj07PKe0GkHbEGzqMHJKbHf3LIDFMhdzQoEUhGSIz/6E08edW57WMTbF7HhA+2418lrDwvdQnbcclGDvutzcaxJ/Oac5g4h4ViAV3t64uAkDBjEMwpgJ25JglnbE1HJaOI9uNzKZpdB6+V51nr/1eLX8Vx2sOIJTb6rND2mgIUWqt81HEo68CLWgtTm6Z9a6eTr4MEEq3oK9fyU/A1HCulhJDd7Bzrcb
- TyshpGJ6
- dAqo0Q3zK0IQnXHKaLownJ0Gr/nPdsvS0xbAix6rZotPt15jnxKeB9Xld2SR+Gd6l7i9sFcM6iP9hfmYy/6Ta7uHikejpNNBSf76Szi5knmB47eGkJd4c3aCM0wilchp5wD2ILUo6S1OiiGcMOWnSpT2oexzBthdYXsXX08D0h5KBVrHthF/40mNWDt4upaEbOrrd6T8+HBwSRrE5nYxOKtx7gUYIOgWOUsIAiIyW92z7TG/VKefpqCtgFi/rq2MUjh5NvB1GOxssn/wFw51ewJWcOQ==
+X-Stat-Signature: 5eod3et9g16ew15z1bryy9yqpb71tbid
+X-Rspamd-Queue-Id: 1FCE1C0010
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775556614-682985
+X-HE-Meta: U2FsdGVkX1/ayxel2h9qI4hf11v7gNfUINBVo3YRd7QR347vhLTtkOyGvjmLQqu5BrgRSIVQU9FUpOmEqw14KBJMB29uFp1ATCSiQ4K+dLu1Cbg9rwigSv52Ha2Ca+lVr0UrVPD1nRlN4KXuVbrHG7OqCuF3Zt0QO6+LrzrnX+s0ZmrA+CmFSh07ju2lNbgiRA8uHDelJ5smWNcx4oRvWKTvFsU14Ok+lUcueX0g9wI1k1MoagybV/NC6L9Fjx0zCJwDGdze3oA9kq7kN09bfU6yUvBTaNFZTK2mSqtCLKlNoo5KCSv+nNM9LtDl5ACqzaDnjUD5fCmbkPLPrlZDwEvlOhN7rPAyWmprhvbXS5LjzLqWoqM0P8T9PUXCoxTX1Ft1NVncKZWj7dP7Ai+SvfcEsskxsMu6foxDfPyeN4x/hoMpdfwvdqBO7VoJZIHOvPYAgxzU3YR8KKaz6F2XVRdGX+Ig1YP1E53/JpErfEpAcuatNl8j6SeOFJGQqFNujlHa9Dm7h7iimhvRc66EyqPauirZVrIffA7YxhFQxA+nG8sKVoCFLI9SkW3mSTm7nykZP6EtOdP/BO2axt418ouRpOhk0fJnzbG9clyjwlSWfU4OJmyNmaBTNtFRxhzTWJsKQHZmpyhUUDlf1Pfzc+E4jdPwcoce58BYk0/MtpdPqJEH6znitI9R65gMbcEw1pTW/LrK32eSi+sgFZBUSkJEmp7MfYJEpxD71+gu8zGghuGAmWKdYmjtOLl3SQjlW6QriL3hoAO2+nXCa9aX7nz+k4DjGD4av5ppusa64VR/rw2+DEk5tQdU7Tk6NjXHpc6aK5CHegbAI7Riam+89JTubIdg8Bn7aX9Xay4x+y5Ul0Ln+yvu1KtCcuW0ResjwjYESfZGOyUJZ6z1vUnnHYkkZ7tpZGP7XBzDY5/UINhulY4RtjV2YO9M3LWSOwDQSRY+8GVIQ7B7AalrU3z
+ PwvUy663
+ SOHx6BeNOG398ZNRpgKAqcxY+E5ZSXzL1uqd5/BCV13cjG+TkpuKNcc0f0WVDDB3Hzn7sS0bKTMNWW+XXAvwRklS9LV+c8PI8WO2AXWLpOx3Gn6QTuOqWKIomj8cIGkmS2VjROP+exF35X7RtyKN1n68pW3KmS3gMeBrjQXapwmf/4sDqjgglfHO3pv+C7YABZFNVxXk7dnIozqRiQCbSIiigvHIe4Vdma+/nzVl0O5cQ6l0h6PE49d36DMgtdLEB0Zv1wiovM+OGwBkla57fGv90gpTTvnRH6J/0Xlf5vuCgVR9a3XUkRAG3idtPxu821knfgWNtL7K8DDa5jrvNFeQgpw5mhcQZRrey9Z1xE8S2OCQ6Tpb3AXI/mhKWw4tw3DPR52igL7T3gJGqZjNVtlqczMBRkQrWlktxK/WhjVeNGQYrN7840T2J5KvqiJn6+sDDKulQtihr2dA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +107,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 06, 2026 at 10:38:54AM -0700, Andrew Morton wrote:
-> On Mon, 6 Apr 2026 11:09:01 +0200 "David Hildenbrand (arm)" <david@kernel.org> wrote:
+On Mon, Apr 06, 2026 at 12:11:28PM -0700, Matthew Brost wrote:
+> On Mon, Apr 06, 2026 at 01:56:49PM +0100, Lorenzo Stoakes (Oracle) wrote:
+> > On Mon, Apr 06, 2026 at 01:54:13PM +0100, Lorenzo Stoakes (Oracle) wrote:
+> > > I see John gave a tag (and he's great so that gives me confidence here),
+> > > but we should really follow the procedure on this properly.
+> >
+> > Oh and just noticed Alastair also :) so that adds further confidence, so this is
+> > really a point about cc/M signoff requirement going forwards.
 >
-> > On 4/6/26 10:29, Pedro Falcato wrote:
-> > > On Thu, Apr 02, 2026 at 11:33:28AM -0700, Andrew Morton wrote:
-> > >> On Thu,  2 Apr 2026 15:16:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
-> > >>
-> > >>> Micro-optimize the change_protection functionality and the
-> > >>> change_pte_range() routine. This set of functions works in an incredibly
-> > >>> tight loop, and even small inefficiencies are incredibly evident when spun
-> > >>> hundreds, thousands or hundreds of thousands of times.
-> > >>
-> > >> Thanks, I updated mm.git's mm-unstable branch to this version.
-> > >>
-> > >> The update is rather large.  If people think it best to spill this work
-> > >> into next -rc1 then please advise.
-> > >
-> > > I think it's a fairly safe change for 7.1, but I'm biased :) Perhaps others think
-> > > otherwise.
+> +1.
+>
+> Andrew did ACK this via DRM here [1].
+>
+> When we take external subsystem patches through DRM, our merge script
+> requires ACKs from an external maintainer, as determined by
+> get_maintainers.pl.
+>
+> I’m not sure what happened here, but it looks like Andrew’s ACK was lost
+> on the patch, and somehow our merge tool allowed it to go in regardless.
+> We will be more diligent going forward.
 
-I'm fine with this for 7.1 (as long as Pedro buys me a beer ;)
+ACK on that... ack :), but please make sure to cc- at least the relevant
+maintainers on these series going forwards also.
+
+I realise mm has changed somewhat in its approach with this so forgiveable you
+missed it :>) but - at least for me - reading mailing lists is just out due to
+bandwidth limitations.
 
 >
-> Thanks, I've firmly added these two to the second-week-of-merge-window
-> pile.
-
-Ack!
-
+> Matt
 >
-> > It's mostly code movement, so it should be fine (unless we messed up
-> > passed parameters somehow :) )
+> [1] https://patchwork.freedesktop.org/patch/703183/?series=161082&rev=3#comment_1294670
 >
-> This (or an earlier version thereof) have been in mm.git since March 24.
+> >
 
-Also ack, yeah it's fine.
-
-Cheers, Lorenzo
+Thanks, Lorenzo
 
