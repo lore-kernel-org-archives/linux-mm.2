@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1357EDB7EF
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F39BEDB7EF
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:49:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384796B0088; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
+	id 6BAA26B0088; Tue,  7 Apr 2026 06:49:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 334E26B0089; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
+	id 691A56B0089; Tue,  7 Apr 2026 06:49:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24A886B008A; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
+	id 5CE7E6B008A; Tue,  7 Apr 2026 06:49:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 150026B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B0967E243B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:48:39 +0000 (UTC)
-X-FDA: 84631436358.22.DDC3CC4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F87E6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:49:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C6FB81A0752
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:49:43 +0000 (UTC)
+X-FDA: 84631439046.29.03CAD58
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2DDD72000E
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:48:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9Hrl0YP;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 32BB31C0004
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:49:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dzh5IUru;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9Hrl0YP;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775558918; a=rsa-sha256;
-	cv=none;
-	b=SKMEr09zF6gsdr466ucoyxa4N/sb5KJPvUuW3cKOthPlq4BGDKmUMGif2DgqC1zEryQADL
-	NR9BIWTUC1gsPhzpcTm4Lzeie41dUFrUbOTxDt6mjfj060FmHCzHEiG0khBHZZA67IYEnx
-	0sN8L71HNXR/Kp9GKM1NlqdRpWPbl7E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775558918;
+	s=arc-20220608; t=1775558982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kcFBtfoTc+V4OFvuZzLlJPwJoiGb+0fUJrkF+opujOI=;
-	b=yAHPUZom4vLLX7Gr70mqkpTjKdmqCu6/OqWJGotdpKFbBobJwFFtOPcncSX+A+oJBiKpQg
-	lM6mgSjcKg7z982tkFlNdXExe5pEQL6rfTKNvF+tGkM+clsIYMGobuhdm+jBGx4/SjE5Ph
-	BDlsewSi8wMjKR70bFHpromCZq23PpA=
+	bh=Htxp7/IabQ4Xiz+tFlCaJ+XZjjLfsrm8Ki7HPqCquow=;
+	b=yP36dsD8NSBmI+CAUoc5CAjR3HQ2Lb5fEJ45aM1CHvaEb/9ojsW9O2c5KJKR1pMHD26VdM
+	OUyxSnJRj3zCQtVfqR/Hv3ODGyf6jE7MWFMUuyl7vQghxa9NdehALdkDTXu/1FDgTwAx3Y
+	JfCdc4zZsTZoM/Om9ZwYzP1mSnY/riA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775558982; a=rsa-sha256;
+	cv=none;
+	b=IQ32A1jWE6JRnpJzojhSFa8BIXglORTczgou8gYphupMQ9BoSrgrBEr8IUoNmDglrnZTUa
+	DdNxeRbk9tqdmXWKnK6y9F5KknuU4cvQu+WAzjGPJ8sGBJOvTusmu8wtjPjwk3xs84ip0l
+	7zkHDxfJVotCL3NBjfcXZdA/wul6RBk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dzh5IUru;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64C6860120;
-	Tue,  7 Apr 2026 10:48:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4639AC116C6;
-	Tue,  7 Apr 2026 10:48:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ABE0C60120;
+	Tue,  7 Apr 2026 10:49:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23364C116C6;
+	Tue,  7 Apr 2026 10:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775558917;
-	bh=plvm98yXi0oiNeiJ5KWfoDRd1nOJdHlTIM+h4PPVQwA=;
+	s=k20201202; t=1775558981;
+	bh=yaqqzWcBkz9jMC2g5Pf5xF7lU+dIw75/p3GRmnmxZug=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B9Hrl0YPWM3VFx6SsgTZ8TtbBCyKSnUdHdQRtEc3XObxhiKqdsjaPL+d40XYklTNX
-	 bggf8Jfdc/YYxn8zYxZyb61PdlVZJs1Rhf42xwVxhqL6ALT1DUYBMcJqRYFOY//5ls
-	 SC/YvjS0xi0jwkTpCnWJ04h8xov1CFLLclQOJfJKXKNVKQgYJh3yfZ1GxEoZdhMTgL
-	 mCoONRv75hKrOLtDgGBGVqAh1UuXR59rfwMSRx8077YOHSixyNdFrKSf5DFr3DlQkq
-	 cONDaKyJ4b7pn2ZLckA82VmZYTpJhAtDt/CSwByCfjc+sOynjtguVIL6ve0LEcvou5
-	 g0JopWY60gt9A==
-Date: Tue, 7 Apr 2026 11:48:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Yin Tirui <yintirui@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
- has_deposited_pgtable()
-Message-ID: <adTb6_xqQoQqK74Q@lucifer>
-References: <cover.1774029655.git.ljs@kernel.org>
- <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
- <41b1ff54-c120-42ae-8b74-54767abf3554@gmail.com>
- <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
- <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com>
+	b=dzh5IUrutaRxhZXz1W3am7LI8nPeJxe+kz1+aNkv8ZJ2oDkOCH6R2JK2/o+t3T5DX
+	 gkQ9H+60DlaDJ/NHCyo6aYNH62kgs2ww1ZBN9rXUBvXdnAlGOQ5QgsWXkp2YJojBns
+	 Yoanq+Pl8G1Kwn7Wk4octwg/U+dk/QKOoykZXg5XnqI95EURyuM5gyh09xu1WHY++t
+	 gF9uTh8b0gFb6vz+doNTynt/DOCoNlDAGQmUfx40bg6auimYgf/fSD4pPRvfKCLqlZ
+	 QzNp8M26wMA+Ygg9/UEpRhGkqxRs2EGEaYOfNTFw0fSNMOQ9qFaz0GH0EcAprSA5oC
+	 JBkR7koy0k18Q==
+Date: Tue, 7 Apr 2026 19:49:39 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] slub: clarify kmem_cache_refill_sheaf() comments
+Message-ID: <adThQ3f4kpefqvLA@hyeyoo>
+References: <20260407100255.40035-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2DDD72000E
-X-Stat-Signature: nkfsnqs9oz6kyj5cu8qydu7rjbqodzfb
+In-Reply-To: <20260407100255.40035-1-hao.li@linux.dev>
+X-Rspamd-Queue-Id: 32BB31C0004
+X-Stat-Signature: 35ok46i6met6kdy4udstazabhh4wz8tx
 X-Rspam-User: 
-X-HE-Tag: 1775558918-551674
-X-HE-Meta: U2FsdGVkX1+KfFGiGKv0knXQzKKdljKfrpNgumNPb3PZew5pPfgDB57hltNA3kpTXG13IQZgbRPSesTL847nGcqIGyqIqZl4WDrBFKGviG2VOihy5lgMeD2fCLJ7zx/PKdPn5tSXh0Js7NUFivX0LMQvk7wnJf29RUeCfjknQ575DPzxp8J8kqt08x+b4T8Tn+PXlkeb/cJDQQPEvkjil75xjDZAz8mAfQu+SwI2ggV5tqb/2Kd+RQFysRCsT2w7UJBoF5//l9DAye7Th/YljObu9VZGDQ4vO8NyubU1U8eSzz4uiNxurbaOclCx5t6wjYS+tIQxhTTFHgbiGU2hIUBeRXmLJPD/6Ax5Ypr/n2z7bBBdh3UOLXBPlEBwoar+J2LswDSKUHX7nO8DLYmSmjMiYSPI2J3/j9gZZ7QA8ZDenB/jzhfr0JFHbtR9O6glRZrBVwhPv0Ub2iw62knuZvpV4HTnfvpZStMKoARZvKHjrE2/frd0wjKmVIMHWTSDz4O/AP0XQ/5QkwYq1QNRqyK5vLZsFFR23agAg2jiXx7k1RtxzZ4J3wZipidHIp4gBcB7w32Xz/EfoyH05TFhqUzk7b7mGwpEmFbUMMo99EMRprR0r7eQmQgNMOXCZtWOHTqcb8sJRMKFKbvkjXFPqb/u+J34RD1s3JcbUFC/9VBx4UXK3bfK9Dg5qJJoZHTLCgLUCb04pXdDmpjwZRtJ8xseeqskFs0jXpdXUBtDG+MBTDrTFKY5CVCnwSVqkajbuevbUcoyEgYQIY2M8EVgjjETn5wdtwm0NVq8D2bNcqpsrGcrP/XPj1Bl0fqDNB/JVY76lHnBUblXYefxBqWCXN/IY8o5Mi2nnpMAjOCnNB+FDXX7jEv1xXT0VgrEKNyAhjf1BxqoHkNjeYmzex3kpX47BQvlprFQK6eFmWWq9zsy6NCKjsF+Ens9neQr/Lrgi9cmzbxcFM2dSqyFJb6
- xYGYRfTk
- h1Za5gVV77o4CUK0oC4hyWVv1oe6EdULJZw4OhELSuiV+LvpDGfBQFoI5lWgXrd3WSjzj92QcT1npA5PwBBU/7/3Ua5XmDG/naWipDRYPZ76EW9dVMTA7l6CiYApC2y90kfTLXJj/942Gr3MWxJuaia13rXyvkK35Qg6fU4zt75Sa6H2UFl5VUzUueUrOySeQm4Uf6EhOLNCCqy+iyaVullKyqwBs68jI9ClSCkbJh7gYOjqy8BJLQLhNXf2beN0pEwqjGbk2zzsKcJaeQpyi+QVgtari2wwgb1NaH8mjWbaQgj8vZNmI40gCJ1HOmbXQGf2huVZXg8fODoiYKBxKZY9kxg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775558982-445673
+X-HE-Meta: U2FsdGVkX1/p7o7reSJr8yJ+0ZdPte28gIH9DGJxr75wGnFcd3W3Cscj4T1D7kzmoWdFKOizOtKPeYanaPs8ix0YJqBoRnTTLHF9rHLEsB5xc9HEpfasof7Ua6n7AIrMVzvaTN94usB9GIHAnYaqKnRkCVGawMdejnzZINoT8sLfHjok+sEJOOF/rM4TvLx6qUvD+/1tJe1uVC4HGU/024aUKmZO4/AxNxn+kZnAfPJAXtkWgyIKL1QlA93HGBG4bfoVC+s4Y/26IBkgd4IuN0b9zlULiIprEhqwKcNxZ0Q6EaGG2x6yESpNy8HQVJw4LAgPvPR/T2eVzTwWKDNU1Tk+sY5fATmmO4qjlWvyvLh+Up561fBeDXL9RO6x4+IkBnrUtKWNVFGIAfuz+ODZrXz3Tf1zjKmgchacJEaEvtehM6ONrrpGCgO2orcuqqWtLZXND/bFOULRBPWndCRDYZP5K1lfdUMa9VoaMFdB4yQ+QDkFQbq7hpjd1SUO/ska4bn76EdKIadlVweEz11RYHSDxgk/iMmkZl2z9jtJ1updB4fp2444mjy99B3ntqPxMa0PFA8tm/mXvK8zcGzen+FzQUbWIRel9O6PGgyBlHflou+dSCjMvjERMiDodkYLKk1g+fxCTmGpOAdiHLuNsOeNSYZNB+K9xvH6SZGm1CfCvYFp70mz3pfjAp+9YTTk0yTzSr3sLcOm+hYY8BWjPka1g5rwYJ1qP18M+INsyzmCxnqh1VJqfwCAIFehMxhbCy4Dkn4YH3Se0Iu9eqMlJCB3lEOyUsV9rRrawer1hr9NGajVb2VRxbRD1V0FDQu8cr9HdEY3NDgUE7KjWWMi9uk6kU/rAJSu+itF+aNNjLyPFJ1T0q63MBzOMNmid4Hc5lbrlaYGVPAAJL9+ojuriJsuDBZLzUvVNwXtbvO4uHiA1t8bcEj3/HCNK0aOqdWuOvk0yYJE1gGPKXn80pJ
+ yVIBVo70
+ SIAvobEaWBTncIbijzq7jjNFwj3ZAmvRJK36q2fIL+DP4o/vtkEV9kzCjyJYlxcJ9mB///nLPlGANculnmDjfiH0kpwTYeNoBk1e5aumaVdbcLFE+9id40dEdNbR1KazDxOnW77MV700UPJhdjya0Q7ogdCFLhswAYZ5ghYRJbUdk5bqv78g9s/NK9aV6tFq9c6E5bZuTocIIoAOPwlWGStGNZIROQyhLOQ4ZE6VrFzIqBJVWpbbZ8kDZb99KNQ3PfeyRUWnmcCnxlU3Jdi38mYFrXh1RfAEldIYAyWBDG2gVVumOpXv5T6tJerSQtnMeSNZo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,141 +91,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 03:49:35PM +0800, Yin Tirui wrote:
->
->
-> On 4/2/26 14:46, Lorenzo Stoakes (Oracle) wrote:
-> >
-> > I mean you would have needed to handle this case in any event, since this change
-> > is strictly an equivalent reworking of zap_huge_pmd().
-> >
-> > But it seems that doing so has clarified the requirements somewhat here :)
-> >
-> > I haven't had a look at that series yet (please cc this email if you weren't
-> > already, I do filter a lot of stuff due to how much mail I get daily)
->
-> Hi Lorenzo,
->
-> Thanks for the quick reply. I will definitely CC you on the v4 series.
+On Tue, Apr 07, 2026 at 05:59:10PM +0800, Hao Li wrote:
+> In the in-place refill case, some objects may already have been added
+> before the function returns -ENOMEM.
+> Clarify this behavior and polish the rest of the comment for readability.
+> 
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+> ---
+> Thanks Harry for suggestions on v1!
 
-Thanks.
+You're welcome!
 
->
-> >
-> > So if this is a PMD leaf entry it will be present and PFN map, so I'd have
-> > thought simply adding:
-> >
-> > 	/* Huge PFN map must deposit, as cannot refault. */
-> > 	if (vma_test(vma, VMA_PFNMAP_BIT))
-> > 		return true;
-> >
-> > Would suffice?
->
-> Here is the dilemma:
->
-> Currently, VFIO uses vmf_insert_pfn_pmd() to create huge pfnmaps on page
-> faults. This sets VM_PFNMAP in vfio_pci_core_mmap(), but it does not
-> deposit a pgtable (unless arch_needs_pgtable_deposit() is true).
+Overall looks good to me, so:
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-Hmmm... it's only the VFIO and hyperv drivers using this.
+With some small nitpicking :)
 
-Wouldn't we generally want a deposited huge page here now we're allowing huge
-PFN maps?
+> ---
+>  mm/slub.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 4927407c9699..a45eb1bd2ce5 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5120,12 +5120,15 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  }
+>  
+>  /*
+> - * refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
+> - * the given size
+> + * Refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
+> + * the given size.
+>   *
+> - * the sheaf might be replaced by a new one when requesting more than
+> - * s->sheaf_capacity objects if such replacement is necessary, but the refill
+> - * fails (returning -ENOMEM), the existing sheaf is left intact
+> + * Return: 0 on success. The sheaf will contain at least @size objects.
+> + * The sheaf might be replaced with a new one if more than sheaf->capacity
 
-Or are this _special cases_ where we have a PMD-sized entry but are not
-necessarily wanting to treat it as THP?
+nit: "The sheaf might have been replaced with a new one" ...
 
-This is a real wrinkle in this whole series no?
+> + * objects are requested.
+> + *
+> + * Return: -ENOMEM on failure. The refill might partially fill the existing
+nit:			      ..."Some objects might have been added to the sheaf,
+      but the sheaf will not be replaced."
 
-David - any thoughts?
+sounds a little bit more clear (tm).
 
->
-> To resolve this,
->
-> Option A: Force VFIO (vmf_insert_pfn_pmd) to also deposit pgtables. This
-> unifies the VM_PFNMAP lifecycle. However, since VFIO can refault,
-> depositing pgtables here incurs unnecessary memory overhead.
+> + * sheaf or leave it unchanged, but it will not replace the existing sheaf.
+>   *
+>   * In practice we always refill to full sheaf's capacity.
+>   */
+> -- 
+> 2.50.1
+> 
 
-How can VFIO refault as a PFN mapping? Does it intentionally sometimes
-clear PTE entries to effect a refault, and implement a custom fault
-handler?
-
-I guess having a fault handler makes it refaultable...
-
-I mean obviously that then contradicts the suggested comment above :)
-
-That seems to me to cast a bit of a question over the whole series - having
-PMD mappings that are _sometimes_ THP and _sometimes_ not is weird (TM).
-
-And it'd suck to add - yet another very specific check - to determine if we
-do, in fact, assume THP for a PMD sized PFN map.
-
->
-> Option B: Introduce a new VMA flag set during remap_pfn_range(), which
-> we can explicitly check in has_deposited_pgtable().
-
-Yeah would rather not, that feels like a hack.
-
->
-> Option C: Check vma->vm_ops->fault (and huge_fault). We would only
-> deposit pgtables for mappings without fault handlers. However, this is
-> fragile because a driver might still register a .fault() handler that
-> simply returns VM_FAULT_SIGBUS.
-
-I mean again this is yet another check (TM). But probably the most preferable I
-think.
-
-Wouldn't a driver doing that be being somewhat redundant? E.g. in do_fault();
-
-	if (!vma->vm_ops->fault) {
-		vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-					       vmf->address, &vmf->ptl);
-		if (unlikely(!vmf->pte))
-			ret = VM_FAULT_SIGBUS;
-
-And so can expect maybe some more redundancy if they also happen to map
-PMD-sized ranges? :)
-
-And the only two callers of vmf_insert_pfn_pmd() - hyperv and VFIO both
-implement actual fault handlers anyway.
-
-So I think this is fine?
-
->
-> Do you have a preference among these, or perhaps another idea?
->
-> >
-> > By the way, I am wondering if the prot bits are correctly preserved on page
-> > table deposit, as this is key for pfn map (e.g. if the range is uncached, for
-> > instance). That's something to check and ensure is correct.
-> >
-> > I _suspect_ they will be, as we have pretty well established mechanisms for that
-> > (propagate vma->vm_page_prot etc.) but definitely worth making sure.
-> >
->
-> Yes, they are correctly preserved!
->
-> During a PMD split in __split_huge_pmd_locked(), we populate the
-> deposited pgtable like this:
->
->     entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd));
->     set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
->
-> The newly refactored pmd_pgprot() correctly extracts the exact
-> protection bits (including crucial cache modes like UC/WC for device
-> memory) from the huge PMD, strips the hardware-specific huge bit, and
-> returns a pure PTE-level pgprot_t.
-
-OK good :)
-
->
-> >>
-> >> [1]
-> >> https://lore.kernel.org/linux-mm/20260228070906.1418911-5-yintirui@huawei.com/
->
-> --
-> Yin Tirui
->
-
-Cheers, Lorenzo
+-- 
+Cheers,
+Harry / Hyeonggon
 
