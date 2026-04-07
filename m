@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89901FEEF52
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C32FEEF49
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD36B6B00A3; Tue,  7 Apr 2026 10:55:48 -0400 (EDT)
+	id 67DBD6B00A5; Tue,  7 Apr 2026 10:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7466B00A5; Tue,  7 Apr 2026 10:55:48 -0400 (EDT)
+	id 5435E6B00A7; Tue,  7 Apr 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE45F6B00A6; Tue,  7 Apr 2026 10:55:48 -0400 (EDT)
+	id 431826B00A8; Tue,  7 Apr 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4E46B00A3
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:55:48 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F184C29CA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D8996B00A5
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:55:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 015BC140850
 	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:55:48 +0000 (UTC)
-X-FDA: 84632059176.14.AF5086D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7789618000A
+X-FDA: 84632059218.20.4E29179
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DE8CD1C0003
 	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:55:46 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NuKWF9om;
-	spf=pass (imf16.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qKViqKdN;
+	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775573746;
+	s=arc-20220608; t=1775573747;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zo5fz8kmoBqMPoqNdgCTbpwxnUovXI2Wz3cn3fpb6g8=;
-	b=OHDSL8vJPk/2cXG4peo7j/f+Pd4ygTBdFDzYYIJR6zL3qfL1Cb8m1luKg9VGiTEIn48vQC
-	pcMUnaN0o+K+Mh0XMAxzThGpQtC9JwN1X90a0xwvFoFD8bFrw0Oe4M1N2T3oTFGHvCCdUs
-	fddd2C736KRW6q0iHGMKNX+xusvnoXs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775573746; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ra3YL28ifItPyJZiMzQ2cfn2q2yJfzaAHaehBB+uxmY=;
+	b=TnebuTC5FzjNwwKLy2UfKwWC9vIwOT5HZ1T3JWFNuWzTodU1nJcvslY8Dqe7ZSFlLgA+Lz
+	erivlfd4WAJyQHr3lNW6ylXwNNxKN5IPwfkO7JTJr+DJe3zV6Zv8f6DxKLsT8Y4xlcudHg
+	Nc4u3FGe1kylwVo1wDvBOUysESPz2FU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775573747; a=rsa-sha256;
 	cv=none;
-	b=K/WuQguHasbDJ2178wnyrNBoqgSYF5PQwJ36uk0XtBlWgCONC+0cs/SHRzy1g8nEhTSm4u
-	iL1mw2zREsr49J0b2bsZ+spAm/YyhIIXx3/oVG1xcmMRJIPxJ7Dezgz++ENY4o2sEpg0e3
-	lNR1gsVW0KWifGit69xFCgHKL+A5rAs=
+	b=2f7tRKSFFXxrhyorid5su9Iqr5BanTEYbcyi26jESTZ3mDXOMFzUtyiaVcSTYSHgawqks2
+	pdWGS/IQYYj/qJNko+jQ/pbU3BjfWHOelhSUJOHzIxhhcL4F2mFBDqLLsCAM/FX4MpBmem
+	fMv2Gwj7VLr5W6jV6IM+yjXZKKq/MzA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NuKWF9om;
-	spf=pass (imf16.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qKViqKdN;
+	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F01A860123;
+	by sea.source.kernel.org (Postfix) with ESMTP id E378543977;
 	Tue,  7 Apr 2026 14:55:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9B09FC116C6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BB0BDC2BCAF;
 	Tue,  7 Apr 2026 14:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775573745;
-	bh=ktiFYUkm17rtWG9ixEvpBIbYQmlh9KYi2e+f5EL5XCo=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=NuKWF9omdnJ/bEfLNjGfch+1eL25hNaS1FkAdfhjVmoIKIGQsNKQMkFLcYPDch7ux
-	 gJqBwlgxHIhG7lF4+4hjPhm6JT99+VfGtt1m1MjCdxAxN9P6Qh6HrumepvTHgXaxn0
-	 0lOGHlczXAY59ch/2fZBw3OBWwrKe9BMm2Bg0wpPSyJv0YValhgTedbv3DiKRNiu+7
-	 DhmruK9l28zjYKbiQmoCZMC6K4tXw+YVuUUXms3rREaBTAfEA5IEp1VNSlM+2xhibJ
-	 S2znC6naxkqHlf02+taUh1WnMD+1RAhTYT6CeWLqW7o9ijyASNv1FbCw15ZY88LqoV
-	 kDeV5ZEoM7d4g==
+	bh=Fv9PtzN7xCSTNsq4ANj8AT1swf3W60piN2PSJ2CQe5E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=qKViqKdNbUTPQihtHtm1YVs6+OE/BmF1bRVTdVUeBbqshZPcUsmBWB/POqBPmhTi4
+	 Hz/pt9Xs46mhPrQ3ILw+Nm7UHZPtF6fjBoE1mNur97AaHB9X+yeoU8E7HhLuWM1EZM
+	 ObA2ayE7aX6LpG3e5R8ewXHVNc3s3ADDCtqY7L5wz3+dq3vC4QGPQkJ+gh16zEC+QE
+	 nVlGDc0sw9b2HPKiU8Rjq+WJ4te1fzZc9OsgegPqBAi8E7Usrr/wWs1rwIMOLRp5r4
+	 XAeLqyow15dqL/rmw1LJoDYf37JzoOzwuT00PPRhlzoBTlsM5SkxQVh5g1+XJbeA/7
+	 kUDZyuZ6CmiRQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E3D4FEEF52;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABC60FEEF49;
 	Tue,  7 Apr 2026 14:55:45 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH RFC 0/2] mm, swap: fix swapin race that causes inaccurate
- memcg accounting
-Date: Tue, 07 Apr 2026 22:55:41 +0800
-Message-Id: <20260407-swap-memcg-fix-v1-0-a473ce2e5bb8@tencent.com>
+Date: Tue, 07 Apr 2026 22:55:42 +0800
+Subject: [PATCH RFC 1/2] mm, swap: fix potential race of charging into the
+ wrong memcg
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEwNz3eLyxALd3NTc5HTdtMwKXcuUJIOk5GTjtERzMyWgpoKiVKAw2MB
- opSA3Z6VYiGBxaVJWanIJyCil2loA+uYQK3cAAAA=
-X-Change-ID: 20260407-swap-memcg-fix-9db0bcc3fa76
+Message-Id: <20260407-swap-memcg-fix-v1-1-a473ce2e5bb8@tencent.com>
+References: <20260407-swap-memcg-fix-v1-0-a473ce2e5bb8@tencent.com>
+In-Reply-To: <20260407-swap-memcg-fix-v1-0-a473ce2e5bb8@tencent.com>
 To: linux-mm@kvack.org
 Cc: Michal Hocko <mhocko@kernel.org>, 
  Roman Gushchin <roman.gushchin@linux.dev>, 
@@ -96,25 +95,25 @@ Cc: Michal Hocko <mhocko@kernel.org>,
  Chuanhua Han <hanchuanhua@oppo.com>, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775573744; l=5405;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775573744; l=6871;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ktiFYUkm17rtWG9ixEvpBIbYQmlh9KYi2e+f5EL5XCo=;
- b=4buYa029bKRDja+FudcwHiadO4RPbc7haNQ9UhhSEB6duzxw3I44ZRV4k0i+0hQXiX0dnEc5j
- Gkfn3V+rOu8CBGklC4jLMUdhig4dBZdcjwMZoWpvGy1ZQEwwSOWBEM3
+ bh=8waYhVG/zmYZKbTD5LXs0veHtD/HsXryyRZUBo5GKyE=;
+ b=irCjKZJcfH1APdFUGYgGW2UOdJ94anKzvDXlkVQVoeRoDu0PD7sDKOyFiX0KbC3RdeQzjyai6
+ YgLFnp1vTe9BhgDMcWBN37tGPiBPT9o90xyn/zf486gb5TKWojQBGk5
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1y5qnqwijondmsx3iz1pn98qbow3ydfw
-X-Rspamd-Queue-Id: 7789618000A
+X-Rspamd-Queue-Id: DE8CD1C0003
+X-Stat-Signature: 514djdeti5i4cc9m7knz9pt6tnjk8ijp
 X-Rspam-User: 
-X-HE-Tag: 1775573746-659524
-X-HE-Meta: U2FsdGVkX19PifV978To2cVamlJo3bwG5MwrK4q5N+FzjJX+64e0fpnSAHnvllE6iAyxwqdg7MyjGZXkfzKw049PUAFGsHLTB1mnzXPJnkw0UGgqbJFbsdMXGiqYz0YSX4IK20gZaQOAPa7HVODUeKnc8D2/NEqdasIzdE2YG64fmngO08JmdkTm8AQM/Ss8BeW0DlkQkHPiP5qX5kMCmWU+RvGh9lZYmVUPZP5kMtG2zCwqLUkOgLQqAONo74vx2NGDoYw1DfNWEOH79m3rIFtQ4aYzfjMkDLpF0cDjdC+9hC1094HNzcZl1CXWOfY6vzccEfqc8g0sZ3Z9scb/T3xRD6hhRwVaGJvJI9VHJKBSaPrcHSJYI7Ekvd5MbY+xx/nQUFyCf+8+e4Gp8bzN94acQkKjdeE/afoRQp8sTUWJ7lOSqYT6exFd0Hh0cZhokmKXqD0DTLPCU5KD5kiWUrm1VQRIzQUDHbelZUrnm8XamEkAv4YJy+ptPJ5KEzryV0Mb3LYg53kDbPdPQx32grdbkwh35nWywJv1/8D3ntu2Q7qjOzNNAnYXEw933Rvs2fLZmR6BN0EIqaKdB04HPKEBU4o/+/YM9PwPoV6+1BYavlucN/ChccYZ6HaYlTdHPcIfLNsDnL2Z8Gol9ln7Utc7rz8XSGQ6q5Uh4kmItmtrfT8etTOJh/taJCC/Tf+ZM8BAHttZSkDOzpxv+S1E4fFffMBpyLaPScfBs7saWtHyzXA5voHmcwZWFq/51NZh087p4Elwt1Ml0nmhD6rAvAZ3emcOHQQulxQ+LH3B3SI7wpwM5LAHh2tbWiAfFRzpW9ZFtkF7yH9lUILVLyddwT4df5baxy3/8sVBRVq2JdYxTjOllrK4VYhRBGdfZfo2jjL5nW+yg8ep0ukmJjiLMjzQlmhUgqYUenwDUW1WpJvgTePBEwS/hzxj9B7bIhbgRmiFPYsdxs9y9Hu4AGX
- jVwfLnh+
- Oc3tEcr+k3TIPdn9LLiIJ4B2ZP759gNQIN/rs+7Zno9wJAejW9o4stYl1XA51o1e3IFkCdhkSnSRiK0oqQRXpeYB7ZW4OginRO+pfvm2JDHG1HahKiD0IFMC6Ck6zmqCRlNlmb6CPY3mg6UX+s3lit1Y/cmxGA0g3NAy4Wd8wQaD/Ng4RFHjIDbs838BHzw8QGsFnmR92Jl/olKTu37ylRzM16a8N2BtmTJFemt+nxzdvNmrEoFLNJZHP2aARKQjrY20Vd56mnTjRzOZJ6z9Rl+Qwk+frLtT8np/64rlhjBYy4l/J9ACvPpAgj3GPkAfTE9sakOecfhDxYvnyzh999Jo+2565tWHj/M7MymNVrSHDMuzdbAvoRz7jecfY/HppsUL6taXfLPmrMYw=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775573746-657492
+X-HE-Meta: U2FsdGVkX18Ybd1xOcgq5wa9jC1xvbkCq1V4EFig4SbKozCLvYeWZgELE0lSxSYAm+f/LQcie1WdBMncrhN93yHHqD7miFi8zUIPd3CafctMUZ9IgftyUKmt9YG8q+M6On166jDG92+S5mNjjof7eFZPuaQzin2byXX8qHBqO28593f3CfmAua2jqrP6LoPAgB68v6MUpQEMjgcau6/5tUjL02X7Vnp782fTQpoNKYXITe68uj4l1H/2bgFlQIueKPe3rHR9pm5nMxfyijAjP70AtGgK6RVMy2U7CXj6U6r/oCAMPDSYhSMZsp7zmpjibQGhG+Xs0iBN4qyryOGmTFub1HJikYWtIBvonLCqiL3C7qEOC3sRcy7gvIaop3RreV7Cz/5eeOHAwOMcDMBcKsaX7qwMosJTV6LgBLcV78h28Aep34vdAp3F2/GO225cTNUsXnK2oJ/TLn2+kGfREBqh1Qu4VQGiyFARytgNcsfzl9Vp8fOe2LXT7GgIk0P7DbKzkveAViW4g9t09wF0bz/cZBVK/77ZvyK7/m/j8XmXbzIWaS/DNt9DthjfTLhcsmp0Vlxnga7tf6RlMTE+xT1CftTtZUZsMAwbPT/z68GiZGuqjb1OGy02KASBDzwh7lxh/9UbcVJaKAetZv/KuELffNv+i95cjZV/sJ3e4d6P330ijOKUoVgPgMhBR/804erNCAhJQaIFXlqz2ty23f296o1laCSZ6HvIXh2j5JqkHO52+uNFrYUAz7Jn76bzcIrZ/UwKXV+zpc7el1FKlA8Z/7+68OErdHfhHrzr/KwN5rV9roEaxL9uuJCvc8XN5Y6B90BDw4e9Het5w68Rc+GIC0RHXu4tJmmECd8pJGn4IH9Zlwp0DerywzED1oIOkzF+0Ql0m5i52ezZTpbuV1pA5ofbdFK0bUWeapADWqB3nCgt1f1XXsPBPeINMB+cr9PUNTrwSFqnbbQLIlI
+ RjNUzuqP
+ s5V1pryvVZHV9nQXKUzppm/0BWTai3V/hEZtdNt1dDzWP7Jo8Vh1Kf5pvFGgRN7//XAFFI86eMecnxcobncrtLjxnXwviHIESpIEEMXQQl4sU8nc4oKneq1y5DsSJVyxQwxbDyOOm0rbRf2eMXIjMSsVPJhQuodCIIVEXRW7BL4ppB0nq8e/NBv0Fu836Xd09UB0hDv0EMb9lSE+n/BSmG2r6nooZoRoTpyDjMpH+r+srP89nZhwn/5s1TahKE8tX71+REyHyijK3R0WfURf6gAhOuhXOE8rG/pG+HfT34rGgJ3jXQfYMsz3n/NLbWB96LKL701BGp0cvugVY2ljH2AEsfLb3Z6bYV7qzuexoAULEYPcB+3muhwdlUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,115 +121,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While doing code inspection, I noticed there is a long-existing issue
-THP swapin may got charged into the wrong memcg since commit
-242d12c981745 ("mm: support large folios swap-in for sync io devices").
-And a recent fix made it a bit worse.
+From: Kairui Song <kasong@tencent.com>
 
-The error seem not serious. The worst that could happen is slightly
-inaccurate memcg accounting as the charge will go to an unexpected but
-somehow still relevant memcg. The chance is seems extremely low.
-This issue will be fixed (and found during the rebase of) swap table P4
-but may worth a separate fix. Sending as RFC first in case I'm missing
-anything, or I'm overlooking the result, or overthinking about it.
+Swapin folios are allocated and charged without adding to the swap
+cache. So it is possible that the corresponding swap slot will
+be freed, then get allocated again by another memory cgroup. By that
+time, continuing to use the previously charged folio will be risky.
 
-And recent commit 9acbe135588e ("mm/swap: fix swap cache memcg
-accounting") extended this issue for ordinary swap too (see patch 1 in
-this series). The chance is still extremely low and doesn't seem to have
-a significant negative result.
+Usually, this won't cause an issue since the upper-level users of the
+swap entry, the page table, or mapping, will change if the swap entry is
+freed. But, it's possible the page table just happened to be reusing the
+same swap entry too, and if that was used by another cgroup, then that's
+a problem.
 
-The problem occurs when swapin tries to allocate and charge a swapin
-folio without holding any lock or pinning the swap slot first. It's
-possible that the page table or mapping may change. Another thread may
-swap in and free these memory, the swap slots are also freed. Then if
-another mem cgroup faulted these memory again, thing get messy.
+The chance is extremely low, previously this issue is limited to
+SYNCHRONOUS_IO devices. But recent commit 9acbe135588e ("mm/swap:
+fix swap cache memcg accounting") extended the same pattern,
+charging the folio without adding the folio to swap cache first.
+The chance is still extremely low, but in theory, it is more common.
 
-Usually, this is still fine since the user of the charged folio -
-swapin, anon or shmem, will double check if the page table or mapping
-is still the same and abort if not. But the PTE or mapping entry could
-got swapped out again using the same swap entry. Now the page table or
-mapping does look the same. But the swapout is done after the resource
-is owned by another cgroup (e.g. by MADV & realloc), then, back to the
-initial caller the start the swapin and charged the folio, it can keep
-using the old charged folio, which means we chaged into a wrong cgroup.
+So to fix that, keep the pattern introduced by commit 2732acda82c9 ("mm,
+swap: use swap cache as the swap in synchronize layer"), always uses
+swap cache as the synchronize layer first, and do the charge afterward.
+And fix the issue that commit 9acbe135588e ("mm/swap: fix swap cache
+memcg accounting") is trying to fix by separating the statistic part
+out.
 
-The problem is similar to what we fixed with commit 13ddaf26be324
-("mm/swap: fix race when skipping swapcache"). There is no data
-corruption since IO is guarded by swap cache or the old HAS_CACHE
-bit in commit 242d12c981745 ("mm: support large folios swap-in for sync
-io devices").
+This commit only fixes the issue for non SYNCHRONOUS_IO devices. Another
+separate fix is needed for these devices.
 
-The chance should be extremely low, it requires multiple cgroups to hit
-a set of rare time windows in a row together, so far I haven't found a
-good way to reproduce it, but in theory it is possible, and at least
-looks risky:
-
-CPU0 (memcg0 runnig)                | CPU1 (also memcg0 running)
-                                    |
-do_swap_page() of entry X           |
-<direct swapin path>                |
-<alloc folio A, charge into memcg0> |
-... interrupted ...                 |
-                                    | do_swap_page() of same entry X
-                                    | <finish swapin>
-                                    | set_pte_at() - a folio installed
-                                    | <frees the folio with MADV_FREE>
-                                    | <migrate to another *memcg1*>
-                                    | <fault and install another folio>
-                                    |   the folio belong to *memcg 1*
-                                    | <swapout the using same entry X>
-... continue ...                    |   now entry X belongs to *memcg 1*
-pte_same() <- Check pass, PTE seems |
-              unchanged, but now    |
-              belong to memcg1.     |
-set_pte_at() <- folio A installed,  |
-                memcg0 is charged.  |
-
-The folio got charged to memcg0, but it really should be charged to
-memcg1 as the PTE / folio is owned by memcg1 before the last swapout.
-Fortunately there is no leak, swap accounting will still be uncharging
-memcg1. memcg0 is not completely irrelevant as it's true that it is now
-memcg1 faulting this folio. Shmem may have similar issue.
-
-Patch 1 fixes this issue for order 0 / non-SYNCHRONOUS_IO swapin, Patch
-2 fixes this issue for SYNCHRONOUS_IO swapin.
-
-If we consider this problem trivial, I suggest we fix it for order 0
-swapin first since that's a more common and recent issue since a recent
-commit.
-
-SYNCHRONOUS_IO fix seems also good, but it changes the current fallback
-logic. Instead of fallback to next order it will fallback to order 0
-directly. That should be fine though. This issue can be fixed / cleaned
-up in a better way with swap table P4 as demostrated previously by
-allocating the folio in swap cache directly with proper fallback and a
-more compat loop for error handling:
-
-https://lore.kernel.org/linux-mm/20260220-swap-table-p4-v1-4-104795d19815@tencent.com/
-
-Having this series merged first should also be fine. In theory, this
-series may also reduce memcg thrashing of large folios since duplicated
-charging is avoided for raced swapin.
-
+Fixes: 9acbe135588e ("mm/swap: fix swap cache memcg accounting")
+Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize layer")
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Kairui Song (2):
-      mm, swap: fix potential race of charging into the wrong memcg
-      mm, swap: fix race of charging into the wrong memcg for THP
+ mm/swap_state.c | 53 +++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 12 deletions(-)
 
- mm/memcontrol.c |  3 +--
- mm/memory.c     | 53 ++++++++++++++++++++-------------------------
- mm/shmem.c      | 15 ++++---------
- mm/swap.h       |  5 +++--
- mm/swap_state.c | 66 +++++++++++++++++++++++++++++++++++++++++----------------
- 5 files changed, 79 insertions(+), 63 deletions(-)
----
-base-commit: 96881c429af113d53414341d0609c47f3a0017c6
-change-id: 20260407-swap-memcg-fix-9db0bcc3fa76
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 1415a5c54a43..c53d16b87a98 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -137,8 +137,8 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+ 	return NULL;
+ }
+ 
+-void __swap_cache_add_folio(struct swap_cluster_info *ci,
+-			    struct folio *folio, swp_entry_t entry)
++static void __swap_cache_do_add_folio(struct swap_cluster_info *ci,
++				      struct folio *folio, swp_entry_t entry)
+ {
+ 	unsigned int ci_off = swp_cluster_offset(entry), ci_end;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -159,7 +159,14 @@ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+ 	folio_ref_add(folio, nr_pages);
+ 	folio_set_swapcache(folio);
+ 	folio->swap = entry;
++}
++
++void __swap_cache_add_folio(struct swap_cluster_info *ci,
++			    struct folio *folio, swp_entry_t entry)
++{
++	unsigned long nr_pages = folio_nr_pages(folio);
+ 
++	__swap_cache_do_add_folio(ci, folio, entry);
+ 	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+ }
+@@ -207,7 +214,7 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ 		if (swp_tb_is_shadow(old_tb))
+ 			shadow = swp_tb_to_shadow(old_tb);
+ 	} while (++ci_off < ci_end);
+-	__swap_cache_add_folio(ci, folio, entry);
++	__swap_cache_do_add_folio(ci, folio, entry);
+ 	swap_cluster_unlock(ci);
+ 	if (shadowp)
+ 		*shadowp = shadow;
+@@ -219,7 +226,7 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ }
+ 
+ /**
+- * __swap_cache_del_folio - Removes a folio from the swap cache.
++ * __swap_cache_do_del_folio - Removes a folio from the swap cache.
+  * @ci: The locked swap cluster.
+  * @folio: The folio.
+  * @entry: The first swap entry that the folio corresponds to.
+@@ -231,8 +238,9 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+  * Context: Caller must ensure the folio is locked and in the swap cache
+  * using the index of @entry, and lock the cluster that holds the entries.
+  */
+-void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+-			    swp_entry_t entry, void *shadow)
++static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
++				      struct folio *folio,
++				      swp_entry_t entry, void *shadow)
+ {
+ 	int count;
+ 	unsigned long old_tb;
+@@ -265,8 +273,6 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ 
+ 	folio->swap.val = 0;
+ 	folio_clear_swapcache(folio);
+-	node_stat_mod_folio(folio, NR_FILE_PAGES, -nr_pages);
+-	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
+ 
+ 	if (!folio_swapped) {
+ 		__swap_cluster_free_entries(si, ci, ci_start, nr_pages);
+@@ -279,6 +285,16 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ 	}
+ }
+ 
++void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
++			    swp_entry_t entry, void *shadow)
++{
++	unsigned long nr_pages = folio_nr_pages(folio);
++
++	__swap_cache_do_del_folio(ci, folio, entry, shadow);
++	node_stat_mod_folio(folio, NR_FILE_PAGES, -nr_pages);
++	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
++}
++
+ /**
+  * swap_cache_del_folio - Removes a folio from the swap cache.
+  * @folio: The folio.
+@@ -452,7 +468,7 @@ void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
+  * __swap_cache_prepare_and_add - Prepare the folio and add it to swap cache.
+  * @entry: swap entry to be bound to the folio.
+  * @folio: folio to be added.
+- * @gfp: memory allocation flags for charge, can be 0 if @charged if true.
++ * @gfp: memory allocation flags for charge, can be 0 if @charged is true.
+  * @charged: if the folio is already charged.
+  *
+  * Update the swap_map and add folio as swap cache, typically before swapin.
+@@ -466,16 +482,15 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
+ 						  struct folio *folio,
+ 						  gfp_t gfp, bool charged)
+ {
++	unsigned long nr_pages = folio_nr_pages(folio);
+ 	struct folio *swapcache = NULL;
++	struct swap_cluster_info *ci;
+ 	void *shadow;
+ 	int ret;
+ 
+ 	__folio_set_locked(folio);
+ 	__folio_set_swapbacked(folio);
+ 
+-	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry))
+-		goto failed;
+-
+ 	for (;;) {
+ 		ret = swap_cache_add_folio(folio, entry, &shadow);
+ 		if (!ret)
+@@ -496,6 +511,20 @@ static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
+ 			goto failed;
+ 	}
+ 
++	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry)) {
++		/* We might lose the shadow here, but that's fine */
++		ci = swap_cluster_get_and_lock(folio);
++		__swap_cache_do_del_folio(ci, folio, entry, NULL);
++		swap_cluster_unlock(ci);
++
++		/* __swap_cache_do_del_folio doesn't put the refs */
++		folio_ref_sub(folio, nr_pages);
++		goto failed;
++	}
++
++	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
++	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
++
+ 	memcg1_swapin(entry, folio_nr_pages(folio));
+ 	if (shadow)
+ 		workingset_refault(folio, shadow);
 
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
+-- 
+2.53.0
 
 
 
