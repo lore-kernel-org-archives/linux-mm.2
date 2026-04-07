@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E318EDB7CA
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 07:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E64EDB7CA
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 07:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80E8E6B0088; Tue,  7 Apr 2026 03:40:24 -0400 (EDT)
+	id 916916B0088; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BED96B0089; Tue,  7 Apr 2026 03:40:24 -0400 (EDT)
+	id 8A04F6B0089; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AE456B008A; Tue,  7 Apr 2026 03:40:24 -0400 (EDT)
+	id 768436B008A; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AFD06B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:40:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E99E9C253B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:40:23 +0000 (UTC)
-X-FDA: 84630961926.11.24487F4
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B2AF01C0007
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:40:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=G1s+Qrcv;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775547622; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6068A6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF16DBAB2D
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:59:22 +0000 (UTC)
+X-FDA: 84631009764.21.F229EB1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6013F4000F
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:59:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OT3YQ6Ny;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775548761; a=rsa-sha256;
 	cv=none;
-	b=HjnRRKKAJ/mboOUT8rGGOHYhRALk5Q40bcwBidmX3qZaeg++rozN/jk/XPB1BWCKowUaiX
-	mHyba2GyHQqjMHwjTSY/x+oBdlsjQzabDw3ciQI9Z1GRV5IcrXrnXhJVzxbvjhcu4oYLtr
-	tPJH98HKIebSDbLJmtwjtdTqCpbmhfk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775547622;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DA1gS7QAqLDq83Q/XySCI7Hpj4QTI9z7098AZR9nD+c=;
-	b=EEHeRZF5dAH6F+3uqe8aleQb97Y4eFyJbzYbUW9nL0eiokPTXTPRzo5eVfzo8FNsxdSq1T
-	EPQY9r1+EYEh0a0RgtSZA5zlmLqTj8WNuzfLprXLplY0eXiWkrxXiK8TUHKUhbHvSf17hB
-	WRna9MaAQaS+IMJBjoT85yc0ZxvU6mg=
+	b=MJUEv+LMNsM2olDp1a7NiVnP34NS9/01OtmBI8lkJ6por33oZ0FCEzBUx46WBkZruz3ern
+	pnPNyJ4DHPvs64Q3uyZLJjqSRKZdS+byfnWS8M3Afu3mLil72PvXNwVUgj+cW+YnEYnfHX
+	GmTzGEqa71xbkxR2gbWmQ0t3Jx0IHSo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=G1s+Qrcv;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775547617; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=DA1gS7QAqLDq83Q/XySCI7Hpj4QTI9z7098AZR9nD+c=;
-	b=G1s+Qrcv74XrXLHo4PZPgG41qiSVGuxsIOskpnKm0aWRsQYYo0cgammxUvK4OlQeH8DTFleHMahzOqzug27F8FR4J5qNyCpPlF3SvbHK5wbp+o+Xsn5OWQgYGv9frh3AkuVL3P4rCsEk/6M9V3RwmIefWCLt+EV/AlzzjM3CR8I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=40;SR=0;TI=SMTPD_---0X0azkhQ_1775547614;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0azkhQ_1775547614 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Apr 2026 15:40:15 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: akpm@linux-foundation.org,  david@kernel.org,
-  lorenzo.stoakes@oracle.com,  Liam.Howlett@oracle.com,  vbabka@kernel.org,
-  willy@infradead.org,  rppt@kernel.org,  surenb@google.com,
-  mhocko@suse.com,  ziy@nvidia.com,  matthew.brost@intel.com,
-  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
-  gourry@gourry.net,  apopple@nvidia.com,  dave@stgolabs.net,
-  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,  vkoul@kernel.org,
-  bharata@amd.com,  sj@kernel.org,  weixugc@google.com,
-  dan.j.williams@intel.com,  rientjes@google.com,  xuezhengchu@huawei.com,
-  yiannis@zptcorp.com,  dave.hansen@intel.com,  hannes@cmpxchg.org,
-  jhubbard@nvidia.com,  peterx@redhat.com,  riel@surriel.com,
-  shakeel.butt@linux.dev,  stalexan@redhat.com,  tj@kernel.org,
-  nifan.cxl@gmail.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  Mike Day <michael.day@amd.com>
-Subject: Re: [RFC PATCH v4 4/6] mm/migrate: add copy offload registration
- infrastructure
-In-Reply-To: <70414c31-d928-41a6-89db-eeb0f34ec07d@amd.com> (Shivank Garg's
-	message of "Fri, 3 Apr 2026 16:41:06 +0530")
-References: <20260309120725.308854-3-shivankg@amd.com>
-	<20260309120725.308854-12-shivankg@amd.com>
-	<87o6kdzeei.fsf@DESKTOP-5N7EMDA>
-	<70414c31-d928-41a6-89db-eeb0f34ec07d@amd.com>
-Date: Tue, 07 Apr 2026 15:40:16 +0800
-Message-ID: <87ldezfcbj.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OT3YQ6Ny;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775548761;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=9gipofllLJeGPw+/o153rjrDWxdz3aGlA00Edc8Fx4g=;
+	b=DrKfGqw0XOLSJpLePrwVCKR2DyREO3KaofTp6N5NjyBU6Qv65G1PBbWK3210WxrPurBQD0
+	2+3ZCGsNUFHBuTi0ROjh5P4gs7hIJl/j7Xej1/YHchNtnx/X39xXE3iSbYF5LJ7eQm2x8Y
+	rOkejWfN4G/1anGQOJg3SvDEhuB0AyY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775548760; x=1807084760;
+  h=date:from:to:cc:subject:message-id;
+  bh=rWUrsv1W8qJf9KmFN4h+K6eWgVKlBezYqGuQLWUdenI=;
+  b=OT3YQ6Nyhb/gzuGvEPfLRqWLQMo+EuOkLCX9kdzFp7l+PmSu45/7e/8z
+   gICa7+d83Pt2CrrtEKjeMFzryreTptDAxtE+7Fz1HYq3E02snF4hq6b9S
+   a1CQpoibcVVUqSv4ZQcfHTXdWjxFUg8wERTcITvedAUpmfJFLMLR8KRAs
+   bgKxjHdUArVLzvqX1bOZFNjVe7WuBaaxq5Cf3OWjV1XhybLEuvPJF2YGE
+   IwuAcgrzRQfiul6PxKkicBiDCgMzeTqLW4F9Gc19kTlIuoX28hJk8wZGp
+   ZtZgEzG3fpoHhpPq+CCrSw4Dk4USPDb8AX4RSTdS2wBKCvDk7zpNzoCnk
+   g==;
+X-CSE-ConnectionGUID: VmgQb4+MSzK6/s2fJmLqGg==
+X-CSE-MsgGUID: glls4arRTjeOhW04Ey6Sng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76401559"
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="76401559"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 00:59:13 -0700
+X-CSE-ConnectionGUID: CQEOJtvnT/WcNOlTuaHAOg==
+X-CSE-MsgGUID: CatIVsrPR0G6T6j+72S9AQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
+   d="scan'208";a="223305417"
+Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Apr 2026 00:59:11 -0700
+Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wA1L3-000000000Kf-06yd;
+	Tue, 07 Apr 2026 07:59:09 +0000
+Date: Tue, 07 Apr 2026 15:58:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-unstable 113/133] error[E0277]: `*const
+ kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+Message-ID: <202604071509.y5vLetYd-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: 3u6713p6ubgqp8kimkma95zzyzf3wa9d
+X-Rspamd-Queue-Id: 6013F4000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B2AF01C0007
-X-Stat-Signature: c1fmehrwhgo3kidwb3ksoq1eoukk5fh9
-X-HE-Tag: 1775547620-332639
-X-HE-Meta: U2FsdGVkX1/5UoO5SvCLEHJag/H/ZyyBIebgoJ1kRqBkEOMhgm4iJ1mIz8dOSwalEhnxw2lYWGmv/eclstaZz/3qCltkJSjZf81K3eTU7cjR6ULg0GU3Jk2jlmlF8si6PMGpXVxkmYEs4TmDmeoQIFdP8G+RQOEhcQKXKSNLVhHwA+M75/cYuemAoXWl8v7kvUvlICP8WThgR8ofPrNvnn9rbajd6GzVuxri2z71lSLsJeFx6bNSqITiKWX/C/mHwN7QR5vVHE6zSZhXCjDw41/VtIgfZpPpEZjr7lyOQ1tjlBj8RyM/XECDjqhgjxVa7YFcISEOUWqXmG+vMiUnBG1yUVHu1RKIYEJ3hdgc7hhqABqSuBLwGqtEIlJ9m1W7MhUpwsvO9xQEhA/HIVvIWXdjAxZbspOanmj9i05uq3qV+R7JC3BzvMIgJBsxr3YkWJL+QR8Jm74piWzE3dOeSyyJOqm5hpUrddlgzRXh5CjepTzLS8UW8pS/UocyrwHlXf/vvFPNuu13z9vaPiulkxYB4IPcC7Bf8EmuA6jo8e6Qu42BoZ6fMWMVElsN4amekpAek+gkQUhPf86jIr3EJ9OFE1hh6bpEWLyb+nWWkpAfUyNlzug3wHxmyeooEvxH+8Qwh51MQ5YdQZaSBwqHaYusnj5UDLGCJsYOXuwwoV/0aRvhagWRA189Hjt0z41HqtVgSB27SGxDHS+awaBnYbI4vkn4JtQZ+AmswkRdWVZ9xk9nHq7xnzJp9FDD1AG7v3KNJDF6D29mGgdZczgRrkF6wwN7r8uq8qFlAjbt/PQ6nxAz2qFzSDG53Ask/iAesmYT2aMzdb8X/RoRqu2yuMx5ziMH9UJkE4kHedmIebXXJvuFf0qZLvoqNwselWy2TDU7fHCtZFp0xG3e6I+BQVYWi15ju3YTLhTfijPlhEsaKnVPATOIZ16iu7tMWcwknMhuJkHaWEAB9LpyuAq
- llSBswiB
- kGeXLhAYqMpxB7sQ2D6wYUXA7bj+pAkhLJsQTky4ZnDQ7Gmuh1YxHV2M9W/c6sTCgmThSDZYst+TdydGGkxRpYJvhD4CfT8ZuQ3Nj1TKJH+S7exSguV2gNH5csImMffoMwHoJf8NJOQhAc1So1bv3h3hBHvAcHAyIxuYgeYI26iiPFObeCsFya3fa3bmnYSzlyqHubNgNmfCEH3KEi8G07UjnBXGBfXwl1EzmqRwcGx94oQQhnyxK7StvoEyaM5JRGVArPpnU4xH4YA5Rkur7QSxgLx8uLtFfIMPSEtEXNdL58/XXBGrrY67Z7Cmycnqub2JJMHiBFKRyISwvDoxH9hDNoN3h9lT2F4SAljZB/tAK23x3sMFThUFJ9A==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775548760-46545
+X-HE-Meta: U2FsdGVkX1+wm/rrVWj5Unb3JEZeAbrriBe7cKN11oDckX3CMPbj5LgKJDHQXV+KCliYlBMZ5mRSXupT66g5VUGqlrT6wttlFej2dDf8mhXWTYTQ4zquXhxnD3AbRbuc7PZwWQEl+7QtQgLtFGDOERsbWSFOzKrGgl9iMg7vaBsQ93kz5UPZgg2l9zIX137yF3BoEJAvm+5LOh0HtXheMjcomll1iDYyB6GaPDptKydc0MiI+LZwLmlwNzk9Hq9rx9pfodt1urPHEhUXNRkH84xYoqejAi3qH5B1T+nN2xpcC/P+7ZMcOOxfyBT2pxhZSFPIjFH3JEd50pqFXmFEE21HvMgDWMHJvBSaz5Nq3adN/dIPW0lj+lG6xv3kWRlswtEyooyYfp3Ss3gv7nUhpaRt+TLeqZBA81UHsLXqEJHNhOvt6aQjjr4PvdA3OWxvubPS7708eJe4E1dJySkE5ALm2yli8LOOBE5mzk/SKfQ81R/cDqtqV+/iag7ZheTK+NISOwSRIYye1qd44MfLqr8gDFvJ82wA48bMXQVhLzxrA5f/l07OkxQcS9CvxHLMSSRFYyQMHBlhss/VUtmesKVArNiT0h12NAcfXSz4l37Q4TYtt36l7quALsbqTljtiAKrVgWUyKagv+xe+gGR4pZjNYai2K9DcAwtAnbuDNa6obzZPCYi6sKOPlkwpsKDyZN5Qbm6A8cvsvYcHmx1I4xSYULFzOF67sT38DzRKbGx+xb9tNSLdzTxFk1ogG+mAN1qLPdtzm/8EmPdgmMwquwb5WDPZD5HvLTXF75mD/rmpfCaExG7I6CdgFwXtNz92h3dDwtr549bVn9QNfVhRv8vC5c30ZZhig1kFPXPRaCYfzd/cwx5jV8ZQlnnvBftWJMVN1hnWYeNq/KPjFfshvy5YnhMSb4TGjM986uhcld0hI5S0/86Zdz3nBvABwfFwM3iMOaENn17k+tsKxr
+ BrEe43EU
+ tnW/0B7r9qdApSZFW7FKkJ12CXO7uBJp12DtM1MVlggWwWiNdcH/E2XIXXRcQpMHjjKgbqCOCsVnCtut4DVUfbZmGn33V90siDgMBlOPydQAM8sJh9Z4Y5SBJuwIfL8+Oqbl9yXptrhPOIObZ6Wyun6UAwdNFbTk+laPoZmXYOdKdWvm2CLRA2l9mGYXyCGD6jhVZOqF7J8aoEK1+r0wPvgT74VGRVxbnzWyLwRS6wKh7zIqdnNImVNDGWWrqtMlzv/aLLCEmIArpU/7KaCHASXHYWOtLN1WXR+enC+teNqB8NhIanfZM4W5IM9rz31pZpPRz85Vi4vHgKik=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,100 +103,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Garg, Shivank" <shivankg@amd.com> writes:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   3fa44141e0bbd5062f2ef0c5cdddd98275d3223e
+commit: 694fc0bd3ca5420f4e1105d2dec02327cfc5d64b [113/133] userfaultfd: introduce vm_uffd_ops
+config: x86_64-randconfig-074-20260407 (https://download.01.org/0day-ci/archive/20260407/202604071509.y5vLetYd-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260407/202604071509.y5vLetYd-lkp@intel.com/reproduce)
 
-> On 3/24/2026 4:24 PM, Huang, Ying wrote:
->> Shivank Garg <shivankg@amd.com> writes:
->> 
->>> Introduce CONFIG_MIGRATION_COPY_OFFLOAD, which lets offload driver
->> 
->> Do we really need a new kconfig option?  IMHO, we have too many now.
->> Because we have a jump label already, the performance difference should
->> be trivial.  Can you measure the size difference?
->
-> BASELINE (offload=n)
->    text    data     bss     dec  filename
->   23577    1632      32   25241  mm/migrate.o
-> 39202900        14159750        6502152 59864802     vmlinux
->
-> WITH OFFLOAD (offload=y)
->    text    data     bss     dec  filename
->   24444    2568      32   27044  mm/migrate.o
->     676      64       8     748  mm/migrate_copy_offload.o
-> 39208218        14163942        6498120 59870280     vmlinux
->
-> WITHOUT CONFIG (always-on)
->    text    data     bss     dec  filename
->   24444    2568      32   27044  mm/migrate.o
->     676      64       8     748  mm/migrate_copy_offload.o
-> 39208405        14163942        6498120 59870467     vmlinux
->
-> It saves around 5.5KB of size, when offload support is disabled.
-> Is it meaningful savings? What do you think?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604071509.y5vLetYd-lkp@intel.com/
 
-The size difference of "vmlinux" is 5.5KB.  While that of *.o is 2.55k.
-Not too big for me.
+All errors (new ones prefixed by >>):
 
-From another point of view, if we will add kconfig for "migrator"
-implementations, we can make this general kconfig option invisible and
-be selected automatically?
+>> error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+   --> drivers/android/binder/page_range.rs:146:23
+   |
+   146   | static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+   |
+   = help: within `kernel::bindings::vm_operations_struct`, the trait `Sync` is not implemented for `*const kernel::bindings::vm_uffd_ops`
+   note: required because it appears within the type `kernel::bindings::vm_operations_struct`
+   --> rust/bindings/bindings_generated.rs:74703:12
+   |
+   74703 | pub struct vm_operations_struct {
+   |            ^^^^^^^^^^^^^^^^^^^^
+   = note: shared static variables must have a type that implements `Sync`
 
->> 
->>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
->>> +extern struct static_key_false migrate_offload_enabled;
->>> +extern struct srcu_struct migrate_offload_srcu;
->>> +bool migrate_should_batch_default(int reason);
->>> +int migrate_offload_start(struct migrator *m);
->>> +int migrate_offload_stop(struct migrator *m);
->> 
->> Why not naming the function migrate_offload_register/unregister()?
->> IMHO, that sounds more natural.
->
-> Ack. I'll rename to migrate_offload_register/unregister().
->
->> 
->>>  
->>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
->>> +	/* Check if the offload driver wants to batch for this reason */
->>> +	if (static_branch_unlikely(&migrate_offload_enabled))
->>> +		do_batch = static_call(migrate_should_batch)(reason);
->> 
->> Should batching based on "reason" be determined by the general migrate
->> code instead of the migrator implementation?  For example, if we only
->> batch copying for ASYNC migration, we should determine that in
->> migrate_pages_batch() instead of the migreation implementation.  Or am I
->> missed something?  If so, can you provide an example?
->> 
->
-> My idea was that different drivers may have different cost/benefit
-> profiles(e.g. setup cost, migrate batch-size, etc..) 
->
-> For instance, a DMA driver may want to target only bulk migration usecase.
-> And a CPU-thread based driver can be used more broadly, without worrying
-> about setup-costs.
->
-> But I agree it's premature with only one-driver.
-> I'll move the reason check with target usecases into migrate_pages_batch()
-> and drop the should_batch() callback. If a future driver needs different
-> filtering, we can add it back then.
-
-In general, I think that "reason" based policy should be in the general
-migrate_pages function.  While "batch size" based policy can be in the
-migrator implementations.
-
->>>  
->>> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
->>>  	/* Batch-copy eligible folios before the move phase */
->>>  	if (!list_empty(&src_batch)) {
->> 
->> Guard with "static_branch_unlikely(&migrate_offload_enabled)" first?
->> Better to define a inline function to shorten the expression.
->> 
->
-> Sure, will add the static_branch_unlikely guard and wrap in a helper
-> function. Thanks.
-
----
-Best Regards,
-Huang, Ying
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
