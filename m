@@ -4,119 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89386EDB7CA
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 08:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D58EDB7CC
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 08:57:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4AEC6B0089; Tue,  7 Apr 2026 04:40:05 -0400 (EDT)
+	id 4B2BA6B0088; Tue,  7 Apr 2026 04:57:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D225C6B008A; Tue,  7 Apr 2026 04:40:05 -0400 (EDT)
+	id 463C86B0089; Tue,  7 Apr 2026 04:57:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C37DD6B008C; Tue,  7 Apr 2026 04:40:05 -0400 (EDT)
+	id 351ED6B008A; Tue,  7 Apr 2026 04:57:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B30566B0089
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:40:05 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40E5E160714
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:40:05 +0000 (UTC)
-X-FDA: 84631112370.14.CEF9ECC
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 307458000B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:40:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="Z4/fnkf4";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 237466B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:57:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7EE91A0511
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:57:18 +0000 (UTC)
+X-FDA: 84631155756.15.094441C
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D497640011
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:57:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=RZP7wrMK;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf07.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775552236; a=rsa-sha256;
+	cv=none;
+	b=iGlvYnyEl/nEQt5MLdwHEqXyf0+d33viZcCNTyCXfsbTnwq5jhOwdqnb5c+yP4b7G4LUQH
+	L3vPVFnQuREharJP3ynyyrtMq9ZgF7u4NWICqDGXr4OKJp0DDHl2FBaQYlTDO2VZtU+pVT
+	awkiliuof9c/hhMFy2UJ/RxoQdVtmQE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=RZP7wrMK;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf07.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775551203;
+	s=arc-20220608; t=1775552236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O4bUAcw60BufFG8grCHM7B/gjvGCGM8MGOE43IA5CTQ=;
-	b=64IOVJkwcCnX2FaFr7GxkZ8QKQXXkmlTFM9sdJ5n74H5GUAebjx4CFIJIz4C9klZiH3XjE
-	AXevX78Jdoc1pmzn0tK/bABadxBh+URLYDqyKw203NVyGmc6fUgyDIjw7TtT0XNWzf6WVq
-	H/gCvhIv2U95ls0aSprjpVZdjDOjovU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775551203; a=rsa-sha256;
-	cv=none;
-	b=m40aWihcCDiqo8QMMJ9isJzAYgCqZjmxNnPuqOyPyYcgmaZRlOqBBEn23CuAK8++XQ63pJ
-	f46Z1IZ7R8geN2UFTHqm1Xm4Fs8+78L56OYKg4yemDIrO8PYlChxYGiNXVGLYYTJ3bFjzc
-	l3S1rwvSPJZnod1lDQTKk4gzNZwYuS4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="Z4/fnkf4";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35d9c7bf9a1so4293371a91.3
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 01:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1775551201; x=1776156001; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4bUAcw60BufFG8grCHM7B/gjvGCGM8MGOE43IA5CTQ=;
-        b=Z4/fnkf4PZ8DDLfKWk+lBmKWbgWcWuvW21zSwCH2KJL92HB5A8b43Svtb3g4xJlD2q
-         7lFT06tvhKdx6QyIK9YJhcqixRhEdYfCxmiIq/3XCI8w9nzS+1KH7ailuOVAw4qaedb6
-         30h3zoUtbZk9KG60i0Odacm5+H7Gr/V7ItPtlC+FWPLNAWyagS+TZ7bJ2UcW6dOgQD7e
-         NXGf56arQBwOhJ1yQQvYn5Ic/Ipb25MEg3Fqt3EX5kWmfWWwN6mhd8em5wn8UtV06mR3
-         CnJl9QnJPkuDU3w3ErtpTvreUqrrK6sPIXXtHCmkmARLXlut3eNnCuBwPWqXhb6uOHOG
-         k+Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775551201; x=1776156001;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4bUAcw60BufFG8grCHM7B/gjvGCGM8MGOE43IA5CTQ=;
-        b=KVpLUjnSVOKglFaEQdZCfyzA0EKFbkwgWrUO/ySCitMkp4/eYPlvu5tDUEHFJqd7ft
-         9h5jk+DnMfIAXRX1308QivAJjRSCsDTfKEV/ausVhcRMYJonkq26ifaXuah7IyWm0pPM
-         /nLLN3F6HhKn3Z+HgqiH0+xd2E68H5BUgGmAXdjsvnKBu5glXU4UxZVteG0gLazTiuTc
-         jjtUcIjg4KsTQzaA6rBgoZpo+KADypgLzzOeE/f0wEj7ccQwo8y+xLkx3Jnr3DxILwwI
-         AbhxbJ3vMdWU4PqVzc9uYt9DBOaSEKt3mgbCveDF/4/vlAjYFtzPfFP7VRUGQYt5jqA0
-         v3yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMErBpkCGvzT5wUmrd8mu5AcrE/XYfEtmzDzfFSt4TyOGwav5r4+uQ/iPB/7K6cu9iHYe3dyJE6Q==@kvack.org
-X-Gm-Message-State: AOJu0YwTCZGYGrkGgAWEBP9wh2cneZtAHkJqhORJf4dne+6WH43rDCmY
-	A12FXnXmLpHkpwf58NVqG+vz23LAm8wvDhZjTGJZ8eR+y3ebfGT3hSPWKBKLmQYhuxU=
-X-Gm-Gg: AeBDiesYks+u4ls61WjpSk0DcvaYz/oJtwaI3JXXxx5T19FAUROojL/zEnZy3jw2ALo
-	ja/ZUOmmt7duUV13eRL5DEyBLNDcu368YgxwGt9MzsSo6UTQEksAQaoepjpl9vEHYeSnNXYzMTt
-	2VVr4E60W4e7D2fXl7D8yUcDcgd2EDaNJxfyDOx2akxYbfZZyz1754GValJmjaT36Qoalo28K5t
-	YE1NLHCgIAk1mp0oTjO7nMnzt2Tm+tEUPtf0gtoidPF5M705H1ScQ7saZGEZ1GDFWMCARelajR8
-	ZHXMnDIZoYalhjmmTW2Vhdzha5aghZ5FCx9p/9hka1ndT2pcu4vyocDfA7BS6fgMBXtnIqna3wa
-	apmp+hSG6TgSiMfdG8m+9MEb4Jz1sbrTD9EpTiyM+M7VI4uFVIaxnWl3s8LxfGnBrQoVHpl4fp6
-	eFiikeqQWRiN9+wkpSPh8aos8EnddYWeCDfJt7c8ZDGuTKQH+s19PAEeU=
-X-Received: by 2002:a17:90b:314d:b0:359:f43d:4a6e with SMTP id 98e67ed59e1d1-35de662f67fmr15869369a91.0.1775551200600;
-        Tue, 07 Apr 2026 01:40:00 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35de697b0c9sm4681861a91.7.2026.04.07.01.39.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 01:40:00 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: yinghai@kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH] mm/sparse: remove sparse_buffer
-Date: Tue,  7 Apr 2026 16:39:50 +0800
-Message-Id: <20260407083951.2823915-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j6bI40rFXjnNi4xEhtGuTS96Jn2uqw2dljQ1TolNlrY=;
+	b=izw34AFrUTG4bwpdQGu3/Bsz7gSFrfs47mh0tRMlyuK4WO1wAfdv3QXgLrR/VHvDJtS/SD
+	OoqibzYxkGYwBc2Gdjt0jZliVq9I6JhVZ/7nPX/bytHwGQ667P7Sjz+SxAqOZTd1gkD5NU
+	m1Y1loQFx057Ifdn6ToHSTQ3+oHNbFQ=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260407085713euoutp02484e5c0096fb3401393786106c0ad46c~kB1lTWUb70378703787euoutp02j
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:57:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260407085713euoutp02484e5c0096fb3401393786106c0ad46c~kB1lTWUb70378703787euoutp02j
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1775552233;
+	bh=j6bI40rFXjnNi4xEhtGuTS96Jn2uqw2dljQ1TolNlrY=;
+	h=Date:From:Subject:To:Cc:In-Reply-To:References:From;
+	b=RZP7wrMKzjWpTNSEshTsXiJTw8AOOP1zOFBBv3tS71vQiKtLXKVltuDeWF8EcIlfM
+	 zElp9QyxfncUuCiEwOUWl9FjZN1RcG+kB8hUgcqxg2h6EcoSs1h0Ivn4/iGzNp9W9Y
+	 Hbg61O3FN+HxRRDMyEpK+gegKhATJxWzq1dImPGc=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260407085713eucas1p2511c88350d65a30746d62a99c13306c5~kB1lHOMuj1628516285eucas1p2J;
+	Tue,  7 Apr 2026 08:57:13 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260407085711eusmtip2e1ec49f71f6ce486832315b6cf927c28~kB1jYPioW0291302913eusmtip27;
+	Tue,  7 Apr 2026 08:57:11 +0000 (GMT)
+Message-ID: <e65750d2-7e1a-4e4a-acd9-ab4c4d0a2055@samsung.com>
+Date: Tue, 7 Apr 2026 10:57:10 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 307458000B
-X-Stat-Signature: gx11qx6keurnenqpik9yritxrzi8d8d4
+User-Agent: Betterbird (Windows)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH v5 0/9] driver core: Fix some race conditions
+To: Douglas Anderson <dianders@chromium.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>
+Cc: Leon Romanovsky <leon@kernel.org>, Christoph Hellwig <hch@lst.de>, Robin
+	Murphy <robin.murphy@arm.com>, driver-core@lists.linux.dev,
+	iommu@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux@armlinux.org.uk
+Content-Language: en-US
+In-Reply-To: <20260406232444.3117516-1-dianders@chromium.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260407085713eucas1p2511c88350d65a30746d62a99c13306c5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260406232527eucas1p2faa678aa90f0636bd17e0a7f4cb8fa28
+X-EPHeader: CA
+X-CMS-RootMailID: 20260406232527eucas1p2faa678aa90f0636bd17e0a7f4cb8fa28
+References: <CGME20260406232527eucas1p2faa678aa90f0636bd17e0a7f4cb8fa28@eucas1p2.samsung.com>
+	<20260406232444.3117516-1-dianders@chromium.org>
+X-Rspamd-Queue-Id: D497640011
+X-Stat-Signature: a9h1xrg1so1e5x76aczmedh4ontjf5h3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775551201-126298
-X-HE-Meta: U2FsdGVkX19Dbm66ksRiy/M76B7mYNxGl5+geVB2xYhg7tVv5fTIPwUPycODQyfhA8jDBGdLNbS4lviuF4NJuf96EsPRR6R/4UGqK/7AG5sct1J6gursJpvFId2o9pK78Zo1XGw0pdlWqObGbfIpr8nDCGcOabNxo4XEO1HBR2r6wrY8AIefWlH+/6lmk4urV57/EcZQVSZQv6ct3Zk9qXD/WZNrik15pQHqYI4oOeijQFmQcB3JZB3ETLPCLvYTwbtTPecmpcY3xakCqifL9ilXeVq8j83H504mDoIYgiWskyBwnaevvqmvr+nZ3BVvUogF9vRVk83RP1V5ijcDW3CYiyiwvqsAIFvrM7bsGIRlcN3uvEawtSbpIT0tb6g6Nh1fRtUT5WMvMhoszNzYpahTWYxbAOtXxODL0VcTH8yAp4vRbtl9ylkFj8IXkhMDX+gYF3ZSBq29aD+lw14b8UN+jD5Wcfkowx716IaS3wt+McwUIBvgrvxTr0KNlY4u95prbYg8F/YykLrI7lRohl+nhrkR2cnl2cQK652ZbKrDMjOHv2zog1GXZTYdfbQ1B813QvcyGgDKsGtINeWj2BGZkhpDjQHrFs9Q+73eCZwNu2HtTvlwSrO5MDS2c54kIcu91zFGVCncSG6sU1sJvCwU5VLsM8RsjBbQUsMYAmToKGw4iW5+B8+g4NDaW7On3lniRKfTq4qt5N5ZWw0JAyW2BThBxSUO3RrZ/Eq7kBL4SrjvokgFDkyz96pj156MOyOedpULgtBo1IvISbV3ogE0RfC65wCfoHWG4LySSa2gspJ219oCCm1U9ohOzxyZrZUeM9JXJG3aJJQqhyj07nSDyykG8A+rhqru4Kb0SOqY2lnK4RzbWMHuo0Qvyqo0zrV8c5XsRfwsNWWTM1akx9UnNQ77vjG5jbJMUBcWoYYgf4fpR8N2RKxmAokhPyDLKdyN0+QjgkxCgZKN4Xe
- D/EMqrqe
- OUcCoLLTmgp1Py2Oa/8VZ9LFKtUfs5ULJMQBVg6xkC74ossqQtvE+PFb2wM9w0E/fjy6CcICHex+U4srTqUo5ARifVoAse98/aRKlRyCRFy/qN1nusRGnb+AXWEJwzJ8WfzF6lsYfTEbZfH6RXhS1QOPbLpuM1wZ/wRJFgL+fXSoeOXF3bU2ltFomZjPCC/Z32zW0iVehItgFBlwt1bkRQBgokOtoV4Rk2r8DbYU5YlSfT5tGbjTYtYEidlwFeAq01k+qlzUBmzO+Lj2RGYvOXjjzt4+sfsfFrCtwhtJa4nz6fP2zQPJYvVX5483W78fTua6YQKx/DhDIqNuHk70mHXB/uDek2vYmuTHjNRazVILp4Gh9KJ/nZAAY5xkk5fozJdWBDGfxisXCfvw=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775552235-116915
+X-HE-Meta: U2FsdGVkX1828k3iSCMqrYFHldsa8DXRVQ7RSCMsQDTacW4aDOHy4l3xgvRt54sU9WVA93twDRIVzMeiDV47xdjNf2qRrrNobNXNSkC40vZ233OLdusC9BQo2t3iND+t+HC9KRLrEktWyIyAb92npFFayfkMAKzERPDTHDLD5GHDDvF+pM4aurTV4LF1vDwQcZZPFImSiBx2sf1yoKild/+C7dlg0/RqG6uoFIY2DZEsOZz7wgfMOlTR+a6cHvdPom5qMKuclBDY5n+BW9qey1/l/oFAy/gQMVbtMnawNp95u4Y8dDp6/sTyBP+AEp8LJkgqso29Yk4OU4pqzG+1oapiNeZ075yuc/NEmUv8/9TlvHaH2MwkTUupMEuRVpTYMmgBklAePIGVWqLT70R+5KxUg9QC68S8LxCKEKTZ0iCytvK88wwcux/1RLQeOAtTCznCNHH64uOAoY/antBV/XxSqfXxypUzlS2k4PVSp8onK43IvROd8L7UtLWgr6y75L5tdnK6ohN0jGUCIKsMgwu6aw37xm5KJ8tBq0KxxbmPIDopCBE9HiDXCUUO3KsuDgXOsIO8gN1NW3pVXJPX/NgiohmQGaW3IEaehMhxDYR7YXTiJQpC5vOjqpbH6iNboKmDr5/1Sf6Byik3vcNSrge8VhN9t5j5LtDml7rsxl6Q3lMhAen2moxX59d2vI4+QNjWrISRMcptvHwQyWEnbR55cpnco57mC4Zs6/KPaej6FneI+prDrjXxNNyeD+m3alqB1tEZzRNyf/p003XDS6F5w8GKr42RCBPoYZSD/kKAwhmI09aH++0R7vmpvLnwAE71Xp8tDa/0zzqhKYTHEXpZlFqisu1fXqzUkE8U/VLhnOS3wQZClBpovj4ZpDlZO7xtgV+jE95PAm8N27hQB7qtvebbkgDRHjMekGyRKx+c8N6Up0MeA7j42UbB2wS1yhRuJxmU+ROB9+Q/NJc
+ qOk2EBUj
+ /yw3t2OOruTN4m8bP8BWUEPPiEhmNnANDhWcnli10rrX8SljJZWcwrmfTMLS7S6PKnG8ghYLGcTFbatQubr+N1cbrQu4oU7VpqikXiNMn0KlG4UTJu+PNnaIBmlTP81+pTYZHXCc6z3ESqieIUY5/c/BmdJZFxdGBXeAa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,170 +109,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The sparse_buffer was originally introduced in commit 9bdac9142407
-("sparsemem: Put mem map for one node together.") to allocate a
-contiguous block of memory for all memmaps of a NUMA node.
 
-However, the original commit message did not clearly state the actual
-benefits or the necessity of keeping all memmap areas strictly
-contiguous for a given node.
+On 07.04.2026 01:22, Douglas Anderson wrote:
+> The main goal of this series is to fix the observed bug talked about
+> in the first patch ("driver core: Don't let a device probe until it's
+> ready"). That patch fixes a problem that has been observed in the real
+> world and could land even if the rest of the patches are found
+> unacceptable or need to be spun.
+>
+> That said, during patch review Danilo correctly pointed out that many
+> of the bitfield accesses in "struct device" are unsafe. I added a
+> bunch of patches in the series to address each one.
+>
+> Danilo said he's most worried about "can_match", so I put that one
+> first. After that, I tried to transition bitfields to flags in reverse
+> order to when the bitfield was added.
+>
+> Even if transitioning from bitfields to flags isn't truly needed for
+> correctness, it seems silly (and wasteful of space in struct device)
+> to have some in bitfields and some as flags. Thus I didn't spend time
+> for each bitfield showing that it's truly needed for correctness.
+>
+> Transition was done semi manually. Presumably someone skilled at
+> coccinelle could do a better job, but I just used sed in a heavy-
+> handed manner and then reviewed/fixed the results, undoing anything my
+> script got wrong. My terrible/ugly script was:
+>
+> var=can_match
+> caps="${var^^}"
+> for f in $(git grep -l "[>\.]${var}[^1-9_a-zA-Z\[]"); do
+>   echo $f
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = true/set_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = true/dev_set_${caps}(\&\\1)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = false/clear_bit(DEV_FLAG_${caps}, \&\\1->flags)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = false/dev_clear_${caps}(\&\\1)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var} = \([^;]*\)/assign_bit(DEV_FLAG_${caps}, \&\\1->flags, \\2)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var} = \([^;]*\)/dev_assign_${caps}(\&\\1, \\2)/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)->${var}\([^1-9_a-zA-Z\[]\)/test_bit(DEV_FLAG_${caps}, \&\\1->flags)\\2/" "$f"
+>   sed -i~ -e "s/\([a-zA-Z_0-9\.>()-][a-zA-Z_0-9\.>()-]*\)\.${var}\([^1-9_a-zA-Z\[]\)/dev_${caps}(\&\\1)\\2/" "$f"
+> done
+>
+> From v3 to v4, I transitioned to accessor functions with another ugly
+> sed script. I had git format the old patches, then transformed them
+> with:
+>
+> for f in *.patch; do
+>   echo $f
+>   sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_test_and_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/test_and_set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_test_and_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/test_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/set_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_set_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags)/dev_clear_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/clear_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags)/dev_clear_\\L\\1(\\2)/" "$f"
+>   sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \&\(.*\)->flags, \(.*\))/dev_assign_\\L\\1(\\2, \\3)/" "$f"
+>   sed -i~ -e "s/assign_bit(DEV_FLAG_\([^,]*\), \(.*\)\.flags, \(.*\))/dev_assign_\\L\\1(\\2, \\3)/" "$f"
+> done
+>
+> ...and then did a few manual touchups for spacing.
+>
+> I only marked the first patch as a "Fix" since it is the only one
+> fixing observed problems. Other patches could be considered fixes too
+> if folks want.
+>
+> I tested the first patch in the series backported to kernel 6.6 on the
+> Pixel phone that was experiencing the race. I added extra printouts to
+> make sure that the problem was hitting / addressed. The rest of the
+> patches are tested with allmodconfig with arm32, arm64, ppc, and
+> x86. I boot tested on an arm64 Chromebook running mainline.
+The dma-mapping related bits are probably not race prone, but if you plan
+to refactor that part I won't object.
 
-With the evolution of memory management over the years, the current code
-only requires a 2MB contiguous allocation to support huge page mappings
-for CONFIG_SPARSEMEM_VMEMMAP. Thus, it seems we no longer need such
-complex logic to keep all memmap allocations completely contiguous
-across the entire node.
+Acked-by: Marek Szyprowski
 
-Since the original commit was merged 16 years ago and no additional
-context regarding its original intention could be found, this patch
-proposes removing this mechanism to reduce the maintenance burden.
 
-If anyone knows the historical background or if there are specific
-architectures (Note that the mechanism implemented in 9bdac9142407 was
-restricted to x86_64. Therefore, I doubt there are any functional
-dependencies for other architectures.) or edge cases that still
-rely on this, sharing that context would be highly appreciated.
+> Changes in v5:
+> - ready_to_prove => ready_to_probe typo
+> - device_lock() while calling dev_set_ready_to_probe()
+> - Add comment before "can_match = true" from Danilo.
+> - undef __create_dev_flag_accessors
+>
+> Changes in v4:
+> - Use accessor functions for flags
+>
+> Changes in v3:
+> - Use a new "flags" bitfield
+> - Add missing \n in probe error message
+>
+> Changes in v2:
+> - Instead of adjusting the ordering, use "ready_to_probe" flag
+>
+> Douglas Anderson (9):
+>   driver core: Don't let a device probe until it's ready
+>   driver core: Replace dev->can_match with dev_can_match()
+>   driver core: Replace dev->dma_iommu with dev_dma_iommu()
+>   driver core: Replace dev->dma_skip_sync with dev_dma_skip_sync()
+>   driver core: Replace dev->dma_ops_bypass with dev_dma_ops_bypass()
+>   driver core: Replace dev->state_synced with dev_state_synced()
+>   driver core: Replace dev->dma_coherent with dev_dma_coherent()
+>   driver core: Replace dev->of_node_reused with dev_of_node_reused()
+>   driver core: Replace dev->offline + ->offline_disabled with accessors
+>
+>  arch/arc/mm/dma.c                             |   4 +-
+>  arch/arm/mach-highbank/highbank.c             |   2 +-
+>  arch/arm/mach-mvebu/coherency.c               |   2 +-
+>  arch/arm/mm/dma-mapping-nommu.c               |   4 +-
+>  arch/arm/mm/dma-mapping.c                     |  28 ++--
+>  arch/arm64/kernel/cpufeature.c                |   2 +-
+>  arch/arm64/mm/dma-mapping.c                   |   2 +-
+>  arch/mips/mm/dma-noncoherent.c                |   2 +-
+>  arch/powerpc/kernel/dma-iommu.c               |   8 +-
+>  .../platforms/pseries/hotplug-memory.c        |   4 +-
+>  arch/riscv/mm/dma-noncoherent.c               |   2 +-
+>  drivers/acpi/scan.c                           |   2 +-
+>  drivers/base/core.c                           |  55 +++++---
+>  drivers/base/cpu.c                            |   4 +-
+>  drivers/base/dd.c                             |  36 ++++--
+>  drivers/base/memory.c                         |   2 +-
+>  drivers/base/pinctrl.c                        |   2 +-
+>  drivers/base/platform.c                       |   2 +-
+>  drivers/dma/ti/k3-udma-glue.c                 |   6 +-
+>  drivers/dma/ti/k3-udma.c                      |   6 +-
+>  drivers/iommu/dma-iommu.c                     |   9 +-
+>  drivers/iommu/iommu.c                         |   5 +-
+>  drivers/net/pcs/pcs-xpcs-plat.c               |   2 +-
+>  drivers/of/device.c                           |   6 +-
+>  drivers/pci/of.c                              |   2 +-
+>  drivers/pci/pwrctrl/core.c                    |   2 +-
+>  drivers/regulator/bq257xx-regulator.c         |   2 +-
+>  drivers/regulator/rk808-regulator.c           |   2 +-
+>  drivers/tty/serial/serial_base_bus.c          |   2 +-
+>  drivers/usb/gadget/udc/aspeed-vhub/dev.c      |   2 +-
+>  include/linux/device.h                        | 122 ++++++++++++------
+>  include/linux/dma-map-ops.h                   |   6 +-
+>  include/linux/dma-mapping.h                   |   2 +-
+>  include/linux/iommu-dma.h                     |   3 +-
+>  kernel/cpu.c                                  |   4 +-
+>  kernel/dma/mapping.c                          |  12 +-
+>  mm/hmm.c                                      |   2 +-
+>  37 files changed, 218 insertions(+), 142 deletions(-)
+>
+Best regards
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- include/linux/mm.h  |  1 -
- mm/sparse-vmemmap.c |  7 +-----
- mm/sparse.c         | 58 +--------------------------------------------
- 3 files changed, 2 insertions(+), 64 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0b776907152e..1d676fef4303 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4855,7 +4855,6 @@ static inline void print_vma_addr(char *prefix, unsigned long rip)
- }
- #endif
- 
--void *sparse_buffer_alloc(unsigned long size);
- unsigned long section_map_size(void);
- struct page * __populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 6eadb9d116e4..aca1b00e86dd 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -87,15 +87,10 @@ static void * __meminit altmap_alloc_block_buf(unsigned long size,
- void * __meminit vmemmap_alloc_block_buf(unsigned long size, int node,
- 					 struct vmem_altmap *altmap)
- {
--	void *ptr;
--
- 	if (altmap)
- 		return altmap_alloc_block_buf(size, altmap);
- 
--	ptr = sparse_buffer_alloc(size);
--	if (!ptr)
--		ptr = vmemmap_alloc_block(size, node);
--	return ptr;
-+	return vmemmap_alloc_block(size, node);
- }
- 
- static unsigned long __meminit vmem_altmap_next_pfn(struct vmem_altmap *altmap)
-diff --git a/mm/sparse.c b/mm/sparse.c
-index effdac6b0ab1..672e2ad396a8 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -241,12 +241,9 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
- 		struct dev_pagemap *pgmap)
- {
- 	unsigned long size = section_map_size();
--	struct page *map = sparse_buffer_alloc(size);
-+	struct page *map;
- 	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
- 
--	if (map)
--		return map;
--
- 	map = memmap_alloc(size, size, addr, nid, false);
- 	if (!map)
- 		panic("%s: Failed to allocate %lu bytes align=0x%lx nid=%d from=%pa\n",
-@@ -256,55 +253,6 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
- }
- #endif /* !CONFIG_SPARSEMEM_VMEMMAP */
- 
--static void *sparsemap_buf __meminitdata;
--static void *sparsemap_buf_end __meminitdata;
--
--static inline void __meminit sparse_buffer_free(unsigned long size)
--{
--	WARN_ON(!sparsemap_buf || size == 0);
--	memblock_free(sparsemap_buf, size);
--}
--
--static void __init sparse_buffer_init(unsigned long size, int nid)
--{
--	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
--	WARN_ON(sparsemap_buf);	/* forgot to call sparse_buffer_fini()? */
--	/*
--	 * Pre-allocated buffer is mainly used by __populate_section_memmap
--	 * and we want it to be properly aligned to the section size - this is
--	 * especially the case for VMEMMAP which maps memmap to PMDs
--	 */
--	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
--	sparsemap_buf_end = sparsemap_buf + size;
--}
--
--static void __init sparse_buffer_fini(void)
--{
--	unsigned long size = sparsemap_buf_end - sparsemap_buf;
--
--	if (sparsemap_buf && size > 0)
--		sparse_buffer_free(size);
--	sparsemap_buf = NULL;
--}
--
--void * __meminit sparse_buffer_alloc(unsigned long size)
--{
--	void *ptr = NULL;
--
--	if (sparsemap_buf) {
--		ptr = (void *) roundup((unsigned long)sparsemap_buf, size);
--		if (ptr + size > sparsemap_buf_end)
--			ptr = NULL;
--		else {
--			/* Free redundant aligned space */
--			if ((unsigned long)(ptr - sparsemap_buf) > 0)
--				sparse_buffer_free((unsigned long)(ptr - sparsemap_buf));
--			sparsemap_buf = ptr + size;
--		}
--	}
--	return ptr;
--}
--
- void __weak __meminit vmemmap_populate_print_last(void)
- {
- }
-@@ -362,8 +310,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 		goto failed;
- 	}
- 
--	sparse_buffer_init(map_count * section_map_size(), nid);
--
- 	sparse_vmemmap_init_nid_early(nid);
- 
- 	for_each_present_section_nr(pnum_begin, pnum) {
-@@ -381,7 +327,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 				       __func__, nid);
- 				pnum_begin = pnum;
- 				sparse_usage_fini();
--				sparse_buffer_fini();
- 				goto failed;
- 			}
- 			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-@@ -390,7 +335,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 		}
- 	}
- 	sparse_usage_fini();
--	sparse_buffer_fini();
- 	return;
- failed:
- 	/*
 -- 
-2.20.1
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
