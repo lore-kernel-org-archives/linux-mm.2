@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22AFEEDB7E7
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B6A2EDB7E8
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:08:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 604606B0088; Tue,  7 Apr 2026 06:06:06 -0400 (EDT)
+	id AC2FD6B0088; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5156B0089; Tue,  7 Apr 2026 06:06:06 -0400 (EDT)
+	id A73A86B0089; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CAA96B008A; Tue,  7 Apr 2026 06:06:06 -0400 (EDT)
+	id 9896E6B008A; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A9F56B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:06:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C9C3A8C3B7
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:06:05 +0000 (UTC)
-X-FDA: 84631329090.29.6F8C462
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 43C472000B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:06:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KDe3atUF;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85F9E6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:08:29 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 476E5C1789
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:08:29 +0000 (UTC)
+X-FDA: 84631335138.27.C51E306
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7C01C100006
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:08:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OjqNwhS0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775556364; a=rsa-sha256;
-	cv=none;
-	b=HQ8tvrLhtUq2Vu3W+yPfglwsqqYAUXFTCGB/Bf/SUNLC5rlcrZh7v9+V+LqNqcuRgGMGU8
-	dsAk+IOEMIjdhy9nOg21uG/kvsaQ6ktPdWc8y8aEsv+vpsXzKI7sPzvuHGOIs6VdGxS559
-	udaEcs1a4i/oHM58rvqeKJzIyWs3ZJM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KDe3atUF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775556364;
+	s=arc-20220608; t=1775556507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P5rNUzspCCwbmUahVp36chMThRuJkZ4XpZItUDula68=;
-	b=dGW5xoUwMRlzbPt+pCXLN7uSWL/N+KDLKdSa5VBiWtBl1FIstYzl6fFZNj1rWeNzu4FAmY
-	Qjp7a7KMAySBW3n2mZ/UD4YNY7pWmQZgB6nPngy/kO65J1Wp7vS/ivPQrIylFnbFIZHDd4
-	FSwn81loOeHIRCeY9Db1pON/A/oq8Gc=
+	bh=Cfar0aBz7g5t2ZOqLZ+P2js5EhdQh95PA1bgX64PG+4=;
+	b=sbDPf9VCCF5dlTICUKu0aHhePc4DWJlJ6YVEumBC0seP0ptIyEPhveE8Z+0ywB2+Cclvgq
+	my8wIwvOnbFssHVF1thNywiagSc4Xa3smOkoEjdxDo9qeRfVuGXC0H4JZE7n2kgxA1uEPL
+	9YponLFHmXNnGelMrOViCyV4InPFO6o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775556507; a=rsa-sha256;
+	cv=none;
+	b=4TrIvNXHtM1+oC2a6hQnydj9i25wzmputjhm/Cl8D7d/cXjSkQ4YF/WMJ0MqbZZ/fihsGg
+	ZT9tMEKYX8DBzHVvKgFBHRzybZpSEePHjSFOEEu+nruq1k05E/fYMZRGzNOeJCaScFYmJ2
+	IQQoyYQ5H13VTmjtJv1+BTi2ghs1fTw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OjqNwhS0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AFF7660123;
-	Tue,  7 Apr 2026 10:06:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C9AC116C6;
-	Tue,  7 Apr 2026 10:05:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 524A044504;
+	Tue,  7 Apr 2026 10:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC99DC116C6;
+	Tue,  7 Apr 2026 10:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775556363;
-	bh=xcNXJlqieSYqhdO9b7zc1ja/wDpDdbkAoWgTKktXzBM=;
+	s=k20201202; t=1775556506;
+	bh=LJPJyFP0f2YfeF5uUdY6JnT5FwY6kPTuyJbRkKuNSVw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KDe3atUFrLcha8dZqpU20XliIYXYYBRVu4cdpDmyL3Y4twRJ7HmKqINPOZimaf9lq
-	 P+MFlkMryiizs/wkxZXHmNoRUXXZNSD3GEBM/W/TiAR7Lalggq9/hhOctfAdMe7Coi
-	 hEKxD/OfEBpOhJdeOYOX/pM48DAJ6+TIYvKJAdT2Tgyww/sTwF01ktJSmMkJLamRns
-	 7E7TwHKpXq9XSPbb6aba+k7c9QVkdqTo2TxWiv8NlO6/sM4CA3WNaq8+L7gJk+2zmn
-	 9YIQIlcFk0PSc/C+WrMyntX8vAVEgXSR855RWxo//guiaJz2NsKdb2fWvbyxvrhUsq
-	 ySUTkLZNQa3eg==
-Date: Tue, 7 Apr 2026 11:05:57 +0100
+	b=OjqNwhS053IkVX8CBweRCuteB09IAJKrQK8Ve61pjglln2XH0KA8YzqYFWl2vT056
+	 gsVk5hHrcG22Fl9h2ynZVl2HYMCVmlV2abyBDoUheXBZOU+uxILBN6EXItMSgwJVhh
+	 5ISkLxxSUYayF2Xw4UeAxAl6vj7tHxcoXTsWKK0fNBX8GgJgWlVNL/gjhc+xXZ03bN
+	 zIymO/Qxm/ZpqSYTn5VLUZgUmmYc1Yy2Pn8nCa15Uv6hLIZQXTBY4rFOv7Qx2EZ4t3
+	 GJK0LeeIYNzqeTtTiZoAj2IBsSb5fh4tdc62U6PIyO/aiXFzROR5ugvwXvm1v0Gpof
+	 /RFVVQtZLajkg==
+Date: Tue, 7 Apr 2026 11:08:21 +0100
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, 
-	shuah@kernel.org
-Subject: Re: [PATCH v2 1/2] mm: fix mmap errno value when MAP_DROPPABLE is
- not supported
-Message-ID: <adTWtnIMxao-_Fhd@lucifer>
-References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
- <20260402235933.10588-2-anthony.yznaga@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (arm)" <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
+	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] mm/mprotect: micro-optimization work
+Message-ID: <adTXZTApsalskiZU@lucifer>
+References: <20260402141628.3367596-1-pfalcato@suse.de>
+ <20260402113328.fd0a6f0e28cf74a651fa2291@linux-foundation.org>
+ <6bl5bzq742c522nmhlshlnf6ho6y6a747l3zh63aagp7kfxymv@s2c6fsuikn4m>
+ <a3ace37b-b75b-47dd-ad7c-c7c3f799dfdb@kernel.org>
+ <20260406103854.f48c27d7709beb680268d388@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260402235933.10588-2-anthony.yznaga@oracle.com>
-X-Stat-Signature: g3pgy13zarkmuyk4hk4us8n4jzkhadjg
-X-Rspamd-Queue-Id: 43C472000B
+In-Reply-To: <20260406103854.f48c27d7709beb680268d388@linux-foundation.org>
+X-Rspamd-Queue-Id: 7C01C100006
+X-Stat-Signature: thitabwrjbfw9uacx1ct6yithzt7dhq4
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775556364-17524
-X-HE-Meta: U2FsdGVkX18VeER4Ebr+387pe5orn+69UVR8QrH+1uQ8+426WmTBo/me51oVb5bMaLxToonrTNkA1C0GL6wDYm42xXIazW4Ds2E+IrD3IELqdS+9hbSrR2ykQWt1yE0/psVuTKX2/iIfDUFJPjwEtQFKcoUwrjXwCFW/WYhhCKvrbXCtLWVcfOH9uZXl3H9ZYJwstk6mK2Ggw8nr/uSoR8d47VR0cMKavCvBMMRnvrl26VhHvvcugYd1wiV1BC7CWFqfRo4HW6WvNeIrZTPatlFY4qqz0H8y843j/n5BnI+6cH72OSsqv+fLulxv1JfX61qT2/72gdf4sSUsifRwfGOjHlrDNCO5M07+cwFG0DGXN08WTUsrc3vxDsv9HujVpWtVdCnFME7VK/kPETBXjEKv2bv1ly9SBomOTkq2nR6UqiEw/pmIGR+wKgNQ/ZN+BCZtaSP6Q0Ogt2bbYZcgebb3L6i/TFgMQo/D2CSt3YJxKMDoj6v6MAHe6koUOs4vn+/+SSOYAjphwAnO/AfWXSRNznhf4Kn6f4IeOka1eVNru5nSaqGoePHCtROTJZoLd3qp+vQbozhhCZmW8R6S2YOKT/kg+DD7cd8Sn8gwkSksX/8KRrI9waZUt4xbs91bqXgGuA61nqrDskyQmM7Lk1gF/B5AaNnCM9ar9JjiFEj6LhDr8PpSVJgY9MzKY4xF7Js5Ko2aEi9QJPaNQot0oMEt+VxteBHRZUNdlQOwBRGL+5N2pjq8Di94WB1FguSva8l3n/Y3iKniYL9p3SFNFVozuLlpbgPe1kVH9Dn9gDAXgiJEp8FiLrE09ODTDD9A4w+P2LoQw1VFcrStzsWJyyybFta22qsrqXZ2V0FapPDk4/nYBpTBEbk1qcG2YAXQQScjXrOFykBY891V8G6i5JYG+jo357djDx/4EmkVt2ncf7iwVovxhb8+eUsUlfE5A8ivQTlv9hl/LRtGMIi
- t7/arn30
- Z71Iw
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775556507-949946
+X-HE-Meta: U2FsdGVkX1+O/c3eINqvwNUXF6ZI0cpAiY23vefNfupaMMrQ275QKPeYHhm3rKwzfxs0o+39vnxJOKXwaE2Vwrka1Quj2i58wHcAYPwFepfFuljCm7ZNrAreyuSSqW8uiK5689mNCziGTQQGIl7AQVfi3nck3Vt4mTT1NRTdXB/8Gd6FUZyWHvHLzwWWznWS72PZOvpK1Y84qv9k6cItsCAHNua8USLBtWoLFTde2o03GCs372mNgh33mtqaHJXRYk7s13mHB+hP8kJFA2TGv3J/AAD+K9BF0S3Nntcdyqd3v1Sm+dB79fdMWEPSZMLmpS5Qrg8Jl/LhypyZEbeYpbKwfR79HH+yuj1k6aChrxf5ltvvsK2iLvXgAWs6wKZXNVHgXMs1WeqfJ6EhgXCqMSJF24A/5pNnZo+fo08Fd10SQZkF3xDio+JYqnjF1Jkh9s7A9mNTFlgBC0j1hL+r2jIwXQ0i+M8y0Ov8PeHAIS5Jnq5WdXlGFPmSl6Z65z78GEhJHPJbfoTpVDxX8kEWpvMt14ive7/Ha37Wpc0EOtQNO451PGlpVMsoWfXTNo9fZox0OmTxk405SFE24H1+n5cOd1yVaahjruffrayqeHE8+A8oBaLk3cYCzDMHGytyzjfXpkT29u9N1Ph3pPFEqfHy6ZmFhrqxWKPtt1DqfRjslFpTlEn6qaiu4LXSWcKoby4mJ7OflcPkGhgjP2qkxdIKQA3EX6exQtKAQN+RPKIonPvSmDKzj07PKe0GkHbEGzqMHJKbHf3LIDFMhdzQoEUhGSIz/6E08edW57WMTbF7HhA+2418lrDwvdQnbcclGDvutzcaxJ/Oac5g4h4ViAV3t64uAkDBjEMwpgJ25JglnbE1HJaOI9uNzKZpdB6+V51nr/1eLX8Vx2sOIJTb6rND2mgIUWqt81HEo68CLWgtTm6Z9a6eTr4MEEq3oK9fyU/A1HCulhJDd7Bzrcb
+ TyshpGJ6
+ dAqo0Q3zK0IQnXHKaLownJ0Gr/nPdsvS0xbAix6rZotPt15jnxKeB9Xld2SR+Gd6l7i9sFcM6iP9hfmYy/6Ta7uHikejpNNBSf76Szi5knmB47eGkJd4c3aCM0wilchp5wD2ILUo6S1OiiGcMOWnSpT2oexzBthdYXsXX08D0h5KBVrHthF/40mNWDt4upaEbOrrd6T8+HBwSRrE5nYxOKtx7gUYIOgWOUsIAiIyW92z7TG/VKefpqCtgFi/rq2MUjh5NvB1GOxssn/wFw51ewJWcOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,46 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 02, 2026 at 04:59:32PM -0700, Anthony Yznaga wrote:
-> On configs where MAP_DROPPABLE is not supported (currently any 32-bit
-> config except for PPC32), mmap fails with errno set to ENOTSUPP.
-> However, ENOTSUPP is not a standard error value that userspace knows
-> about. The acceptable userspace-visible errno to use is EOPNOTSUPP.
-> checkpatch.pl has a warning to this effect.
+On Mon, Apr 06, 2026 at 10:38:54AM -0700, Andrew Morton wrote:
+> On Mon, 6 Apr 2026 11:09:01 +0200 "David Hildenbrand (arm)" <david@kernel.org> wrote:
+>
+> > On 4/6/26 10:29, Pedro Falcato wrote:
+> > > On Thu, Apr 02, 2026 at 11:33:28AM -0700, Andrew Morton wrote:
+> > >> On Thu,  2 Apr 2026 15:16:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
+> > >>
+> > >>> Micro-optimize the change_protection functionality and the
+> > >>> change_pte_range() routine. This set of functions works in an incredibly
+> > >>> tight loop, and even small inefficiencies are incredibly evident when spun
+> > >>> hundreds, thousands or hundreds of thousands of times.
+> > >>
+> > >> Thanks, I updated mm.git's mm-unstable branch to this version.
+> > >>
+> > >> The update is rather large.  If people think it best to spill this work
+> > >> into next -rc1 then please advise.
+> > >
+> > > I think it's a fairly safe change for 7.1, but I'm biased :) Perhaps others think
+> > > otherwise.
 
-Hmm, weird it was missed on initial patchset, but checkpatch.pl is
-unfortunately overly noisy about silly things quite often so things can be
-missed fairly easily.
+I'm fine with this for 7.1 (as long as Pedro buys me a beer ;)
 
 >
-> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+> Thanks, I've firmly added these two to the second-week-of-merge-window
+> pile.
 
-Nice catch, LGTM, so:
+Ack!
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  mm/mmap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 5754d1c36462..2311ae7c2ff4 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -504,7 +504,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
->  			break;
->  		case MAP_DROPPABLE:
->  			if (VM_DROPPABLE == VM_NONE)
-> -				return -ENOTSUPP;
-> +				return -EOPNOTSUPP;
->  			/*
->  			 * A locked or stack area makes no sense to be droppable.
->  			 *
-> --
-> 2.47.3
+> > It's mostly code movement, so it should be fine (unless we messed up
+> > passed parameters somehow :) )
 >
+> This (or an earlier version thereof) have been in mm.git since March 24.
+
+Also ack, yeah it's fine.
 
 Cheers, Lorenzo
 
