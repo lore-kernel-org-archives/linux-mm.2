@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E48CFFB5173
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 01:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DFCCFB5181
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 02:07:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD5BA6B009D; Mon,  6 Apr 2026 21:05:47 -0400 (EDT)
+	id 4E0DB6B0088; Mon,  6 Apr 2026 22:07:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87426B009F; Mon,  6 Apr 2026 21:05:47 -0400 (EDT)
+	id 46AD06B0089; Mon,  6 Apr 2026 22:07:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9D476B00A0; Mon,  6 Apr 2026 21:05:47 -0400 (EDT)
+	id 35CC06B008A; Mon,  6 Apr 2026 22:07:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 971B36B009D
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 21:05:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 576FFBA1E2
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:47 +0000 (UTC)
-X-FDA: 84629967534.01.4F4636C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 76E5980002
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FDwj2FTa;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FE106B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 22:07:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6232F59A16
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:07:27 +0000 (UTC)
+X-FDA: 84630122934.14.556A622
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5254840003
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:07:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tpv/V9Oh";
+	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FDwj2FTa;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775523945; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tpv/V9Oh";
+	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775527645; a=rsa-sha256;
 	cv=none;
-	b=Wcs3LxK7qpi6tqYVamhX3jXHyT/glnVspQNKRawSPLz1A3bFQvE/Ly3qXPRqK2ojhciSjd
-	kSkbW9MpGgw4uzLJiBe4nRDxmSNEYrZagLu7v3NIS84jE8Sdv1WTbDOA1yMDIPsEwER/LW
-	neCsuP9D3dgGqINJjHQ/AIzm0De1m6Y=
+	b=s8IvWFft01vCnTOLKKLGaCGJ9/xKeIL05JO/+1ey2WLhhEVM2djK3qdYw1BOlxJ+TZE8fp
+	n2DSQwq3KbedQAsWLLJj7Vp6WI5Z+GWwMXIbKdo8zOA1AutfgWbVMsXkrrgkVZSo4VUG2S
+	yB9zx3U/s4RL5HC3kImMh0NowpCB7n0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775523945;
+	s=arc-20220608; t=1775527645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0QO0HMgZR6Q1HucKxNFx50+mXtq1QtftwQyXEIAQyxA=;
-	b=i//HqQfCCDBggB9cXHeUITEPKJWeio320GeVBZtZ7/NirQmTluC/nC+5SSj6he5bM+ZtqF
-	7GjhdijXZVid0JooKqMMoSW3PTV5Pt9ssePZXgALmW5usuQeazOLYa+Lr2+k3i04u+UDIG
-	96ul3Gv51Dw34DuSLJK+DowWQC8RPm8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7846B446F8
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08754C19421;
-	Tue,  7 Apr 2026 01:05:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775523944;
-	bh=6J24o91UAsIJGEgFo2jYtnFEeYvJuiRUU82+7XJIPqI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDwj2FTacxl0kPuumeqvG7CuFJL1N/GOrzdwTpAV0y7ENCUyXq+huiFhSdO2rQv9W
-	 YX57PY4xHgxYPi/2WbkX2UE7moPsQSF4r1dzErgfzjZhGc9Xr5WXZajGldx1g6kokb
-	 dw0ZoFjNgDxG+pVnMdLPxYhv071lHdMU1pz1FcTXg+YO3eG3tnze44Yc6WZti5ca0H
-	 WrU7mzF/+Sa6qAL31Y4LYLLKFpWmYnmdzoEfpEDmt027UKrd4NhKuEWFfILOUAojA1
-	 vkrd2wRMnSn9YfE/T4walOiiYQaVkyLJ1kH34op1yuA5QLM4jlqQkJQ7kedl+KfHht
-	 nU/sWnqvM4ewg==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v3 10/10] selftests/damon/sysfs.py: test failed region quota charge ratio
-Date: Mon,  6 Apr 2026 18:05:32 -0700
-Message-ID: <20260407010536.83603-11-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260407010536.83603-1-sj@kernel.org>
-References: <20260407010536.83603-1-sj@kernel.org>
+	bh=zRD8drmtpvaW7u3AYnxWKE0WjDJmYymOaFuTOH+P7/E=;
+	b=ebIKklAs9S3R70LSBE6Z2Ip1TZKLbNt31QdKfyfz6XNGBJDMJtDQPvy2Oola0m6fordCx9
+	72Tq90xSWwEBWOQVrZNqmVN0NxyWzzEVhGsBvwmDmdT6K+GZkeVD4N58z4kvPS01FcLcG5
+	4lk0jIQrBfMfF4//PVREFHqezk2DQ6w=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775527643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zRD8drmtpvaW7u3AYnxWKE0WjDJmYymOaFuTOH+P7/E=;
+	b=tpv/V9OhtXG+sz+yP/JXKIRCAbpUWZiZgB7x8rqWKeZAHQ6gfzAkkT6WJ+sPC6ptxvLvfk
+	oXuMjV/AaBjJGbQaTJ5Opr3UBxDrUzl4fmd+HgXyqBgeRbYm5q6d99xwrt/bkIHLcuO31A
+	Eu/AUJB7q0+MPlYsjjRXkOizm7OQhWw=
+From: Ye Liu <ye.liu@linux.dev>
+To: Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] mm/memory_failure: use bool for hugetlb indicator in try_memory_failure_hugetlb
+Date: Tue,  7 Apr 2026 10:07:12 +0800
+Message-ID: <20260407020715.2269255-2-ye.liu@linux.dev>
+In-Reply-To: <20260407020715.2269255-1-ye.liu@linux.dev>
+References: <20260407020715.2269255-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 76E5980002
-X-Stat-Signature: u3gzxb4okmrzso8rbjyxbq6okwu6x3n7
+X-Rspamd-Queue-Id: 5254840003
+X-Stat-Signature: jehtqr6p7qn5a86sdsch54zgn1dth8ex
 X-Rspam-User: 
-X-HE-Tag: 1775523945-974593
-X-HE-Meta: U2FsdGVkX18beIotGrXwg2yZFEllzs5tlUiiKA8+oMoy+2Gl0I9CGYunHyg6pw5wzOjeEUxpUcZHDLp6S5MW51wlMMFgjn+dg6o/Yvf2oxPK7u0vT77zMaXMgh7bqkUgdCQBuBraC+0oSQdZforKZI08peK9VQ6NvOaNCRezMC0RJplK3rcTH1t6Ej4fXpRvuQVKfZ0ZVXPDPQj37SPTujAHjakwSDLVyB9kFXo/EpKy+ae2nHXV0cKJtuk0MHwL27/WnsA5FXyiMGc6MGUbeSlaAd5iaQganTWxMg/mIbIzsUMQLcIprh2EGDvJJx5nIHo35NVXn1Ygy7hWxHjM0+upDzZQILfMmsN9qajdxKt7dyEgVEpTWTTcF/HZSc7JIRfSt3Ky5sEh6Nk5xuXOhUFkv+8R0MClGkXAs782633L614euvGys7IF8XYdbw5PziAvPsFwxdZcNKZGcwVrqq3Hof8tB40RQy8pjChzgkQWQJBv8gZ4VqQWMbtl2oApSOi2Q7JhWaT6mLk7yeQBB0N2tY6Ort0jTf+8ec6+9iQ606VPWNXs2rs6ghZYgqCApU4UTaod9NOig9K+G0KyL5zWjH1mVjNGZyNIlmyp/1g3GN86IlfnkqgX35U8v8rxKqAu1tg/J/P7PgTGAO1J2TQ16+BlRVhiRZarDdriXmPoigVU72A99+l1cJpOm1ZaFbOADXPnnGasRgzZ1H1spGicUYgWGxgaxpVpwFW2YJXQAYqtXuhYInuGO883UrHUZyfmZ7hnxmxOQrJ9kv/5wBQqKg2SzjUV1SByHBKCiAFlx4WPKRVwMsvKXJ+o/aaNzZTF2FoDuSSNhs+A4iQOzqYXDJtneUnaWGBtzq+/8ZarcC2nY7DtIQzSg6E5MSbrM1H7c0fZnpiE0y3YUHtPYpeTCULumiltThPtsSnKFK5jxStQGYo3m762bBSPS4xBM9rd/YoYf5Uu/kN0hov
- ODXHZJrS
- HSirVHQVM1H6EN70fW3UPgwF1gcdRpR61d2a/U2LVgZCMkPswLx10zC/2uhQ6mFcM0BhP1Q2V3rKzoNq2epeHLDaDgtuenrOZ6dUnsRte61adekwmYZH9V6P+Pw6JkrmBIQhFLqLLV+jiGV0QJ14xRXGIO/5ao5ATDzs7rLQy7iFpjGsvQ8mhp5FAxFihcOeB0eXVG0VUVB1NrqQSWycGTIxF34QmZP1iId6gxPKqasJMoZSe1wMH+Ltw+IXPhVTk4PaDSbvzsmuVAyWYHVEvYF5u54Txcqvcu/6sl3OTdxajB5g=
+X-HE-Tag: 1775527645-460003
+X-HE-Meta: U2FsdGVkX1975juYV0wRUY7Bc1oi1MBNdAyZiSbDqLeqMhL9Xst3hMml9TUv0ZjHc6ssQhgHsx3hNBNqoxaif1BfV7vt2CCI2W3mPoizq82sjRlzIpb2ORzxG/zm1tMZl+Sc5kyc3tKdH4jVbSIrKpCWqooIW/jYcVPjl/4fee5KSLCLNhNri415oTgf0BqcWlXO7gY43YKRQFigBRc6eFoitU4MBWjfriezsHwIpa996aCcg8xLd8SKtJ6Xjcy0qpCU6M+ccq3Bu+/gDrNn3WL1G6xXUizFWgux3iOkwsswMsGGOyGW8/65CgvqS77BDD4LjHn+AcJkbEWxFwiUkauceZLWTUMi4auEK0SLVfhzI046jrYJ9xNYw+xxabiMEQ6P1COTwac+SVdt3ljdPDqqbdPl3MskGVlBogSY4kdu8CSXQ3kiet2cdBwQZ1rwLl7JyqoB0Ya8cs9MGDqfQxd52x1rSGlReDZ8DA7liXq25EJjysdTkPKkZ4ZOGoyoOT/ZVrn5ZK8ulVsjl5xL626bukkfJYhUlY7Ac4rgEJxPayo+UQpA3Y/IkcKYM9Lmzp/o1rr8V4SRap08I4mwD8y3rmdC5d3WTgHv/VpF1vFpF044b8fJ6tBx048J7f8SU8fnd685oyX0mSoFjnODoSTYa6QTAhr4lgx60OYn+P7RFaae24v3F+gCmuhKehTKeeWHNalxJoUf84doNDW61ZaefEGbhxtM1wk0oNVLRjXdnP6eBCGqSaHhYrVXC5SV4Esp6V7LDPwDr5y7n/wfzyXpCkBVyEwmOguYRUWCsT9SqYX8UUSyVKR6zoxulu+1Nc72Jta7pKqi7LEpAsP2on+YeSB+kNI8ooyS+yZSNZYW3BwR/YL6kqNlm3esZcCBRSenazeE5c7w695eL6EmtU27MgjxgJDe5TcSsdlCZdIoYnTU9ZTvFJUbOb1qiY7R0gw5UZwPJvP+CK5D0Rf
+ lDfK2aGY
+ PWr7boL+Hjikfdy3M0mRdv/YsHi0raI8nR9bRozleYvUDa6GxvSWSs1grIXWJVttvOBMNXxSF4WX2PMqeVUr5GSsL76XmeVzAk6XvGFqoRHhtAGzDEo0UgKWTrkeTZ+CKwf6JUmL1Bhj//eVbfFu1k3gmtAbqber7oyXCYtTVgzJkMmiV69rWqIA1M7IXtCwtzl9GA3T+sHbTLCCwChwMHtNzoM5FVZqBfJmQJErdn6A/ccaKyduydFZUUKSN4pz3gdz3dQSwRKHx4YEboWezGrGGyss56v2OHaBxZZquYPZ06wR4VSFPnqoVhj97bPQOh61Xa98SCxbLeyasOzkl3ZnFE7239xArIbPxseIe7a8Jq84=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +89,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
-charge ratio and assert the setup is made into DAMON internal state.
+From: Ye Liu <liuye@kylinos.cn>
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
+The hugetlb indicator in try_memory_failure_hugetlb is a Boolean
+flag, but was declared and assigned as int/0/1. Convert to `bool`
+and `true`/`false` for clarity and type safety.
+
+- try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+- testcase path in memory_failure(): bool hugetlb = false
+- clear semantic conversion in MF_HUGETLB_NON_HUGEPAGE
+- preserve behavior (no functional change)
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
- tools/testing/selftests/damon/sysfs.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/memory-failure.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index b8d6e0f8fd906..d8d4717128898 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
-             }
-     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
-                 'goal_tuner', dump)
-+    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
-+                'fail_charge_num', dump)
-+    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
-+                'fail_charge_denom', dump)
-     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
-     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
-                 'weight_nr_accesses', dump)
-@@ -277,6 +281,8 @@ def main():
-                         nid=1)],
-                     goal_tuner='temporal',
-                     reset_interval_ms=1500,
-+                    fail_charge_num=1,
-+                    fail_charge_denom=4096,
-                     weight_sz_permil=20,
-                     weight_nr_accesses_permil=200,
-                     weight_age_permil=1000),
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index ee42d4361309..d25adb390c3e 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2032,7 +2032,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+  *	-EHWPOISON	- folio or exact page already poisoned
+  *	-EFAULT		- kill_accessing_process finds current->mm null
+  */
+-static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
++static int try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+ {
+ 	int res, rv;
+ 	struct page *p = pfn_to_page(pfn);
+@@ -2040,12 +2040,12 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 	unsigned long page_flags;
+ 	bool migratable_cleared = false;
+ 
+-	*hugetlb = 1;
++	*hugetlb = true;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+ 	switch (res) {
+ 	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
+-		*hugetlb = 0;
++		*hugetlb = false;
+ 		return 0;
+ 	case MF_HUGETLB_RETRY:
+ 		if (!(flags & MF_NO_RETRY)) {
+@@ -2107,7 +2107,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ }
+ 
+ #else
+-static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
++static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+ {
+ 	return 0;
+ }
+@@ -2347,7 +2347,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	int res = 0;
+ 	unsigned long page_flags;
+ 	bool retry = true;
+-	int hugetlb = 0;
++	bool hugetlb = false;
+ 
+ 	if (!sysctl_memory_failure_recovery)
+ 		panic("Memory failure on page %lx", pfn);
 -- 
-2.47.3
+2.43.0
+
 
