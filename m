@@ -4,148 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 935BAFEEF2D
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D02D3FEEF2D
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 14:44:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECD666B009B; Tue,  7 Apr 2026 10:42:39 -0400 (EDT)
+	id 162CD6B009D; Tue,  7 Apr 2026 10:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E56EC6B009D; Tue,  7 Apr 2026 10:42:39 -0400 (EDT)
+	id 13A296B009F; Tue,  7 Apr 2026 10:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1EB06B009E; Tue,  7 Apr 2026 10:42:39 -0400 (EDT)
+	id 029406B00A0; Tue,  7 Apr 2026 10:44:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5976B009B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:42:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 631B7140859
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:42:39 +0000 (UTC)
-X-FDA: 84632026038.24.90E5C21
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 75C4112000E
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:42:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hzXIyjkg;
-	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E1E936B009D
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:44:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9768213BAC7
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:44:13 +0000 (UTC)
+X-FDA: 84632029986.11.F1F9C9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A7A43C000E
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:44:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OPk/0Wse";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775572957;
+	s=arc-20220608; t=1775573051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EujatEDCEJRw1gkJP93YyiWu3J+Jd69SCG7dft/631o=;
-	b=JOjDR6ayrsvkLndu8np4ddFezy50NNO817Rigq0gN7EtBFIgba1Od2DVW9FzEw1nUdrx5b
-	pYLl2OidDfMD6rMqyHU/n7yqhO/9ChnoSlXyU5RkMlKEVzYvzvJUjrfmQawtb7HE36IZyD
-	Y2S74boXwM02sJrnM2xdFlcJZDI+XZo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hzXIyjkg;
-	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775572957; a=rsa-sha256;
+	bh=F+uI6OTjdNGqztBt0n2prscGZ7Rv6C1epHgWbD05+lg=;
+	b=LU59KJRpHybCrg9qA29nJ8qDkbdNu8cazK85xrQe19Ed5h/+aZGqW2LEFmkoCsz6YH2+6e
+	uJOF+6AWznCx/p6LYhdAHK4YGOI1Mmo9jdO1XIcsI68VB5qu0CQ9AB3HTjCDjLG4bSth9e
+	SQPwAcUjq5mQBtdehpqGC2SyP8ZoYlI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775573051; a=rsa-sha256;
 	cv=none;
-	b=NtmJxTnR/7Y9AVdZjXnUDsGjHZ6Lw+4dD66/HLO4myVW0hGftszgRN3ueY8le0T96cztiw
-	wHgssXCBuEKKKbLy7qzYkjy++QX0YF48E/uUPFrIMuJmG0uEiTnwBNPU0NxbLhgZPl/QiR
-	a+d7m15qV7tLuznMJTr2WNBWUqvup+4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775572956; x=1807108956;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZKeT3EG9f0w3T6fK4Zy6iKjyI/8l3jfApv9fdEeLazk=;
-  b=hzXIyjkg+2RYhkSiwKa7XJgUMqYWfXdKN5Az8/mw1RmT9CYuW7N9usTE
-   inoB0y+OMwRvx2mhP7PU3JCHenBaTL2eO7Bj5WzcSc152UHmYfo3CW65X
-   V53iq9gI7/65xrrc1uP/gVfg5/AqRygbnom4ypRB0RogdG6c9YtLHv54B
-   PMi+NURPd14eNjeWCgD+NoUcI9zv9U/wsibKs23WjWNVzIQvFAFiLbu2c
-   RJdvOXICIo/e5nWiTLPrk+ULUBhE1NUSXiBwyAVXmNcgzrg1PQCXuSYs/
-   cy+3rrEvmxHv6S5da1anLRE/SmFuq9Bak9/96z0GbDIl5yxMH9fjz6Kye
-   g==;
-X-CSE-ConnectionGUID: oT1xtiCdTS2XO4a12qSXPA==
-X-CSE-MsgGUID: vS2O18O4Raeu7kU5ZIVn/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11752"; a="75577463"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="75577463"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 07:42:35 -0700
-X-CSE-ConnectionGUID: X9UQn79SSZu5MuDyveNRdA==
-X-CSE-MsgGUID: PyT17ImUSAak2sMkKm4OdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="228119455"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.118]) ([10.125.108.118])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 07:42:35 -0700
-Message-ID: <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
-Date: Tue, 7 Apr 2026 07:42:45 -0700
+	b=YNihT5t+oCbtNiZ+W59GsFFZBUcnUoHCW7y6LxIKuusxylbvrSqMF43YVHI6fNJgNer27O
+	C4GI14pjhsjn+4twSvo+Rmj+wAXzytomAodQBebB2Hs8kUJVo39QCwM8hMDqMGWp3DVW9m
+	PNkjUTBsiZ6CeRKBSO/da5jXMEkdKiw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="OPk/0Wse";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A400C44434;
+	Tue,  7 Apr 2026 14:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D83C2BCAF;
+	Tue,  7 Apr 2026 14:44:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775573050;
+	bh=IS0Hw9PqtMklbf3GWeAwTjwZLCZcdU9hKiZ7Q2p69rA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OPk/0Wse1jxxBZKtv4rcO4Gjx1K+m0MTWP/fTlIwRk1JwHS+5ZAVzLxPrI80dbo7S
+	 bt42fl7CaU2LebeROiJebJpvN6ACCEpKFDwoIoilQb7M1A9OPTbmptpMDPXx8/RTgA
+	 0aGA+Q5EKLfGNjU0Reaccn6RVpk6KBg2/RfsPEMBiJl6v4M640lUVetpk/JyU6fHji
+	 saeKf5dKKqTxmKbyTaXTlSKhX5kABP9Jyhd6bHtOYPgcRiJePsej+US5fQhmP6cNbm
+	 eh1go172haGbqz7uIwADtg1yKxzB6OJBSGyXu+KDC9uTDa/IptojjpyCMl9x3acQhS
+	 kvl1pKU0QUmrw==
+Message-ID: <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
+Date: Tue, 7 Apr 2026 16:44:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
+Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
-References: <20260407125133.564182-1-kevin.brodsky@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260407125133.564182-1-kevin.brodsky@arm.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260224051153.3150613-1-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A7A43C000E
+X-Stat-Signature: nwc7g9rpjduoa9nor7xnrmpx9zbqpeuk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 75C4112000E
-X-Stat-Signature: ebuet59uxf6uwy51y38hkoku9i1y9gup
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775572956-573349
-X-HE-Meta: U2FsdGVkX1/kvidtGEC7kWjFRyQeIBXdK8t8H5KUy1qQzy5hQ57tDFQLwhPgn3qRIutMZ63hl/CxLIq/TCkVYdvAgxkX8G2PIp+bUoL52/roQqtBEhC191FAY7fYAzJqszoA4NIDTsEZ1ptV8FdHFMAqlr3NgAbb6LDKFzRdd88BfPt0NjHerepguGIXv2FzQ8E+vfnVYJWvF2SSB4pka5ki+xzTyHoiLE+DzHWyfSbgPyUzn3Gtqze9kIk0Y1L/Gw2Z8Njnw6DS3vftPngbO5O5urOT0GtJwNIvQx2WBLXwz7onouGFmXcmeFfqWakgdeaNM/bw+fNV/tLxY/vhl+P7JEaOxg7vnkEFRSoNGq3tttaOy2gyPl3C9dVLdEGgvwA6tv0KCXhARbPO+Wp5fXkZYST0ZPXqDaD7KjQRkBvKSc7r6XZnxu+5L2T+8ww840/lY4Ceut6ZVircsAZ1bKsfH4c+9V1pz0z6hSncqgNdslLxmaUhri0KfGbEJwB8BFVIr1GNI5TCUsHWQRx1ut5kCvuEX72CuO6FaGNU8vxoaMBQOA9FFoFuppMR+rgGv1kc5OM3iP+0rcWzinZD3uC43IKwuLdjcrC1etyVkONKrGjkCuSKcNmd7bsv01pg1FW7p9RWTmrpRCNyJG/I1/o8Hi0s+leK7us55p2xAyfCSTOXFMyg/IZ0sjx06QpXfDoHzqVU3kIUhkxLrl+sey9cjgKwqZlboeLk6Uxh2ddmnnMj9DEl5fdo3jCe2gNPDjCv7FbV8n5K+S2scx9a2zwtUL6Bf2yhsUiRYwbITMbvOK6vwTTbIMtR1tYIs5zwEwFwafCIW+zNHIClmURDTgIdkmRnmTDa6tDOWusNIDxVSzJvwT4q20Sglm6xIpFmWSJU9Q43zWm+KCqL9z0k0WBueRb8ZzfKJw9kmKw20ifsX0P36udgw9LDw1N6HBS5wbwJsXtVduNGGWDUu+m
- XcihfuxX
- EBanzdROSiUozS5wI5vTam9+9F2m6orMuA4lL8znSYCKf4kKhuZT9e96CW/yZcq60vy1/1tym+NUJTVv9q0D/Ee76GTN75XKxPd2vCiE/p+CVg/XugyCdq5ZRRhUrKqBoa6MXLn23/HTjqKJ5R5H6r6YIevsMw5cUSlQ3pBS2M9Q5M6SZNzxpmjnXvqEidx8TWmprDpHFwZCVh5spIjLOi2exWQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775573051-495169
+X-HE-Meta: U2FsdGVkX1+OVPGfN/+0kBjaMVUqUV/OXWiDca6rW6JWeXND7+bJUXGWfcBvP7PR4s4YiNFQ+/h4h5E1faz8mam8wBMmwhz9NI1NP/sk5x8Lig7xAPTfgOgxQZ3B4+KKt0FFqc8qSLG5DF0GIz62D7qewkz5aKO/Xv7yMVKw/DjDllm0VKXRYcpHlta69VHLa75eb6EPUYmHMN0FQSIY/Elp5wBC0tNB4zAarxC8FoM1dY9wVVsvD16NA59gaMwE0nNjJ0OVGdEDG1WPCcea51z4LCMEuQNWDOhDFZ6Q60Z6wwRc7y1+N0QlaVMWLbPNaEtuYD/v5THpush9g3Hr3pr2eFN8YYa3GAb9jAVCy2wifZ6k/sJSWCmv/w7QiQifKmodixI24Rhe+UdeasMv3kZu+CsAU/tjyZu9/jwJC3LCTQ6y5jD3QIQsOQABSlA40aU45LA8pA5NSb7jjpNyYjajJAyDe5gY8TlxvXYMm6mtZ5p2naqgK7VFWuVAuvxXjTAsP+QtK82UPdCmLITAj3NGRotLRoxI0Iz4EuBj8PRSzeG1tqMGklR80sFhnmddhoBhNyZhOOnVmOEfL7aIJglAT6BB0sS3d0j6nVAQ7prMOVqFW8RKPtzB4Hvp2tTKW7zf4C88Rln8DTVQZFtZMw9B/TA2548FGKjbqoY1iJ+cvJo6XMI0ppoLetLUqwu8oLX+0Mj7g7eki3RsfnkPsUeU4phoORy0cexYvW7xSEMdTEXgBf7O3t7RDxu6yjij6XKTdFYgIRJywdN3kw5t1QnNOcbQi/w5r1N8r0U0IWuMbLW9lkoyCV5+Zg06iuilNtrXZSDB9tAw4JOkS+5k6iWJlgYY4CRQnfzFHD3sJ7pEI+2IBmd4foMWqPsnc/+YJ8YHGaQHbczE1N/b69qJAP0FYIX/JPdPOkA5HoZa58G7dvJAf8OJSPDJabgZpCWuvZKQi8jauXIgms7Yn2c
+ Umf8EAFw
+ 2ljlQluliXWETK64hHkoJvhH+akoeE6Dvj7A9nnh4JF8EnZGhOa1qw/OzLH+wMALCTJD+NGwgRY/t3FZYQIwA3ZDCIF5EmKTxEof6M9iOS0lPraljemSaTdRyIUjp8cYeoNOAJ9PEnZLQkICm/6pVCWeYqW99rmAO+knjVpRspTqAM3W9Y67MwmeqZtGWH/l9vRVtsxcDVqaxgKU3uKp8kWIuPL0jUyBUqZ+MgdfhUWCz5tE+sZWw3rFKyKkWiYZ8AMNG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,26 +142,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/7/26 05:51, Kevin Brodsky wrote:
-> +If both the kernel and the system support protection keys (pkeys),
-> +"ProtectionKey" indicates the memory protection key associated with the
-> +virtual memory area.
+On 2/24/26 06:11, Anshuman Khandual wrote:
+> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
+> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
+> So with this feature arm64 platforms could have two different translation
+> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
+> 
+> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
+> and virtual address range while also expanding available room for more MMU
+> management feature bits both for HW and SW. 
+> 
+> This series has been split into two parts. Generic MM changes followed by
+> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
+> 
+> READ_ONCE() on page table entries get routed via level specific pxdp_get()
+> helpers which platforms could then override when required. These accessors
+> on arm64 platform help in ensuring page table accesses are performed in an
+> atomic manner while reading 128 bit page table entries.
+> 
+> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
+> supported both on D64 and D128 translation regimes. Although new 56 bits VA
+> space is not yet supported. Similarly FEAT_D128 skip level is not supported
+> currently.
+> 
+> Basic page table geometry has been changed with D128 as there are now fewer
+> entries per level. Please refer to the following table for leaf entry sizes
+> 
+>                     D64              D128
+> ------------------------------------------------
+> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
+> -----------------------------|-----------------|
+> |     4K    |    2M  |  1G   |    1M  |  256M  |
+> |    16K    |   32M  | 64G   |   16M  |   16G  |
+> |    64K    |  512M  |  4T   |  256M  |    1T  |
+> ------------------------------------------------
+> 
 
-I think you're trying to get across the point here that the kernel needs
-to know about protection keys, have it enabled, and be running on a CPU
-with pkey support.
+Interesting. That means user space will have it even harder to optimize
+for THP sizes.
 
-To me "system" is a bit ambiguous here but _can_ refer to the whole
-hardware/software system as a whole. To avoid redundancy, I'd say either:
+What's the effect on cont-pte? Do they still span the same number of
+entries and there is effectively no change?
 
-	If both the kernel and the processor support protection keys...
+> From arm64 kernel features perspective KVM, KASAN and UNMAP_KERNEL_AT_EL0
+> are currently not supported as well.
+> 
+> Open Questions:
+> 
+> - Do we need to support UNMAP_KERNEL_AT_EL0 with D128
+> - Do we need to emulate traditional D64 sizes at PUD, PMD level with D128
 
-or
+It would certainly make user space interaction easier. But then, user
+space already has to consider various PMD sizes (and is better of
+querying /sys/kernel/mm/transparent_hugepage/hpage_pmd_size instead of
+hardcoding it). s390x, for example, also has 1M PMD size.
 
-	If the system supports protection keys...
+I guess with "emulating" you mean something simple like always
+allocating order-1 page tables that effectively have the same number of
+page table entries?
 
-But I'm ok with what you have in any case. Folks will understand what
-you're saying:
+The would be an option, but I recall that the pte_map_* infrastructure
+currently expects that leaf page tables only ever span a single page.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+So it wouldn't really give us a lot of easy benefit I guess.
+
+-- 
+Cheers,
+
+David
 
