@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4CBBE9D814
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8AD6E9D832
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 06:53:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D94676B0088; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
+	id E59706B0088; Tue,  7 Apr 2026 02:53:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6BA96B008A; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
+	id E30B66B008A; Tue,  7 Apr 2026 02:53:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA89C6B008C; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
+	id D6EA86B008C; Tue,  7 Apr 2026 02:53:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9A2D6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:52:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CACA1406C6
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:52:45 +0000 (UTC)
-X-FDA: 84630841890.12.013173E
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9444A40010
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:52:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FB9sNIVL;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FB9sNIVL;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544763; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id C64E06B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:53:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DEC3BA72B
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:53:48 +0000 (UTC)
+X-FDA: 84630844536.06.7F5B5C1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7AE2E80002
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:53:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gq19ZaG6;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775544826; a=rsa-sha256;
 	cv=none;
-	b=G5/sp64C7Zz7UnS25uq5mbM8KPPBQuJFO9J3xjQ7SKAMgrHZxXY8XZHu9QnCpzs2Q+6qlw
-	SztMP30rU2HQQDwcfrycM9kBSwNYEDa6Vyuc735BCBpYw1ERJTtv5uFaFQqB1hz+M4Fb61
-	yiJJtsY8IdXlzOlCBx8XqD2+2JsXoiY=
+	b=0FdGR3FA74cQVcirNJ1jsXP/OlzENL2Dzwq1pcXmjnqd+EFCaiBmhp7PkvULbgJ04wBTGI
+	QrZ+aKKjyDuWsNr1s28kwlYlvHkhLjV1PhRXBrCqUEnYH0zljQqBGyhMtO/WYyJly4QtVo
+	xwInTrc20MFZwpGJ5j6p7+TCm2aZUBM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775544763;
+	s=arc-20220608; t=1775544826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4+YRbn5xz4gzMbT7dbOS4IA4ueE8oXOrYHLytz90mcI=;
-	b=XBHbBXOTAnbmAPwkrvOIoVdSYmT2XScrY1K5wHelbA/15fq8Ew5YSZiCcMic3CwlhJDHV/
-	jQenWR1CfK7hPqefvnq8ZHdmKLKCpQE7pd/MDzVKLtPHhd3BmAn7r7qmCgw6o3lsExNcbN
-	iAYvOA+rpqeYMjoCmcuMRuvH8c7BYN0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775544759; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=4+YRbn5xz4gzMbT7dbOS4IA4ueE8oXOrYHLytz90mcI=;
-	b=FB9sNIVLkrzoQF4E5z2WfPJo9q4aAcPoBszFxmFABr9BlZOgDc9o1f0aW05EtRFKJSgOLF/7CQzw0xRQwALN6ugfr16ToZVGW7EDmRjqBCO4MmYhv/8hfvhg0X1P7XidDWp/5EJf3IxONozNb/BD+M/SlSwt1SuLTIFXKQuJXAo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0X0azT3w_1775544748;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0azT3w_1775544748 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Apr 2026 14:52:37 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: akpm@linux-foundation.org,  david@kernel.org,
-  lorenzo.stoakes@oracle.com,  Liam.Howlett@oracle.com,  vbabka@kernel.org,
-  willy@infradead.org,  rppt@kernel.org,  surenb@google.com,
-  mhocko@suse.com,  ziy@nvidia.com,  matthew.brost@intel.com,
-  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
-  gourry@gourry.net,  apopple@nvidia.com,  dave@stgolabs.net,
-  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,  vkoul@kernel.org,
-  bharata@amd.com,  sj@kernel.org,  weixugc@google.com,
-  dan.j.williams@intel.com,  rientjes@google.com,  xuezhengchu@huawei.com,
-  yiannis@zptcorp.com,  dave.hansen@intel.com,  hannes@cmpxchg.org,
-  jhubbard@nvidia.com,  peterx@redhat.com,  riel@surriel.com,
-  shakeel.butt@linux.dev,  stalexan@redhat.com,  tj@kernel.org,
-  nifan.cxl@gmail.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [RFC PATCH v4 2/6] mm/migrate: skip data copy for
- already-copied folios
-In-Reply-To: <3e1f520f-e3d8-4ef2-b474-ca4e988bbf2d@amd.com> (Shivank Garg's
-	message of "Fri, 3 Apr 2026 16:38:32 +0530")
-References: <20260309120725.308854-3-shivankg@amd.com>
-	<20260309120725.308854-8-shivankg@amd.com>
-	<87wlz1zlf8.fsf@DESKTOP-5N7EMDA>
-	<3e1f520f-e3d8-4ef2-b474-ca4e988bbf2d@amd.com>
-Date: Tue, 07 Apr 2026 14:52:30 +0800
-Message-ID: <87pl4bfej5.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=bnuUmqEsVoIsmdO86nk8heyWMrFfzsGSAxjSx//q88o=;
+	b=nx25VbhNknrMEVz2kP+XsxYqcWPiZwWzwzAk1bM1Hr4CiUHgWO5DRdui0tV/VRk1jJ746l
+	xFiC1IMVY5n1CcuBli+Y+KsD3OZLy5lnpuFZEgRvv56AQ9UEHo3BsSB/ubd9lU/Rj7oxkH
+	mig8CH0UYcvZ+EuB3pLAYN7yNx58CKo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gq19ZaG6;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B3F716F2;
+	Mon,  6 Apr 2026 23:53:39 -0700 (PDT)
+Received: from [10.164.18.83] (unknown [10.164.18.83])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6EB73F641;
+	Mon,  6 Apr 2026 23:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775544825; bh=xmJOywtnqtcjtDrOIaLg4cNmmd9eqq3pTFEdQ1HGsDk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gq19ZaG6H/Z6QLLA361dNnxs7Rcoy1FFoxh2es/ZkM34A3iiH7Q0NWkQ9Xjf85a/V
+	 Cw84yhYE9dms8niScH613/FI3ApHX6Wc/QmkYVNEjsQk3N+7VxRQ/QXYkr1v8tdtC2
+	 iPBeGS35uCwhoz4oVnSyTerqZzVYnRL5bM3gmw1g=
+Message-ID: <f5c9bd04-115b-4f34-bfd2-0bac756f84cb@arm.com>
+Date: Tue, 7 Apr 2026 12:23:39 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9444A40010
-X-Stat-Signature: 5szof9mynsddpuzbd3b1yhz7crnr7xa9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/events: Replace READ_ONCE() with standard pgtable
+ accessors
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260227062744.2215491-1-anshuman.khandual@arm.com>
+ <1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
+ <c7688962-d10c-49e1-a434-ab7ae2c64cdb@kernel.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <c7688962-d10c-49e1-a434-ab7ae2c64cdb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1775544762-826847
-X-HE-Meta: U2FsdGVkX18TJGXjp3w+hDSMl0QVj22PUQLNr2gKLqGGIKAm2YT9EUFdEcLBUiF2iyg3fAivSZ3LV+CEUkLqweg8+tzHajkQAfHwdlsiKoSsKN5WMTooQxnY5cvFcQlE8CItAFRgt/pqrxs5lc1t62njlJ87EfGhxGZAYeFsiyZ4/6nd1xLch4ICttgvBk/gFyaZEMjyf/aHuZohJ1LgrZQJ/Z/lUhrTaJJa7tRAZkHr6zT10Evqb9+6KHq9EpRWnmfSrQMy2hEh+otoncozIbrY+3qOnynEXZys5Wl4ccXmlU33fZfKbuDUmphct2Us33Ba9m0g9s5tGRqf0h5+zs7ycLEBfGNceWQQuUxtm7XiMyrmg5AhBF/tXoLBuEcWkt4CV6gxjHkeSNq7xcx/s0LQwWOnQTWt/PbL99Vp+Dp04aHQKiwDJ8evgIuiD5m9x1sGISl3YMNa0iny4EP7wgF/sRYUOL6A9bXZnscAdhch4CD2CfbJumLsLtyu8fJAU1JfOXeFVNsyXWSuprsQdVsQ57KJZ+VFGeqFWTSaM2Pn57a/cKOmFEc8yJkBi5ErNZj+DI7UAtvdNVTnMPoYtd6B7Tt/6N+tVcYoJPXXtDU2LfHqRXsLvUCv9SyTSkHyjwfh4M+Eo2vWkiGfp1CfNzxhH9lXXiZ0ZSglyJz0D9r+OWSNCbYv0HWG2ihAXlf0VFonLi21Zxidvy+Mav4O9NLbG/R4nRcEptXjOzwYRzlNcAxqOeSxxECx6SAw+Cff6s/yG0sK7avjtBgXW1dlWbvUPVWgK+l7/tV3l6Qh5AHCfMpNkYpl/ShxgLUwGawkTEjQRLXa0LQdDo9H3UhfOagaUD9io+C8TofLe4YXoIm/FbEx9BuZedlCaNDlVv9UDEEFNd7jb6tjszAn0fMOzQ3Y8M8tif6rOi6UdLJpZxyUTgoytMMDEybja8/0tbw0sikDi8ytLELtg+tQXOO
- Ri7yEQ95
- +Py0lkgJxQj8/0CtSyido3bobmF3um06ONud6Tbnn5Y/UVNsDRnxXsSDA06Wh+aVnmPil7joXGVtwx+WFoJtwTRy36XFiOzOGwpbsSaTKnG9p3Fly/RjHJzQFlXXPR9K7WsYqSl4czHaHCbNvXlh50QiSO3xugmuF9RiU+b9zthLw7yxQFhuPfnw5cZ8O03sqDBzCz/69zL5gvRE+V4bixNCRnysH1q5WoiWTy7PLaQWpbIFw1yS8T6aoehvesROyspp27faquTrP0S14B3gMMptkMSTI3aNEedNb4MCyFVWVwpVy8kFOe4sNiOu6LlCTFpLya0qLZlI//qe782ueyt7dQ7iiWwCIMa3PnNWU0HJAugGsG0p+hmI4Vy2XJ9Pxsiu1bgZ+6aojb2c=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7AE2E80002
+X-Stat-Signature: hfysjao6ockseb8fitxcoowe1a55ggrp
+X-HE-Tag: 1775544826-804756
+X-HE-Meta: U2FsdGVkX1+KrRqeD5oeH/MCBIG1StCqnSixBJyIVz4B6XY6/Dy+1xa0noAYIhiZAnZwKtB1B3YKX7oGE9TGQCx+7SusZT/z/Gtatr+2WECoc/x4jOQhhlPrH8Vgobat01iS4ByUbbJ3oSUAeTczg0a8WqR/D+5pUnRS+e4T7Z3SvkIi8JVamM5MIM2Tt0hggspWWRlwyM69WqyiIaAYYKrOQJZ/cGWNhcl2xL/+yvsIEap986itkybkvn2Ma6cywPWJzoxgQtMV7XSJxk8irVrixbhmiWYsNkyzq7xEMcEagY5g42yff17b959eMyJgQbBghttifqk3xRbYky1sHfXV0Aae0Hj9vG6OUNsnNPb0LtCTXtmK5mAVegrgEiLY9XwV7af98p26zaHi1UEXZMNjqT0BWIT7Htivb16vMoMrHfP5yJaf5jPjOuIuJb13phO+03rTD0Bj1BlunMa7qM93EBIE5BnvuFm3CWjHKTok9xvxGfpkiw86m83h9dEz7FIAE+O/uk/W9QA8WAYXIX0g9eutUV1tpvXTsBguRyQfgsxgwwmlZ0KH8POAGeQKIjyDpqzGdtAxekXaakxIqstCjXyXBZ2HRGucWH06QdJ7Ura+RogG0lV3eQZ7+Fp/cOQlOJL+9zxlliVD4XrFDAW2Xom5paXkNcN9fYUP2E9TrL4gkPTmvjgN8DMqwsXDa5eDVNBAF1dh1io//TgUUe6aYn/cdGoCozEtnN4LRpr5yU83Y65YNqOCViIs+Iw/bP4Zh3b7QG/58diGFfhJuzlOod68m3sj3+eN1U6pro2pTGKPfxT7Yg3ArjN5N/Q//p4FLZjsF7fu34XVUdmesC90+kIvACLTODoGC7MSF1vy1GI3xVC+YFn/wKYGBWMwwfwyFhOWVHTHzSi+g1euu/FTZjaNDqLh6QMiih/NVT3eSE44t9rCDiu5byGTkJuOdPujgTzn7yIGATVJ2FA
+ 5kUuEIj4
+ JyVkWt3rfqtqmhMfjz1W87FRgtjv8GFnfK39/O2HZBv8szI8V7JtqwvdY9I+PyA5nNtc8sd5g/B5P73lDHPKpcZroDJ4d0PZF2meiGm2KeAcj37g/1DxdiSMG9ZgEf5o7s/ffqFpg1pYeEiErTMD4Iy8zU++BKOPNKNnld3exeOP+GNSA2VqHw7luoD3cJ45rh5HzE/cWEpEqNDXCsCa+Bdop/w8CY+sHOfGN/ouTEmZj2KVMKY57gofQxfSga4RCi5F9S/VqvAueX4MhMxnlWvEJiPGreGSG2Yxwx1YsrCXXw+FDKbAi7tMsbu1EvOkeb0uHE67mktE4c5lvnFqya/C3c+jYK0lbVfXWVRbMNg5PoKfMnb2VH93cQnVW99jVCgNFVA04814coKTBu803J7xZH8BKnEDe6mhZCH9K2bFmUtwxplMIFU1bSRMDtoy959DgExTlugbVGLX0rITsxC6XRM06uTDlpLr89hyDJgE7ts3VZR1Hvn52l3dsr+IvulQ9GqWyXVQaaxEHb0arevpSRMElr6tPJ2CP2ll4kmGYBVC2iHw5Od3Hrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,54 +96,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Garg, Shivank" <shivankg@amd.com> writes:
-
-> On 3/24/2026 1:52 PM, Huang, Ying wrote:
->> Shivank Garg <shivankg@amd.com> writes:
->> 
->
->>>  static int move_to_new_folio(struct folio *dst, struct folio *src,
->>> -				enum migrate_mode mode)
->>> +		enum migrate_mode mode, bool already_copied)
->>>  {
->>>  	struct address_space *mapping = folio_mapping(src);
->>>  	int rc = -EAGAIN;
->>> @@ -1096,6 +1114,9 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
->>>  	VM_BUG_ON_FOLIO(!folio_test_locked(src), src);
->>>  	VM_BUG_ON_FOLIO(!folio_test_locked(dst), dst);
->>>  
->>> +	if (already_copied)
->>> +		dst->private = (void *)(unsigned long)PAGE_ALREADY_COPIED;
->>> +
->> 
->> IMHO, this appears to be an unusual way to pass arguments to a function.
->> Why not adjust the parameters of migrate_folio()?  How about turning enum
->> migrate_mode into a bitmask (migrate_flags)?
+On 07/04/26 12:18 PM, David Hildenbrand (Arm) wrote:
+> On 4/7/26 05:28, Anshuman Khandual wrote:
 >>
->
-> Using folio->private, keeps the change self-contained in migrate.c
->
-> David suggested adding a dedicated unsigned long migrate_info field in the
-> folio union. I'll switch to that, as this is cleaner and avoid hacky use of ->private.
->
-> https://lore.kernel.org/linux-mm/27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org
+>>
+>> On 27/02/26 11:57 AM, Anshuman Khandual wrote:
+>>> Replace raw READ_ONCE() dereferences of pgtable entries with corresponding
+>>> standard page table accessors pxdp_get() in perf_get_pgtable_size(). These
+>>> accessors default to READ_ONCE() on platforms that don't override them. So
+>>> there is no functional change on such platforms.
+>>>
+>>> However arm64 platform is being extended to support 128 bit page tables via
+>>> a new architecture feature i.e FEAT_D128 in which case READ_ONCE() will not
+>>> provide required single copy atomic access for 128 bit page table entries.
+>>> Although pxdp_get() accessors can later be overridden on arm64 platform to
+>>> extend required single copy atomicity support on 128 bit entries.
+>>>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: David Hildenbrand <david@kernel.org>
+>>> Cc: Peter Zijlstra <peterz@infradead.org>
+>>> Cc: Ingo Molnar <mingo@redhat.com>
+>>> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+>>> Cc: Namhyung Kim <namhyung@kernel.org>
+>>> Cc: linux-perf-users@vger.kernel.org
+>>> Cc: linux-mm@kvack.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>> This patch applies both on v7.0-rc1 and mm-unstable.
+>>>
+>>> Part of the D128 series but independent. Hence could be considered on its own.
+>>>
+>>> https://lore.kernel.org/all/20260224051153.3150613-5-anshuman.khandual@arm.com/
+>>>
+>>> Collected Peter's tag from an off list conversation.
+>>
+>> Gentle ping. 
+>>
+>> Still don't see this patch in latest next-20260406. Hence just
+>> wondering which tree and branch this patch is being picked up ?
+> 
+> It's a trivial change and the last generic code change required for you
+> arm64 D128 change, right?
 
-That's good for the original usage of folio->private.  That is, to
-record migration related information for a list of folios.
+Right.
 
->
-> Changing the migrate_folio() a_ops signature would touch nearly every
-> filesystem for something that only core migration cares about, and does not look
-> practical. We can't add to migrate_mode enum either as currently those values are mutually
-> exclusive and ordered levels of increasing synchrony (ASYNC < SYNC_LIGHT < SYNC)
-> And there are checks like this (cc->mode < MIGRATE_SYNC) or  mode != MIGRATE_SYNC
-> This could break it.
+> 
+> I would assume this to go through the tip tree, but if Peter agrees we
+> could route this (mm) patch through the MM tree.
+> 
 
-IMHO, code readability is more important than limiting the scope of
-changes. The migrate_folio callback of most file systems shares a few
-common implementations in migrate.c. So, I think it is doable.
+Sure
 
----
-Best Regards,
-Huang, Ying
 
