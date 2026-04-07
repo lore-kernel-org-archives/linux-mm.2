@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D13CAEDB7E3
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 09:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F7EEDB7E3
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 09:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3376C6B0088; Tue,  7 Apr 2026 05:56:27 -0400 (EDT)
+	id E0FF16B0088; Tue,  7 Apr 2026 05:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F226B0089; Tue,  7 Apr 2026 05:56:27 -0400 (EDT)
+	id DC1586B0089; Tue,  7 Apr 2026 05:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 225626B008A; Tue,  7 Apr 2026 05:56:27 -0400 (EDT)
+	id CD6896B008A; Tue,  7 Apr 2026 05:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E856B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 05:56:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B28F0E23A6
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:56:26 +0000 (UTC)
-X-FDA: 84631304772.16.F2B549D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BD03E6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 05:59:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C5845A6EF
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:59:04 +0000 (UTC)
+X-FDA: 84631311408.25.2F94E15
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 247AB140003
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:56:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hdhKKYt/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775555785; a=rsa-sha256;
-	cv=none;
-	b=ADyE8a3lWUMFEuDqJ0HNCDKEMogpNkZpW9z7jtzDSWpgcMb33KdyflODSy2XGumvh7bzch
-	BHEI54EL90t+CFRFrrdfPFnOr/MOY9RRM83h6etTpu+e9Df4ugBEQ4C4GBJ+dsfN846sid
-	zB0M0ip/xfJyQx5BiS+f18Kru1NWQ/Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hdhKKYt/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id AF1CFC0006
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 09:59:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0SN1dG0;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775555785;
+	s=arc-20220608; t=1775555942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beBIC3Tv3ETZyBCqe3MuUXtsMzhOPs+pKd8AmVrbSSE=;
-	b=zsNzJTIpb0fseb2vMr2Of99C67/T83rYUAt4sAuC3eWvUghthFQ2J4iwlu2xtxn4W4fR/7
-	hMjtLjId1c+g67Ji+ba9JqEo9a7XypcioB3PzsimvBNAjueAGWOj9zrFVmIVvq1lTy7NVI
-	fdrax22PptCP4/GSqbCsyDyPP6r5G0w=
+	bh=JTCAE1SqqNYfftRfvAv+PIMi8vDjP/1BKRYpiGnnm2Y=;
+	b=mcbXuERq5NACEo83oaXtJL7RAo8wcDEeQ2zeInNdg57lxzK8FsE6k/gCTjjnDldnnmg/we
+	cS4FHOkvI2y4UOVIXMppFhG8/6KZXEZWFvzjZpcT+ZpGyttenSX5on24ct5SFOh+5KyYUG
+	CpaJ+ZYzE8lloP182JOKhCHrqblokWE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775555942; a=rsa-sha256;
+	cv=none;
+	b=29E/oXNiGHNFqHgAD0Dh/rFVTP6P3kE2L5ytM7abWippnSGw1gW4aXWlYn242y1/Xq4zr1
+	1y1XlSwCj/z1UdehFYNmx1VwfIwK+efKJsj6c2pwmmrj2/9KiTSoHRjlJq8nGETQkrOX4i
+	hB+SSoqFCjG1EVVQWv3s8nYIr0EKWlk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k0SN1dG0;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89F3A600CB;
-	Tue,  7 Apr 2026 09:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDFBC116C6;
-	Tue,  7 Apr 2026 09:56:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24557600CB;
+	Tue,  7 Apr 2026 09:59:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7568C116C6;
+	Tue,  7 Apr 2026 09:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775555784;
-	bh=EBvDDpF12kcA81k6wUaXBwL7M//ctd5NjSBhylt38Qw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hdhKKYt/iaxpTvu2bv2rSZrhdMFmEU8UQi8YHN79ERKBXZknv79pb77GuX4nmraoz
-	 TZKXoJRaQQKyijGkz1O2EUWzwhmTORN58C4pD2W9kbmHk4O+0Da7L4LIDRu9uW4AFz
-	 rAI1izyYf5TYdyfjxvo5+BdbXt9zrmbpZRSywKkC+1C4JMYgn3yb4rPo5GGqf6gKht
-	 aIZL9iJXy0YlbzGy7i0jbT8ckbx8NOMQ24iLuTaLVIbKHPtWXa2XWbmBXRkzIAw5Lt
-	 glojNen8PXvY7O6x0dd9MDDefYTnz9/mSVq8bYxLcnZ5+XGRZVUpVf6mgoNl3k2nY9
-	 2TEXM+ZrFuzjg==
-Date: Tue, 7 Apr 2026 10:56:19 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, vbabka@kernel.org, 
-	hannes@cmpxchg.org, mhocko@suse.com, surenb@google.com, rppt@kernel.org, 
-	Liam.Howlett@oracle.com, david@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/thp: dead code cleanup in Kconfig
-Message-ID: <adTUrw46a1wP7HeH@lucifer>
-References: <20260331070730.33915-1-julianbraha@gmail.com>
- <bfdfdb05-77e2-455d-b68d-9da3fd9d1c0d@lucifer.local>
- <20260331173744.925a6ee6fac299f86a07a7eb@linux-foundation.org>
- <3cf0c280-e5bd-4e5b-884e-6c734619b821@gmail.com>
- <20260405122749.4990dcb538d457769a3276e0@linux-foundation.org>
- <e4ca389c-882e-4757-8bc6-76563f448b14@gmail.com>
+	s=k20201202; t=1775555941;
+	bh=YcdLZ0p4kAftv5DfA+WERS7PVAwnpqzv9HtwE5R8yVU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k0SN1dG0wR7107JPk/3Zn20hNkY9DZoJ202ozER9HWvza07qy8Epwv1EYszh62Fit
+	 TB8hZ0tWfRO8M6LhmFYpcRRXjCT6uKo1tVONz+1VqUgB5n8yZ0xOjez61DPfzazIx2
+	 BliRHMSXwyqQvYArfxwwD6/NfGCS8utA2uAC6iJWLZG9NUlvHZ2GPjFXTyxbL67h3f
+	 MKECc/PX+vwHhQzu9wXpr6Yrm8pCTLsBGAvjx2RVEr5lHnlYPod/ZGKVY4skhg6oVm
+	 Duyq5Jlp7MIqYiH4Ixp6kYwf1MOta6OGj2gFHUKo3Kjyr60Gd4LMDU03i9iHnIxjxG
+	 qSiRuVTNwG4hg==
+Message-ID: <710854d0-9ef8-435a-81ea-bbc0ea7aef46@kernel.org>
+Date: Tue, 7 Apr 2026 11:58:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4ca389c-882e-4757-8bc6-76563f448b14@gmail.com>
-X-Rspamd-Queue-Id: 247AB140003
-X-Stat-Signature: yf8s1b7adok8wf3qu89aryagozceonu6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/mprotect: move softleaf code out of the main
+ function
+Content-Language: en-US
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jann Horn <jannh@google.com>, David Hildenbrand <david@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
+ jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260402141628.3367596-1-pfalcato@suse.de>
+ <20260402141628.3367596-2-pfalcato@suse.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260402141628.3367596-2-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AF1CFC0006
+X-Stat-Signature: aitogeda9pgsejfoa97i1brzpsos371b
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775555784-15819
-X-HE-Meta: U2FsdGVkX1/n5Tcs5ZfHHR9P1pCajU5ShbDOIIB+Oi5R3B7vY8CZ6wNKAHM1oMg1mgX9V4vXrNdafQa+GKIZhPEfFZEV8v9aJt4I47pzASSpZU32i4tCdTozewBt5orwAV2++xL5xQHNunElUt7Cl7YOai9GZR0RC7DuL29v7iQ5M/xsGH3poTAEm/ZQmid/FCAUXXwYMDDaZAQbk3vS6im9bXYZUAdk4KzkD/WMlAeoQSS1L7fEC/HYC53501+6Y5jNIv8DeOFtPprXHoSbPF/lXn7V53J/hwyIi8rkWrnUVOHoUPGJO8Evz+jdBP4AaQ5lv8ofnxK5LboV9APuCCKcipavo4M9NDjszezOzlYAPgICJf+1JNKT4Ou2KsfIxZNExUofuxYwmfdvgke/LVUSFM5lXPajhgoPwTlLsC/PPCJ+YwEgQexGs+9mLZWRlQMDcRVq6Qv0yShTkyK+99tnyVJ6QCcyRWgCekuCb5tMuqeklMov7K8jQVeGlCJqNslA/xvgCZGcZo/+D8fqglLizY97LZyymv4zjvpHs4bC/JmmeQqvAp74kAfeP7GeyAzxRaI+vh529B5fTujy/1T4Fl/ZWxEoj413YwSfFnv7X/vFYLr3jPKW3oYPi8zhnr15vuAW3KflG6cnoyIH526E1h36UOFqhI7Fppj1CRyLrBJ+vKwU2EZOr0Ugjh8Cm2KflJwO32DoBgr8Bw2kUyML5fYweGkraa4x6tOjo50NyKz3Mb7aSotkEu93DETATiY8bPO48/4VuDtEXdtJGJ2g79eCbbAiLt5MG9oCviMbpCZtumIfc+rUvUmBYPnM2rfzoVcXsJzcSCAWdhIYT+5O2QA+B/guGwjJUTqqXQc7rK41VPrMPMxqcuMjBe+K95vxAE+lbjPuue8STI23aSARS6+wWmtQ/GJeM3b+xeZF0mNpAZTVB+2jupMymuNaF0NaNMp2qUEuKoVKL5X
- wR4je/Ae
- pbDAgwFgypacNsEEOJh24gb2JDKpYszFm/lgMH9icoQgd8J41I4yFf5DBlbO2dtm4nAsbJf+3Znlz6Ukba+IavBM8s1MUpYjxUVCi5shcqQyU9NCzgk+i9TkuaOSvhIR14bLskidFbTw/Q4xGZmOPR6iDEPGxmyUOMQuZFJM7Jz1XOwS5vGPlyCrvsFrlyfNqyFbHwp1ua3pDrWu8YUv/zGbZpO2H3F/+N5GhANc4rSK4tTc27/gOSlGOsRh749ZH8IPH
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775555942-469098
+X-HE-Meta: U2FsdGVkX1+H1BtfCtKWwmqwuTiPIMmYd49ZbnHS4vOTdZEQ35w4g/KF0qguYJs+erCZULFsgJPWtvDsQ+CSIkMbibQmIL1qoDi+oWX8qn5wtrbXO7UbJRSCDXq2xJOAr0S55tdeVi2oyy0HEp+cU0Aul/PTQDm39EWRSxMq+bLQ7bHzB2mSV7LBmlSg20A1i/TGGi2ramx175vmtX7FR5vwiGvIjPSD9eF8QFUlvLDz2pktdHEfltGYmaQYMBETMpV9i+84XSOxJdkPN0o8OlyYTPWTvmYBm40yZjelhp0FnNyMeYTJnE6mDsktin8Xp9DwP4vQq5y/Hiv4dBZv+i/xsDGbILsbDav9W//ilLeurghsc/FLG35uwoZPo7sfsazKvKztSmAoWAddG23367AK41+dPtrLvdlTU5nY4DHzlmfpEFcovIulD8QjfOav3HAq8lP7yH9TcYiLvoV7mUeSlKOhG53aHz8mG+N7wl3fbHIukalEeea1UkokO0u55tw45uWHMkcuA/2mBortpqlR7hlPI4k5JFNiNHM37oxj5d7BmjEaywOT2VCWEuYgU7WwRITGKiC48nLJ+pMPhCuRE80K4cAnw7nMwHpQV3tUQJ3EThDxbUtGXC0V4MAyfz/aINPIbEBFCja08P9CY81zwV83z8T29xCBxEIg7f5Ezmd2ylb/Rc0rwosB3vDz3ozW3rmKrmX9qEq/lRHLokUo/x07I8Pe9wan/aJL2OjnekPDhIWFzOeyp8R7ZgBT7aKdMDAAl2S8hrfSsZ3lLnz8xRwAydD5ZjpyMvcg893v4uqSJ064WQ19W25MLHRUmrCxb5S6gZXjBnvgpOzkBidAGVAV6p4RyV/zPCICpe4i8sch4Ckv3py3kHKOi7rL5YKn5qWTzUceGVluQWUwkLDqifjsFhxQYDHDsOrBOE/0GPoZ3zjCdj7Q7xIeRjRLagt7Crm4ZD4MhVylSFI
+ fhTudcYK
+ ctdS2vLdHF/OQxvqe9WLofD52aM9X7zsgxhaZd6OQDq0sIXOIxEiLFHTzckmm4t7uEf8xP3f0XthzMKOgWKRPjCQzbSJbfLVTo+NgmAgaa7Ce+PEjW7tfeuAT+wcOUguNs/0Gk74JV1mB7ru2ap/YFvjrHPG3sv5IBYxRHJhKQMEt6Ppj+OxKT68jmRDNIu6dUJd6tLNM2EKe36fraLw7j1wEXVyJwLg+Tmr8eV3JDgGNWVvtshcx0ksWmkgvhMJxPz5QpoxvLOuk3fLKL8y7jH5zpZ/3ktqGQN4PktUsb9MJlgk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,21 +98,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 06, 2026 at 10:14:22PM +0100, Julian Braha wrote:
-> > Have you considered adding kconfirm to the tree?  A top-level `make
-> kconfirm' should help move things along?
+On 4/2/26 16:16, Pedro Falcato wrote:
+> Move softleaf change_pte_range code into a separate function. This makes
+> the change_pte_range() function a good bit smaller, and lessens cognitive
+> load when reading through the function.
+> 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Tested-by: Luke Yang <luyang@redhat.com>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-+1 to this!
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
->
-> Actually I would love to move the tool into the tree. I will clean up
-> the code a bit and create an RFC soon.
-
-Thanks :)
-
->
-> Best regards,
-> Julian Braha
-
-Cheers, Lorenzo
 
