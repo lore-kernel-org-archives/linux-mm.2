@@ -4,98 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E64EDB7CA
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 07:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7420EDB7CC
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 08:06:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 916916B0088; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
+	id E04E76B0088; Tue,  7 Apr 2026 04:06:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A04F6B0089; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
+	id DDBC66B0089; Tue,  7 Apr 2026 04:06:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768436B008A; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
+	id D18A16B008A; Tue,  7 Apr 2026 04:06:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6068A6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:59:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF16DBAB2D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:59:22 +0000 (UTC)
-X-FDA: 84631009764.21.F229EB1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6013F4000F
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:59:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OT3YQ6Ny;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775548761; a=rsa-sha256;
-	cv=none;
-	b=MJUEv+LMNsM2olDp1a7NiVnP34NS9/01OtmBI8lkJ6por33oZ0FCEzBUx46WBkZruz3ern
-	pnPNyJ4DHPvs64Q3uyZLJjqSRKZdS+byfnWS8M3Afu3mLil72PvXNwVUgj+cW+YnEYnfHX
-	GmTzGEqa71xbkxR2gbWmQ0t3Jx0IHSo=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C291C6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:06:45 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53204BA913
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:06:45 +0000 (UTC)
+X-FDA: 84631028370.29.4283C6C
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91435A0008
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:06:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=frNkA8O2;
+	spf=pass (imf15.hostedemail.com: domain of 3EbvUaQkKCDAMXUOQdkTXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3EbvUaQkKCDAMXUOQdkTXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OT3YQ6Ny;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=frNkA8O2;
+	spf=pass (imf15.hostedemail.com: domain of 3EbvUaQkKCDAMXUOQdkTXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3EbvUaQkKCDAMXUOQdkTXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775549203; a=rsa-sha256;
+	cv=none;
+	b=E5ti2NM4TKxzJn2nE3nnl8aOctcJeEEvbbHQyMHPHNzKzcPu1d2wha2j6zli5tsM9kATXL
+	meX3ubbXuQs9FCYmJ1OybWb5yuH9C7BbuCK7X+xub9aL3FUeC1uUyW6t3tPdMXhljlnEZc
+	Y6XfM8szHJtf41Xxn0rW/HfHPGigzPY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775548761;
+	s=arc-20220608; t=1775549203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=9gipofllLJeGPw+/o153rjrDWxdz3aGlA00Edc8Fx4g=;
-	b=DrKfGqw0XOLSJpLePrwVCKR2DyREO3KaofTp6N5NjyBU6Qv65G1PBbWK3210WxrPurBQD0
-	2+3ZCGsNUFHBuTi0ROjh5P4gs7hIJl/j7Xej1/YHchNtnx/X39xXE3iSbYF5LJ7eQm2x8Y
-	rOkejWfN4G/1anGQOJg3SvDEhuB0AyY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775548760; x=1807084760;
-  h=date:from:to:cc:subject:message-id;
-  bh=rWUrsv1W8qJf9KmFN4h+K6eWgVKlBezYqGuQLWUdenI=;
-  b=OT3YQ6Nyhb/gzuGvEPfLRqWLQMo+EuOkLCX9kdzFp7l+PmSu45/7e/8z
-   gICa7+d83Pt2CrrtEKjeMFzryreTptDAxtE+7Fz1HYq3E02snF4hq6b9S
-   a1CQpoibcVVUqSv4ZQcfHTXdWjxFUg8wERTcITvedAUpmfJFLMLR8KRAs
-   bgKxjHdUArVLzvqX1bOZFNjVe7WuBaaxq5Cf3OWjV1XhybLEuvPJF2YGE
-   IwuAcgrzRQfiul6PxKkicBiDCgMzeTqLW4F9Gc19kTlIuoX28hJk8wZGp
-   ZtZgEzG3fpoHhpPq+CCrSw4Dk4USPDb8AX4RSTdS2wBKCvDk7zpNzoCnk
-   g==;
-X-CSE-ConnectionGUID: VmgQb4+MSzK6/s2fJmLqGg==
-X-CSE-MsgGUID: glls4arRTjeOhW04Ey6Sng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="76401559"
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="76401559"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2026 00:59:13 -0700
-X-CSE-ConnectionGUID: CQEOJtvnT/WcNOlTuaHAOg==
-X-CSE-MsgGUID: CatIVsrPR0G6T6j+72S9AQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,165,1770624000"; 
-   d="scan'208";a="223305417"
-Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 07 Apr 2026 00:59:11 -0700
-Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wA1L3-000000000Kf-06yd;
-	Tue, 07 Apr 2026 07:59:09 +0000
-Date: Tue, 07 Apr 2026 15:58:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 113/133] error[E0277]: `*const
- kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
-Message-ID: <202604071509.y5vLetYd-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: 3u6713p6ubgqp8kimkma95zzyzf3wa9d
-X-Rspamd-Queue-Id: 6013F4000F
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZiARTJkG6bieAVjpVY1nM0z1Q63xfD5pEAGan5ewDbQ=;
+	b=OyB77gDiMHNr/AGYd+ezhff7mknAG34rOQq2Se6lz8jlmGa1VaIQzCyU/yQxvGBb3vJrLU
+	pQsCuTurmMIOXQW5dkLWJHV2TFrTaJdDy6/GXxx4cis+WP7Yg4pLpF3W1p4s1M8WOJMeQp
+	iUnjcfjx8ybiCWVpRcE8+vDBrNL1nuw=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488c0120047so1523065e9.0
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 01:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775549202; x=1776154002; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZiARTJkG6bieAVjpVY1nM0z1Q63xfD5pEAGan5ewDbQ=;
+        b=frNkA8O2LZkUp/Daz6WG17UrLNLmYrqd015MKQc5/MffW3Z+pGY8vWnPEiX0l5YLsm
+         Lhog0+u+014hxgEE2lL0Ab6Ic3oxIoo3dMrMdmxHhs0MNUTQp3yN1W8FoBtuGKHcRj2j
+         ITECiX1VjVRtozpJCQ0msT0KbLRgnqUC3KWMeZAnKXd3Jr07osoMik3HfxL5aX/yfvB8
+         tIn6L9zAtDNJ6LLVMMUiYoN6A4Yu7kez3hdRea2TS5iG68leBTW6Em5OJWXlgYHzAj2j
+         WdVEXqa6R5jWx1Db0LG0Y9Lip1TeZ4xio5mavJB1w59SIDA1jfaxGRtvLdjCuIuHSnfv
+         Smpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775549202; x=1776154002;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZiARTJkG6bieAVjpVY1nM0z1Q63xfD5pEAGan5ewDbQ=;
+        b=eMwv/XZHpMMzQbisvsBsQGpRzcM5Mizi/m7CduGUAk086kA/JSxKRVGGM5YCLhCfVn
+         XbuABa3HczbVHqAbwppxMJauyhN3itK8BpR1HlIySZ2kgt9y595ZbJeu15eX/Dvzw/k7
+         R6K2KZ1kA5P05ffOIEAMCSKzC8YXdML5o6NF+OALc7DvRlaOhkPrBAyP0nId559Uq7hK
+         kRsQjKGw65ckIkh81kud2Y3EG4WKpekvyh3Oa++HDQ6OrASs+f+u6Fnlqi6b9lt/lpgj
+         2W2oijm1rG1OTC9N5vVV3WjGNGCexQnOYciD0e1m0Y1LeJig+XEKt+U2tQdU9CwkxPVc
+         iypQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBRj6/IwvJ9S52NT/kExFm3vQh5MwwErWz1ZEDWfJ3MOpjZIu/93BLtRRWvmkBAeuoF17QQif+PQ==@kvack.org
+X-Gm-Message-State: AOJu0YyaMyHYZKwpTPAFpdvh4iUinh6EXIzz3DbMSBIrB3ykyRE9L4rd
+	C2UKAV/qqUJLR6PjcqPtcZLk12lih4FuIfaAv6hYLrH78eK8PXJaOJ7/+vKG4YlstTtbq6Q16rY
+	MLzC/XRFFZ/wuhugXJQ==
+X-Received: from wmp9.prod.google.com ([2002:a05:600c:2409:b0:487:37f2:47bf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a10d:b0:488:be58:bb77 with SMTP id 5b1f17b1804b1-488be58c975mr15356465e9.30.1775549201757;
+ Tue, 07 Apr 2026 01:06:41 -0700 (PDT)
+Date: Tue, 7 Apr 2026 08:06:40 +0000
+In-Reply-To: <31bb8a8e-2ca0-486b-888a-328e9b748ac4@zohomail.in>
+Mime-Version: 1.0
+References: <20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in>
+ <20260401-vmalloc-shrink-v9-3-bf58dfb997d8@zohomail.in> <ac2L2VNExpp8t7oF@google.com>
+ <7bc4bba9-24ed-4a69-b9bd-d45d647f48b7@zohomail.in> <31bb8a8e-2ca0-486b-888a-328e9b748ac4@zohomail.in>
+Message-ID: <adS7EDLby-977BAZ@google.com>
+Subject: Re: [PATCH v9 3/4] mm/vmalloc: free unused pages on vrealloc() shrink
+From: Alice Ryhl <aliceryhl@google.com>
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 91435A0008
+X-Stat-Signature: mmp7k8ejnmq3y3roe1ygixy4iqdjt9mg
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775548760-46545
-X-HE-Meta: U2FsdGVkX1+wm/rrVWj5Unb3JEZeAbrriBe7cKN11oDckX3CMPbj5LgKJDHQXV+KCliYlBMZ5mRSXupT66g5VUGqlrT6wttlFej2dDf8mhXWTYTQ4zquXhxnD3AbRbuc7PZwWQEl+7QtQgLtFGDOERsbWSFOzKrGgl9iMg7vaBsQ93kz5UPZgg2l9zIX137yF3BoEJAvm+5LOh0HtXheMjcomll1iDYyB6GaPDptKydc0MiI+LZwLmlwNzk9Hq9rx9pfodt1urPHEhUXNRkH84xYoqejAi3qH5B1T+nN2xpcC/P+7ZMcOOxfyBT2pxhZSFPIjFH3JEd50pqFXmFEE21HvMgDWMHJvBSaz5Nq3adN/dIPW0lj+lG6xv3kWRlswtEyooyYfp3Ss3gv7nUhpaRt+TLeqZBA81UHsLXqEJHNhOvt6aQjjr4PvdA3OWxvubPS7708eJe4E1dJySkE5ALm2yli8LOOBE5mzk/SKfQ81R/cDqtqV+/iag7ZheTK+NISOwSRIYye1qd44MfLqr8gDFvJ82wA48bMXQVhLzxrA5f/l07OkxQcS9CvxHLMSSRFYyQMHBlhss/VUtmesKVArNiT0h12NAcfXSz4l37Q4TYtt36l7quALsbqTljtiAKrVgWUyKagv+xe+gGR4pZjNYai2K9DcAwtAnbuDNa6obzZPCYi6sKOPlkwpsKDyZN5Qbm6A8cvsvYcHmx1I4xSYULFzOF67sT38DzRKbGx+xb9tNSLdzTxFk1ogG+mAN1qLPdtzm/8EmPdgmMwquwb5WDPZD5HvLTXF75mD/rmpfCaExG7I6CdgFwXtNz92h3dDwtr549bVn9QNfVhRv8vC5c30ZZhig1kFPXPRaCYfzd/cwx5jV8ZQlnnvBftWJMVN1hnWYeNq/KPjFfshvy5YnhMSb4TGjM986uhcld0hI5S0/86Zdz3nBvABwfFwM3iMOaENn17k+tsKxr
- BrEe43EU
- tnW/0B7r9qdApSZFW7FKkJ12CXO7uBJp12DtM1MVlggWwWiNdcH/E2XIXXRcQpMHjjKgbqCOCsVnCtut4DVUfbZmGn33V90siDgMBlOPydQAM8sJh9Z4Y5SBJuwIfL8+Oqbl9yXptrhPOIObZ6Wyun6UAwdNFbTk+laPoZmXYOdKdWvm2CLRA2l9mGYXyCGD6jhVZOqF7J8aoEK1+r0wPvgT74VGRVxbnzWyLwRS6wKh7zIqdnNImVNDGWWrqtMlzv/aLLCEmIArpU/7KaCHASXHYWOtLN1WXR+enC+teNqB8NhIanfZM4W5IM9rz31pZpPRz85Vi4vHgKik=
+X-HE-Tag: 1775549203-145706
+X-HE-Meta: U2FsdGVkX18Y3nRH3CRy820NYYiNyZDRwI7B06QGRBIGbvGFZ7VzZ/u2biFdoR616RgYVZlCktFeh7kn+YkDB+bNpBFoAx3aQ9LQsqytXO0cy1q46dDyl/MsD6dGZeEHukr4T7WMBGvkws+J1uvNMOLVrI17gBiL6nLTefKeuj+Vljg4ko3HXnM23ooCSr57vBYhShl1M9P7tnY2fceLoHI1E/LzCBL78XeagLoGlcu6IcCbkAKVWz8XcSpWpkIbEbm/EuLyLrN3Tej5iWD1XdRopJliOXchgfRcFlLHNOFz/KMLiG4jxYD/WkWwuHMpiUD9496H7C3kCMpN7SeTLQTHjbiyUmEyc0XDCoVS6p7/QfiJej6zbXq1WnKA3xKY3HzO0z2rOHYx4zF+I+WNNZEyxGL6x2/xZD6W3pFOXkqkiCkok568Yf8UYwDE+0ZNzQrWPPi4MOlNp2iqr2A+OMe1Hy21OAK6SKLEFLSqaMyDedOad7up2VUI9zMcSpe7deN9KkQzE4sZYV1gFWSO+FW3PsHM32oi+BheyhMO9Qq0HovPBzQNwnk1rHaiSlrM3OCDVURxRB2Irsa0/CKK2RCVZdtbATQ+E8N4g29tqzEIgnrxUVipuhVpcrpBu61qW9vKz7O+hXefbUjsungM/PzwSMJqWNfEdGiYDPYg4yAW9GvBISt1Na56A5TlLR+TPhk2o8NngnFvixvriASR330tx4ihwTVwpjxrF0r95XibzVHvJ5WmrADxkUhz7h/rH9FxLwzf71dGGZLA0UZXlxReVZdXtZCQscRx3cEmWikIu8C15d9wXTdktj3pOrlgVbAS2QD5luhnKP7z+WlNzCr7QneIsxFBiSiX0Ba1/fub9MjVmro1CrpnBArtWS0nJoFkhG8u8YP3psXZ5Esc8rO1bnYBFLx119DVXSpeQ3sUUY4kffymtHUtVN5gXdwNuSt5Hrw0djs7hOcHL8L
+ 1bR0G/PY
+ aI99KyLtCg5PcyM9cTjP9q2nsSTFmg/2KTsINJ4TmRtcDEV5Sbm0g6V17NBrV4r9M0g+cYta8wK6ScTXOrCb+jQ5zdd79GFaod41Yr8hBjzmhmTZLmcpnmhS02h+jiBDqon/3pwtcooCEd1+J/01b4gfdCDRNxHZkG2NaMnzrzw9sakk6d8EIAfU5lRDOfA/8zBeZe+47Pz22nzaE4lsq9WOVwM0Nbt0LydxXpynUDeK8Mu0/0iN3V0nu/84ou+6ws0GrZiFxg7KLmx2VQnTjQRAGTTQQJ2TzUzIi24gFesGqp4SXr+tTWJBTQm1rzJqWc8BvKjJZ5YSJHlpzXwtKJVt1oWIpuu+X5gfjPWkkcz+fIuoJmpxBb9MP9BkA9HlM+3yNDbmVuGDqAkiyDMZdcdoV7zmHsvI7TEATrwENwQ9qniq/WTSxQeZUlBREiivTb9fOKfmlT+chEXSJDn/FUX4yJExhelmCsuvOFIT07e3uV1vMIFnDYavhm5oNYqDlzCs8E9ZGXkFiZbcnLkFfJH9gLFwByot8CA4tNbuZWYs/LaYuzs6w7ooE1xYKHXBAL3CtLCjoHmKByAyCiCrHfcCAFK2uL7PAbe3wzWwTnBXusRGLpHcLmy+LjjE6+PF2MWtIbulVLreoHHkMRFBXfv3jJt43f54eIXwAE87yVWbRpGCSLTY/Gv77o/bvhHYARoJ8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,36 +108,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   3fa44141e0bbd5062f2ef0c5cdddd98275d3223e
-commit: 694fc0bd3ca5420f4e1105d2dec02327cfc5d64b [113/133] userfaultfd: introduce vm_uffd_ops
-config: x86_64-randconfig-074-20260407 (https://download.01.org/0day-ci/archive/20260407/202604071509.y5vLetYd-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260407/202604071509.y5vLetYd-lkp@intel.com/reproduce)
+On Thu, Apr 02, 2026 at 08:23:42AM +0530, Shivam Kalra wrote:
+> On 02/04/26 07:31, Shivam Kalra wrote:
+> > On 02/04/26 02:49, Alice Ryhl wrote:
+> > Should we set nr_pages first? Right now, another thread may observe the
+> > range being unmapped but still see the old nr_pages value.
+> 
+> Or is this what you mean?
+> <snip>
+> struct vmap_node *vn = addr_to_node(addr);
+> /* Notify kmemleak of the reduced allocation size before unmapping. */
+> kmemleak_free_part(...);
+> 
+> spin_lock(&vn->busy.lock);
+> vm->nr_pages = new_nr_pages;
+> spin_unlock(&vn->busy.lock);
+> 
+> vunmap_range(...);
+> vm_area_free_pages(vm, new_nr_pages, old_nr_pages);
+> 
+> <snip>
+> If this is the case, then I agree this will be much cleaner.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604071509.y5vLetYd-lkp@intel.com/
+Yes, I mean that you should change nr_pages first, before you calling
+vunmap_range().
 
-All errors (new ones prefixed by >>):
-
->> error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
-   --> drivers/android/binder/page_range.rs:146:23
-   |
-   146   | static BINDER_VM_OPS: bindings::vm_operations_struct = pin_init::zeroed();
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
-   |
-   = help: within `kernel::bindings::vm_operations_struct`, the trait `Sync` is not implemented for `*const kernel::bindings::vm_uffd_ops`
-   note: required because it appears within the type `kernel::bindings::vm_operations_struct`
-   --> rust/bindings/bindings_generated.rs:74703:12
-   |
-   74703 | pub struct vm_operations_struct {
-   |            ^^^^^^^^^^^^^^^^^^^^
-   = note: shared static variables must have a type that implements `Sync`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Alice
 
