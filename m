@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E654BFB5188
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 02:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC4D9FB5188
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 03:28:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C8CE6B008A; Mon,  6 Apr 2026 22:57:46 -0400 (EDT)
+	id 7A5A16B0088; Mon,  6 Apr 2026 23:28:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59FBA6B008C; Mon,  6 Apr 2026 22:57:46 -0400 (EDT)
+	id 757046B0089; Mon,  6 Apr 2026 23:28:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B5D46B0092; Mon,  6 Apr 2026 22:57:46 -0400 (EDT)
+	id 66C926B008A; Mon,  6 Apr 2026 23:28:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E96E6B008A
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 22:57:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB9488C055
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:57:45 +0000 (UTC)
-X-FDA: 84630249690.09.C00EAA4
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 05BC5180005
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:57:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=JJEk76RO;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775530663; a=rsa-sha256;
-	cv=none;
-	b=rFd4t9bc8rpOuQeVbhktphONwyaxSmMGOrhR/0jnUqYj/58BdMg7unsf2OV25vZiGIt947
-	5lkEQ/KNt317nAjnu8ETy0aODI1u9BoUusEunwoUxkrUcYxfiYuisx/bWl5TtSkwC1QO/R
-	+onirznyteces1lV1OxYa1TEL5PR9Ek=
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 565756B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 23:28:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD91A8C0E7
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:28:56 +0000 (UTC)
+X-FDA: 84630328272.19.D72A540
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6A20640006
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 03:28:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J8sN6vHT;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775530663;
+	s=arc-20220608; t=1775532535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETgww+HwxHhmO9mtPFnDQxT1EU42o/a0milwkwWeNSg=;
-	b=3+uG8PERqHhxzyWX0QK/3XzQUeuEOWm7AZDv/Lo30Eh6eXeNgcwQQbmHbFeD4bJOVKAExs
-	uzP139y5sVgB8J3xdkhGSUj0jyA6tQ0tFxZu1244nThxpHqEYFDYA/PN1Hz+gnNHyNMF24
-	6IUKNehZklt+Te87nGd4OLHLQcps24A=
+	bh=Ne7ER4wy4Jl5TRr+P2TDdubMY/wDGQsCieUqEyE32e0=;
+	b=ay5/JzWwuhlzYAefLwhaDIYN+b6C1RSxtWecwxhBaRu9bDfck8IGqyihiOCRh4KCyfO81w
+	4dTzAs+mvmMtBO9CLSIT3sEsZlOH4eVBs6UaHe1R72DIJ/w/b79rHJqIdMPEhBN7GE4i2r
+	uzYiIr7M/jePby3pxP1gXhHEvbv1y4c=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=JJEk76RO;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ETgww+HwxHhmO9mtPFnDQxT1EU42o/a0milwkwWeNSg=;
-	b=JJEk76ROATZJcg+uB4TytQD5rt+o3NIKXmfoiiOyV4i7Ss3LYwRSYNSeP1xYcT7+ck2jzGq1j
-	1fL3gTZYY7h1/9QLTuXeYaM6S06MWVCjPRRgNlCYEbxohec4zZZvQhQds9tJIhuwKvuQYWGsJSd
-	EuyEd/6cb1TyCiJVFy2dLoQ=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fqW184C0gzRhQv;
-	Tue,  7 Apr 2026 10:51:24 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id E04222025F;
-	Tue,  7 Apr 2026 10:57:37 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 7 Apr 2026 10:57:37 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 7 Apr 2026 10:57:36 +0800
-Subject: Re: [PATCH v2 2/3] mm/memory-failure: add
- panic_on_unrecoverable_memory_failure sysctl
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260331-ecc_panic-v2-0-9e40d0f64f7a@debian.org>
- <20260331-ecc_panic-v2-2-9e40d0f64f7a@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <59c133a7-74a7-4678-d907-add764bbd107@huawei.com>
-Date: Tue, 7 Apr 2026 10:57:36 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J8sN6vHT;
+	spf=pass (imf17.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775532535; a=rsa-sha256;
+	cv=none;
+	b=epMYaPqX9lHbsFtATtMrx6DZSh1gGajotyOHXSzFWYHglZ7L9qivNwYNcsfPpmQx8/+eZh
+	H4e5Md7Tb+negC3ON0Ywmgirpa3fRUxOlQ9tOJcA64y18zgxe7Sn+KD7Qrik1gxFVmf7NZ
+	NMM1S+OBWPSNdMzlmWQOwunwr6o6eyw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DCE22ECB;
+	Mon,  6 Apr 2026 20:28:47 -0700 (PDT)
+Received: from [10.164.18.83] (unknown [10.164.18.83])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03EC03F7D8;
+	Mon,  6 Apr 2026 20:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775532533; bh=rGxJ/GFPxD1fTxFc6L3HZVbz/GVhPSIOf5Qf+kTZAcE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J8sN6vHT6wwFlL7w+ibtbyy+RquT3UJgu31Rqk6lPgGMfOEtwfVy0CDOl0+tf2hL+
+	 P+5722EfEjo8+QgJZlfBEyhlP2lqjI1tiMA8hoLKpVioc1QG7k/fkkQDQpBfWRMEwE
+	 TiXiGNaYeB1yOH41Pu6Vrltn9LQFfwVlfj8zKXSQ=
+Message-ID: <1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
+Date: Tue, 7 Apr 2026 08:58:46 +0530
 MIME-Version: 1.0
-In-Reply-To: <20260331-ecc_panic-v2-2-9e40d0f64f7a@debian.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/events: Replace READ_ONCE() with standard pgtable
+ accessors
+To: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260227062744.2215491-1-anshuman.khandual@arm.com>
 Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260227062744.2215491-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05BC5180005
-X-Stat-Signature: 1rpdhmnpodeundcshpuae8ubq6tg9j9s
-X-HE-Tag: 1775530662-408858
-X-HE-Meta: U2FsdGVkX1+KKLMWCkwyJ0ZY++I7J3sMFrwEEIPKQ/KBc1h//ikZhASjFKRXjrQ+7Dx2gQTqfhlkOna5pGp2zkKNH/OdESN0yzkMiIxZvNi+MSs/DnbIIb2QIqNI6j8S4rXWU/LQ6JLfSxJsJVjo8a+OTjuWH2CAhz7kPaaAhRrcTcg8vDHwRl92mn/t0sE2Oz4wjh+B3TpeexJEVry8FIrcKnmFNCeWsV8tyDfbZKAK+FidZEydKTIN7KihC00EWJFUgrNJXD6bB6k+hi3BiGkHryUooCqpJJDmZowmbcYlrcHX55be0SIV/SgbPpXtvBr5hJWfSbOtWStqgDggyOEXglJIlF6nn0QX9OODehdNDeXf893tntqmlY3ksVafGuxrDuz6ULc0H/0/XvgX/E2WgxR3yxSZh17AQSl/aI4aR1R64SMvks2c97BRdlQaKoj9j1kk5dlnf3AoLXkYno5RW71846j76LXorR4zZdcQa5MVnatWtREEkFqaKphXF6MK20xGxMT5CTx/P1h5Wy8eTQsnpbmOJ1SkW+OMtogz1Tueq2AMHt0ll05diSP+WFy8GnONCpptoh13tl2yIYz9YPBBY3EERFuYfDBLRQxfv77oXxTzb1T1YSNQu30reLmR88mtuqDfQvgcHaL3+OvHz6Gw6bfWCnuH8pnNsza+iAwDPOaJyvqkcMZp/vNBK75KuWIZzSPseVSFLnqg/ZDQMfTETyqGUGwPS5tycDwWiZ47JvFWfmyTfXvNYQEsnKnOCIusnzNbzuvkPEBucZ9IUzmW2VNtLKhN93nmkph2veimgJXJwNb8QKqKlF/C+tgRgi69E7AJtJ7PZh7LLMe/Dk6RDe6+LLIl6e3MkKr5lUut/67cySKjRR4nfEbeN1rZX1+Rgdn7U/Xdir2ov+OV+BsqNe80Wc3J5YhuHoN299PCM+PQdmpU7Emlqc3zRxhhdSVV9l/1fgTxUBl
- vJqzPzug
- 2ymbrBqQR9kIrDH3ug2jh6kVQY5Wbnrjwg563IzHBKK6KI+/AKxDCWJPxZW9GYqGb31fqYEo7GXdKvK6PVGvv3Hmlcz9Nv53KoGhUx6OQBZy4hdDVUNdD6O7qQzH07VEES2jEKHCcZ3XBU9yYWg87Ql8wsbeskt/r0MDPInfhvoSpyRjQM58SHNk1E7DwvrP7eoTdO02Mz05ZjpIt5ayoSX8xvo81I9/mUc6Vh/xXSCnoouKYe8Z/6elosK+u9MDWrTycJ3skJ35lkhMirww262MWHggOoESiZv+0KtXrEWmjnlYyuZjIunZVJNs8fPnmBdgnj/s7FJEiyEm8RVH6/DAJVpi9Dx4Ir7WiOlXnvW15wBTAwSWY6IQeChU07L66AzmbmJgsT2/uTcIg0a5SQDhVFTDQWPlmMPGT
+X-Stat-Signature: g5myogyn8zcue11suxoj9jn8jzmmsqwu
+X-Rspamd-Queue-Id: 6A20640006
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775532534-421646
+X-HE-Meta: U2FsdGVkX18BosvmMvGSjOpBaP4YBYeRKTKG8YKPw78Qc2d/f0nejTDbh62dlV/totT0+wvMawxFh8u0tBJNEQ0flNHKYHRa++uNLElyXqsfPmkejSG7FT9yDrqboPuVjBcBCx6kkhlQmadigGx3xqrFhxAV9S+bd33KdTc+hioxyn1X4rZobe/vqZDSqU3U3zr2RwyKJLrl4ABW6YNi1OnVPOX5Cb+Gn79XvyFpb9rM2m4xBwGO9JPX71PAIEu1OWERqyrv3AwnBG5j8x8OeMk4JPrITL8Epr01XNrhjBgzmDVSKea7q1skmfF3rRq0LnP5yLTHb+dAWStJC80bnRnO83AEdOmYIzMnxPCo2f2fwvYNTvoKfIqT+NKlA9bCAdS5mqTFBYGl3tRZAMgHO8SSVpwALeuqGrb+Yy8/vEHDzNG0ynP+Tmvu10OS3tCNcIvjD+n1RFhlwKE5bxA5JDX4SttUkbREocpg/o4Mp+ogk9z6f3rySHHnos20rD6gZzNY7cSXVc+BhFoKPwx9hpgMN2MvQMNIE7NDw9UqlrlWgXlRdR6xyc2WgDJsfc9Oo184JBz7qM7NuP2NlQC2pWhp/P2OesFUR5lFWkY5tbBT1Rsu5ehHI1MABmkQol6W7dotSc/d4cC9ByyhSHQENg3Hwyi+BOAWALhWC8WXStB9UUiFYl/GPgboF++o3UKXaIwgcJFQNOwjC/dqwBbQvr18RMoQKA2SAYno3Ush9WvqxrsRg59aeAKvoeoLwebpIrpXjU10jsJ2pl98r9hGxUuhbf+aVK/6tZumJgzYyRdqyL2CR8qfaG5QHc1I/6xE2elGQovA8ijh1CqK4kIKi3nUnZ1kUxRpv92/ZtjhiBjGKkipHwnDye6XLFzvFxxbmFSF7QjmFPm71HCqVrYEK9WC36pGzbI2J33d9xj+s02D/hVugkhvYi4cbmQ+vhMUpaG2+1ar5/EzjRGxXsk
+ Jk9fPgYU
+ w/MaIaME+C0lyTH1yF3MA/RrnuzduEtTkqWzxnhDz8KzqMTybmFqm5j9KIOCjZzx8TcAS3Od3qvIeFZk/68FVb9nBf2C1HdMHWqahja5q+mBbVy+2DPrcLtnimnLblhyPyeWO0B4i6zb4agCk6pECgN4Q0YOcCUswJLXod20rlAHrEUvWWs4IUn4TxNJHbv3ZZBDFNbgbQmnkXcl0BQNqFRQJIWfG1LmGQF4An9BblPvJFQXP9oaZ8PRw3J64SZAA8YP1T1Ew3n2BM+16/rIqSsUTNBRDKCZCmAPmw/O6NVjb0wcvDJ92ANN2/8bJ2u8tBfQraO+4cz0vn83Fqg9/7scSXOjpmcjQbe9DtECbeuVr65oCilRdnEDsATAzdCNQEv8n0I0HXUJ/RE1F4xnEN9BiMwjHRUsE9pauBH127DQhTWvIe0JkV7rmVm/qQsv/J2THbK2RDYwJE8tXi1IpyVtB4CMJXthZbIXpjoN56pWClU23wP+kagamsuR/2HGSsRzOHyjHJx4FHryQR+mYR9hfaRBFgzqcRxzyjZ6i2+BJ6Au9N/YJ2vjy4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,56 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/3/31 19:00, Breno Leitao wrote:
-> Add a sysctl that allows the system to panic when an unrecoverable
-> memory failure is detected. This covers kernel pages, high-order
-> kernel pages, and unknown page types that cannot be recovered.
+
+
+On 27/02/26 11:57 AM, Anshuman Khandual wrote:
+> Replace raw READ_ONCE() dereferences of pgtable entries with corresponding
+> standard page table accessors pxdp_get() in perf_get_pgtable_size(). These
+> accessors default to READ_ONCE() on platforms that don't override them. So
+> there is no functional change on such platforms.
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> However arm64 platform is being extended to support 128 bit page tables via
+> a new architecture feature i.e FEAT_D128 in which case READ_ONCE() will not
+> provide required single copy atomic access for 128 bit page table entries.
+> Although pxdp_get() accessors can later be overridden on arm64 platform to
+> extend required single copy atomicity support on 128 bit entries.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: linux-perf-users@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  mm/memory-failure.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+> This patch applies both on v7.0-rc1 and mm-unstable.
 > 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 6ff80e01b91a..d0d911c54ff1 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -74,6 +74,8 @@ static int sysctl_memory_failure_recovery __read_mostly = 1;
->  
->  static int sysctl_enable_soft_offline __read_mostly = 1;
->  
-> +static int sysctl_panic_on_unrecoverable_mf __read_mostly;
-> +
->  atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
->  
->  static bool hw_memory_failure __read_mostly = false;
-> @@ -155,6 +157,15 @@ static const struct ctl_table memory_failure_table[] = {
->  		.proc_handler	= proc_dointvec_minmax,
->  		.extra1		= SYSCTL_ZERO,
->  		.extra2		= SYSCTL_ONE,
-> +	},
-> +	{
-> +		.procname	= "panic_on_unrecoverable_memory_failure",
-> +		.data		= &sysctl_panic_on_unrecoverable_mf,
-> +		.maxlen		= sizeof(sysctl_panic_on_unrecoverable_mf),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_dointvec_minmax,
-> +		.extra1		= SYSCTL_ZERO,
-> +		.extra2		= SYSCTL_ONE,
->  	}
->  };
->  
-> @@ -1298,6 +1309,11 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
->  	pr_err("%#lx: recovery action for %s: %s\n",
->  		pfn, action_page_types[type], action_name[result]);
->  
-> +	if (sysctl_panic_on_unrecoverable_mf && result == MF_IGNORED &&
-> +	    (type == MF_MSG_KERNEL || type == MF_MSG_KERNEL_HIGH_ORDER ||
-> +	     type == MF_MSG_UNKNOWN))
-> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
+> Part of the D128 series but independent. Hence could be considered on its own.
+> 
+> https://lore.kernel.org/all/20260224051153.3150613-5-anshuman.khandual@arm.com/
+> 
+> Collected Peter's tag from an off list conversation.
 
-Will it be better to add a helper here?
+Gentle ping. 
 
-Thanks.
-.
+Still don't see this patch in latest next-20260406. Hence just
+wondering which tree and branch this patch is being picked up ?
+
+Thank you
+
+- Anshuman
+  
+> 
+>  kernel/events/core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index ac70d68217b6..4ee151cd2c6d 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -8422,7 +8422,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  	pte_t *ptep, pte;
+>  
+>  	pgdp = pgd_offset(mm, addr);
+> -	pgd = READ_ONCE(*pgdp);
+> +	pgd = pgdp_get(pgdp);
+>  	if (pgd_none(pgd))
+>  		return 0;
+>  
+> @@ -8430,7 +8430,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  		return pgd_leaf_size(pgd);
+>  
+>  	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
+> -	p4d = READ_ONCE(*p4dp);
+> +	p4d = p4dp_get(p4dp);
+>  	if (!p4d_present(p4d))
+>  		return 0;
+>  
+> @@ -8438,7 +8438,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+>  		return p4d_leaf_size(p4d);
+>  
+>  	pudp = pud_offset_lockless(p4dp, p4d, addr);
+> -	pud = READ_ONCE(*pudp);
+> +	pud = pudp_get(pudp);
+>  	if (!pud_present(pud))
+>  		return 0;
+>  
+
 
