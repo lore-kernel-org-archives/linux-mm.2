@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED484EDB7EE
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DE7EDB7EB
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 558FD6B0088; Tue,  7 Apr 2026 06:22:45 -0400 (EDT)
+	id EB3926B0088; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509B46B0089; Tue,  7 Apr 2026 06:22:45 -0400 (EDT)
+	id E8B2E6B0089; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8AD6B008A; Tue,  7 Apr 2026 06:22:45 -0400 (EDT)
+	id DC8326B008A; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC966B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:22:45 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D18FA87544
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:22:44 +0000 (UTC)
-X-FDA: 84631371048.11.B44FC13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0437380004
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:22:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZHXzlVJd;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CF8E46B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CCAE13B56B
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:31:04 +0000 (UTC)
+X-FDA: 84631392048.23.BF971FF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C55BAC0009
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:31:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sECHkvtH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775557862; a=rsa-sha256;
+	cv=none;
+	b=rSHFZbdjoetkpe7lnnY6WgEZBoK2HI/r7ODvpQebUBp73HkyoegWbjYmcGAdu30uBxhG2s
+	giALxo3IMXa8oFy8uAvIAtlfTD7vFxJOfiVKk0ZpvxJ4J9Dy28nY1yod0Y6wsW8Qgdzp2c
+	DAvUPONMjjL7Q/k5tIyHxwaBP2TYNpA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sECHkvtH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775557363;
+	s=arc-20220608; t=1775557862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cd0hB3JVy273e/0T2id316HV1m4HpB5IJATgnURbc6I=;
-	b=Hx6zf/usd0VGlLNhSQFR5ecZVf6Tg19oWGIxpAbIDPbpslj/NhJrhLt3f3MCD6g+8Hs8G6
-	1FWuMN0Jb8kgPNmFe+E3pLuLwuPqSnU1Wg2T4z/Ko/Fx6aDdKbnwFDgRBu0UHPe5Bt9GpH
-	npc81fmFIh1k/eMLB1Og0qlgM+Tk2QY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775557363; a=rsa-sha256;
-	cv=none;
-	b=TRy96ngTMut/mCxDBRAexvjSBiIR9khQgqYruSadqQnJZNc0MRkgsS5x4tx2+hwxaAH2Af
-	rDnoYI2r6R6J4QYEqGfI7hSArLUfLlG6IFbA4/4xk9D3bLZVl3l8To3NrPqubtXuUveZcK
-	c1KAu31YMwvQ3w18D5IhYGXSTNUFSMA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZHXzlVJd;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Emv2PAaGEl0bPgbDOuEKzRBxb9CXektrzATbCOMYo2I=;
+	b=10n4PVMW9Zp+5ujdUQDpdTKprHR3CUJpzp0YtmblhkV9X+v6WQhccI0NN+y5pGr9hKqY/M
+	2HHKHcFkJmK/UCzLAPGCbJPGHZJnDAsmUq+wLpTbmwpGrVBqPEbAnfbFo/ddR2QsAXwMeF
+	LkvDt5Flrt0pUjNtZ/dMSWZbiF3IA20=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E316243A6D;
-	Tue,  7 Apr 2026 10:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A19C116C6;
-	Tue,  7 Apr 2026 10:22:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A07560103;
+	Tue,  7 Apr 2026 10:31:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07A9C116C6;
+	Tue,  7 Apr 2026 10:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775557361;
-	bh=FZkXrU5Sd83jhvoTVMaDHnOI/PwYuAOxdZZgsx2RnDQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZHXzlVJdcn23biVy0NIGUnEkgIbhCKM79YUU7qVLdsa27iyW2F4YS/cqLPvQZMwnx
-	 wBUa9244UMoGK9QDESuLHCHGfivKDN5nFW8aZEzs5aKMjYodHJFTSaD4vIkJNVNFvx
-	 pLlTln2YYRfSIluTOI9UpSdIqFr72/k4dLuXK1bhEcEvteMzcd5bOlFDY2JBmUmiF4
-	 QH46TOAbDtuDwMDKhCHjkwLY7Wtz5p5st0Yx1jggpBGBSUs5DczSD/qjS+dNcVTlfJ
-	 1jDiTdUlSamOHQ6s6UXivis4w6CZYdzw7FvFtKFmf3Bq5uUd8IAu0gPwFcqiDXJk8q
-	 xgQwywDrKn3Rw==
-Date: Tue, 7 Apr 2026 11:22:35 +0100
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v3 08/13] selftests/mm: ensure destination is
- hugetlb-backed in hugepage-mremap
-Message-ID: <adTa3YItApOvQAlN@lucifer>
-References: <cover.1774591179.git.sayalip@linux.ibm.com>
- <3b6ffba238a4b59de891acf896fa25d7d3193228.1774591179.git.sayalip@linux.ibm.com>
- <ee15d52f-45df-415b-b0d9-3d267d147e5c@kernel.org>
- <b590a17c-13ed-45f4-9f51-ac662d00e7bf@lucifer.local>
- <066a146b-7dbb-408e-bbc0-542bdcdd6681@linux.ibm.com>
- <86889304-c450-491c-8c06-48ca9c973531@kernel.org>
- <0a1befae-1037-4bbe-b976-352ef4607d2a@lucifer.local>
- <f0905481-3ed3-49e6-a25d-4b58dca7493c@linux.ibm.com>
+	s=k20201202; t=1775557861;
+	bh=xnPiwWIJZOBJKDM3E43NKbF2H1Ltqj2Y7PvIumMZROg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sECHkvtHNV1vu3xYEHaXdXfX1O8I+pbJISMQZvpGMKxILLhPO1wACoSBugIEdIFRG
+	 HlHTPHfqhlHH+4i4LcFrSWcrb5nabh/qpDLYyhovcHWb2OFhKxNvMY9XfgfC8+1SBB
+	 WGS00aiYdPz9XGsGM0dSnNhD8Ht5DKxqBXA3QuDYijFv2vvO8bfpD3rrpycCOU0PTF
+	 cxiWxmkn5YtLkVnBv1eAb+N7ZJlNS/u+20fPiVzFrOmgMSIoINw4VPGHAkeCoFNxsz
+	 kpwjRARM1QCToL32gs8kkGcDovkjxSVNJBb19/79jVvbUsI9yJCUQf8Kh2q1eoJgIW
+	 otkqdv3sQnQyA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Shuah Khan
+ <shuah@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  Usama
+ Arif <usama.arif@linux.dev>,  linux-kernel@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/6] selftests/liveupdate: add helper functions for
+ memfd tests
+In-Reply-To: <b7af6516-1593-4e2b-9149-fc839e2b88bd@linux.dev> (Zhu Yanjun's
+	message of "Sun, 5 Apr 2026 09:30:17 -0700")
+References: <20260404102452.4091740-1-pratyush@kernel.org>
+	<20260404102452.4091740-3-pratyush@kernel.org>
+	<c783bc1b-3327-422f-9191-11550513b13c@linux.dev>
+	<2vxzecktc13r.fsf@kernel.org>
+	<b7af6516-1593-4e2b-9149-fc839e2b88bd@linux.dev>
+Date: Tue, 07 Apr 2026 10:30:58 +0000
+Message-ID: <2vxz5x63awpp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f0905481-3ed3-49e6-a25d-4b58dca7493c@linux.ibm.com>
-X-Rspamd-Queue-Id: 0437380004
-X-Stat-Signature: az6ceemirjwoau3qec7u5jgxebdxqyy1
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C55BAC0009
+X-Stat-Signature: 35bmpbyj11qieda5jzo5s3crs9jn7yfj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775557362-931580
-X-HE-Meta: U2FsdGVkX18/z7k10/n+jK+qBLWw2yr55UodHerhTdRLuW88UAWANAUWJQkB35ONUJarkXV/cfkbL42me4MRJcst14IZAf4MMo6HJBPrrqqckowoHkj21p8J/ciMaRk2GJo80G54eb65NJGao98tcLgxf0MynBxsAzNqyVm7ij73FAgxVh7mcGy0hYoiPCc4JZgt+inwEqbbWF1/6KXWk+4YWzJ5H7C13lX9awzmZO4arTUu0M3+8OHk2pDhaW1JbB33gbcov0XWNFeFVA6SF/zm+2B5LzcG7lT5j+QggHVxfs2BtPeTYkB46UljNVJleqwp2YLwy30DvKM9juVseNTwCi8NOkqtUKdBl/pGD3MfF2AltDwa8RNyfFD3NLvXKFpY0fy9rZQWjupIRoNlj6sQY7hqh4/dPS5UKBLs7ONm60lIHt4hozLkNjuFGLAHtOX7Yv0kWUhQ3/n/SEvLsXwIEqylhDYYbC8eA1us3K6kklhkZHmH5xBxFm5bCBbdGJkGJFrpoIu3ObPDep+o0v9VEeHyt/hCkivL5apcHSUCHJplUOiKjtZMCVyQHCAq307fl5Se+Ddt77k7XaStcbjiRdFGetm48OdRcuc2QWCAYPnGGwntIml7caoPEl+SSpc3Gjh+OntufjDv8uKtkIdzhaF8e7nll7vCDhWbHPWnQ3sSMivZ4JuD6cWQPpco6Y5GQ8rgHjbNJ3DZnqrqLPTAuU21btBltsk49aWCZtvCR/Y/n5HgVGRP5O4L7uhXV5B/EzrWAhgK8xxqiXZcVjejRdCo8dhGnP3vQ5pxXSuvDflgmSR4kWMANXkX5XwztFwU9zp8WZpZ0FqGyfjYIIBHlJz4uPwqTP26IEi9Kmo9G7wnwspkIUsytCS5klD1WVO7FSZgdHrT3oNrr1vqz7Uhjv+6vGvgw6wH2VlgrZ02/JeTMY5gKOzJyXywtv/mc/YXEfB6TqKAOhIQowP
- rK2GRx1J
- wAj7tsCRdOmIVX0ymcMQj1u0yS3ALjgbunKIfJoB53lilvoH22c2VZsKZqY3XO8pn0ONHZ056iQE9ebMYK15hK6ov0VZWjhIzk4sRXfDiR4KKvJYZkzyXUYhSx/P0TqP02NY2WTPSKoXOxybJqqv36T/9Ox4EjVt/0Z2pkWLDyMtggLbMn7wSbL8t1qXh1f505XOKHOC8Z58oxvCBdXkitjgBDMxkgOff44YI9FKjHzHHmR8p4crOtgTRj1bSaWwQiBMf9zM9b/GiIIfi2lDPSoVrqjOMA3xu/ReCK9LbljiTFC87O/hc/BpN6oDxWSE1xp5QJyLCZOqslSz7Mgk3z+CfNLJrheNHOza/
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775557862-491876
+X-HE-Meta: U2FsdGVkX183V6O2/mz80ojckOEsSwIv+y8MLn3DfJ30OaCIu0MF8m7C2XIEDs4jP8gyXrGNf8Uznc4uUVYOGPnxe4NSkaOK7aAVstJr39uNc3ZXl02a8MViGCGp2xuu1B95OD9htYdw5oRJ1Ndzffk79IYZsoxG+luvDpU0GpnXbz4y748i9kLCoBXmrRT/DUglip4rfY+Iuln61H+X3+jP/7znAP6kp3URudsyrMZlh11pF7KQVwrZSQOQ1g5mv4+6VUAY8X2EXGzTLoYha1qCvtgayOW3aKvk57cHjyz9C9Am3nc4bPTCOcgg+P47GnC0IiUqtZfiAt9ejQ2k4HuaXMJI9mH0gZ9MiFuGN6y+Li+MLLs93DzuSfkAPhY+KUDk5OGdbMAyMvZqFz8rjNwEdoAQgBA4EH+BbQzRxSiQVolhRKfs/jefPnJmQDMc+jl81ZmtN3PxvbkWD+h14mdjagHAyf4nYAEgZP+eUFc7mFIE+DjFp80CD/ex8VB4lqW0SJL8J+RWM0m6zuxT01rncxz5S5jT6xyXNiTl5msTErngaC2kYRRUX2mh3nojAXKDmHkezDN0YMWJeQnhaSDjux1G8ri020jdCGZDSpgxPsOiMc1nC4HmZTWqab1yRv9oH3tsw7LhcLsGK1yuX6zG7SJEqwUsA5EOB1I7T4KV/9CDGvyZcYqrkagqujCE/6wM9wdWuB81JBe1YdpPlazInqn1RP1/9802cSn2gW+Te3I1Z3Zfc6BiJGtyWoLF7Xfad/fCXrNa3TnOv4EyXFKrmgT24qKtGHp9SC/93GW01tY13Aem8sJ732CTg58xmbXc+JAwZCRqtrBTQbLq4NXs8UZSrnZdjCd29Y11ZN4gbM7j3Zj2MXuxRpxKyU+VsDNot/1iAEaH+jWIF1F6mTCtb8quVrHXuU74YuR9fhEqXWIseP+HNqDMllIsf9pKNZfndgNtGk0iXEuzV8/
+ Pzy7MPE6
+ Ng62fy7Y9AazmI8Apos3xtuyVJfDvyRJ3V7cUei1A/xILLxH2xFK+LSNb869ZE7KX4X0u50PJ+ROSnNJrqlWig6bcwME/RP3KFogRYB3gbljtUEbXLHRrFggwtTofpCwWwNyD/0hCvePFB/w4AQNH++5eOZaLFCkHhMiSqk4t3eRrrwulVHdrKZMfqg1R/5IEeL35QQRTnhKcPGrqgYmOEirZ9lag5Ghb3fiHAa0Un/yTsQLmirh3pMfXkOfShKqQyrPRC+ZaDt06CvQLQHOCcnzirPXvAa0N4826
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,103 +101,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 11:11:25PM +0530, Sayali Patil wrote:
->
->
-> On 02/04/26 14:35, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Apr 02, 2026 at 09:33:29AM +0200, David Hildenbrand (Arm) wrote:
-> > > On 4/1/26 22:39, Sayali Patil wrote:
-> > > >
-> > > >
-> > > > On 01/04/26 20:10, Lorenzo Stoakes (Oracle) wrote:
-> > > > > On Wed, Apr 01, 2026 at 04:21:55PM +0200, David Hildenbrand (Arm) wrote:
-> > > > >
-> > > > > OK so digging in:
-> > > > >
-> > > > > mremap -> ... -> vrm_set_new_addr() -> get_unmapped_area() -> ... (in
-> > > > > ppc arch
-> > > > > code) -> slice_get_unmapped_area():
-> > > > >
-> > > > > unsigned long slice_get_unmapped_area(unsigned long addr, unsigned
-> > > > > long len,
-> > > > >                        unsigned long flags, unsigned int psize,
-> > > > >                        int topdown)
-> > > > > {
-> > > > >      ...
-> > > > >      /* bunch of checks */
-> > > > >
-> > > > >      /* If we have MAP_FIXED and failed the above steps, then error out */
-> > > > >      if (fixed)
-> > > > >          return -EBUSY;
-> > > > >
-> > > > >      ...
-> > > > > }
-> > > > >
-> > > > > Is presumably where we hit the issue.
-> > > > >
-> > > > > >
-> > > > > > That is weird. An mremap(MREMAP_FIXED) is really just an munmap() +
-> > > > > > move.
-> > > > >
-> > > > > Yeah the weird bit I guess is that we _still_ invoke
-> > > > > get_unmapped_area() but
-> > > > > with MAP_FIXED set to indicate that we want the specific address, so it's
-> > > > > subject to the above checks.
-> > > > >
-> > > > > >
-> > > > > > Are we sure this is not some actual problem in the hugetlb
-> > > > > > implementation?
-> > > > >
-> > > > > It seems the 'slices' check sees if the _target address_ has an
-> > > > > equivalent page
-> > > > > size, presumably hugetlb-mandated, and fails if they're not
-> > > > > equivalent, so this
-> > > > > change is just accounting for that.
-> > > > >
-> > > > Yes, this change accounts for that by ensuring the destination is
-> > > > created with MAP_HUGETLB so it has the same page size as the source.
-> > >
-> > > Okay, weird, so it's the right thing to do to cover all odd arch behavior.
-> > >
-> > > > >
-> > > > > >
-> > > > > >
-> > > > > > But then the test suddenly requires more hugetlb pages, no? I don't see
-> > > > > > a good reason for the MAP_POPULATE, really. It will be discarded
-> > > > > > either way.
-> > > > >
-> > > > > Yeah I'm not sure about the MAP_POPULATE being all that important here.
-> > > > >
-> > > > As far as I understand, without MAP_POPULATE, memory accesses would
-> > > > trigger userfaults, and since the test is single-threaded and has no
-> > > > background handler for the uffd, it would deadlock. MAP_POPULATE ensures
-> > > > the test runs correctly by prefaulting all pages, but please let me know
-> > > > if I’m mistaken.
-> > >
-> > > So you are saying the test would deadlock if you are not adding
-> > > MAP_POPULATE? If so, please double check if that is actually the case.
-> > >
-> > > And if it's actually the case, please carefully document that in the
-> > > patch description, and probably as a comment above the MAP_POPULATE usage.
-> >
-> > Do keep in mind MAP_POPULATE is not _guaranteed_ to work :)
-> >
-> > For guaranteed populate you need madvise(..., MADV_POPULATE_[READ/WRITE]) or to
-> > directly fault in.
-> >
-> > >
-> > > --
-> > > Cheers,
-> > >
-> > > David
-> >
-> > Cheers, Lorenzo
-> >
-> Thanks David and Lorenzo for the input.
-> I tested without MAP_POPULATE and the test works fine without it.
-> I will remove it in the next version.
+On Sun, Apr 05 2026, Zhu Yanjun wrote:
 
-Thanks!
+> =E5=9C=A8 2026/4/5 0:34, Pratyush Yadav =E5=86=99=E9=81=93:
+>> On Sat, Apr 04 2026, Zhu Yanjun wrote:
+>>
+>>> =E5=9C=A8 2026/4/4 3:24, Pratyush Yadav =E5=86=99=E9=81=93:
+>>>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>>>> Add some helper functions that will be used by memfd tests. This moves
+>>>> some of the complexity out of the test itself, which results in better
+>>>> test readability and less code duplication.
+>>>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>>> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+>>>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>>>> ---
+>>>>    .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++++++++=
+++-
+>>>>    .../selftests/liveupdate/luo_test_utils.h     |  10 +
+>>>>    2 files changed, 200 insertions(+), 1 deletion(-)
+>>>> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>>> b/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>>> index 3c8721c505df..ceb918ef9813 100644
+>>>> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>>> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+>>>> @@ -1,8 +1,12 @@
+>>>>    // SPDX-License-Identifier: GPL-2.0-only
+>>>>      /*
+>>>> - * Copyright (c) 2025, Google LLC.
+>>>> + * Copyright (c) 2025-2026, Google LLC.
+>>>>     * Pasha Tatashin <pasha.tatashin@soleen.com>
+>>>> + * Pratyush Yadav (Google) <pratyush@kernel.org>
+>>>> + *
+>>>> + * Copyright (C) 2025 Amazon.com Inc. or its affiliates.
+>>>> + * Pratyush Yadav <ptyadav@amazon.de>
+>>>>     */
+>>>>      #define _GNU_SOURCE
+>>>> @@ -20,9 +24,194 @@
+>>>>    #include <sys/stat.h>
+>>>>    #include <errno.h>
+>>>>    #include <stdarg.h>
+>>>> +#include <sys/vfs.h>
+>>>> +#include <linux/magic.h>
+>>>>      #include "luo_test_utils.h"
+>>>>    +int cwd_is_tmpfs(void)
+>>>> +{
+>>>> +	struct statfs buf;
+>>>> +
+>>>> +	if (statfs(".", &buf) < 0)
+>>>> +		return -errno;
+>>>> +
+>>>> +	return buf.f_type =3D=3D TMPFS_MAGIC;
+>>>> +}
+>>>> +
+>>>> +/* Read exactly specified size from fd. Any less results in error. */
+>>>> +int read_size(int fd, char *buffer, size_t size)
+>>>> +{
+>>>> +	size_t remain =3D size;
+>>>> +	ssize_t bytes_read;
+>>>> +
+>>>> +	while (remain) {
+>>> while (remain > 0) ?
+>> I don't think it is needed. bytes_read will always be smaller than or
+>> equal to remain, so remain will never go below 0 anyway. And while
+>> (remain) is nicer to read.
+>
+> If a wrong number is transferred, this makes remain less than 0. Then thi=
+s loop
+> will run again and again.
 
-Cheers, Lorenzo
+That can only happen if read() returns more then the requested number of
+bytes. That is, if bytes_read > remain. And read() will never do so
+since that can be a buffer overflow and would break userspace left and
+right.
+
+So, I don't see how this is a problem.
+
+>
+> This while (remain > 0) will avoid this kind of scenario.
+>
+> ZhuYanjun
+>
+>>
+>>>> +		bytes_read =3D read(fd, buffer, remain);
+>>>> +		if (bytes_read =3D=3D 0)
+>>>> +			return -ENODATA;
+>>>> +		if (bytes_read < 0) {
+>>>> +			if (errno =3D=3D EINTR)
+>>>> +				continue;
+>>>> +			else
+>>>> +				return -errno;
+>>>> +		}
+>>>> +
+>>>> +		remain -=3D bytes_read;
+>>>> +		buffer +=3D bytes_read;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>> [...]
+>>
+
+--=20
+Regards,
+Pratyush Yadav
 
