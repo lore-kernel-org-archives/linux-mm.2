@@ -4,88 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B89FEEF2E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8332FEEF31
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:47:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4736B0092; Tue,  7 Apr 2026 08:40:14 -0400 (EDT)
+	id 063F56B00A1; Tue,  7 Apr 2026 08:47:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7844F6B0095; Tue,  7 Apr 2026 08:40:14 -0400 (EDT)
+	id 014BE6B00A3; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64C6A6B0099; Tue,  7 Apr 2026 08:40:14 -0400 (EDT)
+	id E46286B00A4; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD726B0092
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:40:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D913313B9E0
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:40:13 +0000 (UTC)
-X-FDA: 84631717506.18.2C6BF3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 195FCA0013
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:40:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XmrTNmWA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D427B6B00A1
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 739391B8560
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:47:00 +0000 (UTC)
+X-FDA: 84631734600.27.98265C5
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 56FAD100002
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:46:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CCH1PwO4;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775565612;
+	s=arc-20220608; t=1775566018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fB5zjQ5HmgJZyt2ixB3nQDPnP47N4L+svW25scgncUo=;
-	b=nC8WBvIGATeD4pjAJmiIpV3kF9AZ7rI4KonI+hnB/w/NF8TjvtXmCq2d85DVOqDh3lQZf+
-	e2uzvKumVaqg1MYBADKQpQxlJci2Sp7c5zPB+/e3izs1uH0o0lF4o1z8Z7Fnlguk7zFW6f
-	5xzD48DywuIqq8CUTASC1q+fJh+L9kY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775565612; a=rsa-sha256;
-	cv=none;
-	b=qUmHTuab/nmkyFwQW9n1Xgz4U7VeO3H723x6UGbCxSUmYlBYeNokzgeQ+fTtWjwX5C+qeg
-	D1NxAjpWvoKNHmhjJe27ayn4vUVTbz1TZEij1SYYbRFLRjlWdCp5n1fpWAiFHGFOPF3Gau
-	L4sdg4gL5IehHlAkEVMMw6O0FZUu4WY=
+	bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
+	b=4fBWI99+dTACJN9eJFFOLWbSAVMtYqZQyu6fszVGlw+aYYrX7UBzVeYNqzKwwYObyEonor
+	r5nijm02B450JgnpS3Jnho3i/jVDhC/DEI2DZOuJwobLuZzDN0fj6mcAfXq04bh4ap6sbC
+	g3ihyZfgADXmzMDq+vIA3mvygppoM5A=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XmrTNmWA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B74943F04;
-	Tue,  7 Apr 2026 12:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF03C116C6;
-	Tue,  7 Apr 2026 12:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775565610;
-	bh=MjKTZvgcsa+0D+fv/ckBA0TQ+h5FwjHVyuFzDvvnDd8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XmrTNmWAF7+UGEO0+jM/dWHCTDewiOoYwE6o1rhI5tRqI7Rooar+ZAL5QK1X2pRJS
-	 j5gLDOpMV19Gd9oNijz+jgr4PzEaaIO+KsTvHtX6zh9Tj02kYoyhZAvJjNC0/dPqOU
-	 nt56lsPzrOFtu2jvy/etLQwO/wjfHZrrCRNZG0m2QeIszrI2F0JoMkjGE6i5LqbjAB
-	 UDM+N3/Rf5XLphUNElSB7FTiiH0fC+Ar6lVrBYieKSUJbuLfe3f67OPKs3YuRFcAdm
-	 DIiBtpfB16dwGdfsZoGM+UqpS4XzG23N5MH1jXZxwbgZNBi7waEZ4si3ckPYiOnMyR
-	 kwPn+cqE8oy8Q==
-Message-ID: <d013f96a-370a-4f1e-8002-3a5876ea44ac@kernel.org>
-Date: Tue, 7 Apr 2026 14:40:07 +0200
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CCH1PwO4;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566018; a=rsa-sha256;
+	cv=none;
+	b=fj2aplMCE0h1WBW5HzDvEYqXlOBT1qVyh9DREPrrtE7P7jQItydMxTIRUGPGq6HQAqvgYR
+	87jDQEH6GAl4RCpkK7jgxbhBJ0G1TzuLuunO9kAMY3dPfHUZwyo5d4AFM0HDf9FANUUiM9
+	tEQoNSKbR7PSioTnTsErps5VwLEqfdY=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so11680305e9.1
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 05:46:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775566017; x=1776170817; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
+        b=CCH1PwO4p00UjIYSS4u27EqjyH4gOk5G1xfw9NZDV+R/sbYSk2LrdcbtDE0bZuC5uf
+         TUNmq908yHB+AOwetGqX5SwGjJ5K40FG/MeewQ8UgLWfelVbDgu7mllbqX54oEQNNvD8
+         zj9pHErHY8GXHeaVKcGTm2dakQj6sbGYgonOedg0kDU+/hMZcBNnVh4mpWYY5IQC86cG
+         LQDZbWl8IIi9kF4EyNkH3jNr9rITOkrz+LyS2q3P7ndTpZy3dEebUe3gB3alBQpvTyV3
+         bx3TBNtr3ZrZrPVuYrM48o+k40ftIeLercEAcAhxf9FXL++6MlEheboyCUc4W9AeXpxY
+         kC0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775566017; x=1776170817;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
+        b=Z7IeiHCqdTpTdwkTEUfGVYmUTUzl2Jcbk61Lv0mvirhq5OZiqXybKgVnaQOgocJwTH
+         6Q34TiRKhFrHZVsBDXoqsOy1gU4bXsUXrqxYYkMomzJS5ADLtL6gBvxTKfq+3Ma4hTKF
+         6rCVrXTcHT30fC3o5kOk6gVicOfnQZMVfesfrlcOt5fCp0wzqG/6I7MO3Uk/EUd41/k/
+         kalACfqk0rP6A0trOg/5KaHi4quRHdNT+3kTmLEDwGfEwXrAnzCb9f26dHHxURyw5j1j
+         RAg00MDQ5P+howEArroR8NLM/d+e1n+mByes53jwFdyvR8a/Z0XFCpTfdb/TFcqzuR42
+         xYbw==
+X-Gm-Message-State: AOJu0YyYoOqP84CXFJjadSzyVeSfQr5YUUcNGAx5VOKVQ1xsj3ETHJgV
+	A+JijLZm3O19nFbc2NM2Ydwh71Abh6/01/SRxQcDNFBC3VJPXITFbNyzMiFtmXCx1NI=
+X-Gm-Gg: AeBDietGJfJh3ypAZ6G9SZ2+4e2Hl6sQJ7AYVvZtg+DWqJNHncci6WxvqgCokP0oHYW
+	0ykrBcbBiQTeDtmRZpKXYXYxFylXM8QorXuHWDhadZDJ4Qv3KPEixZby4lQorK8pHwrKAPEVA6V
+	5EfJYKSrdIzZaAvnvhb6v9UU3PM7U8yLPFunJV8WJgHxvIlajXjKPUuEpUgbDQWMHR3SPSHKn1k
+	KZpqn4NHe9GcyxVkTBY5fZ71BSjE1Nj2H1GyrrRUqxjlvs55Q1Tp1bFMyid+e5+X+GeYzKau2R7
+	jXQAb6rTYxLF2vIlBitF5RQxPGkihC4OW1nbWs2qGBIGtvdw17thSQ0f200LffPX+GbwfM8/TfP
+	FjrYSPyfGeFbbtdgC7z0w0Kayl/xdoCJYExx4k8bwwDPla7NF5j5mvbrVqYKTTys7X+pPtTXYdV
+	gfCJgDJwWftcV9ZDW6sRO2WkSKHsqObl/qttAQ
+X-Received: by 2002:a05:600c:64cd:b0:487:1fbf:e0bb with SMTP id 5b1f17b1804b1-488996a1c9dmr247002615e9.6.1775566016576;
+        Tue, 07 Apr 2026 05:46:56 -0700 (PDT)
+Received: from localhost (109-81-88-253.rct.o2.cz. [109.81.88.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48897fd7e2bsm178382765e9.2.2026.04.07.05.46.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 05:46:56 -0700 (PDT)
+Date: Tue, 7 Apr 2026 14:46:54 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, baohua@kernel.org, bhe@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
+Message-ID: <adT8vnS27qKSTvOC@tiehlicka>
+References: <20260407110002.204755-1-wujianyue000@gmail.com>
+ <adTomi7uPYJebAMD@tiehlicka>
+ <CAJxJ_jjFonN8m1YsGh8FjMBbiociLiXzE=tS2+=Or4+PnTPr-g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] slub: clarify kmem_cache_refill_sheaf() comments
-Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260407120018.42692-1-hao.li@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260407120018.42692-1-hao.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 195FCA0013
-X-Stat-Signature: m3fugs9shxo6zksctrj5n59y7ps536oo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJxJ_jjFonN8m1YsGh8FjMBbiociLiXzE=tS2+=Or4+PnTPr-g@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775565611-85331
-X-HE-Meta: U2FsdGVkX19XuXZVFbWUB2Ljbz2xcdLjWSxGckWIb4pr/SwxQHHlv2qrSFebhihHpjgm12kTjTWH1pATu7VxscpLeBErLXs5p8BoBPfPvf0EZiQpOb/tv5XuOdIT5kAFPZXv8P6rPB0y17Nqul4IYmuRM7gVQZBJDx3ieywYqBpvSlm5Xnd9njkLqWIUER0fMGHO0X8DRJSztRMkSHi0L3IpU0bTw6qGe/w/kAwEhSTWBs08F50wSJSaQN3vjETovVg+M752xt9/yYxJTe1c68MIzelnLEfW5KEB6fLlCQccp6AFQsZP247S0gUgHHLLR11ROukYO8qxwesrbqOa92YgtM5LzvF9mFaTSQZ4N+qcZDP/Fm2gjUSS8jKy4pgPfNrHQ7ogQ7rlyz1T7pHMAWGFOA9c3KLT/ORGNs3xkqyJH3gqG/2MEQsi+c3E0N7NUmezeAxQn/eQAWl4ECZUd8z2e2yLKMZPR8Rb4qvm+scq4WBwD0g+7ohY3LGm9DNxTbVd/jOUEDv6ckakyvlo1NSv0YeUrJUlbMfQRVkeKQ4DbsnsihmNlzt6pVkUBfyfd+eJe15EI6eG4QOcDb/8KlH/jf4kCgoCz844evd7wpqgWRq0FdFLprilPQMcdOUAUlOyYx08+kmnKfD1jdmNHNPC8ATcLppX2AKLemVlUIwU2uuyRqBFPpnaNUlNE/rCK0lKzUyJcERQ8DIjO61FlGGrAIgTIxqWvsIMiPoLJL35Vb+NXlCZcLSc7ROw0JRJfOWWXmaFfnzOnkf5Z7FQNvOUST7YSb1ASeMcUM6h6HtUElzL729LRszsWCUpd38SPE4LV1RjfgzYMONUNX7nh26DWAlki4MBIL5Leq8Raswx4WunCnHbVf/ajRWDcfFa4S3qvIDkh1MHskPP4i8Y31okjb5ixSHlxWz8oltWjvluvV6CwzNWgqn3+6zOEayQPTLmwlLlOWgS/zixRR1
- UV92swJz
- ELHDBsTetptE8ZYe+QGgOMfmKr2110oO2jOVt6gdl8lixjjNkjc0wYFLAWYkDo4VUK1OevlNcus7XTxjI3GdsSZ9/nZ5DQfUhQHcV3TJk9YKnOVf+dF1Uratb7lIDVdWtpU+fn0iC+AVXsvzuzef5jSz4aXrcWdnWYaONppn/AY4AciiRA+uTNFNlJ5hmk8Q4Y/gKUznbkfX5Tv5d16RTM6ktTon4M0bDqaGOG3j3eJDR8gKZDAKMzD4TD1lTLPCJSBHNDaeNwh6I2290FF0TRo/BseXPBT80AVmouENiiJns0tGKbVShDz8ZGUPrP5A+O/CG6XhJbJN7Vu0=
+X-Rspamd-Queue-Id: 56FAD100002
+X-Stat-Signature: kr6qks35x854pwffc6qnc8jpje3krrf8
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775566018-870258
+X-HE-Meta: U2FsdGVkX18tnqSgNLIHAnikX4QxpAcaXyNHibNl77xBi/P5Ko4qldnK7DgBAqmWVot4sK6al9nR7Lj+EWERNzBOKnwotC/kEEQ6n6GzCj70cAqb5zWP/zNmrJTiWQ7lbxIo5sgczodO8ZOMXZ/T4zi3jOjspKqnVcZ5ZHbLroaok5fUpIDF/5xrPEIuY7neokVERyL8hj2CjdsLDB4sSyYU31d/hol268zSpJNXTEg464B4GxH5ATFiq0GfyTfyYzSI87hbkCNBMSOWycwZPBkI5o1THAWXddTYrJtJNpq85J5/pOSHXzTu+fX4xHBmoMPbwLzz2gdrAvtxyiTZK1xI0wzH0mGThI2dzH/1MTIV9dZwuxRXpR5d7rQL5gxOISm4nREz5BIVLLWSuK2Gm6I5xEJ14oYf4ziXJSq3gmqDG8otMWQPWKD3mzR9aqoBQUwDl8o0qMAlE5M2DS9EuqXf+lWc7sOpPOz0/jJX9gs9yfPAz1bOFdekZoLReTHp61a/pgUAAVZv+vyptj2B4NhK/18aLEgMyZNtUCHsa23W6u0reyPkXHNpgk18GOBZZ3st4jDJ+CtH4OpFsRDrpJBMXprQZnApxcbWpvur3Ci2rz1OXBDFd9ZFzr3TltiAjFUUH0F5tXyBg38KnX++kakRxI5K7hQKuQN1bQjMi5ZowxaMcjZF4qo5SuUB9YYPPIvlxUBAiq56z2qApTFCrWz/5ZAyaM5XEz8isGSKJ87tKl8mFFPFiesdwgp/7wwleqypuDm5whbBBvLx2x8h5HEiUazaj0tLP8M26EkSXdml4+SDd4YXWdgMwvwe/80Ze1tdim0tRqQesdM2rCuU8LkHS0/y2X/22vQt6ijpGwWMLmDP39LAF/yXiZyYBZ3sBAe/DdefPCPpSsa1/p0wqC7e1i4FLJdLlXpk0OiqYQV4CUfWAHm+Y+8aNqV1dQGy5vsQz9yCXTRmAufr8mK
+ PAm1o9py
+ RuRPDHIo/oQag270pgwU0/MZav2LHAM1u1ixHveVAPv3cWK2Blm/tVEMIMK1/bodXcsMwloFsK80DSwGJyTajjU10CLGimcGgh6Fxn3rgUhMn0eh5sj+ZcZpYl/f3sS/woHHSo5ARVqxWCdI7OCYjQFW/j3/IfIwiw2vOVVlwYYzLOO5um+W3KZE5ms4vgZRiCGinZknIogb0kewOSZLpsBGmcPygvgZMPhPEpCC6uM6Tq0KrI3ydgb6YyRfBgVdPj4WT4mrHnUn7Q1k7xd4waflWm3wkNsJcGYWlH1ydozcyCh62td4iWY+I4wHc+7El/JSvj1OkvTOVTIVuIEkDU0Nf55jOOcQZ0NFdV7DInppF1PVLoR/IlM+74fLN0Trb11s81ewHPKFXd/y2nlK7FNwxwNfBrgE2zgYXrgP4QwrK7+p0NCrN4a/xveIa4O/BoFGfNymw8odsZfK1YfBezgd0xA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,46 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/7/26 13:59, Hao Li wrote:
-> In the in-place refill case, some objects may already have been added
-> before the function returns -ENOMEM.
-> Clarify this behavior and polish the rest of the comment for readability.
+On Tue 07-04-26 20:31:40, Jianyue Wu wrote:
+> On 4/7/2026 7:20 PM, Michal Hocko wrote:
+> >
+> > All that big churn is really worth it? Are there any other reasons than
+> > "not so appropriate"?
+> >
+> > Really if this is not a part of a much bigger plan then NAK.
 > 
-> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Signed-off-by: Hao Li <hao.li@linux.dev>
-> ---
-> Thanks Harry for good suggestion!
-
-Thanks! Added to slab/for-next
-
-> ---
->  mm/slub.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
+> Hi Michal,
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 4927407c9699..92362eeb13e5 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5120,12 +5120,15 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
->  }
->  
->  /*
-> - * refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
-> - * the given size
-> + * Refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
-> + * the given size.
->   *
-> - * the sheaf might be replaced by a new one when requesting more than
-> - * s->sheaf_capacity objects if such replacement is necessary, but the refill
-> - * fails (returning -ENOMEM), the existing sheaf is left intact
-> + * Return: 0 on success. The sheaf will contain at least @size objects.
-> + * The sheaf might have been replaced with a new one if more than
-> + * sheaf->capacity objects are requested.
-> + *
-> + * Return: -ENOMEM on failure. Some objects might have been added to the sheaf
-> + * but the sheaf will not be replaced.
->   *
->   * In practice we always refill to full sheaf's capacity.
->   */
+> The intent here is to keep generic LRU/reclaim helpers separate from
+> swap-specific code paths.
 
+OK, but why do we want this and cause a lot of code churn to achiev
+that?
+
+> The LRU helpers are shared by both file and anonymous memory, whereas
+> swap.c is meant to host logic tied to swap devices and swap entries.
+> Placing LRU code there would blur the boundary between general reclaim
+> and swap, and make the code harder to follow.
+
+The code is harder to follow than it could be, no questions about that.
+But that alone is a rather weak argument to justify a lot of code move
+that cause a lot of conflicts.
+
+> Separately, I’ve been looking at routing zram’s swap-slot handling
+> through swap-owned hooks (e.g., swap_ops / swapon probing), which would
+> involve swapfile.c and swap.h. That’s likely orthogonal to this LRU
+> move, but it’s driven by the same goal of clarifying the swap boundary.
+
+Does that work benefits huge by this work?
+-- 
+Michal Hocko
+SUSE Labs
 
