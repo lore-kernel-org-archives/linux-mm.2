@@ -4,142 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D624FF512E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 18:38:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D8BFF512E
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 18:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF56F6B0088; Tue,  7 Apr 2026 14:37:59 -0400 (EDT)
+	id 1CDF26B0088; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECCED6B0089; Tue,  7 Apr 2026 14:37:59 -0400 (EDT)
+	id 17EF86B0089; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE2566B008A; Tue,  7 Apr 2026 14:37:59 -0400 (EDT)
+	id 0958D6B008A; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D05546B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:37:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 75EADE2809
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:37:59 +0000 (UTC)
-X-FDA: 84632619078.13.2C3A5F5
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A48F5100008
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:37:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tqRCkSjb;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EDD2B6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:59:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73BCE1406F9
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:59:02 +0000 (UTC)
+X-FDA: 84632672124.27.FCB2875
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A9CBA40004
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:58:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="eVY9/VRu";
+	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="eVY9/VRu";
+	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775588340; a=rsa-sha256;
+	cv=none;
+	b=ptZ4SwX3Rm2QGRDAZ44weCTYTRHcFb4odTA7V6GbBtLpfo+B/IN7oyvOU/eoUMmO/2ghQn
+	x+Dmn6aTyTDq5QCYBtuBqlbipsMVO/J3NsyKi2HfrhtcaDfVrbvljSfYC/ZlbuCBcxHxdi
+	ef2WYHf9GEvDeWn7kBmdu8rQ30dBLPE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775587077;
+	s=arc-20220608; t=1775588340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1CryZz1quunkh33nabMDcABtwXOAm695UMpux3s9zQE=;
-	b=hOLmAFmpuwVjJaNdVcPaZrcC4KF2OdYJ6ImWKsOs82wShoaK+g5iw3DqQpNdHKFaQfN7Lf
-	teKC9igIgdYVv3Ze0+M9GBeufHtokpTvT8FyPr3HWLPUimn78tIjq0sdcZtxpoiFc4nmxB
-	SsqY1/qvHthqlePpzyn50TcxXmJyioo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775587077; a=rsa-sha256;
-	cv=none;
-	b=zKTv9NSPEPO3H3sJfrSlZJYz2EM1NliA7ouc7imNcKSP+7QtnoZymmY88rXxOqU+lPsgUD
-	0Dnrm8TuBkaI1pT7CcRcSBvGHOCxcLfaqYqPPftyP35Jb4iozOV4S17lhHv9t86o9RcIHb
-	blDspbR03vynOg/rXo+Fa5VpMeDJbz8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tqRCkSjb;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cbc593a67aso547270085a.2
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 11:37:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1775587077; x=1776191877; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1CryZz1quunkh33nabMDcABtwXOAm695UMpux3s9zQE=;
-        b=tqRCkSjbUhlovMG7pjB0UTie3KO4Gfg7EmpSirsqhF/+9c88UnR2eL4b5R6yfvzYRk
-         rUdZl9BmeP5+zesMkKib15qEyiaiSddulL0kjW3ZqRXvY5riRVenKWBwmeK0lh1TwUBm
-         MAW4/cDe3OIj48FzVsvYSoByxzWWthxKd4zjNi48X2oh9zWeJ5DtwbNMtOiaIiFD/gk6
-         WVt+tefPiRU2kn5VxoVP/VSMNGsM0VGRR4D/5H5PioF2jpLLdcZbgafeKogusDNvTDz9
-         vzzNSkFUEvgk4LBISLexUylcEMVPC47oYhapO5hQR0sMK68+y3ycF+HLQsfcl+WLxGHP
-         L7WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775587077; x=1776191877;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1CryZz1quunkh33nabMDcABtwXOAm695UMpux3s9zQE=;
-        b=m74sk03Q5u4ply2hIxHpzIe5MPbxlnHUsKED6bv9JFzzy4pQoJIwuVZPzdtoowlKpl
-         KXxJUeh/O+DIHHEYSQqWnL7+mfnNJXHAXaTmcwIv64IJVOQeFzUDnRKPLglESyyT/7lM
-         VylMD8xMHOjZsPsDauPcJPCD+kgH+c6n6ICW5sgilkYKGRVXKQy69xtU5ypl9qc5OC8/
-         O3uwnNHYFwEbi84buSqmU0wnsx5Q7PwmYAPuaNhmYLUJMcrpm2kLuWfhmhn2JU+khQ1V
-         Yu/5gjdVCpbhMrt1zXoZ5AZd7EJvjHhiCFBwZyja6/QMW9Pc9CI04NLUmcLF2gJNje7S
-         BEIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUe9TEAEmpw1lU4kMAmMsJZSJrAPsEhxwME/tpMKi7YH7t0op/lhNLm/Ph1buHajeJkB4REJmdRQQ==@kvack.org
-X-Gm-Message-State: AOJu0YxlJ0KRfbAZSHX4kDX3/G3fiMm1oo7Jfz5tyDoxb/VsNWumP1Nd
-	KS/N00L2tdULAiV60WTz+XfmEcmwLTFZsR2Fv8guE6EaxIT3xNzwsrIqY+tvgsWfG5Y=
-X-Gm-Gg: AeBDieu+b2fGH+x0zRHAvbI65vSQNCK62LBLTKuF55gbOflmWs05bHxKqFXgUgVvE2V
-	euQcIutStGecwatBIrbEQgwhXxHuR4YPQrM1WX/vpgvFXQwbWE7gsZeFrNOqHqK89Wpq3nYm91u
-	3ockXgzi//zBiWAAGr8NKKoGAFc4iXAQs1j6970+Ggrxe8kXnUXds/cG74jeTLzkVw27Hw09m6g
-	SIqwZ/zynPhWkSSKxQsu2g1Rb1phi2SqJb0X91lSpp5lHf7sNHgi7A67Fp4/H85AXV9m8HyDGMT
-	Olu00qR0aB3zKsuls8zYFdvbMmo90/QQ7mxHEQraOPFsWeaveT61VO/RMY1MSe6uTLyCB7ivvy4
-	ZG7UAefIsvrtpJgfhTQeWFvWWOt9yYZLnIVyu/Ql6ucueglqO8cvLXM3OCqF8DjobnqHGdKkPKg
-	BY2Sa0ktHte7LeQLyLL6yBZO53SzyIiS3yoPaBuutp4g0sthkB5ZIj5dRxMr/pJOpRTzOS1oK4l
-	UYxreztOq14LF5w3+CvIJo=
-X-Received: by 2002:a05:620a:1a11:b0:8cf:def2:c356 with SMTP id af79cd13be357-8d41b9ddc4bmr2656844185a.11.1775587076669;
-        Tue, 07 Apr 2026 11:37:56 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5c5cb5csm1368806385a.15.2026.04.07.11.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 11:37:56 -0700 (PDT)
-Date: Tue, 7 Apr 2026 14:37:53 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	lsf-pc@lists.linux-foundation.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>,
-	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	David Rientjes <rientjes@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	wangzicheng <wangzicheng@honor.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <adVPAS4PP7wK0Pxq@gourry-fedora-PF4VCD3F>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
- <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
- <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
- <acbgIKuwDsPvPjdF@cmpxchg.org>
- <adTonuzmUc2AzUhp@lucifer>
- <adU3P9fk8h-AmEp4@gourry-fedora-PF4VCD3F>
- <adU8VnzlLw9JUHB3@lucifer>
+	bh=SQSxQSEOHiVkC2HemnN/5qYkqBP2dOqmPajTu5+oxsw=;
+	b=QCMJOQJUB4VvKyWskBtVtsD3B8Vz+Wq4Pod5wesi92QCxTcHhWmV9vx78kY2AQgCVQQRIS
+	JFqoCvYQecq8vr6PoR9hxKu/fs6d1PaLPvYUcYdICkUMFi/rAFD8bPxzmFXsnNhE8oDzob
+	iU8KMHRpU3lc4v3rcu37YDqMtvoX1Ac=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=SQSxQSEOHiVkC2HemnN/5qYkqBP2dOqmPajTu5+oxsw=; b=eVY9/VRugfr6vnIaqRJqhFI5HN
+	9Kb6vigVz4U4mvZnmzfRVBXNX4+J/lxvZlSEGUNNp5MchlZSnQSrG6OZ9Pio+A+tO/Nj4OERv2YNh
+	HUc5zDfcUnEyaytHUfK8y4l1a3JLSoVhP/9ygHNM7fRGzrPrqx9Qg7AyMV0SQZtIR7rKq8xAxDjzc
+	OLG0QWC13ApBCL+oXo6RvABHhfnhQ53elFVhKCEp8OwO0mqToK1lzm9VeYIQlujNiheEdyGgyhuP2
+	bBhWYxtyqW18Zuicg7ygu6QMM8MysFZLEBmsj6gzQasYuXJrs5xC2hyzUYHHIutuHdGsCKhFyG8JU
+	OPG/OyyA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wABdU-000000079Wf-16wb;
+	Tue, 07 Apr 2026 18:58:52 +0000
+Message-ID: <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
+Date: Tue, 7 Apr 2026 11:58:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adU8VnzlLw9JUHB3@lucifer>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: te7tgxsi8he3br9zzgeknqxymubfo8qj
-X-Rspamd-Queue-Id: A48F5100008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
+To: Kevin Brodsky <kevin.brodsky@arm.com>, Dave Hansen
+ <dave.hansen@intel.com>, linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260407125133.564182-1-kevin.brodsky@arm.com>
+ <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
+ <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A9CBA40004
+X-Stat-Signature: ktzhajbbq8b1guhje13dhpq9mczftend
 X-Rspam-User: 
-X-HE-Tag: 1775587077-650909
-X-HE-Meta: U2FsdGVkX1+R8zpDqNYrqkc9fhrGRb6xcg/jx17mp2KR/3+zBRto8UZYpdEoOChLS4O6auM6f5xQpBKzkwEinBH71F9NK2qrOFfLpUUin5oyTqwsIBBJ1jhh+3Bz1HJuXy33EByaV2pdo8LZpZL3JTErIY9I+buRfZPpPdy5b9Yojrjss9AmYviXdvqhHMoW31xk5vxUDhyv9eRnSqCO3R5ZnhDn7iOCecfmyZ5WzyRpUgp1LWRroLq3nV+kwme0JNQhoGxQbD7sBV5beImbj+z/Yeryh36qR8z2u8EAQTGscoMLCJYf59MznEp78zZ+KT2fMVDaUSvaGCUoN6pnvqPa2f4sPTWjooEfMbATu7nwE7vYxtkItZNk7sXQI2D2Lulog1UMvEOl9FntvfGG68mxDrpjnbAHjFcX7sBzr5h5YMrYp4PtXI7uy7XC9EQQxmbUevX9JlhT3pY41rfDYoVsJkWYqkhUJulO1vVfOzEpBOoUVEN3CLSHUMmVg08SPOYAVsL5FB5Bk1zYoQ0yNuSDcjfkBBorUKqX187k5VABeWOHWeu89zytIV9yT7ljbYLdYZSIMlZKvmGoBAvggVWU1EUxLShcMrX/nJFF09j3iABLkpx/p5fhzWD6DTTYgXlwKOpy/8AjBjsSgy+/xskMiNWK0BO1f3gC/Cu25vonX1MpIhgUOHyNZ6d6hqf/Mg3Mwj+HR6BMoRLPO7dFSAdRXvDFQ7d2BQvrAMgQA9bDbwNvF3U5jCBoH4RfHWs9gRcqaicuJ2CJy4BvUldhAi9T90rdmuBsR7A6/LYYL2nW+XOaEAVxg30mqHwCgpkmvsmLsz0NgS4zqtZhbn+kIeuWpa6Jd8eYUqEWricxA+F/TCcA9JPdr18HWVyuIi9+F7lll4+ZwdkTIm4tvskXQ/EArAtkAAdYKs34Pyv7/qdaUUjaiU1c+kKSIHnryR2FE4L60jIgrSpOep3vEVZ
- 4++4z1c1
- TLFXhFJQiqLCIp2+VJ4R/CjJnzRG9myEm/kJvOSDGaq8mRntTUUEG7UXc6DWn2DoP3bfdkCpBaIO9r8nDKMIY63fk92TriyQvZ/hqzsUCu+vDi0W5ZVok1Z91nhhGKqYC+ghVMm2JUruziUajIjLqYimzBiluFBusALFqSNESmS6OqzJf/wxdl8bZfKq5oPknuxX6aOifgbK7lZGbJuUVvEAg7C0DTqRq6Sv0s3zxNFbve3CW6TLb618agIcQWvbpfuNHvtG/2ARnYEp1dsNYdQQybYrjaZcWj93/E6qYxwyk0gKllcf87pZrxPqkVzC5R+OOFkpROZV3wvgGZ7Rn2TtbsyXD6oTgutd4SseeZ+uVQvQdKmRI4nHtKIzzZ5q83Vx+
+X-HE-Tag: 1775588339-676057
+X-HE-Meta: U2FsdGVkX19E9ivOjvfa+lREES1jqPSf6lhxXRBdK2Pa2WloQlb/F4yfyQM0r+vjOJo3dNSED42kCWzkWwkkqonWYjVloEqtWmOhrilGKgAmjvtAT9szQDOQhShODAo2qP+LdHRHz1GOHyYzho7q7cKeCvkunsFqFMLOrBr1HdBFpU82VeEZHMbbBrViUgFeg9mIH8vxZlgQ7aSFkKVIE5ndIjgHMPQBU/fXLL/SB8PrMoZeXCy8K5HUv4rNivOCOqTF+wdNPMojLfMfVFsqYi9jK1k+5cWinHa8iw5p0v2w75EMCpk+RNV/ao9CdpGeZvEhtYjIflgc9rCzRVC7WsiK8Hnexn0Q1BkY5tdT6amj7c1LjP24I3Y4C1MMM/R+Ql7S4Mfwlm3LJOxlCsPM8khmRe+Un7WBXu0V0L521JeOu91O9RIkded/DQTv7bOY6vjNsb/8mQrbtVj64AbAABK9B/yK0DCBFU+LxjdgCZtoFbAypDcSWQmYeaJ8TcOu0umWFju24gE5kVDq6bkfyZPhd8IlzkUMkUfApIuEoaZz8JFUSxwmBrlZGbDdikq16ffYFTU/4m/bbtCOFrBlPUDo3bOzzpX1TtZa4AFS+YTpjO0MtNTlOqfDBdpCtwXChnSLWgmzb4EMO1LfLPkQFfmrArc1t2mrFcl58fFQYIkcgLe4r+8LrhlPd4KT94UJN0xYP8ICbvChfQAQ5kwT7HRJi8kojBBk8JcvDHEo/vnJafgHrEA1dZU8ou+4zBOwX0U5atVnvlAUsMij/l+c0V+DFNHZNrpRmXg9bG9yyfFeldXvX4pmKMpMXdnXc1SXrUVDpNXo9tD5ERkAb6WjsYsnt0/jWeihCyJF6Ll7iXLm0p2cHXIBlma4ndVxnEjeQJ13JU4u0Y0bl4dmGUSq1mTR072aWXKIfgscf6HegUiy4y78V9mBCm5fF48W896RmbWDCU+lC9637gzPcP9
+ +wi3JC0B
+ iXJ6GqeSUYpb+NyVtIizzQsg4PCN7bcdu6dEd3WJzqSNoEVPgKR9dZY7QNjvVLXoYxEx1Jy94DZFWCKie44RtvXGSrV2WiKGn5aEEiEgFrX9IXP0ZGMm86rqS3YQHoEGd7/wTE4p2EFaJdt7oEm0N2JUeCS77FqNfPrriOhH45ghAf0nAs1nI1kmOkOXlNgPjwnG7/feW2TW3i3JkQ1mTn5Ar8rEuWF6GYbAP1Rs4uedPUmCqxACbi35BezWXJb2mdzlPhDgVKe4QD4LCSBE1gfznitj3diX5cvScVzFotU2oBYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,38 +100,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 06:30:55PM +0100, Lorenzo Stoakes wrote:
+
+
+On 4/7/26 8:12 AM, Kevin Brodsky wrote:
+> On 07/04/2026 16:42, Dave Hansen wrote:
+>> On 4/7/26 05:51, Kevin Brodsky wrote:
+>>> +If both the kernel and the system support protection keys (pkeys),
+>>> +"ProtectionKey" indicates the memory protection key associated with the
+>>> +virtual memory area.
+>> I think you're trying to get across the point here that the kernel needs
+>> to know about protection keys, have it enabled, and be running on a CPU
+>> with pkey support.
 > 
-> > somewhat trivial work these days via <pick your favorite LLM> with
-> > reasonably well designed interfaces.
+> Indeed.
 > 
-> Though to be honest, I did ask Claude to do this with some code before and was
-> really impressed with how quickly it came up with something.
+>> To me "system" is a bit ambiguous here but _can_ refer to the whole
+>> hardware/software system as a whole. To avoid redundancy, I'd say either:
+>>
+>> 	If both the kernel and the processor support protection keys...
+>>
+>> or
+>>
+>> 	If the system supports protection keys...
 > 
-> Buuut I've generally found the code LLMs produce... terrible? Really terrible?
-> So I think you'd want there to be some level of human improvement there.
+> I see your point. By "system" I essentially mean the hardware (the SoC).
+> In general I would tend to avoid "processor" because not all CPUs in a
+> system necessarily have the same features, and some features require
+> hardware support beyond the CPU itself. Terminology is hard...
 > 
-> And in any case, maybe doing things this way will struggle to really represent
-> real world cases (lock contention etc.) but OTOH, being able to simulate a high
-> memory pressure environment with certain parameters even without [the rest of
-> the kernel] interacting might still be super super useful for diagnosing issues.x
->
+> Happy to replace "system" with "hardware" if that's clearer :)
 
-There is a concern people start looking at these tests as signal for
-performance regressions - which is neither meaningful nor useful
-(unless you fundamentally break list iteration or something).
+I think that "system" is too nebulous there, so I would prefer to see
+"hardware" instead.
 
-But for trivial cases, you'd at least like to know under strongly
-controlled aging and reclaim scenarios that anon/file memory is
-reclaimed in a balanced manner - just as an example. 
+thanks.
+-- 
+~Randy
 
-If something breaks THAT assumption, you know there's a logic issue.
-
-Likewise with comparisons between LRU and MGLRU.  It might be easier to
-identify the behavioral divergences that way.
-
-But i fear the whole page-table walk thing makes all of this a
-non-starter.  That's turns into stubbing out like rmap and such.
-
-~Gregory
 
