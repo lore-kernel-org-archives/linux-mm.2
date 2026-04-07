@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D8BFF512E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 18:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10608FF5136
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 19:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CDF26B0088; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
+	id CCD956B0088; Tue,  7 Apr 2026 15:27:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17EF86B0089; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
+	id C7DF86B0089; Tue,  7 Apr 2026 15:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0958D6B008A; Tue,  7 Apr 2026 14:59:03 -0400 (EDT)
+	id B945B6B008A; Tue,  7 Apr 2026 15:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDD2B6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 14:59:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73BCE1406F9
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:59:02 +0000 (UTC)
-X-FDA: 84632672124.27.FCB2875
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A9CBA40004
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:58:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="eVY9/VRu";
-	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="eVY9/VRu";
-	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775588340; a=rsa-sha256;
-	cv=none;
-	b=ptZ4SwX3Rm2QGRDAZ44weCTYTRHcFb4odTA7V6GbBtLpfo+B/IN7oyvOU/eoUMmO/2ghQn
-	x+Dmn6aTyTDq5QCYBtuBqlbipsMVO/J3NsyKi2HfrhtcaDfVrbvljSfYC/ZlbuCBcxHxdi
-	ef2WYHf9GEvDeWn7kBmdu8rQ30dBLPE=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A65FD6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:27:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B95314027B
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 19:27:15 +0000 (UTC)
+X-FDA: 84632743230.28.EB0F70F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4049540002
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 19:27:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ji7895+Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775588340;
+	s=arc-20220608; t=1775590033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SQSxQSEOHiVkC2HemnN/5qYkqBP2dOqmPajTu5+oxsw=;
-	b=QCMJOQJUB4VvKyWskBtVtsD3B8Vz+Wq4Pod5wesi92QCxTcHhWmV9vx78kY2AQgCVQQRIS
-	JFqoCvYQecq8vr6PoR9hxKu/fs6d1PaLPvYUcYdICkUMFi/rAFD8bPxzmFXsnNhE8oDzob
-	iU8KMHRpU3lc4v3rcu37YDqMtvoX1Ac=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=SQSxQSEOHiVkC2HemnN/5qYkqBP2dOqmPajTu5+oxsw=; b=eVY9/VRugfr6vnIaqRJqhFI5HN
-	9Kb6vigVz4U4mvZnmzfRVBXNX4+J/lxvZlSEGUNNp5MchlZSnQSrG6OZ9Pio+A+tO/Nj4OERv2YNh
-	HUc5zDfcUnEyaytHUfK8y4l1a3JLSoVhP/9ygHNM7fRGzrPrqx9Qg7AyMV0SQZtIR7rKq8xAxDjzc
-	OLG0QWC13ApBCL+oXo6RvABHhfnhQ53elFVhKCEp8OwO0mqToK1lzm9VeYIQlujNiheEdyGgyhuP2
-	bBhWYxtyqW18Zuicg7ygu6QMM8MysFZLEBmsj6gzQasYuXJrs5xC2hyzUYHHIutuHdGsCKhFyG8JU
-	OPG/OyyA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wABdU-000000079Wf-16wb;
-	Tue, 07 Apr 2026 18:58:52 +0000
-Message-ID: <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
-Date: Tue, 7 Apr 2026 11:58:51 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Dave Hansen
- <dave.hansen@intel.com>, linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260407125133.564182-1-kevin.brodsky@arm.com>
- <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
- <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A9CBA40004
-X-Stat-Signature: ktzhajbbq8b1guhje13dhpq9mczftend
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=YRyq8P25tDg/ozd6WhuWkMNpNQd/DqGyxMZx0qqNOGE=;
+	b=RuGvcRYJV1RvhxghNISYARqqUq8Ci4QRprpBQ24Dk9a0T6LMGPILuTKeeiuirobSFGP7/c
+	a2H5c9O14Dln4Jgz4+yLVnpbvfSJ4s3F1qji1fCdsFZ57uIHKjtO6J196MKqvs4iM6sYci
+	gMskw/RTawtUbAsR4K8quXcO5ldk8v0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775590033; a=rsa-sha256;
+	cv=none;
+	b=y85/vBUHq80upXAD76lrU4ZQKYksBLa5lNkFQzwDlTK2+3m5kArh3iCOo8UAVlwxa1ImV8
+	otW5JIMIlMMevQWGTGPSEjPOUUonwQwfWL1YpIVmy8CZ0P5ZRLZRYCCdqGeEENSw8FYSGE
+	eJUbBwDL+bx52OuEGghHe/z+tq7EXsk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ji7895+Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 869F9600AC;
+	Tue,  7 Apr 2026 19:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0A7C116C6;
+	Tue,  7 Apr 2026 19:27:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775590032;
+	bh=kWHAI7aObyXj6dvQDOMtmoAXbU5XnD34DfBNqB63Fuk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Ji7895+QUsE+yknJwq04P/tYQ09vHzFAyMlfKY6P9ohknz3L2WPq12Qcw+TbbbZ+v
+	 BaR3hN/4v52VEtnIWLmVOJ2Md90rNWymPkwA5qxemKcSuxw8ehTbL0oiZEw6qbTr5W
+	 NPeHiWNiQcFvFKgtf4FnMQRMr0gMisW8ptTqxyeeKO3GIfF6NJWhHJ44+Hgr7L+u6Q
+	 tcf2FI9ZseCSAuVxjAaa3VuHNizTbKZ2ZJkBVOVjV6yEJNvJ1SLiTLQtx5rCxUHhVl
+	 KBrxS5ze/4MBMwD1Q4dCIsXParBa7IL+LuIziIeKsmrBuwXdriwo7aAOMvlldsPBIa
+	 0y8UCRLEpvZhQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E083809A33;
+	Tue,  7 Apr 2026 19:26:51 +0000 (UTC)
+Subject: Re: [GIT PULL] hotfixes against 7.0-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260406204005.a7bd01cfb84ce72be88c9c4f@linux-foundation.org>
+References: <20260406204005.a7bd01cfb84ce72be88c9c4f@linux-foundation.org>
+X-PR-Tracked-List-Id: <mm-commits.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260406204005.a7bd01cfb84ce72be88c9c4f@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-04-06-15-27
+X-PR-Tracked-Commit-Id: 7bc5da4842bed3252d26e742213741a4d0ac1b14
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 66d64899eae85dc9b96c5433933787cdcd9b21e4
+Message-Id: <177559000961.4123438.10274665543837779264.pr-tracker-bot@kernel.org>
+Date: Tue, 07 Apr 2026 19:26:49 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, mm-commits@vger.kernel.org
+X-Rspamd-Queue-Id: 4049540002
+X-Stat-Signature: e761y9ujr5b6cbw7fg8iars7zo5ssd15
 X-Rspam-User: 
-X-HE-Tag: 1775588339-676057
-X-HE-Meta: U2FsdGVkX19E9ivOjvfa+lREES1jqPSf6lhxXRBdK2Pa2WloQlb/F4yfyQM0r+vjOJo3dNSED42kCWzkWwkkqonWYjVloEqtWmOhrilGKgAmjvtAT9szQDOQhShODAo2qP+LdHRHz1GOHyYzho7q7cKeCvkunsFqFMLOrBr1HdBFpU82VeEZHMbbBrViUgFeg9mIH8vxZlgQ7aSFkKVIE5ndIjgHMPQBU/fXLL/SB8PrMoZeXCy8K5HUv4rNivOCOqTF+wdNPMojLfMfVFsqYi9jK1k+5cWinHa8iw5p0v2w75EMCpk+RNV/ao9CdpGeZvEhtYjIflgc9rCzRVC7WsiK8Hnexn0Q1BkY5tdT6amj7c1LjP24I3Y4C1MMM/R+Ql7S4Mfwlm3LJOxlCsPM8khmRe+Un7WBXu0V0L521JeOu91O9RIkded/DQTv7bOY6vjNsb/8mQrbtVj64AbAABK9B/yK0DCBFU+LxjdgCZtoFbAypDcSWQmYeaJ8TcOu0umWFju24gE5kVDq6bkfyZPhd8IlzkUMkUfApIuEoaZz8JFUSxwmBrlZGbDdikq16ffYFTU/4m/bbtCOFrBlPUDo3bOzzpX1TtZa4AFS+YTpjO0MtNTlOqfDBdpCtwXChnSLWgmzb4EMO1LfLPkQFfmrArc1t2mrFcl58fFQYIkcgLe4r+8LrhlPd4KT94UJN0xYP8ICbvChfQAQ5kwT7HRJi8kojBBk8JcvDHEo/vnJafgHrEA1dZU8ou+4zBOwX0U5atVnvlAUsMij/l+c0V+DFNHZNrpRmXg9bG9yyfFeldXvX4pmKMpMXdnXc1SXrUVDpNXo9tD5ERkAb6WjsYsnt0/jWeihCyJF6Ll7iXLm0p2cHXIBlma4ndVxnEjeQJ13JU4u0Y0bl4dmGUSq1mTR072aWXKIfgscf6HegUiy4y78V9mBCm5fF48W896RmbWDCU+lC9637gzPcP9
- +wi3JC0B
- iXJ6GqeSUYpb+NyVtIizzQsg4PCN7bcdu6dEd3WJzqSNoEVPgKR9dZY7QNjvVLXoYxEx1Jy94DZFWCKie44RtvXGSrV2WiKGn5aEEiEgFrX9IXP0ZGMm86rqS3YQHoEGd7/wTE4p2EFaJdt7oEm0N2JUeCS77FqNfPrriOhH45ghAf0nAs1nI1kmOkOXlNgPjwnG7/feW2TW3i3JkQ1mTn5Ar8rEuWF6GYbAP1Rs4uedPUmCqxACbi35BezWXJb2mdzlPhDgVKe4QD4LCSBE1gfznitj3diX5cvScVzFotU2oBYs=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775590033-790746
+X-HE-Meta: U2FsdGVkX18EqqJjw3KTEu+KalE9hW73Y9cUULPveDNXTR2939dJk4HFYS5haAHx7bTBGFKgk04lAlddYkX8JRXA8rLZewzJ1jhQ/I005pSjWpZiPKLukkgvjpvDfuYVFcuAz3O7ZKNAP5lwn1IKfT0ek3NHRVidnwGB4vDptFUBsXjPcEreUsrsNxhOmGGD9rm7Rb0N0DUYJxWQRygKiN746PLCoQRnoCJStKtGbunor6kmZ6He0zdoPYW2/QeglFLYSszmQgIZO8fvgYbIrlxGZZLc1cyXqDoaBM2ALjURwfkpRLlYP8cBFw883EbvYkuDzHxXgxXIuuHuhKqyh4EQCrfreIPv35y4W/38hNStg247GjlWgS5K/ACfaNmG2BFt+M9synewYBkPrFWp1ChMPHDNo/0XWMvJzX8/+zSUtUFhCTRsfvBdyqHH2emFd3O7EGQAjY+AOuOl6CnuZho5Z3jjuYdELJ8vxes5b0qftxlfbqlqFqkLnv4aIMqkC9vdivRQeeTrSJQ7HWhLNlX08OVtEuEolW28fpzaYYRxkxTy5UwGu1SgOn5Jy60TlFyDrIIOA1DpOLZEdtG5BnvJwEYwSjNIyScOmLLxomCtWGkpMfYJoKLc/0+TKsXpxFzUjIwlErsT+p1B1qeuflTq/YuoxNK9ATcipYOZbuy6arWV8pvKOzmlY12/1syqA3sDEl5EB+jmGMmPJgh3b+V1Hep1GFWzp8s6KmnXh7cKSozmbi9XFlkjYRDIMHVTPF+77z0QAH3JSG/kdvplCevhlAjGKmJl5IxhwohEfhCzqf1KvHWG8rWnK7DLmVlYXDqG37UXBnXC4A+e6Jpl6nBr3dSQe8ieRNnlgaPalJUzlGEYKVDttxqURTe4QUS5rj1BKQGx8BBoNcezW7/YnSH36A1blz42vjy2HjoTFSx8pNMS1gKXE6iXbcKYlu7HcCNV5KVvE7sH0a7xZT3
+ 2FOWYr4l
+ tN/DcRZqGrem5Gem9u6fhPWXicCJ1iVpCOR1viklBwQam+m2LvgP6IdlB4HGA5Rriqb1Hkiu8j5UhvHWI3AxunJHj6E/ujBvhcxuY8dfv4v8yhov+OK3JjAcnNgOC7OqasuJmjd8MSuZyrs8s8T3Jr1nwn4ZXVCU1HmqjiXw8Rq0WMGtdH2qbXGdJEmC8POV9ebH6QXWGRSVY4aU1v637PKLzwQX3AVqV2MRtny9c8g1pSWsQDzeNZn1LkuPXx4+yxEtOXDm28i0rO0+QE6l9XNR0PEosBA9LUNQb4C+G8reVI1J7p8y3LS2EAxkEqiHVlKo/pIC7wAswSYda2IDcdv9FzNAG9Jryt6BtDAcdWp6sz7F5GcZxE3KKZsqVq/IlAnXi6V2NI00Bcns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,41 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The pull request you sent on Mon, 6 Apr 2026 20:40:05 -0700:
 
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-04-06-15-27
 
-On 4/7/26 8:12 AM, Kevin Brodsky wrote:
-> On 07/04/2026 16:42, Dave Hansen wrote:
->> On 4/7/26 05:51, Kevin Brodsky wrote:
->>> +If both the kernel and the system support protection keys (pkeys),
->>> +"ProtectionKey" indicates the memory protection key associated with the
->>> +virtual memory area.
->> I think you're trying to get across the point here that the kernel needs
->> to know about protection keys, have it enabled, and be running on a CPU
->> with pkey support.
-> 
-> Indeed.
-> 
->> To me "system" is a bit ambiguous here but _can_ refer to the whole
->> hardware/software system as a whole. To avoid redundancy, I'd say either:
->>
->> 	If both the kernel and the processor support protection keys...
->>
->> or
->>
->> 	If the system supports protection keys...
-> 
-> I see your point. By "system" I essentially mean the hardware (the SoC).
-> In general I would tend to avoid "processor" because not all CPUs in a
-> system necessarily have the same features, and some features require
-> hardware support beyond the CPU itself. Terminology is hard...
-> 
-> Happy to replace "system" with "hardware" if that's clearer :)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/66d64899eae85dc9b96c5433933787cdcd9b21e4
 
-I think that "system" is too nebulous there, so I would prefer to see
-"hardware" instead.
+Thank you!
 
-thanks.
 -- 
-~Randy
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
