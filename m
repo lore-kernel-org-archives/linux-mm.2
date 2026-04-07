@@ -4,105 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1729105D98A
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 23:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC326105D98C
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 23:36:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C9206B0088; Tue,  7 Apr 2026 19:00:34 -0400 (EDT)
+	id B84FB6B0088; Tue,  7 Apr 2026 19:36:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A1996B0089; Tue,  7 Apr 2026 19:00:34 -0400 (EDT)
+	id B35EA6B0089; Tue,  7 Apr 2026 19:36:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9386B008A; Tue,  7 Apr 2026 19:00:33 -0400 (EDT)
+	id A24086B008A; Tue,  7 Apr 2026 19:36:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DE7F56B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 19:00:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E27B1B8E0D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:33 +0000 (UTC)
-X-FDA: 84633280746.27.C39F4CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 644651C0017
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6VNSKvR;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775602831; a=rsa-sha256;
-	cv=none;
-	b=nH+kMCoI1etCcG7+xGk0FX+kb0aigQDFYbOJkuvxrXFUJZI7f1JPk1goTvHUIIZYSO5mUE
-	VAyH8S4n9/YPJQRB2sBR5oSRwjLQSKr5wxx6TB59G2kFmy4HTCza8w7w6cef5DFb6siTpN
-	sPfHTisPzpgXDamBcqVhQ3SZ9F/WgGE=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB0B6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 19:36:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3CD1A160989
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:36:04 +0000 (UTC)
+X-FDA: 84633370248.03.7EAE6AB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D79728000F
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:36:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gzwV2I2n;
+	spf=pass (imf02.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775602831;
+	s=arc-20220608; t=1775604962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HET5hJmoUonxeOKRNkcO45gduQNISxOyuHxsdJOzLOY=;
-	b=SHhKo14cuj1T8fewEoAQoGzS5nsDfJXLfYMqwDKOu2ka9ldAWsNRklR8QaZbHIGJoWqCwe
-	DiCND86jvxfECEwtW3s1nnrWH2hth/y7+rGk3PlgK05FAajicHI6Sg5Qtfyg2RUHybxsbs
-	FWQ+JGGxR4oFXSByupRyJuz6a2aKigk=
+	bh=cSte9vRO1TSshWcFHdBwTd4rL0Ri6sBQhlLf+reom5g=;
+	b=SD9qDzvUg1FODYYZYFkZlV/ScVhJRDh9mYm69Uh2rpmOW7B4WzJCY90Am6ThG84j/vYUBO
+	bNcmojjCpsrBbtUpjufH/eeUPvso6ES91wlu6e8u676K5uHAnEppUhBI1GpN0+6i0BY1Vj
+	9lcX9U/JxcfX6EjEPDe8ojWq2kJ0WJU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6VNSKvR;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34B8C44535
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129A8C2BCC4
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775602830;
-	bh=jkF6LsPqU12jwyxFfypEKWSkg3vXsh5cayrxCNLp5i0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=N6VNSKvROEaExx1bmqctO6GSFjzHjZ61bxsG+Jau7BNti7eUcF7P7xprNrn03/0jq
-	 lhn0anmZJClQoH/hT0PoO5u+VMrbAqtinURrFwgNNAZEhBa1+ALUYZC30gQBJkQyZP
-	 SlzhGpFKiRKaGqgWSo9JqCfhpp+6ILkXIp17WzwSnuc+iCe20DSjAho4EcQSI1VxEZ
-	 zb53N7FnEcmdc5c92s8lD2obmOsfEhAjFFmWW1cvqmziykdgsW1T/vtgq3AxqIOQeB
-	 Sr0smbUY/mRoYvlvmdhCp5EAUu5qE1pUk20d4zDVicchRux/1pqhmQwy+XTy0FHSvT
-	 vIsTY1UOi66qg==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cfc3ca1922so40532085a.1
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 16:00:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWgQXEGfNrKlC6uJldpbGe9R1xbrXcxufqZbSmE+ORYnJeUqWBVWZ3J/jFX4J3LNvAD01iGv+UkYQ==@kvack.org
-X-Gm-Message-State: AOJu0YzE+87tPiop5gyyOLheMXLdJfe974+7bU0TbZTCVdPhKBFGEth8
-	KTtOil2WvbEXrwYPUmQdEslKVLk2rpheUv/SOUoRv4olYxrg4cNjPlVwitsbwoxqNIqdQ+OyU99
-	87XUuEMLBEsDiJNrjgHMHggGhjVRlmHs=
-X-Received: by 2002:a05:6214:d88:b0:89c:ceaa:872c with SMTP id
- 6a1803df08f44-8a5eb81bfa4mr340853426d6.13.1775602829252; Tue, 07 Apr 2026
- 16:00:29 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gzwV2I2n;
+	spf=pass (imf02.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775604962; a=rsa-sha256;
+	cv=none;
+	b=EVtMiZhHtTvU79MCae4TeBS2/JmnNrFw/x7L40WlivBjLJVASYPqWkJG/nP4CLDVXjY3wS
+	GliSjJzR4a/b6Gj9Lr5RQEPzzWW0hKPEa6bXDBPwXkn111PB6xfwLCOri2exGzg3lSYqch
+	E86i8imVKdGFF2V4D3igCHtFmapeqb4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775604961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cSte9vRO1TSshWcFHdBwTd4rL0Ri6sBQhlLf+reom5g=;
+	b=gzwV2I2ncUaqe4+QeLgjoWkgtjPeLfmFpCTr4rwSDxK4lI4btnWMqUO++NzW1aPp4fp8Ow
+	WP8R4m4Jnvezxs8mFvTp60v/XkbRv16gtk2CR58hFskdBBfdyVr21kon4pDLTIVBCGJhjL
+	1wglG0RCTCdDy3ecrqUPW8SFVaGvM7E=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-Bi_GAVn4O3SsggUb42Sn2Q-1; Tue, 07 Apr 2026 19:35:59 -0400
+X-MC-Unique: Bi_GAVn4O3SsggUb42Sn2Q-1
+X-Mimecast-MFC-AGG-ID: Bi_GAVn4O3SsggUb42Sn2Q_1775604959
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50b52a2d70cso136579331cf.3
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 16:35:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775604959; x=1776209759;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cSte9vRO1TSshWcFHdBwTd4rL0Ri6sBQhlLf+reom5g=;
+        b=lASWuYbGmH9RymE4rioGSRXsijWVxRm9DkUQQ+cv5NDX63Mn8jf31L/+sIP7N+vukn
+         ErqzATsH3xXOtsqfgYjkk183C0HXOUU9yXovOay4fXZCHHLBKkb9Ihtp6yYH9fJcMykY
+         Ywfbm9QMzsJF1eSzF7r8uJmWo4BTDeUIsUiR7U/JcBYNu72bGjOODDIWGczy74yb3Gbi
+         rWx6ZaCEIM1iWPXH+n2Cx4hWysSRcQDGpAmxuqMQcRpAXSjY7gJPyEmEpFU25SZ71h+Z
+         DJ7PP6EpGvfBv+O8CGQCop4RiRy8dhiL9r2wbWEOBxLMEwAidMt6HPX0bVJsnqw6HzbW
+         I7sA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSwnahXbrbTFqsyxn8fgvxYbD32t7Qbwgevmt7twqw2zGkYaDSYzzEu8nqeHwItjRbVA8hC1gNyQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBJ3gsENOevI1I4R8mcAYrHcVwvgwbNIwYDC/DTEYwTKTpkSXc
+	+5G7+PrMxAhZvvamK4kY+T8JZdm77AMaiWsP2/pAy9BBONOYsQgrN/j1VGrDRQUl/15gA3oFl/9
+	RMDbx4r4qF9D/cwCdgVjW0Pz6che87DDIeI/lTzPYJyep43Us7xJB
+X-Gm-Gg: AeBDievrKLBOOGVz5bUCpBKqp59bpyKE7KGT67Vlt5HI64VIX/3gx0+6JwsS/ZQcaFF
+	6d0GQSFUr059jkjj3LyG7aQX/padBgK4Ka6NsDxwc75F8Ws5e0RVNKZwV0UYWpMmEInCDA2qPR5
+	oHBF2d+dXxpNqi58IviuLg2mgYRosHU/T2oBn72hE+0a/dGAqsxu8KFPOzKDIEgevZ2bn5qpgUD
+	3Ulo4d2HMi8Toe0z2eFLF8+avPq/8kLHpGc7JApo/gBATIehvKqK9p6v3IZIsrrIKYZ4VKASQTj
+	kdUb0meTOgILDUJdQDScZLwMrtJl+C3BHJ/kQc0DATq5HCTaDC2Kun9arUX3BBj3rfF/osqM/29
+	dgLX01AWtRxZukh6JYLPt47FGzLhMMyBHH0slPrdh1vRNYxgLipncLLQfsFjz0q4=
+X-Received: by 2002:ac8:7e89:0:b0:50b:41b7:d6c2 with SMTP id d75a77b69052e-50d62ad8295mr291701011cf.47.1775604959230;
+        Tue, 07 Apr 2026 16:35:59 -0700 (PDT)
+X-Received: by 2002:ac8:7e89:0:b0:50b:41b7:d6c2 with SMTP id d75a77b69052e-50d62ad8295mr291700461cf.47.1775604958598;
+        Tue, 07 Apr 2026 16:35:58 -0700 (PDT)
+Received: from localhost (pool-100-17-19-56.bstnma.fios.verizon.net. [100.17.19.56])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d5ea136a1sm129517281cf.25.2026.04.07.16.35.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 16:35:56 -0700 (PDT)
+Date: Tue, 7 Apr 2026 19:35:54 -0400
+From: Eric Chanudet <echanude@redhat.com>
+To: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+	Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
+	Dave Airlie <airlied@gmail.com>
+Subject: Re: [PATCH RFC 2/2] cgroup/dmem: add a node to double charge in memcg
+Message-ID: <adUVZ-i3Ot3R07Lq@x1nano>
+References: <20260403-cgroup-dmem-memcg-double-charge-v1-0-c371d155de2a@redhat.com>
+ <20260403-cgroup-dmem-memcg-double-charge-v1-2-c371d155de2a@redhat.com>
+ <auzxmkl5jxlvlxpryibtz7srdnssguiaylb3uisheclrqelcgh@owm2nve7axb5>
 MIME-Version: 1.0
-References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com> <4451bdc432864aebb54f401eee51ea53@honor.com>
- <adUM54W3WYwEFj3J@KASONG-MC4>
-In-Reply-To: <adUM54W3WYwEFj3J@KASONG-MC4>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 8 Apr 2026 07:00:17 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
-X-Gm-Features: AQROBzBw61WCRWk6P8DZuUdQL5lNNdSj2p4e9VUuuyVH9SFPZTUX1jhf5ktw68A
-Message-ID: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
- = 0 or 201
-To: Kairui Song <ryncsn@gmail.com>
-Cc: wangzhen <wangzhen5@honor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <auzxmkl5jxlvlxpryibtz7srdnssguiaylb3uisheclrqelcgh@owm2nve7axb5>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Id6fBEssU98fIpwxWIbKFwBWWyNgv8MIpRn024ULe8M_1775604959
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D79728000F
+X-Stat-Signature: yupdpii5ap5pirzob84uidjcqpc57naw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 644651C0017
-X-Stat-Signature: racd1hifpuhj8jpqsttwzew7fyje9tdo
-X-HE-Tag: 1775602831-6283
-X-HE-Meta: U2FsdGVkX19zWnYX0VYsguQMJ5mTYCQPVGNhwZj8IaAwLPhfKDo9c51KksEVCmnXjbdJvNGMX9DXLlbUpleh4c6CM91pDBFV9Q3zw4uIzYLTjQBNOqPWmFWM+8O/Ma4KhwcLeOud8QqsrCOS+XH4/I4y2MwitduxzLoQtE4pcbaD5adOBSoUiAcPqM8/Tj3ZDE9wOoV4AZwe0wstX1zwvIXDzAUHPtpMJXTePWlOgOzvPgJ19pCwj/St+bjHLeg6vLH1Sa/3HLIU03AZ3xd8oXAM467oTodrPkaZTGcm3wFgam2qCoQyXPVyr4YBRdJ7AxnKA3cQeEWVrMLIVIwpfJh5M967UD38Uf8AshojwykY4CvwYuWKohTVVoOdFOGMz4+/gtDBRfbzdrLjSD8anHzROd3SQNTiyCan+gju9h5VbGJr9kD1OwjRmhEG/pKkxle19o7oAeE53/abZUpljIwf8y7ZK6+cW9UVU7GE+sJTTlZojFnKEDbXIHIO638PqqL1OIaSqCtBRh5twZ1mO323PoPUr9K426AeBeXkXwu8zo9ew64SY6zUA2IRDvEWwFZY2RVcjCSDqVRSUZYUwjL2WRUGJ7m9iAJuxLgWBFNIJCifGppPh3lonY0nuF69R1loCV3XL72WsUaoHFsdw7OsTDC+0q/p4qJUrx6C/dW0DQe+8/ewH+lTci/99TC80kMUXGt3QJTBSO3ve+PdBO0u1jsBXIW8ld/pbMKJexuw8AlpRFXdeX+nnD03nePKNLlXUp0mivjeN8qKzZ2nr2g/0RUvDZP2EaX27dmzTHv5jsJOwrgBaRa5e/T3Uvx57zMGElKz6mLW/BV27+W4XT1sL3siqUXJqC/4c1zJvx8D6WDqkvANT6P/FvjYtTmm0oMPvcLfvO3FHy5Xqkd+VrHjNKEvxtryIPamJu5ifHMWUPNME6HcEbdaXfGAHciGVZEZ67QLMVLawhl+Jcp
- cPsY7mzh
- kcF0LFEDn6EZ7z4DyjnJ0+qO+tzCrfC+nkP162i1iu63uZ9gMQa3/c3d/mcHEm3TL3seMA3QdHKJsQvYwphCUDCDqKnDz0/jftYRV5zRTw7hy/55nZCSoAKOv8onrzFGZGNfYH8d2s5fDkqVDiZRcxg7hLkk9hUl/AKq2u8cENzfq8kHBjEj31ntgIAtECqa3mfQw6y/5HLUTTUsvt4h9bUEW3zWDslmKH5lz3XosX6YKSDwnaYU4ehckMMOQ8cngFrucKq53hokNjf0OBgIFNiz1deXdXNIP+H5fi4HSfM6HTloZ45o1JM8GqKFVyzoyB/eBx4Z/Y1kuMhSitjVEd9YnYVO4F6G13RIrf+TfRDcOoQZfBdyUgb3jU3nRYqF9ubmroMngixb5JSccueaLLZxeiRZUsGUxxS1L23GLYNT3e4U=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775604961-440358
+X-HE-Meta: U2FsdGVkX1/iei0VpkjIIktVHE4twSZIbRX4MrCp7f9xxtvFZx1j30EFgIJNNXancOjGE50IG7XyYEKJJ6WuCd3kUXSyS811NkweFW+xHtCjVYfkXtzE6MhzXwBUlywyFuh/Zny/XjrDNcqzAJvdh4MTAq/YGYefBDjIatWTpQ66jk7buI4CinxiRid2YoUTtCsEOazcRB5b8sGem1iKNPXcjrPMktwsXVxO8n7dHpZ+22R7Py+2qvqdBPtbP87LMN+4eSkNLv2fiSrt74tnBywbzC+oRJviB4yfNXRlpx+CgaQtqwcT3uXCAiTJke5Osy0BhA2gN0xtuPY/G+VXmO5f2YyKJeBJ/cT1/aMnMNh/aV/bBbPmELy71FsQwJyWfD/mLbBGglnDjFCKd/YVh+PIx3aM3CDfaP1bieQGot9E+b1kMjQpeRrxofIwhVxWHMjst7mJOXxulu5ophEipjbm9EoiBhvRw0GhfplybrzUnXusTEsmMli0rrO0n5bSga8O1v+Q/4SrkilmRIAYHao24S5XjRBk5Ci5vwSBi/pKVT4BM0fT1lKCxw6S5It/BVowCtcOfb0UHDwRYPbDBeC5nUlGKJ/XsCqPDY7jQxq8ZxrMfgFou5z6NmXIaZvC0bzlk2+PqvK8CU2CJBv38oysnOzN5VcKCtZAb8gwrNbx1df+XGKzcihcHqhcVGFw8Tbu/L/ftU5JSTkGHIeZ/luEBtD3swJqftahPRoyv0GAXk4QZltc5FZUxCfvy0wKDnH3pjZB8oG9flPv2ZEd5vbNrmrZUq4c5Fp3ZHa3auNzzg7CX1yWEFFdNt+dKIXfC5dje3WMuBhp+zMU+qoYG6Y4vN1Woa1eL/qSFPZUR5R3XO7O8oKoQAESSRE7B3IP47Vku7C5aevCxkdcgJ1yJGhTGf8YG+gg96gEeElhXvNkRa/m1rvGkXC6WGzfRq2G61ujuP8jIQDvX51Ki9+
+ wQ/oE3qN
+ MqS/wozMhGPU6jwN/II691Lm1khPGwdX9Q7+11B+jkKc0bxpwUykhPQRmlVu6BTQrLd2sWSsux6KlFGbKGDiE/J7/ZH8XBD5FlPUUrwCiH9lOOSdXZfi9N85018MX8Cye88nUaiCootXlGNhBCF10jNzzCx3G/l7oYZ2tEiMCJAUyLLyaamTLY3x8xDnd58Kd+3kI+GIpO9IQU3cIZQ+oeqMyXCT91XHDQ2ZbosdI6//opr77hQxarBIkUluq491DFed7HioNEg2aMauRgB2Dflotsx6XORxUpKKNMGDzHVv90YiWuEPrlrqPK8rFJRx3SSzI1hCq8zQGHJErjpBNy+AdedG1SzuvBUgW0ZChU8p0nwUUIX9lZirLHmNGot2UV5nJ9HrO41r58rMgQMCWEs9kyEiqQhY8YSPHdIc1ilqO41PWrnsg0hE1nuQsdEq6Ib4p65ovb2c/CnJPeMORNk+NIQz1bg5fX/BSawW66lJ3ZtJzpik96uVQTWwfE2XOUp8xNpa4VtjlLVkZ2oeGVLt2XRfP1gKkZPszuCw1FXeeKE2tauQ7VVCW52VUIRaLPqNBVUawbB1Ei60kOz0qVpEvHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,141 +137,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 7, 2026 at 10:26=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Tue, Apr 07, 2026 at 01:37:08PM +0800, wangzhen wrote:
-> > >From ac731b061f152cba05b9aa351652a04f933986e0 Mon Sep 17 00:00:00 2001
-> > From: w00021541 <wangzhen5@hihonor.com>
-> > Date: Tue, 7 Apr 2026 16:17:53 +0800
-> > Subject: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappine=
-ss =3D 0  or 201
-> >
-> > In some cases, when swappiness is set to 0 or 201, the oldest generatio=
-n pages will be changed to the newest generation incorrectly.
-> >
-> > Consider the following aging scenario:
-> > MAX_NR_GENS=3D4, MIN_NR_GENS=3D2, swappiness=3D201, 3 anon gens, 4 file=
- gens.
-> > 1. When swappiness =3D 201, should_run_aging will only check anon type.
-> > should_run_aging return true.
-> > 2. In inc_max_seq, if the anon and file type have MAX_NR_GENS, inc_min_=
-seq will move the oldest generation pages to the second oldest to prepare f=
-or increasing max_seq.
-> > Here, the file type will enter inc_min_seq.
-> > 3. In inc_min_seq, first goto is true, the pages migration was skipped,=
- resulting in the inversion of cold/hot pages.
-> >
-> > In fact, when MAX_NR_GENS=3D4 and MIN_NR_GENS=3D2, the for loop after t=
-he goto is unreachable.
-> >
-> > Consider the code in inc_max_seq:
-> > if (get_nr_gens(lruvec, type) ! =3D MAX_NR_GENS)
-> >     continue;
-> > This means that only get_nr_gens=3D=3D4 can enter the inc_min_seq.
-> >
-> > Discuss the swappiness in three different scenarios:
-> > 1<=3Dswappiness<=3D200:
-> > If should_run_aging returns true, both anon and file types must satisfy=
- get_nr_gens<=3D3, indicating that no type satisfies get_nr_gens=3D=3DMAX_N=
-R_GENS.
-> > Therefore, both cannot enter inc_min_seq.
-> >
-> > swappiness=3D201:
-> > If should_run_aging returns true, the anon type must satisfy get_nr_gen=
-s<=3D3. Only file type can satisfy get_nr_gens=3D=3DMAX_NR_GENS.
-> > After entering inc_min_seq, type && (swappiness =3D=3D SWAPPINESS_ANON_=
-ONLY) is true, the for loop will be skipped.
-> >
-> > swappiness=3D0:
-> > Same as swappiness=3D201
-> >
-> > so the two goto statements should be removed. This ensures that when sw=
-appiness=3D0 or 201, the oldest generation pages are correctly promoted to =
-the second oldest generation.
-> > (When 1<=3D swappiness<=3D200, only both anon and file types get_nr_gen=
-s<=3D3 will age, preventing the inversion of hot/cold pages).
-> >
-> > Signed-off-by: w00021541 <wangzhen5@hihonor.com>
-> > ---
-> >  mm/vmscan.c | 14 +++-----------
-> >  1 file changed, 3 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 0fc9373e8251..54c835b07d3e 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -3843,7 +3843,7 @@ static void clear_mm_walk(void)
-> >               kfree(walk);
-> >  }
-> >
-> > -static bool inc_min_seq(struct lruvec *lruvec, int type, int swappines=
-s)
-> > +static bool inc_min_seq(struct lruvec *lruvec, int type)
-> >  {
-> >       int zone;
-> >       int remaining =3D MAX_LRU_BATCH;
-> > @@ -3851,14 +3851,6 @@ static bool inc_min_seq(struct lruvec *lruvec, i=
-nt type, int swappiness)
-> >       int hist =3D lru_hist_from_seq(lrugen->min_seq[type]);
-> >       int new_gen, old_gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
-> >
-> > -     /* For file type, skip the check if swappiness is anon only */
-> > -     if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
-> > -             goto done;
-> > -
-> > -     /* For anon type, skip the check if swappiness is zero (file only=
-) */
-> > -     if (!type && !swappiness)
-> > -             goto done;
-> > -
->
-> Hi, thanks for the patch.
->
-> We have a very similar patch internally, and the result is kind of bad.
->
-> Currently MGLRU forbid the gen distance between file and anon go larger
-> than 2, which mean with this patch, when under great pressure, you may
-> have to keep rotating a long list of the opposite type of folios to
-> reclaim another type.
->
-> For example, when you have only 2 gens of file folios, swap disabled,
-> and there are 3 gens of anon folios. Anon folios are unevictable because
-> there is no SWAP. And file is also unevcitable due to force protection
-> of gen. Consider anon folios are mostly cold (at least a portion of them
-> are), now the oldest gen of anon folios will be very long (e.g. 12G,
-> 3145728 folios).
->
-> Now, to reclaim any file folios, you have to age first. Before this
-> patch that is usually fast. But after this, it will have to rotate
-> all 3145728 folios to second oldest anon gen, will could take a
-> very long time.
->
-> During that period any concurrent reclaimer will get rejected
-> due to force protection, result in very ugly long tailing or
-> unexpected OOM.
->
-> So I agree this is a good idea in general, I agree we should do
-> this. But better defer this until we patch up MGLRU to remove
-> the force protection first.
+On Tue, Apr 07, 2026 at 02:48:05PM +0200, Michal Koutný wrote:
+> Hi.
+> 
+> On Fri, Apr 03, 2026 at 10:08:36AM -0400, Eric Chanudet <echanude@redhat.com> wrote:
+> > Introduce /cgroupfs/<>/dmem.memcg to make allocations in a dmem
+> > controlled region also be charged in memcg.
+> > 
+> > This is disabled by default and requires the administrator to configure
+> > it through the cgroupfs before the first charge occurs.
+> 
+> This somehow dropped the reason from [1] that this should be per-cgroup
+> controllable. Is that still valid? (Otherwise, I'd ask why not make this
+> a simple boot cmdline parameter like cgroup.memory=nokmem.)
 
-I suspect that once we can age file and anonymous pages
-separately, this issue will resolve itself. David already has
-some code for this [1].
+[1] argued it should be controllable per dmem region more than per
+cgroup. For example, a cgroup configured +memory and +dmem with one
+region charging only dmem and the other double charging memcg and dmem.
 
-Not sure when he will have time to push it upstream, but I
-may carve out some time to take care of it this month.
+cgroup.memory=nokmem karg would double charge all or none of the regions
+for all cgroups iiuc. So maybe just make memcg CFTYPE_ONLY_ON_ROOT and
+inherit that configuration in all children would do?
 
-[1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
+> > @@ -624,6 +656,13 @@ void dmem_cgroup_uncharge(struct dmem_cgroup_pool_state *pool, u64 size)
+> >  		return;
+> >  
+> >  	page_counter_uncharge(&pool->cnt, size);
+> > +
+> > +	struct mem_cgroup *memcg = mem_cgroup_from_cgroup(pool->cs->css.cgroup);
+> 
+> This is not necessarily same memcg as when the dmem was charged via
+> current (imagine dmem controller to depth N, but memcg only to N-1;
+> charge, then memcg is enabled up to N so this would attempt uncharge
+> from new memcg at level N, possibly going negative).
+> 
+> There is a question whether dmem should enforce same-depth hierarchies
+> with `dmem_cgrp_subsys.depends_on = 1 << memory_cgrp_id` (see
+> io_cgrp_subsys for comparison).
 
->
-> But I think it might be reasonable to remove the SWAPPINESS_ANON_ONLY
-> limit now, that can only be triggered by proactive reclaim
-> which would tolerate long tailing and won't cause OOM.
+Thanks! I'll look into depends_on.
 
-It may be better to defer both cases until file and anonymous
-pages can be aged separately.
+> And eventually, if per-cgroup attribute is desired, it would make
+> greater sense to me if that attribute was on the parent level, so that
+> siblings competing among each other are always of the same composition
+> (i.e. all w/out dmem or all including dmem). This likely results in this
+> extra-charging attribute to be properly hierarchical.
+> 
+> HTH,
+> Michal
+> 
+> [1] https://lore.kernel.org/all/a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.com/
 
-Thanks
-Barry
+Thank you for the feedback,
+
+-- 
+Eric Chanudet
+
 
