@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 892E1FB517F
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 01:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 984A8FB5178
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 01:06:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B79F6B0099; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
+	id EE3266B009B; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 768B86B009B; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
+	id E1FBB6B009D; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5931C6B009D; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
+	id D35526B009F; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4323A6B0099
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF66E6B009B
 	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 21:05:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC2548C026
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:45 +0000 (UTC)
-X-FDA: 84629967450.22.031B3AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3EC6EC000A
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88BA81B8484
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:46 +0000 (UTC)
+X-FDA: 84629967492.04.2C2773E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DAFD7140003
 	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ODU85TTZ;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcfFgWl0;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ODU85TTZ;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775523944; a=rsa-sha256;
-	cv=none;
-	b=DhhMBqw3KlTimD0QsYQvnVt0L/TB7lvr9L8XCg2J2rCuu9iqonZnadUnLm/GASBFJbTBZo
-	chOTcA4XDYowBZZMfUcT+LDO13VribQ5SA6pucPNaGYyX1ST465zJHs5CeeOa9sZ8v952m
-	lnloo5N2Gx3b8ub39gj3a0/TIlRmcqg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775523944;
+	s=arc-20220608; t=1775523945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5sVcF7zaH37u0tWHP3HtY1xH4X9u8i3KYqKvRqlaJEQ=;
-	b=cMj9YqWIVglhN72wsAFcPk1we9cTL+Vxn1BOeo3FsSNDPxsd4Q1DHf52UiMSKVUCqSLJZ2
-	hcYHjv+TEe+XWB8R2h5CWULATgf0cqK6zSUi/x7wrWVvsJStiNqu4aKPwVlZUAGNWwqcAX
-	an9EVehVaazsbYS7xRVzU7mXryodFss=
+	bh=4joi/1jxL0tMeoK2jtxaL6glpzvmpSwsvYu1Z1ZZFRc=;
+	b=Mz9WRuJOZHGf7sW9uieyzZRfomDo9KPl6OBkHuPUH6siZKwl1EgYq9ZPaFB7DA32KKLgtX
+	ilyQ8ec/Y1OArHYh16iKGLbCbDdtWfLwvrk5k3a9y3EcVXaMsl7ZINkX9b/R1gOVfbQCH+
+	azEDR8X8XNH5Nj/utGEEug/UuFoP0hw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcfFgWl0;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775523945; a=rsa-sha256;
+	cv=none;
+	b=lucizlEP80+GiO5E+uk0eA1vu3PMWZhZw1GAlKypH5UwAtw/ceb29mb/0Qc6qc6GNCmO4b
+	tFD1NXqnDrY6tJEuCHVShsVdN/oVxtQHRu3nq3kyzMf50X2Ax3Ft94ouYwITwq58XuFDcz
+	NzxOF6Hok1qNlSiuw8NNtP1ioKWl1ks=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEADA6111B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB1EC2BCAF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0046144564
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 01:05:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E792C2BC9E;
 	Tue,  7 Apr 2026 01:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775523943;
-	bh=EIRB4p0R7OQMpXCAySjtmt5LRqO984ojhpZfxIiXyb0=;
+	bh=EuOHul4fripHvwsgWhBfbomSmWCRXpHL6QQJMWdANgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODU85TTZFKTroXbh8r0wzowseIcB6UbnnIAZwvCjg596LBqHtS4B2P2VMF8DO++xp
-	 9i4el1WvytI0Bb+pqpNW/22vs+gwu1q8gvvBQh7icRxckaDeR3PTqwCnr6lCK209FS
-	 YJqWZwCxiMtSZsrqMGQ08yhHIGwiTcLn41+MTks8Fhi2KkOVJPoLKZQhJUyBZstGDc
-	 YKMq3altvB5TtX2OkOSNIdCTwIpUS+6m1PQ9jPXkLG/3sSxajMicrOx2GUXNaLHy9+
-	 AJwQaN2AzfFKY5evddqDeXbEtsKAhg4Xk7v/O4IJy49aPax9GHmZFUPDo2BLwAj029
-	 k8+fmjjZw5oSA==
+	b=mcfFgWl0wSbjxpNVJs8/dkU9XnwsM/Trq3uFVxnc/VzfDu/QnRptO3YCzH1Nd6bKk
+	 Sdhu1R79eFEDSYMWVIcXjDRUaV/4HqF0/5FGh1oDPuL/hniuPauNKU56AKFhilUs6h
+	 Qd/wzKUY5jZ2GYuiCxde6sEKTFSoUDBUGHxAxj8yurENvKcNLTSEKQugviIyVB1Xgr
+	 BgrTRjpsz2pIvswFyA+M37irFMTduQSZ43w/KegrS5uWj60aX/xfnsuQH0HlKtYjFx
+	 BQot8LH7qSHFBTK7kVfIXj8b0hy+7A0JiTv7SQgreod8grZMUQyoy8gUZsxaGkf2IH
+	 wVGOdLY1mGHGg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 08/10] selftests/damon/_damon_sysfs: support failed region quota charge ratio
-Date: Mon,  6 Apr 2026 18:05:30 -0700
-Message-ID: <20260407010536.83603-9-sj@kernel.org>
+Subject: [RFC PATCH v3 09/10] selftests/damon/drgn_dump_damon_status: support failed region quota charge ratio
+Date: Mon,  6 Apr 2026 18:05:31 -0700
+Message-ID: <20260407010536.83603-10-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260407010536.83603-1-sj@kernel.org>
 References: <20260407010536.83603-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3EC6EC000A
-X-Stat-Signature: xw3wen9c9he3538tixmbp6spf79bgdam
 X-Rspam-User: 
-X-HE-Tag: 1775523944-724607
-X-HE-Meta: U2FsdGVkX1+uPj9+tfPCEvIw8zjVgfvY2C4E1U0MFsdwvLadZPcTITp1UzGGnUl6Of7t7MHK3POfTzbjEBT15NzsNB0A3py+nyliADpq2wBVfxEDdo4GuRfrI6S5EWGE+kMhH+fHyZtYtjdsU61MeQxzpQTlh+ScwhXLhLFcTkWgrLBZcE0oAhE17zenHEXNb4lHeaAwD2U1/Bp2j+K6plFqxUZL+O91xmGpb8dThmZ/2kNHS+MK97x7MHZCh1TI46aYusmK+2XvFkH9QXrda4Kb45HrhtxPt0AFsRpPFlqs/SrSaemHoFZ8nCoVg9q89CqZuVZ+ZNOWZBpmoqiR4LgPs4Q2p0dIW94pZrE7wNmf8xybrF7FBSTbrI4xDPlpZTL38cvtvRwgE6cqby4VohORvRdpnXW4/Zhug0He8tVKpO67P153PJQ7D9T9UXIylruIFBahvP9ryC2yeeaaoYgnVi9xjYLLw0zMPSpe+rpy08DETXTrt9Toab7wzSXX05a0wESoQmIsxEy8Ju3zb4XGm5lYF6W3TyJVGDlnfKytMGw81nKr2/wDe8j3BMpJ8362o8FBJd6iz9pap6BN4oJOQ9vUqy0t0yMeTpg52qh1ytIfYl5DSQE4TXRPYiLDDn3Y/+M/Rb7Cb85qWVHuKyfRkbok2xReMU/vk6jiuMnuoq1fyGtccZrphnjyUsdujpXfI/AIdV1e6BoDrznfG0rt8fU23IN7trfAAOMWxZq71UtVsFVVW6T8sg7La/mWtY+u3RA1lutaiQ2AmHrZatNPgqljzLZfrXDlkXgBPm6QZDMt43+FtQEG1KoeA1YRtcu27KUpK1kbPElNM8dpp+jfapoAibhLRl+ZcqrUbwRrzXuJXsQF8zZupLsaAF/71wEAwCX+w1rTje/WRWYFeP03Wrzs6UPjTAPFwO9U/RBK8kZhJStf9PY+2/t02faegZbn77yJSpnlP61taV1
- wH5X9R/s
- UgKcNBAXeabKZrP2m3FzqgEtwNpsFADFo9/DwJq1d2MqF3RE/w/EFU4u9XHKFPmyxHLsN
+X-Stat-Signature: cy5sxj7wwj84bor4yyuh76yegqw9ubqo
+X-Rspamd-Queue-Id: DAFD7140003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775523944-953272
+X-HE-Meta: U2FsdGVkX1+lPvCoG4Rf3UgvTwrfPjmZZfsV28lO3HHocc4zUcLwhFIuU1NjLRoqVWKtr33gr48MdamDEfyR71TegQb0eu/IbZsCS2YFjICgrbuCXXLxdnC+Awd7e+koGCeq3vt3Wau5lpb/LQbhcwATMTsspXloqHc1t5UlBR1+BslAUvQi8hfEenzxFxDEVlrJEDczS5NLuWmO8wUQddNzPzixDZiv479uvl8iNUv5Rtbvbz7SWe0m/k3TEv9IoOu+D/uUB64YCojU8fZ1Wd5sI0bBXDq3+Slce2eYBDc+kt9e3CudoqZ63VYdGjhALDILh1KDEdCTmfLKnd4oMXbm78Umh82ABwt6M0rQGtq81C2cjyeklEpIBPElvuLOFBg/ae7EZBF3y5pC7IkxbuM+GM15V9RB4DxPxosWqbGOoEpyMPrQDf96/iBjAXvGe8T2lq6gKLZf7S6gO0pIQJeTYNs2Sgr+8OnHpzZ2DAtdh0i2UN6iiEikuxydNPfL2mNv4fqpxEkCD1V1Ds7HL3IDWxRdkAaenC/o/vumy7FPktKt8kVOFsd5Lmm39SpVhurFA5CetiPKGCicavBjViSDmb5KHRntlutFeTR1Sp51vGVrXZGp1s2WjhFkfHwFWjJMpSr02zVO5X31vLpNZRzJRCvbSFhXjxl+C66Dw22wQTAIHJTpcfdmAn7iauG3euq+BwPVCfwV19NaVxmkytMo75l3cN/U02oy8G54HouKhAmDGQ/Q7kjUGND6MZZECnFBQRsYta2pb0NQIcZNh/2/umfninx24JELU8o9wPzLBv5avvHdE4voVjbsuPxmHxi3K+MlzS7s0pNTCk3+OYpUcX97ipgv5iyMK3ju6rAblOnvGPFB7MVOnnmu6RKmmDJp/fVGbQNkYZHZFaMdt2G6IQhmLVfGV6APHjsF+kJj0KUzCFraSYFkRducAsUromym/+RM9tvDv0ue0Yl
+ 5F1QCrhc
+ vvRZif8TUSZFZcxTKkV8HI0ooa0P+sw6vA80lrEPFuFDbmuHzzNLDNkK1tzkVBh6kv6MIrVgARl9Oaa2t2SEQ4WyKtE5Scjvui6IKjtsLIPW8xC1KimbatfYd7uFgWPrSL4WnFsuEhY8Yd7tLaODUrzPyjAXlDOvjyMgdO5xMAceeXALfEXDuFny1EYKaHAXJ7jsw6N1nTfyW4naZo25wptzPjctzOos4KVIMsTMXEHA+c1wR58lLjtwvgrbOsafM0Pbd8JmehW1WZO304knbeTbTj55ZvFVO4HLjh50+ryJl7wuQIrgz2pQGIpzWslCfBlH3RRvmUGxdqZc7lqkmjNXd6aD1b5vhnDQY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,66 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend _damon_sysfs.py for DAMOS action failed regions quota charge
-ratio setup, so that we can add kselftest for the new feature.
+Extend drgn_dump_damon_status.py to dump DAMON internal state for DAMOS
+action failed regions quota charge ratio, to be able to show if the
+internal state for the feature is working, with future DAMON selftests.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 21 +++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/drgn_dump_damon_status.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 120b96ecbd741..8b12cc0484405 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -132,14 +132,17 @@ class DamosQuota:
-     goals = None                # quota goals
-     goal_tuner = None           # quota goal tuner
-     reset_interval_ms = None    # quota reset interval
-+    fail_charge_num = None
-+    fail_charge_denom = None
-     weight_sz_permil = None
-     weight_nr_accesses_permil = None
-     weight_age_permil = None
-     scheme = None               # owner scheme
- 
-     def __init__(self, sz=0, ms=0, goals=None, goal_tuner='consist',
--                 reset_interval_ms=0, weight_sz_permil=0,
--                 weight_nr_accesses_permil=0, weight_age_permil=0):
-+                 reset_interval_ms=0, fail_charge_num=0, fail_charge_denom=0,
-+                 weight_sz_permil=0, weight_nr_accesses_permil=0,
-+                 weight_age_permil=0):
-         self.sz = sz
-         self.ms = ms
-         self.reset_interval_ms = reset_interval_ms
-@@ -151,6 +154,8 @@ class DamosQuota:
-         for idx, goal in enumerate(self.goals):
-             goal.idx = idx
-             goal.quota = self
-+        self.fail_charge_num = fail_charge_num
-+        self.fail_charge_denom = fail_charge_denom
- 
-     def sysfs_dir(self):
-         return os.path.join(self.scheme.sysfs_dir(), 'quotas')
-@@ -197,6 +202,18 @@ class DamosQuota:
-                 os.path.join(self.sysfs_dir(), 'goal_tuner'), self.goal_tuner)
-         if err is not None:
-             return err
-+
-+        err = write_file(
-+                os.path.join(self.sysfs_dir(), 'fail_charge_num'),
-+                self.fail_charge_num)
-+        if err is not None:
-+            return err
-+        err = write_file(
-+                os.path.join(self.sysfs_dir(), 'fail_charge_denom'),
-+                self.fail_charge_denom)
-+        if err is not None:
-+            return err
-+
-         return None
- 
- class DamosWatermarks:
+diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+index 5b90eb8e7ef88..972948e6215f1 100755
+--- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
++++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+@@ -112,6 +112,8 @@ def damos_quota_to_dict(quota):
+         ['goals', damos_quota_goals_to_list],
+         ['goal_tuner', int],
+         ['esz', int],
++        ['fail_charge_num', int],
++        ['fail_charge_denom', int],
+         ['weight_sz', int],
+         ['weight_nr_accesses', int],
+         ['weight_age', int],
 -- 
 2.47.3
 
