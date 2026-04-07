@@ -4,104 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E6CFF5107
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 15:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0048CFF5104
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 15:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD226B00B2; Tue,  7 Apr 2026 11:23:39 -0400 (EDT)
+	id 1B4586B00B3; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD996B00B3; Tue,  7 Apr 2026 11:23:39 -0400 (EDT)
+	id 18C186B00B5; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C3F86B00B4; Tue,  7 Apr 2026 11:23:39 -0400 (EDT)
+	id 0A1756B00B6; Tue,  7 Apr 2026 11:39:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A97E6B00B2
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:23:39 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 914C313BB35
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:23:38 +0000 (UTC)
-X-FDA: 84632129316.18.A447BCD
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B6F2040009
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:23:36 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aefdV1zd;
-	spf=pass (imf11.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EF63E6B00B3
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:39:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A756B1408B2
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:39:17 +0000 (UTC)
+X-FDA: 84632168754.13.B3870C9
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AD6CD1A0009
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 15:39:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eLVGqBBi
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775575416;
+	s=arc-20220608; t=1775576356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NKBx6bVmWC7VSTX/T2tSGTL9Yi85hovB3fKir/sRBS8=;
-	b=K2LLzGPI4wQU6WAMyqypRqwxNShoZD4KSCUbzzIHsMv93yRCXvYOODJoEN/1hEgFi3iC+t
-	gWtbXE8Qz1J4plaIjQO/TXfVEm45J9c5j/7EiS9EdYxakLOJb+xRW4w19w4+kf15SSHLSm
-	etB+qFnxD80A1yxoA3oxZ37XGYY+uU4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aefdV1zd;
-	spf=pass (imf11.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775575416; a=rsa-sha256;
+	bh=xUraNMpir2RYmF7SdU6Sk5XYdPYUrZgrKlbGzzDcLkM=;
+	b=X5IBkAxqQbOlCJRVGmuX29b57/zEUOMBiCjzeydzgLI0Wbo5X/scC4AZIhS7WC8Qs2iiiw
+	b/HGrVnqnKFzDb1+qlWZzb0fT5LD42MQMuqudzizzbuWegADrecQc7L7ne8urkbdKQduxk
+	b4E9Ap9nRULLWGIE+rlO96ks6lMX2kg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775576356; a=rsa-sha256;
 	cv=none;
-	b=XzWSgX3sINFW2BJA+Whwk4SXNHl2cXY7HdsZtDlLZrQ/kOTjf6CSPAqogQkfBl5auqfG9a
-	4DI1T0pd0HtDprGveAXTOXdM8ee0ai4tygC3bXHo5KMEhnsUwXebrNUKRauRP3G1FQPI1b
-	lImDdp13clLBCYLtpbIVAQGpAtbTGpw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C09181BB2;
-	Tue,  7 Apr 2026 08:23:29 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A3BC63F7D8;
-	Tue,  7 Apr 2026 08:23:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775575415; bh=S0KhfM4isL6DUfK/OM+IpENXf/XOYoUfgu5TX4otGBs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aefdV1zd4eTc7MvgGtSzxJ6u6nyn6CMFJ8DD0XRkLGfrY33iY2FOoNFww6iazNtBn
-	 wAhikLlDca2j5pDfe4SJfzH1oEwvG3WfHMJS7FKe4QHJTXCAI4y0AQpcswcWdV1YHG
-	 NydN8l/eOnj3UHguIO+FYOOEcR/l3ipZzrQCTm5g=
-Date: Tue, 7 Apr 2026 16:23:26 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Andrei Vagin <avagin@google.com>
-Cc: Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>,
-	Linux API <linux-api@vger.kernel.org>
-Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
-Message-ID: <adUhbk0sKT0ucWhJ@J2N7QTR9R3>
-References: <20260323175340.3361311-1-avagin@google.com>
- <20260323175340.3361311-2-avagin@google.com>
- <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com>
- <acJnOB-rlyt-3jU4@willie-the-truck>
- <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
- <acarA3sGKY4Acozw@J2N7QTR9R3.cambridge.arm.com>
- <CAEWA0a7AZiuy1F+0LDxtEtJpdu=zA-RKhPb1wcDMpy2tSMFO5g@mail.gmail.com>
+	b=Np5gN/UYVLLv5m5CK7wdbfcbg+rojU3FA70nyyJjEvirV8aPl+I7KxwYlYDrD921YvD94t
+	zUKyQfMemm6xfR7F1O/QU6qyhQRlTIvWghlxqDA8pOTmue7GqXnpiGt/eE51byGqPJlmRZ
+	6ClVlHhgr1IkRV9uJywML4dvOawnw1w=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eLVGqBBi;
+	spf=none (imf19.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=xUraNMpir2RYmF7SdU6Sk5XYdPYUrZgrKlbGzzDcLkM=; b=eLVGqBBiZiy8YRBAvIZxY8wsoP
+	d4qMwlS2/8M+zQOm0mQ51yeOSiB9mhw6sOWAiGsAtt7EuGHsyZQgHoR0VRrF9aeeVskP6H7PiSgkI
+	PtATK+fi5tJn8Bqt9awUgXGPSavRe1G2jl5khZYe+zwImmTnQX6nfnIN/nijq8FJgPwwCHkOESBGd
+	L96VSBnw0JGDRZkPT+8xSoyXLIyLfp+PvsvYCi5e7ZlGh27FZQ3x/Fw+6i47fI97EW6cgPHmHiPjg
+	zYhLALrdEQ07e/V5YWA8bkvrqkwqhbGONJ50OxYaPNHcmXNLVv2XpErvJd4t5pPLDtHpqdBQPVo6F
+	1KPefvAg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wA8WB-007k9Y-2Y;
+	Tue, 07 Apr 2026 15:39:06 +0000
+Date: Tue, 7 Apr 2026 08:39:00 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Message-ID: <adUhtrhU7c1TJQww@gmail.com>
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
+ <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
+ <ac5urCFeEB9oyUiD@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAEWA0a7AZiuy1F+0LDxtEtJpdu=zA-RKhPb1wcDMpy2tSMFO5g@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B6F2040009
-X-Stat-Signature: 95ywcokf8ye9hf348tsq638jmh343tyn
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ac5urCFeEB9oyUiD@gmail.com>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: AD6CD1A0009
+X-Stat-Signature: kqc3awodzu6bhkt4endyuyw3q6dncern
 X-Rspam-User: 
-X-HE-Tag: 1775575416-142661
-X-HE-Meta: U2FsdGVkX1/z763iRsRFPY67BoHO2Qh0GPOOyW1QM5PFk2DHv+BIiNrQQa1Z8sO+Rmwp/jmhwSUJQpLhy1XlUzOkncOnOvGMmsw/xy9DYsTOoZ9aPQbVukxIKcpq2BPOdNy3Iv24DM7E1lz5x/2xzXCiAN5kZfabO4du/aU2qHQIKED5to927Ou5vvS1ECaOxWSk6EU0ThLrn1e7zekzQxg1ASznCnchMqaLqFptNA1OxBFidYqvVqxNl60VK4ryg1DDhVgAfCECgvCofv0rqPNGED/xo02SE0HNVdJNBV240Bd1HfhH1trSZTf6dwcRe0BD67yw5+IbbSL2syFt73qGBbn3XsU9MIoS+s31egf9MSoCA/wbHI57Y72KIQ14jUfDYaj5seTwZyOMZK7tWZ5YrozYEC3pUBVL1gtKMq99VaV+dycmOpE/2omsgwuTA5JXP7NLA80TKV3KsURcKnrd42NOV1Rk+AqPF/HdhQt2jwSZaLJDB2waIzX8ptvrWcGdOseZ7PjNUw+KTsZ670Ab3QJd8U3vMXVggUNG088aSo5UvOPwNHzsuLb2GDekyOCfss1piB96qJWevMVxzjuCJH0WaIYWL9NZ8Aot9vGoC85UmpZXbMMBKXUcJSww5eITzuaW6+c9OtrfhgY0lKHwVdm/9/SwW/UVtX7Iba8w4aeHVbhjTgDlxJ6odjjC6D8SQo3phVt2Q1m0dpWAnb3Kc+bxqTUrK37s6bSh6gA8nJDhGKnZfKoSk16pRhWU/EsrP5k3htcuRimj+L10z5wrqbbHV9zNIe/AIFHI0I7CHq4Gkv0LtYypI3n2LXe7aQWQ6MJz+tOI0zw6TIsL1j+D/8GZBWK3405wzNqG6GiFWuA0KS9jzlw2CLYm7uSovEor25Nf2j5/KzlbFPxH000A0EoIe+6OoUb1RRagO+RBV2jlMSuTtdBhyCyxtuhZ3n2f8Q0aptq9MPKa1rD
- +YKkvaAG
- ihnn+P0hAmE0+syaMo9Qji4WSu5lmlQXgIfFCB8fsNhS+Vro6sPii0YCY5J/kG3UeJ9cZprLx+1T1XfOlbtngLqr6XpVrcAKPd4kp5hGT+CMUlWitK0RNcqZBniL6snM8ZAyYlQF6n5Pqju+FUBBw1lZbfmUCWrKWF0MDi5CgbUmZ9CC1uFNDfvU12jsp/wRGXgay5xt6mXs+hztDqnuMhnaOdo4hNHlJBLnW
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775576355-695831
+X-HE-Meta: U2FsdGVkX182p+6e24Yu6dYo2XEHdf7QhLwzs22Yw26gpMRUTv66arWWtqp2uDAQKf7q341QLHnfYVVcqRdXyGoOerJPPBIPYisV37g8dyXWjBRkpXjWyYrdP+INCFGUXAHYK1cfeUYeXhTFmJ/932FwsCrnlDYA6iaTagXAwrTMpdJO5Q+Mza+HNLj2NnO8CFQgmP/blVtjZXkiglXPNzdHr1VQvvkPbf+LOcLp/NfMTQkcsRQmftqTFa0Xu76AKKz4PfIodm6F2K8g348vnB3bpSHLkMvizD8Q0s7tjwepLON73qLXjiDytqm2TAPo2DNG1OHsxpBdNWOHUi55Zm+jRkK+VS6m7h9vkqpgPDXxlznuRaHpaOEZ+x4eqbPYNM1ZaI2mcCi9Go33RfTMJMUnQBU/dlmI1G4C/Ex4syT/JMZUK5yuh4MwHKV4VgjyTzse4gg3JguQ/YfIB+wX3i/muxWfF/a+3Pd4fyX3r3ce7GQ7k9iWADJTv9Kkq4svcKagEDcReSLJrha3p/ubpkJGu9uRVFOP1/GnImbhO+JWh/B9WxPNSqvXKSQx+cOMEDzySzsiL688siqnFrwbtgXr15zWSpbP0qYcllDSFO+htI6wgWiX8SmXDqxEGKoSMa9MDrGJYaaML9h5xTg4o51Y7IY7gwVWhGvVSjdqIbRL+b4XixwLIfdi7OPyBz0ZPrgIATyHqs28UUhhTJruJMzcUZaTde0EvhZGoiSW9ElmgLoI7Sip53nuFNWKaEBnPF5P3UlXKhm3FC9oe+p4VkDy+jDpgrBTLBIFzRfrIFO1SUpFtK220Ok0dIbzbNXPT3SLYOuyMnmUtFd9obLC66Xn+3DC1aO4varIRTRh5HnhHOqeehJA1j5FIYFUr9xB9Nr1yMW/uv/ILnrU4WtXU9JOiucxRosXjfx8SVlXtCH3b0ozO2jxVLLV871TxSjtLdBQAXcAcK7q/M9Q+cG
+ ccgP2R8X
+ N/xkxWiNzR0XUDUmaY0qYNILsAIoqGUR8ewHzUIMI1r3BO04rEUSTaSm9LhF8FHxHqhSqvB9bPmx323FUemB6z8usXJWq++qGOqN/QuBp0TcskUgmitkRhMZPhC3g4GR5A5JQURhxFayqHkI9z7Qdr98dlPiQnqQcfQ25R1Zm4bw7F4bOAUbJ7Bhh4mBoOK//ClBv2aLP8CvU5o+jd/ix9WCJ8O648OaEi9VrQ2zRlJ4XurtLjJU4C+TbxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,113 +100,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 05:21:26PM -0700, Andrei Vagin wrote:
-> Hi Mark,
-> 
-> I understand all these points and they are valid. However, as I
-> mentioned, we are not trying to introduce a mechanism that will strictly
-> enforce feature sets for every container. While we would like to have
-> that functionality, as you and will mentioned, it would require
-> substantially more complexity to address, and maintainers would unlikely
-> to pick up that complexity. 
+On Thu, Apr 02, 2026 at 06:33:17AM -0700, Breno Leitao wrote:
+> > >
+> > > Cool!
+> > >
+> > > I noticed __round_jiffies_relative() exists and the description looks like
+> > > it's meant for exactly this use case?
+> >
+> > On closer look, using round_jiffies_relative() as before your patch
+> > means it's calling __round_jiffies_relative(j, raw_smp_processor_id())
+> > so that's already doing this spread internally. You're also relying
+> > smp_processor_id() so it's not about using a different cpu id.
+> >
+> > But your patch has better results, why? I still think it's not doing
+> > what it intends - I think it makes every cpu have different interval
+> > length (up to twice the original length), not skew. Is it that, or that
+> > the 3 jiffies skew per cpu used in round_jiffies_common() is
+> > insufficient? Or it a bug in its skew implementation?
+> >
+> > Ideally once that's clear, the findings could be used to improve
+> > round_jiffies_common() and hopefully there's nothing here that's vmstat
+> > specific.
+>
+> Excellent observation. I believe there are two key differences:
+>
+> 1) The interval duration now varies per CPU. Specifically, vmstat_update()
+>    is scheduled at sysctl_stat_interval*2 for the highest CPU with my
+>    proposed change, rather than a uniform sysctl_stat_interval across
+>    all CPUs. (as you raised in the first email)
+>
+> 2) round_jiffies_relative() applies a 3-jiffies shift per CPU, whereas
+>    vmstat_spread_delay distributes all CPUs across the full second
+>    interval. (My tests were on HZ=1000)
+>
+> I'll investigate this further to provide more concrete data.
 
-The crux of my complaint here is that unless you do that (to some
-degree), this is not going to work reliably, even with the constraints
-you outline.
+After further investigation, I can confirm that both factors mentioned
+above contribute to the performance improvement.
 
-Further, I disagree with your proposed solution of pushing more
-constraints onto userspace (to also consider HWCAPs as overriding other
-mechainsms, etc).
+However, we certainly don't want scenario (1) where the delay varies per
+CPU, resulting in the last CPU having vmstat_update() scheduled every
+2 seconds instead of 1 second.
 
-I think that as-is, the approach is flawed.
+I've implemented a patch following Dmitry's suggestion, and the
+performance gains are measurable.
 
-> Even masking ID registers on a per-container basis would introduce
-> extra complexity that could make architecture maintainers unhappy.
-> There were a few attempts to introduce container CPUID masking on
-> x86_64 in the past.
+Here's my testing methodology:
 
-> In CRIU, we are not aiming to handle every possible workload. Our goal
-> is to target workloads where developers are ready to cooperate and
-> willing to make adjustments to be C/R compatible. The goal here is to
-> provide developers with clear instructions on what they can do to ensure
-> their applications are C/R compatible. When I say "workloads", I mean
-> this in a broad sense. A container might pack a set of tools with
-> different runtimes (Go, Java, libc-based). All these runtimes should
-> detect only allowed features.
+1) Use ftrace to measure the execution time of refresh_cpu_vm_stats()
+   * Applied a custom instrumentation patch [1]
 
-I do not think that arbitrary applications (and libraries!) should have
-to pick up additional constraints that are unnecessary without CRIU,
-especially where that goes against deliberate design decisions (e.g.
-features in arm64's HINT instruction space, which are designed to be
-usable in fast paths WITHOUT needing explicit checks of things like
-HWCAPs). Note that those typically *do* have kernel controls.
+2) Execute stress-ng:
+   * stress-ng --vm 72 --vm-bytes 11256M --vm-method all --timeout 60s ; cat /sys/kernel/debug/tracing/trace
 
-I think there's a much larger problem space than you anticipate, and
-adding an incomplete solution now is just going to introduce a
-maintenance burden.
+3) Parse the output using a Python script [2]
 
-> Returning to the subject of this patchset: this series extends the role
-> of hwcaps. With this change, we would establish that hwcaps is the
-> "source of truth" for which features an application can safely use. Any
-> other features available on the current CPU would not be guaranteed to
-> remain available after migration to another machine.
-> 
-> After this discussion, I found that the current version missed one major
-> thing: there should be a signal indicating that hwcaps must be used for
-> feature detection. Since we will need to integrate this interface into
-> libc, Go, and other runtimes, they definitely should not rely just on
-> hwcaps by default, especially in the early stages. This can be solved
-> via the prctl command.  Libraries like libc would call
-> prctl(PR_USER_HWCAP_ENABLED). If this returns true, the runtime knows
-> that only the features explicitly listed in hwcaps should be used.
+While the results are not as dramatic as initially reported (since
+approach (1) was good but incorrect), the improvement is still
+substantial:
 
-I do not think we should be pushing that shape of constraint onto
-userspace.
 
-> You are right, the controlled feature set will be limited to features
-> the kernel knows about. And yes, we would need to report CPU features in
-> hwcaps even if the kernel isn't directly involved in handling them.
+  ┌─────────┬────────────┬────────────┬───────┐
+  │ Metric  │ upstream*  │    fix**   │ Delta │
+  ├─────────┼────────────┼────────────┼───────┤
+  │ samples │ 36,981     │ 37,267     │ ~same │
+  ├─────────┼────────────┼────────────┼───────┤
+  │ avg     │ 31,511 ns  │ 21,337 ns  │ -32%  │
+  ├─────────┼────────────┼────────────┼───────┤
+  │ p50     │ 2,644 ns   │ 2,925 ns   │ ~same │
+  ├─────────┼────────────┼────────────┼───────┤
+  │ p99     │ 382,083 ns │ 304,357 ns │ -20%  │
+  ├─────────┼────────────┼────────────┼───────┤
+  │ max     │ 72.6 ms    │ 16.0 ms    │ -78%  │
+  └─────────┴────────────┴────────────┴───────┘
 
-To be clear, that is not what I am arguing.
 
-As I mentioned before, the way this works on arm64 is that the kernel
-only exposes what it is aware of, even in the ID regs accessible to
-userspace. We usually *can* hide features, and do that for cases of
-mismatched big.LITTLE, virtual machines, etc.
+* Upstream is based on linux-next commit f3e6330d7fe42  ("Add linux-next specific files for 20260407")
+** "fix" contains the patch below:
 
-> Honestly, I am not certain if this is the "right" interface for that,
-> and I would be happy to consider other ideas. I understand that these
-> hwcaps will not work right out of the box, but we need a way to solve
-> this problem. Having a centralized API for CPU/kernel feature detection
-> seems like the right direction.
+Link: https://github.com/leitao/linux/commit/ac200164df1bda45ee8504cc3db5bff5b696245e [1]
+Link: https://github.com/leitao/linux/commit/baa2ea6ea4c4c2b1df689de6db0a2a6f119e51be [2]
 
-I think that for better or worse the approach you are tkaing here simply
-does not solve enough of the problem to actually be worthwhile.
 
-> As for signal frame size and extended states like SVE/SME, we aware
-> about this problem.  However, it is partly mitigated by the fact that if
-> an application does not use some features, those states are not placed
-> in the signal frame.
+commit 41b7aaa1a51f07fc1f0db0614d140fbca78463d3
+Author: Breno Leitao <leitao@debian.org>
+Date:   Tue Apr 7 07:56:35 2026 -0700
 
-That is not true. The kernel can and will create signal frames for
-architectural state that a task might never have touched.
+    mm/vmstat: spread per-cpu vmstat work to reduce zone->lock contention
 
-Generally arm64 creates signal frames for features when the feature
-*exists*, regardless of whether the task has actively manipulated the
-relevant state. For example, on systems with SVE a trivial SVE signal
-frame gets created even if a task only uses the FPSIMD registers, and on
-systms with SME a TPIDR2 signal frame gets created even if the task has
-never read/written TPIDR2.
+    vmstat_shepherd() queues all per-cpu vmstat_update work with zero delay,
+    and vmstat_update() re-queues itself with round_jiffies_relative(), which
+    clusters timers near the same second boundary due to the small per-CPU
+    spread in round_jiffies_common(). On many-CPU systems this causes
+    thundering-herd contention on zone->lock when multiple CPUs
+    simultaneously call refresh_cpu_vm_stats() -> decay_pcp_high() ->
+    free_pcppages_bulk().
 
-When restoring, an unrecognised signal frame is treated as invalid, and
-we can require that certain signal frames are present.
+    Introduce vmstat_spread_delay() to assign each CPU a unique offset
+    distributed evenly across sysctl_stat_interval. The shepherd uses this
+    when initially queuing per-cpu work, and vmstat_update re-queues with a
+    plain sysctl_stat_interval to preserve the spread (round_jiffies_relative
+    would snap CPUs back to the same boundary).
 
-> In the future, when we construct/reload a signal frame, we could look
-> at a process feature set for a process and generate a frame according
-> to those features...
+    Signed-off-by: Breno Leitao <leitao@debian.org>
 
-When you say 'we' here, are you talking about within the kernel, or
-within the userspace C/R mechanism?
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 3704f6ca7a268..8d93eee3b1f75 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2040,6 +2040,22 @@ static int vmstat_refresh(const struct ctl_table *table, int write,
+ }
+ #endif /* CONFIG_PROC_FS */
 
-Mark.
++/*
++ * Return a per-cpu initial delay that spreads vmstat_update work evenly
++ * across the stat interval, so that CPUs do not all fire at the same
++ * second boundary.
++ */
++static unsigned long vmstat_spread_delay(int cpu)
++{
++	unsigned long interval = sysctl_stat_interval;
++	unsigned int nr_cpus = num_online_cpus();
++
++	if (nr_cpus <= 1)
++		return 0;
++
++	return (interval * (cpu % nr_cpus)) / nr_cpus;
++}
++
+ static void vmstat_update(struct work_struct *w)
+ {
+ 	if (refresh_cpu_vm_stats(true)) {
+@@ -2047,10 +2063,13 @@ static void vmstat_update(struct work_struct *w)
+ 		 * Counters were updated so we expect more updates
+ 		 * to occur in the future. Keep on running the
+ 		 * update worker thread.
++		 * Avoid round_jiffies_relative() here -- it would snap
++		 * every CPU back to the same second boundary, undoing
++		 * the initial spread from vmstat_shepherd.
+ 		 */
+ 		queue_delayed_work_on(smp_processor_id(), mm_percpu_wq,
+ 				this_cpu_ptr(&vmstat_work),
+-				round_jiffies_relative(sysctl_stat_interval));
++				sysctl_stat_interval);
+ 	}
+ }
+
+@@ -2148,7 +2167,8 @@ static void vmstat_shepherd(struct work_struct *w)
+ 				continue;
+
+ 			if (!delayed_work_pending(dw) && need_update(cpu))
+-				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++				queue_delayed_work_on(cpu, mm_percpu_wq, dw,
++						      vmstat_spread_delay(cpu));
+ 		}
+
+ 		cond_resched();
 
