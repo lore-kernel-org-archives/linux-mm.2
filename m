@@ -4,118 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DB7FF512C
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 17:09:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC421FF5126
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 17:23:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C26916B0005; Tue,  7 Apr 2026 13:09:10 -0400 (EDT)
+	id 9CD166B0005; Tue,  7 Apr 2026 13:23:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7D46B0088; Tue,  7 Apr 2026 13:09:10 -0400 (EDT)
+	id 97D496B0089; Tue,  7 Apr 2026 13:23:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC65E6B0089; Tue,  7 Apr 2026 13:09:10 -0400 (EDT)
+	id 86BEB6B008A; Tue,  7 Apr 2026 13:23:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9982B6B0005
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:09:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1579513B470
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:09:10 +0000 (UTC)
-X-FDA: 84632395260.28.4F6CA2A
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3869E80002
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:09:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Kah9W3Ms;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 705786B0005
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:23:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0129B5B8CE
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:23:56 +0000 (UTC)
+X-FDA: 84632432514.26.0C53CE4
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2884780008
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:23:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKvx6zv3;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775581748;
+	s=arc-20220608; t=1775582635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eb9coQca3Zd+zQgIwS/KrYzVgQyjmsyw37GVCirWHqw=;
-	b=ErZCNqiFP7sGwKCmZ5Ses+f6L2S9G4cE3+xjFZeC/knPGb0phsnWwk2j4QmLNksnajMDpf
-	DEpveUaGehTMryJYbDgcR+aFpalhhjNLOpnmptFzBGBHFnVPalxJm99T7qtGE+nXXDsG9f
-	HbWfr9CNhF1MBSvqF3BhyWfZsZ/dJbc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775581748; a=rsa-sha256;
+	bh=UmV1J/GHikC7tT+phj84rdE9QRa2smYTRcGDKTZxJqE=;
+	b=TMcPn3R0E+yeTQS9hP9SusZvLB9eabm4rx2gdaOFe/TaLMuPvW0mS9K3il0PS0cgtlBn7q
+	DdMJEFR1X27zwm94OgNNJMi1OBnA/OepgSbFb+wrTNRIK0DLNBhVCQHYVPu9Nebw0MOzem
+	/hfmbgE2wB+QfSHTccTLUUKfi0x//As=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775582635; a=rsa-sha256;
 	cv=none;
-	b=aejcKoO8yauBd+maPuiHweg6xqYPYh/6J6qquyQdMXsOXf//tJGFMpwWpoE3ohuM7TqzrD
-	tAsC0DX55cDZAo1sAn1skgvkUs4hNG9Oj9+A1SoNmWXJvwPTsCvo0kcwoJLGF/fdd4eChv
-	XInJO6fw9i9yTxSARxxgpnT46t94bPg=
+	b=K9F1HGlpTNY48ew2v8VKBcof7vpCof1qMlR50+puArRXW3KdrZkuiBiA9IHgL2Ly867LM2
+	J7Q3oMDh+ibOR05KctKntfzU/DtAOmlBiCkxwy97OvCr1w8W0Tt6BtPop6pRZkrBul6a1k
+	yCIHB0Uf6Tsp0PUab4cDfn8Sk4LurdE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Kah9W3Ms;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8d424af6282so508068785a.0
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 10:09:08 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKvx6zv3;
+	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-41c0aae84e5so2861800fac.3
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 10:23:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1775581747; x=1776186547; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eb9coQca3Zd+zQgIwS/KrYzVgQyjmsyw37GVCirWHqw=;
-        b=Kah9W3MsocJP8FvCjcmrzStkFVdg/HJ1saP7SD/aXbySf/D7e3wImW5ucgyuUBWZ2P
-         ZE0RPKtyXrbMJs2HKTZSpDiEjuDlMnQE3vpqMum/2QMGl6+b6wYa2lQg38EG1n06GN9B
-         G3eXKd+ra7WpltMNp4+GnbjJMmwSH4PEfK51mZfAZqn6+eTZK3u5isLjWMCbtZ9/erCf
-         a5E7mHMNC8MeFEDWLMrMbpH/MgDaVux8++AACZwSH9o04RLFtc5/UiV7jpwFHzPymxqV
-         A8mXxqP0MtSZsAuy/+1Ir/5nrwk2X3SezEiYd8T3/8jVMXjHBALUehczCMomb53Yxm5I
-         DpMQ==
+        d=gmail.com; s=20251104; t=1775582634; x=1776187434; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UmV1J/GHikC7tT+phj84rdE9QRa2smYTRcGDKTZxJqE=;
+        b=UKvx6zv3IJSFh/0bG+uCO+H9jwOOFSGIAFowTC0StB31J7Nt348Gfz7RPlfzomEr3F
+         ZV/yjI5KSeqpPuUNpOnGyOrL4otxlo2VQgJyVXrRySaqFLKrOlECAhzbJU58X8ktpu9R
+         OarzIq78zNra4IQun4fiA+TRPeuDIVOZI0JhXpH6Eobr3CCayxiP4b01cGnpZN7Mmx3r
+         BW9Qom5o8mGXLDd4wW5qa2lb844wwm+ZYOQ0I8N5a9Rf38O/6SzxMHU4wHL2DKkJUkYD
+         7YmbiI6QL01LQFyLnhh0/2itOTsMdGLHjAChjPhQ/8uW2dgGyuepeYPVEaxuUOVqKAoW
+         bmCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775581747; x=1776186547;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eb9coQca3Zd+zQgIwS/KrYzVgQyjmsyw37GVCirWHqw=;
-        b=H91vs/yeiPfZsCzeSE0y8WaKkeHJAfpIXqq89Cq7h8FjxT8rjFt6VvOWKXW93rrCUQ
-         jvNHDglCzvul2Q82IHaoft1WO3zzTFX6CPEx0ptQ3+oLqAs3sJgM+8jNfgBcH+SMIo4h
-         7Tfro0MGD2xU9zRTDnYpBPGUP1+8uPKooguGWGcHE97jgHo+nA1IpWLXo9COMrlUKfM5
-         QL5U6nQx4SuHWVwPq8SAO0z7n3Q1GFDSqflABeOSpt0PzOKy5ibluBeRH49yJcyPPlEr
-         aMPaR2sSISu51173CwXQ0esWIPUgiHTBoZoAUgWY5NJHy8VLGj1SPOOllLC5i2D6aIzu
-         yrVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUd7DjPe9bn4MzNSBmKgwwuJSQBwOxjCPFaUnWf9h8rk87X8AKFdtXkL0QZhmKzv/mDnhK8o1hbMg==@kvack.org
-X-Gm-Message-State: AOJu0YwiBjxpqQi6ILeP0k3ZI7K7oX82Ky5p6zLA/JY7rj5Zu876uo7U
-	l3p48CY4jOiXGz4O0fgIWbRJ/OApsxIe+1k4SdalZkf047AfxN0zzArj57aUlhCRBo0=
-X-Gm-Gg: AeBDietqXCmUaNgDil+PCs2FzLHN1/Ux2V2Da0fxCHcpVNnWgKzOoBBVSqIFzonfmcH
-	gvaYR+fOmm5B+416AqEewtKb69bC1NCAJRgmJjVs4Lq6ynE85FvfX03oWSVGiA6+0X4kFv0yeoK
-	v5cwOXUriP0iPNbTheRUwJxYa/k/6WMqXZEmhZWIJhWp7odrnpOJIIbfY9oBaOgJbseXHYSirjV
-	MXAFkzafu3WzL5MZWLN33F1uq61gY4xinG5lzjiBIferXZy7H+ZZU3FR19DSPnBoW3eMo4fHKOf
-	sJfYNzq4b5DA5jbYQcKJgTKrnzc0zN571rY6+0dggbT5e5GUW4eeesMrhBv9QrRYNl8xywioKwA
-	kFSQab8QenHhyM7vW6ZanxVryUqj6RtBx63ZiNBxpattIWknEfkIVL+fQ59L93wbDqYzlQU7db3
-	ANj+C9YhbyC6DXgZUO6J/b2cR+G7mFyjdHSpQbhJxA/7gW1Q1X3InR9aE5UJEXNUejnXa2eLJ2S
-	tDY8Mhy87Bp
-X-Received: by 2002:ae9:e215:0:b0:8d6:2beb:945c with SMTP id af79cd13be357-8d62beba34amr1394722485a.41.1775581747216;
-        Tue, 07 Apr 2026 10:09:07 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5d5a096sm1359165885a.19.2026.04.07.10.09.06
+        d=1e100.net; s=20251104; t=1775582634; x=1776187434;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UmV1J/GHikC7tT+phj84rdE9QRa2smYTRcGDKTZxJqE=;
+        b=g/9FWC1DrxRJgPl07/gYW3DKUbUyIgI817zERCKntBEl6x2CVZp7Bxj+8wk4ndLlTc
+         w+1/NCJ6EvC+tftYqHagtZqTgtSovJHCGwTm3XzxOR/h++5cvTud3/jiW266wk/rFlTr
+         XxA2t0vhKPMrNyLsiAhmsixd8fO7afRlvrlsE2/EhQlKip5vlzifaezaGKvj7Ag526ev
+         1RMyCzVDZ/ah/0PvI8rQNQJ91iZYO/RPZvoJqD2Hpdr/qGQ30kLO4Cg2Cg9mLzN22ft6
+         iNYQ5ntIm6g5GGHDlMhs/lurU19crC5N7blCcmsxcqHCFXYf1nt9pjpFrmd1kA9k55lO
+         9xFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQxRhCO+SY1g93s+QQk+HXRD+G018lduUf8uuz/V05zodgLLY7QJm/V/FHUtQzA275XCUye06uIw==@kvack.org
+X-Gm-Message-State: AOJu0YyXXv0C0CqTxndESVccD9BDhX5SocrOT5o+9l4BEh89i6xitfkJ
+	gJkr0CmHm29BUIAjDt8AGX2ZAHlfGtfFJQGY977TSQMENWwWw/LIZks9
+X-Gm-Gg: AeBDievwSd1zGoUMfmiIcgrSzd2uddkF3Pi32lTjgqWwkKSSDIIrkRNdB/QE4jeoyVu
+	MDnpgsCLWONpe8TB5owuM/cOeSaHVXmnTxZRRBJsNJGFuzEVGoi8ZoOlJFrtOZbTGRxNw7peibJ
+	RCK6IsVysiaVmecuw8XwBB+xKCVCMlv/rdMRwWZsf+8X09xU7Ove71WAJWKYj16+SqNxge6mBo2
+	ai8OsvAOtTS4v6qic+wl/4VAp2I3Fo/ISRv8Wep1JGZlzbn0uaDx0C6LAueBmGxIPVL4lQwhnut
+	WoyN5dvwhzdPQLJsJznrmDNlQ/MsynXYx+7ySAijR9hpXbkmCKkJ7y6sbjoluZ7+lLKCkNz9kYC
+	LAGsbUFLE3VEOZNmnLr55Q6PWb72a9Sr4xUAcK2ZlYcjY5cwvkIeMzY+bNcIxJQgGm4GI3HYnbu
+	LAOJCXrz+uyr5yeZnokJKy/pRjnec7f7Ci
+X-Received: by 2002:a05:6870:9e8b:b0:422:e938:6b49 with SMTP id 586e51a60fabf-4231009bc3dmr10342207fac.38.1775582634032;
+        Tue, 07 Apr 2026 10:23:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:5c::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4235e32d9dfsm5891881fac.16.2026.04.07.10.23.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 10:09:06 -0700 (PDT)
-Date: Tue, 7 Apr 2026 13:09:04 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
+        Tue, 07 Apr 2026 10:23:53 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Gregory Price <gourry@gourry.net>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jackie Liu <liu.yun@linux.dev>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
 	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
 	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
 Subject: Re: [PATCH] mm/mempolicy: Fix weighted interleave auto sysfs name
-Message-ID: <adU6MOCggHJ3A-n8@gourry-fedora-PF4VCD3F>
-References: <20260407141415.3080960-1-joshua.hahnjy@gmail.com>
+Date: Tue,  7 Apr 2026 10:23:50 -0700
+Message-ID: <20260407172350.699577-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <adU6MOCggHJ3A-n8@gourry-fedora-PF4VCD3F>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260407141415.3080960-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Queue-Id: 3869E80002
-X-Stat-Signature: nju7z4ka9egyn5s8akyfwfmnfu3jqkid
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: mhhimwrpe4fatokf61mtq5z6dkoo9gw1
+X-Rspamd-Queue-Id: 2884780008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775581748-626267
-X-HE-Meta: U2FsdGVkX18n6b2zAQdPB+Vs1z5Rg9A8HEkPQR0b3dZMVbIPz2aU037a1MIHV4f3xEtzsUf6zBekxqgL8M9i1KyNquEntEDKYoq3hAAfwUD0+xl8+R/CCd0LKeSZB+6kqwJLb/32eqtZswyfI4xQzKUsQb+wbUkVAO1EdtGH21vT6N46eLS7DQ3YkMkCBhVAHLXM8fCEmLNekFYt6GPubBwYKes85AasfZoEX4BOIpRMZG5Izlu7FHbh72sB7mGEdhVC57zO75RjOLs7/HFkm7UfOhaauYV1xHURNcbYwUSTKMCUkA8zyZrfBzJzVoC2uxELO2cqmf1EsTzsYlX6bLDMzfgBrg9fzWIltzchK5aA9HpQQMk8VDbaWpy2LJipVqwcD53HTyEg85efQeqsrS81NczrxlNr31yfo5oU3y045ZLrSKg0EkCqrmCoJd+KYW+fhANzCgjkmJ+f/FPD7j1lohxvjLN6wjO7Oe8lnqwZK9c0N7T5rJp0K3qHtZY4MLEk/kQgwJxRiYMkPtW/D3CXRaKSyspyo13O0NUzSmTjRiD3+itKPXpx76nsmq4seUgWsNGaZbVX5WzArhzC7YJUzOfvQPvMPsWyMjXdiOHZP9GrL0p586a3IF3UNt0Ce3XIv75jg+oW4Y1Diho3mINOCppXsPB2GMwEWdsW9mhlT/JNG/6mxmsyBcvepfFgePj29U3gtfEVmCniIBrI2CqxWR5kFXJlmrVuMgTUzjNgJdgRGsdtUyyfR2nLDbmLeeIrqFW3tNixZ7/qmkov5MIgBFm1okaBKnbdjlyUdkBZbqV6Qbc+FJnAemwj4GllXh7dpn6YQVrUOKpNWn9pod54CKq5Kc1dHCf3py3VOa3FMUzeQAKmmbQhz29XQ+TuUE05XR6i3KsRrCI6iHfcCh/BxeAHm5avFmN5gkPaYPV9+Kwq22uJQA0JzB42AlPRNPU52jRNH4FGjBGX1nf
- yBwYo2Jn
- ZJ5a7G1B0mBIBYbVHscORPg1XnmgH+zmQ/VZDIBfWSLAANBG3wE1FbxkbIfusYZ3n0cKTOtXcRnHfUBMBtO+glKyuLR22IXbRPzTM+li5+qjxEd/2exFZRXIegWP5glAYqAlrxt3ZGr30sNzkcaSFnu5yXi/7AXv/Esn4MOgPUyNdQGjPXtI9iwFjvph8lkhhv2M0/j0HM65I4Vf2h6Q8xakYrRPKju67ovJ8JFkSnRjfPWkK7PvC1EZIN+yqkSu1oE/lVLhWxF9zC9ngy4D/ee/5B2oUO/SDEIOOLZi6ztS4bwoiAptiAbY1M2rFfPFCXcjxR7O7RXoBMEE20D4YmxZLyx19xL0m3ieOkNEBSrLjI+aOrce+6yD8Kcz5PD3Y63i4GALrryIEPgi9HGMuihLCQW5NiC48IymbGzbCySfLUSyCHAuUizPD2EZ7uwBcqlsjJKJWu6KqxDatiNgevyuxB13EzPfjef+oX2KHyqK1tRI=
+X-HE-Tag: 1775582634-961336
+X-HE-Meta: U2FsdGVkX1/TviZdsbEvQulwMA7D1d/WxjGnCIhJuCex2T3pmY4m5MLWfgE3KVdrVHaPky8yg3GlshjrdsJDkkMdHd+g2pX5pEM+wkpQbDgVjXcUVpnn12SBKWtWjrhbnB6HzkTgqiQDIgBgxU+hka+yPDrmEmrGJ0TEQFSJefpWzKaxrgy/Ckcw3ufx35pwPnTX1A3ZJD70ppXB/NNpUrrKc1gxMn7ZqTVTbdwDfxYFe8E1mO9gl3vEocXXCLK11AHuuFhoHP3BCWdiH8h1J5KzKk7NWgUFa3hMGDoxt2T4LHwUjVuGbIr9O0mLOddCt4PkpXNx/6Y45ebYl8rTlsnxjloNEDSxAO00dB7EoeYMDyJbhkrGi5hXMzPyqLfM8kBA7GyGWdeYSn86tgMYLfMUnJ3VcDsECDuuEQbOAEdV0zeHSR53A6GB/5SXFmijzFYBBy8xEKxpxr6N4CBFodqq0B6MR0ZyR+ZEt5LE0P/dtlHjYNNUQWjd9sZYBLLboOeYubFl8iKVGk5zu2mxXrjLATnoA5wONFw2R7qJbRLeueFdjl5fcm/SXAMqodnWlYJS3oSSd+3SsNPfXQpkT1aHdMeAdf8v06Z6xRvL+cVfzqNYh1u/OndqJSymu9NoaB9SN55FK+RPwKiyNj1kFWjyNz/nsoVtI1je+23KvJ/l86rKqwDiu3VPTR52eBxM9vR1OO9LQJIZ1XTS5bdi+AUTXcX3Wm4jSeNm6MplYRufreDFkk3Ha5gq/e/tU0ygv0Z0C7aq1+gKmkZZzu7gRsSYN2xO+jZBh3cAYUen2dZKQDoslmYuumxumPXLZMJgMHQbjG0cv4My0d7Y7TmqCOXuncX/JfRa1WAMjmMuGYQsmATAjkVE6VVGwo38xxQFYxtBEC9IMTrHPkG+9mcdY/cAhad70jyArGcX69v9zB3QA1bnF7obiApVi0+u82q9iVbZbc+uaF0t+651nQE
+ JF2+/Vfk
+ flacME5SY6Zksa+hZ+clM2jZMO+4qQvIMv07V+XjZxtu+bFBfbBcN3eqHwQPfBTpraWqh9IK7S06YHcA2kmMimL4wWOY7fXWcNHr5pf5CJ/9rh13ZYVEqfnXsVWABGx0Ok/QdHAWZ9AXmtmIP45V5l+ltfUKtIr1MzFehR9P9zCXI/RIjDu2UM1V3/BzpoWrs/3ASrBsCNixMPyIXn9XX1ifHX2EYqfTbZCBRJn2RxM1nX0NS6E9IhemeWtrZxaay5MYz+2803b0MtpPb+dYJGPODtM8yeGYOcIPOKCoT4LBepy0uvGsasFLOekSRRIz4iMcjLY2e3P8HjG22oQC4u7md6C1Oi+q0MwlAB8aaU2+OG7ybu6/sdhqiQj94P6fokMQjwx9A0rC/vEvN4m+yHxvsedrd608FHLCpaSLxDkvHz+H+xh+mJxdvD94V/s1ycxIo+IrKTLp2CKzYfgN9iZPk1tzlqC+fw/SBwHvT4ERxCntIo2NRGlAeCc9ipFzdkcHw3bW7b9Oz9IQoDrkF02axoExJS0IR3iIXySPD1GxP9uCT4lK64Dx3qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,51 +127,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 07:14:14AM -0700, Joshua Hahn wrote:
-> The __ATTR macro is a utility that makes defining kobj_attributes easier
-> by stringfying the name, verifying the mode, and setting the show/store
-> fields in a single initializer. It takes a raw token as the first value,
-> rather than a string, so that __ATTR family macros like __ATTR_RW can
-> token-paste it for inferring the _show / _store function names.
-> 
-> Commit e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> used the __ATTR macro to define the "auto" sysfs for weighted
-> interleave. A few months later, commit 2fb6915fa22d ("compiler_types.h:
-> add "auto" as a macro for "__auto_type"") introduced a #define macro
-> which expanded auto into __auto_type.
-> 
+On Tue, 7 Apr 2026 13:09:04 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-Well that's really unfortunately.
-
-Is this really the only "auto" in the entire sysfs structure?
-
-> This led to the "auto" token passed into __ATTR to be expanded out into
-> __auto_type, and the sysfs entry to be displayed as __auto_type as well.
-> 
-> Expand out the __ATTR macro and directly pass a string "auto" instead of
-> the raw token 'auto' to prevent it from being expanded out. Also bypass
-> the VERIFY_OCTAL_PERMISSIONS check by triple checking that 0664 is
-> indeed the intended permissions for this sysfs file.
-> 
-> Before:
-> $ ls /sys/kernel/mm/mempolicy/weighted_interleave
-> __auto_type  node0
-> 
-> After:
-> $ ls /sys/kernel/mm/mempolicy/weighted_interleave/
-> auto  node0
-> 
-> Based on latest mm-new: 96881c429af1
+> On Tue, Apr 07, 2026 at 07:14:14AM -0700, Joshua Hahn wrote:
+> > The __ATTR macro is a utility that makes defining kobj_attributes easier
+> > by stringfying the name, verifying the mode, and setting the show/store
+> > fields in a single initializer. It takes a raw token as the first value,
+> > rather than a string, so that __ATTR family macros like __ATTR_RW can
+> > token-paste it for inferring the _show / _store function names.
+> > 
+> > Commit e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+> > used the __ATTR macro to define the "auto" sysfs for weighted
+> > interleave. A few months later, commit 2fb6915fa22d ("compiler_types.h:
+> > add "auto" as a macro for "__auto_type"") introduced a #define macro
+> > which expanded auto into __auto_type.
+> > 
 > 
 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Hello Gregory, thanks for reviewing my patch!!
 
-Maybe - 
+> Well that's really unfortunately.
+> 
+> Is this really the only "auto" in the entire sysfs structure?
 
-Fixes: 2fb6915fa22d ("compiler_types.h: add "auto" as a macro for "__auto_type"")
+Thankfully, it seems so:
 
+$ rg "__ATTR\(auto"
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+mm/mempolicy.c
+3786:   __ATTR(auto, 0664, weighted_interleave_auto_show,
 
-~Gregory
+arch/powerpc/platforms/pseries/power.c
+44:     __ATTR(auto_poweron, 0644, auto_poweron_show, auto_poweron_store);
+
+Although maybe it is more valuable to check any __ATTR family macro
+for a macro as the first parameter.  In hindsight, I should have been more
+wary of passing a keyword as a token.
+
+[...snip...]
+
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> 
+> Maybe - 
+> 
+> Fixes: 2fb6915fa22d ("compiler_types.h: add "auto" as a macro for "__auto_type"")
+
+I thought about adding a Fixes tag, decided against it because it's
+purely cosmetic.
+
+... but now that I think about it, I think this could break some workflows
+for users who have automated writing to the auto sysfs file.
+
+Maybe I should add a fixes tag for the patch that introduced the 
+sysfs file instead? That is,
+
+Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+
+> Reviewed-by: Gregory Price <gourry@gourry.net>
+
+Thanks again, Gregory!! I hope you have a great day : -)
+Joshua
 
