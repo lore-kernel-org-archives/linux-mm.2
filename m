@@ -4,114 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E50DFEEF25
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 11:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E4CFEEF26
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 11:36:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 562276B008A; Tue,  7 Apr 2026 07:21:04 -0400 (EDT)
+	id 06FC46B0088; Tue,  7 Apr 2026 07:36:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 512546B008C; Tue,  7 Apr 2026 07:21:04 -0400 (EDT)
+	id 0208B6B0089; Tue,  7 Apr 2026 07:36:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 428356B0092; Tue,  7 Apr 2026 07:21:04 -0400 (EDT)
+	id E51EA6B008A; Tue,  7 Apr 2026 07:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 314526B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:21:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD92AB8DA1
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:21:03 +0000 (UTC)
-X-FDA: 84631518006.28.C1AD538
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 117C340015
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:21:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=HRomY+cu;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775560862; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D2D526B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 07:36:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59BCC13B905
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:36:49 +0000 (UTC)
+X-FDA: 84631557738.06.F42A3EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AAFAA80005
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 11:36:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lv4oTdIt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775561807; a=rsa-sha256;
 	cv=none;
-	b=TXIF3o97gVE1PufSiNi1JdfJr2xTAINBr53byU7wf9iFDswP6qmNY3ULmkHg0PgDdj3ELE
-	BSxmnXhJljfV5faqMHUmLp2sWWJG+WaEMVUanITMl88+QfVZ2Yf6JhbJbEjBnT8mPFdakh
-	3BQ0qlhzHGXmxmyNgCvhxn2vQT9KHw8=
+	b=YMiCjZvMFSrrRCYaQr7XU/ptp0T0Mu7zxCaJrnH2KkTevSoLKcr26cha0HimkLG1rA/w+g
+	rpTvnGGXKsDQRvyMBY4R+EJpJKJjtCWyfh/iv0by7Lbc/lPqhLFuWKr/w/gU/O7Xoqr89L
+	7EA0vj8Vmk+IG8vGrCZ+Q+zqpqb5ZGA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=HRomY+cu;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lv4oTdIt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775560862;
+	s=arc-20220608; t=1775561807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ak6Ow6/QaSx3d2ftagO0ADIntVVPX4rdI7D8NXhmkrw=;
-	b=NymdnGDu4BmBzzNN4wyuUtZ1VMpkAXqa10bNWnntN7OXtg7PQo/57uXVxuJ5LJikHqhQgJ
-	WSjTjJTe92bIC3V6MnfB805JkSoBYLu2Hu1RViZV4Ylx1ms1u8HOaBJ6ghv98SxnguGvmb
-	NZHDMZpxZJ9BgDDzj7vqaXUDceywOpM=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43cfce3a195so2993694f8f.2
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 04:21:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775560860; x=1776165660; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ak6Ow6/QaSx3d2ftagO0ADIntVVPX4rdI7D8NXhmkrw=;
-        b=HRomY+cu0hZjxzD7/Kt6qdjTi3LMlTPGOkgHrbrgKkvA4reefPqRXTUQWke226UA8R
-         BCJsTcw6YFGsp9lGPY+jJDmTWD9h6UMAKRKx5TsPq/rbKxxkjiJhF09wq5WUkwfKw8bt
-         TySKpTjLMv46YI5M/jH/4nQ4cDl1UlC6zJ8H5r5TjCqQaTsGRPsnjCL5xsEf32RAxQs7
-         Ag2BVJkmI7wDpNWHQcGQcg6r+XbBPMfXSFzrn8rMzEewekCc8tTNRyKM8qtr6jnawD1h
-         MSTaYS5YKDlG1gZhNZl9cKFGnOQR08vGG2pFNlYmaosvEu2fnh5OMnHXKAei/FYv3idW
-         tg5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775560860; x=1776165660;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ak6Ow6/QaSx3d2ftagO0ADIntVVPX4rdI7D8NXhmkrw=;
-        b=eZMXWfiQ2NWTwQnHt3TcVSPH2lG/ysMLDBP2dPPJKJ4o6Khpl4ahl+M/0opESpWGEv
-         mqWQeZ2eaMEcs7UyzUu8AHPFzArWFB6OSy+PDxMPq1gh6KhNFjBND6/IslE5OwU3H2fZ
-         u62voy/71IKwtzVloR5w5KWRX1AjYca/C0cMQdefiB+ETvn4E1VIbXQrFqtXMk8l3x7A
-         9j28N3IsYS+MvTwBAGDb0vEBnZXBENZBJBYyPDrOES9Ly5iAbYSkSI+N82BUVV6f6JeY
-         /bH+by6mw3wV2k3z1phXPTptmzo+T/GkN+XR/721vZqoX56FUlrjzsq7JIxx46OxpL54
-         BAMA==
-X-Gm-Message-State: AOJu0YxyKO4dtia5qurOJFgRXqTpczK3fxCcliQ6gTJD84Bbv8B9i6rE
-	J+ZL9BrWG1gLzsD9rGC7ONT5pRYga222m41T/o25HcMgRqE8BGltpURaHvJw1M4ivvc=
-X-Gm-Gg: AeBDievg2L9fJlhT1UnQ+6TeOMH7w37HqSuXUG8VVOh5ic6Ce1eKgdf0nnpzM1oxbzc
-	84z7DmeIyVwGCL1HcO983+q2G2p76rd7IVndhRahNHvG9seIacMR73fLKKftn2dn1cqrxm7Nc7z
-	fzinEbYswEn2oWBcbpKBLqosmSvwHVd0RRN+FcxweT/myBbZLD4oFh6Y09LBzoASbwSpF6HZJDE
-	R7+isHieQ4QpHfwoqbu8Eh6cIrPE9l9laXOY8OpBO+8R/Ft7p0H+MI7vLcdkk6JqCJ5kiSbaFY8
-	6aHn+taaZQOXJx0PHsgy9mZQwPXYABB7ZoewjNOzL4IS3P1hxoBTthN4mvWf/whRb5Y8qPioBMW
-	6X/8uoWS+SQoOErcRYtgvDfdR3rL2oPDENtgX921EanGv8cS9ICYbCfbnxl9EVkYk+8qB0IwZlM
-	yjoQ1JJO/nkqPDhewqtlA1CZ8hjb6ObfxlrNB8ze2Yl62v+S8=
-X-Received: by 2002:a05:6000:1842:b0:43c:ef4f:79e4 with SMTP id ffacd0b85a97d-43d292ff4dbmr22067547f8f.37.1775560860126;
-        Tue, 07 Apr 2026 04:21:00 -0700 (PDT)
-Received: from localhost (109-81-88-253.rct.o2.cz. [109.81.88.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e1c27sm47135247f8f.26.2026.04.07.04.20.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 04:20:59 -0700 (PDT)
-Date: Tue, 7 Apr 2026 13:20:58 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, baohua@kernel.org, bhe@redhat.com,
+	bh=FhkyZjDwnOW+evAfrdQqUYaucLT46UzcTZ12Rb1jE90=;
+	b=4qzj3PutaQcXnthBkoQRd8Hp1D0EGnBZqsgz7+BXVfMWyTvUW3TkVWzxmoHnJlTQ79Qizi
+	tqr5sQaiBntLghBonhuGda4jPz0I3qfjR8dMm10ml8Iv7NCtXpuZwvlT51maF3qSaraVki
+	x+1WcIVkLmGJUUryGUOBhngqWIb6Azs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FCEE600AC;
+	Tue,  7 Apr 2026 11:36:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A9BC116C6;
+	Tue,  7 Apr 2026 11:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775561806;
+	bh=mq6EZwQXNC40lYUPwXXBKytXrBuKjYAwSmfDKtal1AU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lv4oTdItGcdg1G3q9FXl6rO6GLjDawSjVBvn+0Lu0JwqEGjW9ySiTWsJMDz9DG+1F
+	 dPNP+AqFPB5P8jcPFBzMejf/NssG061LZyMZBje6acVtKZDjKpCWUjoO0N5FgufuNK
+	 fqisU34nptsmutBTGX1Mbwi8NudIUtpNc4faVNAdSsz1CeOj2q1OD1nziTst1izfWi
+	 sERQOxgoMpZu/D86wEGnAUj3OQJ7mOUHmjMKZ3T77WNsJUZdfGLQKK/NOy/bEqNUHX
+	 PjX3va909N6i3zq/butG088OB6hJm4JtXVtEAJtob1wWv11IxejeBcEHVIMyYHeZAL
+	 p+fdMdJMurq0g==
+Date: Tue, 7 Apr 2026 12:36:36 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Gregory Price <gourry@gourry.net>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Barry Song <21cnbao@gmail.com>, 
+	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
-Message-ID: <adTomi7uPYJebAMD@tiehlicka>
-References: <20260407110002.204755-1-wujianyue000@gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <adTonuzmUc2AzUhp@lucifer>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
+ <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
+ <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
+ <acbgIKuwDsPvPjdF@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260407110002.204755-1-wujianyue000@gmail.com>
-X-Stat-Signature: h6ezq5amjmkha3mf9tpfkgq8mt64j4hq
-X-Rspamd-Queue-Id: 117C340015
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <acbgIKuwDsPvPjdF@cmpxchg.org>
+X-Rspamd-Queue-Id: AAFAA80005
+X-Stat-Signature: c94wm4u3rbgmxfyfw6xzdrps4fbhgeni
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775560861-287665
-X-HE-Meta: U2FsdGVkX1+3NZimXNNCtAvJFmX0gy3A860KIwOrxFZGv9TK75YJjrGr0l7JiZP6dAwfHYbuWMdfjnlFm9czhmHjNQZoCSr7oWdiT65woF0nziZY9vgbwUlp1dsPY4WC8iGTOb2PMVF09+lRzGYuZV2TKBcPg+JbsYcLeLMrv+O3R0RB7N40QDJ5757zn2KxLdnnz/KvDUoa7bqsMCNSoXPNQCFfvi+1omGgMRZxIxjAcFTsMAhJ/Y3kCBEIp5Is/uySNYROXdg9krF68wUYyR4PnvqKVmEj1dSnbkvFVAr9DgvD7W24rhRTQWfxRPI2CKAXIC+/EBY0IUXCrbCU7NazWJqlMuJVHyWhrkCHBfsZ+uFMZS7thnSDUFjzD9QHTay5HWbH0rDMSq6QMuoloRwJ1UVfuOJiIldJXsMGxB3yeO1VVhhIDsfdEBbKakMoFUeo/NWtKZd9e55PjpaSucmR14esfElb7Ue7qWSVWSAfnPdQGn5ThGl8vtq2Jia7FgMWxxA3fk8YpkSFAsZP3gz6Wza9Hw8MZqhwQg6CyztjCgFuIfAbEAXd5chmRz6Mbdu3qWnOMXvT7zt6PihdTmQcrQug5W5ShT9CXzuiauTDBd7Y4cgrzoZzXMKevjZS1Z06OPDyhitocHA1+uowx1ZrL167NaW+7BVCHIu+Bja35Q7Wdl+odxqJ1d0Xm0KUdliAUuYWMKt1bbkfgYB3aQbk3ZmoR8MZCjVj3NsulyFUMOlQkCqkIuM7Mbtdb0WWWsZYc/qU/AdTkooOzpmviKGvrtGMbZZH4Q6gTCadDfxWOitUe/BFEV0kNv6fcgWNFf63mp/wkwGBNwihbq4bgPnvLG0xmgpaPWd8Bkm6MaApzBsZ9lo7qPFLwOAB9gglVhT3yOImZG99tFYaeV6sDPFnC3fLGNxpwvPErr+ugmkiT4k32l0XxGhl/zrCvzak8XiNoSKMnw9wkLuuKRv
- usDcM3aP
- H1vKZEcFVsnuj6T9507vxfbLDQZPFuyu2FjiB091IEokkcm9nCZnyC4uOQPSlTrEVqInNSgliQ+kdU6xMr7PmBW9XaIoEH2S5Nu75We44VYllTwwmQ3gicBsgyP3IXd3bRmkm9UtiiVTcI9yWKGkn7RcKbQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775561807-808528
+X-HE-Meta: U2FsdGVkX1+GU+YsxyXHQpqLdGPGgWBxdQuV9S4pLJdjwL5OJFuzfMebXCg0OCiaITE4RQBdHmi5zuzDQAQ0rv0wLsK/S5Yf+cb5rtFOBh8JD1RLYpyJbeEH19GVKzhIeNBkNUyu1xg+3HPHfnDL8+YYSJrKLccKEYi8/KPzVItnYplR3xUsi3tblK+ijEcG3Jhux6IKwse++4wKXTtWEJ9zNj5j3FZV2pdfHTzhyQBtf+weo0D2SohgVh67rCtCx3knQVzeHsUZ7CPfVp85sI6WVIy9XSJ590t8fr8J0Veoa+AbNVqNBRp6LWucPLBX920tuNSpk5/7D7q/FyeRRR0ezfHoDEg1OiM5O54Bh15RoICELpmjQ5ENptCDguPTNKQnMs/p55gCrNLmrUVwrOJf+ItQU/n4iXLMhhNApx2RisyE9pSZCOHwsgscBNgyOpaiUsPyD/H8ppP9Wu7enVejvVdR5nBYX/x3kUV+a8tqgUmczcZeOo4iceA5hN6Vd3ewdKUK7B1p2Ajz2lkAJhPd2bjXLpWUiqHIjM9yKN1dLTpKyJ+Dh+Tz/VwtZ/EHRLzznw7pD/O4noFSe2zfr2AJ19YD5PGjD3ft0d13Q1PydDISXo0UO1qqD7I2fudUO0EU+r5ZAuWVJWYvdjmcsqYFg/5hVRsNvNBdVaeBwD5lYyp/yoQGa31OZaSNEzincgwdlcJVk6vOp48nMfpyC/Nuwy3ryIEj+5ti7M+5byGRRIBUxCgLIx0BFjMV8/2T2Whhbnq+xsBs7bNmAT1QHn7BrOFbJz2If26nVjGPYNwWbUSSUjpHvS9cmVMJuzfOwMpMHVpZ01y2+Zhx7e6n67GMbyMTzJc4vYtqvK+kzofHTFo3pbqQEanm7P3/TgDcOYlOGi8jZ95GnmGQfEZZm0hgNfVysXa47Ivc2gJzdCGj+jlzLoSFueCqynDVa6xQjMas1P9XK3YhmCw1oq6
+ DtbboYDy
+ hzdTrcmQS4rkoRrMJnKpL6vxKl+gRxI71D46fJsv9bMaVSAqJUp61yGaDDB5X9DhM5wgVDksnVOP/3ItindFdSmkvRKNIo3PzplzzP7Dy9AilHmJ7SeRijDLwvRmcQhLUyEREv4MaaklHk6O3Xqo9ymY1LTrXdoyCgF4VKX6PFRzelx53kG1aC+hF+nsxGgmjEOKhAlxN2t6h3vTgZ3tXqCA1zX3/gZOBGyEYARhlm8GiTV4QbAHLdx57Zs+bKihoMhABSwe1H/Guiududuj5+URk6MlMeC/KKr4C4yF/D3qopW5RMtmnxVa8xgr+aXB9AZ/Z1m8Lz5ZDzJ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,32 +109,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 07-04-26 19:00:02, Jianyue Wu wrote:
-> All allocated folios are added into lru lists for later reclaim whether
-> they are file or anonymous folios. However those folio lru operation codes
-> are put in mm/swap.c which is not so appropriate. Because swap code is
-> only for anonymous folios.
-> 
-> Here move folio lru helpers out of mm/swap.c and put them into file for
-> their own.
-> 
-> This is cleanup, no functional change involved.
-> 
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-> ---
->  MAINTAINERS          |    2 +
->  include/linux/mm.h   |    2 +
->  include/linux/swap.h |   38 --
->  mm/Makefile          |    2 +-
->  mm/folio_lru.c       | 1074 ++++++++++++++++++++++++++++++++++++++++++
->  mm/folio_lru.h       |   53 +++
->  mm/swap.c            | 1064 +----------------------------------------
+(sorry my mail is a disaster totally missed this)
 
-All that big churn is really worth it? Are there any other reasons than
-"not so appropriate"?
+On Fri, Mar 27, 2026 at 03:53:04PM -0400, Johannes Weiner wrote:
+> On Thu, Mar 26, 2026 at 03:35:28PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > On Thu, Mar 26, 2026 at 10:24:28AM -0500, Gregory Price wrote:
+> > > ... snip snip snip ...
+> > >
+> > > > >
+> > > > > How Do We Get There
+> > > > > -------------------
+> > > > >
+> > > > > Do we merge the two mechanisms feature by feature, or do we prioritize
+> > > > > moving MGLRU to the pluggable model then follow with LRU once we are
+> > > > > happy with the result?
+> > > >
+> > > > Absolutely by a distance the first is preferable. The pluggability is
+> > > > controversial here and needs careful consideration.
+> > > >
+> > >
+> > > Pluggability asside - I do not think merging these two things "feature
+> > > by feature" is actually feasible (I would be delighted to be wrong).
+> > >
+> > > Many MGLRU "features" solve problems that MGLRU invents for itself.
+> > >
+> > > Take MGLRU's PID controller - its entire purpose is to try to smooth out
+> > > refault rates and "learn" from prior mistakes - but it's fundamentally
+> > > tied to MGLRU's aging system, and the aging systems differ greatly.
+> > >
+> > >   - LRU:   actual lists - active/inactive - that maintain ordering
+> > >   - MGLRU: "generations", "inter-generation tiers", aging-in-place
+> > >
+> > > "Merging" this is essentially inventing something completely new - or
+> > > more reasonably just migrating everyone to MGLRU.
+> > >
+> > > In terms of managing risk, it seems far more reasonable to either split
+> > > MGLRU off into its own file and formalize the interface (ops), or simply
+> > > rip it out and let each individual feature fight its way back in.
+> >
+> > But _surely_ (and Shakeel can come back on this I guess) there are things that
+> > are commonalities.
+>
+> There are some commonalities, but MGLRU was almost maximalist in its
+> approach to finding parallel solutions and reinventing various wheels
+> with little commentary, explanations or isolated testing.
+>
+> For example, MGLRU took a totally different, ad-hoc approach to
+> dealing with dirty and writeback pages. It's been converging on the
+> LRU mechanism. This process has been stretching out for years, with
+> users eventually running into all the same problems that shaped the
+> LRU implementation to begin with. Yes, you need to wake flushers from
+> reclaim. Yes, you will OOM if you don't throttle on writeback.
 
-Really if this is not a part of a much bigger plan then NAK.
--- 
-Michal Hocko
-SUSE Labs
+Yeah this is a real concern. And it's a pity we put ourselves in this
+position.
+
+>
+> There are many other divergences like this that complicate the picture:
+> - Cgroup tree iteration, per-zone lists to implement node reclaim.
+> - Divergent anon/file balancing policies.
+> - A notably different approach to scan resistance.
+>
+> Many of these were not part of the main pitch at the time, but they’ve
+> created sizable technical debt that we’re now forced to reconcile.
+>
+> I think MGLRU's NIH-attitude towards the problem space set it up for
+> running into past lessons again and learning the hard way, just like
+> with writeback.
+
+Yeah :( we should never have allowed this series to land the way it did,
+it's an important lesson in how mm should address changes like this moving
+forwards.
+
+But, given the great response on the thread here, and around the recent
+MGLRU entry update in MAINTAINERS, I think this is widely recognised.
+
+>
+> The good thing is that there are some integration efforts now, even if
+> they don't come from the people that promised them. And some of them
+> do exactly the targeted, rigorous tests on a per-component basis that
+> is needed to sort it out (and was asked for back then).
+
+And this is exactly what we need, and it's the ability to do this kind of
+thing (minus the BPF, minus the pluggable bits, of which I have concerns,
+perhaps not _fatal_ concerns but concerns anyway) that made me rather
+pleased with Shakeel's proposal here :)
+
+>
+> But there are many workloads, many hardware configurations, and many
+> cornercases to cover, so this will take time. The end result doesn't
+> just need to be fast for some workloads, it also needs to be
+> universal, robust, easy to reason about and predictable.
+
+Yes, we shouldn't rush this, and should be conservative in how we approach
+this.
+
+>
+> Based on the current differences and how unification has been going so
+> far, I think it's premature to claim that we're close to deleting one.
+
+Yeah. I think people _really want_ this to be true, but it doesn't make it
+so.
+
+Reclaim is a really difficult problem I think simply because there are so
+many corner cases and so many ways in which things can be broken in
+different circumstances.
+
+I've recently heard complaints about really poor reclaim behaviour on
+laptops + firefox-eating-all-my-ram which makes me think in general, it'd
+be good to see a broader improvement in testing, code quality and
+documentation and separation of the various heuristics.
+
+When writing the book it did strike me just how heuristic so much of it is,
+which makes the code necessarily delicate. I think we can do better in
+separating out these bits in general.
+
+But that kind of steps outside of the scope of the proposed changes here.
+
+>
+> And the current code structure makes it difficult to whittle down the
+> differences methodically.
+>
+> IMO modularization is the best path forward. Giving people the ability
+> to experiment with a la carte combinations of features would make it
+> much easier to actually production test and prove individual ideas.
+
+Yes agreed.
+
+I guess one aspect of testing that's tricky here is that it's _so_
+dependent on workload and hardware and software and etc. etc. that writing
+a bunch of self-tests or similar would possibly be semi-useless.
+
+I wonder if we need some way of storing specific test results/having
+specific tests for specific workloads within the kernel tree?
+
+I know, super nebulous, but if we had some way of expressing 'we expect
+behaviour X in setup Y' it'd be super helpful. But I realise that quickly
+becomes a combinatorial explosion.
+
+In a possibly, fantasy ideal world scenario *puffs on dream pipe*, it'd be
+amazing to somehow isolate the reclaim code in such a way that we could
+instrument it for testing purposes.
+
+E.g. if it could be invoked from userland, or UML, or _something_ and then
+faked out to have a certain configuration of X NUMA nodes and Y GB of RAM
+with Z processes competing with total observability of what's happening in
+the algorithm that could allow for really robust controllable testing and
+regression tests, as well as possibly some form of fuzzing for broken
+reclaim scenarios.
+
+*Puts dream pipe down*
+
+>
+> A nice side effect of this is that entirely new ideas would also be
+> easier to try out.
+>
+> I think a good start would be to keep the common bits - "library" code
+> like shrink_folio_list() list and shared facilities like kswapd - in
+> vmscan.c. Move LRU and MGLRU specifics to their own files.
+
+Yes this would be a great (and simple) start!
+
+Maybe worth keeping the mglru.c file or whatever-it-will-be also under the
+reclaim entry in MAINTAINERS while we're figuring out who should eventually
+maintain MGLRU however.
+
+>
+> Then as much as possible extract and generalize functionality into the
+> common code so it can plug into both. For example, collecting accessed
+> bits from page tables instead of rmap chains should really not have to
+> be specific to one. Nor how the cgroup tree is iterated.
+
+Yes, we should aggressively reduce duplication. Since this is a lot more
+'obvious' in terms of value and correctness, maybe also a good starting
+point?
+
+>
+> It might be possible to make N lists a natural extension of 2 lists,
+> so that the tracking datastructures themselves can be shared. With
+> minimal parameterization from the policy engines.
+
+That'd be nice!
+
+>
+> If we can get to a place where the only difference is how reference
+> data is interpreted and causes the lists to be sorted - you know, the
+> actual replacement policy - that is a much more manageable gap to
+> evaluate and argue about. Or swap out to try entirely new ones.
+
+Yes absolutely agreed.
+
+This is a fantastic reply, am annoyed my not knowing how to do mail
+(apparently) prevented me from seeing it earlier!
+
+Cheers, Lorenzo
 
