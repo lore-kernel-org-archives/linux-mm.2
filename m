@@ -4,121 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D24EDB7CA
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 08:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C89EDB7CF
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 08:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 956AE6B008A; Tue,  7 Apr 2026 04:15:49 -0400 (EDT)
+	id 036716B0088; Tue,  7 Apr 2026 04:21:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 906D86B008C; Tue,  7 Apr 2026 04:15:49 -0400 (EDT)
+	id F2EA66B0089; Tue,  7 Apr 2026 04:21:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F58F6B0092; Tue,  7 Apr 2026 04:15:49 -0400 (EDT)
+	id E18B56B008A; Tue,  7 Apr 2026 04:21:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A9F76B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:15:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 130765A123
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:15:49 +0000 (UTC)
-X-FDA: 84631051218.10.59A6F4A
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 216BF40008
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:15:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F1ZxXRpj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of komlomal@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=komlomal@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CC0E76B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:21:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 778E4C259C
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:21:19 +0000 (UTC)
+X-FDA: 84631065078.03.114362F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 174644000B
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:21:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xLGbQ6Uu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Unv5B9Js;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xLGbQ6Uu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Unv5B9Js;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775550077; a=rsa-sha256;
+	cv=none;
+	b=cxL4hdZ0LDNxC5OrZ7LBIT8qqtRUDdlQ8C9tOrPlEg9GEf2zJNEc8oWc0pKG0ikVMq9O6r
+	h+czTOatwwDVBEgvoLctn66rqovGvLb/JtlxAomwsgfscDo39wEHyVgsGxVzq4EIn874vl
+	PF17Ucfy8I0KXvT09GFsuuG2qC5DXtE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775549747;
+	s=arc-20220608; t=1775550077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=z0L5DxdHGgTgLV0g1fo3M5qT56sdXFA3p4Xf95pp+uI=;
-	b=6ESMlfGmHk0DUqof+kulAdkviqUvhNkVQ2n3ZJCurzoev88itS2C5h20m7Axw+jFskhPzf
-	pSeMNsTDaO8Hm4Td3pZN8efGufMPHFAI3OcgS7VwI92J27yfBeicg/xOTvcFtlIRf89aFR
-	RsQftRVD8mTbU4GSji02IIikDWRrzv8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775549747; a=rsa-sha256;
-	cv=none;
-	b=KjUujgfHAnD70h43X9ZEx2MDAe8bSQThmqicQDk7AjzrGCQx87CsiQpXT7BB7K57Fhdekk
-	R1p19wj47V9M7DN6d6hxZdkHlz51m1Ty7GtUdM+ZcBGc81UHb+EPauOyCvo9Oqe+2Rg/Hn
-	DhZmGN5S2biSB8I2RzqD+GoYE055edw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tM5pVGM5I6FLfPVcUIK1ZxbPT8N+tG2e+NWVRs+nFnc=;
+	b=58AQ8AruYfk3ImrZzNX3bUsgdqFuZ1wasVClv4NIq7mYBQEeSqCKNLodJC2dTQ/WRJYWWT
+	WzDdeyTrudQAPh0ktNAvXBylPQq5Q9EcLaVdwGfK5MLjjBmyfRP9thAwsWpPgLsdivuBye
+	X4lx+dFeJafXORc1d3OdZNLZf6/7fUo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F1ZxXRpj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of komlomal@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=komlomal@gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a2b5ea59a1so5358807e87.1
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 01:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775549745; x=1776154545; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=z0L5DxdHGgTgLV0g1fo3M5qT56sdXFA3p4Xf95pp+uI=;
-        b=F1ZxXRpjIWJfYrYpJ6UqmHmi57ZI4pB5891l8CdW+VTsFX31DwgVkoJDv42NVwR/d7
-         aTh70GyqTHeGF74LLJ9HJpkjh0Rsn4zqoQ5L6ZTW7MDVTO0yghPK50bEJcIfdsx1W5cx
-         6fm1zYAn4DinUmtvX55z12HMYGb2DJyQseM0uPMoa+DfU1lqB+D8IAJRI73eCQNH3iOD
-         fUjTCOjsM8/xNW2xg0HuQahrShjYvOEZiILPPFbpKvDaOLEH8ZQo3m6XV3UORSYjyroM
-         xJ4HGw2bvrZ+xq5klo1eSEj7ESPtnx3AqBtUlHQpcE61AH044yGx643FNWacZOp8IEcM
-         wl4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775549745; x=1776154545;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z0L5DxdHGgTgLV0g1fo3M5qT56sdXFA3p4Xf95pp+uI=;
-        b=dkEPKQQ1dsUILDdVbRXew+japyYLeAy4OcaeQhiU8RrdxOWBIuI+fBYlY1nmuAQ2os
-         aYc/awLH9GiFqM84Ves1jCVQHj/TWcAKTq16f3kbj0q7Onz6tRofighrZvID8xz7YEfM
-         nG85Xy9atIAYNU+42POpXwcSYEdybR+In/nztkHXZidiveCSEM/svzQR0XwegpBXHq5Q
-         rVugz73owfCCqQ3M62uPK+z4dM0JGTcWgAGLABI6XfCyRpyhhCJkPsUW3PzuFvFw+ZIw
-         DJ1yt33NiXnk5gdebScQlh16ov066WNs4MhhatPSpvsd5136ZnqfOTsMktuaP1ZExw0X
-         CY0g==
-X-Forwarded-Encrypted: i=1; AJvYcCV/H6wekCd00q6M1lTofry9pxKznMG2TjftkWAJiTN6hAKyMdiykv1wICJXnxg6RCLbwieiuQ9Fzg==@kvack.org
-X-Gm-Message-State: AOJu0Yxk+SDLhfXrcwedt1qwOpMctJWUpK7oz20Pc5UhBvdgAL/7r4rY
-	BuyVvI0O7Uyyutlw6hkSWeWfwc9mnlbsghPXqHAFSeSrzLTaY6UWXslA
-X-Gm-Gg: AeBDies/63TZ1OnwMHPm021kW0dIpXnJ7KkeCbse9z53QErOxuguhdlyT/552hlvxsG
-	yV722OS0Bh6Fbf2yP2AOFP03mvs4nGeNLKp/EIJhkTopDa7Qk3zW14lIr8yL/inswB96X09xb9T
-	ej9yN0m20Xbu+4MYxucRSZkcisVRPrIGfw2v1kNMzzzhD80tAHe2Dyc7eleJTw30iVVPJc6rvn6
-	wiqM7zJG2qlRzypmOufSnecu9ZRIDCipkhaqZDXHq5G1XYWgttCIZgYKYKMW1c9F6gtPj3/0m+q
-	n01ECMcE2ZPflrWj7LqWe/MgXA2F/m3px95jMNsmactPGI7Xz2TdF4jTWHmqkzK9zIXexLhYEJo
-	nx6dwNJyuqlSfnZEuJTxc4jfy2U6H+DNU7WBWi2v0i5t3g8nKu/R4DZHSru80sdBXcgDe1KbuKD
-	cVnTsgidPULtWBbxZQ61TI
-X-Received: by 2002:a05:6512:3d92:b0:5a2:bb45:7f21 with SMTP id 2adb3069b0e04-5a33757c21fmr5925103e87.28.1775549744839;
-        Tue, 07 Apr 2026 01:15:44 -0700 (PDT)
-Received: from agp-laptop.. ([5.180.139.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c6cd3698sm3937616e87.77.2026.04.07.01.15.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 01:15:44 -0700 (PDT)
-From: "Denis M. Karpov" <komlomal@gmail.com>
-To: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	Liam.Howlett@oracle.com,
-	ljs@kernel.org
-Cc: vbabka@kernel.org,
-	jannh@google.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	brauner@kernel.org,
-	viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Denis M . Karpov" <komlomal@gmail.com>
-Subject: [RFC PATCH] userfaultfd: allow registration of ranges below mmap_min_addr
-Date: Tue,  7 Apr 2026 11:14:42 +0300
-Message-ID: <20260407081442.6256-1-komlomal@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xLGbQ6Uu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Unv5B9Js;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xLGbQ6Uu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Unv5B9Js;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5F4D94E35B;
+	Tue,  7 Apr 2026 08:21:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775550075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tM5pVGM5I6FLfPVcUIK1ZxbPT8N+tG2e+NWVRs+nFnc=;
+	b=xLGbQ6UuGu7/peclXL9ys+KIX9gu53Xoq7kwu0rQKPfDsJpOTJIu6xZ48As0AD33HjIoaP
+	jM008CIAYvrj030C+wYMnJt/CrAuctXqAHtQDTJpzWVBbS7zoXq7ZVOQibBh/MpOS+vjox
+	77ckKkyCnUj8NWkkCBe4A6s1qQzw/iY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775550075;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tM5pVGM5I6FLfPVcUIK1ZxbPT8N+tG2e+NWVRs+nFnc=;
+	b=Unv5B9JslMwsdYcL2A3l8JTbNOtduxkwn5y1J+9TcuuU0v2F7iZ8kURB4IVP0ofUCSboFi
+	Lq4TSAeoXOmnOADw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775550075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tM5pVGM5I6FLfPVcUIK1ZxbPT8N+tG2e+NWVRs+nFnc=;
+	b=xLGbQ6UuGu7/peclXL9ys+KIX9gu53Xoq7kwu0rQKPfDsJpOTJIu6xZ48As0AD33HjIoaP
+	jM008CIAYvrj030C+wYMnJt/CrAuctXqAHtQDTJpzWVBbS7zoXq7ZVOQibBh/MpOS+vjox
+	77ckKkyCnUj8NWkkCBe4A6s1qQzw/iY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775550075;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tM5pVGM5I6FLfPVcUIK1ZxbPT8N+tG2e+NWVRs+nFnc=;
+	b=Unv5B9JslMwsdYcL2A3l8JTbNOtduxkwn5y1J+9TcuuU0v2F7iZ8kURB4IVP0ofUCSboFi
+	Lq4TSAeoXOmnOADw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 853304A0B0;
+	Tue,  7 Apr 2026 08:21:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gQH+HHq+1GnuEwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 07 Apr 2026 08:21:14 +0000
+Date: Tue, 7 Apr 2026 09:21:12 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>, 
+	jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mm/mprotect: special-case small folios when
+ applying write permissions
+Message-ID: <jumu4avqtfpf5334cddblhn7xawryviqmxqavxhctpgvtrv7nz@wczfgh3zdq6x>
+References: <20260402141628.3367596-1-pfalcato@suse.de>
+ <20260402141628.3367596-3-pfalcato@suse.de>
+ <20260407005026.ytf7ed4bk2ljyflx@offworld>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 216BF40008
-X-Stat-Signature: 7xuffoukm4cifiwmn6bwpgrq6omo9s96
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260407005026.ytf7ed4bk2ljyflx@offworld>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775549746-694478
-X-HE-Meta: U2FsdGVkX19vFlM9+7vpd2DuZvAEpUSsXp/fXKkRGA7Ym3EThX2r5fWCzIMVOT6zw5WjF5ZlKZNIQwA1h123zNBM/RscVUS+BYDVHE4GNdF7nqWDxXZLajqEEPVbyMm2qOOge7kmL/TjA2C1SzJSny+TgDS+lSXInb0SjoeG4u5+kZVwr2Xvl5iQuiuuHeWAkcxt2abfL8izYUfSZjPwkgggWibjBBbSTMjqcQ6Crg7LbF3Z65mYyTQa5RGSxdTHY1VOAY4GJYCDzMlYsNjAUhm6N/1Dy+TC7FS33SDAAp19/KOtqBeT/UCv0Zo5baRAL44edgDL0P7ClFe9RpIzVllHMKa4ckCOksqGijXFREnhgLnL1qmfkvZkPXJQVPS4Rto2dQlwphE+yPIRvxSYH6+lb/AkyYWvZbOjGxAWhTJc+n7xSAkby1QsnQ+hBAIq6l1B3Y1hl11dd2dPFpy1fxlGTj3SZY3NLUSuEIh7f7LfIJfgR7CmfA0vxL44bnsXUvdd5dZqIayVPNLeT0HL2vX6TxcX7RdmUbEtLrztorw2dE5hB3MvIXIDtPHw4/evKZczI+6m80nRs6uXaHUmedM3h0yYP3f3STxPAj7L64bwi56FXYczsOk9ivrhkQCCYsQppKojkmDHXky0imginY2VtF2KXZ0u9wNf8QUaa49q9X5/MJU9VeuvDSFWMqUheOHhv031wgpDerlCgRxvgd46gx92h4KIBEhuAvarzs6Xlhg5F6+bR9+TV/nz1uk2p+Ot4FM9a6FyhZog29cb7EutNoZCMr1kknTi4G9wPq+UmdPJzFwBrwsusJVwo30ZuXG0T/vnx8JUodveQkpsnXoBZDqnStM6wtnwKJ34SnCCmkJK1aTOJAMSWUCg+fxANWeERNfDrZaGqo8HoDOhsGM0sN7ecIuucRCTVg6Bc/OCotl77KXBIY++LFaZuv3doUFMk5vRVkLFDXVDD87
- ZGDpAe9+
- O/U6GVBP9F9eOKcZx+bwf4Vpf6qM60A6Jwy/wnijGNChcP19v5Q3/ch1Fj9IGs/xnOJohDt1DY/vqGvv6nRXjKakiDaYvedLGPkXgK2rhNBx5xWJDfb5uweiob+wfAkpjNAfRRm99AZ25sv+1ZMuwvAw2xjVV1uCL88rz6iDSrONX0xNpEkZcl1EqBDhtkBSMi3zNH3+JZ4Iaax1URgGcn4kuybOvn8sUAtXj4xc9f76Y29jerWOb16si2diRTrchRHhRcfmp1WovHdIfK/hZBWxtcvcZ2cldHzxzftpVNPbo7kXxZSYlc22+a/MXkOcASmpYyFL+NTieP5WcjyKa6CRzTqTLr2UimT3stXRlUCeMW/IIZ5N+juKoZkFTbclKOMfU3Pevmoi7einL93Pf+8hX/5AkYHt8UNxYLP6apGwGgNNRutJi3cXiL9Sucg8kBnFy8dwLYgepTlj1cVffer/5hypQe66QZUQrVko2/4PNNQcQkbEboY0Xmoxr6vg+WHiMkgt5ZJ2YBnmnSP6mB34glgesKxAejuubBZzmFwV1PuUGTrLjwSAa7NIBgJ2u2hc39sDdCBikMTCL0Y/X+HdCsKPySydw4a2Q
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 174644000B
+X-Stat-Signature: 9bzurd8g8eqfz9mm96ufp1a6nwdsa4rg
+X-HE-Tag: 1775550076-7885
+X-HE-Meta: U2FsdGVkX1+j351vVKmaRos2kI9yrI8FGKAXG1GHEMP5HnOYcre52Nfz67ZIziGG6JvV7gXXZhAan6oFWTsXndv2dkNnO9VWBamx1m5c50RE+zFbcPdSv21nEbrCtWtOPV3G2qfMy3ZmxubwmmqKTKJ4/isncrFYrdMThpJaYZ71yjou5Mfo505Z62DJROCVsmdZ3iVwkjx8f9utiSb0rGDBygDwHrYjLh/vT8ctDdtZI5x1SVWo4Z82x8TkpiJIXRuN6L/La/HyHlPcYBd/bjZ/lC3wIba0vcsafD68sonrRfTTprPBb7VhYJcuUdGe7Lgs1P54d1qb4RDad2UTgWIoBCIer+xNZbjiZRRmFKHXoPKuNze5I83TAqyGZ9KFJGz9ObxuUZOzxlpmm/IJhfSaVqUw2y6iWydGHqTABTTZU6jQfcrvPCo5q8LObuUjxtya9XBRpjhpxl0ANh3tKJ42TfivfZ64fcdv5GWv5vNgpii5ey0LroEvSaFJCLDPLFpYkwCZ0jl/DhkrMv3peV1btKG2QlpBq7BkDzH55AqUMIMNDM0gc4KiMk35iFMTftKC59IwdRXHCd5pMwYuVuliA5yaKD+b+zUS/bUsVUodOMNGYzJ9OOk/FG0ngtjeAgQ21DnMDf0a81Uhz63JVF9asdbmPyqP9PAQygbF1k0SmeGRQaTyzELdOFvelp+0RsOsUBMDO4qX1Q5eWe48QGQ8v0eULn6IkkqcVXx9Kw6l6dmsQkPHuQ02CZ3V64VHGGQVxVRKz4SaNZB4xr276K4okL/yFi/eDxVyLR9ef6j0vbJdVXWmc8QlpoqlAjKkUQQucRX+o5i/gLz7vo7BET2bi6C7qyf8Kn1Wur2HVilY+FvqYrKSFO9TJRYR/OvWhwV4d+XazzoFU2rqsEDo4wduQ3xJNpqIWbd0ae9ycUVsUiHT2MjWw+VlBKVYH4wClSEQDWaTNTjzx+iGPDZ
+ QIRgq+DW
+ o+AceP/D0aIEEMbDNyk1BeC24/cjxuPGgvOv+KIFrAmVxdwGv8MkI3RVI5FWHloJaUPoN8/40YEbVH1Pj2CB49MklaVLnmhAiLXo08osdpcVQs+F/+g8mNWBJEjhNHw/59gwOoDRRm5dtZf5tUFCab+fdja+COKXzDxE4tXny/38LkxFK8a+RLhf8PT2vnmZ7e3mybI4ASuBKpcpRSMUUXXY3xrNZ8ts4qUR8tVayEvjykH+QfTl7u+rKhUGhlQ4aVPMY+xZeaP+0gUIiYJ+ncrHOT3N51qH3bPLZE1jJEgTthG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,55 +136,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current implementation of validate_range() in fs/userfaultfd.c
-performs a hard check against mmap_min_addr without considering
-capabilities, but the mmap() syscall uses security_mmap_addr()
-which allows privileged processes (with CAP_SYS_RAWIO) to map below
-mmap_min_addr. Furthermore, security_mmap_addr()->cap_mmap_addr() uses
-dac_mmap_min_addr variable which can be changed with
-/proc/sys/vm/mmap_min_addr.
+(note: had to manually adjust the To: and Cc:, it seems my neomutt doesn't
+like something about your email)
 
-Because userfaultfd uses a different check, UFFDIO_REGISTER may fail
-with -EINVAL for valid memory areas that were successfully mapped
-below mmap_min_addr even with appropriate capabilities.
+On Mon, Apr 06, 2026 at 05:50:26PM -0700, Davidlohr Bueso wrote:
+> On Thu, 02 Apr 2026, Pedro Falcato wrote:
+> 
+> > @@ -334,34 +371,20 @@ static long change_pte_range(struct mmu_gather *tlb,
+> > 
+> > 			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
+> > 
+> > -			oldpte = modify_prot_start_ptes(vma, addr, pte, nr_ptes);
+> > -			ptent = pte_modify(oldpte, newprot);
+> > -
+> > -			if (uffd_wp)
+> > -				ptent = pte_mkuffd_wp(ptent);
+> > -			else if (uffd_wp_resolve)
+> > -				ptent = pte_clear_uffd_wp(ptent);
+> > -
+> > 			/*
+> > -			 * In some writable, shared mappings, we might want
+> > -			 * to catch actual write access -- see
+> > -			 * vma_wants_writenotify().
+> > -			 *
+> > -			 * In all writable, private mappings, we have to
+> > -			 * properly handle COW.
+> > -			 *
+> > -			 * In both cases, we can sometimes still change PTEs
+> > -			 * writable and avoid the write-fault handler, for
+> > -			 * example, if a PTE is already dirty and no other
+> > -			 * COW or special handling is required.
+> > +			 * Optimize for the small-folio common case by
+> > +			 * special-casing it here. Compiler constant propagation
+> > +			 * plus copious amounts of __always_inline does wonders.
+> > 			 */
+> > -			if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) &&
+> > -			     !pte_write(ptent))
+> > -				set_write_prot_commit_flush_ptes(vma, folio, page,
+> > -				addr, pte, oldpte, ptent, nr_ptes, tlb);
+> > -			else
+> > -				prot_commit_flush_ptes(vma, addr, pte, oldpte, ptent,
+> > -					nr_ptes, /* idx = */ 0, /* set_write = */ false, tlb);
+> > +			if (likely(nr_ptes == 1)) {
+> 
+> Are there any numbers for this optimization?
 
-This prevents apps like binary compilers from using UFFD for valid memory
-regions mapped by application.
+Yes, see the cover letter and the testing done by both myself, Luke and David.
 
-Replace the rigid mmap_min_addr check with security_mmap_addr() to align
-userfaultfd with the standard kernel memory mapping security policy.
+> While I am all for optimizing the common
+> case, it seems unfair to penalize the uncommon one here. Why is nr_ptes > 1 such an
+> exotic use case (specially today)?
 
-Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+It's less common on most architectures due to having no real incentive for
+enabling mTHP, thus having no anonymous pages with order > 0 (that aren't
+PMD_ORDER and thus PMD mapped). This leaves you with pagecache folios (that may
+trivially be larger), but that depends on RA and the filesystem itself (e.g
+btrfs does not support large folios at all). But I would be extremely
+surprised if there's a regression (not in the noise) on the order > 0 case,
+as it effectively does more work per iteration (and per my measurements you
+easily get order >= 3 on ext4 folios, up to maybe around order-7).
 
----
-Initial RFC following the discussion on the [BUG] thread.
-Link: https://lore.kernel.org/all/CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com/
----
- fs/userfaultfd.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> ie: How does this change affect the program in
+> b9bf6c2872c ("mm: refactor MM_CP_PROT_NUMA skipping case into new function"),
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index bdc84e521..dbfe5b2a0 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1238,15 +1238,13 @@ static __always_inline int validate_unaligned_range(
- 		return -EINVAL;
- 	if (!len)
- 		return -EINVAL;
--	if (start < mmap_min_addr)
--		return -EINVAL;
- 	if (start >= task_size)
- 		return -EINVAL;
- 	if (len > task_size - start)
- 		return -EINVAL;
- 	if (start + len <= start)
- 		return -EINVAL;
--	return 0;
-+	return security_mmap_addr(start);
- }
- 
- static __always_inline int validate_range(struct mm_struct *mm,
+That's the series I'm "fixing" to restore performance on order-0.
+
 -- 
-2.47.3
-
+Pedro
 
