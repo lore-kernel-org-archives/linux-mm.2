@@ -4,104 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1305FF512E
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 17:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A91DFFF512E
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 17:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0620D6B0005; Tue,  7 Apr 2026 13:31:08 -0400 (EDT)
+	id 0DA766B0089; Tue,  7 Apr 2026 13:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0393A6B0089; Tue,  7 Apr 2026 13:31:07 -0400 (EDT)
+	id 08B486B008A; Tue,  7 Apr 2026 13:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8386B008A; Tue,  7 Apr 2026 13:31:07 -0400 (EDT)
+	id EE3516B008C; Tue,  7 Apr 2026 13:33:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DAA7C6B0005
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:31:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 429F214092D
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:31:07 +0000 (UTC)
-X-FDA: 84632450574.13.B54CAB1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 82D871C0007
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:31:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvMycR5S;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775583065; a=rsa-sha256;
-	cv=none;
-	b=e5ybOI9MxPMiD3n2xwNc8YaQhjl+Yu0/3zbbsdA8dK6qK+l/9RrGy0CTuTABTwwLpD8j91
-	jQoUjaneHYkMheRnoNA7yMj6ZNgL/b0tfBTn8JUMT2Vi33Uu1w4qzkxHznEGhH3GiMV3Qq
-	2H7hy60aro8S14yMak1QiUglloxR2ps=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E00216B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 13:33:48 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 87C1A1A091C
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:33:48 +0000 (UTC)
+X-FDA: 84632457336.22.109D9D4
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9F1C2C0014
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 17:33:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Qu1k2LWm;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775583065;
+	s=arc-20220608; t=1775583226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4XjU7ixAHBBgp26Ic13sErTcuyUYjU6EtWtjDnf5xNI=;
-	b=T4bkDjnTDcXAJ275O7CcNCVJNix3fIDOkcmKAxF1ImzcypYeXU/lC2Liewb476T9TUYmaN
-	ABQZZ6PV6IeQ7d7cWDbxYJrTsM2RY2/cSjjLbgSyWm8UrMjRoFqyaY4lt0dtCO6Kv0zzNS
-	ZhpFzDU9edaGll1OFjeRzkNFooLATMo=
+	bh=iMPEJ4PSjOhLfHG2aITDvdb8l6v5fds0USOpCE6Wu38=;
+	b=IWAsL+l8lbtzp3AoDChq3Sq58zVCwLAaX1p+BQQcTalX5FrjDr1UYGU5B9hUEH8UwpJTLv
+	xL7g+GmNlUnSUVKcTqyLvgXvpfIVkBI2uRI1QtQC3G0FyHw9hBLwPiX8rR+yN2MV7n1rAM
+	gsEG39VHrmhr9HbmSW4paf+jWc4/bKU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775583226; a=rsa-sha256;
+	cv=none;
+	b=6qlejmxCIzMUbMVLHvloypdTFQQpRBs6NFgF49KX4PMHzrvn+nBsKg8X6+o39UvmMmpmFt
+	vwtAB3eDE4zZz0yhYTIMck3OBqEnyKR9mhhx5wPMT3fIlhPXbfwOVlCHN7tts0SEvtD81k
+	CYhRj6n7iWoZNemVbU/UdIEnHnxqwI4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvMycR5S;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D37744070;
-	Tue,  7 Apr 2026 17:31:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC102C116C6;
-	Tue,  7 Apr 2026 17:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775583064;
-	bh=9UAvXMMrNqXTrDUMWeRlzPfgVWlg1yCmofk6uQ4sAWs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HvMycR5SUvIjTLAwEDuh8RGK4jHzG3y00DReobjmFlfJ34ND91by7Bwk7Xe2BYw7Z
-	 R17BPs8mIv4KgALr90d0mvREbxORfIklhY16OBwEVD/0TQ/IbDslpE/VMYb2DWbJx1
-	 9YuXDwU/GiZQSOs7RUTWCWDhcrHFF4PdDgqbF2zn9gusDlWS9A2CH5u7qy7gh6SsZ9
-	 LXiJUhcyRJmUhMy8SmoeQzYKw2AJwLAHkRmfvBio2x4r6vfywzfm99Q2EbYo1is2ZS
-	 s7X0nGgGH2T34KJ/ehg96b+5DXj0hp+DnDyEi94lQlANXzE0slw4jrOlgOzXVnJKKQ
-	 2ohrkEKfSnbuQ==
-Date: Tue, 7 Apr 2026 18:30:55 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Barry Song <21cnbao@gmail.com>, 
-	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <adU8VnzlLw9JUHB3@lucifer>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
- <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
- <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
- <acbgIKuwDsPvPjdF@cmpxchg.org>
- <adTonuzmUc2AzUhp@lucifer>
- <adU3P9fk8h-AmEp4@gourry-fedora-PF4VCD3F>
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Qu1k2LWm;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8d4f78fc9f6so461283585a.3
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 10:33:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1775583226; x=1776188026; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMPEJ4PSjOhLfHG2aITDvdb8l6v5fds0USOpCE6Wu38=;
+        b=Qu1k2LWmVzF9DQ2YbvBaMKymIO8Ul7nOLDhaO3tM8phAAgLeFORkISgU6By1wuCYmD
+         Jy+kEsoiC1tA1zZk1pE6fxO8cWFd+elQ2r4UzfI7Gv6y/bcY20wut01mSRUDgPhQKgoz
+         CfN4G6ti6Btq+X/ZYax9OFXZC94FNiAnPuGkAKKUIv4QTp3pQDuy7gGpxzXSNLdjyoC+
+         zpVws619NryW6vAazUARveKsMAV+OvkDSpnsBrTyQLEKtLE9TlD/+Z1Wn9du9pmBWk+D
+         t4x/O5nBekKuGZtT6h7bL9vyUzXV11erOTznt+VrCWghHCYYdoPul/s0tYJTzpLCDW29
+         qOGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775583226; x=1776188026;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iMPEJ4PSjOhLfHG2aITDvdb8l6v5fds0USOpCE6Wu38=;
+        b=FPLlqwMzsmZh1BVLL9SkBkvLTgD1q1h3KbuYIHjxXPjFZjLaLuvXgYvnltIiRNDNAp
+         G0pBKoRN2PZ5l/8BtS9P20d1CPrQ3jMDgRicRO54KUOO9jQKStp3QlrzkkRJshUQqNyr
+         M6hK3dilZq4DhvGNX3MLdkex+hg8sfYnRX8V6QDSJ8uWRpe24k7FHt+xC08fe7GrtwUg
+         3rxT/Ze17dpUImqM8d+vvwVN/lr5gmquBejII05ewsWiYZy8vO3IH19gstmeCFSuTMAN
+         +0GJy/nWmZEqA5wXHTGOKsX3miSNBiW5Zjotqzkbl8N4FqRlParHWEHqRHLg2EBepHnR
+         3zdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVEWn3cgBpe6tJnB3ybecuk9rG7NAn/WHEI8C2HGC4hS4IyOUWOX7sb8VkVXmSVWK798CKq9Y9TGg==@kvack.org
+X-Gm-Message-State: AOJu0Ywki9PWm6ysmyzZ3XcbhWQ1Qtx+kA+YbP53gtmUg+LJCbFyAexM
+	atxckOKwt/YB9ggCY3zz7kM5KqUd/kFzdMo/xcSxFH0zXI2HY2FqlULVURzhokPLAI/E0L/cj05
+	GUIrf
+X-Gm-Gg: AeBDies7JN/HeshI3revc0A2s8D/Q0kEddbxOok7K6qu89vdMKvu+iYpYh2Gn3dpoyU
+	pl2mnjnRkEwRn4NDENYu6AX/cuG6a1TGFq62nNOsHt3rkZ6aCvIhmZt9p8bVLgAute0Mz5ZZkyd
+	3wox/TqFCqGPBNV/z/wdqfwG62FahIt4WAHBSzmCnMoz9kkU0lhurKkWCQQPFwpOX8IErfV2qbh
+	/3Dstu8ls2GOnleKel4J3avWKZy7rLDmvfLcSOz5vAe0FhjCcy69KZ4jchJi+OCaEt079nKLxuU
+	Wjt/I9rH9ox7XRYxk2HACVEcacv29ghyo1XZwUcsGX9zc2pCqvH9MrU2GwcyhnGr/XN3lhcKMcI
+	PuAiNuBclkkIaT+wKMbImOdfgFNaYQwqh+Z4g3nW2RQ0QWx137ZKA0D9FWSdyCSTW7umlU5DILi
+	xxrMpNP/Gl6N8KfGPLTtUNusEcb1mZiHLyO4XsDZ5+V0NSrbMhb8GjH3xp3dhwYjulRuDgB8hBZ
+	lirn0um7QRk
+X-Received: by 2002:a05:620a:7108:b0:8d7:2745:6462 with SMTP id af79cd13be357-8d727457900mr1390116585a.38.1775583225568;
+        Tue, 07 Apr 2026 10:33:45 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d6339bc438sm796063485a.26.2026.04.07.10.33.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 10:33:44 -0700 (PDT)
+Date: Tue, 7 Apr 2026 13:33:43 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jackie Liu <liu.yun@linux.dev>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/mempolicy: Fix weighted interleave auto sysfs name
+Message-ID: <adU_9_J74OO9bUhz@gourry-fedora-PF4VCD3F>
+References: <adU6MOCggHJ3A-n8@gourry-fedora-PF4VCD3F>
+ <20260407172350.699577-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <adU3P9fk8h-AmEp4@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260407172350.699577-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Queue-Id: 9F1C2C0014
+X-Stat-Signature: we5rs5q3hf4ogsj6oqgsbhjpntse9agp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 82D871C0007
-X-Stat-Signature: 6gesmhrugz76b841stdmejpqbccaw6r8
-X-HE-Tag: 1775583065-790514
-X-HE-Meta: U2FsdGVkX18RWM/3QHlYnu3bwLoDNpHkvb5J/+bd2Sjmel1eUYnKNFUJjS008UfirnxEccGOjBqRo9CPg15XBsaE38f+3AmejI91kwkJDB44+bMWNzNcdvQFMu+LdJUrOn89wYhTd5nGBaOSCL9ihq55l//bnVGkjdZplrsKuEb5pE0caJNJwcHl28/zP+sS/mIxayF6Q8ldlwMzzdXGzwkgMvtEMo0xd9Lf/qWIYZAitWUGBOwm7nwwwJeJbqPjqkM0cCpI9ki10zC/Gl9VQTR5UHd84Ol4CcVYLmjoCiHnbLHBi3m1kvxKAB7ZeYeSa3RUorJpbxEqDrHYsHVmwJsIWYnBmqGeZF4ZHy+jzU98x2ax3eXwnDmlN+lZfsS84sHd3ZXqQWqoUWlRxV4gGBtYRD007LIwUMcdbGqMHJeTzkp4Inolh+n28uA3LW92YJAn/+EFz9EcMo/LeGw7orE1Z02dDLoZdmBlIaEWcg38GxyTVi9Uf5VkpnG74eFv1leGhc7isXO301PJgHyq9z6kckX5RtQuhTrnGgG/GJzzxsxCm0Xfl5tRcDbnMPGHJYP6QXjMtFfdfrDVyGqLGzEqWHVp8tb52ykTgqIXTI30SE32d+Hnq5LIYzTfjzGOU8aGLF1FyKr4ysW92cD4R9ZizzWJptgbGcjGbO7v4XzPFawKCjuGMF2rK4M73BvGEgWWznpqXR+JiXgxDns6rNb7l/czoMi81MtwXf6x2vsRpEo+TLbUAFCic9OmBgqsKgtm02cubEh9JSZUI4sXl6WenwJHKUaK2CqEscbJmbDDZtTmvzJtvBiNaoJ0c8xiN3PtGx6gkPHhuOEAVndPx8oIGZ4tUHWQhjX2Gx290F+n1MbX74wLHNWDgHC5Apot+fJUak1Y8V0aVaiumW9TpdSSxIgjY1RoRnl3Mz1frnBKo0vW+YGf09VBuOPSSLzYCHvaQXH/mE5O6oUlYFH
- e8JkROLP
- 332zllafePZFoAJTRy2LTbHAO0JeU+1rGkVfxF4j1CKpjAA+xOJxy+XfTSSNRLmjjEjUmOS4kFIKF4+60YXq+d6FrlIl0ZoEd8gVA5U47G3V6KQkp5CFVKjbpWbjZSAGV8neOsGBXT4C56UuA6YOW3+vivD6HOOjh1rgdjRZbsLl6fclVTxZ4hydsGx5ZBhY8sZQPkuiDmOd+kdnk2ekLCpK5mN86t6fomOJs4RTKiwctOYOj2XGTD2YCnnfbiUZA0Qc5Ua9sZ39S2oE1+h0UQs3UnGaZ4RoRp9TTuDOotERcvL4=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775583226-893281
+X-HE-Meta: U2FsdGVkX18fNt5lT1JMz389bQje2cUupCVRbDcUb0CL2l9BnBGbpbZkrtV/SEPl4ADgZRfvkhV/0NAn2uSG/c6O2xfPj+QO9pR1ppQREbEHp1zCcz0aFY/cyR7b9XOVZA0BOl22QV/wWKVwVu7UcfdS2+9PO7Ks4Eli3dDDrF5V9IRTw0GiOHNf44nLxuTTHjssI88pVj+9mTfmW4mkaj4MnsPMjSwBzeryFWy4X9s6fCxjqqMlImdfsfboOdrv0ZsWQb16toHb1YDRU1Uuu4sAloBrNTLk8C0/uxtokzg+R30uuuX8D3LnLIWIOqlyBDoSuJkaFgtVtH+mNpCBVmITtVbATKveTLthzF2GUPbNSw43gNJKjC2VsN5F02b82k7k/NdI7pdVp3j0CXroAvT4QXQueqlzaB9MhP2ecteq7jWuvuvSno8PRbdVyycd+sUpJYVBc7HrilMzK5HENuzvaMi291xf4S4ymuZUowW7F2mbmOwEn223DUIhqw15WSAcG/YvpgFKj9IBHShHBRke8M2g04pH6H8Anbt1Am8A59tpkIOKkC+wc8U6VHcwzJsBgnDctvTyrMcRgw29ob5z/BbkBdal5bE28Bv4/jAs/r9T0XvPIKw/+6ctRtqF8KaPJtaP15fc9zkebzVf6AeXR9o3yIerNCGBEQ1NJaERq05A36jJAP9dWZb9zsam3Mx4BFHE+8Dlb5Cv0LGZtJHZrGrG2eymERj2gOjIsG4s1fRRSkYzvMwXmRZT1VwaMSSpbQpn4p5mHMVVajrOimppAdmF2M7YN4WRbYlCrs93ig9HzLHu4rAGQ0XMvXPJRiyGhHinMmjWZowaN1s9Ag/tWOz5O39K6E7TgffsVAFgJn7/Zy18wP2kuC3/V7IotbOw7g69PfNtbCAeZEEBGAO7zOcWk4v0jhwWM6netXN7PeAMKIsNKpZsS4xwvNGiU08x6cIvNKcCaKdzLPg
+ 7G6ku74U
+ n9zv7HUTu60r02rVm8qsh1MB7Zkbtd7CWENZE2SWWJtpEoIMdYpaKyhi7v2VelncLjWIlQ/O9llOW4MyALCnOuIiD9ZM02fK9hW9vz8SE7mccb73qBzfKx4ts5U8Qlp/EREVSAAh97KEnDQ1HH8OHoGSlIZ2A2i/34WJNTF+JAYA4pblBh9+SIPOddbsS8NYSCQOrdEfW0QjdtDnyC8Vf5hkb74v6ANcu1EQkmoPolCriaxnlULM6ZmQ8Juh9gYBD0OsHEWXXnmG2eYdweSm1Y2jYVUo1nUXIRsV2sQdlPXa1q6JrV/+zVx+NtYuw4tu2AYz03ttpjhiRP1ADM4j2oDncLco+qecwkTo/dq+dvfPzRcT3TT9nMJ7YWrnND6YI7mg8HLTowXvHSzmyvkah5u41sYtDuIcRhr/mmyva3mVotTZ369BvXjIHj9zzB7RBNcCwsrRJQPvlcWQ73NRiR4tyThU/ZedHeTOD79CB50BnQ04=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,79 +125,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 12:56:31PM -0400, Gregory Price wrote:
-> On Tue, Apr 07, 2026 at 12:36:36PM +0100, Lorenzo Stoakes wrote:
-> > >
-> > > And the current code structure makes it difficult to whittle down the
-> > > differences methodically.
-> > >
-> > > IMO modularization is the best path forward. Giving people the ability
-> > > to experiment with a la carte combinations of features would make it
-> > > much easier to actually production test and prove individual ideas.
-> >
+On Tue, Apr 07, 2026 at 10:23:50AM -0700, Joshua Hahn wrote:
+> On Tue, 7 Apr 2026 13:09:04 -0400 Gregory Price <gourry@gourry.net> wrote:
+> 
+> > > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > 
+> > Maybe - 
+> > 
+> > Fixes: 2fb6915fa22d ("compiler_types.h: add "auto" as a macro for "__auto_type"")
+> 
+> I thought about adding a Fixes tag, decided against it because it's
+> purely cosmetic.
+> 
+> ... but now that I think about it, I think this could break some workflows
+> for users who have automated writing to the auto sysfs file.
 >
-> ...
+
+Yes, it broke userland software depending on that symbol being there
+(which, hopefully, is very little at this point in time).
+
+> Maybe I should add a fixes tag for the patch that introduced the 
+> sysfs file instead? That is,
+> 
+> Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
 >
-> >
-> > In a possibly, fantasy ideal world scenario *puffs on dream pipe*, it'd be
-> > amazing to somehow isolate the reclaim code in such a way that we could
-> > instrument it for testing purposes.
-> >
-> > E.g. if it could be invoked from userland, or UML, or _something_ and then
-> > faked out to have a certain configuration of X NUMA nodes and Y GB of RAM
-> > with Z processes competing with total observability of what's happening in
-> > the algorithm that could allow for really robust controllable testing and
-> > regression tests, as well as possibly some form of fuzzing for broken
-> > reclaim scenarios.
-> >
-> > *Puts dream pipe down*
->
-> *picks up the pipe*
->
-> At risk of being shot - this kind of stubbing / functional testing is
 
-*nukes entire site from orbit, it's the only way to be sure*
+The original commit introduced 'auto' and the compiler_types.h commit
+modified that to "__auto_type".  The latter broke userland so that's the
+right commit to mark for Fixes.
 
-> somewhat trivial work these days via <pick your favorite LLM> with
-> reasonably well designed interfaces.
-
-Though to be honest, I did ask Claude to do this with some code before and was
-really impressed with how quickly it came up with something.
-
-Buuut I've generally found the code LLMs produce... terrible? Really terrible?
-So I think you'd want there to be some level of human improvement there.
-
-And in any case, maybe doing things this way will struggle to really represent
-real world cases (lock contention etc.) but OTOH, being able to simulate a high
-memory pressure environment with certain parameters even without [the rest of
-the kernel] interacting might still be super super useful for diagnosing issues.x
-
->
->    ( read: probably not with the current api n_n;; ).
-
-*gasp*! But yeah, also yes.
-
->
-> So to get there, we'd need to agree on the refactor work and interfaces
-> that make it possible to model the scenarios outside a running kernel.
->
-> If we do actually want to move the core to look like:
->   - vmscan.c  : core library
->   - lru.c     : standard lru
->   - mglru.c   : mglru
->
-> Might as well consider the functional testing question as well as we
-> decide what those interfaces look like anyway.
-
-Yes, adding unit-level tests would be hugely useful.
-
->
-> *throws the pipe into the bikeshed*
-
-*Dives in bikeshed to rescue*
-
->
-> ~Gregory
-
-Cheers, Lorenzo
+~Gregory
 
