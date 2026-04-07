@@ -4,84 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC156FEEF2A
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC57FEEF2E
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8D486B0088; Tue,  7 Apr 2026 08:00:59 -0400 (EDT)
+	id 0EBA86B008A; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65916B0089; Tue,  7 Apr 2026 08:00:59 -0400 (EDT)
+	id 074926B0092; Tue,  7 Apr 2026 08:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC93C6B008A; Tue,  7 Apr 2026 08:00:59 -0400 (EDT)
+	id E56426B0093; Tue,  7 Apr 2026 08:04:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BF1316B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:00:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AD4D5AD55
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:00:59 +0000 (UTC)
-X-FDA: 84631618638.11.181C253
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3912E40006
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:00:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mqob4GRw;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB7CF6B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:04:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E524BB163
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:04:54 +0000 (UTC)
+X-FDA: 84631628508.10.A23DC75
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 86CD64000D
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:04:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RKPeu853;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775563257;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1775563492;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=b9UfGcLfPBkl5LZ6M7qHhMwuKYJ679JiDoSUGxGAA3s=;
-	b=QltqE8ARO7slxxG6qYerE3IfXQ3VPxDMCkIXzw827tkE3Tp7rBFLixdm3/JEasbNfAXxfe
-	8YCQIFMcxywhRhcNdxf5posO4kmysAR9rw8XNLHYPHz2AREPwsHkxeY8b1wpN0xGlG8RY+
-	TLHNxRqnXe8LXeDftS/NOfF9X7GACsk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775563257; a=rsa-sha256;
-	cv=none;
-	b=rTe8To2rfhKiGR1NrEx2cjuQXQNcFBgsWxKhjL3satyEmK9IWyfeGV8L0ht/EYlnRTuche
-	5Jiny9DrS0kD3p7X+8epymE1A92pj2reT6bXC6taka/D6M3W9PEGstBbo10X0bJXj2C3B+
-	A+7P0lNGUI+8b2li/OgvYjvwb04Cato=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9onS38a/+xa4xtBFUcC9z1dNXkQev9YIZSMyQ0UjTKs=;
+	b=fQokAFW//OI2AeUFH5Hu3M/mFK7NAw7+6qlZWFdE0anGi/FB79aK/ebDVKBfZ/hc0krdMS
+	9NoaZ4jx/rVDblaqUNGZGWfBx5EzgYBc/H5Ivz4fuLLWZWOiJkcIHNrGmkmxVewv2YMmK0
+	wTF3vufrAuKJAbXlavUc0Z6HYxsjSvY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mqob4GRw;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775563254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=b9UfGcLfPBkl5LZ6M7qHhMwuKYJ679JiDoSUGxGAA3s=;
-	b=mqob4GRwftjlJYHxVKdz8LgCuBNjsj1eFTHvmEi5ZYhuIJdD8qaFzbOB3/nZDIVB/O0NBu
-	4pNT0qDVrpEkwMyglQ18m0FIgiRdb/JjdCFuUt5P9onFaPuEPeWrxd3dRNx0s/jDiBtHDn
-	dn0qT1RZ1TqpnZuXgm6wSJstxJpz09w=
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH v3] slub: clarify kmem_cache_refill_sheaf() comments
-Date: Tue,  7 Apr 2026 19:59:33 +0800
-Message-ID: <20260407120018.42692-1-hao.li@linux.dev>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RKPeu853;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775563492; a=rsa-sha256;
+	cv=none;
+	b=wIBn7ZZ4rBYRSWm67+HW8Pb3fcNrOUhbbeKXEFzbAjoZywBj9hMlDSg4BD/NCtpwSRvDTj
+	zKoJ4Q3EG7oZBZ6OtO7N7NTiyxPYSyxCU8ID21uwzaZ8RSg/ahbiE/MHMjZQzeJ1cbkG9j
+	MYDxJbtslg9mrYIwgon4i5lCYK1CYKY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5414344562;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 251BAC2BCB3;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775563491;
+	bh=nf8UOchn9pxNiBANW4ySdYqzcmGuZiLDqUsnkRCZFnk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=RKPeu853k0VrejA7oYOHJJCF2KZTstUFBLKLaYKoYyb2nwRCpjsTFDFpm4Q/rGfFB
+	 2u8TYjJfPmeBygzkb8fUOdlJBO38kE+8GyXi2tob6O0T3I08FxauthAH1DBNe+FQvC
+	 IiZc2liThMLelbJ7yp6Bx2xh4SWV1tio4Ye8+NscS0QnMKOkzpmbEMByNI2dfPLlgG
+	 jwN2r6rL5iEwRbrQqOm+H8LU5Qvxf2FAopmnP57UzndD8bB7TpZLYPVt/Gwt0fElXb
+	 JfP+AJM/k7cGrP3IPOtbJSY1DqXequvD2mpjP34k5aAAA/texvizxMquIfkatpFjrQ
+	 D1Qh1p2xyC/1Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 172AFFEEF29;
+	Tue,  7 Apr 2026 12:04:51 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Tue, 07 Apr 2026 19:57:31 +0800
+Subject: [PATCH v4 02/14] mm/mglru: rename variables related to aging and
+ rotation
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qhfjgnknx4ir6ehrcfupkwf9nukajrjn
-X-Rspamd-Queue-Id: 3912E40006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260407-mglru-reclaim-v4-2-98cf3dc69519@tencent.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775563488; l=2994;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=uhTQOpFFZDYAXHD7SVVg5W6PNjRmTF38550AcmIU3G0=;
+ b=Ehtr3Q47mha0PCMw1Dvi147XVFp9g1ZeA7WFCt4ArsMQbs2JOAtGPfshF73Pd3eRPypIYIlGh
+ Vd0f1a1ow1EAUlU9O3KwKcgILPqwk+SdD8KrH6hbYvLMaHF0e3O1UVA
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 86CD64000D
+X-Stat-Signature: qt9xwauwowctbkem9rrniot8jbqdfbw5
 X-Rspam-User: 
-X-HE-Tag: 1775563256-205648
-X-HE-Meta: U2FsdGVkX19nCwqw4IiF+4XtsRYT9bba014fy1hUr3626dHKd+9F2tOCr4wxS3gp5bP2NGbGDHAzmgCgmgnZE5DoagkNkxx5R7oGwZ59K/7zfn5g3RtLEVvBHzWfjNL2QWef+g1GRWw/0WVPjX2tyvanslnFlzw/Ry/WIn78+Aw8fGDTTl+hkED3zpiFiFFoJLJm3IQgBIPpgR0ZAjI2OXzDAp82iFhwTXWNSWMf3XnniodrtJVClOGy73ZumH6hsm3XfF7jsV0UihZQCdUsY+J3NU5QxB//SUqe+oXqh+C4OJts6ypW0uaEVwP//CkGXDYoRCxgrvGI1L7xQ98WfUxRfaxyPJrCldoo+yHNZU+hlqCZTKViz4YGMNa06XiExnzGRLYvKGcBUUGPMhGgdPuq7JcisumGG/JenZ/Z68OcSp48x0JtEVJpY+9mBjccaTelQ0VyTiiw3YqU6KXRCMADqsu4Q9pKotw0HfSx4m6QmEuFe7Sm2qYPKMpXOs643sgxHunU7ammnhymUBN8L8zuwlzx0p+xy9XqQSQHWo0vcxmSuaMOH+7U3SB7mUyqvOfQkgSg3t5wH/4oZKk2JHM4RezHNH+oTqRvPdsnEawvbN54Ac+N+kwtRZTTkZSmyPqur5Idd0c5Fo0lxygPanggNF7dToyrtsKfH7PIJDwbexgmMVTuTZ9URxgHpYQHCJkL4yojmarxwmut99HzkGXsLNN4C871AnYYXPkT6+xvcGmh74rKqrYnGTdrGStAs6mNWX4h2GaweGx9BS0g4W25us95C3pZD/HTYWaOsRyHPQipQZhxxXPtP9b8eNDtarSYGg8tsBg43qRaNQGydP+fQMfdCMjTzPAvyO8RgqflMm2tq6NBsFWsoxD4m3aQ/xrFM8fb+O6/6posWkuIfDZW0BQ1xOjRmj45XXYbHtn0d/EL6Pc48xLMtIBnLGZFIx7XNQlOO2h0ao6gVjl
- ZRABCpKo
- nLdAcCr0uohcjJZF+8Zwd+U0gQl9t/Kj8YccXT7W+2T6Ofoo65Yd1dfn/xzlN2OJnpiEuRLn2Ri30LklM4bf3/B8ZuYLUqQqlxCAJo0fn/1MInE9F/Vf3ucgS33GiedeI4SxBL5wr44C1VyeHO6Mnw81Ccv8rilRhy7nFvOnTRAyZMXTjppW3CzCmwV/dJcNIVVRoXfOl0U4SEb7AIKMM64NEuAZBMIREb9Mz65Z4ek2UJMsL4T42YuEHMjIjSZz53nmmC3FxqadJA6o=
+X-HE-Tag: 1775563492-136680
+X-HE-Meta: U2FsdGVkX19R2pREAWrLJLO2DbESUzdVXwPKkIZ5TMa5qP/VNik/eBdvXSippUz+mHKA4snAAL6ms3xZ6/ERxuMC8Iwq80Buek9Mnyyc+0rMahBAxwkuAZhIoVT6iqShck+TJ3gnVsRgiV7pE3M0lSNbqsru2n9jVHvRrhP8keIt2J+jFGOipBRIOScyyfpzLM8cAJFYa9JBnjyH4nXEUNCYq8En14GCsO2hPJWqn4MrrFraMZpcL44w0BYmSsKWXGklUESJ5XEK/8KU85fwyCRwHXG3qFeXlBLEB/5VQU/RpIN1kjl0kLSzFgn+CAR6/kQaR8qv1uB7FJ0F1CvoqUCptcraV4Q/sfvbj0Gl5bcJYjGRzXuYzI7OOoRqn4M1MzkRu+jgRmrYVI7366LB5ubHqcvL77tHLtMiIGuIT8+KGtifE9LuJS2KU+ERade2WbqHaCZd8u2UnQSZF9sMr5Z2RCcJI3JKhNJ5XKAge2r7CwTA6I+CiYcdurV8c4FL5BOiM46QK2BH2G4mm9xZKSBz62J1SKQaLF/Goed4PJKQeZ048fOHEyqi7ezIfW8u7pKKYE5UgVCGOgFduMz27i9HK9W/WTJ65Mp/zxxk2dc90/A/OfgKu2Q9uY9pJMlNH508giS3uORAH+loZ744fnSaIXgfD3zlcuDQOk8PnF4RSKV6XXs9yBGLDfEtOQ/IVpXSNsFA+9Bx2eJLRMFSlZAjpbKU5be8CI4yZmSGyMqMX64pnVS/TOA8Z0i4hfWBCyAjJlBQGOJr7Z0yGBb5WQW+iD7Cjz0VdseSO2rh53VGbMqgMRATcIEAHRnYIqRDBflZnZYMrX8Cd/g43f3AGK/1+ceMG8wjdSzmXr6D/29WAgagX6LQ9ty52AT9LBxe7Re2uxZZMWJeE/pM/uH+Rkyb/ex9lQEwTzGPUqqwqM8U4ilvBMCPJnVKL5v+C7baOJo9sXwiSNsCzSdEZvz
+ TaG491qM
+ B1wiji6Ag1uhuvcUN7JY5zzMJwqBeN8x2b+VJCe7GX/lh78T4VxlZWbXdaLvBOxTCHfjk+puY1SHS5qFv8wzaM8MBDZj6DPH0RG8akrN6A5c7E+95snLKIfM/iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,44 +119,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the in-place refill case, some objects may already have been added
-before the function returns -ENOMEM.
-Clarify this behavior and polish the rest of the comment for readability.
+From: Kairui Song <kasong@tencent.com>
 
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
-Thanks Harry for good suggestion!
----
- mm/slub.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+The current variable name isn't helpful. Make the variable names more
+meaningful.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 4927407c9699..92362eeb13e5 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5120,12 +5120,15 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
- }
- 
- /*
-- * refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
-- * the given size
-+ * Refill a sheaf previously returned by kmem_cache_prefill_sheaf to at least
-+ * the given size.
-  *
-- * the sheaf might be replaced by a new one when requesting more than
-- * s->sheaf_capacity objects if such replacement is necessary, but the refill
-- * fails (returning -ENOMEM), the existing sheaf is left intact
-+ * Return: 0 on success. The sheaf will contain at least @size objects.
-+ * The sheaf might have been replaced with a new one if more than
-+ * sheaf->capacity objects are requested.
-+ *
-+ * Return: -ENOMEM on failure. Some objects might have been added to the sheaf
-+ * but the sheaf will not be replaced.
-  *
-  * In practice we always refill to full sheaf's capacity.
+Only naming change, no behavior change.
+
+Suggested-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/vmscan.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index adc07501a137..f336f89a2de6 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4934,7 +4934,7 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
   */
+ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int swappiness)
+ {
+-	bool success;
++	bool need_aging;
+ 	unsigned long nr_to_scan;
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	DEFINE_MAX_SEQ(lruvec);
+@@ -4942,7 +4942,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
+ 	if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
+ 		return -1;
+ 
+-	success = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
++	need_aging = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
+ 
+ 	/* try to scrape all its memory if this memcg was deleted */
+ 	if (nr_to_scan && !mem_cgroup_online(memcg))
+@@ -4951,7 +4951,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int s
+ 	nr_to_scan = apply_proportional_protection(memcg, sc, nr_to_scan);
+ 
+ 	/* try to get away with not aging at the default priority */
+-	if (!success || sc->priority == DEF_PRIORITY)
++	if (!need_aging || sc->priority == DEF_PRIORITY)
+ 		return nr_to_scan >> sc->priority;
+ 
+ 	/* stop scanning this lruvec as it's low on cold folios */
+@@ -5040,7 +5040,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ {
+-	bool success;
++	bool need_rotate;
+ 	unsigned long scanned = sc->nr_scanned;
+ 	unsigned long reclaimed = sc->nr_reclaimed;
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+@@ -5058,7 +5058,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 		memcg_memory_event(memcg, MEMCG_LOW);
+ 	}
+ 
+-	success = try_to_shrink_lruvec(lruvec, sc);
++	need_rotate = try_to_shrink_lruvec(lruvec, sc);
+ 
+ 	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
+ 
+@@ -5068,10 +5068,10 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ 	flush_reclaim_state(sc);
+ 
+-	if (success && mem_cgroup_online(memcg))
++	if (need_rotate && mem_cgroup_online(memcg))
+ 		return MEMCG_LRU_YOUNG;
+ 
+-	if (!success && lruvec_is_sizable(lruvec, sc))
++	if (!need_rotate && lruvec_is_sizable(lruvec, sc))
+ 		return 0;
+ 
+ 	/* one retry if offlined or too small */
+
 -- 
-2.50.1
+2.53.0
+
 
 
