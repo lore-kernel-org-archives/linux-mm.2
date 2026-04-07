@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CF63FB5191
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 04:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5293AFB5188
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 04:00:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0A236B008C; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
+	id 935FA6B0093; Tue,  7 Apr 2026 00:00:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABB1B6B0092; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
+	id 90D786B0095; Tue,  7 Apr 2026 00:00:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AA2E6B0093; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
+	id 7D5986B0096; Tue,  7 Apr 2026 00:00:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 895EC6B008C
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 00:00:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E79E1B85A3
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:47 +0000 (UTC)
-X-FDA: 84630408534.26.36EEB76
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 64FBF6B0093
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 00:00:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 069058C0CB
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:48 +0000 (UTC)
+X-FDA: 84630408576.03.78A02BC
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0B5AD12000E
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=itU8Xorb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id C3A6C4000F
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 04:00:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d0EVKWGy;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775534445;
+	s=arc-20220608; t=1775534446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ii1Ea1UkZAmfOAWtXKmsQJdWOCx9znCqyuDUx0gRxRQ=;
-	b=XuCX/j6YTEXcoj/KhnGC4R+9Mdft5PmlQ0ocv8mh2tKDrgOjmLgVm7LDdEz/iJdWfvNZB3
-	Kl2vRqCYnb0pPbMZCVOb+ajuh5TbUJDQmxF0xcdDlKDKtd4Y9OnUOgClUCueYsAL5Mun0i
-	A3TgHTlJi2xnVz4+SyJn1mciXdD3Srk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534445; a=rsa-sha256;
-	cv=none;
-	b=EO3lZOumqAFZ5j7eWq1H7+Skxwnuv4IfDN9NAg+vALVeVbzLcOKx0BWaxtSamVJ1TXx03g
-	ut6Hov3YqMFv0nLsF/id6b5qAcUcSZiqpBdUdvhnecLn0nd7HpOm+77bXCwHJAXAy27Bmt
-	Arg0RVkbIH6I+dfPEzPG/Kzhc0tgdXs=
+	bh=e3/+T4sGeRDGVdaUzwkYnO9uaOm5j9yr5+rSq8y+5Ac=;
+	b=W/nUp9EXqwJoKP3es1EiHDfiL1NMuGkI5T6giTin8SKnvjHoGP/r+MeOZXiJfKahqwyzpi
+	4Bg3bLkRSS25I0IuTKiR0Os8XX+aRvHeB1BqGJjzcw0PnnITcxB7ZVChyE4OBcBIQwmsaO
+	lyqK9Sw1xYrxPILT7TPpiJqvi5Mpcqc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=itU8Xorb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d0EVKWGy;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775534446; a=rsa-sha256;
+	cv=none;
+	b=sRNG6srRgpR4skJM0aV7au+y7kotA1l8Y71tTWYxaD2mLfj3x0A0k8z+oXE3w2OmD7y9ye
+	a/ALQdHupsWWln9E19ni6JcPHpQ7yCn0PgBoZX3gqnkr6p9Z/m/Vv0NSSU7wwnV2h3TVHD
+	wsnPurAM6ZvT68E6w5cFNsM+O2KAKzU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775534445; x=1807070445;
+  t=1775534446; x=1807070446;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=1er2E8TY9Tpy2Qwo99UK/oBDNc6k2nZpUyVSIYodlfQ=;
-  b=itU8XorbtQ6fA4iQmwlcRYfMJTVw5q2NepnLS/nnKs1mxvLKvVTNmHRp
-   XwKJ8uqpJEMwakb5bYAQMCgmyyHEb5YgbqnK0v+bKZ+X7wpcQcSemSEaI
-   4OzI9hYDIb5hhOPHj2LICh+UkQ5wpnp7zPbjkLa8rxGK/z2gSAc71h1ZX
-   LdUFuHX2SpokfdrtyXWMHfqQ2Z6mVHljzsJ+QnSsXqh9PiSJH3htQlNWX
-   iTVW6pIpEELSHHPn7HrKMWHEeiuTvwTLT8dpdKrfmfOOzD5Y3OsQoJWyG
-   y2ggrsJF6mMhZnWdzlGTXoDHKMpkWepFpnlg19Hj7JQc/WXGWTgzuvV+G
-   A==;
-X-CSE-ConnectionGUID: LcILIVVYRMuVYV/JOjU7xA==
-X-CSE-MsgGUID: E+zajpTYSQ63lz2BxYo0+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="86782289"
+  bh=USWlDwOx/ndbgT/FRdeormiwr5KIC/20ITAGip56qSk=;
+  b=d0EVKWGymTzErPJtkVPMppnpvYkpap4j18pjTKN3LTMrbAE+77U5qc+c
+   VAa+w61X0RHEro5kn95+b1iNV7jNRhg01lu6abaYJThHcvhOiK5Tjp73o
+   AKHY1iAXYGHMXtu6Rw72EJ7pIWUvvCjzFsXtZsf7/iIEDnPOJgR9kF8fc
+   5M1UIzq60J3PzrV3dRleyCe8EPvCFsEpQt2MyHMkArkC/6Y+toITEjUEp
+   f595/ZGc6iz2yo0xJS3asbu1G/v5BsW+r5VzItlCAPYoCVKJIuGgAROJ4
+   9D3fscdgebBcGYKQsR+KMKEiyH99oYpbQYZgH4G2Yy1zRTBH4I1n2ip6/
+   Q==;
+X-CSE-ConnectionGUID: 670KQHVQRYe3qoZ3xr1x9w==
+X-CSE-MsgGUID: jV8ArwuUSnmbTCme6+Kflg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11751"; a="86782301"
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="86782289"
+   d="scan'208";a="86782301"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2026 21:00:41 -0700
-X-CSE-ConnectionGUID: 8S/r5/AsRyunzJ6lfbUhWQ==
-X-CSE-MsgGUID: Js3bgglnQXerX3pfS9bH3A==
+X-CSE-ConnectionGUID: JbesF0bvTamN7cLAOWalfQ==
+X-CSE-MsgGUID: MlWxMTBDRBGxTc/mvPNSBA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,164,1770624000"; 
-   d="scan'208";a="224844899"
+   d="scan'208";a="224844900"
 Received: from lkp-server01.sh.intel.com (HELO d00eb8a6782a) ([10.239.97.150])
   by fmviesa007.fm.intel.com with ESMTP; 06 Apr 2026 21:00:37 -0700
 Received: from kbuild by d00eb8a6782a with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w9xc9-0000000007J-1v7Z;
+	id 1w9xc9-0000000007H-1lvW;
 	Tue, 07 Apr 2026 04:00:33 +0000
-Date: Tue, 7 Apr 2026 12:00:24 +0800
+Date: Tue, 7 Apr 2026 12:00:23 +0800
 From: kernel test robot <lkp@intel.com>
 To: Yunseong Kim <ysk@kzalloc.com>, Kees Cook <kees@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
@@ -95,20 +96,20 @@ Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
 	Byungchul Park <byungchul@sk.com>,
 	Yeoreum Yun <yeoreum.yun@arm.com>
 Subject: Re: [PATCH] lkdtm: Add folio_lock deadlock scenarios
-Message-ID: <202604051847.ywz0arFk-lkp@intel.com>
+Message-ID: <202604051803.UYvkxRXB-lkp@intel.com>
 References: <20260402143947.162844-1-ysk@kzalloc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260402143947.162844-1-ysk@kzalloc.com>
-X-Rspamd-Queue-Id: 0B5AD12000E
-X-Stat-Signature: 45hpbtm6krh4bamsyzmpp79fm7rm5uxk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775534444-414449
-X-HE-Meta: U2FsdGVkX1/2Ky0pqcOpsFiwB4NmboCLRcxEtZEoXEqeT8RiY7bqvijANrt1SbTT86/lI7xRKUAMMlMgtNtAA+Hm0a0AnGP3vggIRfJ0uDdcwEPfYcVHh1AO1wqKPT8PRfsiFmASLecgbQ8iVZ/wyvuRQ1IKdknTt5PSfeUHIutW5pK/iINjGBmnkc2ASaqdaDbq2QbJkG0Ua4r3j+/djeDlXhZK31yh/YOKwcKXPGFAq2O1iZ0xJ4uJ9S4WBG8cQlhLEemUTvFXMNfCDuiyDjGNkbdKBs0n4t1a4wWf9a1xghIYryjO2jYxvPjLUroO+xi8tPFlvcVrlHX4fMNUWYu9oxHY3e1eYz/VYRvd9O/Tloj807VjuQmhsBlV89YyPSTBXRlxBGrpGYVkj+Un+fBnvmkcDcozmjuXOafaLfUh+zg9k8z36lY0RG8cVWNtcqAsMYH/gDBKzIgjWVf8tAIYp/xoh3oJ2VhsGWQvey+fCURCbh/obuSX5wv6xblpif79pEvhfX2F3d+Z3GIog/duKGpHJPHLOfjKZ2/d5/mQ2ryNW6Ll48G5Fij1kX1AQyHWxABDVlw34J1gDu3AJ66l1wkxvkTjSHvBQ/7boGozLYga9beC061LNqLvrl+DrYIphbQjg8WLJCM51HzVzQthaJFdWBkyVwIRB7babLGlwR+Ci9hkdm/dLU7OTuXRw3fEkqASjvldHzXDjz3QdoqA+JfU8rFrKTo04780VOTBN2OuWfctYMiJZoDeHNRy0RUqTDY7EIOL0dke76jAUu5LAYGuDv/x+3Ghb5yecS0fs8xUWdgNHek0kpoXrtyo+3IEYDQmndtG+XAU20IBezy7h0tWGSevfwBeJC8rvswR0PiiAPTFknAQpKBeXwxXgMJApM7jWU4iDALPPGI36IukjJgNUS9aVN7rXB1w0kdENmTMwJq6XkEybGuwasDEYvbRV45awuHCOCRomKn
- 6L+go6m4
- tgPejrIJCaIUMsXonKKrOUMyXVT9ufXQ/DB3dj80G5SkKk2iP8/1FqZL6iVzL8Sy41Ld7xN2vFJ6QEWl+WArq54qKpxJqOvix1lpbPAAWSlLyslcEyK0yHCKmtBkD50Swlk5f8EWav1A2WmcHU0OIYUj30rS9QrU4SXoRThcFqAm0OmLHi1H0scbOIPNPZDoah6jWzctad4OimI1aEWqXXp5rNTvV57YwrQVFAM1JT5hEE3seUmkOF6ERQksKno6bxf8ndgLNaEO2EAVjbyjpVDx2ML29BvdJ4T2OIFWEVzAeZKcx+awEuiBsBQLhC1UpQ0ZpXGtvQUgtleUHvIc5TYIqCwAuX8ppMerEokKk85fXfJqjKEb8Ape1mUBeihemlgAjlRo9Xb8vj0AdsqCWNdhlEYEMZocNFDc6BiMWD6kSJa2GcKLFBoTh42XEQzs3YORr1rd6XckhahsKdbuEkqPNbnpjDO6SGg7YNq7W6v61bBplW5kOG6lM1OGYnSUEhQnv3ohSbMyOi0jqpuQL9LsmfymguompzhxaLoIb2WuOAnfi6uDth6z9lnoL05ul6ttY
+X-Stat-Signature: rna5yzz8o8zf1rnykxeg3xf78mp356a4
+X-Rspamd-Queue-Id: C3A6C4000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775534445-54585
+X-HE-Meta: U2FsdGVkX1/IBJ9k5hXWpErFtL5e7qbaUpahjGWVNkpBDlTTGGVvPv3NQUAGPWQqOuDJAkEf7AtDfF2QyffUXz8ne3bgfg/9TEt1PzfJYEqwH0goDV+nYywj7nUa2HUr3HHVd7RhM1NybZopF0Ub4YsodxDQe9rT6l6HBFM2HpUCnhbtH0TOAl8hW1s0PIDNUv9prK5RNIYoYkEStPsskJJCCN665fGl2RXUykPYCsXhiYSZG2HLvicZY4+5BFuPztts3h1ANEEJqQF7hYfns7bn8aCVXOpmTcwziTm6+OmkOwwgpKgfjY1z0CZNf4y1UIWJ7bEd8Ht4UWSMvHztQicIVxc0Lin1d97/Sx2bypAEmp2Qx9B0Il66+50pdWicY4mb5CiGY+OAAQ093corsFVvnc5beyzhha9NK8b5cbSNrU3KW2sY0JinjFknd7KsquFSc6B8MBmFnlD2pJM+p7loFWEKN5AdiYuRK2MxPZsTjXAuu2yGRTvYqr1qhBa4ocg4FTauqzhiw22BqD9BkLB5uPVrIgrJWYl5CQ23Xq3ucLOnqZrNyucGwBSzY95yMHvlTznTqnaea8JuYQpnRTSVUf/e5sF7Y0WFG8too/l28AKlUgCGwQZ0ZtIyKYv+pFmS4Y2z5KLv1l8rE/F4I74f/K8H6oaWvHMPeqrjqnuuQezdHPuqeHGUwS8yBzWBib5JMGXdQrRYuvTtkcecP753zot5+S8/MjqSNbjA3qXZLdH13/BI3Qx8E6I01/fgW3Z6kw6PEAo4N2fiq8KpXbB30Bh8mIM4J+BxH8/5qvFnDBOryYen0+vdwQ6geFoGCMJb53WkpH/sHQR+PXM6NU7CX+8XF+N9rSEvPRMu7EqRH8QA54b5cvDVsc+F8obuagMMuLaCncDWk9Hier+P1eX39NYwZ+yQtP5jc46xV5NUJsC5hU1eutzeGsFFn/z2AuJuM7n6j5Ymr+NqPmR
+ oq8ml1A7
+ KsPEdOr+74opEskf9RdEoBwU4jqEia4Mg0Vb/OAfJt1jloZAC6zYDUvQc0bTUBe7st2o3aUfzRcLiPJR9vMFRCvXYgSUA5+GNWx8ndmzf/D3oUv6hMUULlxUuJ4T72UQxMgeViEuf3zMsxkLI9ebn/+AO4zrVD2dCTJOsmkUWH7CVO3ZU07A/0hIJkRyMkqc3QnkvMaPIuoDdB/FQ22hYsQcSCu+MbSTRbk935OqARFlgbFSp66ixSk3QnY7ywjTvty5ukZ5nOd+DEchTlUTpNjz+0f/oGcxAOREWhxcjIvPxL8+xM9e3Q7GgqcunkV6rpmbeyF4yjObLDyzUZVR+p81ncOXXTynfHb/OfOexJA0n8VZHXwhMxd/n7OVhxvGVH32Agx5pn295yCBEy7nCxHVMKvtkLX4jmarn6ZoM0O9jZ2rqMH5+y7W/HzJtDqfUDYOX/GhR4BgudMeoFYnVXCbfuEK1YMCqak0OsaBWtlfUq2SsqNWW0rKjUJojO/1iEgvYYeRB4QvQD67LAnqhyjIopHXEzSgxUjBb2NUbtcogjT+esMsAL/3h6wY2ut/cJ/0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,10 +119,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi Yunseong,
 
-kernel test robot noticed the following build errors:
+kernel test robot noticed the following build warnings:
 
-[auto build test ERROR on char-misc/char-misc-testing]
-[also build test ERROR on char-misc/char-misc-next char-misc/char-misc-linus kees/for-next/pstore kees/for-next/kspp shuah-kselftest/next shuah-kselftest/fixes soc/for-next linus/master v7.0-rc6 next-20260403]
+[auto build test WARNING on char-misc/char-misc-testing]
+[also build test WARNING on char-misc/char-misc-next char-misc/char-misc-linus kees/for-next/pstore kees/for-next/kspp shuah-kselftest/next shuah-kselftest/fixes soc/for-next linus/master v7.0-rc6 next-20260403]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
@@ -130,29 +131,27 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Yunseong-Kim/lkdtm-Add-fo
 base:   char-misc/char-misc-testing
 patch link:    https://lore.kernel.org/r/20260402143947.162844-1-ysk%40kzalloc.com
 patch subject: [PATCH] lkdtm: Add folio_lock deadlock scenarios
-config: riscv-randconfig-002-20260405 (https://download.01.org/0day-ci/archive/20260405/202604051847.ywz0arFk-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051847.ywz0arFk-lkp@intel.com/reproduce)
+config: s390-randconfig-001-20260405 (https://download.01.org/0day-ci/archive/20260405/202604051803.UYvkxRXB-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project c80443cd37b2e2788cba67ffa180a6331e5f0791)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260405/202604051803.UYvkxRXB-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604051847.ywz0arFk-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604051803.UYvkxRXB-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
-   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_folio_mutex_kthread':
->> drivers/misc/lkdtm/deadlock.c:99:38: error: parameter name omitted
+>> drivers/misc/lkdtm/deadlock.c:99:44: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
       99 | static int lkdtm_folio_mutex_kthread(void *)
-         |                                      ^~~~~~
-   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_mutex_folio_kthread':
-   drivers/misc/lkdtm/deadlock.c:112:38: error: parameter name omitted
+         |                                            ^
+   drivers/misc/lkdtm/deadlock.c:112:44: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
      112 | static int lkdtm_mutex_folio_kthread(void *)
-         |                                      ^~~~~~
-   drivers/misc/lkdtm/deadlock.c: In function 'lkdtm_waiter_thread':
-   drivers/misc/lkdtm/deadlock.c:228:32: error: parameter name omitted
+         |                                            ^
+   drivers/misc/lkdtm/deadlock.c:228:38: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
      228 | static int lkdtm_waiter_thread(void *)
-         |                                ^~~~~~
+         |                                      ^
+   3 warnings generated.
 
 
 vim +99 drivers/misc/lkdtm/deadlock.c
