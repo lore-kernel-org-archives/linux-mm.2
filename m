@@ -4,120 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5FBEDB7D0
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 22:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1729105D98A
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 23:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEA036B0089; Tue,  7 Apr 2026 18:58:49 -0400 (EDT)
+	id 0C9206B0088; Tue,  7 Apr 2026 19:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC13B6B008A; Tue,  7 Apr 2026 18:58:49 -0400 (EDT)
+	id 0A1996B0089; Tue,  7 Apr 2026 19:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD6FA6B008C; Tue,  7 Apr 2026 18:58:49 -0400 (EDT)
+	id EF9386B008A; Tue,  7 Apr 2026 19:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0BE6B0089
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 18:58:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BDFE160320
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:58:49 +0000 (UTC)
-X-FDA: 84633276378.03.3A32205
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9EA6EC0002
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:58:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxT4H0gM;
-	spf=pass (imf10.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DE7F56B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 19:00:33 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E27B1B8E0D
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:33 +0000 (UTC)
+X-FDA: 84633280746.27.C39F4CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 644651C0017
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6VNSKvR;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775602831; a=rsa-sha256;
+	cv=none;
+	b=nH+kMCoI1etCcG7+xGk0FX+kb0aigQDFYbOJkuvxrXFUJZI7f1JPk1goTvHUIIZYSO5mUE
+	VAyH8S4n9/YPJQRB2sBR5oSRwjLQSKr5wxx6TB59G2kFmy4HTCza8w7w6cef5DFb6siTpN
+	sPfHTisPzpgXDamBcqVhQ3SZ9F/WgGE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775602727;
+	s=arc-20220608; t=1775602831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WMbYOgaDr/Kx+71TeWTaVBU+sUYdKg1v+oxDqlB4JDE=;
-	b=cTQMJam2zeXQBQARe7qVzwS3RNclfAqe8joImdPBU01I1kJXuHtmxTF3ozskR9dJUbCDJg
-	iYOP7wG5pqBygpUCCNFZwwqe5aKApIr6rvXIK483aMzy/KvQJ5l8H0RfoBdRf543Am6KK5
-	pDjVqMsPpXMm/t/P7db7JEQyTuzqT+I=
+	bh=HET5hJmoUonxeOKRNkcO45gduQNISxOyuHxsdJOzLOY=;
+	b=SHhKo14cuj1T8fewEoAQoGzS5nsDfJXLfYMqwDKOu2ka9ldAWsNRklR8QaZbHIGJoWqCwe
+	DiCND86jvxfECEwtW3s1nnrWH2hth/y7+rGk3PlgK05FAajicHI6Sg5Qtfyg2RUHybxsbs
+	FWQ+JGGxR4oFXSByupRyJuz6a2aKigk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxT4H0gM;
-	spf=pass (imf10.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6VNSKvR;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775602727; a=rsa-sha256;
-	cv=none;
-	b=Bt+0b/hTBEvmrWouq8y7QBpaiNkHPZzz15se9adw76XTLdW1Bbvb/ieetofqY3UE5SHUPo
-	1YZN7h2zHGl0nlGQg6EHW70eoefDxjAvUJpJfQRq8hiaStpy4mV1igMOlZM5e2KmZc+Vg3
-	t2qTj91olOlpZPjA3/e2KFip6/ifRcU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4480660128;
-	Tue,  7 Apr 2026 22:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C69C116C6;
-	Tue,  7 Apr 2026 22:58:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 34B8C44535
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129A8C2BCC4
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775602726;
-	bh=ZxMhQkn/NMJTsfUq+eNI5wRqTDBwCQBg1cjTyGaGSzA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=YxT4H0gMU1uiOeHwbtOxxGkfFWJBaCzthqg03Sftf8l9d186Y09INkfJ8VCpcsjUT
-	 Qfd/Qlw+XjxQGpsD/+wtJtFtyh3etr3/mtV9qhSmixByvSXfzBB7nBSEJNPsodmdHd
-	 n6aWnXLqcu6DDQCkFID7N0ab2dedIpF0ftmNXCcvehsYTzafVVvpTSGtJI0Yt78qAh
-	 7zcrBzbK4e2mGEgKbxfT4/RQOcj3aPhgKqv9IwN+ABisbMsvBq2hQAvVVGI9l26vIJ
-	 NOji8KIk0pikMh4DCWmZrmRQsTJnp7fjTB24k9B9hx+3b4Laf7gnEUw1IEsuOG28xo
-	 +wM+h43SmOleg==
-Mime-Version: 1.0
+	s=k20201202; t=1775602830;
+	bh=jkF6LsPqU12jwyxFfypEKWSkg3vXsh5cayrxCNLp5i0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=N6VNSKvROEaExx1bmqctO6GSFjzHjZ61bxsG+Jau7BNti7eUcF7P7xprNrn03/0jq
+	 lhn0anmZJClQoH/hT0PoO5u+VMrbAqtinURrFwgNNAZEhBa1+ALUYZC30gQBJkQyZP
+	 SlzhGpFKiRKaGqgWSo9JqCfhpp+6ILkXIp17WzwSnuc+iCe20DSjAho4EcQSI1VxEZ
+	 zb53N7FnEcmdc5c92s8lD2obmOsfEhAjFFmWW1cvqmziykdgsW1T/vtgq3AxqIOQeB
+	 Sr0smbUY/mRoYvlvmdhCp5EAUu5qE1pUk20d4zDVicchRux/1pqhmQwy+XTy0FHSvT
+	 vIsTY1UOi66qg==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8cfc3ca1922so40532085a.1
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 16:00:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWgQXEGfNrKlC6uJldpbGe9R1xbrXcxufqZbSmE+ORYnJeUqWBVWZ3J/jFX4J3LNvAD01iGv+UkYQ==@kvack.org
+X-Gm-Message-State: AOJu0YzE+87tPiop5gyyOLheMXLdJfe974+7bU0TbZTCVdPhKBFGEth8
+	KTtOil2WvbEXrwYPUmQdEslKVLk2rpheUv/SOUoRv4olYxrg4cNjPlVwitsbwoxqNIqdQ+OyU99
+	87XUuEMLBEsDiJNrjgHMHggGhjVRlmHs=
+X-Received: by 2002:a05:6214:d88:b0:89c:ceaa:872c with SMTP id
+ 6a1803df08f44-8a5eb81bfa4mr340853426d6.13.1775602829252; Tue, 07 Apr 2026
+ 16:00:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com> <4451bdc432864aebb54f401eee51ea53@honor.com>
+ <adUM54W3WYwEFj3J@KASONG-MC4>
+In-Reply-To: <adUM54W3WYwEFj3J@KASONG-MC4>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 8 Apr 2026 07:00:17 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
+X-Gm-Features: AQROBzBw61WCRWk6P8DZuUdQL5lNNdSj2p4e9VUuuyVH9SFPZTUX1jhf5ktw68A
+Message-ID: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
+ = 0 or 201
+To: Kairui Song <ryncsn@gmail.com>
+Cc: wangzhen <wangzhen5@honor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Apr 2026 00:58:28 +0200
-Message-Id: <DHNAMNISZJ9O.3B58NWX64GBGE@kernel.org>
-Subject: Re: [PATCH v5 0/9] driver core: Fix some race conditions
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Alan Stern" <stern@rowland.harvard.edu>, "Alexey
- Kardashevskiy" <aik@ozlabs.ru>, "Johan Hovold" <johan@kernel.org>, "Eric
- Dumazet" <edumazet@google.com>, "Leon Romanovsky" <leon@kernel.org>,
- "Christoph Hellwig" <hch@lst.de>, <maz@kernel.org>, "Alexander Lobakin"
- <aleksander.lobakin@intel.com>, "Saravana Kannan" <saravanak@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, <Frank.Li@kernel.org>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, <alex@ghiti.fr>,
- <alexander.stein@ew.tq-group.com>, <andre.przywara@arm.com>,
- <andrew@codeconstruct.com.au>, <andrew@lunn.ch>,
- <andriy.shevchenko@linux.intel.com>, <aou@eecs.berkeley.edu>,
- <ardb@kernel.org>, <astewart@tektelic.com>, <bhelgaas@google.com>,
- <brgl@kernel.org>, <broonie@kernel.org>, <catalin.marinas@arm.com>,
- <chleroy@kernel.org>, <davem@davemloft.net>, <david@kernel.org>,
- <devicetree@vger.kernel.org>, <dmaengine@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <gbatra@linux.ibm.com>,
- <gregory.clement@bootlin.com>, <hkallweit1@gmail.com>,
- <iommu@lists.linux.dev>, <jirislaby@kernel.org>, <joel@jms.id.au>,
- <joro@8bytes.org>, <kees@kernel.org>, <kevin.brodsky@arm.com>,
- <kuba@kernel.org>, <lenb@kernel.org>, <lgirdwood@gmail.com>,
- <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-aspeed@lists.ozlabs.org>, <linux-cxl@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-pci@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <linux-serial@vger.kernel.org>,
- <linux-snps-arc@lists.infradead.org>, <linux-usb@vger.kernel.org>,
- <linux@armlinux.org.uk>, <linuxppc-dev@lists.ozlabs.org>,
- <maddy@linux.ibm.com>, <mani@kernel.org>, <miko.lenczewski@arm.com>,
- <mpe@ellerman.id.au>, <netdev@vger.kernel.org>, <npiggin@gmail.com>,
- <osalvador@suse.de>, <oupton@kernel.org>, <pabeni@redhat.com>,
- <palmer@dabbelt.com>, <peter.ujfalusi@gmail.com>, <peterz@infradead.org>,
- <pjw@kernel.org>, <robh@kernel.org>, <sebastian.hesselbarth@gmail.com>,
- <tglx@kernel.org>, <tsbogend@alpha.franken.de>, <vgupta@kernel.org>,
- <vkoul@kernel.org>, <will@kernel.org>, <willy@infradead.org>,
- <yangyicong@hisilicon.com>, <yeoreum.yun@arm.com>
-To: "Douglas Anderson" <dianders@chromium.org>, <m.szyprowski@samsung.com>,
- "Robin Murphy" <robin.murphy@arm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260406232444.3117516-1-dianders@chromium.org>
-In-Reply-To: <20260406232444.3117516-1-dianders@chromium.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9EA6EC0002
-X-Stat-Signature: jj51d5noc6f6xao3uxhfjqap1hxeidsi
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775602727-549269
-X-HE-Meta: U2FsdGVkX185craA0t8t5I0uzTu2Fxgfnkyms4eFLGgtSQbnNoVYOA+fxEjsA9WrerG2glU/LYhgyzzAuo3XOewF+GbssW5uPpxG4GE/b5RCuaMKdZRpHZMSh9M1leVIFJr2NfB7Y8JPKVGQsxuhZR2RZnWdkRY0cn2tiqAX7xO11ibgcBN5HGDHf3CUQ02foMnDYzxWyoCM67XKmsw4M8DtZljQhoJrz1ti8mKv/AFamF2g3ZI8bP6gwHvEsmuydb8bm/v1aXvYB1Stdxx3/mBKGfAAseoq1SrITG2IS7GDkt35gQGIpYXkrBkdx99seK9mXZiFgDrxtU51Rs9dpivhTRc7yYkjJ49DEEBnaVU4Pjt9lMZj+qLIJTIgevR/Ss6Ss3g4GpC4qt2nXKXVuj1RCBNWG5XI2gM6ctI71mEqryb73Mr+SwIHzaF1E3aa6EyESexgopP7pkKAp3dtSSWuAdBouorysDUl1IA7mVTE5dJx0eBB6SNcuj+D1da5eA+L16XCJgxj6/EXsf2/njj2+JpQ78847cHqkdYoz99XQph92uoBnlFVuJd9D2ey6LuRA3JaDv9gzvvfhLc9mOoyGcAoWWTQyqsxEJGluqpnr+2dPx+d/Pqj77mFG5fTeuN1wBQmxgFZMAEuqVPA2Md2O+wGcpueDpmnlwTl+h9XXd4Mh+KK3RH4vxTdVacgHByGc3grbbT0sB2Q7rYRND/NToyu0Q9Zx8zlzYRo64WK0zUnVf+Xu0iZKRhFNv2We/qbfflzm+v3MOBGfjKm54WfrDcER13WBBqabTydgdt3RI2Seo1OIANx6rEOo9aG3kzSj5ZQjifoipCf8Rjxz7LHixI2s5tHE10PFQCITcrZH5xMAOBrTwpxhGhUCYR0SPYcBXnsi1X7+ffS76EXF3NgcaVVR00qtDs34D9UsY1ij5TmYEu/bVlQFc6nVIvVPAa6EwCLNQvxyTYdyRQ
- ocueCSxV
- 1jbgtiss7Vf65AuZ+1FJFqFDn55CRJI3CLO+H/UU0pinAg2HtVl1R/KZXAbmxFAoIuyiJJKzKb7AcQal98OiIeLLBaxIxJCSgdZs0VuWAQJjYPCUQBDMHNndTh3K3l6EsainkMG4AVcAuEQRfPbVcsuhoU5QCs8D9zvLeoeUVNmeMoSJRBprwab84obK71Y/k5vlSD1wLnXF2YhEfeAVwA8j6OcDcmhb8E6n992hw1oAYcRIcrQWzW2sx4SinES4SylTSyQGqenaCyrXvgXLVAzYrPmr8b6u1CEPBjs1Ouv1vT8CvSL+e5nVAvbkFE77W3WXvmhvfSDxqRrJcTjnnEngA4tm2y0VoxmQF
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 644651C0017
+X-Stat-Signature: racd1hifpuhj8jpqsttwzew7fyje9tdo
+X-HE-Tag: 1775602831-6283
+X-HE-Meta: U2FsdGVkX19zWnYX0VYsguQMJ5mTYCQPVGNhwZj8IaAwLPhfKDo9c51KksEVCmnXjbdJvNGMX9DXLlbUpleh4c6CM91pDBFV9Q3zw4uIzYLTjQBNOqPWmFWM+8O/Ma4KhwcLeOud8QqsrCOS+XH4/I4y2MwitduxzLoQtE4pcbaD5adOBSoUiAcPqM8/Tj3ZDE9wOoV4AZwe0wstX1zwvIXDzAUHPtpMJXTePWlOgOzvPgJ19pCwj/St+bjHLeg6vLH1Sa/3HLIU03AZ3xd8oXAM467oTodrPkaZTGcm3wFgam2qCoQyXPVyr4YBRdJ7AxnKA3cQeEWVrMLIVIwpfJh5M967UD38Uf8AshojwykY4CvwYuWKohTVVoOdFOGMz4+/gtDBRfbzdrLjSD8anHzROd3SQNTiyCan+gju9h5VbGJr9kD1OwjRmhEG/pKkxle19o7oAeE53/abZUpljIwf8y7ZK6+cW9UVU7GE+sJTTlZojFnKEDbXIHIO638PqqL1OIaSqCtBRh5twZ1mO323PoPUr9K426AeBeXkXwu8zo9ew64SY6zUA2IRDvEWwFZY2RVcjCSDqVRSUZYUwjL2WRUGJ7m9iAJuxLgWBFNIJCifGppPh3lonY0nuF69R1loCV3XL72WsUaoHFsdw7OsTDC+0q/p4qJUrx6C/dW0DQe+8/ewH+lTci/99TC80kMUXGt3QJTBSO3ve+PdBO0u1jsBXIW8ld/pbMKJexuw8AlpRFXdeX+nnD03nePKNLlXUp0mivjeN8qKzZ2nr2g/0RUvDZP2EaX27dmzTHv5jsJOwrgBaRa5e/T3Uvx57zMGElKz6mLW/BV27+W4XT1sL3siqUXJqC/4c1zJvx8D6WDqkvANT6P/FvjYtTmm0oMPvcLfvO3FHy5Xqkd+VrHjNKEvxtryIPamJu5ifHMWUPNME6HcEbdaXfGAHciGVZEZ67QLMVLawhl+Jcp
+ cPsY7mzh
+ kcF0LFEDn6EZ7z4DyjnJ0+qO+tzCrfC+nkP162i1iu63uZ9gMQa3/c3d/mcHEm3TL3seMA3QdHKJsQvYwphCUDCDqKnDz0/jftYRV5zRTw7hy/55nZCSoAKOv8onrzFGZGNfYH8d2s5fDkqVDiZRcxg7hLkk9hUl/AKq2u8cENzfq8kHBjEj31ntgIAtECqa3mfQw6y/5HLUTTUsvt4h9bUEW3zWDslmKH5lz3XosX6YKSDwnaYU4ehckMMOQ8cngFrucKq53hokNjf0OBgIFNiz1deXdXNIP+H5fi4HSfM6HTloZ45o1JM8GqKFVyzoyB/eBx4Z/Y1kuMhSitjVEd9YnYVO4F6G13RIrf+TfRDcOoQZfBdyUgb3jU3nRYqF9ubmroMngixb5JSccueaLLZxeiRZUsGUxxS1L23GLYNT3e4U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,24 +110,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Apr 7, 2026 at 1:22 AM CEST, Douglas Anderson wrote:
+On Tue, Apr 7, 2026 at 10:26=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Tue, Apr 07, 2026 at 01:37:08PM +0800, wangzhen wrote:
+> > >From ac731b061f152cba05b9aa351652a04f933986e0 Mon Sep 17 00:00:00 2001
+> > From: w00021541 <wangzhen5@hihonor.com>
+> > Date: Tue, 7 Apr 2026 16:17:53 +0800
+> > Subject: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappine=
+ss =3D 0  or 201
+> >
+> > In some cases, when swappiness is set to 0 or 201, the oldest generatio=
+n pages will be changed to the newest generation incorrectly.
+> >
+> > Consider the following aging scenario:
+> > MAX_NR_GENS=3D4, MIN_NR_GENS=3D2, swappiness=3D201, 3 anon gens, 4 file=
+ gens.
+> > 1. When swappiness =3D 201, should_run_aging will only check anon type.
+> > should_run_aging return true.
+> > 2. In inc_max_seq, if the anon and file type have MAX_NR_GENS, inc_min_=
+seq will move the oldest generation pages to the second oldest to prepare f=
+or increasing max_seq.
+> > Here, the file type will enter inc_min_seq.
+> > 3. In inc_min_seq, first goto is true, the pages migration was skipped,=
+ resulting in the inversion of cold/hot pages.
+> >
+> > In fact, when MAX_NR_GENS=3D4 and MIN_NR_GENS=3D2, the for loop after t=
+he goto is unreachable.
+> >
+> > Consider the code in inc_max_seq:
+> > if (get_nr_gens(lruvec, type) ! =3D MAX_NR_GENS)
+> >     continue;
+> > This means that only get_nr_gens=3D=3D4 can enter the inc_min_seq.
+> >
+> > Discuss the swappiness in three different scenarios:
+> > 1<=3Dswappiness<=3D200:
+> > If should_run_aging returns true, both anon and file types must satisfy=
+ get_nr_gens<=3D3, indicating that no type satisfies get_nr_gens=3D=3DMAX_N=
+R_GENS.
+> > Therefore, both cannot enter inc_min_seq.
+> >
+> > swappiness=3D201:
+> > If should_run_aging returns true, the anon type must satisfy get_nr_gen=
+s<=3D3. Only file type can satisfy get_nr_gens=3D=3DMAX_NR_GENS.
+> > After entering inc_min_seq, type && (swappiness =3D=3D SWAPPINESS_ANON_=
+ONLY) is true, the for loop will be skipped.
+> >
+> > swappiness=3D0:
+> > Same as swappiness=3D201
+> >
+> > so the two goto statements should be removed. This ensures that when sw=
+appiness=3D0 or 201, the oldest generation pages are correctly promoted to =
+the second oldest generation.
+> > (When 1<=3D swappiness<=3D200, only both anon and file types get_nr_gen=
+s<=3D3 will age, preventing the inversion of hot/cold pages).
+> >
+> > Signed-off-by: w00021541 <wangzhen5@hihonor.com>
+> > ---
+> >  mm/vmscan.c | 14 +++-----------
+> >  1 file changed, 3 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 0fc9373e8251..54c835b07d3e 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3843,7 +3843,7 @@ static void clear_mm_walk(void)
+> >               kfree(walk);
+> >  }
+> >
+> > -static bool inc_min_seq(struct lruvec *lruvec, int type, int swappines=
+s)
+> > +static bool inc_min_seq(struct lruvec *lruvec, int type)
+> >  {
+> >       int zone;
+> >       int remaining =3D MAX_LRU_BATCH;
+> > @@ -3851,14 +3851,6 @@ static bool inc_min_seq(struct lruvec *lruvec, i=
+nt type, int swappiness)
+> >       int hist =3D lru_hist_from_seq(lrugen->min_seq[type]);
+> >       int new_gen, old_gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
+> >
+> > -     /* For file type, skip the check if swappiness is anon only */
+> > -     if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
+> > -             goto done;
+> > -
+> > -     /* For anon type, skip the check if swappiness is zero (file only=
+) */
+> > -     if (!type && !swappiness)
+> > -             goto done;
+> > -
+>
+> Hi, thanks for the patch.
+>
+> We have a very similar patch internally, and the result is kind of bad.
+>
+> Currently MGLRU forbid the gen distance between file and anon go larger
+> than 2, which mean with this patch, when under great pressure, you may
+> have to keep rotating a long list of the opposite type of folios to
+> reclaim another type.
+>
+> For example, when you have only 2 gens of file folios, swap disabled,
+> and there are 3 gens of anon folios. Anon folios are unevictable because
+> there is no SWAP. And file is also unevcitable due to force protection
+> of gen. Consider anon folios are mostly cold (at least a portion of them
+> are), now the oldest gen of anon folios will be very long (e.g. 12G,
+> 3145728 folios).
+>
+> Now, to reclaim any file folios, you have to age first. Before this
+> patch that is usually fast. But after this, it will have to rotate
+> all 3145728 folios to second oldest anon gen, will could take a
+> very long time.
+>
+> During that period any concurrent reclaimer will get rejected
+> due to force protection, result in very ugly long tailing or
+> unexpected OOM.
+>
+> So I agree this is a good idea in general, I agree we should do
+> this. But better defer this until we patch up MGLRU to remove
+> the force protection first.
 
-Applied to driver-core-testing, thanks!
+I suspect that once we can age file and anonymous pages
+separately, this issue will resolve itself. David already has
+some code for this [1].
 
-> Douglas Anderson (9):
->   driver core: Don't let a device probe until it's ready
->   driver core: Replace dev->can_match with dev_can_match()
->   driver core: Replace dev->dma_iommu with dev_dma_iommu()
->   driver core: Replace dev->dma_skip_sync with dev_dma_skip_sync()
->   driver core: Replace dev->dma_ops_bypass with dev_dma_ops_bypass()
->   driver core: Replace dev->state_synced with dev_state_synced()
->   driver core: Replace dev->dma_coherent with dev_dma_coherent()
+Not sure when he will have time to push it upstream, but I
+may carve out some time to take care of it this month.
 
-    [ Since all DEV_FLAG_DMA_COHERENT accessors are exposed unconditionally=
-,
-      also drop the CONFIG guards around dev_assign_dma_coherent() in
-      device_initialize() to ensure a correct default value. - Danilo ]
+[1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
 
->   driver core: Replace dev->of_node_reused with dev_of_node_reused()
->   driver core: Replace dev->offline + ->offline_disabled with accessors
+>
+> But I think it might be reasonable to remove the SWAPPINESS_ANON_ONLY
+> limit now, that can only be triggered by proactive reclaim
+> which would tolerate long tailing and won't cause OOM.
+
+It may be better to defer both cases until file and anonymous
+pages can be aged separately.
+
+Thanks
+Barry
 
