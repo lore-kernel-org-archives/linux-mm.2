@@ -4,156 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBE92FB5180
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 02:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E89FB5183
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 02:53:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 390C46B0088; Mon,  6 Apr 2026 22:43:02 -0400 (EDT)
+	id D3ABD6B0088; Mon,  6 Apr 2026 22:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340A06B0089; Mon,  6 Apr 2026 22:43:02 -0400 (EDT)
+	id CC4F06B0089; Mon,  6 Apr 2026 22:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 209196B008A; Mon,  6 Apr 2026 22:43:02 -0400 (EDT)
+	id BDAE36B008A; Mon,  6 Apr 2026 22:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09C836B0088
-	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 22:43:02 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A80F3C2125
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:43:01 +0000 (UTC)
-X-FDA: 84630212562.28.7893CE2
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013008.outbound.protection.outlook.com [40.107.201.8])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BE5A340005
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:42:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lP9qfH2x;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.8 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775529779; a=rsa-sha256;
-	cv=pass;
-	b=0CN1KMvWC0q+sRPYqMzBv1sz9b2MbFqaRqJ32cextfokIm+cmudccTLCDArUhXTYlht5O9
-	2bx/gdlMANuGDncw6Ux4yrw9Hzz6udzYs5VQhSSkEdCub+t7iCQbkkAYZfryb+JPgrJyfo
-	bhMKHwdf2HVE7xJKNxRY8N0ast92Zao=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775529779;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB27E6B0088
+	for <linux-mm@kvack.org>; Mon,  6 Apr 2026 22:53:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 205D61401C2
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:53:02 +0000 (UTC)
+X-FDA: 84630237804.16.3D4889F
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8C11114000F
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 02:52:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775530380; a=rsa-sha256;
+	cv=none;
+	b=JKLsX+0hAx9Sbyx1HlfDIRVeYFgCHM98CiblPRnV55/sP41XgmpWh1/Mqq6is51T1/vku0
+	rcjOMZHajrMkeOJGRC/KXC//X5dGnyeMbhRgGJql/R5dcfaZh7PqKHvB7u/tWhEqfO19tN
+	hLPzKdKTzGaW3KjeC+nwVXlZbUQpjrk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775530380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wd+MVOdhHp9JnPxjvE1whER0EW5SLJ1nifyFLwP4ZgY=;
-	b=hL4ZXPWDnNr8kHnDPqdtTso9twxzaGAGdaPqEjFAl1yQI/r3HsnvsWE99lgIgVNbbDsURK
-	6xCKez7oWkVMzVXPQ7V39WZxwNCm1bnd8/w628JZEZr7CBp6v7RbyKC7HIQDgN8AqL7OLS
-	AtRZfWm+8LjD1AiIKcUlX/gPOfCJQzo=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lP9qfH2x;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.8 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ojHEgZQ6ibuAsJS3zAnhMsy/84UGvJso7LNWu9jccUmoonOXPibTYnpFpSR4w+Yk28qrkjBjloZ6/ZaEuGKM+ycs90PzEWnnAOZO/dvhjqBN5lWV96EP9rNrO8NSwPS7n9KaCVk2EAIRK30lw9LYzr/1yz1K3rmZ8j/3vNpY+eszfEBVuIEK3y5KGhRynY60StEOu1JzflPdFZXcZk5BgtTtbt3hwSJHXDm7Eq6zt3dY6oRiXKe8Sq1oPg5Cnag24glL0kYv6Lw5rNfiWbssOL8f6KPmjbRACymtMVYF3eH2KbxZVx4B++NEz26ZGw23SF0B0nSkGM+AuSTbyXA6TA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wd+MVOdhHp9JnPxjvE1whER0EW5SLJ1nifyFLwP4ZgY=;
- b=F+vqptwIsItVrrSBGOHvHcBphBF12m/KPi4HCR0LoX7Lrai57bd5Q2huIOi7bkhhiHPc7Z2OrTXVw0SbtxwYu+EuBaz44zgPDGYkvy8hsoqWtouQiPy6OoL/JGZx3MiuVSIJnemVzwlR3ivI3oMZvBdbSSzy1toZ4izmK7c4OQ67xIsz2Bfa3hdku2pKTf3NykMxBchkw4FMdOE6/J11tVIJeZLqEAcc+HsMjWFTUQeTJUDepohyjYbeokXZe/gPhANwzQuk10wh+1QClnBlTLCHuPJnN45EaMA3u/4QUMj80NKSx2KT3744rKzuTaWynHk7/3kdJLtHVvM55d5GRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wd+MVOdhHp9JnPxjvE1whER0EW5SLJ1nifyFLwP4ZgY=;
- b=lP9qfH2xGXgB3RbXN/oekU4oAPrwJ1fWdyqjPjTz7NFfGRv+0Q/DidszDQfSwTx0ZmBdocQfnCTGgHdEtSTmrOkQa4HAfD6Yqu/pmjwFspjCSvoYgyN747qX7QHJNdJsxQ8Jcp9kYm2u4A+vZuZ2xD7r50kf/JL9qjVb1hCcqimTXwt9i75MVCgcggnFSd9RRCkdJ9zHnkZ3grY9FMCkihKI/eLkujIrKC2IyTtfNB2tqWtsULmlFzODpbNQJPY5dQGX4GN/E5Eckpny2GSyRk+tqFTJC69nzselK0quspHpWUfYAUVuX1Uisk63nHrPdi6VBVdtPP0A1KgpGH6MOg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH0PR12MB8532.namprd12.prod.outlook.com (2603:10b6:610:191::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Tue, 7 Apr
- 2026 02:42:54 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Tue, 7 Apr 2026
- 02:42:53 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Rik van Riel <riel@surriel.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/2] mm: page_alloc: pcp buddy allocator
-Date: Mon, 06 Apr 2026 22:42:50 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <E057A972-42B4-4EA5-B46E-3663FB676A9C@nvidia.com>
-In-Reply-To: <adPQJfmbpYr3-uzX@cmpxchg.org>
-References: <20260403194526.477775-1-hannes@cmpxchg.org>
- <1C961B84-522F-43AB-ADCB-014B3A4ACD21@nvidia.com>
- <adPQJfmbpYr3-uzX@cmpxchg.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0305.namprd13.prod.outlook.com
- (2603:10b6:208:2c1::10) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z4+aE9PlHyYjv32xuRS+4ibAhGyjjSjYhz3cTIiD6R8=;
+	b=PBLmYL1CVmcIJvHFQK36v0YNIXjbD1buh9L4xweooIM1NHNqafLp9bYM8EpGQzYegUFWbl
+	Is5VQbhHtB5GtzjCYHtAPFZ+uvVaTr516TjIi0t3Nq1O/kEeyff8iJM5LD3DPkB1zhBK/D
+	AgZ8gz/r45ot2HrW9DSLpNyxxmCrxAo=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fqW2D2ZZ4zYQtkt
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:52:20 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 1C82C40561
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:52:52 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAX8UuAcdRp6APJDg--.65434S2;
+	Tue, 07 Apr 2026 10:52:50 +0800 (CST)
+Message-ID: <f548cc08-6879-45af-982b-7291f4bf0501@huaweicloud.com>
+Date: Tue, 7 Apr 2026 10:52:48 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH0PR12MB8532:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d8e5b34-c4eb-444d-54cb-08de944f5e34
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	zdse4QHl2R+kjbOJdGLfshHRSbpjiHbieOL9Hu2A1v33aVqed81PlHyR9go8ILgFmllnCN9pHxUwRktawdX5rZ6oe2WovKpwGyMwff2aaX+Wz9wn9YZ0aML9vnaXK2OGygEBkDn50LqPWXxLnCbuTNdzmBu/llY1oBWxtn8H1HiWIQz19/iTaClrAiWtHOn79K1HD2EfEiyv9MBuxdInZe/PKFizyEWEgCYTaeRizi2pHOly2fNMQXIjA8+SUAopxOmEfVAO/EjXALeADzUx8C0tAp3MDN6UFAI/nMsspwEq2i7678g+uyfwUOa0nZvj5cowu5jBJbQuCSrXsqhLsIl7Laeh3S/Sk5cvuabCXnjq7gNxC16l6DCwwiHsyYluOTOuPc4i/qy3DTNxgjy5xrsCD1A2IffsXp8esh50WKPnXP0QQ2qFzqXk1K5HACwuCRuUkdLq1GsURbJk2tanZ4pRqqIHAMRUwDnuej8tztjbHiifrFpvT/IVZaqFVUpd6SxWXu2Ouur9FHD7DHcDiQWxad2/X66+2E9CnHejK2lP9U36QM1SJWfEw1ZzlWpWx0abBqlvUdDaqkn/TmncsB/WTZUoDzqrfN7SI9B/7mZrr6w4AaWQ5EHpwa1gHEfb+HlhoHQgzvQlyXTN8N3R+bYb71qC4gThWsENi3u1j66BLICNQP1254r6gCAK6Ag7U+6ay3RhmPc5lMezwmjzn9FRT97j0ZwolW7NksGsSeM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fUiZrH4kbxjDp/Dz6sGw0VU1a31T4Zeo6ooXMMe5yhfnPP0MXNYu7vKB7GRh?=
- =?us-ascii?Q?MN6VlYIgSI5CU/muhxnGycWVIhFQyqMkvrShy0gmNvn8wSYPeCpRIoH8wh1/?=
- =?us-ascii?Q?GMd6Qg8TpHPrVCYWi/S6xf3PCmSzhE0qCb1rqY31MW/E5BxVYMA3s/7mlBg3?=
- =?us-ascii?Q?0+SjshXhaZEgg7nxeLu1APsR1vg+ZCwaygSY1PQT8ER2/rAnTkIf37Cy4PKY?=
- =?us-ascii?Q?x6n8jhBwGRLUWb2CSFXMwtsy6t3cg+NpEZFa2H6OVoeCQo+8NOur7kNpGHY+?=
- =?us-ascii?Q?oPby//9+HimfrJV0zOChuIBZu9a50J7WiA3ljI6ha7/CTRS6U9dBMTaRjFqx?=
- =?us-ascii?Q?opj5jSOoKNL7WCEMcygxg4XBC0iu7PGYht9D+77SgjlGolsOGokfVyBZ/A6c?=
- =?us-ascii?Q?7oVK2PVekTIS985EWyQ+Drw1ZkB1BDN3fwTMJHV5M5KnxVA6Et+Wb7qmSFvS?=
- =?us-ascii?Q?4N+CsJkG7qFyk9j+SOEEogFPf5wax2PvPGCLtv4VODN8nGwpX5un2rw4JJ7m?=
- =?us-ascii?Q?/ZXri1hS1QhfNCxvfvVsQAUXjhtLVRTZ/eDrIv7kDqSfP3FuPB0SY0UGYjBI?=
- =?us-ascii?Q?m7cDJD9R44RT1tnUv7RbP6qv8l8Kn3o69hQLuSZdQU7iAryUg0mDTq/K5Pko?=
- =?us-ascii?Q?5tbY76S+ijePuLsG8SLpAqn8PSAU6pmwFtJpyF68kwLSBA5mbPfRXRpcnDnX?=
- =?us-ascii?Q?exfo9DZZpBE3sL9MYFN6D0EJ3KopB6Px4eTztbON6iIrsZU10KsGQiNaK+T6?=
- =?us-ascii?Q?Q/pbDSC6Dv6vJjXjtPbyIGzv+pXDquXdEzA8I0KNii9Q798rZa4s/6i5etaW?=
- =?us-ascii?Q?FRSAb/xwi070lGOdKY+1lydcGvNQP3wzqfS5CSHzBA85uJIadXgD9V6RJYA3?=
- =?us-ascii?Q?ROs10A+8AlAKhU66/PG5Wd2vEpDcEw268A6fRXJcED8JnkT0vnMJ9kKJTl64?=
- =?us-ascii?Q?rgF6bIezD8fr1DqmRgHvFfkr3yJu+UOibMrCIywYyiQSh/r/yoUf2dnCfnLN?=
- =?us-ascii?Q?7EqCaOeElbBM/DbCMbR5px36o3Uyv6YFNLUUZVI5xOnEPjmc+p31X5HrwTlV?=
- =?us-ascii?Q?eC3Wefqe3sDuRXWMsDcv4xikoA6ho3IVgpZIW54U0n7NTtNzXtcq+M6NvMap?=
- =?us-ascii?Q?lKMIZBo/RbReQIt6/Msi9decArFcDGiXMq0qfKJ5IiydJlcwL5R4uGR16L8X?=
- =?us-ascii?Q?C43ULhlZzfu6y/I1ME8rqjw3JpJM4zq2YpqtPyRxCKoDfKsRLXzH+8z0I/e7?=
- =?us-ascii?Q?ArZgMK5QN9lATeuPX6OFVHvmM18myV+vuQAFwC5IcxSADHVocZ894Eg+8KGr?=
- =?us-ascii?Q?VfACppPviH2yQJ8AahcJnV2Xr/yt3Q4fW+j9W8PvhgW637tfUz/03w6dKPob?=
- =?us-ascii?Q?0aFDtWThuozFZEpLqHX1V517YfLzdy99SnLORqOs333y89w+0QTksiu1btln?=
- =?us-ascii?Q?z/sJVNKPIzElRx29/I6orIYx4dX/irZ6zA8XJBbMkiA8bLnHUiJB5u9jFlSy?=
- =?us-ascii?Q?pHb4A55c7jxlCO1ecj94XDpdwzV883teVJHXhpiMl7dsw1gVyjhScytFsaCB?=
- =?us-ascii?Q?4od3P8sbvVB/8IAcd9QCvUWSsgDgQqQsbm+MoVmjnnoorMIsH6fnmKWAkzAh?=
- =?us-ascii?Q?m1svmntw0AQC3eLwD1pvciybS2JQypJYOaksaCBmEr/8Fvu8/lQfHlVXrRrr?=
- =?us-ascii?Q?p20ti6+kKJfWx/THJZugsWYFQV/iEqOsoFU9syV/IZK2QK0d?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d8e5b34-c4eb-444d-54cb-08de944f5e34
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 02:42:53.8436
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EBRtlmFpRcnl/oLmk+kYDW69DrCN+uaya91OgAmm0dhPf8JZlPN9UkPZXAvOznJN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8532
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/12] mm/mglru: simplify and improve dirty writeback
+ handling
+To: Barry Song <baohua@kernel.org>, Kairui Song <ryncsn@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, kasong@tencent.com,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ David Stevens <stevensd@google.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-8-b53a3678513c@tencent.com>
+ <d77d5c39-a1cb-46e7-b343-3a20ff8caf3b@linux.alibaba.com>
+ <acuNtuf-mv3KJJdn@KASONG-MC4>
+ <CAGsJ_4xQvcDf5hTHa3M74R3xgjGRcfEa4-mrrpyLT7yaRZJ-hQ@mail.gmail.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <CAGsJ_4xQvcDf5hTHa3M74R3xgjGRcfEa4-mrrpyLT7yaRZJ-hQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgAX8UuAcdRp6APJDg--.65434S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1xur4Duw45XryxGF18uFg_yoW7KryxpF
+	WfKFnFyF4kXr13trnIqr15K34ay3yxKF45XFy3JFy7tF9I9F1kKFyjkw48uFy3Ar98Gry0
+	vr4jqFy3W3WDAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Queue-Id: 8C11114000F
+X-Stat-Signature: us31w8s9djzbqpsog9kmgdzapy4n894o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE5A340005
-X-Stat-Signature: cteaskjo84fef1jfekx1xrr4d8aiyehc
-X-HE-Tag: 1775529778-292940
-X-HE-Meta: U2FsdGVkX1/n+f2TMRJaL5HxDso+oxB9HQBlQ/8r+x7ci8p9mFFK6N585V4ZbK69nOLYCE/063hfGEE3Get7nDYRatS91t5qxX97VyJepESh6LR0o8RnFlT9mzLeOC/VNwP5ZR4EanQGJ/0QQtSnzwa+TPVn2decBlYeDVOLeazwq8nvNkqPD4082LVQS/CjCH2hI4RWFdG9IaZJZc5V+NqwH/eIDNRj/2eQnubOsG/fUnQ8ZhLPf4fBu9klcAEnzXZmTkNx4HRbNuOn6lQI4ocSJ0KmWlVRR9haxxlt6R6Yfx+cPdBdArEoSiMosjz6NDGQgTwIoTFOXR1ChHPNzO8UEr2EDHQnGTZ8cihwfrh0p4PMeeTawtXztiOpMYqY6gDExW01liww+f72ECkfzN7GzgxGTMoVab8FuBxILOgBx0DtgBL7Az/RR1pSInxJO0OiTLBWfCqc1tmQHJamDQNOCdz78lxzDw4ofLwff1zyo7TmkMB4bx+QA3y97zLLRc3LUOz2tyYRZT6060e2bQS+44EUvkiqC2p668RYU1KrbUogKuQRZINkgbtohI0dhdzuFY1ODtu7QHyRRehTktlZn9HlMvgEtHjZDAm6fgnZYMDfcP1eo/AxtlxcS00nDXN2qu42qllGov1pfsgAvQHKMPzEAY14oIud1TXDA4934U0QB25hBI3s25IgYPOWV7UWX6Y9ctpK92dQ8YRl1dSCd6uCaATWfHUkOn84mn3wvJqnAUNiE2lPzt8J8i3PtfBbb1SnewlpzEuI7rrXk8fVhdw8r16AZxbfdWyBeKUZunTTP3zqhr50yc8zBMQcdbTm2KHFdo8WWHJHrr+fY/l9yLXBGxney1G8C8Bmg0fKgHDA/U2M37Gn/LHx/lHUML6/dYL/izI7+eMvb6zd8T7idUAv3UybLbMSnSxfzfYrxKlVbDKXv1L0OEnaL31P+ZHGzXrJNVOmj8BHO1t
- IaW3EqK4
- hI9ypXFJCrbbAuxsfZtEo3605nRV3qOkpX+xzHg78dImsryC7INi/Bt5TzuCjsm4zckvl6l9NYz4vnLn0mCtmGV2E0mW/mO6Jbw8dN/LvW56nmYJlAwYGfJv+F/HADSkarTGiBqk9ghgHN//JbGbMZ4OWPtO5ehjypMRdCzsD9kVpMOFGab0/cL7Y5HpaSPpwAGt1lVMfP+vmMI08LgoQXZk198nECy8Yqsqjj6E45hXOMoHXyLyYcB4+0CF0t5c4Wn6A6V8p7VF0Y3uO28hTH6eEiqnRYAB1y4hB5OWpoH5lbC+hVtSCv/bIpH3COxd8uPWvPC8A+DZKIdWoD3Tkbth7KxWUGZ/uh4eRepItqW6rhr6FbjKG5W8x5w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775530377-828735
+X-HE-Meta: U2FsdGVkX1/R7wrQ+5tiRGI4sBV/6L1CK8sYHecUUkRpPZDlw+C36oi9NVpeNaYrdBunQU1MuO0Kj9Lcx4tIUUzyxlkpR72cdeke5hf5nsBK/XaHreQFEYKgZUR9k/vLrPFXYnyGalbWi/aAlIVP0WlMYw9/lDzApblJOR7u/ysE1XdSgzqso26I+uzYGfqLeK2c07/tu9eBVbnwYjF+KTWZgWMF1GE7HdFsw8i7DxgvaSl9ob0C+fD46f+BnJWvHIxWxvLZ6uAlgjAr6KcncgHzsTUEPFKACSZYQkNrdgrYUmkqNUDR1c6lMrkJFWFYQRZQJSAtNImj823tc66KXr5wJArWNqLH7sA7c9qTMaKfAuKT+gtN8rmJMEyP9xdw3rmU7EUZbtRACCSRzC7CkDICv2bKKeylJ5ImuhSirYK2YfaBWF1fa2yQEATTocOKfA0CVt0F5ENqidF+5CjgayPy9yr0xde7bKLfGuzdQ9lqKOJxl5wK94AoxyafRWLUiMFGKBza0OunKE8wfAEWdjLTAUToC6VPSa7FJce0Nlc1bXEeZ6DcNN1EldOOT+YZ6hD7tRXXbIIEZKUD7oudp+6Vg/oHZVIAxJuyeLmByWL266+HBeAWPsZviNQnZjIydmQsd7no6sehZVhFlnswo2T6NVVq8zXxRaD+l3cQv7ivew5gUxR83i9XGrkqPNcQ9MtRln5qqiI3ljrMb8f/Uv7MYU+7NJK0VzdFPV73KgzchFnG4+0PQIFsMwFyR/y3is3ApFl41NyNnlWgiT12MAf6wIkIVngeBhTHpF2g+mB+4zA6E/riOFuwj67ZOhQeMblX5jf3j7vSQvwecDAQyEZ4BsDKUJVsQZq9ksEXs1mkB93PjMXtTBXpsmYcJJwV45sPyfxfKKdvspGGI+b5et0YcM/M8TnLV4UA3pTSD1wXsPsRVYHvRuMEGC9TrTSFVBS6nQ+dSfnU6HTLdE5
+ BIzu60YJ
+ +FuaydPMfGKLWPx//VuWrNs+MDTbasBnALJX8pc+mHu07lZHjgLi7AR+Vzwd9FLFy9BSCw0u/1rCWfDexBSUOcbj0LUZS+IY+8M+EaSfa5i8aBQsqtZA7vih7AqeORTg2L5kBZ8DKBAFSPFmcnMpkoG164Z5N5MaOEm8AkLvNYMVAzz1zykG+bBYfjVuPDNzqn+LdQ85KQQS8SqBWFj5gr7RcbE6CByQmJVJmk1heUSvA8xoAalVG669dZa/pQ+CxKabp81uFdS9/gsHdw5kUmOfk6/Gzltc/P3XQ94ji413FwjeSOCoHz8KGrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,178 +119,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6 Apr 2026, at 11:24, Johannes Weiner wrote:
 
-> On Fri, Apr 03, 2026 at 10:27:36PM -0400, Zi Yan wrote:
->> On 3 Apr 2026, at 15:40, Johannes Weiner wrote:
->>> this is an RFC for making the page allocator scale better with higher
->>> thread counts and larger memory quantities.
->>>
->>> In Meta production, we're seeing increasing zone->lock contention that
->>> was traced back to a few different paths. A prominent one is the
->>> userspace allocator, jemalloc. Allocations happen from page faults on
->>> all CPUs running the workload. Frees are cached for reuse, but the
->>> caches are periodically purged back to the kernel from a handful of
->>> purger threads. This breaks affinity between allocations and frees:
->>> Both sides use their own PCPs - one side depletes them, the other one
->>> overfills them. Both sides routinely hit the zone->locked slowpath.
->>>
->>> My understanding is that tcmalloc has a similar architecture.
->>>
->>> Another contributor to contention is process exits, where large
->>> numbers of pages are freed at once. The current PCP can only reduce
->>> lock time when pages are reused. Reuse is unlikely because it's an
->>> avalanche of free pages on a CPU busy walking page tables. Every time
->>> the PCP overflows, the drain acquires the zone->lock and frees pages
->>> one by one, trying to merge buddies together.
+
+On 2026/4/2 8:11, Barry Song wrote:
+> On Tue, Mar 31, 2026 at 5:18 PM Kairui Song <ryncsn@gmail.com> wrote:
 >>
->> IIUC, zone->lock held time is mostly spent on free page merging.
->> Have you tried to let PCP do the free page merging before holding
->> zone->lock and returning free pages to buddy? That is a much smaller
->> change than what you proposed. This method might not work if
->> physically contiguous free pages are allocated by separate CPUs,
->> so that PCP merging cannot be done. But this might be rare?
->
-> On my 32G system, pcp->high_min for zone Normal is 988. That's one
-> block and a half. The rmqueue_smallest policy means the next CPU will
-> prefer the remainder of that partial block. So if there is
-> concurrency, every other block is shared. Not exactly uncommon. The
-> effect lessens the larger the machine is, of course.
->
-> But let's assume it's not an issue. How do you know you can safely
-> merge with a buddy pfn? You need to establish that it's on that same
-> PCP's list. Short of *scanning* the list, it seems something like
-> PagePCPBuddy() and page->pcp_cpu is inevitably needed. But of course a
-> per-page cpu field is tough to come by.
->
-> So the block ownership is more natural, and then you might as well use
-> that for affinity routing to increase the odds of merges.
->
-> IOW, I'm having a hard time seeing what could be taken away and still
-> have it work.
-
-You are right. I was assuming that pages that can be merged are freed
-via the same CPU. That rarely happens.
-
->
->>> The idea proposed here is this: instead of single pages, make the PCP
->>> grab entire pageblocks, split them outside the zone->lock. That CPU
->>> then takes ownership of the block, and all frees route back to that
->>> PCP instead of the freeing CPU's local one.
+>> On Tue, Mar 31, 2026 at 04:42:59PM +0800, Baolin Wang wrote:
+>>>
+>>>
+>>> On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+>>>> From: Kairui Song <kasong@tencent.com>
+>>>>
+>>>> The current handling of dirty writeback folios is not working well for
+>>>> file page heavy workloads: Dirty folios are protected and move to next
+>>>> gen upon isolation of getting throttled or reactivation upon pageout
+>>>> (shrink_folio_list).
+>>>>
+>>>> This might help to reduce the LRU lock contention slightly, but as a
+>>>> result, the ping-pong effect of folios between head and tail of last two
+>>>> gens is serious as the shrinker will run into protected dirty writeback
+>>>> folios more frequently compared to activation. The dirty flush wakeup
+>>>> condition is also much more passive compared to active/inactive LRU.
+>>>> Active / inactve LRU wakes the flusher if one batch of folios passed to
+>>>> shrink_folio_list is unevictable due to under writeback, but MGLRU
+>>>> instead has to check this after the whole reclaim loop is done, and then
+>>>> count the isolation protection number compared to the total reclaim
+>>>> number.
+>>>>
+>>>> And we previously saw OOM problems with it, too, which were fixed but
+>>>> still not perfect [1].
+>>>>
+>>>> So instead, just drop the special handling for dirty writeback, just
+>>>> re-activate it like active / inactive LRU. And also move the dirty flush
+>>>> wake up check right after shrink_folio_list. This should improve both
+>>>> throttling and performance.
+>>>>
+>>>> Test with YCSB workloadb showed a major performance improvement:
+>>>>
+>>>> Before this series:
+>>>> Throughput(ops/sec): 61642.78008938203
+>>>> AverageLatency(us):  507.11127774145166
+>>>> pgpgin 158190589
+>>>> pgpgout 5880616
+>>>> workingset_refault 7262988
+>>>>
+>>>> After this commit:
+>>>> Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
+>>>> AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
+>>>> pgpgin 101871227                        (-35.6%, lower is better)
+>>>> pgpgout 5770028
+>>>> workingset_refault 3418186              (-52.9%, lower is better)
+>>>>
+>>>> The refault rate is ~50% lower, and throughput is ~30% higher, which
+>>>> is a huge gain. We also observed significant performance gain for
+>>>> other real-world workloads.
+>>>>
+>>>> We were concerned that the dirty flush could cause more wear for SSD:
+>>>> that should not be the problem here, since the wakeup condition is when
+>>>> the dirty folios have been pushed to the tail of LRU, which indicates
+>>>> that memory pressure is so high that writeback is blocking the workload
+>>>> already.
+>>>>
+>>>> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+>>>> Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingxiangzeng.cas@gmail.com/ [1]
+>>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>>> ---
+>>>>   mm/vmscan.c | 57 ++++++++++++++++-----------------------------------------
+>>>>   1 file changed, 16 insertions(+), 41 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index 8de5c8d5849e..17b5318fad39 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>>> @@ -4583,7 +4583,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>>>>                    int tier_idx)
+>>>>   {
+>>>>     bool success;
+>>>> -   bool dirty, writeback;
+>>>>     int gen = folio_lru_gen(folio);
+>>>>     int type = folio_is_file_lru(folio);
+>>>>     int zone = folio_zonenum(folio);
+>>>> @@ -4633,21 +4632,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>>>>             return true;
+>>>>     }
+>>>> -   dirty = folio_test_dirty(folio);
+>>>> -   writeback = folio_test_writeback(folio);
+>>>> -   if (type == LRU_GEN_FILE && dirty) {
+>>>> -           sc->nr.file_taken += delta;
+>>>> -           if (!writeback)
+>>>> -                   sc->nr.unqueued_dirty += delta;
+>>>> -   }
+>>>> -
+>>>> -   /* waiting for writeback */
+>>>> -   if (writeback || (type == LRU_GEN_FILE && dirty)) {
+>>>> -           gen = folio_inc_gen(lruvec, folio, true);
+>>>> -           list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+>>>> -           return true;
+>>>> -   }
+>>>
+>>> I'm a bit concerned about the handling of dirty folios.
+>>>
+>>> In the original logic, if we encounter a dirty folio, we increment its
+>>> generation counter by 1 and move it to the *second oldest generation*.
+>>>
+>>> However, with your patch, shrink_folio_list() will activate the dirty folio
+>>> by calling folio_set_active(). Then, evict_folios() -> move_folios_to_lru()
+>>> will put the dirty folio back into the MGLRU list.
+>>>
+>>> But because the folio_test_active() is true for this dirty folio, the dirty
+>>> folio will now be placed into the *second youngest generation* (see
+>>> lru_gen_folio_seq()).
 >>
->> This is basically distributed buddy allocators, right? Instead of
->> relying on a single zone->lock, PCP locks are used. The worst case
->> it can face is that physically contiguous free pages are allocated
->> across all CPUs, so that all CPUs are competing a single PCP lock.
->
-> The worst case is one CPU allocating for everybody else in the system,
-> so that all freers route to that PCP.
->
-> I've played with microbenchmarks to provoke this, but it looks mostly
-> neutral over baseline, at least at the scale of this machine.
->
-> In this scenario, baseline will have the affinity mismatch problem:
-> the allocating CPU routinely hits zone->lock to refill, and the
-> freeing CPUs routinely hit zone->lock to drain and merge.
->
-> In the new scheme, they would hit the pcp->lock instead of the
-> zone->lock. So not necessarily an improvement in lock breaking. BUT
-> because freers refill the allocator's cache, merging is deferred;
-> that's a net reduction of work performed under the contended lock.
-
-This makes sense to me.
-
->
->> It seems that you have not hit this. So I wonder if what I proposed
->> above might work as a simpler approach. Let me know if I miss anything.
+>> Yeah, and that's exactly what we want. Or else, these folios will
+>> stay at oldest gen, following scan will keep seeing them and hence
+>> keep bouncing these folios again and again to a younger gen since
+>> they are not reclaimable.
 >>
->> I wonder how this distributed buddy allocators would work if anyone
->> wants to allocate >pageblock free pages, like alloc_contig_range().
->> Multiple PCP locks need to be taken one by one. Maybe it is better
->> than taking and dropping zone->lock repeatedly. Have you benchmarked
->> alloc_contig_range(), like hugetlb allocation?
->
-> I didn't change that aspect.
->
-> The PCPs are still the same size, and PCP pages are still skipped by
-> the isolation code.
->
-> IOW it's not a purely distributed buddy allocator. It's still just a
-> per-cpu cache of limited size. The only thing I'm doing is provide a
-> mechanism for splitting and pre-merging at the cache level, and
-> setting up affinity/routing rules to increase the chances of
-> success. But the impact on alloc_contig should be the same.
-
-Got it. Thanks for the explanation.
-
->
->>> This has several benefits:
->>>
->>> 1. It's right away coarser/fewer allocations transactions under the
->>>    zone->lock.
->>>
->>> 1a. Even if no full free blocks are available (memory pressure or
->>>     small zone), with splitting available at the PCP level means the
->>>     PCP can still grab chunks larger than the requested order from the
->>>     zone->lock freelists, and dole them out on its own time.
->>>
->>> 2. The pages free back to where the allocations happen, increasing the
->>>    odds of reuse and reducing the chances of zone->lock slowpaths.
->>>
->>> 3. The page buddies come back into one place, allowing upfront merging
->>>    under the local pcp->lock. This makes coarser/fewer freeing
->>>    transactions under the zone->lock.
+>> The writeback callback (folio_rotate_reclaimable) will move them
+>> back to tail once they are actually reclaimable. So we are not
+>> losing any ability to reclaim them. Am I missing anything?
 >>
->> I wonder if we could go more radical by moving buddy allocator out of
->> zone->lock completely to PCP lock. If one PCP runs out of free pages,
->> it can steal another PCP's whole pageblock. I probably should do some
->> literature investigation on this. Some research must have been done
->> on this.
->
-> This is an interesting idea. Make the zone buddy a pure block economy
-> and remove all buddy code from it. Slowpath allocs and frees would
-> always be in whole blocks.
->
-> You'd have to come up with a natural stealing order. If one CPU needs
-> something it doesn't have, which CPUs, and which order, do you look at
-> for stealing.
+> 
+> This makes sense to me. As long as folio_rotate_reclaimable()
+> exists, we can move those folios back to the tail once they are
+> clean and ready for reclaim.
+> 
+> This reminds me of Ridong's patch, which tried to emulate MGLRU's
+> behavior by 'rotating' folios whose IO completed during isolate,
+> and thus missed folio_rotate_reclaimable() in the active/inactive
+> LRUs[1]. Not sure if that patch has managed to land since v7.
+> 
 
-One naive idea is to make zone buddy keep track of PCP free lists
-for stealing.
+Not yet.
 
->
-> I think you'd still have to route back frees to the nominal owner of
-> the block, or stealing could scatter pages all over the place and we'd
-> never be able to merge them back up.
+I checked and didn't find Kirill's series "[PATCH 0/8] mm: Remove PG_reclaim"
+merged into master either.
 
-Basically, we want to keep free pages to be merged as much as possible.
-Something like free page compaction across all PCPs.
+I've rerun my original test case and confirmed that the issue can still be
+reproduced.
 
->
-> I think you'd also need to pull accounting (NR_FREE_PAGES) to the
-> per-cpu level, and inform compaction/isolation to deal with these
-> pages, since the majority default is now distributed.
->
-> But the scenario where one CPU needs what another one has is an
-> interesting one. I didn't invent anything new for this for now, but
-> rather rely on how we have been handling this through the zone
-> freelists. But I do think it's a little silly: right now, if a CPU
-> needs something another CPU might have, we ask EVERY CPU in the system
-> to drain their cache into the shared pool - simultaneously - running
-> the full buddy merge algorithm on everything that comes in. The CPU
-> grabs a small handful of these pages, most likely having to split
-> again. All other CPUs are now cache cold on the next request.
+-- 
+Best regards,
+Ridong
 
-Yes, a better way might be that when a CPU wants something, it should be
-able to ask the other CPUs to drain the minimal amount of free pages.
-But I do not have a good idea on how to do that yet.
-
-It sounds to me that your current approach is a good first step towards
-distributed buddy allocator. I will check the code and think about it
-more and ask questions later.
-
-Thank you for the explanation.
-
-Best Regards,
-Yan, Zi
 
