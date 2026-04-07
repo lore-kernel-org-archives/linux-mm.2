@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DE7EDB7EB
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:31:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1357EDB7EF
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 10:48:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB3926B0088; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
+	id 384796B0088; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B2E6B0089; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
+	id 334E26B0089; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC8326B008A; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
+	id 24A886B008A; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8E46B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:31:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CCAE13B56B
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:31:04 +0000 (UTC)
-X-FDA: 84631392048.23.BF971FF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 150026B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 06:48:40 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B0967E243B
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:48:39 +0000 (UTC)
+X-FDA: 84631436358.22.DDC3CC4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C55BAC0009
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:31:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sECHkvtH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775557862; a=rsa-sha256;
-	cv=none;
-	b=rSHFZbdjoetkpe7lnnY6WgEZBoK2HI/r7ODvpQebUBp73HkyoegWbjYmcGAdu30uBxhG2s
-	giALxo3IMXa8oFy8uAvIAtlfTD7vFxJOfiVKk0ZpvxJ4J9Dy28nY1yod0Y6wsW8Qgdzp2c
-	DAvUPONMjjL7Q/k5tIyHxwaBP2TYNpA=
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2DDD72000E
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 10:48:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9Hrl0YP;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sECHkvtH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B9Hrl0YP;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775558918; a=rsa-sha256;
+	cv=none;
+	b=SKMEr09zF6gsdr466ucoyxa4N/sb5KJPvUuW3cKOthPlq4BGDKmUMGif2DgqC1zEryQADL
+	NR9BIWTUC1gsPhzpcTm4Lzeie41dUFrUbOTxDt6mjfj060FmHCzHEiG0khBHZZA67IYEnx
+	0sN8L71HNXR/Kp9GKM1NlqdRpWPbl7E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775557862;
+	s=arc-20220608; t=1775558918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Emv2PAaGEl0bPgbDOuEKzRBxb9CXektrzATbCOMYo2I=;
-	b=10n4PVMW9Zp+5ujdUQDpdTKprHR3CUJpzp0YtmblhkV9X+v6WQhccI0NN+y5pGr9hKqY/M
-	2HHKHcFkJmK/UCzLAPGCbJPGHZJnDAsmUq+wLpTbmwpGrVBqPEbAnfbFo/ddR2QsAXwMeF
-	LkvDt5Flrt0pUjNtZ/dMSWZbiF3IA20=
+	bh=kcFBtfoTc+V4OFvuZzLlJPwJoiGb+0fUJrkF+opujOI=;
+	b=yAHPUZom4vLLX7Gr70mqkpTjKdmqCu6/OqWJGotdpKFbBobJwFFtOPcncSX+A+oJBiKpQg
+	lM6mgSjcKg7z982tkFlNdXExe5pEQL6rfTKNvF+tGkM+clsIYMGobuhdm+jBGx4/SjE5Ph
+	BDlsewSi8wMjKR70bFHpromCZq23PpA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3A07560103;
-	Tue,  7 Apr 2026 10:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07A9C116C6;
-	Tue,  7 Apr 2026 10:30:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 64C6860120;
+	Tue,  7 Apr 2026 10:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4639AC116C6;
+	Tue,  7 Apr 2026 10:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775557861;
-	bh=xnPiwWIJZOBJKDM3E43NKbF2H1Ltqj2Y7PvIumMZROg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=sECHkvtHNV1vu3xYEHaXdXfX1O8I+pbJISMQZvpGMKxILLhPO1wACoSBugIEdIFRG
-	 HlHTPHfqhlHH+4i4LcFrSWcrb5nabh/qpDLYyhovcHWb2OFhKxNvMY9XfgfC8+1SBB
-	 WGS00aiYdPz9XGsGM0dSnNhD8Ht5DKxqBXA3QuDYijFv2vvO8bfpD3rrpycCOU0PTF
-	 cxiWxmkn5YtLkVnBv1eAb+N7ZJlNS/u+20fPiVzFrOmgMSIoINw4VPGHAkeCoFNxsz
-	 kpwjRARM1QCToL32gs8kkGcDovkjxSVNJBb19/79jVvbUsI9yJCUQf8Kh2q1eoJgIW
-	 otkqdv3sQnQyA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  Usama
- Arif <usama.arif@linux.dev>,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/6] selftests/liveupdate: add helper functions for
- memfd tests
-In-Reply-To: <b7af6516-1593-4e2b-9149-fc839e2b88bd@linux.dev> (Zhu Yanjun's
-	message of "Sun, 5 Apr 2026 09:30:17 -0700")
-References: <20260404102452.4091740-1-pratyush@kernel.org>
-	<20260404102452.4091740-3-pratyush@kernel.org>
-	<c783bc1b-3327-422f-9191-11550513b13c@linux.dev>
-	<2vxzecktc13r.fsf@kernel.org>
-	<b7af6516-1593-4e2b-9149-fc839e2b88bd@linux.dev>
-Date: Tue, 07 Apr 2026 10:30:58 +0000
-Message-ID: <2vxz5x63awpp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1775558917;
+	bh=plvm98yXi0oiNeiJ5KWfoDRd1nOJdHlTIM+h4PPVQwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B9Hrl0YPWM3VFx6SsgTZ8TtbBCyKSnUdHdQRtEc3XObxhiKqdsjaPL+d40XYklTNX
+	 bggf8Jfdc/YYxn8zYxZyb61PdlVZJs1Rhf42xwVxhqL6ALT1DUYBMcJqRYFOY//5ls
+	 SC/YvjS0xi0jwkTpCnWJ04h8xov1CFLLclQOJfJKXKNVKQgYJh3yfZ1GxEoZdhMTgL
+	 mCoONRv75hKrOLtDgGBGVqAh1UuXR59rfwMSRx8077YOHSixyNdFrKSf5DFr3DlQkq
+	 cONDaKyJ4b7pn2ZLckA82VmZYTpJhAtDt/CSwByCfjc+sOynjtguVIL6ve0LEcvou5
+	 g0JopWY60gt9A==
+Date: Tue, 7 Apr 2026 11:48:30 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Yin Tirui <yintirui@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
+ has_deposited_pgtable()
+Message-ID: <adTb6_xqQoQqK74Q@lucifer>
+References: <cover.1774029655.git.ljs@kernel.org>
+ <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
+ <41b1ff54-c120-42ae-8b74-54767abf3554@gmail.com>
+ <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
+ <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C55BAC0009
-X-Stat-Signature: 35bmpbyj11qieda5jzo5s3crs9jn7yfj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2DDD72000E
+X-Stat-Signature: nkfsnqs9oz6kyj5cu8qydu7rjbqodzfb
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775557862-491876
-X-HE-Meta: U2FsdGVkX183V6O2/mz80ojckOEsSwIv+y8MLn3DfJ30OaCIu0MF8m7C2XIEDs4jP8gyXrGNf8Uznc4uUVYOGPnxe4NSkaOK7aAVstJr39uNc3ZXl02a8MViGCGp2xuu1B95OD9htYdw5oRJ1Ndzffk79IYZsoxG+luvDpU0GpnXbz4y748i9kLCoBXmrRT/DUglip4rfY+Iuln61H+X3+jP/7znAP6kp3URudsyrMZlh11pF7KQVwrZSQOQ1g5mv4+6VUAY8X2EXGzTLoYha1qCvtgayOW3aKvk57cHjyz9C9Am3nc4bPTCOcgg+P47GnC0IiUqtZfiAt9ejQ2k4HuaXMJI9mH0gZ9MiFuGN6y+Li+MLLs93DzuSfkAPhY+KUDk5OGdbMAyMvZqFz8rjNwEdoAQgBA4EH+BbQzRxSiQVolhRKfs/jefPnJmQDMc+jl81ZmtN3PxvbkWD+h14mdjagHAyf4nYAEgZP+eUFc7mFIE+DjFp80CD/ex8VB4lqW0SJL8J+RWM0m6zuxT01rncxz5S5jT6xyXNiTl5msTErngaC2kYRRUX2mh3nojAXKDmHkezDN0YMWJeQnhaSDjux1G8ri020jdCGZDSpgxPsOiMc1nC4HmZTWqab1yRv9oH3tsw7LhcLsGK1yuX6zG7SJEqwUsA5EOB1I7T4KV/9CDGvyZcYqrkagqujCE/6wM9wdWuB81JBe1YdpPlazInqn1RP1/9802cSn2gW+Te3I1Z3Zfc6BiJGtyWoLF7Xfad/fCXrNa3TnOv4EyXFKrmgT24qKtGHp9SC/93GW01tY13Aem8sJ732CTg58xmbXc+JAwZCRqtrBTQbLq4NXs8UZSrnZdjCd29Y11ZN4gbM7j3Zj2MXuxRpxKyU+VsDNot/1iAEaH+jWIF1F6mTCtb8quVrHXuU74YuR9fhEqXWIseP+HNqDMllIsf9pKNZfndgNtGk0iXEuzV8/
- Pzy7MPE6
- Ng62fy7Y9AazmI8Apos3xtuyVJfDvyRJ3V7cUei1A/xILLxH2xFK+LSNb869ZE7KX4X0u50PJ+ROSnNJrqlWig6bcwME/RP3KFogRYB3gbljtUEbXLHRrFggwtTofpCwWwNyD/0hCvePFB/w4AQNH++5eOZaLFCkHhMiSqk4t3eRrrwulVHdrKZMfqg1R/5IEeL35QQRTnhKcPGrqgYmOEirZ9lag5Ghb3fiHAa0Un/yTsQLmirh3pMfXkOfShKqQyrPRC+ZaDt06CvQLQHOCcnzirPXvAa0N4826
+X-HE-Tag: 1775558918-551674
+X-HE-Meta: U2FsdGVkX1+KfFGiGKv0knXQzKKdljKfrpNgumNPb3PZew5pPfgDB57hltNA3kpTXG13IQZgbRPSesTL847nGcqIGyqIqZl4WDrBFKGviG2VOihy5lgMeD2fCLJ7zx/PKdPn5tSXh0Js7NUFivX0LMQvk7wnJf29RUeCfjknQ575DPzxp8J8kqt08x+b4T8Tn+PXlkeb/cJDQQPEvkjil75xjDZAz8mAfQu+SwI2ggV5tqb/2Kd+RQFysRCsT2w7UJBoF5//l9DAye7Th/YljObu9VZGDQ4vO8NyubU1U8eSzz4uiNxurbaOclCx5t6wjYS+tIQxhTTFHgbiGU2hIUBeRXmLJPD/6Ax5Ypr/n2z7bBBdh3UOLXBPlEBwoar+J2LswDSKUHX7nO8DLYmSmjMiYSPI2J3/j9gZZ7QA8ZDenB/jzhfr0JFHbtR9O6glRZrBVwhPv0Ub2iw62knuZvpV4HTnfvpZStMKoARZvKHjrE2/frd0wjKmVIMHWTSDz4O/AP0XQ/5QkwYq1QNRqyK5vLZsFFR23agAg2jiXx7k1RtxzZ4J3wZipidHIp4gBcB7w32Xz/EfoyH05TFhqUzk7b7mGwpEmFbUMMo99EMRprR0r7eQmQgNMOXCZtWOHTqcb8sJRMKFKbvkjXFPqb/u+J34RD1s3JcbUFC/9VBx4UXK3bfK9Dg5qJJoZHTLCgLUCb04pXdDmpjwZRtJ8xseeqskFs0jXpdXUBtDG+MBTDrTFKY5CVCnwSVqkajbuevbUcoyEgYQIY2M8EVgjjETn5wdtwm0NVq8D2bNcqpsrGcrP/XPj1Bl0fqDNB/JVY76lHnBUblXYefxBqWCXN/IY8o5Mi2nnpMAjOCnNB+FDXX7jEv1xXT0VgrEKNyAhjf1BxqoHkNjeYmzex3kpX47BQvlprFQK6eFmWWq9zsy6NCKjsF+Ens9neQr/Lrgi9cmzbxcFM2dSqyFJb6
+ xYGYRfTk
+ h1Za5gVV77o4CUK0oC4hyWVv1oe6EdULJZw4OhELSuiV+LvpDGfBQFoI5lWgXrd3WSjzj92QcT1npA5PwBBU/7/3Ua5XmDG/naWipDRYPZ76EW9dVMTA7l6CiYApC2y90kfTLXJj/942Gr3MWxJuaia13rXyvkK35Qg6fU4zt75Sa6H2UFl5VUzUueUrOySeQm4Uf6EhOLNCCqy+iyaVullKyqwBs68jI9ClSCkbJh7gYOjqy8BJLQLhNXf2beN0pEwqjGbk2zzsKcJaeQpyi+QVgtari2wwgb1NaH8mjWbaQgj8vZNmI40gCJ1HOmbXQGf2huVZXg8fODoiYKBxKZY9kxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,108 +101,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05 2026, Zhu Yanjun wrote:
-
-> =E5=9C=A8 2026/4/5 0:34, Pratyush Yadav =E5=86=99=E9=81=93:
->> On Sat, Apr 04 2026, Zhu Yanjun wrote:
->>
->>> =E5=9C=A8 2026/4/4 3:24, Pratyush Yadav =E5=86=99=E9=81=93:
->>>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->>>> Add some helper functions that will be used by memfd tests. This moves
->>>> some of the complexity out of the test itself, which results in better
->>>> test readability and less code duplication.
->>>> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>>> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
->>>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->>>> ---
->>>>    .../selftests/liveupdate/luo_test_utils.c     | 191 +++++++++++++++=
-++-
->>>>    .../selftests/liveupdate/luo_test_utils.h     |  10 +
->>>>    2 files changed, 200 insertions(+), 1 deletion(-)
->>>> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c
->>>> b/tools/testing/selftests/liveupdate/luo_test_utils.c
->>>> index 3c8721c505df..ceb918ef9813 100644
->>>> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
->>>> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
->>>> @@ -1,8 +1,12 @@
->>>>    // SPDX-License-Identifier: GPL-2.0-only
->>>>      /*
->>>> - * Copyright (c) 2025, Google LLC.
->>>> + * Copyright (c) 2025-2026, Google LLC.
->>>>     * Pasha Tatashin <pasha.tatashin@soleen.com>
->>>> + * Pratyush Yadav (Google) <pratyush@kernel.org>
->>>> + *
->>>> + * Copyright (C) 2025 Amazon.com Inc. or its affiliates.
->>>> + * Pratyush Yadav <ptyadav@amazon.de>
->>>>     */
->>>>      #define _GNU_SOURCE
->>>> @@ -20,9 +24,194 @@
->>>>    #include <sys/stat.h>
->>>>    #include <errno.h>
->>>>    #include <stdarg.h>
->>>> +#include <sys/vfs.h>
->>>> +#include <linux/magic.h>
->>>>      #include "luo_test_utils.h"
->>>>    +int cwd_is_tmpfs(void)
->>>> +{
->>>> +	struct statfs buf;
->>>> +
->>>> +	if (statfs(".", &buf) < 0)
->>>> +		return -errno;
->>>> +
->>>> +	return buf.f_type =3D=3D TMPFS_MAGIC;
->>>> +}
->>>> +
->>>> +/* Read exactly specified size from fd. Any less results in error. */
->>>> +int read_size(int fd, char *buffer, size_t size)
->>>> +{
->>>> +	size_t remain =3D size;
->>>> +	ssize_t bytes_read;
->>>> +
->>>> +	while (remain) {
->>> while (remain > 0) ?
->> I don't think it is needed. bytes_read will always be smaller than or
->> equal to remain, so remain will never go below 0 anyway. And while
->> (remain) is nicer to read.
+On Thu, Apr 02, 2026 at 03:49:35PM +0800, Yin Tirui wrote:
 >
-> If a wrong number is transferred, this makes remain less than 0. Then thi=
-s loop
-> will run again and again.
+>
+> On 4/2/26 14:46, Lorenzo Stoakes (Oracle) wrote:
+> >
+> > I mean you would have needed to handle this case in any event, since this change
+> > is strictly an equivalent reworking of zap_huge_pmd().
+> >
+> > But it seems that doing so has clarified the requirements somewhat here :)
+> >
+> > I haven't had a look at that series yet (please cc this email if you weren't
+> > already, I do filter a lot of stuff due to how much mail I get daily)
+>
+> Hi Lorenzo,
+>
+> Thanks for the quick reply. I will definitely CC you on the v4 series.
 
-That can only happen if read() returns more then the requested number of
-bytes. That is, if bytes_read > remain. And read() will never do so
-since that can be a buffer overflow and would break userspace left and
-right.
-
-So, I don't see how this is a problem.
+Thanks.
 
 >
-> This while (remain > 0) will avoid this kind of scenario.
+> >
+> > So if this is a PMD leaf entry it will be present and PFN map, so I'd have
+> > thought simply adding:
+> >
+> > 	/* Huge PFN map must deposit, as cannot refault. */
+> > 	if (vma_test(vma, VMA_PFNMAP_BIT))
+> > 		return true;
+> >
+> > Would suffice?
 >
-> ZhuYanjun
+> Here is the dilemma:
 >
->>
->>>> +		bytes_read =3D read(fd, buffer, remain);
->>>> +		if (bytes_read =3D=3D 0)
->>>> +			return -ENODATA;
->>>> +		if (bytes_read < 0) {
->>>> +			if (errno =3D=3D EINTR)
->>>> +				continue;
->>>> +			else
->>>> +				return -errno;
->>>> +		}
->>>> +
->>>> +		remain -=3D bytes_read;
->>>> +		buffer +=3D bytes_read;
->>>> +	}
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->> [...]
->>
+> Currently, VFIO uses vmf_insert_pfn_pmd() to create huge pfnmaps on page
+> faults. This sets VM_PFNMAP in vfio_pci_core_mmap(), but it does not
+> deposit a pgtable (unless arch_needs_pgtable_deposit() is true).
 
---=20
-Regards,
-Pratyush Yadav
+Hmmm... it's only the VFIO and hyperv drivers using this.
+
+Wouldn't we generally want a deposited huge page here now we're allowing huge
+PFN maps?
+
+Or are this _special cases_ where we have a PMD-sized entry but are not
+necessarily wanting to treat it as THP?
+
+This is a real wrinkle in this whole series no?
+
+David - any thoughts?
+
+>
+> To resolve this,
+>
+> Option A: Force VFIO (vmf_insert_pfn_pmd) to also deposit pgtables. This
+> unifies the VM_PFNMAP lifecycle. However, since VFIO can refault,
+> depositing pgtables here incurs unnecessary memory overhead.
+
+How can VFIO refault as a PFN mapping? Does it intentionally sometimes
+clear PTE entries to effect a refault, and implement a custom fault
+handler?
+
+I guess having a fault handler makes it refaultable...
+
+I mean obviously that then contradicts the suggested comment above :)
+
+That seems to me to cast a bit of a question over the whole series - having
+PMD mappings that are _sometimes_ THP and _sometimes_ not is weird (TM).
+
+And it'd suck to add - yet another very specific check - to determine if we
+do, in fact, assume THP for a PMD sized PFN map.
+
+>
+> Option B: Introduce a new VMA flag set during remap_pfn_range(), which
+> we can explicitly check in has_deposited_pgtable().
+
+Yeah would rather not, that feels like a hack.
+
+>
+> Option C: Check vma->vm_ops->fault (and huge_fault). We would only
+> deposit pgtables for mappings without fault handlers. However, this is
+> fragile because a driver might still register a .fault() handler that
+> simply returns VM_FAULT_SIGBUS.
+
+I mean again this is yet another check (TM). But probably the most preferable I
+think.
+
+Wouldn't a driver doing that be being somewhat redundant? E.g. in do_fault();
+
+	if (!vma->vm_ops->fault) {
+		vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+					       vmf->address, &vmf->ptl);
+		if (unlikely(!vmf->pte))
+			ret = VM_FAULT_SIGBUS;
+
+And so can expect maybe some more redundancy if they also happen to map
+PMD-sized ranges? :)
+
+And the only two callers of vmf_insert_pfn_pmd() - hyperv and VFIO both
+implement actual fault handlers anyway.
+
+So I think this is fine?
+
+>
+> Do you have a preference among these, or perhaps another idea?
+>
+> >
+> > By the way, I am wondering if the prot bits are correctly preserved on page
+> > table deposit, as this is key for pfn map (e.g. if the range is uncached, for
+> > instance). That's something to check and ensure is correct.
+> >
+> > I _suspect_ they will be, as we have pretty well established mechanisms for that
+> > (propagate vma->vm_page_prot etc.) but definitely worth making sure.
+> >
+>
+> Yes, they are correctly preserved!
+>
+> During a PMD split in __split_huge_pmd_locked(), we populate the
+> deposited pgtable like this:
+>
+>     entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd));
+>     set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
+>
+> The newly refactored pmd_pgprot() correctly extracts the exact
+> protection bits (including crucial cache modes like UC/WC for device
+> memory) from the huge PMD, strips the hardware-specific huge bit, and
+> returns a pure PTE-level pgprot_t.
+
+OK good :)
+
+>
+> >>
+> >> [1]
+> >> https://lore.kernel.org/linux-mm/20260228070906.1418911-5-yintirui@huawei.com/
+>
+> --
+> Yin Tirui
+>
+
+Cheers, Lorenzo
 
