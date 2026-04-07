@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8332FEEF31
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 496B2FEEF31
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Apr 2026 12:48:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 063F56B00A1; Tue,  7 Apr 2026 08:47:01 -0400 (EDT)
+	id A29FE6B0089; Tue,  7 Apr 2026 08:48:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 014BE6B00A3; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
+	id 9DB266B0095; Tue,  7 Apr 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E46286B00A4; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
+	id 8CA546B0099; Tue,  7 Apr 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D427B6B00A1
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:47:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 739391B8560
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:47:00 +0000 (UTC)
-X-FDA: 84631734600.27.98265C5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5536B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 08:48:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A4CCC2798
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:48:11 +0000 (UTC)
+X-FDA: 84631737582.18.CE8D3EA
 Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 56FAD100002
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:46:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CCH1PwO4;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5441020015
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 12:48:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=H7PIfKQP;
+	spf=pass (imf13.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775566018;
+	s=arc-20220608; t=1775566089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
-	b=4fBWI99+dTACJN9eJFFOLWbSAVMtYqZQyu6fszVGlw+aYYrX7UBzVeYNqzKwwYObyEonor
-	r5nijm02B450JgnpS3Jnho3i/jVDhC/DEI2DZOuJwobLuZzDN0fj6mcAfXq04bh4ap6sbC
-	g3ihyZfgADXmzMDq+vIA3mvygppoM5A=
+	bh=jsPjgRVFyADCET9OBAbphHMErVazIwO74nJ/z5grGXg=;
+	b=0JbdpSYwUNkbLHWA4IXIS+VzKJalFmDeYJgbjXa7AByndOWWmL33uFFCOODxnfTVsdBN4q
+	CunShYcZvP0C8+9yZpm5NAZrsPxQ15iq1GbaMxmzXs2KCatYMaOEibldjrQUAmsMYXqBnr
+	MY6FZ7WMUKve7Y/jfPQvDCGrlH+rn1Y=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CCH1PwO4;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=H7PIfKQP;
+	spf=pass (imf13.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566018; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775566089; a=rsa-sha256;
 	cv=none;
-	b=fj2aplMCE0h1WBW5HzDvEYqXlOBT1qVyh9DREPrrtE7P7jQItydMxTIRUGPGq6HQAqvgYR
-	87jDQEH6GAl4RCpkK7jgxbhBJ0G1TzuLuunO9kAMY3dPfHUZwyo5d4AFM0HDf9FANUUiM9
-	tEQoNSKbR7PSioTnTsErps5VwLEqfdY=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so11680305e9.1
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 05:46:57 -0700 (PDT)
+	b=k1MHXrll4HJ3dTGYjFYd2FWq4lIQvgmXXhiCvMSJvipQF1Z2S0LuIbEx6jpylxdYOt9cb9
+	/tVPpnb/otW6fuQjqKrGqv6mlF6yER67XGrL5zTzVQBw4MVb4kiod75Sw+SomcgPDCiVCG
+	y5+QHUytexN2NGE+IM44lMKcjjrKyYU=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so34308395e9.2
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 05:48:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775566017; x=1776170817; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
-        b=CCH1PwO4p00UjIYSS4u27EqjyH4gOk5G1xfw9NZDV+R/sbYSk2LrdcbtDE0bZuC5uf
-         TUNmq908yHB+AOwetGqX5SwGjJ5K40FG/MeewQ8UgLWfelVbDgu7mllbqX54oEQNNvD8
-         zj9pHErHY8GXHeaVKcGTm2dakQj6sbGYgonOedg0kDU+/hMZcBNnVh4mpWYY5IQC86cG
-         LQDZbWl8IIi9kF4EyNkH3jNr9rITOkrz+LyS2q3P7ndTpZy3dEebUe3gB3alBQpvTyV3
-         bx3TBNtr3ZrZrPVuYrM48o+k40ftIeLercEAcAhxf9FXL++6MlEheboyCUc4W9AeXpxY
-         kC0g==
+        d=suse.com; s=google; t=1775566088; x=1776170888; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jsPjgRVFyADCET9OBAbphHMErVazIwO74nJ/z5grGXg=;
+        b=H7PIfKQPRMlNgeCkubjYXeOpsymFirQg5l2tnaDapuxb1vk1XS4Spe6ohfLpbpBPkv
+         gnp0q1O6xlc4d9eQg187qj6oXtjLkK8nMcxrBH9y9AdmaNDhWVtZ4+KL332FKk75SaFT
+         gXilxp6/YCBmqhU3JTeIHnWmNo6Ba+dEO714otoF6wlt+ElKzo3V3zfrUCDgjevOlLiP
+         xWZ1Bmb76wGFiNdKReXwREwtfWHTyDQErKkGHPeKUG7sGUn8zKxHfw54PJjgwtE47ty7
+         845fUm2840hmyT4lottfgXRobxITkb7cwjnOUsQfMMI2vuW0KYBn6c3HLRx1YAe/o2di
+         Ud3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775566017; x=1776170817;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vbTQpF3+hPLIOL+yboKhhdmIl8i/2JZY5hAAOzxmhBI=;
-        b=Z7IeiHCqdTpTdwkTEUfGVYmUTUzl2Jcbk61Lv0mvirhq5OZiqXybKgVnaQOgocJwTH
-         6Q34TiRKhFrHZVsBDXoqsOy1gU4bXsUXrqxYYkMomzJS5ADLtL6gBvxTKfq+3Ma4hTKF
-         6rCVrXTcHT30fC3o5kOk6gVicOfnQZMVfesfrlcOt5fCp0wzqG/6I7MO3Uk/EUd41/k/
-         kalACfqk0rP6A0trOg/5KaHi4quRHdNT+3kTmLEDwGfEwXrAnzCb9f26dHHxURyw5j1j
-         RAg00MDQ5P+howEArroR8NLM/d+e1n+mByes53jwFdyvR8a/Z0XFCpTfdb/TFcqzuR42
-         xYbw==
-X-Gm-Message-State: AOJu0YyYoOqP84CXFJjadSzyVeSfQr5YUUcNGAx5VOKVQ1xsj3ETHJgV
-	A+JijLZm3O19nFbc2NM2Ydwh71Abh6/01/SRxQcDNFBC3VJPXITFbNyzMiFtmXCx1NI=
-X-Gm-Gg: AeBDietGJfJh3ypAZ6G9SZ2+4e2Hl6sQJ7AYVvZtg+DWqJNHncci6WxvqgCokP0oHYW
-	0ykrBcbBiQTeDtmRZpKXYXYxFylXM8QorXuHWDhadZDJ4Qv3KPEixZby4lQorK8pHwrKAPEVA6V
-	5EfJYKSrdIzZaAvnvhb6v9UU3PM7U8yLPFunJV8WJgHxvIlajXjKPUuEpUgbDQWMHR3SPSHKn1k
-	KZpqn4NHe9GcyxVkTBY5fZ71BSjE1Nj2H1GyrrRUqxjlvs55Q1Tp1bFMyid+e5+X+GeYzKau2R7
-	jXQAb6rTYxLF2vIlBitF5RQxPGkihC4OW1nbWs2qGBIGtvdw17thSQ0f200LffPX+GbwfM8/TfP
-	FjrYSPyfGeFbbtdgC7z0w0Kayl/xdoCJYExx4k8bwwDPla7NF5j5mvbrVqYKTTys7X+pPtTXYdV
-	gfCJgDJwWftcV9ZDW6sRO2WkSKHsqObl/qttAQ
-X-Received: by 2002:a05:600c:64cd:b0:487:1fbf:e0bb with SMTP id 5b1f17b1804b1-488996a1c9dmr247002615e9.6.1775566016576;
-        Tue, 07 Apr 2026 05:46:56 -0700 (PDT)
-Received: from localhost (109-81-88-253.rct.o2.cz. [109.81.88.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48897fd7e2bsm178382765e9.2.2026.04.07.05.46.55
+        d=1e100.net; s=20251104; t=1775566088; x=1776170888;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jsPjgRVFyADCET9OBAbphHMErVazIwO74nJ/z5grGXg=;
+        b=iIttjjw+yyVGXwHlGI8c/PfrWVMs7ParQ/1lwY0XMX99tkGJzG3DvOeLgJh8I8dKmi
+         7PoFUcAsPqSEU/CZmoQGoLPl9lxF+hHKUXYeUK5m/pNsI/XzKKLCZyAczASWkJ+4nVGj
+         4/mwShX8/G05YQ96K0q33Tj7Q+rU02nFVHF6GKLG6hCKKdUeNDv7ncgs+d47aOsV/taQ
+         QRM9Bkhje1HT8Y9fBopPic4UzOGKruuYU656C/rzv5PZpLmBPz/fyZ+ZegGJ2yfUzFQo
+         hFkWmYt4YJh57t95cT7YPkkXEP3Yf6XBROzvh8azuAeKWfp6GAYqexa8clp+ym5bGixf
+         D55w==
+X-Forwarded-Encrypted: i=1; AJvYcCXDCc+ppwdFlKGbgzp75O50rZXpAzV4EOLfgrFu4N7R4QbeqMwwGR+YtiDz0LlhmnHE6tA6nc9RRQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxh998dJfgfvuYyXCW+02WaOadvMMPQkcud2Dyd6b3wysngiKxr
+	mqOend/7deL3Uj866lDb+FCpybg7+M1lyqYY9ch0Psp2QGVHnAUjG2yUwrTTQ6bx+7c=
+X-Gm-Gg: AeBDietWdh+r2m39t0sah2HNVJRoC85EndWYOR44Jz7w+TvDoHgKoRWz+ZgQf8AVI/9
+	GAOAzHrAqYCrye7s2j1qnEYZQXP6YNFcOeBjnDkOVDvXgSIXSapez3UHRGBe59XredOtliMcCkw
+	48W9nPcd/GYuQDVVznkqtgvvpAFCiOBT98wO3h/m21ElcJl1+PKqzAt1+Q4t/3qpU5YyrRFbeyQ
+	PLOdFLbY+urCZMpeijdMtL9eSe5a+rIi5TKEJ1WtdQCQvfWus5nY7RZm2Qr0P/hOs7+j0P/2tU/
+	Dli7BXR2I9OptsRdl2QXeessEfa4E8LfePkv+5sWOxFtOh5+W4jJvTr5qebc7X2KEcMGc11GWWx
+	j46beZ/3VcJXD/lGZQhO5bixraIrg/XlM/h00fwtggBa30tGlclodLNS5AkOqIgtQ/p7kb85X2p
+	409lHqtF5nhXVboDsXRAMaB4yXWe6SKyjG3dNX3NMVqC8=
+X-Received: by 2002:a05:600c:4593:b0:485:33ad:3c9f with SMTP id 5b1f17b1804b1-488997de1c6mr263906175e9.25.1775566087832;
+        Tue, 07 Apr 2026 05:48:07 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4d58e5sm50268531f8f.23.2026.04.07.05.48.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Apr 2026 05:46:56 -0700 (PDT)
-Date: Tue, 7 Apr 2026 14:46:54 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, baohua@kernel.org, bhe@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
-Message-ID: <adT8vnS27qKSTvOC@tiehlicka>
-References: <20260407110002.204755-1-wujianyue000@gmail.com>
- <adTomi7uPYJebAMD@tiehlicka>
- <CAJxJ_jjFonN8m1YsGh8FjMBbiociLiXzE=tS2+=Or4+PnTPr-g@mail.gmail.com>
+        Tue, 07 Apr 2026 05:48:07 -0700 (PDT)
+Date: Tue, 7 Apr 2026 14:48:05 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Eric Chanudet <echanude@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+	Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
+	Dave Airlie <airlied@gmail.com>
+Subject: Re: [PATCH RFC 2/2] cgroup/dmem: add a node to double charge in memcg
+Message-ID: <auzxmkl5jxlvlxpryibtz7srdnssguiaylb3uisheclrqelcgh@owm2nve7axb5>
+References: <20260403-cgroup-dmem-memcg-double-charge-v1-0-c371d155de2a@redhat.com>
+ <20260403-cgroup-dmem-memcg-double-charge-v1-2-c371d155de2a@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3iqnq37lhwpyhhg3"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJxJ_jjFonN8m1YsGh8FjMBbiociLiXzE=tS2+=Or4+PnTPr-g@mail.gmail.com>
+In-Reply-To: <20260403-cgroup-dmem-memcg-double-charge-v1-2-c371d155de2a@redhat.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5441020015
+X-Stat-Signature: zghws81n9z4igb3m43uzgj1zi7ra9awx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56FAD100002
-X-Stat-Signature: kr6qks35x854pwffc6qnc8jpje3krrf8
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775566018-870258
-X-HE-Meta: U2FsdGVkX18tnqSgNLIHAnikX4QxpAcaXyNHibNl77xBi/P5Ko4qldnK7DgBAqmWVot4sK6al9nR7Lj+EWERNzBOKnwotC/kEEQ6n6GzCj70cAqb5zWP/zNmrJTiWQ7lbxIo5sgczodO8ZOMXZ/T4zi3jOjspKqnVcZ5ZHbLroaok5fUpIDF/5xrPEIuY7neokVERyL8hj2CjdsLDB4sSyYU31d/hol268zSpJNXTEg464B4GxH5ATFiq0GfyTfyYzSI87hbkCNBMSOWycwZPBkI5o1THAWXddTYrJtJNpq85J5/pOSHXzTu+fX4xHBmoMPbwLzz2gdrAvtxyiTZK1xI0wzH0mGThI2dzH/1MTIV9dZwuxRXpR5d7rQL5gxOISm4nREz5BIVLLWSuK2Gm6I5xEJ14oYf4ziXJSq3gmqDG8otMWQPWKD3mzR9aqoBQUwDl8o0qMAlE5M2DS9EuqXf+lWc7sOpPOz0/jJX9gs9yfPAz1bOFdekZoLReTHp61a/pgUAAVZv+vyptj2B4NhK/18aLEgMyZNtUCHsa23W6u0reyPkXHNpgk18GOBZZ3st4jDJ+CtH4OpFsRDrpJBMXprQZnApxcbWpvur3Ci2rz1OXBDFd9ZFzr3TltiAjFUUH0F5tXyBg38KnX++kakRxI5K7hQKuQN1bQjMi5ZowxaMcjZF4qo5SuUB9YYPPIvlxUBAiq56z2qApTFCrWz/5ZAyaM5XEz8isGSKJ87tKl8mFFPFiesdwgp/7wwleqypuDm5whbBBvLx2x8h5HEiUazaj0tLP8M26EkSXdml4+SDd4YXWdgMwvwe/80Ze1tdim0tRqQesdM2rCuU8LkHS0/y2X/22vQt6ijpGwWMLmDP39LAF/yXiZyYBZ3sBAe/DdefPCPpSsa1/p0wqC7e1i4FLJdLlXpk0OiqYQV4CUfWAHm+Y+8aNqV1dQGy5vsQz9yCXTRmAufr8mK
- PAm1o9py
- RuRPDHIo/oQag270pgwU0/MZav2LHAM1u1ixHveVAPv3cWK2Blm/tVEMIMK1/bodXcsMwloFsK80DSwGJyTajjU10CLGimcGgh6Fxn3rgUhMn0eh5sj+ZcZpYl/f3sS/woHHSo5ARVqxWCdI7OCYjQFW/j3/IfIwiw2vOVVlwYYzLOO5um+W3KZE5ms4vgZRiCGinZknIogb0kewOSZLpsBGmcPygvgZMPhPEpCC6uM6Tq0KrI3ydgb6YyRfBgVdPj4WT4mrHnUn7Q1k7xd4waflWm3wkNsJcGYWlH1ydozcyCh62td4iWY+I4wHc+7El/JSvj1OkvTOVTIVuIEkDU0Nf55jOOcQZ0NFdV7DInppF1PVLoR/IlM+74fLN0Trb11s81ewHPKFXd/y2nlK7FNwxwNfBrgE2zgYXrgP4QwrK7+p0NCrN4a/xveIa4O/BoFGfNymw8odsZfK1YfBezgd0xA==
+X-HE-Tag: 1775566089-598873
+X-HE-Meta: U2FsdGVkX1/jUYy8MjKbVV/o8w8FCa+zjWewQuxSZWxbScFvIlNaeVoNhzPGsFa4b1BbBRfo4aSGXduAJK5xp3qm8LaojHA5CWi13Gx/BH8237u/K5qWsyvhcMteHL9Za5+zeXSqcToroqGmXDqLtKyRitVEizdX0X+tuQA9haR6A/63chHAwDCEC2KyE2schnrrfas/+R+IHx/6jup//GafnGhzUd9l20WkJ0mwAk0Qct0hCxxpcZcsyChxW6dHF3lnktfw25m2Z3jLDuCDjzF/0Gq8t1x/svkFVKTxHFdizptmZmr1ZZOODJx1/nKPm+k440QNg11hQEnVlefEkcZLrxqyQsYtcCyB2xJYxLJUlHxM8G6jmn4hP8EvHeTqhQmpnrD4FFX1X2nPs8Togp5faIzVBVCASTQccVWuoxwCwljMp+ilcTtJtVGdjpXWnZMF8Bu3ngsvBU4syv8vTfXQzFDycyejIbBKPh02v3oDzDzFI5ui2NrUa/KstIdG23iI5bFiglgHGQjtx+5IX/eHFEux/30KqIuhp3wtPvmjJ7TOzJokgHKNZDY384tLnmriSNHiiSnRAO9NQEfkhrbIUrquz9hMhX2ItzDqxQT4U7simLH2llmm0usl7zY3TdBk4e1JmNxKUH2wYXZ3T4u7QSCNFdvmVaRrNydwoIvcPd086BDfENNsvjR5x239kEG5KZ2Z1BvO7tEaRWFzPKhFhHa0f9E1VAH/gdeeuXYrS0SzzB00NH5n2OVf6X61b8eJ5Y+aiZHiLG0BMk6zyOxviRjau1USSdm5ekrkN2x3tsixUfW5W7EMxpQlWyx5vPrCqU/OGJ9BElrIpAlb8rvzIkEbPEC42+FWVwKxnEiwtQoSWIe22YWd1HUEUQkk8InFJjvXpJj5fjwccF3HtDaydDXQpBVkWff5k/54leJEsbeCPaORA43iGgwNAj5Hm8cgXvn3aJMDR6Heuwp
+ thlvoTAJ
+ 3+Br15pPkokx//OII7W2y3+jEpAuhkxUwrQiB8NrGluYwkZdlAVZhJQKxKLzY55sEilQcIbb8PM5KyEYW39xeAaU9O08pQ2HDiM7TcR9HPGMhWXQnNFbk8VLho+6bxKf2H1fMX4eeE2SsFCnjzZR+fbCT2wdXgi2vcjVAJQNjb8VrshNgkiqOtq+/GKc3KqODKnaGj98+iiV9iQp7fPh4if/NNQMG9W40IxidCHLxaOPWsOmXrKRW/F4L2pg5klL4xFEBH4dW1E/a87JCesAJbWZoP/kEIhFMaPL+eFQexghiKeebZGZ+mATYV8TlLO+oo/PGMKbiYeu2gvATRDpMOee4xI9d5rF5dFAgEYO1hrPDk6HGfoDdvfvcMIsfv5KCQA556ihCaaFYf0l6RD/O59RkK6X7PUosaltsTJ+yCa5yldA4aoVIVaTa8ZudjWhmpraOLt1Z64FPR39u5JeyOrPy8H/d3aQxRgmeMM75YIMI9stUzkHP9Q6LbuX6wCUWAXZWHMAAVDZ1KLklAUPRdBfofAW3GfnqB5jGJqHuNqAp0Twr+wxG7c/wjJpF1YE0IXG7gOKPPvDesfoIc2wfJbDrl3Q24NJIRwVE7e+3Ew69lds=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,38 +125,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 07-04-26 20:31:40, Jianyue Wu wrote:
-> On 4/7/2026 7:20 PM, Michal Hocko wrote:
-> >
-> > All that big churn is really worth it? Are there any other reasons than
-> > "not so appropriate"?
-> >
-> > Really if this is not a part of a much bigger plan then NAK.
-> 
-> Hi Michal,
-> 
-> The intent here is to keep generic LRU/reclaim helpers separate from
-> swap-specific code paths.
 
-OK, but why do we want this and cause a lot of code churn to achiev
-that?
+--3iqnq37lhwpyhhg3
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RFC 2/2] cgroup/dmem: add a node to double charge in memcg
+MIME-Version: 1.0
 
-> The LRU helpers are shared by both file and anonymous memory, whereas
-> swap.c is meant to host logic tied to swap devices and swap entries.
-> Placing LRU code there would blur the boundary between general reclaim
-> and swap, and make the code harder to follow.
+Hi.
 
-The code is harder to follow than it could be, no questions about that.
-But that alone is a rather weak argument to justify a lot of code move
-that cause a lot of conflicts.
+On Fri, Apr 03, 2026 at 10:08:36AM -0400, Eric Chanudet <echanude@redhat.co=
+m> wrote:
+> Introduce /cgroupfs/<>/dmem.memcg to make allocations in a dmem
+> controlled region also be charged in memcg.
+>=20
+> This is disabled by default and requires the administrator to configure
+> it through the cgroupfs before the first charge occurs.
 
-> Separately, I’ve been looking at routing zram’s swap-slot handling
-> through swap-owned hooks (e.g., swap_ops / swapon probing), which would
-> involve swapfile.c and swap.h. That’s likely orthogonal to this LRU
-> move, but it’s driven by the same goal of clarifying the swap boundary.
+This somehow dropped the reason from [1] that this should be per-cgroup
+controllable. Is that still valid? (Otherwise, I'd ask why not make this
+a simple boot cmdline parameter like cgroup.memory=3Dnokmem.)
 
-Does that work benefits huge by this work?
--- 
-Michal Hocko
-SUSE Labs
+
+
+> @@ -624,6 +656,13 @@ void dmem_cgroup_uncharge(struct dmem_cgroup_pool_st=
+ate *pool, u64 size)
+>  		return;
+> =20
+>  	page_counter_uncharge(&pool->cnt, size);
+> +
+> +	struct mem_cgroup *memcg =3D mem_cgroup_from_cgroup(pool->cs->css.cgrou=
+p);
+
+This is not necessarily same memcg as when the dmem was charged via
+current (imagine dmem controller to depth N, but memcg only to N-1;
+charge, then memcg is enabled up to N so this would attempt uncharge
+=66rom new memcg at level N, possibly going negative).
+
+There is a question whether dmem should enforce same-depth hierarchies
+with `dmem_cgrp_subsys.depends_on =3D 1 << memory_cgrp_id` (see
+io_cgrp_subsys for comparison).
+
+And eventually, if per-cgroup attribute is desired, it would make
+greater sense to me if that attribute was on the parent level, so that
+siblings competing among each other are always of the same composition
+(i.e. all w/out dmem or all including dmem). This likely results in this
+extra-charging attribute to be properly hierarchical.
+
+HTH,
+Michal
+
+[1] https://lore.kernel.org/all/a446b598-5041-450b-aaa9-3c39a09ff6a0@amd.co=
+m/
+
+--3iqnq37lhwpyhhg3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCadT9ARsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AhOewD9F+F9qnpuYx39EPNVVkg/
+SKfJIBup3dSTrvEji8kA2RQA/RMerQbaK2QZn1VEv4D6kzXZgky62HGmS4B6FfWf
+8XoH
+=uSlM
+-----END PGP SIGNATURE-----
+
+--3iqnq37lhwpyhhg3--
 
