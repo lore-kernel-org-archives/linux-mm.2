@@ -4,118 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14DF01073C98
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5DD1073C98
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:04:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79A756B0088; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
+	id F18426B0088; Wed,  8 Apr 2026 07:04:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 771FC6B0089; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
+	id EC9286B008C; Wed,  8 Apr 2026 07:04:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 661C66B0093; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
+	id DDE566B0092; Wed,  8 Apr 2026 07:04:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5543A6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCFA85C0C2
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:02:15 +0000 (UTC)
-X-FDA: 84635099430.21.49A69ED
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C14651C0019
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:02:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="j0m/Wl5D";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CFABA6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:04:58 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B87E13BF96
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:04:58 +0000 (UTC)
+X-FDA: 84635106276.08.0CBE573
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A339EC0013
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:04:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZyR3BGBB;
+	spf=pass (imf10.hostedemail.com: domain of 3VzbWaQsKCHIZeedmedaQdWWeeWbU.SecbYdkn-ccalQSa.ehW@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3VzbWaQsKCHIZeedmedaQdWWeeWbU.SecbYdkn-ccalQSa.ehW@flex--joonwonkang.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775646134;
+	s=arc-20220608; t=1775646296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w0ZXcPKyMB2Uz4ebX1V3uX96cejqIV9Zdqzp3mJz0Sc=;
-	b=1BkQTnlgdnWmuM4CXuSNB5zGikwRMbdYWj0ECLsaiK7FyXyutLuELtFHw+TuBadwJfwpl+
-	yFuWGTvrduA2wgGrVEHsw+sFdWwLc2EvvnLfWA5iFxGKbpaPAPA4A68N3/q/r5JsPPo3+W
-	I6dVyWw/M4MjQB0fNfNVB5lhnBYHsNw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646134; a=rsa-sha256;
-	cv=none;
-	b=JjygxubnBJ8lc0riQIBYysvF8QVO6jg/X5RlBsM2NQAfLv75drQ0cZP+6HgtBAvCzwiX0C
-	3nga5FtSyt5kkwru6Hf+NZxbjyDDKjJHnpzOA8yk2W1kEBlfWi/Y1vGpW41Y5e977aoJru
-	EcRx4LFBRixCy6fHpKpf9S+BvENmiBk=
+	bh=1QFeYzDg8GJ9NKSr0YRaZ+Ij5/0muyTGiaNqDyaMghA=;
+	b=4t1m/YkEj/SByHSShM0Xsx0NQZ0BynGSZ8X+m2iX7v/tPxOFZOd/n5mbVMVaAfuyluozit
+	k395qYjfXxfxSglmjYihBi4uTitaTufm3bihUPBuxqXsgnBts6tFpR/Q4t3GYCKMW/lLE3
+	xvsNaDYqf0hWBSkA7upHjDTKFoWdxR4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="j0m/Wl5D";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 078473161;
-	Wed,  8 Apr 2026 04:02:07 -0700 (PDT)
-Received: from [10.57.32.88] (unknown [10.57.32.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DE403F632;
-	Wed,  8 Apr 2026 04:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775646132; bh=BcjAsJfFFdxOuFJG+yx8h9dEcchCwv67qshCeNpQzVY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j0m/Wl5DLNS3bb0LPJygmxr64zm8k47jOHhnUdaH8o4hEg7UUONrE66mssRlJ7NT2
-	 6bzBCKlVrr+w2+XGl2eztRQqDLePKhvx7aHRms/5lUbXVIvqBABzatYJU+Jw6NrJnn
-	 B0h8Vu2G1rPcddUOVHZq+00sZ9LGtr5cxfhIEmOY=
-Message-ID: <9c8ddc37-a236-446b-a85a-261f370d644e@arm.com>
-Date: Wed, 8 Apr 2026 12:01:59 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for
- KVM_SET_MEMORY_ATTRIBUTES2
-To: Vishal Annapurve <vannapurve@google.com>,
- Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
- jmattson@google.com, jthoughton@google.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
-Content-Language: en-GB
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C14651C0019
-X-Stat-Signature: z9irf1cn75ooz7ohrkynywhy5k65in58
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZyR3BGBB;
+	spf=pass (imf10.hostedemail.com: domain of 3VzbWaQsKCHIZeedmedaQdWWeeWbU.SecbYdkn-ccalQSa.ehW@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3VzbWaQsKCHIZeedmedaQdWWeeWbU.SecbYdkn-ccalQSa.ehW@flex--joonwonkang.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646296; a=rsa-sha256;
+	cv=none;
+	b=OyAKhSkMfMDhk2TB1oz8fq2m5SL50OrYwh7mj93wXHxE9NOwr7Kb/eAn1/QIF/Bft8I2IG
+	9HacwupRh1ad97cQYBiwuHiZYEsMI32EUYSH9xosnRkF3Kea6oIZJHXveUXLg8suzrUEb7
+	sF+Wwc4YDCH12oIlWqaR0ALulZdGRTY=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b241be0126so163440835ad.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 04:04:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775646295; x=1776251095; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QFeYzDg8GJ9NKSr0YRaZ+Ij5/0muyTGiaNqDyaMghA=;
+        b=ZyR3BGBBifvFF1OCPv8xhyn4aSdInywXZTYODDDAFhF1XQX1LXHC5W3NXlVnriPLZi
+         vftHBDv/7Kl3WisevX1WrHTK1CB2g24/Qt+T4ZnfWMfWms1bhVRzXXjT2VX5jfDGY+Xy
+         FtvHPEdeirH5YAeAbdifsSYobbrkXWxWxyxlpYYFXaxeHmSMlSiaJSADRThg5bRW1eZk
+         VlgNmS7AFAKRPm4jhic2qBQop/m001jW1SEbSDpkR5tVGyFdYxWpdF8r5DIt9q6lll2n
+         GbKjmdSic8QMOclH7s9sZwtjDuVk1pvzXkbyxOvApcTH7iBFMgRuEOW4A59fAAdQEwZq
+         bU3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775646295; x=1776251095;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QFeYzDg8GJ9NKSr0YRaZ+Ij5/0muyTGiaNqDyaMghA=;
+        b=qSk2VDSpNRVPc6SDRsEBxtozgNMQNKFu75/j6Mt7DoPSBoWHVIxhjQjEkapL7Eb+1C
+         nBpYFAZae7wV3REV9S0KNlDptGjSXtN7rPqDYKxLMjZgeuZXzpbv0cedH0E8xHYgNqOO
+         vwyweECknj+QFaYJ318o9QC+bqhPGzS8IAv24MTr0aQ9ObzBDEdwHjJVNdfJF/RnL6vA
+         kTuVLUD3EeNkrLl7BMFnMAVRP7fEAOrNBGeP3A/Mss0MuIEeEufpCwgAZxtBhNsYt0H7
+         3PBlevpab5tFgWISPEI2ME4TLh4glAMIpN3r6FtLx3eD1M8KgMRFr9IELQxgMh/smdq3
+         Spnw==
+X-Forwarded-Encrypted: i=1; AJvYcCWBbBtscxUcr70Q6FjC1y8GdHjtb3lJmf3CA9FpcFH5bF9BRbBGdMUc+UHcWb38K4Jhf1yCs59tug==@kvack.org
+X-Gm-Message-State: AOJu0YzoyUnIO3JJ0fB1HpsV5aBvWV/lpMB0YL/iYV3PWGDy8Fwp5pe2
+	RuHVuXf2GqGThqxcRhHKBRDgdCt8aZ3lKZ9MR1MkfuXLCJclhax6Jp/Qhu1QuE1Y0ViGTCXbQgL
+	dNdZioq4/f8hB/8ze30sfjkfUsQ==
+X-Received: from plrd7.prod.google.com ([2002:a17:902:aa87:b0:2b0:495c:f3ec])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:38c3:b0:2b0:a980:367c with SMTP id d9443c01a7336-2b28167312cmr221287015ad.2.1775646295294;
+ Wed, 08 Apr 2026 04:04:55 -0700 (PDT)
+Date: Wed,  8 Apr 2026 11:04:53 +0000
+In-Reply-To: <20260408100642.83919-1-joonwonkang@google.com>
+Mime-Version: 1.0
+References: <20260408100642.83919-1-joonwonkang@google.com>
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+Message-ID: <20260408110453.694461-1-joonwonkang@google.com>
+Subject: Re: [PATCH v2] percpu: Fix hint invariant breakage
+From: Joonwon Kang <joonwonkang@google.com>
+To: joonwonkang@google.com
+Cc: akpm@linux-foundation.org, cl@gentwo.org, dennis@kernel.org, 
+	dodam@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	tj@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775646133-229289
-X-HE-Meta: U2FsdGVkX19geHwLhbbiGrHC1wA8hfQWrJ9rX4F6pGZy6WoA4gsepJspf1JPZuWR52WtRQY19CfJ3bopA9etlnw0xT1e0GYDy96TVkqSpLgYu7mReJHEUaFrcRRokcmyWzTGvEKdOBBbnyRdKj5TMP5pJEK34MK6fT7uV4qB/Q/QCnLDgbrdeoSkO+dfjeoWI6UtSOwgpypFvrSwatTiJ41VyleGtobM+TlLIfR1GRtqcxsqlgSnj6CgCF0b8P+gOvuy3hk8VixTC2bNYL7hudBid1RFp8CJIqg4+NAqLdsYLURYZ1N2+k1GWKfSKNPtkNieQ7pNsMFPvjz7RYsqD8Ua/fAkgqbFxqm6F5wEoBWHbLNg9XewS1I2XQICO1Oy7/qyodwrNBOnsQAKKyRRnNu0AkLPg7PHCnDGxdcUkf0363GNJGdffmD6PSDGtp/QROZIi044Oxw33TiZ0xMe0yAjagB9bk+Z228Ott6doxpLbH+7m+vVcrTMwcoXuBu2NSXOR4kxTHKu6e20uf+5ySNvVxtvvgRpEA7HJImIZPD4rrHmGxr4gYH5Dw+kWgExaPwE1pD6WGyLh75uhmwHYCuUEqnpaN2yjdfDHXdkTbS9IwwZwJ/V0AZiXchiqcdWySnUoSparCjsttsPKxNNv14ECTaHi4kvWhDzniNllJN9xj0zEF34yYXM2lkUnY1Lr/uRCv7bCwi+O3Q1oMBUWXm0apOGLtGKc/xPBBfAhgWnWhKDxE6nEe5NKakhcQ2v+2T8OQV4YjvLgiH21S/GqjH7OJvF8hgLi+Jleyi8O0gdGdNA8YU1rTqOvOaB22BeNoyQwPhcSJUWqqaygvkHjgf3zV4nPK13I9yVKLnvva3dvK9XeXBbsaKTtdX7iavQr2tHnORxgcR4RitDmEN/dxkU7K+t/8+G2Y+ngwb+at3oCZy39QNKi9ti7HHBOmItIvqhMsLDJN6y7kxz/ad
- FEH9aNnN
- YP/QtWkZfGDgTEC2GpkGVAlZPkWiXBQ/6Ly1sSViYRc2hQNAQD2d2feGCBHlf1Q+uSeK3cRY+e42MHw/0vamFLgwdzXQJBnRk73L/SeJg29jcqbVqRGj6uVibn3HO/P91W4eWrhQ+S+DSTbMdbhnm/PxGnxx/ZsuxoFfqOEs1noHx5FaZwaw3H7gNsaENC8IifHKzV+JINNyajQmZfLsUi46aY6skN502u/yYXs4Q8R2WqG+J2kYidrwVWa8cEkZwKfflepyNUb7TxmCWoRYfK5+0TF60hjq1ywKxJIDVtcO1h3I62VnFym1KIIkfjRrRcf2M3Ecz22ot8bxNHM/ZH8vobAOOUaSXKOYNWks37vAUj/V6Lol+JBF7/n7kPlhELrVp/UUxaYPUUPbxXsvjx0eBKraKjQBf9wWa
+X-Stat-Signature: xi8udsqwzx51wk4eu9fizim44iuytwru
+X-Rspamd-Queue-Id: A339EC0013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775646296-860282
+X-HE-Meta: U2FsdGVkX19SuWVsYJwmXhwvNuCtcWI8iCdez7qDn4/a1OpfD0Y8mRnYSGs+dRfNlyOQf/ySR7OkNVPDP/RbH/tI5UUn2KUoIKlqO84CnFRPB5D1EG4Xji6n3RsCYlNJpFopEKbKL5J8vMtp7rtgOzWWNFfKNWK/ySSBIXHHX9E+pu85Y17uW+oveOBM4hLD8UDBKBs+akY+BHfKgF0ag+v7G6fbp7bMU5GJpsvaCaZYLOqC65FFO3DXUdupmsKnbnjuTVwvNp7vu7pruDUWUEwG2bWBUDP4UOBpUGZ097MVg5kNVrf1ECt00wVWENW6+jklMpKmqdmAgeEqUYjOjp956OeJ2bKUPv/HNcv9TkABgUQvoFjeiIKiVd6KmHAZ8zPHPUbQJK0F0BKf0t2JXaSS+WFY2Fb5AAAX7h9ibV13LWuhB7Veg3iEjHnYMY7Hrfv99WAyvMHKZRBMrbAcGu1HOrkJ242JTtUQVrQCH9dE/pvfxrXlkj0q2toivVPlPQhDv3YomtRPzhnoVyoO9/xHkUvtwNDxDO8Hvd0hnn9fMygM9Q9Tz3hhF65Xrx0BJTkx3Q9EfPgsXl44q1v+pRVDHdbTq1TBepAN1E/8WWLUt2QJdijrEaK8Vsjq0c2srGAgkRbEPZPRIAwxtUJDVuS8bNnl0/UdYqX2Mu8Y42oJoCp5wlyEHsaLyfT+e3SBIPte/mFRKgvNhm6Y5j1br4VBuTp3hNAOt3+msrjWNgkoDHllCJv1ZvqHVP4f7m73kH9GEF9PXNeA3Sg7GUl1xInyGa25yHsPxcY9NeRS3PKVTCi/cMPWEtXcDwIEltJc2XJUXu3wB8VrOI9vINbQ78Uh8A963e333zTEfCZiAtYLUmxrOpdbEIC1FNY4R0UYhv20EnRZpr/jhrbI88oiKag6ICRnOyx+RTaxlfTMqIxdBopoTA+naI+6EZY5ilGUK4gleLmLWD4Hd1GayJl
+ QzjqSdKU
+ wxZctq4fBP07Ykxg3cy5AyShxc7ryPskDXSwOAHuzoX2HlQ/J21CyljnqqGoMmmaIOI59/g9Fo5xidNbkg3up/ROuI61fl6LjyZuueXMeBypjfZoS1AdfFhxJeYGsU/m7ODfjivjmuFay8bfBCUoupEHtNrk6pXhtY1CNZBWRhrFMhT3SMyDHRJ559J3rO3NoxutSoAh4XDxooRhnd+/+PBWn887FA5zKugRoub6pRZD67KSsUflCclBibh7Hbf5K+chSMlfVezzvMPEJBPufffFucTJ/wxavWEvR4NicDQ+f7p6ms1Q+NHP3XIB1wbNbZ9YLftRaLMflAxpHnaCx43XnJYmTqwXb22/hIcBLvhrsACMA4an0w2PLRX+s2YG6Zw583SnApIVHjigzpE4D0+rI3job1CCisTq/xT0/64JuAynSTGLucTirmtwFRMks/qxK5h9wiTwXPIEsF9uRKvPbGXajLZy61DOESPLxr2T+CDsU57nfTdyvEB5TX9u/NZyyrC80s+DaVhoIrcorPsQkFUb+P9qSarblQ9iVHa+3CNLI2PO68w9a1zxMT+xDVIi/jpTBbdsnQqM3ocRBkwTXf8sE1H4FMsAPH0OMs+uEDnoVz3vU6y42TNTu3hcN8Z3b9cacau73hXQUk1IpVu1fEQHQsu4mmX/wTlhKmwuFa4KcpRea6zlJtUqSRw15eArRuzXPjCPjAoc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,109 +108,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/04/2026 22:50, Vishal Annapurve wrote:
-> On Tue, Apr 7, 2026 at 2:09 PM Michael Roth <michael.roth@amd.com> wrote:
->>
->>> TLDR:
->>>
->>> + Think of populate ioctls not as KVM touching memory, but platform
->>>   handling population.
->>> + KVM code (kvm_gmem_populate) still doesn't touch memory contents
->>> + post_populate is platform-specific code that handles loading into
->>>   private destination memory just to support legacy non-in-place
->>>   conversion.
->>> + Don't complicate populate ioctls by doing conversion just to support
->>>   legacy use-cases where platform-specific code has to do copying on
->>>   the host.
->>
->> That's a good point: these are only considerations in the context of
->> actually copying from src->dst, but with in-place conversion the
->> primary/more-performant approach will be for userspace to initial
->> directly. I.e. if we enforced that, then gmem could right ascertain that
->> it isn't even writing to private pages via these hooks and any
->> manipulation of that memory is purely on the part of the trusted entity
->> handling initial encryption/etc.
->>
->> I understand that we decided to keep the option of allowing separate
->> src/dst even with in-place conversion, but it doesn't seem worthwhile if
->> that necessarily means we need to glue population+conversion together in
->> 1 clumsy interface that needs to handle partial return/error responses to
->> userspace (or potentially get stuck forever in the conversion path).
+> The invariant "scan_hint_start > contig_hint_start if and only if
+> scan_hint == contig_hint" should be kept for hint management. However,
+> it could be broken in some cases:
 > 
-> I think ARM needs userspace to specify separate source and destination
-> memory ranges for initial population as ARM doesn't support in-place
-> memory encryption. [1]
-
-Indeed - CCA requires KVM to first "delegate" the page (effectively the
-shared->private conversion) which will destroy the contents. Then we can
-populate the data (but that obviously has to come from elsewhere).
-
-The closest CCA can do to an in-place conversion is for the kernel to
-copy the data to another temporary buffer and then the firmware can copy
-it back after the delegation. An early version of the CCA Linux patches
-did this (long before guest_memfd). However this is slower than it needs
-to be (two copies) and difficult to size the temporary buffer. Too small
-and you round-trip to the firmware more than you need to, too large and
-you waste memory. And, with increasing support for huge pages in
-guest_memfd and the CCA firmware (aka RMM), it's also challenging to
-preserve huge pages while doing this dance so I want to avoid it if
-possible.
-
-> [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@arm.com/
+>   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
+>     scan_hint_start < new contig start) && the new contig is to become a
+>     new contig_hint due to its better alignment, then scan_hint should
+>     be invalidated instead of keeping the old value.
 > 
->>
->> So I agree with Ackerley's proposal (which I guess is the same as what's
->> in this series).
->>
->> However, 1 other alternative would be to do what was suggested on the
->> call, but require userspace to subsequently handle the shared->private
->> conversion. I think that would be workable too.
+>   - if (new contig == contig_hint > scan_hint) && (new contig start <
+>     contig_hint_start) && the new contig is not to become a new
+>     contig_hint, then scan_hint should be not updated to the new contig.
 > 
-> IIUC, Converting memory ranges to private after it essentially is
-> treated as private by the KVM CC backend will expose the
-> implementation to the same risk of userspace being able to access
-> private memory and compromise host safety which guest_memfd was
-> invented to address.
+> This commit refactors the percpu block update code to make it more
+> visible on what to consider, e.g. when the new contig overlaps with the
+> old contig_hint or scan_hint, fixes the invariant breakage and also
+> optimizes scan_hint further. Some of the optimization cases when no
+> overlap occurs are:
+> 
+>   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
+>     contig start < contig_hint_start), then keep scan_hint instead of
+>     invalidating it.
+> 
+>   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
+>     new contig start < scan_hint_start), then update scan_hint to the
+>     old contig_hint instead of invalidating it.
+> 
+>   - if (new contig == contig_hint > scan_hint) && (new contig start <
+>     contig_hint_start) && the new contig is to become a new contig_hint
+>     due to its better alignment, then update scan_hint to the old
+>     contig_hint instead of invalidating or keeping it.
+> 
+> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
 
-At least in the Arm CCA case the "exposure" of the private memory is
-only in terms of allowing population - and only before the guest has
-run. The host isn't able to access the memory in any direct way after
-the memory has been delegated. But the RMM provides this populate method
-to copy data into memory (in a measured/controlled manner).
-
-From a CCA perspective the logical flow is to mark the memory as private
-and then call the platform-specific function to populate the memory. But
-obviously we can fit in a KVM API which is different.
-
-Note that CCA has a specific VM property called 'RIPAS' (Realm IPA
-State). This is the guest's view of whether memory exists at a
-particular physical address. My current series takes the view that all
-guest_memfd memory is private RAM and the guest will have to
-specifically request that it is converted to shared. I'm hoping this
-series might provide a way for the VMM to configure this (before the
-guest starts executing).
+I have just encountered a kernel panic with this patch. Will submit a new
+version after working on it.
 
 Thanks,
-Steve
-
->>
->> One other benefit to Ackerley's/current approach however is that it allows
->> us to potentially keep hugepages intact in the populate path, since
->> prep'ing/encrypting everything while it's in a shared state means gmem will
->> split the hugepage and all the firmware/RMP/etc. data structures will only
->> be able to handle individual 4K pages. I still suspect doing things like
->> encoding the initial 2MB OVMF image as a single hugepage might yield
->> enough benefit to explore this (at some point). So there's some niceness
->> in knowing that Ackerley's approach would allow for that eventually and
->> not require a complete rethink on these same topics.
->>
->> Thanks,
->>
->> Mike
->>
->>>
->>>>>>
->>>>>> [...snip...]
->>>>>>
-
+Joonwon Kang
 
