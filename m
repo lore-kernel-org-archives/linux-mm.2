@@ -4,77 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E32810F9953
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA4C10F9958
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B9A6B0089; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
+	id EA0576B008A; Wed,  8 Apr 2026 11:47:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BF856B008A; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
+	id E50AE6B008C; Wed,  8 Apr 2026 11:47:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F8716B008C; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
+	id D8D136B0092; Wed,  8 Apr 2026 11:47:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83AA16B0089
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24FACC0A9A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:42 +0000 (UTC)
-X-FDA: 84635818764.17.FBFEDB7
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4BE6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:47:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8FB53E051D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:44 +0000 (UTC)
+X-FDA: 84635818848.28.5938FBD
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 15473160013
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=dSVEcEoS
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7C5BFC000F
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:42 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=drahk1PU
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775663260;
+	s=arc-20220608; t=1775663262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WQBQpmhO7K+JMC5pO21nDiBudOMp6NAQQ2jDhZLgte8=;
-	b=Z/rPHj0kWdCeUK029LfZN2gA05phSoen4ADpbCvBBGOC8PyAER8M8RNuIsPTsD4XIhYJwe
-	/G/R0vmT2BGddtO+FkQg0uWKsVfsd4kLTfToW/N4R1Xw31tYJ8OCIVKHq+jBpUSqN5p4wM
-	DpEOZhztVOXBLnaoolMwjjjJFfirMww=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775663260; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LT/kDv7NmM6H9XF70WMUnfbRhC7vWN8v8AgsiqkvL94=;
+	b=UusO27XRNnPzgTuwlP2uzIdZWcndlMbR4k9D4KzEs6NQyxhAsq6r9r51dh+qsGm1pX6AB1
+	uZ3Jgo8nZNG6B/s7yQ3m6rD1Emt173fn+G9/5a+db+eVip487gPBdEGThUxIosThvIEVu+
+	3aUt4vnOQMtwZ5FnbhcqwpbpyN2uaDA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775663262; a=rsa-sha256;
 	cv=none;
-	b=sdNoKKrrFFyaP4BtZjPezd9KeLC/YYJDZqlyYR8uwjzbvJHQj8igrGktvAmfCYJpR+g+ac
-	J2DkZ0WVofBBXmR07ttCpjqrJnfE3U13QxtF4t5nH8Qyfsr/K4GNr7KBNzxqxToJRDgMgV
-	a9E43PXBfuxF9DuCXcpmnNZdD3EVU18=
+	b=HYNUa6toAapsdyPhFFi6b75llx/2ekYJOavDTg1bNGeyiha6ADhA0tuVUiQrk88WN/sUke
+	S/OH+q629QROjqGc8kKnaPwVQjbin6eeC1awt1SBO2EvdZ6Tqxt3UJSeEQC3gPV4z6k/EV
+	YtdVtVp98s9aoB9mVEAPqGvvDa05dgE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=dSVEcEoS;
+	imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=drahk1PU;
 	dmarc=none;
-	spf=none (imf08.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+	spf=none (imf28.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=WQBQpmhO7K+JMC5pO21nDiBudOMp6NAQQ2jDhZLgte8=; b=dSVEcEoS8p6QTo+xy94ju+Qawi
-	PJErsOo3PJUalqQGUNXd0n83zV0tqzvaLojM35OgHgZ9XzUEyTrqZlKygNblrm186SGKhhoxUsAlZ
-	sUrDJZK3OiOzaQKyKVq6hlCADXx7s/UF41ec9g1JJyfOYDqLiZKaYFiYLqyU9yWqkvC7d83CirmMT
-	+tHSrQW16uAjWOmRP5oPWmzvkvOQAPa/l3+2Fp2glsmQTrwovJ4xT5TShwJdK7BS4rA+Gm9DVXdmD
-	Uv1MgaI1nEK2kFayaDCwVJN3r+RHrG1DtnjVpmY9UtelsvysreuazckrJSCvJWktKNs8O2hqtN4DC
-	PeNnipbg==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=LT/kDv7NmM6H9XF70WMUnfbRhC7vWN8v8AgsiqkvL94=; b=drahk1PUkWRinoPqEMUu/IGpID
+	sespBLN33xkv3O6Jo4lmIb3svEtdh52lD2jPc7b0qva+SWObuIwmOPSmZNk9IKPMqJ4Sa1pCRWgjX
+	qosQDrkepdDMvgAYye/KH+of2EIVWESUABROUReQFWpLz5K+H/LObbOQeNql6RS2v+Cj6ddAj5TLi
+	zZ/sy4yB1R4M68fFS5SrZRdObpTnLHHCx8Owi9DBY8DPs2cwZd6Rt/dSbOfL7JxE4admIhTp3hKnp
+	Z5MWFZ5Ax0fRtqTbbchR7hrpDsLy7PaSmpzG6X9+CTT2DGLiY0mEfnCV0Y0f2S1TfXLMsd26ezjWE
+	7vv09mhg==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wAV7l-008Wdv-0C;
-	Wed, 08 Apr 2026 15:47:25 +0000
+	id 1wAV7v-008We3-02;
+	Wed, 08 Apr 2026 15:47:35 +0000
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH v2 0/2] mm: huge_memory: clean up defrag sysfs with shared
- data tables
-Date: Wed, 08 Apr 2026 08:46:59 -0700
-Message-Id: <20260408-thp_defrag-v2-0-bc544c1bde4e@debian.org>
+Date: Wed, 08 Apr 2026 08:47:01 -0700
+Subject: [PATCH v2 2/2] mm: huge_memory: refactor defrag_show() to use
+ defrag_flags[]
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHN41mkC/23NSwrDIBSF4a3IHcei5jHIqPsooWi8mttBDGpCS
- 3DvxXTa4YGf75yQMBImGNkJEQ9KFFYYmWoYzItePXKyMDJQQg2iVYLnZXtadFF73nfCzZ2TTrc
- WGgZbREfvC3tMv51288I5V6EWC6Uc4ud6O2Tt/sKH5IIP2sjeCqsGNHeLhvR6C9HDVEr5Av96O
- CW3AAAA
-X-Change-ID: 20260320-thp_defrag-540fc4f1fa3d
+Message-Id: <20260408-thp_defrag-v2-2-bc544c1bde4e@debian.org>
+References: <20260408-thp_defrag-v2-0-bc544c1bde4e@debian.org>
+In-Reply-To: <20260408-thp_defrag-v2-0-bc544c1bde4e@debian.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -84,31 +82,31 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com
 X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1451; i=leitao@debian.org;
- h=from:subject:message-id; bh=ORU6TEMuXSX3gagyRoSqYOuhy7BGhkP/KFoWhinuBco=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp1niIlESg6fWs0gSoTm/P8RGRLGG25TN6LPR/t
- vS9X4EUD0KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadZ4iAAKCRA1o5Of/Hh3
- bYLQEACetudlSIF7MfyrhfJbDvQvmBuzC6e39WlDdqt6c6ZswIF5L9ZLisjupWui436LVvrgWLt
- 6W95zLXcrJYDb2XMQXbH4B/VFmDyK1VwGlqk7f7NybBg6wi+CRHZOIarsPNhd7vofKLbl/Ck7a5
- KtDNzQ3Jm4uofs5jLwvgUSMQwFAglSLumwp06dBLvnHJdTscbBQ4Utg7o1trwNxd8D3jj22PejA
- Wmh4MiIOrdXEi3ZLysfvqAHxVH4MNZwg8AMW1hA0ztfer3wtdbTls5bQtNUP+KN7K0a8Edh8EO5
- bBrT1rd2wNad7UricvrPcjQmgBvRx+OkkcQw949w7ydCjMhBiX3Kb7QDAPn30/A7749YS3P/6S0
- KVV+GKGYLl7VRfxdQ3PWUoI1mhQuACCaxnMFfVI1k3jCn+RtTuLmb3KvnHfX3FDqRSbtWZRCNOt
- JNwPYZKJDhBihvkGEjLfflCkcfuj9W5cuFHBwJOPqwgoTY6o7Q/iQ9IpkX/N0U0tNHY/FPZz01P
- oo+FYvhrWv8E+e+sMAivUtGbQo6z0KxDUZKPSpx262euW03JycQhNOCiWwL00lbcsi/k9HKb83x
- UzL1OLr5ntZ/wEnEC63+uPhv63B0X+7+FrUQWhrGPaF9HQyoSW1C4H36e2NLNp5BliwoXdzi+fO
- h6MP9cGQnmyvvAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2413; i=leitao@debian.org;
+ h=from:subject:message-id; bh=mTQwwZt5uj8cXUAizL9ChIQTeOvHj/NUcNxSipTdwOE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp1niIJkVjI5JeQhzpSXj5cT6B2M8rkQkPYw/h8
+ B1diSfbV5KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadZ4iAAKCRA1o5Of/Hh3
+ bfBVD/9GZrthmy+SIFfHPYogBzJSYvug1zP4vuKbzqQl/Q4yLcfr6lsLsWBVn9EnAcdF8K3hiO6
+ 4qua0ajk1RjssYSxMNSoBvbgT30y1bFciqPEqXOb/zFOHPevTxoBe2NuVOfQVcjMmp8n8I3qJE0
+ 5PuJrHyY7tD2V7wI3nQO0zU5TOzmaFWXrXQJHrh7LqlvUWxvD4TnOdE2v1T9cSArRf0mFBopR23
+ 7m6Cq53UJulAOtNsSH8tjNyEkBR+/z4RrLyY5tZxdxtOHQ0dCF+OTpXU6LwJMGGq1x+Osl9FHrz
+ 9PLz2oOvMvjWWjPcvIP8wH1XHXwFjUZXu7StH5wLgGKAr1fDPYzHMIiasVSm2/Q03wmI0ZksH7/
+ kOGchHKltrb3rEZn4jB/FNYn5QrKaNL+aQn8cqRCt3mgYXOZaD3JGz9zedTjmdrl6USkgFZmTXr
+ WPsgssF1UKp9Lx1tYEyNgI+omLMkCa95GFJWjsjwZNQcmypJYf03dUEr6rfjc6/l8JL+CJx95Dj
+ O2ChzMieK5qo/w8Oic1TuoSt26rauwBhlXFx6KHqTlRpYEOK0h8StUzazfMYUR7USEnHpl7Yf93
+ SBvEusTF9/tbH3aUbdpJZ8JEnfFFq80OUX8ZBaFnyn2ARNGlMRbmB1kICX+UGqu4D5KGaQlpQye
+ tOuSyoN97RpVNgw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Queue-Id: 15473160013
-X-Stat-Signature: 6p48two7egndn41t8e1wtu4gmatknxtc
+X-Rspamd-Queue-Id: 7C5BFC000F
+X-Stat-Signature: hfaxrepow7macp7k5hs3fhagucnpzshn
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1775663259-239381
-X-HE-Meta: U2FsdGVkX1+U/WFF44SHT852jYGIVb8bTfjZgTsytzAG+/XvWAmu7fVB155MB+Cy/FiJwGDBl4ilj55ZZhGzVkvhEWlAoYli8zLNhheZbCFdIHqndkIHNBZG8YBIEAtfcNSlszlNoujvJ3sD4XXIjC50zibpI6sFiOvxdJ2pXqna4UPDBpL4PSWYgXxvT1IFWR6aFHUn8E8YFNmvCLZC2m3hZNd7wpng0n2J0lDkmew8p4U/fTWzbIHDxoz6M6Nctd26VCs5p5RR8quW7jlbbeGA71lTPqEUQTPe4Q3V0GxbIQAc7S9pOCIW7QQ4oHuEWxhYQ9Rx/nCeUB5lMLccjFHPBiCKoL3BorV7asKxAdlAX5VhZF6C84jS1NzSdViq2/Fw+E1gkGO3ccP+NJpuedDiH/u+0nnF406MOB0hh0vRapYxe0d/PextNjQDkaVqRYzTWqbZMljp3rpAZcmNrXLtBis3hIVeoYXACqy8Q7e7kQNNfuuuybBEs8LAYj5a2ddbR73E0dlh4WnVAgYW116Pv5aRkQQHldQnfGKcgRi7mcVFfNLdG0r+gaxXiMgsSG7evfyH52ZdKeKkV421J38vmYdC37TaK2wv0PXiRysIPWNzEHKB0Hrx4ezJJ8gB5peb4+8ITtH7b14JO5Sv6G+Rhm46LlSk6p3/RoN6dXASRhUh1L6cf87PHJFweJBUd8sa6rRzrg8u+FHbxOhjdsE37LEjLURA5xqKj+0E5Moiy1ebiShTL1uVDIEGFEeJT72ArWwrxrbYmvOLLex68is1iFzobcvmycEdxX5HXO6nIrYtoKmCOKr8SepuT2XmOhuqFEswAN1MutKL9+EW4Cto7r/5ULbLr7Tj5jxKDUP2xGX8QlOSS3abhNebiD3B0hweWxgRAvKQULL/ZSQleEWUv5BYzEs+gdX3t27oehydo0I0zsNFFeLGQC/H2ZsvEP1maizp5S35UDhUHDw
- P7NaUjfH
- tkIOcTC4WG1k2eatQ7vErvYHBoY3DXbIR83UlK2nLfAg3KW4e7qNXL9hktQk3l5WFiblItekzxUPLqm4Mr4ZAX+68mDu2n3tgjhVJjErQzEYuqO/z3l0x+Sjw3DLaYxeT5J4VgV1CZfhJC0n1OX7o4wT09Lip8kEShUrWf0gWkMnnG89QbW2u/z6wHRU2CDbzJ6VXBk+wOGqJ6f80XF3zOLZ0LqfG31qY6Fltd/BaRDCQC8rX4ZEjJjN5soaEmZSl/aRVQkpFA4uqA8WYwxPb5RyyJRaq1Xae+/SA
+X-HE-Tag: 1775663262-690014
+X-HE-Meta: U2FsdGVkX18UIEwuuwae+0dKQU82xV5Vf6trsI2rhnOFy3hp4PjMgknYX+4eLxr4jMpfYFKtNcg3jyz5DGOm8ivSeavSB4tUMGNsMc7vylaVeQ8sjSJSlXOaVqtVMyJrBfmaLm2J0jtwtVq79TIJ4xLATtry4ed4Tnnn28ZzTkj5QbSL1NQ4jk+HnoMDvaFQ9PQm97TtGejklqN3ma0c7xkNcmnT2A9vDvUd3pCzU2viLU8ENcvAw/dQn52BXKkpjJzaahE+CF/512FcOi7ncFXc2SZcnHKtiBM4SvYjct/HPtZ/XlJfbNkPIYZ7xgGx2xoPV2SNpVLrGBUWqiP3ov214babvU4z1W2y2GhQEtbCHo5861Jl77znTmcCX1SnE3WPb2iHbgUJGPZLscCBP6/dzfvD76qAEKiTOSn/PBC7WafcH5i9QyybSq3Ihb7XQKNzKtS6v8u6NkDrSJknaQXywoPZVk7a1OStRNbh6y8jyymfpPBe3K5E6IH6UdviTyYvebERcwKlSAOtFB/Q+n/eAu6I8A18P7miTASjyWYGUAMOArlaWhJ/uJthm3xg0hqlwqnDw3GSNKpx5PuVLSNvnR6i0feJ9JAgVU18mFqVoxPosKdnzZo6bIl1/pdYQQxy/L6INjhukFa6x04bpIBfopLTUcDgbF/P+JCwslpQum5EYaMdwczgDFcdA/uE52hd9/Yh0l94r40xNsvRQnCi5EDKi3FwASxFAk/k7gC9IWiv4G0N1S+rJhpw2Q8kQilHP66bIzNfMqqJ1+yNbd1qKoQD/+vsiKjhsWlfPRKdwB/SccZfib8zr2g5iTCgKMGK4WQg0ctoVglfG6zsc08Kk8QI/7fXt1OO/ukXw18518iDVR+Ze6PSaw7QRihpf2W8NUI+qonIdDb1w5n64rBJ3XlxVWmBGUfhQLZemerw85RhAvlo5dsCA2v3Wj2dRS3+mUXoSaCmCyWhZE1
+ km3Ucs+/
+ igrC5a5iHOxgW5SuYjHGqY747b4S2go/Q9GexQfbUoniK63e7/viJaXkPKDgNT+Nd3lt2acNPST1FoKXbzPwHBgyK1eOP6wIfPnNTOze1n86JzNgze28s1bVV03/V6OZIM0diQj8wC397SI6AiDf0aY8xbk279sZx8eEgkO4/Ys2Y5i7xO5kMzCSnCllpTKV/HmOEVtFqMKyBX25fp3VH9AAsuNFa4p2428Zr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,43 +114,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Refactor defrag_store() and defrag_show() to use shared data tables
-instead of duplicated if/else chains.
+Replace the hardcoded if/else chain of test_bit() calls and string
+literals in defrag_show() with a loop over defrag_flags[] and
+defrag_mode_strings[] arrays introduced in the previous commit.
 
-Patch 1 introduces an enum defrag_mode, a defrag_mode_strings[] table,
-and a defrag_flags[] mapping array, then rewrites defrag_store() to use
-sysfs_match_string() with a loop over defrag_flags[].
+This makes defrag_show() consistent with defrag_store() and eliminates
+the duplicated mode name strings.
 
-Patch 2 refactors defrag_show() to use the same arrays, replacing its
-hardcoded if/else chain of test_bit() calls and string literals.
-
-This follows the same pattern applied to anon_enabled_store() in commit
-522dfb4ba71f ("mm: huge_memory: refactor anon_enabled_store() with
-change_anon_orders()").
-
-Breno Leitao (2):
-  mm: huge_memory: use sysfs_match_string() in defrag_store()
-  mm: huge_memory: refactor defrag_show() to use defrag_flags[]
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Changes in v2:
-- Do not be too verbose on enum defrag_mode (David Hildenbrand)
-- Link to v1: https://patch.msgid.link/20260320-thp_defrag-v1-0-6ab15d0d26eb@debian.org
+ mm/huge_memory.c | 38 ++++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
 
----
-Breno Leitao (2):
-      mm: huge_memory: use sysfs_match_string() in defrag_store()
-      mm: huge_memory: refactor defrag_show() to use defrag_flags[]
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 76f2d32428c7f..6993c6d8709dc 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -455,24 +455,30 @@ static const enum transparent_hugepage_flag defrag_flags[] = {
+ static ssize_t defrag_show(struct kobject *kobj,
+ 			   struct kobj_attribute *attr, char *buf)
+ {
+-	const char *output;
++	int active = DEFRAG_NEVER;
++	int len = 0;
++	int i;
+ 
+-	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
+-		     &transparent_hugepage_flags))
+-		output = "[always] defer defer+madvise madvise never";
+-	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG,
+-			  &transparent_hugepage_flags))
+-		output = "always [defer] defer+madvise madvise never";
+-	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG,
+-			  &transparent_hugepage_flags))
+-		output = "always defer [defer+madvise] madvise never";
+-	else if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
+-			  &transparent_hugepage_flags))
+-		output = "always defer defer+madvise [madvise] never";
+-	else
+-		output = "always defer defer+madvise madvise [never]";
++	for (i = 0; i < ARRAY_SIZE(defrag_flags); i++) {
++		if (test_bit(defrag_flags[i], &transparent_hugepage_flags)) {
++			active = i;
++			break;
++		}
++	}
+ 
+-	return sysfs_emit(buf, "%s\n", output);
++	for (i = 0; i < ARRAY_SIZE(defrag_mode_strings); i++) {
++		if (i == active)
++			len += sysfs_emit_at(buf, len, "[%s] ",
++					     defrag_mode_strings[i]);
++		else
++			len += sysfs_emit_at(buf, len, "%s ",
++					     defrag_mode_strings[i]);
++	}
++
++	/* Replace trailing space with newline */
++	buf[len - 1] = '\n';
++
++	return len;
+ }
+ 
+ static ssize_t defrag_store(struct kobject *kobj,
 
- mm/huge_memory.c | 98 ++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 56 insertions(+), 42 deletions(-)
----
-base-commit: f3e6330d7fe42b204af05a2dbc68b379e0ad179e
-change-id: 20260320-thp_defrag-540fc4f1fa3d
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+-- 
+2.52.0
 
 
