@@ -4,116 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F9D5105D996
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57735105D999
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:40:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95D9A6B008A; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
+	id 6F4026B0088; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90E246B008C; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
+	id 67D866B0089; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 824996B0092; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
+	id 545446B008A; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 723696B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14F96140926
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:36:00 +0000 (UTC)
-X-FDA: 84633823680.19.6B6D99D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F4CB6B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7A2D1607E7
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:40:32 +0000 (UTC)
+X-FDA: 84633835104.28.9607897
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4528F1C0004
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MjzcvJNT;
-	spf=pass (imf21.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 15A234000C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:40:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQTM5ksY;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQTM5ksY;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775616031; a=rsa-sha256;
+	cv=none;
+	b=cfxDP2ZA0GE56ZLByp/GfbtOGrDHfW3Vj40zTvLhHQF8fZAPlraxuqQQF3kgm1249oRYBl
+	8AdYF+1KthNuQj/Ro1unKjjxzPHGFz3p11FjaO3CuAYWYGNiRCL0g3Ra6AooERNAHgn1Zl
+	ZFnbrohQI5sx5f5KNMzVsAMdeS31VyQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775615758;
+	s=arc-20220608; t=1775616031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KkMn0KxS9q4QmvPIW+laFe0pPrRm5OjtvnER+1DCMbw=;
-	b=AneHBXmUP/XjwDgDUsiO1xjDbZ4V25xxRmBgZIABAY7xk0P6UNmB7NIDzcZuPTRFofG2nv
-	2/Nq6lZtZjVlE9onQyPqPw4XD7QdZ3snGSJZp72zj/FeSy1HyCKfdJkW0VEb3nhMAaAZNO
-	Efg59cdF6INLOGcpTuBAsM/e8qD8ax0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775615758; a=rsa-sha256;
-	cv=none;
-	b=hqXyCzIvOpM8R3jwFHA77/izBgPF5uqMnPS/S14pqtlNrvq4At+/DHmFIrf7HLUePvxECn
-	KvJSMvAOiKpMXaxKPHr3HOUnSkiAmEbpyTuuZS2+SXaoUpZ9/1X+Fxj/HmjXi1izZBfqdQ
-	H9Oh9HYBZJQvpCy838z5FG3ZRJnDwHw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MjzcvJNT;
-	spf=pass (imf21.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tIfwAjkIZ5kzYGnsoXX7VGO6FjtcXNqioX8S8AQDjvo=;
+	b=kmvWxJZek6eRh4LJqIXj7J7/aIqIkiiPVwt0J9dneT+YRI4PKGefIzwTJFvFcQC0cv7Nd3
+	LH8Cfw+bmQ3k8hecaYYSJqJHJ4ZuyVdOXMNidp9xXsV1E/zRrNkWNbmFRq5X1l/cKrUPuk
+	VXJ6suZkW25CtJVEnYVlhqn7yVfyzJs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4405540349
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3AEC19421
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A42D4418E;
+	Wed,  8 Apr 2026 02:40:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93949C116C6;
+	Wed,  8 Apr 2026 02:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775615757;
-	bh=x+v/WG2GftoMBlJMi6E/znxkqCjwUXYr5lqBIrrZgxA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=MjzcvJNTGtX2eAUAX4l1OvT7c6/mxer5VUVKy4XqYDi1n6OhdY6iUMOcMRJUvb8UC
-	 U0IFo0atnAaiNcnHd2ddDMoaQHr5PQN4dIXd7OXLMUzakIW/+qDIh3dx5vLXhL4gL6
-	 H0fKXUSM/W/2efB56PzSRWVPlQ6Tywx88U0h9iZKsq+Z8S0T4OEoPfk/TRRC9uOL0w
-	 1e20Xgb2x52zfuLTT/NCywruEWmGkc9aSkirDECimhPsB1LbesJqfUcznFTvMMVfVd
-	 7IzuP6ULCrjV8vRjd0nNunvYIAb4m/EnW3hVEGhyEvveCg1CDCX3UOgyuJ+PcNPy1W
-	 dZz+2CNDObw4g==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 327E3F40069;
-	Tue,  7 Apr 2026 22:35:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 07 Apr 2026 22:35:56 -0400
-X-ME-Sender: <xms:DL_VaSAZZAV53uxjsRoP8ApXqKPTHg7KaBhB7ifUm8g8fwFadW9NrA>
-    <xme:DL_VaX_AR3Is1-h9xH8WUeuJcRC38pgF90y0A6m3yM7MpjDZARyngo-u9S3wPZIUJ
-    4o2uNUJ3XyzvWXOV7ZIRoTYYLs56H9p8vJ4Izg_7XLDsypywO4IZt-R>
-X-ME-Received: <xmr:DL_VaZEjfj4Ec1nGc6wYr8-0FSY_nr59Sbmj-g9KVnDM8g4QhUw4u2vAuTLe_YPrMBG6hOJEjQ11pfQsEQoj6sOtMtHkbSh7dLU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvvdefkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevkffugggtgfesthejredttddtje
-    enucfhrhhomhepffgrnhcuhghilhhlihgrmhhsuceoughjsgifsehkvghrnhgvlhdrohhr
-    gheqnecuggftrfgrthhtvghrnheptdfhtefhheekffekueetkeeuteelieffteetieegje
-    evueevveefledugfefhfefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomhgvsh
-    hmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeelgedt
-    geejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsg
-    gprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlshhfqdhp
-    tgeslhhishhtshdrlhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqtgiglhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    ihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvg
-    hvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:DL_VaVNRgpJOjWjXP8hbzVv3ecxHhcj4jkmX_hhlkwFAzGQIjjZfkA>
-    <xmx:DL_VaTfFIwx3t5CasfjAMCpUsgvnb2MJXQ08a8_8Zi6o0Kvwehm6ZQ>
-    <xmx:DL_VaauMv1Ry1BCjazIFh2eT6bby-rGeKEz16WKt5x9_EdDmbhHhmw>
-    <xmx:DL_VaclDqlrxZWas45yv3xXH0aT9QZzYkg-JK7QuPGinkIOshHG8Jg>
-    <xmx:DL_VaUzMrWI9WaBAGB14TgJZjrS71Tos5c9nOdNlAxbfV_njFljK-y-o>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 7 Apr 2026 22:35:55 -0400 (EDT)
-Date: Tue, 07 Apr 2026 19:35:54 -0700
-From: Dan Williams <djbw@kernel.org>
-To: lsf-pc@lists.linux-foundation.org
-Cc: linux-cxl@vger.kernel.org, 
- linux-mm@kvack.org, 
- linux-fsdevel@vger.kernel.org
-Message-ID: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
-Subject: [LSF/MM/BPF TOPIC] What's brewing in CXL?
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4528F1C0004
-X-Stat-Signature: x1nkpfz6mg4pzgxcptfthm4zjnonjjfi
+	s=k20201202; t=1775616030;
+	bh=EUzf7XILl/73QfjDDoALzxB1Kjg3AYvxj5Nc0rcI6wY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YQTM5ksY/zhLyKmTxaZ1GRwI6jIeVneI2kjQUcsN/o5ADMABGMhtZCUK1M46ink0v
+	 BryrEsxfwPmUbf+Gvm2ojjHaaWpnfN86ju3tLvcQH9nXrUB3RNzHQ4s1aO1WFOY0B/
+	 rxNTqQzvsLUFn6xnCF1exq3eL5qffV+ESyGbinSEZ/zyxdS1eE3RDg/yj+Iv1tu5Oj
+	 qKhaT68or7BNSfk/eTsZRnagEaNJGSz4Fm+vS5K++j2iR7vbVkHW+DPy9Mfjr/OdA6
+	 D6aiilcxvPA7PE32tFziJiHBdfVpA41IXwHtFZGpCdP+XQ45y8C1TJfmrelyNZq35m
+	 qINs1+gtkboFQ==
+Date: Wed, 8 Apr 2026 11:40:27 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu
+ accounting
+Message-ID: <adXAG52R6WVHd0n9@hyeyoo>
+References: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 15A234000C
+X-Stat-Signature: jqs5h9sui5jjd6kdpzc1psyddeo9o7nm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775615758-978009
-X-HE-Meta: U2FsdGVkX186R2VcjvqTqAP8cLzSLJ+w6qHqB6lZHiNP5x9nxxRkrCRnS5UDvEzXqKCioW6H1LHi9bjp2L55GnLuwpmS//2V74d+VzBQBLCw5u94kwAR0JpNwxLzpGPIcmuRMlItkPYGaT52dDfd6n0i+1a45S8jdk300J2+7WrGOSfM9M2cb+b1ZkvXlXUPvv6iXxWflgSmdOG2zerosSEiyqeJwnjQ7xKFykAMV2siTepyNxlW8eg4Z1jyQUxc1arHOWNlrWX2Gaj36r9SGLplnXPey/t/KemMJ0Ygx/wBFCZ1TNztSuSJBHj/aWVhsHrstR0VZDLUcDJNXW6Lp+Z02uzj26AqC5GdzpyhfbiOdWMsmJqcrWkmWndpzWiG8zcwSGSxyZ+R4zJmcwc9ILEvHu4QtsKz4yKcQ3uqTdEvmwIwNHQ09nuqht2mbQmA6pPYO0fm32jiDJZ/TGC6g4vAC6SbHKlKxXtIcJM6UJLRKefejIz9nvReXOR3UL/+nEsmLuBCzY1M2VcSM+KW4tb1/72Lb5Egwa72efwRs4+ByJNoLzEOL4sWAxbS9axerk/siw6CbtRYrbVt0LMGcsyuBhUXjDXo2+MJ2kxcqwfoU8Pn5XPb4sz91kAu4/PuV61HLkkCI8U9C+upd2dTrL2HiSJecNBY2JyF2jVZg8iRSpgimO4Lx86/fuO7AENi12aOQUwEqbg+MVbi32aXEQHiX+7B79d6I0O6jTrVqKDz8I8vusyDenL2BToco88+milMW1oaEX0i3s9DPIEqftx6StVcehk4wdVvjfNgqayd/tBRzSxM6misP4BnClQKW+QXntRjyokjXrZv0mTnfqYb+gK0aL33rv/SSHCjSzPZiCAsnEYEXJcHWohDYInWXNf3skt7+L4Ew1hxvvujCy2Yvvf+x2z6mb/LLNB6UkDeoccT7hyXnVsbsMnuOflOXlM84jWXoMGkrofpZa3
- jYQIEw52
- abRjDlzpHPoRL7X+Bxudsx3LT9qiNYqngE2TTIgLWlELrmHEc5DP3dmiR+A==
+X-HE-Tag: 1775616030-872325
+X-HE-Meta: U2FsdGVkX18tlGR7WmPd37CKMD6ldBMz1Of+AyKLo3hz2ZzZMVq3AkpJvY3KA54YBTkRBrwJkdB42WsqZoR+o+38rJhrRR0+nXQn7hDJPdJqc6mevB1gg//cn7OWgaqXHJBLefYVe5RwINOlE9T1z7pbOBz1JBFA3d1Zszr0768q1xeogfHeNfTBJ2Bk2BTB74IJRnS9bgvf60AvSnphx7S9aIH+NWLjrPRRmoGmBA+Lz9VDjofegS1yLcsavweNJwA7ZLedBK6V5DEGVrHd/JV/KWoIPakBM72JMfHNQ33GlPlXAcosHGDRrIT8a4UCwslek4GwmAfWEa1FH4Dl0lG9bKtqoRM8kitAbY+g/objyJAJVUQQQbmjuTbCqOWqJlpIhO6V9fnc6/zBmviWaUvREonZHm+YFO+9D+ZfAkhDdKeKE6CBhDMEjN8PvHZh4D0zD+B3RI4nFzrc0q1wci9YX+hR+OymfkgGvGBuI9S2KlZXm2bD+UxpD0B0RjCGZEp1zcZ4VgxSwxywoTIKDLShwCmSF+1A9zkHC9nDZPjRr/GbrFaeyKvvNOVh65mi+kO7S8Qcsuarg3PL0dgmP/Mkv0MPsCNM7YWkHfABvgFhmK748wT51eXvlIiShLk5BGCX379xY51ZtHFpJ4kdeza0eCtPodHskizeozSk68IAYgnWycuj2jLBciMcygT+ue4OUY80DVuD9UTSkkrANoxt5010VFodLxqHEpNdiRLBvB08R33U1mzA3b/saqoVsXOo7SQkLT7JpJIDRUUhtUJeZ2GnUxQBTask0RBvQlvX5XpnAsz8BxiYdID8G5DfyDf83185clIsDPYZuFiuPgPjZk/MCk4dmziYgMppc7SaJjKP4vHc0BbofvDt9nfn/PgC/2ceXV+yi6SLCNHdGZcDUePOEW+Wpy89zSfkdrqFQDAE0mweP00iX6hbZo28t/VQUsdyUbGgWCw9zKL
+ kdUGLhqz
+ N6VyD1qrgsosnB7QTQBjSCfu72QO10RvqJuJF/YqCb1nzJ+/l+5BO4+jKDWysujKHV9Dfd1/8dqgsjbbMEm8KAPyA4ZfrAhrVnnwthO/K0ArPN7IkRRIRgWCnkfESCumhV0kgjS8YY4LtdkV07FJ98WtdWIiAV0b1z2FA6lLKP8FOxV6Ngqk7uLznETvrj0uJhDMutNjshBHORnfsJIUlVhOwhr6e3OZznPrJCDcyMLX3mrFRcDU87KADH0VrYjp2cChGoaBcm4Kd10vysVrCl204M1gpv5t5gWm6PeqZcYJQnQBSLGBUrImjZbifg9zwMOiOoCfp0I9zdW02vAREoBlqdDWh/SgfNgmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,68 +102,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For the summit I offered to organize a discussion on what has been
-happening in CXL since Plumbers and a summary of the monthly CXL calls
-since. The session goal is present top challenges, address concerns /
-questions from the room, and perhaps introduce the CXL topics that have
-their own session later in the day.
+On Fri, Apr 03, 2026 at 08:38:43PM -0700, Joshua Hahn wrote:
+> enum memcg_stat_item includes memory that is tracked on a per-memcg
+> level, but not at a per-node (and per-lruvec) level. Diagnosing
+> memory pressure for memcgs in multi-NUMA systems can be difficult,
+> since not all of the memory accounted in memcg can be traced back
+> to a node. In scenarios where numa nodes in an memcg are asymmetrically
+> stressed, this difference can be invisible to the user.
+> 
+> Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> to give visibility into per-node breakdowns for percpu allocations.
+> 
+> This will get us closer to being able to know the memcg and physical
+> association of all memory on the system. Specifically for percpu, this
+> granularity will help demonstrate footprint differences on systems with
+> asymmetric NUMA nodes.
+> 
+> Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
+> account node level statistics (accounted in PAGE_SIZE units) and
+> memcg-lruvec statistics separately. Account node statistics when the pcpu
+> pages are allocated, and account memcg-lruvec statistics when pcpu
+> objects are handed out.
+> 
+> To do account these separately, expose mod_memcg_lruvec_state to be
+> used outside of memcontrol.
+> 
+> The memory overhead of this patch is small; it adds 16 bytes
+> per-cgroup-node-cpu. For an example machine with 200 CPUs split across
+> 2 nodes and 50 cgroups in the system, we see a 312.5 kB increase. Note
+> that this is the same cost as any other item in memcg_node_stat_item.
+> 
+> Performance impact is also negligible. These are results from a kernel
+> module which performs 100k percpu allocations via __alloc_percpu_gfp
+> with GFP_KERNEL | __GFP_ACCOUNT in a cgroup, across 20 trials.
+> Batched performs 100k allocations followed by 100k frees, while
+> interleaved performs allocation --> free --> allocation ...
+> 
+> +-------------+----------------+--------------+--------------+
+> |    Test     | linus-upstream |    patch     |     diff     |
+> +-------------+----------------+--------------+--------------+
+> | Batched     | 6586 +/- 51    | 6595 +/- 35  | +9 (0.13%)   |
+> | Interleaved | 1053 +/- 126   | 1085 +/- 113 | +32 (+0.85%) |
+> +-------------+----------------+--------------+--------------+
+> 
+> One functional change is that there can be a tiny inconsistency between
+> the size of the allocation used for memcg limit checking and what is
+> charged to each lruvec due to dropping fractional charges when rounding.
+> In reality this value is very very small and always lies on the side of
+> memory checking at a higher threshold, so there is no behavioral change
+> from userspace.
+> 
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  include/linux/memcontrol.h |  4 +++-
+>  include/linux/mmzone.h     |  4 +++-
+>  mm/memcontrol.c            | 12 +++++-----
+>  mm/percpu-vm.c             | 14 ++++++++++--
+>  mm/percpu.c                | 45 ++++++++++++++++++++++++++++++++++----
+>  mm/vmstat.c                |  1 +
+>  6 files changed, 66 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+> index 4f5937090590d..e36b639f521dd 100644
+> --- a/mm/percpu-vm.c
+> +++ b/mm/percpu-vm.c
+> @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+>  				__free_page(page);
+>  		}
+>  	}
+> +
+> +	for_each_node(nid)
+> +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
+> +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
 
-Please do comment, question, ack/nak, or add to the themes below to
-highlight interest and help focus on the few topics we can cover in the
-limited time.
+Can this end up with mis-accounting due to CPU hotplug?
 
-* CXL vs MM:
+>  }
+>  
+>  /**
+> @@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+>  			    gfp_t gfp)
+>  {
+>  	unsigned int cpu, tcpu;
+> -	int i;
+> +	int nr_pages = page_end - page_start;
+> +	int i, nid;
+>  
+>  	gfp |= __GFP_HIGHMEM;
+>  
+> @@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+>  				goto err;
+>  		}
+>  	}
+> +
+> +	for_each_node(nid)
+> +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
+> +				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+>  	return 0;
+>  
+>  err:
 
-  * Much of the angst of "CXL vs MM" has been harnessed by Gregory in
-    his Private Memory Nodes proposal [1]. The meta discussion for this
-    session would be questions like "how many former device-dax use cases
-    can be subsumed by a mechanism like this?". In general, the game here is
-    how to properly isolate memory that does not behave like locally
-    attached DRAM.
-
-  * The granularity of CXL hotplug vs memory_blocks vs various
-    distribution hotplug policies stimulated a proposal to support full
-    "region" hotplug [2].
- 
-* CXL vs Platform Firmware (ACPI/EFI/BIOS):
-
-  * Attempts to use software interleaving to amortize the surprise of
-    "memory that does not behave like locally attached DRAM", introduce
-    firmware dependencies. The firmware descriptions of the performance need
-    to be complete and match a shared understanding of the requirements.
-    Surprise, sometimes this does not line up. [3].
-
-  * Firmware, in trying to be helpful to pre-CXL aware OSes, pre-map CXL
-    memory (whether public generic expansion or private belonging to an
-    accelerator) into the system address map. This causes problems for a
-    subsystem that wants to support hot remove and re-assignment of
-    host-bridge resources. Lack of a specified protocol and the resulting
-    problems it causes for accelerator reset and driver reload, need more
-    thought.
- 
-* CXL vs PCI:
-
-  * While CXL capabilities are enumerated over PCI, to software it is an
-    additional optional protocol. The subsystem supports being built as a
-    module. This has led to a design for error handling that sees the PCI
-    core minimally involved to forward events over kfifo. This arrangement
-    is raising ongoing questions for uAPI like PCI reset and vfio_pci
-    that expect to be able to manage device with PCI core services alone
-    [4].
-
-* CXL vs Tooling / RAS:
-
-  * Error injection, tests, and usability have continued to improve. For
-    folks looking to deploy CXL in production what is cxl-cli missing?
-
-  * While CXL Error isolation has a hard time justifying its utility for
-    general purpose memory expansion, the accelerator use case at least
-    has a reasonable chance to construct a recoverable scenario.
-
-[1]: https://lore.kernel.org/linux-cxl/abwRu1FNqI3dVyqL@gourry-fedora-PF4VCD3F/
-[2]: https://lore.kernel.org/linux-cxl/20260321150404.3288786-6-gourry@gourry.net/
-[3]: http://lore.kernel.org/20260316051258.246-1-rakie.kim@sk.com
-[4]: http://lore.kernel.org/20260401143917.108413-1-mhonap@nvidia.com
-
-"CXL, making MM problems worse since 2021..." -- CXL subsystem tagline
+-- 
+Cheers,
+Harry / Hyeonggon
 
