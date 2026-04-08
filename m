@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39B71073CA3
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A4B41073C9E
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:15:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0B976B008A; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
+	id 7E28C6B008C; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBC5A6B008C; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
+	id 7BA716B0092; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAB466B0092; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
+	id 6A9F66B0093; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C9D5B6B008A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F4B31B9073
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:13:45 +0000 (UTC)
-X-FDA: 84635279610.29.DA72172
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C2DB6B008C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0911CE2897
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:15:40 +0000 (UTC)
+X-FDA: 84635284440.11.255F529
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 617D2A0013
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:13:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fm4pYk+i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650423; a=rsa-sha256;
-	cv=none;
-	b=LJat+gM0jqr6mmsFRs3tbR+SdGSLkqtOI4iGPJueQxmpwg/GolnWjU3EPcIAFfDfVsMn5q
-	vOjzGMZYmx5Xk7GNpDUn6yi+ytErHYKZe3dDu/psKbh9jM2iFcVfTDVfR3Fk73zjiqU6vg
-	pivtX25xSfuqlbBWR/9A/z4b9g/IEFc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fm4pYk+i;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1609F4001A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:15:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kNyAZd3q;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775650423;
+	s=arc-20220608; t=1775650538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5ScxPBx0kg7ANwrTp5zjzec2BzFmHNH/iCqb6c5JzU=;
-	b=t7ZcFodzL0yHMEb3hNzZEaxmw+CGhCvaCY/8c5t9wfye0GkZmTI9xlITIhORcxc7LvPkqV
-	CpiYgIlqptTMmi1Befc7HZhStlp1yijaEyzCCh+54nPYOV9RWJHtX12cOx8bOX5AuaSycn
-	u9k2jicRi7NzFaw257uUGe5v1w4j70k=
+	bh=4cAdvd1+hfUUEAjiZjHVqzp5pqTY+rYudC9Bi2gNYWM=;
+	b=pA06SeZ1sfDnQ6nHXIEs4MLtP7xk2BV1wvSiIsIFMw0vFM/qWH1tXV2wNvjJPJn3MN0WYt
+	k8AT4Y6mZt5aJSeVcELOf8be5Q6u7kI7lydpKQnbYBtMPydrtlQSh4tZGn2kjeAVW26QkS
+	x6LjkxUlptxHbrDsTXRIyPPbVLuyWP8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kNyAZd3q;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650538; a=rsa-sha256;
+	cv=none;
+	b=HPap+2QJ6Q4S3y91qNs4QgtreeIVIUgmrMnS5Ey5Sfy7EOEEaCKxQgSA2b2vkledFcLccM
+	u7JekRz92cmgFTHssea0LFAdEyPP/IM80y87Ha96NyuuaEpjH2x5X5oNRIpQSuGaP+cTLl
+	8te9ohkbmjXbYj0GvbNI8NDPadIwt90=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E54E40521;
-	Wed,  8 Apr 2026 12:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26D2C19424;
-	Wed,  8 Apr 2026 12:13:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B37643ACC;
+	Wed,  8 Apr 2026 12:15:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F60FC2BCB1;
+	Wed,  8 Apr 2026 12:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775650422;
-	bh=My9ex2aNfAQr85RMj/PNNceXRhuE1pGC/rvjjhvlKho=;
+	s=k20201202; t=1775650536;
+	bh=54kKJqAiQr1Z/HdBbSU1ax2w3Dv7r7AWensJDMehcvM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fm4pYk+i6DilsXsT+t8GY4iXYWcW035fNURZeBfTqXB9B2RHLiHuFxqigp1rueLf2
-	 IGKW4LWsJv2ucGAUoKuh2azO8SS5Wre66FjKiCABx/HucXfyegCmGc9lzI6vXZm9TK
-	 IRIn/uNZIhUCkHmI5GvnB0izbKU55WHY8/qhSYDgLF+SJ/S2EgfLoWg9Cy++NZmfVV
-	 zBhwO2uVX1GHHK9yz42oCR5YFqm6oBIxDibRsv1V8zutdmVYIKkkil68x+IhfAdKQ3
-	 G2j6eq6FwzrPCG9IfEdd/fZKO+YrDfABRPtn4RywDcud+oDOGYsONZgdcI5cfhD47D
-	 KWN2m7RrTEYHg==
-Message-ID: <c664368c-fe2c-42d8-b488-e9e30b342491@kernel.org>
-Date: Wed, 8 Apr 2026 14:13:38 +0200
+	b=kNyAZd3q8UEgOFZZ8HTpjZKea94FDVoHEyxCoTJm5stKvyfCN0v9i3pXWj3+xJMop
+	 k/6dOlxIfx6gywBb7DvEE++5cn+9OvoIoZ9MpDjwTazaFFgrraHEGDzQO/WaUzzES7
+	 OqC+XCFbXaKxoRybXm66k8ALmRk6h0TZOGgIE9ZP9Qq/Fhvc6AKyZgRwPg8CVWTyUM
+	 TSc/J9DTbWLHOGQBfYl+lBChr7AtUmgIFqUG1sLLpSpUbfLLad2FxNxPsuzgDcwJEW
+	 mgBat36c9uqJ4Ne9GkESULL7RposNZTxzVPXhLAUG3M09mrmS6bMhs799SIYlEda8r
+	 l9gU8eBY51s/A==
+Message-ID: <b1e1783c-3621-41e4-b65d-38cf66a1124c@kernel.org>
+Date: Wed, 8 Apr 2026 14:15:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
+Subject: Re: [RFC V1 06/16] arm64/mm: Convert READ_ONCE() as pudp_get() while
+ accessing PUD
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -76,10 +77,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
+ linux-mm@kvack.org, kasan-dev@googlegroups.com
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
- <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+ <20260224051153.3150613-7-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+In-Reply-To: <20260224051153.3150613-7-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 617D2A0013
-X-Stat-Signature: 5rub1xhyzd1pdjhdukptpshiuanh667k
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775650423-57731
-X-HE-Meta: U2FsdGVkX1/BGA3SdK0s+SbYGREqh81OKXpXJV1MisqsJ14JnJ9RpvsQbVNivbxlRF0tHsB/wbCOKN8HhC+4p0Ad37A9Nmtd2iTQdB5GT7MMjQrfwf+4cmNUyKkJjhJCVYmWvVn1oX50yNvzOIxBRzPM8lFrZ3xvfdn5ttcQRpvH8fcqkL9d/9n6oDS3Yyq78RAE3HhyXSfFbdFVfn9S5vkBg2XZ0iZHsoU0HTgkDtxCMb+boQIyIm8tT9LGc7apQNw1aEthp/ruYNJzBZLXya6y9fmHrjhRXRQIyaJsZBEhAndFQBn++9G7kxg4XqkwgDOJv/q3ahgiS6RUNjAMCB3ppTNqlDLnDIMrrmrKD4HIiknlNVzrYclxugi4vqUEq5iZ1a3YQnVtsUxe2di+Iw++WNXZ1BpZGqT2pAUWRm0E32WdhGylJQBGei8Lnd4zpMp+mF+U63+6G6rOMt+rT2V+Gq0e1n8FMl0vPmObTmNnf5ghkenHhTuOxDymcMIXod0BmqYdHBEbO1WGoPoCVQWHXCbe1TkJgApdDtQny60UGqhzaSY+kRtfKRUmFNTrnpeNNixLAryYrDmfRl9752HoypRgbfUYdKW0Sq5t553jYXiLFH3UtbODoOmJWAMg9pJ7AqE0bjT1KeKrNNFLaMPEagwby7uY0eDzZetuoPjCBQkrcDbB/NfuSsW6rC/2F5OVOCWCZq2oM9O3oYAXF9ROP7rRTskZJt7T55yXYYFkDXQM1J8ocnQi1FTodFUpjUmBJaItAD14vyYH0w3tOjjGy/K0ObUDGGOyXKxcqpsRe6xQ5AgMghG32eWLIsEUm3O6+eovSVBBKslJ/AEoNulGxg8s9ou1Qse7zskdf9MDFrtf6Q8e+95gfDHV7tDHNaAj0txSGzwRNznQZ6BfjXOCx+BMDcKNEVCcd4XqjgzIR9kB1iM6OmAMCEI7eMhDYlBOFDXF9PPZm4XJkR8
- OFCLqNDb
- fydEVthcaJWpmb/jfHNpCu0mevCtkgSoiCvDZn82E+c55aXhuDoEzuuK66/cdX9cMNBMJUEeA7kxe34+GenBgDmI0kYa6XAV+ohTc6Kp3j3l6GlFqx2c5DoSAnTLdAM0BKmyIJNs8OnUB1u/286xpO3vLX7CgEJh0oj31zNvwyqCrXi5sKLoKh/KIAXXV60EIo3v39WuCBiGWEOJUexENSVn/Jhu+yGhd9lY5YnB/mpG6QmWyNl/BAe0idD+9xctOj7v3
+X-Rspamd-Queue-Id: 1609F4001A
+X-Stat-Signature: h8cgx3eqkq3xow5gewz64u746yoz5h94
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775650537-103119
+X-HE-Meta: U2FsdGVkX1+SO6DmPz6zhZ3E0RQxHGH9u7Du102BNLZ8ndbXvgEq5wJThB1+cL8yr9LqjpTQNldF40UWXQndUVsjfLv3aeGr3xX+ZPAhpueYpF2oh5eC70Z04paCnbQGbTswP60rDU+9ZVrWQ4/Zqpkn+5pJYLlfwF4Ydd03P7y6AfnxTiyoKrQ4r8krvf245j1mIj4LZlJRYnNNoQaubtiYb3cwE7aKdXg5OvlFUINJiA5t9tgfvkLAcsChbEzSwR7u4N+ADXGxBsagmPL3ZJKue5d0It41MXW9Eryrf0mfxgzI1BE8pcwwEI9cFzZbmCUH0q2wXWILCYS/gYbXQa1sF784G+hIpukyOaIxIObIyrirA3Nt//YEZeZfhRMSDCeT+VqHRAV8OfCa96EI9JRxfxlslOHWeLQRj+3664JwcDoZYY8TsS0j0C87CkSsXh1g7MSvLY9/ELotf8HVcl1tuwrJy6a84pFy8sGEhCAiZ2lj6D0e6m6EbL90230cjC9b1bdPwPDdcdVE871SmMuLfVqMN7GfviqqYKixLELyj+k1L+dmtrfyC266kSbVSzds+IGkicbI63SEFJPFIkLK6o7w/KTy0kAIjTbrOO2crkXCbrZZpYrSxOi1khtiTwXRry1hC2+xMPCNpDD+Aahl0CTCjfaR8NorlgG39sNmKz4pDg+SFpt8U7m8NtmPFGhI10+Rg7Smd0o8AhIOF3wQnAuWhFh9rur9jvgxBT5F3q/Unyf8a0fG1MIxupZes56xnBInQ1iwbNDkF2AVudXSfyqaR1TpwWDTo3oh1AXvyELRYefXHnZ8z+STA0sgnFy2ZfJUUVvOt6QI2dtbnkw3Xdkw7GgxCQ3W/SnbsknYUVxiQJAtZb1AR02FwG45CKDUIG9CQxuXcHGcAga6N+PsGCwGaf5b77LJx277M++7fChTJcwO2bFe81Y2VRcSuqVnqyOZdK3np+8nHup
+ /WkM9tDJ
+ 7DLNdZcf8qwb/JA0rparfhL3fp9vIof/dHQN5hnSXOxO5pAcB2vWsmujjk/Uu7QRVhAa6Ic+7L7LCXfXz7KWc6GhhlxU3hg/IpdVSaKYJcl+fGcwGs0tqqxHCvLy2hA2A+rldAs6yZWXp8A+64baEgP6zwYXH/D+Tsg34IrQX1k9B7iyKX0vqGFugULa58H/A1j/zFK0qZ5RuldmvBI+gbDUhPdVXVYoQfVUVcXYVkkiY6sqkNGaS9TXCRGlANY2UOB/zWKmpvu03FeMQssTzu0PXPIkyMXCtMWvDHOI69F4HRJkqQ/V9vI4KAb+i33AoamrlBGgmqjF/kmInyiAP7+xVZWfMxQ/bNxv0ljb+e+U/KRzkK4tGFy2Cyg5Vjy2WCjRZdpaSFzRVUiNJ37xtzXi0H41dIfv/z4yDZ+4HCE2/xNQZpgjCT3kFiG22BQejuC895v/Gjz+f5jYSUyss4IIvOE8JnxRXp1J74IZ8CaUJzwLSPcuUsi+ZXOE+72Qcxy3Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,56 +144,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 12:53, Anshuman Khandual wrote:
-> On 07/04/26 8:14 PM, David Hildenbrand (Arm) wrote:
->> On 2/24/26 06:11, Anshuman Khandual wrote:
->>> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
->>> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
->>> So with this feature arm64 platforms could have two different translation
->>> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
->>>
->>> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
->>> and virtual address range while also expanding available room for more MMU
->>> management feature bits both for HW and SW. 
->>>
->>> This series has been split into two parts. Generic MM changes followed by
->>> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
->>>
->>> READ_ONCE() on page table entries get routed via level specific pxdp_get()
->>> helpers which platforms could then override when required. These accessors
->>> on arm64 platform help in ensuring page table accesses are performed in an
->>> atomic manner while reading 128 bit page table entries.
->>>
->>> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
->>> supported both on D64 and D128 translation regimes. Although new 56 bits VA
->>> space is not yet supported. Similarly FEAT_D128 skip level is not supported
->>> currently.
->>>
->>> Basic page table geometry has been changed with D128 as there are now fewer
->>> entries per level. Please refer to the following table for leaf entry sizes
->>>
->>>                     D64              D128
->>> ------------------------------------------------
->>> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
->>> -----------------------------|-----------------|
->>> |     4K    |    2M  |  1G   |    1M  |  256M  |
->>> |    16K    |   32M  | 64G   |   16M  |   16G  |
->>> |    64K    |  512M  |  4T   |  256M  |    1T  |
->>> ------------------------------------------------
->>>
->>
->> Interesting. That means user space will have it even harder to optimize
->> for THP sizes.
->>
->> What's the effect on cont-pte? Do they still span the same number of
->> entries and there is effectively no change?
+On 2/24/26 06:11, Anshuman Khandual wrote:
+> Convert all READ_ONCE() based PUD accesses as pudp_get() instead which will
+> support both D64 and D128 translation regime going forward.
 > 
-> The numbers are the same for 4K base page size but will need
-> some changes for 16K and 64K base page sizes. Something that
-> git missed in this series, will fix it.
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: kasan-dev@googlegroups.com
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
 
-Oh, and it would be great to also clearly spell out the effect on
-hugetlb as well. I assume the available hugetlb sizes will change as well.
+I was wondering for a second whether it would be better to structure
+this as "convert READ_ONCE to use pxxxp_get() in fault.c" instead,
+essentially, to touch each file only once.
+
+Anyhow
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
