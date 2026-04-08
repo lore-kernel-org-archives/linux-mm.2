@@ -4,97 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57735105D999
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:40:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B8CFF513A
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F4026B0088; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
+	id 7C5BA6B008A; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D866B0089; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
+	id 776376B008C; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 545446B008A; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
+	id 68BE76B0092; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4CB6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:40:33 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7A2D1607E7
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:40:32 +0000 (UTC)
-X-FDA: 84633835104.28.9607897
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 15A234000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:40:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQTM5ksY;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YQTM5ksY;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775616031; a=rsa-sha256;
-	cv=none;
-	b=cfxDP2ZA0GE56ZLByp/GfbtOGrDHfW3Vj40zTvLhHQF8fZAPlraxuqQQF3kgm1249oRYBl
-	8AdYF+1KthNuQj/Ro1unKjjxzPHGFz3p11FjaO3CuAYWYGNiRCL0g3Ra6AooERNAHgn1Zl
-	ZFnbrohQI5sx5f5KNMzVsAMdeS31VyQ=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 586B26B008A
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8AA9BC1CA
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:27 +0000 (UTC)
+X-FDA: 84633857574.09.A6F5714
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AEFCC1C0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PzTrlYX8;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775616031;
+	s=arc-20220608; t=1775616565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tIfwAjkIZ5kzYGnsoXX7VGO6FjtcXNqioX8S8AQDjvo=;
-	b=kmvWxJZek6eRh4LJqIXj7J7/aIqIkiiPVwt0J9dneT+YRI4PKGefIzwTJFvFcQC0cv7Nd3
-	LH8Cfw+bmQ3k8hecaYYSJqJHJ4ZuyVdOXMNidp9xXsV1E/zRrNkWNbmFRq5X1l/cKrUPuk
-	VXJ6suZkW25CtJVEnYVlhqn7yVfyzJs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A42D4418E;
-	Wed,  8 Apr 2026 02:40:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93949C116C6;
-	Wed,  8 Apr 2026 02:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775616030;
-	bh=EUzf7XILl/73QfjDDoALzxB1Kjg3AYvxj5Nc0rcI6wY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YQTM5ksY/zhLyKmTxaZ1GRwI6jIeVneI2kjQUcsN/o5ADMABGMhtZCUK1M46ink0v
-	 BryrEsxfwPmUbf+Gvm2ojjHaaWpnfN86ju3tLvcQH9nXrUB3RNzHQ4s1aO1WFOY0B/
-	 rxNTqQzvsLUFn6xnCF1exq3eL5qffV+ESyGbinSEZ/zyxdS1eE3RDg/yj+Iv1tu5Oj
-	 qKhaT68or7BNSfk/eTsZRnagEaNJGSz4Fm+vS5K++j2iR7vbVkHW+DPy9Mfjr/OdA6
-	 D6aiilcxvPA7PE32tFziJiHBdfVpA41IXwHtFZGpCdP+XQ45y8C1TJfmrelyNZq35m
-	 qINs1+gtkboFQ==
-Date: Wed, 8 Apr 2026 11:40:27 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
+	bh=XAHOhaZnMi2g4QNdL7Fre1v9gU9ZPxngZ75akcpvl5w=;
+	b=dj6asfYa3CQQ3kvrgmpbWGXOq+gWDDIRKZfdCDaNBts2waLkmikWBdlBDxLqqLVODRPSSx
+	dpcmJEVrDDaeNZ8Ftwyi/mG8PeuxYJbjMs2mSauPIqNhVSzZ+2BacYS1b95JU1vgtQIR6m
+	SUYcr8RsSYHH9/ZWV/o2FZwzmNA48HE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775616565; a=rsa-sha256;
+	cv=none;
+	b=qHmlJI6nBQI7+gdOMnSHeHTKvEmEuugDnth6CnU73kuml6IY+cNTaJBO3Ym7FawpVemI2p
+	21QqvIf5P7FLBW7hVYf4k0jhIaSgj0jg4xYC9oyGse/y+yIuLL7E3SXSK0i2MW/CAXAaxT
+	EaaslU+fgMm87TDjQensdV5s1ubKN6A=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PzTrlYX8;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775616565;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XAHOhaZnMi2g4QNdL7Fre1v9gU9ZPxngZ75akcpvl5w=;
+	b=PzTrlYX8uj3PSQdfcvjm7MWPFF9BAjexJkaUFjCZeDqcr947cY+5z37/PNuJxCGa25WknS
+	bVDa+hUn9Fuv/VAzgDu0nJb4gGZS6/68V6nKN2XEIodDFaIxztgFDxG2mOFunBpq9vDXP/
+	QNueG4eJ6EcS88lDx+ZkYXgIMlwQY5c=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-byPuJsC6NNafl8IYg_Ar7w-1; Tue,
+ 07 Apr 2026 22:49:21 -0400
+X-MC-Unique: byPuJsC6NNafl8IYg_Ar7w-1
+X-Mimecast-MFC-AGG-ID: byPuJsC6NNafl8IYg_Ar7w_1775616559
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CBC3B1956094;
+	Wed,  8 Apr 2026 02:49:17 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.14])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A6CE300019F;
+	Wed,  8 Apr 2026 02:49:15 +0000 (UTC)
+Date: Wed, 8 Apr 2026 10:49:12 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Barry Song <baohua@kernel.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu
- accounting
-Message-ID: <adXAG52R6WVHd0n9@hyeyoo>
-References: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
+	Jianyue Wu <wujianyue000@gmail.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
+Message-ID: <adXCKGN_9jFgLqI6@MiWiFi-R3L-srv>
+References: <20260407110002.204755-1-wujianyue000@gmail.com>
+ <adUTC-7iyOAUlhR7@cmpxchg.org>
+ <adWxonmfjvcwXMg8@MiWiFi-R3L-srv>
+ <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: fSIIbYGmPJhknmXOzE6gxViUQfBrB0XB0Nbls4MFKGI_1775616559
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 15A234000C
-X-Stat-Signature: jqs5h9sui5jjd6kdpzc1psyddeo9o7nm
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AEFCC1C0005
+X-Stat-Signature: xs8xwutujuaxtpqk1cggfp1xazyosi3g
 X-Rspam-User: 
-X-HE-Tag: 1775616030-872325
-X-HE-Meta: U2FsdGVkX18tlGR7WmPd37CKMD6ldBMz1Of+AyKLo3hz2ZzZMVq3AkpJvY3KA54YBTkRBrwJkdB42WsqZoR+o+38rJhrRR0+nXQn7hDJPdJqc6mevB1gg//cn7OWgaqXHJBLefYVe5RwINOlE9T1z7pbOBz1JBFA3d1Zszr0768q1xeogfHeNfTBJ2Bk2BTB74IJRnS9bgvf60AvSnphx7S9aIH+NWLjrPRRmoGmBA+Lz9VDjofegS1yLcsavweNJwA7ZLedBK6V5DEGVrHd/JV/KWoIPakBM72JMfHNQ33GlPlXAcosHGDRrIT8a4UCwslek4GwmAfWEa1FH4Dl0lG9bKtqoRM8kitAbY+g/objyJAJVUQQQbmjuTbCqOWqJlpIhO6V9fnc6/zBmviWaUvREonZHm+YFO+9D+ZfAkhDdKeKE6CBhDMEjN8PvHZh4D0zD+B3RI4nFzrc0q1wci9YX+hR+OymfkgGvGBuI9S2KlZXm2bD+UxpD0B0RjCGZEp1zcZ4VgxSwxywoTIKDLShwCmSF+1A9zkHC9nDZPjRr/GbrFaeyKvvNOVh65mi+kO7S8Qcsuarg3PL0dgmP/Mkv0MPsCNM7YWkHfABvgFhmK748wT51eXvlIiShLk5BGCX379xY51ZtHFpJ4kdeza0eCtPodHskizeozSk68IAYgnWycuj2jLBciMcygT+ue4OUY80DVuD9UTSkkrANoxt5010VFodLxqHEpNdiRLBvB08R33U1mzA3b/saqoVsXOo7SQkLT7JpJIDRUUhtUJeZ2GnUxQBTask0RBvQlvX5XpnAsz8BxiYdID8G5DfyDf83185clIsDPYZuFiuPgPjZk/MCk4dmziYgMppc7SaJjKP4vHc0BbofvDt9nfn/PgC/2ceXV+yi6SLCNHdGZcDUePOEW+Wpy89zSfkdrqFQDAE0mweP00iX6hbZo28t/VQUsdyUbGgWCw9zKL
- kdUGLhqz
- N6VyD1qrgsosnB7QTQBjSCfu72QO10RvqJuJF/YqCb1nzJ+/l+5BO4+jKDWysujKHV9Dfd1/8dqgsjbbMEm8KAPyA4ZfrAhrVnnwthO/K0ArPN7IkRRIRgWCnkfESCumhV0kgjS8YY4LtdkV07FJ98WtdWIiAV0b1z2FA6lLKP8FOxV6Ngqk7uLznETvrj0uJhDMutNjshBHORnfsJIUlVhOwhr6e3OZznPrJCDcyMLX3mrFRcDU87KADH0VrYjp2cChGoaBcm4Kd10vysVrCl204M1gpv5t5gWm6PeqZcYJQnQBSLGBUrImjZbifg9zwMOiOoCfp0I9zdW02vAREoBlqdDWh/SgfNgmx
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775616565-251654
+X-HE-Meta: U2FsdGVkX1+AQCoThYGKRjM+RzFkmuU0Byn0XZpYRo++n5NYauthmf9pvKxvcLCOBR/wZdP9VjOAzUIPrjlrM5aLBY//2/0Rf+aUqXi2a6tYTvBhN4pI5wh2BEDG9WVPnwGFC+AquHQgvb2jjsH4GX4nQe1aPs6x9M8C6PUkBIV8Ytsy4YjXbTNIp+Man/2RjLm4fDzblblWSOgxacOZSK4GRi4BMSo/M9JFJYqgBJUsTEprODlAnSSEQpm7t5N564VaktRA0bBO+5B/fvYlQn/7fFsA/c3MPg82yJ2WjJJa5/hI2qQMnUuFwh2D7pyOn9Vdhnu1OaNlqqnzeFH/OijOEyeGw1hzLqSMUKcKQG7izQuEU/GC7+9xS3raPQe5HmylYmGVmUUfNcyT3XRUxtqWE+8hvQfN1lgZ8U+MKqSPDgPdq0IfTQbndQ2q/1xjJRO+RnHXbQth6iyvwe81FVG6nIMFIo8OYLRk/MKRAhM/9KemdhcTHYvjREB4wTAqWq0wBOCACTBQQz/CGxqWxKew67z4a6rto2KLXJSsLsBrEWwkOvzL7yfBFnJfrUn6+/vTcdz+sxmx1kaGAPfXlOXTN8t9NtHKzDnJua1ZqK4r54LuObJ/4AWboYibgo5Z6MNd8kD4fTiqfzfRq2xPMQP8LGzt/2dBJ+iDPvFS4cv4/VkfXlNpqO7d3XsC33HQIKCCZaCq+a59FGYVTPqLJUfQySGCZjkblEK+dDMPpECjUK8TBb2SspDT0c/VNgkRQR+QsnfdcGsE6KWacyBSUc4+YtQ/tQDZ9WPbEpEPL0DnQLd7eJQOwcy878yImFLOTy4m4oV2eW6Z7cp5DprX5cKaJnC1HAd0dNCjm9b9J5Blq55GnFlUHr+Hm8WQVBc6+uPNUAaK5dr/pBSP5s5bwrW8aVJlPQbai6JWMm5k2+CbD6VYAjtf5A5CVaGjLTiqQDyY92zO0itCTJsmDa/
+ b0JO/VWg
+ 1f3RF2XLR+9oZFyf3YXnPSWGwJUPOqW//HbbfDGEiTolmE20DlCYh8FwCbF/Gm8a/NPDl2JqnXc8dO7T5CoCw0Qe2ZwnJ1ar7WktqOB/8wUz9v9dco2zwxzsgctcouB1CmL97PWLZp3uKc45YR6qOq0pwcUgfiopfJX8Dj8zluxaJie03HyTdotcZ5VXEdSoURVpQndkg3kkmjhBRU8QJDiW9wrZzseSwstG6Hk6nRFMk/avCd1yr0pIbjZMxgsMlSh7fkgLAHxtBKyvb0WX6A0ZEG/sXVnqxQN+Q+S55Al+GxAbltDX78vdxDWNaRBwdOqfprvCLq/TEdFteaZcj+UAtD53xcc5iRFd+/Kr1cqO0oVzKovd4E5WM6IGeJvPHk3zHJqXJGElP5rKRP/SENyZ4dJtiZiXZG4KEzezq6QWJwgtWERBNGmxsuaU79WmpW9vaIJ7WPcvS2gs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,107 +114,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 03, 2026 at 08:38:43PM -0700, Joshua Hahn wrote:
-> enum memcg_stat_item includes memory that is tracked on a per-memcg
-> level, but not at a per-node (and per-lruvec) level. Diagnosing
-> memory pressure for memcgs in multi-NUMA systems can be difficult,
-> since not all of the memory accounted in memcg can be traced back
-> to a node. In scenarios where numa nodes in an memcg are asymmetrically
-> stressed, this difference can be invisible to the user.
+On 04/08/26 at 10:20am, Barry Song wrote:
+> On Wed, Apr 8, 2026 at 9:39 AM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > On 04/07/26 at 10:22am, Johannes Weiner wrote:
+> > > On Tue, Apr 07, 2026 at 07:00:02PM +0800, Jianyue Wu wrote:
+> > > > All allocated folios are added into lru lists for later reclaim whether
+> > > > they are file or anonymous folios. However those folio lru operation codes
+> > > > are put in mm/swap.c which is not so appropriate. Because swap code is
+> > > > only for anonymous folios.
+> > >
+> > > Ironically, the only thing that doesn't fit in this file is the swap
+> > > stuff. The page_cluster & sysctl should be static in swap_state.c.
+> > >
+> > > The rest seems thematically relatively clean - infrastructure for
+> > > managing folio lifetime. swap.c is not the best name for it, but short
+> > > of finding a very clear improvement I'd just leave it alone.
+> >
+> > Can't agree more. We should move page_cluster & sysctl and swap_setup()
+> > to mm/swap_state.c, and rename mm/swap.c to mm/folio_lru.c or something
+> > like that.
 > 
-> Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> to give visibility into per-node breakdowns for percpu allocations.
+> Another issue is that many MM-internal items are placed in the
+> top-level include/linux/swap.h, which is supposed to be used by
+> code outside the MM subsystem as well.
 > 
-> This will get us closer to being able to know the memcg and physical
-> association of all memory on the system. Specifically for percpu, this
-> granularity will help demonstrate footprint differences on systems with
-> asymmetric NUMA nodes.
+> For example, the following are actually MM-internal:
 > 
-> Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
-> account node level statistics (accounted in PAGE_SIZE units) and
-> memcg-lruvec statistics separately. Account node statistics when the pcpu
-> pages are allocated, and account memcg-lruvec statistics when pcpu
-> objects are handed out.
-> 
-> To do account these separately, expose mod_memcg_lruvec_state to be
-> used outside of memcontrol.
-> 
-> The memory overhead of this patch is small; it adds 16 bytes
-> per-cgroup-node-cpu. For an example machine with 200 CPUs split across
-> 2 nodes and 50 cgroups in the system, we see a 312.5 kB increase. Note
-> that this is the same cost as any other item in memcg_node_stat_item.
-> 
-> Performance impact is also negligible. These are results from a kernel
-> module which performs 100k percpu allocations via __alloc_percpu_gfp
-> with GFP_KERNEL | __GFP_ACCOUNT in a cgroup, across 20 trials.
-> Batched performs 100k allocations followed by 100k frees, while
-> interleaved performs allocation --> free --> allocation ...
-> 
-> +-------------+----------------+--------------+--------------+
-> |    Test     | linus-upstream |    patch     |     diff     |
-> +-------------+----------------+--------------+--------------+
-> | Batched     | 6586 +/- 51    | 6595 +/- 35  | +9 (0.13%)   |
-> | Interleaved | 1053 +/- 126   | 1085 +/- 113 | +32 (+0.85%) |
-> +-------------+----------------+--------------+--------------+
-> 
-> One functional change is that there can be a tiny inconsistency between
-> the size of the allocation used for memcg limit checking and what is
-> charged to each lruvec due to dropping fractional charges when rounding.
-> In reality this value is very very small and always lies on the side of
-> memory checking at a higher threshold, so there is no behavioral change
-> from userspace.
-> 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  include/linux/memcontrol.h |  4 +++-
->  include/linux/mmzone.h     |  4 +++-
->  mm/memcontrol.c            | 12 +++++-----
->  mm/percpu-vm.c             | 14 ++++++++++--
->  mm/percpu.c                | 45 ++++++++++++++++++++++++++++++++++----
->  mm/vmstat.c                |  1 +
->  6 files changed, 66 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
-> index 4f5937090590d..e36b639f521dd 100644
-> --- a/mm/percpu-vm.c
-> +++ b/mm/percpu-vm.c
-> @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
->  				__free_page(page);
->  		}
->  	}
-> +
-> +	for_each_node(nid)
-> +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+> extern int vm_swappiness;
+> swap_setup();
+> workingset_*();
+> try_to_free_pages();
+> zone_reclaimable_pages();
+> lruvec_lru_size();
+> try_to_free_mem_cgroup_pages();
+> ...
 
-Can this end up with mis-accounting due to CPU hotplug?
+Ah, indeed. Seems we have been putting generic code related to reclaim into
+swap.h|.c due to historic reason. From discussion, I think the below
+three things are doable.
 
->  }
->  
->  /**
-> @@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
->  			    gfp_t gfp)
->  {
->  	unsigned int cpu, tcpu;
-> -	int i;
-> +	int nr_pages = page_end - page_start;
-> +	int i, nid;
->  
->  	gfp |= __GFP_HIGHMEM;
->  
-> @@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
->  				goto err;
->  		}
->  	}
-> +
-> +	for_each_node(nid)
-> +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> +				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
->  	return 0;
->  
->  err:
+1) move page_cluster & sysctl and swap_setup() into mm/swap_state.c
+because page_cluster is only used in mm/swap_state.c as Johannes
+suggestd. And swap_setup() may need be renamed too?
 
--- 
-Cheers,
-Harry / Hyeonggon
+2) rename mm/swap.c to mm/folio_lru.c or something like that to reflect
+its real content;
+
+3) Just Barry pointed out, move generic code related to reclaim out of
+include/linux/swap.h  e.g move into mm/internal.h if they are only
+called inside mm/ folder,
+
+Thanks
+Baoquan
+
 
