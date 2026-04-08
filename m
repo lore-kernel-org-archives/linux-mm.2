@@ -4,130 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0734810F9972
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 19:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCB0610F9972
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 19:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46AAD6B0005; Wed,  8 Apr 2026 15:48:19 -0400 (EDT)
+	id 2977F6B0089; Wed,  8 Apr 2026 15:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41B826B0088; Wed,  8 Apr 2026 15:48:19 -0400 (EDT)
+	id 26EBE6B008A; Wed,  8 Apr 2026 15:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A3A6B0089; Wed,  8 Apr 2026 15:48:19 -0400 (EDT)
+	id 137136B008C; Wed,  8 Apr 2026 15:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7A76B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:48:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71131139F40
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:48:18 +0000 (UTC)
-X-FDA: 84636425076.25.E6C3152
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9746BC0008
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:48:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BJ0sMsFj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of 3_rDWaQYKCBE9vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3_rDWaQYKCBE9vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F282B6B0089
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:49:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D185140169
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:49:04 +0000 (UTC)
+X-FDA: 84636427008.27.BA4FBF8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 30F771C0011
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:49:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VmgmjUyr;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775677696;
+	s=arc-20220608; t=1775677742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aSE638E7Oo0EzKCt6KnXRAv3sjqReWn6aOHcZy7PyI8=;
-	b=maalzxcijX3e8DCLwr+yztjKNa8m3EyO8sYnN1JR0Oa1KpXtunZeNSQ22TZ8Oh9JnDY3L2
-	l6f506wt7no1pU8j1bmhmDJaQCQW1BdqH3on56nQm5tc0Tyblj7s988BlFellnVISIoX/U
-	BUyjYdDfaEMvUGomAGAHnj15/6zwYYI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775677696; a=rsa-sha256;
-	cv=none;
-	b=2wA4nIgUFAvu2QMVLzWCDhbHcMxSJk3VtQcve0YnNsAVWtAXqJ4QmK55k9UtAg7IJ/m2bL
-	W5PdScQhRow0tsDjOnWF8SPx4dGBe2DIr1NjP87hD7Imh/GT5D2t1g8LPiGcdk+0PSmmzo
-	w6eM8nxhZJzilxWq1muK0589cyMoRZA=
+	bh=s6lebmAFqUc0VWZTv0HOUyslnYO3ZnOF7fQDUUciAcQ=;
+	b=4MZoqeks8VVFdtKt9rToy2v0EV4aPEEXWxwGRADwTdKPFluJP7RhD/dxlYrlenk4z3u6Os
+	lTioyV1RIHpPE/8LnPVEeDjHAxOtKx1Cur/GuBPlb4GZgdIzeGxTe779QdWRq+oiS7Y/og
+	keP/E6U5GnxUk+n1g939QZ3c1/uEU1g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BJ0sMsFj;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of 3_rDWaQYKCBE9vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3_rDWaQYKCBE9vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cec239147so85064b3a.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 12:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775677695; x=1776282495; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSE638E7Oo0EzKCt6KnXRAv3sjqReWn6aOHcZy7PyI8=;
-        b=BJ0sMsFjGt+o+ubWvMgeGAeu8RNsQjLXyMN38POiSIdf4aAkIfpgg+tddhbHHlYhiB
-         /ZCqf9hg7TOAbA9+khfR7OzslMLi7voEUY9GGcgnQPLcBjJa57LLackYs64iyyKw9ixE
-         gMutdeIcr+wfcwBsdqBiqMAcY61yNAvekxWGKGJh5Our0h5HkoYGQmtUhVmrbCRhqqFM
-         FP2jENY7S8cr337NLCz79zpCZM9T5TBkkodkrPCCVutwkPnXfFL70H6suvxdegPrHd1v
-         qoq0YIuGXpqLP9iiDEHmYhDRHbiJSRgYngmbdhox5a7Se6nAMktddO16jCqqCAc3tcBB
-         XfoA==
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VmgmjUyr;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775677742; a=rsa-sha256;
+	cv=none;
+	b=BiI0GQdWKg17Zp6Yx1SOgU0g1NQjdjbX1taH6o5VWWE7lCDiG7l91Wf5ua1yL7GV6CqJGD
+	3OqhG4hNTd8pbuihOoyq/x8AJ1AP4om4gn3L37M/WD25O8paPf99+1LEY9USyu1onTbeC9
+	dFXbxXRtqWar6wGFPsrCHogD8S/4Xq0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775677741;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s6lebmAFqUc0VWZTv0HOUyslnYO3ZnOF7fQDUUciAcQ=;
+	b=VmgmjUyrbHu3XU+hBtBqvlaIcHruzqZq/RFpdHVFFaxYYjNCiWKhYOd+II3TDcsNQ9REV1
+	TzzGITWPW6CJtEu6Sx3Be+CD5OVhgpvGZVj2PiEqRfvovHIs1DfrG6NqMmtEAJ7tGhHwhR
+	ydm38VMFMbmo6nSOfGPw351UAZeoo5M=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-379-LkUpGBY7POWTJiaLut9hTw-1; Wed, 08 Apr 2026 15:48:59 -0400
+X-MC-Unique: LkUpGBY7POWTJiaLut9hTw-1
+X-Mimecast-MFC-AGG-ID: LkUpGBY7POWTJiaLut9hTw_1775677738
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-65073af0a32so161164d50.0
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 12:48:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775677695; x=1776282495;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSE638E7Oo0EzKCt6KnXRAv3sjqReWn6aOHcZy7PyI8=;
-        b=ODJ4Wr7wAyNKO03zi3xLeUZiv5bcrV/ozMxkH/Vwrqxu81La/Q0zQ2hlwOSTqdzAI7
-         me8JFStTn9/tbOEn4YfDwXQzT2xfLueJLmL8i8nfyUSgp6Wmpo46OI2i/DMbrqok1plR
-         2VOk/qYUHsvys5mRVyp1d/0253EcSLHYAtA3zp/rjfDvVjy88ysAZfjKPIT8NS/1mOAd
-         fTogROuWWjH3rnDNKW/p3aOnSkECL5CYq6cIPbpFMh2oB+s1evjFJyWwPdM8yOHUoNJe
-         iry9CVb+OKu/s1P2BekzSxb2a8yHyszAFejSY4nCQc5Q+Qs1pjOABTQ+6Foa+UokjNWN
-         HMVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCn8FbsY36Df9OPaBFPDBStaveHf5E9a3KusVBXlfsVgrjzAd6SJaKh88eZpHMLb5yt3/FlAW3oQ==@kvack.org
-X-Gm-Message-State: AOJu0YzEWosnbQSIgIHgnPOYyJHjykgKXSEOIJFRWCW+cyX+pLQYlSLF
-	0SNmT4mVSj7U7whSfsiUx/ZLtueEHhpl9gTuLjAAQ7j8yApRXPCotIgkGQC6uptmFdrI/V27GER
-	4cKDUYA==
-X-Received: from pfbea13.prod.google.com ([2002:a05:6a00:4c0d:b0:823:b9a:9230])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a01:b0:827:2ee7:baaf
- with SMTP id d2e1a72fcca58-82dd8aba4afmr575225b3a.12.1775677694713; Wed, 08
- Apr 2026 12:48:14 -0700 (PDT)
-Date: Wed, 8 Apr 2026 12:48:13 -0700
-In-Reply-To: <CAEvNRgEcKnHkgC2iK8hRMybruY5LrxWH+RK94M7MddUqgGChHQ@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
- <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
- <adWidf8UgZeYctr1@google.com> <CAEvNRgEcKnHkgC2iK8hRMybruY5LrxWH+RK94M7MddUqgGChHQ@mail.gmail.com>
-Message-ID: <adaw_aEJYTLgJcEw@google.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 9746BC0008
-X-Stat-Signature: e33pzp514ts9tknkdjgiztzu38raf5z3
+        d=1e100.net; s=20251104; t=1775677738; x=1776282538;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s6lebmAFqUc0VWZTv0HOUyslnYO3ZnOF7fQDUUciAcQ=;
+        b=WxUH1Ga3fDaK+LDcfd1QGLAAmb5RwbXWmXrU5qBI+JM0VpPx5H2cEWQGxzkhKNvFEk
+         Kp/xQHIuawv6BAYFXoBGi1NJTRrB4DUiyhPfj7U0+aj8vxvK10InAt0WPpFnKle3PZJG
+         F5caevYec3TcqqEaXpa2MfJ3KfsVpEIuy3QSv3LAP5Yg2UN/w4p4qd/auhSaeO4BxAdw
+         qD3woPwxWiFnnAlen1vnp1pXG7CjSPvvkJAvh5QePRxGuaIkyk+fFGY+MpHFOgLf6WR8
+         2QNV6ve0/IU56mIxqT0YA3f1xFTBxJNKFH4SIcU9LqB9E14yXvfBEdanbY3vV/xt4RVq
+         Yh6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUWuLizDKrmTakzQCw772kAsvcQm25YjaKGURT/lHfVjKVBvs2JVZ7KSoEww9kS/3qKSOkp42wf+w==@kvack.org
+X-Gm-Message-State: AOJu0YwnlKYuhFDIiNHqvJ+8C4KB6MaIWcaMuzTpni+seWLuMiijSb7z
+	R5/4QqDaE0CIZifAj4kfssPckDC3A05Y8qeHIdnBy+eWzvU3N/A73o/UBwMT7BTFdy5iDngM9Q8
+	4Tyzlj18CdLSvnJO8It2ZvAezqd6LtN+z2iVz2Hf2hqZKJnXRVLul9VFC8SD5qNhwcElZXVqeEV
+	9dGk5r5yyE9T4UE+T28Jy/tNVtgyY=
+X-Gm-Gg: AeBDieu7eLj5tL489Alb+Q2k7/b5dOyHc6XzlrqzyAxV1eo+ELwQIcJyvBlLbla9aUc
+	xBr0K92zExtenaGVD2wiQkBQGdbItbGw36PLh2FbfmwmCig1SYCkF/kd4jmAfQMS5SFMrugzYF5
+	Z/z0sCShesOmnYsH9bMNgoiA9cwW9ZSUJsbXt/bbLyk58DVfsL4CFOZdpghrIyy7a5U57f3j3/d
+	BCJlnp8
+X-Received: by 2002:a05:690e:1501:b0:64e:a976:dc0f with SMTP id 956f58d0204a3-6504870ac04mr22045459d50.19.1775677738213;
+        Wed, 08 Apr 2026 12:48:58 -0700 (PDT)
+X-Received: by 2002:a05:690e:1501:b0:64e:a976:dc0f with SMTP id
+ 956f58d0204a3-6504870ac04mr22045409d50.19.1775677737724; Wed, 08 Apr 2026
+ 12:48:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260226031741.230674-1-npache@redhat.com> <20260226032347.232939-1-npache@redhat.com>
+ <8a4568de-e0f9-471b-bc94-1062d4af3938@kernel.org> <ee39e605-0d9f-433b-9dfa-f70fd92edfac@kernel.org>
+ <c4e80668-9018-48fc-883c-5d52a5950065@kernel.org>
+In-Reply-To: <c4e80668-9018-48fc-883c-5d52a5950065@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 8 Apr 2026 13:48:43 -0600
+X-Gm-Features: AQROBzAhFnBMl7uCD_-PNdDxiKciHJ1I9BsrODaSd6nYngTKfPDHydTd_07lxzo
+Message-ID: <CAA1CXcA8nE2PZrB4J1gV5v16PeQ7X2AiwjJ3gO1Q8hW7tyTtPQ@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v15 03/13] mm/khugepaged: generalize
+ __collapse_huge_page_* for mTHP support
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, 
+	mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, 
+	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
+	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, 
+	surenb@google.com, thomas.hellstrom@linux.intel.com, tiwai@suse.de, 
+	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zccMndzLzcyVq_2XZZKMRVqALu96euQl2zWbIMCDrc4_1775677738
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775677696-446839
-X-HE-Meta: U2FsdGVkX187x0csfrXdYk9GgEJLQU2WdMyenu2u9z1YZY6av5vhVM5+bNajQO2tMsbpOp0Tc4gjuxdxQUsp81f3TPonxTkOnpMZpuBCO+kJMaaIm+P3WSRCSW3IK7W54fjR5RhMCA1DA+R0U1vONJMGuPOxcxofO3tFeL4KReLueWC5JoxSoYguk3wV2rPANVjyu5JPTh3g53kv0zCBfOnPJaTXfvKDGDLp8NlRLZ3UoOdEAc+FKJHTlZpCyVyJf9WRIkg9byKRGyjgvuJh7flywFkPPND0TsAhpERl1DXYv5s09f27v0q9HFJiyOn55SyuB0bltPMiR+u5A1NQ+BQeg1OKMOc48DbD9Ut7shAwCAOsWQrT1WRBfyT1Aek49noYcTMHQIjwo0t2577Cw6BezkBXTYps1HnG/rKF4+BUPkKYAv+/qzba2yaV0W37y7+Tyu7hyi++dkJDCMoGbtLhSUgf9qwO+8c6ZwI9fqDUceySS3KM1el9ydADsHuDLS6oVzGq9tHZ9mCCi1Xi474l68azlB2mT0Orrk0u6akKsDknyc4IBGX5BSNb9ANP8nS6u4O1XTt8kf+39j4QoUBIOJqmmoJ0ZmWNqE7AhoaEJHaIH2g5iS8lTUgcVm7muD75mc359rTdeTA7UTejiJ/wORH14azumUt1VKUMb3JQFiHYT3rmbTxpMMqYOG6Xl5YvMXDbZMviAtHB3Xwf+bw82DtOKAkf+KY00EujKMcbZq3HS+OrTy0bA7m5j9faKGmINHAPVJ1WKELI/rbPUwoSq26ypUtKF5DBvvVkd6A9wvb47xIncKHibmZIWrnTSMHZf4z6LCgj2nl/EryoMUHJatxGWGWtdioXP28rfVEmmQHj4naZAUjoW4iEvmGcjxl47miC26IRzfngRYnYQ57i0c3kQuNSCAKbaGKG54Mj77avFct3ieN+YMFNDtM14mWLg+56qkZq4IWBD0k
- pov3lE4f
- A1JxuAgJzj1rQJjIVioGHmOiMLzJTa+3hfQ6tF5pleKEXt2S/1/0szJEc0iIcRz2HT+pIQFIKOeQj1oeSpi89E7+IHiN2WufTyhPstHLMZgqOW4qkn93bc7E9ZmnhkcJB6etW6OAiudCggZuKs2gr2KbD4i6iWUxT8y7XMawC8KmDYwWcl8jUGbnzcECNvAPw/kyHgOd/sQzT/KCZoV+0a1RuZkAf0t1uxYi3MfUOaaSyi72xhC9LQj6cVRKVo4r1AFnBERjTqifZLsDI0DTHywdxmNbwUoeXLoVKLg72r1C4yRnxUyfJT+njKe9iHv3pe6BbGJ9PoIETePktNyDwbVGYWyjupwlO1mIGAK0ogytlmFMmdjiMip92uMf+gIqdgAoIGNU+Llg2AU0T+nQayuSWwNJ+Ftv9J4PUhDF33URchlRPUotL3vyYMoAx0Ftc3ECWPX5uWr5e2KCI8tfHl6neF3QumrC0hLIjqobsJPPjWFGAZef4YgCwJryG6Rmvw6p0A+Mo2mQF6KTHcix6L0PCNPTfR0HeG9J4mXrShYsZTh/F82KtVnuUF3zWVe05GqE3dF+d438oaRD1FH9ZqUb1FG8WHKQ9IdOq833uVP1x35FrHRjHzFFmtZlXk5L4U1wiS40bsMrmFQVCWzqsWndb0RBUtm39yfeyJ/fQtnZ4gQEFApbAFVsotMdJSECp3G0+of95lf/ZFbTLLlgCeUZ9tg==
+X-Stat-Signature: oto67fr3ijzxhs5xh3bxdgof73g6cmis
+X-Rspamd-Queue-Id: 30F771C0011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775677741-863630
+X-HE-Meta: U2FsdGVkX1/B/YIdfJU/UGg4fi+dqOa+K+KATFZd8OVoN9B46MgchxPuo8fvnEwbekoeCDNdZJ1hnjTAi2RDXaqQhdgDozBbky2KpGD145bM1kLhoJTXnEA2uQaLY1guaDwJz8a4Pg+0jp3IygtMrZrIhIXIsD0Po3tCS9XgTaV26zHJR8J15amdWQirlVzqMt6xQKTFf07g/InbIYONrjzNaxbgZ95N7nRH8pY6gLBh4gFKfOrgRlrqyRujxvDKX5vQczbyzJK65TOCbox+xdZ5Ws18okZVLE88sjo551ZT6iCtXn4mmvlSOcaWo9npWPX2uVUUbPxDnSvUXh2OT3Rok/Yu+N7+nGTcrLCNESMU/VcsWXtu/nFzYf+0x5X7lMo0oCrRY9/E6fxUZc3muJbZNlAcYneydhv77u0fjlmvNuusNS8JxuL0eOcBDdot3TkCkOXJodEn7rFZcnbq+CxPLLOUcrOUpr31YC1zJ6jPSGVp9w9ujMG5MYWIxD1hk5mhS50L2H1kTB9jz/vclx8T1UCnvqH8XADOLb+rNIO8G4+Vxw4FyM5rxspXJ7bttBqak4fXt6kVuNVnOM8OTFcuzKhffh1jVqjSprvhE6dF+/m1WqDdeBqbmfHNVQ0N1FowdUopXT0rJPv/qRu5z4oDEhp4jl6rXJ0xEaMZTVsjIFXqMKzsJm2c9n6b8lUYDqJrxJKUBp7M+NLwkiATvoYy69DQ8ZZywpvNkAWC98WoYSWTlHhR6d3e4Vxpjl7KK9lNYbxLAB5c5E0FKPNVStpLyOckuMjliMCEcL66Eja7io9ebPc1qmrSSPleB4vaeuWx1/KDDk9MwKIIL1BtCHqrEmEAuARE1r2mgXGeiox96H6hjJO5UVmLUX8f8hfO+47Hm40yqupVVCUmbWRy84niiNTcDSF1u1QEQpuZwC705ttgSm6EhjGH51gPW80nw2yPTQ6B85u7sNvfjwJ
+ Oa4OJ2d0
+ O07+guaxkP2OspHQCxdHY0x5x2sLjXRGpb9YoGSt8NkokGNWr8AOiN65sH8ur8O3c70OgQZm+z4l5B2/N7nxgamkOse3SEBQn9MicNLUvpc9O14Mz41BpvgYU8f/AMdmQA1ru25ALZMztHupimUb5fVj8wk5eEv909UWFDWn7HxtHbuBSwL1Kp1NjIRCPWbvBKxXAJwosbbYfr4KdFDFvDynPtLPUPvsMXCBCNPlT7eP+94jpf3EjqkfGgIHKjb16Mo7z8slBMUOZ6vl61+lEv8uEHKLnYZRnYZk1ba9JQY8kOeuU2aGDCk+IOVPBnzbYeIJAdrc9T3p+nF3/ITRhvNJw1nxTn0pCl9zUtGWusdloGPNJR/XmW42bWu6xRPUhPFOgEjxfIDc0KBrBr7CtqtDD1K0OIMtjq01tZF1sE8orU0yItbsdGm9vORNlmg919Ek8c0pnK4o83DuGuKvDXs1S6lf3mZqAKCy2EozyTfaL0FCJu/LEsSVJSxcWnVHcOVh+hZHl57eW/ERVyVeApwvrXKDyh6Y4ogcRPBB4rxgmq/dgQOfSxMW//q2rfVSrKB+NrxGcJGs5/yUSIK64/qeGDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,105 +144,564 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > On Tue, Apr 07, 2026, Michael Roth wrote:
-> >> On Tue, Apr 07, 2026 at 02:50:58PM -0700, Vishal Annapurve wrote:
-> >> > > So I agree with Ackerley's proposal (which I guess is the same as what's
-> >> > > in this series).
-> >> > >
-> >> > > However, 1 other alternative would be to do what was suggested on the
-> >> > > call, but require userspace to subsequently handle the shared->private
-> >> > > conversion. I think that would be workable too.
-> >> >
-> >> > IIUC, Converting memory ranges to private after it essentially is
-> >> > treated as private by the KVM CC backend will expose the
-> >> > implementation to the same risk of userspace being able to access
-> >> > private memory and compromise host safety which guest_memfd was
-> >> > invented to address.
+On Thu, Mar 12, 2026 at 2:56=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 3/12/26 21:36, David Hildenbrand (Arm) wrote:
+> > On 3/12/26 21:32, David Hildenbrand (Arm) wrote:
+> >> On 2/26/26 04:23, Nico Pache wrote:
+> >>> generalize the order of the __collapse_huge_page_* functions
+> >>> to support future mTHP collapse.
+> >>>
+> >>> mTHP collapse will not honor the khugepaged_max_ptes_shared or
+> >>> khugepaged_max_ptes_swap parameters, and will fail if it encounters a
+> >>> shared or swapped entry.
+> >>>
+> >>> No functional changes in this patch.
+> >>>
+> >>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> >>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> >>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> >>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >>> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> >>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> >>> Signed-off-by: Nico Pache <npache@redhat.com>
+> >>> ---
+> >>>  mm/khugepaged.c | 73 +++++++++++++++++++++++++++++++----------------=
+--
+> >>>  1 file changed, 47 insertions(+), 26 deletions(-)
+> >>>
+> >>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>> index a9b645402b7f..ecdbbf6a01a6 100644
+> >>> --- a/mm/khugepaged.c
+> >>> +++ b/mm/khugepaged.c
+> >>> @@ -535,7 +535,7 @@ static void release_pte_pages(pte_t *pte, pte_t *=
+_pte,
+> >>>
+> >>>  static enum scan_result __collapse_huge_page_isolate(struct vm_area_=
+struct *vma,
+> >>>             unsigned long start_addr, pte_t *pte, struct collapse_con=
+trol *cc,
+> >>> -           struct list_head *compound_pagelist)
+> >>> +           unsigned int order, struct list_head *compound_pagelist)
+> >>>  {
+> >>>     struct page *page =3D NULL;
+> >>>     struct folio *folio =3D NULL;
+> >>> @@ -543,15 +543,17 @@ static enum scan_result __collapse_huge_page_is=
+olate(struct vm_area_struct *vma,
+> >>>     pte_t *_pte;
+> >>>     int none_or_zero =3D 0, shared =3D 0, referenced =3D 0;
+> >>>     enum scan_result result =3D SCAN_FAIL;
+> >>> +   const unsigned long nr_pages =3D 1UL << order;
+> >>> +   int max_ptes_none =3D khugepaged_max_ptes_none >> (HPAGE_PMD_ORDE=
+R - order);
 > >>
-> >> Doh, fair point. Doing conversion as part of the populate call would allow
-> >> us to use the filemap write-lock to avoid userspace being able to fault
-> >> in private (as tracked by trusted entity) pages before they are
-> >> transitioned to private (as tracked by KVM), so it's safer than having
-> >> userspace drive it.
+> >> It might be a bit more readable to move "const unsigned long
+> >> nr_pages =3D 1UL << order;" all the way to the top.
 > >>
-> >> But obviously I still think Ackerley's original proposal has more
-> >> upsides than the alternatives mentioned so far.
+> >> Then, have here
+> >>
+> >>      int max_ptes_none =3D 0;
+> >>
+> >> and do at the beginning of the function:
+> >>
+> >>      /* For MADV_COLLAPSE, we always collapse ... */
+> >>      if (!cc->is_khugepaged)
+> >>              max_ptes_none =3D HPAGE_PMD_NR;
+> >>      /*  ... except if userfaultf relies on MISSING faults. */
+> >>      if (!userfaultfd_armed(vma))
+> >>              max_ptes_none =3D khugepaged_max_ptes_none >> (HPAGE_PMD_=
+ORDER - order);
+> >>
+> >> (but see below regarding helper function)
+> >>
+> >> then the code below becomes ...
+> >>
+> >>>
+> >>> -   for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR;
+> >>> +   for (_pte =3D pte; _pte < pte + nr_pages;
+> >>>          _pte++, addr +=3D PAGE_SIZE) {
+> >>>             pte_t pteval =3D ptep_get(_pte);
+> >>>             if (pte_none_or_zero(pteval)) {
+> >>>                     ++none_or_zero;
+> >>>                     if (!userfaultfd_armed(vma) &&
+> >>>                         (!cc->is_khugepaged ||
+> >>> -                        none_or_zero <=3D khugepaged_max_ptes_none))=
+ {
+> >>> +                        none_or_zero <=3D max_ptes_none)) {
+> >>
+> >> ...
+> >>
+> >>      if (none_or_zero <=3D max_ptes_none) {
+> >>
+> >>
+> >> I see that you do something like that (but slightly different) in the =
+next
+> >> patch. You could easily extend the above by it.
+> >>
+> >> Or go one step further and move all of that conditional into collapse_=
+max_ptes_none(), whereby
+> >> you simply also pass the cc and the vma.
+> >>
+> >> Then this all gets cleaned up and you'd end up above with
+> >>
+> >> max_ptes_none =3D collapse_max_ptes_none(cc, vma, order);
+> >> if (max_ptes_none < 0)
+> >>      return result;
+> >>
+> >> I'd do all that in this patch here, getting rid of #4.
+> >>
+> >>
+> >>>                             continue;
+> >>>                     } else {
+> >>>                             result =3D SCAN_EXCEED_NONE_PTE;
+> >>> @@ -585,8 +587,14 @@ static enum scan_result __collapse_huge_page_iso=
+late(struct vm_area_struct *vma,
+> >>>             /* See collapse_scan_pmd(). */
+> >>>             if (folio_maybe_mapped_shared(folio)) {
+> >>>                     ++shared;
+> >>> -                   if (cc->is_khugepaged &&
+> >>> -                       shared > khugepaged_max_ptes_shared) {
+> >>> +                   /*
+> >>> +                    * TODO: Support shared pages without leading to =
+further
+> >>> +                    * mTHP collapses. Currently bringing in new page=
+s via
+> >>> +                    * shared may cause a future higher order collaps=
+e on a
+> >>> +                    * rescan of the same range.
+> >>> +                    */
+> >>> +                   if (!is_pmd_order(order) || (cc->is_khugepaged &&
+> >>> +                       shared > khugepaged_max_ptes_shared)) {
+> >>
+> >> That's not how we indent within a nested ().
+> >>
+> >> To make this easier to read, what about similarly having at the beginn=
+ing
+> >> of the function:
+> >>
+> >> int max_ptes_shared =3D 0;
+> >>
+> >> /* For MADV_COLLAPSE, we always collapse. */
+> >> if (cc->is_khugepaged)
+> >>      max_ptes_none =3D HPAGE_PMD_NR;
+> >> /* TODO ... */
+> >> if (is_pmd_order(order))
+> >>      max_ptes_none =3D khugepaged_max_ptes_shared;
+> >>
+> >> to turn this code into a
+> >>
+> >>      if (shared > khugepaged_max_ptes_shared)
+> >>
+> >> Also, here, might make sense to have a collapse_max_ptes_swap(cc, orde=
+r)
+> >> to do that and clean it up.
+> >>
+> >>
+> >>>                             result =3D SCAN_EXCEED_SHARED_PTE;
+> >>>                             count_vm_event(THP_SCAN_EXCEED_SHARED_PTE=
+);
+> >>>                             goto out;
+> >>> @@ -679,18 +687,18 @@ static enum scan_result __collapse_huge_page_is=
+olate(struct vm_area_struct *vma,
+> >>>  }
+> >>>
+> >>>  static void __collapse_huge_page_copy_succeeded(pte_t *pte,
+> >>> -                                           struct vm_area_struct *vm=
+a,
+> >>> -                                           unsigned long address,
+> >>> -                                           spinlock_t *ptl,
+> >>> -                                           struct list_head *compoun=
+d_pagelist)
+> >>> +           struct vm_area_struct *vma, unsigned long address,
+> >>> +           spinlock_t *ptl, unsigned int order,
+> >>> +           struct list_head *compound_pagelist)
+> >>>  {
+> >>> -   unsigned long end =3D address + HPAGE_PMD_SIZE;
+> >>> +   unsigned long end =3D address + (PAGE_SIZE << order);
+> >>>     struct folio *src, *tmp;
+> >>>     pte_t pteval;
+> >>>     pte_t *_pte;
+> >>>     unsigned int nr_ptes;
+> >>> +   const unsigned long nr_pages =3D 1UL << order;
+> >>
+> >> Move it further to the top.
+> >>
+> >>>
+> >>> -   for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR; _pte +=3D nr_ptes,
+> >>> +   for (_pte =3D pte; _pte < pte + nr_pages; _pte +=3D nr_ptes,
+> >>>          address +=3D nr_ptes * PAGE_SIZE) {
+> >>>             nr_ptes =3D 1;
+> >>>             pteval =3D ptep_get(_pte);
+> >>> @@ -743,13 +751,11 @@ static void __collapse_huge_page_copy_succeeded=
+(pte_t *pte,
+> >>>  }
+> >>>
+> >>>  static void __collapse_huge_page_copy_failed(pte_t *pte,
+> >>> -                                        pmd_t *pmd,
+> >>> -                                        pmd_t orig_pmd,
+> >>> -                                        struct vm_area_struct *vma,
+> >>> -                                        struct list_head *compound_p=
+agelist)
+> >>> +           pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+> >>> +           unsigned int order, struct list_head *compound_pagelist)
+> >>>  {
+> >>>     spinlock_t *pmd_ptl;
+> >>> -
+> >>> +   const unsigned long nr_pages =3D 1UL << order;
+> >>>     /*
+> >>>      * Re-establish the PMD to point to the original page table
+> >>>      * entry. Restoring PMD needs to be done prior to releasing
+> >>> @@ -763,7 +769,7 @@ static void __collapse_huge_page_copy_failed(pte_=
+t *pte,
+> >>>      * Release both raw and compound pages isolated
+> >>>      * in __collapse_huge_page_isolate.
+> >>>      */
+> >>> -   release_pte_pages(pte, pte + HPAGE_PMD_NR, compound_pagelist);
+> >>> +   release_pte_pages(pte, pte + nr_pages, compound_pagelist);
+> >>>  }
+> >>>
+> >>>  /*
+> >>> @@ -783,16 +789,16 @@ static void __collapse_huge_page_copy_failed(pt=
+e_t *pte,
+> >>>   */
+> >>>  static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct=
+ folio *folio,
+> >>>             pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+> >>> -           unsigned long address, spinlock_t *ptl,
+> >>> +           unsigned long address, spinlock_t *ptl, unsigned int orde=
+r,
+> >>>             struct list_head *compound_pagelist)
+> >>>  {
+> >>>     unsigned int i;
+> >>>     enum scan_result result =3D SCAN_SUCCEED;
+> >>> -
+> >>> +   const unsigned long nr_pages =3D 1UL << order;
+> >>
+> >> Same here, all the way to the top.
+> >>
+> >>>     /*
+> >>>      * Copying pages' contents is subject to memory poison at any ite=
+ration.
+> >>>      */
+> >>> -   for (i =3D 0; i < HPAGE_PMD_NR; i++) {
+> >>> +   for (i =3D 0; i < nr_pages; i++) {
+> >>>             pte_t pteval =3D ptep_get(pte + i);
+> >>>             struct page *page =3D folio_page(folio, i);
+> >>>             unsigned long src_addr =3D address + i * PAGE_SIZE;
+> >>> @@ -811,10 +817,10 @@ static enum scan_result __collapse_huge_page_co=
+py(pte_t *pte, struct folio *foli
+> >>>
+> >>>     if (likely(result =3D=3D SCAN_SUCCEED))
+> >>>             __collapse_huge_page_copy_succeeded(pte, vma, address, pt=
+l,
+> >>> -                                               compound_pagelist);
+> >>> +                                               order, compound_pagel=
+ist);
+> >>>     else
+> >>>             __collapse_huge_page_copy_failed(pte, pmd, orig_pmd, vma,
+> >>> -                                            compound_pagelist);
+> >>> +                                            order, compound_pagelist=
+);
+> >>>
+> >>>     return result;
+> >>>  }
+> >>> @@ -985,12 +991,12 @@ static enum scan_result check_pmd_still_valid(s=
+truct mm_struct *mm,
+> >>>   * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
+> >>>   */
+> >>>  static enum scan_result __collapse_huge_page_swapin(struct mm_struct=
+ *mm,
+> >>> -           struct vm_area_struct *vma, unsigned long start_addr, pmd=
+_t *pmd,
+> >>> -           int referenced)
+> >>> +           struct vm_area_struct *vma, unsigned long start_addr,
+> >>> +           pmd_t *pmd, int referenced, unsigned int order)
+> >>>  {
+> >>>     int swapped_in =3D 0;
+> >>>     vm_fault_t ret =3D 0;
+> >>> -   unsigned long addr, end =3D start_addr + (HPAGE_PMD_NR * PAGE_SIZ=
+E);
+> >>> +   unsigned long addr, end =3D start_addr + (PAGE_SIZE << order);
+> >>>     enum scan_result result;
+> >>>     pte_t *pte =3D NULL;
+> >>>     spinlock_t *ptl;
+> >>> @@ -1022,6 +1028,19 @@ static enum scan_result __collapse_huge_page_s=
+wapin(struct mm_struct *mm,
+> >>>                 pte_present(vmf.orig_pte))
+> >>>                     continue;
+> >>>
+> >>> +           /*
+> >>> +            * TODO: Support swapin without leading to further mTHP
+> >>> +            * collapses. Currently bringing in new pages via swapin =
+may
+> >>> +            * cause a future higher order collapse on a rescan of th=
+e same
+> >>> +            * range.
+> >>> +            */
+> >>> +           if (!is_pmd_order(order)) {
+> >>> +                   pte_unmap(pte);
+> >>> +                   mmap_read_unlock(mm);
+> >>> +                   result =3D SCAN_EXCEED_SWAP_PTE;
+> >>> +                   goto out;
+> >>> +           }
+> >>> +
+> >>
+> >> Interesting, we just swapin everything we find :)
+> >>
+> >> But do we really need this check here? I mean, we just found it to be =
+present.
+> >>
+> >> In the rare event that there was a race, do we really care? It was jus=
+t
+> >> present, now it's swapped. Bad luck. Just swap it in.
+> >>
 > >
-> > I'm a bit lost.  What exactly is/was Ackerley's original proposal?  If the answer
-> > is "convert pages from shared=>private when populating via in-place conversion",
-> > then I agree, because AFAICT, that's the only sane option.
-> 
-> Discussed this at PUCK today 2026-04-08.
-> 
-> The update is that the KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl will
-> now support the PRESERVE flag for TDX and SNP only if the setup for the
-> VM in question hasn't yet been completed (KVM_TDX_FINALIZE_VM or
-> KVM_SEV_SNP_LAUNCH_FINISH hasn't completed yet).
-> 
-> The populate flow will be
-> 
-> 1a. Get contents to be loaded in guest_memfd (src_addr: NULL) as shared
-> OR
-> 1b. Provide contents from some other userspace address (src_addr:
->     userspace address)
-> 
-> 2.  KVM_SET_MEMORY_ATTRIBUTES2(attribute: PRIVATE and flags: PRESERVE)
-> 3.  KVM_SEV_SNP_LAUNCH_UPDATE() or KVM_TDX_INIT_MEM_REGION()
-> ...
-> 4.  KVM_SEV_SNP_LAUNCH_FINISH() or KVM_TDX_FINALIZE_VM()
-> 
-> This applies whether src_addr is some userspace address that is shared
-> or NULL, so the non-in-place loading flow is not considered legacy. ARM
-> CCA can still use that flow :)
-> 
-> Other than supporting PRESERVE only if the setup for the VM in question
-> hasn't yet been completed, KVM's fault path will also not permit faults
-> if the setup hasn't been completed. (Some exception setup will be used
-> for TDX to be able to perform the required fault.)
+> > Okay, now I am confused. Why are you not taking care of
+> > collapse_scan_pmd() in the same context?
+> >
+> > Because if you make sure that we properly check against a max_ptes_swap
+> > similar as in the style above, we'd rule out swapin right from the star=
+t?
+> >
+> > Also, I would expect that all other parameters in there are similarly
+> > handled?
+> >
+>
+> Okay, I think you should add the following:
 
-Nit: as Mike (or Rick?) called out in PUCK, TDX's flow is now a separate path
-thanks to commit 3ab3283dbb2c ("KVM: x86/mmu: Add dedicated API to map guest_memfd
-pfn into TDP MMU").  I.e. it is NOT a fault in any way, shape, or form.
+Hey! Thanks for all your reviews here.
 
-tdx_mem_page_add() already asserts pre_fault_allowed=false:
+For multiple reasons, here is the solution I developed:
 
-	if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm) ||
-	    KVM_BUG_ON(!kvm_tdx->page_add_src, kvm))
-		return -EIO;
+Add a patch before the generalize __collapse.. patch that reworks the
+max_ptes* handling and introduces the helpers (no functional changes).
 
-so I think we just to add similar checks in SEV and the MMU.  This can even be
-done today as a hardening measure, as the rules aren't changing, we're just
-doubling down on disallowing (pre-)faulting during pre-boot.
+I later updated these functions to follow the specific mthp rules in
+the generalization patch. Honestly, refactoring much of this has been
+very hard without one large patch, which is why we split it up
+initially.
 
-E.g.
+How does that sound?
 
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index 73cdcbccc89e..99f070cf2480 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -363,6 +363,9 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
-        };
-        int r;
- 
-+       if (KVM_BUG_ON(!vcpu->kvm->arch.pre_fault_allowed, vcpu->kvm))
-+               return -EIO;
-+
-        if (vcpu->arch.mmu->root_role.direct) {
-                /*
-                 * Things like memslots don't understand the concept of a shared
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 2010b157e288..f0bbbda6e9c4 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2419,6 +2419,9 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
-        if (!sev_snp_guest(kvm) || !sev->snp_context)
-                return -EINVAL;
- 
-+       if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm)
-+               return -EIO;
-+
-        if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
-                return -EFAULT;
+-- Nico
+
+>
+> From 17bce81ab93f3b16e044ac2f4f62be19aac38180 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Thu, 12 Mar 2026 21:54:22 +0100
+> Subject: [PATCH] tmp
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/khugepaged.c | 89 +++++++++++++++++++++++++++++--------------------
+>  1 file changed, 53 insertions(+), 36 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index b7b4680d27ab..6a3773bfa0a2 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -318,6 +318,34 @@ static ssize_t max_ptes_shared_store(struct kobject =
+*kobj,
+>         return count;
+>  }
+>
+> +static int collapse_max_ptes_none(struct collapse_control *cc,
+> +               struct vm_area_struct *vma)
+> +{
+> +       /* We don't mess with MISSING faults. */
+> +       if (vma && userfaultfd_armed(vma))
+> +               return 0;
+> +       /* MADV_COLLAPSE always collapses. */
+> +       if (!cc->is_khugepaged)
+> +               return HPAGE_PMD_NR;
+> +       return khugepaged_max_ptes_none;
+> +}
+> +
+> +static int collapse_max_ptes_shared(struct collapse_control *cc)
+> +{
+> +       /* MADV_COLLAPSE always collapses. */
+> +       if (!cc->is_khugepaged)
+> +               return HPAGE_PMD_NR;
+> +       return khugepaged_max_ptes_shared;
+> +}
+> +
+> +static int collapse_max_ptes_swap(struct collapse_control *cc)
+> +{
+> +       /* MADV_COLLAPSE always collapses. */
+> +       if (!cc->is_khugepaged)
+> +               return HPAGE_PMD_NR;
+> +       return khugepaged_max_ptes_swap;
+> +}
+> +
+>  static struct kobj_attribute khugepaged_max_ptes_shared_attr =3D
+>         __ATTR_RW(max_ptes_shared);
+>
+> @@ -539,6 +567,8 @@ static enum scan_result __collapse_huge_page_isolate(=
+struct vm_area_struct *vma,
+>                 unsigned long start_addr, pte_t *pte, struct collapse_con=
+trol *cc,
+>                 struct list_head *compound_pagelist)
+>  {
+> +       const int max_ptes_none =3D collapse_max_ptes_none(cc, vma);
+> +       const int max_ptes_shared =3D collapse_max_ptes_shared(cc);
+>         struct page *page =3D NULL;
+>         struct folio *folio =3D NULL;
+>         unsigned long addr =3D start_addr;
+> @@ -550,16 +580,12 @@ static enum scan_result __collapse_huge_page_isolat=
+e(struct vm_area_struct *vma,
+>              _pte++, addr +=3D PAGE_SIZE) {
+>                 pte_t pteval =3D ptep_get(_pte);
+>                 if (pte_none_or_zero(pteval)) {
+> -                       ++none_or_zero;
+> -                       if (!userfaultfd_armed(vma) &&
+> -                           (!cc->is_khugepaged ||
+> -                            none_or_zero <=3D khugepaged_max_ptes_none))=
+ {
+> -                               continue;
+> -                       } else {
+> +                       if (++none_or_zero > max_ptes_none) {
+>                                 result =3D SCAN_EXCEED_NONE_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>                                 goto out;
+>                         }
+> +                       continue;
+>                 }
+>                 if (!pte_present(pteval)) {
+>                         result =3D SCAN_PTE_NON_PRESENT;
+> @@ -586,9 +612,7 @@ static enum scan_result __collapse_huge_page_isolate(=
+struct vm_area_struct *vma,
+>
+>                 /* See hpage_collapse_scan_pmd(). */
+>                 if (folio_maybe_mapped_shared(folio)) {
+> -                       ++shared;
+> -                       if (cc->is_khugepaged &&
+> -                           shared > khugepaged_max_ptes_shared) {
+> +                       if (++shared > max_ptes_shared) {
+>                                 result =3D SCAN_EXCEED_SHARED_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_SHARED_PTE=
+);
+>                                 goto out;
+> @@ -1247,6 +1271,9 @@ static enum scan_result hpage_collapse_scan_pmd(str=
+uct mm_struct *mm,
+>                 struct vm_area_struct *vma, unsigned long start_addr,
+>                 bool *mmap_locked, struct collapse_control *cc)
+>  {
+> +       const int max_ptes_none =3D collapse_max_ptes_none(cc, vma);
+> +       const int max_ptes_swap =3D collapse_max_ptes_swap(cc);
+> +       const int max_ptes_shared =3D collapse_max_ptes_shared(cc);
+>         pmd_t *pmd;
+>         pte_t *pte, *_pte;
+>         int none_or_zero =3D 0, shared =3D 0, referenced =3D 0;
+> @@ -1280,36 +1307,28 @@ static enum scan_result hpage_collapse_scan_pmd(s=
+truct mm_struct *mm,
+>
+>                 pte_t pteval =3D ptep_get(_pte);
+>                 if (pte_none_or_zero(pteval)) {
+> -                       ++none_or_zero;
+> -                       if (!userfaultfd_armed(vma) &&
+> -                           (!cc->is_khugepaged ||
+> -                            none_or_zero <=3D khugepaged_max_ptes_none))=
+ {
+> -                               continue;
+> -                       } else {
+> +                       if (++none_or_zero > max_ptes_none) {
+>                                 result =3D SCAN_EXCEED_NONE_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>                                 goto out_unmap;
+>                         }
+> +                       continue;
+>                 }
+>                 if (!pte_present(pteval)) {
+> -                       ++unmapped;
+> -                       if (!cc->is_khugepaged ||
+> -                           unmapped <=3D khugepaged_max_ptes_swap) {
+> -                               /*
+> -                                * Always be strict with uffd-wp
+> -                                * enabled swap entries.  Please see
+> -                                * comment below for pte_uffd_wp().
+> -                                */
+> -                               if (pte_swp_uffd_wp_any(pteval)) {
+> -                                       result =3D SCAN_PTE_UFFD_WP;
+> -                                       goto out_unmap;
+> -                               }
+> -                               continue;
+> -                       } else {
+> +                       if (++unmapped > max_ptes_swap) {
+>                                 result =3D SCAN_EXCEED_SWAP_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+>                                 goto out_unmap;
+>                         }
+> +                       /*
+> +                        * Always be strict with uffd-wp enabled swap ent=
+ries.
+> +                        * See the comment below for pte_uffd_wp().
+> +                        */
+> +                       if (pte_swp_uffd_wp_any(pteval)) {
+> +                               result =3D SCAN_PTE_UFFD_WP;
+> +                               goto out_unmap;
+> +                       }
+> +                       continue;
+>                 }
+>                 if (pte_uffd_wp(pteval)) {
+>                         /*
+> @@ -1348,9 +1367,7 @@ static enum scan_result hpage_collapse_scan_pmd(str=
+uct mm_struct *mm,
+>                  * is shared.
+>                  */
+>                 if (folio_maybe_mapped_shared(folio)) {
+> -                       ++shared;
+> -                       if (cc->is_khugepaged &&
+> -                           shared > khugepaged_max_ptes_shared) {
+> +                       if (++shared > max_ptes_shared) {
+>                                 result =3D SCAN_EXCEED_SHARED_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_SHARED_PTE=
+);
+>                                 goto out_unmap;
+> @@ -2305,6 +2322,8 @@ static enum scan_result hpage_collapse_scan_file(st=
+ruct mm_struct *mm,
+>                 unsigned long addr, struct file *file, pgoff_t start,
+>                 struct collapse_control *cc)
+>  {
+> +       const int max_ptes_none =3D collapse_max_ptes_none(cc, NULL);
+> +       const int max_ptes_swap =3D collapse_max_ptes_swap(cc);
+>         struct folio *folio =3D NULL;
+>         struct address_space *mapping =3D file->f_mapping;
+>         XA_STATE(xas, &mapping->i_pages, start);
+> @@ -2323,8 +2342,7 @@ static enum scan_result hpage_collapse_scan_file(st=
+ruct mm_struct *mm,
+>
+>                 if (xa_is_value(folio)) {
+>                         swap +=3D 1 << xas_get_order(&xas);
+> -                       if (cc->is_khugepaged &&
+> -                           swap > khugepaged_max_ptes_swap) {
+> +                       if (swap > max_ptes_swap) {
+>                                 result =3D SCAN_EXCEED_SWAP_PTE;
+>                                 count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+>                                 break;
+> @@ -2395,8 +2413,7 @@ static enum scan_result hpage_collapse_scan_file(st=
+ruct mm_struct *mm,
+>                 cc->progress +=3D HPAGE_PMD_NR;
+>
+>         if (result =3D=3D SCAN_SUCCEED) {
+> -               if (cc->is_khugepaged &&
+> -                   present < HPAGE_PMD_NR - khugepaged_max_ptes_none) {
+> +               if (present < HPAGE_PMD_NR - max_ptes_none) {
+>                         result =3D SCAN_EXCEED_NONE_PTE;
+>                         count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>                 } else {
+> --
+> 2.43.0
+>
+>
+> Then extend it by passing an order + return value check in this patch her=
+e. You can
+> directly squash changes from patch #4 in here then.
+>
+> --
+> Cheers,
+>
+> David
+>
+
 
