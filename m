@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C4810F9949
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E07D10F994F
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:14:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7E06B0005; Wed,  8 Apr 2026 11:06:41 -0400 (EDT)
+	id 2D3826B0005; Wed,  8 Apr 2026 11:14:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 168816B0089; Wed,  8 Apr 2026 11:06:41 -0400 (EDT)
+	id 2AB776B0089; Wed,  8 Apr 2026 11:14:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07EA86B008A; Wed,  8 Apr 2026 11:06:41 -0400 (EDT)
+	id 1E81C6B008A; Wed,  8 Apr 2026 11:14:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBB156B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:06:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DEEFB61E6
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:06:40 +0000 (UTC)
-X-FDA: 84635715360.22.5F188DF
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 80E791C0003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:06:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nce/YT8h";
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EBA46B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:14:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8F655647E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:14:03 +0000 (UTC)
+X-FDA: 84635733966.07.70AB8BA
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A1A2540015
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:14:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=q1pg2Ckv
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775661242; a=rsa-sha256;
+	cv=none;
+	b=cuC8aMA1+QKZQ0Rf11dEsMjLRAypN4F+uwk56hmeQYFPYqSo1546gu28bo6pUbGb3YysdH
+	693TV1fIgx4AdmfYygQzFVaaNE97TiJC+i2NR82kzC/l0wr6FvWOVRXNW/vqMfI2hHx5ma
+	k7D39j9uUlkhbefzqONCWduZyudRt30=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=q1pg2Ckv;
+	dmarc=none;
+	spf=none (imf27.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775660798;
+	s=arc-20220608; t=1775661242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1+VU8UBRdEVEeyiV4+aPbi7V4ANQswood2btwWC7W10=;
-	b=OzVu/Pk43z5FGTk23nlYLAlcXPdFZZNZTO0kQMpSpCs0KSi5HiUbWEbOVvflJAHfRAqj0L
-	ETMmAMqBMPGSaLNLhML7tu6gQTJxRJkd+MAgwAA7Z6lUMNxI+liYoVv9Z5Othf5yEaIhbf
-	LvzqPuctIAIeA7/EMi9mmqsXOEetTPc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nce/YT8h";
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775660798; a=rsa-sha256;
-	cv=none;
-	b=Et+cpV+XJYG2xqQLiAywqPG/ZvGEJWse7Ls3oBZsfd4iPBctsRP0BLXbXRi/DAlkiA2lJK
-	G2dYadjjjEbELm0w6sVIKdkhLDb+BhGhuJ0SCYjvSvfDBXCfl+pd1bx0JRV0fnk6LhKMb9
-	87tx8ulXXsMIU32eo2i1elHUL5sz7oY=
-Message-ID: <3f9e8e12-2d51-4f2a-ada1-994ed24df284@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775660796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1+VU8UBRdEVEeyiV4+aPbi7V4ANQswood2btwWC7W10=;
-	b=nce/YT8hy0RDyIldhTyZu273O+IC+4lreKGHKqWJoK3qIW7bVWBVi0LDO0W3lmX0H16Zbp
-	2j0OvnNTiosCwvyEbTE3/t2vJHMqme6LCCCV3xImTBLdUhG0DAWay2mblTf9uccqXFl8OC
-	AexvCrHBe5xG29n0GcZSuslUwx11Dow=
-Date: Wed, 8 Apr 2026 16:06:29 +0100
+	bh=7qFmuP/MnKK1BHIb03/wMrebmLz+b5nfHur0r4Fia6A=;
+	b=wiNU6ceEzN+R+QF1z/NHRCpo2ZUnxaQgfjqJCHRYfWEaDD0twbVuzK962Iwy3py15mUiLe
+	VydcSrue+1k1HNXqklXwAXb0Xw0RqaPIKz1oTrp+CbSqCVRyFa/LF3Iz2DdEny5YpYMSL9
+	Hn9eFsdkeb7kXHeaXEbDNsxPQUaMDFo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=7qFmuP/MnKK1BHIb03/wMrebmLz+b5nfHur0r4Fia6A=; b=q1pg2CkvuUVpDz7OpwXLAlQsNe
+	YOaQN8KYTe04O7+Ge8xDiSjUw2cHQdic8sSmgVly2h+sywnL95YbHfEIDl6lFBeyTMBUF6N1lHK8j
+	QnHpB4/TAq2Kw8rHr/d7gd4r1OHSAYSfUIZ4tLExqDIldJpYbBEw9VUwAgmkkrIngHk6YRDBc+bZm
+	0DctdYt88yBtmNq7ua8m7fEnf28Jyn7Ool1PxbIT0qITqlm0geQ0M0QjOYPv1HS/P4WC7AsJcR9Qk
+	khHnLebIEUV3Zj+8Ch2mi3oWrZu5zvMH+upTPxmZmwneAaFX4p5EDha+N6Z3HaMIPqATd7nEVPmio
+	6J3Z6Uag==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wAUbG-008VWe-0T;
+	Wed, 08 Apr 2026 15:13:50 +0000
+Date: Wed, 8 Apr 2026 08:13:43 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Message-ID: <adZopu5wjXIR5HOR@gmail.com>
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
+ <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
+ <ac5urCFeEB9oyUiD@gmail.com>
+ <adUhtrhU7c1TJQww@gmail.com>
+ <a9129d39-f9dc-4f09-b951-203c8e28b600@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [v3 00/24] mm: thp: lazy PTE page table allocation at PMD split
- time
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, willy@infradead.org, linux-mm@kvack.org,
- fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
-References: <20260327021403.214713-1-usama.arif@linux.dev>
- <6869b7f0-84e1-fb93-03f1-9442cdfe476b@google.com>
-Content-Language: en-GB
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <6869b7f0-84e1-fb93-03f1-9442cdfe476b@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 80E791C0003
-X-Stat-Signature: w97ej9uof1affkbtwq6mkajkzn7dcf8d
+In-Reply-To: <a9129d39-f9dc-4f09-b951-203c8e28b600@kernel.org>
+X-Debian-User: leitao
+X-Stat-Signature: gamfms4o9om3s3ay8x5gsnozhzer6msu
+X-Rspamd-Queue-Id: A1A2540015
 X-Rspam-User: 
-X-HE-Tag: 1775660798-632700
-X-HE-Meta: U2FsdGVkX18S1R8b0GJblS60JsiqVFlPzezYurI6+8ZxfHmivEyMndprUEd2+McN98nAzbnzgvRPG0NlvejscBA+mxcmsdlr3v8s+I7duY3Kn/43/Aaev6e556lYc2A7h5hUCJsZFHR61otZrx1RTzPyGl3LiE1VEFniC0rcv1rw+C9CYwM7X5KpLCNjn6Ao5as7w16TdTllOi5kHGpcPNtqgB9cD8pL+sIX7rElkkTQx0bix9UZNrEpw94Nn5ZPSf39SDjWttq3V9zXUb8adiVcAlzANg0SKnpxBephYas1FNv1l87bpvB5s0NAaLlYrauGKNQfdZ4x6z39umyLkitAUWLhKDndi4NbXBCMBGYUFGRphSHsl6WGogKG4z+0OAo1+9B6GmMaU/1RaQuYy4OcJUs1qEH0y+ZXOPTDyltcNkQEEn3LcaNxK81zBkS+k9SNMb5iTqgTSi+yZfYrm+8TmzAg5zR0hCVvMlQdny/M5wjvCGAm2nOJvuHrf/EAwsDCiLE0SDFBKhFxac71eUT4PTObMd6Tpclv83yMWXqejhoKeJ6ua8YFdsjY3Aq/B20XR8C+WKNcw5+CfsNlANQtb2psb8VdLetUWSH5dGuBz9n9qmnd0BaRCeTKcZrAad9kte/lRR5psVm0ld9HQRwZ581Hj2pllvHlYAdLk0CWEGaKhEdt/fEeh/aw/XlKsQNm/B7nsoYWgELpgUIIMgNOVSfhow8l22xHcpwZJ1Z7aIM/jgvh/XMnhvSG/O4sDmSZDW415QAGsL2h1Ao9Rux4q6e1kfguxcxQxf7W62XSQeh4QJBXgJ6knClruCjUKawyvvCjpvKhSby0gjSzFvETIeE2bImODvEgsPVXPruv4kE4Gxigt0HZ7G08KlGYWVzErgpXWjxVmxZhM3aUmxmQWNqYwjvlsNnxyiNaheXwAU1UV3e6L3qSA6Dknz86BgLaSVRr1J/muIY91oW
- 7XOHynXu
- aQ6Cy5C0WAwDJGW6asvZh5ZIXnvdoryHpmoqHNKufDfocr/mQ4fA1udTM+2y5Vd5JSK3X8VFFagzVZ0SlNc5cocWGjL9qQYqOiUSnewhRcOa+AV0QGLjdzoMJFhfIPCX92rISQj98y4mZTZFmQ8nUf+IPfiNy7URz4nORO3mI/jmGyZTCcxImGQWWrwBKQHwSHb0gn6krvLdRluYxKtuWbwyvSwMO5LRrQtzKyOlmimx6WBg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775661241-367509
+X-HE-Meta: U2FsdGVkX18HCqt5t8tQ36FAbkKSY3TMfA5A/VP8xIcbkH0HKlTTqEML9iImPNzE/hShO5v6oXs15g99uHILA4OWlJ2ZAq5tviUCjXGJtriS+JcYh51uGlwRM0ay5c1VUPP0mvFV0QWR1akENtX+e7XQZUojUmBuKoG6wciRYRgxisNxWJge8QUrp+z/c/IjHj82YLdh83PqEzEJb1e+v+xjJwEzb5Fxiw3BwvRGsBv24z4SHKGfdU6+kj5brOHKKTeVqksan2Yjnap2eM0uVqIOGQOTDmcSbIPGWjnFcryjsNjJzE1lFUUrUFfb49w30rmUDstEz3XYgf2vfrtxzFC83m4nsI/RNNzP5xPTteo/T0/G8o9+QCQXiIf3xyOg/WIOf2AQbE9FxSzzc3ZrTYatj2tGmyCTK1R3ayJJrQIE9gjR2GTHeFoIOnGkx3YN7Hgss/AVCmL6c8H9ApN/m9D7IORe7DyDiTCvGP58NpdLjqCVuw8fIG7w/Z/cRscbmmPxWxi2rszWTQZE9nItWF22AqcBYgrzxNPeX0Tn6NiT+MkPwnNykZwUFP698skMVicThdB0uJ1glLGExDOhaMWKZPsqPGfy4mGOoavJspqpQZ6SJxSZUMd+tMQykKNppFKI+NO7zlV2U6tcUcea7xkb5sHT10UONRe8zJ7rbDgkt6ODta+/7t1v0DxtZCudxFO3fP5fPCA60+2gg6Aubh+UdNFZzrBD/SretilFe/MLnBQgx7URMzr2/NgMZ78+ZOLhwTA6a69qmgCdn+sEKInyalELC8WdARZJEVJtMUqUK4rELB/ewQAKZz/PKh5BoRY1Oxe7jBih178qwjEARx5/WO/sp2RNtLW0ZlqgYN5Ufp1xX9gO5bYFhYyxNcEOBvEIiogKI7FAquTeD2bhimQaw+Fo0UgXvCNvoi/OvLULDSJRmUo+5Tkv1PRfG3NqkKr6izupFi2JVfEVOjW
+ +7jrJWYt
+ g6iFDOtWeHzDCa9ggW2dKZbEY+Z4uvNwEcIl3p1PPCrLRXPp5XQg9hqM0wf1+sCQ1hLy3Wvumd5gLLRKT1wpKGqREaVAtV6wFKX44vGugI0j8woeyeIReOlBX2SoF42Y6g/m6xi8988L+J7LVf4PIsTViKrfpkuGlv/ciSVkGSJr1PDRDPS8tqXU2OmBfuKovF/rMOuNqkhjEi/5VlNQz8/qqGRoXvKceHUdXib2dYkif97TRtRjYH+5N2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,89 +102,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 08, 2026 at 12:13:04PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 4/7/26 17:39, Breno Leitao wrote:
+> > On Thu, Apr 02, 2026 at 06:33:17AM -0700, Breno Leitao wrote:
+> >> 1) The interval duration now varies per CPU. Specifically, vmstat_update()
+> >>    is scheduled at sysctl_stat_interval*2 for the highest CPU with my
+> >>    proposed change, rather than a uniform sysctl_stat_interval across
+> >>    all CPUs. (as you raised in the first email)
+> > However, we certainly don't want scenario (1) where the delay varies per
+> > CPU, resulting in the last CPU having vmstat_update() scheduled every
+> > 2 seconds instead of 1 second.
+>
+> Indeed.
+>
+....
+>
+> So you have 72 cpus, the vmstat interval is 1s, and what's the CONFIG_HZ?
 
+Yes, CONFIG_HZ=1000 in my configuration.
 
-On 06/04/2026 00:34, Hugh Dickins wrote:
-> On Thu, 26 Mar 2026, Usama Arif wrote:
-> 
->> When the kernel creates a PMD-level THP mapping for anonymous pages, it
->> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
->> page table sits unused in a deposit list for the lifetime of the THP
->> mapping, only to be withdrawn when the PMD is split or zapped. Every
->> anonymous THP therefore wastes 4KB of memory unconditionally. On large
->> servers where hundreds of gigabytes of memory are mapped as THPs, this
->> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
->> could otherwise satisfy other allocations, including the very PTE page
->> table allocations needed when splits eventually occur.
->>
->> This series removes the pre-deposit and allocates the PTE page table
->> lazily — only when a PMD split actually happens. Since a large number
->> of THPs are never split (they are zapped wholesale when processes exit or
->> munmap the full range), the allocation is avoided entirely in the common
->> case.
->>
->> The pre-deposit pattern exists because split_huge_pmd was designed as an
->> operation that must never fail: if the kernel decides to split, it needs
->> a PTE page table, so one is deposited in advance. But "must never fail"
->> is an unnecessarily strong requirement. A PMD split is typically triggered
->> by a partial operation on a sub-PMD range — partial munmap, partial
->> mprotect, COW on a pinned folio, GUP with FOLL_SPLIT_PMD, and similar.
->> All of these operations already have well-defined error handling for
->> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
->> fail and propagating the error through these existing paths is the natural
->> thing to do. Furthermore, if the system cannot satisfy a single order-0
->> allocation for a page table, it is under extreme memory pressure and
->> failing the operation is the correct response.
->>
->> Designing functions like split_huge_pmd as operations that cannot fail
->> has a subtle but real cost to code quality. It forces a pre-allocation
->> pattern - every THP creation path must deposit a page table, and every
->> split or zap path must withdraw one, creating a hidden coupling between
->> widely separated code paths.
->>
->> This also serves as a code cleanup. On every architecture except powerpc
->> with hash MMU, the deposit/withdraw machinery becomes dead code. The
->> series removes the generic implementations in pgtable-generic.c and the
->> s390/sparc overrides, replacing them with no-op stubs guarded by
->> arch_needs_pgtable_deposit(), which evaluates to false at compile time
->> on all non-powerpc architectures.
-> 
-> I see no mention of the big problem,
-> which has stopped us all from trying this before.
-> 
-> Reclaim: the split_folio_to_list() in shrink_folio_list().
-> 
-> Imagine a process which has forked a thousand times, containing
-> anon THPs, which should now be swapped out and reclaimed.
-> 
-> To swap out one of those THPs, it will have to allocate a
-> thousand page tables, all with PF_MEMALLOC set (to give some
-> access to reserves, while preventing recursion into reclaim).
-> 
-> Elsewhere, we go to great lengths (e.g. mempools) to give
-> guaranteed access to the memory needed when freeing memory.
-> In the case of an anon THP, the guaranteed pool has been the
-> deposited page table. Now what?
-> 
-> And the worst is that when the 501st attempt to allocate a page
-> table fails, it has allocated and is using 500 pages from reserve,
-> without reaching the point of freeing any memory at all.
-> 
-> Maybe watermark boosting (I barely know whereof I speak) can help
-> a bit nowadays.  Has anything else changed to solve the problem?
-> 
-> What would help a lot would be the implementation of swap entries
-> at the PMD level.  Whether that would help enough, I'm sceptical:
-> I do think it's foolish to depend upon the availability of huge
-> contiguous swap extents, whatever the recent improvements there;
-> but it would at least be an arguable justification.
-> 
-Thanks for pointing this out. I should have thought of this as I
-have been thinking about fork a lot for 1G THP and for this series.
+> If it's 1000, it means 13 jiffies per cpu. Would changing the
+> round_jiffies_common() implementation to add 13 jiffies per cpu instead of 3
+> have the same effect?
 
-I am working on trying to make PMD level swap entires work. I hope
-to have a RFC soon.
+That approach would increase the spread in round_jiffies_common(), but
+it brings us back to scenario 1 - each CPU would have a variable
+rescheduling delay, which defeats the purpose of maintaining consistent
+timing.
 
+>
+> Link: https://github.com/leitao/linux/commit/ac200164df1bda45ee8504cc3db5bff5b696245e [1]
+> Link: https://github.com/leitao/linux/commit/baa2ea6ea4c4c2b1df689de6db0a2a6f119e51be [2]
+>
+>
+> commit 41b7aaa1a51f07fc1f0db0614d140fbca78463d3
+> Author: Breno Leitao <leitao@debian.org>
+> Date:   Tue Apr 7 07:56:35 2026 -0700
+>
+>     mm/vmstat: spread per-cpu vmstat work to reduce zone->lock contention
+>
+>     vmstat_shepherd() queues all per-cpu vmstat_update work with zero delay,
+>     and vmstat_update() re-queues itself with round_jiffies_relative(), which
+>     clusters timers near the same second boundary due to the small per-CPU
+>     spread in round_jiffies_common(). On many-CPU systems this causes
+>     thundering-herd contention on zone->lock when multiple CPUs
+>     simultaneously call refresh_cpu_vm_stats() -> decay_pcp_high() ->
+>     free_pcppages_bulk().
+>
+>     Introduce vmstat_spread_delay() to assign each CPU a unique offset
+>     distributed evenly across sysctl_stat_interval. The shepherd uses this
+>     when initially queuing per-cpu work, and vmstat_update re-queues with a
+>     plain sysctl_stat_interval to preserve the spread (round_jiffies_relative
+>     would snap CPUs back to the same boundary).
+>
+>     Signed-off-by: Breno Leitao <leitao@debian.org>
+>
+> I think this approach could have the following problems:
+>
+> - the initially spread delays can drift over time, there's nothing keeping
+> them in sync
+> - not using round_jiffies_relative() means firing at other times than other
+> timers that are using the rounding, so this could be working against the
+> power savings effects of rounding
+> - it's a vmstat-specific workaround for some yet unclear underlying
+> suboptimality that's likely not vmstat specific
 
+I believe the issue is that vmstat's current use of round_jiffies_relative()
+fundamentally solve a different problem than the one we trying to solve.
+The round_jiffies_relative() mechanism is designed for a different
+purpose, as documented:
 
+ """
+  By rounding these timers to whole seconds, all such timers will fire
+  at the same time, rather than at various times spread out. The goal
+  of this is to have the CPU wake up less, which saves power.
+ """
+
+Backing up a bit, let me summarize the problem:
+
+1) vmstat_shepherd() starts all vmstat_update workers simultaneously
+   (or nearly so)
+
+2) All vmstat_update() workers then reschedule themselves for the next
+   second with only 216ms of variance across 72 cores
+
+Upon further reflection, issue (2) wouldn't exist if we simply avoided
+starting all workqueues simultaneously in the first place.
+
+That said, I created a hacky code to find how often the vmstat_update
+is called, and it is not uncommon to see cases where vmstat_update is
+called a few jiffies after it was called.
+
+Debugging further, I found a race between vmstat_shepherd() trying to
+schedule vmstat_update() even when it is already running, which happens
+a lot, given they both run at the 
+
+commit 86e27727b6cc9fbe8bf67818a065105fd30bc7e8 (HEAD -> b4/vmstat)
+Author: Breno Leitao <leitao@debian.org>
+Date:   Wed Apr 8 08:11:01 2026 -0700
+
+    mm/vmstat: warn when shepherd schedules vmstat_update while it is running
+
+    vmstat_shepherd checks delayed_work_pending() to decide whether to
+    queue vmstat_update for a CPU. However, delayed_work_pending() only
+    tests the WORK_STRUCT_PENDING_BIT, which is cleared as soon as a
+    worker thread picks up the work for execution.
+
+    This means that while vmstat_update is actively running on a CPU,
+    delayed_work_pending() returns false, and the shepherd may queue
+    another invocation if need_update() also returns true (which it can,
+    since per-cpu counters are still being flushed mid-execution).
+
+    Add a WARN_ONCE to make this race visible: fire a warning when the
+    shepherd is about to queue vmstat_update for a CPU where it is
+    currently executing, i.e., work_busy() reports WORK_BUSY_RUNNING
+    but delayed_work_pending() does not prevent the re-queue.
+
+    Signed-off-by: Breno Leitao <leitao@debian.org>
+
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 2370c6fb1fcd6..8d53242e7aa66 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2139,8 +2139,12 @@ static void vmstat_shepherd(struct work_struct *w)
+                        if (cpu_is_isolated(cpu))
+                                continue;
+
+-                       if (!delayed_work_pending(dw) && need_update(cpu))
++                       if (!delayed_work_pending(dw) && need_update(cpu)) {
++                               WARN_ONCE(work_busy(&dw->work) & WORK_BUSY_RUNNING,
++                                         "cpu%d: vmstat_update already running, scheduling again\n",
++                                         cpu);
+                                queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++                       }
+                }
+
+                cond_resched();
+
+The fix is a one-line change: !delayed_work_pending(dw) → !work_busy(&dw->work)
 
