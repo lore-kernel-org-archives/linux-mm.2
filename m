@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B345EFD5F8F
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 07:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC85EFD5F93
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 07:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 029A26B0089; Wed,  8 Apr 2026 03:39:51 -0400 (EDT)
+	id CDF966B0088; Wed,  8 Apr 2026 03:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF5E46B008A; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
+	id C90476B0089; Wed,  8 Apr 2026 03:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBD9A6B008C; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
+	id B7F366B008A; Wed,  8 Apr 2026 03:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C616B0089
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58BB7140A55
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:39:50 +0000 (UTC)
-X-FDA: 84634589340.29.E7F27CF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A5C7F6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:47:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D1E2BB7E0
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:47:18 +0000 (UTC)
+X-FDA: 84634608156.04.936636F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 73402180009
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:39:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOqNUi4d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775633988; a=rsa-sha256;
-	cv=none;
-	b=OxBIw67u+wOSn7xsQxbk+22LEpDxvZcu7km2zpnZWjrBD1uqqsm4ch03g9Hftvufaxud2y
-	Drkixgxr4MiDWq/MXAdtu/eutRp0+i4NanOoo7QpdCZzHrbPVTnAup7OgDz42e9yF+Uxk+
-	gNSubqYJjTi5CYWF9yVbhB4uFINXVAA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOqNUi4d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4F9F480010
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:47:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcNdlwoZ;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775633988;
+	s=arc-20220608; t=1775634436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yuJ/5kTSfJV3pXeVXskqH/1yE1cJwc9wVREJXPsF+Ko=;
-	b=GKZN/pDJefS3RK7F5tv/ou1bBCdIph6Xz/PfrA9O9P0SzvcInvkbCyglAVBhxSCyOBmemF
-	QMSjtQvfftL41NZni3hVZljpMPIHf19LTPEwZVw/+7Xg2kr7Q5ElySnNn9jPVWCtBazToB
-	x8CALBVNj4AJizi7MFQS4s1VMFGMJig=
+	bh=wpsn2tfYGKcQ4OlEN/My0p8h756cF4UDa7Kk//NdJT4=;
+	b=Ut/pHzuqaB30Gfu6uGODMPbGTVrpb4WJc7Ppk36aM03G2IvMroNrPjqDnkhUBN/sbl7PhF
+	ykTxwlEq0JnH/Orsqw3VUK82DGv9uvdFiVTiUc4qRmKYcBYLiJeWU9aao8xOQWdI99Mc7k
+	jF1H3aOYP1w44BTCEGCRX7Ys2kXQdfM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775634436; a=rsa-sha256;
+	cv=none;
+	b=lpexBAnmsxwPX6qXjp32x4ikew1xnLdUHJNzW+FkPAAtxNmKlcr16Lx/ldrPLh0axym0i+
+	j6QPelJyGVl+7FDr9eEjNSNV0ATuH6na6Em2bZ0BRqXzq3MvLu0yIvxQgwqP+pLK+najsi
+	XIBjGL7xu2p015Seq1osZ1dVl7ARWMw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dcNdlwoZ;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 859D842E55;
-	Wed,  8 Apr 2026 07:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A37C19424;
-	Wed,  8 Apr 2026 07:39:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36D1540A33;
+	Wed,  8 Apr 2026 07:47:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1645BC19424;
+	Wed,  8 Apr 2026 07:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775633987;
-	bh=JKML08yy0dGpuo28t9vqJg2KAb5rilg3WmynEttBawc=;
+	s=k20201202; t=1775634435;
+	bh=jdEruYUl+aeEf4DiKsSqlHsdtJWhcjZz6DBIPAY3UB0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rOqNUi4dltOXzra1+FgfFkNRd/5pwIsWuJGItMQC259wbE+864o+qSF1LRL5816dM
-	 ikBXsGUsokZQLJ6E7R9Y3GsvJzSVmhs9aTNrofH2ZKJlNJXTIu1h95jmSClldMUlir
-	 RD6LQLMbiqCCmvXbAo/weSbFXEmgbtiQFqc21/l7MyZm/tp7U55aRx/LOeb00iLMGm
-	 dsCttTgICrEcjgmdYn4/P8tr/nQ9CIKcxHRSlvjRHQLs+3aLAUx8Vvz0DRk4KmM9kz
-	 fKrho3gfOlCpe4TJogEakgWq3+N2z4raLU7ZKv+Q2nEn1w2SCulHd8bqY0pUV0XK46
-	 RjuI3vNqWoSdA==
-Message-ID: <efb2dda7-144c-4e00-bd5c-0b57a1244fb1@kernel.org>
-Date: Wed, 8 Apr 2026 09:39:43 +0200
+	b=dcNdlwoZm/G9O2+i7+xZXrk7wT6T8L2tR7bMMvkizRfDC72eGACYH9kgM67oaMm8B
+	 5i6ovqZ+IRzm7shTVTKqkRfd285vk2jWJ8kLs5y3waj/vAzaRm0Aaoa6+2UnGpxaTr
+	 20hKKIn5smmGaJ5sdb0qXBKhLtqysYZPoHw2A3s4sEUxZC9Fd5l+EY6+ose6rMMYm9
+	 9AUI9qXQcDw97VETx/pY+3g5bhdXCPCoAyuSvmvpT1QMu2Q0IaayUuuYFhLKUG9tWy
+	 37MVcHJVbWwv1XGL75nN5ogqMcDrHTM3eU8plltJA/xssCuU1t58+qAsM3BR6PMG5i
+	 QnSywdi0j2GaA==
+Message-ID: <e63e0ab9-75bd-4a7f-9400-a8f87c80d1f0@kernel.org>
+Date: Wed, 8 Apr 2026 09:47:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
- Randy Dunlap <rdunlap@infradead.org>, Dave Hansen <dave.hansen@intel.com>,
- linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260407125133.564182-1-kevin.brodsky@arm.com>
- <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
- <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
- <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
- <8a5e4afd-cd0a-400a-8624-79c1dc9e3ff3@kernel.org>
- <fee59f61-cf62-4a60-9d8a-4543a02a9c48@arm.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Discussion: Targeted memory allocation via
+ debugfs
+To: Juan Yescas <jyescas@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Kalesh Singh <kaleshsingh@google.com>, "T.J. Mercier"
+ <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>,
+ android-mm <android-mm@google.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ lsf-pc@lists.linux-foundation.org
+References: <CAJDx_rj-fTpKjtsw1jJ0aAaC3a2Rt+zrizqY23ZHvq0Mm56uTA@mail.gmail.com>
+ <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org>
+ <CAJDx_rj4DVG2D8ab9O8RWDEF81a5J-fiwtDedubEnsmL-1q+sQ@mail.gmail.com>
+ <5c6e3c1a-bae3-4997-b02e-135374d1d6f8@kernel.org>
+ <CAJDx_rgYXWNC=0_QZDmMpuZU8aZqRU8OeMBqXT1jjzrpK=BWeQ@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <fee59f61-cf62-4a60-9d8a-4543a02a9c48@arm.com>
+In-Reply-To: <CAJDx_rgYXWNC=0_QZDmMpuZU8aZqRU8OeMBqXT1jjzrpK=BWeQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: su3wgimfwjb5i6dpfna4dtstkyb1r47z
-X-Rspamd-Queue-Id: 73402180009
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F9F480010
+X-Stat-Signature: qys71ss6in7q5rtc9ew5o9goyw4td3nb
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775633988-627410
-X-HE-Meta: U2FsdGVkX19jPJn+YidvZqMQ5Gwtc3CSGXOhKY9TRzDiFgPswgkToGWZSEGCZx79/fffgy2g8hiD5JscwwIp4eVbWZR5tJM5Ctlx9ERhevhUH5+IZwlXvBlbH0VOeksmhCQrwvdi7HVdVhLnmDT7mKcxqLyJP59cdIF0wKT/b4BYnb9EPZ5PqjdCI9PzOAAk4EvF1CKyjKq2stwrptBouLWLK8y1XW9RqYTO7Rb56FhSY8mTjn7UIwSoe2sdBE9UcTG/+Ny7aFnWsmEG+9lkxve8derwKNXLg9HsUm1GP1Xqtje8K2rpWxdCxqRR10Y8zDJSvCfS1Pr8g2evdl9phd9DP6bt1DzmVya7xyYPXup8pXpGOIWM0yhP3NyBOFpwWJRLZZ/riAC1D+matgIPo2qkPbKD+JjtGmtgk7lnwySwoTuKSsEmdICdGnHzCBKYw2GrcpNvYkowgLqa6TioPxwXp4qx1X7naVnyaBZ3tmKKP61czyrtkPNinRuOXLS3lgGScGMh7cJAfM8oBXq26beKSWPQyFxmqnYLI68MvzFputBmsUXlUxXxt33yZvodbwD2EGkuEtrXANL7ej2KcAziJYoeQQnHHY9dKrPu05nE9BWzxnCEnKD2dZ/+w0NraKZiVj3yu2YjQKGNYb+tvDJ9WDHXCoEZcnnngdN3oLNlDwtRfoqTGdCAHFdP5Qy9SG0Om91m/x6f6o1Tf0C1sVxjjT0oPsfYLD9LMKC2HeDTgJDWIwI7drVwMiM9pMQPQwxPXMnRIM6BmyzpHrsAWYggvEIxMD1k5zsy7b+Yvm9fgpa0fOK455tZvfD87/lp9+ONTEjvwNOFaT0btYzo/wlVWIVCgLjwx/Do/KxT2JItE6SVyHUV1uausNKEvoZ5HEzEnuRowtoabpPshXQS981iZ6qgaGTrWjhaS0nCxetc5votJcp8BhbI9I3nB7bLwP0DpT3uoYtot0oTSfg
- AeYq6nu3
- vtjA9/FB8Q5f2oa2JXl+JwVGtMbZzw62nmslWqWEFO2Y23tjWc2Z9AJGGSeI+zHIRRV5g05U58zTqzVSoXVWPky9zQGYvCQwq4CxMF85Aux93nACDHJ3A36Ty73wQYklKFDjdo9UcsAs9euH3v6KSq5CgCaWYUFOsSPA0tDHxFfKmGCFNXnenI02wH3TrVYLCi0alOXkZvZw1fyTlpU7sOddTN7fKgszxTxsUoZKbbFJ405QS/SL+DLisG3IzR4khB0FJwADHg90mrUknTP81UAQS9NLftaHQD8C1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775634436-931817
+X-HE-Meta: U2FsdGVkX19Grx35pbI1fvG1d2pNfHmqBBFQHoARt7satFBtuZHdo3KlYnjCkVOsvmbE9WaMTNEHOa7mvlqAym5M+eWDPPOAFwIMPHELt2EuafUu0Z+bEy/9sasUd/6chgdO3M94yhYg9TGtR73pIOzocjTxKbsQLxDf1RJJOCoWzLs2fDmaprdy6hHg2b+dsh6NCX5AtTziOkDmNUvDIaZ/0e8ikUpCF+Cg01++bPuRqj16OgY8XkoVpsf/hvLwSUon0YBv8vYYNKuyg8i8r/RlnDFMjzs8GO82rxkhwOaGJhO3dE/rH+IBIxsIvqCdGcdtEnga9ySSFUBg6CB9XZnhsDAo8tf9rAIKodeeQvCeASv8zFYbsZQzeN037XOZhs3JJvN4/Cw1f5eKSG++m+jHydPCskYat/LMS70qXq75EJJI5Zw4rw0Q0V2+81AcjXRVHo1UusNbY2PolUcRBpQWMVbbdgeD+Dbgn1zQ5r380jITBD/UivPv+B/FQoSuC78Rta7NGZmer6GARVcXeGBQzR//2u8k+xWx98MqjU0GT0vTeUyE0+chEdBSx1CaeBgEPgyFQSrKBNrPXSU7qccqaVLciASYyk9nrZ6XmUPlTsZTlvy7fhfAvsitBDBXcX+kTeohGgeR7/EGXUdAzeqhA/S45HkIbQoeiftSo2cjWT7uiEl6Zs6EXF5fhyMaZtdbTvonap1Z2M0g2CW5Qve8+CGI4XEKw41BRBjXUkCyFc2e4WsGDcW2sdu5mJOtwO8vCZDaYtgmUw3eR5xqm1nqbT3EemC3iErbIBw0LS1PuhkQK4wZ/v1U8SXTs6mcV+1DCbzlNHLTVaDCzMhlUDm6y7b0uNNoUdv6Hk01aTwWyZgg7kIVYLNPjIBNd+ASkAdLaUIydJ6aSAYvBnifB17nnPuRT7J/4zBUItw6bBjwGMg1MW1AKHZySi8U4ld/2x0G7VQywo7JG9DJHv+
+ /fOOYoKC
+ iry7uS+Dm28rcfeGDe1ArJIcjbv+E4X1miDgX6YdbFoUM+90dnvlsc73j05eeWrEH2peV9C+vUuxwN8Mx7EugnGYZwqufLuqRuwRoivU3r6Dx+mwl3TlQWniNkYJMMe/h8eXZQ8p1K+rU84awPM/QaOdoet3QZNvbFHQtTDce6DZJsNzNcMcw4q0Mw79ribaXv8MuJyKmaIkcmc2j9ZOZIQsAF4Y+D6MbxYrRbhp0JsRUx2E4ARKsatHPcMTnTSTd9anyeeek7vHX259+uOykOFY2tY6fXDUhDefwuhnk1HgJdjThK0DYDGVMJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,20 +148,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 09:15, Kevin Brodsky wrote:
-> On 08/04/2026 09:05, David Hildenbrand (Arm) wrote:
->>> I think that "system" is too nebulous there, so I would prefer to see
->>> "hardware" instead.
->> What if you're running in a VM where the feature is hidden ... ?
+On 4/8/26 02:12, Juan Yescas wrote:
+> On Mon, Mar 23, 2026 at 2:14 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 3/19/26 01:56, Juan Yescas wrote:
+>>> Thanks David for you comments,
+>>>
+>>>
+>>> On Mon, Mar 16, 2026 at 8:52 AM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>> You’re right that going OOT would bypass the strict API stability and
+>>> extensibility requirements that come with being in-tree.
+>>>
+>>> However, there are some symbols that we would need to be exported in
+>>> order for the module to compile.
+>>
+>> Reason I am asking is because we had similar discussions around memory
+>> hot(un)plug in the past, where we decided that an OOT kernel module to
+>> simulate add/remove was a better choice than exposing weird APIs to user
+>> space.
+>>
 > 
-> Of course that's also possible, "hardware" has to be interpreted in the
-> context of virtualisation... But granted it is possible to hide features
-> even on the host with the right kernel parameter, on arm64 at least.
+> Hi David, I apologize for the late reply. It’s been a bit of a
+> whirlwind over here with some internal issues.
 > 
-> "If the kernel supports protection keys (pkeys) and the hardware feature
-> is detected"? Still vague but a little more accurate.
+>> Which symbols would you need?
+> 
+> These are the required symbols:
+> 
+> ERROR: modpost: "cma_alloc" [page_alloc_debugfs.ko] undefined!
 
-Can we just talk about CPU support, to avoid using "system" or "hardware" ?
+cma_alloc() will be exported soon:
+
+https://lore.kernel.org/r/20260331-dma-buf-heaps-as-modules-v4-5-e18fda504419@kernel.org
+
+
+> ERROR: modpost: "migratetype_names" [page_alloc_debugfs.ko] undefined!
+
+I'd assume that you can work around that?
+
+> 
+>  > I guess we'd want to call the buddy by
+>> specifying node+zone+order.
+>>
+> That's correct, for the no cma allocations we'll call "alloc_pages_node_noprof"
+> 
+>> Is specifying the migratetype really relevant?
+>>
+> 
+> Yes, we want to be able to allocate these types of memory:
+> 
+> MIGRATE_MOVABLE,
+> MIGRATE_RECLAIMABLE,
+> MIGRATE_CMA,
+> 
+> When the request is for MIGRATE_CMA, the "default_cma_region" will be
+> used for that allocation.
+> 
+>>>
+>>>
+>>> Yes, that is actually one of our goals. We often encounter
+>>> "heisenbugs" that only manifest
+>>> under specific workloads and we want the ability to stress the memory subystem.
+>>>
+>>> For example, if we want to increase the unmovable allocations by 16 MiB,
+>>> a 4 KiB kernel, we can do
+>>>
+>>> $ for i in {1..4} \
+>>> do  \
+>>>   echo 1 > /sys/kernel/debug/mm/node-1/zone-Normal/order-10/migrate-Unmovable/alloc
+>>
+>> How will we handle unmovable allocations ending up on movable memory
+>> (e.g., ZONE_MOVABLE)? (e.g., allocating from ZONE_MOVABLE)
+>>
+> 
+> Once the allocation is requested using
+> 
+> echo 1 > /sys/kernel/debug/mm/node-1/zone-Normal/order-10/migrate-Umovable/alloc
+> 
+> We don't care whether the allocation comes from movable/cma memory.
+
+Well, you should.
+
+If you end up doing something like
+
+echo 1 >
+/sys/kernel/debug/mm/node-1/zone-movable/order-10/migrate-Movable/alloc
+
+You are just breaking ZONE_MOVABLE guarantees. Or what am I missing?
+
+> 
+>> Also, is there any reason why we can't do it similar to hugetlb and use
+>> a simple "nr_pages" variable, that can be set and read.
+>>
+> 
+> We could use a "nr_pages" variable, but we would also need to set the
+> node, zone and migrate type.
+> 
+> It would be cumbersome and error prone to have something like this:
+> 
+> echo "Node1/zone-Normal/MIGRATE_RECLAIMABLE/8" > /proc/kernel/debug/mm/nr_pages
+
+I meant something like:
+
+echo 1 >
+/sys/kernel/debug/mm/node-1/zone-Normal/order-10/migrate-Umovable/nr_pages
+
+(not sure if we really want to specify the migratetype)
 
 -- 
 Cheers,
