@@ -4,138 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9511073C8F
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 10:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82818FD5F79
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 10:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF56F6B0088; Wed,  8 Apr 2026 06:34:34 -0400 (EDT)
+	id BC6B46B0088; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7F1C6B0089; Wed,  8 Apr 2026 06:34:34 -0400 (EDT)
+	id B777A6B0089; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946BE6B008A; Wed,  8 Apr 2026 06:34:34 -0400 (EDT)
+	id A66806B008A; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD0E6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:34:34 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AB95140A84
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:34:34 +0000 (UTC)
-X-FDA: 84635029668.30.7B994F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D3C44000B
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:34:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XEzgMdUl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775644472; a=rsa-sha256;
-	cv=none;
-	b=xkQ2xeFU09uYJoFiXItZU0HlrDqCkrLrcpQXnb3cx4d7B1OtiZEnwpi8PTFcTOzFunQklk
-	gNuKKly2xtmwiMhDvAfdIlAC3jJ4TpIXcDRz3o1N7b3vdyEHI453CGnm+wgSyCbdJNEU2A
-	vhpX5STzFibNYXnzCejN0ZApZj14ldY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XEzgMdUl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775644472;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 933C96B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40786C1F5D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:44:21 +0000 (UTC)
+X-FDA: 84635054322.26.E3AAD87
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012009.outbound.protection.outlook.com [40.107.200.9])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 00D25A0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:44:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=PkJ6PvAk;
+	spf=pass (imf15.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.107.200.9 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775645058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dzQnhV7GtbsFY+r1Ti8PmOtkogWGf8CZU3+G6Y9p8W0=;
-	b=k+x5DT9k1sjbCaeUmQquQ7H3KlunVbgcIaRVd95jnYK0kyKcFz6D+ojXlKStJoClA9v+Pp
-	NRewU6pAggJVeuAtp8vKHzm30lvRolo56WiZ/5mTgCdw7+RL8HwHg9JmACOhCqfEOiu+qe
-	PFtqFyC9F11H75jEcietaC/3Xh4XLTQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19B1D437FF;
-	Wed,  8 Apr 2026 10:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57428C19421;
-	Wed,  8 Apr 2026 10:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775644471;
-	bh=ai9QfuV35IL9Xu+x6DAYuUhTQo8Du03Ovi0qKxAZBeA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XEzgMdUl1Rq+kjbRjjvhg+0Gutorz09KkitcRW5V+MZD9hiw/XiVSzyUUIA76jknm
-	 HZATVuw2zDfsKpj7IkGqF3RfTG+P+3Ug97N6v48KjWUPRz34bpek9yvIwzx96CH1uF
-	 FLQql47DhU5d89KoZ60LBu8r6WPukPsBwl4Stj/qS5ZNNsK3l0lNBYZ+OyeFw3rMBp
-	 wspo93AVf6Otvo0uYAPZsAFNF/A8bxM0Kn/YBMHfK+7GDpiw6wYNYJfRJiHSuuIHzg
-	 WVfVRLtQs2jAMtaGDW33/SmBHBvnhHZn5GZng6cgOZnBq44v0pwKrbmdPiQLSWcwGB
-	 gbmq1QEFd6acw==
-Message-ID: <f92c31e8-0a1e-43e5-8d41-18a1b17f4e27@kernel.org>
-Date: Wed, 8 Apr 2026 12:34:27 +0200
+	bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
+	b=wt5ugZDY0DaVA+RgnEXeksmBqFjqS4wRUY6Sy0mujB0dPwNe8vvjheJvnp4K6k37km6gXg
+	KPoCSUeR1fGqtiRlrSyuTFto+X1pVCROtyMe1uRwK1JzisWOsfSDIME2gGV8ueCS6qTFrx
+	U729X84Z27GtgTOE4gO7R9K4oGjMELI=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=PkJ6PvAk;
+	spf=pass (imf15.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.107.200.9 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775645058; a=rsa-sha256;
+	cv=pass;
+	b=w0YmFNm4lZlAx2CPCkxubIcJWX5T5nk61FvDhFWu5Vnbosj9j91CUODOlGgqaXm375qNCi
+	OpG4c8CRrOR9JyNaIxkqYarRUiDXQTAsax3emxmqzuePv2ucirmsP92wLA6URVTMoQDcR7
+	YgXzMfZ/rgBNNWQtiAa8z4Ex5XE5mqo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vn/y+gmzhQ5B5p1+h5f7PHssKmUVLmecUIc0sHrARsJmuR2WoU0w8991uc1mWqggUGZf8LbD+zMYDmasOFiBNqkWSjH9L3cu0hVyU+sq/9yKJoq9ir93dOmZ8Jcgc7/pCJcQaBDE9Aj/QjGA5Gj6eU9C4yTlYwmIe61rMhdyXvthG1ZF9lMvYstfUDyRJmKnPqLDubsdfUXsN9rWEi9KXWvhWavlU22Q/jKOPtIHRGHEd7f70kbYEA5qec5bNPHCBX2LX9O2q11d1x1LqWJdA9n0+NqR1Km9u16E1cZazArtGeQJIug5+1mTosBo66+vjWKY4/6eQR9WCGQz8on+6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
+ b=Mnft5KgRZRJnrTGuyiZ7uXd7N9VhmtrS/yz62Z5O2oa6QHJY/tHUbhjoDcbQ5pWPS9aIDaLtv2Bo0g+VLZjvWUkHSRPeKf60E/zkbsYePftd/w7ZfLCyw2sZLzdqIoluASNYQ+PgJl5j9rWvgZy5mRWkRXGNXIeLyFXqSGhnAbZ28YMsiyFq3TO38e5s9Ktp/j6Zhmp8a4nNqlx84FDBS6O9Okr3lX1IeBOqKOLybExb22qKK/OmSCf3jPPflWAx9b2+1xUaOa8LT4DScEvfeU8abKcUVAe5JzH1gvvAH7lzhDQpSwELfqzvaiutzellFCw1n+siBimtC8i+0nX5ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
+ b=PkJ6PvAkfDBHlZ/6WVuvQPELOi5yACwPTl00lJLGZU0y6MEeOaE1Q0er33R7zvc0G1gkzqV5MSCC3YQvHT4WRTTfr8b9pXKzj48acTbC7S0+KWYEyP1I8sXuqi6VeaBaHKjSYOHByKKK0UaK2DVCnliLuViAb8QxAlEz83LAgVI=
+Received: from CH0PR03CA0245.namprd03.prod.outlook.com (2603:10b6:610:e5::10)
+ by MN0PR12MB6245.namprd12.prod.outlook.com (2603:10b6:208:3c3::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Wed, 8 Apr
+ 2026 10:44:13 +0000
+Received: from DS3PEPF000099E1.namprd04.prod.outlook.com
+ (2603:10b6:610:e5:cafe::38) by CH0PR03CA0245.outlook.office365.com
+ (2603:10b6:610:e5::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.32 via Frontend Transport; Wed,
+ 8 Apr 2026 10:44:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ DS3PEPF000099E1.mail.protection.outlook.com (10.167.17.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.17 via Frontend Transport; Wed, 8 Apr 2026 10:44:12 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
+ 2026 05:44:12 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
+ 2026 05:44:12 -0500
+Received: from [10.136.43.140] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 8 Apr 2026 05:44:08 -0500
+Message-ID: <4e8c218b-ac5e-4674-9e1e-acf750f0a5c8@amd.com>
+Date: Wed, 8 Apr 2026 16:14:03 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: use round_{up,down}() for PMD alignment in
- madvise_collapse()
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260408093534.2373007-1-ye.liu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm/page_alloc: use batch page clearing in
+ kernel_init_pages()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, <akpm@linux-foundation.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
+	<hannes@cmpxchg.org>, <ziy@nvidia.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rkodsara@amd.com>,
+	<bharata@amd.com>, <ankur.a.arora@oracle.com>, <shivankg@amd.com>, "David
+ Hildenbrand" <david@redhat.com>, <hsalunke@amd.com>
+References: <20260408092441.435133-1-hsalunke@amd.com>
+ <22b6ff3c-9d41-4eb0-9beb-cb92f3ada89f@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260408093534.2373007-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+From: "Salunke, Hrushikesh" <hsalunke@amd.com>
+In-Reply-To: <22b6ff3c-9d41-4eb0-9beb-cb92f3ada89f@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: auafwpf8jat938k79ux1s6eigusck7ys
-X-Rspamd-Queue-Id: 3D3C44000B
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099E1:EE_|MN0PR12MB6245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b2531d7-3fe2-4c13-8f1b-08de955bc606
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	hW1LV2ZP3og//ts5W6pfT9hiTs9GeEXbmByBEj4JpVIxw800f4k/sJHi+qYGYjTWdI6yIdzVEMZsIQ73kKanhM6Jo9b1CsCUllqVBwyPVIocDdqgJoYzFkIPjpk8crA+NXFUjjxEnyXGnHhNGufF1BVWQi4//wIuhIX7ZMFwFq3x9GBNFTsJo+MLqIoPuBHl/q7MGvyDIv2DE1R/rTpInl0Gt85m8y5xP+e9Bpn16YehYqI09sQTyLr+9bOEdeJaNj1MO1w62FoDjeINjBJjk4vqCSxpG0qj8NbwNKUkV5U2k9B4b+I4FOsIDAh3E6KrYDYs1LNsyVcmz9ZCm5EajnOXa9cjYo5lZPcP8aQ6yxHZrza3h91XyaLlq094QCwTBv7JbgDtqL6UZSnDR/oIfgKVIwGRxTqY34S9AeNFwxSMudoJ7lYXRNKOTQ57JvulfCS9m4DJSC2bILkKY3MACj7QJ0AtHnBfKIppQPiQGtlqShuRmpn1NiDQsArI1IaKf7fEbDBT+etxOFPTjaVZ5ThGTjm2jeQNT6n2wmkA5M7VZK47/m3CodWh3Eb2sNfpTPmLYudQyoYm9iQIRFK+fWkG2I3h1dRXKfxU9fBHOr0XrLrdjmiBZNwsBwE/vabMOqF3M89Z6BHY+hLTWWn1YCTCnNA4MFFs1pvekdkwX4MSDdEeaLNPhtB1yOJa2Zdkqrx8Kcuw5CNpKz8+hXNNo7GhYa/tWIv5mQX3EOW1Qz9pG1/X3RaIeWEHI0qcpCowegMXwHMlLDvtyRO6esxG/k5p7GqcOSVOmhmk5nU6QW4=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	UIekNHxHlgCqnGSxZQHmoL6FIHdi/dle5pHZSMjhXkRmW+CHdaqRtDcyfq6cFCexlbrIterY2eei8u5g0tCgot5nA3MWjbc7MSrgZzK7sTlE4wpzveehBP0ebxxwfIkaL3plHvNYtiLLMyMLBlVsJrJuNuzPJVmHx+S0LsEDSYh53bcEN0r5BypzoVeyB/8cjpQEbJm2hQCYB8aJuNdiweWaL0IklmD0uJOE/5kc8W+hH/gx50mlaq5Rslvr1HJ3kAuhb1bfrTwgYFJjJh5gAFlfz2QSccfQ4BPe7mO5QraLvQ/l4HL1o43jDsicGE8bGkj0NsXYMawDOQ9w2i20HFE3XErLJs7YOFiihOOaKNAppl8fT2a/I0GJDkOe5z8xpbdZ6vqjj7AggpF0ebXXeRgRvoh0si0nq+7M/G+T0MwOBFzUXKFBhnynaxzaCEWO
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 10:44:12.9478
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b2531d7-3fe2-4c13-8f1b-08de955bc606
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099E1.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6245
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 00D25A0005
+X-Stat-Signature: t4sg6fzbfgainb91766c64horuuneoe6
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775644472-88681
-X-HE-Meta: U2FsdGVkX1/GXgGWUa96WV2v5K5MNR0EOcy7f+ml1mdquMMuFfct5Jpc4gWzlbkV8ytxkJWmD8uxGUf3Q4wd2ICkAqyztzGCAyHx5kuaBKca6M2oZQnWYXp8OneI0Nk4T4mCve9z6JffMOtv+KeQ+NdQ5O8wUtmtCj1ismIVWfRxVfXUzjJFzKgoaOWVO9KaZ80WcUrxZ2Ao9nJC0Ju3NE5ywSbEPtV+JUjveHRUo17EuLQrEJsZ7xHPsCUSfuug6gbX3In2JySLD6mH0JA7hXkNEUAg14VKJvrY1DRKCSKb9NGkNaBK9TU1gU+QPNAcjAOWSlR4gbAzAcViJjMdQ2D3YYP1x6sMfcsdo1fNfYrdxbsjtMh7YGqTY7G/H2Yu6a7rzCwcr2+d8Koy3Qb/GAJLL5Yu7Do54pYxPYkxXboBpTbFIl2tpLX5tLNz30dJQEA9QrMhEnm9dzhX3M/BatkxRLEtu0US0pX1YcJVsKYsLLjfaX+30/T2wRmM6+N1vi9GKTp97u9rFSEool6iZYtzE5UB1ZS8W3q7B4cpEQa1dlE+J0fU3iYmd15BDwaOLrDKEW0LU0Da7p73TXe5SGVFXtpaSmOghYutFtGQGtkSfbLVzN8PgHhknM03dD4wQJwI+M90zdAnE2axqRs9rto5KJA/a4BGJ7f5faJd8sp+LN3r/OPyOJzrV7vo+aPaH8yPdRlZcdrw4I5+UwzTlcbNk0eZzeeqxAqcHwz1NJsQ5gHuJc+jAVgHZ6VdPBEsufOvSFhiTxH7AT0UhO/I9GjLgaG2DZFXOhQGIfsGdougls0bCvNiMTofhLPKJTv7R0vGgrs+84FfoeYQ7atst63fkbubr4TFH7UPqrXNy9813Digw1T5h6SzP9DNAQLuaYlc7l8/knNnxQ9Cy6nkDjEydZU487yYV8CDqgb8fgiQw7UjbB66z4+4/klk5bpkTtIFjrCh7F+FFhKSRei
- UNRloXL1
- HHf7t5mAw8M6XnIH1I91fcMnW3+DtLwE/j4Wv/zMD7WIBScW0bfA2E5zYmxpI6+clVLHI4l/31lxPABMOu5P3QkF/6WOgJDzqio4+rmVSWgimAW5lhmk1FgwdNBG1PVinv7H52StV9rNIp/m7ZbOvMmMLXUzKO1v2GdZl0l0+LHNAjvMBA1GXd2BMD7F49aAQU+W1GFPSZpfV04bD88385Ch5SYcc8WgHHPMWbcXgJ8YFeU4Bfx/AYflk02D6bwRnDzIfX6jkj6ATg0+TKdFT9WgxRiWX4hSEQ3GeTppwFKTc+0xUy+XZ2Dsw5A==
+X-HE-Tag: 1775645057-153141
+X-HE-Meta: U2FsdGVkX18taaYO7d5Jezmq3YdhDJ8eLrLD3fqpxHM4gVQlZmnwkzUcqVIYNx/EkhZg9b7LqRNr6nyBu97nJ6Ds+ZjwXRMZrfsYdFbG8A0ZweKGVqxsWL1uot6LWQaTN87Q2FNu98Gn/G/i32aFLysdJvz/jADhEWYKrrDCviC6cY+S4zHlpCoi2Wgm+9uuT7+VgIp+4OIxGL7DQyWUydFsJiotCXAow7CuiU1exej46cuiM7jcvpxOIlsXIZxwUxqw8wrrbVJc07e9Om92fF3buA9GZ9n06t28pHULYkxTuN1T+kwJa/RTzf/mh9UL3UdM/uGIMQ9Xr1XYEBIPqWClLdrXITpnHcf7PDb7YuhGR+RwMlv3Sj3fj9IsXqDktVaOl8qUFKHjNkzasXrX6adR5C5z8Brb8nb9fL0byzkvnn68ZH9UmeSixiwc9ZjKyNoX6zYrxAkEip+CzZNW09mTK1mh/kNyiGSjXn23Fhfa6VDtPP7y5hIgqrxwZEGzqc2vPsauC3vo099/cmO2eqYK51zeh5AtoF8igA8BnE6doWmdx+Suk+mOZrFe/nnHwVz+mNTduCkXStx4VtOLS5vcPl2OsKsZsCF/ylUzpT2OQNpFdC8tfqGqnacsbP17eH7cbuz24BNqsdZ5kuEXikuvZikdnCdzjVXJBiK3wFZ+6ik9c7aJCEIVGSqAyHKBIMwrL0maBiMC8yUdtJShEOxnERHBIS+z9rEPyziMtemkzKasQbtoNKbGYM4WNJbOY3l0idTZAqUnYGKJ1fO/IzSEtE9Azm7wzk3kMKbMew/ipuKemWl/a5AED7Gp9Hf8q1ABw1L/5lxNkpn4SafHjk3cXoezIxogQuHyiNl8puPEd4A3u9UNh8ZTl6AmMJ1zELNHMZI6PY7PujSHnf0sKgxaf3jXd+NWbMbHyhqpkjrPEUSx6DtWpWpkdJ7c7sCk9egQz4xDVoWQ7EBLN2G
+ hhL73p6V
+ nhRmo22S/lHuEF4bgVHN/O4PXE02wPvdhKqmcnsl329YttssKCXC2Luts4UdQKT6u3B7zva2uYOwyuPUVJCQNU89vK+Hm6tnGhmNCYelzmsid76QeMU8+/XxhxpP+Pm0kmioffPlGXGgEOmaKZOSExf+SPF8H0wcVZf/bYCqY4cyuosDb77PG3qiqkfs0aDphqmbA9wbo6r7jQGrjF+H5v8u9mqRooQ12oRYLYDCFPqYX/HBxuFuId5ZUTWwzcL2rgkXr6tpco9rGzFYsNpIbqCbxd+KkVC+JpMDO9ykRaFFWObiwOvpak9b3xDXru5Fozb7o2mq1SeQX8ZZMl+fKifhjfION71cVewMUvVHTCs7bFLOtTVl9oIGTtJAKhpNVCCdvgmXfZCVa19fih60nCo/LiHqtIcPR4GqgZQo+NgUxZwf9oAncd7mNb3yssN+oJCKIi3QaFu7u2dYXHOQtiBS0iIfnk97+J+AYtOGz+benvLkg5bnUcf29ptPENQQMwOfwf83pLF/lIcYiGDZPzcn/HvRCNtekhyQ3tjUS4T0rbnk/lQpjAox4ahcakSrkWF6jAwzj/T5s/h2pIGEn8L1XyFFvJWb/2dPK9AMMT/IFh6z25YYlYoRx20WqJyvOEbfACekAHijMqpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,46 +157,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 11:35, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> The PMD alignment in madvise_collapse() is currently implemented
-> using open-coded bitmask operations:
-> 
->     (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK
->     end & HPAGE_PMD_MASK
-> 
-> Replace them with round_up() and round_down(), which express the
-> same alignment semantics more directly and match other PMD-alignment
-> code paths in khugepaged.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/khugepaged.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1e2bff40d014..80d0b7136b58 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2835,8 +2835,8 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->  	mmgrab(mm);
->  	lru_add_drain_all();
->  
-> -	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
-> -	hend = end & HPAGE_PMD_MASK;
-> +	hstart = round_up(start, HPAGE_PMD_SIZE);
-> +	hend = round_down(end, HPAGE_PMD_SIZE);
->  
->  	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->  		enum scan_result result = SCAN_FAIL;
 
-I tend to prefer ALIGN / ALIGN_DOWN when dealing with sizes + addresses.
+On 08-04-2026 15:17, Vlastimil Babka (SUSE) wrote:
 
--- 
-Cheers,
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+>
+>
+> On 4/8/26 11:24, Hrushikesh Salunke wrote:
+>> When init_on_alloc is enabled, kernel_init_pages() clears every page
+>> one at a time, calling clear_page() per page.  This is unnecessarily
+>> slow for large contiguous allocations (mTHPs, HugeTLB) that dominate
+>> real workloads.
+>>
+>> On 64-bit (!HIGHMEM) systems, switch to clearing pages in batch via
+>> clear_pages(), bypassing the per-page kmap_local_page()/kunmap_local()
+>> overhead and allowing the arch clearing primitive to operate on the full
+>> contiguous range in a single invocation.  The batch size is the full
+>> allocation when the preempt model is preemptible (preemption points are
+>> implicit), or PROCESS_PAGES_NON_PREEMPT_BATCH otherwise, with
+>> cond_resched() between batches to limit scheduling latency under
+>> cooperative preemption.
+>>
+>> The HIGHMEM path is kept as-is since those pages require kmap.
+>>
+>> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
+>>
+>>   Before: 0.445s
+>>   After:  0.166s  (-62.7%, 2.68x faster)
+>>
+>> Kernel time (sys) reduction per workload with init_on_alloc=1:
+>>
+>>   Workload            Before       After       Change
+>>   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
+>>   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
+>>   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
+>>   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
+>>
+>> Signed-off-by: Hrushikesh Salunke <hsalunke@amd.com>
+>> ---
+>> base commit: 1a2fbbe3653f0ebb24af9b306a8a968287344a35
+> Any way to reuse the code added by [1], e.g. clear_user_highpages()?
+>
+> [1]
+> https://lore.kernel.org/linux-mm/20250917152418.4077386-1-ankur.a.arora@oracle.com/
 
-David
+Thanks for the review. Sure, I will check if code reuse is possible.
+Meanwhile I found another issue with the current patch.
+
+kernel_init_pages() runs inside the allocator (post_alloc_hook and
+__free_pages_prepare), so it inherits whatever context the caller is in.
+Testing with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_PROVE_LOCKING=y, I
+hit this during exit_group() -> exit_mmap() -> __zap_vma_range, where a
+page allocation happens while the PTE lock and RCU read lock are held,
+making the cond_resched() in the clearing loop illegal:
+
+[ 1997.353228] BUG: sleeping function called from invalid context at mm/page_alloc.c:1235
+[ 1997.353433] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 19725, name: bash
+[ 1997.353572] preempt_count: 1, expected: 0
+[ 1997.353706] RCU nest depth: 1, expected: 0
+[ 1997.353837] 3 locks held by bash/19725:
+[ 1997.353839]  #0: ff38cd415971e540 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x6e/0x430
+[ 1997.353850]  #1: ffffffffb03d6f60 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x2c/0x220
+[ 1997.353855]  #2: ff38cd410deb4618 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: pte_offset_map_lock+0x92/0x170
+[ 1997.353868] Call Trace:
+[ 1997.353870]  <TASK>
+[ 1997.353873]  dump_stack_lvl+0x91/0xb0
+[ 1997.353877]  __might_resched+0x15f/0x290
+[ 1997.353882]  kernel_init_pages+0x4b/0xa0
+[ 1997.353886]  get_page_from_freelist+0x406/0x1e60
+[ 1997.353895]  __alloc_frozen_pages_noprof+0x1d8/0x1730
+[ 1997.353912]  alloc_pages_mpol+0xa4/0x190
+[ 1997.353917]  alloc_pages_noprof+0x59/0xd0
+[ 1997.353919]  get_free_pages_noprof+0x11/0x40
+[ 1997.353921]  __tlb_remove_folio_pages_size.isra.0+0x7f/0xe0
+[ 1997.353923]  __zap_vma_range+0x1bbd/0x1f40
+[ 1997.353931]  unmap_vmas+0xd9/0x1d0
+[ 1997.353934]  exit_mmap+0x10a/0x430
+[ 1997.353943]  __mmput+0x3d/0x130
+[ 1997.353947]  do_exit+0x2a7/0xae0
+[ 1997.353951]  do_group_exit+0x36/0xa0
+[ 1997.353953]  __x64_sys_exit_group+0x18/0x20
+[ 1997.353959]  do_syscall_64+0xe1/0x710
+[ 1997.353990]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 1997.354003]  </TASK>
+
+This also means clear_contig_highpages() can't be directly reused here
+since it has an unconditional might_sleep() + cond_resched(). I'll look
+into this. Any suggestions on the right way to handle cond_resched()
+in a context that may or may not be atomic?
+
+Thanks,
+Hrushikesh
+
+>>  mm/page_alloc.c | 19 +++++++++++++++++--
+>>  1 file changed, 17 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index b1c5430cad4e..178cbebadd50 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -1224,8 +1224,23 @@ static void kernel_init_pages(struct page *page, int numpages)
+>>
+>>       /* s390's use of memset() could override KASAN redzones. */
+>>       kasan_disable_current();
+>> -     for (i = 0; i < numpages; i++)
+>> -             clear_highpage_kasan_tagged(page + i);
+>> +
+>> +     if (!IS_ENABLED(CONFIG_HIGHMEM)) {
+>> +             void *addr = kasan_reset_tag(page_address(page));
+>> +             unsigned int unit = preempt_model_preemptible() ?
+>> +                                     numpages : PROCESS_PAGES_NON_PREEMPT_BATCH;
+>> +             int count;
+>> +
+>> +             for (i = 0; i < numpages; i += count) {
+>> +                     cond_resched();
+>> +                     count = min_t(int, unit, numpages - i);
+>> +                     clear_pages(addr + (i << PAGE_SHIFT), count);
+>> +             }
+>> +     } else {
+>> +             for (i = 0; i < numpages; i++)
+>> +                     clear_highpage_kasan_tagged(page + i);
+>> +     }
+>> +
+>>       kasan_enable_current();
+>>  }
+>>
 
