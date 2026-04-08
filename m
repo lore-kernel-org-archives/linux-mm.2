@@ -4,156 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1D910F9969
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 19:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0929B10F9972
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 19:36:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF5666B0005; Wed,  8 Apr 2026 15:35:59 -0400 (EDT)
+	id 62ECD6B0005; Wed,  8 Apr 2026 15:36:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6D46B0088; Wed,  8 Apr 2026 15:35:59 -0400 (EDT)
+	id 5DF636B0088; Wed,  8 Apr 2026 15:36:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C94FF6B0089; Wed,  8 Apr 2026 15:35:59 -0400 (EDT)
+	id 4F5A96B0089; Wed,  8 Apr 2026 15:36:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BBBCB6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:35:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6C42416021F
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:35:59 +0000 (UTC)
-X-FDA: 84636394038.10.F582E9C
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9B34F2000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:35:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=Bh99876D;
-	spf=pass (imf03.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4324C6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:36:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA5EAE0B0D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:36:51 +0000 (UTC)
+X-FDA: 84636396222.23.C357E8F
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B42A14000D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:36:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=QA99faMh;
+	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775676956;
+	s=arc-20220608; t=1775677009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4LGLk/CDNL83hlgUo8iXk9zFAF5PxXFc3V0NN89y0o=;
-	b=XTr+pUG8eMRZoFyGJrn2MG61S4eV3Hk0g5pC0nfpCOJHJaBFsAnNjIKZdWCMcfOGi9dves
-	eMGlUOp+dM+U+C+1NTOGQ8VcIw3YyLSI7x3edjCF69oHES8uK55Fa6u4IwlQdNDM3s/StF
-	1tPMlP78xDyhFatGCeUU4SCJdQB+bN8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775676957; a=rsa-sha256;
-	cv=none;
-	b=tVgRsENz6r8EvB3nsfQITy/rR0pu6iPDUA+rilvbbDE58X3TClSZ9TQbYaGXjXzCmdkYHP
-	oKH3oVPHZ0ZGgvnbKC+AXidz3eR3n+GN/e01L5rBPCKe81Z7+UFjxk06Cb7ja666BK7oQX
-	kItYlY90PugBEYdFOUzcYTY3jd88ai0=
+	bh=96l/i7uyqouj4dytN5MpYVZKfSy3eXi7wDZWJb62Zz8=;
+	b=U3XjZ/RBWeAAzb23KVvaRDcQ7dszPkrD5q0SOOhfxZ2fncVYMpzrwqmevyOR+4NSUXeFiM
+	yEA15mzo1rW8W6V1atp4Hk574dnan+wuA7eMU44JULdGIbwqU551e0NpTR4IR1tB6LlMAK
+	0u0+7d+fMLgfVKB+Q5iMW/yMyv9urM0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=Bh99876D;
-	spf=pass (imf03.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	imf17.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=QA99faMh;
+	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638JNAkd1556740
-	for <linux-mm@kvack.org>; Wed, 8 Apr 2026 15:35:55 -0400
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775677009; a=rsa-sha256;
+	cv=none;
+	b=ANvZzzadrWuT6ChkI/p4lN99b04H75H2LjDr/khRuWAPNGKCgyWkMdYvnwPFGjJxvZyHzs
+	6sk3C9VuDXgEHiDg0v1G07pw/ZtDf27c/jq0pupdPPXUcDwabOsJ8Q3okWtxNmlHL7fcK7
+	tkN1pIkzahWDB0LCjaj7COOgpwXozE0=
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638JN6rX1682075
+	for <linux-mm@kvack.org>; Wed, 8 Apr 2026 15:36:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=E4LG
-	Lk/CDNL83hlgUo8iXk9zFAF5PxXFc3V0NN89y0o=; b=Bh99876DlThe4BSrmYhz
-	BT49B/aYdNpnd5iXtmahdBmWQKp/nLM7EjQidIcVzMQu0zTcB9WhKQoUhcQ56heK
-	5zV2ZTddiaC6RxhQMa/3ecHH0Fzml6zO4IzVbRJpnOjJvzciBUaBCwXgbtXVeneK
-	FP8Xt+w6gyqpBzKGjC7/1oEVDvOHhqumfe7LK/Evxpw9i8BV/Ak2Ti10fNw+JAlH
-	K10VNlfSBV4KFxb6JDcQUQ+uB/at25i24L1wPVi51/y+nQY78gxCvOr5ponpRO2s
-	LXoItPMPFOhAkpFIu+qalKnqsA0rBuc8xR5faWwr1DuNe9DlvITzCPq2Bak+N1Tj
-	Zg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4dda3nq4us-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=96l/
+	i7uyqouj4dytN5MpYVZKfSy3eXi7wDZWJb62Zz8=; b=QA99faMhBQ2CRLNNFL8L
+	qRU0KP4xnwNqn7cMfDQW5hCPv6hts7r/Xd5kZaAY3dSC43v6ijdCL1tNUW26zeG0
+	i00xv5/w0hQP+E/6FmGItYboGNRG00oqthfvGcLHUjewrJYPfEU7rIUhb+rrH3ZI
+	E7MY1V9FjX/Rjvqq6Buhdtpm+GujTj7zgsZPqlGlaK9OmmMVEoPJ8/8i9H/r++Ew
+	xasVMLD228PIgjw2pkPCzEZbfiWSUlXyI0hlkxJ+Un5rnqSYBqPbHFeq+tEtIyhj
+	R4oX1MgQkBQVvA1CNbDR1nsrNcP1286385FwkRZAdf/g5IG6aI/qI16ZN0btyleO
+	5w==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4dda3n7bxb-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Apr 2026 15:35:55 -0400 (EDT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50b4b81c632so4501611cf.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 12:35:54 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 08 Apr 2026 15:36:48 -0400 (EDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50b44f7b7bbso5160831cf.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 12:36:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775676954; x=1776281754;
+        d=1e100.net; s=20251104; t=1775677008; x=1776281808;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E4LGLk/CDNL83hlgUo8iXk9zFAF5PxXFc3V0NN89y0o=;
-        b=VSHo4gGiibxy5ylt3EeV7pfHBis3jY8SPU0kFH/ES/op1n8rF9LDp+n/RZyaiZ32Cc
-         s/7ZCXv7q/7U/1sswRlQ5z2gCRhmLhqt4d6oHqWMGNlmhcNNqYYQqqNJ58/dFBy8mr0v
-         aD8/utdYOADWk6/LC7suoFYSKFD80DaoSRVE6famNNUZBUX3VWAcLQ6MEmlFEb9ne0w7
-         1uQRNcuznKITKURC+BpqNYNXJZUmomkfpjna6Xq0KImVa5nIAmRKCaqjykpVoQ1ZlVZO
-         z6mA9QLrkepJ3zUKF2fnAHY9pEGWHUOO/bWrW0WNorv7Z8q9nQ4lMhWmjEkoydqVFZ7Z
-         izkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJaUxtQL0CcjA0XY5vGxwdXf3XWUQIWa4WW2XPfkaL9TwdUlQ9O6bY+tlPUm7QNT5opmVLGa3LJg==@kvack.org
-X-Gm-Message-State: AOJu0Yyqf5THtUrmKPrnVYQtoFiLBibjmHmiBuX1XPuLi1ZYpmhbZnH/
-	d0ycMurfuLrdqrfw1bjgdAusO51C+4W3QZMC/pfsJdYxi45hLCHkjJ7hoEuEUXt1IZsdNIXSU6o
-	VoTcxvGwQIF1FJN0fK3E6N8hIvfZP85nUuGCz77xXiXquoo0P
-X-Gm-Gg: AeBDievbKDB0qiAupOEiFdKgx2ATshuYujyA7w3G7wF6gB0D4T7SkP4srkci0gV46uQ
-	JY7xfCd7svFo1sEqtz44UDGT/jLUq3cDve0339g0sRgzhmr3rEJq8gxuuSQW6VcshGGJeT5uAQz
-	rPlby36h9Z1Hv+oUjHN4RpH8juUXliWLokVGNFdOC3gzpurXp62qSIGi9vnkV9SDl/0/I1OvY9J
-	x83PMB5C2E6yQN00RTImbSM6sk5TXUPerozNguL1WYYdgLCKLVXtqHCff4ts6HX7zXnkuMNTGbW
-	2gMp5Yi3Th0zmTvuvrSLzkdTFMFyF1IOGgMM+hT3CW0EUvZltpV3lEXG8rK/xrhnSD0WG4FZC0L
-	3uQylQtLy7SwzdN0ly8VWGmo++NBvAhj+yyMBjnaO
-X-Received: by 2002:ac8:5908:0:b0:50d:a987:89b2 with SMTP id d75a77b69052e-50da98798fdmr100185611cf.31.1775676954058;
-        Wed, 08 Apr 2026 12:35:54 -0700 (PDT)
-X-Received: by 2002:ac8:5908:0:b0:50d:a987:89b2 with SMTP id d75a77b69052e-50da98798fdmr100185051cf.31.1775676953617;
-        Wed, 08 Apr 2026 12:35:53 -0700 (PDT)
+        bh=96l/i7uyqouj4dytN5MpYVZKfSy3eXi7wDZWJb62Zz8=;
+        b=rXkxOdut2nBdR08wMT+oQdQJzS1Yk2LbTiLOgP52zFbk8GrOL63aq6A0b2H38qkVhd
+         Qncxl1MDWSPR+NSs9gks4YNyCv35fkKq/xBtCjNBVbsNkAIipXJyhQVXuIkdcP2f/o90
+         u8EcPg2nrv6M6fZKl1zLJ9mdfCqD/84nuQj++H1F5ks9VcOgRFAYW9+8qrRjK7TFjgZL
+         ewyDa2cj2rwr3PnqLOvMNyirqin+LLHv/PDniR1mel6Qm2yISNOScEk+apcMiEDVYnnX
+         /Gf8AANnk3tHBI5PGgA0m+tDIKRqEEkNZ4OzXiMwKa5OAYZcdKtJnCbaFeSKHTsqjD/5
+         9DDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuDb9DXy750XF5VtWediye0lFq4Np9XbjQQBy7zc2sQ9LguvyQul0ou14Q3S+aXA89TgVAii9lzA==@kvack.org
+X-Gm-Message-State: AOJu0YwMvbKCTIoTEUEdbXOMJTmU5MwN4RNQh5uHlB6nMKPlLtRVIyL3
+	RwzZnzcCInJgMPtHYl4gX18GpcLs9ZPNcoxVXjc/SeVVqC2KH7hIsq+cgcZ+KSyVRh85Bj+bxds
+	O3RPKchMXdReglt9GO/AsPlL0Z8C4sMJZCNN75BOONfQkdnnH
+X-Gm-Gg: AeBDievUmWsCpcsXt9Crha2pPk+RHnZl4UHXTmdwUjeY+kG0dUcNnPL4ooArpC970a0
+	NVedpsOhvSoMTQFyhdV3Q/e8dM4C+++0QYyd4Xex8irN2YNO+RKJ6H6rg+jSCvHOBXeP8WGMbbd
+	EzEE7r1CVAX8r0t/Z4d5tuFPeFQDMBft5H2LyDQSCMbj0uGoKk7+DDrVD6+f2ux+CeZAT83dj1+
+	o3xqjTT1y4oLSK0BKWdl7PNMGdx3eob9KHyEU5IaB1m7qF6dlOJnAgitAiTFAW4n8zB9x4F08AM
+	q4PSr9TvXjlArl6BLv3Oxc2AYKO9HKW++tYiDZSkmde32VjslgePVQ9kapv/asKH43hvfg0fTdW
+	DD5y47qhA71YFcbjYwOEnYY83l0rq8Ma8Sze6fZbo
+X-Received: by 2002:a05:622a:1a86:b0:50d:6b6d:bc17 with SMTP id d75a77b69052e-50dc212b2e3mr10299451cf.23.1775677007889;
+        Wed, 08 Apr 2026 12:36:47 -0700 (PDT)
+X-Received: by 2002:a05:622a:1a86:b0:50d:6b6d:bc17 with SMTP id d75a77b69052e-50dc212b2e3mr10298851cf.23.1775677007355;
+        Wed, 08 Apr 2026 12:36:47 -0700 (PDT)
 Received: from [192.168.129.206] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d82afc7d5sm126128111cf.30.2026.04.08.12.35.52
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d64752857sm142454931cf.21.2026.04.08.12.36.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2026 12:35:52 -0700 (PDT)
-Message-ID: <52016a51-58c7-41eb-8824-3c133aab90b2@columbia.edu>
-Date: Wed, 8 Apr 2026 15:35:52 -0400
+        Wed, 08 Apr 2026 12:36:46 -0700 (PDT)
+Message-ID: <c7342d7f-5c92-4a2c-9d00-5f9cf478f4e1@columbia.edu>
+Date: Wed, 8 Apr 2026 15:36:45 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
- task-context completion
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jens Axboe <axboe@kernel.dk>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Christian Brauner <brauner@kernel.org>,
-        "Darrick J. Wong"
- <djwong@kernel.org>,
+Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for dropbehind
+ writeback
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
         Carlos Maiolino <cem@kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org
+        Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
- <acYdOOpo51xrzNBg@infradead.org>
+ <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
+ <acRDyJrkJhnHHMSe@casper.infradead.org>
 Content-Language: en-US
 From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <acYdOOpo51xrzNBg@infradead.org>
+In-Reply-To: <acRDyJrkJhnHHMSe@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE4MyBTYWx0ZWRfX0tuEQxtesYnW
- zOzgPwQZroQdpIUW8SKEvBUm4HnIOf/R24hmPJ+Bzm3Bz3gCLaLC5U4DxCCxfXVvPFM4iMzZTzn
- W7oh+Aa9kdeYwMfJL9W5+wNs5ZxLNXtI5A8m/0M6qyDSQH3poxbQHquhfTdchpUDigYynRl+THt
- hm93GPwuRAj3bIVBnFyqPGrL9Sw3UwebSqX32zoerqnkkKDZUVpZVg8CJ3ioK7iqcvQxz7GF+yf
- bl1zZymSwzScU6ZKlpgwd6mhl57nwADSAK98klkH2rjNVQAsGDgDiz20FQU4MdnVzZG+kjHnZz5
- lW7kwdwX+W+etWfWDVzkd2TQHUA3ZALowr9S7Rk9pt+8iedBW24ODhoxQvsee/vVZuER5SyX/jn
- 1juLEJDLzFbldH8Sh3M2KvnBhcRUxKMuYukExe/SDEVgWYGC04xwo7DcmUUCsViCV4Mc/GY+rnX
- IP7jengN51jHtT0h0kw==
-X-Proofpoint-GUID: DJiZzmJ3w2mM0Aw6vcHp11DEigijhHgw
-X-Authority-Analysis: v=2.4 cv=BeHoFLt2 c=1 sm=1 tr=0 ts=69d6ae1b cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE4MyBTYWx0ZWRfXxuPLvPBvarMM
+ Y+eysrhEWiuutDBE/KhAkUPFdrRcY+eSNb5+GQR0ZfyJnpeb+8/lFL+pl+5mDefsAnM+fUsUjEq
+ cDCm3rK3ZkxS4t77p6dgMuMYf7ijCiJI4DxvD8FJGnAVO5wd9wAO3Ge3BgmDf5c1YrvBVJTvSf0
+ yNiuMvj5G3/C+H/BetzB91Yz4YH9vlZ5PmU0Ujijo8vq7jbGJWsJ6cLYoRs1IIVazblA5rJF5Mu
+ OCXUFaFgO+Fx8/ZmOPMhVkQEu/uFfy/IZ8kXa5/Cc0/uebwl8VN+r/Wuc0QIm2Ki8BCPyJTPOza
+ VFBlu9nENNwLtnJUSVIoinvho7ADiRbY9xit0no7sAjH3UYswq6Hvdfnh7vDhYr77EDvr2ULdg9
+ sgmudx7Hxv96PsVUZ3mw8fzGVc/msCIIpclOgNyy9s6I9L9WX9af5HyQMTIOgyVk9y6LRplLK2M
+ 7JVGFZcUKO4Tii9I3yg==
+X-Proofpoint-GUID: x_8NIJfs0ShlA_gYASPYBacZT1pM9QTi
+X-Proofpoint-ORIG-GUID: x_8NIJfs0ShlA_gYASPYBacZT1pM9QTi
+X-Authority-Analysis: v=2.4 cv=N9AZ0W9B c=1 sm=1 tr=0 ts=69d6ae50 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=h9G_tkD_DQui4U1ChFoA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: DJiZzmJ3w2mM0Aw6vcHp11DEigijhHgw
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=fDzNMwFgse8Xf2NrkjQA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
 X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11753
  signatures=596818
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=10 adultscore=0 priorityscore=1501 suspectscore=0
- phishscore=0 lowpriorityscore=10 clxscore=1015 impostorscore=10 spamscore=0
+ spamscore=0 lowpriorityscore=10 bulkscore=10 priorityscore=1501 clxscore=1015
+ phishscore=0 impostorscore=10 suspectscore=0 adultscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080183
-X-Rspamd-Queue-Id: 9B34F2000C
-X-Stat-Signature: u6aok5c8e6yh4th1rwdjgmagg1sfn5a4
+X-Rspamd-Queue-Id: B42A14000D
+X-Stat-Signature: yndr5urhpcpn8d4m3wojmx3pq6nh99hs
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775676956-507261
-X-HE-Meta: U2FsdGVkX18QKCKs/g83Wv4DLVF3zVtE04QPfw2Dsd44XIPTeDmnrfMXJe7PaTlannzalbYeyx1pxHf91FPPfgK/b1kMOqIMfAFIb6iZG5AxVeWECpvnhPYuhHa8vahN2uU/i0+nfSjm03hKcfrO7WX4dgKW0VWVEq6PdScTJJ/TXrRVOTWydEwIo9sQUNrkxHjZIkP7JrnfXpc8Nu5i48G0EDSzBNVKDKddMDbxgyXODfqFVWwRpMntDXPuASilhX2Go0MhiOj3Qa4Qc2a6PfBMoYY94RLjdPPvK0Gzc5NL8I1bGmICQKk6CkEgXChEJvzQ0Nu/cjgxiOnVt7f57v0ESqk3pmNHfhdgEYiRBr02Gv45ic6x8oBdMTra2syzxizmOI8rZHJlL4okmm4X5PYxWE4gikq6ixK/rM6P9pmJbncIy4x/Glxdm/BBGFNxpCtkS1uPwwAYyIbs4yqrBJtzNU/0rVJK7yoG4BhEq68vuA0Ppa+WokBJQj4XHVzDbuoZxs+ccxrPZqYhGx0dukg/c2rLEqW3nWNgRXlRncn4lx/QLuvIriw8Es0f7MAhm9VAoCANa96UzuEjo2Sit90V3dzxsU2rL6UQN8Y5ocyb/gxSkbZXbAKtgNItyrhS8GLh9A2r0Fl6SDH+z82JQGjmw9zWEQT6h4nz8Sm696B91jrRRc7En5NT/qxaEyUFsNMZsV6IyUyBHw/DZ6BuoL8yo+wgXWIWmmOArQ9ko9AokiS8GZmi9MDbWi0V4xGYhdFfsBBS8VgP6UGAt1ZF65sJAF0uXZLcMHzG4ZQR18O5vWWYW1KXPBjUGn/PuBhpqdqx9fHxCg8B9LZZSCpoAMGuBfaffsTqZxa678wGUkobTDH/D8fP0RdCywLc8Z7gAY3nVBst0VOnjoTzVx0xis8+XujaccXbzbYvvwrBb4hU7rM8N6I33YB3TTLSiX1E5vS/Y78vteXtPiw//1Q
- OKc2QIY1
- JGYoywcyVRirMOifkhaTDdeBAOrvfuindsuPFQkLJjEOL2o+0cox1b0SLfTwNxKTDjF3TvefGQnpfZGGAt7q1xFC01tjwDt8ncOTkAcHRuKpEfPUL6mTs/FoiAMAyah9mMkz8y64jkpwClagXHLjZ20plXWGhRcVtKvG7rRqRbsjChC4eAB2VoGwD5lI98wSGCqsl0/OvyIvf3rZqagl+RaRHuwQ3mu5H2lz8dRyxL7x3cGXczWBOVNuH/o2cT7h5+eWZvH2CUnOqu4hEaTQYgqIr/rZ4xex7XlarDSAupbBXq/LY32iCVx/fPro1fsPOcLTeMmiiB8OqbxOKnYXRjiBiyh8iexN2W9lx7gX2ABCPUisSHSaPTtyTFFI9CzVW1Je1jpwSrHTaCrrZHyqNA71UMX9wLWn8SNNyzsc9sXHR6+kdYdVjQ5sjuGSOVtymjYKkdwFkm8pMz7bdt6ZyFRpGXXtavDIfCfBGNQuhiMKH1alY3lrp1u1eyRs8vh3kibHqeAJX9PGsjRY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775677009-165060
+X-HE-Meta: U2FsdGVkX1/DMHZwtmC7vwuScMqYweJc20LyJuYd9CMYFE8bbDUihWsw2uMMjN6TJXipiqP9vkJjfV3kTlTjB9Dk9CcBZGUe1ehbXrhmgdwDPMWuQQ2TDLNkp6ceZi84e3jXzV6h8EmVr5EiwCj4z0ozZcrha+va1jXcxyI/FwYjReF43eoAP6oOxQYMHMKmbyZ4UDTTjLasLg5i+sM216+x1vFaDI/3Omtjc4/JSWzcQtK5AO6Oo8L+Yxj30984P9g+DtM8cRIGp98HdsAGtnoMGb2PfesSslDnVErXIXor5cZSCt0rP9eLakDVMJ+Gf/2GVot505R/CZde5bnnZUGEWISd2mlVv8CZ9TUhv3PTK4WNJspcYIsrbeePf7bshlGIntGqWh45RJoHFiAvfXUoI20q25JFejGufMXfUPOKDH95dOnRDbQsNiU271DOYkaKy+cIjDxri/6agabKBnjwzetv6x0/DvsGAb2fHaslCQWkuhZFeOyU53tqkOGciVqIhF7nW32nw6lMRyXCNk1HManD0NgQZWhGvoEk4xQ4OsZNFYBL+Gua8w1TLk7tgUlEVn9ILn4PfxI5dGWYZRPBEW9oY645RL1r7nXBzRNUTr0J8QSDss8iBsFR8fvOkz9BrYuUc8RGb6qnc47NX8wuAKydnr6A6PWb+TsmRkOy9k5DlIdY2SKA/LPk46FoOHisJKcyppiLTqm7LE+jrw/hxEdY7FRRvNXzxDi7iJ2B3DOtDOanbobR+BXd/7j412VOt4GvQTp3fW0ZQpK9G4bhhHOO6EZUDRJYnYu9DJj9tbSI6FLN7LL6eDN3DqamyXzK9M4+pUn8LqC78sh3xsP5O2IWgPaSsRiFAySk4MBNhXWcqipUtyqZLTH5YGSHLcakaJ3ezQNS28wR4lyoT3KvsHhUx6nP1y1wbId5t2VlNwT1coD5eGtK+mZszTyOIyhKYFJYBAv3S7oInD4
+ lAVY73sg
+ EL0KJdQi5t6i3dHmJD2EjH/lEBK3djFCnCNizKGfrolt5RUgppcv/VXt9LtzNuANcLxlz1P74yOmn4cgmqFPvfNbuQ/rVb+qRJZeglbU6x6jaWdaXQ+GYcGyA8OG3c5HEG50T1jzl8CDweM7Hhe0X1ksuXG17Zl7APor4FZaI0CPcFPc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,74 +158,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/27/26 2:01 AM, Christoph Hellwig wrote:
-> On Wed, Mar 25, 2026 at 02:43:00PM -0400, Tal Zussman wrote:
->> +static void bio_complete_work_fn(struct work_struct *w)
->> +{
->> +	struct bio_complete_batch *batch;
->> +	struct bio_list list;
->> +
->> +again:
->> +	local_lock_irq(&bio_complete_batch.lock);
->> +	batch = this_cpu_ptr(&bio_complete_batch);
->> +	list = batch->list;
->> +	bio_list_init(&batch->list);
->> +	local_unlock_irq(&bio_complete_batch.lock);
->> +
->> +	while (!bio_list_empty(&list)) {
->> +		struct bio *bio = bio_list_pop(&list);
->> +		bio->bi_end_io(bio);
->> +	}
+On 3/25/26 4:21 PM, Matthew Wilcox wrote:
+> On Wed, Mar 25, 2026 at 02:43:01PM -0400, Tal Zussman wrote:
+>> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when
+>> IOMAP_IOEND_DONTCACHE is set. This ensures that bi_end_io runs in task
+>> context, where folio_end_dropbehind() can safely invalidate folios.
+>> 
+>> With the bio layer now handling task-context deferral generically, XFS
+>> no longer needs to route DONTCACHE ioends through its completion
+>> workqueue for page cache invalidation. Remove the DONTCACHE check from
+>> xfs_ioend_needs_wq_completion().
+>> 
+>> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+>> ---
+>>  fs/iomap/ioend.c  | 2 ++
+>>  fs/xfs/xfs_aops.c | 4 ----
+>>  2 files changed, 2 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
+>> index e4d57cb969f1..6b8375d11cc0 100644
+>> --- a/fs/iomap/ioend.c
+>> +++ b/fs/iomap/ioend.c
+>> @@ -113,6 +113,8 @@ static struct iomap_ioend *iomap_alloc_ioend(struct iomap_writepage_ctx *wpc,
+>>  			       GFP_NOFS, &iomap_ioend_bioset);
+>>  	bio->bi_iter.bi_sector = iomap_sector(&wpc->iomap, pos);
+>>  	bio->bi_write_hint = wpc->inode->i_write_hint;
+>> +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
+>> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+>>  	wbc_init_bio(wpc->wbc, bio);
+>>  	wpc->nr_folios = 0;
+>>  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
 > 
-> bio_list_pop already does a NULL check, so this could be:
+> Can't we delete IOMAP_IOEND_DONTCACHE, and just do:
 > 
-> 	while ((bio = bio_list_pop(&batch->list)))
-> 		bio->bi_end_io(bio);
+> 	if (folio_test_dropbehind(folio))
+> 		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
 > 
-> In fact that same pattern is repeated later, so maybe just add a helper
-> for it?  But I think Dave's idea of just using a llist (and adding a
-> new llist member to the bio for this) seems sensible.  Just don't forget
-> the llist_reverse_order call to avoid reordering.
-
-Will switch to llist.
-
->> +
->> +	local_lock_irq(&bio_complete_batch.lock);
->> +	batch = this_cpu_ptr(&bio_complete_batch);
->> +	if (!bio_list_empty(&batch->list)) {
->> +		local_unlock_irq(&bio_complete_batch.lock);
->> +
->> +		if (!need_resched())
->> +			goto again;
->> +
->> +		schedule_work_on(smp_processor_id(), &batch->work);
->> +		return;
->> +	}
->> +	local_unlock_irq(&bio_complete_batch.lock);
-> 
-> I don't really understand this requeue logic.  Can you explain it?
-
-If new bios were queued while we were processing this batch, we loop back
-and process them, if we don't need to reschedule. If we do need to
-reschedule, we re-queue the work item and return.
-
->> +	schedule_work_on(smp_processor_id(), &batch->work);
-> 
-> We'll probably want a dedicated workqueue here to avoid deadlocks
-> vs other system wq uses.
-> 
->> +static int bio_complete_batch_cpu_dead(unsigned int cpu)
->> +{
->> +	struct bio_complete_batch *batch = per_cpu_ptr(&bio_complete_batch, cpu);
-> 
-> Overly long line.
+> It'd need to move down a few lines in iomap_add_to_ioend() to after
+> bio_add_folio() succeeds.
 > 
 
-Will fix.
-
-Thanks,
-Tal
+Will do, thanks Matthew!
 
 
