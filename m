@@ -4,109 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B8CFF513A
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:49:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC24FF513A
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:51:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5BA6B008A; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
+	id F1B6A6B0088; Tue,  7 Apr 2026 22:51:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 776376B008C; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
+	id ECC7E6B0089; Tue,  7 Apr 2026 22:51:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68BE76B0092; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
+	id DE2266B008C; Tue,  7 Apr 2026 22:51:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 586B26B008A
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:49:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8AA9BC1CA
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:27 +0000 (UTC)
-X-FDA: 84633857574.09.A6F5714
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AEFCC1C0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PzTrlYX8;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4106B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:51:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5EE2513BE55
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:51:35 +0000 (UTC)
+X-FDA: 84633862950.01.B7F5074
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0656040008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:51:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bGlckLx1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775616565;
+	s=arc-20220608; t=1775616694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XAHOhaZnMi2g4QNdL7Fre1v9gU9ZPxngZ75akcpvl5w=;
-	b=dj6asfYa3CQQ3kvrgmpbWGXOq+gWDDIRKZfdCDaNBts2waLkmikWBdlBDxLqqLVODRPSSx
-	dpcmJEVrDDaeNZ8Ftwyi/mG8PeuxYJbjMs2mSauPIqNhVSzZ+2BacYS1b95JU1vgtQIR6m
-	SUYcr8RsSYHH9/ZWV/o2FZwzmNA48HE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775616565; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NsrZbLl1QzZTc/sVfW1bjaWTpzc/m8nfU9cBBbRPadA=;
+	b=EMVJWwadsLRUsOIa9WZwzpKD6zq4HMjqKyDUgTj5SnZ78YV3qwnj2qguf4ECo+VpYHFseo
+	n8OFK4pnALgkaOIonvZbuKvvtLmJ+EN9T0c7NVr0gur343ebZe+6TDVuS1Qho0/fKqc1Kl
+	W54nfHWWpbAnCjkeKrG3AeB0QbmvwMo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775616694; a=rsa-sha256;
 	cv=none;
-	b=qHmlJI6nBQI7+gdOMnSHeHTKvEmEuugDnth6CnU73kuml6IY+cNTaJBO3Ym7FawpVemI2p
-	21QqvIf5P7FLBW7hVYf4k0jhIaSgj0jg4xYC9oyGse/y+yIuLL7E3SXSK0i2MW/CAXAaxT
-	EaaslU+fgMm87TDjQensdV5s1ubKN6A=
+	b=euONFROf8ogtPWDCvBKiu/63hjZw16lC8t4YjkL2oootlVuWQuoVYKTYQMDjCsTdtCf4SE
+	wjrnlWJ+I4S5zie9AAlnwPDjKrco+FRwSCdsDm2gDKf+4DIMXWolZ1ke/ib44dqbDb40AJ
+	S4Y3MIG5RmRfMeYupohDmCNalV6RtP8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PzTrlYX8;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775616565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XAHOhaZnMi2g4QNdL7Fre1v9gU9ZPxngZ75akcpvl5w=;
-	b=PzTrlYX8uj3PSQdfcvjm7MWPFF9BAjexJkaUFjCZeDqcr947cY+5z37/PNuJxCGa25WknS
-	bVDa+hUn9Fuv/VAzgDu0nJb4gGZS6/68V6nKN2XEIodDFaIxztgFDxG2mOFunBpq9vDXP/
-	QNueG4eJ6EcS88lDx+ZkYXgIMlwQY5c=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-byPuJsC6NNafl8IYg_Ar7w-1; Tue,
- 07 Apr 2026 22:49:21 -0400
-X-MC-Unique: byPuJsC6NNafl8IYg_Ar7w-1
-X-Mimecast-MFC-AGG-ID: byPuJsC6NNafl8IYg_Ar7w_1775616559
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CBC3B1956094;
-	Wed,  8 Apr 2026 02:49:17 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.14])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A6CE300019F;
-	Wed,  8 Apr 2026 02:49:15 +0000 (UTC)
-Date: Wed, 8 Apr 2026 10:49:12 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Barry Song <baohua@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Jianyue Wu <wujianyue000@gmail.com>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
-Message-ID: <adXCKGN_9jFgLqI6@MiWiFi-R3L-srv>
-References: <20260407110002.204755-1-wujianyue000@gmail.com>
- <adUTC-7iyOAUlhR7@cmpxchg.org>
- <adWxonmfjvcwXMg8@MiWiFi-R3L-srv>
- <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bGlckLx1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BEBB6012B;
+	Wed,  8 Apr 2026 02:51:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20871C116C6;
+	Wed,  8 Apr 2026 02:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775616692;
+	bh=ZAYGoVOU/xBKdOabvdM+YHz4qLCWVs6z32hXbsZWLKI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bGlckLx1cBnsEHrKYQQDWFEGJw8n34hukhP7o/9LIps1uAhfRIBIc7D1zccT9fcDY
+	 xmornJxJwwxJMSez+qRcwgSuvHPbPEnmHd1j0BeVr/H1FgTNIGOfoGgOIqQr9oR9hs
+	 V5CSoZMm80LxqS5Y7C1/smRaUcFTy9oDpk5DtKA2AaSIFSPYF5ZGCFKM7Tk3miJcNj
+	 GAh5hGPrnTeQsmrx434opxdiD94Qw3c0lAjUjJQY6j6CxuPU92j3euAsVqip4o030U
+	 2kdXk1l0R4FW4SzBxRqGqUrR5qyoVeBUSd8a+Op0pA8z3Fe3kbraGYLqq+CwLz6DB6
+	 bi9uYsaXIzyMQ==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	akpm@linux-foundation.org,
+	urezki@gmail.com
+Cc: linux-kernel@vger.kernel.org,
+	anshuman.khandual@arm.com,
+	ryan.roberts@arm.com,
+	ajd@linux.ibm.com,
+	rppt@kernel.org,
+	david@kernel.org,
+	Xueyuan.chen21@gmail.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap with contiguous memory
+Date: Wed,  8 Apr 2026 10:51:07 +0800
+Message-Id: <20260408025115.27368-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-In-Reply-To: <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: fSIIbYGmPJhknmXOzE6gxViUQfBrB0XB0Nbls4MFKGI_1775616559
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AEFCC1C0005
-X-Stat-Signature: xs8xwutujuaxtpqk1cggfp1xazyosi3g
+X-Rspamd-Queue-Id: 0656040008
+X-Stat-Signature: c1fejwy367phj37rixzuquwfgonaubxn
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775616565-251654
-X-HE-Meta: U2FsdGVkX1+AQCoThYGKRjM+RzFkmuU0Byn0XZpYRo++n5NYauthmf9pvKxvcLCOBR/wZdP9VjOAzUIPrjlrM5aLBY//2/0Rf+aUqXi2a6tYTvBhN4pI5wh2BEDG9WVPnwGFC+AquHQgvb2jjsH4GX4nQe1aPs6x9M8C6PUkBIV8Ytsy4YjXbTNIp+Man/2RjLm4fDzblblWSOgxacOZSK4GRi4BMSo/M9JFJYqgBJUsTEprODlAnSSEQpm7t5N564VaktRA0bBO+5B/fvYlQn/7fFsA/c3MPg82yJ2WjJJa5/hI2qQMnUuFwh2D7pyOn9Vdhnu1OaNlqqnzeFH/OijOEyeGw1hzLqSMUKcKQG7izQuEU/GC7+9xS3raPQe5HmylYmGVmUUfNcyT3XRUxtqWE+8hvQfN1lgZ8U+MKqSPDgPdq0IfTQbndQ2q/1xjJRO+RnHXbQth6iyvwe81FVG6nIMFIo8OYLRk/MKRAhM/9KemdhcTHYvjREB4wTAqWq0wBOCACTBQQz/CGxqWxKew67z4a6rto2KLXJSsLsBrEWwkOvzL7yfBFnJfrUn6+/vTcdz+sxmx1kaGAPfXlOXTN8t9NtHKzDnJua1ZqK4r54LuObJ/4AWboYibgo5Z6MNd8kD4fTiqfzfRq2xPMQP8LGzt/2dBJ+iDPvFS4cv4/VkfXlNpqO7d3XsC33HQIKCCZaCq+a59FGYVTPqLJUfQySGCZjkblEK+dDMPpECjUK8TBb2SspDT0c/VNgkRQR+QsnfdcGsE6KWacyBSUc4+YtQ/tQDZ9WPbEpEPL0DnQLd7eJQOwcy878yImFLOTy4m4oV2eW6Z7cp5DprX5cKaJnC1HAd0dNCjm9b9J5Blq55GnFlUHr+Hm8WQVBc6+uPNUAaK5dr/pBSP5s5bwrW8aVJlPQbai6JWMm5k2+CbD6VYAjtf5A5CVaGjLTiqQDyY92zO0itCTJsmDa/
- b0JO/VWg
- 1f3RF2XLR+9oZFyf3YXnPSWGwJUPOqW//HbbfDGEiTolmE20DlCYh8FwCbF/Gm8a/NPDl2JqnXc8dO7T5CoCw0Qe2ZwnJ1ar7WktqOB/8wUz9v9dco2zwxzsgctcouB1CmL97PWLZp3uKc45YR6qOq0pwcUgfiopfJX8Dj8zluxaJie03HyTdotcZ5VXEdSoURVpQndkg3kkmjhBRU8QJDiW9wrZzseSwstG6Hk6nRFMk/avCd1yr0pIbjZMxgsMlSh7fkgLAHxtBKyvb0WX6A0ZEG/sXVnqxQN+Q+S55Al+GxAbltDX78vdxDWNaRBwdOqfprvCLq/TEdFteaZcj+UAtD53xcc5iRFd+/Kr1cqO0oVzKovd4E5WM6IGeJvPHk3zHJqXJGElP5rKRP/SENyZ4dJtiZiXZG4KEzezq6QWJwgtWERBNGmxsuaU79WmpW9vaIJ7WPcvS2gs=
+X-HE-Tag: 1775616693-93282
+X-HE-Meta: U2FsdGVkX1+pWogLMYp7SwHGyeK1U8SL1PN8YrLu/W4Tx97deh33DiRQiKJbXnEIaEnnDm9hheVbuom+NBeTKAlUmf3jwpSY35H9XPwnrf1nZV3uFamQWMc5kS3+Dqaar6T3RenNjl9l1nuLeqavlVANmgPvuQ0eUjiyKayvMjtPhoxHfdY+GA6WR+MAKjKOVPqkHezFt9MTr7+626onDwCPqb7gjkTajPpm4IaanuO+Iz6Ouwj2KeCwJY8CDyBuIX8XQz8f5nWW5BO6LnIocbafvOXup4EWIEt9IanDr87FlhyB2s1Qp/u+m0VMF+uFPJknmmGaZZ8FuqqV8gr3mBMq4Ov+FPNGoY+K3OdZE3abhcmeepiGTSWCf1hq9hRf/+Fq2dQ9WwDLvjMGKr0o9Vo4qLeclbbUESs9Jzs9RpIaumIodsY1HMWOFxhDyNeYLdNP3r68/x6G4D9ZJ7W9K9YP5Uf13nKj7JFT8FF2BAw/WrNebw/x92ijZsshht5LUkbvgsiKs1QaLxq4Kw4Fh3OelM+W+FrJEfqJ1SoT1Goa3KEIviHieM21c7QgxMNkOc0dWP5VQSfjX9HrhM0don6jLNS1xs5IYV4IopgEP1TRj6gyQmIE5yKrEnlQxLzlzAhsi7aXVS4POr+hcAU4iX+tjmtjGHiDxGn2BjU+Es77pyhy5PxTz2TWcEDmsWVipH7FLmTsASpi8JO/ot0ZsJgdg5Glem2j4uEt3x0gdG+WpovDSUuapa1XA8NjpvkgAbZ6HWBkmks4HJSOd4w0VPNh/0G8TeUafqiQTV662rGn97VyjTVFKnoK2/oLsIVB5AdQB2hyqBLdrQcFPWZVJ7eqEkikC5gXqoyqUBdn3xZZHDAR/fTY65TZX/IpiC3lU0N1Qy65koImjhfDtBGWGgaIgqp1m01lhhVPfzbCNcrl3xQfBAZ7ITxUcvlbfIdnij4so5lb0Le7b6Eky0p
+ QdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,58 +99,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/08/26 at 10:20am, Barry Song wrote:
-> On Wed, Apr 8, 2026 at 9:39 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 04/07/26 at 10:22am, Johannes Weiner wrote:
-> > > On Tue, Apr 07, 2026 at 07:00:02PM +0800, Jianyue Wu wrote:
-> > > > All allocated folios are added into lru lists for later reclaim whether
-> > > > they are file or anonymous folios. However those folio lru operation codes
-> > > > are put in mm/swap.c which is not so appropriate. Because swap code is
-> > > > only for anonymous folios.
-> > >
-> > > Ironically, the only thing that doesn't fit in this file is the swap
-> > > stuff. The page_cluster & sysctl should be static in swap_state.c.
-> > >
-> > > The rest seems thematically relatively clean - infrastructure for
-> > > managing folio lifetime. swap.c is not the best name for it, but short
-> > > of finding a very clear improvement I'd just leave it alone.
-> >
-> > Can't agree more. We should move page_cluster & sysctl and swap_setup()
-> > to mm/swap_state.c, and rename mm/swap.c to mm/folio_lru.c or something
-> > like that.
-> 
-> Another issue is that many MM-internal items are placed in the
-> top-level include/linux/swap.h, which is supposed to be used by
-> code outside the MM subsystem as well.
-> 
-> For example, the following are actually MM-internal:
-> 
-> extern int vm_swappiness;
-> swap_setup();
-> workingset_*();
-> try_to_free_pages();
-> zone_reclaimable_pages();
-> lruvec_lru_size();
-> try_to_free_mem_cgroup_pages();
-> ...
+This patchset accelerates ioremap, vmalloc, and vmap when the memory
+is physically fully or partially contiguous. Two techniques are used:
 
-Ah, indeed. Seems we have been putting generic code related to reclaim into
-swap.h|.c due to historic reason. From discussion, I think the below
-three things are doable.
+1. Avoid page table zigzag when setting PTEs/PMDs for multiple memory
+   segments
+2. Use batched mappings wherever possible in both vmalloc and ARM64
+   layers
 
-1) move page_cluster & sysctl and swap_setup() into mm/swap_state.c
-because page_cluster is only used in mm/swap_state.c as Johannes
-suggestd. And swap_setup() may need be renamed too?
+Patches 1–2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
+CONT-PTE regions instead of just one.
 
-2) rename mm/swap.c to mm/folio_lru.c or something like that to reflect
-its real content;
+Patches 3–4 extend vmap_small_pages_range_noflush() to support page
+shifts other than PAGE_SHIFT. This allows mapping multiple memory
+segments for vmalloc() without zigzagging page tables.
 
-3) Just Barry pointed out, move generic code related to reclaim out of
-include/linux/swap.h  e.g move into mm/internal.h if they are only
-called inside mm/ folder,
+Patches 5–8 add huge vmap support for contiguous pages. This not only
+improves performance but also enables PMD or CONT-PTE mapping for the
+vmapped area, reducing TLB pressure.
 
-Thanks
-Baoquan
+Many thanks to Xueyuan Chen for his substantial testing efforts
+on RK3588 boards.
+
+On the RK3588 8-core ARM64 SoC, with tasks pinned to CPU2 and
+the performance CPUfreq policy enabled, Xueyuan’s tests report:
+
+* ioremap(1 MB): 1.2× faster
+* vmalloc(1 MB) mapping time (excluding allocation) with
+  VM_ALLOW_HUGE_VMAP: 1.5× faster
+* vmap(): 5.6× faster when memory includes some order-8 pages,
+  with no regression observed for order-0 pages
+
+Barry Song (Xiaomi) (8):
+  arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+    setup
+  arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+    CONT_PTE
+  mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
+    page_shift sizes
+  mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
+  mm/vmalloc: map contiguous pages in batches for vmap() if possible
+  mm/vmalloc: align vm_area so vmap() can batch mappings
+  mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtable
+    zigzag
+  mm/vmalloc: Stop scanning for compound pages after encountering small
+    pages in vmap
+
+ arch/arm64/include/asm/vmalloc.h |   6 +-
+ arch/arm64/mm/hugetlbpage.c      |  10 ++
+ mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
+ 3 files changed, 161 insertions(+), 33 deletions(-)
+
+-- 
+2.39.3 (Apple Git-146)
 
 
