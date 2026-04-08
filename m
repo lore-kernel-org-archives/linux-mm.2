@@ -4,133 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40B75105D98C
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 00:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F866FF512F
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 00:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91C076B0088; Tue,  7 Apr 2026 20:34:02 -0400 (EDT)
+	id CC85A6B0088; Tue,  7 Apr 2026 20:35:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F3B06B0089; Tue,  7 Apr 2026 20:34:02 -0400 (EDT)
+	id C9EE26B0089; Tue,  7 Apr 2026 20:35:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809AE6B008A; Tue,  7 Apr 2026 20:34:02 -0400 (EDT)
+	id BDC776B008A; Tue,  7 Apr 2026 20:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F4706B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 20:34:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BF2F1A09F3
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:34:02 +0000 (UTC)
-X-FDA: 84633516324.09.AABA079
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4A297160003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:34:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Auw00iZQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3dqLVaQYKCGcXJFSOHLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3dqLVaQYKCGcXJFSOHLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B10C36B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 20:35:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5359E8C8F6
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:35:24 +0000 (UTC)
+X-FDA: 84633519768.11.201C15B
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9468780002
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:35:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OSkWP4eR;
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775608440;
+	s=arc-20220608; t=1775608522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aDLo9VPnGDiQNlFQzI1xTSPzRXpWtFJbtAFYR59HS10=;
-	b=yIOhS82TOOW28opGiRRUWvNo68ImCO6kjiC8KpWXDI+N5z4BfH6MhU7xHyhtaNiHcMPRdP
-	E5sTh6CNFXU9z8unHW6mUZlILIxbElD5gDlXu+ZTrzrF7QO9jTjbEMasvEY/V9YA6L0gbM
-	+ossij/6ytoqHzxPDbrnodSKFsANy8I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775608440; a=rsa-sha256;
-	cv=none;
-	b=wlYVAJB6AoHjyYkUBqIASq8YbqTE4Qh8AoOs2eS+hGBIMUaHAd2TVtkb4eH6XNcJU1SukC
-	pqkqSiOnw6ISlXcFoLlaIl/12PGCqntE18J0gioo6hvdfVDYRciKxLD9mquHbUFsAHslYW
-	AOLbA3gu4AGKHDtLk89GxJTSuqrSuYg=
+	bh=55E878MxgP72O9eei0qCPXOsBTcpsSSj+qhDc+Y73Ic=;
+	b=lR/3V8hhliZglmNmsG7THSriItTKONJ2n8+5OQweZlK/ae+YVhUm9o3K/LeaYgG92hVUX+
+	u09ZDwgg2ujY/UbI0wyPILU0tdIjJ2sIiov8D0iSghQlvWNaJtDShBJqhVr6MBlxYw3LFX
+	fnOlb2D9VC5vX6XJA0x9tJSiKtzzLYE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Auw00iZQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3dqLVaQYKCGcXJFSOHLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3dqLVaQYKCGcXJFSOHLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82cf0130d17so3295464b3a.3
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 17:33:59 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OSkWP4eR;
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775608522; a=rsa-sha256;
+	cv=none;
+	b=YwOkCqwEUreBnWmwfoVzFSk119qDEc2/MS4dJ0F2oIOUORBATSRtrx3xxfOaNH01aCv2V5
+	Dpbtg35VDGRKjx2Sq1U7nQTCl2EgqbEoyHVrvo9FIHfqYcQuyl56rmBHFS1d8iklfU08KM
+	cE6T3cRz/wW0X7uEHSD3cPaIVMJj1AI=
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-64f48a5c3d8so5896099d50.1
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 17:35:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775608439; x=1776213239; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aDLo9VPnGDiQNlFQzI1xTSPzRXpWtFJbtAFYR59HS10=;
-        b=Auw00iZQVwWYWV0YKFlqW/tIrrimOP+aj3iEF0WDFJUjLgytIZow/Z2+Qp+R0wdXIo
-         ygk/66Gr5s2MMChab/C3bJ8dgdvMta87ghfewMNDEbz82Oh4mIVZfZ+D3jhpqBqA+8AK
-         kKG1eg2xnL8EtXPnW3tFAHUXjLd4D4GQVc9lXqbizt0qgaV7Wa4//KFcztQb/Ktgqir7
-         JlxyY3ue0gJrLUXwXKkZ55V4r9la/7z1aj6g0/+8LpuM2a6DwhIKTzTLWHuFS1atGRoO
-         0vthcupbt31cqQw4ExUCyz4WHuSEpb1/O0uL49gnP6kCtxO9RcWdtfSODONwf2Omk8AU
-         MorQ==
+        d=google.com; s=20251104; t=1775608522; x=1776213322; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=55E878MxgP72O9eei0qCPXOsBTcpsSSj+qhDc+Y73Ic=;
+        b=OSkWP4eRPTJSTdi5WNJpmJVg0SppckdHWH1BWgDyiXgQpL24dBVqk8+7dKWzAI/lFg
+         ba1ias8VPixSGyBeK8wky2idZ/ZDCJzqeSyRvUVzFOgMc/LqvYNo8exj/lU7e7vbkeJo
+         BIrFMH5nTmChuosW3ppxfW8RMonRUEVWjeZ+Bu2tBg7sRgikmCbwbjxvi5TXPZk29+Go
+         7yrSABvOBKz3+7ApPwAM4FCtpCVeCzugRiELV5RxV7r8fp5N9kDWmYnOo55/UugY9rIs
+         XYq4/X+6lh2hya22VRzmLjv0imkPZjn8cM1RA/Ubl1l3omx7U9kb9b7J8zOI+H44UTuD
+         Ex9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775608439; x=1776213239;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aDLo9VPnGDiQNlFQzI1xTSPzRXpWtFJbtAFYR59HS10=;
-        b=cmqvbID/qwMQvy2f+RJ7zCxHnntUOcRlg0wCF8SMF74/nZ7Mv4uJqq9DemQagp2EYU
-         cfWRwT3Fu5rCy3KfSg3gaLFQlCetf4a+M/5bkAnJX03ywidKSw2D05tMnRiGMp6+3ImI
-         ZTzs9yJkut+9TrTu+JJcyNv5lETTUSt0bY1TAzFV5mS9POivozKg0oG8AWFoF31YIj7I
-         KgWRvXkJb0B1yup7iUXj4rcg2bpm5+MNDdJRd1gIhQGz2npd/kgDXaWQx7O6nbu8psbg
-         k4Q71vW4+8LBRu2p0Fnp9fgy9l6tR5kcR2EORRY9UykQmghwIq3QZ94NgNSLEsZzOf/i
-         KIhw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZFhwFv9y+7BcDXEXPiChIvvA2slOsqaH3qB8gXuEWyeRizdnmv0+WKdrbQ7nffpKnR1ZD6Ugf9w==@kvack.org
-X-Gm-Message-State: AOJu0YzI4y25S8/vulnvfLZNmXRR3/QG9jdZW4wo9H/Zz+KyeAuatmOT
-	nMBZfezHyVHESF6fBwMi4njsZxPR/U4MD67OmV5CmDtBOQSYsoV8MQVw9jdZjbzFHKXMHcP3ZPA
-	FDe5myQ==
-X-Received: from pfbmt5.prod.google.com ([2002:a05:6a00:6e65:b0:82c:6e7c:ac61])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3011:b0:801:eee2:45b6
- with SMTP id d2e1a72fcca58-82d0dac592amr17920681b3a.24.1775608438815; Tue, 07
- Apr 2026 17:33:58 -0700 (PDT)
-Date: Tue, 7 Apr 2026 17:33:57 -0700
-In-Reply-To: <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
-Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
- <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
- <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
- <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com> <nmy5polcxfnn3hoircsiqarxmzlulwwq7w34okanccntp32v56@h2eac44agovv>
-Message-ID: <adWidf8UgZeYctr1@google.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4A297160003
-X-Stat-Signature: ew7iso6qzmdby8bczk4w6wuoko8646tg
+        d=1e100.net; s=20251104; t=1775608522; x=1776213322;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=55E878MxgP72O9eei0qCPXOsBTcpsSSj+qhDc+Y73Ic=;
+        b=oq3OwmJM1uNVBzFMUpoIabls2mEgwSmHvfr79sY5MuDvWenlG8VZfTia8ksKWV3lKe
+         yrFrIpUyA0dz6Bbw2uo4SaXmvxYyuTRouliMd06H2hmZeuRyPMFxNqQCrlmvxDVbmxu6
+         +jQsogVn/81v4Koqs1hJVMtMfdNsDJw5DoIoxQWttuAmcm0sLByvI9GENIPplemdtQu+
+         kavhXhBRrXEAOY+kbGlZnVfv+bGHGQ+XiZuAMWJv8m4RmK5TVMGp3vuSH2JsU4v5SnPT
+         0wRfYlu52mmOPItlGG//PAPBH43/cAQWNM/UGU9Gh1wMKNgGTCcsg76XCMAmzLT6ezjK
+         1Jew==
+X-Forwarded-Encrypted: i=1; AJvYcCXheTbcUh29V86X4wAuQXT4hwP1ZKr1M8Cn4/97Fd0nGNBZHYN/JJ9fQ/AyEE+qe9KakGqGmeu6Qg==@kvack.org
+X-Gm-Message-State: AOJu0YyHl5ubQZ8p7V27zzxNu2F//VubNKi8QIQr8J3BtpksLv/CgauT
+	h4XG05CzDm2F97nx8Plo/HIji7pwD7MsgAZoz3yL0d0vVuxndnD+qMwhrVNp5f0PHA==
+X-Gm-Gg: AeBDies+ne1TsHZSB9fzID0zhY1glmZsL78G6/9zLZeNJIBpamZrUVhRZmVhRyQUEsi
+	Tup8IhhRTPkHZujBk6YyHb6iVV4rXwrRLBMoBCheAT2LYOit+XXwP1in5oZaWTnnFAqnXmt58BD
+	eH6uQHNidaRI0oqxDR6e6iLSemKhJnyvURRCOAW1vxNt/JD6pRQmZBHe6dpQjOPqioAQZEmBnGt
+	Tb1AuyRjwXSxFynNXbFQVzEz7hFYmF6RWzQWlE6GKgZsOlU0kmBmhN/K3ebNuDwT7vZtC4nC1Z2
+	2FOvqf0vk6qQWsn5hCvwdqqp5pX9B7UprGGG13c4318kPtOK3IzFaoNSD3DqBapg3qmxM1GoSwA
+	S0uH2AtO9WSz/UOi1jRXN0EHwMi7VRu1EHd96fPRkDxSbpwCjvjOvuCM6ypaZZGOC6Psc2gNibm
+	2qwT3z/z0pj/be2S1i0vqIG78Zehj/NK9adUuQcwd8W/P7p59X6p/+WNc6iUjYwBp/BRBvWr4Wd
+	rr7X//ovNE=
+X-Received: by 2002:a05:690e:418c:b0:650:72b8:e7b6 with SMTP id 956f58d0204a3-65072b8e8b1mr7721195d50.0.1775608521304;
+        Tue, 07 Apr 2026 17:35:21 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6503a9a9271sm8607789d50.15.2026.04.07.17.35.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 17:35:20 -0700 (PDT)
+Date: Tue, 7 Apr 2026 17:35:18 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: John Hubbard <jhubbard@nvidia.com>
+cc: Joseph Salisbury <joseph.salisbury@oracle.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, 
+    Kairui Song <kasong@tencent.com>, Hugh Dickins <hughd@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, 
+    Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+    Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+    linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock contention
+ in populate/unmap paths
+In-Reply-To: <4a4f5b48-8a1d-48f8-8760-0f5d43b5d483@nvidia.com>
+Message-ID: <982e5964-5ea6-eaf7-a11a-0692f14a6943@google.com>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com> <4a4f5b48-8a1d-48f8-8760-0f5d43b5d483@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775608440-989212
-X-HE-Meta: U2FsdGVkX1+pkYnm3+LfZ/varwR9HoEoUQoo050cQM4KCQ4H31fZ0Si6XSwKu83dwoGVKxQLGQ0lO0kv9WwpibdgqpHaHqzGAxIhbqDG9B7+OaBSNAmjLzxFprQjCuM/mWNnocZ2wFjP9TyhsHt16xSZAfqR0kKXJdtqr5Z58UZFBfVsjlIW0WfKCE6UV803ZdjOi2SgI3TSd2EWRlyx0PdHCJz8pO86JZGGzbgcq1sf32/OjfxNIHFHnvzPiWH/LZueIjhMi5L/Q9Wdq7n3qD4pePGW9KnNNp090u/dNDFY7kE8HvA5qewPT3lpeeHegt4WSjp/Ad488qEpfWfmEcwIiENVyfJIvEbtx0ro6Kaup5numxkngOvkqeBucJgCs8MpgcwoDF3By32XA68FBTMWdJA7RXLnawnuTUztNMkp42kOjbqt8Rl0H8HnBI+CvtoTjue3nz1AV9niqNB9OHSWIIxtwGRrDSIedhFxcaur9gGpv9UqvyCj3N7fs3G6AGxmZ3XfA8rqHG03f36RItPkM9DirTMBoqZExYBSX7hpp4onMpfM2ofFudvc14AShcsgHvnLbZpOVyVh6BloL5f5csgThaKaHTFiZSyBWPZ5Xe7GYzvhSySxbX5LoiLs0tQ398ge0Lyub822cgeilB0jMnyQbAfkgPCh258zYWgeYwBokryfP+9My4y1i/+tZiMwA9Lipd9iJhhw/A1BpFj/L3hj7P2y04Q3pbb1ZEOO2/RyUoyjDH9lBOjQ2xQyVDu41jIaoiwKFqWOmoVj7fMdNJawdZqgHCWR0WpmQqeZX2uMh1n0Jra5jN+Z96vg417yVVwYmLbRAqhKRB//+ALbIM8f0wpoWKzSchm0fCh3MSyWTZclvduBghQ+T8l7aI+ACoFatMReaXgxCNoNDkX+yDE3XffrPPdNshuJ8Uw1xYatJduvWFj/xGXrAObyOqBmZlTJveLWzEJVxr9
- P2nSSfHN
- mALpHOqqL1nupIdYz7XOQFmDCR6DaG8r32307zoBtkrnLF4n//K9QIEsuGNrpFRULwBaTrNTXEGeYIj37wXKC61AkTXSh+tiZ/cpU3I9oQi5rJc5G+8dAYya5ljLfOrn+K3ZxHRlUvGdgSOOj+vCCe9BlmnbJJI8r0ilhiBeCODdIT62t/BPSBqTjIC0oMe2TC6GXh4HW/eEO34kxpWB56rszY16AgrRB2oyRUWLMz5/tspy24qlpGbEjdfu0LExcuY1QsVDaOjFV6Kb2PAMcLh9/84jsOxH39Y4WjjiW2n9herWir/lrEvSNStKuYd0p/LYgpGsRaHt3JOdU3e5bcL5btafmFbzw7ZCkyP1mVeVda6URtxM8e+8FKRUCxUcZLViBKzpsp8FXe2eCy7p2wNeQMpqG05ijkpMYT0puBlwPE8OOxEpGhuJ5ExSxFmsnjj76jEkZ60CuFjV3/ZATBkfv7nGLz/IrFrBSEWvoE9+Z42ZXUMybNoTIQ60zcZNuhJ5+EQHVYTQHLfuMoB3eViTrFAIy561lIEuP74dTLxZpVydR7EoA83mRH1yCJF2FTZDCcqmBS4NsbgjMbWekdwG+CLrH1wbhNDrsOww43UvUJOJl1mGhlVmYjlRe4DeCqJeirkDxarrNWiuAFyPeQXpZLn3WlFf9/e0VJDIzvkfQrboDKJqeMOp17VsH0uKlDHqSifiH6aritxFEnVacr/OrMilSlyTL1pE524y1it6I5KJXnjcmEcOPNTaBZ3c6m/eESSEbzP9V46h7XtubUffLOk2RL+izLMB7
+X-Rspamd-Queue-Id: 9468780002
+X-Stat-Signature: sbc8q6z6y84n3d7umwphoj54xum36es3
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775608522-158274
+X-HE-Meta: U2FsdGVkX18cm1+gfZnydtw+iHAqWZ3L2QgEUhSA3vnQMnVatOXBfds1ZNnpSvhWdvaGFyrypLyhi5jfEfQjg7YOcjUqsuy5Bfv1D/Cs4WNjEMsweHWZF3EXL7qiwsIQSFJ57rUZB69FXxTj5jvJkF97wkDT2IBokX7HDSmd8WLG8U9sa7EPdOjnJiRhJ/nHAt5C4jGWnwAw+Xw4+csO8WY0NTpwCkj4HE3SM9xHIFa+Y/Vy89Orbrwt5tICjZ0rFV3zmpiCud++hIu23EKkrd+WeU6ZU2g7mZ3qSKWFajJGO0OTYDbOubueZhnXrdB91lDfo+sBb38DiveFIff/DDiDmY+KnceP5Z3UnLRha93/x/ykgHsudojRK2XqCiiTGFEWWJuW95M3ywk4QfcfsdkoroVjzX1HI8qn1qKNN0uNMMtFpD3+m+S6Zp2l4RVSGZi5mFO/pHUTsmgVIUHNCdk/+YgEcxZYVWnUbqtVofHv33BCAlEO1zurGVklJm0y2VFc+aWdrDQatsoLqMCpvL46YRFiIiCCSQ3K0akjLRADUEhlgxFpktvSePwL7s4Ab+MFWVf4yM3b0er1b1z1q3dCjOAj3rgcZXMXyILnYM5EvUNugs0yerGb01Gx6Sr+ElMuUVA5P/jEW4qauhKZthDZzyfwl736C807igWt3l71lMy919fYVGFmZI9dlXycJd5T7t/3qbYWjcX53biR3Fm3AYcAcqjTKZlbVOlYDtCgmBXvtgfXkPemz6WcVT/fAzIRO5k7GaKyqvLnJ4iA8hoLQ+S77bLck4xCX2kj4u3pFm56og57CbLuAKOtm6VnGN7MRCwSdrB7/4sqF25cayyx2c+YLayYQQdUmt8dCgiPf2/Wcj5VVT+UUMP3VVImayMU7mOG+kF7YFKsNgj5uaWE+NSqZUVvD2HXb7GLHlfbsqqiYUtK2P/A14A5yEXkuWT/Ki0aJwX4dZYPaZv
+ LH/WbVe7
+ zuo0cauWAlGDERH7DWhATvci3Pk5hPvM7Nnux8DVMGZNUFdVRqdvDe5g2UGDwjdSj0PAlPbLwy7D1ilZvVh3M/spIYW/WIz2CjPp0/nm4ukysDBj2qaMvY9j+iGBgrCyAx/tRtMMOKyGsaEGk3ZhJcHmeBP1RQJ+Sx2lbFt9mkgylBmvG+sxOy1RZHhtJ0T+HjqmiVGiPGQYbPzJZAtBtUovZfkMhv+Wo/g8ft7kOLaYdlsmEWwDHKAbziq2lND7MGMjbdA1h87G5nmiuIgTgS0DvTgbFxVSoCKqav3CgWZx1Yx3DsWNPw4/IXF0I4W5s2cjWtqYR9VkNSRU79Yh9iEyJsHjls6Nj+I1xv9GaMZAjVM6f/sXhx3PRJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,80 +123,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026, Michael Roth wrote:
-> On Tue, Apr 07, 2026 at 02:50:58PM -0700, Vishal Annapurve wrote:
-> > On Tue, Apr 7, 2026 at 2:09=E2=80=AFPM Michael Roth <michael.roth@amd.c=
-om> wrote:
-> > >
-> > > > TLDR:
-> > > >
-> > > > + Think of populate ioctls not as KVM touching memory, but platform
-> > > >   handling population.
-> > > > + KVM code (kvm_gmem_populate) still doesn't touch memory contents
-> > > > + post_populate is platform-specific code that handles loading into
-> > > >   private destination memory just to support legacy non-in-place
-> > > >   conversion.
-> > > > + Don't complicate populate ioctls by doing conversion just to supp=
-ort
-> > > >   legacy use-cases where platform-specific code has to do copying o=
-n
-> > > >   the host.
-> > >
-> > > That's a good point: these are only considerations in the context of
-> > > actually copying from src->dst, but with in-place conversion the
-> > > primary/more-performant approach will be for userspace to initial
-> > > directly. I.e. if we enforced that, then gmem could right ascertain t=
-hat
-> > > it isn't even writing to private pages via these hooks and any
-> > > manipulation of that memory is purely on the part of the trusted enti=
-ty
-> > > handling initial encryption/etc.
-> > >
-> > > I understand that we decided to keep the option of allowing separate
-> > > src/dst even with in-place conversion, but it doesn't seem worthwhile=
- if
-> > > that necessarily means we need to glue population+conversion together=
- in
-> > > 1 clumsy interface that needs to handle partial return/error response=
-s to
-> > > userspace (or potentially get stuck forever in the conversion path).
-> >=20
-> > I think ARM needs userspace to specify separate source and destination
-> > memory ranges for initial population as ARM doesn't support in-place
-> > memory encryption. [1]
-> >=20
-> > [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@a=
-rm.com/
-> >=20
-> > >
-> > > So I agree with Ackerley's proposal (which I guess is the same as wha=
-t's
-> > > in this series).
-> > >
-> > > However, 1 other alternative would be to do what was suggested on the
-> > > call, but require userspace to subsequently handle the shared->privat=
-e
-> > > conversion. I think that would be workable too.
-> >=20
-> > IIUC, Converting memory ranges to private after it essentially is
-> > treated as private by the KVM CC backend will expose the
-> > implementation to the same risk of userspace being able to access
-> > private memory and compromise host safety which guest_memfd was
-> > invented to address.
->=20
-> Doh, fair point. Doing conversion as part of the populate call would allo=
-w
-> us to use the filemap write-lock to avoid userspace being able to fault
-> in private (as tracked by trusted entity) pages before they are
-> transitioned to private (as tracked by KVM), so it's safer than having
-> userspace drive it.
->=20
-> But obviously I still think Ackerley's original proposal has more
-> upsides than the alternatives mentioned so far.
+On Tue, 7 Apr 2026, John Hubbard wrote:
+> On 4/7/26 1:09 PM, Joseph Salisbury wrote:
+> > Hello,
+> > 
+> > I would like to ask for feedback on an MM performance issue triggered by 
+> > stress-ng's mremap stressor:
+> > 
+> > stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --metrics-brief
+> > 
+> > This was first investigated as a possible regression from 0ca0c24e3211 
+> > ("mm: store zero pages to be swapped out in a bitmap"), but the current 
+> > evidence suggests that commit is mostly exposing an older problem for 
+> > this workload rather than directly causing it.
+> > 
+> 
+> Can you try this out? (Adding Hugh to Cc.)
+> 
+> From: John Hubbard <jhubbard@nvidia.com>
+> Date: Tue, 7 Apr 2026 15:33:47 -0700
+> Subject: [PATCH] mm/gup: skip lru_add_drain() for non-locked populate
+> X-NVConfidentiality: public
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> 
+> populate_vma_page_range() calls lru_add_drain() unconditionally after
+> __get_user_pages(). With high-frequency single-page MAP_POPULATE/munmap
+> cycles at high thread counts, this forces a lruvec->lru_lock acquire
+> per page, defeating per-CPU folio_batch batching.
+> 
+> The drain was added by commit ece369c7e104 ("mm/munlock: add
+> lru_add_drain() to fix memcg_stat_test") for VM_LOCKED populate, where
+> unevictable page stats must be accurate after faulting. Non-locked VMAs
+> have no such requirement. Skip the drain for them.
+> 
+> Cc: Hugh Dickins <hughd@google.com>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-I'm a bit lost.  What exactly is/was Ackerley's original proposal?  If the =
-answer
-is "convert pages from shared=3D>private when populating via in-place conve=
-rsion",
-then I agree, because AFAICT, that's the only sane option.
+Thanks for the Cc.  I'm not convinced that we should be making such a
+change, just to avoid the stress that an avowed stresstest is showing;
+but can let others debate that - and, need it be said, I have no
+problem with Joseph trying your patch.
+
+I tend to stand by my comment in that commit, that it's not just for
+VM_LOCKED: I believe it's in everyone's interest that a bulk faulting
+interface like populate_vma_page_range() or faultin_vma_page_range()
+should drain its local pagevecs at the end, to save others sometimes
+needing the much more expensive lru_add_drain_all().
+
+But lru_add_drain() and lru_add_drain_all(): there's so much to be
+said and agonized over there  They've distressed me for years, and
+are a hot topic for us at present.  But I won't be able to contribute
+more on that subject, not this week.
+
+Hugh
+
+> ---
+>  mm/gup.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 8e7dc2c6ee73..2dd5de1cb5b9 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1816,6 +1816,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	unsigned long nr_pages = (end - start) / PAGE_SIZE;
+>  	int local_locked = 1;
+> +	bool need_drain;
+>  	int gup_flags;
+>  	long ret;
+>  
+> @@ -1857,9 +1858,19 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+>  	 * We made sure addr is within a VMA, so the following will
+>  	 * not result in a stack expansion that recurses back here.
+>  	 */
+> +	/*
+> +	 * Read VM_LOCKED before __get_user_pages(), which may drop
+> +	 * mmap_lock when FOLL_UNLOCKABLE is set, after which the vma
+> +	 * must not be accessed. The read is stable: mmap_lock is held
+> +	 * for read here, so mlock() (which needs the write lock)
+> +	 * cannot change VM_LOCKED concurrently.
+> +	 */
+> +	need_drain = vma->vm_flags & VM_LOCKED;
+> +
+>  	ret = __get_user_pages(mm, start, nr_pages, gup_flags,
+>  			       NULL, locked ? locked : &local_locked);
+> -	lru_add_drain();
+> +	if (need_drain)
+> +		lru_add_drain();
+>  	return ret;
+>  }
+>  
+> 
+> base-commit: 3036cd0d3328220a1858b1ab390be8b562774e8a
+> -- 
+> 2.53.0
+> 
+> 
+> thanks,
+> -- 
+> John Hubbard
 
