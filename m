@@ -4,83 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65FDF1073CA5
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C4F01073CA5
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:28:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A13576B0088; Wed,  8 Apr 2026 08:25:25 -0400 (EDT)
+	id 6E24F6B0088; Wed,  8 Apr 2026 08:28:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C3D36B0089; Wed,  8 Apr 2026 08:25:25 -0400 (EDT)
+	id 693AE6B0089; Wed,  8 Apr 2026 08:28:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DA346B008A; Wed,  8 Apr 2026 08:25:25 -0400 (EDT)
+	id 581E76B008A; Wed,  8 Apr 2026 08:28:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 76AD96B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:25:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 182E2C328D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:25:25 +0000 (UTC)
-X-FDA: 84635309010.14.33956F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C43DC000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:25:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qAjG9wWK;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4703C6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:28:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4DB5140AC1
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:28:14 +0000 (UTC)
+X-FDA: 84635316108.30.CD2900B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ECC8D140005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:28:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kAEBB8kz;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775651123;
+	s=arc-20220608; t=1775651293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sO90AtWIAArw58yjhcEPrra87St3zi5zPRjX3hB3+Co=;
-	b=7TnAaaUJwjV+FygeTntN6MWu73Me8yMQNeFAIrflCB1lZvQ4zG0KHaRm6Deovjxc3vtjy0
-	tTFcQCMlb+SK4er+mtJeoJ0KUs17hNmxwBY/I2vtVIIuwdIMXmJYfazs6msuHtdwZ0B++o
-	aLagGoYefTYEidE6maw0pMzHGCpndMw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qAjG9wWK;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775651123; a=rsa-sha256;
+	bh=/aMf679OPttM6U5ARxRngz3Ey50x1fQtVbKPfutV6O0=;
+	b=URZAu3ShEyoUNvlmzLv5at0atD3tx4jUBfQS8BEtAgi209sB3ONpfo4zBHcoY7nY1OggM5
+	i0Ra/SyxOGa0o1Kub/+v+1yhNK5+7CtoniAaXMSKq4qKn/zprLq5v2h8/pj0kRB4BJwFKr
+	mPS76Aim5EYbHov/7QDhV8aOMJG5aNM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775651293; a=rsa-sha256;
 	cv=none;
-	b=J2bQxHoFaAFaUGsgHp9ptg4jKUcoufaSraM4scG3Jhpl+8ehYXXeqris7Cp321gCS1pd/L
-	qQjrYusHTr+Td5JARECR0nWplMlWu6cyQH/3gvp8Xitmt2AQk7dCP4N/XAAQareP6L8xvr
-	re59wh2sSFjvagjg7sKHz9KRPUhZRI4=
+	b=Xv6m7jbh0fBBOClqpva6Sok/TrlSGnHkJXg39T2NYo6y3yJwQmfh7XL9plwGqg6zh7S4Mb
+	9uYWm7Uu9abP2lzbWoC9qm5bxlcY05dRoL7zXem5x7TN5SYco3TGE88gMdQsfTQDW/gQ/H
+	nAWl2ojKynknHvOhFjypO750DMMDShM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kAEBB8kz;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 87DFE60121;
-	Wed,  8 Apr 2026 12:25:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FD0C19421;
-	Wed,  8 Apr 2026 12:25:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 004D441A33;
+	Wed,  8 Apr 2026 12:28:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96885C19421;
+	Wed,  8 Apr 2026 12:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775651122;
-	bh=5kwYf8VF5h+Jca2gaUoEsSCMqtEUj3juDowD7LEL0Po=;
+	s=k20201202; t=1775651291;
+	bh=eCmVTS83bSAS8xQjAy1lmOxcoN300rRw+xckrc2hsRY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qAjG9wWKFtPV9NXS9taO6Yiy5MUnivAviihZaL24nX9D+axPsZSFyrVpkQFN5UGQN
-	 XFNoNSbmAcl8c7IH6DY9o3YnBFOc1Dw22mQSoVgdN9mecPwWH3AV0keCj7KBxCEbWf
-	 wBgOzIj8VSVBkIKI4MWntYqvHpS+aS4NlAHiwXO255mFXwlzKlPKOZBCkJEUX5qSQ6
-	 tk5sehdDv4tqFgxADq73ZIuMNZrKPe+imDA/E1WLDZmrt8jFrHUZfDWOiWV4YWKVuD
-	 Epa/nui8dHaQDCQjXt8a2eMuAC/Gy18XDVfh2KqohuQL+QfGWzgbTqfjBeTz4NUZbm
-	 vwnEe//dG767w==
-Message-ID: <1a1cc83b-5b2a-44cc-b9e2-a31dff7ff887@kernel.org>
-Date: Wed, 8 Apr 2026 14:25:18 +0200
+	b=kAEBB8kzYQwMLJGcNYis8/369QPvVGiPjye3nlYnvyT5nT9mHWY8qcWW+MFlrn25U
+	 csMT2NcfMYjPEdLfnU9H67DuPPIX2avOkV/NEYTpW8TZJipN21NcsWNz8SQBRd33Ko
+	 Q+9D4+V01Rc3dX5MoNVqSALi189uEt/d43kv5sfmwVhxwGmmsQaktmN2TakJcH75BM
+	 9DTl2ZR2gKC+pyx+uoehWwMzoJsFae7BCPQA/lWZt8rInQu3p8ALLTx5aVFnNtUQTq
+	 4GJ2Rd9at0Y/wFkTNmVwy3SnbuKo26oOtNj6sitxgXGBStqs9HGKoxyN6F+2q8BJA8
+	 xxrLI0TbrglFA==
+Message-ID: <4290fcdb-47d1-4f74-97f3-51ac581efeaf@kernel.org>
+Date: Wed, 8 Apr 2026 14:28:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 09/16] arm64/mm: Route all pgtable reads via ptdesc_get()
+Subject: Re: [RFC V1 12/16] arm64/mm: Abstract printing of pxd_val()
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Mike Rapoport <rppt@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-10-anshuman.khandual@arm.com>
- <aaLO3yOu1ShO2tNz@kernel.org> <7f7130d0-f348-451e-960e-b7e6ae9c9ee7@arm.com>
+ <20260224051153.3150613-13-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7f7130d0-f348-451e-960e-b7e6ae9c9ee7@arm.com>
+In-Reply-To: <20260224051153.3150613-13-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4C43DC000A
-X-Stat-Signature: 9p5smzunmx5kuh3r1npmeq73r8yo6efk
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ss4p4f3d96ntkxqxdz4rosuisjqajcyi
+X-Rspamd-Queue-Id: ECC8D140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775651123-6426
-X-HE-Meta: U2FsdGVkX1/lLisgHkz7vZq/wCT9pg0HzmKC1P2DuxGP67VknQYmoiice4l+lTDaxIdseththKUXxyh+3ktLK9fHB3Q9Adr754dxcDUzJ7io6xScjwmgv0V83BIoCHIREucbfRZOgyquaH3C9DUkbiLWGkPV5tL3M69Bg2zGUrkJxCyOmr9XgrR9Dz/3IQ3H5BB69Z0QhIRhvmglFCPaVqe/+1eWBBSlRKxFht5m3XYuMMjjYvwr5YaGTyodf3KAkwyLAkljA/5tpWey5fn7d3Fy5x9GTRZtevemm/Y9KqY+rWRISiOuh+nmsOVOJNVmBPKMIN0Ap3ze0ICEE4GkXoxyjvYEKGydqdtblP6puPLpAMDKZkngYy5cB9Q4qa2olkSgW7m1SqBwgnaRGQD4qD3kq1Z4no2rSdHFCMSVNK500O9CV9v0HPvshVPtCj5tYjW12Ahnz2Bka4UXlILgZYZ7Fm8cg+DESminUjscdxc2AhG3LsLfKH1WHMAvCB7K4HMIEQ4/uf+nE3HUTWuXTgDePDUqugt8o2Hf3nE5zylMyiTX2kdtNtYSKXKncTgrBv5wDo2jvz8pHvPQIGRDWBD9l4Iz95e0WWQ8CAvq/7IIpMqtYOTzeQvrSjrQuypSd5U5ACD3eSHBEn2dumOFyqyTN89N8/WnH8dqw/YoRKgDuGMAxrWojAvHcWOXB5o/8MYFDWMlmy5wRUJNkg5wNubtUK3uClwP/y5YHOM28j1h9dYgPirZAyCtFEEkNGwVaVz7LWfpaRZeMpuXMz0hYf0EgXuQLILZsRUkyoKFupcus+Lc0P4dftWr0E3gyggZFF7oRZMsDgKWhfPgaUa8Bsrf1huPqUwBICkPwPBGWeteiNpjPSWFnz7aKhA7harAvbgRRj2wPOhNR6mxGse17s3UGohBWAQqYAPmwBIRgE4YmWKyrYnD9ZN1d53+SGcPzN1YECoCILQRdVd9TIY
- k01rceRC
- LFG3dyy2lF5xZAnL+K4asvSN94fDWlqrfCtCt06hT2lWQuWtNABtumZhdejK6j6nsEOnGi9VqFzRqwCAZpSF8b5lUFj7VElC78DmccgmBGqtBqNY/4FjnPAJ0FzpRK30dAiwKL5HeqQIXIQtmliCp0FOUcAOBLCnvGE7BOgVYO40x2Qkaq+gAS8hmN/ggxz9tKG2N8/CuuGIAGfey+giahWClChmB74W2jx7aDkX7bNV5ZS2hfkTv2+Ume2zQEY3nZz6A0PDA0vkMLrELHw84Hlh4OmXZWG3UgczW88UzYo+81YHj7TA0Ndfg61BoI29pe9i3ItDrAu4DTGhybxie9nJLEZeJuR28cQKQN+1VlflxI2Cu5Z3WsfVfwxY+4U5lKhkQQ4SQbRRKK6BbUc3nl7CUmKVf1DJ441JnZYHcQ3lMvW1gAiFijWm9ItiP+n7FAi6q
+X-HE-Tag: 1775651292-840731
+X-HE-Meta: U2FsdGVkX1++0k8VjPEjFT5JJm19Hqt9uVU36Rkncl8GMZSyo0hbQm4ntqBL/9KSKPpYZ2T+rEclL+9Pms+E2IA3pg8zCLEuG0jaV/dujl7uB4kR67d431DxEcHyQ6gL9e6lCAJhOr4YhGoGGL1JPKSw7po1GUi/h3OcztYkGJeVagImX7oGLzCnR7XqLALmE7HDxly2tVm4AlEihxiOKWNWvR+QECvbwXp4aBX+7FYIKT3ILIQYnz3C9Ko10IRXK6vhu/A2sjmVxctxs/gPAHZ4IAy6zunHWNAJtRL9G11UkE21ZJ1fCcPV6JtXAXncgtG6K9ufDZiH32mnM9B2AzT5mQNiaeGbKRxTo5ELThuJ6N19vgQPo+B/18UhtFmNiwbPRfLTTZ0aOZSZRwGmO/eFB2mSuDaaD82izXKM5oYBX1sHa+wYc0kztKXLhRqG6gSVLBek6TQV1/7rbOyzgubQnQARna4uOBlW8/C+cOPilgE2o9Yct7oBUkoEHiebAN3fXdd5gqBlABW8NX+pyA9Ao84PtjQqagXt3hDrNGRLAyxdmkouteoMy1JBrBroZZFFt3BCqgCSpkhBqhqG0z5VSBjGv3o66/r4Io2MfiNnanGWj13BomLTRXv89xr5c3tjRSMdR2z4vj17yg5AuiPPX0TX7wywJYA9UjHnMhg3XvyZT8Kj+NmDb/i44fYoMqCHjs/2TQBX41l/1n15thrMTdcoPgTXbS0Mlb5QQubtefoqjcJR+EZrnx7WZ79p/gX74+gc680LQ9IdH3PXA8i00LYer2ONWx1DXcCTlZzbRns8BxcxuXTWl/Ai5imO67CtOB8wiTF/kCIOqWmXn5RpCpmEc11ryNXKG8GY0l6ARK3Z/8SwFndQ9Dkbhs6C4v0xZLuP/0Zlor8EE15qA0bBFdz2d10Wnonx9szTuV/tpqsoFFnUncPmyAXEo8WMZC6isprq2s+nISXlWX9
+ CtR+Npy0
+ mdoPZkI89NvlTUZxb8jdLduJ/h5UC92QQ1z+QSFzp5D3twk6pUChHbGz0EUXhtDnhidVZr07k2Ig/Vonqv7uzxB2Ze+FBfKD9dS9pL/0rWPHTsDdeq77s52zhyVxKbWpeJ375T/GHGrKZ2D4F/AevqrZj0VPjMPhaMPsZNCsCigHFLHxhRGNjhQZBU4BlubSl4OGc6rPuABMDsLED+jDSAMCJJdhDRNYCePzsq1GycJfTh3Ql9+XR9ItXOZ/wXf1ltwjvDv6Lwj6pglTU5cnFYugPpO7FJHbZ6tyy9BdzHpNIadQwlfi3AkZB8Ib7juAb1cEtve4YsSb0yGxH/sIqZJJS487Ew1EMRU3PLCDAw09w+llhUeLzvYlQiwUGSaECXLVYgfTOYKVlQxu3I4b53K2B+z24gi4dbrZPF3aN06pUh8fH6z2oCh/DyD91LsME+hSv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,65 +143,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/26 05:34, Anshuman Khandual wrote:
-> 
-> 
-> On 28/02/26 4:47 PM, Mike Rapoport wrote:
->> Hi Anshuman,
->>
->> On Tue, Feb 24, 2026 at 10:41:46AM +0530, Anshuman Khandual wrote:
->>> Define arm64 platform specific implementations for new pXdp_get() helpers.
->>> These resolve into READ_ONCE(), thus ensuring required single copy atomic
->>> semantics for the page table entry reads.
->>>
->>> In future this infrastructure can be used for D128 to maintain single copy
->>> atomicity semantics with inline asm blocks.
->>>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
->>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>> Cc: Mark Rutland <mark.rutland@arm.com>
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>> ---
->>>  arch/arm64/include/asm/pgtable.h | 28 +++++++++++++++++++++++++++-
->>>  1 file changed, 27 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>> index 257af1c3015d..804ef49aea88 100644
->>> --- a/arch/arm64/include/asm/pgtable.h
->>> +++ b/arch/arm64/include/asm/pgtable.h
->>> @@ -84,6 +84,32 @@ static inline void arch_leave_lazy_mmu_mode(void)
->>>  	arch_flush_lazy_mmu_mode();
->>>  }
->>>  
->>> +#define ptdesc_get(x)		READ_ONCE(x)
->>
->> This will be confusing with 'struct ptdesc' APIs, maybe ptent_get()?
-> 
-> Created 'ptdesc_t' earlier on arm64 platform as an unified data type, which could
-> represent page table entries including their protection fields and masks for any
-> level.
-> 
-> typedef u64 ptdesc_t;
-> 
-> typedef ptdesc_t pteval_t;
-> typedef ptdesc_t pmdval_t;
-> typedef ptdesc_t pudval_t;
-> typedef ptdesc_t p4dval_t;
-> typedef ptdesc_t pgdval_t;
-> 
-> But now it conflicts with generic 'struct ptdesc'. Agreed that overall renaming is
-> required. Probably ptent_t along with ptent_get/set() could be an option. But that
-> is probably orthogonal to the series and can be done later in a separate patch.
+On 2/24/26 06:11, Anshuman Khandual wrote:
 
-We often refer to *ptep as ptent. Can we find something that does not
-contain "pte" to avoid confusion with pteval_t ?
+Subject: you probably mean "pxx_val()" ?
 
-We often refer to the set of functions as "pXX" or "pxx". pxxval_t would
-certainly be an option, but it would be the first "official" such
-occurrence.
+> Ahead of adding support for D128 pgtables, refactor places that print
+> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
+> macro to prepare the argument(s). When using D128 pgtables in future,
+> we can simply redefine __PRIpte and __PTIpte_args().
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable-types.h |  3 +++
+>  arch/arm64/include/asm/pgtable.h       | 22 +++++++++++-----------
+>  arch/arm64/mm/fault.c                  | 10 +++++-----
+>  3 files changed, 19 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable-types.h b/arch/arm64/include/asm/pgtable-types.h
+> index 265e8301d7ba..dc3791dc9f14 100644
+> --- a/arch/arm64/include/asm/pgtable-types.h
+> +++ b/arch/arm64/include/asm/pgtable-types.h
+> @@ -11,6 +11,9 @@
+>  
+>  #include <asm/types.h>
+>  
+> +#define __PRIpte		"016llx"
+> +#define __PRIpte_args(val)	((u64)val)
+
+Same comment regarding "pte" being misleading.
+
 
 -- 
 Cheers,
