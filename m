@@ -4,93 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A621073C8D
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14DF01073C98
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA1C76B0092; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
+	id 79A756B0088; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C533F6B0093; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
+	id 771FC6B0089; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B68CE6B0095; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
+	id 661C66B0093; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A63AA6B0092
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 375631B862E
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:01:29 +0000 (UTC)
-X-FDA: 84635097498.16.250C5CD
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5543A6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:02:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCFA85C0C2
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:02:15 +0000 (UTC)
+X-FDA: 84635099430.21.49A69ED
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5148EC0012
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:01:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="bNuae1i/";
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id C14651C0019
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:02:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j0m/Wl5D";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775646087;
+	s=arc-20220608; t=1775646134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RCo/KGdYTRJFNwKNUpDIZvF/sPfe++F6/SVEF+nLq80=;
-	b=66gw6jb6WlQIy+LrKzU082c6SZOIU+0o39w588HJv/tvySBxtiAS7f3WfMXjXeexiOILUN
-	GxPQ6AQPHwDEA+SSjpT0FcUF03VZ5zyYSHhoAfi6fhIHqTEevrxwvdqEOXjlhSMKG9A1wj
-	2Bp00xfxtzzNwnvPOjalPIGZ43eE9d0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="bNuae1i/";
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646087; a=rsa-sha256;
+	bh=w0ZXcPKyMB2Uz4ebX1V3uX96cejqIV9Zdqzp3mJz0Sc=;
+	b=1BkQTnlgdnWmuM4CXuSNB5zGikwRMbdYWj0ECLsaiK7FyXyutLuELtFHw+TuBadwJfwpl+
+	yFuWGTvrduA2wgGrVEHsw+sFdWwLc2EvvnLfWA5iFxGKbpaPAPA4A68N3/q/r5JsPPo3+W
+	I6dVyWw/M4MjQB0fNfNVB5lhnBYHsNw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646134; a=rsa-sha256;
 	cv=none;
-	b=LrS0YFtdiRRbZ63tl3OLFYntLqO+XYnBP79UtFIjpLXc4oJcWMlBlk1kdy6ZT5xg8xFnQa
-	d4H04fvAv0qsdX5Jqxwg8gyqH+9sfOLg93bhuNt6myGou2kTZtJCT5lAqgy4fXucn0NH7F
-	5RlqnmZRSB9y0ovj2wKUvbNTk+bIryM=
+	b=JjygxubnBJ8lc0riQIBYysvF8QVO6jg/X5RlBsM2NQAfLv75drQ0cZP+6HgtBAvCzwiX0C
+	3nga5FtSyt5kkwru6Hf+NZxbjyDDKjJHnpzOA8yk2W1kEBlfWi/Y1vGpW41Y5e977aoJru
+	EcRx4LFBRixCy6fHpKpf9S+BvENmiBk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j0m/Wl5D";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BFE92BC4;
-	Wed,  8 Apr 2026 04:01:20 -0700 (PDT)
-Received: from [10.57.87.42] (unknown [10.57.87.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F3CF3F632;
-	Wed,  8 Apr 2026 04:01:24 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 078473161;
+	Wed,  8 Apr 2026 04:02:07 -0700 (PDT)
+Received: from [10.57.32.88] (unknown [10.57.32.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DE403F632;
+	Wed,  8 Apr 2026 04:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775646086; bh=sj8JDaDSYK+tYnVjXLuC+PQF+McDxx+lR1PogM9spE4=;
+	t=1775646132; bh=BcjAsJfFFdxOuFJG+yx8h9dEcchCwv67qshCeNpQzVY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bNuae1i/ZuzLq7CMWlbVxrPHfN8BimWSWAP3gURWRbaWCS2zs31gmVArdTgAM9DFA
-	 mGCCsnP9qltnDf2MIQHjEfpDc+cFpIfeQHBf1LM75b3zMgEgVhInlvFDKtel3ZDx2+
-	 xgoASjHChVFUhH352g6g/FvcDa8koEVcRvq2fbV8=
-Message-ID: <2a980011-b229-43d4-ad9e-b3e851bff706@arm.com>
-Date: Wed, 8 Apr 2026 12:01:22 +0100
+	b=j0m/Wl5DLNS3bb0LPJygmxr64zm8k47jOHhnUdaH8o4hEg7UUONrE66mssRlJ7NT2
+	 6bzBCKlVrr+w2+XGl2eztRQqDLePKhvx7aHRms/5lUbXVIvqBABzatYJU+Jw6NrJnn
+	 B0h8Vu2G1rPcddUOVHZq+00sZ9LGtr5cxfhIEmOY=
+Message-ID: <9c8ddc37-a236-446b-a85a-261f370d644e@arm.com>
+Date: Wed, 8 Apr 2026 12:01:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for
+ KVM_SET_MEMORY_ATTRIBUTES2
+To: Vishal Annapurve <vannapurve@google.com>,
+ Michael Roth <michael.roth@amd.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
+ jmattson@google.com, jthoughton@google.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-mm@kvack.org
-References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
- <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
+ <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+ <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
+ <CAEvNRgGm9icDK8sK5ZfqHEOEqSbvjwtihE4p9d3vpBq-NfVjmw@mail.gmail.com>
+ <CAEvNRgEtigp7+PVDkyu_DH947CUqDt312d+P+hWjjd2fHONiag@mail.gmail.com>
+ <yvfwexsub7nrogh67hzcsupbrkzer6a7kbeao5tlq4elrzc2iz@xrwdjd7p32pp>
+ <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
+Content-Language: en-GB
+From: Steven Price <steven.price@arm.com>
+In-Reply-To: <CAGtprH-kgRByFvvCYeWMXtsvpb6qpaWAo8k-3PEnioyPg-LEvA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C14651C0019
+X-Stat-Signature: z9irf1cn75ooz7ohrkynywhy5k65in58
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5148EC0012
-X-Stat-Signature: ocbc9mdastpdwsd9iowitr7adfjbtid4
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775646087-664349
-X-HE-Meta: U2FsdGVkX1/6WynZlOkkWrV/R6KlFortvoaztYODF3yn4B7+CEIAVmps6YZfmsIi3oc7w86RVUv0vNv7uQy5xUA6WyQ9jiD0GcfhyuLUZSbS/aeByCmb8zOfY3DfIIzg+yciF+NEv5A8NKk9xpbaXMHXC9IyFpMxKxEt+jVhFxsxmCFK8zhNbRXIA+dVWjycY3yoHJBJNt5hOOcSMh9MOmKzHDCKkP3ZzpI1sDsPrYRFovnNEouIdNQ9k6XN0XeETKyBB89qUnTsxKUm7jqvlUhsSGq7cUt7yjLoAc04FGcSM34v9zsG7PQupTE9kweLmWK17xWamGQxkCMVcnb4oa7gDROSra1lbiiOSVFnBjEdkgzl4Besw4gg4brebHXk1WeVmfBQ4xm13bkENzfIj1fPjaon/Y6s7stxlb6/l7oeLEK+XCSHeIw+lHGSPmoeiDCRW3isyi4o2q0N+o+TAcjEQKszmUlywOa019hp815Uj1n2GYpw82PRmHpfTX8F/ju12agmiDeuTSWQN6GdjnbTurwe8HkuOZgq9ZzhsovWTbhQG/9Ho0ZF+HMIAgykTuZ8psGerF4CI6d9Do3T0AL05qz7c+oke+8rqK3dCN+d0IY1F6kApGN4qWRhS+U2A6zjXOnLugvVMpaavOYgsUdLJcfJV6H8JHYQg8RtglpTG38TElE7bPJYI8P2dcJwcZffSdNhyhn4IMoy2dTaRkHP2fwOmuB9kKWdY29JwBZJvtv22mkz24js3PpnAYn8y4qreQdtz0i6G38eKCFNtiZsOcAnDOhpdjJl9e7SN2t8NyB1tM/+u7mvFPDXbCcK+nKwsq1lp3fxPBoB+2qjmkqpFu31eT33OptLmU8r6SRirfORAU4FfVRdhafr5e43gvrBvn2CgDWPD3UssGtqHuQSXu1h50MMb2l9YIk/H61oic4wDPV22D/dvqLrB0//LIx4l22yXVC3ZUwylj4
- iDcFtWg8
- DCgzQUc7Obg3BM4Gxh1RmPYBlq4ZOvgxhZYNDAIa817S1hHL7y7DRAVJhU6KyExFyopRneaAQb8ven7vR2KtZhH8/IQ8zmQWzxnv97kC/nwNAdoluJgbScTB1+vuQitsfmglMJL/AN9byVCYj95/c3GcZWPv8fSqcNz9gabCTPYwYPCTsJ094esGviVUa3iRnYbQ29YbOr6wUN+HW7om6Yi/S810ZNHPlRTAxK8849QrKu/k=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775646133-229289
+X-HE-Meta: U2FsdGVkX19geHwLhbbiGrHC1wA8hfQWrJ9rX4F6pGZy6WoA4gsepJspf1JPZuWR52WtRQY19CfJ3bopA9etlnw0xT1e0GYDy96TVkqSpLgYu7mReJHEUaFrcRRokcmyWzTGvEKdOBBbnyRdKj5TMP5pJEK34MK6fT7uV4qB/Q/QCnLDgbrdeoSkO+dfjeoWI6UtSOwgpypFvrSwatTiJ41VyleGtobM+TlLIfR1GRtqcxsqlgSnj6CgCF0b8P+gOvuy3hk8VixTC2bNYL7hudBid1RFp8CJIqg4+NAqLdsYLURYZ1N2+k1GWKfSKNPtkNieQ7pNsMFPvjz7RYsqD8Ua/fAkgqbFxqm6F5wEoBWHbLNg9XewS1I2XQICO1Oy7/qyodwrNBOnsQAKKyRRnNu0AkLPg7PHCnDGxdcUkf0363GNJGdffmD6PSDGtp/QROZIi044Oxw33TiZ0xMe0yAjagB9bk+Z228Ott6doxpLbH+7m+vVcrTMwcoXuBu2NSXOR4kxTHKu6e20uf+5ySNvVxtvvgRpEA7HJImIZPD4rrHmGxr4gYH5Dw+kWgExaPwE1pD6WGyLh75uhmwHYCuUEqnpaN2yjdfDHXdkTbS9IwwZwJ/V0AZiXchiqcdWySnUoSparCjsttsPKxNNv14ECTaHi4kvWhDzniNllJN9xj0zEF34yYXM2lkUnY1Lr/uRCv7bCwi+O3Q1oMBUWXm0apOGLtGKc/xPBBfAhgWnWhKDxE6nEe5NKakhcQ2v+2T8OQV4YjvLgiH21S/GqjH7OJvF8hgLi+Jleyi8O0gdGdNA8YU1rTqOvOaB22BeNoyQwPhcSJUWqqaygvkHjgf3zV4nPK13I9yVKLnvva3dvK9XeXBbsaKTtdX7iavQr2tHnORxgcR4RitDmEN/dxkU7K+t/8+G2Y+ngwb+at3oCZy39QNKi9ti7HHBOmItIvqhMsLDJN6y7kxz/ad
+ FEH9aNnN
+ YP/QtWkZfGDgTEC2GpkGVAlZPkWiXBQ/6Ly1sSViYRc2hQNAQD2d2feGCBHlf1Q+uSeK3cRY+e42MHw/0vamFLgwdzXQJBnRk73L/SeJg29jcqbVqRGj6uVibn3HO/P91W4eWrhQ+S+DSTbMdbhnm/PxGnxx/ZsuxoFfqOEs1noHx5FaZwaw3H7gNsaENC8IifHKzV+JINNyajQmZfLsUi46aY6skN502u/yYXs4Q8R2WqG+J2kYidrwVWa8cEkZwKfflepyNUb7TxmCWoRYfK5+0TF60hjq1ywKxJIDVtcO1h3I62VnFym1KIIkfjRrRcf2M3Ecz22ot8bxNHM/ZH8vobAOOUaSXKOYNWks37vAUj/V6Lol+JBF7/n7kPlhELrVp/UUxaYPUUPbxXsvjx0eBKraKjQBf9wWa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,93 +123,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/04/2026 11:53, Anshuman Khandual wrote:
-> On 07/04/26 8:14 PM, David Hildenbrand (Arm) wrote:
->> On 2/24/26 06:11, Anshuman Khandual wrote:
->>> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
->>> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
->>> So with this feature arm64 platforms could have two different translation
->>> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
->>>
->>> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
->>> and virtual address range while also expanding available room for more MMU
->>> management feature bits both for HW and SW. 
->>>
->>> This series has been split into two parts. Generic MM changes followed by
->>> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
->>>
->>> READ_ONCE() on page table entries get routed via level specific pxdp_get()
->>> helpers which platforms could then override when required. These accessors
->>> on arm64 platform help in ensuring page table accesses are performed in an
->>> atomic manner while reading 128 bit page table entries.
->>>
->>> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
->>> supported both on D64 and D128 translation regimes. Although new 56 bits VA
->>> space is not yet supported. Similarly FEAT_D128 skip level is not supported
->>> currently.
->>>
->>> Basic page table geometry has been changed with D128 as there are now fewer
->>> entries per level. Please refer to the following table for leaf entry sizes
->>>
->>>                     D64              D128
->>> ------------------------------------------------
->>> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
->>> -----------------------------|-----------------|
->>> |     4K    |    2M  |  1G   |    1M  |  256M  |
->>> |    16K    |   32M  | 64G   |   16M  |   16G  |
->>> |    64K    |  512M  |  4T   |  256M  |    1T  |
->>> ------------------------------------------------
->>>
+On 07/04/2026 22:50, Vishal Annapurve wrote:
+> On Tue, Apr 7, 2026 at 2:09 PM Michael Roth <michael.roth@amd.com> wrote:
 >>
->> Interesting. That means user space will have it even harder to optimize
->> for THP sizes.
+>>> TLDR:
+>>>
+>>> + Think of populate ioctls not as KVM touching memory, but platform
+>>>   handling population.
+>>> + KVM code (kvm_gmem_populate) still doesn't touch memory contents
+>>> + post_populate is platform-specific code that handles loading into
+>>>   private destination memory just to support legacy non-in-place
+>>>   conversion.
+>>> + Don't complicate populate ioctls by doing conversion just to support
+>>>   legacy use-cases where platform-specific code has to do copying on
+>>>   the host.
 >>
->> What's the effect on cont-pte? Do they still span the same number of
->> entries and there is effectively no change?
+>> That's a good point: these are only considerations in the context of
+>> actually copying from src->dst, but with in-place conversion the
+>> primary/more-performant approach will be for userspace to initial
+>> directly. I.e. if we enforced that, then gmem could right ascertain that
+>> it isn't even writing to private pages via these hooks and any
+>> manipulation of that memory is purely on the part of the trusted entity
+>> handling initial encryption/etc.
+>>
+>> I understand that we decided to keep the option of allowing separate
+>> src/dst even with in-place conversion, but it doesn't seem worthwhile if
+>> that necessarily means we need to glue population+conversion together in
+>> 1 clumsy interface that needs to handle partial return/error responses to
+>> userspace (or potentially get stuck forever in the conversion path).
 > 
-> The numbers are the same for 4K base page size but will need
-> some changes for 16K and 64K base page sizes. Something that
-> git missed in this series, will fix it.
+> I think ARM needs userspace to specify separate source and destination
+> memory ranges for initial population as ARM doesn't support in-place
+> memory encryption. [1]
 
-Really - I thought the contiguous sizes were the same for D128 as they are for
-D64? What's the difference? Perhaps it's different for level 2, but for level 3,
-I'm pretty sure it remains:
+Indeed - CCA requires KVM to first "delegate" the page (effectively the
+shared->private conversion) which will destroy the contents. Then we can
+populate the data (but that obviously has to come from elsewhere).
 
-PAGE_SIZE	CONT_SIZE	NR_PTES		CONT_ORDER
-4K		64K		16		4
-16K		2M		128		7
-64K		2M		32		5
+The closest CCA can do to an in-place conversion is for the kernel to
+copy the data to another temporary buffer and then the firmware can copy
+it back after the delegation. An early version of the CCA Linux patches
+did this (long before guest_memfd). However this is slower than it needs
+to be (two copies) and difficult to size the temporary buffer. Too small
+and you round-trip to the firmware more than you need to, too large and
+you waste memory. And, with increasing support for huge pages in
+guest_memfd and the CCA firmware (aka RMM), it's also challenging to
+preserve huge pages while doing this dance so I want to avoid it if
+possible.
+
+> [1] https://lore.kernel.org/kvm/20260318155413.793430-25-steven.price@arm.com/
+> 
+>>
+>> So I agree with Ackerley's proposal (which I guess is the same as what's
+>> in this series).
+>>
+>> However, 1 other alternative would be to do what was suggested on the
+>> call, but require userspace to subsequently handle the shared->private
+>> conversion. I think that would be workable too.
+> 
+> IIUC, Converting memory ranges to private after it essentially is
+> treated as private by the KVM CC backend will expose the
+> implementation to the same risk of userspace being able to access
+> private memory and compromise host safety which guest_memfd was
+> invented to address.
+
+At least in the Arm CCA case the "exposure" of the private memory is
+only in terms of allowing population - and only before the guest has
+run. The host isn't able to access the memory in any direct way after
+the memory has been delegated. But the RMM provides this populate method
+to copy data into memory (in a measured/controlled manner).
+
+From a CCA perspective the logical flow is to mark the memory as private
+and then call the platform-specific function to populate the memory. But
+obviously we can fit in a KVM API which is different.
+
+Note that CCA has a specific VM property called 'RIPAS' (Realm IPA
+State). This is the guest's view of whether memory exists at a
+particular physical address. My current series takes the view that all
+guest_memfd memory is private RAM and the guest will have to
+specifically request that it is converted to shared. I'm hoping this
+series might provide a way for the VMM to configure this (before the
+guest starts executing).
 
 Thanks,
-Ryan
+Steve
 
-> 
 >>
->>> From arm64 kernel features perspective KVM, KASAN and UNMAP_KERNEL_AT_EL0
->>> are currently not supported as well.
+>> One other benefit to Ackerley's/current approach however is that it allows
+>> us to potentially keep hugepages intact in the populate path, since
+>> prep'ing/encrypting everything while it's in a shared state means gmem will
+>> split the hugepage and all the firmware/RMP/etc. data structures will only
+>> be able to handle individual 4K pages. I still suspect doing things like
+>> encoding the initial 2MB OVMF image as a single hugepage might yield
+>> enough benefit to explore this (at some point). So there's some niceness
+>> in knowing that Ackerley's approach would allow for that eventually and
+>> not require a complete rethink on these same topics.
+>>
+>> Thanks,
+>>
+>> Mike
+>>
 >>>
->>> Open Questions:
->>>
->>> - Do we need to support UNMAP_KERNEL_AT_EL0 with D128
->>> - Do we need to emulate traditional D64 sizes at PUD, PMD level with D128
->>
->> It would certainly make user space interaction easier. But then, user
->> space already has to consider various PMD sizes (and is better of
->> querying /sys/kernel/mm/transparent_hugepage/hpage_pmd_size instead of
->> hardcoding it). s390x, for example, also has 1M PMD size.
->>> I guess with "emulating" you mean something simple like always
->> allocating order-1 page tables that effectively have the same number of
->> page table entries?
-> 
-> Yeah - thought something similar.
-> 
->>
->> The would be an option, but I recall that the pte_map_* infrastructure
->> currently expects that leaf page tables only ever span a single page.
->>> So it wouldn't really give us a lot of easy benefit I guess.
-> 
-> Right. So probably need to figure all other benefits this might
-> add besides just the user space facing interactions as you have
-> mentioned earlier.
+>>>>>>
+>>>>>> [...snip...]
+>>>>>>
 
 
