@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F64710F9943
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 14:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B26BB10F9945
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 14:55:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD2B6B0089; Wed,  8 Apr 2026 10:54:57 -0400 (EDT)
+	id 21B8A6B008A; Wed,  8 Apr 2026 10:55:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7E196B008A; Wed,  8 Apr 2026 10:54:57 -0400 (EDT)
+	id 1F35D6B008C; Wed,  8 Apr 2026 10:55:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993A16B008C; Wed,  8 Apr 2026 10:54:57 -0400 (EDT)
+	id 1090C6B0092; Wed,  8 Apr 2026 10:55:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87FB16B0089
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:54:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1513C140177
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:54:57 +0000 (UTC)
-X-FDA: 84635685834.22.0916C68
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2E86616000E
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:54:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dm2b95Zy;
-	spf=pass (imf08.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 01B5D6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:55:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C1AA1A01AD
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:55:11 +0000 (UTC)
+X-FDA: 84635686422.30.605FD05
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6A17CA0019
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:55:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O3sstVkB;
+	spf=pass (imf25.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775660095; a=rsa-sha256;
-	cv=none;
-	b=mHl4Rvgyaofekl3rtpo2RQ5xUCBGQ9R8CoSHG4oXX8LrZyWyu6RyOk6cMXTIWkwJpWgLt5
-	BKLJYte+XdpkrU2DiF/tPrtoSOMXySiDE2Z2eDfC5RoQg4D4WgwLwpjdWTZ8/VdJjjznOH
-	8tUkK+d+gZJ8Sr+K3huRmlJknrS8DN8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775660095;
+	s=arc-20220608; t=1775660109;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=baKfOAhSwE8l4WQ1pZT4bGLMLb7Y9E7/47saq2sORVE=;
-	b=vQS3tg6lqBtAjCK35Qc8UqfnpbwaKgUPsv80Na9xnDQX+Y+TPHJvR+kXYvUtHqaal84C2p
-	7tdNxv1Eczt+n+JN9KjIyaUXWXhP2lKyG7U5dfmxZY9AlQ5A9kBBoj23ai0EXcgBteFbO8
-	Bz/bRBORlS0ONVrrxcqXboB/HN+DpOE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3wgIIDUfJ0o70u9l3Zid2L+X0IsBnuKW+IYefvDTKd0=;
+	b=Wl+4TmVJdqlq4ZAutEbfMAf9+QjpWtg/0Upi5nQYtwPcacGTDA6stO9y3Teor6h9U46Mxr
+	7gydR/xIzmtN9Eif880RBU/lomeo43/nsJdi9o0gr8qzBIOQ2rO1Z2TT4Vc2JKwVBKrAc6
+	uDAbm7e5CtdFneaXHw48lgDbvlI5cfk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dm2b95Zy;
-	spf=pass (imf08.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O3sstVkB;
+	spf=pass (imf25.hostedemail.com: domain of alban.crequy@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=alban.crequy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43b8e8e7432so5139810f8f.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 07:54:54 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775660109; a=rsa-sha256;
+	cv=none;
+	b=Ylgz6lFn5h1fpB+S3JgU+JUsdy0In3yg3LByCcts3zJ0GnR6CEtyX2jhrmYBCwaDVvUgPG
+	f2GJhc0Vsr7EJ8sReY5Obv4xHrCYxNMx+6nhuQJIgKZo2jiHTts3TPLMgYjio2odPOVOv3
+	TuBiKh6fFcSlBYdRNQWYmG4xYhyOvJM=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso52254025e9.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 07:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775660093; x=1776264893; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=baKfOAhSwE8l4WQ1pZT4bGLMLb7Y9E7/47saq2sORVE=;
-        b=dm2b95ZyGmK6GyLh+CLI/IVn7L2cjWktgL8HtYlgKrdhjlNFjxOmhltFuEq8whogKF
-         wwconBPQi6vIt5+0McR3xnQJKWLhtJj5B7FhmAhrlIyqMIaQZBCEnfltC3kFzO9U1PFh
-         DAPI0vezRzfnuzGUNh4WzZwuvTZVcQuTBrQsQ0Tr+LaXJQnNlpLPcwSb4UPT1T4w4neG
-         IuVhRkUdfKyfZXXSaC8QZz3lMgjee0Pcj9fJp6I2EZ+vNZhl90RvkdxUEb2pD5fVVf0n
-         5yBPF+z7HukQj0NbtUFLL4yQ6tya5PJhRBJIkRF+CiNM1T6DIVPoDYUE1jPOqp2+L1vM
-         eqGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775660093; x=1776264893;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775660108; x=1776264908; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=baKfOAhSwE8l4WQ1pZT4bGLMLb7Y9E7/47saq2sORVE=;
-        b=FWJ/ZVb2HWbnLk3bskRKpXnUf0chfXI8D0DdtgeHaD/w0MxYqsN8nOCpTx15zwpZFz
-         4J9WgRiPiES9K4LVZN1TKla+vlB7u60wNatpkilpc7xdmiMxrTQqGjBLtuPMo1EtQ/dw
-         5pj04py1dMjx0N+6mBohFkLEnL8AvDMXeZDOMRcCnyyRtEt/wyJxXt4e84dX2h79eiqU
-         VlysLdyt92bi89223bronTk/XUBqfmJwBqvt5f89VUm0+WXVAyUw8fLMplrfSzKkL3wB
-         Hoc6DHhqstlrgi69u3KY9No/aZz87XP5CO6BrtgtLxqNFqF3WJzuj8upl02A6yuC3zFF
-         HDJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuUnjGTwD2uIvwePisUgQPXFN+f83yBK9uptUZKUeMIVt5HZjzmaSN/GYr6ZylEDWTLIs8kJchlw==@kvack.org
-X-Gm-Message-State: AOJu0YwPl5tyZYtfP1zL+CWAFED7MQp/qcaPY/ic+TXzTp6/n6CkHdh1
-	6TV3at072692scuHd/Vh5A2muJWqZZisnoTKA14KJWJbboMsDZyYGRCg
-X-Gm-Gg: AeBDiev0wyYyi2zdwONIXlQRF+4SqlwVFLVF5f3ZyhqlYjUdtsegnGLzV1xqbTqwc/h
-	mL7Fwd6yrKJ+SVviyP631SsSd26ZpZur9e7NgBphYohgBopOVY0gtXUligGPIkBHYjN5OJb8Pur
-	xqAfYIRFd/oBmxr72KmNsyKQkyd+Vzyj1sqlUlJbtLhSlZEG33TUO4pomzPfCVAOLQS5tc/mYQe
-	z2h59idv7QpMZsNN+WQAlDjSqkRCP9xHd0K0dDt9mMGhPvyG0xyGhm6vo7oFnU6x6bVoGZpaUYk
-	xw0ySSqpg9/2QvM2qLVa7X5pcPyimXvPe1IgW5MhmV5l9kuG2qQbwn+MvV6fvf9SV5hFgOBu3+/
-	qTiGAhdQ5uc5l5CfbeYnp6ESwWV0twCVCk2GbbdL2Jz2irWirvGj32RIRECE5mDXMnpqsJXPnjc
-	+q+G42+qaDehtQwuUD7c3AGnrP
-X-Received: by 2002:a05:6000:40dd:b0:43d:71b:204b with SMTP id ffacd0b85a97d-43d292ebf2fmr33731412f8f.39.1775660093254;
-        Wed, 08 Apr 2026 07:54:53 -0700 (PDT)
+        bh=3wgIIDUfJ0o70u9l3Zid2L+X0IsBnuKW+IYefvDTKd0=;
+        b=O3sstVkB+hD5rpsOokVUp8BWlObKdJlANTm/LtBAoYdYZkToU+LmOjLxzEYUxHHNf2
+         RZDfjUxWTpLeAql6Uam2WnWghW8HaQWo/zHufo04NbADcfcNSRErojUQEW274sOV2fn/
+         VcjE8UUsjkjMe2+WLUokcg7hPFSMvMFhKXVzvKUZKm6MvJBpqj4YHlvnOTn+v//zCL5x
+         Xe0sF2B9uhXIbMXArXm/VvB+kDNqlGy10h93XwxHeN3Fd2yj7Wvxwy5LFvOpbfwREL9J
+         q8Z99f2KffSczTavWr4cj/aXrB+jjKnEpUmMJh2kA61m9j1/v7ibxAg8pPb/19BD1aVp
+         mc6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775660108; x=1776264908;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3wgIIDUfJ0o70u9l3Zid2L+X0IsBnuKW+IYefvDTKd0=;
+        b=jfOEuNBr6GMrFe6yZ+yMJvbbnCa4Ppi4aJXe0me9DNUchViHKmcJ1t/20kE1xwH3YD
+         erVX/OGn81tYFoAx+v/Sp8jazchAU0LctdSz9Q8pCy+KKg4/8duMuqwQQe9ADG6g+7P0
+         ZPiTNSnF8tH/9YQJnJnK8hDGfaLWaNG4M8Pv00hl2WeJHzWB0mKITrRiwFG+AU332Vhj
+         LWeLIKxTS732Xn3U4RafuarGjYRzVL8X7ADKw9VMPRo9X4MODSulBp7QAy07xlehTIHS
+         ZirorCzUhW8CxZ1wUYN7GFXrdlPkcjzCuTY+ra1plUuQ6BLp42uv4OAWywq+HylwJhLq
+         GNhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBF7G+utmxEx+jMTz+F04UzX2eyfZyK7xiZ9JN4c9o/SkkB2EcljbkDcgPiXWe8iv5YvUKOEJJvA==@kvack.org
+X-Gm-Message-State: AOJu0Yw+rZXcoTrgFwckls+w1vfHLtZvcQmmAk8WhYku1XElA7+eDsmr
+	AcgPZhO1+f/WIkHOeKludtc7S1wzrvm1/9Sr+Yt/BiaQizRwoqhCewU9
+X-Gm-Gg: AeBDieuWVC5NhqphVa5rWUB1BfW9ybKCUZJ2p4OtO7dvnGb9cvPfA+YWJZpUl9PSLRj
+	KBO+DS9VEb+eNa/rjPTFLXUnjOzr536PLqIy0rvBEQyY5i8VXCGAJKxR7razW0lLzeN9S45H/IN
+	7Zw00/Nf1K4n3lj2+oFNd6cri4+XZ69u+CeAuzkykEsSVG8G9shExhShkbT1Qk8RdRaRXzEYDuT
+	c56ggOSw2gSAiaimECKpnTyo8jSV7UiWUgG3Y8cYLAK+MNMFbq3uHHQLc5n4ZTuSTs3ztA396uw
+	3K9XmdFVzLYJ+Fb7XswmB08KW+CRpaJvDtrGzETfwlxOKePXW2D82+927sNYEcwpH5r0PCPLIGq
+	0xHqSThKcb4Fr7jVm9hn3ILy+mJK1zZJqyrNhBW5d72yloB91iHblTY8TiGcxfu8wXUqDvnpeOp
+	6bsCXrbKv/cFdBoUMDdngkx92E
+X-Received: by 2002:a05:6000:40cc:b0:43c:ef4f:79cd with SMTP id ffacd0b85a97d-43d292e70e0mr31995209f8f.48.1775660107660;
+        Wed, 08 Apr 2026 07:55:07 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b093:bb00::3006])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f5294sm55762103f8f.35.2026.04.08.07.54.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4f5294sm55762103f8f.35.2026.04.08.07.55.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 07:54:52 -0700 (PDT)
+        Wed, 08 Apr 2026 07:55:07 -0700 (PDT)
 From: Alban Crequy <alban.crequy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -107,20 +108,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	Willy Tarreau <w@1wt.eu>,
 	linux-kselftest@vger.kernel.org,
 	shuah@kernel.org
-Subject: [PATCH v2 0/2] mm/process_vm_access: pidfd and nowait support for process_vm_readv/writev
-Date: Wed,  8 Apr 2026 16:54:34 +0200
-Message-ID: <20260408145436.843538-1-alban.crequy@gmail.com>
+Subject: [PATCH v2 1/2] mm/process_vm_access: pidfd and nowait support for process_vm_readv/writev
+Date: Wed,  8 Apr 2026 16:54:35 +0200
+Message-ID: <20260408145436.843538-2-alban.crequy@gmail.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20260408145436.843538-1-alban.crequy@gmail.com>
+References: <20260408145436.843538-1-alban.crequy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6A17CA0019
+X-Stat-Signature: 4c9fc79h87ipz54rxrb5bjd617uebdbk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2E86616000E
-X-Stat-Signature: 3yeawchfb38wmji8hnfipwx54ezjxxqs
-X-HE-Tag: 1775660094-270816
-X-HE-Meta: U2FsdGVkX18HwimpUVlebuHtAEN+rBso6l2XLYR/tvMeeMlg/XpaZtDWperD7t3JvGXjI7Lv2xRqv6y74d6esbxUEAzNzIJsoCPavojnyJszWTDS8H76lqeGrvH796JMRIbtdRTQcO5pKuXwGqElLB3CZEK+7OelbP28MJH++PyUL+4G3FWaKRXqoXodpydC6sjUEFCLFlhBqwOeJF+G1U37tAN6rDfgq3yTu/gfkq7X0WZ/8HQnK3zceldl7qffovL1qfV9It2cVsbA3l0JXf+TJ0y9vCUci4QnYA3ErV5dCp29AkxiHmA+JQeMQufVu2sLcCFrW1IjJolBeV82seaFoWV85m7it/VntNW1bCyKyNLOZJN4uwEdBeCTefKehqEUGcYmBiWPnZ9+FmvAgGJB9lMrmgZmM7UEqHpWfBQ7V3pXOLkT4PhdaFP9vlxJmvhf+vglUcFunZY8sl0imPPX6ebKL4Jy1Q1iTx1cboj4ETSUtuc0JV8De9fWSoPrQx4tNlbDpzfHNHp7GcqCSlu+nIKw/ouSAaILX8rRAl+KRaHFBehhZDjgwaEK0J3kZVGvgpOE5tXuL96z6AewaBHoZuqJ1iXN2da3jWTJdIMAkaGlIGqMSCp0tkjjATG7427pI5UmjteLSSTbFIVzCFAi8HWY7Ls+e/zRxmbivaW7MY8iGlWluWZNQ6SUBZjdGkEiMvYB7ikhgZoS4XEbCAzAxB5xVRxrtE4Blo7g6Gc0RfY85Hcm24VP+tYUUqldXkRrZRv/FDlgrQiOU/NTL+5KmvB8e+1iTM0fFbsKrFHx0tgQhGLKX9DJlB5RJG1/jX0C/N/kMDPR+E2Pzfi7nFBFmeS8D53kS3z3OKux+hpIDXmzf/qnausbA1YJe4kUcUkKLh+7PaJUBtnxqdczzkRjorxCLy2eJXtKvofpHe2IvBGeAIMYwdbHAgJOehVXvbFqwUuPa0ECl8smKx2
- Y5jOwA9k
- hZR1N4Ptxtp+lrplPetD//XUtC28PlEw9VkYhgPKEYf6h07HklQ91AmOSu3rCSHD6NXI+KItsqOtstGN4hem8BVlP0wkf3AEpA1qt4zQeKUEcHSAN9Lz40l3HzerK9BDTfah33kZ3Zgm/zrPr6cLhzDNTvLFj1lIiQ2x4gnY4F1jfm4cds0voAu40N1YphqhO5zjqGHbzvBcRA/MoSqFj/w09XCjlg0bxbrPujvXTqPgDhofGDPcIlib8Cw9m+ZVhRCRdgh0RWWhJItfQL+n97niQRE1FjeR+juHvEWQHGEPWV/W50+ZEfW03z3dm2D7nuIQbxEA64X/c7TQ5pgmza8pGyLNJlcmz4ImCnzSyNl64maPwGfzA/H/yZw58TC6Su40iGV7Wm5ymvWn/VAh0DMHsHq0e/4a2MSfDAbUMNu6PFwWWDp/9efFvspeN3JKewzbvLrxwQqCQQD8Fg6G3mQjLnEA7w0A3ctiWW7R7xWgVVcNM8btZ/HA+JQPVWQygGI+C+DeKIe8YxNckFeF1+3iRUT9uVS7yjuf3oVDBunVxuhCOxpdM3C+tLQjhAktsVSDbjYbXbY3OvVT9NXBUEzyFpA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775660109-354474
+X-HE-Meta: U2FsdGVkX1/57osHYzLRYQw2F614N8GFOAdKjwQkpudMxRs+yUdqcTp3bkisgINiS9rxlZk9s8JmrWst1ISo3pZDRwuTF1JjbZO/ha1mqHL/fcsYoBvWh1NRVDd+C1bfBuRhdIsUYtFyV7d6ElHbhtuLpEXJggeA1AADZPTpHu4I5on4+k7s65PN29JYxFpLuwmIaBRPYLskZOOK1ThymGwKA55ywbiHxipvsYXvh6HxauVR1UB8AShei59EQFwUxkYp1L1d3aFW9kH4oN9fhWlZ8mP4kepKy4sRXB2MrVa4tduVIeVP17Q9o4f2DHpBj/CQJh2oBbDDnceGZ+5ZEXJwTkYkdndZlbBe/0FPD0vCCXanpn3WUYwH4mrLCgdr5w2c8QoMaToDqKAvxlKZTkf5pZtCTEKzcLSnj56HjEC80LJD8O17Dz11wBcnidBXHKPecOfa/mvbJpPqt5TJV3P3CukyaFgq36Tqqn6vSR/X8h65D7e5yx5mQBL3bK3vmPN4WFigeVBilEqf1vMqIirG+pFsJCr2sNaAijtts7QTDD3Qnw/B+rcnfs/sypYsUt7DlyVGJB+PePUGK2wsnFKbSMPyxeC7f+NxO+MP9rxtavGathzUsXCluROMAl6j3mlZP6LzoyTWKvY3ZhAVVkQ8DrerdmEud8Q65iwrOXlc4SE5N7/cz/nIvXG37GwkvBMxW4zCF3BsI6YeDLGJdDhgIdDb0NMBky8WjBoB4ANvNSTYz6cjnoFgxa6YEBJ20AuSSq/weTALQhMfZJo06l0ARWkrzStqcY0wn68/hFTRcfqKa+KPTkornuh4plH7CKQytDQotYpv50+JTX/gCmR3BLaaMLIg19JOC05LcjNqjCulR7flGfwC6okt1q2BXgF/vUyF0TAYp8AuY2OQ1616X6D9PhFduklM2bU+5C1H3SG5Hxj5fXeXGBdG+PyNGc3u6Y442qlxFvHvrNI
+ 0/Z//soY
+ 3XQ8NXBPx1+UAHbfcdtlCed/eBrN0l5zZe0DiRFiY80PzUB/EVSVcSrmhCVGaAy/jwhQE6D9NqH4WHTgWsc27DXO2o+ochaEegNWN22qqpdqsUjjreZxxZv/uCELu7TAYCAU1eHDHvgNL1CV2CX+CqQOovJLSdktD7Kv+sUTx1vTKsV6oz9xsLDLxeJ4bq4xOVGfIFG2RZAbcQ9c1oYKJwKMMZSpZwr7Ag6tzCF/PrYuHK+uJyWHi10K8O3XVwCH45z9+Lpvz8IA2nH6zZ6VEsTDu3YgSqa2iYyPfEcYyoohemoIE7qvM8Y1PxXX3mIIvK6Bsj8H0xuc0gsiCIA6SxNWEqgmMTzSDev1qOGv0b/3b4RQGSPelp0ngrqAev3a/kSnZtSKcvk91fS4VgYzl7qkYWA7ewbRNtIrC/BwTytO7qK8XT2UgRsY7cYtjRkKpCupyNJT9fqsoapHGnepe8NgVRAE/sKJ2H3qDYmMyRqHnnA5mQJpcYeAofZqu7c0riA/9l6VkZD9ON/8m1oMRmg4R7RDOH3TyqiLiN6hy8umcisFlQn4okqaYJ/cbuAx79V7UUcxtamBuZa0xzByPcKWpJcE3KK2OteZx9LZ3ExIFFhE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,38 +131,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This adds two flags to process_vm_readv/writev:
+From: Alban Crequy <albancrequy@microsoft.com>
 
-- PROCESS_VM_PIDFD: refer to the remote process via PID file descriptor
-  instead of PID.
-- PROCESS_VM_NOWAIT: do not block on IO if the memory access causes a
-  page fault.
+There are two categories of users for process_vm_readv:
 
-v1: https://lore.kernel.org/lkml/20251118132348.2415603-1-alban.crequy@gmail.com/
+1. Debuggers like GDB or strace.
 
-Changes since v1:
+   When a debugger attempts to read the target memory and triggers a
+   page fault, the page fault needs to be resolved so that the debugger
+   can accurately interpret the memory. A debugger is typically attached
+   to a single process.
+
+2. Profilers like OpenTelemetry eBPF Profiler.
+
+   The profiler uses a perf event to get stack traces from all
+   processes at 20Hz (20 stack traces to resolve per second). For
+   interpreted languages (Ruby, Python, etc.), the profiler uses
+   process_vm_readv to get the correct symbols. In this case,
+   performance is the most important. It is fine if some stack traces
+   cannot be resolved as long as it is not statistically significant.
+
+The current behaviour of process_vm_readv is to resolve page faults in
+the target VM. This is as desired for debuggers, but unwelcome for
+profilers because the page fault resolution could take a lot of time
+depending on the backing filesystem. Additionally, since profilers
+monitor all processes, we don't want a slow page fault resolution for
+one target process slowing down the monitoring for all other target
+processes.
+
+This patch adds the flag PROCESS_VM_NOWAIT, so the caller can choose to
+not block on IO if the memory access causes a page fault.
+
+Additionally, this patch adds the flag PROCESS_VM_PIDFD to refer to the
+remote process via PID file descriptor instead of PID. Such a file
+descriptor can be obtained with pidfd_open(2). This is useful to avoid
+the pid number being reused. It is unlikely to happen for debuggers
+because they can monitor the target process termination in other ways
+(ptrace), but can be helpful in some profiling scenarios.
+
+If a given flag is unsupported, the syscall returns the error EINVAL
+without checking the buffers. This gives a way to userspace to detect
+whether the current kernel supports a specific flag:
+
+  process_vm_readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)
+  -> EINVAL if the kernel does not support the flag PROCESS_VM_PIDFD
+     (before this patch)
+  -> EFAULT if the kernel supports the flag (after this patch)
+
+Signed-off-by: Alban Crequy <albancrequy@microsoft.com>
+---
+v2:
 - Expand commit message with use-case motivation (David Hildenbrand)
 - Use unsigned long consistently for pvm_flags parameter (David Hildenbrand)
 - Add PROCESS_VM_SUPPORTED_FLAGS kernel-internal define (David Hildenbrand)
 - Keep (1UL << N) in UAPI header: BIT() is defined in vdso/bits.h
   which is not exported to userspace, so UAPI headers using BIT() would
   break when included from userspace programs (David Hildenbrand)
-- Add selftests (new patch 2/2)
 
-Alban Crequy (2):
-  mm/process_vm_access: pidfd and nowait support for
-    process_vm_readv/writev
-  selftests/mm: add tests for process_vm_readv flags
-
- MAINTAINERS                                   |   1 +
- include/uapi/linux/process_vm.h               |   9 +
- mm/process_vm_access.c                        |  24 +-
- tools/testing/selftests/mm/Makefile           |   1 +
- tools/testing/selftests/mm/process_vm_readv.c | 368 ++++++++++++++++++
- 5 files changed, 397 insertions(+), 6 deletions(-)
+ MAINTAINERS                     |  1 +
+ include/uapi/linux/process_vm.h |  9 +++++++++
+ mm/process_vm_access.c          | 24 ++++++++++++++++++------
+ 3 files changed, 28 insertions(+), 6 deletions(-)
  create mode 100644 include/uapi/linux/process_vm.h
- create mode 100644 tools/testing/selftests/mm/process_vm_readv.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3fe46d7c4bc..f7168c5d7acc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16678,6 +16678,7 @@ F:	include/linux/pgtable.h
+ F:	include/linux/ptdump.h
+ F:	include/linux/vmpressure.h
+ F:	include/linux/vmstat.h
++F:	include/uapi/linux/process_vm.h
+ F:	kernel/fork.c
+ F:	mm/Kconfig
+ F:	mm/debug.c
+diff --git a/include/uapi/linux/process_vm.h b/include/uapi/linux/process_vm.h
+new file mode 100644
+index 000000000000..4168e09f3f4e
+--- /dev/null
++++ b/include/uapi/linux/process_vm.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef _UAPI_LINUX_PROCESS_VM_H
++#define _UAPI_LINUX_PROCESS_VM_H
++
++/* Flags for process_vm_readv/process_vm_writev */
++#define PROCESS_VM_PIDFD        (1UL << 0)
++#define PROCESS_VM_NOWAIT       (1UL << 1)
++
++#endif /* _UAPI_LINUX_PROCESS_VM_H */
+diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
+index 656d3e88755b..c6a25e9993e1 100644
+--- a/mm/process_vm_access.c
++++ b/mm/process_vm_access.c
+@@ -14,6 +14,9 @@
+ #include <linux/ptrace.h>
+ #include <linux/slab.h>
+ #include <linux/syscalls.h>
++#include <linux/process_vm.h>
++
++#define PROCESS_VM_SUPPORTED_FLAGS (PROCESS_VM_PIDFD | PROCESS_VM_NOWAIT)
+ 
+ /**
+  * process_vm_rw_pages - read/write pages from task specified
+@@ -68,6 +71,7 @@ static int process_vm_rw_pages(struct page **pages,
+  * @mm: mm for task
+  * @task: task to read/write from
+  * @vm_write: 0 means copy from, 1 means copy to
++ * @pvm_flags: PROCESS_VM_* flags
+  * Returns 0 on success or on failure error code
+  */
+ static int process_vm_rw_single_vec(unsigned long addr,
+@@ -76,7 +80,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
+ 				    struct page **process_pages,
+ 				    struct mm_struct *mm,
+ 				    struct task_struct *task,
+-				    int vm_write)
++				    int vm_write,
++				    unsigned long pvm_flags)
+ {
+ 	unsigned long pa = addr & PAGE_MASK;
+ 	unsigned long start_offset = addr - pa;
+@@ -91,6 +96,8 @@ static int process_vm_rw_single_vec(unsigned long addr,
+ 
+ 	if (vm_write)
+ 		flags |= FOLL_WRITE;
++	if (pvm_flags & PROCESS_VM_NOWAIT)
++		flags |= FOLL_NOWAIT;
+ 
+ 	while (!rc && nr_pages && iov_iter_count(iter)) {
+ 		int pinned_pages = min_t(unsigned long, nr_pages, PVM_MAX_USER_PAGES);
+@@ -141,7 +148,7 @@ static int process_vm_rw_single_vec(unsigned long addr,
+  * @iter: where to copy to/from locally
+  * @rvec: iovec array specifying where to copy to/from in the other process
+  * @riovcnt: size of rvec array
+- * @flags: currently unused
++ * @flags: process_vm_readv/writev flags
+  * @vm_write: 0 if reading from other process, 1 if writing to other process
+  *
+  * Returns the number of bytes read/written or error code. May
+@@ -163,6 +170,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
+ 	unsigned long nr_pages_iov;
+ 	ssize_t iov_len;
+ 	size_t total_len = iov_iter_count(iter);
++	unsigned int f_flags;
+ 
+ 	/*
+ 	 * Work out how many pages of struct pages we're going to need
+@@ -194,7 +202,11 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
+ 	}
+ 
+ 	/* Get process information */
+-	task = find_get_task_by_vpid(pid);
++	if (flags & PROCESS_VM_PIDFD)
++		task = pidfd_get_task(pid, &f_flags);
++	else
++		task = find_get_task_by_vpid(pid);
++
+ 	if (!task) {
+ 		rc = -ESRCH;
+ 		goto free_proc_pages;
+@@ -215,7 +227,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
+ 	for (i = 0; i < riovcnt && iov_iter_count(iter) && !rc; i++)
+ 		rc = process_vm_rw_single_vec(
+ 			(unsigned long)rvec[i].iov_base, rvec[i].iov_len,
+-			iter, process_pages, mm, task, vm_write);
++			iter, process_pages, mm, task, vm_write, flags);
+ 
+ 	/* copied = space before - space after */
+ 	total_len -= iov_iter_count(iter);
+@@ -244,7 +256,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,
+  * @liovcnt: size of lvec array
+  * @rvec: iovec array specifying where to copy to/from in the other process
+  * @riovcnt: size of rvec array
+- * @flags: currently unused
++ * @flags: process_vm_readv/writev flags
+  * @vm_write: 0 if reading from other process, 1 if writing to other process
+  *
+  * Returns the number of bytes read/written or error code. May
+@@ -266,7 +278,7 @@ static ssize_t process_vm_rw(pid_t pid,
+ 	ssize_t rc;
+ 	int dir = vm_write ? ITER_SOURCE : ITER_DEST;
+ 
+-	if (flags != 0)
++	if (flags & ~PROCESS_VM_SUPPORTED_FLAGS)
+ 		return -EINVAL;
+ 
+ 	/* Check iovecs */
 -- 
 2.45.0
 
