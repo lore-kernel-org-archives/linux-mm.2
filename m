@@ -4,122 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C12FFD5F88
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:43:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB71BFD5F98
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 09:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C886B0088; Wed,  8 Apr 2026 04:43:47 -0400 (EDT)
+	id CED1E6B0088; Wed,  8 Apr 2026 05:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DDD96B0089; Wed,  8 Apr 2026 04:43:47 -0400 (EDT)
+	id C9E426B0089; Wed,  8 Apr 2026 05:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F3A16B008A; Wed,  8 Apr 2026 04:43:47 -0400 (EDT)
+	id BB3B76B008A; Wed,  8 Apr 2026 05:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DC916B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:43:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF8941405F7
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:43:46 +0000 (UTC)
-X-FDA: 84634750452.19.1137FD7
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2451EA000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:43:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AM4CtB6h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A9FC86B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 05:14:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EF965961C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:14:28 +0000 (UTC)
+X-FDA: 84634827816.15.F51C2F5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D17F4C0008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:14:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ghxk80zy;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775637825;
+	s=arc-20220608; t=1775639666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDUg5Y8vVTIzFl3YbIlPH9lZElpr4/5T9t8qsPiD1uM=;
-	b=e7XRbjzhF/3pOgsXwtmm88AG4oKDHq01ySj/zfla8IFdKC9fpZyJ5dwFEPcXOk5Cb9eeBm
-	2fIKNuWZu5YYTsX/LNlqElqY7f1n4wjtw089mBYbU/emmBXLUA/6yu50n6w1WCt6KZvqwL
-	tkhJ+Fsx858TYXkwN8R22g0lHCOotro=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775637825; a=rsa-sha256;
-	cv=none;
-	b=j4L9MHDHyrq6MIe9D6kVGo0gpy2UysDYvB4Sr4YRKtzVCM/pZZBWkiIoTt0M0k9u6ehYHR
-	eF51OSiu2kxsS+j6flQVrS5wycGXzL4ybOwDQTnEWKWY61/j5YFC/9wq0h5RGsmPhv3zRP
-	UKi9Xv6ntBtN6Kwi0Wo+/2xf4SHwNBU=
+	bh=UkHCG5dhZchDvFXHA3IGDgcnM8tbJ/gx4ORHy85CrQo=;
+	b=S+v3GroeXOtMULxfNDAN5/jxb6yjsYW2ftswVkjHGeuLU14Fyw/GuZm7meaHPBZeUX3JLt
+	SB59SI39owGhIAPsvzJslnon5vX2Om8GhBjmKKd4xux02VIXDzMf4C2eSoahob1/w0IYn4
+	czPp/OxNXIvQlOyXVuoXb8ZMqMh1Ju0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AM4CtB6h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35d9f68d011so3944737a91.2
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 01:43:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775637824; x=1776242624; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lDUg5Y8vVTIzFl3YbIlPH9lZElpr4/5T9t8qsPiD1uM=;
-        b=AM4CtB6h/o2CUqgNCkldscOfaEM+Jb3P9GEWvxra8l0scLWvTIhQO84m96kqkwSn3A
-         TSiwp+5MWdO+82+pHkF2+4Ey0MVPPyKl8Fda6AKjhoSrVory/7yfQ+KOcaD+T9nJYsjK
-         HORYyHM89npe51VY+dQ+BxcLdVyYLvlYNTNqkX5O8IyT8TBNDRUwADC8gdw8GIS3azcH
-         5SqZFHjS8kRXlvc3Abvz6Cs9wAxEEf/KjQW/Loks/fpfBlK8TKOpApp8l9+VKbXD3bwB
-         389RI/1EFJJdGDza6xENOAQ+layGPcFefeKcEJ5fuk9egLEdDtxCb4INVeCHONSImD7u
-         8Rpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775637824; x=1776242624;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lDUg5Y8vVTIzFl3YbIlPH9lZElpr4/5T9t8qsPiD1uM=;
-        b=CR9HLGE6m4h/Pzlstce4wbnK5Lvzp+TE7Mi63FVnq7AOATMcdD04MEzzeHiZEVsny7
-         eJ+AFeKUD+/ObqNfUnAEIfehR6tpT0HNg1iWxPwOBIxZKJ9dl+oNr6E4+NLAqMUriEmo
-         F6fehgeKpt4fVMYbOoawfbxrRmU6t3qCdFc929HfnTyQFmSP2uXqxYMH27W7CTVfdKsW
-         MfNW03lGn7bQcMgX88BNrTSVnTBEV66tUGSUt7wct8xR8cIfIXfv0XfJ7ywsV7UlfI0H
-         /nfkWJMCa35NMqpaxx99MyJ9COlecXOxqZ5ankqImNGqHzsn1a11Yfv4iK36azPVM5Oh
-         3qBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwDZTyDS8wgninHGYWRbrL3P1QCyrmslW5qW0rY3DHUs1S9pWAwLN0FtYPMRap8Dbi4Lkt1saTgA==@kvack.org
-X-Gm-Message-State: AOJu0Yz4eHpPJpdRa7G5NH7I3mVni3Z1PJBb1xAGpwXloVH6/SBf0/C+
-	pI+KATSpIs7cUzqoZWqPj1jkApfaTj+skI1G4zdh5VVwBbxHYFRKos7S
-X-Gm-Gg: AeBDietZXLtrO5tm5R5Bv4yZPXFGjAcWC9p71yl4ZZh2BwKiE2qLWfeYf7DTfVjUyDK
-	aUjyHuvDgU2zPadPzQXKF0rSYpYYZwHAL7uVM31Xqq9+rp5BP0Ut/+kop+e+tKnkZBTzMBNMhcB
-	Hz4Wam7Y0NlLohJFxP6P890IwdAOBIMEv+xmBK/w4NMRT/2iXAiJd3rZDaWPXEjRlSMAN5ljWa4
-	wqvNtGzA07w3SAYKEkxLZOZsqYbi0SBqi/jqXZnmq7IyaCxXnRBtzbkMD3lTaaSX6IqYZe0cAy5
-	mFOXGjo2V8Qxe78J9HUkj0alekj7yi9+7mMtTMyLQFNkX35g+min7C+tdiVe+Y7DMzv4dDyhoYz
-	/24vtEH1ZqFWulMeXdUS/0R0zOJoQxzUDU902zLra8poeqBc1yaDYdKwq7YjQ1PX56qodqs6zBF
-	rA0VjundGaiXoB4o8f54eceqb84cBTSnXrp+EFbLkHLndCsp+BT96mkQ26RWK+GcJtUQvo
-X-Received: by 2002:a17:90b:4b92:b0:35b:e4d8:e21d with SMTP id 98e67ed59e1d1-35de678f2c8mr19167142a91.2.1775637823840;
-        Wed, 08 Apr 2026 01:43:43 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2749ecbd1sm293654065ad.83.2026.04.08.01.43.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 01:43:42 -0700 (PDT)
-Date: Wed, 8 Apr 2026 16:43:35 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, 
-	Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
-	Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v4 04/14] mm/mglru: restructure the reclaim loop
-Message-ID: <adYP81AhpNf0znp3@KASONG-MC4>
-References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
- <20260407-mglru-reclaim-v4-4-98cf3dc69519@tencent.com>
- <997d5991-6935-49ac-8aa7-569767c4693b@huaweicloud.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ghxk80zy;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775639666; a=rsa-sha256;
+	cv=none;
+	b=xUlZmYpgardAtQvoYWua/p04w+sJ08QkmSzbHmMT1ozQTqGVU1JiMpSt3aXl0i0HGHmN4N
+	ATw+/FJ4NU9gvJ1OYjfY5Y/cwg4UGq4YHLWsyXdL/nD2LCxqWKPPZfrOy7A4mk/QNcTrHG
+	pgfaFlpu3V76kTrdH3BEyYgdP3xS4lM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAF962720;
+	Wed,  8 Apr 2026 02:14:18 -0700 (PDT)
+Received: from [10.163.142.59] (unknown [10.163.142.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2387E3F641;
+	Wed,  8 Apr 2026 02:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775639664; bh=d72bEFH3e2m4PCDJvyifqs2i7ZCFESpqNozQ8GzrTfg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ghxk80zyff7gDALCMKWg7f/MiqxnNUGlu88QNl2zWCW0b6XyuS9iTul4ptVmO4fni
+	 9ibRuCeu8jxX4N5VERxc4am5wONI3uvo+DNbNpsT5HzljD5eY3NgYkFXJ6g3Pk+hqp
+	 QmDlj/2VR5Y5yeFyWbHcB+M46P9UTUFTFt/Wqa0g=
+Message-ID: <1e7427c6-b6e5-4a3a-a600-bef9ac2bf3e0@arm.com>
+Date: Wed, 8 Apr 2026 14:44:16 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <997d5991-6935-49ac-8aa7-569767c4693b@huaweicloud.com>
-X-Rspamd-Queue-Id: 2451EA000C
-X-Stat-Signature: 6g6hsm9b55hos6axp5ifjzcgh73sy5fj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
+Cc: linux-kernel@vger.kernel.org, anshuman.khandual@arm.com,
+ ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org,
+ Xueyuan.chen21@gmail.com
+References: <20260408025115.27368-1-baohua@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260408025115.27368-1-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775637824-941396
-X-HE-Meta: U2FsdGVkX19WlpvZkuFPYa8DHQ0UAfcNhvFZQvULfaCzDYNlmGMhZqce3Lli/2YhyG8L4zkJXiyMGpVbZzytLSNQEyyj6z3jlBU3hTwnhylrYHoCffyMlzG4iQLEAOV/ROhqx/PDWfit5aAVU0Nsi1PAcmmmTHV+3T1KJS8qyebkVlcO43UFdlkYEKxq8LPsirPXcIoLeBBtV04Yzc/pVcDCs+ROSSM1IE/YmdzsvD7StdLKx7tKV+qRe0iPkhKiIXPxxuWkK+CvCRpx/6zq6wBMpP8VGJgN83cUje6bNYn5mFYxjADKz0iOCCHK/kSpaNRZIHkem2f005rwfR0GpSnt4NiZ+Ciz+S4LzCmvnKnWilQPAJ1Rh305+9+Tml0r4zNeVq0lrneQFC95LoS+MmvQUG9JYAn6vl9+5Ql7y3hvAtP3lmb4nKirl4OlnKish+IPEJJ15Vc6vQY0CpZCCAqZHOPKAIhfB5jmWxGt8XnHkySaP5jzAAa2vzjZDTSA4ZIlzrcKD4d3BBQNsTPh9tz6Lzhhz98+cJTKtWM7Q+PM7lB3DDZZtm2+596lrgYDixk/f3pytzPOe61arxJfQIll6wh1T5GRXC/bMPz2TuRYz7oN/9IwGosbQ8RGWRyhH8V4cwiF9j424P+1Hmv1fgFsGf2z0XBvc20bVL5ubaQlBXWw7KDZv8QeM/PyqlXsGzwOPS5TCSi3oupZDJcZbFwMkt8ZbnFBXvD8PonRPeWNw2MPNUUunOEDHrLUJBD6T/v5Wqy/fawWkxkoOtFjB8Q3bX0eSaxcxbU0LTXj/+BiwoI29dAr1i4i/3vPmFn2lQgTXqQy0O1xoYJXy58katdkVGB8V8fKx7I1dUx6Td17G9g9kV0+JSyn8cJdrog0hB0gv2f6hxMzLitBNWJrkt9EtBYUpP3qTmeRMvzOkZCsACpGgN1sazQNHK4VC9Lq8SwTIYmq5C7WYSmvJJD
- sxVIVSYs
- Zob78yjn0cjgnPI+30IAaFoOaFJqG1IfWi3/0FPYrVjCCvnthy7b9dz+pvtHW4uzQaBKsKmsgIIJtrqEvpwB9NQvMxAP0GyaKV75fyOfrG2EHhpaRVj/kqiA4wDHjahBFq/+9nZXdwGmGglM1yJsGgcA1Cy3h0pDQ9R4Y5FT2Q05YQF0cDvzpsFcVMZkeNPXduX3vuo2t2yM+I1rDZJw54J3EKKZ3A4PK1rCzrzL0cCaSj8OFkrDXRUBIF3BN5N9dd9jUqeYazSC9dfhpnNS1OWG/+W01I8aBa4WjIMF1adn/u+X00j5ORaEwnHoAtJ/tLu1fPQVqt8hR1FnJ0PSwnjlT/uKb0Dw7rtZ/qnti0n6oOElI8hDOlVS2t0EujNwVG9WIUeXTRNPm2mL3O5mRzpUF9KqjxRSinTnVISa+eAq8z9TB1dvJ9sdnMmz5wPy/fsgeidbShL4haSaTQ+5BcgBbIhY+zdKfPlB1P7YHngdyNNC9pXvrg0H20E4g9HCRekeAuKcJ66lZO7sMyo7iMm7Cbf47RZ0wx4ddq/S5nuGVR9I=
+X-Stat-Signature: r5enp3arzfqqoyug7uuofcp4m73obnxw
+X-Rspamd-Queue-Id: D17F4C0008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775639665-527774
+X-HE-Meta: U2FsdGVkX18uHyOnVZ2SRBwFxDdkl3HcoTgwHr/3LBfmokCSFxkMyIw1Ry8OpKwvPLcF0n/DF8kWpN18p0jEGDiM9aCT60rqaR8hY3DcUd59ZTj74xFn7FZ27TK9KsrmeqazzmG8JuDOM1vjI+heqz03B96A6lpQmP5pSqiiNRnPerEs5hK45ovifn5jwgzbgCT4DMoGHoHZ3vOsLQ9aOHjRGA013u3iEEkrwDuI/rDvsM7P2p68boOKgEYvrqEa7HKdi4VivTaZa19yDUWa98vRInWfjvDxvTetSWnfPTK6+15id+gEnmn85OseR+hDZJhKv2UmItN3NNF70QtODyq52YVW78SgmG7WQtoQZt4Zoi03AuqlQ7vQx//qGWj9SCXQM25fZCaDpCnqlsV/Yu7jurifUhbQYlRcl/pt2mpXc5URE3hbkOXRqo5BezXl29u3Ke30TBBSAyMo6u599ZGRrrRIxuIbP9Un/bCJRPp/x0CdwH38B1fmUJIfRrZj6CsEdAF7GKtdRO8gIaZK1rluHq4sZ+VfRd7iijH/c+hl4LtumuYGJ1vjGykgoMkwUfLfe8XBMmJMflsStJnObI65XosVZrqh2GJzB+Z/kC1PxNdfjvAj2N6jVPZbFQ+aMGPiWjdsszUqpvqLFqsZ0zJSiGXmyfpUOmer1mALrMuO23nunu0oOGzsHzU7aB7oCBcq1Wbwjg+gqkCnXwhfPPiqAXry0uvs1xf2VjdoiXnu7RbgWGA++tRRlI/1LZRycnUFvlx7iTLimqWIRTj6mMpvPWJJpVlx6i2xvfN4XBHspiyBkJGJhbv8R7hGfj18pmcTUIS7eTi/8lgbxKEjWdzR1kuRE2ODgv6P5AhwVqdnXSx6cLGAqN5GNtzO0YL0QqZMy7MPqARQ/V8OX2KIUJgHdUfAdjTlF3uaICiiompQs5vLb7tjLy46qMnEyBmPLj7yxSCBbtvTiwulLZM
+ K50/YLsV
+ 1X12rTePQtoyoW6EnuzPKkYcoU5vy2hkMwkyPPQYEWBMAelHvCqFCdb2unSXlcC3fnd0OLX608Tz5QuhgIoaFBp7Zoc3D5wlS4LVl+t35nmctkwKjry62hRGTo71stXsnmde3vTb+h2e8WTBQMy6ipny7lqoAPEJH4PrbNHQcr7TLY6jPOR2fRPL2+EvlbrEifN/zptqYMF2f0qaz89iB00tqiv8XVw3sgdQOGBEvy0K6r0WnpLMu8wC7rZcW7PXFilxug8oXFDVQv6qqmUYA6AJ8J+kLYLxXINWCBEvO1D7O9ctBiihPUb0IbVgrQVUudwqqQInmeOBsjY4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,65 +94,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 04:08:05PM +0800, Chen Ridong wrote:
-> On 2026/4/7 19:57, Kairui Song via B4 Relay wrote:
-> > +/*
-> > + * For future optimizations:
-> > + * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
-> > + *    reclaim.
-> > + */
-> >  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
-> >  {
-> > +	bool need_rotate = false;
-> >  	long nr_batch, nr_to_scan;
-> > -	unsigned long scanned = 0;
-> >  	int swappiness = get_swappiness(lruvec, sc);
-> > +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-> > +
-> > +	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
-> > +	if (!nr_to_scan)
-> > +		need_rotate = true;
-> >  
+
+
+On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+> This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> is physically fully or partially contiguous. Two techniques are used:
 > 
-> Will it be simpler if we return directly here?
+> 1. Avoid page table zigzag when setting PTEs/PMDs for multiple memory
+>    segments
+> 2. Use batched mappings wherever possible in both vmalloc and ARM64
+>    layers
 > 
-> 	if (!nr_to_scan)
-> 		return ture;
-
-Looks good to me, I used `need_rotate = true` here since it kind of explains
-what is happening better.
-
+> Patches 1–2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
+> CONT-PTE regions instead of just one.
 > 
-> I wonder if moving the aging check under `while (nr_to_scan > 0)` can change
-> behavior when the scan budget gets shifted down to 0.
+> Patches 3–4 extend vmap_small_pages_range_noflush() to support page
+> shifts other than PAGE_SHIFT. This allows mapping multiple memory
+> segments for vmalloc() without zigzagging page tables.
 > 
-> In the old code, once `should_run_aging()` became true, reclaim could still go
-> through `try_to_inc_max_seq()` instead of being gated by the priority-shifted
-> scan budget. With this change, a small lruvec can skip the loop entirely, so a
-> lruvec that needs aging to make reclaim progress would neither scan nor age in
-> that reclaim round.
+> Patches 5–8 add huge vmap support for contiguous pages. This not only
+> improves performance but also enables PMD or CONT-PTE mapping for the
+> vmapped area, reducing TLB pressure.
 > 
-> Does this have any observable impact on reclaim progress or reclaim balance,
-> e.g. by deferring aging until a later retry / higher priority and pushing more
-> pressure onto other memcgs?
+> Many thanks to Xueyuan Chen for his substantial testing efforts
+> on RK3588 boards.
+> 
+> On the RK3588 8-core ARM64 SoC, with tasks pinned to CPU2 and
+> the performance CPUfreq policy enabled, Xueyuan’s tests report:
+> 
+> * ioremap(1 MB): 1.2× faster
+> * vmalloc(1 MB) mapping time (excluding allocation) with
+>   VM_ALLOW_HUGE_VMAP: 1.5× faster
+> * vmap(): 5.6× faster when memory includes some order-8 pages,
+>   with no regression observed for order-0 pages
+> 
+> Barry Song (Xiaomi) (8):
+>   arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+>     setup
+>   arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+>     CONT_PTE
+>   mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
+>     page_shift sizes
+>   mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
+>   mm/vmalloc: map contiguous pages in batches for vmap() if possible
+>   mm/vmalloc: align vm_area so vmap() can batch mappings
+>   mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtable
+>     zigzag
+>   mm/vmalloc: Stop scanning for compound pages after encountering small
+>     pages in vmap
+> 
+>  arch/arm64/include/asm/vmalloc.h |   6 +-
+>  arch/arm64/mm/hugetlbpage.c      |  10 ++
+>  mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
+>  3 files changed, 161 insertions(+), 33 deletions(-)
+> 
 
-We also skip aging unconditionally at DEF_PRIORITY, both before and after
-this patch. Scan budget can only be shifted to 0 when the memcg is smaller
-than 8M. Seems trivial to me, maybe I can just restore below code in V3:
+On Linux VM on Apple M3, running mm-selftests:
 
-if (!nr_to_scan)
-	nr_to_scan = min(evictable, SWAP_CLUSTER_MAX);
+ ./run_vmtests.sh -t "hugetlb"
 
-https://lore.kernel.org/linux-mm/20260403-mglru-reclaim-v3-4-a285efd6ff91@tencent.com/
+TAP version 13
+# -----------------------
+# running ./hugepage-mmap
+# -----------------------
+# TAP version 13
+# 1..1
+# # Returned address is 0xffffe7c00000
 
-Was a bit worried that tiny cgroups could get over reclaimed, so maybe:
 
-if (!nr_to_scan && sc->priority < DEF_PRIORITY)
-	nr_to_scan = min(evictable, SWAP_CLUSTER_MAX);
 
-I tested the reclaim balancing issue using selftests/cgroup/test_memcontrol,
-all looks good with whichever design as the cgroups there are >16M hence not
-effected.
+[   30.884630] kernel BUG at mm/page_table_check.c:86!
+[   30.884701] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   30.886803] Modules linked in:
+[   30.887217] CPU: 3 UID: 0 PID: 1869 Comm: hugepage-mmap Not tainted 7.0.0-rc5+ #86 PREEMPT
+[   30.888218] Hardware name: linux,dummy-virt (DT)
+[   30.889413] pstate: a1400005 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   30.889901] pc : page_table_check_clear.part.0+0x128/0x1a0
+[   30.890337] lr : page_table_check_clear.part.0+0x7c/0x1a0
+[   30.890714] sp : ffff800084da3ad0
+[   30.890946] x29: ffff800084da3ad0 x28: 0000000000000001 x27: 0010000000000001
+[   30.891434] x26: 0040000000000040 x25: ffffa06bb8fb9000 x24: 00000000ffffffff
+[   30.891932] x23: 0000000000000001 x22: 0000000000000000 x21: ffffa06bb8997810
+[   30.892514] x20: 0000000000113e39 x19: 0000000000113e38 x18: 0000000000000000
+[   30.893007] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   30.893500] x14: ffffa06bb7013780 x13: 0000fffff7f90fff x12: 0000000000000000
+[   30.893990] x11: 1fffe0001a1282c1 x10: ffff0000d094160c x9 : ffffa06bb568a858
+[   30.894479] x8 : ffff5f95c8474000 x7 : 0000000000000000 x6 : ffff00017fffc500
+[   30.894973] x5 : ffff000191208fc0 x4 : 0000000000000000 x3 : 0000000000004000
+[   30.895449] x2 : 0000000000000000 x1 : 00000000ffffffff x0 : ffff0000c071f1b8
+[   30.895875] Call trace:
+[   30.896027]  page_table_check_clear.part.0+0x128/0x1a0 (P)
+[   30.896369]  page_table_check_clear+0xc8/0x138
+[   30.896776]  __page_table_check_ptes_set+0xe4/0x1e8
+[   30.897073]  __set_ptes_anysz+0x2e4/0x308
+[   30.897327]  set_huge_pte_at+0xec/0x210
+[   30.897561]  hugetlb_no_page+0x1ec/0x8e0
+[   30.897807]  hugetlb_fault+0x188/0x740
+[   30.898036]  handle_mm_fault+0x294/0x2c0
+[   30.898283]  do_page_fault+0x120/0x748
+[   30.898539]  do_translation_fault+0x68/0x90
+[   30.898796]  do_mem_abort+0x4c/0xa8
+[   30.899011]  el0_da+0x2c/0x90
+[   30.899205]  el0t_64_sync_handler+0xd0/0xe8
+[   30.899461]  el0t_64_sync+0x198/0x1a0
+[   30.899688] Code: 91001021 b8f80022 51000441 36fffd41 (d4210000)
+[   30.900053] ---[ end trace 0000000000000000 ]---
 
-I think we might be over thinking about this :)
+
+
+The bug is at
+
+BUG_ON(atomic_dec_return(&ptc->file_map_count) < 0);
+
+My tree is mm-unstable, commit 3fa44141e0bb.
+
 
