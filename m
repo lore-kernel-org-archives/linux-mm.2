@@ -4,101 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD0010FC454
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B2D010FC450
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B9F26B0005; Wed,  8 Apr 2026 17:55:12 -0400 (EDT)
+	id 6884F6B0005; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06B2B6B0088; Wed,  8 Apr 2026 17:55:12 -0400 (EDT)
+	id 6606F6B0088; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC2E36B0089; Wed,  8 Apr 2026 17:55:11 -0400 (EDT)
+	id 59D2D6B0089; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DEB576B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:55:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F7EF13A226
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:55:11 +0000 (UTC)
-X-FDA: 84636744822.06.478BA1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 90A2420009
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:55:09 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NeeK5KtC;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0F16B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00E451B71DF
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:56:15 +0000 (UTC)
+X-FDA: 84636747552.20.66D2125
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1BE3E18000C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:56:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=b1C18HLP;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=b1C18HLP;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775685374; a=rsa-sha256;
+	cv=none;
+	b=XRrsGZC4aKZhPnr1fkNRsL82a83BCIud2IF0KnYpdWeFWf24F2vCt/lw+71ic26o/clfRc
+	RN+Vj6qUfQ9UgewbQsP7LrgcBvS0eqyJYy7Su/70s3r9h573kRlCIywzozsTnOPXHcEqnb
+	pX4WcDnowFP/evYzCf6fsrY7OszPXOE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775685309;
+	s=arc-20220608; t=1775685374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHslSwDxFYmJz+2ZwRUejS0CvrNUsSr/wt9GVySUqng=;
-	b=O9EjERiAWA5RqejQ0LpBZG1ss2IVKToP7jtce3aOEHT6RPrnnI4cbcvPPTYJ+shJYnRhFP
-	Zz/785zLOG09yhqHNFrHPT8T0IwqMJvXswQ0XxLxAEpvaQs5WYvGQHzdDZtHZ4qeoUhxTW
-	bVeNYDMY5aQgQh/rWl/2f+C1qnGZC2Q=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NeeK5KtC;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775685309; a=rsa-sha256;
-	cv=none;
-	b=Uh4uyGKfDFY3oyKUVeA2A3Hy2VpII6LgwJP5mo/JgfXhpbNWlTx6aP294zuTsPR4LHnpxg
-	c46DFw47J+mVp0uAZxCNnRtJnPyhjqevmmdCfscepDPM7tfv25T1s0+fdmZzQQvuiIpTVm
-	HuI6iKFc9BGKxjehQmUd8kgjDR7IIZ0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB69760121
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C81C2BCAF
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775685308;
-	bh=9tyfiUj/h3G9nYoqcv1nsHUxCG2DuNBXO0qSeyZXX/k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NeeK5KtC6jdHoDdFOv1ocGFUO/QKc2/suIgnSYtB2lAPIFb/xLQ5S230iibtS7wvu
-	 p93wEk29+hav4AOPEOPoe33SgLxQukMuyDDb4MeWy3DYrMeW6+JYxnuKyWSYUIsQ94
-	 FtepC6YWuPozjrU0izkuQaTzGID00Q0k+Flq3JKGrjiKh71xEDjaQrES60kIDJvp7q
-	 NJ5h2SQNn2GxeHrR7ypkGWDU3ytHAsrRTQHv799+3/0uDVraCB//iSzZJAlPrOS3IE
-	 2jPoLOwNhnm8UjYeAluEEnIQ4GTU09T+mkiCw19cMaPqQ0RxA7mPFmZX65YcrdicDQ
-	 cXyQxqaiCYaPg==
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-89cc71f4311so3508186d6.3
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 14:55:08 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy5U+yI4lV2p7lZHBQuexYyfbCC+ZoGS2SSuVm+dn25NQiyLff5
-	BxeQlWs1eMJhm5DKPjcfJ8hep8M6wZHKCRU5S8hEBRy2Ze5dEJVU674ziZ0305J2J7ZfX3LYvr+
-	ODmIehDY8RdU8SBBIMWMC1i0HKEOKxYU=
-X-Received: by 2002:a05:6214:5c82:b0:8a0:f8b7:391d with SMTP id
- 6a1803df08f44-8a7042f27cdmr310757796d6.31.1775685307892; Wed, 08 Apr 2026
- 14:55:07 -0700 (PDT)
+	bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
+	b=Jt+WkmUShRkz/0jrwppBdZETtkfRb3lYDHSmeyljsqhZX1AZ0dVZIT4GmvzXOajH4Fk4mx
+	MzhHigA7VKjUYPcMpoMH43GJ3bHwGMBmSWdixmcRjRUYt214266KNJpwllHwsBEfz9N5r0
+	ag840taTk4xxAKFnyphnRtBktS4HkFA=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8a093c784b0so3666926d6.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 14:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1775685373; x=1776290173; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
+        b=b1C18HLP2+XqFmC7pW9mpryrX6spI/x89G43Een/nBraLB3enytVzritqxmxXHu82d
+         rVf2537CrMb4BM64sc4iIeud17JBF9W4G1ZV31UASIlegM3n0kM2KSjpIf1ILRhw19x8
+         KblrDvqwLzjaGoF17lwkXa0fZpTxwIIhKvfbaXIlu9zclySCkFYabmUOIPklz4BNsTVB
+         NlZ909vwtsPBsutJwW1JnSS9V63nIpcKukWMw95qCZ/HoxqDGX/bxdZx+QdIeP3HbTN+
+         FHpEDnReT/2MXKldwaRg5wzbF5pg9vAgJ+6oxREadMIon3FU045F9NEM8RNBZk1fBz5y
+         zaHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775685373; x=1776290173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
+        b=Cne4MLsDTANEKCzbANfsjnSljPBWAlMTP6CM19UCOuEr+2kzxu39CbBDw8syP6U82U
+         cor/unZppQGfrs5996d/3FMNzEqzZcU8Do9Hp2NwuCCSVnJTeXXruv7wKBYtmgUmw1xC
+         1uWoO6HT6uWFTcgqjgT0iS/Yo4CyRILLaQ6nzBt592lOQcAR7iKpGq4QHLU/L57KBj47
+         l8mFah5R0eHSbgql46bk3Cj2hsd+JpIQbAEsTg2OH1APwBndONnl48WvRukGVGQtYQI1
+         BUU4GonZic+x4MARwMw2wj9BCBK7deDk2XDLB52qJhpvqjSSBkIE47JazKmnVd+xALA0
+         BFsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXALCvkN+0RFxvAeAHJkk5BkPji2eCkgY9pV1rSSpPzD6NqV8OC2aNxIJAFFvVGnVmdD0ccAWDQiQ==@kvack.org
+X-Gm-Message-State: AOJu0YzYt64qu4iLx8VXgAISSG5BGXCtedEigxsCEfHcLfyXatmD4VNE
+	5+Du1xdCwLBU5hzgt+LXA6iiCxDwuGvHUDKnEzGFO019Ov5qJ3t4iwDxhR2dS7rwD0c=
+X-Gm-Gg: AeBDieuhlLtGkUonLqNYIfTnCtIJOEgNJ8G3N6EyOi3fQQIQoUIh5w4RBUxzIVEe6sh
+	k1VQNWlGN+MZJ5M0wPWUEYoCHwCuBeLt62wCnJ01CfM2QVm3UJTyr3OjQU3JlkROU3blLSgYiUZ
+	auARl4y9j+5puCw36ZoYrBCU8cvn6hxRXuNPKy7ctrz+qrxE3SpJvQX0LjjSHuHqfEs9aGXNbdf
+	e9FvCvGYKEjtlIJLvqPUdQrWU9Z/UfY17dJtOy70b/JxAJYodp7/9hY//HDmadBf9CtgUuQRp59
+	8rU9YGpwZeRTBAayD6Ub8r7GAIApTpJoJTkf0xR2tth0onkfq70ehVUTogA/Er+5bdkdXYOs+Hf
+	7+ywpo2DBFiedULAs5kKgSFXFQkcmFXP7kgzWNelsqxCA9imfx8sn/x8TwGld3YXyTGrzV93vks
+	JJI+Gyuh4as5jS+nyUSVbmiMrrqfTaGh+btl1dAFsT/YqhKeAYHg/Y+aI7sxD0jntD66UGaxlKU
+	ecJqhcp+3Bt
+X-Received: by 2002:a05:620a:1a11:b0:8cf:d565:fca4 with SMTP id af79cd13be357-8d41b8df4ecmr3283687885a.3.1775685373060;
+        Wed, 08 Apr 2026 14:56:13 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5392d35sm1601280185a.10.2026.04.08.14.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 14:56:12 -0700 (PDT)
+Date: Wed, 8 Apr 2026 17:56:10 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Dan Williams <djbw@kernel.org>
+Cc: lsf-pc@lists.linux-foundation.org, linux-cxl@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] What's brewing in CXL?
+Message-ID: <adbO-tqwA_MJ1NHW@gourry-fedora-PF4VCD3F>
+References: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
 MIME-Version: 1.0
-References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-6-baohua@kernel.org>
- <c54e12b0-1a35-48e1-b243-991de246a8ca@arm.com>
-In-Reply-To: <c54e12b0-1a35-48e1-b243-991de246a8ca@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 9 Apr 2026 05:54:55 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yL3Y1Sr0MjTd6=ROC0jKf4JkCqNPODMh-m155rUFcS9g@mail.gmail.com>
-X-Gm-Features: AQROBzDWRyq6ermL0Gg6O6aynt5Lhi1rCxfVFeVsKmdjacHsxC88F_qdnibnoyI
-Message-ID: <CAGsJ_4yL3Y1Sr0MjTd6=ROC0jKf4JkCqNPODMh-m155rUFcS9g@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/8] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
-	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
-	Xueyuan.chen21@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 90A2420009
-X-Stat-Signature: 8kbwj7t6ckycws9t8yump7qbbxjc7kuq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1BE3E18000C
+X-Stat-Signature: asuofiwsuka9z49pkkqcie7ozq3zomty
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775685309-603208
-X-HE-Meta: U2FsdGVkX1+bPPoy9LQyuVRNr2F0vSTGhPnbLzh5l+DgXGnGqNWEyuHXskBrcN9elo4KXeztlcieI2z3cTTkyXCcc15vTjTLVSAtJOFiI5CKLQ4r6rPeaywvvVr1gXxjzAw7PL8SKrOp9hoHkOszw6MwtYm95H7PjU472LlJDxxi4IR2YIVAD9JHYA+sE0COCJnabbQsaSQsJCrDNwDtLIwM6105F4Fc7mJL/8WxJdd8U2mMAF4ken12Rc9MKMWW8rHpiAbpzPkg1r5ycGHjpP2CIiMo/5ao+qT0t0ctHytUmRIL5jNUTtrkbuI6xJha7BxQXmlWw+5zwSri309kr083nj8hk3depEvxFC6VpWaSIM1oP+ZMaPcGVuAxiXJ732L38Q4Y7NaMR4rbMiB6feH25uH6zahLKRWYUHbYi7yUlI0AU7HQ7EULGP9Fp3mam2jiJ5B5zMSedX0FAB+j6LxNtY+DQy3eBjx916lzjT0eR6BXpf+SdJkA+/ynqznrSwHe5/9uToP4xEMI2dE2LLQ4529zhJtyzzpxeCbNq+TFDPQ1X5zGTyp7M7HVFqyX7dMFhdRhZF+zofaJ12qBw5fUF8OFT90pQhoE1lwwWcI++ulEWsHVHj5PJoB53AjFa23f7/eA7a7E0Kjxgun9bbJgt8Mnh1ihFuwVtz0pAnU7h1MksWsH9O/+HCUDc/3h74nmlbK8smSQODOQFOsW6TR9l1BM41LcDyqv+85iHkB0QtdJdDYNJeMDB3NpbcHuGrV+oKfRwxGwkUGgxEB681KZzGmEur6IqQUepNP4xDGxFCe7+rnJxWa7ibQvb0GW0Wja0Trnf8ob4mUFzoD2d0Bj/8cHeJLcKg2kL+g7dWPEZsRL0f4hRHXh9Msp/OU509ufReB3J08PgKcKScxZ4vC2P9SaNPv08yQSKAa3+Vu4XjKKuUS5QLVhZHtvRyJK0eA4c24JDQaokNHf5Yl
- HNgRpVU4
- 5FBY09mcKUa4mvoARgkYXtxFaKZXCvqtKLka4zBtEKDlAqufd1rw3FHagl5+TlNlIKCTHN/BU91WvL00zLGyrhN78MXgKto5F4QsSzhcuXToxgZsbAHLOT3n/H9wDaZmifzJew/LYRyrYgKpyu0sHnaDQgHwoDgiyyJtDsn83DNsjpPR27kzAb8x7AJGBgfPQV2+vNoKwrz8YAiGZTFq9ZfIZ7yH73tZ4JfkNwY7yanVG9g6bAZ3OeemXTdD4tSQucKXvXwd1vtnOyJDAL5CMzShovDiJnrwLBtPpGTR1I/kLCF2jBYXLbo+ciU+h8nCD+2Cloxzuiu5iVFjTnoJLNjQHQ5r8183FG8O6iSi6ARAhmo41wJhMyiMl96/Jm/e+PkXlZPNWCRte5w2bPbeIRH+lg01hcTYmVJrm+JChwaGofaV3aV0ggIBhfg==
+X-HE-Tag: 1775685373-42138
+X-HE-Meta: U2FsdGVkX1+OQAugPCwYz9Jbgtn/urHYS93GW3i36Agf9kDAftbRTzGAM68/kg4SSZ5ytbDdwlG8lV5ALTqo2duec54BoKN53VEFRltWF31fwBnzIqCVlvH2gq8EJVATjzp7IhWtuhVtkSMEzd3QovaWWt51soetnwf+oe0fxHXTGwsdwYIsNip7der1b332VlfeNW8zc/lT6JC4CuFrfYbvHsoVZFf/+KPqvacT1WdhKd4Rubuz1TV9tMoE7lu76BTHA5dtq3Nx8nHZkrD6Jg6DZhoRtR5ulpcf7+ogAUS1qx4i9PSDEBjmhov2Q4CCH6NDxdqr13nK8Mq/PunlxHSCEx4zXc0bDTvGCPUCg4tCBbDub2E8XjU+onrdYBLZ2XQIh5tiQmwhJrTfdoxKxY5KO33nbDJBUzb1n4nTk7UFWvQrAfpuce8U8CGt+n+XZD9GBbu5ffv7sJv7KDU8fhApS2DIqoFyTN7RrgU216uceSi4gl4xs/0uQqxQ11lZybpG10orS9X4PLFN0ZAIYxt73IKm/TILiaP30+BRBE9aBolL9Bku/2jngDXnRXRENFjwblMnGgGrsm+xMhTURh7dYD79DRXMK0EnTP5xS3NxER/kIQ2ph3HOQnTHycLatBoHM/16dgpaetN/xJ3aWu7kpwQTBRyGlmea9tWk0PdyzMTwisdxt5ml8MKoYjeU4AYPUp75lrmmF9SdSUgoazItMiTzKihZ+RAlvDUQ6IKlrPeT8vEYXOdURwhAGsJPBdCraf5Z5qtbOM3lCE9fI2XajQiXtzKn13ptOEBgFC1ghC/3E2ivVsYIy/sO/0wkNIxtNrIH8JewzNJ0Vf10WTcKQIvc2G0s3xWT8ygeYSP6KS6vLrmjHqKvFJfd/HpCD+1+YlCYbNC3sq2AD1HaNBGSbcSFZWQ3ug4gvKPR3iWWOlvw4EUi1OGmfD+5z4b6ktlkIt4e7VuNj4+YLU7
+ ++3D4Tvl
+ oQdWD8A8TvmOxDNpcGl9huqqdZEocN+Xtl+w7TbMf+DD8uYPV7UAzjbXKyOMTtIWLpRIcTx1+qVvIxFXIfRVceXBNcRDl5J0L9JPRY74rPro0N/BJK5rsXycJrp7RhClmSmQeg1hGsHJvB3CPenCroJ7ul39TbPHh5Qz9Z+vc4zu869Epuar1vnbV+HSZEkgwnVRO4kcmfBEb/0kGz0Lv1haZRafiMksaqylW23nhf8Hd39mqueNgt5T5DfnilIewEpL/bJtsqR2FID9VuWkMCJRL6Vyg+ev+zLfVffN3i4rxc+wLSV9HsId1qhGHYAeFupQSv5yBJwsPQFu5qjo34LX0adF4DDMyLSbf9D06IBRwKmKXqJ40eAP87Q2e4uWLLc02A7mIFfhnJ+KwVMB26rs+1UYDHp3elT+R+KbrNZ/Z4X4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,104 +117,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 8, 2026 at 10:03=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
-> > In many cases, the pages passed to vmap() may include high-order
-> > pages allocated with __GFP_COMP flags. For example, the systemheap
-> > often allocates pages in descending order: order 8, then 4, then 0.
-> > Currently, vmap() iterates over every page individually=E2=80=94even pa=
-ges
-> > inside a high-order block are handled one by one.
-> >
-> > This patch detects high-order pages and maps them as a single
-> > contiguous block whenever possible.
-> >
-> > An alternative would be to implement a new API, vmap_sg(), but that
-> > change seems to be large in scope.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/vmalloc.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 49 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index eba436386929..e8dbfada42bc 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3529,6 +3529,53 @@ void vunmap(const void *addr)
-> >  }
-> >  EXPORT_SYMBOL(vunmap);
-> >
-> > +static inline int get_vmap_batch_order(struct page **pages,
-> > +             unsigned int max_steps, unsigned int idx)
-> > +{
-> > +     unsigned int nr_pages;
-> > +
-> > +     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) ||
-> > +                     ioremap_max_page_shift =3D=3D PAGE_SHIFT)
-> > +             return 0;
-> > +
-> > +     nr_pages =3D compound_nr(pages[idx]);
-> > +     if (nr_pages =3D=3D 1 || max_steps < nr_pages)
-> > +             return 0;
->
-> This assumes that the page array passed to vmap() will have compound page=
-s
-> if it is a higher order allocation.
->
-> See rb_alloc_aux_page(). It gets higher-order allocations without passing
-> GFP_COMP.
->
-> That is why my implementation does not assume anything about the property
-> of the pages.
+On Tue, Apr 07, 2026 at 07:35:54PM -0700, Dan Williams wrote:
+> For the summit I offered to organize a discussion on what has been
+> happening in CXL since Plumbers and a summary of the monthly CXL calls
+> since. The session goal is present top challenges, address concerns /
+> questions from the room, and perhaps introduce the CXL topics that have
+> their own session later in the day.
+> 
+> Please do comment, question, ack/nak, or add to the themes below to
+> highlight interest and help focus on the few topics we can cover in the
+> limited time.
+> 
+... snip ...
+> 
+> "CXL, making MM problems worse since 2021..." -- CXL subsystem tagline
 
-If you=E2=80=99re asking about support for non-compound pages, I think
-that=E2=80=99s fine. My current use case is dma-buf, where pages are
-compound. I recall discussing this previously with David and
-Uladzislau.
+Acked-By: Gregory Price <gourry@gourry.net>
 
-If you=E2=80=99re working with non-compound pages, I=E2=80=99m happy to add
-support in the next version. I=E2=80=99m also happy to reuse some of your
-code and credit you as Co-developed-by if you=E2=80=99re willing. I actuall=
-y
-prefer your __vmap_huge() name over my
-vmap_contig_pages_range().
+;P
 
-Does that make sense to you?
+Obviously I have interest in this space, and the private nodes
+discussion is semi-orthogonal as I have been applying it to non-cxl use
+cases - but i do think the framing of it replacing some DAX patterns is
+a decent one.
 
->
-> Also it may be useful to do regression-testing for the common case of
-> vmap() with a single page (assuming it is common, I don't know), in
-> which case we may have to special case it.
-
-I agree, so I had Xueyuan test single pages and highlighted this
-in the cover letter. There is no regression: "vmap() is 5.6=C3=97
-faster when memory includes some order-8 pages, with no
-regression observed for order-0 pages."
-
->
-> My implementation requires opting in with VM_ALLOW_HUGE_VMAP - I suspect
-> you may run into problems if you make vmap() do huge-mappings as best-eff=
-ort
-> by default. I am guessing this because ...
->
-> Drivers can operate on individual pages, so vmalloc() calls split_page()
-> and then does the block/cont mappings. This same issue should be present
-> with vmap() too? In which case if we are to do huge-mappings by default
-> then we can do split_page() after detecting contiguous chunks.
->
-> But ... that may create problems for the caller of vmap() - vmap now
-> has the changed the properties of the pages.
-
-I don=E2=80=99t see this as a problem at all. Splitting pages does not
-affect physical or virtual contiguity; it only changes the
-contents of struct page objects, not the PTE/PMD mappings.
-For ioremap, there isn=E2=80=99t even a struct page, yet the mappings
-can still be huge.
-
-Thanks
-Barry
+~Gregory
 
