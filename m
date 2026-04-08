@@ -4,106 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30296FD5F87
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 06:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78520FD5F89
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 07:05:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B0EB6B0088; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
+	id 96E876B0088; Wed,  8 Apr 2026 03:05:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 362676B0089; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
+	id 91F4F6B0089; Wed,  8 Apr 2026 03:05:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2508A6B008A; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
+	id 7E7816B008A; Wed,  8 Apr 2026 03:05:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FD866B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 919751A09C7
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:49:08 +0000 (UTC)
-X-FDA: 84634461576.10.BDC2935
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D7A5E2000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:49:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4NFTZAU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 69B386B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:05:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EB421B8FC0
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:05:39 +0000 (UTC)
+X-FDA: 84634503198.13.75985C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 51737C0008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:05:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LH0ocdHc;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775630947;
+	s=arc-20220608; t=1775631937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SenYDPdkiQKzoSg2iBQvwYuThBrOYOejVdxnNLXibeY=;
-	b=kndZ893zi5KdlcbW1hT9rhtKzDA315HOJPrzVfSsahPTitP2tLka5rgGOWRERz0MJZZiLh
-	dg1IVAGTf1AaD654s57yC0rFRUb8fj9/9HRLgB8K9LQPez2ZxR3aHa9bwKPWKl0KF8Td4r
-	e9tFqeoBes2zcGY7Sr/otCfVrBleBTQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775630947; a=rsa-sha256;
-	cv=none;
-	b=8ppyr0ySENKJtZsCLWYn7ZNlDFrJj/Ks/5lItHiQefGkSE1so676laOys8p+yAvCw45qGB
-	E/x+O5Rk0aAY6AW89ymLGAkSyf0DOAfFVDCoc3Rko08tjO7G9nq5m6ntO0ssUoQfZ78b6N
-	xwllbp52u+yxY9a0gtKEK2sXt9CS+sQ=
+	bh=+pb08oaDATCWLltN5QPqCojfNCmng3uCOaH6brIS54k=;
+	b=DfKa3HTmlgLl0BXB/EZycPCFDsRqvUBraaHkPQ0RxlasT46fwtDuNQYJ0LTQ4Gbe+cEfuV
+	rmQgu9iHwQ0WS9aiZ6oQUNUMHxc/s+oxsyfiRDF9UM8Q65SNkJ3LY+2q3j0W0f0Z02noGb
+	3xPta5U4RWRLXGOTIROehbzdI7nbzhU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4NFTZAU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LH0ocdHc;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775631937; a=rsa-sha256;
+	cv=none;
+	b=Dr5sOD72lmvy5jgHbLudebnqRxjwdwLDsrUKHaqMjbD5TmHEAFHECIFy9eR8hFR0bwwmKj
+	q69j8LxhoNMQntAYk2eovDaIe/z3wqpRbcPG1AhtK0d8TUEd7lhhazsxC8212RZK3bLw1e
+	5PFP3YFlDmtcDCH1Kk+eHrXlCWXneOo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2BC5435DF;
-	Wed,  8 Apr 2026 06:49:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DA8C19425;
-	Wed,  8 Apr 2026 06:48:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B882D6013C;
+	Wed,  8 Apr 2026 07:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC029C19424;
+	Wed,  8 Apr 2026 07:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775630945;
-	bh=Jf27xk2PEb+D+m73rLzzPti70YoNYsdCvSbCyz5KRkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O4NFTZAUGXJlYJi1cB1XvfzxzdGTopyBo3L3YcY86XA142N96ZrAP2E8Z7cICnhLE
-	 6AeES82rZ1GsQxLKVt6MkUHPfg+P7aIRFJgyQpgbmVrbSsa7jW85ipzT5C6LDcS0XP
-	 gRoSDzQgopOYGZbbOnFfFufWbjcN0mV7jrsb6rLPGUY7f4w4xUxlKOoWXKNQODNu2E
-	 mZd3Qix7Buh60T4+rmK4cx3a5t4M4Pm5adIEofTwJpiX1TKY3djbBbAAYSinFuRLaI
-	 RP+58r0yTBQ6QMvYP/COqOMpaf/w8MiS5qx3fyLn/tFDdAP7Z2ZdXxVtxUdC6c2c//
-	 HJbDftmUH6B0w==
-Date: Wed, 8 Apr 2026 07:48:57 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Barry Song <21cnbao@gmail.com>, 
-	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <adX5txC9tGPR-iyX@lucifer>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
- <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
- <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
- <acbgIKuwDsPvPjdF@cmpxchg.org>
- <adTonuzmUc2AzUhp@lucifer>
- <adU3P9fk8h-AmEp4@gourry-fedora-PF4VCD3F>
- <adU8VnzlLw9JUHB3@lucifer>
- <adVPAS4PP7wK0Pxq@gourry-fedora-PF4VCD3F>
+	s=k20201202; t=1775631936;
+	bh=M8XYGEoCkMLxD3pn8ODjvHiw55anXKWJ1M6byHgjkgA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LH0ocdHcmH4RV1KL1PiXHkOvlvoCRIJqQVMTRzQlvuhEbtW0bgfkjAxMxB7Zrkyxu
+	 f5CMhbvDJERT6DOxCYAX+F5/J/4d29Jm0IPcfXoZhKjdXxNYcv/GR8CnfLtEM0zhBz
+	 i5qLy2oj39iFwqGjIDohH6FI/F+0t75CLX4LyR3KnLEdFgXATv3Trm5GuELGoILTrZ
+	 jc/eAxqVi/lOkrzhFQxbcsB8N6L9SloJtgMbupgUv82uIYu41BpT9Jx78ChAMN8cM+
+	 Gdk4gGTbYxd2vsqwuZNvfjUzmaTKwGXEfDZhpCzCgesoeN0PFvfV7voxwslSv3yN/P
+	 rkZW+WZ9BYFyQ==
+Message-ID: <8a5e4afd-cd0a-400a-8624-79c1dc9e3ff3@kernel.org>
+Date: Wed, 8 Apr 2026 09:05:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adVPAS4PP7wK0Pxq@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: D7A5E2000C
-X-Stat-Signature: owsbxsyn1ncqqctfyrq5upf38u94bwd5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
+To: Randy Dunlap <rdunlap@infradead.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, Dave Hansen <dave.hansen@intel.com>,
+ linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260407125133.564182-1-kevin.brodsky@arm.com>
+ <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
+ <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
+ <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775630946-185888
-X-HE-Meta: U2FsdGVkX1+Th0hFU3v+v5iEylxyZwJaT6zjq7+6EZFp7aHAl25gPtqgmGTp0MrHVUSvz16EMTebUKBucuiOQQfjSLVEjBwuWiFj3vhIawbYXSo1PRGLeIkoUvqRkFSNhJFOjUl9ozGavQ+r+LQE9g3AsmRZp458LiWh9XvSRWF1gIpySNs7PSlhhD4+CAAXx8nDJedB8gJjOOfTdPSpw4N179ZzgjBqeGuOy/Eashaoi5AnUA5+AzSzASQfXdhRugfV29gdoizu1ucxOC2wh/Ry305nMkqoc1QLgGK/Am46q/R3Mwq6ZSu8kpPheQ295ZplhXdF8DTEOyUHAS54tF37Q2Li2n6zgdtNW7C8n6zbMMyJsmHkSlbuvyX7u0Ew2GQn1xEjDg5g4ZxRKAtk4bH1dppAm0CfjDhuiv3b6zLU/1xnntauSks8WKHKwG7fLUiS1XWy218f0YVj21IHKSw+GaXQWZs/pjyWgdxHtw5C9k5ChkWdT/STStDpuAxJrISMu3YGjZn8K3UCy24KFM3i31K9qwIRjcr9N7n5mYFrIHq4Lfc6iE9tiIJkVojEaOo61K5wzA+8kogtjx4oPnVmLOEL1PLHYAdkg2W7Fjl1ogVwhwTghXjms7ZB/+c1Ex8UEnSnPvDGH96lD0H7PQ8Bzo2x1h7a0HgpU2S32uf2cMbgZS8aLMBjjed6ZSI8TFDcW13wbwEEgzcW5gzzXw0LvbM2m7dJ/smfiSG+yBfDHLYxaS7lr5wIL59szrl6m5JX/ARTnc8kLPsfVV8UJeRUizSsCRkX5lrEUqR1Agag00y5v677euKT3O0BOu+gdL1ytqzcEp0h/fERMcYxXQyknnSTYLmpk0TMAF/xDisYJSkPhmu/rRvMDXVcSHQcYNRq1VSIjpUbTsWT/4zaW9e2AhYGD5JHrnQM++UDdZJDX81pRdZRhttEtw8j37OF2okDcnnwgDzIKVT1X9G
- 3pRPK5O/
- zohnW9Fr6wwapcKXs694Gx2YShDgf3SMCYJW3M468n1f9sb3jNLXV2HlF1Em2AZ1SUf6mjpLpUYIegVtFHGUcLDhyaKrPptruRsy04UrnDK/Uc8kkV82pDxiC1OXkJkSpnKEWFOIkleTiiYFsLmoKFr3q3jBhKjeE4tU3EnsL2cp1Y9HyRJ/CB7QpoQPi/y2q0ye/Oh+hBcomsMIejtNo+qB9deMbsWyKthP9gd75aLALvA51K/UzNfdGaxOgJCudUGBN2+bY6yKC26AjEWDvL85grDDUKqU5pqTJJZA3Je7RQ7M=
+X-Rspamd-Queue-Id: 51737C0008
+X-Stat-Signature: spzjs5wwjra19nfaajjc4zotz1pyj5x1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775631937-553442
+X-HE-Meta: U2FsdGVkX1+GFNv0OZ2oftcdHXmBwCW1pArej/Eq+6qmYFuO7vwxJH0nTquNMUX4vhzxTrmH15ihUNJ4jsC7IbsMRtPho64IQXTZs/l09twrI0EGH3iEIT1KtfeJSXYvrl+EQ7SmGjsJ9keJqZ0fCGhpzh6dlLr6JjB9jICe9C3LVgLvmcFH+upr/P6JCOif7Fs8j+PFsann9TqNQH1qP8CzT8mroN8BgT9VpwSaRf70cb607lB3CwUsIqsTW+Lnh2Dp2b+uc0HeopCXI7YXUGT76ius1VdItkBaSrRC7PAIXctnlM3DOQ34CvwtoQwCwQ8eqCNmH7m7emUverKxnw553Omqw2ecwunOrrnPNJLSrsXYCbS2mxhW/GdjZpNalGYF5G4s/SYh8SJVVQYAFgzuq1Fxe+jSeTFWjU0J2iJznZtcmMSZkt4u8NyAjyb0PebgqxkmhxTXEXinm6XaYNIx6v87Gl/SIF56U//YYc2qalr9m5RuWWYymfq/74SWZg5WdcYnCTKjQCJl54QYT6Ec9LTq7/VFDx9Yn4E41DDcU8GyMgwkih/jDdJ03+UzuooPCl3Ku5YmyjyNJ4MxbOTWoN08N7JpouDZOgNtXtcMfxRcw4QaDc8kXhZz9Hgpc9C9u9EfnfP00H6pJIpOMUbgqOTkqDRbSAcptaPFS9uVYuTIou2hd1DYGFjJTUhWALEvqNJVyTX0RefRttON0PAKUiInFv1CWYy/tuH2VNUEP/2x77OcL9qjPiauAX8wlmik3jAJmzjVHWLb3kYCSfkfHUQNrHMOCOZLSHXED3Rfo0RHLb9DwF4P+mHd2eQPgGwY4yz1qpx0lOc8QWWD5lA2atcitR8q1qwsDg7N4O35qC55HbudvN3N8fGTEd1gqPz9ym9cOUrccb/7XiijfKOmZuY38SI/ZfyvpUssZ02Lbo1OMC5a1Ql+ZGGehzyrEOPqN6JJAAmI+kA7FMq
+ 08cp2FZj
+ R08ErsTRkYmMp9r1hjUDOSeAHLXxMaHXEukHp4oBPDIWx6RoNs6S706bCWJKJ73hjvmgN2zJ6TFtEDC7UBsMCrCzBfaCi1PfmqruyKK/eTS6ws9Y4m5E0hvNAhkrF6xEFYMiHUygbzAtFzahcVvemIro1x1uskbrKw+pO1dpuL4ioaD8d+yj1VmEKKq1OIkFnhzpMmHMGMyCyn6AIVPu6tR1Z9m3Q1HJX1/mvXg7g5vU0T9deq5JhavvTZnlBtvdvHVHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,51 +146,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 02:37:53PM -0400, Gregory Price wrote:
-> On Tue, Apr 07, 2026 at 06:30:55PM +0100, Lorenzo Stoakes wrote:
-> >
-> > > somewhat trivial work these days via <pick your favorite LLM> with
-> > > reasonably well designed interfaces.
-> >
-> > Though to be honest, I did ask Claude to do this with some code before and was
-> > really impressed with how quickly it came up with something.
-> >
-> > Buuut I've generally found the code LLMs produce... terrible? Really terrible?
-> > So I think you'd want there to be some level of human improvement there.
-> >
-> > And in any case, maybe doing things this way will struggle to really represent
-> > real world cases (lock contention etc.) but OTOH, being able to simulate a high
-> > memory pressure environment with certain parameters even without [the rest of
-> > the kernel] interacting might still be super super useful for diagnosing issues.x
-> >
->
-> There is a concern people start looking at these tests as signal for
-> performance regressions - which is neither meaningful nor useful
-> (unless you fundamentally break list iteration or something).
->
-> But for trivial cases, you'd at least like to know under strongly
-> controlled aging and reclaim scenarios that anon/file memory is
-> reclaimed in a balanced manner - just as an example.
->
-> If something breaks THAT assumption, you know there's a logic issue.
+On 4/7/26 20:58, Randy Dunlap wrote:
+> 
+> 
+> On 4/7/26 8:12 AM, Kevin Brodsky wrote:
+>> On 07/04/2026 16:42, Dave Hansen wrote:
+>>> I think you're trying to get across the point here that the kernel needs
+>>> to know about protection keys, have it enabled, and be running on a CPU
+>>> with pkey support.
+>>
+>> Indeed.
+>>
+>>> To me "system" is a bit ambiguous here but _can_ refer to the whole
+>>> hardware/software system as a whole. To avoid redundancy, I'd say either:
+>>>
+>>> 	If both the kernel and the processor support protection keys...
+>>>
+>>> or
+>>>
+>>> 	If the system supports protection keys...
+>>
+>> I see your point. By "system" I essentially mean the hardware (the SoC).
+>> In general I would tend to avoid "processor" because not all CPUs in a
+>> system necessarily have the same features, and some features require
+>> hardware support beyond the CPU itself. Terminology is hard...
+>>
+>> Happy to replace "system" with "hardware" if that's clearer :)
+> 
+> I think that "system" is too nebulous there, so I would prefer to see
+> "hardware" instead.
 
-Yeah and you could assert a lot of things like this, for me the real value would
-be in extreme circumstances which might otherwise be hard to simulate.
+What if you're running in a VM where the feature is hidden ... ?
+-- 
+Cheers,
 
-But it'd be testing very specific things rather than 'how does an actual kernel
-behave in this situation?'
-
->
-> Likewise with comparisons between LRU and MGLRU.  It might be easier to
-> identify the behavioral divergences that way.
->
-> But i fear the whole page-table walk thing makes all of this a
-> non-starter.  That's turns into stubbing out like rmap and such.
-
-It could grow exponentially yes :) it was hard enough isolating the VMA logic...
-
->
-> ~Gregory
-
-Cheers, Lorenzo
+David
 
