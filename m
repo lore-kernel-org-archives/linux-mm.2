@@ -4,102 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3867C10F995A
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 16:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B7410F995A
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 16:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90DE36B0088; Wed,  8 Apr 2026 12:27:45 -0400 (EDT)
+	id EA2DB6B0088; Wed,  8 Apr 2026 12:42:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5966B0089; Wed,  8 Apr 2026 12:27:45 -0400 (EDT)
+	id E2C106B0089; Wed,  8 Apr 2026 12:42:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FB6D6B008A; Wed,  8 Apr 2026 12:27:45 -0400 (EDT)
+	id CCD106B008A; Wed,  8 Apr 2026 12:42:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E1016B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:27:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 215911A01F2
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:45 +0000 (UTC)
-X-FDA: 84635919690.20.31909BE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1F8F440003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cznLZ2Ek;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775665663; a=rsa-sha256;
-	cv=none;
-	b=oFUiEdpqomvqaFYG9940MpzVTvg/3RoEoGti6ESmY2Fr9u36RFzBoc5/214Pld5KUWmRKQ
-	nZZQGrFdWWzjy7dwetDYdL691poiSjME65Ly5pXuLQzEa0YPj09EnxoTIxSq7QXpCUutxe
-	f7JpD/E2AesFzGSih43KF20DtQgkKEc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cznLZ2Ek;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B851A6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:42:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E53641A01CD
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:42:21 +0000 (UTC)
+X-FDA: 84635956482.22.C1E3A3C
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 948ED20005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:42:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=L545g3X8;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775665663;
+	s=arc-20220608; t=1775666539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ufZDlKZ485/m20U7MIsmROqZ0tfCkev/WJXljvTA8O8=;
-	b=wV1ItKVtLjfF48M3WAXmjgC5aAyxU1OkI2oFXYghVyxcZDTM1tlB6YlUgogdIe5eQSo8dQ
-	3DM4j2waNfVswX930i1do8As+DY299na5Z4+tqUNB8T1NjkYm7P4EsYXQxqeWZ9IDjuW3y
-	iTZch6NsM8Iu99TEP3dy778PGzYXXVo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 65B7C60128
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8E9C4AF09
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775665662;
-	bh=ufZDlKZ485/m20U7MIsmROqZ0tfCkev/WJXljvTA8O8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cznLZ2EkltNsVpFgDwbi4L7F3vTnqYBKFL6PnWs7y3A3P3fdc2FQYAtLWD3fkcsd6
-	 dgeTkWNVIf1DDg6ZbgDpu+HFj4D0JWU6D9eApMUVjv2v4ySoBmwCYPlRMwim7duXmx
-	 PZt8DTkem9/WIVDLCteeLMHoTfmF+yCgyTANtNV4AjJVPQm88iNs/iSecotuIbH9Ge
-	 u1a00xGdCAfSSq6yvFzYiD+jcWeKLbN6/acu/IHZNcgSmFNtDL/GJgVDhnUpFh3Elp
-	 LgrJu4Y9K5MfoPcKy2dXw4gw7oHIfzLqcbEsjUgk9tJx1Ny2ulKcgTK2UbBGqh5jIa
-	 iIKjAlVOL/+PQ==
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-64ef161129bso5364964d50.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 09:27:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWA8HlokwOxzgoF6n9bvTbJpzVPT9uEaInZdbKlHL6bBHf0kwg8fbUiHnRg1CR+Noes14qwn2N+jw==@kvack.org
-X-Gm-Message-State: AOJu0Ywo/Luw9YhINKg34zN4e0pYAoqPxlkPvo01SauKXD4FtbOQKe0I
-	eYiBL6hCZzBAO0kjnEcxvM1vhda+39PybaQxMPyVrJPY3azM7VXNcpNyi8Pjmt9DabybM1c6MJ7
-	WnorHtBkV3i7VSo5SrJWHgf4SmhLf9wchue780tdPIg==
-X-Received: by 2002:a05:690e:4399:b0:650:849:db44 with SMTP id
- 956f58d0204a3-6504880099amr14212604d50.38.1775665660473; Wed, 08 Apr 2026
- 09:27:40 -0700 (PDT)
+	bh=QIK4dvbBCacea2XmbH1X9fhSsvJ+R6maIp66zH6uBkM=;
+	b=SzQsUE6XScEAFALMCdkWocMvVoG12d0/iAzwBKAJJ6R9K/QTXNnOUZV2/5ZB4oSCrHcdoV
+	a/vjRhrZ6zLAQGvM+DC2ATb76/x1yALR4ik2ZtZo8gV+iOmNKJD0sQr0WOfKcAU+4knJr2
+	lEghFrhgrzMLB/Z+Ca4ew3SJOeKwLUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775666539; a=rsa-sha256;
+	cv=none;
+	b=0+13mo0a7VWpmZh4JS50X2E8d42BEgvbz3pd6IVGJ4+8nh3H/QbM5HJPgWqcZWdGshaRlY
+	4lWjkLKxxdOd9DXIaf1DnOZW0HFg3+6EzQPgiBbiG2EwIBLYWAIzRygVja8CMyCPPwSSUV
+	jESmCe/sA0gZrei5fC9+0O4TQCKjw3Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=L545g3X8;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43ccda008cdso33791f8f.0
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 09:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775666538; x=1776271338; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QIK4dvbBCacea2XmbH1X9fhSsvJ+R6maIp66zH6uBkM=;
+        b=L545g3X8OYh2qsTB2tInlCyyNZ68xZJXTRXXxGTMKw7ImH4okMZ1zXVcEw13jvz0cf
+         uaaQnEuI26kHsGEpwSJYoswLO62PPMUMZ9U7NHsnrAYtg+SxKemdY3O8gRvag0lWok13
+         zLrqNXXMP5eOok7ixLiL1vkIdt22mWnJ72nFfNKW8g2ibCQeeIHr7XI7hbhwc6EMhemC
+         HklRdUxJASQNZK7Aade31Rnu4aW5kcwf3JLqrLVntc9QOEEyILHm/MY7Csx0/3EAUpIo
+         vw3+G3X3usGvctNKhs3ZtKfq+gMKUTyM9VM/DrSZ52oLIgfLSuYpiBU85C1/Sz3L5BKq
+         8J6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775666538; x=1776271338;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QIK4dvbBCacea2XmbH1X9fhSsvJ+R6maIp66zH6uBkM=;
+        b=p9hFcC0+prFWcb9TmAyyatptPRDGhwYGkmQW1Vh2ZHrQ+4bKGcjThCQ9dmzaCy8A8+
+         rElxy2y3ZKViFEYQ7neTRBMSPXCMzNJoH1Jeg3D/bBxe41dyl5JYPzF8qUw6BM2y6Bim
+         FTpP0LtA1LSsmuiGdoOj6EBvcpW4fpb+aVKm6P1wLXwzuvlA67t0UcFoi07cY1U8rDxP
+         ivEuj33w0ZPHCBcE/d7m6XK3xh8TJlQ3xDEKqaNb8O9oT5kKCwYsbAwjwxj4w0xlN1Y/
+         vJAMR0WqOIBv8Ey5v9bck0YtH636iZgbuVC360YxvAf36eAK3ApiLZwS3/xqC5iPP6Xc
+         UfnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdawcTUolOgc53SmAiC9ZyJ10vXDOxOn4bMfHv20SzpWHksR5MyXv2KHR8cSxV7WtzLPo+IpuLxw==@kvack.org
+X-Gm-Message-State: AOJu0YyBiVClN9nCDqqmf68lQXDm4aP2ol5IDnxj4y2FfeNwwj1xAoEf
+	2NdAk4qbKa+eHXXi93obZyyfO4IKYdy3EH4LGgq56fYNjTwl/yTJ1UJzauEVNgSlqAM=
+X-Gm-Gg: AeBDieszMPXjQhWlicoGi8mHDulN4gUQY2tEnn4YQWdfAD9K6yFy0trvYqORN5c8iYU
+	NdnIJO+urQqloDtmjAMQLHQw3BhzGB8rnFDoC/dao5S5GXQ5N0S0gOo6qVPfnPJBDvEnpp5qjwS
+	TFV8Czwq0/4oDpKvIRCsjq+2a2Q6t8VvDPPL8EMVScQSHRwXvIbc2V2F19DplhSOE7N9q1uU3H6
+	HF/q/JRIs/Dg4uR+PMnF1++Ql6xh+xwwNkQm/gW3+GuRnuHTLWS2RuzSpxQVKAsA2Vv0FKbe2SB
+	/MOz/m++gCpn319cVc4rAysQjbtP1vPFAm2ByNnGPH7bOWg4FcnF2uwVePIEgoJBG6dQ/2Mpi90
+	gu0Li3pg5GZtSzwYY9J6h43YfA0HR17vQ7SAm3T1PbwYYmYZchrUXCiv6WoLfw49io2VKG4Qk2J
+	I6xNczYwm9GqlP0wSYCg6eH5OcfkpVZf4wz3TX
+X-Received: by 2002:a05:6000:471e:b0:43b:940a:3457 with SMTP id ffacd0b85a97d-43d595e0467mr218166f8f.28.1775666537708;
+        Wed, 08 Apr 2026 09:42:17 -0700 (PDT)
+Received: from localhost (109-81-88-253.rct.o2.cz. [109.81.88.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d214f2b63sm54258674f8f.28.2026.04.08.09.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 09:42:17 -0700 (PDT)
+Date: Wed, 8 Apr 2026 18:42:16 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [RESEND PATCH v2 0/8] mm: use spinlock guards for zone lock
+Message-ID: <adaFaMGbndSSMaZn@tiehlicka>
+References: <cover.1775654118.git.d@ilvokhin.com>
 MIME-Version: 1.0
-References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
- <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
- <adXxdLSHp2E2k6_5@MiWiFi-R3L-srv> <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
- <adZ4LehwC9KisuXf@MiWiFi-R3L-srv>
-In-Reply-To: <adZ4LehwC9KisuXf@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 8 Apr 2026 09:27:27 -0700
-X-Gmail-Original-Message-ID: <CACePvbV66RRGg-q8mBE6sPa08drVc_NV_HW5QjrUw+hL+=JDaw@mail.gmail.com>
-X-Gm-Features: AQROBzA_fBJ_v1JAHE3_gK85XTS-joyU9CVb59g4PKnHlHNEu7EFFx4hnZT3QTY
-Message-ID: <CACePvbV66RRGg-q8mBE6sPa08drVc_NV_HW5QjrUw+hL+=JDaw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rsxajzbc737nmwhfohdmy5hbc9wpm3cu
-X-Rspamd-Queue-Id: 1F8F440003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1775654118.git.d@ilvokhin.com>
+X-Rspamd-Queue-Id: 948ED20005
+X-Stat-Signature: 7oa33chzm4swkspq79mc8ewgitdo1woz
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775665662-252138
-X-HE-Meta: U2FsdGVkX1/EnYWaxL6ShZB0t7FRrtmZr6koKD0e07tL378ZE0WV0898uArpp4Xkt7iGZ8fK1btn9kBqZyuVvbSeXYfv07hDM34Uhk1rVYyVaHLXWNI81Esm/yMd/4I0sZiPDFQuZFouogycGJdN0x3Ar+quIiwG2XMSautpM1+OKz+hy4xgMhayVsYykPcCJCsJdQu3PAxxSnoUe5XX1joclLtzEs/oJkPOWQfnxrAeo+IJJRYvb/C6mp/wECRdvK0TMhsxGP+dtw2DYzCDcd4+/xCorEWWysfZu9H50jBvQDLyFariYNXbR4UZMF5HTLJe6XBTSTaHf58FZq+bXjpg0A6vWTVj9YgaCXfmacOtreqSuCQL9WJwV/uS4vLi1NCYnHMbRnO2PMkt5xmwz5GvMk+LqWcp8AndQSgeAFNUMQpKcOR2fA1O/bFZ7JMq8O3P8/0+q+SC1+x/Ic1LioxQtnICBojtlneL2HgMUxyYEp6NWVhpiiJu9G1DfbdF0g3A8hwn2eRht0PikFznbAvA/0LHQ8B2SDKaSYYCGcBQJM/ZLpa0Id3fipOI2RXV7N9KqgnTFoLKoQjHYVpTfM770A9tCIJJDyPu7YmheByudGabA1enirVgRwMH0F2ODLKqA4pWBYb+FJmPeh15cBqro2F+HWWY00cS1S4g3G7/SoM+mAOLnwwP1FKkM8nbIyMvMzQS8UeIy7yes75hh09PUlOUqsGjFFIuVhj2ngEMKvl2OsqYsRRZPb3x0iDh9rxPRxxXzbaH5b479lk6qcbyznIPAqaOKVw2ZWa6eBPYne68eI8l+8NVkAUCVr8mF2pcEIp6a/XOEByTC2XmKDBqer3Lp2nYlgaaxZnDfFaE1xTNhzE0HJgTZPSD/oSlAMddj/zmxf4WaZ/aKsdn/Gab5eoTCDbOZorVU6Z0gHgFvLJa4uRfSIsv2mzdTzlrzU+A14xi4AoQepKSZDV
- fhDA9jHO
- L9pnooR456OOGD3UUplzyXPsBFvZez86I/B3Eyb9vs8GyJHg+Ef4M5O2aLgqdByqATm0CD19XA/AALBobhDTbF9nmrcItZ3BQWZ3DMH04nANa7k5sEWK+rHcl5yGKC4C1QgdOvgimwk0eaqRn1WdHVvM1+D7paJ2aI+6uMrAJn7wmcGxbXLrIXd9h8Lk3+yJSdPXW5eRKIXfEaVD45Hagmg8SYijlw9kAWu9aDH6HpiDKcrNswXa2ZwoSZelTisicsej4+sAREDeQmcymkui1tBw3cDcvUPRAVzQDVY2e88P4grSNUHX+MdP4EGFZ4w0QMAhfk+PqJBIx50Hszq9I56mMzE6HCnjGz+bRlY40Ep03UCbD6kAB45S81g==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775666539-734728
+X-HE-Meta: U2FsdGVkX1+Zz1LPB4I/2U8FuXjwuY0YXoxpq/1PSsP/qGOr7kyTAsoi+/NEFWS2oVtyUQZKdNgzR4l0wh/GvE5D6/dtCC67zRjrVf27ZiA1iv5dduj773LARfAzIRPPbLEUxG7p2QKGCGEYwRRPM7DARXccAtHQNS4GzG6eOgXKL/YD1GunPXSQPax27+sLllI7S0ea/cVTb4pnwCYVgVmiuoED4dIEytn9nciM5PdPxpK4WFT2xsdOQBwvYCatqbZbRli3r2/6sDugnJRBW7QmyYiehaDsvvX/owHgQx0GPYlYrlYmIc1Tk+4BV4Znr2X8SJ+xhr+w0x1Z6r4RJ7rMFfWu0bftEVUp+3Y0+VsBK8fTR4SoJyPh7MyH4t5unnwMl2egyOuyBlXtFo1kGVIqv1/jMaISpD7wzfQQSuDHrDndy/N9xByg/qv3DlNGSJa8r83v9ApQojWv8u+UQqpKNtO1Zxjx6t/GVdqdQuFUyTWoyueLSOhsyw4M6YkJpNlMePmYcR0u148EdpbCil4mWC3VEYC/dqa2HNf8Rk5rUL4+lACvw/RTJ+rOj69mYEVCooGPEB1fhdWZkvwz1PUtvbN0mX/p3nxu+gXxgk2inD8WRE0GW2COfgzyWgcSS8FkxWU6uLrDpO7Mg+gov2dKAOzOEutbhKuTBZyMI5EeSn/hoi3NDF+BTFyrZjh9NCyQIB6kYzPm7s+0ZmRWQuoTa5G6CD1Wq7BQMfyHQbv5XbSSmgd354mjgYjmUdF+SvKb2RzCbQn2tXOaMUBzzVS+4Uzv2KrBDhiAsz0sDmDbvrwHRHYMqUzdAnA/blS7cMelKcP1qFFN3YSABSky3BSsCw+NaCEPAATLBOw7xfi6ilCcJB9P7e9aJy7Th38nxIX4frY59+pXJ4qQXW304SYYe1apx21ot0s3rOLqa86+Vc47C2tRDDBDk07Qx8auiZRUdMz31bD0oFzzeJA
+ DMexJ00N
+ PeA0efCdIOS3HLiqlOrOIkAs9WEJpttOdcvpQZJfzJy/T3RXbIueFWSSYtKkpqKHA/nRcdo667OSwXPU/REpPNTA0GMDBr2yQUMAwf7cLNonzeZgCCWtxhrknGOLTBIsP/T81uSOvMZ7napOKRYtCqP6brEYfGCj44Hzio/aDEqyP8UUMrmPqJoZ2G5SkrcuhmyMlgT5LTWVL4Vdx+iMKSdW9BFDhi8LyIS7z9H1IEcjrA+cDFRyh5ADSyAh8OCcAkjZg2h4r6NVLoLCLgXKr+e9bwzRJmwuFd5apVt4V2UW/O+DHdMnwCNjb+y0UPAi/D3zcPR9pFuLnwF5DzGujI9zsSjQl8C9nvw0w4kSOFjG0qg3uwrT0vUQSFuT8cHtfnQw2Pwj9rgoM5ZmglHz0ySF5LhDsSe02nVtGlAf47TP5o65YLAdaePyiYJlwu8/dqEiHUk+hALYS32FKfttTJGj9kULqYLTxoV9JjYqS2kVOO5IiayEauRUcAZPpnAEqcvS+Q11Scgo9PeuOxGgROZIs4dMjQ86BRQachvUeNj0DfttY609YvwpM/LG8L5ysYvGu/HbGNCVGPjCeKAxTKkDP0+TZH5q5+aUiwzChLez1XOc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,15 +121,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 8, 2026 at 8:46=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
-> Both is fine to me. I will change to do the checking in
-> setup_swap_ops(). By the way, I tend to rename setup_swap_ops() as
-> init_swap_ops(), is it OK to you?
+On Wed 08-04-26 13:33:15, Dmitry Ilvokhin wrote:
+> Resending v2 to get feedback from folks who work with this code, as
+> Andrew suggested.
+> 
+> This series uses spinlock guard for zone lock across several mm
+> functions to replace explicit lock/unlock patterns with automatic
+> scope-based cleanup.
+> 
+> This simplifies the control flow by removing 'flags' variables, goto
+> labels, and redundant unlock calls.
+> 
+> Patches are ordered by decreasing value. The first six patches simplify
+> the control flow by removing gotos, multiple unlock paths, or 'ret'
+> variables. The last two are simpler lock/unlock pair conversions that
+> only remove 'flags' and can be dropped if considered unnecessary churn.
+> 
+> Based on mm-stable.
+> 
+> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> 
+> v1 -> v2:
+> 
+> - Andrew Morton raised concerns about binary size increase in v1.
+>   Peter Zijlstra has since fixed the underlying issue in the guards
+>   infrastructure in tip [1]. Note: the fix is not yet in mm-stable, so
+>   it needs to be applied first to reproduce these results. With that
+>   fix, bloat-o-meter on x86 defconfig shows a net decrease of 49 bytes
+>   (-0.12%) for page_alloc.o.
+> - Rebased on mm-stable, since the patch this series depended on was
+>   dropped from mm-new.
+> - Converted guard(zone_lock_irqsave)(zone) to
+>   guard(spinlock_irqsave)(&zone->lock).
+> - Dropped redundant braces in unreserve_highatomic_pageblock()
+>   (Steven Rostedt)
+> 
+> v2: https://lore.kernel.org/all/cover.1774627568.git.d@ilvokhin.com/
+> v1: https://lore.kernel.org/all/cover.1772811429.git.d@ilvokhin.com/
+> 
+> [1]: https://lore.kernel.org/all/20260309164516.GE606826@noisy.programming.kicks-ass.net/
+> 
+> Dmitry Ilvokhin (8):
+>   mm: use zone lock guard in reserve_highatomic_pageblock()
+>   mm: use zone lock guard in unset_migratetype_isolate()
+>   mm: use zone lock guard in unreserve_highatomic_pageblock()
+>   mm: use zone lock guard in set_migratetype_isolate()
+>   mm: use zone lock guard in take_page_off_buddy()
+>   mm: use zone lock guard in put_page_back_buddy()
+>   mm: use zone lock guard in free_pcppages_bulk()
+>   mm: use zone lock guard in __offline_isolated_pages()
+> 
+>  mm/page_alloc.c     | 53 ++++++++++++-----------------------
+>  mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
+>  2 files changed, 45 insertions(+), 75 deletions(-)
 
-Sure. Eventually we will need a function to detect the swap device and
-decide which type of swap ops to use. This is just like in the file
-system after reading the super block. The kernel need to probe which
-file system driver to load.
+I like the resulting code. For the whole series.
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Chris
+-- 
+Michal Hocko
+SUSE Labs
 
