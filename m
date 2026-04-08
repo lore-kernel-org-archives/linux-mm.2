@@ -4,159 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8012610FC45F
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 22:51:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E8E10FC45F
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 23:09:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFC5D6B0088; Wed,  8 Apr 2026 18:51:40 -0400 (EDT)
+	id 41C196B0089; Wed,  8 Apr 2026 19:09:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A85F96B0089; Wed,  8 Apr 2026 18:51:40 -0400 (EDT)
+	id 4140C6B0088; Wed,  8 Apr 2026 19:09:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 926466B008A; Wed,  8 Apr 2026 18:51:40 -0400 (EDT)
+	id 1C6C36B008A; Wed,  8 Apr 2026 19:09:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6E96B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 18:51:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29D241B73ED
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:51:40 +0000 (UTC)
-X-FDA: 84636887160.25.2BCFB3C
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BFC1B4000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:51:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=iYLVepDS;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 081726B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:09:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29533E1B7E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:09:11 +0000 (UTC)
+X-FDA: 84636931302.01.A926562
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B286E100005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:09:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=VqbPU0RZ;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775688698;
+	s=arc-20220608; t=1775689748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0HMTyjU+3VWME3neIOtWAUbmcTCr0jHyC7V9xVqa7uE=;
-	b=OGoe7tS32S8ofOk5XnvAKFSvol+7xtQBBNYPZqDEYSeP2dB1trm33AWvCVP8w/3OsBiK2e
-	mj4+bdB9XaXgRQulxNWx8zct6CwhjaBh+yunk2LLcZvyt0b56DQEFQmKup4QDqrVw3DcA3
-	J9GDvZMfxrT4H1vl1Y2oW+Ap7DhOeLY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775688698; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=PWaV4qCR/WGGXD8PVteuM8/cl19CMqRooAS/C+4Q208=;
+	b=GTmeUFqnRyqYk64NdE/pu2NWdJA9UFxaDxmW8cOUDF+GMiHZREQ2a0/EpmXSUgU2yqLmLz
+	/oY45VXPZKURJtxpJT7ZDrCsca+48RIsCxAZJYdcTPO7dWKraveHoy5uBO9PLDzr6F0vfl
+	xQ2Fdkcr7gjn5ebU3bUbnUDWwfotoFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775689748; a=rsa-sha256;
 	cv=none;
-	b=pz5jWxsrdNy5wsPF2Bn6C1NiYZbNsbWtMGvthq1L0pLHdVpwBQ+1XRTjmSFyT6kF0lp3xi
-	Z/D1cv5Q+z7usP4JDtXfdwbrfqSmb0Mkv2X1Frsr9WW2RxJHh/ahjcgJvLQA3bTL7FVBTJ
-	b43321tGEXg6FB8aGx+5DN8ZSuJkpKE=
+	b=PxNc0+4XDU74Hoc7nR28NU0QQh5+U8Yi8COxOY9ks2tCpxwf2Vh+QzzEfvDbmD9f8JSguE
+	mGYf/SJnEEuA0Jf1OWy16g/rv9zAKUrgzI+zb+8+zdwx8xeifsndGmdfsVlYSPqzrsa7gX
+	K0Rmy75ktmf2JxjlTLidY3e+YAShnNE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=iYLVepDS;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf01.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-Received: from pps.filterd (m0167071.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638MgVUW968535
-	for <linux-mm@kvack.org>; Wed, 8 Apr 2026 18:51:36 -0400
+	imf05.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=VqbPU0RZ;
+	spf=pass (imf05.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638MuEKe2688628
+	for <linux-mm@kvack.org>; Wed, 8 Apr 2026 19:09:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=0HMT
-	yjU+3VWME3neIOtWAUbmcTCr0jHyC7V9xVqa7uE=; b=iYLVepDS0lKOjgw+ZsdC
-	ZWja2OTdpkfhNueRHpTof39JrY0XGw5tnXPdf8MWu7FTxzuJk1ppxGkISTR1zMwH
-	zjK++sUyrla/vSpzgaHI8mCeaf7oelKQ2DsSDzEpYDFy0sBiv7GyYPjIlQlQ0xNa
-	f94iycbv0Iwc7JlBKB4Z69n3gBmRaEplbtA3GkFBc0/EF80LNlS2CFtrEjseHD/2
-	L1ndgJl5EST0f9oHbXarVMmhw9ub+TTHdIN5V8O6mhR0lretkp9PlaKbCmGkgmbp
-	NoWaIr3WXzAG3qKJ/Cb82OrDBLMMiaHr10ys2DtT9AZpBvFuhP8jVx8vV/B+0AyG
-	5g==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4dda3p0mx4-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=PWaV4qCR/WGGXD8PVteuM8/cl1
+	9CMqRooAS/C+4Q208=; b=VqbPU0RZujwiTAEJPIBnECXVe7ODtgxPEJo66qu1VD
+	0/Xa9xK3Oc6vEndNQ/p/ZuDOOL1bEstmtnZgEOpGkNzTVfanRqeT014axtc6VlTx
+	EDffkx+F394AfXYf7/6+JCUlR1y0ZqThIpvXWa4YD6B9zk4e7NRQEXyu5MxJh73t
+	YlW7N9GxmjO6QVyr0GSIFwuRxsy+S5HJwMCOsQNJvwV599WLcM2JE6qTKGc3IWHu
+	4SNTTegj+V/RwXMjCiqmfBoR74Zn7dkl9kRdM0s4sZCeQQ11mMkAB0YL+58nPJSV
+	1O09q4eBrFZpCl84ZtIJK6FcyAMznJ8Afhr7p/QHtAbA==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4dda3n8v58-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Apr 2026 18:51:36 -0400 (EDT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50d9a6a853bso11491411cf.0
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 15:51:36 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 08 Apr 2026 19:09:07 -0400 (EDT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cb706313beso21996285a.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 16:09:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775688695; x=1776293495;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0HMTyjU+3VWME3neIOtWAUbmcTCr0jHyC7V9xVqa7uE=;
-        b=M0XRaQZ6Y5sZyON23L/u5XHJRNCszvFRQqxUCVU6cvlbDJ12XU+zjPmrCLbfv3kMSb
-         zEXXRCd5NQ7zd1rKGeLE5lSPWK/OaOIGcJbzhpXgvE8cZ4YvZkD6n8Fr6VlzH1odIS83
-         ZkUgwX9P1Kgp01xs80I4C7AoS9TRU2HCiyDZG0S+SbGpXYukELe5enkUAnpDp1qblX1K
-         4GYVYflfB5LxA+7eAk0RJlKJJbJG1xtrVOuDXRgihhfPXMsftL7B/i+uUCkD0LY0QoO4
-         2bcx4M90yxWg8cYSZhvigtuJwhAIrt5/7kU8ZRsS5CIyrMva57Hw49VYI6+9qMUP4OyS
-         7qiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYNUowlryuV4WhRTHMB7DEHPPUijPYPc5YzHIiPoLMW3GYoGxR4K5Lfuvoqnw2c/A/qVUA6DsxXA==@kvack.org
-X-Gm-Message-State: AOJu0Yy7AvCM36nt1imNDd22p5ugjbjtSWvkxPBhH1Gcl9nRs8afKpTz
-	M5JDig1pQKXAcBUt3QFw96zxZeXmMuLPgayvVEdIdHWl2pYRgqFklA+y5CEsqSZ6IlqEZ9aB96G
-	/YNi4L/ALlypATXa8H/3OsxrHVXF8xJXOJGp4Pim++20IS47a
-X-Gm-Gg: AeBDieuWTg08M0VSi0uI7TRVA2UFD4rCHN8AdH2Vp26ZHw9nxX0zpZ1ARmdOrKRZ8rj
-	mmhAcPXJD7R3tpbN7g1yfPRyOJoWK91FnGqLPhrZ92909ArEH9T/CGcnkGJAeFDQ3hXUPdjqRb6
-	Q4YW7lrmjzxrj1A17bqgOgQhcJ3Snt5AkgMaq7h9TZkffiV6QPBK6LN7PbV6eaBcgrxsbFCXUig
-	L1RCWf45vPdnCI1HX4icmmnLp9virnTRX63Z7NS/oM9nXT+tAl04HN6AxA3AYp2aV9PSwOcRao8
-	ZbMxv5pWo4mLwOBeosGb7aOZCozKL6gfJDIWEy/NYVWpkxHGwrX43CcUC6Pgpnhs7eo43o1LFxN
-	4uH6SM3u9NjPwy1tFmkeHtFFo+izw6XEks3Jp8M0X
-X-Received: by 2002:a05:622a:51:b0:50d:9e36:f95e with SMTP id d75a77b69052e-50d9e370192mr170670261cf.39.1775688695364;
-        Wed, 08 Apr 2026 15:51:35 -0700 (PDT)
-X-Received: by 2002:a05:622a:51:b0:50d:9e36:f95e with SMTP id d75a77b69052e-50d9e370192mr170669871cf.39.1775688694967;
-        Wed, 08 Apr 2026 15:51:34 -0700 (PDT)
-Received: from [192.168.129.206] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50d521952c4sm164382331cf.4.2026.04.08.15.51.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2026 15:51:34 -0700 (PDT)
-Message-ID: <97b81868-6410-4c79-a242-679a9f04f073@columbia.edu>
-Date: Wed, 8 Apr 2026 18:51:33 -0400
+        d=1e100.net; s=20251104; t=1775689747; x=1776294547;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PWaV4qCR/WGGXD8PVteuM8/cl19CMqRooAS/C+4Q208=;
+        b=tEaRnVaME99RJ+GLBDDI57bPYhsd4zs/7Wt619nn7S1OuUQkeWzN5TBS8YtfwRiLod
+         oC3UzCalWDFBW3vwf5eY8gcl2JcT3oGJ9DzlvyFirL1xzvHZkrtbc9QAcBe1M3NP5ggB
+         7AGmGbCJVjMUa98U0qJ5u8m2XRhpGQzNPmGGNcc5MCqizw0L8hbeVBuZUOuV5uV6zXO5
+         bRVF0iJoO8WQHLuOFCZHnwLwxscTjYQArIZ/pCP06YMhYsty3zTmLkiWjoS5eievESLI
+         zH6TpDwk9/mCYPF0wRPOVicV7eb76fQ2/T/j4opUA1WH6BLd01gs+OqnMpHQOd5PZr6C
+         DCtA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2qRXBS5sNIFHKrzC/mvRwbAA5KwvNWGlGENpyf7WR5TbbUIeRJti/yPzhxjNfOnOryE4xCeiCfA==@kvack.org
+X-Gm-Message-State: AOJu0YyiSO2dBhI6Svw6V38ryDMGtmcy4ikMIUzt6Vlf4mlPf4C+ihnB
+	+Rgmv32locXfjrIxwub2NXmSquLbY9bVpgAWQdBid6C/ZX/jgKfmSM3+DvJKTGKuSTnf6N0F+Hz
+	xA6bIuuWomT8480d8nqZOd79aAQpHfcJpXg71pl1607aRBCdg
+X-Gm-Gg: AeBDiev4gBHdgpiwzhKHPWBawdmtA9w8FLqcu/DgC/v0/pqpwxNrBBSmcAURVJgel//
+	kCpPpMyrlcNlMaU5KHBNCzMEbAVON889W3gg9ffaANsxmjoJ1b/JYimlclR5nucvbZrtOKnOG8H
+	gSV6aSsKezhED9gA/6zjvqMa06O/naLOj0EUM+z5AwYR6EXwpKoRS4J1k/i9UddWTeJ/k9ZfmOX
+	oLI9HTYtR9Su+WGIhpAl8yzjZ+StmlkyBV80YJz+1ef8DC2snYOb+kPY/TJEzntG50BXplUjwSU
+	YozgK8Of/cbxLha5OKedgi2dIHBx3PnOfgFCDlhOpFwQ8yX0ajVoPdBB7vE4h/V46xi7dE54GRM
+	uQV6IE/DboNbDYHlSD3yghy+JxrpBWcVQ
+X-Received: by 2002:a05:620a:8812:b0:8d6:255d:877a with SMTP id af79cd13be357-8d6255d91c8mr2446190885a.15.1775689746878;
+        Wed, 08 Apr 2026 16:09:06 -0700 (PDT)
+X-Received: by 2002:a05:620a:8812:b0:8d6:255d:877a with SMTP id af79cd13be357-8d6255d91c8mr2446183485a.15.1775689746248;
+        Wed, 08 Apr 2026 16:09:06 -0700 (PDT)
+Received: from [127.0.1.1] ([216.158.158.246])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8dc1514d382sm125665485a.4.2026.04.08.16.09.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 16:09:05 -0700 (PDT)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH RFC v5 0/3] block: enable RWF_DONTCACHE for block devices
+Date: Wed, 08 Apr 2026 19:08:48 -0400
+Message-Id: <20260408-blk-dontcache-v5-0-0f080c20a96f@columbia.edu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
- task-context completion
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAADg1mkC/3XOy07EMAwF0F8ZZT1BSZxHhxUSEh/AFrFIY4dGU
+ 1rUl0BV/53QzVSdsry27rFn1lOXqGePp5l1NKU+tU0O5nxiofLNB/GEOTMllBVKFrysrxzbZgg
+ +VMQBCgmAKLQhljtfHcX0vXpv7PXlmb3nYZX6oe1+1huTXFf/cJPkkkeP1jpD0cn4FNp6/CyTf
+ yAcV2xSG0CZPaC44E6Q80HnvigOANgCbg9ABgKCuISAprBHgL4BcP+B/gN0aSyWGqLVO2BZll/
+ hJmQrdQEAAA==
+X-Change-ID: 20260218-blk-dontcache-338133dd045e
 To: Jens Axboe <axboe@kernel.dk>,
         "Matthew Wilcox (Oracle)" <willy@infradead.org>,
         Christian Brauner <brauner@kernel.org>,
-        "Darrick J. Wong"
- <djwong@kernel.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
         Carlos Maiolino <cem@kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+Cc: Christoph Hellwig <hch@infradead.org>, Dave Chinner <dgc@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
- <c4453f4e-c1a2-4f5a-b278-76b63d5dc4a3@kernel.dk>
- <01e6c582-fbab-40ec-97ac-02675e6a08ed@columbia.edu>
- <699933c1-c150-4e10-a5fc-6f128260d0c1@kernel.dk>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <699933c1-c150-4e10-a5fc-6f128260d0c1@kernel.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: qDyf2kkDl0BIfMt1GKNzDatCF2tEPh6g
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDIxMSBTYWx0ZWRfX++35KIcBm7gT
- gI/r+BCShPd4LH2UbtcyFh8VadRAVO8KNzTYQEtP5XsFM4GIhJrbpbshGel221R/Z47Dz0/JLbS
- vjt7ZoVl1BdjAVkA6BVnMXPz+2jksCcLWLYppVkxAQkdNIuNOp1dQdi4mYTlS2K8MTZ0VEF1SAf
- bvgapYMmxVIIvQgN+TlA6P6J6606pnVv8tjYorouDbZaNRDulbpZEic7lv7zENE0Q+aNS1VKg1j
- 6/2a6zXpfWVI+egWVpFnYPkghSbnea9ZZvXGAtjPVaD2ZP0xaYmW6m87ULCJ8klLBpQZ4D8IH8p
- SXBx919JgiZhLoMwI52YL8es1ZeXjIenjUVlnN5E5OXZeMRWoKIXtSCb3RGyYYPbwr9pQqGe9UZ
- jU6UYcOa66p14TEwIbkJtD2EtI3oWN1XfdrbBcTyXhKvdiexKNnSaC0AKYRiJXSEXr42rWkpFWy
- 1FgQ2rfvNibKky1TlkA==
-X-Authority-Analysis: v=2.4 cv=QPRYgALL c=1 sm=1 tr=0 ts=69d6dbf8 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775689745; l=5327;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=eNN6J7KwolysQ9oupsl6H8UQYb2MhLRSQ3CeNcukCUQ=;
+ b=bHlGuFQrrz6YhG5yOASexdE8c208+vSdTnDa69D9htKWSJqGlq3xd+2vFNoibaB4KXVVHi6Gf
+ O+kgQh51awBAp3IkBP15pRJ2W7MKUTTcyJZMZ40qWyf4cXW7q7Hj++4
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDIxNCBTYWx0ZWRfX2FPb4qa4qCOx
+ DsZoTxIsDEhHZfVXCQUQZ7Z8mLzmUtp9LLUl+QvE0brvNH+G2h+/ucGfgCSSpr7HiRpe3PNoMkj
+ vhXw33yI940IF5fErPuDluJaBrtX5KqlyS+928XqME5UYH5gd//WPlKixBPGy2TgDmAvaNtInzo
+ 7Qt0ptJQ1ZqYcVSEyE3yYJVKjj8jkawzEyahaGFePw2FmzZjGU/mYd3rc+XpVm7tvFAuDnUFmI9
+ rvJQX/spUULN620dd420nUQcluoMZTnskw6aWtFWfwTSQS2XhV0jmu+HQM0nOxqFjtX8ndi+3L/
+ u9X67FvMskga60tZlFIF96yC5Gdg3A+3sob1qT+jAvsCMtNfx76/2REJdUPFzRTimLWXlUpl8O/
+ BqeHeLC5xiUaRClb9ux8S8hybiMUMDofPS7EwGfLMmlkI2cl2W2EIhNmLRRiQkVAO6nAeT18Vjp
+ jKiTEd+jJfvTAP0mI0w==
+X-Proofpoint-GUID: 6TuaB1vHHRr0EzyAtwsihPAqFBQRz_sd
+X-Proofpoint-ORIG-GUID: 6TuaB1vHHRr0EzyAtwsihPAqFBQRz_sd
+X-Authority-Analysis: v=2.4 cv=N9AZ0W9B c=1 sm=1 tr=0 ts=69d6e013 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=79PYxaXUQd1wl-QFWJnA:22
- a=lI5dGhs4q9fbHD95aMQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: qDyf2kkDl0BIfMt1GKNzDatCF2tEPh6g
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=VwQbUJbxAAAA:8 a=jj9FZi3_KS3zrj8-0pEA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
 X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11753
  signatures=596818
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 bulkscore=10 malwarescore=0 phishscore=0
- priorityscore=1501 clxscore=1015 spamscore=0 impostorscore=10
- lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
- definitions=main-2604080211
-X-Rspamd-Queue-Id: BFC1B4000A
-X-Stat-Signature: 3xqh5ubswak4xgja5ndcyoi34zjqaypt
+ spamscore=0 lowpriorityscore=10 bulkscore=10 priorityscore=1501 clxscore=1015
+ phishscore=0 impostorscore=10 suspectscore=0 adultscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080214
+X-Rspamd-Queue-Id: B286E100005
+X-Stat-Signature: zopdgc38heyczscdqn1u14s7x8p97h6f
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775688697-439116
-X-HE-Meta: U2FsdGVkX18yVLbFiYb2CJ6rBRdBNm9PhxNrm8isC5blb/NZY5JxsgJhTw/j3VlmQNr2Vrk9V8+uOJqE8z/6qQ80It4aGJ8r7tVKXJFbIp7V9G3G4/bDGkNdNSbiQ3O/ivL6Rz/LOzXslk3T/4dVAJHnPDYi6wwPzASHPLoaZb9RDVSMcTxmlJtPDe4ORLYzPyRWVaBAOuDACttZNf6acJ2OpjdVuXKkwHrUy8i8A+r9N5309ztiX32AwFGVUZ8guIIu8HhReWKMsjW5DnPTZ8YwnLurVXd34iKNf7++5YIgRcrh7qJd/JuQm3azoqnR8bIuxIBfGW2CtCTkJx2ULGH/Kj+SxIAt1mpIs9ivkaADvKa1HswvIbHcpcg7sV/DUHj1GCc3cMc2iTuZToMOsqsk1EIcNjeYOOd/tbm+KSj3bNPlSx46WP/BRru7ra0QlhR3n0WaINCBs2e/O7KP64LXhR2veU9dZ9JQid4sq4s13dAXHMLDbqe3whAFrpAccNyguenCcjJ5f/dwEkS6n4ZGQo4j0g5/zDnlnB0lhPPdatWQMBVJBDRtlAQkxRW6GHUQgP52aRX1rNu4vc+6BJ02DrNhmdvqTzO0V69xtjeaAV4vL3+o1FS5ko3ZOKTY+a5PV7OfbZz3dSOIJrTDEwwaA7lFgA7j4T/Aepl278PVs+STivADUqeu1nqQv7U18XUJY+uVhjnaTk6LDbys4k96La8ZI/yXKnLs41BXnpIGp/t2wKKG/N28sDrBj9349QPq9RaFKzsRbTIL1D7Dro906K0a4iJih5AomjIu/v2gqKPaxjaOfC9sY4oP3kFf5mQcUoWbYymKYjF/1ZsCYtbYklEKgTocZf3CLJKSIp0qL2vBBiJRedNEdEwDfK6npb0EI5kKzXOtgkh4Ae67gA8BFnQ+mcswjiGaCbbz1/NRVS3gFHxaS8ZObg/rZzubp4AfhpSxa5zP17AV7YG
- 8V+L19/5
- y66TeoCfpz7NNxFWmCfhoN09EosxMP4Nc/K9V+Xvwzh1Cm5lMOX7qIaaxGuGziO+uLTPxz7GYoUFGe5r9XZ76fX1rfM15HQWA3RhYwr0OSyiMfRYcaBFCUipGcDBhsrHemFvYb7yTMURcS7YGbfU+iEI+l5Qa2FzOgve0Tnll7L2lPTk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775689748-19996
+X-HE-Meta: U2FsdGVkX1/SBakRuSGBcNQfi96DNu3asIfqnIE1zpH84nRBPsZnbe+z1Ya+aAk4+azpAaaK+0iJ4WFM8t37f5PZctTPn4lZLEzzhqvNe9mYM33IoCOsWYRNupAA8aFmylHbclWOW/QYatbC3T7edtGNxUkI6jBHFhgB/AjYgIk2JHsdgwVtMeZuvPcSxLtFSy4nFmaFnTyOyaXWdpu9TdYvFZlyZUFZ/cbOSssI4g4FnLERmZA4xwAfuifGeduT/zF8Yb/v9AP62rda90XR58gA/19/GEn6yOrxoXaZw4iV+Euq9zwTb6fC11JMIEBd1kaRXoGagEogfygbfsiW6HUOWAt9H+1k7yYpu8xy6McDVk2ybOa4rdkxgMqd6zX8wUC8ZmXLYSuhrhzlcMFzFzW1tiiST4MGAa59KTAbSbuEZfS/W+oSQngKoUbZm0DWAbz++xS89BcfxBz+we7/sBiN8ojNqONu8ueRJH26jGRXZxJt0izy/HxrYuRbL+eAI5VM51v1OiiKdlKWTpq9khznoCeK3MVDYWbm0ILG8QlqTI+oC0T1mE7tAf1abC2xfjFiK52baIzuoZG7czRKg/ksFK1lilzjiny3DKc7Jy74y4HaI9jnaWzwQ/CuX9xFlSsyIq/piAF0h+sCxsix838JeDYQ6zvBCv2ngrVL2/3tItSlY5ElO0Ya5oJAjy3/eLO1H2+JL3gaW1kXmtuDe0VSWq91uOibR4ycDM/N7IANNhiWs7MhKE35cuJ/UzP1opLuVM5WuPwKG2JSS+jZJTmpUO1mv15wStjAFy4QDZy7YueiNPzIPzR3ErpwCY7nLzSTPUxQgbhp7g9RH9K4cmSqPCCMmYXynJXvXR1VtVELaHtJDyLuVp4irJQoKua7lpXhgTY5ODPaljJ5xrbKrhosqWTPbQ6unn+VKTpaH3mLuWdFHjLOH18NtQ43U/TCoPPdFnG3OFwGKimpsjf
+ pyXZCZTQ
+ PfjLtGOfp3LgJm0Ivw8pRy4AQXVyXET5GT+eNN5TjPrgO8N7YFFqyMyWSst6SlErbeOAjPjF7HUWze5MX6BPLDQm9Axzwg8cV1Gp73IDj5dKqDS6+2HAfK4LHQ5IAqRpqyXI7QP4Tn12drP1LOCEYkhhCqcY5VdVaTBklNJkCln52pCn1qCja/F1Tv+4DyYV8ETsmsgHW6JxUF1ID9S2nZ4nar4DXvhK7iCXKqo+LmcjdrIkFCyexVMSzKqPap83lOfGIJqalYPzPNDOVu3RaewhMPlbZUEFPryHud7cQeboBmef08mtUiGiFC5GPQoeSodxH47p5DLO1eUoaR5/2g3hq4Tw4PsJAZTRentEP6cuDzljLi2eucx0yFaSh22O9ijHA70SB0mKoxWXKf7ERoUJzjXXG0mSC/WC1JFDZ9dwDYHGgbP/u4Y6VTp81C2EidBWXJlYbcOagwUhLyV9FkJbNE3/bNrOsrauNIoshSABhzMRFXJEko8wZPLktlw7q5e/e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,23 +166,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Add support for using RWF_DONTCACHE with block devices.
 
+Dropbehind pruning needs to be done in non-IRQ context, but block
+devices complete writeback in IRQ context.
 
-On 4/8/26 3:51 PM, Jens Axboe wrote:
-> On 4/8/26 12: 48 PM, Tal Zussman wrote: > On 3/25/26 4: 14 PM, Jens Axboe wrote: 
->> 
->> Thanks! I'm going to give Dave's llist suggestion a shot on top of
->> this as it seems like it'll simplify this nicely. Looks like that'll
->> involve turning bio::bi_next into a union with a struct llist_node.
-> 
-> Since these lists can get long, I'd keep an eye on llist reversal
-> overhead there...
-> 
+To fix this, we can defer dropbehind invalidation to task context. We
+introduce a new BIO_COMPLETE_IN_TASK flag that allows the bio submitter
+to request task-context completion of bi_end_io. When bio_endio() sees
+this flag in non-task context, it queues the bio to a per-CPU lockless
+list and schedules a delayed work item to do bio completion.
 
-Going to send v5 shortly -- tested with and without the llist reversal and
-it didn't seem to make much of a difference. This was on a single-disk VM
-though, so any stress testing you could do would be very helpful.
+Patch 1 adds the BIO_COMPLETE_IN_TASK infrastructure in the block
+layer.
 
-Thanks,
-Tal
+Patch 2 wires BIO_COMPLETE_IN_TASK into iomap writeback for dropbehind
+folios, removes IOMAP_IOEND_DONTCACHE, and removes the DONTCACHE
+workqueue deferral from XFS.
+
+Patch 3 enables RWF_DONTCACHE for block devices, setting
+BIO_COMPLETE_IN_TASK in submit_bh_wbc() for the CONFIG_BUFFER_HEAD
+path.
+
+This support is useful for databases that operate on raw block devices,
+among other userspace applications.
+
+I tested this (with CONFIG_BUFFER_HEAD=y) for reads and writes on a
+single block device on a VM, so results may be noisy.
+
+Reads were tested on the root partition with a 45GB range (~2x RAM).
+Writes were tested on a disabled swap parition (~1GB) in a memcg of size
+244MB to force reclaim pressure.
+
+Results:
+
+===== READS (/dev/nvme0n1p2) =====
+ sec   normal MB/s  dontcache MB/s
+----  ------------  --------------
+   1        1098.6          1609.0
+   2        1270.3          1506.6
+   3        1093.3          1576.5
+   4        1141.8          2393.9
+   5        1365.3          2793.8
+   6        1324.6          2065.9
+   7         879.6          1920.7
+   8        1434.1          1662.4
+   9        1184.9          1857.9
+  10        1166.4          1702.8
+  11        1161.4          1653.4
+  12        1086.9          1555.4
+  13        1198.5          1718.9
+  14        1111.9          1752.2
+----  ------------  --------------
+ avg        1173.7          1828.8  (+56%)
+
+==== WRITES (/dev/nvme0n1p3) =====
+ sec   normal MB/s  dontcache MB/s
+----  ------------  --------------
+   1         692.4          9297.7
+   2        4810.8          9342.8
+   3        5221.7          2955.2
+   4         396.7          8488.3
+   5        7249.2          9249.3
+   6        6695.4          1376.2
+   7         122.9          9125.8
+   8        5486.5          9414.7
+   9        6921.5          8743.5
+  10          27.9          8997.8
+----  ------------  --------------
+ avg        3762.5          7699.1  (+105%)
+
+---
+Changes in v5:
+- 1/3: Replace local_lock + bio_list with struct llist, per Dave.
+- 1/3: Use delayed_work with 1-jiffie delay, per Dave.
+- 1/3: Add dedicated workqueue to avoid deadlocks, per Christoph.
+- 1/3: Restructure work function as do/while loop and only schedule work
+  originally when the list was previously empty, per Jens.
+- 2/3: Delete IOMAP_IOEND_DONTCACHE and its NOMERGE entry, per Matthew
+  and Christoph.
+- Link to v4: https://lore.kernel.org/r/20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu
+
+Changes in v4:
+- 1/3: Move dropbehind deferral from folio-level to bio-level using
+  BIO_COMPLETE_IN_TASK, per Matthew and Jan.
+- 1/3: Work function yields on need_resched() to avoid hogging the CPU,
+  per Jan.
+- 2/3: New patch. Set BIO_COMPLETE_IN_TASK on iomap writeback bios for
+  DONTCACHE folios, removing the need for XFS-specific workqueue
+  deferral.
+- 3/3: Set BIO_COMPLETE_IN_TASK in submit_bh_wbc() for buffer_head
+  path.
+- 3/3: Update commit message to mention CONFIG_BUFFER_HEAD=n path.
+- Link to v3: https://lore.kernel.org/r/20260227-blk-dontcache-v3-0-cd309ccd5868@columbia.edu
+
+Changes in v3:
+- 1/2: Convert dropbehind deferral to per-CPU folio_batches protected by
+  local_lock using per-CPU work items, to reduce contention, per Jens.
+- 1/2: Call folio_end_dropbehind_irq() directly from
+  folio_end_writeback(), per Jens.
+- 1/2: Add CPU hotplug dead callback to drain the departing CPU's folio
+  batch.
+- 2/2: Introduce block_write_begin_iocb(), per Christoph.
+- 2/2: Dropped R-b due to changes.
+- Link to v2: https://lore.kernel.org/r/20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu
+
+Changes in v2:
+- Add R-b from Jan Kara for 2/2.
+- Add patch to defer dropbehind completion from IRQ context via a work
+  item (1/2).
+- Add initial performance numbers to cover letter.
+- Link to v1: https://lore.kernel.org/r/20260218-blk-dontcache-v1-1-fad6675ef71f@columbia.edu
+
+---
+Tal Zussman (3):
+      block: add BIO_COMPLETE_IN_TASK for task-context completion
+      iomap: use BIO_COMPLETE_IN_TASK for dropbehind writeback
+      block: enable RWF_DONTCACHE for block devices
+
+ block/bio.c                 | 83 ++++++++++++++++++++++++++++++++++++++++++++-
+ block/fops.c                |  5 +--
+ fs/buffer.c                 | 22 ++++++++++--
+ fs/iomap/ioend.c            |  5 +--
+ fs/xfs/xfs_aops.c           |  4 ---
+ include/linux/blk_types.h   |  7 +++-
+ include/linux/buffer_head.h |  3 ++
+ include/linux/iomap.h       |  6 +---
+ 8 files changed, 117 insertions(+), 18 deletions(-)
+---
+base-commit: f384d0b7710d3edaab718c02bbae46a4d3fd09de
+change-id: 20260218-blk-dontcache-338133dd045e
+
+Best regards,
+-- 
+Tal Zussman <tz2294@columbia.edu>
+
 
