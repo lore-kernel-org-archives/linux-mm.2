@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A4410F9969
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 18:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9D910F9969
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 18:46:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 681696B0095; Wed,  8 Apr 2026 14:46:38 -0400 (EDT)
+	id 71DE36B0096; Wed,  8 Apr 2026 14:46:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60B286B0096; Wed,  8 Apr 2026 14:46:38 -0400 (EDT)
+	id 6CD8B6B0098; Wed,  8 Apr 2026 14:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9AE6B0098; Wed,  8 Apr 2026 14:46:38 -0400 (EDT)
+	id 595F06B0099; Wed,  8 Apr 2026 14:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BAF76B0095
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:46:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7135B7132
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 18:46:37 +0000 (UTC)
-X-FDA: 84636269634.06.57ED9F9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A5E6B0096
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:46:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1066057BD1
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 18:46:42 +0000 (UTC)
+X-FDA: 84636269844.13.9AD98D7
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 77D501C000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 18:46:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=frl1QSWI;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9F57E40002
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 18:46:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="b/boA0s1";
+	spf=pass (imf04.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775673999; a=rsa-sha256;
+	cv=none;
+	b=FfORqHEByHeARIrbxzp2XHVln2Ul3o6WsScY3/w1jgAtacfSxL5Uj+SANDhkScRDijo2E7
+	nSdYktAOegiJAxMByssnHh3M/tyPC+3fBTLoqmrnATl7FceGRRLXU771zKioClmfslGIv0
+	SFng4oXlU4AeFnVbFrxbPubgj8L7L68=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775673995;
+	s=arc-20220608; t=1775673999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u/FVAs3+nVWCm7Mn/SYzhNu6ZuycBrO+O7t3Y1hxAIE=;
-	b=vhrzUSWZeYI2wm59NM+YRvDeiPDvaX5Ssq67R8yHDizgyge+OTEB1uzVNDfNvTed9hNd0K
-	dFYMRtKZXe2NSBNv9Z2Bd8gFa7xvUqwBmwz2WE43YhbDyTbiDnWgv0vlkbIIZ4E+rm856R
-	j9HhVuCC9/5nUKcOsniVEyRJLyQXUAI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775673995; a=rsa-sha256;
-	cv=none;
-	b=5H4YgEei+T2hTElLLzepm7P9uanNOY8gzDgKQkxf6p8nmIlYVZvbxvzaLnVpwOFnfTk9E3
-	9KPhh66/l8Us3p8i5lPkZJlh+fG0f0wD817gBDRKMuI0F0qxbGICAQRk3Y+QkdqAWAQFSi
-	kG+clhm3TyvxBgnuA2QPV6t2havV/8k=
+	bh=UqhjeDnHacxc+DguGBAg4lyRMb8kf2xKVKHgKUo0dTQ=;
+	b=O/TnkKMAAAg4BfkfFfRkDkizChoiggl0T60nh9vPhUrbRSWAV8kpihYDdW5nSaYNxaaeL7
+	jp45qRa5rfpiEsM3iU+LQkfJu7M30DLwWRGXvApwgQ02ZKejXI9UG4Bb1kUujgrDyRQs+y
+	JctweFVCeGXdFURKhXHODNz0x+uSFhA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=frl1QSWI;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6386b4oD2594681;
-	Wed, 8 Apr 2026 18:46:27 GMT
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="b/boA0s1";
+	spf=pass (imf04.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638IUBCd2302408;
+	Wed, 8 Apr 2026 18:46:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=u/FVAs3+nVWCm7Mn/
-	SYzhNu6ZuycBrO+O7t3Y1hxAIE=; b=frl1QSWIgWbCzXh2eO2VxQ6p369BuMfAE
-	+JRQck/GJgLmyznmq2g7moNamZNJ7zJfoxoFQ74Vm/LqUY4bzIcjYatPmsMvczl8
-	P8efBCmHBmktoPlv9wkHA01Ke+jRxd9y+q2W7qp1k/YQ+Dynu1TjPbp14AMdBGcn
-	fD1VaOT7/LVUDzRtJUOT6T7aruXh3GAz8ZPqbEL8kM40rCJEjQRxI1uiggkIz81I
-	VVcYQ13fJ+7T54D55d9nhaWmhsRDDvRkuMrnuNxu9jwJMKdofhzjCOMYTTXClpHl
-	0+XkWogOLOutsRoyZDrte7bzityTTpk9sry1lqxufNYtspQUKOM9Q==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2e9jcv-1
+	:mime-version:references:subject:to; s=pp1; bh=UqhjeDnHacxc+DguG
+	BAg4lyRMb8kf2xKVKHgKUo0dTQ=; b=b/boA0s1d5bxxGIH292nbEDfFlIzo0vQS
+	Lj+GzoqG2ku5LH6RRIGGio4I4hB1EfPsFn/19F92MnqjetYttdgvbGxLfac55t2l
+	6kZPSsnPrSH1i21U4nukUNG3awYQJnhnJmQUODCxt4olnyoxHsSpt2tBdLTn13tb
+	m9GqV7G8ek2EASKNtLdTBt38qoMeU9qrKBMlVEU6cgcqNkOa/JdP108qL97RrWKG
+	tsadwF5g/Fuil8uWNeiYPuCk8ZyXCwaruD3LbXz++OFc4WNLhl3qiKm5KL4pgi9I
+	mVcg4e8Mxx6+MOC9c1k4tZ2AEc0pM14sUJgc7QKNKU07XUzE8xtcQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fhj03-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Apr 2026 18:46:26 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 638G9FuQ007942;
-	Wed, 8 Apr 2026 18:46:25 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmg2gkmp-1
+	Wed, 08 Apr 2026 18:46:29 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 638FpSrP019008;
+	Wed, 8 Apr 2026 18:46:28 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcme9gm3r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Apr 2026 18:46:24 +0000
+	Wed, 08 Apr 2026 18:46:28 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 638IkNe150725326
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 638IkRZf59310524
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Apr 2026 18:46:23 GMT
+	Wed, 8 Apr 2026 18:46:27 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB8642004B;
-	Wed,  8 Apr 2026 18:46:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id EF2442004B;
+	Wed,  8 Apr 2026 18:46:26 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B2BE20040;
-	Wed,  8 Apr 2026 18:46:19 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 54F0120040;
+	Wed,  8 Apr 2026 18:46:23 +0000 (GMT)
 Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.212.72])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Apr 2026 18:46:19 +0000 (GMT)
+	Wed,  8 Apr 2026 18:46:23 +0000 (GMT)
 From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 To: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Cc: djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
@@ -91,9 +91,9 @@ Cc: djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
         Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
         p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [RFC PATCH v2 4/5] iomap: Add aio support to RWF_WRITETHROUGH
-Date: Thu,  9 Apr 2026 00:15:45 +0530
-Message-ID: <dcb4a5bfb8872c38c263290c124bbfc8a0f8b3c7.1775658795.git.ojaswin@linux.ibm.com>
+Subject: [RFC PATCH v2 5/5] iomap: Add DSYNC support to writethrough
+Date: Thu,  9 Apr 2026 00:15:46 +0530
+Message-ID: <162ff37dec9295bb76ebadba6ea72ac72cc3c3df.1775658795.git.ojaswin@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1775658795.git.ojaswin@linux.ibm.com>
 References: <cover.1775658795.git.ojaswin@linux.ibm.com>
@@ -101,37 +101,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: JhEyvaM_pp-26pRFxK6A_oTXKQ3pEitz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE3MCBTYWx0ZWRfX4OHy3uIx0ZyM
- Rj8kp4GLHq/ZSKc5r3LXAqUyXLXsURyI3ayhwtCM+rpfOgz9QjKNBrRI9MPymi4kLypFsMUmNJH
- T130L8+dNbKSxDaPXhV2XUC2mIFC3neqTYLeGTD7605rRUV8WM6a39RZokTmHvh5axb5C0FMdKN
- WMhMO5QpzREhizcHSWuA+7euBWiz8lt9nZFaIZUQlZHslKAeJ+LHr7oU6kKJwAl+ObM+FHhTrLj
- 4vXLw30qxaTKcg6asK3+JpsKLcysNFGDuNm6ztoJqVmw3Ir3lVkRJeuMrPSte0S/5ShqyRoHoBt
- AMH4gcZAksfijQKh2m7pEftVyLBej8fhpVys3y0OlO+VWaboBN0iLz6QOwzFAlHX7V+OYTxe7fP
- UON6PkqUybL+aYD6USJLop5mu03gQJ4QzzVqkle6MuX6AXx6svxm4+sxelccq/A3Nbtz95gqgAn
- By4CRlWVjNo7w8arymw==
-X-Authority-Analysis: v=2.4 cv=Cfw4Irrl c=1 sm=1 tr=0 ts=69d6a282 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE3MCBTYWx0ZWRfX87itVyAk2BZw
+ 5zN6CXNfltPIFFRrEFyk869PVeO3cgxSrbmZlzzYBGnb1mdnjf3zpO8wEziXbIsFmagcLb3SuR4
+ T52vGnAn6vvAWG39vJ/eBB2BxTyQVw54CRz3a3tLAUNM+uNYcZeIuvuymRGYGTU+nTa6G8IcVcA
+ 5KQpuGuuawggPiyDy08JyuhSaEnXGSbc9psXzBKyg9AcrSBirixkttd1S9Jd7SmnYjQ1cUEmu0p
+ VKsyhI9AMvepW3hcpinDZYzXRrKUfhGyg//PeDrX/IXryF7XZYRm/XBkcf3LiOp5XiIHtVignxa
+ /cY26NUPpYWgQl2R9h5ljUTGL2XTctcHF/8ZPP03g22nWNksmLvBnsQdVeOh95g/PbrEUwZpw2x
+ Q5NZa45dMbvltx6Kr34IATMaHn0SRDb/UYKIGJ2KfDL4hNoduv9O6R5WACz/OhzdLq+KGo1sVLE
+ ynWayXCnc16PZ48IL3Q==
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d6a286 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=dGFhD9eEaN_uTI8HWPQA:9
-X-Proofpoint-GUID: mTjuhj2a_Ms-PfKakK7_N4KuIFlR8Lsd
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
+ a=qsowkHyYPmhlFs6s4IEA:9
+X-Proofpoint-ORIG-GUID: yg4EfJuoyroMIX8kQWusv1PnSFj0EC2h
+X-Proofpoint-GUID: 8y3ULG_eg5bbhD938sHwn0yaRqJi3mqR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-08_05,2026-04-08_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080170
-X-Rspamd-Queue-Id: 77D501C000C
-X-Stat-Signature: eezey4kz54cnn7wk7ppxxfrdapz5ouw3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775673995-141130
-X-HE-Meta: U2FsdGVkX18Ox9a0eCzgwzKQOIlGpLHAJag6WE4Qk2gI/j1LxrEfz1rI4LKWSrzZEtzJa183+nfx1/7KtGjP2IJJShp0hMrlcDCOQnZ/3dlpayY1NJNSjcSf+AP/fnz5/3TpCaoUTgRIB1X8LCWCEV73KasGAkoqD3fEajunBL7Jm4FAN04GmgCf+2HX5dRkVOVJzeanPLtJDzcpEoHDxoBQRb3RA+72HYkt3J3qDe/7m+n58OkEMa2h4v6b4k+evrjGGiluM4vZSn2EzrnbeW8nzkV7ptBnBx3XO/sROUMhi3vZ3CFqFaleFNdPmw6m9MvHektWVLd1uWsETb0eHrdh7dqgCj7YaUBoNucf4GoZxbXXArwqq1FD535r+Ga+6xolIuJjFpq7XWBRQCSCAvLuMx7usPDdOKParlRQtm/ShqdqOzeoMt/+EgfQbJ1eaTZeduYIpJ1H/0c/rhD7L+dV91hIOrYCr3YLO1kb0gB3927FOyA6YyvLon/czYZPj4V5YkhSTIYfuOQWqzLWfqGQgng4zNDjvewhP843uzSvctcuWgtL3Fyr+VzVz7esX1z5eQua4SOsTcTuGUL3LdK8Fle5M//Cq1H4je58acvOWMB/rkISawzeVkk6D5svaa+GpgsZiK0+ehlnISM2Z96Fd9x6ZCor1Atj4OIBW5Mp51lMEzxtllWxTpOU59Nd7aeAyU3o4/o4uIV40CNvS+5+C7WX9j7E629AWhVOnarbI/bMUuyoy1aaiXQ8Yvsm3MkAU9lEpP9b9Tw24fOCbYHvlTi82kaSZ15XivqjOXd8+GX5HcPFuuw+3E9j6AgnxbDTwqX1ydCQ+yJi4RjcZD9wdtsaIFIN0+QHGcoRC5vMEpFyBOYAU+6jDG0ncIER1wT/Pmsu3VNGCu7Pk3eTqB1aWbUtSFIhnQbWU7j8GEO/+sdmfkzRQqxJLcQ4XnLdPT6iaE2Hf2Ixne588ah
- fmyU55uv
- bCZ2f8U7N6AsTRcU3AT+pSjgywYUQe8hvP5u51htPeI09IBDDcQdti4cu8LxaRUETBH1zY6xS8MOGPUFuESKYC9PIgUwr5EfESFe9/isfdV2oX27cRaV9H3pcoYoaONFbr9mM3nS5IXbLl4+lg3IwSnTMvsZfISNIbTsWWwiVAmsrKoo5GaPkwZgJQNA7Ay0bdkdYUgqlSnHToqKF7y66gMZU0iu9MMMfjYRBbXYLfMOfqTGgKJy1jn8EXnsfi6xYZ2WAUdFJf5HN8nUbHb2z8+b547Ks9hZwC5LBXFeD79gfdUpZu88/7C2QPQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9F57E40002
+X-Stat-Signature: 9s4z7zzxtjbf8uk36ig9dyu9smn59gsj
+X-HE-Tag: 1775673999-551358
+X-HE-Meta: U2FsdGVkX19xgcC+HRsETArQ2A33/Cnw7bFz51gSt1DY1vjLcReWEOHOhpdy2qWI/sOUZFEN7CnSMWJ0kkmCz2MU4YQCAnDX5zzO1oBdmwEGMP4ThgQemeVN1dQhhH6rofLujbZ+izT8eaxKD1wlMl7iaef2vnUJJj+/OoAWbHouEXALMN7wI/Lx3C7bYDyQ9OOUpr+npEjLE+6OOCL7d2Tmpetuvs5nUA7L+m9TmefqeuQaFNoU+sZ3BY4uYNo7VCeKdDcjCcpqO6FR7wfLAfbTb6Z2nmX7bDmKqx/G5DNN20Ywzg6I6a4VtqYMFevSMXt7K+WYXzGnUr/cSTtVq/5+bM2S2I4GyW5/an21zeWYPqnh2T16cSBV2H38d7mmgcmGxcc2FQrkekt6bHJof+mDa03O64mKLkbuHkRWtqB3C/hyElAfl/pm0FMl7Fbj4i3xfqMOPVzwjZa7Icu404mu2Ps/Yn5yqTrO8AmweS6XZYNylGj5kpYePki8QnduJ3RxMKkes7GdydlUs18zKzWuYBiWlH2e0AKW98dVVg83cmnl/e2d/uwW5/+NyWIsNInGeSxCuGbkay99AbYs9y5IO1x+FZIEuIPSqx7xDv4D53U5BNF/ZXBS0iC7tE656mpjN2EpwlL/NsAAM0bTKrERkbalcRaR0NV6YxATlHxkrRmfVX6vbXDYBy3/p//j58C3PTcs79EIEvr1dkkg2d+J6iCYOPImgrn95INhJqBA6Za/DuD+1iDMSdq0hF9sV2kIty5lxvB5+lhhgialtzlfxpQ68Rr80CU+XSueb7htgkgxUcKmbuN5WkcalkswU1C9NRWa4/muXepXHtVXhInmRY/DCmKHPa2D1t4Zb0dUMDu32QCrJi5iIMbSpphxl8BfDezEWIl3UrgX7ReRJid94/Ls7LK7Txw13zyc3vYaVL+tyl+Q3WjIoHE5RDsvSB4+MmJuVp6x3vdV1pR
+ J0dSTcoG
+ bNgJz32ivgQjXoclRHqNFSWQIme43Z8P1/OlNr0UO5yZvUMxElhvR/XHVl/s+E703QkotNEVvHeHQIdjqsR5ile1dTYkf+r947oq9JhXsIfX5bbo/52A25B94tyfwdF64Ajw9dHuKL7/L6RBst3yD0IPQPYqE/RzOB8youd8FBGNZ9eQi0v8x0GZxGbcDLlnPsZhOreN5+wSBRyUkP0cmFeQhAFFD+VUAN8w5nPa6tZp1VmHX8u5LRzykMIVO5Y95xFjlc7ycHQwJAi2wFHjA7q9+1QXPh3thfcvrTgesFm4tvUHF8ATjgvalVwh3xeOjW2YPfBKpZbZ5GV2swxIyKYZgWqkNQPzNgWPv3d9n9K7pWyROXiDb44GnfTZmVamiKxXusjPlKuyVjKUH4bXXsC/sdeEX9MNCPRPX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,148 +139,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With aio the only thing we need to be careful off is that writethrough
-can be in progress even after dropping inode and folio lock. Due to
-this, we need a way to synchronise with other paths where stable write
-is not enough, example:
+Add DSYNC support to writethrough buffered writes. Unlike the usual
+buffered writes where we call generic_write_sync() inline during the
+syscall path, for writethrough we instead sync the data during IO
+completion path, just like dio.
 
-1. Truncate to 0 in xfs sets i_size = 0 before waiting for writeback to
-   complete. In case of writethrough, the end io completion can again
-   push the i_size to a non-zero value.
-2. Dio reads might race with aio writethrough ->end_io() and read 0s if
-   unwritten conversion is yet to happen.
+This allows aio writethrough to be truly async where the syscall can
+return after IO submission and the sync can then be done asynchronously
+during IO completion time.
 
-Hence use the dio begin/end as it gives us the required guarantees.
+Further, just like dio, we utilize the FUA optimization, if available,
+to avoid syncing the data for DSYNC operations.
 
+Suggested-by: Dave Chinner <dgc@kernel.org>
 Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 ---
- fs/iomap/buffered-io.c | 53 ++++++++++++++++++++++++++++++++++++------
- include/linux/iomap.h  | 10 ++++++--
- 2 files changed, 54 insertions(+), 9 deletions(-)
+ fs/iomap/buffered-io.c | 37 +++++++++++++++++++++++++++++++++----
+ include/linux/iomap.h  |  1 +
+ 2 files changed, 34 insertions(+), 4 deletions(-)
 
 diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 74e1ab108b0f..6937f10e2782 100644
+index 6937f10e2782..8965f603f2cf 100644
 --- a/fs/iomap/buffered-io.c
 +++ b/fs/iomap/buffered-io.c
-@@ -1113,6 +1113,9 @@ static ssize_t iomap_writethrough_complete(struct iomap_writethrough_ctx *wt_ctx
- 
- 	mapping_clear_stable_writes(inode->i_mapping);
- 
-+	if (wt_ctx->is_aio)
-+		inode_dio_end(inode);
-+
+@@ -1119,6 +1119,14 @@ static ssize_t iomap_writethrough_complete(struct iomap_writethrough_ctx *wt_ctx
  	if (!ret) {
  		ret = wt_ctx->written;
  		iocb->ki_pos = wt_ctx->pos + ret;
-@@ -1122,12 +1125,27 @@ static ssize_t iomap_writethrough_complete(struct iomap_writethrough_ctx *wt_ctx
- 	return ret;
- }
- 
-+static void iomap_writethrough_complete_work(struct work_struct *work)
-+{
-+	struct iomap_writethrough_ctx *wt_ctx =
-+		container_of(work, struct iomap_writethrough_ctx, aio_work);
-+	struct kiocb *iocb = wt_ctx->iocb;
 +
-+	iocb->ki_complete(iocb, iomap_writethrough_complete(wt_ctx));
-+}
-+
- static void iomap_writethrough_done(struct iomap_writethrough_ctx *wt_ctx)
- {
--	struct task_struct *waiter = wt_ctx->waiter;
-+	if (!wt_ctx->is_aio) {
-+		struct task_struct *waiter = wt_ctx->waiter;
++		/*
++		 * If this is a DSYNC write and we couldn't optimize it, make
++		 * sure we push it to stable storage now that we've written
++		 * data.
++		 */
++		if (iocb_is_dsync(wt_ctx->iocb) && !wt_ctx->use_fua)
++			ret = generic_write_sync(iocb, ret);
+ 	}
  
--	WRITE_ONCE(wt_ctx->waiter, NULL);
--	blk_wake_io_task(waiter);
-+		WRITE_ONCE(wt_ctx->waiter, NULL);
-+		blk_wake_io_task(waiter);
-+		return;
+ 	kfree(wt_ctx);
+@@ -1173,6 +1181,7 @@ iomap_writethrough_submit_bio(struct iomap_writethrough_ctx *wt_ctx,
+ 	struct bio *bio;
+ 	unsigned int i;
+ 	u64 len = 0;
++	blk_opf_t opf = REQ_OP_WRITE;
+ 
+ 	if (!wt_ctx->nr_bvecs)
+ 		return;
+@@ -1184,7 +1193,10 @@ iomap_writethrough_submit_bio(struct iomap_writethrough_ctx *wt_ctx,
+ 		wt_ops->writethrough_submit(wt_ctx->inode, iomap, wt_ctx->bio_pos,
+ 					    len);
+ 
+-	bio = bio_alloc(iomap->bdev, wt_ctx->nr_bvecs, REQ_OP_WRITE, GFP_NOFS);
++	if (wt_ctx->use_fua)
++		opf |= REQ_FUA;
++
++	bio = bio_alloc(iomap->bdev, wt_ctx->nr_bvecs, opf, GFP_NOFS);
+ 	bio->bi_iter.bi_sector	= iomap_sector(iomap, wt_ctx->bio_pos);
+ 	bio->bi_end_io		= iomap_writethrough_bio_end_io;
+ 	bio->bi_private		= wt_ctx;
+@@ -1273,6 +1285,19 @@ static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+ 	if (!(iter->flags & IOMAP_WRITETHROUGH))
+ 		return -EINVAL;
+ 
++	/*
++	 * If we realise that cache flush is neccessary (eg FUA is not present
++	 * or we need metadata updates) then we turn off the optimization.
++	 */
++	if (wt_ctx->use_fua) {
++		if (iter->iomap.type != IOMAP_MAPPED ||
++		    (iter->iomap.flags &
++		     (IOMAP_F_NEW | IOMAP_F_SHARED | IOMAP_F_DIRTY)) ||
++		    (bdev_write_cache(iter->iomap.bdev) &&
++		     !bdev_fua(iter->iomap.bdev)))
++			wt_ctx->use_fua = false;
 +	}
 +
-+	INIT_WORK(&wt_ctx->aio_work, iomap_writethrough_complete_work);
-+	queue_work(wt_ctx->inode->i_sb->s_dio_done_wq, &wt_ctx->aio_work);
- 	return;
- }
- 
-@@ -1530,9 +1548,6 @@ ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
- 	if (iocb_is_dsync(iocb))
- 		/* D_SYNC support not implemented yet */
- 		return -EOPNOTSUPP;
--	if (!is_sync_kiocb(iocb))
--		/* aio support not implemented yet */
+ 	do {
+ 		struct folio *folio;
+ 		size_t offset;		/* Offset into folio */
+@@ -1545,9 +1570,6 @@ ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
+ 		return -EINVAL;
+ 	if (iocb->ki_flags & (IOCB_NOWAIT | IOCB_DONTCACHE))
+ 		return -EINVAL;
+-	if (iocb_is_dsync(iocb))
+-		/* D_SYNC support not implemented yet */
 -		return -EOPNOTSUPP;
  
  	/*
  	 * +1 to max bvecs to account for unaligned write spanning multiple
-@@ -1557,11 +1572,32 @@ ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
- 	wt_ctx->pos = iocb->ki_pos;
- 	wt_ctx->new_i_size = i_size_read(inode);
- 	wt_ctx->max_bvecs = max_bvecs;
-+	wt_ctx->is_aio = !is_sync_kiocb(iocb);
+@@ -1575,6 +1597,13 @@ ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
+ 	wt_ctx->is_aio = !is_sync_kiocb(iocb);
  	atomic_set(&wt_ctx->ref, 1);
--	wt_ctx->waiter = current;
-+
-+	if (!wt_ctx->is_aio)
-+		wt_ctx->waiter = current;
-+	else
-+		/*
-+		 * With aio, writethrough can be in progress even after dropping
-+		 * inode and folio lock. Due to this, we need a way to
-+		 * synchronise with other paths where stable write is not enough
-+		 * (example truncate). Hence use the dio begin/end as it gives
-+		 * us the required guarantees.
-+		 */
-+		inode_dio_begin(inode);
  
- 	mapping_set_stable_writes(inode->i_mapping);
- 
-+	if (wt_ctx->is_aio && !inode->i_sb->s_dio_done_wq) {
-+		ret = sb_init_dio_done_wq(inode->i_sb);
-+		if (ret < 0) {
-+			mapping_clear_stable_writes(inode->i_mapping);
-+			kfree(wt_ctx);
-+			return ret;
-+		}
-+	}
++	/*
++	 * Similar to dio, we optimistically set use_fua=true to avoid explicit
++	 * sync. In case we later realise cache flush is needed we set it back
++	 * to false.
++	 */
++	wt_ctx->use_fua = iocb_is_dsync(iocb) && !(iocb->ki_flags & IOCB_SYNC);
 +
- 	while ((ret = iomap_iter(&iter, wt_ops->ops)) > 0) {
- 		WARN_ON(iter.iomap.type != IOMAP_UNWRITTEN &&
- 			iter.iomap.type != IOMAP_MAPPED);
-@@ -1571,6 +1607,9 @@ ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
- 		cmpxchg(&wt_ctx->error, 0, ret);
- 
- 	if (!atomic_dec_and_test(&wt_ctx->ref)) {
-+		if (wt_ctx->is_aio)
-+			return -EIOCBQUEUED;
-+
- 		for (;;) {
- 			set_current_state(TASK_UNINTERRUPTIBLE);
- 			if (!READ_ONCE(wt_ctx->waiter))
+ 	if (!wt_ctx->is_aio)
+ 		wt_ctx->waiter = current;
+ 	else
 diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 661233aa009d..e99f7c279dc6 100644
+index e99f7c279dc6..579bc48ed39c 100644
 --- a/include/linux/iomap.h
 +++ b/include/linux/iomap.h
-@@ -486,9 +486,15 @@ struct iomap_writethrough_ctx {
- 	atomic_t		ref;
+@@ -487,6 +487,7 @@ struct iomap_writethrough_ctx {
  	unsigned int		flags;
  	int			error;
-+	bool			is_aio;
+ 	bool			is_aio;
++	bool			use_fua;
  
--	/* used during submission and for non-aio completion */
--	struct task_struct	*waiter;
-+	union {
-+		/* used during submission and for non-aio completion */
-+		struct task_struct	*waiter;
-+
-+		/* used during aio completion */
-+		struct work_struct	aio_work;
-+	};
- 
- 	loff_t			bio_pos;
- 	unsigned int		nr_bvecs;
+ 	union {
+ 		/* used during submission and for non-aio completion */
 -- 
 2.53.0
 
