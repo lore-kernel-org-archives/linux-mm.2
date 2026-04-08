@@ -4,111 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F462FD5F94
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43664FD5F98
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA4846B0088; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
+	id 737CE6B0088; Wed,  8 Apr 2026 04:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E56556B0089; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
+	id 6E98D6B0089; Wed,  8 Apr 2026 04:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6BDC6B008A; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
+	id 5B0D96B008A; Wed,  8 Apr 2026 04:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C74BA6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AC1AC2C39
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:27:56 +0000 (UTC)
-X-FDA: 84634710552.07.C55F31A
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 50D7A100008
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:27:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA2C6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:36:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E9F241A088F
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:36:42 +0000 (UTC)
+X-FDA: 84634732644.03.8323A2D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 64728140003
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:36:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eLQ5FHSQ;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775637400; a=rsa-sha256;
+	cv=none;
+	b=OY821UKzdk/6qlfDsqdISM7CKPOJqe3piG7uK1+jIJhmcTucNAHUKFYgfJTlTs5eXhf2wM
+	TLoibvmCORUGeJrNpPnsnTe7zX3hog0Y1spOTRvhB57MRnGpX9i948wWtbalY/woyLPBFT
+	cWpvniqvpsy69OPvsW/t04yYPNo78ws=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=eLQ5FHSQ;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775636874;
+	s=arc-20220608; t=1775637400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qlLht5FZXAgY/dXsccRVorUksFD2m2uBlNMCQYM/FAU=;
-	b=GfrXmQGOpqhJWbxtgZLxfIc9ohOe3tNGO6YS+2jwrMS/OKOmpAXXEloa9azoJKfp+XxN7H
-	aGP8AFVXXJAb3GXb6T4KFT2CW18UX/iDh7HeDIv36tVb5EOxskW40GFM19eMmiA5KF14NY
-	44LbBCWTrttfgs272a2jKvIzxODJWA8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775636874; a=rsa-sha256;
-	cv=none;
-	b=rOpHRV4QgwUzhoRCfCqqFZFt0qctJ+FRf5slJvOvpgel99qC+BHiwlJWsezHzROO7661Pt
-	wSJGms5NbQTMEGaZsLuJD+e4A2QSF+qRYesskFPLK0zhzn2RhnZNs+N+JhMhlVgAlVErTl
-	3HEh/Zs9yBziA/fDpKUSoduLZVbE2zk=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4frGQ93vr9zYQtr3
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:13 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 6021E4058D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:47 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP1 (Coremail) with SMTP id cCh0CgBHS9uBEdZpZ4E8Dw--.57995S2;
-	Wed, 08 Apr 2026 16:27:47 +0800 (CST)
-Message-ID: <bfe3e2ef-fd72-4130-86c3-3f0b5ea44a1b@huaweicloud.com>
-Date: Wed, 8 Apr 2026 16:27:45 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Loaw8PpmykJdGoBeOuulDHAtP1xQoV6l9r+7fw4smo0=;
+	b=LNep/3CCtNnYu18kVzcRp4FMrnXj6rwkFXtytaYl/4ouDdyW/7TRaHAlLnfjHXLVwKgGk+
+	WSmIXdA80bl7DCuScpvpwx02RHQUlXdu7HrZ4A/JHY6jVX3HU4HELk8VDL4Pd0Wtm6Wkob
+	oE1xJIWVz1t0rgaOKTn1rB8/SYsoOnM=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6386HUIM2302913;
+	Wed, 8 Apr 2026 08:36:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Loaw8P
+	pmykJdGoBeOuulDHAtP1xQoV6l9r+7fw4smo0=; b=eLQ5FHSQ3+llXRINXTMiBe
+	bwjAPlpSVdKsKItFWnus6pv4BdZudy0LbDWCTT8gEYvMb22lhBZo3OfzWe89SnuP
+	KMlAJfaN/lVHg/pZx4cS8d6o6tuCpiwNCxsoLVlz8//SoJ/Eko8u79etHyKC3VAr
+	qsf4CurZPXFCedwl6W5e/7LsgTlgjcXFJDjWTSRwXl7BgnviU/BwcjrO2GqAvnva
+	sPXUyYcM7uTrJt2PNHF1IU+fVuAXi5/di5xUT9M6msYaoXuEDRPWjFJNXhpKbL02
+	VUeYOgXkhwCRAZBdSRezMCg7CyU52iGDKk4KSRcVFPdYXgMGK+BDs6IlJRT3W5yw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2ff19g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 08:36:31 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63867pFK007892;
+	Wed, 8 Apr 2026 08:36:30 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmg2en52-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Apr 2026 08:36:30 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6388aToh56558050
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Apr 2026 08:36:29 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F187058056;
+	Wed,  8 Apr 2026 08:36:28 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F05D5803F;
+	Wed,  8 Apr 2026 08:36:23 +0000 (GMT)
+Received: from [9.124.213.224] (unknown [9.124.213.224])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Apr 2026 08:36:23 +0000 (GMT)
+Message-ID: <5888f69f-c336-4151-a9ac-9b0b00f9c3bb@linux.ibm.com>
+Date: Wed, 8 Apr 2026 14:06:22 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/14] mm/mglru: scan and count the exact number of
- folios
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
- Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
-References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
- <20260407-mglru-reclaim-v4-5-98cf3dc69519@tencent.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20260407-mglru-reclaim-v4-5-98cf3dc69519@tencent.com>
-Content-Type: text/plain; charset=UTF-8
+From: Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v4 13/15] selftests/mm: move hwpoison setup into
+ run_test() and silence modprobe output for memory-failure category
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1775466329.git.sayalip@linux.ibm.com>
+ <8ef8640092004d143fe80e6fc32ea8d30a9080de.1775466330.git.sayalip@linux.ibm.com>
+ <8B26C697-4D0C-4E1E-A14E-D517CC9DA05A@nvidia.com>
+Content-Language: en-IN
+In-Reply-To: <8B26C697-4D0C-4E1E-A14E-D517CC9DA05A@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgBHS9uBEdZpZ4E8Dw--.57995S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3JFyxAr4Dur4rtr43Kw4Uurg_yoW3GF4Upa
-	9xG342yFW8Jr43KrWvqr4rCr43CrWfJ34DAry3Aw1SkFn3XFy8Ka13Gw1UtrWUuryDCFWF
-	v3W7KrZ7u3WjqrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 50D7A100008
-X-Stat-Signature: hqs6w6n3ergjxe5russnfs9fr3cuamy5
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDA3NCBTYWx0ZWRfXyMsFxjH5ZAEx
+ QURUCqdCb6tU0N/lsaLNSWf4CEOXaX8rjiUOY2f9hY/TmFyeM71HOTuOsiDJLMe4Jlcf+FnL3WY
+ RJ2ZF17PIJbmV0augrWBKXXMM4SBmk8AoBJiBZHxIFGNwriB2NjiKlaUdjRd7LCMTKXGQuBFkps
+ QrV3/fQWJJAbNsSI8ZQ1rcL+cuTt2/7WDxKTqCrK8TSqxWAHF3/zhktufRjs8j9eGxn00YrEMrT
+ d172/Y+aYGMmaHm90SDQR7y4YQjWMrYFCwk3QtXbAduAmOH20BjhbuPtq9c/3Bdd8zkXm9eGPt5
+ lVfSy4Hpdm0eBU1EhhVx0SKDjDa6mAsSfUqBg2NQiWqzF8LwHDONvpsjhyVrJSxqVfC7zCKuFTl
+ +ZHylFYG6N8BYtXWfkrKILdKK0mVxuHX9ZNyDfwI0qTX+Qk+Y/fFIMhEAiDXnhe9U4HkF4GEh1B
+ dRVT82tQogAQrPzJMGA==
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d6138f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=Ikd4Dj_1AAAA:8 a=39rta5gLTdMnewpgM9YA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 0LbYInRYda5hNxNYcRJELdpDcjEyUcy7
+X-Proofpoint-GUID: 5A0vIPtpZv8knW7GWCJDMYoa_Kb2a2tu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-08_03,2026-04-07_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080074
+X-Stat-Signature: ojoyp4r16hsf1x6dt7jab4xks4g5p3bc
+X-Rspamd-Queue-Id: 64728140003
 X-Rspam-User: 
-X-HE-Tag: 1775636871-738776
-X-HE-Meta: U2FsdGVkX181f4cfYeQVDsYW+n1nerLwKcg+f4PcrxnycE56iq8yKLENE8/a4K1u/eXswxl4JHqF3w2R6P1g596Pwc2hFO2IYGLzSLCL1ryOX/bGNGzCHyH5gAQKYQvSJZ2u+m7lSOMWtG/0RHZCrmxbXEp182X5ECwT3oQiX5LU0cQUyZl/NzdJSqfp4/s3tD+3AwNorX3mFzZRKhGht8X5a3GtgeRm3yEI3C+3OfUVkctj+fWtpbvAjDyxyEZSs/QC4NSf3pMBk7hCCqjxvUsJ0dcZkhixBgSwQFxiUe9ECs2xHus8E4SrX3XPHvxVYUWX1wPL+HCUn+YslQZuqsNlLym9qPWD313gLyYslWMCnQhyswk2P21p3RLb5Ue+RHeQXOzSr2PLlpqYBOo9lSygZFCGg3LfVU3+ymZANnJijc8CJqiKLStJ866DtKxAGZrKJ5K/8QoQA7ZXZ3/VejLNSKWEc3JCTuHbbn5/iXk0c1IBw8WIDqE55w/Ef1mZ3o/U1Hp9OQD1XE8SZ+TB0aanzPKdzEd1DQrOoEPmJUmUUoaUh/f1deU1ZMlmFjueWTn/FnOfIpv+amDDRpMh1okWeC+QNywU+mtNlJC+RTOWgdDcBzXKIHPhg7cIYwUlp1m2rGbYDk+2zTNixMBZCBmG6PoAaqUSMf2wLHW/dXhdvQbJ2J4+wgulj4oxSNtpQ7AwSN70Nuev/XYWexX6j9Zan0B+1Yn7H0VIv7pIzKk4UmWQF3O74G1dZK20C6dhP4dJqKFY086gIHy2LNuHeNFUynZe51DvlUUef7Xz3OlGYvbjzRVP0xp+f856IOJhp4oGj/i3nMA/lBhNNb8dxftJlATwvYifzyI88Fjwf2fia17irpBNjDVGy5q05jCsCytXoLxLf+lrr92a0ShKNVJHtWSZgdgQJvJVwBKsYsoUxKBeU4T6Wigo48QGXW2I6P0n+OsNKlmbr0p2lWR
- sWk39Zkc
- Xi/ooQKxXOFXS6FJ0PxeN6TdkcL91g+uTG7ywD7sUtKBzPVvzkRTT366SFxf7rllpwh7r2JmVX4vunRh3p6yNCL5E/PYJhgOg1WrU55SkYQf7ETE+wBJI1cXgld+yqmyRc2KySFP/2QbCtRbSicaRbf6DC0TnwF8ad7eqJNdqDJTGwer8T/H9p+1ZCVnhxsXlp6gnilQSgapJw28/cqoFZzDg4kXFopIcckITPHt+XueuvnG8x1Q+TQ/MAfyjoHEeE/Y+
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775637400-629767
+X-HE-Meta: U2FsdGVkX198NL7IQohPo26wA8DysmvUXz3XYMCZqGPgKs3IDZ7HgSrACJ1ZPI6oSx+zlZfFiZIV+7fpdIUktbL3tQf2CelHqVN1wYGQC0Wm+8yJaCmDGantPHuItO8MBSamz5H3CJH5C/SDl/Z8dMJmnuI0NvfEw31ZkY6ie7yoa5+M2gah9imh3QmTt5DVPvKFz3Km2h+Fv6372/PmiDdofoOE/VSqN/RVadNab6di8DVjCP35xIuOT/pwgtX1G5lX3bl7LUz2kOqY3EXTeS1BO7rW/FWza83fR3F6iOhMln5zV5dI5AnbKKZ6GjpEXce8MtO/4p+KQ/BZqHdIKn/qqYy/wKK4hxqUxYJDb6jSJQJbhUXYlFiDcuX4qYozG+xTC9ZDbOeBIZJXVAClwgiJ52iT5fWhQYXzy9808Tpc7C3jZ4vJ5OO3GxBy/qhXlyFtHwCAi9bvehDLnXbEnxIEfre/nZu13HWs7uE6OIJFzAyr8Q9TNG3obp3w+UahW4YSu1nRtsYxorQ2dkiOe9zXhPKR0I5hxaGOmIeXAN90xcs08+8Da2b9mGqrsqX4OigqkyjaPUBuJHJXg/M8Z5A/QqoySVB87Ba3Ogl8SlqkAgeM9Qqfb15VbUQT7G7NASm5mGsbe5u1/xWqTvsaL7kAGhxNY+cSFMvmSXXGlV2iDIQBglPiJjW8ZceQfeDWum4WrT5aT1+Ox5w2zU7/GuHSiPhfbDVxOODR9LRARFiOyrrJy4XPIgJ+cdIRz58pdZyjkXy6uQrcmN1ZVX+oSfNCUXaBQcGZml2WmxrG5aId564W9lPqgO8rza65iQ0zafgsXYupt15NZdNIrLrBCzT9mF74QaHIygGttsy5SiTGNtw8iMlbWAqAZjfkQn5jvwExxa4CDH66jHLkHMoEtsZssDv/wGDtuKj31d/bH4WhSH008HCGBBqt/HzqAZrlGWxnjMwneIFhsmDR13o
+ 7w4oiUsf
+ gajgnbD75XO5pO8XPU0VeCq6TEdl6t28YM69D1KucYlzFp+ykSLx11pCLZOCjsvTenHXi+qe6YF4pcBlcCxgxmGnFrXSJ97vVljef421UO9dSTtOaQSE1Yry+Y0Ava33uxhSoTEvU/LmwVardA68cGeIIIOm2ZGzOGFsatD7mAASl0n0ABYEoK1iIq4ObgFqXKGlUESYQerGsfO6ISxj6R8derYG7det1HfOzmZkQLs6NnVZpoNkXvXos6brXekPOrEkEYaBIwktM406KxSIz6QWfwM3XrvZoK9kGt0EP0i29OEOalOeKUQnW/IhIUM2PnVzHRquUNUWnUnIyWBb9MqulCGKAIhXV/BcmD48u16ZtkQFq8WHr9s/SRyilzzK11dOGiz2vu+f86OA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,213 +153,170 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/4/7 19:57, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 07/04/26 20:21, Zi Yan wrote:
+> On 6 Apr 2026, at 5:19, Sayali Patil wrote:
 > 
-> Make the scan helpers return the exact number of folios being scanned
-> or isolated. Since the reclaim loop now has a natural scan budget that
-> controls the scan progress, returning the scan number and consume the
-> budget should make the scan more accurate and easier to follow.
+>> run_vmtests.sh contains special handling to ensure the hwpoison_inject
+>> module is available for the memory-failure tests. This logic was
+>> implemented outside of run_test(), making the setup category-specific
+>> but managed globally.
+>>
+>> Move the hwpoison_inject handling into run_test() and restrict it
+>> to the memory-failure category so that:
+>> 1. the module is checked and loaded only when memory-failure tests run,
+>> 2. the test is skipped if the module or the debugfs interface
+>> (/sys/kernel/debug/hwpoison/) is not available.
+>> 3. the module is unloaded after the test if it was loaded by the script.
+>>
+>> This localizes category-specific setup and makes the test flow
+>> consistent with other per-category preparations.
+>>
+>> While updating this logic, fix the module availability check.
+>> The script previously used:
+>>
+>> 	modprobe -R hwpoison_inject
+>>
+>> The -R option prints the resolved module name to stdout, causing every
+>> run to print:
+>>
+>> 	hwpoison_inject
+>>
+>> in the test output, even when no action is required, introducing
+>> unnecessary noise.
+>>
+>> Replace this with:
+>>
+>> 	modprobe -n hwpoison_inject
+>>
+>> which verifies that the module is loadable without producing output,
+>> keeping the selftest logs clean and consistent.
+>>
+>> Also, ensure that skipped tests do not override a previously recorded
+>> failure. A skipped test currently sets exitcode to ksft_skip even if a
+>> prior test has failed, which can mask failures in the final exit status.
+>> Update the logic to only set exitcode to ksft_skip when no failure has
+>> been recorded.
+>>
+>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
+>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+>> ---
+>>   tools/testing/selftests/mm/run_vmtests.sh | 52 ++++++++++++++---------
+>>   1 file changed, 33 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>> index afdcfd0d7cef..17c9bd910c47 100755
+>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>> @@ -235,6 +235,7 @@ pretty_name() {
+>>   run_test() {
+>>   	if test_selected ${CATEGORY}; then
+>>   		local skip=0
+>> +		local LOADED_MOD=0
 > 
-> The number of scanned folios for each iteration is always positive and
-> larger than 0, unless the reclaim must stop for a forced aging, so
-> there is no more need for any special handling when there is no
-> progress made:
-> 
-> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
->   the function and the call now just return the exact scan count,
->   combined with the scan budget introduced in the previous commit to
->   avoid livelock or under scan.
-> 
-> - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
->   scan count was kind of confusing and no longer needed to, as scan
->   number should never be zero as long as there are still evictable
->   gens. We may encounter a empty old gen that return 0 scan count,
->   to avoid that, do a try_to_inc_min_seq before isolation which
->   have slight to none overhead in most cases.
-> 
-> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
->   the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
->   naturally returns 0 when only two gens remain and breaks the loop.
-> 
-> Also change try_to_inc_min_seq to return void, as its return value is
-> no longer used by any caller. Move the call before isolate_folios so
-> that any empty gens created by external folio freeing are flushed, and
-> add another call after isolate_folios to also flush empty gens that
-> isolation itself may create.
-> 
-> The scan still stops if there are only two gens left as the scan number
-> will be zero, this behavior is same as before. This force gen protection
-> may get removed or softened later to improve the reclaim a bit more.
-> 
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/vmscan.c | 60 ++++++++++++++++++++++++++++++------------------------------
->  1 file changed, 30 insertions(+), 30 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 462ca0fa2ba3..d3fd5bb56cce 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3878,10 +3878,9 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->  	return true;
->  }
->  
-> -static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
-> +static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
->  {
->  	int gen, type, zone;
-> -	bool success = false;
->  	bool seq_inc_flag = false;
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  	DEFINE_MIN_SEQ(lruvec);
-> @@ -3907,11 +3906,10 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
->  
->  	/*
->  	 * If min_seq[type] of both anonymous and file is not increased,
-> -	 * we can directly return false to avoid unnecessary checking
-> -	 * overhead later.
-> +	 * return here to avoid unnecessary checking overhead later.
->  	 */
->  	if (!seq_inc_flag)
-> -		return success;
-> +		return;
->  
->  	/* see the comment on lru_gen_folio */
->  	if (swappiness && swappiness <= MAX_SWAPPINESS) {
-> @@ -3929,10 +3927,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
->  
->  		reset_ctrl_pos(lruvec, type, true);
->  		WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
-> -		success = true;
->  	}
-> -
-> -	return success;
->  }
->  
->  static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness)
-> @@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->  
->  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  		       struct scan_control *sc, int type, int tier,
-> -		       struct list_head *list)
-> +		       struct list_head *list, int *isolatedp)
->  {
->  	int i;
->  	int gen;
-> @@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->  	if (type == LRU_GEN_FILE)
->  		sc->nr.file_taken += isolated;
-> -	/*
-> -	 * There might not be eligible folios due to reclaim_idx. Check the
-> -	 * remaining to prevent livelock if it's not making progress.
-> -	 */
-> -	return isolated || !remaining ? scanned : 0;
-> +
-> +	*isolatedp = isolated;
-> +	return scanned;
->  }
->  
->  static int get_tier_idx(struct lruvec *lruvec, int type)
-> @@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
->  
->  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  			  struct scan_control *sc, int swappiness,
-> -			  int *type_scanned, struct list_head *list)
-> +			  struct list_head *list, int *isolated,
-> +			  int *isolate_type, int *isolate_scanned)
+> Can you rename it to LOADED_MEMORY_FAILURE_MOD to clarify its use?
+> Since now LOADED_MOD is visible for the entire run_test().
 
-Nit: too many parameters for this function.
+Thanks for the review!
 
+I kept it as LOADED_MOD and specified it as a local variable 
+intentionally. The idea was that, if any future tests are added that 
+need to verify whether the module was loaded, they can reuse the same 
+variable. For that reason, I did not make it specific to the memory 
+failure test.
 
->  {
->  	int i;
-> +	int scanned = 0;
->  	int type = get_type_to_scan(lruvec, swappiness);
->  
->  	for_each_evictable_type(i, swappiness) {
-> -		int scanned;
-> +		int type_scan;
->  		int tier = get_tier_idx(lruvec, type);
->  
-> -		*type_scanned = type;
-> +		type_scan = scan_folios(nr_to_scan, lruvec, sc,
-> +					type, tier, list, isolated);
->  
-> -		scanned = scan_folios(nr_to_scan, lruvec, sc, type, tier, list);
-> -		if (scanned)
-> -			return scanned;
-> +		scanned += type_scan;
-> +		if (*isolated) {
-> +			*isolate_type = type;
-> +			*isolate_scanned = type_scan;
-> +			break;
-> +		}
->  
->  		type = !type;
->  	}
->  
-> -	return 0;
-> +	return scanned;
->  }
->  
->  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  			struct scan_control *sc, int swappiness)
->  {
-> -	int type;
-> -	int scanned;
-> -	int reclaimed;
->  	LIST_HEAD(list);
->  	LIST_HEAD(clean);
->  	struct folio *folio;
-> @@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	enum node_stat_item item;
->  	struct reclaim_stat stat;
->  	struct lru_gen_mm_walk *walk;
-> +	int scanned, reclaimed;
-> +	int isolated = 0, type, type_scanned;
->  	bool skip_retry = false;
-> -	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->  
->  	lruvec_lock_irq(lruvec);
->  
-> -	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
-> +	/* In case folio deletion left empty old gens, flush them */
-> +	try_to_inc_min_seq(lruvec, swappiness);
->  
-> -	scanned += try_to_inc_min_seq(lruvec, swappiness);
-> +	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-> +				 &list, &isolated, &type, &type_scanned);
->  
-> -	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
-> -		scanned = 0;
-> +	/* Isolation might create empty gen, flush them */
-> +	if (scanned)
-> +		try_to_inc_min_seq(lruvec, swappiness);
->  
->  	lruvec_unlock_irq(lruvec);
->  
-> @@ -4861,7 +4861,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
->  	sc->nr_reclaimed += reclaimed;
->  	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
-> -			scanned, reclaimed, &stat, sc->priority,
-> +			type_scanned, reclaimed, &stat, sc->priority,
->  			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->  
->  	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+Please let me know if you think otherwise.
+
+Regards,
+Sayali
+>>
+>>   		# On memory constrainted systems some tests can fail to allocate hugepages.
+>>   		# perform some cleanup before the test for a higher success rate.
+>> @@ -250,6 +251,28 @@ run_test() {
+>>   			fi
+>>   		fi
+>>
+>> +		# Ensure hwpoison_inject is available for memory-failure tests
+>> +		if [ "${CATEGORY}" = "memory-failure" ]; then
+>> +			# Try to load hwpoison_inject if not present.
+>> +			HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+>> +			if [ ! -d "$HWPOISON_DIR" ]; then
+>> +				if ! modprobe -n hwpoison_inject > /dev/null 2>&1; then
+>> +					echo "Module hwpoison_inject not found, skipping..." \
+>> +						| tap_prefix
+>> +					skip=1
+>> +				else
+>> +					modprobe hwpoison_inject > /dev/null 2>&1
+>> +					LOADED_MOD=1
+>> +					if [ ! -d "$HWPOISON_DIR" ]; then
+>> +						echo "hwpoison debugfs interface not present" \
+>> +							| tap_prefix
+>> +						skip=1
+>> +					fi
+>> +				fi
+>> +			fi
+>> +
+>> +		fi
+>> +
+>>   		local test=$(pretty_name "$*")
+>>   		local title="running $*"
+>>   		local sep=$(echo -n "$title" | tr "[:graph:][:space:]" -)
+>> @@ -261,6 +284,12 @@ run_test() {
+>>   		else
+>>   			local ret=$ksft_skip
+>>   		fi
+>> +
+>> +		# Unload hwpoison_inject if we loaded it
+>> +		if [ -n "${LOADED_MOD}" ]; then
+>> +			modprobe -r hwpoison_inject > /dev/null 2>&1
+>> +		fi
+>> +
+>>   		count_total=$(( count_total + 1 ))
+>>   		if [ $ret -eq 0 ]; then
+>>   			count_pass=$(( count_pass + 1 ))
+>> @@ -270,7 +299,9 @@ run_test() {
+>>   			count_skip=$(( count_skip + 1 ))
+>>   			echo "[SKIP]" | tap_prefix
+>>   			echo "ok ${count_total} ${test} # SKIP" | tap_output
+>> -			exitcode=$ksft_skip
+>> +			if [ $exitcode -eq 0 ]; then
+>> +				exitcode=$ksft_skip
+>> +			fi
+>>   		else
+>>   			count_fail=$(( count_fail + 1 ))
+>>   			echo "[FAIL]" | tap_prefix
+>> @@ -529,24 +560,7 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
+>>
+>>   CATEGORY="rmap" run_test ./rmap
+>>
+>> -# Try to load hwpoison_inject if not present.
+>> -HWPOISON_DIR=/sys/kernel/debug/hwpoison/
+>> -if [ ! -d "$HWPOISON_DIR" ]; then
+>> -	if ! modprobe -q -R hwpoison_inject; then
+>> -		echo "Module hwpoison_inject not found, skipping..."
+>> -	else
+>> -		modprobe hwpoison_inject > /dev/null 2>&1
+>> -		LOADED_MOD=1
+>> -	fi
+>> -fi
+>> -
+>> -if [ -d "$HWPOISON_DIR" ]; then
+>> -	CATEGORY="memory-failure" run_test ./memory-failure
+>> -fi
+>> -
+>> -if [ -n "${LOADED_MOD}" ]; then
+>> -	modprobe -r hwpoison_inject > /dev/null 2>&1
+>> -fi
+>> +CATEGORY="memory-failure" run_test ./memory-failure
+>>
+>>   if [ "${HAVE_HUGEPAGES}" = 1 ]; then
+>>   	echo "$orig_nr_hugepgs" > /proc/sys/vm/nr_hugepages
+>> -- 
 > 
-
-This patch makes the code easier to follow. Looks good to me.
-
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-
--- 
-Best regards,
-Ridong
+> Otherwise, LGTM.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+> Best Regards,
+> Yan, Zi
 
 
