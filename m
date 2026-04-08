@@ -4,80 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EFBFD5F91
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 07:36:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B345EFD5F8F
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 07:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1BD6B0088; Wed,  8 Apr 2026 03:36:22 -0400 (EDT)
+	id 029A26B0089; Wed,  8 Apr 2026 03:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 973396B0089; Wed,  8 Apr 2026 03:36:22 -0400 (EDT)
+	id EF5E46B008A; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 861736B008A; Wed,  8 Apr 2026 03:36:22 -0400 (EDT)
+	id DBD9A6B008C; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 77F5E6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:36:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1734A160A45
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:36:22 +0000 (UTC)
-X-FDA: 84634580604.02.D75E633
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C5C616B0089
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:39:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58BB7140A55
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:39:50 +0000 (UTC)
+X-FDA: 84634589340.29.E7F27CF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0C7DB8000D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:36:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nBN6TY5G;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 73402180009
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:39:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOqNUi4d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775633988; a=rsa-sha256;
+	cv=none;
+	b=OxBIw67u+wOSn7xsQxbk+22LEpDxvZcu7km2zpnZWjrBD1uqqsm4ch03g9Hftvufaxud2y
+	Drkixgxr4MiDWq/MXAdtu/eutRp0+i4NanOoo7QpdCZzHrbPVTnAup7OgDz42e9yF+Uxk+
+	gNSubqYJjTi5CYWF9yVbhB4uFINXVAA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOqNUi4d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775633780;
+	s=arc-20220608; t=1775633988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NHBxpCe8VwSq3CDbulhrrdaBqwIRC/vJocbp0QUE9l0=;
-	b=coQfXwzsDo0bUKQ8ykCzGl3Rm6rba3+/9ubEQMAMOpOz9C8eepE5bYCvab8DqhouR3D0f4
-	SdI9JajcjAqZXLmlzjOmylIaxH9BEuZNRaLmWFVO0PHn7yj/a3HdFgXqkE019febPgPXSE
-	7ghKrsZKj1bcbxGaB6ErC40lA588FoM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nBN6TY5G;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775633780; a=rsa-sha256;
-	cv=none;
-	b=qNpxTnr/bYmPOFLkGeOY8qza2rY4Nlmg+BW26STWsCvU314CYwlUWCbvZ0DMR//9UHh18c
-	ng+hazaAtdsZ7IvVBsYlsopRhcDtoAXQ+TY8Tvh4/9Y/a3E1qO1JdNaOUUFfsXf6TPrXPw
-	WrDNbxS4OrgsBYP4KR5tIWbOAzvTM6A=
+	bh=yuJ/5kTSfJV3pXeVXskqH/1yE1cJwc9wVREJXPsF+Ko=;
+	b=GKZN/pDJefS3RK7F5tv/ou1bBCdIph6Xz/PfrA9O9P0SzvcInvkbCyglAVBhxSCyOBmemF
+	QMSjtQvfftL41NZni3hVZljpMPIHf19LTPEwZVw/+7Xg2kr7Q5ElySnNn9jPVWCtBazToB
+	x8CALBVNj4AJizi7MFQS4s1VMFGMJig=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 082CB433B3;
-	Wed,  8 Apr 2026 07:36:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358E3C2BCB0;
-	Wed,  8 Apr 2026 07:36:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 859D842E55;
+	Wed,  8 Apr 2026 07:39:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A37C19424;
+	Wed,  8 Apr 2026 07:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775633778;
-	bh=9usUKozMxTM5/KPBGhFL/Q5Q+WRhnI82yaR3J4yHm9A=;
+	s=k20201202; t=1775633987;
+	bh=JKML08yy0dGpuo28t9vqJg2KAb5rilg3WmynEttBawc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nBN6TY5GLLWEq3U7h/9ZirccALW3l4Tx4ivhOSx0sUKHGA1kyxKWjil3vxw8CK7gz
-	 yf2xzlKeYUJE2n/u08fy7XYLgX2ZBHpzeQxy4h0c77nWZVYQvDc6naZandP5Sw6m6b
-	 8G9WHeVeNCxTVeT4FX7uNn7Ff1JEhX/9T6K2Kmmdy1CGD1Ku7FjSDuCwncxORKyg4e
-	 /9TiGZ/AxuGYiZ+i81To3jOOGzRkWUs7ybxqkYExRifwGqkjomQou1PqeXGRR4wtgE
-	 WMR1WF2XYtJeGlsYVfOrqTplvmhEXjc95oPGAu1xNYXtDNcmaTj3f229tLgjytv4L8
-	 UI0J61zg01uaQ==
-Message-ID: <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
-Date: Wed, 8 Apr 2026 09:36:14 +0200
+	b=rOqNUi4dltOXzra1+FgfFkNRd/5pwIsWuJGItMQC259wbE+864o+qSF1LRL5816dM
+	 ikBXsGUsokZQLJ6E7R9Y3GsvJzSVmhs9aTNrofH2ZKJlNJXTIu1h95jmSClldMUlir
+	 RD6LQLMbiqCCmvXbAo/weSbFXEmgbtiQFqc21/l7MyZm/tp7U55aRx/LOeb00iLMGm
+	 dsCttTgICrEcjgmdYn4/P8tr/nQ9CIKcxHRSlvjRHQLs+3aLAUx8Vvz0DRk4KmM9kz
+	 fKrho3gfOlCpe4TJogEakgWq3+N2z4raLU7ZKv+Q2nEn1w2SCulHd8bqY0pUV0XK46
+	 RjuI3vNqWoSdA==
+Message-ID: <efb2dda7-144c-4e00-bd5c-0b57a1244fb1@kernel.org>
+Date: Wed, 8 Apr 2026 09:39:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
- Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
- Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+Subject: Re: [PATCH] docs: proc: document ProtectionKey in smaps
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Randy Dunlap <rdunlap@infradead.org>, Dave Hansen <dave.hansen@intel.com>,
+ linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Yury Khrustalev <yury.khrustalev@arm.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260407125133.564182-1-kevin.brodsky@arm.com>
+ <98880cc2-09be-4bd8-b8f4-f0f0845f939e@intel.com>
+ <2d2aac86-2780-4a29-9eef-116c26485812@arm.com>
+ <18e2042c-d414-40fb-8819-5e930d5b1584@infradead.org>
+ <8a5e4afd-cd0a-400a-8624-79c1dc9e3ff3@kernel.org>
+ <fee59f61-cf62-4a60-9d8a-4543a02a9c48@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260408031615.1831922-1-yuan1.liu@intel.com>
+In-Reply-To: <fee59f61-cf62-4a60-9d8a-4543a02a9c48@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: su3wgimfwjb5i6dpfna4dtstkyb1r47z
+X-Rspamd-Queue-Id: 73402180009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C7DB8000D
-X-Stat-Signature: x9xgqgcf7hm4eau8ysmmh6khqcbtpjcr
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775633779-744893
-X-HE-Meta: U2FsdGVkX18EGhvSg6y1z1F9g6l9ddK5xrGZiVUMNGesFzeGG7uFM+ilIAUbg/nBJd2I4qDF8KxiCtrzowwCxEgWuA9UJGE1mrw1zYlGTJE5hTy+gTU8xFQ5aYuEwmVR8YelsHVcqUxqWPQL01CQMAjPGTbrYBTDBYm0LUXLWYfomAntzSz9k8PG0jX2MD38CRM32uA6wZJXBrS7vpefqRPL1qxNHTdU5Zp+0MGL5r33tOduG5pze5FaxWhC5160Fdx4G2EuDRGYZ1Lg3DmdR7qmrV++T6ceaPtfkZtnL6N4kFnuyiRW2MjtxBIbpkIPjZwl5PwLduW3tkV9aSYrt13U/iNYgi24wWer6s58i3RjIiSgqzo31apDjhCkGZq6OeXWfDeAVEVeOuRUhXbkp1ML5Ee6Y+Xczuj1szGLXe7GnAJSIb/u77h6JudfHFViTXXJZv3wquzsRljf2wLlSSggEzTgMU0cG4UQ5x9Xh60N5Ymv76rCdPFMP1fVmFGOFY3b3rmzPk4Fm1iM09qeSV8QunmkDWtTBeKCk2ct0wm3Z6iZWbByUwVKxbTw8NuT1DZjzNoXW9G+wGBrc0ntdGEwMwIDXERaiYK5gCphAHM9Y7z90pTRtEo0C/PdL9tvtr9NSSUfl+QSL0j7gPnJJ7IxidSdYvWZu6T/brBXiRPsZaakXc3uAR92w91DuauuGUY4jNnydZ8cumOWO9RgKg4FvG/aMShIZE7fvc2qqrYI51GCf4xkL/N0pGSsohc3xSrMVRV3u9s8kxv88LgYXKBMT/hk6KpiLOLh/UTq8cz4FQnWv8zZPUqQuIVE2BSFKe8Lv2iBh5v2xNKPjmr4a9f4Z8OfgbsQ7Hq2y8Q/93m+vuf+zkOpgzDQrbvjxENGhAitCVritCRr54uqGO9t2/3A+rSitokgVNIiaqgHbgKBrzWt7SLXocO9gfFdr2XY6xf0dYdxwUnVBxw+i13
- Ekg7hQrb
- zFFd+fcW2LA8SLTZYwnyAAUTlxTQiR7E9wHTvhDGbfLRFgHGfKSaU/PeJf3aB26bKZHdMdRHraDxULPg9jMGULpE8MHwokaaO8CpBqex530HpWtkZkDvvPc5IjM8R9HtR1/M1xWdJ83RucMAlp34et2D0PY84VZwOuAadfH883U0NPzpdvp6CtSjosovIHbiMU5S5BnqQrQPaZzU4g23fNvsTsrAG1PxYqw0HjHT4yztn92BSBOQZ5x+WASSLA6cyMj3MahgWCmF8Q8Xx/v8b1N85rWmiw5znWX3TjpvT3+qbUKfZYyp5DEHy9Cujslvt0+VBcx8jKUh4pr4ez/Jdz6xZvKbcoqsxqF0xLkGI954HDN+oxcg+lECihMCCOttFj/C/O1SdK/+ix7EPjJWhXWn7RQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775633988-627410
+X-HE-Meta: U2FsdGVkX19jPJn+YidvZqMQ5Gwtc3CSGXOhKY9TRzDiFgPswgkToGWZSEGCZx79/fffgy2g8hiD5JscwwIp4eVbWZR5tJM5Ctlx9ERhevhUH5+IZwlXvBlbH0VOeksmhCQrwvdi7HVdVhLnmDT7mKcxqLyJP59cdIF0wKT/b4BYnb9EPZ5PqjdCI9PzOAAk4EvF1CKyjKq2stwrptBouLWLK8y1XW9RqYTO7Rb56FhSY8mTjn7UIwSoe2sdBE9UcTG/+Ny7aFnWsmEG+9lkxve8derwKNXLg9HsUm1GP1Xqtje8K2rpWxdCxqRR10Y8zDJSvCfS1Pr8g2evdl9phd9DP6bt1DzmVya7xyYPXup8pXpGOIWM0yhP3NyBOFpwWJRLZZ/riAC1D+matgIPo2qkPbKD+JjtGmtgk7lnwySwoTuKSsEmdICdGnHzCBKYw2GrcpNvYkowgLqa6TioPxwXp4qx1X7naVnyaBZ3tmKKP61czyrtkPNinRuOXLS3lgGScGMh7cJAfM8oBXq26beKSWPQyFxmqnYLI68MvzFputBmsUXlUxXxt33yZvodbwD2EGkuEtrXANL7ej2KcAziJYoeQQnHHY9dKrPu05nE9BWzxnCEnKD2dZ/+w0NraKZiVj3yu2YjQKGNYb+tvDJ9WDHXCoEZcnnngdN3oLNlDwtRfoqTGdCAHFdP5Qy9SG0Om91m/x6f6o1Tf0C1sVxjjT0oPsfYLD9LMKC2HeDTgJDWIwI7drVwMiM9pMQPQwxPXMnRIM6BmyzpHrsAWYggvEIxMD1k5zsy7b+Yvm9fgpa0fOK455tZvfD87/lp9+ONTEjvwNOFaT0btYzo/wlVWIVCgLjwx/Do/KxT2JItE6SVyHUV1uausNKEvoZ5HEzEnuRowtoabpPshXQS981iZ6qgaGTrWjhaS0nCxetc5votJcp8BhbI9I3nB7bLwP0DpT3uoYtot0oTSfg
+ AeYq6nu3
+ vtjA9/FB8Q5f2oa2JXl+JwVGtMbZzw62nmslWqWEFO2Y23tjWc2Z9AJGGSeI+zHIRRV5g05U58zTqzVSoXVWPky9zQGYvCQwq4CxMF85Aux93nACDHJ3A36Ty73wQYklKFDjdo9UcsAs9euH3v6KSq5CgCaWYUFOsSPA0tDHxFfKmGCFNXnenI02wH3TrVYLCi0alOXkZvZw1fyTlpU7sOddTN7fKgszxTxsUoZKbbFJ405QS/SL+DLisG3IzR4khB0FJwADHg90mrUknTP81UAQS9NLftaHQD8C1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,151 +148,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 05:16, Yuan Liu wrote:
-> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
-> to rebuild zone->contiguous. For large zones this is a significant cost
-> during memory hotplug and hot-unplug.
+On 4/8/26 09:15, Kevin Brodsky wrote:
+> On 08/04/2026 09:05, David Hildenbrand (Arm) wrote:
+>>> I think that "system" is too nebulous there, so I would prefer to see
+>>> "hardware" instead.
+>> What if you're running in a VM where the feature is hidden ... ?
 > 
-> Add a new zone member pages_with_online_memmap that tracks the number of
-> pages within the zone span that have an online memory map (including present
-> pages and memory holes whose memory map has been initialized). When
-> spanned_pages == pages_with_online_memmap the zone is contiguous and
-> pfn_to_page() can be called on any PFN in the zone span without further
-> pfn_valid() checks.
+> Of course that's also possible, "hardware" has to be interpreted in the
+> context of virtualisation... But granted it is possible to hide features
+> even on the host with the right kernel parameter, on arm64 at least.
 > 
-> Only pages that fall within the current zone span are accounted towards
-> pages_with_online_memmap. A "too small" value is safe, it merely prevents
-> detecting a contiguous zone.
-> 
-> The following test cases of memory hotplug for a VM [1], tested in the
-> environment [2], show that this optimization can significantly reduce the
-> memory hotplug time [3].
-> 
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      36s      |      7s      |       81%      |
-> +----------------+------+---------------+--------------+----------------+
-> 
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      36s      |      9s      |       75%      |
-> +----------------+------+---------------+--------------+----------------+
-> 
-> [1] Qemu commands to hotplug 256G/512G memory for a VM:
->     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
->     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->     qom-set vmem1 requested-size 256G/512G (Plug Memory)
->     qom-set vmem1 requested-size 0G (Unplug Memory)
-> 
-> [2] Hardware     : Intel Icelake server
->     Guest Kernel : v7.0-rc4
->     Qemu         : v9.0.0
-> 
->     Launch VM    :
->     qemu-system-x86_64 -accel kvm -cpu host \
->     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->     -drive file=./seed.img,format=raw,if=virtio \
->     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->     -m 2G,slots=10,maxmem=2052472M \
->     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->     -nographic -machine q35 \
->     -nic user,hostfwd=tcp::3000-:22
-> 
->     Guest kernel auto-onlines newly added memory blocks:
->     echo online > /sys/devices/system/memory/auto_online_blocks
-> 
-> [3] The time from typing the QEMU commands in [1] to when the output of
->     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->     memory is recognized.
-> 
-> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
-> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
-> Tested-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
-> Reviewed-by: Pan Deng <pan.deng@intel.com>
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
-> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+> "If the kernel supports protection keys (pkeys) and the hardware feature
+> is detected"? Still vague but a little more accurate.
 
-[...]
-
-> @@ -842,7 +842,7 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
->   *   zone/node above the hole except for the trailing pages in the last
->   *   section that will be appended to the zone/node below.
->   */
-> -static void __init init_unavailable_range(unsigned long spfn,
-> +static unsigned long __init init_unavailable_range(unsigned long spfn,
->  					  unsigned long epfn,
->  					  int zone, int node)
->  {
-> @@ -858,6 +858,7 @@ static void __init init_unavailable_range(unsigned long spfn,
->  	if (pgcnt)
->  		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
->  			node, zone_names[zone], pgcnt);
-> +	return pgcnt;
->  }
->  
->  /*
-> @@ -956,9 +957,22 @@ static void __init memmap_init_zone_range(struct zone *zone,
->  	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
->  			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
->  			  false);
-> +	zone->pages_with_online_memmap += end_pfn - start_pfn;
->  
-> -	if (*hole_pfn < start_pfn)
-> -		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
-> +	if (*hole_pfn < start_pfn) {
-> +		unsigned long pgcnt;
-> +
-> +		if (*hole_pfn < zone_start_pfn) {
-> +			init_unavailable_range(*hole_pfn, zone_start_pfn,
-> +					       zone_id, nid);
-> +			pgcnt = init_unavailable_range(zone_start_pfn,
-> +					start_pfn, zone_id, nid);
-
-Indentation of parameters.
-
-> +		} else {
-> +			pgcnt = init_unavailable_range(*hole_pfn, start_pfn,
-> +					zone_id, nid);
-
-
-Same here.
-
-> +		}
-> +		zone->pages_with_online_memmap += pgcnt;
-> +	}
-
-
-Maybe something like the following could make it nicer to read, just a
-thought.
-
-
-unsigned long hole_start_pfn = *hole_pfn;
-
-if (hole_start_pfn < zone_start_pfn) {
-	init_unavailable_range(hole_start_pfn, zone_start_pfn,
-			       zone_id, nid);
-	hole_start_pfn = zone_start_pfn;
-}
-pgcnt = init_unavailable_range(hole_start_pfn, start_pfn,
-			       zone_id, nid);
-
-
-LGTM, thanks!
+Can we just talk about CPU support, to avoid using "system" or "hardware" ?
 
 -- 
 Cheers,
