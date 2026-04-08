@@ -4,111 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49325105D996
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 03:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 651D5105D996
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 03:16:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 687D36B0088; Tue,  7 Apr 2026 23:12:17 -0400 (EDT)
+	id B47DF6B0089; Tue,  7 Apr 2026 23:16:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65F516B0089; Tue,  7 Apr 2026 23:12:17 -0400 (EDT)
+	id AD1D76B008A; Tue,  7 Apr 2026 23:16:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59C2F6B008A; Tue,  7 Apr 2026 23:12:17 -0400 (EDT)
+	id 999426B008C; Tue,  7 Apr 2026 23:16:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E4576B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:12:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBF7D140881
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:12:16 +0000 (UTC)
-X-FDA: 84633915072.15.DDA7353
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CA16D100006
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:12:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 858D16B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:16:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7930B1A0A39
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:16:01 +0000 (UTC)
+X-FDA: 84633924522.13.269C43D
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 92DFA80004
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:15:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WaHyOqA0;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775617935;
+	s=arc-20220608; t=1775618159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZP9VtDCIdTrW+zgFkYssyeZTDbuEZgcPZOgrjuwIt4k=;
-	b=R3qwkN2RRH0mru2j0t+w37eBycEITTAA9Z41yIgN+ExrmHoBn3ZMwZjvnQTHVsh5PC8oqV
-	hpAbSUuAfoPUyZk/KAnlx2QIYGMRS21fx5o4RbUH38ehO9msyIIJsk4JAqe7+uBl1wZW+T
-	UCM8yRUSp3f5Ra25hyGp4MROfdMO4qQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775617935; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T5BAqHbb5bhnkhjYz3aTCjg27+CiWn9lwJmI608v3cI=;
+	b=AyLMQYmIegHcYLccnLZIdRDGDix2+p/shfSk+Af0W3KEEPqdtb8VSdnpNUtR4TMlcIToaU
+	FePTz5Ovkqh2GHsfHom3LZ6XDaXKFiGQrzJibASK9/HWpMDYgxVt+M/73mIckQECcRiazZ
+	czcS759rIQIQwcT5TU7EbjtUi1YYGJQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775618159; a=rsa-sha256;
 	cv=none;
-	b=TeHSTvUFdzZ/VUF2RjKfu2YIrwDK/ulnZVsyfKmlAPJhRCskN1MfhGVj8THsfW1CIe+D8J
-	u+xJeL2p90HHgBkkwa1yEqIsQdUE4fH5soXg3d1ugdITQDCbPlWZXAK3QdgEZBbagKoNbz
-	fMnp9SvsEzpgFaRA1bblns+d2tyj3cE=
+	b=hbxQ96M5gstV+bikliHhOzHNsdN+QVquL7iqkxrpyFa5ZW/vcE1nuLCys8e7M3Is8wdZdC
+	P5JHHKHgqFdC8Gz76LYMnKUM/ZSn7zqPvea1zXRiDpn5VE5gxgBK6c0GwlhlsjbmrAWnpv
+	BFnXqfq0a01eDCbGulhrY7HZNxprias=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fr7PR4McQzKHLyl
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:11:07 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id A0FA840590
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:12:07 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP3 (Coremail) with SMTP id _Ch0CgBXg1CGx9VpuP0NDw--.48788S2;
-	Wed, 08 Apr 2026 11:12:07 +0800 (CST)
-Message-ID: <8ee6d7c6-bf9e-41c7-9e04-69ad3e1a21c2@huaweicloud.com>
-Date: Wed, 8 Apr 2026 11:12:06 +0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WaHyOqA0;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c76cce85bd9so2106838a12.1
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 20:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775618158; x=1776222958; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=T5BAqHbb5bhnkhjYz3aTCjg27+CiWn9lwJmI608v3cI=;
+        b=WaHyOqA0/mQoww+rYNdYlNhT/P7oZAQou2oXQzHpzWnY+Kelravt4nTXFHUKra5QPY
+         rssKTbxWwsQZ9rw5N68YrizgEPaXDJo0vhEXrxNnaz21YbCV3a6o+Fk+Z4wcJ5NbZ020
+         jg/jMo93+VVvzBFn5PceFVBdBRD4oWFMhVQw1PimnjRpqrUQtAZMZP7AW9dYNqTcBoIu
+         r0YAZLCO3LfSDPphRjhftWClFLdmrCq2D9NXTi5slyFbx1vQEWr4itJX0YyPO23JDbQx
+         bVWScrH1M5rsO3XvNgaHJYhX0OH3EAVwA/2YTVE6/Qc5AzihJrtS2IRDsYpuK/m2fkvw
+         K1vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775618158; x=1776222958;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T5BAqHbb5bhnkhjYz3aTCjg27+CiWn9lwJmI608v3cI=;
+        b=l7vEhnwrZC6uQ6BPHCLjkZDfDZtYjnhdaORvR5jtAjQbMCukOoBnVEfbnfAJyfp+a8
+         uNMXh+L2/CLcWbAgoecMl5crK+g46lkZLxuU0ciIN6c8GZz7pidZAur9acgDrGWsHC0E
+         v+yIMsdU3uuEP/fc4xWkeGWGMOzMnUgk3G24tHKAb5WpX1UMTErGriSayGKrMokMTk3x
+         3kb2oiySksC795ckx44rUeDGarEp7oty0SQ1VDyWbQYF2E9VgqzQZsTEWpCazL2PmlWw
+         54+yqrDQL+mRoxfHIWuggpG7oj7EijEZXOBGB39cneOTMSHQ13iovLTiN9A17yTu9C9p
+         35kg==
+X-Forwarded-Encrypted: i=1; AJvYcCWq1k0tNXQXHvuMG81tjnHSKRqblg+8RthHChFa8uuEF4s/6Ba/LEivgfrhiAGWPPgfHFP51C7jmQ==@kvack.org
+X-Gm-Message-State: AOJu0YxWKTtG57xEwYuZEx0pqO6VcVsEJF3DOZk+BcigISGeh5/CWJmt
+	yJ1LeJgLwUXhF3PDEEz2ikTgdC7mf9sGmh1LRhl1UPuIn5dXxnCEJflu
+X-Gm-Gg: AeBDievQcJf0ZUVi+Szmxqr5vh5ahua5p5n/G05xwQqw6YEg4eUDWwsKioDSzgxnrIe
+	iNJcRbkYuLqLE44kENfNXa0MTrqjl4ErG3k1GB39q7YnHC8Ie4GfZj8Fx7t3c8B/b0035SONSlX
+	mWGwV9Eh63FEPxHN40jeZmEUD05ZYoIc3JShmpKD6SYpSW+DAGi6RxrIzcz/12O6odJPxoyEHJI
+	LqaxISzM90LOfLg6Epg/i3GgxIvAhiQa/zxi86UzVxzNDo+9bksd2dPIoAZN3vj16upituVHGzt
+	zlHMQ1k/Vh66HUJ3PR+s1XQf2Nkz/Hsj0hmegLpTddYWnSS9/XlKfLHJ8YPUdzeV/2iuQtHez79
+	VWaRfaNwMOTSjLk83K7rWeGwrMqiP6K7fS+Xzi6K2CAu/JJEbMkfR7HvPv25IvXWOqg2XhRTrkj
+	jWeWt5KrYX6nH+4iATSRGhDqntUWyF0JRmydttT3BEw4NFhE3oVL+mf0Fc1WAf5JVU1oTO
+X-Received: by 2002:a05:6a20:1587:b0:39b:fbb2:5e46 with SMTP id adf61e73a8af0-39f2f0968d0mr20221375637.40.1775618158243;
+        Tue, 07 Apr 2026 20:15:58 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76c65a3f08sm17170990a12.31.2026.04.07.20.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 20:15:57 -0700 (PDT)
+Date: Wed, 8 Apr 2026 11:15:51 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: wangzhen <wangzhen5@honor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
+ = 0 or 201
+Message-ID: <adW_O1-QAQadQ68-@KASONG-MC4>
+References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com>
+ <4451bdc432864aebb54f401eee51ea53@honor.com>
+ <adUM54W3WYwEFj3J@KASONG-MC4>
+ <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/14] mm/mglru: relocate the LRU scan batch limit to
- callers
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
- Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
-References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
- <20260407-mglru-reclaim-v4-3-98cf3dc69519@tencent.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <20260407-mglru-reclaim-v4-3-98cf3dc69519@tencent.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgBXg1CGx9VpuP0NDw--.48788S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZF18tF1kJw4ruw47Kr1UAwb_yoW5Kr4fpF
-	WDCw42krW8JrW3Ka9avr4kuF43CFWrKryxJrWIvr1akFySqFyfK34akr1jqrWUCrykZF1r
-	Za47KF48Wa4jqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: CA16D100006
-X-Stat-Signature: ejoabmiob8gu4aaccm1k3fpksg4cbedi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
+X-Rspamd-Queue-Id: 92DFA80004
+X-Stat-Signature: jyn44eh78y7myykpkz3xij9wmjxd5d4g
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775617932-862540
-X-HE-Meta: U2FsdGVkX1+nVDKE1mOWY1Xyhr8bJzobaOvzRd/lQ3Kyn9N9DbjR+8J8mRNkeCfwpETVWy8RH12ESTi9rHuhK0aDfDQUh35+VSMdqErst4JJVeGI8WdUzPb0YAaOl0cHF1TOKyIPCcJZbjuZR+hJwUokRwmaVoaPlzuUl8rsY7lO34Z2lv590a2dpg/uRlJraIlRL6SZYGA4/3z5q06w/7v15bmF2IvsWbbg2QK9NFzFcMRRhzSirWpZAxeMWMLAlb1gw1Xunq+RzEQ1BQE4KdKjqRSqrOOCpxL67Ki3NwODp+GjnhiLlBvMX13Kfp5JvjcBwj82g2pCRpNfr57va6zpccaKoOVnrnz0FOMNVVdTfmJOHukoVPu/BGvPuUDmSZOV4dQSOSGrkVMY/I5i7/5QjWIVK+YMT+FuTRl90Ev40WitlZgDKtmzAHuoDzapEcisHYoZ3qnyqoaddHnEyJJG+oXM9ivsCiTrZmug6EIFXmyx+1lehyt9QjnFye/6y/S+6qzIkg4s1ogJU04YrTkatmt1Q/FdTvZZo5s/xhPpZr2+smGhgrYE0sbrD4DY/2WyCIWFk8zAYK5d5/vLtllS9jJPtAy2beXiVq0WPW77vFSFI6L4ZHE095YwNxZZzL3JOyBk8GF/BrnrmjJVOqpqOWmem+jM6bHXTdl76VqAKhEcDfcCsCeDZqs4MNjAh61CB0MDeuT5qbv5CJePge6r8VxYqaDKNmfuGReRRF7crixW3/BhYfrwxoWSTmWM4/r6NJye8YlLCjM9tTzjLADTziBQ1tR63PmViK3UuIelUHAKXKKLFDIqwAsh9evGTDkWjyxXprwFQftlMHWfntDOciaNUOv+hdn8ozq1mtwRJYrzN3XXrK0R5JoI25t5pc49/Lcx5Ub/WmFwrH8W/jd/7hmordQCaFA4zCjihMuXal7Nh5rFmcRNNgwddMmlVUEg2U/9ynBZID4622V
- QxTKzTQ0
- SFMTWiinwWxY39LTk0gbMF8j4VSdd8MdVK98DxE2cjd03GN0urkXLfE6inw9hOBBBHyPBXxhYlj5a06sr6l1ByljaW/w2DA1ni214xwubWELmvDNCeOR/udL/C7oPhB1jEvW+pTB/h9hHzJMcBG+yFwCIANOLYjuou9CZXi5Lhj8X0VwudHOQzevLXwlpIx74y/BETF+3deVs6cbPNreDucuDKCspB8HmMgRRB2P6srPLrI/XJ3D8Hj00In1yNxllT7/bnLZbqUEDBVohhvUwBcXM+r38dsjlN2XNppmx/21fZagoEyJQX/K6Og==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775618159-123779
+X-HE-Meta: U2FsdGVkX19LDfDMrWOjgi+CJHnLgyglsAxQf/EA2QpoZFy7SQBwAAYwmgqAlpYma6orPAXsPmWSXNK/IO+xsLW4iLngGfSkzy6jtvpk2Z0AAe1Q9ziL73RmwNR9/FZVV1IV6Ol8dIDJUmi6HqCDYfzfcarhWvlHZFjpyALL2fItue6nNNOJ6Qj310F+/5n68Yewe5BD+h0dE917yrBdmF2cXxtVreMAXjlp3sVue75bcrVf3cPuhI4JeW6tiwXUDvQPUFzma/X1I/RYzxHmUxhTaswuPfTd7tRc1fsp7yD8nrpsiTRHVUmgx7Sx8jN506n9Ydi63r00082KU2JWddu3/wvS4LeMtt7rVRX+jiPkLcpJYS+ZQn+iubc9OJkUiYngpqMY0tw1aqmlu0tj0MwBpaG+ZB5QmVra5ubzA1pfuP5PrS7h3BXLnli0CVpAMWEovV6sUYDSB6VhlEmFGWYeQejHkHXCvpFZkqv/UT2kq53NFXdLZJuwUBgE1tnLtJJA6bxcKlNZXwQbDuNrhI/mkyIjrfONy/+wRoHu/kmCf2oCTubpk9r4TEJQ+y1Un+D5hU8TjslM+z0hyxExzNOJRT8vZWx9kue7mOEzrthdtRjApc2bfOjAjFn62OZegbGhttGQ6ScQ1+KWknNS9K8ROPTR0/4d+pf6iwZQu09hzB2tJjQbhw4fjPkblUvwqclon1mmVrY+t8QimoKle4ZUpUuw8zyLvW0NVSDn61ialv+AFM81r4SnbqaIbZxXAXS8ZL73FNwlAq8n5leHAiYG5kNLq4BbN+z+EC8oi9bwbGSKqG/iPhXu4ZCEfTzbzG4AWCrBP7QfV23FAifx3cWT42D2uR8nX7dS9J9ZIjBHOgYPb4c/UtgCiTxo8hYX/7uMg770FTiYurGvbjjgYM3pIh+ycUelt7APcu2FEf04L0IxDfoN16tlZkX27KN86E2HtrvxZqd9i51lvMf
+ t5zwr+wb
+ flr+9XZVBMMBmmBv147mus+Pv6JhdklJYF10/LboJ2Omnd+0xrVOVHxHnpfQJVlz0eNiq2MigF3urMmwq2tFGeBkJsj1lW58KT3iD3W1VbTeEpu5+Qwk6BqOGNxkJ1ks7CEAUMncPog1AIQlufhcAOE6RhtOwz0T6Nwc3MNwV4Ple1wgdLDmiBqH2shlraJRbujHwGJChF5kGn5Q2+wlClYQCxAWokSZPmxa+PfJ99a/85NYkPqRf2s4HwyZ5fW+H5VGYQXZy1DUblOwiYkhXMsl6AV1PYmn2IsHMebxm3fubUGZ+ITYhY+kpG18kGs3gC8nPnFk7DiR/vtG0n16rI7qGTO6WujBCwy4MLEbyww8uUo0OWEHItoxdQ4zDNlK7qkHIc5wr/Z+jkgOF7VQS3rQb/I9Axp1BbF1y0IwdBste0xIgpMOwyhr6wEvPcFwJXzCFvF9P9RtkRxsX7YgfkvxLWjAVFB0lscmKYaCY6uyUqrdFzjQrovpYmQpd4pU/bw4nlKpiHSC75iFgEIJBsBlzreqZlwBEszBlmEmDCCTgEJwvGR4lyO56Zh/Gima5ymuQ3stWvPMX70+6AosOtPBBEbV0m2t9lD8h/fF2sSTWX2jHZNINXC0oiG0a+AWccFNSUa0tvJGoOroQ/bZNUac/PZlwolgGm3cd1dZkW+OZkPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,100 +129,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/4/7 19:57, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Wed, Apr 08, 2026 at 07:00:17AM +0800, Barry Song wrote:
+> On Tue, Apr 7, 2026 at 10:26 PM Kairui Song <ryncsn@gmail.com> wrote:
+> >
+> > On Tue, Apr 07, 2026 at 01:37:08PM +0800, wangzhen wrote:
+> > > >From ac731b061f152cba05b9aa351652a04f933986e0 Mon Sep 17 00:00:00 2001
+> > > From: w00021541 <wangzhen5@hihonor.com>
+> > > Date: Tue, 7 Apr 2026 16:17:53 +0800
+> > > Subject: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness = 0  or 201
+> > >
+> > > In some cases, when swappiness is set to 0 or 201, the oldest generation pages will be changed to the newest generation incorrectly.
+> > >
+> > > Consider the following aging scenario:
+> > > MAX_NR_GENS=4, MIN_NR_GENS=2, swappiness=201, 3 anon gens, 4 file gens.
+> > > 1. When swappiness = 201, should_run_aging will only check anon type.
+> > > should_run_aging return true.
+> > > 2. In inc_max_seq, if the anon and file type have MAX_NR_GENS, inc_min_seq will move the oldest generation pages to the second oldest to prepare for increasing max_seq.
+> > > Here, the file type will enter inc_min_seq.
+> > > 3. In inc_min_seq, first goto is true, the pages migration was skipped, resulting in the inversion of cold/hot pages.
+> > >
+> > > In fact, when MAX_NR_GENS=4 and MIN_NR_GENS=2, the for loop after the goto is unreachable.
+> > >
+> > > Consider the code in inc_max_seq:
+> > > if (get_nr_gens(lruvec, type) ! = MAX_NR_GENS)
+> > >     continue;
+> > > This means that only get_nr_gens==4 can enter the inc_min_seq.
+> > >
+> > > Discuss the swappiness in three different scenarios:
+> > > 1<=swappiness<=200:
+> > > If should_run_aging returns true, both anon and file types must satisfy get_nr_gens<=3, indicating that no type satisfies get_nr_gens==MAX_NR_GENS.
+> > > Therefore, both cannot enter inc_min_seq.
+> > >
+> > > swappiness=201:
+> > > If should_run_aging returns true, the anon type must satisfy get_nr_gens<=3. Only file type can satisfy get_nr_gens==MAX_NR_GENS.
+> > > After entering inc_min_seq, type && (swappiness == SWAPPINESS_ANON_ONLY) is true, the for loop will be skipped.
+> > >
+> > > swappiness=0:
+> > > Same as swappiness=201
+> > >
+> > > so the two goto statements should be removed. This ensures that when swappiness=0 or 201, the oldest generation pages are correctly promoted to the second oldest generation.
+> > > (When 1<= swappiness<=200, only both anon and file types get_nr_gens<=3 will age, preventing the inversion of hot/cold pages).
+> > >
+> > > Signed-off-by: w00021541 <wangzhen5@hihonor.com>
+> > > ---
+> > >  mm/vmscan.c | 14 +++-----------
+> > >  1 file changed, 3 insertions(+), 11 deletions(-)
+> > >
+> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > index 0fc9373e8251..54c835b07d3e 100644
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -3843,7 +3843,7 @@ static void clear_mm_walk(void)
+> > >               kfree(walk);
+> > >  }
+> > >
+> > > -static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+> > > +static bool inc_min_seq(struct lruvec *lruvec, int type)
+> > >  {
+> > >       int zone;
+> > >       int remaining = MAX_LRU_BATCH;
+> > > @@ -3851,14 +3851,6 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+> > >       int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+> > >       int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
+> > >
+> > > -     /* For file type, skip the check if swappiness is anon only */
+> > > -     if (type && (swappiness == SWAPPINESS_ANON_ONLY))
+> > > -             goto done;
+> > > -
+> > > -     /* For anon type, skip the check if swappiness is zero (file only) */
+> > > -     if (!type && !swappiness)
+> > > -             goto done;
+> > > -
+> >
+> > Hi, thanks for the patch.
+> >
+> > We have a very similar patch internally, and the result is kind of bad.
+> >
+> > Currently MGLRU forbid the gen distance between file and anon go larger
+> > than 2, which mean with this patch, when under great pressure, you may
+> > have to keep rotating a long list of the opposite type of folios to
+> > reclaim another type.
+> >
+> > For example, when you have only 2 gens of file folios, swap disabled,
+> > and there are 3 gens of anon folios. Anon folios are unevictable because
+> > there is no SWAP. And file is also unevcitable due to force protection
+> > of gen. Consider anon folios are mostly cold (at least a portion of them
+> > are), now the oldest gen of anon folios will be very long (e.g. 12G,
+> > 3145728 folios).
+> >
+> > Now, to reclaim any file folios, you have to age first. Before this
+> > patch that is usually fast. But after this, it will have to rotate
+> > all 3145728 folios to second oldest anon gen, will could take a
+> > very long time.
+> >
+> > During that period any concurrent reclaimer will get rejected
+> > due to force protection, result in very ugly long tailing or
+> > unexpected OOM.
+> >
+> > So I agree this is a good idea in general, I agree we should do
+> > this. But better defer this until we patch up MGLRU to remove
+> > the force protection first.
 > 
-> Same as active / inactive LRU, MGLRU isolates and scans folios in
-> batches.  The batch split is done hidden deep in the helper, which
-> makes the code harder to follow.  The helper's arguments are also
-> confusing since callers usually request more folios than the batch
-> size, so the helper almost never processes the full requested amount.
+> I suspect that once we can age file and anonymous pages
+> separately, this issue will resolve itself. David already has
+> some code for this [1].
 > 
-> Move the batch splitting into the top loop to make it cleaner, there
-> should be no behavior change.
+> Not sure when he will have time to push it upstream, but I
+> may carve out some time to take care of it this month.
 > 
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/vmscan.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index f336f89a2de6..963362523782 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4695,10 +4695,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	int scanned = 0;
->  	int isolated = 0;
->  	int skipped = 0;
-> -	int scan_batch = min(nr_to_scan, MAX_LRU_BATCH);
-> -	int remaining = scan_batch;
-> +	unsigned long remaining = nr_to_scan;
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  
-> +	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
->  	VM_WARN_ON_ONCE(!list_empty(list));
->  
->  	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
-> @@ -4751,7 +4751,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	mod_lruvec_state(lruvec, item, isolated);
->  	mod_lruvec_state(lruvec, PGREFILL, sorted);
->  	mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
-> -	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batch,
-> +	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
->  				scanned, skipped, isolated,
->  				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->  	if (type == LRU_GEN_FILE)
-> @@ -4987,7 +4987,7 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
->  
->  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->  {
-> -	long nr_to_scan;
-> +	long nr_batch, nr_to_scan;
->  	unsigned long scanned = 0;
->  	int swappiness = get_swappiness(lruvec, sc);
->  
-> @@ -4998,7 +4998,8 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->  		if (nr_to_scan <= 0)
->  			break;
->  
-> -		delta = evict_folios(nr_to_scan, lruvec, sc, swappiness);
-> +		nr_batch = min(nr_to_scan, MAX_LRU_BATCH);
-> +		delta = evict_folios(nr_batch, lruvec, sc, swappiness);
->  		if (!delta)
->  			break;
->  
-> @@ -5623,6 +5624,7 @@ static int run_aging(struct lruvec *lruvec, unsigned long seq,
->  static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_control *sc,
->  			int swappiness, unsigned long nr_to_reclaim)
->  {
-> +	int nr_batch;
->  	DEFINE_MAX_SEQ(lruvec);
->  
->  	if (seq + MIN_NR_GENS > max_seq)
-> @@ -5639,8 +5641,8 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
->  		if (sc->nr_reclaimed >= nr_to_reclaim)
->  			return 0;
->  
-> -		if (!evict_folios(nr_to_reclaim - sc->nr_reclaimed, lruvec, sc,
-> -				  swappiness))
-> +		nr_batch = min(nr_to_reclaim - sc->nr_reclaimed, MAX_LRU_BATCH);
-> +		if (!evict_folios(nr_batch, lruvec, sc, swappiness))
->  			return 0;
->  
->  		cond_resched();
-> 
+> [1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
 
-LGTM.
+Hi, thanks for sharing the idea.
 
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Right, a few weeks ago I also got info from CachyOS that they are using
+following patch for MGLRU:
 
--- 
-Best regards,
-Ridong
+https://github.com/firelzrd/re-swappiness
 
+The idea is also split the seq number for anon / file so swappiness
+works again.
+
+However, I really not sure if this is the right approach. It changes
+the model of MGLRU and things like TTL may no longer work as expected.
+And TTL does solve real problems too (also from CachyOS):
+
+https://github.com/firelzrd/le9uo
+
+TTL replaced the le9 patch above in a cleaner way for thrashing
+prevention.
+
+Right now we do page table walk (and it walks both anon / folio)
+while generating one unified new gen, meaning the folios in that
+gen have the same (or at least all older than a specific) access
+time, which is used as the metric for TTL.
+
+Besides, having unified gens also help implementing things like
+workingset reporting where each gen is like a bin for histogram:
+
+https://lwn.net/Articles/976985/
+
+Aging triggering could be a bit more problematic too.
+I think the right way is to just do the aging asynchronously, Yu
+even left a TODO comment in vmscan.c:
+
+/*
+ * For future optimizations:
+ * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
+ *    reclaim.
+ */
+
+Then, we start the aging when ever there is less than 4 gens, and
+allow reclaim to always go on even if there is only 2 gens left.
+
+The performance would be better since the is no more blocking
+on aging, no change to existing model, and the change should
+be smaller and easier to review IIUC.
+
+One concerning part is doing reclaim while only having 2 gens left.
+I think it seems OK. It should be rare as 3 gens act as a buffer
+already, having only 2 gens left means the async aging can't catch
+up and system is under extreme pressure so it's unlikely the folios
+will get access enough times to get meaningful heat info, and
+refault will be more meaningful help to sorting out the workingset:
+
+https://lwn.net/Articles/945266/
+
+Cgroup reclaim can do some throttling on that too, and kswapd can
+still do aging synchronically.
+
+Just some ideas, we may need to do some test and benchmark
+to figure out which is the best solution. Discussion
+is welcomed! :D
 
