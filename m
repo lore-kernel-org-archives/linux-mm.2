@@ -4,134 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C39B1105D991
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 01:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9F8105D993
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:20:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 209D96B0088; Tue,  7 Apr 2026 21:43:06 -0400 (EDT)
+	id 5283F6B0088; Tue,  7 Apr 2026 22:20:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BAC96B0089; Tue,  7 Apr 2026 21:43:06 -0400 (EDT)
+	id 4D8D36B0089; Tue,  7 Apr 2026 22:20:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A9EE6B008A; Tue,  7 Apr 2026 21:43:06 -0400 (EDT)
+	id 3EE396B008A; Tue,  7 Apr 2026 22:20:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC8CD6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:43:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5B3813BEFD
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:43:05 +0000 (UTC)
-X-FDA: 84633690330.25.F901F43
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9CE2010000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:43:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nCARR3XQ;
-	spf=pass (imf05.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nCARR3XQ;
-	spf=pass (imf05.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775612583; a=rsa-sha256;
-	cv=pass;
-	b=p+UBMmOHyd769nQwTBDUVq62kBTMDflMuhmXYJP9eCsJcGm3GeVDAgahV96jzt7UJ6A0ug
-	5xSdf+ETE7U3eXtyYxfucLws/EamFjlN/koL632FeJNKHLS1SjjrgDilssE4w5z8Vu3NJW
-	qz9vw5fx0RuWMtv4+kW5cn5gj3Ab45A=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775612583;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 313056B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:20:50 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90E491609F6
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:20:49 +0000 (UTC)
+X-FDA: 84633785418.15.955A4A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9AFD640002
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:20:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FhSehnji;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775614847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxC98xPrXRqEsWHoH58ww6cmTyYCIoJK/4CvumIFxvQ=;
-	b=EQLNEKwdPHvjxjk1e94VNx748BxQ+Rn2Mkx5kDwRuliWMRhALzRk+5K637BEcBVHau8qkf
-	9HScbHLD4hB/EBZIUEoy5bg+AftrglJOOrArsp9t/aeKjlK8eDfYRqVtqQUZf5X8P74nk4
-	ICC/wZpYw+vXV+ea0+90eCfHqLUUG3M=
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38e203fbe14so968351fa.0
-        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 18:43:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775612582; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UG5sYDIZzi4EDxIcrRhVpsLYvfhX5arvmfyCPbPSIAulb6wj4GlyaSHGwjK0HEMJFX
-         3oQ4FMwWBF+c9dqLXCAcPyrhnZmt+KpGORt3CGZEVaoT8YJTi38V7+WhWhlfrFGVcUE1
-         UFpzqbTClVMRMPU72roqb15SOX3nRyMRvGHCAd/dJMnN9EYvKmlX2Ze1bqon0Npi1DMJ
-         f6YGYBFdMYMcdg3R0RvCOTuA8Bjm+PKLQG69mkFa/mUs6+hnU3OVgeqC039tm9Mn10kv
-         So3cApqqGwBt1tagjamYgGdMNx45vwGR54eYZFbVdeCEo5JwawjWbapWr4tuh6Titk4t
-         86Fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fxC98xPrXRqEsWHoH58ww6cmTyYCIoJK/4CvumIFxvQ=;
-        fh=f/7+n2SX9FTLWe+VZ5foy0/J9ricVYMDAdVb/7ukwaQ=;
-        b=JYlm7ti0Wv8nbQ922RcAwGECAadG30614z9+f7SSdESbc0d1VMBt6PrGhrSMldkV64
-         cUud/lJX2kqSUwWHX/buVudaGQRfLRYozGgW+QCkyg0PwTPeUhqkoblDz3O/Ve46SRrh
-         6QU4zLd8caVYNADVF7M7XP+Blwa2iTwPyC5wKjVluviMQ1kpEo97kvvokwVoqZwShX+1
-         NnGmMGK4w5BxnHWr6RIGQIdljdybg8ERS1vVBEJDZUz72GHdkHhqCNp1Wt19UAo/AcXP
-         o8v/GOrDL0AzG6WjgVR/q1ptmZJEz6rDQ6KFBcKNAR3/ZQKIJq5FD76j3oWiORHn5mnF
-         ncFA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775612582; x=1776217382; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fxC98xPrXRqEsWHoH58ww6cmTyYCIoJK/4CvumIFxvQ=;
-        b=nCARR3XQbBGl8hRGnJfXlGyidOh620JzuddeVoyF2c1UUPYP3iemioZ+sTneQSUZ/+
-         b6QOyVgOd1yESKPzy9xJPuwjkYkHZ7kmMYoFs/FVu9MdLwmMOi2EeT07wa6VwT+TDFsO
-         HcsYEV8bEOEQmsa/gRgwqIPABask19+t47YKckVAzYIaqVwr3oDISpczOMlWbEl7Akv1
-         Q6RwoazhRfDlQAiqv2R2L3WThPdXBCTj5nE+BsGSDJltre0ZJZAu1der8UxDJUx4kH7C
-         p9grQBTEBGkilckFId/bq1NyncGyRiQdu5e53AAMITaVe9VlEbyxANF7BIomt3r3GrVc
-         9wyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775612582; x=1776217382;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fxC98xPrXRqEsWHoH58ww6cmTyYCIoJK/4CvumIFxvQ=;
-        b=nI/guyi+IhYC6/GH20ycUGWe6b16VJa2+Klm6zy9lmLuUJfZgm3+fmyAO+bsEF7Ouo
-         U1Hw7lGlt4qvjBVQzr690UYO1l7qQqMDW43i366ts6a9huj6qrbGtEA6dV4mREPbBaA1
-         1peVwdTT25t/NhtiDpyCwDXkeGspCZn7ehbHSi+tEhlWPUXxa4+MsIBj87IlYhDESUxA
-         YFCXmNR8qNcZtBo+jXjeXOE1aFvhd9NSH2DGwFBoSPjnn97Lw2Y2WPJFtTaKbwd4jpNN
-         IOXaG+aFiSSXza4PcyguwDdtXGySu64A4iF8390h5Q5XJhwnyEbAqcQL9zuYyMd9Ugp5
-         xRTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWYeOEJi/+RZhWCp0QzMPB+x+wpqYlAXss5z8PA4dpiVw98P/dT5xcb3RxSgCkrApeIgWstV9Smzw==@kvack.org
-X-Gm-Message-State: AOJu0YzOsJKu8esKRivaPtOV5ksKHduqoV3pyG9KMi9C5BYZAROgppEU
-	J4TZr3U9/lErOGGQVwFqv6Y4DZw9MNKqYu3VshKAfLTPBoIV0+uLmrttl4d8XS36OIbNGuDSQTN
-	N0906NhtYEFPstX9ztof/amwWl4mRjrM=
-X-Gm-Gg: AeBDievGLFjBjlm9+Py4NmXRRXNJag/6PS4zBpljU4DnPGI4FVaF4TNW3eQC7fg+YNd
-	6B8QnNtomzfypRTn8ZMAKAuAWU9+rTiMu5B7SCI++MqTHXzeX48EOhf59cu60ShW0j7/EAUH3Rn
-	lRIveHEBI50d5uYn1Xuf3Opb3ifqofS2NeUFd9d9xvvFuOGlHtA741JYQVg8uUFbcwD8J7vN0Db
-	BaHI/YkMjMsC05aCbcPwauP+20GPF2jGSxJcoPD3ATJONlPuDUmm+rlXBa2mmJyRCnmFYlMQrh7
-	dXqtvIwEyOhHIsyR5hk=
-X-Received: by 2002:a2e:a541:0:b0:38d:f18c:a8d7 with SMTP id
- 38308e7fff4ca-38df18cc92fmr20766261fa.1.1775612581370; Tue, 07 Apr 2026
- 18:43:01 -0700 (PDT)
+	bh=EkTMDGKP948BYYsNDQ6v54eavDd4YZn/lUk2B2IC8qw=;
+	b=SrAXu29An/nAHMvayZnZ15GlwJEm4Y5oe01iLVZWv4E61h4RgyfoWpp/pWQ+wJtGz9yDqr
+	bcKz8ZRYIBFa2YzI1B2Q3iVXLr5H6ayOuYuplKXRmUKuVQY4T3RQl0EQCpKVQ139S7dPOU
+	F6RwvxR/5WMLZfc76bcMQyhHaTo23kM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FhSehnji;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775614847; a=rsa-sha256;
+	cv=none;
+	b=k7aCNHPE7eGfSH7xxo77bqfQUpQFqLii5rCshPVXj5ZnzwaAxSNXvEpQUvyXo0Mit6KyG8
+	Jd8hij7UIEAXg8sG8M7TzweFrhVZncN9AoR6N+KT6haXr1iKU0QxkKlwsas0XKs1nvkR/y
+	uP90AGeCC12s2a862s/MFobn1t9zrZs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CE70443C6
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317D7C2BCB5
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775614846;
+	bh=EkTMDGKP948BYYsNDQ6v54eavDd4YZn/lUk2B2IC8qw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FhSehnjihi7vemqR/JEZDVofEmDPgOjyLbgVSjUtwKCsGzV28aa8G+llG5/pLkVJn
+	 bbj4/nMhBrJIrQO7BT8IKBaoeR9B28VycAFAs3ehyFKnqRdhQy5Qd2zGLYsij13pkc
+	 0q9lTjJnMcXyUXgC0B3jEDDM+eJFbGzjk3xtRms+oQc8bwIWdrqvG9hpfhgQ6fXYSr
+	 iWOeSwb60H7mEzHNvq6rLlzX+5tkq4KIvQUZIXS2+GTUnYH01VMCyX8H31I7jvugar
+	 iwcxPdSonjak+9E+jHhmtIU1sT6hzVBQT9hV70ULBdf/KrrmUsvZw9n5i4m04eDO8O
+	 PvQaHaoLWYLIA==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-89cd8596724so63829996d6.0
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 19:20:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWxt8q4YZRPJKT41Q9fAlNMsB3duEULCgRq6k2JK+SvA3np94lkza5RBv0wEDWB9hDBkG5ZQGl5jw==@kvack.org
+X-Gm-Message-State: AOJu0YxsCKpoGWF3KZ0Dn6XQ//LZD5kviZXR0J+3tsqEBX3K2AmnzoFY
+	H3lDfFGIUXl4UcNBn1hA/Lho8Fz+V+y+N6L09IrEpKJPmwfPeL14PMDMmpzH2tihhVRcFTb2S1w
+	pOKmq2Jo2TKIDvCC10F5F+yfGf+8tXxo=
+X-Received: by 2002:a05:6214:1d07:b0:89c:d424:aceb with SMTP id
+ 6a1803df08f44-8a7043ee093mr331232136d6.31.1775614845504; Tue, 07 Apr 2026
+ 19:20:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260318011558.1696310-1-zhaoyang.huang@unisoc.com> <CAMgjq7DWkURifMhR8HG4nZRz6=G+Pk7kz9OGdEuL=VvZ7vWDTw@mail.gmail.com>
-In-Reply-To: <CAMgjq7DWkURifMhR8HG4nZRz6=G+Pk7kz9OGdEuL=VvZ7vWDTw@mail.gmail.com>
-From: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Date: Wed, 8 Apr 2026 09:42:48 +0800
-X-Gm-Features: AQROBzBUHg_Em7QzqowrnsecjX6CiRCG-Ek9DSeqq2r1soPC22myVEb7HMx0EOg
-Message-ID: <CAGWkznGoZEukGhwV7JLdvWEmZHtv_Pu=tBSvsWdFMhNyqW+azA@mail.gmail.com>
-Subject: Re: [PATCHv3] mm: remove '!root_reclaim' checking in should_abort_scan()
-To: Kairui Song <ryncsn@gmail.com>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@kernel.org>, "T . J . Mercier" <tjmercier@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+References: <20260407110002.204755-1-wujianyue000@gmail.com>
+ <adUTC-7iyOAUlhR7@cmpxchg.org> <adWxonmfjvcwXMg8@MiWiFi-R3L-srv>
+In-Reply-To: <adWxonmfjvcwXMg8@MiWiFi-R3L-srv>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 8 Apr 2026 10:20:34 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
+X-Gm-Features: AQROBzABPWMVwekFvRSuJev5R_1ZnyCXzik3x46t1Zi8Xx69sex2MtowCdnYFI4
+Message-ID: <CAGsJ_4yNZiRpgyTbooJEkkefVxgWOywkcVd2BeY5Dq2wuicNNA@mail.gmail.com>
+Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
+To: Baoquan He <bhe@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Jianyue Wu <wujianyue000@gmail.com>, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com, 
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
+	lorenzo.stoakes@oracle.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9CE2010000A
-X-Stat-Signature: epo9wi4htuog8xdru5it8isazprgkozt
+X-Rspamd-Queue-Id: 9AFD640002
+X-Stat-Signature: 34xayjt6pu3813zhuxdai1x8afbi6gtn
 X-Rspam-User: 
-X-HE-Tag: 1775612583-779577
-X-HE-Meta: U2FsdGVkX191jO9u5wReGj3Hgv814vZVTMNyroeyPCffsX+5rPWZTZElU5XtrpGIGqSQFMEAD74iMj+xUCmAuCFlDpDdlyVOp24ybDUWdmiEQjeAZQ1Pd0PTS5m8fahXMBYFsAvvdjH16Pp8vvXHvSKt64U2xzIqOLxMLgXBQZ6mXfDUNTGJX7xjbB2RzNvrOjiCuNlnI4wjH3oB8oNVe396Xu/hccjpk/em4u0VX4VuZPr8LToGwgvI85qdDAMC3vQjWmgL6ZpOPp3nLFcHql68HXkt828iNJunUoRJ+eN5qLcWrOA5CCSTpfju/piaE80kutcRGQBtIOkzwyOu/bDBfG1DBPMbDB/iPmyODRxa89tGHEfK/Qai5kf4+sBC9mnvDb1rarHf4LAwuvVtC+b5tK6nGA814XY+6JqPHUyCaxljLGragtBJqNBosFypDw8uCfCEF+EwRNPPkX36kCDgUOXcW/AlySEMi9bnCrYHyukdeqEa7bxnHGJjEcamu7wUhkEmo7WRP3CvmA4lbrpw7kDZWeODy4dzq02rFayWdDwOvq7peR1zz7P2K/kVQ7+r9tMtD1BpEtm8CeGJ6TsARHQl+1px64Hbr6JmDQraus4ZPqnpcneFADcgP1l3fMEvv4vaIzvlzq8FXruk6Py1EpP5ZobnXBg78OQ1c2iYj7HB75YzHT+pkwHh1jdsCvTnlL3fgg3leGYG6rlqbKgYk4zVdaXwVpziLHhqlqOPUkKVtObawtTqfFUfuuVqUQT22I1oEu4wJoe5whQliXjsS5qkiKSVQQ1VI3jRo2kv+HMjLgtB0gf0fSoy0VUvYvZpGdy7+6WdQqzl3Gn+U5eawae4iCrixcZ9/AqvB/NQ238X6L9+az49UL14gwLcnXHtP8LxmPtUk4s5NmMEF9BwZhhM4XBE+/nF/lAKKvA4LBK3FM7j45Nrct85q+W8sR3loF+QtQl9NIHpRdU
- nmjqtioQ
- TT7GsTXutBM7mwaIjQ7ZzVthD8xoBJNShnruVrl4M1UmRtxMEBsx7XuLsdtV/hmlEec1/MBk0uiUIcUewtIsi9WiAWRqxkz3+E09l5wuzYI5BFmhpXHvt3dr6v0n4qxYBEY9mfsjaY67sXaRBYA7SQAgnW7vz9/l4TzbJC1+1JCD+Cwf2Ltkj3++BmJ1UcleDBPnP3Xs3f9MI9+4vgbbanzCGD1F/hurQN0yq9YEaRf19qY3x4anPqJ34AjAiw9JsZrfAPegq7AMUIVVHfU4seVtdqYzTc6OyL6oRk2FgzdHFyZOjc2oGAV0S9I9LaS36jnuOzdNYy7juNGLkPUtMLI8VujoI4H+sanrVH749sdLkVCv5RGz9h8zqDnPfHgLSRdEv5oaBrKkZ2YqTwU/sH+E4vgDSSJK/M7EKIjnuYl4FgsPcrf5U4IyUtoamiZW4m+TAK5FWIm38NnylEnD+fgWPWDADYo92MtNrFttGkVdZfVuwjZob3dSBP1mmQTyVlnbr+JDfO0gjw0uuZaqHwnW1xuxk9rmY12a7x3pKrFBldqUTsteSqHrNdO1c2+H2/5sZBOzOeAABgGE6vrgTVr51aflcQ7eGSvq6UTbEpE5Ny/I=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775614847-442394
+X-HE-Meta: U2FsdGVkX19Uu4hhPYY/3J8nQwS6HttCE4505Etlc4Y+HRPWh7hh6qU94UA/NqaSWkYifZD6rk7+TQ3LesjX7Ux54GvzpyhLEtg0HrhJXMobITF4dFQdk+b2GHjoBVYhNb8gIxQbdvdnAshFPb6+rH87VSVO5kuk2ZnAmn6rQyNugSJJoOK6DGIjoVg5N2bSeS9RPXDuegGmlEM8OZQF07BHqfcTPzPCaGfLXOtz61iAspNn6IBDtvE97qYbmVCe/SONtqjDmcPe7LBGdLoFMYR5Orhy6e87A84u7U+SqVIfmC5vnalsmXi44AvlEmWqauDbd20+OBd6KVDv54/OIGGn8WHWI9lXAeNcFM/oUH7QDcUyMslGI4O8gDbH5GVvwhA6ehpD92i5Eq6T2hly0INAup9Q2r3QxFtliPSiTDU4069jnQk/3S//dLdNtzh+6/DrSsNAGPoaiXBxnLk9fWNdvIPJJaJfnCwet0exd3XFazYuS6YS5EZ4ZXuA4e5XqIsAlKVvtnlVh1BrZgGrxDfccBQjPWSI/fZbsBwDCVKRfdmpDkGzRt+KhrQDeCbK03eG7rzkGrFZpZtPdUoTtRsaMlUFvuY11Qq0lLAfIGIbcZj1af3nd1wtBHRUrnRG0YmFHL5YeZkEIo/y2CfTH8uNPQQvJC3LtfoRW7Pn5gggnyGq9/j2UG/YcyXezjesT3cyrd08sNPLG5DUFNw1t6/6zsmHkjXoN/W/40rUeYRfLkKyJMByZFivQWCr45n0jEN6t8bJJR5V1POkaQcDdH/ELRljb6TUrvZaVYLQHDierDDS2HNr1kh1Myg/yw8XCDI/HBLh88CTTnweHZj59697UZ4vGVrD2WRpfiVq8jZzDoBXgZmwzLyGxjcUIkp2xv6g8N63srLV7U6ypu5iDl01gCzRLXX7RN6Vf02ZcOcH/hK8WzTRXDQNOSUNg/r8Frux1YMnIu1nXJ711jY
+ wYoJEwbP
+ 979RPZ20vvI/sejJeS1X+VxfKqNcx6VhVXPEUjUrBIqgNftEByRXFgTlW0zlqo1lo3YN79slVNwdpyVi2FXg7jutFIg4KsUriTPa+J+69+RsH51K306xWbzbu8AtImvVtxj4dK5SrZ3qltwpcEX8S78rs98dEJKfvo7ZNO4n7fberIJIkWvyrQ8A/k1Va1tDS9fG7ydss8LlLrrMW3o6VcOmuiv0ZGs0upaOSJOVTapgklWYtbeFwz9CKAf62kL7dDgBDOqg0RKbjJMOHn2sXWwoLAwQuSCfUGkPMy7myFZpM9BL0/YKQqFG8fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,87 +106,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 7, 2026 at 10:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Wed, Apr 8, 2026 at 9:39=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
 >
-> On Wed, Mar 18, 2026 at 9:17=E2=80=AFAM zhaoyang.huang
-> <zhaoyang.huang@unisoc.com> wrote:
+> On 04/07/26 at 10:22am, Johannes Weiner wrote:
+> > On Tue, Apr 07, 2026 at 07:00:02PM +0800, Jianyue Wu wrote:
+> > > All allocated folios are added into lru lists for later reclaim wheth=
+er
+> > > they are file or anonymous folios. However those folio lru operation =
+codes
+> > > are put in mm/swap.c which is not so appropriate. Because swap code i=
+s
+> > > only for anonymous folios.
 > >
-> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> > Ironically, the only thing that doesn't fit in this file is the swap
+> > stuff. The page_cluster & sysctl should be static in swap_state.c.
 > >
-> > Android systems usually use memory.reclaim interface to implement user
-> > space memory management which expects that the requested reclaim target
-> > and actually reclaimed amount memory are not diverging by too much. Wit=
-h
-> > the current MGRLU implementation there is, however, no bail out when th=
-e
-> > reclaim target is reached and this could lead to an excessive reclaim
-> > that scales with the reclaim hierarchy size.For example, we can get a
-> > nr_reclaimed=3D394/nr_to_reclaim=3D32 proactive reclaim under a common =
-1-N
-> > cgroup hierarchy.
-> > This defect arised from the goal of keeping fairness among memcgs that
-> > is, for try_to_free_mem_cgroup_pages -> shrink_node_memcgs ->
-> > shrink_lruvec -> lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the
-> > !root_reclaim(sc) check was there for reclaim fairness, which was
-> > necessary before commit 'b82b530740b9' ("mm: vmscan: restore
-> > incremental cgroup iteration") because the fairness depended on
-> > attempted proportional reclaim from every memcg under the target
-> > memcg. However after commit 'b82b530740b9' there is no longer a need
+> > The rest seems thematically relatively clean - infrastructure for
+> > managing folio lifetime. swap.c is not the best name for it, but short
+> > of finding a very clear improvement I'd just leave it alone.
 >
-> Hi Zhaoyang,
->
-> A nitpick here, this is triggering an error with checkpatch.pl:
-> ./scripts/checkpatch.pl
-> 0001-mm-remove-root_reclaim-checking-in-should_abort_scan.patch
-> ERROR: Please use git commit description style 'commit <12+ chars of
-> sha1> ("<title line>")' - ie: 'commit b82b530740b9 ("mm: vmscan:
-> restore incremental cgroup iteration")'
-> #23:
-> under the target memcg.  However after commit b82b530740b9 there is no
-Hi Kairui,
+> Can't agree more. We should move page_cluster & sysctl and swap_setup()
+> to mm/swap_state.c, and rename mm/swap.c to mm/folio_lru.c or something
+> like that.
 
-Thanks for heads up. It is weird that I got the result as Yes/Err/Err
-by latest checkpatch.pl for the following three styles as <after
-commit 'b82b530740b9' there / after commit b82b530740b9 there / after
-'commit b82b530740b9' there>. Is it possible that the result depends
-on the local environment?
+Another issue is that many MM-internal items are placed in the
+top-level include/linux/swap.h, which is supposed to be used by
+code outside the MM subsystem as well.
 
-> total: 1 errors, 0 warnings, 10 lines checked
->
-> A lot of auto tools recognize that commit message format and print
-> warning, Better to follow the rule unless necessary.
->
-> > to visit every memcg to ensure fairness. Let's have try_to_shrink_lruve=
-c
-> > bail out when the nr_reclaimed achieved.
-> >
-> > Suggested-by: T.J.Mercier <tjmercier@google.com>
-> > Reviewed-by: T.J.Mercier <tjmercier@google.com>
-> > Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> > ---
-> > Patchv2,v3: update commit message
-> > ---
-> > ---
-> >  mm/vmscan.c | 4 ----
-> >  1 file changed, 4 deletions(-)
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 0fc9373e8251..10f1e7d716ca 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4839,10 +4839,6 @@ static bool should_abort_scan(struct lruvec *lru=
-vec, struct scan_control *sc)
-> >         int i;
-> >         enum zone_watermarks mark;
-> >
-> > -       /* don't abort memcg reclaim to ensure fairness */
-> > -       if (!root_reclaim(sc))
-> > -               return false;
-> > -
->
-> Makes sense to me combined with b82b530740b9. I've been testing on top
-> of your commit and it seems all good:
->
-> Reviewed-by: Kairui Song <kasong@tencent.com>
+For example, the following are actually MM-internal:
+
+extern int vm_swappiness;
+swap_setup();
+workingset_*();
+try_to_free_pages();
+zone_reclaimable_pages();
+lruvec_lru_size();
+try_to_free_mem_cgroup_pages();
+...
+
+Thanks
+Barry
 
