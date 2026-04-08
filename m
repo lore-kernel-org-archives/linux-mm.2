@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A4B41073C9E
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:15:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CAD81073CA5
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E28C6B008C; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
+	id 859C36B0092; Wed,  8 Apr 2026 08:17:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BA716B0092; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
+	id 80ACD6B0093; Wed,  8 Apr 2026 08:17:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A9F66B0093; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
+	id 6F9F26B0095; Wed,  8 Apr 2026 08:17:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C2DB6B008C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:15:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0911CE2897
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:15:40 +0000 (UTC)
-X-FDA: 84635284440.11.255F529
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 629826B0092
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:17:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28F378CB4E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:17:30 +0000 (UTC)
+X-FDA: 84635289060.20.EC73A77
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1609F4001A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:15:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kNyAZd3q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 500F510000F
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:17:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hf9bYJ80;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775650538;
+	s=arc-20220608; t=1775650648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cAdvd1+hfUUEAjiZjHVqzp5pqTY+rYudC9Bi2gNYWM=;
-	b=pA06SeZ1sfDnQ6nHXIEs4MLtP7xk2BV1wvSiIsIFMw0vFM/qWH1tXV2wNvjJPJn3MN0WYt
-	k8AT4Y6mZt5aJSeVcELOf8be5Q6u7kI7lydpKQnbYBtMPydrtlQSh4tZGn2kjeAVW26QkS
-	x6LjkxUlptxHbrDsTXRIyPPbVLuyWP8=
+	bh=o7VsHLXptJ95COxSKs0ScfqIswvohnDgBMdUEw4P/Go=;
+	b=kq9iV0BR2c+H1axm1rdLS4Lje/fWT8HXBjeicD6P774M3flHe5K0hzZ+JH9N0BU/gYUrta
+	IaWZkcoTlmmBwI7fZojyRxngoKbD6M5YXTSnS1OcubT2M6LyP77r1WdTGGYN5p9v/vjCMp
+	JQdeiWjxg+pmSx0zlEl5crQA+hc75XI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kNyAZd3q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hf9bYJ80;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650538; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650648; a=rsa-sha256;
 	cv=none;
-	b=HPap+2QJ6Q4S3y91qNs4QgtreeIVIUgmrMnS5Ey5Sfy7EOEEaCKxQgSA2b2vkledFcLccM
-	u7JekRz92cmgFTHssea0LFAdEyPP/IM80y87Ha96NyuuaEpjH2x5X5oNRIpQSuGaP+cTLl
-	8te9ohkbmjXbYj0GvbNI8NDPadIwt90=
+	b=QmRKf8i4Z/nbE9NL5hZsPqKjQS0c7PJfnIBda06vYzgbksNGTdtlzcE/Lb6Ss0Os3wyl5m
+	6PK9oSvAcMwEMrSAlMRfLjlVsb8omCPIv7cTmxnsc9USQcAy5bc54nsTDeXnX0H1ZKCPD1
+	r0HNlvlqXTiC5wotyj7aSvhknNQblXg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B37643ACC;
-	Wed,  8 Apr 2026 12:15:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F60FC2BCB1;
-	Wed,  8 Apr 2026 12:15:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DCA340A9D;
+	Wed,  8 Apr 2026 12:17:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA007C19421;
+	Wed,  8 Apr 2026 12:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775650536;
-	bh=54kKJqAiQr1Z/HdBbSU1ax2w3Dv7r7AWensJDMehcvM=;
+	s=k20201202; t=1775650647;
+	bh=9RDpTJaswPF4RZD8fDr9UWPGxniVyHEL2oMP01MICtA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kNyAZd3q8UEgOFZZ8HTpjZKea94FDVoHEyxCoTJm5stKvyfCN0v9i3pXWj3+xJMop
-	 k/6dOlxIfx6gywBb7DvEE++5cn+9OvoIoZ9MpDjwTazaFFgrraHEGDzQO/WaUzzES7
-	 OqC+XCFbXaKxoRybXm66k8ALmRk6h0TZOGgIE9ZP9Qq/Fhvc6AKyZgRwPg8CVWTyUM
-	 TSc/J9DTbWLHOGQBfYl+lBChr7AtUmgIFqUG1sLLpSpUbfLLad2FxNxPsuzgDcwJEW
-	 mgBat36c9uqJ4Ne9GkESULL7RposNZTxzVPXhLAUG3M09mrmS6bMhs799SIYlEda8r
-	 l9gU8eBY51s/A==
-Message-ID: <b1e1783c-3621-41e4-b65d-38cf66a1124c@kernel.org>
-Date: Wed, 8 Apr 2026 14:15:33 +0200
+	b=hf9bYJ80e8mo7uRTzk9PvAOXk24thjgM3Nx0h4knc6Ejt/QopDc0w/KMYiqTUqdSU
+	 NV1Tu4lsemjq1nT95EK5hf9j8btk62yCVgGbOc5EgUh0OYMcpj5nT8S/Eazk4u3qGI
+	 3IHexIj6haCdm0fEUCyTc3grx57THgzuz4aQE6HNINwx/Qp9AB0jZXRC1etuL4kcZu
+	 Q+4aijjuRJwTHs0bbQuW69upCf/vnBWzXysURO54rAHDaPSh53SlJyjrjvaKy7oBWY
+	 ALI1bhuzqXJ39DO3TOcmZyDw7dN1IKnRQTxGgCu5keCZko/9391eZtqCS8tED/nnjj
+	 hO6me+Czimoow==
+Message-ID: <238ab437-06b1-43ef-86bb-9341c02040b1@kernel.org>
+Date: Wed, 8 Apr 2026 14:17:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 06/16] arm64/mm: Convert READ_ONCE() as pudp_get() while
- accessing PUD
+Subject: Re: [RFC V1 07/16] arm64/mm: Convert READ_ONCE() as p4dp_get() while
+ accessing P4D
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -79,7 +79,7 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, kasan-dev@googlegroups.com
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-7-anshuman.khandual@arm.com>
+ <20260224051153.3150613-8-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260224051153.3150613-7-anshuman.khandual@arm.com>
+In-Reply-To: <20260224051153.3150613-8-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 500F510000F
+X-Stat-Signature: 4ypoid79jqznaty1we6umgws6ikueast
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1609F4001A
-X-Stat-Signature: h8cgx3eqkq3xow5gewz64u746yoz5h94
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775650537-103119
-X-HE-Meta: U2FsdGVkX1+SO6DmPz6zhZ3E0RQxHGH9u7Du102BNLZ8ndbXvgEq5wJThB1+cL8yr9LqjpTQNldF40UWXQndUVsjfLv3aeGr3xX+ZPAhpueYpF2oh5eC70Z04paCnbQGbTswP60rDU+9ZVrWQ4/Zqpkn+5pJYLlfwF4Ydd03P7y6AfnxTiyoKrQ4r8krvf245j1mIj4LZlJRYnNNoQaubtiYb3cwE7aKdXg5OvlFUINJiA5t9tgfvkLAcsChbEzSwR7u4N+ADXGxBsagmPL3ZJKue5d0It41MXW9Eryrf0mfxgzI1BE8pcwwEI9cFzZbmCUH0q2wXWILCYS/gYbXQa1sF784G+hIpukyOaIxIObIyrirA3Nt//YEZeZfhRMSDCeT+VqHRAV8OfCa96EI9JRxfxlslOHWeLQRj+3664JwcDoZYY8TsS0j0C87CkSsXh1g7MSvLY9/ELotf8HVcl1tuwrJy6a84pFy8sGEhCAiZ2lj6D0e6m6EbL90230cjC9b1bdPwPDdcdVE871SmMuLfVqMN7GfviqqYKixLELyj+k1L+dmtrfyC266kSbVSzds+IGkicbI63SEFJPFIkLK6o7w/KTy0kAIjTbrOO2crkXCbrZZpYrSxOi1khtiTwXRry1hC2+xMPCNpDD+Aahl0CTCjfaR8NorlgG39sNmKz4pDg+SFpt8U7m8NtmPFGhI10+Rg7Smd0o8AhIOF3wQnAuWhFh9rur9jvgxBT5F3q/Unyf8a0fG1MIxupZes56xnBInQ1iwbNDkF2AVudXSfyqaR1TpwWDTo3oh1AXvyELRYefXHnZ8z+STA0sgnFy2ZfJUUVvOt6QI2dtbnkw3Xdkw7GgxCQ3W/SnbsknYUVxiQJAtZb1AR02FwG45CKDUIG9CQxuXcHGcAga6N+PsGCwGaf5b77LJx277M++7fChTJcwO2bFe81Y2VRcSuqVnqyOZdK3np+8nHup
- /WkM9tDJ
- 7DLNdZcf8qwb/JA0rparfhL3fp9vIof/dHQN5hnSXOxO5pAcB2vWsmujjk/Uu7QRVhAa6Ic+7L7LCXfXz7KWc6GhhlxU3hg/IpdVSaKYJcl+fGcwGs0tqqxHCvLy2hA2A+rldAs6yZWXp8A+64baEgP6zwYXH/D+Tsg34IrQX1k9B7iyKX0vqGFugULa58H/A1j/zFK0qZ5RuldmvBI+gbDUhPdVXVYoQfVUVcXYVkkiY6sqkNGaS9TXCRGlANY2UOB/zWKmpvu03FeMQssTzu0PXPIkyMXCtMWvDHOI69F4HRJkqQ/V9vI4KAb+i33AoamrlBGgmqjF/kmInyiAP7+xVZWfMxQ/bNxv0ljb+e+U/KRzkK4tGFy2Cyg5Vjy2WCjRZdpaSFzRVUiNJ37xtzXi0H41dIfv/z4yDZ+4HCE2/xNQZpgjCT3kFiG22BQejuC895v/Gjz+f5jYSUyss4IIvOE8JnxRXp1J74IZ8CaUJzwLSPcuUsi+ZXOE+72Qcxy3Y
+X-HE-Tag: 1775650648-460419
+X-HE-Meta: U2FsdGVkX1+03dIU/U3vICjx+RGTFXyBRTWtZchOlPOGIKzr9J/Xhnw0dgqSCib20rKgySh3lv7yzRF7jG/FcaSMoA9G39dvQ9uWwL5FFdpjn5KX35B4dGBtCfUOiJmXaesVlgcaqLz2mkCey2qzv/fdVLXzC5xW8EnxqU3+1WjM3pJvk8bAeDDLCuZlZk1YeRHSM85Ruoq3QOhIB2ZHBRdtRfGZBcbB0XTJCXLm/dqJxjYSAAlaD6d90rPtwkoTGlWBBrbaCd5YkTbMMHgqCuY1GCnaezHBT4AlR/wOQm0YEI3iG+qOrXJoW8wC9YKtIjivvBvtO0lgBBRnnN1eMkhpDqlFUZiUWMvke65Y1DG/BXcdZUTkoiutp5IFdR5QOB/3JCXtMqGGVo42oqeDi5rjyLSBvPfHVaieGPN8cvcnIQQuzi6f4RUSsg4obSXA3v3gMFuwdVci6/RkJJaR/CmY6OlOi9st/2lJmQ87/sZjKMsjbDYhd9ajlDn7t+Vul2X4bHM/qDxqWIAuWPHgp5Ro6ZYYXdcCahPsctJ4a3/f3Ble+6O8rftR6yxDYzPqskuDjCK3Xu3Ri8PiBil6ZBQEqXJGt9+Z5D1ZqMWNRhcltuu1GhZpQ1q3vIRR9cxmL3j8aP+8RccQHRAqjnX/ON3Y0phSWYo/bHUZkLOXTSSmPtuMxHrDpeVXpuvzByRzD7HO82mpEUI82SYjv2GPLI1SP+MFYwyTh0Nua0UEkZ5bciKcT8ZE/O2AjNP8SFqsx0MbeyUuLR8XKZ8Xi3l95ou1X/Nk4N8XL3EcKIJDXzi+Qx2YpGy/s4hAmFemxJ08s2cEy0r8b4kQ73vSHI9ZQYl1+9x+kL8jtHZApPUR/YqgwoGn7yPvbeY1/OAbe769omICyb30y+rj6l/zfhxjZ+chepQ9pYLQkT7A6FjQxAMznujZ3fCI6JBFEziJgOIbihscd22UXkNhHN9kPIS
+ QnwFe6is
+ MWLe6nMCMe2H/3mzxQ7bzmI8JRT0AdfrMwPGQWKCV8kJRz+oPdApabmX6e/WX2NJzK2xab8J/JDFEn9k0qJfbnOsz7yhCd9FH/zEdlCK6FR82z+VNauaVZUJwlYPMul20Q90LEq/aABgs+HuSRvwBHsUhcU/XfV9RYVMQ5sY1DRW1T4aD3gDO0Ygg51xwDwLatwE/LmbrqpoJcWQxyTyilQKLm0FbQUAlD1Jt8ukCG6kmIPRgS/U5+nM9PpDcSSXsFGirqweZJ4DmqeEGGhhKTbnoUhgPddp1wkStjSqwdjw4UNK1pcnhyPLqZISpG4UE32xs0gW/PkqgjudMcMGLHoMA/7L3XORPKZQ74UXSsF6kBYJ1Ske4qVt27mCuLe8p1CrZvqfv7HkeuyVbALc7ktF7bqraoBgHrsel2ofEKhuHdFhU2hnYsPyzrpbVoD3UQYGua0OwYh42FR9YzWJzl1DAKlNrOsuT+DT3qM5AJeXGk073venwPut46e0bukxVeF5+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,7 +145,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/24/26 06:11, Anshuman Khandual wrote:
-> Convert all READ_ONCE() based PUD accesses as pudp_get() instead which will
+> Convert all READ_ONCE() based P4D accesses as p4dp_get() instead which will
 > support both D64 and D128 translation regime going forward.
 > 
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -158,13 +158,91 @@ On 2/24/26 06:11, Anshuman Khandual wrote:
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
 
-I was wondering for a second whether it would be better to structure
-this as "convert READ_ONCE to use pxxxp_get() in fault.c" instead,
-essentially, to touch each file only once.
 
-Anyhow
+[...]
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+>  static void __init kasan_pgd_populate(unsigned long addr, unsigned long end,
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index a80d06db4de6..16ae11b29f66 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -354,7 +354,7 @@ static int alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  {
+>  	int ret = 0;
+>  	unsigned long next;
+> -	p4d_t p4d = READ_ONCE(*p4dp);
+> +	p4d_t p4d = p4dp_get(p4dp);
+>  	pud_t *pudp;
+>  
+>  	if (p4d_none(p4d)) {
+> @@ -443,7 +443,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+>  	}
+>  
+>  	do {
+> -		p4d_t old_p4d = READ_ONCE(*p4dp);
+> +		p4d_t old_p4d = p4dp_get(p4dp);
+>  
+>  		next = p4d_addr_end(addr, end);
+>  
+> @@ -453,7 +453,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+>  			goto out;
+>  
+>  		BUG_ON(p4d_val(old_p4d) != 0 &&
+> -		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
+> +		       p4d_val(old_p4d) != (p4d_val(p4dp_get(p4dp))));
+
+Same here, while at it remove the BUG_ON. (see below)
+
+>  
+>  		phys += next - addr;
+>  	} while (p4dp++, addr = next, addr != end);
+> @@ -1541,7 +1541,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+>  		p4dp = p4d_offset(pgdp, addr);
+> -		p4d = READ_ONCE(*p4dp);
+> +		p4d = p4dp_get(p4dp);
+>  		if (p4d_none(p4d))
+>  			continue;
+>  
+> @@ -1703,7 +1703,7 @@ static void free_empty_p4d_table(pgd_t *pgdp, unsigned long addr,
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+>  		p4dp = p4d_offset(pgdp, addr);
+> -		p4d = READ_ONCE(*p4dp);
+> +		p4d = p4dp_get(p4dp);
+>  		if (p4d_none(p4d))
+>  			continue;
+>  
+> @@ -1724,7 +1724,7 @@ static void free_empty_p4d_table(pgd_t *pgdp, unsigned long addr,
+>  	 */
+>  	p4dp = p4d_offset(pgdp, 0UL);
+>  	for (i = 0; i < PTRS_PER_P4D; i++) {
+> -		if (!p4d_none(READ_ONCE(p4dp[i])))
+> +		if (!p4d_none(p4dp_get(p4dp + i)))
+>  			return;
+>  	}
+>  
+> @@ -2258,4 +2258,21 @@ int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+>  }
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+>  
+> +#if CONFIG_PGTABLE_LEVELS > 3
+> +phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+> +{
+> +	p4d_t p4d = p4dp_get(p4dp);
+> +
+> +	BUG_ON(!pgtable_l4_enabled());
+
+Heh, while at it, convert that to a VM_WARN_ON_ONCE() or anything else
+that is not a BUG.
+
+I strongly assume CONFIG_DEBUG_VM checks are sufficient.
+
+> +
+> +	return p4d_page_paddr(p4d) + pud_index(addr) * sizeof(pud_t);
+> +}
+> +
 
 -- 
 Cheers,
