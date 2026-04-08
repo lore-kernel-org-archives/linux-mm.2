@@ -4,228 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDAB110F9972
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:36:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46B4D105D9BD
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B0EB6B0092; Wed,  8 Apr 2026 16:36:04 -0400 (EDT)
+	id 836306B0005; Wed,  8 Apr 2026 16:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462186B009D; Wed,  8 Apr 2026 16:36:04 -0400 (EDT)
+	id 7E7DD6B0088; Wed,  8 Apr 2026 16:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 302526B009E; Wed,  8 Apr 2026 16:36:04 -0400 (EDT)
+	id 6D5F36B0089; Wed,  8 Apr 2026 16:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E32F6B0092
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:36:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A94991A0287
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:36:03 +0000 (UTC)
-X-FDA: 84636545406.07.66C3BAD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4AB2A1C000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:36:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cdTCglx9;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aSNOjFbV;
-	spf=pass (imf20.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775680560;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B65B6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:38:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D80414021A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:38:06 +0000 (UTC)
+X-FDA: 84636550572.21.1081A59
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AF165C0008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:38:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fgb2OH9K;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775680683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=spTVXylMvx0q5sy3vOijXy6dU/P52BxGx70W/t4A1XQ=;
-	b=TrVF3QfvcVXOhHGwr7Mv7u2kJ1qgPtQPwTxY0Cxwb6bpqBcTqLvs9mu/g/UqSA0XEYCPaT
-	8igmCgowKx24yK557sCig7jvKctWW6Vv6ZWJ6dflxC19jFaDqGa2JlRzmu4ztGHf/X1RqL
-	4+rdnxT29z1qsumCm6xt314lvCOpPJs=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cdTCglx9;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aSNOjFbV;
-	spf=pass (imf20.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775680560; a=rsa-sha256;
-	cv=pass;
-	b=ihS9VAHHO4HqHHmDlg0hwojWte+OXxZ09hunuq3Dc27+SlRr6jJ65X0s2t3t1qE5yH51dX
-	C+knhgT42eiq5SeUiF8tNCB4Ej4hRoSnT0ndD0CukDRp6LyF7WC92RKkqbBFPiY38/k7PD
-	VhNjPwXeLMgHQWH3NcfSrc2Lw30zo50=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638KBXLt1463997;
-	Wed, 8 Apr 2026 20:35:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=spTVXylMvx0q5sy3vOijXy6dU/P52BxGx70W/t4A1XQ=; b=
-	cdTCglx9J7FkXzXe04nsyuGtkISQkiAU7stDCwLLevKD01EGUpkPgLa/S9aUXlSa
-	9i3FbDTFQHJwNQk405/279QfKbuVzzAWJ+MDNSn9CIiHOq7mi+FeZRHUZ5dV60wz
-	2RDquI0EdiTQW1tfHFY4zRJ+J17ka1I/mijpycENeOGudHsTZYgoSRZj8sLp4vcW
-	tYIN2iBvQq0PBp7PKgkaQ2ajfRCYJ13OA+AonWGG8FlkFFD4+h2W/HsmyKQEnP2h
-	c4V0SnIQBgMr/vX4Svaql6qjNWYIO8zECQna23nNNZnHlBx+67cQknXcVYkyU7jo
-	kAtHzvjo6EojBL1ihfXMIA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dcmq9vay1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 08 Apr 2026 20:35:54 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 638IY9kC026185;
-	Wed, 8 Apr 2026 20:35:54 GMT
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010002.outbound.protection.outlook.com [52.101.193.2])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4dcmebsd8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 08 Apr 2026 20:35:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EE60YxqNYmueurgjVPVuadiAauqEY4RY6WiCHiNyPvGtksP2FJNGazhDJAuZgne0SzD9qmhjcxHnc5JRhwEnklSmkmhkzDH9kZNyHgbEmXyrlGxPg9LfJSFBKPfkAe2nOfdqGHjkxDI7XTnbtf6xI2vb0cM79Y3MhQS5qtk2a0xslUGE0cZZQpK8HfvnndfuACGavYcIMvk/LZMWDs3wHGLoL9uHhEr2ZIOiyqdbQwuQfK+cMkTGYX/NCYae5NxctjSc7MP8j64twR2Jc+8jHXlP5Sd+Y/LmYqhZ2z2jDk606YxFwo4OSChKxqkt8B/hNVHmcYeigO1OhPXHEBRx9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=spTVXylMvx0q5sy3vOijXy6dU/P52BxGx70W/t4A1XQ=;
- b=jruI+5g43dvtnbqKXDfyEla7eGhf5AMKNKkJyZn5O4BuRP3vF+oU08T3IdXADyB9JFTnzpvwpIeGsLLLTg/aygcsNFswGHVWD0QXQOI0uiHXqkHhPR4d2luABICZbAiK8ajW+uw5KvsE96FDUjIWuP2lEVuUuXWK2olFeNAT+Y1vITR1Utx0yk0hDnAAtZwMrvnxWLqJ8JI3f43aSuntqEKfgVK6w4D9W3VQSxrhzWZ+JqMO4S/FD1YVV1JHkDEwnR2NHza3TGsPxUmx5IJ7bDVlPdS6GX2YIIRbPYrTp8hy3JWoPjGEydFFG0uLvijRBtltyaUSEvEWRRtA9Ok2Gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=spTVXylMvx0q5sy3vOijXy6dU/P52BxGx70W/t4A1XQ=;
- b=aSNOjFbVGv34RC7gioc6DDg7HCxe+B3yv3NbZSqSMZaRy+kT/ZVaUGzKr5Jr4y+xo4vo38Q9Mpf5LTLfAx/CdfOBOx1HGGX4GVOyIU2PPWY6zMGaTw82QyrjyUGOo0yg7a/n8ShINXFMAjNAY7bPUHbt02fRafYvHavceuzzITw=
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
- by DM4PR10MB6861.namprd10.prod.outlook.com (2603:10b6:8:106::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Wed, 8 Apr
- 2026 20:35:50 +0000
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::c2dc:a34f:6987:1230]) by MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::c2dc:a34f:6987:1230%6]) with mapi id 15.20.9769.018; Wed, 8 Apr 2026
- 20:35:50 +0000
-Message-ID: <83b56ffb-6e2e-4c9b-b0cf-9f04b61ebe7f@oracle.com>
-Date: Wed, 8 Apr 2026 13:35:42 -0700
+	bh=LjYnu4owpf/zaSuq0bbFHdaqsldn4LQ2NanTgIzt0b0=;
+	b=KBtWJG4NaYuezoy0qkGlxy8ardc/9zZdqyJAv+RKMSVNFXMsdwOoyffeVo3C23oYJMhgUq
+	QZMRv8vS1kXlabmHr9HMuP6Ld/ApQkXTQ9dxJZvOYrNoEE3n+eOqex85xrEYbtPRO3Jxvz
+	9E80IsyaFWUfnWPy0wrQqo0klLSZxgE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775680683; a=rsa-sha256;
+	cv=none;
+	b=3Tm24n1I0q7ppGxyotDjAZ3E9Oy5CboBQ//y6bJ7EgXZufBbZe8ioe7JDnCHXeYK4qhcGY
+	4NhZBtmENDHmAY3PSqr80PF5wwMJ6SiBf4ZVliSfpem13yHgEboeBwTgBZeYgU7XxRhOfr
+	KGKk0rqJY/VY1bmSRvmM6hDeci/5YAw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fgb2OH9K;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf22.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775680683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjYnu4owpf/zaSuq0bbFHdaqsldn4LQ2NanTgIzt0b0=;
+	b=Fgb2OH9KR46JDGSoZVh12KMZme7vHrIVlRhWaf4V0IDPqQ1P6kjjbPjW1XwkIomjnvrROR
+	k/mvpi2F9M+/Xh3aDRucWJTmjr6IehbTMAq7dlcYcIWTmCk4yu+vQLgu3x9OmpBq5oiDo/
+	oiOnh+BmQt8csQ9/wvEjXvg0UPN0aR4=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-d3hbxVU1P_uDkxv-Coeh3Q-1; Wed, 08 Apr 2026 16:38:01 -0400
+X-MC-Unique: d3hbxVU1P_uDkxv-Coeh3Q-1
+X-Mimecast-MFC-AGG-ID: d3hbxVU1P_uDkxv-Coeh3Q_1775680681
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8d5b5d607d1so58049585a.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 13:38:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775680681; x=1776285481;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LjYnu4owpf/zaSuq0bbFHdaqsldn4LQ2NanTgIzt0b0=;
+        b=spifczFtcl/SPhA9QQmWklnSKyovzCKAwa6lb1sMWOwZ/g1RP8axwy60DkwGAjbHAn
+         t7QnUKezG6S4uvGYoZbCX1VCmu64QGPfvptZ2tMnHtWRYaBF7Rbj3eueraMDv1X1ZSiU
+         ZZZ8jZfwdIYp1i80/Ai53uHbLVd053InabjL54shCGMF6qoj2B283mi/z59s4Zgh06MZ
+         6rj/NB5KBIvfwgXRW9toGw4NK41BZzPUsK5Mq5MWnnJ14OnQ5uJkOU0m7TPKKgwYPjez
+         uaWMxtihQLy+ppAo7pEQtyphaedpasDeu9jgW57YAQQbOeLdS2MKYOTME7boyhgDonTp
+         Igqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUoLcic88YDdGOh9qfT7IvdEpSjCA3eRgYpy6lUSgiZX81eYTTpuD88skeRjYAM4z/WbkYHLm3HYA==@kvack.org
+X-Gm-Message-State: AOJu0Yx1WBiDvc+F7Nc4UMEiad45CE41tbkwlVobLLF6tjPWYSf5cCOJ
+	Ls1DzRQHBos5cjeFvKdRICcRn2RQTeAcNuoNKDV8Lz3CPVDCgq9SDHEy/WexLbdJkLdcEPprHgr
+	NsAVBBVvnJLH+E22UGne6HRXFgwVLjWImfwqi7hxIbcXUvnbhPI27
+X-Gm-Gg: AeBDietKFkh8KUO4Qt3VB9YqOueB9hyPw8QF4qwBZcBHkjxfgG2Ut9Ncra+3KUIhEx1
+	AZAECR8CkDCFWdc1ux3MxbQjT5n1G4cnchy49Fjo7XmzlrFKijAsq9NUbjojJPFeFTJkjM1iocH
+	sTC4I3QmrkmsEUqaqy9MynawDaoWMD3jqvC2gn0Fb0Pmq6EtWsR5wJA6WJsMGGUi6K5B/a2Q5Km
+	Bp7qjlAM5rdxEnKrr+lHXiXMbnwNSqjPxxYonLCuFdUC57lyHMGGzSI3sieUspnA3FKEoxUIWef
+	+lQcpfKLAntqxy2WMEN+LUa28Zy4wik7C3HkWT9txuFNNxJXm+GGvaY5IZwKE7488S1ZB7eysut
+	efxVZsFx1ePzZLR8lhZd9px8onA==
+X-Received: by 2002:a05:620a:198f:b0:8cf:e0fe:f22f with SMTP id af79cd13be357-8dc3bbece88mr175182085a.18.1775680681160;
+        Wed, 08 Apr 2026 13:38:01 -0700 (PDT)
+X-Received: by 2002:a05:620a:198f:b0:8cf:e0fe:f22f with SMTP id af79cd13be357-8dc3bbece88mr175178285a.18.1775680680629;
+        Wed, 08 Apr 2026 13:38:00 -0700 (PDT)
+Received: from [192.168.2.110] ([69.159.169.238])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a8c29f00sm1562313885a.45.2026.04.08.13.38.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Apr 2026 13:38:00 -0700 (PDT)
+Message-ID: <0d9bfc3e-dad1-4856-9319-040135bed91b@redhat.com>
+Date: Wed, 8 Apr 2026 16:37:49 -0400
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
- locked
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, david@kernel.org, ljs@kernel.org,
-        Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
-        Jason@zx2c4.com, shuah@kernel.org
-References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
- <20260402235933.10588-3-anthony.yznaga@oracle.com>
- <20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
-Content-Language: en-US
-From: anthony.yznaga@oracle.com
-In-Reply-To: <20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
+Subject: Re: [PATCH v2 10/11] mm: thp: always enable mTHP support
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org
+Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <cover.1770675272.git.luizcap@redhat.com>
+ <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
+ <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TzXuBDl7vu9rFqk9n7N4Sbj4RVkE3Wl2zjUOg5guZ40_1775680681
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN0P223CA0001.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:52b::19) To MW6PR10MB7660.namprd10.prod.outlook.com
- (2603:10b6:303:24b::12)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR10MB7660:EE_|DM4PR10MB6861:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7c0ed91-887b-401a-b830-08de95ae6c26
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	xVA9PbnDf0kxcSJK9+ernmRdmyyqMK/DQB33cib2YqG9JRhSS0nZO2jKFIZtpQtt5iHxYIYnO9IJHcCMY2T6t1+bxa3cervBYAD/zB7cFNIm8YvL7bvh5xiYGkKQS6VyNum7fqaqClH2bAWIvr77PMfYJiyCVrhgVe+rE6lX4wmUTbzYUqv45NMuSFyDC7Q5/Oj3hfPN5+WccpPYjopFzIkNVpa0XrfT1tXa0ftp6dXNy1XTj/emcUFXI8TuvBIIX0B0ujQnknWFZlaBYZEcCuB/aYKr6Rb1gaLGWxxHJYz+gr6VFvrnON181sxTTNy3pwruKyX77O2k+v7V+8BIyxTvM/p+DIfjNabUAgdb0N/OzyPb/hc1BAFGgQeuqPjmeaSTeEQ90JXB0KTGc564Vpc4bzpt0ntHKi6KkVz5rsL8D9GfqIRTZmuAyKRHzL3/V9ki8JV2pfIhC8KPhDuVVanH7VcxDlT3YcxATV6YmWLztf8cQiYmjfe3ew5qwHn34zvv/Yf0qu1o90F6wEZY6t0+EmUZWA4RpHbKlzsxtQW81uIu8EX4edhvK70zLlaZph21Ea8txBcmPILHGjLvo0brAoz/qa73qlY5XnzhJjZthMoVnGmNwrnOkPYevUIOEaPi3X/0zLR6XXFiz6qnztOfxKMZBwE2yKLIrK1MwEk0MC0LtG4FdnKZE5lA3T06
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR10MB7660.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mlk5cDdZL1B5UEczVmJxZnlWeDQzUHFvOEpIb1hiODFlWWtUSkJtQXJzV2VD?=
- =?utf-8?B?a3JZRlZvWVhQVXdlSUE0cWczSVIvRWVEMmdJRDhwd0U3THdsQnR5eU0vb0ZH?=
- =?utf-8?B?YVZIRkZtbWVQaG9OdXdkN0NUTkFDQytvVlp2dFphL0RoRXV0MkpjMHNpNitD?=
- =?utf-8?B?NlhnUWErSzZvVFlQSWFRNnZFRDRQdHF2aUR6b1k2RnFuTjlmekM1TGh1dlhu?=
- =?utf-8?B?YkpHSmsrRmdOSzVPMXJrcVVJVlJnVk5Ja2JqNENnbWJNczNvV2lIN1BKTTVW?=
- =?utf-8?B?MG5XR0s2YUhaVnh6dm0zMDJzMmUzREJiajZiZDk5VFpRSDdLNzV3VUhsOGl4?=
- =?utf-8?B?VkhMNDUrM1ZWYkRRVHdjZTh3dUpFUC92b1dZQlIyWWdRcng5M0Mzdk5jTXla?=
- =?utf-8?B?VTlDZ2J5UnN6RU5sbzU1WnlBWno2cUFIN1Fodlpsb1dPRkxyTzJPalNEMi9G?=
- =?utf-8?B?SGluUW05bjFJcFlzaWMwR2tYY3NtR2FpbzllWUtxQ3dYMTN3MkNMSEJWbGRo?=
- =?utf-8?B?WU9LK1hjSE1GemVrNkpNcDNKSGFvZk9sT21Bc2JmSWJwWU9ocEZqNWk2L0xW?=
- =?utf-8?B?VHJUYU1ueGE1cS9IRFovVlJaQUJwWmFXaHl1ZzYxMkREK0QwNVJvb0VuVmxD?=
- =?utf-8?B?alNtc25uNGxVelJLay9XaTNpdmFvRzl3VDZkanlSM1pKOHcxQkVGb1RCSG5o?=
- =?utf-8?B?L1VwVVo0UlRjM0RINVdoeEFES3ZkM3lURDN1bzZ5aDZWbGlVVnlPaFEyeEFW?=
- =?utf-8?B?Y0w2bWtXYTF1bnZta1BBbHB5T0dtOXBaVEwzUmZad2IxellTYmVKVHBqOUlz?=
- =?utf-8?B?R1JvdElKaEM3eng4NTU0ZUlXTCtjeDEyNGdzZW1XVEFEUUJjV2JIb1VwN2RT?=
- =?utf-8?B?U0JZZ2xFbzVZaXlyeXBIZ0JqZkg0MHR6SjMxNmllaTlkTFJVdkttams4OWM3?=
- =?utf-8?B?ZGRleDR0dktWSlVwRzZDeHpoVmpzMkZXeVBOTC9ZVzFHSE41QlBHOTkzTEdO?=
- =?utf-8?B?cGdUUWl6V3AwdHNyTURiN0N0UnRJdTBmdENpVjdKK2hiQTNJUi9MbzFYamZJ?=
- =?utf-8?B?WE10VE1jclo3biszMFNIRmpKR2VibE05WFY5Y015NDk0K1dWanZaMThYWGZG?=
- =?utf-8?B?NndnRHlxQVJ5UmhRWlhtSlU1ODdQU0dINTh2Q0hSMFNTZ1pRVUIzRWxKZUZG?=
- =?utf-8?B?VGY0UzhXanJYeU15bzUwbHNFWGY2TnpwcE5hN0dGZCs3RWpEUWpzNW5KWjVS?=
- =?utf-8?B?NmZZZVZXNEkzUFkxejA3NG1GVzM5bldGdU9wVlYyMmRwMmRzM05qQU9nNmlQ?=
- =?utf-8?B?SDdPTmpicXNuV0g4ckNsbndzN081RUlWa0xJYlBkdjN4RVc1RHBoWndtRmhH?=
- =?utf-8?B?TlNqQ0JBT3lzVFE3cWxsU3hsdzVQaGFNMEl2MkNEZnI2UnJYelJ5dndBTnBu?=
- =?utf-8?B?MlArQjZKdEpBcXBkcnRzRWd4d2hxY3JSUVUvSzR2NGYya1FKM0dMci9IbnRq?=
- =?utf-8?B?ZHBSOUcwVUd0SjdHZk9FWGQvQXlFdXdpMWlQNkd2eVB3bzdCQTRIcFZhTVcz?=
- =?utf-8?B?L3ZiVWVicVBHYUx4WkFOUTM3L3QzelB0cnpKeHpSY3QxQW50aTdKSU56Vm5x?=
- =?utf-8?B?S2g3SDN1K29mMWF4VkpDN1JJSWJSL3V6VGNHOXFtYzF5NWFKQmJxSVJIUGNq?=
- =?utf-8?B?N2hSRklpbEIwNmlEalNnTm8vcEE4UmlIMFJaMTJYSUxtZG9qT29lUDg4Ykx2?=
- =?utf-8?B?L0VqYkxIV2hMTjBaL3FTd2NuYmxpVGFGODNWK0dabFhoNlNQckRGaUZKdksz?=
- =?utf-8?B?RUY1TmRneGtsbFUzQlEweVdCcUtpNDZ5ZEwxajVOUys4TFdUV1Y5Q2Fhd1Jo?=
- =?utf-8?B?amlDQmNFcmZCV2lFQU5FbWpKdm56QWN5c1NyTHpXWCttVThXYUxxMm1TTjRN?=
- =?utf-8?B?Z3prRXppMWRlRktCL250VEJScmhEMmRITld0aWNIQTBJVGFxVG5GcWN1UzE4?=
- =?utf-8?B?Z0JHbVRNUEdhUzcvOWNKY2tsSFovWHRBS2pGcXdxSENVbG5mUHMyOURnZVhO?=
- =?utf-8?B?ME9BbGc5QXdOcHVoZllJSDVPbk5lQjVuU1BwNHVsL01mQ09kWldGRFo3SzY2?=
- =?utf-8?B?eVFmTVhMR2NlT1g1Z0xCbDZ4VTZkeG03KzVUTHZMMWJPRmNBcTdXcG5RZW9Q?=
- =?utf-8?B?Z21VTkZRTVJHd1lkenFsTzJpbzM4THYwWWZmbHRQYjA5OFQ4eHU1U2tyRkp1?=
- =?utf-8?B?VkVsakc0RFpuSnZpUkV3Tk0wZWdpNkU0RmxKNlpQUGppWlJwN1BQdmFxS2NU?=
- =?utf-8?B?NEZncSsvUVBpL0FiV1JkeHRhQmhqT3B4T21xWkpZNjBobFpBRWczRGp1NnhR?=
- =?utf-8?Q?Vbcqt+K5+kawHYYw=3D?=
-X-Exchange-RoutingPolicyChecked:
-	Bxwk4iOJeOSh1Oc3AplJVJvksyHf/vGdXSHjQV1Ljcivu+BTaKmHkc3sqt6kU01TUvix+0sDC3LohWcEI2YwlepZZkXQVoWWH7AOniWBteP8kUqyWipd8ppyn9TpKEABXsm1CiLybuSJPVf6eHvfSWiXA8bISkWKB7kw2HNm4ueFCpG9bqO/lEz7Nsjjg1owvzt4x3JBoDn7r4zSHDak385PbKtAnP25Me8cNAl7GoWgfVEaoUJTEnulqsKD/zEkdpUlaAOPVj2jMGc+Upsb1bONzlsaezW1SGoTyS5JhIbJJyaLUT42wpuWuactl8jwyctcUERRlZDxeA20CvZlAQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	IKqv679NqWRMLZBF6/fyixie5fms05Mvac4MEe1zV00W5xN4Bf6QcmHvY7Fh9rnRcoS5S6k+SruGTKZkEv0hAP7IF8ZBvIWrrGPzxcc2oCek8yoQgHvO/cKyDdx8YfIVCLa3+HmN7C52Z+PTAeeLX969OTKZEQYTEQxSrdXqIR+t/i99VdwC9iwfK3qBJPIJJLbHw++wfJ20m2HB3+Pul+hEWqrg5ceaKggHwUy1hA10gCYmxAJJXTd9U+3YE2zVAqA9JOXGm10lLoWyflER6YH33W/YrNgq3MOqq9CS0hEwr/622sln9lOstbTIVFGE5Cq80tz8Uvz94QSzV06cylBJqCYuPTk/GLRe/Szy1zIEeWrhdsC8puZPYWOBzbk0j4efLoP3nux1d6an9hPgQQ90KqfoFddfJFcZr+fzS/Z4NYQXE/mt8ZfadBvg+RDtW0NEft1FtLXXMnSTl8l8Q2BepZF9MyP0+/HIHzLd7CxMYcwlUUBQCp2lzWFIAJP2HNdBy7/yEw+moZqrou1Vq1il82CVyKNoZ7tGSXe+gYDBDq2IWu9+raQVRTNPYl8HUUriT/t8au3ZAte88WKGx1CbCvUMcHWEROHFvuB/zgs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7c0ed91-887b-401a-b830-08de95ae6c26
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR10MB7660.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 20:35:50.5819
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LqL8DWx3FRKhr4h9ocRKRU67PoAqviH263tcn/09IxP4SI+EP9Jgg9BHu1NVWt/h8D/KxDAlRnH3I1822mrZSGr+k8P33QghUDFTuWUsvUs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6861
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-08_05,2026-04-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 adultscore=0
- phishscore=0 mlxlogscore=990 suspectscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2604010000
- definitions=main-2604080191
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE5MSBTYWx0ZWRfX2c3+bulM3xwK
- Scwc0y0ZjskABhIo88/7ANZFuVGHFxTNN8Jyioz+q5xAKgLWkrzMDO/U1OFe52vKTKaMLSIs2Wq
- cvacpLft2O78f6Ofo+4kHZxhIFTM/lp821zKvq86brNdtmqh+UKBfQOIhxisfEPwUSLU4cPMW6t
- 6VcKhE2Rdu7TE/4cRgl+qHuQHvKj5GEbauGemQzi2wqRymgl+FyfNNe470uZxJaaaM2d83yBPcY
- ABQLm0iGCmQlUiqojsjSSJO1KNDJhnaLB77CS9Dy6/tG+UVs684+6jSVFcsVaUsFm2vOj0WduGT
- ApynqUXm9fe+8dwWJAtTFdWjQExSlCSb6+NBQF8RgypxujokzH8A3b543PsY2dRgeGYYcj8qO62
- mm0uLL/jMDhn9sY1c1x0KPWF3xYRB/swUPiAVJdMOdkkPC+rxfxXG5mJ6Zyo+zHnh8sSXSUHik0
- Fv5yqOk/SfUrQjoLdLBXZoo9ohPsne9s0En/sbHQ=
-X-Proofpoint-ORIG-GUID: v03-bCj03k-lMqnCjvM3n1bOzX-85e4S
-X-Authority-Analysis: v=2.4 cv=MaJcfZ/f c=1 sm=1 tr=0 ts=69d6bc2a b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=c92rfblmAAAA:8
- a=yPCof4ZbAAAA:8 a=VrYRbosYpvdKnHUA8TwA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=zZCYzV9kfG8A:10 a=GvGzcOZaWPEFPQC_NcjD:22 cc=ntf awl=host:12292
-X-Proofpoint-GUID: v03-bCj03k-lMqnCjvM3n1bOzX-85e4S
+X-Rspamd-Queue-Id: AF165C0008
+X-Stat-Signature: cqp87monb6n59uzih4qpxfuujzuh1rxz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4AB2A1C000C
-X-Stat-Signature: 3nerafbhxj159xjbjtpaff7bjy6o489f
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775680560-48145
-X-HE-Meta: U2FsdGVkX18vNumVJRVXgiIJ6z/uQp8CtqtY4s42vAD7h/IyAUCmYlKLS1XSglpdt4Niu0bVDzV9/hpzxhdKHXMQL6mFv/4NnUEE5mu+KMYOfS2s9aLTrf84cE0iBYe3he85EIh76r/OgDoJpaUSLD7c0DckxFT2/toReQTEdXYme1OM4Co/cS6CRB1VDfjEhSFJgU+L24d8cuDPIbNAokV/pI4PWFCWE6BOsfvAnlhICB+u6ssHMeLPsvfkQklInzCH9bPiSBL4OWsvBeUxeRWZLjkYkAZ4Kxu/6MCJtvWd3xfGtJFgWFZAKTSyqaPmZ8z1raGgspJxlPJ8DLC+4A13IiEUatsRiLCxCU9JYIaBmvyuaO3ECCFBwtnff1j/zSmeye2zOeT4GYZQaYJtl8JAjzCI9VKhJ/sgmIUlgr3H+9lADvo5qtjVFe/qizgCHm1npR1g88J2I2CXWL7QFEc+jcGe4oOW+/o5tj9vfVcUgveVBA2gmujxC3Fv8u8v+4DfEIL+0oxIccS26QJS92Lva7+pjJRiSEjUnvidGSPp4jJlPNXERCaYGsXsw7LA7lquNVWZ/9azbInrPCCLnH4VGlkhEp4xZjUhJe7eHUFLpSHgnVsV7Tq/dhyS5bonZ2Q6Z47KSM5/lnnimRMZ7b4a3b3DdzVeA5KRtVjXT9cEmT9FhmsH3/cdpQLeINtzbzFNRSBzlGmqdrnyFvpD8ok8XXZoKtZ6OXfY2PA6vaJBf5BrOopLiE5hJvC/Rl7umGNrTFD9PH5/k1+qeVolGaFT08VRumSmavvqkybdQMm8uqaC4TpVEKeiEqatT0kEAmjJ/O4eB8qQLtZrT19yLVX5dMUYhsCL8KqfRoPgSta479Zerd7tMVIFZ90p/SjIU6VJ91qLgKARBL2zKrhDxDiwAOfnubJfUoAlb6Sn5P+2rQvrhuqQmfOODVpiPhEqzoIuo9Uvgee16DCZ80A
- rRJign2g
- SlpNEzCwi/xrHvS1JtWPu/SyDBMoCLsSbrYOb4JcwOgFGo1ZuuuVDoSXMvmPqSh2drXRkmV/7pfEOs3cPFh2xUOYbzA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775680683-895454
+X-HE-Meta: U2FsdGVkX187e3Pc5/uYYPtSr+vTZkoJiJpr+NgAkCnlAcL/whnrafhOoRSgMbWNytrvGf9WIr6Jmuhamsukf3yCw5Wzf1o+i35T2/nGvOEyRrAKujgV8F2ASxhPAq4NhSd0hm0AoMIHHzFfnCcdBXSasZbpMVBAumJPu7qzHYRL7lmt7WcNCA1j4uo2YSwT4EZfYaerlmEcvtN0HpzOP9JyYTUtphiDI2GHWPYjNyrBMUu+2Us8C4JdneH920a3K2Zad7c8DWrnx8n6jeeRbkkkPXcVVE60aGfg5xg/Yuqcbh0/BTo1Hq0ZnHOTkYJ2iW+/C/7GUeHUkNVlsgrG1TELeTqQzLDJ9WUVL6lC9kNUOxj4es0d3j1OHhTk+PE//ekpy6L6+K2cWKYxqpQVhDBPZFBguApwjzIFWZgGNHxHwaBlZu5NQLZNqlr4t0Jza2j3gCmeaIgFSObmjMcsjaY5BfCUsmCdTwLYcabSLYy01jg+uaVdGDt7nouoXrDV/bPoHyBwqOIIfXsXALPVyGig1KIQlo+0e2vc9oG8Y94NupPx67jG0DCTK54xDzLdpf6/CESn95g8vtKbDRTpuFnuN7Mqcs6xUI36exuPlcQEPFUVgOVJNfznfdjOPlhDBqMVbfrKRySDRn1qM0Qz68E79pis3uMkGir0EVHJK1tRqZR4Gyw1KKuFiyJjlgyTgI8XKLemv1ATY+f8XEhU88iwg2YS+KHunb+xITaK/GusQEfwBipsJpuC6iWCFaXqhtkrQQM+8Rx/S64v5TyP7H3CgHkwqWSmdVhRkQ/MVsNeNK3IIh8BSq/PfhoXNUFsJFOcIaXQRPSnuUVgj0ZEK5TSh2eIHKDjum0c6bgZxilNYNvw6rAGy3BoviKhrJJCoTUNxouGNI1jahSVXSdNighZ8NkiARRjqrbcDo/SYV6RNig82s5OeJU9WWPSIprfswIEDCCCaqikrEbpQ97
+ k9iN4y1s
+ Gkn9g6MJTj4IAOa7pBnc85WPlAQsVpvp1CpIUl6VCcWuPfaAIZxBBJaSihQaqMyPePAi3ig+Q0DoloMODxKRTRj7fYm6dLkXT4CwA56Kj80mIuseqwMfTISbkx3kT+rIYd3hS221bzH7gdVdOPRDFTfgwzR/kxLRQiG3qbnX+YcYn50rY3kH38Itg52+e/mAXIR6I1PLWaTEbrGU9iMeLZFRLj0oNX/9GdwnLrHru4xquzJPIj3ZITg4UPV4l6cMTgXM3MqykArYIRXD8VT2zEmSIOe/BrWoHBlVZ/dugr3dUeoBb553JddU13YxUIIlUn+QpiIHjpWOs38JwU0NWnBWDxG56/rKKZFgFki1Y+8SNsWoYqTboLxE+rG2P08H+QoJR1RuIUqohEZthaKN8sshMrZO0GDyzFo3046BGZ+Q8W/sxnQyXyXkCnxg4IeOHvZl745mwmrfDQPs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -233,22 +133,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-02-10 04:56, Baolin Wang wrote:
+> 
+> 
+> On 2/10/26 6:14 AM, Luiz Capitulino wrote:
+>> If PMD-sized pages are not supported on an architecture (ie. the
+>> arch implements arch_has_pmd_leaves() and it returns false) then the
+>> current code disables all THP, including mTHP.
+>>
+>> This commit fixes this by allowing mTHP to be always enabled for all
+>> archs. When PMD-sized pages are not supported, its sysfs entry won't be
+>> created and their mapping will be disallowed at page-fault time.
+>>
+>> Similarly, this commit implements the following changes for shmem:
+>>
+>>   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
+>>     check so that mTHP sizes are considered
+>>   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
+>>     when PMD-sized pages are not supported by the CPU
+>>
+>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> ---
+>>   mm/huge_memory.c | 11 +++++++----
+>>   mm/shmem.c       |  4 +++-
+>>   2 files changed, 10 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 1e5ea2e47f79..882331592928 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       else
+>>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves())
+>> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+>> +
+>>       orders &= supported_orders;
+>>       if (!orders)
+>>           return 0;
+>> @@ -122,7 +125,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       if (!vma->vm_mm)        /* vdso */
+>>           return 0;
+>> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+>> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
+>>           return 0;
+>>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+>> @@ -806,6 +809,9 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>>       }
+>>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves())
+>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> 
+> I think you should also handle the 'huge_anon_orders_inherit' setting in this function if pgtable_has_pmd_leaves() returns false. Shmem as well.
+> 
+> if (!anon_orders_configured)
+>      huge_anon_orders_inherit = BIT(PMD_ORDER);
 
-On 4/3/26 12:31 PM, Andrew Morton wrote:
-> On Thu,  2 Apr 2026 16:59:33 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
->
->> For configs that support MAP_DROPPABLE verify that a mapping created
->> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
->> be locked if it's created after mlockall(MCL_FUTURE).
-> There are a few queries from the AI reviewbot;
-> 	https://sashiko.dev/#/patchset/20260402235933.10588-1-anthony.yznaga@oracle.com
+I added the check you suggested in the other email for this in v3. One more
+item below.
 
-Interesting. Of the two issues, one is certainly legit. I need to add an 
-munlockall() on early return from test_mlockall_future_droppable().
-For the other, the question posed was whether the tests should handle 
-possibly being run on an older kernel that doesn't implement 
-MAP_DROPPABLE. It seems to me to that a selftest should not be expected 
-to work (or even necessarily compile) on kernels older than when the 
-selftest was introduced, but I don't want to assume.
+> 
+>> +
+>>       order = highest_order(orders);
+>>       while (orders) {
+>>           thpsize = thpsize_create(order, *hugepage_kobj);
+>> @@ -905,9 +911,6 @@ static int __init hugepage_init(void)
+>>       int err;
+>>       struct kobject *hugepage_kobj;
+>> -    if (!pgtable_has_pmd_leaves())
+>> -        return -EINVAL;
+>> -
+>>       /*
+>>        * hugepages can't be allocated by the buddy allocator
+>>        */
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 1c98e84667a4..cb325d1e2d1e 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -1827,7 +1827,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>       vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+>>       unsigned int global_orders;
+>> -    if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+>> +    if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
+>>           return 0;
+>>       global_orders = shmem_huge_global_enabled(inode, index, write_end,
+>> @@ -1935,6 +1935,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>>       if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>>           orders = 0;
+>> +    else if (!pgtable_has_pmd_leaves())
+>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> 
+> Moving this check into shmem_allowable_huge_orders() would be more appropriate.
+
+I kept this check for v3 because I found that it's consistent with
+the IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) check. If you feel strong
+about your suggestion, then I think we should move both checks to
+shmem_allowable_huge_orders() (which would require a small refactoring
+to shmem_allowable_huge_orders() so that we return the allowable orders
+from a single point).
+
+> 
+>>       if (orders > 0) {
+>>           suitable_orders = shmem_suitable_orders(inode, vmf,
+> 
 
 
