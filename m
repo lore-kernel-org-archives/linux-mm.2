@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6352EFD5F6E
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 04:20:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C1E5FD5F61
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 04:21:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7148D6B0088; Wed,  8 Apr 2026 00:20:03 -0400 (EDT)
+	id 542806B0089; Wed,  8 Apr 2026 00:21:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C5846B0089; Wed,  8 Apr 2026 00:20:03 -0400 (EDT)
+	id 4F6736B008A; Wed,  8 Apr 2026 00:21:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DB826B008A; Wed,  8 Apr 2026 00:20:03 -0400 (EDT)
+	id 409826B008C; Wed,  8 Apr 2026 00:21:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CB676B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:20:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B5D70E2889
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:20:02 +0000 (UTC)
-X-FDA: 84634085844.06.A7AAFF2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6C6FC1C0003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:20:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GO7bqj7A;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 326216B0089
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:21:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B22F8E29E6
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:21:54 +0000 (UTC)
+X-FDA: 84634090548.21.4D2D692
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A75F01A0006
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:21:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775622001;
+	s=arc-20220608; t=1775622112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VvZJVvz1yetwIGi/CQ4H3ufYDNJNdd6yPa1rOzuU5xQ=;
-	b=LcG2iCjwRz68Esu0UyS7Y/jQPSs8E+lWF49kUj8PmO6K8KNdLIUuC1eGyjhqAMuczKe2gP
-	6btjimza+B1BZDLbizJxViFLOG0xZFPXA6fcRg797NZC4CtzEI8SyGYzUk32CuV157tV3k
-	JuHehPdTvc4V9lNh/Y3767w2Vu8/Ylk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GO7bqj7A;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775622001; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3xH42glrgYu9hSbhdHoYNu1a94UrZHPAFnOkX1dS6Os=;
+	b=TkZjXx2y28u1Kajo49gLPm/mZQ990i8zm1GqRn7tECKdvfd2QUzscBY4do0hj3+zdtNMpV
+	M0xJJBVOqKr+Zrax+UvF6UCg1eckMMBiKezJgEIFQcesXIAEUNpZzHdHMWgvSUPgVUdPEs
+	WnUztXq/DDqwZoffBc6NOM4izH8hEGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775622112; a=rsa-sha256;
 	cv=none;
-	b=ZoQZGqsSPfBlznlLKyoTMnnQo/WZUxvGR+omMLQIz+ffPBfzjvXg2QM7okYSUsXPN9yDKa
-	iOxIShAe/qGjvkikUuOZRWN9wEP0wTFQYzbitgu6U6DhSstaiAw+YmxhLHdpFj4UFiJvaD
-	nxjkWgysGsiYNNsLMDvjNKeYdDj4viU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5CE9F35A8;
-	Tue,  7 Apr 2026 21:19:53 -0700 (PDT)
-Received: from [10.163.142.59] (unknown [10.163.142.59])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A8443F632;
-	Tue,  7 Apr 2026 21:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775621999; bh=UkY/DeWiXJF+UzU1CgRHPZgFfeXQcMwts5esknbn6wg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GO7bqj7AxtUfnOPEktdiwI5ceB0ZJSGwylLrth8CWxj1FG8y3JA9YHfcVBR28a8SA
-	 BvEVC678eOWrsaUuD3ToLrjKdf6D7/gbAEsxy150vRyS98eFjbcYunpBoJtdr+bwe8
-	 utKariVcKTqHBkRzfO6EM4gztGsM4b/C7c606BLM=
-Message-ID: <b297383a-731c-4efa-95b7-0f198b098d11@arm.com>
-Date: Wed, 8 Apr 2026 09:49:51 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/8] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
-Cc: linux-kernel@vger.kernel.org, anshuman.khandual@arm.com,
- ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org,
- Xueyuan.chen21@gmail.com
-References: <20260408025115.27368-1-baohua@kernel.org>
- <20260408025115.27368-6-baohua@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260408025115.27368-6-baohua@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	b=fuU84SVLM+JFh7ifhNOp/sRJWVWx5ULx2PbFttpcYcFp5zrY7BwUfj7Jwf1Rx9FCHnEWyI
+	l0N/Ygt03beDnewniiaxl/5LdG5CaMcuaCfhY5tAzS8li8pgwBT1tMsJLgkHNCDXW1cVdx
+	m7twtpB4wF90sZJi9VgyXk19LNf8heQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fr8z00PKXz8Xs70;
+	Wed, 08 Apr 2026 12:21:48 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl1.zte.com.cn with SMTP id 6384LgZT059071;
+	Wed, 8 Apr 2026 12:21:42 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Wed, 8 Apr 2026 12:21:42 +0800 (CST)
+X-Zmail-TransId: 2afa69d5d7d6c39-32e8c
+X-Mailer: Zmail v1.0
+Message-ID: <20260408122142195kd_6Njq39HPtNW0rnWnF3@zte.com.cn>
+In-Reply-To: <adWxmEzU23nza_pn@hyeyoo>
+References: adSFyyFWlLy177rB@hyeyoo,20260407210216761qrDj8RR7pN-ycbvYmA69v@zte.com.cn,adWxmEzU23nza_pn@hyeyoo
+Date: Wed, 8 Apr 2026 12:21:42 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <harry@kernel.org>
+Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <zhang.run@zte.com.cn>, <xu.xin16@zte.com.cn>,
+        <yang.tao172@zte.com.cn>, <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogZGVmZXIgZnJlZWxpc3QgY29uc3RydWN0aW9uIHVudGlsIGFmdGVyIGJ1bGsgYWxsb2NhdGlvbiBmcm9tIGEgbmV3IHNsYWI=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6384LgZT059071
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Wed, 08 Apr 2026 12:21:48 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69D5D7DC.000/4fr8z00PKXz8Xs70
+X-Rspamd-Queue-Id: A75F01A0006
+X-Stat-Signature: j4z4tskxx6jwugqu4q4kzqkdhr5x437r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C6FC1C0003
-X-Stat-Signature: kukxfnj8wnu1tkc7fny8wzxtbtndponx
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775622000-3248
-X-HE-Meta: U2FsdGVkX1/W+11PSRxNhgQinULAZq7m698M5NO3RfKIzR1v3jCC8W7WKhRWPdmvDtAaeuwUaBdZ8ryl+CmZ6HZM1EplUCBtRcz/0iuQ+oIXDUPkrNs2d90XRDFzixki9Bx7M4FZpVdStzFC/T9hi5Yk5H85rtQrqGBngLAcOB3lqAxgup/R7L/YBsWjGFofTuNTn7yhKmlwtRs4c5/19aTqwzeS9HLjeiFYLPTULh+O5N85WxT0zw/wtfWZ/m9eC5hzmwSbU7Df84HNp5ijtP6NGYLLZK8o85zpd83LN2ywHgCcKMyI1s/i3wM2o6ml3CAte1Tw4Lb1J53/Jgh4NUfuRfE6XgttmpvB29Yh42JbwhLwX7KpAR8y51w5gi7Kv64PHjGXKY2CPaGE6hiGg7NSFEqAAUZEW/7vUp5Og5qJtHKtvl8+nC96K710GPmnALb/p00SHBKb8I6TgELk2Jw51K7mTiNvrqcXZbSoruRiDUJa7JkfdP+RJymp1C82+PwhK7hJJ3mZQDJs7B3GzAv1/eCetMWvRSasKUATWkdMztrpXoVLG56ZJ//1+/zIMtIpFXNa3HtxgXi+dGrAuWRiw+/otPP1/jFSnnLcnw9Lnxto5W70fsbxIZKopQxd0l6wcWsBt8LOsKitG/Q8AAcR0FGTCGvBKCg33+l4XWwcLXaP0+m0zUNos4nj1aM4j7gjFnQVnqQK+NyFfph4nfkINzrq8tuQypmw81Gpi4OXJ/ZTHjYJwWYjIu/xMO95v/+tiUV+YxpXbtqmv19p/bCvgO2Y2OQhCCjgTAoXxWoffFB3cZDpGxFga+ovujWMDqne6Z0OUMPOVAxatu9MHPcav4NB0nTH3QGIjbHCDwRDSJYCFxcHUESHaQGPBLBc1ARfcY14foEAOBR2yjSAL/m8Govg3bcYjiuY0LuhHQVTKZqPIMKZR4W5I0SzBc6vreId9KClmsdyV8MN+ak
- n5CirmwX
- 1W4Nmvp44zCYVscbfmzJ/0yADgarEgAR76vBbf4G17FEnUvSadaEoNUVPNOPSGDP637KrD5qCgkIQ7LW/i1Q1ACyMlJ2aD2P6K5K/H0bkw2H81hfdfczivAneEdtDrQHdkyFzDDBatWGzrwMx+wy4kEKQvkxHr92csWcnRQ4/totH0Paxy1LGzOZ0v0C3qAW46cI/mBDDAlGgzyXnw54J1NDWbDGj3E2Amb8tpgrrtDzuxeUbTSwpGDVfEOTs4Y5HahtODb9dhIbJ2Oem6COW7dUPnb4GmXJSqt7pwwsbJSyy2tPckr855gjPjWGP74mkjJk0YpRkiDSm184fJcaXfLZ+22JX0rTqYPiKK2vDYvJkZ0lxKVCe2Q+wFTHqzKf95EnTWZLDi6VC2WHUCQCrcxF4jJ7O0hb2UIlu
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775622111-208161
+X-HE-Meta: U2FsdGVkX1+vWSO3RlkMy7uJYtlSRa2MFGaUIFyI8PRaHuhVC4ciDVAhdTbtHwAJEDgzj1emlQVSXyAR9hhDHw2Oag6W+IGrhYBEhRmIoaJZDKQBu/5d/D0BJjglhy7X0BPs4rDr4iA3mHxfOG3oE0SfthY0ZSGWOY9D9bUeo2cn0jV4+waUzbvp0zfnhGjLCr2Cn91lzD5A/bHMUpsZyvRQSJTYaeKk0s5LTw0ckFd8jS8Y1XOJH4NC95Cf74fZo+Q42uExbbV4IDLvnETTbMqi5JqIBVd33E1rri0//YI7NaLPsV3zWVYip+wmlbZF8N9GEsfjPwL1oMagP33OWkWfqVIuuaOgW4lKw7FQopYtUVhm3irWn5og4713PwByEcXzPiP805fzDjPb4ORVmTgVdN/D7t1WLUCgG7KKGcR0bhj0Jo84wUwyltbk7BjrHfGuzzxw5d1j8K2weU6rLLrTlNHvsWrJkWBhxYaJYWQEmX5KQLe1tcPzAliBdkcXcl8PtixKqk2/ZgttY6WqfqXLOHsS4Gge1ty5BFEgMn3s9m5PH1FdMvWAml5dw/Tlzyq8VVbRXTN8FTVTVy7kP4fP3hsQ543SqHaAMs6K2Oc8s/hcADF7AwGMecpl3toWT04mXjdWR17pHukA93U+Wy7z0i66aGWN/xO5FXhtQa0D7sIF0J4+p2D2Wuqiffug7zZVOW0hAFgAnfwGKD/Hn+Rh1kQzVrMw+Z6z8jIMJQiRXfBMCwX+Udj6HrGrthCP3nxYim+SA20rt+XX/W2qQ6jFOnDPYQtOCPMZzOmXJh+ruhAiK9w4pxpDNl/Avv0SIlzo//TjtxMDa+VPxUWlSr7e24yCd54J2SIN1fogoqpo6knN8Akd2Qv+vNNg3LAqNvmgrIunKk7TWH6tWNjDRUoimAQfAZIHpMIm1HTXG+i2y0r73IQfUYttUP9v0Ox3boNu/FhKZU+sIIXt1AF
+ 0f9uziZn
+ iUHuGauDzq0Cg7iVaHAnYsX7Tqig7EK/Y+dqbrZ3zseuOBHDPOTBSfe6UDdchCdW793L0Fv86ieiDAlRX8igDv+Hlak9GYKIAvtQRwS/eNy4R8XKkrzbnsY7gtNu5Wr4ssCvzCpIxx1myxaCCJDeMLqcDHvnTGgyfPD8BZYRZvI4QiTehO3F2fq73H8C38EdtM0ma
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,309 +101,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
-> In many cases, the pages passed to vmap() may include high-order
-> pages allocated with __GFP_COMP flags. For example, the systemheap
-> often allocates pages in descending order: order 8, then 4, then 0.
-> Currently, vmap() iterates over every page individually—even pages
-> inside a high-order block are handled one by one.
+Harry wrote:
+> > > > -        slab->inuse++;
+> > > >          allocated++;
+> > > >      }
+> > > > -    slab->freelist = object;
+> > > > +    slab->inuse = target_inuse;
+> > > >  
+> > > >      if (needs_add_partial) {
+> > > > -
+> > > > +        build_slab_freelist(s, slab, &iter);
+> > > 
+> > > When allow_spin is true, it's building the freelist while holding the
+> > > spinlock, and that's not great.
+> > > 
+> > > Hmm, can we do better?
+> > > 
+> > > Perhaps just allocate object(s) from the slab and build the freelist
+> > > with the objects left (if exists), but free the slab if allow_spin
+> > > is false AND trylock fails, and accept the fact that the slab may not be
+> > > fully free when it's freed due to trylock failure?
+> > > 
+> > > something like:
+> > > 
+> > > alloc_from_new_slab() {
+> > >     needs_add_partial = (slab->objects > count);
+> > >     target_inuse = needs_add_partial ? count : slab->objects;
+> > > 
+> > >     init_slab_obj_iter(s, slab, &iter, allow_spin);
+> > >     while (allocated < target_inuse) {
+> > >         p[allocated] = next_slab_obj(s, &iter);
+> > >         allocated++;
+> > >     }
+> > >     slab->inuse = target_inuse;
+> > > 
+> > >     if (needs_add_partial) {
+> > >         build_slab_freelist(s, slab, &iter);
+> > >         n = get_node(s, slab_nid(slab))
+> > >         if (allow_spin) {
+> > >             spin_lock_irqsave(&n->list_lock, flags);
+> > >         } else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+> > >             /* 
+> > >              * Unlucky, discard newly allocated slab.
+> > >              * The slab is not fully free, but it's fine as
+> > >              * objects are not allocated to users.
+> > >              */
+> > >             free_new_slab_nolock(s, slab);
+> > >             return 0;
+> > >         }
+> > >         add_partial(n, slab, ADD_TO_HEAD);
+> > >         spin_unlock_irqrestore(&n->list_lock, flags);
+> > >     }
+> > >     [...]
+> > > }
+> > > 
+> > > And do something similar in alloc_single_from_new_slab() as well.
+> > > 
+> > 
+> > Good point. I'll restructure the path so objects are emitted first, the leftover
+> > freelist is built only if needed, and the slab is added to partial afterwards. For
+> > the !allow_spin trylock failure case, I'll discard the new slab and return 0. I'll
+> > do the same for the single-object path as well.
 > 
-> This patch detects high-order pages and maps them as a single
-> contiguous block whenever possible.
-> 
-> An alternative would be to implement a new API, vmap_sg(), but that
-> change seems to be large in scope.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
+> Thanks. Please keep in mind that you need to enable SLUB_TINY or slab_debug
+> to test the alloc_single_from_new_slab() path.
 
-Coincidentally, I was working on the same thing :)
+Sure, will do. I’ll make sure to test the alloc_single_from_new_slab() path as well
+by enabling CONFIG_SLUB_TINY or slab_debug to ensure it gets exercised.
 
-We have a usecase regarding Arm TRBE and SPE aux buffers.
-
-I'll take a look at your patches later, but my implementation is the
-following, if you have any comments. I have squashed the patches into
-a single diff.
-
-
-
-From ccb9670a52b7f50b1f1e07b579a1316f76b84811 Mon Sep 17 00:00:00 2001
-From: Dev Jain <dev.jain@arm.com>
-Date: Thu, 26 Feb 2026 16:21:29 +0530
-Subject: [PATCH] arm64/perf: map AUX buffer with large pages
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- .../hwtracing/coresight/coresight-etm-perf.c  |  3 +-
- drivers/hwtracing/coresight/coresight-trbe.c  |  3 +-
- drivers/perf/arm_spe_pmu.c                    |  5 +-
- mm/vmalloc.c                                  | 86 ++++++++++++++++---
- 4 files changed, 79 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
-index 72017dcc3b7f1..e90a430af86bb 100644
---- a/drivers/hwtracing/coresight/coresight-etm-perf.c
-+++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
-@@ -984,7 +984,8 @@ int __init etm_perf_init(void)
-
- 	etm_pmu.capabilities		= (PERF_PMU_CAP_EXCLUSIVE |
- 					   PERF_PMU_CAP_ITRACE |
--					   PERF_PMU_CAP_AUX_PAUSE);
-+					   PERF_PMU_CAP_AUX_PAUSE |
-+					   PERF_PMU_CAP_AUX_PREFER_LARGE);
-
- 	etm_pmu.attr_groups		= etm_pmu_attr_groups;
- 	etm_pmu.task_ctx_nr		= perf_sw_context;
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 1511f8eb95afb..74e6ad891e236 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -760,7 +760,8 @@ static void *arm_trbe_alloc_buffer(struct coresight_device *csdev,
- 	for (i = 0; i < nr_pages; i++)
- 		pglist[i] = virt_to_page(pages[i]);
-
--	buf->trbe_base = (unsigned long)vmap(pglist, nr_pages, VM_MAP, PAGE_KERNEL);
-+	buf->trbe_base = (unsigned long)vmap(pglist, nr_pages,
-+			 VM_MAP | VM_ALLOW_HUGE_VMAP, PAGE_KERNEL);
- 	if (!buf->trbe_base) {
- 		kfree(pglist);
- 		kfree(buf);
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index dbd0da1116390..90c349fd66b2c 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -1027,7 +1027,7 @@ static void *arm_spe_pmu_setup_aux(struct perf_event *event, void **pages,
- 	for (i = 0; i < nr_pages; ++i)
- 		pglist[i] = virt_to_page(pages[i]);
-
--	buf->base = vmap(pglist, nr_pages, VM_MAP, PAGE_KERNEL);
-+	buf->base = vmap(pglist, nr_pages, VM_MAP | VM_ALLOW_HUGE_VMAP, PAGE_KERNEL);
- 	if (!buf->base)
- 		goto out_free_pglist;
-
-@@ -1064,7 +1064,8 @@ static int arm_spe_pmu_perf_init(struct arm_spe_pmu *spe_pmu)
- 	spe_pmu->pmu = (struct pmu) {
- 		.module = THIS_MODULE,
- 		.parent		= &spe_pmu->pdev->dev,
--		.capabilities	= PERF_PMU_CAP_EXCLUSIVE | PERF_PMU_CAP_ITRACE,
-+		.capabilities	= PERF_PMU_CAP_EXCLUSIVE | PERF_PMU_CAP_ITRACE |
-+				  PERF_PMU_CAP_AUX_PREFER_LARGE,
- 		.attr_groups	= arm_spe_pmu_attr_groups,
- 		/*
- 		 * We hitch a ride on the software context here, so that
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 61caa55a44027..8482463d41203 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -660,14 +660,14 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
- {
- 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
--
-+	unsigned long step = 1UL << (page_shift - PAGE_SHIFT);
- 	WARN_ON(page_shift < PAGE_SHIFT);
-
- 	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
- 			page_shift == PAGE_SHIFT)
- 		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-
--	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-+	for (i = 0; i < ALIGN_DOWN(nr, step); i += step) {
- 		int err;
-
- 		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-@@ -678,8 +678,9 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-
- 		addr += 1UL << page_shift;
- 	}
--
--	return 0;
-+	if (IS_ALIGNED(nr, step))
-+		return 0;
-+	return vmap_small_pages_range_noflush(addr, end, prot, pages + i);
- }
-
- int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-@@ -3514,6 +3515,50 @@ void vunmap(const void *addr)
- }
- EXPORT_SYMBOL(vunmap);
-
-+static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
-+{
-+	if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE)
-+		return PMD_SHIFT;
-+
-+	return arch_vmap_pte_supported_shift(size);
-+}
-+
-+static inline int __vmap_huge(struct page **pages, pgprot_t prot,
-+		unsigned long addr, unsigned int count)
-+{
-+	unsigned int i = 0;
-+	unsigned int shift;
-+	unsigned long nr;
-+
-+	while (i < count) {
-+		nr = num_pages_contiguous(pages + i, count - i);
-+		shift = vm_shift(prot, nr << PAGE_SHIFT);
-+		if (vmap_pages_range(addr, addr + (nr << PAGE_SHIFT),
-+				     pgprot_nx(prot), pages + i, shift) < 0) {
-+			return 1;
-+		}
-+		i += nr;
-+		addr += (nr << PAGE_SHIFT);
-+	}
-+	return 0;
-+}
-+
-+static unsigned long max_contiguous_stride_order(struct page **pages,
-+		pgprot_t prot, unsigned int count)
-+{
-+	unsigned long max_shift = PAGE_SHIFT;
-+	unsigned int i = 0;
-+
-+	while (i < count) {
-+		unsigned long nr = num_pages_contiguous(pages + i, count - i);
-+		unsigned long shift = vm_shift(prot, nr << PAGE_SHIFT);
-+
-+		max_shift = max(max_shift, shift);
-+		i += nr;
-+	}
-+	return max_shift;
-+}
-+
- /**
-  * vmap - map an array of pages into virtually contiguous space
-  * @pages: array of page pointers
-@@ -3552,15 +3597,32 @@ void *vmap(struct page **pages, unsigned int count,
- 		return NULL;
-
- 	size = (unsigned long)count << PAGE_SHIFT;
--	area = get_vm_area_caller(size, flags, __builtin_return_address(0));
-+	if (flags & VM_ALLOW_HUGE_VMAP) {
-+		/* determine from page array, the max alignment */
-+		unsigned long max_shift = max_contiguous_stride_order(pages, prot, count);
-+
-+		area = __get_vm_area_node(size, 1 << max_shift, max_shift, flags,
-+					  VMALLOC_START, VMALLOC_END, NUMA_NO_NODE,
-+					  GFP_KERNEL, __builtin_return_address(0));
-+	} else {
-+		area = get_vm_area_caller(size, flags, __builtin_return_address(0));
-+	}
- 	if (!area)
- 		return NULL;
-
- 	addr = (unsigned long)area->addr;
--	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
--				pages, PAGE_SHIFT) < 0) {
--		vunmap(area->addr);
--		return NULL;
-+
-+	if (flags & VM_ALLOW_HUGE_VMAP) {
-+		if (__vmap_huge(pages, prot, addr, count)) {
-+			vunmap(area->addr);
-+			return NULL;
-+		}
-+	} else {
-+		if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
-+					pages, PAGE_SHIFT) < 0) {
-+			vunmap(area->addr);
-+			return NULL;
-+		}
- 	}
-
- 	if (flags & VM_MAP_PUT_PAGES) {
-@@ -4011,11 +4073,7 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
- 		 * their allocations due to apply_to_page_range not
- 		 * supporting them.
- 		 */
--
--		if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE)
--			shift = PMD_SHIFT;
--		else
--			shift = arch_vmap_pte_supported_shift(size);
-+		shift = vm_shift(prot, size);
-
- 		align = max(original_align, 1UL << shift);
- 	}
--- 
-2.34.1
-
-
-
->  mm/vmalloc.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 49 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index eba436386929..e8dbfada42bc 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3529,6 +3529,53 @@ void vunmap(const void *addr)
->  }
->  EXPORT_SYMBOL(vunmap);
->  
-> +static inline int get_vmap_batch_order(struct page **pages,
-> +		unsigned int max_steps, unsigned int idx)
-> +{
-> +	unsigned int nr_pages;
-> +
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) ||
-> +			ioremap_max_page_shift == PAGE_SHIFT)
-> +		return 0;
-> +
-> +	nr_pages = compound_nr(pages[idx]);
-> +	if (nr_pages == 1 || max_steps < nr_pages)
-> +		return 0;
-> +
-> +	if (num_pages_contiguous(&pages[idx], nr_pages) == nr_pages)
-> +		return compound_order(pages[idx]);
-> +	return 0;
-> +}
-> +
-> +static int vmap_contig_pages_range(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages)
-> +{
-> +	unsigned int count = (end - addr) >> PAGE_SHIFT;
-> +	int err;
-> +
-> +	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
-> +						PAGE_SHIFT, GFP_KERNEL);
-> +	if (err)
-> +		goto out;
-> +
-> +	for (unsigned int i = 0; i < count; ) {
-> +		unsigned int shift = PAGE_SHIFT +
-> +			get_vmap_batch_order(pages, count - i, i);
-> +
-> +		err = vmap_range_noflush(addr, addr + (1UL << shift),
-> +				page_to_phys(pages[i]), prot, shift);
-> +		if (err)
-> +			goto out;
-> +
-> +		addr += 1UL << shift;
-> +		i += 1U << (shift - PAGE_SHIFT);
-> +	}
-> +
-> +out:
-> +	flush_cache_vmap(addr, end);
-> +	return err;
-> +}
-> +
->  /**
->   * vmap - map an array of pages into virtually contiguous space
->   * @pages: array of page pointers
-> @@ -3572,8 +3619,8 @@ void *vmap(struct page **pages, unsigned int count,
->  		return NULL;
->  
->  	addr = (unsigned long)area->addr;
-> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
-> -				pages, PAGE_SHIFT) < 0) {
-> +	if (vmap_contig_pages_range(addr, addr + size, pgprot_nx(prot),
-> +				pages) < 0) {
->  		vunmap(area->addr);
->  		return NULL;
->  	}
-
+--
+With Best Regards,
+Shengming
 
