@@ -4,165 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A964410F994F
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C54C510F9953
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:46:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAE8D6B0005; Wed,  8 Apr 2026 11:41:14 -0400 (EDT)
+	id 1CB926B0089; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5F4E6B0089; Wed,  8 Apr 2026 11:41:14 -0400 (EDT)
+	id 17C696B008A; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A26D86B008A; Wed,  8 Apr 2026 11:41:14 -0400 (EDT)
+	id 0BA7D6B008C; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FDC56B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:41:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F9A3E01EC
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:41:14 +0000 (UTC)
-X-FDA: 84635802468.10.63BB440
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012037.outbound.protection.outlook.com [40.107.200.37])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 51BC0A000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:41:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uK9ED8VF;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775662871; a=rsa-sha256;
-	cv=pass;
-	b=xn2Nl6UhPhwmBGGhifb3g/ZOSriO2kJe3u0bF6afH2+8c409//8FWIRoe1tJrdeJJYchfx
-	NqJQqbpiW9GnyoAOgXZtoaddcSDT1lXAnEPVRbU2cyZFWterfRAcGV4pZKTYD0HzDISOt7
-	rSmHZhSqkh0YDdqKpSMs5i/IL1Zv6P8=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uK9ED8VF;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775662871;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F358E6B0089
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:46:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C4221401E0
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:46:03 +0000 (UTC)
+X-FDA: 84635814606.08.A105E5B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3E1D71C0012
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:46:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zu7SlHoM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775663161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y+xvlBHBcH7IM2+ZDj18/N62x/I7T5X6uhPVMzuDREs=;
-	b=OuNRRcMx5sLtgWQ8yECobfzVMjItXVs73DFwUJP+sbRvrQxoh/Og+TVVQVxH+YvLtbmgML
-	Q3motIH564bX2qqWC8cJB8KQUq4X6LB92/EHiup9oGPmhlpPOtDkOEEXAlUh3GW3W02cI/
-	TsP8a7S4PIuTveNH8j//9qJHBtA1mbg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fuYjpxG7lLAnKtlClwowE6iGtNF4kRxZtRBp0cppjZ0G45+zAHJZ8ZFcYtu1ONHV0BiFOlYYYnbK9oCkiW472EAErEZjRX8MdEjKV24G97eZUqhXIDA9nuHm9Al5OroO/+iTt+8kgrU2ZOhlfwy4tQqJ9HTGwzWTIpSMtwTBlO9oOO48n2mPxiFNKi7Kdij8Xy4j9iSgugO1Mg2YqxvkIoIduqTteWwlJqxwmXInz4orNQA6gpmDyGY2a2vqcHJvltwjAVfYSGmR/rsWU1Ff62zsEibPt8UPS6q345BkG+JOYwvfWl+XCg22Qzz0uN73ySEbWehZ71KkgMSCdFX6iA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+xvlBHBcH7IM2+ZDj18/N62x/I7T5X6uhPVMzuDREs=;
- b=uZNYz1cn2gdtfvOEGYoorVG+TbZIXTXtgbiLHqXGdKQzv+xnGEfp3PM0q2VV4PZWPWJeS3QgNvYLV7iAQhnkSTbC0ySQ42yVTWTCQL82BR2bLRj7XgbyVlO/C3a073vLZlSCB0+xjCuAVB5wJw/3GxCHKhBmKW2OXb0QgzlDJ+gWJl7YtRbawgx65F4NJ3s1N8Ccl29UfgcwGeSArvxpQShp9XsbO5kC9bEFAvMJpNb6pTN1phevxDw3LBj4Hm3Xg3eu/IfYCs9sJUtxO8mi9PGu9GQ25kZR4CxIbXuuM+n+uwFwehh6Hhi+0NGwPAIlZ3nDejarNPRKIYdJByo8pQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+xvlBHBcH7IM2+ZDj18/N62x/I7T5X6uhPVMzuDREs=;
- b=uK9ED8VF09lwR3m0RQAyVjH2ajhslIwFuvFB0g2nhkIc02eyNT6tFO0rlAZBeZhuvfzSo1SlmfZreIRu2/FSKRO5F3bpAeQsO4dekx8SEjkJPL77uYbOfEndlbo3NEM2cJxPw4ePhJoIkRzXRdqpnceZyJaimX6T3dPaHZUau8S3AYvKRF1/QcRrzQKXoZFQ4sRG2izMToyv2gX+oeUro8dHZb6W3n/zpO2PyGidE5AvyegUi1SQ8FOKi5XZpb2ghLjj3lWjqB4GZX+41tvwZ6ZCQMvCq2IdK5G+QzsNABev0JHM52gxFdICSNXLQOh5rkJSAYkocRg0P74+yOwWsA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS5PPF4A654669B.namprd12.prod.outlook.com (2603:10b6:f:fc00::64b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.41; Wed, 8 Apr
- 2026 15:41:03 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Wed, 8 Apr 2026
- 15:41:03 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
- Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Miaohe Lin <linmiaohe@huawei.com>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v4 13/15] selftests/mm: move hwpoison setup into
- run_test() and silence modprobe output for memory-failure category
-Date: Wed, 08 Apr 2026 11:40:59 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <B686276F-89E5-4192-8973-3B787FC8AC86@nvidia.com>
-In-Reply-To: <5888f69f-c336-4151-a9ac-9b0b00f9c3bb@linux.ibm.com>
-References: <cover.1775466329.git.sayalip@linux.ibm.com>
- <8ef8640092004d143fe80e6fc32ea8d30a9080de.1775466330.git.sayalip@linux.ibm.com>
- <8B26C697-4D0C-4E1E-A14E-D517CC9DA05A@nvidia.com>
- <5888f69f-c336-4151-a9ac-9b0b00f9c3bb@linux.ibm.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0316.namprd13.prod.outlook.com
- (2603:10b6:208:2c1::21) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=ABVcnSBYw67/dNbfG+cq2X/5dXQSJpLjV8UMfC8U4II=;
+	b=bv9V0+eW8+mVrDr9Rbzk+sDAC/TWIgtJKuhno4eDnWzd5kofgnD/E0jB/Po/s7xEttXY/q
+	/e2c3FHzxxvzDHnkLS14y63bIvs1g2cL+wshi1Fq/XecnaCsAgsod/tQHncCQAqXVAIEMx
+	LiXJ+/S0O34nqlg76JSBgDFfpEuldOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775663161; a=rsa-sha256;
+	cv=none;
+	b=nxnYPmCM537lpTOIiAwhWmKgdqxVmLZMhEMHgDJntaXB0k/cuaj8rKqiiCCF9jN6i1wCzZ
+	4m9+aOEASAU1d6XTqpwrna/0Ln8h/+MOjcyV1TWOH7FTGylR863lvyCX2fQNdfpo6lcrhq
+	yp0DRbi62gnlMQm+XMTs4Ry9usCe2Cs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zu7SlHoM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf20.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775663160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ABVcnSBYw67/dNbfG+cq2X/5dXQSJpLjV8UMfC8U4II=;
+	b=Zu7SlHoMpxRHks9m+4YbjMaCIVNXoRd+htwEq0Dt/8w6HrlT3gkoRGil1Ar+nsyJCZ6pCE
+	AOM/550GG6v+vFjm6361mCsA0Nx7AVOAJKXh3rqGVGm+BqtOj2/R3lKPotPXkNeyWbkIyz
+	twcfprS5uokAFR+0hlUdoNXFcykF/fM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-QrTHQVknNKmkhMeU6X5Y2w-1; Wed,
+ 08 Apr 2026 11:45:58 -0400
+X-MC-Unique: QrTHQVknNKmkhMeU6X5Y2w-1
+X-Mimecast-MFC-AGG-ID: QrTHQVknNKmkhMeU6X5Y2w_1775663156
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 133171956052;
+	Wed,  8 Apr 2026 15:45:56 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.14])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C55419560A6;
+	Wed,  8 Apr 2026 15:45:53 +0000 (UTC)
+Date: Wed, 8 Apr 2026 23:45:49 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, baohua@kernel.org, kasong@tencent.com,
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <adZ4LehwC9KisuXf@MiWiFi-R3L-srv>
+References: <20260328075812.11060-1-21cnbao@gmail.com>
+ <20260328075812.11060-3-21cnbao@gmail.com>
+ <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
+ <adXxdLSHp2E2k6_5@MiWiFi-R3L-srv>
+ <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS5PPF4A654669B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bffe843-2c4b-4cd5-112d-08de95853d0b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	FEVB6z1kfUqnNQ9YWMiDj/YPlyiUQypazDmlUxqs8rVBvgGP5Zp1vzmJaez4KUCge2hHyHuPAmtn6mbeQSYcXG9j25GhO+x9NnKcd43SXMsOSHQHEAUL4KEykGm0CNSgHsXNtOuW2hMMH6IkzjQlNWAkocMSFOMUDVERoSC0TY10wegZ50rI5b0gYg0DLhLLLnMQByM15BaZYJC+rN29oZW1hDnPtNrJG3P500h610QTH4J4UUOLXN8vF6wiHbpVn4lNEzNi9BWgenaNjSGfpB6sqR4/9Yz/cawPatArYphlzBKq9lrpy1t7wZw9PSXUM6ZUo+6FGswWkINI+/u+hrezN80XUUurs6U6qxIHCprTBP7TBOMy+yuE9fBsSkBrE7tOuVH9JocHOmPGu0DuHHJYNksKNN20OEkZaV1vfJu18IPmfXztfldAVZf0JN7mFD5tfNUVT2JWw5hTBw4U2rthD2Plxzbk7VU4Q3YqzAL6dDbHSbZQ8kCaSrIUsox2Srnjv1pf4Z/VU2Ljtmo5XxA5LCSw1liKI1vfsCwv8xUlaqH8fn/sDx1yPeo52oPPGAyoteJUTl9wUsQyOtu/ON0E5Y0s3npLs/ubUF3C95B0/iZsDWSvbDmepizLkgFxQaZu4MyZP0AI/+qkkmmA2j6vmeRcPeIOcGCg6ynhFSe8/T9DC0pp1MN6+awGhCKXzcH/bZd6rsWforBclbs7MfKOWGC8l5zAiC2w1uUxkkk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WDY3lvwlRZpvaNoJGrMBL5b9WUgsXHoViwBNkBTuDifeyoZCeRVw9xzII4u/?=
- =?us-ascii?Q?taLdWyKwGn98DKr/6vdz4ArwbN37dlUAeAmqFWb5Xf40PWoVY1MULgpGjU33?=
- =?us-ascii?Q?mDYRe/MraAsTtyz0Eaq9qKJ1hh+wwJ/BTGwY0f2lMqek2/2uN2Y2ugfXNLpQ?=
- =?us-ascii?Q?dN7Z2e2rUnYVseUOqhXryoDulOeU7VS+5UAMLuswq7Tmw+hJT2Me84fXTxVZ?=
- =?us-ascii?Q?imyKXrmVsdPM7+qhoKwUwt7G1jMPi87MVVNlGXpGxeWYfih7xbDqS03HsYIx?=
- =?us-ascii?Q?GUUKrVVM3ydYJo5sE9etvIlmtYusdwnDMJbH8ie+A5ZDYSiiJFdl8zY3noOv?=
- =?us-ascii?Q?YKkZkUZCTu4baBIjV9QtzvjdOTpsC12NJAPpNK7F6+teoKJrgjg+v4P7DFQe?=
- =?us-ascii?Q?Xgvb+w7xZY+f0WDjXa4g/kRJ2BnFT1CksiiBSleE85CA46j/6N3BEmfUz+h7?=
- =?us-ascii?Q?VVg60Ow2Q41UQQOSLHzY703fnnDOHqo2FYAaBO5vQjbZZTd0DFFCwC//lviJ?=
- =?us-ascii?Q?wWHiCZFuxYCR0VDu0Pma3zSUSwGtQIaB4stf3ddxECr8gSqsg8qucw+WcjiL?=
- =?us-ascii?Q?YopQaNRNSoW/yI55LoMvcVD3boNRKnH9W5oxcVhtm8v0BPlFzJi+Nb+67J3U?=
- =?us-ascii?Q?f6viVJBE69WXQS33W2TzI/7SFGISqKofE+9czQYp/P+zsFcuPB8TGhnQDk+m?=
- =?us-ascii?Q?v/aM20DRQKGyWXvwZqhfVBuBbrqrLj++NIfdEmmtX8dO4syivMcl28YmzRsW?=
- =?us-ascii?Q?1tnGmoNxpUk59eN7eXboSWSm1qQZ8VPz4O3lWRrLEkWMBTToxLLDIVHkHYcX?=
- =?us-ascii?Q?FbsWI5LjnIv6Gznxh8aVvOfsVIGV3/s4VISaHKKNUGr4xGYzUNxZ0lXSxD+3?=
- =?us-ascii?Q?r8XLQhRRBMKlng4JjVO+77SBngTEVzFupNSVDZYvu+kV9LewwLNR3ID6Vuoz?=
- =?us-ascii?Q?W6LH1OyUDbCesfpOyYcyRJe+snDi2uabbq3jWL2KnhFbVZXbNfJFBncpOFvf?=
- =?us-ascii?Q?FaX/AFIBri+LQGz1zNfaGehVIrIxkP0zdHV3ZYW9FZ/0W8j91R810Yqvial9?=
- =?us-ascii?Q?Q+GRxK67nNNRuH4bfvc6xYcyY/YSvPLxdMg21gSbJoczgcaDWejYJR+BkVl7?=
- =?us-ascii?Q?njn83X0KYrPdwRHwQFB8WhU+ZjccWWjA7c0WYOHbRIOC4Vu6USWid5Uam2aJ?=
- =?us-ascii?Q?G7REHNFbA8QjmPR6A6MvyL1CGOnpDGrVEFO3+G6rUETVoiIwDlkPLhmlRjmt?=
- =?us-ascii?Q?51yxJfIMlxcU1ny99hYRdDESZieEodrQRgUNsTb5z/580cFmwOLH7KabCN2L?=
- =?us-ascii?Q?nGIsZue3anatcqT5//kokY2wnfCmOMwPOLsuO47uw39EeSssPAgKKvVbhGHh?=
- =?us-ascii?Q?iNoivUOacSFKN/QwRNYRkJ55q+kaZX1qcNGdh7Etr+2hsYTy5Xsb8bAYLeZS?=
- =?us-ascii?Q?+Z1LP5wnPTfRKJK1NnrstjP/eGKWcX7z0YPV3dmIFtiMmd0jWnH9De1nFW/W?=
- =?us-ascii?Q?TpS8Aw/4qknUfKku+gdlZklt2YN7hayOiNJwRrbwtdWthjJ9+L3JSwp9TtyC?=
- =?us-ascii?Q?fto7ft+utrG71aGAtgRNrXrfELl4nH/LJbBHRtPUHSurqMEp4D9CPWkezxWH?=
- =?us-ascii?Q?8vCS/HYhKRejnxYRq6pJO0hGnp3w4TUd4+Xw1EH/020IpUkz6aLdNIoT9x/y?=
- =?us-ascii?Q?ObkRbRDp7dMYK5iBNcCD0CocCurVAxU3IMxjaqwkj8Fiaqv4?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bffe843-2c4b-4cd5-112d-08de95853d0b
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 15:41:02.2551
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6tNbXd0VfJAwmb+9O0ztR2qqmYD5am9JD10XcYGTAU/1Y1XUithNV9YQwtbTthF/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF4A654669B
-X-Stat-Signature: 55jzqxxsxpmcmiorhao7knejb8cji67d
-X-Rspamd-Queue-Id: 51BC0A000C
+In-Reply-To: <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: bxvOFPR_qwJySzRg_tpyU2Q6L5t9IE8iJ0f9FdDTs14_1775663156
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3E1D71C0012
+X-Stat-Signature: b6f1463ytct3o8wumh7aoispdsk4t1sc
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775662871-530503
-X-HE-Meta: U2FsdGVkX18fo4h4QAeV8yzEG51CUlL2JJHANa4kfgr4XlsaQlKdsluZ6KQj1ujMbXxBdhnI3rwDr5OucMP+ChBRy3mtFNiQPp9RzcmjWtK83IQo3CXcgugBl+HQ9l5a0QyD7c/swiYHl8uP+iK5LLRMEbBP1sngJX08c1kK8JvC2VmorK2Hp7eWBO13o4fo0aVTrOHOCOACe8+PfQzbANkb66L0DGlfaP6PK++KjOoPk2hMsiiC3afKurF8kfE53u/Gu8eLZUHzlQOcUSA5FSwcuPcRMJfXuyltU0qakAGLxUNo6mudd4KGZvqvQy6X4Wy0EwLNVgwklFO8ZrsmAWb5gOFdcg1me1Vwuz1BHTyOl7sXLdDGYoeurVOUFaNuzUije94yr6cnrSv+69sE/gjYwsA6mMH1v7wFcFPoySehxqEnyzeSxAvDuj2xVtMPiM+mhAyutz5wcjHcPIlDLE53q1+vzmNmX9GZLnskmkREFZ+rp6QxpMSszwZxU5ExKp6izH7sJIrsXNd0M8kt8kQNV6Lx9OctEoVujXeQp3CLioX+XInIFNbVGNlpflaJGfQGSKk/aZumDDbPIIgSv+diyUVoD5jn3V8YM0kKvCMfq8KOP5DqakVRgNpZ378CEALRJS5FZcoUAPZEEcCvWcEjoBxljXEmms+71a+T4rtljqxC1Y4WJs5R4y7C1CRsJQIQqUHoChmMtj1gnqoud1mFJcY0CEg3/OONhwnK0HI6S57cwlBzI0Zs5OiKRqI32ZFD6u7VjHjP34NR7MtKMK48f20pVQoqHdxa/iJI3J7i6mWePhbIHZf+Pcav2z77hTC3fb38a2o8Kfru6NfW9icwM3jKyGVlGqvPTZ5lhz6oNDH9K6OHR1GuVh7Rn1RioSqvi/xpHLE1qRcCdwtnb/xHIoctjQltFyOmnd6H9eRdThY06pgdVRKIOgL4fynWXlv5pBQWr5fvN8gKy7b
- M6Mnpl13
- B99sEbaeKJgv4xhtPMevHGaHtlC3lM3z/kvg/pewDb2050AqMq580QuDL0hywKlQ/sF0Nmu6g2R/0CBWyzF1pYajmDw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775663161-755390
+X-HE-Meta: U2FsdGVkX1/vmN27AF3BqhW9fHcRNuRIQT0yg2r2SqXgHPmz3ry1wEjGkVW3MZyzQ6RAwJT0sGeUU01o0ThWqQCOgruWWB7X7Lqyp1HZ3RRZsGLzYJoSJEdEK50i1MOgkZ5huB9HJe1mOyvAM4r7G+qlb1dGwHx2ryFcr0wnEpklbE/UJohNH9wYfIpJ8uaIYJmhE+hAhN+iLGnIpLwr54DMeyxAlRVyQcVks4oF3JFGBlRnLBAXxF+Pu03MrRLQZEeMJF3qx7bsV2ig5jwODB+ZqbnZsyKQllG6SvLFclsgzJmJga0aNP30odI/91nTZyYJ0ePblfPN/pDJVBxhJERuiiLNg76ceylYuIgT1lsDkeTI4oMwa2VPVE+C6RKzs2KDAvidn4qkjrcZyUDvthyDGITgh66Z0DEgDAo7WSljcMmvEkaxlLcwduO7jtuQqyQaCr1/VxOLx/J/visdAiq+n4OCY5znVfLy2AB6ySF/x4sKgdZ1TuxjSQBzN+Mqrr/CBXrGTQvBQfaE7rxV0+wBlPyqwjZpMSnKIWHd5H4YfnPGPReNsUsaUyD8GkR3U93lmzocuFTJSEqPsOiYb4fiuButRV0wUfiBy77DIySpLTzyvxg+ImlRAlYN5cHet8eQ2rS53zbth5Cz8/L+pNkx34jcU86h261T24MzFYI0sqjtn/wDr1dA5lNQ1uBnBgr7K59les9QzuNrD8DgzIqCFfXt1PdDMFtdGa0s6h0cdsRZRwruWpwAL68OZEjntpheYwsX9epA9Txcs6bAo9OIfjl3J5eIVHqe365LerI3pcn8ZTCLBp3aVywbZrPp9RUxMCJewgn74pPC7i2Bl6p3FTy5Gd8Km7hrshbhAsX9OGtdFKmjqbhmUpfLgWWSYewJfHHxKB9nRfE9OlyRMXaNjUUMqfjIitUtvHENhdgbYzzCHivn9CbbTIcCugLyL4DNM7fsVzkNUxqDKKP
+ +CxMF/UB
+ O33HdtOm9rQZrcD+c6vkzR2ULNfunhiXPv3as4n8NSa5BbFJpQs15YnqxghV6qRNVPKrihcL2XuU6PNA5AAwfHFiClh820mQChjU4LmkE264WgagMSlHhxJsf14/T9Hooc5H4+hD3jerv8cew55LhJZUrJeqP6dOZOWSKBv0oWxCp+5KN9eo6ZcpOxgAkR/cMjItWLLP0/E3S7EckL35OLplm1gd7UII+Aaa0EdEHYCWpCDTbfUcBFq2kkpQYjRj1WiTKzPzfLTsyOqwZWJXgeM3E3lifIczpG1wG3OgYCP0rTFGA5uBXHpStqWZZQHD41LQZ5HlWeXttUPph00CLh/hMbuPqTIUUn4sYlkMyr2Pf4xjV4WyqHVGKzZx5L+DFzCPzjQ6qtW6sMRPy0/HJPubL2ucRi5ClOXSHWuMKDV+JjpDCgicoKKuiS5ssTlRQXL1eDgYA+5B6Cs4xZsC/GuTqZC+GQC04ot49DhrOTheyZhuFSoYajjgD8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,104 +113,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8 Apr 2026, at 4:36, Sayali Patil wrote:
+On 04/08/26 at 02:26am, Chris Li wrote:
+> On Tue, Apr 7, 2026 at 11:11 PM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > On 03/30/26 at 08:30pm, Chris Li wrote:
+> > ......
+> > > > @@ -608,6 +593,39 @@ static void swap_read_folio_bdev_async(struct folio *folio,
+> > > >         submit_bio(bio);
+> > > >  }
+> > > >
+> > > > +static const struct swap_ops bdev_fs_swap_ops = {
+> > > > +       .read_folio = swap_read_folio_fs,
+> > > > +       .write_folio = swap_writepage_fs,
+> > > > +};
+> > > > +
+> > > > +static const struct swap_ops bdev_sync_swap_ops = {
+> > > > +       .read_folio = swap_read_folio_bdev_sync,
+> > > > +       .write_folio = swap_writepage_bdev_sync,
+> > > > +};
+> > > > +
+> > > > +static const struct swap_ops bdev_async_swap_ops = {
+> > > > +       .read_folio = swap_read_folio_bdev_async,
+> > > > +       .write_folio = swap_writepage_bdev_async,
+> > > > +};
+> > > > +
+> > > > +void setup_swap_ops(struct swap_info_struct *sis)
+> > >
+> > > setup_swap_ops()` needs to return an indication of an error.
+> > > The error is that sis->ops is NULL or op->read_folio == NULL or
+> > > op->write_folio == NULL.
+> > > If there is an error, we should fail the swapon.
+> >
+> > Thanks for your comments.
+> >
+> > In the current patches, there's no chance any of these happens:
+> >   sis->ops is NULL or
+> >   op->read_folio == NULL or
+> >   op->write_folio == NULL
+> 
+> I am aware of that. Adding the check in setup_swap_ops() responds to
+> the WARN_ONCE check on op->write_folio() feedback.
+> In fact, we should never have a case where op->read_folio or
+> op->write_folio is NULL. However, I can see that other future swap ops
+> can be NULL. e.g. Notify swap entry free. It is hard to enforce that
+> some fields can be NULL and others can't. So having code safeguard it
+> is fine.
+> 
+> > Because it's a if-else logic in setup_swap_ops(), adding an error
+> > checking looks a little weird. I think it's worth adding the error
+> > checking in setup_swap_ops() later when we have new swap_ops added
+> > and there's potential any of above three cases could happen.
+> 
+> Adding the check in setup_swap_ops() is to remove the useless warning
+> check on the caller side of op->read_folio(). If you think the check
+> is not needed setup_swap_ops(), then it is not needed in
+> op->read_folio() either.
+> The WARN_ONCE() then kernel panic on reading op->read_folio does not
+> make sense. The check was added due to one of the feedback that what
+> if this call back is NULL.
+> 
+> I prefer to keep the `setup_swap_ops()` function responsible for the
+> NULL check, due to the discussion history surrounding it.
+> I'm also fine with adding the NULL check later. However, the NULL
+> check needs to be consistent across the patch series. The other NULL
+> check inside WARN_ONCE before the caller site op->read_folio()  and
+> op->write_folio() needs to be removed.
+> 
+> Does that make sense?
 
-> On 07/04/26 20:21, Zi Yan wrote:
->> On 6 Apr 2026, at 5:19, Sayali Patil wrote:
->>
->>> run_vmtests.sh contains special handling to ensure the hwpoison_injec=
-t
->>> module is available for the memory-failure tests. This logic was
->>> implemented outside of run_test(), making the setup category-specific=
+Both is fine to me. I will change to do the checking in
+setup_swap_ops(). By the way, I tend to rename setup_swap_ops() as
+init_swap_ops(), is it OK to you?
 
->>> but managed globally.
->>>
->>> Move the hwpoison_inject handling into run_test() and restrict it
->>> to the memory-failure category so that:
->>> 1. the module is checked and loaded only when memory-failure tests ru=
-n,
->>> 2. the test is skipped if the module or the debugfs interface
->>> (/sys/kernel/debug/hwpoison/) is not available.
->>> 3. the module is unloaded after the test if it was loaded by the scri=
-pt.
->>>
->>> This localizes category-specific setup and makes the test flow
->>> consistent with other per-category preparations.
->>>
->>> While updating this logic, fix the module availability check.
->>> The script previously used:
->>>
->>> 	modprobe -R hwpoison_inject
->>>
->>> The -R option prints the resolved module name to stdout, causing ever=
-y
->>> run to print:
->>>
->>> 	hwpoison_inject
->>>
->>> in the test output, even when no action is required, introducing
->>> unnecessary noise.
->>>
->>> Replace this with:
->>>
->>> 	modprobe -n hwpoison_inject
->>>
->>> which verifies that the module is loadable without producing output,
->>> keeping the selftest logs clean and consistent.
->>>
->>> Also, ensure that skipped tests do not override a previously recorded=
+Thanks
+Baoquan
 
->>> failure. A skipped test currently sets exitcode to ksft_skip even if =
-a
->>> prior test has failed, which can mask failures in the final exit stat=
-us.
->>> Update the logic to only set exitcode to ksft_skip when no failure ha=
-s
->>> been recorded.
->>>
->>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page=
- test")
->>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
->>> ---
->>>   tools/testing/selftests/mm/run_vmtests.sh | 52 ++++++++++++++------=
----
->>>   1 file changed, 33 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testin=
-g/selftests/mm/run_vmtests.sh
->>> index afdcfd0d7cef..17c9bd910c47 100755
->>> --- a/tools/testing/selftests/mm/run_vmtests.sh
->>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
->>> @@ -235,6 +235,7 @@ pretty_name() {
->>>   run_test() {
->>>   	if test_selected ${CATEGORY}; then
->>>   		local skip=3D0
->>> +		local LOADED_MOD=3D0
->>
->> Can you rename it to LOADED_MEMORY_FAILURE_MOD to clarify its use?
->> Since now LOADED_MOD is visible for the entire run_test().
->
-> Thanks for the review!
->
-> I kept it as LOADED_MOD and specified it as a local variable intentiona=
-lly. The idea was that, if any future tests are added that need to verify=
- whether the module was loaded, they can reuse the same variable. For tha=
-t reason, I did not make it specific to the memory failure test.
-
-You mean future tests that use hwpoison_inject module? Or any future test=
-s
-that load a module? For the former, you can use LOADED_HWPOISON_INJECT_MO=
-D;
-for the latter, I am not sure how a single LOADED_MOD would work for
-different modules and that probably would need new code for that case.
-
-My point is that since LOADED_MOD is now in the scope of run_test(), it i=
-s
-unclear which test uses it without reading the entire run_test(). Giving =
-a
-specific name improves readability.
-
-
-Best Regards,
-Yan, Zi
 
