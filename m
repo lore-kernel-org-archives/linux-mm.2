@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3361B1073C8D
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A621073C8D
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 11:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 882A66B0092; Wed,  8 Apr 2026 07:00:49 -0400 (EDT)
+	id CA1C76B0092; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 833216B0093; Wed,  8 Apr 2026 07:00:49 -0400 (EDT)
+	id C533F6B0093; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748F06B0095; Wed,  8 Apr 2026 07:00:49 -0400 (EDT)
+	id B68CE6B0095; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 62DF06B0092
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:00:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26DBFBC6F7
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:00:49 +0000 (UTC)
-X-FDA: 84635095818.03.C60B48E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1BCB6180010
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:00:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bRVBbQly;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A63AA6B0092
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 07:01:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 375631B862E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:01:29 +0000 (UTC)
+X-FDA: 84635097498.16.250C5CD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5148EC0012
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:01:27 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="bNuae1i/";
+	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775646047;
+	s=arc-20220608; t=1775646087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EZ2yuTZvfsrt02dodKOU1pTCiBawJg1GQIriROlTJHs=;
-	b=JJdsmgXf3vCVklXZJWPPD6mGdQ31hRW35jcFEsUa4ua4EikyNm2rqxSJUV14AMbhPZXngD
-	/hH1iAJstLwCrslILxCzEpbm/n88dBSrJE43lBF2fKe5/mBeUcUfBDmQmQH16hnpptZp9C
-	fpFpYlthLL1o6+ANsWXovolxeZOSYJg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646047; a=rsa-sha256;
-	cv=none;
-	b=c6dOv1cnSo2d+u3ompOyWgcrpBSyycBnfYZEFcTKzkWUUC3MnV0iNP5CY3+9K9y4LHOGjv
-	P2J9UgnWVSiS/VZQXKQ4yixzbE7IaRRG097zJPomhscOA37TCq5+o6nh52CJwcJw5U3sFF
-	dAWo9iEr+rY8z8eoOF0XRb0uJhcEjWw=
+	bh=RCo/KGdYTRJFNwKNUpDIZvF/sPfe++F6/SVEF+nLq80=;
+	b=66gw6jb6WlQIy+LrKzU082c6SZOIU+0o39w588HJv/tvySBxtiAS7f3WfMXjXeexiOILUN
+	GxPQ6AQPHwDEA+SSjpT0FcUF03VZ5zyYSHhoAfi6fhIHqTEevrxwvdqEOXjlhSMKG9A1wj
+	2Bp00xfxtzzNwnvPOjalPIGZ43eE9d0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bRVBbQly;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 647536011F
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D109C2BCB0
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775646046;
-	bh=0OfgS+n/fNHdA6iHaO+uqBDCD2A8pXnvnNC61V/pXfw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bRVBbQly3XBWY1dTEzOEwlNr0HfuGL1bTGHzsMkQtqFOHYtF5lhWJKIjXAHNOSeRO
-	 i3wpQ4md7jGhUCJLSyjGLBKck9fixNCf6lbZSPOQ75UYEv3KVoMz/3BTijIM1cXq1r
-	 eD81XeKn/cWcQBnyVwCKQKzAoJ7FNNwT1QkF7UthrOxerX6xeaadm4akAQs/EVmAxC
-	 6tQerp4BeZOZhoxYvNhcZD0ZgiblFxYTJGApIrxiSYdP+YCpkx0JUHFQ25gHNrFJH/
-	 8SJSNSJwNVVWlQmyjZkupyQK2+Lx1Ua3qEllSqeH7CWAxnFEqDHNsLWfpZXWTm5tF/
-	 eFUmqQg2CAcwg==
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d59d249fbso63608351cf.0
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 04:00:46 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzDkROa9HHIyBxQuKPA49BeDAMfYRZVrt63lmBMGeqatVpKtd1i
-	Dme+e2b8VIjWigN6q6+aFPg5HqdqUcSs4lgD04op7OsVuX6WcYdo2jHp4JwnN6o166kGx9hmWip
-	CE4xQV8W7zixFNAAcrBXoMFjK43Iucjw=
-X-Received: by 2002:a05:622a:1e9a:b0:50d:7587:dc46 with SMTP id
- d75a77b69052e-50d7587e069mr271418751cf.12.1775646045425; Wed, 08 Apr 2026
- 04:00:45 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="bNuae1i/";
+	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775646087; a=rsa-sha256;
+	cv=none;
+	b=LrS0YFtdiRRbZ63tl3OLFYntLqO+XYnBP79UtFIjpLXc4oJcWMlBlk1kdy6ZT5xg8xFnQa
+	d4H04fvAv0qsdX5Jqxwg8gyqH+9sfOLg93bhuNt6myGou2kTZtJCT5lAqgy4fXucn0NH7F
+	5RlqnmZRSB9y0ovj2wKUvbNTk+bIryM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BFE92BC4;
+	Wed,  8 Apr 2026 04:01:20 -0700 (PDT)
+Received: from [10.57.87.42] (unknown [10.57.87.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F3CF3F632;
+	Wed,  8 Apr 2026 04:01:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775646086; bh=sj8JDaDSYK+tYnVjXLuC+PQF+McDxx+lR1PogM9spE4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bNuae1i/ZuzLq7CMWlbVxrPHfN8BimWSWAP3gURWRbaWCS2zs31gmVArdTgAM9DFA
+	 mGCCsnP9qltnDf2MIQHjEfpDc+cFpIfeQHBf1LM75b3zMgEgVhInlvFDKtel3ZDx2+
+	 xgoASjHChVFUhH352g6g/FvcDa8koEVcRvq2fbV8=
+Message-ID: <2a980011-b229-43d4-ad9e-b3e851bff706@arm.com>
+Date: Wed, 8 Apr 2026 12:01:22 +0100
 MIME-Version: 1.0
-References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-2-baohua@kernel.org>
- <02b0464a-13f6-4e0c-ad69-0f494bfacbf4@arm.com>
-In-Reply-To: <02b0464a-13f6-4e0c-ad69-0f494bfacbf4@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 8 Apr 2026 19:00:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x-73NTcef0Ep8wKUQviC=4KvGh3BfwGMqNFQt0fTPt=Q@mail.gmail.com>
-X-Gm-Features: AQROBzCZTm-M-8NVQt7j0TfFWeTANOKbOR2ssF4vKWCEH8fhyZKDU6z1LoiRbbI
-Message-ID: <CAGsJ_4x-73NTcef0Ep8wKUQviC=4KvGh3BfwGMqNFQt0fTPt=Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/8] arm64/hugetlb: Extend batching of multiple
- CONT_PTE in a single PTE setup
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
-	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
-	Xueyuan.chen21@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1BCB6180010
-X-Stat-Signature: phnekiao1hs1kg9bg8tjmiywragszgmn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
+ <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775646046-740664
-X-HE-Meta: U2FsdGVkX19DNMBPatWomTMFMU/Rf7plO/UOYh6cNl2yrjPyFB1meoz17heFivb/ykM/MZhObSqmdVzc9kr1fi9nPHc8SOY+iL36CYlgV9t2dqC8WTYq65Og+eXncMa589piumhXlRMrQXiW/+9ASq28coQoLPcCzSULvv1g6FkFXMd0M9eimWJq3CA6Ma2wOV1h9/CW6hzpeCApR8xFwuV0EKewcigxtBHCSLIg+/VWjQV0DWN/Cc61kDGK5m7bnrlPXNakwLndk1elTwa48PzW44Za6op193Abs+54ssa1Oa52F6VuWBGfv5Wc8uS7NOQoWI1mQ9hpCQ3ZO5L44lhTwok97/78ev8dqB28dXFbqvbBXZfAOZv/N7StkW/sawEtpaWbomy92PxJtH4KA4QQ8Wl+h897DIC5Wjy+fGK/vGZpEmMAc3zrkN34EHYUZq1IeZGupAwiSY2Y7klGnS1/Baq0RybUwT/cSAlQGO3m8dxyl+b4wSyQ+K/Mtfhy8cKui011ltOICJMXK8+aqPlk9/Q0KhEdDqvkq7Rx2k2dDjbW7FuwoFAvch4k2SOBu/9/+C/RTn/RnwknnMtNuvMQ8QpHqaorh2HCXpInY+2T6j6EtD446hKgw/sOyiIDYxj6pNlqi1Q2B4e7jZtgPo2q/TuKxFXXx3udF2qwM+WYVVZ1zeerdbCUgSdrY3HC5ilMct8GvlAWPN5gq77d0cdK5SJdHyXK3EATPUV0pfXikFXLtWHGC7pjOUGTasmQ1t4aNcat6CqxvXQGuAtOSXmgCeebLUpCVmiZK78B01mDSkn2QPSu50NeVd4UBF0x7JinonMDrwsQr0I3/yVmIpGIJ8shSAyU296NF9Na5ATXnSb+dMY/fmqWlI6Ba7fIs9aU2XQBpHQ53o5QawHqEWrvDdlTC+nEUyNsnkTqIApjiXE742rOyhzKvc6PI66oMNSjtzUNU4nVURYWPd9
- JPXVt3HN
- hvyMpnOSdLkd7R4fC1AIrsAWTUMVj/il9ac+k6HS7LvKggs0F9Bkbp5KgCwWZu3A5am5ULMxIq8VycW6aughQBqhh3c5m95uptchFGXYRGVeti1UIh2roZqUMxcbikVZfhJQY8096K94GRU9E0MZ6/nr/t0uoe38FN0NKKrvaHyO2JAjwGuhozXFWYphQs5wOtte54WW18SKyoBjIYPo5y+zrr2oSnoaMQlXSqSPWMYtpnT80X13fMzMKUzJ8Hypy0X6TdeGsw5PQCwIVWF0DG0L5OcB73pBaF2Pp1bg/urFu4xCNEzlDIBUqCQRWKR4BSJlpK1qkeBZ+qQ8q+fYp7X5lSXXBb2qB1nAIeR0JMm5smyMI34WwLAhRPx17C5WgcPp+cEqszsiVxC0Jy8zTTjRq5JeY6M6ndkbnkuSnxpjxqfQSZMn0ySwKIem8OQ0Tsqp4/GDulKnW1bLnOTxeRqX5dW6mSsst96wBDcrRgjtuwds=
+X-Rspamd-Queue-Id: 5148EC0012
+X-Stat-Signature: ocbc9mdastpdwsd9iowitr7adfjbtid4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775646087-664349
+X-HE-Meta: U2FsdGVkX1/6WynZlOkkWrV/R6KlFortvoaztYODF3yn4B7+CEIAVmps6YZfmsIi3oc7w86RVUv0vNv7uQy5xUA6WyQ9jiD0GcfhyuLUZSbS/aeByCmb8zOfY3DfIIzg+yciF+NEv5A8NKk9xpbaXMHXC9IyFpMxKxEt+jVhFxsxmCFK8zhNbRXIA+dVWjycY3yoHJBJNt5hOOcSMh9MOmKzHDCKkP3ZzpI1sDsPrYRFovnNEouIdNQ9k6XN0XeETKyBB89qUnTsxKUm7jqvlUhsSGq7cUt7yjLoAc04FGcSM34v9zsG7PQupTE9kweLmWK17xWamGQxkCMVcnb4oa7gDROSra1lbiiOSVFnBjEdkgzl4Besw4gg4brebHXk1WeVmfBQ4xm13bkENzfIj1fPjaon/Y6s7stxlb6/l7oeLEK+XCSHeIw+lHGSPmoeiDCRW3isyi4o2q0N+o+TAcjEQKszmUlywOa019hp815Uj1n2GYpw82PRmHpfTX8F/ju12agmiDeuTSWQN6GdjnbTurwe8HkuOZgq9ZzhsovWTbhQG/9Ho0ZF+HMIAgykTuZ8psGerF4CI6d9Do3T0AL05qz7c+oke+8rqK3dCN+d0IY1F6kApGN4qWRhS+U2A6zjXOnLugvVMpaavOYgsUdLJcfJV6H8JHYQg8RtglpTG38TElE7bPJYI8P2dcJwcZffSdNhyhn4IMoy2dTaRkHP2fwOmuB9kKWdY29JwBZJvtv22mkz24js3PpnAYn8y4qreQdtz0i6G38eKCFNtiZsOcAnDOhpdjJl9e7SN2t8NyB1tM/+u7mvFPDXbCcK+nKwsq1lp3fxPBoB+2qjmkqpFu31eT33OptLmU8r6SRirfORAU4FfVRdhafr5e43gvrBvn2CgDWPD3UssGtqHuQSXu1h50MMb2l9YIk/H61oic4wDPV22D/dvqLrB0//LIx4l22yXVC3ZUwylj4
+ iDcFtWg8
+ DCgzQUc7Obg3BM4Gxh1RmPYBlq4ZOvgxhZYNDAIa817S1hHL7y7DRAVJhU6KyExFyopRneaAQb8ven7vR2KtZhH8/IQ8zmQWzxnv97kC/nwNAdoluJgbScTB1+vuQitsfmglMJL/AN9byVCYj95/c3GcZWPv8fSqcNz9gabCTPYwYPCTsJ094esGviVUa3iRnYbQ29YbOr6wUN+HW7om6Yi/S810ZNHPlRTAxK8849QrKu/k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,71 +98,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 8, 2026 at 6:32=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
-> > For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
-> > we can batch CONT_PTE settings instead of handling them individually.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  arch/arm64/mm/hugetlbpage.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> > index a42c05cf5640..bf31c11ebd3b 100644
-> > --- a/arch/arm64/mm/hugetlbpage.c
-> > +++ b/arch/arm64/mm/hugetlbpage.c
-> > @@ -110,6 +110,12 @@ static inline int num_contig_ptes(unsigned long si=
-ze, size_t *pgsize)
-> >               contig_ptes =3D CONT_PTES;
-> >               break;
-> >       default:
-> > +             if (size < CONT_PMD_SIZE && size > 0 &&
-> > +                             IS_ALIGNED(size, CONT_PTE_SIZE)) {
->
-> Nit: Having the lower bound check before upper bound is natural to
-> read, so this should be size > 0 && size < CONT_PMD_SIZE (i.e written
-> the other way around).
+On 08/04/2026 11:53, Anshuman Khandual wrote:
+> On 07/04/26 8:14 PM, David Hildenbrand (Arm) wrote:
+>> On 2/24/26 06:11, Anshuman Khandual wrote:
+>>> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
+>>> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
+>>> So with this feature arm64 platforms could have two different translation
+>>> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
+>>>
+>>> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
+>>> and virtual address range while also expanding available room for more MMU
+>>> management feature bits both for HW and SW. 
+>>>
+>>> This series has been split into two parts. Generic MM changes followed by
+>>> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
+>>>
+>>> READ_ONCE() on page table entries get routed via level specific pxdp_get()
+>>> helpers which platforms could then override when required. These accessors
+>>> on arm64 platform help in ensuring page table accesses are performed in an
+>>> atomic manner while reading 128 bit page table entries.
+>>>
+>>> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
+>>> supported both on D64 and D128 translation regimes. Although new 56 bits VA
+>>> space is not yet supported. Similarly FEAT_D128 skip level is not supported
+>>> currently.
+>>>
+>>> Basic page table geometry has been changed with D128 as there are now fewer
+>>> entries per level. Please refer to the following table for leaf entry sizes
+>>>
+>>>                     D64              D128
+>>> ------------------------------------------------
+>>> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
+>>> -----------------------------|-----------------|
+>>> |     4K    |    2M  |  1G   |    1M  |  256M  |
+>>> |    16K    |   32M  | 64G   |   16M  |   16G  |
+>>> |    64K    |  512M  |  4T   |  256M  |    1T  |
+>>> ------------------------------------------------
+>>>
+>>
+>> Interesting. That means user space will have it even harder to optimize
+>> for THP sizes.
+>>
+>> What's the effect on cont-pte? Do they still span the same number of
+>> entries and there is effectively no change?
+> 
+> The numbers are the same for 4K base page size but will need
+> some changes for 16K and 64K base page sizes. Something that
+> git missed in this series, will fix it.
 
-Thanks very much for reviewing, Dev. As we discussed in patch 0/8,
-this should be
-PMD_SIZE, not CONT_PMD_SIZE. I will use size > 0 && size < PMD_SIZE
-in the next version.
+Really - I thought the contiguous sizes were the same for D128 as they are for
+D64? What's the difference? Perhaps it's different for level 2, but for level 3,
+I'm pretty sure it remains:
 
->
-> Also IS_ALIGNED needs to go below size.
+PAGE_SIZE	CONT_SIZE	NR_PTES		CONT_ORDER
+4K		64K		16		4
+16K		2M		128		7
+64K		2M		32		5
 
-Sure, thanks!
+Thanks,
+Ryan
 
->
->
-> > +                     contig_ptes =3D size >> PAGE_SHIFT;
-> > +                     *pgsize =3D PAGE_SIZE;
-> > +                     break;
-> > +             }
-> >               WARN_ON(!__hugetlb_valid_size(size));
-> >       }
-> >
-> > @@ -359,6 +365,10 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int=
- shift, vm_flags_t flags)
-> >       case CONT_PTE_SIZE:
-> >               return pte_mkcont(entry);
-> >       default:
-> > +             if (pagesize < CONT_PMD_SIZE && pagesize > 0 &&
-> > +                             IS_ALIGNED(pagesize, CONT_PTE_SIZE))
-> > +                     return pte_mkcont(entry);
+> 
+>>
+>>> From arm64 kernel features perspective KVM, KASAN and UNMAP_KERNEL_AT_EL0
+>>> are currently not supported as well.
+>>>
+>>> Open Questions:
+>>>
+>>> - Do we need to support UNMAP_KERNEL_AT_EL0 with D128
+>>> - Do we need to emulate traditional D64 sizes at PUD, PMD level with D128
+>>
+>> It would certainly make user space interaction easier. But then, user
+>> space already has to consider various PMD sizes (and is better of
+>> querying /sys/kernel/mm/transparent_hugepage/hpage_pmd_size instead of
+>> hardcoding it). s390x, for example, also has 1M PMD size.
+>>> I guess with "emulating" you mean something simple like always
+>> allocating order-1 page tables that effectively have the same number of
+>> page table entries?
+> 
+> Yeah - thought something similar.
+> 
+>>
+>> The would be an option, but I recall that the pte_map_* infrastructure
+>> currently expects that leaf page tables only ever span a single page.
+>>> So it wouldn't really give us a lot of easy benefit I guess.
+> 
+> Right. So probably need to figure all other benefits this might
+> add besides just the user space facing interactions as you have
+> mentioned earlier.
 
-Here it should be pagesize > 0 && pagesize < PMD_SIZE as well :-)
-
-> > +
-> >               break;
-> >       }
-> >       pr_warn("%s: unrecognized huge page size 0x%lx\n",
->
-
-Best Regards
-Barry
 
