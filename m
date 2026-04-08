@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F9CF1073CBC
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4E7B1073CBD
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08E2D6B0093; Wed,  8 Apr 2026 09:33:46 -0400 (EDT)
+	id 71E216B0095; Wed,  8 Apr 2026 09:33:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B9E6B0098; Wed,  8 Apr 2026 09:33:45 -0400 (EDT)
+	id 6A79D6B0098; Wed,  8 Apr 2026 09:33:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D105A6B0095; Wed,  8 Apr 2026 09:33:45 -0400 (EDT)
+	id 5BDBB6B0099; Wed,  8 Apr 2026 09:33:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A4F0B6B0095
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:33:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3276516014F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2269B6B0095
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:33:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C2719534EC
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:45 +0000 (UTC)
-X-FDA: 84635481210.18.267D09B
+X-FDA: 84635481210.15.9E93CED
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 51007A000E
+	by imf16.hostedemail.com (Postfix) with ESMTP id BE1DD180005
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=IvnRXoaO;
-	spf=pass (imf25.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=bhtlSTwf;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775655223;
+	s=arc-20220608; t=1775655224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xTQqRfhvs/Tv/mhxkfDN3528xsH43ydxutA5GLZLSsM=;
-	b=ViZK+AK9NdnxIn5PBpf9CUEQ4FvPLrqoOEv3qh0xjkiadshVTI6CTlWlkynW60xEc1Bwnd
-	9A5ebesGW1Vk5nb8OChO8PZiPBgGAEZuapi9H0cGQ0Ub9YVq2IqYWb0GvxusIgw4fc/x3+
-	Yo4wmc/yYVNAgA+YHbKH2cuHy3j39n8=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=IvnRXoaO;
-	spf=pass (imf25.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655223; a=rsa-sha256;
+	bh=nf+JuPEE/jp8A+2PdYP2O6YgayTSpGEteEGx3VKZEwM=;
+	b=CiZR8uCM5lzL2VF5dIRcS8zH6wbP0R1HEpNNdoW++ionCOVw5zcGYyRKfGq4GKFiXxpLnU
+	u1tMLn4gVIoFnKrlQpMIuVa439u0ngTl+7ZPpcUatjp9Exp4ynB6Qywx5sLm5+mP/S0zAP
+	SMiOV/Y/R5NdzM4IuoFAk6HH398sV/8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655224; a=rsa-sha256;
 	cv=none;
-	b=Eu/pRxxs9yunE76prsYcvyEgZqXiiSfcxBl5CP836kW0f1DvTPk58wZMQBIX1d13N91C0N
-	JYKkHJXRErrftWDtfaTvKuXKeLjwe/uEyGCGJr2wQb6O+CCisainYcu4GRt2fx8tfh7T3e
-	VawA8umROBTMbyPVCjo+XIJw1HElqgg=
+	b=7RaywW/xWIf/jnqvKB6IiT1gEzzmdWcp2h2l+UIRRhZR6izQvqOfEsrmkAlsQigOJ4OfaM
+	u9V5EkUST+zQvN6u+oYX/vRRsCXzPZRyvg/ZlzHJyXc+dKzwbNrtbkjkX+1Qt0bNAk1bkk
+	grTlAdFMCVDil2OGxO0klEUusi4ddLs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=bhtlSTwf;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id D519EBE71C;
-	Wed, 08 Apr 2026 13:33:39 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 9AC46BE727;
+	Wed, 08 Apr 2026 13:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
 	s=mail; t=1775655220;
-	bh=xTQqRfhvs/Tv/mhxkfDN3528xsH43ydxutA5GLZLSsM=;
+	bh=nf+JuPEE/jp8A+2PdYP2O6YgayTSpGEteEGx3VKZEwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IvnRXoaObJirk2iWCAuDUuAZMp8JYZjmXaRXN3rlDRnLU6+WLTt2kcrnFPYJp1V4y
-	 PAkcgMOX36lIBxcgF+4Jq1Xz71r4scavVF9rq59QbfDNM4yBABpfvjZjvn+/A20zXY
-	 h5HDWLd+rHptqEZJJ5wzYcYACJvJeB3WM9aA1wZg=
+	b=bhtlSTwflFyzIun/pkj53UHMDknnPfyBwaNmJiJdop/TjpXEBE47MclZwzdhTxbrn
+	 kX3SRbMi/dWR6jXgz8zlaWNT8y2hN8fANknXtgLvypFaiWel8Of/YBaT/aioCaU57f
+	 ly8rOQKQsKo5nA2Te4SI6Q/ESxwJBcUEBU8iwpVc=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -72,22 +72,22 @@ Cc: linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>,
 	Steven Rostedt <rostedt@goodmis.org>
-Subject: [RESEND PATCH v2 5/8] mm: use zone lock guard in take_page_off_buddy()
-Date: Wed,  8 Apr 2026 13:33:20 +0000
-Message-ID: <37f14ad134e1e639f4b41c238b14e5a24e9115d5.1775654118.git.d@ilvokhin.com>
+Subject: [RESEND PATCH v2 8/8] mm: use zone lock guard in __offline_isolated_pages()
+Date: Wed,  8 Apr 2026 13:33:23 +0000
+Message-ID: <0da769d4078fccbde4182a5ee655ea673ccbd5a9.1775654118.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1775654118.git.d@ilvokhin.com>
 References: <cover.1775654118.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 51007A000E
-X-Stat-Signature: sxjhpxb5m5h17fhiimiz3qgknnus5f95
+X-Rspamd-Queue-Id: BE1DD180005
+X-Stat-Signature: yad47najoc4iotwkmty55cfpy19x6xp9
 X-Rspam-User: 
-X-HE-Tag: 1775655223-531481
-X-HE-Meta: U2FsdGVkX18T32VA52H0Mm3OD0iVHKBPJM63ajzFFO3w1kMhblVh1aOr1JNu+7Iwrd93wtjKCxTPqP+x4RupXDi45vGTjGx+4ukLb7Rp5CdpuVLaDflJNGJ4U6hlCBwG+G1Jwuwuq5JwYeLU5xO3u0eWszsTgxAS0w0ouWcFl9WnnYYxu9d6SbRPKyujHeGhG6pM6ZtAomnKr0yVEF0NsQ4DnnyIvXmoiIZ5zOtWo7SfBbxFBxh9h2lZQ7Xsh6d5HRyqJu88CibKTJjdMLtOnhiLXzhxtkSqQuQH2RyUc3CO4TqKZ6KDbFdrKi7nPVY1cMB1n4Vq2+D8wqFR68h/Wl3HSnBC5/zwgBKch8Ztq6bHN0knASGU/WvXlRyiwi+2wowEUEj2ErvLASiyHhnPuTbYS723vL5kNIJT88ub+0TRhH55ly8kXPPg72llyPN8vWjmcBJQg8JxK0aPXsu8TWVT60Hbk42C1F4koF/00BMLHG9yrxpsh/MWnqQyPbXr1EKbPbRgnzYKvt5WUt9To2k3GnP9pnooqk4F2TR2xOXCHpWEwXccG4obByh2sOKwpfXeoSMC1ZGiswTBtsDETnTbSImKAHEIry949FILasqAXD3D9fBBXKT6Yy1TpnmpprIheJfE6EOmrk5/6NQtpr98MW7SpHXbsyM0XW6SlWZghv+w+25IZ9DbrLlvfiN3k5/FwrzVQWke+/nNNSQMfRXgoh2KGRzjBzg83DHp0l0uXOiIu6NgUDsHT1V7ZIJB5swqJz5QibzgJgpWVz3bvQugQJDCV4plX/GzFo311IpCWagtv6KW435yNXVgJHgotK1Y89OlgqGM2EGjtcImAaMGnk/lb6DPHBYfT2/lx/ca7ty38mPSro3Q4gi/mf9tmeibLljWXtGtnrJb6JMCfI+nreUBoY5Bfn3n/rRLuTeQHzPKjcjrXWNCfDfTifInOM+fhQIIbpkqglTUfDc
- TKyntMvL
- kKjMHDEDiilqN6W2o4XNfbBMkRjWQYZlPX92ZbSfWvBnBbflk6oHq2BtzvF4+Jz+je4w4DyVYVgfgRwQwUwtLF7NfBACPyCgo5MYV4PtPducEorbpk/f0hGPb0es03nJRL6pX23HZEXwQwlEYk5+5iCVZGYYm5Zf9T1fSsyW2wVXOhsPPNunTwQzXIY6iEFYXgMtdbUb6fsIR/zqje3Jg/Jm0bCpWbneX2FGg3DcKYQqsDYVpHBe8ztPljpCbyZ6FHDGlh2bQt+A+yAJSW/u2egxJH+dtDGKgH/PHrg2s6TZk3rmmhLIIXZcKVIN1hPC/ZMYMIxTFOGhfNeZvsg0IAW/hE+0zVyC3Y4Zd
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775655223-211579
+X-HE-Meta: U2FsdGVkX1+AM+es+8AUnSeqYjvEIRmF6zwfI3e4zrt4gjV3ta32EkuvOi8FrVopDuUvzijjA92nAy2rPuZfOq44LmiXQb6il4g+016N/nCUz1tLb6et3OFvsrFay89D4bhPKj8GdvcUZ6Ebn+A4iEr5gSKflAPwnZVjbJ/DD81QUzq+aTQ8FtZlfvTG7M9Ii60pfUfNbM9YD4hdNJpOLNqZCl7YSU69MQZ1sSNBIm5BuziOCxHb3wy7/w+T2xKWoVeJ4NjN8HEs0ODDyo8qv2amH2Vy1QR5rEn6K3GOpP4821zQJ6o9/rJvOB+ejsqMUQmBdxp0f/igH3KegXhv7AIk9uD0ZfqENrx8Fc/67lbW3nySipHwEGcWM+QZ87lfQWnYW69kxe0JgNEWJqE2d/FoR2Ifr/Yz25+Q1ZsICYpRSkd8gT/S2GJLZfU5dWKd9+7/T+IbV4F/iEDYTQc7WH37hOfcSM62W0IYdYU4zA19xP8wm7DtcH9wnb1UqCGmcDnNMamPqXXiKyLg9InvXjcFUCdtNzf7ImrFDGqoU1MStJ4vIrTfht2zaOBpguK0xU6AtX06EAGHDKwynvOTHQBV5xREGKQn6CERrlh+3Mm0+EmFgb2zpt8Y7Fgap29XC3Vac7DydhDsAAijYp7w21SfHdhAO5v4iGaihE3OkXXgeTE1w5xOr88y2cr+iz4ZHSa82ki50iOlSfW4s/VmtRTSzsGehJhXdseQOfv7ULR9IjunTaNS0V08uqI7B0TIKIi6KiUrsRaF0vHMR6o8R1p6PoAICdeVkWBriETO/adAgO1kYD3V1DtJZXXRbhjHDppix8lBmPz6Fetg2bSjdXYG9J/WK0AdGB9m62RzVIN1pe6aruwkPLvibCF+z38xVHnK5Va0JjTTqd2Oas20kLebi26auAh8qn6VxysuR/6pOY+TNw58Na6wN855t3MKoTX5/PybKcETBotNos2
+ Gqbb98/a
+ 7pqszGJYlcF13PYA8I1MDBOmZfbSk+tqXoSxUUdRI1O4hVUxMSjIyrfoxwwTGrU+7+cXTye9/+7PbQYwZVSJ9RX2MsQpf0wwkZH5S2Ld5O2OVPDuQ9iZfRuORpUFpUwEdtwLejpjgpVMriUb3pus4oY9drx81UBuCIGR9s1wvQauTuZ+IqFYsgWnRj9aNC635krifgcMjudTwSEj10oHNBq/V9tufSbUMraUHh4O8LXKe5WHg7vdwEPo965QkAhbUoQV86CY0tZdzN5gfol0VjkPQ8a5GoHmB8iKnAiU2P2zncaatWak1U8q03Ye1Yh+FxZ2xy6pXj7k155UnEIXXjHPengzpkSSLRSLD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,52 +95,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use spinlock_irqsave zone lock guard in take_page_off_buddy() to replace
-the explicit lock/unlock pattern with automatic scope-based cleanup.
-
-This also allows to return directly from the loop, removing the 'ret'
-variable.
+Use spinlock_irqsave zone lock guard in __offline_isolated_pages() to
+replace the explicit lock/unlock pattern with automatic scope-based
+cleanup.
 
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- mm/page_alloc.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ mm/page_alloc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0b9a423cbd24..4d074707c850 100644
+index 6a7c548a7406..bda0282bcb03 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -7509,11 +7509,9 @@ bool take_page_off_buddy(struct page *page)
+@@ -7396,7 +7396,7 @@ void zone_pcp_reset(struct zone *zone)
+ unsigned long __offline_isolated_pages(unsigned long start_pfn,
+ 		unsigned long end_pfn)
  {
- 	struct zone *zone = page_zone(page);
- 	unsigned long pfn = page_to_pfn(page);
--	unsigned long flags;
- 	unsigned int order;
--	bool ret = false;
+-	unsigned long already_offline = 0, flags;
++	unsigned long already_offline = 0;
+ 	unsigned long pfn = start_pfn;
+ 	struct page *page;
+ 	struct zone *zone;
+@@ -7404,7 +7404,7 @@ unsigned long __offline_isolated_pages(unsigned long start_pfn,
  
+ 	offline_mem_sections(pfn, end_pfn);
+ 	zone = page_zone(pfn_to_page(pfn));
 -	spin_lock_irqsave(&zone->lock, flags);
 +	guard(spinlock_irqsave)(&zone->lock);
- 	for (order = 0; order < NR_PAGE_ORDERS; order++) {
- 		struct page *page_head = page - (pfn & ((1 << order) - 1));
- 		int page_order = buddy_order(page_head);
-@@ -7528,14 +7526,12 @@ bool take_page_off_buddy(struct page *page)
- 			break_down_buddy_pages(zone, page_head, page, 0,
- 						page_order, migratetype);
- 			SetPageHWPoisonTakenOff(page);
--			ret = true;
--			break;
-+			return true;
- 		}
- 		if (page_count(page_head) > 0)
- 			break;
+ 	while (pfn < end_pfn) {
+ 		page = pfn_to_page(pfn);
+ 		/*
+@@ -7434,7 +7434,6 @@ unsigned long __offline_isolated_pages(unsigned long start_pfn,
+ 		del_page_from_free_list(page, zone, order, MIGRATE_ISOLATE);
+ 		pfn += (1 << order);
  	}
 -	spin_unlock_irqrestore(&zone->lock, flags);
--	return ret;
-+	return false;
- }
  
- /*
+ 	return end_pfn - start_pfn - already_offline;
+ }
 -- 
 2.52.0
 
