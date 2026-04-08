@@ -4,81 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 038B21073CA6
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A861073CA8
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:31:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FAD46B008C; Wed,  8 Apr 2026 08:29:51 -0400 (EDT)
+	id 009686B0092; Wed,  8 Apr 2026 08:31:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB576B0092; Wed,  8 Apr 2026 08:29:51 -0400 (EDT)
+	id EFC316B0093; Wed,  8 Apr 2026 08:31:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C1ED6B0093; Wed,  8 Apr 2026 08:29:51 -0400 (EDT)
+	id E123C6B0095; Wed,  8 Apr 2026 08:31:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CD746B008C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:29:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C64D213BF87
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:29:50 +0000 (UTC)
-X-FDA: 84635320140.26.D9C1DAB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D1A6A6B0092
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:31:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 973271A0AAC
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:31:10 +0000 (UTC)
+X-FDA: 84635323500.21.A771F87
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E74724000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:29:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbzqqgYD;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id BF0844000E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:31:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fL2obKUG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775651389;
+	s=arc-20220608; t=1775651468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8y5Ycg7R99Pg70uvWWdHQ93znkZ8DwM6ExjSWIGpvq0=;
-	b=CYPpvPKqGJodjutWgQwowc0aYlgrS4QtiFZxNnA9YSN/cJxfpm/ZPygwAhXNGt69Gg/aEV
-	E2paWDuzpsmxMKPi41dVraSN1902hQi/dEHy8M/jAxj03s48LeC4gm79ETB0dT6tQeWtba
-	nxoq7ciYv64Z/uoRkqGALtNjpfPhJMU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbzqqgYD;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775651389; a=rsa-sha256;
+	bh=s6k5O2fsvEAkuEpSEPhXbZ85nMZnV2N2ztZ6Od+xouU=;
+	b=dmk6otp0rxpH1IbYDJU8M7dM9xiaU7CnqOEx7C5z3/Wq6InKyvSa24tPljPaYv8301htrr
+	DzZbZPaeTEThMj9EbdPyj3Sgzyk0cz8ehJxXqPkrc29SEYhPWp0qceSbvJop6KOL9/XAUX
+	zpNi/fegcEN/oARch54nh1JCNujZE0Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775651468; a=rsa-sha256;
 	cv=none;
-	b=hLd8bqLD6TsSTx6FlD2mSM/kHSJV5TCc/YHwb889284drNDY+lqptb+RgePWXzaJktd/mR
-	Kvsnyn3Q1E+VwqEpFaJr0nQIUcJDw6DhaeiZglelq6dAQ17opbtRitlWMMLsRcKsx2LqUQ
-	GllPIB4BqUGaCLcxBjM6diP/2PZNO+s=
+	b=urnlQWn1jv28HIZrySkAJPt2gaakUxOhlk+ft2AB2l4NHI1kedMdI1vt9PqBmuyRIlJT+T
+	460nZyBUYoKfD/1NiwsFDPjp2ZVczhtPaiUbf1tPhtE4diRqE82HMkk4V7R6aZnmcn8pnw
+	RvOQ7bPcYtaN0rd7kS4PvKzaD5XDqMg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fL2obKUG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD2B243E3A;
-	Wed,  8 Apr 2026 12:29:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFA7C2BCB0;
-	Wed,  8 Apr 2026 12:29:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC021443A7;
+	Wed,  8 Apr 2026 12:31:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A5BC19421;
+	Wed,  8 Apr 2026 12:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775651387;
-	bh=YoeeG6VmG9FMt4vLqUZu66gSA7KOlJhiS55juM69ZcM=;
+	s=k20201202; t=1775651467;
+	bh=ny/5AyHrAqLd/aY33NUm54cF+Bg70m7gtQFtwi8UI3c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bbzqqgYDJaQzrCs8odQyzCSqhRwcmyL1ScaEN1/EvV8yt15TkSLXSG06xagX7ROA9
-	 S5GrDl+xfuQYxN8nXIEWX90ehEFAm/sxQ0UbtYVqsAIKRLpi7KFD83TjjgaAEgL+Ih
-	 orRIFhBmHouoMfpe41uiaXXuBlM5McRT8VZkv0q3WDt7YHq/WGOQlnyztXBKtavsYA
-	 e1uFC5yRv1oxG5qxnhsTlNU19ROFHvtR2S0t+cHwsPe3IRGjYNLoFDwpFBZOZR0jJO
-	 gT/W+2kyHJrimY22ExgTLGQNtw0vs9XJsIpC81enpf4ZgdsclBKJnrxwUcnr/l2TL1
-	 ZJEd/fFXzRP8Q==
-Message-ID: <4382c90a-bc92-470e-9aa7-4666753479ca@kernel.org>
-Date: Wed, 8 Apr 2026 14:29:44 +0200
+	b=fL2obKUGkXiB9sKtq2nZ2X3PAJ9O41x3jEVg0Yzrw3aR3+Vm/ANWxZsasS9ztrIlj
+	 HAcZ4NMbl/HjkkPxRdaRw1OLAIRpH0kCKkD/HY3vA6+cFsOyfKxPWJATKe/mICIe6e
+	 IZ1ucovCcBsA93830RPkjtv9xvOZk19hOSPlvDaWALmyZK0LUDDh3fc5Z1ittnFhyC
+	 ageJVZjKSf+14+eRj2dHHrcbBFzlpKLu062ZLKcBeB93MudoJhICnp2pzmO+jdMz94
+	 eGflr1A89HImTxI23UdJ0mlAymD581pZL69fwtkIQd52ovbKRYhSbhnyC5MrW4f3Mn
+	 Jm8w4dUdRnFsA==
+Message-ID: <6e770522-0138-49dd-8f7f-3833b1a2a120@kernel.org>
+Date: Wed, 8 Apr 2026 14:31:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 14/16] arm64/mm: Enable fixmap with 5 level page table
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-15-anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong"
+ <yong.hu@intel.com>, "Zou, Nanhai" <nanhai.zou@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+ "Chen, Yu C" <yu.c.chen@intel.com>, "Deng, Pan" <pan.deng@intel.com>,
+ "Li, Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
+ <IA4PR11MB90099CF424CDD1E88A30504EA35BA@IA4PR11MB9009.namprd11.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260224051153.3150613-15-anshuman.khandual@arm.com>
+In-Reply-To: <IA4PR11MB90099CF424CDD1E88A30504EA35BA@IA4PR11MB9009.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BF0844000E
+X-Stat-Signature: afkx1hr4bcao5mpbw1hecuss4ixxgrna
 X-Rspam-User: 
-X-Stat-Signature: 56oqn3pscazfphmhzi717jsmfeq3zugc
-X-Rspamd-Queue-Id: E74724000A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775651388-586043
-X-HE-Meta: U2FsdGVkX18PH7wOXwC52IFFgvRPK7WJ8okmo09WZwAX3+gddx+ELjjd684zY2TYSYSlvvV8f83Qiuwb7riJ8BsgHvtLojFMKA6ChrR3mY6/npRcl7nJqcEejj/wdz4DcBWQfD9VV97RW1VdO8JbuSF0OTQtOb+A0J22qfOTXVYgad3e/DNww/lWJeAZlAG2phO1Ldi/T8NXsqoycbovX3SNLbRmJciP2moSXRwX+dT3sn3/xW0yiCNtEj5PsikOkht98Ve2hkG1lJZkP1cIWZObSY1vRhhZT5UZT45Yhfiy2DTx11ns0+2udPV0k/rpOMsK2Tu4Uc5bhDCg4BWi0S4vC4hjnaxh7eFJ79jkv+pU/q1mfO4hsW+hYQnxzdubLZ01yQHFnHT/9BLO1AShAZS7DgIWX47Y+okvsKH4KZPJp7hQ8tdu0gh6XZ2iISH+ylEPx0lHvuL3R1UVNONHm72OqYrLcUZai0Rp6o+wZ2oYAvOYrVAmAS45Xb5L1tcN0uPpwmkYQ32IW8b4OlWEKCTRQmaalFXi1X6SQfcPtdpETOglN9UB6PdxN8pOuSbFvSM2dzDv5WjIYZwmvO1R4qume4AGmtK+t7Gfoiump1PjzqxxCGgydrSU1yrj/fItkdBdVv5Icat2SeebiY1Qp1WxgKU5BPoPOVeeSFNTEuDYTYN/PHgCIs/HzE+QRMWSk4i15OLc3SnYbMgq3HZN8RSGFlzmdyy86uH23ia63/w44H3i9mAQzUypksqyRvv1CX0OqnvPQ/yGztIqyumViuqxNAevLP+sNzCprgvqX6HLXIumdTjVETJK87i2FzTwD2WcUBVMU0YBEnZHW4NOAIB4q0ye4mLfH7NvCSiKEMAacfVxPcHJkdf4XqfHiS6f+XpxmQyV42USKaiURqoRZ39dSJg+lobv63e3MiitzZrBcfyDiOloYy3+wyKi2zjetmOyDugouwqivNNAWdA
- 2WefULL1
- u06/so5upYasLnx4y6WgMEDJS61xBB2JkHEdMqR9KeYZ+7dZkIbZMGi5b4WDeHyizMdsKqkos4Pe0ZLmTXI3JozH1+hfzY6OlTPnD8sq6DAm+U8510tlgyOS7Qv+T3pW5oe2ZxBZAy6mx3338nXpJNHfptVz/4GvRRyVHn5vbxWFHLxQZpVsiX3ChvSWSM2Bs7VMlhzHDbNuzBCQfaCoQTgU5b+9C6vw8JcBV
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775651468-268925
+X-HE-Meta: U2FsdGVkX1+NgC54BaGTcI7qYxIBE2p+/tOpECQaDGtw0BQPVdZ/hJbudIHixWsxJA0bMHTBAShquFPisvbx+p16kXSufLsBOF6kHKB9IL4D+TIsvxzhSyPGlLCYn3QygJLaEedkaUV8pJu6yTJV1cvmJjoqv9wten29SnHAtODwv0aovhQzwQdxFfePBj5PhNuNfYLqQNo1iqNbziuxiwdz9MKWmizSxoC+URG3BVXVrjxoWFC7vl0rcTYZ1oz7G2XYy85kjmnfslsERHSnuiOEz14FiNO8HCGb5hbkgsLpln/Ix2Le6nAh6uRLibp/EJ6Knqcd+egnERUfPJnlc0K/1T4wNXagjGiZxt7RqQr9wEMONnLvjFNGE8JIjPVqjsR3eNqz6Y4yPrUmlDIWGychEbx0PK7vISO7TxeNbhp/eCiSZvyj9sM+VbArzCjL8SHCJaFHxA9vxgCriiecdKA1Lniwv6wk4k4SqI0JbFgNAul9b55FUNCNoeThjgJD/rGHU6BdVEDGUCKpY34FRZFfs+KLSGr72cByX/GK+CQeNsF4G09qkXRXRwC5jv3CNa3z9rjz8o5IPBvxMXX05Q7iW6ehcn1hXDaW0eLthmZ1Fmgb1nEwS8gGpPusUoZXkaMgCuRi31X7Fx0QKued8P7X6d1kfibF7wx7POY59cp/QkqlJeqVE1kk4+QOcniz8E1+/Kn/vbBZ/O0xETiLZ8wr8G1CmXg7SHEIez5Q4aksUxYT2FM8FKzQZ/OA0muF9NMPVQHCgjLDr6GmQY+D/1L6grn/jtNZxWl7rySd03Hqe6gldKtLy8OZeDbckd+2GfLtLNOHahYxg8RVS+ChqTh1zQRgXaYCvwXoW3xJRR45fDQFGkoiIzDUCRcT2yH+OMh4nalzKcxL1aqFbWyVA9wA5YCHvOFWjkEwFaf7TgoUEenIGRnR9lfwnS271L1wXh56fE/bbcFEd/d4fhB
+ VxFcBUb2
+ /io27ToiKcNacHivjl4ax32XU8RH6I5BoIktvbs49ywDfTpXDIJDunHrbedOnpOWjRBSbJT/dk1uHThPIijcWuc7Taalvaki5hAr30U1Rvo3yHjOv43P4qMzKKn47OnT8K7EeUIGNAhNlYDV0brzUEiz+K3GfWTdInVgDlXOFGWymNAFdhl2dgNG4hU+YYOv8atpUPJnBoG0DLwNOnBIwGU2Mfgv+fr99hKWnPUiR+t2Stoc7TmzXDRg9FHglP43OivOqppUAa6YLgAp6N8Y1/mdeGKbSfsg/+XUgAqaL0ZmjpHpg3LQs6O36dOAXWyDVDrh4nEzja9V1R9qxca10cj504HCXGJ2ks9jBwCozG56utZOxxBSaA2RiJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,13 +145,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 06:11, Anshuman Khandual wrote:
-> Enable fixmap with 5 level page table when required. This creates table
-> entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
-> (PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
 
-Can you add the "why" ?
+>>
+>> Maybe something like the following could make it nicer to read, just a
+>> thought.
+>>
+>> unsigned long hole_start_pfn = *hole_pfn;
+>>
+>> if (hole_start_pfn < zone_start_pfn) {
+>> 	init_unavailable_range(hole_start_pfn, zone_start_pfn,
+>> 			       zone_id, nid);
+>> 	hole_start_pfn = zone_start_pfn;
+>> }
+>> pgcnt = init_unavailable_range(hole_start_pfn, start_pfn,
+>> 			       zone_id, nid);
+> 
+> Yes, this looks better. I'll apply your suggestion
 
+Best to wait for Mike's comments first! :)
 
 -- 
 Cheers,
