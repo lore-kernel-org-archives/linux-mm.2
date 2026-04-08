@@ -4,90 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24523FD5F92
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F462FD5F94
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 826066B0088; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
+	id EA4846B0088; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D6716B0089; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
+	id E56556B0089; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC166B008A; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
+	id D6BDC6B008A; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 561856B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E468ABA45D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:12:58 +0000 (UTC)
-X-FDA: 84634672836.25.EE7D02F
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5F85BA0006
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:12:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=d4CwHB7T;
-	spf=pass (imf15.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=d4CwHB7T;
-	spf=pass (imf15.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775635977; a=rsa-sha256;
-	cv=none;
-	b=HUbRKCG/HddSaF5Pl74foimxycSHFe/1tFGWHlP7dGNjxM0GwIzLhXkiX4PhCNUuOr2VvU
-	oQCGWrq/p12rDYqbKY1WVkEcv0JZsIRzpybDaouJrclZR9qYY0UTiMRwBHzrDhgtGYxP92
-	X27dIPaH49rYhICHBNhV+o7ACqibb94=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C74BA6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:27:56 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AC1AC2C39
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:27:56 +0000 (UTC)
+X-FDA: 84634710552.07.C55F31A
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 50D7A100008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:27:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775635977;
+	s=arc-20220608; t=1775636874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=D4Dc8j1nfmErNosxziXn1qD0pEKNNpyJIdOEd8MGydE=;
-	b=a/RCW7Pl675w8tQqy5IAFaIMIDPiV+MN9fHEVd/RDsdagkGaaE+/+DqaPpTWfR7edu8sam
-	hZJ/lcjYLei3VH6NR+F1qBpqKtflFg4b5rP2PJGkKRUe+S6Yw7Q8FdMGZAsXvU809//0RR
-	n2csy5KBeLeuyvaXZO4DuviAbHfdPNY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=D4Dc8j1nfmErNosxziXn1qD0pEKNNpyJIdOEd8MGydE=;
-	b=d4CwHB7T/BfpIiJ9dxUhjmmqhh85oduzMsFRGGSxQM14aLEvKGDhQbZtHwo9cdM7+OPCEiQo1
-	BOeFiMsk35DS4SbTbDvGo8RdKJ7naiTIWHP8+Z8wiGU7UcVctaObnlUVr/gZK9yzV3URSaJ0ESc
-	RXhfXzEu/dnJZJKe4GacfEc=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4frFyM02KHz1prLc;
-	Wed,  8 Apr 2026 16:06:35 +0800 (CST)
-Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id D59DE40576;
-	Wed,  8 Apr 2026 16:12:51 +0800 (CST)
-Received: from huawei.com (10.50.87.63) by dggpemf500012.china.huawei.com
- (7.185.36.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 8 Apr
- 2026 16:12:51 +0800
-From: Lin Ruifeng <linruifeng4@huawei.com>
-To: <sj@kernel.org>, <akpm@linux-foundation.org>, <chenjun102@huawei.com>,
-	<tongtiangen@huawei.com>
-CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] mm/damon: support freeze kdamond
-Date: Wed, 8 Apr 2026 16:06:52 +0800
-Message-ID: <20260408080652.1745410-1-linruifeng4@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qlLht5FZXAgY/dXsccRVorUksFD2m2uBlNMCQYM/FAU=;
+	b=GfrXmQGOpqhJWbxtgZLxfIc9ohOe3tNGO6YS+2jwrMS/OKOmpAXXEloa9azoJKfp+XxN7H
+	aGP8AFVXXJAb3GXb6T4KFT2CW18UX/iDh7HeDIv36tVb5EOxskW40GFM19eMmiA5KF14NY
+	44LbBCWTrttfgs272a2jKvIzxODJWA8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775636874; a=rsa-sha256;
+	cv=none;
+	b=rOpHRV4QgwUzhoRCfCqqFZFt0qctJ+FRf5slJvOvpgel99qC+BHiwlJWsezHzROO7661Pt
+	wSJGms5NbQTMEGaZsLuJD+e4A2QSF+qRYesskFPLK0zhzn2RhnZNs+N+JhMhlVgAlVErTl
+	3HEh/Zs9yBziA/fDpKUSoduLZVbE2zk=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4frGQ93vr9zYQtr3
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:13 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 6021E4058D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:27:47 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP1 (Coremail) with SMTP id cCh0CgBHS9uBEdZpZ4E8Dw--.57995S2;
+	Wed, 08 Apr 2026 16:27:47 +0800 (CST)
+Message-ID: <bfe3e2ef-fd72-4130-86c3-3f0b5ea44a1b@huaweicloud.com>
+Date: Wed, 8 Apr 2026 16:27:45 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.63]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500012.china.huawei.com (7.185.36.8)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5F85BA0006
-X-Stat-Signature: xh99ipfzr53ktrppuh6tw98stnghwr7w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/14] mm/mglru: scan and count the exact number of
+ folios
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+ <20260407-mglru-reclaim-v4-5-98cf3dc69519@tencent.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-5-98cf3dc69519@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgBHS9uBEdZpZ4E8Dw--.57995S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3JFyxAr4Dur4rtr43Kw4Uurg_yoW3GF4Upa
+	9xG342yFW8Jr43KrWvqr4rCr43CrWfJ34DAry3Aw1SkFn3XFy8Ka13Gw1UtrWUuryDCFWF
+	v3W7KrZ7u3WjqrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 50D7A100008
+X-Stat-Signature: hqs6w6n3ergjxe5russnfs9fr3cuamy5
 X-Rspam-User: 
-X-HE-Tag: 1775635976-957709
-X-HE-Meta: U2FsdGVkX18a8kcnmE36YS0C45/yXoYdCWwDiJYBVEEQ6UWK1B+lndPpeCzU+yRBNdxTStZLVqf/MKk6VPPRsKlOjlde8SASD6UvHNH/6mpCpYNpG5HvNb5dElGEoGdlyHkp8jUyAGH8dCFaWtAEZl/F7XLhSF26tmPiDcztJA0GmWch3HSOM68gj1Kqqe2P8JdV9E4mOOxt9sJHlCRaRZuqjAOnV7Y/+hne3vTOREuflQ7wLia/UddeE/ngNvg+VmoQHcIeO1Ky6K95pDjuTMQc7ojdrnDCIxwZoBVb7EsrOZi+PgWoAo+LysO6agsJQmVz/DWQeyUm30zzaTzYdqSAJmX+In0Qmz2P4wmTIPuNhJVhn3A4Hs2XkuSxZE5KO59hklvmM/pOAho//GqxiYhTGKbh8YnEJbXAcvlrX8mJYx11cViIFVJ7oyeM3PcA5BbZM6hfKjEOruROUO++6kacesCE5d1wSVbakr7gL6yRPFYWRPw4AUilh7rIZ8thdcTMa6t2HuCq1lCf0PHl93o+bM4t/mRhQwANxUZJ5CQoTx5RbZImHz1FLqzXN9GOqUPFV+KldYHJj0lcLqH8PEZUSsJS8JUkpoMKdsZKA80SbxDS7gawPJKPeCv9mTsMQCMwti7mpMWR5lMyHOwghEX4z+XRLWnhwT+kifQnBjRwpAY9hZzepwt8+J6Ak38zfPhAVYiFZUOQPppggMpkSoJ5lzA+i6dYTcpvogR9MxWBnpl8z5jeYhRxGh+Z6zr9K7/sd9bK7cmzoj5BjWaEU2702svRZfrjRSAdifI/IgPw5x0VAloJo3G/AOTsJUWC/q/3Ab5ubeCUs8h5SY+ystCM8S+aF3gCGRrYy+tnnkFLn1SrSrGw1j6Q2n4SZ5sRMdrLqEBXVkrun3yP3ZPmrp9pJqZahuo61QVlD7G8v1kt59SWkMbtLnZDIAfuUUUfsvt4Vqdv6JbaXCkk7ZS
- UYLg23m5
- aeNblFYwB0j5LlObPe5BGQTdhtNoNeh//C+Wsckj/7HerC+LCsvmKNAKKC6KyhHOshQVOMFW6i0Y0F7EEYbpHVFoXVSZjpLNxyylMJRlEqr1J5P0afe0/S1ZCIjW4hBTWf4uRw1BNJ/BbRWljqAlWn7oIGxC+LNOJZ4dy493dqKeUlTz0kQUT7qV0K1TeRl1H82VEuqGpQZ5Hff83h4fefy69yCGV8LyqZoc0RSrm/IBDrRYD9iKc2ot6Ws9Bk+AaRb7dJj8jjzQ/9dcmqG1FW9Q2mf1VRr9uyMWNbh7iCv1KXoSKRetMidDEBXWcAQJijNAYgKBDGNSir9qrv4cimLPrtoFtbqweuEkT8gaCzuKG0sg=
+X-HE-Tag: 1775636871-738776
+X-HE-Meta: U2FsdGVkX181f4cfYeQVDsYW+n1nerLwKcg+f4PcrxnycE56iq8yKLENE8/a4K1u/eXswxl4JHqF3w2R6P1g596Pwc2hFO2IYGLzSLCL1ryOX/bGNGzCHyH5gAQKYQvSJZ2u+m7lSOMWtG/0RHZCrmxbXEp182X5ECwT3oQiX5LU0cQUyZl/NzdJSqfp4/s3tD+3AwNorX3mFzZRKhGht8X5a3GtgeRm3yEI3C+3OfUVkctj+fWtpbvAjDyxyEZSs/QC4NSf3pMBk7hCCqjxvUsJ0dcZkhixBgSwQFxiUe9ECs2xHus8E4SrX3XPHvxVYUWX1wPL+HCUn+YslQZuqsNlLym9qPWD313gLyYslWMCnQhyswk2P21p3RLb5Ue+RHeQXOzSr2PLlpqYBOo9lSygZFCGg3LfVU3+ymZANnJijc8CJqiKLStJ866DtKxAGZrKJ5K/8QoQA7ZXZ3/VejLNSKWEc3JCTuHbbn5/iXk0c1IBw8WIDqE55w/Ef1mZ3o/U1Hp9OQD1XE8SZ+TB0aanzPKdzEd1DQrOoEPmJUmUUoaUh/f1deU1ZMlmFjueWTn/FnOfIpv+amDDRpMh1okWeC+QNywU+mtNlJC+RTOWgdDcBzXKIHPhg7cIYwUlp1m2rGbYDk+2zTNixMBZCBmG6PoAaqUSMf2wLHW/dXhdvQbJ2J4+wgulj4oxSNtpQ7AwSN70Nuev/XYWexX6j9Zan0B+1Yn7H0VIv7pIzKk4UmWQF3O74G1dZK20C6dhP4dJqKFY086gIHy2LNuHeNFUynZe51DvlUUef7Xz3OlGYvbjzRVP0xp+f856IOJhp4oGj/i3nMA/lBhNNb8dxftJlATwvYifzyI88Fjwf2fia17irpBNjDVGy5q05jCsCytXoLxLf+lrr92a0ShKNVJHtWSZgdgQJvJVwBKsYsoUxKBeU4T6Wigo48QGXW2I6P0n+OsNKlmbr0p2lWR
+ sWk39Zkc
+ Xi/ooQKxXOFXS6FJ0PxeN6TdkcL91g+uTG7ywD7sUtKBzPVvzkRTT366SFxf7rllpwh7r2JmVX4vunRh3p6yNCL5E/PYJhgOg1WrU55SkYQf7ETE+wBJI1cXgld+yqmyRc2KySFP/2QbCtRbSicaRbf6DC0TnwF8ad7eqJNdqDJTGwer8T/H9p+1ZCVnhxsXlp6gnilQSgapJw28/cqoFZzDg4kXFopIcckITPHt+XueuvnG8x1Q+TQ/MAfyjoHEeE/Y+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +116,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During suspend and resume, the data monitored by kdamond is
-no longer meaningful. Meanwhile, since kdamond may involve
-I/O operations, it is necessary to freeze it.
 
-Signed-off-by: Lin Ruifeng <linruifeng4@huawei.com>
----
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3e1890d64d06..5cd1f0aed66b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -16,6 +16,7 @@
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/string_choices.h>
-+#include <linux/freezer.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/damon.h>
-@@ -2753,6 +2754,7 @@ static int kdamond_fn(void *data)
- 
- 	complete(&ctx->kdamond_started);
- 	kdamond_init_ctx(ctx);
-+	set_freezable();
- 
- 	if (ctx->ops.init)
- 		ctx->ops.init(ctx);
-@@ -2774,6 +2776,8 @@ static int kdamond_fn(void *data)
- 		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
- 		unsigned long sample_interval = ctx->attrs.sample_interval;
- 
-+		try_to_freeze();
-+
- 		if (kdamond_wait_activation(ctx))
- 			break;
- 
+On 2026/4/7 19:57, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Make the scan helpers return the exact number of folios being scanned
+> or isolated. Since the reclaim loop now has a natural scan budget that
+> controls the scan progress, returning the scan number and consume the
+> budget should make the scan more accurate and easier to follow.
+> 
+> The number of scanned folios for each iteration is always positive and
+> larger than 0, unless the reclaim must stop for a forced aging, so
+> there is no more need for any special handling when there is no
+> progress made:
+> 
+> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
+>   the function and the call now just return the exact scan count,
+>   combined with the scan budget introduced in the previous commit to
+>   avoid livelock or under scan.
+> 
+> - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
+>   scan count was kind of confusing and no longer needed to, as scan
+>   number should never be zero as long as there are still evictable
+>   gens. We may encounter a empty old gen that return 0 scan count,
+>   to avoid that, do a try_to_inc_min_seq before isolation which
+>   have slight to none overhead in most cases.
+> 
+> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
+>   the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
+>   naturally returns 0 when only two gens remain and breaks the loop.
+> 
+> Also change try_to_inc_min_seq to return void, as its return value is
+> no longer used by any caller. Move the call before isolate_folios so
+> that any empty gens created by external folio freeing are flushed, and
+> add another call after isolate_folios to also flush empty gens that
+> isolation itself may create.
+> 
+> The scan still stops if there are only two gens left as the scan number
+> will be zero, this behavior is same as before. This force gen protection
+> may get removed or softened later to improve the reclaim a bit more.
+> 
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 60 ++++++++++++++++++++++++++++++------------------------------
+>  1 file changed, 30 insertions(+), 30 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 462ca0fa2ba3..d3fd5bb56cce 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3878,10 +3878,9 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+>  	return true;
+>  }
+>  
+> -static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+> +static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+>  {
+>  	int gen, type, zone;
+> -	bool success = false;
+>  	bool seq_inc_flag = false;
+>  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>  	DEFINE_MIN_SEQ(lruvec);
+> @@ -3907,11 +3906,10 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+>  
+>  	/*
+>  	 * If min_seq[type] of both anonymous and file is not increased,
+> -	 * we can directly return false to avoid unnecessary checking
+> -	 * overhead later.
+> +	 * return here to avoid unnecessary checking overhead later.
+>  	 */
+>  	if (!seq_inc_flag)
+> -		return success;
+> +		return;
+>  
+>  	/* see the comment on lru_gen_folio */
+>  	if (swappiness && swappiness <= MAX_SWAPPINESS) {
+> @@ -3929,10 +3927,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+>  
+>  		reset_ctrl_pos(lruvec, type, true);
+>  		WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
+> -		success = true;
+>  	}
+> -
+> -	return success;
+>  }
+>  
+>  static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness)
+> @@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+>  
+>  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  		       struct scan_control *sc, int type, int tier,
+> -		       struct list_head *list)
+> +		       struct list_head *list, int *isolatedp)
+>  {
+>  	int i;
+>  	int gen;
+> @@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>  	if (type == LRU_GEN_FILE)
+>  		sc->nr.file_taken += isolated;
+> -	/*
+> -	 * There might not be eligible folios due to reclaim_idx. Check the
+> -	 * remaining to prevent livelock if it's not making progress.
+> -	 */
+> -	return isolated || !remaining ? scanned : 0;
+> +
+> +	*isolatedp = isolated;
+> +	return scanned;
+>  }
+>  
+>  static int get_tier_idx(struct lruvec *lruvec, int type)
+> @@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>  
+>  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  			  struct scan_control *sc, int swappiness,
+> -			  int *type_scanned, struct list_head *list)
+> +			  struct list_head *list, int *isolated,
+> +			  int *isolate_type, int *isolate_scanned)
+
+Nit: too many parameters for this function.
+
+
+>  {
+>  	int i;
+> +	int scanned = 0;
+>  	int type = get_type_to_scan(lruvec, swappiness);
+>  
+>  	for_each_evictable_type(i, swappiness) {
+> -		int scanned;
+> +		int type_scan;
+>  		int tier = get_tier_idx(lruvec, type);
+>  
+> -		*type_scanned = type;
+> +		type_scan = scan_folios(nr_to_scan, lruvec, sc,
+> +					type, tier, list, isolated);
+>  
+> -		scanned = scan_folios(nr_to_scan, lruvec, sc, type, tier, list);
+> -		if (scanned)
+> -			return scanned;
+> +		scanned += type_scan;
+> +		if (*isolated) {
+> +			*isolate_type = type;
+> +			*isolate_scanned = type_scan;
+> +			break;
+> +		}
+>  
+>  		type = !type;
+>  	}
+>  
+> -	return 0;
+> +	return scanned;
+>  }
+>  
+>  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  			struct scan_control *sc, int swappiness)
+>  {
+> -	int type;
+> -	int scanned;
+> -	int reclaimed;
+>  	LIST_HEAD(list);
+>  	LIST_HEAD(clean);
+>  	struct folio *folio;
+> @@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	enum node_stat_item item;
+>  	struct reclaim_stat stat;
+>  	struct lru_gen_mm_walk *walk;
+> +	int scanned, reclaimed;
+> +	int isolated = 0, type, type_scanned;
+>  	bool skip_retry = false;
+> -	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+>  	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>  
+>  	lruvec_lock_irq(lruvec);
+>  
+> -	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
+> +	/* In case folio deletion left empty old gens, flush them */
+> +	try_to_inc_min_seq(lruvec, swappiness);
+>  
+> -	scanned += try_to_inc_min_seq(lruvec, swappiness);
+> +	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
+> +				 &list, &isolated, &type, &type_scanned);
+>  
+> -	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
+> -		scanned = 0;
+> +	/* Isolation might create empty gen, flush them */
+> +	if (scanned)
+> +		try_to_inc_min_seq(lruvec, swappiness);
+>  
+>  	lruvec_unlock_irq(lruvec);
+>  
+> @@ -4861,7 +4861,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+>  	sc->nr_reclaimed += reclaimed;
+>  	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+> -			scanned, reclaimed, &stat, sc->priority,
+> +			type_scanned, reclaimed, &stat, sc->priority,
+>  			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>  
+>  	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+> 
+
+This patch makes the code easier to follow. Looks good to me.
+
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+
 -- 
-2.43.0
+Best regards,
+Ridong
 
 
