@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A46341073CBC
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E1291073CBE
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:54:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 112AD6B0092; Wed,  8 Apr 2026 09:43:34 -0400 (EDT)
+	id 6A29F6B0005; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EB4A6B0098; Wed,  8 Apr 2026 09:43:34 -0400 (EDT)
+	id 67AA26B0089; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027946B0099; Wed,  8 Apr 2026 09:43:33 -0400 (EDT)
+	id 5B77E6B008A; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E9F226B0092
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:43:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB4761A0119
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:43:33 +0000 (UTC)
-X-FDA: 84635505906.08.7ADB09F
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EF28E14000F
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:43:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=2pjpuHjT;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7416B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3CB51A0120
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:54:52 +0000 (UTC)
+X-FDA: 84635534424.23.B7AE9CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 48ED41C0003
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:54:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRa67WlT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775655812;
+	s=arc-20220608; t=1775656491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nEzTFQjl9DqVOjuj8AZ7Q8vKfFlTMogz1GqqT4a5JQc=;
-	b=JFL+rja90UOUgU8CpvnYz+ark7r2lOXeJNXg8g9ztZPFT6YceHfhY4gFPwuPpFUDc5/D8Q
-	3NtO58nBFHd/kBqY13SffwHYJDPv6Pp4t94baxO3TX1KecKcJdxN1hE/fTyd4jqerOBGiv
-	K0rujySAXOC8FEZXbtgXkMOUk73OKOM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=2pjpuHjT;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655812; a=rsa-sha256;
+	bh=ROsaxkUmsK9dQT8Wi+iwtU1tPZYRdlLs0Vtp0MHNi/s=;
+	b=dQRyg2jduNm6mtDRUfknsaOO20yU2fK5HLSGLWRfqDUCf6MdiWYFEZKKbfR0xeXsnuByE+
+	Odr70zVV2JVggBCI2uFsFPXct7r2+tQui3w/WwrLSQrjPc1iCmE4NwHdoPA89R4KJYtzjj
+	fqfh5RbXMQhqDjucdaEvVy6Z/bFv3sI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775656491; a=rsa-sha256;
 	cv=none;
-	b=DDTCefMad7ix8olK8/RrE4Nj9A6nZVOXRa+UZ1rtnUPw0zK+v/b0Pa+wNJ2UdqQbmmXyYw
-	V2Aedoy7T/sQdt1q1GoP/iWNmWAJYjq1d6ZU7bdgck1w0ZBL1s2xzeJ14BpBd5qv01jQkB
-	HmFxMeyDxkPZUNNVA3honD99wi1foIo=
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 5E8CABE716;
-	Wed, 08 Apr 2026 13:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1775655219;
-	bh=nEzTFQjl9DqVOjuj8AZ7Q8vKfFlTMogz1GqqT4a5JQc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2pjpuHjTz5McVfzUin/beRPpMqPNX2JPb9m5gwSLojZPjhvqhu3AEtJoafxeecmR9
-	 CJD7wS5ddB9R/2JhNy4jkxLi2OTX2JC5aTkzW2DSb29rdiPE7apXSwA+mBIeHaplFv
-	 3s8KAFlG2qZHJmIKZLN4f/hcAHsvxWVHDwp32lWg=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org,
+	b=C40D37l924WyFb4f/rG1bnxZi31kDBWJ0qhTiTLuII6U+mRLW4GHVxSARWEKOoMgA6cuWp
+	KCW7Tcsr0wckwOXfIzbW+zCw03T/wwBwE4fBItpFNdzv1LCg0JyKxS8VNLEZg0fP3uAnhx
+	sgEwSbMOn6aCUVOpKB8WPJPf+gBBcl0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRa67WlT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B661A600AD;
+	Wed,  8 Apr 2026 13:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B89C19421;
+	Wed,  8 Apr 2026 13:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775656490;
+	bh=ROsaxkUmsK9dQT8Wi+iwtU1tPZYRdlLs0Vtp0MHNi/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QRa67WlTM5SuiVWoEOlaqi06yAIr+JapoBgqqErFeWIq66QdFKiC+C784fxuuzHvd
+	 HCeLxllrOAR62N7GZEYynFMLkxyIarc+6APAOml+UoJPiugNPy9WZVmbMaMmgp9yFc
+	 I2x/YXVZQvPEpB6xgU3YbHTvl5U309py8okXl+l9bLc61l7M64uzbA7/nNTaHvSlTd
+	 qmTsf70+/7ka/96rvClfbcrFVy090CAETx0FoQws3OxoPWtFchQ3EGpSrMNH+E1U2o
+	 GagdUFNtJ8uwaOK5rqX354Ybp5N1P1NfjuBf7Os417JnMR+iOhoK4ggBHtZdSeFDom
+	 grp94QcXnoyVw==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [RESEND PATCH v2 3/8] mm: use zone lock guard in unreserve_highatomic_pageblock()
-Date: Wed,  8 Apr 2026 13:33:18 +0000
-Message-ID: <b259aa5ea08a8f6f04b36986fa302e70f61ce7b4.1775654118.git.d@ilvokhin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1775654118.git.d@ilvokhin.com>
-References: <cover.1775654118.git.d@ilvokhin.com>
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: (sashiko review) [PATCH v6 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Wed,  8 Apr 2026 06:54:32 -0700
+Message-ID: <20260408135440.88978-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CALa+Y17YnrOe=UXWBMKJ1U6seKJuauDqAdTDYo1cCYnrP_vSFg@mail.gmail.com>
+References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 48ED41C0003
+X-Stat-Signature: dhx5bfsefo88r7xigx6y1i6iacqmqnme
 X-Rspam-User: 
-X-Stat-Signature: yuf4b15jazirhocej4fuq6mbhyoq739b
-X-Rspamd-Queue-Id: EF28E14000F
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775655811-11144
-X-HE-Meta: U2FsdGVkX1/Szl69qU5gbAl5018IbZH8P4X1ij0AkEdWXqddJRs3b69+3/KbY/C9WRREUpYxKgGkK7n11JSxqBCNHQzHuQqm4Gz/ogpz1AfTfoxp0tZOHIZniKiK1GxL5MjWPNe3qjRKCpKa1zAM9xOfj1kOSYI2vveZi20ZwBJiLSt9nvl8umMCkgCoPY/AmYB22JZfclyd2bXTXSH/pbUDDJpbAGzACC4bhEmcZmrAU4oowpsN22jkQb3BmfgYnbwFZtzeo23Lnnfc5ySu5O16PN6U5e4vDJuEelgoG+d8KGP8z287IQqrgIQ2/uV5YDU2r2OoKW0Bapgn6X5g1Rk5nyKYgfQEl3oqtWCNTtiGaoBAonIwNdjN6lgoyZFNW4ZbVHkLbzNit8ZBikakyw9djJi1moJazQayEY1yZQ8MUpF5rbQDqAiJNuqJ4GWWu/PgCMWUZRZpyanCvgLbEn46zgKVl1eAS1V8bs96sA1kOMNoKfAV+eE72Y14bu1P3iyvZQkkIJY+ta/riN7XRtGpUjREO1ZDz+ad6a4XdijR4tO21DNCVI8bsi9AB3mRjBr03VaIqy0kPNLx5uIFzGninzBvw3Z2B+MUYoqUa25VM2IvW8IQoGqRvXkDXBk4YUJa35fHQTngEEKc+XWrS/x68VF3SAYJiri15Fe17UA0KGCd7JdTRp79HVyRiBQluVGgxm2u6hWLrqmqIY7YN2kISBkFzGrxbMuqZcp3R1UyLLCMwTgRXekRI7MeQvebUOTVcTq89aqkq2uw+3yvUun0opfWgBKL44gzL8cmClwLwXeaN7QzkUmJ/ohLTRMf4I1ZErgegp83PkaKJzgqGx5R4moJKOstnQ9Uw4ixks9XSVQi98+uUUyQ2dEqPjT/w3s1mHah5STOXEt5i80uuPJRSsWDhtpPjgEjVUYHFVEmVa0jNyezgJ4YK6PtJNK9WE2U+K9lHElrv7nMoJG
- BNcBTF7V
- 2f3D9QRViiHi9sdGPIqoDJ5lE6ia3J0V68liQfougv/4hOlkL4Niqv9VQar0ndypR0RucJnqBwr94XUrmxzCtcQeWCoD3AiSSO1aB2ab62Uk7LYAbIDxA0zcL37uLPCUccrDlc9XNxykZEaM2tWJhv3KpqfJkf9BwzXTScFbgUyN5mXrQMBSxVjvopfZbBv68304czbGhkgRrX27zRtK4wfl02dPtKpqTEmaYZsLbgGMR5ieCgHNaQ7ReKSVG0sTyWd4co/7wXB35LaNYbTOfMdttguq0oY5VPEdlOhg5SDWOLbGWx7niCl8H70sJnAl9AsUXx+KvQT3HBeZapu708z2zjIuF2GuQ28NC
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775656491-205390
+X-HE-Meta: U2FsdGVkX1+bJMISY47AEsTd8KY1y1vjTYs2zUKEdbO4PrE0xfNJQ4xVCzkywSMJw18vigs9/A6GkyzW1Uin4mEWivn+Kck0MfFui3zFKmJ3a3qU9OfiDysqGwZYQcJt0jINzaxKmBrCRgkvgC+orUcC2w3FuXORnV8tURlY4X/IcINYIg5FVIcnX0QM/W22YFtl9SPSWuIBQ/NoLi7HtRHVeW3xpKfV2Avgm3NL3C/WSdnGgkop3pTKSeJ0AJSzibNgzQp7sLnLKUWfReGc4nwORbkhn0EkYjQGch3Yj4F1sNAGc24y2AutROEp7QsNJmxdvlQraEPkoy7x5+OaTTDH8dgtn44kbkpE9QUGg2NA6R1tUBNsnCEFmr85saymZN5lENYRFyXydCEK+1OdLTTD68I4FReLs5uMPWtdX2Q+yvjo833OFZBV0uyGhQobdAn4nlDvZWaw+0nLyKHbzPscXnPWRSRMKlQnC6iGuUZs5pXqssqP+EhbSMb1rq1Jquy0D75BhTmf/Dt1YY6XKFum39Vc4nwOiIy1Beuc/GLcSweitTNHrj9ymIlcySp8uqknlbRy850l/iEGYvB9M90cgrfW7zKpvDcqFStaQEaBHVtyWfvdF7thGTY+TFgle1KeDknYhfdaXh1n5N41+ET44wyNJUQN+ojkHTAEy9U/XvpveLNunir/Q5epnR70wmannZi4QUeWgXbQF1OEYbef8vsJCnf/4pi/+NcTqImCHUhK/PvMiAFfDyacZKxJtQyU7AZi0XCSkqq3R8TxhrojG1tsvEgpKml9xf+6zMCwNIzguCO8P2b4CCDY/K0Dd156+nFFO4v4xVMf3riVOK1PjsG5ku0IyLNm8ub/OfLubYHtOfZt97dOayZ4dtuvDWZ65MCbqGD3NI1w197TkS59OHOgR1H+0ULVhNnttmSKnxiS+h0nXJooEyZJjy0GjmgVcq/rhFd8FaPY3OL
+ dX5URUyv
+ e9xrAsfvukRPdo2ikI9gFcIh3+3Rvmzy/ZWpcT6Yi5EG74el0Gbp2PjiGgYZ8gE0tH77I5WavIGBVVptxrbbhrMVAfyKYBzPLfIQ9CWXWzcpigUVvkLeWh/kqSvazWryX4ACVO1arklr9r8chW3QCf732FcmGyPmwgzYQyFkZMoemYzVum2sAX82ElKjozQebz9aKIdU47jZpz2MR3SimJenrZ/AhVGLgF5TkwRPL8CyAQd+kv/UCv6jPGxfeGEE9BGMt+T8qkXSyGNZ2VWJHXdScN+aaSMX6aWAPTFWSSZLaqQV7JIJ8YnL8Ww17bRSnefxZReCTeGvXcJ6LyrP8+0sjX9YGUNvKzA1/bd4QnD5wDTJ7T4tout4WebbtR5v/gH89GvyoP6WpuntjJM7IwXudvylzVnVhx8gv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,52 +101,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use spinlock_irqsave zone lock guard in unreserve_highatomic_pageblock()
-to replace the explicit lock/unlock pattern with automatic scope-based
-cleanup.
+On Tue, 7 Apr 2026 19:33:43 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- mm/page_alloc.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+> On Tue, Apr 7, 2026 at 9:05 AM SeongJae Park <sj@kernel.org> wrote:
+[...]
+> Yes SJ. I think we can make it work with single goal now that the
+> below commit is part of mainline. will give it a try and post an
+> update.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 3a4523c35fb6..0b9a423cbd24 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3480,7 +3480,6 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
- 						bool force)
- {
- 	struct zonelist *zonelist = ac->zonelist;
--	unsigned long flags;
- 	struct zoneref *z;
- 	struct zone *zone;
- 	struct page *page;
-@@ -3497,7 +3496,7 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
- 					pageblock_nr_pages)
- 			continue;
- 
--		spin_lock_irqsave(&zone->lock, flags);
-+		guard(spinlock_irqsave)(&zone->lock);
- 		for (order = 0; order < NR_PAGE_ORDERS; order++) {
- 			struct free_area *area = &(zone->free_area[order]);
- 			unsigned long size;
-@@ -3544,12 +3543,9 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
- 			 * so this should not fail on zone boundaries.
- 			 */
- 			WARN_ON_ONCE(ret == -1);
--			if (ret > 0) {
--				spin_unlock_irqrestore(&zone->lock, flags);
-+			if (ret > 0)
- 				return ret;
--			}
- 		}
--		spin_unlock_irqrestore(&zone->lock, flags);
- 	}
- 
- 	return false;
--- 
-2.52.0
+Sounds good, please don't hesitate asking any questions.
 
+
+Thanks,
+SJ
+
+[...]
 
