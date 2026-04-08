@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A751710F9964
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 17:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC7610F995C
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 17:26:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EC8C6B008C; Wed,  8 Apr 2026 13:26:18 -0400 (EDT)
+	id 1020E6B0092; Wed,  8 Apr 2026 13:26:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19CCA6B0092; Wed,  8 Apr 2026 13:26:18 -0400 (EDT)
+	id 049A26B0093; Wed,  8 Apr 2026 13:26:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F311C6B0093; Wed,  8 Apr 2026 13:26:17 -0400 (EDT)
+	id E47026B0095; Wed,  8 Apr 2026 13:26:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D5FAD6B008C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:26:17 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC2611B6E64
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D5E866B0092
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:26:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D7E9E01E5
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:26:19 +0000 (UTC)
+X-FDA: 84636067278.22.F64425C
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8ABFD140011
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:26:17 +0000 (UTC)
-X-FDA: 84636067194.03.B901978
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CD4BA1A000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:26:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Jji5KAB7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3to_WaQYKCIU57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3to_WaQYKCIU57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775669175; a=rsa-sha256;
-	cv=none;
-	b=rS+xg/HQgbLJlVnZ4PsqSAfnyP3YuAoB/U1Svp4KbafHqDCayT2ZeP/Fut6xiNpCd4aefm
-	jrrFdE/FjcyqIdmEstH1vq9Ik+3z0+IHhdA7IGhL7SAg1KIwfcmWbdcwhkAB8ETvD3UaZK
-	S/ixChp2QtnVR3LlvnnAO6DhNzqV6XI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Jji5KAB7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3to_WaQYKCIU57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3to_WaQYKCIU57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NWZ5qand;
+	spf=pass (imf23.hostedemail.com: domain of 3uI_WaQYKCIc79tslyrzzrwp.nzxwty58-xxv6lnv.z2r@flex--wyihan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3uI_WaQYKCIc79tslyrzzrwp.nzxwty58-xxv6lnv.z2r@flex--wyihan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775669175;
+	s=arc-20220608; t=1775669177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HKfhxJtawehvSEWMDkPfY/SsNOZhfVJKas8DUTzpFWA=;
-	b=niWT1mTk1CQuliUH3M6nDnE3GGUxz5T0BY7vCCO848QZWEPI38VsfsLsJu5cGAAkXd5Al8
-	iCCjVBaJkthANbfzC0jf7CWdPL8/C2xwvxN6vWAAuhx1B9vinYuU8mWmfBvXURmO9UWNGj
-	Lpip3oxxzGWRFsoLnHhtBw85rMOQs3c=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c70d1f56eso19329b3a.0
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 10:26:15 -0700 (PDT)
+	bh=cXBGnJ08RM3Dn6KYmVg3dZVgKAKRqoAR1kz7qqbY2VI=;
+	b=gy/f2xFDIqFTto5Nvzztq0O9BPnWaVaold82TfXsU0FEgybF0vT4I49KFC4JVVbFYMFSf/
+	Vf5h90Lo/9uSNpTeBG+lcbRSJsbP4Pq+un0xBstW6ki6XvW88dts/VHQIH3al7J8Wh2f4a
+	E3mBMU2bQD/vEB4jJWUAsxOM4sMFy2k=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NWZ5qand;
+	spf=pass (imf23.hostedemail.com: domain of 3uI_WaQYKCIc79tslyrzzrwp.nzxwty58-xxv6lnv.z2r@flex--wyihan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3uI_WaQYKCIc79tslyrzzrwp.nzxwty58-xxv6lnv.z2r@flex--wyihan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775669177; a=rsa-sha256;
+	cv=none;
+	b=gHOeV0zE2ieUi6VlBIKxAShYpVt6d2Pjm4H7JEXuBIiQp/x9V53dW3lroHUj69G1h/rbsR
+	eiUE6v25fmYu0UDLfGb7yv/Fj3h0heuAx4KaQDOJxUVpYSa290zFXe+XyuF7EC+mZfpTPT
+	YHfTzI//bgE4BRy3YY5nirF6QDsQ8HY=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b0c30b51bfso1904415ad.0
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 10:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775669175; x=1776273975; darn=kvack.org;
+        d=google.com; s=20251104; t=1775669176; x=1776273976; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKfhxJtawehvSEWMDkPfY/SsNOZhfVJKas8DUTzpFWA=;
-        b=Jji5KAB7EV58wcFmnbX/yhTRtrauOLGTlIu5dccDojnnBsZY4jHt/JkCJ1ZouZHTU2
-         POeN7e5Xzs4HO15RuT0jPJyqCjGpe9j4uO0FpW0uc9U+s3aQCEbPXqA+TrinRGOjDj9I
-         Mbz/gRNm72xrlK5aq52PN/NMbS78MvyXXepCl3yoD8ss+Z/6UYZhI/icxUtTLytQ85mn
-         NNVE/Y2r4fUQGi6ODZGJ1NdWlrHrbkhJWxZy2ien8n9JqxjIpVPQgrVq1ywkOrFpbG6T
-         WSJLbZ+FgiG1A9lzapmQaL4vAgrGJmD0Y2a6S+L5JTTcP6NVbm7x26juryrQaxFdTCMY
-         fmtQ==
+        bh=cXBGnJ08RM3Dn6KYmVg3dZVgKAKRqoAR1kz7qqbY2VI=;
+        b=NWZ5qand78St0bTmM0NMNeXO8E4E4rvjK1RfoRnjaYdrpWvRtRnEGR7bqO2XOyP0Sh
+         SPfnSvQ7sVHiYVIO/uYxZr3NYXJxE5O9QN4YZXn8tXQFKE4O0wNkl1MZaRp02Opj9bIf
+         80veLHCuxyshAQ1a0aRB7acQE07/TQRd44FSIb4vMqi1klzt8NSFJsV4BhWk7i321pgI
+         KzzrtOwBIlaXMnekxXy5YDd9/It1q6FlmNNjLZZa7uCEu6GHQjyz8r1X9Uj7Ow7VEi4T
+         ujubW9Yv7guuZv/MFzCBX8tuszh6+bWfpdAQXTnj74rwYBw/nwTarRO6BM5a257n0rHV
+         w00g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775669175; x=1776273975;
+        d=1e100.net; s=20251104; t=1775669176; x=1776273976;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKfhxJtawehvSEWMDkPfY/SsNOZhfVJKas8DUTzpFWA=;
-        b=lXXFAc3vFD0jDJ+ZSWQnGIJH0JmEAye9FWT7SrPERstXXqqUvqEH9pdiH6rrLNY7ya
-         9YSNC6j5cVM/eSfLqQC5zy8FqtYcfPZAZ2aasi7a+ICBat4NLhwiA8E0v9IIZw4+eIUG
-         oZHR6w8H92Umb6cSxcH7RTsniSde/O6zP+1+k8GwYrSqDpeBKReWGA1NAHWqh3p84M8i
-         PYH2BWh/9Eprkh3m6uiPUJRL78w6RbiHxF8pCUnPLU6hrqaLXVXj2B6IaOcdkon1ky/y
-         +lcSUIrV0k+d8c/pmn9zYcIMw9LdkTg1s6H4trfAx/JaBMXvpWLgCTQmjNCN0jkkocot
-         x3pA==
-X-Forwarded-Encrypted: i=1; AJvYcCXiQ5TVB2kzToq3rSQEKZmyl5OyQVT9ygh71OcI+30IM3AaycLa3TDUVubxRimCnHJ/tkx1qvH/2A==@kvack.org
-X-Gm-Message-State: AOJu0Yw5d+ecb/9+fYI9is7TdSoM4UY0TLFlBQ9TbgW7O2+vOhSj60IT
-	L1XSjRH4JoBSjokReh9Am43WTPtiyUxNYa5dsIvAu8HtuU4nX8o65VkTGmYbtuibpDydojdwcKU
-	ogboEyA==
-X-Received: from pfbay5.prod.google.com ([2002:a05:6a00:3005:b0:82c:67aa:804])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a0b:b0:81f:852b:a925
- with SMTP id d2e1a72fcca58-82d0da4594cmr21368656b3a.1.1775669174393; Wed, 08
- Apr 2026 10:26:14 -0700 (PDT)
-Date: Wed, 08 Apr 2026 17:24:44 +0000
+        bh=cXBGnJ08RM3Dn6KYmVg3dZVgKAKRqoAR1kz7qqbY2VI=;
+        b=kZCR8H82hReC5QOCKiBsJqnsd1fZXuHsawu87AVHkjTP9KDVzjgRQvyE+fMqWbW28H
+         vUuYw1auWJMO8tnYwMqRRVguXFQRap77tCFJh56uw1KOuQyFtdAhSVXWA35Tz7EXcXVS
+         /XRRft9al5xml7DS6ysH0aOxTaKu6FferJeeCDcslhbJA1BEFfcjLz4EXgpYseBtzLTT
+         dipzI9okwLMYqJe0rJXxfYYIBdMeUwGa0Df8bjf3jW8mwGbr8a7fA3E/JA/cEYwDhiqo
+         ZTXiViuyHAbtm5JFv0oGPqjdbjxqW47K3QoyzVVuXPlwXxjYwXrF+cB9SVtPicNSdtGL
+         bbmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrQvpHnGHqZLO2rblT/RiIXpTd3SQDy8vP76i5YX8hGsxTyN0lrqP8yhqjDwf9a3wkLpfSNu6jAA==@kvack.org
+X-Gm-Message-State: AOJu0YxSp47Hqt+DEQ+am6fBa0ZNxx28iUikJGDVEq+Ko1LjvUVFu0H5
+	UM62YEjIWBVlLQQ/B/UsdO2ZuXuaoEHJBIaRTokuUZn9ufnJeF7v/rOMVVGkyyErgncTOMhetWa
+	odv474g==
+X-Received: from pllo16.prod.google.com ([2002:a17:902:7790:b0:2b2:4331:5552])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3803:b0:2b2:4f43:b48c
+ with SMTP id d9443c01a7336-2b2c7267313mr3087985ad.14.1775669176229; Wed, 08
+ Apr 2026 10:26:16 -0700 (PDT)
+Date: Wed, 08 Apr 2026 17:24:45 +0000
 In-Reply-To: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
 Mime-Version: 1.0
 References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775669168; l=1598;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775669168; l=1543;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=sG0P7RhWvhPfeqHAnDvFiL/wdpauzKoG7D3X6bRIOBg=; b=HYYjhlQyURswF6uipGoryLPDVw7e6x7xLSDi6B5Ls1j0ivGRToHWOQGxxy9K2uu5HWYRcsBPt
- EKIp8P5HwgPAwc24TnV56V+kv3ClUL+8+ATdyRnYAbdQ0knKeaLNQGa
+ bh=J3QZtuvE1lZ2QUWb/3XDrQaTozqcK1lsZfxrtY+rULk=; b=ohyQXWxRZGPECeCqTFjtef8YZ+umakzibuW5apwDb2InHSLTkMGXhbBkBw+FaeA7lKNULxCbB
+ XrJMn2cS9cmBHmXTKCX/+Omh2q/h6zyDLPCi7ZuJE70grdI7shFL2Gm
 X-Mailer: b4 0.14.3
-Message-ID: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-3-718f45eb7c75@google.com>
-Subject: [PATCH RFC v3 3/7] mm: shmem: Update shmem handler to the MF_DELAYED definition
+Message-ID: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-4-718f45eb7c75@google.com>
+Subject: [PATCH RFC v3 4/7] mm: memory_failure: Generalize extra_pins handling
+ to all MF_DELAYED cases
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -106,14 +107,14 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
 	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: CD4BA1A000C
-X-Stat-Signature: ne4mbuciuye5kcqsiipneakdmz399nj4
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775669175-185256
-X-HE-Meta: U2FsdGVkX19WHGJ1N9eROxPC0qNVSAJ2WcbqEQnGlEnpfnmU573OHzfnlcuFng1MVLyx3PTPbfEmWmneD9vDFVqUeeNFN1uICXZa7SuijH9Y1QlVMeuM0EV8xwlirInT3aNijIfO73HC+ka5z/CT77lYtV3J59adFUNJ19gSJujrbcry5uq37sVC4AbmLk+jomBjpd9QXJ7hz+pZeOxrnI1XW8d5g+uA39mN7mbW+KP0GVNmGn0TCTTHc2ngeqxc046MOR5YDAtYHM8D+/hbJFnWfOY8fUB35y7MD+xWlobte1AGrqskqN2GdDjck0fbRakgpyaCGQwNJ5if9MPWxiX9UpOFCeqbijgImdwUScgdMPjjZcD9s3Iy986yVlxDscmmVrsCyUlNHZlACKhyHm2vyPTPHxb4dWunVzcWDzv8YjC5MjE9wiWlWq7KWYwIfSBa7rY1blV375px3cIPiaSxtRPeq5CvOrdsoDqX/qOZVL2B2hGNiNjEAQwd9yzJBCpHQvA+GmreB3BEz6+NPlx8UQsANbiZJ1+XgqjIJiL8Q8J7tF7Moj+uWOjUc33HDbcEk8paJpigLvf9f5mjIP4r2VMxu2NWZbeNZ0Goh6TrM+PXS2toFBXjElcSqsedVOEfcNmrzBNsdF0hfZYDkeRcll3S2Rj5fUTDzWpynRjmjJm9vcmF7WTh/3TdOS64CSkOKgECaO6HfnUKW71LAu2beVMjaPWuoto5DOKbb335Ejho67NqwuDasDf+ngYgPIjgyVygs8wV0pTyMcORAGh6Y1knzDgs3I6HP2QO/YCEQ4E3HjE3lHdJVIOTXyPgHvAqRtFHGoNyW+Ea8Wfffjm4wjbxa+iJmc7qJcR5dHE86hv157broY35b/O/vou4lAllMI0jAMz5AiL/uq4pjl/TVE2L0ODZKc0JUo+7KaV2vBMbzBfMBBKsRRKFkpiFhsOb0LiCnXfld8SSciJ
- v5AskLZW
- tiUK1vjLrHkCLR2eQ/54Tpw+nfCo7RL5BJq4B6SX6FjMX7SXJzISnn8TMaiy+DX2xRWzd06gRR87iYlMo0WHJPl6CEwHclXorfMvvtFSX4sLTzZhhDUIOlcEH/dhtKLyEQl5HkOeDGZqbS9ddR1WgboCKY7OJVk4EUhOfZBh1YY9CBjJ8hknOyGXKlXARPnbEg0TtvVGyF4/K8cIYUp+XTWIWaff10/6/Wo2rbbIr1mTMSFpFJSsBc5CbqE2HHt1ShUctQVQQwdRnP1a4uU3Ur4GnqWCX2tTxdiDNsptOm5/DUjgsCSolGmKH+I2NY5vxhRWjOP6aN9Wd6zbJ7LKGw2usCC10dcwhylE9OHrH692tid3PNwrXA23rXQs5KzQb9QaJzga+5c+l/qebt8sX63Oc/HwwdTO6htofa9uizeDrK3mEYyddga0DJs0JT/a5LxCMHzVaZZ83NVg6QTz57MoG0xJq0eIPqXLX7RDr600O2HwLmrCYDv3zWIzxXrm2RDXjf+N+aDx1drin7Xkq8HplYTm3W4y5jyuacS+oe3YNxu0ZlxV4p5j2r4L3Tp3kfwMM+Hk337RNHGtnKkZz+QauSA78UrjXxqVdbDkuhsgeKiphRfeuJmr83wGdejNXiMjT0ia2ds/CHt5xbh82KogBfkPYXM63FJJw9wxqyyLa22TLYd9uq7xlmM2sOXUV2aLuFzi2jzB9RYXTTcIJMoGp5yhc/Y6uVju9t6QzY7jVAcmmuohrXXZBVQ==
+X-Rspamd-Queue-Id: 8ABFD140011
+X-Stat-Signature: j71qpiuhy1x8cg37fkwerx18ao1sbqzd
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775669177-134383
+X-HE-Meta: U2FsdGVkX18X3y2oBogdJvuZAo4GsUrej4VkQE3MBGHD9+7aLs6i19KcS7WVluVuUgQ8wgpudv1eQxh/FZDGyvChIXhSvRhcpBH3ORu972Ea5dI1kEA8zwxCtSWMjFTbwwRp8XLQq8g7dBoEHId89KOWU4NkeBU21J3qyYd8i3F/xMY0DcSLqswlPMuJw/yJEG9Dr8v+wFqr32qf95Mv+6Pb95DxCC9Y8mj8s7xs6yvdmxs1CT9/sVaXkw5fi0f5Im1rcTo/bvVINojJWWmd+z52KY6gyCCTSJXXrYvzbKVy/AJRavcwbnUSr9ILmWd6gOsULP5LoRrmnpN6M49gZB/O2rdSpxYvdHHv+0VsJgw+2ALnXwFIQ+V5bpugeTuGidrhYxqTSo3v2AtBxOqejCDaikhiP3wM6k0X7+lvjyR0wilTBCvcNozYq0FIn8zaxXkANMK8KWmusBpqYuwDI/RH77YNOwkqQbmm0lMEAaNj+z4mtG651vEK7CcdqIdlNo7TGCnaDKUUCXFElQd2KpL84eZrULHN6V2EboDZN9U8zYqBw5Vz+2UgnpZadJjS00hHvvmxkXqtXq0SS/L2skh1N+VRcglIgoAucwEPx7XdcXbpDUM7sJUC14pH2jMWQ7AzaS0xhWcNitc7Joa6PpAnmqWm19Jk8HcoLVa485mkfUnjqk6bRW7kb/UOi4qnsTqh3WyF6fjafKEW47bcAQCuubK3EfuSy8VduLTFlPysqSFBQ/ggsmrQ91nvXaD7JZ9ERMZ/nXiaDYdoihjn2o/Tl5gCwok2vfbN0ZfvMNIkEzuLJtDA2krin4NT3CLw+x1Kfo+MGH/QVh51RHl98YPa/kNWXxrfC8yfYAdmEfJxa9eIGBdakP2e0dW9cnejoCcg2k58RtxksmqzjqGE8P8ZjDhrMvEDNe3040R+MANLlE3tIv/lyURxl0G77ePdTD/ebQHumLB05I7lpHU
+ qZSVseJs
+ J2ag+td/XWVPRhrz8riHE17gyy4bOlf3NbjqXwcwMbP6C8g0mahGDRbVa4WWSH5VTxVGZ0arJbFTXV3HFxhSWnB8C0GOMSndr6x7YywOCz56sTtuxENirwT9mO0C3kpw9B5zyv5V5ohOcdWHJ9M0D5xsdFchFZEoC32Ch2oRFaOO3T5ew4ZIbGS69XdbL1hgD8U+vO32wwtk+hQ3pyHmcTuImP9zWucfiyKSM3Oa1q5dwZWo36LRDBX/h/8CXCmmzUkXpTS6r/PbjLoVQYksFLs4+L+MrDbRVTKGqutzdjP8NBFab9930BMPfiWBLL5jDsY37PmCjhE+bvgvJ/N1OUNGA9SkzbDDFkeFd06PLIL5hZ7W8CwU5sLTw7ukGj+Te32kwmiDvV+/7KvlZuzVg5vIFZs/8v3shYSNFcAYaLPA0ADOjHI0wvNkodNumVw/ksbKjkN8Z68GmTx2UlqkrjrkoF/Ny8oxHbQsyYEap/Pc74M8Mmd/FP6p4A+V1nZdTZ4QUuJJmcBCmI9B98/XUwRKyS4THzp57xl7UGZVEZUI35GPu+gPhtu3WPtJYi0N6yNgZdVLrq0IKDT1Qu1dhUgJn9WHBDBNmV7kIny+ct9egI4tsa/GfqJyUk8h5MF56SxCBnq4Bu34SGrbOk1aHKD+RS8G2EIbeWSwaeJRqH7zUrAYVCC0GC60QWLH74o41H2EXAdwu6IfdPqd+lHqdkpj71X9/F56LziGfFa1AuqA0zMN1J70r6RUT7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,49 +122,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To align with the definition of MF_DELAYED, update
-shmem_error_remove_folio() to return MF_DELAYED.
+Generalize extra_pins handling to all MF_DELAYED cases not only
+shmem_mapping.
 
-shmem handles memory failures but defers the actual file truncation. The
-function's return value should therefore be MF_DELAYED to accurately
-reflect the state.
+If MF_DELAYED is returned, the filemap continues to hold refcounts on the
+folio. Hence, take that into account when checking for extra refcounts.
 
-Currently, this logical error does not cause a bug, because:
-
-- For shmem folios, folio->private is not set.
-- As a result, filemap_release_folio() is a no-op and returns true.
-- This, in turn, causes truncate_error_folio() to incorrectly return
-  MF_RECOVERED.
-- The caller then treats MF_RECOVERED as a success condition, masking the
-  issue.
-
-The previous patch relays MF_DELAYED to the caller of
-truncate_error_folio() before any logging, so returning MF_DELAYED from
-shmem_error_remove_folio() will retain the original behavior of not
-adding any logs.
-
-The return value of truncate_error_folio() is consumed in action_result(),
-which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
-also returns the same thing after this change.
+As clarified in an earlier patch, a return value of MF_DELAYED implies that
+the page still has elevated refcounts. Hence, set extra_pins to true if the
+return value is MF_DELAYED. This is aligned with the implementation in
+me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
+set to MF_DELAYED and extra_pins is set to true.
 
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- mm/shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memory-failure.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b40f3cd48961..fd8f90540361 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5207,7 +5207,7 @@ static void __init shmem_destroy_inodecache(void)
- static int shmem_error_remove_folio(struct address_space *mapping,
- 				   struct folio *folio)
- {
--	return 0;
-+	return MF_DELAYED;
- }
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fd9ed2cd761d..d6628ad114a5 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1052,18 +1052,14 @@ static int me_pagecache_clean(struct page_state *ps, struct page *p)
+ 		goto out;
+ 	}
  
- static const struct address_space_operations shmem_aops = {
+-	/*
+-	 * The shmem page is kept in page cache instead of truncating
+-	 * so is expected to have an extra refcount after error-handling.
+-	 */
+-	extra_pins = shmem_mapping(mapping);
+-
+ 	/*
+ 	 * Truncation is a bit tricky. Enable it per file system for now.
+ 	 *
+ 	 * Open: to take i_rwsem or not for this? Right now we don't.
+ 	 */
+ 	ret = truncate_error_folio(folio, page_to_pfn(p), mapping);
++
++	extra_pins = ret == MF_DELAYED;
+ 	if (has_extra_refcount(ps, p, extra_pins))
+ 		ret = MF_FAILED;
+ 
 
 -- 
 2.53.0.1213.gd9a14994de-goog
