@@ -4,139 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D67FD5F94
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24523FD5F92
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 08:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDB956B008A; Wed,  8 Apr 2026 04:09:30 -0400 (EDT)
+	id 826066B0088; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8BFC6B008C; Wed,  8 Apr 2026 04:09:30 -0400 (EDT)
+	id 7D6716B0089; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA2436B0092; Wed,  8 Apr 2026 04:09:30 -0400 (EDT)
+	id 6EC166B008A; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD7B36B008A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:09:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5376C160A6C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:09:30 +0000 (UTC)
-X-FDA: 84634664100.03.1AE81FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8C80D180003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:09:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMtAd4XN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775635768; a=rsa-sha256;
-	cv=none;
-	b=d3JMhimZ5eDTr+jwR7UJLn+0wuqJ7RHMMjQa3q7Ws9Cc7pHsQF55XpeWdhmWZN9ckb8SQ6
-	wXuzBqLA8ksBMkH5mrkj15BJrmIXWf1BAPKUVhvPUWpWzYZFWhRKLg+3N1QxeF6Oi9/nNe
-	lvtx2jjlLBhWmZIq8w8IZiNhNVmVK5k=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 561856B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:12:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E468ABA45D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:12:58 +0000 (UTC)
+X-FDA: 84634672836.25.EE7D02F
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5F85BA0006
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:12:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=d4CwHB7T;
+	spf=pass (imf15.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMtAd4XN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=d4CwHB7T;
+	spf=pass (imf15.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775635977; a=rsa-sha256;
+	cv=none;
+	b=HUbRKCG/HddSaF5Pl74foimxycSHFe/1tFGWHlP7dGNjxM0GwIzLhXkiX4PhCNUuOr2VvU
+	oQCGWrq/p12rDYqbKY1WVkEcv0JZsIRzpybDaouJrclZR9qYY0UTiMRwBHzrDhgtGYxP92
+	X27dIPaH49rYhICHBNhV+o7ACqibb94=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775635768;
+	s=arc-20220608; t=1775635977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZUrNOYunrZqrgbPg64J4Jqz2LJTx1j/Fg5ySiYmIszM=;
-	b=RVhCGO1IpybVZ/BLALlmZ3R5xEmTLH+wTNfegUDYcK1J1f8tkfPQ8V1AbhmFB6h3zvUdK+
-	cdDrLMdCGuHd5bBzjkyZ9u0N3JjRCgjQULfMkHZ7gSzyUSIDAGpmEeUokhzmLNdu73kzds
-	rDEvl8s4xTJJUdEiK1gc6kQLo0u9jtY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03D6060121;
-	Wed,  8 Apr 2026 08:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D96C19424;
-	Wed,  8 Apr 2026 08:09:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775635767;
-	bh=hqn72j02DwcWfAb8Mcx2xMW2lIxmfO9NFn8z+gg9roo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OMtAd4XNinTdl0ZHL7hrsbszQfcdUCVDQz6iSJEQFW077NCCWoGFNnn5EyfGSCgef
-	 0IUMIjbGQpUS6Iw14HaV6M0arD2+BV0E9ZC22WmRgBw2mxL05ilrv4EgV4iO9KK7gS
-	 x0PvEJj4dsyHkTCZESkJNOBrOWb+XwxGRTRmMRlswxcvPQjiCvLzJMOY3/ocx0oJa9
-	 ejGzo0+zsG47oIYbCyV7a/wr09t1f1nUws4BnQlFN1iqkugPxMwOqQ+zEXuUnQq5ly
-	 pJw8pdefr0UNpcjOtWE7R27NkrYxJ2YnIUclTviqktLYYv/JwVVoyackpSGmFofWW2
-	 L1owvXGehD+Ag==
-Message-ID: <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
-Date: Wed, 8 Apr 2026 10:09:23 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=D4Dc8j1nfmErNosxziXn1qD0pEKNNpyJIdOEd8MGydE=;
+	b=a/RCW7Pl675w8tQqy5IAFaIMIDPiV+MN9fHEVd/RDsdagkGaaE+/+DqaPpTWfR7edu8sam
+	hZJ/lcjYLei3VH6NR+F1qBpqKtflFg4b5rP2PJGkKRUe+S6Yw7Q8FdMGZAsXvU809//0RR
+	n2csy5KBeLeuyvaXZO4DuviAbHfdPNY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=D4Dc8j1nfmErNosxziXn1qD0pEKNNpyJIdOEd8MGydE=;
+	b=d4CwHB7T/BfpIiJ9dxUhjmmqhh85oduzMsFRGGSxQM14aLEvKGDhQbZtHwo9cdM7+OPCEiQo1
+	BOeFiMsk35DS4SbTbDvGo8RdKJ7naiTIWHP8+Z8wiGU7UcVctaObnlUVr/gZK9yzV3URSaJ0ESc
+	RXhfXzEu/dnJZJKe4GacfEc=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4frFyM02KHz1prLc;
+	Wed,  8 Apr 2026 16:06:35 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id D59DE40576;
+	Wed,  8 Apr 2026 16:12:51 +0800 (CST)
+Received: from huawei.com (10.50.87.63) by dggpemf500012.china.huawei.com
+ (7.185.36.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 8 Apr
+ 2026 16:12:51 +0800
+From: Lin Ruifeng <linruifeng4@huawei.com>
+To: <sj@kernel.org>, <akpm@linux-foundation.org>, <chenjun102@huawei.com>,
+	<tongtiangen@huawei.com>
+CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm/damon: support freeze kdamond
+Date: Wed, 8 Apr 2026 16:06:52 +0800
+Message-ID: <20260408080652.1745410-1-linruifeng4@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
- contention in populate/unmap paths
-To: Pedro Falcato <pfalcato@suse.de>,
- Joseph Salisbury <joseph.salisbury@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
-References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
- <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8C80D180003
-X-Stat-Signature: imsosthkao77yc9sb6931wn5q6nkamdb
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.63]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf500012.china.huawei.com (7.185.36.8)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5F85BA0006
+X-Stat-Signature: xh99ipfzr53ktrppuh6tw98stnghwr7w
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775635768-902355
-X-HE-Meta: U2FsdGVkX1/HIZqLZbdFxgELVfzkdP+WzgS7D7L99t55fTvwOmFPL2JAx5Z+yEULanNOiVkADtmXV/7RT8YKMKbr1BS7MNzc34a0frh8UDJO/+jczIlCVxzgh7ApExPwM5slk+VGJ4eRWkNP/LXLdXdKa7tNRkrtibcSjmvh/BerUjkwvAGfWYyEKwhDVksd2IJKyWOb7nMp9csQUc4sNknprSTR6AH15fRyrd9kScxCiMK+DvBQ5nCapbjV3YI0cVaWWrwD6vbRjB5L1ytzZQ6C6lF3rnnAOVErmHjI/DNnkvxY3UEkD/tBdlRz2kvg5EP+UCPX5d53SPl5vZusEJOwgtAklrR6bH4fAkqFGW9cd+taoWg2elyK4Ux0sTk2sDKrMt77JPS5Cs3qdk1pviBKr1/HX5ISD8YLxz3yifivepimmSbmAy1n64/Ee85L2MkZu7/3KjCInxqcSH89+cXr8VlIhh7uOvkYQHgpczCY+bfNJwRmP6GgiSnzXZN2edbUqJuS01QvbAhvFvdDhr2G4XmzQQcObwmcWZr3MD3p66DqbusEWVnBLaSdRPVs8ZcGuNYe4csssKtn//EUOEoBVzOx33RjIDKAuUltj7FwmPqZH/VgtRbJhqQ1werBQPSG8OGTEzw/dCPDaqhX+KdZtCAFeJeN3UV+dQUlIblpYp/L/kfY6iJBSJxa0McAHSCQsvRsEFCKYv3xdYIwqIlka4YTRoTxPJ5oVPE0hBZbcVJ6itV0XXIPNQUvdaYO7H0egf1/yzvjmHgE0ByMRnMw2RmFpH/iwgutG6jtcUcSPzIjzbVIOeYkzNAr492wdHo/7IgDFB2R6aDo82D4wKGPV2ue3vNdd2I3/EzQQDODfkdJeNAvlfmjj1yJbPHoLT7pAuTHhwYLmpNNnhfUR9r+2Ru/20EqgPhZW4tGaWOYQBgPAcgiwwWpnOzJG5mCmV1yj10ypNxg+TYHxFo
- yw9M96g5
- 3tOLzkDjP/qMuQoSfRs8CNA4EJYk7gfrhKBm8BM2h39BZ6/rUymTXOagAx5O2PdWR+9ec7GEPPn4uYUlKhITxp1oZt6Vx1ITXChfbR3bGAgx48HKfSf0DDsCARuFMaUO70l3KPlvxiDW7nnNOi2npQjXeptR9lw7cBFhMt1mqm5mmwww8jzMKrgk+F2CG7lFDard5W/DDnS0PrOvTXR/u5hZLNgHNlMjGFBpc6B6iiNpuMD19qDQT0MPi/QvlqQBZKn1c
+X-HE-Tag: 1775635976-957709
+X-HE-Meta: U2FsdGVkX18a8kcnmE36YS0C45/yXoYdCWwDiJYBVEEQ6UWK1B+lndPpeCzU+yRBNdxTStZLVqf/MKk6VPPRsKlOjlde8SASD6UvHNH/6mpCpYNpG5HvNb5dElGEoGdlyHkp8jUyAGH8dCFaWtAEZl/F7XLhSF26tmPiDcztJA0GmWch3HSOM68gj1Kqqe2P8JdV9E4mOOxt9sJHlCRaRZuqjAOnV7Y/+hne3vTOREuflQ7wLia/UddeE/ngNvg+VmoQHcIeO1Ky6K95pDjuTMQc7ojdrnDCIxwZoBVb7EsrOZi+PgWoAo+LysO6agsJQmVz/DWQeyUm30zzaTzYdqSAJmX+In0Qmz2P4wmTIPuNhJVhn3A4Hs2XkuSxZE5KO59hklvmM/pOAho//GqxiYhTGKbh8YnEJbXAcvlrX8mJYx11cViIFVJ7oyeM3PcA5BbZM6hfKjEOruROUO++6kacesCE5d1wSVbakr7gL6yRPFYWRPw4AUilh7rIZ8thdcTMa6t2HuCq1lCf0PHl93o+bM4t/mRhQwANxUZJ5CQoTx5RbZImHz1FLqzXN9GOqUPFV+KldYHJj0lcLqH8PEZUSsJS8JUkpoMKdsZKA80SbxDS7gawPJKPeCv9mTsMQCMwti7mpMWR5lMyHOwghEX4z+XRLWnhwT+kifQnBjRwpAY9hZzepwt8+J6Ak38zfPhAVYiFZUOQPppggMpkSoJ5lzA+i6dYTcpvogR9MxWBnpl8z5jeYhRxGh+Z6zr9K7/sd9bK7cmzoj5BjWaEU2702svRZfrjRSAdifI/IgPw5x0VAloJo3G/AOTsJUWC/q/3Ab5ubeCUs8h5SY+ystCM8S+aF3gCGRrYy+tnnkFLn1SrSrGw1j6Q2n4SZ5sRMdrLqEBXVkrun3yP3ZPmrp9pJqZahuo61QVlD7G8v1kt59SWkMbtLnZDIAfuUUUfsvt4Vqdv6JbaXCkk7ZS
+ UYLg23m5
+ aeNblFYwB0j5LlObPe5BGQTdhtNoNeh//C+Wsckj/7HerC+LCsvmKNAKKC6KyhHOshQVOMFW6i0Y0F7EEYbpHVFoXVSZjpLNxyylMJRlEqr1J5P0afe0/S1ZCIjW4hBTWf4uRw1BNJ/BbRWljqAlWn7oIGxC+LNOJZ4dy493dqKeUlTz0kQUT7qV0K1TeRl1H82VEuqGpQZ5Hff83h4fefy69yCGV8LyqZoc0RSrm/IBDrRYD9iKc2ot6Ws9Bk+AaRb7dJj8jjzQ/9dcmqG1FW9Q2mf1VRr9uyMWNbh7iCv1KXoSKRetMidDEBXWcAQJijNAYgKBDGNSir9qrv4cimLPrtoFtbqweuEkT8gaCzuKG0sg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,36 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> It was also found that adding '--mremap-numa' changes the behavior
->> substantially:
-> 
-> "assign memory mapped pages to randomly selected NUMA nodes. This is
-> disabled for systems that do not support NUMA."
-> 
-> so this is just sharding your lock contention across your NUMA nodes (you
-> have an lruvec per node).
-> 
->>
->> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
->> --metrics-brief
->>
->> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
->>
->> So it's possible that either actual swapping, or the mbind(...,
->> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
->> system time.
->>
->> Does this look like a known MM scalability issue around short-lived
->> MAP_POPULATE / munmap churn?
-> 
-> Yes. Is this an actual issue on some workload?
+During suspend and resume, the data monitored by kdamond is
+no longer meaningful. Meanwhile, since kdamond may involve
+I/O operations, it is necessary to freeze it.
 
-Same thought, it's unclear to me why we should care here. In particular,
-when talking about excessive use of zero-filled pages.
+Signed-off-by: Lin Ruifeng <linruifeng4@huawei.com>
+---
+ mm/damon/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3e1890d64d06..5cd1f0aed66b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -16,6 +16,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/string_choices.h>
++#include <linux/freezer.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/damon.h>
+@@ -2753,6 +2754,7 @@ static int kdamond_fn(void *data)
+ 
+ 	complete(&ctx->kdamond_started);
+ 	kdamond_init_ctx(ctx);
++	set_freezable();
+ 
+ 	if (ctx->ops.init)
+ 		ctx->ops.init(ctx);
+@@ -2774,6 +2776,8 @@ static int kdamond_fn(void *data)
+ 		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
+ 		unsigned long sample_interval = ctx->attrs.sample_interval;
+ 
++		try_to_freeze();
++
+ 		if (kdamond_wait_activation(ctx))
+ 			break;
+ 
 -- 
-Cheers,
+2.43.0
 
-David
 
