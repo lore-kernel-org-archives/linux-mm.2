@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91B881073CA4
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39B71073CA3
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B38346B0088; Wed,  8 Apr 2026 08:11:41 -0400 (EDT)
+	id F0B976B008A; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE8FC6B0089; Wed,  8 Apr 2026 08:11:41 -0400 (EDT)
+	id EBC5A6B008C; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D8146B008A; Wed,  8 Apr 2026 08:11:41 -0400 (EDT)
+	id DAB466B0092; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B8B46B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:11:41 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30EED5C215
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:11:41 +0000 (UTC)
-X-FDA: 84635274402.28.74D0F2C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9D5B6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:13:45 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F4B31B9073
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:13:45 +0000 (UTC)
+X-FDA: 84635279610.29.DA72172
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6D5A61C000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:11:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TAkH2mAK;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 617D2A0013
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:13:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fm4pYk+i;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650423; a=rsa-sha256;
+	cv=none;
+	b=LJat+gM0jqr6mmsFRs3tbR+SdGSLkqtOI4iGPJueQxmpwg/GolnWjU3EPcIAFfDfVsMn5q
+	vOjzGMZYmx5Xk7GNpDUn6yi+ytErHYKZe3dDu/psKbh9jM2iFcVfTDVfR3Fk73zjiqU6vg
+	pivtX25xSfuqlbBWR/9A/z4b9g/IEFc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fm4pYk+i;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775650299;
+	s=arc-20220608; t=1775650423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4BRZY+pcnQ08ylQgO8G9gh28UYxAOGWlZSbhClXBliw=;
-	b=udq2NK9KkFH0SU5DxkCvodFnEOX+MjMwFfdmVtlR7o8RxaZcgAr+oUFEAMpzI5BF3x5Eh5
-	5K0MtG/cv8fzo/M5Vnn0T9V+D3zzHORlWfkqJHlmOIhgXH+nFiR2yf7rIUFOm6yv2VxtnJ
-	5AokPfoijbr1DBcIp9q7tBFKv/jdMlE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775650299; a=rsa-sha256;
-	cv=none;
-	b=1RWzoPhSmR5r1owYN0GsLThjb5xfDw73b+4TUDP2ZKHqIN6es+boOSUKEyEtmxJMgFQ75C
-	Gf2AoeZEdl+gjBfhZ+PexcBHbMLkKJNkcWAJE73zHi4H+29/E94wLc8oPRj89LvwKTV3M2
-	zGSrh5zSCu7oUSgff3emDUh3HHE2Ssw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TAkH2mAK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=H5ScxPBx0kg7ANwrTp5zjzec2BzFmHNH/iCqb6c5JzU=;
+	b=t7ZcFodzL0yHMEb3hNzZEaxmw+CGhCvaCY/8c5t9wfye0GkZmTI9xlITIhORcxc7LvPkqV
+	CpiYgIlqptTMmi1Befc7HZhStlp1yijaEyzCCh+54nPYOV9RWJHtX12cOx8bOX5AuaSycn
+	u9k2jicRi7NzFaw257uUGe5v1w4j70k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 578674454B;
-	Wed,  8 Apr 2026 12:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1987C2BCB0;
-	Wed,  8 Apr 2026 12:11:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E54E40521;
+	Wed,  8 Apr 2026 12:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26D2C19424;
+	Wed,  8 Apr 2026 12:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775650298;
-	bh=Ol+xkN6yaT23Br6Zs3lLHk19S4Qvt/lfnkQJSV9CpQc=;
+	s=k20201202; t=1775650422;
+	bh=My9ex2aNfAQr85RMj/PNNceXRhuE1pGC/rvjjhvlKho=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TAkH2mAKU9+L0aYV86ZGKaI1Udhi48E07kE9syr+C0cYRaY7VSH8uj0mBczjN+P+O
-	 9BT6kqIYyxW2CeaNpFeuEqq8ZyT55dtf+rM/6WHiAjLM8Sz5QqSkxDCWmWXi4arYlN
-	 kqFm7R/hLIhvb0iy+4osKVJMvIRUj5ZeAiBEL5+LRCb5uEhQBGGmLHyxoWp3R2TDDz
-	 sBWxJGW131iejvn/cnrUdaZU/USSZLjRJrEMiRQiiYEqp3oC8ipfv7JblWXjHp8sv2
-	 B3BmlcbD7XIzfP1Y9qB+ZLnQJA258wJfBSU/vDn48ESNv8vXRSG8YTHIrZA9ddhu3e
-	 wpChoH8SkHo8w==
-Message-ID: <628a1d9b-cc16-4cf6-8c19-b6ed49af8492@kernel.org>
-Date: Wed, 8 Apr 2026 14:11:34 +0200
+	b=fm4pYk+i6DilsXsT+t8GY4iXYWcW035fNURZeBfTqXB9B2RHLiHuFxqigp1rueLf2
+	 IGKW4LWsJv2ucGAUoKuh2azO8SS5Wre66FjKiCABx/HucXfyegCmGc9lzI6vXZm9TK
+	 IRIn/uNZIhUCkHmI5GvnB0izbKU55WHY8/qhSYDgLF+SJ/S2EgfLoWg9Cy++NZmfVV
+	 zBhwO2uVX1GHHK9yz42oCR5YFqm6oBIxDibRsv1V8zutdmVYIKkkil68x+IhfAdKQ3
+	 G2j6eq6FwzrPCG9IfEdd/fZKO+YrDfABRPtn4RywDcud+oDOGYsONZgdcI5cfhD47D
+	 KWN2m7RrTEYHg==
+Message-ID: <c664368c-fe2c-42d8-b488-e9e30b342491@kernel.org>
+Date: Wed, 8 Apr 2026 14:13:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 05/16] arm64/mm: Convert READ_ONCE() as pmdp_get() while
- accessing PMD
+Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -77,9 +76,10 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com
+ linux-mm@kvack.org
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-6-anshuman.khandual@arm.com>
+ <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
+ <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260224051153.3150613-6-anshuman.khandual@arm.com>
+In-Reply-To: <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6D5A61C000A
-X-Stat-Signature: y8z74557jfq9ci4bzs67oejn4c8ig597
+X-Rspamd-Queue-Id: 617D2A0013
+X-Stat-Signature: 5rub1xhyzd1pdjhdukptpshiuanh667k
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775650299-309349
-X-HE-Meta: U2FsdGVkX1/oe7rNZwJVKCTf/MXczbBxcu+WUZTC49NviPMHX10Uj4BDw7l7C9ddbAatBoBgD8Y+H2cYeYNs3JfSWyz1dMqAhNxgmNBynNtvT+XkRsGcykIwluymPSgJ9YKABfocMqeRHjaex0c2JoosnB0C58w7fSVN+1KTT9TZ51B0mkU6F7eL5eJPd7wAaXqFLkQmaq3Ns8sM4Np9PFM4zamdXqWkpWQkHjSUkQWHdVAweyfjWMWhQIZNK9+KeUBK+SNHDJRruAZBny4+fW+8wDbX367GU8uzwcsXBgiXafWN478H0RqqeRVr/bS1xFLRw6nOLwsgDjy2RVtFLdZ9Gzm8R7Nhy/ALBoBLefY4RdMEwJJPRsjUpQvI1yt9FY7BU07Z3qbtyez2dhHTPT924SjKFqvaOxw1Zo0ToT/23WU9dU53HuARH4V3EvxuUvC3pov/ZQ4EmG+nR8MxxuAhCIC45GKFcvAP/iYHWITC8d6RuMgXIeM8IzXLuVAwdGhbFcz0J2B6tip3RRyXpsHwKHIdTYYR3v4sSzzmIxkV2LT+Y2GWRyh99PXEidf/SgBkeP3SQyxJh/Bd9Mf03KCSTLjXSMzj6rdR9sI5OaeVDAgCWzdo4ooVlJXDAP/HrowOonCF+1tZCOQuqTpV/veyYQm3v3cuLtxv3eUEYr3eDxIx6hPSXuJ++IIAjefrFLqqV0JNKxrvTsQusHHPKZXs0DhOqAO6ADABGB7IBTNR/Ycg/5Stde+0rk/X1Zl8g2DlHeprI/N1w1ikMEbuTfE+DKiHYz4KgUtldSlQ+O4lTlAdpJwSW3YXjXsLrXr6feUk8RCAliw2+wroVBUpJfxl3+yPc+8F43qrmUcB6e7/0IjxfgbOJHceIrCOXrmIpUlDMVIYYZHTOWmEr662SDiK7fPBr3E3NmpekvY5GrHJMK0Qd0XVYkeZb9UUqvwaYYIx4enX4SlfYFMQTrQ
- VBTzf0CQ
- OtcauXSYRSckakD8=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775650423-57731
+X-HE-Meta: U2FsdGVkX1/BGA3SdK0s+SbYGREqh81OKXpXJV1MisqsJ14JnJ9RpvsQbVNivbxlRF0tHsB/wbCOKN8HhC+4p0Ad37A9Nmtd2iTQdB5GT7MMjQrfwf+4cmNUyKkJjhJCVYmWvVn1oX50yNvzOIxBRzPM8lFrZ3xvfdn5ttcQRpvH8fcqkL9d/9n6oDS3Yyq78RAE3HhyXSfFbdFVfn9S5vkBg2XZ0iZHsoU0HTgkDtxCMb+boQIyIm8tT9LGc7apQNw1aEthp/ruYNJzBZLXya6y9fmHrjhRXRQIyaJsZBEhAndFQBn++9G7kxg4XqkwgDOJv/q3ahgiS6RUNjAMCB3ppTNqlDLnDIMrrmrKD4HIiknlNVzrYclxugi4vqUEq5iZ1a3YQnVtsUxe2di+Iw++WNXZ1BpZGqT2pAUWRm0E32WdhGylJQBGei8Lnd4zpMp+mF+U63+6G6rOMt+rT2V+Gq0e1n8FMl0vPmObTmNnf5ghkenHhTuOxDymcMIXod0BmqYdHBEbO1WGoPoCVQWHXCbe1TkJgApdDtQny60UGqhzaSY+kRtfKRUmFNTrnpeNNixLAryYrDmfRl9752HoypRgbfUYdKW0Sq5t553jYXiLFH3UtbODoOmJWAMg9pJ7AqE0bjT1KeKrNNFLaMPEagwby7uY0eDzZetuoPjCBQkrcDbB/NfuSsW6rC/2F5OVOCWCZq2oM9O3oYAXF9ROP7rRTskZJt7T55yXYYFkDXQM1J8ocnQi1FTodFUpjUmBJaItAD14vyYH0w3tOjjGy/K0ObUDGGOyXKxcqpsRe6xQ5AgMghG32eWLIsEUm3O6+eovSVBBKslJ/AEoNulGxg8s9ou1Qse7zskdf9MDFrtf6Q8e+95gfDHV7tDHNaAj0txSGzwRNznQZ6BfjXOCx+BMDcKNEVCcd4XqjgzIR9kB1iM6OmAMCEI7eMhDYlBOFDXF9PPZm4XJkR8
+ OFCLqNDb
+ fydEVthcaJWpmb/jfHNpCu0mevCtkgSoiCvDZn82E+c55aXhuDoEzuuK66/cdX9cMNBMJUEeA7kxe34+GenBgDmI0kYa6XAV+ohTc6Kp3j3l6GlFqx2c5DoSAnTLdAM0BKmyIJNs8OnUB1u/286xpO3vLX7CgEJh0oj31zNvwyqCrXi5sKLoKh/KIAXXV60EIo3v39WuCBiGWEOJUexENSVn/Jhu+yGhd9lY5YnB/mpG6QmWyNl/BAe0idD+9xctOj7v3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,14 +144,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/24/26 06:11, Anshuman Khandual wrote:
-> Convert all READ_ONCE() based PMD accesses as pmdp_get() instead which will
-> support both D64 and D128 translation regime going forward.
+On 4/8/26 12:53, Anshuman Khandual wrote:
+> On 07/04/26 8:14 PM, David Hildenbrand (Arm) wrote:
+>> On 2/24/26 06:11, Anshuman Khandual wrote:
+>>> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
+>>> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
+>>> So with this feature arm64 platforms could have two different translation
+>>> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
+>>>
+>>> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
+>>> and virtual address range while also expanding available room for more MMU
+>>> management feature bits both for HW and SW. 
+>>>
+>>> This series has been split into two parts. Generic MM changes followed by
+>>> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
+>>>
+>>> READ_ONCE() on page table entries get routed via level specific pxdp_get()
+>>> helpers which platforms could then override when required. These accessors
+>>> on arm64 platform help in ensuring page table accesses are performed in an
+>>> atomic manner while reading 128 bit page table entries.
+>>>
+>>> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
+>>> supported both on D64 and D128 translation regimes. Although new 56 bits VA
+>>> space is not yet supported. Similarly FEAT_D128 skip level is not supported
+>>> currently.
+>>>
+>>> Basic page table geometry has been changed with D128 as there are now fewer
+>>> entries per level. Please refer to the following table for leaf entry sizes
+>>>
+>>>                     D64              D128
+>>> ------------------------------------------------
+>>> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
+>>> -----------------------------|-----------------|
+>>> |     4K    |    2M  |  1G   |    1M  |  256M  |
+>>> |    16K    |   32M  | 64G   |   16M  |   16G  |
+>>> |    64K    |  512M  |  4T   |  256M  |    1T  |
+>>> ------------------------------------------------
+>>>
+>>
+>> Interesting. That means user space will have it even harder to optimize
+>> for THP sizes.
+>>
+>> What's the effect on cont-pte? Do they still span the same number of
+>> entries and there is effectively no change?
+> 
+> The numbers are the same for 4K base page size but will need
+> some changes for 16K and 64K base page sizes. Something that
+> git missed in this series, will fix it.
 
-You should mention the move from pmdp_test_and_clear_young(), and why it
-is performed.
-
-Nothing else jumped at me :)
+Oh, and it would be great to also clearly spell out the effect on
+hugetlb as well. I assume the available hugetlb sizes will change as well.
 
 -- 
 Cheers,
