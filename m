@@ -4,89 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CB6105D99B
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 03:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D8AFB5189
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 03:40:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24EC46B0088; Tue,  7 Apr 2026 23:21:12 -0400 (EDT)
+	id 292516B0088; Tue,  7 Apr 2026 23:40:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FF6C6B0089; Tue,  7 Apr 2026 23:21:12 -0400 (EDT)
+	id 243206B0089; Tue,  7 Apr 2026 23:40:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115F96B008A; Tue,  7 Apr 2026 23:21:12 -0400 (EDT)
+	id 132786B008A; Tue,  7 Apr 2026 23:40:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F393E6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:21:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E6B51A0971
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:21:11 +0000 (UTC)
-X-FDA: 84633937542.18.4B203A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EB28F4000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:21:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 000626B0088
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 23:40:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C85113BEDB
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:40:30 +0000 (UTC)
+X-FDA: 84633986220.14.DDE268F
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A09084000D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 03:40:28 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLEPRTWT;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iBIorfVi;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775618470;
+	s=arc-20220608; t=1775619628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slr7IK17CaWYSyalInYKoii9g5wch0RE+FjGRJ1lOuk=;
-	b=Kac4gJdW0WF2qeQTJVhTkreOc5i88V2b+YKLkpsRbeTJIBryB2nJf/0zrl/G7Qu0g679Ek
-	JM7BlIwGbXpj0dnuwi41AjwpPwEY7B+lWirZQD/brVch6W1e5Hv73PzeLIV743tkif9LYk
-	zjcsbp7gw/nEPvi6/Tb1mRLrWnN+oDU=
+	bh=c8Ds3pHng15kKOEJE0OjDpk2jM6or+3GmYgHlHYpLlk=;
+	b=WIGxjjNizEeRu1jd6OwXBVgifVerjnkHA3fOzYrnn9s7aB5JrEJbjBjNiDeWs72GtOCr98
+	2AwmnhyBwQeKAPSXkXEtO0rV0ijAWF+T1Ba49GXksOc4bLxvpQDlp5mYLV1RYKF8qGWzRd
+	3eCH1zZgmYdwena2+ztZ01B+zWrpVWY=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLEPRTWT;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775618470; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iBIorfVi;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775619628; a=rsa-sha256;
 	cv=none;
-	b=4Y919cIny76M27iT56eTEd7/7TwItEou9oK7MD0CNnuqJ5AJdIuiGz0HS94Yc7RWIqq4yb
-	xlTRtNr6z2vDhOx7m6oCkWw9EMcMNWY/NYyvff13Mm/jUwQk8b1b/PjVltBC64n9vX1Cy3
-	Nvk2TmWJMgw9J8/FC7OeCSuBIBc8NGA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C44C74434C;
-	Wed,  8 Apr 2026 03:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D6FC2BC9E;
-	Wed,  8 Apr 2026 03:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775618468;
-	bh=KnNKUv3eJ5Gv1Q9yr28xE3tQt7BYIq2Uf+I/m02aYU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GLEPRTWTWMuvM/pn2Zr3e5H/+PLyJBECnRsfx1IGeGWsRnf26c+Oi0w/RvsESOVHG
-	 7S6pzzD3w5uEpO12RHBP1XtQYody9cJRCesG7dUo4GzeMtXVwmTgAfFSFt2l4GOwpR
-	 PVha60LqnCGgwSU4v5KZEMFpOqENdbT2EX4MAmcxDtlorLrkPkv0+huBcH28qH+NeZ
-	 UlOu67M81w9Zu2+ad+L+6cftiWIjQNvBqUk2YlIcW5bPrGuRAu5VZ7Mb1LbVME+uqT
-	 eOKKLRs4RFg8U4iqZa8vWcu0RNR2zeyb24O5lF3My47GN7sgy9q3aHitw6UO66K0WE
-	 eNox0fC2T52Zw==
-Date: Wed, 8 Apr 2026 12:21:06 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Denis M. Karpov" <komlomal@gmail.com>
-Cc: rppt@kernel.org, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
-	ljs@kernel.org, vbabka@kernel.org, jannh@google.com,
-	peterx@redhat.com, pfalcato@suse.de, brauner@kernel.org,
-	viro@zeniv.linux.org.uk, jack@suse.cz, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] userfaultfd: allow registration of ranges below
- mmap_min_addr
-Message-ID: <adXJop1d0QdH2Mwm@hyeyoo>
-References: <20260407081442.6256-1-komlomal@gmail.com>
+	b=4ZNdis//WcIRbjr8WX8KPscN7NalvmzNJDhCZ+/l8MbSCn871qpscAxtx8UXPZrMytZ7hS
+	pXioyHe11ub7R0bokw5gFt5s2IXlcwVAZPVHFsILtfyNKxW2nrHQ6wzSNXxeMn/Bp6Mun/
+	3uDcANIs+kSGwypZaMTuIBmpgKaR9W4=
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7dbba5076c8so2165052a34.0
+        for <linux-mm@kvack.org>; Tue, 07 Apr 2026 20:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775619627; x=1776224427; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c8Ds3pHng15kKOEJE0OjDpk2jM6or+3GmYgHlHYpLlk=;
+        b=iBIorfVi4DRJ5nVNDhWWurEmUtVSzEtrWJZ9OyL5m17SKOBlEx5/JHQ7KxYYQTKZNg
+         o3m0VYVWM+TJo/3V9Vvj0GTUQXPIIUSni4K9yA/JTCOwtPkywgZjRVXh/ZC75PaUwqS1
+         V5Vv52BuewPIZQYpFTd6GttdCVZnMSRDTsweukBKTe90+TdokCq6oMCqoaz3L+e7IynZ
+         NN+ArQYGiPmwCEBAKcQSSqyTFLEC3eyRi4xjXyqtKY+iC3IdKR8asF3sfmtWmHi8Ave/
+         q+SZBZ+sVau0irwTyQ2275toyaRQrm6Ge+qt7YeCi3MEv8LGCrfIFPaby07aXxj3GOVV
+         yTfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775619627; x=1776224427;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c8Ds3pHng15kKOEJE0OjDpk2jM6or+3GmYgHlHYpLlk=;
+        b=oNThNM9M3PVOt6l43NkEkZ2p3ZUKg79v23iJwYZL6Eu6xnka3HgfLMO7gnneV/wk+q
+         ZKzRcGDYpUNM9C9JfNOjqe/Vjjy3rHXIAPZ4FaAgLd70G3A73mJWHYF+LNAYPrOLf3G/
+         kpG/WCMOf2JCKxeI67JDWe4I28/384cCAfYpJIVz4kDcL8itXxzixYeDgRx+9ein+fkW
+         w14Pr7ET3dqMkL6xhX39BYq144FNfXgjDZLuomRRYchSLnmEZBeOymyVn8h2dVhkX2NV
+         imMkFZGmMvIyI83jYlwaYwSNk9Gm/bPpLsKyw6cMWrhK4zPa/HXQq/O+bzIffei7cfef
+         XoAA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+MOPAnvI6Yg+HPYS3K0it7eCjP5AxmyTChgufL6Dxre9Hu6286WFXh5cWIVyAqoaQa92QjQ1RUQ==@kvack.org
+X-Gm-Message-State: AOJu0YxjKKnE4acATD8Drka1MTfAtAyiBrc2agzIaUyFu33eWbwJEKKv
+	fncf20qcVvSUsUjouiK6OU0j9aI9izTEbLIsScUgZN/hbTbVEz03ijjC
+X-Gm-Gg: AeBDietiVJc73IqRYwPlHKMTyIM5aKimjbZeaDJ2RMCWLAa0qfytFjQJQ7EZugaufEY
+	fbW5LJyWKhkVaU+nlARSxaWxCypIBC51WskPisd+XbiXTRG3JPzhNIOYVH2vDCzyYAURkGSI2pO
+	LFudY/DU9/+CF2xqzDLmb/5tVAYgpJwSRPb9uFltvNOezGwxWu2I7uG3ziBeLISpml7/N6T7C3a
+	J0fWP6g0AR7v+havXyJ3CKBH/FFwLi9tC+IkkE/hL3gzCPl790gFx5vwaPTByvGuV6H3kK+VFYd
+	2qz0P1eerEIF9QgTzURjIjGEqpKzPrki5GQB1lAkDNVbxlfeM1Q3mCAbSPknrVPq2gPGy2XP1jG
+	eEFV7vorzWRx482aVtRBBDqBL4k8Pg528TVOOurmyaiyjW36E43by4+e5eVZIGKx/Gyqu7/HknV
+	TPVs4LV3J5Fmbj5vUd+CHI7Q==
+X-Received: by 2002:a05:6830:391c:b0:7d7:419a:7ac8 with SMTP id 46e09a7af769-7dbb7517e0cmr11694018a34.15.1775619627529;
+        Tue, 07 Apr 2026 20:40:27 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dbed6c3512sm3988912a34.4.2026.04.07.20.40.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Apr 2026 20:40:26 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Date: Tue,  7 Apr 2026 20:40:24 -0700
+Message-ID: <20260408034025.3317937-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <adXAG52R6WVHd0n9@hyeyoo>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260407081442.6256-1-komlomal@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A09084000D
+X-Stat-Signature: sktkojsoz8eh9tggupd5aoifu1k8a3ft
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB28F4000A
-X-Stat-Signature: 1qmq5xm6jcpefbh3ra9ixdz75xk37maf
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775618469-633348
-X-HE-Meta: U2FsdGVkX1+hA5+PhiOVnTbFbVfDblDkkdvEGZKimLQrZQLIiEmKHXM8yKGbPvlfufD+Ash89NHAV0sRq1N8pbs4aLKYqVIgr7VYUkn8TFZQyXCZJR3Ly86bPHpGH3r0tftOsumh0HY/EirsIUwbwT78U70mdREa0sRMBeFIH/eiWvIMaJNp9DAeVzn5QAXe1cdQTw8FjDQ6YiYWPhXFqoLOEvJN8ZqaIS1E+6qXIEpo9/4v0NRxZM7BDtY9wRgDic1botiBVlD/ClpiFy2KpDUzrVaflX7ujxo1a4rda1nac1ToEeIRf724paKYQtFl4IxjMbvguvmi/YdCC12b2luC9XwXIkMKEZN0C+2ndaRpGFDW7hZNLRbQ+knUjPWWn8Na1c+flYrwivewkjRpQ10a19bqja8qESRT4FPLnVM7VSe9yVY0yKKutzCoOGOM906/6n4w1q+2LCi/DCq3b1qgGwlx5vU53Yh/4GEo0oVVTKORG35SyFBp0A65qSuKTpEz3GZWUAoBckUB6ONOJWSS1E27Uucw3rsdB6wGwHvC/eakgZddWqXy6Ml0J/8ZNqWMV8OBvciA7kJkgvmjO/xx2q+//sTNJHv1kccRbA9bdhDuNmhfXLZpf7N/9YQQbRpylHK7gp57FYiWQrkDGhf3CDyhAF8uj1FemsTeEHhLsR0ApVKxPjyRzQNSLJnAbU3uuJ+uNfqaJnAhASNEeVv669VrC25CThXwwvj4lajfUZLW3pMVVPCDsgw7mUSjYD1C+1gAR7fMnHQI6Tzivk++6rCOZgu/vCoVM5TP4NVbvdTiFr/0B5hoRljSEu+4N/YuG/kSOnW+Fpw5JTgfwgA+DHzEFubeRaX+QLSUu2VtFM9LnCta7V19YiRGFXi8ndj//Jj/twMkxutnKSgFf4KvWtJ7KTSsz6qctGYR6fAKVNuFqlzX9pHlTPlz7/ElHetyLtwrrR5RFgXD09m
- E/oStSWo
- xpCR5uGQQv19QvbO4l1/1Nph2O47pNBFeuYs3gAhZe4uvD20/buyax/RsN0tX6h86T7pfejguuQMNriwjL9bs/ozq1dubG3U/mcUHuUdt8XaHq2yOg6uKqX9Qo36wyQzzYeXNfst4MWCERTRdw9fd1q36CuNx1KOgslRKX25t6W238wjBqPYM1HuRsLlgdB31YOA8XBHAKANlYCXDpNRmCjHqCGywpjbSdepLGuEc5z6glZuDjIU6oHFnLc2eDfVR0kYjDwgMAdOqIF0OckYJU1odj57W5RVQ3tObfZYoTb+XL9+iujza9Bht9dz3NZoch9V/RYqlaEMzb/D+vUNgD1S4Xs8hpad4AKsh
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775619628-217874
+X-HE-Meta: U2FsdGVkX1/OYpEGuQslURR8uzJnyFg6yPkZZCSkNGNo4y9GiheAz5eQoESIy2gTvDckvThiT9zq3GjFjUHv1XOU7rSEIGA6F+fe8trUVw2LdLtFDQBCgXBwjbfqJBpF/7UVztjwrASZo7aZDVzKI9uif4lEn5Z42kOcqNPvmUKjpk/j6/OZJUYw6n5itzgqShE7wEZUwHTu5fp2dcmwg37HyZsXm+Rq2CaeDGolFgFeZRwvU8ChbNqSTRnZ4WoH5X0rlenIspltQ0FkDjWhiUDSVNw+LhishQt/Nr/SgrCpQHbosnmvejW0Yr6w6ycX9PQ5QDiBR7RDzDYEAKkyqTr635sjSHthwTVmIVEeUQH3rH3UhZrzf3OK5jRUlCbvrivU3VW7F7f9Zic8B1lSW92GkX80+fb6lRUeJolZv4mnz/LdDiqJuWQYuflXxCtSBqAO0XCiB3bgoc4/vlcMA/+wReC0IIG8BFVLbvRTSf7EqC2m1p3zqTEBe9hTBqZGSYI5b+L1k+Ue9OL7AsaDfe1VMig/MJg0uzGcakgUcyqUp0XBMgrqDVYI67QcM7godnyJa0udu09enXrVaVwKVKBOwI9+49Vux7QAFoK5G3T/V9zTyib9TvTIodnOzW7Yo0vdFufasdWzRulLG/HW8RRjF0aZIi5hOYNoT5rPpzZZCmD/43r6yQE0tbv0/Oo7JztR2cmOWUfI9yUDGyIxJykEiS/Eknd66eizI/ITzutwDiITeuTbR1o/Z7do/gmgNR0RJ55+1eBBm4yMbarYy5SoreI3Ztnit7S9HFTW+lHIIwqFwmhfJQDsr3SMN+8e7dNuHcR5xZmkIKkdeRXddP3zaZ02uhZjKkF1+JdOZ7F7Ng6r+gKVf0yhuLDMfiJT+TAOBqHpX1zoi64XSMUrBEHWsVZoNopXPddNqwDC85PS4ZWT9EW1pATcFhxiyhWy2IGpknEy+FKnVIaLC2P
+ jk4ygFUr
+ o/4KR1Faf1NEihRNjF3b+2KpnGTFCc8tNjFlvLRxYSM+O/n7jRZ2pcyqqIk+Aj9+TpsJAu8WWZAIQIhuSKP1DnwLkfk6u4fufXa20SVDsUuNznpnDGHCFVt/v8aNnf/gBEuJac3CTqw3UgNo/SyGKm2VVYHIGyfwwnYKmHnMrClNGtzg8HQlgFVyXtSXEK/q02g/uoKWQOftvLmAhgGbtUWX4jW2fj9HPmyE/gVtZnuua9vzy7qvmmi3PM822fvdy5L/vXkbhxpH/3OBmPRz4wp1WTKDOrxrQpdsp//o7cneyO4qBSkYlleIT0CJHWlCaQ0TGHsbmAe1ztlggT220mb4zBZZq0KkRfOshr1jJSZ8MyjU8i44/nVmhNFs9QvHZoBvBgbb02XR+ABeOBkY0JwGuYaPEPgw33ja66ID6BHJe4JsaBVvTyKCmmfjAnmpViYJotIos0yxW7CLuqPXaGrDPFky7YCRMN33C1Eb6u0v2ddmBc5+Q8bOp9sAkLKGzh/CaiUdd4bkCB3UlhL/KX0XNbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,60 +132,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 11:14:42AM +0300, Denis M. Karpov wrote:
-> The current implementation of validate_range() in fs/userfaultfd.c
-> performs a hard check against mmap_min_addr without considering
-> capabilities, but the mmap() syscall uses security_mmap_addr()
-> which allows privileged processes (with CAP_SYS_RAWIO) to map below
-> mmap_min_addr. Furthermore, security_mmap_addr()->cap_mmap_addr() uses
-> dac_mmap_min_addr variable which can be changed with
-> /proc/sys/vm/mmap_min_addr.
+On Wed, 8 Apr 2026 11:40:27 +0900 "Harry Yoo (Oracle)" <harry@kernel.org> wrote:
+
+> On Fri, Apr 03, 2026 at 08:38:43PM -0700, Joshua Hahn wrote:
+> > enum memcg_stat_item includes memory that is tracked on a per-memcg
+> > level, but not at a per-node (and per-lruvec) level. Diagnosing
+> > memory pressure for memcgs in multi-NUMA systems can be difficult,
+> > since not all of the memory accounted in memcg can be traced back
+> > to a node. In scenarios where numa nodes in an memcg are asymmetrically
+> > stressed, this difference can be invisible to the user.
+> > 
+> > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> > to give visibility into per-node breakdowns for percpu allocations.
+> > 
+> > This will get us closer to being able to know the memcg and physical
+> > association of all memory on the system. Specifically for percpu, this
+> > granularity will help demonstrate footprint differences on systems with
+> > asymmetric NUMA nodes.
+> > 
+> > Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
+> > account node level statistics (accounted in PAGE_SIZE units) and
+> > memcg-lruvec statistics separately. Account node statistics when the pcpu
+> > pages are allocated, and account memcg-lruvec statistics when pcpu
+> > objects are handed out.
+> > 
+> > To do account these separately, expose mod_memcg_lruvec_state to be
+> > used outside of memcontrol.
+> > 
+> > The memory overhead of this patch is small; it adds 16 bytes
+> > per-cgroup-node-cpu. For an example machine with 200 CPUs split across
+> > 2 nodes and 50 cgroups in the system, we see a 312.5 kB increase. Note
+> > that this is the same cost as any other item in memcg_node_stat_item.
+> > 
+> > Performance impact is also negligible. These are results from a kernel
+> > module which performs 100k percpu allocations via __alloc_percpu_gfp
+> > with GFP_KERNEL | __GFP_ACCOUNT in a cgroup, across 20 trials.
+> > Batched performs 100k allocations followed by 100k frees, while
+> > interleaved performs allocation --> free --> allocation ...
+> > 
+> > +-------------+----------------+--------------+--------------+
+> > |    Test     | linus-upstream |    patch     |     diff     |
+> > +-------------+----------------+--------------+--------------+
+> > | Batched     | 6586 +/- 51    | 6595 +/- 35  | +9 (0.13%)   |
+> > | Interleaved | 1053 +/- 126   | 1085 +/- 113 | +32 (+0.85%) |
+> > +-------------+----------------+--------------+--------------+
+> > 
+> > One functional change is that there can be a tiny inconsistency between
+> > the size of the allocation used for memcg limit checking and what is
+> > charged to each lruvec due to dropping fractional charges when rounding.
+> > In reality this value is very very small and always lies on the side of
+> > memory checking at a higher threshold, so there is no behavioral change
+> > from userspace.
+> > 
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  include/linux/memcontrol.h |  4 +++-
+> >  include/linux/mmzone.h     |  4 +++-
+> >  mm/memcontrol.c            | 12 +++++-----
+> >  mm/percpu-vm.c             | 14 ++++++++++--
+> >  mm/percpu.c                | 45 ++++++++++++++++++++++++++++++++++----
+> >  mm/vmstat.c                |  1 +
+> >  6 files changed, 66 insertions(+), 14 deletions(-)
+> > 
+> > diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+> > index 4f5937090590d..e36b639f521dd 100644
+> > --- a/mm/percpu-vm.c
+> > +++ b/mm/percpu-vm.c
+> > @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+> >  				__free_page(page);
+> >  		}
+> >  	}
+> > +
+> > +	for_each_node(nid)
+> > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
+> > +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
 > 
-> Because userfaultfd uses a different check, UFFDIO_REGISTER may fail
-> with -EINVAL for valid memory areas that were successfully mapped
-> below mmap_min_addr even with appropriate capabilities.
-> 
-> This prevents apps like binary compilers from using UFFD for valid memory
-> regions mapped by application.
-> 
-> Replace the rigid mmap_min_addr check with security_mmap_addr() to align
-> userfaultfd with the standard kernel memory mapping security policy.
+> Can this end up with mis-accounting due to CPU hotplug?
 
-Perhaps worth adding
+Hey Harry, thanks for giving this patch a look!
 
-Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Yes, definitely. I think the solution is just to charge based on possible
+CPUs, even if that might lead to some inaccuracy (by however many CPUs
+aren't online at that moment). Seems like that's what already happens
+in memcg anyways, so I think this discrepancy is OK to tolerate.
 
-> Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
-> 
-> ---
->  fs/userfaultfd.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index bdc84e521..dbfe5b2a0 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -1238,15 +1238,13 @@ static __always_inline int validate_unaligned_range(
->  		return -EINVAL;
->  	if (!len)
->  		return -EINVAL;
-> -	if (start < mmap_min_addr)
-> -		return -EINVAL;
->  	if (start >= task_size)
->  		return -EINVAL;
->  	if (len > task_size - start)
->  		return -EINVAL;
->  	if (start + len <= start)
->  		return -EINVAL;
-> -	return 0;
-> +	return security_mmap_addr(start);
-
-Hmm but it looks bit strange to check capability for address that is
-already mapped by mmap(). Why is this required?
-
->  }
-
--- 
-Cheers,
-Harry / Hyeonggon
+Will spin up a v3! Thanks a lot, Harry! Have a great day : -)
+Joshua
 
