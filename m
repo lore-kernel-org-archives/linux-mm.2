@@ -4,155 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 941D110F9968
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F02910F9976
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEBFA6B0005; Wed,  8 Apr 2026 16:10:46 -0400 (EDT)
+	id 624D26B0005; Wed,  8 Apr 2026 16:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9CDA6B0088; Wed,  8 Apr 2026 16:10:46 -0400 (EDT)
+	id 5D56E6B0088; Wed,  8 Apr 2026 16:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8B906B0089; Wed,  8 Apr 2026 16:10:46 -0400 (EDT)
+	id 4EBA56B0089; Wed,  8 Apr 2026 16:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C95516B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:10:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C4BD139FF2
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:10:46 +0000 (UTC)
-X-FDA: 84636481692.25.C707A3E
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0A67920013
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:10:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="g//499sA";
-	spf=pass (imf13.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="g//499sA";
-	spf=pass (imf13.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775679044; a=rsa-sha256;
-	cv=none;
-	b=SJkA9BS/ftXMVnR8yAoUrZ31ge+424H2WgMBULLBDIAyd6Pk/WQYUpd5XCs78d8okfAFNU
-	1jQRjKogK0xjXC5Co3WOF6tPhVyxpAx9d5k3jIQYxfd/3j+D00GkQplpOs51NIb+hoQGrV
-	DpfhbmRJ9IOwmivQbAc19QGqtJzvS0M=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CEC76B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:23:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECAE357D1C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:23:32 +0000 (UTC)
+X-FDA: 84636513864.13.A7B7C3A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0377D140004
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:23:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c6CM9nw1;
+	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775679044;
+	s=arc-20220608; t=1775679810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSffQ46dxsNqLEMfW9mFNMfZBuciexIdSUQp95L3zYs=;
-	b=TWjV5wRmtmwI8Ued9fB6Kiqpiaviy/RiwODyiUi8ZxNyBfkdfC3R8vBpVkk6bUb2Gwer5v
-	Uz/uGurSAFiXua1IoNpRcpsDUP2FjU9L5ziQBDdyQWPf8L9kH03U1QqMwDAfJzWvufl8A0
-	Rgy/4elWeRPGA2aEXdqTN+VlhgdbM00=
-Received: from pps.filterd (m0167076.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638Ju6Rf3709294
-	for <linux-mm@kvack.org>; Wed, 8 Apr 2026 16:10:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=vSff
-	Q46dxsNqLEMfW9mFNMfZBuciexIdSUQp95L3zYs=; b=g//499sAUgG6l/aPNEY4
-	MrWDgZlHmfuOJ2N7pJMdRvAl/ADxc31gcYWWhPadhtApYsJGBMdVuAZ84Tyf0TLd
-	o7X5qy6NkDuP6cuAUkdTFD8YsGuNlKCVqHKCAnE9rBvb0CUUJkvkmpeafOlj6nFb
-	KtVZjONIOH0+rMVhdndCyxP4SZmYj9cAcwKbHQBhr3E0D2JfV0q7q15HV/dekLR8
-	RPvAfnvNTl8WK7OvOdrYJ5LOORWmu9FgFUIZkXM0Vzzwg+Yg6PWm5vkmCIWOp7A6
-	AKzSJZs356dJIl90Rk97kyFsa3pwGkyruHvPJHy6Wv6ixy5KnZy0bZvHdbim9/DG
-	Ww==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4dda3r7feg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Apr 2026 16:10:42 -0400 (EDT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50b802961ecso1865041cf.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 13:10:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775679042; x=1776283842;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vSffQ46dxsNqLEMfW9mFNMfZBuciexIdSUQp95L3zYs=;
-        b=kxXgZHRcDo/mF4z2wZwUxqsTNhOKoNGiIA8eVSzamr10pC7wBLCd8WRxCwxci1v4hZ
-         HLnpZoKlHWQYdFE9zcnxpUkuCTFsVSL4+YRcJeogNw7ybaCX5lKpa/NjNG3P8PvnvZoU
-         Mp/LE4mL2n5JTELRF3H5z4C7LhfhFrUp87MF0Dv9rga1uUqwDiQXojUnjx/cjGdvnSpT
-         6pFpTXRenc0HXe0Owm0U7q949jJKa0UC0m74NrrZdgIYP5GucJ2X54/frtYR6moC0Pwm
-         QinXKifrZVVrtRRmVaHjgKeQUZC1VKr67BxjFX9NJjTiEabjGYn+nKzYNey+gBnIizTz
-         2BQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfSzy6lBplVb6E1Rv5ECZmvNVNP3xCBIO80Z9xknDagVTpSvamRqluHdWwZ6isjdwSlxhbVZ6TMg==@kvack.org
-X-Gm-Message-State: AOJu0YyAkXnNIuvhO3hVVbxslky68qGtQNeho7QspXJJHkc7jbkwhx9Q
-	brc7qGazAhsWcxfHzjVtWlPacyYFiPLpFTo8OiYFOquTRXI4ytjOdQr1AQ7IYHELACvpSYBf17T
-	RdQGAGURzJ3SvRk4esAbqz9sw0rOZv38I14MBgX7SWpBmQLh2
-X-Gm-Gg: AeBDies9rjpz5gZHQI61UoAUDglIAY0TeqI2Q7w+3mWUqyn3nWLA6H5xrU8JAcRqmFe
-	P9uoumIVPLK2wMN9nwpR7q8A911r2xG7zkPNmwuVWzghcihyhvEmDc5S4GY6mP4s6F6deK5ueAw
-	nef8FdJKSnKClwtNhaB+pQsTD9lZeUrh9N36wrLdxy9m0Kdr3RsP6OLEvsuF0XjDVk0xsx9ApCh
-	eVpCkrB08RrLR2X70M7SRQ7euq+UkNmVTRgfk26SMXueRX+7CLlqpn5zM/UgFS4fL0XvC7UM5QP
-	3TkUVvxg7JtzLrkt64K8TRjzb85PvTRFPwXKUjCt+RwQo/OIrcyJldkHsFydtpd6xL6O/coGflm
-	hbYPvnDvwqC/A2FkTKkv/XDEtdjJJe8T9UNESWUBi
-X-Received: by 2002:ac8:5846:0:b0:50d:83d7:686c with SMTP id d75a77b69052e-50d83d76b21mr252299501cf.31.1775679041647;
-        Wed, 08 Apr 2026 13:10:41 -0700 (PDT)
-X-Received: by 2002:ac8:5846:0:b0:50d:83d7:686c with SMTP id d75a77b69052e-50d83d76b21mr252298531cf.31.1775679040871;
-        Wed, 08 Apr 2026 13:10:40 -0700 (PDT)
-Received: from [192.168.129.206] ([216.158.158.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50db5cfd8a9sm20333591cf.12.2026.04.08.13.10.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2026 13:10:40 -0700 (PDT)
-Message-ID: <62c1ec17-082d-4215-85ca-3e87048a6226@columbia.edu>
-Date: Wed, 8 Apr 2026 16:10:39 -0400
+	bh=dpd53IYBKPxfvsuuiOqR/eqPWf1cD9+LMYnfXG431mU=;
+	b=0JiBnwqfdj0XTf6jiZNmvE9iMwhzYMdxL9T774hrNsgj7NnKPqrhaPrFy9Ma9eJuZqC5h/
+	S7v2TjnR4JV9busZHUIUzzouq23PPKzIzww3/VBlHwPXuzZKQvRGkXrsFOodlcDRGDKJle
+	7zSMCb/2eSbvILqX0l/N7Uz2nTSiWDM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c6CM9nw1;
+	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775679810; a=rsa-sha256;
+	cv=none;
+	b=ZKC/9aURtDp4eEvRs+ENm4LCaeKK0b/mUVnbsRIpvmDxk0jLUM5q8v1R68cdY7bOTTXuWi
+	B/1boO4X/LOQ/5kwCZQlmS9BX/HFbAYvklZ9+/qtJcey++CCuZKXF3F8gfZmnepk/gC3yv
+	S24R3vze4lmnZmYL2fycp9Vo15fphZg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775679809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dpd53IYBKPxfvsuuiOqR/eqPWf1cD9+LMYnfXG431mU=;
+	b=c6CM9nw1/A3RYkKHAQ6VAa/MvvgfoiSWtZUaiTcQQr7Zhn4vPKijSTkNP2K7Et1Ok8pOXL
+	CFs1VlYEB+10Gl6nAFCZi44vitrCrLa99yv4lixS8DfklROSuG3vS3oeB27uvBtUOzrlvJ
+	g0DQWK28x6WC8MVkUeN1GOCc34iVbtk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-CwFTT27VPcaMhy004THKQg-1; Wed,
+ 08 Apr 2026 16:23:25 -0400
+X-MC-Unique: CwFTT27VPcaMhy004THKQg-1
+X-Mimecast-MFC-AGG-ID: CwFTT27VPcaMhy004THKQg_1775679804
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65E6A18005BB;
+	Wed,  8 Apr 2026 20:23:24 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.88.140])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BF50180075C;
+	Wed,  8 Apr 2026 20:23:22 +0000 (UTC)
+From: Luiz Capitulino <luizcap@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com
+Cc: ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com
+Subject: [PATCH v3 06/10] mm: shmem: drop has_transparent_hugepage() usage
+Date: Wed,  8 Apr 2026 16:23:01 -0400
+Message-ID: <020a4fe05e8ac52ca47c27b0fbb6a07c163a118f.1775679721.git.luizcap@redhat.com>
+In-Reply-To: <cover.1775679721.git.luizcap@redhat.com>
+References: <cover.1775679721.git.luizcap@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for dropbehind
- writeback
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Carlos Maiolino <cem@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-        Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
- <acRDyJrkJhnHHMSe@casper.infradead.org>
- <9631d652-fd3a-45ac-b8a3-b632b26f6fa5@columbia.edu>
- <ada0KnRjpYnY_QYh@casper.infradead.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <ada0KnRjpYnY_QYh@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: gvuUalzwqihCwa3WawS8-N0zAAwyssoR
-X-Authority-Analysis: v=2.4 cv=UplT8ewB c=1 sm=1 tr=0 ts=69d6b642 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=Qm0qsxP7aFY2tkT6R2MF:22
- a=rfDhleDhcnsx78YaP-MA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: gvuUalzwqihCwa3WawS8-N0zAAwyssoR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA4MDE4OCBTYWx0ZWRfX7pf+bY6owgXJ
- orvK9aql580lWD+v43YvF59nFiX2JkhcnUpXO1uL5f0R3f2D1DDmE+MyCGtypmtQI6PN76PHrGg
- uCL+7/jSn3ide2KvqzRtHZ3ov9hPYRqbsdoxr8Nx/jCwM2rZYcZOAell1TxzU02WWBWL4L1Il6G
- tsCHI3MSZ/61CLpEtFzR38p7pjH+wc5C3lx/L5ftalzVu7bLG3i24nEIV3iAgwoX9BW64+6D95v
- j97Arw9ZX7hiVYBp8g0FigHPG2RLHkhhviN1kFppICYxMqSjHbh6u7WhowiEWb4N/mUJlfylUGF
- QzBiQhuPgUwEL+btixqanEZvJiE5Rj1u3RzzGsLMFHHeKD1wuJBUP8k+GzfbasfnJoIxHBtCO21
- Ck6vRrFqj874JusSYLuuFgEaDEPzxLrusEXMfrxWIyI+geoXPRZ322b4ZVZxGW94GsHW/dGI0qM
- A+D8etZhR533Nxdbk5A==
-X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11753
- signatures=596818
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=10 spamscore=0 phishscore=0 lowpriorityscore=10
- impostorscore=10 malwarescore=0 clxscore=1015 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604080188
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0A67920013
-X-Stat-Signature: h4ayyp6opo7ceqmpjunbebrnfbbe7ogn
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: gPXNVKezzQgPhxveTBAQR47NfBvM1LyNN1r3RH8MVys_1775679804
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-HE-Tag: 1775679043-368269
-X-HE-Meta: U2FsdGVkX1+pxLhxDCnEZu7/w1etdYqxrYygL+8HO8CoL2pXhvHdBPJ8hWOTb/5x3N3cBNaVoBZEj0jfdIHTvu5kFfl6UBdVhcWyrWmHVu+zS2RyouuqQRMeghIhG/aUhD7F9UbMe810ly5fiskgTuTSAYfo9BDrp4m37msLPD1VQy7N2DGY0zMGVUn30+W8ec1A3nj/3zpxqdLLmfjHzcco2L5Dkerq4DNw7mwJU5hil3Om60jLPRPXGkfDNYx+8StCHF1vBlygjtCAubf4utAt0CiPayW4QLtmyJVvpBBxrTN9giskgAmg3q0mv2zZpVb8hX8eavpXwrMz5DTKWuah+Il7dHtrW4Ct/0l4sp4utwG1kz18vzFD1McFeJCxQP1OJ3s3R5iUj5iBd8BxzwGRdBy2ttwbkkwd6FxoNTv9GRLpys2EpW5mlEtKRm1uH7BxlmmVNVeaE+LCNtKCeQ77alRMZ1FKIvcuJ890KPx4B9/A9C8FZWXN7HIAv4/CokNfRS4XGsp2zTdSA9Z2Ci63gRD5p8925VrP/r3jDGWSeKAvM8r3aVifMr5kRs91ieJ7VS/iPQWfFdUilIbAyCgZSYn4WlMUX524CzV2MXZk1EHj7GHszCB/3pXNrEhwblaLmQB0U2sjAcQVFu0shSY2eoHHSoYp8SKiU8+Kj4XgX772r+GV4wdzUk7Vmq8IVBLk0fouSHt3P7V4EE7n606IKiQlogutFSooXWmqNbpG4gs56rlIoQwmcYIHjXqj/tcM7kTBOw5jGZtQHRgW4mYiaJRmrpcHFqeN90MO1pL/4pY5qN7b4fTNrs7iWN4x6TfgDY9D3rLZEs5IYjpKNKLdiMyXy0kQks+kSRNh2BsH726K1NlAYJNE3hbKYnHUUPU3uYOrovfC9ctvsuqg/nLUOjLmanmmh/iNVFEkxnRGqCb6ikMp36I+WCOBv0dhtCgcM9W89sZady3lkIT
- NLtLLdj5
- D8oFdx8BmytLriCBUbe6B8FSFGvyUl7hICErKSQw+OsMDrj50YFFLAWzQ+/tcldutISEF+VQ15gmzKVt2Wcci4UVJ+18eWkzkKeahABELmIENbMoiK2v2QvIwzAeGm6EcdMi2TORyVBPHz5JwrKbf9L5v0ZRF4fAh79etaSMY76uE4vDUE007W+4IT2YiqqwAy8oBNTq60B8spM2je2Ik5ad7cOO/WRQXMWDSXJXJRwTLeuRJIRW4Lxw2VcePNnyp4MiGXu3Eka7N/XIMb3exMqiPlxjrWSNNB0u2Jgym8+yy/w5VWmQoED9QRcY/n6uD4QAtzkKPnjRAHghcLf4EJ9//ieCeonUl4usKVcpxrNMGH1Zqw5WUQyFHVQZQupatvGQPV5zBnHc3SWpWGfFSAAMF98n/Z0AqDKEVz4GtpuXWcPs3wx3gQBzxC2QI52bK+D33kJRIeQuptf/6h1moyAvVMS9nzM52dCujIXD1rguaUD3Sd7TO6ZVJ+MAqen/AW8ranH8Tm2gd6ZQ=
+X-Stat-Signature: kf3oopjtznu35cqkgk8e3bfi3u93hpcn
+X-Rspamd-Queue-Id: 0377D140004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775679809-804222
+X-HE-Meta: U2FsdGVkX1/OrgIwxpAdVceG/9lSP0vJT5hT6q/aaM0zu/n0IfRos+JH0e8Qd4Y9qL0dO8X9uEyYz4nyUXyHOEoTecoolFQ6iujKsHXzSovtY4HcKBA46W5wuU9/D4gQng4v/X5UoYn9iUM4AY39f8k30Bc/GcXS2Tfa0L4Lj9DH/UMiOisxznFnD5SOo+IevEN1EjZCItyOgfMxyp2KzH6Hz5AV1RCekhQTNnOzp107IRsWu75Hk5VmIFN4rgCkYFGNwGMO4SDlyh0VUVtL40OEp2tN3kWdHd6PIpmr5SIA5PMt65Hzl61PmBYjZsf2SfumpSR0xbDQbnuEkO4mBPUDD4eCF9BdPtzPh6BfUqD7IQfVmSIgNPHfW0aiWIyFkSx2iBXe/gh8Sjog0xddIxKE7yO+sW3nQCUpf8vYKPf6W96B/n3fqwbig5Sa4VLBKftP5UassaPE6Emn5WK6eN9ITs6X3pVb9/94K40dtQbMPgHhM9mOCwntWsGD4r4E58vQKx0OZ3UOHbchTefv+WuiuMQ6zoDGta18VfoAGk+zRGEhmp9qDZObmSL9H8wFGbsHqjcpa75OrWwVjyd3UZnPUNChp1vb0RxAHdXOWrPatuagPXIiviOjTQpPWgCWtTmWrYMYvI+K/OQYvKTSlbdp9PQ4cQHo2NhcOSGbiGKnMYGgB+mVlaUot7clEQ2ONJrw5oSr3AgkRyr/TEtUXAXcJmb7450JZDpevSQD3LI/hV/jF8/fEXbRl+Stez6MbY6XZHrvZuOejCdEIi9P6DDdPAUsqPMZSF+aIIPBCxbOvuuyB8EUCtsIbZ9YWxvEN5RAD4Ah5WMweY+zMmrsuGlt/iy/RlGXS1cR/LMjEkqSSctOjjC/bavBwwlVF16QcoTRfdjg7Z4RXd3+vDSzRtSFgQSrND9FiDqePHQudl6yFWaAawQv0H0XkLJFA/Y/oX272rqWoWdou+XWNZ3
+ OKW7t6AZ
+ BAySgFUoBo3hNEdBl0QNePZOfFVEW6AOc17+YGRBwXPK1UvCaWyIzqzSCRx+0MX3EphG9woZUKpDks2TPxMSm4mYWxBJJRu7zD2OUtSkPDF9lzDrdphbNsck6ZawegmUISPghq4+94djhjJrr5VpHQoyHNPp1cjCuyLSCxKhJVixuUb02PzAPGMJ3ymgGw/cBnzhWh/oVf4Cl2QzOXVoLtcQ2uHtF60gke05H+KjcwO4o9AWB83I+1r9NDa26nNbxjIZUdSYi/36FWXyipxEL4bZ+yCjWFjwudScamEOK71CgKWTN6A+ApSr1a9pUSBjvJbqXjOO4TgmsMhLdQ6DvZI94c17OAT83oGZz2EWaSu5Dc5+3att/jgj/avjaCxvq2xTe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,60 +109,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 4:01 PM, Matthew Wilcox wrote:
-> On Wed, Apr 08, 2026 at 03:44:37PM -0400, Tal Zussman wrote:
->> On 3/25/26 4:21 PM, Matthew Wilcox wrote:
->> > On Wed, Mar 25, 2026 at 02:43:01PM -0400, Tal Zussman wrote:
->> >> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when
->> >> IOMAP_IOEND_DONTCACHE is set. This ensures that bi_end_io runs in task
->> >> context, where folio_end_dropbehind() can safely invalidate folios.
->> >> 
->> >> With the bio layer now handling task-context deferral generically, XFS
->> >> no longer needs to route DONTCACHE ioends through its completion
->> >> workqueue for page cache invalidation. Remove the DONTCACHE check from
->> >> xfs_ioend_needs_wq_completion().
->> >> 
->> >> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
->> >> ---
->> >>  fs/iomap/ioend.c  | 2 ++
->> >>  fs/xfs/xfs_aops.c | 4 ----
->> >>  2 files changed, 2 insertions(+), 4 deletions(-)
->> >> 
->> >> diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
->> >> index e4d57cb969f1..6b8375d11cc0 100644
->> >> --- a/fs/iomap/ioend.c
->> >> +++ b/fs/iomap/ioend.c
->> >> @@ -113,6 +113,8 @@ static struct iomap_ioend *iomap_alloc_ioend(struct iomap_writepage_ctx *wpc,
->> >>  			       GFP_NOFS, &iomap_ioend_bioset);
->> >>  	bio->bi_iter.bi_sector = iomap_sector(&wpc->iomap, pos);
->> >>  	bio->bi_write_hint = wpc->inode->i_write_hint;
->> >> +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
->> >> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->> >>  	wbc_init_bio(wpc->wbc, bio);
->> >>  	wpc->nr_folios = 0;
->> >>  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
->> > 
->> > Can't we delete IOMAP_IOEND_DONTCACHE, and just do:
->> > 
->> > 	if (folio_test_dropbehind(folio))
->> > 		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
->> > 
->> > It'd need to move down a few lines in iomap_add_to_ioend() to after
->> > bio_add_folio() succeeds.
->> > 
->> 
->> Actually, looking into it more, IOMAP_IOEND_DONTCACHE is used as part of
->> IOMAP_IOEND_NOMERGE_FLAGS. I think deleting it while maintaining the
->> no-merge behavior would be uglier than leaving it in.
-> 
-> But why was it added to NOMERGE in the first place?  I don't think it's
-> harmful to merge writeback I/Os which are COMPLETE_IN_TASK and I/Os
-> which are not, as long as the final I/O is completed in a task.
-> 
+Shmem uses has_transparent_hugepage() in the following ways:
 
-Looks like it was added in commit 34ecde3c5606 to ensure XFS DONTCACHE
-completions were actually punted to task context... which we now ensure
-elsewhere. Will delete and mention the side effect on regular I/Os in the
-commit message.
+- shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
+  if the CPU supports PMD-sized pages
+
+- shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+  the code block calling has_transparent_hugepage(), the
+  has_transparent_hugepage() call is exclusively checking if the CPU
+  supports PMD-sized pages
+
+While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+in all cases, shmem can determine mTHP size support at folio allocation
+time. Therefore, drop has_transparent_hugepage() usage while keeping the
+CONFIG_TRANSPARENT_HUGEPAGE checks.
+
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+---
+ mm/shmem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b40f3cd48961..6f8b20d77e07 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -689,7 +689,7 @@ static int shmem_parse_huge(const char *str)
+ 	else
+ 		return -EINVAL;
+ 
+-	if (!has_transparent_hugepage() &&
++	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
+ 		return -EINVAL;
+ 
+@@ -4664,8 +4664,7 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
+ 	case Opt_huge:
+ 		ctx->huge = result.uint_32;
+ 		if (ctx->huge != SHMEM_HUGE_NEVER &&
+-		    !(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+-		      has_transparent_hugepage()))
++		    !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+ 			goto unsupported_parameter;
+ 		ctx->seen |= SHMEM_SEEN_HUGE;
+ 		break;
+@@ -5451,7 +5450,7 @@ void __init shmem_init(void)
+ #endif
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (has_transparent_hugepage() && shmem_huge > SHMEM_HUGE_DENY)
++	if (shmem_huge > SHMEM_HUGE_DENY)
+ 		SHMEM_SB(shm_mnt->mnt_sb)->huge = shmem_huge;
+ 	else
+ 		shmem_huge = SHMEM_HUGE_NEVER; /* just in case it was patched */
+-- 
+2.53.0
 
 
