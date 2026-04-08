@@ -4,106 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16087FD5F77
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 04:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D779FD5F68
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 05:03:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01FC86B0088; Wed,  8 Apr 2026 00:56:29 -0400 (EDT)
+	id 757176B0088; Wed,  8 Apr 2026 01:03:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F12F56B0089; Wed,  8 Apr 2026 00:56:28 -0400 (EDT)
+	id 708596B0089; Wed,  8 Apr 2026 01:03:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E289C6B008A; Wed,  8 Apr 2026 00:56:28 -0400 (EDT)
+	id 61DCC6B008A; Wed,  8 Apr 2026 01:03:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D4D596B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 00:56:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7967F5BBDF
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:56:28 +0000 (UTC)
-X-FDA: 84634177656.19.7C839BE
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 34791140004
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 04:56:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775624186; a=rsa-sha256;
-	cv=none;
-	b=SB3lr8WCzrIKATzHnUUHHiS4yvCTjjuJlvtqpmQWEfNw5mIORlAZOKxMMPT7hKUlcd5cKI
-	56cslCalSw+V95rEUGmmKb7sNi2pAksg95iljD9AmEvQRIM5Uk7ESIPxjVBbOaE3069BJY
-	WNd3g8VvyBCPpJlKTDWb5bsAFx01CIE=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3B36B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:03:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1BC1E2A03
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 05:03:43 +0000 (UTC)
+X-FDA: 84634195926.11.6963E05
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 29E1840002
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 05:03:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=s6ylrp4A;
+	spf=none (imf04.hostedemail.com: domain of BATV+4d4f7abe5776451c4d8a+8263+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4d4f7abe5776451c4d8a+8263+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775624186;
+	s=arc-20220608; t=1775624622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MAJbeMRDDxAItV7hO1b+8Cj35xMqD5zIordHjGBqXLg=;
-	b=Z3hRYJV+BgJOwTMIrpyewZRtkpswHhAJSOqn1WuohiqJIdulsUTT1Y+cl6noc44q2xD4VV
-	rq6p286oACdZwT7JAn3v+KpE9imCfcdwyMPmuVBANtoX6meY6UqHfr9tKQNXjr/3mUpfSk
-	1BhhjzPnyoDYRq4yium0nFgdGylvZqw=
-X-AuditID: a67dfc5b-c45ff70000001609-7b-69d5dff35c30
-From: Rakie Kim <rakie.kim@sk.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Jackie Liu <liu.yun@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kernel_team@skhynix.com
-Subject: Re: [PATCH] mm/mempolicy: Fix weighted interleave auto sysfs name
-Date: Wed,  8 Apr 2026 13:56:13 +0900
-Message-ID: <20260408045617.318-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260407141415.3080960-1-joshua.hahnjy@gmail.com>
-References: 
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5/qEsbqxOUv5KSzyhq5DLMuZrREUg6mbeIZELe+SUww=;
+	b=O6YZszJmMUqWi7QH7z7CTlzeQQmItmChWspfkHLc+3uUY8QOQu21zju0ys2kyQ9BW+tLjE
+	IEJ78KDgYEpfXKZ6geXOK287+pk8jG6UjKn9NBb/6LCkTg80jBZXAPwTCrGMmefNBlRWJi
+	bVGVclaqEVC9rwEh3x/23KhJjCVR+LU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=s6ylrp4A;
+	spf=none (imf04.hostedemail.com: domain of BATV+4d4f7abe5776451c4d8a+8263+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4d4f7abe5776451c4d8a+8263+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775624622; a=rsa-sha256;
+	cv=none;
+	b=KfVfXYxnNwyBGcn+uPgbda2wusP16+rmCBOV4xvnTnJI7f2vQiOvDxBMFXv62AbZiaShpK
+	NFbHq5YBgMKkbfJB1PHpUJqtYd/cKWLlgip7cPG62GWgFhBSEqh94xHHJ/wbFutdFoVOjW
+	9TaSGpXo9HsKBxp4S6MtNoo7ehyD7+Q=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5/qEsbqxOUv5KSzyhq5DLMuZrREUg6mbeIZELe+SUww=; b=s6ylrp4Asy9kfLDQpYmKGUrXLC
+	89uIj0BTQszIY71WxqqXaqlEOKWSwJMVa5rD8GE5gVB9/eItM5O12CYEKd/uNpxNIQTWh5mPIW6hs
+	718SAvy03aXJJbOwQYSvpfTJ/9YEU+91O9N6iQ+YmtyTI3rA2675pRjeG2SBhZkFiJvVPhbsE2zSY
+	Moc3JvijJkdGh5ybAJrDeOW/EKbz1c7eYqPhbSsJ1ds8RTgsznD9lzX5PIctU6ttD/vfmnaI/8hF/
+	j43CoVI48GMFJeL9IXH6DrBNfI+pSythCP6Vk/Kw0TzP5f5/oRxvEWtNCbtNrmTkY7kfkK+ItQMSG
+	W4EiJ7ZQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wAL4l-00000008GcG-0ubk;
+	Wed, 08 Apr 2026 05:03:39 +0000
+Date: Tue, 7 Apr 2026 22:03:39 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] f2fs: do not support mmap write for large folio
+Message-ID: <adXhq-eEjJji1rcc@infradead.org>
+References: <20260406154940.2407853-1-jaegeuk@kernel.org>
+ <adSTUszGSlEK_IBv@infradead.org>
+ <adWMAzmaHiYzSTzN@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrILMWRmVeSWpSXmKPExsXC9ZZnke7n+1czDa5dtLKYs34Nm8WuGyEW
-	z7f+YrT4efc4u8XxrfPYLfZdBIpf3jWHzeLemv+sFo8OFlp865O2WL0mw2L20XvsDjweO2fd
-	ZffobrvM7rF4z0smj02rOtk8Nn2axO5xYsZvFo+dDy09FjZMZfY4d7HCo7f5HZvH501yAdxR
-	XDYpqTmZZalF+nYJXBm/nnxnL/jIU9HQ0MrSwLiXq4uRk0NCwETi1t3ZbDB257c5LF2MHBxs
-	AkoSx/bGgIRFBDQlTrROYu5i5OJgFnjKLHHt7EEmkISwgJfEwcNXWEBsFgFVifdnDzKC2LwC
-	xhLNZ09CzdSUWLfxFlgNp4C9xLNFK8FqhAR4JF5t2A9VLyhxcuYTsBpmAXmJ5q2zwZZJCHxn
-	k5j+fTkTxCBJiYMrbrBMYOSfhaRnFpKeBYxMqxiFMvPKchMzc0z0MirzMiv0kvNzNzECI2JZ
-	7Z/oHYyfLgQfYhTgYFTi4T3x40qmEGtiWXFl7iFGCQ5mJRHepPrLmUK8KYmVValF+fFFpTmp
-	xYcYpTlYlMR5jb6VpwgJpCeWpGanphakFsFkmTg4pRoYjQ+enVLyv9/zk8D+R/fn3zr42FFC
-	ZgZTqGVPhCD/Np384NZ6TtN1jZsvnHUJaN9Z7nmk+8CxeJVWuz3XnV523FuzLkfP6ChXqMS/
-	vyyLDgmJLr8if/TnEY57bhLXfpdvlAtMuCvX+NHsdNu9eTrN0reeL538sWjtjN1Xjyx4yqW4
-	IiY1vGbhRSWW4oxEQy3mouJEAN9CIl+EAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrGLMWRmVeSWpSXmKPExsXCNUM9Rvfz/auZBq1HDSzmrF/DZrHrRojF
-	uSmz2Syeb/3FaPHz7nF2i+Nb57Fb7LsIlDw89ySrxeVdc9gs7q35z2rx6GChxbc+aYtD156z
-	Wqxek2Ex++g9dgd+j52z7rJ7dLddZvdYvOclk8emVZ1sHps+TWL3ODHjN4vHzoeWHgsbpjJ7
-	nLtY4dHb/I7N49ttD4/FLz4weXzeJBfAG8Vlk5Kak1mWWqRvl8CV8evJd/aCjzwVDQ2tLA2M
-	e7m6GDk5JARMJDq/zWHpYuTgYBNQkji2NwYkLCKgKXGidRJzFyMXB7PAU2aJa2cPMoEkhAW8
-	JA4evsICYrMIqEq8P3uQEcTmFTCWaD57kg1ipqbEuo23wGo4Bewlni1aCVYjJMAj8WrDfqh6
-	QYmTM5+A1TALyEs0b53NPIGRZxaS1CwkqQWMTKsYRTLzynITM3NM9YqzMyrzMiv0kvNzNzEC
-	Q39Z7Z+JOxi/XHY/xCjAwajEw3vg45VMIdbEsuLK3EOMEhzMSiK8SfWXM4V4UxIrq1KL8uOL
-	SnNSiw8xSnOwKInzeoWnJggJpCeWpGanphakFsFkmTg4pRoYUxdv/sg4W2eC872dtc9Kdzyt
-	seG2YH324fcxDo0wW9fwPQp33Mykp6wW/eLfnBo5P33W7ufnTyVWL4vKlPX77bnIuveZmLWt
-	7uZZ/y3mNIZFyl6RnhiZfze4I2pL00dvnh0LY/MiFkaZlZ1qD/G8Oalrrdiq1PZDx1iPWL4s
-	2HT1xLTXbk+ElViKMxINtZiLihMBsWaQjnkCAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 34791140004
-X-Stat-Signature: xikgheefisdr5w666zhkk8mrqj5o84k8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adWMAzmaHiYzSTzN@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29E1840002
+X-Stat-Signature: a7jq7qywt8qk78sxwyutzsq5e7ucdamu
 X-Rspam-User: 
-X-HE-Tag: 1775624183-598237
-X-HE-Meta: U2FsdGVkX1/oJtYuKo52E4WTHLom2mdLSkWIHJxH6bBd8k0j8llG6MMRa76p96phcjuLWNR2Bh5vSNcB0BCCx3XBl665323rPOSA1hJ8kipcTKg92GZ68FV+//YIgGWW790wfRNRraBymLMeiqSBlGBr1GXF9tNWqk3EVrz5gF/s5cOj/kd3Iv4skPviWWkmg7e4QPPG2v9GjGffFkn522dmXbcIyjKg4dOZ4SQZ5+8HtFOLDHqYupAtphhw8hGjs2Ff/KXUvLvqOLPc3XFOiz8DMuVlrMr+LO9jJoEsTa+XWj+wH5WsrtNJ+c2rkv6F+UH1/vkbRrtA3iWgK/93WKCs0mFZMannhBKv3MM4PIm6m49+bdRuDYvj3m716roOBdZpYZ3NWe9+AQg/hDKJGL5L5RxHhNpuzqNoW/P9jz9DKdukZWO4RumMCSLF/On1fRG2UN6CTEXRYReyespFbGxGjuWONbMEZUtqysz7THSLiMw64Xj/sQ48pwtcu2SBZvrT4Hd98Cw4b+uAD5zo/7qvnvT7s6WPTYuGwZvJJm4nTTohEPbui/RU0svTLz6Ib6JgadtkxRjekoJDe+FFF9tLrQLLfPOhotoxbgNae8gPQNdssYFOT6RbUBDdkkC1TRuHct8ZoNsP3IOCOyXBEM4sriHCCYAM4/halKkIt3qkQYQQvguP35sU/cTPpVnLydKdVyJIXROUrI95h8J49mu6gQx44ZTBZgL1sCi5sv48PRckKA//OLuUMeSXheNzBP00Fj1or7oHU55GiIWbHe2G+SaXulHm3W4YEqXZxuyLoVlIscL/fDYq6OPuTWZoarAS2rVlP77J4bOuRhMHg1tuyRc+/hvtkn1H8IdPyyjylTtrvEm1X28bKcp4DtOnzvI4UgTRDTJ5p5v9qfuVlcxxp/dbp8T+XApZMC0bd1Yi2Tn1Gr3bJgOMBUCuNz22H2IsmCkT9AKurkkXQ6G
- VwdnS99i
- cWjNF7VLy6gJwFGenicrGyZ9OXrPewPQcZt2tDDcqbWhI/Vu3oUzaFQMWjs17BEPlibRfYmkUuttK5uoxPvk+4YpmS2LjtN+cmEib
+X-HE-Tag: 1775624620-438126
+X-HE-Meta: U2FsdGVkX1/WOMYdQt5TIMsc1PNEZNCjCjticCuzdqnURurYVpVT/yblMR7ZSWW43TNn04+t/5dsHb50HTAogub0A2cFEBq43tqgYJ9eA4ZzN0WRAFD4XdFZ3ITNqIYWlmgmrOp8FPxhMBTIhsOgH3Bwf/Tv5ZIB2PtXf5ufcyDweiViPBmJ3GQBrmBBSofLG7VbtzksJ4GAptF17wHuOZIQV1VUo4uajiAKhinyl4Ldv2JfvKCfBW6V66bwDN3wEXDEv2Ixwgmgnz+O7oHBJVPTD2c4QjvlgOMRi7/xAtdVBcbUPBW85Y6pr0mWcvJeV0lAvgkihOdelY3rbgwyqc0qSu4v5wMPpnhur30LRp06jbHb6f1sSWJySb4M/Pr7S2L6VLeRbBUxxuOplJgERke5VVsGlzX/riUsqOwyepjNKjQSe/44M3sSeAQFEbk1jKk0VW3hAWv0mri6aN3063tK/C6jPuqjreCrV6dPxuyvleHKoUtD0umX49pQou1Y+75Kz3/Z6WuPHqHM9E1rOwHZ+QbWydpJ+6e1zL1n+vZvJjrPbchN0UVUsWOiXn7I2Bu4CHOu2hWvMRnHgrpb8ltWVw30+34B9xAOQXHbqOIY2DAyWVAFu33OKoBpAdKTqoSHjWDT4n/7IEDxLyOPyiqMKGZ6flxA0Tu2zlwLPV4+4MLzO2kL4kJ8I75uzvpbxP4hwEPNzYofw1AgHGpS5FICPr2/Q5DMgPEzY6bmo5iWewjFgPWHkQUVn0eBCA2bdhV+inGsez/qZma28euiD54+kAsEQt+/YUJ+dVDyTB8F633JYBk+uVlh+M6Z8aKhv7GOeB/8YLFWtkY3wyn/mug2J1QbxpW5inQIT/92aFvXvsE25/JslAafxMwipC58zP+fTUQVipfZB1Tt+nwQHmXav62+IbKM2DmqhVsW6HzxsyYbVs876MkI7uTs7m4sEhQ1Z7vz62SLsJorDJ7
+ qnbzEnRN
+ UaIBYjGdYC9tR54VRgo9Zd8NfnyU9DPFvONexJouroNE/C3webmue2y+YTzDREqtM21EOitQOGYPn16x8jGXErxWdzSa2LquhbfeLJQSUuEv+jLF8doi4hD6y7xpZcgtGw8XGyMzjVE0fl4p4FSqwJgW+m2aVCBjkR4TlFIe78MvMuMfC5ihqNmdMpVqsZqnAd0I9SDWVSxT8A3EsyZqb1j1PxYa1k6vZ/+AMkpoiYRMkY+BztKwrT2SICyoQqEadxG7AFKWPsCyMII2HstcvqQU/pf+ljyvxLKQgb6RP5uVNMOqE4xToBZ5pyv66BzVywxls1aR9NN2TTSrrJeeGxS2ib2mmQUbCNLUEZqSKdu+y09Kxp9SYNBqftOpDwMHijZKJQXxGf81GiExiZozU8+wG16eJBLNWPtbb5RJ8QND2q4OKaflTbI+nnFGuNwATcGcUNzer38S4RWBNsISi5AXt/C5va8JIXIf2+7diqklegFfbwywQOMXBtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,42 +91,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  7 Apr 2026 07:14:14 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> The __ATTR macro is a utility that makes defining kobj_attributes easier
-> by stringfying the name, verifying the mode, and setting the show/store
-> fields in a single initializer. It takes a raw token as the first value,
-> rather than a string, so that __ATTR family macros like __ATTR_RW can
-> token-paste it for inferring the _show / _store function names.
+On Tue, Apr 07, 2026 at 10:58:11PM +0000, Jaegeuk Kim wrote:
+> On 04/06, Christoph Hellwig wrote:
+> > On Mon, Apr 06, 2026 at 03:49:40PM +0000, Jaegeuk Kim wrote:
+> > > Let's check mmmap writes onto the large folio.
+> > 
+> > Why?  And how is this not breaking applications?
 > 
-> Commit e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-> used the __ATTR macro to define the "auto" sysfs for weighted
-> interleave. A few months later, commit 2fb6915fa22d ("compiler_types.h:
-> add "auto" as a macro for "__auto_type"") introduced a #define macro
-> which expanded auto into __auto_type.
-> 
-> This led to the "auto" token passed into __ATTR to be expanded out into
-> __auto_type, and the sysfs entry to be displayed as __auto_type as well.
-> 
-> Expand out the __ATTR macro and directly pass a string "auto" instead of
-> the raw token 'auto' to prevent it from being expanded out. Also bypass
-> the VERIFY_OCTAL_PERMISSIONS check by triple checking that 0664 is
-> indeed the intended permissions for this sysfs file.
-> 
-> Before:
-> $ ls /sys/kernel/mm/mempolicy/weighted_interleave
-> __auto_type  node0
-> 
-> After:
-> $ ls /sys/kernel/mm/mempolicy/weighted_interleave/
-> auto  node0
+> Since we only support the large folio on the read case.
 
-Hello Joshua,
-
-This was indeed an unfortunate and tricky issue to track down, given
-that it was caused by an unexpected global macro expansion. great catch,
-and thanks for the quick response and clean fix.
-
-Reviewed-by: Rakie Kim <rakie.kim@sk.com>
-
+In general spelling such basic out in the commit log, and even comments
+is really helpful.  I'm curious how this works, though - by the time
+you read a large folio you don't know if it will ever be written to.
 
 
