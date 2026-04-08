@@ -4,100 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C54EE105D98D
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 09:27:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25189105D9AC
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 09:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18FA06B0089; Wed,  8 Apr 2026 05:27:14 -0400 (EDT)
+	id 234516B009B; Wed,  8 Apr 2026 05:32:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 167136B008C; Wed,  8 Apr 2026 05:27:14 -0400 (EDT)
+	id 20B756B009D; Wed,  8 Apr 2026 05:32:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07D216B0098; Wed,  8 Apr 2026 05:27:14 -0400 (EDT)
+	id 121AA6B009E; Wed,  8 Apr 2026 05:32:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E64726B0089
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 05:27:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C45BC21E2
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:27:13 +0000 (UTC)
-X-FDA: 84634859946.06.8B668B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 98DA5100002
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:27:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0tRU8a7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D526B009B
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 05:32:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A43121A0A8B
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:32:28 +0000 (UTC)
+X-FDA: 84634873176.01.56EF972
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A09D340004
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:32:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775640431;
+	s=arc-20220608; t=1775640746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k5ka0MBI/NXno/qBif2caRlXP6SvU98LBqQ63GlDEUA=;
-	b=ZGpBpv+uk7P6gx+77EgWo7neJ69APq/FXmT5s6LfVZTGp+gNLGvn7ZRqt4gQJ7GIn/btq8
-	zGxgUaI6I1+p6ncQSBOxPpBTMgVXJeq5n4PUsLSLdBt/75Y8RFGJnZZLw9aIDjq3yFOn2H
-	4S23RtUtM38K84eKSrPiYfHRkbDiDo4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775640431; a=rsa-sha256;
-	cv=none;
-	b=k6rkXAgxY2LRUNFJNplgd9IVPylobRwAguJkGTOQwXijl/DwvPHpTvqs7naLldmNE63M72
-	cpZrdcissw6an0Oo1azl8jjz38KseWtWi22EtD2tJBz+STyCkuZJaL+oHARab7TaYFc4Sw
-	PX3Vr3pVWDi+5B04jg1aMHQfp6eEojc=
+	 in-reply-to:in-reply-to:references:references;
+	bh=SWjtnMgZoeasyrNY7V1zJ8cVg/oywv2EZTEtMrFO3eY=;
+	b=U68R5CDq6V3Cp7zCs6VAR+pX7aTVW0H8Y+450kiBe9rk7KtZOc2oxpSaNf0guBv729nMim
+	R2Gh7I1AHwUeQCjXBTuCAYQtnC0gxBoHiUU1aNTzPz2tdo0r9yQMXvkfdxJlJttKqxD+0X
+	zSbVkr3ZuPurAXvv6nFGQqC/tBjoS4E=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0tRU8a7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9410E42A2B
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761CFC19421
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775640430;
-	bh=fgHXijjC8wwB0orWX7VexpNbX73CqRtv/Ev6hR9O/bM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p0tRU8a7jpZKFAVG6hQN82Q9y8JgoplCEPfnZmKQcpJJrEYU07xSOR0+9xOkpVame
-	 No11FMd31EaErMOYQjSJeXYNBb51QYRC81+yuxNXOxjfbjhBjeiiqFfi8jMchkNPot
-	 hJWUqaUvUzRQu4aeHWbJTaJ++B77B+hE34bR7qtXN9AlusZsi6OeAZOjQK/ACWxrBl
-	 onKl/tycFFNijraNYKD/KdjO0BpXOLUglXrwAIUAmfiUwd+HGTDZodLP6ri04KEApA
-	 ZG3jAFDvjNWq0f9Gyb4HLkyzhhFlQpEXaXJuixi1aWsRzivg0L7T5nhfDpKRmSMYtT
-	 DziAQBqxebTjw==
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-649278a69c5so4695265d50.3
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 02:27:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUrjcVSAf/dPt5GuY0eJKq5Nz3lwDTrElNBH630FcHa5HzC0stvnt8rvRRaKUPkfIz1IKFBmdh5AA==@kvack.org
-X-Gm-Message-State: AOJu0YyMDSkeLrFKUwaHwHaBQ6zIh2h900wHKX1e3ToRl29TBkctYlNt
-	4+HT5pUKm8e3/4R8esI97D3LvO0vAvR4WfgcZbxn4OG+c4Ss0F3beRnnIiESFQHuWWN7jEYoM9I
-	JEVS34m7JIxGuJj/ukS+bmHJmEZyuvENcQPnUK8vSWA==
-X-Received: by 2002:a05:690e:4393:b0:650:335a:c31 with SMTP id
- 956f58d0204a3-65048865cdfmr12394814d50.60.1775640429852; Wed, 08 Apr 2026
- 02:27:09 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775640746; a=rsa-sha256;
+	cv=none;
+	b=dOO0KbnLdTPE5Aq0SILQDXWs1b3mZrfrn6VuxjCQbmsjHSy+RTGbynGHSbS8tc56MpKIdT
+	QD58TNLGLCkZIBJyfyk0sxDvnKyYEvVXPRvoNCAewPWGO7JGH9lAJQh94pSC53oSP2voRj
+	QzZMN5MeQ9BOlU5Pc2w9yAi2NrJ76F0=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4frHr813qbzKHMYX
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:31:20 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 931E34057D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:32:20 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgCngEujINZpbMVlDw--.41855S2;
+	Wed, 08 Apr 2026 17:32:20 +0800 (CST)
+Message-ID: <41c80e21-44f1-475c-9708-b088fcf0d0e5@huaweicloud.com>
+Date: Wed, 8 Apr 2026 17:32:19 +0800
 MIME-Version: 1.0
-References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-3-21cnbao@gmail.com>
- <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com> <adXxdLSHp2E2k6_5@MiWiFi-R3L-srv>
-In-Reply-To: <adXxdLSHp2E2k6_5@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 8 Apr 2026 02:26:58 -0700
-X-Gmail-Original-Message-ID: <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
-X-Gm-Features: AQROBzDF8Gb_q0g8T6YtNHlQ7Weuei8IYitDIUVYoCFYeYNmY7eYxhK5VBqb6bc
-Message-ID: <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 98DA5100002
-X-Stat-Signature: e8qemtdtjguzgu1dto3yuouu6i9ymygu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/14] mm/mglru: don't abort scan immediately right
+ after aging
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+ <20260407-mglru-reclaim-v4-7-98cf3dc69519@tencent.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-7-98cf3dc69519@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgCngEujINZpbMVlDw--.41855S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZF15CrW8Cr43JF43Zw48Xrb_yoWrJFWxpa
+	93Ga17AF4kJr1aqanIkw409r1S93y8Gr45J345ury8C3y3tFyft34akr1YvFy5Awn5Z3y3
+	XF4YgF18W3WjvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775640431-344247
-X-HE-Meta: U2FsdGVkX18HDQiHoFTxrwaVGPCB8e9E0oXM3QgBIrQJKbodzpZwls8ZZA6L3VoS3jw3kiZvGn7tLz0fiGW/xuj4Y4qkTRKgEAnyXOefGLx0vO05hDsF6MHF04VUYVgVsPeYcZ7+aFMdyfkKcvKGRGkH44GhqOIVnwzANAxGNtIuYDOp/RJP/wP3KsIPCwmNHdblt8enxMmYo/OGirGXPph0alFAVejFbWjDXjHDyxB0SCZ7kLAMl22sG2KKfA8GP1S8YvNQtuJXs2Lz0/qQ8E+C0tNRYzHSpnCudTprphpy4GXNTPyrSNND26KsG25wHbb70bvWoJhBZor4qYkRY2+9t7qxf4100+Mh5lpRgbqWcmRKCUH3L5zHNlNHxzU5KPi1yZn1OgnZSqUTI7R6eki0tSOSbsuXIe2KF/C8I2vjKt0578hAGwVazBpzSrSqKZcQr9yM9dpSbK/ajBZN1eKiK4mqqn1PxWCs+5ZstS9UWSXDldeiitafp6IZhDnSsZINsl8Tfz0WjJUijtlbkvpDekTI0XGgyApdwBl0oecb2YUTh1TNA+yMbYcr+r52R3ooj6lxHq2AVxVX/wDQ8I3mOw0Tr2isVZu7ag+Srj7AUfUobUtVoRCoyXyLa+x6jq6wA/REjF20KlojXC5u7OI0fiWbfqxhDqA+xiCAVImbvN7fw1CwpkdNcky8lsnLxtBzGOM92fu8hPtDV4Z30UAOr9FtnG8yYkJutqcud5z8U7ZuF6NRHUByUKmEkCn9onZnn0CdQK8p1M2wCFopk4XolCqZnLiFM/FHOYwnA4WNLjVN3jxQCQUbb6UyfKSp48Uk8HPVy6QGHTAhoulqJ/QfeMe6uWS2MYVoYbERyokCb9TH80cukyckBn5Q4vP1qPCwVP2ZxJGuBMam81DhdObCh4T0Et1KFXqBjAXbVq0jjbYkunsym463eBc1j5+Xl0XhliLkbu/deI4Oq7i
- AoBNjwLf
- xbp4cO90JuGhd7w9fcw1i/vjBJe7s3HK8zpXgWl+P32E0LivmshcU//CbrpHrCh/2gpbqxSZO7KKsxqJMhuh1558EZu+RtzdrQt+KI0QZ7VyzxL4E6V8xuolh+tW5Z1Cn92/3ylkm6DuSSQX3tP5hV7+3OWYLuEKMlHfJuFcsAPU1xg25aFI1uNR5mB+vwRBBxyRqdTMiYPMu3FVfUwQ49bQ9d2rlIDRW5pD8TPlYuOwXpZFGQeRH0gWO43NbbcGmfT5jXYk2nxaKniBq+mG4pu8CR3vG80rbQSa78eBw5jafaUX9ldDWgOdTVePbMJ/ctmF8dCMyeQtZvEIugePjEyfkyT7p6hZpNmNV
+X-Rspamd-Queue-Id: A09D340004
+X-Stat-Signature: k78w3ctwsz1qgzz44gco4w3xrq5apuwc
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775640744-937740
+X-HE-Meta: U2FsdGVkX19sj0EO0ll/Cq7gDzw83Aq8qy4EbUyy5qrTISuBP0EIzBBs3joeb9lXgKoBjWT241762qAu44/eEtOgb7AbwjQUAUDOjh3FWcETTEC/IpHWpxnwFkx7UwEsCtP+C/WI+cdoLSLBIsLhbyB7lhR0gL1h3XKcuJWB1L4dOQTvk+sR0jxKoVnYPcd+QOuXlzHUtGtQpF3ZSPTfHHfAZFa7vBsrRpPiTZ9T1o1/JNubx6q1cDFVO8Rt9FIRnTADkyaomxv1VQp4GIzha+D6W1a7X+xsxDsC7YKJUpUbqfvOg8hAd/jx8lkZgTQ3FJtO5xF2hNwr0n4nAsaLsM04zmP54AnlPcDWhXD2BdB8X8F8mnUiXUDzhiXHzeLiq0YZ7gNJA0zQbP0IJoHEJehQZ35Eowuz5tjNNzYEdCsFKSbMSqAddqA+pqWErFf9iIzn6+RVsb4XuM1IUDseonuFIrAtpeupAHc3aAqkvC+061zSnAtdY6x+tWCenIduOtCRy+7aIznpLdVkAmBu+aru42yISTTfsebcwaDcj1THEdm0ZKuI8jvpFUGQooNxLcQblqbxRaBlFF7iGhQHR6UPiiU6TRrByYAzcHiCAcIFL/FQHSWiK3DI8seh4XC2P+G0OrSW621CPEd0AKykU1R8gejpTrIgA8uSkwLQpThzj3AZAIWEuBpNcSDtz3oubGjCXJE6egk5ADvw6In4inh0Idys3NzfFJNuPaL6wWhGVmZ2fnKxMiEWp0P5SYt/QZ4NLLa13aGTNiA4DIgrqPfYoHC2LOxw2W7A4ZfhC1hwWQlA6kok8cIZC9vr/k2WbfWd8Dlrv4gS19ROwhk+WeH4uzHUOJTfE3p12g2iedTa71s0n/SlOcrzjHdGTVMeZEyrS9xxeCjg9FUDtqHr/8xHGrb8h2B+Ko/vHOxkvq485t4PoGJ+1PoIDxIsmwL3dBopTZ6PVAPgW6JQ4XN
+ /wuBF0/I
+ vDZR//mD8fvpaJKkZ0g/N+QuY1Cc6bT/QLZ5Be1W/7K2agCSHIuv9fM6kzspEQMTReyu9MqkratZigXnmKxOAFG45Cm+1dWgz5DNVSY1vniZDoDKHprLmuDtByqsBXoazg7ivQgAxMHKBycotk7c6o+sBWl/teNxlQk0F8UhPJR5FFazmXqNAMk1DzGpkCuhmHLcu5Ep17foVKUTaunICFpBCQciGmT7iJlcApjR60+fmKBbWXpElZmJGt013Gb9G1GkN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,73 +116,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 7, 2026 at 11:11=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
->
-> On 03/30/26 at 08:30pm, Chris Li wrote:
-> ......
-> > > @@ -608,6 +593,39 @@ static void swap_read_folio_bdev_async(struct fo=
-lio *folio,
-> > >         submit_bio(bio);
-> > >  }
-> > >
-> > > +static const struct swap_ops bdev_fs_swap_ops =3D {
-> > > +       .read_folio =3D swap_read_folio_fs,
-> > > +       .write_folio =3D swap_writepage_fs,
-> > > +};
-> > > +
-> > > +static const struct swap_ops bdev_sync_swap_ops =3D {
-> > > +       .read_folio =3D swap_read_folio_bdev_sync,
-> > > +       .write_folio =3D swap_writepage_bdev_sync,
-> > > +};
-> > > +
-> > > +static const struct swap_ops bdev_async_swap_ops =3D {
-> > > +       .read_folio =3D swap_read_folio_bdev_async,
-> > > +       .write_folio =3D swap_writepage_bdev_async,
-> > > +};
-> > > +
-> > > +void setup_swap_ops(struct swap_info_struct *sis)
-> >
-> > setup_swap_ops()` needs to return an indication of an error.
-> > The error is that sis->ops is NULL or op->read_folio =3D=3D NULL or
-> > op->write_folio =3D=3D NULL.
-> > If there is an error, we should fail the swapon.
->
-> Thanks for your comments.
->
-> In the current patches, there's no chance any of these happens:
->   sis->ops is NULL or
->   op->read_folio =3D=3D NULL or
->   op->write_folio =3D=3D NULL
 
-I am aware of that. Adding the check in setup_swap_ops() responds to
-the WARN_ONCE check on op->write_folio() feedback.
-In fact, we should never have a case where op->read_folio or
-op->write_folio is NULL. However, I can see that other future swap ops
-can be NULL. e.g. Notify swap entry free. It is hard to enforce that
-some fields can be NULL and others can't. So having code safeguard it
-is fine.
 
-> Because it's a if-else logic in setup_swap_ops(), adding an error
-> checking looks a little weird. I think it's worth adding the error
-> checking in setup_swap_ops() later when we have new swap_ops added
-> and there's potential any of above three cases could happen.
+On 2026/4/7 19:57, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Right now, if eviction triggers aging, the reclaimer will abort. This is
+> not the optimal strategy for several reasons.
+> 
+> Aborting the reclaim early wastes a reclaim cycle when under pressure,
+> and for concurrent reclaim, if the LRU is under aging, all concurrent
+> reclaimers might fail. And if the age has just finished, new cold folios
+> exposed by the aging are not reclaimed until the next reclaim iteration.
+> 
+> What's more, the current aging trigger is quite lenient, having 3 gens
+> with a reclaim priority lower than default will trigger aging, and
+> blocks reclaiming from one memcg. This wastes reclaim retry cycles
+> easily. And in the worst case, if the reclaim is making slower progress
+> and all following attempts fail due to being blocked by aging, it
+> triggers unexpected early OOM.
+> 
+> And if a lruvec requires aging, it doesn't mean it's hot. Instead, the
+> lruvec could be idle for quite a while, and hence it might contain lots
+> of cold folios to be reclaimed.
+> 
+> While it's helpful to rotate memcg LRU after aging for global reclaim,
+> as global reclaim fairness is coupled with the rotation in shrink_many,
+> memcg fairness is instead handled by cgroup iteration in
+> shrink_node_memcgs. So, for memcg level pressure, this abort is not the
+> key part for keeping the fairness. And in most cases, there is no need
+> to age, and fairness must be achieved by upper-level reclaim control.
+> 
+> So instead, just keep the scanning going unless one whole batch of
+> folios failed to be isolated or enough folios have been scanned, which
+> is triggered by evict_folios returning 0. And only abort for global
+> reclaim after one batch, so when there are fewer memcgs, progress is
+> still made, and the fairness mechanism described above still works fine.
+> 
+> And in most cases, the one more batch attempt for global reclaim might
+> just be enough to satisfy what the reclaimer needs, hence improving
+> global reclaim performance by reducing reclaim retry cycles.
+> 
+> Rotation is still there after the reclaim is done, which still follows
+> the comment in mmzone.h. And fairness still looking good.
+> 
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index c673830f4ba8..354c6fef3c42 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4979,7 +4979,7 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+>   */
+>  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  {
+> -	bool need_rotate = false;
+> +	bool need_rotate = false, should_age = false;
+>  	long nr_batch, nr_to_scan;
+>  	int swappiness = get_swappiness(lruvec, sc);
+>  	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+> @@ -5000,7 +5000,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+>  			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
+>  				need_rotate = true;
+> -			break;
+> +			should_age = true;
+>  		}
+>  
+>  		nr_batch = min(nr_to_scan, MIN_LRU_BATCH);
+> @@ -5011,6 +5011,10 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  		if (should_abort_scan(lruvec, sc))
+>  			break;
+>  
+> +		/* For cgroup reclaim, fairness is handled by iterator, not rotation */
+> +		if (root_reclaim(sc) && should_age)
+> +			break;
+> +
+>  		nr_to_scan -= delta;
+>  		cond_resched();
+>  	}
+> 
 
-Adding the check in setup_swap_ops() is to remove the useless warning
-check on the caller side of op->read_folio(). If you think the check
-is not needed setup_swap_ops(), then it is not needed in
-op->read_folio() either.
-The WARN_ONCE() then kernel panic on reading op->read_folio does not
-make sense. The check was added due to one of the feedback that what
-if this call back is NULL.
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
 
-I prefer to keep the `setup_swap_ops()` function responsible for the
-NULL check, due to the discussion history surrounding it.
-I'm also fine with adding the NULL check later. However, the NULL
-check needs to be consistent across the patch series. The other NULL
-check inside WARN_ONCE before the caller site op->read_folio()  and
-op->write_folio() needs to be removed.
+-- 
+Best regards,
+Ridong
 
-Does that make sense?
-
-Chris
 
