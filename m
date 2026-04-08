@@ -4,108 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C54C510F9953
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336F410F9958
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 15:47:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB926B0089; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
+	id 725AD6B0005; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17C696B008A; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
+	id 6FCE66B0089; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BA7D6B008C; Wed,  8 Apr 2026 11:46:04 -0400 (EDT)
+	id 63A036B008A; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F358E6B0089
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:46:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C4221401E0
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:46:03 +0000 (UTC)
-X-FDA: 84635814606.08.A105E5B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3E1D71C0012
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:46:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zu7SlHoM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 586916B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 11:47:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D6D2B6411
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:42 +0000 (UTC)
+X-FDA: 84635818764.26.3BDD55B
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 08BF240005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 15:47:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=UEQzZNC+
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775663161;
+	s=arc-20220608; t=1775663260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ABVcnSBYw67/dNbfG+cq2X/5dXQSJpLjV8UMfC8U4II=;
-	b=bv9V0+eW8+mVrDr9Rbzk+sDAC/TWIgtJKuhno4eDnWzd5kofgnD/E0jB/Po/s7xEttXY/q
-	/e2c3FHzxxvzDHnkLS14y63bIvs1g2cL+wshi1Fq/XecnaCsAgsod/tQHncCQAqXVAIEMx
-	LiXJ+/S0O34nqlg76JSBgDFfpEuldOQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775663161; a=rsa-sha256;
+	bh=g56auhKAY5j+dvmNG9CeuB28V6/CJ5EqcS41m0jUuFE=;
+	b=abjHsRvYFc31W/IapW7bH/h0smDY0k4DF5tpp8COuY5fv8iJkeYzL3a+AyR4ZyyqpYJe5B
+	Vqodr/jkN+qC1QPT+lQ+YBbyVSM9gkQesndB8/c7MoDO9xRwymGfXF2IFRohMeriiSBZLa
+	F7xhQobX+Zlww3Mj/myDpcv6gf6xOkE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775663260; a=rsa-sha256;
 	cv=none;
-	b=nxnYPmCM537lpTOIiAwhWmKgdqxVmLZMhEMHgDJntaXB0k/cuaj8rKqiiCCF9jN6i1wCzZ
-	4m9+aOEASAU1d6XTqpwrna/0Ln8h/+MOjcyV1TWOH7FTGylR863lvyCX2fQNdfpo6lcrhq
-	yp0DRbi62gnlMQm+XMTs4Ry9usCe2Cs=
+	b=Fn5cpw7a3BMeKWF/UPS/4oGj5ms/4+6RNLwEze8c+o4T6kCpptAenOeZlElZJk+NxLN+zw
+	rWhEhiTTJCpdfGU+Yr7QXFLVfhePK5lubfDaASw1V4KQ4X7Ua2gYQpqXA/9b9XB2aELSU8
+	pypJkUHwt5X3rgBPSCzw5o2hLpE6kRQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zu7SlHoM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775663160;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ABVcnSBYw67/dNbfG+cq2X/5dXQSJpLjV8UMfC8U4II=;
-	b=Zu7SlHoMpxRHks9m+4YbjMaCIVNXoRd+htwEq0Dt/8w6HrlT3gkoRGil1Ar+nsyJCZ6pCE
-	AOM/550GG6v+vFjm6361mCsA0Nx7AVOAJKXh3rqGVGm+BqtOj2/R3lKPotPXkNeyWbkIyz
-	twcfprS5uokAFR+0hlUdoNXFcykF/fM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-QrTHQVknNKmkhMeU6X5Y2w-1; Wed,
- 08 Apr 2026 11:45:58 -0400
-X-MC-Unique: QrTHQVknNKmkhMeU6X5Y2w-1
-X-Mimecast-MFC-AGG-ID: QrTHQVknNKmkhMeU6X5Y2w_1775663156
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 133171956052;
-	Wed,  8 Apr 2026 15:45:56 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.14])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C55419560A6;
-	Wed,  8 Apr 2026 15:45:53 +0000 (UTC)
-Date: Wed, 8 Apr 2026 23:45:49 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, baohua@kernel.org, kasong@tencent.com,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <adZ4LehwC9KisuXf@MiWiFi-R3L-srv>
-References: <20260328075812.11060-1-21cnbao@gmail.com>
- <20260328075812.11060-3-21cnbao@gmail.com>
- <CACePvbXVaK0McYSr8O7h2XMpEh1f1JGzLVJQd69V0QnFXr8Evw@mail.gmail.com>
- <adXxdLSHp2E2k6_5@MiWiFi-R3L-srv>
- <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=UEQzZNC+;
+	dmarc=none;
+	spf=none (imf27.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=g56auhKAY5j+dvmNG9CeuB28V6/CJ5EqcS41m0jUuFE=; b=UEQzZNC+f7LrCH9J/cy5DtjfSM
+	8092LqJ1MyKxSiue0T+1tZmMWlQvTOMbzlv8K+x3pPnNYOAlPUmDlFwoHDL1ccPsmyOp2NGrAQUZH
+	u2sGsbmLYxH8ahlhkUeVF207qcX3fWNLbKWKeO0DUbXJhVH54IID0/NIx2CB0XTvJOIbU13CA+0Fx
+	d2u98SjvgckTKKqW151JTDvlZ8R2urpx+DkEzhH77iNfO9rguHMWT1jbrWYf6aaJRlTI3gJro9Ns3
+	gg8KuwAVWLdcVsvou1Ahm7sRYgeL+iVDeogo/DdArgk8+GGdYpkv8nfG8N7+9tcG6pDkK/fth7gf0
+	WtxhX12A==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wAV7q-008Wdy-22;
+	Wed, 08 Apr 2026 15:47:30 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 08 Apr 2026 08:47:00 -0700
+Subject: [PATCH v2 1/2] mm: huge_memory: use sysfs_match_string() in
+ defrag_store()
 MIME-Version: 1.0
-In-Reply-To: <CACePvbVwoqdOmMWkJUm=mqYQi=MgK+Q3NJu1Pxmmy9v61f4qEA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: bxvOFPR_qwJySzRg_tpyU2Q6L5t9IE8iJ0f9FdDTs14_1775663156
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3E1D71C0012
-X-Stat-Signature: b6f1463ytct3o8wumh7aoispdsk4t1sc
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260408-thp_defrag-v2-1-bc544c1bde4e@debian.org>
+References: <20260408-thp_defrag-v2-0-bc544c1bde4e@debian.org>
+In-Reply-To: <20260408-thp_defrag-v2-0-bc544c1bde4e@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4937; i=leitao@debian.org;
+ h=from:subject:message-id; bh=/sCYxACzHeKOBBtKbTf0JYBh6CfVPvs9YQezkVa8oQE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp1niIWX4L/u4+a9VuF0VbZDMLGe4Jc6QrcS85Z
+ NJRBgw8Y7KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadZ4iAAKCRA1o5Of/Hh3
+ bWyBD/9t7F391FzPemA6wI+p/T1F7yuIR/Frzv64pDqioDHGIAkFzQBcdEMOty8LAlNgOpioAHT
+ AO4kjK+OBn2+jGezyf68sukbQuxCOioVuade3ueVws2wNn5JCz8itLc6p7AIEUaRduPpCLZSWnS
+ dvMIYUqL1sZXUKNOZTckmRuRgMNSa01drx1bV6Xj3zf8l+f63jJnp8GMhLch1jSf1TBzDdLlmPy
+ edbNel9XFzhA7b3fg3iwUtyjI7gOV7FaFdgBGkMTVOH+LTx8oUFVbhGnCEy+LVt9AOs0RjjwHpa
+ Xo72K/0BRWtPeoQVmI69drU2tJOz59U7IPF4xtGFjQKHRL/0va5CZReh2oNA1FfEBwkpO9WDdGc
+ aXcEpnDyF3vxygqx+3LuPtk0VQlc5s4Fas88NFW0Aw3LopG8+kqQVNF1RiCqp/HMwUrUM+OC7+4
+ 4rwfiWrPibc9k4zGF0IcRf5YDgO1BEu+xr5TRCQojStEF5EKmM+ZXTN2x56kI6AP4AjAUsbD1gr
+ kd65zFRDxFkzzTmdTx5TsZ9MLhZQJdIIAw/5oIms2K4nk+gnc952rFyYA2fZmzkqqK4kTTQKs0X
+ sQFmfLwbZ7z+lnRfQWobqP+LbxVOOKJK48lSlThZpP2+5Mb+OZx4V52cZCJFD0o/KxhbuNUhUK5
+ RRQ5MsGsBkAuE5w==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 08BF240005
+X-Stat-Signature: tsiidzsbwiez9yhsxeg3gfcgix5w7tq3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775663161-755390
-X-HE-Meta: U2FsdGVkX1/vmN27AF3BqhW9fHcRNuRIQT0yg2r2SqXgHPmz3ry1wEjGkVW3MZyzQ6RAwJT0sGeUU01o0ThWqQCOgruWWB7X7Lqyp1HZ3RRZsGLzYJoSJEdEK50i1MOgkZ5huB9HJe1mOyvAM4r7G+qlb1dGwHx2ryFcr0wnEpklbE/UJohNH9wYfIpJ8uaIYJmhE+hAhN+iLGnIpLwr54DMeyxAlRVyQcVks4oF3JFGBlRnLBAXxF+Pu03MrRLQZEeMJF3qx7bsV2ig5jwODB+ZqbnZsyKQllG6SvLFclsgzJmJga0aNP30odI/91nTZyYJ0ePblfPN/pDJVBxhJERuiiLNg76ceylYuIgT1lsDkeTI4oMwa2VPVE+C6RKzs2KDAvidn4qkjrcZyUDvthyDGITgh66Z0DEgDAo7WSljcMmvEkaxlLcwduO7jtuQqyQaCr1/VxOLx/J/visdAiq+n4OCY5znVfLy2AB6ySF/x4sKgdZ1TuxjSQBzN+Mqrr/CBXrGTQvBQfaE7rxV0+wBlPyqwjZpMSnKIWHd5H4YfnPGPReNsUsaUyD8GkR3U93lmzocuFTJSEqPsOiYb4fiuButRV0wUfiBy77DIySpLTzyvxg+ImlRAlYN5cHet8eQ2rS53zbth5Cz8/L+pNkx34jcU86h261T24MzFYI0sqjtn/wDr1dA5lNQ1uBnBgr7K59les9QzuNrD8DgzIqCFfXt1PdDMFtdGa0s6h0cdsRZRwruWpwAL68OZEjntpheYwsX9epA9Txcs6bAo9OIfjl3J5eIVHqe365LerI3pcn8ZTCLBp3aVywbZrPp9RUxMCJewgn74pPC7i2Bl6p3FTy5Gd8Km7hrshbhAsX9OGtdFKmjqbhmUpfLgWWSYewJfHHxKB9nRfE9OlyRMXaNjUUMqfjIitUtvHENhdgbYzzCHivn9CbbTIcCugLyL4DNM7fsVzkNUxqDKKP
- +CxMF/UB
- O33HdtOm9rQZrcD+c6vkzR2ULNfunhiXPv3as4n8NSa5BbFJpQs15YnqxghV6qRNVPKrihcL2XuU6PNA5AAwfHFiClh820mQChjU4LmkE264WgagMSlHhxJsf14/T9Hooc5H4+hD3jerv8cew55LhJZUrJeqP6dOZOWSKBv0oWxCp+5KN9eo6ZcpOxgAkR/cMjItWLLP0/E3S7EckL35OLplm1gd7UII+Aaa0EdEHYCWpCDTbfUcBFq2kkpQYjRj1WiTKzPzfLTsyOqwZWJXgeM3E3lifIczpG1wG3OgYCP0rTFGA5uBXHpStqWZZQHD41LQZ5HlWeXttUPph00CLh/hMbuPqTIUUn4sYlkMyr2Pf4xjV4WyqHVGKzZx5L+DFzCPzjQ6qtW6sMRPy0/HJPubL2ucRi5ClOXSHWuMKDV+JjpDCgicoKKuiS5ssTlRQXL1eDgYA+5B6Cs4xZsC/GuTqZC+GQC04ot49DhrOTheyZhuFSoYajjgD8g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775663259-928592
+X-HE-Meta: U2FsdGVkX18QRjpsMAAjJHk8NL2t2wTm5o5RZ1W9wGluxmuXGnG21Vr/lFppQZaT1dV0YG7Yzplagx63WJXjEW03maiDQmtXw1pQ330CYCLEQZTLJEtjVbC8+iqGweHVSSwlNOrZwnX/HE9QacQYfjNmGpDJWTzw4GmEf9HGXySTi4/DwNiLcOox4ckBQG9Y4xy31i6x5rEpsJKEhDKZ2473dswJwP3l8KE4msUOp+bT3YT6Llj54SmjT15VKHr7jwpsgKYLkhcHLfVS2b1nVHgCvHRMsBqWM+romQ2a1+ldM3GUknhuesFZKlsstffku5C1/l9vbOIf8QJt9KmLkRv4bJK4Y7hKJUikniKllFTN3EB4l/sdfO5n7k9/KFLKK0XGGKn14QC6JjjjCCb9mJivjnVnz1pZJqDnxAHi0M5iS8FtPPryOT1eggERQp43Bqvr5Qo63VGHh5AGuFZWD7TaPcDkJhA9e2G3LXfYn7J8RTfbMHdKq9nhbnIYknXyHPR8GHIdEUM8qWgLnZUt5al5JRwvasSunKsV4ySI1Xc0rZvPWU/WXw58jdtqDbCHL+o+gGqcpux6J+oaI5NyAaJLDtm8sy+Z0KweqPflgcDS3QdabiXXyludKLp6IbiBT/r6mczCqPn+RnD7qzxpdM60XBLz+25jO6UhvnOwJ4LoYD7HEuHQtZVeMWSrOaLGD1ly0BdXlhHMmthtCtmDAYYMtaxMfDSJsV+hhZFzNou7+VYKneQ/CREm8E5hhTkiSlQW9YmNzJYGNzQpLigniCScBX68MLoO7V2KdHnFs42vHoupl+YaHxoQrHrqF4ewjtN3+W0Ph8UMRjFjd3mm42JXHswVpgMXhtkphmaRq7KHCDMHdsFsuAa25Ltv+g6QKOevOm0F6z76JWlorYWVaufRDvgLgPOMTJvLk8tX8OIRIRZivmaQVJfO/zjKrTi00gglHoMOWdYHNwSpy5X
+ HIma9xW/
+ BPs0LEgeKnEfQNlpYAnbR6SoJmut3/YCFNhdmaiD+Uy0FlVtm5sVt4/YxC7VQyMCj7ViV3+2+h9nF/cJI9NC8VwzmyxVoRRsQhs0E5fKe/H/2OTefo1f5ZWSXrMkU5YBD5UKwI/V9OiaRDz+oaxbjLZN77o+8wsBi7CNJdUyWAgvU2myUHgQA+Z+onY0FE2kHX0h/8VDrYqa8rhWIODsaW4vH7rG0Unsnh1el
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,79 +114,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/08/26 at 02:26am, Chris Li wrote:
-> On Tue, Apr 7, 2026 at 11:11 PM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 03/30/26 at 08:30pm, Chris Li wrote:
-> > ......
-> > > > @@ -608,6 +593,39 @@ static void swap_read_folio_bdev_async(struct folio *folio,
-> > > >         submit_bio(bio);
-> > > >  }
-> > > >
-> > > > +static const struct swap_ops bdev_fs_swap_ops = {
-> > > > +       .read_folio = swap_read_folio_fs,
-> > > > +       .write_folio = swap_writepage_fs,
-> > > > +};
-> > > > +
-> > > > +static const struct swap_ops bdev_sync_swap_ops = {
-> > > > +       .read_folio = swap_read_folio_bdev_sync,
-> > > > +       .write_folio = swap_writepage_bdev_sync,
-> > > > +};
-> > > > +
-> > > > +static const struct swap_ops bdev_async_swap_ops = {
-> > > > +       .read_folio = swap_read_folio_bdev_async,
-> > > > +       .write_folio = swap_writepage_bdev_async,
-> > > > +};
-> > > > +
-> > > > +void setup_swap_ops(struct swap_info_struct *sis)
-> > >
-> > > setup_swap_ops()` needs to return an indication of an error.
-> > > The error is that sis->ops is NULL or op->read_folio == NULL or
-> > > op->write_folio == NULL.
-> > > If there is an error, we should fail the swapon.
-> >
-> > Thanks for your comments.
-> >
-> > In the current patches, there's no chance any of these happens:
-> >   sis->ops is NULL or
-> >   op->read_folio == NULL or
-> >   op->write_folio == NULL
-> 
-> I am aware of that. Adding the check in setup_swap_ops() responds to
-> the WARN_ONCE check on op->write_folio() feedback.
-> In fact, we should never have a case where op->read_folio or
-> op->write_folio is NULL. However, I can see that other future swap ops
-> can be NULL. e.g. Notify swap entry free. It is hard to enforce that
-> some fields can be NULL and others can't. So having code safeguard it
-> is fine.
-> 
-> > Because it's a if-else logic in setup_swap_ops(), adding an error
-> > checking looks a little weird. I think it's worth adding the error
-> > checking in setup_swap_ops() later when we have new swap_ops added
-> > and there's potential any of above three cases could happen.
-> 
-> Adding the check in setup_swap_ops() is to remove the useless warning
-> check on the caller side of op->read_folio(). If you think the check
-> is not needed setup_swap_ops(), then it is not needed in
-> op->read_folio() either.
-> The WARN_ONCE() then kernel panic on reading op->read_folio does not
-> make sense. The check was added due to one of the feedback that what
-> if this call back is NULL.
-> 
-> I prefer to keep the `setup_swap_ops()` function responsible for the
-> NULL check, due to the discussion history surrounding it.
-> I'm also fine with adding the NULL check later. However, the NULL
-> check needs to be consistent across the patch series. The other NULL
-> check inside WARN_ONCE before the caller site op->read_folio()  and
-> op->write_folio() needs to be removed.
-> 
-> Does that make sense?
+Replace the if/else chain of sysfs_streq() calls in defrag_store()
+with sysfs_match_string() and a defrag_mode_strings[] table.
 
-Both is fine to me. I will change to do the checking in
-setup_swap_ops(). By the way, I tend to rename setup_swap_ops() as
-init_swap_ops(), is it OK to you?
+Introduce enum defrag_mode and defrag_flags[] array mapping each mode
+to its corresponding transparent_hugepage_flag. The store function now
+loops over defrag_flags[], setting the bit for the selected mode and
+clearing the others. When mode is DEFRAG_NEVER (index 4), no index
+in the 4-element defrag_flags[] matches, so all flags are cleared.
 
-Thanks
-Baoquan
+Note that the enum ordering (always, defer, defer+madvise, madvise,
+never) differs from the original if/else chain order in defrag_store()
+(always, defer+madvise, defer, madvise, never). This is intentional to
+match the display order used by defrag_show().
+
+This is a follow-up cleanup to commit 522dfb4ba71f ("mm: huge_memory:
+refactor anon_enabled_store() with change_anon_orders()") which applied
+the same sysfs_match_string() pattern to anon_enabled_store().
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/huge_memory.c | 60 ++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 34 insertions(+), 26 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 970e077019b75..76f2d32428c7f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -429,6 +429,29 @@ ssize_t single_hugepage_flag_store(struct kobject *kobj,
+ 	return count;
+ }
+ 
++enum defrag_mode {
++	DEFRAG_ALWAYS = 0,
++	DEFRAG_DEFER,
++	DEFRAG_DEFER_MADVISE,
++	DEFRAG_MADVISE,
++	DEFRAG_NEVER,
++};
++
++static const char * const defrag_mode_strings[] = {
++	[DEFRAG_ALWAYS]		= "always",
++	[DEFRAG_DEFER]		= "defer",
++	[DEFRAG_DEFER_MADVISE]	= "defer+madvise",
++	[DEFRAG_MADVISE]	= "madvise",
++	[DEFRAG_NEVER]		= "never",
++};
++
++static const enum transparent_hugepage_flag defrag_flags[] = {
++	[DEFRAG_ALWAYS]		= TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
++	[DEFRAG_DEFER]		= TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG,
++	[DEFRAG_DEFER_MADVISE]	= TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG,
++	[DEFRAG_MADVISE]	= TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
++};
++
+ static ssize_t defrag_show(struct kobject *kobj,
+ 			   struct kobj_attribute *attr, char *buf)
+ {
+@@ -456,34 +479,19 @@ static ssize_t defrag_store(struct kobject *kobj,
+ 			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+-	if (sysfs_streq(buf, "always")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "defer+madvise")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "defer")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "madvise")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "never")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-	} else
++	int mode, m;
++
++	mode = sysfs_match_string(defrag_mode_strings, buf);
++	if (mode < 0)
+ 		return -EINVAL;
+ 
++	for (m = 0; m < ARRAY_SIZE(defrag_flags); m++) {
++		if (m == mode)
++			set_bit(defrag_flags[m], &transparent_hugepage_flags);
++		else
++			clear_bit(defrag_flags[m], &transparent_hugepage_flags);
++	}
++
+ 	return count;
+ }
+ static struct kobj_attribute defrag_attr = __ATTR_RW(defrag);
+
+-- 
+2.52.0
 
 
