@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BA5105D991
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 01:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC99DEDB7D0
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 01:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78786B0088; Tue,  7 Apr 2026 21:38:37 -0400 (EDT)
+	id 02ED76B0089; Tue,  7 Apr 2026 21:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B29F16B0089; Tue,  7 Apr 2026 21:38:37 -0400 (EDT)
+	id 0067C6B008A; Tue,  7 Apr 2026 21:38:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3F556B008A; Tue,  7 Apr 2026 21:38:37 -0400 (EDT)
+	id E85886B008C; Tue,  7 Apr 2026 21:38:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 919D06B0088
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:38:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F05298C9DA
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:38:36 +0000 (UTC)
-X-FDA: 84633679032.28.E2D827A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6295440009
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:38:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pYMUC06T;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775612315; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D63766B0089
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 21:38:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84FA1E292E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:38:58 +0000 (UTC)
+X-FDA: 84633679956.09.FDC0E5A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5E846C0003
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 01:38:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bbNQ7dLx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775612336; a=rsa-sha256;
 	cv=none;
-	b=8pA5esFq9JkoIoU+I0q81ySXyU8Teku0tHiUqHBprh+Ng9WwyN7EHhAsKPnKTWcGcm6slr
-	AeAG5Hc8+msokvjMg525zU5OS7XN6DhCuDDi6qWsVzFYOCcxGFxmW5JtVfSbpDhU/6XFlB
-	0CtkAliv+xsyLkmWhGT8ZM0RgDRoJCg=
+	b=D0EwTTGbH9yM2+Io4rYzvPCAV4yLZRm4B9M9cvu8AQBwmBNZuBHh6VNm7VdSUvhdIAYbW5
+	lRxa25FZko5pvkr3LbctsJtGiKOdmgWIp6Z36KVMa7PbYdTDYG4ctHZm6QNGNVhdXcVEUg
+	ef7mKqPv7rE/UQZr7dieS86PycJC6os=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bbNQ7dLx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775612315;
+	s=arc-20220608; t=1775612336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pU7KO9tuLTYvSMi1eBL8b53sP9TaEYK9+CkL6tk5R1E=;
-	b=w8hfbETzXN2sEiBrPMmkERIolqg4o9Gy7WbzR9ybymAxNZlC7PoEUzhkVlsQHK1TKsveqj
-	/gRJYUljc5HDyvDrtCGb7hZUkgVI4eBEzpkfn8LrfCxtQ+IidXEC3OlH/0yCIOu5ceVA8+
-	oVK0stS2dHypgsBBX8H/Jv3yroj3QJo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pYMUC06T;
-	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF45E6012B;
-	Wed,  8 Apr 2026 01:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E6EC19421;
-	Wed,  8 Apr 2026 01:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775612314;
-	bh=K8m42IOYFnKEeERMd4eWHH9pYeXT5uciLN7M1Iy9Pd0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pYMUC06TOe4DYzOSe9U826zQCYoG7FWrVUrS52NDNXKbOIPjvmePKVr6CPUWHMeoR
-	 XgUWpMbG/jgOlti3N2WRoc0716abLsGen4OLQ7HAgEnbD8JeYYBxiFEJQ7Uv3WGRwZ
-	 TMtBUR1g+GANnWX4pRaACtQECG9+Db6BCuKf2whNwjMMYh0W0V1lsu+piIlK8PMAPl
-	 bDd4w5LHy6sNDCm1vcTvjcW+lhShIN/NEaY1b5/nuo6om9lKwnGRhlPy4i/DzUqt7i
-	 EwEnWWj9GpLx5hLv/AS9nESWabcuc3THhYlTZ8+aPrhMU7/9rdgDW+lZfqX88i/M6m
-	 t6TAvJNHW4CLA==
-Date: Wed, 8 Apr 2026 10:38:32 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: hu.shengming@zte.com.cn
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	zhang.run@zte.com.cn, xu.xin16@zte.com.cn, yang.tao172@zte.com.cn,
-	yang.yang29@zte.com.cn
-Subject: Re: [PATCH v3] mm/slub: defer freelist construction until after bulk
- allocation from a new slab
-Message-ID: <adWxmEzU23nza_pn@hyeyoo>
-References: <adSFyyFWlLy177rB@hyeyoo>
- <20260407210216761qrDj8RR7pN-ycbvYmA69v@zte.com.cn>
+	bh=0KJ/NgB0Ojo2aHtP+IOyiMd2ituEthuu9DnTYaHttBg=;
+	b=V1Jn3gZsRKr676MQ2HdB8+HK62MRcNP79c7yvIc4jA4SZumPKlnW+V3xCxQsrd5nWBO7q9
+	Z7q0OMqYlPL3YS6tKBn4ChgjIRDdrYCrx9p0ec95oOf8MMeQTcOnycALq4o0rFlhl9bVUE
+	txYQasBVgSWnhxHc4p/jdMALk0P3980=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775612335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0KJ/NgB0Ojo2aHtP+IOyiMd2ituEthuu9DnTYaHttBg=;
+	b=bbNQ7dLxHdMSgTyTXyNJ5ooqFMDJiBplL9qjZ1fWxFbGqBRJ524Ehmz7eLSz3cw+fhsHKj
+	SFfbP7/+Ch5rl8vHE7fA3TdpODaXqwDfOncodZDKAvGt7FC83KgoP991r1Fl9WFkMfMgfM
+	KOv2QmXHD2+wJvB8GUtRRt8B2EUloFI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-2Qb9RMGOOu-tgCd1e2KupA-1; Tue,
+ 07 Apr 2026 21:38:51 -0400
+X-MC-Unique: 2Qb9RMGOOu-tgCd1e2KupA-1
+X-Mimecast-MFC-AGG-ID: 2Qb9RMGOOu-tgCd1e2KupA_1775612329
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D756719560B4;
+	Wed,  8 Apr 2026 01:38:48 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.14])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0D511955D84;
+	Wed,  8 Apr 2026 01:38:46 +0000 (UTC)
+Date: Wed, 8 Apr 2026 09:38:42 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Jianyue Wu <wujianyue000@gmail.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: move folio LRU helpers out of swap
+Message-ID: <adWxonmfjvcwXMg8@MiWiFi-R3L-srv>
+References: <20260407110002.204755-1-wujianyue000@gmail.com>
+ <adUTC-7iyOAUlhR7@cmpxchg.org>
 MIME-Version: 1.0
+In-Reply-To: <adUTC-7iyOAUlhR7@cmpxchg.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: rnT9nheWv21yY3wBdkMWRO9ChQAt74URPbpu-_j00YI_1775612329
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260407210216761qrDj8RR7pN-ycbvYmA69v@zte.com.cn>
+X-Stat-Signature: rfb35koph19jgdr9q9qhxtmbi4qursqa
+X-Rspamd-Queue-Id: 5E846C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6295440009
-X-Stat-Signature: pj96btsy5azrihx3jm1yxgz79t1w5uc1
-X-HE-Tag: 1775612315-259242
-X-HE-Meta: U2FsdGVkX18tJOifZOeZ2ltVpnpEqNmO27mSuUKlIro1CxpjeU55FBbI5aNaESHCE1oWwgEqBXCSpj9snAvbugJbjQ0TNRGiPEEdpamJfUmAWKyOaBd2B33qWZyRtMWbPPDc+EdSEpDT6i+U19mRj0Fvbi6fmD74pXrutwHbnRY5aydPuexasunNVCF3T1P4CsmWJgsnOZzcxTDvWpjnX3+tGZ0+JcY1kF7s5WFWfZ1u320S6YxbcIV0S5F9bCcsctKmXsUy66cRC7LiLYlGQg6N9REDZwhKxR22UrJv19138ahqLSR0ip49WdDhBITakPsA2w60xJ8lcvSyUYxdmIzJdpGu0XAG46Y4EG5rLYBRnXtiAL0o5U0Vja4A6VV64JzMLRZhmK4oUYdqj/iPwslT9O6S7EUgzYeD37aWxlfWDxuO3BqrNgQ1pVbssvs4wAa6kqaBuM5/D47brZR655vGaL9nbj3DUZfuN6Igl7u5AsrvmY7TbliGliS0GWp5tFL/yK2128eCFBVoUtgndFBO+7z8jtU1wdp4DYF62tGn3jGdDtb+w2iIBRf+wO7/AcfANh976gadjK8TRRHuhyIbGyhI3ZU0DJcdkcEznNqDua1EXQ3xe0BHtFjlAnortE7oTNg12IVeWVFyLGwJu0FYaDPr0uxzwJgqMZaYEnK1jqpPX7Imbz7MW0JUg1NOZ9mEZ+XY6o4IVVCI3gQtJmygnv6ZrL2PutgFWsaeh1IqVrLoz3wRhKgtYTwfblLCv9HlWamYZgO4mKHgO2VWhNPqINFuPkVnUHlXjRQOZgdA5eVruSfwvybEscgvn4gttgwuyH+OF6MStC9XZ0SPAcYI5HhTryiYGk6ynudXmhNKxYNWVMyGFYpUEetR609Jlir/Ex7pyuCjBlSjD+/TfOA3QUwloNsbddAlG/4qDzO0h+BQ3qlLtvw1tlP7nnSta18gLYRwJvHg2fhAcM/
- o/zBPrpu
- zxboefOwO3083A5B8Br08XxjJRxwFtOqRJ/QXn35gnUHKs+Vpmj8Ep4hOnk8WekxR3CzlPAbPeJPgj6sB3r2KBAxL+9iQqdpEL8YEcdO8nBPPN3f0Q64k6SzUxAtcm6v8RtVbLOzrN4xHwuO9UTLGFQaxbJ3NqMt8oYHHnPtvhBBmDFZ2EfWyENm2/WmuM3EnEDk3QMhjZtIwyJnjwHfh0tVptQi4GULjbAnZ9IaW5qbW7ZLg8pzfTYpbRGrs1NpDs3LUYJafnrbwYMhpR1/yTH8JqZbQWSXwj0R6akVLaxzUTBO5AA+x3R1+hw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775612336-311384
+X-HE-Meta: U2FsdGVkX18TTvP1FNjHRudm2LXv4+DxSxVSY5RABIZZqhzf3rz28RWINwiNJq6cDWXUfx9w1z2nakslZdjDOj5RchD0i/vtYfg5WUBqlOTfwfCdFw9Nn0q2s0nhO165krd3Us1yj7qYGeWEYx5Hat4J2uYMTbSjzdacV9tkNFd8yZ0j2TwPBFaR/oPUIFswPNzL3GTOGytCfM90OBUs87alyky2TJyOGzsIw8x4U7MDy46LUb9+oVMT3BRzpsRYgJj50X91qxhW69KxP+5E0c7X/EYFWQZi5mTlJh8ld4/GlAHyDUCVpbEym5f4wvmYhx+aPBbnZYh8+8BLHxyG6Os19DgraXP7ngCRukn7l3aTE73GoZ2HUG635f04melNUp7igmHpJlNelTYTH8nFJ7EDNXFWP7SQIrxmS9+KziHD6VeMpe4OtZA0KOUvp9jeN/poNaOsftCyEUXBqg4q5gcGe734H/1bTEZ/9Lm5NeWiIKaVU0OoDDBDvfaScx1H4lUuemPBQjq6STU65nZbjADKCDnydsmliy/7nntZ4wZdxvvTjb/lu0VWb7CLymKOxH+2yZIIkmRhGN5zINJjYotrM+JVQs+N+MidiLYwDsdMyLaKlzwrKAK8DrTo5rHB91IKZTLgCvj2DNaV3Msen4KYP9VRxiwylGWKqJLQg3ZyD9UWcFT580ZqVPV8qVNmYlCP//R/5rLgXoRcfaxKJX7ccXkc/oFx53oioVI3s12al0ua0eZxzw3C0Qoz/OEy0FeTO+z8YTnV9uq4LwK4tUXpkYA+lyjjVTIikXqdeFD+NRme6jssiiLZDn86mjKxxsPfcpgkEb/4raTDucdEc7GMAVhV+CtBSWprQ4YLqecTPg1bKAwqjHWi5XvCtuxjmnKVdQUMum9CABQfjJ5WD7vf47EJ7ZVBPo32jtC5xcKnWcBlRrR5uhLrANwqGIGOcGAFvOv4yuSrgdT8T3V
+ AxGholK/
+ neQ9KXNMjZcIYrDS+0pSJlMfket3xN81+thp5aSTuSxwj3wPFduP7LDJbURymf0ENcPl/KFg0qReJi5rRk8yARNNSGXleccVHYWPRY65R5oFqG5RdtWkhvSxErhdPT4rqexAkPmkZuXCZXUHFNBI+HwRp9JlCe3YpMIeVkm7R3XHm2oot/qKf9NiFUVZTrbeC44R3ZTSJVSKkbrpudSi6gUSDwdY8lkNZc1KBLqmexk/PeukibTEafU70kpb8x1YqgJsvLzpJRryjdIMmt+9+lCmt5FTGU2KnDCOsCTEojSRxHz1ZQ4adc5cRFgZbbX9H3ai0vLt40fq9UxH3QENK/7swbefDhb8dOP2uW0zWPpaxqhjiyxHbDTYwuqZHJmP7YcM2wFtuP4/mntUjYCo/546gXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,181 +108,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 09:02:16PM +0800, hu.shengming@zte.com.cn wrote:
-> > > diff --git a/mm/slub.c b/mm/slub.c
-> > > index fb2c5c57bc4e..88537e577989 100644
-> > > --- a/mm/slub.c
-> > > +++ b/mm/slub.c
-> > > +#ifdef CONFIG_SLAB_FREELIST_RANDOM
-> > > +    iter->random = (slab->objects >= 2 && s->random_seq);
-> > > +    if (!iter->random)
-> > > +        return;
-> > > +
-> > > +    iter->freelist_count = oo_objects(s->oo);
-> > > +    iter->page_limit = slab->objects * s->size;
-> > > +
-> > > +    if (allow_spin) {
-> > > +        iter->pos = get_random_u32_below(iter->freelist_count);
-> > > +    } else {
-> > > +        struct rnd_state *state;
-> > > +
-> > > +        /*
-> > > +         * An interrupt or NMI handler might interrupt and change
-> > > +         * the state in the middle, but that's safe.
-> > > +         */
-> > > +        state = &get_cpu_var(slab_rnd_state);
-> > > +        iter->pos = prandom_u32_state(state) % iter->freelist_count;
-> > > +        put_cpu_var(slab_rnd_state);
-> > > +    }
-> > > +#endif
-> > > +}
-> > >  static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> > >          void **p, unsigned int count, bool allow_spin)
-> > 
-> > There is one problem with this change; ___slab_alloc() builds the
-> > freelist before calling alloc_from_new_slab(), while refill_objects()
-> > does not. For consistency, let's allocate a new slab without building
-> > freelist in ___slab_alloc() and build the freelist in
-> > alloc_single_from_new_slab() and alloc_from_new_slab()?
-> > 
+On 04/07/26 at 10:22am, Johannes Weiner wrote:
+> On Tue, Apr 07, 2026 at 07:00:02PM +0800, Jianyue Wu wrote:
+> > All allocated folios are added into lru lists for later reclaim whether
+> > they are file or anonymous folios. However those folio lru operation codes
+> > are put in mm/swap.c which is not so appropriate. Because swap code is
+> > only for anonymous folios.
 > 
-> Agreed, also, new_slab() is currently used by both early_kmem_cache_node_alloc()
-> and ___slab_alloc(), so I'll rework the early allocation path as well to
-> keep the new-slab flow consistent.
-
-Sounds fine to me.
-
-> > > -        slab->inuse++;
-> > >          allocated++;
-> > >      }
-> > > -    slab->freelist = object;
-> > > +    slab->inuse = target_inuse;
-> > >  
-> > >      if (needs_add_partial) {
-> > > -
-> > > +        build_slab_freelist(s, slab, &iter);
-> > 
-> > When allow_spin is true, it's building the freelist while holding the
-> > spinlock, and that's not great.
-> > 
-> > Hmm, can we do better?
-> > 
-> > Perhaps just allocate object(s) from the slab and build the freelist
-> > with the objects left (if exists), but free the slab if allow_spin
-> > is false AND trylock fails, and accept the fact that the slab may not be
-> > fully free when it's freed due to trylock failure?
-> > 
-> > something like:
-> > 
-> > alloc_from_new_slab() {
-> >     needs_add_partial = (slab->objects > count);
-> >     target_inuse = needs_add_partial ? count : slab->objects;
-> > 
-> >     init_slab_obj_iter(s, slab, &iter, allow_spin);
-> >     while (allocated < target_inuse) {
-> >         p[allocated] = next_slab_obj(s, &iter);
-> >         allocated++;
-> >     }
-> >     slab->inuse = target_inuse;
-> > 
-> >     if (needs_add_partial) {
-> >         build_slab_freelist(s, slab, &iter);
-> >         n = get_node(s, slab_nid(slab))
-> >         if (allow_spin) {
-> >             spin_lock_irqsave(&n->list_lock, flags);
-> >         } else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-> >             /* 
-> >              * Unlucky, discard newly allocated slab.
-> >              * The slab is not fully free, but it's fine as
-> >              * objects are not allocated to users.
-> >              */
-> >             free_new_slab_nolock(s, slab);
-> >             return 0;
-> >         }
-> >         add_partial(n, slab, ADD_TO_HEAD);
-> >         spin_unlock_irqrestore(&n->list_lock, flags);
-> >     }
-> >     [...]
-> > }
-> > 
-> > And do something similar in alloc_single_from_new_slab() as well.
-> > 
+> Ironically, the only thing that doesn't fit in this file is the swap
+> stuff. The page_cluster & sysctl should be static in swap_state.c.
 > 
-> Good point. I'll restructure the path so objects are emitted first, the leftover
-> freelist is built only if needed, and the slab is added to partial afterwards. For
-> the !allow_spin trylock failure case, I'll discard the new slab and return 0. I'll
-> do the same for the single-object path as well.
+> The rest seems thematically relatively clean - infrastructure for
+> managing folio lifetime. swap.c is not the best name for it, but short
+> of finding a very clear improvement I'd just leave it alone.
 
-Thanks. Please keep in mind that you need to enable SLUB_TINY or slab_debug
-to test the alloc_single_from_new_slab() path.
+Can't agree more. We should move page_cluster & sysctl and swap_setup()
+to mm/swap_state.c, and rename mm/swap.c to mm/folio_lru.c or something
+like that.
 
-> > >          if (allow_spin) {
-> > >              n = get_node(s, slab_nid(slab));
-> > >              spin_lock_irqsave(&n->list_lock, flags);
-> > > @@ -7244,16 +7265,15 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-> > >  
-> > >  new_slab:
-> > >  
-> > > -    slab = new_slab(s, gfp, local_node);
-> > > +    slab_gfp = prepare_slab_alloc_flags(s, gfp);
-> > 
-> > Could we do `flags = prepare_slab_alloc_flags(s, flags);`
-> > within allocate_slab()? Having gfp and slab_gfp flags is distractive.
-> > The value of allow_spin should not change after
-> > prepare_slab_alloc_flags() anyway.
-> > 
-> 
-> Agreed. I'll move the prepare_slab_alloc_flags() handling into allocate_slab()
-> so the call sites stay simpler, and keep the iterator/freelist construction
-> local to alloc_single_from_new_slab() and alloc_from_new_slab().
-
-Thanks.
-
-> I also have a question about the allow_spin semantics in the refill_objects path.
-> 
-> Now that init_slab_obj_iter() has been moved into alloc_from_new_slab(..., true),
-> allow_spin on this path appears to be unconditionally set to true.
-> 
-> Previously, shuffle_freelist() received allow_spin = gfpflags_allow_spinning(gfp),
-> so I wanted to check whether moving init_slab_obj_iter() into alloc_from_new_slab()
-> changes the intended semantics here.
-> 
-> My current understanding is that this is still fine, because refill_objects()
-> is guaranteed to run only when spinning is allowed. Is that correct?
-
-That's correct and it's fine.
-
-> > > +    allow_spin = gfpflags_allow_spinning(slab_gfp);
-> > > +
-> > > +    slab = allocate_slab(s, slab_gfp, local_node, allow_spin);
-> > >      if (!slab)
-> > >          goto out;
-> > >  
-> > >      stat(s, ALLOC_SLAB);
-> > >  
-> > > -    /*
-> > > -     * TODO: possible optimization - if we know we will consume the whole
-> > > -     * slab we might skip creating the freelist?
-> > > -     */
-> > >      refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
-> > >                      /* allow_spin = */ true);
-> > >  
-> > > -- 
-> > > 2.25.1
-> > 
-> > -- 
-> > Cheers,
-> > Harry / Hyeonggon
-> 
-> Thanks again. I will fold these changes into the next revision.
-
-Thanks!
-
-> --
-> With Best Regards,
-> Shengming
-
--- 
-Cheers,
-Harry / Hyeonggon
 
