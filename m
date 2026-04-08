@@ -4,111 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9875FD5F75
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 06:42:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30296FD5F87
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 06:49:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099B96B0088; Wed,  8 Apr 2026 02:42:28 -0400 (EDT)
+	id 3B0EB6B0088; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04B096B0089; Wed,  8 Apr 2026 02:42:28 -0400 (EDT)
+	id 362676B0089; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA3186B008A; Wed,  8 Apr 2026 02:42:27 -0400 (EDT)
+	id 2508A6B008A; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D9D736B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:42:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C401160A2B
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:42:27 +0000 (UTC)
-X-FDA: 84634444734.14.29F4FA6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0622FC000A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:42:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U/KAz5r7";
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD866B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:49:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 919751A09C7
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:49:08 +0000 (UTC)
+X-FDA: 84634461576.10.BDC2935
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D7A5E2000C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:49:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4NFTZAU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775630546;
+	s=arc-20220608; t=1775630947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tM7k7VYCqB4z5t3PZyIgrlKJeJsyjYJwYxEKWVfQERk=;
-	b=QwlTfzy9esNIselFngxqbfpBWzdcEoX9jXvOBtzr2tQyxk1PU1EZScL/i5dgGEZP0HvKGi
-	hn82fpGzKQChhjlJPz2/Dx6yqHSd4bE9LM6RgxZ+n0ZAerA5KFiFYk03UB1uF1HVLVJZ2E
-	FyEXbXLNNTKadjwTT/5sx0qCcNCpr5k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775630546; a=rsa-sha256;
+	bh=SenYDPdkiQKzoSg2iBQvwYuThBrOYOejVdxnNLXibeY=;
+	b=kndZ893zi5KdlcbW1hT9rhtKzDA315HOJPrzVfSsahPTitP2tLka5rgGOWRERz0MJZZiLh
+	dg1IVAGTf1AaD654s57yC0rFRUb8fj9/9HRLgB8K9LQPez2ZxR3aHa9bwKPWKl0KF8Td4r
+	e9tFqeoBes2zcGY7Sr/otCfVrBleBTQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775630947; a=rsa-sha256;
 	cv=none;
-	b=PbBWthnAjUecesoyFj5CrCXuinZtm++pmWZJxAvoI5vA3JbClMSNHOS4yojD6wqyX7TinY
-	S0luJ2Ekm3aykw1qg9CqI5tgRmsfm7CP3SntqqikcenDLo0DZOcmRR1Oo7SPZ1xewIu9jw
-	dACBgH8fTZkBjYWc4NEk6PaGpHjndeY=
+	b=8ppyr0ySENKJtZsCLWYn7ZNlDFrJj/Ks/5lItHiQefGkSE1so676laOys8p+yAvCw45qGB
+	E/x+O5Rk0aAY6AW89ymLGAkSyf0DOAfFVDCoc3Rko08tjO7G9nq5m6ntO0ssUoQfZ78b6N
+	xwllbp52u+yxY9a0gtKEK2sXt9CS+sQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U/KAz5r7";
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O4NFTZAU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3CC1360128;
-	Wed,  8 Apr 2026 06:42:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2242C19424;
-	Wed,  8 Apr 2026 06:42:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2BC5435DF;
+	Wed,  8 Apr 2026 06:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DA8C19425;
+	Wed,  8 Apr 2026 06:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775630544;
-	bh=hew+yMuJllj/CILG+kipSamfxQNTS+u4BKAsnh0Jvxc=;
+	s=k20201202; t=1775630945;
+	bh=Jf27xk2PEb+D+m73rLzzPti70YoNYsdCvSbCyz5KRkY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U/KAz5r784TYMJ5nXnUBiSQNvcv7W83SI2KXHmTgp/Gs7ftNs/tzH0V4nvKfeutOb
-	 R51tBfkNTTSjrqaF3xTtyIfveOPMkl9kz0hVus573UjOZ1dYd/ZYeW5EWMwA/jL0nK
-	 91ebpbl6GDCBmjUNLHUtU0LA6IihOr+Xl1NZ5DGJ0jsZUTUhfINNyIFdWv8U/8cBzZ
-	 kkZNE0vwrCg/sN67ymN3pAfCux7NVAoKkvnaflxIb+zDsX1Te+Nam2oxE151EBFrCt
-	 dDTHQjv6JLWK/78L4wJD80J8aHaa0OXky53/ur5lIYdB+b3Lduwd8Vglq7dKSzEuAH
-	 pIP4IbOFvaeEw==
-Date: Wed, 8 Apr 2026 07:42:10 +0100
+	b=O4NFTZAUGXJlYJi1cB1XvfzxzdGTopyBo3L3YcY86XA142N96ZrAP2E8Z7cICnhLE
+	 6AeES82rZ1GsQxLKVt6MkUHPfg+P7aIRFJgyQpgbmVrbSsa7jW85ipzT5C6LDcS0XP
+	 gRoSDzQgopOYGZbbOnFfFufWbjcN0mV7jrsb6rLPGUY7f4w4xUxlKOoWXKNQODNu2E
+	 mZd3Qix7Buh60T4+rmK4cx3a5t4M4Pm5adIEofTwJpiX1TKY3djbBbAAYSinFuRLaI
+	 RP+58r0yTBQ6QMvYP/COqOMpaf/w8MiS5qx3fyLn/tFDdAP7Z2ZdXxVtxUdC6c2c//
+	 HJbDftmUH6B0w==
+Date: Wed, 8 Apr 2026 07:48:57 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nico Pache <npache@redhat.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v4 5/5] mm/khugepaged: unify khugepaged and
- madv_collapse with collapse_single_pmd()
-Message-ID: <adX4g9dGN_TNV8_A@lucifer>
-References: <fef63b28-a364-4e7c-bdbd-6d0403632920@lucifer.local>
- <26fcec86-ee78-4f5c-8ca5-0e6230699cfd@kernel.org>
- <440d6b8a-d299-43eb-83b5-6625f9468e5e@lucifer.local>
- <37132e09-9c03-4afc-bc73-4bca416c5343@kernel.org>
- <9d5a4703-a15e-4be6-926b-af2d98db40c0@kernel.org>
- <CAA1CXcCYLGQBy9nT-MSTPVK=XgWWtD6Af-QiA_6pXtM_2pybPg@mail.gmail.com>
- <87b83f7b-f0b1-4184-93a0-3b4b574c813b@lucifer.local>
- <20260401133145.90b094a7b87bdceb0013b5af@linux-foundation.org>
- <adTCJ8NQHGNMqR1d@lucifer>
- <20260407144259.011a26666eff9c96d74e39a2@linux-foundation.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Barry Song <21cnbao@gmail.com>, 
+	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <adX5txC9tGPR-iyX@lucifer>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
+ <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
+ <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
+ <acbgIKuwDsPvPjdF@cmpxchg.org>
+ <adTonuzmUc2AzUhp@lucifer>
+ <adU3P9fk8h-AmEp4@gourry-fedora-PF4VCD3F>
+ <adU8VnzlLw9JUHB3@lucifer>
+ <adVPAS4PP7wK0Pxq@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260407144259.011a26666eff9c96d74e39a2@linux-foundation.org>
-X-Rspamd-Queue-Id: 0622FC000A
-X-Stat-Signature: b1x98ah78kxsnxrnmzb5tqcn69qkd5o5
+In-Reply-To: <adVPAS4PP7wK0Pxq@gourry-fedora-PF4VCD3F>
+X-Rspamd-Queue-Id: D7A5E2000C
+X-Stat-Signature: owsbxsyn1ncqqctfyrq5upf38u94bwd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775630545-98497
-X-HE-Meta: U2FsdGVkX1+vkH05PX99faw0bZdwSVKqIDD1qLcf/x3YFbL9mnkAFeVDdKObJRcF9y7Y1JfjpQl4Oc0QoPyzh2ENVKwhpLwkkKy1yJndgovqPOuBuZ1icSwt0Jcq06nd4ssyi8SgJ+Q7yx4CpOkmjbHayemjAMfYXeUK7IGLrhfZL/1yt9+0JbM12ypXT47A1/xAgY76cDbiIKeIq1GT+3ifNZ8PAYhkwcAg+K7gT/c3IIgejuaTgtkJRcDEwzlywsKLHud04ZjNPVThjeYGtoZFWL4qgQNHKHuvVBzpXylSzrK8AN1vOngKlbkEbcqrVSfNeeRgJG/mjcOfQi/uYq6nKE/styaX28Ut4hE9um6mHqPCoB3F/+/7Z35JYN9NPHIiil0RiR+1mzlqNu22Eb0CFsKWMvl+GxCI38FVB/GD2F0V2g9op2m9u6PkZ+P51kPrCy8bEWZ3OLR2Nrf6MsLi7/oh/ytf1vQ2XfIw5M3hT6K8y/E10fbuGvkC2N2U2A3ugsM1seHLRzE1kcMh4jQkDZPT1u2GYaPzKwvnXWBSRoKGeNglWA2HiBh+M2CHt1PkXhIDkX+rBuq/Kyyyt00+ndEO+g3CBy8B2RGkzMrKjSttiUIkqQ9BCtTjxdoRS2ATfcoI4EAP4M+HtaSVQVDosJ9yGOYVRn80kzLyQeS1P8pHlTPp+/iOoHpfdFXQ5YnpRAGaHUNDZYiH5kl6gOB4cwtROqOfpZ65KlDH5n4hcHyJD9LoI47O+KMflhWo9hh8TpickohO9qxVXK+1h4FhBTBA0CkVLSczbxKvd+uaHrN7snwUFPiyNuyJeFu5Rp7F1KvEY/KrEw2prk+aZEDXbpqrzUkLGDJhnURI/Op5HzVeqwH+D6aO8QqyEhrkOKBBcIK+gIVyVFisgkjyQ3ufM1FaHru7qbtEGa2HAS9zdf0nKmIm5th7CuBo9C49LBCT3W6YleqaEvHvCnV
- gKf2CcGM
- MnP9NnEmKIf69pziAjqEhT0aHI1uoIWeawrhmJPvq6bX+q5xffLNHLFXV/ChutiYvJokS
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775630946-185888
+X-HE-Meta: U2FsdGVkX1+Th0hFU3v+v5iEylxyZwJaT6zjq7+6EZFp7aHAl25gPtqgmGTp0MrHVUSvz16EMTebUKBucuiOQQfjSLVEjBwuWiFj3vhIawbYXSo1PRGLeIkoUvqRkFSNhJFOjUl9ozGavQ+r+LQE9g3AsmRZp458LiWh9XvSRWF1gIpySNs7PSlhhD4+CAAXx8nDJedB8gJjOOfTdPSpw4N179ZzgjBqeGuOy/Eashaoi5AnUA5+AzSzASQfXdhRugfV29gdoizu1ucxOC2wh/Ry305nMkqoc1QLgGK/Am46q/R3Mwq6ZSu8kpPheQ295ZplhXdF8DTEOyUHAS54tF37Q2Li2n6zgdtNW7C8n6zbMMyJsmHkSlbuvyX7u0Ew2GQn1xEjDg5g4ZxRKAtk4bH1dppAm0CfjDhuiv3b6zLU/1xnntauSks8WKHKwG7fLUiS1XWy218f0YVj21IHKSw+GaXQWZs/pjyWgdxHtw5C9k5ChkWdT/STStDpuAxJrISMu3YGjZn8K3UCy24KFM3i31K9qwIRjcr9N7n5mYFrIHq4Lfc6iE9tiIJkVojEaOo61K5wzA+8kogtjx4oPnVmLOEL1PLHYAdkg2W7Fjl1ogVwhwTghXjms7ZB/+c1Ex8UEnSnPvDGH96lD0H7PQ8Bzo2x1h7a0HgpU2S32uf2cMbgZS8aLMBjjed6ZSI8TFDcW13wbwEEgzcW5gzzXw0LvbM2m7dJ/smfiSG+yBfDHLYxaS7lr5wIL59szrl6m5JX/ARTnc8kLPsfVV8UJeRUizSsCRkX5lrEUqR1Agag00y5v677euKT3O0BOu+gdL1ytqzcEp0h/fERMcYxXQyknnSTYLmpk0TMAF/xDisYJSkPhmu/rRvMDXVcSHQcYNRq1VSIjpUbTsWT/4zaW9e2AhYGD5JHrnQM++UDdZJDX81pRdZRhttEtw8j37OF2okDcnnwgDzIKVT1X9G
+ 3pRPK5O/
+ zohnW9Fr6wwapcKXs694Gx2YShDgf3SMCYJW3M468n1f9sb3jNLXV2HlF1Em2AZ1SUf6mjpLpUYIegVtFHGUcLDhyaKrPptruRsy04UrnDK/Uc8kkV82pDxiC1OXkJkSpnKEWFOIkleTiiYFsLmoKFr3q3jBhKjeE4tU3EnsL2cp1Y9HyRJ/CB7QpoQPi/y2q0ye/Oh+hBcomsMIejtNo+qB9deMbsWyKthP9gd75aLALvA51K/UzNfdGaxOgJCudUGBN2+bY6yKC26AjEWDvL85grDDUKqU5pqTJJZA3Je7RQ7M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,163 +111,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 02:42:59PM -0700, Andrew Morton wrote:
-> On Tue, 7 Apr 2026 09:38:19 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Tue, Apr 07, 2026 at 02:37:53PM -0400, Gregory Price wrote:
+> On Tue, Apr 07, 2026 at 06:30:55PM +0100, Lorenzo Stoakes wrote:
+> >
+> > > somewhat trivial work these days via <pick your favorite LLM> with
+> > > reasonably well designed interfaces.
+> >
+> > Though to be honest, I did ask Claude to do this with some code before and was
+> > really impressed with how quickly it came up with something.
+> >
+> > Buuut I've generally found the code LLMs produce... terrible? Really terrible?
+> > So I think you'd want there to be some level of human improvement there.
+> >
+> > And in any case, maybe doing things this way will struggle to really represent
+> > real world cases (lock contention etc.) but OTOH, being able to simulate a high
+> > memory pressure environment with certain parameters even without [the rest of
+> > the kernel] interacting might still be super super useful for diagnosing issues.x
+> >
 >
-> > On Wed, Apr 01, 2026 at 01:31:45PM -0700, Andrew Morton wrote:
-> > > On Wed, 1 Apr 2026 09:14:35 +0100 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> > >
-> > > > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> > > > Date: Tue, 31 Mar 2026 13:11:18 +0100
-> > > > Subject: [PATCH] mm/khugepaged: fix issue with tracking lock
-> > > >
-> > > > We are incorrectly treating lock_dropped to track both whether the lock is
-> > > > currently held and whether or not the lock was ever dropped.
-> > > >
-> > > > Update this change to account for this.
-> > > >
-> > > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> > >
-> > > Not sure if I should add this?
-> > >
-> > > Should it have
-> > >
-> > > Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse
-> > > with collapse_single_pmd()")?
-> >
-> > (Sorry only just noticed this)
-> >
-> > I mean we do need this patch, if you plan to do this as a fix follow up then
-> > should have a fixed tag, but I do worry about bisection hazard by leaving this
-> > as-is.
-> >
-> > We definitely either need this patch folded in or as a fix that gets sent
-> > alongside the change.
+> There is a concern people start looking at these tests as signal for
+> performance regressions - which is neither meaningful nor useful
+> (unless you fundamentally break list iteration or something).
 >
-> I added this to mm-stable a couple of days ago as 5a62019807da
-> ("mm/khugepaged: fix issue with tracking lock"), below.  It does have
-> the Fixes: so I think we're good.
+> But for trivial cases, you'd at least like to know under strongly
+> controlled aging and reclaim scenarios that anon/file memory is
+> reclaimed in a balanced manner - just as an example.
+>
+> If something breaks THAT assumption, you know there's a logic issue.
 
-Ack LGTM thanks!
+Yeah and you could assert a lot of things like this, for me the real value would
+be in extreme circumstances which might otherwise be hard to simulate.
 
-Sorry was going through old mail after I realised I didn't know how to use
-neomutt properly and missed a bunch :)
+But it'd be testing very specific things rather than 'how does an actual kernel
+behave in this situation?'
+
+>
+> Likewise with comparisons between LRU and MGLRU.  It might be easier to
+> identify the behavioral divergences that way.
+>
+> But i fear the whole page-table walk thing makes all of this a
+> non-starter.  That's turns into stubbing out like rmap and such.
+
+It could grow exponentially yes :) it was hard enough isolating the VMA logic...
+
+>
+> ~Gregory
 
 Cheers, Lorenzo
-
->
->
-> commit 5a62019807da4a7add0717c962ac83b23dd12b2c
-> Author: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Date:   Tue Mar 31 13:11:18 2026 +0100
->
->     mm/khugepaged: fix issue with tracking lock
->
->     We are incorrectly treating lock_dropped to track both whether the lock is
->     currently held and whether or not the lock was ever dropped.
->
->     Update this change to account for this.
->
->     Link: https://lkml.kernel.org/r/7760c811-e100-4d40-9217-0813c28314be@lucifer.local
->     Fixes: 330f3758a3bc ("mm/khugepaged: unify khugepaged and madv_collapse with collapse_single_pmd()")
->     Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->     Reviewed-by: Lance Yang <lance.yang@linux.dev>
->     Reviewed-by: Nico Pache <npache@redhat.com>
->     Cc: Alistair Popple <apopple@nvidia.com>
->     Cc: Andrea Arcangeli <aarcange@redhat.com>
->     Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->     Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->     Cc: Barry Song <baohua@kernel.org>
->     Cc: Brendan Jackman <jackmanb@google.com>
->     Cc: Byungchul Park <byungchul@sk.com>
->     Cc: Catalin Marinas <catalin.marinas@arm.com>
->     Cc: David Hildenbrand <david@kernel.org>
->     Cc: David Rientjes <rientjes@google.com>
->     Cc: Dev Jain <dev.jain@arm.com>
->     Cc: Gregory Price <gourry@gourry.net>
->     Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
->     Cc: Hugh Dickins <hughd@google.com>
->     Cc: Jan Kara <jack@suse.cz>
->     Cc: Jann Horn <jannh@google.com>
->     Cc: Johannes Weiner <hannes@cmpxchg.org>
->     Cc: Jonathan Corbet <corbet@lwn.net>
->     Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
->     Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->     Cc: Liam Howlett <liam.howlett@oracle.com>
->     Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
->     Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->     Cc: Matthew Brost <matthew.brost@intel.com>
->     Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
->     Cc: Michal Hocko <mhocko@suse.com>
->     Cc: Mike Rapoport <rppt@kernel.org>
->     Cc: Nanyong Sun <sunnanyong@huawei.com>
->     Cc: Pedro Falcato <pfalcato@suse.de>
->     Cc: Peter Xu <peterx@redhat.com>
->     Cc: Rafael Aquini <raquini@redhat.com>
->     Cc: Rakie Kim <rakie.kim@sk.com>
->     Cc: Randy Dunlap <rdunlap@infradead.org>
->     Cc: Ryan Roberts <ryan.roberts@arm.com>
->     Cc: Shivank Garg <shivankg@amd.com>
->     Cc: Steven Rostedt <rostedt@goodmis.org>
->     Cc: Suren Baghdasaryan <surenb@google.com>
->     Cc: Takashi Iwai (SUSE) <tiwai@suse.de>
->     Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->     Cc: Usama Arif <usamaarif642@gmail.com>
->     Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
->     Cc: Vlastimil Babka <vbabka@suse.cz>
->     Cc: Wei Yang <richard.weiyang@gmail.com>
->     Cc: Will Deacon <will@kernel.org>
->     Cc: Yang Shi <yang@os.amperecomputing.com>
->     Cc: Zach O'Keefe <zokeefe@google.com>
->     Cc: Zi Yan <ziy@nvidia.com>
->     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d21348b85a59..b8452dbdb043 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2828,6 +2828,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->  	unsigned long hstart, hend, addr;
->  	enum scan_result last_fail = SCAN_FAIL;
->  	int thps = 0;
-> +	bool mmap_unlocked = false;
->
->  	BUG_ON(vma->vm_start > start);
->  	BUG_ON(vma->vm_end < end);
-> @@ -2850,10 +2851,11 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->  	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->  		enum scan_result result = SCAN_FAIL;
->
-> -		if (*lock_dropped) {
-> +		if (mmap_unlocked) {
->  			cond_resched();
->  			mmap_read_lock(mm);
-> -			*lock_dropped = false;
-> +			mmap_unlocked = false;
-> +			*lock_dropped = true;
->  			result = hugepage_vma_revalidate(mm, addr, false, &vma,
->  							 cc);
->  			if (result  != SCAN_SUCCEED) {
-> @@ -2864,7 +2866,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->  			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->  		}
->
-> -		result = collapse_single_pmd(addr, vma, lock_dropped, cc);
-> +		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
->
->  		switch (result) {
->  		case SCAN_SUCCEED:
-> @@ -2893,8 +2895,10 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->
->  out_maybelock:
->  	/* Caller expects us to hold mmap_lock on return */
-> -	if (*lock_dropped)
-> +	if (mmap_unlocked) {
-> +		*lock_dropped = true;
->  		mmap_read_lock(mm);
-> +	}
->  out_nolock:
->  	mmap_assert_locked(mm);
->  	mmdrop(mm);
->
 
