@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F391073CB6
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2071073CBC
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBE276B0088; Wed,  8 Apr 2026 09:33:42 -0400 (EDT)
+	id 2B1C56B008A; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6FB56B0089; Wed,  8 Apr 2026 09:33:42 -0400 (EDT)
+	id 262076B0089; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D856A6B008A; Wed,  8 Apr 2026 09:33:42 -0400 (EDT)
+	id 177C06B0092; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C37B26B0088
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F10B46B008C
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:33:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DE98140132
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9A6A7C01D3
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:42 +0000 (UTC)
-X-FDA: 84635481084.05.998D381
+X-FDA: 84635481084.27.E4CE5BC
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8E75F100016
+	by imf06.hostedemail.com (Postfix) with ESMTP id E0A5E18000E
 	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=B6CgjiPE;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Byro1AdR;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655220; a=rsa-sha256;
-	cv=none;
-	b=OZPly4CudbBAzH+LUXywgGastHNG7xK+FEhNikE0qhd/N63mPmVn04TweUYcsTJqsadDDV
-	mX52iHUTHgh+bsXqppHR34kgXEPT4xy6H9/9RGeKhtwfD28IcIm5OP5CdFlxb4hAFvohSq
-	VL5PI7cCoU4oRK2J7RfaMu4mTmbOYPw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=B6CgjiPE;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775655220;
+	s=arc-20220608; t=1775655221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCLRAjuTrAQTizeHsvvcGO1levRtnCTOyZrIbtMQ40A=;
-	b=VVeZSWuXWkLKX5ov31orKM49/OGyxAXHR6qhMmqLDSzAOI+/yv2tkN+UQg6Q1jirJasCE8
-	nRSgo+YsLgKaf+4VdyeVw8D7jZrmUdAXpiYJA5uDK2Dc9mnjeKsYTvQNQiZjZm713z/bVy
-	SZialzFSdk1KSKoH+9cUfJN5njnhg1U=
+	bh=B7DEJ5+heQ7onPG4SiPavDH/m9STlxrOJvRAAYFCZmk=;
+	b=HeuPG0rJJteX8j95Wpet6yqiVxVjEuR3+U8/cdp9++fPIsTdde9tueXOzOlm19D9/WHU97
+	hYnXEK5mLCfJ/Rq1dPk+e/fPnGvQJhFPQEyL23mA1Jfvwp7rSPROom52wf45Hcc6YZMd4v
+	fz+RmzEYWCXoVL5zGsXzmx41ZRqwYXI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655221; a=rsa-sha256;
+	cv=none;
+	b=nlbh0jWih5dbtC39ui4POeb+9JXjnls15b1otYs4gGoLlZDdB7dRWn/R9/oWNQn0rxoFIb
+	n5hE9ty3quIOkic8szKsxjJ7bkv4nwm9AWegLXyI5kVhgdsHVjQYhcKBoG34VOOoD+gxSN
+	wF4VtxuY52Wjqm8ZICDl/1bC8qG2vp4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Byro1AdR;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id DFA7EBE70F;
-	Wed, 08 Apr 2026 13:33:38 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 254D6BE713;
+	Wed, 08 Apr 2026 13:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
 	s=mail; t=1775655219;
-	bh=zCLRAjuTrAQTizeHsvvcGO1levRtnCTOyZrIbtMQ40A=;
+	bh=B7DEJ5+heQ7onPG4SiPavDH/m9STlxrOJvRAAYFCZmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B6CgjiPEf0oUY+HcHI1TGUkeqsMFfR+z6iwLuuCNGT6xWUh1mPNDAFsbKgfc0z8g0
-	 kctIIZ/mwbnFCIccEJAX9CCMrtczS5vOUz6mniz4QA7JS/H2zTg35B1na/ftX1vy0G
-	 BRILKsctNBtNAGDKC44EVtNjzejbgY2r8DJxRNIg=
+	b=Byro1AdRFmhHNV2ta5mXvcd4QswA/3naGRANsHBhr1wQ28PT8pgLRn035Guuocetb
+	 j/svy96Ds3qH6v5rOeF5US4scV2Lovh/Bm4MVhW1hm0CNf8Ckjbx8VF++lezc/nDyw
+	 1c0GRLkhoFbRK3O2fmavL0//C2Y028YHmGIiyb60=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -72,20 +72,22 @@ Cc: linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>,
 	Steven Rostedt <rostedt@goodmis.org>
-Subject: [RESEND PATCH v2 1/8] mm: use zone lock guard in reserve_highatomic_pageblock()
-Date: Wed,  8 Apr 2026 13:33:16 +0000
-Message-ID: <9423598fd4f5664c72c0e030efaef2ac5ceae978.1775654118.git.d@ilvokhin.com>
+Subject: [RESEND PATCH v2 2/8] mm: use zone lock guard in unset_migratetype_isolate()
+Date: Wed,  8 Apr 2026 13:33:17 +0000
+Message-ID: <b4a25c016b7b857fb55406baf2fd96b52a1f742b.1775654118.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1775654118.git.d@ilvokhin.com>
 References: <cover.1775654118.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kt4347dghujenkck9a3zqrs719x876zq
-X-Rspamd-Queue-Id: 8E75F100016
+X-Rspamd-Queue-Id: E0A5E18000E
+X-Stat-Signature: n14ndrdw8sb66bksgq8k8hdpwp5fkx96
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775655220-423380
-X-HE-Meta: U2FsdGVkX19eNkj5hQWsWg8W0Cq9EUQUOBnCqeZNX0eloTvUUvPWbG5QGmK1yvLsb8p8RENfByUFxQrMKt3B0zC+1ftD3Y561zw88N2wzbz3TNLaZLVUciwwP33riDA6MMJW85dUiQhkizgrNMsGa5fTEZxUybCYLljMzsEfB73MxPe1xq3fBc11wF0O6XyF3e5JzHh2s8yglr5iA+OPv66UKbL2bX/S683hX5WNCgQY16oe1V9RqbMDHHApxtbF2MTAlJvlzB1XHZOxm4RmLldxIqxeCkZc/qgB1nigWLaQKfJaaox1evEFMOYqbYylH8xxhOj2ZX4VaW7JVvezinJFltqZrgskPVONwOli8FNceYgcbpVMDR2itLetuSHVYr80wMAu7vqJ2MbSO3DJn8kP35/kBJW2cvll+za0DH6Oees9/a4JWUzfPzBhb/7rp+qAxcAziYD+oKihkJ5ALlVyWczMIotuaaAjGcdTDXLxYnccd0QoLY8v1K6EjQ3LTAF5S/Dr7Ed5qnK4KDzzQZKXZj1HCGsasV7tOweDe9vU3/7y/YPdxOoM2dDJOq6CwhydQfVjWBAG2gox9miPemNJBqBFNQM0cNUBsRze6w8yznjREqpKAthhAjRKA/pAx7Xyg4WgYAtc1HdL8WYLMIk4FhMy83wjkShvvbG0lYmDNFQOIkz9tDKAp58V6FqPWjauSen6zWE/MtyDl2ZffwPQCx0XmB4vKiLeQrsCdwUaoCxTwj7tiVTFMW46XyQxoNwlN3nVFaZg/oLnCygOmZPPUN71bNotPm5PqWnyXqoteKOvCA1QjHq1K0Vvcw93W8JoP6Ur5GtmkBfygs9lKxKPlsj3Vl4+/+HYmi8EORdsKK6DCZX6JBoPv/yXJREJD/eTjnQHks0Aa4m93qmMieQ6CQDRWjfHdz+D4HY0brfyGtD44Foti2ugwjuhVTlG0dvBhuiKDoo=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775655220-509744
+X-HE-Meta: U2FsdGVkX1/MlgTdG7Me5LSgnY2/0+j6x5pSkWWLeiA7yO3UE3IpuMRxX/oZe8igpVn5CiChKalX/B2dVmjnR8A5ngn8aktD2X3b49iSO0kkfFraPNhQgP0S2tcsPDDgQ94v2V1gWiFTGINGS59Me7DGMfKisJsUx/vBNK3sx0sBPcGeAvP4ymv0S4VO6FiYEvueaQZJykE6pgmkRsHbRBqj1V2iWIlMjGW+0KET8wTRl+Xr70a29EHmsN+y6oQ3dxptrAxOpeFIZz2lIYYssDhwKMCnAdnJPhPRUu4vjz5JoXxvMXWjA02RdbS7WawMvvqu4QrQOKa78Ok2rqVrVWjtpcl1Kwnnzo4b9wIcOsk/HU9kIbMVXkI1S1QX9KDBy7JcoQxXVMA1APy82AMP1+WZ564vX705aureV0el/wVo/CUXvayzW38bdUWV02/Cwp4MCzNaSS1DUKykJzsmXcBj8VIOEafj+jJn5F1HkWmdbLEgTdB2h25p7cwMbcrOmGdC345bcub+d7/CnjlYHnGD4+4KAY+8BYhXju6HoPNDN1qYuXwm8Vwxlg2S5+4+IEn+wtUok8KA4edrsX7OkZ5fy+VzqWmH8vg2N5j9c4M9giCvPiSTvNwCeoOJKy+E8Te7I7yu+TvAdGnLCY4+77U9HkdpgXyrs6ztWlRzlVaARIZO8nPhD3/mv0pF04tvGe/ySvdIOibV1WE8iAbe97MJdwTNIXawfBGKnJzUKJxfahQS3M3Armh25BrVzAB9CaW+5HI7TrwhwVSDmEGavt5O8GuwRxnzy4xqLyw27KcAdYZTsL8Sz8DYfLs1W5jFXkxWpwK+P/gtN+ZKVcLxfW8gY2ePOSjL71ercXO2oqn+UmmieIk5ZrmxEnEPGTVVcf0vKms6VHHcxX5v/XDRamnBBYaliYO8EOOBrVO85UlrsiNgP4RcITOBQbTwrhqPryBHcMnbWOrUTjgsyjv
+ K0iX5c+l
+ AXw8LAwlCtP9zodboxLz/UWAVBSXF7MEor99T6FrGDcCNsuwg4dVyVTvEPonoBue1uQqH7/je66cl6f7PDOSsf+iY8LNfa8JewilV31TLZqHLkAV/tNDdYan+RjtFsMgd6M8c2MUWNnNazRcGC1+LBCnyU61FeogNYWcHv9w7nVDu49saxZhvRjufnVbCg7YPrgii6ezoM2uS0IJsvr8cNWv5l5ZcCE9jnCIsgWzenuKdFP/LY2ygZZCsrCCp+6gDP/O5SxyHSdosC/Et3HbUTnBC6m0jnMuV0EvTPPLrLJ+fvWCksRAu8OGAKnY+mZhwkf19JaWUzA2VglkWIhC6W/iYlq/wp2VRV/9k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,63 +95,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the spinlock_irqsave zone lock guard in
-reserve_highatomic_pageblock() to replace the explicit lock/unlock and
-goto out_unlock pattern with automatic scope-based cleanup.
+Use spinlock_irqsave zone lock guard in unset_migratetype_isolate() to
+replace the explicit lock/unlock and goto pattern with automatic
+scope-based cleanup.
 
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- mm/page_alloc.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ mm/page_isolation.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 111b54df8a3c..3a4523c35fb6 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3431,7 +3431,7 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
- 					 struct zone *zone)
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index c48ff5c00244..9d606052dd80 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -223,15 +223,14 @@ static int set_migratetype_isolate(struct page *page, enum pb_isolate_mode mode,
+ static void unset_migratetype_isolate(struct page *page)
  {
- 	int mt;
--	unsigned long max_managed, flags;
-+	unsigned long max_managed;
+ 	struct zone *zone;
+-	unsigned long flags;
+ 	bool isolated_page = false;
+ 	unsigned int order;
+ 	struct page *buddy;
  
- 	/*
- 	 * The number reserved as: minimum is 1 pageblock, maximum is
-@@ -3445,29 +3445,26 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
- 	if (zone->nr_reserved_highatomic >= max_managed)
- 		return;
- 
+ 	zone = page_zone(page);
 -	spin_lock_irqsave(&zone->lock, flags);
 +	guard(spinlock_irqsave)(&zone->lock);
- 
- 	/* Recheck the nr_reserved_highatomic limit under the lock */
- 	if (zone->nr_reserved_highatomic >= max_managed)
--		goto out_unlock;
+ 	if (!is_migrate_isolate_page(page))
+-		goto out;
 +		return;
  
- 	/* Yoink! */
- 	mt = get_pageblock_migratetype(page);
- 	/* Only reserve normal pageblocks (i.e., they can merge with others) */
- 	if (!migratetype_is_mergeable(mt))
--		goto out_unlock;
-+		return;
- 
- 	if (order < pageblock_order) {
- 		if (move_freepages_block(zone, page, mt, MIGRATE_HIGHATOMIC) == -1)
--			goto out_unlock;
-+			return;
- 		zone->nr_reserved_highatomic += pageblock_nr_pages;
- 	} else {
- 		change_pageblock_range(page, order, MIGRATE_HIGHATOMIC);
- 		zone->nr_reserved_highatomic += 1 << order;
+ 	/*
+ 	 * Because freepage with more than pageblock_order on isolated
+@@ -279,8 +278,6 @@ static void unset_migratetype_isolate(struct page *page)
+ 		__putback_isolated_page(page, order, get_pageblock_migratetype(page));
  	}
--
--out_unlock:
+ 	zone->nr_isolate_pageblock--;
+-out:
 -	spin_unlock_irqrestore(&zone->lock, flags);
  }
  
- /*
+ static inline struct page *
 -- 
 2.52.0
 
