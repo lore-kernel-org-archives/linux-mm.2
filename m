@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C5B10FC442
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:02:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48ACD10FC440
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0441D6B0005; Wed,  8 Apr 2026 17:02:56 -0400 (EDT)
+	id 6D5226B0005; Wed,  8 Apr 2026 17:29:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F36C86B0088; Wed,  8 Apr 2026 17:02:55 -0400 (EDT)
+	id 685DD6B0088; Wed,  8 Apr 2026 17:29:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52776B0089; Wed,  8 Apr 2026 17:02:55 -0400 (EDT)
+	id 59BC46B0089; Wed,  8 Apr 2026 17:29:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D797C6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:02:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 378528A9C2
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:02:55 +0000 (UTC)
-X-FDA: 84636613110.21.4294B5D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 817ED40006
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:02:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q4siIfZi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 495216B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:29:41 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6203B7460
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:29:40 +0000 (UTC)
+X-FDA: 84636680520.28.D9ECED4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E0E75140006
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:29:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mShnAkf/";
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mShnAkf/";
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775683779; a=rsa-sha256;
+	cv=none;
+	b=EkCALHzFeDfeOZxVinTScvshzQIjKrsPmvALEQrwx103yzo2UQEsopZYa6cUvX0IdeF7MP
+	UoVrOrv+kLSkRiYUlcT7EgkU3QZ+WcJFBL9hxphiML62ioIyx5nD6fmKRrixtnoM7/QG2w
+	G1lEITPCJ9v48txDHPuHcCW/QIjrF18=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775682173;
+	s=arc-20220608; t=1775683779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QTqdlzSVCsCj8eIGPpTEsfoA5yVi96ze+i3bzGUEx1s=;
-	b=AMlMG7zfivCA2N/ftfYxJQSitGMeJgS5PIprwQ5vda10rzWgHWLzQUPxvJVH50brnIsj14
-	YTJFXWT2ZZEGqs3SIB7MQfD7p+LNkGd27P99uN+3ud1H2GxtBpD3f13fCZ3I7iCD47Pelw
-	zSqTWsv81IJhNRAaG05j0h20r0miSJI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q4siIfZi;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775682173; a=rsa-sha256;
-	cv=none;
-	b=vqOXqeXSCd0GgNZ4EI9uLKPcHv037FdhENRWhPWIrzi66D6xna7tDsNFce+HfAWc2NCePY
-	vrjX60tWmYqSYcZK/iyfh0LZbpJY0d3wAyqEUbBzn+lehzE//1zetrCfKW4bsmehxqTRDE
-	tSy86yOG1t5mmHPOACBx4RooS/LgqpI=
+	bh=hQX7iZU1sLRdwZhoYb3R3nLptKkjtedR7BZxMeedyD4=;
+	b=H8g3nocpcC8K1NG3HZOYicgPFSg19i2pJQARDextc4bry9UA9bx6p6sw6NgpgpnOhiLmEl
+	3aRCppjZPX15wcAmtQBqQ0eyk5DJ1Y+Y7E+fy37lw5hhrC3+3soybaUsxONlIvUniUW1rP
+	2Suf+IeGt018S/XOtBzHTO6fa9OThi4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B192D600CB;
-	Wed,  8 Apr 2026 21:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9852C19421;
-	Wed,  8 Apr 2026 21:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775682172;
-	bh=psYo50zJHSL5yH9z50ceo7cT2eNtm2mYQFhEmsP0pgA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Q4siIfZi15u7OMB0K85RsJ4IaTyccT4bNEwUt1oswHTJurxvR+tZApmiPxM/qlj1W
-	 /gVjwNZfgZHoWlQ20sUq+t4Qu4y6/EyL9yMtFy6gvrNLabvAuK6yGBzHXfmup4XCHN
-	 t6jT7CNk1R3j06zwZ+LpFKhIhy9OCd5uf2a28pLA=
-Date: Wed, 8 Apr 2026 14:02:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: anthony.yznaga@oracle.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, david@kernel.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
- Jason@zx2c4.com, shuah@kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot
- be locked
-Message-Id: <20260408140251.6158aa7a56f71128471f327e@linux-foundation.org>
-In-Reply-To: <83b56ffb-6e2e-4c9b-b0cf-9f04b61ebe7f@oracle.com>
-References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
-	<20260402235933.10588-3-anthony.yznaga@oracle.com>
-	<20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
-	<83b56ffb-6e2e-4c9b-b0cf-9f04b61ebe7f@oracle.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 817ED40006
-X-Stat-Signature: yekrc1h6fir6rdwefst97dy541nzwas6
+	by sea.source.kernel.org (Postfix) with ESMTP id 974444451C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:29:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D953C2BC9E
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775683777;
+	bh=Y/lmxQXbhWG5INKynpR7jdhH5uj4BdkuJqvEO5FdF8Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mShnAkf/k0d/LPFZwfdKiBYhDDRse6tKDagf1kPr0oc2h9w/psRVyY/VbUi3fNrb/
+	 UwejrwtODpxGK4z79tPZavt95SOnbd9sQLRlk39P65hH7VVNgNbtEk/e5DbB/+7/bP
+	 5B1vSYWraZaEkPnl8p2FqY/yFJPFQwjm9t9YWKptwjSJFVpG65JiB+ZDSD1GSyxYHm
+	 xfrrdmbqoXEBePOAjVHkqhnlYkckawhDLioIf+F6YK0jJTGJ2OKAppfEQDJOnhw7xM
+	 N678+2fkcGmpwmOX8M7g5QP1A2k0MROxHaQA2BcOtjrzzDO/BD8NZq4JkLEC3Lb2Fq
+	 4WwEwNJCm7Zrw==
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a23f802e0cso3916956d6.1
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 14:29:37 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw+ES/vBhhUJN24+Y/HEQnzxZ2gDJAaY7nA45lciuQN4EFBP05U
+	1W1SS4fkq2bzZXBofdJWjF0/A9G7Gs1zJx1mkb9I9koeFje4bpUga5+ldrjZI/vfZ6OIABDV5+/
+	8q4rsNV9yLetVlfYJ82KN5sgiy8vs2s4=
+X-Received: by 2002:a05:6214:1d0a:b0:8ac:74d7:dd14 with SMTP id
+ 6a1803df08f44-8ac74d7debcmr15884866d6.34.1775683776598; Wed, 08 Apr 2026
+ 14:29:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-4-baohua@kernel.org>
+ <f661064f-269c-4e1d-8d6c-a9a2e50cd82c@arm.com>
+In-Reply-To: <f661064f-269c-4e1d-8d6c-a9a2e50cd82c@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 9 Apr 2026 05:29:25 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x-7tk6FPM5eN+o2=1ewbbCvrGYSG-qk1FybnhYAqU0xg@mail.gmail.com>
+X-Gm-Features: AQROBzDD8xzlg0Uj1HRs0Wqi-s5iSaX2fFmsZNIkL6fa0v5sA5A7gsWqrrxGDtU
+Message-ID: <CAGsJ_4x-7tk6FPM5eN+o2=1ewbbCvrGYSG-qk1FybnhYAqU0xg@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/8] mm/vmalloc: Extend vmap_small_pages_range_noflush()
+ to support larger page_shift sizes
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
+	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
+	Xueyuan.chen21@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E0E75140006
+X-Stat-Signature: i4tk6sf84uidj9cwkwwyfc9uwtygs7pp
 X-Rspam-User: 
-X-HE-Tag: 1775682173-434902
-X-HE-Meta: U2FsdGVkX18ku2kVhIL9bUJzkE6Fuq16xp4lrqfUiiva7uaC4wKZWgvymdX3Ygv0AvRpV7uCqzVSnQ9gTYY3IhKbZholzHrL/Npkpjlj6ZumEbEXq6jNEIvH7012LtMBzGFLOOIpxjdx/CD3y8XjIpHK9bSXUOTcEKUtuvHfuMeu54cxlSxzyudWkkE3lbrWCcW/ggwQaiCeGTRpw8kArbn1ZUS5sd/Ntq1zbaUa5lrA7Ul1qj74nG6p/3b4ZxXh4+v4zaLW2rUkj4WKhVCbDCokByZtryXFD7SwuFb7Jwc2BlgZfneOKBoeSErU7p7MxV/5yv+XhLChWNSnIR7I6qnKSXqXIiUvgOqXFyovfFbFy1rQt3TkivGRv9TtWYM7pDxxW9tfghmFAVa6LjyrgJssFzpM5unrt5U8M7IixdCgVgdKLRAiG9SguJGmUOJhhTmsR0w8HJN0pef/vg5SMk6LFN1Es7wrxUv+w6OAzB6svB9Ll2wMR9NAxHzw+ywhSNH3VlHTeAPfriW8xdrXcjw1dOIksfNY23nCxailKd2kseCx5QgWSpuZ0A+sY+mlVxnYytQUN6VzcAh9McqEwLGYWihCGxkAQ9527jP1ZX2yquOXyZJKWFQl/Ah6v615e3CErFs4c5h9/Pg9fW4Pq1ED+uaHObYHmXXSy813x4saQi3+QdyTcb4uWZV3nenxJ68pOo6M5cTdcb+OjEmg5cg7FobhV2QOuU9ty2P7UICDkEeDdNCYRNepNXUZjWRDzouqtu+vKfSxOxs8psc0820ULx/GcQbcpKBD0gdLn/WbMB6ckGfZymGtVnl3ymyQOc0DdEQL4kKrNfkej9fJZ13cRLjNnT/epKmNZXrkQZUchxF3epkEoFYw3T9StnT6iy6SNhNlyDi81LSGnORF6fyVuisjXbTwcz6YSAR99HK3MIAIXsk/OL9/i3ENXF9b8U23Cw+cSSnp669gU9k
- fSoQ4dpP
- ozU39O8WiKg3jGs5qnOLRPZrHzvWpr+o6ZZBZA55d8R7xhw0ZeZUj6CV3MaO04q+MX0IsB6YUbzW2sJ6sLecOU5B2uEbqPJvdHNmJ7v1AWUdWs2u1RU3tVQFTG/c5DuV5TKMAEdn50JjgtZWZje+t/syddafVCPEHvT4+vRwSXyfOOyHTYwBCWIc402IKQd42Lm2lA3STYmyA/TSxrZr8idTBopL8xRM4l61jcGovaDG1ZkTk06oK8WQNwcVlBSzbqJn4BLL73l+N06qyh5FVLCBXhTD6aKBn4RHx6xiP92FsdcZBtsunEjLf6cuuTddjDNbgPnfH2CDqNpc=
+X-HE-Tag: 1775683778-142236
+X-HE-Meta: U2FsdGVkX1803Yh4aFOS1xYIa0F3g953Reaf01g5oiGmWlVHQbfqGEGa+t7qya93iigV0ZaVDGyYuUr8y+bbXcB4K79oLJB0k1dx07xehLqRonQaRgbxxNHzUj78mAc+GTspz+NavW72b1hDF8InIBrfoETTz6vRt9AWOY+Vy25IgBjveUqFnTnjtRvhK+dPSlnmaVwA3pYFivkJPqe6MzdHD76cchiWZLvZwoNMtU56RrvT9cyAYrm/gBufwB81d7Hdx858bmqto2V+8dNJvgEkItThI+nW5uGuRJD/8t24LtOftG647p4qG7NfiouFhOniP9zL3zs8hT4BjBKWaF3SZvyA1ZT9yljCV0D0dirqDrVQ7V0ITZ4RWx1ozTdphrChBu6fRqfeGcjwqNXQLR8mZjMrU2Lh9e4el4vwgJOYWCtmAa4Gq5c/ijMLqwk3NwqbpDhqsfceXI89+Tq4uzm5lfLH++WWJdYdJfUN+yUuERm9vABd0OwxKARM2bSLoQilao1sJYNxSWbff8v8o5AnV2xrumTAlzGZHPJp7Cb4cSvdfdJFz6Bzlz/NxwivzeSJYR7XUBLs3gm6g47pMBm99fnNVqF1IamJYdhtX8yg+/wGc3TEnW4d1gPFtTKKelARK0PxgxsRj1YT+GUX9J/8vjWQAykKxKdgM+0AbhTlrS1O/zGOLTGdD1AaQlpw4M6PuW8XgI9KmwQXI1TnTuHS0SeX3aplujQK2k+lximXYLk40Yn3SN4fdUp2Os8+hahs6fpIsrPkx3BLHmGBSjEaNU0PGJcs2+H4/SOU1oZiVNXLgyQt0DscO4xagKWwiJwSjzH5D0MOZKA9AYayZ6hgg/BSrzSTwm5/IlMHU9fE6L4YdMAjN/S6vCxUAawrn3Q2Qjw90dGjwfRnU7bhhCm7wAIHq5gYsOjJFf4nWBMc0pKsH0kySGfKRcPQDfzbBBxpPsFXT8xlVRw5VoK
+ jTL8OoJz
+ bZlqP8up3nQ0NBHsWgVduRzre6nGq9I5FuF92dkiXpG54ny2mQAAV7ax+XJKmA2K89voPGsyQgXqydBoL9/A1fw0dNsVPLNOVBQCwMw1t6AH8nmEKSicpTDV5hfHtXHoV9ogJq5vvvq/ceVnfe9lhFTHuqwocLfJ/mD3OUIn5iqpMtgM9bAEllV5pGOqdunCQvPdzClKuts8Hsfe8TQIvs9ralVi565iB1gFye8SY+iuZRtkqt5t0r2ntEwKa0KSY6Te/YjYj/APyft/9M24seVJKTQzQGeqLejIX4goeI4FJhWMyKWgfd4OU6s+xn108Uhgf65aIS1WhUA8HXkKeiCCY4tHYjvHPd08PnRTWHEaI+3fLfdVwssI0NiAWhFKDLfu5htEqNiP2NdHPl9Jnw920DAJAjZ+6xiDIUAJBBPPrSQhtS2u1SC0jWN1NMdKn8r8JeQL1lRu1/RA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,36 +106,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 8 Apr 2026 13:35:42 -0700 anthony.yznaga@oracle.com wrote:
+On Wed, Apr 8, 2026 at 7:08=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+>
+> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+> > vmap_small_pages_range_noflush() provides a clean interface by taking
+> > struct page **pages and mapping them via direct PTE iteration. This
+> > avoids the page table zigzag seen when using
+>
+> "Zigzag" is ambiguous. Just say "page table rewalk". Also please
+> elaborate on why the rewalk is happening currently.
 
-> 
-> On 4/3/26 12:31 PM, Andrew Morton wrote:
-> > On Thu,  2 Apr 2026 16:59:33 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
+Sure=E2=80=94I=E2=80=99m not a native speaker, but =E2=80=9Czigzag=E2=80=9D=
+ feels like
+=E2=80=9Crepeatedly walking the page tables back and forth=E2=80=9D to me.
+That=E2=80=99s exactly what I want to express.
+
+>
+> > vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
 > >
-> >> For configs that support MAP_DROPPABLE verify that a mapping created
-> >> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
-> >> be locked if it's created after mlockall(MCL_FUTURE).
-> > There are a few queries from the AI reviewbot;
-> > 	https://sashiko.dev/#/patchset/20260402235933.10588-1-anthony.yznaga@oracle.com
-> 
-> Interesting. Of the two issues, one is certainly legit. I need to add an 
-> munlockall() on early return from test_mlockall_future_droppable().
+> > Extend it to support larger page_shift values, and add PMD- and
+> > contiguous-PTE mappings as well.
+>
+> So we can drop the "small" here since now it supports larger chunks
+> as well.
 
-Cool.
+I=E2=80=99m still struggling with the name, since we already have a
+function without =E2=80=9Csmall=E2=80=9D here:
 
-> For the other, the question posed was whether the tests should handle 
-> possibly being run on an older kernel that doesn't implement 
-> MAP_DROPPABLE. It seems to me to that a selftest should not be expected 
-> to work (or even necessarily compile) on kernels older than when the 
-> selftest was introduced, but I don't want to assume.
+int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+                pgprot_t prot, struct page **pages, unsigned int page_shift=
+,
+                gfp_t gfp_mask)
 
-I don't know that there's any policy on that.  My attitude is that
-selftests are not intended to be forward- or backward-compatible. 
-That's why we ship them with the kernel source!
+>
+> Also at this point the code you add is a no-op since you pass PAGE_SHIFT.
+> Let us just squash patch 4 into this. This patch looks weird retaining
+> the pagetable-rewalk algorithm when it literally adds functionality
+> to avoid that.
 
-If we get a selftests fixup then I do like to backport that into
-earlier kernels if appropriate, to keep those in good shape.  And that
-has the effect of reducing people's motivation to run a later kernel's
-selftests on their current kernel.
+Sure. will do.
 
+Thanks
+Barry
 
