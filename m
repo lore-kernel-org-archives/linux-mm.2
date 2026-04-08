@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE3F10F9968
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:01:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA6C10F9976
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 20:07:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E4D6B0005; Wed,  8 Apr 2026 16:01:54 -0400 (EDT)
+	id 104346B0005; Wed,  8 Apr 2026 16:07:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C463D6B0088; Wed,  8 Apr 2026 16:01:54 -0400 (EDT)
+	id 0B5516B0088; Wed,  8 Apr 2026 16:07:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B839A6B0089; Wed,  8 Apr 2026 16:01:54 -0400 (EDT)
+	id F0D946B0089; Wed,  8 Apr 2026 16:07:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A7BDC6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:01:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A042B741D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:01:54 +0000 (UTC)
-X-FDA: 84636459348.04.160FB0C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7F64040005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:01:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tPdDet7B;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775678512; a=rsa-sha256;
-	cv=none;
-	b=UnbTwMoUdzAAhBjIqj1VzAAD2/cH392M0+lV0kgbnJ3Ihe/akkVvb9gDGdbOcoIv0f1M2W
-	6UMFKWOQ57Gfwn2wCkvkpdhap/jJML987uGci253imVlYTJdWOMiR0hdcd0kCHidg3vMSC
-	TZQRFvH37QyorL8O2ORxUi//HcqK5Vk=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E3BA86B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 16:07:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 822DB140251
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:07:18 +0000 (UTC)
+X-FDA: 84636472956.10.529127B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B6A5E140008
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:07:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SaBd3YuC;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775678512;
+	s=arc-20220608; t=1775678837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Z6y5mzwmAQdrf9oPiv/Zpc3+lv0vlBFnEYQxnmFeos=;
-	b=OdxqEUK5DofQXkv2cjONhmcqJy3MtE0aAUJkL6uVBExddZoB1QcGUlVECiO+od8P9ke2xe
-	P5H5FUjQuJC7hP8UdcBKMPLdV7R8qyby1NNrQrtcXDhwJtnhc99+4cgH0kvp9WK8I1WlGo
-	HfrJI+O5j9tiEVQFCCL40Is3FoXkM8g=
+	bh=Duwelm1sdtZX7g1M5GJ6XXV+FjnxeSae8404SM2yegg=;
+	b=TwbJQlD7n2xDlJBXp017Aa0SKIdTL8a0m6r0FpOsPh5mpB7cVpojzGqWYOBVUHug5d59jp
+	DTz551Hh6K7okxu0sZgtugllkb08e++pvu82p6lAYl2eMNlrnF3fiT9sGPf0GWHQ5f6Dc0
+	dDpxI+fmC013BkgxSNluvXAkrcCb6DA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=tPdDet7B;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8Z6y5mzwmAQdrf9oPiv/Zpc3+lv0vlBFnEYQxnmFeos=; b=tPdDet7BMdnQrWQfPC5mjFDQLl
-	QHfwYh9hZk8gMelhgivq7Hiq1g1lESVcRAZnb/qv8pLIumyKzEzeW9anFdH+uOvX5TY1goULJ5sYJ
-	J8KJSqCfJK9PX4jHbjgFmCfmocjCFq68BtBlckgK1kXbfJtV882MEhPF8b4g92/26aqz/O6PDkTUy
-	4XRCsaF0xl73kGSTKilKC8fhXbVh7lXSVqllFfK5fT0dXCx354VnS7+wTiY18mr9m7kOLwnLqO1ny
-	GRdgw0ss3YA0GicL3j1Kc76Gh7e0A43EcAOcvXF9KRRidW1IwMMtukya8oddIUIN53gBiSdVBY9Qw
-	nvzXFI3w==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wAZ5u-00000005sOg-3Nri;
-	Wed, 08 Apr 2026 20:01:46 +0000
-Date: Wed, 8 Apr 2026 21:01:46 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for
- dropbehind writeback
-Message-ID: <ada0KnRjpYnY_QYh@casper.infradead.org>
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
- <acRDyJrkJhnHHMSe@casper.infradead.org>
- <9631d652-fd3a-45ac-b8a3-b632b26f6fa5@columbia.edu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9631d652-fd3a-45ac-b8a3-b632b26f6fa5@columbia.edu>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SaBd3YuC;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775678837; a=rsa-sha256;
+	cv=none;
+	b=Jmaz+Ep4baSGtd5xQ4jF7r+vZpw0LAA14h0xzSg2XaXe/eGD3tYLDqsEN1Z+U9TJKGDTsD
+	DOS3nijDyAeydqUXGjY3GQflUFeTiJZFAw4cPGVaUSFnHArwzi4siw8LSP3faGTAXfv2x4
+	hbm09gKcQHUd9bm1WCYk/r7Witr6EPc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 743474338F;
+	Wed,  8 Apr 2026 20:07:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B94C19421;
+	Wed,  8 Apr 2026 20:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1775678835;
+	bh=zkMpvfcXurA2nO2kaov6GLyQ92lcLQj1NOJR5OwkUP0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SaBd3YuCdhQxAdkWNbXgdlSnM/jYGSa2YieQJA6TGn4Gi7PVdxH3vBSE7VNj1yHEY
+	 R+ypk9kkxCwnxwY/7zXkHQ+kLYpRChybFCV803VtI0B3C0Y2fsJoXgeK826uT49uVl
+	 8vYuzKpEq03hC2FvhTrlf3SYWcb4zEyJLr1evpNs=
+Date: Wed, 8 Apr 2026 13:07:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Dmitry Ilvokhin <d@ilvokhin.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [RESEND PATCH v2 0/8] mm: use spinlock guards for zone lock
+Message-Id: <20260408130715.d6772b9675b0182bac9fe427@linux-foundation.org>
+In-Reply-To: <adaFaMGbndSSMaZn@tiehlicka>
+References: <cover.1775654118.git.d@ilvokhin.com>
+	<adaFaMGbndSSMaZn@tiehlicka>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B6A5E140008
+X-Stat-Signature: q9ozaednsobggphtbqjtaysdqqd5t8on
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7F64040005
-X-Stat-Signature: wkfztaczpatu117eyzye61rquuxykm53
-X-HE-Tag: 1775678512-4087
-X-HE-Meta: U2FsdGVkX1/pt5duhhFSOhFk6O8XE0w8MPJn1eGzj/j29i3o8lckI/HjE2tGywaNRa1+p1NFBevogy+3QpYgeFPGAgrJ/pbfJXUkccB1/RU+dab/wOgMgB58P24HHfCzRZya0aPXescicbz7BHkFgrYyv0taATEsq1Z6wvN+r5cefDi6KbKkpLPCSfO+rdHuAmzq4xoCWnfnrWbC+SLexEeMQ+J5KUEYDuS/sTieYpsghUc1JriLVgG3Br0HkXHpAvaRmi+Wjtn0tmiAY/5dvthEHKp1SWeSt6/bPR61rCvQ8S5AJ0CQ8bYnJTlm26JQtYEbcPhi616M20SFsEJqYd0cJZ15G7/JfmcH/63pmFGVe05yKiogeSxJcTwV9eO1nhfyBZRX5MLyNArEie+7MtuJ6WG1h50DYHTvvUEP9TI9GnGvyb4pLsZ5q23NvtqNBGNCmAG3+HZkBRCEj5jcilOfrM51NwTXvY4CAZoxDHuM/TswOMiIxt/pSJZSjHnFBa7Q9vFXOVJHr58j9wBqej9xa3K5bqfoKGPQWnjedLFIq2DtgntBFs+bh/AHYHUvIJefNF1++EIHxpvlYWnq+qmBlKB48M9jL+gAS4GXpsigqnI+9ft4BYeA7OY6sWx3BZBobdI/XWWtJ/uRoy+Bx1+dFRVzBeTI0vZKZS+w+aJme47bL3iKYQLTTl3VsScFaqBjKQ7o3fumzCPjElZmp6mpkgTpdehTYw0MmLtkdMtoej5ibZ8UfmL+r5Atm2dBbdOhpiPeDbfvn7NUrQ0ElOCWO8B35ygsPtxDxTsvfKHWHnuS5sgTeks0KzoxeqFXz/vBWn8yfKdK+/98BmxchkNo0ebItxIkG3ubRF+XtX6D4/U11HH7RCVvz0lM+8UTYPxtVfUXoS3Nyt1vbSGTJkP02mBUbvO9l0IWuyV+7v0e5khy0/A2gQ5NCimUT+re2wcJCquV+3SAAsWD6w7
- eZrfHGRQ
- LH1K7VyQxdzmZmIbepQzgyk9OgiVSi2E0bublpzLQuvj2lDHbdvUfgaScQ5kMgD/R1kJfx+Qtl4TMGtZUgChUFVObUTb/GS8nlsndLqO1WzjZyrM/D4WwORGxgjZ9EvPie/bTqtCKr1WMWNR3zhiUweT8xt0BAy3jXKIHhQhEpoVnXQtWO5EgldKjlk+hC9iw3jOhBMIKdhvcC8kKv5XmAk245V2kjzaCEyO9BZRWTjzTk6Qaa0bAv0uFx1qpXb7pAadVTDBFkf/DIN7dbxfk1MrP3lspiJI99famQR92NvF82sk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775678836-430572
+X-HE-Meta: U2FsdGVkX1/0+dluO0nwTmivWzielakDIagxjtzHBHPiyeGdm5suSBPLykV+U2qFB9K4kB/w/HtaL6Eo4rr+pLQJLoHv3yUAEK+Hq0ztwlAFpCNWVkJEJMQojfd2KcljR5JAVTbFY3k4fJQJF9oS8nzkwHteWzjNpDimJKcH9LdyZnLtRXu0lAwdh8zm/NiFT+iAUnPcmTLkHQI13EStYmKttV5VENpzpG0t+ba7NBh9BO37prQ5D5ZQtMDuRpLpET1gox0t26AoH0IIux33sPrqanxjTbt5yeBPaVJ2YOxaX80RmJlbT8XNjjXCdvtjAd5bO68dn+/z1YI4JVqK1XDkmP8RY7W2lp+9fucU6wrOxD96mnJVBvl1rixStg6bGpeKgYesnGKxrbcXD9NeRn2uj/Y2CwZGOcesvD65XDR6Kz7+doPGHAubBKDTAlW48ATDcIHMvuGgu+10m4RbZ7RNM4D9oj3EjI2EuMRhTO07LIenuVRlK9GZe0/0DRMD88pZH/RCr5o52FNK1blelXxVzvJEmz/h89auRrD5FsjP+3L8Ect/nX7iPFyE9T2Ta1QgJeE0baRdoDSm7n2VxnaTegbcW8ygmScltoF8kHL7QwLN147mDN5OfdbDCSyZdD+HhINSwuVTiyaQb1e6fIybczAjfLAttzHKQCypUiTeQfXM0tzjZzOxy7dOmtj9sfNvexjelZ3yQnM9xJIocrXevEqTGuiMdg/QCElmD1NT/OxGadFs+JW+haiGc8NzQ3S/JFRBjHFQdMvWmTOwVV1thyrr1xjWFuWmD17iRBploAId7wiVJcsdKRgA6NItGMai1ka5/sRYsWBHGcXkSevlDv6ov5p88L/1rQ+Orc1+KcPWUmvXLZI/zteo+v5t03rhdYtCrxeEg9nohPqblrOtCUelRF4V2EqElpUXFiI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,52 +91,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 03:44:37PM -0400, Tal Zussman wrote:
-> On 3/25/26 4:21 PM, Matthew Wilcox wrote:
-> > On Wed, Mar 25, 2026 at 02:43:01PM -0400, Tal Zussman wrote:
-> >> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when
-> >> IOMAP_IOEND_DONTCACHE is set. This ensures that bi_end_io runs in task
-> >> context, where folio_end_dropbehind() can safely invalidate folios.
-> >> 
-> >> With the bio layer now handling task-context deferral generically, XFS
-> >> no longer needs to route DONTCACHE ioends through its completion
-> >> workqueue for page cache invalidation. Remove the DONTCACHE check from
-> >> xfs_ioend_needs_wq_completion().
-> >> 
-> >> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> >> ---
-> >>  fs/iomap/ioend.c  | 2 ++
-> >>  fs/xfs/xfs_aops.c | 4 ----
-> >>  2 files changed, 2 insertions(+), 4 deletions(-)
-> >> 
-> >> diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
-> >> index e4d57cb969f1..6b8375d11cc0 100644
-> >> --- a/fs/iomap/ioend.c
-> >> +++ b/fs/iomap/ioend.c
-> >> @@ -113,6 +113,8 @@ static struct iomap_ioend *iomap_alloc_ioend(struct iomap_writepage_ctx *wpc,
-> >>  			       GFP_NOFS, &iomap_ioend_bioset);
-> >>  	bio->bi_iter.bi_sector = iomap_sector(&wpc->iomap, pos);
-> >>  	bio->bi_write_hint = wpc->inode->i_write_hint;
-> >> +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
-> >> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
-> >>  	wbc_init_bio(wpc->wbc, bio);
-> >>  	wpc->nr_folios = 0;
-> >>  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
-> > 
-> > Can't we delete IOMAP_IOEND_DONTCACHE, and just do:
-> > 
-> > 	if (folio_test_dropbehind(folio))
-> > 		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
-> > 
-> > It'd need to move down a few lines in iomap_add_to_ioend() to after
-> > bio_add_folio() succeeds.
-> > 
-> 
-> Actually, looking into it more, IOMAP_IOEND_DONTCACHE is used as part of
-> IOMAP_IOEND_NOMERGE_FLAGS. I think deleting it while maintaining the
-> no-merge behavior would be uglier than leaving it in.
+On Wed, 8 Apr 2026 18:42:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-But why was it added to NOMERGE in the first place?  I don't think it's
-harmful to merge writeback I/Os which are COMPLETE_IN_TASK and I/Os
-which are not, as long as the final I/O is completed in a task.
+> > Dmitry Ilvokhin (8):
+> >   mm: use zone lock guard in reserve_highatomic_pageblock()
+> >   mm: use zone lock guard in unset_migratetype_isolate()
+> >   mm: use zone lock guard in unreserve_highatomic_pageblock()
+> >   mm: use zone lock guard in set_migratetype_isolate()
+> >   mm: use zone lock guard in take_page_off_buddy()
+> >   mm: use zone lock guard in put_page_back_buddy()
+> >   mm: use zone lock guard in free_pcppages_bulk()
+> >   mm: use zone lock guard in __offline_isolated_pages()
+> > 
+> >  mm/page_alloc.c     | 53 ++++++++++++-----------------------
+> >  mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
+> >  2 files changed, 45 insertions(+), 75 deletions(-)
+> 
+> I like the resulting code. For the whole series.
+> Acked-by: Michal Hocko <mhocko@suse.com>
+
+Thanks.
+
+As I mentioned previously, the outcome here hinges on how the
+developers who work on this code feel about using guard().  Most of
+them are in hiding at present but that's OK - it's post -rc1 fun.
+
 
