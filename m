@@ -4,152 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82818FD5F79
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 10:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEB9B1073C8D
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 10:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC6B46B0088; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
+	id DF3996B0088; Wed,  8 Apr 2026 06:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B777A6B0089; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
+	id D7D866B0089; Wed,  8 Apr 2026 06:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66806B008A; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
+	id C6CB66B008A; Wed,  8 Apr 2026 06:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 933C96B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:44:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40786C1F5D
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:44:21 +0000 (UTC)
-X-FDA: 84635054322.26.E3AAD87
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012009.outbound.protection.outlook.com [40.107.200.9])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 00D25A0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:44:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PkJ6PvAk;
-	spf=pass (imf15.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.107.200.9 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775645058;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B8BDC6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 06:51:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A9DD140760
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:51:19 +0000 (UTC)
+X-FDA: 84635071878.10.9098C8F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A36398000D
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:51:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egaMHIVX;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775645477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
-	b=wt5ugZDY0DaVA+RgnEXeksmBqFjqS4wRUY6Sy0mujB0dPwNe8vvjheJvnp4K6k37km6gXg
-	KPoCSUeR1fGqtiRlrSyuTFto+X1pVCROtyMe1uRwK1JzisWOsfSDIME2gGV8ueCS6qTFrx
-	U729X84Z27GtgTOE4gO7R9K4oGjMELI=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PkJ6PvAk;
-	spf=pass (imf15.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.107.200.9 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775645058; a=rsa-sha256;
-	cv=pass;
-	b=w0YmFNm4lZlAx2CPCkxubIcJWX5T5nk61FvDhFWu5Vnbosj9j91CUODOlGgqaXm375qNCi
-	OpG4c8CRrOR9JyNaIxkqYarRUiDXQTAsax3emxmqzuePv2ucirmsP92wLA6URVTMoQDcR7
-	YgXzMfZ/rgBNNWQtiAa8z4Ex5XE5mqo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vn/y+gmzhQ5B5p1+h5f7PHssKmUVLmecUIc0sHrARsJmuR2WoU0w8991uc1mWqggUGZf8LbD+zMYDmasOFiBNqkWSjH9L3cu0hVyU+sq/9yKJoq9ir93dOmZ8Jcgc7/pCJcQaBDE9Aj/QjGA5Gj6eU9C4yTlYwmIe61rMhdyXvthG1ZF9lMvYstfUDyRJmKnPqLDubsdfUXsN9rWEi9KXWvhWavlU22Q/jKOPtIHRGHEd7f70kbYEA5qec5bNPHCBX2LX9O2q11d1x1LqWJdA9n0+NqR1Km9u16E1cZazArtGeQJIug5+1mTosBo66+vjWKY4/6eQR9WCGQz8on+6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
- b=Mnft5KgRZRJnrTGuyiZ7uXd7N9VhmtrS/yz62Z5O2oa6QHJY/tHUbhjoDcbQ5pWPS9aIDaLtv2Bo0g+VLZjvWUkHSRPeKf60E/zkbsYePftd/w7ZfLCyw2sZLzdqIoluASNYQ+PgJl5j9rWvgZy5mRWkRXGNXIeLyFXqSGhnAbZ28YMsiyFq3TO38e5s9Ktp/j6Zhmp8a4nNqlx84FDBS6O9Okr3lX1IeBOqKOLybExb22qKK/OmSCf3jPPflWAx9b2+1xUaOa8LT4DScEvfeU8abKcUVAe5JzH1gvvAH7lzhDQpSwELfqzvaiutzellFCw1n+siBimtC8i+0nX5ow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EAxCuzFUAaeNYkLJx9r5cUQbK46o8FiZ3y4+3jZ1X40=;
- b=PkJ6PvAkfDBHlZ/6WVuvQPELOi5yACwPTl00lJLGZU0y6MEeOaE1Q0er33R7zvc0G1gkzqV5MSCC3YQvHT4WRTTfr8b9pXKzj48acTbC7S0+KWYEyP1I8sXuqi6VeaBaHKjSYOHByKKK0UaK2DVCnliLuViAb8QxAlEz83LAgVI=
-Received: from CH0PR03CA0245.namprd03.prod.outlook.com (2603:10b6:610:e5::10)
- by MN0PR12MB6245.namprd12.prod.outlook.com (2603:10b6:208:3c3::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Wed, 8 Apr
- 2026 10:44:13 +0000
-Received: from DS3PEPF000099E1.namprd04.prod.outlook.com
- (2603:10b6:610:e5:cafe::38) by CH0PR03CA0245.outlook.office365.com
- (2603:10b6:610:e5::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.32 via Frontend Transport; Wed,
- 8 Apr 2026 10:44:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- DS3PEPF000099E1.mail.protection.outlook.com (10.167.17.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.17 via Frontend Transport; Wed, 8 Apr 2026 10:44:12 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 05:44:12 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 8 Apr
- 2026 05:44:12 -0500
-Received: from [10.136.43.140] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 8 Apr 2026 05:44:08 -0500
-Message-ID: <4e8c218b-ac5e-4674-9e1e-acf750f0a5c8@amd.com>
-Date: Wed, 8 Apr 2026 16:14:03 +0530
+	bh=ICCkp+ssxnVDS7PelgR7/bwxLqKRQM1AQHruCs+Hg8M=;
+	b=dKzjZ2Ybx16eF5GIJcpdwi7sSZG69UMlZVPtIRogLVKOh+S0eGwd4fp5uVQOi8jJy/ENnL
+	79+wfhGtT2WihIEQS4ikwGHu4vzePSrUZ98FwA4tGkTd+MpeTqOVfRS3hmV+FsHgoX13ML
+	Clw42Xlv+nrDPXKiFUxHDMt+NHF/+O0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egaMHIVX;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775645477; a=rsa-sha256;
+	cv=none;
+	b=lAcspTX1uX4jPVneUHIwCr6AqkfNeyE4KRygkgIi3nmMtOYZbqtMKCSIlMbJ7Kaz45hnSB
+	QgfqNG/+b4oQeQx8tf0vRVE67vFNbvhuCfEiJKI6I19A2wh7fVuayeLRx+22rCF0YIYLqi
+	koJxjkKPLHJiauMEOo1loWF+/YnjEdQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C1B3C60121
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:51:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C35C4AF09
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775645476;
+	bh=QcVIS2KyesCxdmA9sx35zdLvBkk/H6s0DycEBh0eXi0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=egaMHIVXJIqqn/x4eQ/1bd8ULWJcXYmRdU+H0NCLohRsrAJEazmKY0nPrlwTIYyxF
+	 4yghwkyIG5GbvENTxmlwtaETWj1o/ztEvxok1lw+TstO2VCKR6Kc5KmB94Ndahkx8S
+	 i46wvPIWl2USFqMM+5DuTmJ5FHXW2uMeJY7KETUhYFjn/pUDj8kqohTvSsAjPF0nye
+	 TtS2A1Uw69O58cEJAKlAckDLmN7rZHap3aarpGA9LRTL9efOmcP8gg8ZWe5BckvSbv
+	 TrW0raWt0bdwMlXW0FytWL2LeVustesqPDJeeBARQghRM37ajtaiOZHlzFDWaMuy6D
+	 K2c/CrB+izcoA==
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8a151012558so75592786d6.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 03:51:16 -0700 (PDT)
+X-Gm-Message-State: AOJu0Ywyh6MxhVENG0R7PutEkhPGmagOj8WiItvfdO4mYr+PxfykdNlm
+	b473pBrn6wZdKjlBEKlPDhzqnrdCn/r/zxG1GUFCrtDUtqBGV+CnoEbT6XgGudDSbNIMZm/+w2j
+	d68eRTlaG0DUvhm5v7UA5l3QfZU+nLew=
+X-Received: by 2002:a05:6214:21a2:b0:8a5:71c7:9df with SMTP id
+ 6a1803df08f44-8a704da806fmr347127946d6.50.1775645475735; Wed, 08 Apr 2026
+ 03:51:15 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: use batch page clearing in
- kernel_init_pages()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, <akpm@linux-foundation.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
-	<hannes@cmpxchg.org>, <ziy@nvidia.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rkodsara@amd.com>,
-	<bharata@amd.com>, <ankur.a.arora@oracle.com>, <shivankg@amd.com>, "David
- Hildenbrand" <david@redhat.com>, <hsalunke@amd.com>
-References: <20260408092441.435133-1-hsalunke@amd.com>
- <22b6ff3c-9d41-4eb0-9beb-cb92f3ada89f@kernel.org>
-Content-Language: en-US
-From: "Salunke, Hrushikesh" <hsalunke@amd.com>
-In-Reply-To: <22b6ff3c-9d41-4eb0-9beb-cb92f3ada89f@kernel.org>
+References: <20260408025115.27368-1-baohua@kernel.org> <1e7427c6-b6e5-4a3a-a600-bef9ac2bf3e0@arm.com>
+In-Reply-To: <1e7427c6-b6e5-4a3a-a600-bef9ac2bf3e0@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 8 Apr 2026 18:51:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xqxmHWBahN-yX10XcEwaHpvypCkwWDLHMY_1P_SzCeMg@mail.gmail.com>
+X-Gm-Features: AQROBzCurKt1V0ceXesm8lVgYpSnbwt2aYbxCH3r48dlXoSU8YdQK1AeC5pWe-c
+Message-ID: <CAGsJ_4xqxmHWBahN-yX10XcEwaHpvypCkwWDLHMY_1P_SzCeMg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/8] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
+	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
+	Xueyuan.chen21@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099E1:EE_|MN0PR12MB6245:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b2531d7-3fe2-4c13-8f1b-08de955bc606
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	hW1LV2ZP3og//ts5W6pfT9hiTs9GeEXbmByBEj4JpVIxw800f4k/sJHi+qYGYjTWdI6yIdzVEMZsIQ73kKanhM6Jo9b1CsCUllqVBwyPVIocDdqgJoYzFkIPjpk8crA+NXFUjjxEnyXGnHhNGufF1BVWQi4//wIuhIX7ZMFwFq3x9GBNFTsJo+MLqIoPuBHl/q7MGvyDIv2DE1R/rTpInl0Gt85m8y5xP+e9Bpn16YehYqI09sQTyLr+9bOEdeJaNj1MO1w62FoDjeINjBJjk4vqCSxpG0qj8NbwNKUkV5U2k9B4b+I4FOsIDAh3E6KrYDYs1LNsyVcmz9ZCm5EajnOXa9cjYo5lZPcP8aQ6yxHZrza3h91XyaLlq094QCwTBv7JbgDtqL6UZSnDR/oIfgKVIwGRxTqY34S9AeNFwxSMudoJ7lYXRNKOTQ57JvulfCS9m4DJSC2bILkKY3MACj7QJ0AtHnBfKIppQPiQGtlqShuRmpn1NiDQsArI1IaKf7fEbDBT+etxOFPTjaVZ5ThGTjm2jeQNT6n2wmkA5M7VZK47/m3CodWh3Eb2sNfpTPmLYudQyoYm9iQIRFK+fWkG2I3h1dRXKfxU9fBHOr0XrLrdjmiBZNwsBwE/vabMOqF3M89Z6BHY+hLTWWn1YCTCnNA4MFFs1pvekdkwX4MSDdEeaLNPhtB1yOJa2Zdkqrx8Kcuw5CNpKz8+hXNNo7GhYa/tWIv5mQX3EOW1Qz9pG1/X3RaIeWEHI0qcpCowegMXwHMlLDvtyRO6esxG/k5p7GqcOSVOmhmk5nU6QW4=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	UIekNHxHlgCqnGSxZQHmoL6FIHdi/dle5pHZSMjhXkRmW+CHdaqRtDcyfq6cFCexlbrIterY2eei8u5g0tCgot5nA3MWjbc7MSrgZzK7sTlE4wpzveehBP0ebxxwfIkaL3plHvNYtiLLMyMLBlVsJrJuNuzPJVmHx+S0LsEDSYh53bcEN0r5BypzoVeyB/8cjpQEbJm2hQCYB8aJuNdiweWaL0IklmD0uJOE/5kc8W+hH/gx50mlaq5Rslvr1HJ3kAuhb1bfrTwgYFJjJh5gAFlfz2QSccfQ4BPe7mO5QraLvQ/l4HL1o43jDsicGE8bGkj0NsXYMawDOQ9w2i20HFE3XErLJs7YOFiihOOaKNAppl8fT2a/I0GJDkOe5z8xpbdZ6vqjj7AggpF0ebXXeRgRvoh0si0nq+7M/G+T0MwOBFzUXKFBhnynaxzaCEWO
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2026 10:44:12.9478
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b2531d7-3fe2-4c13-8f1b-08de955bc606
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099E1.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6245
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 00D25A0005
-X-Stat-Signature: t4sg6fzbfgainb91766c64horuuneoe6
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1775645057-153141
-X-HE-Meta: U2FsdGVkX18taaYO7d5Jezmq3YdhDJ8eLrLD3fqpxHM4gVQlZmnwkzUcqVIYNx/EkhZg9b7LqRNr6nyBu97nJ6Ds+ZjwXRMZrfsYdFbG8A0ZweKGVqxsWL1uot6LWQaTN87Q2FNu98Gn/G/i32aFLysdJvz/jADhEWYKrrDCviC6cY+S4zHlpCoi2Wgm+9uuT7+VgIp+4OIxGL7DQyWUydFsJiotCXAow7CuiU1exej46cuiM7jcvpxOIlsXIZxwUxqw8wrrbVJc07e9Om92fF3buA9GZ9n06t28pHULYkxTuN1T+kwJa/RTzf/mh9UL3UdM/uGIMQ9Xr1XYEBIPqWClLdrXITpnHcf7PDb7YuhGR+RwMlv3Sj3fj9IsXqDktVaOl8qUFKHjNkzasXrX6adR5C5z8Brb8nb9fL0byzkvnn68ZH9UmeSixiwc9ZjKyNoX6zYrxAkEip+CzZNW09mTK1mh/kNyiGSjXn23Fhfa6VDtPP7y5hIgqrxwZEGzqc2vPsauC3vo099/cmO2eqYK51zeh5AtoF8igA8BnE6doWmdx+Suk+mOZrFe/nnHwVz+mNTduCkXStx4VtOLS5vcPl2OsKsZsCF/ylUzpT2OQNpFdC8tfqGqnacsbP17eH7cbuz24BNqsdZ5kuEXikuvZikdnCdzjVXJBiK3wFZ+6ik9c7aJCEIVGSqAyHKBIMwrL0maBiMC8yUdtJShEOxnERHBIS+z9rEPyziMtemkzKasQbtoNKbGYM4WNJbOY3l0idTZAqUnYGKJ1fO/IzSEtE9Azm7wzk3kMKbMew/ipuKemWl/a5AED7Gp9Hf8q1ABw1L/5lxNkpn4SafHjk3cXoezIxogQuHyiNl8puPEd4A3u9UNh8ZTl6AmMJ1zELNHMZI6PY7PujSHnf0sKgxaf3jXd+NWbMbHyhqpkjrPEUSx6DtWpWpkdJ7c7sCk9egQz4xDVoWQ7EBLN2G
- hhL73p6V
- nhRmo22S/lHuEF4bgVHN/O4PXE02wPvdhKqmcnsl329YttssKCXC2Luts4UdQKT6u3B7zva2uYOwyuPUVJCQNU89vK+Hm6tnGhmNCYelzmsid76QeMU8+/XxhxpP+Pm0kmioffPlGXGgEOmaKZOSExf+SPF8H0wcVZf/bYCqY4cyuosDb77PG3qiqkfs0aDphqmbA9wbo6r7jQGrjF+H5v8u9mqRooQ12oRYLYDCFPqYX/HBxuFuId5ZUTWwzcL2rgkXr6tpco9rGzFYsNpIbqCbxd+KkVC+JpMDO9ykRaFFWObiwOvpak9b3xDXru5Fozb7o2mq1SeQX8ZZMl+fKifhjfION71cVewMUvVHTCs7bFLOtTVl9oIGTtJAKhpNVCCdvgmXfZCVa19fih60nCo/LiHqtIcPR4GqgZQo+NgUxZwf9oAncd7mNb3yssN+oJCKIi3QaFu7u2dYXHOQtiBS0iIfnk97+J+AYtOGz+benvLkg5bnUcf29ptPENQQMwOfwf83pLF/lIcYiGDZPzcn/HvRCNtekhyQ3tjUS4T0rbnk/lQpjAox4ahcakSrkWF6jAwzj/T5s/h2pIGEn8L1XyFFvJWb/2dPK9AMMT/IFh6z25YYlYoRx20WqJyvOEbfACekAHijMqpk=
+X-Stat-Signature: mp1bhicssyk1w8cw789kxgtbiixbjckd
+X-Rspamd-Queue-Id: A36398000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775645477-888570
+X-HE-Meta: U2FsdGVkX18kXXOhI55Hsx39P+0hvz5+IMla+B2vsFo7pYyYMLnhHaK2LvTLAGmRF5laf2UFRfyBSX4FwvVY7KBdPmXEC8hk3hUYuIH1voQCVFB/vlhrUXtdkosdolqRgu/OIHKnPHyynHG/2ypXwqsUOOAkU0yU63uPfGFmGfkKMC4PMkdyzbMGzEcElkxyHqYI03hIpA8xV7IrlfDVtkRnZTka8hhuVFvPr7qR2pAf7hiSCJsC4JCYDzirV/H97N+1jjTM92tOHyUNGfB61NnH7IJcBQwrFgCwEl4zvrzAtYm6HdtJxoG42Fsm+q1d+rJzyVRhs559jYwDrwFaWcv0k8EiEHGprf3z95eVbovtN6+besbCmkPBriB+kmHr+mGT3H4bTCVVyJiGZBFF5qRN8MZui03E1rgBtYCWYIIavk52FrbXLHRIimnTOZBJReYn/M/vB/NGiEzLoscs4UKnVA3yyrUODaHJr7O7A0dLYuFwBxwBv8iPR6zzk1+2iUGdIrVs0/1DGpU/Ob/qNR18U4fGkvdzZZT8XCk3u5/lgPleLhX9eXJhuNnrcTdFKFC1fxHsD1+6VQzZHlLUcd5BHKwqeaohj9ptpjq3kpoUdlMRh/GtOH4r/C0mQACgSB0GaSRH136fbv6ZTvDXwmFDhKdMREc6csT2GQ/bXmR2fxw9+q43XVQD9I7Yh+ZWph6IO1OFuitDwzvNwMSTgpjaod++8rCgS5P0iOyUGbG1CyFOgNjRJPYjbRm9ANSR9xLDtTAHRhkiBOUMCxLHQ4UZRb62wEV9nreWiFHvs762u1Tk/bRWOV+8W6MjyKHCGUFFvLK1smN1l5SvfSwX38vHq1SOobUs8yRvmHwB/WTdoRBh6AspbiCfA3yzlHvCHILjM9MBVA8z5fnQoEbCB9k650WL35HSVdPOO4EMGHZp6LhfUvu1wHTpfG3JIvR9LMSfDi2DpXrrSLPWC0N
+ o4qVckyM
+ Uw6VjYKtgtqhRx7k2R/f3NSN6Nlb4Qbe8Tb/QN0H3Nj0n6hh7vwm0J0GXZilEmzPqISjWNrGhxYSqLIVhtwrDJBPvCrKqAs5DGeC+qoJdQIZfEJOT1TX4RmO7bc6rVv0nEekJBkiaqpAAXq9ticTXxJRj7igHruMNAetGhAQDFrKwnKH2REUB10tWKnxv9s0k9HHJa1dmTivgLUS6fsNxTXSmiXzDWRFm1J+RLbnQF3blhyaPirbF7VNP3KSW3LsgKVxh/H+F4qdKxnnnQwaQnLUgiU5wCWkSIoGGFrONdacoc5afNO6OpUDKL4Dwa9r2oh3W02g7Kwan8/8IKwYZvOc//LFviFn28SIdXm5acAgP+uNj1jhrYp7xes5jetItYeflFj8Z086iHW0CXfhbLo8QYFyXh/Ek+2WU6fLeC/o4mm2MmtE2sApwFZH523olRnCF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,129 +105,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 08-04-2026 15:17, Vlastimil Babka (SUSE) wrote:
-
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+On Wed, Apr 8, 2026 at 5:14=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
 >
-> On 4/8/26 11:24, Hrushikesh Salunke wrote:
->> When init_on_alloc is enabled, kernel_init_pages() clears every page
->> one at a time, calling clear_page() per page.  This is unnecessarily
->> slow for large contiguous allocations (mTHPs, HugeTLB) that dominate
->> real workloads.
->>
->> On 64-bit (!HIGHMEM) systems, switch to clearing pages in batch via
->> clear_pages(), bypassing the per-page kmap_local_page()/kunmap_local()
->> overhead and allowing the arch clearing primitive to operate on the full
->> contiguous range in a single invocation.  The batch size is the full
->> allocation when the preempt model is preemptible (preemption points are
->> implicit), or PROCESS_PAGES_NON_PREEMPT_BATCH otherwise, with
->> cond_resched() between batches to limit scheduling latency under
->> cooperative preemption.
->>
->> The HIGHMEM path is kept as-is since those pages require kmap.
->>
->> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
->>
->>   Before: 0.445s
->>   After:  0.166s  (-62.7%, 2.68x faster)
->>
->> Kernel time (sys) reduction per workload with init_on_alloc=1:
->>
->>   Workload            Before       After       Change
->>   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
->>   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
->>   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
->>   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
->>
->> Signed-off-by: Hrushikesh Salunke <hsalunke@amd.com>
->> ---
->> base commit: 1a2fbbe3653f0ebb24af9b306a8a968287344a35
-> Any way to reuse the code added by [1], e.g. clear_user_highpages()?
 >
-> [1]
-> https://lore.kernel.org/linux-mm/20250917152418.4077386-1-ankur.a.arora@oracle.com/
+> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+> > This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> > is physically fully or partially contiguous. Two techniques are used:
+> >
+> > 1. Avoid page table zigzag when setting PTEs/PMDs for multiple memory
+> >    segments
+> > 2. Use batched mappings wherever possible in both vmalloc and ARM64
+> >    layers
+> >
+> > Patches 1=E2=80=932 extend ARM64 vmalloc CONT-PTE mapping to support mu=
+ltiple
+> > CONT-PTE regions instead of just one.
+> >
+> > Patches 3=E2=80=934 extend vmap_small_pages_range_noflush() to support =
+page
+> > shifts other than PAGE_SHIFT. This allows mapping multiple memory
+> > segments for vmalloc() without zigzagging page tables.
+> >
+> > Patches 5=E2=80=938 add huge vmap support for contiguous pages. This no=
+t only
+> > improves performance but also enables PMD or CONT-PTE mapping for the
+> > vmapped area, reducing TLB pressure.
+> >
+> > Many thanks to Xueyuan Chen for his substantial testing efforts
+> > on RK3588 boards.
+> >
+> > On the RK3588 8-core ARM64 SoC, with tasks pinned to CPU2 and
+> > the performance CPUfreq policy enabled, Xueyuan=E2=80=99s tests report:
+> >
+> > * ioremap(1 MB): 1.2=C3=97 faster
+> > * vmalloc(1 MB) mapping time (excluding allocation) with
+> >   VM_ALLOW_HUGE_VMAP: 1.5=C3=97 faster
+> > * vmap(): 5.6=C3=97 faster when memory includes some order-8 pages,
+> >   with no regression observed for order-0 pages
+> >
+> > Barry Song (Xiaomi) (8):
+> >   arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+> >     setup
+> >   arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+> >     CONT_PTE
+> >   mm/vmalloc: Extend vmap_small_pages_range_noflush() to support larger
+> >     page_shift sizes
+> >   mm/vmalloc: Eliminate page table zigzag for huge vmalloc mappings
+> >   mm/vmalloc: map contiguous pages in batches for vmap() if possible
+> >   mm/vmalloc: align vm_area so vmap() can batch mappings
+> >   mm/vmalloc: Coalesce same page_shift mappings in vmap to avoid pgtabl=
+e
+> >     zigzag
+> >   mm/vmalloc: Stop scanning for compound pages after encountering small
+> >     pages in vmap
+> >
+> >  arch/arm64/include/asm/vmalloc.h |   6 +-
+> >  arch/arm64/mm/hugetlbpage.c      |  10 ++
+> >  mm/vmalloc.c                     | 178 +++++++++++++++++++++++++------
+> >  3 files changed, 161 insertions(+), 33 deletions(-)
+> >
+>
+> On Linux VM on Apple M3, running mm-selftests:
 
-Thanks for the review. Sure, I will check if code reuse is possible.
-Meanwhile I found another issue with the current patch.
+Dev, thanks for your report. Sorry for the silly typo=E2=80=94
+Xueyuan=E2=80=99s vmalloc/vmap tests don=E2=80=99t trigger that case yet.
 
-kernel_init_pages() runs inside the allocator (post_alloc_hook and
-__free_pages_prepare), so it inherits whatever context the caller is in.
-Testing with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_PROVE_LOCKING=y, I
-hit this during exit_group() -> exit_mmap() -> __zap_vma_range, where a
-page allocation happens while the PTE lock and RCU read lock are held,
-making the cond_resched() in the clearing loop illegal:
+it should be fixed by:
 
-[ 1997.353228] BUG: sleeping function called from invalid context at mm/page_alloc.c:1235
-[ 1997.353433] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 19725, name: bash
-[ 1997.353572] preempt_count: 1, expected: 0
-[ 1997.353706] RCU nest depth: 1, expected: 0
-[ 1997.353837] 3 locks held by bash/19725:
-[ 1997.353839]  #0: ff38cd415971e540 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x6e/0x430
-[ 1997.353850]  #1: ffffffffb03d6f60 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x2c/0x220
-[ 1997.353855]  #2: ff38cd410deb4618 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: pte_offset_map_lock+0x92/0x170
-[ 1997.353868] Call Trace:
-[ 1997.353870]  <TASK>
-[ 1997.353873]  dump_stack_lvl+0x91/0xb0
-[ 1997.353877]  __might_resched+0x15f/0x290
-[ 1997.353882]  kernel_init_pages+0x4b/0xa0
-[ 1997.353886]  get_page_from_freelist+0x406/0x1e60
-[ 1997.353895]  __alloc_frozen_pages_noprof+0x1d8/0x1730
-[ 1997.353912]  alloc_pages_mpol+0xa4/0x190
-[ 1997.353917]  alloc_pages_noprof+0x59/0xd0
-[ 1997.353919]  get_free_pages_noprof+0x11/0x40
-[ 1997.353921]  __tlb_remove_folio_pages_size.isra.0+0x7f/0xe0
-[ 1997.353923]  __zap_vma_range+0x1bbd/0x1f40
-[ 1997.353931]  unmap_vmas+0xd9/0x1d0
-[ 1997.353934]  exit_mmap+0x10a/0x430
-[ 1997.353943]  __mmput+0x3d/0x130
-[ 1997.353947]  do_exit+0x2a7/0xae0
-[ 1997.353951]  do_group_exit+0x36/0xa0
-[ 1997.353953]  __x64_sys_exit_group+0x18/0x20
-[ 1997.353959]  do_syscall_64+0xe1/0x710
-[ 1997.353990]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 1997.354003]  </TASK>
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index bf31c11ebd3b..25b9fce1ec6a 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -110,7 +110,7 @@ static inline int num_contig_ptes(unsigned long
+size, size_t *pgsize)
+                contig_ptes =3D CONT_PTES;
+                break;
+        default:
+-               if (size < CONT_PMD_SIZE && size > 0 &&
++               if (size < PMD_SIZE && size > 0 &&
+                                IS_ALIGNED(size, CONT_PTE_SIZE)) {
+                        contig_ptes =3D size >> PAGE_SHIFT;
+                        *pgsize =3D PAGE_SIZE;
+@@ -365,7 +365,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int
+shift, vm_flags_t flags)
+        case CONT_PTE_SIZE:
+                return pte_mkcont(entry);
+        default:
+-               if (pagesize < CONT_PMD_SIZE && pagesize > 0 &&
++               if (pagesize < PMD_SIZE && pagesize > 0 &&
+                                IS_ALIGNED(pagesize, CONT_PTE_SIZE))
+                        return pte_mkcont(entry);
 
-This also means clear_contig_highpages() can't be directly reused here
-since it has an unconditional might_sleep() + cond_resched(). I'll look
-into this. Any suggestions on the right way to handle cond_resched()
-in a context that may or may not be atomic?
+>
+>  ./run_vmtests.sh -t "hugetlb"
+>
+> TAP version 13
+> # -----------------------
+> # running ./hugepage-mmap
+> # -----------------------
+> # TAP version 13
+> # 1..1
+> # # Returned address is 0xffffe7c00000
+>
+>
+>
+> [   30.884630] kernel BUG at mm/page_table_check.c:86!
+> [   30.884701] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> [   30.886803] Modules linked in:
+> [   30.887217] CPU: 3 UID: 0 PID: 1869 Comm: hugepage-mmap Not tainted 7.=
+0.0-rc5+ #86 PREEMPT
+> [   30.888218] Hardware name: linux,dummy-virt (DT)
+> [   30.889413] pstate: a1400005 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYP=
+E=3D--)
+> [   30.889901] pc : page_table_check_clear.part.0+0x128/0x1a0
+> [   30.890337] lr : page_table_check_clear.part.0+0x7c/0x1a0
+> [   30.890714] sp : ffff800084da3ad0
+> [   30.890946] x29: ffff800084da3ad0 x28: 0000000000000001 x27: 001000000=
+0000001
+> [   30.891434] x26: 0040000000000040 x25: ffffa06bb8fb9000 x24: 00000000f=
+fffffff
+> [   30.891932] x23: 0000000000000001 x22: 0000000000000000 x21: ffffa06bb=
+8997810
+> [   30.892514] x20: 0000000000113e39 x19: 0000000000113e38 x18: 000000000=
+0000000
+> [   30.893007] x17: 0000000000000000 x16: 0000000000000000 x15: 000000000=
+0000000
+> [   30.893500] x14: ffffa06bb7013780 x13: 0000fffff7f90fff x12: 000000000=
+0000000
+> [   30.893990] x11: 1fffe0001a1282c1 x10: ffff0000d094160c x9 : ffffa06bb=
+568a858
+> [   30.894479] x8 : ffff5f95c8474000 x7 : 0000000000000000 x6 : ffff00017=
+fffc500
+> [   30.894973] x5 : ffff000191208fc0 x4 : 0000000000000000 x3 : 000000000=
+0004000
+> [   30.895449] x2 : 0000000000000000 x1 : 00000000ffffffff x0 : ffff0000c=
+071f1b8
+> [   30.895875] Call trace:
+> [   30.896027]  page_table_check_clear.part.0+0x128/0x1a0 (P)
+> [   30.896369]  page_table_check_clear+0xc8/0x138
+> [   30.896776]  __page_table_check_ptes_set+0xe4/0x1e8
+> [   30.897073]  __set_ptes_anysz+0x2e4/0x308
+> [   30.897327]  set_huge_pte_at+0xec/0x210
+> [   30.897561]  hugetlb_no_page+0x1ec/0x8e0
+> [   30.897807]  hugetlb_fault+0x188/0x740
+> [   30.898036]  handle_mm_fault+0x294/0x2c0
+> [   30.898283]  do_page_fault+0x120/0x748
+> [   30.898539]  do_translation_fault+0x68/0x90
+> [   30.898796]  do_mem_abort+0x4c/0xa8
+> [   30.899011]  el0_da+0x2c/0x90
+> [   30.899205]  el0t_64_sync_handler+0xd0/0xe8
+> [   30.899461]  el0t_64_sync+0x198/0x1a0
+> [   30.899688] Code: 91001021 b8f80022 51000441 36fffd41 (d4210000)
+> [   30.900053] ---[ end trace 0000000000000000 ]---
+>
+>
+>
+> The bug is at
+>
+> BUG_ON(atomic_dec_return(&ptc->file_map_count) < 0);
+>
+> My tree is mm-unstable, commit 3fa44141e0bb.
+>
 
-Thanks,
-Hrushikesh
-
->>  mm/page_alloc.c | 19 +++++++++++++++++--
->>  1 file changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index b1c5430cad4e..178cbebadd50 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -1224,8 +1224,23 @@ static void kernel_init_pages(struct page *page, int numpages)
->>
->>       /* s390's use of memset() could override KASAN redzones. */
->>       kasan_disable_current();
->> -     for (i = 0; i < numpages; i++)
->> -             clear_highpage_kasan_tagged(page + i);
->> +
->> +     if (!IS_ENABLED(CONFIG_HIGHMEM)) {
->> +             void *addr = kasan_reset_tag(page_address(page));
->> +             unsigned int unit = preempt_model_preemptible() ?
->> +                                     numpages : PROCESS_PAGES_NON_PREEMPT_BATCH;
->> +             int count;
->> +
->> +             for (i = 0; i < numpages; i += count) {
->> +                     cond_resched();
->> +                     count = min_t(int, unit, numpages - i);
->> +                     clear_pages(addr + (i << PAGE_SHIFT), count);
->> +             }
->> +     } else {
->> +             for (i = 0; i < numpages; i++)
->> +                     clear_highpage_kasan_tagged(page + i);
->> +     }
->> +
->>       kasan_enable_current();
->>  }
->>
+Thanks
+Barry
 
