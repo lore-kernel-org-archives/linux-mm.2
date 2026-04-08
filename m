@@ -4,119 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E191073C93
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18B601073C93
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 12:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 270D46B0088; Wed,  8 Apr 2026 08:49:35 -0400 (EDT)
+	id 6BA216B0088; Wed,  8 Apr 2026 08:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 248866B0089; Wed,  8 Apr 2026 08:49:35 -0400 (EDT)
+	id 66B326B0089; Wed,  8 Apr 2026 08:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 185456B008A; Wed,  8 Apr 2026 08:49:35 -0400 (EDT)
+	id 5811E6B008A; Wed,  8 Apr 2026 08:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CDA46B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:49:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A86AB1B9049
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:49:34 +0000 (UTC)
-X-FDA: 84635369868.16.E2C1F3A
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B68FD40009
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:49:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BboDmiBu;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4895A6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 08:52:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E104E140AAC
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:52:29 +0000 (UTC)
+X-FDA: 84635377218.12.8F496B5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4735CA000C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 12:52:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Od6B71TE;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775652572;
+	s=arc-20220608; t=1775652748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DCiGh/TAopmTia/e16V2uyYbOgyzJf5l79QanUCh3kg=;
-	b=SVTSb5eWfKZfBv3AvuHoEhFcV0dTJUe3PR4ylrZzTVp3rKuPxfag3KRi65rADyg25YyaWq
-	WElWx6oHuAaSmFhsNrYivSYcuwV+KzWwzB+8fnI251EtimPu/Dlnwp0PR6ofro7QJMH3q/
-	JAQ5mlDPG3D8ZjXs95FSA46vBJD/EII=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775652572; a=rsa-sha256;
+	bh=NSc3orVIihfB6HH+EJovspyaX9WDVWv+3uztoWNhFcQ=;
+	b=sthT5FoFHp/atqM1DK39GfRgP7hdq34pYAQWWJU7OOqvFnJcbjzHzv2yteIFrndD+3/iMz
+	sgj12vG6siKy4e+4NtJp1SeHUtDTzyef4/B4+rsT2TLzGnVUSXshKcFyCSlDDRgF2RojxP
+	Qde894f+GjfueHqodrjfvHVf/3GVUyI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775652748; a=rsa-sha256;
 	cv=none;
-	b=PK2sU5NG6AeZptLVKT7Z6Ulm++EhTtSk+Mj9VERk5e701t3OqXxyjHUunKqfPzdgQJPQuN
-	/EfaXtEO0kAqFd6LbxrkxQoU0WBd+AUYDrwUlNusDLerd0sB7flWSEOSWy0zXyi9pKSUGq
-	UIhbgPXgnfokZ05A09fiXZHTly+XCbI=
+	b=VNMQqQEB/qC8eVoqaP9xylB//mZ8vbBHFwbcRBhh1HnXVtGTNYL+/zvP1Cd4QgBTB0k51J
+	dRFmCZhOHJGdlHvld6WQ14DJJMpJPI3iQBW7OMMpUlssTpTcWu6VjH7k2WZRxg0IKka8uG
+	I//yuqWr1yGGZOibRU4C4QScLh1BNKY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BboDmiBu;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4888375f735so58708305e9.3
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 05:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775652571; x=1776257371; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DCiGh/TAopmTia/e16V2uyYbOgyzJf5l79QanUCh3kg=;
-        b=BboDmiBuSzfDSeAU6GVpTiOSd/+5GHslNlVVZg/AaR23bZ+XV5HTK6flkkHUdVbFRL
-         D0807WW4mezJeJFaMh6D0DRp151SY0f+8ZRH6y5iIy4zXFWhkTmF08SeU64rkpMCGDDB
-         jonvGq01tng/EdQJIJ3YsYsMnH0l1k3zC78sO4qqxSB6315rUsUUhabwVjG5wWLA7x3J
-         rHxorZg3LOa07BuhykU+2Gh3ExY+35wpE3v30H/wOM7saEZ527VNqSMasDlvUp79ylzY
-         22AF0xgJg97CyP4c+2tEv+UG0y5nLmm9ZOHrt2JZV0PlDnl7mDlLjvIT2GQwAsOX/16t
-         Z/Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775652571; x=1776257371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DCiGh/TAopmTia/e16V2uyYbOgyzJf5l79QanUCh3kg=;
-        b=DcTMA1CNPNZRE4voNAeN9WjGpczp7hXT7e38v/1TMsKyDCv6kaumzi5VUcLqlZRlAQ
-         He6hblp2CJ9JtfiKPdQB8cZXUj0Jxfj+xgNaauuWBQNKfor173pVxae7Yu9Rkom9rA8d
-         /bGs4sXVCeAOpdpC3CqN+GnNhomMw3cXIvG8+csD7DKS0EieeZ8NcfdjZmhbhVCFFEMy
-         /+azy9jR+DdtbQHh5EBGN2suGeUouOC3W+gA2V/f8pbt8ocg3sS/GW2PufFCC8D0Kzhc
-         nCmn0kW+LkyIw8y4TWGXfi4kCQnnyeXi7wzAwT7M+0IGh5x7k8LDPK3A/f2oTn3GeRT6
-         EcRA==
-X-Gm-Message-State: AOJu0Yyd3piuWz1nmff5xJInHaosGJhRHt+2VvU+hecEAdPvZ9Nanvi7
-	Td5mThVv3E3FjDesP/Y5AVT0r+5t4W8+VTEvT0jAoS+P5703zf/UQD1N
-X-Gm-Gg: AeBDiesgji1xtAJnhXFiQEQBp2uo1BjF8UT14iZjZ9MQJ9TLBzx5f5ciYGQ6RRkbTvx
-	JP8/8TSuXhRM53Q6bc5XSiw42qQUoozelW6Rz59H6BrBZoipv36XEWQJ/RVGsWjVuV0arw4+PBN
-	bRlgWXXE7TwgCzHepafuCsX5tZE8qLEJPP5/o7Pd3FCZEVXTiXr8SjJCasRzzc3qBubzEK97dG1
-	e2/swAn/mjrBDFrlXDMBGzbEeg44XV2FPAkTOMAeYMNRn3H+JXX04qArJ2q9e6y4yEeHZKTWwl8
-	lZsZpn+B+x/YaaqbdD0eYyt1JjYIY4G26WKOfo5J7rxrdS/juQPOESZMAbty6x6bN5pU2NP4W2H
-	tPiu1V8VGojMX1qfLvwvxC/UK1ZZ3Q8pNqqdo3++dRDuDyNLovsYWwnftqENNSeKx805EbErRIV
-	HQAi4/X+8/6VPmbnQLCL+IRBzlQhzmmqFC3yTN1u6CPusvULhbEOMFSwHAPp4FF9bHoGn+P1Oo2
-	9k=
-X-Received: by 2002:a05:600c:630a:b0:485:2fe9:336f with SMTP id 5b1f17b1804b1-488998e3cbemr296043305e9.30.1775652570938;
-        Wed, 08 Apr 2026 05:49:30 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488c5dc5fefsm24994505e9.7.2026.04.08.05.49.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 05:49:30 -0700 (PDT)
-Date: Wed, 8 Apr 2026 13:49:23 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@redhat.com>, David Hildenbrand <david@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf/events: Replace READ_ONCE() with standard pgtable
- accessors
-Message-ID: <20260408134923.3a44a703@pumpkin>
-In-Reply-To: <1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
-References: <20260227062744.2215491-1-anshuman.khandual@arm.com>
-	<1267a6c0-f8e7-4708-96da-4d131b5c6069@arm.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf15.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Od6B71TE;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf15.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 97BB9600AD;
+	Wed,  8 Apr 2026 12:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F1EC19421;
+	Wed,  8 Apr 2026 12:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1775652747;
+	bh=pI38M4TIKVe9bBgloxuZeTwodJ0BBnK5L95Fxg6BN3o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Od6B71TENC1nv7URJ7PCOcItPI5OsgRz6eFR6lVg6CMp2pQMXSlit1YlmgJgggN95
+	 8do93KHQk5pYtW0PSIB90NUmiwG9u/Rf+CRb8SzPz2JmVRarfbf3BNIxLI0JpyZm0Q
+	 C4PuYzl8Qd7OHAupF58qKo/fb3HFo3UvkzYxv84g=
+Date: Wed, 8 Apr 2026 14:52:25 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>, linux-mm@kvack.org,
+	Jane Chu <jane.chu@oracle.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Miaohe Lin <linmiaohe@huawei.com>
+Subject: Re: [PATCH 5.15.y 0/6] mm/hugetlb: fixes for PMD table sharing
+ (incl. using mmu_gather)
+Message-ID: <2026040846-curable-portfolio-0bba@gregkh>
+References: <2026012608-tulip-moisten-c6f6@gregkh>
+ <20260218110129.41578-1-david@kernel.org>
+ <c6f63b74-d532-4384-a1e6-2b0dcb7b5303@lucifer.local>
+ <2026031222-vacation-cramp-6fdb@gregkh>
+ <c6b9712f-2f23-43e4-b270-dd3a7371e57d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B68FD40009
-X-Stat-Signature: pemhhkiohuruato31dma3rpqn4z7t5sk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6b9712f-2f23-43e4-b270-dd3a7371e57d@kernel.org>
+X-Rspamd-Queue-Id: 4735CA000C
+X-Stat-Signature: chp7kswynb7b83hazrcq8o5nres7dq5t
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1775652572-645008
-X-HE-Meta: U2FsdGVkX1+XyTfpC71Tw/7hpYnYMG8Cu1/woeOuSVTaSC4vzPcOYBBEpTudWtor2r0/vhCur751s3T6HGsvRXsyAOxwJhZodKBOXqO6K67Qii7UY3b+hzSyezfXnXMV2PRpA7CWb3YmQdZAX5f34zGDCYsfF7IYW7hkpulz+HgOMxumumYg6v9ch9y4MdXIwUL4x3wL5BdUrfZjNGrb0jZjYtzJbOovQedICCPf5VYdYyl3yY03PmnL27t5+SrNLJ05vvIwngLkWyOoisqVAjSoAR+jM72S68UdHXkYdBuwlmure4trIPbPxcVwZrglTspP0vJfhHtl+N/hndIdxKJOVYMJUFQTSgfs4Uo5GrDDWc9oKa84BxX0pgqrE1TgJUMISUlOXdlLgfeSUcEwB6rdx/Y4FG8aNctfDV70o0Xu6aAE6uGKtxX0HTlpYFeU+cMeLF60XEDco6ZbcJ8m2zmXhwAcy31co/T3bphCN+egUbGG3KOThM0qqDtP/sksbdraPO71r7uwytOV3hOYzsOMiguJzEHjEbyl4oWZRjA2LI8CeTnBNc7ivzqY9EErv6P44tBijVkDqhBX09gNCdPTWjjCli/H5/KpUYRudHAmzmunUKiUgCYBwbfnrpMYypED/DNCWby5ChVN6rP5Ggdpc17uS4Lvhk1bRxPeq503TX0QtY1geUfp8OghjvKyxXPkboxJqckJ47j2FBZpeSk4ipZhyFLBKsMLGJMRkYXET7wJxoCuE6UmV+rcUovquZ3zld+In/MVY9bscfzsHPRJcjC0fybe86O4Wv4kAYV8H9EW6YVrbAUnthQ2vnuj5p0xOVs1nGUnrKcVMzX64egiYPdCQTR8tpic/vUrSBiEekFTjUsqMn5XZIc/B+VqzLESEu999gsdNQ+H8iJg2O4bwvjgehgxzFtig3CQLJbqkjxzbmh2ETPjh3WSr+M2+oc50sIERgzTYLBcHBP
- ZaY9qljZ
- cniYNayL5WJ81oHUd5PUXqgE848w8VfeR9ZRCy9q557LiTiTqG7JaUthknUfuFi4TONmr92jodGpkbHKK3fp/BGxuNmjxI9/XuTpYZQ8SGQ5SbEJ3q1edPG29LQzj9BOPK3GYCF5dotogOhn6n9jWKj88h2ldBTt+4oz4BjHu8hSqOSXn8bkLCdiiERHJiRaONCRLIVbxjWYOJaZuQ2lTeUwKGsfMxjdP71ZsfjuSmb/W2J5Bz9paotJRi6ry/3lAAuHCKFz1iYcDto/bSUIbMPpCGwTiLq2VmDl5S/QBgodUgDwxfvWY8YlSBXFcyCUCexBNu2p8c3vHXh+BRcq7jkH8s7Gkp5RbZvrUYcVydr0Cmu9tDqOhz8whd+MX/u27guqpuPTYKP+TrOE5k6tBPXFYpLZGwB8pYGYfLCcVM8bcorlpsQCMVsq46Uh4cVhv0+6hWdCmiyI0rUQ6FxU16Gzg360SCtaH64V5ujMtZYU8+z7MdP8AAXaF6yZye557G0moxDVH48y6N4S/qumV8zvyVb5S6IUBa3HuIttLexVDwwrZEq31N1l6F2udlemmJbHeqvXZhdwHFzQD0H5PpGH7uzI56OaGgDKOXcWyvmbJQOhholK+gsAdUZpL4fXUcHFWHxlW4dHifN4=
+X-HE-Tag: 1775652748-605329
+X-HE-Meta: U2FsdGVkX19+17yEFQrAOlRtV/ae4Hk0Ovnb04uZfUaGWl60IePHqAnzhx6aQ7s12RLDMO6Qaqplu5vtkO86iEgYujXP5U7U/vd/IHr70jDRljQXMMni5faALt7fx+ggX51TT5ZUqFnGw5LOdyFYIHeq87mvBIPll7lSUYXgsF8lLrN4DPZZN/fd8JQtmgIXW47t6qD6pm9sJNarDtcxooIS/3GbC/B49PIGhsePTR0c2qMWe9Krng5wFYvhIOuMaQlzLVDDCIAyFwlaNnuLOMuWfIqKYN2w57JQ1GWl11Sulgu/CSSADTGknZnWZjt1qsITw8UInOSTLcdixPf71mGpJpkqTzk5HOvvS7MPjRbZ79SvFKo47OgzpVT5/rZ2Enk6fLue3swnVEu1k8LJjTFwYWFNvyLtJvnhI2mzivCWYbVLYbW0TNPaBBSzexVvXPO0sz38vCEkMcBHSO/2LA49vv/pNfEygnffq7OTtIhRYKeH434Ob4x7/jtiHm3ZNMXiuist/W6bFTwDnKpVHDVafHlLDCOiLqKXJBLFNf97sN+5vHmgWnZWJ5e4nMk4zKqTOyvvAiqZhx9UENSoxJSqUt9m4PgD2xI2C2NARaKC728SXtLYB5TtEb0ZmljD7pSF3NDarEWgCco3I0V4PZ5YcSwZot+H/SpiMAwIIxtUftzijsPi096rpHMA4o14gB/cIECZlVVykUau5BCRHqTyu/1hZzRuY1dT235UsQF9D7xMojrK2o5ZOjDcAYn/QLYum8aSU7XJHdY9c9dT+7EpRrwo2VisWVaLZq9Fo1vfcU+a1GLfarWs5wQK7qO+iR87co8ofBWMmlQiUdAjTFpieY4mr6Yx/SacyHv+MRBZuk94a+swg3ukTpNhj1Zs1G20v5ffZntC7qjMjRq6LO7qM+/5Jjmvz3v3bBwbJlOc4SAj5QaJDx9GUd9fKILtOiHZn0H0H/Ch28eKRuR
+ jAdNiIB5
+ E/hBismWTblCxwsTXC54xd0XmWj5q7fCPO/TyHTCc4MCMIZYbIdM723m38r9E6QdmsUQ/6sbbWupr8NudmWYHPT/IkSynLzjn+jAfO/0lmStcv160Y3MC1L7Eu6PbyeK5sQQRDINrrVnHMklHgLA7AeNcpTVI9k0+g41/a+aUUiujEFvWrxvJu/a4+DW3+qPXJa8eMUMiXFpao47MTdNKkQJYGpIN6nyEgzUa9ty/lm2VajGKHZm6iX7YKEI9SVvPJkEaZc6uc/O+ZR/Rw7mtLq770WLRxH1i8JTbtDO93zheLbwwu7AXxlVroNXVB0BfzWMRMVnqNj2ZD9HQffsDnQNYHRzZEcLJCZ09gWAFbxvP1VpYFBD2q0k7mA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,23 +101,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 7 Apr 2026 08:58:46 +0530
-Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-
-> On 27/02/26 11:57 AM, Anshuman Khandual wrote:
-> > Replace raw READ_ONCE() dereferences of pgtable entries with corresponding
-> > standard page table accessors pxdp_get() in perf_get_pgtable_size(). These
-> > accessors default to READ_ONCE() on platforms that don't override them. So
-> > there is no functional change on such platforms.
+On Wed, Apr 08, 2026 at 10:00:44AM +0200, David Hildenbrand (Arm) wrote:
+> On 3/12/26 18:47, Greg Kroah-Hartman wrote:
+> > On Thu, Mar 12, 2026 at 05:42:13PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> >> Hi,
+> >>
+> >> This series was sent a ~month ago, is anything holding this up? The underlying
+> >> issue is causing a really serious regression so it's quite urgent to get this
+> >> pulled ASAP :)
 > > 
-> > However arm64 platform is being extended to support 128 bit page tables via
-> > a new architecture feature i.e FEAT_D128 in which case READ_ONCE() will not
-> > provide required single copy atomic access for 128 bit page table entries.
-> > Although pxdp_get() accessors can later be overridden on arm64 platform to
-> > extend required single copy atomicity support on 128 bit entries.
->
+> > I see 70+ pending 5.15 patches that people have backported that need to
+> > be queued up as well as the pending upstream patches.  During the -rc1
+> > cycle the stable trees get flooded, so the older kernels take a while to
+> > get released as they are on the bottom of our priority list.
+> > 
+> > We'll get to them "soon", they aren't lost.
+> 
+> I assume that is still the case, another 3 weeks later? :)
 
-Did you consider enhancing READ_ONCE() to support 128bit accesses on arm64?
+These are all queued up now, right?  It's a matter of actually doing a
+5.15.y release, which seems to be on the every-month-or-so cycle as
+devices relying on this old kernel sure are not used to updating very
+often, right?
 
-	David
+thanks,
+
+greg k-h
 
