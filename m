@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2453B105D996
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:35:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F9D5105D996
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 02:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FD796B0089; Tue,  7 Apr 2026 22:35:23 -0400 (EDT)
+	id 95D9A6B008A; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3FC6B008A; Tue,  7 Apr 2026 22:35:23 -0400 (EDT)
+	id 90E246B008C; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 712096B008C; Tue,  7 Apr 2026 22:35:23 -0400 (EDT)
+	id 824996B0092; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6296F6B0089
-	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:35:23 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 092DC160A09
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:23 +0000 (UTC)
-X-FDA: 84633822126.18.CCEE866
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 37C5B40013
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GdJoRXh1;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 723696B008A
+	for <linux-mm@kvack.org>; Tue,  7 Apr 2026 22:36:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14F96140926
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:36:00 +0000 (UTC)
+X-FDA: 84633823680.19.6B6D99D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4528F1C0004
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MjzcvJNT;
+	spf=pass (imf21.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775615721;
+	s=arc-20220608; t=1775615758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rhgcVGNkIdqzP97BKYsaYuB6sJP9zA3v3Is4NOEz5rE=;
-	b=qhY3J9w5u1b13BZrO5i9LbuhENnHtLLYqn+GVMQbPpZOa1zCu05ZdfeuCiCygJnSpvypbe
-	y9X/Fzc3SCgzsJ8cZObYh5QwPLTbnw17rz3t+35sT/al1OouEJuotioF7su4aQw0EDV+Hz
-	8qqbxOGFV9G3IJ3U/B1gUEXeYt08DLM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775615721; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KkMn0KxS9q4QmvPIW+laFe0pPrRm5OjtvnER+1DCMbw=;
+	b=AneHBXmUP/XjwDgDUsiO1xjDbZ4V25xxRmBgZIABAY7xk0P6UNmB7NIDzcZuPTRFofG2nv
+	2/Nq6lZtZjVlE9onQyPqPw4XD7QdZ3snGSJZp72zj/FeSy1HyCKfdJkW0VEb3nhMAaAZNO
+	Efg59cdF6INLOGcpTuBAsM/e8qD8ax0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775615758; a=rsa-sha256;
 	cv=none;
-	b=wb/KqKAaLvScGCqGiKgjnJeiklO92ytYhQB6C+/33ixS15pZTNGE7YQyoXhMh4u7ZGqyK8
-	nRA4L39Fb119ujhK+XN3TCiDnhGD2rbrqFl+m3IiPiymYQZMaUJS0DEw8rYb+q1f+1zVLj
-	lVx+8jCwp7Fj7yTr0iPIVc+9SBL4JK4=
+	b=hqXyCzIvOpM8R3jwFHA77/izBgPF5uqMnPS/S14pqtlNrvq4At+/DHmFIrf7HLUePvxECn
+	KvJSMvAOiKpMXaxKPHr3HOUnSkiAmEbpyTuuZS2+SXaoUpZ9/1X+Fxj/HmjXi1izZBfqdQ
+	H9Oh9HYBZJQvpCy838z5FG3ZRJnDwHw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GdJoRXh1;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775615713; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=rhgcVGNkIdqzP97BKYsaYuB6sJP9zA3v3Is4NOEz5rE=;
-	b=GdJoRXh17Qo7z4o7flxsr2lJswiYMvEIPicswCxLIHgtf+cFw8dR1LQ9bYRgD4VTp48RLXfFm2wxfA8w/9MXMIRwjmQTiyKZAyp5c+axude+8xFis7kpb6ZJ65s4ql8qxSpgNpLC4UHw6F2t21ijbi6NCyktCvHyzsiSQcG0A8E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X0dBvl6_1775615707;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X0dBvl6_1775615707 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 08 Apr 2026 10:35:08 +0800
-Message-ID: <367ea69a-c802-46d5-a2c7-259342cdc2ab@linux.alibaba.com>
-Date: Wed, 8 Apr 2026 10:35:07 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
- = 0 or 201
-To: Barry Song <baohua@kernel.org>, Kairui Song <ryncsn@gmail.com>
-Cc: wangzhen <wangzhen5@honor.com>, Andrew Morton
- <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, "kasong@tencent.com" <kasong@tencent.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com>
- <4451bdc432864aebb54f401eee51ea53@honor.com> <adUM54W3WYwEFj3J@KASONG-MC4>
- <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ts541quk4c7r171h66hxbagh9jjf7755
-X-Rspamd-Queue-Id: 37C5B40013
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MjzcvJNT;
+	spf=pass (imf21.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4405540349
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3AEC19421
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 02:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775615757;
+	bh=x+v/WG2GftoMBlJMi6E/znxkqCjwUXYr5lqBIrrZgxA=;
+	h=Date:From:To:Cc:Subject:From;
+	b=MjzcvJNTGtX2eAUAX4l1OvT7c6/mxer5VUVKy4XqYDi1n6OhdY6iUMOcMRJUvb8UC
+	 U0IFo0atnAaiNcnHd2ddDMoaQHr5PQN4dIXd7OXLMUzakIW/+qDIh3dx5vLXhL4gL6
+	 H0fKXUSM/W/2efB56PzSRWVPlQ6Tywx88U0h9iZKsq+Z8S0T4OEoPfk/TRRC9uOL0w
+	 1e20Xgb2x52zfuLTT/NCywruEWmGkc9aSkirDECimhPsB1LbesJqfUcznFTvMMVfVd
+	 7IzuP6ULCrjV8vRjd0nNunvYIAb4m/EnW3hVEGhyEvveCg1CDCX3UOgyuJ+PcNPy1W
+	 dZz+2CNDObw4g==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 327E3F40069;
+	Tue,  7 Apr 2026 22:35:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 07 Apr 2026 22:35:56 -0400
+X-ME-Sender: <xms:DL_VaSAZZAV53uxjsRoP8ApXqKPTHg7KaBhB7ifUm8g8fwFadW9NrA>
+    <xme:DL_VaX_AR3Is1-h9xH8WUeuJcRC38pgF90y0A6m3yM7MpjDZARyngo-u9S3wPZIUJ
+    4o2uNUJ3XyzvWXOV7ZIRoTYYLs56H9p8vJ4Izg_7XLDsypywO4IZt-R>
+X-ME-Received: <xmr:DL_VaZEjfj4Ec1nGc6wYr8-0FSY_nr59Sbmj-g9KVnDM8g4QhUw4u2vAuTLe_YPrMBG6hOJEjQ11pfQsEQoj6sOtMtHkbSh7dLU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvvdefkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevkffugggtgfesthejredttddtje
+    enucfhrhhomhepffgrnhcuhghilhhlihgrmhhsuceoughjsgifsehkvghrnhgvlhdrohhr
+    gheqnecuggftrfgrthhtvghrnheptdfhtefhheekffekueetkeeuteelieffteetieegje
+    evueevveefledugfefhfefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegujhgsfidomhgvsh
+    hmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfedtgeehhedqfeeffeelgedt
+    geejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsg
+    gprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlshhfqdhp
+    tgeslhhishhtshdrlhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqtgiglhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvg
+    hvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:DL_VaVNRgpJOjWjXP8hbzVv3ecxHhcj4jkmX_hhlkwFAzGQIjjZfkA>
+    <xmx:DL_VaTfFIwx3t5CasfjAMCpUsgvnb2MJXQ08a8_8Zi6o0Kvwehm6ZQ>
+    <xmx:DL_VaauMv1Ry1BCjazIFh2eT6bby-rGeKEz16WKt5x9_EdDmbhHhmw>
+    <xmx:DL_VaclDqlrxZWas45yv3xXH0aT9QZzYkg-JK7QuPGinkIOshHG8Jg>
+    <xmx:DL_VaUzMrWI9WaBAGB14TgJZjrS71Tos5c9nOdNlAxbfV_njFljK-y-o>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Apr 2026 22:35:55 -0400 (EDT)
+Date: Tue, 07 Apr 2026 19:35:54 -0700
+From: Dan Williams <djbw@kernel.org>
+To: lsf-pc@lists.linux-foundation.org
+Cc: linux-cxl@vger.kernel.org, 
+ linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org
+Message-ID: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
+Subject: [LSF/MM/BPF TOPIC] What's brewing in CXL?
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4528F1C0004
+X-Stat-Signature: x1nkpfz6mg4pzgxcptfthm4zjnonjjfi
 X-Rspam-User: 
-X-HE-Tag: 1775615718-403131
-X-HE-Meta: U2FsdGVkX19zN8ZUkpnNm9jrbYafnn6bza1yfDdzi6YhrRBrbGbf5DIwPIXmck1xUsRYqUBDPldxH3iyFbijfQIiHoSlVv/X20ORqzpzWUUJGrlHIbkxAsl7wCR7OuY+lhE2vjc65kCeeD+IDT8a3XBMsAAr82EMr0wBVory24VsOdc5L8U0k96eGyfwNrOR9hwQagJw43BnY9BIAO/PjD/kgquTKoCz300DHVE0+wdXRgm0Nsn8ZZST81YyQz/WcFQ+pNTVMH8sxIrpvz1UwlTRbH+89hXzlLJNUXKb4wF7A0Emf10vER/OJ1BAwSM1720LxY1PGhNxeN+JsuuYiUg8Ox88UDKiV48+RViTNgCkmtgRNzEWTOf8LerYwfkyrsHTK9lnWJ8j5oBE7sYAkXSXVOGy0wvIdIR18fihzVvicWDMJEYqfhAertWUm5KW6XVjZEVoocQbttWDbwzQpmhwLUpZdIp9uoQsSLQOmRMG9T35VUEkpkjGgV7g/hygTJ3QTJ115MKvpElmklACPvP/vI/8aPbNn4UBNYhqEM7PgVeKfxTsuN4WjojOkzieaBFcp2/yF3dBv2dKvN9mES7LoLjAGGW4rjhTuE8/g9+AdX7ZylwdBsbH78FylHdSSnO2nwOKIxeolcldJQPCizUgj/0qQACEr50xyNP77ZukXQOYDiyZB/WA4xeQ/viuEgYdkKzIgCvGDL8yFzdpDWSNFh1ztr4DoMPngsG/lxw9B9HsDIFDksQdTRz8113OFnlQkRhwQXLQIK7BWnUy6gavuTAA743HdhM79xRbLo+rZaRb4cxXRWdBQQN1f8Me2Qkcmnrysq6IBqJabGrb5n7Gs9FDaU7ZTFdndhWV4KWY0X0LY/JhHWlJhRyAcFL7/VtQDUaCuSzVp/RWP9O18apoq3UY+PbQGXVX/qSKDiSTpD1vWfF5m5VKgdZ51WdWHwwQRI6+DhiX78WcgnN
- H8vh2OMt
- uhiLhBUtd3C3HEPRLp5todriwOEVWffmsUKf0hTDGM91rpb7/+xmP7x12AF/8y1ydAANPz+jWPSxAoc5glZyo0K3VaeqVJ8+o5FzROGz/RbnWA1dOTuJBi9Ft6rpZDXIfudRMQG/57ZuioyYxpvCjfqoA99MT7yOdw6qykVsQfaOIs4wGdftk20ie/iyG1K+l9ivs42DGLY7ynJGP2U8Q03QKsP9i/W3bbAP4zA+gxOTzHcpnh/IejbfjG352u1jQ1Nea64LxbEw0j8f27IA9CEpd/ubIo1K/6IBMx4faebZvFSj/TktBVt/v5CU2ys8zdJ/WYcMcUrCeW7M7TdF/fvxbOpXRDUvp6EOm/2U072jaPxvepwxlxJMXDtpCkUCocU04aXbb/0+A2SeZ8gHP02Hs7u+G7PQRFZj8e6yuUWzF+zIjSQPQmtccyydiCn0umUbyERVR/k9EJ0m4UNDEJfVnJKI0B83ORa72
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775615758-978009
+X-HE-Meta: U2FsdGVkX186R2VcjvqTqAP8cLzSLJ+w6qHqB6lZHiNP5x9nxxRkrCRnS5UDvEzXqKCioW6H1LHi9bjp2L55GnLuwpmS//2V74d+VzBQBLCw5u94kwAR0JpNwxLzpGPIcmuRMlItkPYGaT52dDfd6n0i+1a45S8jdk300J2+7WrGOSfM9M2cb+b1ZkvXlXUPvv6iXxWflgSmdOG2zerosSEiyqeJwnjQ7xKFykAMV2siTepyNxlW8eg4Z1jyQUxc1arHOWNlrWX2Gaj36r9SGLplnXPey/t/KemMJ0Ygx/wBFCZ1TNztSuSJBHj/aWVhsHrstR0VZDLUcDJNXW6Lp+Z02uzj26AqC5GdzpyhfbiOdWMsmJqcrWkmWndpzWiG8zcwSGSxyZ+R4zJmcwc9ILEvHu4QtsKz4yKcQ3uqTdEvmwIwNHQ09nuqht2mbQmA6pPYO0fm32jiDJZ/TGC6g4vAC6SbHKlKxXtIcJM6UJLRKefejIz9nvReXOR3UL/+nEsmLuBCzY1M2VcSM+KW4tb1/72Lb5Egwa72efwRs4+ByJNoLzEOL4sWAxbS9axerk/siw6CbtRYrbVt0LMGcsyuBhUXjDXo2+MJ2kxcqwfoU8Pn5XPb4sz91kAu4/PuV61HLkkCI8U9C+upd2dTrL2HiSJecNBY2JyF2jVZg8iRSpgimO4Lx86/fuO7AENi12aOQUwEqbg+MVbi32aXEQHiX+7B79d6I0O6jTrVqKDz8I8vusyDenL2BToco88+milMW1oaEX0i3s9DPIEqftx6StVcehk4wdVvjfNgqayd/tBRzSxM6misP4BnClQKW+QXntRjyokjXrZv0mTnfqYb+gK0aL33rv/SSHCjSzPZiCAsnEYEXJcHWohDYInWXNf3skt7+L4Ew1hxvvujCy2Yvvf+x2z6mb/LLNB6UkDeoccT7hyXnVsbsMnuOflOXlM84jWXoMGkrofpZa3
+ jYQIEw52
+ abRjDlzpHPoRL7X+Bxudsx3LT9qiNYqngE2TTIgLWlELrmHEc5DP3dmiR+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,124 +121,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+For the summit I offered to organize a discussion on what has been
+happening in CXL since Plumbers and a summary of the monthly CXL calls
+since. The session goal is present top challenges, address concerns /
+questions from the room, and perhaps introduce the CXL topics that have
+their own session later in the day.
 
+Please do comment, question, ack/nak, or add to the themes below to
+highlight interest and help focus on the few topics we can cover in the
+limited time.
 
-On 4/8/26 7:00 AM, Barry Song wrote:
-> On Tue, Apr 7, 2026 at 10:26 PM Kairui Song <ryncsn@gmail.com> wrote:
->>
->> On Tue, Apr 07, 2026 at 01:37:08PM +0800, wangzhen wrote:
->>> >From ac731b061f152cba05b9aa351652a04f933986e0 Mon Sep 17 00:00:00 2001
->>> From: w00021541 <wangzhen5@hihonor.com>
->>> Date: Tue, 7 Apr 2026 16:17:53 +0800
->>> Subject: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness = 0  or 201
->>>
->>> In some cases, when swappiness is set to 0 or 201, the oldest generation pages will be changed to the newest generation incorrectly.
->>>
->>> Consider the following aging scenario:
->>> MAX_NR_GENS=4, MIN_NR_GENS=2, swappiness=201, 3 anon gens, 4 file gens.
->>> 1. When swappiness = 201, should_run_aging will only check anon type.
->>> should_run_aging return true.
->>> 2. In inc_max_seq, if the anon and file type have MAX_NR_GENS, inc_min_seq will move the oldest generation pages to the second oldest to prepare for increasing max_seq.
->>> Here, the file type will enter inc_min_seq.
->>> 3. In inc_min_seq, first goto is true, the pages migration was skipped, resulting in the inversion of cold/hot pages.
->>>
->>> In fact, when MAX_NR_GENS=4 and MIN_NR_GENS=2, the for loop after the goto is unreachable.
->>>
->>> Consider the code in inc_max_seq:
->>> if (get_nr_gens(lruvec, type) ! = MAX_NR_GENS)
->>>      continue;
->>> This means that only get_nr_gens==4 can enter the inc_min_seq.
->>>
->>> Discuss the swappiness in three different scenarios:
->>> 1<=swappiness<=200:
->>> If should_run_aging returns true, both anon and file types must satisfy get_nr_gens<=3, indicating that no type satisfies get_nr_gens==MAX_NR_GENS.
->>> Therefore, both cannot enter inc_min_seq.
->>>
->>> swappiness=201:
->>> If should_run_aging returns true, the anon type must satisfy get_nr_gens<=3. Only file type can satisfy get_nr_gens==MAX_NR_GENS.
->>> After entering inc_min_seq, type && (swappiness == SWAPPINESS_ANON_ONLY) is true, the for loop will be skipped.
->>>
->>> swappiness=0:
->>> Same as swappiness=201
->>>
->>> so the two goto statements should be removed. This ensures that when swappiness=0 or 201, the oldest generation pages are correctly promoted to the second oldest generation.
->>> (When 1<= swappiness<=200, only both anon and file types get_nr_gens<=3 will age, preventing the inversion of hot/cold pages).
->>>
->>> Signed-off-by: w00021541 <wangzhen5@hihonor.com>
+* CXL vs MM:
 
-Please use your real name to sign off.
+  * Much of the angst of "CXL vs MM" has been harnessed by Gregory in
+    his Private Memory Nodes proposal [1]. The meta discussion for this
+    session would be questions like "how many former device-dax use cases
+    can be subsumed by a mechanism like this?". In general, the game here is
+    how to properly isolate memory that does not behave like locally
+    attached DRAM.
 
->>> ---
->>>   mm/vmscan.c | 14 +++-----------
->>>   1 file changed, 3 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index 0fc9373e8251..54c835b07d3e 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -3843,7 +3843,7 @@ static void clear_mm_walk(void)
->>>                kfree(walk);
->>>   }
->>>
->>> -static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->>> +static bool inc_min_seq(struct lruvec *lruvec, int type)
->>>   {
->>>        int zone;
->>>        int remaining = MAX_LRU_BATCH;
->>> @@ -3851,14 +3851,6 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
->>>        int hist = lru_hist_from_seq(lrugen->min_seq[type]);
->>>        int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
->>>
->>> -     /* For file type, skip the check if swappiness is anon only */
->>> -     if (type && (swappiness == SWAPPINESS_ANON_ONLY))
->>> -             goto done;
->>> -
->>> -     /* For anon type, skip the check if swappiness is zero (file only) */
->>> -     if (!type && !swappiness)
->>> -             goto done;
->>> -
->>
->> Hi, thanks for the patch.
->>
->> We have a very similar patch internally, and the result is kind of bad.
->>
->> Currently MGLRU forbid the gen distance between file and anon go larger
->> than 2, which mean with this patch, when under great pressure, you may
->> have to keep rotating a long list of the opposite type of folios to
->> reclaim another type.
->>
->> For example, when you have only 2 gens of file folios, swap disabled,
->> and there are 3 gens of anon folios. Anon folios are unevictable because
->> there is no SWAP. And file is also unevcitable due to force protection
->> of gen. Consider anon folios are mostly cold (at least a portion of them
->> are), now the oldest gen of anon folios will be very long (e.g. 12G,
->> 3145728 folios).
->>
->> Now, to reclaim any file folios, you have to age first. Before this
->> patch that is usually fast. But after this, it will have to rotate
->> all 3145728 folios to second oldest anon gen, will could take a
->> very long time.
+  * The granularity of CXL hotplug vs memory_blocks vs various
+    distribution hotplug policies stimulated a proposal to support full
+    "region" hotplug [2].
+ 
+* CXL vs Platform Firmware (ACPI/EFI/BIOS):
 
-I have the same concern. In many of our scenarios, swap is disabled 
-(swappiness=0), and we only reclaim file folios. In such cases, the 
-workloads really don’t care about the hot/cold status of anonymous folios.
+  * Attempts to use software interleaving to amortize the surprise of
+    "memory that does not behave like locally attached DRAM", introduce
+    firmware dependencies. The firmware descriptions of the performance need
+    to be complete and match a shared understanding of the requirements.
+    Surprise, sometimes this does not line up. [3].
 
->> During that period any concurrent reclaimer will get rejected
->> due to force protection, result in very ugly long tailing or
->> unexpected OOM.
->>
->> So I agree this is a good idea in general, I agree we should do
->> this. But better defer this until we patch up MGLRU to remove
->> the force protection first.
-> 
-> I suspect that once we can age file and anonymous pages
-> separately, this issue will resolve itself. David already has
-> some code for this [1].
-> 
-> Not sure when he will have time to push it upstream, but I
-> may carve out some time to take care of it this month.
-> 
-> [1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
+  * Firmware, in trying to be helpful to pre-CXL aware OSes, pre-map CXL
+    memory (whether public generic expansion or private belonging to an
+    accelerator) into the system address map. This causes problems for a
+    subsystem that wants to support hot remove and re-assignment of
+    host-bridge resources. Lack of a specified protocol and the resulting
+    problems it causes for accelerator reset and driver reload, need more
+    thought.
+ 
+* CXL vs PCI:
 
-Great. Sounds reasonable to me.
+  * While CXL capabilities are enumerated over PCI, to software it is an
+    additional optional protocol. The subsystem supports being built as a
+    module. This has led to a design for error handling that sees the PCI
+    core minimally involved to forward events over kfifo. This arrangement
+    is raising ongoing questions for uAPI like PCI reset and vfio_pci
+    that expect to be able to manage device with PCI core services alone
+    [4].
+
+* CXL vs Tooling / RAS:
+
+  * Error injection, tests, and usability have continued to improve. For
+    folks looking to deploy CXL in production what is cxl-cli missing?
+
+  * While CXL Error isolation has a hard time justifying its utility for
+    general purpose memory expansion, the accelerator use case at least
+    has a reasonable chance to construct a recoverable scenario.
+
+[1]: https://lore.kernel.org/linux-cxl/abwRu1FNqI3dVyqL@gourry-fedora-PF4VCD3F/
+[2]: https://lore.kernel.org/linux-cxl/20260321150404.3288786-6-gourry@gourry.net/
+[3]: http://lore.kernel.org/20260316051258.246-1-rakie.kim@sk.com
+[4]: http://lore.kernel.org/20260401143917.108413-1-mhonap@nvidia.com
+
+"CXL, making MM problems worse since 2021..." -- CXL subsystem tagline
 
