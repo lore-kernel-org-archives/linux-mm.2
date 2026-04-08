@@ -4,98 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6B3410F995A
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 17:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA68110F9964
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 17:26:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2892C6B0088; Wed,  8 Apr 2026 13:01:13 -0400 (EDT)
+	id 93E8D6B0088; Wed,  8 Apr 2026 13:26:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 212CE6B0089; Wed,  8 Apr 2026 13:01:13 -0400 (EDT)
+	id 915E26B0089; Wed,  8 Apr 2026 13:26:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DA716B008A; Wed,  8 Apr 2026 13:01:13 -0400 (EDT)
+	id 82BDB6B008A; Wed,  8 Apr 2026 13:26:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A2A6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:01:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 74843160216
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:01:12 +0000 (UTC)
-X-FDA: 84636003984.08.631FB4F
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E5772C0020
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:01:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ikjTaqfk
+	by kanga.kvack.org (Postfix) with ESMTP id 7062A6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:26:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 102B257767
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:26:13 +0000 (UTC)
+X-FDA: 84636067026.27.081CBA3
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2430C1C0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:26:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mmUekVg8;
+	spf=pass (imf21.hostedemail.com: domain of 3sY_WaQYKCIA02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3sY_WaQYKCIA02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775667670;
+	s=arc-20220608; t=1775669171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWlcN0d2sqnEz/Q4L3iF8sYk4gtZDkaL7FX/NnHp/cg=;
-	b=SI4na1ywRYbpgmMPOH36thAs7tkPD3rfdkU1FbtGdpBaoZudrK5/dYNutIQxwbm4dkZRLj
-	FXyDormM1Rfu+z+RLXUW2x6wQk7FiMx1+UNOSMLSHrYJgoxf2cVQ2gUIWLNuYVhg5wRUNp
-	hudyuBvrLtQDsob0F4PwXticlhInJnQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oXQyTXYZ9HA4GAttYpd1iImAOXEXFhOnKZhr8KGG2U8=;
+	b=GFNVRbsAQVscfbXEnMMgkGA/yRtxX4NZYWuhClKK0sMLlEJtnN+jqGDc3IZsBc2gKK9ZwU
+	4fpbrXJWI9w5yrNj0FKaKodhKk04THXqExLJC9KY/FusBhxw7HJONiseF7fQq+gTGY26Nj
+	m88Bx9+kaac++52e6wXuKS3hlqUo5co=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ikjTaqfk;
-	spf=none (imf28.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775667670; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mmUekVg8;
+	spf=pass (imf21.hostedemail.com: domain of 3sY_WaQYKCIA02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3sY_WaQYKCIA02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775669171; a=rsa-sha256;
 	cv=none;
-	b=tfvG/ocFcwj+whOVI5TPczP4dUNS72KdlpXwAM/vhfdohFSU10WMsdnUv2fIxBgMGAyD0R
-	7HMzrz7cKZIi87/pNBbpdu0dHOdUyltBnubZraaJ4CW7FTbtYntebB/49AHCfKiXG4vkAr
-	vFmsDuIWE7IT0cpPPqbcX3SiQi0OBZY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=fWlcN0d2sqnEz/Q4L3iF8sYk4gtZDkaL7FX/NnHp/cg=; b=ikjTaqfkDuOZYFxSWfbAxa48aT
-	gydnE7Ecs8QhVeEDKO0LHEKuIy97O3gA5L91knIiLs6Gfnn2rorBY2WBC1Gwdpy1ql7tcZ/nHGkU1
-	rzlPCzrz1MMlXb5bPHiHjkR/3RwgxQ3pGyKJn0D7SKW/hV351hp3WJDl2GeZ/s45HRuIpufu9HSUh
-	LXZpn99OiD+WtQCLZtL+Q+k2uwsJKZEptZGOFk2K0MurqwvP/4JtuJxBx9VRQulA1fiy+Pkjl9QsZ
-	BjSoWkBBme+Sv7ohA67A7m75kuHcV5cq4q7z2BCGDFqkc9QWl9iyzXtq9qV8zrFs5yIB+fqPUtSOQ
-	/VojlE2g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wAWGx-008ZGd-2R;
-	Wed, 08 Apr 2026 17:01:00 +0000
-Date: Wed, 8 Apr 2026 10:00:53 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	b=8LRHeDkMnGoOANwG3jcRHCWs9E155PUhYni9ukrBhVlnjt+pO7KtQ368bntzv+yydbg8Nl
+	iJ6itBumjq6epcIG+fcYpAe4D2qOW4kpreKEqll+Dq65YWHN55q96JoGAuxSvargHrNjWn
+	iBFN0ggHvJOvzIl/fBR8RoeEA5fYbxk=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82d42b6f2b0so15557b3a.1
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 10:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775669170; x=1776273970; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oXQyTXYZ9HA4GAttYpd1iImAOXEXFhOnKZhr8KGG2U8=;
+        b=mmUekVg8b8Ok6y0kc6rmOQ+3B8P7P8usYoysxm6Kwpnz5V7zPdlbjdY4o/iFLwhrks
+         W8wnczcPzTv17R59qD3BWpmsaizRgIa8YZJZ4YJGrSo01YujyRWcYkfQpZ9l9QHj8G8K
+         yF5Yz17439Anh1MaleAZkTQwUEi/N2V66tdk0CxsFyNUWuAYmFLtb2vcw3DLv7tpl1mZ
+         SStGaaTieSLZHZV//cskRzFbqHo0TLm9bK/+I5Im/s3qpOieUaf0/6OvAyQ76hYX7FFj
+         84hvCJyhZpUiuPwmoICptUKBKFknYDu5MB5MqtfqDC7GmazEMVuSIouQsJWQPKnCl46w
+         k+gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775669170; x=1776273970;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oXQyTXYZ9HA4GAttYpd1iImAOXEXFhOnKZhr8KGG2U8=;
+        b=GhVJ7BPtkO0CPTPQGn1Irpj/DSXvfBV35o3gsETBXpsxeZagMZIHnpwhFf0BtavL7x
+         wtonRMbVKpw42psefIse20DDJU5+nJIVTiDZ/ian8lgV/Z1HHNtZgt4ubA9W4aFqnafa
+         sBGMGBzPJgMohQO9jKhyUV6U5ONYO/yXhXgCbUJ8LGmDT33Zas/kfjWnophe+tU/k533
+         wcB1sK94PeTkhsk6YWw0LkwW5Yf61Kcw6WdsKaO80/rzPqHKlSqSgsVF/b8tBTaTpDds
+         KOQ4ntV8pbJ/MggE+IT9j7mPiFdtsWOM6Fx7ftmu9mzUlfDI4foFfkqpwsyvzYZY7YI/
+         WM8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUwptJSD9XXCF1LvaCBX3vdsf6Hw9mZHpbzGVMmJy10CmFTuC/F3F4lK77VglzlJURbjMH3KXHW7g==@kvack.org
+X-Gm-Message-State: AOJu0Yz73iMxy8oypUW0OoP61b/twl4utmEwOHAU/tDgvLztxrgOTU+c
+	MyEmfgt5u4DzudH1nioTe2CaaoG5M+qfbS3d8aYv8ZXoqvNBC2z0Oijag/jP6I/+jAFbB6NMP74
+	NewIwsg==
+X-Received: from pgbcp3.prod.google.com ([2002:a05:6a02:4003:b0:c70:e4b6:a27b])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3286:b0:398:b499:44e0
+ with SMTP id adf61e73a8af0-39fc832f20dmr634781637.41.1775669169633; Wed, 08
+ Apr 2026 10:26:09 -0700 (PDT)
+Date: Wed, 08 Apr 2026 17:24:41 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFmP1mkC/x2NwQqDMBAFf0X23IWQ1Cq9FvoBvRYPqXlpF4zKh
+ ooi/ntDj8PAzE4ZKsh0rXZSLJJlGgu4U0X9x49vsITCZI29mLNxnJAm3Th6Gb4KTpEDBr8hcJS VNfa8ODa2bdrQINavmkpqVhT73zzpcb9Rdxw/yad0vHsAAAA=
+X-Change-Id: 20260403-memory-failure-mf-delayed-fix-rfc-v3-02878d7ef5b5
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775669168; l=2920;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=+gY9M7pK6g1wVjdUn1IEgoo+d0875SrS/mpl3kkU7n0=; b=pZPKd+rhK4e+NAPviiUHM2w6HcUVC5JRoewg3GzHhgWj5s8+YLuzvk/OygZLAk2t9HwTzPnwm
+ zL5GLng99vcD3WUNtHTJ/15DbjUedlvIDsEAcNeVyyvO2Xr7qjvDPia
+X-Mailer: b4 0.14.3
+Message-ID: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
+Subject: [PATCH RFC v3 0/7] mm: Fix MF_DELAYED handling on memory failure
+From: Lisa Wang <wyihan@google.com>
+To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Message-ID: <adaGcf2hKNGHwVPd@gmail.com>
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
- <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
- <ac5urCFeEB9oyUiD@gmail.com>
- <adUhtrhU7c1TJQww@gmail.com>
- <a9129d39-f9dc-4f09-b951-203c8e28b600@kernel.org>
- <adZopu5wjXIR5HOR@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <adZopu5wjXIR5HOR@gmail.com>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E5772C0020
-X-Stat-Signature: mbfgo94yc9j96uumhm76y5mxenb191mu
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
+	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
+	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2430C1C0005
+X-Stat-Signature: tgmubu31t6pzqrxsnk6sk3edqaggau4f
 X-Rspam-User: 
-X-HE-Tag: 1775667669-48258
-X-HE-Meta: U2FsdGVkX1/VWxt2aTELA6o41mMYUWW5nX0cYFus0JrGvZ5OBUqYDITK9oKmHabpseJnDtb8+QBn81IPP4PEBOA4Yrk5e8k1usAEYrym9GVdDjLHmTd+qtGkF6OLM8cN0FpfMn0xF8MG+jzjVrQmiD7eLdawR38vtKkpO9e/Fq4C52ZJ/D3mOH0YngR5k5VzyawI84nI+7R/ywoGIP21Dyg60nkIkwOAhOs0QHpl2c1PH7MGvwC7+oxPDoWrZXvDjGz8nbhh+lLmCUhGgcDsjFFNtB0rnYNt8bCh9bwO8KAQxDLskvzu0FmugnkOhjthIkxAvGVIqz91X6gBMi2dNY0tXUeydjSOMlffrTZ84uEmbCF49+2n3PgS0SlBXA7Skvp8SyRL3pkHkrFZGk2VOosizWpR2wESunk/9kKW5VvTj1tX4m9OBOak2ibXwTo0XaAj6005ySHlhyLfctnhP0j/Az+zxXGuWxLH4wFGJi+AmLVAPwVHVhHvAWbSTFh9lpYH7cz/xUMCqaO03yJCb5zUTnkXLvEumTbAlOYed6QGEBGv+2Izyjp5vZ49z8Ko7NjPX2kGBbj/Kt8TnVj4ydIWtmJaN/8c4v9IiGzl271GhCqI0+fKaT47EAN3ZpYNvHEae865f16LqhVo9mz6713jPnOs8zgmg9oEYyPxrTCKKgDqsPyo0zoPPfzdschvKKXjJZhB1sKsB3hFvNeVGLR7KxPEreiWW9lmkCk3I0Uwt0o2gfksZKavm7DFuz8PciUPFGW1yds3mM8hO6ru0gqMBauCsoEOfWd5MEitjEke/flwlE/EU5By2ZL2GUiD8o+A+Fuz8q9sqlRCxG5ggl2ZDqpRFOWLBC36qxlgNTlH1qcluQ3Ue53LvJsXvCX2q0th0ZvWBi7+5g4b66uZ6dPSN/ruszGvxrgAWc5zFITvfEQL9ox8TxoyZlMfdkrRAhD1zdx/RuBelFh4ZZh
- CAeCzB/W
- rMnGbXFSrIrPLsLDCGwMm6G+sPtlaeYTG78KBqrpXXQx0XS6kmu/7nAcrzLzva3bqcqXHYbDtM4/Q9EuZVGbnZDkk/FXlBfG5HWqzNODK3FyhRWMmyGXy8Bj+hocQHnFsc4n9brg+ViUT+1N2vvr+9qsvXfkoyiojkWKKhgx0ZZUCgN7e+f6ta47HH8fIAHBbkj7SGeI2GoH94F8FpgzursPgW1ebLw+LxtSQ
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775669170-462496
+X-HE-Meta: U2FsdGVkX1+vTgVVfioB9c3qPKwbdYVknhXMa82mdBAXR+x0eG7mGh5++fdzFvcG4MenoeKEPRu1NidhXGt7tWnzP42f2R5IF/QJR/IEEXt/aMJcMKcLciS6em51ifzJfYxKdo8NtLsSO9m55l98TarjfXwL4s7o4nHPaSUrjN/fkTt15F4YhEElBFRbYdorjAaA1nUi/zDfDGRkzTp0YJc3GZonHGIM9tGiI+ACFMJs42x5Qnsn1fs6lHBu3V1XUzEh8FpEHUUMlri69lq2cmWKTbV+exwLWE8ZHM8OdKwukIN5NTJHHWkHg4cOE8GLeCZZ8CwpAccDSXHptnlTwhDcY3p8kFeGVhLShf2TR3dazjHZBv6c8HIuNDcZn3Gxy5UU1VjbrRqiSAMHde+bbB1wvHK0nj1LChv7tF9J2GFgZyZVzWbQNdFRbjiXKMfTCBz5o2MNm+WqcDLX6NrRgXb4hBwcLXjQbeCqDWVYpFOdPzcVzLtUf5mrcH8on1GdDTCcOx8EZhCsML+a41kzfe/Ii74NwZBgZlJYuJ43DY8MSb4KDvGBDmpbs5kUzVrDWWWXmc8FthHPKz1D0ySvQ2MxapnrQAThLVbNlvodotcIVJA4PhMQscBLwCvcfxORm6Rt+HCSYXXFppdOCOlT6yaJOR4bIQ81MApAfK3IafEx5QvJTrHXRIw7trMIMo6bxiVso1hpqDCL5shaJrXIFG+77fNCfBs0aUsOemHG0VJcsxj1NsptwnrU3/plKFvz0Mr1pUpw+ri85ob/6Z5S+ynGHuIKTGxo7uo5u9mE//Wsc0DaVe/9dMTx/Z1T+Yy1q9hJr5E4YFiFCNJw7bqso28AILeNrVT8FDPPxLxnbv4yDmqMTzi9FVPeok3ycwBaGYiJBgvDpov8W48XfIb6yRW7v6PS9A/AoqcvR4GzLebBV5UYYU2qfehTIuOVIswuUUOl1xpn338ZbwewhBb
+ Yi932qTI
+ xcNX10FKmOvmaa45gfwSip8f0guw2XEyOikKZSYQeiLQQYFsXkTImGn8iPw7zHqkz4g6t7INBOFqvy//lJqLWxE1qrQBtZJzpV6FaRYBL/xzRz9PXi1pTNtrm0abkTH8d8nOqJ87rPRBfJOESbU2r7J4McSl44eH7msMAdiox2NwjGzUixzZXX38zcEsSMB84ViMzKTLOitQUFGQU5997gLzr/aHXolbLRn9O7fiL5dS9Fseos0AfCVPjwpdRZXMSY07PCR7m++xTXhEnio1Y7qIee0+XOrR0V/iEpLApYtIX6iAZWjp5B2PZJkDrT4deOM/aSeZm16lysTrCh6TDSfUD2RiRkokck90n3gRdkzw6Akh2BEc9EKAeTNQWiuc1VjZkzXXZJKgO6Ed3PBgN2upfz8/rgkgxQUACm5GaV4qnxih81VTQrChr4/uSM7mH4BEcZPSNUyMEzXSkzAlkMtW73n3Yor4oxysLgFdcDd79xLq4G6kUTyqOpPb1epG6xQfroOabba23kJzZRVXNKGTNMXLUwvtwhzcETh8S5FR4YrE/ERWEAl7eedieIZVX2RCJ9vSxNspN1dZP7RtKnaRxZCPnbBGqizvpmpvYBjhNKfkD3Ll93QDMbVG55uHCfHXJuxB0NXfce69SlKLkTggNbpvJMLVKySo489mq9g0X+SOHZYch6SxYR8TrUi8aD2RZMjhwDTIUP9Rmq6u4nDsA0dqyQ7IlnvA7wHiLsIrHVAosrMhVfEaIOzSP2/gA/hqmmWeT/Uu5F1E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,104 +124,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 08:13:43AM -0700, Breno Leitao wrote:
-> On Wed, Apr 08, 2026 at 12:13:04PM +0200, Vlastimil Babka (SUSE) wrote:
->
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd6..8d53242e7aa66 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2139,8 +2139,12 @@ static void vmstat_shepherd(struct work_struct *w)
->                         if (cpu_is_isolated(cpu))
->                                 continue;
->
-> -                       if (!delayed_work_pending(dw) && need_update(cpu))
-> +                       if (!delayed_work_pending(dw) && need_update(cpu)) {
-> +                               WARN_ONCE(work_busy(&dw->work) & WORK_BUSY_RUNNING,
-> +                                         "cpu%d: vmstat_update already running, scheduling again\n",
-> +                                         cpu);
->                                 queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-> +                       }
->                 }
->
->                 cond_resched();
->
-> The fix is a one-line change: !delayed_work_pending(dw) → !work_busy(&dw->work)
+Here's a third revision to fix MF_DELAYED handling on memory failure.
 
-In my testing, this race condition occurs more frequently than expected,
-likely due to the timer configurations we've been discussing throughout
-this thread.
+This patch series addresses an issue in the memory failure handling path
+where MF_DELAYED is incorrectly treated as an error. This issue was
+discovered while testing memory failure handling for guest_memfd.
 
-I developed a diagnostic patch to monitor vmstat_update worker scheduling
-frequency, and the results show consistently low values. Avoiding
-rescheduling a worker that is already also reduces the contention on
-stress-ng test case.
+The proposed solution involves -
+1. Clarifying the definition of MF_DELAYED to mean that memory failure
+   handling is only partially completed, and that the metadata for the
+   memory that failed (as in struct page/folio) is still referenced.
+2. Updating shmem=E2=80=99s handling to align with the clarified definition=
+.
+3. Updating how the result of .error_remove_folio() is interpreted.
 
-commit d725f0664b70aa5c677215b0fc1abc0117aaf114
-Author: Breno Leitao <leitao@debian.org>
-Date:   Wed Apr 8 09:01:02 2026 -0700
+Changes from v2:
++ Address the comment about fixing the typos and clarifying the
+  'unmapped' status from Jiaqi
++ Address the comment about merging shmem memory failure selftest into
+  memory failure selftest from Baolin
++ Align the consistent style in truncate_error_folio suggested by Miaohe
++ Fix some bugs found out by Sashiko. e.g. set vcpu register when VM is
+  running.
+Thanks!
 
-    mm/vmstat: fix vmstat_shepherd double-scheduling vmstat_update
-    
-    vmstat_shepherd uses delayed_work_pending() to check whether
-    vmstat_update is already scheduled for a given CPU before queuing it.
-    However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
-    which is cleared the moment a worker thread picks up the work to
-    execute it.
-    
-    This means that while vmstat_update is actively running on a CPU,
-    delayed_work_pending() returns false. If need_update() also returns
-    true at that point (per-cpu counters not yet zeroed mid-flush), the
-    shepherd queues a second invocation with delay=0, causing vmstat_update
-    to run again immediately after finishing.
-    
-    On a 72-CPU system this race is readily observable: before the fix,
-    many CPUs show invocation gaps well below 500 jiffies (the minimum
-    round_jiffies_relative() can produce), with the most extreme cases
-    reaching 0 jiffies—vmstat_update called twice within the same jiffy.
-    
-    Fix this by replacing delayed_work_pending() with work_busy(), which
-    returns non-zero for both WORK_BUSY_PENDING (timer armed or work
-    queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
-    now correctly skips a CPU in all busy states.
-    
-    After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
-    The remaining early invocations have gaps in the 700–999 jiffie range,
-    attributable to round_jiffies_relative() aligning to a nearer
-    jiffie-second boundary rather than to this race.
-    
-    Each spurious vmstat_update invocation has a measurable side effect:
-    refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
-    drains idle per-CPU pages back to the buddy allocator via
-    free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
-    the double-scheduling therefore reduces zone lock contention directly.
-    On a 72-CPU stress-ng workload measured with perf lock contention:
-    
-      free_pcppages_bulk contention count:  ~55% reduction
-      free_pcppages_bulk total wait time:   ~57% reduction
-      free_pcppages_bulk max wait time:     ~47% reduction
-    
-    Note: work_busy() is inherently racy—between the check and the
-    subsequent queue_delayed_work_on() call, vmstat_update can finish
-    execution, leaving the work neither pending nor running. In that
-    narrow window the shepherd can still queue a second invocation.
-    After the fix, this residual race is rare and produces only occasional
-    small gaps, a significant improvement over the systematic
-    double-scheduling seen with delayed_work_pending().
-    
-    Signed-off-by: Breno Leitao <leitao@debian.org>
+Would like to request reviews from Miaohe and Baolin regarding the
+selftests:
++ Is adding more TEST_F()s suitable?
++ Are you expecting refactoring to reduce code duplication in
+  selftests?
 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index d59eff1582547..5489549241b51 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -2156,7 +2156,7 @@ static void vmstat_shepherd(struct work_struct *w)
- 			if (cpu_is_isolated(cpu))
- 				continue;
- 
--			if (!delayed_work_pending(dw) && need_update(cpu))
-+			if (!work_busy(&dw->work) && need_update(cpu))
- 				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
- 		}
- 
+Would like to get feedback on the direction of selftests before looking
+into adding selftests for hugetlb.
+
+Also, hope to get some feedback about the guest memfd test in this
+version. At a high level, should I move the memory-failure specific
+guest_memfd tests into a new file? guest_memfd_test is starting to get
+really large. Also, I'd like to use the kselftest_harness to handle
+teardown/cleanup (unpoisoning memory poisoned for testing) on test
+failure.
+
++ RFC v2: https://lore.kernel.org/r/20260319-memory-failure-mf-delayed-fix-=
+rfc-v2-v2-0-92c596402a7a@google.com
+
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+Lisa Wang (7):
+      mm: memory_failure: Clarify the MF_DELAYED definition
+      mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
+      mm: shmem: Update shmem handler to the MF_DELAYED definition
+      mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED =
+cases
+      mm: selftests: Add shmem into memory failure test
+      KVM: selftests: Add memory failure tests in guest_memfd_test
+      KVM: selftests: Test guest_memfd behavior with respect to stage 2 pag=
+e tables
+
+ mm/memory-failure.c                            |  27 ++-
+ mm/shmem.c                                     |   2 +-
+ tools/testing/selftests/kvm/guest_memfd_test.c | 238 +++++++++++++++++++++=
++++-
+ tools/testing/selftests/mm/memory-failure.c    | 109 ++++++++++-
+ 4 files changed, 357 insertions(+), 19 deletions(-)
+---
+base-commit: 513de28cb70afe6d3e24fe5b432c13363f9cfda6
+change-id: 20260403-memory-failure-mf-delayed-fix-rfc-v3-02878d7ef5b5
+
+Best regards,
+--=20
+Lisa Wang <wyihan@google.com>
+
 
