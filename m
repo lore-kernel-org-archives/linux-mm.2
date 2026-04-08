@@ -4,112 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B2D010FC450
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A037910FC450
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 21:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6884F6B0005; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
+	id 10DFF6B0005; Wed,  8 Apr 2026 17:58:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6606F6B0088; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
+	id 0BF166B0088; Wed,  8 Apr 2026 17:58:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59D2D6B0089; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
+	id EF0336B0089; Wed,  8 Apr 2026 17:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D0F16B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:56:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00E451B71DF
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:56:15 +0000 (UTC)
-X-FDA: 84636747552.20.66D2125
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1BE3E18000C
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:56:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=b1C18HLP;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=b1C18HLP;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775685374; a=rsa-sha256;
-	cv=none;
-	b=XRrsGZC4aKZhPnr1fkNRsL82a83BCIud2IF0KnYpdWeFWf24F2vCt/lw+71ic26o/clfRc
-	RN+Vj6qUfQ9UgewbQsP7LrgcBvS0eqyJYy7Su/70s3r9h573kRlCIywzozsTnOPXHcEqnb
-	pX4WcDnowFP/evYzCf6fsrY7OszPXOE=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DF7466B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 17:58:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 507851B712C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:58:43 +0000 (UTC)
+X-FDA: 84636753726.04.66C54CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8A6F040002
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:58:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jK/fHVBB";
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775685374;
+	s=arc-20220608; t=1775685521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
-	b=Jt+WkmUShRkz/0jrwppBdZETtkfRb3lYDHSmeyljsqhZX1AZ0dVZIT4GmvzXOajH4Fk4mx
-	MzhHigA7VKjUYPcMpoMH43GJ3bHwGMBmSWdixmcRjRUYt214266KNJpwllHwsBEfz9N5r0
-	ag840taTk4xxAKFnyphnRtBktS4HkFA=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8a093c784b0so3666926d6.3
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 14:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1775685373; x=1776290173; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
-        b=b1C18HLP2+XqFmC7pW9mpryrX6spI/x89G43Een/nBraLB3enytVzritqxmxXHu82d
-         rVf2537CrMb4BM64sc4iIeud17JBF9W4G1ZV31UASIlegM3n0kM2KSjpIf1ILRhw19x8
-         KblrDvqwLzjaGoF17lwkXa0fZpTxwIIhKvfbaXIlu9zclySCkFYabmUOIPklz4BNsTVB
-         NlZ909vwtsPBsutJwW1JnSS9V63nIpcKukWMw95qCZ/HoxqDGX/bxdZx+QdIeP3HbTN+
-         FHpEDnReT/2MXKldwaRg5wzbF5pg9vAgJ+6oxREadMIon3FU045F9NEM8RNBZk1fBz5y
-         zaHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775685373; x=1776290173;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qndnJttoApFXUO2POEtVDoUfAMGPbRgoP3C1nGgpeNw=;
-        b=Cne4MLsDTANEKCzbANfsjnSljPBWAlMTP6CM19UCOuEr+2kzxu39CbBDw8syP6U82U
-         cor/unZppQGfrs5996d/3FMNzEqzZcU8Do9Hp2NwuCCSVnJTeXXruv7wKBYtmgUmw1xC
-         1uWoO6HT6uWFTcgqjgT0iS/Yo4CyRILLaQ6nzBt592lOQcAR7iKpGq4QHLU/L57KBj47
-         l8mFah5R0eHSbgql46bk3Cj2hsd+JpIQbAEsTg2OH1APwBndONnl48WvRukGVGQtYQI1
-         BUU4GonZic+x4MARwMw2wj9BCBK7deDk2XDLB52qJhpvqjSSBkIE47JazKmnVd+xALA0
-         BFsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXALCvkN+0RFxvAeAHJkk5BkPji2eCkgY9pV1rSSpPzD6NqV8OC2aNxIJAFFvVGnVmdD0ccAWDQiQ==@kvack.org
-X-Gm-Message-State: AOJu0YzYt64qu4iLx8VXgAISSG5BGXCtedEigxsCEfHcLfyXatmD4VNE
-	5+Du1xdCwLBU5hzgt+LXA6iiCxDwuGvHUDKnEzGFO019Ov5qJ3t4iwDxhR2dS7rwD0c=
-X-Gm-Gg: AeBDieuhlLtGkUonLqNYIfTnCtIJOEgNJ8G3N6EyOi3fQQIQoUIh5w4RBUxzIVEe6sh
-	k1VQNWlGN+MZJ5M0wPWUEYoCHwCuBeLt62wCnJ01CfM2QVm3UJTyr3OjQU3JlkROU3blLSgYiUZ
-	auARl4y9j+5puCw36ZoYrBCU8cvn6hxRXuNPKy7ctrz+qrxE3SpJvQX0LjjSHuHqfEs9aGXNbdf
-	e9FvCvGYKEjtlIJLvqPUdQrWU9Z/UfY17dJtOy70b/JxAJYodp7/9hY//HDmadBf9CtgUuQRp59
-	8rU9YGpwZeRTBAayD6Ub8r7GAIApTpJoJTkf0xR2tth0onkfq70ehVUTogA/Er+5bdkdXYOs+Hf
-	7+ywpo2DBFiedULAs5kKgSFXFQkcmFXP7kgzWNelsqxCA9imfx8sn/x8TwGld3YXyTGrzV93vks
-	JJI+Gyuh4as5jS+nyUSVbmiMrrqfTaGh+btl1dAFsT/YqhKeAYHg/Y+aI7sxD0jntD66UGaxlKU
-	ecJqhcp+3Bt
-X-Received: by 2002:a05:620a:1a11:b0:8cf:d565:fca4 with SMTP id af79cd13be357-8d41b8df4ecmr3283687885a.3.1775685373060;
-        Wed, 08 Apr 2026 14:56:13 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d2a5392d35sm1601280185a.10.2026.04.08.14.56.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 14:56:12 -0700 (PDT)
-Date: Wed, 8 Apr 2026 17:56:10 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Dan Williams <djbw@kernel.org>
-Cc: lsf-pc@lists.linux-foundation.org, linux-cxl@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] What's brewing in CXL?
-Message-ID: <adbO-tqwA_MJ1NHW@gourry-fedora-PF4VCD3F>
-References: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
+	bh=gLhQk/GcRQzTBdz6Sgw1idF6hAS9xniYesYPBlEvfFA=;
+	b=Rd3sopyKamx1VWMXKqVK8NzaaJ32I8mH995d20WcasM7e70P7/VwDd15Nn+FAF1IJQYv8I
+	q3dPGQV/KGHcA2eJItgIq4qq6BxWqZ3O9rFtoFw4nwam8wXV0Shu6Vstj0L9XmusqPlP7Y
+	gdFyFQ90HsYXG4gEzQie4U+oNdKywJM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775685521; a=rsa-sha256;
+	cv=none;
+	b=LkkdgosBCkg6F5H7xnc63iiA/e101fNazXREBIOkhYzPbIM8NT+TOsjRWapy0V3VzQjtXS
+	bxtCz7PWmD8z3kdwZ4yIVvIdkA09aIQdwng4DGOnCnlyjvdCl9BsmRdIZg73sIxXdCD5g6
+	ZiuhSB2rcEqSexvt5X7qjQ0u/pbnsPQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jK/fHVBB";
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B16E6011F
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:58:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3007C19421
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775685520;
+	bh=gLhQk/GcRQzTBdz6Sgw1idF6hAS9xniYesYPBlEvfFA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jK/fHVBBlK8Ch5c2VQhERNpXDMnvynf/9nH2KPuDEBFwZfWST6DQyIjTJL3EvSm5f
+	 XPUnFmF6vlE22ttrL3Jxm5IeUhengTQK6+LQNaMQs7boykglCj82Fd6Y9n16TeJm8f
+	 FqIGhZGd8h2h+OkzfU/p7JCtkxvEQ0RsnFQ7UGzn4e+ROFoxZLKZ1M/5/2EW188Sc/
+	 6c3qeqfu+SKjWSpP2MuiMHWLyd6oWHCqJHIvhcKD5eJyCR4mlBSDvTfZuVcMS1wocG
+	 1iFw2S0xyciWKypOtwhhwuy4DQsAYGEdMZWH0b8DxtbdffzjYzm4HNx7dDfWBPtxeW
+	 meWXSRtBZgU2g==
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50d58c513dbso2186211cf.2
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 14:58:40 -0700 (PDT)
+X-Gm-Message-State: AOJu0Ywe6Ys72Emh1S86SYKe4vTWFNfEuce5lagXZDstc+mE6JNC8Z/H
+	yTaE78mBxO0r5/yMVKz5koQ2wK2QfYxYE+jKM/qguf80Q/ziTcs881SKh49+0+kvARNm1NrdS6g
+	3eOSDm9GP/9B1iEl90kU7lnuj0Gmxkko=
+X-Received: by 2002:a05:620a:280c:b0:8cd:7271:65f0 with SMTP id
+ af79cd13be357-8d41da56bfcmr3255803085a.44.1775685520089; Wed, 08 Apr 2026
+ 14:58:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69d5bf0ab2210_2b3110036@djbw-dev.notmuch>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1BE3E18000C
-X-Stat-Signature: asuofiwsuka9z49pkkqcie7ozq3zomty
+References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-8-baohua@kernel.org>
+ <90cfbbb4-9f75-4c67-a1c5-34780b2f7108@arm.com>
+In-Reply-To: <90cfbbb4-9f75-4c67-a1c5-34780b2f7108@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 9 Apr 2026 05:58:28 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zn9KcA-KXTp3-F6uCe-AEiqrawdwFffBvxTJbDVwgyvQ@mail.gmail.com>
+X-Gm-Features: AQROBzCoMjacDMsJOO1TbJJq704JVsHCBUimPGPOnAYdW4abGNDECmY_PU-x9sA
+Message-ID: <CAGsJ_4zn9KcA-KXTp3-F6uCe-AEiqrawdwFffBvxTJbDVwgyvQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 7/8] mm/vmalloc: Coalesce same page_shift mappings in
+ vmap to avoid pgtable zigzag
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
+	ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org, 
+	Xueyuan.chen21@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8A6F040002
+X-Stat-Signature: 34q49a8ak15w5zgroengmmmtukdb8pq6
 X-Rspam-User: 
-X-HE-Tag: 1775685373-42138
-X-HE-Meta: U2FsdGVkX1+OQAugPCwYz9Jbgtn/urHYS93GW3i36Agf9kDAftbRTzGAM68/kg4SSZ5ytbDdwlG8lV5ALTqo2duec54BoKN53VEFRltWF31fwBnzIqCVlvH2gq8EJVATjzp7IhWtuhVtkSMEzd3QovaWWt51soetnwf+oe0fxHXTGwsdwYIsNip7der1b332VlfeNW8zc/lT6JC4CuFrfYbvHsoVZFf/+KPqvacT1WdhKd4Rubuz1TV9tMoE7lu76BTHA5dtq3Nx8nHZkrD6Jg6DZhoRtR5ulpcf7+ogAUS1qx4i9PSDEBjmhov2Q4CCH6NDxdqr13nK8Mq/PunlxHSCEx4zXc0bDTvGCPUCg4tCBbDub2E8XjU+onrdYBLZ2XQIh5tiQmwhJrTfdoxKxY5KO33nbDJBUzb1n4nTk7UFWvQrAfpuce8U8CGt+n+XZD9GBbu5ffv7sJv7KDU8fhApS2DIqoFyTN7RrgU216uceSi4gl4xs/0uQqxQ11lZybpG10orS9X4PLFN0ZAIYxt73IKm/TILiaP30+BRBE9aBolL9Bku/2jngDXnRXRENFjwblMnGgGrsm+xMhTURh7dYD79DRXMK0EnTP5xS3NxER/kIQ2ph3HOQnTHycLatBoHM/16dgpaetN/xJ3aWu7kpwQTBRyGlmea9tWk0PdyzMTwisdxt5ml8MKoYjeU4AYPUp75lrmmF9SdSUgoazItMiTzKihZ+RAlvDUQ6IKlrPeT8vEYXOdURwhAGsJPBdCraf5Z5qtbOM3lCE9fI2XajQiXtzKn13ptOEBgFC1ghC/3E2ivVsYIy/sO/0wkNIxtNrIH8JewzNJ0Vf10WTcKQIvc2G0s3xWT8ygeYSP6KS6vLrmjHqKvFJfd/HpCD+1+YlCYbNC3sq2AD1HaNBGSbcSFZWQ3ug4gvKPR3iWWOlvw4EUi1OGmfD+5z4b6ktlkIt4e7VuNj4+YLU7
- ++3D4Tvl
- oQdWD8A8TvmOxDNpcGl9huqqdZEocN+Xtl+w7TbMf+DD8uYPV7UAzjbXKyOMTtIWLpRIcTx1+qVvIxFXIfRVceXBNcRDl5J0L9JPRY74rPro0N/BJK5rsXycJrp7RhClmSmQeg1hGsHJvB3CPenCroJ7ul39TbPHh5Qz9Z+vc4zu869Epuar1vnbV+HSZEkgwnVRO4kcmfBEb/0kGz0Lv1haZRafiMksaqylW23nhf8Hd39mqueNgt5T5DfnilIewEpL/bJtsqR2FID9VuWkMCJRL6Vyg+ev+zLfVffN3i4rxc+wLSV9HsId1qhGHYAeFupQSv5yBJwsPQFu5qjo34LX0adF4DDMyLSbf9D06IBRwKmKXqJ40eAP87Q2e4uWLLc02A7mIFfhnJ+KwVMB26rs+1UYDHp3elT+R+KbrNZ/Z4X4=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775685521-746862
+X-HE-Meta: U2FsdGVkX1+7MAWWdaSvHQKBGJdL2bhtAe0UvIIPGnpoWK2h8XU8DREVJIf2y/88EtoSUZn+T6cXTZz09C0VG9t4LjZ0bddHuUF8UA2M8ijGC6j+PeVpyCKVd1W2MLhyL7VPWTkUbasp+qutTKOcPFOsqLxZTeyXPJvtvM0Dlx3pLzE/9S8VKchdWlQpZwe0Bkb3EmyOtncMH6PWZvNgafgy0BKwZYqqpgw/nTHk1MlU/oShAvNIH7iMhSwr4J++nLqRt4mAkBVPpIvPQSLsIZRoN0RH4/01om4MKww72wFv53RWLcfSgzWpROoNV2bHD0N16p54gc2zCGIOGXICIYHyk1rH9y8fFUm2FAAQ2Q/sHgW/FVbVqC3OsncM68uxQrWwLWWW05ZuovhDNZb56jdMhp9ZIxHGxSzYOBWVu5OgC/H4+skLVhqWPzRbiX/SCPuz6OLxizLha7/fT1dQ19rk4S2rRsjtTDqq51tc6Z1yyj+utA+sK5TpaJrElVZQb9j3mfjmmWyZ7RhugX61lpNWE5z096AKNJevnQar/hh5TZ6crrYpsirh3ZKU3GufFM4LaZKsQ/OI3An5rE+Z/BxLGNeyJ1wQlfizwJ9yaODd2aivC7P3Tg2P3GyJp5x/kSyCLzeVE0BtWXPyiRIMDrgFFS3ZZQL6JtzaII6Y5Ml7kP3RGeHlQSoQ+bZCNqNuZGmlbx/s2HSIqGZNhEutYE3SqC9KZolmGIU7QZ5wSB7XeCkbeORD2zLrL+h5mqZr39vdqPdrBnJ0Pj/9BnLIM0hwsHCsc9YfysUSXvzJc9Vs96GvoUra9a/V5aNBVBFjhpgJYg2MrxlbCYXPWgX/Ment+WaDqPgBBnBDSrie7E4Mmum6Smp49pAGJlh4m2OabRKDfhl+6Xy2pjJvh6SeoHTnTZES5vKcHk0cPyUygAzD2BgVARG0K2dS5j+el8WeJUry4QECEb6X8JUYcf+
+ XAotFs3Y
+ cCAyEyQAKZRCnlkjRyXDh7zDS75TjaNtzjwGm9mMzXQBbaAHb5DYIRGpLXNjqG++1ffZoVLPP5XfSoHkz0rg7TjllHea1mJRaCPZ8bgboZVESBmNw5HYvplMsrZzI9O1aOxHofxg1BsiFvtFQ9k8Kjc2xZR137jhNWRwUZEEHSdoDIkcTDFtrJy3lbmR3sE7Yg7721aUCy6f1s3/xuHYY39scihhiKUceBjE9ed6tU35QNNRw75vRLoaMziQQzQCAMGE1yUW0io/t1tAwB4IlZ6u4WPlZLFwXu449AotA784oCBkLe4oCTpxpsdSalgmxsUC96cH8PxYFiO3kxKT302tIilZm+O4FPqU6i9ES+qUtCTZhb6mV1b/5Z1OCMcA1R0xVS9VxqtEufsnDKw4zJA2EweKfEAW1Ect5UdBTwCVz5Jbkrh7U3RZ5NjaK2DsO7Iwa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,29 +106,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 07:35:54PM -0700, Dan Williams wrote:
-> For the summit I offered to organize a discussion on what has been
-> happening in CXL since Plumbers and a summary of the monthly CXL calls
-> since. The session goal is present top challenges, address concerns /
-> questions from the room, and perhaps introduce the CXL topics that have
-> their own session later in the day.
-> 
-> Please do comment, question, ack/nak, or add to the themes below to
-> highlight interest and help focus on the few topics we can cover in the
-> limited time.
-> 
-... snip ...
-> 
-> "CXL, making MM problems worse since 2021..." -- CXL subsystem tagline
+On Wed, Apr 8, 2026 at 7:36=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+>
+> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+> > For vmap(), detect pages with the same page_shift and map them in
+> > batches, avoiding the pgtable zigzag caused by per-page mapping.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+>
+> In patch 4, you eliminate the pagetable rewalk, and in patch 5,
+> you re-introduce it, then in this patch you eliminate it again.
+> So please just squash this into #5.
+>
 
-Acked-By: Gregory Price <gourry@gourry.net>
+Sure. I guess I revealed some of the development process in this
+patchset. The patch was initially written with page table rewalks
+for simplicity and then iteratively improved. I agree that nobody
+really cares how it was originally written :-)
 
-;P
-
-Obviously I have interest in this space, and the private nodes
-discussion is semi-orthogonal as I have been applying it to non-cxl use
-cases - but i do think the framing of it replacing some DAX patterns is
-a decent one.
-
-~Gregory
+Best Regards
+Barry
 
