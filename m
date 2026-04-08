@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD9501073CB6
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 512411073CBC
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 437FD6B0089; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
+	id 12A0F6B008C; Wed,  8 Apr 2026 09:33:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374326B0093; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
+	id 0DB696B0092; Wed,  8 Apr 2026 09:33:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ECE96B008C; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
+	id F0D046B0093; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC73C6B008A
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:33:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72AC7160164
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:42 +0000 (UTC)
-X-FDA: 84635481084.15.7F0C529
+	by kanga.kvack.org (Postfix) with ESMTP id D1B1B6B008C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:33:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9CDE8B5C8C
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:43 +0000 (UTC)
+X-FDA: 84635481126.03.9990A65
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8C1CA20014
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=yLWV5gHf;
-	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+	by imf21.hostedemail.com (Postfix) with ESMTP id C4A7C1C0012
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:33:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=g1E2+sOR;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775655220;
+	s=arc-20220608; t=1775655222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wREz4T78YPhJ9E8L+oiJL2Av2c4hdXIqKWNz/bt2yKQ=;
-	b=kyPSvDyg7ZQK45sFq717v5CMR7nrDIL2BbURDjxacNoIKXakO5AE3o9hah7V3TZhYMlLaS
-	vswvB3Ht8ozxdREo/6eX9QXWVjDPk0YYkh0tS6B9xuhfnFEDU0ZcqLeMSDVyjW0QK4VgTr
-	199D3YNiJe1iMqaVqhzbZvbxFgg4LSI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=yLWV5gHf;
-	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655220; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3LpytnOc5QnLYuuG5kgtGtzHAwZXxVYcBS5MJBOR4yE=;
+	b=YPCvMgUJl5AUzB/11CNZXqkDIffUccD3KT/sk0pn+T97vVwPep6F0UYLJMFpis8T3cVxyo
+	UUlAeILICx07BmspjaFNIQSSAuyeKfTkw6nrtxVB8O3cF1bOkxOfgHji61xgOsqeV4oKQY
+	EHkW8+d6p6pUo/oxaq6+QMR/W8KFl1E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775655222; a=rsa-sha256;
 	cv=none;
-	b=4AKnia8PmFQz5mxHjdrl+CTRfQfMMWlMFyrWn40/CzGuHD13UubT5WzZVuPJWxZI+bRZCC
-	SLeZCm/32W4rIKGPEKmKcmdSpj89kD90rLEtultliqfRvvkP581EvimptJdgygY79zylS6
-	znL8msJFtUTaH/K8U+Ud/GfgUJLwNgs=
+	b=d1GzuNO95QSKZfkZ4clBvV9LPXOo1odq6nsWmFngD9XFxSMXJcxv42lpie/MkBRGfVVXRD
+	1/NUzbN7IlES11XsPEK0jY9zuKOiExhyrR+Tmt4DZQqXyDf/OoXJc3754cFJHxRKkUkm/M
+	VI7Q3ZxqQpwLSKcYBJG/ZR8nBtpYDV0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=g1E2+sOR;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id A7399BE70E;
-	Wed, 08 Apr 2026 13:33:38 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 96308BE719;
+	Wed, 08 Apr 2026 13:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1775655218;
-	bh=wREz4T78YPhJ9E8L+oiJL2Av2c4hdXIqKWNz/bt2yKQ=;
-	h=From:To:Cc:Subject:Date;
-	b=yLWV5gHfWjYCIU9OvQagLVNRrMHUVcUp7LUJ4o9NaYoGrDtnUv8gZwOc2SCEVHgRt
-	 GFpgc6az4lCMFLpIpxX58yvDMJP4rq4KMxNhrGGaWKaDXYjkVgg1HrodCzhWXH9+kZ
-	 Kl6r7oSAZVX+3OB5Yjtrf1K7kibpLM0nVfNg7Eo8=
+	s=mail; t=1775655219;
+	bh=3LpytnOc5QnLYuuG5kgtGtzHAwZXxVYcBS5MJBOR4yE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=g1E2+sORFrsWyXcMpW/xI3OK8vS/IL7O6mqDUHmGeV4tpEHh854ICn7bayGZmS2B2
+	 65TJbXtCEP/a8dQaSsPWTAa8++gMYq9P+cO6U/Gvjh5sZEz4yhtgMFWeXmCT1Tzzvc
+	 4iqbeo1eTBKBIK5n3keQ1iP3gxD9E7WEjLutBnE4=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -72,20 +72,22 @@ Cc: linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>,
 	Steven Rostedt <rostedt@goodmis.org>
-Subject: [RESEND PATCH v2 0/8] mm: use spinlock guards for zone lock
-Date: Wed,  8 Apr 2026 13:33:15 +0000
-Message-ID: <cover.1775654118.git.d@ilvokhin.com>
+Subject: [RESEND PATCH v2 4/8] mm: use zone lock guard in set_migratetype_isolate()
+Date: Wed,  8 Apr 2026 13:33:19 +0000
+Message-ID: <266d19019bdbfef4b26e7b98e94bb536c6cae398.1775654118.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1775654118.git.d@ilvokhin.com>
+References: <cover.1775654118.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C4A7C1C0012
+X-Stat-Signature: epok5rfsyhac16zgwj7bxbybr1b9j1e1
 X-Rspam-User: 
-X-Stat-Signature: ighnj1xhynpg4b3efgf5gg93sjum7w3b
-X-Rspamd-Queue-Id: 8C1CA20014
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775655220-340536
-X-HE-Meta: U2FsdGVkX1/yHhLsUVki7vnqh396Xcnt25tKFBuiOuc1N3fC3SHu3Hl73vfnpdDnKkdSmNJf4iPI1IsVCQ6q6s8AvV0oxzLdQSuhW13CGtB3rCjOloSSkGpYnkMLK4/wf4eKD5dFbHbMDnFkZs6vA7AEJYECjUczasBqhDjTpYR7zV70PmaibpddqJ9WA8M0P9AgZAIQZJBNihYMx54YyfsKZRcUgYYJ6SU3cZl94FNu+RVKiFutQtUIYOSz0PkgnGpexqPwP/KDp1ZjANcifTVCu73yhad8D65/ApyKQ1R7e3IXEWYR6mS1NyBDyorUaWr9+iS0nkoE48/wxZ7pRcbMaWv6RrQlwthNDckfnKvZvDvzQFS8HoNIpeCXfOnqDzz8MGwncDQuqDlWxzk9axMTZCXHoloe/HfUe6WzrZS+B50K6WcMN8Hw/6oYkzF/FO9QgCR07q3vRirB3r7tbK8op24BIE5WTtW9UhTE1hN5UyGN2GcIs9w+ib9gTCXve6wBoXUs+7iUjjXkfKs48nbCsLktfvEvRuAKUPiDJJuWS7hgsu0f+DQrDfV/GekTAGLJSVjGuOZ7ZkWcKaR+9j04J41NfuIcnQCbS9TMKfP4x7Xr8fWEL/itqyxtjwCGCev6htSxt+4FvE6PzhtgmN2XmBo6euaWu++AaXg1Kt7MhrAGgoTOA9yxHZ6bU3Vai0Ds+xx6Ska1jhkxgY1kcjc1k93iRkrlxDsMIjNQf7Q+tqCNxgPMrLUIhysRBcVop/wEeXjt4vk8X1dkHCJ76obnB237H7evIrzP10Dw4S7pE1GWhb1cGPmHADC2RU67NKnwwio/WJ1QqMcTGtuO8WAqFGGxM8kKb3xwR0ZYqm6KGBTuwFEIehP5z+03HoiNouCAym+r06YHJpPBCgvLjveyyKTPCzi8H5l8hMohC8hLIiHge+1TQsk+dcrUAeMtsY0lDzhaq8Z0sciBAL/
- PxyR3NBm
- jD2PCiBukfreLOoPXmdVPxoy1G5FRsikxqoHT8q9pqILumJfPAE5WBg0cxe4lIaUlOCE3Xsj8xXGr2umQk9kjjQ0sdRYRNjWkFJnKrYZfUXSnICB0OeMks50W+ROkBMsiUaYXFRNlRVezKMX7h2G+AQZ4SedW52aqRBDBL4o87/aaSxD6ei6KBTdvs5+1T0FJGTdmW4WSegX9QM4HYDb1/tipu5Pej9rerMS9mh/ATar61wg3iou/nK65pvX1WShR1jo9A/kfuWajW0DYH3JWaRZ6ouTiFihteQzINBNE46F6riEaKVzMwXZwyc4oxsRbsh0nYZP98qD29yA74JhRLBDkTAwtl7lS4Nsg2aWhmhZp8d8Raz9A72fZfiXfbuOajS94UYhCimwuHwA=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775655221-432425
+X-HE-Meta: U2FsdGVkX1+WlZP9ccofIU2R4GjLhNTmzHRLbO8v5NFtx092KpqSoibT4M34MfjFlke4ksDAepf4n1075n4ieLvHjVnfUKgz8VuGYz4WyVhx17Gtd5BFBsYLjMGgX6Y/e7sQjpTunnm3IV14+ffsE2iiFWEvaA9Ux0zM5aaVUMyHOQLZq6z/3LrG2RabELnI8N2ytjRHZ0pb9Nb7aGZTWqNN+6kiTF47Pc0A+QJXjnJTfAnXOzFz/9opQt2YfY1aRWQOKdV3xYOo5uwPQln+0d301UT+Y9D4HNfkKzR+XYHs4uBiwPTtLocfBtfXVxEPHlLGQmo9BWcDsQcWKUxjrWCx1IA7DY6+tiURzO79xb0klGA7zrY3H9Py5tKGfGO+GOGm6tBEhI3ievNB8xZ56mO+vEXyRIaHPd9OOinZndzpqbMBj6hqVd2pvu2EXrjt78Un+42DOolC4ySelqWRyFcKelstqd665yIigXJCvmbJDoGyxPAzuJvwTQ/f8yEGYOllwCHoq2Z+2RS4uGvhCNbI8DSyL358RMrFRDbUE4XW4TLovYapH8gG8VQ4gyLsGgwm7tFWs9oEZb+jP2XoH4OG4C8Y0tQaEyoQgUoxPh4FIg9lnamfDxWAzddXtmpYKX9/dPkzx35DcXp28hfpfAd+FhOcIRYqAuOUka5siBcX7tY5jcsk+EIqzgdGa1RDwv4oZOCRe1aMeE7FqBOzsdy0Xq8sKlpoc+yId6HzN/Ww/c518ZI+kiZcZXWl/L+JvejdxMnHruAtqrwGab6BrCH9+A9Gfzt5HAthyU5eEyWUv9OVQkV8rxxMigW/x88rTelX65xPWrST8frdoyBmvgOY37O0KYLa9lW2P0/bS1rdKnek2MhmVl7TXZbgcmHRlZBKqqXXtfuL6Ziu8RvlZzCSc3fyKgbKip3uFSZORpmnn0eay/E6CgHTQghT8l+MDCrZ0uaKDZoizOScohY
+ u9RzxHEP
+ CSsYCBp3sxZQ1wQkceNo6iIffhmvhC3GMoWtZRRgaej5M4DfaIJdaJ7QchaB46kEJq23xvah3XXUNkLfgJdWwAjn2GLgazwIcqtafS4i4xJd2/aeU5YnkHqk1gfBTlbI5ADqo24o+Q0LoS+JEt1htK/a68fsP0CJqJiGw+3pVp0SVxLerzOa5loAOourbVZSlpmQlMVvZdYeWZqXCKO/40MZyLYs5PYVMmzIkRwo5F+M0z1+1kOSow/0qM7JTM38pPGmnd8HpKjkHHcy5M1EbgqilWGO7y0STdw2tvxTfR9f5lAsQfBysJiBiOIOiqaNIMhajyTBBj8JYg3MuOxZjhWaSmz2dUmvyO233
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,59 +95,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resending v2 to get feedback from folks who work with this code, as
-Andrew suggested.
-
-This series uses spinlock guard for zone lock across several mm
-functions to replace explicit lock/unlock patterns with automatic
-scope-based cleanup.
-
-This simplifies the control flow by removing 'flags' variables, goto
-labels, and redundant unlock calls.
-
-Patches are ordered by decreasing value. The first six patches simplify
-the control flow by removing gotos, multiple unlock paths, or 'ret'
-variables. The last two are simpler lock/unlock pair conversions that
-only remove 'flags' and can be dropped if considered unnecessary churn.
-
-Based on mm-stable.
+Use spinlock_irqsave scoped lock guard in set_migratetype_isolate() to
+replace the explicit lock/unlock pattern with automatic scope-based
+cleanup. The scoped variant is used to keep dump_page() outside the
+locked section to avoid a lockdep splat.
 
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ mm/page_isolation.c | 60 ++++++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 34 deletions(-)
 
-v1 -> v2:
-
-- Andrew Morton raised concerns about binary size increase in v1.
-  Peter Zijlstra has since fixed the underlying issue in the guards
-  infrastructure in tip [1]. Note: the fix is not yet in mm-stable, so
-  it needs to be applied first to reproduce these results. With that
-  fix, bloat-o-meter on x86 defconfig shows a net decrease of 49 bytes
-  (-0.12%) for page_alloc.o.
-- Rebased on mm-stable, since the patch this series depended on was
-  dropped from mm-new.
-- Converted guard(zone_lock_irqsave)(zone) to
-  guard(spinlock_irqsave)(&zone->lock).
-- Dropped redundant braces in unreserve_highatomic_pageblock()
-  (Steven Rostedt)
-
-v2: https://lore.kernel.org/all/cover.1774627568.git.d@ilvokhin.com/
-v1: https://lore.kernel.org/all/cover.1772811429.git.d@ilvokhin.com/
-
-[1]: https://lore.kernel.org/all/20260309164516.GE606826@noisy.programming.kicks-ass.net/
-
-Dmitry Ilvokhin (8):
-  mm: use zone lock guard in reserve_highatomic_pageblock()
-  mm: use zone lock guard in unset_migratetype_isolate()
-  mm: use zone lock guard in unreserve_highatomic_pageblock()
-  mm: use zone lock guard in set_migratetype_isolate()
-  mm: use zone lock guard in take_page_off_buddy()
-  mm: use zone lock guard in put_page_back_buddy()
-  mm: use zone lock guard in free_pcppages_bulk()
-  mm: use zone lock guard in __offline_isolated_pages()
-
- mm/page_alloc.c     | 53 ++++++++++++-----------------------
- mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
- 2 files changed, 45 insertions(+), 75 deletions(-)
-
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index 9d606052dd80..7a9d631945a3 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -167,48 +167,40 @@ static int set_migratetype_isolate(struct page *page, enum pb_isolate_mode mode,
+ {
+ 	struct zone *zone = page_zone(page);
+ 	struct page *unmovable;
+-	unsigned long flags;
+ 	unsigned long check_unmovable_start, check_unmovable_end;
+ 
+ 	if (PageUnaccepted(page))
+ 		accept_page(page);
+ 
+-	spin_lock_irqsave(&zone->lock, flags);
+-
+-	/*
+-	 * We assume the caller intended to SET migrate type to isolate.
+-	 * If it is already set, then someone else must have raced and
+-	 * set it before us.
+-	 */
+-	if (is_migrate_isolate_page(page)) {
+-		spin_unlock_irqrestore(&zone->lock, flags);
+-		return -EBUSY;
+-	}
+-
+-	/*
+-	 * FIXME: Now, memory hotplug doesn't call shrink_slab() by itself.
+-	 * We just check MOVABLE pages.
+-	 *
+-	 * Pass the intersection of [start_pfn, end_pfn) and the page's pageblock
+-	 * to avoid redundant checks.
+-	 */
+-	check_unmovable_start = max(page_to_pfn(page), start_pfn);
+-	check_unmovable_end = min(pageblock_end_pfn(page_to_pfn(page)),
+-				  end_pfn);
+-
+-	unmovable = has_unmovable_pages(check_unmovable_start, check_unmovable_end,
+-			mode);
+-	if (!unmovable) {
+-		if (!pageblock_isolate_and_move_free_pages(zone, page)) {
+-			spin_unlock_irqrestore(&zone->lock, flags);
++	scoped_guard(spinlock_irqsave, &zone->lock) {
++		/*
++		 * We assume the caller intended to SET migrate type to
++		 * isolate. If it is already set, then someone else must have
++		 * raced and set it before us.
++		 */
++		if (is_migrate_isolate_page(page))
+ 			return -EBUSY;
++
++		/*
++		 * FIXME: Now, memory hotplug doesn't call shrink_slab() by
++		 * itself. We just check MOVABLE pages.
++		 *
++		 * Pass the intersection of [start_pfn, end_pfn) and the page's
++		 * pageblock to avoid redundant checks.
++		 */
++		check_unmovable_start = max(page_to_pfn(page), start_pfn);
++		check_unmovable_end = min(pageblock_end_pfn(page_to_pfn(page)),
++					  end_pfn);
++
++		unmovable = has_unmovable_pages(check_unmovable_start,
++				check_unmovable_end, mode);
++		if (!unmovable) {
++			if (!pageblock_isolate_and_move_free_pages(zone, page))
++				return -EBUSY;
++			zone->nr_isolate_pageblock++;
++			return 0;
+ 		}
+-		zone->nr_isolate_pageblock++;
+-		spin_unlock_irqrestore(&zone->lock, flags);
+-		return 0;
+ 	}
+-
+-	spin_unlock_irqrestore(&zone->lock, flags);
+ 	if (mode == PB_ISOLATE_MODE_MEM_OFFLINE) {
+ 		/*
+ 		 * printk() with zone->lock held will likely trigger a
 -- 
 2.52.0
 
