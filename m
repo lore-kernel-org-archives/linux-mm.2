@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E1291073CBE
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 13:54:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 425B71073CBC
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 14:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A29F6B0005; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
+	id 74C296B008A; Wed,  8 Apr 2026 10:03:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67AA26B0089; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
+	id 723DB6B008C; Wed,  8 Apr 2026 10:03:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B77E6B008A; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
+	id 660DC6B0092; Wed,  8 Apr 2026 10:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D7416B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 09:54:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3CB51A0120
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:54:52 +0000 (UTC)
-X-FDA: 84635534424.23.B7AE9CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 48ED41C0003
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 13:54:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRa67WlT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5989E6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 10:03:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E009616012A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:03:25 +0000 (UTC)
+X-FDA: 84635555970.07.0C5BC22
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 726D1140021
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 14:03:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uF9YVPoA;
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775656491;
+	s=arc-20220608; t=1775657001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ROsaxkUmsK9dQT8Wi+iwtU1tPZYRdlLs0Vtp0MHNi/s=;
-	b=dQRyg2jduNm6mtDRUfknsaOO20yU2fK5HLSGLWRfqDUCf6MdiWYFEZKKbfR0xeXsnuByE+
-	Odr70zVV2JVggBCI2uFsFPXct7r2+tQui3w/WwrLSQrjPc1iCmE4NwHdoPA89R4KJYtzjj
-	fqfh5RbXMQhqDjucdaEvVy6Z/bFv3sI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775656491; a=rsa-sha256;
-	cv=none;
-	b=C40D37l924WyFb4f/rG1bnxZi31kDBWJ0qhTiTLuII6U+mRLW4GHVxSARWEKOoMgA6cuWp
-	KCW7Tcsr0wckwOXfIzbW+zCw03T/wwBwE4fBItpFNdzv1LCg0JyKxS8VNLEZg0fP3uAnhx
-	sgEwSbMOn6aCUVOpKB8WPJPf+gBBcl0=
+	bh=imGrul+C5vLlXrsDsW6/7MXfYzG50a3heIIE95FfoQc=;
+	b=s8TQbRSg7H20Ev4o7zs+2M16Q2eMHL3e6s4w9cj2kFExCZAad4tNlsacdxArOePhWeYXfV
+	x+gjEIkQrHZ4OSizoRa9FIKnELDEQNxbvxX1yEJlrCtB0D8TU1fg3meh94qNStSHAyqPfD
+	kYCrWCsLPgFcJqP00UMiZwOU6ZTawuk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRa67WlT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B661A600AD;
-	Wed,  8 Apr 2026 13:54:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B89C19421;
-	Wed,  8 Apr 2026 13:54:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775656490;
-	bh=ROsaxkUmsK9dQT8Wi+iwtU1tPZYRdlLs0Vtp0MHNi/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRa67WlTM5SuiVWoEOlaqi06yAIr+JapoBgqqErFeWIq66QdFKiC+C784fxuuzHvd
-	 HCeLxllrOAR62N7GZEYynFMLkxyIarc+6APAOml+UoJPiugNPy9WZVmbMaMmgp9yFc
-	 I2x/YXVZQvPEpB6xgU3YbHTvl5U309py8okXl+l9bLc61l7M64uzbA7/nNTaHvSlTd
-	 qmTsf70+/7ka/96rvClfbcrFVy090CAETx0FoQws3OxoPWtFchQ3EGpSrMNH+E1U2o
-	 GagdUFNtJ8uwaOK5rqX354Ybp5N1P1NfjuBf7Os417JnMR+iOhoK4ggBHtZdSeFDom
-	 grp94QcXnoyVw==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: (sashiko review) [PATCH v6 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Wed,  8 Apr 2026 06:54:32 -0700
-Message-ID: <20260408135440.88978-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CALa+Y17YnrOe=UXWBMKJ1U6seKJuauDqAdTDYo1cCYnrP_vSFg@mail.gmail.com>
-References: 
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uF9YVPoA;
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775657001; a=rsa-sha256;
+	cv=none;
+	b=QhvYZYCLTbCgV25/b9odPftWu896oyIzAlAICNbj6TaEGT52hwsOVG/mcUue1bCCZhz58n
+	+TOLTd44yAM3vaOatBII3Of0xyGe7Y9odfZmRAsjTClOQbs3W4T2mcpgaEu5uo9paQv7O2
+	rQVEPbnIH0aPmWTZLSCTGlyUyoMwqSw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB44A267F;
+	Wed,  8 Apr 2026 07:03:12 -0700 (PDT)
+Received: from [10.164.148.132] (unknown [10.164.148.132])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E27483F632;
+	Wed,  8 Apr 2026 07:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775656998; bh=mBcTI6iP+yGZjitLw/2y8VAoswxzOV+GzQFjaDM+rJE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uF9YVPoAWLM3ZMXDgsdRN7uBAZmC4m2DTAjbtsmHJSmKIqlnn0hpH/YV/zwN+CwCY
+	 9Rv5VIummHWSwrF7YZboLxLu4ZY72hI3IuiMkoAaxfrPO3L6LgDecLOjy+RbhddIk4
+	 kEdfUxyC3bvZI/toZbKG/FmOS94Lwrw731gFOf4Q=
+Message-ID: <c54e12b0-1a35-48e1-b243-991de246a8ca@arm.com>
+Date: Wed, 8 Apr 2026 19:33:01 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 5/8] mm/vmalloc: map contiguous pages in batches for
+ vmap() if possible
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
+Cc: linux-kernel@vger.kernel.org, anshuman.khandual@arm.com,
+ ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org,
+ Xueyuan.chen21@gmail.com
+References: <20260408025115.27368-1-baohua@kernel.org>
+ <20260408025115.27368-6-baohua@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260408025115.27368-6-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 48ED41C0003
-X-Stat-Signature: dhx5bfsefo88r7xigx6y1i6iacqmqnme
+X-Rspamd-Queue-Id: 726D1140021
+X-Stat-Signature: ugs6i9kdrpdwdih5p3mxr3n1ikmzg8yr
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775656491-205390
-X-HE-Meta: U2FsdGVkX1+bJMISY47AEsTd8KY1y1vjTYs2zUKEdbO4PrE0xfNJQ4xVCzkywSMJw18vigs9/A6GkyzW1Uin4mEWivn+Kck0MfFui3zFKmJ3a3qU9OfiDysqGwZYQcJt0jINzaxKmBrCRgkvgC+orUcC2w3FuXORnV8tURlY4X/IcINYIg5FVIcnX0QM/W22YFtl9SPSWuIBQ/NoLi7HtRHVeW3xpKfV2Avgm3NL3C/WSdnGgkop3pTKSeJ0AJSzibNgzQp7sLnLKUWfReGc4nwORbkhn0EkYjQGch3Yj4F1sNAGc24y2AutROEp7QsNJmxdvlQraEPkoy7x5+OaTTDH8dgtn44kbkpE9QUGg2NA6R1tUBNsnCEFmr85saymZN5lENYRFyXydCEK+1OdLTTD68I4FReLs5uMPWtdX2Q+yvjo833OFZBV0uyGhQobdAn4nlDvZWaw+0nLyKHbzPscXnPWRSRMKlQnC6iGuUZs5pXqssqP+EhbSMb1rq1Jquy0D75BhTmf/Dt1YY6XKFum39Vc4nwOiIy1Beuc/GLcSweitTNHrj9ymIlcySp8uqknlbRy850l/iEGYvB9M90cgrfW7zKpvDcqFStaQEaBHVtyWfvdF7thGTY+TFgle1KeDknYhfdaXh1n5N41+ET44wyNJUQN+ojkHTAEy9U/XvpveLNunir/Q5epnR70wmannZi4QUeWgXbQF1OEYbef8vsJCnf/4pi/+NcTqImCHUhK/PvMiAFfDyacZKxJtQyU7AZi0XCSkqq3R8TxhrojG1tsvEgpKml9xf+6zMCwNIzguCO8P2b4CCDY/K0Dd156+nFFO4v4xVMf3riVOK1PjsG5ku0IyLNm8ub/OfLubYHtOfZt97dOayZ4dtuvDWZ65MCbqGD3NI1w197TkS59OHOgR1H+0ULVhNnttmSKnxiS+h0nXJooEyZJjy0GjmgVcq/rhFd8FaPY3OL
- dX5URUyv
- e9xrAsfvukRPdo2ikI9gFcIh3+3Rvmzy/ZWpcT6Yi5EG74el0Gbp2PjiGgYZ8gE0tH77I5WavIGBVVptxrbbhrMVAfyKYBzPLfIQ9CWXWzcpigUVvkLeWh/kqSvazWryX4ACVO1arklr9r8chW3QCf732FcmGyPmwgzYQyFkZMoemYzVum2sAX82ElKjozQebz9aKIdU47jZpz2MR3SimJenrZ/AhVGLgF5TkwRPL8CyAQd+kv/UCv6jPGxfeGEE9BGMt+T8qkXSyGNZ2VWJHXdScN+aaSMX6aWAPTFWSSZLaqQV7JIJ8YnL8Ww17bRSnefxZReCTeGvXcJ6LyrP8+0sjX9YGUNvKzA1/bd4QnD5wDTJ7T4tout4WebbtR5v/gH89GvyoP6WpuntjJM7IwXudvylzVnVhx8gv
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775657000-199227
+X-HE-Meta: U2FsdGVkX1+zIXlZQpJAxWJp3QbxodxlBlwDiUfx/nHH4cmivbjGP895UEM2k59m5inCkpXVrSWvsU48yI8nsIkDK6wU1T5g9N7DGYhZBBoSstixiBIMVqfnrd72+nyVR2rN13xjUUjNaZsn93L0o9CBNgaFXNW6CTzieNseHUOGmZ8TPo/txi35949x5FD/FQPipXpj4wU9lZrYlMZZoPsNo6TPBWMn4GigA0Au5DLQTbGXXlkcroNZwle5az9kPd4OD9CGPsr7LByHl36hP/XIt/hhoC4jMm2QWPEEDlG3MbkGCJNsLCiitG2w/AI7b1IUV2z4z9xVrCcM0B/cr8Oeh5KRK5WS/j9O5JB3Un1xCzVPuy98Ch5OcoMWVTH8d+vK2Ha5gOZbd/NpugDI1G/ok3PG0GdPjTnNj1uKicHJki/hB7fC8ZuNI6b1HlqZijCTnMQigoPviED1WaM1WRPsMadqALDmc4Gp15J5BaTcv/v60r57ZSXoCrmwm+uu1T2E0Gcx0ThepiUOEnbGZAu1cBLV2uXXNUZzQl0RYc9Kwo8JW9xdnjAyek+zx45nPGb3zN4FWxeRqVaex4Ruq/9vTnwEnnkaKMeCVizQyKEXx0L084A1ncbEpPoE/2od/YF2DqenlEvRxTjje8unLhVlhLKnFPHRD6b37UhEXWBq+Zaaw49sGEJXU9BJ8nykOzjf3QjcHb6WAkvvzz9hEo+qQaUjeWKwdOezaCu19k4ZwMREHmMruO0wLXHI1ImIC3Y6EHoelN4uZgPnp+sOGOJ/WTpQLmzMfYAavXzvZST1uavCGNhPcKJ/QEuacKnVacUPuzgrcvJgIeaHSctacYvAoFmXFK1MFLrX10BslLjHk9mg6J+rW91k9eNXpbb5XwAAnI9476vh1iXDQCGf6c6QlX5HQA2ouzz/7XKi5JjPh5GqlZxzM0vkRLQXuAD3IDT804EkApbiNy6qjIZ
+ wU5Se//Q
+ SiEMRhS0RbRtvioCGdDfXFSCGiKkCxlfKuCAIDO/t9Hroag83dkoMUBYBpppbvk7l94OQyA4n+TCeiFdtFKHAQTumn4Sirtwh6W+9IPcQx3mWRXDcG8WrYtaHj3tVGfqgukQje09zwhHdneG1tRrDlQpcCUUM+P4H714cbJxoO1bhp8nyKUlNtlj8bXigpeHrV59KBYk8puxQP7m/GH0CjVIXKfHKka4Q3aFdtbJwjxzMiZFB6Fd0KrrUB/zqnfpAsO1ZZ9MK1bC3TGlsSd29IL/RGwcbKksM/+/NR1Av9sBWVRTPsS12ECn3OG4x8jOqURSVDW0bHpesm/cPB0TnlXO5emMH80/DfATy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,19 +95,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 7 Apr 2026 19:33:43 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-
-> On Tue, Apr 7, 2026 at 9:05 AM SeongJae Park <sj@kernel.org> wrote:
-[...]
-> Yes SJ. I think we can make it work with single goal now that the
-> below commit is part of mainline. will give it a try and post an
-> update.
-
-Sounds good, please don't hesitate asking any questions.
 
 
-Thanks,
-SJ
+On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
+> In many cases, the pages passed to vmap() may include high-order
+> pages allocated with __GFP_COMP flags. For example, the systemheap
+> often allocates pages in descending order: order 8, then 4, then 0.
+> Currently, vmap() iterates over every page individually—even pages
+> inside a high-order block are handled one by one.
+> 
+> This patch detects high-order pages and maps them as a single
+> contiguous block whenever possible.
+> 
+> An alternative would be to implement a new API, vmap_sg(), but that
+> change seems to be large in scope.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>  mm/vmalloc.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 49 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index eba436386929..e8dbfada42bc 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3529,6 +3529,53 @@ void vunmap(const void *addr)
+>  }
+>  EXPORT_SYMBOL(vunmap);
+>  
+> +static inline int get_vmap_batch_order(struct page **pages,
+> +		unsigned int max_steps, unsigned int idx)
+> +{
+> +	unsigned int nr_pages;
+> +
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) ||
+> +			ioremap_max_page_shift == PAGE_SHIFT)
+> +		return 0;
+> +
+> +	nr_pages = compound_nr(pages[idx]);
+> +	if (nr_pages == 1 || max_steps < nr_pages)
+> +		return 0;
 
-[...]
+This assumes that the page array passed to vmap() will have compound pages
+if it is a higher order allocation.
+
+See rb_alloc_aux_page(). It gets higher-order allocations without passing
+GFP_COMP.
+
+That is why my implementation does not assume anything about the property
+of the pages.
+
+Also it may be useful to do regression-testing for the common case of
+vmap() with a single page (assuming it is common, I don't know), in
+which case we may have to special case it.
+
+My implementation requires opting in with VM_ALLOW_HUGE_VMAP - I suspect
+you may run into problems if you make vmap() do huge-mappings as best-effort
+by default. I am guessing this because ...
+
+Drivers can operate on individual pages, so vmalloc() calls split_page()
+and then does the block/cont mappings. This same issue should be present
+with vmap() too? In which case if we are to do huge-mappings by default
+then we can do split_page() after detecting contiguous chunks.
+
+But ... that may create problems for the caller of vmap() - vmap now
+has the changed the properties of the pages.
+
+
+> +
+> +	if (num_pages_contiguous(&pages[idx], nr_pages) == nr_pages)
+> +		return compound_order(pages[idx]);
+> +	return 0;
+> +}
+> +
+> +static int vmap_contig_pages_range(unsigned long addr, unsigned long end,
+> +		pgprot_t prot, struct page **pages)
+> +{
+> +	unsigned int count = (end - addr) >> PAGE_SHIFT;
+> +	int err;
+> +
+> +	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+> +						PAGE_SHIFT, GFP_KERNEL);
+> +	if (err)
+> +		goto out;
+> +
+> +	for (unsigned int i = 0; i < count; ) {
+> +		unsigned int shift = PAGE_SHIFT +
+> +			get_vmap_batch_order(pages, count - i, i);
+> +
+> +		err = vmap_range_noflush(addr, addr + (1UL << shift),
+> +				page_to_phys(pages[i]), prot, shift);
+> +		if (err)
+> +			goto out;
+> +
+> +		addr += 1UL << shift;
+> +		i += 1U << (shift - PAGE_SHIFT);
+> +	}
+> +
+> +out:
+> +	flush_cache_vmap(addr, end);
+> +	return err;
+> +}
+> +
+>  /**
+>   * vmap - map an array of pages into virtually contiguous space
+>   * @pages: array of page pointers
+> @@ -3572,8 +3619,8 @@ void *vmap(struct page **pages, unsigned int count,
+>  		return NULL;
+>  
+>  	addr = (unsigned long)area->addr;
+> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
+> -				pages, PAGE_SHIFT) < 0) {
+> +	if (vmap_contig_pages_range(addr, addr + size, pgprot_nx(prot),
+> +				pages) < 0) {
+>  		vunmap(area->addr);
+>  		return NULL;
+>  	}
+
 
