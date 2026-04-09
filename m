@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F4CE9DE7A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF08E9DE6E
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:18:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02FC36B0088; Thu,  9 Apr 2026 05:17:54 -0400 (EDT)
+	id E60B76B0005; Thu,  9 Apr 2026 05:18:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 007676B008A; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
+	id E38296B008A; Thu,  9 Apr 2026 05:18:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E86816B008C; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
+	id D76306B008C; Thu,  9 Apr 2026 05:18:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA0526B0088
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E99BBA6ED
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:17:53 +0000 (UTC)
-X-FDA: 84638465226.01.1EAE8ED
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C89EB6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:18:14 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77839140566
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:18:14 +0000 (UTC)
+X-FDA: 84638466108.12.BD64B5C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E103D40011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:17:51 +0000 (UTC)
+	by imf07.hostedemail.com (Postfix) with ESMTP id E009340014
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:18:12 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umu7HDqG;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dn/tfxHF";
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775726271;
+	s=arc-20220608; t=1775726292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y2fuoybGQcpLUwSlo1cJGBzd+6HTCXuyYA3Dr5dT15A=;
-	b=q0ig1snTBfZShaEFyYG0XFkyS6SMG+pONn2FoErxJFE2+BZzaFiuV1qmgrYsNSoeNQZVKM
-	tF0tsa+xHpaseGjFWKe3EAQsSwAenZI4wHI7of3FkETqlkxfHW3iw0+fjWvvRlcokpAjFZ
-	CzO90+4tiOd0gt7M2bw5asFapdPBjfg=
+	bh=vCRSXwVlT1XOjdVpuf40T2VPLXl7Op8wM7eSXQHx2t0=;
+	b=q+sfYGAw8TNAU3Xz7hpazE4nXp/DrUZIJIYcBMxCYXYJN5pySl0mRRbQ92hm30OVAQsBc3
+	IWyAlB0VAwqW6mYvQWDlg3p+HYPd2o2FIMzyyDa82scHMQjRVbncsVWsP3fGM71OrfP2U9
+	TfwOsHKp+P9OIbJ6EImi5m+Z2K0SGYc=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umu7HDqG;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dn/tfxHF";
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775726271; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775726292; a=rsa-sha256;
 	cv=none;
-	b=tEuli44hqiSjnyBrlt8H1ueTa+KOoZbiXEaXxx1NhodmQEx6C3zcUDPOBYAqjbrkZjgfVa
-	ueqgwCOiNiu4aa6lCJeIYpruDuzOLzUDRAEJwv8ztr8JvsBUw2vPjQFQHUyk6vgdUelV+U
-	hZdPuByh9R9y0a3tz4LGYhqDXNLk0k0=
+	b=cOKL+Mt6NSbAAI1Jr/1yS+fSTXb0c/H8AaTpfyRTDhoZu1DApl2Ymg57rh7/h/oC80jXUi
+	eRXcVD6juOycDE0FDLpkTpuR+gSr3lO9tqkxOrFn2F1avbUTdcnD1Zf4/7kO1EHh6Dx++T
+	qbZZFWICfC0SEb/WdP3V8iQ6OEhyz9w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2431B60121;
-	Thu,  9 Apr 2026 09:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4A6C4CEF7;
-	Thu,  9 Apr 2026 09:17:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C05860121;
+	Thu,  9 Apr 2026 09:18:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A6BC19424;
+	Thu,  9 Apr 2026 09:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775726270;
-	bh=XNDkkO9rVakd2F84eBx8F2rL3w+gmE4vG38aFwtklgM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=umu7HDqG1ovtr6kyo6a/Nwl+cTnsX+PZ6hdE3g31fj14BZuo1yMf1cHDlFjffY2Jt
-	 CgGjGMVBmPvJrH9FBEEnm6lz2hX7A7Oc/HqKWzpIxAy4odTF+gHsb4jUHSVkrqYPWI
-	 1KJKd68DtIXHZmw0GaLyYuu4FhgDewpLS84kDL1Vv4CTrEWhOYhNLsux2tDS01jygT
-	 D2jpv1OawCtJBacTS1DmNSxpGz1uJS4CeZGHCrh7nTDr86JupPIRGZRCVYo0RLMVZb
-	 VxmAOaRwC02wUCoQYUqSZC0CW867M6NBaMO/lwPPkAveEKztPMoXic+zOoTZ1kwPcJ
-	 lc7ciNwi4vfpw==
-Message-ID: <a48a854a-5f8e-4f4b-9da9-ae79ef92e07a@kernel.org>
-Date: Thu, 9 Apr 2026 11:17:46 +0200
+	s=k20201202; t=1775726292;
+	bh=l4DQ125b/7uRFDTo0CRMQOSUlthuAZ0rRzbKGkw3cEc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dn/tfxHFLwuOjXDZkAstNVEUjr98q2XVZSrqaAXDbkjYV+nyB76PREwXcJ8bAObzP
+	 QevxZFTHLxmqQjNlhNZcfK+Zgxk1MrpHuFRBHdXoHbBKkXCUUOxEcaUxet5IFYD0g5
+	 7Ge2j+178bd6e5npbCPC+Ynma9khbpv7gy18NVb1fcp9dh6k5Z9JT9pff44F8pgFgv
+	 bqFkvhLAHrkDuQuUXGR2IhbYBgAOXDrKrY71108UaJbRaS94xdbWo2UHRB9mBU5BX4
+	 r6vPMehdZTRH3CrLcAahl7JpstxKj962Tu3wmcnm+CA+1afgqT+ZeTCza42r8qy9n7
+	 3q/TYDrJ+5zfw==
+Date: Thu, 9 Apr 2026 10:18:07 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: xu.xin16@zte.com.cn, hughd@google.com, akpm@linux-foundation.org, 
+	chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, 
+	michel@lespinasse.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+Message-ID: <addoN3ur7GtiKOFf@lucifer>
+References: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
+ <20260407142141059pWDasxUAknP5rqvAMl28K@zte.com.cn>
+ <adTPQSb-qSSHviJN@lucifer>
+ <8332aedb-e499-4789-8f46-832df8d60224@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
- interval
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev,
- usama.arif@linux.dev, kernel-team@meta.com
-References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
- <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
- <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
- <ac5urCFeEB9oyUiD@gmail.com> <adUhtrhU7c1TJQww@gmail.com>
- <a9129d39-f9dc-4f09-b951-203c8e28b600@kernel.org>
- <adZopu5wjXIR5HOR@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <adZopu5wjXIR5HOR@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E103D40011
-X-Stat-Signature: mjskyi6imxcsc1e6yizdgsiiqtohna9n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8332aedb-e499-4789-8f46-832df8d60224@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E009340014
+X-Stat-Signature: cdzdwpirpcp44hcy7esydowj16tzzsn9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775726271-655186
-X-HE-Meta: U2FsdGVkX18siHzy7nSm9mYFSpGX/l2pLXUT7jL6/pDZHeZr+YyRQQUrsPoqw1Sc5bo1XCdld05qOmy9cA5zPyraLTnGID6BhnX/0Qjh0OIpSKtGZgnjYj+mZani9PueLWYj7R5RbBO7ZpcQl/fnT1kmzVPNPbj0OE4+io+sEEdaCbDHL7cZXJRF3/RZk0Ezs/o/Am9DISkEy5DQFXFOQ3X9Ny5Luwk8JEzeTPx2iB2XA/8bqlLXvA9C5IDNZIysQiw2N631Y+RRksauUFthUEgiFath4sr8RL/x1nT16/k/yD63XkTnUWNUzYShezxE/Pr20kwE0pGFR/fpqz3QoWcxQKE5Gyt67zAREM6nD+dUhZfApLfnjbUAeqH1ZoxHaN32v/NDQ6abiQAbnhEse4yBe2NFnoWncvlFiMrBm15jorZ/IbN8T1e5J0qTNq4tp91npooQBs1DxAGOrI8BT27zuQftRZaJhXI0kditlnJXIauEAAhT7o3oWCVwxAQFbnCCf0q2LuSL9Op94LPOvHRKjoDrGBMCNse2r4lIJoaxOKbnbi6Mzocly85XKpULxSay/2dRn+OqZmEAzt9QDDDiApKm5FaRXhLqUvZ2TGqIIf78NIAr2NA3NSvf3Lz7aPWAzjDxXmq4Ln74XATZhJsA9/M1pPyFF9yXZEAJFdrfejdYEmvH3q1DAObvhRau7NiXH7/+Ev6/yBVVAxSsPNPV3NCHGk+PqYM8+e1OylkaMoJ1WVNFDOntldvlyLYA+JUWKRw95hHfQvsLOS4XRTi/b5/I6gU/x4ksiz3j3SwHTK66cPH4TlC8T0Lgunu8UaTq5QUHDyjdzKIVWzzaNU8Layqbf+9CoLVZHXXuY0dT6a1Cbx6B+jSzJTXWJiiGPcuKxnCsP0nJeOh3lNoo/TiaGzwSRCV/wz7YjPl3nidqLyS5uzWyh+fcpjQStOuHEP/SxP2t99fHZ9G6gcX
- LHr7G7kG
- YplvK/wpFrnCqZfarO4idJknvsFUXrmvwX1KwIhdHEeaWcWNMOI0azNf0ipRjs841XoQmAUFH1bFwP/iB3ebrmst/PdLy8wOcXY+pl6cSnI0jS7KC4dbWTYA1W4oertb4garCNH7UwPeKnEDiEWhF2NSqfHGutYCtefoJyyGRt+L6Etz+sUYIaHgQh0PWnvDeqRI3P8hYFV3iV4SVsIfMHOrmG1mUkeU0nE/rSl7mIKveKDeQTRhZ2hgnvxCyYJWDnm/+8UiApZjOPfYVvUTiPaEP/HER+hqh5TIRR7IN7yUkh1hbixEwppgGP2jWtemhIhyCCPNkRzgSnC6C5PI/TOohPrZHRLrJPH6zFiN7c3Q5FwPNpgMRUHd7SBlmnSc9L+rF
+X-HE-Tag: 1775726292-379047
+X-HE-Meta: U2FsdGVkX1/lqQOEFtibYR9fDm4AQoNC+7bjBTzLDPxaNuVuDWlZnxXYAycwnNGaCm6Ul7sk8YlD/qINrIVfSkbhDc5QhqlWkPMsTsCEysXaBanFt6+7HHfRoF+cQsorh2nJpOGj+X525/mlC+xH0baOgI1NFf4mgMMszobHtOnq4AZRPTQVDfaoqO5YB2aM5p+K/MMmyIrkTM/Roayf8UXIrGsSieXyVvgvm+tkV5Qkpq69xUF7P4uFcUbT7X3HUWr6b2+GvD//1Uu4Jvx4RSyMap01fS2XCOdiHJPTUDjdAAd+HUNJ1N6YTQNJJRv1MnhF2CHhtvdH+NwsnCtfv+V/7nTtBV0OJVOT9qUuOkvcMmtRKIDPspRUfGtjZdxSggwfcressLyTTe8KROYKF5e0thr0/+6Tt4GHc6jOZRKcrwmVwylLfN3iR9mQsEe40hK9VmcGrCeadrFkgIQ8xMFW22hXVg7hMq4I2wJV4YrLLJpwNocbKAm8iEozbPslsuqsm/Ixep+LONzLSILjZOvzUTvDJLjzQKV/EdC7mfpQhW+600u0+gyKqTkO/FztAkBrWIXRjIZODR5+YaxwAKu0y1MQU8HpQRsDedIkvnhNlZkJLtF+h2wObfthSyZOrO0aCz/0E4K+wixtJMspaR84l/+sY91z/jjLQHlXxSQ7+w555BMyFMd9dAbpiV3mqjA/PW1bxrplvjGe7CvEBJ/mVz+nLrtsYafbPW697edK0WG4yZXa7c0BMV7gf4RbppG7En4AjEu838O9VzTGWqRsZhfdlIDlKLTSstS3Me4eIUD7yLF16BiGFdcxJaaQi0rd8BviEhFFF3WAscu1e+qKaZAOAGKu+5+KyujdcjeLsd0Y0rOqCE8AEQNhcS/HpF7yCf39/RtLGqUV2bwuWIUx0kdPjWYJqPbRsjdUiZPwOpOp3BSa6VSVxev2rnhx7b+jRXmvvpRG5Z7gtoi
+ 5weCbF1R
+ TXEn3561wTvZJAc4CIzfpbMY4b8X+nH6jBIhHGTU9LH6i7krnnXO97SaP1FbsungemzMmwsADQRJ/0iGDXRhAKkdXJ2J1V50dmuVgDvzWoOnLo31B+BGPQRGzfNoAbOpFhmclxljwmCwup7ydVehrNubLELUBQ2yralhnffXhwjg/tOgOlwsqR/Rq1VtUhqxpz2bTmStU7nyFF+hvVzabHimOLGqFjHKQWDw5TsHCjdJcBkvrdrtwovgDD1GvSn3mKznR5WwHVR5A25v1rXkFy7MM/G2bdEut9OuTvN4yBprXCFt2SRFmmb2u3ukRJ7gB2t9rVyCCy0ut3/tkQID5jqO+bH9bnTnKjbhC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,187 +95,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/8/26 17:13, Breno Leitao wrote:
-> On Wed, Apr 08, 2026 at 12:13:04PM +0200, Vlastimil Babka (SUSE) wrote:
->> On 4/7/26 17:39, Breno Leitao wrote:
->> > On Thu, Apr 02, 2026 at 06:33:17AM -0700, Breno Leitao wrote:
->> >> 1) The interval duration now varies per CPU. Specifically, vmstat_update()
->> >>    is scheduled at sysctl_stat_interval*2 for the highest CPU with my
->> >>    proposed change, rather than a uniform sysctl_stat_interval across
->> >>    all CPUs. (as you raised in the first email)
->> > However, we certainly don't want scenario (1) where the delay varies per
->> > CPU, resulting in the last CPU having vmstat_update() scheduled every
->> > 2 seconds instead of 1 second.
->>
->> Indeed.
->>
-> ....
->>
->> So you have 72 cpus, the vmstat interval is 1s, and what's the CONFIG_HZ?
-> 
-> Yes, CONFIG_HZ=1000 in my configuration.
-> 
->> If it's 1000, it means 13 jiffies per cpu. Would changing the
->> round_jiffies_common() implementation to add 13 jiffies per cpu instead of 3
->> have the same effect?
-> 
-> That approach would increase the spread in round_jiffies_common(), but
-> it brings us back to scenario 1 - each CPU would have a variable
-> rescheduling delay, which defeats the purpose of maintaining consistent
-> timing.
+On Wed, Apr 08, 2026 at 02:57:10PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/7/26 11:36, Lorenzo Stoakes (Oracle) wrote:
+> > On Tue, Apr 07, 2026 at 02:21:41PM +0800, xu.xin16@zte.com.cn wrote:
+> >>>
+> >>> I'd completely forgotten that patch by now!  But it's dealing with a
+> >>> different issue; and note how it's intentionally leaving MADV_MERGEABLE
+> >>> on the vma itself, just using MADV_UNMERGEABLE (with &dummy) as an
+> >>> interface to CoW the KSM pages at that time, letting them be remerged after.
+> >
+> > Hmm yeah, we mark them unmergeable but don't update the VMA flags (since using
+> > &dummy), so they can just be merged later right?
+> >
+> > And then the:
+> >
+> > void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+> > {
+> > 	...
+> > 		const pgoff_t pgoff = rmap_item->address >> PAGE_SHIFT;
+> > 		...
+> > 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+> > 					       pgoff, pgoff) {
+> > 			...
+> > 		}
+> > 	...
+> > }
+> >
+> > Would _assume_ that folio->pgoff == addr >> PAGE_SHIFT, which will no longer be
+> > the case here?
+>
+> I'm wondering whether we could figure the pgoff out, somehow, so we
+> wouldn't have to store it elsewhere.
+>
+> What we need is essentially what __folio_set_anon() would have done for
+> the original folio we replaced.
+>
+> 	folio->index = linear_page_index(vma, address);
+>
+> Could we obtain that from the anon_vma assigned to our rmap_item?
+>
+> pgoff_t pgoff;
+>
+> pgoff = (rmap_item->address - anon_vma->vma->vm_start) >> PAGE_SHIFT;
+> pgoff += anon_vma->vma->vm_pgoff;
 
-I think it's not the case and round_jiffies_common() prevents it, more below.
+anon_vma doesn't have a vma field :) it has anon_vma->rb_root which maps to all
+'related' VMAs.
 
->>
->> Link: https://github.com/leitao/linux/commit/ac200164df1bda45ee8504cc3db5bff5b696245e [1]
->> Link: https://github.com/leitao/linux/commit/baa2ea6ea4c4c2b1df689de6db0a2a6f119e51be [2]
->>
->>
->> commit 41b7aaa1a51f07fc1f0db0614d140fbca78463d3
->> Author: Breno Leitao <leitao@debian.org>
->> Date:   Tue Apr 7 07:56:35 2026 -0700
->>
->>     mm/vmstat: spread per-cpu vmstat work to reduce zone->lock contention
->>
->>     vmstat_shepherd() queues all per-cpu vmstat_update work with zero delay,
->>     and vmstat_update() re-queues itself with round_jiffies_relative(), which
->>     clusters timers near the same second boundary due to the small per-CPU
->>     spread in round_jiffies_common(). On many-CPU systems this causes
->>     thundering-herd contention on zone->lock when multiple CPUs
->>     simultaneously call refresh_cpu_vm_stats() -> decay_pcp_high() ->
->>     free_pcppages_bulk().
->>
->>     Introduce vmstat_spread_delay() to assign each CPU a unique offset
->>     distributed evenly across sysctl_stat_interval. The shepherd uses this
->>     when initially queuing per-cpu work, and vmstat_update re-queues with a
->>     plain sysctl_stat_interval to preserve the spread (round_jiffies_relative
->>     would snap CPUs back to the same boundary).
->>
->>     Signed-off-by: Breno Leitao <leitao@debian.org>
->>
->> I think this approach could have the following problems:
->>
->> - the initially spread delays can drift over time, there's nothing keeping
->> them in sync
->> - not using round_jiffies_relative() means firing at other times than other
->> timers that are using the rounding, so this could be working against the
->> power savings effects of rounding
->> - it's a vmstat-specific workaround for some yet unclear underlying
->> suboptimality that's likely not vmstat specific
-> 
-> I believe the issue is that vmstat's current use of round_jiffies_relative()
-> fundamentally solve a different problem than the one we trying to solve.
-> The round_jiffies_relative() mechanism is designed for a different
-> purpose, as documented:
-> 
->  """
->   By rounding these timers to whole seconds, all such timers will fire
->   at the same time, rather than at various times spread out. The goal
->   of this is to have the CPU wake up less, which saves power.
->  """
+And we're already looking at what might be covered by the anon_vma by
+invoking anon_vma_interval_tree_foreach() on anon_vma->rb_root in [0,
+ULONG_MAX).
 
-This is true, but only in the context of a single CPU, to minimize its
-wakeups. What it doesn't say is that every CPU has its "whole second" moment
-shifted relatively to others. Which doesn't contradict the above, except
-that "whole seconds" without further details can be misleading.
+>
+> It would be the same adjustment everywhere we look in child processes,
+> because the moment they would mremap() would be where we would have
+> unshared.
+>
+> Just a thought after reading avc_start_pgoff ...
 
-I've finally looked at round_jiffies_common() in detail and after initial
-confusion I believe it doesn't introduce different delays for different
-cpus. One observation is that in the middle we round "j" to HZ, thus a whole
-second value, and then
+One interesting thing here is in the anon_vma_interval_tree_foreach() loop
+we check:
 
-        /* now that we have rounded, subtract the extra skew again */
-        j -= cpu * 3;
+if (addr < vma->vm_start || addr >= vma->vm_end)
+	continue;
 
-so the final jiffies target is slightly different for every cpu. This alone
-could indeed shorten delays for higher cpu numbers, so crucially there's also:
+Which is the same as saying 'hey we are ignoring remaps'.
 
-        j += cpu * 3;
+But... if _we_ got remapped previously (the unsharing is only temporary),
+then we'd _still_ have an anon_vma with an old index != addr >> PAGE_SHIFT,
+and would still not be able to figure out the correct pgoff after sharing.
 
-*before* the rounding step. The rounding can be also down instead of up if
-the remainder is less than 1/4s.
+I wonder if we could just store the pgoff in the rmap_item though?
 
-So I'm now rather convinced that it works fine. Suppose we have a delayed
-work queuing itself every second on cpu C. It will be executed for the
-second (since boot) N at jiffies == (N*HZ - 3*C), then this will reschedule
-it for the second N+1 at jiffies == ((N+1)*HZ - 3*C) (as long as it's
-finished the previous iteration and requeued itself in 1/4 second, otherwise
-it will be N+2). So I believe it will maintain the spread among cpus without
-drifting over time, and not introduce any variable delay depending on the
-cpu id.
+Because we unshare on remap, so we'd expect a new share after remapping, at
+which point we could account for the remapping by just setting
+rmap_item->pgoff = vma->vm_pgoff I think?
 
-> Backing up a bit, let me summarize the problem:
-> 
-> 1) vmstat_shepherd() starts all vmstat_update workers simultaneously
->    (or nearly so)
-> 
-> 2) All vmstat_update() workers then reschedule themselves for the next
->    second with only 216ms of variance across 72 cores
+Then we're back in business.
 
-My point in suggesting 13 of 3 per cpu was to find out whether the 216ms
-spread is really insufficient for vmstat - I would be surprised if it was
-the case.
+Another way around this issue is to do the rmap_walk_ksm() loop for (addr
+>> PAGE_SHIFT) _first_, but that'd only be useful for walkers that can exit
+early once they find the mapping they care about, and I worry about 'some
+how' missing remapped cases, so probably not actually all that useful.
 
-> Upon further reflection, issue (2) wouldn't exist if we simply avoided
-> starting all workqueues simultaneously in the first place.
+>
+> --
+> Cheers,
+>
+> David
 
-I still doubt it would work without continuously controlling for the drift
-(which round_jiffies_common() does). I think it the existence of the shared
-lock and initially some random perturbations would eventually result in them
-becoming synchronized, like metronomes sitting on the same table.
-
-But thanks to your new findings below this is all hopefully now moot :)
-
-> That said, I created a hacky code to find how often the vmstat_update
-> is called, and it is not uncommon to see cases where vmstat_update is
-> called a few jiffies after it was called.
-> 
-> Debugging further, I found a race between vmstat_shepherd() trying to
-> schedule vmstat_update() even when it is already running, which happens
-> a lot, given they both run at the 
-> 
-> commit 86e27727b6cc9fbe8bf67818a065105fd30bc7e8 (HEAD -> b4/vmstat)
-> Author: Breno Leitao <leitao@debian.org>
-> Date:   Wed Apr 8 08:11:01 2026 -0700
-> 
->     mm/vmstat: warn when shepherd schedules vmstat_update while it is running
-> 
->     vmstat_shepherd checks delayed_work_pending() to decide whether to
->     queue vmstat_update for a CPU. However, delayed_work_pending() only
->     tests the WORK_STRUCT_PENDING_BIT, which is cleared as soon as a
->     worker thread picks up the work for execution.
-> 
->     This means that while vmstat_update is actively running on a CPU,
->     delayed_work_pending() returns false, and the shepherd may queue
->     another invocation if need_update() also returns true (which it can,
->     since per-cpu counters are still being flushed mid-execution).
-> 
->     Add a WARN_ONCE to make this race visible: fire a warning when the
->     shepherd is about to queue vmstat_update for a CPU where it is
->     currently executing, i.e., work_busy() reports WORK_BUSY_RUNNING
->     but delayed_work_pending() does not prevent the re-queue.
-> 
->     Signed-off-by: Breno Leitao <leitao@debian.org>
-> 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd6..8d53242e7aa66 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2139,8 +2139,12 @@ static void vmstat_shepherd(struct work_struct *w)
->                         if (cpu_is_isolated(cpu))
->                                 continue;
-> 
-> -                       if (!delayed_work_pending(dw) && need_update(cpu))
-> +                       if (!delayed_work_pending(dw) && need_update(cpu)) {
-> +                               WARN_ONCE(work_busy(&dw->work) & WORK_BUSY_RUNNING,
-> +                                         "cpu%d: vmstat_update already running, scheduling again\n",
-> +                                         cpu);
->                                 queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-> +                       }
->                 }
-> 
->                 cond_resched();
-> 
-> The fix is a one-line change: !delayed_work_pending(dw) → !work_busy(&dw->work)
-
+Cheers, Lorenzo
 
