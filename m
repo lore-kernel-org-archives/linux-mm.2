@@ -4,130 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB0F7F364A2
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:48:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736E1F364A2
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36BDB6B0005; Thu,  9 Apr 2026 12:48:52 -0400 (EDT)
+	id DF4536B0005; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 343606B0089; Thu,  9 Apr 2026 12:48:52 -0400 (EDT)
+	id DCBF96B0089; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25EA86B008A; Thu,  9 Apr 2026 12:48:52 -0400 (EDT)
+	id CE1386B008A; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 132346B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:48:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA4B06B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9801813BC6E
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:48:51 +0000 (UTC)
-X-FDA: 84639601662.23.9321B15
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E0E140003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:48:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm3 header.b=JBa2iyPy;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="j FdnhQ0";
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of boris@bur.io designates 202.12.124.156 as permitted sender) smtp.mailfrom=boris@bur.io
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BDA8140418
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:49:23 +0000 (UTC)
+X-FDA: 84639603006.23.4D61D7E
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D14DEC000D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:49:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="PMFB/VR1";
+	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775753329;
+	s=arc-20220608; t=1775753361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d3IP8RghDZznaGjEmBTDPbOMMDpuWMs623Nter0+ozU=;
-	b=xrq9G3DLMOz+LhSjU1WRdYcWhjG1tV+hM9b2QlTJONx/PD49ZZ1UE+NWjOjPpFUZINni4w
-	a6PjYe6/gqD+zGXZZQVS60dkPQEBSTEOjaKueOGJLLaQWoYKMRAC2ZH/w8eNR8etivv2Nh
-	C7Wll3WlavCuwNVNUTbmS3pq7IkLUOE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775753329; a=rsa-sha256;
-	cv=none;
-	b=gABq7G6PMFnzkKQnOo5Pjozjdl5lDHjJ2WLck/VW7JQWlJYS5fdnYpUTgPrGGgOHIhIgbf
-	hUZ2XmJ1Dto6jXGEEdWvekD5LERUaCsKud2rAOlGwtLyYTRKbaAxee2UiPms6tTsHVprd4
-	jzsK2pjUSZvkuMD4CQePcSc/lfGC6HU=
+	bh=skeijJYAw0fiK+XGH88wl8oZ8yiStugPyY7G6KP4bYo=;
+	b=RRK2zcZCNjSN11xCu/HauT7SI/BGgdOAfms70NYZFwGLp1KYiyNviFspZN9LfcTuUoWfDg
+	Z3FnFhbfKIsc7rjk+GDaKPJqKg3Ir+2d2SuI1PHgJqUo2WjBfyCOFCUcsO/VLUuwU4mdPf
+	gBZGraRbS1XBSOKT10ttf8frIlwDwHw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm3 header.b=JBa2iyPy;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="j FdnhQ0";
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of boris@bur.io designates 202.12.124.156 as permitted sender) smtp.mailfrom=boris@bur.io
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 179837A00DE;
-	Thu,  9 Apr 2026 12:48:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Thu, 09 Apr 2026 12:48:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1775753327;
-	 x=1775839727; bh=d3IP8RghDZznaGjEmBTDPbOMMDpuWMs623Nter0+ozU=; b=
-	JBa2iyPyBSx865Vm57yQ9EewtxMcG+eG7Jgc9CSUH8jaIINA093WZQry+7gh2yl+
-	aNz9zY/SRV79rLLr+1mmE68CBMOyouIrKLQia8AEuNk0TMnwPihLwDa6ihvyPCb/
-	jKiYLcCuQr3aWV9qVfOaaJEseShsB9YcdNfafnHicgJNxjfgiFkPNi29yQNBQNQv
-	Djofhw4vcCmKrSK/kFRJjzvpX6zxmTpzl7DVKJFyfVcxoFbnx6xzZQroFOCbRMaD
-	thvra328CsJNvF/RTxouILIt+rIJquR/A0PPk6WYWjedpUMFRDplK4iz8+QzwbcE
-	EG+2UQukTp62CjhEyqZCng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775753327; x=
-	1775839727; bh=d3IP8RghDZznaGjEmBTDPbOMMDpuWMs623Nter0+ozU=; b=j
-	FdnhQ0j8JeFI/3d422WWF0ZdEqWBOoBRxcWGHP0bHR0KsxBFnaKxk5jSGKD+TmbL
-	oM9C/T1t5V44YXRg4J39hTbGy34O9CF8LxKmbm3nWhkiZ8Y2s/r2yuYaWC/dTtGD
-	wwcpPfILPpNnG+31sNrDrBMIDYUwNXmkJ97LjEkit4CGwpSDGzmyj751Vcirp5d1
-	vyOxPrK5gz/mdJMe+O06ED6p+DR4Hx1Ecsp1lpEBSkF06xxUuIQCx0UhIyVdEMkJ
-	7xxUCDgQAkbxquK/PeA1AYsQA8UNPwziK8Er77RdaG/L2Td5WUtcOfgHYhXCjlOT
-	nWw4wRDmrGk8zWhaU9sAQ==
-X-ME-Sender: <xms:btjXaTIj4JALk8eSIe2zHXPgtiJHACUvV4YcL0OVlHL1e24bNSEReg>
-    <xme:btjXaQdYE8GcM8qo7oMzKqKioGC009rkLsNv71Emq_s3i1_BUvsfuhPH4IeBiKjpL
-    _Z0Y7AUGCOCd0qZUlAkie7zmXKK-uywvw36bnwYuL3Q2iUoY5I4hfc>
-X-ME-Received: <xmr:btjXaS-UPDU_F5TXjtUY_b0fTLBHzr1iaGpbcv7QIHXqxJwPPLhRPAuIaVEYKOJBeNNmEXT0EphZC4zeUmHmlZ9ZcsA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvjedtudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertd
-    dttdejnecuhfhrohhmpeeuohhrihhsuceuuhhrkhhovhcuoegsohhrihhssegsuhhrrdhi
-    oheqnecuggftrfgrthhtvghrnhepudelhfdthfetuddvtefhfedtiedtteehvddtkedvle
-    dtvdevgedtuedutdeitdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
-    rghilhhfrhhomhepsghorhhishessghurhdrihhopdhnsggprhgtphhtthhopeeipdhmoh
-    guvgepshhmthhpohhuthdprhgtphhtthhopegrmhhirhejfehilhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopehlihhnuhigqd
-    hfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvg
-    grugdrohhrghdprhgtphhtthhopehlshhfqdhptgeslhhishhtshdrlhhinhhugidqfhho
-    uhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:btjXadpwcQQ2ZRj4u1tNxPhoPOIG8sKz4_AyTuHyuFNYBuRXnmbFeA>
-    <xmx:btjXaXBfsfJdNHtC8jzasYRcUlrByLIrNikW9LO1CT4FgCDXDw8Rjg>
-    <xmx:btjXafxGUsuFqAws7MR3oUl9hId454ofOKQlVjkadRXQ8NoCuIEtww>
-    <xmx:btjXaU19YmEB3F8nG3286Yh19t264tjA_nQ7pTdeVt33MbyYxuNrQQ>
-    <xmx:b9jXaZZXMdY46GcseSt1rTR0bhID00IyipGp6U9DJH22JwFt_009-ZpX>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 9 Apr 2026 12:48:46 -0400 (EDT)
-Date: Thu, 9 Apr 2026 09:48:34 -0700
-From: Boris Burkov <boris@bur.io>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>,
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <20260409164834.GA3472346@zen.localdomain>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
- <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="PMFB/VR1";
+	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775753361; a=rsa-sha256;
+	cv=none;
+	b=Z3aloXFI6nR04wUNr4N+7Rht0cPjMTvN3SF6LQjfR+s9DD9pGwDXjqANehQ5FA0nMfwKei
+	pE5Z6HRA0wFdmYCn+CzIW43mELZET1BiFoKgTJT/4KC2GVFt8x+29K7tdoWLHT7/ji215X
+	o/nmyO9VhOhRR1QOt1cGjnN6E+Rvw7M=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639AeONS2302396;
+	Thu, 9 Apr 2026 16:49:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=skeijJ
+	YAw0fiK+XGH88wl8oZ8yiStugPyY7G6KP4bYo=; b=PMFB/VR1NXWf8l0QKJrRcB
+	PHjR84wRDpsPwS1adRf/bF0JB+gkpC4Z4AXSJN+J5ZTSjlGI38MVL9tCj9OENoSR
+	bJI5EtM+A+3Bmvlu5yKGBoy2YRQgTGtNXu54wM/7581yDZE6EQWW7DoGvCqgZbBy
+	ZXDPbQuJX1KRD9BaD6ish3ZIg3KZpo6xHwaxWCK/B8ZJX23Zr9J+fSBZp+tb6L2S
+	gJ0OzwJhNi6mAF2iLhcTfMrnumMtQmwTbhU7lhltC6o1y2oDcVuip268j6xoIHAc
+	aeq8ynWzyyz9VJ5IySBSgMxzWG4hdQ0SRiBbXf0n99Grms+mCMdCtzm4ENevcnHA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fp2ay-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 16:49:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 639Cnqf7018946;
+	Thu, 9 Apr 2026 16:49:07 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcme9mf5c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 16:49:07 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639Gn7TF30605878
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Apr 2026 16:49:07 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 45DB958052;
+	Thu,  9 Apr 2026 16:49:07 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7C5B58050;
+	Thu,  9 Apr 2026 16:49:01 +0000 (GMT)
+Received: from [9.124.212.138] (unknown [9.124.212.138])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Apr 2026 16:49:01 +0000 (GMT)
+Message-ID: <d90cd4aa-e0d9-43d2-926e-2154df924f97@linux.ibm.com>
+Date: Thu, 9 Apr 2026 22:18:39 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
-X-Rspamd-Queue-Id: 5E0E140003
-X-Stat-Signature: wwtd691p3rs8qa4hjf4tf9rwpwrsw7xx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 13/15] selftests/mm: move hwpoison setup into
+ run_test() and silence modprobe output for memory-failure category
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <cover.1775466329.git.sayalip@linux.ibm.com>
+ <8ef8640092004d143fe80e6fc32ea8d30a9080de.1775466330.git.sayalip@linux.ibm.com>
+ <8B26C697-4D0C-4E1E-A14E-D517CC9DA05A@nvidia.com>
+ <5888f69f-c336-4151-a9ac-9b0b00f9c3bb@linux.ibm.com>
+ <B686276F-89E5-4192-8973-3B787FC8AC86@nvidia.com>
+Content-Language: en-IN
+From: Sayali Patil <sayalip@linux.ibm.com>
+In-Reply-To: <B686276F-89E5-4192-8973-3B787FC8AC86@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE1NCBTYWx0ZWRfXwvUI0Gwo1mcg
+ wa1oc4VivmfI6eqIsrx8m3q64N5D+QkE5qQAGXfOivbbn3ZQEqXfSmSlVy/K0Dps8xXoZaVMnCB
+ r5diJrPEAJbjIykV3ww3Eci0OcTESE3gTBHkmZAtxpF1wLrmCma1oB+WP6EDaOnI4oLY5Yfec59
+ kDQX1zfgi6bNccGxjRPs+kf5SglhOOehYCksJ7c1gPID6TvNffvYx+Ul+qHbSVvGrtRigilR3qr
+ piV9Bn1/LA/6Qvq/k99gi4NmG1Ak0U7LFnmHAZWVq/fFci4NHE3xtA8dOjqKA+EbSi6lTGmA6q2
+ g0y1+3k19oD+2rD4ovMYdGMm+IUYJe5kV66/kasDHEDStwCDNH4XpoGXa9MU4XGQvCH0GEFSTnY
+ qUlYgRvbvrZkuiTAaOX8TXhPSEOTDMp4+bHx+kgHvR3ExfQi7rvwMltrOwHHymce0EZe9ATuePU
+ tMWn/SL0eq3LJN0Ujqw==
+X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d7d885 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=WTjc7Mk9pcOPGDH6nUsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: xQKqax6dvX8APGiCVYRA2NgekkI8SNQd
+X-Proofpoint-GUID: ERlRxTJ0wNXRKaZ2H8ZfNUREZ1Be82IX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090154
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D14DEC000D
+X-Stat-Signature: fxsnipibesns8jq6aw84ypdfjkiqbdic
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775753329-116134
-X-HE-Meta: U2FsdGVkX1+NV782k/HdNWjmRGWKxm/ap+MRukj0x3pT8CfdjIvbPXMReWd2h/SlP1Gr+MqPbEKx5M5NjH/pEoU2khTkMOi6wQSyq0vlN68wNWwPkq/bIpsi4iPER6cDRH2pGz4f1DLuGLWKujUdm49D1Ie9lw4wo4m8/0/I03JtKoHpt3TxJrwShmZo43NdqE5DtW4rqvyZzYE0tgfuckRi5K/iXm1Piev/WiEe0zBmFWB66sIgz9L0Xyo6sUI3TJZn39cYvVWWxCElvU/WfQ5S3VAXSBpOiTVqV0bvUGo330NdIhM43an2flYepDnmNkGAlxHAAb1icnJVZYTBX+MEZXXbRVwwGgpOfprz96lnHJFU1N8PMvaQ5wrIPxeWDVbUWKWPeG0kBkSepSOciE37u6Aa/ngzepQejlizDCPz7nBhbmwMJWuMZ7hIA68eJijqWsERhZ5tlG79NxMmD9Sqje5/6Untlx13hKEs8VpHwbbH7n4mr3inxbyGmIlgvMuiLNMBZQq/cruU1V8/dZ+cF+hV7RyiLaqc5SRh/332s+jNHw9pRL878s5iwRjcZWmyHRw1sK2YQHgoWQNlvy283KctNmLchM6jjVH/ai8IuMTysU0oYKyDQJGkPlilXcITbus6KYMqby3SICsceWScOZOAhS5DcDqfMTjMsByvly6d3csZt6pyz8VS74BXXQeSQlMkFW8e2otYSkiZ4IqYWrBc8qumpwlJu53UG9afz110WZoFOLnzFBXDtG6AJ6Sq4cwnhPI4iiEy9bjscA8AAUjD83emkcaZq72AuntkFlXKYY5ib4/MlvksPc1Cp4xXCv1qREisR56EHQTNSZpxSdSXX5kBeFatOQelonL7T7WKAlKvVYGry4/YbGn+kFlhNTIhsROkSkKZZ9XY7WXNsWkkxg7ffnT4gVo+jQgTttYKXVrAsW9j9JJD/qV7otEtnT5W6bPoNgpdUHB
- qX/yUQfv
- b/hpnQknqXtST6B6VFYtevOcGMzVTywcdqHSn8WkeOcEhT+hEgKAnYBd5pSEHtf4WKz8OA7EKu8/B9xn/vADLZ3W9LJ9De3zNSnVCYIEXuZVZ7Z5RkxEG4Q2Udf2Q+KXbeS1zwkpqpbOH+fJew56uBElEdwUKCOolfH9v/1OnvEaUCGo/KXp/3b+tEfybaBl//mLPJ/gMHri+JVt2MOsGPh/Hd500Bv5PSOr/j7XrscJjdrXaeUEgA7yd8q3MEjL7+UrgtLSrzLQEHBPE6UV+iK4KZWjGAUY1S2ymJX0tR14AWqQ=
+X-HE-Tag: 1775753360-674437
+X-HE-Meta: U2FsdGVkX18swPd+XhHvyspzc6A74WFTHmVWSWlOebrpk4Hgl3dh7ZX6UAwO5r357JbKi7xUT9jBVwNq5P16wjbyLIjjhkpBmiS4u3XsUdcZ1x6Tp1P5ffxHFG+/Xdr2tXq/BUoNdwOnoKt/fE8G5eQAyXK0Swdrmi4xKQENIY7npxr3TS/zBOuQ/rAwC0nwf5eiKn8nx/e8T42XRLBNZuwYNqCD5wTgDR+rA9rL9QThVBnWSDjDOd2+mFbkEGmdNhDgYgN6QaISPtfNL7nZGSpesQEnAPEVe+aMzJs4MKd285hRQtLTHHRJ3cxqX0Zi8mMqrYCkEdtkwdUtzYkUbSAj6I3Kngirvy6mx7MI2spQi3zALh3iO/Sukng7x3HNfjZ+XGpcPb6wwxIX2nvBrOsq9qqMCn4rLM2gGUY/hZIpF6fBcB+2mlF0q4DIwk6t0swpo0kcMvaCe/zQkPb8WfXEyQKYpiHlytX7lWb6RBn1GCC7k4M8o18Jd+5Dtdm/0VCO+vTSBZ2LenEywm+/9jWeHjvIcaaXWDxerO6TRQ2iPIfMBQqFWYK+B1lYed582Uhs42mEZ/46+E634Q/u3c+/Q47W2sRIOa/0faUumVmYhtcBAIlnECuN5xt9akyH/tc9gq+dv3KdXccbjU1B4yVnkcJlZ23flMgaZskX3uVja8Jen1EGzw2gxErSy/wLPpccwsd9iEVPrO5jBhcte10BHHzZa/2G9q7m1HLQesaJIsPXRMqT3XdavE4Dq0oFSf2eRxXRJZsKe5E5+ub2JRJhp8IE01gvd4hv1Ve3Y7142YXbIDLMIQEIBlMZ2Pg/yY+VPEuKhasUEyfqNwboUWE/OkOZKnl4G7D9bpTy3QT72PhPMwKmJWJzE010yrQ5TUr/KT+PkaAwLNlf4YQ0aZwBmh6uFNns3aevM/pAnkQsyxi+rUJZdrFZFUrjOUfsTJsUB1xGgmnepfyulEq
+ 5jBtSfpx
+ 5OfO854sR1N8vsT2WUJI19drfqnMrXQ9gNSL1dzuvc4pAtSBAQZxwx1c7oHL3IGr9xoAMoK6K5jGFu63A2P2dHUqTy+qDUxxo6YUZHP+JXkxovmoYc6nSsuT4X0Kc8fbLajKI4NSVjRqMdWOBwNtjjG9EZSct8JeBmRafc7E0CsunaTLreV/ID9M7QN5dG0n8n+fXtBGzO+JJCbNAW31hjpQSOX1xUiZm9F+RJ0eiS8Fe18/SLrAWwCTiNjYS93ue26hbnueDNWgSaMVlHq6lbAAG06yF4NhcUHeXjn/4GiP2fSUXcVKAhYFc5HgAfVQJqoFe2otmjbpo9ewtUiGE1V8oiCD6IxhEQB9fRMyrM0N0EhYal8gqgjkIFl7diGr0+/oqDdiY9OFPX9XyAIjqi3qwPqsKoXm19ZzOX7GJVh/7CstOdDnVSiDdwJqA+PRUCDl6wbodEibHywY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,106 +153,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 02:57:47PM +0200, Amir Goldstein wrote:
-> On Thu, Apr 9, 2026 at 11:17 AM Jan Kara <jack@suse.cz> wrote:
-> >
-> > Hello!
-> >
-> > This is a recurring topic Matthew has been kicking forward for the last
-> > year so let me maybe offer a fs-person point of view on the problem and
-> > possible solutions. The problem is very simple: When a filesystem (ext4,
-> > btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform a
-> > complex cleanup - like trimming of preallocated blocks beyond end of file,
-> > making sure journalling machinery is done with the inode, etc.. This may
-> > require reading metadata into memory which requires memory allocations and
-> > as inode eviction cannot fail, these are effectively GFP_NOFAIL
-> > allocations (and there are other reasons why it would be very difficult to
-> > make some of these required allocations in the filesystems failable).
-> >
-> > GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclaim)
-> > trigger warnings - and for a good reason as forward progress isn't
-> > guaranteed. Also it leaves a bad taste that we are performing sometimes
-> > rather long running operations blocking on IO from reclaim context thus
-> > stalling reclaim for substantial amount of time to free 1k worth of slab
-> > cache.
-> >
-> > I have been mulling over possible solutions since I don't think each
-> > filesystem should be inventing a complex inode lifetime management scheme
-> > as XFS has invented to solve these issues. Here's what I think we could do:
-> >
-> > 1) Filesystems will be required to mark inodes that have non-trivial
-> > cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-> > whatever :)). Usually I expect this to happen on first inode modification
-> > or so. This will require some per-fs work but it shouldn't be that
-> > difficult and filesystems can be adapted one-by-one as they decide to
-> > address these warnings from reclaim.
-> >
-> > 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
-> > kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
-> > performance reasons. I expect this to be a significant portion of inodes
-> > on average and in particular for some workloads which scan a lot of inodes
-> > (find through the whole fs or similar) the efficiency of inode reclaim is
-> > one of the determining factors for their performance.
-> >
-> > 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
-> > per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
-> > to process them.
-> >
-> > 4) The work will walk s_hard_reclaim_inodes list and call evict() for each
-> > inode, doing the hard work.
-> >
-> > This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
-> > and they can work on freeing memory needed for freeing of hard to reclaim
-> > inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
-> > they should really be addressed.
 
-One question that pops in my mind (which is similar to an issue you and
-Qu debugged with the btrfs metadata reclaim floor earlier this year) is:
-what if the hard to reclaim inodes are the *only* source of significant 
-reclaimable space?
 
-> >
-> > One possible concern is that s_hard_reclaim_inodes list could grow out of
-> > control for some workloads (in particular because there could be multiple
-> > CPUs generating hard to reclaim inodes while the cleanup would be
-> > single-threaded). This could be addressed by tracking number of inodes in
-> > that list and if it grows over some limit, we could start throttling
-> > processes when setting I_RECLAIM_HARD inode flag.
-
-Anything that pushes back on the "villains" sounds very good to me :)
-
-> >
-> > There's also a simpler approach to this problem but with more radical
-> > changes to behavior. For example getting rid of inode LRU completely -
-> > inodes without dentries referencing them anymore should be rare and it
-> > isn't very useful to cache them. So we can always drop inodes on last
-> > iput() (as we currently do for example for unlinked inodes). But I have a
-> > nagging feeling that somebody is depending on inode LRU somewhere - I'd
-> > like poll the collective knowledge of what could possibly go wrong here :)
-> >
-> > In the session I'd like to discuss if people see some problems with these
-> > approaches, what they'd prefer etc.
+On 08/04/26 21:10, Zi Yan wrote:
+> On 8 Apr 2026, at 4:36, Sayali Patil wrote:
 > 
-> Hi Jan,
+>> On 07/04/26 20:21, Zi Yan wrote:
+>>> On 6 Apr 2026, at 5:19, Sayali Patil wrote:
+>>>
+>>>> run_vmtests.sh contains special handling to ensure the hwpoison_inject
+>>>> module is available for the memory-failure tests. This logic was
+>>>> implemented outside of run_test(), making the setup category-specific
+>>>> but managed globally.
+>>>>
+>>>> Move the hwpoison_inject handling into run_test() and restrict it
+>>>> to the memory-failure category so that:
+>>>> 1. the module is checked and loaded only when memory-failure tests run,
+>>>> 2. the test is skipped if the module or the debugfs interface
+>>>> (/sys/kernel/debug/hwpoison/) is not available.
+>>>> 3. the module is unloaded after the test if it was loaded by the script.
+>>>>
+>>>> This localizes category-specific setup and makes the test flow
+>>>> consistent with other per-category preparations.
+>>>>
+>>>> While updating this logic, fix the module availability check.
+>>>> The script previously used:
+>>>>
+>>>> 	modprobe -R hwpoison_inject
+>>>>
+>>>> The -R option prints the resolved module name to stdout, causing every
+>>>> run to print:
+>>>>
+>>>> 	hwpoison_inject
+>>>>
+>>>> in the test output, even when no action is required, introducing
+>>>> unnecessary noise.
+>>>>
+>>>> Replace this with:
+>>>>
+>>>> 	modprobe -n hwpoison_inject
+>>>>
+>>>> which verifies that the module is loadable without producing output,
+>>>> keeping the selftest logs clean and consistent.
+>>>>
+>>>> Also, ensure that skipped tests do not override a previously recorded
+>>>> failure. A skipped test currently sets exitcode to ksft_skip even if a
+>>>> prior test has failed, which can mask failures in the final exit status.
+>>>> Update the logic to only set exitcode to ksft_skip when no failure has
+>>>> been recorded.
+>>>>
+>>>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
+>>>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+>>>> ---
+>>>>    tools/testing/selftests/mm/run_vmtests.sh | 52 ++++++++++++++---------
+>>>>    1 file changed, 33 insertions(+), 19 deletions(-)
+>>>>
+>>>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+>>>> index afdcfd0d7cef..17c9bd910c47 100755
+>>>> --- a/tools/testing/selftests/mm/run_vmtests.sh
+>>>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+>>>> @@ -235,6 +235,7 @@ pretty_name() {
+>>>>    run_test() {
+>>>>    	if test_selected ${CATEGORY}; then
+>>>>    		local skip=0
+>>>> +		local LOADED_MOD=0
+>>>
+>>> Can you rename it to LOADED_MEMORY_FAILURE_MOD to clarify its use?
+>>> Since now LOADED_MOD is visible for the entire run_test().
+>>
+>> Thanks for the review!
+>>
+>> I kept it as LOADED_MOD and specified it as a local variable intentionally. The idea was that, if any future tests are added that need to verify whether the module was loaded, they can reuse the same variable. For that reason, I did not make it specific to the memory failure test.
 > 
-> Is this expected to be a FS+MM session or only FS+Matthew?
+> You mean future tests that use hwpoison_inject module? Or any future tests
+> that load a module? For the former, you can use LOADED_HWPOISON_INJECT_MOD;
+> for the latter, I am not sure how a single LOADED_MOD would work for
+> different modules and that probably would need new code for that case.
 > 
-> Boris,
+> My point is that since LOADED_MOD is now in the scope of run_test(), it is
+> unclear which test uses it without reading the entire run_test(). Giving a
+> specific name improves readability.
 > 
-> Is this related to the Direct Reclaim Scalability topic you wanted to discuss?
-> We are still waiting for posting on this topic.
-
-Very much related. Thank you for the message. I (and others at Meta) are
-working on this general class of problems, so I will send out a separate
-message right after this email, but I don't want that to suggest I am
-not interested in this particular aspect!
-
-Sorry for the delay with the topic, Amir.
+> 
+> Best Regards,
+> Yan, Zi
+> 
+Sure, will rename LOADED_MOD to LOADED_HWPOISON_INJECT_MOD in the next 
+version.
 
 Thanks,
-Boris
-
-> 
-> Thanks,
-> Amir.
+Sayali
 
