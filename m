@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E6B5E9DE62
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 955AEE9DE62
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 580F06B0005; Thu,  9 Apr 2026 04:22:00 -0400 (EDT)
+	id E5AFD6B0088; Thu,  9 Apr 2026 04:22:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531E36B0088; Thu,  9 Apr 2026 04:22:00 -0400 (EDT)
+	id E33366B008A; Thu,  9 Apr 2026 04:22:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447606B008A; Thu,  9 Apr 2026 04:22:00 -0400 (EDT)
+	id D48AB6B008C; Thu,  9 Apr 2026 04:22:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33F436B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:22:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4AB8592E1
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:21:59 +0000 (UTC)
-X-FDA: 84638324358.05.D5353C7
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 46E9C1C0009
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:21:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="dim/9D+M";
-	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C64DC6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:22:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F11F140446
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:22:22 +0000 (UTC)
+X-FDA: 84638325324.08.66F405F
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A4AE9180005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:22:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZtE+lgE1;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775722940; a=rsa-sha256;
+	cv=none;
+	b=7j9N7M1db9C9FLv8OnOr0Z/BQJc1mDO+gjp/j17fWOrV69HnMgGovY506DXJSSsZ4BljFp
+	+2JryaufzTuAFE/cgB/agfLeP1LRUI86BvUHzXWYqtnBNjyA9kq+CVX5CN4ATRIhmOZUH+
+	I+QlHnsX4t0nhKKEbgKHVC3sxPgFNv4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775722918;
+	s=arc-20220608; t=1775722940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ZlzV1lahyhPp5qrzpmqEvqVy8chzzw12TKhbe+CN4U=;
-	b=QIMffVr4UP6GAX8ggklS9RnlF3Pq1JZN3iwOEdhcUyo9p2YgBlqAFJRdDk/q4r/bTJ1dnr
-	iheOgpiv1QfgLPRS1i726z0VZoX6OpcVAQzsGhNAJ7mACK6jQS6D52fDh7f5PhgS0qqR+W
-	yTUnNCOd3tv3MPhcjZWtsgRngysh7dc=
+	bh=tOlZqbKz0soyeFsp+SRDEq8smfLI1S2gYBgZ/02VudA=;
+	b=tXmMMNS0RVf3bnbMsBMq488pEKqZd+OI0W6OXZ6HHk5QxCpr6UJ5eLJZPrAUH9Mvls6mZh
+	KDTG3VufiG0NKs7BMzHwlZv9ufQ1QMVEK3NkELgTeL+LgOO3AlcRRAqpmLkOm4JiJMDP5R
+	TdSr3Bnaa1OCiWzGaiNmBscqfVtJxgU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="dim/9D+M";
-	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775722918; a=rsa-sha256;
-	cv=none;
-	b=nNxIw9Uz5v8pwQ3NTogVIwn+2a/p1k6BSHrRgi3gnKZuocxfzn8LfEDDpkNupLjObIKXdA
-	SA2sswrR6qRu0hXb0CaZ154TxFST++67g/oaBMkwy3HaYWYnwaORXwAtwhR9iohulTBudP
-	r9MfhrLFUkfxm54aGUbt7p3nJaVW5oo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=/ZlzV1lahyhPp5qrzpmqEvqVy8chzzw12TKhbe+CN4U=;
-	b=dim/9D+M2GD9R4GhDwj+ZpwfpOH4fyiOOmIVuBzFLQZjzqAqqxGdOpBsR3yeu/e5JZCvEnx3+
-	JtUWTg1cG2YUZsexEXFAPseukS5VzNAtBccmuouasTh96zwKbA1e4kod3akFNUmcfY9iKnx497E
-	LnFegr1QictsYhTPjHvhkFo=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4frt6H6sjwz1cySK;
-	Thu,  9 Apr 2026 16:15:35 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA48B4056C;
-	Thu,  9 Apr 2026 16:21:49 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 9 Apr 2026 16:21:48 +0800
-Message-ID: <f8eec130-efe5-4e08-b5b4-a9701ccc7056@huawei.com>
-Date: Thu, 9 Apr 2026 16:21:43 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZtE+lgE1;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d17bb1c1dso480822f8f.2
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 01:22:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775722939; x=1776327739; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tOlZqbKz0soyeFsp+SRDEq8smfLI1S2gYBgZ/02VudA=;
+        b=ZtE+lgE1pjE8f1Ef/whyAJeVTgCw9uLoSkhHTmdRPu1mdaLL/cOPemx39rDDqin+Cr
+         Ow2djwcYzYWogBZb+3baXgMkvWFFTsbRTLG8CzPHRX3nU1/JmgtZuvK9gp3IT+dmdSMg
+         pTjllyH2XP8FC2XbU2INjlfff4mGey/nUssP8loYK5oMG4CsGzui9fch4JLOsxScYc8i
+         UdWQh6ommSVnL9JUJuftmzp5lKBVEk3bLdoEbe+XSW8/zSe8zERtO1atAlX09TxJl3tR
+         XuvZQfc1a66eSfYwiiBP5Br0XIKPoVyK0yJ37LA5038JfMC8LpWH92GDSMvZGa8y66bv
+         wslA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775722939; x=1776327739;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tOlZqbKz0soyeFsp+SRDEq8smfLI1S2gYBgZ/02VudA=;
+        b=PsLith2+NMzfmDHxPmnKST15wOKCInbWd+GBqEqHhNjPMbnJ63B4ZQOXMx9cMHyKLt
+         376nLqyY6SiwdV1ZO04Rh7rpBzBZD2lMsj2NJFIw6HjelOsqW6n7C2pgywP8720fD13V
+         RoHEMsJl/IvGC/DGU26tpXABwXS9ClpCJFLK6rObkr6eQzUgeq8GgxnceOzRtVTdHqkL
+         DS/ke1W3dTQTtILpu9diPLKd+3tyVtZTQtzAXvhMFzy8qgT20ctYvmW+7wHCywDHQ3d6
+         3vBztAutVU0sqJiD35MOTCRvCE9kdRNsbfRC7DE4IJIltMzPC/zijzuwLJ2oN6oMocVI
+         O7zA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnNMep+EjG2Uh8drOSXb0E6ZmzsPolBqV0MLiezPOCbPHRlRYJZt5GeFvkj9aDluAY3hScF+my1g==@kvack.org
+X-Gm-Message-State: AOJu0YxpMEr4FzWoypoKE6fAViA/FbbckLlXqvlkKbIIDaVzO0+r73RJ
+	QEyuP9c//6gr/z7tVgAYKCt/p3Y0tDU2LZ2YIQryA5AOwRFKfnySQVc3lrJvPTTv3nE=
+X-Gm-Gg: AeBDietwRhNzSgyPodZilf/MUGjgfTMp2HHpig55Hs/AeMWnHJXEpAFtWC9bQRDDWpr
+	sVeBGUYvJHFfpi/rg1THgB1Uce4bLuFJfbzkUc2/svp62SBNDYvKdr/WufulIU3zaAeqOx756W4
+	HCSOe5dSBTN0hXQu0A397R/fxVIzr6pEOsGinIKNc90ryFPl2nFLwsn0wL+6/PhB72MnqpTlL7G
+	A5wJg0Klem8Ia+Y4Qphmho7EqYMa3ITq37so1aghpQBeDu3WiJdVj1O1j7B98zAJkho/0o9XP2z
+	QUxfM9PA1y1LQXkyyK0b2TKtLp7hYxzJZEScRVCzaBIvrHWCDiO+DcRQSCuJHWTXpg88wrgfdDW
+	KgNVYO7LRC0PkfAAHFEAbQUdn4NSwmLZbhptFaRA3QvEzmctBsl44fGU3OknwVZMqdganRLg6P/
+	JEUEIaGekSgJguMaK/uVvbKdwc8qoSx5q+Cg==
+X-Received: by 2002:a05:6000:400e:b0:43d:1c39:534f with SMTP id ffacd0b85a97d-43d29295ef1mr36340143f8f.11.1775722938997;
+        Thu, 09 Apr 2026 01:22:18 -0700 (PDT)
+Received: from localhost (109-81-92-28.rct.o2.cz. [109.81.92.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4e52a0sm62165656f8f.30.2026.04.09.01.22.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 01:22:18 -0700 (PDT)
+Date: Thu, 9 Apr 2026 10:22:17 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
 Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
  interface
-To: Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Christian Brauner <brauner@kernel.org>, Alexander Viro
-	<viro@zeniv.linux.org.uk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil
- Babka <vbabka@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
+Message-ID: <addhuRqrB-u7oDp8@tiehlicka>
 References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
- <addP4MKmA8zfSN1o@tiehlicka> <addRr9Vn_LNiXp11@lucifer>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <addRr9Vn_LNiXp11@lucifer>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 46E9C1C0009
-X-Stat-Signature: u56kz8r4r1se1mh9tz1b8w7735eca9z3
+ <addP4MKmA8zfSN1o@tiehlicka>
+ <dbb92553-58ba-42e1-b7df-b8450bd69d33@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbb92553-58ba-42e1-b7df-b8450bd69d33@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1775722915-175387
-X-HE-Meta: U2FsdGVkX187+KfydQE4dNndHlHFIkdwmBcLKHrPuzq/I1/DlRVb9xXLOYMocSPAzDh3MbwzWtoc412Ki6hx+aICvZCbrowV9gxNxHIELQPGzyenQ/dA5MQKWrlbeIojMhi9tHt84W7UHPJgaRLI8SXfeCE0+lSf5It7/kNLqfbZTVIkYioHYt2w4weHCTclPz6FEhFXqrZ+FMGe/I4bNdXBlqTInwHnF00uSBsNM1rCgBDwhYn9OqEhrEYJTnLiIE92HtWQW5/Bk8wHu78COFt2MFRW3Eu0c2JQK9cy/tSpgjLecdGn6lisL80ay/iQ4usnoJ6pDvONDt5WjM+HtwnGcPBRb3D0uRvs5XiFcPkkBxKZelJJCunZsFZeEoI/V5m33ZcN+fEFWjKpEe6O7hrvQgsa7U0YG0/txTKJ8EEqEWGxwYYEQ2HYckJsHPSVqj1bNOoGIENJSvenPb1zNdAH7nIIET0k+bNhbw5jFneKgOFbPCemxqEB/aVmdGWG/oyOekoxfi2knewnSwDnbNTGqrKW5WWYc15OAwtseAKavF41Ks5pQNAHuoigOcOVjBMi4UB/cWXQmLaDDajdt3j8Uv/jjxR1bl5xQo1Xi9oI1DqrY0Gc2uae46td1LyvstEi0EE+LUa54SUkTqWlsjOZ6SkyIVUBoBmMpKgKOes7XAkG6k8Lbnp4NS6K3b4S276ffNb7SRGt3vKyWMN4zwpBpoGiEdROJb0PABcRDL/tuk3P03WGOIgVZKXT6X5ESa1l3NtXFCI8LrrkgCLDXo7O5n68HhkYNqYe3ifh8T4oAzeH59Bf/cKncwFkLAQZS8jQSbuZ782Xn5WiszfW3kLfpRCw/EksroiPyvCpVYevGXuY29NysUgkI2fLQ0DKQuNc/indbWWdmR1sFRuNbrjxuskVHHTE/k+qW9sXGC36LpCwZ+NN97KPxODabEDP6/NnykzvD8Q75KabLe9
- a8OMzLM6
- gTPodTJ+QxeBBMLje9ip62yWZxuQl/AYH77TOcgcSZhNXj0EQQGZgNPLIbVJgJJkR+dnobo7AdikpKzpGFFLWa13emIGlv7EfaPz7nJWykxsX9FNewt3O5l+Pwefp4oI3si/79nNQwyIGtestsMNmnsD3nKkiigSqJIjysnGeAccvdtpYFUVwF3LdRbCKZ3zG/i+wVz6L/996MOzUPcZGpHQ6PasEOEtI20YbWqIghoEf77clDrLmVbKidH6+CR1mxZhv8R4kA118faumld56HobEKzgFmRLqyoNf8Pi/FLDS7nQAiGREfn5A90mzFp2DI0z5O1dKLBMtCJx6dPhF4mHUrsfTYOfKeJIpHG7CrOGk238=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A4AE9180005
+X-Stat-Signature: uwpjdh8bxbyppw9a7zokdw8roong36ex
+X-HE-Tag: 1775722940-636142
+X-HE-Meta: U2FsdGVkX1/vU5CZlBrAuut1wcr6uVyqFYxJJsTQYGYzvWkms3mMnl2wjNHNQ/XzipoaClkXVM220SqPAei+vmwLDYwyLRnXM9jSaWkjr8XJIjkUXTNgO2t/H80mVBm2wR01CzUIHz51eoL0/g2Tyf3nKU8YN0uYtdbkaBv786sIfipKiI27+2hjIvhhYDce8OMRDc08n6ZEzEkFEDCbTJr4hq2xIWTtqWY1atZvg1wHMILPaIdMLY72zXVbSX367zPHIkZQk7Hmvagvh6jVO8nRQzzdZtKCCUvoQ64OoupF13+HzPHeQN8RoHgO5Y7iTfxXDqQCLxFTvl1f9RybDlqU7AkeMcUZdUYITplcAy03M1c/YcU5MJDL402ua/mdkTbEjVEb/1/8/h9JK6GlJjd/zdSU4ajmZ7cNXcEnJhczNgwV7kYqfk3QubKejXqndpL/TOvl9wsOBz6nLc3/yYy0yiHAwptGe8NKsXSUn3XPh55AH60eWo5H2fwt8kEI+wCSpFQsNch/NNoH2cLxnhhnmgcuC0qEV41i4T/NyjMvVEI2cBPVCAsIbj1p/wpstrSnNaEtpFR0ExPDOCEqvAYS807MGwC3A1AEPj3dSraRCAx4dLwWAywLh0SuWiCZOMfdwG/r498it2lnk0v340l97Jus5aJOdIjrgg85OKHRFdiUGLTIGrPpgoNg4CJS1FDwXM4HUEqOQQ9mBiCd7Ehl0vFlRvQv/HX74AsHXnirB+NYy0zVFE80UlJD2OVR3SiNOIhbnFl0TUa8Sr5DMgRkjdDunZeJOrbwHVhmLtk0tpTEeyhG236Zt+NuZ++cRj+FouYmQ9xC55tIqeo3wRPVVpQPly/oAwCvuABK0OW9cNkVQ5vRgb7CmnvVYX7ucbd/4uzP/NKZiij5FEzKqhL5JOl6vYcW8nEXXezgMqw3G8h966PggzltcoE+XxjsAlDwSeyLKoksWN9hiCi
+ EN3oLXFM
+ ZTbUmquLynJisdgZZ9+Liyu0UEfLfsPfFmfguOzd+SqLNl37vwpH5Xp3WUu8lj8l6BCxZ/sFgpmIhP5Btiq4RokgPTE575Fx5HklViBYedeUhGaW1BYhPwHB5JhwX23NqFu0Bul4li/P60pqaHhnXV9WwsAwFhVnZsIcyOo21Q7Dsb1mhsoJA1U8K5TdRk/tSUb1r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,70 +128,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu 09-04-26 16:08:37, Kefeng Wang wrote:
+[...]
+> To use the reclaim interface, there are two differences,
+> 
+> 1) we need to input the reclaim numbers and swappiness, this is not a big
+> problem
+> 2) for reclaim, it supports swappiness=max to only reclaim anonymous pages,
+> but cannot only reclaim file pages,
 
+Why is 2) a real constrain?
 
-On 4/9/2026 3:19 PM, Lorenzo Stoakes wrote:
-> On Thu, Apr 09, 2026 at 09:06:08AM +0200, Michal Hocko wrote:
->> On Thu 09-04-26 14:35:03, Kefeng Wang wrote:
->>> Add a sysfs interface at /sys/devices/system/node/nodeX/drop_caches
->>> to allow dropping caches on a specific NUMA node.
->>>
->>> The existing global drop_caches mechanism (/proc/sys/vm/drop_caches)
->>> operates across all NUMA nodes indiscriminately, causing,
->>> - Unnecessary eviction of hot cache on some nodes
->>> - Performance degradation for applications with NUMA affinity
->>> - Long times spent on large systems with lots of memory
->>>
->>> By exposing a per-node interface, admistrator can,
->>> - Target specific nodes experiencing memory pressure
->>> - Preserve cache on unaffected nodes
->>> - Perform reclamation with finer granularity
->>
->> Quite honestly drop_caches is not the best interface to build any new
->> functionality on top of. It has backfired a lot in the past and we have
->> tried to make it extra clear that this should be used for debugging
->> purposes only. Extending it further sounds like a bad step.
-> 
-> Agreed, there is still _huge_ confusion out there as to what this is for.
-> 
-> (If I hear another person tell me this is a way to 'free up memory' I'll scream
-> :)
-> 
-> Really I think it should be seen as a legacy thing for, as Michal says,
-> debug purposes (it would have been a good idea to put this in debugfs tbh).
-> 
-> And adding something to sysfs as a permanent, maintained interface for this
-> purpose seems problematic.
-> 
-> What is the use-case for this? Why are you dropping the caches? Presumably
-> for debugging/perf measuring/etc. purposes? The cover letter is lacking
-> that.
-
-Our use case is as follows, for hot-pluggable nodes, for anon pages,
-migrating them to other nodes, but for pagecaches, just evicting them
-since pages could be refaulted. For mem-tiering, a large amount of cold
-memory is stored in the low tier, we think that evicting pagecache is
-better than migrating them back to high tier, also this avoid the risk
-of accessing potentially faulty memory.
-
-
-> 
-> I wonder, if this is something we should move forward with, whether we
-> might be better off putting it in debugfs as a result?
-> 
->>
->>> One use cases is hot-pluggable NUMA nodes, during hot-remove, simply
->>> dropping pagecache is far more efficient than migrating large amounts
->>> of pages to other nodes, which also eliminating the risk of accessing
->>> potentially faulty memory.
->>
->> Does the per-node reclaim interface can help with this by
->> any means?
->>
->> --
->> Michal Hocko
->> SUSE Labs
-> 
-> Thanks, Lorenzo
-
+-- 
+Michal Hocko
+SUSE Labs
 
