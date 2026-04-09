@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7947DE98FD6
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845B6E98FDC
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:41:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D44876B0092; Thu,  9 Apr 2026 05:37:19 -0400 (EDT)
+	id 86A466B0005; Thu,  9 Apr 2026 05:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5586B0093; Thu,  9 Apr 2026 05:37:19 -0400 (EDT)
+	id 81A9A6B0088; Thu,  9 Apr 2026 05:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0C266B0095; Thu,  9 Apr 2026 05:37:19 -0400 (EDT)
+	id 708DB6B0093; Thu,  9 Apr 2026 05:41:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B270A6B0092
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:37:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4AB5B1606A6
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:37:19 +0000 (UTC)
-X-FDA: 84638514198.08.60F990F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8C26F80010
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:37:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XPkMRWPz;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF356B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:41:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11769596E4
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:41:54 +0000 (UTC)
+X-FDA: 84638525748.27.E0D770E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5C2FB4000F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:41:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CpdlWVOz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775727437;
+	s=arc-20220608; t=1775727712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mhq9Zd4vB7ULAYBj4Ike1ZRzIyFgFq5FpJnEEuJDHDQ=;
-	b=l24kFjDVbqXyPb0JKlkJCOjRYlnqir1j4UWZ+7Mt1gBlRxItSMx034p+hNemPFjX6sVXZd
-	BrNNyKgKHYtVsSf0HLqfibc3p1br5W5dBrb5izBz7GEUUF+tTgLl5Dep8wbaJbGBMb4K+d
-	/if3CO8Ya6nQUcBdqSnLJI6Z+7+D/Nc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XPkMRWPz;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775727437; a=rsa-sha256;
+	bh=WgCibSxuPoPLvCu7SqgvDn1zE0622I04U8SJUoVP1Eo=;
+	b=Qt9pprIkQH9FkcZLV+C30uyPbXifkw3Jwdc1qexrB4LTXPr0hmSDREhMQg9yAttFa66GV1
+	SQmewz7rFfKY8DGoRuDIG/CSpV8TgInGyn56i6IyoCmrVkEo12N3XC7P8be5okF6kkYS0V
+	WaBDLkwX7IEnMvIT2NAI0BM3KLPK1KI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775727712; a=rsa-sha256;
 	cv=none;
-	b=KfZikFNBZcYYdFiXcZcds+CubBfyaC3KK5Oawx4Oqyhsw2DxB7oxwJB0BsaD1857FPm4F4
-	7IhQ5Ua0BG0Ol4OYtqAfRWoBk2orr2cFj02GlT+QpHyMhNgL7LIrWvN7MaXuuYuYNUIqjy
-	lq0eK2EXGSd3UsJKzk4Xvb4Zm6S2aE8=
+	b=53sp4MbhuiwCaUQdBNejIEW04/T2HlNjSErO5LZ48FSF8SP//r8TJJQ0s/hoZxWNC3s5x1
+	4x2uYflA+++bRx+OqIyhzB2TwxN1YciG6bCftN7Ej0HDfXYjJZgIoPXYP7AsY8bluC5pFU
+	f82y9EYrCEvaJiFjmFPHNs8SZSWYMXM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CpdlWVOz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CACCF600CB;
-	Thu,  9 Apr 2026 09:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4F1C4CEF7;
-	Thu,  9 Apr 2026 09:37:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6083F44448;
+	Thu,  9 Apr 2026 09:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ACAC4CEF7;
+	Thu,  9 Apr 2026 09:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775727436;
-	bh=8cYAlzO7S50sLkj8aMzBDcYX3LlVqIA3ZJpm1p+BBjA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XPkMRWPzKndUdWW0Tvg+MS0bDZYX40MnzKGYhZGFwdjr1/LLTVPwvqg0KiaKKDgeK
-	 2wvVHsSiwQ7OQR6CroHP3dhgmxVFFJFqlqr30cPlAjtpdPAlZE1Of9vuknCdi1B9AI
-	 /IgOLtbqPmLKLrnBfV1oWtICCIBaPJdHVqm3blN8VX+cT9AaJi5wx3a0BaAb+X8r7Z
-	 Dv9fQk6YngQobS6xXdsW+hc+Q8uc7qVRS/Erux2faipZ8UtX4+MLOZ5LlKV82ASTCQ
-	 YpTwp/RA1DFJGO/qlhsWS8io/FgjmOGlxHBs3vdAaAWC46mPZT9j6j3lvNLa0jh9s5
-	 aw8hin45iKgNA==
-Message-ID: <015c3268-9c95-4314-b28d-c5e33eb2fb86@kernel.org>
-Date: Thu, 9 Apr 2026 11:37:10 +0200
+	s=k20201202; t=1775727711;
+	bh=9OROoV0rWGe0sK3wBROT37WhokeK5lFEn2PwBB2BcG8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=CpdlWVOzX+elKep7Zbvhs6TzH27OkUDp245LGTRynhswGWCoBwmNL4vqlzB8dBsUH
+	 touwC30voN4iDgJjfzzJiherfnqelApY1d7oGWMqiGUsPiH1EYfq0Xu2BoPeeLbXIi
+	 EviFYCrrl5tJ8x+37mxe51x1xx/mKC9AaRveaDwRunYcS9cZfEIUellOaLLKeXKBST
+	 0RV1Sc77RXZiz0QdnHqOJHbuDokRqEHV8U77MUp2zEmbcxKlJhIH7+FOTSTAdkzsdv
+	 Bi9PseMN7xC3itkBKy8BylIPMPkCJU9EdROqmMYUgqCYA9UJohN0z7RAupDUWI5n8A
+	 TUebnjf4vZIQg==
+Message-ID: <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org>
+Date: Thu, 9 Apr 2026 11:41:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
  address range
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: xu.xin16@zte.com.cn, hughd@google.com, akpm@linux-foundation.org,
  chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn,
@@ -77,8 +78,7 @@ Cc: xu.xin16@zte.com.cn, hughd@google.com, akpm@linux-foundation.org,
 References: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
  <20260407142141059pWDasxUAknP5rqvAMl28K@zte.com.cn>
  <adTPQSb-qSSHviJN@lucifer> <8332aedb-e499-4789-8f46-832df8d60224@kernel.org>
- <addoN3ur7GtiKOFf@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <addoN3ur7GtiKOFf@lucifer> <015c3268-9c95-4314-b28d-c5e33eb2fb86@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <addoN3ur7GtiKOFf@lucifer>
+In-Reply-To: <015c3268-9c95-4314-b28d-c5e33eb2fb86@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5C2FB4000F
+X-Stat-Signature: ak7hjzu95kmj6ikakhq5of48jog58gyp
 X-Rspam-User: 
-X-Stat-Signature: 9aa7999nyg4mddrhekwkmpnrs7ka3tki
-X-Rspamd-Queue-Id: 8C26F80010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775727437-333653
-X-HE-Meta: U2FsdGVkX1/GqbJtQHRDvCQKvWN3ujusAqp/FI3NjlPoF/m3XhCh8w1RsZh9MVyA1JIP/bDWkPdKIkBQwYYajxZ89LYC0Fj8xhDo6B2Lx9UjDqMpUwk2YCugqIjz5LHWCfS87aw4IbJ3e4u4yX0OhA9s68BUQqA8vTsVj7Hl4+r0HFO79n8uuWEAx3KIL6mPbNR0p3Kil2gNwFPuzttvUry7fdm+WWZ+Jk+66g/WN3XrsdCU+qIf21vE5Vyqge9whsv45W+Rjz2D6BPXDLDq+YyIIv+By04bMH7SLbiWZxFxM8gPP6Od7S5UqeGrI9U7I8aIVTYL7sn1FpU9hRamI7PjldSTcrUyHYGrGcgUI8CGjZRxcgMOkj83pvGPzC4jUjEk/gpwphbpusClDmUE/9t2EKaBY99cpYcyBH/yBJcbWK0z97CpvhZmpStW/H6aVPoAsITtWNNXZe/DL0qt8F3DL8pEe6kgf2Oz51GHgHuTYhOazm8od++k5gWzuExSxtAnB7BQ+FQGfzMerK8Z5h7XuSzmZwr7QSD/RGwRHsUDZNm7bwQsUxXWMA/wNG+NIvYBP58Lsgzb46rSRXHkdAw0kHw/D3Ghq2nshCjFYIqbNpI+dp7VwxWK0r6aPR3ob4upzbDfWfKPbbfYrurMmwC4YWwB5j3AQIC3PfLhXihxSBXvXwY80vbtc0slncT1OjFX1i20Cotvq9sA01r6DhbSFS6+DNgCCcszyHAAvoxaFhfIKUErB9iDCou7BU/LWyPQ/rw/6RkNxpwg9b0OPl7ttUyrZHBWQjvrdgZrwV/h6Na7qhSQwp51T24J/xKeeqeB5massFQYX3mg5SYxbuqVKh1LGUiro9rXVEytsQwCxeD/GWipEfgvDXXIr9m1QHqbE+6uPRJc8vkQD8i66Uaff10u8xKUcpjsH6bTdkZ2GJyXbzqDAwQIvqm4KcALgTjLcj24BnUk90QKQyk
- JEJjDMgM
- X20nHieYMBl4DQOT57Gd22jcwk/z0EumBIMw6Wpn3QrFEydYvNlNMrxZOShd0bwkpIJHYDyTV0AFpXy9JYYwsLxxRCVy7RzJkgD1gDlZuNukTejm3UBePQQH6u1j8ZeavvHsh5y5rrGLK1gJ7RcAxwkRxfoUm6c5ftvVXfZ7dzZt/hN56gUKofSZcodvqUZ2OLnKS3jlRxhBJhihkRMS0J454fdvlo/46bKbhB/xp3W4vI8j96Y+4GOrzz75F1mc6m72F107kUnCHULlC+bliyws1x32evnlTmPUvoHhz+sMc+1Pxfq7yLmlkMw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775727712-649984
+X-HE-Meta: U2FsdGVkX19NIxMXwzkAEv3I2X4q5iY49dwS1qgewBIBlo4WhdaaYQzReFX3S/t0JzXZtksgivxBkltON/lInTz+X31kuxj25yDkz+4R5cBG19n0fveRSRhepa4pE9OBftFsnVAQNQiwEywIht9uCM5KYgn1L+X/CHmuGMgsOdfJ9X9zWWrjBA+/SZ2MAinx3Zc0uLbwcGblLD0ahQ6y5jDWt8zj6mww3vB+NnJSog/bxpcd2jN60eeK73SpG97NKG/GeDIv5LEX/5kjxzgDhZwTWpg3GNisjwRvEpxv6wGXO3sBmHrZRq1+eYHlbJRAynQmP9Vo77hdAqlKEzKFI0IwhO18jTRdPt2hF0j+IpTAU79j0Fctx9bfJ6HWJBwcOlDHN+F9H9bOBalbUSkuL3+Gvak4u+c6L2Xpiw9RcRbwp1znCdypr2F0QL5PnvvdihoAIgEdYR2zbGbtxsmrda25m+Xirg0j0DGTOk0F205013rQclSKTaesJjG/J+5axsVh3bHfoeP8sg+QjtMyg9juDgjoBXQorxYCfSmH0ANbtHtCxE9dD8PjlmekxPwAJKLvjrjTXwaWwiE4RMzWg/VNKqn2QnxFYq/OqfHpAgUKuk36A93m6ek9KFrBdfxdUoCVsl6JD0mn21vvo3JHqt3sW0KujPnAzEGZ1go4k13jQZ7uMmSr+qk6oCTiGHaDSo+Arb2smYzFSqOIW29e2EATSzsXEfz7I1EMHQT4fz6HcI3fdblhoBcIOCQO3BerGXs5gO5Ly6CeGGke5FrAMD5175yUAIqrgK4dNr3X0j+ZfOgxkwcseaYaevZY0698DY6jiZLPPYwKQcZLuZoeYaLlplJu+vR6ZvqcqA0nUC1L79fzqqGQvPsR0I1F76oMV4rKEaPj5v8Ghz5neslvF/UAI65MqfSHkjK3Q/Q+eAZnHwxusAIfUTtFhLelZzqBP1p8VVS3pwLeTCXPCWW
+ mP/n24ir
+ JUco5TrVtmYAuU/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,79 +142,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 11:18, Lorenzo Stoakes wrote:
-> On Wed, Apr 08, 2026 at 02:57:10PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/7/26 11:36, Lorenzo Stoakes (Oracle) wrote:
+On 4/9/26 11:37, David Hildenbrand (Arm) wrote:
+> On 4/9/26 11:18, Lorenzo Stoakes wrote:
+>> On Wed, Apr 08, 2026 at 02:57:10PM +0200, David Hildenbrand (Arm) wrote:
 >>>
->>> Hmm yeah, we mark them unmergeable but don't update the VMA flags (since using
->>> &dummy), so they can just be merged later right?
+>>> I'm wondering whether we could figure the pgoff out, somehow, so we
+>>> wouldn't have to store it elsewhere.
 >>>
->>> And then the:
+>>> What we need is essentially what __folio_set_anon() would have done for
+>>> the original folio we replaced.
 >>>
->>> void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->>> {
->>> 	...
->>> 		const pgoff_t pgoff = rmap_item->address >> PAGE_SHIFT;
->>> 		...
->>> 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
->>> 					       pgoff, pgoff) {
->>> 			...
->>> 		}
->>> 	...
->>> }
+>>> 	folio->index = linear_page_index(vma, address);
 >>>
->>> Would _assume_ that folio->pgoff == addr >> PAGE_SHIFT, which will no longer be
->>> the case here?
+>>> Could we obtain that from the anon_vma assigned to our rmap_item?
+>>>
+>>> pgoff_t pgoff;
+>>>
+>>> pgoff = (rmap_item->address - anon_vma->vma->vm_start) >> PAGE_SHIFT;
+>>> pgoff += anon_vma->vma->vm_pgoff;
 >>
->> I'm wondering whether we could figure the pgoff out, somehow, so we
->> wouldn't have to store it elsewhere.
->>
->> What we need is essentially what __folio_set_anon() would have done for
->> the original folio we replaced.
->>
->> 	folio->index = linear_page_index(vma, address);
->>
->> Could we obtain that from the anon_vma assigned to our rmap_item?
->>
->> pgoff_t pgoff;
->>
->> pgoff = (rmap_item->address - anon_vma->vma->vm_start) >> PAGE_SHIFT;
->> pgoff += anon_vma->vma->vm_pgoff;
+>> anon_vma doesn't have a vma field :) it has anon_vma->rb_root which maps to all
+>> 'related' VMAs.
 > 
-> anon_vma doesn't have a vma field :) it has anon_vma->rb_root which maps to all
-> 'related' VMAs.
+> Right, anon_vma_chain has. Dammit.
+> 
+>>
+>> And we're already looking at what might be covered by the anon_vma by
+>> invoking anon_vma_interval_tree_foreach() on anon_vma->rb_root in [0,
+>> ULONG_MAX).
+>>
+>>>
+>>> It would be the same adjustment everywhere we look in child processes,
+>>> because the moment they would mremap() would be where we would have
+>>> unshared.
+>>>
+>>> Just a thought after reading avc_start_pgoff ...
+>>
+>> One interesting thing here is in the anon_vma_interval_tree_foreach() loop
+>> we check:
+>>
+>> if (addr < vma->vm_start || addr >= vma->vm_end)
+>> 	continue;
+>>
+>> Which is the same as saying 'hey we are ignoring remaps'.
+>>
+>> But... if _we_ got remapped previously (the unsharing is only temporary),
+>> then we'd _still_ have an anon_vma with an old index != addr >> PAGE_SHIFT,
+>> and would still not be able to figure out the correct pgoff after sharing.
+>>
+>> I wonder if we could just store the pgoff in the rmap_item though?
+> 
+> That's what I said elsewhere and what I was trying to avoid here.
+> 
+> It's 64bytes, and adding a new item will increase it to 96 bytes IIUC.
 
-Right, anon_vma_chain has. Dammit.
-
-> 
-> And we're already looking at what might be covered by the anon_vma by
-> invoking anon_vma_interval_tree_foreach() on anon_vma->rb_root in [0,
-> ULONG_MAX).
-> 
->>
->> It would be the same adjustment everywhere we look in child processes,
->> because the moment they would mremap() would be where we would have
->> unshared.
->>
->> Just a thought after reading avc_start_pgoff ...
-> 
-> One interesting thing here is in the anon_vma_interval_tree_foreach() loop
-> we check:
-> 
-> if (addr < vma->vm_start || addr >= vma->vm_end)
-> 	continue;
-> 
-> Which is the same as saying 'hey we are ignoring remaps'.
-> 
-> But... if _we_ got remapped previously (the unsharing is only temporary),
-> then we'd _still_ have an anon_vma with an old index != addr >> PAGE_SHIFT,
-> and would still not be able to figure out the correct pgoff after sharing.
-> 
-> I wonder if we could just store the pgoff in the rmap_item though?
-
-That's what I said elsewhere and what I was trying to avoid here.
-
-It's 64bytes, and adding a new item will increase it to 96 bytes IIUC.
+As we're using a dedicate kmem cache it might "only" add 8 bytes, not
+sure. Still an undesired increase given that we need that for each entry
+in the stable/unstable tree.
 
 -- 
 Cheers,
