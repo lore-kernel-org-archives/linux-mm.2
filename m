@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1653E9DE59
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:19:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C05E9DE42
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28A1B6B0005; Thu,  9 Apr 2026 03:19:23 -0400 (EDT)
+	id 1C94B6B008A; Thu,  9 Apr 2026 03:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23B0A6B0088; Thu,  9 Apr 2026 03:19:23 -0400 (EDT)
+	id 179E06B008C; Thu,  9 Apr 2026 03:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A2F6B008A; Thu,  9 Apr 2026 03:19:23 -0400 (EDT)
+	id 0691D6B0092; Thu,  9 Apr 2026 03:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F1CF86B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:19:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D726B8B85
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:19:22 +0000 (UTC)
-X-FDA: 84638166564.12.FA441FD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E175280004
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:19:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KkPQXE2O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1DBE6B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:20:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85B1B1B7E7C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:20:30 +0000 (UTC)
+X-FDA: 84638169420.14.E3AE92E
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4DB6C40008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:20:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NZacqqes;
+	spf=pass (imf07.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775719160;
+	s=arc-20220608; t=1775719228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=my6LXn8xmgzajdOla0euu8Ri/1WZ4QR4CXhOVlghjT0=;
-	b=ZiJ5cDwuFzN7CZykQPjfDuQvEjc8YdrfezeuuyXlSRcG3o+6viJGpZsKX4Iw6opOKJ1oQ+
-	mVhfprXUB0cu83YsbjmeEuomd6Nzo0OenQs4Taw2qUAZWR89lmBj81Jda5DZQGDhZ/be4s
-	/MPNvtCvLq6YA3e0zPtsv7T7CisJuQc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775719160; a=rsa-sha256;
-	cv=none;
-	b=eSxgyuIjHCtMjBGN4eFbf/3uLV4fc6TCkapYJULDN4HnFCiKwdcn83T+TjjHaIr2z98VLs
-	1rtIgWbVf9pl1U5fZc3a518l00z7N4XPQUVf015pSLRKUxcZjVFlMwGeu3MgmAJW4TEfJs
-	mA6hbTUDgkWJ6R+QkbONDYyk+EiIM+c=
+	bh=HYqV+HwLz8zoQmcesOVkUB8rczTiyU8XEXIOxFTDGIQ=;
+	b=DhZE8f+WzIO2e0yaI0792xO3QufiNYYSdz0duH4Kbg4dGQIMBMxv+RbOb/OI7cHm/GLcd0
+	bSMR/n7DndnKVJAfsvnbVXqLyeKFqq/iMVx7Dcjb2Aa7QEZJCQjlt1SoOwadRTiMOHwED1
+	OlA8P3cLNXDsl136LBsAC9h9cThIPZU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KkPQXE2O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4ADCE600AD;
-	Thu,  9 Apr 2026 07:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D789AC4CEF7;
-	Thu,  9 Apr 2026 07:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775719160;
-	bh=my6LXn8xmgzajdOla0euu8Ri/1WZ4QR4CXhOVlghjT0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KkPQXE2OV9lhdm+b7H4aSgxRaoDCoYGrSQ12jMsAv3+DSapTtrBfG+ibb6XjBr4Lj
-	 iRKUx0U2FlzhVuuLSF5gYDCOWd4Zrp6t4pXODl90fgBQqoErjBWwkIVfhqzSP59mH4
-	 /V5RPQitO2Ww3CqrUF6W+sUybi0mB1Kt4834r1PTqhEGI7nX5gtB9k7HPJg9nToZdN
-	 DiPwFt99EAo6sAlGhgW2wviRWtMGGLfswjU9bBbfBLnJfl7/YODT8n1ui3Shj1YWAD
-	 AD9Dq5hdWqIWwUKSRXg0+W96XVATFE9DpuBuLceVFcI18zIIXZwBN85m3qozzIy6uo
-	 GvTroDgy7uqVA==
-Date: Thu, 9 Apr 2026 08:19:14 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
- interface
-Message-ID: <addRr9Vn_LNiXp11@lucifer>
-References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
- <addP4MKmA8zfSN1o@tiehlicka>
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=NZacqqes;
+	spf=pass (imf07.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775719228; a=rsa-sha256;
+	cv=none;
+	b=LmoVPCkIFQnx0/XWzwpRXXWqYIY0U+vxkGp9onk7DUVT11nLQXKJsjkvvEOXXYEWZpL6lr
+	6yJzc5JRGlIvkcCN8f43NvsDNqgHjh+9QeTB3eDuFWotDLMzGeWWOp7kkV4IyiEvlhSKq5
+	6fLWkWViBuxPWBvlc+/5fvD0gv/bUh4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=HYqV+HwLz8zoQmcesOVkUB8rczTiyU8XEXIOxFTDGIQ=;
+	b=NZacqqesoAM96BvKsOd69w6m/mAYUmCK3ZsL3LnBBOnlXU92taxpSQbQNf8qn49FPweyzAxJJ
+	eCPJPEJumr3lVd7XwYN9jgdT/P5npYGHgabtpK1WAJS/q87XzQ5hM8JfMUFlKGn/Befd+qNfWca
+	864bCtUxzjAkJQ2ugl7JCoE=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4frrlN1KPMz1K9D3;
+	Thu,  9 Apr 2026 15:14:08 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8BA4B402AB;
+	Thu,  9 Apr 2026 15:20:20 +0800 (CST)
+Received: from [10.174.177.52] (10.174.177.52) by
+ dggpemf500012.china.huawei.com (7.185.36.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 9 Apr 2026 15:20:19 +0800
+Message-ID: <1b340c6e-4e21-42c3-a1b1-d07813b8b8b7@huawei.com>
+Date: Thu, 9 Apr 2026 15:20:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <addP4MKmA8zfSN1o@tiehlicka>
-X-Rspamd-Queue-Id: E175280004
-X-Stat-Signature: 9add8fbc7ktff43no6swdiddx9cmn74m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: support freeze kdamond
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <chenjun102@huawei.com>,
+	<tongtiangen@huawei.com>, <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260408140708.89729-1-sj@kernel.org>
+From: "linruifeng (A)" <linruifeng4@huawei.com>
+In-Reply-To: <20260408140708.89729-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.52]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500012.china.huawei.com (7.185.36.8)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775719160-597895
-X-HE-Meta: U2FsdGVkX1/Noo+XuTAqGoxnaQpXYV0XpUK5MXnH+W6lB8riPNLYjVv6/p6YzxKfcSZZv/GUbsE0xIfvUBBanw9bBB/E8TmMMdB9UvQyGoS8tkD5u51tW2UOFsOvFrwTMM6dEHWDV9oZ7ZTTc0oEu7R+exDE4+N3mNjSHfrH/Ei+B6cR4glA/Hl1QNbqG52LD/pTNn3zc6iiDyzKqS1GfUgNrWFaV6TPgvX7m2Mva52OeCtPu9XXm0+7plxmM5Ydg+qiqCLYLKmz7i6hbHhLGI7OWqrR+p87vKNbpIGDx7WspdfGySBG/Heu/rxEW4Hi4BwN+Nofsi19TZ3T6wJCvzR4usfSibNg4bb0RI16Dv9JO3DURjJ6cGkZtIjS2VUhAGcjtVYg0VihUJCrc3yHvuamtsgPMjcvD7mdVG2kZdd7qiAdChPzN/4USd2l0ohvU+rsqBxlxvU14al/cQ4TVzO0XOb4gA1PRBaEqKYl7okW2qJuHfuVpqM2sKeA0npSniyCT0ezNFv/uvSLZRW/Z+P8LhdTcyx0qQIYvDGvzYQq0QEs+3Pj5XOzyfy9Pu6cxi3yXWr/VDQ+mLIdi3YG/nMR9fM1MO3w/ZKH2HqHht26MuBlgN8T6eXtEBAyM2PR6CIuAbjDTIPXYeXXphT6eJeKy2gRajtohTd5Ak26U8uML11dsCff3psmBHZ5/kONg7+nCMF5oA268QmxFgEb09tmIzpw0SRaSZZq0HgR3fG3SbA1UFk6Laq8M+cQ+T893ig8fNskd7AOXVxb4snznKmDI7c8eil0GsAD6LHd8iOiZ8p0gcfyEJ1mRKLBhZuf9r1wqqJRGQPD3LKCLy6SjNORYsF/L35sQU7wBGpm/AOTX2jC10mYCBTB/1+mCg8IMP15mPEoUt0sLaNtClZT1TqCVbWLEBILf/zOSNiEZ2hra1K3MNiPEKBJLDif8eOkNy8FdYjXrXvFVH8G0OD
- z/A+0GV4
- muFW86CiDZ0SvHIvfuIy6acTyzJ0Rt0GR80OgqH+sW1yl9p8XYqa7YVZim/zCfB4iV/YuQtPbrU0JI0LA6wQb621idpoZnH088Zz5VixqIgOlvWhnz/8jRWdzExFOJ3q2/f+/0AF+3uQyKMrxPbl/PwMNSEfuLTCTVNuxQCc825N+c7dpRe5Sbobxk/wknujtiqlWoAGseuRP03P2uWweuyryoRrGn3tMK079hUhMK8fu5ETj0TWKHHB3g2KaIwnNrheVMoj5+ED15aR4X21YqcaKCQtd8hPK3Uo3xpCzvIU6Bok=
+X-Rspamd-Queue-Id: 4DB6C40008
+X-Stat-Signature: 6x7fwewe63mwh8mxaguhb64rfqqbdng5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775719226-154343
+X-HE-Meta: U2FsdGVkX19/9/wZ1iDJNEHH3gmHklwAFy9YSzhXtrRp6Gpo8G1/M/CN4S8eeLlxzzWWBVOxQsR3P1oiORPQof4K0VNhqXMNK1gEb4QaBGpuFv2XoEkR62upxaqrhVN0HzLLwk6F5VESHshRBACpKKAceWOhG4jwUZ111JY8lHEUg3FCvsbWd5M8XB9RdFV83FS95JfGGCGHZnScdhpO6JW4SWEjtVZn2AB4dSVSarSmbF0RdiHkjjfztzjwIKT5TrHmN3Pf5QVAEA46eShxn5gxeUgvTOfn4pBNfc1hXMLOTIiHH8OVTj2cmJeW1Zj0lEoV7Eo1U0OGLs1wsCQwW4O4dlJIIOwCVH/udMNr0vNh2/fvuTFFgh1P2rKwGqc9KTOCoux4Eh9I0Ud34RAqwFYt5EPN2dIobHpCDKIfv7+eV+N8fgdCcLXFJYj4VHveqD5VeWpBNtTU5ndm2FARYu7W1R3TS/HGUhjvFRjYNKeGGozHvZ+AupL613BxblUEJIsC/E32dg7Vll41/64hgVE8CVjociz4oh7mz0GZrsAAgo7+8LQB3o0EX7/yJIc9BmyV7Y9DwhAkOUKZVHHRFluJ0iExtmC5hh0bVela2LzCzZ3nVjuFtQaSh1pwqewftY2wJ6azbrvAZ1LgIu7dsLpgtF+pkPYwa3Ta68nnWWlSPd58+eZFeY1WnO1p3ABCqe0aNc/I9l6/yHWpunCAFw/R3geKdxFbWtTXckqc4916OeaeFlN2XN0hEsn/iVUb4/jm4lL+0e37dBZCl+7pUqCVg8ilsSWE8iDwlff6E0wwpkGyGziORKEVLxp3JikAuLVMJDKeoP1F6gy3cb7f7drCEFSBQ2nKNfakh0mFLWqkmJPfzy5jI8rBfIDHZI+d6fe24HXLUEdrAdP9imlSWQY1CBaUnlpFxBCjRHrhbdOb8PvSroE/XLzglLYNp5VhihbcWzfrOtkIGcTG1nE
+ DqN3+iyn
+ MwsLZGckwGPlEY6tBFhXuWnw/u25CUHvNRATJm/f5jOJFhwlz6EUNqomVUcePRmkEBDEMDxjfOJTtK490i2hVBFub8PR7+twJVLxyXq7nsrahM1ooI/i2P65gAjsI0PtjXFcMA8K2JYisCMZHFQUvm/Rv6eLP+7MqSvxSsR5WVgJXebHTnWf+V+jp6DJ/IKyy4okUV8z+D1hPiuaJ1RktH1kMlgKPXr4oShvXs83/xWmMkes4b77FiSAYAvW7Yta5HM6Mq1oA4UMO7TrIEm+pAPHWmpIlnosswu3d/RS0WYGNkkNyroEa4jRb5WpmvLX7TZ9D4x2SP3P7JlqKWT5DA1OBBZ9n9y58mhrEeqplRwaB8AxnSsVc8HH3+FwYXR3lRd9jcnXlP81Mp8CeFYfPrnudwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +98,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 09:06:08AM +0200, Michal Hocko wrote:
-> On Thu 09-04-26 14:35:03, Kefeng Wang wrote:
-> > Add a sysfs interface at /sys/devices/system/node/nodeX/drop_caches
-> > to allow dropping caches on a specific NUMA node.
-> >
-> > The existing global drop_caches mechanism (/proc/sys/vm/drop_caches)
-> > operates across all NUMA nodes indiscriminately, causing,
-> > - Unnecessary eviction of hot cache on some nodes
-> > - Performance degradation for applications with NUMA affinity
-> > - Long times spent on large systems with lots of memory
-> >
-> > By exposing a per-node interface, admistrator can,
-> > - Target specific nodes experiencing memory pressure
-> > - Preserve cache on unaffected nodes
-> > - Perform reclamation with finer granularity
+Hello SJ，
+
+Thank you for your reply. Based on my current knowledge, I think this can be
+described from three aspects:
+
+1、kdamond monitors physical/virtual addresses and performs certain 
+actions based
+on the monitoring results to improve system/process efficiency. When the 
+system
+undergoes suspend/resume, most user-space processes are in a suspended 
+state.
+kdamond may therefore perform operations such as PAGEOUT / 
+MADV_NOHUGEPAGE, but
+these are not true data monitoring results. This may cause changes in 
+the efficiency
+of certain processes after system resume. Therefore, I believe that 
+continuing to
+run kdamond during suspend is meaningless and may even have negative 
+effects.
+
+2、When performing hibernate, most of the used memory in the system is 
+swapped out to
+disk. When memory is large, this is time-consuming. If kdamond does not 
+sleep, it may
+affect hibernate efficiency.
+
+3、As discussed in [1]: "The principal reason is to prevent filesystems 
+from being damaged
+after hibernation. At the moment we have no simple means of 
+checkpointing filesystems, so if
+there are any modifications made to filesystem data and/or metadata on 
+disks, we cannot bring
+them back to the state from before the modifications. At the same time 
+each hibernation image
+contains some filesystem-related information that must be consistent 
+with the state of the on
+disk data and metadata after the system memory state has been restored 
+from the image (otherwise
+the filesystems will be damaged in a nasty way, usually making them 
+almost impossible to repair).
+We therefore freeze tasks that might cause the on-disk filesystems' data 
+and metadata to be modified
+after the hibernation image has been created and before the system is 
+finally powered off. The majority
+of these are user space processes, but if any of the kernel threads may 
+cause something like this to
+happen, they have to be freezable." During suspend/resume, processes 
+involving I/O operations should
+be frozen.
+
+Based on the above reasons, I believe it is reasonable to support 
+freezing kdamond. If there are any
+errors in my thinking, please point them out.
+
+Thans,
+Lin Ruifeng
+
+在 2026/4/8 22:07, SeongJae Park 写道:
+> Hello Lin,
 >
-> Quite honestly drop_caches is not the best interface to build any new
-> functionality on top of. It has backfired a lot in the past and we have
-> tried to make it extra clear that this should be used for debugging
-> purposes only. Extending it further sounds like a bad step.
-
-Agreed, there is still _huge_ confusion out there as to what this is for.
-
-(If I hear another person tell me this is a way to 'free up memory' I'll scream
-:)
-
-Really I think it should be seen as a legacy thing for, as Michal says,
-debug purposes (it would have been a good idea to put this in debugfs tbh).
-
-And adding something to sysfs as a permanent, maintained interface for this
-purpose seems problematic.
-
-What is the use-case for this? Why are you dropping the caches? Presumably
-for debugging/perf measuring/etc. purposes? The cover letter is lacking
-that.
-
-I wonder, if this is something we should move forward with, whether we
-might be better off putting it in debugfs as a result?
-
 >
-> > One use cases is hot-pluggable NUMA nodes, during hot-remove, simply
-> > dropping pagecache is far more efficient than migrating large amounts
-> > of pages to other nodes, which also eliminating the risk of accessing
-> > potentially faulty memory.
+> Thank you for sharing this patch.
 >
-> Does the per-node reclaim interface can help with this by
-> any means?
+> On Wed, 8 Apr 2026 16:06:52 +0800 Lin Ruifeng <linruifeng4@huawei.com> wrote:
 >
-> --
-> Michal Hocko
-> SUSE Labs
-
-Thanks, Lorenzo
+>> During suspend and resume, the data monitored by kdamond is
+>> no longer meaningful. Meanwhile, since kdamond may involve
+>> I/O operations, it is necessary to freeze it.
+> I'm not used to PM freezer, and maybe because of that, I'm not fully
+> understanding the motivation of this patch.  Could you please elaborate the
+> existing problem and how this patch is fixing or improving it?
+>
+>
+> Thanks,
+> SJ
+>
+>> Signed-off-by: Lin Ruifeng <linruifeng4@huawei.com>
+>> ---
+>>   mm/damon/core.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/mm/damon/core.c b/mm/damon/core.c
+>> index 3e1890d64d06..5cd1f0aed66b 100644
+>> --- a/mm/damon/core.c
+>> +++ b/mm/damon/core.c
+>> @@ -16,6 +16,7 @@
+>>   #include <linux/slab.h>
+>>   #include <linux/string.h>
+>>   #include <linux/string_choices.h>
+>> +#include <linux/freezer.h>
+>>   
+>>   #define CREATE_TRACE_POINTS
+>>   #include <trace/events/damon.h>
+>> @@ -2753,6 +2754,7 @@ static int kdamond_fn(void *data)
+>>   
+>>   	complete(&ctx->kdamond_started);
+>>   	kdamond_init_ctx(ctx);
+>> +	set_freezable();
+>>   
+>>   	if (ctx->ops.init)
+>>   		ctx->ops.init(ctx);
+>> @@ -2774,6 +2776,8 @@ static int kdamond_fn(void *data)
+>>   		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
+>>   		unsigned long sample_interval = ctx->attrs.sample_interval;
+>>   
+>> +		try_to_freeze();
+>> +
+>>   		if (kdamond_wait_activation(ctx))
+>>   			break;
+>>   
+>> -- 
+>> 2.43.0
 
