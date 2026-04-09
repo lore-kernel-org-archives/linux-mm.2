@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76011EA3C23
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845BCEA3C4A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D86E06B0005; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
+	id C7B306B0005; Thu,  9 Apr 2026 06:52:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5E656B0088; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
+	id C2C0E6B0088; Thu,  9 Apr 2026 06:52:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9B416B008A; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
+	id B1AF76B008A; Thu,  9 Apr 2026 06:52:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BAA656B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67B618BAB4
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:48:23 +0000 (UTC)
-X-FDA: 84638693286.24.DF8861F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AC794C0003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:48:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ovA/s+7s";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB9B6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:52:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E48B1B8446
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:52:40 +0000 (UTC)
+X-FDA: 84638704080.12.6C7F4B3
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6910340008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:52:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Epj5NLKY;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Epj5NLKY;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731958; a=rsa-sha256;
+	cv=none;
+	b=7esEXYroKg02s3wLLxOnNY7UFDzCHGiIdafJmeMPKnVN5NIxLm9x6HLEBxH6b40NmfRCrN
+	OeoxNd2z9/7d9PVJndfUt6ahFuZ49WE9E+z2uYKTq/6sJ016RRqHYki/fgGDw+3x8vBzFw
+	6jyLhqgaElQ0V4VJ5Aib21QzU6EefiI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775731701;
+	s=arc-20220608; t=1775731958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iRBkiBI2x82vMKsMNZjL7f2xn2orolYI+36FdSKj7bE=;
-	b=u4EaMC88WoZBFtui2YgQz9tdiKn0NBCkNFKpMS9v0JyJYkkr9JyDWdUSPGKrVNEk0la3r9
-	lQdfCaJEzIqhvfQm0bxgMon9JWr0HTEIYt37dZJbXIX3eec61T7V0TJu1bNA/ty0RndvzZ
-	P4oKSAJZ910Ar4ZFTg+ttwIXJVM+Mts=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731701; a=rsa-sha256;
-	cv=none;
-	b=WKvXgvC2A94uuJgwfW0THwI1wjAL52Zr9M8s9Z7uHdFRP6SuCpS3yFd+LB71FUl3lsm1n2
-	KPMj8fFrkhKKo/8Z8IKRIBBbCUyLk8yqckjvOgfeXFCcv2dnCdY4OzAC9Yqk3eFmObwMh8
-	RgqkglbextXKCJVmlrItn7CPvnNGoz4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ovA/s+7s";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 985BD4183F;
-	Thu,  9 Apr 2026 10:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB469C19424;
-	Thu,  9 Apr 2026 10:48:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775731700;
-	bh=Jx7gEXI9vJ/oyMVdgHUEoqOvId83JfYBNs7L/9ysO+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ovA/s+7sTstzRC1cWBwDEAQ9EYOpR2DEwLICJDIAaYmEu5gPZKeeEhiNCt+tM3i3+
-	 UsULDu5W9SYWMNSuC+skESNI45NKwkE+tKBm/pjACs8evI83EP4StmGwhQ6M5Hl5zr
-	 AH9J8IlwAb2jJLXRtLYYBI8tMtlBBcQyfDHlKL0QVfFzNM5pzKj4lIctiSmMubmyps
-	 6VZAd9xOKG0crUT334xKGfEDP8ajbOPGCujwnHTuwOL/bg1eM65Y3VYGtYc7Ud4ea4
-	 KUTecHfl+4Jdbg1lUhBfvzeKDfaNkC8qcv3tnh/kEzj0jL1cSL9HBzlgBLuTRbap+s
-	 Hky0OaOkF8XUg==
-Date: Thu, 9 Apr 2026 13:48:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: CaoRuichuang <create0818@163.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: mm: stop relying on killall in
- charge_reserved_hugetlb
-Message-ID: <adeD7VijQIaT8gWU@kernel.org>
-References: <20260405213126.1161-1-create0818@163.com>
+	bh=NuouJ5hGuPj+8OpBucBQO1REDxTAFBbB4iqEVWsSckY=;
+	b=2szymbZJjGaHq6PVf8tf5B5ooTlM4oIwdf/SvxPbzKAWaYuao9z0B0DRtL0JjJxBpYm2Rl
+	RemJxUNjsR38qlemHGPewykkVjxyXpMOTmnEVEbB9x6NSDH68kPz/5E05/4aTM++dZE6D/
+	/6J4iS09VLrEgxHWZdVLBusd0Fc4wto=
+Message-ID: <408fc657-94a2-4832-b5cd-7013c002403d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775731956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NuouJ5hGuPj+8OpBucBQO1REDxTAFBbB4iqEVWsSckY=;
+	b=Epj5NLKYJdYGHLWGVI8zpsduF26q6pYl4ej9eTFU/B3+gZxA1v4rwN7MLujQuwBE8esvkA
+	HTM0IoMJKDHP0rXcpUdW0MlNFVMt2U53vEFGsbTASJddvtITIWvpZrZ0dzmI0WgekvpsJD
+	S9g/7V92JP6VFOspZsB+htVa4GUFg4Y=
+Date: Thu, 9 Apr 2026 11:52:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260405213126.1161-1-create0818@163.com>
-X-Rspamd-Queue-Id: AC794C0003
-X-Stat-Signature: dx3mw73b7o163qk98x8no8y1zqrkxcck
+Subject: Re: [RFC PATCH] userfaultfd: allow registration of ranges below
+ mmap_min_addr
+Content-Language: en-GB
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Denis M. Karpov" <komlomal@gmail.com>, rppt@kernel.org,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ jannh@google.com, peterx@redhat.com, pfalcato@suse.de, brauner@kernel.org,
+ viro@zeniv.linux.org.uk, jack@suse.cz, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260407081442.6256-1-komlomal@gmail.com>
+ <20260408123700.1596800-1-usama.arif@linux.dev> <addcUpxfuR2llaiW@lucifer>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <addcUpxfuR2llaiW@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6910340008
+X-Stat-Signature: n995exnkwd9khwx6if1yg4tm51bonfxr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775731701-10626
-X-HE-Meta: U2FsdGVkX1+BtRQFtOs36+NlbbQh29yVyBVhs/ljxZMlPqwl7GuXT9nwGyfdXzAGaFJJComM3SRCME+GslXU2v4oUJAfvIoxGM9TZgo2GefdSS1/CJqrlizzFrr6PZxpXD3LhHF2VnGqwFu6zUL1Col4h4U78v2u9VTcwqXPlmkAJB+EBabITBGc2nPX/I8ekWhEc9QqhdOZBF0ibjcbV13FHw+iJUmGxCyq2dNfNwsrCME6ai4k3BKgyzR/Vg8158X5gKcN8YqJURrP57uboUmbPmhASE0AF7ZgnboayGyCdYemZlThIdzf8In4GW5OOrLZAE8HOf22VvgJ+Rl2dLkoCm1JKpAT/JBLHSXbnGKNLF8XJ8zraNeKPk9ErUHxgum/6PoO2h9OD3e6ppo6mI1/muJS6zvXfs2E6Q7XzYJiHtiE2wUJnFzvTwg7T5AiJ7sjWkaORPr9c5On8/RA+OJfT8Kx8R0yXkLgYgpISAI9DhQ1wqQrwH1nZF5Kxi0xiCW+F20iIfuD3AsvLF8UbzyQeOAUEAYSNEUVbLS6DT79pWJpk8QRl1iML9wqqEL9618O8/QgKOpBZH1pxFBSZ/cEZO6x3UeRCNYJyIbXsQib+ClUNv+7YzUHX9JGCvengSyt5D4mBWhD3C9XDqQQCxhAt1KRKUPxZMNgoP5WEy+iZoGpWltBDCOM2V+GJn46KdcJmUaGcmGQryEknfR3OGeF+tYbPCROYsUN4zH3DDkyHF8ZaGYg15H5kGEEPiQD8UQApjFXlphsNK3h5osG8EeiWcVUYIXgyAtcP2cU4TVTt+rotO508Aw67jS5I0SblxKu5acYtT3f8+l4qL+TQWNYHxLaYNfoPY2o5mAvLU1LnTRqxuNDi+P/xZVPjI7deuGPtFs4fq611tctA0ak9x53umTK59qNdhBk6lYg0Xg1q1gCGTUrszylD65JE71uLZe0g7+XWUXtQXWRcTp
- DaeHgRHf
- YCJRf1MOZa2dLBl7qX66MGyHFfuHxcfQwtHeHd5qTE57JWko9HH0ZD5gsUN1+fa/Sd/8ViCAIASe9UqlOfS/LbMbaEMWFz6mRBVpoLArVbyNTWuCTyf6FSUsWUJ/swtqPBnHGACtxIzht7g6uNRMCymjjH+knwoV6lQo2Hwy2LO0biic6Fi4shR90iNYkjxD1nwwFK216gWDnanG3tjhgPaB6qFGqpjteA2nRvWH2KOnZSZOn7cvxQRhdWUcg4UblYrtJVyyv8aX+9+spXbnkzoO+cxcyJOeXgcZIpCEZibhVV+TNDRSLg3I7TnRpI2sVtMyzOm57+6F81ZE=
+X-HE-Tag: 1775731958-292741
+X-HE-Meta: U2FsdGVkX1+Xqkqtckc9dsF9DY/bCn4bKK2hbcKFqh6dTXSZoMZH05g7D1bmrDMAhYFZ+hKxFpqLJ3+9aIMkX5U5bbupaSBH25kkpigQGJcwK+wsQetYJwF8iaZfJmB58KFXzot891gqVDlS/K2ZScntRoYn04sTDRy8MnQc3dLgxtZ9fxx6OLLIeuKVhhAKuOWpg4tbqJM+r3TAXzeudNsDdTN5LUW58sLfSdEt3bpewlj72zxS0KgrMv4fLhc5btYK+2n434ZBuETwuOvXvBzDNe/nqOuPMCOgc17zHGgV00EO/JZMIM28/EyMVJDjL/HubZhU34TEZ8GcP2C259eRHmATQgAeg10kMCAN4yspYqLHHpB6RcjeZwVuC1z9RlVNP1lHv5ci5A0IJ6rZIeO+cyU/sWDLLs7s+tqMMe3WUuDcO1nReZknWAXX1Ie/xpdqi06dSxs3alSXaVAOLhy4As42QxDlehDIGIFWApkLxxdKr7Jy6QbXHeb4NcIRjJ9DIAWQ3VuIUpDRCiTse2AlXMimSZTwKDXs2gb4jmii0mOfjVfxrnCPLDiDfHb8Ozx/DLTZQlpHU2EHoBlr9ksfk7hX901I7JDmKi8eA8qmgoP5iiqM6XbppsCIs+pw44gI7DcUiUk6Aepk591hD7mqB0FqYmd9lYFeIW7ikY9VTzsKLc0I8hAhzV6MACFicZtkJIC2691lG4HwumkhsHKoZP2QcVHUU5755XE0e74jH6A8nRAwxRQc9Jl03Ve24JAYyxZdgCKx+mnu3nNgAOeOw5rR8KZ0/PN88rTT2AXnmcMVbxNV2kL9vXWARN689Z8HmPafWiuh1DeQU4H6RLAG7YS0DfjGudZ/l2LTY7T0OjxZBlquMOh2nS58FKpfDT8M8Yda46LaW0XhgtEay1BqDx09TqzuE09+ruO4lHQBwG+1RNmxo8VuJthZrotIVZBdr79wCavLfWtVRcb
+ L4r4X6tC
+ ecFRkj+E/fULt0Qj/AhEH/en6hBHU0efKwqwKHnko+Eg2O9NcwRInBseUG3n1NILV8zyz1dLdEmZzlnU9zYS3mgQDtPNclwX+WOlwVKfYtEWJXlNEodjUjFgeQ9X76353En/y+jJqH4It3nFwD4XMgGVzT0im2vkQ3GGzz6x7sa4ApLBG6T0Kva4LTHnLpk/KCeSs0y0jZLF+/I01CBILMcV+jSUd2kbkilpYEx0ZCR+wccz/DjreBIrzFfepCyJ4JIJ6VPu6pGBwn+eE4kCY7n4cDOj3yq7q9MNqeAmJukZ6c+h9XpJGEHSy98x8Z9achxEek43jUQzEXwVufr/El1yt0qufmpYvCNVJ2tOLVYdX+4r2MiywvHlg67sXRggXFq7I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,98 +94,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-On Mon, Apr 06, 2026 at 05:31:26AM +0800, CaoRuichuang wrote:
-> charge_reserved_hugetlb.sh tears down background writers with
-> killall -2 --wait write_to_hugetlbfs. That depends on killall from
-> psmisc, which is not installed on minimal Ubuntu images, so the test
-> fails in cleanup with "killall: command not found".
 
-Can't we just skip the test if killall is not available just like we skip
-it if it's not run as root?
-
-> Track the writer PIDs we start ourselves and signal them directly
-> during cleanup instead. Make write_hugetlb_memory.sh exec
-> write_to_hugetlbfs so the recorded PID names the long-lived test
-> process, and redirect async output straight to the temporary log file
-> instead of going through a tee pipeline.
+On 09/04/2026 09:01, Lorenzo Stoakes wrote:
+> On Wed, Apr 08, 2026 at 05:36:59AM -0700, Usama Arif wrote:
+>> On Tue,  7 Apr 2026 11:14:42 +0300 "Denis M. Karpov" <komlomal@gmail.com> wrote:
+>>
+>>> The current implementation of validate_range() in fs/userfaultfd.c
+>>> performs a hard check against mmap_min_addr without considering
+>>> capabilities, but the mmap() syscall uses security_mmap_addr()
+>>> which allows privileged processes (with CAP_SYS_RAWIO) to map below
+>>> mmap_min_addr. Furthermore, security_mmap_addr()->cap_mmap_addr() uses
+>>> dac_mmap_min_addr variable which can be changed with
+>>> /proc/sys/vm/mmap_min_addr.
+>>>
+>>> Because userfaultfd uses a different check, UFFDIO_REGISTER may fail
+>>> with -EINVAL for valid memory areas that were successfully mapped
+>>> below mmap_min_addr even with appropriate capabilities.
+>>>
+>>> This prevents apps like binary compilers from using UFFD for valid memory
+>>> regions mapped by application.
+>>>
+>>> Replace the rigid mmap_min_addr check with security_mmap_addr() to align
+>>> userfaultfd with the standard kernel memory mapping security policy.
+>>>
+>>> Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+>>>
+>>> ---
+>>> Initial RFC following the discussion on the [BUG] thread.
+>>> Link: https://lore.kernel.org/all/CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com/
+>>> ---
+>>>  fs/userfaultfd.c | 4 +---
+>>>  1 file changed, 1 insertion(+), 3 deletions(-)
+>>>
+>>> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+>>> index bdc84e521..dbfe5b2a0 100644
+>>> --- a/fs/userfaultfd.c
+>>> +++ b/fs/userfaultfd.c
+>>> @@ -1238,15 +1238,13 @@ static __always_inline int validate_unaligned_range(
+>>>  		return -EINVAL;
+>>>  	if (!len)
+>>>  		return -EINVAL;
+>>> -	if (start < mmap_min_addr)
+>>> -		return -EINVAL;
+>>>  	if (start >= task_size)
+>>>  		return -EINVAL;
+>>>  	if (len > task_size - start)
+>>>  		return -EINVAL;
+>>>  	if (start + len <= start)
+>>>  		return -EINVAL;
+>>> -	return 0;
+>>> +	return security_mmap_addr(start);
+>>
+>> Is this introducing an ABI change?
+>>
+>> The old code returned -EINVAL when start was below mmap_min_addr.
+>> The new code calls security_mmap_addr() which returns -EPERM when
+>> the caller lacks CAP_SYS_RAWIO. Existing userspace callers checking
+>> specifically for -EINVAL would see different behavior start is
+>> below mmap_min_addr.
 > 
-> Signed-off-by: CaoRuichuang <create0818@163.com>
-> ---
->  .../selftests/mm/charge_reserved_hugetlb.sh   | 25 +++++++++++++++----
->  .../selftests/mm/write_hugetlb_memory.sh      |  2 +-
->  2 files changed, 21 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> index 447769657..757df4878 100755
-> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-> @@ -44,6 +44,8 @@ else
->  fi
->  export cgroup_path
->  
-> +write_pids=()
-> +
->  function cleanup() {
->    if [[ $cgroup2 ]]; then
->      echo $$ >$cgroup_path/cgroup.procs
-> @@ -193,10 +195,12 @@ function write_hugetlbfs_and_get_usage() {
->      [[ "$private" == "-r" ]] && [[ "$expect_failure" != 1 ]]; then
->  
->      bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
-> -      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" 2>&1 | tee $output &
-> +      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" \
-> +      >"$output" 2>&1 &
->  
->      local write_result=$?
->      local write_pid=$!
-> +    write_pids+=("$write_pid")
->  
->      until grep -q -i "DONE" $output; do
->        echo waiting for DONE signal.
-> @@ -261,10 +265,21 @@ function write_hugetlbfs_and_get_usage() {
->  function cleanup_hugetlb_memory() {
->    set +e
->    local cgroup="$1"
-> -  if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
-> -    echo killing write_to_hugetlbfs
-> -    killall -2 --wait write_to_hugetlbfs
-> -    wait_for_hugetlb_memory_to_get_depleted $cgroup
-> +  local write_pid
-> +
-> +  if (( ${#write_pids[@]} )); then
-> +    for write_pid in "${write_pids[@]}"; do
-> +      if kill -0 "$write_pid" 2>/dev/null; then
-> +        echo killing write_to_hugetlbfs pid "$write_pid"
-> +        kill -2 "$write_pid"
-> +        wait "$write_pid"
-> +      fi
-> +    done
-> +    write_pids=()
-> +
-> +    if [[ -n "$cgroup" ]]; then
-> +      wait_for_hugetlb_memory_to_get_depleted "$cgroup"
-> +    fi
->    fi
->    set -e
->  
-> diff --git a/tools/testing/selftests/mm/write_hugetlb_memory.sh b/tools/testing/selftests/mm/write_hugetlb_memory.sh
-> index 3d2d2eb9d..49164bbfc 100755
-> --- a/tools/testing/selftests/mm/write_hugetlb_memory.sh
-> +++ b/tools/testing/selftests/mm/write_hugetlb_memory.sh
-> @@ -19,5 +19,5 @@ echo $$ > ${cgroup_path:-/dev/cgroup/memory}/"$cgroup"/cgroup.procs
->  echo "Method is $method"
->  
->  set +e
-> -./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
-> +exec ./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
->        "$private" "$want_sleep" "$reserve"
-> -- 
-> 2.39.5 (Apple Git-154)
+> You mean API change? :) we don't guarantee ABI for kernel stuff anyway.
 > 
 
--- 
-Sincerely yours,
-Mike.
+Ah no, I meant ABI, I hope :)
+
+The return value of validate_unaligned_range() flows directly back to the
+ioctl() return value, which is visible to userspace. The error code a program
+sees from ioctl(fd, UFFDIO_REGISTER, ...) changes from -EINVAL to -EPERM for
+the same input, right? Its probably not an issue, but we would need to update
+https://man7.org/linux/man-pages/man2/ioctl_userfaultfd.2.html
+right?
 
