@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A7610FC456
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 01:29:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434E310FC456
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 01:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB1156B0088; Wed,  8 Apr 2026 21:29:14 -0400 (EDT)
+	id 631DF6B0005; Wed,  8 Apr 2026 21:43:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60996B008A; Wed,  8 Apr 2026 21:29:14 -0400 (EDT)
+	id 5E2BE6B0088; Wed,  8 Apr 2026 21:43:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94F876B008C; Wed,  8 Apr 2026 21:29:14 -0400 (EDT)
+	id 4F8B66B008A; Wed,  8 Apr 2026 21:43:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 840D16B0088
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:29:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46F52C01FD
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:29:14 +0000 (UTC)
-X-FDA: 84637284228.28.23755EC
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 03F25A0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:29:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TaMrpk3L;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775698152; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4027A6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 21:43:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB1101A0333
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:43:38 +0000 (UTC)
+X-FDA: 84637320516.15.2A2976C
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0B57B40005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:43:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GCefANrc;
+	spf=pass (imf12.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775699017; a=rsa-sha256;
 	cv=none;
-	b=YKEN3xW53mIB3juBxexaKTVFLgqULeaIS+2NmKplXO+ZAHA3o/1BgmmVX9rw4lgcS00qvV
-	Y+opufmkPDW0+InEEEE4f06uwonGJ1xAUt82cEQUsZH894ZQj3hES69ruH8TwU8ecqO4WU
-	+s8uB8IGVIhDPV3bgktAPv94ysMEI4M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TaMrpk3L;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+	b=6q7p2cQ74cjVpF+/DYA+yGL9D8cT9LQ/NIdbi8i3kjHjcfyGQi5S8PxjvMGpoO006yNZht
+	BlbeN+4+FcF45L8iuVFikxuygzLnlYX6amRfbx4SLBbCRnBlksZCOFF/yUgXVZZRzi2oM3
+	jDgMj7nQbgefb/HvkLpECcReZB6nd/U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775698152;
+	s=arc-20220608; t=1775699017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6DpAhVDfr8Quok6ciQMR/TnrA+KAslBk5pzeRLG23+s=;
-	b=mpQni0IamXSxwSzkVGoxWvamF/YpjWgZp8s8lz8hCub0MnnYqvFogJh4Nd2ExGTT2Ik9r9
-	FnooiTpFf/a3ZzQcORhBtYNA4YjXxovbOEYHg1OIxesVLHYM2LAst/v7nkhH7S4cRb4PgO
-	ovKB48zHD3ivIyuJHOV8S4E1FkttpdQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775698147; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=6DpAhVDfr8Quok6ciQMR/TnrA+KAslBk5pzeRLG23+s=;
-	b=TaMrpk3LjMSCPKoDQeXAKq+UqQio2aNusArP0LUNM6fVwMOqGQ9gIONwl06GLMKR9pUpUPeK2ltYBJF1CX6bJHucoXQ/uZ+cS5+P/Rkz443iKMet5+AgIXCI87cP0v9paoyqKSE9/Lq9lgLOBYhuqQVjepbza7HzvzRz50tVo68=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X0gT4kj_1775698136;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0gT4kj_1775698136 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 09 Apr 2026 09:29:05 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: David Hildenbrand <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Ingo Molnar <mingo@redhat.com>,  Peter
- Zijlstra <peterz@infradead.org>,  Ritesh Harjani <ritesh.list@gmail.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Baolin Wang
- <baolin.wang@linux.alibaba.com>,  Ying Huang
- <huang.ying.caritas@gmail.com>,  Juri Lelli <juri.lelli@redhat.com>,  Mel
- Gorman <mgorman@suse.de>
-Subject: Re: [PATCH v2] memory tiering: Do not allow promotion if
- NUMA_BALANCING_MEMORY_TIERING is disabled
-In-Reply-To: <bd78aaa2-888e-4c27-964b-09f085161224@linux.ibm.com> (Donet Tom's
-	message of "Wed, 8 Apr 2026 18:50:28 +0530")
-References: <20260323094849.3903-1-donettom@linux.ibm.com>
-	<87wlyqt52m.fsf@DESKTOP-5N7EMDA>
-	<c571bb69-82f2-4346-9f99-6a7258e28a27@linux.ibm.com>
-	<87o6k1ubg4.fsf@DESKTOP-5N7EMDA>
-	<bd78aaa2-888e-4c27-964b-09f085161224@linux.ibm.com>
-Date: Thu, 09 Apr 2026 09:28:59 +0800
-Message-ID: <877bqgvs4k.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YyOcfs4RbmFbfLD1gD7SLpTnMTWxwH0cAknM+2b/2so=;
+	b=wzIiQIhrbvZdKWJg3GyqGBaEYbw4136RDgR/I1Eh2GCbCdNK3Bh99GSNM1VmC6kRFFQbln
+	UuFR/nDZC1349ctNVf6aIyElBjPQtea4iPZoIuOR3AGG3tn6S4jVl21whwhhH1xwHjNTEg
+	PmaNdYWJ1lBRLm5MBiasv4q8mfi2ZlI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GCefANrc;
+	spf=pass (imf12.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775699014;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YyOcfs4RbmFbfLD1gD7SLpTnMTWxwH0cAknM+2b/2so=;
+	b=GCefANrcjTcgoArGavz/8QXmV7OhLYJwxPguf8WsExTszsNR4Be2PotIiq2No9MGAQOiPa
+	Os8VwCeKssEKPdnYc3v453qu0flxDsJ7IUwuptzzKRXKrc42bVzlFcQepq+NcMeUdro/hc
+	ZFNNCVi6jE2AC+DHkOoxObatUJmONrY=
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/khugepaged: use ALIGN helpers for PMD alignment
+Date: Thu,  9 Apr 2026 09:43:22 +0800
+Message-ID: <20260409014323.2385982-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 03F25A0005
-X-Stat-Signature: af64n1a4an8os6sqwpms8474hr5qixi3
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775698150-772446
-X-HE-Meta: U2FsdGVkX1/ux8LaV8L6sXbsk/UD9mPqkFwcKqWvLMNz/NYOO+5CVAaeLKa4yykXc/OA5XRZCqpDDEFL9XXSIx7E2bnMSESN7kBO8dkFNi+gKFkLiozztEnvK0XChnurE4YP2JPO/e8Z8MWo13npMegXq9IyoUOmXOyMZPi8opXBTtNdraSMzLDricajnp5PS5j5lNUYpik5haZq9QWGSvFnAl7+SS5p7yAEx0y9Vdl1Tma38xUjOPAM3s07Pr+TexmD8p3H+2vYbWFc65FYDbaOJ8zr2Z8v8jIw5cDEZOQVHBtgTXeN8VzarzkttNT7po2ohwgoCQ7p1Y8YBH04yVei0sKfkznAXC1ccxj8T8HoELckern99uQYaFkcuVtTVsrnQonLzwxYMwoPAse5sqtMsXA6J3dDfw2tl0QWFV/5WNR5lwc9UAQ1nBmUfsD8a/azUeqF/WaQ0jI20edeiC9El5QbXyUOrKcxxZL1w8Prlkc5LUlU5rKXOm6Rwy71w3lMMMxM4EgLUkM9W0PuDZqH1RPfiTyxJvP7bl/PRG7sijQTkHzo3PwLMZe4fEVCeeVE+wACXtuUblBkHyQNmvLQKGUUhla+FjJbMV/IpxQfyZ62HXp3eZDE5gDSWty8r/u4idGkacX1SHfwuSvOEATterg7bvKECSO6SOl1oy5e8Be7lpS+FB5uFk0R0e2Md44wxmOxZz+hnVQAoThJRDE01cmWx71pAHKVFOcrZYOaTzKfMkGhAg7jgxx70Ll1OlSnKU4BGlHHnfYfK68CCqU/aZTurU4+8rMsnvD4A0HhuJev9pMInQ840wjocF7qDoezPSgs4l13emtj4fM6nWcTag+SKq42lFcjZBQANfIl0O3UbrGRVN+NNA7Q+/QoWApd5Bij9ZOs/fyDtw7D0iDUsjKBzeSNjbA/zZzut8W4P3xCXJ3ANCHzKwYdC62x9XuNg0prDOl8TWKI0+u
- bxD4JIDL
- FmDVwe67XOjO4cFEzq0y300Dy4EqtHiWFu0y7Y3fWrBvHEVcBiuBD22yhXIcI5Jo0dtO6Rw7OpfwJ0wNHQbtG9NebPlr6nmC3VUNxVHY+egEXkqd54rK5sdBX4OVv8MMvjDGDsaitPn7fCjp2heJRSfa46oBqBbFSq1d0E8sabLuWCWlGzRy6/SnixsPbTCi0VXWGDW8qzsyyC1jrNfjkk38//WxtZt8Leb1DEYxmS+a3Iz2lZ2U76VoUg6bdymBZb8PannL+5uJyjQGHdfyGjVOjiayCqLLpZJGJFdYtpS3mOOSu+8jrkKXUNacsfPBUKEQHLh9j6nrTZQDAVzbjXhCNCy24qYzquqVbsfMc0q5OeN3Xd6Lx2HJXJNDBbHy4dpyJ6JXxmT/EVZBXThS7pJ56EUCrKRSE067v4tJJ2nC6aaOHey/LYYzh7Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0B57B40005
+X-Stat-Signature: zt1kt5esi3en1yqzg54f1cckupygw5ff
+X-HE-Tag: 1775699016-335022
+X-HE-Meta: U2FsdGVkX18wZ+elfa0t8crxYQGYxCkx6WxYk1wGwuCeH2JAgouOlbDCFCHJC6z89zyasL0+EymFO9NjngdqnZir6gH2D0Wi9yq/ueR73/8mKEX1ncLo6ON4s9a5lqwVb8nWCi9k5UMotii3KPem0RA/NFeViiGmU+DnMTrWBaFKeP0yF7k0awbmCZSr1yLxoUOH44gNz25NT09SmM7EVKpoluUN7WhwY2YnQQABtTxdJks5NyJ1s8vqZuNF328aBOS/zbaghI70xBDo+D3sntFrBCeR/4vjsREdPWjjE67EV5OScmDcgsRqdt7xJekEMVWnfrX479JXaNDSXagVHCNokZB8m062wAVnuBqJcoslp9cYWm63lHXBDdQpN1abv7pVRC/BQ7FxtD5n2q/ifLdfozoHmLT146oQYRXtIoLdxNESap6guGFC/gLCjBoI3wfmqkH7LeNJR5ede+WSJfpuxnNMLKXtqj8V4VOGXQfvQKN59s2NkkH0q0PUM/bnCVQJVMSFgvpV7NBXcVDs8H/U73lJQo+x/Qfqq9AnyQ8p2zIoCFCcwN6uvZnVqt2SH/LQ1Tfb6GOh/SXVdQdfVA+7rYy2M4tin6nsGumjaRaSZNHYP7iOlmVP+U8hviQdaZ2oC9iigbjHEvHQh3BKhH6PVpgAHz1DKqjM94j7EUaA5F6Thp0yDeFZQBtCsbgm+G/Nl2pyiDGVHrIGqbH3AzxjZvX6ADK7P8EHCK0vgSG9Pjpg6KwsC3Xv6638l3szxm/EXTsQPZaeSnVUoBoOTj9jahVaTxhxYRGSoVBDZDYsjQDz/YarJopVw7RQHi8COq2EPymXYZ6ErZpeAtpsHliW5IoeFfeh6+saIf7/M23dUNBJeyvklH7354J70sAXg6kfs7jLNniNJjmcDu9xNHJzAAnJmUWDhKdhNVi4Nej7fJONY89hKzCgYEEmRbUYdFAzXjlPDcz5tNo/UcE
+ f1fRH8+u
+ RKZ6FfGfy23cBI3N0ag13c5s8EO4p6kbA+gJBOx+NUIz2sL3BYGlefeC0wpfJ33dUnq6ptTAYPiajRLQBEzXwonkTqE7nT3F7iL3kvuxvRg9px2LSzXRfDjDXyqets44Vw3dTn8jaUpKkjQl8dis1LwrPQlhkzg01rUOpkNUGE44zv6pfxpFVYwZxDcozqDp+/O1u5fC6fDE+MG+rQ1ti78HFOBmaXtuhJD0K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,144 +94,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Donet Tom <donettom@linux.ibm.com> writes:
+From: Ye Liu <liuye@kylinos.cn>
 
-> On 4/2/26 11:54 AM, Huang, Ying wrote:
->> Donet Tom <donettom@linux.ibm.com> writes:
->>
->>> Hi
->> Hi, Donet,
->>
->>> On 4/2/26 8:57 AM, Huang, Ying wrote:
->>>> Donet Tom <donettom@linux.ibm.com> writes:
->>>>
->>>>> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
->>>>> disabled and the pages are on the lower tier, the pages may still be
->>>>> promoted.
->>>>>
->>>>> This happens because task_numa_work() updates the last_cpupid field to
->>>>> record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
->>>>> enabled and the folio is on the lower tier. If
->>>>> NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field
->>>>> can retains a valid last CPU id.
->>>>>
->>>>> In should_numa_migrate_memory(), the decision checks whether
->>>>> NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower
->>>>> tier, and last_cpupid is invalid. However, the last_cpupid can be
->>>>> valid when NUMA_BALANCING_MEMORY_TIERING is disabled, the condition
->>>>> evaluates to false and migration is allowed.
->>>>>
->>>>> This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
->>>>> disabled and the folio is on the lower tier.
->>>>>
->>>>> Behavior before this change:
->>>>> ============================
->>>>>     - If NUMA_BALANCING_NORMAL is enabled, migration occurs between
->>>>>       nodes within the same memory tier, and promotion from lower
->>>>>       tier to higher tier may also happen.
->>>>>
->>>>>     - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from
->>>>>       lower tier to higher tier nodes is allowed.
->>>>>
->>>>> Behavior after this change:
->>>>> ===========================
->>>>>     - If NUMA_BALANCING_NORMAL is enabled, migration will occur only
->>>>>       between nodes within the same memory tier.
->>>>>
->>>>>     - If NUMA_BALANCING_MEMORY_TIERING is enabled, promotion from lower
->>>>>       tier to higher tier nodes will be allowed.
->>>>>
->>>>>     - If both NUMA_BALANCING_MEMORY_TIERING and NUMA_BALANCING_NORMAL are
->>>>>       enabled, both migration (same tier) and promotion (cross tier) are
->>>>>       allowed.
->>>>>
->>>>> Fixes: 33024536bafd ("memory tiering: hot page selection with hint page fault latency")
->>>>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>>>> ---
->>>>> v1 -> v2
->>>>> ========
->>>>> 1. Dropped changes in task_numa_fault() since the original changes
->>>>>      already handle runtime disabling of NUMA_BALANCING_MEMORY_TIERING.
->>>>>
->>>>> v1 -> https://lore.kernel.org/all/20260320092251.1290207-1-donettom@linux.ibm.com/
->>>>> ---
->>>>>    kernel/sched/fair.c | 6 +++++-
->>>>>    1 file changed, 5 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->>>>> index bf948db905ed..4b43809a3fb1 100644
->>>>> --- a/kernel/sched/fair.c
->>>>> +++ b/kernel/sched/fair.c
->>>>> @@ -2024,8 +2024,12 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->>>>>    	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
->>>>>    	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
->>>>>    +	/*
->>>>> +	 * Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
->>>>> +	 * and the pages are on the lower tier.
->>>>> +	 */
->>>>>    	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
->>>>> -	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
->>>>> +	    !node_is_toptier(src_nid))
->>>>>    		return false;
->>>>>      	/*
->>>> No.  Even if NUMA_BALANCING_MEMORY_TIERING is disabled, we should still
->>>> allow migrate pages from lower tier to higher tier via
->>>> NUMA_BALANCING_NORMAL.  If we have precious DDR, why waste it?  This
->>>> follows the semantics of NUMA_BALANCING_NORMAL before introducing
->>>> NUMA_BALANCING_MEMORY_TIERING.
->>> Thank you for the review comments.
->>>
->>> One thing I am trying to understand is that page promotion
->>> appears to happen regardless of whether
->>> NUMA_BALANCING_MEMORY_TIERING is enabled or disabled. In that
->>> case, what is the specific role of
->>> NUMA_BALANCING_MEMORY_TIERING? Do we get better performance
->>> when it is enabled?
->> You can search NUMA_BALANCING_MEMORY_TIERING to find out what it does.
->> We can get better performance as the original commit message says.
->>
->> When NUMA_BALANCING_MEMORY_TIERING is introduced, we didn't change the
->> original behavior of NUMA_BALANCING_MEMORY_NORMAL because we had no good
->> reason to do that.  In fact, you change its behavior, so you should
->> provide some supporting data or bug report to justify the change.
->>
->>> My initial understanding was that disabling
->>> NUMA_BALANCING_MEMORY_TIERING could be used to turn off
->>> promotion. However, it seems that currently we cannot control
->>> promotion independently. If NUMA_BALANCING_NORMAL is disabled,
->>> neither migration nor promotion happens, and if it is enabled,
->>> both migration and promotion can occur.
->>>
->>> I was under the impression that:
->>> - NUMA_BALANCING_NORMAL would handle migration within the same tier,
->>> - NUMA_BALANCING_MEMORY_TIERING would handle promotion across tiers,
->>> - and enabling both would allow both migration and promotion.
->>>
->>> This would provide more fine-grained control. Is my
->>> understanding correct, or am I missing something here?
->> You can change this, if you have some supporting data or bug report.
->
->
-> Thanks for the clarification. I was running some experiments where I
-> only required migration, not promotion. However, I observed that
-> promotion was still occurring even when NUMA_BALANCING_MEMORY_TIERING
-> was disabled, which led me to believe it might be a bug, so I reported
-> it.
->
-> As I understand it, enabling both NUMA_BALANCING_MEMORY_TIERING and
-> NUMA_BALANCING_NORMAL results in both promotion and migration. Given
-> this, do you see any concerns with modifying the behavior of
-> NUMA_BALANCING_NORMAL?
->
-> With this patch, we would have better control over enabling and
-> disabling promotion independently. I would appreciate your thoughts on
-> this.
+PMD alignment in khugepaged is currently implemented using a mix of
+rounding helpers and open-coded bitmask operations.
 
-IIUC, we change the existing user visible behavior only with strong
-enough practical reason.  If so, making something conceptually better
-isn't enough for that.
+Use ALIGN() and ALIGN_DOWN() consistently for PMD-sized address range
+alignment, matching the preferred style for address and size handling.
 
+No functional change intended.
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+
+Changes in v2:
+- Switch to ALIGN()/ALIGN_DOWN() per David's suggestion.
+- Also convert collapse_scan_mm_slot() to keep PMD alignment helpers
+  consistent within khugepaged.
+- Update the changelog accordingly.
+- Link to v1:https://lore.kernel.org/all/20260408093534.2373007-1-ye.liu@linux.dev/
 ---
-Best Regards,
-Huang, Ying
+ mm/khugepaged.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 1e2bff40d014..1b1d1a881ec3 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2518,8 +2518,8 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 			cc->progress++;
+ 			continue;
+ 		}
+-		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
+-		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
++		hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE);
++		hend = ALIGN_DOWN(vma->vm_end, HPAGE_PMD_SIZE);
+ 		if (khugepaged_scan.address > hend) {
+ 			cc->progress++;
+ 			continue;
+@@ -2835,8 +2835,8 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	mmgrab(mm);
+ 	lru_add_drain_all();
+ 
+-	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+-	hend = end & HPAGE_PMD_MASK;
++	hstart = ALIGN(start, HPAGE_PMD_SIZE);
++	hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
+ 
+ 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+ 		enum scan_result result = SCAN_FAIL;
+-- 
+2.43.0
+
 
