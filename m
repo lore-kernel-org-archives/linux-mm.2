@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87A9EE9DE41
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C03E9DE41
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D439E6B0005; Thu,  9 Apr 2026 03:01:03 -0400 (EDT)
+	id 9C86E6B0005; Thu,  9 Apr 2026 03:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4136B0088; Thu,  9 Apr 2026 03:01:03 -0400 (EDT)
+	id 979856B0088; Thu,  9 Apr 2026 03:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C09FE6B008A; Thu,  9 Apr 2026 03:01:03 -0400 (EDT)
+	id 88EE26B008A; Thu,  9 Apr 2026 03:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A58986B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:01:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D32D1B7E3D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:01:03 +0000 (UTC)
-X-FDA: 84638120406.01.82477A0
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 38CC5180004
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:00:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Bo1v9F6x;
-	spf=pass (imf24.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA8B6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:06:04 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17376B8B85
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:06:04 +0000 (UTC)
+X-FDA: 84638133048.11.8E64D74
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4FA20120014
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:06:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=e+T2023E;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775718362; a=rsa-sha256;
+	cv=none;
+	b=NTLnmr4q1h/6gLfQZ7c+6kZLVZFX1zZ7Eg2Q1isXO+eAUNLGiEzYLbKQpyLjxdf0aPuRfN
+	OQq4IOSBtVOn+aiVn3/NjameVkLuTkbYCku94HYddUsxAZvCQ8mz55PRObOJKyGsiqXVxX
+	D65qPua9YyBKQo0aVEyQrV+mgBvkpFs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=e+T2023E;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775718060;
+	s=arc-20220608; t=1775718362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6z0npu8fIAS2o6fPNf20bgRccAnWCocIwK4i1LBbuDk=;
-	b=YIwuPx7J05XRnsu+cj7Cqw247nAIIJTfwA3gWBYUsP/gSQrJg333r7xlOtn0DQA+wcZNoW
-	QeTfOFZidXQ29CPje7Pc1oTJTq7sXJN/jr9kMqUp+r8o4oVtIdyR8w0HNdINcP952PX8Ek
-	WUTUWizOqdOSd9Nh3rHahsJIFWhZoiw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Bo1v9F6x;
-	spf=pass (imf24.hostedemail.com: domain of linruifeng4@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linruifeng4@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775718060; a=rsa-sha256;
-	cv=none;
-	b=doqERh1wdnZS6BzF1spp46y0k2YLFctlXppdQ0xbW3dwvxFhVpnJQiiKmEUIx72xUcQOjb
-	/k9yOI4dHUY1ezO9g1rbGE7UmXTjNL5DzJMLQUB+3o+xiEr9r92PZKlkYM/0ksQ4hMlHjE
-	2jwe9El0Ev/ANY164CUx1WCZ5CnA1Z4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=6z0npu8fIAS2o6fPNf20bgRccAnWCocIwK4i1LBbuDk=;
-	b=Bo1v9F6xb1v1tcbT3IigZThvbxJhZJzCcW9AreNAGNXvJX8vZXF3cjM6RPMpUbBYYRyW6xSiO
-	UDH5gFF4yk7dTH4Or6aEPqUUhT0hTLtGiqoKOiqeZv3nBerblnH1g7Z4jEQs7YiE1ULoAcfksB/
-	/9xSoefK15RzpvhwVDZLkBQ=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4frrJv0BklzLlYJ;
-	Thu,  9 Apr 2026 14:54:39 +0800 (CST)
-Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id DBED640562;
-	Thu,  9 Apr 2026 15:00:52 +0800 (CST)
-Received: from [10.174.177.52] (10.174.177.52) by
- dggpemf500012.china.huawei.com (7.185.36.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 9 Apr 2026 15:00:52 +0800
-Content-Type: multipart/alternative;
-	boundary="------------0VuqlmOkxonvbK8qZuc6iukh"
-Message-ID: <b8dac53f-443e-4cdf-9229-9949c90b8eda@huawei.com>
-Date: Thu, 9 Apr 2026 15:00:48 +0800
+	bh=Av5kApTuVKQ2ovOm1Q+K88vhXOOjtCZxC4N23qscKWQ=;
+	b=YSImnD35fJBtH1KlTxs5qvA9wz9dC3XaLIovFztpyASMCeJPG25J9XKEQ1nDm/1sWrNpNL
+	RbFwAjC6MVYqaDDP+pL6JPb9VjseqWiDGl7z9xuhmaXCIzzqrNcpH/NQEY5EcDz2USHPVe
+	axduM+z2At+fNdeAYW9uzedaHWymYEc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1775718358; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=Av5kApTuVKQ2ovOm1Q+K88vhXOOjtCZxC4N23qscKWQ=;
+	b=e+T2023ExjiZS93rgp1WVGhS594foI2Hxy9WRZlnOPhyARu7i0bVCgzH/NCN4cvCLADBfIzqwA9E/AaGWmtugSDUW9CPH1LVf+rdKH77n+/HYJ3buOdj0Rw4+SIoPDDahfCiuImWVlCrFhVh9Sj5GXZ1UDW3qOltutT8soXgiIY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X0hYF7w_1775718356;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X0hYF7w_1775718356 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 09 Apr 2026 15:05:57 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Gregory Price <gourry@gourry.net>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jackie Liu <liu.yun@linux.dev>,  David
+ Hildenbrand <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul Park
+ <byungchul@sk.com>,  Alistair Popple <apopple@nvidia.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  kernel-team@meta.com
+Subject: Re: [PATCH] mm/mempolicy: Fix weighted interleave auto sysfs name
+In-Reply-To: <20260407172350.699577-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
+	message of "Tue, 7 Apr 2026 10:23:50 -0700")
+References: <20260407172350.699577-1-joshua.hahnjy@gmail.com>
+Date: Thu, 09 Apr 2026 15:05:54 +0800
+Message-ID: <87bjfsy5nx.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: support freeze kdamond
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <chenjun102@huawei.com>,
-	<tongtiangen@huawei.com>, <damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260408140708.89729-1-sj@kernel.org>
-From: "linruifeng (A)" <linruifeng4@huawei.com>
-In-Reply-To: <20260408140708.89729-1-sj@kernel.org>
-X-Originating-IP: [10.174.177.52]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500012.china.huawei.com (7.185.36.8)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 38CC5180004
-X-Stat-Signature: up8drzc4qnw7zjbz14ejdwdmzac9g3u7
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Queue-Id: 4FA20120014
+X-Stat-Signature: znsqwexa8ayrmu9bnfgf8oo136gttcqp
 X-Rspam-User: 
-X-HE-Tag: 1775718058-786495
-X-HE-Meta: U2FsdGVkX19XweWaAiBryVci37W40pAnR6ot4QYB3X2fzEZkx4mUfkkzXlYPgiZe6wvBBQZ2+U0x85+VreMr98udANsvxFu+9bzg9ZycbInNBE9n7vIbe/tV6Etn0MvRb/OL6mO9ijfWdoeXmrsAeS8h9uKDjrEMygAUEnngrX+0q5LmFkZ1R7jglegfY+qp9dIsmKS25INvHIw/r5KeVbQJwfuv9BWG0Pl2wAwgGMNoketHPsvv1zd/69+mVJYvs+Yf54RmEv8L1Au8Gx+gK9X7NmnC1RFDPORSm8s2FDSCyRBJAGxx6uVFnl4PYja+xYHiLmw0UIASw+ad5UWd9KNFgNISBCUGid+VoSBtArOWPe3jSOH/S9IGjGRHH2tEvoQSxM1oHxV0ACSqhm0mN91dox+aVibRQ4MPZTbyqZtwZ4GREDxvKLVxzt6bAUf9Py0O1+9qNjkQD9EHwj8GJAG31NK/NbRq+qkutpkxrWMmpOZFcunohpk/IlHXM10Oxt1n3ElfsWvRdFlMXtESulVuevanFhlBX9nKsJh0VqPXcHZF7TQXQPM8mGEGuF+2rD+UT1ndRUIQY3M0JHHZ8jV9TF2ihI6oE+EPWVaxXPxVhYF9nqV0Pq440qnAhArxlRZTj26ZVkA+Z6OWRJQgpQefMK4JhEneHjE3s3FPQ1Qel+xuHJrIZhVpbNRaGNt24GCwCuLJAK/hJ00uhjVmnumfLUj0gMj/x53wUZiWc6ITQ87OQrTze2Xs1xAmIadqKH5F3A5cVkL+1b+zB6y4AKLhMZne9YJYgD3YK/N6YN1e0ExioxDhI5+fJZcZt6i8XrioG3LsyMfTWras1tvY5CcXRYHWcYXXSTgPelqi0pjrbCWyLqoxGm/2fkylBP1IT6MEILZ1FnvAq/eV/xxWwl3Q27AayHkaXRDoFpIJUdJzG1K0zs0NOGSJzLAPetNjNeiZGFxn49hcs9jtD2i
- xwjO1o2H
- 4ht0SLmraSCwdGMRwLrq0zZ40KFWm1G/ypuhNPGxT1fMeI/o94OGu0h8Kkwz+Iz6E/l1izqE60v+zCF2kLTCgyKJB4/hy/Q3tGvJgEbEkYUIBqli/GI3uzL9v10Wvh0PKpfACFAndrMp5B+uL/B7pytBdsGrljDXiIC2HenX4htFonq+pmqh0Z83e+sC1LBBi0IqLjpWiRLKJEJQIVUn0kjRD8KHTxjKp4bQfEhk18f2QdBR6o4jJLUJglUGTH/I7LFe/dDWricEApbmoKcN19NjyGz4qOLHqxC6bXq3ILSLhwB6M5XM16k/OmxfNsitbHCYlHwJ++r8XgZWG3mpNcVFNulx1bkHENgLFYp36aCeteZd99tH8sZAndg9YFWEc+Hf8KdJeMvu3oz0wJyYDYvBtOKY1TWYA4JiSCvq/DijGYMdasmhTl75IByNZY/yR6u8YtgRsxyGUvq+13rD9VAX873XCkCb40U/e92VM0+jz7rBRE7v3ee7XjEq0HcBRxsgorpZFyJXNCYw=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775718360-80382
+X-HE-Meta: U2FsdGVkX18IXmFEv0pJ9TJq4GCeIrZlDWXoQjFqPvJJZ4dFj42eEWuODq/TPZnzZli02B38IgUfYnN66dpTjquKvSSf8ThzEPFKW2r5tO1+jN8fT6y6un1jSbW1i9z7JDIhtBCuCV/N0CohB827qEgddCPvcAKa6f4ErBP57o/t/Coo0PhHKimCsdipblTx4x1Ig6xCPn9ZrsgIOK996ElMRtAJ//yQAU6ey+Gpe7hQj41r/tu3hvHn4aITsy72Og9VwVnVHYa9REEamezIDGFNB1wk7P44i7naDM1ECBGT4Dceofvx3dnZX95Ft+PamxcLY3IKoSRSArQ4hvnGvGLvAu/KSOeeaGQc/MYlJz0JxeovW8DM6Z+t2gHl+PqHXkO8KfUAuBf+FCY3pSeKTPk2F4OU4j47Ddj1JQjYAPPzOGT4f84UZmFcV5eQTyW2XbXhLjMWMM8C/D+qUj8kkhnEzdVLQVDlgEq8EjZD9cgzH06wrFmFVfpV/qJR/PQlYf4vG+L7Uz+Fwep2AJ0GP64F+YW6Afio2GwGZ2vtYBsPdONP4J8jMOhLeKoWPbeqP0Rlx/US8VXBSsNa7suX5hoLUrJw4tsMMte/1Pt9JUa0gzIIP0nsubtoDmNdU3/Q6R7H0ii7ruPsDI068o2Mi2GleFoVQ3pxKsv0XRLzMshAGieYpBi6+xzwcVn5NNTCbexxVj8CFF2wLqOADi7UNfi3ATeDuDaOUB7Qm2FnIOAAhwsgXSuDXkULtBiRItHuenBtXzqRU/Fo005/PZCn6NDXxFWtPUC7P0ybEixg45lfUyie8lG1WuXnWMHXZTsS2qoYpjFrIM1iYlQFSlQAOBIOloDKh+0CIueg/dWF43nlJ3/piVm7IyZrjakx+fC468UjJOIugUvDdBnYxlFb9xwBoifdB1+gZwpXUNUmxXTGfwJBC0BZUr7Hts7nHmH3LJVSM5GvTimbFVxUpY4
+ 19ovW6sQ
+ rBbBapTo4kkDLmvH2jdq7d4bOSt6R+9BJB2d8bWOrqk8EKrkOpq41oeaTykwRlwnUwsLO8LzBMA1T+xB9yZX0zLWeA05F7+3BFQf9R8239bUyRr4tUsR+JgdvYva1uFn8HhXQlBss8BcdoaNo+8JD3MwUl/7P8YPgR/s9ylnm8UEa/Mr+9nUDeCSDKsKVI6VHw921ObHXeOuA6oQPZpF0j38L7e0p6gpR94LD02e95twDCOYiC7tNyLtIDkwpg+7aiU+59OekQwzVz7NjArhfsRKQveCSlCMMs5ocattmv12sc41tOnzKyqkvileoCVQZDrJSYosPjk7Z0NpiNRk/aZp7ZmpXzC2w76sP0Rf102wOPPY7zxTkqpZ8PWwjn4jjvFUNRz9D4QUm0MJen0paJFsTs5TSDpP96Omq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,225 +89,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------0VuqlmOkxonvbK8qZuc6iukh
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-Hello SJ，
-
-Thank you for your reply. Based on my current knowledge, I think this can be
-described from three aspects:
-
-1、kdamond monitors physical/virtual addresses and performs certain actions based
-on the monitoring results to improve system/process efficiency. When the system
-undergoes suspend/resume, most user-space processes are in a suspended state.
-kdamond may therefore perform operations such as PAGEOUT / MADV_NOHUGEPAGE, but
-these are not true data monitoring results. This may cause changes in the efficiency
-of certain processes after system resume. Therefore, I believe that continuing to
-run kdamond during suspend is meaningless and may even have negative effects.
-
-2、When performing hibernate, most of the used memory in the system is swapped out to
-disk. When memory is large, this is time-consuming. If kdamond does not sleep, it may
-affect hibernate efficiency.
-
-3、As discussed in [1]: "The principal reason is to prevent filesystems from being damaged
-after hibernation. At the moment we have no simple means of checkpointing filesystems, so if
-there are any modifications made to filesystem data and/or metadata on disks, we cannot bring
-them back to the state from before the modifications. At the same time each hibernation image
-contains some filesystem-related information that must be consistent with the state of the on
-disk data and metadata after the system memory state has been restored from the image (otherwise
-the filesystems will be damaged in a nasty way, usually making them almost impossible to repair).
-We therefore freeze tasks that might cause the on-disk filesystems' data and metadata to be modified
-after the hibernation image has been created and before the system is finally powered off. The majority
-of these are user space processes, but if any of the kernel threads may cause something like this to
-happen, they have to be freezable." During suspend/resume, processes involving I/O operations should
-be frozen.
-
-Based on the above reasons, I believe it is reasonable to support freezing kdamond. If there are any
-errors in my thinking, please point them out.
-
-Thans,
-Lin Ruifeng
-
-
-在 2026/4/8 22:07, SeongJae Park 写道:
-> Hello Lin,
+> On Tue, 7 Apr 2026 13:09:04 -0400 Gregory Price <gourry@gourry.net> wrote:
 >
+>> On Tue, Apr 07, 2026 at 07:14:14AM -0700, Joshua Hahn wrote:
+>> > The __ATTR macro is a utility that makes defining kobj_attributes easier
+>> > by stringfying the name, verifying the mode, and setting the show/store
+>> > fields in a single initializer. It takes a raw token as the first value,
+>> > rather than a string, so that __ATTR family macros like __ATTR_RW can
+>> > token-paste it for inferring the _show / _store function names.
+>> > 
+>> > Commit e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
+>> > used the __ATTR macro to define the "auto" sysfs for weighted
+>> > interleave. A few months later, commit 2fb6915fa22d ("compiler_types.h:
+>> > add "auto" as a macro for "__auto_type"") introduced a #define macro
+>> > which expanded auto into __auto_type.
+>> > 
+>> 
 >
-> Thank you for sharing this patch.
+> Hello Gregory, thanks for reviewing my patch!!
 >
-> On Wed, 8 Apr 2026 16:06:52 +0800 Lin Ruifeng<linruifeng4@huawei.com> wrote:
+>> Well that's really unfortunately.
+>> 
+>> Is this really the only "auto" in the entire sysfs structure?
 >
->> During suspend and resume, the data monitored by kdamond is
->> no longer meaningful. Meanwhile, since kdamond may involve
->> I/O operations, it is necessary to freeze it.
-> I'm not used to PM freezer, and maybe because of that, I'm not fully
-> understanding the motivation of this patch.  Could you please elaborate the
-> existing problem and how this patch is fixing or improving it?
+> Thankfully, it seems so:
 >
+> $ rg "__ATTR\(auto"
 >
-> Thanks,
-> SJ
+> mm/mempolicy.c
+> 3786:   __ATTR(auto, 0664, weighted_interleave_auto_show,
 >
->> Signed-off-by: Lin Ruifeng<linruifeng4@huawei.com>
->> ---
->>   mm/damon/core.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/mm/damon/core.c b/mm/damon/core.c
->> index 3e1890d64d06..5cd1f0aed66b 100644
->> --- a/mm/damon/core.c
->> +++ b/mm/damon/core.c
->> @@ -16,6 +16,7 @@
->>   #include <linux/slab.h>
->>   #include <linux/string.h>
->>   #include <linux/string_choices.h>
->> +#include <linux/freezer.h>
->>   
->>   #define CREATE_TRACE_POINTS
->>   #include <trace/events/damon.h>
->> @@ -2753,6 +2754,7 @@ static int kdamond_fn(void *data)
->>   
->>   	complete(&ctx->kdamond_started);
->>   	kdamond_init_ctx(ctx);
->> +	set_freezable();
->>   
->>   	if (ctx->ops.init)
->>   		ctx->ops.init(ctx);
->> @@ -2774,6 +2776,8 @@ static int kdamond_fn(void *data)
->>   		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
->>   		unsigned long sample_interval = ctx->attrs.sample_interval;
->>   
->> +		try_to_freeze();
->> +
->>   		if (kdamond_wait_activation(ctx))
->>   			break;
->>   
->> -- 
->> 2.43.0
---------------0VuqlmOkxonvbK8qZuc6iukh
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+> arch/powerpc/platforms/pseries/power.c
+> 44:     __ATTR(auto_poweron, 0644, auto_poweron_show, auto_poweron_store);
+>
+> Although maybe it is more valuable to check any __ATTR family macro
+> for a macro as the first parameter.  In hindsight, I should have been more
+> wary of passing a keyword as a token.
+>
+> [...snip...]
+>
+>> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> 
+>> Maybe - 
+>> 
+>> Fixes: 2fb6915fa22d ("compiler_types.h: add "auto" as a macro for "__auto_type"")
+>
+> I thought about adding a Fixes tag, decided against it because it's
+> purely cosmetic.
+>
+> ... but now that I think about it, I think this could break some workflows
+> for users who have automated writing to the auto sysfs file.
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <pre>Hello SJ，</pre>
-    <font face="monospace"><span
-style="color: rgb(15, 17, 21); font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Thank
-        you for your reply. Based on my current knowledge, I think this
-        can be</span><br>
-      <span
-style="color: rgb(15, 17, 21); font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">described
-        from three aspects:</span><br>
-    </font>
-    <pre><span
-style="color: rgb(15, 17, 21); font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span>1、kdamond monitors physical/virtual addresses and performs certain actions based
-on the monitoring results to improve system/process efficiency. When the system
-undergoes suspend/resume, most user-space processes are in a suspended state.
-kdamond may therefore perform operations such as PAGEOUT / MADV_NOHUGEPAGE, but
-these are not true data monitoring results. This may cause changes in the efficiency
-of certain processes after system resume. Therefore, I believe that continuing to
-run kdamond during suspend is meaningless and may even have negative effects.
+Fixes tag helps people to decide whether to backport the commit.  So, I
+think that we need it anyway.  Feel free to add
 
-2、When performing hibernate, most of the used memory in the system is swapped out to
-disk. When memory is large, this is time-consuming. If kdamond does not sleep, it may
-affect hibernate efficiency.
+Acked-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-3、As discussed in [1]: "The principal reason is to prevent filesystems from being damaged
-after hibernation. At the moment we have no simple means of checkpointing filesystems, so if
-there are any modifications made to filesystem data and/or metadata on disks, we cannot bring
-them back to the state from before the modifications. At the same time each hibernation image
-contains some filesystem-related information that must be consistent with the state of the on
-disk data and metadata after the system memory state has been restored from the image (otherwise
-the filesystems will be damaged in a nasty way, usually making them almost impossible to repair).
-We therefore freeze tasks that might cause the on-disk filesystems' data and metadata to be modified
-after the hibernation image has been created and before the system is finally powered off. The majority
-of these are user space processes, but if any of the kernel threads may cause something like this to
-happen, they have to be freezable." During suspend/resume, processes involving I/O operations should
-be frozen.
+in the future versions.
 
-Based on the above reasons, I believe it is reasonable to support freezing kdamond. If there are any
-errors in my thinking, please point them out.
+[snip]
 
-Thans,
-Lin Ruifeng</pre>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2026/4/8 22:07, SeongJae Park 写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20260408140708.89729-1-sj@kernel.org">
-      <pre wrap="" class="moz-quote-pre">Hello Lin,
-
-
-Thank you for sharing this patch.
-
-On Wed, 8 Apr 2026 16:06:52 +0800 Lin Ruifeng <a class="moz-txt-link-rfc2396E" href="mailto:linruifeng4@huawei.com">&lt;linruifeng4@huawei.com&gt;</a> wrote:
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">During suspend and resume, the data monitored by kdamond is
-no longer meaningful. Meanwhile, since kdamond may involve
-I/O operations, it is necessary to freeze it.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-I'm not used to PM freezer, and maybe because of that, I'm not fully
-understanding the motivation of this patch.  Could you please elaborate the
-existing problem and how this patch is fixing or improving it?
-
-
-Thanks,
-SJ
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-Signed-off-by: Lin Ruifeng <a class="moz-txt-link-rfc2396E" href="mailto:linruifeng4@huawei.com">&lt;linruifeng4@huawei.com&gt;</a>
 ---
- mm/damon/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 3e1890d64d06..5cd1f0aed66b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -16,6 +16,7 @@
- #include &lt;linux/slab.h&gt;
- #include &lt;linux/string.h&gt;
- #include &lt;linux/string_choices.h&gt;
-+#include &lt;linux/freezer.h&gt;
- 
- #define CREATE_TRACE_POINTS
- #include &lt;trace/events/damon.h&gt;
-@@ -2753,6 +2754,7 @@ static int kdamond_fn(void *data)
- 
- 	complete(&amp;ctx-&gt;kdamond_started);
- 	kdamond_init_ctx(ctx);
-+	set_freezable();
- 
- 	if (ctx-&gt;ops.init)
- 		ctx-&gt;ops.init(ctx);
-@@ -2774,6 +2776,8 @@ static int kdamond_fn(void *data)
- 		unsigned long next_ops_update_sis = ctx-&gt;next_ops_update_sis;
- 		unsigned long sample_interval = ctx-&gt;attrs.sample_interval;
- 
-+		try_to_freeze();
-+
- 		if (kdamond_wait_activation(ctx))
- 			break;
- 
--- 
-2.43.0
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------0VuqlmOkxonvbK8qZuc6iukh--
+Best Regards,
+Huang, Ying
 
