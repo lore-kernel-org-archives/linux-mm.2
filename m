@@ -4,73 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E184BE98FDD
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:55:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5A13E98FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CBD6B0005; Thu,  9 Apr 2026 05:55:18 -0400 (EDT)
+	id 090026B0005; Thu,  9 Apr 2026 05:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324406B0088; Thu,  9 Apr 2026 05:55:18 -0400 (EDT)
+	id 07F5A6B0088; Thu,  9 Apr 2026 05:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23B266B008A; Thu,  9 Apr 2026 05:55:18 -0400 (EDT)
+	id EE7946B008A; Thu,  9 Apr 2026 05:56:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 176376B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:55:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2EF41406DC
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:55:17 +0000 (UTC)
-X-FDA: 84638559474.06.D133E00
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E2D7D6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:56:37 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E3D1140549
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:56:37 +0000 (UTC)
+X-FDA: 84638562834.12.56911D9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BF492160003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:55:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mXfStgu/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775728515; a=rsa-sha256;
-	cv=none;
-	b=qbruo4ACLFO1VsXUCQsPu8IN+t4BDzMIlArcZKahiBU6iFs3dzqDLkKZ/tHOt6vVl9kiNs
-	WeDbjhnYhJ0swUyhhNy07YxYXFF6Hm5gRXjEIPEXcGsc7VGlznYIYvdv733wRERae0WqqM
-	u35Vq22tV1ukNQLeAC4UHETsqwq02os=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mXfStgu/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id A562540008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:56:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWPzUry6;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775728515;
+	s=arc-20220608; t=1775728595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSIHEAgVPt/ndB71PNd9KqLJeVHWDoe3ICi5iT/PeaM=;
-	b=Vu2Runm1dQbKPHb4pucEzHkhTmbTUGU4+s0AFSCAEnjVNo6ZvmZm5IYNJcCvphcl2KOncE
-	F7okK++lAOaTmYLyiLPjIs8h1F1MTPmlM6Q5e4oi7Hm3QwwX/2nAbXDwYd9EwkkDEjf1jw
-	DZ1nSZykHbz4cTMHUjC8vJaBGI7HDcE=
+	bh=QgerVe2FKbJjP0qWK2fIuSO/aTpHMq8ArXdNealEqi0=;
+	b=cXi9FBWUelwxtBGaM91/9xMX8uaOAXWRCWzbnmYznAZCQhGObgDYFnMzEIgFNV9mxPu8vU
+	U7ENm5L15vd6ouRepXhXhv8ZLhQ/aGlRnAp4Y6XF944te77kJYOHC8YLYwaQayMwsbCn6q
+	XprhK8STMSHA8rf/X66TRvosP6iQaJk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775728595; a=rsa-sha256;
+	cv=none;
+	b=gSuCD1+mYuNRKzieol0Bj9iTktnP8UbSvf5GB7q/M1CqLM+/BnL1isiZ43MjNe+Opca/fI
+	VCpcqrjcvMcMPAeFhwT2C6JXlnGeIMY9ocnpxvcc4CukB4fYSjLzwTdOulScZf3FGhAGP4
+	lXFnjCoLaj5gi+bfTy6BekeSJIHkxNY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWPzUry6;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB4BE44095;
-	Thu,  9 Apr 2026 09:55:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605E7C4CEF7;
-	Thu,  9 Apr 2026 09:55:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 93C754434B;
+	Thu,  9 Apr 2026 09:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46DAC4CEF7;
+	Thu,  9 Apr 2026 09:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775728514;
-	bh=7Jqv0DZIrzFjI5F0XxPVosyqI7IXF3zzlfSfOKKQ134=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=mXfStgu/3TLzTJSJjLl8FnH2jzRgL7wFbNyTxVRAwxXcBCOJJ80al87IknCfF0YG3
-	 bpgBRvPZ7GuNHwdIltxZhZ9X/8zy5b8VG6o+ludtnWSQQgv6U0ws5i7M/Kaa8nyjol
-	 orwEkErAbxpVLwYkk8bKGvKwe/M+cJLWtFrgFjuDWroZINYZ8SKNKYEJkaodZSeTW6
-	 ZUFLypObeT0ujyGXbFc+Z/MXRHp5LNNxRXzz5rlQ6ho4Y2+xiHOz517EOQoV1CIwA+
-	 hPicY2nRCoqew0KAKDO8IWaiCEG0yHyjCuqIy+GjffWdqiETSCciyRvmoIvn8ZNO1R
-	 Jx5KErSlJXTRQ==
-Message-ID: <5401c1d2-5f42-4288-9dad-2b9768b579c7@kernel.org>
-Date: Thu, 9 Apr 2026 11:55:10 +0200
+	s=k20201202; t=1775728594;
+	bh=wLiR1jmbGwhcGbTJEzKKbYyUIoLx7sO83hROGWXcB0M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EWPzUry6dvaIBTs35SPrRGMlH0v437ArhurDjAwF9Tfeh+olQS/iG7smV3CFzG1v/
+	 EOorHW7BDETnixYZbPIvqObBG0V+hIdrGJXwRca7FmuhpWTq7PA/nbNM791APw68VY
+	 k/JyY5qaPgRoDU4Mi61P0ptK7Fe3R1QdxqhoP3aiewT4PK4L5dRqrgXO1Xec4O0w6E
+	 qteJhYjcT/jUakHW0dYpBhoKkko+OBrMgheTRYyk96A0xrIPqnnQifLhhX1rkAibOt
+	 wnBYkSikjVj9AUxTMCPNHwwOlb8AGkWN0nNNO1D6VvTIQDoYUTgf0+9ROneYCvFRiE
+	 QSob1Q/X5Ga+g==
+Message-ID: <63a3bd6f-c8cc-4e3c-a2b2-90163da066af@kernel.org>
+Date: Thu, 9 Apr 2026 11:56:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
  address range
-From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: xu.xin16@zte.com.cn, hughd@google.com, akpm@linux-foundation.org,
  chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn,
@@ -79,7 +78,8 @@ References: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
  <20260407142141059pWDasxUAknP5rqvAMl28K@zte.com.cn>
  <adTPQSb-qSSHviJN@lucifer> <8332aedb-e499-4789-8f46-832df8d60224@kernel.org>
  <addoN3ur7GtiKOFf@lucifer> <015c3268-9c95-4314-b28d-c5e33eb2fb86@kernel.org>
- <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org>
+ <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org> <add2XbcdFpCaT5tK@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org>
+In-Reply-To: <add2XbcdFpCaT5tK@lucifer>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BF492160003
-X-Stat-Signature: km9rca1z9woe73iefn9z6d1nqhpzs46m
+X-Rspamd-Server: rspam12
+X-Stat-Signature: qbdkxh1p87atrekba3agi1b81ad3jcy5
+X-Rspamd-Queue-Id: A562540008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775728515-166345
-X-HE-Meta: U2FsdGVkX19VWQduiIQlPSdafHYpgcxaIUbVj6Af2egX187PKeuV3fqYYc9rVBE2XcEeFM9ZJ9UQcCFWaLjBlNl9IhXNBEXJT+bQ7sqaLfUgYcTkgiatbLm2YUDyGgU87X3EZbLdTKr6DmaW0SMbeSM7uGy9VbD+abq0uusWZeYwtoHCcOk8NwZ/0TsXC1fdbZPhMFVhYjm2VbpVZ4sJIYRY4GAFPGD/d+yJxm4+dwd/Injw4cwQrwvieZajjqdazb25QQCwgYQKkbV0RRp6eyaBghZYovSB3ffTTnlsw4n3LNZc3RQGJVphisGXVZztLJpT3TWta5GqZozDlpm8ugUHVlAgIHy4DvkwKpIZ2N27pwCBII+IX2NI5m4EIyj295qWq+bznrIOsLzpgzCq9SGQfso0MMIkEhGAa3suU8RdbSzbAgvU6QiYrupXZ8sDh0uPeojNODe9sAyMt1VQZL3qDjrDSeo0nezhLyEqJZb0AlzyAeuCDzfXpekC50OSQDCmTadKGA4UmCpp98zzsESDl/dgWTu91grKaR0cW3zX8ggXFb8YbJQ/Q2El1k7VsKJ2q9y0VaolS2WIO9VmbQUhFJ0PLbrr8yjBlDyAe5S6IXzyrvfWbapk3cmhEYOagIPVa/tPamTx5uzjNagxQ/XbE47bFfT4oA0OUZ2svpFAufxnL4c1njRt+NZjUnG4mMBMDpjLA798T+eOO1r0GNOujOiz4/EKXBRfJUZnbBOqL8vDTDDdUl8zBMfExUsfJ9NsXoNqrVf6DrO6UihmIwDXDPaMqL5Wyudqv1oCSJiscDrwUYkR/wRbCxKVxDfJjdN909Mb3/JOnmZOXqEFESYkg+bDB+saxlLKJvnMiZqcYSB5PMLp1dzaSPqORozPIXUTQ12BGsPXfZzm4npzdalT8WqSfIFKRAFPWf0oITVeeidZd3fXHGvRYwkLC4yf5RTrYir7+4Y17N5j9v9
- 71aM5LjK
- TYxnAWG+azuwepsHT6ILJ02SjB+lvfrO3xvP7CZ2EJanMdoLDXoTtGbpIeDSrZ1S0mKTxE+U5dSkel2/cVpxx5M8+QsCNuSKhlRsdvE4Vw6p5R+HINMoL7rqX2xuMGuVjWwUUbKU+90alS+K3RAClPVydOa594bVb9KNRFNn6M1SoeQD7I4xEgIm13libutVewC7en/b8cVmZy8Tk44mczg97K0ULViBxa6Kol7YdfGpjQ/GxtfD7ZdJKtDi6i1H9eP/EVoHd/vTcJ96YqtASikxWJehGLYMCpoj778svOBTQWxoV5+uy4ejbuQ==
+X-HE-Tag: 1775728595-634508
+X-HE-Meta: U2FsdGVkX18CX1639m4cfNqFDt6HSuhfQwAVYdVrbq/nGVOPkGHZ1Vz/sVS2A+s2QVVCVKVVbzmNaLvXljxses8+zz4GPKc2MuI55oGJMO634JeecKWZ7YFFeZqFckptPNp/PXw4soljuLpWM3W522RTgnm5KQDB1k2DD6bFpoji2Pqe//H/LoEicC50qUgrJorWTfjq9is/OyxJwYdPorg3Ys5Ac8aki34QIWyzTKjyVNDirnZGCxA+6sePvN+UgMiGeQzdyqkfhEwC497aP5wkWQvUobtHGK5oeyf++xIs2e71DeNJ+tWS8ZfIUa0E1nuUo9eR/5BkNJXj5PFiTXnvb1qS9pO9XxyMkIeVy666Ti/d3TkBpwkh0tAGOa2W8eRlVxoC9xIGZWOuEya8E4Ik5/gLQfpU2KFWem/aIdVCCIKBfrpUYx2kY49Wz/9bp5CjW7nx++EwIBvxlfm1JhbNt7rhfay5dd5bUz644+ZWvDLXX3j6rPu+51nQIN8ZJVE0hbm8t9E9DeD2whskauKAfLFmVn9Z5yBJLH4/ia7Uww9I+RWabTnYDRqRl9SECXmYUWRYfVLAFruqL2kVYjalUkcZr+AjJ/F3Zoj5rp5SfJ3WTphO2FAxAWAZpEP15Lj/6SegFVF0ayOTmcz6NfHBGmA2jXZ9oxvI9yi72ksv+UdGwmRRPPE4twmRAq2BemLOoHohLIJPrAz8m+LuZ2KfYRMKDcngkNhu1ZLYOQSq5ncqTR33i3jCp0OaNBdAOey9e4DvbQcz6ci4wgvW+BDY5S8g1F3RZzpiqYdeQagTdTBUQ2da95DfhWg3tQ10pP5a7oSPIw1lAXvB08BD64igkfgnK6a7dSR3P1BXxBy9UHM8aVNwQ4kH7Ss5W2UWUvIDNyZz8en8oRn13cVD9mzuuJoEDvXiw2hqBDe2SFzku74Dw4sEbDDRMO5oZMOHP/8x3NGrjr2Egwrp+aa
+ ZGm2I954
+ JRPVXRORaqudHLRGlsfbi54pCSWCwYYwmOhqxCIohf7gmgubDZG2uEDY7MtaNpUYT5nAjQQT6d4j5KD4oUAF1zAwu7w3101ThYWK9F0gevt6zSeR3lhE3nZ24rP5mNR0KZ9YZUVAx/91y117JQISdI2lb1B/hecj/kqmKVpI2t1tXyrDhxM2K4EG4ANoS/ofjx7DZFsxMldYAcuiheLg7AlgSZJsyIjN6EbLO71ZWbNj5+Hs1lSnhLHLe6dqVV7RF3we+v6mzONkniEe36ThypELoyDlbtYPAKAYmJvY7XODecD9hpc1QBcrzpQtzK71sPJ5oBGJnbz4Rew4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,96 +143,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 11:41, David Hildenbrand (Arm) wrote:
-> On 4/9/26 11:37, David Hildenbrand (Arm) wrote:
->> On 4/9/26 11:18, Lorenzo Stoakes wrote:
+On 4/9/26 11:53, Lorenzo Stoakes wrote:
+> On Thu, Apr 09, 2026 at 11:41:46AM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/9/26 11:37, David Hildenbrand (Arm) wrote:
 >>>
->>> anon_vma doesn't have a vma field :) it has anon_vma->rb_root which maps to all
->>> 'related' VMAs.
+>>> Right, anon_vma_chain has. Dammit.
+>>>
+>>>
+>>> That's what I said elsewhere and what I was trying to avoid here.
+>>>
+>>> It's 64bytes, and adding a new item will increase it to 96 bytes IIUC.
 >>
->> Right, anon_vma_chain has. Dammit.
->>
->>>
->>> And we're already looking at what might be covered by the anon_vma by
->>> invoking anon_vma_interval_tree_foreach() on anon_vma->rb_root in [0,
->>> ULONG_MAX).
->>>
->>>
->>> One interesting thing here is in the anon_vma_interval_tree_foreach() loop
->>> we check:
->>>
->>> if (addr < vma->vm_start || addr >= vma->vm_end)
->>> 	continue;
->>>
->>> Which is the same as saying 'hey we are ignoring remaps'.
->>>
->>> But... if _we_ got remapped previously (the unsharing is only temporary),
->>> then we'd _still_ have an anon_vma with an old index != addr >> PAGE_SHIFT,
->>> and would still not be able to figure out the correct pgoff after sharing.
->>>
->>> I wonder if we could just store the pgoff in the rmap_item though?
->>
->> That's what I said elsewhere and what I was trying to avoid here.
->>
->> It's 64bytes, and adding a new item will increase it to 96 bytes IIUC.
+>> As we're using a dedicate kmem cache it might "only" add 8 bytes, not
+>> sure. Still an undesired increase given that we need that for each entry
+>> in the stable/unstable tree.
 > 
-> As we're using a dedicate kmem cache it might "only" add 8 bytes, not
-> sure. Still an undesired increase given that we need that for each entry
-> in the stable/unstable tree.
-> 
+> Hm, random idea, but I wonder if we could cram a bit somewhere that
+> indicates whether a remap has in fact taken place?
 
-Hmm, maybe we could do the following. I think the other members are only
-relevant for the unstable tree.
+He, also what I raised elsewhere :)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..0c6bfed280f7 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -191,12 +191,13 @@ struct ksm_stable_node {
-  * @nid: NUMA node id of unstable tree in which linked (may not match page)
-  * @mm: the memory structure this rmap_item is pointing into
-  * @address: the virtual address this rmap_item tracks (+ flags in low bits)
-- * @oldchecksum: previous checksum of the page at that virtual address
-+ * @oldchecksum: previous checksum of the page at that virtual address (unstable tree)
-  * @node: rb node of this rmap_item in the unstable tree
-  * @head: pointer to stable_node heading this list in the stable tree
-  * @hlist: link into hlist of rmap_items hanging off that stable_node
-- * @age: number of scan iterations since creation
-- * @remaining_skips: how many scans to skip
-+ * @age: number of scan iterations since creation (unstable tree)
-+ * @remaining_skips: how many scans to skip (unstable tree)
-+ * @pgoff: pgoff into @anon_vma where the page is mapped (stable tree)
-  */
- struct ksm_rmap_item {
- 	struct ksm_rmap_item *rmap_list;
-@@ -208,9 +209,14 @@ struct ksm_rmap_item {
- 	};
- 	struct mm_struct *mm;
- 	unsigned long address;		/* + low bits used for flags below */
--	unsigned int oldchecksum;	/* when unstable */
--	rmap_age_t age;
--	rmap_age_t remaining_skips;
-+	union {
-+		struct {
-+			unsigned int oldchecksum;
-+			rmap_age_t age;
-+			rmap_age_t remaining_skips;
-+		};
-+		pgoff_t pgoff;
-+	};
- 	union {
- 		struct rb_node node;	/* when node of unstable tree */
- 		struct {		/* when listed from stable tree */
-@@ -1600,6 +1606,7 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
- 
- 	/* Must get reference to anon_vma while still holding mmap_lock */
- 	rmap_item->anon_vma = vma->anon_vma;
-+	rmap_item->pgoff = linear_page_index(vma, rmap_item->address);
- 	get_anon_vma(vma->anon_vma);
- out:
- 	mmap_read_unlock(mm);
--- 
-2.43.0
+We would have space for that in the rmap_item.
+
+But see my other message, maybe we can indeed store the pgoff. Needs a
+second thought.
 
 -- 
 Cheers,
