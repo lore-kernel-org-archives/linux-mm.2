@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7983110FC456
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C35D10FC465
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803E66B0005; Wed,  8 Apr 2026 22:07:50 -0400 (EDT)
+	id DAAAD6B008A; Wed,  8 Apr 2026 22:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5076B0088; Wed,  8 Apr 2026 22:07:50 -0400 (EDT)
+	id D5B0D6B008C; Wed,  8 Apr 2026 22:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CAB96B008A; Wed,  8 Apr 2026 22:07:50 -0400 (EDT)
+	id C98096B0092; Wed,  8 Apr 2026 22:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C65A6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:07:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAFE5140366
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:07:49 +0000 (UTC)
-X-FDA: 84637381458.11.987DAB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3387140004
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:07:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eJOGiaka;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B80E06B008A
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:08:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D20E1B76FB
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:08:33 +0000 (UTC)
+X-FDA: 84637383306.09.70789EB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 755CFC0007
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:08:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=q4o7vSn0;
+	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=q4o7vSn0;
+	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775700511; a=rsa-sha256;
+	cv=none;
+	b=KStVfXXOgGXi/MUPuw0ygoDfvCHFVXh9ZB2L+xg1iHXnMeUUsLcbzXZzCfmL5eX90/ioWy
+	Z7B/RNqKDAeovnZyr6hR4QMSnt9z82FFK/kTAZY8RKEdgyd0BfvmsreWZIGCKHqcPDTe7h
+	VgkFlY4TrOtTNmrHVANzfMYGkG3YSuI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775700468;
+	s=arc-20220608; t=1775700511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RqlE6AJjctyRx6Wy0xNY7ePP4J+esP0ggSOpTU/KgI4=;
-	b=Q/v+C7Vcze0a1KnILRo/sIf5pUcnlQ0t1COlsFNPgj30cTplPY6l1doGwJrDONl5p2QuQf
-	81R9t3S4h5Jer3WJ+DCLgYdoTNH4Hc3ldGgRfhadLRn1Dh7D1OQi04CRfm0eUBHYFjUCT+
-	dFh0VUKgdhcTdes9/e8RO/fcgeYwRgY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775700468; a=rsa-sha256;
-	cv=none;
-	b=OAYKLFiJsxGaUtXvHIr7DceCUz4o41EQsKh7dxAwW6zDYJ/JPpmlCTjkhldUMjqIXfubsS
-	3xkDiLhw1tA4IVer9+fAEwZS+TlwZ8UNhiwiv5kWm9IXdpcyfwZulkriLh3SfXVwBUzuS2
-	Xtz40mtPR7OI9qaYVo2c3HXSLfU8e1k=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eJOGiaka;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6CAA44197;
-	Thu,  9 Apr 2026 02:07:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8988FC19421;
-	Thu,  9 Apr 2026 02:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775700466;
-	bh=f+BvsdXCelqVPu1ZTii6+3t7WeF9lW4AmeZ0lcGbNM4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eJOGiakaGP9bFmnUhNDXoJ5WHtDM8DNU3thdhKpYCHTNePFYo+WbI7ute6MoV0Wz1
-	 GgKeSn6Etk3si2QyCLnYknLPsgrIoXHDlEc+A4pZaa2tdeHUy9HruM4MmMOFmJhGEh
-	 +uSKdrmqrofCbwM4+Kf2/BP0VxbH/zxDxB5snep0=
-Date: Wed, 8 Apr 2026 19:07:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>, LKML
- <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, Sourab Gupta
- <sougupta@nvidia.com>
-Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
- folios
-Message-Id: <20260408190745.40f0c0231a475e697c970fd4@linux-foundation.org>
-In-Reply-To: <20260409014647.397515-1-jhubbard@nvidia.com>
-References: <20260409014647.397515-1-jhubbard@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=UaytnJ6ZCFlO4gD8gW+Y2+bllQtwZ5ZchyRx+p3OVfA=;
+	b=gHhuY2rrLiRGkkhEVormg7ngJCkfc0KYuv9wgbbzjwXeLS1B39WqDdpMPRC2MYme/wZzKD
+	qqIhwjhRJu8YZBAg7QGRyY4s65Im8JY2lzQu8wCkx7PvUtjiaEg1bG5Z9lPi2oEC1ZWIoa
+	62uYgogJyv1OLMwjnKjJeuQXoqQ39eI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C34B35C7;
+	Wed,  8 Apr 2026 19:08:24 -0700 (PDT)
+Received: from [10.164.18.48] (unknown [10.164.18.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B712B3F7D8;
+	Wed,  8 Apr 2026 19:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775700510; bh=nb/Ldn1rG04kuyp/Gu2fW/d/DdD/8muloilUcAfi43U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q4o7vSn0CL3AE34IYW0A28ObmyC0/AovqMKiX8ETjREHWSV3hA/69vGjO4TEGCuXl
+	 uxgKPmx5HpNKOENAA6d1klBtQOq5eCKj7Z/LFS6EYS4RU/mRRFjEfNhxoUYDreWYJ7
+	 NnDQYFf/oHSxnHRrbb6eQa5wWiF9uyl5KKVRtj3c=
+Message-ID: <1d3df806-fdf5-4cd8-960a-9ebb707de575@arm.com>
+Date: Thu, 9 Apr 2026 07:38:23 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V1 00/16] arm64/mm: Enable 128 bit page table entries
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <a77b39a4-c6dd-4a8a-8ea4-2bdc31bd3601@kernel.org>
+ <8d2c9ecb-ae33-42f2-a8ed-66b3286b9286@arm.com>
+ <c664368c-fe2c-42d8-b488-e9e30b342491@kernel.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <c664368c-fe2c-42d8-b488-e9e30b342491@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3387140004
-X-Stat-Signature: uf9jcj7fjud7rg4rt4pkks8kcpwyb9nn
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 755CFC0007
+X-Stat-Signature: 1wncjj9ug5u3cm4us4htw8r994xdyz5j
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775700467-955552
-X-HE-Meta: U2FsdGVkX1/TBHQQTlAQDg8D2bYyfMruzntPdKEqSDb0dy9AN4rgoNWpihT74fyyFWan7mX6SbYLHTB+tEbO0x0N81EPy9dhtuSqBNBIr4pmCLvknrxQI92stChi5DyE7wvJs5OZ34tRXkl+LgiczS/b+isOzNGAttLiR8Nkqq3MQLmvoyQUOy5wRcWB5kO+SQC6ntECyWpJ2pKgWK82yMJ8iRAu3ZfCllEYTnzAyCLVw+RmY1jJPrXoE9R3eqdgfvS0aJ6BaNde7o2o9lBdpeR1dCAthKgzCE1vlOXUbx2rO/0PkBo/mK00rZifDbHMfhX8XwPgJF588DXhWuCrAr27SZCWweRc6Md4jw76zOYHEkbl1r+ISdonfK8w6CngpVBqr75BKONSpfxp5d5SeiABlZA9GiU4HARvpq7IFtj8k0VKjCaPgO2VTJQLpoyap+qVR+C/utG4Tbleyti4wVn8NHKnWE2GxjwSJigPOYlkBTaYkNmTqNwQJ4ne7KELXq13YABIB6MMPXEB/KVipzuUEzl72d77dCFFgDJ5Rst3CPvxeA1Sss17OkCxuk0sRGCDZ2fhgRJ2E3ju5EOrVAPM4CkerxUkxxqZDqxlyN64BAQMCc00kXnTLQDXBjsVj/ETT5NiEkIeBcAzAJJKXC83sOyNK4OOdTs3xywKtF2g1JZFDNbX2ygtI/dJW6j73ym1a1DHZh/tVwzTvzSDvQPHD6OwTNn5bqcmA1C21lc7eSjYALcFc7v8ewiirRa/TeNklAFnPWLa6KSVQkEzT+Nwce30rLDLHVD0ErOPvYW0QndcKhvpcxlkNMnixa5c8uQj7L4eljIoqTPIOkFSHl2zBrb6BmxnusfAnQWrXQKa98wwA7I4pjvT4PUHuLALwyNqgQcKma9MbrFg05V6b5+5KiePIu1mk4h1TOrSpcUhUATWPVl2dddwysHV8NyQ99BMLSl9iMxt80G3U3Y
- 4nHJLuN5
- 2ZuE5t6kYoSvF8AbqqUzXWQLNvj6Chd8pVl1qY2BKVVc0MZWKP3uKDqWaSR/lx00Q9vdhC7WgWGG6OHlRA3Zym4u99NYhxDFfbDgwzfcHxiosJPuD9Ft1799MFlih8+oq8Do7Zb4+saqCjZT3H9Ji1172K57260yvoo5Uoe6c/sBcMh0wz4WycrF4BxzBDx1LJgmIZ58gGU1AXZp+uappsmvwPVpfR/vZ8LXGURdLvJaatc+6hbk2NEsEwsCJHAcBeO5dHgJXC74gGac=
+X-HE-Tag: 1775700511-680812
+X-HE-Meta: U2FsdGVkX1+ZObujydssvIS3MICj7s68ogqYDUBrRMNxLEHku0sQvXoS60bXyOojGwyIsO3sFLT3oVyirxtUInWIfva364nZiIn3fvbENtKQG4/B3BMdLxFtLHARYd1vTJq0nBhR3mJLIxgsr8oVJugVmSRthlFRmlhOgHa31xd/IE68AGt9w7ls5mZgGAIniMGFlFt6z2qvh13/1O+INuA3lu6To4+e7QQ92L/yypSdd48dWH1HCcQNBsQVz64Oc2n1mYeh24Vqq/InTMQysmdjhYEw+x9xOjRnKJVzYKc3uUuqPVpFs+3h/086LfRPpuOZyrqUeivbkq5QQ08w5YPGl8F45Swu8usP4+QlKh4t0jhaGmgoHYgZOBeNors/n5r/inIFUuPF0pOqQ0ILx5Zsm1xGDsq1xl9l472Z7g/X8mHd/4o/YOzVIlFmCO+mB3oxwkH1f7iCcQFKQxFqbs6DuuarD1KdXzdEdxhobSwC3GcHvBhffOxUIC0FbNtsQQUqjq66N4EkupxsMxdi/Lo+Zj0LdK60U8eKQlLUOQ9qKzeIyNomIkM6RMUp0z+LgzSkxjB/4QRbGZ3TDt6A+nOTt0oiUcQOTj2F/rZO9EdOxUlEz6w/LeYNJnLXHGuExR1hOfbFSHR8rfJVUZhbL0mF7SC2hxamu3R4pIr1diaQkyIU24J/XbFQbjhiGbhNDdwy3TxwenCObLRoB88vzEQVxmRca7W6rbjOgXSaK9oRJLcM65jaPNxv9a4740SgKUzBBe4zNhMvQNNEBbZlbcAlReGcFLb+Bu2UjtaD0XXWXQsILcHCQ5TwEZpxXZVqVdl7Pez8TAJAUlB/kHE1ysXsKWpNRFRDx5PGn9zxU8voyvwh3+ZHld6XBSRo9hAWk7ZdZIE0nQfRu+Dy7NtUqfvQusiJ/NfvoqyXYZs5FjTu5NpD0tSo9pAWiNnSZV1KpExwchkKHY9oRobLQH4
+ CShw1lMu
+ 1ErrUlO9X8minSpIkyGPUScoZZHhP8Qa2tZj3mHEj4kVIwrsJmksZa4nOehWM5xWr4FMyRxxPxUGNrwuiSZxAiAmcXjfCW/dYpKCfYj4+J0Bj4l1SA3nY0T+X9clpsqC3eB66LUpBMnmrMqvBIM0aEEprE2ND3H0Jtj9A2HkZfrkZilL5wNdK+/eaYR8hbkMNBh0YVSwZucs7Rw3vxh2xbX8A6JTTixXrAeqYXkF026U/3Fw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,25 +98,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  8 Apr 2026 18:46:47 -0700 John Hubbard <jhubbard@nvidia.com> wrote:
 
-> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
-> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
-> gup_fast_folio_allowed() falls back to the slow path for any order-0
-> folio with a NULL mapping when CONFIG_SECRETMEM=y. This causes a
-> performance regression for drivers that allocate pages with alloc_page()
-> and insert them into VMAs via vm_insert_page(). These pages legitimately
-> have a NULL folio->mapping, but they cannot be secretmem pages.
 
-How significant is the slowdown?
-
-> Secretmem pages are always added to the secretmem inode's page cache via
-> filemap_add_folio(), which sets folio->mapping to the inode's i_mapping.
-> A folio with a NULL mapping can never be a secretmem folio. The
-> NULL-mapping check was intended to handle truncated file-backed pages (a
-> reject_file_backed concern), not secretmem detection.
+On 08/04/26 5:43 PM, David Hildenbrand (Arm) wrote:
+> On 4/8/26 12:53, Anshuman Khandual wrote:
+>> On 07/04/26 8:14 PM, David Hildenbrand (Arm) wrote:
+>>> On 2/24/26 06:11, Anshuman Khandual wrote:
+>>>> FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
+>>>> translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
+>>>> So with this feature arm64 platforms could have two different translation
+>>>> systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
+>>>>
+>>>> FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
+>>>> and virtual address range while also expanding available room for more MMU
+>>>> management feature bits both for HW and SW. 
+>>>>
+>>>> This series has been split into two parts. Generic MM changes followed by
+>>>> arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
+>>>>
+>>>> READ_ONCE() on page table entries get routed via level specific pxdp_get()
+>>>> helpers which platforms could then override when required. These accessors
+>>>> on arm64 platform help in ensuring page table accesses are performed in an
+>>>> atomic manner while reading 128 bit page table entries.
+>>>>
+>>>> All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
+>>>> supported both on D64 and D128 translation regimes. Although new 56 bits VA
+>>>> space is not yet supported. Similarly FEAT_D128 skip level is not supported
+>>>> currently.
+>>>>
+>>>> Basic page table geometry has been changed with D128 as there are now fewer
+>>>> entries per level. Please refer to the following table for leaf entry sizes
+>>>>
+>>>>                     D64              D128
+>>>> ------------------------------------------------
+>>>> | PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
+>>>> -----------------------------|-----------------|
+>>>> |     4K    |    2M  |  1G   |    1M  |  256M  |
+>>>> |    16K    |   32M  | 64G   |   16M  |   16G  |
+>>>> |    64K    |  512M  |  4T   |  256M  |    1T  |
+>>>> ------------------------------------------------
+>>>>
+>>>
+>>> Interesting. That means user space will have it even harder to optimize
+>>> for THP sizes.
+>>>
+>>> What's the effect on cont-pte? Do they still span the same number of
+>>> entries and there is effectively no change?
+>>
+>> The numbers are the same for 4K base page size but will need
+>> some changes for 16K and 64K base page sizes. Something that
+>> git missed in this series, will fix it.
 > 
-> When only check_secretmem is true (and reject_file_backed is false), a
-> NULL mapping is sufficient to prove the folio is not secretmem, so the
-> fast path can proceed.
+> Oh, and it would be great to also clearly spell out the effect on
+> hugetlb as well. I assume the available hugetlb sizes will change as well.
+
+Sure will update the required information in the commit message as well as in
+file arch/arm64/mm/hugetlb.c, where HugeTLB sizes support matrix is enlisted.
 
