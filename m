@@ -4,146 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2DA2F364B2
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E7AFF364B1
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 383EE6B0005; Thu,  9 Apr 2026 14:47:21 -0400 (EDT)
+	id 77CD16B008A; Thu,  9 Apr 2026 14:47:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 334BD6B0089; Thu,  9 Apr 2026 14:47:21 -0400 (EDT)
+	id 72CFF6B008C; Thu,  9 Apr 2026 14:47:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223736B008A; Thu,  9 Apr 2026 14:47:21 -0400 (EDT)
+	id 66A096B0092; Thu,  9 Apr 2026 14:47:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CA306B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:47:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8CC93E0437
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:47:20 +0000 (UTC)
-X-FDA: 84639900240.27.F54FEE4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 555056B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:47:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00492138C7B
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:47:40 +0000 (UTC)
+X-FDA: 84639901122.14.B7ACD48
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AC9F614000D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:47:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owuKJyaN;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7DA9240002
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:47:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdxt77ps;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775760438; a=rsa-sha256;
-	cv=none;
-	b=0qhFMZ4H+vNn+TzsAT1o16kb4uNTRF/BxEWNWeNmfCQUoPgARUJlVHR5l857MwicmU4Fq0
-	b2fZjM6wuAQi3ozd19Kz7P3zPT5t/mt/UkZGVj7+kvKik3TkzYkBeki7b2UwAFsuOnLy+9
-	gs/bYMy/4qGwfbnvi0w+4/yr0cuPkMk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775760438;
+	s=arc-20220608; t=1775760459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=svwTgNryibsq3/lIE0D/EnOaofZtSlowFyi6XV26Xfo=;
-	b=VmNsBQmSBfFXsf0FDFbS4YSITyb9jNDJGN0o673O0A5q1Ra8O49/tZGK/MFTrft0/LErFK
-	QDFMFCWiQvpzrugOnP5oSVZCDuiSTxpPgdZoDYy/uzH1n7dvhqhMB0FuoeBKDjjaetmcWf
-	BFReBRTQEgmfqqf/VNHG2kiB8YA3jB8=
+	bh=/ynxQXlOG28vT+Qv0GCJ2ea7lAJsvOFo3WspRgJbUf4=;
+	b=nIHp44zjx5LexOhu+IcyDtrCGUyQEO9rm7j+2h6pbZMPrHkE8xMVocwh5zt03zT79P9Ppg
+	PAJAJ7gIEIhS5tt1Z2vBaKWLi5ZH18RGeHa11N6FN2efdyfgsXyFZg1ZoS3V/lWLxIZ/lp
+	FwFY7aGDwa/DtRTVvkMi5S/r2HuqgBs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owuKJyaN;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tdxt77ps;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775760459; a=rsa-sha256;
+	cv=none;
+	b=N72S80pXN0GO68Pr+ChH9hieziMtkfFwX+npb5KXOrdMN3QErfj7gKfDOhI8aJXYGsshzD
+	9pa+5/057p/loF5dfPRxz5SnFN4u5N+Huao/BijM9kNzaVALB08nFNksj9QPyrPL0Gq/BM
+	mqYPEg84f7Z6LOB5qSfBqknjTStTfI8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F0C843E5F;
-	Thu,  9 Apr 2026 18:47:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375EBC4CEF7;
-	Thu,  9 Apr 2026 18:47:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9723943F84;
+	Thu,  9 Apr 2026 18:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1735DC4CEF7;
+	Thu,  9 Apr 2026 18:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775760437;
-	bh=wN7F9fKA4JbTA7CrHbrx+JQKhgCNMy1dmZE3mrBVygs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=owuKJyaNvfKZGn7M9p437+zqIiaBIW/76VhQXhB5XG4mopCJ0v7M3eZfMO8GBmg4f
-	 pXYEKtK3X6JByMf6/K5Kz4GQmE3fVh5OnPMmfyV7O1rfWrQ5escXD9UKfMdeyIeMnD
-	 bIMM5TfxCVqRqvluSTqQ6SpTcfaJO5JrfXsW4cOEyX5aeol6ot1VhTjo+Nip2jz0jS
-	 pBBBkfb6T5o49dZPSNnXXTPmS2C9nqAenKbw78Z7/IwAHi+MHWMGeVdkEbcNBxGLT8
-	 Jb4NiKlMCy/tNQn4pL68drhnCCPrmlLiwBFNQFhUGtc31v/H9nCrk309ydrD3oAUvt
-	 QJOtzGeE1OjZA==
-Message-ID: <4edea589-26b0-486a-9703-3b8c2d528a42@kernel.org>
-Date: Thu, 9 Apr 2026 20:47:07 +0200
+	s=k20201202; t=1775760458;
+	bh=9hyJHbfFEUwXp5G3u37Z51sC8+W3u2u16Ri8A5G5bWc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tdxt77psaSManp8RwTtMljaONd8XKkvy+BI0xBuX8TWyQrhWmgmSLlhsKOXcaFt6g
+	 0X/KUwJw/psdQ+OVJML4OZct+J7Ja/rHBkJkyBsQW0Z9Q/dtRUcDlSP0Ii4IcYWy8D
+	 oyknISWY8cuoYmXGMnA8wn6qP4gBNR4db//fXZsQP1BoaNjEq09V07gtKf0iTqLeXo
+	 DODHhOKA5l8VZZX3jVNEYuWlc21fPJEV1RXZ7RZmI5iYCVDw97lFMWkcOjvsZ9GM3H
+	 xDc5SRaKVtb3iSHWF4swYaijPGVrYjPdj8B04VRnGVgidqN1X5QETOFrx11507JGkB
+	 BIyIeC7qeTgRQ==
+Date: Thu, 9 Apr 2026 19:47:31 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Hugh Dickins <hughd@google.com>, 
+	Joseph Salisbury <joseph.salisbury@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
+ contention in populate/unmap paths
+Message-ID: <adfz3ySoHakewmx2@lucifer>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+ <4a4f5b48-8a1d-48f8-8760-0f5d43b5d483@nvidia.com>
+ <982e5964-5ea6-eaf7-a11a-0692f14a6943@google.com>
+ <adfhGOHcg4AF3IFn@lucifer>
+ <2cec5f0a-93cc-4572-9793-17f9fd123d2c@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] Separate compound page from folio
-To: Zi Yan <ziy@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Matthew Wilcox <willy@infradead.org>,
- Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jens Axboe <axboe@kernel.dk>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <20260130034818.472804-1-ziy@nvidia.com>
- <c1a2a49b-8141-418f-b239-167ef031451b@kernel.org>
- <3C342301-A8E4-4EC4-BB9E-9C8246F8D6F7@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3C342301-A8E4-4EC4-BB9E-9C8246F8D6F7@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2cec5f0a-93cc-4572-9793-17f9fd123d2c@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AC9F614000D
-X-Stat-Signature: rjhsqrqo86m65fd4sqi7sk3hwooqzuk7
-X-HE-Tag: 1775760438-913794
-X-HE-Meta: U2FsdGVkX19X8PA75AYn2dmYgwr4FgfU6fkfjTlhTnd9EMSVhpOJF/5JPvGmR8JdSROk7lQHT6b0LvBdXOKFYYzHU8f9yXKzqwV+6YsW6Md7toYIDsCJLqEBD/jnv21MMtdTzdhmTLIxigFtc7HJ+whq2T8ds/O8dA43F+2sONYKsYkQGSSt43zB9tGSy/IxKYsFih2pMERr8wUVclpNtHJkVtxhMEuqChDPx6rqFcZTDcmDFQ6c4dxTOzfLsVsEi6C63FxG2iCUAqEmcZ8XXXL3zejdyyfJQSzk4Izjsag/5RCpj4vW1Ekvbgna/UVJX9CjwjCVPRDT/Ta/C6HWOP7HDstkkjbDwBNpRqtIerGogXYV4nl8xBcEFqr4+n6Kl8vWchLvk6LyBFUNMBGwcnM9Fvjh2HdZJF2+CYvfhQcRz6yooDVd9bcY0sicysmOHV5aC1Mhu3VS3lR8V5+Ra/J8d4CIvD5pwcMBYZkILrTelIUEAsWspBZJp/Hablac3wIhLu3JBD9C3MwExbLjJaOsI4Yb9aoaKvlzt6Ff9htXIoJA/4FWf5YcV6iK5CMlk6VSNM/LoiTmGsGD2qMROcnDQB4XZVi3GqzravoJLmT5fbBa8+GgdVJJWKAl1ILfweeiigbyLG/kSo1NIfsz4gE4f3u8pMiEdA/59lc34abazZa1O5ZMtC41VTRQiIyzAuyXnnPDwseIP4vb4nCB+0qET6P6knby2TKWOqSDyrmZ+y8n+jsfRcwNOHS2Y0xuJDi5HNTXQb9VjDvgHvJy+jJvfUz6Jz2ylQpJYU1nQ6NUxVnO664GKXWxet0BelnVHD3MSpACp71dsrtC0tOJVM8kIEkrxWr3lcfHbv80ToMkwiKEjsQ8w+ivKZ93h8ocgiAY0/fnAJ7tndymb8Zx32iiiI0jQFqb38/bvbyZnzSkoi1tDUs4aXUUOrt4W/p38XTQ2fJvNAAui0eq3Gy
- 1bl1uDTR
- h3xQq2XZ7xvPmJuWMLkqD5GHYQpYqNfAT7U1o4iSWLKYmevF6WOZ1W50bDAprh6vWra+Sixr6cNmV6eQkYlXo8p9s2XN6w36/trriaXQ6PbaDnRXMexRsFhnwqNQlEl9oOII3oBUv5DQaqttU428opAQ6kH45kBl5Uq3UheDrQJ8dhpKRGo0NGpNZ3JXN+2S0LQ04t0ISVTt3CCijujvSGXtT4rGlbNehoOtoJNZ7WwikoGycMBcZZgnE4swMUwgFFxoQsqERjSHU3s7BQNJ5JLx/L74VVtFc3zU+
+X-Rspamd-Queue-Id: 7DA9240002
+X-Stat-Signature: w4znr8z7zy1x8aug51wu6jqkodj7ss8y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775760459-118014
+X-HE-Meta: U2FsdGVkX1+MQWlwjZw8eJQ0Y605sPVYRBGbSIK/UoZJ7myTZYzSXr9yxaNYcoBMqJI6L7mlbh5dxcgEUxkQZiCOBJoWeU4dOC4dNtYSJJbe/YN6qOOLcrJWkv4DW4fY27pY5QuvoOM5XbRIeJ0kFhvQPqx0kZgZsU/SmaDpSZEUvILl91wcmUP5pyad9VXwUZpLCAchqSE2+g+M9kAcO+SDv1tXbB1P6xjeeU3wObq+qtxrrACo2pxDsOMVWDjyGBryVulPUVM4N7xHUbneH9TYubwIa4RveVTRjEJ31hQPiRlJ/ldJVPEIJzHXCu1VAfrSb754o+Xc6lyCKEeUsqyHzW7puRgHZECWttM5AOCXMCrsCi8mdo6RjKIBFY7dsODw+g7PlYCNAu73unOPVCtrOfEQLpy3BT+AMUeXb2nDwTAL0AhL5T6KWKKYxalOZK2QYz42vxiVWArTM8HTbyAItbv3NOQcSV+SDeDpTK7w9UMux/XkKdMYtAY4ZZILic1YjYBF1/+Se6vPGbU0BanYVf3fGulCeHCga8vdJqptd7z89C1k2D3+EwzNtqvc4c7d5wwVx3qJ5GufjXnhlouoplFqrcM9TxvRiIzCR1gFPFQlB0twiJS5+MR4H0KPRLEQ6fadAyYZMNx8dznK+WOzhDv57LU6HIPw3edRXVlZ9V5w3l0OKWR/6hKf23j6+Ga2LArc2gK1qDd2KOp7OIOAC7eOOAsSV3QgY2mGajBvmhAICtARfZULaDn1B0On+Ydf7qXhnwx/remv3Nv7KvRR3aUcoX2wnFyjwHmXpw8bqw+5THOZ48Y5IeLejWibjMG6hdsJzD8mjYezCuC063NGVm5s9fSGBzd/SG/mUpj7w8j2sfVeSJQQpEkPRIV0NXTEbLQun+in4z1Uh44Y2cBA2CdF5jPe7hTJfObtozUdXEMQ0SD5lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,104 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 09, 2026 at 11:12:39AM -0700, John Hubbard wrote:
+>
+> ...
+> >>> +	 * Read VM_LOCKED before __get_user_pages(), which may drop
+> >>> +	 * mmap_lock when FOLL_UNLOCKABLE is set, after which the vma
+> >>> +	 * must not be accessed. The read is stable: mmap_lock is held
+> >>> +	 * for read here, so mlock() (which needs the write lock)
+> >>> +	 * cannot change VM_LOCKED concurrently.
+> >>> +	 */
+> >
+> > BTW, not to nitpick (OK, maybe to nitpick :) this comments feels a bit
+> > redundant. Maybe useful to note that the lock might be dropped (but you don't
+> > indicate why it's OK to still assume state about the VMA), and it's a known
+> > thing that you need a VMA write lock to alter flags, if we had to comment this
+> > each time mm would be mostly comments :)
+> >
+> > So if you want a comment here I'd say something like 'the lock might be dropped
+> > due to FOLL_UNLOCKABLE, but that's ok, we would simply end up doing a redundant
+> > drain in this case'.
+> >
+> > But I'm not sure it's needed?
+>
+> I'm OK with just dropping the whole comment. I've lost my way lately with
+> comment density. :)
 
-Sorry for the late reply on this.
+Thanks, yeah I get this wrong myself often - I think tending towards more
+comments is the better default :)
 
->> As discussed, the issue is still that interpret non-folio page
->> allocations as folios, which can also be compound pages.
->>
->> Now, there are PFN walkers that do that, but also page table handling code.
->>
->> Most prominently, when mapping such pages through vm_insert_pages(), we
->> will call into folio_add_file_rmap_pte() and essentially touch mapcount
->> related stuff.
->>
->> Once in the page tables, users can GUP them and modify the pincount.
->> Other page table walkers can just similarly find them and look them up.
->>
->> To stop messing with mapcounts is easy once we can reliably identify
->> such pages when mapping/unmapping them.
-> 
-> My current way of doing that is to mark every page “NotRmappable” page_type
-> in post_alloc_hook() and clear this page_type at page_rmappable_folio().
-> Any user wants to set their own page_type can overwrite “NotRmappable”.
-> And folio_test_rmappable() is just !folio_has_type(). One exception
-> is hugetlb, since it has page_type and is rmappable. Fortunately or
-> unfortunately, rmap.c has special handling code for hugetlb, so there
-> should be no problem.
-> 
-> I did some test using io_uring (via nvim), which uses compound page instead of
-> folio and does vm_insert*(). At least no crash was present.
-> 
+>
+> >
+> >>> +	need_drain = vma->vm_flags & VM_LOCKED;
+> >
+> > Please use the new VMA flag interface :)
+>
+> Oops, yes.
 
-We discussed that in the meantime elsewhere. :)
+It's entirely forgiveable because this is massively new and pretty much nobody
+but me and people who've bumped into it on review are all that aware :P
 
->>
->> GUP and other page table walkers are more problematic and need more
->> thought (and work :( ).
->>
->> Essentially, vm_normal_folio() would have to fail on these pages. But
->> what to do about vm_normal_page() users? The page_folio() would have to
->> fail. But then we must keep some page table walkers working.
->>
->> And we have to figure out what to do with GUP.
-> 
-> Since _pincount will not be present after my change, GUP cannot be applied
-> on these pages.
-> 
-> OK, my memory comes back. I think my original proposal of separating
-> compound page from folio might not be right, since that defeats the
-> purpose of folio, which is a group of pages managed as a whole.
-> 
-> Basically a compound page should still be regarded as a folio, but rmappable
-> related fields (e.g., _large_mapcount, _nr_pages_mapped, _mm_ids)
-> should not be initialized and user is free to use them differently.
-> In this way, _pincount can be a common folio field to initialize and use.
+I mean I'll end up converting it all later anyway.
 
-At least long term a non-folio page should not be regarded a folio.
+>
+> I'm on the fence about whether to post an updated version of this.
+> Maybe wait until someone pops up with a real need for it?
+>
+> Thoughts?
 
-There are quite some changes required to teach page table walkers (incl.
-GUP) about that.
+Yeah, let's wait for a real world case, otherwise we'll never be sure that we're
+not solving the wrong problem I think.
 
-In GUP code, we would not mess with the _pincount for non-folio things.
-It will be a bit tricky.
+>
+> thanks,
+> --
+> John Hubbard
+>
 
-Handling the rmap (skip it) as a first step might be easier.
-
-> 
->>
->> So compound pages are just the tip of the iceberg :)
->>
->>
->> We could maybe forbid mapping them through vm_insert_pages() in the
->> first place, requiring all callers to do order-0 page allocations. Hm.
->>
->> Then at least they would not end up in user page tables.
-> 
-> Will it kill performance? If only order-0 pages are allowed.
-
-I don't think this is really performance-relevant for the
-vm_insert_pages() interface. We never get PMD-THPs either way.
-
-But yea, if we could keep that compound pages working that would also
-make our life easier.
-
-> 
->>
->> But there is other code where compound pages are interpreted as folios
->> and the other way around that must be sorted out.
-> 
-> I think we might want to have some sub-class of folios, like rmappable folios,
-> not rmappable folios, and others, otherwise, we are going back
-> to mixing page and folio.
-
-I think it's pretty clear that a folio will be mappable.
-
-If you want something that is not mappable, then you shouldn't be
-allcoating a folio that carries metadata for storing all that information.
-
--- 
-Cheers,
-
-David
+Cheers, Lorenzo
 
