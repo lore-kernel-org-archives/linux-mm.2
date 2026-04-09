@@ -4,106 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C2F2E98FA9
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 03:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DD8FE98FA6
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 04:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 321D66B0005; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
+	id 9A55C6B0005; Thu,  9 Apr 2026 00:07:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D2A06B0088; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
+	id 92F356B0088; Thu,  9 Apr 2026 00:07:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1C36B008A; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
+	id 7F6B86B008A; Thu,  9 Apr 2026 00:07:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A50D6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7265140399
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:22 +0000 (UTC)
-X-FDA: 84637637364.05.60CCAB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9A5ACA000C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PgL6J1yH;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 68E626B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 00:07:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F20F1B78A4
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:07:58 +0000 (UTC)
+X-FDA: 84637684236.01.718528A
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 50D41160006
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:07:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c644hdmN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775706560;
+	s=arc-20220608; t=1775707676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fU05U0/lI4g2ijCidHZ3j2rU1iPgL0L8RB1CJ+rRE2o=;
-	b=ylrawlRMZ3PUhu/YEmLBlcJLbHNGm6nUK/pJCqDR5mAbxgZu+8Le+bY+0pX2/intr1nOkq
-	XwKoCE+Slw15BGqfMf6kbdF0NalrLoEg6TX3WbmTDeZI7xQYYadM+6u63KLU7e6GIMKcK0
-	+BznBW7GXBF5FQlCsfE9ZERHJ49NicA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775706560; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=LAVFMhISX71mA6gdtT79bgsvTIDHJN01ntSn6nTznYc=;
+	b=PyXBKy+Qp+cOSEe6TWX53HlV7bkoCLGSgdvlyouynKy0YqFNz6yTw6yUCv0YrC55j2unO9
+	FOVaafHop7zmVuxMj3dtp9gG3CDA3XjV3j0RQszQASF9tFnnVoTocGQUYcvGcH1j1j2LcJ
+	U8zQ+gdBHCBoCJnBxZCt0l/iSQOuUgI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775707676; a=rsa-sha256;
 	cv=none;
-	b=NFOuGB0aDo7elx6BCi5Zi8B9xG7985QiaQ+4AfR/NxNmx5X69BDVFCWJcwtLGdV12vy+1P
-	aTcNYJY+ylrfdq03Pd+SGee5nT1vTdl/NVaqmdxOAmYECX1WaPhpgEPVsKCcWfjWzbWlvg
-	HN+7hBCyN5x3OYuInIyLvSvSJUxxnP0=
+	b=x4qQU2qcCuAw9FrJ1kpL+QUEUXJsLavyTlKHx+qEbRo0pnaNcH6deiBm9fQ5m4wzk6itkV
+	viS0Csn0oZ6Q2ZblCiceRAEwuj4ypldr6N6FYPfzluwahlHwTnj/2zRa+miTy1WVKJOQhj
+	GrZXIVB2/TvubI6xbS/me5Sa8AYnJmg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PgL6J1yH;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63882444FB
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430C7C2BCB1
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775706559;
-	bh=5DNUciIRiFPhT3GitLgn8L2T3DcdPnaFe3B+BD+7kkg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PgL6J1yHTM59k/6lvC/kLrCsx6PNmjuY33+m1LTDDD3Di6dj4LWcpl/N+ab0G92Er
-	 gzpZnsTPWezZr8wdCNMbhEvgCqk8D0frdwbMCbr3X5V2ZylJWszc3YTeqVV4V4+WBC
-	 7hha9iAHlQoCnCvrTpYy6f2zu/+yCYcWGg3JN/QPKZ5HhHf+QsU2kInZ/fjCOJ/ott
-	 DbrJOKLcfxn7lkezyW1h64c67FFvmU+Z6Y9ZPmbjN0sytvc4y8qrF4XPT74hGNRo2S
-	 uk7IoM23Pei9yfVZmYcmDC3GNQOTiNoRYAIDKKkFaEezOpQ3IOqptkK6w3+YeVF5Fr
-	 gSrhdMVhz1tpQ==
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8a151012558so5395526d6.3
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 20:49:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWLdIUlPS0SToXtd0HtcVF1CAhjDPFhdf+eeVTM4vVR3aqzZ7Q8EarwM5GnrINX2EHd5FketyqxjQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx1nXMDykr9ryD0du+qKbmC4HjVmLmO2iAxI5JBoTJax0m8dZDq
-	I0jjzFBS41WSsIKXYEnwz/NAuNl4MTgg+xLdI3F09GowIpZ6XEJ194qjcEURCYRDOXvvUEiEsPO
-	27KUthR2ZsAlmw6+jvUP2HcCIuZHlj58=
-X-Received: by 2002:a05:6214:19ed:b0:89a:f10:9980 with SMTP id
- 6a1803df08f44-8ac7413fbbbmr38698396d6.22.1775706558553; Wed, 08 Apr 2026
- 20:49:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com> <4451bdc432864aebb54f401eee51ea53@honor.com>
- <adUM54W3WYwEFj3J@KASONG-MC4> <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
- <adW_O1-QAQadQ68-@KASONG-MC4>
-In-Reply-To: <adW_O1-QAQadQ68-@KASONG-MC4>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 9 Apr 2026 11:49:07 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
-X-Gm-Features: AQROBzCi0WktBv3fB90ur7-Wo3B5z99NIxTu9PhVrMAEXZNR94S6ZSHAsAFuS5M
-Message-ID: <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
- = 0 or 201
-To: Kairui Song <ryncsn@gmail.com>
-Cc: wangzhen <wangzhen5@honor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, 
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9A5ACA000C
-X-Stat-Signature: 3cc7jfbppt9gxqesadpnyzcwkcppugiu
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c644hdmN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35c238f1063so387958a91.1
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 21:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775707675; x=1776312475; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LAVFMhISX71mA6gdtT79bgsvTIDHJN01ntSn6nTznYc=;
+        b=c644hdmN7zMDkQbm4jbda+vhSJ67/bkaEG9fikCf1cZSC2WuQuXEHbZ7WLWa9NGhKz
+         q8tyRsjno6P4C7o1hPAYBIvKF0eQx0exzCAMeqLvkvWXEtKSTIjNG/G8JX4ADmsGjAoG
+         V+olvZ6HaA6itcGpZ1iICodgYvan0/KTTJfcNpKYW3rUevAM8yjA3RDTe++qqdpE923x
+         LDk2SMNdSZm2E4olrtqgLPhuX0OW2Gsbvye9tvsQGdtxUuIt5bjeVjV/XjiXS3vcNiMn
+         MbTAS0gaG2Hb7XdXcjQ85TrmTJjLItEqt1vB5NOX+661cvwH3okPLcZ96ELBpy03Pjmr
+         ahoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775707675; x=1776312475;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LAVFMhISX71mA6gdtT79bgsvTIDHJN01ntSn6nTznYc=;
+        b=N4NMHeRQctyI46jNPkEl7fIc0r3S8V1co5RtguLapb94slxy3TzocWHmoTPvN442l2
+         6rybk8IPgImHFm6DuD56yHTbszUJn4l+xWfJZI0RG5W03sQOlqKjvOlaJQfGAvqhjy5c
+         Z3fSFwL3IZV+/R6H/YrCp2dQqNLPHRUJy3brX7WzmTmiv8OuI8wHRezb6VIQKpRHiNsU
+         sp/o0DqgUrz6RM9R2b8gFa2I2dLsgqKJQ4UTG8jnCbAyGI71p2zqxvcomV5EJK2jzqxa
+         QpNkFg2c4eV3aIvIGLxHYw7Yvz7tQrTqs8FAHnNKBKz3IuxJhLcG8c/iG4BPycwHt+RY
+         /ueQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFAsqY0Wg0aHepdT1m8eOq583la51AJy1IBSaa5aKjdWg9Fb6UuhXT9IgN//bYDEKZjuIzgNs0CA==@kvack.org
+X-Gm-Message-State: AOJu0Yz9evu84z6EgRHWxa3o6JRcWgRyw9w8QzaFI1TeHqr2JL94FA+8
+	aBRn1WIdX3BgW4H9tBFqrwMItRs5TCCequcLJdN3kwsL9d6mX1K09iDN
+X-Gm-Gg: AeBDieuVR1UtfLh9ExDkHzEDc86+07y65pt93aRrIK69jsKz8H1t40BVozLaxzGlHk7
+	d/I/NpKVlcYcvfDm8VqWYzeOdZdKFYfQsu3lI2ywmu54GgaDn9K1VYXRmx3Vdw0/UscSJF8nW3P
+	A/nyYOTvmFKg6HJU+Jh4p8OFFdSody3ArmEK2ShU4yRDdg0CGEMJ8hECfsnuDEL5/CBXzi7TEFU
+	l9dgUrVnH5bhEwqYfqPdJIpUnHUVK+JnWBS20G7WkAMMA/Hj8GWwFaeCyQUKd5s6JpxkALOf3Tl
+	Swcj+QXpvnATBQgApMOaAl5c7CdM1gRsiXbKFD8PyEV+P9Zlrn/B1UIbkHTRIHTPjDLVFgCjRK8
+	wskdF0ZPy7gZV1D7U7DiDNVKE+y5+EqVEHtZ1agYJatcJ3iPW8CBUOHN7DMrWdx/6D3GzQmLicU
+	FcEcrtBMVXwvoARMe90RKf4w==
+X-Received: by 2002:a17:90b:4c90:b0:35b:e690:c5ad with SMTP id 98e67ed59e1d1-35e359a5e4cmr1974770a91.25.1775707675088;
+        Wed, 08 Apr 2026 21:07:55 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e3517f2a0sm1658684a91.17.2026.04.08.21.07.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2026 21:07:54 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>, Donet Tom <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <huang.ying.caritas@gmail.com>, Juri Lelli <juri.lelli@redhat.com>, Mel
+ Gorman <mgorman@suse.de>
+Subject: Re: [PATCH v2] memory tiering: Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
+In-Reply-To: <877bqgvs4k.fsf@DESKTOP-5N7EMDA>
+Date: Thu, 09 Apr 2026 09:12:56 +0530
+Message-ID: <se94lry7.ritesh.list@gmail.com>
+References: <20260323094849.3903-1-donettom@linux.ibm.com> <87wlyqt52m.fsf@DESKTOP-5N7EMDA> <c571bb69-82f2-4346-9f99-6a7258e28a27@linux.ibm.com> <87o6k1ubg4.fsf@DESKTOP-5N7EMDA> <bd78aaa2-888e-4c27-964b-09f085161224@linux.ibm.com> <877bqgvs4k.fsf@DESKTOP-5N7EMDA>
+X-Rspamd-Queue-Id: 50D41160006
+X-Stat-Signature: 7z4yoky341udbyuciygqtuyk3fb7yius
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775706560-464776
-X-HE-Meta: U2FsdGVkX19Apz0/X60pE+4jfAm8UM4Zrx2+If7LnIUkuACXvGAGiPyfQ1+Yg6hujI0Umb9GwiDp06/zLTDAyeikegncvCeEJj2ip+ZN1hZQgRiTIKpxeVaPHmhG6/EyIyY4PfiIEmcr+He281K71Orn4x3LE3BxhQrnqaQcCvF+NQdq8ODoUEiWxqxTgMkuEgwECj4JNVCEdcFkx4PkCSSfRVYj6NVf3HfmcLrOH3+gn2u7IPbR9JEjfKkRo0V9uK57KhrCqkZKqU+yYQMuDAwkoBRzKDLMVAu5L1fn+I7d+RSw6Hr4bJpgKTJ2VywHaXdH7iUsvCj7nNI3qTG16yO3YDSPVP6jDiM+R6o8QXUDcXLVa32T4TQfQ0LYEzw3NOOtVjPgwwlGxQfaug0Pybxf8AEIeRbDIDAOmOxPgT4Tu8fRRYdoBKoiy9xaHAdEB8qHJt1kqty+OtWGLjrCSqd2cOk8bqDzbukGOdZ6xErjwlfT6tKtAZ90RKopNatxDzKbQ1gBgoInubOHmR0qdsyWe5mbKvaUV2VzcXSAbu6jfelyVWeUUd5iNH3UoySlja8uRrCal4UIpgivqCWfPLxILGYaFK5L68rqOg9l9Ay8Cm94dtwnSNsiXxBvqzeI+fSR9dNtQeaczlOldCTigKM6TeBNlrKYBIfXaOys3itnCpjfSqNULMRdbfePDnBFPWd2aJ9nHYdrMMzPGiW8xEeWpz77CTuWmlkcM5yEuXX2j3hc/OKM+kAFWOP2Cr9lt/fFWcJkSduZ0tUt5F/DxXqH+6rFvcy2d0LcXh43eX/bnBKpGBKElhy279sq/izqV6uIQmsUs0jDzIUyEZ8SAshKmEzQdO8PTOvtbKxXC1VrnKPzr7Dc8FcOdsE2Kt2DetVRdZsg8KQI7Hdwe9ku0eLMGWRzkv+DLt8hlAiPei8lSotWFi/6OyNUpamkU+7E2InVhucSA1cIQiXv1bx
- /aBB7YvG
- b70kP7KWNX8zm8sNOa68mO1PtZiYiodZcL+vnHUlZ5K6zC5ercC4vIh95YdswlpjMXFHAGii67wcP8rzrUsemukNkk/sQDSN5OLbsUkH5gHNQmK/VL+ODaANm4082f4fM9QlgS/3aIkMCCvgeHcihz/UuBGJ8drUjSttFMGeZlBFzAP9k+qal0XGM1YlUi1k6TZ9U0Yl8uZr+3e0ztQwGxeFJfjamLwr5aYnCmAKSpE3sPXRDuCNL0gOAF+gKRhHPP9u3VGrPqPQHU/qPRLt6tR6jED4wAM0N8T+S07AFpP/c2ehjylRa/Cxu6z2ZvL43VEO49d6R3C/2PEkyURQRQ509NhO+VqwRvaZWetq7Uq7QTDa62YoQyePZcY0r9twoZ4bVBjP0b+OHSfL7c0vS6lAwPw7MHoU8Cn6ylpknGep4ddtWfRnw7gOoHSjYtU2SjzVqmSE3suwgcUU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775707676-1765
+X-HE-Meta: U2FsdGVkX1+a14IiUIsu2hVBCTIZGilwpXkgPcRpK2JkBSbyyPnyvBHRW4+YyvhdmYDyQd4d4B1j+OdmiFpvVatBlALRvLC00RxW5hDH3hh9HVvunnAueWiO4QtG6VrfHik1hnbKrRHtLuTKfHGNrRM4MDK5SCRj4eekkywULgnTMgHBQ/i7v48upeWRvnECCZHKbwe6/qnopLUeqZPzM5dWjaxN/S86KxyJFhmUsrQUvtW3RaNnkpxLF/CPAE7Y7GfpkkTKyHJ8cS+oWeJFpKEuRgJdxVD+WXA4mw0OS9RzICWCYOkIHPK0+uUQm3Ebn7FEMgLyC8/ugKO1PbW6Gb0AywSH541XbHboZa1s8aFqOdo1HRT1XYiiyehAzwos3ehW+7fMD0SEyw/vfp7RIMSSgalU4nXqj4l4F6Jc6vfOWO/DOFBkibW5sE+qGLQvWnjtEpWoWabYx+2qpB4W9+ScwsTU8zamReUNJ36OXoeEWEPLqV/5Xr3fkb6Vhy4xrYwaFpdgKZ7Du75dvChMGfDMeNMTUc3AWHUeius7JFBVhRSPvsXVxxBUFLLy9z1bGd5JMVqbkarSYw84LnkJPA6+8vU9wlV2rXI8kkSSK4VDzzD9jwK+1p1WJFTvcGushPw5TBATuQL34NyRRyvMBTyFErQvpDHYWws7G6WXrtlhbToBF8I6alUhLvpWhqDUgqClvgNMc/YGUc1nVcK1ss06+1GPvTc5Lm9XN9ldErCMG23uyoXSxWDh/k7xW02VBVYz4U5hj2db+F8i1T7bal0tJxO451xPaPgWPcEwryrv7lvuwLTVhXev4Ryv21i8kDkfLcSqSy8NTUlwxeiP2mYNnzD46j2oh4k31ar6c7Pbxg9STEKjrvfZdATXpQJEeskXK8bVyjvwg3AQ7/ej+94xmdUITTB1ubov9/twyceFgqGGJCyG2SLvHowt89aV8/gprkv1X5azSHDV+FV
+ THSO+U8b
+ BIjEM4ww2OYnmE016ytJiAeTHC9I9gLWLGgzGQVQps/MUgyoud2LSQkyS6QVvpa0PoUL7cRot3QKqYQCXm1jihnerczfjE3V2D1WTFmLWeEQz1nXhmlsaYy8lfjPDX1hGvp/7oLOfqVR4uaU1c1w/P9Sizjs27gUSEE6B9KI75Ow0/hfzKP4Xlvh93Rbz+idV2FQOHfGZm0n1V2niJy8bPaSft8PpQarl7SHrE/UD/WjmaWHnlOucxW9Ce0lXolFtZSESk8FPng5PhfNOTOXUFqHtZcDecQtoepl6pmgAq3unc9rW+VaejDzpo4+p1Ka3AWjBuz+QJ33ETKuB7FVd3qaP8X36PKC9KWAAV1g8VD6e/F1MsTmh+w8fKp7cWzDeT7ifICgW7p2l769nm5CYxGIya2jc3Eb8dvLz20aisIX8LdRqtoxJ5bInv2ZZhH2QmiYnhphuA2UDkAi2nURX4R95q9WdUGL4yoj0HRhvSbaG9ILLgl14njveiVnUpZ2s4luGLtPr3U9rRolDjG4AVJabpgpz1h1llyEZpuDmDV5QJb1GsxSCa/3XRXN+xmBgIWZYgx1ZSSZ4eOU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,140 +113,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
-> > > Hi, thanks for the patch.
-> > >
-> > > We have a very similar patch internally, and the result is kind of ba=
-d.
-> > >
-> > > Currently MGLRU forbid the gen distance between file and anon go larg=
-er
-> > > than 2, which mean with this patch, when under great pressure, you ma=
-y
-> > > have to keep rotating a long list of the opposite type of folios to
-> > > reclaim another type.
-> > >
-> > > For example, when you have only 2 gens of file folios, swap disabled,
-> > > and there are 3 gens of anon folios. Anon folios are unevictable beca=
-use
-> > > there is no SWAP. And file is also unevcitable due to force protectio=
-n
-> > > of gen. Consider anon folios are mostly cold (at least a portion of t=
-hem
-> > > are), now the oldest gen of anon folios will be very long (e.g. 12G,
-> > > 3145728 folios).
-> > >
-> > > Now, to reclaim any file folios, you have to age first. Before this
-> > > patch that is usually fast. But after this, it will have to rotate
-> > > all 3145728 folios to second oldest anon gen, will could take a
-> > > very long time.
-> > >
-> > > During that period any concurrent reclaimer will get rejected
-> > > due to force protection, result in very ugly long tailing or
-> > > unexpected OOM.
-> > >
-> > > So I agree this is a good idea in general, I agree we should do
-> > > this. But better defer this until we patch up MGLRU to remove
-> > > the force protection first.
-> >
-> > I suspect that once we can age file and anonymous pages
-> > separately, this issue will resolve itself. David already has
-> > some code for this [1].
-> >
-> > Not sure when he will have time to push it upstream, but I
-> > may carve out some time to take care of it this month.
-> >
-> > [1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
->
-> Hi, thanks for sharing the idea.
->
-> Right, a few weeks ago I also got info from CachyOS that they are using
-> following patch for MGLRU:
->
-> https://github.com/firelzrd/re-swappiness
->
-> The idea is also split the seq number for anon / file so swappiness
-> works again.
->
-> However, I really not sure if this is the right approach. It changes
-> the model of MGLRU and things like TTL may no longer work as expected.
-> And TTL does solve real problems too (also from CachyOS):
->
-> https://github.com/firelzrd/le9uo
->
-> TTL replaced the le9 patch above in a cleaner way for thrashing
-> prevention.
->
-> Right now we do page table walk (and it walks both anon / folio)
-> while generating one unified new gen, meaning the folios in that
-> gen have the same (or at least all older than a specific) access
-> time, which is used as the metric for TTL.
->
-> Besides, having unified gens also help implementing things like
-> workingset reporting where each gen is like a bin for histogram:
->
-> https://lwn.net/Articles/976985/
->
-> Aging triggering could be a bit more problematic too.
-> I think the right way is to just do the aging asynchronously, Yu
-> even left a TODO comment in vmscan.c:
->
-> /*
->  * For future optimizations:
->  * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memc=
-g
->  *    reclaim.
->  */
+"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
 
-Aging asynchronously could be a separate topic, as we can
-do many things in an async manner=E2=80=94similar to proposals for
-asynchronous compression. These async approaches may improve
-performance, but they also add complexity=E2=80=94for example, managing
-CPU utilization of reclamation threads to prevent devices from
-overheating.
-
+>>>>> Donet Tom <donettom@linux.ibm.com> writes:
+>>
+>>
+>> Thanks for the clarification. I was running some experiments where I
+>> only required migration, not promotion. However, I observed that
+>> promotion was still occurring even when NUMA_BALANCING_MEMORY_TIERING
+>> was disabled, which led me to believe it might be a bug, so I reported
+>> it.
+>>
+>> As I understand it, enabling both NUMA_BALANCING_MEMORY_TIERING and
+>> NUMA_BALANCING_NORMAL results in both promotion and migration. Given
+>> this, do you see any concerns with modifying the behavior of
+>> NUMA_BALANCING_NORMAL?
+>>
+>> With this patch, we would have better control over enabling and
+>> disabling promotion independently. I would appreciate your thoughts on
+>> this.
 >
-> Then, we start the aging when ever there is less than 4 gens, and
-> allow reclaim to always go on even if there is only 2 gens left.
+> IIUC, we change the existing user visible behavior only with strong
+> enough practical reason.
 
-I don=E2=80=99t think allowing reclamation with two generations left
-will resolve the problem. The fundamental issue with sharing the
-same generations for file and anon is that one type must catch
-up with the other=E2=80=94either through reclamation or via what this
-patch is (admittedly) doing as a workaround. If we have to go
-through reclamation, that effectively makes swappiness invalid
-again.
+So what I understood from this discussion so far is, we don't have any
+mechanism to do auto-numa base page migration between DRAM -to- DRAM w/o
+triggering promotions too from a lower tiers to higher tiers.
 
-Allowing reclamation with two generations may let one type move
-ahead briefly, but over a smoothed time window there is no real
-difference, as the other type still has to catch up with the one
-that has fewer generations left.
+... This to me sounds more like a broken interface.
 
+> If so, making something conceptually better isn't enough for that.
 >
-> The performance would be better since the is no more blocking
-> on aging, no change to existing model, and the change should
-> be smaller and easier to review IIUC.
->
-> One concerning part is doing reclaim while only having 2 gens left.
-> I think it seems OK. It should be rare as 3 gens act as a buffer
-> already, having only 2 gens left means the async aging can't catch
-> up and system is under extreme pressure so it's unlikely the folios
-> will get access enough times to get meaningful heat info, and
-> refault will be more meaningful help to sorting out the workingset:
->
-> https://lwn.net/Articles/945266/
->
-> Cgroup reclaim can do some throttling on that too, and kswapd can
-> still do aging synchronically.
->
-> Just some ideas, we may need to do some test and benchmark
-> to figure out which is the best solution. Discussion
-> is welcomed! :D
 
-Maybe we can still find a way to address the concerns you raised
-above, as well as TTL=E2=80=94for example, by using separate timestamps
-for anon and file pages.
+I think Donet's approach was more towards fixing the problem, then
+making it conceptually better. So, as of now most of us may not see this
+as a problem, since not many systems have different memory tiers
+attached. But with more widespread CXL adoption and more memory tiers in
+the system, we might require more finer control over auto-numa based
+page migration.
 
-Thanks
-Barry
+
+But hey, I just wanted to voice out my opinion here. If we think
+changing user visible behavior is going to break existing applications
+and we don't want that - then in that case the reasoning sounds ok to
+me.
+
+
+> ---
+> Best Regards,
+> Huang, Ying
+
+Thanks for your feedback!
+
+-ritesh
 
