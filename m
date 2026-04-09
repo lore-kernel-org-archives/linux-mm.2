@@ -4,90 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A60FF10FC466
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54B8C10FC466
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95DAE6B0005; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
+	id 87C9F6B0005; Wed,  8 Apr 2026 22:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90DEF6B0088; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
+	id 854A46B0088; Wed,  8 Apr 2026 22:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 823CB6B008A; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
+	id 76A5A6B008A; Wed,  8 Apr 2026 22:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6C36B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3457887CAF
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:30:25 +0000 (UTC)
-X-FDA: 84637438410.04.FC12175
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9261F80011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:30:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 6374E6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:36:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 114A1140373
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:36:01 +0000 (UTC)
+X-FDA: 84637452522.10.BB42EC2
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EC7B6C0002
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:35:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=UGpa0zeX;
+	spf=pass (imf10.hostedemail.com: domain of sion.ji@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=sion.ji@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775701823;
+	s=arc-20220608; t=1775702159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=DNbM1dW0sygxZ4tdqvsd97F30tCJgImZUniQv0vRTK4=;
-	b=LF3JRy/ZcY7AuYyXALuw0cHgsqM1r/d9HC32YwbJWqUSuekBG4nmbJpt+kN14cV25qnfuo
-	xyo9b96Pid4NXkWeMP1+p5nMZGDyZZ6HYYtlzzhXI4pPOwuRrqVszApf2sFOrenbQeHXiN
-	PJghE+JJhuQuJM91/pm14I36f9s2AqE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Svwkd34gA5sOnhAwfBHI8rDp7I4bZYBAYTElFQpGfuY=;
+	b=jmiz8Sz5Ry6UfxK3LfWabVAcZW+OqJ8tC78UfLnefyYK7WXIuts7+tQo0oyU/Y/730JzRv
+	E4Lbrz9PP6tMn3nDIiltp9b4s4L47C/h6lIifRR3a822Zc1dHPzZ0oNTMCV+jrN7s+ul23
+	6iTLpyrm7luajLySFDZi+iVD/offx7c=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775701823; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=UGpa0zeX;
+	spf=pass (imf10.hostedemail.com: domain of sion.ji@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=sion.ji@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775702159; a=rsa-sha256;
 	cv=none;
-	b=TXWVeW/G0J79ppj4f3JD8XsJ0a6+AAagAm4YhJWBooK2JxlNQ5o1fAixT+Z/BiyGX+drKd
-	8XIAVqSKIv2HdcIj+FQh+5o4v5XYxTkluUBluMCY7eB+K20/4BcVDSVkg6pQ9ZcTj29jnS
-	v4QvNT/4RQUXkBmSwy9rFnoFMbR88rk=
-X-UUID: 0a9157c033bc11f1aa26b74ffac11d73-20260409
-X-CID-CACHE: Type:Local,Time:202604091025+08,HitQuantity:1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:29359778-258f-4ef3-bbfc-06fb5b1b6bb3,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:45fa8da2f672d49430258e355d67af85,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0a9157c033bc11f1aa26b74ffac11d73-20260409
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 894210101; Thu, 09 Apr 2026 10:30:14 +0800
-From: zenghongling <zenghongling@kylinos.cn>
-To: dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	zenghongling <zenghongling@kylinos.cn>
-Subject: [PATCH v2] mm/percpu-internal.h: optimise pcpu_chunk struct to save  memory
-Date: Thu,  9 Apr 2026 10:30:10 +0800
-Message-Id: <20260409023010.10493-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	b=57Rlmkr15gbg75rTgPeRAhb2GrFPBck7uK1A8VpNulpMccfTdTzYi6HP1yJGgMOdYUau6e
+	EtKgpNmCM+1MkhrieTLhCSnRmO9X2wuN1JJwj0TMLZDDArzVwzobXQv2ColIGcLDJcE1nG
+	3jMLNPC3orGhhEDpZsl2NXQDggBfoNE=
+Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260409023554epoutp01a30b34e6611fcdd2add6fcc39ba3dbc6~kj7OIBOsC1819618196epoutp019
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:35:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260409023554epoutp01a30b34e6611fcdd2add6fcc39ba3dbc6~kj7OIBOsC1819618196epoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1775702154;
+	bh=Svwkd34gA5sOnhAwfBHI8rDp7I4bZYBAYTElFQpGfuY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UGpa0zeXYvwxImJu2Xw0qS9DNYeORc4H7+2xLADkYUxMdVnVQLJ8TbF4n+Ave30V0
+	 NIsNWjDoG/u7BZBKQIkc9ev/6kDBwyqq9hcS0X/ta1G/hHJxMN9mvX1nSMve2SZ5v2
+	 sMHpRwgFi8LNqKaug2sNw8ze95gAu/4MjtO0SHK0=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas2p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260409023554epcas2p29b35a3c31622764ae384f17ce2139964~kj7N0E8dH1248612486epcas2p2R;
+	Thu,  9 Apr 2026 02:35:53 +0000 (GMT)
+Received: from epcas2p3.samsung.com (unknown [182.195.38.209]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4frkZK3t6Kz6B9m7; Thu,  9 Apr
+	2026 02:35:53 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260409023553epcas2p2e40d1d79206f0169a765fadcf180b010~kj7M6g5qo1249512495epcas2p2L;
+	Thu,  9 Apr 2026 02:35:53 +0000 (GMT)
+Received: from AE (unknown [12.81.78.179]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20260409023552epsmtip12b61a69ae4dbba27ca8fa276504ffec5~kj7M0tsTX2647326473epsmtip1j;
+	Thu,  9 Apr 2026 02:35:52 +0000 (GMT)
+Date: Thu, 9 Apr 2026 11:35:52 +0900
+From: Sion Ji <sion.ji@samsung.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador
+	<osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, Wei Yang
+	<richard.weiyang@gmail.com>, linux-mm@kvack.org, Yong Hu
+	<yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>, Tim Chen
+	<tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen
+	<yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>, Tianyou Li
+	<tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+Message-ID: <20260409023552.GA2807@AE>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260319095622.1130380-1-yuan1.liu@intel.com>
+X-CMS-MailID: 20260409023553epcas2p2e40d1d79206f0169a765fadcf180b010
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----atTJT_IMamyeT3aYIDqNfPm07F0lpbeBE4hx2ZgfjOvbTF6B=_51383_"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+cpgsPolicy: CPGSC10-223,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260409023553epcas2p2e40d1d79206f0169a765fadcf180b010
+References: <20260319095622.1130380-1-yuan1.liu@intel.com>
+	<CGME20260409023553epcas2p2e40d1d79206f0169a765fadcf180b010@epcas2p2.samsung.com>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9261F80011
-X-Stat-Signature: tnre4gocwzrxey73cq4459ribrx4pcec
+X-Rspamd-Queue-Id: EC7B6C0002
+X-Stat-Signature: ns7h9nxkqrarc4o6ycjj1sw4m8mij9f5
 X-Rspam-User: 
-X-HE-Tag: 1775701822-948146
-X-HE-Meta: U2FsdGVkX1/ilY+UtjXOzQ98i9DBssvPqfuQiOgfLQm6dWSlf/KcUMCCtc3+DoMkXweoqPhoSiuYW2uJYBHfb2897Xs4/nDk85FOlxBQhBdEKCrUmG64DJcRcQoFqiBw/IY5ZuZaX8UHNGeBPgB+2M98jiKROCVaUR/EDIqlYqLUFZA2yG9GcrjV6rj06rguiIUFukSiMFpZ8ivRYWHmLqiF/kYHWKTfGg4We+MXXdOOrtg/GoxuQ1Za1M3wqxdLlqDbSjYl6/l+4V1uELYjMszSQeUnKMA1pzRTvZbSPBIidKFeZHeLb76CTfE1cqET/RkC7+luILOG569d6/6R1XqBJoYzIDKRFj75GUwje/WQjMBDDbYI+FiLKNtwRNPD5GV7OT8fC3JVmyd1nFP1hGFMj53ggUehw6kT7xQ0RQiucS0RSSDQJIY4NI4/NaKFOZDygFXMoPdVQXwGqRArlF3FxQWq1WRdfYWbUsB1nuqKY3dXfRmqS6qAgoUyRg6ZS5Q6aaTBnAXqwfDtsMi58SswSA79u3+mEhhUkhK9nOX/hU6r6hTreI6GIBtvKBEtxEwuoA/b5wvfaMJ/SDmYGOctSxcYNY11UpMjJ+si3dVTShnzVUydGFkWQxfaSO9Y39in32oIv5Xoev4Sa303h2xllbuRn/BHK28vJU9fRXccuyyV0CdaZCwpg3cpLT+TOQMvcRKbdvILZ4AQcpfd47ZDZQOaXdxHapISyyGJ6WDAVT+PURmDm5qwSydo2xnu11uMnrXyIM4+hi9nU4hmdZi34a41V3Yho84Nclr0wfn0/FWqNayPUTbqK42IqJkgs4zort4BSTANiJ5PdlTKeMGJmux//DIwPCsu1jkQmxLoUKKM7yJHksQhVgUQJ6hczEQaM19eOD/0cAFajIj13HEcbTF/gXUOQ6J7mhV7iLaJiIg/gF+2CJt/KYSZCx0floFD4M3wNhd2e5lgekn
- +UYzgmp9
- cDH+ETFMPl7ZjeAOp5pZgePVmCBpxvKgWTYoENlOCn/86BSQv8ztGUYhWZfGEGS5nbXLr
+X-HE-Tag: 1775702157-193159
+X-HE-Meta: U2FsdGVkX18xR2bgnupW9fYE/sXiYdgqWzxIGfwKntBGrN1EzHVTPCcC5cECAR4OXXyjTQFXfK9/74E5iw2J5ZpkgJ9xX4oo+VYDccDcBbZ+s19wtz+xQL54iUZ7IoaSSu++mJcOUXZONJUcLupzSNXV0NDrc8BqJxHTF7demlRR6HcFN3+JenQgD6r4VXtCP5+tD+5UBAah0eZxoWdm6z5dlz03JRCKFIvV8UfEAmKVP9a1ixi/avz5+yKTCzXyEMtjJCDuHa7eBVwGgmDaZLTBh0Gk6IffrNvrgLu1PRp1pCanFcGJOL9ip1is8022dknXCQzrIvSZfs1q1Owj1/l5B/gRnyvBPOqLjlXmgiCNZm1jiV9cslXiFy3Jn+APz73VMT93K6ICgZMvQBKRaj0Q6uCp2POEkTaiYFDxcj80yvTrCDKRQlquGt9hP3aZbRpNGeFmHaqLMgPpk8iHzbEY7ZS0t/qOvHIVJWtEahvjvif4jiXzFfIECsSAlz1gX/IwrIFQ+zx/lTjFeTwbvvQer9dBTOCSPB3a2DSs3/sLqL4T5nW0xIbgb+ptgIBdRkMRJonekVlcx/7MxT2GPPgIAe5a5j09MfwfdskXtmbo2YPXbk4st05wJm7hMECpw+DbvGuCfRt4Ebr0u+SybTPNZ6IvcgE5NxCWst7OfknFTXfRLMo37Xo7hYHohmTwLl48ARFKEGNb4iPx5iWxY2rppaK8NSbXFUmGd+0dqhYflrJYdMKLK6Gscs48JhyMOY5dWKrgiUy3ImwmnsBv3Bpjqqlpra96tpqdh+4FFLVORTm8aUqtBTZKh1zYy58Z4jY8sJ1uwlnoaP9rbVhAkE2DTzWeMc90BtiC53XNDCdryxw673506bF77Yr/b6OD/QN489EsfXSBwUeuqCQnb+7+PsvczFAV+t6gpdv6iv+Y9JdqT4PD887qz+Wn86fdAdTVvTkpaCWLJHatF1u
+ t62EsFJ4
+ BpYgWLcsUqvfVH2CNPvcpsrzPxkfx6dkFVslHPaLx6RbiiRje3XxPn4JFdeG2G86nbuFpja3ZFBHIjT16EmwPSjVJsE5zdWNpiIU2Cw/u5BTWdpxZ+IsYr7bJI6Qm61zW3oe50gKIMMoLQ7dferrRnCupj7gyUlJQKe4Lft+BNnF7MswHwWL3fsDAbUXHWGIJJBuMXLouLUP7SP2d5nNqMlHdaHkI2XQgPzIpb8gIBh0awss6RnbtNMIoyTs5tuOBvFNXos/x8vRwVgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,132 +116,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Using pahole, we can see that there are some padding holes
-in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
-can reduce these holes,decreasing its size from 192 bytes to 128 bytes
-and eliminating a wasted cache line.
+------atTJT_IMamyeT3aYIDqNfPm07F0lpbeBE4hx2ZgfjOvbTF6B=_51383_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-With allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
-Before:
- /* size: 256, cachelines: 4, members: 19 */
+On Thu, Mar 19, 2026 at 05:56:22AM -0400, Yuan Liu wrote:
+> When invoke move_pfn_range_to_zone or remove_pfn_range_from_zone, it will
+> update the zone->contiguous by checking the new zone's pfn range from the
+> beginning to the end, regardless the previous state of the old zone. When
+> the zone's pfn range is large, the cost of traversing the pfn range to
+> update the zone->contiguous could be significant.
+> 
+> Add a new zone's pages_with_memmap member, it is pages within the zone that
+> have an online memmap. It includes present pages and memory holes that have
+> a memmap. When spanned_pages == pages_with_online_memmap, pfn_to_page() can
+> be performed without further checks on any pfn within the zone span.
+> 
+> The following test cases of memory hotplug for a VM [1], tested in the
+> environment [2], show that this optimization can significantly reduce the
+> memory hotplug time [3].
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      7s      |       81%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      36s      |      9s      |       75%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>     qom-set vmem1 requested-size 0G (Unplug Memory)
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v7.0-rc4
+>     Qemu         : v9.0.0
+> 
+>     Launch VM    :
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>     Guest kernel auto-onlines newly added memory blocks:
+>     echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> [3] The time from typing the QEMU commands in [1] to when the output of
+>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>     memory is recognized.
 
-After:
- /* size: 192, cachelines: 3, members: 19 */
+Since the above results were tested in a QEMU environment, we ran the 
+tests in a real-world environment [1]. The kernel version is v7.0-rc4,
+which is the same as the QEMU guest kernel. We configured remote memory
+node using 2 and 4 CXL devices for the 256G and 512G tests, respectively. 
 
-with NEED_PCPUOBJ_EXT
-Before:
-struct pcpu_chunk {
-        struct list_head           list;                 /*     0    16 */
-        int                        free_bytes;           /*    16     4 */
-        struct pcpu_block_md       chunk_md;             /*    20    32 */
+We replaced the QEMU hotplug commands with the daxctl [2]. We tested by
+changing the value of /sys/devices/system/memory/auto_online_blocks. 
 
-        /* XXX 4 bytes hole, try to pack */
+The following is the result when the kernel onlines added memory blocks:
+(echo online > /sys/devices/system/memory/auto_online_blocks)
 
-        long unsigned int *        bound_map;            /*    56     8 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-        long unsigned int *        alloc_map;            /*    72     8 */
-        struct pcpu_block_md *     md_blocks;            /*    80     8 */
-        void *                     data;                 /*    88     8 */
-        bool                       immutable;            /*    96     1 */
-        bool                       isolated;             /*    97     1 */
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Plug Memory    | 256G |      6.7s     |     4.4s     |      -35%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      18s      |     8.7s     |      -52%      |
++----------------+------+---------------+--------------+----------------+
 
-        /* XXX 2 bytes hole, try to pack */
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Unplug Memory  | 256G |      2.8s     |     2.6s     |      -8%       |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      5.2s     |      5s      |      -4%       |
++----------------+------+---------------+--------------+----------------+
 
-        int                        start_offset;         /*   100     4 */
-        int                        end_offset;           /*   104     4 */
+[1] Platform        : Intel GNR-AP
+    CPU             : Intel(R) Xeon(R) 6960P
+    Memory          : Samsung DDR5-4800
+    Hotplug devices : Samsung CXL 2.0 128G Devices
+    Kernel          : v7.0-rc4
+    
 
-        /* XXX 4 bytes hole, try to pack */
+[2] daxctl commands to hotplug memory for a test:
+    time daxctl reconfigure-device --force --mode=system-ram dax0.0 
+                                                           (Plug Memory)
+    time daxctl reconfigure-device --force --mode=devdax dax0.0 
+                                                         (Unplug Memory)
 
-        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
-        int                        nr_pages;             /*   120     4 */
-        int                        nr_populated;         /*   124     4 */
-        /* --- cacheline 2 boundary (128 bytes) --- */
-        int                        nr_empty_pop_pages;   /*   128     4 */
 
-        /* XXX 4 bytes hole, try to pack */
+The following is the result when the value is set to online_movable:
+(echo online_movable > /sys/devices/system/memory/auto_online_blocks)
 
-        long unsigned int          populated[];          /*   136     0 */
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Plug Memory    | 256G |      4.5s     |     4.4s     |       -3%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |     18.6s     |     6.6s     |      -65%      |
++----------------+------+---------------+--------------+----------------+
 
-        /* size: 192, cachelines: 3, members: 17 */
-        /* sum members: 122, holes: 4, sum holes: 14 */
-        /* padding: 56 */
-        /* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Unplug Memory  | 256G |      2.2s     |     2.6s     |      +18%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      5.2s     |     4.2s     |      -20%      |
++----------------+------+---------------+--------------+----------------+
 
-After:
-struct pcpu_chunk {
-	struct list_head           list;                 /*     0    16 */
-	int                        free_bytes;           /*    16     4 */
-	struct pcpu_block_md       chunk_md;             /*    20    32 */
 
-	/* XXX 4 bytes hole, try to pack */
+FYI, it is the result when kernel does not automatically online memory.
+(echo offline > /sys/devices/system/memory/auto_online_blocks)
 
-	long unsigned int *        bound_map;            /*    56     8 */
-	/* --- cacheline 1 boundary (64 bytes) --- */
-	void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-	long unsigned int *        alloc_map;            /*    72     8 */
-	struct pcpu_block_md *     md_blocks;            /*    80     8 */
-	void *                     data;                 /*    88     8 */
-	bool                       immutable;            /*    96     1 */
-	bool                       isolated;             /*    97     1 */
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Plug Memory    | 256G |      3.3s     |     4.4s     |      +33%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      6.7s     |     6.6s     |       -2%      |
++----------------+------+---------------+--------------+----------------+
 
-	/* XXX 2 bytes hole, try to pack */
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Unplug Memory  | 256G |      2.2s     |     2.6s     |      +18%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      4.4s     |     4.2s     |       -5%      |
++----------------+------+---------------+--------------+----------------+
 
-	int                        start_offset;         /*   100     4 */
-	int                        end_offset;           /*   104     4 */
-	int                        nr_pages;             /*   108     4 */
-	int                        nr_populated;         /*   112     4 */
-	int                        nr_empty_pop_pages;   /*   116     4 */
-	struct obj_cgroup * *      obj_cgroups;          /*   120     8 */
-	/* --- cacheline 2 boundary (128 bytes) --- */
-	long unsigned int          populated[];          /*   128     0 */
 
-	/* size: 128, cachelines: 2, members: 17 */
-	/* sum members: 122, holes: 2, sum holes: 6 */
-	/* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
+We hope this result is helpful.
 
-Suggested-by: Dennis Zhou <dennis@kernel.org>
-Signed-off-by: zenghongling <zenghongling@kylinos.cn>
+Regards,
+Sion Ji
 
----
-Changes in v2:
-  - Add pahole output for allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
-  - Fix subject to use "pcpu_chuck struct"
-  - Reorder nr_pages before nr_empty_pop_pages
-  - Add suggest by
 
-Changes in  v1:
-  - Fix the error commit message.
-  - Move nr_pages over nr_empty_pop_pages.
----
----
- mm/percpu-internal.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+------atTJT_IMamyeT3aYIDqNfPm07F0lpbeBE4hx2ZgfjOvbTF6B=_51383_
+Content-Type: text/plain; charset="utf-8"
 
-diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
-index 4b3d6ec43703..8cbe039bf847 100644
---- a/mm/percpu-internal.h
-+++ b/mm/percpu-internal.h
-@@ -77,13 +77,13 @@ struct pcpu_chunk {
- 	int			end_offset;	/* additional area required to
- 						   have the region end page
- 						   aligned */
-+	int			nr_pages;	/* # of pages served by this chunk */
-+	int			nr_populated;	/* # of populated pages */
-+	int                     nr_empty_pop_pages; /* # of empty populated pages */
- #ifdef NEED_PCPUOBJ_EXT
- 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
- #endif
- 
--	int			nr_pages;	/* # of pages served by this chunk */
--	int			nr_populated;	/* # of populated pages */
--	int                     nr_empty_pop_pages; /* # of empty populated pages */
- 	unsigned long		populated[];	/* populated bitmap */
- };
- 
--- 
-2.25.1
 
+------atTJT_IMamyeT3aYIDqNfPm07F0lpbeBE4hx2ZgfjOvbTF6B=_51383_--
 
