@@ -4,197 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B738E98FA5
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 03:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C2F2E98FA9
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 03:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95D726B0005; Wed,  8 Apr 2026 23:20:35 -0400 (EDT)
+	id 321D66B0005; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90E5F6B0088; Wed,  8 Apr 2026 23:20:35 -0400 (EDT)
+	id 2D2A06B0088; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D53C6B008A; Wed,  8 Apr 2026 23:20:35 -0400 (EDT)
+	id 1C1C36B008A; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 695E46B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:20:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2896EE0C20
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:20:35 +0000 (UTC)
-X-FDA: 84637564830.04.9F3EBA1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9D096140002
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:20:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Owwup3fD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf26.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775704831; a=rsa-sha256;
-	cv=fail;
-	b=egQhE5nGOHtyovGmCjbSoSNEDTP1rFaHhskC2/eRU2dkNDucNkzBVRhpNOrQpCv9HpoaiA
-	Ij91lco+gL+RBXnM1hx2TuSlTqVNtb8Oub4D4vzUyirIKAvPSrFZDlKNaMuj5oyL3DJ6l6
-	Zzs8VyeyAIOZyEcL0I6Km1D/rifzE2s=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Owwup3fD;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf26.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775704831;
+	by kanga.kvack.org (Postfix) with ESMTP id 0A50D6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:49:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7265140399
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:22 +0000 (UTC)
+X-FDA: 84637637364.05.60CCAB6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9A5ACA000C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PgL6J1yH;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775706560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H8638BwiEFYX3GGnoaLtJJyoNr7pj4IDUPGZ188ZSFM=;
-	b=yyJiQWsbEn85UxxkpyxxGUKenxudSzf9lJkmcSWXhvIDD9h6Xi2VIrOzaYzBHNBW9TQew+
-	OrHROGo+XvXbCUOSnd53PcIY1twW8x8/2Ld8YDJg67d/e5MqR6FJyP0m7SBT+J+cLQyuPn
-	J5d0ioHd7Z/Dw31OR0m+zSh0PEYepkk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775704831; x=1807240831;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=HBqC52PYr9wFx3L00/rRRKXSnuV3PlMC2xa8/g6sHXo=;
-  b=Owwup3fDvSX4IbMSce4PPzuDqxoGroZv8FxlQDokIRIv1FoqYxZgVKEN
-   mcv1tmnd6YnA4N6HRd+qYmlobKFvQNUNazHcG8rX+GuTPONi5ZV1cZ+IQ
-   uHgk6AOOkkGOF3sYhLzk3oJlvLyKGQluMyoDISsHuSa5sNTg0VokzsEAK
-   lxAKCseebQCnIyeGsPc/LZi7hC+DH8L/Et0Aam/rpNQCuONxYS+GCRy98
-   Ac6fv4qq8RE8H/79L7DzG+3fgGjah6qiesPG1tn5/mUG9OOPDa8ZWwGkV
-   vm3M0Lh3MuaO48uLXsu3WcwqQkkaPeVk0wUago7cLWYRKmeXGVYB7NZrs
-   Q==;
-X-CSE-ConnectionGUID: qT94N45wTuu++s+IVN0CZA==
-X-CSE-MsgGUID: JSaArVj6Q121HD7kSaaMYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11753"; a="79291953"
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="79291953"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 20:20:29 -0700
-X-CSE-ConnectionGUID: 9AYEKBYLTTe1W+oQxHpWNw==
-X-CSE-MsgGUID: COCLNCCCSCy4xKYR59QeIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,168,1770624000"; 
-   d="scan'208";a="233612643"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2026 20:20:29 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 8 Apr 2026 20:20:28 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 8 Apr 2026 20:20:28 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.5) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 8 Apr 2026 20:20:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JRfqL2n5wHRyF3gYxgAHPulR6RJu5+BsCWUMIOXlTImZHOFUp/i9o+bLjsW2JAgNhJV92ClFhh+IMvlCiHhJEwLqZyGX2i0/E7K47DA6LXIV5bJxskZ2afJiVWyfQbYu5kD//VzRnhjigrxYfIG2lx/rP3Q/sN5noj8RImP36tiDhEJK7gTOkqD8mvla0vI2c9+UyOP+0o8QH6ULnPCassoWiMEBRSRQkpQ7jQJYVyFJh3fKIu0L4szM0oUeUnwgDYC1OJcethiE5ABPFxasSb98f4fz/kcfoRyxnNdOfpnLYvGEjK6PtsPM2oPyy+CigRdlTR5xhJJtt5CEZec1dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H8638BwiEFYX3GGnoaLtJJyoNr7pj4IDUPGZ188ZSFM=;
- b=Sm5hQJkKstA3KvY1l5R1LS8uVxHzaxy+EqmpxH50ey3UyBZCXNhrzHGrYjWDiRU7dw3NhqUrSOm88SERoDGssGH2UHcdoEr0iKC8xh99/2zma+Oc1eA2i7PjY/GTwActaKfFrd8r6aMaT6ikAmp83p0o/yjDWOmur/PYBP35b16dnqN3RiSC/p2Y2Dx831lX+Mn+0Lx7F6l8StvxIlGpPk4XKA4v9zAyuosgBPaoIFXyWqkIzDCEJkEvtrOT1wt60uZRFlwQd01y5CwDZUd1dezdTmJDsNMwKPhghxJNYFEl01OFDyL7ypH9QVSy3wsC+4oCNxy28+Qy2X9iOtN1Yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB6936.namprd11.prod.outlook.com (2603:10b6:303:226::16)
- by DS0PR11MB7681.namprd11.prod.outlook.com (2603:10b6:8:f0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Thu, 9 Apr
- 2026 03:20:25 +0000
-Received: from MW4PR11MB6936.namprd11.prod.outlook.com
- ([fe80::96dc:12ef:f56f:dd04]) by MW4PR11MB6936.namprd11.prod.outlook.com
- ([fe80::96dc:12ef:f56f:dd04%6]) with mapi id 15.20.9769.015; Thu, 9 Apr 2026
- 03:20:25 +0000
-From: "Liu, Yuan1" <yuan1.liu@intel.com>
-To: Sion Ji <sion.ji@samsung.com>
-CC: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
-	"Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
-	"Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
-	"Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>, "Chen
- Zhang" <zhangchen.kidd@jd.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous check
- when changing pfn range
-Thread-Topic: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous check
- when changing pfn range
-Thread-Index: AQHct4abryaKSRoUW0qNNchDaIVkzLXWJB0AgAAMFqA=
-Date: Thu, 9 Apr 2026 03:20:24 +0000
-Message-ID: <MW4PR11MB693641052EE649F974F8CD9EA3582@MW4PR11MB6936.namprd11.prod.outlook.com>
-References: <20260319095622.1130380-1-yuan1.liu@intel.com>
-	<CGME20260409023553epcas2p2e40d1d79206f0169a765fadcf180b010@epcas2p2.samsung.com>
- <20260409023552.GA2807@AE>
-In-Reply-To: <20260409023552.GA2807@AE>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB6936:EE_|DS0PR11MB7681:EE_
-x-ms-office365-filtering-correlation-id: 95e5c05e-e9af-4ac2-235d-08de95e6f0f2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: vnEswrinrfmtx5ilBgvhnyBLUxD0JTo53Ig+MGRpCK4x07k3Rj9OSvmJbzV1XvzqR6ZjTPVPcBtzqAsknowfh71LZwMtJK2iNOgFit6Y5JKvtpVIzt5/cZDSkIuyWW1dZtfMMBNG1i1uLKe3pOqD63lUYvGZkiSZLKtO7qbiYUhSMGwjdAzWrHQX5dJ1xXs6prCnHay6LQ1wDIA3bpwo0V+f6pdW0wb2y0Zr3zT9tREZhpP2rCeeMw0tUgfb/HHPzup0qGh4QlnTCxHrF/7zbMdVz5PGMJyukl8qbBo1NqoOK3IcWXRqEVp1baaIokT6rk+9lITi0zWrcyhkyo3NMRpUoamk8KFui3cFxxL6SjKrezBOqIokeZrd8q4NRF6MBEYRpxmXEkLWyQU5KgT4j4QSpfBBAjRTZzUqSFPhk7cylx7NiYqVhQZKgCqS1SGtNxFQZlPLzrVp2ynMgRxiaMHvk9b0M+VrALHT5SuHjHn6cUbbVHCZBvqGcGFjyKrpBcReRWaeI/L4gRWYNmOuFEWNJtJCFa5SqgqFjLXH24K76d4pGRKQQUb6vy8flq5qa7IIJrP9F1hc8lqLc5nvV5RPCTJKJ8jpvMi9ue4yljw5DOZgz9Vo2gkZb5kOqtSwNuR03rJbSOXnKjv+y5Je+b6B8DkRXADMLMRC3qnXAFg4wMyM7KaqfY5jyhHwbYCeDY2twxtLkthqQLCOHrOJ3LkVBOA9bhUQc5VCgbc3/O2VqkDoPQEqvQb9ZQR+FejozWbmqAZoVSnlO239uWDoUDoLIV0dM0CY+uZfGXhq3d4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6936.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9wUQY7LT1TqNBFyRUMZzOfASefC1g5tnZDwBRXLp2jX3WoHMw+ta1Lqj7CZ7?=
- =?us-ascii?Q?WGvQP3icko9T4yWdM0xXNDEgrYOGzYGqKIs2Pdsn8BWtMO9ixVkUBCoMfaLF?=
- =?us-ascii?Q?kZdCUi1fKty1iCoVGVvBPvNMcZTBFwc0YQMPbBSszyl7Kk5si+C6hY7ygQhn?=
- =?us-ascii?Q?p+P3it9Rjlr8w8n5rq2bnrUuzhIWq9SMzTbzy3cZbo6ZxDFhqtpHOK/cT/Fc?=
- =?us-ascii?Q?LCb/jXjgPN1dirn0wXO29vl/Llbe9BOjRPZvYYNeRwwUeIFSW+RG6BXPaenG?=
- =?us-ascii?Q?Of6tPavFrt+edO43TsS+UyzQf/yiBd777xCRVGaia8+rLVZp5YxKGEHH5VPi?=
- =?us-ascii?Q?uX0gbUp46Ei7DW3xxD9WgAy08SJbiJ+q3d8oRWtJtfGGgl8pYmELuIulaPp1?=
- =?us-ascii?Q?AZaBnlCQTLHCSlefHCkLcTsLKte0xuVe6GtAbQt/TDrYw7LmV0tK6F2va4uB?=
- =?us-ascii?Q?E+c607fDJOAQLxQQ6OocTMclyeCKsbL3vOSOmCj2qFGec1pxojc7sGCRLIr9?=
- =?us-ascii?Q?ku9I3K1YsXtw1dsmUCtuiMU5DJiMkFk0FxWRBSVmyw7B6d41WjjSpcYYvEwC?=
- =?us-ascii?Q?T/sXf8vS8aAjD37FupAEEmXtiJ3wURM0RdHKHL+Cn6wfwLXRvpNMVqQlOgdR?=
- =?us-ascii?Q?n5Fmy93U86a0ie6iwzPs934r5WVfKRDSIhY0GK2NKp5Rs42nK0VZKmRduuRt?=
- =?us-ascii?Q?2Sjm62+owGJ5qjjcXOh/i+dtfFyAEIwAXNjgkPMs1013fuU3W+3gEZBg5QeS?=
- =?us-ascii?Q?XDLs/Fix8dmpSir/fiMnNNaUTUM78uQe9+4eW+SPFrl1kTsTeDdG8UostGTZ?=
- =?us-ascii?Q?RNhr459jejMEe7QQlINu8nyXwJRqMQcmj975AAqKUHFfzCnJEVrS5tOJ/WgP?=
- =?us-ascii?Q?TJiM5zViHzQ0oBR2fNCQnLyE83aJ8PkumyUbfgMCJVVYln/RvBjkXNVm0pgN?=
- =?us-ascii?Q?/2DWay/LhXL5JewaVgsLvUkcVlyKuCMzqbJvT9abGX2GslFvvhZXUn+2DpX6?=
- =?us-ascii?Q?pzBgFwHUQEU1LIlHdcVxQ/hhbBm5eZ21FPwVpWoZNsDSvQLKsYoX6NiCari3?=
- =?us-ascii?Q?r68kEvDjefF/6PlwwqBK7p9q/35330b0CmK6uCB/t6QYXuIMRarXfnAg2pqP?=
- =?us-ascii?Q?Ypkr6aqQh3qrvc+9x/N273oxZwRBSDg1L3YO71lKjBqjYEo3HW1TxRcS4T7y?=
- =?us-ascii?Q?U1X3FBCxWsU64SS3MviRiHxuKW+v3Tz59pTtid8aqdE6E0gTZO7zKTkRwyzu?=
- =?us-ascii?Q?dUTIOpKj263pjgZ1VX4UHLzpfuRZiJqok/bN5Rnv2NeCk0G54kRjSCCauijd?=
- =?us-ascii?Q?o4sEYw+8rzqAd0B7e8ZNPltdDzjFYmhixAVfbCCZIf6/qm4PCj4zhJPJWpMd?=
- =?us-ascii?Q?808xtNqIVJhPp6WESaXxByK87+2iRFOirXUgi3QfonsD27bTLjAZCvpTIR2l?=
- =?us-ascii?Q?I7gP6tlG3bE8GseI7MBCIfc/w3K7FBSSn/jSNUq3XfMTu6s5ah5QIIBy4hBd?=
- =?us-ascii?Q?JJRvDMhRCXTyP6+5j2Rz4Ouu3PrFj3mPosJWzwvEztYVRB00lt2+MHsT8qpx?=
- =?us-ascii?Q?UFf3+eWTfi1Rjmipe09wBZZ4P1bhqRHKTUMIY1S/j9p6EQQrBGEOe7/R+oao?=
- =?us-ascii?Q?dG+VpmmG6GlfwyTYw8CI2iHrTJfYkc7CIkS6sp/rVUGue0zP/TPLQspTgWVh?=
- =?us-ascii?Q?fB8Egcx15xgHX9DzssB1ktW1rkrdoGY2nR4a/pXwEkzMSx47?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	bh=fU05U0/lI4g2ijCidHZ3j2rU1iPgL0L8RB1CJ+rRE2o=;
+	b=ylrawlRMZ3PUhu/YEmLBlcJLbHNGm6nUK/pJCqDR5mAbxgZu+8Le+bY+0pX2/intr1nOkq
+	XwKoCE+Slw15BGqfMf6kbdF0NalrLoEg6TX3WbmTDeZI7xQYYadM+6u63KLU7e6GIMKcK0
+	+BznBW7GXBF5FQlCsfE9ZERHJ49NicA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775706560; a=rsa-sha256;
+	cv=none;
+	b=NFOuGB0aDo7elx6BCi5Zi8B9xG7985QiaQ+4AfR/NxNmx5X69BDVFCWJcwtLGdV12vy+1P
+	aTcNYJY+ylrfdq03Pd+SGee5nT1vTdl/NVaqmdxOAmYECX1WaPhpgEPVsKCcWfjWzbWlvg
+	HN+7hBCyN5x3OYuInIyLvSvSJUxxnP0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PgL6J1yH;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 63882444FB
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430C7C2BCB1
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775706559;
+	bh=5DNUciIRiFPhT3GitLgn8L2T3DcdPnaFe3B+BD+7kkg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PgL6J1yHTM59k/6lvC/kLrCsx6PNmjuY33+m1LTDDD3Di6dj4LWcpl/N+ab0G92Er
+	 gzpZnsTPWezZr8wdCNMbhEvgCqk8D0frdwbMCbr3X5V2ZylJWszc3YTeqVV4V4+WBC
+	 7hha9iAHlQoCnCvrTpYy6f2zu/+yCYcWGg3JN/QPKZ5HhHf+QsU2kInZ/fjCOJ/ott
+	 DbrJOKLcfxn7lkezyW1h64c67FFvmU+Z6Y9ZPmbjN0sytvc4y8qrF4XPT74hGNRo2S
+	 uk7IoM23Pei9yfVZmYcmDC3GNQOTiNoRYAIDKKkFaEezOpQ3IOqptkK6w3+YeVF5Fr
+	 gSrhdMVhz1tpQ==
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8a151012558so5395526d6.3
+        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 20:49:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWLdIUlPS0SToXtd0HtcVF1CAhjDPFhdf+eeVTM4vVR3aqzZ7Q8EarwM5GnrINX2EHd5FketyqxjQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx1nXMDykr9ryD0du+qKbmC4HjVmLmO2iAxI5JBoTJax0m8dZDq
+	I0jjzFBS41WSsIKXYEnwz/NAuNl4MTgg+xLdI3F09GowIpZ6XEJ194qjcEURCYRDOXvvUEiEsPO
+	27KUthR2ZsAlmw6+jvUP2HcCIuZHlj58=
+X-Received: by 2002:a05:6214:19ed:b0:89a:f10:9980 with SMTP id
+ 6a1803df08f44-8ac7413fbbbmr38698396d6.22.1775706558553; Wed, 08 Apr 2026
+ 20:49:18 -0700 (PDT)
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: KTdFNR4B28lZcte5xHSNxrKJ0+7fXnRdZ16mBuOoVf0G0hZUaH2q7opgttA2hhfTmBfrQfx4nL4/9a+clry0rcVX2A2MaecRSLUH1TMzHh08LSImEWG9TmhV4T77IzKKSSGniu1QDKA3H6WB1Wk1okJ1yZRbAli2H0jiEKD1Ugvf32xOMLhx/E/XrhCPXKKxpzTj0yXM/59koD2aaw28WY1UAPnsFlOS1EVRlWnnZjEp/oWyyPBWazKVuoWwjG5mOhoveB5uDgLyitumtV/O5kzrbSsE5mG+oQI161u9p4wdbLR1WQdnuJkigYBY4EbSFaq+bs3mzsmX0P9r5rp+9A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6936.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95e5c05e-e9af-4ac2-235d-08de95e6f0f2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2026 03:20:24.9733
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sqCULTsBiPC5Vnp85y87efmWg+UYzyn+j2lPMP4/cha2qSgj+Ikzhux0iawkGriEDp1A9zS2qez7Tc7BwlIpuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7681
-X-OriginatorOrg: intel.com
-X-Stat-Signature: hpsj9mtiqrj6ffwcx6ogtgtbc7x3cxyd
-X-Rspamd-Queue-Id: 9D096140002
+References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com> <4451bdc432864aebb54f401eee51ea53@honor.com>
+ <adUM54W3WYwEFj3J@KASONG-MC4> <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
+ <adW_O1-QAQadQ68-@KASONG-MC4>
+In-Reply-To: <adW_O1-QAQadQ68-@KASONG-MC4>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 9 Apr 2026 11:49:07 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
+X-Gm-Features: AQROBzCi0WktBv3fB90ur7-Wo3B5z99NIxTu9PhVrMAEXZNR94S6ZSHAsAFuS5M
+Message-ID: <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
+ = 0 or 201
+To: Kairui Song <ryncsn@gmail.com>
+Cc: wangzhen <wangzhen5@honor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9A5ACA000C
+X-Stat-Signature: 3cc7jfbppt9gxqesadpnyzcwkcppugiu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775704830-462459
-X-HE-Meta: U2FsdGVkX1+EBKKkrmWgkOps0V7yUTPe+aNyLP42XvVkvhnvou66vqp649EhZlRKigo2SzX3mUDTtfNkxOIbke4lLCPjcfM/VNVbV6Y992fSf1atStdcq0ODre+8MUoqo1saC8v3uLagu639fAKDqv7r8L+APIPLGz0w3o+UMnPAgLEz3bDF/uh/NT4x+HGnywZhnBE//3yTIwpRf3ziINw9vLircvVk+ffb+JTigNg652MhxDBZfdPwMWgYkfozHic6g3iRBU3TdKKAI94r+iL8JC2VWqk5cKgCYMSWwlEAhwwNCEVOWQBoKjcSFry/67lChMxU9XNSeZCvZkW0XbWW9IsjdsSUTlxEyoz3HuvDHpzza6RsKM9A3tqA+Z1sGYCrp6O9wayM1q9qm4Ojpu77C4yXKBwRgb0zSvDRQOpow1C5OnlZX5yf8QeMI1s3o3NsmRc6b5o+qNTfyE1A2IR6AZ0lWUDjwv/GPdUTDHmvJQVJRADyP/VH68hE2V4uOs5Hctkksjp/CNp5mUiBjB0BXThjNSD2UQt8poG5L0aMwIw11pS0ss1cp3KW5T8xNs16JaSJMQadbNA7VznOIhtAEXQ9qbw+tAlSRZffoZBT2tqY6hCErFPAyMr/Pdr1RYHvKZ4g+q85heEoRbhea178TYOcykbBydoMpw7TXG1Upmp+IBO4KpHgqXHZ7g/J6zqYEeL0H/suSxh+Omhxo7J0oF7ERnWSA0GEOmwCGGzQF8gLecCOOAYC7kPpbfjqbH8wkE3DU2h2xFqL6ax0aRBAP8Cfb3BpxucXrIFVPTuNqXRDKqbHUQv66zqU+NIhYRYLuRscEHvWYf2e7Q1lkE61ZygDyDR9VBG/Jc6CXpn4qnyAfD0UpFNBf5IdQNOI8arB2LdJx+7vgDMTlG7Qt4B2nbteaGiY9080GGOqA0iwzeAS8xqoNay/miNSzr5KmSBr6L2tk4wQ4yp5HvP
- pNlbi2U3
- nPP9eMMWSLdph+fZL55PcdcE4CY8oYcwe0BaylghIm89x0Yr5fVhk865gY+UDIFZohWDF+zUrBsxM8hiBoR6ceW20z6FHdztvCzdZ7IdOhbktJpLjmKX4UfwoX3ERg7M9GAitJkd/G0u42Xyn8unIyR2uBjc2c3tlUmE3vedFgzuWQgoR/jQnOZ8CNvqElYV6+XV5wt5P8LWfeZp8EO+mfGZZXD8W6J3Eax+qbrcf4GtK9iPe6NKecdtIm4/nY2BxWbXSzL0fXnLh9GnsUzbAepty83un6g6L6Avfg//9/0Hb+ilNzA9dZkYUjmjmwnDRjKK2FdsSGG8qyhIt5/obtXD//XWz8bFojp0jp1MkqJtV8vm6hqIQhdy/x2y1KRsV8tRvIVzBwVWg0U1R0VhtCIs3pG5NQ/Q+mVWpf786XA94sawtsk9QOqmEaywUf18bN1g4d+ps9F4e3EthuNLaYGjqjaTBcVRlPIRZGUWwefwG+lfh5qO6caHq5GlQ2L3SJP/0yzm020eU6XbQfCpXVxEF892CxtwB7x9ZrNbEj6Lnoo1RgwOZ1Nflv/WTaDDCvp0ntyL6hFi8KBrv8swdTBrODjbKNNrtdOGT19ImrMzAH4YwleSDjLhhyNyrUeu+jAdYRaZ4toWLX58gPDqJ3bB8SHw0AY+jcdGdp9f1IEb5owJiGQ0PLo3vGzi5Z9rCV6tsfsf3jebpVCB968OchAacSmxxA6tsUFrhgmy7mAX/Xf+ghzGqTKgg6kHkNLouIoNtXfhn6M+9Ya0=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775706560-464776
+X-HE-Meta: U2FsdGVkX19Apz0/X60pE+4jfAm8UM4Zrx2+If7LnIUkuACXvGAGiPyfQ1+Yg6hujI0Umb9GwiDp06/zLTDAyeikegncvCeEJj2ip+ZN1hZQgRiTIKpxeVaPHmhG6/EyIyY4PfiIEmcr+He281K71Orn4x3LE3BxhQrnqaQcCvF+NQdq8ODoUEiWxqxTgMkuEgwECj4JNVCEdcFkx4PkCSSfRVYj6NVf3HfmcLrOH3+gn2u7IPbR9JEjfKkRo0V9uK57KhrCqkZKqU+yYQMuDAwkoBRzKDLMVAu5L1fn+I7d+RSw6Hr4bJpgKTJ2VywHaXdH7iUsvCj7nNI3qTG16yO3YDSPVP6jDiM+R6o8QXUDcXLVa32T4TQfQ0LYEzw3NOOtVjPgwwlGxQfaug0Pybxf8AEIeRbDIDAOmOxPgT4Tu8fRRYdoBKoiy9xaHAdEB8qHJt1kqty+OtWGLjrCSqd2cOk8bqDzbukGOdZ6xErjwlfT6tKtAZ90RKopNatxDzKbQ1gBgoInubOHmR0qdsyWe5mbKvaUV2VzcXSAbu6jfelyVWeUUd5iNH3UoySlja8uRrCal4UIpgivqCWfPLxILGYaFK5L68rqOg9l9Ay8Cm94dtwnSNsiXxBvqzeI+fSR9dNtQeaczlOldCTigKM6TeBNlrKYBIfXaOys3itnCpjfSqNULMRdbfePDnBFPWd2aJ9nHYdrMMzPGiW8xEeWpz77CTuWmlkcM5yEuXX2j3hc/OKM+kAFWOP2Cr9lt/fFWcJkSduZ0tUt5F/DxXqH+6rFvcy2d0LcXh43eX/bnBKpGBKElhy279sq/izqV6uIQmsUs0jDzIUyEZ8SAshKmEzQdO8PTOvtbKxXC1VrnKPzr7Dc8FcOdsE2Kt2DetVRdZsg8KQI7Hdwe9ku0eLMGWRzkv+DLt8hlAiPei8lSotWFi/6OyNUpamkU+7E2InVhucSA1cIQiXv1bx
+ /aBB7YvG
+ b70kP7KWNX8zm8sNOa68mO1PtZiYiodZcL+vnHUlZ5K6zC5ercC4vIh95YdswlpjMXFHAGii67wcP8rzrUsemukNkk/sQDSN5OLbsUkH5gHNQmK/VL+ODaANm4082f4fM9QlgS/3aIkMCCvgeHcihz/UuBGJ8drUjSttFMGeZlBFzAP9k+qal0XGM1YlUi1k6TZ9U0Yl8uZr+3e0ztQwGxeFJfjamLwr5aYnCmAKSpE3sPXRDuCNL0gOAF+gKRhHPP9u3VGrPqPQHU/qPRLt6tR6jED4wAM0N8T+S07AFpP/c2ehjylRa/Cxu6z2ZvL43VEO49d6R3C/2PEkyURQRQ509NhO+VqwRvaZWetq7Uq7QTDa62YoQyePZcY0r9twoZ4bVBjP0b+OHSfL7c0vS6lAwPw7MHoU8Cn6ylpknGep4ddtWfRnw7gOoHSjYtU2SjzVqmSE3suwgcUU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,204 +111,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> -----Original Message-----
-> From: Sion Ji <sion.ji@samsung.com>
-> Sent: Thursday, April 9, 2026 10:36 AM
-> To: Liu, Yuan1 <yuan1.liu@intel.com>
-> Cc: David Hildenbrand <david@kernel.org>; Oscar Salvador
-> <osalvador@suse.de>; Mike Rapoport <rppt@kernel.org>; Wei Yang
-> <richard.weiyang@gmail.com>; linux-mm@kvack.org; Hu, Yong
-> <yong.hu@intel.com>; Zou, Nanhai <nanhai.zou@intel.com>; Tim Chen
-> <tim.c.chen@linux.intel.com>; Zhuo, Qiuxu <qiuxu.zhuo@intel.com>; Chen, Y=
-u
-> C <yu.c.chen@intel.com>; Deng, Pan <pan.deng@intel.com>; Li, Tianyou
-> <tianyou.li@intel.com>; Chen Zhang <zhangchen.kidd@jd.com>; linux-
-> kernel@vger.kernel.org
-> Subject: Re: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous
-> check when changing pfn range
->=20
-> On Thu, Mar 19, 2026 at 05:56:22AM -0400, Yuan Liu wrote:
-> > When invoke move_pfn_range_to_zone or remove_pfn_range_from_zone, it
-> will
-> > update the zone->contiguous by checking the new zone's pfn range from
-> the
-> > beginning to the end, regardless the previous state of the old zone.
-> When
-> > the zone's pfn range is large, the cost of traversing the pfn range to
-> > update the zone->contiguous could be significant.
+[...]
+> > > Hi, thanks for the patch.
+> > >
+> > > We have a very similar patch internally, and the result is kind of ba=
+d.
+> > >
+> > > Currently MGLRU forbid the gen distance between file and anon go larg=
+er
+> > > than 2, which mean with this patch, when under great pressure, you ma=
+y
+> > > have to keep rotating a long list of the opposite type of folios to
+> > > reclaim another type.
+> > >
+> > > For example, when you have only 2 gens of file folios, swap disabled,
+> > > and there are 3 gens of anon folios. Anon folios are unevictable beca=
+use
+> > > there is no SWAP. And file is also unevcitable due to force protectio=
+n
+> > > of gen. Consider anon folios are mostly cold (at least a portion of t=
+hem
+> > > are), now the oldest gen of anon folios will be very long (e.g. 12G,
+> > > 3145728 folios).
+> > >
+> > > Now, to reclaim any file folios, you have to age first. Before this
+> > > patch that is usually fast. But after this, it will have to rotate
+> > > all 3145728 folios to second oldest anon gen, will could take a
+> > > very long time.
+> > >
+> > > During that period any concurrent reclaimer will get rejected
+> > > due to force protection, result in very ugly long tailing or
+> > > unexpected OOM.
+> > >
+> > > So I agree this is a good idea in general, I agree we should do
+> > > this. But better defer this until we patch up MGLRU to remove
+> > > the force protection first.
 > >
-> > Add a new zone's pages_with_memmap member, it is pages within the zone
-> that
-> > have an online memmap. It includes present pages and memory holes that
-> have
-> > a memmap. When spanned_pages =3D=3D pages_with_online_memmap, pfn_to_pa=
-ge()
-> can
-> > be performed without further checks on any pfn within the zone span.
+> > I suspect that once we can age file and anonymous pages
+> > separately, this issue will resolve itself. David already has
+> > some code for this [1].
 > >
-> > The following test cases of memory hotplug for a VM [1], tested in the
-> > environment [2], show that this optimization can significantly reduce
-> the
-> > memory hotplug time [3].
+> > Not sure when he will have time to push it upstream, but I
+> > may carve out some time to take care of it this month.
 > >
-> > +----------------+------+---------------+--------------+---------------=
--
-> +
-> > |                | Size | Time (before) | Time (after) | Time Reduction
-> |
-> > |                +------+---------------+--------------+---------------=
--
-> +
-> > | Plug Memory    | 256G |      10s      |      3s      |       70%
-> |
-> > |                +------+---------------+--------------+---------------=
--
-> +
-> > |                | 512G |      36s      |      7s      |       81%
-> |
-> > +----------------+------+---------------+--------------+---------------=
--
-> +
-> >
-> > +----------------+------+---------------+--------------+---------------=
--
-> +
-> > |                | Size | Time (before) | Time (after) | Time Reduction
-> |
-> > |                +------+---------------+--------------+---------------=
--
-> +
-> > | Unplug Memory  | 256G |      11s      |      4s      |       64%
-> |
-> > |                +------+---------------+--------------+---------------=
--
-> +
-> > |                | 512G |      36s      |      9s      |       75%
-> |
-> > +----------------+------+---------------+--------------+---------------=
--
-> +
-> >
-> > [1] Qemu commands to hotplug 256G/512G memory for a VM:
-> >     object_add memory-backend-ram,id=3Dhotmem0,size=3D256G/512G,share=
-=3Don
-> >     device_add virtio-mem-pci,id=3Dvmem1,memdev=3Dhotmem0,bus=3Dport1
-> >     qom-set vmem1 requested-size 256G/512G (Plug Memory)
-> >     qom-set vmem1 requested-size 0G (Unplug Memory)
-> >
-> > [2] Hardware     : Intel Icelake server
-> >     Guest Kernel : v7.0-rc4
-> >     Qemu         : v9.0.0
-> >
-> >     Launch VM    :
-> >     qemu-system-x86_64 -accel kvm -cpu host \
-> >     -drive file=3D./Centos10_cloud.qcow2,format=3Dqcow2,if=3Dvirtio \
-> >     -drive file=3D./seed.img,format=3Draw,if=3Dvirtio \
-> >     -smp 3,cores=3D3,threads=3D1,sockets=3D1,maxcpus=3D3 \
-> >     -m 2G,slots=3D10,maxmem=3D2052472M \
-> >     -device pcie-root-port,id=3Dport1,bus=3Dpcie.0,slot=3D1,multifuncti=
-on=3Don \
-> >     -device pcie-root-port,id=3Dport2,bus=3Dpcie.0,slot=3D2 \
-> >     -nographic -machine q35 \
-> >     -nic user,hostfwd=3Dtcp::3000-:22
-> >
-> >     Guest kernel auto-onlines newly added memory blocks:
-> >     echo online > /sys/devices/system/memory/auto_online_blocks
-> >
-> > [3] The time from typing the QEMU commands in [1] to when the output of
-> >     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
-> >     memory is recognized.
->=20
-> Since the above results were tested in a QEMU environment, we ran the
-> tests in a real-world environment [1]. The kernel version is v7.0-rc4,
-> which is the same as the QEMU guest kernel. We configured remote memory
-> node using 2 and 4 CXL devices for the 256G and 512G tests, respectively.
->=20
-> We replaced the QEMU hotplug commands with the daxctl [2]. We tested by
-> changing the value of /sys/devices/system/memory/auto_online_blocks.
->=20
-> The following is the result when the kernel onlines added memory blocks:
-> (echo online > /sys/devices/system/memory/auto_online_blocks)
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Plug Memory    | 256G |      6.7s     |     4.4s     |      -35%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      18s      |     8.7s     |      -52%      |
-> +----------------+------+---------------+--------------+----------------+
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Unplug Memory  | 256G |      2.8s     |     2.6s     |      -8%       |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      5.2s     |      5s      |      -4%       |
-> +----------------+------+---------------+--------------+----------------+
->=20
-> [1] Platform        : Intel GNR-AP
->     CPU             : Intel(R) Xeon(R) 6960P
->     Memory          : Samsung DDR5-4800
->     Hotplug devices : Samsung CXL 2.0 128G Devices
->     Kernel          : v7.0-rc4
->=20
->=20
-> [2] daxctl commands to hotplug memory for a test:
->     time daxctl reconfigure-device --force --mode=3Dsystem-ram dax0.0
->                                                            (Plug Memory)
->     time daxctl reconfigure-device --force --mode=3Ddevdax dax0.0
->                                                          (Unplug Memory)
->=20
->=20
-> The following is the result when the value is set to online_movable:
-> (echo online_movable > /sys/devices/system/memory/auto_online_blocks)
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Plug Memory    | 256G |      4.5s     |     4.4s     |       -3%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |     18.6s     |     6.6s     |      -65%      |
-> +----------------+------+---------------+--------------+----------------+
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Unplug Memory  | 256G |      2.2s     |     2.6s     |      +18%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      5.2s     |     4.2s     |      -20%      |
-> +----------------+------+---------------+--------------+----------------+
->=20
->=20
-> FYI, it is the result when kernel does not automatically online memory.
-> (echo offline > /sys/devices/system/memory/auto_online_blocks)
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Plug Memory    | 256G |      3.3s     |     4.4s     |      +33%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      6.7s     |     6.6s     |       -2%      |
-> +----------------+------+---------------+--------------+----------------+
->=20
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Unplug Memory  | 256G |      2.2s     |     2.6s     |      +18%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      4.4s     |     4.2s     |       -5%      |
-> +----------------+------+---------------+--------------+----------------+
->=20
->=20
-> We hope this result is helpful.
+> > [1] https://lore.kernel.org/linux-mm/aam5nOyXs1sNdjTe@google.com/
+>
+> Hi, thanks for sharing the idea.
+>
+> Right, a few weeks ago I also got info from CachyOS that they are using
+> following patch for MGLRU:
+>
+> https://github.com/firelzrd/re-swappiness
+>
+> The idea is also split the seq number for anon / file so swappiness
+> works again.
+>
+> However, I really not sure if this is the right approach. It changes
+> the model of MGLRU and things like TTL may no longer work as expected.
+> And TTL does solve real problems too (also from CachyOS):
+>
+> https://github.com/firelzrd/le9uo
+>
+> TTL replaced the le9 patch above in a cleaner way for thrashing
+> prevention.
+>
+> Right now we do page table walk (and it walks both anon / folio)
+> while generating one unified new gen, meaning the folios in that
+> gen have the same (or at least all older than a specific) access
+> time, which is used as the metric for TTL.
+>
+> Besides, having unified gens also help implementing things like
+> workingset reporting where each gen is like a bin for histogram:
+>
+> https://lwn.net/Articles/976985/
+>
+> Aging triggering could be a bit more problematic too.
+> I think the right way is to just do the aging asynchronously, Yu
+> even left a TODO comment in vmscan.c:
+>
+> /*
+>  * For future optimizations:
+>  * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memc=
+g
+>  *    reclaim.
+>  */
 
-Thank you very much for sharing these results - they are really helpful. Fr=
-om your data, it seems that for 256G the improvement is not consistent, but=
- for 512G there is a clear and consistent benefit. This is very useful for =
-understanding the behavior at larger scales. Thanks again for the detailed =
-testing!
+Aging asynchronously could be a separate topic, as we can
+do many things in an async manner=E2=80=94similar to proposals for
+asynchronous compression. These async approaches may improve
+performance, but they also add complexity=E2=80=94for example, managing
+CPU utilization of reclamation threads to prevent devices from
+overheating.
 
-> Regards,
-> Sion Ji
+>
+> Then, we start the aging when ever there is less than 4 gens, and
+> allow reclaim to always go on even if there is only 2 gens left.
 
+I don=E2=80=99t think allowing reclamation with two generations left
+will resolve the problem. The fundamental issue with sharing the
+same generations for file and anon is that one type must catch
+up with the other=E2=80=94either through reclamation or via what this
+patch is (admittedly) doing as a workaround. If we have to go
+through reclamation, that effectively makes swappiness invalid
+again.
+
+Allowing reclamation with two generations may let one type move
+ahead briefly, but over a smoothed time window there is no real
+difference, as the other type still has to catch up with the one
+that has fewer generations left.
+
+>
+> The performance would be better since the is no more blocking
+> on aging, no change to existing model, and the change should
+> be smaller and easier to review IIUC.
+>
+> One concerning part is doing reclaim while only having 2 gens left.
+> I think it seems OK. It should be rare as 3 gens act as a buffer
+> already, having only 2 gens left means the async aging can't catch
+> up and system is under extreme pressure so it's unlikely the folios
+> will get access enough times to get meaningful heat info, and
+> refault will be more meaningful help to sorting out the workingset:
+>
+> https://lwn.net/Articles/945266/
+>
+> Cgroup reclaim can do some throttling on that too, and kswapd can
+> still do aging synchronically.
+>
+> Just some ideas, we may need to do some test and benchmark
+> to figure out which is the best solution. Discussion
+> is welcomed! :D
+
+Maybe we can still find a way to address the concerns you raised
+above, as well as TTL=E2=80=94for example, by using separate timestamps
+for anon and file pages.
+
+Thanks
+Barry
 
