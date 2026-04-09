@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E02C9F31E5A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CBC7F31E5A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F7AC6B0005; Thu,  9 Apr 2026 12:03:05 -0400 (EDT)
+	id 03CB46B008A; Thu,  9 Apr 2026 12:03:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CF3E6B0089; Thu,  9 Apr 2026 12:03:05 -0400 (EDT)
+	id 014716B008C; Thu,  9 Apr 2026 12:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40CD76B008A; Thu,  9 Apr 2026 12:03:05 -0400 (EDT)
+	id E6D2D6B0095; Thu,  9 Apr 2026 12:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 337066B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:03:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF8AA1408C7
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:04 +0000 (UTC)
-X-FDA: 84639486288.03.1CE4F0F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D74396B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:03:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F0AEBB81D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:08 +0000 (UTC)
+X-FDA: 84639486456.21.82C3F84
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3CD2A80015
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:02 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=h1GNWoD0;
-	spf=none (imf30.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id E4EB016000A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Gh85pBMa;
+	spf=none (imf08.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775750583;
+	s=arc-20220608; t=1775750587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SxYUlZLj1gmpCo8eCeKIGiFpev17tNAzKybkLp/40nI=;
-	b=BV8gbr3y4eSQn+wnM0G14wiJVW/KwDU972QftoEHeyEiXmzG+ehkEKSCvRzjrGKv5mIqPw
-	FmjTmNYmXZdzpyew5JnesjQXC42TEGugkJ22Q5D96U+qcjLaBo14bgXE/2rDI4Z7LOAjbg
-	lyknURNyxHEp8BjctrvriOeoTRIUcCU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775750583; a=rsa-sha256;
-	cv=none;
-	b=gS+BrQBOjl3sQqnG75xFHCBfER5GhPZtDF6tfO1duUGEK2u44WJXfUq78wmnEwgG49gQd8
-	O5u+WCwqaxVQhK4/5NMHtlT4nJZgWqB3eJUveZE+YL9Uf0O72OP/k9+jpBjO1wYQgYukda
-	xxr7N1YOxMTM+Xa3YtnkxT9VVPvm1XU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h53OigJvhKi2R7WTc8tD2Nme4RfoPqZlyMjNikVjZqA=;
+	b=NB2X3+T3UFcUibyIMH/PHAXrPTeOSJAAJw5gQ04SyEXrSTnSz4BVIeACaFtCTYN32bd+hi
+	iSw2ZP9ONZWhIT1Hi+M65hevsLyFe328URXzi0kwMAfRJtsV918ACQshCqzq+z6qMmUaTX
+	6FehYCTxc/+/qDX/dTbLuR5Ngnot2E0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=h1GNWoD0;
-	spf=none (imf30.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Gh85pBMa;
+	spf=none (imf08.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775750587; a=rsa-sha256;
+	cv=none;
+	b=N4V5Zl+RX/dSMwIMeXocmMG5UeBLWtsDo4Gr4Uve1EAfm0gPmn5fEsZWLC2q6RsBgTrayM
+	Aw3eFiCJxusIJw60pxj/l2VfMsCn7c4JGYtBpkuYv6KR6CnLmywkONhs1PfCr0vXSU1l4U
+	IgVj04rEi7gteYHO7LVlecBIBZx5Ew4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=SxYUlZLj1gmpCo8eCeKIGiFpev17tNAzKybkLp/40nI=; b=h1GNWoD01ZSYa/9RK53eKMGQb1
-	pR3bWB8r+lqXQGNAfbDaoppHO9yJzu6TVAz1FBtkAuv2UJXybU3NPyHtXfnnldQdTCk2Lem1xXdCD
-	NtgsXzOkwgjvGy5+pgs/+7NVU8mSGDWkfKsloQY00RzyNk6q/fLDR6L0frIclJE016YKFf4jtwmwC
-	pKn0xWdrvZi/5zG4ZL2hRPaoq/MwDZ2no6r+pRr8vGp9n60IRZXUUkN2LSI90ezMaS5sAJteTs2XV
-	PGB991wT4VMT4up40SyJD74ssZchAv0VmSSmrK5nt+iqGBXIv/I/aoVN+APRoQgFDKIvoFVagV4LZ
-	6nh+Keqw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=h53OigJvhKi2R7WTc8tD2Nme4RfoPqZlyMjNikVjZqA=; b=Gh85pBMata1NecuSQtkzPmgc8E
+	y1ebnQvyYW25FfwUI17O4uZoCDE7vls4dhGt96+ueNNXPYmujBBng7gsL0iUV75VIfe8J6vn2aG6a
+	ZPAfuTRRfoC17tS3PZ0HbJv1P5BeTKx+sfpGs0L3+tw7U6PGAgrkBmMo7Y4EQLOk/ZGBMAtr48oz1
+	ODp7rpGFFHu/QFMmE2Rzpbo44Yj2BbVwHuodmI5KQr7Gywz1TSTAxvyE0uT06c1VVNkVDXeBeHyXX
+	NVVPn66SBi1sP/VgWIzRWLYj9yti124GCrwl0cae7PB2PD5mv3sZQTBrA5TeKG2ipRUAbGSMz64gD
+	Xxu+2rRw==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wArqF-0000000At1t-0EJp;
-	Thu, 09 Apr 2026 16:02:52 +0000
+	id 1wArqO-0000000At2j-3j5h;
+	Thu, 09 Apr 2026 16:03:01 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Tal Zussman <tz2294@columbia.edu>,
 	Jens Axboe <axboe@kernel.dk>,
@@ -79,21 +79,23 @@ Cc: Dave Chinner <dgc@kernel.org>,
 	linux-xfs@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: bio completion in task enhancements / experiments
-Date: Thu,  9 Apr 2026 18:02:13 +0200
-Message-ID: <20260409160243.1008358-1-hch@lst.de>
+Subject: [PATCH 1/8] block: add BIO_COMPLETE_IN_TASK for task-context completion
+Date: Thu,  9 Apr 2026 18:02:14 +0200
+Message-ID: <20260409160243.1008358-2-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260409160243.1008358-1-hch@lst.de>
+References: <20260409160243.1008358-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4ienmqb1431ieed5o5fs1h6f3f78jqft
-X-Rspamd-Queue-Id: 3CD2A80015
 X-Rspam-User: 
-X-HE-Tag: 1775750582-917312
-X-HE-Meta: U2FsdGVkX18shik+0WenDEpGs4pJejjaJisHuKNhTTy+VNqwFY+58DyN4Cpoh8uriq1braYpGYY93plSBbM3gWIX0/gaU/r7iZsVjQBE+OIksPVmEkIawRXKSRIhmVvdBv+2NTX653vcB+u0iLgDBSYBiMDHrBl3t9l2Nv4CibG8soALMrQRmCc3wX9NkTJ0k4hUHwbLdjjQ57oYEIGOYjYrFZqnWzuLEarQWbbb4TztUDIsL9J/xWL2x5ryC6Segqf8pFWa5MSSHzXOid5nXv7ih79XEK7JhGaaFz97PHvK41WrIZbdsyTgWx0GlUBXXEDBczQQgKZIg3EcDKXyRBw8UWEKlgVA4mi0NBk+CWFVsfTHTYN4QwF0osu7JIm8cU6BAsH9dy/rTffRAEVvhCkgGCe1q6bi3eUI48Vd7QJuPd9e8Pv/JopKo6DMGmPQ3luqt85UYdZlVqd0g0/OHH3pI+LE1+qSV0rs0+QG4moqdeMtDEczuNYnBAxAqk9ba24hH7BR2Zgo20D2hTmaTRRTmENSVpNlAwSfzcLWvnZ3SzkHHzycSHnQ59joqrRDHljAEHxbrPtCaKBHXPuh8nJKQ0lEzg++xcgN8y9z9oiKSbFZR+g9ELM1u5vYAl7ZoN2hmYY6P6I94P+O3GqhgGUSpgUr6t0TLgi5o519nKUzE8+iVOl8jT6/c2IInSAPUyumDNI7moW2gfnd6SaFeF+ysS65h7zU2X9x4plbW3lyTNYMsq+K4XecPdfkmeq0uMGup75AYRn/IEL+Z7DupeHw7zTEIaRjGhyzx7KXwPoccOBeYxxZVGWsvwdYZMJe9wbOHaH6sdlW8oOawSVS8R76/s8tCEHaSBRANLEKsiEMQrKFhAc7V7O3FPhL9W8NSNU1KhrZggiF15SICb48hb3aShRkaVraGPgLG/S+bY+3XDvk+O3LOpsiTJbTZEk8eE1EeB3pEB32Hy6Xxlu
- KnHy9JIQ
- ufO6Qt1HOi1hplIbXk1gctlQKX5bJjI4hlBofsz1xRG85fvlU5Owa5laMjhEysVRm4g8prlEKsNXZQl1m3j+Qnqy7hcU8n29MxrwotKErE4MaTxpeFrNZUcosxTPZRlO2VO6ZDUURuZzwpg2o8s0KEGGYlD1SGykttr+psp7DEGxMNCI2AlL6RgXYqF3sSOhbyIY25LBOOVkhjsKEu/KSQvv1DWaevHeNgMni9MDvIHHoR5wD7aWwFWhJNINkDHMA0BWRm1lMXnu77ZVLv6JmJ0alYgiDTPrHxJJDz67gGFIr6khupM13fpYe0OItj2wvDKzZBmFbDFJORIgjMAraDNmnW0OeSLW9uvF0EosQh1KOJZWWZMjv4/EpZ5u+SHWMmo76BudJHqLJC7HLOlk48pWMXa5pei6ezutV+6WbmkDE3bqA0b5QasXxfKSAloqFZHIIuttbDKObS/Mrv0OC2rs9uZ8TlixXyGrCOl55S0h1s/uJyEFDAlwLNJIwVSmLwWU3pYEKNWMXJQppndqSpYwainDr9yuWV/O2KCpLqd0kDEaUnLJPTSiJ7Ps2DJ9kAzaYyVIaMUtAjIunCN382g6ts+QysvevJJlEyb/p4ce/+cU=
+X-Stat-Signature: 46b1s5pw35qsjwssiua7wyt67z8ax4sw
+X-Rspamd-Queue-Id: E4EB016000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775750586-417726
+X-HE-Meta: U2FsdGVkX18+goYc3+v5A4lqDul0CT7QrtyokMHlPcBQXXMg+k8+yAvbOrWe9LP0aali8ZN9dR55DqEOAGhqUEgbKB3OJBeYp/H8sOk0DzU4dUntPzVk1IdOl2Tx23mSBicvU/OP0yuV/95T9iAC4EGZxHlkCGnrNt1EC2ur6XgDi44rl+gTIDqPi128e0y4SEy9Ly/nw/JZ1kRF2uOgZH9PDSC9Kuilrd1qZzEyITq4y1CxNq+rRZ3qfhne2myZkpqbWyJqEJ6CWz3J+j4OnU7G+HG5BqKpBN39kJP+6DtzQ98AhP1XzvuAOW31nrWXoAHk+DvgG6cN6mMZ8UD6Jm7wY2yuBAboam27uQgEMmWxgRE6XJ3UFKBG9B8VlHcOs3E82LFJx+tFxZSqeHdR+KydQkwp9joM72we8CrRaalczwbNwkRwsPW6VVV8y0Fc5vYZvcfgKQOg7vW1AI/K7tyQ+CqXzOXG96MVrcWaMq1Kl83PziX0zoZxg71R0VfY3n/6Uoh0GMnd6LCM9zxB/kvi3OpDrVctWqh3sWpMhbJHtq683fHN7LPhJT7T8pW8qLCze/q6LZWTSUj3UfL4cwwy7WA0BNUVFp2TRVayir7ikrps0xfX7L3mebLFIlPXWNdL557bnXSadiwEsUyrIe9D4pJSOZzjFolEvw80c/vgEIuGWHiY1HIsPo2gbsisOLiKRrdEJvoVqFcbLDf+EwcJGWWpfOFOhckT7f8xh78pOK13WnKFvgvKqIn5bFNgivEhUE5ie4kqJtLftdHWRa2sgkJspJwsEkAI2xZai0E2kxN718ezok6OaPvy0ehwKa5Em/KThmgjUCNJMQNOpOSmL5/s+sFRbCfZEziL0pUI+uHADdbFR9WRM8ma5WB30DsFuZHIxxF4ToAtIE2S6NHvWoNADO7073LNDM09tMNDAtQ6aolAwwh4fIU0z6T1nMkGRfZT/GE+dQMR8tx
+ 52cN1dEb
+ xdHZbRrfJarmbcUZq7X6AUKOtyNuAsyUytJ70QWY9UcuabSHWIQ9JKhcSinUEUx/xuvP4ST3FprvGgZH0bPEv57NkoTSKixU5+fbx06Q//RDh4nGEVyA6b8eodbBBFTo9gIqyutE7/5ieTMqYk4e6Ocs6KDzeWBoLq3rR6LL82luesyzCRnyj32vT0pXXL7uTok6zrBn5rOAUqRadSTQOT/gfrhO3qz8mKm4TlkVkx4Pd/jUHX0AO1AsV3Q+8WFcrp2f0blvDpPWnio3IdizkgOutdy/QQJcBSRQ5xBvFpEaHKReHFvNC0Fx6o0ok+/L2hr/ufaEvfBBDU9noaj71akITHfOOCmrxwHvPurFclrTg7vERqMug7rDARJScmtQL/AV1NtYujNjLE1zpGnwmzhrG9ohpCZSdOPFYbvuglfPi6dzrOJlc43rZN3haGuZ3SB+GZPYsz8P6cJK9K95BLnlD9GpxcvfxVqtPi60uuxMMM9T/4e71/c9iQrJd1o0ODWv3899fjXWJDjZHLUs8CcyYubdGZnPdU6Bt6xrGuU94XlNxd//MRcuNSvYKwT8D5ZW6QWKHQnjhpyq/TjOOKxAm5FyI5il02ZeZ+FzW7RKyaqZn8bXcztoECB6NQsMBMrW7X0SM0NeBNAPYduhhH80q5P3Spdz1fQRaqFcE9c+4biknLhSl4GdeAhKloGrmM7tPrYS3wxszNplBoqkQ+pulsXpSFIxTECHzPxh9nU7b01s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,40 +103,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Tal Zussman <tz2294@columbia.edu>
 
-this series builds on top of:
+Some bio completion handlers need to run in task context but bio_endio()
+can be called from IRQ context (e.g. buffer_head writeback). Add a
+BIO_COMPLETE_IN_TASK flag that bio submitters can set to request
+task-context completion of their bi_end_io callback.
 
-Subject: [PATCH RFC v5 0/3] block: enable RWF_DONTCACHE for block devices
+When bio_endio() sees this flag and is running in non-task context, it
+queues the bio to a per-cpu lockless list and schedules a delayed work
+item to call bi_end_io() from task context.  The delayed work uses a
+1-jiffie delay to allow batches of completions to accumulate before
+processing. A CPU hotplug dead callback drains any remaining bios from
+the departing CPU's batch.
 
-which I fixed up to apply to linux-next.  If you want to seriously review
-or test this, you're best off using the git branch here:
+This will be used to enable RWF_DONTCACHE for block devices, and could
+be used for other subsystems like fscrypt that need task-context bio
+completion.
 
-https://git.infradead.org/?p=users/hch/misc.git;a=shortlog;h=refs/heads/bio-task-completion
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+---
+ block/bio.c               | 83 ++++++++++++++++++++++++++++++++++++++-
+ include/linux/blk_types.h |  7 +++-
+ 2 files changed, 88 insertions(+), 2 deletions(-)
 
-it first makes the complete in task interface more flexible so that it
-can also be used from inside the ->bi_end_io handlers, which we'll need
-for a few uses cases.  The second patch fixes the offload condition, the
-next two then convert to uses in iomap added in the current merge window 
-over to the interface.
+diff --git a/block/bio.c b/block/bio.c
+index 641ef0928d73..550eb770bfa6 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -19,6 +19,7 @@
+ #include <linux/blk-crypto.h>
+ #include <linux/xarray.h>
+ #include <linux/kmemleak.h>
++#include <linux/llist.h>
+ 
+ #include <trace/events/block.h>
+ #include "blk.h"
+@@ -1716,6 +1717,51 @@ void bio_check_pages_dirty(struct bio *bio)
+ }
+ EXPORT_SYMBOL_GPL(bio_check_pages_dirty);
+ 
++struct bio_complete_batch {
++	struct llist_head list;
++	struct delayed_work work;
++	int cpu;
++};
++
++static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch);
++static struct workqueue_struct *bio_complete_wq;
++
++static void bio_complete_work_fn(struct work_struct *w)
++{
++	struct delayed_work *dw = to_delayed_work(w);
++	struct bio_complete_batch *batch =
++		container_of(dw, struct bio_complete_batch, work);
++	struct llist_node *node;
++	struct bio *bio, *next;
++
++	do {
++		node = llist_del_all(&batch->list);
++		if (!node)
++			break;
++
++		node = llist_reverse_order(node);
++		llist_for_each_entry_safe(bio, next, node, bi_llist)
++			bio->bi_end_io(bio);
++
++		if (need_resched()) {
++			if (!llist_empty(&batch->list))
++				mod_delayed_work_on(batch->cpu,
++						    bio_complete_wq,
++						    &batch->work, 0);
++			break;
++		}
++	} while (1);
++}
++
++static void bio_queue_completion(struct bio *bio)
++{
++	struct bio_complete_batch *batch = this_cpu_ptr(&bio_complete_batch);
++
++	if (llist_add(&bio->bi_llist, &batch->list))
++		mod_delayed_work_on(batch->cpu, bio_complete_wq,
++				    &batch->work, 1);
++}
++
+ static inline bool bio_remaining_done(struct bio *bio)
+ {
+ 	/*
+@@ -1790,7 +1836,9 @@ void bio_endio(struct bio *bio)
+ 	}
+ #endif
+ 
+-	if (bio->bi_end_io)
++	if (!in_task() && bio_flagged(bio, BIO_COMPLETE_IN_TASK))
++		bio_queue_completion(bio);
++	else if (bio->bi_end_io)
+ 		bio->bi_end_io(bio);
+ }
+ EXPORT_SYMBOL(bio_endio);
+@@ -1976,6 +2024,24 @@ int bioset_init(struct bio_set *bs,
+ }
+ EXPORT_SYMBOL(bioset_init);
+ 
++/*
++ * Drain a dead CPU's deferred bio completions.
++ */
++static int bio_complete_batch_cpu_dead(unsigned int cpu)
++{
++	struct bio_complete_batch *batch =
++		per_cpu_ptr(&bio_complete_batch, cpu);
++	struct llist_node *node;
++	struct bio *bio, *next;
++
++	node = llist_del_all(&batch->list);
++	node = llist_reverse_order(node);
++	llist_for_each_entry_safe(bio, next, node, bi_llist)
++		bio->bi_end_io(bio);
++
++	return 0;
++}
++
+ static int __init init_bio(void)
+ {
+ 	int i;
+@@ -1990,6 +2056,21 @@ static int __init init_bio(void)
+ 				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
+ 	}
+ 
++	for_each_possible_cpu(i) {
++		struct bio_complete_batch *batch =
++			per_cpu_ptr(&bio_complete_batch, i);
++
++		init_llist_head(&batch->list);
++		INIT_DELAYED_WORK(&batch->work, bio_complete_work_fn);
++		batch->cpu = i;
++	}
++
++	bio_complete_wq = alloc_workqueue("bio_complete", WQ_MEM_RECLAIM, 0);
++	if (!bio_complete_wq)
++		panic("bio: can't allocate bio_complete workqueue\n");
++
++	cpuhp_setup_state(CPUHP_BP_PREPARE_DYN, "block/bio:complete:dead",
++				NULL, bio_complete_batch_cpu_dead);
+ 	cpuhp_setup_state_multi(CPUHP_BIO_DEAD, "block/bio:dead", NULL,
+ 					bio_cpu_dead);
+ 
+diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+index 8808ee76e73c..0b55159d110d 100644
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -11,6 +11,7 @@
+ #include <linux/device.h>
+ #include <linux/ktime.h>
+ #include <linux/rw_hint.h>
++#include <linux/llist.h>
+ 
+ struct bio_set;
+ struct bio;
+@@ -208,7 +209,10 @@ typedef unsigned int blk_qc_t;
+  * stacking drivers)
+  */
+ struct bio {
+-	struct bio		*bi_next;	/* request queue link */
++	union {
++		struct bio	*bi_next;	/* request queue link */
++		struct llist_node bi_llist;	/* deferred completion */
++	};
+ 	struct block_device	*bi_bdev;
+ 	blk_opf_t		bi_opf;		/* bottom bits REQ_OP, top bits
+ 						 * req_flags.
+@@ -322,6 +326,7 @@ enum {
+ 	BIO_REMAPPED,
+ 	BIO_ZONE_WRITE_PLUGGING, /* bio handled through zone write plugging */
+ 	BIO_EMULATES_ZONE_APPEND, /* bio emulates a zone append operation */
++	BIO_COMPLETE_IN_TASK, /* complete bi_end_io() in task context */
+ 	BIO_FLAG_LAST
+ };
+ 
+-- 
+2.47.3
 
-The last patch plays with the implementation and reuses concepts from 
-erofs to reduce the completion latency at the expense of more always
-alive threads.
-
-There's a few other places that could benefit from this, like erofs
-decompression, PI verification in the block and file systems paths, or
-fscrypt decryption.
-
-Diffstat:
- block/bio.c                 |   93 ++++++++++++++++++++++++++++++++++++++++++++
- block/fops.c                |    5 +-
- fs/buffer.c                 |   25 ++++++++++-
- fs/iomap/bio.c              |   44 --------------------
- fs/iomap/ioend.c            |   53 +++----------------------
- fs/xfs/xfs_aops.c           |    4 -
- include/linux/bio.h         |   28 +++++++++++++
- include/linux/blk_types.h   |    6 ++
- include/linux/buffer_head.h |    5 ++
- 9 files changed, 165 insertions(+), 98 deletions(-)
 
