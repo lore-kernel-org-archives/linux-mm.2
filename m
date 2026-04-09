@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A73E9DE5F
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E811E9DE63
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:01:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E36BB6B0005; Thu,  9 Apr 2026 03:59:02 -0400 (EDT)
+	id C172E6B0005; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE8806B0088; Thu,  9 Apr 2026 03:59:02 -0400 (EDT)
+	id BC84C6B0088; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFCED6B008A; Thu,  9 Apr 2026 03:59:02 -0400 (EDT)
+	id ADE636B008A; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BBDAD6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:59:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66B5E13B25E
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:59:02 +0000 (UTC)
-X-FDA: 84638266524.24.FC3B87B
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1BA6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FA6BE294C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:01:28 +0000 (UTC)
+X-FDA: 84638272656.29.91B5447
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C82681A0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:59:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y5C3Nu4w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721540; a=rsa-sha256;
+	by imf21.hostedemail.com (Postfix) with ESMTP id BA3A61C0013
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:01:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOTz9tLV;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721686; a=rsa-sha256;
 	cv=none;
-	b=TRbPLB+rk/sOc/RgSQtlrSVkUc5Vv/Sek+8LQIHKsMpKuHnbN3Mhp9RguMUTWNHcE9g1DW
-	BkSzAgzoSbWprNCXS2zAy53uz18nDlHQ5GadJwYDX3GofnkCfKt3sSRwcTaRHO9V1JZsgJ
-	k3WfDDOequUAjUGhF2ihgU+Qgw03/4I=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y5C3Nu4w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	b=P3L3Pqfj4cwsyDSIni+36L55/dpfwjyZSKFIkiLtZlfw3g3Vtq+KxvYgFO2CnGvCmqVw5D
+	qHhkKmPDIn/yw0jLl6lvgp6NRc0WmqlwNnjcRnuKLlUKfEtYsy55v6pxYRpY7mSB8FFj47
+	/1p9Zl3jYUUlmUcHnfdCYDBbW3PVssQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775721540;
+	s=arc-20220608; t=1775721686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eBbDNSBHtp7HZRUrPrLAaAwZ6qZc2fYLwlE6qDGmZSU=;
-	b=kgxACNhI+nBWvt5u2qlfM2RyjbzS6j6aqe4ypmHPuB0+StDREdTGQg9VwrN9jIQ2oWULmZ
-	aRJRjBA+1mcBZzaDEovRevXBkvXQYnzMVj8Kw9URTyyz5C6O64QltOctx+47dEXV5FhtZ9
-	e+6/oEVzKP6cT3MApG7d36yD3HvnmOw=
+	bh=NtIM8rEfbYq0bFQF3BN/n22f+0/+mv7d7fE3g7f4/d4=;
+	b=Pn1ipCDvYgUBpt3JocW8/LJaze4vEbMNfu8SK+2mM2wjRjdut0pTQZR3Hza3ditL1p8lzg
+	f1roJM9TpU+qUzUwoBYG6Z6jmCEvllnFx+LfxUhldT8ispf8t1KxL8pTU55Y3k49+W2lPe
+	qzcwAGCqKDoJEM9sIyQRSfvEjZJ1y4M=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOTz9tLV;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04348600CB;
-	Thu,  9 Apr 2026 07:59:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C7AC4CEF7;
-	Thu,  9 Apr 2026 07:58:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D852600AD;
+	Thu,  9 Apr 2026 08:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933BFC2BC9E;
+	Thu,  9 Apr 2026 08:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775721539;
-	bh=vWlsbBNlV4qxxJh+mktKzb+dE9BzzFofWF3ur8Ob5iM=;
+	s=k20201202; t=1775721685;
+	bh=RGmpNngIfJC7vsE/AA6AGxc8jF7BEr2rUsoHZzp8PsQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y5C3Nu4w/fCBUkGKprgozESwjJS2l94AULTHqMmwU6SJoUNQDRtJDsLEwRobzzi4z
-	 dMFUXS8mGNN4q6a2djyCGMWuNIB30YAfU34um99BNH928/q4kVBmFQJUM73ou7ZABi
-	 K6GWcorGWf0WTlaFMoTcrwhWfGOMGqdmEgZWwdQp9xGGJiUlT50QqndTBEVnE93MPP
-	 iz5f1T1ZqbMbfTHPobvw9rE1AzXoyuulPMyFFwKIhjgNMDPpBwYc67TdzDGXbulj7o
-	 uTftzrY7E+0TzoL4uQ2oDMe2RsNIjr75HKWklfIfgOhXi7mw4l6GhKKWXInNJ76BJj
-	 5EtRQ2+Jukm+A==
-Date: Thu, 9 Apr 2026 08:58:53 +0100
+	b=rOTz9tLV6I6aNdusDm3HswNPIWXdRp/W6DkRosUNvQIzX9eaIsc5Tbz0x7b4UcVJD
+	 VghAjUDqOJFDCdxJWd6SUI9/j/6Ib9lheDAoTXVwEbTbxh69QWEZ28y3Uj0PaniLm8
+	 eLCzJ9OnW71vIFeqfBTsPsf7/n5c5f4d6sxAWDTKB1Kd7U2Jx9X/sliZ4ru/t8xybV
+	 Hngi1RQTrPDym8ZFVyYzNfVv88ValdoNCYPc7mNPNEyZL6YlHovTNGUlGIZfbyelGm
+	 cWIZka/2Kf5Nu6Kh7areDqyG7LuzyK1U5AKAPK1Pio5MDnq19kTt+XsB8sbiO/H5B7
+	 KeLJ25ueK/PNA==
+Date: Thu, 9 Apr 2026 09:01:20 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Denis M. Karpov" <komlomal@gmail.com>, 
-	Andrea Arcangeli <aarcange@redhat.com>, rppt@kernel.org, akpm@linux-foundation.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, jannh@google.com, peterx@redhat.com, 
-	pfalcato@suse.de, brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Usama Arif <usama.arif@linux.dev>
+Cc: "Denis M. Karpov" <komlomal@gmail.com>, rppt@kernel.org, 
+	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@kernel.org, jannh@google.com, 
+	peterx@redhat.com, pfalcato@suse.de, brauner@kernel.org, viro@zeniv.linux.org.uk, 
+	jack@suse.cz, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Subject: Re: [RFC PATCH] userfaultfd: allow registration of ranges below
  mmap_min_addr
-Message-ID: <addXVDMjY89-cJ4A@lucifer>
+Message-ID: <addcUpxfuR2llaiW@lucifer>
 References: <20260407081442.6256-1-komlomal@gmail.com>
- <adXJop1d0QdH2Mwm@hyeyoo>
- <CADtiZd3AcY2LwPfCkb782TaY1h50dTPpEzhfLSyMeQeXG6VXfA@mail.gmail.com>
- <adcUHx27oZLftSjS@hyeyoo>
+ <20260408123700.1596800-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <adcUHx27oZLftSjS@hyeyoo>
-X-Rspamd-Queue-Id: C82681A0005
-X-Stat-Signature: 19wt51sheeme67t7t3si8axjn7i1wk8u
+In-Reply-To: <20260408123700.1596800-1-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775721540-919993
-X-HE-Meta: U2FsdGVkX1/D+ZRx6GO/u31R7rNj0GHZoE74V1lEfolyIH5CHVZLk6U6VBE+6Z5Ztd8TNCA7Bu6IxGkOE39uzBTKBBw98OPshZHf5w++ksakv/wRNc+6U64DJNssoTrh/i1U6IlIgXkyeeC/3orxtDcMp/x0SCaH1rw/nD/2/W78jQ49hf46WNZU0q56iGpaBqjpw7Ut12kCR/LSDga/BLOnMDdYUM+WrhDODF91BTiM0zDHgRj1MWI93D/hvnN70M9fpCA7TQs6UMNCasK4SCDzpHe1vqNnlR6pDuvp3/dm/ERfaoD1Qlq0SZTxZfr2AqV0BOdgSQQPFIo/ln7rjh8uCvxIRO8ZD8/94cfxK6ro4Ap/1QyS3OeyUN2e2INRGuu1zav+ysgO05N7qRBHU3LkRDrQ2as+M7bmDgzPbgzSLSUqrHyb611pkiQLHtTIu65Rhe9zxUrdOHAJyJDjusjySbFSnL5c0edp6S/RKRkk1QDBxLU0WfFaiR/+lAq/oYM5bVJQm8jtW/vcYmIpKuRQB2d7PBZq+UQu8vaTgizrVqad4mduP1otlUl6CQ5Mjs3J/fFZOkI2k9Wc6trN/OxqkP1L1jC7FMNwouskmJbjUp71upCLKaX01IfNWu5/SR/iB4vR6pDIaOhEmbV2maL1k7nYeCTaqKjdVfP2bKNreZ/XhaWLp9HGb6gX40jy3BV5UH1oXeq/+/i+Z0eyZq9E/HC+4E8nyVAOGxkGxQgld06vI4fJ7PTCYo2eyPfduvEHfTanjck7+7V6m11uQuBZOsrblTR7h/lJNvCNpMNhOgZ2TPayUBD005GAc0BxBLCJWTTJBUe7Nx1uMycH0vm952aWiYlDOFxXjebGyI1ZZOzwN+0ahHtH7hkbeSRHlnHwqZTp1HYvGouBFAQRkVYqK0MN84w8TFWm6QHsb+qjRwxUGXbG3UARUeL/7WiutLhe/pfDnIamJZhDPG5
- R/7b0Ptq
- JfXojM2IfZl9KIFyuK62OdgQJzf3tyYsLF8xdISp0VTGnM3c+90oGNpe/0T1OrE1P/9GUz2PPy7KQy93Z8VPQbDxJNTXX4rp60sxuHfbujWzFvvzUSqE0hPXWFBFTuoPphqo2Tp+lZNXSlXEUKnURN29SnHXpUajvoZda7NV7y2Yepy8ymxVzfhNHO3KfLJYKEDBEUCF9sY+BYt9uFPO6GqOoR63aBEut7/E+2QVMCAvfYBDp8TC9JbGfcLLcZmxQuMfsinNToLkeQDhTBmoZzOMeacdb2aWne6XILZHul6dMp5Yw/ABg9SNTSpWHuaC/rxJRWOQVB+QNcOz3e0n40AdrfIOBdX6C+sPm0DOuaHWGs53GRkCSG8yeWhTYY9NNCvzpJ7hmQzOkg636x8pP7NbrbOYEBp++bzKu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BA3A61C0013
+X-Stat-Signature: w7ybib1cfgn4nneusnxzptm8spsocm4j
+X-HE-Tag: 1775721686-992630
+X-HE-Meta: U2FsdGVkX18TEf5lhLryL+xiSXPXdn4IGvhatq6qjg/IjxuCVu8mz+cn4XqhJ9z3vVxwZYNH5GFerkCeF7GDBr4W3iaTClArdDeTPsqUSqu5QK3XY0lMTVSTGuT4G2/WGVv1+TAYsaAuOcuTdavM8qhkMiJtNG0x8NuuSwrS8CyKNsfDgyaLjt8COF3KntvxPJnn/UsdvS7Omt0+okMdu8xPaVCAFdBTqVFIaVIgAB1v588Vx9bojqicdVoPj+o6VAqUydXfu2+qOL9wS8uBmBKTL/OIK1rFci9e9Ld0iWZbJY5LYW8ZhPAkAQu031O6fMVjCDMAEcREY4Z2L6PXqfk0CT5YUw915bNHmKlxO8PxXhjGNoTCPi0g4FkFx9rcbVQygsu+X3R+GN8AG8pWUcYIBz6W/sP9BOYNA58t0I6+k25lZupzLPvNtdeS2w/6jozYFXAvyl6HCByj/6wxAHPjV3SGFayIssPy9MAW+JZa1iQCKqhmjElTmaccMM3fi9Bk8eFDYwjsLlCWtse1wuFrP7l2IVRwL2rTQPWzfhQZQ/6UyRNrPdOHLc4KbbAJXY5keFFEXSN5gG4P6jx1Wap19k5Z15ksDq0x7F0/XJ9bGw6kWsXUxecooyfwky8RcoaDJr6UUkG8O0ojxW/P4xB0l9cziVya3BewCHqZtha3HRpB6jc4s/NX9MZYBAhWvq1WL/FRjOzZJZ7IR7aPAdEhiCFjrzedwXMjDe2yE9uyxiPqhbe0CSDx4b2WACgX/6ehmAGoc7YiSCyNFwZ0r4WHcY89P06Mz34dHg6sk7qZ/Qx/aYVin7yDJroL0E+Lu2J8xQ8GTs7RX6kYBRb//iGTQ+zm7l13eis3gtHKT1D6sgUHbgX0qQg3YtWL6pHgYMWhYm+prJcVTNaqnlSQIzeesE6szsRV87aIQIEYhA3FRnPsYTyBzV6TNAwROVeKT6deb1478UJtrkOX4NM
+ e2EShStK
+ D8waNZh3b+DAvMLIiE2DelDsiE3nOevgjLwEcyFdiBS4+Hd1M830UcGcl5YCBpTafBZ2YzCXFvgu4frclQbrtYM6La1QXncVsFsvigFV8nofY9XKyaEvv+MbH4/GnM4dD5H2EqRQZWmg8AScAFEMvf9CLmt9zaB/wMIcUryLbywuUFOEXaNB4Yblgz/IxkWupqMIndt/8Q15qrUxcgx4ubzVMA33FcnPkoRpXsA2tFus1kd884DdiLCpVd46WNthseYTKktVKphdiGMPRlnBtuT3X+y/dv1HCd5XJu4iuUZh+mCFWIqqDQnsVQeOQHr9IKvWD6oIaxvz7DI5EdOUZqnZk5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,119 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 11:51:11AM +0900, Harry Yoo (Oracle) wrote:
-> On Wed, Apr 08, 2026 at 11:09:00AM +0300, Denis M. Karpov wrote:
-> > > Hmm but it looks bit strange to check capability for address that is
-> > > already mapped by mmap(). Why is this required?
+On Wed, Apr 08, 2026 at 05:36:59AM -0700, Usama Arif wrote:
+> On Tue,  7 Apr 2026 11:14:42 +0300 "Denis M. Karpov" <komlomal@gmail.com> wrote:
+>
+> > The current implementation of validate_range() in fs/userfaultfd.c
+> > performs a hard check against mmap_min_addr without considering
+> > capabilities, but the mmap() syscall uses security_mmap_addr()
+> > which allows privileged processes (with CAP_SYS_RAWIO) to map below
+> > mmap_min_addr. Furthermore, security_mmap_addr()->cap_mmap_addr() uses
+> > dac_mmap_min_addr variable which can be changed with
+> > /proc/sys/vm/mmap_min_addr.
 > >
-> > Actually, it's not obvious to me either, but I may miss something.
-> > My intent was to replace the current restrictive check with a more flexible one.
+> > Because userfaultfd uses a different check, UFFDIO_REGISTER may fail
+> > with -EINVAL for valid memory areas that were successfully mapped
+> > below mmap_min_addr even with appropriate capabilities.
+> >
+> > This prevents apps like binary compilers from using UFFD for valid memory
+> > regions mapped by application.
+> >
+> > Replace the rigid mmap_min_addr check with security_mmap_addr() to align
+> > userfaultfd with the standard kernel memory mapping security policy.
+> >
+> > Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+> >
+> > ---
+> > Initial RFC following the discussion on the [BUG] thread.
+> > Link: https://lore.kernel.org/all/CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com/
+> > ---
+> >  fs/userfaultfd.c | 4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> >
+> > diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> > index bdc84e521..dbfe5b2a0 100644
+> > --- a/fs/userfaultfd.c
+> > +++ b/fs/userfaultfd.c
+> > @@ -1238,15 +1238,13 @@ static __always_inline int validate_unaligned_range(
+> >  		return -EINVAL;
+> >  	if (!len)
+> >  		return -EINVAL;
+> > -	if (start < mmap_min_addr)
+> > -		return -EINVAL;
+> >  	if (start >= task_size)
+> >  		return -EINVAL;
+> >  	if (len > task_size - start)
+> >  		return -EINVAL;
+> >  	if (start + len <= start)
+> >  		return -EINVAL;
+> > -	return 0;
+> > +	return security_mmap_addr(start);
 >
-> Technically, it's less restrictive only if start < mmap_min_addr
-> (setting aside the discussion of whether this is an appropriate check).
+> Is this introducing an ABI change?
 >
-> Otherwise (start >= mmap_min_addr) it's more restrictive? (now, the process
-> should have the capability when registering an existing VMA to userfaultfd)
->
-> > I think performing this check here allows us to deny invalid requests early,
-> > before locks or VMA lookups occur.
->
-> But we're not trying to optimize it and we shouldn't add checks without
-> a proper explanation for the sake of optimization.
+> The old code returned -EINVAL when start was below mmap_min_addr.
+> The new code calls security_mmap_addr() which returns -EPERM when
+> the caller lacks CAP_SYS_RAWIO. Existing userspace callers checking
+> specifically for -EINVAL would see different behavior start is
+> below mmap_min_addr.
 
-Duplicating this kind of logic in the already horribly duplicative (and more
-generally, horrible) UFFD implementation is actively buggy and incorrect IMO.
+You mean API change? :) we don't guarantee ABI for kernel stuff anyway.
 
-I also find it extremely odd that we are validating that a... source
-address... is... mapped that way (in userfaultfd_copy(), we validate
-uffdio_copy.src using validate_unaligned_range(), as well as the destination via
-validate_range()).
+Firstly, as with Harry, I don't believe we should be duplicating checks here
+anyway. UFFD is duplicative enough as it is.
 
-It just makes no sense to me at all.
+And this is such a silly edge case that I don't think it is valid or reasonable
+for us to account for whichever totally insane user relies on a pointless
+re-check being done there and _then_ relies on the error code
+being... -EINVAL... which is overloaded for a million other possible failures.
 
-Let's get rid of it.
-
->
-> > Removing this check entirely would also allow using UFFD in cases where a task
-> > drops privileges after the initial mmap(). This seems reasonable because the
-> > VMA already exists, i.e. kernel already allowed this mapping.
->
-> Yeah, that seems reasonable to me.
->
-> IOW, I don't think "creating a VMA on a specific address (w/ proper
-> capabilities) is okay but once it is registered to userfaultfd,
-> it becomes a security hole" is a valid argument.
-
-Yes.
-
->
-> And we don't unmap those mappings when the process loses the capability
-> to map them anyway.
-
-Once it's mapped it's mapped...?
-
->
-> > In the [BUG] thread discussion
->
-> Was it a private discussion? I can't find Andrea's emails on the thread.
->
-> > Andrea Arcangeli also suggested adding a check for
-> > FIRST_USER_ADDRESS to handle architectural constraints.
->
-> Again, what's the point of checking this on the VMA that is already created?
-> *checks why FIRST_USER_ADDRESS was introduced*
-
-Yeah this is just the exact same thing with a different thing to compare
-against no?
-
-copy_from_user() will handle this in mfill_copy_folio_locked(), returning an
-error if a user tried to copy from somewhere they shouldn't have (the same way
-as if the user tried to copy from somewhere else they shouldn't have).
-
-Let's not block on off-list sidebars.
+Let's let it be -EFAULT and remove this silly check altogether.
 
 >
-> commit e2cdef8c847b480529b7e26991926aab4be008e6
-> Author: Hugh Dickins <hugh@veritas.com>
-> Date:   Tue Apr 19 13:29:19 2005 -0700
->
->     [PATCH] freepgt: free_pgtables from FIRST_USER_ADDRESS
->
->     The patches to free_pgtables by vma left problems on any architectures which
->     leave some user address page table entries unencapsulated by vma.  Andi has
->     fixed the 32-bit vDSO on x86_64 to use a vma.  Now fix arm (and arm26), whose
->     first PAGE_SIZE is reserved (perhaps) for machine vectors.
->
->     Our calls to free_pgtables must not touch that area, and exit_mmap's
->     BUG_ON(nr_ptes) must allow that arm's get_pgd_slow may (or may not) have
->     allocated an extra page table, which its free_pgd_slow would free later.
->
->     FIRST_USER_PGD_NR has misled me and others: until all the arches define
->     FIRST_USER_ADDRESS instead, a hack in mmap.c to derive one from t'other.  This
->     patch fixes the bugs, the remaining patches just clean it up.
->
->     Signed-off-by: Hugh Dickins <hugh@veritas.com>
->     Signed-off-by: Andrew Morton <akpm@osdl.org>
->     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
->
-> Oh, ok. there might be a raw mapping without VMA below FIRST_USER_ADDRESS.
->
-> Adding such a check wouldn't hurt... but if there is no VMA, you can't
-> register the range to userfaultfd anyway?
+> >  }
+> >
+> >  static __always_inline int validate_range(struct mm_struct *mm,
+> > --
+> > 2.47.3
+> >
+> >
 
-Exactly... and I don't want to see us randomly do checks that already happened
-previously.
-
-Putting duplicated bitrot-baiting code in what is one of the worst areas of
-mm is not something I want us to do, and would like us to actively remove
-anything that already exists like this.
-
-And the fact that this is in an fs/ file is even more annoying to me. Really I
-don't think _any_ meaningful uffd logic belongs there. Especially since we have
-a bunch of other uffd crap in mm/userfaultfd.c.
-
-The fs/userfaultfd.c file should be a bare-bones thing that handles the fs side
-of uffd _only_.
-
-Cheers, Lorenzo
+Thanks, Lorenzo
 
