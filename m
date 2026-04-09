@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4077AF31E22
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1A2F31E22
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:20:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 811EC6B0005; Thu,  9 Apr 2026 11:17:42 -0400 (EDT)
+	id 6DD0F6B008A; Thu,  9 Apr 2026 11:20:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8E16B0089; Thu,  9 Apr 2026 11:17:42 -0400 (EDT)
+	id 68E1C6B0092; Thu,  9 Apr 2026 11:20:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7265B6B008A; Thu,  9 Apr 2026 11:17:42 -0400 (EDT)
+	id 5A3B16B0093; Thu,  9 Apr 2026 11:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 617976B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:17:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 21D8714047B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:17:42 +0000 (UTC)
-X-FDA: 84639371964.09.38A3963
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 488756B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:20:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD716160464
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:20:26 +0000 (UTC)
+X-FDA: 84639378852.27.AEEC1DF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 67409140014
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:17:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qht0fFe/";
+	by imf27.hostedemail.com (Postfix) with ESMTP id 385D940005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:20:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pLgfQ2wd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775747860;
+	s=arc-20220608; t=1775748025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nbr06xUxYlzqYLI3d13wLA/zrqb+kMb6HGm3++yLxR8=;
-	b=lO2yOPDg9bNSHIpnYnD6i02Lj//itGk0Mcx2Dq1EOtSPUDXlhS9WyAXQ+qBJbOijJjWDey
-	qUW6SSRzwnTqcTV/Ff0oSj+qgBZfi3NEvG1CRzjH8vkPCOZ2gpBsVWcuzkyWToxdR2fyev
-	3XnJao+Ycj3IyoFAJWeKkUQPtGQRXBc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747860; a=rsa-sha256;
+	bh=TjT1lCBts9+nGjdmgN2+udMG66pBga9mn29vtO5y8nc=;
+	b=Lt7ph0xtlcYuTONOKwnuYiUvhpcsSIoouK2WC8f00iuccSTmI0d/1E+AtuVls4Nsj6HeFM
+	Ep9iTKiXTNRQ9YJ6Aiuiu8TFZneV37i9neFE6XDYoblxX9hK/8hyc95xcMlzERLMu2nU0z
+	M7Rq9wEFz9orPijyxJ/COPCLHUeBHLY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775748025; a=rsa-sha256;
 	cv=none;
-	b=NNDY11tenY7bGI8JtK6TV6xTqmqDIosHheYcl8TTwQTSMHJSRh2Et6Xzs/fDxHbv0Ge5hE
-	Bdx1R/o24eiNrzgMP3tgaW+HK5+K4Z+V/V1qxAupgis3wfgiHuEAkWZiU4KQltRhzcBWro
-	8BVzBUsQqv44/jkezwi94FYzQkceHPY=
+	b=Gp9oVLMMFfmflAwcXJP+8EwIzbGfxbFpCqWMRJBubPeNSJAT1brNGxTQ54TnpcdMB2DjW0
+	5LIohYahiateUrvhbKosbAQotYCa8ulo8XvkPqrGsyyRZ7bYF1yS9fiIyiLCW9baG1Jzfo
+	VBdsng4IVQXRCoOz13xWpjwhgAZAroQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qht0fFe/";
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pLgfQ2wd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6697F43FB0;
-	Thu,  9 Apr 2026 15:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926CFC19424;
-	Thu,  9 Apr 2026 15:17:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 400DB441B1;
+	Thu,  9 Apr 2026 15:20:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A679C2BC9E;
+	Thu,  9 Apr 2026 15:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775747859;
-	bh=sAn4kmA/v5fslLSRk7scPloEbnAS+gMCiSVeAY7naxU=;
+	s=k20201202; t=1775748024;
+	bh=CYBSGM9SzwH7P635l4C7PjyfDosC033edsSUrRg6c3o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qht0fFe/mAYbgemHSrTJUo++6CxWDoPmooLnV8Mh+eLdG0nRX6n9/3kNfXrV6fK6u
-	 1IOsS72bzgsHmIjHQsmj6DxoD0K9xK8F+reRJx4L9gaTBzbkYf6VfezuwKZF/KpURX
-	 pvpBEUbxTUQPfmb2WFB7KZWcFgNbRMw5kbbjtRbYrhz6xu448ViLBRW7fRq/8sw/5f
-	 99kGM+McX3C63N32vBWaWN2FBEnxBCM61AA3iAzmQbf+YgB6jJLDp3qX9VeDL9aRDR
-	 /h1GRhpWpMU+9nwBZlTNSMfqiUxIZ2WCbdPg2XlTs1P/yC7XPqvESzIz3OeKz13Lig
-	 CYrrj9wd9kEsw==
-Date: Thu, 9 Apr 2026 18:17:30 +0300
+	b=pLgfQ2wdyqZd657n0SMW+WOSBGOr1xPSqAtP5HFmvpDMOoKKIIbck1g+bgKqcjIAE
+	 DPnUWWXg72eXz5SdFII7wophQDgGHOqV2OKX6V9qmr3jxzqD7M6Nuv47v2Mf8AGPEF
+	 SVlcLqGdLjK9xJQvsViIFUoUtYPbD/94vx6Ny57yPDSiIFIhNmepn31jw5auTTqB9q
+	 hBe2hDTfPyO0TM5T1as6KN5Bvu6AesM64rZEFN65ovEn9ekq5eg9AIYUufSjL1w1ma
+	 vNsD42lGcJjC92Z0Kfbw4mEGK3EPQFpVILJdzwdexJ67TpfoFZ9FYvyvGDTkoQOi/P
+	 bm6us5A5h1BXw==
+Date: Thu, 9 Apr 2026 18:20:17 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "Denis M. Karpov" <komlomal@gmail.com>, harry@kernel.org,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, ljs@kernel.org,
-	vbabka@kernel.org, jannh@google.com, peterx@redhat.com,
-	brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, usama.arif@linux.dev
-Subject: Re: [PATCH v2] userfaultfd: allow registration of ranges below
- mmap_min_addr
-Message-ID: <adfDCpTH9n2lG63n@kernel.org>
-References: <20260409103345.15044-1-komlomal@gmail.com>
- <d4xigmgectqbv5q5dxsrlunea3ynexa4ym4nuxy2rokrawsqu6@yfhzm3hl5nya>
+To: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] mm/userfaultfd: detect VMA type change after copy
+ retry in mfill_copy_folio_retry()
+Message-ID: <adfDsZZnIadaCsuW@kernel.org>
+References: <20260409120653.290386-1-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d4xigmgectqbv5q5dxsrlunea3ynexa4ym4nuxy2rokrawsqu6@yfhzm3hl5nya>
-X-Rspamd-Queue-Id: 67409140014
-X-Stat-Signature: p876yyr1em6mfjsfajsup3jgpcis7ead
+In-Reply-To: <20260409120653.290386-1-devnexen@gmail.com>
+X-Rspamd-Queue-Id: 385D940005
+X-Stat-Signature: cra3fjzyeioghz6px9iy3743f6wpqx19
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775747860-659269
-X-HE-Meta: U2FsdGVkX1+9BSYi+1b5t7HLrq7uOrkYshdQWHhX0d7E2vDFBk7XZsxDGo5WVIqxTl4JVghzBJX5Yly/ul+H3FCQ7KnMEFY6JwQ4XGb6PaRat3yO2ScgGHL4LDjATuTzOGBR2dkjn7U/zSdZrZsEOsCX9Gz8wnv4ZFO8Lt4lA/TXIpLaAQZij5tm25DC6i44IjextJCTMk38Xwh0j73gzXhVDu1WnQr2yMMKlJ5buksymgDUAwJSiyX4+MWacHPk4+mUOEZMQTwyA6S4T5I6KxwjmYqX6kRFyeSwlI2xN8y62XBFZHuVnTiKLCDgiHFsYwKrBZOgW2nAGoRKJeXeXx57fRnzt8/NMdWo33+9J/bAqY3V2xcaQjS/vmGwO/IZivecqqC1dfR6YuhWuRQ0ql88UEfoLtO6zoeflT3pCEVt1+HNKyBQjqfcmvb+ZfMjL04MdbMSKCMqdUcoD2tuvCMe1M85ThucLOEQ0/CqxF1tXRdeQ06abiGtuIold1f3Xg9Z1TQ3Dm/Qu/WPP0WtXYJdIx7l4eQ79QGfYnAdtJ1SBbtOpmXiaFQy1cVLO0+cVdxdeFkFZrxJtv/hVxSxQiyZc6Rm49EQCMuu7Nz5yFNdZKtdj0YC8BJ+NBDqylMzoXlMYQw9TehHOaFYNjLVq9sc6wg7ZYKpSDJICeZCwDh7hn9po/rA/vs1UFYgH7nR8+Yd5VOaCu1tLRf8s9J69mMKykp61lzxcYlrbHbR5+vbGu2EBr/M2LyoLGYL3RNEydhlO3gUy9qwB6xvN4M4isKHidpTSqNdlSWrHFAA02DzbA54wVZ/bm+DtXtpw+Sb3f6VfytJRzWlRpoInKZotCfLxrweEzE1wOat+CKhrVQHukKmzooJGtQjyk5eWdVP67aHQh6b77m+N1NmqFaJvKfWjbMmfoEP8SRS8T4/42sc4BhQrRKrRdwVpXY1ztZetT5m3eegBbJ8/Q6UZjC
- 0rk+PV1X
- kh8hJlR8ezYyHi1mxn4+rZnxgBbGKTkqTcR0wRlfV2prNdF/SWFoF4AKqGOE5aj1CYKoO5nHsycURM9HCoqip8kgkvMVBn767EjrxeKyfKZG1gqNWH+X1F0kezu90LE1ndwdBRuA56h4ZtVaQbJwh6N+JvMNSbeEb23lV4GYy4TaiKNJkXGjTilf+MS5KNSqxONNIDNURnhbP+VjaBlVXrJYPQgW3mhedjNvvsUw5Ou0O2H7ZqgWU6qfvjvOrUyZc/yEUDyhxmg7JhNPUsmA0/ia0a4BMgYbVEBL1ftOACGJkML67NuI4amNiPonX+J8w1GdJW1Q+eLAOwak=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775748025-611240
+X-HE-Meta: U2FsdGVkX1/pU7h1Oct+n80gbBlmWjT9bZ/W58yL5Gp+Pp0lm2V0Vyyj+AvlLTYnKhGmqVARPoDt20wd2rHT6Zx/jdhLH2/0tC56oNSWDb49D7sgItRMvdsJ9wY2UDpw1GP0gbrNuCLOXjTQhPh5hGIgzAOxYkvGDmZ7A+rT4GxHlzMnCzVBsjkESNMymb3MylaFN0AkyD9CgeBAQbyZzDX4IZzcFscNldQ1bfdktxjw6HgsCMYuboqV4cHnm5yhVcivEvOcZoFdMS9Rf51jutEEtpZykYgmuPFAyF/YVfK7XGxpinE42BwfwjmCIWkfMelTMC5Yifyu+2OOZ2uvCPlcpjb2fyp9oo41lBqhCxW5UX5c/s6YNKTIyoeUDld1Hb4UZV9dtesZPwSeasFc/+1fRJV6hITkJBqMr3sQvT6o90D3wykHbR8icDeKRfOwJedC6jaYTJnZ5KIfMx0NddZRdmHJNDBt4KKSwHRX/s7MMljJfTXOLxOdW67xwd3OzzeF6cyf8c7XFOqP8t5qVrZvD3Q5IiZ83YzWVIz2DB9u6c2JJghMEayXB57O9qEl42qHYk9v+IQgFKKanqEpybPYA6xFwaytHSHfZ9TyN4B2LwZCBaCIwgl8OCFXoU72tQIN0ZCE6sqkYe+1BK7fhBqut4YQnHR8qZ239Jq4F5K3bLdHqCTr8mgJGgsmhCTcABP+1a2kknndMneKDK/A2DSdlqF1jd8QmaOiK3X8scfMOu6edZ/tKacLfO1ONPCWXX62S7ToAskngBIKfKroBx9rb3KPA1/i21YRD8N+fHSZEo7N47pKp/elGnAbef9wmyw715UuxDm8yhwZ94DdNJYvbLbQwdo+bXrTeQaUT25Vk4yl0HrMRFSJUwDyyWwllDwOHCFZ6agDIiKG3uJImxPLYQKzzceNClIE9FWMPfrhMDxXLZ2skWD2oAHpBiEIfxAwyQECHnNg+L+F7VS
+ Rx/KDkNE
+ mwMYORIkQphzmN0/6e9kUAxf722BEw3a7FwIHbaSA/3Op/IsiSI/i5xCEOj75UUqv9T+cqK/A8+b6jwNGlIZ3/rP//Xyyb3vu0AJPL01DuscdNLSi9ugKana4rv/Cig5Pne1dV+Qs+vJC+WY7VaI/fhF7AoLdzM2/Ko1zp02+NHP16cBv+xJhUcJxXH3SFZGyOJ802trIthzCgIJl+iYTeZ7tljaw1CvCmbuCgposjm+cjaGwiHPbPe7qw0mQr2alItBSu3gvUDRTUM1yuLNEJcFBc8AvKyIPDxrWx81cBQQJjH1oWCHglzsiwA2ZroVducgkxIWNrFyLHRNA1wPockycEUZX88CgC3ik
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,34 +94,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 01:30:07PM +0100, Pedro Falcato wrote:
-> On Thu, Apr 09, 2026 at 01:33:45PM +0300, Denis M. Karpov wrote:
-> > The current implementation of validate_range() in fs/userfaultfd.c
-> > performs a hard check against mmap_min_addr. This is redundant because
-> > UFFDIO_REGISTER operates on memory ranges that must already be backed
-> > by a VMA.
-> > 
-> > Enforcing mmap_min_addr or capability checks again in userfaultfd is
-> > unnecessary and prevents applications like binary compilers from
-> > using UFFD for valid memory regions mapped by application.
-> > 
-> > Remove the redundant check for mmap_min_addr.
-> > 
-> > Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-> > Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+On Thu, Apr 09, 2026 at 01:06:53PM +0100, David Carlier wrote:
+> mfill_copy_folio_retry() drops mmap_lock for the copy_from_user() call.
+> During this window, the VMA can be replaced with a different type (e.g.
+> hugetlb), making the caller's ops pointer stale. Subsequent use of the
+> stale ops can lead to incorrect folio handling or a kernel crash.
 > 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Pass the caller's ops into mfill_copy_folio_retry() and compare against
+> the current vma_uffd_ops() after re-acquiring the lock. Return -EAGAIN
+> if they differ so the operation can be retried.
 > 
-> This looks relatively safe. However, I'm not sure if we want this in stable.
-> This has been broken for 11 years now, with no complaints.
+> Fixes: 59da5c32ffa3 ("userfaultfd: mfill_atomic(): remove retry logic")
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-I believe Denis has a new usecase that wasn't there for those 11 years :)
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Denis, can you share more details about your usecase for us to better
-understand importance of backporting this to stable?
- 
+> ---
+>  mm/userfaultfd.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 481ec7eb4442..214923a411c1 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -443,7 +443,9 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+>  	return ret;
+>  }
+>  
+> -static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio)
+> +static int mfill_copy_folio_retry(struct mfill_state *state,
+> +				  const struct vm_uffd_ops *ops,
+> +				  struct folio *folio)
+>  {
+>  	unsigned long src_addr = state->src_addr;
+>  	void *kaddr;
+> @@ -465,6 +467,14 @@ static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio
+>  	if (err)
+>  		return err;
+>  
+> +	/*
+> +	 * The VMA type may have changed while the lock was dropped
+> +	 * (e.g. replaced with a hugetlb mapping), making the caller's
+> +	 * ops pointer stale.
+> +	 */
+> +	if (vma_uffd_ops(state->vma) != ops)
+> +		return -EAGAIN;
+> +
+>  	err = mfill_establish_pmd(state);
+>  	if (err)
+>  		return err;
+> @@ -495,7 +505,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+>  		 * will take care of unlocking if needed.
+>  		 */
+>  		if (unlikely(ret)) {
+> -			ret = mfill_copy_folio_retry(state, folio);
+> +			ret = mfill_copy_folio_retry(state, ops, folio);
+>  			if (ret)
+>  				goto err_folio_put;
+>  		}
 > -- 
-> Pedro
+> 2.53.0
+> 
 
 -- 
 Sincerely yours,
