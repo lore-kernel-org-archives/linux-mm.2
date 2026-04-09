@@ -4,120 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E38E9DE6E
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F4CE9DE7A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A2F06B0005; Thu,  9 Apr 2026 05:16:57 -0400 (EDT)
+	id 02FC36B0088; Thu,  9 Apr 2026 05:17:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 953F46B0088; Thu,  9 Apr 2026 05:16:57 -0400 (EDT)
+	id 007676B008A; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 842D06B008A; Thu,  9 Apr 2026 05:16:57 -0400 (EDT)
+	id E86816B008C; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E566B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:16:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B40E16064D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:16:57 +0000 (UTC)
-X-FDA: 84638462874.26.CB63EB7
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A9440C000E
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:16:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cl2KFsBd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OeDSb5yP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cvjDxRnw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hT9LRiOr;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id DA0526B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:17:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E99BBA6ED
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:17:53 +0000 (UTC)
+X-FDA: 84638465226.01.1EAE8ED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E103D40011
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:17:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umu7HDqG;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775726215;
+	s=arc-20220608; t=1775726271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=sGJ0OlHjX4pzaN/+U1PaKFUh61nxkXNQRA9d/Udbj1A=;
-	b=UXrntIV9Ljdzsi4khW4a3CuwP7C+183U0wZKH6Pt/COm5NxSrE7xXQrVxev+gRQB/m/9aA
-	hSafMrjb8Egl9Ly56/9Gt6KPIbH4LVnF/qjcSX9O1rRZoiSnj1/bXlMzoE0B+LnYq75d2G
-	zhE7uJgeTUpNOjhi/5pYSCfHlUCWx+Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y2fuoybGQcpLUwSlo1cJGBzd+6HTCXuyYA3Dr5dT15A=;
+	b=q0ig1snTBfZShaEFyYG0XFkyS6SMG+pONn2FoErxJFE2+BZzaFiuV1qmgrYsNSoeNQZVKM
+	tF0tsa+xHpaseGjFWKe3EAQsSwAenZI4wHI7of3FkETqlkxfHW3iw0+fjWvvRlcokpAjFZ
+	CzO90+4tiOd0gt7M2bw5asFapdPBjfg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Cl2KFsBd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OeDSb5yP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cvjDxRnw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hT9LRiOr;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775726215; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umu7HDqG;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775726271; a=rsa-sha256;
 	cv=none;
-	b=GLth+zqJbZqjsez6pv88uW+dOCu/ueD4vh51nYO3ixsIm/Fj06vZ3bYojwXzMSUGGBz0MG
-	/JYk/5ruXQ/6xgKZVylanqySlkgF3SmQ9UJxcFmkgpk9Qa06+nQi3dXWEBYQ4TtvBb4qRf
-	wp0WqlMFOHT34txjR4TaKwfoKv5BRRw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D1C584EE6E;
-	Thu,  9 Apr 2026 09:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775726213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=sGJ0OlHjX4pzaN/+U1PaKFUh61nxkXNQRA9d/Udbj1A=;
-	b=Cl2KFsBd0NNf5T3cMlrgNZ9JdJgbCNohOoWbQDCCJYDTxBfJ0XQsmRMVA1j3IRFZN3oFf4
-	3APFfJqYtTYYya+QrObagxm1Dz/yfE4srJ2VnvmTgPjOvFxafV1IJDoziDphlL/L2oppwF
-	Zfj5ART7BgbD1UzWt+YJq75cEczowHo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775726213;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=sGJ0OlHjX4pzaN/+U1PaKFUh61nxkXNQRA9d/Udbj1A=;
-	b=OeDSb5yPLoFewX+U5tmdUAN+FcqjwngXChdeJJGPxAI7qSfTK1WwZCxoktpkGUvupXzoVs
-	9zZolrzcUriAfnCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775726212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=sGJ0OlHjX4pzaN/+U1PaKFUh61nxkXNQRA9d/Udbj1A=;
-	b=cvjDxRnwx32fjl0TKqDidz4CeStb2rfEisTGBm500CvxQ+bU/WKOwo5iZcRQvFC3ZfNrli
-	LlkFpdHkAvyiHA1oiN9xt6fMwkEeTHSmMuo/I6r475CtFKm26+5oIWR7S9Uts7TguFqCoN
-	qwi2HeEXk6OUrvETVnsPghzpDJmv19A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775726212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=sGJ0OlHjX4pzaN/+U1PaKFUh61nxkXNQRA9d/Udbj1A=;
-	b=hT9LRiOrWfkLHz6cWp+9iiJcFoWS/MENUswK30amy/J7wlx1ZIT91EAO8UqSt7Laa7ZJpb
-	KFWbKAqlN+8laGDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C5B304A0B4;
-	Thu,  9 Apr 2026 09:16:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VMfHL4Ru12mTPwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 09 Apr 2026 09:16:52 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 75939A0B66; Thu,  9 Apr 2026 11:16:44 +0200 (CEST)
-Date: Thu, 9 Apr 2026 11:16:44 +0200
-From: Jan Kara <jack@suse.cz>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org
-Subject: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+	b=tEuli44hqiSjnyBrlt8H1ueTa+KOoZbiXEaXxx1NhodmQEx6C3zcUDPOBYAqjbrkZjgfVa
+	ueqgwCOiNiu4aa6lCJeIYpruDuzOLzUDRAEJwv8ztr8JvsBUw2vPjQFQHUyk6vgdUelV+U
+	hZdPuByh9R9y0a3tz4LGYhqDXNLk0k0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2431B60121;
+	Thu,  9 Apr 2026 09:17:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4A6C4CEF7;
+	Thu,  9 Apr 2026 09:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775726270;
+	bh=XNDkkO9rVakd2F84eBx8F2rL3w+gmE4vG38aFwtklgM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=umu7HDqG1ovtr6kyo6a/Nwl+cTnsX+PZ6hdE3g31fj14BZuo1yMf1cHDlFjffY2Jt
+	 CgGjGMVBmPvJrH9FBEEnm6lz2hX7A7Oc/HqKWzpIxAy4odTF+gHsb4jUHSVkrqYPWI
+	 1KJKd68DtIXHZmw0GaLyYuu4FhgDewpLS84kDL1Vv4CTrEWhOYhNLsux2tDS01jygT
+	 D2jpv1OawCtJBacTS1DmNSxpGz1uJS4CeZGHCrh7nTDr86JupPIRGZRCVYo0RLMVZb
+	 VxmAOaRwC02wUCoQYUqSZC0CW867M6NBaMO/lwPPkAveEKztPMoXic+zOoTZ1kwPcJ
+	 lc7ciNwi4vfpw==
+Message-ID: <a48a854a-5f8e-4f4b-9da9-ae79ef92e07a@kernel.org>
+Date: Thu, 9 Apr 2026 11:17:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A9440C000E
-X-Stat-Signature: c6uddgu9cu53p67fikcoxfn8rmu7o3ck
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmstat: spread vmstat_update requeue across the stat
+ interval
+Content-Language: en-US
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev,
+ usama.arif@linux.dev, kernel-team@meta.com
+References: <20260401-vmstat-v1-1-b68ce4a35055@debian.org>
+ <fa089716-1bed-478b-96e3-a2ef5465b52f@kernel.org>
+ <a55afddd-8c6b-4a7a-bfd9-5140013c764c@kernel.org>
+ <ac5urCFeEB9oyUiD@gmail.com> <adUhtrhU7c1TJQww@gmail.com>
+ <a9129d39-f9dc-4f09-b951-203c8e28b600@kernel.org>
+ <adZopu5wjXIR5HOR@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <adZopu5wjXIR5HOR@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E103D40011
+X-Stat-Signature: mjskyi6imxcsc1e6yizdgsiiqtohna9n
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1775726214-556877
-X-HE-Meta: U2FsdGVkX18CeF0URbqNLG9og/P0uys8vcWMSe25X1dLd0H9RzBggkfT8RGdCNTtKdaA99lKgE9+LIq06b3qSzHCSU93G+NA9qHpWBoXEEGflSFWmIHnWrzq4U0INLalrikHU8iNUu+4SLKTOksIUvGpLV/1fVXwYJN2JshaD00vLkO/nFWnG0rKWpRIaBM0tCvY9IVLUbQx/82evLe3vpf2diR1ml+jjejlWmbzPMeFkvaARmUk1j/Hodj0e9mJBb1Mm8jbsOyaPTwzqUbRsLQ0uxIJkRy9g6H8b/hoiw/wfuQVPRgZ/RXE+FfDET6A2m+aJ3snVr5D6XEwC2+CUnhTBOnQFyuvVO7ZoLL6qFcBTMpIDOzJEjLBRlcBleER9VQi0IcFwQ4yapSRwER+sznT0kLGNq4rWFEKXHc0bhe7g6oCyel/ybQj+FGVxvetim/TStJPxs5jnodA4SEABncrkefniAbJuLakTPmqf3F/+AnTYtj8bukRyKpNoN0Vo5vNWHLiK5vLFYorHd3/CO3pMLYqPIeZvSugqk03Zbe9CFs9wUkxjxjL5O/VJv6VuNzkryrfB97EVDWvQcbtBVYBLdM51qJxV8/5rDw9DzrUSbGtGzWeVp+2CyXjcA4p542L/507BvLFi/O0R0CasltOwpebFdDGsS6bU4h2vwb/62uchmT2BADwCAxKV8OokG6hyYYIaINJgCd4l3ArV+gM9lzLgckEJ4hdtW1+iBVww+NQdkxd9fGsjWgTK4VdC8B/tATt3w5kUAVEqCAwcoRYeJfXBGXRSf1/EV5VI4yK3grc2JRh1TmADbklMJfCYhUGvpqZhMl1EvIQPB7wvaBCcmzkyaxr4iWyDekyunhJVLzXRHkXD7HzlfyWdljqlswHNLVuqvh5JRQjcV2/2Vvj887bvUbJ/c3ruMgh9bCkstaPhFdTU9Kkl+v653m6LFT1wVATLE0xbaIL1sx
- 3oYFSVzc
- v26IMNh2nBpFCtbehTbpxseQiFjG2xppwifomAciZs9vK5lACg79zB2Y1EIlSJJPNrafSyM4bu0gfXIVR5isThIW16ifB8Pp8mt7AM7D0j+8BHnt6nHUFeL4PO1LmRBGccmtgPy3P2YuoGAiTY9yLFFjTlwajyv4lj7S4SAu2PweE5AKUkEpkzi2L0yrzL+K5SqjG0Xdj4DgLR/4/kyJ7ZFsDo9ov5e1toS8tPHakXlz/8LPHvLswgix1+EgJgXaszJHt1taEIWN8wmIX5LWKlxIBZJCvfestDYMzCUBbY4MErDCGFzmT3EUraCrPZwE44Se/afeZq1N/F1JSU9yJMDslnA==
+X-HE-Tag: 1775726271-655186
+X-HE-Meta: U2FsdGVkX18siHzy7nSm9mYFSpGX/l2pLXUT7jL6/pDZHeZr+YyRQQUrsPoqw1Sc5bo1XCdld05qOmy9cA5zPyraLTnGID6BhnX/0Qjh0OIpSKtGZgnjYj+mZani9PueLWYj7R5RbBO7ZpcQl/fnT1kmzVPNPbj0OE4+io+sEEdaCbDHL7cZXJRF3/RZk0Ezs/o/Am9DISkEy5DQFXFOQ3X9Ny5Luwk8JEzeTPx2iB2XA/8bqlLXvA9C5IDNZIysQiw2N631Y+RRksauUFthUEgiFath4sr8RL/x1nT16/k/yD63XkTnUWNUzYShezxE/Pr20kwE0pGFR/fpqz3QoWcxQKE5Gyt67zAREM6nD+dUhZfApLfnjbUAeqH1ZoxHaN32v/NDQ6abiQAbnhEse4yBe2NFnoWncvlFiMrBm15jorZ/IbN8T1e5J0qTNq4tp91npooQBs1DxAGOrI8BT27zuQftRZaJhXI0kditlnJXIauEAAhT7o3oWCVwxAQFbnCCf0q2LuSL9Op94LPOvHRKjoDrGBMCNse2r4lIJoaxOKbnbi6Mzocly85XKpULxSay/2dRn+OqZmEAzt9QDDDiApKm5FaRXhLqUvZ2TGqIIf78NIAr2NA3NSvf3Lz7aPWAzjDxXmq4Ln74XATZhJsA9/M1pPyFF9yXZEAJFdrfejdYEmvH3q1DAObvhRau7NiXH7/+Ev6/yBVVAxSsPNPV3NCHGk+PqYM8+e1OylkaMoJ1WVNFDOntldvlyLYA+JUWKRw95hHfQvsLOS4XRTi/b5/I6gU/x4ksiz3j3SwHTK66cPH4TlC8T0Lgunu8UaTq5QUHDyjdzKIVWzzaNU8Layqbf+9CoLVZHXXuY0dT6a1Cbx6B+jSzJTXWJiiGPcuKxnCsP0nJeOh3lNoo/TiaGzwSRCV/wz7YjPl3nidqLyS5uzWyh+fcpjQStOuHEP/SxP2t99fHZ9G6gcX
+ LHr7G7kG
+ YplvK/wpFrnCqZfarO4idJknvsFUXrmvwX1KwIhdHEeaWcWNMOI0azNf0ipRjs841XoQmAUFH1bFwP/iB3ebrmst/PdLy8wOcXY+pl6cSnI0jS7KC4dbWTYA1W4oertb4garCNH7UwPeKnEDiEWhF2NSqfHGutYCtefoJyyGRt+L6Etz+sUYIaHgQh0PWnvDeqRI3P8hYFV3iV4SVsIfMHOrmG1mUkeU0nE/rSl7mIKveKDeQTRhZ2hgnvxCyYJWDnm/+8UiApZjOPfYVvUTiPaEP/HER+hqh5TIRR7IN7yUkh1hbixEwppgGP2jWtemhIhyCCPNkRzgSnC6C5PI/TOohPrZHRLrJPH6zFiN7c3Q5FwPNpgMRUHd7SBlmnSc9L+rF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,76 +104,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello!
+On 4/8/26 17:13, Breno Leitao wrote:
+> On Wed, Apr 08, 2026 at 12:13:04PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 4/7/26 17:39, Breno Leitao wrote:
+>> > On Thu, Apr 02, 2026 at 06:33:17AM -0700, Breno Leitao wrote:
+>> >> 1) The interval duration now varies per CPU. Specifically, vmstat_update()
+>> >>    is scheduled at sysctl_stat_interval*2 for the highest CPU with my
+>> >>    proposed change, rather than a uniform sysctl_stat_interval across
+>> >>    all CPUs. (as you raised in the first email)
+>> > However, we certainly don't want scenario (1) where the delay varies per
+>> > CPU, resulting in the last CPU having vmstat_update() scheduled every
+>> > 2 seconds instead of 1 second.
+>>
+>> Indeed.
+>>
+> ....
+>>
+>> So you have 72 cpus, the vmstat interval is 1s, and what's the CONFIG_HZ?
+> 
+> Yes, CONFIG_HZ=1000 in my configuration.
+> 
+>> If it's 1000, it means 13 jiffies per cpu. Would changing the
+>> round_jiffies_common() implementation to add 13 jiffies per cpu instead of 3
+>> have the same effect?
+> 
+> That approach would increase the spread in round_jiffies_common(), but
+> it brings us back to scenario 1 - each CPU would have a variable
+> rescheduling delay, which defeats the purpose of maintaining consistent
+> timing.
 
-This is a recurring topic Matthew has been kicking forward for the last
-year so let me maybe offer a fs-person point of view on the problem and
-possible solutions. The problem is very simple: When a filesystem (ext4,
-btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform a
-complex cleanup - like trimming of preallocated blocks beyond end of file,
-making sure journalling machinery is done with the inode, etc.. This may
-require reading metadata into memory which requires memory allocations and
-as inode eviction cannot fail, these are effectively GFP_NOFAIL
-allocations (and there are other reasons why it would be very difficult to
-make some of these required allocations in the filesystems failable).
+I think it's not the case and round_jiffies_common() prevents it, more below.
 
-GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclaim)
-trigger warnings - and for a good reason as forward progress isn't
-guaranteed. Also it leaves a bad taste that we are performing sometimes
-rather long running operations blocking on IO from reclaim context thus
-stalling reclaim for substantial amount of time to free 1k worth of slab
-cache.
+>>
+>> Link: https://github.com/leitao/linux/commit/ac200164df1bda45ee8504cc3db5bff5b696245e [1]
+>> Link: https://github.com/leitao/linux/commit/baa2ea6ea4c4c2b1df689de6db0a2a6f119e51be [2]
+>>
+>>
+>> commit 41b7aaa1a51f07fc1f0db0614d140fbca78463d3
+>> Author: Breno Leitao <leitao@debian.org>
+>> Date:   Tue Apr 7 07:56:35 2026 -0700
+>>
+>>     mm/vmstat: spread per-cpu vmstat work to reduce zone->lock contention
+>>
+>>     vmstat_shepherd() queues all per-cpu vmstat_update work with zero delay,
+>>     and vmstat_update() re-queues itself with round_jiffies_relative(), which
+>>     clusters timers near the same second boundary due to the small per-CPU
+>>     spread in round_jiffies_common(). On many-CPU systems this causes
+>>     thundering-herd contention on zone->lock when multiple CPUs
+>>     simultaneously call refresh_cpu_vm_stats() -> decay_pcp_high() ->
+>>     free_pcppages_bulk().
+>>
+>>     Introduce vmstat_spread_delay() to assign each CPU a unique offset
+>>     distributed evenly across sysctl_stat_interval. The shepherd uses this
+>>     when initially queuing per-cpu work, and vmstat_update re-queues with a
+>>     plain sysctl_stat_interval to preserve the spread (round_jiffies_relative
+>>     would snap CPUs back to the same boundary).
+>>
+>>     Signed-off-by: Breno Leitao <leitao@debian.org>
+>>
+>> I think this approach could have the following problems:
+>>
+>> - the initially spread delays can drift over time, there's nothing keeping
+>> them in sync
+>> - not using round_jiffies_relative() means firing at other times than other
+>> timers that are using the rounding, so this could be working against the
+>> power savings effects of rounding
+>> - it's a vmstat-specific workaround for some yet unclear underlying
+>> suboptimality that's likely not vmstat specific
+> 
+> I believe the issue is that vmstat's current use of round_jiffies_relative()
+> fundamentally solve a different problem than the one we trying to solve.
+> The round_jiffies_relative() mechanism is designed for a different
+> purpose, as documented:
+> 
+>  """
+>   By rounding these timers to whole seconds, all such timers will fire
+>   at the same time, rather than at various times spread out. The goal
+>   of this is to have the CPU wake up less, which saves power.
+>  """
 
-I have been mulling over possible solutions since I don't think each
-filesystem should be inventing a complex inode lifetime management scheme
-as XFS has invented to solve these issues. Here's what I think we could do:
+This is true, but only in the context of a single CPU, to minimize its
+wakeups. What it doesn't say is that every CPU has its "whole second" moment
+shifted relatively to others. Which doesn't contradict the above, except
+that "whole seconds" without further details can be misleading.
 
-1) Filesystems will be required to mark inodes that have non-trivial
-cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-whatever :)). Usually I expect this to happen on first inode modification
-or so. This will require some per-fs work but it shouldn't be that
-difficult and filesystems can be adapted one-by-one as they decide to
-address these warnings from reclaim.
+I've finally looked at round_jiffies_common() in detail and after initial
+confusion I believe it doesn't introduce different delays for different
+cpus. One observation is that in the middle we round "j" to HZ, thus a whole
+second value, and then
 
-2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
-kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
-performance reasons. I expect this to be a significant portion of inodes
-on average and in particular for some workloads which scan a lot of inodes
-(find through the whole fs or similar) the efficiency of inode reclaim is
-one of the determining factors for their performance.
+        /* now that we have rounded, subtract the extra skew again */
+        j -= cpu * 3;
 
-3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
-per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
-to process them.
+so the final jiffies target is slightly different for every cpu. This alone
+could indeed shorten delays for higher cpu numbers, so crucially there's also:
 
-4) The work will walk s_hard_reclaim_inodes list and call evict() for each
-inode, doing the hard work.
+        j += cpu * 3;
 
-This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
-and they can work on freeing memory needed for freeing of hard to reclaim
-inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
-they should really be addressed.
+*before* the rounding step. The rounding can be also down instead of up if
+the remainder is less than 1/4s.
 
-One possible concern is that s_hard_reclaim_inodes list could grow out of
-control for some workloads (in particular because there could be multiple
-CPUs generating hard to reclaim inodes while the cleanup would be
-single-threaded). This could be addressed by tracking number of inodes in
-that list and if it grows over some limit, we could start throttling
-processes when setting I_RECLAIM_HARD inode flag.
+So I'm now rather convinced that it works fine. Suppose we have a delayed
+work queuing itself every second on cpu C. It will be executed for the
+second (since boot) N at jiffies == (N*HZ - 3*C), then this will reschedule
+it for the second N+1 at jiffies == ((N+1)*HZ - 3*C) (as long as it's
+finished the previous iteration and requeued itself in 1/4 second, otherwise
+it will be N+2). So I believe it will maintain the spread among cpus without
+drifting over time, and not introduce any variable delay depending on the
+cpu id.
 
-There's also a simpler approach to this problem but with more radical
-changes to behavior. For example getting rid of inode LRU completely -
-inodes without dentries referencing them anymore should be rare and it
-isn't very useful to cache them. So we can always drop inodes on last
-iput() (as we currently do for example for unlinked inodes). But I have a
-nagging feeling that somebody is depending on inode LRU somewhere - I'd
-like poll the collective knowledge of what could possibly go wrong here :)
+> Backing up a bit, let me summarize the problem:
+> 
+> 1) vmstat_shepherd() starts all vmstat_update workers simultaneously
+>    (or nearly so)
+> 
+> 2) All vmstat_update() workers then reschedule themselves for the next
+>    second with only 216ms of variance across 72 cores
 
-In the session I'd like to discuss if people see some problems with these
-approaches, what they'd prefer etc.
+My point in suggesting 13 of 3 per cpu was to find out whether the 216ms
+spread is really insufficient for vmstat - I would be surprised if it was
+the case.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Upon further reflection, issue (2) wouldn't exist if we simply avoided
+> starting all workqueues simultaneously in the first place.
+
+I still doubt it would work without continuously controlling for the drift
+(which round_jiffies_common() does). I think it the existence of the shared
+lock and initially some random perturbations would eventually result in them
+becoming synchronized, like metronomes sitting on the same table.
+
+But thanks to your new findings below this is all hopefully now moot :)
+
+> That said, I created a hacky code to find how often the vmstat_update
+> is called, and it is not uncommon to see cases where vmstat_update is
+> called a few jiffies after it was called.
+> 
+> Debugging further, I found a race between vmstat_shepherd() trying to
+> schedule vmstat_update() even when it is already running, which happens
+> a lot, given they both run at the 
+> 
+> commit 86e27727b6cc9fbe8bf67818a065105fd30bc7e8 (HEAD -> b4/vmstat)
+> Author: Breno Leitao <leitao@debian.org>
+> Date:   Wed Apr 8 08:11:01 2026 -0700
+> 
+>     mm/vmstat: warn when shepherd schedules vmstat_update while it is running
+> 
+>     vmstat_shepherd checks delayed_work_pending() to decide whether to
+>     queue vmstat_update for a CPU. However, delayed_work_pending() only
+>     tests the WORK_STRUCT_PENDING_BIT, which is cleared as soon as a
+>     worker thread picks up the work for execution.
+> 
+>     This means that while vmstat_update is actively running on a CPU,
+>     delayed_work_pending() returns false, and the shepherd may queue
+>     another invocation if need_update() also returns true (which it can,
+>     since per-cpu counters are still being flushed mid-execution).
+> 
+>     Add a WARN_ONCE to make this race visible: fire a warning when the
+>     shepherd is about to queue vmstat_update for a CPU where it is
+>     currently executing, i.e., work_busy() reports WORK_BUSY_RUNNING
+>     but delayed_work_pending() does not prevent the re-queue.
+> 
+>     Signed-off-by: Breno Leitao <leitao@debian.org>
+> 
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 2370c6fb1fcd6..8d53242e7aa66 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -2139,8 +2139,12 @@ static void vmstat_shepherd(struct work_struct *w)
+>                         if (cpu_is_isolated(cpu))
+>                                 continue;
+> 
+> -                       if (!delayed_work_pending(dw) && need_update(cpu))
+> +                       if (!delayed_work_pending(dw) && need_update(cpu)) {
+> +                               WARN_ONCE(work_busy(&dw->work) & WORK_BUSY_RUNNING,
+> +                                         "cpu%d: vmstat_update already running, scheduling again\n",
+> +                                         cpu);
+>                                 queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
+> +                       }
+>                 }
+> 
+>                 cond_resched();
+> 
+> The fix is a one-line change: !delayed_work_pending(dw) → !work_busy(&dw->work)
+
 
