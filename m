@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D318E9DE5E
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:52:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A67E9DE5B
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 07:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 357A56B0005; Thu,  9 Apr 2026 03:52:17 -0400 (EDT)
+	id 5A3EF6B0005; Thu,  9 Apr 2026 03:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 308216B0088; Thu,  9 Apr 2026 03:52:17 -0400 (EDT)
+	id 554CA6B0088; Thu,  9 Apr 2026 03:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F7166B008A; Thu,  9 Apr 2026 03:52:17 -0400 (EDT)
+	id 46AEB6B008A; Thu,  9 Apr 2026 03:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E7A6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:52:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B17FD13ADAB
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:52:16 +0000 (UTC)
-X-FDA: 84638249472.07.5BE3A57
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 39AFD6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 03:54:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE0611A04DF
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:54:13 +0000 (UTC)
+X-FDA: 84638254386.18.8CB464B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CA4DE1C0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:52:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvVJ8Uzm;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id E2570180006
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:54:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=deUTiNJS;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775721135;
+	s=arc-20220608; t=1775721252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HC4yIbeMFoP9fA1jy6cixoRbkOvK+TszSTx3OCbvWxc=;
-	b=yU8bD4jb0MvOGngK2ojVioDX78tqtiCmovqMWJLBeMO1jFaNzM6yvs4pRQCwD3G/N09skh
-	38rRTxRV3+Ri7KZod35ldvyNe0K5GuCRZkTXHC0SXq1FzY6D7fi/eEUA3mp5qpXo50OnDD
-	E4GE3ngFhEfEBNsmd8LlTcsLKUcYnvQ=
+	bh=FuWux20iUqLwlWHsiLowBSdiDzURl+/x5fFZ1Y4ba1o=;
+	b=Onj/vvQIbYwAW9DicnERuoZnu/wlrSDNUpotQ8jCoYmsfcBXPSjAec9OwtfUuTecWDfyWs
+	Rl6MbA9Cxp8ssMHqJ5tDGr+iM2mIEb+oMxzEUdx/22zPgdJ7CpwwYeoQRG8QX+IpRpUZYt
+	brOVDE0UIwq2btY9IYuEydy/5jNjnpI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvVJ8Uzm;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=deUTiNJS;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721135; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721252; a=rsa-sha256;
 	cv=none;
-	b=PIDwlOBWVVkgJ7CU6mnG3MhQD4cGib8ebmE1DQNOx1PD5fajJ2j98HrvMotl93r6R1BnVZ
-	h4k0FUalg7jg6ZhGl9RFG5OmdCoDuax7z7M/FLMKdZ9GGw1717TwaEzj14s2+fc9IIG4e0
-	reMudo5CDrc8SYsVBJF6dBoK8kIMcws=
+	b=JzQbzNMn/DcQgPsEDO74coRCag4bB5+TUjlTMJT0gMAXcE+CxUGo0++W9HccI2HrkwY/JE
+	LO/fapYWv5DRouJzCH0dxvuVYMaWwdlAnGasbYX7IJnuaQaHcLsrWArqJXC+ePE7CELgea
+	7KBKmFsL8dor8CE0/dRchANvU3yV5uA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A4DB443995;
-	Thu,  9 Apr 2026 07:52:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DCEC4CEF7;
-	Thu,  9 Apr 2026 07:52:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0978842DDB;
+	Thu,  9 Apr 2026 07:54:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5667EC2BC9E;
+	Thu,  9 Apr 2026 07:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775721133;
-	bh=yGi65EzNbfPcmaJHDWorm0OFGsNjNwfdp9HFY6agVns=;
+	s=k20201202; t=1775721250;
+	bh=2AqO2B4PoeUn+NsMyrRZTH4RsKgtVTRhCrCLeTcVFlE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RvVJ8UzmOEqrs0G14kFM++8rr6iSHglz2PZ93CS4iIyeprIkvH8VqMiq/edzOnkCw
-	 Si4666iPcgT3pRU8sE0Wf+cubbsOxmSkc58sEXEE0TCWStDdwgdVmxRQmfBm8wrY71
-	 mzI3VspNd6nW1JYnfViIiONMRI2Kej7tVv4FKomuFTLENDR/OcJ18kSdXGarSyzoR5
-	 r118jxfBv6pJ7S8C5KL9DbZVwIWGBoDobp64ckPeC4QjdTdxu0/gPXSdcQNREJvO9n
-	 jJLUS6GwJ0Vjf3l1frsawwNuCCzoXfWttFhEnBiG3G2B7XWsVMhPxhMs+7qvRANkx0
-	 J1LsyFry/mCQw==
-Message-ID: <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
-Date: Thu, 9 Apr 2026 09:52:09 +0200
+	b=deUTiNJSP/4r5rdX5GLZayNjEt4CNzx1LTHSgzzSedi5ZW3OeZna2VYjrQPX98BRd
+	 m8jfbGQJGP8MwZcRA02aKJNCAdkB0TBAOIqic3YOWHL4t98EgrDTJAZQgC6qpWG58Y
+	 wZmWBH/0lJ2JFCIo6QUpJ7vWeVVia/L/bzsygskAhxOM5GZ38IbYiA7kS5nTi7HnE1
+	 GvQj39Ws0377Ye21Trcud0ad9xerXoqHtxIMfvaZmaHmkaWAI3Gr3cXe4XwYcxaKFy
+	 vmC3dE/zBCZOpCEEEJ5aDEKdVBbCIY3NryG1/n/0KQVbU3ABOxBy4Zv5RHJJ0QatHh
+	 3VxiqLDit/Msw==
+Message-ID: <e3f15b4a-a010-43bc-a07a-4fb387c06255@kernel.org>
+Date: Thu, 9 Apr 2026 09:54:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
- folios
-To: John Hubbard <jhubbard@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>,
- Mike Rapoport <rppt@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Sourab Gupta <sougupta@nvidia.com>,
- Zi Yan <ziy@nvidia.com>
-References: <20260409014647.397515-1-jhubbard@nvidia.com>
+Subject: Re: [PATCH v2] mm/khugepaged: use ALIGN helpers for PMD alignment
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260409014323.2385982-1-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260409014647.397515-1-jhubbard@nvidia.com>
+In-Reply-To: <20260409014323.2385982-1-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E2570180006
+X-Stat-Signature: mf9gqy3nss1h1swzfxqn18rmndj8pqgt
 X-Rspam-User: 
-X-Stat-Signature: 7htiauzsmr585impu4oe18ux9qj8bqch
-X-Rspamd-Queue-Id: CA4DE1C0005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775721134-244941
-X-HE-Meta: U2FsdGVkX19jsNtiZ7H5Q6hXj98zO6zLJyu0B8/QYCdz7VpwSTqwBab1sGZp3jPnIQbREgGD3qfCmjKY/ugqYrdQS+x5Bj546rq3cOx6rPfHPlCiaYqjKrCgKnUFtlSrGISAEaQbooyPhKfxLauy1YPwl0DnQpDqpGfCplC8k9MBEqhee96D0U1OcojKumRdCYnZQmB2RyBWiSzjmYLAG/2/eqpcd04aKQyu5dUPFyhyh1DSjGGCiJUfDbKnEmsXDWBCQVZYdS3jWGoBOLwy0WHGpDYO8bkzBnJRz6qB02gSQjkcP/iYumwuTOYYyQkP52gI4dPqPgf7DdPclCSA6z9UZJjmSMY42M1JSisDENs9vD53e3wDCchmRnQ39joGqYcGl+or5BBptVWGftttgLJZ8Tc24tbzVTqrzcYqABCWz17roq1Q+GJe8Vr60x4KIcrRQR797CC0IOHJ2bUqTWuqLKnaw6ZOYsaqAMb8wZbKqm2bdQC4RNGzyFq8RG0HPEjAXD4ZaT0XkCKYOM14wY+ZEsgIC3kJuIUm0Q0AL+XXAToltbiszKVcN6ZTgzn2R6P9CVrD+2Yy6z1ls9i/o//+oiZgWt+jyRsS7+TNY537g3z6dlpbA5ZiIZpREjkKBoLHPEckRgXO27/4Y+tLHEF0ncLabqE4AUR0lBSyKoMtBZ4LBWYFJfDUUErjuOF+ySt2MM9SzZUF2dVrfpTbNgnS+jdrvXLPR+8FcjBb7ECJnlsU4ACIXkgLpaWQPsxcynRutKXNtCsHUUql/88fNyfT3OjeoGjf3GJVD+RQcTnBhEya1Mr+ZsoE73eCBNIyEAMNg2ROVt1nTqkbPmUrVWHmfkb5ohGeY7yOjygk94lO9Io0FJ+97BOX6XnsKDUS08qDWNCN39hkfZp83XFdAYNavG3/Z3bGh/YT1ZzxSuzoMgQATKuF6Vl3kioHluB6Rzl2Uino7LXeCq3CiOz
- mL8iEmwt
- fAnsD11p6AKuMvxLLp0tPjYMWfZASvpw74tWRwbTlo3UBQt2O6Et4mhNaZ0uclsgKJxXruYvU4x50eo2njbIYlzrBSIbbDq2TQ+O3FIgOcZYKdhrSn2Hsl3DgPZgnUtHnOUq2XhyJrcl372CsEVFLLnljm8R4pvrIGrRlkBht5+Bnnc2ZtZB7nl8WgKmYQKEgzj2wg5ULqGKp5ywTPY2f3QT/ArpyZcbdRrvidaEY3rMIoCKMLIAoNXoMhSeYxvtbVjsAEzvuoP/DoPEp+nj4twGqFw==
+X-HE-Tag: 1775721251-262292
+X-HE-Meta: U2FsdGVkX18CuDapO0oLg1J8dapH10IKYBdgHBF8sKxmhp0dvLtzWhspdFSCxUF306YflqaMPJEZ00RgEo3OPDvIe4KSitXx81UsFRO8R1PIj9LXomowVPYbFrhen8sESiZ9cPyumgYJXfd1AXLPdAl3/1B7fkiM8TaVvnjaReoLWy/xjxgK23sUDtaSQXDOGOxDQy4SxqmCYXSPU5Gb+4LjVPiF7tJXCayqAjzfDDPjwD0IkNEaOPX5OCCjtoK/U/h6Dpage/IV/2PHNCHlQnEdLdS7Gbc5NKH5EMQZG3ijHfZTrI1L5MLQtkawpRbIJG88IdS6jrKj9yC3D7hVKC2W+Rq35LBi54rXA9n7VSi48345DAr6Uyr/yWjpwnkltYtoqXxFQXaBfM2w4L90RlEixvyVzX3tiUsE1QX+WYpXaI/MwP8lF8TrT0CiYmMwqKRRRdc+4MrHH2yU8Pir4eLeaFwKrmiRTSjEe3YR8A338gkeEcrrs7S2dz7p9zRY+dWW7dBtFQL5GjRU/dgzTxqqAM6L8dNNU5JlD32Fcl+J+2fYEBAA77VdIxHFKZiE4+ki3bLMQQfOLeKS3C7Utn0qDURBHDCOUhuAD66M4UgXQ77O2risE31YCdqN3fmGXq7zfrwK2bcu6HSU7jpwGtMeBRdtP6h5eMx3CIcqLoV8eCIWWwg+BiThW2X4U0sq44FENqf82zc1QniAD5OqtELm254IHoPL2kLS0pdN5GPmWW2o9ch6y/gZ1quQFW9Y55AY3vrlI45K0OfMf371clPbiuaPDz68th9AelLFUUuZ7E8W7+s7ceZyEXxSKYPQ4EZ9PakYVbpJ9SSByD6O6UKwmvqTTZil4PnIT8qxTy2bV5Wgt8Z1UZtyRjsbLzwi7/qzZd5HRkWwBBxYo20Xbuqwa7zGEQWBpQFGRw3ty96Ll5LBhTG7CO9tOyAlTRN/oRF68t0fQ2o2O9awek3
+ MC1RcHPM
+ TXbbtYhM228Y1fv1FPv5IYmRfbH9IuCXG9CKc6Nf52t/pmI4tN8EglK2+wujRwClYa7ZpDJUOe5Hnc3LOpyZkUWB+Y/xeb/BDxKkrp21m6LoB2UiqORbgkuQEGEKbxePJmCWKnceh6S+bzLXBH+zfUQAYVPkodMCoVDORTgbjy7QDZR4Jx3s4lH1Ar8DKPghUyQitexZ0TbXegVtJzphZrGb4LEL/W0JZVS+f8JhYHQxVW/37eLfPjUzRxTSjhtdfeUBy15wmY6YuYwb9u9mi3o2X0ehxr6arav9Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,73 +142,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 03:46, John Hubbard wrote:
-> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
-> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
-> gup_fast_folio_allowed() falls back to the slow path for any order-0
-> folio with a NULL mapping when CONFIG_SECRETMEM=y. This causes a
-> performance regression for drivers that allocate pages with alloc_page()
-> and insert them into VMAs via vm_insert_page(). These pages legitimately
-> have a NULL folio->mapping, but they cannot be secretmem pages.
+On 4/9/26 03:43, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> Secretmem pages are always added to the secretmem inode's page cache via
-> filemap_add_folio(), which sets folio->mapping to the inode's i_mapping.
-> A folio with a NULL mapping can never be a secretmem folio. The
-> NULL-mapping check was intended to handle truncated file-backed pages (a
-> reject_file_backed concern), not secretmem detection.
+> PMD alignment in khugepaged is currently implemented using a mix of
+> rounding helpers and open-coded bitmask operations.
 > 
-> When only check_secretmem is true (and reject_file_backed is false), a
-> NULL mapping is sufficient to prove the folio is not secretmem, so the
-> fast path can proceed.
-
-Hm, what if secretmem folio just got truncated? I hate to rely on some
-handling in the caller to detect truncation differently during GUP-fast,
-but this function returning "true".
-
-Zi is working on a way to distinguish folios from non-folio things: that
-we can identify whatever was added through vm_insert_page().
-
-Because that's really the key problem here: vm_insert_page() pages are
-not actually folios, they just look like a folio today, but looking at
-fields like ->mapping does not make any sense.
-
+> Use ALIGN() and ALIGN_DOWN() consistently for PMD-sized address range
+> alignment, matching the preferred style for address and size handling.
 > 
-> Tested-by: Sourab Gupta <sougupta@nvidia.com>
-> Fixes: f002882ca369 ("mm: merge folio_is_secretmem() and folio_fast_pin_allowed() into gup_fast_folio_allowed()")
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> No functional change intended.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> 
+> Changes in v2:
+> - Switch to ALIGN()/ALIGN_DOWN() per David's suggestion.
+> - Also convert collapse_scan_mm_slot() to keep PMD alignment helpers
+>   consistent within khugepaged.
+> - Update the changelog accordingly.
+> - Link to v1:https://lore.kernel.org/all/20260408093534.2373007-1-ye.liu@linux.dev/
 > ---
->  mm/gup.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 8e7dc2c6ee73..3ea661e67eea 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2784,12 +2784,17 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  	mapping = READ_ONCE(folio->mapping);
->  
->  	/*
-> -	 * The mapping may have been truncated, in any case we cannot determine
-> -	 * if this mapping is safe - fall back to slow path to determine how to
-> -	 * proceed.
-> +	 * If the mapping is NULL (truncated, or never set), we cannot
-> +	 * determine whether the folio is file-backed, so a long-term writable
-> +	 * pin must fall back to the slow path.
-> +	 *
-> +	 * Otherwise, a NULL mapping proves this is not a secretmem folio
-> +	 * (secretmem folios always have a valid mapping to the secretmem
-> +	 * inode's address_space), so in that case, we can continue with the
-> +	 * fast path.
->  	 */
->  	if (!mapping)
-> -		return false;
-> +		return !reject_file_backed;
->  
->  	/* Anonymous folios pose no problem. */
->  	mapping_flags = (unsigned long)mapping & FOLIO_MAPPING_FLAGS;
-> 
-> base-commit: 7f87a5ea75f011d2c9bc8ac0167e5e2d1adb1594
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
