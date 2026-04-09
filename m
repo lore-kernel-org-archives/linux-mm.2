@@ -4,123 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBC4EA3C33
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4BAEA3C4B
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A8FD6B008A; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
+	id 38DC16B0005; Thu,  9 Apr 2026 06:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 532F46B0092; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
+	id 364DC6B0088; Thu,  9 Apr 2026 06:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D1526B008A; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
+	id 2A1916B008A; Thu,  9 Apr 2026 06:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29D946B008A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1CF41B8446
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:52 +0000 (UTC)
-X-FDA: 84638656704.16.38D0AD6
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1F18712000B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=a+i5tAvc;
-	spf=pass (imf29.hostedemail.com: domain of komlomal@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=komlomal@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16E346B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:38:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F21A8BD69
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:38:05 +0000 (UTC)
+X-FDA: 84638667330.22.2930577
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 96BA58000F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:38:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QmNCOPRP;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775730831;
+	s=arc-20220608; t=1775731083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
-	b=5b6/Y3RrJ7cBt/tt0dL80dRJRF2PaShZ3Q+8sK5kvlFgRqOkXL9lOsJ3f6wkUdH36My/g8
-	5Ff94G2H8YUG6gWR6cHmj/zIdCFVUaWTMxmnW8CbZNE2CyxBO2J6PV5zyggaeZAc195d5O
-	s2Kqq2mTqf8pWyu34jeIyGM/hJhgULc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Uq24EilmIdS76nXGDAwJu8G3CVqetL9sNwY4U4OjvNI=;
+	b=C2WuhIWyZAoC7F7Oh73PX+XLCZ5HBWrvxOS53Sn1w3ooi/qHdEJBcl0EHS3awLywT+JwUm
+	jI4mR1mamHKgpJmQpAOd6+GFoRKqTqADhf4Vonqw8HvRamgBxE4rpmyC4akZzZ+sMhXsg1
+	TYDz/eMz8y/O7Umxp9irB5Ymof5LkBs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=a+i5tAvc;
-	spf=pass (imf29.hostedemail.com: domain of komlomal@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=komlomal@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775730831; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QmNCOPRP;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731083; a=rsa-sha256;
 	cv=none;
-	b=xkv6y+fjQNXdcFU0PUZ8wd5Rh5pOoQXubuFDXEWsJFvoeqhC8LMWmZ2R7FDydLbwnZ/jjL
-	TEUCk5CBnStC6cLwarxezP7i/KMMQY0As95k9SIawlLQMtc6s2ciRgikkNNHitCQEqAGWV
-	C6sxRt1hA8JeGmAV2GCOofGdFbjFHc0=
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38dd5f28a4cso6376451fa.2
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 03:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775730829; x=1776335629; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
-        b=a+i5tAvcVTKZ24RCoOmc10ZvChhCxn1+z6tWPCoOjMDGajlQ5ORDVl5pKbW98EsJnx
-         lC/kXKE00zCdWo4uDPnMMemHAIQP29ltjWcdyD6Wg7KhtCLANswRqRNzM/smsTQpMMvX
-         1KCOgJmnUM/YKe0pAw/UEDL3nMXeUJCpxMM0Ust9ihbpbIt9GOt4JLHiFAtAhLbXczrS
-         CE4yGZuOJGiiD5OJZP7OURt148gSIecQYcS5EcmNmF6f1+xjK6PrEu0Ds/xF2wgBCCvF
-         sVVKn6E3pElgfqdBe2ay+5yk9FynaAAsFPuI1pJFDzpAqrDy3qqicWFltjHt8Pg0BX6D
-         qXQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775730829; x=1776335629;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
-        b=VN6isOaW9l+df2eVzEUa1CPky96odCcICY9/3Y2JUMPexwgT4bEO6j2q4JX4jn40Lp
-         1jcyVQ+9wYIWBW/ZAyLNNMW8DLMhFUVvTHnYAEdYgdhEEGciE67tKY9U2cPolDxxTIGo
-         SZY7gfkAwhTMxUR4Lq/6MZRwgtlbNi/wJv3DW9lZjIm0fuvdRVvesUbwXyb0q+fIfrG4
-         dwCFxCgy2Zat/zJH3rTCmhuMmvHVjLPEpMYVfIdnhAk9tl2UyEd/3YL9uG4hV67pTPiy
-         PtpoQHz7NHwOmWo4NfOljZrnS8BzXcPGuDz4A1etDJ/yVTcrkMc455dM85xYuG2T1V3r
-         RBjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxJU0w0hvA5j6cNhDh6+PVg7rfgG73PWkxlF+aHteuEMnqV345j44NQFVnqlMQGFqOkXnQau7G/Q==@kvack.org
-X-Gm-Message-State: AOJu0YxQJyurXTmsSLiwwjDMeeXCtKTYLyDkctCNpR5tXTmNP9XpQ2Vk
-	ygK7+8dc7A1y/umHUm4Vl2UlGb64jUhVHFIJx8xJqcQKMUmrlDq+x+DS
-X-Gm-Gg: AeBDietEjcudLhHLtXN3EFEbNzfbntY4caJfgICrnwQUFm0Ske8V1brMfFdAWK2Rtvr
-	EJD5XEmEoRvVRCdiVp/KfW6Ri0q7svZMfy2hfjm7F28BuRxvonYuFH4+TEO1Sy6Z1cxXU/Yxse1
-	ElFMAVeF0YFK0IqcpKyTnP1AL+VKexhLJJIbgrZfFzomk5eATnmloExrgedicY1tcRnSJYMhBNb
-	c0FXliBlVxNPNoTD1rls7yloJFCxVVId2nVxaa+r1vJ1xxqAXfXY74e/AeyI1mT0+1Uari3eQBv
-	w++vAsLkuOvFcUdMRe15G+Q+IXEvLOoaGMjMxgyeZXTaBlR37XILgRVJh6F0z7ZM9nzLq8S+BYi
-	5my0cdS0RXqp0vaoezFqPvqNG9qf/WREajs9cmODfwyUGt21M/Z/CQc7jWWWhMqv7R8E/z9aMMa
-	n0zc3DIn4ohnDVCGN7hMsv
-X-Received: by 2002:a05:6512:3044:b0:59e:57d2:75f0 with SMTP id 2adb3069b0e04-5a33758ad0fmr9639795e87.32.1775730828956;
-        Thu, 09 Apr 2026 03:33:48 -0700 (PDT)
-Received: from agp-laptop.. ([5.180.139.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c9f42b6fsm4958305e87.84.2026.04.09.03.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 03:33:48 -0700 (PDT)
-From: "Denis M. Karpov" <komlomal@gmail.com>
-To: harry@kernel.org,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	Liam.Howlett@oracle.com,
-	ljs@kernel.org
-Cc: vbabka@kernel.org,
-	jannh@google.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	brauner@kernel.org,
-	viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	usama.arif@linux.dev,
-	"Denis M. Karpov" <komlomal@gmail.com>
-Subject: [PATCH v2] userfaultfd: allow registration of ranges below mmap_min_addr
-Date: Thu,  9 Apr 2026 13:33:45 +0300
-Message-ID: <20260409103345.15044-1-komlomal@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=ui+dL0tU+bCxvgzPUHmc1hY2IDdlfXc285fWYWxIOIwcBSxGko8ospyJaVr4tDkHVl07a8
+	hyvC3Lz2RhPxRm+WvNcIVrlR1l3YC7gJDeFXzlY8qO/uK6D9NnQEPemiPnksm2dKXw8ibn
+	ixw1cqwZhy53RnhaU5XZJrSpYIW15Po=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 914B641851;
+	Thu,  9 Apr 2026 10:38:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93843C4CEF7;
+	Thu,  9 Apr 2026 10:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775731082;
+	bh=976DNqeQEs7Pl86bSQIumgGXPxpOrVddLnDDmQWOHVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QmNCOPRP43UhzksR5XQpFQQoocT2bmpB7xLiO8PisbEJ+AXcLEkykvdo55fWP3r+n
+	 dsZssJP/kYRRyzIhHvcVafJaWpGsgo9h6GFwGgr0oap6IlXPbfNbqvQKIVIUpBTqb5
+	 VwxcYF9KUnhIpRqTf8ZO5MIu/NxSPZFVMadq5ELnHLLcGRsGat01tlsqwV1uAtGoPo
+	 n5vPo1Pv0g/MOsD/d/7Qb9RIXa8H6jK+kD5jSd+ijK3Mgts74y6z8x42c/muXrOQjL
+	 p8BOJGYMNnkMiTzYr2CH2yTi2aHvRDh+mYu2d4n4BEYrwgD8AjaOqiVPeKDrRLEhYO
+	 VSf+/+rUX3yfQ==
+Date: Thu, 9 Apr 2026 13:37:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC V1 02/16] mm: Add read-write accessors for vm_page_prot
+Message-ID: <adeBg_eZvmz-ST67@kernel.org>
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <20260224051153.3150613-3-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224051153.3150613-3-anshuman.khandual@arm.com>
+X-Rspamd-Queue-Id: 96BA58000F
+X-Stat-Signature: gf3sk45nmoxeu8qsjcunszebtx4jpt9m
 X-Rspam-User: 
-X-Stat-Signature: 9xoqw8rgqo5pnad4kzkx6e7eckh5h87i
-X-Rspamd-Queue-Id: 1F18712000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775730830-556500
-X-HE-Meta: U2FsdGVkX1+c7BuQpyn2V3Hh8CDiSQp/ecJN5BLf3rymrlCEbb4PI+rKH609us5S4su63molZ+h6x/9rm8nfZtW3CCMhMRf4+wMUbpe1/yOvUvQhLRg89silSfBJr/YXA8dDHgMYu4BZuyyCa/RdNBeNS8U3Efg+vLPSEIIrQEDXeowJHimR5jD/Q7Lf8BJD9kIUKsw/lvZdWsJBU5ylnIluHVI15rYh+rMkR7OELO/e0h47U2/va7vnZKffcyjEUxbrRwgvrWuCz8t+40dG9KMx05KTDo3CvpGfheyYNca3CPQ/RxEY8Y6lXtTYJt382zry6ApaXHjZ9JXK+5QrHCFLPvLG2upTFqqjwNmDL52kLs2JDAftsMBFe7gmNldrA9ZDMbfWLzuGxzla8lzcV4RZ3bB0cxd8ItFKpCIxEJiKqyBHFvXL8e7r9qJKTNtIoR4Vo37aoAUxF1kMa1PWfFG0WYwJi7KlnCOTQ17H3sfI7LsXr9D6TyjpCDuCwe1oSnc0eAVctfDnuTG3ZYtjRxPXXPusjYid7qiSBHzqGSf4AYpSshwg+WI3rPJXFGR54MTwnL0O8NZ5lwmYvvDgk4apo46QdAT1RUNT1mP/bGUf3nKzZE9y5Fox1XiApcPoXAYNK4S1bscrLe1v+eC5Zw1kRySsmac1lWvyrCExrkq9JWIuT4pZAlI+O5T1numVoagL8iGYXbXwjdxgSUOi9SrFGDxkwoeUdUR9e1B03zEtf2rntdo7zyBDMkpeM2280Wxr8WheM/lkmwWIFH8Fb+RpsltyqHKOHLEmCGO+LY0EzQWbqU0vgvkAxwR3IQWFblXTn3YZhInUv4iLPa1PqfaLzlQ3UCCgh1S+fTTg33ikH9rlwxoWhQBjFL8QjJyoF5X35A7t6qtvjHYsAdtPlxLfGujcl2ef2WOxXh/R4ebS4Gt4b5dcYZs5dbPwX76rccSCsRaXmLfJZQo5Pxq
- 4G/ZFlnH
- Bcq+pkWLTLCQpy7/L9gqEf/6uK6hP9Cwgsrek8LJ2vF3ivWvN5nODeBqT96BG7NrkSUnGvc55kPUWqfTwtn6M8ks8glWOn+iwXlkAoG7Fv+bfh7JvfDnrsjZkTKk3Mux4+m9gParjCTNsodyzwdSBkHlFwkf4F11N4u7Y3jnKMs0ZtCa/6+vM0nTBmYo6k7LijenfXai+s0gvG1iPISzuCpU+t19kSkMFvwsE1eV6fxsXumKtF+stYBhT2RKF/7CdKpfwl6D2ip2A7x42WBv+2HNybeM/qiy6DUFqt7LLYAspd9CUMUp0yniov7SKLhUAi26rNTNU00nNac+cXUg95h41DZjlMDorUgjsG+JkLWuzFGEa3NrVbnPVNAccyPTw6XGcc5B5asjtRY5S7JrzFJbc6zGy42SQbzfGJyVw5jdTwzGdao19npgIJ7blaDsi//32+EPsNjBB3lMFiBdFtkaUwUNYs3+TlZ7MuELwk7kgCE8=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775731083-690547
+X-HE-Meta: U2FsdGVkX18PBdrBD1D471k99j/3Iw5gxFnWF5InWjUQKcgsFoAgE06lV/+hdEUDTDa1/0R412Ekglk3BY3v0PqZn5/qZSx47XdX8E6aOmpsInJZ5o8hhO5lKysYyB1r83ci+DGQsNH5BqP57+MxxGi/HxErQ12SGQfyq6/fMdWqt+3h26WwNH1+e3NGQ/aawF07+K96FjzV+d8CDC9060/wHO5xvgARS0EQUN8+nXtsYA3q1x7DJggTJ509zbcsIfXWDXiQB1CwpzVj1qzPWYPlm6A500wQoDHBoUQUKaglI05ckNNUxV11D9S5u1GwElm4c8EhNn87OXgZ09xW2xZTc9gOwqgCxoHG9UeYVTd1/R8GPxBO9Pfe2bFhoOXi1NUHnjrFFr3TRcKgaBHrDRzsbnIGedsfIX/6YSgzBPX8GmrnPUVOp6aaKekpjbP9N6xpU3SlAHEL3Q6uueBU5m8oWK896ZnEwx6G3z2f948h5uJytw13NpO4eVt5T4hZ0pyqFo/ONtE6Bw63lMkVIDqsEp+i2PCbrlI23ehDLYcfkH9v+TRRL7NaoLtWRMgYnJMeFDKxj6wYw48Da/ALC93gwF8ZWafPVjQIGUOpc3Vk9rbuQiiFM2/O/16JIOh4l3gS4sGtkro5xU1NGvWvMgH/PyYmztlXNruerPauK7YFoq6ZDUw1bZ77FbmYezDHpVsuULNH7P43RzlCfTY67wuFMJy2xd2jpaKMpjrafwkmozFoZFYksRSfrW633TlM37bm6XUmG8s0B8qNy8T6PZoJErTjJO/lI/hFusJN/C47P7rdI0Ty+3DD9f+rA9afBwjKphdeiMZhja2jjCHeq4TDRlk3R8jfey61CKyU2x8VvWS5AVE0v21/+RJzjOZZ6XS7Q11rgBPAsV3BTCKS7CqNZObb0ENYi71UPD4q4AmbfmbE9DmCVvBsvWK0AU8tRmtYygErAdgjOTCiIAZ
+ Ri+p29Z3
+ x26M6r2Pngt3hkqdeib8N+QPikkT2ZiL7+Of0PqgUjNFkWsK+vOV00WX9qsK2rdjtzUZKhB1Cyc5QmLDnpZNIyViFu0DCFbREJqFHPspMaIgCRFKE7azMNo1YAPSZhxsnm2q9rS0bvPPf28H415u1+BqUl8ztwuVotoJanLQINH1LPxIXkHjpdxeUokid3FVJnXGG2oUp5G+xmk/zq8FEiCFYkttKU0rVXFWb4s29DrcYq9l4ZPyuw/Nwr1bMzbR77NZKVdgQj1qDIKBYj6JtZJEIxV/GSiO49vXZXfDUrxCkxZPtx165ZZPbB1+f/+7uKuCSKSo2HKWAawzIu11M35KRtVitiN1RLsLWewiBTKXjEY9eLL6WyjpYqIPyxkoDUOFRNuliInd9i250rRzTgMo/dQS0Nf5pquc1Kg0zYoVTyfT2tUsejcpuWw7/5iePvF3i6RFItaZubG/wTC+u0tME/5IfHLObbwWzN3uW3HqBf63fqhh5AKuJkXkf+/tuIgtzK+PJ8Oq/KI5AX/zqGSOs5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,43 +98,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current implementation of validate_range() in fs/userfaultfd.c
-performs a hard check against mmap_min_addr. This is redundant because
-UFFDIO_REGISTER operates on memory ranges that must already be backed
-by a VMA.
+Hi Anshuman,
 
-Enforcing mmap_min_addr or capability checks again in userfaultfd is
-unnecessary and prevents applications like binary compilers from
-using UFFD for valid memory regions mapped by application.
+On Tue, Feb 24, 2026 at 10:41:39AM +0530, Anshuman Khandual wrote:
+> Currently vma->vm_page_prot is safely read from and written to, without any
+> locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
+> tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
+> be handled with READ_ONCE() and WRITE_ONCE().
+> 
+> Add read and write accessors for vm_page_prot like pgprot_read/write_once()
+> which any platform can override when required, although still defaulting as
+> READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  include/linux/pgtable.h | 14 ++++++++++++++
+>  mm/huge_memory.c        |  4 ++--
+>  mm/memory.c             |  2 +-
+>  mm/migrate.c            |  2 +-
+>  mm/mmap.c               |  2 +-
+>  5 files changed, 19 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index da17139a1279..8858b8b03a02 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -495,6 +495,20 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
+>  }
+>  #endif
+>  
+> +#ifndef pgprot_read_once
+> +static inline pgprot_t pgprot_read_once(pgprot_t *prot)
 
-Remove the redundant check for mmap_min_addr.
+I don't think we need _once in the helper name. Presence of the helper
+already implies that pointer should not be just dereferenced from one side
+and that using the helper will do The Right Thing from the other side.
 
-Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
----
-v2:
-- Remove the check entirely rather than replacing it, as suggested by
-  Harry Yoo and Lorenzo Stoakes.
-- Added Fixes tag.
-- Link to v1: https://lore.kernel.org/r/20260407081442.6256-1-komlomal@gmail.com
----
- fs/userfaultfd.c | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index bdc84e521..4b53dc4a3 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1238,8 +1238,6 @@ static __always_inline int validate_unaligned_range(
- 		return -EINVAL;
- 	if (!len)
- 		return -EINVAL;
--	if (start < mmap_min_addr)
--		return -EINVAL;
- 	if (start >= task_size)
- 		return -EINVAL;
- 	if (len > task_size - start)
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
