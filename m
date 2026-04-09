@@ -4,89 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B57AEA3C4E
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6D9EA3C59
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:07:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12826B0005; Thu,  9 Apr 2026 08:04:39 -0400 (EDT)
+	id 0B4D86B008A; Thu,  9 Apr 2026 08:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9566B0088; Thu,  9 Apr 2026 08:04:39 -0400 (EDT)
+	id 067366B008C; Thu,  9 Apr 2026 08:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A265A6B008A; Thu,  9 Apr 2026 08:04:39 -0400 (EDT)
+	id EBDF16B0092; Thu,  9 Apr 2026 08:07:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 93A876B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:04:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F46513B965
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:04:39 +0000 (UTC)
-X-FDA: 84638885478.25.1EB129E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B5E4140018
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:04:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRcRzH4E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DC8966B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:07:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 902AABAD60
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:07:00 +0000 (UTC)
+X-FDA: 84638891400.16.57149DC
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A8FE5C0003
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:06:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rnDFhBVc;
+	spf=pass (imf10.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775736277;
+	s=arc-20220608; t=1775736418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fwTHIJxjIYpNKNbKPjX5z2YBlngCSlDhVOBalB65o7I=;
-	b=2p2bFMXwRmM26qxIPiYrlIWu+5EJvaQVXHpQJn6McOK6dHY7XLHh8dL8UBEg6Ghwj50UXI
-	6xXAWohokhsj8/0e+P2rZJCZdwCCtXqPn2jn3Baer5ruYGvPRnsraWzC4m30vPdE3hO3xV
-	y9jsfzYItS0xwEgzn4Q3WQ1svxdUuFk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775736277; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sXdgIpG5FRTBrRjbb+SQdYnUqpZ5GkM25dk30cTxjFI=;
+	b=5EGxnzVHkBj7iY5Ws2P89WQYzVAqL5BV2fVO6MrwAFyu1ejKahs4MkccqRJgTk4yheGsYP
+	xvj4SBR+qS3KPkCZwOM1HmOvnaPeVvwrim/ffipLFKTd7KRaMUWQdktE52WaBuY5HlSJ2G
+	x0pwMRBjgkZg/hq+z0fDmbdCyIM61Sc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775736418; a=rsa-sha256;
 	cv=none;
-	b=eoHmSY54+4OynCcmeEW5wUrHHhhtvEPhr/YdsGex2WydP6o7qEUhecoIWISz6JHPle5yzD
-	igeKL9H7aNiE3+LBj8r03hwxUnrq/iWmiftt+FoiHYjbVtkO4W5OOeLgdZPSlOaW12G6Z0
-	U1Hdu15g3QjCypnEQZNlXXXWFRwoSb0=
+	b=N41Z4Aq0RJ36dRR2TxLp9zV0AgMoI7LPUVZvBHjaQPqSnPe27pfc+Wbh3IPersQbfkkDOG
+	+hd7IQgbzB2hqw4sLJjeldhaCiUdz7iBFdj2ULXnW1rSvbjN05VcWQ/28VfEMBQ+Bh4yrp
+	j51sQmH1ovI5Q/jGSagz/NPSqLSrYH8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRcRzH4E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2106F600CB;
-	Thu,  9 Apr 2026 12:04:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDE3C4CEF7;
-	Thu,  9 Apr 2026 12:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775736276;
-	bh=gcZxvku11NmaM/oQN+7sEkPtzgRgmTY51fejdl+f4iQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QRcRzH4ElTvkUK2UDiRPGgoHkPhNfpWtUwSuoa2hKEqYP6G2IulpGTGcXh78j7Unb
-	 cv+2aeZFfqDHIYyM9ycPVHx5TbzOLMGI1syCd95GAdtXD+UUu0LIZeDeMSyX+QSOvE
-	 lXSrFoSKNinfh4EE8/oSmIMXCg/B08rp04y85z8LUK4Yp4ydsPDBfEZOEWeTf4QRlR
-	 kcI+zCjQNk2qkzg58EoMQS4nvuvPkg/X1PWkzbOgH8D1Vm6QV3mOAKj9H923tZP+HX
-	 ldNqn/12cjl6IfK6hkex3+Q463rRVVL/tk05/l60JHkk6uUbs1L6UWNmDcEb84JELG
-	 PfVMXLtN5Y2+Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  SeongJae Park <sj@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  kernel-team@meta.com
-Subject: Re: [PATCH] kho: call kho_kexec_metadata_init() for both boot paths
-In-Reply-To: <20260409-kho_fix_merge_issue-v1-1-710c84ceaa85@debian.org>
-	(Breno Leitao's message of "Thu, 09 Apr 2026 03:31:40 -0700")
-References: <20260409-kho_fix_merge_issue-v1-1-710c84ceaa85@debian.org>
-Date: Thu, 09 Apr 2026 12:04:32 +0000
-Message-ID: <2vxzjyug9w6n.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rnDFhBVc;
+	spf=pass (imf10.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488afb0427eso11006605e9.1
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 05:06:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775736417; x=1776341217; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sXdgIpG5FRTBrRjbb+SQdYnUqpZ5GkM25dk30cTxjFI=;
+        b=rnDFhBVcjDRZJeF2bBADUjwLQp9klTCKIvVxyPGQd8erAsCGEAg2Ok98Pmvz/KrmsY
+         4/93Z1ZRUrwYuM1JEWVtR4hbPHSL1dQUS3pk+v2xURpYE43lq6sKvFA3S7hrVe4GvxvC
+         kUvK46mAuts2CyiW4DgTW79xcK3SZRvovkaeLMDCjA73ak+a5vB/3Zay12IpSYhYsP2i
+         HvCaXedIcbPuMiwvnjmxilyz0uW8YOnqe0v2H5F60zyUHMYAMke91I2eMNd21k1YTf7q
+         bMPOjoGunJlcO1NtZ51xJCNDJJItenurysdgUaDYygZI8DDL2QRUs17X6+WaY1ar0GJT
+         N6hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775736417; x=1776341217;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sXdgIpG5FRTBrRjbb+SQdYnUqpZ5GkM25dk30cTxjFI=;
+        b=KaQmWlO1nE386hGoKsGtzVPNb2NsthDzHceHGePYUWgqOYbPOYNF/AESYV8wKKzOui
+         s0QnbpeJ3AxNTw/I7p11KisIxhOdugd/FgVloZILCS6OZdteV03/FzeUGTKyYLNHdi71
+         jXO7N8TNLbGY21XElDMSYowQsLnhNR1PDA2levTO17AgbLNXqggMp0tZToFrygokOrDO
+         fxokluEOkOL9iTb4FUA6Rcrl+BD8Jdd8AcO50KOo7oRxwX1zysQQ37wQZPeovYm6hIyw
+         EqLkm81PH+QZSoMCGXeHx4CLAHYcsJpjyHmautHtmZjm8ixBq8Go/PROxQW8CWQNr+XC
+         xbEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcKt4H6eocOqCMFuN2GdhxmbvIom8JxIdAu+y56+BE2MNCEO5T+j16AWJGoR3vS1M/HI7uJd2Gww==@kvack.org
+X-Gm-Message-State: AOJu0YxSkU6dqHaMMiB9gt9J7dL3ZM/50W/yJrW3AfOH20ZH35uAcOXk
+	miFqPKJMlRz6tbW6l/JPCvKnVTNVAH2uSzg0H7ATFd/EIxPqQ/2c1tDf
+X-Gm-Gg: AeBDietjpXjOk/N3JYTpaitpaHWg+uL7ks1rBEOrhnNlENvO6zchU9RzUkTAbbzkcaG
+	cRaTbXFuWfEs9woPKAHrJwkVlgU+cBQSSrdQS7HJejYCWo81gV8GL3mZsGV5Y0Ku8YSDSrfMswn
+	w8PushhhUJrX7rUtjzG9PO+o/R6uFMjIIrS9kE6tYK3ymgK8sXjtVBN3LJNs2eiNmt3YCxnDp/X
+	LGDIVtnVwSJJ6UR9tDhsAyS4+kXwdSc+TtpWq3WTrS9gH4Ffu3It6CONNaJrdBDUk9E6LQEt+IL
+	EGpeqtxwq4+niiAiidaV2V8xqbYSj93KVxCnt0lY7gb+92M7QdOgXl3bY/F8qec1jmYHidOx6JG
+	f6Qba3xaqsN6W1LOW5XDIqmhGKhB/0hoo1g4fqbViDQzthyGckM1inBwZ9k47ErbN3aSiI3dDfu
+	jUAGz+IdxQz8W6LVHgrhHldeD1++i+T0cG7+YUiCK1aXIUo+m7Lxx61lyDkGG3K5VMJl0DYRBGu
+	CXuXjqbldoicHpwem1O5BE=
+X-Received: by 2002:a05:600c:628e:b0:480:20f1:7aa6 with SMTP id 5b1f17b1804b1-488997dd822mr321214615e9.21.1775736416672;
+        Thu, 09 Apr 2026 05:06:56 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488cf9e8808sm51409725e9.5.2026.04.09.05.06.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 05:06:56 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH v5] mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()
+Date: Thu,  9 Apr 2026 13:06:53 +0100
+Message-ID: <20260409120653.290386-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: B5E4140018
-X-Stat-Signature: ixj3fkms9kpnqs39efsoxggkigmpdw9n
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: aqfhmgc3ii5ntht4xttochms6uy6zifp
+X-Rspamd-Queue-Id: A8FE5C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775736277-615483
-X-HE-Meta: U2FsdGVkX1+NaSmIaZz/C0z4GtTscC32/EMX3DKUA7moueHohMsNeDeT0WiUvBtnRn3GY0aNPxSc2iQfvS1QgfS32dXeca83YLqxIL3WvJ9Nlj1Etluf0cIA1/C+PZf3y0XILy0EmDCkrHrREZANHoUsb8KRyXGY6tt/UV8csseqJhrebZ3M+YRVL2Tujx33/VBRs5CUOvXxWHN2rmTzldj7GnwuUfwUvqSpR4JcqhWXLEE27S97i01vB2lWoVZ124KGQ3rt1UxT0mWnn58ukx+ekN35XG0Tbx2xTXlqHFj5VocLyxdUkkH424iciM8Qi1EJf3HkmyyMhx5U/AWekFuKU1xkzvHMEmQTFrYjJjLbjjlx40wZ418sRV8utVvzasTD/vHUEmaxiXGmhf+P9jWtraM7zsoFHmrssq38T3mOBQ/Xi7Sk7CV8sjEk0++9qtUYjFd+aNcRIaKcAp0665zbvjqW2+pDGkEJ24jIrdyFqsC2Z3haODpHhxLdl4iRMYWOToSEWsXMd5Vx4D0h7GVZfIYDnLTeSVNwMDx7s0dqdA2Z+rAtE3UD3A8/sCpCPIQIcgJxkb9dQNlhjCb7IzakxMXF8K/9IahGyWpYXK+OfjXyBvSMBAWcETIXgVf4PXehVK+nqmdPJAE1VWyIwOufNPpP2c5O56YjjSa/JhYZIlyDhLFdm/g5S/KbBJZnS4F8QUg0bNREGWZirPGCEQpqJh6VU3G/p6cP53jG8a8F8gSP9AoCQUSf36mjGJeKbY20Ng23nIeNN6Adw8eEcHCI8qaVApHBixkBHa9M/iVoWvwEHFvHVtCzScl5x2OEEzR63adxJCNGrKgFePG2zwFDV4LMKQ/uzldWlanlKtv1KxX0ESdLhKlAIa5htstTl2wibO+pGpR8IfNjbF8bgOCMkbyxBwdQ+THzbmAYvkvyJT0gQZy8oIZJ/bktDjezdhMpycyswZ397ApZlh/
- tTU3JSRB
- SUJhPABJY2/G/f6GdrlfaUGdB1j3tAtbgx3EHPdoGpD8Cn+ktGItnWdAyMV7YJGNY+SfjB02Hy8OasaLlvTyuX2JYxkiKaidWNUz8hKvGUQnJH2D+Sap3UetQ3qE2uEmQQqCyv/A1aGMbMhStJ2KfzHuBE/Ke7mdPnrS946Ak2z7w2pYyggavp+h9gUnsYdUO1qZXJYNPpT7/CD9895x9KvoY6k7jRerH2yEAs6KxY+u+GXUV0gPjIHCg783DmNoWpbTTR/+8bfC2t1k=
+X-HE-Tag: 1775736418-839219
+X-HE-Meta: U2FsdGVkX1+GyGsh677KITWiqYNl8B2sYmmr4FT6+Y8tAwhWKagpmzEzdhaUS99V78t6vEDUt93cUrgqUETl4AL+pnofAB/X3q1zqG51MnWDdjYT8L932S8TBKZQeZP7d64A2ebH8DxdoYVnT3Gh+CdS7EMVoaODh5iP7E2ZRJ9XQ7ypS/8pz/fNj2FNl9hZW+m3eOW8NDdVN9bSKjT3dlVjJv0okSgEUvrvw2DGJiRbl8Iyfv5O3AGrnlLeyWMkVyfYiPPY6lh6n/IzLlyoVwdUI1Qq/hsEZd9HsCVqqsH60pA8LAg4bsplughiJ1AL/WAobAlX9OiFNuKkK0KdDK8olI/eF5toI+frGWTnKBKekNfXA5dJUJ5/kybcQ8OCqMIOg0qV1YBgfJyd5pa+Y2CCpbT10QTBOtseNhysoilx7pWgd3d0r2IvF1zI8js7vNWkujYsynP5VIB+dIfkS/QLhAqMUPcvdDHaeJHvi7Qk1bfIaD33njqeVUK9ucmVjfe317XKrmnT03K+gOo5XtlDPmdEi+CKzJnY1jEL+V1GWBTQ8zVpCOMfBNjX37q2j2Q7DDtDM6vROBHOZB5aeZJqpoQVj+BNM6cwYcg0GOZ2nMM2WN12U0bLQnMbv8D5y0QNstivY4d4h4sPev1Qrjd+eYDYGFCiyAkgnJ9/1TsWGvJhVbrxQ/9RccwaCbv/0LJXEOtJnyg1KUnb03oiN3RQP/qray+J9NhEXgixvaosr5MsvZ1cidAKs12gPFUnq1ly2n38OEpvRVnAzKbHYO1hAqDQnTZikGgUOi9C9WmUUtqV7hobLNxgb6f1/kF02AtTXXZBXvN4ZRgM3g/dfEsfxRYJ3jWrNq8t518ahVqm46azTqK7zEjW3cQ1zhwV3ssMNcF2BO/D6BDeBy5Sg//xXQzGKh8Md7CFuJ8wpQZL4RJI3Cc70DtcgqnzItDhkTgM2AEPSl7MUhk7ojM
+ pV2r/qAH
+ YTd8cp9LVbII4vVg026JC6l95pN2vS5A3mvr5mfIREu8yc5T7LpifZGjwPH0zXWgbXK5K3MlsYF/1c5X40RdECKzy2V4zzCQE/5KkGMielGbSSqFH+weNL8YxvqxlT5VnZhP1uL1pRO6pn0Fm9wjYPyo7k4gDkQJs5r6zdwWRbTcfOH+IJ5FZ+voHcE+pcMclGuywnkksbOqUFaVXWiIDsHV8WtrxdBDx/1AqNv+Ce8YQCZuKr+1QPnNxrLfB9EcZaTTu3GmyTmryu6ih0mttUdEsX9ZPZvboFtsgwO/+oOjXbNsPZ8GX2DfuWyeVFoTN2wLSyo6AveKeomnMpLkKj5KviewF4/t/lkuqpYANUI2q5ekVVW9BjpebhDqOneocCKI7jmOYumBgK8Fayz6/0JyvE1nqE/GxfJqHxhgs/FfsnpQ418kOC3/vfO0WdwvV3e7ttzs/kLmLG9M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +122,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09 2026, Breno Leitao wrote:
+mfill_copy_folio_retry() drops mmap_lock for the copy_from_user() call.
+During this window, the VMA can be replaced with a different type (e.g.
+hugetlb), making the caller's ops pointer stale. Subsequent use of the
+stale ops can lead to incorrect folio handling or a kernel crash.
 
-> kho_kexec_metadata_init() was placed after the fdt check, causing it to
-> run only on the fresh boot path (no incoming FDT) and skipping metadata
-> initialization on the KHO restore path.
->
-> The original patch[1] was based on commit 5c9e55fecf93658 ("Add linux-next
-> specific files for 20260312"), which included commit d7176a010afce8
-> ("kho: fix deferred init of kho scratch"). That commit has since been
-> rebased and reworked in linux-next, changing the code flow so that
-> kho_kexec_metadata_init() is no longer reached on the restore path.
->
-> Fix this by moving the call before the fdt check so it runs regardless
-> of whether an incoming FDT is present.
->
-> Link: https://lore.kernel.org/all/20260309-kho-v8-5-c3abcf4ac750@debian.org/ [1]
-> Fixes: 047117e78331a ("kho: kexec-metadata: track previous kernel chain")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+Pass the caller's ops into mfill_copy_folio_retry() and compare against
+the current vma_uffd_ops() after re-acquiring the lock. Return -EAGAIN
+if they differ so the operation can be retried.
 
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
+Fixes: 59da5c32ffa3 ("userfaultfd: mfill_atomic(): remove retry logic")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ mm/userfaultfd.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Andrew, since the patch "kho: kexec-metadata: track previous kernel
-chain" is still in mm-unstable, please meld this patch into it if
-possible.
-
-[...]
-
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 481ec7eb4442..214923a411c1 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -443,7 +443,9 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+ 	return ret;
+ }
+ 
+-static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio)
++static int mfill_copy_folio_retry(struct mfill_state *state,
++				  const struct vm_uffd_ops *ops,
++				  struct folio *folio)
+ {
+ 	unsigned long src_addr = state->src_addr;
+ 	void *kaddr;
+@@ -465,6 +467,14 @@ static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio
+ 	if (err)
+ 		return err;
+ 
++	/*
++	 * The VMA type may have changed while the lock was dropped
++	 * (e.g. replaced with a hugetlb mapping), making the caller's
++	 * ops pointer stale.
++	 */
++	if (vma_uffd_ops(state->vma) != ops)
++		return -EAGAIN;
++
+ 	err = mfill_establish_pmd(state);
+ 	if (err)
+ 		return err;
+@@ -495,7 +505,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+ 		 * will take care of unlocking if needed.
+ 		 */
+ 		if (unlikely(ret)) {
+-			ret = mfill_copy_folio_retry(state, folio);
++			ret = mfill_copy_folio_retry(state, ops, folio);
+ 			if (ret)
+ 				goto err_folio_put;
+ 		}
 -- 
-Regards,
-Pratyush Yadav
+2.53.0
+
 
