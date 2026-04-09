@@ -4,150 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C659F364A4
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B0DF364A0
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 17:01:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A99A6B0005; Thu,  9 Apr 2026 12:56:23 -0400 (EDT)
+	id 6DBA66B0005; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8807A6B0088; Thu,  9 Apr 2026 12:56:23 -0400 (EDT)
+	id 68C736B0088; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7966A6B008A; Thu,  9 Apr 2026 12:56:23 -0400 (EDT)
+	id 57B2B6B008A; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A6586B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:56:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EADB55B7FD
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:56:22 +0000 (UTC)
-X-FDA: 84639620604.17.78A9346
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 59FBC1C0002
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:56:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=X+Rhl1rh;
-	spf=pass (imf18.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775753780; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 427AA6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D76C61A08D7
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:01:10 +0000 (UTC)
+X-FDA: 84639632700.06.8787CE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0B43A100026
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:01:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hw8QJZXj;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hw8QJZXj;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775754069; a=rsa-sha256;
 	cv=none;
-	b=Z5/GUc+xobZSKcMXfMyuSYpOTpKw0cDcVMNWl8D6kUz2WTirZJS9ao6I/vAAkQKRDkSpqn
-	UzCCg8ZWmcMfXCSCx0TbsmufKSg7Q1fO4EY858UzRF8Mk40+UlrsdyNzIn/G3WcPs9Kwds
-	V186TiLD8p7O3jQX/3Ht3akzos2CMq4=
+	b=nVH+D+EoIAPsg37oLvKS+YUDFgnsjUwZWw6EhF5DLST6bmauKErt816gIOzyyHE9FlXE9b
+	1MmKYNkKQU/qiYS5nTT7wdh1/Sk1SUjMdmMRPUxfOk4DKrB0R/zYV+oQ79fnRSusTSizkj
+	kPR2fK92ZZZfQeZ0qA3pTdlYs0FR6z4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775753780;
+	s=arc-20220608; t=1775754069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OvEphWIYTmaOsYyig1o+y2ujYF+NlxWZBxa7RIBpdl8=;
-	b=oVWQtzKlCe1Tgk8GkfgUVL/kwckOv2ZbvmwIy9o+njlvUZvqw4bQirCkNyj1ULoEw41G7Q
-	YkYMzRo4x/SkqnSu+LsheZWYwfZan5vtHQ09pSGV9kmUpRj636HuMho25/qk4hchfJaY+2
-	DOhhCt0joTrGnmWBB5wuvuZcG3+d5zI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=X+Rhl1rh;
-	spf=pass (imf18.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639AQUN22591197;
-	Thu, 9 Apr 2026 16:56:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OvEphW
-	IYTmaOsYyig1o+y2ujYF+NlxWZBxa7RIBpdl8=; b=X+Rhl1rhew7vjbQi7Z3+4l
-	zp+a07MMUvkzo7YSTcKaXg/mPMac9hhC/f+Mu5W2oKUrjaw2CxJC56wlBgVF2iLn
-	4bX5D4n274K0rvujuv6VBeJCVtgpsvsyOU6+jHyvM8p9HCC1dHb/DBZXh09owYi3
-	HfSHDncYO1muOz/bH/rxE5BDox+RknMp1CwV9PJk24M5d1ULsfEsBRuw3YfJW9YI
-	5/7sPXLF6ZuFNf+drAuyxvgU+/Uv3OBykAneDPGvHYrU6FLZVTIlSTtRa8yuP1b9
-	thxIc7HJHqH/xZxnZHISs/29AGfEHP6mWVcSldzi3zIHB9xKyQ0jIa3OR3Mi2MPg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2ee4fb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 16:56:12 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 639CmkE6019008;
-	Thu, 9 Apr 2026 16:56:11 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcme9mfw9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 16:56:11 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639GuBK930343700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Apr 2026 16:56:11 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0395C58045;
-	Thu,  9 Apr 2026 16:56:11 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F7355805E;
-	Thu,  9 Apr 2026 16:56:01 +0000 (GMT)
-Received: from [9.124.214.147] (unknown [9.124.214.147])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Apr 2026 16:56:01 +0000 (GMT)
-Message-ID: <22e3db13-1e6f-43ec-9682-6eda7fb7ed97@linux.ibm.com>
-Date: Thu, 9 Apr 2026 22:25:59 +0530
+	bh=0Xp1yAyByb+meT+jdfJQgxP+Q+P6R1SDArB30IHs2tM=;
+	b=zbNLm2IDQgpIOcVCoS8EyrwCBcZtFAAG09mxIwUZWiMpz89ex6/vg5L2gEkYbptfESb+0T
+	iHcR5+BEEHinkalMD0ozdRb1ICjlFVc8aSNbJQo+f5nxJGjBqIv1FBLwGTvRBC0MGmvH6e
+	DofKc2OAAwmCeLx+xgkgkeVkljTXGNo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 32E2360103;
+	Thu,  9 Apr 2026 17:01:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EF1C4CEF7;
+	Thu,  9 Apr 2026 17:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775754067;
+	bh=vpM1p9ulFwkMeX6amQbAGlMHW7aiCUgASpTF7AU0vA0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hw8QJZXjTX2OaAUte2QPQNb/SI5CU8gtmzAs5q1zKUAa9jrkl780bwqp5a+Rm2+jY
+	 TQS9ynebRxWSpO+4XyYObpmh8Iy6ywSsdXQH+ixBm2HZugeubmwNKDfyb9+xpvXIVe
+	 wtXVBuvFscwu6I2i/O7ItLjUrsAAia9QQs8zR50365kJ12ie3RQ/knWQcYWeuoU8bO
+	 gOVNIlwMk6X4Ie4k7X1CSa3vnZBXgoZD0zYvUaG1mqKzGyawxfUW50B11oWfnW/oDd
+	 vywsyo6MjEzmeoRZNjRWBHQ5kuPmT5GjTGSNYyPIV6JdAv14rCmCv9zEgEWEEOnlzN
+	 fXEEoS8OsPcUw==
+Message-ID: <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
+Date: Thu, 9 Apr 2026 19:01:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/53] selftests/mm: hugetlb-madvise: use kselftest
- framework
-To: Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-        Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-10-rppt@kernel.org>
+Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
+ vmstat_update
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260406141735.2179309-10-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: nXHmBfUFBa74AbhTU3U9NXvQFKC9UN5g
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE1NCBTYWx0ZWRfX9Mgs1UO44P1l
- kLxrr7b5KWP/kHm3rsN75OEtbeK2jerdQlf67QqWwhEDj7D2zrsUmdVT28GTVUMMmF76sjhWF33
- 3AjtreOUJrSdZ6ZNIFHZXNpONA3sPP269dov/fc4Ogs3stpJ5PuWGb7IWPV3hE19Bx+p2R1kNUz
- D7+DzNzUEBgpuKKc0a3ga3EF+xw/ZAOUIktHapWqBreaVCD3gbE5tDGwpBcqQmfty/VtjZDxGgN
- TwpoZHoDOxUIYhoPAJeHkelaw7wYMlLZ9NPcv5WaYcwLYYJqG6860h8bECPVrX/UGmkUrUUAs1m
- I0mHBh2F5LakJcf21PQWP4M7OuCo+6TC30QBhyj2hHlvHSAnS3bPGGKnsPi9Ck8ADk2Q9qZD+7d
- hEGZpJtBGc795o+uMMoVBTxf+x2L5KcHTotVBNBHaIFItOA26BMIHQsl6/NjyXrG/89wZD48zRI
- gSx33N0/+rqf8E2ID5Q==
-X-Authority-Analysis: v=2.4 cv=Cfw4Irrl c=1 sm=1 tr=0 ts=69d7da2d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=DTDaNkLqmGNR2mV1pvMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: TNOrP0JNv1SJ8pTC8LEKA6-H--cbC-cn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090154
+To: Breno Leitao <leitao@debian.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>,
+ Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
+ shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
+References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0B43A100026
+X-Stat-Signature: 3itrmo7dhf9jdym1q459977gxqmr53ja
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 59FBC1C0002
-X-Stat-Signature: 4wx9kfnjpcrucfrz6gqgkdpoow813bsd
-X-HE-Tag: 1775753780-157390
-X-HE-Meta: U2FsdGVkX18uKYOpkwahm1WbngHAfWb5zpwqwqNmuvSy5Y6eSwly5JKRuyahMdHyQ2noqiYMkKgzh9cm9wy4B0yJ8b3rtEIMY5vmvoOFr72WK/b/4f9VOT2o/TMNmWpk3fMb/ZAT3rJ6AoscHTspyIJNKbFVDGyrXePaC8y/IFblRvbjLsNTd2hqDeCXYUoyVCkEo20v0igyhDFAp3IPoCpF7dY3/5JAH8knCxCuHT8kjBtrj3rTBdWp5aZFJ396oR14UNdAywAK6sKwpw6fwWLvE3+AX5vmlW45eg6seZfWxUiIDxkSNbJO7l+oHBzZwA1v1wpwaehgsRHDKif3cMw2/6Sz/nZ8A4pK79HkAepOfMWXNBxbWmDJLTrmr5ofSrIN/AUfX4VE2QBj9u8zL4av/50etKObvVu4ci4dIS3y1672AUWrALFsJKTU8OI76mxS1IyOsMt6kZvXNzQkfHGLV64cXxY+z7O5AU/99M4qvy5yLiJtOtDLdWgV/IpiWRn7Y/7B/hy/ljsUlXhmMn84rcdjtxFrAQNPJwI5gVoKrY3w3asz9h5600mmq8nUaXOYVJgEPaXpSmONxz1nhg0EN3RM4sAtI5GDuX2nM94T++0QfhMc78Zk9UH+O9MiKmSWvpfwIkYDJuuVkkYQF6B+DxXBbkUDfFvw/D99ysfjpQCA6K/u60FRe5JiDjxgIemrYa49b/Z1svRmjuw7t3JX8tc1bfnbye7FlQ30hRE5g0gwyrtu+lUOrrVsktTfPfgEr9DpL0rdvxOjpj2Y1tOybVRZ+C9mjCr326W7SIlPfbU0+YjwI+/EgXwCyAtH8sjiPHTp9QM7eumiAxsFdtM/3ecPoatsP40WcgzVjlO1DCVP85y7W7qh0Cl2G2HbNJKAARkkds5h8+tx3NZz7vRmct2CU+D0gHpTUMpVPAX73gAhxap8l3pyOu+toL5W49g6IhGP0N5FUT8rs9C
- 8H4jVJm4
- CZ7Ldb9S38FyL+hGVksPIouNwsD9cvpyXzeYKPBi5J4fxYLABHqF+tKA3hJRReu0MbUKdHTuxzRpULp+4n2wtoi1lhRT3d5/wI8MYNUZQLiQxR4vdRgthzbzWyRe+gh6Sw1qyeBDqDpgDawJnhkO2TwrzwGZSIYj7ftgMcwVBsdSKxwa8DoUro9+4Pt+7e56gOBuBdcfN4RLu7KRNw2uqXyxLaqVmYqpir+rosMNJ/uZOncxghwe17TgpUzmLqS7DrE5iBH7A/sqQgNObfI3a1jH8zq++ivktJL7mRs9DRkqoHgp+BYLInD12BCR0CPqFTS+4tpMGJ2kdluAR4EnBGYk3WCpfQoQtBzD1TFENue2cv/Xn7hcwhT9hew==
+X-HE-Tag: 1775754068-220892
+X-HE-Meta: U2FsdGVkX1/FKs8BEFFuLQxHvN4ZFLMM+zBuuMRk/LujAvjJDMM4FrkWuBgJK73v3v/JmqEGchFiSW9JQdIIx5JNWYcVS64WRt8pZk2U+T96IeVmy/VjmvGTM23GAV5pFMGxlrtcvygwTIw7NMGWwOYzZQZNdEQjnx852ZBaqwTCHoyYUYHp/KiS9DLIKCDt9zqFzQ1O1GFcJ63sFoQH6UHLJDVLrJGN8F5R4hiwsOKU4XY52/9aMyt30bZhk+HR5Bwt+/mW0168HrvqkosngLQfHYUiHKwgwAsp+yzwRkiEZZM2epp3tZvpCYD4EqMEzMuaV9IRshRGrxGZK71gX0+EQvuYjCVRmO7zF7Ae6AEJqsLbqZd6TQ0W54Aa16YamQwnZzyzzHxxiCAFsTR5EreMpgFuq4Er10J5XCI2CdQfiYaD8unBi8P1Lt+/GedvtfSC39SV5JeXSlWQioKl5oGdLxnWi2Q6QUyRnBcOjghUagTPJ0Ug57flggfajdoVdSfM1hTFr8EgfwZsTewkrFbfNCQDDn04+5efjQ0dqf0Zs2RDD99zou8JeO4+4yMuhcMwxb4BJLkMEo6RwzBAHAkkmAXAzLhDSBtRZuJgH4sQXeuryOBVqCfLZNE8bDT3yzqTmg3ntI0xRIfSGh9TukfJ2zWkqfFkgvR7PfJxIAZTvSn5d6wKF8yLX/B/sH9qMNs10GYKSURniISSC6YtztG/3rw15ViLxqc1aMyH0CBRd6mPD6TtpBDb4pKa5yO20LEL7cmmDqMb5fj3QUkRsKHjt0O8/OHmIUHhjxupWTMpvBZw+8TMDC/rgCppl28WLFe7En6xV+Xc9KEIcYuhRaWw3BHhpupEn0VYuIxAFj5l3zrgeHmRFit2AaoIITiN5z/YorCwDNixgmUotTCSMiobE0zF5XUR/AcKmpHbjGZSCth2dJGz8+qyYmewbgE9X2S7nxyYxQ2saSaXpLG
+ E8/zo7DK
+ y3WJzCVIrNN/jgXC9zEqBQlQOAGqWESzm9cEThcMPGvxGMIBA9wdVK3tCX+gdNzdy3umvOeF6CPbt1dNnXKa5t9x8giFlNWDN+enTM9WAs1Cso7ZXSjO/tYCECLIOz4VICIb0dbWZv5jnLXQZm/YqT85AIKxPKyf5umgUfwOMvAQvAU7LWxNFUia9DPYBYdQeCaoaakDFLK09y+6XHW0MQxVCgi0FyVNJDQdvues/i7EIVR6NruQdXnIig4602lJ4/Hq5qgybJMXQ+mhQI1u0AWxTgEaRGXJjct1p3oUt+/nz7Vo8pON1Wqi6xQAfUPET+irvBYmXh50PDMRXGhr06z3gtudhZL5yjVhntilJpdsrOBttmElvZUiWfg8ELhxQ9DODOyFaTRbS05GyPrgNYpJX5yWFZavWia3EsHhcVfY5d35hKVCSCX2Gh+XlSvDUkhdtjPJ4HUmOlW6ySccjtxZnxwWZ9I9ecUghmBjvciYBkkt3KZK4dEHmGy2ZexA8M6hkScRt5Jh0Y7E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,394 +100,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/9/26 14:26, Breno Leitao wrote:
+> vmstat_shepherd uses delayed_work_pending() to check whether
+> vmstat_update is already scheduled for a given CPU before queuing it.
+> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
+> which is cleared the moment a worker thread picks up the work to
+> execute it.
+> 
+> This means that while vmstat_update is actively running on a CPU,
+> delayed_work_pending() returns false. If need_update() also returns
+> true at that point (per-cpu counters not yet zeroed mid-flush), the
+> shepherd queues a second invocation with delay=0, causing vmstat_update
+> to run again immediately after finishing.
+> 
+> On a 72-CPU system this race is readily observable: before the fix,
+> many CPUs show invocation gaps well below 500 jiffies (the minimum
+> round_jiffies_relative() can produce), with the most extreme cases
+> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
+> 
+> Fix this by replacing delayed_work_pending() with work_busy(), which
+> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
+> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
+> now correctly skips a CPU in all busy states.
+> 
+> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
+> The remaining early invocations have gaps in the 700–999 jiffie range,
+> attributable to round_jiffies_relative() aligning to a nearer
+> jiffie-second boundary rather than to this race.
+> 
+> Each spurious vmstat_update invocation has a measurable side effect:
+> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
+> drains idle per-CPU pages back to the buddy allocator via
+> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
+> the double-scheduling therefore reduces zone lock contention directly.
+> On a 72-CPU stress-ng workload measured with perf lock contention:
+> 
+>   free_pcppages_bulk contention count:  ~55% reduction
+>   free_pcppages_bulk total wait time:   ~57% reduction
+>   free_pcppages_bulk max wait time:     ~47% reduction
+> 
+> Note: work_busy() is inherently racy—between the check and the
+> subsequent queue_delayed_work_on() call, vmstat_update can finish
+> execution, leaving the work neither pending nor running. In that
+> narrow window the shepherd can still queue a second invocation.
+> After the fix, this residual race is rare and produces only occasional
+> small gaps, a significant improvement over the systematic
+> double-scheduling seen with delayed_work_pending().
+> 
+> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-On 4/6/26 7:46 PM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Convert hugetlb-madvise test to use kselftest framework for reporting
-> and tracking successful and failing runs.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Looks like v2 posting raced with Dmitry adding R-b tag to the posting in v1
+thread:
+
+https://lore.kernel.org/all/adebKQaiAP4G3liv@shell.ilvokhin.com/
+
 > ---
->   tools/testing/selftests/mm/hugetlb-madvise.c | 204 ++++++++-----------
->   1 file changed, 82 insertions(+), 122 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
-> index 898cc90b314f..4c6c346a3af5 100644
-> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
-> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
-> @@ -26,12 +26,11 @@
->   
->   #define validate_free_pages(exp_free)					\
->   	do {								\
-> -		int fhp = get_free_hugepages();				\
-> -		if (fhp != (exp_free)) {				\
-> -			printf("Unexpected number of free huge "	\
-> -				"pages line %d\n", __LINE__);		\
-> -			exit(1);					\
-> -		}							\
-> +		unsigned long fhp = get_free_hugepages();		\
-> +		if (fhp != (exp_free))					\
-> +			ksft_exit_fail_msg("Unexpected number of free "	\
-> +				"huge pages %ld, expected %ld line %d\n", \
-> +				fhp, (exp_free), __LINE__);		\
->   	} while (0)
->   
->   unsigned long huge_page_size;
-> @@ -57,28 +56,24 @@ int main(int argc, char **argv)
->   	int fd;
->   	int ret;
->   
-> +	ksft_print_header();
-> +	ksft_set_plan(1);
-> +
->   	huge_page_size = default_huge_page_size();
-> -	if (!huge_page_size) {
-> -		printf("Unable to determine huge page size, exiting!\n");
-> -		exit(1);
-> -	}
-> +	if (!huge_page_size)
-> +		ksft_exit_skip("Unable to determine huge page size\n");
-> +
->   	base_page_size = sysconf(_SC_PAGE_SIZE);
-> -	if (!huge_page_size) {
-> -		printf("Unable to determine base page size, exiting!\n");
-> -		exit(1);
-> -	}
-> +	if (!base_page_size)
-> +		ksft_exit_fail_msg("Unable to determine base page size\n");
->   
->   	free_hugepages = get_free_hugepages();
-> -	if (free_hugepages < MIN_FREE_PAGES) {
-> -		printf("Not enough free huge pages to test, exiting!\n");
-> -		exit(KSFT_SKIP);
-> -	}
-> +	if (free_hugepages < MIN_FREE_PAGES)
-> +		ksft_exit_skip("Not enough free huge pages (have %lu, need %d)\n", free_hugepages, MIN_FREE_PAGES);
->   
->   	fd = memfd_create(argv[0], MFD_HUGETLB);
-> -	if (fd < 0) {
-> -		perror("memfd_create() failed");
-> -		exit(1);
-> -	}
-> +	if (fd < 0)
-> +		ksft_exit_fail_perror("memfd_create");
->   
->   	/*
->   	 * Test validity of MADV_DONTNEED addr and length arguments.  mmap
-> @@ -90,16 +85,13 @@ int main(int argc, char **argv)
->   			PROT_READ | PROT_WRITE,
->   			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB,
->   			-1, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
-> +
->   	if (munmap(addr, huge_page_size) ||
->   			munmap(addr + (NR_HUGE_PAGES + 1) * huge_page_size,
-> -				huge_page_size)) {
-> -		perror("munmap");
-> -		exit(1);
-> -	}
-> +				huge_page_size))
-> +		ksft_exit_fail_perror("munmap");
->   	addr = addr + huge_page_size;
->   
->   	write_fault_pages(addr, NR_HUGE_PAGES);
-> @@ -108,20 +100,14 @@ int main(int argc, char **argv)
->   	/* addr before mapping should fail */
->   	ret = madvise(addr - base_page_size, NR_HUGE_PAGES * huge_page_size,
->   		MADV_DONTNEED);
-> -	if (!ret) {
-> -		printf("Unexpected success of madvise call with invalid addr line %d\n",
-> -				__LINE__);
-> -			exit(1);
-> -	}
-> +	if (!ret)
-> +		ksft_exit_fail_msg("madvise with invalid addr unexpectedly succeeded line %d\n", __LINE__);
->   
->   	/* addr + length after mapping should fail */
->   	ret = madvise(addr, (NR_HUGE_PAGES * huge_page_size) + base_page_size,
->   		MADV_DONTNEED);
-> -	if (!ret) {
-> -		printf("Unexpected success of madvise call with invalid length line %d\n",
-> -				__LINE__);
-> -			exit(1);
-> -	}
-> +	if (!ret)
-> +		ksft_exit_fail_msg("madvise with invalid length unexpectedly succeeded line %d\n", __LINE__);
->   
->   	(void)munmap(addr, NR_HUGE_PAGES * huge_page_size);
->   
-> @@ -132,10 +118,9 @@ int main(int argc, char **argv)
->   			PROT_READ | PROT_WRITE,
->   			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB,
->   			-1, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
-> +
->   	write_fault_pages(addr, NR_HUGE_PAGES);
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
-> @@ -143,19 +128,14 @@ int main(int argc, char **argv)
->   	ret = madvise(addr + base_page_size,
->   			NR_HUGE_PAGES * huge_page_size - base_page_size,
->   			MADV_DONTNEED);
-> -	if (!ret) {
-> -		printf("Unexpected success of madvise call with unaligned start address %d\n",
-> -				__LINE__);
-> -			exit(1);
-> -	}
-> +	if (!ret)
-> +		ksft_exit_fail_msg("madvise with unaligned start unexpectedly succeeded line %d\n", __LINE__);
->   
->   	/* addr + length should be aligned down to huge page size */
->   	if (madvise(addr,
->   			((NR_HUGE_PAGES - 1) * huge_page_size) + base_page_size,
-> -			MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +			MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
->   
->   	/* should free all but last page in mapping */
->   	validate_free_pages(free_hugepages - 1);
-> @@ -170,17 +150,14 @@ int main(int argc, char **argv)
->   			PROT_READ | PROT_WRITE,
->   			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB,
->   			-1, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
-> +
->   	write_fault_pages(addr, NR_HUGE_PAGES);
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
->   
->   	/* should free all pages in mapping */
->   	validate_free_pages(free_hugepages);
-> @@ -190,29 +167,25 @@ int main(int argc, char **argv)
->   	/*
->   	 * Test MADV_DONTNEED on private mapping of hugetlb file
->   	 */
-> -	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size)) {
-> -		perror("fallocate");
-> -		exit(1);
-> -	}
-> +	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size))
-> +		ksft_exit_fail_perror("fallocate");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	addr = mmap(NULL, NR_HUGE_PAGES * huge_page_size,
->   			PROT_READ | PROT_WRITE,
->   			MAP_PRIVATE, fd, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
->   
->   	/* read should not consume any pages */
->   	read_fault_pages(addr, NR_HUGE_PAGES);
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/* madvise should not free any pages */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/* writes should allocate private pages */
-> @@ -220,10 +193,9 @@ int main(int argc, char **argv)
->   	validate_free_pages(free_hugepages - (2 * NR_HUGE_PAGES));
->   
->   	/* madvise should free private pages */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/* writes should allocate private pages */
-> @@ -238,10 +210,9 @@ int main(int argc, char **argv)
->   	 * implementation.
->   	 */
->   	if (fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-> -					0, NR_HUGE_PAGES * huge_page_size)) {
-> -		perror("fallocate");
-> -		exit(1);
-> -	}
-> +					0, NR_HUGE_PAGES * huge_page_size))
-> +		ksft_exit_fail_perror("fallocate");
-> +
->   	validate_free_pages(free_hugepages);
->   
->   	(void)munmap(addr, NR_HUGE_PAGES * huge_page_size);
-> @@ -249,29 +220,25 @@ int main(int argc, char **argv)
->   	/*
->   	 * Test MADV_DONTNEED on shared mapping of hugetlb file
->   	 */
-> -	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size)) {
-> -		perror("fallocate");
-> -		exit(1);
-> -	}
-> +	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size))
-> +		ksft_exit_fail_perror("fallocate");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	addr = mmap(NULL, NR_HUGE_PAGES * huge_page_size,
->   			PROT_READ | PROT_WRITE,
->   			MAP_SHARED, fd, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
->   
->   	/* write should not consume any pages */
->   	write_fault_pages(addr, NR_HUGE_PAGES);
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/* madvise should not free any pages */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/*
-> @@ -279,29 +246,25 @@ int main(int argc, char **argv)
->   	 *
->   	 * madvise is same as hole punch and should free all pages.
->   	 */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_REMOVE)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_REMOVE))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages);
->   	(void)munmap(addr, NR_HUGE_PAGES * huge_page_size);
->   
->   	/*
->   	 * Test MADV_REMOVE on shared and private mapping of hugetlb file
->   	 */
-> -	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size)) {
-> -		perror("fallocate");
-> -		exit(1);
-> -	}
-> +	if (fallocate(fd, 0, 0, NR_HUGE_PAGES * huge_page_size))
-> +		ksft_exit_fail_perror("fallocate");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	addr = mmap(NULL, NR_HUGE_PAGES * huge_page_size,
->   			PROT_READ | PROT_WRITE,
->   			MAP_SHARED, fd, 0);
-> -	if (addr == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
->   
->   	/* shared write should not consume any additional pages */
->   	write_fault_pages(addr, NR_HUGE_PAGES);
-> @@ -310,10 +273,8 @@ int main(int argc, char **argv)
->   	addr2 = mmap(NULL, NR_HUGE_PAGES * huge_page_size,
->   			PROT_READ | PROT_WRITE,
->   			MAP_PRIVATE, fd, 0);
-> -	if (addr2 == MAP_FAILED) {
-> -		perror("mmap");
-> -		exit(1);
-> -	}
-> +	if (addr2 == MAP_FAILED)
-> +		ksft_exit_fail_perror("mmap");
->   
->   	/* private read should not consume any pages */
->   	read_fault_pages(addr2, NR_HUGE_PAGES);
-> @@ -324,17 +285,15 @@ int main(int argc, char **argv)
->   	validate_free_pages(free_hugepages - (2 * NR_HUGE_PAGES));
->   
->   	/* madvise of shared mapping should not free any pages */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages - (2 * NR_HUGE_PAGES));
->   
->   	/* madvise of private mapping should free private pages */
-> -	if (madvise(addr2, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr2, NR_HUGE_PAGES * huge_page_size, MADV_DONTNEED))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages - NR_HUGE_PAGES);
->   
->   	/* private write should consume additional pages again */
-> @@ -346,15 +305,16 @@ int main(int argc, char **argv)
->   	 * not correct.  private pages should not be freed, but this is
->   	 * expected.  See comment associated with FALLOC_FL_PUNCH_HOLE call.
->   	 */
-> -	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_REMOVE)) {
-> -		perror("madvise");
-> -		exit(1);
-> -	}
-> +	if (madvise(addr, NR_HUGE_PAGES * huge_page_size, MADV_REMOVE))
-> +		ksft_exit_fail_perror("madvise");
-> +
->   	validate_free_pages(free_hugepages);
->   
->   	(void)munmap(addr, NR_HUGE_PAGES * huge_page_size);
->   	(void)munmap(addr2, NR_HUGE_PAGES * huge_page_size);
->   
->   	close(fd);
-> -	return 0;
-> +
-> +	ksft_test_result_pass("MADV_DONTNEED and MADV_REMOVE on hugetlb\n");
-> +	ksft_finished();
->   }
-LGTM
+> Changes in v2:
+> - Instead of changing the timings, do not double-schedule.
+> - Link to v1: https://patch.msgid.link/20260401-vmstat-v1-1-b68ce4a35055@debian.org
+> ---
+>  mm/vmstat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 2370c6fb1fcd6..cc5fdc0d0f298 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -2139,7 +2139,7 @@ static void vmstat_shepherd(struct work_struct *w)
+>  			if (cpu_is_isolated(cpu))
+>  				continue;
+>  
+> -			if (!delayed_work_pending(dw) && need_update(cpu))
+> +			if (!work_busy(&dw->work) && need_update(cpu))
+>  				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
+>  		}
+>  
+> 
+> ---
+> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
+> change-id: 20260401-vmstat-048e0feaf344
+> 
+> Best regards,
+> --  
+> Breno Leitao <leitao@debian.org>
+> 
 
-
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-
--Donet
 
