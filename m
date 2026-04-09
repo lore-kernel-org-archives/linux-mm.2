@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50906EA3C4E
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 11:31:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0793DEA3C59
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 11:36:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A93B96B0005; Thu,  9 Apr 2026 07:31:55 -0400 (EDT)
+	id 56BCA6B0005; Thu,  9 Apr 2026 07:36:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A44096B0088; Thu,  9 Apr 2026 07:31:55 -0400 (EDT)
+	id 542BB6B0088; Thu,  9 Apr 2026 07:36:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 980D46B008A; Thu,  9 Apr 2026 07:31:55 -0400 (EDT)
+	id 47F986B008A; Thu,  9 Apr 2026 07:36:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 890866B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:31:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41D0CBA77C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:31:55 +0000 (UTC)
-X-FDA: 84638802990.14.51D66B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B12B040011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:31:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k4nqKu9T;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C7576B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 07:36:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D596CE2D86
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:36:50 +0000 (UTC)
+X-FDA: 84638815380.30.D4A1847
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1913F1C0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:36:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Co6DXJZx;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775734313;
+	s=arc-20220608; t=1775734609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xJge8KwjpLLpH7tUzNeyVdjNENR4Hhc/QYGBFajPFwQ=;
-	b=w1Ez3mQf60ktZnsq+zDQsOPevWZuad0TcCayyUxNI0UzRC1QOqfTHglNVpr/tbSWJaavq3
-	AyZl7qFlYkteQ0cnIcxzDw0lm5deKlnUa4piVjDVU3/YHhizLlZx9CR15tokb4oXOvOkSM
-	6FIVrIQkfiMQ7Oiaa+m0n+xB8WNTTA0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775734313; a=rsa-sha256;
-	cv=none;
-	b=ADCPp2fyGs6NBoW67ZWDRmLRUYObwYWsfa9UbMR5qGG7RUNO3vvjR+p2RNHqbxvCBYe1Uv
-	kWVg+f5MX51ufzRJ20DKmHT8mx0oKDwtsxiW6bjT430PnBb+m69pt1sb4QsQqIn/4Nt41u
-	0juGRy9rnV9hqCID/QNw3sGIen3Bsl8=
+	bh=RbkflGjGu8BF8nS6s790ufgH6Ojdrqp4tFiwDkoaxz0=;
+	b=PtjB3R7+M9j8L+SGTisEWS58O+7FyoDmhJq+0vB5psKDF/6a8hf+VpHS6ASwrwZFd/LUO6
+	0HeMOyO0WQetCIOA5VBwPTzcl/oQEi1OKPdlWZJjwm04FCdIv0us4AWfIIFfl9pFRDqbIZ
+	w//C9kgO72jvfcBtRChl+N/hdTrRtho=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k4nqKu9T;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1679A60123;
-	Thu,  9 Apr 2026 11:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD17C4CEF7;
-	Thu,  9 Apr 2026 11:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775734312;
-	bh=G/4ZWyrrUDrDjMueESr3dU0jG2H5a4pqPFRbf1vziaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k4nqKu9TCo1Hdfiv7tmE1IswzVF0UG26f7dFH85NfZAliP31kA5i+hJq3AjPPT8+8
-	 pMdbKqEhKelqBNKDDfl6a+QNQzQh/CeT0tJ7nznbo3KY13liEYweQEMxqiL61BB7OF
-	 x1MQ1nGHYXovHupcFZtaNKSex5YnJxp4pBlFMCLVELbTCPjZMF1HRhkw58wODcaD0P
-	 CgrSlj7auwcwirQFjAIEEtylI8aoreTHGpzf75RLNnTRAeXjsZtL3dLFJAUrWw9u+C
-	 9pQdDo53iXiMwoxh3zGSLLDoDcqj3rAZ96xugMPrM2StWoSGGPGsbJjDb66jtY99iR
-	 lLcOyEcHkzhZQ==
-Date: Thu, 9 Apr 2026 14:31:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: David CARLIER <devnexen@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-Message-ID: <adeOIvNXFLTCXMcv@kernel.org>
-References: <20260331134158.622084-1-devnexen@gmail.com>
- <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
- <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac3paYh6sPHr3EJd@kernel.org>
- <ac5yKatsMxNp4G2g@x1.local>
+	imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Co6DXJZx;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775734609; a=rsa-sha256;
+	cv=none;
+	b=rsfspo5XfqIzYUDRJonw+LToFM+lHh+gS/sKebwfXJdJMin+dqppS0z68xnRRogoNd4ypb
+	qh6TYIXi0ssXu8/7vwJH2nuwEZUUk5y8WzZEpk3EjPWmD8LCGh3hqt52pFjgE+6pwTuoVZ
+	H2KVK7kMFPcsWSu42Md+Uez/TxWaRlk=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 713A6BE7A5;
+	Thu, 09 Apr 2026 11:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1775734607;
+	bh=RbkflGjGu8BF8nS6s790ufgH6Ojdrqp4tFiwDkoaxz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Co6DXJZxLdh7H45ycK5MQG1F61S4xOokD/ug2AtnVTmrVeK0RqaXhRb6jgc5zGppy
+	 Jpfz0Q1F30rdiAcF2fG/eVu0ieuEZnjNOxukLHDs4cGwrNK5hbgfGR8s5kihyaCM+o
+	 TfQ6CDpoSzNNjSdW0H/+QqpxBnE9EyPgFTYyl5DA=
+Date: Thu, 9 Apr 2026 11:36:43 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [RESEND PATCH v2 0/8] mm: use spinlock guards for zone lock
+Message-ID: <adePNxNF2pOqMYXJ@shell.ilvokhin.com>
+References: <cover.1775654118.git.d@ilvokhin.com>
+ <adaFaMGbndSSMaZn@tiehlicka>
+ <20260408130715.d6772b9675b0182bac9fe427@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ac5yKatsMxNp4G2g@x1.local>
-X-Rspamd-Queue-Id: B12B040011
-X-Stat-Signature: youwbhazoazwmsjg83y3hjxr7rh7cngy
+In-Reply-To: <20260408130715.d6772b9675b0182bac9fe427@linux-foundation.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1913F1C0005
+X-Stat-Signature: 3bdcyw88c9c9wsqcj989yk8c1x46hbps
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775734313-298631
-X-HE-Meta: U2FsdGVkX1+Vyw2VPuQfk+z9rjoDZpPm60++Dng9OidvfvXSv+vDYK1ZqHtOk9T5qmJmaLDHRJnCL2EBeXNRfiajhOFVKXuMSyqoTQ/jl/z3wN+1RCDybnEPfUbJ8zZhWu7YMRBZkyOi8nsBmcavjY+pBkuAIkKMpvFhfIp5cKA/lWttVXBM3fmuVMjOr6CgaeC9be874btspVbk8SmIe6VdR0sptv9DRRGHE28TGqsHJGGtEpuzqSOoGf5HVhDBqaU3TL3WcUfA5w+xwjxl4kOhD36Ce+R+dgVzdCTJlPPSbnz0Mq1I1B+R+JXWWRY22ZQN80DVlqe7gstt8U8CHty0RHP64dNYOIkgIV4n2kb6MxkCdPIJG8ktzs5oCawJx1DFh9n1/uzfPUZnxXe7eHDS/imCpq/+P03mMoXFGb28wbakHrbuSe3egm9XFjfwFnrBnpb9KGAeulDXpf9hI/lRVm2Vh/bEZ4P9zKeRVsVSTNcv1FAUM2KCay8wz2dj2nbWvgc/uauzHlmSW8yGvR61mm+zU2qTuMYRu7bnEDSfZieObu5atK2F0hJmRyH3CXkR1DFZljLlzGmRFFhCxl+WiU6PdKTxjenPWd3B4lrvPVxN5K06SLz8xwlFmzGAwdossh/FYWc2johj2YEhwLnX3H2ekitbSfgMq7GvPPoIls+3HjWscHnXyad3hVWjKvHnrNSQDxrVWczZKsi3GVaumZYD1K/iewJ5bw0aEv8IUwL3eSE/O13ftkJvj08gSDjZbetOGJoC79GNipzcghhTAaiNIykko25vPO13lIubrs7lpeV6jZP+b8hNvq+Rpbl4zofNz+sQWfBkb7yGD7Oh8UjvWVAAvp1+ZxPc0au4BUg8txfn/quVmkRD5hkoJWnPwR3FsgvfrGYK5Lu4yErHynM1ddVurlN69wKm9e2x6oYlIDuzjEnWMxyqsA5uUKi9PAa90b8nE2iZ9dB
- EYMwl6nw
- cSu9LtlMcFBtig528m7L25KmwFobBSbzXhdKUZWaxkWrA0nsHDOOLV34Rz1TNTX3dHlptKr2PIxIx7bxbvlK+qfdH4he1/PG3DCIx6tS64SsJaPLKQ9qsEp8J6hnL0SSiQvFM4BVHlb6WnOHZ8LTXwByegZ/otXRb7L/4a5syUnv8YEcBWZFRvoJLt8qCAPn/+euSaHLvMWHygNTlM/u4s0WO4sKhJkRKZMRcKDao4kXt/2h4terGJ5/JBGycy726epZBV6pqND1xv+hIQaGVDqxuudCeMUiQ4AeB6akOhJ/hdpc=
+X-HE-Tag: 1775734608-932509
+X-HE-Meta: U2FsdGVkX1/u3sSGGJusHBL/XW5994yd9FTdmOF9brimdQUtKQ92/LysIHMfXP9m5SCtIRZEnIi75+W3leELT2KbRDH2yNNOrZltVimII2pnPD0o8ZKdr9gPVUZzx4/43xDEyg00nwdAQIF8PPxwkvuBda2OdhY9B6fgBlymsNhJzVqPlVFruOR25+sZccRMh22T9f6piHnBRrleuOPkCth3SHguBQaK5ygmf4qsH6SLcLxYccg9C3jxUWrYw6Y+WWsYznzq7vihM43UIel30TbKzetTseEIgMoIQJqmrxFDmUxpB701BPEg9SCmPx10uurdg0e8vOyg64sAjXwiCorgYjhp9iQw5fo2unXR6HcoB12UcABhAM16CLDt98tTNKOGOu+JVD/DxB4W7qXpCNKy0D16OY/eM0x9UPNZvss+UwoWLDgKZ3HukIMqCguvtZPN4coqWmAbRADLG9Tgb8jHhNs5LJCS6qB7Ax2vzHgZ5t6SrtBUmhMyzW3SlVxnIWOEmddQvJ8PoYQ05JmqNiza2TUineRd6Auy+R4N9yOZeSmPyLRj+0MNxsIvnBU3EvNUN/mMnBmMHQqVYkO8kY57mord41jNJzAPQC5b3uorh3ZoEObQpK2Q5a2LAcoSAswzdEs5YKWu25JUxn/xMLZ6b3SFmvV/JdWx91oNmszJwac2xqvn4AMGXZk7Ppe3Mbp8+E7+ByFfgdflVrTERohH6Hq6oJgQq3Rt1T4/HiC3RXpGTKyU2MFsiQyhsTRmhjM9el57enn4t83Uhe0YBSg5FvyQr5U9guJKTHnaAum/J+r0ynekhcWtZH/5IiM3Kx8KufLAE9V+kCNz539KF0CHvZ82gtNaOSQHP3CA/3oNhVcAeFIfYULvPXwxITGidQRU7wksBBx5zHx85Y2Zl5wx9DIvAUpePS/AlZMDMVMxJ+5HrtWZalPznPMyZnHtG+jBdssjru0SXZ1dVfb
+ w9wY+z/z
+ lmE5j5T6n6RM7fJK7Lq9Wp/YGnJazmIkgWZxHXF3gXb32EkNqD8OOa24pLUCBnQP8EBuXP1TMfJzSp4mPE2bLJ48lZQQUnL+sv8kw2knsnGnenHb/UBCq4dk5TyXD8yrByuTix1nSKZWYUL8tnG0qc3ckTBIx+Ahi2WUujW5ksd6/gnbP4rsSgw3NFkynt/8GeV9aDkwI1S8BhOVpXQpXZP/g3bOu9QfrhDzIhkvgww88NcJY853yayLaVjLAV3ZL1zO8zqoWUueGmJFaeakfMdTOXJE8CFdob50Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,88 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Peter,
-
-On Thu, Apr 02, 2026 at 09:42:01AM -0400, Peter Xu wrote:
-> Hi, Mike,
+On Wed, Apr 08, 2026 at 01:07:15PM -0700, Andrew Morton wrote:
+> On Wed, 8 Apr 2026 18:42:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> Let me also leave my comments inline just for you to consider.
-> 
-> On Thu, Apr 02, 2026 at 06:58:33AM +0300, Mike Rapoport wrote:
-> > Hi David,
-> > 
-> > It feels that you use an LLM for correspondence. Please tune it down to
-> > produce more laconic and to the point responses.
-> > 
-> > On Wed, Apr 01, 2026 at 09:06:36AM +0100, David CARLIER wrote:
-> > >   On Tue, Apr 01, 2026 at 08:49:00AM +0300, Mike Rapoport wrote:
-> > >   > What does "folio allocated from the original VMA's backing store" exactly
-> > >   > mean? Why is this a problem?
+> > > Dmitry Ilvokhin (8):
+> > >   mm: use zone lock guard in reserve_highatomic_pageblock()
+> > >   mm: use zone lock guard in unset_migratetype_isolate()
+> > >   mm: use zone lock guard in unreserve_highatomic_pageblock()
+> > >   mm: use zone lock guard in set_migratetype_isolate()
+> > >   mm: use zone lock guard in take_page_off_buddy()
+> > >   mm: use zone lock guard in put_page_back_buddy()
+> > >   mm: use zone lock guard in free_pcppages_bulk()
+> > >   mm: use zone lock guard in __offline_isolated_pages()
 > > > 
-> > >   Fair point, the commit message was vague here. What I meant is:
-> > > 
-> > >   mfill_atomic_pte_copy() captures ops = vma_uffd_ops(state->vma) and
-> > >   passes it to __mfill_atomic_pte(). There, ops->alloc_folio() allocates
-> > >   a folio for the original VMA's inode (e.g. a shmem folio for that
-> > >   specific shmem inode). 
+> > >  mm/page_alloc.c     | 53 ++++++++++++-----------------------
+> > >  mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
+> > >  2 files changed, 45 insertions(+), 75 deletions(-)
 > > 
-> > I wouldn't say ->alloc_folio() allocates a folio _for_ the inode, it
-> > allocates it with inode's memory policy. Worst can happen without any
-> > changes is that the allocated folio will end up in a wrong node.
+> > I like the resulting code. For the whole series.
+> > Acked-by: Michal Hocko <mhocko@suse.com>
 > 
-> For shmem it's only about mempolicy indeed, but since we're trying to
-> export it as an API in the series, IMHO it would be nice to be generic.  So
-> we shouldn't assume it's only about mempolicy, we should rely on detecting
-> any context change and bail out with -EAGAIN, relying all rest checks to
-> the next UFFDIO_COPY ioctl done on top of the new mapping topology.
+> Thanks.
+> 
+> As I mentioned previously, the outcome here hinges on how the
+> developers who work on this code feel about using guard().  Most of
+> them are in hiding at present but that's OK - it's post -rc1 fun.
+> 
 
-My point was that this is preexisting bug and that we don't need to rush
-with the complete fix that will extensively compare VMA compatibility...
- 
-> > This is still a footgun, but I don't see it as a big deal.
-> 
-> IIUC this is a real bug reported.  Actually, if my understanding is
-> correct, we should be able to easily write a reproducer by registering the
-> src addr of UFFDIO_COPY to userfaultfd too, then the ioctl(UFFDIO_COPY)
-> thread will get blocked faulting in the src_addr.  During that, we can
-> change the VMA layout in another thread to test whatever setup we want.
-> 
-> > Let's revisit it after -rc1 and please make sure to cc "MEMORY MAPPING"
-> > folks for insights about how to better track VMA changes or their absence.
-> 
-> No strong feeling here if we want to slightly postpone this fix.  It looks
-> like not easy to happen as it looks to be a bug present for a while, indeed.
-> 
-> It's just that if my understanding is correct, with above reproducer we can
-> crash the kernel easily without a proper fix.
- 
-... but we do need a more urgent fix for the case when a VMA suddenly
-becomes hugetlb, because that could not happen before the refactoring.
+Thanks, Andrew.
 
-For that, it would be enough to check that ->ops are the same before and
-after copy_from_user().
-
-@David, do you mind to send a patch for this without waiting for rc1?
- 
-> > >   The vm_flags comparison was a secondary guard against permission/type
-> > >   changes during the window.
-> > 
-> > Permissions should be fine, they are checked in userfaultfd_register.
-> > Some other flags that don't matter to uffd operation may change during the
-> > window, though and then a comparison of vm_flags will give a false
-> > positive.
-> 
-> IMHO false positive is fine in this case when -EAGAIN will be used (which I
-> still think we should), if it only causes a retry.
-
-I still disagree, but let's postpone this discussion for later, when David
-resends the patch that compares VMA properties.
- 
-> Thanks,
-> -- 
-> Peter Xu
-
--- 
-Sincerely yours,
-Mike.
+Understood. I'll wait for feedback from more folks. Hopefully they
+reappear soon after the -rc1 dust settles.
 
