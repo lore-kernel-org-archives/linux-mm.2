@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF5D4F364A6
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABDB9F364AB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:12:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C3566B0005; Thu,  9 Apr 2026 14:09:39 -0400 (EDT)
+	id 0BA156B0005; Thu,  9 Apr 2026 14:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374266B0089; Thu,  9 Apr 2026 14:09:39 -0400 (EDT)
+	id 06ACE6B0089; Thu,  9 Apr 2026 14:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28A9D6B008A; Thu,  9 Apr 2026 14:09:39 -0400 (EDT)
+	id EC2686B008A; Thu,  9 Apr 2026 14:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 175806B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:09:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6B0F14014B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:09:38 +0000 (UTC)
-X-FDA: 84639805236.22.4BA6E4B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F2B13180006
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:09:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pJUDCn75;
-	spf=pass (imf16.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D71036B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:12:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D10FB62BE
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:12:37 +0000 (UTC)
+X-FDA: 84639812754.09.8ED8F17
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D732EC000E
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:12:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZB+gt1h;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775758177; a=rsa-sha256;
-	cv=none;
-	b=LMVNkFIYKEyINdxJrYsFvBr0Lo7k6Xt/Uq0RQs2jDKIfyuDxD07c/b32u/eb17UroRVsXE
-	WKgAzDqN0sxJhUNzsbgRXEdMYaMN4YC+RTNWDzdL1t1Fk33hRegG2f9z4W/bR2bndF8elG
-	b1a5nuFTzQLxLOR26V2VafhXae5uwHc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775758177;
+	s=arc-20220608; t=1775758356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/oipjRn7L1x3WVlR/yQ16BlYXcWSXvkfWBZIMdtvnlI=;
-	b=2hunoMRRvhlKOr2R92PgWD/DcAiFxP1Imha2xIO8/xCVzTBjdLWQxQ2fBOhXiwbXkbN33C
-	nev1KBzHA1bDS706viwaySCU2Fe2p4M1KksSe1HTyws9HElz43pwFc5yQdTR3jcfNVqJLb
-	E/UyFxejydyORJnZemBpsmMCQndS13o=
+	bh=tHNHJwgaPtwJHWT9cgWPi4YPKOqp8AtFlU26wzvYe84=;
+	b=ttB3R8Qbi17gOaQkRzMRPWal8cKHnUOS+aIO6+aU9/9V/T+ZXynZtyfRflhMMVana+nI18
+	b/cLAmNY9asavHA1g6LuT+mK0irApV83ONgYL2CiEW4sWTmZa5O6hY+Us+6RsWAUSVmsTg
+	b+NPlqAYqtoEUgiaP/hFXdun4k/7Mtw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pJUDCn75;
-	spf=pass (imf16.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZB+gt1h;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775758356; a=rsa-sha256;
+	cv=none;
+	b=1mwH3ZCdpIHfNp0Xc0yzdfkEpeLmt9ih8dzQpHLrz3x7HiPN/83IE4kxCCUKQ/N3FylPhQ
+	x9l9gTdmvCKnWhai8q+5bygGglbv/FPcPineTIR7bxh6aqbrs1oQbPK9Lhi/x8HZwypfzO
+	AJD2MeFCqbH3Y/DTK6xX5p8NUfs93vk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 24926600CB;
-	Thu,  9 Apr 2026 18:09:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C340C4CEF7;
-	Thu,  9 Apr 2026 18:09:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 99DDD44349;
+	Thu,  9 Apr 2026 18:12:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A26C19424;
+	Thu,  9 Apr 2026 18:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775758175;
-	bh=mOz3Q/H820xOIotefY92H7FBaOC39XWq57VpCvb4O2s=;
+	s=k20201202; t=1775758354;
+	bh=gcApZAdBePxG8cWm/tm+Oc6ad9GPWAlW6Va4NZC3jW0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pJUDCn75rPeKVvF2hqe/NiBTqF7b0W58jAq526EvJu4LN/ItjhHpcAJxsxy8vLHBe
-	 TTUXgJ7Od8hwihbPfnJkJ/hYeb6ofM4PWi6LV/4JUvGgLgPisVEsBWQFgAOzWQ02DV
-	 uZEQZoGz4nJrh1+aiJcIsTq8Dh2F4/bKD9RvSRk2sow7bPYkO5dkvqmHtDED8npK5n
-	 q0Z3WTtQcJXKL1YQfn0eUQ4NrKCwmdSpj+apCHqhiY46T2xonW8tOT5CiiS5uRgSQG
-	 lMY4oCZHIwnibg7IpyrSKB7Cr2XIbQ1dwvV2nXbpgfO7L5AQs015qs2an9sS0TmSRu
-	 c5GGsAeWAG/dg==
-Date: Thu, 9 Apr 2026 11:09:33 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Joonwon Kang <joonwonkang@google.com>
-Cc: dennis@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org,
-	dodam@google.com
-Subject: Re: [PATCH] percpu: Fix hint invariant breakage
-Message-ID: <adfrXdWJeuqDLWFM@palisades.local>
-References: <ab7QClPFaFAWsxBh@palisades.local>
- <20260323140514.3487563-1-joonwonkang@google.com>
+	b=XZB+gt1huoeyJXJMf+p7UwRj6HsC/FbEy7qDkwD5ZUGfQ127x36eeMNORElkDhlWW
+	 EsiTvceg0xAtxiVpe12HgsCQHniaF0JL2nWrf+0/h5qykNkkKsu9HlaTx6MfoWWv9V
+	 Ul1ARvPVql//ctwHzw2xatqCy3LFLujevTXXG7Z5cv6EuRM/e8BW2R3M+XvQ1C7F1c
+	 RSsSoF5jgAw/KbMM8GQzF6R41ANa1hp/L4SQv7K+XkrDLve192cWb/yDkk9vtxR9tb
+	 AtwuC0p6/HReEzEgQcoJahUaQ6svxKToJ4yrtlNOVXAAFutcI2X6YTHzqcCzOVagOm
+	 GJHhcCFXLywoQ==
+Date: Thu, 9 Apr 2026 21:12:27 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: David Carlier <devnexen@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] mm/userfaultfd: detect VMA type change after copy
+ retry in mfill_copy_folio_retry()
+Message-ID: <adfsCwaVcFk1sLhj@kernel.org>
+References: <20260409120653.290386-1-devnexen@gmail.com>
+ <adfdVbCY18PZMfI-@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323140514.3487563-1-joonwonkang@google.com>
+In-Reply-To: <adfdVbCY18PZMfI-@x1.local>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D732EC000E
+X-Stat-Signature: tbmfricetdbiruqdkbcqy4c96ha4xn5e
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2B13180006
-X-Stat-Signature: zd4hpbdb7nema5b8zudq4hcfj1p64gn4
-X-HE-Tag: 1775758176-654607
-X-HE-Meta: U2FsdGVkX1/A9hokRCXwQb7FawkLSXC8UVQEJNdZXs8MmECEfoh7WZac2bR0Uv932AtJLqaS9wFpjtjRpklJ01/bmPpPqxfjaCYeGc1gmkmZBc85tWTOr9OWehfIK056sRmjZ6XwtkCFuSHhqZGE1+JY5AgvQgEAStv/jIEEe5atfOxdUiVYPAbNFfp5BoylB7jYAZMMgz094qSeTXOINZvtdSvy012mTRBXyeKN30vDpKZu9LzilWflrHVqKIjWq6YsWcdz9CIVQnLkbwS+LvqC22aL2jUjDTZhy5iPXuPVMm9I90J1XSD6TJQUA0RAkVle1i/PjRshvoiVbbAmGST/RLRhLPVu3wnKMDDcQpjpQGcC6RzTbF9NNL8FfAJfwt7T9VINFEcznP7sVdvuBPzhNTVrpFberIQVyRxj6I2V41BjgWc6ddMFMeme0f0bM1U7Tghz3aGyp6fy6TEXvgjc9c4GNHjKPp66zFQcIvs7HsEtFPs3yi2DGyTOz9Z89xzIhYkntxikT1TqO2eCLSem0Mo0a02IwyMWgQX7uPYZbCWBJQreC5Qypt/DUhV4/jKBSZwpsbbD7p7jNZ03y7UmdaUugnkm4U6hCUkbprZAAX+85C1CQvK90ImPD2AiIkanlN4z0CEwMYuFzLczx8CCljG3TWxv45qotkBgTHOLYC6VgHegAvbahlofFEjJVo9gMsjexr04BHPDX/xOWIt20KxBpPW9QfEJh1lj2AI3KAQWiwGwo3G5apv2sVNqKmTxEdigy/OGXxzvcRgN9aqQkY12bn8HKYYCTUBkjYzXRbxMPGSNAh3CskZPGLyaCb9U9s3fop6zQODVlJr4UDPiWIaBucxCEJFoKCih1ZNxIwk7LdMlQDFTc+oTHF5Y5lbv+XJ6YOKc9X6/xEug5UqPAjHBKs6Ii2Qaz7MoIZjE3Dm8vHzxdMCL7CLNpTvvEu1IHhtCbBEZGdeYMg0
- g97TjZdG
- J6zc9V47Bmzld9KyD2IXgwbsgSB4Z+4SYMsByXLo00E65PyyPkQPcnqC1ftc7j8rCqJ6x0OLKrK10vKQ2XkbgF0QnMz1taqAsOAiOaU6+QoVllx/YsHKi8bl/Y9G8b9pZQbsaFPB+KQ1w3Mo4ACqvWAXvSsKQQw/Z8+hVL4FYQyO94TdQUOo4KLq6eh65QjQQr8r8PspcPX3LZFSnkDBHc+ykmg==
+X-HE-Tag: 1775758355-852249
+X-HE-Meta: U2FsdGVkX19bHmqinpB3Eaio29OOjd8r5eFntCuPf0nVCeNHchxbjpGm7Yh/iTD+j91zDpTw1V7D1fXcyY1VzlIoywuacD214C0WVi5ekT91Rqq3eqH5abbG73AGMHRkA48pgs2lxgn36tp7W5V0aOojJbeuHjmSun0i1JBTsvQV9c6U5t4FjzTs0oQDGJlt6vj1p0bQwoinhPGcGjVPv9w2XtuOEk8enB8yP0cQqIe93lIeT1UrPifD7EtMeWqzmQUfbcWqaefd8RUtrKCNhh+L3hOHmguqtf1mC3/vW//OuvPjrJI4z+gwycWodTnnDC5Mvp9JHrD3RZSIctMoOsU7VCFvMD+MHjnY9fmEzqJZ960C+iu6zin2LSMamkUrTwtURnyoa86a/SjDfS9PNV0ltjCfh+jIG+3bC89qPPIdnTXKJym8ckLcsfyQf9VWUnLrE8Z3NkZE5p1izUU3jG0t/fLYGX2SCC1mycGtmFQKBmtO1A6PW3cZvDq+K2a0xNdCC+/CFS4YM1FoCTJEP5el4XMvNkLEQF3ghrrUlxYtG/c6crnCH//JcYG2C7eoMsr3eUW5AEZd0QHRO9u6nVeXvQFE347PY4jyaTZXvxUSBy/GP2aFX1FjT9FMa0OeARxD8oJxISdwe5wDclILjckAmLvojykvWyWN4EEJNC/7zdjs7SRARV1vggcHL4ke6+ynXQ0J/2uk2eeiiw8aYC4O7CnokpXGOu/AIPaVCd8KyrkCcKnTg0VStB1RlZeYBtXj7wBfCisvbnrxAcjdlgenzZ+FMc1dX0STvGfo/BerchGDBSvxqsdxFtFehCz0GVU4fRwHFqN0Ol9CX9sEOe9oow64XNn0TJtzHrPkwCspN0NLSsO+ac66BCsZZw2Zls3aWNKakCJag8NGaNelrshRTjei3+mvGI/DSvw6O9aWM+E9rLpqyU695XrJW4B64KsfV2mbNYleFyFhYEI
+ MPEl8sVf
+ JXF+bdO2xmOTSTCxZ29H6A0bsjC1rzTpX7mOKrpBxjN3LkcfrsKi0SkwCxH0q03Jggh/M2wW3CTCB1KRxzOodG6dLAq72zEWrgxabuKh6TVW6xhDym+ZKQsUQwGTAPG7OLBxxxX68A/KPAV1uLWxG0ttMOp6Vrlp+RlReOWClSKb1k3Aco+tNSRPc7lBmkT0ho4H04XAQIGb/D7w0a2KSfbc/He/XbZe2L/a7Gc7D9OXUkZoY/d7DkcBLLXl6Gnzvs+29Qg0gG9dAPxh7CBU2VDdw+Ek4MCX3QJ2r92WeOVSMqeo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,73 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-
-Sorry for the delay, I've been a bit sick.
-
-On Mon, Mar 23, 2026 at 02:05:14PM +0000, Joonwon Kang wrote:
-> > Hello,
-> > 
-> > On Fri, Mar 20, 2026 at 11:52:14AM +0000, Joonwon Kang wrote:
-> > > The invariant "scan_hint_start > contig_hint_start if and only if
-> > > scan_hint == contig_hint" should be kept for hint management. However,
-> > > it could be broken in some cases:
-> > > 
-> > 
-> > First I'd just like to apologize. I spent an hour yesterday trying to
-> > remember why the invariant exists and the reality is this code is more
-> > clever than it needs to be.
+On Thu, Apr 09, 2026 at 01:09:41PM -0400, Peter Xu wrote:
+> On Thu, Apr 09, 2026 at 01:06:53PM +0100, David Carlier wrote:
+> > @@ -465,6 +467,14 @@ static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio
+> >  	if (err)
+> >  		return err;
+> >  
+> > +	/*
+> > +	 * The VMA type may have changed while the lock was dropped
+> > +	 * (e.g. replaced with a hugetlb mapping), making the caller's
+> > +	 * ops pointer stale.
+> > +	 */
+> > +	if (vma_uffd_ops(state->vma) != ops)
+> > +		return -EAGAIN;
 > 
-> Thanks for taking time for this and sharing more context. While you are at
-> it, I have a fundamental question on the invariant. I had deliberation and
-> discussion on what benefits the invariant gets to the percpu allocator by
-> its existence. My understanding is that if we put contig_hint before
-> scan_hint when they are the same, it is more likely that contig_hint is
-> broken by a future allocation, which leads to a linear scan after the
-> scan_hint for hints update, although we could save scanning upto scan_hint
-> when contig_hint is not broken. On the other hand, if we put scan_hint
-> before contig_hint instead, it is more likely that scan_hint is broken
-> while keeping contig_hint, which does not lead to the linear scan for
-> hints update, although we could not save the scanning that could be saved
-> in the other case.
+> I agree with -EAGAIN here, but we discussed over all the things on possible
+> inode change and I don't know why we don't consider that.
 > 
-> In other words, if contig_hint breaking allocations occur a lot in general
-> with the current invariant, the performance may more suffer than without
-> the invariant. I also think that there would be no strict reason of having
-> the invariant.
+> I still think those should be considered.
 > 
+> If the vma snapshot idea is not welcomed, fine.  We need to think of
+> something to cover those too.  Current patch won't cover "ops unchaged" but
+> "inode changed", or offset changed, for example.
 
-I think the original premise is that percpu memory is quite expensive, 1
-allocation costs nr_cpus * sizeof(allocation). So we do our best to bin
-pack at the cost of faster allocations. We could always just break the
-contig_hint but then over time we could cause more fragmentation.
+This patch is enough to fix the regression introduced by my refactoring.
 
-The case that triggered this was netdev needing 8 byte objects with 16
-byte alignment [1].
+The inode/file/vma_snapshot checks are needed to solve the issue that
+existed roughly for a decade.
+ 
+This should be a separate patch and it's really not urgent.
 
-> So, could you clarify the necessity of the invariant? If there is no must
-> reason, then I could post another spin-off patch to remove the invariant
-> at all so that we could simplify the code and experiment the result. How
-> do you think?
+> Thanks,
+> -- 
+> Peter Xu
 > 
 
-I can't really recall the exact reasoning for the invariant, but it was
-probably along the lines of wanting to not lose information if possible.
-
-Say an earlier area becomes free that is the same size as the
-contig_hint but with better alignment, we ant to use that as the
-contig_hint but then we either have to lose the scan_hint or keep it
-with the invariant. Given the premise above, I believe we want to
-continue bin packing, I think the general idea of scanning next time
-around isn't the worst thing.
-
-Sadly because it's already there, and has worked for quite some time,
-it's kind of on us today to provide data / reasoning to delete it. I'd
-wager that some upcoming work is going to change how percpu gives out
-objects either through some sort of slab caching that we can revisit
-this more in that context.
-
-Thanks,
-Dennis
-
+-- 
+Sincerely yours,
+Mike.
 
