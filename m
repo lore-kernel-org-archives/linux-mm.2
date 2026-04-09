@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853B1EA3C4C
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76011EA3C23
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:48:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCF4C6B0005; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
+	id D86E06B0005; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7066B0088; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
+	id D5E656B0088; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBD426B008A; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
+	id C9B416B008A; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE2696B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A520140764
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:44:19 +0000 (UTC)
-X-FDA: 84638683038.01.54D119C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1BF8518000D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:44:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+UXO2Te;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BAA656B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:48:23 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67B618BAB4
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:48:23 +0000 (UTC)
+X-FDA: 84638693286.24.DF8861F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AC794C0003
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:48:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ovA/s+7s";
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775731458;
+	s=arc-20220608; t=1775731701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y9Lfw49qVFwn8/7T7s5W8rSUWCFn3rVo5/dWn6c2Wwg=;
-	b=QQePM46x1uoc76rH+VZBfc6nP9Yrb0xGzKM506tlC6C30YhG2/h2gfy07LYOPTMlCcofe5
-	Zg10e3PesNuCv0rgGhtd/L6oDGQoYqATXIvi9cKqxC7HZTXdmKfkIEVFfSVndUaQ+jPgGN
-	RwVD7JvdbVZ0Am2pQw5zmEBHjInz66U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+UXO2Te;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731458; a=rsa-sha256;
+	bh=iRBkiBI2x82vMKsMNZjL7f2xn2orolYI+36FdSKj7bE=;
+	b=u4EaMC88WoZBFtui2YgQz9tdiKn0NBCkNFKpMS9v0JyJYkkr9JyDWdUSPGKrVNEk0la3r9
+	lQdfCaJEzIqhvfQm0bxgMon9JWr0HTEIYt37dZJbXIX3eec61T7V0TJu1bNA/ty0RndvzZ
+	P4oKSAJZ910Ar4ZFTg+ttwIXJVM+Mts=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731701; a=rsa-sha256;
 	cv=none;
-	b=W3jxFTHwW7vpeH5Owf/aQQeEdJnhM5sv82v6+NrBAZ7/RHZ1m4nuuHdwM0XDXPeOI0HuTQ
-	YXYE/htv6yJfdUEIdAQ+/OO1RPxMB0f8e2yrjgWNLl0MSwGNi72ljO6XOBuGRB9dpU5RTl
-	PHHwmu6lTCJxGg/fNsyhSoDbhEngpeI=
+	b=WKvXgvC2A94uuJgwfW0THwI1wjAL52Zr9M8s9Z7uHdFRP6SuCpS3yFd+LB71FUl3lsm1n2
+	KPMj8fFrkhKKo/8Z8IKRIBBbCUyLk8yqckjvOgfeXFCcv2dnCdY4OzAC9Yqk3eFmObwMh8
+	RgqkglbextXKCJVmlrItn7CPvnNGoz4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ovA/s+7s";
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8175160121;
-	Thu,  9 Apr 2026 10:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65285C4CEF7;
-	Thu,  9 Apr 2026 10:44:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 985BD4183F;
+	Thu,  9 Apr 2026 10:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB469C19424;
+	Thu,  9 Apr 2026 10:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775731457;
-	bh=4MFRTaxl6iMcBtXLBSVYfuS5O6SXdiJUZpY2SawBjc8=;
+	s=k20201202; t=1775731700;
+	bh=Jx7gEXI9vJ/oyMVdgHUEoqOvId83JfYBNs7L/9ysO+w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N+UXO2TeiTIt2GFrX3ah9Dw/XzmFtWQulTegodX0DtOeZOuE4Zwz0rKKOodMPXVoB
-	 tXoECHVST8Lh/mfI4yCT90UGU+vsLJF7yzaE3EVypbWuCWENDAMm/ZTXTqjlwZwOAn
-	 ph6As8YUo+OkflICmg0PR5im7kdyI+k4F7/SqXlAhmKXFhiwF0EGU4J82t/NrXeruW
-	 hAAWM/6vXPqi3EiwPVTR0LmdsgiUtIRjPmIBXCMnUCAqfRL2SVXKpM6zYNz12Cbnp7
-	 8/vVPKs7GkxnW73PBe/H5IviH/fi8r0K1xSwPQnV/MVFjg1+lE7OxvPF3LfnS5eqSA
-	 XlMvyxa9ZqFQQ==
-Date: Thu, 9 Apr 2026 13:44:11 +0300
+	b=ovA/s+7sTstzRC1cWBwDEAQ9EYOpR2DEwLICJDIAaYmEu5gPZKeeEhiNCt+tM3i3+
+	 UsULDu5W9SYWMNSuC+skESNI45NKwkE+tKBm/pjACs8evI83EP4StmGwhQ6M5Hl5zr
+	 AH9J8IlwAb2jJLXRtLYYBI8tMtlBBcQyfDHlKL0QVfFzNM5pzKj4lIctiSmMubmyps
+	 6VZAd9xOKG0crUT334xKGfEDP8ajbOPGCujwnHTuwOL/bg1eM65Y3VYGtYc7Ud4ea4
+	 KUTecHfl+4Jdbg1lUhBfvzeKDfaNkC8qcv3tnh/kEzj0jL1cSL9HBzlgBLuTRbap+s
+	 Hky0OaOkF8XUg==
+Date: Thu, 9 Apr 2026 13:48:13 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm/sparse-vmemmap: provide generic
- vmemmap_set_pmd() and vmemmap_check_pmd()
-Message-ID: <adeC--_dkgWHdSPj@kernel.org>
-References: <20260404122105.3989557-1-songmuchun@bytedance.com>
- <20260404122105.3989557-2-songmuchun@bytedance.com>
- <adIKIhRL6q2NIgnj@kernel.org>
- <D0D4B0DA-56F3-4ECD-8855-96C21A6DE1F0@linux.dev>
+To: CaoRuichuang <create0818@163.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: mm: stop relying on killall in
+ charge_reserved_hugetlb
+Message-ID: <adeD7VijQIaT8gWU@kernel.org>
+References: <20260405213126.1161-1-create0818@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D0D4B0DA-56F3-4ECD-8855-96C21A6DE1F0@linux.dev>
+In-Reply-To: <20260405213126.1161-1-create0818@163.com>
+X-Rspamd-Queue-Id: AC794C0003
+X-Stat-Signature: dx3mw73b7o163qk98x8no8y1zqrkxcck
 X-Rspam-User: 
-X-Stat-Signature: rcmphh14m18h9yzt1bf6zzrikhza6cmp
-X-Rspamd-Queue-Id: 1BF8518000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775731457-983482
-X-HE-Meta: U2FsdGVkX1+muurRNOawyDY9cZYype6drgjNg29agGkrjZZiLJKjV/D8uN+UTRDuxFL8C8xWBkBoHFKlvR4+BVwJG2Vw+IremDpkJbn4kUrViYByD4IfEoZxoXI4HXLp1vI8qzk/oXijuotevVTGjXBnN6kvWSupdXQ3nDV5+Viw2dPZ8hw8f+e39VmbwE1FTaF2r351/fmY03J9XhVBRqlwq/z6jawkP+XyuhvA6zloCh3rLBohvzvNjMvgkhuNImU1r+H/1vcrtb12MPTewAn57XOnNE4QDfaPH+R04eBYmdlvy7jXS0vfRlcz6gPk7d3UxNZYMZAjCLeCkHUGMBlBUPy1VMe7dj6T1MODJDSeqcNf8luvGpD06R1ssFiS8rCCgt9S57OaxaIjVfis5tX115unZLmTpw9dr9hbhvjoMpLT8K3p8rG42zjaQPyHSjyMTAuaFkDObkbYgSlI0pgiF0TFPKBVR0gf/9bw52hhgAgagyEmCDF0UnSIAOkUctwyNWNf/K27KmgluAP/NcY1yURbxDCBKOctIcpZTUut01y92BF+0YlzKKRawNDV7ktF8VSEms8CUlrFPN5CEiJOoE9NITkdERHMXbYdSWNBtzTqcuKoP88qbJaVHedjPj2+4FXfWc7k+uDuBSdOuAYWGt/Wj+ANJOQvPROL5AjDsPkpsYrukD3BRHBDI3kZSZ2Gw97WiX/fDIXOKauoYfPANgYAW243imL8xkI6s6LP46gOGbqpMn8no/SinCkHOG5CX6oQSZZ4ol2Pus44EqwqcOwsYAUzKZkr7iGam8EzaV30LMatds6BemC7qUIFQ+IbLl+BobR1ET5iNBu+ZWQRSHtHSmBOWpp6fVfklOR6sYcAIt3nDNbhjttaiioV8q0Rcj1udsI/lFVJiVOgucOXJXnEG4bk+IkYbVWszY5qS3dmt0EaELy44Ue6JB/t4I93P/Ec1pyWUH/tTPb
- ILx/8aGU
- wdiuu
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775731701-10626
+X-HE-Meta: U2FsdGVkX1+BtRQFtOs36+NlbbQh29yVyBVhs/ljxZMlPqwl7GuXT9nwGyfdXzAGaFJJComM3SRCME+GslXU2v4oUJAfvIoxGM9TZgo2GefdSS1/CJqrlizzFrr6PZxpXD3LhHF2VnGqwFu6zUL1Col4h4U78v2u9VTcwqXPlmkAJB+EBabITBGc2nPX/I8ekWhEc9QqhdOZBF0ibjcbV13FHw+iJUmGxCyq2dNfNwsrCME6ai4k3BKgyzR/Vg8158X5gKcN8YqJURrP57uboUmbPmhASE0AF7ZgnboayGyCdYemZlThIdzf8In4GW5OOrLZAE8HOf22VvgJ+Rl2dLkoCm1JKpAT/JBLHSXbnGKNLF8XJ8zraNeKPk9ErUHxgum/6PoO2h9OD3e6ppo6mI1/muJS6zvXfs2E6Q7XzYJiHtiE2wUJnFzvTwg7T5AiJ7sjWkaORPr9c5On8/RA+OJfT8Kx8R0yXkLgYgpISAI9DhQ1wqQrwH1nZF5Kxi0xiCW+F20iIfuD3AsvLF8UbzyQeOAUEAYSNEUVbLS6DT79pWJpk8QRl1iML9wqqEL9618O8/QgKOpBZH1pxFBSZ/cEZO6x3UeRCNYJyIbXsQib+ClUNv+7YzUHX9JGCvengSyt5D4mBWhD3C9XDqQQCxhAt1KRKUPxZMNgoP5WEy+iZoGpWltBDCOM2V+GJn46KdcJmUaGcmGQryEknfR3OGeF+tYbPCROYsUN4zH3DDkyHF8ZaGYg15H5kGEEPiQD8UQApjFXlphsNK3h5osG8EeiWcVUYIXgyAtcP2cU4TVTt+rotO508Aw67jS5I0SblxKu5acYtT3f8+l4qL+TQWNYHxLaYNfoPY2o5mAvLU1LnTRqxuNDi+P/xZVPjI7deuGPtFs4fq611tctA0ak9x53umTK59qNdhBk6lYg0Xg1q1gCGTUrszylD65JE71uLZe0g7+XWUXtQXWRcTp
+ DaeHgRHf
+ YCJRf1MOZa2dLBl7qX66MGyHFfuHxcfQwtHeHd5qTE57JWko9HH0ZD5gsUN1+fa/Sd/8ViCAIASe9UqlOfS/LbMbaEMWFz6mRBVpoLArVbyNTWuCTyf6FSUsWUJ/swtqPBnHGACtxIzht7g6uNRMCymjjH+knwoV6lQo2Hwy2LO0biic6Fi4shR90iNYkjxD1nwwFK216gWDnanG3tjhgPaB6qFGqpjteA2nRvWH2KOnZSZOn7cvxQRhdWUcg4UblYrtJVyyv8aX+9+spXbnkzoO+cxcyJOeXgcZIpCEZibhVV+TNDRSLg3I7TnRpI2sVtMyzOm57+6F81ZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,55 +93,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 05, 2026 at 10:07:36PM +0800, Muchun Song wrote:
-> > On Apr 5, 2026, at 15:07, Mike Rapoport <rppt@kernel.org> wrote:
-> > On Sat, Apr 04, 2026 at 08:20:54PM +0800, Muchun Song wrote:
-> >> The two weak functions are currently no-ops on every architecture,
-> >> forcing each platform that needs them to duplicate the same handful
-> >> of lines.  Provide a generic implementation:
-> >> 
-> >> - vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
-> >> 
-> >> - vmemmap_check_pmd() verifies that the PMD is present and leaf,
-> >>  then calls the existing vmemmap_verify() helper.
-> >> 
-> >> Architectures that need special handling can continue to override the
-> >> weak symbols; everyone else gets the standard version for free.
-> >> 
-> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> >> ---
-> >> mm/sparse-vmemmap.c | 7 ++++++-
-> >> 1 file changed, 6 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> >> index 6eadb9d116e4..1eb990610d50 100644
-> >> --- a/mm/sparse-vmemmap.c
-> >> +++ b/mm/sparse-vmemmap.c
-> >> @@ -391,12 +391,17 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
-> >> void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
-> >>       unsigned long addr, unsigned long next)
-> >> {
-> >> + 	BUG_ON(!pmd_set_huge(pmd, virt_to_phys(p), PAGE_KERNEL));
-> > 
-> > Do we have to crash the kernel here?
-> > Wouldn't be better to make vmemmap_set_pmd() return error and make
-> > vmemmap_populate_hugepages() fall back to base pages in case
-> > vmemmap_set_pmd() errored?
-> 
-> Hi Mike,
-> 
-> Thanks for the review. Let me explain my original thought process here.
-> 
-> My assumption was that pmd_set_huge() for the kernel virtual address space
-> should rarely, if ever, fail in this context. Furthermore, if we look at the
-> architectures this patch replaces (e.g., arm64 and riscv), they are either
-> ignoring the return value of pmd_set_huge() entirely or lacking any graceful
-> fallback mechanism anyway.
-> 
-> So, to keep the initial generic implementation as simple as possible, I used
-> BUG_ON() as a strict assertion.
+Hi,
 
-Fair enough, let's just make it VM_BUG_ON().
+On Mon, Apr 06, 2026 at 05:31:26AM +0800, CaoRuichuang wrote:
+> charge_reserved_hugetlb.sh tears down background writers with
+> killall -2 --wait write_to_hugetlbfs. That depends on killall from
+> psmisc, which is not installed on minimal Ubuntu images, so the test
+> fails in cleanup with "killall: command not found".
+
+Can't we just skip the test if killall is not available just like we skip
+it if it's not run as root?
+
+> Track the writer PIDs we start ourselves and signal them directly
+> during cleanup instead. Make write_hugetlb_memory.sh exec
+> write_to_hugetlbfs so the recorded PID names the long-lived test
+> process, and redirect async output straight to the temporary log file
+> instead of going through a tee pipeline.
+> 
+> Signed-off-by: CaoRuichuang <create0818@163.com>
+> ---
+>  .../selftests/mm/charge_reserved_hugetlb.sh   | 25 +++++++++++++++----
+>  .../selftests/mm/write_hugetlb_memory.sh      |  2 +-
+>  2 files changed, 21 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> index 447769657..757df4878 100755
+> --- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> +++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+> @@ -44,6 +44,8 @@ else
+>  fi
+>  export cgroup_path
+>  
+> +write_pids=()
+> +
+>  function cleanup() {
+>    if [[ $cgroup2 ]]; then
+>      echo $$ >$cgroup_path/cgroup.procs
+> @@ -193,10 +195,12 @@ function write_hugetlbfs_and_get_usage() {
+>      [[ "$private" == "-r" ]] && [[ "$expect_failure" != 1 ]]; then
+>  
+>      bash write_hugetlb_memory.sh "$size" "$populate" "$write" \
+> -      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" 2>&1 | tee $output &
+> +      "$cgroup" "$path" "$method" "$private" "-l" "$reserve" \
+> +      >"$output" 2>&1 &
+>  
+>      local write_result=$?
+>      local write_pid=$!
+> +    write_pids+=("$write_pid")
+>  
+>      until grep -q -i "DONE" $output; do
+>        echo waiting for DONE signal.
+> @@ -261,10 +265,21 @@ function write_hugetlbfs_and_get_usage() {
+>  function cleanup_hugetlb_memory() {
+>    set +e
+>    local cgroup="$1"
+> -  if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
+> -    echo killing write_to_hugetlbfs
+> -    killall -2 --wait write_to_hugetlbfs
+> -    wait_for_hugetlb_memory_to_get_depleted $cgroup
+> +  local write_pid
+> +
+> +  if (( ${#write_pids[@]} )); then
+> +    for write_pid in "${write_pids[@]}"; do
+> +      if kill -0 "$write_pid" 2>/dev/null; then
+> +        echo killing write_to_hugetlbfs pid "$write_pid"
+> +        kill -2 "$write_pid"
+> +        wait "$write_pid"
+> +      fi
+> +    done
+> +    write_pids=()
+> +
+> +    if [[ -n "$cgroup" ]]; then
+> +      wait_for_hugetlb_memory_to_get_depleted "$cgroup"
+> +    fi
+>    fi
+>    set -e
+>  
+> diff --git a/tools/testing/selftests/mm/write_hugetlb_memory.sh b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+> index 3d2d2eb9d..49164bbfc 100755
+> --- a/tools/testing/selftests/mm/write_hugetlb_memory.sh
+> +++ b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+> @@ -19,5 +19,5 @@ echo $$ > ${cgroup_path:-/dev/cgroup/memory}/"$cgroup"/cgroup.procs
+>  echo "Method is $method"
+>  
+>  set +e
+> -./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
+> +exec ./write_to_hugetlbfs -p "$path" -s "$size" "$write" "$populate" -m "$method" \
+>        "$private" "$want_sleep" "$reserve"
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
 
 -- 
 Sincerely yours,
