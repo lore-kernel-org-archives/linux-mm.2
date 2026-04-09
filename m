@@ -4,131 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE207EA3C21
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77BFEA3C22
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B52E6B0092; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
+	id 1E17E6B008C; Thu,  9 Apr 2026 06:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365D46B0093; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
+	id 1B8D26B0093; Thu,  9 Apr 2026 06:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A3A16B0095; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
+	id 0F62C6B0095; Thu,  9 Apr 2026 06:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1786E6B0092
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8F7C59393
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:13:37 +0000 (UTC)
-X-FDA: 84638605674.17.ABED4DC
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AE90740003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:13:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Civ11WzR;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of technoboy85@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=technoboy85@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775729615;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 049286B008C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:14:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC25E140746
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:14:00 +0000 (UTC)
+X-FDA: 84638606640.14.E3D2FA7
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E0BC340010
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:13:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Os4bzlJi
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775729639; a=rsa-sha256;
+	cv=none;
+	b=eKEIvZkZgj14I3qOqGpfzwgu2/yEzNeWylLBkl3m9kEMBBy6xgBx+CHIEfC1fXpLFjatWg
+	sPcQCzZKU6bKamXliFIA+ZwbgJOYdtEGeJcode3uFUqQD22+9kBl7470R2ZkAs/qzLj+FB
+	9wkaV1CAuw1QgJ3cSChvXvucR4Fr/Dk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775729639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
-	b=c0B1bt3ZgzXv9KEj0XfoT1KuPkyaI11AJyqX2MmNUvNHcHTvAtUSX+GV8AgdQvcSuzA8TX
-	xtvGOpzMYKCqAq8VxNDEo452g20NLCtZgDkwIdU4S9JQIlczoANbdULsPZt1ZyLGd+H7EE
-	FGiwp7RsxhdXba5FpOojzQXgG/Mj+ew=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775729615; a=rsa-sha256;
-	cv=pass;
-	b=GMZMzxopi4inGhkUzRFTMTo1SjUnxoYC5Om4AcUxpEEcoab1/MpskAM97ZE6zwmgbw3zFA
-	0KJWT6DBAd5psVJdgprt4BI08E3QTAemtJvdWwDUba12Fmy1GanoYK3EI3M3yBXCap94ox
-	2d/9G6FA5w/+hrK4c33eSe+1E2xBpYU=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Civ11WzR;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of technoboy85@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=technoboy85@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9c11eba219so74048866b.2
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 03:13:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775729614; cv=none;
-        d=google.com; s=arc-20240605;
-        b=O1uZev+BO8pjCplLj00mPQIgqhp6B1fwcoknVxFNyCAyt0BHu9vqFac09lu9q9aG7J
-         +5HyTsEqZLj1stWnY9zL3/KYcLdA7iIXeZjgnWJE0ViEaeVKLyfXnoBFELnFMibnfe7C
-         VIg8OzFVx++FDJcl0PsKYTOVKwNZAJrqqEjhN9h24kQufQ8OGdwTE9AEidOuDB/QVGlv
-         g+kesMwFnn2GgH4vJaonkjvzhK69s2ScFG6t0E4nIbee4sQvexWDvqJr58+sjmx/ER/H
-         n1cE7b2G30RXOCcA7gLg3grCXjC2UlYywkYrpyDVjpTr8DqbEE0dxh2/2dP7yRj8TQ0Y
-         77zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
-        fh=8GpqOR888E9HiVG0ckTOeUs/oMNWDHPb2L8e/W2CqfE=;
-        b=AOZB3VRlQMrUBJorAA+2fFeJGJG/6xeq59h7zU2VvNTKtAr+mrRqLRTAFPtCMpIqGy
-         /rLl5vgg/ARBO1kuvKdeMRTFbTIwSPfWBLCdhZM/c1+85pPq0pMtqWcNaOhOU7TZA04L
-         6RD6vpGZ6l3Y8qFlI3uwbOkmeC2JneDY5etp8MLWBG7S2Q+b2bLoaHEtVDHiIVxliX1u
-         0/B+NMxsMBMFPmff1RcOIkf2g+Ayw687+JrnOYtkfA+/uGRC2Fdo76JVwYqCsFkBYZdn
-         5oAb1OyN7yb9cFmStO543Bw45z4hlMQ8UhF+kCVlim4vpRM1JNlXSuAazsi3njyvD2V2
-         28rA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775729614; x=1776334414; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
-        b=Civ11WzRXU5poHzCAknffuVLYxPlkYx+NjHUqjWJNMtHG6sT+AtiFDtaWqcooo0eDT
-         E60gM9AUnakhMX6JPL4DEOGMQZpNghiwZ/2DcW//fpkViVCa1vctHrbl1bQbhDtZsY34
-         +uqltFrTZAPHhdsdzxTqc09S9FQWHtuyjkFA2w2toB/hYsgzPLnV/4u5uolZ6yqz5noI
-         uT27DzpGCT6m8jGoWmN1iI39JbPcj3cgRp7f2NMoOcCni/X2VHgW2o6l1pWzHSXVIrJ5
-         7OR+Ap70lk6tGIfsiqx/qiUCjU4qxl6euKe0W2TpeVlqgmMXZ/EmqWrPzEo+05xhEZPX
-         505w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775729614; x=1776334414;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
-        b=ioeBvubRXQppKtWCR2CBTM/iJG0oquZwpX+2koFC4uo4CJTD3u3rqEpKaCgyhw+DYc
-         6t84tPidsRHGGG/6du1sgrO0pMkxFzM5QuJE6aWZYxBXvqlmlBTiyGCj2dRpeorvhk5Z
-         LPPKypn3Z+i/vwMAPvyJLQQ1n9YONrBGWRJMB2LG8YG2NPlYjJ4G/K/156pz9vpGu7af
-         QAGy/WzsdFSimdpwYSe+oA9OoNZeUgapwcfP6VfRRI0NcPsN9l8Nb3e8ENR8Thod70lr
-         LKIvutcqnQ2t158ko072aUIvIGrBOHBYc5F3m0DlzCWFFcrczAIDAttzuZ4TH9VWbj1C
-         CYiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIdDH1hS81atmeJD56V8aMMFGI1mfyYD2b6v3H48cfCfuppMpLibr+tolAW9kalgXeALS0MQUnDA==@kvack.org
-X-Gm-Message-State: AOJu0YxE1MfJy/qm/NxWosfu6L2F+TSi8oab5s4F8sfIVofWTV4u/C/1
-	BUBqLd2JgLxa43mN6WxSsNEPYnCsVdxNQO6FN03sBRD2YO34VpD/7/73Hpr65swQvr8DfGr0v5z
-	M17n82XmdObv1XjOlBrm2rlSiHl7IkXM=
-X-Gm-Gg: AeBDievhpAIhzGWN+S4OxJL7TJoQ98/lZi3P2k9vLeBZhbfZypmkccvklWTNlMCBnh/
-	qDNtPRBOFKghS8V5lJJPGpqIDwfz++FOmO6uIPIC2+GOgzNjNzV3k0cMlJhkO4i7l8gv2/Ijpej
-	9lW1rOyolPFqTA5X0ZWtJfemTMWdtnaH5FY4fBRlTg4DZlJ85MaJLUELCSXhBF8a70WZygUKcXz
-	mHbNt1jmx8rJ/H4fymHHd+Ywxo0OkcmIRfxSzbW7Fn5T3MA6/hGKcZOhyQQZXOZgiMRuFpnJPJo
-	s8HeWFSXHG/H3mXt7g==
-X-Received: by 2002:a17:907:9605:b0:b9d:3966:bc23 with SMTP id
- a640c23a62f3a-b9d4768d513mr142385766b.26.1775729613743; Thu, 09 Apr 2026
- 03:13:33 -0700 (PDT)
+	bh=FzWgWPTYOUXksm2yrkcRcT+jT0HPJKIhnfcAUSbpY+U=;
+	b=LV5zKLNJG42ty99FMOzlh0NmP3EawhUuqfKKmMIrVu0lGOucJ8k+MXsLyNaq3GTlg9NlES
+	eoxe5vFLjBEj5XwN6d5SPYJ6S9MoDKkgJKWG6YyK+g4Aw4r92DCnlLId6IhJjWDseHLaoy
+	gc7/uiFKEzjaO0w9LRM8PQyZGPxlDgk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Os4bzlJi;
+	spf=none (imf07.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FzWgWPTYOUXksm2yrkcRcT+jT0HPJKIhnfcAUSbpY+U=; b=Os4bzlJi9bj/d529D/CNPg2+mG
+	57BpudCqnG69DUWP3fHaIAFLnOgZi0lzTjI/xDZf1ptRBTLOHX4krCZjLPuKjaKRQIC/Mrq4pLT68
+	KB1dXUJDOYIswsUI51ySf+3kG1IaQuUe4F+mGKI0YunJQt76F/+xqpuC6ewFl9hwGnbXVQ62ceTWE
+	vUkwxjaU5gX9mfD7gC8eVnjYubM5nz7NfokII2vTefdvU3ehednwVYgbwn3ATc0MH4DHuWZMEvVT0
+	8eF71tXDvzj7ZTfjtnZcYugLaKQ3aV8KiQabvi4Hwo/O7GeopnRZNn5AKZU2z6Z9+PuhAtbqFdx/U
+	5HHciUHg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wAmOT-0097x9-2S;
+	Thu, 09 Apr 2026 10:13:50 +0000
+Date: Thu, 9 Apr 2026 03:13:43 -0700
+From: Breno Leitao <leitao@debian.org>
+To: akpm@linux-foundation.org, mclapinski@google.com
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, usamaarif642@gmail.com, SeongJae Park <sj@kernel.org>, 
+	kernel-team@meta.com, Alexander Graf <graf@amazon.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, puranjay@kernel.org, asml.silence@gmail.com
+Subject: Re: [PATCH v8 5/6] kho: kexec-metadata: track previous kernel chain
+Message-ID: <add4SuufMiHo8Mpm@gmail.com>
+References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
+ <20260309-kho-v8-5-c3abcf4ac750@debian.org>
 MIME-Version: 1.0
-References: <202604090741.1kUVXMoc-lkp@intel.com>
-In-Reply-To: <202604090741.1kUVXMoc-lkp@intel.com>
-From: Matteo Croce <technoboy85@gmail.com>
-Date: Thu, 9 Apr 2026 12:12:57 +0200
-X-Gm-Features: AQROBzAZyly3rkZi_uaCRUbRSjWTfZY1vAkt2NvdbZUe0X0EKu3VrrmPc-isLc0
-Message-ID: <CAFnufp29D4VdTgoJ4uDk-dQ4-RuO_C6=TQ7O9TA5M=JSe1j+cw@mail.gmail.com>
-Subject: Re: [linux-next:master 8662/12838] htmldocs: MAINTAINERS:40: WARNING:
- Inline strong start-string without end-string. [docutils]
-To: kernel test robot <lkp@intel.com>, Joe Perches <joe@perches.com>
-Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Stat-Signature: inic6p5wjo9sp4qx7f6j6nmqyhhbmtig
-X-Rspamd-Queue-Id: AE90740003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260309-kho-v8-5-c3abcf4ac750@debian.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1775729615-239788
-X-HE-Meta: U2FsdGVkX18PBG0ocdtF0vnUHDClrdtJ/s3ToW/zBxAN6m7P4iIaEy7q7LGECj4IeHs66m+ulVYzqc1Im2SdmM9fXTwjB3jq2G8iYl9fWrvKOteixb6ykTsnbOtt/KZmCbiLNP1k00iE+JTxsPh1fydQdUtxcjbX/cvsVKJNEDBA7mwPAJQY8+maZMH5jVztkNSOhPLMw8Mo8HKpR4AJB9A+7pcM09jyfhLmN+6FmOnhvLng/bfJu+4jU7PSl46kZLbY2D9JMyqoYK87NYXjoGV7oMMX41tisVge7k8gHCdfvqZqE5/BO0GGQL8D1R6KZ1a1itdsjvD806hmmm3GqAKs0NHx1dwD7R8feBmBMeUV5KRDv4h2pN6VMkYoaC5/Fkv4Hz3EjNI31+cy2YyemYqpndQwLjAYF2YVCGH0Hzd/88r3V4NgdStH45wupDe1r3tu/I+HwV12rBjAK7/AxEGNkXoQfL5fqTzGUNTfbgEDFVNwWLIGqJmrY935zvXCRHmtKcIKCWFG8upEnuHROw0LByOKuT/hbgED4eSe2hM9OqRt2K+GOvnqouFcHdIiS1V45h42Oaan/z2h6aR9rx0INt5+rZwnr1n9eJh6W1gikHEhTo6YrGGcG7j1h+PRkGN3sFNQCTOnoxfT7+zBAthBjyeNWYJuBpvGU0Q/j+AnpWgsSI+nZJYGeli/ekLwVmFri7Z7T2zMd7AnEBDckFkLPEp506i5aqMIhRsWlpg/43KOBy7wMI4u0VecaGEhpJ0O0SCdKIoOLFRlwHaJeaFXm+rNfUlfP/vtxrQWZD42yE/lR7eKUAtrkL3fb3ls444Njk4gOvbLrd1n99GcoHWRTqt/J9reO2y9lPgug4REiz0igfyxEL5iQjHoTzhgNSnLwQQ7W2V7wfO0brQrXLXP2rM56dpB6zXiv6VP72bIdH1Qggg80Xet7JYbqkVz0XJ/b+Tw5/Lh7YEhXps
- YG6ntDo/
- c9loEr/l8FYlSvZW1b+yjv5pAlZiHgig0oarw559gYyEr5h2Imh29GI7rTDUq1CcEKPKu1/ovaH66WnzoS+CG/g8Abg0SWf6EtUw4u63jQNufZ4GtvGuGccaLJ6/EclB2Ou5fOh5SF/jCW+dusYvo861/To2TGrWChvKfmKbtUUKrO+Kf/2uhKymqouXyIYFcSPSXu5BKwye+PsT+iVA4ElPfYlYnpRn9GY2dXnCzl5gjUV2fYPP0Kfs6z9MzdrS9+zRHUDkfgmpYFkhrbIT3JSdcqEOtibJau7iwUc9amVdJbwWlsqCrhRERYISXUZaSoNmitjGH05IPpNR8E2X24GD6aiJHv9sCkolzmKsKwfyx8R77fOqBniD1UL5GYIzXYSmfvaXRvZSmNVVLO3udi/DNz9N7nfyQe9+H43XZNfP8by5dnu/MFEyZLWTstt34o45jGygj9bvmK6/wdeE6BXBIGITeuLH3i/SXRj2Sr3ymmPOKwPET4VbXxRe8RXSYZuxVKGcxqHtnleU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E0BC340010
+X-Stat-Signature: eegsoywidfwmhmxau7qowi1wkchn7r5x
+X-HE-Tag: 1775729638-298523
+X-HE-Meta: U2FsdGVkX19CGBvFYL797AluXNeWu373jCncqfwbGMtE+VmNUuE3/gpPYHs1JeTrlhikEGRrePMhcFY2JtRwjj19Q46/muQykpxR6+GOCULqeTt1dx9qtAGLKnLVhKuDnzJDWaQ9sbRXv0qw11yADVU/MS9T6zOA8YdB3dTw19zi5HEQN0/1OAnl7G8rzecYGLwp4lkAF/hWheM0x9FSJ2Gvt4xHdPtQMY9/bz1wSxH8queKy8bA9wt5y2+/7cCWjvQ6/ELM1vDCqENf8/SLyCkAPT4MhWS6sOg1lvnXoRsCtkcb1+3BCx4pAj6fB5CGf5AdA++oXL1BvtuF5d9qcyXZE8nG/E+qg+kEDbYrvJ3lyCBYboVn3Vm3Eagp8oQrqpiE0D/CGrXBvoMOjzqlidvpWQUxueftg/MyQAQNc+j8nFMjR1h2oy2wy6TolcCCBMeOahzGVEbBO1Tz3PEZ8kLyjsCa59hIiTLWXBDpDvLnvgsyfdjJDBYWCQZ9o5ZIvNYzwsDGGOgaek1KHOzfJsn1qj82dOOi4lKiltd5l4nbmI/bEC6UnhMvj8EEmBUJJ+oe+9Wapm+i6KQsSbq81B9KjaleNcKudejC+kNw9gYPlCniIoE7MBDmfZXyXcu2hLq7YvJTLv+IKhvG4thlELIroKSz1daVYPYx4ZDs4DyALyzeRLWxYz2d/3/cDbrHlkNQZPBvSWrgblVVdTE9n3Cv770ZRObXe4ocgDN4SC72svXdUKC9pIULoPA0buDzrWcS2f5JcpuuyV0P4krabjkMTB2tXyez8lMh0vFnWOf+M70J5BTUw37z5PgztxTqV7gK20hoc6aRyVd+UyZGdYbSv0rTemsxdFUP/SQMfA/IpsoMk7ru4jb2LSl7FjnXj2GxCDN/gsx7RN6K7j3JuQygOwhYIkVZMMeDdp3ikKg3D/Btkby7R0oQlMHE4vdqi0D2ubNKmPXtU34t7yK
+ +9fcuQpP
+ hHzXRrYh9nKXjy+g4sDKgfpGyRgJkdVeJl08Wf4zNKo3BtQobLg5pnlRsSJ2s6CCg85jQNlINRSjZLhgJNDvPRQLCvVjwOMlQPbADIblA9JQkHbLdLZ05hDox98ssi4v7W7FqUw5ehnqR+lVDvgBNvMbkTZSK4D4WdhPfsPp3kN7i+/SZ0XYNbBHJTgSAHk4FZQ9rQcQwdCTQsOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,50 +94,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Il giorno gio 9 apr 2026 alle ore 07:24 kernel test robot
-<lkp@intel.com> ha scritto:
->
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   db7efce4ae23ad5e42f5f55428f529ff62b86fab
-> commit: 420849332f9f9f1ce6ff142868ae2e6ae9f98f65 [8662/12838] get_maintainer: add ** glob pattern support
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
-> reproduce: (https://download.01.org/0day-ci/archive/20260409/202604090741.1kUVXMoc-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202604090741.1kUVXMoc-lkp@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
->    Checksumming on output with GSO
->    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [docutils]
-> >> MAINTAINERS:40: WARNING: Inline strong start-string without end-string. [docutils]
->    Documentation/userspace-api/landlock:480: ./security/landlock/errata/abi-4.h:5: ERROR: Unexpected section title.
->
->
+Hello Andrew,
 
-The problem is that "**" is seen as start of a bold text in RST.
-Escaping the first * fixes error and keeps the glob unaffected:
+On Mon, Mar 09, 2026 at 06:41:48AM -0700, Breno Leitao wrote:
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 1f22705d5d246..7bac80e9a29a4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1441,6 +1512,10 @@ static __init int kho_init(void)
+>  	if (err)
+>  		goto err_free_fdt;
+>  
+> +	err = kho_kexec_metadata_init(fdt);
+> +	if (err)
+> +		goto err_free_fdt;
+> +
+>  	for (int i = 0; i < kho_scratch_cnt; i++) {
+>  		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
+>  		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
 
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -35,7 +35,7 @@ Descriptions of section entries and preferred order
-     F: drivers/net/ all files in and below drivers/net
-     F: drivers/net/* all files in drivers/net, but not below
-     F: */net/* all files in "any top level directory"/net
--    F: fs/**/*foo*.c all *foo*.c files in any subdirectory of fs
-+    F: fs/\**/*foo*.c all *foo*.c files in any subdirectory of fs
-     One pattern per line.  Multiple F: lines acceptable.
-  X: *Excluded* files and directories that are NOT maintained, same
-     rules as F:. Files exclusions are tested before file matches.
+I discovered an issue while testing this code on the current linux-next:
+the kho_kexec_metadata_init() call is now unreachable due to recent
+changes.
 
-should I create a fix patch or we can still amend the previous in net-next?
+My original patch was based on commit 5c9e55fecf93658 ("Add linux-next
+specific files for 20260312"), which included commit d7176a010afce8
+("kho: fix deferred init of kho scratch"). However, that commit has since
+been rebased/reworked in linux-next, and the code flow has changed.
 
-Regards,
--- 
-Matteo Croce
+I'll send a follow-up patch to correct the placement.
 
-perl -e 'for($t=0;;$t++){print chr($t*($t>>8|$t>>13)&255)}' |aplay
+For reference, the intended code structure should be:
+
+  static __init int kho_init(void) {
+	  ....
+          err = kho_out_fdt_setup();
+          if (err)
+                  goto err_free_fdt;
+
+          err = kho_kexec_metadata_init(fdt);
+          if (err)
+                  goto err_free_fdt;
+
+
+Currently in linux-next, it looks like:
+
+          err = kho_out_fdt_setup();
+          if (err)
+                  goto err_free_fdt;
+
+          if (fdt) {					    |
+                  kho_in_debugfs_init(&kho_in.dbg, fdt);    |  -> This code was moved by d7176a010afce8, but, not anymore
+                  return 0; 				    |
+          }						    |
+
+          err = kho_kexec_metadata_init(fdt);               |  -> This code is now unreachable
+          if (err)
+                  goto err_free_fdt;
+
+
+I will send the fix for it soon, and we can carry on the discussion
+there.
+
+Thanks,
+--breno
+
 
