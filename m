@@ -4,140 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30809E9DE68
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFE54E9DE6B
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:04:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B52B6B0005; Thu,  9 Apr 2026 05:00:42 -0400 (EDT)
+	id 5E6CD6B0088; Thu,  9 Apr 2026 05:04:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 766576B0088; Thu,  9 Apr 2026 05:00:42 -0400 (EDT)
+	id 596E36B008A; Thu,  9 Apr 2026 05:04:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 654B06B008A; Thu,  9 Apr 2026 05:00:42 -0400 (EDT)
+	id 486536B008C; Thu,  9 Apr 2026 05:04:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 541F66B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:00:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3C00C1E84
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:00:41 +0000 (UTC)
-X-FDA: 84638421882.10.C70CEAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 14B19A0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:00:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BFnn4XBi;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 36C7D6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:04:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE70DC1E50
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:04:17 +0000 (UTC)
+X-FDA: 84638430954.11.0F4C7CF
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2B2EA10000F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:04:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GawDvfh0;
+	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775725240;
+	s=arc-20220608; t=1775725455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a5GCs+NVrlIL3xxuFLyCPrY+ptg/H3J+GCpxvvTNBz8=;
-	b=Ja6O7pcJnR3DaiF7tmf3JrphijdYQgiGh7Z1txfZKRui/FqczYbdRijXWiryFm0qlQzsjg
-	7UFhLUFYAO8AXVm+K20Oy/j9yk9mzZt3HhMYnCbS3YadyzzcBAE/PHq2WMEVlXX1eihSEC
-	UGIx5iGCr7yIPYou6dgX+blLNzbzrZ4=
+	bh=HRuj7KznoikSTmL2aPPH26e92KL8/vXZHi1ZBjPLNSk=;
+	b=MY0hz+uzf3xQ32Rx/lsnco7qNLEUHhPVlOtKPyqvLPO2ninpFzgE2d8ba5D+NVD2NJgoYY
+	YPJQRq8cy7Dlb7TlHRUrxM83GA+7j4vG+zcWgrcnQef9ltbDHwbZ3HTGYftiZnjnXSR38M
+	U47hH93ts19lUpkru4YKfSg/JdKWupo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BFnn4XBi;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775725240; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GawDvfh0;
+	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775725455; a=rsa-sha256;
 	cv=none;
-	b=2sKTXe8K2XLCgWx+qWs4q4hH/mKO1u0JYbr9cNBHj+3IolFikyXVvkb2qU4ViFjUd+k+VH
-	UkNHvDl+ClaajivU6dW0lCwH9AYKa0t61SleuSmiZe5c/jg/4VhloRemSPl/ApU0B/TAy1
-	S6qQgNchUx7vMNN4hK+ZbkiZAnTQRuQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCD5541934;
-	Thu,  9 Apr 2026 09:00:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD91C4CEF7;
-	Thu,  9 Apr 2026 09:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775725238;
-	bh=ZO3gMd5SCYUHW1ze3Rln/U5DdDpUtmeUbd0y31FJ00g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BFnn4XBiag8+7OHUnjbs1qY0QMWJItcBOHJozZYNE2q44bpPythgCsjgUyd/Fz4so
-	 1Ol7J4JKhc7cZaa+AQMAbK496bkPWEZyddcGGnm124gXV40HowlO1/fmcVWwdsGSow
-	 va3vDSjFrHWqa2iKraxMQQH2ay4VhWYyb8HgskNRYfZzqIjJNn3oM0sh1uzJvbuzpi
-	 GpdA/2EPOlPD/Mhf5tWViLM3ha0IPIoNQB4G+0xYmHuTD36VlU8q6S+9xtwREHkVvV
-	 /d5qiwZfJlKrt+tHDz8jzTI918+0RF2xi/y9m21TdQ4hOmv7US+v+YjxdmMREnXkDq
-	 1IlDwYVnkFe1Q==
-Message-ID: <4dd26573-85cc-446a-b2b7-2aeab8aa2417@kernel.org>
-Date: Thu, 9 Apr 2026 11:00:33 +0200
+	b=RfKMgjDjHHoQEGmZLDLlH+gV8dLUjG4TMP2YRTK5XlDG2ARbj9uQjWoZHvv/si56UOlC3m
+	dbPCtCSe7PqpEhIu9gWB4aiQCT1kjRiijkzvqvDtgeOlyXKrW8cYyaQGGYQdGbFWJJhLR0
+	cNCnS4H84J5bCA0uc/jbULkjNdsLwyE=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638JCp4d2516358;
+	Thu, 9 Apr 2026 09:04:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=HRuj7KznoikSTmL2aPPH26e92KL8/v
+	XZHi1ZBjPLNSk=; b=GawDvfh0TFogqAXG8f7bNM4VHN4oIwmmmvZ6Qnryo8iGRh
+	ienqWaqou36ulWERk6wFzJsnvcMU2j7x8acBaQV0taXgi8MHiimjUg3uNETiDIDF
+	cGkiMB+swT7HBJCBbxq3Y4G36hc7bPLMUThF5t6bhkgwz5shusMDU/vCiKPv1q1J
+	lWrySkf5oxRJcpEPE1G0bj1DD9zhn517Z8kI4avnqw1TOZ6Y86ZKk2PcFL54AHb5
+	PRYhj9tHOBCsg8nVJllssjDKFDmuUaKkVD1iA736t+vlSlMch4ZRGf936WgkfKEd
+	K3EYVmnHqcJlKZK7s1bkjb+rPKHDxgv44BD1YqXQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2g3avw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 09:04:07 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6397vYqT013827;
+	Thu, 9 Apr 2026 09:04:06 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcmf4awtx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Apr 2026 09:04:06 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639946ta34669074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Apr 2026 09:04:06 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 601D45805B;
+	Thu,  9 Apr 2026 09:04:06 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E4B0158058;
+	Thu,  9 Apr 2026 09:03:57 +0000 (GMT)
+Received: from [9.123.6.34] (unknown [9.123.6.34])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Apr 2026 09:03:57 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------uGaPtK1tzST1xWSar09lgc1I"
+Message-ID: <7a6a6912-87f7-4a8c-925b-f9b9848964bd@linux.ibm.com>
+Date: Thu, 9 Apr 2026 14:33:56 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: use batch page clearing in
- kernel_init_pages()
-To: "Salunke, Hrushikesh" <hsalunke@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rkodsara@amd.com,
- bharata@amd.com, ankur.a.arora@oracle.com, shivankg@amd.com
-References: <20260408092441.435133-1-hsalunke@amd.com>
- <22b6ff3c-9d41-4eb0-9beb-cb92f3ada89f@kernel.org>
- <4e8c218b-ac5e-4674-9e1e-acf750f0a5c8@amd.com>
- <20260408083229.45d1a083f17484d3b2678855@linux-foundation.org>
- <fcc68286-d2ae-4e51-b4b2-886af115ad7c@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 03/53] selftests/mm: migration: don't assume hupe page is
+ TWOMEG
+To: Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton
+ <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+        Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-mm@kvack.org
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-4-rppt@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <fcc68286-d2ae-4e51-b4b2-886af115ad7c@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260406141735.2179309-4-rppt@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KeridwYD c=1 sm=1 tr=0 ts=69d76b88 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=r77TgQKjGQsHNAKrUKIA:9 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=rlPHAZ1KW3o3l-f_mKwA:9 a=QEXdDO2ut3YA:10
+ a=vO6svISg_lu9jOKiBMcA:9 a=ZZEEGfxkCmjLWy6g:21 a=_W_S_7VecoQA:10
+ a=lqcHg5cX4UMA:10
+X-Proofpoint-ORIG-GUID: TTEysIKSCgx2oPwW9P3AAAlxmmt4Zmy7
+X-Proofpoint-GUID: Kt-S7C6L-u9M3RyB6Zz5yn1qABU3uwGf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDA3NyBTYWx0ZWRfX0vMKwh+HZpgg
+ eYSTCoAiaxSG++pKtD1X6f2lGRfUZ22zO1Te0odbU3dg/95+SGAwAV0ojuNQUOuRd7sJKEIUUCR
+ 9r41m4CYXXlWCCkC1moxUegAISIdMrQ3bR4mxUG0waPFl07rQiKN6ac/Irnss9MmqIca6t9Co32
+ w2mpH1RosjUPGcWsY7bhCGZus8Z5QQfQaQ3LV/fYA4fOrycuhrW+HZpyEFmcS07bXUNWniCm0WT
+ QiwBOAKCzmTfXjX7uSjzcmgH/l82VqTggPJDcyQ1QC+4CxF88QUjKLrluQa+c52ho7e+NPL+Vd4
+ 9JmF1aNar9RsO2xzGLJb458ZJo7NBKOzD4XZs0isZrR5JcveqWjz5whax4AZPsV5HuIe+Joqrc3
+ Ubrjrwgw3sBEDNEtPPrdwceJPtZVXCGkV2qnDJ3Yxv5rR0jjVFgwLP1U7fb4oxtW1mvOwhVtw3s
+ 0YRh2skve0BjNldn+Bw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-09_02,2026-04-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ clxscore=1011 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090077
+X-Rspamd-Queue-Id: 2B2EA10000F
+X-Stat-Signature: 9qztjpynfatbab6atd4xxww3h3j63xx4
 X-Rspam-User: 
-X-Stat-Signature: 9gfnqbecwg8fyks9aeih3xz6de7rj7jk
-X-Rspamd-Queue-Id: 14B19A0005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775725239-933595
-X-HE-Meta: U2FsdGVkX1+fBeLMqsyj3GPeo+SbytqMw8GCgFvbz27NNSwkp7NH+dbkczAU6zMHgD+vWcv8dc0cQ7YonwYx+I9sSkJJLF+tbgfpF7p1gHJUcs/BzxrL+ifmjiMFRFwReagRkgkYCWf/aDkpN9pP7LEIQ+1DV9QBG5/yeqshx+povrakGqR5snozepNQrKCaMSi16gQEOpZASwq8oH2h17eM+XxfJoGx8Q65+GMmnNPaZmmzJM41pkL7pIxtTv0hef4hqw3MtUzeXDdqkWRQehlUgzPM3Ospg4v5t2GNq0u12iIzJWSwaXs2OUxrzN+bRpLhEItXvf6zxFdfTHDExlU4ekrGAXxJ+vWl9EydO+RZTE9le7udyF7BHlYY/QrPmbwjZxOk3CJn9Qad24vv4sjKVYfoP3HIPPR3yCcDr3RyE9tvjDlWYP7VJoockTbhEJ4KoZHPULk8vlASxNWq0JyhR8bn91MSyqB6pK43wOKH4PBguDaZgb9699vvHQNwY3htKvkx/UnXiMoV7DycGeRroufVNCmILcnhb0S5EXLXo4ljuHyLBjSOOL6VMcGevMW7hXU9zGNl5CWW+T0CdNRrBsm4053ODrnbx+ObBvvSSz9v8KZ5giIzdhYXj/1B7fIQVkel5B08ibPLd85vFMxjU6HRi+Ns3ZjEivzX/hj9vDtIZjxb5CnLbK3hBdlY2eGTVezdR1ul/3jIKmPpD/EVsKdEW39pHZ9y1JSX7V4o0xhVuvOKqxftrF6lKx/IKLRMlNiFThJn0iv45/ikmfAAUjbAvcQP1SxC9RzfRPak9y2YY5QGu7TV0wOUYsnkOkl6uYdTDga1iGoGxElWUVMvdSO7V8am+pJq20DoP3Y3hFM1uaeKc7Heue2uLDjbEOKEGXHrCo2PXkpQwd3zI4D5eO5bW/vAaiTcX9REmylXxCKB2nf4NQot2PkniSlkJsm8oFTw2A0VrY5sxIM
- L7JkC3EU
- 75Vf/aAzUqpFYxsE5AqJs8CqMgPbRIFb6fpUnaPxy3FxWKhwsgm7u50ORQJmP0F1AQxECg1EYf2X3thcr+2EnWly/qUV9eLCOrklaSXwUx976UEmBWm/YfIbHFzfUxFi+kpvDEiEuRbKNZxunN6Zb1NAVmZXIFK4kfhaQSR4udRpmOgX8KZ6014wqH9U5PRJu5GY9WOBmjYSZmbafNQ2zFek9E3CwmVrSzWLxQz7wv4he8kY9HjX9CduCfrzlkT74QHXY2C+MGZQJVyxTC4De0eg0YNFqvixmrTDYRpv9Ay3VQfNyS4y345k4Vd5derGJ7EacLg2JUzccpw8=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775725453-396270
+X-HE-Meta: U2FsdGVkX184I5tWzbNKIiFr3bVN5eV1qI9SvrRFlqx1RUPgYV1JufzwiSt2WYFmWji37Jom6JylDiHaFshRNpL8ULN2T873MVO5OXQ8SL1z6d4lh5yXTVd64cGThUn+fwfHoNRZCEAumz9hwi22lHNsmTK5bscHiRHvu2WETxKWwXYXCJxSGl+tRKuGlqxKmOOmelQ7M37WtwFDQDQGT0XaC+oz4HdBcoYKbH3wxz/dyfPBKLuAvavO1wgUoZMeMM+fbjo3qvYtAzPDMU1Z476Iu1gqTfHoZxDL1Ex7hpZLfTKF2TLQUO22z/BZU9h/LKof/Eim5qSsme0fA7cCmsC0IhDNXlDz9XlchLaY+6GpJotSMF7rX9iTsfkVgAASMtKM2EOs0Udsms3nNe7C7u53+6cto0+AvtjyWhfDT7w8lVqzwDLf90Osmp742NOACYWTPYypJQb66B+lvkiHfmtonf0dP5gTYLyE/3W39mf09opVhAwAlR3i0Jr7LwFx9KKvhBvlqPyjsbG5p2PaobAqueoJlWGaBQU0SuGX588StqAv12gJn4mg80S8Wqv/MfygFDQovJpzYPbXGI3fj19R06tFyYTU2r8gN9wcpSvMZnKNg66j/gLyVsQ5Umj9ct3gi2Bj5YUSzWWuvUnwPnWUc4fd1UAuXN0L3hPXHV3R3l8aNCmM3jJE76cJG4/0C19pFTnXb8z/20GQmLNttjRcogUVemi02S9/XMTHK4VDqpY1thxXB6wRqsAniD9Ae4dRWJPC6xHC7yJhIED0zC1tOIkGHunIkoq4Rk0LT9sWGRLWqjuVn3CxVrZv1TxidF28c0xuDUmL7qlhVk5cui1ieglS5gmOtVVfrzRrkhVvnlSqK/Ls9TUiyvhCIZO/Ac6rv0Tdt738+eQWnQhCIWrBslVIECX6LNRo9SkKb+MwtFzBBRMYJy7aRp/3qnzGajgHaapDwTLTlB7egO2
+ SwsOVWey
+ ifW5nwCFRQP1PYNS41RZ5/I9NDVxPIxMYa0FJ65ZZdIQeDGJ4VZFhLmIaPuMmaGzI0ZQGK31s4/lHBCiHCZXoYfap0AbztLZ4WrH3hMso0Y+FVlfykg9hGXbQRKAtVHALoST1q0cSXaIdzCpHpNHj3zogqrGEniJd9hGTh0806pdmuvg50fQDs/8PvfR/u3pBknFGQ6adpI+qzw9rv1F9gXZtDyeX4z6VWZTBK341q+5Kifbh0UusSGhB45UmUUePW6tR889yOv3o7byhQT4AAljPnBwSLZv8AiC4ZYv59OlNNsYRPoPrhDu6U0pw1UEM/RnjC8/XGfx4/xB/1//nfeX8owgAcOMg1ejE9M+gaGSvef3BiLJY+dJhkV4oCb+duA6R8krY1a6cFfi0r9E61sUwpu9whYj1frEjHJhSA9BZx90lwWwaUFbomg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,90 +155,317 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 10:55, Salunke, Hrushikesh wrote:
-> 
-> On 08-04-2026 21:02, Andrew Morton wrote:
-> 
->> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->>
->>
->> On Wed, 8 Apr 2026 16:14:03 +0530 "Salunke, Hrushikesh" <hsalunke@amd.com> wrote:
->>
->>> kernel_init_pages() runs inside the allocator (post_alloc_hook and
->>> __free_pages_prepare), so it inherits whatever context the caller is in.
->>> Testing with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_PROVE_LOCKING=y, I
->>> hit this during exit_group() -> exit_mmap() -> __zap_vma_range, where a
->>> page allocation happens while the PTE lock and RCU read lock are held,
->>> making the cond_resched() in the clearing loop illegal:
->>>
->>> [ 1997.353228] BUG: sleeping function called from invalid context at mm/page_alloc.c:1235
->>> [ 1997.353433] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 19725, name: bash
->>> [ 1997.353572] preempt_count: 1, expected: 0
->>> [ 1997.353706] RCU nest depth: 1, expected: 0
->>> [ 1997.353837] 3 locks held by bash/19725:
->>> [ 1997.353839]  #0: ff38cd415971e540 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x6e/0x430
->>> [ 1997.353850]  #1: ffffffffb03d6f60 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x2c/0x220
->>> [ 1997.353855]  #2: ff38cd410deb4618 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: pte_offset_map_lock+0x92/0x170
->>> [ 1997.353868] Call Trace:
->>> [ 1997.353870]  <TASK>
->>> [ 1997.353873]  dump_stack_lvl+0x91/0xb0
->>> [ 1997.353877]  __might_resched+0x15f/0x290
->>> [ 1997.353882]  kernel_init_pages+0x4b/0xa0
->>> [ 1997.353886]  get_page_from_freelist+0x406/0x1e60
->>> [ 1997.353895]  __alloc_frozen_pages_noprof+0x1d8/0x1730
->>> [ 1997.353912]  alloc_pages_mpol+0xa4/0x190
->>> [ 1997.353917]  alloc_pages_noprof+0x59/0xd0
->>> [ 1997.353919]  get_free_pages_noprof+0x11/0x40
->>> [ 1997.353921]  __tlb_remove_folio_pages_size.isra.0+0x7f/0xe0
->>> [ 1997.353923]  __zap_vma_range+0x1bbd/0x1f40
->>> [ 1997.353931]  unmap_vmas+0xd9/0x1d0
->>> [ 1997.353934]  exit_mmap+0x10a/0x430
->>> [ 1997.353943]  __mmput+0x3d/0x130
->>> [ 1997.353947]  do_exit+0x2a7/0xae0
->> tlb_next_batch() is (fortunately) using GFP_NOWAIT.  Perhaps you can
->> alter your patch to not call the cond_resched() if caller is attempting
->> an atomic allocation.
-> 
-> 
-> Thanks Vlastimil, David, Andrew, and Raghu for the reviews.
-> 
-> After looking into this more, I think adding cond_resched() here was
-> overkill. I agree that dropping cond_resched() and 
-> PROCESS_PAGES_NON_PREEMPT_BATCH entirely and just calling clear_pages()
-> is the right approach. There's no case where cond_resched() in 
-> kernel_init_pages() is both necessary and safe:
-> 
-> - It's unsafe in atomic context, as the BUG shows (tlb_next_batch()
->   allocates under PTE lock + RCU read lock via GFP_NOWAIT).
-> - It's unnecessary for common allocations (order-0, mTHP, 2MB) which
->   clear in well under 1ms.
-> - For 1 GiB hugepages, kernel_init_pages() only runs during the
->   initial admin-triggered allocation. When processes later fault on
->   those pages, clearing goes through folio_zero_user() ->
->   clear_contig_highpages(), not kernel_init_pages().
-> 
-> So rather than guarding cond_resched() with GFP flags (as Andrew
-> suggested), I'll remove it entirely in v2 to keep things simple and
-> same scheduling characteristics as the original code, just with the
-> batch clearing performance benefit.
-> 
-> Regarding the 512 MiB arm64 case that David mentioned the stall from
-> clearing that without cond_resched() under PREEMPT_NONE is acceptable,
-> or should it be handled differently?
+This is a multi-part message in MIME format.
+--------------uGaPtK1tzST1xWSar09lgc1I
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I mean, it would already happen today, because there is no
-cond_resched(). So nothing to worry about I guess.
+Hi Mike
 
-> 
-> I can introduce clear_highpages_kasan_tagged() / clear_highpages()
-> helpers, or keep v2 minimal with the logic inline in
-> kernel_init_pages(). Any preference?
+On 4/6/26 7:46 PM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)"<rppt@kernel.org>
+>
+> migration tests presume that both THP and HugeTLB huge pages are 2MB.
+>
+> Add dynamic detection of huge page size with read_pmd_pagesize() for THP
+> and with default_huge_page_size() for HugeTLB.
+>
+> Signed-off-by: Mike Rapoport (Microsoft)<rppt@kernel.org>
+> ---
+>   tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
+>   1 file changed, 32 insertions(+), 12 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+> index 60e78bbfc0e3..e3c2f831e15a 100644
+> --- a/tools/testing/selftests/mm/migration.c
+> +++ b/tools/testing/selftests/mm/migration.c
+> @@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+>    */
+>   TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+>   {
+> +	unsigned long pmdsize;
+>   	uint64_t *ptr;
+>   	int i;
+>   
+>   	if (!thp_is_enabled())
+>   		SKIP(return, "Transparent Hugepages not available");
+>   
+> +	pmdsize = read_pmd_pagesize();
+> +	if (!pmdsize)
+> +		SKIP(return, "Reading PMD pagesize failed");
+> +
+>   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+>   		SKIP(return, "Not enough threads or NUMA nodes available");
+>   
+> -	ptr = mmap(NULL, 2*TWOMEG, PROT_READ | PROT_WRITE,
+> +	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+>   		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>   	ASSERT_NE(ptr, MAP_FAILED);
+>   
+> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+> -	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
+> -	memset(ptr, 0xde, TWOMEG);
+> +	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
+> +	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+> +	memset(ptr, 0xde, pmdsize);
+>   	for (i = 0; i < self->nthreads - 1; i++)
+>   		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
+>   			perror("Couldn't create thread");
+> @@ -215,6 +220,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+>   
+>   TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+>   {
+> +	unsigned long pmdsize;
+>   	pid_t pid;
+>   	uint64_t *ptr;
+>   	int i;
+> @@ -222,17 +228,21 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+>   	if (!thp_is_enabled())
+>   		SKIP(return, "Transparent Hugepages not available");
+>   
+> +	pmdsize = read_pmd_pagesize();
+> +	if (!pmdsize)
+> +		SKIP(return, "Reading PMD pagesize failed");
+> +
+>   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+>   		SKIP(return, "Not enough threads or NUMA nodes available");
+>   
+> -	ptr = mmap(NULL, 2 * TWOMEG, PROT_READ | PROT_WRITE,
+> +	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+>   		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+>   	ASSERT_NE(ptr, MAP_FAILED);
+>   
+> -	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+> -	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
+> +	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
+> +	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+>   
+> -	memset(ptr, 0xde, TWOMEG);
+> +	memset(ptr, 0xde, pmdsize);
+>   	for (i = 0; i < self->nthreads - 1; i++) {
+>   		pid = fork();
+>   		if (!pid) {
+> @@ -256,17 +266,22 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+>    */
+>   TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+>   {
+> +	unsigned long hugepage_size;
+>   	uint64_t *ptr;
+>   	int i;
+>   
+>   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+>   		SKIP(return, "Not enough threads or NUMA nodes available");
+>   
+> -	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
+> +	hugepage_size = default_huge_page_size();
+> +	if (!hugepage_size)
+> +		SKIP(return, "Reading HugeTLB pagesize failed\n");
+> +
+> +	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+>   		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+>   	ASSERT_NE(ptr, MAP_FAILED);
+>   
+> -	memset(ptr, 0xde, TWOMEG);
+> +	memset(ptr, 0xde, hugepage_size);
+>   	for (i = 0; i < self->nthreads - 1; i++)
+>   		if (pthread_create(&self->threads[i], NULL, access_mem, ptr))
+>   			perror("Couldn't create thread");
+> @@ -281,6 +296,7 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+>    */
+>   TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+>   {
+> +	unsigned long hugepage_size;
+>   	pid_t pid;
+>   	uint64_t *ptr;
+>   	int i;
+> @@ -288,11 +304,15 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+>   	if (self->nthreads < 2 || self->n1 < 0 || self->n2 < 0)
+>   		SKIP(return, "Not enough threads or NUMA nodes available");
+>   
+> -	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
+> +	hugepage_size = default_huge_page_size();
+> +	if (!hugepage_size)
+> +		SKIP(return, "Reading HugeTLB pagesize failed\n");
+> +
+> +	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+>   		MAP_SHARED | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+>   	ASSERT_NE(ptr, MAP_FAILED);
+>   
+> -	memset(ptr, 0xde, TWOMEG);
+> +	memset(ptr, 0xde, hugepage_size);
+>   	for (i = 0; i < self->nthreads - 1; i++) {
+>   		pid = fork();
+>   		if (!pid) {
 
-I'd prefer not sprinkling IS_ENABLED(CONFIG_HIGHMEM) around and simply
-calling a clear_highpages_kasan_tagged() from kernel_init_pages().
+This patch looks good to me.
 
--- 
-Cheers,
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
 
-David
+-Donet
+
+--------------uGaPtK1tzST1xWSar09lgc1I
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><font face="monospace">Hi Mike</font></p>
+    <div class="moz-cite-prefix">On 4/6/26 7:46 PM, Mike Rapoport wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20260406141735.2179309-4-rppt@kernel.org">
+      <pre wrap="" class="moz-quote-pre">From: "Mike Rapoport (Microsoft)" <a class="moz-txt-link-rfc2396E" href="mailto:rppt@kernel.org">&lt;rppt@kernel.org&gt;</a>
+
+migration tests presume that both THP and HugeTLB huge pages are 2MB.
+
+Add dynamic detection of huge page size with read_pmd_pagesize() for THP
+and with default_huge_page_size() for HugeTLB.
+
+Signed-off-by: Mike Rapoport (Microsoft) <a class="moz-txt-link-rfc2396E" href="mailto:rppt@kernel.org">&lt;rppt@kernel.org&gt;</a>
+---
+ tools/testing/selftests/mm/migration.c | 44 +++++++++++++++++++-------
+ 1 file changed, 32 insertions(+), 12 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index 60e78bbfc0e3..e3c2f831e15a 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -184,22 +184,27 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+ {
++	unsigned long pmdsize;
+ 	uint64_t *ptr;
+ 	int i;
+ 
+ 	if (!thp_is_enabled())
+ 		SKIP(return, "Transparent Hugepages not available");
+ 
++	pmdsize = read_pmd_pagesize();
++	if (!pmdsize)
++		SKIP(return, "Reading PMD pagesize failed");
++
+ 	if (self-&gt;nthreads &lt; 2 || self-&gt;n1 &lt; 0 || self-&gt;n2 &lt; 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, 2*TWOMEG, PROT_READ | PROT_WRITE,
++	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+ 		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+-	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
+-	memset(ptr, 0xde, TWOMEG);
++	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
++	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i &lt; self-&gt;nthreads - 1; i++)
+ 		if (pthread_create(&amp;self-&gt;threads[i], NULL, access_mem, ptr))
+ 			perror("Couldn't create thread");
+@@ -215,6 +220,7 @@ TEST_F_TIMEOUT(migration, private_anon_thp, 2*RUNTIME)
+ 
+ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ {
++	unsigned long pmdsize;
+ 	pid_t pid;
+ 	uint64_t *ptr;
+ 	int i;
+@@ -222,17 +228,21 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+ 	if (!thp_is_enabled())
+ 		SKIP(return, "Transparent Hugepages not available");
+ 
++	pmdsize = read_pmd_pagesize();
++	if (!pmdsize)
++		SKIP(return, "Reading PMD pagesize failed");
++
+ 	if (self-&gt;nthreads &lt; 2 || self-&gt;n1 &lt; 0 || self-&gt;n2 &lt; 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, 2 * TWOMEG, PROT_READ | PROT_WRITE,
++	ptr = mmap(NULL, 2 * pmdsize, PROT_READ | PROT_WRITE,
+ 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, TWOMEG);
+-	ASSERT_EQ(madvise(ptr, TWOMEG, MADV_HUGEPAGE), 0);
++	ptr = (uint64_t *) ALIGN((uintptr_t) ptr, pmdsize);
++	ASSERT_EQ(madvise(ptr, pmdsize, MADV_HUGEPAGE), 0);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, pmdsize);
+ 	for (i = 0; i &lt; self-&gt;nthreads - 1; i++) {
+ 		pid = fork();
+ 		if (!pid) {
+@@ -256,17 +266,22 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+ {
++	unsigned long hugepage_size;
+ 	uint64_t *ptr;
+ 	int i;
+ 
+ 	if (self-&gt;nthreads &lt; 2 || self-&gt;n1 &lt; 0 || self-&gt;n2 &lt; 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
++	hugepage_size = default_huge_page_size();
++	if (!hugepage_size)
++		SKIP(return, "Reading HugeTLB pagesize failed\n");
++
++	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+ 		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, hugepage_size);
+ 	for (i = 0; i &lt; self-&gt;nthreads - 1; i++)
+ 		if (pthread_create(&amp;self-&gt;threads[i], NULL, access_mem, ptr))
+ 			perror("Couldn't create thread");
+@@ -281,6 +296,7 @@ TEST_F_TIMEOUT(migration, private_anon_htlb, 2*RUNTIME)
+  */
+ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+ {
++	unsigned long hugepage_size;
+ 	pid_t pid;
+ 	uint64_t *ptr;
+ 	int i;
+@@ -288,11 +304,15 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+ 	if (self-&gt;nthreads &lt; 2 || self-&gt;n1 &lt; 0 || self-&gt;n2 &lt; 0)
+ 		SKIP(return, "Not enough threads or NUMA nodes available");
+ 
+-	ptr = mmap(NULL, TWOMEG, PROT_READ | PROT_WRITE,
++	hugepage_size = default_huge_page_size();
++	if (!hugepage_size)
++		SKIP(return, "Reading HugeTLB pagesize failed\n");
++
++	ptr = mmap(NULL, hugepage_size, PROT_READ | PROT_WRITE,
+ 		MAP_SHARED | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+ 	ASSERT_NE(ptr, MAP_FAILED);
+ 
+-	memset(ptr, 0xde, TWOMEG);
++	memset(ptr, 0xde, hugepage_size);
+ 	for (i = 0; i &lt; self-&gt;nthreads - 1; i++) {
+ 		pid = fork();
+ 		if (!pid) {</pre>
+    </blockquote>
+    <p><font face="monospace">This patch looks good to me.<br>
+        <br>
+      </font></p>
+    <p id="b"
+style="overflow-wrap: anywhere; font-size: 13px; font-family: monospace; background: rgb(255, 255, 255); color: rgb(0, 0, 51); white-space: pre-wrap; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">Reviewed by: Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a></p>
+    <p><font face="monospace">-Donet</font></p>
+    <blockquote type="cite"
+      cite="mid:20260406141735.2179309-4-rppt@kernel.org">
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------uGaPtK1tzST1xWSar09lgc1I--
+
 
