@@ -4,140 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA469F31E53
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ADDFF31E53
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B3A76B0005; Thu,  9 Apr 2026 11:57:56 -0400 (EDT)
+	id A20AA6B0092; Thu,  9 Apr 2026 11:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58B396B0089; Thu,  9 Apr 2026 11:57:56 -0400 (EDT)
+	id 9F8856B0093; Thu,  9 Apr 2026 11:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A1276B0092; Thu,  9 Apr 2026 11:57:56 -0400 (EDT)
+	id 90F646B0095; Thu,  9 Apr 2026 11:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 37B386B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:57:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC9B8E30EB
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:57:55 +0000 (UTC)
-X-FDA: 84639473310.01.17730DE
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CE53240013
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:57:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jAFAFjmz;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of jyescas@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 809476B0092
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:58:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BE4C1A06C0
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:58:03 +0000 (UTC)
+X-FDA: 84639473646.26.E71F5F2
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013033.outbound.protection.outlook.com [40.93.196.33])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ABA4840008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:57:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="D/uNJ6Ib";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.33 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775750273;
+	s=arc-20220608; t=1775750280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eJSTtlawRgNunuP+iBc/3XE7chPGEsUsV+rdzUKnPRw=;
-	b=UK25K0VHc2DmP3ikjpfvE1cpS957e5OeyHdhdEFkTYflokry5ie0XWbij/suavVOEsw5HC
-	24a5SafSEsy6zRkDsLUosxWGMxd1frEJ1QPW0OhdBhCzRaPht5zqTcxUy/MuwWp5JswVHw
-	8bkiBWeVuFrEpcEcv6LN0HwH6rNe4z0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775750273; a=rsa-sha256;
+	bh=CvEFiYYwoZW9/qXT4K0Frz/GfgBFdkb7Y19UYReD/z0=;
+	b=Khjdh2CmoUrYQFX3zEFtXxRliqMhE1p4gjsi9rQFwcz7yFbCL5N7OX742UQkCEQH2sk9u1
+	EFuIq925gAFwbSXJb+ZsgyKjR4TBP+zDQQ+xwsp5/RZUzu5E3cOf1dfnuZPvfKpcRprZlB
+	2cEeCCF8Telk2Z7eTzohJUjm4QHrp6k=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775750280; a=rsa-sha256;
 	cv=pass;
-	b=Xa7AstVbSpl4zRXRahHis8i/AG4LINS4Z06ADPTboaxajXF+ziPPXCnaOrCF3dLsiMz+x+
-	8st4Awcg5GiqYB7gszrvsFOfg9+FSC9j7VdFf8PCXSUARbptzQjD7FrIssOymMI7LziFYH
-	6GGTcb/BMe9QOuA5OgHvF2+EECqpkrk=
+	b=uQmZHlxBva4m8VTyxU7ch5KVEjiBnZMWQAa3aJAcUqZECTQwBFTOiDbhSgfL1PTJBtDk4r
+	4ryiYlQFC2/Q9hpEbnRG1zjxJ2SMptzhUDVYwA72/jboCK11S2bEPSrZKp+FhFqcWPIeFA
+	unw1arByORJMjTOsVRvUQCmnsxTlvUY=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jAFAFjmz;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of jyescas@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jyescas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488940ccfa6so116495e9.1
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 08:57:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775750272; cv=none;
-        d=google.com; s=arc-20240605;
-        b=j5G1zDCQVwUwyIJkWNRr4KIkXFyXv64hrzy/Pf2aicQQyOt/5dA+IqQaiPuwZnnFJn
-         n0zzBBc9WxrluBjW3Hgo2SuX281D1V+brZHVIVLtzzP89V4a7/iq9w1YBkiyptLqiG0x
-         0+OYtY9/zbdUy1jEGGK8IQj2lA4SFTSd677Q+hELhvvczuZR75CGNaLVzvle/30PoBo8
-         i9dzRK8BpXhexLs5TFthZyi3bDM0IxRMcOv4HcwWaUd2azNajjfmnAKrHmFELDPqLYOA
-         UyEK8tbuMsclLhjW4tMzEVGCYOsjhdBE8tPsyWEBFNIhlFgjHRSBN4VAGSqG/wKRKQef
-         /Y6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eJSTtlawRgNunuP+iBc/3XE7chPGEsUsV+rdzUKnPRw=;
-        fh=BFKNqL3oHiX5v5DUER/9S19jFMd1ZOd2OI+RdNdlWjg=;
-        b=MxLROCEfmjdN8gVWoIJtr0YF6cyPufauiDE9uPAPEFq0H19Xl1vXT9wSwniXi0/wRF
-         /ZsX5C2TyKWDMAn3oaODdQ9gVxZuERUSyGxFrmjGjVquMnxk4pRqJIDwVnuWBI8WdfK3
-         GI2qaMo0zCM9XJ33RZsYLIRsM9AkuPGZxyNqtEveTtBqgA3HaAZDIuILP336DBOGlyPT
-         dVUUs7atL0VxfS6WAvqJ0cDZBdH1Nc4wGBlsN9dXp+v07JXLohV01qCnl1wFCZRQdz0o
-         GtuthhVFOACam9FJlBQ2nxxg6eMvmRI4//5Lw6DUBjhWn/9sRKfNALgkiBqDWUTkCkK4
-         zPiQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775750272; x=1776355072; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eJSTtlawRgNunuP+iBc/3XE7chPGEsUsV+rdzUKnPRw=;
-        b=jAFAFjmzdSEg2WzS7Awtgah7+Rafo/1O9lw8kdMhn/DHRQhbxtYA0tWCEcQuqjaq4s
-         5AQtJv+AH2W/nVWpqHRhpy9NnG7EQaH/2N7AROHoDmAPsRIZic7lTubtU/mQMk6lW12n
-         f88PyDDw88QUvrypUC+jv5YcrHd95o6+NbIMGG0eCRMWvyyRCbSP14DNR5RYy2PQLAGq
-         LuFWaL6KYy4ik4jzpwNwHMQmn4TVO8YR/731XN4SduCBcHL2D8REgD3CPnvl3x0z2u06
-         fnhGsiPxd1WD3pB1AkrWcR4Ck/LZ8XeqnAv5TIrCJOrRwPIIGSi5+o/DN468Kp/5p4Cp
-         2Urg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775750272; x=1776355072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eJSTtlawRgNunuP+iBc/3XE7chPGEsUsV+rdzUKnPRw=;
-        b=dOZ9ePwUBk49fp1jCoumzKGNbfJdUhgW+zhx0hjZGTa564324c/C/c6A9XOvSbgrY4
-         KtZ6terxU4DYFPYfMGUMhLO1twKy1waemYGv5/EdHgzFPn6B//uZNl6nByIgkZf0SwFC
-         muKhfDpfRgY4DMjEwxlYunIKExnxW80QMiPKnCQtQjsHYeQh4Qp+4Cb/xUxQlkIdHOmf
-         p/mwYKIKSrcA7hvGelPElfHCOXW5XT74vHAic55kUx0jDRhVxtR/csTTHUBYyosFaChE
-         pM0mbNyMa8qK+BkUfcOaGmjMuvRyZch8vTQ+5KAICUSmVbFVkM4Uta00Ucnxhux78i73
-         rm2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXkTi7Vvulra3efDBD1A/vmBppcBkhztrloJDw0j3MjpB17RiS90ppH32wVw3tlSncCNG6Z4Ef1IA==@kvack.org
-X-Gm-Message-State: AOJu0YwlFkbWXNIORjSwIJvIaEMT44ZG2Kyr34rhqnS+cUNAno9CXVRH
-	s4V3AVYpiwc7sGqJ6Y35GW3zn95yGveQUZnhbr5nAw7saf8TQYy905W8D6eN427kT2lfmQVIiUr
-	lG7DqpWBArcgjgf/yWPccHx/MyANfxA3iC4X7pY/3
-X-Gm-Gg: AeBDieuXzfzsZOAnWBVewNq++jQEvtUY1gBiGIXkzoNknvObhf6Ct0iU2eUy0G9RESd
-	0iTjLr6jcI6r0NIaoFodJL3fCE6UUyz7Irk1j2XVb62Njchbnv8tKQA+LHBsmPXLsEvvRfkKI/V
-	iV2qu9gBSx8bUbO5xp8HQuiOU5uA4Qz2zKOSKOonL+iDGU9B4i6seA8FkRuuU1Klt5ZykJuGRjB
-	bZgzV7XOCsgmtABDAu2NGnQAUE+9EVvHDWrO5Cv9PLcapwVljkW+U8ZG67oxKw86ZzYlPGr9EH6
-	xke/vIbsaDaB3CA1n4wwxTICiyX1oGHOkStic7W4mGqucZZI0ZRz
-X-Received: by 2002:a05:600d:108:10b0:477:86fd:fb49 with SMTP id
- 5b1f17b1804b1-488ce10217emr1042425e9.10.1775750271535; Thu, 09 Apr 2026
- 08:57:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAJDx_rj-fTpKjtsw1jJ0aAaC3a2Rt+zrizqY23ZHvq0Mm56uTA@mail.gmail.com>
- <00ec73d6-11d9-43ab-b1e2-d543425d19c7@kernel.org> <CAJDx_rj4DVG2D8ab9O8RWDEF81a5J-fiwtDedubEnsmL-1q+sQ@mail.gmail.com>
- <5c6e3c1a-bae3-4997-b02e-135374d1d6f8@kernel.org> <CAJDx_rgYXWNC=0_QZDmMpuZU8aZqRU8OeMBqXT1jjzrpK=BWeQ@mail.gmail.com>
- <e63e0ab9-75bd-4a7f-9400-a8f87c80d1f0@kernel.org> <CAJDx_rjk-5pp5Z884bnTBss19Xk0msEayR=GAMG2wWCk+WOZ=A@mail.gmail.com>
- <aa8e148f-252f-4d81-89db-b1702d9b6888@kernel.org>
-In-Reply-To: <aa8e148f-252f-4d81-89db-b1702d9b6888@kernel.org>
-From: Juan Yescas <jyescas@google.com>
-Date: Thu, 9 Apr 2026 08:57:40 -0700
-X-Gm-Features: AQROBzC2DseDS-XJ6oE-Y5WQZARE-rgVqrB1Ga_OYxeZ-BYZIW2DWalkgTGqurM
-Message-ID: <CAJDx_rjgyi-L-1j2kpi1NeKj+Huynd6ZFqJDmYqN8i8L3KyBfw@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Discussion: Targeted memory allocation via debugfs
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	android-mm <android-mm@google.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, lsf-pc@lists.linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="D/uNJ6Ib";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.33 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iwnrxtcqb3ZGZRJYpz/17vvoPUaL1FsH2waEFt47/89y0sn6Cf/V633n4Y5HaTHtLZQr0bOfpdNBLNBeuIzm8C8ARsQI3lqi/tDobgwCI/vzlw6z2TCx9eX/wL5ODKLSaL/qQCo1DiKN9Kkf6dQ+xKKKE4ThMnYQSe/EGNu/d0Giovf9JJs0u7wYs/IG+E/+9ozszunINlMUctcQ/OgQApFe9hJoaJyMO7meyoem5cCRprjihu6jwWOjqw6tZs2kUnWLOeviba44riYk1sgNGFYucugchrado6v9qkdN3dHbwd55j7LwiriZp/6W0fGsWtWZ2Hq/tEZvchr78TXc9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CvEFiYYwoZW9/qXT4K0Frz/GfgBFdkb7Y19UYReD/z0=;
+ b=xZl1q8zjMCgnCHSQr2mkQPrMBhmtLRfxbYvGRw2nE6lIkXsHL7I3whrSZvZ+PBGRe088f1N2FYPW1EWcqi488MqRPnRmw1VY63TmEij/8RrenbRAduysARt+eoClhw4+0QiL8RhHY/HtQmhNf6tCD7EygPPY9KBhtgLt1e7zi7RwUSys0svEkNzVIIfLLk7eoD8/1VIqadAs8afNPdSUwcnKrnJJ2zjgwTSotqs65AiSDI8VcGxE6fzcruetDw4DCfV7nGfattOMjbvGb0NJPjYDuhgydD0+Q4HyVzQK3eZI0L6L+FiUWW9ZrHyvQ2cB5lswuM+YkOtQFce62CCQLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CvEFiYYwoZW9/qXT4K0Frz/GfgBFdkb7Y19UYReD/z0=;
+ b=D/uNJ6IbeFW5S4gQnXXeTPRkEBpzK/afkbf7iChGAlYDlqX+X2UH+1PN4KmxSlwcyfJyZfxRYJYbgd5NPA2yNqZ2AySysQAmvnH6yLUU+tqMKu+MHrnoLe7JmXH1FZWPNWPhFXzXaywIbbBoGqqoIBlSmRMoX53XNP0t5d7xTo9OOg5gX2eDHuVNcWCdW0efllcozG+rh67s7znDGZq8JAS86bsZ/TxbLLc+b1izk7eiWFlCWsf/6nFI3tYuH6pyaCPjo0Lkl2vX2twELH2CMzVWojCu46fHr+v+iZD6GmmDhYsjBfu8vrnc8YpjFzOR0aBGPleV5ZOB+TXm3aTmHQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS2PR12MB9615.namprd12.prod.outlook.com (2603:10b6:8:275::18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.20; Thu, 9 Apr 2026 15:57:44 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Thu, 9 Apr 2026
+ 15:57:44 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Luiz Capitulino <luizcap@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v3 10/10] mm: thp: x86: cleanup PSE feature bit usage
+Date: Thu, 09 Apr 2026 11:57:41 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <F9F90195-D89C-4DBF-BDFC-311A32D00B9D@nvidia.com>
+In-Reply-To: <16fe2db0becab98db70f53e4ce1422450a9f40ee.1775679721.git.luizcap@redhat.com>
+References: <cover.1775679721.git.luizcap@redhat.com>
+ <16fe2db0becab98db70f53e4ce1422450a9f40ee.1775679721.git.luizcap@redhat.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CE53240013
-X-Stat-Signature: u8k77oz5qf79xqumq3obft1jsz9r89xf
+X-ClientProxiedBy: MN0P221CA0008.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:52a::30) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS2PR12MB9615:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8b71e36-a2bb-4c25-8bfc-08de9650bc8e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	7hL6w1UPu3+bD6oo3Okdc5dnIPTPRmOBM3EhQuc8K1lSx2FYh2tXkbRCvn74bTn3/mvN7SSB/LbMVYjN712Xzix4UVkTmGPKZg1edKhV0ixTCvHqk1WMFUP3UvaN5S9qkh4e/2zXORPR9ry5CjqjBn98aKJ6l/WQgdeZn+ISLTGVxo4tJLsA2RTtwL75D7HhZlcZF9oOdFG5xhZvHwbhxNxHtL5JOCjaqg7hRJ1gVJU2IQ/4XyzDy8/UEXERSR9of/JQtvtW5LCLg/j6MExPNtH/8gbGSc/SO0UOv24wsejhPxvkH8WBhdDu/h5mtVc0Bl+5lRbAOjldQ6ITl7aKr7q8rPVxZrey03FfWl2E6hK1SBY2NiFdBOmTKg8PhGkOYpzSK3ZylzckJzxQz7K3zkVhF0v1rJvSWrx6juET4Z6R0FHVcy2JstbpNJjZcw5jQ/QGzXkacFofCAvjskwMuUZIEuSZiCc257ZOu9QiZlYznAd1G+IYOiG0GOtFz1ia8bi0bYFLeoXg1Pe1CAAOOnSk6fqtoLuE5Qc1pyJR1utSqVgzmpmMNciIsz7Vkt5sBrkLJ5k4lBkcd70+BftDVSmXadGcCurnM4rwNUJMpDg1q9JFLDfWBG0PXdTBh/rJG0T3+8fnmoQvSt4UU3irIk6kM1NoMANBFWRGaEUa8VouF3gRA5LIquVEpXwSz9X2l14UtCOAlEEcBl4uGgoQXFKZDWqqfeoPGq3cQblBawg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HJhpy8cd+nY2a7AeZpjXaPgKdtLYkXjuDlTPux93pysmZ8p3npLgMTqs+P39?=
+ =?us-ascii?Q?sz/OzypOuA4R3CBs9jUH5blSbFEPRxxuohTWcdVN3lCLgawG08zdDqQtKQ/p?=
+ =?us-ascii?Q?Yfwxxg8IToIiwGXO/Xs5cyCiKHUyY6SCXFcnORrhvA1hOrO/Agk0m+z3pwr8?=
+ =?us-ascii?Q?+LyhIcR2Pk+6WsXGwX2EvPlY/M4jRXXSqpeHkJAMXlZp65FpHt34Zi6HS4My?=
+ =?us-ascii?Q?O5TtD9h4DVw0UGuqOnYp/LmN2JYM8wYTBxq3APWUvJaG6+GFuN+TZlHMYxEW?=
+ =?us-ascii?Q?Wak6zhHOgOsJxrK0BaIw+qziHM19R84QwWzAkjpQtOh7M9fa8H718x5UcQQy?=
+ =?us-ascii?Q?SYKVr+wFAJZkjX16UzD9G4bV882LmDB97S9+L4ah75FYCiySa6vULWMOjDxB?=
+ =?us-ascii?Q?THgx1SukT2vJlXf64xO2fMNQr1tTKt29IRyjmyL0LcQf6XVpOJA6h3gZ7Teo?=
+ =?us-ascii?Q?63GAfet6rQrYWngGdy6w1IIEC3aNnvoT5ieMG8atvceC1N0gSA3BN01G09+h?=
+ =?us-ascii?Q?rsdmEGZSL/6rJ6FNokOHND89yoH9LXzWQTgPlMgsMBJUTabFOEYi058U+/2Y?=
+ =?us-ascii?Q?b4eXeFuSriXVqTCPBlnM1k/M6xnNdfW5mXcZR+5O6rnE2LAo8uzvG+i2c8rQ?=
+ =?us-ascii?Q?rGrUy63l+FBk2GIAS5epjCg5mGaUQI4Z0BFlXRsWbWzawxsSRfjtju1WX6qm?=
+ =?us-ascii?Q?YO76TFA5j+SOl6gy6n2itdRYkNmL0hZpyGdV61/GJJQVaMItmtZnt0XB37w1?=
+ =?us-ascii?Q?IrAbzRlqt9R0hcEGOr+O6omuihiyaauggZm+8RsRE0iCuEWaer89Y5EASHxU?=
+ =?us-ascii?Q?tKyednoPih2USsiYbfzyfuiGICyGvya2FZNTXKc85d5GKqByOdmCfaIlFixw?=
+ =?us-ascii?Q?mXUL5LBSaEmr67UhyXMNnlHGJ6edWgpWgzK207igcyqw5V12I0Vpz1dM7GGS?=
+ =?us-ascii?Q?j5L3Jj5OLZIbAluJX1W5U03vNJbMdCJ8QKBrAh1bSze37U1TIOncE26aLE7Q?=
+ =?us-ascii?Q?xiqXnGQmAdbjJ8EGoN3A7YpTm0Gr9j55mwr5NpMsmxQLKq+YimRGkLNwUbwD?=
+ =?us-ascii?Q?iOuZqX8fAyI5Wb9UApgklEOXquPIGZEz42066LBnF2iwhWcwUOsTLRvqh3lr?=
+ =?us-ascii?Q?0MiUGN6hobCURvXut0NoAXUH016eP6UyjXO3lqNiaFslNLXHh+r+AQKjizy6?=
+ =?us-ascii?Q?YL75f9SJqmjfwYWlghkApZ7KyA8nlHUU6T+lh+Pab/zMaCTLRqE55FRelHAf?=
+ =?us-ascii?Q?Oskid9IDZHMvZnJXpAPlzR+N8rPpq893WJAhB0d0ytWdG2Z7t7hs5TvcLm4v?=
+ =?us-ascii?Q?Yw3DjB8aNhfYd2wTo1ynFQYZemer2ISzk7zelhOj9DzxPIyiG2x3O/nrkAY6?=
+ =?us-ascii?Q?u2Pxww3wAGqNtjIMDnfPh8bXXlCGH0ZCxMRK+pw6Rc0UITc9fScNNQzZeQNX?=
+ =?us-ascii?Q?p0Yr3LhBnjLPaIKbXrMS5sDlZSEdtkba+5DpISia7edSZO/KybfWh/LpVYjD?=
+ =?us-ascii?Q?Slc4rQ2FL4XtbZZg9LmMKZKtsvsUmGP/XR9dNBT5pYkG94jfQ/F+8C+A9RPe?=
+ =?us-ascii?Q?uiTH+MtuSwGD6jhT7tknuMxPaEF91bt1ek5hB94u+1m+s+71TA4dNMXq3wTF?=
+ =?us-ascii?Q?7Prd+5xLSJX2MXDSbHfgblTKC9Pav3NZVcxQBobmBgiuRr1MwiivIk9chvSj?=
+ =?us-ascii?Q?QcYGYWspAHrGLKQCIkIQU5+Cr+0pJVHkmgNBigyVPVBwuUsnLpVeGp1KOP5Q?=
+ =?us-ascii?Q?Y8YrlAniRQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8b71e36-a2bb-4c25-8bfc-08de9650bc8e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 15:57:43.9560
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6JdFT3naKUAY/lUgERhYet+tkKtu6B6oy2iKU8+obKHPSpu6RF6h0L/vF3WTraGy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9615
+X-Rspamd-Queue-Id: ABA4840008
+X-Stat-Signature: 8e6nfwrdhb1i48zh41tsgathsfh8puze
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775750273-388639
-X-HE-Meta: U2FsdGVkX1/98RI3zPaVMyZygODQYmecSWNSUtxlp7JMzchZYWj46tM9KuYTaso/fVoTwe26KHJ8MIVv4DXOkpl1UAeoK0YvuhUbRyRcgndAC9vLByr9OzwH8Y4G01YjT9TmFt+8fDQ1Y6c3S+KwJFmBajaGCPEC5gzCgKBpTUxGFSsP2gVDNWzVJ7DE53vkzgr6dU8EgDr4j3AZMYZpo8t6IsVfwT7eiELoJY5dmnPjZi3dY1/UfWxiVy6owc6vNhgNxr6dKYll7qkKr1gVx3B0cHvw4q/OD8zwHVpqmoawPZMVVxxLt3ZV4etrqVPLUkbqvnIO+CKBjA8WoS466kJYL4cPOuRhJ4bsrqeTeQwg1zJhFyhnvH1VoeciBYBb/O1VZWAjwCOYIm9kqMW8uH73VyLqMLyTqVjgHkitsOBsmzorCrJmJV4SWcqW7FjnEvVpXewQhHlvqzdg29G6WdgnIi4aw0vbtwi7/AUNJrCWiNabqX74HE0KEmuF++lESfrBCFdA64Xii2QdifAAiAaQhsHnA3CQ7pTmxU2MzF4NBZ/5+L0Sc8M2nlTzbKm5yA0Qr11idgl+ICwdFEUNlVIBiSYRYwoeR5ubrVvNovZahy58TqhJeSvd/Yd7py0N3Ex7LlVepB5X19YY4g+VTCsrDkO6r0vJaXWMBMKmLFY/nYOmrKfTDUhU9b3W4cbW1RVfFW2UKUedfNfgZctL4uXOBorL+9TkJI8yDGlSepzFZg7zZxXmvQIBfKvPslU7aAhBHBaHmHndrNwseKh1hHJcldJsUBx520fyBuKQUlR3JFUOFaDX0sfn+UPMKpEzbR+OFV7uGOL9KfCtKEg3DSpUgwj1PFXfV1GNnWvJN8QXQSNRCumGJz1A9bCKJFOuYTKsaupdak7H4vt9HjPuWBs9azHQug5YldiTquVn19Yy5f72KjdvN3MXgjmyqitQhpAL/KttQLnPlQL8mU+
- YshXz7bN
- xfsM9T7vbhPIwbotVDyqZt8J4LLj2VY8cUW4aXRZqdakbHBzZZOIqfap7F8lbaTgmocS7S0CPlrqnfMy6lx6136SJ7N/le6JuBd0l5TCDTx/jjC42F98d6NnaYM+xNTzrwkqiEAxTN4J6NWvoMGYi+jnNAxJNK1QTUJfusHhhB7VMu9+YDDJxvQKiUYXcAbyyJK8UIGNkASRMboWLeugF4U4N7Jsx1vreQvVaXrd8fTC6PI8QjAIXu6039aKrs9Qjh5/d0qflJE2/sz4=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775750279-354413
+X-HE-Meta: U2FsdGVkX18prp4lR/5RO4vNlPOEqE8KUoccOYiF0ErsyX9cgEpKte1/QIbZetJG3IOmKxEnM+3ctXsH/+HgvAKOB9D4a5BoJcpE2TOX8AEoyN+II4a1vej/x8WqI5Kztb5SJ5sj8/lJ5ua2FOWKby3QfRlP1Zyw1ggYcv53F/CrwkVwaSBV5ZBD1BKbo/zv8QDXsQ9bn2oXRin1GfmiY2fVNwJUHqcCh6Nyit94cEd+Q/01naWgeDfr/aNfEr+UER+wqDumy5q7Ptxx7X3R5ptI2ooeAnClyfdbwWpaE+OMz1elP0ZkzCDllD9jsr8CIkzmVvIXxXv4WLRCBdxV1SkYLtBdIrd+LklrOKR4JRhWu9e0Y7mqQf+JR/U1MqYnchzAnp87l2JLhDRhLzjqgN3B3m2GqUBYKvYbNWaZ+dxMKd4hC25bOxH0Cmw+TAu70NYMQiwBxn0lyi/IBMW7ruLeGgRQmOzE1Qlpn1e753jt8Ah7gtI0/M7R53E9T3iw3O6bT+glOgU1NKgEW7jIewircS5SvjsCHiOldL9JQny2QfXsc3Qwg5NUuJce2Vkb7fgfl+FcMqOudOZCo3vX5G0kR8mCQcU+VMaLVpaCVVAwUFZleavcfvFAInyYrFrNYxSMXoHh7F75GeAoAUuIBhUGiZaz1WGwU6zGNxmIYbAiP/bQs6fMHoGVqdeK4UKFKHYsmwMTO+Il7XreqpcvdzW3kVMQo4KDtoYsGdYw3OhyG7XOCVgh+D5b7+x3puk9mD1OHjW+ctj4ggJWWqJZ+CrQ1eiEGh9qZYeslMXFX/IdWXxS3geoaJI67Z7eDMzvYL3tI2V3QV5E77S5jh006HG+pd2K9lq6R7XXm15piQnwjfhluDx1xvf8CaEfpPaPdCC8xHmRryNjQInAVa1nayD3VgU5jxLgwlNT/TzEw8TjUA6SPp1Bj7yzjV57JZMzIp6pKqIlE0rM0rYb5kF
+ H1FBTakL
+ VEbiGnVooaCTee+1sStqYWIxMJ/as4XJUZvFDO+zDmGTFw3SWwjaoMxBxoU3kk6QTfz7NOOvvtT0Uq0etp1PCtLZMWRtBaFs+B4nxDQnElLYwwPLkCujs/yAIizkbasCvp1VphUZ+Hitq3jbhoZ4R8IAp5GSjcstJTncckfPg+ifZocX+ZzeJytfWWG11nlsSDbCI1BHs9AuYNqOk72Yx8CyQ2SgR4wpGHZb5QCNPXhri+bTdAFaqTlJBGCI62v3T/K5RKeWvmCfkD1fEaItcUVK9i0w9f8dJlFwDQxSk+2zkYW7MksHQisuCBTft5EAei7g9naAiuwF7/dB5FAQaV/gsDoBDQV72GbN7mhaBVHhMmT3I8S/pf+CrlK7gLFSDBDri
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,107 +163,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 9, 2026 at 1:06=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> >>
-> >> echo 1 >
-> >> /sys/kernel/debug/mm/node-1/zone-movable/order-10/migrate-Movable/allo=
-c
-> >>
-> >> You are just breaking ZONE_MOVABLE guarantees. Or what am I missing?
-> >
-> > I see. How should the ZONE_MOVABLE allocations be handled? Should they
-> > be excluded?
->
-> Well, the same applies to MIGRATE_CMA: if you end up placing unmovable
-> allocations in these areas, you will break these scenarios.
->
++X86 maintainers
 
-I see what you mean. I was not understanding your point. In that case,
-the driver will have to remove the unmovable or
-Invalid migrate types directories from the sysfs interface. Only valid
-migrate types, orders will be allowed.
+On 8 Apr 2026, at 16:23, Luiz Capitulino wrote:
 
-The same applies to ZONE_MOVABLE. Only valid migrate types must be
-included in the sysfs directories.
+> Historically, THP support on x86 checked the PSE feature bit to enable
+> THP. On 64-bit, this check is redundant since PSE is always enabled by
+> default for compatibility. On 32-bit, PSE can enable 2 MiB or 4 MiB
+> page sizes so it must be checked. To clean this up, this commit:
+>
+> 1. Drops arch_has_pmd_leaves() from common x86 code. For 64-bit,
+>    we assume PMD-sized pages are always supported
+>
+> 2. Checks for PSE only on 32-bit by implementing arch_has_pmd_leaves()
+>
+> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> ---
+>  arch/x86/include/asm/pgtable.h    | 6 ------
+>  arch/x86/include/asm/pgtable_32.h | 6 ++++++
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgta=
+ble.h
+> index 8fe95270b713..f45568f9513c 100644
+> --- a/arch/x86/include/asm/pgtable.h
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -314,12 +314,6 @@ static inline int pud_trans_huge(pud_t pud)
+>  }
+>  #endif
+>
+> -#define arch_has_pmd_leaves arch_has_pmd_leaves
+> -static inline int arch_has_pmd_leaves(void)
+> -{
+> -	return boot_cpu_has(X86_FEATURE_PSE);
+> -}
+> -
+>  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>  static inline bool pmd_special(pmd_t pmd)
+>  {
+> diff --git a/arch/x86/include/asm/pgtable_32.h b/arch/x86/include/asm/p=
+gtable_32.h
+> index acea0cfa2460..1db3214cfb45 100644
+> --- a/arch/x86/include/asm/pgtable_32.h
+> +++ b/arch/x86/include/asm/pgtable_32.h
+> @@ -44,6 +44,12 @@ do {						\
+>  	flush_tlb_one_kernel((vaddr));		\
+>  } while (0)
+>
+> +#define arch_has_pmd_leaves arch_has_pmd_leaves
+> +static inline int arch_has_pmd_leaves(void)
+> +{
+> +	return boot_cpu_has(X86_FEATURE_PSE);
+> +}
+> +
+>  #endif /* !__ASSEMBLER__ */
+>
+>  /*
+> -- =
 
-> Your driver would have to support page migration, but that's not
-> trivial. For example, movable_ops pages currently only support order-0
-> pages.
->
+> 2.53.0
 
-I agree with you. If we only allow valid migrate types, we don't have
-to support page migration :)
 
-> >
-> >>
-> >>>
-> >>>
-> >>> We could use a "nr_pages" variable, but we would also need to set the
-> >>> node, zone and migrate type.
-> >>>
-> >>> It would be cumbersome and error prone to have something like this:
-> >>>
-> >>> echo "Node1/zone-Normal/MIGRATE_RECLAIMABLE/8" > /proc/kernel/debug/m=
-m/nr_pages
-> >>
-> >> I meant something like:
-> >>
-> >> echo 1 >
-> >> /sys/kernel/debug/mm/node-1/zone-Normal/order-10/migrate-Umovable/nr_p=
-ages
-> >
-> > Got it, we can do something like that. It makes more sense.
-> >
-> >>
-> >> (not sure if we really want to specify the migratetype)
-> >>
-> >
-> > The migrate type is important because we want to make both MIGRATE_CMA
-> > and MIGRATE_RECLAIMABLE allocations.
->
-> See above regarding MIGRATE_CMA.
->
-> But in general, bypassing the page allocator and just allocating random
-> pages is not really nice, not even for a debug feature.
->
-
-I agree. My intent is not to bypass the page allocator. We will use
-the page allocator and
-This will allow only valid cases (I will remove invalid migrate types
-from the sysfs directories for CMA and ZONE_MOVABLE).
-
-> In particular for the scenarios you mentioned:
->
->         - CMA allocation failures due to pinned MIGRATE_MOVABLE pages.
->
-> I think some decent user-space reproducers might be a lot more elegant.
->
-> I guess for CMA, you'd want a way to allocate some ordinary *user space*
-> (anonymous) memory and be able to check whether the memory was allocated
-> on CMA memory, to then fire up a page pinning storm and concurrently
-> trying to allocate the memory.
->
-> So maybe you really want a debug mechanism to migrate a (movable) user
-> space page into a CMA area?
->
-One intent of this driver is to debug CMA issues (pinned MOVABLE pages). Th=
-is
-The driver will allow easy reproduction of the case you just
-mentioned. For example,
-I will allocate most of the MOVABLE pages and then trigger a CMA
-allocation, that might trigger a migration.
-
-However, the driver's main goal is to put the system into low-memory condit=
-ions.
-so we can reproduce OOO, kswad, lmkd issues seeing in the devices.
-
-Thanks
-Juan
-
-> --
-> Cheers,
->
-> David
+Best Regards,
+Yan, Zi
 
