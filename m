@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C340BF364B6
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 20:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123E6F364B6
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 21:09:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00EAD6B0005; Thu,  9 Apr 2026 16:39:12 -0400 (EDT)
+	id D57156B0088; Thu,  9 Apr 2026 17:09:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F02096B0089; Thu,  9 Apr 2026 16:39:11 -0400 (EDT)
+	id D2EA96B0089; Thu,  9 Apr 2026 17:09:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3EC56B008A; Thu,  9 Apr 2026 16:39:11 -0400 (EDT)
+	id C44C26B008A; Thu,  9 Apr 2026 17:09:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D3FBA6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:39:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D2A3B6F51
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:39:11 +0000 (UTC)
-X-FDA: 84640182102.01.F12BE00
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A470A180005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:39:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EBAMrbrY;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AF7206B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:09:23 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10F3FC1125
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 21:09:23 +0000 (UTC)
+X-FDA: 84640258206.28.B77967C
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0F732180009
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 21:09:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm3 header.b=o2L2wXFF;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="T ogtoZr";
+	spf=pass (imf24.hostedemail.com: domain of boris@bur.io designates 202.12.124.147 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775768961; a=rsa-sha256;
+	cv=none;
+	b=myrMHd61fxyMkrTb/QtbHkI5Gv/J3QxH4ZLri3ZMJcZvrjUvj2MXejEFHNx0Ol95EoCYph
+	iT0RDuAbk3gq9Qc5qeZI4FHgDk/YdtH4wrAe8QkuOGQgWRnOXCuqxbAvxueIJfBs7LtPMs
+	6/k4jb2hdxbmZJSCmQfgiBZYYifDbo0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775767150;
+	s=arc-20220608; t=1775768961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+34jg3Tc1cAOq2VG9ePh2ikhel8hzpDfd6tWSVvepI=;
-	b=RJew7WCea5DJ06XZIcx4UuHbWReEAyHUotNhMqpvq87lIG9KqoTX65aq1pGhsANdoOsvHF
-	xJQ0CMuj2imSpPIiZ5rIjX+xAY5ZR9/3byBK3k/wDVYHVA1eRAKlXDUYMu7AjILlW1Bemr
-	l9ApLfNnUurIO8xYTfdV5TqqPYy7Pi0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775767150; a=rsa-sha256;
-	cv=none;
-	b=DfZXISTOeXskfjSVaEAeiQI4eopR1/729NXFCAgBqClFNLUi1S8pJRWIXO1M1Vwyyp3byG
-	sjxCFPMxoBCz2UQxjJPih49xLRvtNoT/e7HSkFDdoJLwPeEAgh6ei9bv4n58GRhNRuYAeJ
-	WMDmmii3pNzC4ydGw0gychTGdDbTCNA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MZunF1xN5zrge3JmcTJNc0v9YAdspsz5QhxRbtTKwcs=;
+	b=T4Q7WO+yRCpfN2bnT17bMyanoPxhP/+TFgLoYd1w1vvQmDFqEYbdfGeUJxgESHS18ICRvx
+	aFiLzoMP35tCCY3JENWSo2VPayzcRjS+PBqUi/uBEzFAdtF5cyxv6wOnX5VwMU4ebgfsEO
+	a9PZ3w/100Ll4/rJ/4N3w8pi6aM/ZcE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EBAMrbrY;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=e+34jg3Tc1cAOq2VG9ePh2ikhel8hzpDfd6tWSVvepI=; b=EBAMrbrYaPjGRUi9kRwsbPxgbe
-	R6B7EZw7ZTEhMe3Dei/Ag+nxK01Nwn4gm0lyUGtPXiDW+xu/G+wx8UeW2KyeiG7EvGpDMxD7fHq2e
-	p5GuYvuCWyEF1J4SCjWEbwzQ2HAKwIVpwN9vJqGXoyqoayTxShijE0ki6hQfDuJxUo2M417EU5Cc2
-	KoKYbxOBQj4hYzA2QS+mL8BxIW+B+ms05YRqoH9p0XWyF0ShhO84HojHaOoeUz46Pq9Uh6ipdTt+3
-	5MEBBc1nnzDrE4f+5zgWVin4UWXpR7+cjQa6b5EdJygqzmT9WZXJr2fy9ZB6Pg2+aZz65cjTw0tve
-	lOQHrksQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wAw9W-00000007X0O-1GC3;
-	Thu, 09 Apr 2026 20:39:02 +0000
-Date: Thu, 9 Apr 2026 21:39:02 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	David Hildenbrand <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
- interface
-Message-ID: <adgOZgCfSeWjwreX@casper.infradead.org>
-References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
- <addP4MKmA8zfSN1o@tiehlicka>
- <dbb92553-58ba-42e1-b7df-b8450bd69d33@huawei.com>
- <20260409081619.34f172dad0e5a56923b7eb2d@linux-foundation.org>
- <adgA2IKrdStZJ6AX@tiehlicka>
+	imf24.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm3 header.b=o2L2wXFF;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="T ogtoZr";
+	spf=pass (imf24.hostedemail.com: domain of boris@bur.io designates 202.12.124.147 as permitted sender) smtp.mailfrom=boris@bur.io;
+	dmarc=none
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id EF21C1D001C9;
+	Thu,  9 Apr 2026 17:09:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 09 Apr 2026 17:09:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
+	 t=1775768959; x=1775855359; bh=MZunF1xN5zrge3JmcTJNc0v9YAdspsz5
+	QhxRbtTKwcs=; b=o2L2wXFFkxCVBbna22tFAs8DtCjafPn77fvQX55BlUe5hyLZ
+	am0LxTcNf4z5FFULlAgQwj317NreS6UcntlHscIfFJ207fiw61//jTdwozksAlGQ
+	xRnOYKHcn209iRF7JlDzTaoQUKxoHhy00VAarAxwuWiO+AoVIsJjVYeEGt3c7ayq
+	LagUC7sNf+kArBNw6IKEqmCIx6km3FBq4nispZBa9XiQImZiAIcJ32cCQsE5I1P0
+	W+Pf+DoJH04S6FCRq9USSq2O6XCk3G+iHVKHYheavy7OLGQsB8bcuxr9OIow7oP9
+	uuvMOqLN0tb8K5HhxbtGFmIQZ5oqjIrlH86EoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1775768959; x=
+	1775855359; bh=MZunF1xN5zrge3JmcTJNc0v9YAdspsz5QhxRbtTKwcs=; b=T
+	ogtoZrxkMyhClXEh8CIly+y8MXpCcoMJf41gxBmru+I386BL+Sde8gLeltuKzInU
+	jExRog3UsF/G5/9V7+8VmL5dFxRvQaF4ntAYDx4n1/AIC9WqQYkA3tlaZO7E9J2z
+	FYeBAwAQV62ouLfop/bPUq8qj+HsYi8iaBhj2irlsSSDhRbEg4/Fl3N4INVVIOvT
+	buBGIXsXrTCn3KugrZ2M4nSvngBGfYxho25insJrD1ZkhDNxpOLYxzBrKKj1Uvyu
+	P30/o7RilhbTffVJE88RnmSgKoBeST7v+yNhdTOiC4GVIq9H8oWSwthIMVY02sxR
+	bt+ynAL/FrGZz9YRKHb6A==
+X-ME-Sender: <xms:fxXYabRkq9CslWKeydbjtoR9P20h378nO2y2TLbomNrSYPs_N8kwpg>
+    <xme:fxXYaYPm-REosQhquMp4ZPzu8XwPqfVJwBgaIH9rIaoQO_I8xQDOKKJJDkgvL3SMW
+    blVEVVnl47AYLLRDw59HXUvzIN02LOO7ZBbIr-zaBLtOCcvUrTkWc2a>
+X-ME-Received: <xmr:fxXYaUXrL88NJXiJoCdIbYyrf9VOm8enq-BR5SU-I1ck321gnudt9_G5P72aBlYorwFAymyP4NJ2HNlH6d6uBkAoATU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvjeehgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkgggtugesthdtredttddtvd
+    enucfhrhhomhepuehorhhishcuuehurhhkohhvuceosghorhhishessghurhdrihhoqeen
+    ucggtffrrghtthgvrhhnpeduveeuteeufeefvefgtdeifeetgedvueefgfeuffelvefghf
+    eijefgledtuefhieenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdihohhuthhusggv
+    rdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghorhhishessghurhdrihhopdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhsfhdqphgtsehlihhsthhsrdhlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdroh
+    hrghdprhgtphhtthhopehlihhnuhigqdgsthhrfhhssehvghgvrhdrkhgvrhhnvghlrdho
+    rhhg
+X-ME-Proxy: <xmx:fxXYafcQkBn3kzt5BaJu2kdJry-fMqsxpw1CAkSz4UFCQ5jnfaz7bA>
+    <xmx:fxXYaQu2W8qMhERm3eTgoYgiRFfANb4VsXRg6hi_171RsLEk6Ebngw>
+    <xmx:fxXYae-OX3BkObPDBmBGr1xIA2IvDGZWHL7a7JZaLNHBJqYZFxuCTw>
+    <xmx:fxXYab1ShO5W28Sn5qoT5kCCCSCVIAQ30CHboTmO6E-b0UHWPval7w>
+    <xmx:fxXYadnvMes_hzHxNipBwKkvFZnG_P6JjnV-HizTeu6ORW-EqQRe3W41>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Apr 2026 17:09:18 -0400 (EDT)
+Date: Thu, 9 Apr 2026 14:09:06 -0700
+From: Boris Burkov <boris@bur.io>
+To: linux-fsdevel@vger.kernel.org
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org
+Subject: [LSF/MM/BPF TOPIC] Direct Reclaim and Filesystems
+Message-ID: <20260409210906.GA881465@zen.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <adgA2IKrdStZJ6AX@tiehlicka>
-X-Rspamd-Queue-Id: A470A180005
-X-Stat-Signature: 4osgg4po5ntyh5jo7ir6ebj31db6korr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775767149-473592
-X-HE-Meta: U2FsdGVkX1+aHw05YpoeTy9BXXGzFm8Pc7rivxNLm+1RsX4xAe0AGUGryUOkyO/fmCHyvXlHyWheaADxK9M43bPMK/M6HMEV6xgGNKAXXESP8lDrqMKB2tparsRifZxbePVY7JJAacYELwGRI/YF1/Jgl6e11EK5gdmflH/9XpQJOGXGAOj6vPmEqp94PilFs4NAXKDYNlS43A5G7SbdGQkRQOamg8O+2BRKlT2VvupAnSA4SSbFvwL3H3H8YbDOadsWWupUKN5YsHZ2kXAmkBssEQthNFhLuhLcOOT/2qMtPR68m4pQaKenkc3O7ll/6TIWTgbTwSHJfK0Ajv63oxi8flPHhviR+oK+5DYF2fGJvAubi/nzYWOaWrOt/HoEhYOOVM68E4P6ZoT1obXoYOg9DJk6eUAR0V5BmmPqc4ODBzzi3oKVW9FEUtK6er6Im+9UG9nu2Ln6kPkh8bgXNAKAgyrDjMJP0ta8OaUmDgWib0+zAImxsVf0uPpyZ9H0eucPYs7IM1PwqxiG1+4gkQSloMZCU6lFYgbT+ViFQsxQFiVlP5MFKIf8ZkHHZPG94NrnjDIdoe4qi+o6XT3chqOf+QxFVlbjtaVSgbacrDAYo1Ki/0gSiAZuNwDFtMo54lOT7JEiZXPkL6OJhkYFWhSrabDBvjMK+P6eDB2SVF3zeFlI8QGc2VPUyo4HIMFNQ8Ml7z6Ww7E2xL8DyGxA4esj+CAysxNrDIYdjPeY9t6c3ENOMhBoerjkCjlqOX57XG1yHPu9PCnDHnWq2amYqV14qrEKyInc5QpQToniDnAZZQnlmsW46Mk1dXtAEELofs9MrTwUxkNojuY8XJReMuhjMX6+djqj0Gp+WubN6vBmo4lfZ7JzEgS+7V/LGqZ6TYXjCovbM428FCNCqAlbvCZn471X4L1LqRe0cYUZV46iMf/JtbL6iKrvZ3VZNniJus/uUCAgFmJ4pQ8j6Y3
- soLer6vp
- wY+HZ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0F732180009
+X-Stat-Signature: 4smf14e3jfdayksa8kfjkat9k7raz7e8
+X-HE-Tag: 1775768960-956161
+X-HE-Meta: U2FsdGVkX1/fXV9/RrAf92RfofGQC/FX2LCoBxKqbf/gO2pltexfumKLb4O2tBOVV6a7raOeD2LUA1kJ3IEcTmsqZY5g9hIvdTrxWZh3LZ94ABHG5XKJbiWVfPXYCsT9qupngURlu2fPetYDoBYzUBMl9tQWmT/x9ViYCZ+wFgpHSj9P7diab68hhKPLwSoQcqLkIrw65oir6A9xTeDksSGGyVS2zOf5gXzCEonIQpjsMPcrw5Gqpwbv9RBkpGhz91s2Vib0HtSsgf2m7uF7gaZBEBORC9QRaKmQxw+AHr5WlQ4s0lUqEJqIDEchCrKjgCFbF8ocmcl5MeVAuEPZ3J497qOW7euiI+Lno0o48IS0maVTujbM/9LoOdw8Q3vqg0SDBA31Aefxkq6RmezxejLXwuyS8Lqf+ntnfKKmw5dyEGp+AIGB8w7FFWyEQ7C5VlloP2m69QJbqfyHVBXOymSq4BDATzGN6P3DW2RsoTLtqBauXgc+BzXYxgUlO/E0zw0zf/fjXQT/ucjYHRCapqJdtRH05o6iNEpT6KDaVvgwox4iDhmUieXDMGBcVEc7hYi+Rvbgc3ShaPxFHkeUjWwVW7fjrAIbRuLo0Z7gtx/G/yJdo7iyXFgnS0faGp68za8GQiLVhHiXWt+VtjRb2fym2dhY3lGjY6btm9KaEx+xrlGdcDJ9RHZtx5zUjwPFHjvroyYVxjipn27vPpZjY9zLUMkx8dPJ4QxsTQYslzH130BmHR5AXNBM30T9JLr0+Mf5uT3m4boqE+zFPLIHa4VgsXwuDeUhjNjCt5P2j6MlCbfavyBRNyp19iEGmL+ER07QVJnFg+QTE70uErjxRmzCVISejPwPU2TGWjnm8z58t4X2ozFiaIMtkZvg6crkS2FlTQyfn/IqvUrLStDTEM7Dfbre743BFKm82JlDTfVI62AQ8xxssY9/L//pwxJku2+EifPo7OXQF3R3d3n
+ ioIQAbPC
+ HOxYbq4ta5mPmAPoZR9h8bN1Y740U1CENY9IbLg0A4nRbuX3f8kd8eP/TupwWW0psjcEJ9xlBMEjMwJ6U3hUBUQeQ+Q7jUhZHdVZ4rs/8rZi10JA6lBgBAwbmD1UOfx/LmMsN+r+FBc2Pf1U+36NVWxYR8y9EMFJN6PFzTTwlIVeu2ZaBiLQIJRcpPnZ3SfBDtQHncDVsGp4rvsDgoGsZC1ZJfVnOxtcOR+fFjvlkUKgXF4STqBUtVIJjF80dPv/30v11m5+kaosB6E5nrKhOIjULAGh3AXBURJZpqnNEKcnEitrKYLCfB1S9YplRWj7bqVvzfM0EgxZ8GoXFPiaM9gNPzxyOb2JUrBxxkZK4U1XeirpcfG5SNV7u/SKMgOToBjehwjxljTR/xWOrHi8Nk1bQQ5ZqXBxVMrZu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,22 +126,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 09:41:12PM +0200, Michal Hocko wrote:
-> <rant>
-> Our caching strategies might not be fitting all existing usecases but as
-> usual we are targetting as many of them as viable. The problem with
-> drop_caches is that it has grown unproportianal amount of cargo cult and
-> grown into "solution for any performance problems" magic pill. Even when
-> proven to cause more problems than it solves so many times. Again and
-> again. That is really sad. Same as THP causes more problems than it
-> solves and that you should be using 2GB of swap space or that swap out
-> is a signal of a disaster. There are more and they are hard to die.
-> </rant>
+Hello,
 
-I get a kick out of seeing articles like this still being published:
+A theme that we (Shakeel, JP, I, and others at Meta) have observed in the fleet
+at Meta is a tension between btrfs and direct reclaim. This has manifested in a
+variety of different ways. All situations also must be considered w.r.t. memcg
+reclaim and global reclaim. There is no overall "assignment of blame" intended,
+just a desire to build a deeper understanding of best practices and paths
+forward for all the components involved. I work on BTRFS and have minimal direct
+experience with how other filesystems besides btrfs handle such challenges, but
+I imagine there must be some overlap in challenges.
 
-https://kb.netapp.com/on-prem/ontap/da/NAS/NAS-KBs/What_are_the_differences_between_hard_mount_and_soft_mount
+I think this is probably too large a topic for a single session, but I am
+curious if any of the categories of issues are broadly interesting. I
+personally think the one that cuts across the groups the most is the question
+of reclaim cpu usage.
 
-'intr' and 'nointr' have been no-ops since 2007 -- eighteen years before
-this article was last updated.  We should make more things no-ops.
+- The filesystem triggering direct reclaim [2]
+Especially when the filesystem is holding a lock like the inode rwsem or
+a filesystem internal lock (like the btrfs btree locks), this results in
+unexpectedly high latency for the filesystem user, and in the case of memcg
+reclaim and held locks, will unfairly affect the latency of other cgroups not
+under reclaim. We are working on categorizing these and reducing them case by
+case, but a clearer statement about valid allocation contexts and GFP flags
+could be broadly useful.
+
+- Reclaim freeing metadata and/or forcing metadata writeback [1][3][4]
+In btrfs, this results in redundant work fetching and writing btree nodes if
+it happens to hot nodes in the btree. Should we be trying to lock some of
+these nodes down from reclaim? If so, how many is appropriate/safe?
+
+- High reclaim CPU usage [1][4][6]
+It is possible to rapidly generate a very large amount of direct reclaim, for
+example by doing parallel page cache reads larger than the cgroup limit from
+many tasks in a memory.[high|max] constrained cgroup. This will then use a great
+deal of CPU attempting to do the direct reclaim. This CPU usage can become so
+extreme, and can be emphasized with cpuset cgroups, that we end up being unable
+to schedule tasks holding important shared locks and massively tank the
+throughput of the system. I have been able to reproduce conditions where even
+killing the offending cgroup can take minutes. Some crude early experiments have
+shown that throttling the reclaim cpu usage reduces the intensity of some of
+these problems. Can this also be attacked via cgroup cpu throttling? Proxy
+execution? What about the same issues under significant global direct reclaim?
+
+- Filesystem doing expensive work while in direct reclaim [5]
+In BTRFS, compression can result in relatively expensive work while trying to do
+writeback urgently. Jan brought up issues around synchronous expensive work in
+inode reclaim as an LSF/MM/BPF topic already.
+
+Thanks for reading and thanks in advance for any feedback and thoughts,
+Boris
+
+Links:
+[1] btrfs memcg accounting separation (AS_KERNEL_FILE)
+https://lore.kernel.org/linux-btrfs/f09c4e2c90351d4cb30a1969f7a863b9238bd291.1755812945.git.boris@bur.io/
+[2] btrfs readahead direct reclaim reduction
+https://lore.kernel.org/linux-btrfs/9fd974c2-00aa-4906-8cab-ec0d85750c4b@gmx.com/
+[3] btrfs re-cowing inhibition
+https://lore.kernel.org/linux-btrfs/cover.1772097864.git.loemra.dev@gmail.com/
+[4] btrfs csum tree write locking reduction
+Link: https://lore.kernel.org/linux-btrfs/aa5a3d849cb093a767e08616258c03c7eec8fe26.1753806780.git.boris@bur.io/#r
+[5] Jan Kara's proposal to discuss complex cleanup in reclaim
+https://lore.kernel.org/linux-fsdevel/c18f8189b755c13064f51d93bfcaddb15300f9f8.camel@kernel.org/T/#m319eb6245485bb7c71171a55bf700cc1409a144d
+[6] LPC previous discussion of cpu hogging and locks (unrelated to reclaim).
+https://www.youtube.com/watch?v=_N-nXJHiDNo
 
