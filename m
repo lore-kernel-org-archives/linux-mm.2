@@ -4,92 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA086EA3C21
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE207EA3C21
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FFCD6B008A; Thu,  9 Apr 2026 06:10:56 -0400 (EDT)
+	id 3B52E6B0092; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D7996B008C; Thu,  9 Apr 2026 06:10:56 -0400 (EDT)
+	id 365D46B0093; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 315636B0092; Thu,  9 Apr 2026 06:10:56 -0400 (EDT)
+	id 2A3A16B0095; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 215C46B008A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:10:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B66B61606C6
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:10:55 +0000 (UTC)
-X-FDA: 84638598870.08.AC18EEB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6F061100007
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:10:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DoXJefwm;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775729454; a=rsa-sha256;
-	cv=none;
-	b=1zqtOzGZ5/ho+XzZ5f9D4Lwim13GofCm0WuxPaQRE6P0/yjYIej+ihaFfXWPaMtiXVDJSV
-	5YPGEAIauw08Utm/S4woPxORu1XAUO5UKFTRBuWZ3FWmCGVYQTCQcjZmAnneT4tGDsxN2f
-	cXHiUKeCI6tt+XNYRIk1lcYhCIfpIcw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DoXJefwm;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775729454;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1786E6B0092
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:13:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8F7C59393
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:13:37 +0000 (UTC)
+X-FDA: 84638605674.17.ABED4DC
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AE90740003
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:13:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Civ11WzR;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf11.hostedemail.com: domain of technoboy85@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=technoboy85@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775729615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2FigYED1pze1+QNonRTD2+UmVbmoc123ryoS8VxaOU=;
-	b=sqSRHs1eLZfmP8/EG+Li7tfLJbFn+DlowuKdM8yHk9Rx/fydA9104rL6jSmm1WPUHxzG41
-	csbZpemc27TKYUGpi0AsYpLRpu1NLKUkqhnI957fT/sh6cUuMB0a/VTKs45hXD9ouQ2lpB
-	JCvkRqeEzn9dGq0Qwwt3+BjMy9EdVcA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73DAE3297;
-	Thu,  9 Apr 2026 03:10:46 -0700 (PDT)
-Received: from [10.164.148.43] (unknown [10.164.148.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A9393F632;
-	Thu,  9 Apr 2026 03:10:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775729452; bh=xIGIsShfGZskdnuFPNvuPLkTAert80RGZC2aB1q7CjI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DoXJefwmEF4Xv70LZdkYk6MtFwB06HynMMQiS9dxHAGyDBhDs6tIQxU6JqGlaxxT1
-	 5l0KuSbVXUsmv7dZFj7pBdLci58Ix28p+xTpPcqqgCgREtAbIg718vw3jXbj/yM9py
-	 6vibhorVUqWAuDsmXYGl7v3TKTbr8WA+aB2BJdKI=
-Message-ID: <46fbd241-4d64-409a-b9dc-77e778ca088e@arm.com>
-Date: Thu, 9 Apr 2026 15:40:38 +0530
+	bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
+	b=c0B1bt3ZgzXv9KEj0XfoT1KuPkyaI11AJyqX2MmNUvNHcHTvAtUSX+GV8AgdQvcSuzA8TX
+	xtvGOpzMYKCqAq8VxNDEo452g20NLCtZgDkwIdU4S9JQIlczoANbdULsPZt1ZyLGd+H7EE
+	FGiwp7RsxhdXba5FpOojzQXgG/Mj+ew=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775729615; a=rsa-sha256;
+	cv=pass;
+	b=GMZMzxopi4inGhkUzRFTMTo1SjUnxoYC5Om4AcUxpEEcoab1/MpskAM97ZE6zwmgbw3zFA
+	0KJWT6DBAd5psVJdgprt4BI08E3QTAemtJvdWwDUba12Fmy1GanoYK3EI3M3yBXCap94ox
+	2d/9G6FA5w/+hrK4c33eSe+1E2xBpYU=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Civ11WzR;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf11.hostedemail.com: domain of technoboy85@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=technoboy85@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9c11eba219so74048866b.2
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 03:13:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775729614; cv=none;
+        d=google.com; s=arc-20240605;
+        b=O1uZev+BO8pjCplLj00mPQIgqhp6B1fwcoknVxFNyCAyt0BHu9vqFac09lu9q9aG7J
+         +5HyTsEqZLj1stWnY9zL3/KYcLdA7iIXeZjgnWJE0ViEaeVKLyfXnoBFELnFMibnfe7C
+         VIg8OzFVx++FDJcl0PsKYTOVKwNZAJrqqEjhN9h24kQufQ8OGdwTE9AEidOuDB/QVGlv
+         g+kesMwFnn2GgH4vJaonkjvzhK69s2ScFG6t0E4nIbee4sQvexWDvqJr58+sjmx/ER/H
+         n1cE7b2G30RXOCcA7gLg3grCXjC2UlYywkYrpyDVjpTr8DqbEE0dxh2/2dP7yRj8TQ0Y
+         77zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
+        fh=8GpqOR888E9HiVG0ckTOeUs/oMNWDHPb2L8e/W2CqfE=;
+        b=AOZB3VRlQMrUBJorAA+2fFeJGJG/6xeq59h7zU2VvNTKtAr+mrRqLRTAFPtCMpIqGy
+         /rLl5vgg/ARBO1kuvKdeMRTFbTIwSPfWBLCdhZM/c1+85pPq0pMtqWcNaOhOU7TZA04L
+         6RD6vpGZ6l3Y8qFlI3uwbOkmeC2JneDY5etp8MLWBG7S2Q+b2bLoaHEtVDHiIVxliX1u
+         0/B+NMxsMBMFPmff1RcOIkf2g+Ayw687+JrnOYtkfA+/uGRC2Fdo76JVwYqCsFkBYZdn
+         5oAb1OyN7yb9cFmStO543Bw45z4hlMQ8UhF+kCVlim4vpRM1JNlXSuAazsi3njyvD2V2
+         28rA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775729614; x=1776334414; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
+        b=Civ11WzRXU5poHzCAknffuVLYxPlkYx+NjHUqjWJNMtHG6sT+AtiFDtaWqcooo0eDT
+         E60gM9AUnakhMX6JPL4DEOGMQZpNghiwZ/2DcW//fpkViVCa1vctHrbl1bQbhDtZsY34
+         +uqltFrTZAPHhdsdzxTqc09S9FQWHtuyjkFA2w2toB/hYsgzPLnV/4u5uolZ6yqz5noI
+         uT27DzpGCT6m8jGoWmN1iI39JbPcj3cgRp7f2NMoOcCni/X2VHgW2o6l1pWzHSXVIrJ5
+         7OR+Ap70lk6tGIfsiqx/qiUCjU4qxl6euKe0W2TpeVlqgmMXZ/EmqWrPzEo+05xhEZPX
+         505w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775729614; x=1776334414;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5G1tgPSgfqXAdaiT/Kh+YtWkW5LgqZYK/6TgiRqZBJM=;
+        b=ioeBvubRXQppKtWCR2CBTM/iJG0oquZwpX+2koFC4uo4CJTD3u3rqEpKaCgyhw+DYc
+         6t84tPidsRHGGG/6du1sgrO0pMkxFzM5QuJE6aWZYxBXvqlmlBTiyGCj2dRpeorvhk5Z
+         LPPKypn3Z+i/vwMAPvyJLQQ1n9YONrBGWRJMB2LG8YG2NPlYjJ4G/K/156pz9vpGu7af
+         QAGy/WzsdFSimdpwYSe+oA9OoNZeUgapwcfP6VfRRI0NcPsN9l8Nb3e8ENR8Thod70lr
+         LKIvutcqnQ2t158ko072aUIvIGrBOHBYc5F3m0DlzCWFFcrczAIDAttzuZ4TH9VWbj1C
+         CYiA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIdDH1hS81atmeJD56V8aMMFGI1mfyYD2b6v3H48cfCfuppMpLibr+tolAW9kalgXeALS0MQUnDA==@kvack.org
+X-Gm-Message-State: AOJu0YxE1MfJy/qm/NxWosfu6L2F+TSi8oab5s4F8sfIVofWTV4u/C/1
+	BUBqLd2JgLxa43mN6WxSsNEPYnCsVdxNQO6FN03sBRD2YO34VpD/7/73Hpr65swQvr8DfGr0v5z
+	M17n82XmdObv1XjOlBrm2rlSiHl7IkXM=
+X-Gm-Gg: AeBDievhpAIhzGWN+S4OxJL7TJoQ98/lZi3P2k9vLeBZhbfZypmkccvklWTNlMCBnh/
+	qDNtPRBOFKghS8V5lJJPGpqIDwfz++FOmO6uIPIC2+GOgzNjNzV3k0cMlJhkO4i7l8gv2/Ijpej
+	9lW1rOyolPFqTA5X0ZWtJfemTMWdtnaH5FY4fBRlTg4DZlJ85MaJLUELCSXhBF8a70WZygUKcXz
+	mHbNt1jmx8rJ/H4fymHHd+Ywxo0OkcmIRfxSzbW7Fn5T3MA6/hGKcZOhyQQZXOZgiMRuFpnJPJo
+	s8HeWFSXHG/H3mXt7g==
+X-Received: by 2002:a17:907:9605:b0:b9d:3966:bc23 with SMTP id
+ a640c23a62f3a-b9d4768d513mr142385766b.26.1775729613743; Thu, 09 Apr 2026
+ 03:13:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/8] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com,
- ryan.roberts@arm.com, ajd@linux.ibm.com, rppt@kernel.org, david@kernel.org,
- Xueyuan.chen21@gmail.com
-References: <20260408025115.27368-1-baohua@kernel.org>
- <20260408025115.27368-6-baohua@kernel.org>
- <c54e12b0-1a35-48e1-b243-991de246a8ca@arm.com>
- <CAGsJ_4yL3Y1Sr0MjTd6=ROC0jKf4JkCqNPODMh-m155rUFcS9g@mail.gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAGsJ_4yL3Y1Sr0MjTd6=ROC0jKf4JkCqNPODMh-m155rUFcS9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F061100007
-X-Stat-Signature: bo535cifwdq59hc8scj98tx5wda8wkox
+References: <202604090741.1kUVXMoc-lkp@intel.com>
+In-Reply-To: <202604090741.1kUVXMoc-lkp@intel.com>
+From: Matteo Croce <technoboy85@gmail.com>
+Date: Thu, 9 Apr 2026 12:12:57 +0200
+X-Gm-Features: AQROBzAZyly3rkZi_uaCRUbRSjWTfZY1vAkt2NvdbZUe0X0EKu3VrrmPc-isLc0
+Message-ID: <CAFnufp29D4VdTgoJ4uDk-dQ4-RuO_C6=TQ7O9TA5M=JSe1j+cw@mail.gmail.com>
+Subject: Re: [linux-next:master 8662/12838] htmldocs: MAINTAINERS:40: WARNING:
+ Inline strong start-string without end-string. [docutils]
+To: kernel test robot <lkp@intel.com>, Joe Perches <joe@perches.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: inic6p5wjo9sp4qx7f6j6nmqyhhbmtig
+X-Rspamd-Queue-Id: AE90740003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775729453-228618
-X-HE-Meta: U2FsdGVkX1+GBxRZ3m/smxcNfMeN9nQveq1Bj8w2N5LZDTLVIwcGIFiKr6QoT67qjbJDXNYDhyBJ5kAJ4tnthiT6d5OcY/mcZq97MEfT4oeAO9y0dKtiTUu8F3MzXjCTxyEgyag1J9aceAMXQ5jbwQq820v0itvqIYY3U4Wr/Naw2pMtHMAou0fLO9WAWjsLH9VDk+cviVu5fQl7ANE/0flx27YitkB1yMbu89KHlyyaNwGDNL3D+71itqYsvy4jrIp1pZchdFpFr5R/Sal0SPrnhS0YtvuJpG4qIKGQweP9hQB3CopxgxISYSw+4tdMvWyfSAVjrhU5zxC53QsTaiRjLmKYRsEAXN8UjlNyOxqXZVVOy24t3ML7iwicjdElVHO/KJjyhjZKdiFw8pWxXbgC9W1+pgbWNAtp2GpPPjPzCeWF9vtKHEpI0sjm7lDz2tPof+rLw0PNJbWyUWoH9zuUhcpKwPD+FSnN/Ae1hv3jB1+1i51GnUv/luSYZcZsuefj5xljbed9SkLIJpq6zy20kq0gKH4ObvTAzNBb5iFel9B7G8u22hbf3V8kVTz4e17MQtaUGeHX9vOENPO1Gi5HZ9kq/4MO3fRDgyvxWdwHOPcKv5g1Z5CS+b7CXFwnRqBJetsVOsm3iKUBdXDn81G7bldQHj0oiZZX9hCsGjsGPd9TIJfWFRmj3fEs/rTmgjzoClEwdVJQv0vADtmXvxRZozwtNAgsKbAXwyufOHQdx0cxfoQjir6wcyleBt6/bEi16KgOiGyXpW9+4n1PWPusws7/fAVQZhzXkOuc9S7sxgCQJwt5OwdbI9kY6y+W3rlyGecXX6I9xgwMzbxDstEkPESCjP/DMewMXzcfXT4Cg/l3uVuYLNBL1sX+ZBIPyvMAoXOWhQnVrBwdyafBj5+zI2QS+9FWZ33p9dXb+VChPfO0YPofqAFmHE2CYuiL7iKKdtKlNICkbCPAS2J
- 83IQxig4
- MPE8M1RlAK1l3QT2OI4U8qqR6nQ+H/Z95uDkCSN7RDkWWSKHYhA384nZpH8qwR0CXZ3aKWCDLzNARQBQQsnsFhcGETYAW6FxrJEqpk/yKkBWz0sJiNbcDxsdU2iikHRYh3VP+SPl1YzIFdfgziM0abMuRq5EKh7tyn8zHVwI6WP4I237sv65QWrQJx2+HXGhwmLt+DUrf+urSMjUw77FYylZmtlR3nBV0CfSvZWgzbVcqR8GZpcrlyI81e/mPqGSQChz9dKkcbt1uV0rqpa+YImffkdJTRSl33nxDtRUtFCwnzJSVTHEire4yxl91a/Q7AHPyz0NdPD1mf2Cv6Ey3ZgdVT/OgbHh0ZMesBSja5Y+n2gv4J5QfFmvwhJWqtvoz8Myr3OOh4uQ/Ejev8OUNHyr4KYo29cr+mEoH
+X-HE-Tag: 1775729615-239788
+X-HE-Meta: U2FsdGVkX18PBG0ocdtF0vnUHDClrdtJ/s3ToW/zBxAN6m7P4iIaEy7q7LGECj4IeHs66m+ulVYzqc1Im2SdmM9fXTwjB3jq2G8iYl9fWrvKOteixb6ykTsnbOtt/KZmCbiLNP1k00iE+JTxsPh1fydQdUtxcjbX/cvsVKJNEDBA7mwPAJQY8+maZMH5jVztkNSOhPLMw8Mo8HKpR4AJB9A+7pcM09jyfhLmN+6FmOnhvLng/bfJu+4jU7PSl46kZLbY2D9JMyqoYK87NYXjoGV7oMMX41tisVge7k8gHCdfvqZqE5/BO0GGQL8D1R6KZ1a1itdsjvD806hmmm3GqAKs0NHx1dwD7R8feBmBMeUV5KRDv4h2pN6VMkYoaC5/Fkv4Hz3EjNI31+cy2YyemYqpndQwLjAYF2YVCGH0Hzd/88r3V4NgdStH45wupDe1r3tu/I+HwV12rBjAK7/AxEGNkXoQfL5fqTzGUNTfbgEDFVNwWLIGqJmrY935zvXCRHmtKcIKCWFG8upEnuHROw0LByOKuT/hbgED4eSe2hM9OqRt2K+GOvnqouFcHdIiS1V45h42Oaan/z2h6aR9rx0INt5+rZwnr1n9eJh6W1gikHEhTo6YrGGcG7j1h+PRkGN3sFNQCTOnoxfT7+zBAthBjyeNWYJuBpvGU0Q/j+AnpWgsSI+nZJYGeli/ekLwVmFri7Z7T2zMd7AnEBDckFkLPEp506i5aqMIhRsWlpg/43KOBy7wMI4u0VecaGEhpJ0O0SCdKIoOLFRlwHaJeaFXm+rNfUlfP/vtxrQWZD42yE/lR7eKUAtrkL3fb3ls444Njk4gOvbLrd1n99GcoHWRTqt/J9reO2y9lPgug4REiz0igfyxEL5iQjHoTzhgNSnLwQQ7W2V7wfO0brQrXLXP2rM56dpB6zXiv6VP72bIdH1Qggg80Xet7JYbqkVz0XJ/b+Tw5/Lh7YEhXps
+ YG6ntDo/
+ c9loEr/l8FYlSvZW1b+yjv5pAlZiHgig0oarw559gYyEr5h2Imh29GI7rTDUq1CcEKPKu1/ovaH66WnzoS+CG/g8Abg0SWf6EtUw4u63jQNufZ4GtvGuGccaLJ6/EclB2Ou5fOh5SF/jCW+dusYvo861/To2TGrWChvKfmKbtUUKrO+Kf/2uhKymqouXyIYFcSPSXu5BKwye+PsT+iVA4ElPfYlYnpRn9GY2dXnCzl5gjUV2fYPP0Kfs6z9MzdrS9+zRHUDkfgmpYFkhrbIT3JSdcqEOtibJau7iwUc9amVdJbwWlsqCrhRERYISXUZaSoNmitjGH05IPpNR8E2X24GD6aiJHv9sCkolzmKsKwfyx8R77fOqBniD1UL5GYIzXYSmfvaXRvZSmNVVLO3udi/DNz9N7nfyQe9+H43XZNfP8by5dnu/MFEyZLWTstt34o45jGygj9bvmK6/wdeE6BXBIGITeuLH3i/SXRj2Sr3ymmPOKwPET4VbXxRe8RXSYZuxVKGcxqHtnleU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,120 +136,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Il giorno gio 9 apr 2026 alle ore 07:24 kernel test robot
+<lkp@intel.com> ha scritto:
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   db7efce4ae23ad5e42f5f55428f529ff62b86fab
+> commit: 420849332f9f9f1ce6ff142868ae2e6ae9f98f65 [8662/12838] get_maintainer: add ** glob pattern support
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+> reproduce: (https://download.01.org/0day-ci/archive/20260409/202604090741.1kUVXMoc-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202604090741.1kUVXMoc-lkp@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+>    Checksumming on output with GSO
+>    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [docutils]
+> >> MAINTAINERS:40: WARNING: Inline strong start-string without end-string. [docutils]
+>    Documentation/userspace-api/landlock:480: ./security/landlock/errata/abi-4.h:5: ERROR: Unexpected section title.
+>
+>
 
+The problem is that "**" is seen as start of a bold text in RST.
+Escaping the first * fixes error and keeps the glob unaffected:
 
-On 09/04/26 3:24 am, Barry Song wrote:
-> On Wed, Apr 8, 2026 at 10:03 PM Dev Jain <dev.jain@arm.com> wrote:
->>
->>
->>
->> On 08/04/26 8:21 am, Barry Song (Xiaomi) wrote:
->>> In many cases, the pages passed to vmap() may include high-order
->>> pages allocated with __GFP_COMP flags. For example, the systemheap
->>> often allocates pages in descending order: order 8, then 4, then 0.
->>> Currently, vmap() iterates over every page individually—even pages
->>> inside a high-order block are handled one by one.
->>>
->>> This patch detects high-order pages and maps them as a single
->>> contiguous block whenever possible.
->>>
->>> An alternative would be to implement a new API, vmap_sg(), but that
->>> change seems to be large in scope.
->>>
->>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->>> ---
->>>  mm/vmalloc.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++--
->>>  1 file changed, 49 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index eba436386929..e8dbfada42bc 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -3529,6 +3529,53 @@ void vunmap(const void *addr)
->>>  }
->>>  EXPORT_SYMBOL(vunmap);
->>>
->>> +static inline int get_vmap_batch_order(struct page **pages,
->>> +             unsigned int max_steps, unsigned int idx)
->>> +{
->>> +     unsigned int nr_pages;
->>> +
->>> +     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) ||
->>> +                     ioremap_max_page_shift == PAGE_SHIFT)
->>> +             return 0;
->>> +
->>> +     nr_pages = compound_nr(pages[idx]);
->>> +     if (nr_pages == 1 || max_steps < nr_pages)
->>> +             return 0;
->>
->> This assumes that the page array passed to vmap() will have compound pages
->> if it is a higher order allocation.
->>
->> See rb_alloc_aux_page(). It gets higher-order allocations without passing
->> GFP_COMP.
->>
->> That is why my implementation does not assume anything about the property
->> of the pages.
-> 
-> If you’re asking about support for non-compound pages, I think
-> that’s fine. My current use case is dma-buf, where pages are
-> compound. I recall discussing this previously with David and
-> Uladzislau.
-> 
-> If you’re working with non-compound pages, I’m happy to add
-> support in the next version. I’m also happy to reuse some of your
-> code and credit you as Co-developed-by if you’re willing. I actually
-> prefer your __vmap_huge() name over my
-> vmap_contig_pages_range().
-> 
-> Does that make sense to you?
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -35,7 +35,7 @@ Descriptions of section entries and preferred order
+     F: drivers/net/ all files in and below drivers/net
+     F: drivers/net/* all files in drivers/net, but not below
+     F: */net/* all files in "any top level directory"/net
+-    F: fs/**/*foo*.c all *foo*.c files in any subdirectory of fs
++    F: fs/\**/*foo*.c all *foo*.c files in any subdirectory of fs
+     One pattern per line.  Multiple F: lines acceptable.
+  X: *Excluded* files and directories that are NOT maintained, same
+     rules as F:. Files exclusions are tested before file matches.
 
-Yeah it will perhaps be better to have a fast-path detecting compound
-pages, and if not then checking contiguity. So sure please go ahead
-sharing some of my code and you can co-credit me.
+should I create a fix patch or we can still amend the previous in net-next?
 
+Regards,
+-- 
+Matteo Croce
 
-> 
->>
->> Also it may be useful to do regression-testing for the common case of
->> vmap() with a single page (assuming it is common, I don't know), in
->> which case we may have to special case it.
-> 
-> I agree, so I had Xueyuan test single pages and highlighted this
-> in the cover letter. There is no regression: "vmap() is 5.6×
-> faster when memory includes some order-8 pages, with no
-> regression observed for order-0 pages."
-> 
->>
->> My implementation requires opting in with VM_ALLOW_HUGE_VMAP - I suspect
->> you may run into problems if you make vmap() do huge-mappings as best-effort
->> by default. I am guessing this because ...
->>
->> Drivers can operate on individual pages, so vmalloc() calls split_page()
->> and then does the block/cont mappings. This same issue should be present
->> with vmap() too? In which case if we are to do huge-mappings by default
->> then we can do split_page() after detecting contiguous chunks.
->>
->> But ... that may create problems for the caller of vmap() - vmap now
->> has the changed the properties of the pages.
-> 
-> I don’t see this as a problem at all. Splitting pages does not
-> affect physical or virtual contiguity; it only changes the
-> contents of struct page objects, not the PTE/PMD mappings.
-> For ioremap, there isn’t even a struct page, yet the mappings
-> can still be huge.
-
-Okay so I was under the impression that *not* splitting the page
-will be problematic.
-
-But, vmalloc splits pages because the caller can operate on
-individual struct pages by vmalloc_to_page(). To the contrary,
-since the caller of vmap() decides what kind of pages to
-virtually-map, we don't have the problem I was raising. So
-I guess we are fine by making vmap do huge-mappings by default.
-
-> 
-> Thanks
-> Barry
-
+perl -e 'for($t=0;;$t++){print chr($t*($t>>8|$t>>13)&255)}' |aplay
 
