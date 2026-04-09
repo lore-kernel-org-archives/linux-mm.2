@@ -4,147 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE18BE98FDE
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95AC1E98FD2
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 09:53:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F050A6B0005; Thu,  9 Apr 2026 05:50:05 -0400 (EDT)
+	id CC1346B0005; Thu,  9 Apr 2026 05:53:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDD2A6B0088; Thu,  9 Apr 2026 05:50:05 -0400 (EDT)
+	id C98956B0088; Thu,  9 Apr 2026 05:53:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF3496B008A; Thu,  9 Apr 2026 05:50:05 -0400 (EDT)
+	id BD5416B008A; Thu,  9 Apr 2026 05:53:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D0F4A6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:50:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AB5A96B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:53:58 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77930B9C82
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:50:05 +0000 (UTC)
-X-FDA: 84638546370.01.0E4FD9C
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1E88A40010
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:50:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=K+vzRBGj;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775728203; a=rsa-sha256;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62BD85952C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:53:58 +0000 (UTC)
+X-FDA: 84638556156.01.2EA468D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8FDA7140004
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:53:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bTMdzfSB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775728436; a=rsa-sha256;
 	cv=none;
-	b=eYBRbVynz4UlE77v83nNqj4IS/Opemoycs3wX0ZJFAh64y4I2S02Bz6eQ3x/wrii8QyeRc
-	9Z2iboLiV1fFwc9kKzYQvOPoPwmoU8PF5QtTRYxlJy0OzuvgGTiQzVKLJxPY3sm13746kI
-	b6vg4OrQC7rYGOKm1AbSRvr/TnSPqsg=
+	b=SDihBCf0rJOP8aB0LDIdTPFrUZyMqIt95E8tiCVicWDl7o3nwX1YGadNiCZmk2+RlAEVfp
+	Na9bXAiHj2h+BwDntkKMxbpqMlp2dpGUjq7ygHXJzHDXJQTd1ZMMbx2HJc0NGRf1psMUGP
+	WFrN3i8QhKO27jbBj9U571wJF54Ps6A=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=K+vzRBGj;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bTMdzfSB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775728203;
+	s=arc-20220608; t=1775728436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xy0aFwR9hSVE9FugkDv+q+eeKeSUlXGFf66m16wYZTY=;
-	b=MUp9O7kWmqE+R5EsTEl9orOGKUMnGloPLUnniyPzZWTWifVK/1M0axeriX0IC7hyux7Snt
-	2VvhgiPkwBknxmNaLvBOy74iEYIbpv35zula4ErcbwG6L08of3wx4nKo96ckXl7CYpp1X1
-	LHam6XukxEbju8NKKxBXMTFsj13nLds=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 638Iaujj2591197;
-	Thu, 9 Apr 2026 09:49:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xy0aFw
-	R9hSVE9FugkDv+q+eeKeSUlXGFf66m16wYZTY=; b=K+vzRBGjvv0GAIELRmHXmD
-	AG6FzR/3WhCmO8/ju6+uAMrPbP7dUxcnUlxfbOHkx3Ze+dbfNZjTyJ0It2b817uz
-	9VtfWlqv8A7rM3Fb5kiH4nREVPRyKUtiPIDfNIr4JUYg0rt7eWWV/n3rZ8uT7IPx
-	O8fp/10P7+DsuvOOo9gt0G0c1carPsMhGKwSuxg0PkKQHRH/t4J0esZUSAWDMmb2
-	lXND6DRl8SYzsVnf/eeFtBXlo9d4rDKIeV75Jc63J9TDmVBNjZwG1qW4B3yRdDPP
-	C+7fNp0x0kxW/2lF2ClH3IDgc+TetEvioJGt2SjaDSVFwuB61COotbwfTpKekMRg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2ecbv6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 09:49:56 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6397qZQh030062;
-	Thu, 9 Apr 2026 09:49:55 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dcme7k231-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 09:49:55 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6399ns7F21234386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Apr 2026 09:49:54 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 744FB5805B;
-	Thu,  9 Apr 2026 09:49:54 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB9D758058;
-	Thu,  9 Apr 2026 09:49:46 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Apr 2026 09:49:46 +0000 (GMT)
-Message-ID: <eb94ebf2-cc19-4a1b-962a-98346d7b7b6c@linux.ibm.com>
-Date: Thu, 9 Apr 2026 15:19:45 +0530
+	bh=HzDQ5KMBnxs1G8MNDDupe0Rojr2+4O8EdgztzAMeJIs=;
+	b=WmrevfjmlxYzNfJbgBctV8gkWMxNYpscrvB6wV6DOUoo+JfQuzPr7OGalYH2dwGo4E8767
+	9XX/cb07TsjU7PsvDw0IJuSSSnx3uZlftPhL20z9MiA/7mIQBBFcBQSwovFKvdKTZhzrLE
+	wx2Chd5tw2da/NU4vJsDXOXCfCAWBJk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4325843CE9;
+	Thu,  9 Apr 2026 09:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA044C19424;
+	Thu,  9 Apr 2026 09:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775728435;
+	bh=7I0MXF+l8nyjZuATbUmKGm0GIf+FqeD/ZIqKF9lA6sU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bTMdzfSB/UkQKZksXO3wU9KqnVN6BbkOWqhv8s2eX/ynWdibrAMAZaToNN9MXVRrH
+	 yHR4iR1EtLGrIka0F02Okxgwy5xmS7Vm2eZ8e0jCVgaV1kCidZy468rtia507gLsnb
+	 9H9fQa11DQmsjSXt084PvLirULuXw7u0OLDw7JQRdk0AEAEU/xgE1+g6S9ijiKNS7M
+	 USMnYBd7HvEGSUATMngXbLKeNVevlr+TtRS/FZ3DUVfUtggH2iOc+oTWnNOvwpEBk+
+	 7LU3NerSxO1brRPvIe6vevkEyAaSAArGsJOTuUlNr8TbXCCv6vjPLAXr/O22/OAHxV
+	 RIjOCDxBYU51g==
+Date: Thu, 9 Apr 2026 10:53:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: xu.xin16@zte.com.cn, hughd@google.com, akpm@linux-foundation.org, 
+	chengming.zhou@linux.dev, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, 
+	michel@lespinasse.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+Message-ID: <add2XbcdFpCaT5tK@lucifer>
+References: <9950c6c1-f960-58c0-4312-e4f5ac122043@google.com>
+ <20260407142141059pWDasxUAknP5rqvAMl28K@zte.com.cn>
+ <adTPQSb-qSSHviJN@lucifer>
+ <8332aedb-e499-4789-8f46-832df8d60224@kernel.org>
+ <addoN3ur7GtiKOFf@lucifer>
+ <015c3268-9c95-4314-b28d-c5e33eb2fb86@kernel.org>
+ <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/53] selftests/mm: hugetlb-shm: use kselftest framework
-To: Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-        Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-8-rppt@kernel.org>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260406141735.2179309-8-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: xVUArB0X5A1WkQ7OklpwXZUw-uOrUNTA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDA4NyBTYWx0ZWRfX3um++GYn/J4e
- k/DgGJjCM1y8fPjGK7gNbOtHEsHE5jmcxN2buo4El6zG96Exk+rR6WGBFy9t+Io9E/UBql4hU0K
- 5SFZTOxnwwSPPerkd8DGIoOToaZTpQOdDo/N7BysKTlrP1hIRfXMyuCOF3kOPL01IOz5FrRKn0o
- hR/j0y4GixOIjounq2lf0a72RH7LlLUix8IZmMCqZ6W+nkV863yeza++96H0o6i1KSf7R21XMnU
- OwY7ubbPDYuuK0v7acedxmCe4kJZBJ9SaWMGG/XY3GlT9IF9WOhr3Tu2FrOv6WyBk9Auknj8gCU
- G46WeboS1YbkgDfK3cqXGtuaQ9IcaboxzHPH6yrgL+74Nd/xVpPPNm+JhDkD5D7ppGSMMqOqHZ9
- du+wCRQ+KGPExKXgTtRoEBhqKQzFTlY4xhtsPMoStsYqkgDGz6k24fxcl53FbvVyWtpew1dOBEr
- XoczcdN8WD70P/Iwmcg==
-X-Authority-Analysis: v=2.4 cv=Cfw4Irrl c=1 sm=1 tr=0 ts=69d77645 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=rVzG8BGgQnyHgGzjHBUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: p7hSlYH4aeAOw0kLZuXNyaF_sX3yLzpg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_02,2026-04-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090087
-X-Stat-Signature: 8yjhqqnhyi3a1p3cnzmpmez5w1hxi5ba
-X-Rspamd-Queue-Id: 1E88A40010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d659edad-863c-498b-b215-b9f98d15e0ce@kernel.org>
+X-Stat-Signature: uibci6egtw18fidesrwg5skpduwbfnrh
+X-Rspamd-Queue-Id: 8FDA7140004
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1775728202-824327
-X-HE-Meta: U2FsdGVkX1/rClGyAFQUb7DiZsSgNg5U5hyuv9ppBKfWdzbQIEubIHvzbGj4mjQ4BPNQNG6KlTPDy0Dsh4k7J1B1FqU5Yl2m+B5Eif2C+9Sdn9bisWuANmCqw1iat3eNO5YvYItP5UqPgaDR4XC59gt1LelnfA4QoORrnfVcW4XMB1RHMe6GXZlIPmk5/qLR9uV/Ep//i2nRSRBLbNAha3dNn683t9vGtJtMZrldbhr3a6cidKcuACcDe6jShcbdORhopMDrPKfvQXlDMYiHyYWtKydkZLPFvAOiYR2prP9t0Nmzn7FHCXopxFccNHVZ2gs4QbSqH6xwxC0bKWUUSX/HfAQgEDOojs+LQViX9hZR/G/DCw18yi1eGEXjCjfF7VJPmg+TBAQjZbmVcUDv+r/Tf5wlz9wGg38pMROxS00wvQSOLujyj+JCw8ZlD56p02H5o96rB4jn0MI8pXQ6QdX9y0C+q+HdL5e9VyoBIJmCmE+RqvEzcJ52OafS5fFqAHFArqZcr30mwthjuSFFrjhZnf9zL4BGnszD7wZ1fBrGCC0ibWYjR1gon1wSXrCfyQXqNaeH6swpK9XlWlw52pTUl814eI22zh8CNaBCFYbjcLpV5D874JdiZ/B041UPLo+PSy+ZWAx2cVMK7m/bby8pbuK7imrN7RwpDnJ69jRGzNPrmo4DDVgVmvExZDlaJ3cdLTCBfcY1t4TZlkWL+yEAXboZH72/MNAxn1eTAoKbDolE1co7stJWJGOkJfSO9+jlpVE7n+UKt4Eco1F7R6YXPNiNYhG/vPguuL6oCv+bZYGd0PsGidus0wcug03xkjkGnY+Dq0iCE2PIx2i4PnUbRqnr78efhxwUQqS0cpZ1SKFjMr0Mbg==
+X-HE-Tag: 1775728436-545546
+X-HE-Meta: U2FsdGVkX18Ioa6d6REdoO3T1ptu+Oyky80R6VvjBkFP/dscXqdm4zSx9et8tQM3hofMa/iJoMJKHqt/BvIT+PiLJzDbK4YMjEUFZvFEjiWURysfeMbOiS/got3VR+S4qou/skxKbzYU5KNo0/IcETn5TpLSndJu8QivF0HwFHxnE3Zx6HbMlzB+l0mWnGr5N98iRV+AbIGFNdN+WqnlbXL/WUXwuKgGb1HLNWUEXHElyr1Sui0AGJccJYI/IAmdy6Vy0BxrpR6sOzXGXaOLt14x6Apx9XbP97rGLDmbvV+k3rvPVHWQB4Ep+0dNuSPZhA9FZQl/NoIbB/12Tey2NDSQDweD7P0vEhcVbKNVE2z9wq22JhhEeRypAxB80QP25sQakfAo/Un4rhMcvrE05J1lgMoye2DoTTcgCchqHUDTAJmN98ztyHLKdWwiCnUdt4OREzYJcNLL1gNnU8p0H2xL4qy1WOJ6PSdkc2+QDQEWxOrr4mleOSOU7Q7kEWSS9I1JcLnQkHyt6WWNrpDE6ItUMGhmjZN2UKGNl/LwOt1H87yE4VdNZHaFfCPrgAHSAZXoJSCGvt2cceBL2yOaV5sI+Aqnw+nKwaiXZAe2kj9koA46KawGdLRQfaWdQyL63PWMgX8DaFGge5g/AcqO4kNKKFOMtp/rW7HRlbV5HNr+8dvjNHBhZEDggUntcdRTI+WOezAaNTnZ5X/jHesjRqECBClFZGtifdmJwYvJsaCQsu+g5sAZaaIVs0g4PHAlqkyqvopt2Ke+ui8g8RKmNIyiaVMVuTJ05w2cQb2v/UIe4FuYkFalXwda1+UdNMicSaLe35XD7O4UzrmOnTudZENZ2mT5Sr1ryEzXjKxVMoZf01dBUJeiyhTKGY/e8ZjChGX8CUZ5H8rOKSDQ/2OFN098R7PKL04TrKX6Nt4CPFnuNqdNGf61yooyC63m9HPsxK7+TkazbPC/EbqQ4FT
+ OYkj24sH
+ Uv+MX1HXZZC0OCJL3P/6fwaPYKXsen000ToIJQj79l0hsEd+8bmj2kBqYY5XNOht+hPBXLqWbal0sBDIMhTcw2D2zjFXg6yQZ4vKL1v65Rqc03Phv1GQZbnL7VeLKF5RFqoF3sg2Zbmar1wjPOvUZ2zoYEUDLJg/rVCMBMye93BAGBo0Umyx9z/zFRMOqkwau9OusTEJ1Jlpeh1jDhntiYjRM2/SLa8RmSoA7hzqVmQH6Tjwp4lO4kM335qsGgeRG8FjM4G0uXgVw5nUA765jYZfmhzIQIOBGwKYIky6H7SaYjc8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,122 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike
-
-On 4/6/26 7:46 PM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Thu, Apr 09, 2026 at 11:41:46AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/9/26 11:37, David Hildenbrand (Arm) wrote:
+> > On 4/9/26 11:18, Lorenzo Stoakes wrote:
+> >> On Wed, Apr 08, 2026 at 02:57:10PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> I'm wondering whether we could figure the pgoff out, somehow, so we
+> >>> wouldn't have to store it elsewhere.
+> >>>
+> >>> What we need is essentially what __folio_set_anon() would have done for
+> >>> the original folio we replaced.
+> >>>
+> >>> 	folio->index = linear_page_index(vma, address);
+> >>>
+> >>> Could we obtain that from the anon_vma assigned to our rmap_item?
+> >>>
+> >>> pgoff_t pgoff;
+> >>>
+> >>> pgoff = (rmap_item->address - anon_vma->vma->vm_start) >> PAGE_SHIFT;
+> >>> pgoff += anon_vma->vma->vm_pgoff;
+> >>
+> >> anon_vma doesn't have a vma field :) it has anon_vma->rb_root which maps to all
+> >> 'related' VMAs.
+> >
+> > Right, anon_vma_chain has. Dammit.
+> >
+> >>
+> >> And we're already looking at what might be covered by the anon_vma by
+> >> invoking anon_vma_interval_tree_foreach() on anon_vma->rb_root in [0,
+> >> ULONG_MAX).
+> >>
+> >>>
+> >>> It would be the same adjustment everywhere we look in child processes,
+> >>> because the moment they would mremap() would be where we would have
+> >>> unshared.
+> >>>
+> >>> Just a thought after reading avc_start_pgoff ...
+> >>
+> >> One interesting thing here is in the anon_vma_interval_tree_foreach() loop
+> >> we check:
+> >>
+> >> if (addr < vma->vm_start || addr >= vma->vm_end)
+> >> 	continue;
+> >>
+> >> Which is the same as saying 'hey we are ignoring remaps'.
+> >>
+> >> But... if _we_ got remapped previously (the unsharing is only temporary),
+> >> then we'd _still_ have an anon_vma with an old index != addr >> PAGE_SHIFT,
+> >> and would still not be able to figure out the correct pgoff after sharing.
+> >>
+> >> I wonder if we could just store the pgoff in the rmap_item though?
+> >
+> > That's what I said elsewhere and what I was trying to avoid here.
+> >
+> > It's 64bytes, and adding a new item will increase it to 96 bytes IIUC.
 >
-> Convert hugetlb-shm test to use kselftest framework for reporting and
-> tracking successful and failing runs.
+> As we're using a dedicate kmem cache it might "only" add 8 bytes, not
+> sure. Still an undesired increase given that we need that for each entry
+> in the stable/unstable tree.
+
+Hm, random idea, but I wonder if we could cram a bit somewhere that
+indicates whether a remap has in fact taken place?
+
+rmap_item->some_field |= !!(vma->vm_start >> PAGE_SHIFT != vma->vm_pgoff);
+
+(yeah obviously _not implemented like that_ but you get the point)
+
+Since remap case should be rare, then if that bit is clear, do the cheap
+path, otherwise do expensive?
+
+Longer term, my anon_vma rework should fix this more broadly :)
+
 >
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   tools/testing/selftests/mm/hugetlb-shm.c | 46 ++++++++++++------------
->   1 file changed, 23 insertions(+), 23 deletions(-)
+> --
+> Cheers,
 >
-> diff --git a/tools/testing/selftests/mm/hugetlb-shm.c b/tools/testing/selftests/mm/hugetlb-shm.c
-> index de8f5d523084..10e4baa091f2 100644
-> --- a/tools/testing/selftests/mm/hugetlb-shm.c
-> +++ b/tools/testing/selftests/mm/hugetlb-shm.c
-> @@ -28,9 +28,9 @@
->   #include <sys/shm.h>
->   #include <sys/mman.h>
->   
-> -#define LENGTH (256UL*1024*1024)
-> +#include "vm_util.h"
->   
-> -#define dprintf(x)  printf(x)
-> +#define LENGTH (256UL*1024*1024)
->   
->   int main(void)
->   {
-> @@ -38,44 +38,44 @@ int main(void)
->   	unsigned long i;
->   	char *shmaddr;
->   
-> +	ksft_print_header();
-> +	ksft_set_plan(1);
-> +
->   	shmid = shmget(2, LENGTH, SHM_HUGETLB | IPC_CREAT | SHM_R | SHM_W);
-> -	if (shmid < 0) {
-> -		perror("shmget");
-> -		exit(1);
-> -	}
-> -	printf("shmid: 0x%x\n", shmid);
-> +	if (shmid < 0)
-> +		ksft_exit_fail_perror("shmget");
-> +
-> +	ksft_print_msg("shmid: 0x%x\n", shmid);
->   
->   	shmaddr = shmat(shmid, NULL, 0);
->   	if (shmaddr == (char *)-1) {
-> -		perror("Shared memory attach failure");
-> +		ksft_perror("Shared memory attach failure");
->   		shmctl(shmid, IPC_RMID, NULL);
-> -		exit(2);
-> +		ksft_exit_fail();
->   	}
-> -	printf("shmaddr: %p\n", shmaddr);
-> +	ksft_print_msg("shmaddr: %p\n", shmaddr);
->   
-> -	dprintf("Starting the writes:\n");
-> -	for (i = 0; i < LENGTH; i++) {
-> +	ksft_print_msg("Starting the writes:\n");
-> +	for (i = 0; i < LENGTH; i++)
->   		shmaddr[i] = (char)(i);
-> -		if (!(i % (1024 * 1024)))
-> -			dprintf(".");
-> -	}
-> -	dprintf("\n");
->   
-> -	dprintf("Starting the Check...");
-> +	ksft_print_msg("Starting the Check...");
+> David
 
-
-Do we need to add a newline (\n) here? The output is currently printed as:
-# Starting the Check...# Done.
-If this is intentional, please ignore this comment. Otherwise, it looks 
-good to me.
-
-
-
-./hugetlb-shm
-TAP version 13
-1..1
-# shmid: 0x1
-# shmaddr: 0x7ffface00000
-# Starting the writes:
-# Starting the Check...# Done.
-ok 1 hugepage using SysV shmget/shmat
-# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-
--Donet
-
->   	for (i = 0; i < LENGTH; i++)
->   		if (shmaddr[i] != (char)i) {
-> -			printf("\nIndex %lu mismatched\n", i);
-> -			exit(3);
-> +			ksft_print_msg("Index %lu mismatched\n", i);
-> +			shmctl(shmid, IPC_RMID, NULL);
-> +			ksft_exit_fail_msg("Data mismatch at index %lu\n", i);
->   		}
-> -	dprintf("Done.\n");
-> +	ksft_print_msg("Done.\n");
->   
->   	if (shmdt((const void *)shmaddr) != 0) {
-> -		perror("Detach failure");
-> +		ksft_perror("Detach failure");
->   		shmctl(shmid, IPC_RMID, NULL);
-> -		exit(4);
-> +		ksft_exit_fail();
->   	}
->   
->   	shmctl(shmid, IPC_RMID, NULL);
->   
-> -	return 0;
-> +	ksft_test_result_pass("hugepage using SysV shmget/shmat\n");
-> +	ksft_finished();
->   }
+Cheers, Lorenzo
 
