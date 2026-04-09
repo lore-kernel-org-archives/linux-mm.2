@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8218AEA3C4C
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 853B1EA3C4C
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:44:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A24A96B0005; Thu,  9 Apr 2026 06:43:46 -0400 (EDT)
+	id DCF4C6B0005; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D5C26B0088; Thu,  9 Apr 2026 06:43:46 -0400 (EDT)
+	id DA7066B0088; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EB056B008A; Thu,  9 Apr 2026 06:43:46 -0400 (EDT)
+	id CBD426B008A; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D78B6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:43:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 287891B841A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:43:46 +0000 (UTC)
-X-FDA: 84638681652.12.88534D1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7935240002
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:43:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1mGk+uV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BE2696B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:44:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A520140764
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:44:19 +0000 (UTC)
+X-FDA: 84638683038.01.54D119C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1BF8518000D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:44:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+UXO2Te;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775731424;
+	s=arc-20220608; t=1775731458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jwPYPiqvk2ZFIe1ouQWppxxtenc5NiuK1evhIvndwWI=;
-	b=u1A+mHmvJ5Qr45puytLkWQX3AaR5PNkdYjJTq8PCr+gE3x/0yn2X+4KmGuWb7Cvci1xVld
-	+28OWM5JDjQYhQxeKDUD1q/Y52RDMvO7GqlT1DrTtv3h1AmZfnPG7e/GcjnCLY5LIyPY9l
-	dRZCv3rdylvFQsquqU9gWuDOWLFWCGk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731424; a=rsa-sha256;
-	cv=none;
-	b=0jlE6iLSSysk6tBI+Alq+Pzr/SvTy7J9Pq2QQ0eOHnPuYgLj/d1Qld8sQv/SGwSxIYJg6W
-	FntbdJN+I7KEhoR5LAMdkVd2GOKa5Oop79lxn1XIDCtqqlKHIRGTtYrv3+SlfhP3kzw714
-	IkpA2Sq96o7KrzNhX1mAATpUGjy9dy0=
+	bh=Y9Lfw49qVFwn8/7T7s5W8rSUWCFn3rVo5/dWn6c2Wwg=;
+	b=QQePM46x1uoc76rH+VZBfc6nP9Yrb0xGzKM506tlC6C30YhG2/h2gfy07LYOPTMlCcofe5
+	Zg10e3PesNuCv0rgGhtd/L6oDGQoYqATXIvi9cKqxC7HZTXdmKfkIEVFfSVndUaQ+jPgGN
+	RwVD7JvdbVZ0Am2pQw5zmEBHjInz66U=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1mGk+uV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+UXO2Te;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775731458; a=rsa-sha256;
+	cv=none;
+	b=W3jxFTHwW7vpeH5Owf/aQQeEdJnhM5sv82v6+NrBAZ7/RHZ1m4nuuHdwM0XDXPeOI0HuTQ
+	YXYE/htv6yJfdUEIdAQ+/OO1RPxMB0f8e2yrjgWNLl0MSwGNi72ljO6XOBuGRB9dpU5RTl
+	PHHwmu6lTCJxGg/fNsyhSoDbhEngpeI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E4F2439DF;
-	Thu,  9 Apr 2026 10:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C869FC4CEF7;
-	Thu,  9 Apr 2026 10:43:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8175160121;
+	Thu,  9 Apr 2026 10:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65285C4CEF7;
+	Thu,  9 Apr 2026 10:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775731423;
-	bh=5ml8mhhklm4HBRD0vDuN9qP5ofPgl4kjNMeUuK18QGc=;
+	s=k20201202; t=1775731457;
+	bh=4MFRTaxl6iMcBtXLBSVYfuS5O6SXdiJUZpY2SawBjc8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q1mGk+uVsWVNNwAuFFURUf9UZHih8sBBd4h80F2ws7Tq9q+/Jto0fxGGLVvf+JRHA
-	 CjfTETaNUEXPjrlE3a+FuxugUUMxCNJw7koLBXE80KdImHw7TBsovAyAO0rjrjUzw7
-	 67ZAuIl92UvVjlryJjQPf68g9kb+Nw7QvnLqVFzhgp+JDT2Q9wCyZ33f5SRhvhJRDj
-	 0j6+n69s2Yw+UENuNAA3BlEQdqm5EHUvsPjly9dIYXKnZ3fygeqjMI9Wu9SKFRzdS1
-	 8XudLwhctfto2SuTccbP1+UdzVZSRD5HXBYkYVlHWg8ZJNsLbjpUgLZ+QCXcLvKIsY
-	 RWTYoAK12wh2A==
-Date: Thu, 9 Apr 2026 11:43:37 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Denis M. Karpov" <komlomal@gmail.com>
-Cc: harry@kernel.org, rppt@kernel.org, akpm@linux-foundation.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, jannh@google.com, peterx@redhat.com, 
-	pfalcato@suse.de, brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	usama.arif@linux.dev
-Subject: Re: [PATCH v2] userfaultfd: allow registration of ranges below
- mmap_min_addr
-Message-ID: <adeCuu2ByxD3Sx1l@lucifer>
-References: <20260409103345.15044-1-komlomal@gmail.com>
+	b=N+UXO2TeiTIt2GFrX3ah9Dw/XzmFtWQulTegodX0DtOeZOuE4Zwz0rKKOodMPXVoB
+	 tXoECHVST8Lh/mfI4yCT90UGU+vsLJF7yzaE3EVypbWuCWENDAMm/ZTXTqjlwZwOAn
+	 ph6As8YUo+OkflICmg0PR5im7kdyI+k4F7/SqXlAhmKXFhiwF0EGU4J82t/NrXeruW
+	 hAAWM/6vXPqi3EiwPVTR0LmdsgiUtIRjPmIBXCMnUCAqfRL2SVXKpM6zYNz12Cbnp7
+	 8/vVPKs7GkxnW73PBe/H5IviH/fi8r0K1xSwPQnV/MVFjg1+lE7OxvPF3LfnS5eqSA
+	 XlMvyxa9ZqFQQ==
+Date: Thu, 9 Apr 2026 13:44:11 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] mm/sparse-vmemmap: provide generic
+ vmemmap_set_pmd() and vmemmap_check_pmd()
+Message-ID: <adeC--_dkgWHdSPj@kernel.org>
+References: <20260404122105.3989557-1-songmuchun@bytedance.com>
+ <20260404122105.3989557-2-songmuchun@bytedance.com>
+ <adIKIhRL6q2NIgnj@kernel.org>
+ <D0D4B0DA-56F3-4ECD-8855-96C21A6DE1F0@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409103345.15044-1-komlomal@gmail.com>
-X-Rspamd-Queue-Id: 7935240002
-X-Stat-Signature: 97y36edx78ozmpg96y6h9h6oxyjx3icr
+In-Reply-To: <D0D4B0DA-56F3-4ECD-8855-96C21A6DE1F0@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775731424-893230
-X-HE-Meta: U2FsdGVkX19H0isBHRlnfhs8SQs53C6wQkRz8uJPg4uQAr6Mk02jTTQv/f47KC15SJuhHFu47+rbcAez1LcETs2qZSyhU/lX7a0QqN5TRXHst3WX9I2MMxo+pP5JNHS9i9I3udQpWisKWoaQTQEf0Cvrg+p1p5v9fMhuMgGXQ78EMUVe4oJYWs/6XGgkYBT7LN2sF/dP9JddA3WFJgczjZ5hH9zSRTiVDCIB1P3pIKZuDkCRcsE257O+RKGyX5H+9tyzXIum8JS+IouQLtXZ/J1DcQOJesHw+0is8VD6cqvaPZCfjwVyFSIdFOcod236AVdMuDhGnIpX8Jzg/KOlm06Q/PE5iyoNJlAYGL2yHDjQ+3TafMcCNe/DnESCUb5O17JwrNcmLVqG2a/vVRbRI/mwnkx4bbZ47OxYnSCSNoX9wgZfcG9zZeJrKcgdyeonPaPuyjlDzSedc34Sy3BBSmyMaqLqh6Wf5Jmcs6nVEDDHdU0rNd9Lv+LDQuuB0RwZ6l7yzzMzUETfC45PCpm3ZqzTB6pmPKxVxGFLwyd7y4bdHVo3Ie9KDudN+HgBgQtzVzelvQDbtajOjsaxpLr+xdmG0HN10Cn6xJNn1FjWtHoWD5PE63XYy6VmYYlW1LUGd/TQNDDOV7RiVOZN09SS0C/F52r6Rhw7HJlkYU72wT5ImuejbI4q3hoLXIrFzc/qG4wkv6YeQiSCWuUoSfTN2O9jaGZpKw/+4y8aIgv3DabDe0La8igXmjFztLKwS16GFn0TSZInfFsEzH8WIDQMTS+YPoT+U3Fkmj8YuNeP3ZSYAqPUTNm765P2dPSZbXxsRF8AFifXShitPxkMwetDCq4RiPPnGoQQrU3k5lO/Jp64lQx+P/4oRhOBIBgoUtt1Zrg4/YdCuBp1eqFwmFWgJamrBTw+LnN1hIEYBqOlOgBxMDiz5SNtxgSPSVJC5c1mdSVQT6osc1J27kaXKQE
- wXkMr8YZ
- /pfYOhx8R+bL0s8jLgnFYWpAAvcGgNsReOGuHXFvz/X3eVc5MEeTHET5nN8zt1CovP+yaE6RXqgt3bPKScNS0irm6yqJytQ8/i71ykPdo9uhJDrgH2snkpJ+U3YTacN9fWPp3WuFi8z4Zo1WZyjTZ8C9RE3wl6No6e3EODcJmLLtYfzdz2p4SwjUyjeKjrlrHfVf1PK6Q+OEjzxYKZQ7g47x789zVzkdoKW6o0ZbotlAgn9zPCUejTLX1zpHps0HS0x5mRy/5xANjohmegHi5Ak8eDTG7xpGcUsYI2cjKqJ5lEQn6VlpJ7XHgjv2z+gBzTZxAOV4A1Hk32BuHEHvufIDLOmcrDQ4invOt
+X-Stat-Signature: rcmphh14m18h9yzt1bf6zzrikhza6cmp
+X-Rspamd-Queue-Id: 1BF8518000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775731457-983482
+X-HE-Meta: U2FsdGVkX1+muurRNOawyDY9cZYype6drgjNg29agGkrjZZiLJKjV/D8uN+UTRDuxFL8C8xWBkBoHFKlvR4+BVwJG2Vw+IremDpkJbn4kUrViYByD4IfEoZxoXI4HXLp1vI8qzk/oXijuotevVTGjXBnN6kvWSupdXQ3nDV5+Viw2dPZ8hw8f+e39VmbwE1FTaF2r351/fmY03J9XhVBRqlwq/z6jawkP+XyuhvA6zloCh3rLBohvzvNjMvgkhuNImU1r+H/1vcrtb12MPTewAn57XOnNE4QDfaPH+R04eBYmdlvy7jXS0vfRlcz6gPk7d3UxNZYMZAjCLeCkHUGMBlBUPy1VMe7dj6T1MODJDSeqcNf8luvGpD06R1ssFiS8rCCgt9S57OaxaIjVfis5tX115unZLmTpw9dr9hbhvjoMpLT8K3p8rG42zjaQPyHSjyMTAuaFkDObkbYgSlI0pgiF0TFPKBVR0gf/9bw52hhgAgagyEmCDF0UnSIAOkUctwyNWNf/K27KmgluAP/NcY1yURbxDCBKOctIcpZTUut01y92BF+0YlzKKRawNDV7ktF8VSEms8CUlrFPN5CEiJOoE9NITkdERHMXbYdSWNBtzTqcuKoP88qbJaVHedjPj2+4FXfWc7k+uDuBSdOuAYWGt/Wj+ANJOQvPROL5AjDsPkpsYrukD3BRHBDI3kZSZ2Gw97WiX/fDIXOKauoYfPANgYAW243imL8xkI6s6LP46gOGbqpMn8no/SinCkHOG5CX6oQSZZ4ol2Pus44EqwqcOwsYAUzKZkr7iGam8EzaV30LMatds6BemC7qUIFQ+IbLl+BobR1ET5iNBu+ZWQRSHtHSmBOWpp6fVfklOR6sYcAIt3nDNbhjttaiioV8q0Rcj1udsI/lFVJiVOgucOXJXnEG4bk+IkYbVWszY5qS3dmt0EaELy44Ue6JB/t4I93P/Ec1pyWUH/tTPb
+ ILx/8aGU
+ wdiuu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,49 +100,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 01:33:45PM +0300, Denis M. Karpov wrote:
-> The current implementation of validate_range() in fs/userfaultfd.c
-> performs a hard check against mmap_min_addr. This is redundant because
-> UFFDIO_REGISTER operates on memory ranges that must already be backed
-> by a VMA.
->
-> Enforcing mmap_min_addr or capability checks again in userfaultfd is
-> unnecessary and prevents applications like binary compilers from
-> using UFFD for valid memory regions mapped by application.
->
-> Remove the redundant check for mmap_min_addr.
->
-> Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
-> Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+On Sun, Apr 05, 2026 at 10:07:36PM +0800, Muchun Song wrote:
+> > On Apr 5, 2026, at 15:07, Mike Rapoport <rppt@kernel.org> wrote:
+> > On Sat, Apr 04, 2026 at 08:20:54PM +0800, Muchun Song wrote:
+> >> The two weak functions are currently no-ops on every architecture,
+> >> forcing each platform that needs them to duplicate the same handful
+> >> of lines.  Provide a generic implementation:
+> >> 
+> >> - vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
+> >> 
+> >> - vmemmap_check_pmd() verifies that the PMD is present and leaf,
+> >>  then calls the existing vmemmap_verify() helper.
+> >> 
+> >> Architectures that need special handling can continue to override the
+> >> weak symbols; everyone else gets the standard version for free.
+> >> 
+> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >> ---
+> >> mm/sparse-vmemmap.c | 7 ++++++-
+> >> 1 file changed, 6 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> >> index 6eadb9d116e4..1eb990610d50 100644
+> >> --- a/mm/sparse-vmemmap.c
+> >> +++ b/mm/sparse-vmemmap.c
+> >> @@ -391,12 +391,17 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+> >> void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+> >>       unsigned long addr, unsigned long next)
+> >> {
+> >> + 	BUG_ON(!pmd_set_huge(pmd, virt_to_phys(p), PAGE_KERNEL));
+> > 
+> > Do we have to crash the kernel here?
+> > Wouldn't be better to make vmemmap_set_pmd() return error and make
+> > vmemmap_populate_hugepages() fall back to base pages in case
+> > vmemmap_set_pmd() errored?
+> 
+> Hi Mike,
+> 
+> Thanks for the review. Let me explain my original thought process here.
+> 
+> My assumption was that pmd_set_huge() for the kernel virtual address space
+> should rarely, if ever, fail in this context. Furthermore, if we look at the
+> architectures this patch replaces (e.g., arm64 and riscv), they are either
+> ignoring the return value of pmd_set_huge() entirely or lacking any graceful
+> fallback mechanism anyway.
+> 
+> So, to keep the initial generic implementation as simple as possible, I used
+> BUG_ON() as a strict assertion.
 
-LGTM, so:
+Fair enough, let's just make it VM_BUG_ON().
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
-> v2:
-> - Remove the check entirely rather than replacing it, as suggested by
->   Harry Yoo and Lorenzo Stoakes.
-> - Added Fixes tag.
-> - Link to v1: https://lore.kernel.org/r/20260407081442.6256-1-komlomal@gmail.com
-> ---
->  fs/userfaultfd.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index bdc84e521..4b53dc4a3 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -1238,8 +1238,6 @@ static __always_inline int validate_unaligned_range(
->  		return -EINVAL;
->  	if (!len)
->  		return -EINVAL;
-> -	if (start < mmap_min_addr)
-> -		return -EINVAL;
->  	if (start >= task_size)
->  		return -EINVAL;
->  	if (len > task_size - start)
-> --
-> 2.43.0
->
+-- 
+Sincerely yours,
+Mike.
 
