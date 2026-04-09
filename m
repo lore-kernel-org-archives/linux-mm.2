@@ -4,105 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E22E9DE6A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5223E9DE68
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:51:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A14F6B008C; Thu,  9 Apr 2026 04:37:35 -0400 (EDT)
+	id 0CA896B0005; Thu,  9 Apr 2026 04:51:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151846B0092; Thu,  9 Apr 2026 04:37:35 -0400 (EDT)
+	id 07BDD6B0088; Thu,  9 Apr 2026 04:51:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068736B0093; Thu,  9 Apr 2026 04:37:35 -0400 (EDT)
+	id EACA06B008A; Thu,  9 Apr 2026 04:51:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F5A6B008C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:37:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F9D11B7E99
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:37:34 +0000 (UTC)
-X-FDA: 84638363628.11.25645FC
-Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CF991C000B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:37:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D208E6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:51:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B49E1A06C9
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:51:56 +0000 (UTC)
+X-FDA: 84638399832.14.C02685E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 67C52C0002
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:51:54 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775723852;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slKIIxZHPJtfzl3BxAXEGV+ymAm1hnWUImamO1FevdE=;
-	b=LJWymxJ3MRe8pm7PHqwBtfcY8fZIh5hTVnn+hhwonGPcSx83+EzBhhOwquNDzYugr+cfBO
-	Us1JlBZ8M0jg041ZKjtdUZj2f3AwtQ3GrMQOWXPuoJvWihUnXjzmvF4dD9D5QddxhiU4f8
-	iuPQMhE7dY2RghN56ZPlNPe5jbFzLLo=
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1/6mHsbJ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zKA35l6H;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1/6mHsbJ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zKA35l6H;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775724714; a=rsa-sha256;
+	cv=none;
+	b=AY6Ov1xOQ/TE8Tl5s2EM+3CGrshuDb1AaMnllJYAvd5ab3VZKi/qBSegwDYGA6HDnxZVtb
+	MglvXkF2hYcddvsjKuCdV2vLqTR2jpP8ipYAbDZ1J/p49CZy8spBVKFg7trbxOErFJUoXQ
+	KQFy3NAexoYi5YYFYOXUukHLbq/4Qzk=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775723852; a=rsa-sha256;
-	cv=none;
-	b=32djK0RHBoCJMQFo+CqEcho7PUELfZiq1w3OmxmF4tYdkejc4B1Yc6VU+zsd52V8RCVT4Z
-	Ukfb972SA+SeusD4oUwoelEy49z6U1orZgzrzqXiLML/VwT3NRfAOvEg40hp+gUV+CWTXG
-	E1Rh1LsOINUs/bsTqg7IND7QgDW93fE=
-Received: from w001.hihonor.com (unknown [10.68.25.235])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4frtZH5ZGkzYkxt8;
-	Thu,  9 Apr 2026 16:36:23 +0800 (CST)
-Received: from TA011.hihonor.com (10.77.232.85) by w001.hihonor.com
- (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.27; Thu, 9 Apr
- 2026 16:37:24 +0800
-Received: from TA012.hihonor.com (10.77.228.68) by TA011.hihonor.com
- (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 9 Apr
- 2026 16:37:23 +0800
-Received: from TA012.hihonor.com ([fe80::9e31:9fdb:69fb:928c]) by
- TA012.hihonor.com ([fe80::9e31:9fdb:69fb:928c%8]) with mapi id
- 15.02.2562.017; Thu, 9 Apr 2026 16:37:08 +0800
-From: wangzicheng <wangzicheng@honor.com>
-To: Barry Song <baohua@kernel.org>, Kairui Song <ryncsn@gmail.com>
-CC: wangzhen <wangzhen5@honor.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, "kasong@tencent.com" <kasong@tencent.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
- = 0 or 201
-Thread-Topic: [PATCH RFC] mm/vmscan:Fix the hot/cold inversion when swappiness
- = 0 or 201
-Thread-Index: AQHcxpp3lWbWYl52/kGrIYBkwEcKwbXTsUiAgABHaICAAZuggIAAusoA
-Date: Thu, 9 Apr 2026 08:37:08 +0000
-Message-ID: <6e9abeaab88f4053a34ced0b3b4be165@honor.com>
-References: <7829b070df1b405dbc97dd6a028d8c8a@honor.com>
- <4451bdc432864aebb54f401eee51ea53@honor.com> <adUM54W3WYwEFj3J@KASONG-MC4>
- <CAGsJ_4yZHjSq=d1g7dJC9szwRVLuHqLpWt0Cphi7npzrQz6p3g@mail.gmail.com>
- <adW_O1-QAQadQ68-@KASONG-MC4>
- <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wcQTrp-zQ=pj2v5Pa3z_SLs56p+t2OmG6myz7GJdqb2A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.229]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1/6mHsbJ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zKA35l6H;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1/6mHsbJ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zKA35l6H;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775724714;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S3UzexDVgj3hY9DW/GeYeGvfNpeCar+zlMKW2FpGQGE=;
+	b=XQ40mHsuZWpuNWgk0KBdzbzRRcuiGSc3NdgP+iGgnf8bNlrHmxZTOu7YblbWn57FZJSAFy
+	eqlWdXzljEo3eeFMRt7sDQ3HdV264e0It+Ocewn2Tg5Tl0r6TjbewOq3Ju8pXHyFzowafn
+	FTen4gaXOR5lD6yIPuSEfzaHUb27Fd0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8A7BB4EE4B;
+	Thu,  9 Apr 2026 08:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775724712; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S3UzexDVgj3hY9DW/GeYeGvfNpeCar+zlMKW2FpGQGE=;
+	b=1/6mHsbJZhTkDFD+R641iqLHXBrz3ldYShDidr0cDdCyGKoyiyl4PtofD2WC+Y6FZl6xzG
+	rHX3DQKy16EHVdaLBNkD8+XyrOLfHdG/5BHrE5BtVSnOVt/g2z4quNErwzFc15LLGQKdVe
+	o8D6eosGdmB7kfRXYKk0FFHn6Ea9eRQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775724712;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S3UzexDVgj3hY9DW/GeYeGvfNpeCar+zlMKW2FpGQGE=;
+	b=zKA35l6HIsWaGbm41z3H5VCAGv6L9t/7wXvibqa7azITS04o8+vkqkoa52a2miY9val6ei
+	/bp5fTSZh7xdIzBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775724712; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S3UzexDVgj3hY9DW/GeYeGvfNpeCar+zlMKW2FpGQGE=;
+	b=1/6mHsbJZhTkDFD+R641iqLHXBrz3ldYShDidr0cDdCyGKoyiyl4PtofD2WC+Y6FZl6xzG
+	rHX3DQKy16EHVdaLBNkD8+XyrOLfHdG/5BHrE5BtVSnOVt/g2z4quNErwzFc15LLGQKdVe
+	o8D6eosGdmB7kfRXYKk0FFHn6Ea9eRQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775724712;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S3UzexDVgj3hY9DW/GeYeGvfNpeCar+zlMKW2FpGQGE=;
+	b=zKA35l6HIsWaGbm41z3H5VCAGv6L9t/7wXvibqa7azITS04o8+vkqkoa52a2miY9val6ei
+	/bp5fTSZh7xdIzBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D87B4A0B3;
+	Thu,  9 Apr 2026 08:51:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T9PhHqdo12k4JwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 09 Apr 2026 08:51:51 +0000
+Date: Thu, 9 Apr 2026 09:51:49 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: anthony.yznaga@oracle.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, david@kernel.org, 
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, jannh@google.com, Jason@zx2c4.com, 
+	shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
+ locked
+Message-ID: <urtokyyat4gw3zvfffdpz5yq6pvwrzjvc3cttpps2xiuucflzz@ujutvveagq2l>
+References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
+ <20260402235933.10588-3-anthony.yznaga@oracle.com>
+ <20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
+ <83b56ffb-6e2e-4c9b-b0cf-9f04b61ebe7f@oracle.com>
+ <20260408140251.6158aa7a56f71128471f327e@linux-foundation.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: CF991C000B
-X-Stat-Signature: oho9tbiq9toqguaitrh7nmj8jr5ygik1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408140251.6158aa7a56f71128471f327e@linux-foundation.org>
+X-Stat-Signature: uwkgpznq9zim36zmsekh86p8b3xuqgwo
+X-Rspamd-Queue-Id: 67C52C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775723850-513334
-X-HE-Meta: U2FsdGVkX1+cr1aK9LB56SUMaleaccoYuDZr6wmqk8A2pJPnbg/Y6Ejtgx60vmRLJIjc5frUfsEJ2tQtVsUphHIlcy4gKEWcwdSLLUM08uaZuQO7v5SltNhdC3f1HRtWwJbtD3HDWBWvLtgvJwUFua13nPNn/WGxTF6x+u7fP5Ir38Aib3TjKoxbuKq29NWNFV/KSkp+6FmkwKTI79KVsagLXxCC58GPyN2b1ThZFsfbop3Reakm44/1CX6riptf+xQasCG0yEFMZutfGXRP4Kei5Re3oa9dCQw2uX+7orx4VJfkuEhPhJp9xlM2XVza5lxqWwbJJGw3dHZpJcWJR5m21xuGSABM+ua42ft0ortSfmiFQxEwydqC911g6gkBDKoSPmhTjxDaLscvbCKn9XfpMpSJM+Vcu1fDswbVd4ktAhiT6k11EU/19+8yCNDT8fMhOvDj+sqyA0IxX6XbpsIoyFPdmZJem/gjgXzi9Yh2BIdODlrZqAPoLbkADAFhr8BIuUSZYLTfCZHWUkXF/KwJYfMcv3y3O8eZgbQjaLJkSzcbeDTku3nEeuYklzCZxvA05ZK5/ZAuExJJFEI/0BUntYvh+VDmkQNMCdOzsTsmIFLzgIVKoxL/ogwqq9ihyU2Mo9r1P5iQTkBJPmTP7J4BqbSPyd1Y3JgPNEeXJ0ZGsEdTCMxPUsv5wfSImPjY+V3+xZALEBjpGRbN6eD4zJP23HFtLBSYH8dQEX6ycFoZHReBKctYGH2UMLYjSSvSPl+3Iw7MrEa1tOduqrI3bxDDPN36612UarMpIoQZq5XAsBtho+XtRATwR7YRyNVN49BOJ0Xb/GH7zpi20AaqvhzZ7vy+SldnTr0Qj80UF09HiwFnSaCeJ5CB84qFJtf+hE7nBeX9PKjyWbtfTxLCHnIIJq38j6Tpwf47Bp0xYSb8oStTIY6mz9dS0fBPDJKcAGPUoPMTKhwpKOwsVyk
- 47+dGyCj
- QZwPz6rpaGZZZ4QRSrRWRRa04tQUTNYyINFVrIaTwurLJAZZqufAuLEq63l3wX7/RT/Oa4oVJ8S7iLu01EyecWrLjF/B86pCqxH55Ftgwt5eXEr2CaHZ79UQWuPu9rvuU6C/q2tKviCUzPikY9vo3PdhOPkSI+UgO0rXoqmEaH4HnZLtZEsLnFDfe2F4bcJgt90Fy0xPxTEGnYwShQdcEj/VEJwiEdlbbp9mAyVxSHzgy7QNJPJCaXA6Wgln6OeCyUMxtrlGcFwBgxlA7xkBvduub57eF/kKujT9VEFpZLQEdfrIS5hhl3/PIkzBU2JCp0MMnMdK+yLOOJ5oB5Nj96Yjk4QtJHQK9GPOMt+WSlnL/YC/TBwsrTvF6IJ8OQPOjt8NL55bjPl4EmkTPSNBuDKkvw/jzLUE3BeTBkMjUM4cKbDk=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775724714-979877
+X-HE-Meta: U2FsdGVkX18y0SPBQ1aD1ZOaWPmbYrplxsi7e5QRy5ai8xJEykegOok0ADAtiHx5mblMmqssm9pyHnnmfUdQZJDpjeX7itbLW65+b5gV/9eYQWAewncvNEmonHyQjYmOeC9GIiqQXv3d7uCTK04cjb5KOnWzTKY3yJpcSRaTXPT7jXQUJjcjtzQW7v9NBEQjy9l9J7Klzu2cGCp+U1nlTZsqL8+3msln453daXMzM1178sD1WJG/HcMx9LMql10Xs1AQFAuK5vygKa+rPcCxMNo2+PtV4Cb75ChhbnQHI7RQblJuLb+Z01WhGoVEtrt4DmR0GgGugUIoKR7eZBztGHzWNuY8y691h7RQpfFGoEaXxcYSIBAaCoSXFpJ0kPHmNDcxwVb4nmMzxVg/B0Ig7rnyCdqUYYz87PgCVsUpEEXHNo3OBXGMx9+phS7VRIvsf/FBthY1NHt2zqHpVrGs3iND8IXkjF1bdylrmyQ5DXzWjpt9T4JKFudNiEyBFkBbQ9hQk/zAj+iZ03I4uvKtoE2ye9KfmshhPMQfUhrgqdighK6olAVf8rlVVoWZWPJ/wTjpbPyTvI33EiSilaVCkL7B4MjK0dL1JQit+e+VQMA3HDDT3RgDYJJ9zUmlk8s7hJLjChRL1FKA4RjyeQnvyVGjRO0f8KEWe4OK3M7xMrQw1zBc4hAcEP2kBYBZo3uKZPzpRP4k6OzPd79bmAori+VOeSU7kXz/0aIDOPBNv/ykj9aqhVkoAd5VFNbNZ7UOKdC+XX2pDotfjRMKzuZ7Yvh2z2JAkFoij2dNPfta2b2U2Wz/uEBhsxR1MeYKiH+Bk0o/aKEbiJkstZ8cXiikIA5Hlftee082PbiUB6GHihfSrjj3dkLfn/veAoV/9V7t0Hqt9KgE3y8wMfNuDWdprpsWBrINU1o1jsrBCFW5fRBRp7XWEoP0nqX6GpxzetVy0a6Ts2re7NI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,90 +135,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiA+ID4gSSBzdXNwZWN0IHRoYXQgb25jZSB3ZSBjYW4gYWdlIGZpbGUgYW5kIGFub255bW91cyBw
-YWdlcw0KPiA+ID4gc2VwYXJhdGVseSwgdGhpcyBpc3N1ZSB3aWxsIHJlc29sdmUgaXRzZWxmLiBE
-YXZpZCBhbHJlYWR5IGhhcw0KPiA+ID4gc29tZSBjb2RlIGZvciB0aGlzIFsxXS4NCj4gPiA+DQo+
-ID4gPiBOb3Qgc3VyZSB3aGVuIGhlIHdpbGwgaGF2ZSB0aW1lIHRvIHB1c2ggaXQgdXBzdHJlYW0s
-IGJ1dCBJDQo+ID4gPiBtYXkgY2FydmUgb3V0IHNvbWUgdGltZSB0byB0YWtlIGNhcmUgb2YgaXQg
-dGhpcyBtb250aC4NCj4gPiA+DQo+ID4gPiBbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGlu
-dXgtbW0vYWFtNW5PeVhzMXNOZGpUZUBnb29nbGUuY29tLw0KPiA+DQo+ID4gSGksIHRoYW5rcyBm
-b3Igc2hhcmluZyB0aGUgaWRlYS4NCj4gPg0KPiA+IFJpZ2h0LCBhIGZldyB3ZWVrcyBhZ28gSSBh
-bHNvIGdvdCBpbmZvIGZyb20gQ2FjaHlPUyB0aGF0IHRoZXkgYXJlIHVzaW5nDQo+ID4gZm9sbG93
-aW5nIHBhdGNoIGZvciBNR0xSVToNCj4gPg0KPiA+IGh0dHBzOi8vZ2l0aHViLmNvbS9maXJlbHpy
-ZC9yZS1zd2FwcGluZXNzDQo+ID4NCj4gPiBUaGUgaWRlYSBpcyBhbHNvIHNwbGl0IHRoZSBzZXEg
-bnVtYmVyIGZvciBhbm9uIC8gZmlsZSBzbyBzd2FwcGluZXNzDQo+ID4gd29ya3MgYWdhaW4uDQo+
-ID4NCj4gPiBIb3dldmVyLCBJIHJlYWxseSBub3Qgc3VyZSBpZiB0aGlzIGlzIHRoZSByaWdodCBh
-cHByb2FjaC4gSXQgY2hhbmdlcw0KPiA+IHRoZSBtb2RlbCBvZiBNR0xSVSBhbmQgdGhpbmdzIGxp
-a2UgVFRMIG1heSBubyBsb25nZXIgd29yayBhcyBleHBlY3RlZC4NCj4gPiBBbmQgVFRMIGRvZXMg
-c29sdmUgcmVhbCBwcm9ibGVtcyB0b28gKGFsc28gZnJvbSBDYWNoeU9TKToNCj4gPg0KPiA+IGh0
-dHBzOi8vZ2l0aHViLmNvbS9maXJlbHpyZC9sZTl1bw0KPiA+DQo+ID4gVFRMIHJlcGxhY2VkIHRo
-ZSBsZTkgcGF0Y2ggYWJvdmUgaW4gYSBjbGVhbmVyIHdheSBmb3IgdGhyYXNoaW5nDQo+ID4gcHJl
-dmVudGlvbi4NCj4gPg0KPiA+IFJpZ2h0IG5vdyB3ZSBkbyBwYWdlIHRhYmxlIHdhbGsgKGFuZCBp
-dCB3YWxrcyBib3RoIGFub24gLyBmb2xpbykNCj4gPiB3aGlsZSBnZW5lcmF0aW5nIG9uZSB1bmlm
-aWVkIG5ldyBnZW4sIG1lYW5pbmcgdGhlIGZvbGlvcyBpbiB0aGF0DQo+ID4gZ2VuIGhhdmUgdGhl
-IHNhbWUgKG9yIGF0IGxlYXN0IGFsbCBvbGRlciB0aGFuIGEgc3BlY2lmaWMpIGFjY2Vzcw0KPiA+
-IHRpbWUsIHdoaWNoIGlzIHVzZWQgYXMgdGhlIG1ldHJpYyBmb3IgVFRMLg0KPiA+DQo+ID4gQmVz
-aWRlcywgaGF2aW5nIHVuaWZpZWQgZ2VucyBhbHNvIGhlbHAgaW1wbGVtZW50aW5nIHRoaW5ncyBs
-aWtlDQo+ID4gd29ya2luZ3NldCByZXBvcnRpbmcgd2hlcmUgZWFjaCBnZW4gaXMgbGlrZSBhIGJp
-biBmb3IgaGlzdG9ncmFtOg0KPiA+DQo+ID4gaHR0cHM6Ly9sd24ubmV0L0FydGljbGVzLzk3Njk4
-NS8NCj4gPg0KPiA+IEFnaW5nIHRyaWdnZXJpbmcgY291bGQgYmUgYSBiaXQgbW9yZSBwcm9ibGVt
-YXRpYyB0b28uDQo+ID4gSSB0aGluayB0aGUgcmlnaHQgd2F5IGlzIHRvIGp1c3QgZG8gdGhlIGFn
-aW5nIGFzeW5jaHJvbm91c2x5LCBZdQ0KPiA+IGV2ZW4gbGVmdCBhIFRPRE8gY29tbWVudCBpbiB2
-bXNjYW4uYzoNCj4gPg0KPiA+IC8qDQo+ID4gICogRm9yIGZ1dHVyZSBvcHRpbWl6YXRpb25zOg0K
-PiA+ICAqIDEuIERlZmVyIHRyeV90b19pbmNfbWF4X3NlcSgpIHRvIHdvcmtxdWV1ZXMgdG8gcmVk
-dWNlIGxhdGVuY3kgZm9yDQo+IG1lbWNnDQo+ID4gICogICAgcmVjbGFpbS4NCj4gPiAgKi8NCj4g
-DQo+IEFnaW5nIGFzeW5jaHJvbm91c2x5IGNvdWxkIGJlIGEgc2VwYXJhdGUgdG9waWMsIGFzIHdl
-IGNhbg0KPiBkbyBtYW55IHRoaW5ncyBpbiBhbiBhc3luYyBtYW5uZXLigJRzaW1pbGFyIHRvIHBy
-b3Bvc2FscyBmb3INCj4gYXN5bmNocm9ub3VzIGNvbXByZXNzaW9uLiBUaGVzZSBhc3luYyBhcHBy
-b2FjaGVzIG1heSBpbXByb3ZlDQo+IHBlcmZvcm1hbmNlLCBidXQgdGhleSBhbHNvIGFkZCBjb21w
-bGV4aXR54oCUZm9yIGV4YW1wbGUsIG1hbmFnaW5nDQo+IENQVSB1dGlsaXphdGlvbiBvZiByZWNs
-YW1hdGlvbiB0aHJlYWRzIHRvIHByZXZlbnQgZGV2aWNlcyBmcm9tDQo+IG92ZXJoZWF0aW5nLg0K
-PiANCg0KQXN5bmNocm9ub3VzbHkgcmVjbGFtYXRpb24gY291bGQgaW5kZWVkIGhlbHAod2hlbiBz
-d2FwIGlzIGVuYWJsZWQpLg0KV2UgaGF2ZSBhbHNvIHNhdyBzb21lIGltcHJvdmVtZW50cyB3aXRo
-IGEgc2ltaWxhciBhcHByb2FjaCBpbg0KQW5kcm9pZCB3b3JrbG9hZHMuIEFzeW5jIGFnaW5nIG1h
-a2VzIHN3YXBwaW5lc3MgbW9yZSBlZmZlY3RpdmUNCnNvIHRoYXQgbW9yZSBhbm9ueW1vdXMgcGFn
-ZXMgZXZlbnR1YWxseSBiZWNvbWUgcmVjbGFpbWFibGUuDQoNClNpbWlsYXIgdG8gYXN5bmMgYWdp
-bmcsIGdpdmluZyBhZ2luZyBtb3JlIG9wcG9ydHVuaXRpZXMgbWF5IGFsc28gaGVscC4NCkZvciBl
-eGFtcGxlLCBpbiBzaG91bGRfcnVuX2FnaW5nKCksIHJldHVybiB0cnVlIHdoZW4NCkV2aWN0YWJs
-ZSBwYWdlcyA8IE1JTl9MUlVfQkFUQ0guDQpJIGhhdmVuJ3QgdGVzdGVkIHRoaXMgeWV0IGJ1dCBw
-bGFuIHRvIHRyeSBpdC4NCg0KPiA+DQo+ID4gVGhlbiwgd2Ugc3RhcnQgdGhlIGFnaW5nIHdoZW4g
-ZXZlciB0aGVyZSBpcyBsZXNzIHRoYW4gNCBnZW5zLCBhbmQNCj4gPiBhbGxvdyByZWNsYWltIHRv
-IGFsd2F5cyBnbyBvbiBldmVuIGlmIHRoZXJlIGlzIG9ubHkgMiBnZW5zIGxlZnQuDQo+IA0KPiBJ
-IGRvbuKAmXQgdGhpbmsgYWxsb3dpbmcgcmVjbGFtYXRpb24gd2l0aCB0d28gZ2VuZXJhdGlvbnMg
-bGVmdA0KPiB3aWxsIHJlc29sdmUgdGhlIHByb2JsZW0uIFRoZSBmdW5kYW1lbnRhbCBpc3N1ZSB3
-aXRoIHNoYXJpbmcgdGhlDQo+IHNhbWUgZ2VuZXJhdGlvbnMgZm9yIGZpbGUgYW5kIGFub24gaXMg
-dGhhdCBvbmUgdHlwZSBtdXN0IGNhdGNoDQo+IHVwIHdpdGggdGhlIG90aGVy4oCUZWl0aGVyIHRo
-cm91Z2ggcmVjbGFtYXRpb24gb3IgdmlhIHdoYXQgdGhpcw0KPiBwYXRjaCBpcyAoYWRtaXR0ZWRs
-eSkgZG9pbmcgYXMgYSB3b3JrYXJvdW5kLiBJZiB3ZSBoYXZlIHRvIGdvDQo+IHRocm91Z2ggcmVj
-bGFtYXRpb24sIHRoYXQgZWZmZWN0aXZlbHkgbWFrZXMgc3dhcHBpbmVzcyBpbnZhbGlkDQo+IGFn
-YWluLg0KPiANCj4gQWxsb3dpbmcgcmVjbGFtYXRpb24gd2l0aCB0d28gZ2VuZXJhdGlvbnMgbWF5
-IGxldCBvbmUgdHlwZSBtb3ZlDQo+IGFoZWFkIGJyaWVmbHksIGJ1dCBvdmVyIGEgc21vb3RoZWQg
-dGltZSB3aW5kb3cgdGhlcmUgaXMgbm8gcmVhbA0KPiBkaWZmZXJlbmNlLCBhcyB0aGUgb3RoZXIg
-dHlwZSBzdGlsbCBoYXMgdG8gY2F0Y2ggdXAgd2l0aCB0aGUgb25lDQo+IHRoYXQgaGFzIGZld2Vy
-IGdlbmVyYXRpb25zIGxlZnQuDQo+IA0KDQpUaGF0IGlzIHRydWUuDQoNCkluIHNvbWUgcHJldmlv
-dXMgZXhwZXJpbWVudHMgb24gQW5kcm9pZCB3ZSBvYnNlcnZlZCB0aGF0IHdoZW4gdGFza3MNCmFy
-ZSAqZnJvemVuKiBhbmQgYWdpbmcgaXMgdHJpZ2dlcmVkIHZpYSB0aGUgZGVidWdmcyBpbnRlcmZh
-Y2UsIHBhZ2VzIG1heQ0KZ3JhZHVhbGx5IGFjY3VtdWxhdGUgaW50byBhIHNpbmdsZSBnZW5lcmF0
-aW9uLiBJbiB0aGF0IHN0YXRlIHRoZSBNR0xSVQ0KcmVjbGFpbSBwYXR0ZXJuIGNvbnRyb2xsZWQg
-Ynkgc3dhcHBpbmVzcyBiZWNvbWVzIHZlcnkgc2ltaWxhciB0bw0KY2xhc3NpYyBMUlUgcmVjbGFp
-bS4NCg0KPiA+DQo+ID4gVGhlIHBlcmZvcm1hbmNlIHdvdWxkIGJlIGJldHRlciBzaW5jZSB0aGUg
-aXMgbm8gbW9yZSBibG9ja2luZw0KPiA+IG9uIGFnaW5nLCBubyBjaGFuZ2UgdG8gZXhpc3Rpbmcg
-bW9kZWwsIGFuZCB0aGUgY2hhbmdlIHNob3VsZA0KPiA+IGJlIHNtYWxsZXIgYW5kIGVhc2llciB0
-byByZXZpZXcgSUlVQy4NCj4gPg0KPiA+IE9uZSBjb25jZXJuaW5nIHBhcnQgaXMgZG9pbmcgcmVj
-bGFpbSB3aGlsZSBvbmx5IGhhdmluZyAyIGdlbnMgbGVmdC4NCj4gPiBJIHRoaW5rIGl0IHNlZW1z
-IE9LLiBJdCBzaG91bGQgYmUgcmFyZSBhcyAzIGdlbnMgYWN0IGFzIGEgYnVmZmVyDQo+ID4gYWxy
-ZWFkeSwgaGF2aW5nIG9ubHkgMiBnZW5zIGxlZnQgbWVhbnMgdGhlIGFzeW5jIGFnaW5nIGNhbid0
-IGNhdGNoDQo+ID4gdXAgYW5kIHN5c3RlbSBpcyB1bmRlciBleHRyZW1lIHByZXNzdXJlIHNvIGl0
-J3MgdW5saWtlbHkgdGhlIGZvbGlvcw0KPiA+IHdpbGwgZ2V0IGFjY2VzcyBlbm91Z2ggdGltZXMg
-dG8gZ2V0IG1lYW5pbmdmdWwgaGVhdCBpbmZvLCBhbmQNCj4gPiByZWZhdWx0IHdpbGwgYmUgbW9y
-ZSBtZWFuaW5nZnVsIGhlbHAgdG8gc29ydGluZyBvdXQgdGhlIHdvcmtpbmdzZXQ6DQo+ID4NCj4g
-PiBodHRwczovL2x3bi5uZXQvQXJ0aWNsZXMvOTQ1MjY2Lw0KPiA+DQo+ID4gQ2dyb3VwIHJlY2xh
-aW0gY2FuIGRvIHNvbWUgdGhyb3R0bGluZyBvbiB0aGF0IHRvbywgYW5kIGtzd2FwZCBjYW4NCj4g
-PiBzdGlsbCBkbyBhZ2luZyBzeW5jaHJvbmljYWxseS4NCj4gPg0KPiA+IEp1c3Qgc29tZSBpZGVh
-cywgd2UgbWF5IG5lZWQgdG8gZG8gc29tZSB0ZXN0IGFuZCBiZW5jaG1hcmsNCj4gPiB0byBmaWd1
-cmUgb3V0IHdoaWNoIGlzIHRoZSBiZXN0IHNvbHV0aW9uLiBEaXNjdXNzaW9uDQo+ID4gaXMgd2Vs
-Y29tZWQhIDpEDQo+IA0KPiBNYXliZSB3ZSBjYW4gc3RpbGwgZmluZCBhIHdheSB0byBhZGRyZXNz
-IHRoZSBjb25jZXJucyB5b3UgcmFpc2VkDQo+IGFib3ZlLCBhcyB3ZWxsIGFzIFRUTOKAlGZvciBl
-eGFtcGxlLCBieSB1c2luZyBzZXBhcmF0ZSB0aW1lc3RhbXBzDQo+IGZvciBhbm9uIGFuZCBmaWxl
-IHBhZ2VzLg0KPiANCj4gVGhhbmtzDQo+IEJhcnJ5DQoNCkJlc3QsDQpaaWNoZW5nDQo=
+On Wed, Apr 08, 2026 at 02:02:51PM -0700, Andrew Morton wrote:
+> On Wed, 8 Apr 2026 13:35:42 -0700 anthony.yznaga@oracle.com wrote:
+> 
+> > 
+> > On 4/3/26 12:31 PM, Andrew Morton wrote:
+> > > On Thu,  2 Apr 2026 16:59:33 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
+> > >
+> > >> For configs that support MAP_DROPPABLE verify that a mapping created
+> > >> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
+> > >> be locked if it's created after mlockall(MCL_FUTURE).
+> > > There are a few queries from the AI reviewbot;
+> > > 	https://sashiko.dev/#/patchset/20260402235933.10588-1-anthony.yznaga@oracle.com
+> > 
+> > Interesting. Of the two issues, one is certainly legit. I need to add an 
+> > munlockall() on early return from test_mlockall_future_droppable().
+> 
+> Cool.
+> 
+> > For the other, the question posed was whether the tests should handle 
+> > possibly being run on an older kernel that doesn't implement 
+> > MAP_DROPPABLE. It seems to me to that a selftest should not be expected 
+> > to work (or even necessarily compile) on kernels older than when the 
+> > selftest was introduced, but I don't want to assume.
+> 
+> I don't know that there's any policy on that.  My attitude is that
+> selftests are not intended to be forward- or backward-compatible. 
+> That's why we ship them with the kernel source!
+> 
+> If we get a selftests fixup then I do like to backport that into
+> earlier kernels if appropriate, to keep those in good shape.  And that
+
+/me puts on his gecko-shaped distro kernel hat
+
+Yeah, adding selftests and selftests fixes to (upstream) stable is great.
+Particularly when it comes to bugfixes (or CVEs) they are quite handy to
+verify the fix is in place and works properly.
+
+> has the effect of reducing people's motivation to run a later kernel's
+> selftests on their current kernel.
+> 
+
+Yeah. Some people do that but... to each, their own :) It should not be
+supported upstream.
+
+-- 
+Pedro
 
