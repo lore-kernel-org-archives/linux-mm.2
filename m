@@ -4,95 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A53C3F31E21
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDFF7F31E24
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:11:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13AE6B008C; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
+	id 2B0D66B0093; Thu,  9 Apr 2026 11:11:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC4626B0092; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
+	id 262316B0095; Thu,  9 Apr 2026 11:11:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA866B0093; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
+	id 178216B0096; Thu,  9 Apr 2026 11:11:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 91D186B008C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EB22160809
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:10:24 +0000 (UTC)
-X-FDA: 84639353568.02.65D2A21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7B9BA18001B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:10:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ga94zfGZ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 0B78C6B0093
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:11:38 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4BEA58EB2
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:11:37 +0000 (UTC)
+X-FDA: 84639356634.29.11DCAC4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D92A3160006
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:11:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlUcElYu;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775747422;
+	s=arc-20220608; t=1775747495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/qXVKUAxy+elrynhs6cxblO1GtPFfAVzCsABhyo+9Lk=;
-	b=wodyVX/xap6RUpwbCtU/QebUGLhLQs+M5B7DnIiejxnxvO4PIvI9+oy+BPZ3LyusjAQqzG
-	46aAZNp/Rw5AehaS523r3Wf+jHCmc0DNzta2YEPJQ95aGvncICLVM4Y5GjJQa2XhTnTkJO
-	lbRUeuXg8BZd3UDMUzUqNrLyFBOI/wA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ga94zfGZ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747422; a=rsa-sha256;
+	bh=Exxdezai81WMrpXeIii4WHdkN5NN91vHx72vHcwcvQ0=;
+	b=XPp2aj08s6kau8xvc64MaAoLxvTh5dQERCpkfSRIjbTyl0XZIuuVPwUhUbTICFGM46/Kah
+	DDr/3NS5WC614N7Tm38hlIn5XVy5MD6c6+FegbeCyMLhechp0y2rAaS5YV0ybKRGRDZCPF
+	BVnbTQl7SU4OYNULEhVlmtt/ZjPCNKw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747495; a=rsa-sha256;
 	cv=none;
-	b=OyUpd8mmpbOxkYq7VNL6R5QZ1S83L6rkRRyYWvbIbkxutlrBj/zlXPX1TvIHivZrcr0yrD
-	wfyxXrcmNL1NFoUosGFK/X55M3eVGFAU1gi2Xmj0zzax3KCbSSWIOs/E67+odZzbAePi3G
-	sPLFO/sIrD7BFUVQ67rFeTAUGMWsP5E=
+	b=LqwOo8JX1rC2xQDCnqYFvd0mD7nqRFjFz4Uo4mEaJxMJa//yv/etg9t3J+g/jr3qY4ya2P
+	PD0/CYQATvXS238VxeHno7omNc+YDV4/d41KD2EJpU6kZ2UHFY2CYqGn+q19yWnY2ApNKn
+	exle1AIbC9P7O+/4S1lRDfMvCTnJUo8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlUcElYu;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 826264171E;
-	Thu,  9 Apr 2026 15:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EA1C4CEF7;
-	Thu,  9 Apr 2026 15:10:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BCB760125;
+	Thu,  9 Apr 2026 15:11:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E9BC4CEF7;
+	Thu,  9 Apr 2026 15:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775747421;
-	bh=mpzbJeW9K8HU2WsSd97Hb9A6JcAPIDKyhFRx2DEEoe4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ga94zfGZlyiDjKYAxafyOeqcBSHFLvp+MC1zJIsqZ2CZzDB8V7fQt6soXlFoDHt1C
-	 oeNp3mU784AFH2Km/tgGqAOxH6kJDsJAepj1RcOngWBlKmhnzuxFmgVy8CwZfscRZ+
-	 4uvoPbCeNcEcbm+UWrrNBjf7l3xnPwHTLM3Y8sg+JxTDfjp3oHHSgAQXSb6aBC/upw
-	 3lXDP4VqBY9Lwp4UtlNFCZ3RKlavzj7FLyRrdGwXHcOGcz6FUtL6jwWBbSleyXUXb7
-	 SLDxnFJjO9RuWg6f453kioizTxG7lexyNfTUXidefPlibk80ZhHmiew0XSDj4ZbukB
-	 wXG2eyKMjE9+A==
-Date: Thu, 9 Apr 2026 18:10:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>, yinghai@kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm/sparse: remove sparse_buffer
-Message-ID: <adfBVc8ohLrtIe3j@kernel.org>
-References: <20260407083951.2823915-1-songmuchun@bytedance.com>
- <b22f0af1-848d-45da-99b2-0c28b740e979@kernel.org>
- <70EF8E41-31A2-4B43-BABE-7218FD5F7271@linux.dev>
- <dcc3b56f-5d4c-4bb0-bfd8-49747df30f47@kernel.org>
+	s=k20201202; t=1775747494;
+	bh=g2ADslYAl1gkG6B2ryk7AAj+udO2hcR5FE/jpdgcyXE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VlUcElYub9DBYJ7OhfBzT83mIYtFZk+b7GV8Yc2OxMb55U279PAMlUoIYKbc+lP9k
+	 IcL9R3S0tfkvClz9l31/nYbK7bZIuLUQeXG0tqu7GlemTGalRrhbUGz9B8Ghepg597
+	 WHxO0dyzH2GABw8ZivJkcL/syeN8nIodknFT75lBFfJ20KomrrusjUMuxq5KNYk6+K
+	 7vEpPVFEQ6+A14Jnnx3JW2tmOVFSpJ6u03nU46hTKoocNWGkAOCtSR7MV+QiaGYid/
+	 PO2iY+AhpUY4s7odgDEREOI0vyJFSqeQRLjJUmuCdFq2bWfHRVSo6Lh6twSeohqTyT
+	 ipl4sc6yO2Zpg==
+Message-ID: <accf843b-ee4f-46a2-b187-a6d8e4115ca7@kernel.org>
+Date: Thu, 9 Apr 2026 17:11:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dcc3b56f-5d4c-4bb0-bfd8-49747df30f47@kernel.org>
-X-Rspamd-Queue-Id: 7B9BA18001B
-X-Stat-Signature: ymdfd5nsx698sdqrs3qpte813uqhrcdx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
+ folios
+To: Zi Yan <ziy@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Sourab Gupta <sougupta@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+References: <20260409014647.397515-1-jhubbard@nvidia.com>
+ <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
+ <D74E0809-E673-4CD0-84DC-46CBDBB06F03@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <D74E0809-E673-4CD0-84DC-46CBDBB06F03@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: a9paddae7mpo47ochshu4fxanscdkj56
+X-Rspamd-Queue-Id: D92A3160006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775747422-374558
-X-HE-Meta: U2FsdGVkX19K4nC/Wp3fjb/G2qPsv807OxFzrgM8zPIKykLHbS84he0mA1xD25m3zJ0UesEUnYw/Sf0ReZxIXhsDbpYkAbeswBELIuUt9dAxauWB9/mP4Zs5FpkijP9pvGXo4p33naBwaeKdIw6KNxuKv7/5DMxf8/sSHBdgE/oDvINNj0iZV7F2VcjBX3TuJAUkaBgoR7rguzTB2wcajjmKE+1xR8PmBeA27/SQfcv5kPm/QHXYxXH3T9gTtOWJIIXO/qaoR0fDElUl2QADGJISyVSLZColZGpSM4ilNM2zqvr42kIs8EB9P7mkECpemr4LUpnGI81sbfJ4n7XHe//5Rg9dCN6cKM5wUPDFabaEGIFHn0Eax3wn9yS4mWEHFO4FUAOVi3kxrllAMoxpeBxTqmPFDmI7YubXUb0A+I1/FlWeaM4BuyljbKpadfWUJmsG8MTthaKgZALiRwR5JfKTfg2sj/MGHwO6P1m3rLeFAF2tFmpCyEAad7cwUbjLB+sQVHrOHpluYEmvOG9UbgnbIZOe6TBiPon75OyHb9qEK4N37JKVQg9IjGpA4eBv6Cwj5wtDo/nu/pCcn3xrAcfIoEQazavOfFBAdGOuTx1wS3vJbiohA0lM9KBpwoOZkxId94TE2IA+vDTn8lKBxIi+E3yuLvC5mwQlecFtgvCEZvLhhbDhT0P2LmoLaON8rYnsbrm+L09225JHoN5tPeSTU20j38E5/BF8xEKl5bC3ctRWXhbeJ4IascCSDE50Qed9QWTOGkRqDzX718YBa417RyQ9zQQrV5yHCc2IGxXtSnfPODjCJyK52vtUvGo6JJxfJ3U7/XUKRZUVBeYqakjMBfahL1f1woo53qPJBxqj1dvP5m5MbYSDGgX83urv8e88QNkl5UNp4knL4otgp1S+/qARxcwHmZI160Ybj7qu8J11AJ7BfUbShV/sySh5gQe6QJGBAx1xpweheI2
- t2vWgXBN
- ThDTnMPA3d7BbcVVAHAjDRuE2VEeuUD7LXAkiYQhgdd3ltjUKKCifmyRyB4R9rCDir4NTW5fERta2QwpbZDUcxTA40oB/xUuABysurjtoJmgD/S0LmtF7bnSMkke/+Cj4yBNjObocjXziGr6w1Snv6lyUZOj1XAoW/pzGPUkCSxLPuKIMBlhjPW4UGEi2q5uAXIQmVEeHGF/oeDm8uZtjxZcewYFoMAt67534So3KCx42AgDIUNBbGk2P9ReXQHSlK4nJ3kKxPvkmlKD6D+URba+/ThS81VegaLCbm/ZKYiE7LB51byfAQLX5fzb0VuUn0w3xwJZ17E2ol5o=
+X-HE-Tag: 1775747495-36692
+X-HE-Meta: U2FsdGVkX194cMMwq1UU6qPvFOw1CGc3bIH6WCvpGo9FwpY/dB2FCneB4NDQrHd8MAD5HeUKk9xOs0k/x+4mi5DMjn/PKnC7qr+a9KG56c+5ml6UVtkkQcK3IRqEcVckBvWw7vqpDwbEe+iWA2KGNtd98pfpB3b7uuoudn3OAMKEcC26VdotRr2fHtuCq4D1Wn50R1UVKBpQw0KLGEgwa5aPklFxHVlYJTna8NdmFMXZPqY48ZySZCcfnBB5shKuuBwJcH4fyxmJyvKFUibvRVfZU7rr4s2blpl0D/DFREqMj0ymG6Q2sgtAN7YylSslPKOCHb4J8/BvJZMoYGVjAn7U8WqvbCF/zafGsM723mSy1F45wWSQ+3NYEAfozC9ggSNCT6fc560PX7ZblX/aimeqkhM8qQV3XLA0khJ4UkBA2iX2+8sUPYeP6QZdrB2ehDNav0I+0FKbB9YEkrxB50eFnEIWUTWg7duh1Edo60AlHu9sgjWV7eTSK4/N1P0vE/XBJ4NoitCP7a/Qp9/wJRVMOTu+4kGIta7irmsC59PAGqSG+8o0cA8Nwgjrp+me/tQBO5hXcqZiJ+9yHciZKSvk2zk77tSE25ulJTkAtFHGfRTqSBxkngz6qn4VF4soQR02s/TlVBp27Xwd3q8YqxyzwCd7nq1lIt5MrwrKmiXUt9310zfQJx/rqZ0uz7Mvbu6eMOyKrXe77w/58DPc23yAv4FHBl5hsaRLaAb6Yu7//QOfU+lbbWrhVJtsLSyyuemrisTyMUWLdQG7LFSp2Z0Q8AbBdsaLKubN3ZLu5AtEo/AqIcWo0VLccupQ4JZsF52l3j+1V4N8XVngqDp2Tt42XVBfmIiDPwM2OkPg0JV+fqBfiuhBDyeJj4IZOtmaCcRtLF5HUJjcBGYOEgGA4lyLm0fYAjxkr0CoFeNzEhfmeoP/wufxtEGjlmahnAYVA9Zypv2KlufCLCTSBvX
+ NzvYeP+7
+ wOY6E4Xbq5uxU5wsDvIESw4XDTOvfadTGz0CedYFHKXQ/hL1as5FJkzQp491nJH+Yoj4oRTdJTlgF9YdY36tO3eO/Zut2i+Q3eRXYkMOQSa2nYLD+jI1RUbDD2d4/Lp3rH5jNcLF5pDfv+PGHmI+cFL+z0GS0sorJ+jdSmsl2qkcoEW+vqYWc+g5dUAsoTBrPf7WUagiHFsvxwWOTnE65S0mOnKiVCW+EjCPZry+A1OEcgHwR4FERyQ8KfYOtmo2ZuQNzjeOhvqHBZTFZqblnkToZ+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,86 +144,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Thu, Apr 09, 2026 at 02:29:38PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/9/26 13:40, Muchun Song wrote:
-> > 
-> > 
-> >> On Apr 8, 2026, at 21:40, David Hildenbrand (Arm) <david@kernel.org> wrote:
-> >>
-> >> On 4/7/26 10:39, Muchun Song wrote:
-> >>> The sparse_buffer was originally introduced in commit 9bdac9142407
-> >>> ("sparsemem: Put mem map for one node together.") to allocate a
-> >>> contiguous block of memory for all memmaps of a NUMA node.
-> >>>
-> >>> However, the original commit message did not clearly state the actual
-> >>> benefits or the necessity of keeping all memmap areas strictly
-> >>> contiguous for a given node.
-> >>
-> >> We don't want the memmap to be scattered around, given that it is one of
-> >> the biggest allocations during boot.
-> >>
-> >> It's related to not turning too many memory blocks/sections
-> >> un-offlinable I think.
-> >>
-> >> I always imagined that memblock would still keep these allocations close
-> >> to each other. Can you verify if that is indeed true?
-> > 
-> > You raised a very interesting point about whether memblock keeps
-> > these allocations close to each other. I've done a thorough test
-> > on a 16GB VM by printing the actual physical allocations.
-
-memblock always allocates in order, so if there are no other memblock
-allocations between the calls to memmap_alloc(), all these allocations will
-be together and they all will be coalesced to a single region in
-memblock.reserved.
-
-> > I enabled the existing debug logs in arch/x86/mm/init_64.c to
-> > trace the vmemmap_set_pmd allocations. Here is what really happens:
-> > 
-> > When using vmemmap_alloc_block without sparse_buffer, the
-> > memblock allocator allocates 2MB chunks. Because memblock
-> > allocates top-down by default, the physical allocations look
-> > like this:
-> > 
-> > [ffe6475cc0000000-ffe6475cc01fffff] PMD -> [ff3cb082bfc00000-ff3cb082bfdfffff] on node 0
-> > [ffe6475cc0200000-ffe6475cc03fffff] PMD -> [ff3cb082bfa00000-ff3cb082bfbfffff] on node 0
-> > [ffe6475cc0400000-ffe6475cc05fffff] PMD -> [ff3cb082bf800000-ff3cb082bf9fffff] on node 0
-
-...
-
-> > Notice that the physical chunks are strictly adjacent to each
-> > other, but in descending order!
-> > 
-> > So, they are NOT "scattered around" the whole node randomly.
-> > Instead, they are packed densely back-to-back in a single
-> > contiguous physical range (just mapped top-down in 2MB pieces).
-> > 
-> > Because they are packed tightly together within the same
-> > contiguous physical memory range, they will at most consume or
-> > pollute the exact same number of memory blocks as a single
-> > contiguous allocation (like sparse_buffer did). Therefore, this
-> > will NOT turn additional memory blocks/sections into an
-> > "un-offlinable" state.
-> > 
-> > It seems we can safely remove the sparse buffer preallocation
-> > mechanism, don't you think?
+On 4/9/26 17:05, Zi Yan wrote:
+> On 9 Apr 2026, at 3:52, David Hildenbrand (Arm) wrote:
 > 
-> Yes, what I suspected. Is there a performance implication when doing
-> many individual memmap_alloc(), for example, on a larger system with
-> many sections?
-
-memmap_alloc() will be slower than sparse_buffer_alloc(), allocating from
-memblock is more involved that sparse_buffer_alloc(), but without
-measurements it's hard to tell how much it'll affect overall sparse_init().
-  
-> -- 
-> Cheers,
+>> On 4/9/26 03:46, John Hubbard wrote:
+>>> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
+>>> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
+>>> gup_fast_folio_allowed() falls back to the slow path for any order-0
+>>> folio with a NULL mapping when CONFIG_SECRETMEM=y. This causes a
+>>> performance regression for drivers that allocate pages with alloc_page()
+>>> and insert them into VMAs via vm_insert_page(). These pages legitimately
+>>> have a NULL folio->mapping, but they cannot be secretmem pages.
+>>>
+>>> Secretmem pages are always added to the secretmem inode's page cache via
+>>> filemap_add_folio(), which sets folio->mapping to the inode's i_mapping.
+>>> A folio with a NULL mapping can never be a secretmem folio. The
+>>> NULL-mapping check was intended to handle truncated file-backed pages (a
+>>> reject_file_backed concern), not secretmem detection.
+>>>
+>>> When only check_secretmem is true (and reject_file_backed is false), a
+>>> NULL mapping is sufficient to prove the folio is not secretmem, so the
+>>> fast path can proceed.
+>>
+>> Hm, what if secretmem folio just got truncated? I hate to rely on some
+>> handling in the caller to detect truncation differently during GUP-fast,
+>> but this function returning "true".
+>>
+>> Zi is working on a way to distinguish folios from non-folio things: that
+>> we can identify whatever was added through vm_insert_page().
 > 
-> David
+> The idea is to give every allocated page a NotRmappable page_type and
+> 1) let page_rmappable_folio() remove the page_type by setting mapcount
+> to 0, since page_type overlaps with mapcount;
+> 2) allow callers of alloc_page*() to change page_type from NotRmappable
+> to other types.
+
+Could we instead just set the special type in vm_insert_page(), after
+verifying that it does not have any other type?
+
+> 
+> After these, rmappable folios with any order is a folio without any
+> page_type. HugeTLB is an exception, but rmap code has special handling
+> for them, so it should be fine.
+> 
+> I have a draft[1], but have not had time to refresh it yet. I am planning
+> to work on this after my two other jobs (make READ_ONLY_THP_FOR_FS enabled
+> for all FS with large folio support and ensure ->private is 0 for tail pages).
+> 
+> [1] https://github.com/x-y-z/linux-dev/tree/remove_mapcount_for_non_folio-2026-02-16-23-27
+> 
+>>
+>> Because that's really the key problem here: vm_insert_page() pages are
+>> not actually folios, they just look like a folio today, but looking at
+>> fields like ->mapping does not make any sense.
+> 
+> Based on my understanding of some callers of alloc_page()/get_free_pages(),
+> vm_insert_page(), they use GFP_COMP to get a compound page and vm_insert_page()
+> individual pages of the compound page. These pages might be pinned.
+> During past THP cabal meeting, we discussed about it if
+> 1. we should disallow such uses and only allow order-0 allocations, or
+
+Right.
+
+> 2. we need a new type like new_type_folio for them and the type does not
+> have folio fields except ->pincount.
+
+Right.
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
 
