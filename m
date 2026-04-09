@@ -4,169 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2355EF31E21
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF9EF31E24
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1726B0005; Thu,  9 Apr 2026 11:05:59 -0400 (EDT)
+	id 0B02D6B008A; Thu,  9 Apr 2026 11:08:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7628B6B0089; Thu,  9 Apr 2026 11:05:59 -0400 (EDT)
+	id 061A16B008C; Thu,  9 Apr 2026 11:08:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62A8E6B008A; Thu,  9 Apr 2026 11:05:59 -0400 (EDT)
+	id E92296B0092; Thu,  9 Apr 2026 11:08:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 515686B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:05:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1541F1A0807
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:05:59 +0000 (UTC)
-X-FDA: 84639342438.26.80BF43B
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010035.outbound.protection.outlook.com [52.101.61.35])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 24C1F14001B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:05:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mlVzt2f3;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.35 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775747156; a=rsa-sha256;
-	cv=pass;
-	b=YMxbpoEeEaRBaoWEIx5MgXumncqUPp4EZdLtbsaLlOXOh2nZp0t+OmNXR38U+fAuLMa/TL
-	vVyP+wxi5FwesqPLSRSilTVdzTrY5/VQDIhTNwT+q7E5NLbqkRhG/XvdBu+FaeWa/yM1p2
-	Jsi7U5e1LJJiF8jxvAL3BjGuHR77rmA=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mlVzt2f3;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.35 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775747156;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D96596B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:08:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E56913B83D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:08:27 +0000 (UTC)
+X-FDA: 84639348654.13.D0BF4E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 92C2C40011
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:08:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIUHmfcl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747305; a=rsa-sha256;
+	cv=none;
+	b=hf/w+2lQtD0kLzZGebWtFn39+Fv2riz7xVT4zX8PP/9M8N/5/AY+BO1QDfngSrmz+uW28C
+	NSGoXDSKmlE6ALHa6qxwSLHyod98ixn9/R1qSoSIfQzB9pHIQa4iWtl1CElXGKkodsAgjM
+	2C85KA6g4hYEz4MckJYlqeLbZAQjzPo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIUHmfcl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775747305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RU11S8mrWHl5Ty9v0JFiC0oPEUOJ7xWiw9w7uZzsTwI=;
-	b=W1I/YMBslopvdZkKsTOBWRCP8r2Q9jQKfBBcRzy7YhrwTsEcjAyKKWFX4HaCHPnX8zTThF
-	JvBOJNegVeum0hbvBH8njIBEwIVrTJoX5dzWOpye5BC1yecp6FtUso/VkQXu+Vwl9X7Ceh
-	TpH04QeVop9dUSxtIBvbZ4ahDSSNwQY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iS/O5n0IhBs3XPc153sXG7C4+cTM1mq5O2CR11r1OvvaBOQUJ3VlUg9NwngQim5KFAY7D2Uvrgqjc4/8e23Glapak6JkVpNYpl/4HvtAm2zIvJl+MVTnwO5c+3Fnw1XStta8LR/h+Yh8GxpG3gxmnNUnV8v8S+ekMra5Wl6OZVQfCgx7akakHCe+7kW16mY05yXFw96MS46IgLS2wFoTRUdmnlfLRuy6oyv9kxBzGdCHsCzASfnoYBUiVCNytImJuV77YVMnpcZ9+DXZQ6J5IyLjxe1J4G+6bIIbmxXv/PkiEbhU+txZE0j51sZPQ6xZqsSMgJTwsaX3hrHoI1IuUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RU11S8mrWHl5Ty9v0JFiC0oPEUOJ7xWiw9w7uZzsTwI=;
- b=bCKO17rJv3RPbsP3kDy5hGWJhMstsYOH4IgZ0w6dVmqwiSa3tHViNhx8GLvn2IH/2WqVyzDz9nqu0ZFpuEfhc2GmqFwK2CwwLe6MKRAQDDghDyXP1ss5r/Cr8fm3TZFFsfoXzfXD3GBJDPppR+dl9kAjYKgY+LFmDOSJ3DndJhjDidAlzbET27umjBN8J+AUU1TFLIWUhtIFq7VYtXTOUzr1CBWs+FdELqSZcFhBfNbbJ5GqzNyuqtyw3eRtrdzJJSapMNlSwl31AHlwjCbGPsx7ROAyURCvVLz4WLDRt9Bsoxhm/3AQRqC3I92oheX+s9AldBqf5/J1utpWL4V58g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RU11S8mrWHl5Ty9v0JFiC0oPEUOJ7xWiw9w7uZzsTwI=;
- b=mlVzt2f34hQnpkLAeeyhVKYe/texzAHDnCyMfrJRjQxarXfZEkZngRPLoUxd9Gb5a4Zu06cILq86crDi7DaGxtmBa7w3qzUyGJKaMQhK48H8C2Mzft4WTSRcrkXAzpeekmVmlxmSRpR3pF2mLjAisUUDxdjMHbJEcUwNktZxDIN0igXiP3jv/gkPclGmvCzUUlWfjbH5ovYms3NcsXP9WETDzq9mP6UPItxP6mMhyqE97i94hV+12yxr3RcVUzJRhzjjkOjq0aNoQg52DdK5Kn8Hj0JLGO9PCxuBhPOAdcEK7am51srvqm/wetSC1CbFB1kRMYU6YDgRXLXLZjLl/w==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SJ1PR12MB6025.namprd12.prod.outlook.com (2603:10b6:a03:48c::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9769.20; Thu, 9 Apr 2026 15:05:47 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Thu, 9 Apr 2026
- 15:05:46 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: John Hubbard <jhubbard@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
- Sourab Gupta <sougupta@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
- folios
-Date: Thu, 09 Apr 2026 11:05:43 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <D74E0809-E673-4CD0-84DC-46CBDBB06F03@nvidia.com>
-In-Reply-To: <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
-References: <20260409014647.397515-1-jhubbard@nvidia.com>
- <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR20CA0061.namprd20.prod.outlook.com
- (2603:10b6:208:235::30) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=JoXFRMvB36TW375yAguZ3eZkYn9c4ydX2x4tY2Rf3Eo=;
+	b=1wO3IhWtq9wDjw3BSuW2aQ8hOUKQyUwJzxrgTsYKbLj3xpArDiC9UQW7Q5U3mEJT6JlXJH
+	jUtRGO9/aTVUX9E0BGKIB5qwTNkjKtJbax0N33EMn7uP0/FUdwMlJad1MvaVhnB7yps/ZO
+	+1l9T+TFibYVq7BVkC6dfmFQ/PjguBg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 642A740714;
+	Thu,  9 Apr 2026 15:08:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FD0C116C6;
+	Thu,  9 Apr 2026 15:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775747304;
+	bh=8bKMs+7uL671pUbX7j8IgkjFDdALfxxzN+DgJ+2wuwE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tIUHmfcliQiRyYv+4RxvHKh5zUVWOvlz9N1GJoHIWYmp/53VyeTZ/5Ys34S7aTQBi
+	 ju8h66ch2EbJCr7Fqw93Y7S5JK4hWEQJJUIK3x0FOpp0uzGEJBzdYYcampYKFYjJB8
+	 SvX2GZTBlHkepW3lNV2H3R6cus4MWC8DUxgvi3Eheh0S4+x60lVSZYjAhQG7QWRLOj
+	 QTd6jqYQkJzvyMC1mvmZ+d7symxwkCHMMKqB7eYMITgpf+Cjdxk6jYPvmZcAa1dWaN
+	 AmS2BQ5susZRgzcotybX5LvBXS7sMNMtSOXiUS2ypW8CTcx2eXrZtIIpbJOwvi8tOr
+	 sDcFygQx1DCAg==
+Message-ID: <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
+Date: Thu, 9 Apr 2026 17:08:18 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ1PR12MB6025:EE_
-X-MS-Office365-Filtering-Correlation-Id: f7c7d11c-e224-49be-d631-08de96497a3f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Kc2oT8rsaBmLv3gwkwI2tysvJ8wyvo/H1HUnQCiok0uYrnAq4DyvSUjRDTyr2/qokW/cqmPmfd4TScVqt6AASah6XFdzyuRoPaA1G/p2Dj8XczYX1iVZLTPtAK3bclIIL9hdpvhUtihNPAuumhu7Us9ELYRpNotAg3LQC6W3ELB7RaQhe8zwXVQaJy7Jzzd9iDABhnLwEe0+5n+hzwbMr8tySB0poO1mMnwikvZ7N2Hhsv0j7OMXvxYNiHOOAi/Hos+pwU/e072dXK+iA2fGSZLLeDSsrqKGaNaI5hOpkcpA3SEaUR4ZmdG/aUueC/R3gkLJuPn606MNyWoR0Sh/n2jpdT0hNDhcm0rMl+houG7n6TdKEvQDSBJurGpTjpc67hz/GL+T3xgz+yUF4ovq1xk8J5uXo9e4nCKsYcWEpb98NwC94bsLhtRHgG4ZUxHYcp4cKOwrQXjGFEQjwHAMU9fjs3LHSm+Fy3w+WZPXf6QH3QluH99bNizlbBfFO3+fX8NITgs5fWjcoH+wsBjOkccxrJi+gH3rRCRIRl8pRG6ZXmz3yKZx7R6Okt9ydNj4NQCX835UF0ZgFoLUrkLTBlk7OdZJ14aJr9VF7HPSPnnOVgEQlxU7O0Xd1rg77yveBbqy466HLhXIZ4xZq3woj/yG3rE95BRLrg71wgSiqMBfMksZsyuuPZ5F3aGEDPjT6pKK9PaO9MzYbN8VpNZpUJIkQ7Cv5WuuYj2tAEGqrvQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dWhwbm1KWmZ6Z2F0eVR5c1ltK3ZQMkxhbXk4eEp2TTZIU0l1SUtuRkFtZEJo?=
- =?utf-8?B?bHFzdG9EM2dFNWJwODByQmlMcW1pRGZJYjJxTlBxN01kdzlialdORGdnZndW?=
- =?utf-8?B?d3g5dDFDVFpuSkZVcWVjazFId0txSWR2WHFuV2NSdWxUTWxSUHpBSlpFS2Y5?=
- =?utf-8?B?ZlVhTmlkVWpXeW5mWmZIdzY0WGVwOXlZYm0rZHV5bHJVM0kyMHdHNUxyUHVD?=
- =?utf-8?B?Zk5UU0x1THEvNkFnOU5PNWQzQnYvcmtnT3Fla1dmU2ZQTVVMY0dBa2I4ekJK?=
- =?utf-8?B?ZzZJMElwUGVnY2hzZDhucWtQZ2xHTnhRQlFLdHBMdkJtUjRkMk1Lc3d0ZGFs?=
- =?utf-8?B?Nks5OTRzNmZpa1A2MmUwWTdYRk9IQ2Q1UEluZHoxUlNtbnIySHA5R0FneXIv?=
- =?utf-8?B?MldFZHo2YkJKTXhaTTBLbVFQYUlhdDVsWFJCNGhvRURUbEV4M1JSQkhaZGgz?=
- =?utf-8?B?WDNFa3lTVmRDc2NBU0VreVAzOUo5MGNPeTZjcFBSdU5pK1pMWVY0K0dBWlk3?=
- =?utf-8?B?bm81L1hOS2xYWHVHUCtIbE9pS0ZlR0tHVFlDQXdiK0c2L3N5QUJGUjVNOW85?=
- =?utf-8?B?MVpya1gvVTNqOFRRQXFjNjhLYm9lQTV2eFdZZUlGNzFhb0tHVWQ4Y0ZpaUpI?=
- =?utf-8?B?TFV5cmU3SHNrS0pmYmFGR1hzbnFRdnVzUWs4OEViNTc5YjhSQlJyMU82ZXJB?=
- =?utf-8?B?eUhkL2NKQnZtNXdkZ0EzN1ptVHlMemI0QjBrOWFkVkhWeXNtekZzVzEyK1dM?=
- =?utf-8?B?N0drbjl3WWgwZVFaY1YvR1MwSWQrcUJvQkczQzdYZjdaUkhjSEYxcWFXbG01?=
- =?utf-8?B?V010OHpIemZoYjAzZnZmWHBOMDk4L0hsUTcrNzE4MVNJUXBoakF4ZitxSWlr?=
- =?utf-8?B?aktCVnFUSEU3ak1VTTRQNnNvRmFEaHQ3VnlXSkp6N0s1TTV1OVQwZmZBNFp0?=
- =?utf-8?B?RmhDNERLVkNLbnRBVk4zRlNHMWtaSGpPVndNNTFNUzUzSjRPSFJwTitVWEpQ?=
- =?utf-8?B?TXdGTVNJWVRVSlZ6R21zR0dnaXVyMTRmUHVVclYrV29NZGV4WE95U2dFVXNt?=
- =?utf-8?B?eWxwY28yOFk4azZONDVJN3AzUmxKNlM5c0UzZ1ZMajAwaXR3VDE1UkNOYW1J?=
- =?utf-8?B?cmx1Z2hEYUFLdnM3d2QzQXpsU3BmUkxpa1EyMTl2aTZYZ045LytQdFdUTGdM?=
- =?utf-8?B?MnlvS0tEaFNVREJaSGhxckhpSU1NOXZRbGNWWEFNN0JOOHBRTCs2dkZzMDBO?=
- =?utf-8?B?ZEZnczY2MnhNb09ENjBuUnJ1MmN1cHViRkNESUs0eEhnUk5kWTBoc1pUS2dO?=
- =?utf-8?B?c3A1Ri81bGdPVCtiMDA3YVgwdUF5dTFkWE8xV2EzczVHZFp3YThzNXkvVkQw?=
- =?utf-8?B?QjI2QUdUc2FUNzdySDRCS3N4dS9vbGdGcUUwRldud2x4RkRsSkxVcGZ1dEFn?=
- =?utf-8?B?NUt0RFp3TytWSndFaC9JRlN3WjlTOU9Hd0M2cWNidWZWYW5HUDNxMGNsSE01?=
- =?utf-8?B?U0NWWi8xQkFMWFNMeDcxN2hLblo1NG0rOFYvZ1prU0dZaFBOUTZ5QmE1U0Fq?=
- =?utf-8?B?UDllSHFFUFdKM2pqU29OL0dWV1h1TlIzQkNGcGZHZVJrYzdpL2ZrdktrSThR?=
- =?utf-8?B?MTgzNXEwTnJTR0pZTUdDbXdXbzhpMCtLQjdiZEdJcDViQkxnOE9ZNFpTV3BR?=
- =?utf-8?B?UlNPVG1qMDA2bUlnRHFheUFqenJMak4yWXRvWm9ZR2FNM2RCTG1BVnBBb1Bu?=
- =?utf-8?B?QXEzbG5QV3BZby93OE8vMzdvWFdlZDZxZEEyWHVYYVJQejVkekJFQmhCeXJz?=
- =?utf-8?B?eHBtVi91cTNvNUg5WFYrYm4vaEp3dHRFQlAwUDNkOGl4Nm9zY0QwQkdyclpG?=
- =?utf-8?B?Y1FFbmlCelg3VElmWkJUWU9wM0ZCUkJZYVR3U3MxQWhENTVtR1hEeENFanQr?=
- =?utf-8?B?WWRFNURCbGo5ZjN0cWpoZ2w4bWtqejhNZklRR3hKckNub3RtSEFWaDJzM1Jr?=
- =?utf-8?B?SnFxclBITjVJZDRzbFlIcnY3Nk84Y2tva3Z1ay9YZDZmVUFqVTZ3dXhNMzJX?=
- =?utf-8?B?cW1uK3N5bmpSd2k0anFIVDg1WUtGc3dkTDRuZ0RCbDMvbDQvMU9YblN2dTJJ?=
- =?utf-8?B?RWlaK0dQSC9FU3N4KzNZOFRwdEpLNERsbjRMY3RkaUUxV3BJb1lRdTZURFVY?=
- =?utf-8?B?aWJVdk5zV0tSbWNxWnk1RlFGc292OXFxWXhXRHA3eE9CdExHNWdqNkNiU05m?=
- =?utf-8?B?WjB6ZVpha2VqRmhPclRuYThFTlpqUWZwTmJPQ0RmVXc4MElZR0YvOEhJZmRl?=
- =?utf-8?Q?/hz1elt17bY5Bq4gtC?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7c7d11c-e224-49be-d631-08de96497a3f
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 15:05:46.2500
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8h2r4IPUBwkCBFWwU1usWKqyr4GUPuMdgz8sTYO5+9lObAEIPEkOPcCft1p4JFJz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6025
-X-Stat-Signature: mxgrwfdnqmsrnzgg8e4fnmwh1dmi8z7f
-X-Rspamd-Queue-Id: 24C1F14001B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ linux-kernel@vger.kernel.org
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
+ <ade6RVeXxDt7ImP4@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ade6RVeXxDt7ImP4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 92C2C40011
+X-Stat-Signature: b1op5pxry4x6eefoq93ce7oypa4nijtx
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775747155-823879
-X-HE-Meta: U2FsdGVkX19JWgk6Se38J5ADf8dvh2hIpNRS4s1F9SIHWgq4EPPzj5opJRpUWa2+f26gA174yhlSO8luFl/FR9a8QyznKjTvYv/8PrOmKjrSCDxPUaeF0rSTDbbgyxCnkMZ934nKyqmTzkVeKbQJ9E6MibUBPAiyQu/ig0pA4qXkzf/YSK2iS3k7q0UMz8P5/rotjTpaw4mw29rYt8RGNkNJEibmAIt8NtrsNKAcDnb/+qapzlIPrTM7tUqrVwHu9hE8I9FrHS7kJITT5ftEvvQNa8l74nMcW08NvCG0sCKTg6WqbMALkRvkCxXEjUUKtqf+CmucXNAGD0JFjdSr1Dgg/I9LauwUWZjIb5eHC+9oKbNnSlgI9eGdfL8R1TSEMi8zLJgME+b5jqq6BetCrb3neblNTZ7T+juQgUiXfepyDifLxA1GvaeRwE8CYE1q+kDga6wO2UnSi01KOMfAoOTEpnoi2I1W7HaCenKCVypOOATjRUAMMj9mLrKa2qWaczf19oM8ag0Kb3WnbrSrc4u29+J03rdHo/nQDG2mZ8if9kbkQvZl5vdDujHzBipd40VTljv5/ouU7XoX/pFAQ3qunud9YwAgFKJfxwzuM5DFplBnQbHFeCe49Wm38BPdLOyaxgFY2xH2KY+IdPSNCfFM4Gw7Unio7urJv4t099ArQMUAu0GxQmvzuiuXisjoEqLA9uIOsKsDfGwPfYQaHr3YbMKIA3pr40pu05pc5AEAEfqRu53HhhF9OJzlfZkPswB64LIzJu/e9/oKo4OprFGaq/Nm2hlOCiJlgSgCUjJP+JQji14uGciGOkazE21GVmOZrdivEHWSzicQNkU5w95JqoNUL+GAsT2Wp9INK0+XGjYyVBKXTcIeqvmpblt2MDNZxY6kIHhZEdi3xaa3jruFBRctb+1R5Z2eytDPoF1cYRQBfuK1d8CPTc435jkN3XUhoKHE9YFC5886vT1
- kRxjcEur
- POgxC0vfDv0mlyTsZE1CZxD6Edy7UwHUDy45K3u98YRy2DWgdvzf8bkD5XssBrQBCLkceTOUtDkyfczOHZTVxGXeX5YJFkuGJdn1R+kc/qLX6ENobZ+ypPsw/GBKkoeoalf0Xoo98I0PENoSGwrvSBY/xBwfYFRE4bwgHyp3Gl4/FziqGSqXZFQV1Ej/GA7PEQIztRRu+dzyzsdOwED6waao6wUTgfLMK9caUu2jKJOLp/4GomTtfY0bRjes0x7H7CCe4BFRsgrzYMDgkZy9qZFcO4K4+ArXwsN80ChZ8V4jGJH5QBh0Ns7Mv0dTLRyIIKu+tZsXMl8hOyGrX49VYrVNyl/Bh3KA5VOt2JwYKpguUm+kyy4WhUP7wL1G+us3bO5p/WJ96r9NGd6VR54aaoD2zNVkjPRAANbHzY6p6rUbbAHk=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775747305-861495
+X-HE-Meta: U2FsdGVkX1+9ae1J4vjF7QlbK1NC/NsQGPtkwmlYYQmgC51lFme1oILKRPCWAjzSyzvVLKTkUAS2E2qcduX2S/jTv38ewnqR7sSVKdFUGSXW8JWHpud34xka65Q7KKtmbLR4UTcAvAoUxgxMY8zmia7cvdlJXcH/A78/x6156LIrQvMpi0jTFqckNKqXgYfYp98IzCMch1J9Ofjzh0fQE4/mL9luiOuFZ0cOLoD0yTe0YxgGtfwgBrGLOivCTJUwD3K2er5giqbd3bYPpFYxhEoTR8Flh/WNJEsLGKaGnmPHYAOFxWbSNrp010gX+uu9RQRAebizFis04Lyx2UxWnb3dBFZXWRriDfU/t5lZK5bVLHKeMxcuYh+ZTRn01euJYf75Ku18nBPlwFvCROwFZUXy0kVVfS6upzNm5GeBydWL6HW+QbmwBF7Vr3KWgbye/CoXYAmn1voLeL6Uyvq599EhKqZ0o8uWmOt3IJvBpzDwdgOeKLtH2EISUCYIesE557wbMtG96tCv7snAvdgCeHVrnajPbyVyDj+2bWfTlyzFZqZ7J9mJZlDISdQrjpoR11qn7buMErm2KC1Ft6D81/Nwjb2ZtLHzY045c2O9NthjMEARBT7E12oaAbNB+fSBKXqSbhJ0RJjsNmA0OpbHQLQdDwS8aeDtDf8ts+DdlkUPCFGsQhM4Ozjqwus2LLT/1HH1OiHy7HfHviEDT/bje5p4tqsblbUEHOvz3VE43w/vOK/QpiBatBYF8MAhE3TDC6DELi32CYJr72wBQlvQzHRNuBehqvNchIThBgO31nReY3y8etRoF8CmqO9zwrI0zJjB+iBdVg3NuT8nuxJ8QLkhum8Bg4UmZ/M075q+zUG8ddre1JDSddpGWHJb1zPTwuS3MMqyRHDax/xspg7Wz6AK9jhB6egcwDbIhNUbPlxHWNrJsbDyOFDSVfRCNeNY/3NeV2xibhI0nJqzyYr
+ jv31e/75
+ muaXOvAp9nXxapcDtxkH5iHrfcRaSuQZlRDovkTjUX0jVJnkTyg5w40frlyL+bkjcWe5crvieWg7AytEq5s+SpcpDCbTUf5dwe0KB9hu/oY+F032QEEWWDrdky8akiVOVff8egtSPrZzQ4969U73wmvk/MYzH8EqGDNqUWdSyxrS3Z9g6PS/Uq0d6QCRFejWTBqks+q7dcv0+nYgCSylT7PP7wRFM0wWZuqoISa5haHL1CtNB5ZsOoDpBGiGdqKDboqDmWo1+2SdbNC7CQvjzBT0XplF6mD7dIGKp7fRLN20X/jVZ2sDagdQtSbeXTOTMVmeRGhAbCQmq0SVtDbKuZvE1KXsneeNgs2GNKl2VdZuOEb+MrHaA5ud/vf2xrwo3547z8ViO9O9VE03p5qgMSM1XFFyWIpElBIC42mpJxnC5cnuiPat22EZxc+zOKCWdzfNbVl4kbgRaITw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,119 +145,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9 Apr 2026, at 3:52, David Hildenbrand (Arm) wrote:
-
-> On 4/9/26 03:46, John Hubbard wrote:
->> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
->> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
->> gup_fast_folio_allowed() falls back to the slow path for any order-0
->> folio with a NULL mapping when CONFIG_SECRETMEM=3Dy. This causes a
->> performance regression for drivers that allocate pages with alloc_page()
->> and insert them into VMAs via vm_insert_page(). These pages legitimately
->> have a NULL folio->mapping, but they cannot be secretmem pages.
+On 4/9/26 16:40, Mike Rapoport wrote:
+> On Wed, Apr 08, 2026 at 09:36:14AM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/8/26 05:16, Yuan Liu wrote:
+>>> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
+>>> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
+>>> to rebuild zone->contiguous. For large zones this is a significant cost
+>>> during memory hotplug and hot-unplug.
+>>>
+>>> Add a new zone member pages_with_online_memmap that tracks the number of
+>>> pages within the zone span that have an online memory map (including present
+>>> pages and memory holes whose memory map has been initialized). When
+>>> spanned_pages == pages_with_online_memmap the zone is contiguous and
+>>> pfn_to_page() can be called on any PFN in the zone span without further
+>>> pfn_valid() checks.
+>>>
+>>> Only pages that fall within the current zone span are accounted towards
+>>> pages_with_online_memmap. A "too small" value is safe, it merely prevents
+>>> detecting a contiguous zone.
+>>>
+>>> The following test cases of memory hotplug for a VM [1], tested in the
+>>> environment [2], show that this optimization can significantly reduce the
+>>> memory hotplug time [3].
+>>>
+>>> +----------------+------+---------------+--------------+----------------+
+>>> |                | Size | Time (before) | Time (after) | Time Reduction |
+>>> |                +------+---------------+--------------+----------------+
+>>> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
+>>> |                +------+---------------+--------------+----------------+
+>>> |                | 512G |      36s      |      7s      |       81%      |
+>>> +----------------+------+---------------+--------------+----------------+
+>>>
+>>> +----------------+------+---------------+--------------+----------------+
+>>> |                | Size | Time (before) | Time (after) | Time Reduction |
+>>> |                +------+---------------+--------------+----------------+
+>>> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
+>>> |                +------+---------------+--------------+----------------+
+>>> |                | 512G |      36s      |      9s      |       75%      |
+>>> +----------------+------+---------------+--------------+----------------+
+>>>
+>>> [1] Qemu commands to hotplug 256G/512G memory for a VM:
+>>>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
+>>>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>>>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
+>>>     qom-set vmem1 requested-size 0G (Unplug Memory)
+>>>
+>>> [2] Hardware     : Intel Icelake server
+>>>     Guest Kernel : v7.0-rc4
+>>>     Qemu         : v9.0.0
+>>>
+>>>     Launch VM    :
+>>>     qemu-system-x86_64 -accel kvm -cpu host \
+>>>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>>>     -drive file=./seed.img,format=raw,if=virtio \
+>>>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>>>     -m 2G,slots=10,maxmem=2052472M \
+>>>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>>>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>>>     -nographic -machine q35 \
+>>>     -nic user,hostfwd=tcp::3000-:22
+>>>
+>>>     Guest kernel auto-onlines newly added memory blocks:
+>>>     echo online > /sys/devices/system/memory/auto_online_blocks
+>>>
+>>> [3] The time from typing the QEMU commands in [1] to when the output of
+>>>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>>>     memory is recognized.
+>>>
+>>> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+>>> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+>>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>>> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+>>> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+>>> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+>>> Reviewed-by: Pan Deng <pan.deng@intel.com>
+>>> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>>> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
+>>> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+>>> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> ---
 >>
->> Secretmem pages are always added to the secretmem inode's page cache via
->> filemap_add_folio(), which sets folio->mapping to the inode's i_mapping.
->> A folio with a NULL mapping can never be a secretmem folio. The
->> NULL-mapping check was intended to handle truncated file-backed pages (a
->> reject_file_backed concern), not secretmem detection.
+>> [...]
 >>
->> When only check_secretmem is true (and reject_file_backed is false), a
->> NULL mapping is sufficient to prove the folio is not secretmem, so the
->> fast path can proceed.
->
-> Hm, what if secretmem folio just got truncated? I hate to rely on some
-> handling in the caller to detect truncation differently during GUP-fast,
-> but this function returning "true".
->
-> Zi is working on a way to distinguish folios from non-folio things: that
-> we can identify whatever was added through vm_insert_page().
-
-The idea is to give every allocated page a NotRmappable page_type and
-1) let page_rmappable_folio() remove the page_type by setting mapcount
-to 0, since page_type overlaps with mapcount;
-2) allow callers of alloc_page*() to change page_type from NotRmappable
-to other types.
-
-After these, rmappable folios with any order is a folio without any
-page_type. HugeTLB is an exception, but rmap code has special handling
-for them, so it should be fine.
-
-I have a draft[1], but have not had time to refresh it yet. I am planning
-to work on this after my two other jobs (make READ_ONLY_THP_FOR_FS enabled
-for all FS with large folio support and ensure ->private is 0 for tail page=
-s).
-
-[1] https://github.com/x-y-z/linux-dev/tree/remove_mapcount_for_non_folio-2=
-026-02-16-23-27
-
->
-> Because that's really the key problem here: vm_insert_page() pages are
-> not actually folios, they just look like a folio today, but looking at
-> fields like ->mapping does not make any sense.
-
-Based on my understanding of some callers of alloc_page()/get_free_pages(),
-vm_insert_page(), they use GFP_COMP to get a compound page and vm_insert_pa=
-ge()
-individual pages of the compound page. These pages might be pinned.
-During past THP cabal meeting, we discussed about it if
-1. we should disallow such uses and only allow order-0 allocations, or
-2. we need a new type like new_type_folio for them and the type does not
-have folio fields except ->pincount.
-
-Willy (cc=E2=80=99d) said he coded some experiment on it some time ago. I d=
-o not know if
-he is able to recover the code.
-
->
+>>> @@ -842,7 +842,7 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+>>>   *   zone/node above the hole except for the trailing pages in the last
+>>>   *   section that will be appended to the zone/node below.
+>>>   */
+>>> -static void __init init_unavailable_range(unsigned long spfn,
+>>> +static unsigned long __init init_unavailable_range(unsigned long spfn,
+>>>  					  unsigned long epfn,
+>>>  					  int zone, int node)
+>>>  {
+>>> @@ -858,6 +858,7 @@ static void __init init_unavailable_range(unsigned long spfn,
+>>>  	if (pgcnt)
+>>>  		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
+>>>  			node, zone_names[zone], pgcnt);
+>>> +	return pgcnt;
+>>>  }
+>>>  
+>>>  /*
+>>> @@ -956,9 +957,22 @@ static void __init memmap_init_zone_range(struct zone *zone,
+>>>  	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
+>>>  			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
+>>>  			  false);
+>>> +	zone->pages_with_online_memmap += end_pfn - start_pfn;
+>>>  
+>>> -	if (*hole_pfn < start_pfn)
+>>> -		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
+>>> +	if (*hole_pfn < start_pfn) {
+>>> +		unsigned long pgcnt;
+>>> +
+>>> +		if (*hole_pfn < zone_start_pfn) {
+>>> +			init_unavailable_range(*hole_pfn, zone_start_pfn,
+>>> +					       zone_id, nid);
+>>> +			pgcnt = init_unavailable_range(zone_start_pfn,
+>>> +					start_pfn, zone_id, nid);
 >>
->> Tested-by: Sourab Gupta <sougupta@nvidia.com>
->> Fixes: f002882ca369 ("mm: merge folio_is_secretmem() and folio_fast_pin_=
-allowed() into gup_fast_folio_allowed()")
->> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
->> ---
->>  mm/gup.c | 13 +++++++++----
->>  1 file changed, 9 insertions(+), 4 deletions(-)
+>> Indentation of parameters.
 >>
->> diff --git a/mm/gup.c b/mm/gup.c
->> index 8e7dc2c6ee73..3ea661e67eea 100644
->> --- a/mm/gup.c
->> +++ b/mm/gup.c
->> @@ -2784,12 +2784,17 @@ static bool gup_fast_folio_allowed(struct folio =
-*folio, unsigned int flags)
->>  	mapping =3D READ_ONCE(folio->mapping);
+>>> +		} else {
+>>> +			pgcnt = init_unavailable_range(*hole_pfn, start_pfn,
+>>> +					zone_id, nid);
 >>
->>  	/*
->> -	 * The mapping may have been truncated, in any case we cannot determin=
-e
->> -	 * if this mapping is safe - fall back to slow path to determine how t=
-o
->> -	 * proceed.
->> +	 * If the mapping is NULL (truncated, or never set), we cannot
->> +	 * determine whether the folio is file-backed, so a long-term writable
->> +	 * pin must fall back to the slow path.
->> +	 *
->> +	 * Otherwise, a NULL mapping proves this is not a secretmem folio
->> +	 * (secretmem folios always have a valid mapping to the secretmem
->> +	 * inode's address_space), so in that case, we can continue with the
->> +	 * fast path.
->>  	 */
->>  	if (!mapping)
->> -		return false;
->> +		return !reject_file_backed;
 >>
->>  	/* Anonymous folios pose no problem. */
->>  	mapping_flags =3D (unsigned long)mapping & FOLIO_MAPPING_FLAGS;
+>> Same here.
 >>
->> base-commit: 7f87a5ea75f011d2c9bc8ac0167e5e2d1adb1594
->
->
-> --=20
-> Cheers,
->
-> David
+>>> +		}
+>>> +		zone->pages_with_online_memmap += pgcnt;
+>>> +	}
+>>
+>>
+>> Maybe something like the following could make it nicer to read, just a
+>> thought.
+>>
+>>
+>> unsigned long hole_start_pfn = *hole_pfn;
+>>
+>> if (hole_start_pfn < zone_start_pfn) {
+>> 	init_unavailable_range(hole_start_pfn, zone_start_pfn,
+>> 			       zone_id, nid);
+>> 	hole_start_pfn = zone_start_pfn;
+>> }
+>> pgcnt = init_unavailable_range(hole_start_pfn, start_pfn,
+>> 			       zone_id, nid);
+>>
+> 
+> Yeah, this looks better :)
+> 
+> sashiko had several comments
+> https://sashiko.dev/#/patchset/20260408031615.1831922-1-yuan1.liu%40intel.com
+> 
+> I skipped the ones related to hotplug, but in the mm_init part the comment
+> about zones that can have overlapping physical spans when mirrored
+> kernelcore is enabled seems valid.
 
+The set_zone_contiguous/clear_zone_contiguous can be ignored I think.
 
-Best Regards,
-Yan, Zi
+The comment about shrink_zone_span() is likely not realistic.
+shrink_zone_span() would not shrink over boot holes.
+
+Well, unless we have an odd case where the hole+memory starts in the
+middle of a "PAGES_PER_SUBSECTION". That would already be problematic if
+memory starts/ends in the middle of a PAGES_PER_SUBSECTION chunk. I
+don't such a case exists.
+
+We could improve shrink_zone_span() to let
+find_smallest_section_pfn/find_biggest_section_pfn test the pfn_to_nid()
+and page_zone() not on;y on the smallest/highest pfn, but also on the
+highest/smallest PFN in a PAGES_PER_SUBSECTION chunk.
+
+No need to test pfn_to_online_page() twice, as that is the same result
+for all pages in a PAGES_PER_SUBSECTION chunk.
+
+-- 
+Cheers,
+
+David
 
