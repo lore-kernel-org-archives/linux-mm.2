@@ -4,104 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC59EA3C4E
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:50:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3848EA3C4E
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38DAC6B008C; Thu,  9 Apr 2026 08:50:48 -0400 (EDT)
+	id 2866A6B0005; Thu,  9 Apr 2026 08:58:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33E566B0092; Thu,  9 Apr 2026 08:50:48 -0400 (EDT)
+	id 25E4E6B0088; Thu,  9 Apr 2026 08:58:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2532B6B0093; Thu,  9 Apr 2026 08:50:48 -0400 (EDT)
+	id 1742E6B008A; Thu,  9 Apr 2026 08:58:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 186D46B008C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:50:48 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE9071B8568
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:50:47 +0000 (UTC)
-X-FDA: 84639001734.14.28DDF32
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 719D380007
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:50:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jr1w2Lb+;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775739045;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 02F966B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:58:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B04761A077F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:58:03 +0000 (UTC)
+X-FDA: 84639020046.08.2F3C46C
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A228912000E
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:58:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eZgfhZpP;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775739481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KE4eT7YcrT++12c/obGpJYqag96lO0J1UNDibfVOhpA=;
-	b=xm7/Az0QnVGWaTkN1YKMHviQXs1LxJwn2RNkbD7UFlBuPzceNMJ0/2fDTt6abdalo+1Oqj
-	ziZRW4gN8yB14ArBfPa7ENH8Kv/7dm9ZX9Z5iTFu8Z2aKmmRtUbvDZlZYn8glbcIpNwF8L
-	rP3gF3QB8IXjuPXOgZVEHYuCRgF/vSU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775739045; a=rsa-sha256;
-	cv=none;
-	b=sjseXNiAlg5fdHkg86eo1kjnKdhacHKWzoTXKqMIMrLZnJwPx5DnRsRnuT/m3wY9fnulFp
-	tqIq+jaXURS3Lkkz0JG7jzpqB6ppYShYHQqmCh299DqOxkddq1dXbwgwBci/8DYdfqG4l3
-	YRRXZNMNTJpgMd/5dd5d7ZGL/J7ySgs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jr1w2Lb+;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=KE4eT7YcrT++12c/obGpJYqag96lO0J1UNDibfVOhpA=;
-	b=jr1w2Lb+N3vZPTEFDElACQMA6h5rDgN8VQXEOB8wa1u3Sr6XbfzJvM8fu4Ea9zuaiDMLOILNf
-	bOKS8e6m6ezGljzENQ0R0UCWPCMNTbCk5HhaXK+9xOhDdgZtjUf6DP+g36FHlneYudVV9iHTLYZ
-	Z5RSJ/sZ3AhkAqLCedtGYiE=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fs04s751Mz1T4Gp;
-	Thu,  9 Apr 2026 20:44:45 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6037C40561;
-	Thu,  9 Apr 2026 20:50:38 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 9 Apr 2026 20:50:37 +0800
-Message-ID: <95bc0034-a72b-449c-9be4-b691fd03dc1e@huawei.com>
-Date: Thu, 9 Apr 2026 20:50:33 +0800
+	bh=ZHo0GbkrJBYGpDJ/KY0vXCFuOX6g8CR7CnRcWE4JybE=;
+	b=Yj7V2kGW/JMBtu1rmiAqVvYoYLTZwGNJLRY+Iq1pzOKNQyhO+bOatKHk86eVfK/Pn/BifV
+	yeLBN03tkSVJE9/dZCx9GcI/ijGLyE8MZZ8u+SpzhhezCBtiaOJXvFnFR48P2Fe3oBPbZ3
+	6QBg8qCJfFkSGAMa+RgjWh64TkkzstE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775739481; a=rsa-sha256;
+	cv=pass;
+	b=WxCb1imqndLosdlq7+ypzgtOeYOAIJX2FJSAdqnt2e/v0CXSqot3t8+yyebJhst6LGhoXp
+	P8emmFUotPyjm9STyu6sEU6zHVyFq7SB2gXYvsqN7xFR+Jr8unskw61oklIqsp+zpnwVJ4
+	SwQAlfwo2JVKnDBXas22trA+pgMLVw8=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eZgfhZpP;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b9c6680aaf8so144256466b.3
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 05:58:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775739480; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VUhLN5tkXOoyDmyLbtmdIADfwluuxXKva1YDkaByeH/wVopeHK/W745e8Lu4cUVZbK
+         45GD8kitsyAzn6FPFLNn/X/mwKGbIuoLjl2in3yyjPNkJY5wCPNIIQLnFiL5eDxd6sc/
+         o4hWB8WYy78S5aP1LuC+SEgifBZ8tXeV8rNslX+ixVuMox7ELiSD1jz1MeVRnDJfWbRX
+         pi3IqCfC3NuTxtSLFNl0XCXBYbHvL43vMIjCSJTOMErueH4aT+kmmRlnTo17dHYIdMRm
+         YDzdhGPlhxYuDjlQraa5dCvQdJPsIifzaAe0VJYMGKIKGT0RYWmp7FPFAa2fwMY8H03E
+         AYxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZHo0GbkrJBYGpDJ/KY0vXCFuOX6g8CR7CnRcWE4JybE=;
+        fh=pufOkVDHa8PMios+QH/FGflhw7BnUujoU9LzfjGS6D0=;
+        b=REGTbdUH/MMEZ1HU/PFeMP8LYKQLTF/sXizgYoqJ8vMpx4dJU6sAJeYsWT6+ykA2a5
+         ILlC3kaTKrVGRD7GkUTwA+ZiRqdJoTH2W0bf4+sQ5wuJT58tXzztqOw9BxaCEZqlM5/2
+         rquq3XLAOkuj3QsAHkEMGklKfV78Nwm22FoZZi80bcVDQT7VghD7T3p5rFJL0F6CzFWP
+         vdRDMyBQpjfqIU+FpEl1WF5pODf+WAhIj8SsyWdj5b81zRhj0bEU5PRfh00e2xfXOBJd
+         A+NPVtnK2bmbcnUDhxyx/VAABnzzOoCvuJUunBMxoxNa9eFaS8Q+8BR+mPOke3jKrfdv
+         1gvQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775739480; x=1776344280; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZHo0GbkrJBYGpDJ/KY0vXCFuOX6g8CR7CnRcWE4JybE=;
+        b=eZgfhZpPiAVTxT7SoG20ygE3QIEjwoQ3FUTukcvkeAffl/NkD2jYtEWTy2Yp7/UHhy
+         iT6QOG+r9pTFfqueaQiHlARmPFA9HELxrjfQ2cLZrv9EZrjVikVqo8/j1PAwLnGxuXN6
+         2EH6OxxrHyErAQipZXRoQQgum4T/z6olPxjSytQygZNevKcKCxpyTw3r5W1evT60ja/+
+         6Gpnn3QKZywyvGb5UvEW8vy30VVqZY55fafdcEe5coWp0+Ow2HW3P85uaG8RE8Veddyw
+         njsSxrFj5JyZ6DO3cKfiiocZJUwaGNxe8tmntiRBj6lYhJO7HLRB/A/lB9OD3um7JBZs
+         oYxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775739480; x=1776344280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZHo0GbkrJBYGpDJ/KY0vXCFuOX6g8CR7CnRcWE4JybE=;
+        b=j2hEVoaZiK9F27hyVbFknK7NpbVuBV86TEBDAELgBJ+1A0O1q8B2tMhd6LFIk/bahx
+         VJlsFhTc1EyJN6I0Wu3uOdmym9ApnO0ztLj15xsPDpxV9JcSLojthM24QJ3v/NZ+e5i8
+         ftCbMVyy56XqvRVs2wse9Ve/fE5IgCpY0WNQzuN3iHR9ipH2uzjWTzZFESNktNLqlqKh
+         1z3z4s/EJ7/zESHOKlH2D3E29LgfoNMTBsiMpDTgi7byMrKA0he312zrbANigRBj5AVV
+         0nhdGRvDftzi4zwlC1LxHzGdUIgLTdvzFgaydVKw0CzpEPvp/X39ZNePwkYjg+crpuWH
+         KiKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWAn6lT3I9GF1tmap4B7ZFMovNucrxsve2wOSwwvT90FWy7BT+N/pbskXarm1wUIHrwK0HiCdxTg==@kvack.org
+X-Gm-Message-State: AOJu0Yy7p5mcau1AuCMOinqSpR69vNuuYK9E2ByZvTvj/UgQ2aommeEU
+	qkP1lI1VG+PyCsMyI4IHlDKsOhh8SbuYHMk4XTZF44MUO+q0/NNq/YD7YCkEF1gqsqTxdjTi3n+
+	UvX9gjGRLSkzhnMPAUvjy3pMyj8/hA4U=
+X-Gm-Gg: AeBDievNaHHXREyStYpeekJt9GfqkRScfelrqfBe2Hu4+4bif9Cg94nwWQpRKck0XBM
+	FwH+sMabFz8xEk1c6SldA4bwDWbXlwBSiuq1MUqHFYKssHOGK6VE9eh/U4DNIp7DMVLHiqETX3a
+	RHUgS3Q3Hl39EXlFoZOlB1csByeXEyOOoBN8kp6xathmXtZtxyIDLi7e20YJSiZ8Luuc4Iadblf
+	Snzlv8HCWMX2ns+dVHVE0lvws8Q/9PesFvHQMXzPiED241uGbfGxIDVR1aZfCMMNMTVLhsoNlAB
+	SB+Us0NhO6LgT8homGZmHmqq42KwwSYMofzvQEKzqw==
+X-Received: by 2002:a17:906:f594:b0:b98:8c46:fc44 with SMTP id
+ a640c23a62f3a-b9d472537a3mr188681866b.2.1775739479605; Thu, 09 Apr 2026
+ 05:57:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
- interface
-To: Michal Hocko <mhocko@suse.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Christian Brauner <brauner@kernel.org>, Alexander Viro
-	<viro@zeniv.linux.org.uk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo
- Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
- <addP4MKmA8zfSN1o@tiehlicka>
- <dbb92553-58ba-42e1-b7df-b8450bd69d33@huawei.com>
- <addhuRqrB-u7oDp8@tiehlicka>
- <bdd49511-9b84-42cc-a286-9fdf2ef531a7@huawei.com>
- <adeFBKzNq9rNzbHk@tiehlicka>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <adeFBKzNq9rNzbHk@tiehlicka>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: 719D380007
-X-Stat-Signature: dsth8ix1q56s987hrsf5d6fk4nne9um8
+References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+In-Reply-To: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 9 Apr 2026 14:57:47 +0200
+X-Gm-Features: AQROBzD488QBLxf8tFQvWy4nXPU6xnyCMIBJtuUSx6jvGfNNYZgE0kkI12Vq1nc
+Message-ID: <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Filesystem inode reclaim
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org, 
+	Boris Burkov <boris@bur.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5dmurnf7n57ay3j3agjg3cey7iw6nrnh
+X-Rspamd-Queue-Id: A228912000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775739043-467982
-X-HE-Meta: U2FsdGVkX1825P1HYy6KAdwZxhByBCVu8kvuce6CLCTFMB10hd3Jwej0Yu4U550SD4oGuMwtIajSOhQrxzWMeSbh4inA5Ww4En1DgvGTMRgGaB5BEbr8odnTpbjXqNoF+c1gCKeML9MBsE5q/hLnSBXfN94RDtLkgfJcib+L5paoh3F6KaB8ss/yPT97JqG2F6BKvvaJ4IqjVPc92kPThvzCuGSaCCGZ7GNXcF+nJ5wkiYR2Gykpd3NkwgRQ51uEE3eQDWcRUhrv3D/S7d6nkKkJunRwvVPDLIrL22qFfUNNiE6bJep+xsszhrnbDAg/7eK31zxRfpxF7guOUJGccQ4LypmgDHnhofe3uc1Hhc3JkTRGoqBbYOniZj4taI7/fOaeJ+qWWi3rfK0w93QoSmTzG8Rb1WEMauWFaOfI38tLYx2SGPTQ6hGosuN5MVw0dwVteE7FYNhkjv0fhLtcG19Sb0L3RAzIar8oYNg3VD2G+Ggy0UpBYBoTu6BRdMjseninRXl3yBucyUNUjvbbEJYVA1s1wq5OyMkGuRSfUpwY3nUN8c2DKfdo6oi2+xWZk2RxZtaLFNmbyeskbC0Mb34C/n3Lt4xQuSjTrLMwF5reEMIQoHYROX4aqLUYJrEmuZnXq1ueTLLRKFhft2g+J13qPRHfjssW9iodsavstFlCQ7x/9Hpa51BZJ9tb+ckQwjnji0u+uWGLaYiyIhlmuoFiCbA/zkTg2SVCRaaOzZtBvpDzO8xqWANRFGoNymhWjt+zwfK4/6OaCo6NnM7wOKSbInk++a8BrekblV8ZLZ0fRNs8ys7Eoln3V+7T7NLYGJ2RAvMchi3nRF4vv1NnpL7qJ6kQ/N8F+S7vf006OYx4O9tvkI2bA3gJ8D+X5c19fcssSZcu/KCK6iXWHLXg4FA4WmtZbuW2IxZ10JmTvTjDSPPFcPN89K4+gTka5NA0G8D5WaDdGBl6gqd8qow
- JclVLve/
- uAqwhj8OSxL+F5+tKrdVHmwjQzIaMmzrpB+CSbJ8mjwUHkMnP/E7lapX1LGCADJ5X1ah6+On3llmQNFDAXgWepUuE7q5JvzwXNBTySUCrJpsnDuRsccVnAjGRO1dC6gSmzlipKL3xmTpYnPuFegk0ysOdKYv5s4mUacjUu696ux3UHSqbTHD7BPDjEtRJnlQthPbrAY6NpvtiFM3/s/eUqGDyRQr9t5y8pE065hJVIhYm0yZzXWL9zCLFsnFnlESs9/gcf3FgcGnfEZqd/4gZmMQUWyRxgsVPtEV28xP6Ib4va8gGaYbskYpGVQiShdpUfdEgzllXqqvywNJpauSEOMm5anXIkPNv25jA6HniikvO5w0=
+X-HE-Tag: 1775739481-900517
+X-HE-Meta: U2FsdGVkX1/07cjHIN0s2KKNRaXaMiUvoDdn8sw6KCzzKAEKYELhTNsfgOIp3Or28sjeqC1e1w4kW9a3AcJH0jrB0dwYNDEx+QWX9BinkGG88DXkE6prlVerZ3rywh5o98138NQIDb7alRbXKpwZcEbarl9IpIrgN5Sk01vTJpoL4biQQ9DbTg90V65I58FCKCO02sibtq7DUVBviZ/EVB030vT3mylPc9SSHeWPqcla98dz+J+TnAFnLsiv5rkMTzEgBa7Y84F1UaysQTDp+qaFRYEfNFM7A3V9Ojd3oGky6K6vSPn9gxAZtR6y+HJBLZ4aF9wH1SQ+elMpyOfi/mFcfgUlEaT4t5cwWnkBGSPL8NWdZ6M85wMEHPoi5KLIcd2n0/K3ySkFYYglaAu60+ljA6S1Ggeiw1ObZwzwZBoY3sxokcP87ahxm37RdsTQS9V/7iC9uxXPObUx3iL7Co/6pPsoWDX7PCOpyqWodmCc6N6v8VOJltmIezO9VJ5kkbOqQt0+xdHT8KPFBkjjzYwzAEqCeKfIVrrvEc7WWfIPTNQao0eDgU6yGGtjMbbjUlE5cZBUNSv/0TehVzKGndWMdKZG4TUO1+GAwLSOneqv4qwtOkJNiKHA84Nqz27atEh1D2Zyybcjc4DqZO6Dfq8KnNqGoFS2brZGTFlcX1ZzpPEfOcMdEwAHGV3iukxyBSRrq1EHzkf/vMG/Z0brnB2SGBcVRnPRk1mOEO8QQ8yblm9vLLmxzv1Fv8E+APyFQRrk6RLoRhRvWCuhaTtuNgXhnsR6hffAj5gz7IdA94QeZNdYaTxBT1utYIc+/4wwn3PpdkfUXHEdF8v5WkeC4lS9MHR6Qm58xkW768iX44kidN9MJ6cBcdO3ooYCCurE37zdqfxAJV9T2ZFg8Ey4r7BaO0p6uTHylwq0OvMilyBvci6sL84pLJt09NGKDexQCkTqMTwKBy2iunwbcWn
+ ae7LD4uw
+ tqNb3oUTqaS0pGXXIYPqcm2+eny9wXwmHFR9gWjEMduXqMtcA/JYFpfCrwx7zDS3UdQ4pps5IY4xoAVOe+5jmzDOLYUb/OnKPCU50HvugbJBqNsGie82wmpEmGZIzNu+iHVzhBmJNIeeTUGK5LrbnW16aRUK1IxNO4z43NsGKaj7HGTOz+MjmBZcF1cmm8kzJrzxKBnEkfytmaa60ozBmtt+8tYl3pbozC+uMBITOd8XqHW4T+pfOWJdUs7jbt+2mfdvnuQ5p3IAnzXyuSFZAnxoXuIxi3vOWAzAEtKkpz8x/EjMZgeClvaaRTo9ghQqH1lYoWhGY6zAhauHWl43c3pxmDGTfolHuuOcyu/hpMhX43Em3qUynbEbn7HHaZjCxPt8rNyhhepi/0MA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,79 +139,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 9, 2026 at 11:17=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+> Hello!
+>
+> This is a recurring topic Matthew has been kicking forward for the last
+> year so let me maybe offer a fs-person point of view on the problem and
+> possible solutions. The problem is very simple: When a filesystem (ext4,
+> btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform =
+a
+> complex cleanup - like trimming of preallocated blocks beyond end of file=
+,
+> making sure journalling machinery is done with the inode, etc.. This may
+> require reading metadata into memory which requires memory allocations an=
+d
+> as inode eviction cannot fail, these are effectively GFP_NOFAIL
+> allocations (and there are other reasons why it would be very difficult t=
+o
+> make some of these required allocations in the filesystems failable).
+>
+> GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclai=
+m)
+> trigger warnings - and for a good reason as forward progress isn't
+> guaranteed. Also it leaves a bad taste that we are performing sometimes
+> rather long running operations blocking on IO from reclaim context thus
+> stalling reclaim for substantial amount of time to free 1k worth of slab
+> cache.
+>
+> I have been mulling over possible solutions since I don't think each
+> filesystem should be inventing a complex inode lifetime management scheme
+> as XFS has invented to solve these issues. Here's what I think we could d=
+o:
+>
+> 1) Filesystems will be required to mark inodes that have non-trivial
+> cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
+> whatever :)). Usually I expect this to happen on first inode modification
+> or so. This will require some per-fs work but it shouldn't be that
+> difficult and filesystems can be adapted one-by-one as they decide to
+> address these warnings from reclaim.
+>
+> 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
+> kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
+> performance reasons. I expect this to be a significant portion of inodes
+> on average and in particular for some workloads which scan a lot of inode=
+s
+> (find through the whole fs or similar) the efficiency of inode reclaim is
+> one of the determining factors for their performance.
+>
+> 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
+> per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struc=
+t)
+> to process them.
+>
+> 4) The work will walk s_hard_reclaim_inodes list and call evict() for eac=
+h
+> inode, doing the hard work.
+>
+> This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
+> and they can work on freeing memory needed for freeing of hard to reclaim
+> inodes. So warnings about GFP_NOFAIL allocations aren't only papered over=
+,
+> they should really be addressed.
+>
+> One possible concern is that s_hard_reclaim_inodes list could grow out of
+> control for some workloads (in particular because there could be multiple
+> CPUs generating hard to reclaim inodes while the cleanup would be
+> single-threaded). This could be addressed by tracking number of inodes in
+> that list and if it grows over some limit, we could start throttling
+> processes when setting I_RECLAIM_HARD inode flag.
+>
+> There's also a simpler approach to this problem but with more radical
+> changes to behavior. For example getting rid of inode LRU completely -
+> inodes without dentries referencing them anymore should be rare and it
+> isn't very useful to cache them. So we can always drop inodes on last
+> iput() (as we currently do for example for unlinked inodes). But I have a
+> nagging feeling that somebody is depending on inode LRU somewhere - I'd
+> like poll the collective knowledge of what could possibly go wrong here :=
+)
+>
+> In the session I'd like to discuss if people see some problems with these
+> approaches, what they'd prefer etc.
 
+Hi Jan,
 
-On 4/9/2026 6:52 PM, Michal Hocko wrote:
-> On Thu 09-04-26 16:54:48, Kefeng Wang wrote:
->>
->>
->> On 4/9/2026 4:22 PM, Michal Hocko wrote:
->>> On Thu 09-04-26 16:08:37, Kefeng Wang wrote:
->>> [...]
->>>> To use the reclaim interface, there are two differences,
->>>>
->>>> 1) we need to input the reclaim numbers and swappiness, this is not a big
->>>> problem
->>>> 2) for reclaim, it supports swappiness=max to only reclaim anonymous pages,
->>>> but cannot only reclaim file pages,
->>>
->>> Why is 2) a real constrain?
->>
->> This should not be a restriction, but a strategy. Our product wants to
->> migrate anonymous pages to the local instead of swapping them out. However,
->> the current per-node-reclaim interface does not support reclaiming only file
->> pages.
-> 
-> Yes, I do understand that you want to keep your hot anonymous pages
-> resident on some node. Those shouldn't be reclaimed by the user space
-> triggered reclaim anyway, right? Migration will then happen during the
-> memory offlining.
+Is this expected to be a FS+MM session or only FS+Matthew?
 
-Yes, that we need.
-> 
-> This will certainly require some fine tuning but I do not see any reason
-> this should be completely impossible. Certainly a more robust way (from
-> API POV) than the suggested drop_caches. I am also not convinced we need
-> page-cache-only reclaim for the existing reclaim interface. I believe it
-> makes more sense to look at the reclaim from hotness POV rather than
-> anon vs. file.
+Boris,
 
-It is already support only reclaim file pages when swappiness = 0 for
-memcg.reclaim, but not for per-node-reclaim, so we can just make a few
-small changes to enable it(no tested)
+Is this related to the Direct Reclaim Scalability topic you wanted to discu=
+ss?
+We are still waiting for posting on this topic.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 84eba9ab5d25..46254ae9b8df 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2515,7 +2515,7 @@ static void get_scan_count(struct lruvec *lruvec, 
-struct scan_control *sc,
-          * using the memory controller's swap limit feature would be
-          * too expensive.
-          */
--       if (cgroup_reclaim(sc) && !swappiness) {
-+       if ((cgroup_reclaim(sc) || sc->proactive) && !swappiness) {
-                 scan_balance = SCAN_FILE;
-                 goto out;
-         }
-
-or
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 84eba9ab5d25..e2998b61f78b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2515,7 +2515,7 @@ static void get_scan_count(struct lruvec *lruvec, 
-struct scan_control *sc,
-          * using the memory controller's swap limit feature would be
-          * too expensive.
-          */
--       if (cgroup_reclaim(sc) && !swappiness) {
-+       if (sc->proactive && !swappiness) {
-                 scan_balance = SCAN_FILE;
-                 goto out;
-         }
-
-
-
+Thanks,
+Amir.
 
