@@ -4,87 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A7C10FC460
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Apr 2026 23:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACF010FC45F
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 00:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A95106B0005; Wed,  8 Apr 2026 19:52:47 -0400 (EDT)
+	id AA1766B0005; Wed,  8 Apr 2026 20:00:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6CDB6B0088; Wed,  8 Apr 2026 19:52:47 -0400 (EDT)
+	id A03BC6B0088; Wed,  8 Apr 2026 20:00:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A9726B008A; Wed,  8 Apr 2026 19:52:47 -0400 (EDT)
+	id 8A4856B008A; Wed,  8 Apr 2026 20:00:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87C196B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 19:52:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E72A13A774
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:52:47 +0000 (UTC)
-X-FDA: 84637041174.30.A0F1EA1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 65926140005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 23:52:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CvHUGpMI;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775692365; a=rsa-sha256;
-	cv=none;
-	b=Vu+QSSbaRKuAcKW9hXB4ktMBjxdJqOi5Tg2IWUlEIQpKGYLLmxBrf3SxWBfvwkfJT8KfB2
-	4QAWTEYDMEJONAlty8g3aOORsRJJNwc6MiJYHr8kxY8KLbiZhllOzNhz8prgaxsN1ZD482
-	HRSZdd4HCELMVaw435kR0W7k3v4UyRI=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 765886B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 20:00:54 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22B0CB7528
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 00:00:54 +0000 (UTC)
+X-FDA: 84637061628.26.3CBD5AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 632EEC0008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 00:00:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n04EEiiR;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775692365;
+	s=arc-20220608; t=1775692852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGckHCLTGMVTcwZwbxQrLXVXwNuPQELw3TwpjAQfPoQ=;
-	b=e8x54/ES2gdCS2H62zQMq+zRmGe8aRXUHHOWs2Os+syCpLoTH1lgAOeJpObZoq5dCub7ez
-	f+wnMTaieM1wB9zdc+SyxhPGxZHZAKrNkAy73NdJVsN0p9fF2e0stph6Nmvx7bl8Mr2OKJ
-	/kyY21mz1r2ZCMMvX+4GWn5l6yqGr/M=
+	bh=pRSu2QWvv111P9ovZNOOU5jWRQQt/BPBHft0+vJIG+0=;
+	b=kriuSeIeHPOzYgesiWsiK+276pj7aJA80UiRzBaLpljcOFLK3zncAsbvXTUQcIyKbbANtQ
+	gEQLqu/Qt63wlmbTq3sT8EM83dUfnDLhYeWP1kgjom0cTJYE//Hll6LnQk9+Ak6NGvUocw
+	MCbZFrxtwvbZGqn668LYf+Hr/t1w0io=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775692852; a=rsa-sha256;
+	cv=none;
+	b=u80YkIY2h6BitOY86yOxJin8XFmbXnqKOpLS03ONvpn8tq5sdEyDjJM9k1WU0BhN8PSeSo
+	+3iCz1qJVkr45m6TfpAlRzEJPqqQTmlyTNs0JvFDNdt6BOaGFs7jXX+70hI9VtXtjMDPkX
+	St+m3W+C6Ji1AHqEWwb7rPXjRMxrZtM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CvHUGpMI;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n04EEiiR;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 53B0A600CB;
-	Wed,  8 Apr 2026 23:52:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA50C19421;
-	Wed,  8 Apr 2026 23:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1775692364;
-	bh=NoXTCDZdFrEUxD6kvr1g80kAzOx+axNA5Wxx5KjLhms=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CvHUGpMI8iV7a3qdD67rMlMQHJwIimrGieGk/w1PMg8Hj+buOG1fSH0hb3ppNkZM0
-	 Y91A9xAB9FDcvJhqGNMDoTX1877jXPFf/w2DTEFWbZmySvnagFP0eVwy89t4JfR53r
-	 I89zcnym4lP3mR8G6REEGzbqHKREANmsHwjl5wu4=
-Date: Wed, 8 Apr 2026 16:52:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+8a59070fc852219166ab@syzkaller.appspotmail.com>
-Cc: hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com, Dmitry
- Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- kasan-dev@googlegroups.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in kcov_ioctl (3)
-Message-Id: <20260408165242.3cc507e32217426be2686a8e@linux-foundation.org>
-In-Reply-To: <69d6e54f.a00a0220.468cb.0012.GAE@google.com>
-References: <69d6e54f.a00a0220.468cb.0012.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A28B4453C;
+	Thu,  9 Apr 2026 00:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA1AC19421;
+	Thu,  9 Apr 2026 00:00:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775692844;
+	bh=qppp/68yL1FBDErK+oJASXFD51sGuVpQH4bDIkn6sd4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=n04EEiiRelmZ/SxG+FaURhv7uQcCIcGYP3/75s3NiC605Ngr69+aovYWbEwoH9NL1
+	 yv4Xr9QeT2jBYiIIqk79Yj0PnEAaxmenTnicD0vVUJ2E/G1o+Q4HBV9EDvj+xAe4mC
+	 LQRPF2G7satvRydNnV6IU0kpjz7z7my+VTNB/wVx8dt09yzYgiH+kH8S4o9koNhf1R
+	 sK6YGvl4jitOVXt+b8jQQkEIWVLf9RiD+LM6JfkTNkKzwDaZ+GIe53rlkRPlku+kcl
+	 2Fcy18YfoqTtqaHCs/Xj9Dn30F9fwUr1a8fhf9wszeQXe0h4dv/DoWtiqApmxw22Pb
+	 6q4tylb2cHW9A==
+From: SeongJae Park <sj@kernel.org>
+To: Bijan Tabatabai <bijan311@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v3 00/10] mm/damon: introduce DAMOS failed region quota charge ratio
+Date: Wed,  8 Apr 2026 17:00:34 -0700
+Message-ID: <20260409000035.93742-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260408165001.8473-1-bijan311@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: e9so3dqh6bjkkbe1yd6917e5gmg1ouk9
+X-Rspamd-Queue-Id: 632EEC0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 65926140005
-X-Stat-Signature: m8zyijy8pjozutwzay5bjrrnew4o8eh5
-X-HE-Tag: 1775692365-4456
-X-HE-Meta: U2FsdGVkX191PR5Ho/PrZlnh/CXMtS+cD5zoPAXb98BCnu/EUqHjuzK4l2N/4Otaz0w24UBW6UZXZiJdTjSP/ZoTowORQC615Heo6KZQUBafdTyn7xhfBG80SfAMRf5n4NOWS0983pqIpI8bE0uYkPwKQi3zlTFELd5WYgBg64DhAQ7Al1mVdgarWEpNwsIMukxrauvjhX61p5sQSUWK/ZFd66MiCyhgiS9oFo9KD3OnhuLPTymWCLXK/91BEGyhusV3zc2JKRAUD6Utcy7pxn3GUPgbQKz+mHwi3aHw9bW/9zi9GEl0JMXzcE3daCVizOTqmxtbsNKz8hFikGtDMYbEg7nv37eEJpxPKieWwLqBjqW+8Ig4FA589/lFb1kdNfKh/Gv7El5185rswfALiTFCDTx8BVB3H6pHQ0yMqHikFtV/AKp2ZgPAbXjM1h78FpMWC+M7B0qettgIsjyRx6tmulH3/HG7trbORv9sMyu/FX5GgS0ejJmuG5q14OkQ7IIX3qSg05EpB4Ybrcuh+8bxWGS9DMn2RkRnM4uSmpRUZOHfFKOY9ar1vWmbhSHSvRt6PM25JwlBcn5HVujlI9WjCbIpYMIkKGhKFCTC3/7QMd2E7vpzeFMymd+a4h5aK1oAgXbiPixvIEYdy30ITfVVCTuVaJ8CmUCtvnj1rTDrjLNtXQV1pZ12fLQ52E2SmERWnmtH0C52mh+6Zzaje2vMEelMlRxYaoFvmiwr7dqvWPXtCSUUj/+arSdnMG/qoWQT4QTIVRianeDW0nz2CUF4Tyw9zTHKGG07JVZBTNiOn7tFraiMcf3910Pt/zQAAaA7E2Galfj8NAuw3PzW7h//BdZjoDS3pUZ03FeWd9yDN149ZRYuZ6+pENO3/R5lhL5O8/i+pXZEjE7RmoSoxTv18OdgkcvhHcK7LAc7RWlHaWifHTD6/vwtMxsli/yxRUE3P1n2YuHJvPwmQf2
- id/pSUWi
- g6L9eIh8ga90c6ewi2c9ojalRn40Hl8pN7OeyvcCblFL/QPiH+E04U3YH+xvC2IKFFHTP6h1JAS14XgVG4NQJcJRtMs4s9iLSeQZNzVA1SlRlvPBiOLPtZCmGsLjt5wFg+MfvrVN7b6a6ln16byVawPmek2b9CuTMa8sz5+kqPsW4qawFN041HrNy/qsjSUjJcCYXSdsRYaSNU3Mn0iQPEYaUPvWBJRgPt7ASQtMi+iirs3HvjE7EG4YpLf4iPpuyS8N3humz3PM+HL5i8INhHWzJJvjVT7c69yKbzHKjYb5UMBajqHE0IA8B/IYPOfMXvr12WWToEPglmrfgsYqI+Wm3ux+4ecq6sFk3dF6nLJbiRYsavfZehOTwDUNcS6kMKLjAgZj0iCxxDMkJr0uG3iLtaGj9uBwYtMjJjWCZGQUA7QRDaMF3vROiAfJVYOTnHG9vMbj3FXJrqjCmMvgxb3blPG9Kmo+drUU3C8a+zlFTwnAECyxUqr6lDd1q8eh+DcKpZrQxT85ZNLx47/tXHdbueeo+Kfwwho8UAcidCwq9wxi6SVt7NDB68fLVUHZ4RojIu21x7984XZnXokifJFm4zAE+N1Nu9Pax6v7zgYxHtiqRDasocJi6qUl7AX24TeWXiEDk4+QVSKwWEcsubhX/FHMebvZ/e2RKhnG4nmmDS4WhmxLLwRxA3sFuSypKwp3hnrMj3XgS0M+FBMUwqJ4Kj2h8SQ2M+N2CSVNc97Oex/bVcXZqVCZXa/xTxr5nb0tpxrQ00JpWvNi6y+biMQ70Q7/1DjRKd9j16exPw0DtoLhtMKYRDNdA7ovUc3mmDorLTwIID78F6FcpjObd91Ui4UH/cff/tRu2aTtuvwrB8WJkjRJRtlFlpJjReSZ98sDFtJz23MFHacqfyrSSa4x1Qh4LqdlmdcsJB+y+qFHtMduTLYeowDLE9KJFd+Fid8gb
+X-HE-Tag: 1775692852-664047
+X-HE-Meta: U2FsdGVkX18CznGhA6K/V5WRphPzMUSDzX7/MYjlVh2J8XwoDnQLxxe1gBAzwUuOV4Gnha7xmPTcFGk0LU4brG5XekdlZDQZ1v/9DuuzKmWjRYW3dnK+LrqZD31Tg5yd983727Eb4uaOUtK/xQPK4Tlx2Jf9Wwgkn38n0QvH0+lMidKY6PoCBlL+SUlU5TQEIMAu415vCg0s+QdteXcgoF59ebIZjpsMgc9BDNG1I56Vksglqz/0HxsQBtEOKB803KQe08dQz8Rv/fAnFQ816i5X9fh56g52mqAIR4JFBDkVG8ldUBy/lQ4tqTVg+ubtDLpnml0AEku0FjR2V9VsX6uvc4wasXbwSU0q80pxLzByQrLz+eZvwm0GeZ4XeNJYl28cxjj2EFvy33owv3akzGQMrYlhEAyMg9ccEi1mGz7/OWydGp40dBdhJ8dnIHyp4zB5Wsf/91JDmZPAt48sm+NIPjVdd7nh+DEvQJszsoooZ+I8oV5g2PlAQNUcDztQ3Nmx2Vyvg9rTHYjzBa+3yPNB82tkbRoBHqObadCqP5C0wyiuWxUOMH9rIjxjssm94LOtCKNJJKpimMbfv69s0+XPgB9/kUrHZzXnFxDK1osRXCqXagvGhtMlKmQU70Vd6vA+NFqvOxlB3EgG9ujwdYSqKkSABOehRQyX2qrDUSRXB8ENCcAuisdCdN6IlSSA5Q86iMcIFkgPcbGaX/Rw+SQnKkFyCWr7o7N0u4d3ayzs/dD8xYZKRFk/yTCHRK3Xo6NozxLxFKz/awWRczymXC+BMquPdffQRYTN81okEbib3gVmBL3swR48BIiJ2y1IWTZysqx/+f4HiyiO0wcUTX2ebIvzDxeXh9jgcq5uLG/PuwSXCt40omnfPPHI0AhgHogmhQDi8mbHA75Lv6kFs4vEBRSZZMA79zPFHPeqOEw8y4xJL7IB7ldHuHn4vz7FFR8rdSAJIckNboyPlth
+ Vh+SGyxu
+ /Er4NdzasoLP+W6ZXeZzWwJxognAwS3hp7hhqau8BExvcNfjM/eE3/GIX6JolyQsmNlSIlCFibVCgTdV9e5nwiAfePKSKk2Ts7fd2B/EoX5pdC9gFIfW/SF8Wy8TiH0ONtnXiwb8fHOmjXeRlKBLTTTj4djsLEq3R3uCUAVed4fcaz1PnovbGPXaRtISbGVkwsQdq0/MR/P4lxoPZyyvs723yfec0gZ2JO8D7MnxHkbEG3R37AeXBUN7CiwdJni5Fs3sD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,96 +108,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 08 Apr 2026 16:31:27 -0700 syzbot <syzbot+8a59070fc852219166ab@syzkaller.appspotmail.com> wrote:
+On Wed,  8 Apr 2026 11:48:27 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
 
-> Hello,
+> On Mon,  6 Apr 2026 18:05:22 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> syzbot found the following issue on:
+> Hi SJ,
 > 
-> HEAD commit:    7ca6d1cfec80 Merge tag 'powerpc-7.0-4' of git://git.kernel..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=133b4dda580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=64e78d99d9bf8b4c
-> dashboard link: https://syzkaller.appspot.com/bug?extid=8a59070fc852219166ab
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> > TL; DR: Let users set different DAMOS quota charge ratios for DAMOS
+> > action failed regions, for deterministic and consistent DAMOS action
+> > progress.
+> > 
+> > Common Reports: Unexpectedly Slow DAMOS
+> > =======================================
+> > 
+> > One common issue report that we get from DAMON users is that DAMOS
+> > action applying progress speed is sometimes much slower than expected.
+> > And one common root cause is that the DAMOS quota is exceeded by the
+> > action applying failed memory regions.
+> > 
+> > For example, a group of users tried to run DAMOS-based proactive memory
+> > reclamation (DAMON_RECLAIM) with 100 MiB per second DAMOS quota.  They
+> > ran it on a system having no active workload which means all memory of
+> > the system is cold.  The expectation was that the system will show 100
+> > MiB per second reclamation until (nearly) all memory is reclaimed. But
+> > what they found is that the speed is quite inconsistent and sometimes it
+> > becomes very slower than the expectation, sometimes even no reclamation
+> > at all for about tens of seconds.  The upper limit of the speed (100 MiB
+> > per second) was being kept as expected, though.
+> > 
+> > By monitoring the qt_exceeds (number of DAMOS quota exceed events) DAMOS
+> > stat, we found DAMOS quota is always exceeded when the speed is slow. By
+> > monitoring sz_tried and sz_applied (the total amount of DAMOS action
+> > tried memory and succeeded memory) DAMOS stats together, we found the
+> > reclamation attempts nearly always failed when the speed is slow.
+> > 
+> > DAMOS quota charges DAMOS action tried regions regardless of the
+> > successfulness of the try.  Hence in the example reported case, there
+> > was unreclaimable memory spread around the system memory.  Sometimes
+> > nearly 100 MiB of memory that DAMOS tried to reclaim in the given quota
+> > interval was reclaimable, and therefore showed nearly 100 MiB per second
+> > speed.  Sometimes nearly 99 MiB of memory that DAMOS was trying to
+> > reclaim in the given quota interval was unreclaimable, and therefore
+> > showing only about 1 MiB per second reclaim speed.
+> > 
+> > We explained it is an expected behavior of the feature rather than a
+> > bug, as DAMOS quota is there for only the upper-limit of the speed.  The
+> > users agreed and later reported a huge win from the adoption of
+> > DAMON_RECLAIM on their products.
 > 
-> Unfortunately, I don't have any reproducer for this issue yet.
+> Thanks for this series. This is a problem I have come across and am looking
+> forward to seeing this land.
 
-Thanks.  I added a few kcov names from MAINTAINERS.
+Thank you for acknowledging.  I'm hoping this to land on 7.2-rc1.
 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/ace9641c44ac/disk-7ca6d1cf.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/6e66f8b9476e/vmlinux-7ca6d1cf.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/d679c066df56/bzImage-7ca6d1cf.xz
+[...]
+> > DAMOS Action Failed Region Quota Charge Ratio
+> > =============================================
+> > 
+> > Let users set the charge ratio for the action-failed memory, for more
+> > optimal and deterministic use of DAMOS.  It allows users to specify the
+> > numerator and the denominator of the ratio for flexible setup.  For
+> > example, let's suppose the numerator and the denominator are set to 1
+> > and 4,096, respectively.  The ratio is 1 / 4,096.  A DAMOS scheme action
+> > is applied to 5 GiB memory.  For 1 GiB of the memory, the action is
+> > succeeded.  For the rest (4 GiB), the action is failed.  Then, only 1
+> > GiB and 1 MiB quota is charged.
+> > 
+> > The optimal charge ratio will depend on the use case and
+> > system/workload.  I'd recommend starting from setting the nominator as 1
+> > and the denominator as PAGE_SIZE and tune based on the results, because
+> > many DAMOS actions are applied at page level.
 > 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+8a59070fc852219166ab@syzkaller.appspotmail.com
+> This makes sense, but the quota is also considered when setting the minimum
+> allowable score in damos_adjust_quota(), which, to my understanding, assumes
+> that all of the all of a region's data will by applied. If an action fails for
+> a significant amount of the memory, a lower score than what was calculated in
+> damos_adjust_quota() could be valid. If that's the case, the scheme would be
+> applied to fewer regions than strictly necessary.
+
+Good point, you are right.
+
 > 
-> bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:0c, vlan:0)
-> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P23414/1:b..l P27649/1:b..l P27664/1:b..l
-> rcu: 	(detected by 0, t=10502 jiffies, g=200461, q=440 ncpus=2)
-> task:syz-executor    state:R  running task     stack:25416 pid:27664 tgid:27664 ppid:5809   task_flags:0x400000 flags:0x00080000
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5298 [inline]
->  __schedule+0xfee/0x6120 kernel/sched/core.c:6911
->  preempt_schedule_irq+0x50/0x90 kernel/sched/core.c:7238
->  irqentry_exit+0x17b/0x670 kernel/entry/common.c:239
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-> RIP: 0010:__orc_find+0x49/0xf0 arch/x86/kernel/unwind_orc.c:101
-> Code: 00 49 89 fe 48 89 f0 49 39 fc 72 7b 48 b9 00 00 00 00 00 fc ff df 49 89 ff 48 89 fd eb 0c 48 8d 6b 04 49 89 df 49 39 ec 72 4e <4c> 89 e2 48 29 ea 48 89 d6 48 c1 ea 3f 48 c1 fe 02 48 01 f2 48 d1
-> RSP: 0018:ffffc9000d12f138 EFLAGS: 00000212
-> RAX: ffffffff91777f46 RBX: ffffffff90f165c4 RCX: dffffc0000000000
-> RDX: ffffffff81aecd9f RSI: 0000000000000000 RDI: ffffffff90f165b8
-> RBP: ffffffff90f165b8 R08: ffffffff91777f70 R09: 0000000000000007
-> R10: 0000000000000200 R11: 000000000000aecd R12: ffffffff90f165c0
-> R13: ffffffff81aecd22 R14: ffffffff90f165b8 R15: ffffffff90f165b8
->  orc_find arch/x86/kernel/unwind_orc.c:238 [inline]
->  unwind_next_frame+0x2ec/0x1ea0 arch/x86/kernel/unwind_orc.c:510
->  __unwind_start+0x3d1/0x7f0 arch/x86/kernel/unwind_orc.c:773
->  unwind_start arch/x86/include/asm/unwind.h:64 [inline]
->  arch_stack_walk+0x73/0xf0 arch/x86/kernel/stacktrace.c:24
->  stack_trace_save+0x8e/0xc0 kernel/stacktrace.c:122
->  save_stack+0x162/0x1e0 mm/page_owner.c:165
->  __set_page_owner+0x8c/0x540 mm/page_owner.c:341
->  set_page_owner include/linux/page_owner.h:32 [inline]
->  post_alloc_hook+0x153/0x170 mm/page_alloc.c:1889
->  prep_new_page mm/page_alloc.c:1897 [inline]
->  get_page_from_freelist+0x111d/0x3140 mm/page_alloc.c:3962
->  __alloc_frozen_pages_noprof+0x27c/0x2ba0 mm/page_alloc.c:5250
->  __alloc_pages_noprof mm/page_alloc.c:5284 [inline]
->  alloc_pages_bulk_noprof+0x782/0x1490 mm/page_alloc.c:5204
->  ___alloc_pages_bulk mm/kasan/shadow.c:345 [inline]
->  __kasan_populate_vmalloc_do mm/kasan/shadow.c:370 [inline]
->  __kasan_populate_vmalloc+0xf0/0x210 mm/kasan/shadow.c:424
->  kasan_populate_vmalloc include/linux/kasan.h:580 [inline]
->  alloc_vmap_area+0x95d/0x2bd0 mm/vmalloc.c:2129
->  __get_vm_area_node+0x1ca/0x330 mm/vmalloc.c:3232
->  __vmalloc_node_range_noprof+0x213/0x1530 mm/vmalloc.c:4024
->  vmalloc_user_noprof+0x9e/0xe0 mm/vmalloc.c:4218
->  kcov_ioctl+0x4c/0x720 kernel/kcov.c:726
->  vfs_ioctl fs/ioctl.c:51 [inline]
+> As you mention above, this is not a correctness issue because the quota only
+> guarantees an upper limit on the amount of data the scheme is applied to.
 
-I assume the fuzzer is asking kcov_ioctl() to allocate ludicrous
-amounts of memory.
+I agree.
 
-	case KCOV_INIT_TRACE:
-		/*
-		 * Enable kcov in trace mode and setup buffer size.
-		 * Must happen before anything else.
-		 *
-		 * First check the size argument - it must be at least 2
-		 * to hold the current position and one PC.
-		 */
-		size = arg;
-		if (size < 2 || size > INT_MAX / sizeof(unsigned long))
-			return -EINVAL;
-		area = vmalloc_user(size * sizeof(unsigned long));
+> Additionally, it may very well be true that what I listed above would not be
+> very noticeable in practice.
 
-KCOV_REMOTE_MAX_HANDLES looks to be OK.
+I guess it is hopefully true, for following reason.
 
-/sys/debug/kcov is mode 0600 so this is no emergency.
+The score for each region is calculated as a weigted sum of the access
+frequency and the age of the region.  To avoid DAMOS action is repeatedly
+applied to only a few regions, we reset age of regions after a DAMOS action is
+applied to the region, regardless of the action failure.  So, periodically the
+score of the regions having the action unapplicable region will get low, make
+no big impact to the minimum score threshold calculation.
 
-Maintainers, perhaps we can do something more ... restrained here?
+But real data could say something different.  I will be happy to be proven
+wrong my real data. :)
+
+> I just thought this was worth pointing out as
+> something to think about.
+
+Indeed.  Thank you for pointing out.  Nonetheless this is not a new issue that
+introduced by this patch series.  And the impact is not clear at the moment.  I
+will be happy to revisit this in parallel to this patch series.
+
+
+Thanks,
+SJ
+
+[...]
 
