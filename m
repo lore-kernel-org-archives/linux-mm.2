@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0442F31E22
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 14:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BA99F31E25
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 14:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CBF76B0099; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
+	id 9DF6C6B009D; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107186B009D; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
+	id 833DC6B009E; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11BA6B009E; Thu,  9 Apr 2026 10:22:04 -0400 (EDT)
+	id 7492A6B009F; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D875A6B0099
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:22:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F5D5C283D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 57FCC6B009D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:22:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0201314071E
 	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:22:04 +0000 (UTC)
-X-FDA: 84639231768.14.2C3E941
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B495C40009
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:22:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lm5DwTkB;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 84639231810.22.9DAC6FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 610C1140002
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:22:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DdiA08nz;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775744522;
+	s=arc-20220608; t=1775744523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5sVcF7zaH37u0tWHP3HtY1xH4X9u8i3KYqKvRqlaJEQ=;
-	b=Oh1Ea6K+vjK3wTqHFtbfuqNh1bDA7si7HoATm8YlhmEB0NpS7kuFuIxIEa6nm+5EEuqn/8
-	3LbfHKPRIL6jKHnGhTtW4ClfKntqqv7loSa7XLqg8Aj3CUiB4lixpxDjHPtAMuZTLsCPJF
-	U5WzoTF20s5lHbwpDNbPysiM5eJL4m4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775744522; a=rsa-sha256;
-	cv=none;
-	b=Nsef5Mn8pcWe8V8aWBb60LPAB9EmcWDwDOAqhN0MKlwn46+ym0dvVM99zbmmZCGZwbSdM4
-	mTyETpDp80Uqh3jv0iQc8Fs5Fv/oGYYDo41VZCc0IcI8JsUzbvRoOC6XqfnHBqwz7VJ8Yi
-	fjO2yWrVW9IBrXy8XY4fPOAv6k7B6OE=
+	bh=0QO0HMgZR6Q1HucKxNFx50+mXtq1QtftwQyXEIAQyxA=;
+	b=1gFh93IuU13u1fa1VkfZbAVyNI3fh4rP2m81xqkMCcwLqYwb162fSWpHym2X6KgbNufPDG
+	RzQ79OzV0Mc9iOQSezgSA+mSFcfOxVkv8n3kRWY+5gj8d7U9WUI2K3CdDjNaSdf/BiWty3
+	xOyXH4VOvobFDBIKEzkL3EGVVc/WVD4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lm5DwTkB;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DdiA08nz;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775744523; a=rsa-sha256;
+	cv=none;
+	b=dTpzdnpbO765KYHu6Ce3ajDrceqQdfBsMw6GPFhMVgSiAPiddsDolynfq0bC+aGW7oWfRx
+	ip2RuiMqWSD9puaRXysfRtIevmgvde1MX8FFfPOo5Y8NGYmWGlqkQmupqhTu/qYDPtwE3M
+	yr4d4AqvkS1T29atB+M8ac4uRTGcriQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED05B4452B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9743BC4AF0C;
-	Thu,  9 Apr 2026 14:22:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E0C6760133
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:22:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D0AC2BCB1;
+	Thu,  9 Apr 2026 14:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775744521;
-	bh=EIRB4p0R7OQMpXCAySjtmt5LRqO984ojhpZfxIiXyb0=;
+	s=k20201202; t=1775744522;
+	bh=6J24o91UAsIJGEgFo2jYtnFEeYvJuiRUU82+7XJIPqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lm5DwTkBgFBzKQYfPE6Add3IYFy3KBou/Z3K1gwtBLA5e3NIJlZ8YKlM5dSZXAWLw
-	 p0ar57O/b3CHFdhDSiz9Tohz0IB/g0MaSJ/ZZy40+yyvca/7E0aMAVS+dVzTrRBs6S
-	 U6Uqr7nX1bE/4nvVloKHOiZgJfVuvUL4AvpPUa0eL1qLhTS+nVt4CCWaG934vvFFu8
-	 QK3OSAV1LqKeVNvPmgxgsyYacrJvD4bTlX0TtHec9OFHo3r7UJ1Orpu6wfwGuVQHBU
-	 OVlshGb0ntCSs3wyBuOpbrp76y6japs5uRpJbOfc7XbdLYbMkLR+sxe5CkzBNBakGA
-	 LHddvzFUJiu+w==
+	b=DdiA08nzY42W5gcsPSMmrHmqg2Bmqq7dj8BUACOLHrnk6Kn0JuA+Ia3qL5/Jq8oDl
+	 qJWRVf8VpFZr72rvs8jL9ylsiOx+kIvhPfMFllxLYCXRmEp8GSmKB8Lg8T2l335XHm
+	 5UdTqOUm8Q25h/ErEiJC7XOQ+6Fv7Lvg1fzsvf/NcUSINQxhbEyya1A9LxCUtjsEhK
+	 7i/eVA+ESe+DHqiopwO4nnOdnqBmPXAfsKAe1US1P92EmZJNoycW+fBNRhwXOuEwIF
+	 GSanZCI4Ux/10Ecf0eKSk3iGO1ZT+pV4DaV91rh0WKaPRvnQAFdCZjKX+77UL5lKkX
+	 /PdNjYpxW1rmQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v4 09/11] selftests/damon/_damon_sysfs: support failed region quota charge ratio
-Date: Thu,  9 Apr 2026 07:21:44 -0700
-Message-ID: <20260409142148.60652-10-sj@kernel.org>
+Subject: [RFC PATCH v4 11/11] selftests/damon/sysfs.py: test failed region quota charge ratio
+Date: Thu,  9 Apr 2026 07:21:46 -0700
+Message-ID: <20260409142148.60652-12-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260409142148.60652-1-sj@kernel.org>
 References: <20260409142148.60652-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B495C40009
-X-Stat-Signature: owuhsjtsf4re847cipnfs9y8t4yqu3kx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775744522-336324
-X-HE-Meta: U2FsdGVkX1+UCrzjVuyclmfZ6GeN667fpE3Nr9qgXb2JJqczZ67NnpJoeuppyo3J88hXvm1A+2e9jDDj3G77fPDu5WqLw71S41L346wOFfr+/vvkpyXVP30enZBq0qAezZ/o1eFZHIELVjbxzc1LXEXRQkE9obBshQDM+oK9MiPlobP9EQOlgaN5c+z2uWoxTcCdSantM7PyfxLQTK7A7PympEvNCAeXgiGKLblDGvI/Xp9neV5cpWw/X5hfKsx70s3cMvyVteXvleD22gM2YqujbsqZIjrNbVsMJtoCdDjFpbnmxxbkM/driEarz28DEWIZ+H9ivSmgaG+F51PZSWVwhn1zR8qVo8MVS4yj8gUK140uXUzNMD8Jc02iqdjYDOo3LCnpOxcscUjlmGGs9LsKgRcxkSYPKrVTq9E+j7jfPz1JKJo0z7IjdItRFss2LjXHiUONv/xM9pz+1x7eq9IJIuhN9LP2zymuak+6bw5lF5/OKNWTli+SkJ21ogY10oESaumkXPdWzuzh+sCwoBVq/f0v7WWylYewhBQommMKQtBBgwL2EOdbfqbewR+rmLFuH4PCNnycJXTa6K8u3nznISbT4GaNFPhfjKT//SN99AQPStdiC+t2Mkf7cB6pMlFS3//hFjti2pbi1fWm4Fhco8JYHdGIiWNwVgdysG+nFuc6a6khR4cyATHvIJ8UQfIN6iWHa99pQG4CF6if5zsct8g3jL/fncOkj+4GiDcCYOEQfOroSuileSkPU7A2HpMT/P7cdSUneD+7Awm8clHtSlyS51LYs77juzC0gdAOm7vqsQRlcAFgdvTCxwY3gx8vdaYgDjipKAiFrzG9r5FmvaOQxOhQS5Re56yWmTCtW+CG3n9r31etevSNZU0wJMKC1E7Uh8Fege2WZL1L6uPtU/m/1n4U/k+Sq6X5kkdTHOijlTKh4n/5+KiluWrrosQNNZUvlll0+RsL+b8
- plg0ZpI5
- dlP5LzJYFy2Wzz0PwPCQH5E0WjS2LhXCyWn1xcERiU2tSDnj9wu1Ga6GZPDp3of1m6YtvcfW3CI1fKJYNm+TZjCsuYAcRXjtZtdaHElxbyRumg6d1A5V6nhAoN0rUAeH6O2I+5MUXcKmAyOEaL9L+9nJYcbaJ4V3cyDxvo9y+CBVo1p0mXHLRIiSYvp9y+/60iik3Ybd+PkVEDEw6ioKyR2l/YbotMztBrddcgmj3s8Zall+FPJEFHDm9Jv4dSxOD069HjrT3khETn0zzgKjJcrCJWE/DRf51GbzoQ9vDb9jt6kc3FqFd1U/AJbp9fvilFqhYaKG2rff3iLaI4BgidZEJl/9/s9JzDj25ps3OdzcjEpPJx4Ct75jECg==
+X-Rspamd-Queue-Id: 610C1140002
+X-Stat-Signature: 8eur1acm95sfqx1ngiymcj5b9ty8p8xc
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775744523-326507
+X-HE-Meta: U2FsdGVkX1+7nzBhFzg4GeEH56vhKOp5TV8ZH/0PByKoXu36+lBuFqDhLXAZ5bWqduD6J6f/dxcSRfmiMGbDW47hnJKId7gfpsM2dFzf1oU/QeHjHcZJQYVj/pIL7vcXiOuXnATY5t7r2H6j1/9S3xhchI3kkLMfS5rPbundbRx8+g3Zvoh3TcxxcPJ7/kFXUplvnoyBcgIjLlLFGfZb/MkOPo9rX657JsT/RI1XKvTgoHL/8APv1eybd3RsJsXwyPjlGwu/B4KN4ifnI5EQaULgI8LggBIqb8NhEVyQKGi1K2KkH+/iF/msfEeYw/LvLV3BwFJVt2JB8NViVtygyR30uPqzpJBKkzTdkk5tj4uSzsCS2fsrBzEp/kTxalKmpaaTXuBHAz+91T8SUJEDvCV6tEOGaVhGXZItL6gCZGV6GTx78WmDP389ucfIceu0lpaeZmDSxfn7LzfVHd4vk/H3FXkZNiMCAGnZKGqoJdtyUg2SB6FbI02Q2BC9GYYQ0rcEpQL5rNtQYuh0pR/xFRlFMHWLFoc67iyhK/ka+ue+Aj/Ipsg8/XGBwC3Z5hgBR8D2sDIJGfhJkRkR1J8kbPz/K1sspxyYzfNnHU0CxOdW2fM/kB09Ak0RgrRi08BAlTvAec6yUntPr+It/7UgwCNyVHY+yPR01X/ZO7fZQHdAEVf4RNnZFfnZ5TKWvfVPHkIcsBLT/RU8RzSSwXZFcR8baJWb6DhB+PwExhCL7i6wN4zcv8jwcOon2W623qu3a4d1y6sq5g7K6MF+5hXc1CeYe7fS70U2SQSrOQqmCnYWsJ95+iiyw6D+Zqdi1RBXSF//OkRGKWNK38SZhAhcPP96heye40Ft81jVhFkX6Scpb/xdNIfSDmkwc/7HfsVugA6vD9I9EauXlISXEvenaqfnB1MUCR6qMMuSvLz+myfl52okyYtkx9GsBm3A0uYkMYcSN4VUr8pwmhkqJvK
+ jNJYwxup
+ +XF9fuxaNlxMpa0seXgj9RwafLLlx5fhSqhQ5zmGL/TvaKEO2CMYpS27vacmSxlVsPRZEM/RCzV7/P6v9iDKaSzexE4lOyXbMc6NsYjjOhGcEM0AN6hpLA3n30HzGJA5jaPYyCvbh17tRTyUxNMZSZpXEj4+8sG2KqDnR6YBmoNV9cp6dQ5NA8CAOG+mQsfUiP9cpHvfgU/VaTxU9646tLoAUtwPYpIlRV341Fafpkz44OdoC5K47rMDfBlp/Ylaxqp9Z6nOdCQHHJsvDwagnS+FQMtLeDhbetpRKWyWQS2LUI1Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,66 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend _damon_sysfs.py for DAMOS action failed regions quota charge
-ratio setup, so that we can add kselftest for the new feature.
+Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
+charge ratio and assert the setup is made into DAMON internal state.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 21 +++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/sysfs.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index 120b96ecbd741..8b12cc0484405 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -132,14 +132,17 @@ class DamosQuota:
-     goals = None                # quota goals
-     goal_tuner = None           # quota goal tuner
-     reset_interval_ms = None    # quota reset interval
-+    fail_charge_num = None
-+    fail_charge_denom = None
-     weight_sz_permil = None
-     weight_nr_accesses_permil = None
-     weight_age_permil = None
-     scheme = None               # owner scheme
- 
-     def __init__(self, sz=0, ms=0, goals=None, goal_tuner='consist',
--                 reset_interval_ms=0, weight_sz_permil=0,
--                 weight_nr_accesses_permil=0, weight_age_permil=0):
-+                 reset_interval_ms=0, fail_charge_num=0, fail_charge_denom=0,
-+                 weight_sz_permil=0, weight_nr_accesses_permil=0,
-+                 weight_age_permil=0):
-         self.sz = sz
-         self.ms = ms
-         self.reset_interval_ms = reset_interval_ms
-@@ -151,6 +154,8 @@ class DamosQuota:
-         for idx, goal in enumerate(self.goals):
-             goal.idx = idx
-             goal.quota = self
-+        self.fail_charge_num = fail_charge_num
-+        self.fail_charge_denom = fail_charge_denom
- 
-     def sysfs_dir(self):
-         return os.path.join(self.scheme.sysfs_dir(), 'quotas')
-@@ -197,6 +202,18 @@ class DamosQuota:
-                 os.path.join(self.sysfs_dir(), 'goal_tuner'), self.goal_tuner)
-         if err is not None:
-             return err
-+
-+        err = write_file(
-+                os.path.join(self.sysfs_dir(), 'fail_charge_num'),
-+                self.fail_charge_num)
-+        if err is not None:
-+            return err
-+        err = write_file(
-+                os.path.join(self.sysfs_dir(), 'fail_charge_denom'),
-+                self.fail_charge_denom)
-+        if err is not None:
-+            return err
-+
-         return None
- 
- class DamosWatermarks:
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index b8d6e0f8fd906..d8d4717128898 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
+             }
+     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
+                 'goal_tuner', dump)
++    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
++                'fail_charge_num', dump)
++    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
++                'fail_charge_denom', dump)
+     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
+     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
+                 'weight_nr_accesses', dump)
+@@ -277,6 +281,8 @@ def main():
+                         nid=1)],
+                     goal_tuner='temporal',
+                     reset_interval_ms=1500,
++                    fail_charge_num=1,
++                    fail_charge_denom=4096,
+                     weight_sz_permil=20,
+                     weight_nr_accesses_permil=200,
+                     weight_age_permil=1000),
 -- 
 2.47.3
 
