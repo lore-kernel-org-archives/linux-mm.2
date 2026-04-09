@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFED3F31E59
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31E82F31E5A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:04:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5D7B6B009B; Thu,  9 Apr 2026 12:03:54 -0400 (EDT)
+	id 98CE26B009D; Thu,  9 Apr 2026 12:04:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D350F6B009D; Thu,  9 Apr 2026 12:03:54 -0400 (EDT)
+	id 964AE6B009E; Thu,  9 Apr 2026 12:04:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFCE66B009F; Thu,  9 Apr 2026 12:03:54 -0400 (EDT)
+	id 87AFB6B009F; Thu,  9 Apr 2026 12:04:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE5B6B009B
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:03:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3F91113B163
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:54 +0000 (UTC)
-X-FDA: 84639488388.17.5D77963
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76E2E6B009D
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:04:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2466C1406E0
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:04:03 +0000 (UTC)
+X-FDA: 84639488766.26.01257FB
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 770901C0016
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:03:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kQoYS4HS;
-	spf=none (imf20.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 842D318001F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:04:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=X1ZE0ZDD;
+	spf=none (imf16.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775750632; a=rsa-sha256;
-	cv=none;
-	b=FgNonrIpPX3TDLeRFceQbhyOg0FovrFX5ztoAx0NNdW2FIX8p6G7hYoiputjKOQe9Qr2Mc
-	kv4y1UO7xdjuvy+3slRSgt0H1NAszu8LVFoquAFTuJDd8OrPuZ/RXa3trmVQrhU/CUMwHg
-	thH0R6ptRbBGeRl9KI1FDQuCvh1pZ3Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775750632;
+	s=arc-20220608; t=1775750641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eEKUbIuo9fZAdJk1FYFd6tgmjZsDZNLvgGz2ue3oLuo=;
-	b=o7aD/pYCCaG27N5COWjNuD/mKWM0+PWAOvuLmdS8c2RGBUQ++MRYlfmHQL0ixuYdMuV3HR
-	xVq5EUygmZs+eDFdy9hFMTxIyuCNU5gU54H/NOo8APTU94pfdcyY4ghifA50LiXV5BmC9U
-	PJ6ph1X33FVDg+r9tFguHB2epH+JxfY=
+	bh=t91yQKljfNS63wofUJw8789t2weIp40I1JaX9qzqq/I=;
+	b=r/wpU2v6NBjDDR9DCIc14QFJ++7l5dGL+widrH7n4nnndYuAjMIHIJbyg2zYi1/h/FUtaL
+	QViU9EEk3Jo+2BgU7zQPBJqp11gjUNVuWSHKK2bL+lB+N/FBDLobEXQ+gbneyTBClNRnuk
+	2IyeeV6Tc9ruY3DwXlg4bts9MrNm/Zs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kQoYS4HS;
-	spf=none (imf20.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=X1ZE0ZDD;
+	spf=none (imf16.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775750641; a=rsa-sha256;
+	cv=none;
+	b=34oizyzaog/ka/N1sJ25R7Jok+ActuvGozrSZYn7KshMhKC4CcSTTya8mAKgJtUHDW/OfS
+	2YCR5OaSnxS24qDC5ECjF0q+QtdYWlTbSFz2KtkBMJN9gaRMpGdT0jIYzguaBboer3reWY
+	+PAnP83+LRc2UrypvcsCsynmXU/0eV4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=eEKUbIuo9fZAdJk1FYFd6tgmjZsDZNLvgGz2ue3oLuo=; b=kQoYS4HSsLVIn50YskCEgjJ6Fq
-	UptT2cEv16lB+JK6GOZtYAj5Ufg3eahSl0DZxC7yT1ImyJFBkgv9elt253UOegNBFx53xCBY2voCi
-	HpGnEi5gn1QH/nOrPNt+4IzZzm4cYoUiCYhii8DsMGhSUt1mPxtBgUFmPSA2tsHaW6EtCNlFVndHO
-	f6/mVlSPj7ztFSix2X/R/tNZbk786xJ6p1uztsQan47GDdqHouhWQ3JzSUWnvjRxSReax/sTl7mHn
-	/kbfQ96fS+IeT6SL9cdrcbVEbwg89Jm/DmxSkqj1MhTB/XNCskKz6J+1VmGql6bth3QTiMgt+Hix3
-	EXwSiS7Q==;
+	bh=t91yQKljfNS63wofUJw8789t2weIp40I1JaX9qzqq/I=; b=X1ZE0ZDD0CNHcWIVi7HvmYlnnl
+	ql47n/PEo3jTxAimPcUqUooqEeMGZQ+kLPZnSxv0okP10ALtx3AS8kd4H7sMvE7aoJ9br8aCC6IlR
+	7gLmL/RBYLKxVHGbZRA6DMgeCKEKSr0BeeaKYaNUN1zp4JYZjr+wyRTF3inwNkTIzP6mu9dwRON2/
+	xY/9H6T/ITGNQ+KWlXCD/u995zv5eIfrqhE8y8PFBFrzraYbRZvEDYnRVJSGhVY731XojBzPWiA81
+	WjOJeJQY+MoI1gSMmBlgbZB9GScIr68ONzwmI4rJxFiT1IQhEfyPoTS7kdoPyeGEw+aGEmV3wrx9m
+	fCM17YVg==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wArr9-0000000At7E-4A3r;
-	Thu, 09 Apr 2026 16:03:48 +0000
+	id 1wArrJ-0000000At8B-1JIj;
+	Thu, 09 Apr 2026 16:03:57 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Tal Zussman <tz2294@columbia.edu>,
 	Jens Axboe <axboe@kernel.dk>,
@@ -79,23 +79,23 @@ Cc: Dave Chinner <dgc@kernel.org>,
 	linux-xfs@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/8] iomap: use bio_complete_in_task for buffered read errors
-Date: Thu,  9 Apr 2026 18:02:19 +0200
-Message-ID: <20260409160243.1008358-7-hch@lst.de>
+Subject: [PATCH 7/8] iomap: use bio_complete_in_task for buffered write completions
+Date: Thu,  9 Apr 2026 18:02:20 +0200
+Message-ID: <20260409160243.1008358-8-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260409160243.1008358-1-hch@lst.de>
 References: <20260409160243.1008358-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 842D318001F
+X-Stat-Signature: jooz6ekezme7wuzx5ez7dt8qg9s8bziz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 770901C0016
-X-Stat-Signature: fhnduib9ayd4e8h9bse6kw1su38oaey5
-X-HE-Tag: 1775750632-541003
-X-HE-Meta: U2FsdGVkX19VH6dIzm38bawfwSfdDt8T2DvhQHwM8i86gs0xxOo/v0atD6QY4DAX5ppDdQRMIc62xFAugDs+Y2PbeJqd79AsNXb3dGdFUEob87eALJWuOtEkTB2KRvY1qBgdpKFdttxJAhpp5zs2VzpHsE+PD7RM30rQbHv+T3msqfGSDTouCwVXV3yMSTU6zbrhL410xYcIwK7syv8OpyW0FkVbbEQvjXyyj32uqk5G0YRC3aIe+sIu8Eyny+Vy1Q5GjSBfEyEyqavp88CtBWar/oX41WCjzxhP+vM3euMW+I4/JZoY3+BHQPZtpvlW9ACfmmgqj69YNKI7bMO9Ed9Xygy65+h0CmTCxfNluAzs5v1q1T+EoNfWk0AjLZQyZ5zH2bYyhfBupvImP4lp0YJkewUVLqyMfUDaI6ZN2cmGUtCLCMjfNmWQdxg5cJJ9lO+MVIwk5EWpHm2dHSEzEsuWW/QnIVRgFueqsiaz50p3kiekl7eVph+/64pWuHPVEDsXCuaE1arr3GVix4p240rnGJDkxD7E5za0APWbqjvgR8ok/a8Gpqn02FrcN82kKUmN0JieuYG0vdUJDxmVrjocp0oYsOk9uTMDcu33mhwMxrwDDtKJVwxFUW4TH8C+4MGr3ApNP4tmAqFoiqQSTkGGV+OnEqI1XL93WO6qXAGgR0UDqPMf9phjOIud4vrYOvF+ja82n8h2FTC+3P2YE51XTALs+10GbNLTlDYVBLn1Jc838Bi7WYwIOrrkr+jREihj5JBTTnf1m/yAJkApHtjUtmh6wgPf4zm203yMC3VIT4O9kwVOkjpyggImOK/Cq+J/2DkyJwI7VtSjgyVcI9Urdck+gEiZ6S4VGD6E8ZlQuLTo7TKeAhpBt29wfz8VH+ZojyEJz8Er6omdTV+jOjgqFzvwU5inub0nKWsuNxLaL0AoC4M4Y8R2NJ1GrQDCFHmbH2kwmG7B5Um/tpB
- Va6Pl8cZ
- TLt2hbNYLQ6jiStfl6Bk8L8odMiyM4GcSsiwl/Aaqi78KrfmSKOPm1c/B3bRtn5wFedLlIMg8S2FL4xB55GDp+cKw+EvQ+HTBUOneYvL3AaAbkQjoGqiggQsLtI/JP0MlscaHtLppzHlFCEM1dBgXRnSnfMapQWGKW9TzdS+t+SUYdzTzTy7JrhLHe/LvnRjL8699vIU7RO9yjn2TpZbTg7LGO2cCeCzP7TzxUINm0zPug+wWqgdBL/4Mc0WG/Peg82uoQ1HKJmm2he+wupUQZnC4o2YeGnzJhJzpGSvR9PXMCinTCHwwYYiKykYfnl1SyXnMVqB0q0HSwZQm/rGIYQiauuAyaEdNVb1DtJx6PsaP3OgDAiXPGczI1NWX6h84ryF8Qf80vJ6iit8I1kqiw+LDfK/yYQdCHeLg2yEqWQTgz374y1ZdRjWjq2Q8tNYmDI3mu2sbgVz78+UbSEI9y6cWBVPgYvgsBgnIGZ91nxyHynlNLPm7ZlICKAELtl+pO9vwOK7QDtaT9acVZWFjNzaC4joQ9aB1jr6jGAT93GoAvDsbET4uW+/jUiGLre5rHETVtQV8cyuZDW6Ko6SIqy0usZd5nUfTlgGiA6/tpcH/F3qSw58T1DUYevgNvHb7Cm0TBeE+UdEiMRg=
+X-HE-Tag: 1775750641-123210
+X-HE-Meta: U2FsdGVkX18jHrLExc4sdm31PnThHc54TmmAwHe+IzHdVaZtoDWD/8VMRy0pn9sWuLlqUl7eSvuBvm0kZIwpHOaG1O+mHMYNOAyPZOzwOe7fHmsXHtS9jGqF7u3DhgFTX74OtWjPBrm2/w8+ETHC5wo3mTT9rsxgKLfMhhtuplf4pJ93xrIgLsjEWyi3SFGE3kaZ+hUA9I//OePJM2XvmxJYVtJXtJg8UHILTDG7SWRAqW82z/JZwat3v2/zUo3gJRdiNkZXBvxdgRtPJegiHxKpAGj247/aeg5Y1W0gY0NB0pAo2y8sZWnHp/+WwwporMxqS0eV5J7fIU8qt4rCvjl68gfVdlow8+hrS95lDBtTIGJldon2iINOcnI/RYucfKhi8KLVoqnYPz12bcrlaj8Z5Zy0NY3shTrKV/9Yd6kZGeM4rlIPciV61qqk9BSOxTjTAh6Aa4i1tIOYwtFkVS1VTITkyxc8ksTrFt4x1vugToA9Kc5Cjw6ZfK31UX9btPZLweTQ+iGu24fxRIGI3V1sec/3J5OSIVdT3J69uQGASPn0UHD8Hw6voKyf6gQTAtWTbjEqiNSAghzO2zNnws7J7R7oY6BG0/dpRW2/BYB9k8LIjVwdA/BanKc1HsfoayndELEk9MAEXyIjBjYdJU112LAbBQiblibeDCRAGwIy1YadjBflBue4kVY4M5yLAH3wMSrOma/X+083mILm/ETmcvuOHSKVqj/rZYbkb2JdSc7mQs68IGlw4FdQDMK2C+xEOcJd7mv8Wx33MuHGGlb45OodHVhA7ujve3zi0kQOLQEtbv4Ix0NjkvDTJVZVT5EnWYSCiDlN9sWLkzsXNt79hOE7puhQICxs7f9bQVPFb1lbPgPjXFy06Tj9VEwcStV3MsEv8tqHnlKtF5t0777p4A/c/3pgV69158f14tu7nc8rvcPudzs5TIkKrNvpS9TJP2OU5t0YfDf3bIp
+ wHPMpm0s
+ E3019sixRa/gHjk6TnQocxbWV/4KEMSOtF14Lo+zpmYFNI8LmgI86zZft59+Ls7GisAPejglOFqc0a1ssz6BNujB1pLtGcJBbLTvpCRxByFS0V05OTFNVN6GC6BS6GhTGOlTPDVQ72ZNz1vDEuwgBJ8nLarJR7Nl0e2UkIlFxrEp90BII3kFtbgcQv2SdkMqJQFdfGUUVcwysK0EEHRKc9cBRdMtwpe8MfSOVhthtrM+hhNWxmBG1H6T4R8FVKyqnur5GtFA60sOm+aCsmSXbM+w16311XEc+WLDV5n3k6EZ6wR0HrB62r19QUMSw73Tp/5wTrk9u+CfAHNk86mSonrw44kjah8SgE+arv0xpNrtGjvCnevqdCp2AgCYBWFHHchT+MPiZglizZenj4ybZ6KqHf9ec0DYrVx64rQhPkDoodN13j7Mnre5piWqsBfHqz3WweXV3zxBnLF4UuSWgXHbHJFypHhZ0HRfOoPIjZb1QdCxQJpmluYWGFdhbPC/Jxcc9UnIPO2pg8efZu0QiQwU3bA9mI0AhFd93mi3yeB5o/iNDeZKRj098dVJtWMPfWzUbBVs7WvOyjHH/j56nihXOKJyThC62mXlo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,72 +108,80 @@ generic block code.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/iomap/bio.c | 44 +-------------------------------------------
- 1 file changed, 1 insertion(+), 43 deletions(-)
+ fs/iomap/ioend.c | 53 +++++-------------------------------------------
+ 1 file changed, 5 insertions(+), 48 deletions(-)
 
-diff --git a/fs/iomap/bio.c b/fs/iomap/bio.c
-index 4504f4633f17..5b9b91198ec8 100644
---- a/fs/iomap/bio.c
-+++ b/fs/iomap/bio.c
-@@ -9,9 +9,6 @@
- #include "internal.h"
- #include "trace.h"
- 
--static DEFINE_SPINLOCK(failed_read_lock);
--static struct bio_list failed_read_list = BIO_EMPTY_LIST;
--
- static u32 __iomap_read_end_io(struct bio *bio, int error)
- {
- 	struct folio_iter fi;
-@@ -27,49 +24,10 @@ static u32 __iomap_read_end_io(struct bio *bio, int error)
+diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
+index a32ece8a3ee3..160224007486 100644
+--- a/fs/iomap/ioend.c
++++ b/fs/iomap/ioend.c
+@@ -72,63 +72,20 @@ static u32 iomap_finish_ioend_buffered_write(struct iomap_ioend *ioend)
  	return folio_count;
  }
  
+-static DEFINE_SPINLOCK(failed_ioend_lock);
+-static LIST_HEAD(failed_ioend_list);
+-
 -static void
--iomap_fail_reads(
+-iomap_fail_ioends(
 -	struct work_struct	*work)
 -{
--	struct bio		*bio;
--	struct bio_list		tmp = BIO_EMPTY_LIST;
+-	struct iomap_ioend	*ioend;
+-	struct list_head	tmp;
 -	unsigned long		flags;
 -
--	spin_lock_irqsave(&failed_read_lock, flags);
--	bio_list_merge_init(&tmp, &failed_read_list);
--	spin_unlock_irqrestore(&failed_read_lock, flags);
+-	spin_lock_irqsave(&failed_ioend_lock, flags);
+-	list_replace_init(&failed_ioend_list, &tmp);
+-	spin_unlock_irqrestore(&failed_ioend_lock, flags);
 -
--	while ((bio = bio_list_pop(&tmp)) != NULL) {
--		__iomap_read_end_io(bio, blk_status_to_errno(bio->bi_status));
+-	while ((ioend = list_first_entry_or_null(&tmp, struct iomap_ioend,
+-			io_list))) {
+-		list_del_init(&ioend->io_list);
+-		iomap_finish_ioend_buffered_write(ioend);
 -		cond_resched();
 -	}
 -}
 -
--static DECLARE_WORK(failed_read_work, iomap_fail_reads);
+-static DECLARE_WORK(failed_ioend_work, iomap_fail_ioends);
 -
--static void iomap_fail_buffered_read(struct bio *bio)
+-static void iomap_fail_ioend_buffered(struct iomap_ioend *ioend)
 -{
 -	unsigned long flags;
 -
 -	/*
 -	 * Bounce I/O errors to a workqueue to avoid nested i_lock acquisitions
--	 * in the fserror code.  The caller no longer owns the bio reference
+-	 * in the fserror code.  The caller no longer owns the ioend reference
 -	 * after the spinlock drops.
 -	 */
--	spin_lock_irqsave(&failed_read_lock, flags);
--	if (bio_list_empty(&failed_read_list))
--		WARN_ON_ONCE(!schedule_work(&failed_read_work));
--	bio_list_add(&failed_read_list, bio);
--	spin_unlock_irqrestore(&failed_read_lock, flags);
+-	spin_lock_irqsave(&failed_ioend_lock, flags);
+-	if (list_empty(&failed_ioend_list))
+-		WARN_ON_ONCE(!schedule_work(&failed_ioend_work));
+-	list_add_tail(&ioend->io_list, &failed_ioend_list);
+-	spin_unlock_irqrestore(&failed_ioend_lock, flags);
 -}
 -
- static void iomap_read_end_io(struct bio *bio)
+ static void ioend_writeback_end_bio(struct bio *bio)
  {
--	if (bio->bi_status) {
--		iomap_fail_buffered_read(bio);
-+	if (bio->bi_status && bio_complete_in_task(bio))
- 		return;
+ 	struct iomap_ioend *ioend = iomap_ioend_from_bio(bio);
+ 
+-	/* Page cache invalidation cannot be done in irq context. */
+-	if (ioend->io_flags & IOMAP_IOEND_DONTCACHE) {
++	/*
++	 * Page cache invalidation and error reporting cannot be done in irq
++	 * context.
++	 */
++	if ((ioend->io_flags & IOMAP_IOEND_DONTCACHE) || bio->bi_status) {
+ 		if (bio_complete_in_task(bio))
+ 			return;
+ 	}
+ 
+ 	ioend->io_error = blk_status_to_errno(bio->bi_status);
+-	if (ioend->io_error) {
+-		iomap_fail_ioend_buffered(ioend);
+-		return;
 -	}
 -
- 	__iomap_read_end_io(bio, 0);
+ 	iomap_finish_ioend_buffered_write(ioend);
  }
  
 -- 
