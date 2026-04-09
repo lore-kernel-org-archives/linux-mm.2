@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78C78E98FB0
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 05:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BE3E98FA8
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 05:52:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CC246B0005; Thu,  9 Apr 2026 01:51:08 -0400 (EDT)
+	id BF0376B0005; Thu,  9 Apr 2026 01:52:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97C696B0088; Thu,  9 Apr 2026 01:51:08 -0400 (EDT)
+	id BA1906B0088; Thu,  9 Apr 2026 01:52:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 892556B008A; Thu,  9 Apr 2026 01:51:08 -0400 (EDT)
+	id A90136B008A; Thu,  9 Apr 2026 01:52:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 729D16B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:51:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 19B141403D8
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:51:08 +0000 (UTC)
-X-FDA: 84637944216.09.D223B60
+	by kanga.kvack.org (Postfix) with ESMTP id 90D946B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 01:52:13 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46F5613AAB0
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:52:13 +0000 (UTC)
+X-FDA: 84637946946.21.7CC9EA6
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7526E1C0003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:51:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="2jwv1M/T";
-	spf=none (imf21.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id A83BBC0003
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 05:52:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GjImWanb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775713866;
+	s=arc-20220608; t=1775713931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SevTQiMUPxnzE7hB73BHC4x9bLPrhVzNNZ0TFANaSpM=;
-	b=lttRtuhpEuCuvX5FEQXuncXDpCbGNjVS2Q//8zlgk8wmY2RICH7EYw1xSFiFj2OnpmpqlX
-	8mm31ahXd8rIufCRVFB3cPjgWyexW5jWG3NB/Hp2ddt8Lh/r8VwvzzAftInNMxQIpFmRaG
-	6Md89NYL5mQdQ8n/TmlvlFPaYDtKNqs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="2jwv1M/T";
-	spf=none (imf21.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775713866; a=rsa-sha256;
+	bh=UMroIp8osf38V3IaXClZpIfCVNsX2ssW6flgtrb+9PY=;
+	b=qrdhrrRrm68IejTTe0SdDuSp3dWRCTdCcPD8C6x6/oGJSY/WG+Z5+UeT4hH1Phq6fCPmq+
+	CCR9Y1Y3Bx3YFf9fj41q8XTo6iXZMXoZ9t4SQtJ7Rw9oftCod5KT1aZC7Wy0SMBQljx1QP
+	AK97h+uAJr1i8XlbxdIKhbK8za2jOhk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775713931; a=rsa-sha256;
 	cv=none;
-	b=zSRNFHxaY/VNrE5S0g7MdanThX43LQCfiy8irHZjsLavshRlOBeTxylaKwZBmHVvoEFHuI
-	KbuGFBYQcMmSIfDJXsrhKMoJWtHOBh0Q8zWLfJuwR5FNc13aWAU30fFKjJdXYAhjP7UucM
-	mGKnQUOCeDcLVQUZ5l8jfts6eYotYV8=
+	b=MCm1AUN32MLklu/o0wOgMmu7nbd31wRlqZSrpFhk1FGA63p9r1iC6vhnz0h+de4zUbv1tu
+	b7t3Rgy1sOZLb27VI+NijPyj4qVzHtBzuw2C3pYLNQgprdk9ie7hqLx+RwYigQOMt9EI8G
+	Muux0jbJm40Cx+b4l/rBAhftP1r53QY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GjImWanb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf22.hostedemail.com: domain of BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a4de8e1a1e27f13a2878+8264+infradead.org+hch@bombadil.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=SevTQiMUPxnzE7hB73BHC4x9bLPrhVzNNZ0TFANaSpM=; b=2jwv1M/TAmBmK5jU+sXOIOzevv
-	5FsTHueWHde19wdB+LAf827ZaszQ0qO37U/NRQfwdy85NEJ9Sr68n7oGkdBAPLx6+OT9Azk9xzGAF
-	PwGijCAQkymLFrwlWLQvwM+FvmlKmLnmOVXxNUF8PIg3mWAC0QitPNrHF3KJgmZAQTpvk+2KW/xSQ
-	dfhW3OvCiJkfQYD0mddjkrEqm2Mt4iTaX7ZYAhdlugkPQL8UcOcYKGUZhLuvC/oKl1tHnW1mNNCnz
-	sByYSlLk3+l7d01wRvp85DK6stgHw4yH8zvNB6/LqYU8osGmsVHTK4C/SJFxGc23xN/pB7evMA02t
-	QIF0eABg==;
+	bh=UMroIp8osf38V3IaXClZpIfCVNsX2ssW6flgtrb+9PY=; b=GjImWanbIMK7nXuK5qKZSCtrNE
+	oNnVSH3OUkvo5CX6JHlhy9ixgbdGUCQwaA1pC9QGZ4AJv+dsPYFwiIGMqEJiUqENHJ0mikyyM6Aqu
+	ewutJGNUyP7Jk6QPTYBtFP0B4JXTqq0HokRr+jlOtWHGTJE9cCHVfoCU5Gw4eEz2ksWFOrEH2s388
+	N0PizmOjfL4IUgBj9V9IvZAGz3iYLWoG/HiXuhrZLaq9NvNgPUO8I+vQs2+Ykiot1iQ82dTAqInPO
+	mLoku86KJ3xFzEFOCO2HxlsYTVS/hZh4ayPfmdWxG3V777kCJpiLpIWSSmxHBl9MoPMye8V8MqJoH
+	L7kHjjnQ==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wAiI7-00000009jXc-2g7T;
-	Thu, 09 Apr 2026 05:50:59 +0000
-Date: Wed, 8 Apr 2026 22:50:59 -0700
+	id 1wAiJD-00000009jZf-1UIA;
+	Thu, 09 Apr 2026 05:52:07 +0000
+Date: Wed, 8 Apr 2026 22:52:07 -0700
 From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -80,22 +81,23 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	linux-nfs@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH v2 1/3] mm: kick writeback flusher instead of inline
  flush for IOCB_DONTCACHE
-Message-ID: <adc-Q1iDWHD5yxHH@infradead.org>
+Message-ID: <adc-h4bhUFGqbejN@infradead.org>
 References: <20260408-dontcache-v2-0-948dec1e756b@kernel.org>
  <20260408-dontcache-v2-1-948dec1e756b@kernel.org>
+ <tstklxm7.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408-dontcache-v2-1-948dec1e756b@kernel.org>
+In-Reply-To: <tstklxm7.ritesh.list@gmail.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: A83BBC0003
+X-Stat-Signature: cu6ot389e1du35z6mr5wrra9jbgzw6gn
 X-Rspam-User: 
-X-Stat-Signature: num18f5tehe65i8767k47ndbjfy49i3n
-X-Rspamd-Queue-Id: 7526E1C0003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775713866-319012
-X-HE-Meta: U2FsdGVkX1/Gx9i41sKC0UVDK83ze3y43xpS+a3ac+MXi3BYwMc647kaYTOL5pncaxalQQzFQENs6ezxUxiErbAFbWcsLzhwYtZLe5wvqnWDENEZS2T1+AfFaU7Wyz9ODqV26cT2I+rjZxdlPoAlR3E5eqWYPlgOMPTfVBudmZlMwxJejEZGF8Oce1EaSYOqVYgfyKpV3MN9SWz9U89y0dCYiIqpcNqY8JcaYyi4lL56JmF50DKb5+Ij3Mqcr/0h3a7iZlncIBCh9RpYwkXDKS/CjOfFDo7Z4NwEJidzXTGj6cEzPQDdcpq+4VS+GedEC6iKrnOVCyfxIW3acC9oqL9uOUmh+LzXF1nYGUwBTIyBlbTcoLF+ZRBSsFnQwqHEnhiaVKwgu+dwI8dT3ojCmoIs1lWlRWnPC7zR9nZVDTsqInKC5WkQCWyBOg5hL5V1h3tbiIn4LNvTH2uEg9pNV69OZ6M0W7t1ConWnKK7ra9E5S0jK01zh0dg5wXAWzEUVpDy/JXf5D3H8EyJ1uImwA1YACAi4IwIgh3JjifS7Fshho5+iER8IgIaYIndfgzupCsMt5M9rMB0Qo5wYkv5TxaG5IuE/PrChkG5I4zsjWIrqCxbEI5n8lO9hpDdmNQ73JI43zBf2kd1TCT7CnJaA+L4bxjtKdILRRF8BU8fcjlcyRjGvTBStJoYFTiPeCRrnLmh/IchrxkhUvO9EzyuMk+0o4tc+M07133SqQzLZUuoVXNpzt4ll9hbqPACJpyAEwEzbYDEa1zp9c9DZQ5y8K14Tnwg+qKQ1G9o3bZ+I/0DE/SDIsGzJ0IkmU7M7Bx/+KugfCG5/mSN8Q3QoDc6cIoRqaiUGIG2yGFtCnyHTGf4zTxBI72e3IZv0qF+KehRIRjeEyaOdF6XGCmx6bOgdoicVfE6c4nfDaYjuJT1oqBcrW3t3YE2MXxMMwxVxIKsuHpNQW5bMJabos32W0u
- 7B0QU3lG
- oIfUuZjE4mvf2Euc4xUrfGu+7n4KvR2HxgowYwq0ouqnSlNZQpw4SRT8wWcWenMlKM6fP0oXCoXS8fEBPC6BF58NOclfSe0ZP7yXhLilk3sAhCetN9CvrAiBdOIjbVIlYZ6oDlB1Zflut4QXnBImVc9y6wmill9LTL/UnY6xB8di5KgrshuJFHjlQW8FTekTcehLzIg8mTA4/26HwlLznXprwLC2ntjWGlQKN4csuwtg/7IN+seT0tOALiA7WeKegUKpUK44voEro+AXA+348MkBo4LFJX719Pys43dmZh0H/R1Qr2Nspd9WOeKgxhua4VvrG59bfhbuBgIYmuyp+kRPxUZ9PuxFGJp/n/9NCx4rOM9eWSpAaMTeoj3xo4XpG/6G4UdG1vOwkQcPUHQUECDRqqz177Wbpq1A5qGBgk6kmtCeLm44syP6Qa55UeIBUPq0Iul2SMfLXSCoWBIeoqv6/llyX1wCIW9Bo/jRbroK9L1rif4d8WQhj/pMLFadFTr1AIliwyFAN3pPLIGV8HR0x/yaPCSxf+Nnc0F2jkIcbHfo=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775713931-410254
+X-HE-Meta: U2FsdGVkX1+PvOC+VOj6ac7sdiuiRoC5Tr8H4NGaj3jvRAi3xAdnVwwaJvt3zsgWXdhISu9b0RfZtA3fJ0XlBNMGpiChQqLPO9wsB5k1CS7Hgznmj/GjW91xuBeJ9fXFlYxXU31Dnd81s2HPcU1zMZS0tyB6xTgSWgVsP0+mdUA12/LxTfp1ayIWb6AQ1xhX06jL58lMesDOtCb363pATttcOqka0Q5nik5w45N1PK2FknxAZ8hOz8PcEHzlNymu7fbe1g3DQKyP8utxEk3SU0bW9ijiH8KFN7xMfnZ53Pl+vFdDFOXTn4gRAFEOfpzvS26SyJwaycU3b9xXfYYMk5DX94QpfiGJZl04zKWJPEVbVfjU9nCPZrfyTBZNqSadL6vA0myGcTDmPR8zlnhghoAjQr7qLwxChcxJKHf+rTsJEb/LY2gqUA/Al2ec+rW9438ThU8ccylfRNmHpcZTcUKyKUnLZOmPTRjHclyd4s2nmueExMJCXym5L8bxK0hsSz81dEwhrNhayUb9SzXueaskEgBGX+Rvj/4fiaSzpOG1K3Ar2IoUTuQGEYreMtXxPa9FNzuIhqM36fdmx3T5URoFeyTDTTck8awV0aN6QFcaHCbxYLZ9QXfe9WSDPQYkFAiL9evm17wQ/RVIvSR2XWMyIvHF0F0Xe8+OAG62aCMAigxOz1Ay0Q1SigQmWH+XBktMd8s515YjSDjKG6YYpDnrhFwOf13wMZ+urvm6YaEYz0fkiXQQ7f5rAr39xH9OE5VyC92i6rKLxtzOwm0dCSW21k++f0uLb9PGjOhgEvtkMbYk+e3XvERZ7ZuK2xBB1SkbIDb2hwftqs0HwZf2V6x5PhVipCxPVjuav8HUy/LR5op9KBhHwmv1QCb3bgpYZWi5DlLrL5Rb2vO/q0N9SzdViWbY4GthGoBSRXKONWd/bjwz6CgCNmcVnkg5Gbh8chtjwW87cQGb69GH3ap
+ PHWvGoU/
+ su/LA3eV7uMZB9WWmtoRyRD2Qm3haRepbL5xfU/hbwoBhQiWbhZ1qVgEK3mIIZYiWhvFjvseWnGPX2q5bGFRfD8R8pDnr9ZHBRMPnBEkKt77V4/lPQF2yr2DumJPsmStaBbBkiZhz7JxKAEWWWnTnCoAnK77rn9uFAZQ/PDDCH5QMoTjaN1klEA/QCBVTLdcGzjoMC8Rs3IBJsXrnnh8O+rTxkJlnuVTt7URDklS4AoqAoW9MHB11Gn4Qu/DUYMKfTVKKh2tsHjgX2HJ8lDA9WRP85t6eZvEfvKOE5E3NukaOQZ/RgXGXwsqRWTMumE4noXPL72wRWeS/lodHwGT3Y7xsb+zlu7QvWEA8whSShaADv+P2EvwWvu+ddrVWRz7r2VTrliiEvONfzpUvt1TCn71xj60ttR3GSajoUNRz1dmFa21Id6MXuGARj8CRlqKNlReVpl+uBM58s5/z8a8Vky+UmMb1xJg07aV0e8dh95X9/AjipOgT3/t7b2YCVxBqF0CPGEU9jeAPnJggq+Kf+W3L/ViwL+pLPkMD4FqjPAScgfROJ4XZDQBVjkpNeK2ppUfH5WUgaG/E87MtkNFqreFtGSAERwyQpvXW4ZOqJ2YzOspbK2MPtAbiqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +105,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 10:25:21AM -0400, Jeff Layton wrote:
-> Replace the inline filemap_flush_range() call with a
-> wakeup_flusher_threads_bdi() call that kicks the BDI's flusher thread
-> to drain dirty pages in the background.  This moves writeback
-> submission completely off the writer's hot path.  The flusher thread
-> handles writeback asynchronously, naturally coalescing and rate-limiting
-> I/O without any explicit skip-if-busy or dirty pressure checks.
+On Thu, Apr 09, 2026 at 07:10:32AM +0530, Ritesh Harjani wrote:
+> > +void filemap_dontcache_kick_writeback(struct address_space *mapping)
+> 
+> This api gives a wrong sense that we are kicking writeback to write
+> dirty pages which belongs to only this inode's address space mapping.
+> But instead we are starting wb for everything on the respective bdi.
+> 
+> So instead why not just export symbol for wakeup_flusher_threads_bdi()
+> and use it instead?
 
+I'd rather not expose that to wide with the extra reason arguments
+that's not otherwise exposed outside the core writeback code.
 
-Having numbers showing the benefit here would be very useful.
-
-> +/**
-> + * filemap_dontcache_kick_writeback - kick flusher for IOCB_DONTCACHE writes
-> + * @mapping:	address_space that was just written to
-> + *
-> + * Wake the BDI flusher thread to start writeback of dirty pages in the
-> + * background.
-> + */
-> +void filemap_dontcache_kick_writeback(struct address_space *mapping)
-> +{
-> +	wakeup_flusher_threads_bdi(inode_to_bdi(mapping->host),
-> +				   WB_REASON_DONTCACHE);
-> +}
-
-wakeup_flusher_threads_bdi ends up calling wb_start_writeback eventually,
-which sets WB_start_all, pushes the reason to start_all_reason and then
-does the actual wakeup.
-
-The flusher thread then through wb_check_start_all does a WB_SYNC_NONE
-writeback based on get_nr_dirty_pages.  Which seems wrong - we don't
-want to do a huge writeback evertime the some DONTCACHE write finished.
-
-So I think you'll want a new WB_start_dontcache bit, a new
-get_nr_dontcache_pages() helper on a new node counter, etc.
-
-
-> +EXPORT_SYMBOL(filemap_dontcache_kick_writeback);
-
-EXPORT_SYMBOL_GPL, please.
-
+Btw, wakeup_flusher_threads_bdi should really be marked static in
+fs-writeback.c as well.
 
 
