@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0275210FC465
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A60FF10FC466
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 02:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4786D6B0005; Wed,  8 Apr 2026 22:27:55 -0400 (EDT)
+	id 95DAE6B0005; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44FFF6B0088; Wed,  8 Apr 2026 22:27:55 -0400 (EDT)
+	id 90DEF6B0088; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38CBB6B008A; Wed,  8 Apr 2026 22:27:55 -0400 (EDT)
+	id 823CB6B008A; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2608B6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:27:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E3CC13A085
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:27:54 +0000 (UTC)
-X-FDA: 84637432068.28.7F57CCE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 81F251C0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:27:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTHhH5PI;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775701672; a=rsa-sha256;
-	cv=none;
-	b=dDW/LVS7pMR9KHYmHv8k5CPD8oA5uDwjvTU5fMREJpgIwTXsx47DBkExz4xb0AQWKPwu6u
-	w1kGy+AyDQOzwZMujm4K3OCx2DarMyMnP/WyG3yoIzL+tOuFenqBNV4GGk6Vu1T4DD9bsY
-	2RmTVCo8EHjNnxMC3e08FXe5NFljlKM=
+	by kanga.kvack.org (Postfix) with ESMTP id 6F6C36B0005
+	for <linux-mm@kvack.org>; Wed,  8 Apr 2026 22:30:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3457887CAF
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:30:25 +0000 (UTC)
+X-FDA: 84637438410.04.FC12175
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9261F80011
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:30:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775701672;
+	s=arc-20220608; t=1775701823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pPi3lm04sHbgQE41/IAGLyaSBuw90y/u3eFpV2u5Aos=;
-	b=ru8J49xGec1My5gPpfH18c97roo31lq5VD+ww4PYQEmpq3zAccQn+C3/eEH26PyCK5MirF
-	VzD+BVRxKY/oZTIjGLW8Z3qkIJeYXRjLSUsNzv0qMPVSafu05sms1kdzBHP1/IQLRUkN8q
-	yHRSfcU+4kV5bjZ/nfSFoKGTscmpnKA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=DNbM1dW0sygxZ4tdqvsd97F30tCJgImZUniQv0vRTK4=;
+	b=LF3JRy/ZcY7AuYyXALuw0cHgsqM1r/d9HC32YwbJWqUSuekBG4nmbJpt+kN14cV25qnfuo
+	xyo9b96Pid4NXkWeMP1+p5nMZGDyZZ6HYYtlzzhXI4pPOwuRrqVszApf2sFOrenbQeHXiN
+	PJghE+JJhuQuJM91/pm14I36f9s2AqE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTHhH5PI;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D289F60126
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:27:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634B3C4AF09
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 02:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775701671;
-	bh=pPi3lm04sHbgQE41/IAGLyaSBuw90y/u3eFpV2u5Aos=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WTHhH5PIIplErlR8SQJNbwhpyfg5qGUOK8dsw+zXQpNbgkdap1dcY6LO2x2/NthEm
-	 QrT/2YUhq3zKtdXNJIF0ePf2oT2fMir8OCMRZIB40zThJWYrGxYwrRrDOlVYNSTPCR
-	 lLqH6SnY1TiDR0GaC9PwiWqmrQNzTbks3FAk5wQnzdwaXEb2QFly5a0mhr3WtrMfeo
-	 yFKC0SUaOfHV4Fzy/jN3c66UIOtl6v/p8/fvT9ZB9y3ZvWxj5D7+OX9f7iBUNn437R
-	 CrSYTYl3CCXhi+zPktdVX5s8wpP0DCzj7IxFpX4bqegQvHubr2VOQ5FRT6e8Nqoc3R
-	 oJ3il4Vob8KSw==
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5ff05af29b4so124339137.1
-        for <linux-mm@kvack.org>; Wed, 08 Apr 2026 19:27:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWirziEAL0o7QGTuO4xoq7aYzvdgvZOwwTkotWCZ56Zuu/OgZamSVidqBLo2sPZlvka5TeBAUkN6w==@kvack.org
-X-Gm-Message-State: AOJu0YynzEd6SW01xmgfet8lJoGpt1fufa21lTGPz6OlKKd3PbPTTW5j
-	0XL/jgPpiy/P8RAgREoVpFYEtWq2n4hjbCRLxFfQR/1XTcNzHz/HVK3tC2UVqhvVeDqAIYveT7n
-	H/mPd2ABIMHbrhnIsasxsXyX1SHw8xSk=
-X-Received: by 2002:a05:6102:1614:b0:605:b96a:a0d4 with SMTP id
- ada2fe7eead31-6085eab3ff1mr1058862137.27.1775701670512; Wed, 08 Apr 2026
- 19:27:50 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775701823; a=rsa-sha256;
+	cv=none;
+	b=TXWVeW/G0J79ppj4f3JD8XsJ0a6+AAagAm4YhJWBooK2JxlNQ5o1fAixT+Z/BiyGX+drKd
+	8XIAVqSKIv2HdcIj+FQh+5o4v5XYxTkluUBluMCY7eB+K20/4BcVDSVkg6pQ9ZcTj29jnS
+	v4QvNT/4RQUXkBmSwy9rFnoFMbR88rk=
+X-UUID: 0a9157c033bc11f1aa26b74ffac11d73-20260409
+X-CID-CACHE: Type:Local,Time:202604091025+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:29359778-258f-4ef3-bbfc-06fb5b1b6bb3,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:45fa8da2f672d49430258e355d67af85,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 0a9157c033bc11f1aa26b74ffac11d73-20260409
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 894210101; Thu, 09 Apr 2026 10:30:14 +0800
+From: zenghongling <zenghongling@kylinos.cn>
+To: dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	zenghongling <zenghongling@kylinos.cn>
+Subject: [PATCH v2] mm/percpu-internal.h: optimise pcpu_chunk struct to save  memory
+Date: Thu,  9 Apr 2026 10:30:10 +0800
+Message-Id: <20260409023010.10493-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20260409014323.2385982-1-ye.liu@linux.dev>
-In-Reply-To: <20260409014323.2385982-1-ye.liu@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 9 Apr 2026 10:27:38 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zb0BH0ipUtft_FUTyBYgxV69V-Za1xHLN8fXi3jBaXeg@mail.gmail.com>
-X-Gm-Features: AQROBzAEKv6EK9eJUTZzxh3iWjJmEpc5kXlPFLLkfO7O3qt8udOD-r7XHKCtYQY
-Message-ID: <CAGsJ_4zb0BH0ipUtft_FUTyBYgxV69V-Za1xHLN8fXi3jBaXeg@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/khugepaged: use ALIGN helpers for PMD alignment
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9261F80011
+X-Stat-Signature: tnre4gocwzrxey73cq4459ribrx4pcec
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 81F251C0005
-X-Stat-Signature: gjssy4bqk3xnfqhxc8f4fsetme4j1ekh
-X-HE-Tag: 1775701672-91254
-X-HE-Meta: U2FsdGVkX18jnhTwLpngxKdkg13j9T7yW+HM2oYM+VyX9jpVQWdZgxtxbAstjitfxT5DqcmISVhG66zuQpW3eOhf6zgJrobW4cimNtI+K4/e9RS48ddlSC77ETwplKQwQ5CFee2b8gkzw3kjVRAE2Qtx9Kn7h+dQ/F2ZHIEDxjt9RwXPo0LnLojhX8Sv8yrgRut3jHfayX6ZndpWqh34AFnJ/P7I/ACS+7ugocVJhN7MmzpC379yJ0ROKb5+tsqVhF8ivxriCrtAUYdxeHU0J4VSQ2CaCDn7J1tVz2N4CZ/OaWA++TACAtFaVs6ziv0q6WkAiDexN1DsOIbxdG/u86vkbYCYrhtgS72OlCxNyPaxcpShO9dfyr0kvaTUhJG+Gkr04wxcJHj1lcW1OolEKYNLZriG6y1biOPVZ1XRnugdykMOMPmRDARUYUaovnDE8HCP5vOxhFgD7D6sLrd1hUyCDf+Jj43IfMjldx7VY5Jsw/f2XpdGGjjBA9E08/y8MqxNuBO5/ZzVWHe+R0Ht6LTnYZWENiQFuJs/Kh3s8RjokIUBOfKWZVo2IUewJZ3DEAMXb1+6DeixI+2hncihLZ1weq0ps+59g+MF8DHWIMpihvbG00QljC1Y4f3ZpycUsEtdrZvV+7tJp7gFBTI9vHMVuBPHZD2DgQJa6O64FhEYLyI/s+LPfjVTDk6dJgmMgOKN8lD7zo3SoVn/GFg4g4PWzlMmHWscb6x7+A3CIqwn2vCQPYoQl5ZDwcYS+Yg53F14gMcxk0ER5kT4R1SsYOh+eXuqu2g7nKM+GCW1a5DMyPoances2h8UM7o1/eHc3aEnsxxpofHWVmXu/TDm4QIg1m/ZwqU0siyMpHakU9oacc36Gol6FCuAu+LBWBqOCNDYsox5AKW+xT4P6zdI1LGuWV+e/mbv+LOLqgPcDydbPR71vg2o04pU3XfqOCHNoPA0gP5MfSkElABrM2H
- b2+p38H6
- /PdNCwMahvgBRrNawilP0rvhfsG1Zq7LbHB2dP3eHYZjhv1o2nMEilNJUg7K3FpCAv1/P7pHlt4sd3c/Q/t/qy5G9+THWjtjSkeWoJgbJ8rlvucCW1+up3fP7TSmGM+8lnA7V4v425TBfB3brSLdSb3NTGKMqCUWD8W/LyANGuZQB7sbpGbUI2MQIgpLRqNEcANGExDfB2VNaf3RMmt+swowcuEa3H+9vaxOutIqJE26qDsKT58V3/LtulRH4VXJaPEZ8+fH388VHW9cdBHb9N8eXG+/hIa9vGUjH28WSM/uAncHAPCjpaYz+cg==
+X-HE-Tag: 1775701822-948146
+X-HE-Meta: U2FsdGVkX1/ilY+UtjXOzQ98i9DBssvPqfuQiOgfLQm6dWSlf/KcUMCCtc3+DoMkXweoqPhoSiuYW2uJYBHfb2897Xs4/nDk85FOlxBQhBdEKCrUmG64DJcRcQoFqiBw/IY5ZuZaX8UHNGeBPgB+2M98jiKROCVaUR/EDIqlYqLUFZA2yG9GcrjV6rj06rguiIUFukSiMFpZ8ivRYWHmLqiF/kYHWKTfGg4We+MXXdOOrtg/GoxuQ1Za1M3wqxdLlqDbSjYl6/l+4V1uELYjMszSQeUnKMA1pzRTvZbSPBIidKFeZHeLb76CTfE1cqET/RkC7+luILOG569d6/6R1XqBJoYzIDKRFj75GUwje/WQjMBDDbYI+FiLKNtwRNPD5GV7OT8fC3JVmyd1nFP1hGFMj53ggUehw6kT7xQ0RQiucS0RSSDQJIY4NI4/NaKFOZDygFXMoPdVQXwGqRArlF3FxQWq1WRdfYWbUsB1nuqKY3dXfRmqS6qAgoUyRg6ZS5Q6aaTBnAXqwfDtsMi58SswSA79u3+mEhhUkhK9nOX/hU6r6hTreI6GIBtvKBEtxEwuoA/b5wvfaMJ/SDmYGOctSxcYNY11UpMjJ+si3dVTShnzVUydGFkWQxfaSO9Y39in32oIv5Xoev4Sa303h2xllbuRn/BHK28vJU9fRXccuyyV0CdaZCwpg3cpLT+TOQMvcRKbdvILZ4AQcpfd47ZDZQOaXdxHapISyyGJ6WDAVT+PURmDm5qwSydo2xnu11uMnrXyIM4+hi9nU4hmdZi34a41V3Yho84Nclr0wfn0/FWqNayPUTbqK42IqJkgs4zort4BSTANiJ5PdlTKeMGJmux//DIwPCsu1jkQmxLoUKKM7yJHksQhVgUQJ6hczEQaM19eOD/0cAFajIj13HEcbTF/gXUOQ6J7mhV7iLaJiIg/gF+2CJt/KYSZCx0floFD4M3wNhd2e5lgekn
+ +UYzgmp9
+ cDH+ETFMPl7ZjeAOp5pZgePVmCBpxvKgWTYoENlOCn/86BSQv8ztGUYhWZfGEGS5nbXLr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,22 +95,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 9, 2026 at 9:43=E2=80=AFAM Ye Liu <ye.liu@linux.dev> wrote:
->
-> From: Ye Liu <liuye@kylinos.cn>
->
-> PMD alignment in khugepaged is currently implemented using a mix of
-> rounding helpers and open-coded bitmask operations.
->
-> Use ALIGN() and ALIGN_DOWN() consistently for PMD-sized address range
-> alignment, matching the preferred style for address and size handling.
->
-> No functional change intended.
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Using pahole, we can see that there are some padding holes
+in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
+can reduce these holes,decreasing its size from 192 bytes to 128 bytes
+and eliminating a wasted cache line.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+With allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
+Before:
+ /* size: 256, cachelines: 4, members: 19 */
 
-Best Regards
-Barry
+After:
+ /* size: 192, cachelines: 3, members: 19 */
+
+with NEED_PCPUOBJ_EXT
+Before:
+struct pcpu_chunk {
+        struct list_head           list;                 /*     0    16 */
+        int                        free_bytes;           /*    16     4 */
+        struct pcpu_block_md       chunk_md;             /*    20    32 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        long unsigned int *        bound_map;            /*    56     8 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+        long unsigned int *        alloc_map;            /*    72     8 */
+        struct pcpu_block_md *     md_blocks;            /*    80     8 */
+        void *                     data;                 /*    88     8 */
+        bool                       immutable;            /*    96     1 */
+        bool                       isolated;             /*    97     1 */
+
+        /* XXX 2 bytes hole, try to pack */
+
+        int                        start_offset;         /*   100     4 */
+        int                        end_offset;           /*   104     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
+        int                        nr_pages;             /*   120     4 */
+        int                        nr_populated;         /*   124     4 */
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        int                        nr_empty_pop_pages;   /*   128     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        long unsigned int          populated[];          /*   136     0 */
+
+        /* size: 192, cachelines: 3, members: 17 */
+        /* sum members: 122, holes: 4, sum holes: 14 */
+        /* padding: 56 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+After:
+struct pcpu_chunk {
+	struct list_head           list;                 /*     0    16 */
+	int                        free_bytes;           /*    16     4 */
+	struct pcpu_block_md       chunk_md;             /*    20    32 */
+
+	/* XXX 4 bytes hole, try to pack */
+
+	long unsigned int *        bound_map;            /*    56     8 */
+	/* --- cacheline 1 boundary (64 bytes) --- */
+	void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+	long unsigned int *        alloc_map;            /*    72     8 */
+	struct pcpu_block_md *     md_blocks;            /*    80     8 */
+	void *                     data;                 /*    88     8 */
+	bool                       immutable;            /*    96     1 */
+	bool                       isolated;             /*    97     1 */
+
+	/* XXX 2 bytes hole, try to pack */
+
+	int                        start_offset;         /*   100     4 */
+	int                        end_offset;           /*   104     4 */
+	int                        nr_pages;             /*   108     4 */
+	int                        nr_populated;         /*   112     4 */
+	int                        nr_empty_pop_pages;   /*   116     4 */
+	struct obj_cgroup * *      obj_cgroups;          /*   120     8 */
+	/* --- cacheline 2 boundary (128 bytes) --- */
+	long unsigned int          populated[];          /*   128     0 */
+
+	/* size: 128, cachelines: 2, members: 17 */
+	/* sum members: 122, holes: 2, sum holes: 6 */
+	/* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+Suggested-by: Dennis Zhou <dennis@kernel.org>
+Signed-off-by: zenghongling <zenghongling@kylinos.cn>
+
+---
+Changes in v2:
+  - Add pahole output for allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
+  - Fix subject to use "pcpu_chuck struct"
+  - Reorder nr_pages before nr_empty_pop_pages
+  - Add suggest by
+
+Changes in  v1:
+  - Fix the error commit message.
+  - Move nr_pages over nr_empty_pop_pages.
+---
+---
+ mm/percpu-internal.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
+index 4b3d6ec43703..8cbe039bf847 100644
+--- a/mm/percpu-internal.h
++++ b/mm/percpu-internal.h
+@@ -77,13 +77,13 @@ struct pcpu_chunk {
+ 	int			end_offset;	/* additional area required to
+ 						   have the region end page
+ 						   aligned */
++	int			nr_pages;	/* # of pages served by this chunk */
++	int			nr_populated;	/* # of populated pages */
++	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ #ifdef NEED_PCPUOBJ_EXT
+ 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
+ #endif
+ 
+-	int			nr_pages;	/* # of pages served by this chunk */
+-	int			nr_populated;	/* # of populated pages */
+-	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ 	unsigned long		populated[];	/* populated bitmap */
+ };
+ 
+-- 
+2.25.1
+
 
