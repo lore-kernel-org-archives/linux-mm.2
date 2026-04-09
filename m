@@ -4,92 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36497F364A5
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 17:04:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03D3DF364AA
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 17:09:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88FDF6B0005; Thu,  9 Apr 2026 13:04:55 -0400 (EDT)
+	id 033036B0005; Thu,  9 Apr 2026 13:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8675B6B0088; Thu,  9 Apr 2026 13:04:55 -0400 (EDT)
+	id F26376B0088; Thu,  9 Apr 2026 13:09:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A46E6B008A; Thu,  9 Apr 2026 13:04:55 -0400 (EDT)
+	id E14776B008A; Thu,  9 Apr 2026 13:09:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B9506B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:04:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D61D1B8BC5
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:04:55 +0000 (UTC)
-X-FDA: 84639642150.24.5658AEC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 56E0240008
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:04:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BuFnRLrC;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA6E6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:09:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 796FB1608D7
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:09:48 +0000 (UTC)
+X-FDA: 84639654456.17.CFF2FE6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 12773A001B
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:09:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FThtOdRo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775754586; a=rsa-sha256;
+	cv=none;
+	b=5exl5bMU7rigXTzE8FPyLCLTKKRbLVjA5L47oS4r3LOljRLuODaa5l3cSLEbvVJ2ZvPdsG
+	IK/XwStjM2lBQ2hnDqZNkYV3MEaQwEn4Tcy9+Q2i358XKgtdGPi8YnZrkkVvJWBiJC3UPJ
+	+r58sQpuCQQsQr2qrMI453CMzVTrRoU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FThtOdRo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775754293;
+	s=arc-20220608; t=1775754586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6zkA8te2VcNctgRvQOKvrYylsf1ncXgi32RcUcEP6OE=;
-	b=mCoB2sGzD0Wj+iSFlMezM/wKuXZV8or1RUtMqzPEirXRYnYJ1jdI1Ps5HYd+IfaP8kJ0+3
-	aa6P8XDYc/k0afHLjYVMYMbrAxv9xa/BfL7QifA5DrkolPOB1FUwWsrQBkYT3cpQ95nQG5
-	ErUfVa2EI22avkCA9HjgC/E+WqgqAYs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BuFnRLrC;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775754293; a=rsa-sha256;
-	cv=none;
-	b=7UaVAXyQa2TO3y4nfGmn3Xln8tiOgeHS4+mf4J2pnNV1JpE8yj2/AYrbq7eC4SzILT6FKw
-	Kvlfd7ITZR9HCMO+gskESmyTbxIfk9sEu8wY+igyrEgUJn+SPoHxnR07NdQ/P8yltsMxiT
-	aJDcWwlPcrSmV/O2XuDy+tuCxnRcWjo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9484600CB;
-	Thu,  9 Apr 2026 17:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6989C4CEF7;
-	Thu,  9 Apr 2026 17:04:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775754292;
-	bh=SNp5Dca2WkR7m+cZfnjJ08JI2QTkKbVMIgFIL0NCEFE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BuFnRLrCwQF8NSp2qmLtteCUTqxnummyH9ZdjP84VJaLdvDn09YVcg7dshUyoc0Wu
-	 hyHfGrm+fMI9YyITE3P6RtG7MPc6rVqL/7Wk884lOXmyGRhu2b4/Fx8wkfNBxkM9US
-	 j+rv3qits0ZUeTdnQQgen9jhsnp+oi4imuxyzSJ7mzftaVL+/+hDMx+r2FZdUxAozH
-	 HhKrcoutX0VHIh4Mh3RZ+gmn68twsaC8ZW1xvQuTiev2WGB8/pahEubDNbYoVQxrcI
-	 IM7AXKs8jAffgJcGsvFN5DFCIfNCmW4Y27OhGasjgKogSS+bpch4hn90sOcOtbBG5R
-	 65e7u1Fl4w8kA==
-Message-ID: <b8b1fa91-b3f9-404d-b6b8-f1cb2077a108@kernel.org>
-Date: Thu, 9 Apr 2026 19:04:49 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	bh=+Oxezvv+XY94eqFB5rhe7YtVnfzUNjVg60HqVaktujI=;
+	b=BZViTJvzyEnaDknKik80kstcJ4gXR9pGGy5rUVIix12zWghI1qI3+7bkPE/mrS2yO90Zs2
+	AmFeh8DLPcgherwRqERRmw0IhP9vRzWq+8BEjGS1S0liF7ZhWfx4VQSBnk5dB60vJum3IB
+	FlMHTNXiAc2NXqmTpt0mR52QpH9Dcp4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775754585;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Oxezvv+XY94eqFB5rhe7YtVnfzUNjVg60HqVaktujI=;
+	b=FThtOdRoSyXykU8hvOVvH8dU0Ecvl1CYOuzYvq5f0rH/0VwWF1g4uLg+vAtqUFdJJphVqx
+	TRT528fmhzDlvUDdAQoG8g+UM3Kv2U41sfQiUYnALUHiaQ6j2i8ycsL6XKmxnch5g3/WI6
+	o2prjJXJHO+x9+taQ4ODQahy/W3sXtg=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-99-3TMZ0h_CPYqKFNAIyLkK5g-1; Thu, 09 Apr 2026 13:09:44 -0400
+X-MC-Unique: 3TMZ0h_CPYqKFNAIyLkK5g-1
+X-Mimecast-MFC-AGG-ID: 3TMZ0h_CPYqKFNAIyLkK5g_1775754583
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cfc575fa15so203439785a.2
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 10:09:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775754583; x=1776359383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+Oxezvv+XY94eqFB5rhe7YtVnfzUNjVg60HqVaktujI=;
+        b=Qx6Th/fAZPy2XY3wX5BzD9dBl8lEKM76Tk48ttj0k7UtTUZM/l1iuDmbmSSZeCwpA+
+         ATzaU3yajc4hojQIoohp+RHECeBYfmb3gXUt/8ro7CaJ377hCTowGr94U97pr+I7+N2m
+         URbcsDcS8Z0E5EnS4dbdDJA1LNEKPUd737g2xsibG2qFAOjQHln/0h26L5Bc9huSPdS0
+         ijlKG1cLun5/Qe6YQGpM6kLL8PbytLAOtCjZGXc8J7BoAVAcn1kYe1M86FjkNQyTv8mN
+         4Wi+hpzYRkIoA5SN3abLqWsGIctztVYAi7AvzQsZHH/iKNPvrJALy2303VQTupx37Nh6
+         xyUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9Pc4d79yUI+mLxMYfoMGc11gO/BSgxYQlL1his+kVcKaIUV8R5yLDlDMja5Hn/sY9hfeP2sBrNg==@kvack.org
+X-Gm-Message-State: AOJu0Yxo0j7HdcamgdGJZ3MyOyTsNYMiYu23vRTdBioHYYnGVMqN2NSc
+	HyXA9vtHeWNEffQEbosXsP2zYmJQrMHHnidqiCLrBThOR/kwyaxuZkF8HKfJBO8CCHvjKOB6um4
+	LycYLXVLGFcMOO8eGmnAjdj1kSFMNWNcYkf81szypWVJE4iQ5tNMq
+X-Gm-Gg: AeBDiesTB+Coe831/TkZdYxU9FjjZip/tamnUDhl3D8njehl7gPoK81Sj9jnwRORs/S
+	5IvuZ2O3wZvblLdU25nSc3JubJ7iDEOLm3ZV9P32yR4lqVerIJeOZEauL0sblpfd3TyDqZmWeaw
+	9fpJdqu47KGdg56sB1pUBCoyxiNNNMbXmgI3AJjBpBtXXNY96U4n9xGJ9pHOekVOkD5mPxY84ZM
+	cK9Z7wRU86gb1KfhF7BUjul+M1EqXO+LyPe2xmh65sw+Dl0zKg/33of8H36NrsIZtCzMm4YV1Fq
+	tyoeUCS9kosKxUyRF4qsI0KXHOqvG9SpQt1N/D1IPCW3DI12LjrOMsUKuuR2bgWixaD96OSwY7K
+	iFA92MTtBNKF53H99EGQoKeFkw5Xz+dc/K0jzg0FH8/36W1w=
+X-Received: by 2002:a05:620a:4505:b0:8cf:dd93:acb3 with SMTP id af79cd13be357-8d41e62f87cmr3528894285a.56.1775754583147;
+        Thu, 09 Apr 2026 10:09:43 -0700 (PDT)
+X-Received: by 2002:a05:620a:4505:b0:8cf:dd93:acb3 with SMTP id af79cd13be357-8d41e62f87cmr3528887785a.56.1775754582478;
+        Thu, 09 Apr 2026 10:09:42 -0700 (PDT)
+Received: from x1.local ([142.189.10.167])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d40495cd32sm1615693985a.22.2026.04.09.10.09.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 10:09:42 -0700 (PDT)
+Date: Thu, 9 Apr 2026 13:09:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v5] mm/userfaultfd: detect VMA type change after copy
  retry in mfill_copy_folio_retry()
-Content-Language: en-US
-To: David Carlier <devnexen@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <adfdVbCY18PZMfI-@x1.local>
 References: <20260409120653.290386-1-devnexen@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+MIME-Version: 1.0
 In-Reply-To: <20260409120653.290386-1-devnexen@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7POv6V0JB1XGenUFQHp9Q_C-7Zsw3DFpn7c0Hq2mktQ_1775754583
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 12773A001B
+X-Stat-Signature: w3wp9zua5oqxo6oz69h5piqrrw37we4d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56E0240008
-X-Stat-Signature: n9tpk3wfug8jr9rcapsimncebpecg8rj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775754293-433753
-X-HE-Meta: U2FsdGVkX1+57xsjeDujw+Ly3E/cjbe5MVyq3bzaZ7RXjcObR3xRcBb4kV2KiqDrx3b7rDxN/mDbupjNq6VRAI6qJilWTKGPJcnHqK8trz6rYmM1RaSkRqJdIj1ZOjRz5UspwzSQ6QGlkWYgD0h3tLKwaRSwxCJoTjuLy5g32eBSDqQuzt2cJx3RNUibQtwVCGvOlvYjErgh1fZLTFIACdvlY+fs8PAxKTAhAeCFEtQd9K97OsTbifnS5f39weYB2tdJvIQfVEeL1+K1EdqB0j2Snepx0uc+sgqvA9LCAFPMWGNPOC0AGZPpdEV4GIrJRl/RF3kf9YtBaCIOxD1IaulBZ+QG/Ob1BhMUeAoyn62zx3xvmWh9GOVxr34DUQIgbXGnVr+XFOh4lsEV9Ly+8eOLJyet7I3h5B6KSkdqaN5egg7bQeJFomrQGU6YnmDf3Sd87ffsHhPC6BU3FubfTMTz69DZ9Uy2ysmyUlkYzBs/6IvE5YOTLT6QdALBSlXQCUXzC3920MXz1lpezIw6YUmVkHRtsfCpTST+hy4/25Jtt1Jl8/LZraAzrsTk8kpa6uiV914GojCRERUvaNJxrHJMTLk+zjl4HhPBtYcX3l8ZdPuV09+XFKjA64XxVn2gkAOwfwm6ihxpfw6rcBk9pHZ6BbR+10lIqlA3vGGCttCRNKoH5jtj2qx+qhfbN6JwqXsKdud8pWrmpS10P/B4tQtbFTvYk1CL+sqdPFlwQV/4ukYQ0oli3XH1uprZMTsFlpKurIn48U0jgckUI2ayo5ji30G2BMz1oNPb4syqvop5+/FVOV9W7sbbJnvMlRghooVxU+zazb1yshWHsj6vjra5Entz8vfLHpp9cDE94xlZ9ecneDiYXvnQgWMBp67JDHekLW4zx2dwMxYlzGazPE5x07fJtA9F+elA5e30ft1BqqzM1+3iTi08ZHu0v6pmR+JLdx2fduGncclVC5k
- MKxBvogX
- 4B3CL4KaU5+t+MZzWrUecchFpYmR2/qC1MfPq+3apHZ1BXj0c8gUfboeG729M9pZoD3CNnF5C/9IXonYVmZTKJ9RNHzlaKsJ8yVKoXyKQp5A549zCU8wAY9nG9NiuOrN2SHEbdEkJuYK4Lc14qEl0Ws53/Aw3n7sX16pJ9IdqNv6dRAlz23Axr9Leti3bbF3C5iFEn8wwaJwFQMZjJdfYUn+/VNMT96RGP3Sq1d2ExzVL6AeI1gOwpCyf+6Xa4m3VvtTIF6HjZAPOM8S0mkXpVtV7Zrpg8eeiiqmTprnt/On2qsMFo5PrhJ0F5gx1DM6qS9KRpewlyr3zQAM=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775754585-561153
+X-HE-Meta: U2FsdGVkX1+2L5GZyMsgpZg8C8p/WeJKrdADUwBkKdEceX+C9VAzq6MNcpU9CNvPRto6vgDKrF5vqsjVs6O0vYYVP8HsUDtvwxRHGSuJufq6TNm8essPGqK2CdmRhxj8P+LpMOjltWDQ/v6LuMybev3xFAT4mYTeLTv8c7Xa3Odl6OwXKtTd5mHCfx4voUICkBhjOfjOhurguvQ4CDWhpak+AnVF7dpIN/RKTtISxhy1tnzjMoovI94IrIxi34qhbHohO4uWbzr28HICa8eFtGaAb2E064EX+KKq86o4b7iJAg7Z0zZH3LmPKpyTaF/W1lJMtc0rtQW3GUgNWb30cdD3owLoDXleekswZjEg/krscbNMTdO27ngDPtsjV56zIzLhCRwyLuA5HXUypWVqCL4U249Zr6N4W2whRTL3pPYSkS3kPy9rHGbr1hXhl3SMzV4aAfBaBJPFN1e3CDYQYjGjNM4/cNcXMuKunc/K6jUgR1i78/w1fWw4bx2KXovGLYpOMd4Nkr5wFpHgEh7RoS+6DvD7wR6cuiiv2lykYOT2xBuIxVUV35tSv28DOXxGCiixfmdnCZMG+YFd1ddZcAvS9xxcMa4H6OmlQBC3zZqMbjbcjTGh+xHb2N3LfSd1A6qL/f7H1Elr4OuARI4HTxyTXW/mYYSBspBETgHk1Y8NO4QyEdoGRXobz3H+rP8U7gi2EWyM+fZG8fFA7qKAisCGssdmGzJiR93wXhEGHsHRYpToT3hhptlrJsUGYFE7dlRx3RENz5+GS7ZBJd6UgnqORTJinE/OJaloiP/4x99t+4HwZCmr636Kb1XlkkrRK+4jgEP2YmxKxV7NB+vx1t9usPPm8Sufz+LP1GgUA4hS5PDvNKM+tsVps/Ver8HTsHyFeeh+Ko7lGFIEtVDmoNigwqucC2NgOgJFjtCnCTBQoNOFEXtQsknAAhsLwpaZEuZD6tTboEMood1DgJb
+ taCOEWBB
+ qMYW5J7lRfyZL0xLPaSQVssv+0zwiwZ0qpvMvlANXLa47LpVlSDvBZus3RqqmbRwy/XXPIZ6im+Tdecwf9mlKzR4lcXf3lQGEC/ZOVJ9x1446N3NR2t9/sQPq8uXQMI/uYVvxwk+2NKD4CcODCMUncQILyB5iUXRyQGSndOW24rn5T59jwBlvV3ZD+4JznK+hFP4F/5Zwnf9K3ZGJyQclJtibgr3LJanKGK16bBo/GxyvWk/Ssdp+0Cmn+5rK+vL1xm4GLDBTrEo4OA4+kECevQbW0qwI2QCN4NeoO0FTa4IYEaz4HWF7m8LAB0/DjdOXdf7S53KNIAYrV/fuU+/7d/Q3a1BFICqbNexvuEUw0pYcrSxKuPZl8cwkVOmoMzt+VoATur9LxZ2Kr/4VNtLYK8/giTn7hKWC4XG/Bk1QiMhrL4fe2de/PYnLwdUKhgL/taSvnVSE/2a4Tzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,7 +130,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 14:06, David Carlier wrote:
+On Thu, Apr 09, 2026 at 01:06:53PM +0100, David Carlier wrote:
 > mfill_copy_folio_retry() drops mmap_lock for the copy_from_user() call.
 > During this window, the VMA can be replaced with a different type (e.g.
 > hugetlb), making the caller's ops pointer stale. Subsequent use of the
@@ -108,11 +141,6 @@ On 4/9/26 14:06, David Carlier wrote:
 > if they differ so the operation can be retried.
 > 
 > Fixes: 59da5c32ffa3 ("userfaultfd: mfill_atomic(): remove retry logic")
-
-I don't have such sha1, is it a stale mm-unstable commit? Seems to be
-4974a6aaa768 ("userfaultfd: mfill_atomic(): remove retry logic") now in
-mm-unstable (and can further change)
-
 > Signed-off-by: David Carlier <devnexen@gmail.com>
 > ---
 >  mm/userfaultfd.c | 14 ++++++++++++--
@@ -144,6 +172,18 @@ mm-unstable (and can further change)
 > +	 */
 > +	if (vma_uffd_ops(state->vma) != ops)
 > +		return -EAGAIN;
+
+I agree with -EAGAIN here, but we discussed over all the things on possible
+inode change and I don't know why we don't consider that.
+
+I still think those should be considered.
+
+If the vma snapshot idea is not welcomed, fine.  We need to think of
+something to cover those too.  Current patch won't cover "ops unchaged" but
+"inode changed", or offset changed, for example.
+
+Thanks,
+
 > +
 >  	err = mfill_establish_pmd(state);
 >  	if (err)
@@ -157,5 +197,11 @@ mm-unstable (and can further change)
 >  			if (ret)
 >  				goto err_folio_put;
 >  		}
+> -- 
+> 2.53.0
+> 
+
+-- 
+Peter Xu
 
 
