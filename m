@@ -4,148 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736E1F364A2
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B601CF364A3
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 16:55:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF4536B0005; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
+	id 043636B0005; Thu,  9 Apr 2026 12:55:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCBF96B0089; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
+	id F36C86B0088; Thu,  9 Apr 2026 12:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE1386B008A; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
+	id E25276B008A; Thu,  9 Apr 2026 12:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4B06B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:49:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BDA8140418
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:49:23 +0000 (UTC)
-X-FDA: 84639603006.23.4D61D7E
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D14DEC000D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:49:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="PMFB/VR1";
-	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775753361;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D23126B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:55:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6AADBBAF2
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:55:55 +0000 (UTC)
+X-FDA: 84639619470.24.B0D50CB
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013015.outbound.protection.outlook.com [40.93.201.15])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C4D19A001F
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:55:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Glv4Jp9l;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775753753; a=rsa-sha256;
+	cv=pass;
+	b=QiVyUhlojylj5xlcViUvG5mHLRc4o8vSiYn37kU8SaoheFRFfgvjrHPFKBr9ggQrK9gFhm
+	K10/Imjtp9RWktaw8sIJMJG3f7DEKLS9IUC5Ll/3oFkpJp3jAnaRH0TLLc6HntgtT7NMMZ
+	+Noh0akV8JRF+ErJpnMZvnGC2Nmctn0=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Glv4Jp9l;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775753753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=skeijJYAw0fiK+XGH88wl8oZ8yiStugPyY7G6KP4bYo=;
-	b=RRK2zcZCNjSN11xCu/HauT7SI/BGgdOAfms70NYZFwGLp1KYiyNviFspZN9LfcTuUoWfDg
-	Z3FnFhbfKIsc7rjk+GDaKPJqKg3Ir+2d2SuI1PHgJqUo2WjBfyCOFCUcsO/VLUuwU4mdPf
-	gBZGraRbS1XBSOKT10ttf8frIlwDwHw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="PMFB/VR1";
-	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775753361; a=rsa-sha256;
-	cv=none;
-	b=Z3aloXFI6nR04wUNr4N+7Rht0cPjMTvN3SF6LQjfR+s9DD9pGwDXjqANehQ5FA0nMfwKei
-	pE5Z6HRA0wFdmYCn+CzIW43mELZET1BiFoKgTJT/4KC2GVFt8x+29K7tdoWLHT7/ji215X
-	o/nmyO9VhOhRR1QOt1cGjnN6E+Rvw7M=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639AeONS2302396;
-	Thu, 9 Apr 2026 16:49:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=skeijJ
-	YAw0fiK+XGH88wl8oZ8yiStugPyY7G6KP4bYo=; b=PMFB/VR1NXWf8l0QKJrRcB
-	PHjR84wRDpsPwS1adRf/bF0JB+gkpC4Z4AXSJN+J5ZTSjlGI38MVL9tCj9OENoSR
-	bJI5EtM+A+3Bmvlu5yKGBoy2YRQgTGtNXu54wM/7581yDZE6EQWW7DoGvCqgZbBy
-	ZXDPbQuJX1KRD9BaD6ish3ZIg3KZpo6xHwaxWCK/B8ZJX23Zr9J+fSBZp+tb6L2S
-	gJ0OzwJhNi6mAF2iLhcTfMrnumMtQmwTbhU7lhltC6o1y2oDcVuip268j6xoIHAc
-	aeq8ynWzyyz9VJ5IySBSgMxzWG4hdQ0SRiBbXf0n99Grms+mCMdCtzm4ENevcnHA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dcn2fp2ay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 16:49:08 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 639Cnqf7018946;
-	Thu, 9 Apr 2026 16:49:07 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcme9mf5c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Apr 2026 16:49:07 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 639Gn7TF30605878
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Apr 2026 16:49:07 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45DB958052;
-	Thu,  9 Apr 2026 16:49:07 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7C5B58050;
-	Thu,  9 Apr 2026 16:49:01 +0000 (GMT)
-Received: from [9.124.212.138] (unknown [9.124.212.138])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Apr 2026 16:49:01 +0000 (GMT)
-Message-ID: <d90cd4aa-e0d9-43d2-926e-2154df924f97@linux.ibm.com>
-Date: Thu, 9 Apr 2026 22:18:39 +0530
+	bh=kjYdKGYwESNlmkEWP58Pizo5OysD7aK2uWlWy8tfkdg=;
+	b=5bMelggwiuA/HQtKOvMovdNv0eKuaUaPomLK41W4kr21IQp0VMWjCFrokE+VaJxMgcEg0O
+	H8SYaG0lYZvvIRQ9IY51Lx3LGLqiQaOIZTWzQZaHx0k8JURwLctiw86Dw/bY+phk6ypTf5
+	VMX7Kq2I2t9uYjYlP7GLD5h6tgI0ZVk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nz3mAnh9PqXeTlhBcfs/i+4JXzUQJzAPbRp+GFMmnpIrLye+5qNcO/poT6EEge8VC9cOFy6urWeiPknXHFXJRHhs4NO3Dad1rWwzlchnLWkSEQKNOZ+Q7CK4Z2SrxA8c+zLJZ7PzrmZc4s5yhe4lclwVnDgObYHsS8wXGeYGkFi3XfmzKL1wG0HYjgn7p0bumnS4Bo7s58ubEuuBmNTJuuqX8PcfUb7UbGSH/MTLlp81dxWzjR3NKrzzjouFt7ZK1tPQnkPyOO4ClncF1QxBf1rwfiTqoSK9AeBSEvAA7XhEZeXan3JbC2iUcm5V8QmOgwrih7ZGgxH1xAQMFilX4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kjYdKGYwESNlmkEWP58Pizo5OysD7aK2uWlWy8tfkdg=;
+ b=uZLZHpkmpAGNTlA8/wE4DYALA0nNjwMXA+1i9JpMtG4XmOIihlXwkSWjx2GRR9tkIbU6dYqfBcweHAemEYc4RdNup0JmWxevuoeo4Rs2ChT747g0Xai0WwDL+4Gg9S3VhTcKNeuxLrql6C+uTxQE1Z7MrA2A2IPCsTRPnXuz2uYVwH/LAkdzZd8ZihFxTxis2ToWlJ5DmSxeipFmMvL6Zl5jiKZVLclWpY3tLLmzEVQaObEPopsbLw/AoWgmsJY5nDzEj+qll6FEa0aDauoOGkFSy+VJaZE6NXe/3R13q+j+ZwS4c7S9sJ86PhPHGZ3xB9+pxi20UK4S1HIS+reUiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kjYdKGYwESNlmkEWP58Pizo5OysD7aK2uWlWy8tfkdg=;
+ b=Glv4Jp9lVV6IxkCo8l66CFFxUYoRq7Vr6FaLNp6xXFAHN0U6nOlrcIxSUc06AG1flsdyKi8FvJSiDUx2O4rOPFV4jOliJ9BZhM53fvOLPx31JwuiI4wrzptYS17VXk6u5rCg/ykVAO3AegsSfYgVVx8/KD0X4nPFKZDR1RJojR/Lsx+bveSVV5uN1uiC87vqC1dvmYNAXuZ0OaboefTKA/rvBmEAgwoeZmR+e/kHEGtu7rg8Y+7JRf3S0D8jJ47gQUC7lQlhChdBce0AoemqfJyBLeANkoMSRufzhhzgvUsrBAHyh9LU9VY/O3bvqrS+jvOKNgFpu+RQP1azPo5/pw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH8PR12MB7448.namprd12.prod.outlook.com (2603:10b6:510:214::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9791.32; Thu, 9 Apr
+ 2026 16:55:47 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Thu, 9 Apr 2026
+ 16:55:47 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org,
+ Sourab Gupta <sougupta@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
+ folios
+Date: Thu, 09 Apr 2026 12:55:43 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <1A7433E5-C8C1-45EC-A0B7-2BDC7D065B1A@nvidia.com>
+In-Reply-To: <accf843b-ee4f-46a2-b187-a6d8e4115ca7@kernel.org>
+References: <20260409014647.397515-1-jhubbard@nvidia.com>
+ <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
+ <D74E0809-E673-4CD0-84DC-46CBDBB06F03@nvidia.com>
+ <accf843b-ee4f-46a2-b187-a6d8e4115ca7@kernel.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN0P222CA0012.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::20) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/15] selftests/mm: move hwpoison setup into
- run_test() and silence modprobe output for memory-failure category
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <cover.1775466329.git.sayalip@linux.ibm.com>
- <8ef8640092004d143fe80e6fc32ea8d30a9080de.1775466330.git.sayalip@linux.ibm.com>
- <8B26C697-4D0C-4E1E-A14E-D517CC9DA05A@nvidia.com>
- <5888f69f-c336-4151-a9ac-9b0b00f9c3bb@linux.ibm.com>
- <B686276F-89E5-4192-8973-3B787FC8AC86@nvidia.com>
-Content-Language: en-IN
-From: Sayali Patil <sayalip@linux.ibm.com>
-In-Reply-To: <B686276F-89E5-4192-8973-3B787FC8AC86@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE1NCBTYWx0ZWRfXwvUI0Gwo1mcg
- wa1oc4VivmfI6eqIsrx8m3q64N5D+QkE5qQAGXfOivbbn3ZQEqXfSmSlVy/K0Dps8xXoZaVMnCB
- r5diJrPEAJbjIykV3ww3Eci0OcTESE3gTBHkmZAtxpF1wLrmCma1oB+WP6EDaOnI4oLY5Yfec59
- kDQX1zfgi6bNccGxjRPs+kf5SglhOOehYCksJ7c1gPID6TvNffvYx+Ul+qHbSVvGrtRigilR3qr
- piV9Bn1/LA/6Qvq/k99gi4NmG1Ak0U7LFnmHAZWVq/fFci4NHE3xtA8dOjqKA+EbSi6lTGmA6q2
- g0y1+3k19oD+2rD4ovMYdGMm+IUYJe5kV66/kasDHEDStwCDNH4XpoGXa9MU4XGQvCH0GEFSTnY
- qUlYgRvbvrZkuiTAaOX8TXhPSEOTDMp4+bHx+kgHvR3ExfQi7rvwMltrOwHHymce0EZe9ATuePU
- tMWn/SL0eq3LJN0Ujqw==
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=69d7d885 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=WTjc7Mk9pcOPGDH6nUsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: xQKqax6dvX8APGiCVYRA2NgekkI8SNQd
-X-Proofpoint-GUID: ERlRxTJ0wNXRKaZ2H8ZfNUREZ1Be82IX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-09_04,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090154
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D14DEC000D
-X-Stat-Signature: fxsnipibesns8jq6aw84ypdfjkiqbdic
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH8PR12MB7448:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1058930-bcd8-48cf-e251-08de9658d87b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	OPITiOYkX9fC/siZD5FALJHe6dzslSCCnkenztGOWBG2A2UyOa7NnT+z0jcVhGyrUJA5uTYGeh9DUKQWc5Q6w5eH+OpNQlIZFMbzMbgehnZSxMutSiItjKU04oj5pUyAGGPUW25SxRhWuRAFZ0QBuWPeUewyTl4mvPKnNFeeKJSS3tr6Y/tJZBeonByzDB+iEYTs+kJGtxWBXZYCHUG0oH6jYPtcDHahhxGVzQf9j6//3sBKQiAh6L5Y24Osi2mtgG7VaVhvJgs576wsM4YM0NXjgl12ucIyIUqAdRKieocaWv9wmxMkCvYIqrBc6cls0ANitVbuAza+lhi0DUw0SJODPeQR6dlWTYjvfEk2vK5I9qLjMLgSqJU24A9wJQUeGrLCnLDKxZ6jzPz+0BZgTDVATqdTPfRkTfV+qvFMUTVVorGEREvEM6JIznNf+9xS5s/FIS03KCOIJxNXAYw8lnukr+r5vEy0nuh6ZbHxnWdbcz81OLnjJS89GSoCL07bf339Mr0+cOu8MWQDjSFhpCeLpbhr3hNHKYufFNkbliRjUbiGFtt4WnuIjA2chpROm7iayCenrjajaslUEFVder+mHAQHYOpw+4Rw+jZ9a/1/CEEesfRIf+N0Ftsu4ejgx0NTzt+jek2QTPOdKPW7WCNWOhd9NX0ZbbqYMEiNihnAoGgxml+XhVQtuGXJKvcrXE33A7kGx5fLLz/44nZJAh8vTwqIOagusKcjX2ewahM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8+nvmZ58hGdqUUmpZ8i8BarJEf3sLYc8YeGviuAQDD5DJw+s41XV3NUpChxo?=
+ =?us-ascii?Q?hooTjau2EZdf3bzn5r08s02VVWkSRbuBNNhVbmNR6/x2gHrRG/UxjNqCjOBh?=
+ =?us-ascii?Q?WWjFrK4rTvhamYGqqqd8iwSlCJDxelCPnuDvrW+vm/5zxhg+hRHlzx/5IpnB?=
+ =?us-ascii?Q?aGTPMAgbvyOBDxc3bKX/sbnQVeCNvPLVgUIv9rG5YRCkKKDzqwH8OQrpmJ2e?=
+ =?us-ascii?Q?cMs6UBO7M3sBqiREm3iy8FGu0marSb4c0dwqGthS2RdMUQv5MyHKmU2280X/?=
+ =?us-ascii?Q?Q+2GjUmiweO3RIiORUVo+haW3QPxzSETvRjvy9JGv47+FWYJeMEWU6v9UsyK?=
+ =?us-ascii?Q?YCGYhppTC6d0wP6tCB58yqIqTKbzdX+OSjegcQcxbL/RKX+CeLr3uH3MWKDB?=
+ =?us-ascii?Q?KrltCHxa98MfRMXYVqtHez+xkKlvKqX8MC9KqMMyYupSEDVSCObjFZ2FgpNY?=
+ =?us-ascii?Q?Wla61n9VnkO6E5V/8xguIBwz9YYh4BVF20rRs/oHK3l6ixcXJfDKfCoZCofo?=
+ =?us-ascii?Q?Vy1bvuqMWhI0ULYhC+JDOqoAH7ab9mBjxYHLIjX79uWKJEDQYEuzxsrUIp/h?=
+ =?us-ascii?Q?u/UgZbSjz5jzKnby57WnwsP3U3pXHOgiA23Jt6jS1F+YZDVLN7Qw6G62f0Y0?=
+ =?us-ascii?Q?zhFFqU63Gde3M4B/It4sb7Guqe8ECu0dk3/GayL00UQlg1VWStLUI5DOexCP?=
+ =?us-ascii?Q?v7YtNbK/czrjFs5ibLFWh5bziT7bmFwbh4CnDat/aUMlmwGZqlUxzZul9XKr?=
+ =?us-ascii?Q?MUZ+BvU9rkgIx8zQgeFIdPMShSZUExnLNvU2bLyd/TtpClqhsSKHt8ywZYfV?=
+ =?us-ascii?Q?9YnJkGlDDuESsMB2j92Fimxn8zRDDmvtK7+MirR7uS0qvcJ6Lv0vq0H/ZYp8?=
+ =?us-ascii?Q?E6RLtbYH6xMCTT9qOJx0DggRyq5Sep1Zrq9BBYg0KxbDXD0gUluDs2+Hfj5k?=
+ =?us-ascii?Q?LRHn08+eY594eTrjM3md5+D8Eow8+MtWyNxSVe26WGfYksfbMgjaDU1fRLD8?=
+ =?us-ascii?Q?90YbJ3EYCLDeWTUZ1WuK0r61bOzgxmCy4CzurnBaWgK1qrBYjad4xJSL208r?=
+ =?us-ascii?Q?Oik8JRmeGibu36L6P6sOembHYtkPeoNJCXjrxh5u+PGRmXMp0mSXVB0yAtU5?=
+ =?us-ascii?Q?JoJfwn6wBPkDWYk05XkL0EZUih2wXzXST2k4hyKKpFfV22HgEa/aSmvtboLk?=
+ =?us-ascii?Q?FgjXqcla4qhtSCkqxtJYp8zpgGALfncU3zCHzfVoYqS7Dqfjv7UrsO7moyp4?=
+ =?us-ascii?Q?6N/wIqpvzIEqbM5SAyk/Jlzdcd9Z2nGnm2te/U98bq5gi7puJrj947iUeMVJ?=
+ =?us-ascii?Q?WRjtlBgzwa58s2dF6FJi9Igm13SPBS3V71rQ4rjb+19jYgfO3oh/wE9yH2RL?=
+ =?us-ascii?Q?ShJeseWrYYf6CSI/YmwkfdqDZqJ9F5TMHOb8H8mqRrTAh5POAc+mjlXSmTV8?=
+ =?us-ascii?Q?OZ9igYpJ3G+mhRnVzxyv5xDO5s/nFK6ITFsK7O7pW03Fb6vz7gX5CgJUe6G3?=
+ =?us-ascii?Q?doDf3zW36M7HebcjXGRHpYIsfJftT4OkBS+KexwwXr9QVNoZq9hlL6JfUMkC?=
+ =?us-ascii?Q?wJdeIepADAaJ0DRfg604u7a3J+gNuzxC2JPygR+vlL8xUJRfst/RUfcw4sjN?=
+ =?us-ascii?Q?DniO/icFlUNLmHKz8uOWqFSMayWHb1JL9Z4R5CoazClRcMd1j/KDvUwR/UXp?=
+ =?us-ascii?Q?di/w5zXEJtPlDs9VHdm3FHzHvVDMZfiyOnNM9mVBK3c/SauM1dEBv2XJpbc+?=
+ =?us-ascii?Q?vaBRdu8bbQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1058930-bcd8-48cf-e251-08de9658d87b
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 16:55:46.8912
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OGWcJtTOGkDi96VoOF/UNdAAANiypFme5RX8L5esKQVxjo3Gws9hvhIbGVY5p8JX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7448
+X-Rspamd-Queue-Id: C4D19A001F
+X-Stat-Signature: pu4xrat9y6ik4b7ec7bt69mryauszrdm
 X-Rspam-User: 
-X-HE-Tag: 1775753360-674437
-X-HE-Meta: U2FsdGVkX18swPd+XhHvyspzc6A74WFTHmVWSWlOebrpk4Hgl3dh7ZX6UAwO5r357JbKi7xUT9jBVwNq5P16wjbyLIjjhkpBmiS4u3XsUdcZ1x6Tp1P5ffxHFG+/Xdr2tXq/BUoNdwOnoKt/fE8G5eQAyXK0Swdrmi4xKQENIY7npxr3TS/zBOuQ/rAwC0nwf5eiKn8nx/e8T42XRLBNZuwYNqCD5wTgDR+rA9rL9QThVBnWSDjDOd2+mFbkEGmdNhDgYgN6QaISPtfNL7nZGSpesQEnAPEVe+aMzJs4MKd285hRQtLTHHRJ3cxqX0Zi8mMqrYCkEdtkwdUtzYkUbSAj6I3Kngirvy6mx7MI2spQi3zALh3iO/Sukng7x3HNfjZ+XGpcPb6wwxIX2nvBrOsq9qqMCn4rLM2gGUY/hZIpF6fBcB+2mlF0q4DIwk6t0swpo0kcMvaCe/zQkPb8WfXEyQKYpiHlytX7lWb6RBn1GCC7k4M8o18Jd+5Dtdm/0VCO+vTSBZ2LenEywm+/9jWeHjvIcaaXWDxerO6TRQ2iPIfMBQqFWYK+B1lYed582Uhs42mEZ/46+E634Q/u3c+/Q47W2sRIOa/0faUumVmYhtcBAIlnECuN5xt9akyH/tc9gq+dv3KdXccbjU1B4yVnkcJlZ23flMgaZskX3uVja8Jen1EGzw2gxErSy/wLPpccwsd9iEVPrO5jBhcte10BHHzZa/2G9q7m1HLQesaJIsPXRMqT3XdavE4Dq0oFSf2eRxXRJZsKe5E5+ub2JRJhp8IE01gvd4hv1Ve3Y7142YXbIDLMIQEIBlMZ2Pg/yY+VPEuKhasUEyfqNwboUWE/OkOZKnl4G7D9bpTy3QT72PhPMwKmJWJzE010yrQ5TUr/KT+PkaAwLNlf4YQ0aZwBmh6uFNns3aevM/pAnkQsyxi+rUJZdrFZFUrjOUfsTJsUB1xGgmnepfyulEq
- 5jBtSfpx
- 5OfO854sR1N8vsT2WUJI19drfqnMrXQ9gNSL1dzuvc4pAtSBAQZxwx1c7oHL3IGr9xoAMoK6K5jGFu63A2P2dHUqTy+qDUxxo6YUZHP+JXkxovmoYc6nSsuT4X0Kc8fbLajKI4NSVjRqMdWOBwNtjjG9EZSct8JeBmRafc7E0CsunaTLreV/ID9M7QN5dG0n8n+fXtBGzO+JJCbNAW31hjpQSOX1xUiZm9F+RJ0eiS8Fe18/SLrAWwCTiNjYS93ue26hbnueDNWgSaMVlHq6lbAAG06yF4NhcUHeXjn/4GiP2fSUXcVKAhYFc5HgAfVQJqoFe2otmjbpo9ewtUiGE1V8oiCD6IxhEQB9fRMyrM0N0EhYal8gqgjkIFl7diGr0+/oqDdiY9OFPX9XyAIjqi3qwPqsKoXm19ZzOX7GJVh/7CstOdDnVSiDdwJqA+PRUCDl6wbodEibHywY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775753752-628658
+X-HE-Meta: U2FsdGVkX18EfUqCpkqvz9tTkJPE8AKJ4s3Tpxn6Z/WOE5r6dAEfLSQtfyHxYwGsV1kXIUwBB8zITi4Fb53u1iXAKlkWMFezAhn5ZHGxkxToA2ik/PGSwqsGqCKXHPDbbbg0/lZFfKzg8O2d/+87NKDlf89YydVyykGyR468C36WLwVSNZWp1j+z/fOTAwJkk4hCUImY/dI3ELgsyNLMjH5DaJCo+ArlgxW2jEZ04u+MxfH7EfOGpxOiT8yNpcjVofZ2+/Lq7XkNDzeMb0uBy1x3vvnA7gcji7rS4eJ4rFdj/EXyZEzz+8Eyt5vrQobO6TUYZTYx8oR7wJKLSEgMY3H342CPS5+QjfpJ9dT0nKirx9mE5BA54vOZPtuZBGlL/Do3FCB3qoDEvsyzGlYGmuQSvFcYK8rMtZ85+GuuArmCY3fNCCqoIHdyHloEuJmJRft479RdbK5tAx7Ue1tJA43Hah8EpcDDOxadDxTxcClCRikGAfzhpAQ2EcUV6Epjl28yH+tGElAjOw32VJjfdwhRbL4nBUN5F11Oeab1eu9Bi9GjFl1w/vaKCAaNzKq3snBQ2ZSBHT25e8l6bDASt2zkqVRKnDoBRQASy9GNaue35myaSXB7/VIqFtHu2fx4C9ha5eM10g1E5M5AhYWpkigtVveQhczQy0nFmx2IeCbbz8dNGWkbd5irVuGGO7xL3XKJ+kXa9tOs/8ndVLF38ybY/LCYZGRA122GxW0ModWgFIP5Z3Uccl2Qyqz3cGlqHcAOVlf6zKqgetDkrFYse1Dk5LQqhOGKkTtbMTL5EgeLT0WL6YcOF8A/xzlf+FY0HeYUYZI9Gb7qRo47J1Cz8vgVwxBpxyq8051Z4eiEvac19Oi6fARxbheuNN6cW6AhIPm7Z5r0lYA7/SHmlKOKV+UuMeptyM4imSwZzaz1zcvfzccft0KoNcRA2g4e0dQboKq5FGg6haT9HUUVX1C
+ CBzIYT2L
+ 3GBHb8TLtUgjTAEvWBJLFeM7bAeHq6nq5sCdHSxmuU0EJB075cpA1kW+D/hF/pk3ZR9B4eS8uJiAR5knq49CQlreliqJvh7veMiM7zeaHl5ySx6Acxn8cwucItHs+hOKANLpe8hStO8XZLQso6AnF9+/DkMO8jDTp+YRzLfwu9LICB1uudzXfWpRI5/6QUvj+sVefGMAsGWv03VjGy2PqKNGGDrRngSaRhSUI+qjmywqqR0SJwCS7eeA7bNIfse36807mThAxRIubBBfybNmvJyVkRTC6SogttI03I8OQOE7lqePVS4QwTnwGcdKPCXnPTSw7+OquJ8VRNw+JCMdngG8T/S5uxMvIoPigfzjYDwolzx7TI9B0YIBdWMt/LlnlebI0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,94 +168,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9 Apr 2026, at 11:11, David Hildenbrand (Arm) wrote:
 
-
-On 08/04/26 21:10, Zi Yan wrote:
-> On 8 Apr 2026, at 4:36, Sayali Patil wrote:
-> 
->> On 07/04/26 20:21, Zi Yan wrote:
->>> On 6 Apr 2026, at 5:19, Sayali Patil wrote:
->>>
->>>> run_vmtests.sh contains special handling to ensure the hwpoison_inject
->>>> module is available for the memory-failure tests. This logic was
->>>> implemented outside of run_test(), making the setup category-specific
->>>> but managed globally.
->>>>
->>>> Move the hwpoison_inject handling into run_test() and restrict it
->>>> to the memory-failure category so that:
->>>> 1. the module is checked and loaded only when memory-failure tests run,
->>>> 2. the test is skipped if the module or the debugfs interface
->>>> (/sys/kernel/debug/hwpoison/) is not available.
->>>> 3. the module is unloaded after the test if it was loaded by the script.
->>>>
->>>> This localizes category-specific setup and makes the test flow
->>>> consistent with other per-category preparations.
->>>>
->>>> While updating this logic, fix the module availability check.
->>>> The script previously used:
->>>>
->>>> 	modprobe -R hwpoison_inject
->>>>
->>>> The -R option prints the resolved module name to stdout, causing every
->>>> run to print:
->>>>
->>>> 	hwpoison_inject
->>>>
->>>> in the test output, even when no action is required, introducing
->>>> unnecessary noise.
->>>>
->>>> Replace this with:
->>>>
->>>> 	modprobe -n hwpoison_inject
->>>>
->>>> which verifies that the module is loadable without producing output,
->>>> keeping the selftest logs clean and consistent.
->>>>
->>>> Also, ensure that skipped tests do not override a previously recorded
->>>> failure. A skipped test currently sets exitcode to ksft_skip even if a
->>>> prior test has failed, which can mask failures in the final exit status.
->>>> Update the logic to only set exitcode to ksft_skip when no failure has
->>>> been recorded.
->>>>
->>>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
->>>> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
->>>> ---
->>>>    tools/testing/selftests/mm/run_vmtests.sh | 52 ++++++++++++++---------
->>>>    1 file changed, 33 insertions(+), 19 deletions(-)
->>>>
->>>> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
->>>> index afdcfd0d7cef..17c9bd910c47 100755
->>>> --- a/tools/testing/selftests/mm/run_vmtests.sh
->>>> +++ b/tools/testing/selftests/mm/run_vmtests.sh
->>>> @@ -235,6 +235,7 @@ pretty_name() {
->>>>    run_test() {
->>>>    	if test_selected ${CATEGORY}; then
->>>>    		local skip=0
->>>> +		local LOADED_MOD=0
->>>
->>> Can you rename it to LOADED_MEMORY_FAILURE_MOD to clarify its use?
->>> Since now LOADED_MOD is visible for the entire run_test().
+> On 4/9/26 17:05, Zi Yan wrote:
+>> On 9 Apr 2026, at 3:52, David Hildenbrand (Arm) wrote:
 >>
->> Thanks for the review!
->>
->> I kept it as LOADED_MOD and specified it as a local variable intentionally. The idea was that, if any future tests are added that need to verify whether the module was loaded, they can reuse the same variable. For that reason, I did not make it specific to the memory failure test.
-> 
-> You mean future tests that use hwpoison_inject module? Or any future tests
-> that load a module? For the former, you can use LOADED_HWPOISON_INJECT_MOD;
-> for the latter, I am not sure how a single LOADED_MOD would work for
-> different modules and that probably would need new code for that case.
-> 
-> My point is that since LOADED_MOD is now in the scope of run_test(), it is
-> unclear which test uses it without reading the entire run_test(). Giving a
-> specific name improves readability.
-> 
-> 
-> Best Regards,
-> Yan, Zi
-> 
-Sure, will rename LOADED_MOD to LOADED_HWPOISON_INJECT_MOD in the next 
-version.
+>>> On 4/9/26 03:46, John Hubbard wrote:
+>>>> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
+>>>> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
+>>>> gup_fast_folio_allowed() falls back to the slow path for any order-0=
 
-Thanks,
-Sayali
+>>>> folio with a NULL mapping when CONFIG_SECRETMEM=3Dy. This causes a
+>>>> performance regression for drivers that allocate pages with alloc_pa=
+ge()
+>>>> and insert them into VMAs via vm_insert_page(). These pages legitima=
+tely
+>>>> have a NULL folio->mapping, but they cannot be secretmem pages.
+>>>>
+>>>> Secretmem pages are always added to the secretmem inode's page cache=
+ via
+>>>> filemap_add_folio(), which sets folio->mapping to the inode's i_mapp=
+ing.
+>>>> A folio with a NULL mapping can never be a secretmem folio. The
+>>>> NULL-mapping check was intended to handle truncated file-backed page=
+s (a
+>>>> reject_file_backed concern), not secretmem detection.
+>>>>
+>>>> When only check_secretmem is true (and reject_file_backed is false),=
+ a
+>>>> NULL mapping is sufficient to prove the folio is not secretmem, so t=
+he
+>>>> fast path can proceed.
+>>>
+>>> Hm, what if secretmem folio just got truncated? I hate to rely on som=
+e
+>>> handling in the caller to detect truncation differently during GUP-fa=
+st,
+>>> but this function returning "true".
+>>>
+>>> Zi is working on a way to distinguish folios from non-folio things: t=
+hat
+>>> we can identify whatever was added through vm_insert_page().
+>>
+>> The idea is to give every allocated page a NotRmappable page_type and
+>> 1) let page_rmappable_folio() remove the page_type by setting mapcount=
+
+>> to 0, since page_type overlaps with mapcount;
+>> 2) allow callers of alloc_page*() to change page_type from NotRmappabl=
+e
+>> to other types.
+>
+> Could we instead just set the special type in vm_insert_page(), after
+> verifying that it does not have any other type?
+
+You mean in validate_page_before_insert() we set the page to NotRmappable=
+
+if it can be inserted, then in the rmap code we reject NotRmappable
+page/folios? And NotRmappable will remain until the page/folio is freed.
+That should work. So the purpose is to avoid setting the page_type if
+a page/folio is never going through vm_insert_page()?
+
+>
+>>
+>> After these, rmappable folios with any order is a folio without any
+>> page_type. HugeTLB is an exception, but rmap code has special handling=
+
+>> for them, so it should be fine.
+>>
+>> I have a draft[1], but have not had time to refresh it yet. I am plann=
+ing
+>> to work on this after my two other jobs (make READ_ONLY_THP_FOR_FS ena=
+bled
+>> for all FS with large folio support and ensure ->private is 0 for tail=
+ pages).
+>>
+>> [1] https://github.com/x-y-z/linux-dev/tree/remove_mapcount_for_non_fo=
+lio-2026-02-16-23-27
+>>
+>>>
+>>> Because that's really the key problem here: vm_insert_page() pages ar=
+e
+>>> not actually folios, they just look like a folio today, but looking a=
+t
+>>> fields like ->mapping does not make any sense.
+>>
+>> Based on my understanding of some callers of alloc_page()/get_free_pag=
+es(),
+>> vm_insert_page(), they use GFP_COMP to get a compound page and vm_inse=
+rt_page()
+>> individual pages of the compound page. These pages might be pinned.
+>> During past THP cabal meeting, we discussed about it if
+>> 1. we should disallow such uses and only allow order-0 allocations, or=
+
+>
+> Right.
+>
+>> 2. we need a new type like new_type_folio for them and the type does n=
+ot
+>> have folio fields except ->pincount.
+>
+> Right.
+>
+> -- =
+
+> Cheers,
+>
+> David
+
+
+Best Regards,
+Yan, Zi
 
