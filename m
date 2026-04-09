@@ -4,92 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FCCF364AF
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72EBFF364AF
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18E8E6B008A; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
+	id B3B8C6B0005; Thu,  9 Apr 2026 14:35:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 166386B008C; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
+	id B13B46B0089; Thu,  9 Apr 2026 14:35:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A34E6B0092; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
+	id A29126B008A; Thu,  9 Apr 2026 14:35:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F26A46B008A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:24:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86462560C9
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:24:41 +0000 (UTC)
-X-FDA: 84639843162.25.A67CEE7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 924756B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:35:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B083140177
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:35:59 +0000 (UTC)
+X-FDA: 84639871638.24.B7BA8D7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C136040003
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:24:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7HMAE1w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 374E040004
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:35:57 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ayPWzMwr;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775759079;
+	s=arc-20220608; t=1775759757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2yUfjrS12dXVy2I2I++13aaB8lz5ESIf/F8Z5xPj1xQ=;
-	b=h0ZT0atmLsdvL8QTfx665V+YDuCqqkKMBhkN2gKmKzKuAnUbK0pwluiR/OInQGXxHRor7o
-	R6r0HFeRPyziN3kBFSk6gTwwz1+kQWeEwO9cV1EguV1M+xhl0FzRFstrP5drFn4bGRruPJ
-	xuH1c47Ck68beKJ372imBFRJepvXp6U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775759079; a=rsa-sha256;
+	bh=3mNVgSGdbNdDlSRaVclt79VJ6PhUPbY5ouT0uV9aEu0=;
+	b=3Y+jK/nt3CN3EXn49XrBytND26arAh9vMrvvtYPVMjOAl48FyXX2pP9v6H779lVXsOQP9r
+	6wGvlGyY0dXTWKkDSBa4xkFoazBt/shJ85CaAPB1Jy6wGKdv5tE2l09ialTm/uZAGWq5zJ
+	W9muCIz+nU2wPltfx/hpvlmRr3Faps4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775759757; a=rsa-sha256;
 	cv=none;
-	b=Vpk3x0KcI7T3iM7JepiY8PLhV/yCHXdd5I9fFB9+OMYBXgepwDcXkJhlE6Hbm03oMq9h5V
-	SFaHAPe1/4Tq6ryrjNEGRLOk/7fawGk9mXYuNnaY7hFxKLoE/5f5c1sipVZvaxow6pSDB0
-	hATazf+oSiAncbUNELQsYJJtqiyV5E4=
+	b=Vmhp+yf8wdHtUEeSUVUWkF9iMujmyVdJPSJvujEb/r3LARs93NGG9DeUL3g3YzeVlfolST
+	l6Ng8QIJiLGYCKqqKA/VUeRezkhD4dj9qseiAn+q7JguNuvYvaYFlOCCr5IZ4ecqxENnTN
+	cJjQhg8YT/eWBoG5Bc0jD9AbZ11RjnQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7HMAE1w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ayPWzMwr;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BBFF9404CF;
-	Thu,  9 Apr 2026 18:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAAFC4CEF7;
-	Thu,  9 Apr 2026 18:24:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 424CF4386A;
+	Thu,  9 Apr 2026 18:35:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3276FC4CEF7;
+	Thu,  9 Apr 2026 18:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775759078;
-	bh=2yUfjrS12dXVy2I2I++13aaB8lz5ESIf/F8Z5xPj1xQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C7HMAE1wIjLoFqwoZ9KRCPIpLMD+2AB6gOcofs3RDOghYizSLrg1kz0xFZT7PZ1y0
-	 mr7PUIYnq07w+Wo/J3DpzigXjix9c9c3ifQeneJNMl1/35/k8ES7UaGuDJplXgzObY
-	 FQb6q0ccPTXBASuY016zzHxrRAbqbv+es0yJ0bM0hIksv79GpkzJVOcry7teBV1PZV
-	 AvweqCwYDvKCJ6pcMXD/kLADl09zIB+mHyEjN3BLLMFor4r+FvvaoCpDnGS1zO/LN1
-	 q26UgqsPVvxWvSjj0ZFUkYZfTgHT3dxHuQtRfgVamXmbpP0Ue5ovl+mRso7fxRaB6p
-	 q7nrpkvTY0/aQ==
-Date: Thu, 9 Apr 2026 19:24:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Joseph Salisbury <joseph.salisbury@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
- contention in populate/unmap paths
-Message-ID: <adfqY3ayAHvACm4q@lucifer>
-References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
- <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
- <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
+	s=k20201202; t=1775759756;
+	bh=C83VW7E8/gl6WDv7/vpndeE32VsJX3FXGM/BP11pjuo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ayPWzMwreOLvA21im9dtVCWWgMMb6FL06aDWSybg0HVRHAbh3jUpJIqIPiqMAiZsa
+	 bPsyWiM/RX+f+ocH6KAk70rxEKIKjsRAP7Za2sQNmt+1zIhwx/kmKIrnFKvB6AZQid
+	 jFSrc3nQFkJn7UlAECBKAS0BD50Jz1+I1zZGy+/vzFiQoFXvYKlegZU8+J8yjmJe0Y
+	 MY/vIk5sg1NQcCTH2Fg6GMIWHI7/uO5us+0gGmHUqZyETzbBV0XKh5dfoRkdGb2CxU
+	 s/X0Pn4jBoNdLPvq+MMmMPksj36Y+Q4NpJp/bXyD65TjfmATEpCbkr+fNet5scb6em
+	 WmIYE/lstz+FQ==
+Message-ID: <2c1fa4d8-d236-4abd-8437-b21d9edad2e1@kernel.org>
+Date: Thu, 9 Apr 2026 20:35:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
-X-Rspamd-Queue-Id: C136040003
-X-Stat-Signature: 4q3rcwhkquscqyt7qynuf6c3zehcy95h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable v15 03/13] mm/khugepaged: generalize
+ __collapse_huge_page_* for mTHP support
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260226031741.230674-1-npache@redhat.com>
+ <20260226032347.232939-1-npache@redhat.com>
+ <8a4568de-e0f9-471b-bc94-1062d4af3938@kernel.org>
+ <ee39e605-0d9f-433b-9dfa-f70fd92edfac@kernel.org>
+ <c4e80668-9018-48fc-883c-5d52a5950065@kernel.org>
+ <CAA1CXcA8nE2PZrB4J1gV5v16PeQ7X2AiwjJ3gO1Q8hW7tyTtPQ@mail.gmail.com>
+ <2e3f7c8c-c443-4e71-ad60-36c5203de09b@kernel.org>
+ <CAA1CXcCNLkdjMt=WXgJ1QYSn9WTgN8FVZDQk8E9P=S54sFDSDA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAA1CXcCNLkdjMt=WXgJ1QYSn9WTgN8FVZDQk8E9P=S54sFDSDA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 374E040004
+X-Stat-Signature: 7rqq7erp6c1nqhukfodqpb7ay7uiebmb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775759079-817367
-X-HE-Meta: U2FsdGVkX19+Cmw+ket4/kXsWhkXIuh/0sR65LEEhQJ4KVgUfq06aSViyIPGhWQ27NAYowr1jR6Arp4LE2gTyF/jkKRV4bfrTZu6Vn0FzEkTidKNs33Rs3rsH2TM2vNap8j3WQpc+TPY9RPm9zYvxc9sqIGdQ7O+R4QipK/DqCDtLyWfwi479y+9nbJ/tvFGOp0DFqHEn5kA+Ofc2dPkmcbidaslpH7FspruMDFECpTAYG7FK1itabParfzPXsMcW/p/4f8dRLTdlFjc2I7+WLZrXTFlweZ2Lz1Msr2xD4A7QqpNxaadAx8TyurFm199N5cfcB86bjcXIp5VvXC6NRdcqR525SOVaDuIcyrzxDORbAlxdOxpgujF9pZNcpofKXvvu4UhC+31eLI84JqxscUF7advSTc4B+tdODtX0LqHPod1Xd/w4kCCKILJVY7+aM2KQOGwLcV+rR337eY3ad43NumOHC6T3nCyAcUZ9zCU78dQnu+aHtHC3zHZ8JDwZvtpuB9FY/con/E/YxTGXymDma2sgwN+EihYH39rNNhudNFfbJekfck5Omj8RQ8w/x85jNCXopJMI9TtDvyE4Qhq2rViW9Kj8yn537wuR8rPvjKD3AFU+bdRTkgN3/ZfvLD4Pt5BMhhYJ3EYTmNZsVZh3F0SgxGTc6RdK+DH/5E+6zB1cJRz5KSmjioAYkzA06ym43vEPvHD9lN7hNelRHWohAuEa+PVSdAeL9zk8HiufihV/einRsl0X3kAAncRltnCodobpx8f9XgaSbr1oWJBDvcIKkRkI96hsf6WxGxZkLQmIFzH41EklcpK7T1Tfyl8YEZLKDCEA+FiTONkP389lmaJYhaOrXnOZEyPOxtCsMtuQDrzLujlyalCgFb2DIcp3h/Pg8n9L8n724uXJu0WIFnJNS5evQ9at2LBjnq55gmAqISCu/iJMioTu4a8ggbNEnw2tPwrl3TObPq
- bc6lp5PI
- hjABXKrRlfWD4uvsxTZqsZ8vG9Lsx+t+S1bPZRMVpMbrVRfhDhGQkga99psjgfZvOByBlZZjkTIKBS5QbBh0SILcdU5bxftQzhwEth7suuoDeUrsDrHq6js4xILUw8i++U8auJlU2efUaDkKPDXnyK8rsCMW/Wa7BM139E7dXfnMQYJIbLmu1Mq3x7PKaOKVsJL4mSONg7SWmePZg0AbVrlj7rX6pNimcCjp71KonhnFgUOA1Zk2HgzQ/XBaTl/r0w4tj
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775759757-681000
+X-HE-Meta: U2FsdGVkX19jML45H5ewRz2ib36nVgJAhxtP2NdvUbHsVoiK5fYbhh1Ay1ezdZbMLRsIbuEeWy/VwX28MrUXWxMrhMzFa8UiPUnaYQ/pptXH5/bzz5Y8gIiUTCDRaCBS9FqU9RXLwV5bDU84OzOS9o/m0X+dzbKPeWL+Fx9diMij+r/BR3YqxZiokD+5AJ+GfxMdNa2bxHcSjl3YdBuLbR/DbfeuEgL7DKTxbiFNGzPMuaKIMH2xIf/3L3tk0XC/x6fDzAOJRSGKPUl/DfGp+2WIz8zqiUuqpqWatof1+LmzdbFJ/H7lqH0HM63DuoUEqMqvNjzq6Lzq59E0X6gpu59tvKDtcomAAFxCxVgmziHdcaSbj9WwFHpzx/Bm1e/+u98/jrJTlMjoXJtJMdnnA23DBVGUolSPhNnVf4VNau5AF5IgajNOXKkNnv1wcD8nm09Y07+3ERfOjwS/xZm3nZMGsswj3EfjBj3UDd7m/Z+t99iNCQeK2ksOUuwzjCB21SihsHUBdLEq9mwolf1P3Oir7c0btUDQrec1xqLefoJbNsSXLU26mlMRyIPb0lsFd+x9tcz6SZox+gUpOvn/pbxDFGD/ZKIYhe8Hf2gvQbhYrB+N1QCwviVgKYE13GnaSlEksBjiQvhgT8/FUsi9cntEHxv7mn/RI2Det6A7kpFZz6/7rzKF+7PAI83jkSzg9/8iIqFRSGRApZBBPKKjxV6jgwPLqwcq1xhQfLysF1ZkhekjCNeUsVv3D7Bh+1CtiPTNs7XOpNtY5J/VsH6tL5JfRwfTo/rOq1pA5W4q0lnuJ0etMMzgsgf7wWKn8X9Ysms7EBB9CFkTNQZBYzGSMrUeqXQr7TQY+3whf7qzmFAALkufydIFRsn2Ned8O0URiTkJWfNFzUj7nb61OS9nj79r5Pf5LNX/xrR2514PzrzfSMAFRJSlVQ3mIPr/YTw3wTDZ9yT92ntbsgnx4QL
+ VzdRnlvo
+ Uix/brL+ueCRFniJebb3AoyxN4+CN9LqnXORu0kVuQvvlImIaf5cY3IzosN58HW8iZ1iyya85q3vpcbB0HRfeIKYO0lUtpx5N+shxerDRUbi1yKzYWM3+ioDuBqm5i65FwZxQMcCGc4Q6F6ps2EDAx0nju0e2WE3jwdDEax9D/T3bHgCTpx5af3N/Tya2yUktbyb33/KIDQ+nS/mOt8c2Ws67QqJyhT2dHoFfO3m+LJJoK9XjOjBQhVfLMOuVfvHJBmI7IAW8UThJtnFYyQ6reKR58BGHV/OQcGX7Tdb2/t2boOZRxu5g/hmO3tlZqBbLV6xBnAIPts/53F/RxK/4z2pfRfAhlkxFzXtEtwM+/JsrkXsm/5+3eyH+1LjLNsUsXSWJorqQwmKKREXXFITso9C779SBe/1VOXZ7TKAOjjUw3YM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,86 +162,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 10:09:23AM +0200, David Hildenbrand (Arm) wrote:
-> >>
-> >> It was also found that adding '--mremap-numa' changes the behavior
-> >> substantially:
-> >
-> > "assign memory mapped pages to randomly selected NUMA nodes. This is
-> > disabled for systems that do not support NUMA."
-> >
-> > so this is just sharding your lock contention across your NUMA nodes (you
-> > have an lruvec per node).
-> >
-> >>
-> >> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
-> >> --metrics-brief
-> >>
-> >> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
-> >>
-> >> So it's possible that either actual swapping, or the mbind(...,
-> >> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
-> >> system time.
-> >>
-> >> Does this look like a known MM scalability issue around short-lived
-> >> MAP_POPULATE / munmap churn?
-> >
-> > Yes. Is this an actual issue on some workload?
->
-> Same thought, it's unclear to me why we should care here. In particular,
-> when talking about excessive use of zero-filled pages.
+On 4/9/26 18:17, Nico Pache wrote:
+> On Thu, Apr 9, 2026 at 2:14 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 4/8/26 21:48, Nico Pache wrote:
+>>> On Thu, Mar 12, 2026 at 2:56 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> Hey! Thanks for all your reviews here.
+>>>
+>>> For multiple reasons, here is the solution I developed:
+>>>
+>>> Add a patch before the generalize __collapse.. patch that reworks the
+>>> max_ptes* handling and introduces the helpers (no functional changes).
+>>
+>> I assume that's roughly the patch I shared below? If so, sounds good to me.
+> 
+> Ok cool! Yeah very similar. I was just making sure you weren't dead
+> set on it being squashed into the other patch.
 
-Yup, I fear that this might also be misleading - stress-ng is designed to
-saturate.
+Oh no, it should be a separate cleanup without functional changes!
 
-When swapping is enabled, it ends up rate-limited by I/O (there is simultanous
-MADV_PAGEOUT occurring).
+-- 
+Cheers,
 
-Then you see lower systime because... the system is sleeping more :)
-
-The zero pages patch stops all that, so you throttle on the next thing - the
-lruvec lock.
-
-If you group by NUMA node rather than just not-at-all (the default) you
-naturally distribute evenly across lruvec locks, because they're per node (+
-memcg whatever).
-
-So all this is arbitrary, it is essentially asking 'what do I rate limit on?'
-
-And 'optimising' things to give different outcomes, esp. on things like system
-time, doesn't really make sense.
-
-If you absolutely hammer the hell out of the populate/unmap paths, unevenly over
-NUMA nodes, you'll see system time explode because now you're hitting up on the
-lruvec lock which is a spinlock (has to be due to possible irq context
-invocation).
-
-You're not actually asking 'how fast is this in a real workload?' or even a 'how
-fast is this microbenchmark?', you're asking 'what does saturating this look
-like?'.
-
-So it's rather asking the wrong question, I fear, and a reason why
-stress-ng-as-benchmark has to be treated with caution.
-
-I would definitely recommend examining any underlying real-world workload that
-is triggering the issue rather than stress-ng, and then examining closely what's
-going on there.
-
-This whole thing might be unfortunately misleading, as you observe saturation of
-lruvec lock, but in reality it might simply be a manifestation of:
-
-- syscalls on the hotpath
-- not distributing work sensibly over NUMA nodes
-
-Perhaps it is indeed an issue with the lruvec that needs attention, but with a
-real world usecase we can perhaps be a little more sure it's that rather than
-stress-ng doing it's thing :)
-
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
+David
 
