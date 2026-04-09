@@ -4,90 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E811E9DE63
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42DF2E9DE62
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C172E6B0005; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
+	id 8985C6B0088; Thu,  9 Apr 2026 04:04:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC84C6B0088; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
+	id 8499E6B008A; Thu,  9 Apr 2026 04:04:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE636B008A; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
+	id 75EDF6B008C; Thu,  9 Apr 2026 04:04:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1BA6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:01:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FA6BE294C
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:01:28 +0000 (UTC)
-X-FDA: 84638272656.29.91B5447
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BA3A61C0013
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:01:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOTz9tLV;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 650A76B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:04:05 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1C22BA009
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:04:04 +0000 (UTC)
+X-FDA: 84638279208.16.F04EA33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4175614000A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:04:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bgytiDwt;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721686; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775721843; a=rsa-sha256;
 	cv=none;
-	b=P3L3Pqfj4cwsyDSIni+36L55/dpfwjyZSKFIkiLtZlfw3g3Vtq+KxvYgFO2CnGvCmqVw5D
-	qHhkKmPDIn/yw0jLl6lvgp6NRc0WmqlwNnjcRnuKLlUKfEtYsy55v6pxYRpY7mSB8FFj47
-	/1p9Zl3jYUUlmUcHnfdCYDBbW3PVssQ=
+	b=tjYGeV893V1tfxAEVmDg157hj58WaXaxN9U3zg1gf7NEKw8bcN5QzoRYy2Ax+UZ3nN7FOR
+	oXwnkvDvMd79bAztsm0v0EPvY1unZgnABm0Pk2IYN48G+WcrSrtDeAQDFufQMvVK8IMwhL
+	4ScH3lwHH7n6ZfYQygZQMdjagyz+FH8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775721686;
+	s=arc-20220608; t=1775721843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NtIM8rEfbYq0bFQF3BN/n22f+0/+mv7d7fE3g7f4/d4=;
-	b=Pn1ipCDvYgUBpt3JocW8/LJaze4vEbMNfu8SK+2mM2wjRjdut0pTQZR3Hza3ditL1p8lzg
-	f1roJM9TpU+qUzUwoBYG6Z6jmCEvllnFx+LfxUhldT8ispf8t1KxL8pTU55Y3k49+W2lPe
-	qzcwAGCqKDoJEM9sIyQRSfvEjZJ1y4M=
+	bh=dRGNPUtpRswK70iMLBYC+Pa6fNL//yXjl1W4GqZSscw=;
+	b=3jCchdjMvIl9xEBrhsL+OJ7u78166eEQh4Oguc3vtnm/LCiW412E/H+/yPo1tAIvgh1G5k
+	CNRPc9BMto8aMVOxgYbnSkvLrGpn8kZcTVoOlTuVcpGutBhTuycJ83uXPRN3kMywPLIzjs
+	pg09lbLpEd7gDw7iVSKA+HGmQPUml4M=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rOTz9tLV;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bgytiDwt;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D852600AD;
-	Thu,  9 Apr 2026 08:01:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933BFC2BC9E;
-	Thu,  9 Apr 2026 08:01:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BFD140E00;
+	Thu,  9 Apr 2026 08:04:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B89C4CEF7;
+	Thu,  9 Apr 2026 08:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775721685;
-	bh=RGmpNngIfJC7vsE/AA6AGxc8jF7BEr2rUsoHZzp8PsQ=;
+	s=k20201202; t=1775721842;
+	bh=G2ZJR48gQHdHGhWfbPFbOSyHC6zZ1l0MoaQGw2C7Oak=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rOTz9tLV6I6aNdusDm3HswNPIWXdRp/W6DkRosUNvQIzX9eaIsc5Tbz0x7b4UcVJD
-	 VghAjUDqOJFDCdxJWd6SUI9/j/6Ib9lheDAoTXVwEbTbxh69QWEZ28y3Uj0PaniLm8
-	 eLCzJ9OnW71vIFeqfBTsPsf7/n5c5f4d6sxAWDTKB1Kd7U2Jx9X/sliZ4ru/t8xybV
-	 Hngi1RQTrPDym8ZFVyYzNfVv88ValdoNCYPc7mNPNEyZL6YlHovTNGUlGIZfbyelGm
-	 cWIZka/2Kf5Nu6Kh7areDqyG7LuzyK1U5AKAPK1Pio5MDnq19kTt+XsB8sbiO/H5B7
-	 KeLJ25ueK/PNA==
-Date: Thu, 9 Apr 2026 09:01:20 +0100
+	b=bgytiDwtrQUnhP+4RBfPsfweYkSoLJlcqMjWZgQvft1H8bo/ZuURAdBynkBlivQ79
+	 x23fW4+brpjAHzYdS8JKxxvv0UNwldnu40j4PiOCgg7joz4IGCDUQSZ+Jp3B6L+Wqh
+	 swYO/kw47QdR5k0RR9QaTT+DeUwWeGz6QxfurRhkHbROtUAA0b1Q5ZDJmVUlO3MPfh
+	 Sox2kWgoupLwfcZRwczznLzd6H2CIPCTtAM65+TXwhYDCuQYjHBI6KOZLzQE5A27Fe
+	 Vw8SYH/1cEdJHTB2xipw7YeZm5R+AXamw6HHzwPB7/bl3+ehguRguJbmfz5stHABCl
+	 HLvhFnIDAT/Tg==
+Date: Thu, 9 Apr 2026 09:03:56 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: "Denis M. Karpov" <komlomal@gmail.com>, rppt@kernel.org, 
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@kernel.org, jannh@google.com, 
-	peterx@redhat.com, pfalcato@suse.de, brauner@kernel.org, viro@zeniv.linux.org.uk, 
-	jack@suse.cz, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] userfaultfd: allow registration of ranges below
- mmap_min_addr
-Message-ID: <addcUpxfuR2llaiW@lucifer>
-References: <20260407081442.6256-1-komlomal@gmail.com>
- <20260408123700.1596800-1-usama.arif@linux.dev>
+To: anthony.yznaga@oracle.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, david@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, 
+	shuah@kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be
+ locked
+Message-ID: <adddNM1yDJ6tWXsR@lucifer>
+References: <20260402235933.10588-1-anthony.yznaga@oracle.com>
+ <20260402235933.10588-3-anthony.yznaga@oracle.com>
+ <20260403123120.82cb5becb19e1b572d474394@linux-foundation.org>
+ <83b56ffb-6e2e-4c9b-b0cf-9f04b61ebe7f@oracle.com>
+ <20260408140251.6158aa7a56f71128471f327e@linux-foundation.org>
+ <ee802934-0be0-4c33-b3d6-38ef713e6bf4@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408123700.1596800-1-usama.arif@linux.dev>
+In-Reply-To: <ee802934-0be0-4c33-b3d6-38ef713e6bf4@oracle.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BA3A61C0013
-X-Stat-Signature: w7ybib1cfgn4nneusnxzptm8spsocm4j
-X-HE-Tag: 1775721686-992630
-X-HE-Meta: U2FsdGVkX18TEf5lhLryL+xiSXPXdn4IGvhatq6qjg/IjxuCVu8mz+cn4XqhJ9z3vVxwZYNH5GFerkCeF7GDBr4W3iaTClArdDeTPsqUSqu5QK3XY0lMTVSTGuT4G2/WGVv1+TAYsaAuOcuTdavM8qhkMiJtNG0x8NuuSwrS8CyKNsfDgyaLjt8COF3KntvxPJnn/UsdvS7Omt0+okMdu8xPaVCAFdBTqVFIaVIgAB1v588Vx9bojqicdVoPj+o6VAqUydXfu2+qOL9wS8uBmBKTL/OIK1rFci9e9Ld0iWZbJY5LYW8ZhPAkAQu031O6fMVjCDMAEcREY4Z2L6PXqfk0CT5YUw915bNHmKlxO8PxXhjGNoTCPi0g4FkFx9rcbVQygsu+X3R+GN8AG8pWUcYIBz6W/sP9BOYNA58t0I6+k25lZupzLPvNtdeS2w/6jozYFXAvyl6HCByj/6wxAHPjV3SGFayIssPy9MAW+JZa1iQCKqhmjElTmaccMM3fi9Bk8eFDYwjsLlCWtse1wuFrP7l2IVRwL2rTQPWzfhQZQ/6UyRNrPdOHLc4KbbAJXY5keFFEXSN5gG4P6jx1Wap19k5Z15ksDq0x7F0/XJ9bGw6kWsXUxecooyfwky8RcoaDJr6UUkG8O0ojxW/P4xB0l9cziVya3BewCHqZtha3HRpB6jc4s/NX9MZYBAhWvq1WL/FRjOzZJZ7IR7aPAdEhiCFjrzedwXMjDe2yE9uyxiPqhbe0CSDx4b2WACgX/6ehmAGoc7YiSCyNFwZ0r4WHcY89P06Mz34dHg6sk7qZ/Qx/aYVin7yDJroL0E+Lu2J8xQ8GTs7RX6kYBRb//iGTQ+zm7l13eis3gtHKT1D6sgUHbgX0qQg3YtWL6pHgYMWhYm+prJcVTNaqnlSQIzeesE6szsRV87aIQIEYhA3FRnPsYTyBzV6TNAwROVeKT6deb1478UJtrkOX4NM
- e2EShStK
- D8waNZh3b+DAvMLIiE2DelDsiE3nOevgjLwEcyFdiBS4+Hd1M830UcGcl5YCBpTafBZ2YzCXFvgu4frclQbrtYM6La1QXncVsFsvigFV8nofY9XKyaEvv+MbH4/GnM4dD5H2EqRQZWmg8AScAFEMvf9CLmt9zaB/wMIcUryLbywuUFOEXaNB4Yblgz/IxkWupqMIndt/8Q15qrUxcgx4ubzVMA33FcnPkoRpXsA2tFus1kd884DdiLCpVd46WNthseYTKktVKphdiGMPRlnBtuT3X+y/dv1HCd5XJu4iuUZh+mCFWIqqDQnsVQeOQHr9IKvWD6oIaxvz7DI5EdOUZqnZk5A==
+X-Rspamd-Queue-Id: 4175614000A
+X-Stat-Signature: sgru6oznm38733wdrrguirghahp9eob6
+X-HE-Tag: 1775721843-566892
+X-HE-Meta: U2FsdGVkX1+OLtULLKtK19dij2IlBCqs4pCht6nlFz9VcP4l73Tg2k8M+t0hmQh6qBj2Kzf0TIpyLb7uSXjmOqdN93gsQsFU/4YTmbB4srsHbwMNwMGg2g6oMR5NpK4SRzPnFIsqPJPwS+DcIw/1NaPLYwydnf2ZiqyXOBllbxy+sInaaD4iVbmwFfWZaGdeyIQjD0tO4xwPUfPtKXx6HnRb7pAFYA+bGFOHVBNILrtBbuNb8rK3RE+0WhQyh36a0aMxS5oaIUlTjMD5Ul7wMA6MiJWXYZlmT1GURRdpvdPSFzEtX0g84+PPss75HVWNapIL8bmhAVX3ar38tHthEb/6ZNL3pfC3Gxl3W410xrmPR4cuMWyd0rGwHIb7TwHoyLMbqPi9sDFxkeAhEmIdchrXfm6tpmXro1jc7N8qvXO8sn1/2gLDjucehsEn9zGWXyUwx4mrkll5LxJ8Fm1N3QICwkBSX6Z/4nofnolkKSCcjm+K3ySsRG90QTbo/038OmBmqIAZc4moM9iZMhF7siaEFLSv1hTXt9zquEoIE/s/vsJaKzGJcwB8SxO8d07VBmx8XaGo77z/N4YlwalsCDLTCzd2+pI4bBEcc0UGZrjDlEM6SRdTg2oTGIBrZZWLiAVI1zkcSKF60QxNwx8p0SVgBjdwUJ93M2lhnyEVGcUTUI9IBuKVdy4e+swwjuU6e5kZRc8/Tft/GsoBOldu+3A0lnvhKDakeBEKslXhPz8dxgEFhmncxcQCnApB/2PWVaN4W27Pv6tGqrxZpmPmoE961QKW1+nUGA6g8HyZDb2S9DBKei/ZUD0BrQVDxIdtWZ3HtO/LM0HGYm8oWsci9lGcoLsAtVeC4U2s1igWumu9gryUjQ1tnv7rWjrqVT1hKCHnI6ASSsSes0tMV0W5yQNnrixXaCBHECiapSaQwkjsSm6FcDyKSYFr5pSqYTEIEVKifmXICwRrFt/LdhG
+ cCv1jMWP
+ OONOet6vp0wl4EcIHqQ95lhVWo5op6DqYdU2LSmrE9umLJPhBemjmx8cJJ/jvb4TvNA2GT/xDINf26ZRF7wyjpU211D4CgVghpjr6AlpM7ErsixMRhNxE8OEQAjboNrGi/U2KQUG769dqcTEaVME7fmjJJ0B7Z48An/a4nhdUuiOnIxr49ogk9xCgG9uLoSlDxEs2Aj/QBsyMFfI6R8gSdpTZMJQaAvU1m+Cyz9vfK/gJDM5Nvr2Dm90EbGkfQBjFqapZd6me1Mg190NkYWAWSNMwYfvVyYya448CcgNRrqHTw54RbdhtEzUzS7wOYnOjBM5VQtxjKYO6QCHKagsRBO/UNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,83 +99,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 08, 2026 at 05:36:59AM -0700, Usama Arif wrote:
-> On Tue,  7 Apr 2026 11:14:42 +0300 "Denis M. Karpov" <komlomal@gmail.com> wrote:
+On Wed, Apr 08, 2026 at 03:26:14PM -0700, anthony.yznaga@oracle.com wrote:
 >
-> > The current implementation of validate_range() in fs/userfaultfd.c
-> > performs a hard check against mmap_min_addr without considering
-> > capabilities, but the mmap() syscall uses security_mmap_addr()
-> > which allows privileged processes (with CAP_SYS_RAWIO) to map below
-> > mmap_min_addr. Furthermore, security_mmap_addr()->cap_mmap_addr() uses
-> > dac_mmap_min_addr variable which can be changed with
-> > /proc/sys/vm/mmap_min_addr.
+> On 4/8/26 2:02 PM, Andrew Morton wrote:
+> > On Wed, 8 Apr 2026 13:35:42 -0700 anthony.yznaga@oracle.com wrote:
 > >
-> > Because userfaultfd uses a different check, UFFDIO_REGISTER may fail
-> > with -EINVAL for valid memory areas that were successfully mapped
-> > below mmap_min_addr even with appropriate capabilities.
+> > > On 4/3/26 12:31 PM, Andrew Morton wrote:
+> > > > On Thu,  2 Apr 2026 16:59:33 -0700 Anthony Yznaga <anthony.yznaga@oracle.com> wrote:
+> > > >
+> > > > > For configs that support MAP_DROPPABLE verify that a mapping created
+> > > > > with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
+> > > > > be locked if it's created after mlockall(MCL_FUTURE).
+> > > > There are a few queries from the AI reviewbot;
+> > > > 	https://sashiko.dev/#/patchset/20260402235933.10588-1-anthony.yznaga@oracle.com
+> > > Interesting. Of the two issues, one is certainly legit. I need to add an
+> > > munlockall() on early return from test_mlockall_future_droppable().
+> > Cool.
 > >
-> > This prevents apps like binary compilers from using UFFD for valid memory
-> > regions mapped by application.
+> > > For the other, the question posed was whether the tests should handle
+> > > possibly being run on an older kernel that doesn't implement
+> > > MAP_DROPPABLE. It seems to me to that a selftest should not be expected
+> > > to work (or even necessarily compile) on kernels older than when the
+> > > selftest was introduced, but I don't want to assume.
+> > I don't know that there's any policy on that.  My attitude is that
+> > selftests are not intended to be forward- or backward-compatible.
+> > That's why we ship them with the kernel source!
 > >
-> > Replace the rigid mmap_min_addr check with security_mmap_addr() to align
-> > userfaultfd with the standard kernel memory mapping security policy.
+> > If we get a selftests fixup then I do like to backport that into
+> > earlier kernels if appropriate, to keep those in good shape.  And that
+> > has the effect of reducing people's motivation to run a later kernel's
+> > selftests on their current kernel.
 > >
-> > Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
-> >
-> > ---
-> > Initial RFC following the discussion on the [BUG] thread.
-> > Link: https://lore.kernel.org/all/CADtiZd0tWysx5HMCUnOXfSHB7PXAuXg1Mh4eY_hUmH29S=sejg@mail.gmail.com/
-> > ---
-> >  fs/userfaultfd.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> > index bdc84e521..dbfe5b2a0 100644
-> > --- a/fs/userfaultfd.c
-> > +++ b/fs/userfaultfd.c
-> > @@ -1238,15 +1238,13 @@ static __always_inline int validate_unaligned_range(
-> >  		return -EINVAL;
-> >  	if (!len)
-> >  		return -EINVAL;
-> > -	if (start < mmap_min_addr)
-> > -		return -EINVAL;
-> >  	if (start >= task_size)
-> >  		return -EINVAL;
-> >  	if (len > task_size - start)
-> >  		return -EINVAL;
-> >  	if (start + len <= start)
-> >  		return -EINVAL;
-> > -	return 0;
-> > +	return security_mmap_addr(start);
+> That makes sense. It's trivial to skip the tests if MAP_DROPPABLE is not
+> defined so I'll do that.
 >
-> Is this introducing an ABI change?
 >
-> The old code returned -EINVAL when start was below mmap_min_addr.
-> The new code calls security_mmap_addr() which returns -EPERM when
-> the caller lacks CAP_SYS_RAWIO. Existing userspace callers checking
-> specifically for -EINVAL would see different behavior start is
-> below mmap_min_addr.
 
-You mean API change? :) we don't guarantee ABI for kernel stuff anyway.
+Yeah in general, I think we best-effort try to keep them working for older
+kernels (but no guarantees IMO), so checking if something's implemented is
+cheap-and-easy.
 
-Firstly, as with Harry, I don't believe we should be duplicating checks here
-anyway. UFFD is duplicative enough as it is.
-
-And this is such a silly edge case that I don't think it is valid or reasonable
-for us to account for whichever totally insane user relies on a pointless
-re-check being done there and _then_ relies on the error code
-being... -EINVAL... which is overloaded for a million other possible failures.
-
-Let's let it be -EFAULT and remove this silly check altogether.
-
->
-> >  }
-> >
-> >  static __always_inline int validate_range(struct mm_struct *mm,
-> > --
-> > 2.47.3
-> >
-> >
-
-Thanks, Lorenzo
+Cheers, Lorenzo
 
