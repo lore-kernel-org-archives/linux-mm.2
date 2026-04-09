@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 371E1EA3C59
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 13:04:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48DE0EA3C4E
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 13:23:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A1F46B0088; Thu,  9 Apr 2026 09:04:31 -0400 (EDT)
+	id 5B9C66B0005; Thu,  9 Apr 2026 09:23:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3526C6B008A; Thu,  9 Apr 2026 09:04:31 -0400 (EDT)
+	id 56A736B0088; Thu,  9 Apr 2026 09:23:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 268596B008C; Thu,  9 Apr 2026 09:04:31 -0400 (EDT)
+	id 480AE6B008A; Thu,  9 Apr 2026 09:23:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 179BE6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:04:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81C0A8C3E7
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:04:30 +0000 (UTC)
-X-FDA: 84639036300.28.803E3CB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 38D7040017
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:04:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WEWHru9M;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775739868; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A83B6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 09:23:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E0B71B8456
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:23:12 +0000 (UTC)
+X-FDA: 84639083424.06.7E84210
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 84ADDC0015
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:23:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gAVlBbSw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775740989; a=rsa-sha256;
 	cv=none;
-	b=aDSANrzBZaQnuhepxSavgq/pC02dgIFpxNsQ01I/7+CR4cE7jLQ7xldLhEVxekd0AF20hz
-	nHh1XemRaztJS0ZnFTaqaFeRH1TAWaOQFoJ6fs+R23U1tdk5/onuVYtFUOZTdjU//lHG02
-	4fW7e+yRSUdz1aWvsPgH/YItfl39MOk=
+	b=K71U6duGSSURnv5hCFpDsBTjVjEyUHPeez+rx8eS6RAUphbyXRYQ0CCdWY/ASLpnCm9+VE
+	M53UnHLeOJj0k0AqofXp884Lhu7/s82tZEeQ6oDPHM42Y3tbMZIUrex27AeX10FI0SLPZq
+	ivoFmyNO0bP7NAQ2afyui4OFgZzaoDI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WEWHru9M;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gAVlBbSw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775739868;
+	s=arc-20220608; t=1775740989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/CxLVmExVUDvo4D0kgtu+lUbRHYuuHvCMXcx/stGmLA=;
-	b=oHVPUPVJl0ZpDY1HEwwLYPjBYz6gTCZLhboXo4o/Hu+MVk6P/YBlFU68lEKOb2LtVZtfuK
-	1T1BYVA7J2UPAQbXHqgDADHXwec2Ux3svKkuNXYunQm5yWMGHUfqppTFiEy4q3xG3bi75x
-	nY5gMjQYJwxCom31nCLPXTE6x6z9Lz8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 450752F9D;
-	Thu,  9 Apr 2026 06:04:21 -0700 (PDT)
-Received: from [10.164.148.43] (unknown [10.164.148.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 66B673F641;
-	Thu,  9 Apr 2026 06:04:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775739867; bh=edxyJPIpDcrkfXUhyUoWo4ZmUknvNS6KHcMk8cn0t/I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WEWHru9Mm8PVscGfg0HS2jjbC3uPW/84RjXSA79iGQDftHDSidtj4+Za4wgmICpZ8
-	 YgeyOYc20NhpLSo8TPZdbrMHyvxKRzDm5PQ80YA6AsBTkD9sJPqHOFR3NQNDMr1THh
-	 D5bgeFoJdi/FmHS8Zyz8SYKked/kVDY6P4nMrIt4=
-Message-ID: <00f8f77c-c9b2-4900-ba9b-52d6fe2332bd@arm.com>
-Date: Thu, 9 Apr 2026 18:34:15 +0530
+	bh=XdYAYQUqkQHKX6yKOZdjekTpsk8cmhwvmdhU46i0g8E=;
+	b=4SRY/LgRSrJd0jl736qZBx1IR2Fj/cBdK/kkKiJWhaxD3tuU2BvK9AdozB3jYr0hk5NxZV
+	nhu9aUktR8y2fbQezukZ/1CZXirCzUK0tdsqu98MMbh/Ea+bt2G1wkDi40tUvPGEz7FDek
+	TZL1BaN5Gom0vW5Vn52E9ctcnlBj6QE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C3EF40962;
+	Thu,  9 Apr 2026 13:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9666C2BCB2;
+	Thu,  9 Apr 2026 13:23:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775740988;
+	bh=tqL1fimNDWlyLrxDSkoymopCMl8WNimZ9u/t901NIq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gAVlBbSwQ2EhjlAwBlMNJeosfz0dD/8/v41ae3TtdzbJ4z1x3dD4yTseDt0lVJtuY
+	 bPPpYhmxSCVZyjh7JC0K0y5Dw2ZboOV+3v0qtTJfhHkOkdo8tkm1dRIIKCBDhYcCpw
+	 62TcG886O1nJQIEV5zQUUb2JNYXEHY8UDWiHHh0habAexbRBhLpAkYw/Yf7Fu10JrT
+	 6yEawp4pnmL1Vrsjz8Iq4dX+w+XzA9pmI1rgkQ5grLt0pzA3IDL93pcxKo2fB07nfV
+	 2B7unxdgFM/y+9dQ1ApQeXfmvZtOnpQkyjMNYFbiVx96jPgwg8CrxgwCTE4Ymj7s9J
+	 YKfVqZs9BLKVA==
+Date: Thu, 9 Apr 2026 15:23:00 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Anand Moon <linux.amoon@gmail.com>
+Cc: David Howells <dhowells@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Douglas Anderson <dianders@chromium.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Randy Dunlap <rdunlap@infradead.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, "open list:CERTIFICATE HANDLING" <keyrings@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:FILESYSTEMS (VFS and infrastructure)" <linux-fsdevel@vger.kernel.org>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Subject: Re: [PATCH v1] treewide: Fix indentation and whitespace in Kconfig
+ files
+Message-ID: <20260409-kontraproduktiv-sterben-034defac1e79@brauner>
+References: <20260407053945.14116-1-linux.amoon@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/khugepaged: use ALIGN helpers for PMD alignment
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260409014323.2385982-1-ye.liu@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260409014323.2385982-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 38D7040017
-X-Stat-Signature: bkgn61i51f4t1xzxnfgsc9q8ya3zipa9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260407053945.14116-1-linux.amoon@gmail.com>
+X-Rspamd-Queue-Id: 84ADDC0015
+X-Stat-Signature: 5b3ahb3b7tjsaomd64ih91qt8x3i1e3f
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1775739868-342719
-X-HE-Meta: U2FsdGVkX19CPE5LMuSx9BiWjFrlf/XJlL2zeY3hWjroeOs5a8P3DUc+wvsud1IjdXrzFgcx408QNk9kotjM719/OdvyZQQhFonst8whpPMkdF5CY7v0ViOwqEG8jvblTg0D0qXE+P+y8XtZb72iQdWtlj+QLYt9x3XYSt55AC1/UCzQ6KGuvn4wVM3qEWEj7ZE2mOCHQVMpaWC3xmENKZuvAagwgr0OpudeLzMbNnbK8qPgUODDV66a9ekaIBt0IEsZouuMGRDrVihaXEJhXqPdtWMDuYVUlBMucLzLq2aXze4JcZQddHulF4/5u2zY+naBADmKmmTOAzF5CV/NeItrNKabLnt2Ulf6ChP8aT2pdTF5+p5Z6iapcdYAjksheK6VaxHC0b5hiYGg4rA0jy46PaBB/AFtT9Fl/g9jfdvq5FroTfSVLU3rlgh9V7SfHhW4Qgfw/D/oIFulq6CFkVmP3TuLLRmjPdwW5FKwbv3ni1t3s0DZnVU8udoVUdSIitXYcjJvZL7FL+t3vSvEeXvzvj016rvsR+LvmKT/Ubd/8/sBX2o5tj121lRfqL2hwuEXn+Gj72jO121VBJvhuJrPEaPWZK5LcKB4q48VJ+qaoY6GrasZYaFWSdjE4oWKosI/YZOu2myKzdvz1JBi5QiOtN0jzeejwYIT4oOdQkesr/DMIkJ5ecT8QvxsbfpLV1juWzxyUGZoCa8l1Cc2gPngMrS6j3RQfL3tLkFkWxsUeVXymYgZs+Mk7obGumbxdoVDcWUnutROCIcRtAz/Pn1OyFajsDxVKfPOPznqQqE3HirfA6cu4zJcimJ3AXQF1SRB2RJCae7YeMvMGH+zDhi0MpO/bKsjcRDB0emoBH0i5UDLsu0AGZSHLlRJigEidrjpROUI5FsJpOm/L1b9H/LM3c34ROaNtaWc3S/KC7HYa4gTn+XhbUrObCLyrmj6SbEGohgL4itWEPb8iMH
- vQZ64LL2
- MgOdTtJbe+df2HAy8LkdJtyvnNTLd9DF2ChVJQE06c1OvV1QVfBEgQ3+/s6KQHRpv0hvbpyQsux6mjTkythhlaWicvNiPmuLgOiueOcoRiSRtM6BO4GhrY13FjHb9Y5vgtWWztdsKxUIZgzcLJTycQXH2f7wCEHRnV6UcDRkUvhoZCdNni6FVN6AmjXAsWOrLfddBy3y5OPNnPFWRz8G+43mjxZDpLBBVGLT5RwCKMJD1H9H7uliyb/qm2GCr0G2ZXPfD3BBLL5L7l2YXOEBr/Ep3sEZo8kP2pABiQBMc91ZsvVTvciBh+vnkQPh4jJM68qVj
+X-HE-Tag: 1775740989-19276
+X-HE-Meta: U2FsdGVkX19sDgcffxshi7iDH1eBCQ92S7Q7UOPXMkMmbZrEXGLjuvJ5pAQukwh4MSjbqCYFSHLOMpddUPvvsuYcaV3jufHuAJudyTHW3ztrQ08VS86/dhlnkTlhQF2ixWXdUkrzDxQpbnEPlHZOz1rxiMR4zLQHtmxv1Jpl6GDnvxX1QPy0lReQGIjsPRxg7GKFBXhxyx+KV9WyXZEihgYwCU8D6w/hr/HYWDnch9OczMPO1Mv5rWFT+H4vZOOB3EzedE2SLhwB2pSRtFpAG1PgNSpIHRuDpwb8V9eCaK8VMJeAIOWKBeZLdVlz2mnV/bkxGlcb9ovolaYcpl1byv4RnD3alaLqyfWLJx1EzGqUDPHnhCvoLxE6NnBR7lA7PKb6pz3cyY9Bu4UOf4wXHjlvoEz+jf+G2siq/9Dri+29c60j2XaszeZViqp11qQ9w/ImwpW/JfJ9VcMbTv085fSMuO9wOvZc14C3pKX0N62jGt0kUN3l5kdO5fr7ajQrmmgBcRMFbAhaJ63Ft7GJDsnjkrszteCFufWOjcYt38Sl/HWYy63dGlI7XjKMnFRw/66gHYclwdFlKLiWST5hmYwRYkRtyeKNTGcxHmLRNeCrgDg7qDconn61Cs6f1cwY/6PdGGAzuYTcmeSJh8/mt0uYlnZm3wH5BmsntXHBOH5PDw63ARDu9piruii5zUQupgqUE++emxtlixtXvEZhbkHSoVxVgeWOkwpWgy8+exSP27h4l+5hxqlwD00jB9dXEAWVdFK4sJRE4Z4NbTlmd/Ao+d8AoOH7QwfBkMYwJgxaunVHGx8MqX+TbR88pgcI9C0h8m1vlw1JZPWRD3TA03KGcbgqYyZnTH6N83Kyanx7DTe46TvDjj4YncRPNqAJf3vt45GpHqORl9p6IMpClHVkzAjUKeSIqC+74pn/BhW1SbGbijkDqV5bn2YqIK9b9BvkV3GqL6wo2GOX3qy
+ LhDCmwcZ
+ opuXMQRSTtrfYk91AyvMR2bf0jr5ZNkSHMCr1g+DajrKOGQgSUbAM3+UZwtyoU+vSffCOS/Sip79pw2fONrc2icVRJxsiHMf66RdXv88q2wGaTiMB6vm8M9XwgiiuEZFiQewpiXKREeIgsIf4cxCDNFDhb4EgGwLT2/aaqZDcGjhOb4EXDS3p2k2/AUTJcuZQ+dfVYBd/eVsuUbOSC0noi1e9PGcSYFMrORsT0jt+sJvW/kMMW/1zCYoFEbXYXoQin0RnQNorcGwFBPW/4zYjLsoiCxK+Mgy1NXuXwoRLLVR0sFNCEz4Lib15G3vrE+yohW2n1v9S6ht/T19iSZn6IXGCJMwsNr92dAM/PhJDWG+WGNbwqjyGYhCQ939LG7n1IzTPXgvZmSlzsmvnZ4afJTWzoZ1+iFYrk+Ny
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,30 +102,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 09/04/26 7:13 am, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Tue, Apr 07, 2026 at 11:09:34AM +0530, Anand Moon wrote:
+> Clean up inconsistent indentation (mixing tabs and spaces) and remove
+> extraneous whitespace in several Kconfig files across the tree.
+> This is a purely cosmetic change to improve readability.
 > 
-> PMD alignment in khugepaged is currently implemented using a mix of
-> rounding helpers and open-coded bitmask operations.
+> Adjust indentation from spaces to tab (+optional two spaces) as in
+> coding style with command like:
 > 
-> Use ALIGN() and ALIGN_DOWN() consistently for PMD-sized address range
-> alignment, matching the preferred style for address and size handling.
+> $ sed -e 's/^        /\t/' -i */Kconfig
 > 
-> No functional change intended.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> 
-> Changes in v2:
-> - Switch to ALIGN()/ALIGN_DOWN() per David's suggestion.
-> - Also convert collapse_scan_mm_slot() to keep PMD alignment helpers
->   consistent within khugepaged.
-> - Update the changelog accordingly.
-> - Link to v1:https://lore.kernel.org/all/20260408093534.2373007-1-ye.liu@linux.dev/
+> Signed-off-by: Anand Moon <linux.amoon@gmail.com>
 > ---
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
+Sure,
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 
