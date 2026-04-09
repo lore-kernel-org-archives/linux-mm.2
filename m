@@ -4,108 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDCFEA3C28
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECD5EA3C36
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50C2D6B0005; Thu,  9 Apr 2026 06:33:27 -0400 (EDT)
+	id 645A66B0088; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496166B0088; Thu,  9 Apr 2026 06:33:27 -0400 (EDT)
+	id 5CF7B6B008A; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35E166B008A; Thu,  9 Apr 2026 06:33:27 -0400 (EDT)
+	id 4BE9D6B008C; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 213686B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:33:27 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BEDBFE2CD7
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:26 +0000 (UTC)
-X-FDA: 84638655612.30.F6051D1
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D36B840008
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=POD5uUIZ
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775730804; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B0086B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3D4CC1AB4
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:50 +0000 (UTC)
+X-FDA: 84638656620.21.BCFA91C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 541A380008
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=orvo0MZx;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=orvo0MZx;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775730829; a=rsa-sha256;
 	cv=none;
-	b=5ANBHlGYMIMK8SAMpOG8Iopy+1g1EWF5G9mcrvmNFXbUxebOpAXxOhWzYNIcB/muPVUa+t
-	ZRuzH4dz6WBeZ3cPrn7OvXYLIpOyRNABGF6I71Z6xpzNsjY1BvsPrL7WtBFpXIfg2hwwml
-	eDe+BOd9ViVDhbYkBAmxtipgecWYltY=
+	b=RxenvOkSFNacA5kapeQoeJAoqkeRmZWcSNafEFXiezy/f9MU3c+ZGToj9eMijmqwhsmR88
+	874R94/4Y2fmZkXIyjHhGk0EGu4VumWFPq2C4AcQz5S4G998H9LerRQGVvfy5+MoaDjUOM
+	0lh99scZ9LoRuwjBo/0mWUhoNIZOsIk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775730804;
+	s=arc-20220608; t=1775730829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xOrV9v/5kxkZp0KXqbx4oj3rerkVpVOAiY3HoKygQhQ=;
-	b=Q4GnfcdPtHGVHSoQeIH8eVB3MR31o9APHQj43/PdAH33MCYck4avRDvxCgO4HPTksyDTEg
-	qvE71aG0p5fufzsl6Z9J/fOtLq8EMmzlEcIayDDfbTnSY4G4LQnQketJEw6HJ7bGKf9/tK
-	SXQWkguGaLFHFK7JZLUxr9iqp9Vrzi0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=POD5uUIZ;
-	spf=none (imf17.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=xOrV9v/5kxkZp0KXqbx4oj3rerkVpVOAiY3HoKygQhQ=; b=POD5uUIZoOTuiW6NvSJFl/al3v
-	kyctPd4Lx/snwwcr/OqX+VbUyglwKdUwj0ciLg9yugoI4LHruQFZ0D48BQQgUuklW0ooaVYdccQmQ
-	SGO9l9h1JN75E+YI9fSuGs0erYD8q6edi1YeGPneeukROmKLcaWVcM2XnMUcbx1oCb1aU9NaAjPbt
-	eCQ4d89Vu18CPNmDxRxBx+tr/ObTfbu6R1z1DWKcL2Y3Nz0t0a6oLjIb+fyqXCRWdVhy3g7OYOApk
-	JqtLIV99moAa5pGsv/M3k5JOrbWHa6IqpaTMG4tQ2iwZqOJcnkgkP9oxnLq94nMP1DTYcjC6E95tF
-	xpOa63EQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wAmhM-0098a8-2h;
-	Thu, 09 Apr 2026 10:33:21 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 09 Apr 2026 03:31:40 -0700
-Subject: [PATCH] kho: call kho_kexec_metadata_init() for both boot paths
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aCoI6i+DnPocxOUwqSH9KXFV1m27WvxSYZQ8ms3/tSs=;
+	b=Pt+aa+l+ElGF6RCN7cfBU8FjggxgFGuDYfRes3vkoY5LS/kVfZmrGdTHfkUmB6dK88lYAw
+	FZU0S27v0gQYRxKWh6Vqcgqp/I9pQredmC5/rcs7ZMXtI1E67X+NscveZ5c75UiT7MhZ/h
+	/joHDaqnEXnx/Uo0T8BMVELAxdHOQl8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C26A2600CB;
+	Thu,  9 Apr 2026 10:33:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B1CC19424;
+	Thu,  9 Apr 2026 10:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775730828;
+	bh=TNpoG6jI5tUlUTjT6ng/gxK0PSSrOAvTDidVFPbVzI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=orvo0MZx+9BgWSKdcdjIjZM78aRRqk52xsQRs/dx4vvzLle+gsk275Dc2SFF0l16c
+	 iXiyU6gWr5G+gjcSqa1AxqUl1CS06FnZyI50l/0f+ZoGS1AgwJrmfePzeyTpf+h+/L
+	 quTJs6pzboQRHwuZfUFx/RrVRnNsWwuWPXL75BficN9lewEnKvzx7aVpEON50Ssg6z
+	 3/ox1uad544T+pg543Lv/nByorHBIxlZmrW/RcM3vrxNXhgmpGpGemo5LVN4JD9uRz
+	 B7XyNXv6xVbmrCfNSxP7GAnQpRS5x7U60UxwASry2gvxTISV3rowKMPC13VMb9uByq
+	 z/qpI/Pm4z38Q==
+Date: Thu, 9 Apr 2026 13:33:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
+Message-ID: <adeAhYW-hJ7-6-Xy@kernel.org>
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <20260224051153.3150613-2-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-kho_fix_merge_issue-v1-1-710c84ceaa85@debian.org>
-X-B4-Tracking: v=1; b=H4sIAAuA12kC/yXMQQqDMBAF0KsMf20gihWbq0gJiY46LWrJ1CKId
- y/a5du8HcpJWOFoR+KvqCwzHOUZoR3DPLCRDo5Q2KKypb2b17j4XjY/cRrYi+rKpguxrqsYy5D
- fkBHeiXvZrrV5/K1rfHL7OSscxw+z/pjLdwAAAA==
-X-Change-ID: 20260409-kho_fix_merge_issue-dab886bb4a15
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, SeongJae Park <sj@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1854; i=leitao@debian.org;
- h=from:subject:message-id; bh=5TlKEPR92vw6WZwmmebWNqLJax06gARkdAVbmtTdh6M=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp14BtJdPwc3Hpzi3uZYw2/s/qlNiR0GbkZVNEi
- dueDjuqzMSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadeAbQAKCRA1o5Of/Hh3
- bco2D/9u05uwdj+Zbie+rIxz6AQMsA1kX0NaBwLKkxNj9ytJ9DyIXCbjq7jiDnQBplZD/5iQtIW
- 72teRKZHY3ubuCjx+uIA+cvy4Q8tGAFF7IGuuoxcCKfmHl212FOE7VrCv1gfEadMC38KuldqLFm
- S18mYegdvopvZ8sqiTt4f8owggEho98Aw4PNIDmw0ZMH0Ncrltt1Q9r41GCO/fO1krw4BbbaMnb
- 2USc3JZz/oCKTX4gIIQzH52AwFboEWYHnuH1WY+XSe/00pUuq1Z5rgaaPQAWPau2k/jz+oViwhF
- +Uv2uRgkBnyAF7AdUkTJQi6dOAmmoqQytIFtfRxHqdOOENgIbeoylRNVc38kPa6N5zfaJsQC/EX
- 8SQHQLFzCTG5ag92i1Tup6jMZIn4BND9lucvnOvWw04kDaqM6Rjp6n8ns8Tx1kQKXtcBw7Ell/u
- B6/Gv2uQxBFfaJwRW/qg+9XmhyT8IUvHFzpyd/C2VVzQnBUgq1WzYM1fIlAFJ59XYjCZBtiWtGm
- /JjsrcWr3WRNysn/zkzPIF/yspzBHoLSPwS2JS9TyGcyEsXeEP6pmOuMtlBYrpQ+k7Hry55zln6
- FFSJrtjH17appPImq9DT1f4jSNVkY7G3C1WmgY/9xVGRC6hxaLZGb4nPzuee6ayBSLXS3Jng7Fo
- dN8ZsreJPOFjWHg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224051153.3150613-2-anshuman.khandual@arm.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 541A380008
+X-Stat-Signature: pr5zzydctb4krm38m4r45owxh6d3i54w
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D36B840008
-X-Stat-Signature: ryrerur3zfsimrd8c3kstkrs3o1xz3ma
-X-HE-Tag: 1775730804-9642
-X-HE-Meta: U2FsdGVkX18gfHJOthxTCF0q60kqk7TM3M794o7vxVvYTSTTNtvxYyvrdENt1oDRlPmntQWsuLHFgqAkuaA+zkhlEnDwQf5WXkovQqfAWFJ2f5PMXTQsUOvCMJ4BJw2Xsm3TZVJTjYaa/57b1DPuk1GStDafcP67Sl6MQCRl9OMk2jdeDW5OFeXvu4y7WfkrS8uLdi+4GbwGRU0HpedupJpfnMyaO2uBynMlghqSIthXpwGGP0V3I2MMGgbVZM2p3cnGGExzYnSaCM3tW/PBcp+RuxPcG9cfkxoZQrYO3ea6CUeSyXKgrjB+doZynlFK5L1ffY2Q0Yr84LwT43T5PGhDa1OdwnahGWxgzdmBiW8FibF6ANZKA4HL24YbLG2u8qREYxRpaQtfBSN97bW8bOS01SqbpQkwo/J4Qo/CPSthpHXEaofr7VF45OGPy9oWDodPt7CKuj+G2epShQ8lQfuo4P7+ZzUKyqTLBbVyphJToXmB6A0DpPb8thEwLeMi0h/8Ku2DOX2hEmCc1QjSqFOFN8RoiiUOo97kXhu0ZXqkwcHevwZtR5ajZZO62TB6ItWjiK2Y4202qwGYbPT2BvKM0npKWFM3ynOuSmGCFMMq9GHs4eP3PKDYySkJgzDngW8AxgnGGJzlwUJYYI51GoCr3T3e4AUs3rTRWBoif9TaAbz8vIWa0LjGlkSOYxyCtKgFsePHfLryZMJE3ED8gAfYB1HFdTctziyDebrp8NF8vPyDfd49A9iX+aJ5HngkGQuwJ4YHcGbVPPTZmEWddjNto4X54lnHsAUJhBaa/CeUj7IYWidFGFav9AwUGT8Vq/6/mC8XgBUHizYsezgPlDkpzdUvMJRalBhgJ6PEvWn1YmfLOyl63q9SStBl39d+qKNNhxBwBUQRiiGAhKqrxpIQ9CsIWNGzsnGaSh5Tc85hy43UxdrTgnvIA4hnieSb0IHnmIqygnrJTQftjfe
- qFmWkSyI
- 30ICngzu8wUk5QowXSVA7FeRMFh+PnhztylvShXQIhd2Cs9wZfMGboDCJxYuZvnxvRqx9V6q44GrnCSsIzfm1IRZ3H92dT0d1TdD148zG264UzB2XMamHAvbXHrbwh+PY47oLgukBnKTnXoZ58DNwJQicC5qyX5rjIxWTd89CltIwjcKJDYnbUXF/TWqqSuMZPpQfXgnOFM5MlRJSGqQnq763dhUZflNXk5l+
+X-HE-Tag: 1775730829-796297
+X-HE-Meta: U2FsdGVkX19edPOVaLr4YeY5vbiUczu5PsHOyVn76o6ndBfdHEN/OJ1GKkR56SKnjG+skVyHNlCRXVbJoCwlwFC7wandwkiAiM5mhLmpOV9u9uHx2URw93bbJNs7OY5x8A0lXxc3e1BJ5YH9Y4PY17UxWMF8afzyxxT2ae+0xb252KCPgEpwaDkAbRttZSXWeOkf8q/LMapj3ITQdM9CTEP7Rw2SG3DIbAdayTSUkoodsx2Oj9c6emWGa5J+klGm9teIGhAUkTYU6Dc9PiAa8+xvTcKIA/CPJNAmvzADQNDOeHQrLqy1qVDP6KeeyBjEG7GZK8NGObc4i5GlwzbFDnyDJIGQm9vvjZg2zqOoD5muUQdf1Tx06J34Qm8iyz8t6Ha7x1CBB71HB8SNkUkRiSOBQQ83Hv/LzOx3zTQ4qtlheg1miImHyqDI99VTfLTNSqS4e1V6BnSyggtsDG7ouAi6nhqV2pYVH1dWy58lDRYU2Fej7Zfque+n7DgrAoW4vJKs4+04nsLZwivGq4XeXlJI1U5j7D2Z0H++FvKr2zBzetg2f8wo2ApMZPtkG97RXOHRu8w8KpRvU1I0P3wZelG8pQmlrI7sXnW9thYDtU4PfHLZZJ/7R8yN1GPUO8Q6CpZyNEfGtle48nKuteH4hovGo8dbmBgeqMEQevJJ8AV2mMWBCNJuAY2NvhyITzljgE1ONw+cCmEWmMLTG36uVLtBbM6T77mXgFrh/GKeOJp6UJmWkAKRprk5di34eMsMoHcq5IQiqJnPFStNtYz3gVGiTMfIQ4usItO4gUO/sOAGnuivKZWYBK76ZIpSUImqi/MkJAZpgSqXRLtk0ScZmMmXACVEKFcSiOOs5Yxfqobu47ZNsqTZgpJsFoXy8t5/wDJ4EmBrlEKgvYSuXC8BmwpXIHb5dLWF27Pl5bw9R6GRmMCDIVHX7iTzp2n/64lF7oBpjziw844coV3wG/3
+ KzIbO/99
+ ZJJCD4XwR+FxnV20nOaPUmYOw+Ocdh/vcSLA5KscL6GY4K94XbrSvtTeohsX5aADZ2fLeUXRXNDoGB61JaLEObX1ujjIjMWq7eMoqjak1Ot0IpUbEs5KuAtALnjiq/B5s8r1/xvRAkXQpbQ7EirTLY4dlZ1aJHr5HiredQBlNM/qPU3qYbAlpj9jPQy4TsapgCL3HSK3a9NkKDy1ONxp6/84TFa1JRRJ4DJ3IiWN+fy8xjgF0hMGfSLzHB0rWQu0Ld8z8qLQlISBNEWz+JOgTCZ8Lh5JLt7wyLcUyz1EbO1HIcEcvcZGT9hLwqn/x1sP22OZCrGK76czKXvPTBcuer11IWwoAqfa6q1XtMEoSfMqKbDv9Ga5pJ+wl3SK8AOdZsdYO53/rZhpJfSDRt8+n57jO+4NwsVU5C7Fwt3CCGamTj9GHmeEwJ1vV+kItvT0+zWNBnlM4gaO+tMc4La+0PXcKWcW2Z2kAfGUbNY7o0JQDw7BXuZgJPCXh3RtAi86ePy31GhWY1odz0vM55uKa3CJYa3BMDTV5F8NxY0w4Yl1Vs0hPSPRRksHIyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,57 +98,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kho_kexec_metadata_init() was placed after the fdt check, causing it to
-run only on the fresh boot path (no incoming FDT) and skipping metadata
-initialization on the KHO restore path.
+Hi Anshuman,
 
-The original patch[1] was based on commit 5c9e55fecf93658 ("Add linux-next
-specific files for 20260312"), which included commit d7176a010afce8
-("kho: fix deferred init of kho scratch"). That commit has since been
-rebased and reworked in linux-next, changing the code flow so that
-kho_kexec_metadata_init() is no longer reached on the restore path.
+On Tue, Feb 24, 2026 at 10:41:38AM +0530, Anshuman Khandual wrote:
+> Ahead of adding support for D128 pgtables, refactor places that print
+> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
+> macro to prepare the argument(s). When using D128 pgtables in future,
+> we can simply redefine __PRIpte and __PTIpte_args().
+> 
+> Besides there is also an assumption about pxd_val() being always capped
+> at 'unsigned long long' size but that will not work for D128 pgtables.
+> Just increase its size to u128 if the compiler supports via a separate
+> data type pxdval_t which also defaults to existing 'unsigned long long'.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  include/linux/pgtable.h |  5 +++++
+>  mm/memory.c             | 29 +++++++++++++++++++----------
+>  2 files changed, 24 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index a50df42a893f..da17139a1279 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -17,6 +17,11 @@
+>  #include <asm-generic/pgtable_uffd.h>
+>  #include <linux/page_table_check.h>
+>  
+> +#ifndef __PRIpte
+> +#define __PRIpte		"016llx"
+> +#define __PRIpte_args(val)	((u64)val)
+> +#endif
+> +
+>  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
+>  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
+>  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 07778814b4a8..cfc3077fc52f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
+>  	return false;
+>  }
+>  
+> +#ifdef __SIZEOF_INT128__
+> +	typedef u128 pxdval_t;
 
-Fix this by moving the call before the fdt check so it runs regardless
-of whether an incoming FDT is present.
+I don't think the typedef should be indented.
 
-Link: https://lore.kernel.org/all/20260309-kho-v8-5-c3abcf4ac750@debian.org/ [1]
-Fixes: 047117e78331a ("kho: kexec-metadata: track previous kernel chain")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- kernel/liveupdate/kexec_handover.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> +#else
+> +	typedef unsigned long long pxdval_t;
+> +#endif
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 5e8206235d99e..94762de1fe5f0 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1519,15 +1519,15 @@ static __init int kho_init(void)
- 	if (err)
- 		goto err_free_fdt;
- 
-+	err = kho_kexec_metadata_init(fdt);
-+	if (err)
-+		goto err_free_fdt;
-+
- 	if (fdt) {
- 		kho_in_debugfs_init(&kho_in.dbg, fdt);
- 		return 0;
- 	}
- 
--	err = kho_kexec_metadata_init(fdt);
--	if (err)
--		goto err_free_fdt;
--
- 	for (int i = 0; i < kho_scratch_cnt; i++) {
- 		unsigned long base_pfn = PHYS_PFN(kho_scratch[i].addr);
- 		unsigned long count = kho_scratch[i].size >> PAGE_SHIFT;
+Don't we want this in, say, include/linux/pgtable.h?
 
----
-base-commit: db7efce4ae23ad5e42f5f55428f529ff62b86fab
-change-id: 20260409-kho_fix_merge_issue-dab886bb4a15
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+Sincerely yours,
+Mike.
 
