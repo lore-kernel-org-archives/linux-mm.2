@@ -4,95 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B0DF364A0
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 17:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DE5FF364A4
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 17:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DBA66B0005; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
+	id E32246B008A; Thu,  9 Apr 2026 13:03:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68C736B0088; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
+	id DE2B86B008C; Thu,  9 Apr 2026 13:03:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B2B6B008A; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
+	id CD1956B0092; Thu,  9 Apr 2026 13:03:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 427AA6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:01:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D76C61A08D7
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:01:10 +0000 (UTC)
-X-FDA: 84639632700.06.8787CE6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0B43A100026
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:01:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hw8QJZXj;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hw8QJZXj;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775754069; a=rsa-sha256;
-	cv=none;
-	b=nVH+D+EoIAPsg37oLvKS+YUDFgnsjUwZWw6EhF5DLST6bmauKErt816gIOzyyHE9FlXE9b
-	1MmKYNkKQU/qiYS5nTT7wdh1/Sk1SUjMdmMRPUxfOk4DKrB0R/zYV+oQ79fnRSusTSizkj
-	kPR2fK92ZZZfQeZ0qA3pTdlYs0FR6z4=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B9C8D6B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 13:03:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 056B813BCAC
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:03:28 +0000 (UTC)
+X-FDA: 84639638496.15.BD68237
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 26D3A40016
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 17:03:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hTRlqvo5;
+	spf=pass (imf07.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775754069;
+	s=arc-20220608; t=1775754206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Xp1yAyByb+meT+jdfJQgxP+Q+P6R1SDArB30IHs2tM=;
-	b=zbNLm2IDQgpIOcVCoS8EyrwCBcZtFAAG09mxIwUZWiMpz89ex6/vg5L2gEkYbptfESb+0T
-	iHcR5+BEEHinkalMD0ozdRb1ICjlFVc8aSNbJQo+f5nxJGjBqIv1FBLwGTvRBC0MGmvH6e
-	DofKc2OAAwmCeLx+xgkgkeVkljTXGNo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32E2360103;
-	Thu,  9 Apr 2026 17:01:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EF1C4CEF7;
-	Thu,  9 Apr 2026 17:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775754067;
-	bh=vpM1p9ulFwkMeX6amQbAGlMHW7aiCUgASpTF7AU0vA0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Hw8QJZXjTX2OaAUte2QPQNb/SI5CU8gtmzAs5q1zKUAa9jrkl780bwqp5a+Rm2+jY
-	 TQS9ynebRxWSpO+4XyYObpmh8Iy6ywSsdXQH+ixBm2HZugeubmwNKDfyb9+xpvXIVe
-	 wtXVBuvFscwu6I2i/O7ItLjUrsAAia9QQs8zR50365kJ12ie3RQ/knWQcYWeuoU8bO
-	 gOVNIlwMk6X4Ie4k7X1CSa3vnZBXgoZD0zYvUaG1mqKzGyawxfUW50B11oWfnW/oDd
-	 vywsyo6MjEzmeoRZNjRWBHQ5kuPmT5GjTGSNYyPIV6JdAv14rCmCv9zEgEWEEOnlzN
-	 fXEEoS8OsPcUw==
-Message-ID: <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
-Date: Thu, 9 Apr 2026 19:01:01 +0200
+	bh=VlbtUK11ejlh+AbZO79lglXrLZbQabCI4s+8sUt4k7s=;
+	b=Bk8vcaZpPZ1y91WnJoyBbOPCOXnTznM7PWerphdKxAxITV0+BoDiA6TbUDi31x96TmT1Fj
+	O/0cpoiIhjdm9J+ezTD148jfmD1oUDHY5prxdR5ExI8HEBFLZ6MfNlCAeTkR45Lik3r0sp
+	VhxgHINFCBwQjbaFaF0xO+w9kpIUkR4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hTRlqvo5;
+	spf=pass (imf07.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775754206; a=rsa-sha256;
+	cv=none;
+	b=h7VQjI7Siho4narksRSZUCKtokAnwfHVZkQkDsTQtaFdLZLyI/SbCeNwVMkZxzKq2/Vm/S
+	EY9HSdra8eGsK/hfnXg4PqYS6Q96+tz2vAj9aT1iB8sz7lhLna484yAYIaeKCAdeV1zzel
+	WHunG2iSiAUeX+o5rYwNh2CvN1z13yo=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aae146b604so8518795ad.3
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 10:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775754205; x=1776359005; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VlbtUK11ejlh+AbZO79lglXrLZbQabCI4s+8sUt4k7s=;
+        b=hTRlqvo5WGy5Gg22T9F55gOU9FVXO+ym+btQB+HRTk3ouGUXzqyDoiVbm9r3wIFTkk
+         rxy5QQk/R0k/n3qi+UBSrPfQT9YOZFTVIr0DtYU1+/69Ge+3kk3WB2ldBccPPrhYvt9a
+         HAKg+5fRkFUp1clgYUFfLE3w+5BTkuFZOxCYNHVlzUmrQiZFJgp7mLoWr48ysP0gADpL
+         /QMxWZAORwFl0QvvPIGjRaYtjsuFHn7ba7ztJbKuHmFwzOfrdEIyJKgLLILOdYGqBO7H
+         y1Gk142qHZArC/F3uuyCHq10UrgILMUIdidH1BGlwiSprcL/5vtfyVk4O7/FH2sHTZi3
+         FoGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775754205; x=1776359005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VlbtUK11ejlh+AbZO79lglXrLZbQabCI4s+8sUt4k7s=;
+        b=PchSB5kcr52WBzAcOrmg2su55TBOSJVWXJS5O5ABqocS+8aIEbtXWSvYErkQ4fXc7p
+         JlthnIukpBcb9SU6fF4UDKbH36FQE5LUNGLIfjWTw8knxsnkGwKufzlrvnNo8dRj4b2y
+         yB/vGAx50oWSKmHxdvOAlGNAhzqPjrA+2eXCWDi+Bwlj8TdrK+J8E420GUqTh5kdWDxr
+         y9BI3SlrECG/pL/ehZs9EVX/fB7GdWqrRIT8lCaS69GIx81Yp66/2NC38+BcS3ZbMEeC
+         GrDnF4IA649gc4n9AEOnYXatCky65IYXnKS1Gbs9piiVaHPCxcXBRumXPyJ5MjlQ5zYF
+         UDZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV76J7b4sR14vMauM9ppvPi0AtUcQscn9IROUKClZqyfGYVL17Ue9KSBfp7fiR39VxsfdhGpN41AQ==@kvack.org
+X-Gm-Message-State: AOJu0YzWax3TFGSZeBx1c14MlyGKE1s99DwIExMnQJ4ybdEwjE7uuqQ+
+	yOfRNYpWRTr3TtoDLeaN/X3qaB30NyIulz4g8Qf0p2ArPM3P2hzW6ycv
+X-Gm-Gg: AeBDiese2SIHfjzENv9HcX3IwlVrNFLkl6UYWwSPoO8Was9pF5Cr9wkF+O2wR6YmBbk
+	lcxvS8vgN/CzI/z7eexWOGHFfclpEK8LkBM6rpTu9/iBOknPyREjALq4SUXsdqrU6UYgI/dKgRn
+	ZM5SySrNF0bX4wG/W//6aZldiFCObdGNUnvU55txNor53W6PqF3gR8ePN1pNwXeKyiRxDKS3Rlb
+	R7ehilR+sUWTaOZnHei/qfmtLnMOgajPJif9pnXF3vA+Wx+qICILl7gO07xq0sYycwrHsu1zPGX
+	Q8eHQiDr6Plt+ASCUGxQiu6mMRmc9ZbUHdXKeMxnsFF2TI78E9oiOcG2Zek22foh1Dq79Vs5ygO
+	PdFyx+uYZJXh7/VBE/RaP7qZ/JJBN7LeuD/a+hw0kdqIwzNEeANY4dWwliabw4xWAXOxmyxOo/K
+	49CoFjwRrJIzYYbMzw/Bvx6cCg20QKb1PdiQ==
+X-Received: by 2002:a17:903:1ac3:b0:2b0:62dd:3a80 with SMTP id d9443c01a7336-2b281868e69mr284863465ad.17.1775754203306;
+        Thu, 09 Apr 2026 10:03:23 -0700 (PDT)
+Received: from google.com ([118.150.148.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f27048sm554505ad.62.2026.04.09.10.03.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 10:03:22 -0700 (PDT)
+Date: Fri, 10 Apr 2026 01:03:19 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Joonwon Kang <joonwonkang@google.com>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, dodam@google.com
+Subject: Re: [PATCH v2] percpu: Fix hint invariant breakage
+Message-ID: <adfb1wrzJjuqHEuA@google.com>
+References: <20260408100642.83919-1-joonwonkang@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
- vmstat_update
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>,
- Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
- shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0B43A100026
-X-Stat-Signature: 3itrmo7dhf9jdym1q459977gxqmr53ja
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408100642.83919-1-joonwonkang@google.com>
+X-Rspamd-Queue-Id: 26D3A40016
+X-Stat-Signature: tgy8hmgisqzchgmhpto7b18sxdmr6ccy
 X-Rspam-User: 
-X-HE-Tag: 1775754068-220892
-X-HE-Meta: U2FsdGVkX1/FKs8BEFFuLQxHvN4ZFLMM+zBuuMRk/LujAvjJDMM4FrkWuBgJK73v3v/JmqEGchFiSW9JQdIIx5JNWYcVS64WRt8pZk2U+T96IeVmy/VjmvGTM23GAV5pFMGxlrtcvygwTIw7NMGWwOYzZQZNdEQjnx852ZBaqwTCHoyYUYHp/KiS9DLIKCDt9zqFzQ1O1GFcJ63sFoQH6UHLJDVLrJGN8F5R4hiwsOKU4XY52/9aMyt30bZhk+HR5Bwt+/mW0168HrvqkosngLQfHYUiHKwgwAsp+yzwRkiEZZM2epp3tZvpCYD4EqMEzMuaV9IRshRGrxGZK71gX0+EQvuYjCVRmO7zF7Ae6AEJqsLbqZd6TQ0W54Aa16YamQwnZzyzzHxxiCAFsTR5EreMpgFuq4Er10J5XCI2CdQfiYaD8unBi8P1Lt+/GedvtfSC39SV5JeXSlWQioKl5oGdLxnWi2Q6QUyRnBcOjghUagTPJ0Ug57flggfajdoVdSfM1hTFr8EgfwZsTewkrFbfNCQDDn04+5efjQ0dqf0Zs2RDD99zou8JeO4+4yMuhcMwxb4BJLkMEo6RwzBAHAkkmAXAzLhDSBtRZuJgH4sQXeuryOBVqCfLZNE8bDT3yzqTmg3ntI0xRIfSGh9TukfJ2zWkqfFkgvR7PfJxIAZTvSn5d6wKF8yLX/B/sH9qMNs10GYKSURniISSC6YtztG/3rw15ViLxqc1aMyH0CBRd6mPD6TtpBDb4pKa5yO20LEL7cmmDqMb5fj3QUkRsKHjt0O8/OHmIUHhjxupWTMpvBZw+8TMDC/rgCppl28WLFe7En6xV+Xc9KEIcYuhRaWw3BHhpupEn0VYuIxAFj5l3zrgeHmRFit2AaoIITiN5z/YorCwDNixgmUotTCSMiobE0zF5XUR/AcKmpHbjGZSCth2dJGz8+qyYmewbgE9X2S7nxyYxQ2saSaXpLG
- E8/zo7DK
- y3WJzCVIrNN/jgXC9zEqBQlQOAGqWESzm9cEThcMPGvxGMIBA9wdVK3tCX+gdNzdy3umvOeF6CPbt1dNnXKa5t9x8giFlNWDN+enTM9WAs1Cso7ZXSjO/tYCECLIOz4VICIb0dbWZv5jnLXQZm/YqT85AIKxPKyf5umgUfwOMvAQvAU7LWxNFUia9DPYBYdQeCaoaakDFLK09y+6XHW0MQxVCgi0FyVNJDQdvues/i7EIVR6NruQdXnIig4602lJ4/Hq5qgybJMXQ+mhQI1u0AWxTgEaRGXJjct1p3oUt+/nz7Vo8pON1Wqi6xQAfUPET+irvBYmXh50PDMRXGhr06z3gtudhZL5yjVhntilJpdsrOBttmElvZUiWfg8ELhxQ9DODOyFaTRbS05GyPrgNYpJX5yWFZavWia3EsHhcVfY5d35hKVCSCX2Gh+XlSvDUkhdtjPJ4HUmOlW6ySccjtxZnxwWZ9I9ecUghmBjvciYBkkt3KZK4dEHmGy2ZexA8M6hkScRt5Jh0Y7E=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775754205-93968
+X-HE-Meta: U2FsdGVkX1+9rK8DUnm22pilTr8fogc3Ko8nf+hS3eXdIzg+tGZPzSYAFeS4OEfwdH1yQAlI7ZtlrX574baJVlv60zFiB9qeGe/nolyzHXRdbZPjazQjx3YMTCHphYOExSAKmJ6W4byrZnM8v//GbzhKIY2WO46UCB/bGtKzOUch7CCooyiEf3TaejvkVc/Y4SI7tF8X5R6dWbBZIClj2Htkr4iqKUvaxSKYmSnVFKoMGo1I9zGvAFTwj03U8vZIynFPVpWSfkYVrTm0AENdGuqwnF6agwn+/GsOatpMTwBkL7H9GZ9mbcWnlMGQifcGpgr9qpqpMf5E484Szv5tJEL9voIbzJITZ50T1JknWN0MobX3/njn8f/qEQ92k3CKXlb1POMEnCMHCROYptj7OOpy/FJHf+qcuifF8AL6ggTwUcv2tDMwsLP1U0v9XWAhTAQqgWXDAByZNDTPylZixS1jlykzjqeD7xXO3zBuj+5xVEzYppM+FyXXWORFWexMI7gn5WjEahegO6Vkmi/xtWan0qx4eeVbbVrztu/OuluAwTvU9dt0ne8naEg8ly6yWEX389izg9M6Lq8vMpQG2+CQbnIsZfOTs24urFZsL3vNEGlexW2+WDqbeYFsZ40yrHVExFDNJ8OTswhP4nMe+gzhVP1LIp9LDDFxV0zLoNEeWyooQK8hgjMSJNcWciE3bATaH1nFrfo8ZmsXgw585LWbUGQo2cCc6hLHpC9qgvpRQJgqDYzGuQtgwbmoMfaFHFiII37gJj/sq3VqSembXDvam6w4snBEDAr69i5Qc4NTU5BXdsLhs3FtrLB9PtD1Am/n8Hx84L+op4+J0DtvcGb1bA1jml5kjeX4xJ8n0j88MoQ1dffJueTWyKqrr0C7zFNcLEiqkIvqhTzYgaiIQfOz1/sr4loaND6ctXLCnaHJgmxA5c+R9hZI9dIJkVfjvLMDxQVpX9fIVCcPtrw
+ tUWcsGSJ
+ GnJLfbxWtvR7RRyc4RoANylyAvRtWEv+ytkaJy4YmrhStDI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,91 +117,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 14:26, Breno Leitao wrote:
-> vmstat_shepherd uses delayed_work_pending() to check whether
-> vmstat_update is already scheduled for a given CPU before queuing it.
-> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
-> which is cleared the moment a worker thread picks up the work to
-> execute it.
-> 
-> This means that while vmstat_update is actively running on a CPU,
-> delayed_work_pending() returns false. If need_update() also returns
-> true at that point (per-cpu counters not yet zeroed mid-flush), the
-> shepherd queues a second invocation with delay=0, causing vmstat_update
-> to run again immediately after finishing.
-> 
-> On a 72-CPU system this race is readily observable: before the fix,
-> many CPUs show invocation gaps well below 500 jiffies (the minimum
-> round_jiffies_relative() can produce), with the most extreme cases
-> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
-> 
-> Fix this by replacing delayed_work_pending() with work_busy(), which
-> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
-> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
-> now correctly skips a CPU in all busy states.
-> 
-> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
-> The remaining early invocations have gaps in the 700–999 jiffie range,
-> attributable to round_jiffies_relative() aligning to a nearer
-> jiffie-second boundary rather than to this race.
-> 
-> Each spurious vmstat_update invocation has a measurable side effect:
-> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
-> drains idle per-CPU pages back to the buddy allocator via
-> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
-> the double-scheduling therefore reduces zone lock contention directly.
-> On a 72-CPU stress-ng workload measured with perf lock contention:
-> 
->   free_pcppages_bulk contention count:  ~55% reduction
->   free_pcppages_bulk total wait time:   ~57% reduction
->   free_pcppages_bulk max wait time:     ~47% reduction
-> 
-> Note: work_busy() is inherently racy—between the check and the
-> subsequent queue_delayed_work_on() call, vmstat_update can finish
-> execution, leaving the work neither pending nor running. In that
-> narrow window the shepherd can still queue a second invocation.
-> After the fix, this residual race is rare and produces only occasional
-> small gaps, a significant improvement over the systematic
-> double-scheduling seen with delayed_work_pending().
-> 
-> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Hi Joonwon,
 
-Looks like v2 posting raced with Dmitry adding R-b tag to the posting in v1
-thread:
-
-https://lore.kernel.org/all/adebKQaiAP4G3liv@shell.ilvokhin.com/
-
+On Wed, Apr 08, 2026 at 10:06:42AM +0000, Joonwon Kang wrote:
+> The invariant "scan_hint_start > contig_hint_start if and only if
+> scan_hint == contig_hint" should be kept for hint management. However,
+> it could be broken in some cases:
+> 
+>   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
+>     scan_hint_start < new contig start) && the new contig is to become a
+>     new contig_hint due to its better alignment, then scan_hint should
+>     be invalidated instead of keeping the old value.
+> 
+>   - if (new contig == contig_hint > scan_hint) && (new contig start <
+>     contig_hint_start) && the new contig is not to become a new
+>     contig_hint, then scan_hint should be not updated to the new contig.
+> 
+> This commit refactors the percpu block update code to make it more
+> visible on what to consider, e.g. when the new contig overlaps with the
+> old contig_hint or scan_hint, fixes the invariant breakage and also
+> optimizes scan_hint further. Some of the optimization cases when no
+> overlap occurs are:
+> 
+>   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
+>     contig start < contig_hint_start), then keep scan_hint instead of
+>     invalidating it.
+> 
+>   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
+>     new contig start < scan_hint_start), then update scan_hint to the
+>     old contig_hint instead of invalidating it.
+> 
+>   - if (new contig == contig_hint > scan_hint) && (new contig start <
+>     contig_hint_start) && the new contig is to become a new contig_hint
+>     due to its better alignment, then update scan_hint to the old
+>     contig_hint instead of invalidating or keeping it.
+> 
+> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
 > ---
-> Changes in v2:
-> - Instead of changing the timings, do not double-schedule.
-> - Link to v1: https://patch.msgid.link/20260401-vmstat-v1-1-b68ce4a35055@debian.org
-> ---
->  mm/vmstat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v1 -> v2: Consider cases where the new contig overlaps with the existing
+>   contig_hint or scan_hint.
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd6..cc5fdc0d0f298 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2139,7 +2139,7 @@ static void vmstat_shepherd(struct work_struct *w)
->  			if (cpu_is_isolated(cpu))
->  				continue;
->  
-> -			if (!delayed_work_pending(dw) && need_update(cpu))
-> +			if (!work_busy(&dw->work) && need_update(cpu))
->  				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
->  		}
->  
-> 
-> ---
-> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
-> change-id: 20260401-vmstat-048e0feaf344
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
+>  mm/percpu.c | 124 +++++++++++++++++++++++++++++++++++-----------------
+>  1 file changed, 85 insertions(+), 39 deletions(-)
 > 
 
+Just a few minor style nits; checkpatch.pl reported the following:
+
+CHECK: Lines should not end with a '('
+#173: FILE: mm/percpu.c:653:
++       overlap_with_contig_hint = pcpu_region_overlap(
+
+CHECK: Unnecessary parentheses around 'scan_hint_cand_2 > scan_hint_cand_1'
+#258: FILE: mm/percpu.c:699:
++       if ((scan_hint_cand_2 > scan_hint_cand_1) ||
++           (scan_hint_cand_2 == scan_hint_cand_1 &&
++            scan_hint_cand_2_start > scan_hint_cand_1_start)) {
+
+Since this patch will need a respin anyway, I think it would be better
+to address these together in the next version.
+
+Regards,
+Kuan-Wei
 
