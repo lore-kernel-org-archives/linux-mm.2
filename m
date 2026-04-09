@@ -4,155 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC1D6F364AF
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 19:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2935BF364AF
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 19:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C062A6B0005; Thu,  9 Apr 2026 15:06:55 -0400 (EDT)
+	id 0CA5F6B0005; Thu,  9 Apr 2026 15:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6E16B0089; Thu,  9 Apr 2026 15:06:55 -0400 (EDT)
+	id 0A2686B0089; Thu,  9 Apr 2026 15:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7E736B008A; Thu,  9 Apr 2026 15:06:55 -0400 (EDT)
+	id EFA5A6B008A; Thu,  9 Apr 2026 15:41:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 955FF6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:06:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 469D0E09DD
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:06:55 +0000 (UTC)
-X-FDA: 84639949590.03.0CEFC5F
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9C46712000E
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:06:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=SHkTUWBV;
-	spf=pass (imf29.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DDB1A6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:41:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 781A9B6B35
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:41:18 +0000 (UTC)
+X-FDA: 84640036236.19.E845B04
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 40A5780013
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:41:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="JUwRa/wE";
+	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775761612;
+	s=arc-20220608; t=1775763676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0TE3BpM0SejjMSyXXnavLwv4WumjR4yqmxJerJDH+M=;
-	b=zcFJUTHLd2QWsq+XqH6LbmJbNQ9RqaKhQhh5LwZigjo6u/Mx+6VfuwSaVY66gQrY+6iIIC
-	xai030JpLv2tZZ8Y4cf7hxlPc0sFgF3z9m0/LVcAgiVn7kQ0Gvc0uVY/it8wiWgZAEBcOf
-	ANUllUyxrIFeEv1EK5D9AMfe04hOQTs=
+	bh=ge1b1xcWybylA8rGPuIV1asvwgEzJw2EpZ+7Ph4FvfI=;
+	b=p7nn5EznAJtF13c1aPCgiCv+7ZwZRXh6fV7YovNvNLR/YB/WsuYjs7MUQGL/o8uNB8Lefx
+	0Hsl3J9vjoxDnzFz82HEP15ywm0twzEoFK7/pk2vPH6h++Z/NKE49cO+U1XWbuPN1kdDoh
+	Bef/1PnsMdCtc5Jbk/lorCM8AXB3HJ4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=SHkTUWBV;
-	spf=pass (imf29.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775761612; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="JUwRa/wE";
+	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775763676; a=rsa-sha256;
 	cv=none;
-	b=AN049fya3aUw+elTh6ClEab320Z4X4RDwZ+RI/pWkLgEkGEycd+4YXK+GJt92l6qD8Ebnm
-	Y/0mTu7TMv9B7kkmlFkVukjKesc2zNjfF3XjTLNCE1bvb4ibgBbZvDsNkNgb3WjWRg9vwQ
-	LPGptDaG8Npw/Jtt9FA3BASEgnxzhGM=
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639Iu0pr502676
-	for <linux-mm@kvack.org>; Thu, 9 Apr 2026 15:06:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=X0TE
-	3BpM0SejjMSyXXnavLwv4WumjR4yqmxJerJDH+M=; b=SHkTUWBVb5JV+5wswx/3
-	fv3VdJgOn6EtZ9VVGJlmI/22efGQJpycDNew19wu+FXgt7Za/gyUhXJJMlSUYAPC
-	29HU3fCO9N88R9N5oxKVh12v49IMAzQ2ew+abamYRLUaNbyZTDGuZKwVmD2GUWjK
-	c61x1PU925wali6CMgdXbOXu6Y8+8a3ro2C664uFJUBjm8WCYRkOEumIrCIQm9b5
-	RXZIUcycY+g0+4EB2yt/rCBNQcYA28a5aWplv/gv+Qvosr3aC7DvRDl8mT+j24cT
-	fpTLl9x8pJbu0ndQochguTkPSfsZ7eqjuVURAQ/IRf1T/QZlRt7fR5cxBARE+yQS
-	KQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4ded1gk43n-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 09 Apr 2026 15:06:51 -0400 (EDT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50d984c74a8so32490111cf.1
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 12:06:51 -0700 (PDT)
+	b=dqQo2fnu5ulJDzo4VzNITA78PnLKdSFXt6djkOOEQb0JtaZ0Kl5unS29DeTDKk9jIY9uiE
+	LXVv7McIK9fYArZkt6AdtPA4J1Y1uCPoWmQwoZ2iie8w9wWSoc/Mxd7xIL3mv2znKUP74S
+	KrRS0sIoJIy+ZLTbobDOTENpJEeqN0U=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cfbd17589so916336f8f.0
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 12:41:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775763674; x=1776368474; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ge1b1xcWybylA8rGPuIV1asvwgEzJw2EpZ+7Ph4FvfI=;
+        b=JUwRa/wEYjaSID9SM+bbL8ztKbotWdkIH4t3nK4NMyIpuaudh/GQDR/920bDlIYklB
+         sCFnAqz6XVwEMsaATvSOVbC6bLD1h+g7rUP75mgmfppaUQkOU54s/yyKHNiaHVAjVPmL
+         1+uNfbMfGILInSkV1VkXd/KC/DNKLZtBCXMPoPCTN6EOJGTHPbY7QbJ1IfdLFkXwQfjX
+         +kCzJbVwqqWq+61faBs1d9R+AnuPNTwduBsKRt4nlHwfYtsK3wI2YvYsblKAP7/4ukNA
+         OdsvN/qJNkK+Zoau3+XvgLBXMdqSj1GDn6PX6N4pIyLPiIcecwvnk1LIUvU+5yNaX9pV
+         o7Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775761610; x=1776366410;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X0TE3BpM0SejjMSyXXnavLwv4WumjR4yqmxJerJDH+M=;
-        b=tF4B7+xx5eHxU/IOXz2cJrPYG+8g/crNrrDjZFGEZzb5Ni3a3SWFanNKexi8V/Wnqp
-         p+uk0Df2LubH7PtSGdq0LhLuoggh2JhRoJZAjWlrjtbtBfvD4cRhkr/2KNrN7jschNXy
-         +eb9CWxV49q/vKjQGsYOZ5TI+huwsNhY+GhOCc36IxGfOpRehd16ThHWFtenujOtUaK8
-         mnfz5cBQH+NPm224OpnsF/kFbkJEOpN+enPlL64pt0AK9ayYxTOZailjQsL/sMGEKFT0
-         AKuRxwF8OheqRbLeUs6ESuiDf05iFAooH5fRs9abLdmEy1IGBzSOFgnAx4w8snnCoVQn
-         tuZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDLmMdP3qXeZnP1x5hYr3Ct+piCQw1sW/6thAKZKnbG4y9JXVRStlnu7zOeD9BCY/0zwRu0G+Bkw==@kvack.org
-X-Gm-Message-State: AOJu0YyzSoaog0hs79DSexMxX8YlsW8N/PFry7mL5DITI4v1LqHjXY0h
-	Yu8GA1l2RfLOjW6TkjRpxVV4plIZIOcE4brwnoNym55H+6iSLfpXf9O25XBJV0J/SNjHBqnDgO0
-	uw0YXt4/y3LRUgRvPiSPYLJulqswaNnXyPi2MgoOmeXxdFWCk
-X-Gm-Gg: AeBDiev+/hfTlwhLsrdrdUXl9iMlk2xs/tjRyXXqfkSmeeY8sI/pteYnVpTBiV8cV5u
-	1WcUPY7Dm2uDqvrbAEu7sC9Fj30eCcEs4rCYD+m8sXlNqp8GBjRvdGNd/bmXERcOzk93TmsYFal
-	GEcrIL8gmZm+8BRNEJIkkSJp3QVYU1C/CdCg+rLCxaNzDyJqCjv2J0DGn5GtJN/GTblKvRwqksB
-	VyyAuAoNM45v+ltLwxw3EDV0gzezak2kQg9kMU+wfgFYchrrVBM8VDowF+NUHu3GVwi82pV8Qel
-	/6Ykdc4MOPbNF5qPkphi1wjGA+LAsr7hpixg3USD6WTWR7aUkWGG+PZxSjcLm5eqmkcDpfdXI4w
-	1EvX59Kptu6DH46BHLSe/rxWtT0+AxAKcO+vkQVpI
-X-Received: by 2002:a05:620a:4453:b0:8cf:d441:c7c0 with SMTP id af79cd13be357-8ddcefc12bbmr8529185a.34.1775761610143;
-        Thu, 09 Apr 2026 12:06:50 -0700 (PDT)
-X-Received: by 2002:a05:620a:4453:b0:8cf:d441:c7c0 with SMTP id af79cd13be357-8ddcefc12bbmr8523385a.34.1775761609626;
-        Thu, 09 Apr 2026 12:06:49 -0700 (PDT)
-Received: from [10.206.71.59] ([129.236.231.31])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb6949954sm23897685a.21.2026.04.09.12.06.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 12:06:49 -0700 (PDT)
-Message-ID: <2cdaa767-c071-4e84-b9d7-1c944407f5bb@columbia.edu>
-Date: Thu, 9 Apr 2026 15:06:47 -0400
+        d=1e100.net; s=20251104; t=1775763674; x=1776368474;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ge1b1xcWybylA8rGPuIV1asvwgEzJw2EpZ+7Ph4FvfI=;
+        b=DjR0vXhYzF0nDFCmnZ0sappgsG7o6NgJX49dyrdE7hAeP7WZhpRED/eXCaiF98mSFB
+         sT2GIBWeFHEENZji/SsUxibJFJ/pz2/vSc4kJQBgxwTglK8XzVr/s2aceN/aNTny7F9T
+         IbRcEmSClw1FeEdFbZ7s2HAlxznuzNNtQGCDHNayXX1esQY7H11gs0O0CtJGstHQsHJ5
+         Xv/kDsKi/WE2EfT/yHMMoFSQKBhGv2RlDPuYkJvKxmWXkIS7jazRLD8fZ2cu9qh57E46
+         JZFpkWZSOdl2vrClTC/W/yyoV7b//XvpHlB5iCSJ1km/UOt0EdnWFpg0rD9h0NX/Wrtf
+         tOeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUwm6GQ2PzCEGF0r4eTc4d6K5Rwr2h7s8Itco1CQ9lcKy8JF7IVSq2fH/jq4vmcE5awB7SOOt1xQ==@kvack.org
+X-Gm-Message-State: AOJu0YzPwtzZMdOiXE4oqkocnIkZJAYxFANfOehykWeERA0s0b1yotP1
+	TPjZGg1eHsDw7AAcJ3C8mtHab0QYYaKIWbR+feW6WFaq5i93WU1sfAlmPbcPNVY+QBc=
+X-Gm-Gg: AeBDiesmLJDtOc2ok2CHG1MMRl/vg+PLjRZ7+T02oQ0oMugID/XFI0OcXeTPy7Lsfvg
+	tXdsBqsvVtrw3AIcLcjx1CX1xbGHYmK07BCo9r57tSbEykQEKMv2WrPIYfVEeNrvHYLyEDVPkBE
+	RCiquAokTJdGqsGdfaMSXrpyq9/4zQstMtGZM0lqNifH0cOvoHX5ReGzXhlW2vtWzDMKUhY8nzQ
+	t5tW44X9qHkb6zqHJmL7M/zw841KnD6llk5h5X7jgay4C8P+hVzEgf5UBbn90omMbzTvwk7ce7b
+	h59Nf9wjNLdqH2lh7JjGzYn2bLYlENC9PbB1sq/CkTNpHSrz3/OjyUjaxVg7KLUkQsUN+4YwOPi
+	ffOUAihnId28FAVdKknik/CDISU4P4mN64dpcN2zfFB3rgGnObFjCO1NrP3gzNLYKI+BGX/887h
+	6S0fhNIad5P2zVVjLTR40zkf2tbLbBK8m/ZA==
+X-Received: by 2002:a05:6000:607:b0:43c:f81f:3e6f with SMTP id ffacd0b85a97d-43d6423cfdemr517256f8f.8.1775763674566;
+        Thu, 09 Apr 2026 12:41:14 -0700 (PDT)
+Received: from localhost (109-81-92-28.rct.o2.cz. [109.81.92.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63e50289sm1144780f8f.28.2026.04.09.12.41.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 12:41:13 -0700 (PDT)
+Date: Thu, 9 Apr 2026 21:41:12 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>,
+	David Hildenbrand <david@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
+ interface
+Message-ID: <adgA2IKrdStZJ6AX@tiehlicka>
+References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
+ <addP4MKmA8zfSN1o@tiehlicka>
+ <dbb92553-58ba-42e1-b7df-b8450bd69d33@huawei.com>
+ <20260409081619.34f172dad0e5a56923b7eb2d@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Christian Brauner <brauner@kernel.org>,
-        "Darrick J. Wong"
- <djwong@kernel.org>,
-        Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-        Jan Kara <jack@suse.cz>
-Cc: Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-9-hch@lst.de>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <20260409160243.1008358-9-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=b7CCJNGx c=1 sm=1 tr=0 ts=69d7f8cb cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=RFpAoTwO7tzpE9r8PTiuXw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=JydwF5vtCPpp8KBJ6BUA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDE3NSBTYWx0ZWRfXxu9xibrLCyir
- r9tHp/TQEmvAB6G0ipdyhtVnmnBmSgF9QBMb9pf+Nb0p0mGRr0tVdLDtDr6B1twsJhg+SfEy/UF
- MeZ2HpE0hqhV/xNKXlvWCLFppej0MgzHNaooMpMRHYN9cBGx+RXL9hDumMymxaqSHr86zRlyaZi
- +YkYX/NfqYwcX2hYW4E+C/l4q7NpWw4g5t23bY8ZTipjFREqkqzfvtkPl1CCeR3NpB1d9xlHtLR
- P0N0gJIdulDMy+nuWATPY+skRqjz18zoc4c6gCgCKxqqIp8IWgjEYRUcnnG7F7w3oYxW88e7uhV
- JOlldzSQKEN+Ipi0FfUceU/vNNN1Jqb0DLhJmsJ7/A1GB5v48Xo02ZHqHt7TxI82I8cRoVhoX8L
- pwrpam0K906FV5tx3oL+K7hr5nQ2t0ksSTdhBLRHsqFL+holEDVKWqgK/v8qSToBjRDWdfcbjSF
- iFPj12+KIY4vMw/8qZQ==
-X-Proofpoint-ORIG-GUID: gnWhJRg3od8gnYinT3BcpH1IT_hesxSJ
-X-Proofpoint-GUID: gnWhJRg3od8gnYinT3BcpH1IT_hesxSJ
-X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11754
- signatures=596818
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=10 clxscore=1015
- impostorscore=10 priorityscore=1501 adultscore=0 bulkscore=10 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604090175
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9C46712000E
-X-Stat-Signature: d34nhazaxn64h9555h9yboumas8g856z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409081619.34f172dad0e5a56923b7eb2d@linux-foundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1775761612-620848
-X-HE-Meta: U2FsdGVkX18Zu1SRGI2dAUloUPL+gwn8kQXQDBWWyo1rF4IhvvX44ukTIsd+Zr+tWhf6l8cZZIOdrZS7Y/2QePOOM+2KtJcuQs/ePNNDtvV/b0p0cSGAnKzYn/Mw08bm3dT2MpGmwpIiqgM7qjnGRkbXBr1m52E3lG0rHfIQy52mnvYw44XekXPkTHrKEXDkmbbCe15VWvGLy2RrnDizylQPsq9dZwTgOEMvRuvkaoeLzf5x9yXuHMwC08CcCVodugaVLXlRwGaRoI4fuEt8jLc2vtuRTwiboYEJSmwITxdwiUgo8Qoql6v01CRFdaTXb/j7DsSn6thYvB2zTF8bFqT42w9vZW8Kwro4nuvfk6AxKYr8dROVIYaa0Fe051XJWV6W1DccI6QvsiLY2wha/2qy1Yy+FW3D9gf6KovQT8+6nAVEf0ZPESDDIIq3qoK2wmoh+BWEZe/usZbL2pZYU785I0gdh7JNxduI3fersNxeavHYKxIuSdnGWMJue/PUOhwaVf81O9UJsbHN+xcoNhrgiU9Wov6njdK/v8SSpPxyEZQ9t1oczdu4hPu/OHHwhI+yvayMtYsxWsUASwURj3r5uvS02gcrpLnIIvKpibeiWrtcDEWXPTQyFhTqF4gXITPhTfbbNzicb+toiWhFrpJ8IHvlenaN7wW92mU3qtzpmlyHkciKJmK8ZNG8bo9ARv6GIm8uFx7jlsA41xFChNC8onn7gnbf7N0Kh7Ax73jcW4KRvaOc9YjvnY4IxSdst3nQjii5rwJiCPQACRMNvXrDZWtNySmkrzmxKFwMEflQ9Ta2t6M68rJt3NpMvbOH0Z/HnCi9KD5pTalb7nMgm7cWaWDklFEaX/pAIyYQI61MkK8srwFU8Q/sdFm6SWW6MDD4XfBtBvHiB2jpdrpDZ6YP1rG826/bvlo9FH2pVCZF2RZda4J1UO9biH6Tofr5qqWrjUbcn/catNtrkf1
- 9aNFdvW2
- q993ZfDWlU332XDnACb0CXPQ2iq7f0Epp4+meQRvaloxXd+0Jie0TLX6y5pq8y58dRugOl5b5eGQgAu7aloi0Sig+yW9rXJF24aRV6iYA5SYFhvJqcGRwyW//vLV28qZ/zclANTljfCRFpiFHaZDW0/9fJHe6KJ30SI1MxBENmEQWtP+X+06AKWYvl7Z39NKJF7TJk8RWckO7mrRGuyWzxfWAuJD6Q0Y4ttXOJ3uPDSJ0rEekPO8SCxV3UfWLYGFPQE22zgxe0yrzXUjSev1kNqRU5iGX5+98FdKSs6buBijhsMNYIWbXbVdwoFxiVdxF1lRWlFXFHHS6XDWCBNcfYq25J9z2RyQTj0S2PTbLLmDaUBhzx/d/NRmKj7g18u1dvxrjs6DRKldQs0GclktLt/onNcZCZ+MyOHIhzgq71qe7KWhKKyUMwHHQUesjKe9/Z4ukW49xfpIUmCsFrXpddxNus6/gJ36nc8D90jP1Hb4+XI2jop5t/ndcUP1wJN5hQvyIScPkMLzihwY=
+X-Stat-Signature: zkgtp9aetki5tx95se4jfqt4h3ptrmjw
+X-Rspamd-Queue-Id: 40A5780013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775763676-696977
+X-HE-Meta: U2FsdGVkX1/pyaR03dLgb7OpjaDB1Td7zQgQH/lp7dZXFKQvBmRT3Va+xwByIcKWKY1uT/BUPUoZD5AhxfbXCrMUNigDGglouTuSGAgHd93xvgTlkfny4reR3K2LdIxphlKWNCM8nFB75+IhzfkCj+kT4xZwA4092GQk/+kFOAYscA17P1lEOKdzL3YMg/pPQ6XDQmQEOxxAmzw5n+yXD54dnogLP30faVPjPxWOIuSNDuvL+jTO1ZL/DU6EJcD32qrWmiIp4n12s/E1PwXZhy36TX4YxiywYeF2KmN2KMwav429giq3zUVMOZzcliRGHPPfwwGpxlebI/u8z9d+PztpxvGCtgyvRq41aGr5qH5ekcjlkBCVwQP8jOixCb0nalfyGtFKCF9MAeJs4S1NzW+YKMEE9uKPIxGPx9k1Fq0pcBx+bjWPgw8w4gjifcXNPXKvOdb29096NPdQd9gs8+SWj0YPE1vxUKH0hsKetX3t3skRhP/ltv1VUlX7+kFKMoP5Q/gDC0M73MjRInAbWLzUEVWoTYxkKdZM0tKSR514uVF3Anir5eNKXWrBhIPXzFp4K7TY9hebUsn7eSmZv0I47ZRRw7srBjjBpFXGixrmxJi3NsX6nnd2W8QVrETGeoo5X7xlQ4BsrE3mvyIrRcpojN7gpYkZMQ698Et2HDwePfTOoz5JISZxW2+fKlQMGch9Zua3xFuJX7jSfbVs+eFJyg6GRreRyjAWBsPovzpaE9vUxyR5w0zZmb4ukFpSHZvtiitBVB9P5VSB5mnMX9RHUJMQeSGUppSTC9SjOqKmYi2UZgdRR4dwirBMt7dzB2sZeFRTgFrPpy0PR8EZOjYpfx5mfs3HFvkldVY5Wv4XyxOxYehzDzYMBzxVurBJUjI7e605qXBPhPdjGyrVxUmMZdKnZpNqZNQF/p/IcMPW/tUGEL6fv2yMej3oyN/+cHWDg4tj4uGy3WGH2hi
+ 2OyRuH+c
+ Y792SeeekDZkcvXwbyuRuuGMsWg7M8Hx0xAu2DFQJGBAv3Ew0PUIVG2oB7DaWc9CK0QN4Kp34Qgs1kjzRw3DoH7r/GtjUuyGRBRsqmRISpjwnTn8psX3s74cXca6aud7vn/s0N+D+PPml24eK+HL9kwINuKTBBwNXMsYsMpOIMT7PPP32MzDX4EcwOKtDdsLWD/2+ajhVHv9Mk5WC6VFNiac+NsLvrEnDH/mexsRrHjmgrOt10n6pjGmr4OcFqX/AqNkOIUgpLJ6dcJGu2mMMQGtMEO/scsiRNmM8p7GcTFa65wl6HfGMeJP8q7S78Mc2MRALWaBdZ69GWISWdJQtjCJBzk82G3kGLbgpKcICy1uACnSpchZrfMVipIWPVJbQuZTg9qRQrx1LLdfHFduyKDDcHjUYRJQiu6Lgv8QamrdjF5Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,193 +129,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 4/9/26 12:02 PM, Christoph Hellwig wrote:
-> Commit 3fffb589b9a6 ("erofs: add per-cpu threads for decompression as an
-> option") explains why workqueue aren't great for low-latency completion
-> handling.  Switch to a per-cpu kthread to handle it instead.  This code
-> is based on the erofs code in the above commit, but further simplified
-> by directly using a kthread instead of a kthread_work.
+On Thu 09-04-26 08:16:19, Andrew Morton wrote:
+> On Thu, 9 Apr 2026 16:08:37 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->   block/bio.c | 117 +++++++++++++++++++++++++++++-----------------------
->   1 file changed, 65 insertions(+), 52 deletions(-)
+> > > Quite honestly drop_caches is not the best interface to build any new
+> > > functionality on top of. It has backfired a lot in the past and we have
+> > > tried to make it extra clear that this should be used for debugging
+> > > purposes only. Extending it further sounds like a bad step.
+> > 
+> > 
+> > I am not clear about this history of this interface, but some of our
+> > products do use this interface :(
 > 
-> diff --git a/block/bio.c b/block/bio.c
-> index 88d191455762..6a993fb129a0 100644
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -19,7 +19,7 @@
->   #include <linux/blk-crypto.h>
->   #include <linux/xarray.h>
->   #include <linux/kmemleak.h>
-> -#include <linux/llist.h>
-> +#include <linux/freezer.h>
-
-Why freezer.h and not kthread.h?
-
->   #include <trace/events/block.h>
->   #include "blk.h"
-> @@ -1718,51 +1718,83 @@ void bio_check_pages_dirty(struct bio *bio)
->   EXPORT_SYMBOL_GPL(bio_check_pages_dirty);
->   
->   struct bio_complete_batch {
-> -	struct llist_head list;
-
-If we go with this approach, we should remove the newly-added bi_llist from
-struct bio too.
-
-> -	struct delayed_work work;
-> -	int cpu;
-> +	spinlock_t lock;
-> +	struct bio_list bios;
-> +	struct task_struct *worker;
->   };
->   
->   static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch);
-> -static struct workqueue_struct *bio_complete_wq;
->   
-> -static void bio_complete_work_fn(struct work_struct *w)
-> +static bool bio_try_complete_batch(struct bio_complete_batch *batch)
->   {
-> -	struct delayed_work *dw = to_delayed_work(w);
-> -	struct bio_complete_batch *batch =
-> -		container_of(dw, struct bio_complete_batch, work);
-> -	struct llist_node *node;
-> -	struct bio *bio, *next;
-> +	struct bio_list bios;
-> +	unsigned long flags;
-> +	struct bio *bio;
->   
-> -	do {
-> -		node = llist_del_all(&batch->list);
-> -		if (!node)
-> -			break;
-> +	spin_lock_irqsave(&batch->lock, flags);
-> +	bios = batch->bios;
-> +	bio_list_init(&batch->bios);
-> +	spin_unlock_irqrestore(&batch->lock, flags);
->   
-> -		node = llist_reverse_order(node);
-> -		llist_for_each_entry_safe(bio, next, node, bi_llist)
-> -			bio->bi_end_io(bio);
-> +	if (bio_list_empty(&bios))
-> +		return false;
->   
-> -		if (need_resched()) {
-> -			if (!llist_empty(&batch->list))
-> -				mod_delayed_work_on(batch->cpu,
-> -						    bio_complete_wq,
-> -						    &batch->work, 0);
-> -			break;
-> -		}
-> -	} while (1);
-> +	__set_current_state(TASK_RUNNING);
-> +	while ((bio = bio_list_pop(&bios)))
-> +		bio->bi_end_io(bio);
-> +	return true;
-> +}
-> +
-> +static int bio_complete_thread(void *private)
-> +{
-> +	struct bio_complete_batch *batch = private;
-> +
-> +	for (;;) {
-> +		set_current_state(TASK_INTERRUPTIBLE);
-> +		if (!bio_try_complete_batch(batch))
-> +			schedule();
-> +	}
-> +
-> +	return 0;
->   }
->   
->   void __bio_complete_in_task(struct bio *bio)
->   {
-> -	struct bio_complete_batch *batch = this_cpu_ptr(&bio_complete_batch);
-> +	struct bio_complete_batch *batch;
-> +	unsigned long flags;
-> +	bool wake;
-> +
-> +	get_cpu();
-> +	batch = this_cpu_ptr(&bio_complete_batch);
-> +	spin_lock_irqsave(&batch->lock, flags);
-> +	wake = bio_list_empty(&batch->bios);
-> +	bio_list_add(&batch->bios, bio);
-> +	spin_unlock_irqrestore(&batch->lock, flags);
-> +	put_cpu();
->   
-> -	if (llist_add(&bio->bi_llist, &batch->list))
-> -		mod_delayed_work_on(batch->cpu, bio_complete_wq,
-> -				    &batch->work, 1);
-> +	if (wake)
-> +		wake_up_process(batch->worker);
->   }
->   EXPORT_SYMBOL_GPL(__bio_complete_in_task);
->   
-> +static void __init bio_complete_batch_init(int cpu)
-> +{
-> +	struct bio_complete_batch *batch =
-> +		per_cpu_ptr(&bio_complete_batch, cpu);
-> +	struct task_struct *worker;
-> +
-> +	worker = kthread_create_on_cpu(bio_complete_thread,
-> +			per_cpu_ptr(&bio_complete_batch, cpu),
-> +			cpu, "bio_worker/%u");
-> +	if (IS_ERR(worker))
-> +		panic("bio: can't create kthread_work");
-> +	sched_set_fifo_low(worker);
-> +
-> +	spin_lock_init(&batch->lock);
-> +	bio_list_init(&batch->bios);
-> +	batch->worker = worker;
-> +}
-> +
->   static inline bool bio_remaining_done(struct bio *bio)
->   {
->   	/*
-> @@ -2028,16 +2060,7 @@ EXPORT_SYMBOL(bioset_init);
->    */
->   static int bio_complete_batch_cpu_dead(unsigned int cpu)
->   {
-> -	struct bio_complete_batch *batch =
-> -		per_cpu_ptr(&bio_complete_batch, cpu);
-> -	struct llist_node *node;
-> -	struct bio *bio, *next;
-> -
-> -	node = llist_del_all(&batch->list);
-> -	node = llist_reverse_order(node);
-> -	llist_for_each_entry_safe(bio, next, node, bi_llist)
-> -		bio->bi_end_io(bio);
-> -
-> +	bio_try_complete_batch(per_cpu_ptr(&bio_complete_batch, cpu));
->   	return 0;
->   }
->   
-> @@ -2055,18 +2078,8 @@ static int __init init_bio(void)
->   				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
->   	}
->   
-> -	for_each_possible_cpu(i) {
-> -		struct bio_complete_batch *batch =
-> -			per_cpu_ptr(&bio_complete_batch, i);
-> -
-> -		init_llist_head(&batch->list);
-> -		INIT_DELAYED_WORK(&batch->work, bio_complete_work_fn);
-> -		batch->cpu = i;
-> -	}
-> -
-> -	bio_complete_wq = alloc_workqueue("bio_complete", WQ_MEM_RECLAIM, 0);
-> -	if (!bio_complete_wq)
-> -		panic("bio: can't allocate bio_complete workqueue\n");
-> +	for_each_possible_cpu(i)
-> +		bio_complete_batch_init(i);
->   
->   	cpuhp_setup_state(CPUHP_BP_PREPARE_DYN, "block/bio:complete:dead",
->   				NULL, bio_complete_batch_cpu_dead);
-> -- 
-> 2.47.3
+> I added it more than 20 years ago (before debugfs existed) as a way of
+> exercising cold-cache testing fs/pagecache code.  My stress-testing
+> code was previously using umount/mount but this was inconvenient for
+> some reason.
 > 
+> But the damn thing because so popular!  Mainly because our caching code
+> has always been problematic in various ways and people found that
+> drop_caches was an effective workaround :(
+> 
+> So it's an unhappy story.  Caching causes people problems, caching code
+> doesn't get fixed, people get stuck on using a stupid debug thing which
+> I guess I should have just kept local in my tree.
 
+<rant>
+Our caching strategies might not be fitting all existing usecases but as
+usual we are targetting as many of them as viable. The problem with
+drop_caches is that it has grown unproportianal amount of cargo cult and
+grown into "solution for any performance problems" magic pill. Even when
+proven to cause more problems than it solves so many times. Again and
+again. That is really sad. Same as THP causes more problems than it
+solves and that you should be using 2GB of swap space or that swap out
+is a signal of a disaster. There are more and they are hard to die.
+</rant>
+
+-- 
+Michal Hocko
+SUSE Labs
 
