@@ -4,130 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41992F364B5
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 19:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79EDDF364B1
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 20:02:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E4A46B0005; Thu,  9 Apr 2026 15:43:30 -0400 (EDT)
+	id 8B53F6B0005; Thu,  9 Apr 2026 16:02:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BBB36B0089; Thu,  9 Apr 2026 15:43:30 -0400 (EDT)
+	id 865C26B0089; Thu,  9 Apr 2026 16:02:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2046B008A; Thu,  9 Apr 2026 15:43:30 -0400 (EDT)
+	id 72D726B008A; Thu,  9 Apr 2026 16:02:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E44E6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:43:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02F7E8725F
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:43:29 +0000 (UTC)
-X-FDA: 84640041780.27.7A4E328
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AE1B91C0011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:43:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SbueGpkX;
-	spf=pass (imf20.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775763808; a=rsa-sha256;
-	cv=none;
-	b=hsTAkFIK0Pbb7RCut2Z9CWjrLRKEde8knSxnDhU3vS+8l1NtxtlYQW3i2woF6YX1F4OVn6
-	xyEB4E2cQnUW+rziL4SMBGoAa9wi+7SvDQtrB2ozMfZ24DQzmTSCNA9lvWyNe/dGoZ6TzG
-	wGdptkR+aaVFuNjh8rvu1kWCnAH8s/g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775763808;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61FD56B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:02:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDBEF139436
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:02:46 +0000 (UTC)
+X-FDA: 84640090332.22.240FD4F
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010031.outbound.protection.outlook.com [52.101.46.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4570E20009
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:02:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="r/13kcvx";
+	spf=pass (imf13.hostedemail.com: domain of jonathanh@nvidia.com designates 52.101.46.31 as permitted sender) smtp.mailfrom=jonathanh@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775764964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ra6N3tqtIXjDa5n23KMu+Hf3WRKsDK7vMmZt4WPbudU=;
-	b=lEUaabq2c/ERNqQyS2IBqto7qm5b1uoQMmi6eP01HnaVySyJvl8FGjA1BtSKUSJhV8Bpgj
-	SsnTTQKRL6rT7ewVRDqz8+h1nCZUaFhS2g3LYjyMReE2zlWZdLCX5bhU3t+lz6f50LIm0j
-	18vKxDTrYM6ebPB6XvZl9AhPJNEWd1c=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SbueGpkX;
-	spf=pass (imf20.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775763807;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ra6N3tqtIXjDa5n23KMu+Hf3WRKsDK7vMmZt4WPbudU=;
-	b=SbueGpkXT6h9rIM+65K7nJqme6AIFCY/iJ1ok1IJ2mBpoNmwE7sIJTaXf+IHc+H/mqewZX
-	NoxUiU1BzyxszDpBWKGQIOJTF4nLj+frwGG0uIrJ6yMpUYy6mnEVGZ5WAKOhYjcnE9TO3l
-	WIH3K5mQ80KrQrV+paef7oHcSzcTcZI=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-HyLDFjXpPDeNS2djlcD-qA-1; Thu, 09 Apr 2026 15:43:25 -0400
-X-MC-Unique: HyLDFjXpPDeNS2djlcD-qA-1
-X-Mimecast-MFC-AGG-ID: HyLDFjXpPDeNS2djlcD-qA_1775763805
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cfcf23c0e1so244461585a.2
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 12:43:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775763805; x=1776368605;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ra6N3tqtIXjDa5n23KMu+Hf3WRKsDK7vMmZt4WPbudU=;
-        b=leg3nyi+KA8bEcmRSJsj/AJMItuLBN1UDy8smdisyCJMj9ey0b+K6JXS5KOQf+qAfi
-         2YxIEqdvirbbXKhBozMprCtL3g1u8XTqVZHpgsdDaXO+//5HttSWDzRnGrZsmDoxdkvN
-         e2bMZj/VC7tbPsqoiYCY43JaYuX0jcggEL7pkhcC3BJVypNxWFfEmq0uewN4lMKsbTIP
-         hjNMoznL9I9UkM2foFLhzoNVvPHbt5LGhTwcRRxSFheV7A+NDWF24EkP6Wq959CAYfZN
-         AYjIulxbaJcG9d2/Enrlc9f3Y5AQp8CgeBCoW276bExT2k/suUY8+Ym4meU7OT8GjH5X
-         HZyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzHp8eZDiPKuidIDIBPTOjEugwh/aVAtI4qkmZAhHyx90u8XSLSuScSzzXyfiaU2fd8v07H6ZulA==@kvack.org
-X-Gm-Message-State: AOJu0YzwgstvNLfmu9oWgjschrsv1nrhsIi3aUSkmLdMyZk+hNHLIYa0
-	L3FP15EXhuicO0nsoXHlDPLVcaeYec2eYcthQed4MEn1m5WSWuiviDrUu4iFzCsc1NTbA8bl+nY
-	09LMWmfZVlLEAZeg0wIc2WqYo12uWwb9lpf4r8tT/s8fzo+Pno+zo
-X-Gm-Gg: AeBDietU0/3aIKN3RuaekGoB4TS+qx/DyXF76Cs+VyqoKibvwqlo5H2KfzaCw5WiDnr
-	6UzdyhS9nfOSBX3Hn0eyNrLPRjwj+nvkXKyhoBLUxzSNSayfZjyJDX3SRK+YL3yyUueb/UxVduM
-	utjbcIkzlkykxGes4jETfDm7S969BAWay84h9UpbwaOehS13CY+eOrvQU019X3WqbuNhclPjETg
-	XhTR36YLIi4kWa8zcih4DtwiAScfmlAKvuEnp+yEDcXugftxm3WhDk0WGSydCPnNiipPWJe+sdF
-	W1oMpdn2RYHnKZGStYXVBsgOxlCvlaxqp6B/IE7WQoYxhyYTYiStyruR1mRDZbmDF7RSguTX+gi
-	WdB5fz85RoWcIp6yDiQH95RXABZHgy+ET5zEfg5QLZHoIeQjQfFm0rCyZq9ZH4wKO95x9TKcvQa
-	UEGFejWYhdXpzu7XM=
-X-Received: by 2002:a05:620a:290d:b0:8c6:ff8f:58af with SMTP id af79cd13be357-8ddcf7ab003mr27970185a.51.1775763805209;
-        Thu, 09 Apr 2026 12:43:25 -0700 (PDT)
-X-Received: by 2002:a05:620a:290d:b0:8c6:ff8f:58af with SMTP id af79cd13be357-8ddcf7ab003mr27965685a.51.1775763804677;
-        Thu, 09 Apr 2026 12:43:24 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-53-69-159-169-238.dsl.bell.ca. [69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb9738cd3sm28965585a.40.2026.04.09.12.43.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 12:43:24 -0700 (PDT)
-Message-ID: <315f7856-82aa-4566-8c16-1d96314b235c@redhat.com>
-Date: Thu, 9 Apr 2026 15:43:23 -0400
-MIME-Version: 1.0
+	bh=US/TPYRBbjndpDCKE3UhGYVEIbeT8xndtPlFe3vEhjo=;
+	b=lDe2QZvArH3fMtl38No9kZ3KgZaMQYoyGJiKAcLa/PS985qSV+oru8IMYPSw1xQFftk2ov
+	eokzPcHW+pZMEUoIlfOg9p7HD8dU9uYTObyks+gFNuWn4ka/rh0iEWKFqzUVwvy+q6OOKY
+	Ywb7ROFQV2AnCtSYxDgji59bfJlvvNU=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="r/13kcvx";
+	spf=pass (imf13.hostedemail.com: domain of jonathanh@nvidia.com designates 52.101.46.31 as permitted sender) smtp.mailfrom=jonathanh@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775764964; a=rsa-sha256;
+	cv=pass;
+	b=yO7FUAVqAgLE/uc85LAHBt2KDJw6gHrXr4jge1Y7py8Ka/879ttFY8SYOs3jmlxYSr+4Z3
+	wzYA/xjhVQYAOlKWhrB8kSghwVRLZnC5wtIJqQTC4zZY6YSJffTRoaO8i3LLUjZrvSeMX6
+	TVaytWEqT1hRz8clgyCIXhvzenJCDAY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a4Fji/pNC8Su0OisQVl18h1Z1PdnL4D2lxdj1OCHg3yAOFJlbl+lkh7Oo1aq5omwT+BvRyrLh+QypeilG+8/V6akBKOcUpJc8QBAbsqT2pBWpuEHmIzKR1+ajvsfhsl7YdxJpPMADlTVjlw8dfXosVu+bLTqIxMFR3aDwCdns4LstaFthSGif7IXuLLiv4MtWwbxqexKDmmhH7kcPJgOhueMHuI+hRHe0vu/D1z1al9yR2e4QpI1/OUv4dZ8+k4w+P3ylmOQnUYKx4JvronKVZbfRr7Hqx3kAvut/O3mJb6WuIsVGaq1kCNSd5OY160Q3zXyw3Est/8ytSx2q15Y0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=US/TPYRBbjndpDCKE3UhGYVEIbeT8xndtPlFe3vEhjo=;
+ b=sldS00vd9XNjTc4ZjCBACUEzpvyg4OrC+fRXkMuFDLQ/XdrqpslLbJWVvfLu4VRntETn/2XfGf/scW7i1quqjova78+f8wtpya7F0XlshiB+8jt36nE2S5iwNeZ0Zw8YZHCWwroqaGwQK5caKjTPf5CY3oX4TI8H4NXETxbBTVQUoFEY9lW6LXJwEn2FGmr5jjT31VG4aYKrSIiFe3jFiQ4rCbKV6YesASAX9U6TXOQAsLU1Lm40AwIfi/+quE/VauZclXn1AmAbMDDaHMF9DhY2RHU2zLsnKVNMlwDg81TzfbmkLCXBcu7ZQxRDyU3iv2aE48/ooeahsTqAq4n1+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=US/TPYRBbjndpDCKE3UhGYVEIbeT8xndtPlFe3vEhjo=;
+ b=r/13kcvxdwtR3TnEydhTBx6QUXVUDgFnRIa5J9mTDxT1bEk33gb9OH90+swvE9qDVra+ekop8hCHDk30sQaFrRB53dNDookHtRY9WcpWrI3tm/Z3UTuRFr3wBf62TUCadtNntFNBbgFLdPqaidDD+q/UILZHfYRP7wZ7xTigSSc7HNyHod/jNGRfwoFUXA2dl3KI3SIkLtv6LihptbbYyrhQa9Ovb7eANk10NnpUloadaLRkyDRiDVAOsG2mDMU08mnpu0xu5qlve49XCrLSJAyU7r1CAU5e6IB7Fnrs+oet6seCD4o+Xs0YJA1tQpVqfI4IzXY2yfXuQSwjtDy+Yw==
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
+ by DS5PPFC9877909A.namprd12.prod.outlook.com (2603:10b6:f:fc00::661) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.18; Thu, 9 Apr
+ 2026 20:02:35 +0000
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391%6]) with mapi id 15.20.9769.041; Thu, 9 Apr 2026
+ 20:02:33 +0000
+Message-ID: <da886682-c255-47de-90bd-8bd708a0ebdb@nvidia.com>
+Date: Thu, 9 Apr 2026 21:02:28 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/10] treewide: rename has_transparent_hugepage() to
- arch_has_pmd_leaves()
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <cover.1775679721.git.luizcap@redhat.com>
- <4f640655f26b4cc2056a62bebfd570686dd6dc3c.1775679721.git.luizcap@redhat.com>
- <A1A0BC2F-A9AF-4929-8774-C5841A3F6020@nvidia.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <A1A0BC2F-A9AF-4929-8774-C5841A3F6020@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: gvrpXUH2J2odqHf6WLvYhmd7vbcYsMneq4fJzmaYM74_1775763805
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
+Subject: Re: [PATCH 0/3] slab: support memoryless nodes with sheaves
+To: Hao Li <hao.li@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
+ <abE6uqdzMUv8k0mU@fedora> <8ab58ecb-1fc1-42a1-b67a-c3107de2ece4@kernel.org>
+ <e7e4ea66-49cc-4996-a638-25f6cb08a42d@nvidia.com>
+ <y5oqhhbecurzrj755sujnqyny6ohmyd4uhslrrigdgpq6shf52@nr5gp7bpit3g>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <y5oqhhbecurzrj755sujnqyny6ohmyd4uhslrrigdgpq6shf52@nr5gp7bpit3g>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PA7P264CA0496.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:3da::10) To DS2PR12MB9750.namprd12.prod.outlook.com
+ (2603:10b6:8:2b0::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|DS5PPFC9877909A:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39632b4d-87dc-4af5-8ff8-08de9672f017
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|366016|376014|1800799024|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	R5jPyQVuA7CQ6t4htTDO26Ws5/pEAVOmPQOrVDIWIqzqhLLav88Z3CCKKl4v0yssm0Du74RjId7IYvclPxCseB5PmZz9qIY7HOMNLuvjKJEhU4kWRQcRx3PzILR8KolHgAf5Hw9EMUvY0H1Pl4vOwvWxkhcGKjzfrrooE+MIu4EvFIav8f82quDDv4me382LuKFbq4/alw6O8DofAYPb7RXQdfLitnPFp7n38Qk/x0zrDE4FWQAV6/DespdjH9zQnw66feNnyayEI9+zXx45FeUbi3HuttqJ1wUxDxvr6iPn7Mmrnhg4tZ9AFBf9GzQiyPP9IZ6akrRm46045h06N+iYlzPJJ/k0dbXIl/F8IJPBzVoPt3LqcBRdRqp35hTyhZ57pt0a6yFUGgoK2UTkCfmbghQXbNK9bD04/SEzlDMPhqp2/pET3YJMS8RLH0nDtbvELTpGUh6iJ3njYMQ4YrIP1yS1Tet81UfRb3YluUjXQ3lRSkMNiyo6dwvdR18yk6DSINCP3+o0Ox56zdQ6dXiAuXdHONucnfWx/rO7AaV4J97MdfmY71FrqLAQU+dWcL7Q98RISgwGyk6wXpUsC1jTm321eLyRtYkqNWoP20+VZuzpKfo5+04Ls02GsFOL4zMOUTyMNwUVVOrUwvxoC3iJFVekMDSaoolP8yhyq9a8rhLNmJ5C9jG6L3XAHGJvQ0WToM+QsXGJOosnwnlX2DFnQYRHyTiDkq1Zus4GejI8EMC8Q2LR2kH1I3sArRUN
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(366016)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mk1XT0hBVmFFeWpKMW82M09OY1VoTXNLb1o2aHZaWkJZMzhQVEFPSXNtWjNX?=
+ =?utf-8?B?b1J5dVloRjFLbUNvMVdzME9sRVZ0VmVOb3ExYVN2ZVJuVEI4MkREQ00yWjJT?=
+ =?utf-8?B?OHJhREV1ZVpsaWQ5Nm1hYmZqb2ZSZ0pwdzZLTnhjUWcvaDBlTFFDdjFoMmV6?=
+ =?utf-8?B?T3BIcWVNUDZPNUpGZFUvelo5SGdOb0NFNkJQNDVBZ0ErdUJ6OWJxUWR4QjR3?=
+ =?utf-8?B?MVcrdWxXb2w1M3JFSEhHdlk5cG5MTnlWNEJZZ3NUMXMwYUFTVzI4dzF6cnZI?=
+ =?utf-8?B?em92dklXbWt2YUtNM1RyVEQ0Z3FOZ29USmdTQ0hmanlKVHNJTjc0dEhoK2RN?=
+ =?utf-8?B?aUJ6TFpmQ3JoRUphWng2aU03dnNiU3RkV3YyYytuWnB6bExENk04Q3orWFdF?=
+ =?utf-8?B?OUxUdC9UTlBUM0lTWDhBOHlHNXZPZGNlVlhZUFNHYkJCVkJLL3RmVHhSbHZj?=
+ =?utf-8?B?SUViZEIrK1lML0hZSklxOG82a3FzZXRpaDlXbEMzbjNhQ01lMUkwVnJRNXRU?=
+ =?utf-8?B?cHJ2d0xUZEVLY1BFaW5ReGh0bmhxSkYreWl1SitZbUg1eTYxemxQRjJCVlda?=
+ =?utf-8?B?TWJkbG0rZ0c5Nk8vQjdtNC9nWHQ5c0c0ajJYV3lKdnM3MXo5NFkrNUFDNDdz?=
+ =?utf-8?B?d3dvaWs1bTZqb3lMeFRhYkk2T0JFZ2t4VXV6aW9xWENvNjQxVm5FaHptcE1Y?=
+ =?utf-8?B?bWw4bGZrT3lmdUIwKzQ4ODluZ3poekxuZnhGbU9RYXkrTnlTTDcvRnlVOWN2?=
+ =?utf-8?B?c0hjSkQ0bzVsbzVWdG9SN1puVFVNM1o0VGJFK1dEQUp3MHdUeG5qK1JqVTlw?=
+ =?utf-8?B?TVM2aXpFdlhhdTEyNFVOTDFvTFRCQmlNS2I5UHZ5V1pYV1V5MHQ0R0J5VTBW?=
+ =?utf-8?B?dFpWZ3RtUlE4Q1BuOTZPTWJObEl6THp5UUFWWGhyM1BXWnVkVXExMkpCZFcy?=
+ =?utf-8?B?RGxnQ0NJTWl2MmlwdkNuZ1M1NEYwYzFuZFQxWHd4ZzN3ZVp3NzdkV0dsdjVX?=
+ =?utf-8?B?a2VlODBDL2hLM05JeU5GZUNYTzNrV1U2ZE4vNkltR2RBWEhDbHR3cURRd25q?=
+ =?utf-8?B?a0dBZUxWUE9EdWwwS1FOci9CU1drUXJKNndVL3BjNkFOQ2ZxckdMeWdKWHZO?=
+ =?utf-8?B?dnVrN3RoWWJhaXpkL1o5SFo3eG5xbnhtRS8zbU5oemhCTWZyOGRRZTdZcEp2?=
+ =?utf-8?B?RDJ6MGVrbzlYTG40aEFpaUd1S25aOEh2d0lHc0V6RVFHRG1ISXJ1MWx4QXVk?=
+ =?utf-8?B?VTQ4dGVZQ0tET21Cc0ZqUm14ODU1QWgvc2dYa253SjlKNmdjYUtybG5FSEFU?=
+ =?utf-8?B?VG8rMjRCUXFJQzdxOHlnSnZlTElSVUxSSTE5a2tsOS8zRFFUd2x3ZW1kQnJq?=
+ =?utf-8?B?anUrQlVvR3VFM0V4Ri9RaGFoY01OWE05RVkxWkpHVDIxTmJVbmxuTkN2ZUtS?=
+ =?utf-8?B?VDd0R3BTN2x1VDdrWHJFTmU0QzBpWmMvQSt3MWt4TWMxRkZQQlovMlNnVjV6?=
+ =?utf-8?B?S3RiM2psK0RjUmJ0WkRjMTFidTNsYkFITDkyUE9meGcralVOaGZUaTdHbVM4?=
+ =?utf-8?B?RjFDcjdnelB6RG1kMXVqL0ZEMTdXM1JvQ1F2YXB6WHRhVjRMSmNCVHl1UU9S?=
+ =?utf-8?B?TG01blA0Nlh4OGkzNlFKYXRMMDMvOGZVQjRMczNoTjFGN3ZVT205NmcwVUhr?=
+ =?utf-8?B?WVE0WC9VazE0SjN5ZWNrcFdEb21RVzRNU0x6QnBXSzNuY2lIc1M5VWRzVDMy?=
+ =?utf-8?B?RUNha0ZPR1VydWE5b0E1Z052NjR4YXR0dG5XZm9nT3hvWkxORnpWajFXdjQ2?=
+ =?utf-8?B?S0xUc2k5Q1pDSVJKMisxbEdmREJwQjM3YlpFYW55aFRmM2NydTh1cWwwMHpR?=
+ =?utf-8?B?eXczemdHNDdyR2JGcjFYNW5YSnY5K0c2UzBGYkwzRHJqUEtMMEJmc3VTUXBh?=
+ =?utf-8?B?RERpR0Q2R0dEZUxhSDc4VjNqaWVMUFgyNkV6TklxNThLMm0zSGVvOFZqZXZR?=
+ =?utf-8?B?SWNLV1ovYXdHU1hGMCtkbEVBWGltQ05WUTNST011bDl1LytTcE95ZllHYzgy?=
+ =?utf-8?B?ZnVMQnhwMUhvcm9zRksyMzR4aUJ5RlUxWTFqdVA0VElZK2tnSDh2bkNxZGY0?=
+ =?utf-8?B?b2hKbzVvdlR2OHVGSDRpUFdHYUZpb3BoVk1NSDJvNkpBU1lEMW9Fbk9TU25q?=
+ =?utf-8?B?VTVnY0xQM1YzUUtqSFlYeXBISXlLZ0w4dXlWOGMyUnM2VEZZZEpmNUIyYzBV?=
+ =?utf-8?B?amRrRm1mYkpxUWlXVWl4Y1lkeUhKUE13L3BiYmZuc01mdGxZMmFaVUhJdjhO?=
+ =?utf-8?B?VWdVWWxJeUNGQXIrTUk4YW51QmtTNEs3QUptN05NaUpUSW5GR3Jsa1ZtUEk3?=
+ =?utf-8?Q?Ag19H99G+mLTRV6z1m3qeir7kiblHafNn7xh18HIbjGzw?=
+X-MS-Exchange-AntiSpam-MessageData-1: 7c7D8yDS3KyZGw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39632b4d-87dc-4af5-8ff8-08de9672f017
+X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2026 20:02:33.2460
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XVG02U2hoF5K8LgU0E2FzR3Z57/yOjfErswVA1bkLoiWwnV5MZQDDIh9PKpWwAzbPqEZnWYnczWUhucQi8BgLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFC9877909A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4570E20009
+X-Stat-Signature: tmyy3k53yw6wayi9xe1iw69jhgebns1p
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AE1B91C0011
-X-Stat-Signature: bddfp68188rpkbpfui74od11h1tgrp8n
-X-HE-Tag: 1775763807-694264
-X-HE-Meta: U2FsdGVkX1+L/N5E/+t+bW6zXyCYhX594H8eXAu2zE774q1TQ1Qd7oFCEgAHr6nJu+7EqbgJEE+7aQzcM8LTLh61FAgwNqlWk6Yy4dGY82m66Vl48V29aPwHnC3rAd1h8f+g7KPBu8+9fiecN+9QB34own1wmGY6cUqSX35YuXfi0dB+mru0vkklTW5yflEPDG4jc7TwPppl2kvTGJtWqVSxpoR3FWl3hGKcIXHNHd8tX5RYGvzkKsGXoSBQJwaJqZcAP3WBYKyes4hG8/LczzYmdvuItvVCvnScA8nthzVO5X6bkTrAKplrtT4ihexNUNSRuRsTpxKNq5bfeRjFFuH9HCApzSTvL060JAK5d+Mkjr7D7YwaKcRqbVGHUM72APOL02/fLkY/VYIc4txWZePglc/jv4yBKJxwY/ylUQxV3TxmznfzIDakUFdnCDeh/S3bxVZ9f9X6lAfaBrU1LfeSOjyeNHm25H5YxGv/Xvc51FsOSONXWZ7DRPS1woK1/4EUGbjeDPNk3SRQb2lhq588ufbZrCvDxwzM5vqwf7JuZW0LnpEmh2iXJALVcL0wxSN3z9bZRNWgi+q3ttoHAOG51upngw7t4bWPvu4+Y3aeaqv4t4f4pPe76h3JWUGMBfZqdxE9VBXOZUuWh8fPCoZbP4gT89zx6ancoRNV7Kd+48EgKWWRt/5YX0nJdPVT3uWF71oWM7K381+Zg4ORLCx+frzmwmevdpF1p1GQAbHPWv+Ci2sGzzotrS8SXQfFyOss5T62gRpiqoSLsdCKbdwhzRlGmkN+cRZ0NP6tkgC7PKGZT+OjV+GZ/yXgj3P+Cg/Sij2jTpgpOm+mr8WRv5WTSRWfXHY/gLWJnd5a06ZfwroKXntp7BQLQlISjSRQJo6HHW256QVrwmZQxqn4zKIqR6vXjjRjSaX2/IcNNZ0waG1bM2RuJ4YP4ZPwzHUMiLboWxhSDc3IjvcWUqd
- eFMNtFjX
- z9zKsMW1FpivGtsSZ6x4oEDy131gSDp1JpmzekaqjBKz4Ot10Cjw35xJcyiji20fwP/Q2j4m3yBMI3SN8uHaLf4VjyG3tSqd9xzWVYv7O+xGcjFEHrSIx3L+/Z15c1XaSMy7pNvpNwELNlCxqTLCrP37GJqmGSucTAWqymgQ/wEiUgWRaK+uCBhwIfg==
+X-HE-Tag: 1775764961-752241
+X-HE-Meta: U2FsdGVkX1800b5Syl34Pold9vYz3A2qqYLZdnKp7NTMpSRQo63FFfEtDSls8UNvkSMMUeh5uX0EOZahenWBwerjNb5bnguNmJKmZWyruL9/O/VWhloGiJ0BnmmjCBby6IexoQDxCiMvQXv+w1ajuBUONnSLv60M0twRynEOxZmSO2abeFu3D4QWGZfwoqKMwOq+y9vTJsy74w2xSja2IvQiubjavc9wuf6YLHG8L4Dqz6D8vECdZF4VT+d73JRVKCEloisICrsI8vJsDhNGPAmr1HplZVvL2DDrNPdW4lYXrpz7SuxCVnAVwtx0EgX5HhJXfW9ZpPBdWgDvjhljfrX/tnHxWs3SyxwRgADrqUMz1zzGX+zQTdhEOTaZSdIk9Ot6Oe+Hojoz6MMobhScDanQmNe/Zi9F9hNdeMO/46DBhxkOS+0nJUi+DXo4xkwAn/0uPqueDFuz0ZnXltYPXMUdZ8bpFuLMEwAjIbLNIQWAue+pyo3h8oiXUbqGEmh6J9s87QHNoe96khOFNP1ecjVkCiofRFAYv29N5h5JZRa2YFtMJHKC3hesxS3emw3UYBesPTJRQSvOh5CpW0YuCJISQq1CV6CxxrEuKuWmc61JtMPnL2YXcN9i6y1v6HPSt37Al0YnDtV4CHpYhBP85jJ7L1rcmEycrxJ3slLvyLcx1qNvByEDg4gfr8IM77iCw56kmaurMTXBZA4m9lbzzkdkeZfv9vFjVxNTUEBK5Xy5a6Dvt3ucEtpZYbkKDCJIF75fVplUBRO7V25AI3s97O54a4CbZxwnPIDZvWy5li119geu7yLNBZo0rC4qXjdqpPk30bcov+TywDP8y/ekfrkG5R19wuKSxzchnUcmGKxSdh9smLYzDFFSh2a8PK4a7T2kWheynYfeSW7ZvZmlJypV79WptHzm1ferjm3d7dh5FV+PTQvPTSQ6KIU7NlwX2QRy6kndMR8D3FCNR5y
+ 3zKBJ6YG
+ +yekZSnovSCdom65MuuTPhmXu/Xv+ggQnOorqxHBbIsw+r7UYmc0XLuTVubkliZmjNoUWZTw+rPZZGMapPCLkx66OMBvRiPmObOEi4thXrz7hA0088ydqY5yAFVVff3Egdl66fhmTjCdul8rnWLrSFlJ/SrKyPnoQ4Da6QWalH/hxKMmlsleD9s9w9zxfWBroqXUG0KPebjrlPFelJ8798ILMtZxXcd1LzJX8w/NG8XDNbOlogzX5qS8a7hHjDwmh7zZK7gdMwDWl8+v456o5TJnEL5ufUBtA4bpw0JisMyYPYgJ++nNwIvbsqRuqTUqgO2NI/QgT3nuD/TQSA7mccTZBTqGvjiT86b7NhkLpdTmkCuut3jUxqx/BNTDYaAwpvqPJSLf1o+pH3g0g5Pfs8hhtKK8MP2FwOXH/toXyWpKJD769uz5P7urhXgdfuv1LX6GQEke0JBNwCs7nGyOvvZnhxp+Q/GadC8TP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,221 +180,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-09 11:41, Zi Yan wrote:
-> On 8 Apr 2026, at 16:23, Luiz Capitulino wrote:
-> 
->> Now that all the has_transparent_hugepage() callers have been converted
->> to pgtable_has_pmd_leaves(), rename has_transparent_hugepage() to
->> arch_has_pmd_leaves() since that's what the helper checks for.
->>
->> arch_has_pmd_leaves() is supposed to be called only by
->> init_arch_has_pmd_leaves(). The remaining exception is hugepage_init()
->> which will be converted in a future commit.
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   arch/mips/include/asm/pgtable.h               |  4 ++--
->>   arch/mips/mm/tlb-r4k.c                        |  4 ++--
->>   arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
->>   arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
->>   arch/powerpc/include/asm/book3s/64/pgtable.h  | 10 +++++-----
->>   arch/powerpc/include/asm/book3s/64/radix.h    |  2 +-
->>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
->>   arch/s390/include/asm/pgtable.h               |  4 ++--
->>   arch/x86/include/asm/pgtable.h                |  4 ++--
->>   include/linux/pgtable.h                       |  4 ++--
->>   mm/huge_memory.c                              |  2 +-
->>   mm/memory.c                                   |  2 +-
->>   12 files changed, 22 insertions(+), 22 deletions(-)
->>
->> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
->> index fa7b935f947c..a97b788315e2 100644
->> --- a/arch/mips/include/asm/pgtable.h
->> +++ b/arch/mips/include/asm/pgtable.h
->> @@ -615,8 +615,8 @@ unsigned long io_remap_pfn_range_pfn(unsigned long pfn, unsigned long size);
->>   /* We don't have hardware dirty/accessed bits, generic_pmdp_establish is fine.*/
->>   #define pmdp_establish generic_pmdp_establish
->>
->> -#define has_transparent_hugepage has_transparent_hugepage
->> -extern int has_transparent_hugepage(void);
->> +#define arch_has_pmd_leaves arch_has_pmd_leaves
->> +extern int arch_has_pmd_leaves(void);
->>
->>   static inline int pmd_trans_huge(pmd_t pmd)
->>   {
->> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
->> index 24fe85fa169d..c423b5784337 100644
->> --- a/arch/mips/mm/tlb-r4k.c
->> +++ b/arch/mips/mm/tlb-r4k.c
->> @@ -434,7 +434,7 @@ void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
->>
->>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>
->> -int has_transparent_hugepage(void)
->> +int arch_has_pmd_leaves(void)
->>   {
->>   	static unsigned int mask = -1;
->>
->> @@ -450,7 +450,7 @@ int has_transparent_hugepage(void)
->>   	}
->>   	return mask == PM_HUGE_MASK;
->>   }
->> -EXPORT_SYMBOL(has_transparent_hugepage);
->> +EXPORT_SYMBOL(arch_has_pmd_leaves);
->>
->>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
->> index 8e5bd9902bed..6744c2287199 100644
->> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
->> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
->> @@ -165,7 +165,7 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>   				       unsigned long addr, pmd_t *pmdp);
->> -extern int hash__has_transparent_hugepage(void);
->> +extern int hash__arch_has_pmd_leaves(void);
->>   #endif
->>
->>   #endif /* !__ASSEMBLER__ */
->> diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
->> index 7deb3a66890b..9392aba5e5dc 100644
->> --- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
->> +++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
->> @@ -278,7 +278,7 @@ extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
->>   extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
->>   extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>   				       unsigned long addr, pmd_t *pmdp);
->> -extern int hash__has_transparent_hugepage(void);
->> +extern int hash__arch_has_pmd_leaves(void);
->>   #endif /*  CONFIG_TRANSPARENT_HUGEPAGE */
->>
->>   #endif	/* __ASSEMBLER__ */
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index 1a91762b455d..e4d9b884af5c 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -1121,14 +1121,14 @@ static inline void update_mmu_cache_pud(struct vm_area_struct *vma,
->>   {
->>   }
->>
->> -extern int hash__has_transparent_hugepage(void);
->> -static inline int has_transparent_hugepage(void)
->> +extern int hash__arch_has_pmd_leaves(void);
->> +static inline int arch_has_pmd_leaves(void)
->>   {
->>   	if (radix_enabled())
->> -		return radix__has_transparent_hugepage();
->> -	return hash__has_transparent_hugepage();
->> +		return radix__arch_has_pmd_leaves();
->> +	return hash__arch_has_pmd_leaves();
->>   }
->> -#define has_transparent_hugepage has_transparent_hugepage
->> +#define arch_has_pmd_leaves arch_has_pmd_leaves
->>
->>   static inline int has_transparent_pud_hugepage(void)
->>   {
->> diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
->> index da954e779744..c884a119cbd9 100644
->> --- a/arch/powerpc/include/asm/book3s/64/radix.h
->> +++ b/arch/powerpc/include/asm/book3s/64/radix.h
->> @@ -298,7 +298,7 @@ extern pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>   pud_t radix__pudp_huge_get_and_clear(struct mm_struct *mm,
->>   				     unsigned long addr, pud_t *pudp);
->>
->> -static inline int radix__has_transparent_hugepage(void)
->> +static inline int radix__arch_has_pmd_leaves(void)
->>   {
->>   	/* For radix 2M at PMD level means thp */
->>   	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
->> diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> index ac2a24d15d2e..f7933c52cca9 100644
->> --- a/arch/powerpc/mm/book3s64/hash_pgtable.c
->> +++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
->> @@ -370,7 +370,7 @@ pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
->>   	return old_pmd;
->>   }
->>
->> -int hash__has_transparent_hugepage(void)
->> +int hash__arch_has_pmd_leaves(void)
->>   {
->>
->>   	if (!mmu_has_feature(MMU_FTR_16M_PAGE))
->> @@ -399,7 +399,7 @@ int hash__has_transparent_hugepage(void)
->>
->>   	return 1;
->>   }
->> -EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
->> +EXPORT_SYMBOL_GPL(hash__arch_has_pmd_leaves);
->>
->>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->>
->> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
->> index 1c3c3be93be9..e638d914fbad 100644
->> --- a/arch/s390/include/asm/pgtable.h
->> +++ b/arch/s390/include/asm/pgtable.h
->> @@ -1776,8 +1776,8 @@ static inline int pmd_trans_huge(pmd_t pmd)
->>   	return pmd_leaf(pmd);
->>   }
->>
->> -#define has_transparent_hugepage has_transparent_hugepage
->> -static inline int has_transparent_hugepage(void)
->> +#define arch_has_pmd_leaves arch_has_pmd_leaves
->> +static inline int arch_has_pmd_leaves(void)
->>   {
->>   	return cpu_has_edat1() ? 1 : 0;
->>   }
->> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
->> index 1662c5a8f445..8fe95270b713 100644
->> --- a/arch/x86/include/asm/pgtable.h
->> +++ b/arch/x86/include/asm/pgtable.h
->> @@ -314,8 +314,8 @@ static inline int pud_trans_huge(pud_t pud)
->>   }
->>   #endif
->>
->> -#define has_transparent_hugepage has_transparent_hugepage
->> -static inline int has_transparent_hugepage(void)
->> +#define arch_has_pmd_leaves arch_has_pmd_leaves
->> +static inline int arch_has_pmd_leaves(void)
->>   {
->>   	return boot_cpu_has(X86_FEATURE_PSE);
->>   }
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index c4c5282f795c..4b52a3abeab5 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -2222,8 +2222,8 @@ static inline void __init init_arch_has_pmd_leaves(void) { }
->>   #endif
->>   #endif
->>
->> -#ifndef has_transparent_hugepage
->> -#define has_transparent_hugepage() IS_BUILTIN(CONFIG_TRANSPARENT_HUGEPAGE)
->> +#ifndef arch_has_pmd_leaves
->> +#define arch_has_pmd_leaves() IS_BUILTIN(CONFIG_TRANSPARENT_HUGEPAGE)
-> 
-> Should this be
-> #define arch_has_pmd_leaves() 1
-> ?
-> 
-> Since all has_transparent_hugepage() is converted
-> to IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pgtable_has_pmd_leaves()
-> and pgtable_has_pmd_leaves() is basically arch_has_pmd_leaves().
-> The IS_ENABLED() is the same as IS_BUILTIN() here.
-> 
-> Before this patch, if an arch does not define has_transparent_hugepage,
-> has_transparent_hugepage() basically means the arch supports PMD leaves
-> and software controls the availability of THP. Now you rename it to
-> arch_has_pmd_leaves() and setting it to 1 reflects its actual semantics.
 
-Yes, you're right that the intended future semantics is: if an arch
-doesn't define arch_has_pmd_leaves() then the kernel assumes it supports
-PMD pages.
+On 08/04/2026 15:06, Hao Li wrote:
+> On Wed, Apr 08, 2026 at 02:04:54PM +0100, Jon Hunter wrote:
+>> Hi Vlastimil,
+>>
+>> On 11/03/2026 17:22, Vlastimil Babka (SUSE) wrote:
+>>> On 3/11/26 10:49, Ming Lei wrote:
+>>>> On Wed, Mar 11, 2026 at 09:25:54AM +0100, Vlastimil Babka (SUSE) wrote:
+>>>>> This is the draft patch from [1] turned into a proper series with
+>>>>> incremental changes. It's based on v7.0-rc3. It's too intrusive for a
+>>>>> 7.0 hotfix, so we'll only be able to fix/reduce the regression in 7.1. I
+>>>>> hope it's acceptable given it's a non-standard configuration, 7.0 is not
+>>>>> a LTS, and it's a perf regression, not functionality.
+>>>>>
+>>>>> Ming can you please retest this on top of v7.0-rc3, which already has
+>>>>> fb1091febd66 ("mm/slab: allow sheaf refill if blocking is not
+>>>>> allowed"). Separate data point for v7.0-rc3 could be also useful.
+>>>>>
+>>>>> [1] https://lore.kernel.org/all/c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org/
+>>>>>
+>>>>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>>>> ---
+>>>>> Vlastimil Babka (SUSE) (3):
+>>>>>         slab: decouple pointer to barn from kmem_cache_node
+>>>>>         slab: create barns for online memoryless nodes
+>>>>>         slab: free remote objects to sheaves on memoryless nodes
+>>>>
+>>>> Hi Vlastimil and Guys,
+>>>>
+>>>> I re-run the test case used in https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/
+>>>>
+>>>> - v6.19-rc5: 34M
+>>>>
+>>>> - 815c8e35511d Merge branch 'slab/for-7.0/sheaves' into slab/for-next: 13M
+>>>>
+>>>> - v7.0-rc3: 13M
+>>>
+>>> Thanks, that's in line with your previous testing of "mm/slab: allow sheaf
+>>> refill if blocking is not allowed" making no difference here. At least we
+>>> just learned it helps other benchmarks :)
+>>>
+>>>> - v7.0-rc3 + the three patches: 24M
+>>>
+>>> OK. So now it might be really the total per-cpu caching capacity difference.
+>>
+>>
+>> I have also observed a performance regresssion for Linux v7.0-rc for some
+>> graphics related tests we run. I bisected to ...
+>>
+>> # first bad commit: [e47c897a29491ade20b27612fdd3107c39a07357] slab: add
+>> sheaves to most caches
+> 
+> Hi, Jon
+> 
+> Thanks for the reporting.
+> This first bad commit is surprising. In theory, this commit seems couldn't hurt
+> performance.
+> Could you possibly manually switch commits to verify this bad commit again,
+> without using git bisect?
 
-I originally kept arch_has_pmd_leaves() tied to THP because I was afraid
-of breaking the current callers who want to use PMD pages with THP. But,
-as you say, they should all be checking for
-IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) now.
+So I went back and checked out commit 
+e47c897a29491ade20b27612fdd3107c39a07357 ("slab: add
+sheaves to most caches") confirmed that the problem exists there and 
+then reverted that and confirmed that I no longer see the problem.
 
-I'll look into implementing your suggestion for v4.
+Jon
+
+-- 
+nvpublic
 
 
