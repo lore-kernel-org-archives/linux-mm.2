@@ -4,129 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89384F364B1
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 20:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799E3F364AF
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 20:10:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4F936B0005; Thu,  9 Apr 2026 16:07:14 -0400 (EDT)
+	id 9AAA66B0005; Thu,  9 Apr 2026 16:10:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D003C6B0089; Thu,  9 Apr 2026 16:07:14 -0400 (EDT)
+	id 95BB76B0089; Thu,  9 Apr 2026 16:10:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEF666B008A; Thu,  9 Apr 2026 16:07:14 -0400 (EDT)
+	id 871156B008A; Thu,  9 Apr 2026 16:10:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD9B86B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:07:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85867B516A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:07:14 +0000 (UTC)
-X-FDA: 84640101588.13.6F5DD32
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E6EF240011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:07:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X1l6s9I5;
-	spf=pass (imf12.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775765232;
+	by kanga.kvack.org (Postfix) with ESMTP id 789976B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 16:10:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2567BC0BA4
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:10:07 +0000 (UTC)
+X-FDA: 84640108854.30.527FCC8
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3CF9440014
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:10:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wUaCJDSz;
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wUaCJDSz;
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775765405; a=rsa-sha256;
+	cv=pass;
+	b=OGqWn2r7lR9reyYQFf+wOxsJDIBdoukQ9kRlT6tKHRgZFnBzaaIM8p/rzgNnerJ8qk9dRd
+	JWrSBMS2YZC5LP9+upMgpiB+uL8gw+8dPnqUQ4t0ivc/LHGvmnngvrTxFd5N9CKhrjK+YG
+	3V44RDEoC0oSsh3bXyPE4wByOHN+Pl0=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775765405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/noGlVUyCBU9SCMkKfV/73/nLArO8jWoLAogqLw1xDk=;
-	b=l7wGMG7HjpoxMBnLsYz2I0lqMJjJwB/NOHTsYM9cdVZmMWN4mC/wcX5nydsDUoTf16Qgeh
-	e2onFYtRO8iH2h3hpbjjkUOp60aLfTXk9FgreBg7a66M7B+UbBTmHQb+MpW0f2IkHKxr2Q
-	qrRD3NTGxUvAIezG2fudBgY+QX4s5XU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X1l6s9I5;
-	spf=pass (imf12.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775765232; a=rsa-sha256;
-	cv=none;
-	b=CMQhIjsv9ROqiptIPPOFCqUTWXVNRJtt7Qe8vkw8P0MDiWRCNA2hxCCe3sJvwHkw75Og8W
-	D+VYphXhcF/0YQRq8jq5Bfkwy0ZdRdm7QskHIQisu1Y8wEPYA9I9r2TO03V96Ssk1htBsq
-	5ikua3CsqCgJtr1qcp6G3phKsqGZn9w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775765231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/noGlVUyCBU9SCMkKfV/73/nLArO8jWoLAogqLw1xDk=;
-	b=X1l6s9I5RbD4+lCJRKJotirKBBpnCpCPu6kWtOuqov/bGa6GzoH9Wr4Twd06U/HqYNJNFn
-	5JjkjOcv+zfQLDCusK6IG29oiVgccQhngAiGC5mLfHtsfCqKDvL39NQ5lgMy1IgYmdNP3d
-	b32Jq/UiZQWYrC9ddR+eE4g2cW7OklI=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-Mb6zeYHcMg6Rw88-C3vIcA-1; Thu, 09 Apr 2026 16:07:07 -0400
-X-MC-Unique: Mb6zeYHcMg6Rw88-C3vIcA-1
-X-Mimecast-MFC-AGG-ID: Mb6zeYHcMg6Rw88-C3vIcA_1775765227
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8abb82c27e2so43624726d6.3
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 13:07:07 -0700 (PDT)
+	bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
+	b=xK5O0G1jwIz39ZLW7JssYCrAjdFVmivYpYTX5eoLAvie4CevtjImXYvLxBnUDOkvNUBR7n
+	Rv/o/KphgO8WtHTcbfblnyGea7yzNZmV1/ifS9bXO/c50OOpwWiUlO2ejh7zIYpCrGxBzw
+	Q67h8Q1feYPa7EEXBKqgBZbFXgPpvCo=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50d8c7a393fso768701cf.1
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 13:10:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775765404; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CWjbvYlE2+J63yGKJHckopoh3y/lSkjtwQ7GtEV1u0TCNmbFRku8QIq3Cp2QdOKhnY
+         bsNpnEUCm4aW0CdcDTEmlqVSojw2INH3krDo+nWFGM0c9gOi0xZ3N4zqLAiisQVw7Fmw
+         m96K6vIEHaouOYE/lz+lNwXyTb+vxliVz9OUoTrhcADYKJuwUy5fb8Q/goUyIhc4vQG8
+         Hy1+H81VdFLAzO8HE+uijOKkc8uN5FDLefm0F7zh8T0+XZ4Aj/CslpTg3FKZvcmUA5iE
+         KQXlHU7ur19nTXb8cJSapU2tSAnM/774KqXHX6Ka3VWSp/FEJe+5qmiCyTFO0Jj8HI5m
+         Wdlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
+        fh=DeqAMx2FAZKFNT7Df7gRwpkit9QRduMrUPtB00ectrY=;
+        b=Ztw6xg5eniydMcCL+KbU8K4jWc5Whb4Q3/mtm8kipDsf6WPWcUFZtRS20lOC4ClChl
+         aqP2yYhhQd904kHO8O7PwMzLZTZWv1A/vl8iZwarc9bZ0sd4odc3CUOPq4jSvF1Zv76l
+         aBLw4mvbrPaNC9SaohHdwuWCYVzrfz+Pa/mZEZSmhj0rCdeudu1oRfFihU4a8r2Sdz03
+         BFDyrpeDghgS9i8Scztq0A/P6z4xPqkWrRxDSFTL8FdQbr1YcyHhId0IHR3lcWXE23Y7
+         dkBp5aMGJeb/ECW5VLHtohwWlAS33x/LeWUjxH019QEFOealHbyOyCa3rZhKCwvD+WNY
+         z8rg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775765404; x=1776370204; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
+        b=wUaCJDSz+GfAVxqRqCcgunqPZeb8tYZq5Y6qDARHksfi/3DHfD4zvh/EwRM/GxVn2o
+         EhLsaowpJ2N4cZr9m1yk35THPe5lL4EBcgGhyfsINzMwlyexq+k7j31J5k3DMmHTYhgf
+         5F/uhfJOHY0O5pI7pHYkZFJci/nOT6pdI2BCfWZuERbX8a6TrkSGzj0lERRVaedcnTuI
+         d/SnV/PITiEI7ioHTHvTO2dYEDQzMPDsxdAYbSG4q6OCcGbWwb+JO+eEzVTw/kSg42yH
+         iVJTq3Ah4nWD1Ybz39+6HlK+w63hVXZkGorAemRv7XYqjB7GJCrtLer46YBYmQ5Vnbwc
+         4PFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775765227; x=1776370027;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/noGlVUyCBU9SCMkKfV/73/nLArO8jWoLAogqLw1xDk=;
-        b=WFkBOkns+SlBHzWWlms4R95iUgqhnAhy2yKhIoQka/3BIS6H9ykOtiMtPynlOs37TH
-         NAnJP11/0PAgx3FXoVNy3NPQt2fUU9E3579WTtneo4Mp+JPiKac9Sb+DrsZmdSe8PhFF
-         8v0yY9GR0BXar5o1xDSJGdH6GAECoycvb61dDw3LcPJPueZgA4tqgBiDp8KEcSvNaijk
-         d/m0s0cJTC5CT60dRg5M25MzdGrUbA9tByG9I0RNJSa4pW7gtX6+U/NyFd/NtNPvzf0J
-         3Sc2GzHx6FpdP5J2AH0SZc642rmF3vVEcXa0jyeRGsaXFsoApuXTEPvgfde5gJDNDrhd
-         Bn3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZecr90chYzyzA4LRKDJz/Ohl8hXs0ifdxCCDBsuZ4DQb+pCfnZp0yUokBvkTpo+O4AuEOolE1Nw==@kvack.org
-X-Gm-Message-State: AOJu0YzAbPhe5PlEKOn288wvDTQS8/yUx7Np1Icqm2GDog9OAIc6LEs2
-	v/2ZX9piYW5uBypohVwYpznz71Hq6B/nVGzv9HEMr/6wAJPFFGlnWN8d8UlXvmrFVnwn/Oi+eCS
-	pBQdbiqa/KbE20bQWLtXtkPyvApfOOqzmtcyLf1mV1Mk3tACtAl7X
-X-Gm-Gg: AeBDiesG2mmk1chhaHkDwEclDj29iwqxmpWyI0ReMul7LSK73w9ZtILUOtTeqOpC0kP
-	x2OFzN0G5/BcRGlbxzEkUlVuYYbwtEuHhUsE/H9upqm5inKpwSsdT4MBy7L1JsGHx4TY8gQtsve
-	ChPtdAg5143k9oWuD+QnJrLQ4ZJZpONpf4QTEmrk9RQfoxLv8QmLfFeEI9C5wzd8BA/d6K0nnU1
-	5kC/x0UTJU77LR+TZY5UC/dYRmNvdE+4yhxuS+1KY8SuVdaUo/w309ZnGAIOYgYe5w98xHx54hA
-	gHbxkmWEtOB64rwonpD7Rpzv7VDCSno5VnVluOK7Nyid4wp42EnWJjnglssv/MGsRJufl8zMuYc
-	WFhf/i+/xLWiTwpHFW8aayg+BKUo9kzLMJke0pzFEJJ5ugnjS5dFaOvP4GD4SvCjrh6uMfuU1p6
-	a4t6wNHjeGDjwHFA4=
-X-Received: by 2002:a05:6214:8093:b0:8a5:104b:e385 with SMTP id 6a1803df08f44-8ac8629b4c2mr2842366d6.35.1775765227226;
-        Thu, 09 Apr 2026 13:07:07 -0700 (PDT)
-X-Received: by 2002:a05:6214:8093:b0:8a5:104b:e385 with SMTP id 6a1803df08f44-8ac8629b4c2mr2841986d6.35.1775765226718;
-        Thu, 09 Apr 2026 13:07:06 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-53-69-159-169-238.dsl.bell.ca. [69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84cffe76sm5587716d6.47.2026.04.09.13.07.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 13:07:06 -0700 (PDT)
-Message-ID: <7830cda5-b3df-4da1-805b-278d5af6b2b1@redhat.com>
-Date: Thu, 9 Apr 2026 16:07:00 -0400
+        d=1e100.net; s=20251104; t=1775765404; x=1776370204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ew9YJVqzCV0p3Lp1Qxmpt1qcifyX/ZWozjm6bnofDwU=;
+        b=fluTooRhrFPwLWtvVr19i5KHpXIBn7cLjd6z3e8D8ChZ9yzXOisolkfiWTsRV1Rf5A
+         rbTn4Xcref/n54tErIUL4YbD3UPQKxI7SNxEo0ZulRsVSB0ocnO2nlnbOpjrhH8qT90t
+         SG+1tCVMTNP2nziq69y/5tV0jqi73MnPW0S4Dq2DzJrkOeqkowNcraILDhnWkF5Tpydf
+         pHWfbWG+uD8QOINQtgQyV9s0TE3Z2OvfMJoxeEzHciTNd33qRRE6z/hxtl9lYyfcSFYk
+         BmNB87GFwMaA+YCt2QIjueSeuPovFC418pcZ3tlXOb20ZWoy3pDtRijYJk2TwuMMYzaN
+         U3Ig==
+X-Gm-Message-State: AOJu0YwrrowbMs21I46/yRd4lN0nVQ48any/T5zadNeY5glGRYvL6rYo
+	2J4AoFuYahXwMF1d0UatjbFawdyGn6z2OdZA/81YBHFpWHcuc5RnHzt7oT3w6wZBKVavMC7n8KF
+	o4KPTuJXK8IilwRTqXT4ka4GJwG+VwzVLfx4I8ZMq
+X-Gm-Gg: AeBDieunvMGPHzYLTJlYxiTEXkjqiTe3NjD0sN5JuEcyFvnlAM+OfDtNkrQ6i9J+/i+
+	W0SLGCc61fTmG9bDS0UNvZyKbAl+oqkrSWAQApcflHBwXhRmJvP4iS985DHULQkqHL+9mV1jCGH
+	PljCtb6H20jMMY9Y66HPxS/OtF4sRkj09TNSv6YBvXQYGDcEuVHPW8nokYgU4RTi5e7qZ5glYIP
+	uQtGUKYUl7hLGanhsv7c/TwdYCoTz3iwSP6pnRFZ68q5XoYudW2TV0n+WbQV1lTbQgVXd4vYMWV
+	6vNErHcg5vSZLI+B89p54JbFlODBVJTOQ7tF95vSnibkHAM=
+X-Received: by 2002:a05:622a:a983:20b0:50d:418a:9770 with SMTP id
+ d75a77b69052e-50dc2535cfamr19504341cf.2.1775765403815; Thu, 09 Apr 2026
+ 13:10:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/10] mm: thp: always enable mTHP support
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <cover.1775679721.git.luizcap@redhat.com>
- <6dea717fe8c86003e7da33c9a7623b834649d5ee.1775679721.git.luizcap@redhat.com>
- <772C4431-FA93-4477-B1CE-3BE5EA97FD0B@nvidia.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <772C4431-FA93-4477-B1CE-3BE5EA97FD0B@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0NNP-8RvtU4ntWMdGTO1HMKAkKErjsMSDbcNxTYazOs_1775765227
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E6EF240011
-X-Stat-Signature: 44pwoc5tpnhfocy8enqfi68rm6kpmhya
+References: <20260409152822.1073083-1-gourry@gourry.net>
+In-Reply-To: <20260409152822.1073083-1-gourry@gourry.net>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 9 Apr 2026 13:09:52 -0700
+X-Gm-Features: AQROBzB0iy5dDbU7EKphm65HVhCwBsaWZDeae_72XosBjnydaerQSoGW-5lujDA
+Message-ID: <CAJuCfpFJ6+OraOT11_bysOZsymk9OB4+C1M_R0UEYgtgXfVA_A@mail.gmail.com>
+Subject: Re: [PATCH] userfaultfd: preserve write protection across UFFDIO_MOVE
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	aarcange@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3CF9440014
+X-Stat-Signature: aonsr5sgt69qrpm4a3rygj7jdbttyf99
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775765231-573067
-X-HE-Meta: U2FsdGVkX18J/VbxQmOOGM/kcAke7fDAqr1yf0YMMJ2KMdzywgTigWXKgHiZrW1v8PeLHveaLTLnIaM9pKGRphz8M1DBG/4bOq5clZ9e+c50lgcvZy3HV4XU5oYoXCj17A0ES+pTSXRVWGZsKtakzDmd6hF/9CT7VRrb3uTtQkY5yut9l/fBExrcHdGKrbWlCGfvhV1jaIe7Z3eZiIvwRJO6MsnA5JAXPBri4bIhjADWadp2eOhCB3G7X9I3WqmzlIOfat/8UihBn2Uqoo9WU0pLcvkCI/D8kyjHA3qyRd8rj5sZVAXXZ3RxJEsGp5OWTThJq9/g8Ptkd5+ggM3xanC2xzkfrIQ/XylCI0wFLH+rx1E4J2863rif5qD4RyBYcZttdDx4fQuvj+xDXDRd7g1tw+EK2ZO4ni4DGf4jRJ4qqDHaEf3A1Jft8nyR7oFrQhRX8Y61wcpmNTaFhfLE9kBg3PVAGO9R6XDdKnH/iYeoMnPyugF+i3zEcP5kA8htQJpvA3es1/Y4FsysOLzXVlcWTkz8d2mXaN6bQ5iT2+jL9GHoZsn/QAd+o7buG7tc71/1PATIMq7Eknj/oilW+xrNA/JTI+vL3qatKlOXAug4919X+x4KR/fd2cQaIJpDhiJol7xluJJAcuSjVHn7W67tSSt7r58LvKWKGLfJmvtvY7Q4Cw33Snoy4lKxv5BOuwuZmUbaadRmkMvVBNMm2HWHAyPlChsNhmBLedrRBuwVFGl4XBauIADQ9vritpeiH+EG+/Q7WUMW047e0SlEcHQwgVuqUrBymO+F+jqB0Fj05iwwE1x21QSw7INQdZnTv5jdyGeeru8RqzsPwd51pORqYuC9lZ12FKl+GXpBvA/POadfqLk5p9OjQc+6p/dUmzNLUSGAPcf2WLVKRDdo2ivmFjVagILuf8tJM8BX8t6Owtv22+gPKHHn9+AoxbIFnWp9fBSEgLG54ttEOI2
- 5IV63CGj
- IXG5tttW4lcaolrHx/6kV8E4cTEN5vli6g8SAOqguhYtkq7UqfhYrCRJeZLuaYoD+VEJn3SvAUoFtpoR2k2ZEtRwwbv8scqhRPM3SxCro9Qsdak9W30/BafQ84YjA9Vumi/DcLeYRmFjpJBXAaFkHxDOsj5DRyoNl/ko6A1uvFFUTQGejreYBONWLhIT7RmPwQ/ZG/iD5obu9WiDKIL8cYkxUQ1H9MhyryOWEmhNVNmJZrLJ4eCYuTHMZ6txweoj5cc+4f+tx71qbH9hqhdbIM8lznJZiDjpSLndlXkYbXZI6NagrT4dd5xvZhJsatUbdh2aqT6aZL1hA1u8G/dRzHDUYTWwGXSQ9sWEI1ZHmuSwMEz2Z521uzmDOzzgjmSzeA4vUCtYaa6nSk+Bg8xG4ev7azw3ORQSGa24xThIPlbEu4n24+rh66KoSfg==
+X-HE-Tag: 1775765405-73560
+X-HE-Meta: U2FsdGVkX1/RA5LPt1tzwpHiTYEoOLYSSo/9RxMPYi8UhnLoqiLIZMSfIAjqWXEvxr0mcXlNpAe+el/x3Evz29zM0E6q0Ibg9xoJ7M81+vYh9CYpwqVZstSCmQL2NUkepUQwelz3Nr/OP7yk0z7B3Z1YCTH5n/wUs0oucUWTIEw8AKDpYgZBKjEW6yDDy1d/hVbh6o0rNacBbCSgJPaKEd5hfc+Hv6GrqDztIdPB4KQzKTLCKUDpDEYqCTQ2nhMNDRyrBfslhAck434RBJKAKNt8RLcuBaudmuav4VhzCWj3un3/q3isaZgZAe+a8VT9KTUret6vQT3upZjaaudaH2kwO5x6C012eonopUpffES2QzBB8XjNjXq4Uapc0HdtooACkS34pAA+mdk6JnPBEA57fkQK2KKBjsKUHcruKcR7/+tYywFqFo+OLFde5YmlxDo5BB71cLCSAjpr8ruXiqan3/zzwSiBzcc2sjKa6rY7+rD3Zwkx7P7yEdIIy2k0GR/8DGjVzqvhGA63ALg2KZKe/BVHQwIJwwdIQq/mZQeUMmlvAeEtE6vPyHE/UjEhnfOyYMc01hbq3gTKJedJQRweeH+GaCxdzG2zkaMntW26tfvmVeu0COzkECfCUhsRgy9CdOihI5st80sB2pcJWYQQmOrVuEnlWIJulI2plDiZF5zc/PwrPpm5lhH/VNL5e5ZjVg1+tSULzqkBlxgvbTdH2nK1SXtSOn2h8rtF4rGLo88mwBlzWbFtmFukMmN8wjFIcJ4JuPeCtfdMDYh8CgOM8jVu0vmD9URnFA+Sk8VsaLlbiYZ1bYHonEv1EMdAZbo3xntAsIXwssLc8qhQX/wuS3F1Xrj2BuSVx9tfWUZMZiWDYDPx9CMBJCqMABxLQIxgs17blaOqywFsSLmzhmZ/eThUgNyrT00862mQZgZJB2daoceptjFHVN+yqFi2wfOy+/8Z6JYbEnuOq7s
+ j3lnoWC+
+ CYP13menH+/grh5OWpseluOeypyn4j5YeFFr+I/aDT539jJxBhAE96NpIokiiawgys8M8E2U7mk6KcrjSnUZhlMLW3c2QkmkI73doeHiiuDGwbB2SNC75zydrn3eiG0IMoC8POcGk0bNcxehxqmfJvYzIOwmqTHfBJ/nMJoG4enrw5LtrGIhD3TdXWqKnlFab4++YOsSLeYA+MbfkH1T2OVIsdKjIEreV0PXxNqczHodpQ0846T5hv7iGRW8Hr/w4MvDgq42nNMS9NoUqR6J8xawLI31UTFSSseqbMduhMoxWChJ9wDHkgNbJYYIdhC6Nj8qxioW+jjxP9+z1QrGJfCIJpJZZDTPfo7N6sszPBFuYEKFWuonoKwbRJVhS5vFo1b3/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,140 +138,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-09 11:55, Zi Yan wrote:
-> On 8 Apr 2026, at 16:23, Luiz Capitulino wrote:
-> 
->> If PMD-sized pages are not supported on an architecture (ie. the
->> arch implements arch_has_pmd_leaves() and it returns false) then the
->> current code disables all THP, including mTHP.
->>
->> This commit fixes this by allowing mTHP to be always enabled for all
->> archs. When PMD-sized pages are not supported, its sysfs entry won't be
->> created and their mapping will be disallowed at page-fault time.
->>
->> Similarly, this commit implements the following changes for shmem:
->>
->>   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
->>     check so that mTHP sizes are considered
->>   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
->>     when PMD-sized pages are not supported by the CPU
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   mm/huge_memory.c | 13 ++++++++-----
->>   mm/shmem.c       |  4 +++-
->>   2 files changed, 11 insertions(+), 6 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 86e489c0a150..6de3d8ebc35c 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -118,6 +118,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>   	else
->>   		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->>
->> +	if (!pgtable_has_pmd_leaves())
->> +		supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-> 
-> Why is BIT(PUD_ORDER) also removed? I thought PMD THP support and PUD THP support
-> are separate. Here the code implies PUD THP relies on PMD THP. Is that the case?
+On Thu, Apr 9, 2026 at 8:28=E2=80=AFAM Gregory Price <gourry@gourry.net> wr=
+ote:
+>
+> move_present_ptes() unconditionally makes the destination PTE writable,
+> dropping uffd-wp write-protection from the source PTE.
+>
+> The original intent was to follow mremap() behavior, but mremap()'s
+> move_ptes() preserves the source write state unconditionally.
+>
+> Modify uffd to preserve the source write state and check the uffd-wp
+> condition of the source before setting writable on the destination.
+>
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-This was a suggestion from David to an earlier version:
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-https://lore.kernel.org/linux-mm/dac20466-adac-4e47-8f50-87f4774fd57b@kernel.org/
-
-My understanding was that if an arch doesn't support PMD pages then it
-probably doesn't support PUD pages either.
-
->> +
->>   	orders &= supported_orders;
->>   	if (!orders)
->>   		return 0;
->> @@ -125,7 +128,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>   	if (!vma->vm_mm)		/* vdso */
->>   		return 0;
->>
->> -	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
->> +	if (vma_thp_disabled(vma, vm_flags, forced_collapse))
->>   		return 0;
->>
->>   	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
->> @@ -787,7 +790,7 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->>   	 * disable all other sizes. powerpc's PMD_ORDER isn't a compile-time
->>   	 * constant so we have to do this here.
->>   	 */
->> -	if (!anon_orders_configured)
->> +	if (!anon_orders_configured && pgtable_has_pmd_leaves())
->>   		huge_anon_orders_inherit = BIT(PMD_ORDER);
->>
->>   	*hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
->> @@ -809,6 +812,9 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->>   	}
->>
->>   	orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
->> +	if (!pgtable_has_pmd_leaves())
->> +		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
->> +
-> 
-> Ditto.
-> 
->>   	order = highest_order(orders);
->>   	while (orders) {
->>   		thpsize = thpsize_create(order, *hugepage_kobj);
->> @@ -908,9 +914,6 @@ static int __init hugepage_init(void)
->>   	int err;
->>   	struct kobject *hugepage_kobj;
->>
->> -	if (!pgtable_has_pmd_leaves())
->> -		return -EINVAL;
->> -
->>   	/*
->>   	 * hugepages can't be allocated by the buddy allocator
->>   	 */
-> The code after is:
-> 
-> MAYBE_BUILD_BUG_ON(HPAGE_PMD_ORDER > MAX_PAGE_ORDER);
-> 
-> Should this check be removed or only performed when pgtable_has_pmd_leaves()?
-> 
-> I do not know if there is a possible Kconfig that lowers MAX_PAGE_ORDER
-> below PMD_ORDER and enables THP. After this patchset, that might be valid
-> if people do not want to use mTHP but not PMD THP.
-
-I need to look into this more carefully to be able to answer this, I'll
-get back to you.
-
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 613393eae5a9..b49a30475cb0 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -1839,7 +1839,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>   	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
->>   	unsigned int global_orders;
->>
->> -	if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
->> +	if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
->>   		return 0;
->>
->>   	global_orders = shmem_huge_global_enabled(inode, index, write_end,
->> @@ -1947,6 +1947,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->>
->>   	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->>   		orders = 0;
->> +	else if (!pgtable_has_pmd_leaves())
->> +		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-> 
-> Same question as the first one.
-> 
->>
->>   	if (orders > 0) {
->>   		suitable_orders = shmem_suitable_orders(inode, vmf,
->> -- 
->> 2.53.0
-> 
-> 
-> Best Regards,
-> Yan, Zi
-> 
-
+> ---
+>  mm/userfaultfd.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index e6dfd5f28acd..783ca68aed88 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_struct *mm=
+,
+>                         orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
+>                 if (pte_dirty(orig_src_pte))
+>                         orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
+> -               orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
+> +               if (pte_write(orig_src_pte))
+> +                       orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vm=
+a);
+> +               if (pte_uffd_wp(orig_src_pte))
+> +                       orig_dst_pte =3D pte_mkuffd_wp(orig_dst_pte);
+>                 set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+>
+>                 src_addr +=3D PAGE_SIZE;
+> --
+> 2.52.0
+>
 
