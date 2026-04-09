@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2000FF364A6
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37E9F364A6
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:06:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B0E6B0005; Thu,  9 Apr 2026 14:03:48 -0400 (EDT)
+	id DF74D6B0005; Thu,  9 Apr 2026 14:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20C576B0089; Thu,  9 Apr 2026 14:03:48 -0400 (EDT)
+	id DA83B6B0089; Thu,  9 Apr 2026 14:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122A46B008A; Thu,  9 Apr 2026 14:03:48 -0400 (EDT)
+	id CBE986B008A; Thu,  9 Apr 2026 14:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 015D26B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:03:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53F101A0166
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:03:47 +0000 (UTC)
-X-FDA: 84639790494.24.807DAA5
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BC8A06B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:06:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56CB4139059
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:06:18 +0000 (UTC)
+X-FDA: 84639796836.05.0468674
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B9BD2C0013
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:03:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZj5N06X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 913494000A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:06:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbKILrKU;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775757825;
+	s=arc-20220608; t=1775757976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/H2dWi1BsThheafcmx781nT7IuPmcwBrZFZzlDcfMCo=;
-	b=TMvtzTU6TMl2FMJC11YPyY7k1OM0XrW+WLeW0biBqmK22i4VlWGZnSXu/rkLAY0XmZHnvP
-	uzsVr1SRgUCsQs+SG5tqPB6dOrP1uCzcamZlOeYk3VH9hXB1oMVgsx64QuG4ct+WOWe9Pg
-	l/DHqPMQyEXzoFXmE6OjcIUosntzJrk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775757825; a=rsa-sha256;
-	cv=none;
-	b=QVK3mhuc35FGCIoHwMxBwfN+ru+8bogMvgtWWcl12Te7g1i71a2zyOmntDqv/wax2bl96j
-	nxQlXkqABTeytNKdN28MoebdT6v8hVfLFvEceBW/Kv9YUy3juYjnwqmrbvKL60uvhWy6rv
-	NYKB3iJZyY5MWZ3kqPaINGFSNDBM5/I=
+	bh=NfxUCt49N9N51sdtX7qGacaTiS5FvXvof6n28eKOkMY=;
+	b=e/BKSOG8L20x+AbjgHm1G+5M/aU1jD89W824JOVOwdA61zL1KOWJ3buJiI1uwoQpSChb+g
+	68kCVak/adJ0Syhp5myvfxP9zNWTcge8aeyBrE7n+375QBlNKCm15xvLfSZFDcG2SykEdW
+	aIM+rsbOG4JvIxLQgGNjIzVT9oDScAQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZj5N06X;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PbKILrKU;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775757976; a=rsa-sha256;
+	cv=none;
+	b=bvewqOvwhffh3H2xUSFLAJjN5Qe5AOlBGF7lxSzVqVMx4oDSjwMPbS1Y2KScJgRbEoMhbn
+	wo5ielm1WEEVSHWA9G9/qkznmz4n+mz4wMsGE42reFBB/OBOSW+LaFw0dk3Q75IaaOFk9X
+	viMPJT6h8G8QObwglKe+f7aXb6hCkxg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17A24600CB;
-	Thu,  9 Apr 2026 18:03:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E38C4CEF7;
-	Thu,  9 Apr 2026 18:03:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E1E2A60103;
+	Thu,  9 Apr 2026 18:06:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250F9C4CEF7;
+	Thu,  9 Apr 2026 18:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775757824;
-	bh=4dbCHZLjjXhxdr9gOsf+BIDy30Sqc5rBBMNQ7k7EzDo=;
+	s=k20201202; t=1775757975;
+	bh=LRJfzSmiQGNsDySIlvIC513MTSAp1qgL1sH0ceLK3sU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fZj5N06XaWfYZYpq2na8TQKoYo3vPYHGjEucpEHkRv2YtNVXNDQe7mSmD46sopb9P
-	 9uC5x1QvJyP0WgFrZBwT9Yqh2N0hbmaeQ/s+h55IEvCAVLnrkLKCAUm3OV7mE5MB8W
-	 ELmqncnkrwmF7acIiIp/cAydEARB1UxlvqNH5DVN2xEZEcmVR7vcPmdt7T4+jUZZ92
-	 k3k67yopanxGmZHy6T4a140EdqQtGvz1fycVAuTBuR1wLxrjHnnGySl4gapZoo5Vub
-	 3Pzdz7i6ZOfFwHEk63iWcMhWzF3izYV7iydsgkRejhWscUy6Hm3aVXB/QxGNtjmoLR
-	 Wi+5bOn2l0esw==
-Date: Thu, 9 Apr 2026 19:03:41 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
-	Joseph Salisbury <joseph.salisbury@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
- contention in populate/unmap paths
-Message-ID: <adfhGOHcg4AF3IFn@lucifer>
-References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
- <4a4f5b48-8a1d-48f8-8760-0f5d43b5d483@nvidia.com>
- <982e5964-5ea6-eaf7-a11a-0692f14a6943@google.com>
+	b=PbKILrKUtYeTHPHYiFH7Na561CeOcYXO40jy5rZUX8E5WIt7k9DY0agiTU5dlnX8u
+	 lD6nqEz1VJQZlooy5fG3WpjGdKdE4Wyc4C0l/Xz7bWo5+TSgH9jTDDZhbu6zTjbwJG
+	 /q6tBlAna9M9Xnc2PPq+kxcvdUt9adTIPuiYakb58ekbB9TnaQu4VwJ5OH8Xol1tD+
+	 37GPK64nUrdz1H9kR9pfJoRRhspoBIIGO5OSpdYEveVvP0KB9f1zcsD2fhqG4Wb5rZ
+	 BhJc2pBBfvfpV0TkFuopQ4Tyrh+FS2NvXZZDUqeVyb1pnGRIor3sac94pWmlwR9qfR
+	 4hIzj/tiZVIfQ==
+Date: Thu, 9 Apr 2026 21:06:08 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>,
+	Zi Yan <ziy@nvidia.com>, Evangelos Petrongonas <epetron@amazon.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
+Message-ID: <adfqkOWVFgeAkItF@kernel.org>
+References: <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
+ <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
+ <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
+ <0D1F59C7-CA35-49C8-B341-32D8C7F4A345@nvidia.com>
+ <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
+ <58A8B1B4-A73B-48D2-8492-A58A03634644@nvidia.com>
+ <aburnbP64n9axmu_@kernel.org>
+ <CAAi7L5evx8ta8BifNiGNfUoTiaBUsv4cgQRbm_15RoAfdKPcMw@mail.gmail.com>
+ <acAAp4JaTGn_STBH@kernel.org>
+ <2vxzwlyj9d0b.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <982e5964-5ea6-eaf7-a11a-0692f14a6943@google.com>
-X-Rspamd-Queue-Id: B9BD2C0013
-X-Stat-Signature: dfar16zdg8s4g4z4hc4fqn7rbp5aqmyi
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2vxzwlyj9d0b.fsf@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775757825-454376
-X-HE-Meta: U2FsdGVkX19n2qcpNLhhQuwPpQl5hVBQrLWrLx31SwvVrBqQUh1eypT15ut07c65khj2qKubMzLRoTc7JcFMP/oUWRxRo19PAwa5a3PWqQxuz6jPkbWF9uAnhV3lmDmdam66Efn5X752fOivTsC0ZAfTdoWmwQlEO8rGPrkNGHfmBTYpTxnndhdR6DdM7iM2bhRtKpnp3E9ZDCaqSDBN8f+s0qYp4Dki2dg0eANnlVRYgN/ThiQOUWGgoVlCsJ2a6CweobxrZJaLML2ATA3EOHPBI6L7znl3dR25gZU/IvnEQASN99PU/FMoZ5CZqhZH+8QgzsMRXPWcDeMLRcRIlJfTSxQDegDXlm0xqOgQNM1bg4FQ2HS+qYR+SaMzYjoKavDv7vjCyg3jiDJtDMVvTIwldAu5M1kA+Ps+TXg9vNzOT17GUaqGXM1+68b1V6Gy8aOMxG/NNhl39iUzjUAck7MOZVz8Cl7cNUC/ud04SWyt9HRf+mGCDFq3+WwxO8mMNGG09NXDUN4/DiO1Kn1Minc+SeBhRrNSQicqtzXYTOzQ5G8rdM9O00C2pUtYFN5Uyt/zPKmVackvfs4thzdmoIVgkuoUnmFAfO/FlPx3xS3Zq7XMbaBtOk2/W6wYg7WsgibDslcifrW/+yzIVSEX5/0sGPo21P0iceFqqHAuy6Wb13dMYnjGyDdBY0AxbqFkLfo8guWOWoZrga5CBe/EFtzjIAzJh4w9kef/D7itawJtEaKvXqLTs/6xmUkH9xb5nKbDZShuDxZh3tdWtm4DWh1N3iqKxuCZia5vuu9SJez1SVdKChNstJaHu4RHvKasGyrRfYXz0fFAUZIvb8RVX4zwqYxkTXUcTE1BzxmSwTa4pt/kNU9TvX0WPaMiFweDYmzn2eiLSO9RCwJ3I+kxtaajpmKFeld8+peJXV5C7FKsb/00lhMKOlMWOXBRojXy43ibuLleJudorBbuXgy
- a/72BSmn
- Z+XV1mlNtF1AovjbJdjGbjJLPe7JCULQ4Ema0gJ2mhfkkmN/v0yyMDb1ElAWGbWPN22KQYsDXPN2ahyJeKIcPG/ZWux6Eefft+c7Zp3jZQ5/LXkSJfMHY02cvMvLVs2VWT+32KnMjVh1GXPyA4u3C7mJx6nS/5GvW3XYWln0s6ur4pTqFqZMDWCPMgI+owhQf2ofhA62/3WMchk2jKkG4niZ13CcRFzc+jmC7oxpXXALRH0XdxnlcpEExxANm5xCAzZ84n/jWrMCuBXw2Asri57bHJDELzixls3vfoHrC7sXgXck=
+X-Stat-Signature: xxybzmo7b7ux4er7jwcfojzzawh1d536
+X-Rspamd-Queue-Id: 913494000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775757976-774877
+X-HE-Meta: U2FsdGVkX19o++wSAinfQMeOt5bRqAvz2WqFfHCBscN3V/ryljYRaWnhXpMyY3ve6EmJRG9jCXe64d/NZEA/Rwu4KvkBKC5CBdg6lpMpfCXcPJIx7K5wtgibZxcoikLeUBUz+3X0J3ED4Ew4V1RnkX4p5jIlC0UWJ7xVgzJNXfSTSkQUFQAsQxp+IFjRa+XeM/Yz+OJleFQSgHDp6ibZBTS2hV7IsS/sLMlN/3FN6w3GoqnDG0ZlyxipLwkg2+gR3yK6Dj+/NUT82lhvSPEWrIDFCcy/mPvTHGT4bXMFZJAAIXmeJh8rdTcnbLESAI7XXIzhJcYbMk+ZmiVouvurXxq1NkdDejG4V37iNAdSJayWNe4UE+5pkb92AeUXaC15l4tmKEfVvlF7wPnhOk4KNaSQ+veC6jG8poqDv6Jj4bjhry+NZN6ehtyFfoBJz3CaTpX1JxsqeSNPYuoWjcVrbvX+wjdySyZ5YPIF0aCPMJtVSehrj9s5CVnhzt7TXOgGPnSF77jxE7mhOqS1aEUenpYLxuPaJ8K/TraS0xtow3/CLJzY6Q9IRBLb18c3kpyU5t1VRkAKJQd8D67OgYIAxlfJLWMZfF1qW5XS0lazoVuI0hu1Ova4+IR7P2tHK7z79UHFUayTF8JhmQiGbl66kj1Z6rJD/oOljw9+Qd1lp9I3hTDy69JxjRf8cEz+muOiv7/U44nSTzR+EzGd4kECT6rcnzzn3AY9TEUAOqfGv+w9L8F5ZGc2h9wWMcsoNSr4dyJ4FP+ogmjeL5lyJAOz09dV1e2nBADZXXsPiTB12fijQ3Biks035QmdJbnel/HBqxNFLje//TbBqk+yMHjJmHLKH/u0s1KzJtr7YDXp3ycHsDrCfgxFmq8JkPx0/NorTgzi6I+8NUfLmNNv8arJ/PLMGdtN2NddsC0VpQMTsyed7MrbPniSWqagO1prx7l8WJbsL6sCNKgKqws18bx
+ 4ZKlHSjR
+ 5KxV7zjo3xutSIKdY7rlpkTzY0orvsGSqdQWEqosCbxQe9RMSkgDcCHo1RxNLeeepupf/8+zghW1p6SlYBaPgmcbB4EIxEY+gBo7jefizq0BxDxer9+R2OxNSUE6kBs+cV+Ll03Ax7RLGdeP0YtIIb+0GOi4G+tLAszkCffL6vkTok0niwmtubG4CofolR3k4z0d3RSDZyBt2i/lnTOTQKNC2jvLj9a714xYFg3tqb6w0k3q+bh4fPYdSh+lI3n1sw/jBpMnCVi1wzQrDApsp/3drSIHFBysYQReZtfU1+u5XWEX2WQPooBFw0e0il7FPy3L0dA+R/IpMvuM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,150 +106,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 05:35:18PM -0700, Hugh Dickins wrote:
-> On Tue, 7 Apr 2026, John Hubbard wrote:
-> > On 4/7/26 1:09 PM, Joseph Salisbury wrote:
-> > > Hello,
-> > >
-> > > I would like to ask for feedback on an MM performance issue triggered by
-> > > stress-ng's mremap stressor:
-> > >
-> > > stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --metrics-brief
-> > >
-> > > This was first investigated as a possible regression from 0ca0c24e3211
-> > > ("mm: store zero pages to be swapped out in a bitmap"), but the current
-> > > evidence suggests that commit is mostly exposing an older problem for
-> > > this workload rather than directly causing it.
-> > >
+On Tue, Apr 07, 2026 at 12:21:56PM +0000, Pratyush Yadav wrote:
+> On Sun, Mar 22 2026, Mike Rapoport wrote:
+> 
+> > On Thu, Mar 19, 2026 at 07:17:48PM +0100, Michał Cłapiński wrote:
+> >> On Thu, Mar 19, 2026 at 8:54 AM Mike Rapoport <rppt@kernel.org> wrote:
+> [...]
+> >> > +__init_memblock struct memblock_region *memblock_region_from_iter(u64 iterator)
+> >> > +{
+> >> > +       int index = iterator & 0xffffffff;
+> >> 
+> >> I'm not sure about this. __next_mem_range() has this code:
+> >> /*
+> >> * The region which ends first is
+> >> * advanced for the next iteration.
+> >> */
+> >> if (m_end <= r_end)
+> >>         idx_a++;
+> >> else
+> >>         idx_b++;
+> >> 
+> >> Therefore, the index you get from this might be correct or it might
+> >> already be incremented.
 > >
-> > Can you try this out? (Adding Hugh to Cc.)
+> > Hmm, right, missed that :/
 > >
-> > From: John Hubbard <jhubbard@nvidia.com>
-> > Date: Tue, 7 Apr 2026 15:33:47 -0700
-> > Subject: [PATCH] mm/gup: skip lru_add_drain() for non-locked populate
-> > X-NVConfidentiality: public
-> > Cc: John Hubbard <jhubbard@nvidia.com>
+> > Still, we can check if an address is inside scratch in
+> > reserve_bootmem_regions() and in deferred_init_pages() and set migrate type
+> > to CMA in that case.
 > >
-> > populate_vma_page_range() calls lru_add_drain() unconditionally after
-> > __get_user_pages(). With high-frequency single-page MAP_POPULATE/munmap
-> > cycles at high thread counts, this forces a lruvec->lru_lock acquire
-> > per page, defeating per-CPU folio_batch batching.
+> > I think something like the patch below should work. It might not be the
+> > most optimized, but it localizes the changes to mm_init and memblock and
+> > does not complicated the code (well, almost).
 > >
-> > The drain was added by commit ece369c7e104 ("mm/munlock: add
-> > lru_add_drain() to fix memcg_stat_test") for VM_LOCKED populate, where
-> > unevictable page stats must be accurate after faulting. Non-locked VMAs
-> > have no such requirement. Skip the drain for them.
+> > The patch is on top of
+> > https://lore.kernel.org/linux-mm/20260322143144.3540679-1-rppt@kernel.org/T/#u
 > >
-> > Cc: Hugh Dickins <hughd@google.com>
-> > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
->
-> Thanks for the Cc.  I'm not convinced that we should be making such a
-> change, just to avoid the stress that an avowed stresstest is showing;
-> but can let others debate that - and, need it be said, I have no
-> problem with Joseph trying your patch.
-
-Yeah, the test case (as said by others also) is rather synthetic, and it's a
-test designed to saturate, if not I/O throttled by swap then we hammer the
-populate path. It feels like a micro-optimisation for something that is not (at
-least not yet demonstrated to be) an actual problem.
-
-stress-ng is not a benchmarking tool per se, it's designed to eek out bugs.
-
-So really we need to see a real-world case I think.
-
->
-> I tend to stand by my comment in that commit, that it's not just for
-> VM_LOCKED: I believe it's in everyone's interest that a bulk faulting
-> interface like populate_vma_page_range() or faultin_vma_page_range()
-> should drain its local pagevecs at the end, to save others sometimes
-> needing the much more expensive lru_add_drain_all().
-
-I mean yeah, but I guess anywhere that _really_ needs to be sure of the drain
-has to do an lru_add_drain_all(), because it'd be fragile to rely on
-lru_add_drain()'s being done at the right time?
-
->
-> But lru_add_drain() and lru_add_drain_all(): there's so much to be
-> said and agonized over there  They've distressed me for years, and
-> are a hot topic for us at present.  But I won't be able to contribute
-> more on that subject, not this week.
-
-Yeah they do feel rather delicate... :) sometimes you _really do_ need to know
-everything's drained. But other times it feels a bit whack-a-mole.
-
-I also do agree it makes sense to drain locally after a batch operation.
-
-It all comes down to whether this manifests in a real-world case, at which point
-maybe this is a more useful change?
-
->
-> Hugh
->
-> > ---
-> >  mm/gup.c | 13 ++++++++++++-
-> >  1 file changed, 12 insertions(+), 1 deletion(-)
+> > and I pushed the entire set here:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kho-deferred-init
 > >
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index 8e7dc2c6ee73..2dd5de1cb5b9 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -1816,6 +1816,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
-> >  	struct mm_struct *mm = vma->vm_mm;
-> >  	unsigned long nr_pages = (end - start) / PAGE_SIZE;
-> >  	int local_locked = 1;
-> > +	bool need_drain;
-> >  	int gup_flags;
-> >  	long ret;
+> > It compiles and passes kho self test with both deferred pages enabled and
+> > disabled, but I didn't do further testing yet.
 > >
-> > @@ -1857,9 +1858,19 @@ long populate_vma_page_range(struct vm_area_struct *vma,
-> >  	 * We made sure addr is within a VMA, so the following will
-> >  	 * not result in a stack expansion that recurses back here.
+> > From 97aa1ea8e085a128dd5add73f81a5a1e4e0aad5e Mon Sep 17 00:00:00 2001
+> > From: Michal Clapinski <mclapinski@google.com>
+> > Date: Tue, 17 Mar 2026 15:15:33 +0100
+> > Subject: [PATCH] kho: fix deferred initialization of scratch areas
+> >
+> > Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
+> > kho_release_scratch() will initialize the struct pages and set migratetype
+> > of KHO scratch. Unless the whole scratch fits below first_deferred_pfn, some
+> > of that will be overwritten either by deferred_init_pages() or
+> > memmap_init_reserved_range().
+> >
+> > To fix it, modify kho_release_scratch() to only set the migratetype on
+> > already initialized pages and make deferred_init_pages() and
+> > memmap_init_reserved_range() recognize KHO scratch regions and set
+> > migratetype of pageblocks in that regions to MIGRATE_CMA.
+> 
+> Hmm, I don't like that how complex this is. It adds another layer of
+> complexity to the initialization of the migratetype, and you have to dig
+> through all the possible call sites to be sure that we catch all the
+> cases. Makes it harder to wrap your head around it. Plus, makes it more
+> likely for bugs to slip through if later refactors change some page init
+> flow.
+> 
+> Is the cost to look through the scratch array really that bad? I would
+> suspect we'd have at most 4-6 per-node scratches, and one global one
+> lowmem. So I'd expect around 10 items to look through, and it will
+> probably be in the cache anyway.
+
+The check is most probably cheap enough, but if we stick it into
+init_pageblock_migratetype(), we'd check each pageblock even though we have
+that information already for much larger chunks. And we should use that
+information rather than go back and forth for each pageblock.
+ 
+> Michal, did you ever run any numbers on how much extra time
+> init_pageblock_migratetype() takes as a result of your patch?
+> 
+> Anyway, Mike, if you do want to do it this way, it LGTM for the most
+> part, but some comments below.
+> 
+> > @@ -1466,10 +1465,13 @@ static void __init kho_release_scratch(void)
+> >  	 * we can reuse it as scratch memory again later.
 > >  	 */
-> > +	/*
-> > +	 * Read VM_LOCKED before __get_user_pages(), which may drop
-> > +	 * mmap_lock when FOLL_UNLOCKABLE is set, after which the vma
-> > +	 * must not be accessed. The read is stable: mmap_lock is held
-> > +	 * for read here, so mlock() (which needs the write lock)
-> > +	 * cannot change VM_LOCKED concurrently.
-> > +	 */
+> >  	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+> > -			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
+> > +			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+> >  		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
+> >  		ulong end_pfn = pageblock_align(PFN_UP(end));
+> >  		ulong pfn;
+> > +#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+> > +		end_pfn = min(end_pfn, NODE_DATA(nid)->first_deferred_pfn);
+> > +#endif
+> 
+> Can we just get rid of this entirely? And just update
+> memmap_init_zone_range() to also look for scratch and set the
+> migratetype correctly from the get go? That's more consistent IMO. The
+> two main places that initialize the struct page,
+> memmap_init_zone_range() and deferred_init_memmap_chunk(), check for
+> scratch and set the migratetype correctly.
 
-BTW, not to nitpick (OK, maybe to nitpick :) this comments feels a bit
-redundant. Maybe useful to note that the lock might be dropped (but you don't
-indicate why it's OK to still assume state about the VMA), and it's a known
-thing that you need a VMA write lock to alter flags, if we had to comment this
-each time mm would be mostly comments :)
+We could. E.g. let memmap_init() check the memblock flags and pass the
+migratetype to memmap_init_zone_range().
 
-So if you want a comment here I'd say something like 'the lock might be dropped
-due to FOLL_UNLOCKABLE, but that's ok, we would simply end up doing a redundant
-drain in this case'.
+I wanted to avoid as much KHO code in mm/ as possible, but if it is must
+have in deferred_init_memmap_chunk() we could add some to memmap_init() as
+well.
+ 
+> > @@ -2061,12 +2060,15 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> >  		spfn = max(spfn, start_pfn);
+> >  		epfn = min(epfn, end_pfn);
+> >  
+> > +		if (memblock_is_kho_scratch_memory(PFN_PHYS(spfn)))
+> > +			mt = MIGRATE_CMA;
+> 
+> Would it make sense for for_each_free_mem_range() to also return the
+> flags for the region? Then you won't have to do another search. It adds
+> yet another parameter to it so no strong opinion, but something to
+> consider.
 
-But I'm not sure it's needed?
+I hesitated a lot about this.
+Have you seen memblock::__next_mem_range() signature? ;-)
 
-> > +	need_drain = vma->vm_flags & VM_LOCKED;
+I decided to start with something correct, but slowish and leave the churn
+and speed for later.
+ 
+> -- 
+> Regards,
+> Pratyush Yadav
 
-Please use the new VMA flag interface :)
-
-	need_drain = vma_test(VMA_LOCKED_BIT);
-
-> > +
-> >  	ret = __get_user_pages(mm, start, nr_pages, gup_flags,
-> >  			       NULL, locked ? locked : &local_locked);
-> > -	lru_add_drain();
-> > +	if (need_drain)
-> > +		lru_add_drain();
-> >  	return ret;
-> >  }
-> >
-> >
-> > base-commit: 3036cd0d3328220a1858b1ab390be8b562774e8a
-> > --
-> > 2.53.0
-> >
-> >
-> > thanks,
-> > --
-> > John Hubbard
->
-
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
