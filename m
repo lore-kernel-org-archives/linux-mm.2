@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C7AAE9DE68
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45EF3E9DE67
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 08:30:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C19886B0005; Thu,  9 Apr 2026 04:27:48 -0400 (EDT)
+	id AE48F6B0005; Thu,  9 Apr 2026 04:30:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1496B0088; Thu,  9 Apr 2026 04:27:48 -0400 (EDT)
+	id A6E6F6B0088; Thu,  9 Apr 2026 04:30:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E176B008A; Thu,  9 Apr 2026 04:27:48 -0400 (EDT)
+	id 935F86B008A; Thu,  9 Apr 2026 04:30:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A54526B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:27:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49AE0160421
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:27:48 +0000 (UTC)
-X-FDA: 84638339016.25.47F99C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A233640013
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:27:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DDjVTAIi;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB746B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 04:30:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22E441406DC
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:30:07 +0000 (UTC)
+X-FDA: 84638344854.24.C9D5FB4
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 38C501C000C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:30:04 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gKn52ztF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775723266;
+	s=arc-20220608; t=1775723405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XOLbiyFZ6yUTc+lvkxPmguuF+R5YrtfocWqBWRVawTo=;
-	b=bgC/AjEsD/oXGTRStufINqADR/jFxMJlGi1BLilN+XoDdux3BkpZT+BPmWK29I1nK9zqOY
-	sk75GIjcot/kcsYJAK4X5yl71DfyKUMUnEyckukU0MzEAbQFyM4XIc51S2yiab5XxLpgMX
-	dQDifzux+KOtAp2AR/yz2nzNNiLtW68=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DDjVTAIi;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775723266; a=rsa-sha256;
+	bh=TG3Qdmc3lNsKjHzcIFMYLHvMSiJZlrsl5sNm+q7Fpf4=;
+	b=RmUEt5ZExrj40wcPH4OeAt/CJ3n7Yf7rNK4jeorYHBj+QSScEtqShdmc+gN1enlSNSjKtE
+	fCuxWVXYTg01LIOkywQKlPhXUHVLGIjFG+TY0D0+MwwCJMqSRvCaT+sWFRjw176e70HzRK
+	DEvD5JxXOlaDnfsjsYSGGfyvil8A5FM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775723405; a=rsa-sha256;
 	cv=none;
-	b=TVaastBdnIsQhWzGGoHhmpc4fuDjsjw2nd0Cm1+x3QNON5EbQxkWY4Lj66mjHg7yySk/Gs
-	25kFOtNs5tpZyv5L7cz79OrtsJL1UjNc7iIHubEZ9N3cb7ynFa8BDUGCVjY0HEG/IoFO+G
-	zVNBbBw+WHtzbdAcEBCh1d7RmaU//qs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0F9140DB9;
-	Thu,  9 Apr 2026 08:27:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F0AC4CEF7;
-	Thu,  9 Apr 2026 08:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775723265;
-	bh=XOLbiyFZ6yUTc+lvkxPmguuF+R5YrtfocWqBWRVawTo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DDjVTAIip4E5V92VROBLPSNEdCRwyYe7VvOXqlsaszBjwomvTUkfdwYa1WVb8oO7a
-	 Tzb1od3eGe+AysPGY6/Dv0kx+EQT8nHOWUr2CdAumZOap50cHVsAvhV6g2vE/X2iEC
-	 3AqSDNRKX4otwBgcIh6cVZtLMtB8Qehn+pXh2bXQNVZ+VshbERf9HhuNuQqodsSrFZ
-	 AcZWCVEJ8yuJZ0dKUcLrI3MBowViBvmIuFi8U6YN9ghjHFE65x0bSMobAJuQtvA/fk
-	 Pjb7TBluBzfgyNVOcASwY3MBDd+EVSLLRp2PvyM+K1D7GvSDdyN3zsVIsd7nh+K8Ok
-	 3hgNqLlysNMtA==
-Date: Thu, 9 Apr 2026 09:27:40 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC] fs: drop_caches: introduce per-node drop_caches
- interface
-Message-ID: <addiCaDKTWYge-3R@lucifer>
-References: <20260409063503.3475420-1-wangkefeng.wang@huawei.com>
- <addP4MKmA8zfSN1o@tiehlicka>
- <addRr9Vn_LNiXp11@lucifer>
- <f8eec130-efe5-4e08-b5b4-a9701ccc7056@huawei.com>
+	b=jZAIBHNaC7r+3+edo8kg1AZGZ0PHlSuMiJ7Z6JZ/LSMW1JezObGiiezvh49kR+5t4oWQcW
+	JU9Z0nfW0YJ3jiRP+W6vluZsF41GA5AoAWbuxGma4eWWzhvO7mD0isy0thw6B2lr55/I23
+	M6Z3aR2xS7WydCjh7HX5GyGkYnLzlwU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gKn52ztF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775723402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TG3Qdmc3lNsKjHzcIFMYLHvMSiJZlrsl5sNm+q7Fpf4=;
+	b=gKn52ztF2FP3C+TwXjdoMyA1rNNVY9jZ4UKAWphquuDJP/cRFaH4VO9IRBArnsN7TDAdtr
+	Y1/36Y8WzjmU9eE4JBYNIOyEepZ+djE9yYdlZP3LRIejQXBAOh3YIjVdcDEyLokHaXJB2+
+	svMCUveneaKphq4wfX2ie8yFWmQJSnI=
+From: Lance Yang <lance.yang@linux.dev>
+To: luizcap@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	dev.jain@arm.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 00/10] mm: thp: always enable mTHP support
+Date: Thu,  9 Apr 2026 16:29:36 +0800
+Message-Id: <20260409082936.50302-1-lance.yang@linux.dev>
+In-Reply-To: <cover.1775679721.git.luizcap@redhat.com>
+References: <cover.1775679721.git.luizcap@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f8eec130-efe5-4e08-b5b4-a9701ccc7056@huawei.com>
-X-Rspamd-Queue-Id: A233640013
-X-Stat-Signature: rgdxy4gaddgy9uq7hjbnza4843c9k6sh
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 38C501C000C
+X-Stat-Signature: uwk677mnfmemnc4snex8yeenegigpkq7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775723266-953364
-X-HE-Meta: U2FsdGVkX1+V8vE/N8FSN6PoUcXcpjpt9kj/r5SOvuKFU6pmfE/dedckyS5rycQD9cg35G8uWxfjgCkjwGgTxLdrBQPkWJOpe426L+VQ8YDste5dzvg7qytgc+yrNnA7U5buKBI0aOUf9r3nKaxyylLKY/Bk77gF9f/rLLSNkhN8M3L4dnCy4M4wekmsPxHa2OZI9FnV0WUHmXllAb4c/oCidlLJYaBVPQw7depNnO934gsziZ4JimrVkoVg48Z5o+PYCqrwHT5XxwyfhYCHj8cdUy9SGEl2PZSDy08RI79yP0zYUeGnlaXeU3JPev7w0wCGNLyoHMEZBotx65buQRhBQMybKefG7zba/T7i+UUlKNNqphwCp2vyPSoN/084o4KdiV5YUea05rTjLIW79YMkvW9wRfyNKPI8oz+S2Ejszr+706H0o/MMFNwwSkdRr91DyzF0Fm20fvtQQgs2w8aS/t5iKt3+DBPu2G1Ahst3/r2ZD6CAV/m1JsEhGHe0FGDyUm3TEsoHzvu85kxz3SPPmz98UjzZwL/0AC//KAhX6gWEqGaT9cPPmuEMCSx0z1SBEL+nLKqG/n/p1yjYB/wfBQpO/L9n+yYGWUS5AWTPzOf1xP1FEtuc8aDTkY0FayHdRuoxXk42gRBz/OkCQV5EGjGn1aA7QsxfXPfJJWlV6B9mH+Uc8CmnssotfsqusRASseO+EiqVSgrG6ymttPCwKAT5wAiKrpiqadga6xYyrqT5pRlz+08twaQgSn2ld5YPwpkMR6y5GKeyYqZ0GfMK46gee+S7TuvOSWLkGlJMg0cMQPzkUORGChq1amkOZemiXtjhUBF8AkFiwEPv5nMprBZpf4zanVNjWNraNvLdTr1pJS0/VF4wRnNkrx6V6uAhqC0q7w5S2NfkCq+M8m7OTJrdEitp9qZPrEpq02fNwDaM7yJ+jZszx7cAFNV7abMFiHB+xlYJlt+c6PA
- z6KoQNbI
- S07BCD2mC5TkNUAwq9bwIRaoTWzgIXU1tpNfdbkNAybmhzPm91fOL5b1CFVplfrpNegjsG0X2SP5ii7APm6ru2VAPj8GIfRsh92wIxKwnbbHNXdaw+UvylwgMBLq4fQdK9tqjcSAfv1nS47fPNuqY2T0pHU6X9jUwHBcDzCiv0grt/gdWV9BmxALyjTytzpVK0lSU3qu/KCkMm34I/JP7jv8JP8yK1oMImVm/1ov6uU9h3sXqcLE+EY3vkgFmJhyYgTnlUX7Np5bUBa/BOiWhZwQ9+OyTJZBm89+YgHHgAoimlYROnrq9QhQtpsXBYROP42t6alGHGMpBzpQ=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775723404-341989
+X-HE-Meta: U2FsdGVkX18EF6AiXiW+9aujqkuKjumpKokrimD7ZoJiE8eS6hYTjXCFTr+pPhEXE/Cizgl3MBZm6G0V4pjzIEbkmZw/sNfOmpx0rGfBJy9qwnWcmJyVPEX1VZ2nUMyG60n8ayUUSigeCMwdvknvZXpQZEi7dyOmI9D/wzbfAW6voTQGaLQyvbSPsxPm3a4VAnVqw8OYeVW5QaN7X+cI9amNmd11n5VoZve0anMOzafub9GXtNj85FNuJPlKKiQ9Zgakpl0i+1zw8YJTugBksbOVePrWAy5IW0C4AbsIhz3pyoFNdkXFD727BvTGtxsi5hojBYEICK4cxRoxXmtLZ+SysWv1St6qGOZ/jF9TL5XE9r9qKRaZ/j1xuV6UjKWoeNqPjQAg/d4rBOw0wfOWAeFMMMLfSI1MJN0tf7+1baxJyyFZnvbRpFrin8OwKIahSyEZHZb974mmpu8AqNLTUJ2636BZo6EXF/HRcLtJffkTe4br/F+c/t3LYyQpm/Qeyc5uU/rpOc/6EO5Tb6sqo5i81NSDwKcXbZbZqejXHygnmdAVK9qTvvqZkQDVldS2a9EgZ1Hb2X+/moG9ZGw26v5VObXrcLm28+jjKXwzyoVn9T3DAuYpylEk4jKTuJu7GogvOMoPMNHYRV4MKv1j68YWkQaTDkpijNMS+5ZUiiYrBqY6GFvLFR9YG2qQJPV0oW8Fv0CJaLIDoqXDfE/HIUlV5ihGWZqu8NPOwvKcEb/v4xwwUqbAPAgzCoget4nLTjBWKvE7CHWSUHcYQypgPV85BJW/ryHgS8BVCxCTL1lwQ4JzrsgDtAgdaArCNnL8fqoli/RSxB/tk1Sb6xq2wdVwsMdEh14n80W+i7fEoPNtdUmWH1/OI+RJg3kxZtnuQ9Fefbv7z6lG1TZx0c/z/Q7G+iYeGtbmcyiD24VH71PtGediTH0xsxmvUVdCswB5ddEUZdL1JlUyWPJYU+x
+ jOk3uU+X
+ v7UvRIusGt1E/0rpDFHDJLsaMrV/3QJdOwpruvIvYJeJFf2poJDxkmQoa2L64XbNrT6HHL7WlaAu35CB8Ugj3JEJh54Ijpwp/HBH2GdMNgipA8DCbfS5PSL3TYoou8o/6kLD+NuOqhdeAMOrub5hXvasPVRPcJZKes9lTSwA5bNc1rYL17LZS4bEqh2HtgpiyV7coilc86P722ol+tijlUWTN4LSRGGPhopvrWqkGV72IowE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,19 +99,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 04:21:43PM +0800, Kefeng Wang wrote:
-> Our use case is as follows, for hot-pluggable nodes, for anon pages,
-> migrating them to other nodes, but for pagecaches, just evicting them
-> since pages could be refaulted. For mem-tiering, a large amount of cold
-> memory is stored in the low tier, we think that evicting pagecache is
-> better than migrating them back to high tier, also this avoid the risk
-> of accessing potentially faulty memory.
++Cc THP
 
-Hmm, this feels like it should be a heuristic in mm rather than something people
-are manually triggering by writing to a file?
+Some folks seem to be missing from CC for this series. Please run
+scripts/get_maintainer.pl; it's your friend :)
 
-I'm not sure I'm OK with us allowing people to manipulate core mm page cache
-state for non-debug/synthetic perf analysis reasons.
+Thanks,
+Lance
 
-Cheers, Lorenzo
+On Wed, Apr 08, 2026 at 04:22:55PM -0400, Luiz Capitulino wrote:
+>Today, if an architecture implements has_transparent_hugepage() and the CPU
+>lacks support for PMD-sized pages, the THP code disables all THP, including
+>mTHP. In addition, the kernel lacks a well defined API to check for
+>PMD-sized page support. It currently relies on has_transparent_hugepage()
+>and thp_disabled_by_hw(), but they are not well defined and are tied to
+>THP support.
+>
+>This series addresses both issues by introducing a new well defined API
+>to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+>new helper, we ensure that mTHP remains enabled even when the
+>architecture or CPU doesn't support PMD-sized pages.
+>
+>Thanks to David Hildenbrand for suggesting this improvement and for
+>providing guidance (all bugs and misconceptions are mine).
+>
+>This applies to Linus tree bfe62a454542 ("Merge tag 'soc-fixes-7.0-2'
+>of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc").
+>
+>v3
+>--
+>
+>- Rebased on top of latest Linus tree
+>- Removed i915 patch as driver dropped has_transparent_hugepage() usage
+>- Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
+>  with early_param handlers clearing CPU feature flags
+>- Fixed build error with CONFIG_MMU=n (kernel test robot)
+>- Fixed huge_anon_orders_inherit default setting when !pgtable_pmd_leaves() (Baolin)
+>- Small commit changelog improvements
+>
+>v2
+>--
+>- Added support for always enabling mTHPs for shmem (Baolin)
+>- Improved commits changelog & added reviewed-by
+>
+>v1
+>--
+>- Call init_arch_has_pmd_leaves() from start_kernel()
+>- Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
+>- Clear PUD_ORDER when clearing PMD_ORDER (David)
+>- Small changelog improvements (David)
+>- Rebased on top of latest mm-new
+>
+>Luiz Capitulino (10):
+>  docs: tmpfs: remove implementation detail reference
+>  mm: introduce pgtable_has_pmd_leaves()
+>  drivers: dax: use pgtable_has_pmd_leaves()
+>  drivers: nvdimm: use pgtable_has_pmd_leaves()
+>  mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+>  mm: shmem: drop has_transparent_hugepage() usage
+>  treewide: rename has_transparent_hugepage() to arch_has_pmd_leaves()
+>  mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+>  mm: thp: always enable mTHP support
+>  mm: thp: x86: cleanup PSE feature bit usage
+>
+> Documentation/filesystems/tmpfs.rst           |  5 ++---
+> arch/mips/include/asm/pgtable.h               |  4 ++--
+> arch/mips/mm/tlb-r4k.c                        |  4 ++--
+> arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+> arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+> arch/powerpc/include/asm/book3s/64/pgtable.h  | 10 +++++-----
+> arch/powerpc/include/asm/book3s/64/radix.h    |  2 +-
+> arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 ++--
+> arch/s390/include/asm/pgtable.h               |  4 ++--
+> arch/x86/include/asm/pgtable.h                |  6 ------
+> arch/x86/include/asm/pgtable_32.h             |  6 ++++++
+> drivers/dax/dax-private.h                     |  2 +-
+> drivers/nvdimm/pfn_devs.c                     |  6 ++++--
+> include/linux/huge_mm.h                       |  7 -------
+> include/linux/pgtable.h                       | 19 ++++++++++++++++--
+> init/main.c                                   |  1 +
+> mm/debug_vm_pgtable.c                         | 20 +++++++++----------
+> mm/huge_memory.c                              | 15 +++++++-------
+> mm/memory.c                                   | 10 +++++++++-
+> mm/shmem.c                                    | 11 +++++-----
+> 20 files changed, 80 insertions(+), 60 deletions(-)
+>
+>-- 
+>2.53.0
+>
+>
 
