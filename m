@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87877F36B96
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 23:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F5DF36B96
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 23:42:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C60C6B008A; Thu,  9 Apr 2026 19:42:20 -0400 (EDT)
+	id 821B16B0092; Thu,  9 Apr 2026 19:42:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4504D6B008C; Thu,  9 Apr 2026 19:42:20 -0400 (EDT)
+	id 763EA6B0095; Thu,  9 Apr 2026 19:42:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3178C6B0092; Thu,  9 Apr 2026 19:42:20 -0400 (EDT)
+	id 5AF876B0093; Thu,  9 Apr 2026 19:42:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 17ED06B008A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:42:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BADE787FBA
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:42:19 +0000 (UTC)
-X-FDA: 84640643598.12.0F628A4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49BB06B008C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 19:42:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20110E15A2
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:42:22 +0000 (UTC)
+X-FDA: 84640643724.09.B901BD6
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A9B784000D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:42:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AoWHHsun;
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE4AA14000B
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:42:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cZY01yaV;
 	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf01.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775778137; a=rsa-sha256;
-	cv=none;
-	b=MjG+hvdHeR4zwT+2zwFJ0IWAIiiafcB92sbp+txZJN+I0M/i/DyBeBESpaA6YUsKewzylT
-	RERC5PvJ+RD5rzrHpzVBO1Z6rDfTZSg90Ml+qD28DMgsBXltcjam1X6b4K9WFZtyLwZAkW
-	WWGodWZlOmyUuEMraldU03Ki0zhSJeM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AoWHHsun;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf01.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+	spf=pass (imf23.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775778137;
+	s=arc-20220608; t=1775778140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8bSdH7wFkyRhLWs186r5SR78aocqTaV/GzyoUPrXLjk=;
-	b=K9xurNJKMM3nn6JJSncAfkkzUkXXDxTurBGXhngrTcG0xykLkBm09AMvfTqawHKNnLsgvq
-	ycanb8trJLjDnffTe9M1QZJGz/y1bnOyRtjl05sqVYe6EjE4MDVFJtAO4NDe+yh37zbkkI
-	nWIduuI65wD9q1OJQSA1hhngMzPEtds=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639JtbOH2622470;
-	Thu, 9 Apr 2026 23:42:13 GMT
+	bh=ve0WHKfZecPDYUxLfEInPAl0u6biNq0N1tCu6dq7iGM=;
+	b=zypwOQBkjCFlPN8aQFovypJgxk7L7eMZmAd+F43NoqkRqWqrA9A9RT9pkPd5XA9zPIAFDD
+	6SHj8uoGm+yU8LxBGwqer+fG7vKUCfuQ6xWXr2I0wRx48ILJZaIvARvoyJVy73N1vX7CGp
+	qrvY4j1km9hTmxEEiaJCgjMrFdt9XUE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775778140; a=rsa-sha256;
+	cv=none;
+	b=8lKFQ7htuoWB6oYrtIi/+wEahMFYOi3MRUDRF3h7GtntKH+eKepFKP6NKgcUzpDP1DIpEp
+	Ktw4/pJx2zJX7oOj01aTcGVHnzbSCYpubj21Xn03x/CK8wRjmkiFFHNAD8ABpMloWtrkhM
+	q2ltBkXZgbcz41VtX+haTcN8jEKXFS0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cZY01yaV;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf23.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 639JtW2f3522833;
+	Thu, 9 Apr 2026 23:42:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=8bSdH
-	7wFkyRhLWs186r5SR78aocqTaV/GzyoUPrXLjk=; b=AoWHHsun5ZXP6mgIdevJ2
-	/x4Vay6xnXivohkycC9rUla+VY+cq6FcWLxpN5WhF/hP5qSK0dmQgzWYFM2Rm0d9
-	Ri34VQknDfBVT6+me4aQPauPBs86CIjY+VsZi7F7GsmOonXlG+YbWzsd4artgYX9
-	YzFMLVW9TzcnkjrLVFt4cU4+QhUQD8rs3aunRIOGiZ2jLIggn7aZ/fr9z95Yj18Y
-	kf8fimjc+BHyP1DTlrC+WqWxtwxawwFKyyfctdQgKoacHfPyrqAE7ijVm71W5E9h
-	69uhGlmcAyudylJms553npqpGKHVX5S+0p0UaPCdPZa7tk8hI27Y+lEwpo4N01WF
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=ve0WH
+	KfZecPDYUxLfEInPAl0u6biNq0N1tCu6dq7iGM=; b=cZY01yaVx1wbA0wkMEfF8
+	zs3jxIOxfF3JqWOd4x5V2Nz//nXX9zqSyw6u3WPAS+bscIxwol7dOUNET2GodZgy
+	CFoLl2fZtMPW3VlAYjAdz/p+lAqykxb+pQQ6tvfO2K+H/qdm2eqWRyLlEFjwi7l+
+	HfdeBgokCj+xHg9uPvVVBJD1pBjT2PCewS6VQhb9boev04UmxBXBCPHqKaIx3iUF
+	EEMTph8oZi2UnxnvZCbkzyd0dizVD9hrrNuGWMqLNhlnLnbK8KtvF8IZPtY3dJ2m
+	5bgaybbZZAeMzNzjQ+imB068gxZm0j14kbtEv0GuSAY9GW6FdKWYILiVkCF82AK0
 	g==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dcmqarraj-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dcmqb0pwf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 09 Apr 2026 23:42:13 +0000 (GMT)
+	Thu, 09 Apr 2026 23:42:14 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 639MIPEW040165;
-	Thu, 9 Apr 2026 23:42:12 GMT
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 639Mb0HP040079;
+	Thu, 9 Apr 2026 23:42:14 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dcmnbj4s2-1
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dcmnbj4sn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 09 Apr 2026 23:42:12 +0000
+	Thu, 09 Apr 2026 23:42:14 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 639Ng6Yp038323;
-	Thu, 9 Apr 2026 23:42:11 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 639Ng6Yr038323;
+	Thu, 9 Apr 2026 23:42:13 GMT
 Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4dcmnbj4pp-3;
-	Thu, 09 Apr 2026 23:42:11 +0000
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4dcmnbj4pp-4;
+	Thu, 09 Apr 2026 23:42:13 +0000
 From: Jane Chu <jane.chu@oracle.com>
 To: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
         osalvador@suse.de
@@ -86,9 +86,9 @@ Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
         skhan@linuxfoundation.org, hughd@google.com,
         baolin.wang@linux.alibaba.com, peterx@redhat.com, linux-mm@kvack.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] hugetlb: remove the hugetlb_linear_page_index() helper
-Date: Thu,  9 Apr 2026 17:41:53 -0600
-Message-ID: <20260409234158.837786-3-jane.chu@oracle.com>
+Subject: [PATCH 3/6] hugetlb: make hugetlb_fault_mutex_hash() take PAGE_SIZE index
+Date: Thu,  9 Apr 2026 17:41:54 -0600
+Message-ID: <20260409234158.837786-4-jane.chu@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260409234158.837786-1-jane.chu@oracle.com>
 References: <20260409234158.837786-1-jane.chu@oracle.com>
@@ -101,26 +101,28 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adults
  phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2604010000
  definitions=main-2604090218
-X-Proofpoint-ORIG-GUID: YxPnX_y4GOJbFM-UZwzBQo-qk-_L2LKM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDIxOSBTYWx0ZWRfXw/6/hbDq4Zg+
- Hhgqe7uyoifxrd/JdXy93ZlJMmAxTYK3TXWPB5TrGjzSjyDOmKjoXInr9UkzVV13UIXh9pt/jMU
- 7lTW+/+/fJ/qdtonakcpijzdOO7Dv05dLF18pB2PXo2ST2653U5VUqAzUAyIL2Osn2udnjk6Kg6
- XKZoeMhRwyZ7PjE8RXpbNV3YRa8F9Ly06ebv7jhYu0ZnzTV5j3dRX/ZB4DNhZOfEFjerjhwWwu/
- s8UxibS59sSyqinlveAP4CcJ+T0Oa8urLxBfQ2ymdFRWJAtiyLyQn9qszSowdegI7zsn8e7pAgG
- 5sa/h2mFVTZiIFs9UObkVUIpJUqvwQ/JKl2txLr3ZQwMEd6LF21cCEmnYTx0jQQ1eubeiBc8F+d
- ssEwpXhfUgxDkJxlXHLLJozyQZZx5vV0BKwBzX32OLTbfnySkr2kANw6+vhU5Uitw7caflwi/Kl
- viqG6qBkuTiOUMiDZgg==
-X-Authority-Analysis: v=2.4 cv=AsTeGu9P c=1 sm=1 tr=0 ts=69d83955 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDA5MDIxOSBTYWx0ZWRfX9QjuJMgPFi9e
+ 1s0CT2IKyhifo+DwMlALFs7fATUU0D9TSMMyvk0wGIgUdrZlyUnICk4D3wqss7ck/xM+cvJhd3K
+ +eIYwmSOYFyoNuJY3Q6yTj/GM5vdmXGkDbxMqVxJnf4MUbVJIjVi/haD4kZUUw9+YhFGX5Dknaj
+ t66+YkCN0mWztuKEvYgR7LjG3GpFxKv5Y22bHaZkYzvZQCScwTnXG1yw3sH+Gu2YkvviCBCepvL
+ P8qC8xkjOX47yMsBcf6xRZRkfKHHKgIFhjdOqcl44CVstUXZK4fKUIsPbXfRTJ+s5S/g624k0n6
+ ozKp1jYDA5RriQ0cQc9uQ9KwTXNB4eMDtkUEbvTFvlvR+ilYy/UY31Hv6e5C1dqV7ywHBUxmf19
+ 6R4CobsFpVLpJaZP531ohtFIZ3UOa1F6C8CX30M9kknJu4ZWOByktxcLxZEUKlvrrm9V9mu50vV
+ VOXCpAkWkSHaxBggUQg==
+X-Proofpoint-GUID: sGfNb0vxfvq3RucVF6M8h43ZKbt16ZS6
+X-Authority-Analysis: v=2.4 cv=Oux/DS/t c=1 sm=1 tr=0 ts=69d83957 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=RD47p0oAkeU5bO7t-o6f:22 a=yPCof4ZbAAAA:8 a=aC9wH1do4BV7vRM6I0AA:9
-X-Proofpoint-GUID: YxPnX_y4GOJbFM-UZwzBQo-qk-_L2LKM
-X-Stat-Signature: a5xhtd1ozcqs6sg3bhxefpq1txo8d8uf
-X-Rspamd-Queue-Id: A9B784000D
+ a=x0eKOSpe3m1H3M0S9YoZ:22 a=yPCof4ZbAAAA:8 a=PimoNoQ6ervgX2tBKDwA:9
+X-Proofpoint-ORIG-GUID: sGfNb0vxfvq3RucVF6M8h43ZKbt16ZS6
+X-Rspamd-Queue-Id: DE4AA14000B
+X-Stat-Signature: wf69yfucwwonmnfs7qdn75swqio3qj7a
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775778137-26129
-X-HE-Meta: U2FsdGVkX18L0l7jnIt5cWyf5sDACR8+jOcMmKmMGXzCq1FT8SRx7+H3hFdJBL6Jh6sSX5mJwNxktNfSnORmHIdS6wptqkRswpy5DHqG3quAWlQsWaDezT4RwxEBJS+0WVScBkorgxLsjbD0Mzfd0sTv8tkBCMoYHY/TROHj6et0Gm42o3S8EQ95S2k4YlCb/ODOSkS/3dhgMNwQaixRZ3o55NJP7GiYONPSIUyyt1MRXAweDHEi6iMf5nshV5wfGNei7mzZyca27Eqgr02FoCQYJzZd9+3xtqmoEFn62HdLjveSVI04jrFQ2H8F0JAtBHzbr1lxfFc9jo8rKDyc2o8a+o4oVWMsWBHWPV4D1JE/HShEnIyuUvVy733ADK06oQsW1HwI4D6s5ZRvVHiCQcCTbz1wQQk4ipwYsJZl6ziNTj/j+f23ALSXU4UfXQJVaghq+n0cB6VTVtErI6v9DhmgdZ2/vPLL1OBJKjVsWYnjOcCmUFbAPNYH5wdKpWsWcxqF5ipaZDQCScHjW7agA6uT06PxxzWVygYf/0YcPt2uS5Y6oNPh6kCpCim9A0GrZF6Yiy5u8iJWxBVQflHLvqroiBSaJifFRECMhf2sWVw58aPYi6ZV/GxkTWWsSkuY9jDiN6T3BAEijPoIss7YY91n9uHY0PC8ScHJiYdZY/lFPgVc10v7j6JX64dPEisTRoiffqOTlwHNfBHdHtvZfQYcOZ2PKn5hpTfeZsjsNhLK53XsWYZ/WDEwyemMmOXm11XUOzbEBNOYiN10D7xC3zCLGmAjqihRzdY9MN+NFR2L8bMUNGlkmW5wbrY9aKP69hS1J/BjC5zHYsc1U2fPMYHQYLfw/bUGkhNzxfPZ6i1eXIuZ240Isusqbm4uF7JtivULherP5+aR1uN8llrDPg+BBGKd/fEqz79yPyObpo7YPTCi0+xCQAiaVNQjsLcI
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775778139-178154
+X-HE-Meta: U2FsdGVkX18pAhpaDftJxT0GnuXYnrPTbuhi+T96yrHaIKPxCl7beeoc/EqJJKMYr8fx7XtDBvqb01CsMek0okWhmUHTz5hq+tDyEO8rhi12DtFekvqB2XFIpYC6BrLkF1+irnqrVLnlwwcHDQvLtKZKt9GC8hRx7EyH/83EPFLHzvf838VxV0hJ2gzVITcM4CC0VhA+kW0UXQSFtMCyWth1pkCGsoscfD2Dr8rdl8nmatypWuotv5CEJu8to3ZIX7KeV/FgtDAQn9pfVMr3OU3ZXveIPMfCyJFiBWTpW55A5NPgyXooMVljKA4ZJ0wW9howmd+d7ozZ4JsbpEQt7lnVfy4664GSFoUGSriT4B8N6cZtI0Wk59fCPiL4ESmV5wZlc1ggQAZoOR0JCSCIlxd5xcZWs3g2a/NYE94PbA/AUdEvuN36KerjblzQqUz6+srZC+QYN78Umlq5WoNz0HuOSrZYOHoePvkNFUtFHAbeNhvoorJ2TA2Oy0QBcIeioLzJA2ksKcnYgMuYFP+0l3VxO3EofeaXytNsiBIzXu7r3Tl3itlOVwkIfq4joIHmiT0vMcYOa0T984M3ImpKFB0NrUPsJBUBW6/hSyC5dwlt/GjihRyIjN1KecDovphtJvxs832F9wxEceuDVTYn4hJThMHebtpYemGo215RlGQwDMOx7chVjRY9hHb6Wwhl6lOki+vlu2bN/bWt9k1PXVa3flLrR7bZNLuZ5BWZU261mEXmY3dk1glBAyhvqLvrhlmtOUptgrHgDGo7hxc4mnBz6D3/ZFl6AL/81fBXop9AekHo3S2sCdFXA6DktMpVymSgsnev8xP6G4+R4K21T7P62Y6pOUItrMWBB/rx8rsJmdIJMRxSzWfQvI0ZGfTyFcQicWXsU8QXGzh/OvW+51gdp3Yj54RCaVCTRHB1+nshWlgO8ukF4YlaZ25h+J1gHpZKUCc/nbIYG+7ZZ6P
+ /nY3MqoR
+ BDtvfbg+9W5VqOz5wK1tRRpLtBxcdgVxMwD07wqbIk3ymjYObxoflkL9a21+ddM2pisRF2vk9wsOr31h2ZWn9uKJ568hN1+WY0hZD/4wD2uJ6kkD2938MXTONvAxyLUcGcGIcziZsgNiwPJ1X4oY6vS/gmZedr6GahyvcBKHuGweED0sToGXQTJRCU1sUc6sqOv64lpD7gIAEHx4BVJdknV0VMGCgUHBAraga4+Z/FhVeE5x4s+wPB+hux/BdfAt6nKHiyQZAmXsB+jWGNO93VgC3s2fKlAr3HhlWmc8D75Ar9VL/4kyl8Glima0K/hBZtmxR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,62 +130,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_linear_page_index() is just linear_page_index() converted from
-base-page units to hugetlb page units.
+hugetlb_fault_mutex_hash() is used to serialize faults and page cache
+operations on the same hugetlb file offset. The helper currently expects
+its index argument in hugetlb page granularity, so callers have to
+open-code conversions from the PAGE_SIZE-based indices commonly used
+in the rest of MM helpers.
 
-Open-code that conversion at its remaining call site in
-mfill_atomic_hugetlb() and drop the helper.
+Change hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index
+instead, and perform the hugetlb-granularity conversion inside the helper.
+Update all callers accordingly.
 
-No functional change intended.
+This makes the helper interface consistent with filemap_get_folio(),
+and linear_page_index(), while preserving the same lock selection for
+a given hugetlb file offset.
 
 Signed-off-by: Jane Chu <jane.chu@oracle.com>
 ---
- include/linux/hugetlb.h | 17 -----------------
- mm/userfaultfd.c        |  3 ++-
- 2 files changed, 2 insertions(+), 18 deletions(-)
+ fs/hugetlbfs/inode.c | 19 ++++++++++---------
+ mm/hugetlb.c         | 28 +++++++++++++++++++---------
+ mm/memfd.c           | 11 ++++++-----
+ mm/userfaultfd.c     |  7 +++----
+ 4 files changed, 38 insertions(+), 27 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index c64c6e5e50f5..71691a2b6855 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -792,23 +792,6 @@ static inline unsigned huge_page_shift(struct hstate *h)
- 	return h->order + PAGE_SHIFT;
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index cf79fb830377..e24e9bf54e14 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -575,7 +575,7 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+ 	struct address_space *mapping = &inode->i_data;
+ 	const pgoff_t end = lend >> PAGE_SHIFT;
+ 	struct folio_batch fbatch;
+-	pgoff_t next, index;
++	pgoff_t next, idx;
+ 	int i, freed = 0;
+ 	bool truncate_op = (lend == LLONG_MAX);
+ 
+@@ -586,15 +586,15 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+ 			struct folio *folio = fbatch.folios[i];
+ 			u32 hash = 0;
+ 
+-			index = folio->index >> huge_page_order(h);
+-			hash = hugetlb_fault_mutex_hash(mapping, index);
++			hash = hugetlb_fault_mutex_hash(mapping, folio->index);
+ 			mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 
+ 			/*
+ 			 * Remove folio that was part of folio_batch.
+ 			 */
++			idx = folio->index >> huge_page_order(h);
+ 			remove_inode_single_folio(h, inode, mapping, folio,
+-						  index, truncate_op);
++						  idx, truncate_op);
+ 			freed++;
+ 
+ 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+@@ -734,7 +734,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+ 	struct mm_struct *mm = current->mm;
+ 	loff_t hpage_size = huge_page_size(h);
+ 	unsigned long hpage_shift = huge_page_shift(h);
+-	pgoff_t start, index, end;
++	pgoff_t start, end, idx, index;
+ 	int error;
+ 	u32 hash;
+ 
+@@ -774,7 +774,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+ 	vm_flags_init(&pseudo_vma, VM_HUGETLB | VM_MAYSHARE | VM_SHARED);
+ 	pseudo_vma.vm_file = file;
+ 
+-	for (index = start; index < end; index++) {
++	for (idx = start; idx < end; idx++) {
+ 		/*
+ 		 * This is supposed to be the vaddr where the page is being
+ 		 * faulted in, but we have no vaddr here.
+@@ -794,14 +794,15 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+ 		}
+ 
+ 		/* addr is the offset within the file (zero based) */
+-		addr = index * hpage_size;
++		addr = idx * hpage_size;
+ 
+ 		/* mutex taken here, fault path and hole punch */
++		index = idx << huge_page_order(h);
+ 		hash = hugetlb_fault_mutex_hash(mapping, index);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 
+ 		/* See if already present in mapping to avoid alloc/free */
+-		folio = filemap_get_folio(mapping, index << huge_page_order(h));
++		folio = filemap_get_folio(mapping, index);
+ 		if (!IS_ERR(folio)) {
+ 			folio_put(folio);
+ 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+@@ -824,7 +825,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+ 		}
+ 		folio_zero_user(folio, addr);
+ 		__folio_mark_uptodate(folio);
+-		error = hugetlb_add_to_page_cache(folio, mapping, index);
++		error = hugetlb_add_to_page_cache(folio, mapping, idx);
+ 		if (unlikely(error)) {
+ 			restore_reserve_on_error(h, &pseudo_vma, addr, folio);
+ 			folio_put(folio);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 38b39eaf46cc..9d5ae1f87850 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5515,7 +5515,7 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
+ 		 */
+ 		if (cow_from_owner) {
+ 			struct address_space *mapping = vma->vm_file->f_mapping;
+-			pgoff_t idx;
++			pgoff_t index;
+ 			u32 hash;
+ 
+ 			folio_put(old_folio);
+@@ -5528,8 +5528,9 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
+ 			 *
+ 			 * Reacquire both after unmap operation.
+ 			 */
+-			idx = vma_hugecache_offset(h, vma, vmf->address);
+-			hash = hugetlb_fault_mutex_hash(mapping, idx);
++			index = linear_page_index(vma, vmf->address);
++			hash = hugetlb_fault_mutex_hash(mapping, index);
++
+ 			hugetlb_vma_unlock_read(vma);
+ 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+ 
+@@ -5664,6 +5665,10 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
+ 						  unsigned long reason)
+ {
+ 	u32 hash;
++	pgoff_t index;
++
++	index = linear_page_index((const struct vm_area_struct *)vmf, vmf->address);
++	hash = hugetlb_fault_mutex_hash(mapping, index);
+ 
+ 	/*
+ 	 * vma_lock and hugetlb_fault_mutex must be dropped before handling
+@@ -5671,7 +5676,6 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
+ 	 * userfault, any vma operation should be careful from here.
+ 	 */
+ 	hugetlb_vma_unlock_read(vmf->vma);
+-	hash = hugetlb_fault_mutex_hash(mapping, vmf->pgoff);
+ 	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+ 	return handle_userfault(vmf, reason);
+ }
+@@ -5696,7 +5700,8 @@ static bool hugetlb_pte_stable(struct hstate *h, struct mm_struct *mm, unsigned
+ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 			struct vm_fault *vmf)
+ {
+-	u32 hash = hugetlb_fault_mutex_hash(mapping, vmf->pgoff);
++	u32 hash;
++	pgoff_t index;
+ 	bool new_folio, new_anon_folio = false;
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct mm_struct *mm = vma->vm_mm;
+@@ -5707,6 +5712,8 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 	unsigned long size;
+ 	pte_t new_pte;
+ 
++	index = vmf->pgoff << huge_page_order(h);
++	hash = hugetlb_fault_mutex_hash(mapping, index);
+ 	/*
+ 	 * Currently, we are forced to kill the process in the event the
+ 	 * original mapper has unmapped pages from the child due to a failed
+@@ -5920,13 +5927,14 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
  }
  
--/**
-- * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-- *				 page size granularity.
-- * @vma: the hugetlb VMA
-- * @address: the virtual address within the VMA
-- *
-- * Return: the page offset within the mapping in huge page units.
-- */
--static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
--		unsigned long address)
--{
--	struct hstate *h = hstate_vma(vma);
--
--	return ((address - vma->vm_start) >> huge_page_shift(h)) +
--		(vma->vm_pgoff >> huge_page_order(h));
--}
--
- static inline bool order_is_gigantic(unsigned int order)
+ #ifdef CONFIG_SMP
+-u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
++/* 'index' is expected to be in PAGE_SIZE granularity */
++u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t index)
  {
- 	return order > MAX_PAGE_ORDER;
+ 	unsigned long key[2];
+ 	u32 hash;
+ 
+ 	key[0] = (unsigned long) mapping;
+-	key[1] = idx;
++	key[1] = index >> huge_page_order(hstate_inode(mapping->host)); 
+ 
+ 	hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
+ 
+@@ -5937,7 +5945,7 @@ u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
+  * For uniprocessor systems we always use a single mutex, so just
+  * return 0 and avoid the hashing overhead.
+  */
+-u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
++u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t index)
+ {
+ 	return 0;
+ }
+@@ -5952,6 +5960,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct address_space *mapping;
+ 	bool need_wait_lock = false;
++	pgoff_t index;
+ 	struct vm_fault vmf = {
+ 		.vma = vma,
+ 		.address = address & huge_page_mask(h),
+@@ -5972,8 +5981,9 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	 * get spurious allocation failures if two CPUs race to instantiate
+ 	 * the same page in the page cache.
+ 	 */
++	index = linear_page_index(vma, vmf.address);
+ 	mapping = vma->vm_file->f_mapping;
+-	hash = hugetlb_fault_mutex_hash(mapping, vmf.pgoff);
++	hash = hugetlb_fault_mutex_hash(mapping, index);
+ 	mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 
+ 	/*
+diff --git a/mm/memfd.c b/mm/memfd.c
+index fb425f4e315f..911ff8220d05 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -64,7 +64,7 @@ static void memfd_tag_pins(struct xa_state *xas)
+  * (memfd_pin_folios()) cannot find a folio in the page cache at a given
+  * index in the mapping.
+  */
+-struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
++struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t index)
+ {
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	struct folio *folio;
+@@ -79,12 +79,13 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 		 */
+ 		struct inode *inode = file_inode(memfd);
+ 		struct hstate *h = hstate_file(memfd);
+-		int err = -ENOMEM;
+ 		long nr_resv;
++		pgoff_t idx;
++		int err = -ENOMEM;
+ 
+ 		gfp_mask = htlb_alloc_mask(h);
+ 		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
+-		idx >>= huge_page_order(h);
++		idx = index >> huge_page_order(h);
+ 
+ 		nr_resv = hugetlb_reserve_pages(inode, idx, idx + 1, NULL, EMPTY_VMA_FLAGS);
+ 		if (nr_resv < 0)
+@@ -116,7 +117,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 			 * races with concurrent allocations, as required by all other
+ 			 * callers of hugetlb_add_to_page_cache().
+ 			 */
+-			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
++			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, index);
+ 			mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 
+ 			err = hugetlb_add_to_page_cache(folio,
+@@ -140,7 +141,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 		return ERR_PTR(err);
+ 	}
+ #endif
+-	return shmem_read_folio(memfd->f_mapping, idx);
++	return shmem_read_folio(memfd->f_mapping, index);
+ }
+ 
+ /*
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 2c565c7134b6..c053aa4389b6 100644
+index c053aa4389b6..9482b25d3d84 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -573,7 +573,8 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+@@ -504,7 +504,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 	long copied;
+ 	struct folio *folio;
+ 	unsigned long vma_hpagesize;
+-	pgoff_t idx;
++	pgoff_t index;
+ 	u32 hash;
+ 	struct address_space *mapping;
+ 
+@@ -573,10 +573,9 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
  		 * in the case of shared pmds.  fault mutex prevents
  		 * races with other faulting threads.
  		 */
--		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
-+		idx = linear_page_index(dst_vma, dst_addr);
-+		idx >>= huge_page_order(hstate_vma(dst_vma));
+-		idx = linear_page_index(dst_vma, dst_addr);
+-		idx >>= huge_page_order(hstate_vma(dst_vma));
++		index = linear_page_index(dst_vma, dst_addr);
  		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+-		hash = hugetlb_fault_mutex_hash(mapping, idx);
++		hash = hugetlb_fault_mutex_hash(mapping, index);
  		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 		hugetlb_vma_lock_read(dst_vma);
+ 
 -- 
 2.43.5
 
