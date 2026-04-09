@@ -4,93 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECD5EA3C36
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:33:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBC4EA3C33
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 10:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 645A66B0088; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
+	id 5A8FD6B008A; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CF7B6B008A; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
+	id 532F46B0092; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BE9D6B008C; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
+	id 3D1526B008A; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B0086B0088
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:33:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3D4CC1AB4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 29D946B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 06:33:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1CF41B8446
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:52 +0000 (UTC)
+X-FDA: 84638656704.16.38D0AD6
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1F18712000B
 	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:50 +0000 (UTC)
-X-FDA: 84638656620.21.BCFA91C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 541A380008
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 10:33:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=orvo0MZx;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=orvo0MZx;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775730829; a=rsa-sha256;
-	cv=none;
-	b=RxenvOkSFNacA5kapeQoeJAoqkeRmZWcSNafEFXiezy/f9MU3c+ZGToj9eMijmqwhsmR88
-	874R94/4Y2fmZkXIyjHhGk0EGu4VumWFPq2C4AcQz5S4G998H9LerRQGVvfy5+MoaDjUOM
-	0lh99scZ9LoRuwjBo/0mWUhoNIZOsIk=
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a+i5tAvc;
+	spf=pass (imf29.hostedemail.com: domain of komlomal@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=komlomal@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775730829;
+	s=arc-20220608; t=1775730831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCoI6i+DnPocxOUwqSH9KXFV1m27WvxSYZQ8ms3/tSs=;
-	b=Pt+aa+l+ElGF6RCN7cfBU8FjggxgFGuDYfRes3vkoY5LS/kVfZmrGdTHfkUmB6dK88lYAw
-	FZU0S27v0gQYRxKWh6Vqcgqp/I9pQredmC5/rcs7ZMXtI1E67X+NscveZ5c75UiT7MhZ/h
-	/joHDaqnEXnx/Uo0T8BMVELAxdHOQl8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C26A2600CB;
-	Thu,  9 Apr 2026 10:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B1CC19424;
-	Thu,  9 Apr 2026 10:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775730828;
-	bh=TNpoG6jI5tUlUTjT6ng/gxK0PSSrOAvTDidVFPbVzI4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=orvo0MZx+9BgWSKdcdjIjZM78aRRqk52xsQRs/dx4vvzLle+gsk275Dc2SFF0l16c
-	 iXiyU6gWr5G+gjcSqa1AxqUl1CS06FnZyI50l/0f+ZoGS1AgwJrmfePzeyTpf+h+/L
-	 quTJs6pzboQRHwuZfUFx/RrVRnNsWwuWPXL75BficN9lewEnKvzx7aVpEON50Ssg6z
-	 3/ox1uad544T+pg543Lv/nByorHBIxlZmrW/RcM3vrxNXhgmpGpGemo5LVN4JD9uRz
-	 B7XyNXv6xVbmrCfNSxP7GAnQpRS5x7U60UxwASry2gvxTISV3rowKMPC13VMb9uByq
-	 z/qpI/Pm4z38Q==
-Date: Thu, 9 Apr 2026 13:33:41 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
-Message-ID: <adeAhYW-hJ7-6-Xy@kernel.org>
-References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-2-anshuman.khandual@arm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
+	b=5b6/Y3RrJ7cBt/tt0dL80dRJRF2PaShZ3Q+8sK5kvlFgRqOkXL9lOsJ3f6wkUdH36My/g8
+	5Ff94G2H8YUG6gWR6cHmj/zIdCFVUaWTMxmnW8CbZNE2CyxBO2J6PV5zyggaeZAc195d5O
+	s2Kqq2mTqf8pWyu34jeIyGM/hJhgULc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a+i5tAvc;
+	spf=pass (imf29.hostedemail.com: domain of komlomal@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=komlomal@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775730831; a=rsa-sha256;
+	cv=none;
+	b=xkv6y+fjQNXdcFU0PUZ8wd5Rh5pOoQXubuFDXEWsJFvoeqhC8LMWmZ2R7FDydLbwnZ/jjL
+	TEUCk5CBnStC6cLwarxezP7i/KMMQY0As95k9SIawlLQMtc6s2ciRgikkNNHitCQEqAGWV
+	C6sxRt1hA8JeGmAV2GCOofGdFbjFHc0=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38dd5f28a4cso6376451fa.2
+        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 03:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775730829; x=1776335629; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
+        b=a+i5tAvcVTKZ24RCoOmc10ZvChhCxn1+z6tWPCoOjMDGajlQ5ORDVl5pKbW98EsJnx
+         lC/kXKE00zCdWo4uDPnMMemHAIQP29ltjWcdyD6Wg7KhtCLANswRqRNzM/smsTQpMMvX
+         1KCOgJmnUM/YKe0pAw/UEDL3nMXeUJCpxMM0Ust9ihbpbIt9GOt4JLHiFAtAhLbXczrS
+         CE4yGZuOJGiiD5OJZP7OURt148gSIecQYcS5EcmNmF6f1+xjK6PrEu0Ds/xF2wgBCCvF
+         sVVKn6E3pElgfqdBe2ay+5yk9FynaAAsFPuI1pJFDzpAqrDy3qqicWFltjHt8Pg0BX6D
+         qXQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775730829; x=1776335629;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IZCUPUgWtF9cnC+OBlLzSDFkNCO2ZEIu1l+DqN/zQCg=;
+        b=VN6isOaW9l+df2eVzEUa1CPky96odCcICY9/3Y2JUMPexwgT4bEO6j2q4JX4jn40Lp
+         1jcyVQ+9wYIWBW/ZAyLNNMW8DLMhFUVvTHnYAEdYgdhEEGciE67tKY9U2cPolDxxTIGo
+         SZY7gfkAwhTMxUR4Lq/6MZRwgtlbNi/wJv3DW9lZjIm0fuvdRVvesUbwXyb0q+fIfrG4
+         dwCFxCgy2Zat/zJH3rTCmhuMmvHVjLPEpMYVfIdnhAk9tl2UyEd/3YL9uG4hV67pTPiy
+         PtpoQHz7NHwOmWo4NfOljZrnS8BzXcPGuDz4A1etDJ/yVTcrkMc455dM85xYuG2T1V3r
+         RBjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxJU0w0hvA5j6cNhDh6+PVg7rfgG73PWkxlF+aHteuEMnqV345j44NQFVnqlMQGFqOkXnQau7G/Q==@kvack.org
+X-Gm-Message-State: AOJu0YxQJyurXTmsSLiwwjDMeeXCtKTYLyDkctCNpR5tXTmNP9XpQ2Vk
+	ygK7+8dc7A1y/umHUm4Vl2UlGb64jUhVHFIJx8xJqcQKMUmrlDq+x+DS
+X-Gm-Gg: AeBDietEjcudLhHLtXN3EFEbNzfbntY4caJfgICrnwQUFm0Ske8V1brMfFdAWK2Rtvr
+	EJD5XEmEoRvVRCdiVp/KfW6Ri0q7svZMfy2hfjm7F28BuRxvonYuFH4+TEO1Sy6Z1cxXU/Yxse1
+	ElFMAVeF0YFK0IqcpKyTnP1AL+VKexhLJJIbgrZfFzomk5eATnmloExrgedicY1tcRnSJYMhBNb
+	c0FXliBlVxNPNoTD1rls7yloJFCxVVId2nVxaa+r1vJ1xxqAXfXY74e/AeyI1mT0+1Uari3eQBv
+	w++vAsLkuOvFcUdMRe15G+Q+IXEvLOoaGMjMxgyeZXTaBlR37XILgRVJh6F0z7ZM9nzLq8S+BYi
+	5my0cdS0RXqp0vaoezFqPvqNG9qf/WREajs9cmODfwyUGt21M/Z/CQc7jWWWhMqv7R8E/z9aMMa
+	n0zc3DIn4ohnDVCGN7hMsv
+X-Received: by 2002:a05:6512:3044:b0:59e:57d2:75f0 with SMTP id 2adb3069b0e04-5a33758ad0fmr9639795e87.32.1775730828956;
+        Thu, 09 Apr 2026 03:33:48 -0700 (PDT)
+Received: from agp-laptop.. ([5.180.139.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2c9f42b6fsm4958305e87.84.2026.04.09.03.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 03:33:48 -0700 (PDT)
+From: "Denis M. Karpov" <komlomal@gmail.com>
+To: harry@kernel.org,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	Liam.Howlett@oracle.com,
+	ljs@kernel.org
+Cc: vbabka@kernel.org,
+	jannh@google.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	brauner@kernel.org,
+	viro@zeniv.linux.org.uk,
+	jack@suse.cz,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	usama.arif@linux.dev,
+	"Denis M. Karpov" <komlomal@gmail.com>
+Subject: [PATCH v2] userfaultfd: allow registration of ranges below mmap_min_addr
+Date: Thu,  9 Apr 2026 13:33:45 +0300
+Message-ID: <20260409103345.15044-1-komlomal@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224051153.3150613-2-anshuman.khandual@arm.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 541A380008
-X-Stat-Signature: pr5zzydctb4krm38m4r45owxh6d3i54w
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1775730829-796297
-X-HE-Meta: U2FsdGVkX19edPOVaLr4YeY5vbiUczu5PsHOyVn76o6ndBfdHEN/OJ1GKkR56SKnjG+skVyHNlCRXVbJoCwlwFC7wandwkiAiM5mhLmpOV9u9uHx2URw93bbJNs7OY5x8A0lXxc3e1BJ5YH9Y4PY17UxWMF8afzyxxT2ae+0xb252KCPgEpwaDkAbRttZSXWeOkf8q/LMapj3ITQdM9CTEP7Rw2SG3DIbAdayTSUkoodsx2Oj9c6emWGa5J+klGm9teIGhAUkTYU6Dc9PiAa8+xvTcKIA/CPJNAmvzADQNDOeHQrLqy1qVDP6KeeyBjEG7GZK8NGObc4i5GlwzbFDnyDJIGQm9vvjZg2zqOoD5muUQdf1Tx06J34Qm8iyz8t6Ha7x1CBB71HB8SNkUkRiSOBQQ83Hv/LzOx3zTQ4qtlheg1miImHyqDI99VTfLTNSqS4e1V6BnSyggtsDG7ouAi6nhqV2pYVH1dWy58lDRYU2Fej7Zfque+n7DgrAoW4vJKs4+04nsLZwivGq4XeXlJI1U5j7D2Z0H++FvKr2zBzetg2f8wo2ApMZPtkG97RXOHRu8w8KpRvU1I0P3wZelG8pQmlrI7sXnW9thYDtU4PfHLZZJ/7R8yN1GPUO8Q6CpZyNEfGtle48nKuteH4hovGo8dbmBgeqMEQevJJ8AV2mMWBCNJuAY2NvhyITzljgE1ONw+cCmEWmMLTG36uVLtBbM6T77mXgFrh/GKeOJp6UJmWkAKRprk5di34eMsMoHcq5IQiqJnPFStNtYz3gVGiTMfIQ4usItO4gUO/sOAGnuivKZWYBK76ZIpSUImqi/MkJAZpgSqXRLtk0ScZmMmXACVEKFcSiOOs5Yxfqobu47ZNsqTZgpJsFoXy8t5/wDJ4EmBrlEKgvYSuXC8BmwpXIHb5dLWF27Pl5bw9R6GRmMCDIVHX7iTzp2n/64lF7oBpjziw844coV3wG/3
- KzIbO/99
- ZJJCD4XwR+FxnV20nOaPUmYOw+Ocdh/vcSLA5KscL6GY4K94XbrSvtTeohsX5aADZ2fLeUXRXNDoGB61JaLEObX1ujjIjMWq7eMoqjak1Ot0IpUbEs5KuAtALnjiq/B5s8r1/xvRAkXQpbQ7EirTLY4dlZ1aJHr5HiredQBlNM/qPU3qYbAlpj9jPQy4TsapgCL3HSK3a9NkKDy1ONxp6/84TFa1JRRJ4DJ3IiWN+fy8xjgF0hMGfSLzHB0rWQu0Ld8z8qLQlISBNEWz+JOgTCZ8Lh5JLt7wyLcUyz1EbO1HIcEcvcZGT9hLwqn/x1sP22OZCrGK76czKXvPTBcuer11IWwoAqfa6q1XtMEoSfMqKbDv9Ga5pJ+wl3SK8AOdZsdYO53/rZhpJfSDRt8+n57jO+4NwsVU5C7Fwt3CCGamTj9GHmeEwJ1vV+kItvT0+zWNBnlM4gaO+tMc4La+0PXcKWcW2Z2kAfGUbNY7o0JQDw7BXuZgJPCXh3RtAi86ePy31GhWY1odz0vM55uKa3CJYa3BMDTV5F8NxY0w4Yl1Vs0hPSPRRksHIyw==
+X-Stat-Signature: 9xoqw8rgqo5pnad4kzkx6e7eckh5h87i
+X-Rspamd-Queue-Id: 1F18712000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775730830-556500
+X-HE-Meta: U2FsdGVkX1+c7BuQpyn2V3Hh8CDiSQp/ecJN5BLf3rymrlCEbb4PI+rKH609us5S4su63molZ+h6x/9rm8nfZtW3CCMhMRf4+wMUbpe1/yOvUvQhLRg89silSfBJr/YXA8dDHgMYu4BZuyyCa/RdNBeNS8U3Efg+vLPSEIIrQEDXeowJHimR5jD/Q7Lf8BJD9kIUKsw/lvZdWsJBU5ylnIluHVI15rYh+rMkR7OELO/e0h47U2/va7vnZKffcyjEUxbrRwgvrWuCz8t+40dG9KMx05KTDo3CvpGfheyYNca3CPQ/RxEY8Y6lXtTYJt382zry6ApaXHjZ9JXK+5QrHCFLPvLG2upTFqqjwNmDL52kLs2JDAftsMBFe7gmNldrA9ZDMbfWLzuGxzla8lzcV4RZ3bB0cxd8ItFKpCIxEJiKqyBHFvXL8e7r9qJKTNtIoR4Vo37aoAUxF1kMa1PWfFG0WYwJi7KlnCOTQ17H3sfI7LsXr9D6TyjpCDuCwe1oSnc0eAVctfDnuTG3ZYtjRxPXXPusjYid7qiSBHzqGSf4AYpSshwg+WI3rPJXFGR54MTwnL0O8NZ5lwmYvvDgk4apo46QdAT1RUNT1mP/bGUf3nKzZE9y5Fox1XiApcPoXAYNK4S1bscrLe1v+eC5Zw1kRySsmac1lWvyrCExrkq9JWIuT4pZAlI+O5T1numVoagL8iGYXbXwjdxgSUOi9SrFGDxkwoeUdUR9e1B03zEtf2rntdo7zyBDMkpeM2280Wxr8WheM/lkmwWIFH8Fb+RpsltyqHKOHLEmCGO+LY0EzQWbqU0vgvkAxwR3IQWFblXTn3YZhInUv4iLPa1PqfaLzlQ3UCCgh1S+fTTg33ikH9rlwxoWhQBjFL8QjJyoF5X35A7t6qtvjHYsAdtPlxLfGujcl2ef2WOxXh/R4ebS4Gt4b5dcYZs5dbPwX76rccSCsRaXmLfJZQo5Pxq
+ 4G/ZFlnH
+ Bcq+pkWLTLCQpy7/L9gqEf/6uK6hP9Cwgsrek8LJ2vF3ivWvN5nODeBqT96BG7NrkSUnGvc55kPUWqfTwtn6M8ks8glWOn+iwXlkAoG7Fv+bfh7JvfDnrsjZkTKk3Mux4+m9gParjCTNsodyzwdSBkHlFwkf4F11N4u7Y3jnKMs0ZtCa/6+vM0nTBmYo6k7LijenfXai+s0gvG1iPISzuCpU+t19kSkMFvwsE1eV6fxsXumKtF+stYBhT2RKF/7CdKpfwl6D2ip2A7x42WBv+2HNybeM/qiy6DUFqt7LLYAspd9CUMUp0yniov7SKLhUAi26rNTNU00nNac+cXUg95h41DZjlMDorUgjsG+JkLWuzFGEa3NrVbnPVNAccyPTw6XGcc5B5asjtRY5S7JrzFJbc6zGy42SQbzfGJyVw5jdTwzGdao19npgIJ7blaDsi//32+EPsNjBB3lMFiBdFtkaUwUNYs3+TlZ7MuELwk7kgCE8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,67 +128,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Anshuman,
+The current implementation of validate_range() in fs/userfaultfd.c
+performs a hard check against mmap_min_addr. This is redundant because
+UFFDIO_REGISTER operates on memory ranges that must already be backed
+by a VMA.
 
-On Tue, Feb 24, 2026 at 10:41:38AM +0530, Anshuman Khandual wrote:
-> Ahead of adding support for D128 pgtables, refactor places that print
-> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
-> macro to prepare the argument(s). When using D128 pgtables in future,
-> we can simply redefine __PRIpte and __PTIpte_args().
-> 
-> Besides there is also an assumption about pxd_val() being always capped
-> at 'unsigned long long' size but that will not work for D128 pgtables.
-> Just increase its size to u128 if the compiler supports via a separate
-> data type pxdval_t which also defaults to existing 'unsigned long long'.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  include/linux/pgtable.h |  5 +++++
->  mm/memory.c             | 29 +++++++++++++++++++----------
->  2 files changed, 24 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index a50df42a893f..da17139a1279 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -17,6 +17,11 @@
->  #include <asm-generic/pgtable_uffd.h>
->  #include <linux/page_table_check.h>
->  
-> +#ifndef __PRIpte
-> +#define __PRIpte		"016llx"
-> +#define __PRIpte_args(val)	((u64)val)
-> +#endif
-> +
->  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
->  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
->  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 07778814b4a8..cfc3077fc52f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
->  	return false;
->  }
->  
-> +#ifdef __SIZEOF_INT128__
-> +	typedef u128 pxdval_t;
+Enforcing mmap_min_addr or capability checks again in userfaultfd is
+unnecessary and prevents applications like binary compilers from
+using UFFD for valid memory regions mapped by application.
 
-I don't think the typedef should be indented.
+Remove the redundant check for mmap_min_addr.
 
-> +#else
-> +	typedef unsigned long long pxdval_t;
-> +#endif
+Fixes: 86039bd3b4e6 ("userfaultfd: add new syscall to provide memory externalization")
+Signed-off-by: Denis M. Karpov <komlomal@gmail.com>
+---
+v2:
+- Remove the check entirely rather than replacing it, as suggested by
+  Harry Yoo and Lorenzo Stoakes.
+- Added Fixes tag.
+- Link to v1: https://lore.kernel.org/r/20260407081442.6256-1-komlomal@gmail.com
+---
+ fs/userfaultfd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Don't we want this in, say, include/linux/pgtable.h?
-
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index bdc84e521..4b53dc4a3 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1238,8 +1238,6 @@ static __always_inline int validate_unaligned_range(
+ 		return -EINVAL;
+ 	if (!len)
+ 		return -EINVAL;
+-	if (start < mmap_min_addr)
+-		return -EINVAL;
+ 	if (start >= task_size)
+ 		return -EINVAL;
+ 	if (len > task_size - start)
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
