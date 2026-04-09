@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF8F1EA3C59
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:36:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB38BEA3C55
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 12:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28F296B0005; Thu,  9 Apr 2026 08:36:11 -0400 (EDT)
+	id EEEF46B008A; Thu,  9 Apr 2026 08:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 240456B0088; Thu,  9 Apr 2026 08:36:11 -0400 (EDT)
+	id EA06E6B008C; Thu,  9 Apr 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156716B008A; Thu,  9 Apr 2026 08:36:11 -0400 (EDT)
+	id DB5896B0092; Thu,  9 Apr 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 052866B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:36:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C104A13B946
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:36:10 +0000 (UTC)
-X-FDA: 84638964900.13.1ECC405
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3CFB4180007
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:36:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hf2jBI9W;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C7DFF6B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 08:38:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74DFE1B7826
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:38:59 +0000 (UTC)
+X-FDA: 84638971998.26.32DA35D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C1C564000A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 12:38:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4fn9Q4X;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775738167;
+	s=arc-20220608; t=1775738337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PVzSeg4rWq2dmbhr6nNYnEpDs4q8e0TGKGmrSP7c2OE=;
-	b=heNfMlv51tY4Tef2GsBNagVsC7IgR4k2qsR3Y6udxQZ3xk3EIDs2oDoYZbjPiRB9WnsDq3
-	1iAhADgv4bB98DVpe1N6jTHzXFM3f6iApg1J6eSjeuj5kDYI1BzT1YxjlOYzKI+RkZlRDs
-	+hhoweZ18lwIKPnYGkYS9qHE4YWMVUs=
+	bh=1k40QPpjaJJyL5dsAaodvlVj4+rT/6wM2jo73CiSpO8=;
+	b=e89xbxvgFkDsJ9nxq+ZwECVH833ewtZx75DYRlybyYytEYUeNy4/1x71Wbs7Fvd8tLs5eZ
+	+f2E7ZoRxqrcUQfgGBAEOToRhP0I1yUzRsCFJp30onSH6cVHDQxvcTjqrK2eIciCCU0/xM
+	FkJz3ZI9OkEYFuQBc53vXEqERUqXKmA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hf2jBI9W;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775738167; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4fn9Q4X;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775738337; a=rsa-sha256;
 	cv=none;
-	b=R9i1BS9wrEYW68PCMxnxZDP662ZIy/YesrOqUc7yrBD8k2QMbGS2fpuYZDjv4u/N1SAWkG
-	vQa/HG/dBKHp6u+PYrVBc05CR/PwTOjdEsdvfkdNprTzgUyX9LKbvjqlLhqYxFRqlR18TG
-	WuosAvxVPbMyCJV4n0BAoGHsz8ptqT0=
-Message-ID: <9f01b396-4694-4ee5-a1e6-754f9399e950@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775738165;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PVzSeg4rWq2dmbhr6nNYnEpDs4q8e0TGKGmrSP7c2OE=;
-	b=hf2jBI9W5G3s/L8Jj3mb2/fXzZjw1eoDaa965a9mpfeSLy1kTQmQ67GZTAqL8wiGdFpf3Q
-	PwJNGfqPlAqnLPsvj97mk0brQ9890xoaeRfZz45fmHtBng3UMYbVB8USfaRwWBvrcttNbr
-	p0mjUEhNv8H3WIRxgK962wz69dhN0W4=
-Date: Thu, 9 Apr 2026 20:35:42 +0800
+	b=uepdrvW2kYhlxSGL47v2ZGVhCaFjVaxEvV2n80hx2eOL4bD2OJsKR0eqTPww8tfKxpZ48+
+	ZEB6QTBQ0f5EVj9XgADcUDEH+iEX6BNr+2VMZUdYErH4JOD+dRD2K9skF9yoa6pr383ZuQ
+	4hk3oh87NQnXO1587bH+/vpFsoWZ9xU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C37E6439A8;
+	Thu,  9 Apr 2026 12:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADE4C19424;
+	Thu,  9 Apr 2026 12:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775738336;
+	bh=S1UzqxaXEc/yIE0ufFwghwwUVw6xvXwfGs8iCXCKSJw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t4fn9Q4XJQe3p+oZ+kJtet9UBjhDHwzuk/79owhpBPBCfJmayqSA4WmNiOQrrKNAw
+	 LIDvKeWxhcy5QdHGIdxGNjS+NnUByasX+OJUdfsk0/0FGmDNVO3IkZATnwWOShPh1I
+	 gOltWksTcRi75T6wBungyq4UQSuDb0YFpAkKg5A9QhQ4IHrOteT0H1mvZW0FcUu8Z+
+	 YjjaYd1eEqwMt6neauUxdhD7OJzbfFO4xEBnVTz6OGYKq8HJ/IIRYUGOcRTR/litSJ
+	 +4foUNO3RJFXQvZjQSqpYecg/G0lJEFL6ZuMiUDjuIPS/1T5mi9sm9SwaN5SWuLBVU
+	 wl7xbxf7MjKyA==
+Date: Thu, 9 Apr 2026 14:38:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Alban Crequy <alban.crequy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>, Willy Tarreau <w@1wt.eu>, 
+	linux-kselftest@vger.kernel.org, shuah@kernel.org
+Subject: Re: [PATCH v2 0/2] mm/process_vm_access: pidfd and nowait support
+ for process_vm_readv/writev
+Message-ID: <20260409-behoben-gehen-baeb1486fb03@brauner>
+References: <20260408145436.843538-1-alban.crequy@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 00/10] mm: thp: always enable mTHP support
-Content-Language: en-US
-To: luizcap@redhat.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, ziy@nvidia.com, ljs@kernel.org,
- Liam.Howlett@oracle.com, npache@redhat.com, dev.jain@arm.com,
- baohua@kernel.org
-References: <cover.1775679721.git.luizcap@redhat.com>
- <20260409082936.50302-1-lance.yang@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260409082936.50302-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3CFB4180007
-X-Stat-Signature: rj89mtt3jqydtsd3wk5bogjm9tuyzu8w
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260408145436.843538-1-alban.crequy@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C1C564000A
+X-Stat-Signature: fd1bkucp4jigxz1ej7emffqiqdkik5eh
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775738167-915329
-X-HE-Meta: U2FsdGVkX19oMpYGf60QX4EEU2oaNPsIeyYHjnv6GBuVz8UYS+uvYY8X/kS4WvzXScomkNx9irU3AdoXGzqwuN5L95qcAyy2MyC6rVEoYIVeQOwiupj3+xYFnSSQx384InNgpaz+mC63MmWMUauCC+KuV8JsPjrbcpuGHBdOiXrOwCLyP1i/JQmFoYxQ59GS8pvplFaIYOSnF69y9xtfRcBeAORKVmpcNRO3/QsK2gbspXBv6Mv68HTMxgE2okbP38F2fvdZKfoq7CwvGt4YjS7cyxbTPtzDrt7UXMlvKplFYXZrALkecH4Smzz3UN29FPAiPGnx6I0pXFtRHh81Wyy9zRCH+5AqXMqoTG0SW0eRc2Nh1XEkMacce4MP+S2D7+VwtJQiCpHhroeUIUWAU9D0GrdXbziWqSrIzwlDCemt5sSxLWtrkr/HI9tGvpIx08V0D1sSiVsKH2JY7IOZncBFswlTWFNh9yPvSDRlQrYQV+Qccl5YuMW28M/5KaTwkxoAd1/RpXJoaufjC2GkfUKZ+OrLznVEMjdYYBaVunb4jjx3Vdmm2+YJzKeH9rQA0viGrNJW8d/qhrdAz41CQHKvibZgO/8GoD2HvYHJeMNihigpqABsDkV6y1B/9ozcyH7ipjGOkeYIiZOJCUUAknZDUOPeuI6skj7i6sH4IFcJzcaJ8snq/MjS1DSOXO0KZ5/8dXjtsa43l7/g1qtp5EDV5qAujZpjDiKhxz1Q9a01psTqubwDi9gNoclZKHUeTJBwFCR5V0/ZXu4qiUhyqcMTqHI9oKsYyRfvL0tWsTVUXI16YBw7V9epcRTsf327iyeT+f7DIDugrCl1Simz6dFxzeW4XHaFs/gU/P18YCbIygaTSxQNbxgFRwx4nO0uW/uZHonN+prkWIjebzr5Yx49DCQogdjpbZ3WXzPdUVT8UMJdE+31vSGGQwFwRmph4W/ZzLVastM7osogEqY
- LfxqeWbF
- c3nl5ebo+RoUmTvNO4lhl+nkwAZBxAKZKzUBHl1udIqo0QnqR3Z2ZEcoA/7GXnqSgOpGVdUxY7m8Zo9s3fTjWbsbXRf8lFpDIxHvJdKhE7h9ZP9mrZPFrTr/CUpYaqUxbiTwvOWN2eCOMXe0mFMMbnmxv7AbAcQy1j4r1ouRdk2TLUgB+93i0lNx4USp9GdVYvKb0A0IReyltMQdXNdHwz2fJeA==
+X-HE-Tag: 1775738337-965356
+X-HE-Meta: U2FsdGVkX1+lZ/ACCsjToovFoFpviQQbrWxxvOhDtyWc9WZcEvnRuFpL1wR1ld9pMdZdWNX5gUac1V41vp1Gy9YoRvJJIPac88BXk0D61tM7VjZ4SE92/TKNOQS2pZeKJKCdAWguLB9BgDwJyC5uVKG3NXpwCK+xlT4B25VS4w4vJZG6NCGNyLRXugeuKb7dbJBx/7nwY2NlY+nctvL4im/zR9/hMOeX/LU98vleUTQUhZDfthnnMA1xn+5rCJ9F8lP2/FlI6LLCEqZPiOX31lM++SjH8pUELbSJy/3nYhLSfN7RVee9pJ6hU7LytUZ2sUPtMkfjjZreNcCtAiKl1CSlt4oOskbTYqCybPvyr0e0AWENK92CyQlVdbg9kB2bL3/vhD9UQ6yuPtnWoUn7tHmJ4bSnlBvijkMzTjhI3jLI8kpcoWble5/qsNWN24zGqOSmPndPFDPIAvwaal/qh6ber5JRfY7CX3a3tt+y6TxWLW6xgAbfg0be+HCTAavrUQO6qMbvrbkEl375Az5RKxcxvqLa9uko77pZfKDgA0+EQH7/uI6bV2A+qe9w1yyMkhWX/68A91vJ5guX83LWWK2NgGA+0hWy/VpZjiQSW6N6r9W1vs8N5B0YcBu1h3g3eoWERFJPD+p5UB/wpwShkPAiKE5keC8Ma3m17+8NkXBA7ZrnELTppoBlTb/teIBFueCFLWASEfSR6vnwrsE+o51IPQB4hKlg1vu6JWNLJkyn+tEg50hiq249gp4oDkjNzY7DSw75+lpVEbJYsMbp1xkae6uIR/rIMbHgSeH8HrSxYuYMEKwrIj76u7og72O7tFlJfefXeMcVkRNygRxskNOY7Qyqi/pw64L20CjKZumbAQNuBGjJ5o1ueK7ZGWImGM1Kmsx1tRGc3bKIUhO3our3U7Qr3rYJ7LkvaaAXrrzQjHJTPnLK4qxS7jGjQUqEemfWdYNDGFAWV5p8pKi
+ AlHIYLZ+
+ 2ZdjfAX+FcJJOaKM5tzFaDNL+8M0UpLQlJc8XgN9d9Ps0hG3A44dHEuWoQrB8DqWhfdklG64YXO2PjrUn8EzDNuknCgqNI3bPq7WiO1tGzcv4KLKRJLPX50ovNkIFCsfWoBG26XXPeCwxTMM2PadsVp7mm8gFDSSz8O78zo8NF+pfaCa1yO4Auvfe4bj5JH5dESZqcZQULk0PhJ7PqhLSwyq8pPQfR+V/eV0wHSkYHgqZncYQVDlPi/Xqvq37fZeh/+G3zHvvD4+4KZCbKCOa32qpuojKURrUluqOBE+45lMNYKC9NQj8REF5qBZ+YjzJQ1STuzDnVlLJUssyIOhHEazZZmagHY3fmltiiwumxhHx7eX9fI3H18psod7dS0yLY0A0HRRNNF1Odg4vL6BPdbE+uFtecV+O9/2YOSSW6WMQVwtGDijRomWOxm5lr3VzBUer4TO+OuDkx6ZgC8+O20VWQiHvqXgbN+ccC1BlWCL4AGqf2Nw3IkGDMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,13 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/4/9 16:29, Lance Yang wrote:
-> +Cc THP
+On Wed, Apr 08, 2026 at 04:54:34PM +0200, Alban Crequy wrote:
+> This adds two flags to process_vm_readv/writev:
 > 
-> Some folks seem to be missing from CC for this series. Please run
-> scripts/get_maintainer.pl; it's your friend :)
+> - PROCESS_VM_PIDFD: refer to the remote process via PID file descriptor
+>   instead of PID.
+> - PROCESS_VM_NOWAIT: do not block on IO if the memory access causes a
+>   page fault.
+> 
+> v1: https://lore.kernel.org/lkml/20251118132348.2415603-1-alban.crequy@gmail.com/
 
-Ouch... just realized I missed one more. +Cc Barry.
+Looks good to me,
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 
