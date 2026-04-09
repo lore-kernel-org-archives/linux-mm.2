@@ -4,129 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE596F364AD
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FCCF364AF
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 18:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A18A6B0005; Thu,  9 Apr 2026 14:23:07 -0400 (EDT)
+	id 18E8E6B008A; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0530B6B0089; Thu,  9 Apr 2026 14:23:07 -0400 (EDT)
+	id 166386B008C; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAAF06B008A; Thu,  9 Apr 2026 14:23:06 -0400 (EDT)
+	id 0A34E6B0092; Thu,  9 Apr 2026 14:24:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D94AD6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:23:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8839CE02EF
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:23:06 +0000 (UTC)
-X-FDA: 84639839172.24.85E57D2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 387D640017
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:23:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N6nGOESL;
-	spf=pass (imf01.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F26A46B008A
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 14:24:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86462560C9
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:24:41 +0000 (UTC)
+X-FDA: 84639843162.25.A67CEE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C136040003
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 18:24:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7HMAE1w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775758984;
+	s=arc-20220608; t=1775759079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tp1d8ZS+UHvbq4+BjkPrR72AeyAn3NvEQozPe2yXurA=;
-	b=unrwxdgiVGwVcE1R76yDBi8+HlQjTBM+E1luoaPPzK9FByElBqhhSBaAFmqF54XUz2Qi+I
-	Qmk4v91ptqbDGQb1gkyRvnOMuHAxi/abDimeqOgkDjFMIEqBodSykMSUB7Yako8b7X84Yk
-	FM8UXzC+AlFNtU1MNGaIZU711sbMmzE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N6nGOESL;
-	spf=pass (imf01.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775758984; a=rsa-sha256;
+	bh=2yUfjrS12dXVy2I2I++13aaB8lz5ESIf/F8Z5xPj1xQ=;
+	b=h0ZT0atmLsdvL8QTfx665V+YDuCqqkKMBhkN2gKmKzKuAnUbK0pwluiR/OInQGXxHRor7o
+	R6r0HFeRPyziN3kBFSk6gTwwz1+kQWeEwO9cV1EguV1M+xhl0FzRFstrP5drFn4bGRruPJ
+	xuH1c47Ck68beKJ372imBFRJepvXp6U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775759079; a=rsa-sha256;
 	cv=none;
-	b=NtT3qSSMrNsws8A3zK0fYFAU+0oBbGKRN1Q2n/ef4I8vhczpd6oabOvY5xWNDA1z1LzP8D
-	hZUXchTRYAGJyIx9TtfWLQbtSyV8SG8AZDI5R7WZYMYa26GZEzDbudiYo1CTTmdUtrCJ9a
-	s3uMPdZ7f9UiF7LbL8eBJdjA8j4LDrA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1775758983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tp1d8ZS+UHvbq4+BjkPrR72AeyAn3NvEQozPe2yXurA=;
-	b=N6nGOESLOR4718/3EbzZn8d8kH4NpJuQlvV8I1bGzNqgS0hNquCF6BEBYC/PNnzZNWP6k3
-	ke8pHa76ZGm0qevRiDX8SYLpT3shoAgevb0d3sQ/zQfJvrUENgUNJdCWF26NaZeCuP4tyg
-	UimpdXlXObuHvH6t2+loT/FdE5c5VB8=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-YD7AC6GiPHWc3--sjPiTyg-1; Thu, 09 Apr 2026 14:23:02 -0400
-X-MC-Unique: YD7AC6GiPHWc3--sjPiTyg-1
-X-Mimecast-MFC-AGG-ID: YD7AC6GiPHWc3--sjPiTyg_1775758982
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8d65190e52fso214608885a.1
-        for <linux-mm@kvack.org>; Thu, 09 Apr 2026 11:23:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775758982; x=1776363782;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tp1d8ZS+UHvbq4+BjkPrR72AeyAn3NvEQozPe2yXurA=;
-        b=pJqKKEOqXEEv8G2d+Tll73nwnw3GVvevuvp2q6OFOU1k03HnNULsPHtnWKHu7LFtFs
-         B8vRdblBg1/O0QrfW2F0tdFY3Auh2yM8Q5LRizC8XWD5gDXPSqdGJSEfRFppsfahthH2
-         siorztGU9xlfRrw+4KJe9HHI1lJ54P9e6PJUf89+d0DHGoAn7GG+C+E499ldYO+9dPtS
-         u6/IzGaDuvRI43FmsKne2eYqaZ0nC5mUKrt9MpMu8men7DoQ1xaj4Xh89OCGV6nHHGwP
-         pykxWwA9+1Rnjgr+mEq9Y+cs7IbZt9BgU7tH+Fve/kIWObU1hNi8JUpwXCX61jnhGLlI
-         mp9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVeysyI+Xe8yhw8YjtB/VnZ9oX36+iF4oR5SjotWgOZYpaslFpYsA5ALnzmUhn0fByNAHQ0nXv1pg==@kvack.org
-X-Gm-Message-State: AOJu0YwMldRc9a1ku2kA9VNYUv7aJ4X/QYhngXlks56oiV540yOU1h0m
-	joc3o35u2z+aFQdYzhK5OthS39XoygXsUjWXpAVbv5FsL+uL5rqYzON5givC5/Umg3cvoU8BaJH
-	XU0IJdoFkHANUCiTqAIbWRolTEeT872BM6Fc1k2qH+iCpAsMV96Dj
-X-Gm-Gg: AeBDiet50YuT8VTromhUWKUsEwdjkoerhDkBmjg4X/1e99MUiwNwmdMETAZ+en0BWpE
-	zErgOfRLLTa3LZe6RsmlFOETPxOL9Vth4IvGNN6zXA4xUDLj+z18BDiFrzPEVcz+1Hup0RXRLub
-	iTcHi5H3wHswgDdyj8DedeWwxuEdHFDCZnxuK+ihdonjFuN4c3kbt01jLXdKqA6amG1FyMDjPP9
-	9ZIbjUEs7nMoZ2ZQ0Rsu8XPrWMotUrWKska+LhSEJOwPkW5eqt5bf76vmO6FvAzKZMOPkvtWIZF
-	OkdyOBeVJRusI6A6/CEA5oJK+c83UWpMv2kev568Jr5zxMT+90dl9CIiEHY/2uxU6bzeHB2pWZI
-	o/hhzkZAOqF8dA2zGA6eSCsH3ag==
-X-Received: by 2002:a05:620a:2908:b0:8cf:d62a:c814 with SMTP id af79cd13be357-8d41c2be534mr3849127085a.19.1775758981875;
-        Thu, 09 Apr 2026 11:23:01 -0700 (PDT)
-X-Received: by 2002:a05:620a:2908:b0:8cf:d62a:c814 with SMTP id af79cd13be357-8d41c2be534mr3849120585a.19.1775758981349;
-        Thu, 09 Apr 2026 11:23:01 -0700 (PDT)
-Received: from [192.168.2.110] ([69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb8d6bf40sm12146785a.29.2026.04.09.11.23.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Apr 2026 11:23:01 -0700 (PDT)
-Message-ID: <0f354976-854f-431d-a10b-0910fe6831b6@redhat.com>
-Date: Thu, 9 Apr 2026 14:22:49 -0400
+	b=Vpk3x0KcI7T3iM7JepiY8PLhV/yCHXdd5I9fFB9+OMYBXgepwDcXkJhlE6Hbm03oMq9h5V
+	SFaHAPe1/4Tq6ryrjNEGRLOk/7fawGk9mXYuNnaY7hFxKLoE/5f5c1sipVZvaxow6pSDB0
+	hATazf+oSiAncbUNELQsYJJtqiyV5E4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7HMAE1w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BBFF9404CF;
+	Thu,  9 Apr 2026 18:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAAFC4CEF7;
+	Thu,  9 Apr 2026 18:24:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775759078;
+	bh=2yUfjrS12dXVy2I2I++13aaB8lz5ESIf/F8Z5xPj1xQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C7HMAE1wIjLoFqwoZ9KRCPIpLMD+2AB6gOcofs3RDOghYizSLrg1kz0xFZT7PZ1y0
+	 mr7PUIYnq07w+Wo/J3DpzigXjix9c9c3ifQeneJNMl1/35/k8ES7UaGuDJplXgzObY
+	 FQb6q0ccPTXBASuY016zzHxrRAbqbv+es0yJ0bM0hIksv79GpkzJVOcry7teBV1PZV
+	 AvweqCwYDvKCJ6pcMXD/kLADl09zIB+mHyEjN3BLLMFor4r+FvvaoCpDnGS1zO/LN1
+	 q26UgqsPVvxWvSjj0ZFUkYZfTgHT3dxHuQtRfgVamXmbpP0Ue5ovl+mRso7fxRaB6p
+	 q7nrpkvTY0/aQ==
+Date: Thu, 9 Apr 2026 19:24:35 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, 
+	Joseph Salisbury <joseph.salisbury@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
+ contention in populate/unmap paths
+Message-ID: <adfqY3ayAHvACm4q@lucifer>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+ <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
+ <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- Liam.Howlett@oracle.com, baohua@kernel.org, dev.jain@arm.com,
- npache@redhat.com
-References: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
- <20260409122654.42622-1-lance.yang@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260409122654.42622-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: luBj1CvDnghXJ8nbQWNw4FJmJHTM094qagjQLsBMhxs_1775758982
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 387D640017
-X-Stat-Signature: jfazcnfgfzstp8f35zuhjf51ykfez164
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
+X-Rspamd-Queue-Id: C136040003
+X-Stat-Signature: 4q3rcwhkquscqyt7qynuf6c3zehcy95h
 X-Rspam-User: 
-X-HE-Tag: 1775758984-626492
-X-HE-Meta: U2FsdGVkX18wRDpeA8I9PdWMrJFx6t0XqtBc3fdSTTsE7AYKB4+Ci5U6EC/4N8SXZYRoaVKGvX+AzYwYF8GbAVYiRdsS+qE9u5F7VCA4FZEvFNCucHI74oNKsZbM2Nnjr3hYrJI+Xw0od5EZdU3JZXFcML7PKGiZSyeUnIF42qiDrpHHxu3igFmuCzNWoE5MLq51jYKIlFGuVECdRuDHh3+PFWU0lxCTF4/VpKrawVVUJqohF3J3Idh9POi5jM6nN2n9VS4uM/EQzgtiMrd3vKdHH6KDRDOr7UNks8avTWsxyr1g1cHBaQZlT9DTDHKK8OGH3DyrAcg+aRtBDgeW35zFJ9ip7IqdUjJYd+nP8eGNnsejGMM1AxyG78BV59c1LCMtigXPPw9KhsDu5kL9XqssbVuKh1DHwxXMUuo+swzKyqoP5DtY2c2UTbImW03r5swyjCujRZpPKQOcMJUqOAd+UmCudpm4MSqndHCXN6F6snF70MeVUkc/ozKhEpwLmXRZ/Z8ROzu5dRyrt7l6US3trmrZPnyUeYo9nxrKW7gbGXJofWYxw4Xqhc1bvPKSeJ5MnBibXR5oOf3sAK3OUIYPyNWgXJs7E3F838574G/3r1k+xMhL6VRSiM1U67euVKoBY5hox1kJAuxdxgB/BTGADIEESCgIhPZpgiCngvf++ypx+GK7NYybLl/OhNabVjfBi7UJUyEf2qRbi1NjPO8rZApiZlb+q/TrtKdlQa6RqVtn+RQpJd38valQTT/uo68zFNyruz0ErMa04xL9MNSm42KAj2EY2nTRce9AX6g8koRXpdBT5gNZbyNP6or3SijLIeOXrs7N4KftmTjMmVpwq79WmneKjs3MZGVYv6YhDCiT4LtRv/mM90mwxwtieJ2dhxZIngkIAqA9b6leEVqmBqc66z1Vvpgd0y5bvwWJ8FiH2G3OKA4ioA99kfhbLNabDpx00rh/aIsibnI
- wtgfjnOJ
- dC82sN2wjAq/EyElVkJN7kVY/IKf1XyPW9C3WYWZREoCRsxEJHvieeovCGkBjrChPssMWF6argFSwyLW698VXCKgFsZGeNx66rKqIvtfimGkoxrrLUeoafUvKU+tz0g7+fg0fcNBOEqGQNfEJ0IeOM+ptldsuytgmyPfud2q4j8QL1DmyPAUEN85K/A==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775759079-817367
+X-HE-Meta: U2FsdGVkX19+Cmw+ket4/kXsWhkXIuh/0sR65LEEhQJ4KVgUfq06aSViyIPGhWQ27NAYowr1jR6Arp4LE2gTyF/jkKRV4bfrTZu6Vn0FzEkTidKNs33Rs3rsH2TM2vNap8j3WQpc+TPY9RPm9zYvxc9sqIGdQ7O+R4QipK/DqCDtLyWfwi479y+9nbJ/tvFGOp0DFqHEn5kA+Ofc2dPkmcbidaslpH7FspruMDFECpTAYG7FK1itabParfzPXsMcW/p/4f8dRLTdlFjc2I7+WLZrXTFlweZ2Lz1Msr2xD4A7QqpNxaadAx8TyurFm199N5cfcB86bjcXIp5VvXC6NRdcqR525SOVaDuIcyrzxDORbAlxdOxpgujF9pZNcpofKXvvu4UhC+31eLI84JqxscUF7advSTc4B+tdODtX0LqHPod1Xd/w4kCCKILJVY7+aM2KQOGwLcV+rR337eY3ad43NumOHC6T3nCyAcUZ9zCU78dQnu+aHtHC3zHZ8JDwZvtpuB9FY/con/E/YxTGXymDma2sgwN+EihYH39rNNhudNFfbJekfck5Omj8RQ8w/x85jNCXopJMI9TtDvyE4Qhq2rViW9Kj8yn537wuR8rPvjKD3AFU+bdRTkgN3/ZfvLD4Pt5BMhhYJ3EYTmNZsVZh3F0SgxGTc6RdK+DH/5E+6zB1cJRz5KSmjioAYkzA06ym43vEPvHD9lN7hNelRHWohAuEa+PVSdAeL9zk8HiufihV/einRsl0X3kAAncRltnCodobpx8f9XgaSbr1oWJBDvcIKkRkI96hsf6WxGxZkLQmIFzH41EklcpK7T1Tfyl8YEZLKDCEA+FiTONkP389lmaJYhaOrXnOZEyPOxtCsMtuQDrzLujlyalCgFb2DIcp3h/Pg8n9L8n724uXJu0WIFnJNS5evQ9at2LBjnq55gmAqISCu/iJMioTu4a8ggbNEnw2tPwrl3TObPq
+ bc6lp5PI
+ hjABXKrRlfWD4uvsxTZqsZ8vG9Lsx+t+S1bPZRMVpMbrVRfhDhGQkga99psjgfZvOByBlZZjkTIKBS5QbBh0SILcdU5bxftQzhwEth7suuoDeUrsDrHq6js4xILUw8i++U8auJlU2efUaDkKPDXnyK8rsCMW/Wa7BM139E7dXfnMQYJIbLmu1Mq3x7PKaOKVsJL4mSONg7SWmePZg0AbVrlj7rX6pNimcCjp71KonhnFgUOA1Zk2HgzQ/XBaTl/r0w4tj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,50 +97,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-09 08:26, Lance Yang wrote:
-> +Cc THP
-> 
-> On Wed, Apr 08, 2026 at 04:22:57PM -0400, Luiz Capitulino wrote:
->> Currently, we have two helpers that check for PMD-sized pages but have
->> different names and slightly different semantics:
->>
->> - has_transparent_hugepage(): the name suggests it checks if THP is
->>   enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->>   implements this helper, it actually checks if the CPU supports
->>   PMD-sized pages
->>
->> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->>   by the hardware, but it just returns a cached value acquired with
->>   has_transparent_hugepage(). This helper is used in fast paths
->>
->> This commit introduces a new helper called pgtable_has_pmd_leaves()
->> which is intended to replace both has_transparent_hugepage() and
->> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
->> it returns true if the CPU supports PMD-sized pages and false otherwise.
->> It always returns a cached value, so it can be used in fast paths.
-> 
-> Set once at boot and then read in hot paths, would a static key be a
-> better fit there instead? Something like:
+On Wed, Apr 08, 2026 at 10:09:23AM +0200, David Hildenbrand (Arm) wrote:
+> >>
+> >> It was also found that adding '--mremap-numa' changes the behavior
+> >> substantially:
+> >
+> > "assign memory mapped pages to randomly selected NUMA nodes. This is
+> > disabled for systems that do not support NUMA."
+> >
+> > so this is just sharding your lock contention across your NUMA nodes (you
+> > have an lruvec per node).
+> >
+> >>
+> >> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
+> >> --metrics-brief
+> >>
+> >> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
+> >>
+> >> So it's possible that either actual swapping, or the mbind(...,
+> >> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
+> >> system time.
+> >>
+> >> Does this look like a known MM scalability issue around short-lived
+> >> MAP_POPULATE / munmap churn?
+> >
+> > Yes. Is this an actual issue on some workload?
+>
+> Same thought, it's unclear to me why we should care here. In particular,
+> when talking about excessive use of zero-filled pages.
 
-This looks like a good suggestion, if nobody opposes I can do this for v4
-(although it may delay inclusion a bit).
+Yup, I fear that this might also be misleading - stress-ng is designed to
+saturate.
 
-> 
-> DEFINE_STATIC_KEY_FALSE(arch_has_pmd_leaves_key);
->   
-> static inline bool pgtable_has_pmd_leaves(void)
-> {
-> 	return static_branch_unlikely(&arch_has_pmd_leaves_key);
-> }
->   
-> void __init init_arch_has_pmd_leaves(void)
-> {
-> 	if (has_transparent_hugepage())
-> 		static_branch_enable(&arch_has_pmd_leaves_key);
-> }
-> 
+When swapping is enabled, it ends up rate-limited by I/O (there is simultanous
+MADV_PAGEOUT occurring).
+
+Then you see lower systime because... the system is sleeping more :)
+
+The zero pages patch stops all that, so you throttle on the next thing - the
+lruvec lock.
+
+If you group by NUMA node rather than just not-at-all (the default) you
+naturally distribute evenly across lruvec locks, because they're per node (+
+memcg whatever).
+
+So all this is arbitrary, it is essentially asking 'what do I rate limit on?'
+
+And 'optimising' things to give different outcomes, esp. on things like system
+time, doesn't really make sense.
+
+If you absolutely hammer the hell out of the populate/unmap paths, unevenly over
+NUMA nodes, you'll see system time explode because now you're hitting up on the
+lruvec lock which is a spinlock (has to be due to possible irq context
+invocation).
+
+You're not actually asking 'how fast is this in a real workload?' or even a 'how
+fast is this microbenchmark?', you're asking 'what does saturating this look
+like?'.
+
+So it's rather asking the wrong question, I fear, and a reason why
+stress-ng-as-benchmark has to be treated with caution.
+
+I would definitely recommend examining any underlying real-world workload that
+is triggering the issue rather than stress-ng, and then examining closely what's
+going on there.
+
+This whole thing might be unfortunately misleading, as you observe saturation of
+lruvec lock, but in reality it might simply be a manifestation of:
+
+- syscalls on the hotpath
+- not distributing work sensibly over NUMA nodes
+
+Perhaps it is indeed an issue with the lruvec that needs attention, but with a
+real world usecase we can perhaps be a little more sure it's that rather than
+stress-ng doing it's thing :)
+
+>
+> --
 > Cheers,
-> Lance
-> 
+>
+> David
 
+Thanks, Lorenzo
 
