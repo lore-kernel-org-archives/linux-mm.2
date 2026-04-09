@@ -4,140 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF9EF31E24
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A53C3F31E21
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Apr 2026 15:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B02D6B008A; Thu,  9 Apr 2026 11:08:28 -0400 (EDT)
+	id B13AE6B008C; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 061A16B008C; Thu,  9 Apr 2026 11:08:28 -0400 (EDT)
+	id AC4626B0092; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E92296B0092; Thu,  9 Apr 2026 11:08:27 -0400 (EDT)
+	id 9DA866B0093; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D96596B008A
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:08:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E56913B83D
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:08:27 +0000 (UTC)
-X-FDA: 84639348654.13.D0BF4E5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 91D186B008C
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 11:10:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EB22160809
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:10:24 +0000 (UTC)
+X-FDA: 84639353568.02.65D2A21
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 92C2C40011
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:08:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIUHmfcl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747305; a=rsa-sha256;
-	cv=none;
-	b=hf/w+2lQtD0kLzZGebWtFn39+Fv2riz7xVT4zX8PP/9M8N/5/AY+BO1QDfngSrmz+uW28C
-	NSGoXDSKmlE6ALHa6qxwSLHyod98ixn9/R1qSoSIfQzB9pHIQa4iWtl1CElXGKkodsAgjM
-	2C85KA6g4hYEz4MckJYlqeLbZAQjzPo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tIUHmfcl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7B9BA18001B
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 15:10:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ga94zfGZ;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775747305;
+	s=arc-20220608; t=1775747422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JoXFRMvB36TW375yAguZ3eZkYn9c4ydX2x4tY2Rf3Eo=;
-	b=1wO3IhWtq9wDjw3BSuW2aQ8hOUKQyUwJzxrgTsYKbLj3xpArDiC9UQW7Q5U3mEJT6JlXJH
-	jUtRGO9/aTVUX9E0BGKIB5qwTNkjKtJbax0N33EMn7uP0/FUdwMlJad1MvaVhnB7yps/ZO
-	+1l9T+TFibYVq7BVkC6dfmFQ/PjguBg=
+	bh=/qXVKUAxy+elrynhs6cxblO1GtPFfAVzCsABhyo+9Lk=;
+	b=wodyVX/xap6RUpwbCtU/QebUGLhLQs+M5B7DnIiejxnxvO4PIvI9+oy+BPZ3LyusjAQqzG
+	46aAZNp/Rw5AehaS523r3Wf+jHCmc0DNzta2YEPJQ95aGvncICLVM4Y5GjJQa2XhTnTkJO
+	lbRUeuXg8BZd3UDMUzUqNrLyFBOI/wA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ga94zfGZ;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775747422; a=rsa-sha256;
+	cv=none;
+	b=OyUpd8mmpbOxkYq7VNL6R5QZ1S83L6rkRRyYWvbIbkxutlrBj/zlXPX1TvIHivZrcr0yrD
+	wfyxXrcmNL1NFoUosGFK/X55M3eVGFAU1gi2Xmj0zzax3KCbSSWIOs/E67+odZzbAePi3G
+	sPLFO/sIrD7BFUVQ67rFeTAUGMWsP5E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 642A740714;
-	Thu,  9 Apr 2026 15:08:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FD0C116C6;
-	Thu,  9 Apr 2026 15:08:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 826264171E;
+	Thu,  9 Apr 2026 15:10:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EA1C4CEF7;
+	Thu,  9 Apr 2026 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775747304;
-	bh=8bKMs+7uL671pUbX7j8IgkjFDdALfxxzN+DgJ+2wuwE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tIUHmfcliQiRyYv+4RxvHKh5zUVWOvlz9N1GJoHIWYmp/53VyeTZ/5Ys34S7aTQBi
-	 ju8h66ch2EbJCr7Fqw93Y7S5JK4hWEQJJUIK3x0FOpp0uzGEJBzdYYcampYKFYjJB8
-	 SvX2GZTBlHkepW3lNV2H3R6cus4MWC8DUxgvi3Eheh0S4+x60lVSZYjAhQG7QWRLOj
-	 QTd6jqYQkJzvyMC1mvmZ+d7symxwkCHMMKqB7eYMITgpf+Cjdxk6jYPvmZcAa1dWaN
-	 AmS2BQ5susZRgzcotybX5LvBXS7sMNMtSOXiUS2ypW8CTcx2eXrZtIIpbJOwvi8tOr
-	 sDcFygQx1DCAg==
-Message-ID: <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
-Date: Thu, 9 Apr 2026 17:08:18 +0200
+	s=k20201202; t=1775747421;
+	bh=mpzbJeW9K8HU2WsSd97Hb9A6JcAPIDKyhFRx2DEEoe4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ga94zfGZlyiDjKYAxafyOeqcBSHFLvp+MC1zJIsqZ2CZzDB8V7fQt6soXlFoDHt1C
+	 oeNp3mU784AFH2Km/tgGqAOxH6kJDsJAepj1RcOngWBlKmhnzuxFmgVy8CwZfscRZ+
+	 4uvoPbCeNcEcbm+UWrrNBjf7l3xnPwHTLM3Y8sg+JxTDfjp3oHHSgAQXSb6aBC/upw
+	 3lXDP4VqBY9Lwp4UtlNFCZ3RKlavzj7FLyRrdGwXHcOGcz6FUtL6jwWBbSleyXUXb7
+	 SLDxnFJjO9RuWg6f453kioizTxG7lexyNfTUXidefPlibk80ZhHmiew0XSDj4ZbukB
+	 wXG2eyKMjE9+A==
+Date: Thu, 9 Apr 2026 18:10:13 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>, yinghai@kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] mm/sparse: remove sparse_buffer
+Message-ID: <adfBVc8ohLrtIe3j@kernel.org>
+References: <20260407083951.2823915-1-songmuchun@bytedance.com>
+ <b22f0af1-848d-45da-99b2-0c28b740e979@kernel.org>
+ <70EF8E41-31A2-4B43-BABE-7218FD5F7271@linux.dev>
+ <dcc3b56f-5d4c-4bb0-bfd8-49747df30f47@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
- linux-kernel@vger.kernel.org
-References: <20260408031615.1831922-1-yuan1.liu@intel.com>
- <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
- <ade6RVeXxDt7ImP4@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ade6RVeXxDt7ImP4@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 92C2C40011
-X-Stat-Signature: b1op5pxry4x6eefoq93ce7oypa4nijtx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dcc3b56f-5d4c-4bb0-bfd8-49747df30f47@kernel.org>
+X-Rspamd-Queue-Id: 7B9BA18001B
+X-Stat-Signature: ymdfd5nsx698sdqrs3qpte813uqhrcdx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775747305-861495
-X-HE-Meta: U2FsdGVkX1+9ae1J4vjF7QlbK1NC/NsQGPtkwmlYYQmgC51lFme1oILKRPCWAjzSyzvVLKTkUAS2E2qcduX2S/jTv38ewnqR7sSVKdFUGSXW8JWHpud34xka65Q7KKtmbLR4UTcAvAoUxgxMY8zmia7cvdlJXcH/A78/x6156LIrQvMpi0jTFqckNKqXgYfYp98IzCMch1J9Ofjzh0fQE4/mL9luiOuFZ0cOLoD0yTe0YxgGtfwgBrGLOivCTJUwD3K2er5giqbd3bYPpFYxhEoTR8Flh/WNJEsLGKaGnmPHYAOFxWbSNrp010gX+uu9RQRAebizFis04Lyx2UxWnb3dBFZXWRriDfU/t5lZK5bVLHKeMxcuYh+ZTRn01euJYf75Ku18nBPlwFvCROwFZUXy0kVVfS6upzNm5GeBydWL6HW+QbmwBF7Vr3KWgbye/CoXYAmn1voLeL6Uyvq599EhKqZ0o8uWmOt3IJvBpzDwdgOeKLtH2EISUCYIesE557wbMtG96tCv7snAvdgCeHVrnajPbyVyDj+2bWfTlyzFZqZ7J9mJZlDISdQrjpoR11qn7buMErm2KC1Ft6D81/Nwjb2ZtLHzY045c2O9NthjMEARBT7E12oaAbNB+fSBKXqSbhJ0RJjsNmA0OpbHQLQdDwS8aeDtDf8ts+DdlkUPCFGsQhM4Ozjqwus2LLT/1HH1OiHy7HfHviEDT/bje5p4tqsblbUEHOvz3VE43w/vOK/QpiBatBYF8MAhE3TDC6DELi32CYJr72wBQlvQzHRNuBehqvNchIThBgO31nReY3y8etRoF8CmqO9zwrI0zJjB+iBdVg3NuT8nuxJ8QLkhum8Bg4UmZ/M075q+zUG8ddre1JDSddpGWHJb1zPTwuS3MMqyRHDax/xspg7Wz6AK9jhB6egcwDbIhNUbPlxHWNrJsbDyOFDSVfRCNeNY/3NeV2xibhI0nJqzyYr
- jv31e/75
- muaXOvAp9nXxapcDtxkH5iHrfcRaSuQZlRDovkTjUX0jVJnkTyg5w40frlyL+bkjcWe5crvieWg7AytEq5s+SpcpDCbTUf5dwe0KB9hu/oY+F032QEEWWDrdky8akiVOVff8egtSPrZzQ4969U73wmvk/MYzH8EqGDNqUWdSyxrS3Z9g6PS/Uq0d6QCRFejWTBqks+q7dcv0+nYgCSylT7PP7wRFM0wWZuqoISa5haHL1CtNB5ZsOoDpBGiGdqKDboqDmWo1+2SdbNC7CQvjzBT0XplF6mD7dIGKp7fRLN20X/jVZ2sDagdQtSbeXTOTMVmeRGhAbCQmq0SVtDbKuZvE1KXsneeNgs2GNKl2VdZuOEb+MrHaA5ud/vf2xrwo3547z8ViO9O9VE03p5qgMSM1XFFyWIpElBIC42mpJxnC5cnuiPat22EZxc+zOKCWdzfNbVl4kbgRaITw=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775747422-374558
+X-HE-Meta: U2FsdGVkX19K4nC/Wp3fjb/G2qPsv807OxFzrgM8zPIKykLHbS84he0mA1xD25m3zJ0UesEUnYw/Sf0ReZxIXhsDbpYkAbeswBELIuUt9dAxauWB9/mP4Zs5FpkijP9pvGXo4p33naBwaeKdIw6KNxuKv7/5DMxf8/sSHBdgE/oDvINNj0iZV7F2VcjBX3TuJAUkaBgoR7rguzTB2wcajjmKE+1xR8PmBeA27/SQfcv5kPm/QHXYxXH3T9gTtOWJIIXO/qaoR0fDElUl2QADGJISyVSLZColZGpSM4ilNM2zqvr42kIs8EB9P7mkECpemr4LUpnGI81sbfJ4n7XHe//5Rg9dCN6cKM5wUPDFabaEGIFHn0Eax3wn9yS4mWEHFO4FUAOVi3kxrllAMoxpeBxTqmPFDmI7YubXUb0A+I1/FlWeaM4BuyljbKpadfWUJmsG8MTthaKgZALiRwR5JfKTfg2sj/MGHwO6P1m3rLeFAF2tFmpCyEAad7cwUbjLB+sQVHrOHpluYEmvOG9UbgnbIZOe6TBiPon75OyHb9qEK4N37JKVQg9IjGpA4eBv6Cwj5wtDo/nu/pCcn3xrAcfIoEQazavOfFBAdGOuTx1wS3vJbiohA0lM9KBpwoOZkxId94TE2IA+vDTn8lKBxIi+E3yuLvC5mwQlecFtgvCEZvLhhbDhT0P2LmoLaON8rYnsbrm+L09225JHoN5tPeSTU20j38E5/BF8xEKl5bC3ctRWXhbeJ4IascCSDE50Qed9QWTOGkRqDzX718YBa417RyQ9zQQrV5yHCc2IGxXtSnfPODjCJyK52vtUvGo6JJxfJ3U7/XUKRZUVBeYqakjMBfahL1f1woo53qPJBxqj1dvP5m5MbYSDGgX83urv8e88QNkl5UNp4knL4otgp1S+/qARxcwHmZI160Ybj7qu8J11AJ7BfUbShV/sySh5gQe6QJGBAx1xpweheI2
+ t2vWgXBN
+ ThDTnMPA3d7BbcVVAHAjDRuE2VEeuUD7LXAkiYQhgdd3ltjUKKCifmyRyB4R9rCDir4NTW5fERta2QwpbZDUcxTA40oB/xUuABysurjtoJmgD/S0LmtF7bnSMkke/+Cj4yBNjObocjXziGr6w1Snv6lyUZOj1XAoW/pzGPUkCSxLPuKIMBlhjPW4UGEi2q5uAXIQmVEeHGF/oeDm8uZtjxZcewYFoMAt67534So3KCx42AgDIUNBbGk2P9ReXQHSlK4nJ3kKxPvkmlKD6D+URba+/ThS81VegaLCbm/ZKYiE7LB51byfAQLX5fzb0VuUn0w3xwJZ17E2ol5o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,181 +100,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 16:40, Mike Rapoport wrote:
-> On Wed, Apr 08, 2026 at 09:36:14AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/8/26 05:16, Yuan Liu wrote:
->>> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
->>> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
->>> to rebuild zone->contiguous. For large zones this is a significant cost
->>> during memory hotplug and hot-unplug.
->>>
->>> Add a new zone member pages_with_online_memmap that tracks the number of
->>> pages within the zone span that have an online memory map (including present
->>> pages and memory holes whose memory map has been initialized). When
->>> spanned_pages == pages_with_online_memmap the zone is contiguous and
->>> pfn_to_page() can be called on any PFN in the zone span without further
->>> pfn_valid() checks.
->>>
->>> Only pages that fall within the current zone span are accounted towards
->>> pages_with_online_memmap. A "too small" value is safe, it merely prevents
->>> detecting a contiguous zone.
->>>
->>> The following test cases of memory hotplug for a VM [1], tested in the
->>> environment [2], show that this optimization can significantly reduce the
->>> memory hotplug time [3].
->>>
->>> +----------------+------+---------------+--------------+----------------+
->>> |                | Size | Time (before) | Time (after) | Time Reduction |
->>> |                +------+---------------+--------------+----------------+
->>> | Plug Memory    | 256G |      10s      |      3s      |       70%      |
->>> |                +------+---------------+--------------+----------------+
->>> |                | 512G |      36s      |      7s      |       81%      |
->>> +----------------+------+---------------+--------------+----------------+
->>>
->>> +----------------+------+---------------+--------------+----------------+
->>> |                | Size | Time (before) | Time (after) | Time Reduction |
->>> |                +------+---------------+--------------+----------------+
->>> | Unplug Memory  | 256G |      11s      |      4s      |       64%      |
->>> |                +------+---------------+--------------+----------------+
->>> |                | 512G |      36s      |      9s      |       75%      |
->>> +----------------+------+---------------+--------------+----------------+
->>>
->>> [1] Qemu commands to hotplug 256G/512G memory for a VM:
->>>     object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
->>>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->>>     qom-set vmem1 requested-size 256G/512G (Plug Memory)
->>>     qom-set vmem1 requested-size 0G (Unplug Memory)
->>>
->>> [2] Hardware     : Intel Icelake server
->>>     Guest Kernel : v7.0-rc4
->>>     Qemu         : v9.0.0
->>>
->>>     Launch VM    :
->>>     qemu-system-x86_64 -accel kvm -cpu host \
->>>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->>>     -drive file=./seed.img,format=raw,if=virtio \
->>>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->>>     -m 2G,slots=10,maxmem=2052472M \
->>>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->>>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->>>     -nographic -machine q35 \
->>>     -nic user,hostfwd=tcp::3000-:22
->>>
->>>     Guest kernel auto-onlines newly added memory blocks:
->>>     echo online > /sys/devices/system/memory/auto_online_blocks
->>>
->>> [3] The time from typing the QEMU commands in [1] to when the output of
->>>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->>>     memory is recognized.
->>>
->>> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
->>> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
->>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
->>> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
->>> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
->>> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
->>> Reviewed-by: Pan Deng <pan.deng@intel.com>
->>> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
->>> Co-developed-by: Tianyou Li <tianyou.li@intel.com>
->>> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
->>> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>
->> [...]
->>
->>> @@ -842,7 +842,7 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
->>>   *   zone/node above the hole except for the trailing pages in the last
->>>   *   section that will be appended to the zone/node below.
->>>   */
->>> -static void __init init_unavailable_range(unsigned long spfn,
->>> +static unsigned long __init init_unavailable_range(unsigned long spfn,
->>>  					  unsigned long epfn,
->>>  					  int zone, int node)
->>>  {
->>> @@ -858,6 +858,7 @@ static void __init init_unavailable_range(unsigned long spfn,
->>>  	if (pgcnt)
->>>  		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
->>>  			node, zone_names[zone], pgcnt);
->>> +	return pgcnt;
->>>  }
->>>  
->>>  /*
->>> @@ -956,9 +957,22 @@ static void __init memmap_init_zone_range(struct zone *zone,
->>>  	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
->>>  			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
->>>  			  false);
->>> +	zone->pages_with_online_memmap += end_pfn - start_pfn;
->>>  
->>> -	if (*hole_pfn < start_pfn)
->>> -		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
->>> +	if (*hole_pfn < start_pfn) {
->>> +		unsigned long pgcnt;
->>> +
->>> +		if (*hole_pfn < zone_start_pfn) {
->>> +			init_unavailable_range(*hole_pfn, zone_start_pfn,
->>> +					       zone_id, nid);
->>> +			pgcnt = init_unavailable_range(zone_start_pfn,
->>> +					start_pfn, zone_id, nid);
->>
->> Indentation of parameters.
->>
->>> +		} else {
->>> +			pgcnt = init_unavailable_range(*hole_pfn, start_pfn,
->>> +					zone_id, nid);
->>
->>
->> Same here.
->>
->>> +		}
->>> +		zone->pages_with_online_memmap += pgcnt;
->>> +	}
->>
->>
->> Maybe something like the following could make it nicer to read, just a
->> thought.
->>
->>
->> unsigned long hole_start_pfn = *hole_pfn;
->>
->> if (hole_start_pfn < zone_start_pfn) {
->> 	init_unavailable_range(hole_start_pfn, zone_start_pfn,
->> 			       zone_id, nid);
->> 	hole_start_pfn = zone_start_pfn;
->> }
->> pgcnt = init_unavailable_range(hole_start_pfn, start_pfn,
->> 			       zone_id, nid);
->>
+Hi,
+
+On Thu, Apr 09, 2026 at 02:29:38PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/9/26 13:40, Muchun Song wrote:
+> > 
+> > 
+> >> On Apr 8, 2026, at 21:40, David Hildenbrand (Arm) <david@kernel.org> wrote:
+> >>
+> >> On 4/7/26 10:39, Muchun Song wrote:
+> >>> The sparse_buffer was originally introduced in commit 9bdac9142407
+> >>> ("sparsemem: Put mem map for one node together.") to allocate a
+> >>> contiguous block of memory for all memmaps of a NUMA node.
+> >>>
+> >>> However, the original commit message did not clearly state the actual
+> >>> benefits or the necessity of keeping all memmap areas strictly
+> >>> contiguous for a given node.
+> >>
+> >> We don't want the memmap to be scattered around, given that it is one of
+> >> the biggest allocations during boot.
+> >>
+> >> It's related to not turning too many memory blocks/sections
+> >> un-offlinable I think.
+> >>
+> >> I always imagined that memblock would still keep these allocations close
+> >> to each other. Can you verify if that is indeed true?
+> > 
+> > You raised a very interesting point about whether memblock keeps
+> > these allocations close to each other. I've done a thorough test
+> > on a 16GB VM by printing the actual physical allocations.
+
+memblock always allocates in order, so if there are no other memblock
+allocations between the calls to memmap_alloc(), all these allocations will
+be together and they all will be coalesced to a single region in
+memblock.reserved.
+
+> > I enabled the existing debug logs in arch/x86/mm/init_64.c to
+> > trace the vmemmap_set_pmd allocations. Here is what really happens:
+> > 
+> > When using vmemmap_alloc_block without sparse_buffer, the
+> > memblock allocator allocates 2MB chunks. Because memblock
+> > allocates top-down by default, the physical allocations look
+> > like this:
+> > 
+> > [ffe6475cc0000000-ffe6475cc01fffff] PMD -> [ff3cb082bfc00000-ff3cb082bfdfffff] on node 0
+> > [ffe6475cc0200000-ffe6475cc03fffff] PMD -> [ff3cb082bfa00000-ff3cb082bfbfffff] on node 0
+> > [ffe6475cc0400000-ffe6475cc05fffff] PMD -> [ff3cb082bf800000-ff3cb082bf9fffff] on node 0
+
+...
+
+> > Notice that the physical chunks are strictly adjacent to each
+> > other, but in descending order!
+> > 
+> > So, they are NOT "scattered around" the whole node randomly.
+> > Instead, they are packed densely back-to-back in a single
+> > contiguous physical range (just mapped top-down in 2MB pieces).
+> > 
+> > Because they are packed tightly together within the same
+> > contiguous physical memory range, they will at most consume or
+> > pollute the exact same number of memory blocks as a single
+> > contiguous allocation (like sparse_buffer did). Therefore, this
+> > will NOT turn additional memory blocks/sections into an
+> > "un-offlinable" state.
+> > 
+> > It seems we can safely remove the sparse buffer preallocation
+> > mechanism, don't you think?
 > 
-> Yeah, this looks better :)
+> Yes, what I suspected. Is there a performance implication when doing
+> many individual memmap_alloc(), for example, on a larger system with
+> many sections?
+
+memmap_alloc() will be slower than sparse_buffer_alloc(), allocating from
+memblock is more involved that sparse_buffer_alloc(), but without
+measurements it's hard to tell how much it'll affect overall sparse_init().
+  
+> -- 
+> Cheers,
 > 
-> sashiko had several comments
-> https://sashiko.dev/#/patchset/20260408031615.1831922-1-yuan1.liu%40intel.com
-> 
-> I skipped the ones related to hotplug, but in the mm_init part the comment
-> about zones that can have overlapping physical spans when mirrored
-> kernelcore is enabled seems valid.
-
-The set_zone_contiguous/clear_zone_contiguous can be ignored I think.
-
-The comment about shrink_zone_span() is likely not realistic.
-shrink_zone_span() would not shrink over boot holes.
-
-Well, unless we have an odd case where the hole+memory starts in the
-middle of a "PAGES_PER_SUBSECTION". That would already be problematic if
-memory starts/ends in the middle of a PAGES_PER_SUBSECTION chunk. I
-don't such a case exists.
-
-We could improve shrink_zone_span() to let
-find_smallest_section_pfn/find_biggest_section_pfn test the pfn_to_nid()
-and page_zone() not on;y on the smallest/highest pfn, but also on the
-highest/smallest PFN in a PAGES_PER_SUBSECTION chunk.
-
-No need to test pfn_to_online_page() twice, as that is the same result
-for all pages in a PAGES_PER_SUBSECTION chunk.
+> David
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
