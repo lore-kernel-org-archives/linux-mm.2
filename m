@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543D0F36B97
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 00:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 448ECF36B9A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 00:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AEDB6B0005; Thu,  9 Apr 2026 20:12:05 -0400 (EDT)
+	id 6A7166B0088; Thu,  9 Apr 2026 20:18:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75F496B0089; Thu,  9 Apr 2026 20:12:05 -0400 (EDT)
+	id 630646B0089; Thu,  9 Apr 2026 20:18:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69C196B008A; Thu,  9 Apr 2026 20:12:05 -0400 (EDT)
+	id 4F8276B008A; Thu,  9 Apr 2026 20:18:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B5166B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:12:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0ADA38AD20
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:12:05 +0000 (UTC)
-X-FDA: 84640718610.28.58B897A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5E4851A0007
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:12:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Li6mSTkb;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38EDC6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 20:18:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D35A1A02DF
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:18:45 +0000 (UTC)
+X-FDA: 84640735410.21.61E9CE5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D80631C0007
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:18:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iVS3MxUJ;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775779923; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iVS3MxUJ;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775780324; a=rsa-sha256;
 	cv=none;
-	b=KdDd+AG8ajQ3wULta5mnzIFjy0kNsj737U5AFb7X7gTGD2tLFJt65685kzJOwiNwpE9Ap4
-	3R8DS6jjs8+MKRV9H4Hzg9E/mBFBT+DLtZbDRDU2/JjZmjoQtw4oSbFlotNL1A5iIHgC+X
-	taGT+3ikOvA+JtsTVZRbfXoZwsSvjEE=
+	b=GSZdwCcWHsYloh9mzidzi1zOBxm2JmpiVIhoUIw9ld/6fDLci1j/l7h5J3M8rOey9ygvGH
+	XY3Gx1m9bjziTY3siJh2jeXDM5Vk5AtjL90Y75O20ut66Nwx+UBOg0tpsGsUT8ioGL3XM1
+	EOVDyoHkQi/KjslzVkgcB5ML8bTWr78=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775779923;
+	s=arc-20220608; t=1775780324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qalelU2OVFIi9vg/MxI809u/9MRYVd9xJrSdW3f1vXA=;
-	b=47S7bmOWt4t9gWROQGQWW3jiDkkzyvc6pFXM1Tvr5qoBREZ60PYfJXNPg9en5u1+2rxr7/
-	enAAaF2pTB0veqbBuUH2csNkv8jdqghSyIlFsYLFA87/yjRAU1GzOcVYc3snAE8ypKR2Eo
-	5mvIbwjP1C4yRqTx1u7BDbghObq+gGo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Li6mSTkb;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=V4WRlbU2LaFRx/kfFbsrD/NDQf+pfMbBQXDhpusFZ8A=;
+	b=RF8FBxpH4H8yPFGvMrDy16QhluD72KA1vaAlFOpor0NydXBw32Y46SkOYdYH1VY7m8RP2v
+	us17RwU30j23a73k95teMv8t6HM+E5YM5nBsM1NetExSjK6TttIvgm/2xmaH0WnYvh8HSf
+	cc1TrAK+3NQpAFOeGFRbx52wveHbwAs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B04AB600CB;
-	Fri, 10 Apr 2026 00:12:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391B8C4CEF7;
-	Fri, 10 Apr 2026 00:12:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CAA8344450;
+	Fri, 10 Apr 2026 00:18:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC02C4CEF7;
+	Fri, 10 Apr 2026 00:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775779922;
-	bh=Dyj6DdBLJ8yRouWJ2nAzD7cNHqNhbULuYxPjo7BULS0=;
+	s=k20201202; t=1775780322;
+	bh=/Q/ll9PivB5oIVa+0s1p+HhzrIQo6pfDmvHg0+GwGp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Li6mSTkbLPgUlVnGG42ioTKx9YBJ9oGfyO2hE5zOWffSBlOCa9c7K//W/Wc6IxYYr
-	 4d7BE1jEs9wV5qobdskJxM99JHfB2OFCdUo/6x4/VNRQ5xwTcHF0noP7gNwFvQLjDq
-	 6NGlshdm2m3Wtrw9v/GYubdo0T/l9/qNtMArKzyJD3NFJ81owy9+fdTE3VPwN6x4h+
-	 pXS9c1RS+xFoGRQg5p0e7KW49Ch/yxyCHJ13qthmdxcbT5XZCwYVp4PDYgxmCuOI5U
-	 c4fT5jxhXB4sq+m3FbdbEUrysuynpma1hIG1Mh+fTM0ULKeGPhvrNpX7IRvNanmmDs
-	 7qyap3l9d+Ang==
+	b=iVS3MxUJnNfok8BEsH/dviiPNaVrgEYPvv7VzPpgVWHDeCJ5apJff9W6TCLKMuCfH
+	 ikX8XHNSK3YAo3oHbI0ET0Cl98IsEB5z3mImJull7hPRg9oKvxpTVVPVvfe/dUuXOe
+	 Ging1o40xnrKRKz7oPUf1valFg+7SHBpPU2a18Z557+sdalBIeAPr5wzx7Q7oW+fId
+	 hJUjPMco/A0Hz37cUii1S01Jkj8XqT5iTRsJQbBjeoTgbCQzp5i2eJadrNE5RcI/D4
+	 YJIQp/vlJ+fEVHTe4lSEt0Fm4Dtkwj67AqgRI5gDRzPAQrHObLssq5A7EWw0+/773r
+	 y8QLSreSJKBaQ==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v4 03/11] mm/damon/core: introduce failed region quota charge ratio
-Date: Thu,  9 Apr 2026 17:11:54 -0700
-Message-ID: <20260410001154.77757-1-sj@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Ye Liu <liuye@kylinos.cn>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/khugepaged: use ALIGN helpers for PMD alignment
+Date: Thu,  9 Apr 2026 17:18:33 -0700
+Message-ID: <20260410001834.77924-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260409142148.60652-4-sj@kernel.org>
+In-Reply-To: <20260409014323.2385982-1-ye.liu@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D80631C0007
+X-Stat-Signature: wrcaasijyhfrkemrducyfdy6bwehn348
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5E4851A0007
-X-Stat-Signature: hursmw95mwnweianpo3jcbkf73rx5bqz
-X-HE-Tag: 1775779923-33150
-X-HE-Meta: U2FsdGVkX19e8P3pTpMiPYYgLpeMoef10LzXKlZVocaRQSB2vwDzPWonRGmjqCQ4f7r/H7SAUGk+ze9AwGtXaFYd2iah5M1UhKz6/JLNEfxmWTtMEfh7VG6k/zTwfIDWzcoUZEpkqxqo3zpIEXVdD8MMEvafKkJ6/7b6UO4T1WnGkZQMrrwqH8jIJQM7z/GbGL9DKPo/Q+HtxZ8/3X7lgUY+iuNJnynV0ytUsBiY3QhqCypIZxoOt4iCrF9+t7razE8DoHedGNQU1l8vlOjc5AkK+PFFhvZ3MvJBHVP0Fvkv8V+EyPprznr6zCYKz8AiVMhbGJwDOH261hRQRvt/kNyq33T5QayfJY7eiIkx6GT58XEnV8bFBgIbdttI87IxgE5CQQOeNwI7JZxSFcLkAvV//7BhTNSM3rsTbq9t0ZTx6Y5eUxCV9hJdfZsm9+KVY+BursNlrxujV7ITbTS0mqUFHMW36N9HJxtKkPJ4aZNWj4AleDEhcqxn0YmiZ/fX85ktO4tCUkVGDKfgSdULMag6riA30bdlGUsRwLGAE0O6wZP1SU0K3/+xfSH5kuJNtS8cSSXjsbSNSPd5Vfb6R3C0ROpFZlSmqrg3Zc19OtNzOHD7PfcjwuJdnMQm6Mk/GzdPbAMSLn9XEIu8HanwUeA7kHcn6tcmy949MfIHbZJT0cA3A6uRJjnt+3BjTxIceDMJekRsKFuus46CQagSgcXcxGe+YdPsiz/2xIZ+dMaKAntp3FKGhN2zNYZbCMNBblMkDUikt8Lo6sfDDHZDIBOPxqLt9UCU/qUIw5MB9TGstnNlag808P+rFf2Y+xhve+R6Woeym7lzreAbaKOyO+aJA2Pv0TdKzg7PP9pmfD0plR/uPpLoWeTn+ZnDl5+EhwSE7Ga0SI5wmeXE5LyLSATQQygGBIvVhLEEoBd4pT3k+afr1dndnjnkyj47z3kapGyURnZPsEEhx9woXoa
- XZ9tbXz2
- 8+lSPsnF60TFeQYLKF97RP7CnFpKVHH12wp3MZd2GDaxNytesUJNdsZduEVolR32SZ88TQ4LfV0AU4XOrpvPIUB7XEtD4jUPv7YVfF6AgyJek9/eeCqsc7BkWvgFbC04Q7nW+npOVPZkypvrcTLUls6tw7juJufQhetHjbs5lCx/GPIKzaWfORiEvvHwCXa9oWb7gP4O6zFzUtA22S5cmVVAQA4CrY/0TSB7YKd6NTkGMcDOZ96HoZSZ2aSjWgugspSjpnkQsf3LzncmiGpgttc8FpPsJ9OYTwSgy2e7iy+UcNuZO7OgoBzMpIw==
+X-HE-Tag: 1775780323-233143
+X-HE-Meta: U2FsdGVkX18XXIF/8YMijJfHr/pGpm7zSvwNrFgoJn3qMoYwy3rnhsw7C7KejEvi6aNzJTdHWLpeiqbfEK3G/8jK+iZW9ulZcsU/rRZ2NnGep7r9rW47MEzwZo1AV9RmsDPNiuE8L0KqlAYbpf7jwK2n+7plZ+72oy0iuDypXcvIP9GPAd/dRUii4NzvAnylLXhQT1t9F9Qol37KwDuZU3jp5AFjC+pCjovqHzw3SEtneuOcnRcyJsv+hgUGD1ZXS8yU8D8n4a6QJYkT77QCSBbFMB0QBD/o7tUq2mXsBPRdeRpUO7R99uZATo4tZu+5SXh6RI+WQcM8VHw8aPe6MTvaG8i3gv2KmE7uhERAoePaayhH7MygjhIuKFlqesLBUDfEvtyAfxM4jBOhKvkoBaxy+L1avAKsrF6zDNpDz+PeTDSILICcF5SR3zmER0eeQ4Oxrq770X9MOnN8Tec4BCckqctWDJmAMt++YmTTUoink8PG9fOAFf2qHnxZyMdPtralm4/MPt/cUmMQlqIsgith8Pf5p8c+VIx5GNmH6aAOihv8K1U4Cwb6zaMFVkr/lBnCIKPGNhR5SubAUiM722BQHyQMacmtXMXWLQ4jHJUCOoCT5JD5tR4V4YsBOkhkjWHd+Ad8sjar0Zxei7yOqR2Ex3Bt+6KHaqVxuRpod5otYjZ01fFgH1gKfD8hb+LA4CVO4CWnfChw5vR2XJhK7QT90s26IsrLL6tG2GB7u9p+twEJGQ+Fsq+2GzYqkz01BkN+23O7jmhyupAUg2NCfSC4EIX4Yr/+mTgMiaMRDwPb3HWZ4aJTf7q8oLjQlOnzcZlEpamWnx3vQtWGSw3tEno8cloC80DuD9eIu38ifsYpQHea2om7SVg+eMghMLY7ZObeYQOVx94STQuTPvzgZxUypHaRq94XVJMS5fWz9siLEdJwFTS6LaZfW5MmvRoWgRjJiN8gnzHnKoFHLO5
+ rIA4L1f3
+ 4spSDgIVLXGhxj/XQ6ABqYe6l0lc+d1U5M0KwjPbC4WiAhLHRpkq/Z9QnJFN0tAh5UTcapQvphbS+7k1L75p8qoDx4e9QbZfn8otIZ/9C1C82PHdpeRXeYab0D7ZW0+8eWTLWt9MksCPnZ8a5bRS81643ovLD6v+zo6puhBCZWzlrjTFyT2IP0XDV7JyXBB9izzVNLwsn+Utbtm+h96ZSHZ9ZosZBTk1ybRz/3kOnLLDJTG6c1285/CWhPtUX9XzBZN6E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,170 +103,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-# sashiko review suggestions
-#
-# 1. Consider reducing recipients.  Maybe the author,
-#    maintainers, reviewers, and mailing list of the
-#    direct subsystem and parent susystem mailing lists
-#    could be a starting point.
-# 2. Add short summary of your opinion at the beginning.
-#    For example:
-#
-#      TL;DR: sashiko found an issue.  I will respin.
-#      TL;DR: sashiko found no issue on this patch.
-#
-# Please DON'T FORGET removing this comment block before
-# sending this!
+On Thu,  9 Apr 2026 09:43:22 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 
-Forwarding full sashiko review in a reply format with my 
-inline comments below, for sharing details of my view and
-doing followup discussions via mails if needed.
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> PMD alignment in khugepaged is currently implemented using a mix of
+> rounding helpers and open-coded bitmask operations.
+> 
+> Use ALIGN() and ALIGN_DOWN() consistently for PMD-sized address range
+> alignment, matching the preferred style for address and size handling.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
-> # review url: https://sashiko.dev/#/patchset/20260409142148.60652-4-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 55afcaa519ab8046d8aa94af44973c3cff0c2a26
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/core: introduce failed region quota charge ratio
-> 
-> DAMOS quota is charged to all DAMOS action application attempted memory,
-> regardless of how much of the memory the action was successful and
-> failed.  This makes understanding quota behavior without DAMOS stat but
-> only with end level metrics (e.g., increased amount of free memory for
-> DAMOS_PAGEOUT action) difficult.  Also, charging action-failed memory
-> same as action-successful memory is somewhat unfair, as successful
-> action application will induce more overhead in most cases.
-> 
-> Introduce DAMON core API for setting the charge ratio for such
-> action-failed memory.  It allows API callers to specify the ratio in a
-> flexible way, by setting the numerator and the denominator.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 31ba739d28e2f..1f171665509b8 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> [ ... ]
-> > @@ -2041,6 +2043,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
-> >  	mutex_unlock(&ctx->walk_control_lock);
-> >  }
-> >  
-> > +static void damos_charge_quota(struct damos_quota *quota,
-> > +		unsigned long sz_region, unsigned long sz_applied)
-> > +{
-> > +	/*
-> > +	 * sz_applied could be bigger than sz_region, depending on ops
-> > +	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
-> > +	 * the region size in the case.
-> > +	 */
-> > +	if (!quota->fail_charge_denom || sz_applied > sz_region)
-> > +		quota->charged_sz += sz_region;
-> > +	else
-> > +		quota->charged_sz += sz_applied + mult_frac(
-> > +				(sz_region - sz_applied),
-> > +				quota->fail_charge_num,
-> > +				quota->fail_charge_denom);
-> 
-> Could this calculation lead to an integer overflow?
-> 
-> The mult_frac() macro evaluates the numerator multiplication internally
-> using the type of the first argument, which is unsigned long. The sysfs
-> interface in the subsequent patch ("mm/damon/sysfs-schemes: implement
-> fail_charge_{num,denom} files") populates these values using kstrtouint,
-> allowing inputs up to UINT_MAX.
-> 
-> If a user configures large values for fail_charge_num, could the
-> multiplication silently overflow the 32-bit unsigned long result on 32-bit
-> platforms, or on 64-bit platforms for sufficiently large memory regions?
-> 
-> This might produce a wrapped-around charged_sz and affect quota enforcement.
-
-Sashiko asked same question in the previous version.  I decided to keep this as
-is for code simplicity, as the issue is quite minor, unless other humans make
-some voices.
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 > 
-> > +}
-> > +
-> >  static bool damos_quota_is_full(struct damos_quota *quota,
-> >  		unsigned long min_region_sz)
-> >  {
-> > @@ -2111,7 +2130,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
-> >  		ktime_get_coarse_ts64(&end);
-> >  		quota->total_charged_ns += timespec64_to_ns(&end) -
-> >  			timespec64_to_ns(&begin);
-> > -		quota->charged_sz += sz;
-> > +		damos_charge_quota(quota, sz, sz_applied);
-> 
-> Does discounting charged_sz for failed actions affect time quota enforcement?
-> 
-> DAMON converts the time quota (ms) into an effective size quota (esz) using
-> throughput. If fail_charge_num is small or 0, the charged bytes accumulate
-> very slowly, which could drive the throughput estimate to near zero.
-> 
-> This would cause esz to bottom out at min_region_sz. Since kdamond stops
-> only when charged_sz >= esz, and charged_sz increases only by heavily
-> discounted bytes, is it possible that charged_sz never reaches esz? This
-> might cause kdamond to endlessly process the entire target memory space in a
-> single cycle and consume unbounded CPU time.
+> Changes in v2:
+> - Switch to ALIGN()/ALIGN_DOWN() per David's suggestion.
+> - Also convert collapse_scan_mm_slot() to keep PMD alignment helpers
+>   consistent within khugepaged.
+> - Update the changelog accordingly.
+> - Link to v1:https://lore.kernel.org/all/20260408093534.2373007-1-ye.liu@linux.dev/
 
-Action failure is expected to be faster than successful action applying.  Hence
-the denominator of the throughput, the total time took for the charging, should
-also be reduced.  Users may set the ratio based on their expected overhead
-difference between the time for failure and success of the actions.  So, this
-is an intended behavior, not a bug.
+Nit.  Changelog should go to the commentary area [1].
 
-> 
-> Additionally, does the discounting affect region splitting earlier in
-> damos_apply_scheme()?
-> 
-> The region is split using:
-> 
->     sz = ALIGN_DOWN(quota->esz - quota->charged_sz, c->min_region_sz);
-> 
-> Here, esz and charged_sz track discounted bytes, but the resulting sz is
-> passed to damon_split_region_at() to split the physical memory region.
-> Could using a discounted byte limit as a physical byte size cause the action
-> to be unnecessarily restricted to a tiny chunk, preventing the scheme from
-> being applied to the full allowed physical area?
-
-Yes.  And therefore the previous patch is made, though the current version of
-the patch is completely wrong.
-
-> 
-> >  		if (damos_quota_is_full(quota, c->min_region_sz)) {
-> >  			quota->charge_target_from = t;
-> >  			quota->charge_addr_from = r->ar.end + 1;
-> 
-> As a separate note regarding a preceding patch ("mm/damon/core: merge
-> quota-sliced regions back"), are regions split due to quota limits being
-> skipped and orphaned during the target loop?
-> 
-> In damos_apply_target(), the loop uses damon_for_each_region_safe(r, next, t)
-> which fetches next before executing the body. If damon_do_apply_schemes()
-> splits r, damon_split_region_at() inserts the new remainder region
-> immediately after r.
-> 
-> Because next was pre-fetched to the original next region, the newly inserted
-> remainder appears to be bypassed by the iterator. This might prevent the
-> remainder region from being processed by other schemes in the current cycle,
-> and the intended merge-back logic might not execute for it.
-
-Yes, as I mentioned to the earlier question just above.
-
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260409142148.60652-4-sj@kernel.org
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
 
 
 Thanks,
 SJ
 
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260409142148.60652-4-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+[...]
 
