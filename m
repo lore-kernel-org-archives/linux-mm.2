@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9F8F36BA4
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 04:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48932F36BA4
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 04:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83DA06B0005; Fri, 10 Apr 2026 00:21:57 -0400 (EDT)
+	id 9F6AB6B008A; Fri, 10 Apr 2026 00:29:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EF026B0089; Fri, 10 Apr 2026 00:21:57 -0400 (EDT)
+	id 9A77C6B008C; Fri, 10 Apr 2026 00:29:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7050D6B008A; Fri, 10 Apr 2026 00:21:57 -0400 (EDT)
+	id 8BDAF6B0092; Fri, 10 Apr 2026 00:29:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB716B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:21:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2C21140392
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:21:56 +0000 (UTC)
-X-FDA: 84641348232.10.6CB949D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 795CC6B008A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 00:29:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2277A5835A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:29:17 +0000 (UTC)
+X-FDA: 84641366754.11.CF1FD48
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0A51880004
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:21:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=V7lLGyCR;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1F20640008
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:29:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bjxI+aQ8;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775795355; a=rsa-sha256;
+	cv=none;
+	b=65eT5gfBWaXXQjUpWmzF7JWf73HbngugtbijBwBhQcBd05+VNgj3/pyGXEU823bpedor2P
+	cl/SXmsKMNPo8DZTSIhVqlZCFemnUaiZZxUIfSsJzYCG4cE9VL1ezjWNUMFiCzI40TjbXy
+	JDl/Jq65AKGcJOCuqd0P9YFUMjUY4UI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775794915;
+	s=arc-20220608; t=1775795355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6uHJXCSUTxlOlhJ1YH5vcsGK/++2J1B0XW1TG+HJgk=;
-	b=sWKsj+gRusbdbAFh9mvJ2n8XLj2chJ+OLRuega2cwMJfWLa80iwjDlCHo/oH8+DfFzkUbv
-	Ij12CoaHmCaVo4pUvREHzde8S98Di36Qoym0ZQbjtDoapg2+oU595cdDlHgGUXrYNFhJLh
-	M3fpvFpW4NJOG5/aERWe7QTpe2/ijIE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775794915; a=rsa-sha256;
-	cv=none;
-	b=oATOJ0LIYaDe5zZonpuVhdIgjneTxas4NZQFlh05L6z6K6XBKugFk7QwhIXqrUSZua66cC
-	oFB3e9DkFZY+U8DmT6SyfYnykRzg2g0PQvQ/AlnWuOHhrDsrtieNThnaXKlQpjXjPPjDs7
-	ou1YOI4cOoYWgWKTng5Z1IVsk3hmASE=
+	bh=oHebwTdaLWNAvs0/4wxR9L58v575xxVmSaA4yoh/ZUo=;
+	b=Fib7ntwoGX9VKnheqME2eWwaAKmooSZ4vndosmHEp4B/xnXgKXOtDpEmn7j0lOZYZoRH1U
+	AQJG2ekdnvQoGqKzaeJOkkEQ/UCWCY2A6Q7Ga16Z3VBpY5sow1QwePaGfKjsHKo4hlqQxH
+	bz330FSZ41zzA7jKoaZS0/qmA1xl5bc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=V7lLGyCR;
-	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bjxI+aQ8;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 845DC2008;
-	Thu,  9 Apr 2026 21:21:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B4522008;
+	Thu,  9 Apr 2026 21:29:08 -0700 (PDT)
 Received: from [10.163.181.174] (unknown [10.163.181.174])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 668AD3FAF5;
-	Thu,  9 Apr 2026 21:21:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37E5A3FAF5;
+	Thu,  9 Apr 2026 21:29:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775794914; bh=yNYtRWemxBehsStI8lS7zwbuvuaTycWq8O+12cp0kh0=;
+	t=1775795354; bh=BSdQ3Ls3b2H01n0rpr+1N/SbRJC1dCvd44chWo22Nbc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V7lLGyCRjzBFKUjJy+Tws9lDROrQyWlkUAfTsMgWOPjwWM4bQpWwJ7us2nynvVNU+
-	 /HHMG0BJUWIRBfYoH5pUaQ5zBK9mvngorFK4TzUQjF2xigTG21/X0vRfbEMRa5pvIA
-	 tE5gLPUsBiB3zI+Vp6r3xRWJKI42w0c3dDz1YYsU=
-Message-ID: <18173611-b233-42a4-867d-1e474feee534@arm.com>
-Date: Fri, 10 Apr 2026 09:51:47 +0530
+	b=bjxI+aQ8zFM9SyTQFzyGuKMzJg2y75xsC8VOiuWuEm99z0f5vvZn0tIA7wR7+h4Iy
+	 CzNTVCPduKNC02eWJmFtnGR1w9MZ9FUvS9hdN6XbJhkRIfwFDfcxyUx3QXbrABvHxb
+	 FKKbokiyNtbnCQKEVUV+bW6T2cZvHRUFw5fAnldY=
+Message-ID: <8ae905bd-fb1c-408d-bf50-77667a51e3a1@arm.com>
+Date: Fri, 10 Apr 2026 09:59:06 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 01/16] mm: Abstract printing of pxd_val()
+Subject: Re: [RFC V1 02/16] mm: Add read-write accessors for vm_page_prot
 To: Mike Rapoport <rppt@kernel.org>
 Cc: linux-arm-kernel@lists.infradead.org,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -75,21 +75,21 @@ Cc: linux-arm-kernel@lists.infradead.org,
  David Hildenbrand <david@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-2-anshuman.khandual@arm.com>
- <adeAhYW-hJ7-6-Xy@kernel.org>
+ <20260224051153.3150613-3-anshuman.khandual@arm.com>
+ <adeBg_eZvmz-ST67@kernel.org>
 Content-Language: en-US
 From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <adeAhYW-hJ7-6-Xy@kernel.org>
+In-Reply-To: <adeBg_eZvmz-ST67@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ip416i45r8br6ubadf879obpyz5d56kx
-X-Rspamd-Queue-Id: 0A51880004
 X-Rspam-User: 
-X-HE-Tag: 1775794914-524887
-X-HE-Meta: U2FsdGVkX181T1XRTkvPW1wuLjtS9IuIFXq7nK6Hy7vG+XxVDByQlAnYqiRtvLUTJqkxOy+hcZsjW/P1GU1PFdUlHt6KpUoawq6o1+qxwOPAsdPH2oIrNsrkU/iHiV7lHv9vShlwHlAmsVmxJLwI4hrYaUAyku19p/eSLXWFfqcIHUHpJgclRtkqX3UGUrUndThiyZkHg2jOncIjvjrhgm+ul7wjNhEpEF/CPgv9LfcillCaofgukGXpw9T3CgNncGzg0OHf0LGjdrneIpzsqOhal1Xv88MdMwbeW28zvFE6Cfk/WppgU8A8arvX6pxvK6fyp5xYpqpXhU6Wmo/ZgCMmIYU5rPXDCTTbJA9pt46LrL4d4e2KfOF2lV9Qs1MJ2GT1Zp6IFoC4oHlz44ea815Sg8mtiLo/+tF3au4zxNPVaqMZ/KOQLVnhtrSFKEOMAb4tyyLBwYo/C5Cf8PZ5vzghxvQUcpRMin9nUbQvUxVwZ2pUEghXZwGQ528Vz6VSYnTTEDuMRd0az0jRfJaCynqL1ha+rnr46Ys2g8KS4umzp/7juArRB8OplS8CfsNTXsNdp17ByfQW3KLrrskz1f0SHtv7FyR8uIyLYgFoarQb6Y25KJozA1SVowp/W1wiYwj0aGpvH7QzUNRnDPGTmmh8eBY3J0CZTnpRTL2kLcttv9R5FZjwpZBvvM1olhdDobgoHjcrn2ba1cNIrIlOG2GgJuvgigNYO9ttYRaN44cMfqnc2qw1BHBDspzUfgreU69rmMkzR8FAcyeRd/BUvCdvRum4yXv0wvgFFOeVPK+ouLooTDMQnzWTI4R7pnPC7lpvcLJUwOgCm/KjHyejF2k//7hcc/qQ/cdxgmieLqBBpgiavgHrfFHw62nzuki1rz63bs3dliP0ty73aq2Wr8UskUR02YWDhVikAN/Uy+KjS13y8AH+cm5+mFXmsAGb7NXmqmwC+reUiE7me5R
- 8h4eW7Ph
- pP9emca2DKOeRPz6if+Y1xGPF7SP7RmpgC02CCrWm3tnmdM0u6O3DHLILrjd5X73V9bAu4F6OP7AuJLtSlZSgQbScv+wCXpEEnUljbEnC7b8skkTVJthSkCbPWRq8qN4CW9/tY+BiuCvlRd9oWH/y2YYlQfIFz3m78Shjlkwkuc44kn8ppMtCw4RCh+pOUNMOaX/t9PdePEh2m/FlDXaS5ZiVo5WoxHCe1P/Ku/RyjWpiNbhTWDgXFUJJhDOUC8syhin8vM5aaiFrkKwaYKiOK1uBpsBTmibGm9ppEyFG7bZ4Dpc5AGWgr0rR7ZOPkprLvG4ezilmQKD1I98kouCotdSDnyR4uhKXAxLmIJiiOgErx2Zv2GCcBTvSbrsOaXp68Y5Jed20sDJSXXJJydyOPV7FEtoAUUi/axyNNgaHwqmrcyqEeIEmqe5u1LTQQYVYS5LrPhfRYx5xuyH614umYBJXd7coRtuc/wiBuOp2YmFQ2EKVioEWUQ+P6K2a12HWCZMCjv3S4LUo7S02w34mLEtg0YU7zULazOH6
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1F20640008
+X-Stat-Signature: w8u3fjt5zaesnkoj3gk8pc9cm5gzjntk
+X-HE-Tag: 1775795354-840888
+X-HE-Meta: U2FsdGVkX18lZ/Vd7O9JPmh8ZjSIriL9KBW/jlop/6M9WLdISnF6uY1Yjj78E+D5L69oauaQm6+uwO44qIFTl5sCxj7SS7cYi1IxlWYVS0Y9OShd8egI5Z1HDjhlbNWjflpDUXBeB/1rgyIwd/bT8nMd0P13bqmPI1wgRmqsv3LIG9VcXOiaYaHBy0MOh4lSV/JgCRq7Bp2nlhsLRalL+T/LVY3Ga9uGNf2v5uUDkFDqzgCKAQok3jntqF1R986ahwZHu9XeDv4sdrU0oJmtqjpe0e4GlTwQWlXiLWGs5uSS13MaIxjtHxx3CwKiTnS6Df+bqYLb+PcYq63IkAA1TOm9Q+Vum1wJ8CDm/LZk4REgusVBXOGdX0aW1uo1VXIjPJrZaOlERcZLJYcNTrIyF0TBuP3msWdAWA37+SXx5UPi0sTfIXwn5RUjQtDJzUGoR2T7LPVR41BnuOSx+O8wLln8QyitjQvd87/wv0MT6GgQxLmNpCeKwhjo/8oebufhVjaDP8oERYeHdYeddph63klHeDyArOM2IXAYZOWB2yC2LfvKZRUYRgVOBNd+FPvvgUJgDH7qvppqBuuPOhmdCgNJeVxVIHFmcVb8qwKOkziQ5W19hp/IZ0rZv0Alqn9jbqX/aQSZDy958UeIr9eJZHVq6MsTo8ZkloZLy/rJjs+/lJVahVcoOf2P4EXsaNTfmeYMT3ucnQWE8Fm8dIWPn3M0GiwVdLnKkwkzEsnhKngBhLKSdxEFDVKLn2XGXgJtH2Hpz+DlqKq6PGAmLCOmmYRjNQBFgyhta62d1OH88dqQF90ZZ07vX8GLgAZAd31J2tznsP3x+BSVXEAwpnxffaEb66xumcb6ZHRB9h3XdZsZH/tGfYLAY7JHl/dhk2LvEhpsl8K9B1iO7ZJJrWMzaGdpjaAbQKkiKzNFLgwHar2QClAj+unDO0mbh5twu+DRnbKP3UCP5VVI98PW4wJ
+ JwgcA+cf
+ q+BncNBuS/clRNcYatwKB69zyufJrEqpn5v8c2LuzydMRdPfMf7ROdOC3VpANpdhMqfQprly3Y/f3B7vxj526+xqKmpx0n3HtixmSVQ+mfU/f4UrK3rVFrZf9rZQ4ZwU8/oqpRTKseuzFD5RoNA6Un0BPoHEbNmbGGLVb5cfzDd3AiIHBnBCyRqpSdQTIVn+mFAU+tQxAIYtWxMwq4JaN/pJSGJMJylGAC3OYuwSYC0Wv9Oll8doA18lkL8//O8o0eSWzwV/TV7mSSI0t8mVsB+rDpnkna4zizjMI5taAeicdT62m3MS3rOQa0bbB9zfn/RnBkOCrFAALmqp0KxDzknQJNvy3AdLeOMwrOf/0DG4I17mq5uZ52SGnhkzjTOED0QS33zYtDiQMxl0yFSNLw/5x3aNyzLxdFoQdtZvR4dRAUWLEwI81kulGbC21ERGiKrePDJs0NUaxh/OTacs2QEfNC/liD+vQEtFYJbEon7u2MM9Jto5BHAD3TRl4DPZvgfwO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,19 +97,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/04/26 4:03 PM, Mike Rapoport wrote:
+
+
+On 09/04/26 4:07 PM, Mike Rapoport wrote:
 > Hi Anshuman,
 > 
-> On Tue, Feb 24, 2026 at 10:41:38AM +0530, Anshuman Khandual wrote:
->> Ahead of adding support for D128 pgtables, refactor places that print
->> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
->> macro to prepare the argument(s). When using D128 pgtables in future,
->> we can simply redefine __PRIpte and __PTIpte_args().
+> On Tue, Feb 24, 2026 at 10:41:39AM +0530, Anshuman Khandual wrote:
+>> Currently vma->vm_page_prot is safely read from and written to, without any
+>> locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
+>> tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
+>> be handled with READ_ONCE() and WRITE_ONCE().
 >>
->> Besides there is also an assumption about pxd_val() being always capped
->> at 'unsigned long long' size but that will not work for D128 pgtables.
->> Just increase its size to u128 if the compiler supports via a separate
->> data type pxdval_t which also defaults to existing 'unsigned long long'.
+>> Add read and write accessors for vm_page_prot like pgprot_read/write_once()
+>> which any platform can override when required, although still defaulting as
+>> READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
 >>
 >> Cc: Andrew Morton <akpm@linux-foundation.org>
 >> Cc: David Hildenbrand <david@kernel.org>
@@ -119,48 +120,29 @@ On 09/04/26 4:03 PM, Mike Rapoport wrote:
 >> Cc: linux-kernel@vger.kernel.org
 >> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 >> ---
->>  include/linux/pgtable.h |  5 +++++
->>  mm/memory.c             | 29 +++++++++++++++++++----------
->>  2 files changed, 24 insertions(+), 10 deletions(-)
+>>  include/linux/pgtable.h | 14 ++++++++++++++
+>>  mm/huge_memory.c        |  4 ++--
+>>  mm/memory.c             |  2 +-
+>>  mm/migrate.c            |  2 +-
+>>  mm/mmap.c               |  2 +-
+>>  5 files changed, 19 insertions(+), 5 deletions(-)
 >>
 >> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index a50df42a893f..da17139a1279 100644
+>> index da17139a1279..8858b8b03a02 100644
 >> --- a/include/linux/pgtable.h
 >> +++ b/include/linux/pgtable.h
->> @@ -17,6 +17,11 @@
->>  #include <asm-generic/pgtable_uffd.h>
->>  #include <linux/page_table_check.h>
->>  
->> +#ifndef __PRIpte
->> +#define __PRIpte		"016llx"
->> +#define __PRIpte_args(val)	((u64)val)
->> +#endif
->> +
->>  #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
->>  	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
->>  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 07778814b4a8..cfc3077fc52f 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -532,9 +532,15 @@ static bool is_bad_page_map_ratelimited(void)
->>  	return false;
+>> @@ -495,6 +495,20 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
 >>  }
+>>  #endif
 >>  
->> +#ifdef __SIZEOF_INT128__
->> +	typedef u128 pxdval_t;
+>> +#ifndef pgprot_read_once
+>> +static inline pgprot_t pgprot_read_once(pgprot_t *prot)
 > 
-> I don't think the typedef should be indented.
+> I don't think we need _once in the helper name. Presence of the helper
+> already implies that pointer should not be just dereferenced from one side
+> and that using the helper will do The Right Thing from the other side.
 
-Sure will drop the indent from pxdval_t.
 
-> 
->> +#else
->> +	typedef unsigned long long pxdval_t;
->> +#endif
-> 
-> Don't we want this in, say, include/linux/pgtable.h?
-> 
+Makes sense - will drop __once from the helper name.
 
-Sure will move the typedef into the above header.
 
