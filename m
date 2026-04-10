@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC6AF459F3
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:24:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCD1F459F3
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 611806B00B8; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
+	id 43E1F6B00BA; Fri, 10 Apr 2026 11:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C29C6B00BA; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
+	id 415106B00BB; Fri, 10 Apr 2026 11:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48A3E6B00BB; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
+	id 304956B00BC; Fri, 10 Apr 2026 11:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 370BC6B00B8
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF0481A0153
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:24:50 +0000 (UTC)
-X-FDA: 84643018740.27.EE60EF6
-Received: from iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com [50.16.246.183])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5E5941C0012
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:24:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NYCUeKkd;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 50.16.246.183 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 205166B00BA
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:25:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCD28C14E7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:25:18 +0000 (UTC)
+X-FDA: 84643019916.12.5A5272C
+Received: from iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com [44.210.169.44])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 54C7C40005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:25:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QOaOamUz;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 44.210.169.44 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775834688;
+	s=arc-20220608; t=1775834716;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wZc+sAyXLDOw4SNn2V1QCxBFXc6EIQ5hl84+ynFDeD4=;
-	b=H5wCHeLkkmTMnblcPOXnkF2JWNGe3PO/oBQ/UIy3jWUbMx3nKojl1UdGknD3eFvOAHpgHf
-	814M/iDC+c0EF2JDFrqX30+ruCBFpxsQqhyL3mMDs0e9Yq61wznCk9rBoBQ5o9iGeEiP7k
-	SHTTMmNcKUziPrspHlCD8UXeqX9rekw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834688; a=rsa-sha256;
+	bh=GnVTAq+Vwl6iHj2Q375I7ZXv1+5p652RGq37btep3G4=;
+	b=ra2VWQBxUw++Y1SP7BNJ5BRpUVTmPE9nW1Hjk071UR/4E+knuTlvHuWCTQlJFKByZQbqkG
+	4ZGpyf1p1/qXpnIQ3cg4b43De2I/908XRp3xPNpWoWeRo5VTNFAmBFsT4XUDzpyhdBAnAM
+	+Xg4dbZ5blfnLkQqaSdq1Qr9vcmqSdk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834716; a=rsa-sha256;
 	cv=none;
-	b=hbAugpY5Y0U5qb8HLCTYDQzuFvg0y7jQYf7C6/T+gZ00i125szTe5eft1RmizUvUYDhULM
-	VmCVXgM40tIvyvVD3v1VC1D8thVF/2fMPRZN8PEsLq/o+3mHyf8Ol3/0I74H4EUS4IuuMa
-	SH/cb7sb5VYX/RUYMFN7TLFVNTrxqws=
+	b=Kr5WU0jCh+0XDiGRoVCrg59UviMkAhMuu2dUD+0x+UrHN2vTmt56BD/iH08RzXUgBrRFtR
+	MET1UJ+VURUeUNTbReBytvKn++aIxQmmImd7duWwWcSCjZy9d+HBlXrTv3FYCTR5te5DSc
+	zRQBpyl7gfeYH/JONTiKKkzMslquOBg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NYCUeKkd;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 50.16.246.183 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+	imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QOaOamUz;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 44.210.169.44 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1775834688; x=1807370688;
+  t=1775834716; x=1807370716;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=wZc+sAyXLDOw4SNn2V1QCxBFXc6EIQ5hl84+ynFDeD4=;
-  b=NYCUeKkdn6hO45hvQMbf4h2atm8eNmq3K8CQF/acazOWh3xbmIDZijqm
-   iq6oan7J4xm1N8Jvn0ZqCjk6xYeKdplxs5zjzNDYnziGVfXOrN1kEd+wm
-   va5h1H+2Ph93Dpdwt54kQgsDxKWchyzk2IXmM1HoKF5TjdH/MwHN4hZBj
-   kLH3P2OBaGP/mQMhUXPvvB4Hw2lQzB0SxSs7u/alrpa3H+N6JQYV1vucQ
-   XCEXY0YcITTLer/2HckPk8b97Bl8mf3YNSaZ28XGYDtOjTs/sJ35Jaj1Z
-   NUzWFDjVAiMJczDsXhZvQpZ8eF+aV3DbN10qznlqyt2GpV29FQCNn4o0t
-   g==;
-X-CSE-ConnectionGUID: X+8/8Q82QPSEUaO2zzwCGA==
-X-CSE-MsgGUID: 20SnI1ONQjO+nFdv/IJbAA==
+  bh=GnVTAq+Vwl6iHj2Q375I7ZXv1+5p652RGq37btep3G4=;
+  b=QOaOamUzw1di6lQGLrCChdu7UVS7EOf4QL+RNOlD3q4pFLkxiUnZHczC
+   RyGyb+zC8vwMU2qFzURVVO+EtaZltdlBY4dPKiXo78O+NloD9ttmFXeIg
+   8fFJLxchxBxdZmF7NbqYayYrf4LC+gg/LBRRSv643/bLNKlgg3r4DlO3a
+   j1/7dcqtf1e9YPqEppzQce8JogubbZYUPcwTJ1DXslkL9+qT3VlC4yhM0
+   UH9VpN5ebtJebh+96Y3GVZU8IcJ9ziMadDlrxfOjoFnAQjqHcTu8oD9qn
+   Cqh0n8h51KHkxvVGrVXPnuv+/A6tHN6ueSGxAwVzLbmlbqBjN2g3yZEMg
+   Q==;
+X-CSE-ConnectionGUID: tSN4jR+yQUCwENmmcNhX5g==
+X-CSE-MsgGUID: VRlTbueXRTGizFwW/rpitQ==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770595200"; 
-   d="scan'208";a="15428079"
-Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
-  by internal-iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:24:47 +0000
-Received: from EX19MTAUEA001.ant.amazon.com [72.21.196.67:6584]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.62.178:2525] with esmtp (Farcaster)
- id 7efac024-2436-4ad4-8a7e-9b389eaca327; Fri, 10 Apr 2026 15:24:47 +0000 (UTC)
-X-Farcaster-Flow-ID: 7efac024-2436-4ad4-8a7e-9b389eaca327
+   d="scan'208";a="15419965"
+Received: from ip-10-4-13-79.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.13.79])
+  by internal-iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:25:15 +0000
+Received: from EX19MTAUEC002.ant.amazon.com [52.94.133.138:27160]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.91.247:2525] with esmtp (Farcaster)
+ id 788f29e3-7b60-44a3-97cf-eb3ae81457f6; Fri, 10 Apr 2026 15:25:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 788f29e3-7b60-44a3-97cf-eb3ae81457f6
 Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
+ EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:24:46 +0000
+ Fri, 10 Apr 2026 15:25:14 +0000
 Received: from [192.168.12.97] (10.106.82.30) by EX19D027UEC003.ant.amazon.com
  (10.252.137.250) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 10 Apr 2026
- 15:24:33 +0000
-Message-ID: <e725b3aa-f67e-4de6-acfc-788f264616c0@amazon.com>
-Date: Fri, 10 Apr 2026 16:24:31 +0100
+ 15:25:02 +0000
+Message-ID: <547aa730-8cc9-4fd9-94d5-e669aa7bcf87@amazon.com>
+Date: Fri, 10 Apr 2026 16:25:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
 Subject: Re: [PATCH v11 01/16] set_memory: set_direct_map_* to take address
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita"
+To: Ackerley Tng <ackerleytng@google.com>, "Kalyazin, Nikita"
 	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -113,13 +113,14 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
 	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
 	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
-	<andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
+	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
+	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
 	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
 	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
 	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
@@ -132,10 +133,9 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
 	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
 	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
-	<yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
-	<tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com"
+	<ajones@ventanamicro.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+	"tabba@google.com" <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
 	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
 	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
 	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
@@ -164,7 +164,7 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"Manwaring, Derek" <derekmn@amazon.com>
 References: <20260317141031.514-1-kalyazin@amazon.com>
  <20260317141031.514-2-kalyazin@amazon.com>
- <7b785e34-4d49-48d2-b438-afa1def3ec0f@kernel.org>
+ <CAEvNRgFUXsO4HLVvyjfU=UX9cO6UrRppyTu1X0_+6SXLhDEN=w@mail.gmail.com>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -176,22 +176,22 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmnY1+MFCQZCUjMCGwwACgkQr5LKIKmaZPPQKgD/f3FtERbJ+LYHLSG/ZbLNAOLngUlQ
  qo5VfIyJOzeLzC0BAP2PIUFIHo7vmia/PXEmT+ve4c5rx+EkH/Dx1GRpjWoI
-In-Reply-To: <7b785e34-4d49-48d2-b438-afa1def3ec0f@kernel.org>
+In-Reply-To: <CAEvNRgFUXsO4HLVvyjfU=UX9cO6UrRppyTu1X0_+6SXLhDEN=w@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.82.30]
-X-ClientProxiedBy: EX19D004EUA002.ant.amazon.com (10.252.50.81) To
+X-ClientProxiedBy: EX19D004EUA001.ant.amazon.com (10.252.50.27) To
  EX19D027UEC003.ant.amazon.com (10.252.137.250)
-X-Rspamd-Queue-Id: 5E5941C0012
-X-Stat-Signature: eyuw6h8yr1pxhdhzz7zx6d6n9jeyqsq4
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bs7i69pm1io53ghqmczni8rx5cb8nfb5
+X-Rspamd-Queue-Id: 54C7C40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775834688-346961
-X-HE-Meta: U2FsdGVkX1/+dbIlGls8l6ZOsvNtrp22w8ehc3YggFTJE3nzflTxQ+mniCzadWc+51K0juymLwBmBn0TkTL1b5/B9PieOeL9bUh790wEA8rKvTfRJgf/AEVoe1WkM7SU9PKVLPjdEXlGn2iN2wu6M8c/IiV4Z36HYnibVvwpzYVvLrdpLVqB3oGL6SqhkOT3J8lAt5Ipjc+Hec2mnKNoOevsQAf6cVZ9dGdle5FXQcu5kKnK/gjFm53q05gHRQjsmQSSg5NoBOV49ziKIzBqQimc58UNpdGu2fBLLpaimeXk1XlZdedLV0XtksEQriRXruNBw6xDQP1HSOd8p3j/AleOMwKVSjXAXYM1pFLptl3WEqEMefLXGo3dThm/4V9TX1PiBtVirLoDrC3fYb9BrUfxe2lq/Dj1183qvfM9JzWjFt62rPvIAK5mA9IAjsMfaXveKGD5aD8VuyufTMZS35fU4t5lZk0wd6dOQUUfSvoAsJDGagxKJCMTfHsW+Jq9fHZSWJOfGbqTD1RBLUBs2ZW6md1bI6RInI+VJxXYQMQ28gKv072egDW5pJMs7CbYvxX30WRsCefKRuYLNPIZdAMTqHSLiKJ5MvNB3WiYFAb7Pg25GL8RDLk635u1uIflE7b2MkKINxC5QzzI/LQHY3/iwY+/90fmED1c/XD/MXVhnSNdW92f3TscHWmKQnvZMdZ7ZYOYGwmLWuPpzyV/TK9GIr/PrPiqT1D4hbmBQOFUzYcsWZ1SJlWuX0vKXHfXMnTC6VWPfNT1T0euvvYHQUq9ezAJkCcFHyDhiTifcEm1kpcOt2fQ7/z7272etRIWxcgYQmJTYI0KM0PeVsrOGx4Tag9Z3Ra0HscVEXSdN53x3V+aC7jEr1A1P70OrjfOPwH/IwmrNhFTGKOdsyx0XreUDDNyoUQMUwh7+EgwgJ0FbpNdaYEX/JhgL+Mj2KsSzfFLiTvOvtcjd5LoMDB
- B/YWEObo
- sOfvQ/Uq/O0LTlMbKJoYzETH2kQxocKp31ZZSacH7fOZiY9FVdcpkzT25+GzC1KBZHQsSCJvc0U8L457NYLTYGn2LSktomyUGmuqfQo+TO0vqZzdJrLOxCX3IDT3kTLTo+jTO9MWldSVk0Cgnu/Blfve+Le5KcL7POU6onEd4B5VgkTqqCUG1pipLydvXAahThu5ejiKk89v/qPARztcFNEiPWKJxhMnNngK0k/IBXef1vIkS6ykkD15r+Gl3hoaQrXzr30xvrJi8T26zIglj43ZD7GP0/pCgZjb9M78Cn4XgE0M8MMcAl/8E3UTsHyBQ+qz5PO2DkrVdvfoLwyzf2Lrz934J8sBlvSuX0+JmC4Y1KOzHOjuwneuwijx53upQy/gJ+zoNPy6GqIMaWwTKIMHFRd+v18nv2aUiZLK6AsNlmtzU1kvp9Is2TYyOqx93x2sbQzdSy6PVPrauBL1HZUXzybw1sDsHxroSmDJVNl3XhJOrF8eKStjn2EGAkZsyxfsfvzaOItix2YsCagQv3GVKBK/yFN3b6Dwr0f7wkGbTwV7Z22qKDKL2lAjQ+loNWPEMvh4eG4169G+4U+R5K6Ua8dAOiAf2cH402BQzbGiwwh1URd/uSqPHsAlBOBBzZ5n9TulPKjgMXG0z3FyyUhxcxoMw2A/jHrf9DDAMFJpIqiZh6oGMeFJPJmEAVCcmv5YYuxaqC3V+ZZCDTxqOSOWrKPpi1kvlFyyXk3c6BCQzth/MMhk8eEW8DwkFrp0ah1KhHGCooohOqA/z+8vJdHEEMDvZg1J/O874v/mHZAM02Vp2LPtmgPsSrQDmT4aqMpDCegioWNPkOO7DnelxM+DacQFRc5cpEWACGFmR6yU24xpOhuwIj0x8/drkmUyu6IdOxiPfvaifGpK/sn0CMDExxTOFsZXsfx/YKgdp6JA2Ilw0U6cRdWypz2S6Pg1HkwC8fEB/2un3MBCMWPvWR9APLwN5
- TSWuhYPS
- 0Nc5Ay+xIz+N7ZUUQOYoPzD9gy+tQ/6O2bqFVKO/4TT0SYw8y5xGnnJn+CtE1i0AAaXeqWc0jEzW2Qcy197d4QFcBEbdfaC0XkhM0VC2LI4=
+X-HE-Tag: 1775834716-50539
+X-HE-Meta: U2FsdGVkX1+bb54Nsk1S9XtEzb+9LuRXDjQ7rjdqvxkWDb6MUX5zkuSgRM1vwjR4YgJxSiUJ8i02JA5yqYVJgViLxAG4nMlb/I5LksEOxMqKbQ37guEl05BqLuHk20KGaIeQ94DNUejCihfCmJoZOhR3ZDZCCWo6yJMSOUSQrWvvGRIuexA3jmf7fNbgmT2At21vUTFZ4Bnag+a8Lq01PD+WdnyMAyDxKQMXWfjaESEwZqIMncfjjkiccL1VYPqsn3kH1xeDihYWCGXI01aGu0qiyJRyncJ+EP13e79ht5VTEW5Be1dQNcznl+3m4uQDAhussrGhACxy4OjfLs0+aR+SY4rqi3DD1l27SjiFKeUSJ0GtCWmsHaV7PN1UvNSHrr0jFL2uXclL+ENcSVFFGCctwZQqfy92J3gKvEpk84K/SI1PN7Spaa1zYS0BI4VFjg5NZK5g+M6c5IIh3s7pfGTWzjUMfUaRE48HZNE9nyAqY4NyeBzIcSUwsF8nnXDxY9O9etKDJDlKhe9H/oL6JQa+hLywJYJfe+gF0W/HrQm1zs0u8BT9h3alt+Q36yQ461tyw2qN1vcULNdnr8zXP9ty5Ej9CEB6Fm2qpqeOzur5E/d0MuJ9pSP1JvN2YZrXG81JX3FXCFjMUf5YqizOyiJ4yT5ginfRCYPCbs6jU6koKqlNc7govlwhYTYzRRFKRk5ZmB0nfa7jN0F07/4jNk85N66ISIaH43neBbwDR9nQBj28MSaf/TrMM58fuCgJuhIJtrtTvZl2SBAaIE9fn7tUtxCc+i51csU9MQKAP+royBpaZSLZ15iHBAwcRO/Lhy3cfljmBjZ3XRz2CchX/GIqjqFQxVwvyhBTYC2bWoSkYMc6X98q2nalK6xXDlHZOufP17bdRVUgBJBLRNx3vcNuJf/4JhFPkaF55AjSkCmKObd0bmJIMgTibtAKbiSvMXqb9UrVBAJzPW5sQqR
+ 2mqb3pY1
+ HoeiHge3DXkQQdNushCmOyGyDb4X8dx/b6923EOENW+jj+2mDAaM0U4mGkExOI8iTK1iERayLky1vu85KmwTR71x6u0Jo9XdRIMfwzkaiMO9EeRZbqm7f4OLJtMW3APhcJiTkL8g71bfHLvcMzejoNbio5M0Ft7KL3cmwvLBJA/fEnnylUvtENQ/6oqy5n/9vfk7DH805pBzLZEg/hlB5jnxnEe5ZZG3OzvlT8DE7061D86DHEoxS2+NAOlDrOe+i1x3gqFNeMTmnBfEk8ARn42te2ePtDOzgxdTIkV44NagCRdhApxV8GCZf+/8bGf5LDBjcUUSgijWSbyJOBm097Nbd1aON28H3W8UsamXK/vLhxVeuyX0u9Rt1btz6+crjToZW4NNdL49EkG7uF9XiB3jjiV8hmhf0w9deuJOikk+1zySNvvEMuiq1yZ0r0QJq6Us6ptFX1m+uxTa85XkhKwpJTEdTkuE8zC+quHUUYHtMOfye8t+OV54nXK27h22zj1qxPlGoPBFJoYoyFYcKH47An5Xs8qXfyTroK5kASeBW8IHvdMqABOuGD2izyZWDK9aLfHDElTIj842sFD9SOVDsJqj3bIyxo/Bkr9aNU61Zc7E3XVLKmP13FSI0egsOc6iEKw8UFN7RTIqq4c/uujqhWrMJblI87t4+II09TgUrKkVsY9jm9m1DScUEKgh9jSZUCnKj2Y0RY0CurJgTORCTzHhiGZQ8eyyizUJdxbieW4iBln7jIHJkEDKaeklPKQk05Cx5xXvOzG7YNpN0tztwmOZqmh19nQhkIodgp2ZMbb1ru2Pz+Hps2SFw3WXmZWF+HxS9VVYl/IrjuEC3FF2rsyX+Uv9BwO2R/z8LoBJOWPwriXawZEJx+okP3xw2EU+VoaIFIC1OnRpdiVh51rrRUV2F2C4/MS9k+vUGACjMgbaWtXiPW1DSLW+qUHS+HzU2TEwcF3TAhDRza7R4MfMpBUns
+ kZL1W6zm
+ mh17U4GSK1+RQKPQu/sp2HUD338bvuyapO6pZNWkWiZkrYKGFshCnQTZ753lW1slA0s49PehVYWLpocFAbVN/1AkXfY8y1RUVia7GOBRh6B4jnRP/qAHuZOIwaPudsZepVuhTk1b2oARAw8C/tUaJ4vTcrwRRiECl/Y97nqFShs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -201,32 +201,183 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 23/03/2026 17:44, David Hildenbrand (Arm) wrote:
-> On 3/17/26 15:10, Kalyazin, Nikita wrote:
+On 23/03/2026 18:00, Ackerley Tng wrote:
+> "Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
+> 
 >> From: Nikita Kalyazin <kalyazin@amazon.com>
 >>
-> 
-> Just a nit while reading over it once more: restate what the patch
-> subject says.
-> 
-> Like "Let's convert set_direct_map_*() to take an address instead of a
-> page to prepare for adding helpers that operate on folios; it will be
-> more efficient to convert from a folio directly to an address without
-> going through a page first."
-
-Done, thanks.
-
-> 
 >> This is to avoid excessive conversions folio->page->address when adding
 >> helpers on top of set_direct_map_valid_noflush() in the next patch.
 >>
+> 
+> I can't take credit for what Sashiko [1] spotted.
+> 
 >> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 >> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 >> ---
+>>   arch/arm64/include/asm/set_memory.h     |  7 ++++---
+>>   arch/arm64/mm/pageattr.c                | 19 +++++++++----------
+>>   arch/loongarch/include/asm/set_memory.h |  7 ++++---
+>>   arch/loongarch/mm/pageattr.c            | 25 +++++++++++--------------
+>>   arch/riscv/include/asm/set_memory.h     |  7 ++++---
+>>   arch/riscv/mm/pageattr.c                | 17 +++++++++--------
+>>   arch/s390/include/asm/set_memory.h      |  7 ++++---
+>>   arch/s390/mm/pageattr.c                 | 13 +++++++------
+>>   arch/x86/include/asm/set_memory.h       |  7 ++++---
+>>   arch/x86/mm/pat/set_memory.c            | 23 ++++++++++++-----------
+>>   include/linux/set_memory.h              |  9 +++++----
+>>   kernel/power/snapshot.c                 |  4 ++--
+>>   mm/execmem.c                            |  6 ++++--
+>>   mm/secretmem.c                          |  6 +++---
+>>   mm/vmalloc.c                            | 11 +++++++----
+>>   15 files changed, 89 insertions(+), 79 deletions(-)
+>>
+>>
+>> [...snip...]
+>>
+>> diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
+>> index f5e910b68229..9e08905d3624 100644
+>> --- a/arch/loongarch/mm/pageattr.c
+>> +++ b/arch/loongarch/mm/pageattr.c
+>> @@ -198,32 +198,29 @@ bool kernel_page_present(struct page *page)
+>>        return pte_present(ptep_get(pte));
+>>   }
+>>
+>> -int set_direct_map_default_noflush(struct page *page)
+>> +int set_direct_map_default_noflush(const void *addr)
+>>   {
+>> -     unsigned long addr = (unsigned long)page_address(page);
+>> -
+>> -     if (addr < vm_map_base)
+>> +     if ((unsigned long)addr < vm_map_base)
+>>                return 0;
+>>
+>> -     return __set_memory(addr, 1, PAGE_KERNEL, __pgprot(0));
+>> +     return __set_memory((unsigned long)addr, 1, PAGE_KERNEL, __pgprot(0));
+>>   }
+>>
+>> -int set_direct_map_invalid_noflush(struct page *page)
+>> +int set_direct_map_invalid_noflush(const void *addr)
+>>   {
+>> -     unsigned long addr = (unsigned long)page_address(page);
+>> -
+>> -     if (addr < vm_map_base)
+>> +     if ((unsigned long)addr < vm_map_base)
+>>                return 0;
+>>
+>> -     return __set_memory(addr, 1, __pgprot(0), __pgprot(_PAGE_PRESENT | _PAGE_VALID));
+>> +     return __set_memory((unsigned long)addr, 1, __pgprot(0),
+>> +                         __pgprot(_PAGE_PRESENT | _PAGE_VALID));
+>>   }
+>>
+>> -int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+>> +int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,
+>> +                              bool valid)
+>>   {
+>> -     unsigned long addr = (unsigned long)page_address(page);
+>>        pgprot_t set, clear;
+>>
+>> -     if (addr < vm_map_base)
+>> +     if ((unsigned long)addr < vm_map_base)
+>>                return 0;
+>>
+>>        if (valid) {
+>> @@ -234,5 +231,5 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+>>                clear = __pgprot(_PAGE_PRESENT | _PAGE_VALID);
+>>        }
+>>
+>> -     return __set_memory(addr, 1, set, clear);
+>> +     return __set_memory((unsigned long)addr, 1, set, clear);
 > 
-> --
-> Cheers,
+> Sashiko also spotted that there is a hard-coded 1 here. Before this
+> change, it was already hard-coded to 1. Not sure if this is a
+> bug.
 > 
-> David
+> Could this be addressed in a separate patch series?
+
+Yes, I agree, it looks out of scope for this series.
+
+> 
+>>   }
+>>
+>> [...snip...]
+>>
+>> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+>> index 40581a720fe8..6aea1f470fd5 100644
+>> --- a/arch/x86/mm/pat/set_memory.c
+>> +++ b/arch/x86/mm/pat/set_memory.c
+>> @@ -2587,9 +2587,9 @@ int set_pages_rw(struct page *page, int numpages)
+>>        return set_memory_rw(addr, numpages);
+>>   }
+>>
+>> -static int __set_pages_p(struct page *page, int numpages)
+>> +static int __set_pages_p(const void *addr, int numpages)
+>>   {
+>> -     unsigned long tempaddr = (unsigned long) page_address(page);
+>> +     unsigned long tempaddr = (unsigned long)addr;
+>>        struct cpa_data cpa = { .vaddr = &tempaddr,
+>>                                .pgd = NULL,
+>>                                .numpages = numpages,
+>> @@ -2606,9 +2606,9 @@ static int __set_pages_p(struct page *page, int numpages)
+>>        return __change_page_attr_set_clr(&cpa, 1);
+>>   }
+>>
+>> -static int __set_pages_np(struct page *page, int numpages)
+>> +static int __set_pages_np(const void *addr, int numpages)
+>>   {
+>> -     unsigned long tempaddr = (unsigned long) page_address(page);
+>> +     unsigned long tempaddr = (unsigned long)addr;
+>>        struct cpa_data cpa = { .vaddr = &tempaddr,
+>>                                .pgd = NULL,
+>>                                .numpages = numpages,
+>> @@ -2625,22 +2625,23 @@ static int __set_pages_np(struct page *page, int numpages)
+>>        return __change_page_attr_set_clr(&cpa, 1);
+>>   }
+>>
+> 
+> I agree that in arch/x86/mm/pat/set_memory.c, __kernel_map_pages(), has
+> calls to __set_pages_p() and __set_pages_np() that seems to have been
+> missed out in this patch. Those calls still pass struct page *. Maybe
+> that's because __kernel_map_pages() was guarded by
+> CONFIG_DEBUG_PAGEALLOC, so if you were using an lsp-guided refactoring
+> that call was missed.
+
+Fixed, thanks!
+
+> 
+> Should probably try a grep to see what else needs replacing :)
+> 
+> [1] https://sashiko.dev/#/patchset/20260317141031.514-1-kalyazin%40amazon.com
+> 
+>> -int set_direct_map_invalid_noflush(struct page *page)
+>> +int set_direct_map_invalid_noflush(const void *addr)
+>>   {
+>> -     return __set_pages_np(page, 1);
+>> +     return __set_pages_np(addr, 1);
+>>   }
+>>
+>> -int set_direct_map_default_noflush(struct page *page)
+>> +int set_direct_map_default_noflush(const void *addr)
+>>   {
+>> -     return __set_pages_p(page, 1);
+>> +     return __set_pages_p(addr, 1);
+>>   }
+>>
+>> -int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+>> +int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,
+>> +                              bool valid)
+>>   {
+>>        if (valid)
+>> -             return __set_pages_p(page, nr);
+>> +             return __set_pages_p(addr, numpages);
+>>
+>> -     return __set_pages_np(page, nr);
+>> +     return __set_pages_np(addr, numpages);
+>>   }
+>>
+>>   #ifdef CONFIG_DEBUG_PAGEALLOC
+>>
+>> [...snip...]
+>>
 
 
