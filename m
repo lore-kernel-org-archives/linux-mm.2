@@ -4,84 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14333E99052
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF982E9904A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:19:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 551666B008A; Fri, 10 Apr 2026 04:09:38 -0400 (EDT)
+	id 037676B0005; Fri, 10 Apr 2026 04:19:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 502266B008C; Fri, 10 Apr 2026 04:09:38 -0400 (EDT)
+	id F23A76B0089; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418066B0092; Fri, 10 Apr 2026 04:09:38 -0400 (EDT)
+	id E394F6B008A; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 310346B008A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:09:38 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A32A61B7686
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:09:37 +0000 (UTC)
-X-FDA: 84641921994.04.0DB00EF
-Received: from outbound.baidu.com (jpmx.baidu.com [119.63.196.201])
-	by imf01.hostedemail.com (Postfix) with SMTP id 9D98E40003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:09:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=M9lzGUV2;
-	spf=pass (imf01.hostedemail.com: domain of "prvs=md1554E09E79=lirongqing@baidu.com" designates 119.63.196.201 as permitted sender) smtp.mailfrom="prvs=md1554E09E79=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D11696B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 734571A0445
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:54 +0000 (UTC)
+X-FDA: 84641947908.05.7026FC3
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6748710000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=akl9dBtH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775808576;
+	s=arc-20220608; t=1775809192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XVCGD+rFsf43XDlKVku2Aq26Sh7eivzVMrrFZLWXJH8=;
-	b=gl0csqcBT2U12HCB+Gg9i1qb0ES88/7z6xigDRv/BBDvGbCokLiyX4K48IuGCSEUPN+/cA
-	US4iIGydStN2UUwzRhSnWvuyluFCrVqo7FeIMH/0Edrz7z0QHvUFYociEa4zITU5IRqPP5
-	v1GHBmbllumL7s0yGhe24kKqm/Mprp0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=M9lzGUV2;
-	spf=pass (imf01.hostedemail.com: domain of "prvs=md1554E09E79=lirongqing@baidu.com" designates 119.63.196.201 as permitted sender) smtp.mailfrom="prvs=md1554E09E79=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775808576; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zoo8eGSkihm4pzVA3O7YxgtC1cJl7QU3sLX++hivSVg=;
+	b=Nr5a8/HyxT5Bapd39vGF0FiL7o9nYkTRiWBjC329vU3+l6G6nPAZn3dPZjX9W+B99e60XJ
+	DwOrB+cossdfdgPfUPh7Aa2IEcxOL5pzcfW2qYWVPoyojXokoxq/Sd6Ul6KNsblSMSAO54
+	Wa+Z32moZWDNNiI/DurlDkVvcLtgBZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775809192; a=rsa-sha256;
 	cv=none;
-	b=OqyK/9LZgT+A/mdv5Beq4aBDlME2r+o979wY7H/xvn+jz6eBsC7owJU27f3JJXsHV2zuVK
-	pXqOkFhmMIqE9XamhN9wjZE5nv5Ajaewr9VOGNIhuSQ9xT3HfbDfI5qzLOx7wssu663LY2
-	gpDdQeWuOXyFVOYx+FZ6UpvettsLSxc=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
-	<brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] fs/coredump: reduce redundant log noise in validate_coredump_safety
-Date: Fri, 10 Apr 2026 04:09:18 -0400
-Message-ID: <20260410080918.2319-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	b=HQWeuiCfj40843yVkAHs9XcVm3wqVaYAjVoj7mL2uXWsijRZU25tM1DYSeQ4dJugo9/UeY
+	euT66h4MeU5G8dJNNpCY3wevGHaOCt1dC9OVqpWAsxN3NCC/dijT5s83fYJtZmyD2JgLM4
+	yMfOkLwSobSDcgql6GWIh1KdzVYiN/s=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=akl9dBtH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775809190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zoo8eGSkihm4pzVA3O7YxgtC1cJl7QU3sLX++hivSVg=;
+	b=akl9dBtHidnFCQuw9V6gubcDZsWwzA37+wRfKcpHSp5J4giorE+9zz+ooqFWH2mlUxi2W9
+	Qx+36gQebk6ImLIT4CXJKspYN9poyuLbh563Bd1vGEgEjdrNH31Rcmj6YDa9qa/NvqoQ1o
+	Xanm0raswE1rD7u11I5yNr6+OJyysc4=
+From: Lance Yang <lance.yang@linux.dev>
+To: luizcap@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
+Date: Fri, 10 Apr 2026 16:19:38 +0800
+Message-Id: <20260410081938.51302-1-lance.yang@linux.dev>
+In-Reply-To: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
+References: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: bjhj-exc3.internal.baidu.com (172.31.3.13) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1775808568;
-	bh=XVCGD+rFsf43XDlKVku2Aq26Sh7eivzVMrrFZLWXJH8=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=M9lzGUV2YZ1Z8n2QSAqzb7KIxNdbNAMN5bPWJt+KbmoBKYFuaHYR2Ny33bLkG4HNk
-	 Zl+YGiw2F5YW0+gvTv5NVz21oz92p9viw5+b1M+9lNl1pRo8poAFQKTT1Slo0M8nrf
-	 76cUUexzG8Y9TSJVJS07x1HhTPF3T4yAeQxOx8v/tFJ7xdzTj1ECmznW9HfItChblg
-	 mqjFI0SS5LBghD5PBtNyRjSHQTKuJa2Gs9v+EWx8Lar+klbS9YjNSqOGgcYJDaxY7q
-	 L+e1oEHidp8Et9YJuQ+4kcx4xR6gP+V2Y64o+pdRuz8DyawjQ5uYc85A1TzdpAF5Ap
-	 EtQEpsEpsixlQ==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6748710000A
+X-Stat-Signature: f6sm51q4ezd3em7z31k7ka6b7pjxbxio
 X-Rspam-User: 
-X-Stat-Signature: yjdz74dszqheonwrfepzm7neroe1u5iq
-X-Rspamd-Queue-Id: 9D98E40003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775808572-578116
-X-HE-Meta: U2FsdGVkX18aJlmoGFp+57UGNiDJJIPd7dQcwRT+WwVHhthrNzgfHL4bUMM8+S1A//uLT93Cf6SQW04IOduoxV5Mz0el3viYscMCscoytY0MD/jToZzsNClFydIxu+DvSepFAPvoljqkSx9uRPjtFzWAlnoB4OI9lqFbTD4dI+VFxHYWwI9JdyFpeWce+JGkROdgL1CLPzlxJaVtecy/oFOqvzX7dOTgP1tzaeFWcxEO3OZ4ae/byIcHI7xatLBvnT8xUhE41BT/b1bu0DSVwt8Hh1T+XkvFjFFduS0lZD7wMVbhd8vwWPJmV/C9MdgyJersK5s84mmkb198fL9ePp3z90THSA5K90vdJ5qVxT7GS+rmTRiyErl9xpYYKfo//QeMJI+PkhWhw10hixjUGvkMsrh3n/M6w3sIUhKvuWGYaUt6kRb/dC6nBwq3QfxwPlaOtSM/LLABALuw3HqXVIxuC+HXVKYHVyyByx+vyB+a+QjPygrue6ATi5hosxHERWe1KheowgzZedOH5f6+A/uQrQ9scFTXnPUjAcuC/7r4g6wwkVdo9nC7X8BqCzclDGfjNDKwwMS+VcfPNKve/F6yTbpFYrVqecpDXCnbWbc3kpOw77VZlrsq2K0jKXyTs8ijWitLcKGNDmKSyF0DW+ZuZbEmB0dS259J3ZxUZDTkSTgDbzymaii+mItPnQ3q8BC36vT1zzChXLh6YJjLxTOHpsG0xlAXRrsHVuJv/e3TuY2NCPmB45AmMH+UPl0hns0SPbC2dXMhy/4Q3+vGOe6aSv97fmrp77xLKP0V6DSMdKyt3Oe7pO60eBzwBm1ZnHrsUeIQb16Ie3Io4CmwX2IrG4bcTTx9jIqv+lIj+CVRq5rUMTlGQd6e3xiHIABy0Jkc63bTRAm+Nr67UoUeDPrGXpjNIvro+CRkt9bvjFvmRens3oK6bT1dS4EYzXZUtjLJ081c22/5n/H3f6z
- VNvetZ8i
- wQbe0xffWGYTwiKpWSkOrZ11Cegeu/FeCPGBA0yJPiV/aVkW6lmPmQ71UEf1XMW7A15R5JT4gNZUoPwLc/S5F6c2OzZ46lRv4bLpUKbRKZ9IR2M4RHvQiBZ32FrxmgYb7xJTq9BHeWoadVE8FenDbfLIbzaKmkSQ70xcpmH8c/bKgv9H3DTV2SvEvNgLh6uXDpn2zZLRZ6UOi19Tj6RsBhngwuwQTSZzq4NSNgobIJoIrLs9tsC3Sh8weaXUDIAEhHv1F+uyusTTklGl8m9GC7jyZn/sf76jR1VEZIYpU9C+n072rjX+qbKnI3zKpcLZ3zsM0f2OTtk/89hkUARC2kQvWsdvt/1J6iAQmzusbmbcse8qElC8aWHmUYucaTed4HlfE4BPKqEZMp9LTKTabJ2NBLC3YUfLPu2Te51f3AN8zr7Q=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775809192-826412
+X-HE-Meta: U2FsdGVkX188UX7KbxWdK5LnmjHDBAwow5Zuvq0fMr5txfGkc3phlV6YNSs7b0TrECLzFW7f6LQnPdqOA5cpT5UkLjRArnU0vgeuZ56DQs7AOgTzYP6b9h1FgaT0VusCMvOlFLEwMsGlerjHCeepJtw6JsMKmU8eVlNUJMOosSmScmz/qYynTMpi3dWErlrWJgBhwgbDu+DeG/WxFemfp2jGhTKVfOxt7vDUitg/MGYlrK2cPramHf0kNjq5d3rt+TrIT/+Z2Cw/1HHt+A9ImaWhf9L8Hx7A5ATVfUsOUWjO5o163UsAC27l3+Iz/3585swmhaZ1TLLXQlaLoRiT4lKwt/mIpz4u8ILafZNh2B9+L9DtMDbwxPevgsCY72IQVzZFldRK4pyk2B3IFF3Mr5eqGJJ+/HnCZeKCJzqt2+sxjDsBigMT7kj+HRvcisqOt0qfR7qA2v+ajt/Pq5Z6JybOJQk+UNylkzyPAFGl3+ieWCh2TpdCKW5NPTbJ4QkSBfumugbMVzWmLKGXEjpUYFPmKG6nbVioG7ncgwIzS5HNbLDwI3PP8kvgmCx86JMxHcpjCSk9RAkZ1mDSzyq0p/lYtF5qZ7JsCk3Xzui8+VqsgScI2HKh8vwF6Q2WCk/rQR6azQ6jnp0RsI9UsC3FZK+DHGwmvvwcDrffdgQ80EqFrbT5xEF5/WKCJrAly8zETi5KWlOr7HzH2hAjfqBjIGYgJZdkTKJXjADHjfZpK62BChrJsy/8r0bADt0dqtI+WEcYPMpMaLr0ahFBTbndQWE25vMGfi6TvmX402ybMyR03FPlC9cBZzjfMy4CMDJParU7vWKm1Z1VBSJC47b99BrLyQS2nYJ60VztkypTMXZAf802PUc7z0/mvhGp5im+mHLA3hPI9N8BxFHEwNKJDONEyZv3UE130PFyGZkSVeY9f/q/rpGZzOZXk7q8tm2tLBOV1drq4WlZBGAkg0V
+ gUuoBSn1
+ VvGGaTfFSp7FaSECkPdt+7biIm6NIukuMMV+8U8CzNUyJz5nVdG7Y5bgWoLIjgzeiX65OD7d5RbNdBaSbKWMdtK/giekDSxgL2tOsiEnzcBojQcQdiCWs4iA07On47UgHSmLhwLwP/U/IGLIUV7kG9z05Hu1ym+JQnbkL2mJYTSDYHL+NkLt0PevVWHE5KnI8wG5XqkGGjCiV85UeBDtSCJ6AQeUNqWICGJL41ARxeMXMl866Yn7cXOFujhnRToQmNfgjDCA+BfALVsVYgAdwVyXSAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,64 +99,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
 
-Currently, writing to 'core_pattern' or 'suid_dumpable' sysctl nodes
-always triggers validate_coredump_safety(), even if the values have
-not changed. This results in redundant warning messages in dmesg:
+On Wed, Apr 08, 2026 at 04:22:57PM -0400, Luiz Capitulino wrote:
+>Currently, we have two helpers that check for PMD-sized pages but have
+>different names and slightly different semantics:
+>
+>- has_transparent_hugepage(): the name suggests it checks if THP is
+>  enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
+>  implements this helper, it actually checks if the CPU supports
+>  PMD-sized pages
+>
+>- thp_disabled_by_hw(): the name suggests it checks if THP is disabled
+>  by the hardware, but it just returns a cached value acquired with
+>  has_transparent_hugepage(). This helper is used in fast paths
+>
+>This commit introduces a new helper called pgtable_has_pmd_leaves()
+>which is intended to replace both has_transparent_hugepage() and
+>thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
+>it returns true if the CPU supports PMD-sized pages and false otherwise.
+>It always returns a cached value, so it can be used in fast paths.
+>
+>The new helper requires an initialization step which is performed by
+>init_arch_has_pmd_leaves(). We call init_arch_has_pmd_leaves() early
+>during boot in start_kernel() right after parse_early_param() but before
+>parse_args(). This allows early_param() handlers to change CPU flags if
+>needed (eg. parse_memopt() in x86-32) while also allowing users to use
+>the API from __setup() handlers.
+>
+>The next commits will convert users of both has_transparent_hugepage()
+>and thp_disabled_by_hw() to pgtable_has_pmd_leaves().
+>
+>Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>---
+> include/linux/pgtable.h | 15 +++++++++++++++
+> init/main.c             |  1 +
+> mm/memory.c             |  8 ++++++++
+> 3 files changed, 24 insertions(+)
+>
+>diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>index a50df42a893f..c4c5282f795c 100644
+>--- a/include/linux/pgtable.h
+>+++ b/include/linux/pgtable.h
+>@@ -2192,6 +2192,21 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> 	}
+> }
+> 
+>+#ifdef CONFIG_MMU
+>+extern bool __arch_has_pmd_leaves;
+>+static inline bool pgtable_has_pmd_leaves(void)
+>+{
+>+	return __arch_has_pmd_leaves;
+>+}
+>+void __init init_arch_has_pmd_leaves(void);
+>+#else
+>+static inline bool pgtable_has_pmd_leaves(void)
+>+{
+>+	return false;
+>+}
+>+static inline void __init init_arch_has_pmd_leaves(void) { }
+>+#endif
+>+
+> #endif /* !__ASSEMBLY__ */
+> 
+> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
+>diff --git a/init/main.c b/init/main.c
+>index 1cb395dd94e4..07f2ddbf9677 100644
+>--- a/init/main.c
+>+++ b/init/main.c
+>@@ -1044,6 +1044,7 @@ void start_kernel(void)
+> 	print_kernel_cmdline(saved_command_line);
+> 	/* parameters may set static keys */
+> 	parse_early_param();
+>+	init_arch_has_pmd_leaves();
 
-"Unsafe core_pattern used with fs.suid_dumpable=2..."
+One more thought here: I don't see why we need boot-time caching.
 
-This patch optimizes the procfs handlers to only invoke the safety
-validation when an actual change in the configuration is detected:
+has_transparent_hugepage() does *not* look expensive on the common
+archs. On x86, it is just a CPU feature check. MIPS is different, yes,
+only the first call there is more involved ...
 
-1. In proc_dostring_coredump(), compare the new core_pattern string
-   with the existing one using strncmp().
-2. In proc_dointvec_minmax_coredump(), check if the new suid_dumpable
-   value differs from the previous one.
+But if we *really* want caching, couldn't we just do it lazily instead
+of adding another early boot init step?
 
-This keeps the kernel log clean from repetitive warnings when
-re-applying the same sysctl settings.
+Something like:
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- fs/coredump.c | 3 ++-
- fs/exec.c     | 6 ++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+bool pgtable_has_pmd_leaves(void)
+{
+	static int __arch_has_pmd_leaves = -1;
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 29df8aa..9b357d2 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1483,7 +1483,8 @@ static int proc_dostring_coredump(const struct ctl_table *table, int write,
- 		return -EINVAL;
- 	}
- 
--	validate_coredump_safety();
-+	if (strncmp(old_core_pattern, core_pattern, CORENAME_MAX_SIZE))
-+		validate_coredump_safety();
- 	return error;
- }
- 
-diff --git a/fs/exec.c b/fs/exec.c
-index 9ea3a77..32b46e4 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1975,9 +1975,11 @@ COMPAT_SYSCALL_DEFINE5(execveat, int, fd,
- static int proc_dointvec_minmax_coredump(const struct ctl_table *table, int write,
- 		void *buffer, size_t *lenp, loff_t *ppos)
- {
--	int error = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
-+	int error, old = READ_ONCE(suid_dumpable);
- 
--	if (!error && write)
-+	error = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
-+
-+	if (!error && write && (old != READ_ONCE(suid_dumpable)))
- 		validate_coredump_safety();
- 	return error;
- }
--- 
-2.9.4
+	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
+		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
 
+	return READ_ONCE(__arch_has_pmd_leaves);
+}
+
+That would avoid depending on parse_early_param() / parse_args()
+ordering, and it seems much simpler too :)
+
+The boot-time init step looks a bit shaky to me ...
+
+Thanks,
+Lance
 
