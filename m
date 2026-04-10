@@ -4,84 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D265F44840
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 487F1F44840
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF1966B0089; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
+	id 739AD6B0089; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC9286B008A; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
+	id 6C38F6B008A; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B05FD6B0092; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
+	id 58B166B0092; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3A406B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 519FB1A04ED
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:22:37 +0000 (UTC)
-X-FDA: 84642408354.28.99C3356
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 767C140010
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:22:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s90fG734;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 426856B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E32058EC3
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:50 +0000 (UTC)
+X-FDA: 84642413940.24.33D3A66
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 609C818000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lgc0buJb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775820155;
+	s=arc-20220608; t=1775820288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/FgmDbPdVKeTFmDflrD7GhFmg1r0p/Z0QkjNzZaoXas=;
-	b=xzEKiE2PTjYhbhAkMQNwV83RmwQAiu96WZ/6kQLQsh8tWGfki/ysp2bO9GPkCUQgUSmEj5
-	Aa9SyTMhd+vZUOlSBl6SgsQVT4lIiZDkp3U5gV6ffZhnZZvjvp4zYTxnjBulzU8IpLueBw
-	pX0vajBSEW1dtCtzliNaI8JzPOh2OyI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775820155; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pL2u8G14yedECayBazskDlM9FGACE+Bqe2F5AnR4p0w=;
+	b=updfWPVCJWyNiDJBboOPVDYgOB9UJnwmCmZf4MJ7ttHRYTBJ/LwHOGuULf6fUR1jCZn81I
+	hHrSvF+hnFyxw5tLi/P8T3PxQ8gyUgjynEnCZXVe392Sb0eFwF4kRe78He61xImRdbD4xd
+	oybdEeg/0zEP16aYw7ettan9Qvn3ZIY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775820288; a=rsa-sha256;
 	cv=none;
-	b=bpWdUFlvsG0605rfIhlrz9v7jS1P5LNbNBvgp1j6UL5SJLU1S9O5lnVe0MUyL3Vg5dIY7L
-	sotIb7+zxM0zq3QPXlTituC501Fv3+rZ9ENaRgXR2kBpae2jDbIkUbmtdUSuD9O6zSOhdG
-	78KSYNnehIZ0BJmlzyVDJQzjwQjSGzE=
+	b=c4E2M85jQes/0FtsjHG3VQPIpszUmuPAZmbsK3h0J529iQrZsfV5+1o7k+US38XgrxrlU4
+	js8oRjYxhn5jSKX8DNI1KYSFcPV0yhlw4zL5LzG/sqeddmAwZ2Zf2dp9I7Dq7yYzzFhpev
+	Uw+JVt96G0+/MY8ntqoadsMz4hTmMCI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s90fG734;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lgc0buJb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775820153;
+	t=1775820286;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/FgmDbPdVKeTFmDflrD7GhFmg1r0p/Z0QkjNzZaoXas=;
-	b=s90fG7347KOkTrLsFMypwJ3sk4ZKJadpaDexywNknA/dFcbsYhu45VQXmDXrRY+wH9BgwR
-	AgpSjtItYoAtN120d5Jc1MBgPoO0sa4OLoTjf44KsJVYsGQILD2t4xXVEpiHEeWRzwzMZw
-	NRW11qcau0cHbbtGVF7OXyaNhheAvZI=
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pL2u8G14yedECayBazskDlM9FGACE+Bqe2F5AnR4p0w=;
+	b=Lgc0buJbwkSBl9H29bocyedc72ItyFsaAvpYxeazrNi8uKkkmpOkYKIuqoy6zLqjrUOF4H
+	j7mbJ3zl+i0Cz/9du9+JO4FfGZOnSKU6BmHlsN+lbRh6LgyILLCF2B2rCVDrCRzZLHOoHT
+	0biJvrXVp0hla/Qn6xTcNSfmBYj4B9I=
+From: Usama Arif <usama.arif@linux.dev>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	peterx@redhat.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.orgg,
-	Hao Li <hao.li@linux.dev>
-Subject: [RFC PATCH] slub: spill refill leftover objects into percpu sheaves
-Date: Fri, 10 Apr 2026 19:16:57 +0800
-Message-ID: <20260410112202.142597-1-hao.li@linux.dev>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] hugetlb: make hugetlb_fault_mutex_hash() take PAGE_SIZE index
+Date: Fri, 10 Apr 2026 04:24:31 -0700
+Message-ID: <20260410112433.3248586-1-usama.arif@linux.dev>
+In-Reply-To: <20260409234158.837786-4-jane.chu@oracle.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 5qmpikq63ggy7w8od3zqj3icpjthpc35
-X-Rspamd-Queue-Id: 767C140010
+X-Rspamd-Queue-Id: 609C818000A
+X-Stat-Signature: 71tu1af7z3tqpxpi8ho8i5ge7wf3c46z
 X-Rspam-User: 
-X-HE-Tag: 1775820155-57618
-X-HE-Meta: U2FsdGVkX1+J275YdkXkV8n7XIrIHxQN52f7dl/oYhhJF3slJI2v55cgysm51G6rVcrTvBZ0zDeJgdfBynE3enpkRTwO/cGlWELYILUJhdDoRWls4Eng/DaAMi0sjKu3arwHObbh5nxyl6wZnNutI9Nv3v/G0fJepRRhRhsjhf0lgFatP5zdTm55yuxYTPwgq3jq4TknppOxvA/ZgqRDjLhHU5EaxaJbRQLHQ3IsyAwstIZ7nCByi6rSDYIiB/KpqOHgiYk0/zpoDNAcj07PI5oKu51tpuFubjl6EdiI2l6VQr474eJO00XtDSBbodGghgVDTKczDODpbcckcoMQjQc3Zd9qa8I4o0WC00NWdSt5tifBEQt9lBWHAGKjVZu/qN3KurvtDNpejsv1isurAB9Aayn3p4PaAxhQNED5iIZpUR8B2OpcN4yQ043de2vVCQgj7SHg3bc9u6oW0PNzPN0vd4S3vbrCHqYbh3piZoiEw6K4HO/1EBGI2X2QDMummH+bnDmpydFwCtkk5hw5MmfrGm8who83HnJveiWc9t+E2P673ytdLA4g2F2Xvf3imxEtvXWDDi1S2x5XKvLlJeb7VEDdzAn6/jun1yg+7nfkxAj9Kypx/NfwbWnTPLBs/D55U5ykZTrclvL/dgeOrJtFPfpgqmHDuYk60ym85Cu/WUuU00H7EsNCIsUC0uqo/8ojf8dUQjtn/4bm6Gj45aeeZ5H018P2sLP53VtC2RH5nxGuazFgIXtdvO1HpyXtgCYBAQ/jWgNFE0F1HiCRnjlqjzUDebpKIe133QGbZWa+mpWcch6HJvKr+2aFAEgyBGZKC9IAodgpUGGLEvnLJ/+h2LR2RTMQID4VN0CTPJW2njeF0PTpepzHgvaZt5IFvPqVOQz4Ulc8B046pgw3WgUGVmj5zRB9g5cR+e0npdA7DhaXQCY8qECXC3AwB66fG1fMLTXyMvyK3PHRmgP
- viPtZCYE
- cx68OzmzYnqcFR/wDz1P0yTeMdamit1sFM3gj9JlN2K31wChGDH7J12vRdO+IUsL/lMV5KzLcZ8IRknbKA8ym4JgcP7nHUas0os09u0Fq+QFOmNBkz4RnEfSB33Kb0tutI6w4jpcyZC83OoXQT2KvDL/WDgj3Bsx6mftb/HstJq1Gligwa73P/Bhq2SBSxIxB8nnJ2GifxeltdOqjo9IzHxIZqcuDdYrToQ0G
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775820288-461333
+X-HE-Meta: U2FsdGVkX1942yEOIQIzTvEtJTfkC/TzV0SU3MZEI1XZJnK/6JBS2MSuM0zgx1s250TvOreqKJ1Hbi9DhmJg7A7/896ibHcOdZ+fBlcFLZeZvbtTdDQxgvzC1eDrdbgGp98mai2fXc0JrqzJ3DCi31Oxyoh6qRVB5h2FTosARmxQQ8CJHejrcyAO3edZ/v3RGgbvHZE6PmYor1pEtAvR+9YZyeuWtHIfhx+38Tf/bMCTZ+k0Oogq7gDO1BkaXZdcoGYM0YS895QzwoqUz25nH3b6+PYhUkjH+txXuyFIUOfegdM4KZlDBZf6G8rGGAhuwpxp+2jC71n9hMOrg/zyzcjC0RaZG3+VJzvsVgdcIyFXNRAUj4Kxfd1B1B9oDbHm8niGZVdF8lhnbQJcvHMSr0TmKp39Ne71rGawwlYlL/GFgJNz0cccQql0W1t//kYpvW7i04lIkjBgb8ey2j4t5FVlS65dKKzajevHcVncAVmGc8QctQxT1cquopc+OY94nse1+c5NS2GVWs28uPGzAz5RbkkkL1bJFcT9uEN6Bvm+MQcDjdHybZhSI82tfjGDuxiVRNV2wlkVsuVFxwT7S+w/sVtD0oVHTLxNKOCw3KdQ3F9JTrgMQC8vzBlBrxt3j6i2GbhlhGGTudYwVpgUQArLYiJLP5CqUvqYYNtCOsdXSKb1e7Huzh4IGAQsoqWk1j8OFLdcac8eMRNvCIBLcdNIVJDBmQnsFLjZG5ZAL3WsUJImPxLqpQDai4XgLGB1xF8UuosPt+OEOU5KTNRx99xW8zQzb4Z0uHOgHDPCSSUdwtlOnnlkQIBt6ilkONzJLAC5uo3UbWOsXvuP93+Owte7jQhhf1MGfH/VAISOWhAk4xzuCWN1XkzSheQwni1ybXDzrfaTLYxShh3BzUSzCaen78ws6k5PEGoM5Zz/4fXT12rk8rd9AjB9SfvGZiiGWy47OnZPzUd8Gi1WFeA
+ V0vuowfU
+ SVW0mDnrZleORqa54pRJWZR8UF2Z6OeZcNF3QFxQ4KY35snJlqIDDVnMI87MCT/T3pcVE5OwWBqf1tDogTixQzAxHCFMM1xOWmz8TTYko7zTB4x4Hd70nXOJnzUyIylIQ3mUvF0zpaQVzKzxG+vtY5K2yJwSKiBvLEOrtHfF9kDMkovuKffiFo0nrPhizCZYz0aKqY6buvbRDRtYpYkbSOXVn/bAayGHOMgJ5H3KZQQWST/rAG8DNhkk49waiGq7VeRAuznwXOfcRjsI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,219 +103,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When performing objects refill, we tend to optimistically assume that
-there will be more allocation requests coming next; this is the
-fundamental assumption behind this optimization.
+On Thu,  9 Apr 2026 17:41:54 -0600 Jane Chu <jane.chu@oracle.com> wrote:
 
-When __refill_objects_node() isolates a partial slab and satisfies a
-bulk allocation from its freelist, the slab can still have a small tail
-of free objects left over. Today those objects are freed back to the
-slab immediately.
+> hugetlb_fault_mutex_hash() is used to serialize faults and page cache
+> operations on the same hugetlb file offset. The helper currently expects
+> its index argument in hugetlb page granularity, so callers have to
+> open-code conversions from the PAGE_SIZE-based indices commonly used
+> in the rest of MM helpers.
+> 
+> Change hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index
+> instead, and perform the hugetlb-granularity conversion inside the helper.
+> Update all callers accordingly.
+> 
+> This makes the helper interface consistent with filemap_get_folio(),
+> and linear_page_index(), while preserving the same lock selection for
+> a given hugetlb file offset.
+> 
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>  fs/hugetlbfs/inode.c | 19 ++++++++++---------
+>  mm/hugetlb.c         | 28 +++++++++++++++++++---------
+>  mm/memfd.c           | 11 ++++++-----
+>  mm/userfaultfd.c     |  7 +++----
+>  4 files changed, 38 insertions(+), 27 deletions(-)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index cf79fb830377..e24e9bf54e14 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -575,7 +575,7 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+>  	struct address_space *mapping = &inode->i_data;
+>  	const pgoff_t end = lend >> PAGE_SHIFT;
+>  	struct folio_batch fbatch;
+> -	pgoff_t next, index;
+> +	pgoff_t next, idx;
+>  	int i, freed = 0;
+>  	bool truncate_op = (lend == LLONG_MAX);
+>  
+> @@ -586,15 +586,15 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+>  			struct folio *folio = fbatch.folios[i];
+>  			u32 hash = 0;
+>  
+> -			index = folio->index >> huge_page_order(h);
+> -			hash = hugetlb_fault_mutex_hash(mapping, index);
+> +			hash = hugetlb_fault_mutex_hash(mapping, folio->index);
+>  			mutex_lock(&hugetlb_fault_mutex_table[hash]);
+>  
+>  			/*
+>  			 * Remove folio that was part of folio_batch.
+>  			 */
+> +			idx = folio->index >> huge_page_order(h);
+>  			remove_inode_single_folio(h, inode, mapping, folio,
+> -						  index, truncate_op);
+> +						  idx, truncate_op);
+>  			freed++;
+>  
+>  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+> @@ -734,7 +734,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+>  	struct mm_struct *mm = current->mm;
+>  	loff_t hpage_size = huge_page_size(h);
+>  	unsigned long hpage_shift = huge_page_shift(h);
+> -	pgoff_t start, index, end;
+> +	pgoff_t start, end, idx, index;
+>  	int error;
+>  	u32 hash;
+>  
+> @@ -774,7 +774,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+>  	vm_flags_init(&pseudo_vma, VM_HUGETLB | VM_MAYSHARE | VM_SHARED);
+>  	pseudo_vma.vm_file = file;
+>  
+> -	for (index = start; index < end; index++) {
+> +	for (idx = start; idx < end; idx++) {
+>  		/*
+>  		 * This is supposed to be the vaddr where the page is being
+>  		 * faulted in, but we have no vaddr here.
+> @@ -794,14 +794,15 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+>  		}
+>  
+>  		/* addr is the offset within the file (zero based) */
+> -		addr = index * hpage_size;
+> +		addr = idx * hpage_size;
+>  
+>  		/* mutex taken here, fault path and hole punch */
+> +		index = idx << huge_page_order(h);
+>  		hash = hugetlb_fault_mutex_hash(mapping, index);
+>  		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+>  
+>  		/* See if already present in mapping to avoid alloc/free */
+> -		folio = filemap_get_folio(mapping, index << huge_page_order(h));
+> +		folio = filemap_get_folio(mapping, index);
+>  		if (!IS_ERR(folio)) {
+>  			folio_put(folio);
+>  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+> @@ -824,7 +825,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+>  		}
+>  		folio_zero_user(folio, addr);
+>  		__folio_mark_uptodate(folio);
+> -		error = hugetlb_add_to_page_cache(folio, mapping, index);
+> +		error = hugetlb_add_to_page_cache(folio, mapping, idx);
+>  		if (unlikely(error)) {
+>  			restore_reserve_on_error(h, &pseudo_vma, addr, folio);
+>  			folio_put(folio);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 38b39eaf46cc..9d5ae1f87850 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5515,7 +5515,7 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
+>  		 */
+>  		if (cow_from_owner) {
+>  			struct address_space *mapping = vma->vm_file->f_mapping;
+> -			pgoff_t idx;
+> +			pgoff_t index;
+>  			u32 hash;
+>  
+>  			folio_put(old_folio);
+> @@ -5528,8 +5528,9 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
+>  			 *
+>  			 * Reacquire both after unmap operation.
+>  			 */
+> -			idx = vma_hugecache_offset(h, vma, vmf->address);
+> -			hash = hugetlb_fault_mutex_hash(mapping, idx);
+> +			index = linear_page_index(vma, vmf->address);
+> +			hash = hugetlb_fault_mutex_hash(mapping, index);
+> +
+>  			hugetlb_vma_unlock_read(vma);
+>  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+>  
+> @@ -5664,6 +5665,10 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
+>  						  unsigned long reason)
+>  {
+>  	u32 hash;
+> +	pgoff_t index;
+> +
+> +	index = linear_page_index((const struct vm_area_struct *)vmf, vmf->address);
 
-If the leftover tail is local and small enough to fit, keep it in the
-current CPU's sheaves instead. This avoids pushing those objects back
-through the __slab_free slowpath.
-
-Add a helper to obtain both the freelist and its free-object count, and
-then spill the remaining objects into a percpu sheaf when:
-- the tail fits in a sheaf
-- the slab is local to the current CPU
-- the slab is not pfmemalloc
-- the target sheaf has enough free space
-
-Otherwise keep the existing fallback and free the tail back to the slab.
-
-Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
-stats.
-
-On the mmap2 case in the will-it-scale benchmark suite, this patch can
-improve performance by about 2~5%.
-
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
-
-This patch is an exploratory attempt to address the leftover objects and
-partial slab issues in the refill path, and it is marked as RFC to warmly
-welcome any feedback, suggestions, and discussion!
-
----
- mm/slub.c | 107 ++++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 88 insertions(+), 19 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 2b2d33cc735c..fe6351ba0e60 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -353,6 +353,7 @@ enum stat_item {
- 	SHEAF_REFILL,		/* Objects refilled to a sheaf */
- 	SHEAF_ALLOC,		/* Allocation of an empty sheaf */
- 	SHEAF_FREE,		/* Freeing of an empty sheaf */
-+	SHEAF_SPILL,
- 	BARN_GET,		/* Got full sheaf from barn */
- 	BARN_GET_FAIL,		/* Failed to get full sheaf from barn */
- 	BARN_PUT,		/* Put full sheaf to barn */
-@@ -4279,7 +4280,9 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
-  * Assumes this is performed only for caches without debugging so we
-  * don't need to worry about adding the slab to the full list.
-  */
--static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
-+static inline void *__get_freelist_nofreeze(struct kmem_cache *s,
-+					    struct slab *slab, int *freecount,
-+					    const char *n)
- {
- 	struct freelist_counters old, new;
+This is supposed to be linear_page_index(vmf->vma, vmf->address), right?
  
-@@ -4293,11 +4296,26 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
- 
- 		new.inuse = old.objects;
- 
--	} while (!slab_update_freelist(s, slab, &old, &new, "get_freelist_nofreeze"));
-+	} while (!slab_update_freelist(s, slab, &old, &new, n));
-+
-+	if (freecount)
-+		*freecount = old.objects - old.inuse;
- 
- 	return old.freelist;
- }
- 
-+static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
-+{
-+	return __get_freelist_nofreeze(s, slab, NULL, "get_freelist_nofreeze");
-+}
-+
-+static inline void *get_freelist_and_freecount_nofreeze(struct kmem_cache *s,
-+							struct slab *slab,
-+							int *freecount)
-+{
-+	return __get_freelist_nofreeze(s, slab, freecount, "get_freelist_and_freecount_nofreeze");
-+}
-+
- /*
-  * If the object has been wiped upon free, make sure it's fully initialized by
-  * zeroing out freelist pointer.
-@@ -7028,10 +7046,15 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 		return 0;
- 
- 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-+		void *head;
-+		void *tail;
-+		struct slub_percpu_sheaves *pcs;
-+		int freecount, local_node, i, cnt = 0;
-+		struct slab_sheaf *spill;
- 
- 		list_del(&slab->slab_list);
- 
--		object = get_freelist_nofreeze(s, slab);
-+		object = get_freelist_and_freecount_nofreeze(s, slab, &freecount);
- 
- 		while (object && refilled < max) {
- 			p[refilled] = object;
-@@ -7039,28 +7062,72 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 			maybe_wipe_obj_freeptr(s, p[refilled]);
- 
- 			refilled++;
-+			freecount--;
- 		}
- 
-+		if (!freecount) {
-+			if (refilled >= max)
-+				break;
-+			continue;
-+		}
- 		/*
--		 * Freelist had more objects than we can accommodate, we need to
--		 * free them back. We can treat it like a detached freelist, just
--		 * need to find the tail object.
-+		 * Freelist had more objects than we can accommodate, we first
-+		 * try to spill them into percpu sheaf.
- 		 */
--		if (unlikely(object)) {
--			void *head = object;
--			void *tail;
--			int cnt = 0;
--
--			do {
--				tail = object;
--				cnt++;
--				object = get_freepointer(s, object);
--			} while (object);
--			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
-+		if (freecount > s->sheaf_capacity)
-+			goto skip_spill;
-+		if (slab_test_pfmemalloc(slab))
-+			goto skip_spill;
-+
-+		if (!local_trylock(&s->cpu_sheaves->lock))
-+			goto skip_spill;
-+
-+		local_node = numa_mem_id();
-+		if (slab_nid(slab) != local_node) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			goto skip_spill;
- 		}
- 
--		if (refilled >= max)
--			break;
-+		pcs = this_cpu_ptr(s->cpu_sheaves);
-+		if (pcs->spare &&
-+		    (freecount <= (s->sheaf_capacity - pcs->spare->size)))
-+			spill = pcs->spare;
-+		else if (freecount <= (s->sheaf_capacity - pcs->main->size))
-+			spill = pcs->main;
-+		else {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			goto skip_spill;
-+		}
-+
-+		if (freecount > (s->sheaf_capacity - spill->size)) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			goto skip_spill;
-+		}
-+
-+		for (i = 0; i < freecount; i++) {
-+			spill->objects[spill->size] = object;
-+			object = get_freepointer(s, object);
-+			maybe_wipe_obj_freeptr(s, spill->objects[spill->size]);
-+			spill->size++;
-+		}
-+
-+		local_unlock(&s->cpu_sheaves->lock);
-+		stat(s, SHEAF_SPILL);
-+		break;
-+skip_spill:
-+		/*
-+		 * Freelist had more objects than we can accommodate or spill,
-+		 * we need to free them back. We can treat it like a detached freelist,
-+		 * just need to find the tail object.
-+		 */
-+		head = object;
-+		do {
-+			tail = object;
-+			cnt++;
-+			object = get_freepointer(s, object);
-+		} while (object);
-+		__slab_free(s, slab, head, tail, cnt, _RET_IP_);
-+		break;
- 	}
- 
- 	if (unlikely(!list_empty(&pc.slabs))) {
-@@ -9247,6 +9314,7 @@ STAT_ATTR(SHEAF_FLUSH, sheaf_flush);
- STAT_ATTR(SHEAF_REFILL, sheaf_refill);
- STAT_ATTR(SHEAF_ALLOC, sheaf_alloc);
- STAT_ATTR(SHEAF_FREE, sheaf_free);
-+STAT_ATTR(SHEAF_SPILL, sheaf_spill);
- STAT_ATTR(BARN_GET, barn_get);
- STAT_ATTR(BARN_GET_FAIL, barn_get_fail);
- STAT_ATTR(BARN_PUT, barn_put);
-@@ -9335,6 +9403,7 @@ static struct attribute *slab_attrs[] = {
- 	&sheaf_refill_attr.attr,
- 	&sheaf_alloc_attr.attr,
- 	&sheaf_free_attr.attr,
-+	&sheaf_spill_attr.attr,
- 	&barn_get_attr.attr,
- 	&barn_get_fail_attr.attr,
- 	&barn_put_attr.attr,
--- 
-2.50.1
-
 
