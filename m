@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC07F459EE
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35573F459EE
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:18:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89F3D6B0092; Fri, 10 Apr 2026 11:18:05 -0400 (EDT)
+	id A25866B0093; Fri, 10 Apr 2026 11:18:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 876EE6B0093; Fri, 10 Apr 2026 11:18:05 -0400 (EDT)
+	id 9AFA06B0095; Fri, 10 Apr 2026 11:18:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 717FD6B0095; Fri, 10 Apr 2026 11:18:05 -0400 (EDT)
+	id 850346B0096; Fri, 10 Apr 2026 11:18:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D6E06B0092
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:18:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 351771A03B4
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:18:05 +0000 (UTC)
-X-FDA: 84643001730.03.57AEB5C
-Received: from iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com [18.207.52.234])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D71998000E
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:18:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7492D6B0093
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:18:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37176C173A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:18:14 +0000 (UTC)
+X-FDA: 84643002108.13.E5F6971
+Received: from iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com [34.198.218.121])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CE24780005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:18:11 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=LgMLt5ol;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 18.207.52.234 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=ifsNMxPV;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 34.198.218.121 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834291; a=rsa-sha256;
+	cv=none;
+	b=1sGoKLZlxx7jnsAyrfgk8oslIh0prcFRsv76oxyQPGFWF/HUZapO+tfXzabunJleGPr3bi
+	gaya3xKH0hvYj5XmUzmnTJGt0enkokaq3CxGvbl/UjGdxh6diZpAMuJdxit9P3FJiExTVH
+	VIe1U1VPQLCLVKtbH3PfpQa2osmoioA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=ifsNMxPV;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 34.198.218.121 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775834282;
+	s=arc-20220608; t=1775834291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J9cP5nyNBVdHTunGQ5jDQSIpvb7xpE4eUSBAo97hkJ0=;
-	b=nsRZF9T3/8oI6UFpv90+Gds/Ot8Lm1lw6mfvZF+FhLnI/46vOZB5hgQikqCut6NxcveEum
-	SF5IoPjQnaBob1HIf/LUH7lTBzjQUxxRvtAFORgjDygRQRQICwdsW5kD1FKecDrwJduT0d
-	H4q6M/UAihJcah2kMFC7MOxNZk3V9Hw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=LgMLt5ol;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 18.207.52.234 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834282; a=rsa-sha256;
-	cv=none;
-	b=8hOUC2qOxLQo6a554GU7o2bHqFXUobvA8AJ/t4EPUG2Nrd/A61kwaRIYypoq+STS2Wjp6I
-	nS9MHFZ4sLRsutWXzeHIDD/AeY7a68dFU2x+pIsZ14HRsAIDbrcZW17uyDatbCF2v7dUOM
-	DI16hORwLcFrhIOorTHLCJJjn64Skyk=
+	bh=wtjHGpnQg1lu73D2AL344q66wwOjm1vkuSNtOJPDZj4=;
+	b=JBquA+pOPZdRAjOSvDXyXw7cA8H/TLNadbxohZKKyAbk7Xtrkm+TFyIHrzIY0g5kBdl9mu
+	IUtq5iLFGCATfSKKblrGxU9Yp3/5s6wiUVBgNY4JCBPPxwjjRoDARqwpPxpg+deHgwE9jS
+	ixdxSUvXON+9CpdssPurrAmmgzaUG0s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1775834282; x=1807370282;
+  s=amazoncorp2; t=1775834291; x=1807370291;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=J9cP5nyNBVdHTunGQ5jDQSIpvb7xpE4eUSBAo97hkJ0=;
-  b=LgMLt5olZ6Xyj52qmt/pp3UUQ9UTHDEmjQJvIokeW6XAPxqXQZckLA6v
-   WkO/eebw46V+WJygFccRFPxoI+cqPVf9gW3S6M9pigQnfyzz+6MMMJuFS
-   bKEjEvczxhZMIDj6s36V/ZpQglqcPFcoQ4uq6xN7d7ZnDUT3CuqPG2p2K
-   Y96M13Y3kXqcSKlEtzweD4vtad3TKYSrFS0PlXkklYwawVFGUAJTD9ZgH
-   N2bDJYEm5FBRgicVibUMR3eXo3hWIol2wpCVA2TTGc/xk0Mc8E7B6y5Cv
-   eNtPIavucKMH+WHhr0dx76EWuGsoB86j75U7c+0XkH31EUS6zf0K9AFsI
+  bh=wtjHGpnQg1lu73D2AL344q66wwOjm1vkuSNtOJPDZj4=;
+  b=ifsNMxPVj/UQVhlKVy2he1+Cv6julmBHIXhkkGvAFwnwyDK1jXHN04/3
+   875jJhbq6QJAPzBW9uZb/MaU9E1oCUl5CygYa5xdxPiihSZXGvcSlRdQT
+   vxN7KVXpgzsISzKqp1+bru+h6j1KA/zdFh8K9JSNsaOECwQKLBpXp8XF4
+   K0yxf+XRr6UlsP5wXYmYrmtYKy93SacvZU3XgCNLPSHktdObV9zNkMiG6
+   MZCBANWsMwU/NaM3/WLb8JLTQCcI2lwyt+Pc4QcUKWCmcf4s5f4lppDvX
+   xuzvo4I74zyKzKUIAnPJYUjUgoUYNt96E5W23zEOi18niyWcNopUDME3S
    A==;
-X-CSE-ConnectionGUID: jQsDUYBERo2AN14uA1uvsQ==
-X-CSE-MsgGUID: v1H0fzXpTW+R29AfsmiVqw==
+X-CSE-ConnectionGUID: BTx+enIwRwGAT80uKS6img==
+X-CSE-MsgGUID: 9iPVJ/7aQoyu6dbmF3RzpA==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770595200"; 
-   d="scan'208";a="15970575"
-Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
-  by internal-iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:17:59 +0000
-Received: from EX19MTAUEC001.ant.amazon.com [52.94.133.142:19687]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.91.247:2525] with esmtp (Farcaster)
- id 44a9f160-6783-4a3a-a130-a27483caa248; Fri, 10 Apr 2026 15:17:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 44a9f160-6783-4a3a-a130-a27483caa248
-Received: from EX19D027UEC004.ant.amazon.com (10.252.137.178) by
- EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+   d="scan'208";a="15428526"
+Received: from ip-10-4-7-229.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.7.229])
+  by internal-iad-out-013.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:18:10 +0000
+Received: from EX19MTAUEA001.ant.amazon.com [72.21.196.67:8399]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.29.254:2525] with esmtp (Farcaster)
+ id ab9b97a0-55cc-470f-a2db-ce7ac5d2c725; Fri, 10 Apr 2026 15:18:10 +0000 (UTC)
+X-Farcaster-Flow-ID: ab9b97a0-55cc-470f-a2db-ce7ac5d2c725
+Received: from EX19D027UEC002.ant.amazon.com (10.252.137.166) by
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:17:59 +0000
+ Fri, 10 Apr 2026 15:18:09 +0000
 Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
- EX19D027UEC004.ant.amazon.com (10.252.137.178) with Microsoft SMTP Server
+ EX19D027UEC002.ant.amazon.com (10.252.137.166) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:17:58 +0000
+ Fri, 10 Apr 2026 15:18:09 +0000
 Received: from EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d]) by
  EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d%3]) with mapi id
- 15.02.2562.037; Fri, 10 Apr 2026 15:17:58 +0000
+ 15.02.2562.037; Fri, 10 Apr 2026 15:18:09 +0000
 From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
 To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
 	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
@@ -157,11 +157,13 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro"
 	<itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin,
  Nikita" <kalyazin@amazon.co.uk>
-Subject: [PATCH v12 01/16] set_memory: set_direct_map_* to take address
-Thread-Topic: [PATCH v12 01/16] set_memory: set_direct_map_* to take address
-Thread-Index: AQHcyP02mR1MdYtT7E6CxP+5D2NjoA==
-Date: Fri, 10 Apr 2026 15:17:58 +0000
-Message-ID: <20260410151746.61150-2-kalyazin@amazon.com>
+Subject: [PATCH v12 02/16] set_memory: add folio_{zap,restore}_direct_map
+ helpers
+Thread-Topic: [PATCH v12 02/16] set_memory: add folio_{zap,restore}_direct_map
+ helpers
+Thread-Index: AQHcyP09iU0saiM/JE2jxlJdvD20bQ==
+Date: Fri, 10 Apr 2026 15:18:09 +0000
+Message-ID: <20260410151746.61150-3-kalyazin@amazon.com>
 References: <20260410151746.61150-1-kalyazin@amazon.com>
 In-Reply-To: <20260410151746.61150-1-kalyazin@amazon.com>
 Accept-Language: en-GB, en-US
@@ -172,14 +174,14 @@ x-originating-ip: [172.19.103.116]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
+X-Stat-Signature: rcs9ytddwx7szsg4brmieh7ahe55iyz7
+X-Rspamd-Queue-Id: CE24780005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D71998000E
-X-Stat-Signature: s6n6wtg6mbch94f1p1eax8j7y1n3gzdy
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775834282-25713
-X-HE-Meta: U2FsdGVkX1/KLbGO9aCsx17ry4/tbtgBu56Jr9aXm9yRdrw38QXGOmrA+wwQCdcwkKIkcrW7oWVtYpqu2h8hokF04Sbe0ryFYasFMNsWelRFeC0Lz+VOql4F0SvgHYrujNe6gzt4yGkdICTegCLD4aEPzux6gqNYq6mxJMZIrr9JYG9UmU0Z+Q/IbFsoEP0GNCDlGj4dVktd5p2PLOvK/C4E6sbfg43mxukt98NTEQl80CnpoCMtnx9hP5QLYaZrYU3o4IAifdM4haxbWLSh7Uqw7VfTVP0KJRQvD96AyLkbW2ddiho9+VRzcHyZi0GEW91Bh8PbdrxszFZEjSj9X/GW85NOY8q8WBGkhCvnzf2wbaASQ+ZuBo6l3gdgGB98W7YSMc7GhnG5CZxv0ROOE+41Rp5IRLK1nv/WvJZ4wFyYmD9ej0Rv6KsmbMdDFPBmjD5rukFkiEOq8oDASzvJiG1fEDH7JL8TE0pnH0OH5qYYyryDUyStIPAA7BohEYlcICIXJ0CfzKAHm4a1wWOiyN/P6DKCSt+Y14RjTxx/w/6Bzo5bnaGOyzWft6lPyL0xPMZVXTVZR496c9SSdxi7vCtJ4otxuIMGHs2Mpp8utr6HAxhKw+Gh5YVpHaJbiHCEI7m6gCiwCHOANGxCaXVrJXEzX7CaQ/lzTT6QpaY+tWPfoB9T9VIl312ytp12V1Fzf02J8ZmT+iS4ugMNjLK7wTy5aLeBNfiegC+KjQhRn5CHFDCWHnUTrLuzvE2fBsEPyQEXayCy4Pbv50Xwu4+2CgvG7ruwasRgD7cGKvBvgbiSTv147hBioooUyJY71uivXRMs1f8luLsh6UMls9imLRmFd6a1AlADbMcQagbTu1VRZVUaYquEiIOkldYp1yuww/CJ/JHN9fc6oLt1qibkQB1oMvKx/pm8pyGIKI4L4GYwMu3eGcwaLPwT/8YtD0mvT0bk3CQWNtKLqCjiuxi
- E1gicI08
- UTxAeXVrKWIQ6WJcef192J0ILnB9F5qh96l4QHoEbssoGCuvrs2aU++gtw75y9p6JzZ7FF0vvWv4FvyyKgCWWJij5Kket5e79/04ah+I5bvYhzDdwcb599cuQQqdAAIgkRVwgzdF26+dCyFtlk+GFWY3zM+GH9/n9yISIzLxQKANCN4A61AmKrRUcyUdRkporBAqpGRaMeLrrVl3whedHE22mWrhrlSUk5MdGRA267vfYZkbcYGV+6Ugdl7Z4DnzP6uquWJR+Bp9LuGINsxTpDabqYX1cfm7SPfqYi5uOzm0ClD0NR1JB2NwX/6cNAKv88Y5ZRSXK6a9h6r6L7AAV2FhSApPFJgclHHL/AtSo7om2ik3OY7dwcf2Fbu3oWj1L4uxdANkQ7AqzjlEm77llKVqlYkEiwOuWo3rjkSoFeNiFRCfpkHvJN5+Dz5qDIK7tRqgYouTdmw7NBz0HuylY0zkP2sdLePfgH0TwaBjXKzk8QC9+xYGtFRbBgsPyEwO+ejuqd3j6E2yACU3yI1Kjnx9m3SPvjCCqDGT3SLxup5QY4x4+PxGLNYpqV8k1gP8lSbu6NVvgD4547Bfb8igrtq6C9IznNkyiTjhNyvjILfdRyldvleEZ7399u9pPG7nJ1y6Ev8r4DpEyLo+IpBVqFH0F1yiBlhX+WFKNLVEnl9Vj2FfgawSKi9pJOExa8VwFoKT8lLzzrujOdBmhMNWrVs+7/3WPMKFfZDS+XggiRCrZzjVmheor34bqPIY6A+9Q09ORttAA4QL/zBg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775834291-184702
+X-HE-Meta: U2FsdGVkX19TY+qMe4nDUIFvqfXTWxrAFzvyx4YsF3g6pQ+V1ERNUif9Mf1rNVOPK+tZKT7JguXtrRgny9doMkOujnMc3tZFDZKhwUGoxjb66Gbbup35d1w3kp/ZDmAGR85awxb7I3Wx3yBT64GDSrORZfIYGUU9WDxr4KcEC723lcAPzb86+eW1MBFIN4rlMTGyHGF1pcdgxAfE/RVFd4K3N3yeEFXhOYbH+h7Bfsr5UDdoK+tT/7jt33NjT7A5CNMwzZ1NAvGnPsU3p+SUWHTrrLZER+CSuSdPq3xbWYtgUqCtYC5H5abIsLSxffe5+Vu9pkmIhOUCsDkMRsHVOSvrA2FB9CgCilCNfEYTdqtdvVwBBoAx7Djky6LeAMm0fwLULZ63Pq7hEQQEZIcnE7sfZFJcVKEAkXDrETeAjHMya6VM2DcKi3P8tEspk6B07KGvUQ7RT+kxlvt5UwOFetOmEewrarrJxuQyDiAYiPaL8rZoLyGWQcoOQcjjO/a6I2FtTGI6ZCYt5N5hoYoAmZrhZ0r3gYX6BXRW/pqRHBjfFC+N0RWMwNtbZhB4ZhqvfB3bKeqhyHek1NfXSw6EUoGTW5xvrCR4qo0cbiHbvgegv7eNOFM2i/0fG1A/DqJPSMwgTpD8izcXvLZVJRgqR/63JzS2dnVEpmX8fb0f9Vr2w1h8aFjy1mSoUkNTKhEwf5qZc6L/SlGX00yKCSOpHx3B/IQSv1TP0arY/y2Ut03eBTLBlEvRVC/c6keYj8MwYeBk2qvG2cG4n5Uw6tjM9Ucq3AV9UPjzzCZxnclepD2JdVmaEy9Ob8BplK6JpsC0vdWGwQJuBy4N5/DdtJicGr1p4CRoFebLng0K3sVLaqedfO1hIGwmBpL0mR4nV92JL5RmJ8mH/Lx5lsg9bohnqIqGoStgezLf7fH3ZEWsJiX8HMd6+vONx66qZkYsH3Mp38nT5i9h1D0ytHAFvF+
+ Yd7s+wFr
+ pOV382bh0pOjPE7Ju0ebdJH63wHcupUuryBQBR1AUlVGqNWL1zD2tTNu3MKAPcTvFgPsiqSbYByODQSufphtr+ckzg8NGm5DuB3MyXHad5zlfuX3/k8rMHzWaAplI14+XuixzENB1sscoc+zTTVJR1Iw/PrUfCESdSPIpQ8dqFUIBOHoSVPHV54PhfRnzjYO9TQHTNK468VPw008Iy0+gUq9XQ0ycOmOiYZJVGbpCquqfc+PFfaiAT/S7TAOKWK0MtbdgwVRz2KT7k9qvIc8aOwUQO9svoHJA8pZcQP4ugkYdsdsfOq/pk4Aclmoi9BOiKH4BiGA4Yoap3yBBtVYLE82RnAXPjBMbHfeP6E9kcejTHjh74Ivqon30M6RDpDQj9nDPj7KuldmKH1MLthS9uM3ZGZQ7lmCTPoTrMllSpqSY1jJv3Y+Bt67mlHH4aR7eQlUCHFf0wrvBm0gBFBS+E2xZm52fF94Wv+z1zP5fsev/WI9J1begHS7/XmB27sGgfxlp+Wu61s/aWgEPiBIZbNkUgiLc7gMwMHb1267bGwx3fefjMmpQIMqxrMiY5D8Q5ZcLc6woxSYdCzVJZC8DBdNFZDqokOY7KOwsv9N5fJTNAl8H9ZKn988bwMhPRcPU8QCmDxH7VOtfJE83a499xcaADYlQYrrpIM7OMO4BVYg8hW486xsGdidVSHldzuO1PXYIRmGn9GKLsQNKRx/MOVTjqLsvCpC8BO2Uhb0ghaTEoP8U/x8PXo7x44zRGteTy0GiSpphagiOufWxrKVXm5PRIsEmGMqh8YauWIXAq/cUpQ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,562 +191,127 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Nikita Kalyazin <nikita.kalyazin@linux.dev>=0A=
 =0A=
-Let's convert set_direct_map_*() to take an address instead of a page to=0A=
-prepare for adding helpers that operate on folios; it will be more=0A=
-efficient to convert from a folio directly to an address without going=0A=
-through a page first.=0A=
+Let's provide folio_{zap,restore}_direct_map helpers as preparation for=0A=
+supporting removal of the direct map for guest_memfd folios.=0A=
+In folio_zap_direct_map(), flush TLB to make sure the data is not=0A=
+accessible.  On some architectures, there may be a double TLB flush=0A=
+issued because set_direct_map_valid_noflush already performs a flush=0A=
+internally.=0A=
+=0A=
+The new helpers need to be accessible to KVM on architectures that=0A=
+support guest_memfd (x86 and arm64).=0A=
+=0A=
+Direct map removal gives guest_memfd the same protection that=0A=
+memfd_secret does, such as hardening against Spectre-like attacks=0A=
+through in-kernel gadgets.=0A=
 =0A=
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>=0A=
 Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>=0A=
 ---=0A=
- arch/arm64/include/asm/set_memory.h     |  7 ++++---=0A=
- arch/arm64/mm/pageattr.c                | 19 +++++++++--------=0A=
- arch/loongarch/include/asm/set_memory.h |  7 ++++---=0A=
- arch/loongarch/mm/pageattr.c            | 25 ++++++++++-------------=0A=
- arch/riscv/include/asm/set_memory.h     |  7 ++++---=0A=
- arch/riscv/mm/pageattr.c                | 17 ++++++++--------=0A=
- arch/s390/include/asm/set_memory.h      |  7 ++++---=0A=
- arch/s390/mm/pageattr.c                 | 13 ++++++------=0A=
- arch/x86/include/asm/set_memory.h       |  7 ++++---=0A=
- arch/x86/mm/pat/set_memory.c            | 27 +++++++++++++------------=0A=
- include/linux/set_memory.h              |  9 +++++----=0A=
- kernel/power/snapshot.c                 |  4 ++--=0A=
- mm/execmem.c                            |  6 ++++--=0A=
- mm/secretmem.c                          |  6 +++---=0A=
- mm/vmalloc.c                            | 11 ++++++----=0A=
- 15 files changed, 91 insertions(+), 81 deletions(-)=0A=
+ include/linux/set_memory.h | 13 +++++++++++=0A=
+ mm/memory.c                | 45 ++++++++++++++++++++++++++++++++++++++=0A=
+ 2 files changed, 58 insertions(+)=0A=
 =0A=
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/s=
-et_memory.h=0A=
-index 90f61b17275e..c71a2a6812c4 100644=0A=
---- a/arch/arm64/include/asm/set_memory.h=0A=
-+++ b/arch/arm64/include/asm/set_memory.h=0A=
-@@ -11,9 +11,10 @@ bool can_set_direct_map(void);=0A=
- =0A=
- int set_memory_valid(unsigned long addr, int numpages, int enable);=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page);=0A=
--int set_direct_map_default_noflush(struct page *page);=0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d);=0A=
-+int set_direct_map_invalid_noflush(const void *addr);=0A=
-+int set_direct_map_default_noflush(const void *addr);=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid);=0A=
- bool kernel_page_present(struct page *page);=0A=
- =0A=
- int set_memory_encrypted(unsigned long addr, int numpages);=0A=
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c=0A=
-index 358d1dc9a576..5aff94e1f8b2 100644=0A=
---- a/arch/arm64/mm/pageattr.c=0A=
-+++ b/arch/arm64/mm/pageattr.c=0A=
-@@ -245,7 +245,7 @@ int set_memory_valid(unsigned long addr, int numpages, =
-int enable)=0A=
- 					__pgprot(PTE_VALID));=0A=
- }=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page)=0A=
-+int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
- 	pgprot_t clear_mask =3D __pgprot(PTE_VALID);=0A=
- 	pgprot_t set_mask =3D __pgprot(0);=0A=
-@@ -253,11 +253,11 @@ int set_direct_map_invalid_noflush(struct page *page)=
-=0A=
- 	if (!can_set_direct_map())=0A=
- 		return 0;=0A=
- =0A=
--	return update_range_prot((unsigned long)page_address(page),=0A=
--				 PAGE_SIZE, set_mask, clear_mask);=0A=
-+	return update_range_prot((unsigned long)addr, PAGE_SIZE, set_mask,=0A=
-+				 clear_mask);=0A=
- }=0A=
- =0A=
--int set_direct_map_default_noflush(struct page *page)=0A=
-+int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
- 	pgprot_t set_mask =3D __pgprot(PTE_VALID | PTE_WRITE);=0A=
- 	pgprot_t clear_mask =3D __pgprot(PTE_RDONLY);=0A=
-@@ -265,8 +265,8 @@ int set_direct_map_default_noflush(struct page *page)=
-=0A=
- 	if (!can_set_direct_map())=0A=
- 		return 0;=0A=
- =0A=
--	return update_range_prot((unsigned long)page_address(page),=0A=
--				 PAGE_SIZE, set_mask, clear_mask);=0A=
-+	return update_range_prot((unsigned long)addr, PAGE_SIZE, set_mask,=0A=
-+				 clear_mask);=0A=
- }=0A=
- =0A=
- static int __set_memory_enc_dec(unsigned long addr,=0A=
-@@ -349,14 +349,13 @@ int realm_register_memory_enc_ops(void)=0A=
- 	return arm64_mem_crypt_ops_register(&realm_crypt_ops);=0A=
- }=0A=
- =0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d)=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid)=0A=
- {=0A=
--	unsigned long addr =3D (unsigned long)page_address(page);=0A=
--=0A=
- 	if (!can_set_direct_map())=0A=
- 		return 0;=0A=
- =0A=
--	return set_memory_valid(addr, nr, valid);=0A=
-+	return set_memory_valid((unsigned long)addr, numpages, valid);=0A=
- }=0A=
- =0A=
- #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
-diff --git a/arch/loongarch/include/asm/set_memory.h b/arch/loongarch/inclu=
-de/asm/set_memory.h=0A=
-index 55dfaefd02c8..5e9b67b2fea1 100644=0A=
---- a/arch/loongarch/include/asm/set_memory.h=0A=
-+++ b/arch/loongarch/include/asm/set_memory.h=0A=
-@@ -15,8 +15,9 @@ int set_memory_ro(unsigned long addr, int numpages);=0A=
- int set_memory_rw(unsigned long addr, int numpages);=0A=
- =0A=
- bool kernel_page_present(struct page *page);=0A=
--int set_direct_map_default_noflush(struct page *page);=0A=
--int set_direct_map_invalid_noflush(struct page *page);=0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d);=0A=
-+int set_direct_map_invalid_noflush(const void *addr);=0A=
-+int set_direct_map_default_noflush(const void *addr);=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid);=0A=
- =0A=
- #endif /* _ASM_LOONGARCH_SET_MEMORY_H */=0A=
-diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c=0A=
-index f5e910b68229..9e08905d3624 100644=0A=
---- a/arch/loongarch/mm/pageattr.c=0A=
-+++ b/arch/loongarch/mm/pageattr.c=0A=
-@@ -198,32 +198,29 @@ bool kernel_page_present(struct page *page)=0A=
- 	return pte_present(ptep_get(pte));=0A=
- }=0A=
- =0A=
--int set_direct_map_default_noflush(struct page *page)=0A=
-+int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
--	unsigned long addr =3D (unsigned long)page_address(page);=0A=
--=0A=
--	if (addr < vm_map_base)=0A=
-+	if ((unsigned long)addr < vm_map_base)=0A=
- 		return 0;=0A=
- =0A=
--	return __set_memory(addr, 1, PAGE_KERNEL, __pgprot(0));=0A=
-+	return __set_memory((unsigned long)addr, 1, PAGE_KERNEL, __pgprot(0));=0A=
- }=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page)=0A=
-+int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
--	unsigned long addr =3D (unsigned long)page_address(page);=0A=
--=0A=
--	if (addr < vm_map_base)=0A=
-+	if ((unsigned long)addr < vm_map_base)=0A=
- 		return 0;=0A=
- =0A=
--	return __set_memory(addr, 1, __pgprot(0), __pgprot(_PAGE_PRESENT | _PAGE_=
-VALID));=0A=
-+	return __set_memory((unsigned long)addr, 1, __pgprot(0),=0A=
-+			    __pgprot(_PAGE_PRESENT | _PAGE_VALID));=0A=
- }=0A=
- =0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d)=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid)=0A=
- {=0A=
--	unsigned long addr =3D (unsigned long)page_address(page);=0A=
- 	pgprot_t set, clear;=0A=
- =0A=
--	if (addr < vm_map_base)=0A=
-+	if ((unsigned long)addr < vm_map_base)=0A=
- 		return 0;=0A=
- =0A=
- 	if (valid) {=0A=
-@@ -234,5 +231,5 @@ int set_direct_map_valid_noflush(struct page *page, uns=
-igned nr, bool valid)=0A=
- 		clear =3D __pgprot(_PAGE_PRESENT | _PAGE_VALID);=0A=
- 	}=0A=
- =0A=
--	return __set_memory(addr, 1, set, clear);=0A=
-+	return __set_memory((unsigned long)addr, 1, set, clear);=0A=
- }=0A=
-diff --git a/arch/riscv/include/asm/set_memory.h b/arch/riscv/include/asm/s=
-et_memory.h=0A=
-index 87389e93325a..a87eabd7fc78 100644=0A=
---- a/arch/riscv/include/asm/set_memory.h=0A=
-+++ b/arch/riscv/include/asm/set_memory.h=0A=
-@@ -40,9 +40,10 @@ static inline int set_kernel_memory(char *startp, char *=
-endp,=0A=
- }=0A=
- #endif=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page);=0A=
--int set_direct_map_default_noflush(struct page *page);=0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d);=0A=
-+int set_direct_map_invalid_noflush(const void *addr);=0A=
-+int set_direct_map_default_noflush(const void *addr);=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid);=0A=
- bool kernel_page_present(struct page *page);=0A=
- =0A=
- #endif /* __ASSEMBLER__ */=0A=
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c=0A=
-index 3f76db3d2769..0a457177a88c 100644=0A=
---- a/arch/riscv/mm/pageattr.c=0A=
-+++ b/arch/riscv/mm/pageattr.c=0A=
-@@ -374,19 +374,20 @@ int set_memory_nx(unsigned long addr, int numpages)=
-=0A=
- 	return __set_memory(addr, numpages, __pgprot(0), __pgprot(_PAGE_EXEC));=
-=0A=
- }=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page)=0A=
-+int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
--	return __set_memory((unsigned long)page_address(page), 1,=0A=
--			    __pgprot(0), __pgprot(_PAGE_PRESENT));=0A=
-+	return __set_memory((unsigned long)addr, 1, __pgprot(0),=0A=
-+			    __pgprot(_PAGE_PRESENT));=0A=
- }=0A=
- =0A=
--int set_direct_map_default_noflush(struct page *page)=0A=
-+int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
--	return __set_memory((unsigned long)page_address(page), 1,=0A=
--			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));=0A=
-+	return __set_memory((unsigned long)addr, 1, PAGE_KERNEL,=0A=
-+			    __pgprot(_PAGE_EXEC));=0A=
- }=0A=
- =0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d)=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid)=0A=
- {=0A=
- 	pgprot_t set, clear;=0A=
- =0A=
-@@ -398,7 +399,7 @@ int set_direct_map_valid_noflush(struct page *page, uns=
-igned nr, bool valid)=0A=
- 		clear =3D __pgprot(_PAGE_PRESENT);=0A=
- 	}=0A=
- =0A=
--	return __set_memory((unsigned long)page_address(page), nr, set, clear);=
-=0A=
-+	return __set_memory((unsigned long)addr, numpages, set, clear);=0A=
- }=0A=
- =0A=
- #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
-diff --git a/arch/s390/include/asm/set_memory.h b/arch/s390/include/asm/set=
-_memory.h=0A=
-index 94092f4ae764..3e43c3c96e67 100644=0A=
---- a/arch/s390/include/asm/set_memory.h=0A=
-+++ b/arch/s390/include/asm/set_memory.h=0A=
-@@ -60,9 +60,10 @@ __SET_MEMORY_FUNC(set_memory_rox, SET_MEMORY_RO | SET_ME=
-MORY_X)=0A=
- __SET_MEMORY_FUNC(set_memory_rwnx, SET_MEMORY_RW | SET_MEMORY_NX)=0A=
- __SET_MEMORY_FUNC(set_memory_4k, SET_MEMORY_4K)=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page);=0A=
--int set_direct_map_default_noflush(struct page *page);=0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d);=0A=
-+int set_direct_map_invalid_noflush(const void *addr);=0A=
-+int set_direct_map_default_noflush(const void *addr);=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid);=0A=
- bool kernel_page_present(struct page *page);=0A=
- =0A=
- #endif=0A=
-diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c=0A=
-index bb29c38ae624..8e90ff5cf50d 100644=0A=
---- a/arch/s390/mm/pageattr.c=0A=
-+++ b/arch/s390/mm/pageattr.c=0A=
-@@ -383,17 +383,18 @@ int __set_memory(unsigned long addr, unsigned long nu=
-mpages, unsigned long flags=0A=
- 	return rc;=0A=
- }=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page)=0A=
-+int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
--	return __set_memory((unsigned long)page_to_virt(page), 1, SET_MEMORY_INV)=
-;=0A=
-+	return __set_memory((unsigned long)addr, 1, SET_MEMORY_INV);=0A=
- }=0A=
- =0A=
--int set_direct_map_default_noflush(struct page *page)=0A=
-+int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
--	return __set_memory((unsigned long)page_to_virt(page), 1, SET_MEMORY_DEF)=
-;=0A=
-+	return __set_memory((unsigned long)addr, 1, SET_MEMORY_DEF);=0A=
- }=0A=
- =0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d)=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid)=0A=
- {=0A=
- 	unsigned long flags;=0A=
- =0A=
-@@ -402,7 +403,7 @@ int set_direct_map_valid_noflush(struct page *page, uns=
-igned nr, bool valid)=0A=
- 	else=0A=
- 		flags =3D SET_MEMORY_INV;=0A=
- =0A=
--	return __set_memory((unsigned long)page_to_virt(page), nr, flags);=0A=
-+	return __set_memory((unsigned long)addr, numpages, flags);=0A=
- }=0A=
- =0A=
- bool kernel_page_present(struct page *page)=0A=
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_m=
-emory.h=0A=
-index 4362c26aa992..b6a4173ff249 100644=0A=
---- a/arch/x86/include/asm/set_memory.h=0A=
-+++ b/arch/x86/include/asm/set_memory.h=0A=
-@@ -86,9 +86,10 @@ int set_pages_wb(struct page *page, int numpages);=0A=
- int set_pages_ro(struct page *page, int numpages);=0A=
- int set_pages_rw(struct page *page, int numpages);=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page);=0A=
--int set_direct_map_default_noflush(struct page *page);=0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d);=0A=
-+int set_direct_map_invalid_noflush(const void *addr);=0A=
-+int set_direct_map_default_noflush(const void *addr);=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid);=0A=
- bool kernel_page_present(struct page *page);=0A=
- =0A=
- extern int kernel_set_to_readonly;=0A=
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c=0A=
-index 40581a720fe8..7517195b75b9 100644=0A=
---- a/arch/x86/mm/pat/set_memory.c=0A=
-+++ b/arch/x86/mm/pat/set_memory.c=0A=
-@@ -2587,9 +2587,9 @@ int set_pages_rw(struct page *page, int numpages)=0A=
- 	return set_memory_rw(addr, numpages);=0A=
- }=0A=
- =0A=
--static int __set_pages_p(struct page *page, int numpages)=0A=
-+static int __set_pages_p(const void *addr, int numpages)=0A=
- {=0A=
--	unsigned long tempaddr =3D (unsigned long) page_address(page);=0A=
-+	unsigned long tempaddr =3D (unsigned long)addr;=0A=
- 	struct cpa_data cpa =3D { .vaddr =3D &tempaddr,=0A=
- 				.pgd =3D NULL,=0A=
- 				.numpages =3D numpages,=0A=
-@@ -2606,9 +2606,9 @@ static int __set_pages_p(struct page *page, int numpa=
-ges)=0A=
- 	return __change_page_attr_set_clr(&cpa, 1);=0A=
- }=0A=
- =0A=
--static int __set_pages_np(struct page *page, int numpages)=0A=
-+static int __set_pages_np(const void *addr, int numpages)=0A=
- {=0A=
--	unsigned long tempaddr =3D (unsigned long) page_address(page);=0A=
-+	unsigned long tempaddr =3D (unsigned long)addr;=0A=
- 	struct cpa_data cpa =3D { .vaddr =3D &tempaddr,=0A=
- 				.pgd =3D NULL,=0A=
- 				.numpages =3D numpages,=0A=
-@@ -2625,22 +2625,23 @@ static int __set_pages_np(struct page *page, int nu=
-mpages)=0A=
- 	return __change_page_attr_set_clr(&cpa, 1);=0A=
- }=0A=
- =0A=
--int set_direct_map_invalid_noflush(struct page *page)=0A=
-+int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
--	return __set_pages_np(page, 1);=0A=
-+	return __set_pages_np(addr, 1);=0A=
- }=0A=
- =0A=
--int set_direct_map_default_noflush(struct page *page)=0A=
-+int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
--	return __set_pages_p(page, 1);=0A=
-+	return __set_pages_p(addr, 1);=0A=
- }=0A=
- =0A=
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool vali=
-d)=0A=
-+int set_direct_map_valid_noflush(const void *addr, unsigned long numpages,=
-=0A=
-+				 bool valid)=0A=
- {=0A=
- 	if (valid)=0A=
--		return __set_pages_p(page, nr);=0A=
-+		return __set_pages_p(addr, numpages);=0A=
- =0A=
--	return __set_pages_np(page, nr);=0A=
-+	return __set_pages_np(addr, numpages);=0A=
- }=0A=
- =0A=
- #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
-@@ -2659,9 +2660,9 @@ void __kernel_map_pages(struct page *page, int numpag=
-es, int enable)=0A=
- 	 * and hence no memory allocations during large page split.=0A=
- 	 */=0A=
- 	if (enable)=0A=
--		__set_pages_p(page, numpages);=0A=
-+		__set_pages_p(page_address(page), numpages);=0A=
- 	else=0A=
--		__set_pages_np(page, numpages);=0A=
-+		__set_pages_np(page_address(page), numpages);=0A=
- =0A=
- 	/*=0A=
- 	 * We should perform an IPI and flush all tlbs,=0A=
 diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h=0A=
-index 3030d9245f5a..1a2563f525fc 100644=0A=
+index 1a2563f525fc..24caea2931f9 100644=0A=
 --- a/include/linux/set_memory.h=0A=
 +++ b/include/linux/set_memory.h=0A=
-@@ -25,17 +25,18 @@ static inline int set_memory_rox(unsigned long addr, in=
-t numpages)=0A=
- #endif=0A=
- =0A=
- #ifndef CONFIG_ARCH_HAS_SET_DIRECT_MAP=0A=
--static inline int set_direct_map_invalid_noflush(struct page *page)=0A=
-+static inline int set_direct_map_invalid_noflush(const void *addr)=0A=
- {=0A=
- 	return 0;=0A=
- }=0A=
--static inline int set_direct_map_default_noflush(struct page *page)=0A=
-+static inline int set_direct_map_default_noflush(const void *addr)=0A=
- {=0A=
+@@ -41,6 +41,15 @@ static inline int set_direct_map_valid_noflush(const voi=
+d *addr,=0A=
  	return 0;=0A=
  }=0A=
  =0A=
--static inline int set_direct_map_valid_noflush(struct page *page,=0A=
--					       unsigned nr, bool valid)=0A=
-+static inline int set_direct_map_valid_noflush(const void *addr,=0A=
-+					       unsigned long numpages,=0A=
-+					       bool valid)=0A=
- {=0A=
- 	return 0;=0A=
- }=0A=
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c=0A=
-index 6e1321837c66..6eddfb22c0ff 100644=0A=
---- a/kernel/power/snapshot.c=0A=
-+++ b/kernel/power/snapshot.c=0A=
-@@ -88,7 +88,7 @@ static inline int hibernate_restore_unprotect_page(void *=
-page_address) {return 0=0A=
- static inline void hibernate_map_page(struct page *page)=0A=
- {=0A=
- 	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {=0A=
--		int ret =3D set_direct_map_default_noflush(page);=0A=
-+		int ret =3D set_direct_map_default_noflush(page_address(page));=0A=
- =0A=
- 		if (ret)=0A=
- 			pr_warn_once("Failed to remap page\n");=0A=
-@@ -101,7 +101,7 @@ static inline void hibernate_unmap_page(struct page *pa=
-ge)=0A=
- {=0A=
- 	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {=0A=
- 		unsigned long addr =3D (unsigned long)page_address(page);=0A=
--		int ret  =3D set_direct_map_invalid_noflush(page);=0A=
-+		int ret  =3D set_direct_map_invalid_noflush(page_address(page));=0A=
- =0A=
- 		if (ret)=0A=
- 			pr_warn_once("Failed to remap page\n");=0A=
-diff --git a/mm/execmem.c b/mm/execmem.c=0A=
-index 810a4ba9c924..220298ec87c8 100644=0A=
---- a/mm/execmem.c=0A=
-+++ b/mm/execmem.c=0A=
-@@ -119,7 +119,8 @@ static int execmem_set_direct_map_valid(struct vm_struc=
-t *vm, bool valid)=0A=
- 	int err =3D 0;=0A=
- =0A=
- 	for (int i =3D 0; i < vm->nr_pages; i +=3D nr) {=0A=
--		err =3D set_direct_map_valid_noflush(vm->pages[i], nr, valid);=0A=
-+		err =3D set_direct_map_valid_noflush(page_address(vm->pages[i]),=0A=
-+						   nr, valid);=0A=
- 		if (err)=0A=
- 			goto err_restore;=0A=
- 		updated +=3D nr;=0A=
-@@ -129,7 +130,8 @@ static int execmem_set_direct_map_valid(struct vm_struc=
-t *vm, bool valid)=0A=
- =0A=
- err_restore:=0A=
- 	for (int i =3D 0; i < updated; i +=3D nr)=0A=
--		set_direct_map_valid_noflush(vm->pages[i], nr, !valid);=0A=
-+		set_direct_map_valid_noflush(page_address(vm->pages[i]), nr,=0A=
-+					     !valid);=0A=
- =0A=
- 	return err;=0A=
- }=0A=
-diff --git a/mm/secretmem.c b/mm/secretmem.c=0A=
-index 11a779c812a7..fd29b33c6764 100644=0A=
---- a/mm/secretmem.c=0A=
-+++ b/mm/secretmem.c=0A=
-@@ -72,7 +72,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)=
-=0A=
- 			goto out;=0A=
- 		}=0A=
- =0A=
--		err =3D set_direct_map_invalid_noflush(folio_page(folio, 0));=0A=
-+		err =3D set_direct_map_invalid_noflush(folio_address(folio));=0A=
- 		if (err) {=0A=
- 			folio_put(folio);=0A=
- 			ret =3D vmf_error(err);=0A=
-@@ -87,7 +87,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)=
-=0A=
- 			 * already happened when we marked the page invalid=0A=
- 			 * which guarantees that this call won't fail=0A=
- 			 */=0A=
--			set_direct_map_default_noflush(folio_page(folio, 0));=0A=
-+			set_direct_map_default_noflush(folio_address(folio));=0A=
- 			folio_put(folio);=0A=
- 			if (err =3D=3D -EEXIST)=0A=
- 				goto retry;=0A=
-@@ -151,7 +151,7 @@ static int secretmem_migrate_folio(struct address_space=
- *mapping,=0A=
- =0A=
- static void secretmem_free_folio(struct folio *folio)=0A=
- {=0A=
--	set_direct_map_default_noflush(folio_page(folio, 0));=0A=
-+	set_direct_map_default_noflush(folio_address(folio));=0A=
- 	folio_zero_segment(folio, 0, folio_size(folio));=0A=
- }=0A=
- =0A=
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c=0A=
-index 61caa55a4402..8822f73957d9 100644=0A=
---- a/mm/vmalloc.c=0A=
-+++ b/mm/vmalloc.c=0A=
-@@ -3342,14 +3342,17 @@ struct vm_struct *remove_vm_area(const void *addr)=
-=0A=
- }=0A=
- =0A=
- static inline void set_area_direct_map(const struct vm_struct *area,=0A=
--				       int (*set_direct_map)(struct page *page))=0A=
-+				       int (*set_direct_map)(const void *addr))=0A=
- {=0A=
- 	int i;=0A=
- =0A=
- 	/* HUGE_VMALLOC passes small pages to set_direct_map */=0A=
--	for (i =3D 0; i < area->nr_pages; i++)=0A=
--		if (page_address(area->pages[i]))=0A=
--			set_direct_map(area->pages[i]);=0A=
-+	for (i =3D 0; i < area->nr_pages; i++) {=0A=
-+		const void *addr =3D page_address(area->pages[i]);=0A=
++static inline int folio_zap_direct_map(struct folio *folio)=0A=
++{=0A=
++	return 0;=0A=
++}=0A=
 +=0A=
-+		if (addr)=0A=
-+			set_direct_map(addr);=0A=
-+	}=0A=
++static inline void folio_restore_direct_map(struct folio *folio)=0A=
++{=0A=
++}=0A=
++=0A=
+ static inline bool kernel_page_present(struct page *page)=0A=
+ {=0A=
+ 	return true;=0A=
+@@ -57,6 +66,10 @@ static inline bool can_set_direct_map(void)=0A=
  }=0A=
+ #define can_set_direct_map can_set_direct_map=0A=
+ #endif=0A=
++=0A=
++int folio_zap_direct_map(struct folio *folio);=0A=
++void folio_restore_direct_map(struct folio *folio);=0A=
++=0A=
+ #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */=0A=
  =0A=
- /*=0A=
+ #ifdef CONFIG_X86_64=0A=
+diff --git a/mm/memory.c b/mm/memory.c=0A=
+index 2f815a34d924..3b9ada2cc19c 100644=0A=
+--- a/mm/memory.c=0A=
++++ b/mm/memory.c=0A=
+@@ -78,6 +78,7 @@=0A=
+ #include <linux/sched/sysctl.h>=0A=
+ #include <linux/pgalloc.h>=0A=
+ #include <linux/uaccess.h>=0A=
++#include <linux/set_memory.h>=0A=
+ =0A=
+ #include <trace/events/kmem.h>=0A=
+ =0A=
+@@ -7479,3 +7480,47 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma=
+)=0A=
+ 	if (is_vm_hugetlb_page(vma))=0A=
+ 		hugetlb_vma_unlock_read(vma);=0A=
+ }=0A=
++=0A=
++#ifdef CONFIG_ARCH_HAS_SET_DIRECT_MAP=0A=
++/**=0A=
++ * folio_zap_direct_map - remove a folio from the kernel direct map=0A=
++ * @folio: folio to remove from the direct map=0A=
++ *=0A=
++ * Removes the folio from the kernel direct map and flushes the TLB.  This=
+ may=0A=
++ * require splitting huge pages in the direct map, which can fail due to m=
+emory=0A=
++ * allocation.  So far, only order-0 folios are supported.=0A=
++ *=0A=
++ * Return: 0 on success, or a negative error code on failure.=0A=
++ */=0A=
++int folio_zap_direct_map(struct folio *folio)=0A=
++{=0A=
++	const void *addr =3D folio_address(folio);=0A=
++	int ret;=0A=
++=0A=
++	if (folio_test_large(folio))=0A=
++		return -EINVAL;=0A=
++=0A=
++	ret =3D set_direct_map_valid_noflush(addr, folio_nr_pages(folio), false);=
+=0A=
++	flush_tlb_kernel_range((unsigned long)addr,=0A=
++			       (unsigned long)addr + folio_size(folio));=0A=
++=0A=
++	return ret;=0A=
++}=0A=
++EXPORT_SYMBOL_FOR_MODULES(folio_zap_direct_map, "kvm");=0A=
++=0A=
++/**=0A=
++ * folio_restore_direct_map - restore the kernel direct map entry for a fo=
+lio=0A=
++ * @folio: folio whose direct map entry is to be restored=0A=
++ *=0A=
++ * This may only be called after a prior successful folio_zap_direct_map()=
+ on=0A=
++ * the same folio.  Because the zap will have already split any huge pages=
+ in=0A=
++ * the direct map, restoration here only updates protection bits and canno=
+t=0A=
++ * fail.=0A=
++ */=0A=
++void folio_restore_direct_map(struct folio *folio)=0A=
++{=0A=
++	WARN_ON_ONCE(set_direct_map_valid_noflush(folio_address(folio),=0A=
++						  folio_nr_pages(folio), true));=0A=
++}=0A=
++EXPORT_SYMBOL_FOR_MODULES(folio_restore_direct_map, "kvm");=0A=
++#endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
