@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2BFF4484F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:21:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD17F4484F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F6186B00D1; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
+	id 2FA416B00D3; Fri, 10 Apr 2026 08:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A68A6B00D3; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
+	id 2B13C6B00D5; Fri, 10 Apr 2026 08:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 396106B00D4; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
+	id 19A516B00D6; Fri, 10 Apr 2026 08:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 222356B00D1
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9EF4590C7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:00 +0000 (UTC)
-X-FDA: 84642555480.20.1CBD8C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3969A180009
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmyBeAjX;
-	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 04C0A6B00D3
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:21:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8BBE140515
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:05 +0000 (UTC)
+X-FDA: 84642555690.10.119EED3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 29AFA20003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:03 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMEawaGf;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMEawaGf;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823664; a=rsa-sha256;
+	cv=none;
+	b=7jPt0QzOLj/X7cvrr1I3ftlzLumVog9g+RR64jVCS764ExRu5OjMEdDtBSG8NWsBL5u3El
+	/1UXSgj2XxvOFudN1eWp3iccr+7ZderwFbv6mmLoD03ARzlicPLyW6fpXbFekbAcCvBGmJ
+	CNCaUOXsXAYACwbUCpfJoHFEEw/U/fw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823659;
+	s=arc-20220608; t=1775823664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=55BqTpopgqyhosJe2byyDZjQwi/7tJCuwd4CS33Nh0I=;
-	b=cQz15h3ILgje33CT+sBnPD7Vt2i4l86Ko9N9AVyADIjwn2F2KHvZxNu2p/r64/PfsEGAd5
-	M1z790IRTP3EMiVSm3Qc4QqtkkejZnQjqcu45ZQ4A/VbCNdlWoAYFlrkEN6dqFmkJLZ+pN
-	6xVtjJu1NwJlmBmixSfCCh1HPxF2bAA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823659; a=rsa-sha256;
-	cv=none;
-	b=fTGFIYgoEhpnVDIhhRjfOy4mGFkawhIWXy/sp9N7yHKLnvERaQCo/Uo0tJ/bBik66pkwe6
-	nhDL27U+yo8qxsgLiwquAjSzMNbXH5AaTKjB85oUmzH+JHg4aeRuljDTJ3o2cPH2hApAQc
-	x9Z/pnEqxB0d0aKfM6l3eDfCqtg8dOs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmyBeAjX;
-	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=knDLOL3Pglg0Ub7FLYkkPKBMBdISeZid22CAd3SOyJM=;
+	b=DFaH3oCP7CLtc+eH4+7KDxjuSpFHv/iovAOpR46STWpTv6/i5Pk/DuqK3oKaRbkXAOSwqX
+	Hg3ZWMDK4VQdrKWvSwHf5XuAeCb9vTLYmmZNepURLatB3dlvrMh4XqrgjMZyxPyjHeGZ+F
+	v4ZLO3v0X7Jyigau6OBdN5EseyD2Dd0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B18E409C7;
-	Fri, 10 Apr 2026 12:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82685C19421;
-	Fri, 10 Apr 2026 12:20:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5035961333;
+	Fri, 10 Apr 2026 12:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21923C2BCB2;
+	Fri, 10 Apr 2026 12:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823658;
-	bh=Hb2dziS1cUz3f0ZYnY6mq4QP/VKrKM0StdHMUX+1BaE=;
+	s=k20201202; t=1775823663;
+	bh=arEz1VHg70GeH2cUr9Lpy43pf1nP5ZqGj9No6b3NvGc=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=RmyBeAjX6h1L2rIRLcz+AgNEdpyqYQZZkX4kYkgxpR9ZJA0/rvdow263wov/8PVOr
-	 hb2QUP5GwQZouavgtAcs0bwbkCd8TxgfCVh6LWoo2a7HWknstglzPKB+9aabXFzH1J
-	 rP1F6gK8dqeRn0JBTKdTohI1oCqed+5PigWBVmbAA5ah3505CMSHrUL7HPCCN4sGiu
-	 NHT4954Kmifvfva6Jx9l4xaRzDUJEaSzZYxXiP8aChKSe2ykT1tpUU6RYxqauW7DoH
-	 p3wDa9fQGCdDGL4OtStOnSEjWIThdsFEIiYqSYDvCq0zlNoVlLTrCjuWlgc/BYNO1M
-	 jFsY3AL2zO6GQ==
-Date: Fri, 10 Apr 2026 14:20:55 +0200
-Message-ID: <20260410120319.593798781@kernel.org>
+	b=NMEawaGfBmItTINOkOidvgB6jXoclDGf78qU2DQLeTlzGLrdEzTDk/muIR3isadas
+	 Eyy5g0FnRv8ECHD8WNjJd+poKDwf709MD2FUA4Zxpq4v2gA+LwpA8vel0ik9BGCmUL
+	 SRAcDP7ql7MsZ2nrhkZkSeh/8fnf2+XnKGt9MLspNLANeefspPmNjhAwKQtf/nBzwq
+	 +qFTCUz5zVqyJxqgiY8VftvHSe0PhwZa05l9UZAVCASdReHFxw2Di6MoEIbRm/DACH
+	 6EZjVdKmyCFY0ahPlTJF5Om8tUGbM3+RzMDvfnJ5JW0Kfa99RJyTmb3751RAHQJ2qn
+	 SLzORLtraR9aA==
+Date: Fri, 10 Apr 2026 14:21:00 +0200
+Message-ID: <20260410120319.658485572@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org,
+Cc: Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -105,8 +105,8 @@ Cc: Jonas Bonn <jonas@southpole.se>,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  linux-m68k@lists.linux-m68k.org,
  Dinh Nguyen <dinguyen@kernel.org>,
- Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org,
+ Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org,
  Michael Ellerman <mpe@ellerman.id.au>,
  linuxppc-dev@lists.ozlabs.org,
  Paul Walmsley <pjw@kernel.org>,
@@ -115,18 +115,18 @@ Cc: Jonas Bonn <jonas@southpole.se>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 30/38] openrisc: Select ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 31/38] parisc: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bqrhfce9f3zx1w8wn87cbu534phdnz3a
-X-Rspamd-Queue-Id: 3969A180009
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 29AFA20003
+X-Stat-Signature: b9txcxbgbjrhks8bw1ke5ymkniher17o
 X-Rspam-User: 
-X-HE-Tag: 1775823659-387265
-X-HE-Meta: U2FsdGVkX18OK8GN1dyB6NrjpmXCacJm7zpmv1b6gX3Y2mHINV2cocOqon2g+aM19rGKSUEMXkFbR6JDJevhaHLu2TkcthlVOT0oKSOTvQi6EDx0436v6piiQknUvpvJFGoIzu0E59/G2+U1hD6VGBIzA/v4LvPemR1LaLcoNxAvJrkbHKwndFTXJuLYR2NmtJ9vxdRdfLPRbY5gAvWdQBmB4YjirSeY20PI/ga4g0C2RSeWvpBpbb6HtJ/knKCEbCgDzVybzt+4DP6Ln+vIz4NTy1JwA3saoBzwDb/tWaZch8NQvam8rhBxO9n5bF+Trcou8ZwxZw5pAQmY3OcE4f0YqD4t0R1KzhhaLCYHl+cyRbgUx12wJ5TAcGbWB7AmnV8jc3t1MqqvFuHptEHshAnMjyet5DHtwoKv4SUccDGPHbDrMZx7FrIZ2f5vNbWYEsgB91AY39hUPPRzsZCt4gWpM877dZ8HjoF4dqS4QP+WRdFnAUnKBwqhB+/+Ho8jKqrnZBFfF+pMkDVQgTMU8sXJx6oLDc4Sg27BW15iiz3T0OYOpxGDnoMmOcmPYN9nT9DhPzLmTUzmCqsXjQjXKS/g1ePd9+hlEbQqaPt+RntMtRg6zp5nURlm+MUSTmVMNz/aVGNszMKf5y7gbIbq1V2WKDrEosoozPnkksQSiIfK3QaBvdeAdz8DmQ+ZFdl50NJlGaqSpXzJv5QtYgmQuLs65VtG9envWJN9bakb+ZuXAVee8o6p6pCHw74qHcbpvO6ylgn0WkfvrrwU+fqpxjc1lENsHHgpzaQ3bLWNeOou6lipu9kWztaJNDea5K4lAZKA/SvtbzxJ44MIBrJ9yTzVT0Lqyi+HOfhmOK52cpzDrQuCocfaErdlx5OKwUGXfOhAptXqha+Tu/Y3hydObm/3kMeZ8W9IdRwJn4DSSDndPo/jT1r/dO/rzQmgGaoorPE6KcBPgKyYNOQ9gF1
- uGKO2s9Z
- 5C5FGe7gMh/x5DZQ4RdBOT2eQN9gJWHt6vhJ7wGv72K1wX/MfPQHuuqyQ+BgjpRrA0GAIMvW8EoQH1ow0ccz7+IIaD6ppZ/CDM9WF0+ltFswvNEe7kBxdxh7yeofux/DFAfNZg20uktKsIdW7HzyhNJZO/2+G4kKzc6U9aAwa05PndHObp1DS8f0Fde4et84wSG5MlwZ4xpk4g4vmzveYk+rBbq58vHIDDdKDlqnQS6smLZRMzIyyZnZDmPXLg6ekcFeRNrJwifGYlPxilFFu3UxJEo4F70GEqx3N223Kz931WAWqCVzkK/1x8pdt3i08yEFbJQaGdkPb/oPJ9rVTMLd8YNM+DN5lJa+OSrvMAQhF57Og7Uwey9V7EmLwUeweFbSvfSDf4VT8ERkKmoIhlIaRf8bbIXcnmVSO/X+rmB0QyIG0kK19PLuQIw==
+X-HE-Tag: 1775823663-176848
+X-HE-Meta: U2FsdGVkX19bEpT58+2L/Z/ZpP5DtN1cbkaNUhALBVaYeylgRE5UeGEVHVj9rUWC8kv5xrNNcIMSyf6aGh6FaKoJRL5Jx2urCZM/um9SbvN9AxK4g8gaYgy5DcM2Xdym23D+bAsBlGmzpHdu1Lpuq6dLwnbyNDYQ8JrKNbZKsSL/QTTNUP+Qt5/dbNZi41JX1ZR1eK3ZXhf9bQpz1ko/8B3VOoJekpJIzb2rZ9X9JVSZaPQlDzUIxUNMhImfz2IorVHhhL7F02HOCg5ZCua0XhqsT2TjmD21qTyOOsk3mzerFR3SvKLWNX0tEXf0xWDTqZPc4NG4oqKJGTvtV/zGB6UFMR2OoYRnyI/kODQljCTJzYhZZX1RCxHw5aLyI2rBxK2Ob7z1igcW2XcwhboDn0GJaV1XftWPXi1CwBTl9wov1rlKKXBOC1kQy1czBxbLCLs3jk5L1cqCPItnTtPkKLMqhocny0iE66KvUUKwlXiR5TQgZgGutOav+sHFdBZVLepn3bg79ybHssRGVbcTnlphAUAX/YyvKc7jCNet81NL3WU2CCVBdWFuwfLhLvSrmB8xdVKI1/VTkiLRojJl7lA0DDIk0zhQrdZzd+iNHBy5v3ylwq7Kx+4v7a5u9kOespHQwzbrazCVqUeT1ovMiEDAgYzwvwE3bPHtdxZIbtK1/W50UO+4IyzANk2G/lNzmrzB8lSxD/rFiRILbRsgvSorcfEKFtdALpawij5GXvr39QUo9AqGfCFkDmcfx+pM4dRZs+zchx0KN9UzYebjcA0a5nWLc4xGV6HJjPm1j2GtqIwITbXg3nYj2QUW+BUMQzctCTPbGz3Ab7tfNvSLtBAVY4M4PvJd5Lz2AWkPIsxkJF9NmDFzGhEqhqfqnqVYM9OdkltTDmlykjjvvSgj3mertVjG1hB6sPircPlq8G5lYCCW5VVOY1iAVEJ6WOj8vnzvCJRnkzIhB4S8WI7
+ ZuYwLgli
+ O27u6/cjfE/V2s5BLlQ9yQAwWWtli/35YyDuoIBEiqpTFfmSlDvhzJBAWHKpUBJQ4YIu3ZYV9fE8tQ+rOuIyHPKEDcjo/jOe+QTpCREtBGA6eRnHKghrHJXygMvpwOFnTTYHav29wbyJxfek1G+FqiC/RTI8DVzDWFIG1B5TFnCOzprcdLRTAZS6XPvOJqIOwvQbP/1a4dHPcuSSmJP5LqFlqXB54+SBm+vnCeuqmINQbopvDqRZvXzMHYhdaWRkaX1RFav7mekmx9wLXPEM8J5QKuy0B43xrzGYXmqyUADkZBjdz9Vw8KTs0Y187E8+j3FBE6MTbfM+kTZ/81n9sF7ZGjO0diTpTKbryIJzPLdiaOe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,38 +137,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 The only remaining non-architecture usage of get_cycles() is to provide
 random_get_entropy().
 
-Switch openrisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+Switch parisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
 and providing random_get_entropy() in asm/random.h.
 
 Add 'asm/timex.h' includes to the relevant files, so the global include can
 be removed once all architectures are converted over.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: linux-openrisc@vger.kernel.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
 ---
- arch/openrisc/Kconfig              |    1 +
- arch/openrisc/include/asm/random.h |   12 ++++++++++++
- arch/openrisc/include/asm/timex.h  |    5 -----
- arch/openrisc/lib/delay.c          |    1 +
- 4 files changed, 14 insertions(+), 5 deletions(-)
+ arch/parisc/Kconfig              |    1 +
+ arch/parisc/include/asm/random.h |   12 ++++++++++++
+ arch/parisc/include/asm/timex.h  |    6 ------
+ arch/parisc/kernel/processor.c   |    1 +
+ arch/parisc/kernel/time.c        |    1 +
+ 5 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/arch/openrisc/Kconfig
-+++ b/arch/openrisc/Kconfig
-@@ -10,6 +10,7 @@ config OPENRISC
- 	select ARCH_HAS_DELAY_TIMER
- 	select ARCH_HAS_DMA_SET_UNCACHED
- 	select ARCH_HAS_DMA_CLEAR_UNCACHED
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -16,6 +16,7 @@ config PARISC
+ 	select ARCH_HAS_STRICT_MODULE_RWX
+ 	select ARCH_HAS_UBSAN
+ 	select ARCH_HAS_PTE_SPECIAL
 +	select ARCH_HAS_RANDOM_ENTROPY
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select GENERIC_BUILTIN_DTB
- 	select COMMON_CLK
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_SPLIT_ARG64 if !64BIT
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
 --- /dev/null
-+++ b/arch/openrisc/include/asm/random.h
++++ b/arch/parisc/include/asm/random.h
 @@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef __ASM_OPENRISC_RANDOM_H
-+#define __ASM_OPENRISC_RANDOM_H
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASMPARISC_RANDOM_H
++#define _ASMPARISC_RANDOM_H
 +
 +#include <asm/timex.h>
 +
@@ -178,38 +179,44 @@ Cc: linux-openrisc@vger.kernel.org
 +}
 +
 +#endif
---- a/arch/openrisc/include/asm/timex.h
-+++ b/arch/openrisc/include/asm/timex.h
-@@ -9,13 +9,9 @@
-  * OpenRISC implementation:
-  * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
-  */
--
- #ifndef __ASM_OPENRISC_TIMEX_H
- #define __ASM_OPENRISC_TIMEX_H
+--- a/arch/parisc/include/asm/timex.h
++++ b/arch/parisc/include/asm/timex.h
+@@ -1,9 +1,4 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * linux/include/asm-parisc/timex.h
+- *
+- * PARISC architecture timex specifications
+- */
+ #ifndef _ASMPARISC_TIMEX_H
+ #define _ASMPARISC_TIMEX_H
  
--#define get_cycles get_cycles
--
--#include <asm-generic/timex.h>
- #include <asm/spr.h>
- #include <asm/spr_defs.h>
- 
-@@ -23,6 +19,5 @@ static inline cycles_t get_cycles(void)
+@@ -13,6 +8,5 @@ static inline cycles_t get_cycles(void)
  {
- 	return mfspr(SPR_TTCR);
+ 	return mfctl(16);
  }
 -#define get_cycles get_cycles
  
  #endif
---- a/arch/openrisc/lib/delay.c
-+++ b/arch/openrisc/lib/delay.c
-@@ -18,6 +18,7 @@
- #include <linux/init.h>
- 
- #include <asm/param.h>
+--- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -30,6 +30,7 @@
+ #include <asm/pdcpat.h>
+ #include <asm/irq.h>		/* for struct irq_region */
+ #include <asm/parisc-device.h>
 +#include <asm/timex.h>
- #include <asm/processor.h>
  
- bool delay_read_timer(unsigned long *timer_value)
+ struct system_cpuinfo_parisc boot_cpu_data __ro_after_init;
+ EXPORT_SYMBOL(boot_cpu_data);
+--- a/arch/parisc/kernel/time.c
++++ b/arch/parisc/kernel/time.c
+@@ -17,6 +17,7 @@
+ #include <linux/platform_device.h>
+ #include <asm/processor.h>
+ #include <asm/pdcpat.h>
++#include <asm/timex.h>
+ 
+ static u64 cr16_clock_freq;
+ static unsigned long clocktick;
 
 
