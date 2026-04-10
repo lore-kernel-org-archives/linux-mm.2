@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BF0F459EF
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 17:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275D9F459F7
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 17:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95E636B0005; Fri, 10 Apr 2026 13:00:57 -0400 (EDT)
+	id 225CD6B0089; Fri, 10 Apr 2026 13:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90EF86B0092; Fri, 10 Apr 2026 13:00:57 -0400 (EDT)
+	id 1D70F6B008A; Fri, 10 Apr 2026 13:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D7146B008A; Fri, 10 Apr 2026 13:00:57 -0400 (EDT)
+	id 0ED1B6B0092; Fri, 10 Apr 2026 13:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A4776B0088
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:00:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4BE1BA1D6
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:00:56 +0000 (UTC)
-X-FDA: 84643260912.18.82CE86E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AA64F4001E
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:00:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8SU44fs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 016336B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:44:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 958B61B7070
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:44:25 +0000 (UTC)
+X-FDA: 84643370490.22.DFC6703
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D9D38140003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:44:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oIwDJ6Wl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 39jbZaQsKCB8EJJIRJIF5IBBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--joonwonkang.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=39jbZaQsKCB8EJJIRJIF5IBBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--joonwonkang.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775843064; a=rsa-sha256;
+	cv=none;
+	b=fJy2Uy47Rbi3hSEZoN1tFeu/DfQMArJtW7Ejup7ASZC5i14y05zPRQdzehUTXFEvryttcP
+	f4ztCOh48+ji43STU508nikRT1zOlyH9ECV+UfjtgD2l/U5yBVORdbOnZF9ScjlefX3yB1
+	qjUZZZuBdEPVsfqmoZR7/I2+uEdHm/s=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oIwDJ6Wl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 39jbZaQsKCB8EJJIRJIF5IBBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--joonwonkang.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=39jbZaQsKCB8EJJIRJIF5IBBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--joonwonkang.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775840455;
+	s=arc-20220608; t=1775843064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kuCe1IChcs40hj6ob7wGzY/q7/dhHbWnN7FfloNYs2c=;
-	b=5YckxzEsObeP5Bh3QaZpMeVxlvB8KbhUl+KU274YYl2dp+Ntuzr5OwLYn/Tdcrzy6whzA2
-	8aoPjY157h94CqIEk1i7029EklmK2jGIWzInXNqY2CciPuk0cL61cqzokkwvOYFbpAkmMK
-	IE6nPH+0KDrZ1wtdNf0dDwLPQ1pV+Ow=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775840455; a=rsa-sha256;
-	cv=none;
-	b=ETKq7UGQ2KZ02rtUWkG3eN85OgLQuBHSdIxPKTypnypu5l/huWG/3zB8BHoq9beNMrvk/J
-	KIzBs5cuIUkJpDkQS2kLHrIvB1GoOWWSnffSIDd+9MDzABtH4+n5whVbByPuS2oKs/Tpzb
-	RzhZE7eSctVHFOFq/436cBj0sFGk2zY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8SU44fs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0375A60141;
-	Fri, 10 Apr 2026 17:00:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E31C19421;
-	Fri, 10 Apr 2026 17:00:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775840452;
-	bh=U6eJt+lB9XtV2TYcmB/Cyxool90IKNFvE1dIXTnnx3w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8SU44fsIhMHJ4svmNcyINgZUNbjcsINUv9z9dnk4ZkaKhNRJdGRHBQkn/a3MYRUt
-	 kDGV0EDXQvGJVcgKb9yA485U/NqzvhosPQnOQt9pDieVqApBDBG4BVOemP1fD+rhBA
-	 TxWpZLp7MjkCkxM4KexT45ETpvBxoUnDJG5H0b2eoN5ApKAn+necVCco5xiiDRMpud
-	 N9qlU/RG8JeYOR4C7A/HaQU4Tw1+TG3NYPRMVfLwfLwp8HU51xpbrwnZUotUEL0Yiv
-	 zE32hgbty2QHvtY5jU+BJ868LBwRo+ghkaQmgXcfgwu/sf6TNAv0AP1D4Q+ys6jL/8
-	 RgOzYEQmOC4Jg==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Fri, 10 Apr 2026 10:00:50 -0700
-Message-ID: <20260410170051.51008-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410164610.6764-1-aethernet65535@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AA64F4001E
-X-Stat-Signature: npmxsmfpc4g6gxwimke6kw78iu799yt6
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8k26hBFuVAQf1qhFtUuhQJ98YbLIG0NafY0jtRJ99xg=;
+	b=axuYkRdIQ3yfMpIr6sxoXxjpjzqBxUPs9Bn52hLxDNkDuksmfDpl8MNdGpT3tZi4TghR8B
+	QnmYSwn0v2hMZH509P3WWzJ+lfiVbci7uuneQ+2b8UixKBmHszeBCNF81dqRTJCU8YAFt2
+	5BlnF4SZME7iTR+nE22B77QRgj1ss40=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b24af7ca99so36061415ad.1
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1775843063; x=1776447863; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8k26hBFuVAQf1qhFtUuhQJ98YbLIG0NafY0jtRJ99xg=;
+        b=oIwDJ6WlrMSabURkBEx/xfieQb3RldAoyWryNbYY9MdqPDiSKYJR+YW5cN6DUncD5i
+         d9WYdhw80JBT+WYwb+9aEu93071/MRb1W8Cd13GUrJWqeOkWfwx7wFyXt8zlXyaE+bs3
+         7h7fBLnhfUcx4aL8veARFN/LHYJS73XQS75DXT7DBHctS84B/bYOOsd7gA1AUjg+rkFb
+         fk8fbqfMRcAk5Q3ES2G7FQDfCtXhwdYUT+uCE0LNrlSP61UBhUBpOxPwO8MUoAp3mSWd
+         o9FgA8uYSuDUHiB5n0+I+jBpTVPYMMvL5S74S7oSmy2ZL+qHoryh09OC5sFUAR1KCLBO
+         bA4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775843063; x=1776447863;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8k26hBFuVAQf1qhFtUuhQJ98YbLIG0NafY0jtRJ99xg=;
+        b=nJ45yWWCI5HPuiV5BrmtHqmqOMT5TRhUIGE5sjTze6JTxo+r9lv0JZOoM2IAYnICK4
+         3Uyw0SeDf2HDPbg58jcIXJ53IAZtAIM/T24kWDAgZWwDJsLunbxeib9otXRAVI4Y/nmI
+         fi3AEPcDoUGG+TpnSH6s2mte4h1+icg7wGqcz9TxBuxgkXt/J9XG101mThzQSCnQjOto
+         sYG5dsxAaSgdMcDm9Cc1pKlr+X4fjjEk7dluQ3vTJJJFSfEYXEvEdzkoI1MHbilLzub2
+         VcCEM713pw/WarJIUaKnfg8w/vNO+JTBx5qU/oRzv4/9XO9fnEQ3orW05VQdoC9zzDXT
+         FMgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJfk+9PVjmWnEDZ2vkyhEHWsaw3lSVAwnAiQd8CMKIzVRw5ypnhWZa6+UuqMpeehtQ0VLh+cKXxw==@kvack.org
+X-Gm-Message-State: AOJu0Yw8He0ClMkJAGjWzq4AuApUW62tEP9/ncqdyeHYtFC6DE4H16W+
+	+l9RAB79s88aBlTMFwNyNl3xKUmwjGwK0iy+ibBInUpemVam/9VQo1MeufmUVLxbXWybHDpCJSW
+	2Xpt4Y0LQQWI/9KYoPA3S9eHFdQ==
+X-Received: from pgar16.prod.google.com ([2002:a05:6a02:2e90:b0:c74:1130:c2e5])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:6a2b:b0:39f:c602:2149 with SMTP id adf61e73a8af0-39fe40d8aa4mr4413706637.60.1775843062495;
+ Fri, 10 Apr 2026 10:44:22 -0700 (PDT)
+Date: Fri, 10 Apr 2026 17:44:15 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1213.gd9a14994de-goog
+Message-ID: <20260410174417.1450834-1-joonwonkang@google.com>
+Subject: [PATCH v3 1/3] percpu: Fix wrong chunk hints update
+From: Joonwon Kang <joonwonkang@google.com>
+To: dennis@kernel.org, tj@kernel.org, cl@gentwo.org
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, dodam@google.com, 
+	Joonwon Kang <joonwonkang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 7qah3ctppi4qapugck8k8chnf5zwdmip
+X-Rspamd-Queue-Id: D9D38140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775840453-935964
-X-HE-Meta: U2FsdGVkX1/pC5vVho2aoQF5SvqqWQIXzDmhBgmn0AB2cVFWYTPPPR+Waw9/C9NPvoU9bWGSTj4bjHR64wCs3l+8t6o/N/pLwu6ZCrP52wLjw0vo99TLi8jhcWSSuF8nmuKPXJfkwavO8xMrXCB1raJ24ndybG8AOTJ7m+lifktX0p4RMDllWXPGV42XcS23JzPGobiArosQocy4rtsXSGrAat1PfcD4iFsnP5jQwBH4y3jDmXUcq0vJxf3kaSsYr8mEfW17Vc1f5N+mIqMVkGhPILlXu2JFWT/8OhXOON0BOp2UFXGKjx3LzmsXUhAdUdO2RZ+3ajqH2pvkxIB4QC5mZLWxW8fsYXN8Mwk/XYob44+BfPf80tH8FZJ6z0JdQR/fSc2T3LaGs7eNg1OGBdE3VOW78Wo3hboxLzN9c+BvBaSSzf9BciTe5CU1gnYAqadf0BI6x7B5HPuzEeJltJLZcAdP0qtuTx8zT77+YWsZeoKvGZmxrhHc2fSXiga5X9LmIJ9053NcKwEhoGdw+WGrQl+m2Lr+EGn7ykNL6jIc5a00y2Y1KwEfSu7LdAyewGG9QxC6GOFU9zo/kLEqMjgU6thpd/cKEVTwP115zwGPOfizaMddH3dx436HfK5OgOIiCwAN9V+1Oodp/siT5VnitlS/gsVln4sCK0yIwSIwobP+Q9WokL0E7lLKgcofKuloZMKRMSRGIxDNMu4FmjJUmJ1Af5yxfKDZqe0Ihn9I7hRfyCAnD4bs65a7CUfgsaiJGFMMxcLFkiyqRB+p9pjwjvvaX+wlI/UUCXoTiwvBOQExDCFylzaQKkqqM+TLgJuV8kZmn2mdaPBnYB2Dr6O/pyTAxZ1cqf3eFm35A/Ed6HpAOOTcKN2X3/0xJwsiR+e/pPBlcdIHly7/9tDLwT+UJ3WkP+mT4sN96BnWS3wgaCtrMivY3bzRn7+8sjuaQ1AGMl66HKPU1HqHGKM
- aaxfTeCn
- FT2J0Eq8UrYspgSssQEaKnm64WoLtVvVPqLoBvb+33hSlUUbm3+O5NcTB926mZk0eUsa9xVT0pH8GW2OfuyvbftmgDDNww2QtgVnpdrQWJO82immoyQ6ZhBHQN38zvuV39169/qvHqBmZYRAs7UNDWhWnyVv3gtIJ1HzJvcSqV8B/05yleXgQPe3oQfQXeKO9YLcpDf8Jqeg2InD1NU7cdACmvmpACCRtk1AYjvy7FH7eHuaX4+bqbv5lR3kdfy4owpraTEYGno61ouBHgBW/4jRPbX3Hu4Y13rNqECOmaKv8Xu4=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775843063-568790
+X-HE-Meta: U2FsdGVkX1/XPoCP1grWVOL+V7/GXXSAIj8I/tXBvYY7l5/JTEbSlEysE41zSjMBfEry+XGJ4CAWGfIWl5d0paUto6iva8okvPhcdowZQEMDZsgsKZp6L/h+UplqYsMCH3K/RRUocUVgFLQnE5s6mAE9K/hcDpgOgtpafw10zIQ9873/Z7SlrI6nrczOrkR7xZvrv8tfBdpIxKFvACsSjtF0lwqGO4vJgSqq4ExpfHRsipB4SZP6MBL9UcJksjbXzRaTBV6Rd+txo1+uDms6uC+liqF6WxfTWLb+o6oUQVWxjaY1tAu2wEq1wkm5SfyX9nw60mLiHDtzR9n6qJGFaW2nOvvQ4pwngPRtvgMTjNUHb49zvf2JSJz9XOYT/0i/X5EDixCjgRaWYEjdrsS4BCNTQBMJALHzj8tWu1yaq24evZh4RRpGpS9o/afoqL8wlmz5ZJq2kMFtSw9B4Ig71PlGFxPUxbDxH0+en+yhwSjeFCI0ovW6V/hRPpV52P4LACWAC48KSdcr6LXVx9U/NqBU2tT/8A65FCdRZbJ8/6vbBomL4T8VxyJyVh6SenhRP4CNauLAb66oDN2aQ2X718dV3Cd0T5R1emj4uyqGN5BPYMwdUA5Y0sb6feFQBAeYNHUCd9Gyv/XhydYDh2xEhYclfoNe8KGT319FEgF8xvaDC+/za/ch/XnYsbb6muPBCDsOO+6BkMMqReIqqn24YMbZzWspkpAxDp0NW42kQVKDHn7HbK3FZ2ql+9Hy44EhZoJpROfnCOcTNJ+Iv0yitmRby8aFUuujeAk56/150os5at88rJoCzacmngVjrR2s0W5qCaRoqEovMHGbrbKt+C9SkWhvL7GwY1XOHeW/itcU7sAnubAc3K4L841D3fHeAuZyKlNpTc/28PDjTwG9egGQ2HjfirMcoeZXG9WXaRHFRHbtcaHt42yDSqtZJzyZsFQu09VEzXIOksgdIYN
+ 75GBYYdR
+ XzzLG95Y+YNb+OQMrklbJKmmdyxRv9MMv3AH0yk2pJkeJo23v4eJnbu1ZXk0I9WfSKGnXdss5VDA6MPPAOkAJMNwHg0WRiaDdsW2knAkO/oJJkmopHwRYaibWue6j9e1RePg8aKw2+VPDDHX3BnUQe9owelhI+lQYOGcx9+kk+2c0SVAlH8iNKnFPQ0APQcihaznNRXwh26oNV4UjffntDMrOjMVSY+zPDqfgAo/wFmh/Fgiou5v4mGgLY8N5J4Vj4eSIvw7ufSiWMfzDJmvrXrGfLAOMeQ4VikygpjK4xRsYGsQPD9fUtOT5jXz1om0xDqLtg0z8xoS2yGaXVAsdYMJQYgxc33VDu54JbR71X9ioDwgM6+9eSrqsGb69yGuAPj/JmymH2SwZjGNwWWM8yX9nD9pf5xYx3dNkh/4ZQgMpApdgptcJ34WalsXogUr9mxPcIwm6G3EGIrZjtvKGjhvQKepI4IzhUKLxgEWK4eHcFebMmmtz1vePA6MzpN0mPkgwDskRhHtjgEGu1kdWxXvfcpR1ClSmKVlu9gy6VWeasKzmKDK83XU7lLOrW9Tg1rOnV808hT4QdY8PtoNPUSU2JKT28HpD0hO6HU5UoDQQzKv8dibZrP4uY7Ph9ZYMZmAGTeLZ0H2Ky5jdKmyzeoF5kLHWvCFvtkS4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,58 +105,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 11 Apr 2026 00:46:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Chunk end offset was set to a block end offset, which could prevent
+chunk hints from being updated correctly. It was observed that the chunk
+free size gets minus or shorter than the actual free size due to this.
+This commit fixes it.
 
-> On Fri, 10 Apr 2026 06:55:00 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > On Fri, 10 Apr 2026 17:40:04 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > Sashiko found some issues.
-> > 
-> > Clarifying what is the following action for the sashiko finding would be
-> > helpful.  For example, if you say "Sashiko found some issues, so I will post a
-> > new versiuon soon", and if I'm busy, I can save my time by saying "Ok, then I
-> > will skip or delaying review of this version and wait for your next review".
-> 
-> Okay, I will keep that in mind next time I foward a Sashiko's Review.
-> Thank you for you suggestion.
-> 
-> > [...]
-> > 
-> > Agreed.  This was unclear to me in previous disucssions, though.  I still agree
-> > it is out of the scope of this patch.  But now I think we need to let users
-> > force-restart.  Adding this to my todo list.
-> 
-> Just to make sure - is this the same issue that my recent RFC patch [1]
-> aims to address? I want to make sure we're not duplicating efforts.
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+---
+v3: Initial version.
 
-Hmm, this makes me confused about how we ended up working on this series, then.
+ mm/percpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> I'm still actively working on that patch, and I plan to send the next
-> version next week. I've been holding off because I didn't want to send
-> multiple patches in parallel.
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..3ecd86096641 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1054,7 +1054,7 @@ static void pcpu_block_update_hint_free(struct pcpu_chunk *chunk, int bit_off,
+ 	else
+ 		pcpu_block_update(&chunk->chunk_md,
+ 				  pcpu_block_off_to_off(s_index, start),
+-				  end);
++				  pcpu_block_off_to_off(e_index, end));
+ }
+ 
+ /**
+-- 
+2.53.0.1213.gd9a14994de-goog
 
-Ok, seems I dropped a ball.  I was working like AI bot that only works with
-limited and nearly fresh context for each mail that on my inbox.  I will work
-on making another thing for tracking this kind of parallel works with good
-context.  But since I already dropped the ball for this, I'd like to make sure
-we are on the same page.  So I'd suggest below.
-
-1. Let's hold this patch series.  Andrew, please don't merge this for now until
-   this discussion is completed.
-2. Please summarize your parallel works in progress with the context about how
-   you decided to do that in the way, with summaries of our previous
-   discussions.
-
-Could you please do those, Liew?
-
-> 
-> [1] https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
-
-
-Thanks,
-SJ
-
-[...]
 
