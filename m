@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A3F7F44850
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959D5F44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 939796B00A7; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
+	id 05FDC6B00A8; Fri, 10 Apr 2026 08:19:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EA606B00A8; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
+	id F2B706B00AA; Fri, 10 Apr 2026 08:19:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7645D6B00A9; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
+	id E1A476B00AB; Fri, 10 Apr 2026 08:19:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60C906B00A7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 029341B812B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:17 +0000 (UTC)
-X-FDA: 84642551196.30.F7E8CAD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C99E46B00A8
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8965B13B05E
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:22 +0000 (UTC)
+X-FDA: 84642551364.06.73CFFCE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 43A48A0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pacXAmHL;
-	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id CE6BE20013
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VM13lKS0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823561; a=rsa-sha256;
+	cv=none;
+	b=tPljqrKkL25ufwSHO6frPw8EjFb42+zpnmBzv8gKAk3kpYYBsIxtds1XMmM+w1MIVjP5Zo
+	RKmZEfiufEsJ2ElLIVulaslGtR9XhPzzfHrB+osREe0AFXQyqSNwb8cKBj/LpcoRtfJ5E2
+	CboiQ1PyVrzhLNoeP983zLyVgfj89Fo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VM13lKS0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823556;
+	s=arc-20220608; t=1775823561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=P2IEyAEzLrLcDKf1D+hPXmSP/5CZZgHCZVdt+e9rGY8=;
-	b=53meOVpVMN1dk7nf6PNnFLMSAYgs4l8pbUdiUwRNb8PogYJI/nfzRrvbiZNa/fxEjE/yAN
-	tClAUijCHv+6kdxc3hqzCHmpiCLdkLLlFKHB8oiJBsA3CYV4ROOMFVn89FmWRi1THK4I7o
-	ag9VW2+iyZIyTzkZjLTcqOqmT8NcKZg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pacXAmHL;
-	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823556; a=rsa-sha256;
-	cv=none;
-	b=EPH4veqqMeYzfboXaHGq2ymbJIheW34eaVj3EzLRfGu8WMmPNns4gKclAwLu9IQwMPHo4k
-	FE4UXitwN3m3X1znLZmiJm9C+h86OykBTb3692hx5cyP/J6wdhH04PWx7GHwPSumLPhUZQ
-	S3rTJB83WUPCOUD/uE3/ugbeFHffn5k=
+	bh=M9a5EG3CG8Udn3B7jIZCxrZ3k3coZbiW9xz1Wj8kXaE=;
+	b=h1MpUkBFWFezcBGKNClg5F0nPDHtctjY6aFxylFCH7UDLH6TNnjB1lUxngPWbrbGihZPct
+	5l9fEI+Q9BJt0QVxDEhthciRo0YcwB1zsmm8ipKKb77O/W1DyL8HRxrDbE/q+mci/wbX0Q
+	oLFw3/o307O4B3xBCeNG2Jwp4Xp41C8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65ACF44037;
-	Fri, 10 Apr 2026 12:19:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE3EC2BC87;
-	Fri, 10 Apr 2026 12:19:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E547D4047B;
+	Fri, 10 Apr 2026 12:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38E7C2BC87;
+	Fri, 10 Apr 2026 12:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823555;
-	bh=qtG4jYoFMBUH8Rv5LkkLsBrvbBwuDbTX1269QfkLCzw=;
+	s=k20201202; t=1775823559;
+	bh=p4ul6fecafqSjuz/HWiW1SqReHpNi3SQC1heaf7AtH8=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=pacXAmHLAMseTev4RAQUAZDfRzJFeJXjwMW3x14w8vUm7ybikBbtslQQu96s/8Sq0
-	 a3pcIexn/gzfbwI2qYLuXSTx/gSXbmVwhuUFKfTY31pSFVH71nhoebkIPAnwJfmArK
-	 tPmJiCD8oWRaoY6EByg0L3DGpV75oKKW/C5lmUUCoaSznEsjUHpS9yyQByZ5hUlH3x
-	 P8NYw39byMTR2ebfPveTfvTFbDgwqYFvegEj7/kJQbjlvVeppRrN8YtOduabfxNT6E
-	 Yw4oV6JDjGSLEpWghPJGJFmnCci2PXJh9wjpVWvhGUbODkplfUDbeuEJIVIN1zibiF
-	 mC2OEaJT1jHhg==
-Date: Fri, 10 Apr 2026 14:19:12 +0200
-Message-ID: <20260410120318.187521447@kernel.org>
+	b=VM13lKS0vi1Fampzs2SOJUSl5pFNtZPRrbRXrfYUkEg7syYn7CVko7c7egIdexCfj
+	 MaRLNlopnK85+N7I7i3OZHuHcMdHWNGNdlJV5bSYYI//COctIU1M1ukOOe7R86fGRN
+	 QQ/j+jjVi+CYY1R1j+UlDL84K4FAOhCbq1OrkH36o+f5XviRftg90dsfUTYhZvjNV5
+	 hk3/t6EuYClXGdWJA1CVm0r4gv7+Uuy+bWtd/uVuLx4/iO4+bV/Z+fKbXLcG7tmKkB
+	 b/7xC9trAvx6oz1zNsW6Ny9Eav33gyvB9AokHXFATxUfQATArxGnp5TkYcwejIeG8o
+	 hkZquPfDoH+3g==
+Date: Fri, 10 Apr 2026 14:19:16 +0200
+Message-ID: <20260410120318.253872322@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org,
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ netdev@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>,
+ x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
- Arnd Bergmann <arnd@arndb.de>,
- Michael Grzeschik <m.grzeschik@pengutronix.de>,
- netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org,
  Herbert Xu <herbert@gondor.apana.org.au>,
  linux-crypto@vger.kernel.org,
@@ -115,18 +115,18 @@ Cc: x86@kernel.org,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 09/38] iommu/vt-d: Use sched_clock() instead of get_cycles()
+Subject: [patch 10/38] arcnet: Remove function timing code
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Queue-Id: 43A48A0005
-X-Stat-Signature: hdhynbpdgmw91aphu7zqdzobcza4aomp
+X-Stat-Signature: qdu3wam9763zf8pzweuqbwuonrrjuqfh
+X-Rspamd-Queue-Id: CE6BE20013
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775823556-915951
-X-HE-Meta: U2FsdGVkX19dXPE1hKQQXre0LzDMuJXMpyQQDhNAlj81J61/NtLPBp4fLcmPPjgZssJbf3R5nhabXr9VQtPjdsR13SwMsIS7mCaPCkXCjXq2YOGvv5xi3FhczUsQBN4kzvD64xOARhynTmi3LZW41vg/1qBeC0FXAqVYKYH9xdzFJPpGbe6XkGQTBLa4Ac/Ir3p8rpUOnOuu8K4wmWAqgF5mfi8ShXxBGcOqc1ojCrSS8dDAgWMtbWfJRxMgv/rahrGoFie+RDlV5n0r6lOYN56iiowKUKsCgPtKVqeGhPfa5IzQi854YQxApQldTZZhGr4/+wUP90ngsqg+N2iXT8cmeaOOZIrNlUvHlnOpOSU0jdRpdFB6FGxMBbRRK4LlnADsQzVPF3zAZV0iuA4uCClUSE0dRZ0OqdMPRaCbr+9DJAv3lXxMbEdJ8Pvt1GurqBSGbKVlxJ5KZuJMPgaWn9asxxkZstNfZhMWi7LaYpriJm/M2dbW5+nl0YmiieRWiX71+9JhdVFVWq6EVdx76t9BicenIwi0/vu43jsubB/EzY6UrIlofoBEsL54sDeH8lM7WuaA6t6fI2VCEhv0EyTukv1ptR3pAdBMN4GiTBZU9AKAvD066f9xA59p1K08icTjwE+wk9Gj021lt3eebI+Ilm/f5VOix/QS2rVKX8ZvAkGbUHaNjApPuXXCtXtKKXBjcZwoL+I6dS84qN9B4an+HVXr57pK6v4NchDDgcCW7iwfMcHXTa6XbInWlMC+k5PkdKjXGXhQXk1fjY+I+/AeCODtW/UTUsw6vWDWjmWMQGB0vmPTLDDvPwIBLPzoYF6wlkyuCzHL2VLghveZtGeatHModNSQ++Pa3WgCSwu2w5O1put1GNNfaxccMe+NKIr6TEEn2GdP8RNtL9RQ6mIMDp2r3Y08IM3CfGzG8dBNHJ6lM5WbVoSagTUQlrTfqW9/o/YlQEc+edqiw6O
- 1xprEqkn
- zPMquHzneSa7XiD9YwuPZSj5GtgzZVoOlQY+IwbNPpkwR3t5L51fqqz7dtFBePVwk1aNnzntSoPgsN+LbIcFRnJi8FgtIkvW3JKCRJtud3Yj7wiTo7Iqtz3DMVz9luLG/snaZMbPn8nrosV8HjZx1qI+HhpY/zAeNpYlpuc1bgjvi67e9ynkjMvsP8+unekGz90d41iAEROqQYztOwHxsabGPKO+QEF1WPYAuNp4W1k58up/jhYdhha4jqdVMHiVq/R7DfoZhHY29kafH4TBdeL+A6EhArmPs3oZ8n9wuRyX0MIieq/gVfAwvDj59rmsLCZ8AdxzFnfi/kJFzrA7konAIMglVXezlfY2Fq8LOHfcpjBU9DtQrbbCeuxdRLb1NtSP5
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775823560-925863
+X-HE-Meta: U2FsdGVkX19LW1AtOcw0OnIEbUyKnj8WbOtLg5e4wdF5rUcJbUxhs9t5STsMg9M0O9kz6FSQwNncTjv2sY/D3JEz66W9Un9wCY4i8YIkbdv15ZEbqdZJufAIAkh+8miRXJGWtb5G/6WMQNBy6S1SAlknVxJ2JmdWLRh4KFDuWnzHWH2tQLy00zW+LGQUwpKtWE+ruyNV0OCbQZuY78PWiAGBu/H73x05kFbNbHlg0j/8g0gmHm6tbwllQuUaqDjQ/NsBOYOlUC+KUl/nwoDnlzt2Ab1D07P4gHj/tj7Fgf6cOplztnvxWsuHmpjRvfx0X1//3pwNBN5Yv+vJy8/MJNz8QloADtr3PSWDF02PJEv3vMoCmO3OwGienZPpEIVw6jhx44FlaDZ9kKhu+pHxyUyS2v0u36qUk0Q+7SNqmwpCzgIA5bDwlXTpSp/KLAMVCZJiz2YOZUVV0BS5K1jLIlh1rhCt/2DasBl4meU6E654SLJjWuMfIhijeWgT7Gu3SLXtSBVSYd1K5+8N7r5owxyvrW6mkyAChyDwZdlbpMtzXuBlHRyf9zdmbS+o++a5V4bDskm53TfpEddGCCRjdbxHYszgKV5QUA5apguBFF//YlYhdUlvRwy3PGVGvhq6J8YgzOkeXrjjtoI3XbUdio8RnZ3c3Cuqx2DWNrK7ImvDrWLXLT9KaUwutLuy3z0yr+1swc1ccfJpKNcHYPUNPfMMq0fsqXOKZHViyNaPQqN/IWL9mQibnaIvuSkryYuGQo85y2YuzX9Gu1eJIMsfIaprZ7e4MpGZdntqppnrZflCWyfTv5GeTsi5guhkrUklYNbx4n5vPcuQziBw/Bfz+04UDFsQkfF4fxp4GTPOiOZ45jTYOf8A2sghgkNs1TVoyVcNoTJfuFV0fy+LPGqUGsaR8DDhSru2TdZhNF28W4qNA1jx5Mzt3jWMRS/U6RYQuK8knk35WIXPgr/pz0I
+ ml6FR/Z/
+ 6TADqOlOHeD/iZh35qBOjKv2ITZfEeJoJGrXuerMDSfz4zP57Ht/UNjGnbzqZxH7rdJxpmObZtD/sA3WyWGZmvfng7MX/LRxrfpp6jqgCOxsWAqF6yQjXd/pzzYGYSggV9x2TIYw01GyFzcwKgpFYFJ803lRpzWdwRkqKPXLP1pmzS8pU4UtVDrnHOo8vrxUlibYw9a5ZK5uoUdGOmPSv98ldV35RuDefCaw285Mr75MDGxVCUTeSYjivbIJ8ndI5YbVZbg33Fenfjii9MkUL6Nmy4pNQ3PuBZQnPH1abJV98C3OVGhowrT4AD9hz29Bqbldz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,84 +134,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Calculating the timeout from get_cycles() is a historical leftover without
-any functional requirement.
-
-Use ktime_get() instead.
+ARCNET is a museums piece and the function timing can be done with
+ftrace. Remove the cruft.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: x86@kernel.org
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: iommu@lists.linux.dev
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: netdev@vger.kernel.org
 ---
- arch/x86/include/asm/iommu.h |    3 ---
- drivers/iommu/intel/dmar.c   |    4 ++--
- drivers/iommu/intel/iommu.h  |    8 ++++++--
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/arcnet/arc-rimi.c  |    4 ++--
+ drivers/net/arcnet/arcdevice.h |   20 +-------------------
+ drivers/net/arcnet/com20020.c  |    6 ++----
+ drivers/net/arcnet/com90io.c   |    6 ++----
+ drivers/net/arcnet/com90xx.c   |    4 ++--
+ 5 files changed, 9 insertions(+), 31 deletions(-)
 
---- a/arch/x86/include/asm/iommu.h
-+++ b/arch/x86/include/asm/iommu.h
-@@ -18,9 +18,6 @@ extern bool x86_swiotlb_enable;
- #define x86_swiotlb_enable false
- #endif
+--- a/drivers/net/arcnet/arc-rimi.c
++++ b/drivers/net/arcnet/arc-rimi.c
+@@ -291,7 +291,7 @@ static void arcrimi_copy_to_card(struct
+ 	struct arcnet_local *lp = netdev_priv(dev);
+ 	void __iomem *memaddr = lp->mem_start + 0x800 + bufnum * 512 + offset;
  
--/* 10 seconds */
--#define DMAR_OPERATION_TIMEOUT ((cycles_t) tsc_khz*10*1000)
+-	TIME(dev, "memcpy_toio", count, memcpy_toio(memaddr, buf, count));
++	memcpy_toio(memaddr, buf, count);
+ }
+ 
+ static void arcrimi_copy_from_card(struct net_device *dev, int bufnum,
+@@ -300,7 +300,7 @@ static void arcrimi_copy_from_card(struc
+ 	struct arcnet_local *lp = netdev_priv(dev);
+ 	void __iomem *memaddr = lp->mem_start + 0x800 + bufnum * 512 + offset;
+ 
+-	TIME(dev, "memcpy_fromio", count, memcpy_fromio(buf, memaddr, count));
++	memcpy_fromio(buf, memaddr, count);
+ }
+ 
+ static int node;
+--- a/drivers/net/arcnet/arcdevice.h
++++ b/drivers/net/arcnet/arcdevice.h
+@@ -11,7 +11,6 @@
+ #ifndef _LINUX_ARCDEVICE_H
+ #define _LINUX_ARCDEVICE_H
+ 
+-#include <asm/timex.h>
+ #include <linux/if_arcnet.h>
+ 
+ #ifdef __KERNEL__
+@@ -62,7 +61,7 @@
+ #define D_RX		512	/* show rx packets                        */
+ #define D_SKB		1024	/* show skb's                             */
+ #define D_SKB_SIZE	2048	/* show skb sizes			  */
+-#define D_TIMING	4096	/* show time needed to copy buffers to card */
++#define D_TIMING	4096	/* Not longer supported. Use tracing instead */
+ #define D_DEBUG         8192    /* Very detailed debug line for line */
+ 
+ #ifndef ARCNET_DEBUG_MAX
+@@ -95,23 +94,6 @@ do {									\
+ 		pr_cont(fmt, ##__VA_ARGS__);				\
+ } while (0)
+ 
+-/* see how long a function call takes to run, expressed in CPU cycles */
+-#define TIME(dev, name, bytes, call)					\
+-do {									\
+-	if (BUGLVL(D_TIMING)) {						\
+-		unsigned long _x, _y;					\
+-		_x = get_cycles();					\
+-		call;							\
+-		_y = get_cycles();					\
+-		arc_printk(D_TIMING, dev,				\
+-			   "%s: %d bytes in %lu cycles == %lu Kbytes/100Mcycle\n", \
+-			   name, bytes, _y - _x,			\
+-			   100000000 / 1024 * bytes / (_y - _x + 1));	\
+-	} else {							\
+-		call;							\
+-	}								\
+-} while (0)
 -
- static inline int __init
- arch_rmrr_sanity_check(struct acpi_dmar_reserved_memory *rmrr)
+ /*
+  * Time needed to reset the card - in ms (milliseconds).  This works on my
+  * SMC PC100.  I can't find a reference that tells me just how long I
+--- a/drivers/net/arcnet/com20020.c
++++ b/drivers/net/arcnet/com20020.c
+@@ -70,8 +70,7 @@ static void com20020_copy_from_card(stru
+ 	arcnet_outb(ofs & 0xff, ioaddr, COM20020_REG_W_ADDR_LO);
+ 
+ 	/* copy the data */
+-	TIME(dev, "insb", count,
+-	     arcnet_insb(ioaddr, COM20020_REG_RW_MEMDATA, buf, count));
++	arcnet_insb(ioaddr, COM20020_REG_RW_MEMDATA, buf, count);
+ }
+ 
+ static void com20020_copy_to_card(struct net_device *dev, int bufnum,
+@@ -84,8 +83,7 @@ static void com20020_copy_to_card(struct
+ 	arcnet_outb(ofs & 0xff, ioaddr, COM20020_REG_W_ADDR_LO);
+ 
+ 	/* copy the data */
+-	TIME(dev, "outsb", count,
+-	     arcnet_outsb(ioaddr, COM20020_REG_RW_MEMDATA, buf, count));
++	arcnet_outsb(ioaddr, COM20020_REG_RW_MEMDATA, buf, count);
+ }
+ 
+ /* Reset the card and check some basic stuff during the detection stage. */
+--- a/drivers/net/arcnet/com90io.c
++++ b/drivers/net/arcnet/com90io.c
+@@ -332,15 +332,13 @@ static void com90io_setmask(struct net_d
+ static void com90io_copy_to_card(struct net_device *dev, int bufnum,
+ 				 int offset, void *buf, int count)
  {
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1606,9 +1606,9 @@ void qi_flush_pasid_cache(struct intel_i
-  */
- void dmar_disable_qi(struct intel_iommu *iommu)
+-	TIME(dev, "put_whole_buffer", count,
+-	     put_whole_buffer(dev, bufnum * 512 + offset, count, buf));
++	put_whole_buffer(dev, bufnum * 512 + offset, count, buf);
+ }
+ 
+ static void com90io_copy_from_card(struct net_device *dev, int bufnum,
+ 				   int offset, void *buf, int count)
  {
-+	ktime_t start_time = ktime_get();
- 	unsigned long flags;
- 	u32 sts;
--	cycles_t start_time = get_cycles();
+-	TIME(dev, "get_whole_buffer", count,
+-	     get_whole_buffer(dev, bufnum * 512 + offset, count, buf));
++	get_whole_buffer(dev, bufnum * 512 + offset, count, buf);
+ }
  
- 	if (!ecap_qis(iommu->ecap))
- 		return;
-@@ -1624,7 +1624,7 @@ void dmar_disable_qi(struct intel_iommu
- 	 */
- 	while ((readl(iommu->reg + DMAR_IQT_REG) !=
- 		readl(iommu->reg + DMAR_IQH_REG)) &&
--		(DMAR_OPERATION_TIMEOUT > (get_cycles() - start_time)))
-+	       (DMAR_OPERATION_TIMEOUT > (ktime_get() - start_time)))
- 		cpu_relax();
+ static int io;			/* use the insmod io= irq= shmem= options */
+--- a/drivers/net/arcnet/com90xx.c
++++ b/drivers/net/arcnet/com90xx.c
+@@ -633,7 +633,7 @@ static void com90xx_copy_to_card(struct
+ 	struct arcnet_local *lp = netdev_priv(dev);
+ 	void __iomem *memaddr = lp->mem_start + bufnum * 512 + offset;
  
- 	iommu->gcmd &= ~DMA_GCMD_QIE;
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -23,6 +23,7 @@
- #include <linux/xarray.h>
- #include <linux/perf_event.h>
- #include <linux/pci.h>
-+#include <linux/timekeeping.h>
- #include <linux/generic_pt/iommu.h>
+-	TIME(dev, "memcpy_toio", count, memcpy_toio(memaddr, buf, count));
++	memcpy_toio(memaddr, buf, count);
+ }
  
- #include <asm/iommu.h>
-@@ -360,14 +361,17 @@
- /* PERFINTRSTS_REG */
- #define DMA_PERFINTRSTS_PIS	((u32)1)
+ static void com90xx_copy_from_card(struct net_device *dev, int bufnum,
+@@ -642,7 +642,7 @@ static void com90xx_copy_from_card(struc
+ 	struct arcnet_local *lp = netdev_priv(dev);
+ 	void __iomem *memaddr = lp->mem_start + bufnum * 512 + offset;
  
-+#define DMAR_OPERATION_TIMEOUT  (((ktime_t)10) * NSEC_PER_SEC)
-+
- #define IOMMU_WAIT_OP(iommu, offset, op, cond, sts)			\
- do {									\
--	cycles_t start_time = get_cycles();				\
-+	ktime_t start_time = ktime_get();				\
-+									\
- 	while (1) {							\
- 		sts = op(iommu->reg + offset);				\
- 		if (cond)						\
- 			break;						\
--		if (DMAR_OPERATION_TIMEOUT < (get_cycles() - start_time))\
-+		if (DMAR_OPERATION_TIMEOUT < (ktime_get() - start_time))\
- 			panic("DMAR hardware is malfunctioning\n");	\
- 		cpu_relax();						\
- 	}								\
+-	TIME(dev, "memcpy_fromio", count, memcpy_fromio(buf, memaddr, count));
++	memcpy_fromio(buf, memaddr, count);
+ }
+ 
+ MODULE_DESCRIPTION("ARCnet COM90xx normal chipset driver");
 
 
