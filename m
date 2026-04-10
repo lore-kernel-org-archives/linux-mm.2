@@ -4,88 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C078EF44868
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:57:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E228F44871
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:58:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 360D66B0089; Fri, 10 Apr 2026 09:57:38 -0400 (EDT)
+	id D25CB6B00AE; Fri, 10 Apr 2026 09:58:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3379D6B0093; Fri, 10 Apr 2026 09:57:38 -0400 (EDT)
+	id CFD096B00B0; Fri, 10 Apr 2026 09:58:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2755B6B0095; Fri, 10 Apr 2026 09:57:38 -0400 (EDT)
+	id C12BD6B00B2; Fri, 10 Apr 2026 09:58:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2D46B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:57:38 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD9EB160543
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:57:37 +0000 (UTC)
-X-FDA: 84642798954.09.BA73E01
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6CCFB80008
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:57:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/vxNCfM";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/vxNCfM";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775829456; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B04746B00AE
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:58:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F1E2E329B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:58:36 +0000 (UTC)
+X-FDA: 84642801432.19.CE48EA1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2AAD6180008
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:58:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vWZbIC2N;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KsEebD9c;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IJqwGUfF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O/BHxZuF";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775829514; a=rsa-sha256;
 	cv=none;
-	b=TpJ4W8hkupKS33V9AF0F5k9fgo+Gor/nPmm4sjQ8/52a9yZ3lcfum91cxPPv0MCvg376AL
-	RApeeBS76FCHuKALnWiUdnrKngptNRvzvFOYhSw0VMRBIlDhDbv0cElM8pYnVwMan9pvsV
-	eSahX9ew5R4mQNoP256DQpwX6i+S0OM=
+	b=tKCvOSsnjLwS5SmrjPlWlkUo8rKt1Z5cw27tQLdZIM7wwFN2dTPzSOuY/8VE4D+WG33qy1
+	DLYOvqqv/Szwx59gAiu4wrQ5zwmfZZbcD6+YtnzLKndDXH8pSbg+Aa6W15YO/b13F4xGMw
+	SbEfSK3ncNbRCrWsBn/UrpckNMjSeCY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vWZbIC2N;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KsEebD9c;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IJqwGUfF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="O/BHxZuF";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775829456;
+	s=arc-20220608; t=1775829514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vyVwi5EGlehz7IiGyQOLLSMb/aMdJo9DFm5M/7Z7Y4w=;
-	b=ZPGweIHrSHoz9BY88WCxTnutSVgWCf/0G9z9poUBaomEpCqDPScdgLncOpf5wbYA1QqZJR
-	ptdfv8v0iiMUpRY7N5F1BLHPJHP7xAVfkfXgCs1oWL0J77ZSDT2GnbMxcNQjbsaDYAxAlt
-	pYgDXdnNcouHrJBUzusxFGryIOpDlRc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B90276091C;
-	Fri, 10 Apr 2026 13:57:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A279C19421;
-	Fri, 10 Apr 2026 13:57:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775829455;
-	bh=2UJna0uTGN4hf6YnN3LfOZVqmiao4JvVlXwhKEIQG+A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/vxNCfMeD0nE0Byd8pFfHDHw0yJqz5goeEh+sT5Nbdu5AfWsljC59hFWunu/iz+N
-	 GQQqPu7dWX0WXANdZDShzkB/pckMJwt3MJxemYDv8EMy/QpM1sefMjouMolamdcfGm
-	 AulfFI/JIkYq8jtR6AaQc1h12Vf6sVo2Sjq9J0hxZv5JQwulTzU8giLmfiVIbPcQyx
-	 D+W3N87Z+erFX93ubSBIZp3/9xzZVeIncrlxNOpChNhnI42AfUFCt8MUk3cCur2y2u
-	 eULKxjnS5+xfUPhCkqOK4WbB4LuBb4BbFoQaePjXZx6q1dVqv0FiQTvxbuEGrfgCvU
-	 RyHi6h+mVWYdA==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
-Date: Fri, 10 Apr 2026 06:57:27 -0700
-Message-ID: <20260410135728.82274-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410044259.95877-3-aethernet65535@gmail.com>
-References: 
+	bh=4RVDMTcGQhdEmFHIKJeFRI47IlLZziJTl8kPSrRvHwM=;
+	b=pnJpNEj2fwcijikHdxhEJ9bZe0ipCFlsvREUTXuTBPHgozZPdaBH3djedYscfi9GrYouAA
+	y0otHwk6BuJ9mea8lchipX8OGhvvv3sHIr/SKRJt9sh1o0mPQ+RpnB07PJKiSjiTDb/Xpf
+	NS/rC7OU3aiXSKVAY4Tc18/ZcwOien8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 968725BCD3;
+	Fri, 10 Apr 2026 13:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1775829512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4RVDMTcGQhdEmFHIKJeFRI47IlLZziJTl8kPSrRvHwM=;
+	b=vWZbIC2NF8lkBqvyg0/EKfRmpKCfCO8hWFxuxCG/0dqa35SGiEkRtyN9ux11DxKdWxsB9d
+	6LVXevyYhjYl0xDX8a4MUph28w13wGTbnS4KKqURt7I6kHLw2jf1npOneAHXUvG/h6o5O4
+	pWjaUSPmK2k8Ruq03LEXNFU2Sho5y1I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1775829512;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4RVDMTcGQhdEmFHIKJeFRI47IlLZziJTl8kPSrRvHwM=;
+	b=KsEebD9cw7SKDbtzjRs+Gy0ivdIvMTCEHq7de8c68gdHEukRkKEFz2AiZtpAQFso9XnKU0
+	iSZt9REZLnlOgDAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1775829511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4RVDMTcGQhdEmFHIKJeFRI47IlLZziJTl8kPSrRvHwM=;
+	b=IJqwGUfFZOg6Ih1PGrjkVkCodwQXc9MzVBVf4F2uPkGyiaonkUmB5VJ/i3zHDmUKBtMBx/
+	9we4LYDep/v1o6fOy24k8F8PG74KW/pSg4O6gUn0RNUYw7ll4D42pUmI991YWSb/ctgO59
+	ivVKlB2m5Zbqg2xqTjwOnHDem+kvqFg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1775829511;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4RVDMTcGQhdEmFHIKJeFRI47IlLZziJTl8kPSrRvHwM=;
+	b=O/BHxZuFthF5OZ99+JtGVSFI5mxo4uruRfNy8NVjgRY6DST5ZIPGNPcabwMNbYhsCtIkJc
+	7pUBpxPp0JHXiFDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 889D24A0B2;
+	Fri, 10 Apr 2026 13:58:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PCJUIQcC2WlASgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 10 Apr 2026 13:58:31 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 3C560A0A81; Fri, 10 Apr 2026 15:58:27 +0200 (CEST)
+Date: Fri, 10 Apr 2026 15:58:27 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Boris Burkov <boris@bur.io>, Amir Goldstein <amir73il@gmail.com>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Filesystem inode reclaim
+Message-ID: <ntokc2yg35cn5etqp4bljd7wkbt2tydl2hhpxamh5svoikzv2k@zvbpiymsxozv>
+References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+ <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
+ <20260409164834.GA3472346@zen.localdomain>
+ <adjaHn7RnvaMp7mc@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6CCFB80008
-X-Stat-Signature: 6uxq1u5zaww5788yzgd6rxsjuxtht31y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adjaHn7RnvaMp7mc@infradead.org>
+X-Stat-Signature: cq3oq9iq9eqsr4yyp8wrr3akaisi18od
+X-Rspamd-Queue-Id: 2AAD6180008
 X-Rspam-User: 
-X-HE-Tag: 1775829456-269803
-X-HE-Meta: U2FsdGVkX1845c24MoFKikhzItr5V95aPZ6i+0ltMKfXOEcjGT1lxIIou+TZLqkcI7LltMz1pxEgdjwqY9Hk+o0rAG7sCYsbF8vZXd0VvgC6X85MPGh8e+a/2nX//l7ueDJ0uHmEFMjPPdEn6pJI+hI2auN5F1qW7tZwilO02yv7Cl1gkZNFE3mhJHAWIENzL7k2CwzCjVTadvOf4x55l2jS4+hRo36l7GPx9Qi73C6xqtHKaAvrvsktgrBf8XPTlk39Xoc3NAuPjeGTs7LJZazaxTTWRftZHUS1RSa8wDz6Hbl5GEf7NOZP4OW31JnIvbmujhL3IZXFrmGPx1qTFESk4L0eZe4zsMwey4WNmc0AywxF4yHhVIcO7hZGDrW2FlsLIZtDIG55lAh6XSYIZVzuT3diJi0qmUvZxWw4xbZiLvmB2mZQ1Rbwk0Ys8AIYU96V96DcQdWuj6lQ8u3NwogiIpNRyoqbCDDuEAkMs93t2BaudRMpPWpOBm6ZZ6S/ej6sQZp/lkbmhquV5IJtWdvxQ7ZN7VEsn4LG5QlS5s1yLskmVwCCDJw1vJhXFYK05hmYtuErM56HJ4GCNk0SBSRGFe14fc2dGjc9Mb8IL2c3MQJnjO3mVNpaFU2Hi7YMSwT8qN5kqCGpmp5TME/8b4WYn7qDmRa8FqTS1ZMou7ZlH2hXEvwrTpsEmzlfUaHcP9qM4wMLeaJ1ljLn8OGQCQHRwtlmKq3e3jg+oMiI9llZa7pmzMMyKou9JMyLIhx+EOb14PHzErUykp3eQtRuxbHXqdpmW7N5vI0HjgL1H+4GgXQvKKPm0RvZtmwrVs4I2x/45KUMFsd3eJtbJJRi10fbOPjk67t+Ar/LsG24Q2LDkYLnZbxtM1xpVz+an4Dgdqn+NUfLkMSClfHZRI+PLayNsnkQBjn+dOKOLRsTnTLV3Ko0J1zhhkSc7U6A0VDESwGXZVNprGcF8ryNJdv
- vsTI6IFL
- cBjxH
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775829513-613615
+X-HE-Meta: U2FsdGVkX1+RmyJBr6vqEuBM6KyzyMf3cAAL4NhplXvOJ7YrWVxkDkkP6yGV0lh0gxbAP0FS46YMAe2kaCtzBc8nOJbYYC0dYqWmLI+WtHXZ/Kya3+SCJ9LW2cF5Xhk2I7VUMRX5kykNGsjbGWrktUq3AUq7Kd6Mt/+icolzOrrWXUbR9wcHX9FFmRqe8WhNFT2xASy0DqMrWiqACcx5t7NJsEY6z8N7K89X1PRuWIakwdUOLwDsKwHtLjLc2cFEoOJsPjmfSU0dCKcRz1smwbgnrGOSNg8a+BgG3oU+GmbAZW+KqsA2VJxhy44sqaZWPI9BFO9jK+uTFL01D62FuN9j9tR43+rLDi+t/1N28lEjWjNVuExOK2Uc1KidYJiltmufwxgpKF+Dx1cW7Vk2VM1z/YlEfvPqtxKYuQdDsGOqU/owp8UU7U4kqOjd/JJzRRv39Cpwndg+1rWGtmF9DLAvBqtowH4ts2DLwT9hgIWQVqnEWG+tr5chMBIdfFm5D7uQbRKzCgFK10BSRnLS57hD8+befjz9+eKwVXXWlEWnlCwIciskmyi2hQXjLqR4jGH7clObtXfTIQIKcIl1xh3Ql2fkLnKjE6HFzbsn570GIthRDbFPE0dCZmkKU1APiu+c/8avTLfbqKHcpZsQM8BBEPkdqeY+We7ebVS2uDEve5mwmBDgXZUhaduB8kos6tAM4Hj/qMrOlgZWlgQchsjYcrftdnRFEZPylbJvpMEWxjRCJwe6U4ma/dfzeYYX+xUdJQTdoTI3THpDNI8+VV3VgPzaiHXqCRBEllaKqAMDTqkIkbNbCCZNJb+7cLSfTsX7p84/8BmAr5CS51voWxmxaK4JjQzofJ7SxXXei0PtR/TeKfkCK0WLS+GkAxH9jafIVPaD28bA7VI5YFj3mxYhybUVC0nl55SsjZQEE+Q08nQFrZYa+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +133,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 12:42:59 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Fri 10-04-26 04:08:14, Christoph Hellwig wrote:
+> On Thu, Apr 09, 2026 at 09:48:34AM -0700, Boris Burkov wrote:
+> > > > This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
+> > > > and they can work on freeing memory needed for freeing of hard to reclaim
+> > > > inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
+> > > > they should really be addressed.
+> > 
+> > One question that pops in my mind (which is similar to an issue you and
+> > Qu debugged with the btrfs metadata reclaim floor earlier this year) is:
+> > what if the hard to reclaim inodes are the *only* source of significant 
+> > reclaimable space?
+> 
+> (disk)space or memory?  If this about disk space, make sure your file
+> system ENOSPC handling triggers inode reclaim, XFS already does it.
+> 
+> If it is the only source of memory we just need to do the slow reclaim
+> to gain memory.  You better use mempools or similar to make it safe.
 
-> Problem
-> =======
-> When a user sets an invalid 'addr_unit' (e.g., 3) via
-> DAMON_RECLAIM, 'min_region_sz' becomes a non-power-of-2
-> value. This value eventually reaches damon_commit_ctx(), which does:
-> 
->     dst->maybe_corrupted = true;
->     if (!is_power_of_2(src->min_region_sz))
->         return -EINVAL;
-> 
-> Although -EINVAL is returned, 'maybe_corrupted' is already set. The
-> running kdamond observers this flag and terminates unexpectedly.
-> 
-> "Unexpected termination" here means the kdamond exits without any user
-> request (e.g., not by writing 'N' to 'enabled').
-> 
-> User Impact
-> ===========
-> Once kdamond terminates this way, it cannot be restarted via sysfs
-> because:
-> 
-> 1. DAMON_RECLAIM is built into the kernel, so it cannot be unloaded and
->    reloaded at runtime.
-> 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
->    Writing 'Y' does nothing, as 'enabled' is already Y.
-> 
-> Reproduction
-> ============
-> 1. Enable DAMON_RECLAIM
-> 2. Set addr_unit=3
-> 3. Commit inputs via 'commit_inputs'
-> 4. Observe kdamond termination
-> 
-> Solution
-> ========
-> Add an early validation in damon_reclaim_apply_parameters() to check
-> 'min_region_sz' before any state change occurs. If it is non-power-of-2,
-> return -EINVAL immediately, preventing 'maybe_corrupted' from being set.
-> 
-> Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
-> Cc: <stable@vger.kernel.org> # 6.18.x
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+AFAIU he spoke about memory. Yes, mempools are the standard answer for
+guaranteeing forward progress but in this case good luck with properly
+tracking down all that needs to be "mempoolized" (and how large the pools
+should be!) to guarantee you can run transactions to cleanup inode - for
+each filesystem. I don't say it's impossible but IMO its way too big effort
+for the gain. So I think just throttling hard to reclaim inode creation is
+way more practical solution, although strictly speaking you cannot
+guarantee forward progress in all the insane configurations you can think
+of.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
