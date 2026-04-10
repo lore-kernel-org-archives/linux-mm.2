@@ -4,113 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F12FE9905D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AF5E99065
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B5736B0005; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
+	id 196296B0005; Fri, 10 Apr 2026 05:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33F8B6B0089; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
+	id 120856B0089; Fri, 10 Apr 2026 05:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207216B008A; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
+	id F02CE6B008A; Fri, 10 Apr 2026 05:42:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CB9C6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90FB01B7C35
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:40:05 +0000 (UTC)
-X-FDA: 84642149970.01.EC591E2
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BA42CA0006
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:40:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCXViYt1;
-	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D8C4A6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:42:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F31C13AEA7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:42:06 +0000 (UTC)
+X-FDA: 84642155052.18.99792AC
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 87A46C0010
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:42:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=NO3eBl8z
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775814003;
+	s=arc-20220608; t=1775814124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
-	b=DDzwix3rEq6wjapmHgcLpMw43BEFi9PzWNce+jJzqOpQEqpJm/+Vbzl6ORs84HQ1nfgzAN
-	zxG2+iyUSWhelPmBj1LI59dLZA6zUn9sdEzp1w1e0FsEXEmvOG+wCiVrx3AcubPvfO6wXn
-	DRsF12DNVBLIS0BfDrBx1QmgqqsUTUs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCXViYt1;
-	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775814003; a=rsa-sha256;
+	bh=YChrqsE4WmmiSWUmGyqQcSWkvMfn/HOsna4U+guou7E=;
+	b=L2FkmUoS77DCd4sEts8RFP08zO8h0bBHM5aiINZcleuyy+VrjQlQBK2kNtpyR1rykZcuDW
+	3HNFy39JAQjn6nWTu8619KTg80gJmLvy8XFKCSEaFwsrw36JfGeiND412dWLpnVnqUUCVy
+	E9jGXY/eYlkeqmgaTQp53+loZtyN+3w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775814124; a=rsa-sha256;
 	cv=none;
-	b=5FDawwdCOvKHnUr4jabHeNvK45ulb4yB93A1xS8Rly8Z9pJu3U7tkxO98La90RRWQmQZ1S
-	8FdP8yOh/qoPkiHZZiFPLtd5ZUdO0WaN6OBSG6l0k7inT5XfavicQesJkiv7NwWyT2b5SJ
-	MF4Kp9VXogIJxQFgaspmbLJWknqU5Yw=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824c9da9928so1655821b3a.3
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:40:03 -0700 (PDT)
+	b=XYYj/UdhcE8xBiaNXV41+tpSC62B9LRE2sX7un+e6EcVCKI2hEW5j7AT/+KtY1jnFtlLsx
+	eljCjy66xAqThXnalJ7PXlrwZy887tpzCjE9KaaqFIZy2Gk0g8EeBpBtvmchyShpdCp+ww
+	lFYbo+kjx44FywccqLCx2pIXJmqZQK8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=NO3eBl8z;
+	spf=none (imf22.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.45) smtp.mailfrom=matt@readmodwrite.com;
+	dmarc=none
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so1748858f8f.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:42:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775814002; x=1776418802; darn=kvack.org;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1775814123; x=1776418923; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
-        b=SCXViYt1irEYeDQH3/tTEfFBUHLs04HKa1LX8ddb9n890m06dRFNfBlBMkJMtZ4l9f
-         V31f/v/8hbm+moRPRGpDmhTMmcfRnO8P8evqV0zTGiHJc2N9Oy0bNNrdOwLzZXH8fw5d
-         YYEqYeG4f3u4NyRnw4PjVEaiAWz/l8czPrkkcgGkJ20rg5GxbsVLGcosIeF/7QPbmffp
-         0hBr38Vr4zsrFr9UMKM+a5En+Iz+Cd0XLwrG81wjJbRB4SXqYI8WnOF/T1EAoxsz+SRi
-         VbTSCeUTK9xooJIeGt3qa6NH2A/pCViSBNqiwa+CLMu+Er3hxo1gZY35et6J94pvDqDW
-         anIQ==
+        bh=YChrqsE4WmmiSWUmGyqQcSWkvMfn/HOsna4U+guou7E=;
+        b=NO3eBl8zhKXrAu4lNcACadZUgBvaXoUn1/yTTNCRXq8KDyZP60LddiI8bruGFgy6qn
+         G9Lud5VNHvv8JRxEUPsOakDlsTij6ZT7lQfPq6IxTFV+4AoiH1OjgXt0nsp2OO3rVOFW
+         oqLEeI69jMvdrlNcW3xlNKIF/YCKxpt4U3vfKB0eC4Wr7xQ55+AQ3Y9JEPzTaTcDEtMr
+         hAtyA3o6abfqiv88fhS/lmDMqL8dLS/1kxuKyAbAdvxPaerEVV13IBGrp7QbBzn6KkeC
+         VLIVD9av/cEKF3LFxn1Yx670FMsw1wn6OMavYYU2SjjoOB2TAdbQyMfXORXNJiuHjrbB
+         QQ/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775814002; x=1776418802;
+        d=1e100.net; s=20251104; t=1775814123; x=1776418923;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
-        b=Vfxo9i1YPVkABXQ3Uc6DxrOE1AJOuVtnsgtxtmtyazoe3/F04cEAyLwtZbvDgSVegi
-         qsjZxttbdPLA3NazOalEdxgnoWN977ES7DG01b0YaqKfqtDYL0wNRzAKJgmRb39ucYaS
-         6H6yfTlFoeFrqJiA8x2VzPeYprFUH0HXGqr8xNr6IdK17KfUyu5PkZiLQ4JnAqJCn2oL
-         NIols+pj3W5C2UwOS4XGGhbiRG9R6JMdDDXTGZrw5x6fgHGaAlXYqVpYMDBQfnNwFmfV
-         wt8NDBAFl70mA/nr4f5iU79Qwv1Zgb6sSUdtyZ7KKE7xbWSK+nwWg0ySMQfsD0ZOUDew
-         pDwA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/3ZWSu/tQ9mbrJqK9K0VneoS5kOAS/J/C2uWqOMg0qBDYKlbVVWQSqYTctwCRxoS8m+AAqotRGQ==@kvack.org
-X-Gm-Message-State: AOJu0YyOQYF4IA1jmub/PtCeDaoSAizpSmJooxBp8Ztn5ysR7mSmdBiT
-	lARYEKlw/jwxHQQt7K++QqSkXMrHBCaupUmP/1V5QOpfYIQEp7T8SoQP7FAEJw==
-X-Gm-Gg: AeBDievoCgWZPpk2yEICc9oi5dShnDWcqpYlV9SHlYMqfFfqm0Ccc/9zQOplj2f3H62
-	7+wQpZ8jXcvJ68FDmTU7Rh8KRovMoz4OCxdLy4zyVf1sK6wjcKATPReaPsIg90Gk00ieW91G3lX
-	GgHOjPyHQziL6sKjp3jf2F7geDKk8Xp8if3KJybLgcS7CMP0JGTy5sJmozbBqz+OEnbu9wzx3Dz
-	ORnTODKjCfuwYF0i+pXsqR0tRU4UH+StRagJctb6ectOMbjgMQy0mcOD58VSmcenH1RI0pwVjSB
-	+jhAciOn4eSYAN3sl5LzHzgYlbvcE1HoNDaaoWkv4hLo0NWRHvrwTUw3l30AKnLoXhEUQcVKg1d
-	nnMFWlP2hLFRcTId8bdmFklFyLcHm6j7gS0GaxUWNzzzcFFuUUGtnlGvKpItHhXQPlk+6hcuYdp
-	UU0a5S1TQQQuiP8M7/MaUkJa7lOio=
-X-Received: by 2002:a05:6a00:3a19:b0:81e:f1c3:89df with SMTP id d2e1a72fcca58-82f0c288c6bmr2738256b3a.50.1775814002219;
-        Fri, 10 Apr 2026 02:40:02 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c52cf05sm2278831b3a.61.2026.04.10.02.39.59
+        bh=YChrqsE4WmmiSWUmGyqQcSWkvMfn/HOsna4U+guou7E=;
+        b=Bqdp/JAzZjckQvJVxM+gDG093LCnbJCt0Yb0HNXBXs0husMqViPZcApWp6BxEEwn8T
+         vbzaZ/T/uuEVOJa2wwI2zT56y8HFGVansYtxnKD4vbi7wDtCz/hm1Bb4/yKGgfvU9Jt0
+         ZonJBNTGOLFqexHszrmltTJXtb3m0ZL8csDq2cW1+qThRcC1frS4Kr5W/RUMk511/9c2
+         iySnEXGCp/3kCYp+XCrjIy9R8hVGueMDLuB73pg8qGCtOSJ4SRj5dfZ1OoQuoWhKWSqw
+         EuppQLAnHp+TtUjlacFD94GIhO8PgDqTIJk6dQ7r5DRoG1EXUkDu2YRJ6l9PZnmpLFQk
+         yLow==
+X-Forwarded-Encrypted: i=1; AJvYcCVfw+6LoMcQ3BcgjX8wn6nQHxgmhckMZEUfAGFPrcSJBKaIcxB+7lTY3PU0/k/uFffrMsUrjwYR5g==@kvack.org
+X-Gm-Message-State: AOJu0YxJTscscoOsNH9UCuLy8/yCwDg8PtNHoRpUslRW8BnBJcaIfiQi
+	QUlDGCYAWORoVqtZT4uquzGgTEGDmCCWza1TW5QnT/QeUOauM2Q0Cv3LlOU9Eqq+atA=
+X-Gm-Gg: AeBDievCrFGB9TUNFl3b/YJi5/YvhmUOeu+R/pOJLUbgmnTW82vyAoDXdDbO+B5Sz42
+	pfsy5pKR/DMDfx7CreBZVZahky63EfPYBUHBFbW8ncKO5Wo8bXwKZEkWWfp0uvoseE2Pc1OcW49
+	DjA4KdLN0TBSFjeYuIuAQGNVx0TWMJcePS4sL2Kx5yBI514dcMA178z5r3Jq0WH1auNGHq85YWF
+	STmH0h42tIFuEHxTiAkMvaaDyq1NUd3iJHr9MD3ve8SC69r6+Jz368o3EsSujPNgjMowt6KTB4u
+	HhGHJaHK6+GYi8NK9JUFi9fBYBJLKIWGgjvJJrImq4f9+G42a6U0V2fKKc8jn6lmuk/XkHaPMZr
+	ywQ8gTeP7yYMz+EJhXiI/Xywe3xUc6aDgxx6DqIWZP8fCCNcua8ZouzoIDLmw8GCJnUwYk5zVth
+	aihhXABmUGuCvkGqpFrCUxTyBuSA==
+X-Received: by 2002:a05:600c:8b6d:b0:485:9a50:3384 with SMTP id 5b1f17b1804b1-488d688209dmr28260235e9.25.1775814122698;
+        Fri, 10 Apr 2026 02:42:02 -0700 (PDT)
+Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ebe::178:140])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67ced32sm21701095e9.7.2026.04.10.02.42.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 02:40:01 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
+        Fri, 10 Apr 2026 02:42:01 -0700 (PDT)
+From: Matt Fleming <matt@readmodwrite.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Minchan Kim <minchan@kernel.org>,
+	kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Fri, 10 Apr 2026 17:40:04 +0800
-Message-ID: <20260410094004.193555-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260410044259.95877-2-aethernet65535@gmail.com>
-References: <20260410044259.95877-2-aethernet65535@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: Require LRU reclaim progress before retrying direct reclaim
+Date: Fri, 10 Apr 2026 10:41:56 +0100
+Message-ID: <20260410094157.2895775-1-matt@readmodwrite.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260303115358.1323188-1-matt@readmodwrite.com>
+References: <20260303115358.1323188-1-matt@readmodwrite.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BA42CA0006
-X-Stat-Signature: t4ifg4xrni6znogojkia7g8tq54b5kof
+X-Rspamd-Queue-Id: 87A46C0010
+X-Stat-Signature: sd4wrrhae7gg9eanfq756qn3kqcqsr34
 X-Rspam-User: 
-X-HE-Tag: 1775814003-159570
-X-HE-Meta: U2FsdGVkX1+ElVD3N1A8tkdnVPMdrQMq5j706gqIHAVF6Q026RTeX6c+UYoPINv161en4VtGFVsKxJSQBaRmrrVckg+pDWqUcx1D2j1ZuSl7YDMsCAjHb4anT0ZOMvU40R1DOQpGyf1rAfFSBzq7icUhaMz3+qFD1Ly7h/LCn+aOzJrO2b18pmDtP2miU7SSD8gJYpmYT+z2xzVdzezJK1D6WttgTmp4H74svfsBhTeaWMuzbrA0yCI4zGzliRSzaO0bwEDKwkO4dl5TzbLWSqe6w4OF6cmSKPzU0/juyEqIV32Ayq7Sqk66R8L1TvQR2psW3JtIWIs5Z61k4ec7NAER6tKeuylJZFXnp9bzM93RRQ9VPRDdnaeL0iwOkKCPz38sZXPbQ3BHSFcZT67186TLaf3Cm0BAM/2eWz+RV8jYmUueN6wzL5lkwiIzsu+7m+qQbPY3AAP4s41EOhYxgzq6X9LrN9Xs/+43KTruJ/OWpQkRLke0Cz920zOgGsuPcW5sbs2tHFn50JTH6eUM061YzP3JuKCTKca7YscpHgVtMJaRh66jUQsvBvjwmMvYXSGXXGZ7xN6fRn4hy9mv9ho7e6HthQ+F0E9k2Pw+xV2wQnftaobf6EgA/mbmjmgMQP4Ej/f98d4Hh+HGGVAajO+On46IoL6XRiXHGl4voLQppWbUAe7x2xlzcq44dsL8Wpvt7JIse8b/0PqCPWb+4bIEiHGnFa9nZeDGcjaVAItAQ9JbD8sfOYYRMRsRPvRmdEErh8teFFUB0aFgc5P/0cS+YRhUgDv2ks+nHGJIg1eTiJ1K/caNu8KZsQAZRZf7vGbLLZ3k4SAs7d696ZblwgkTKrbY+3NfGrdZv5Hk+N75aiM2xma87r67RGKbUiw/kbshpH9/3TQn/cVw/IKQ4CDlfHJj8+hmxoZC09u1Q30QKWrzu3LLlpKBpJKPxbCHv2Zh4BKIVG7MShBi0sV
- HIALWX0v
- T+KjsMFNFi0KYyRa4KGQXbtiAgdpYeJZpfJKzAjO+yA4YdI2EfO9pXyEDx9z0hOb5zyOePbj/CZ+UsQSkPK8PLCzt8L5rPHncAqgQrV+SN8iJIKNbYRtoRFZWUJQeWcm2Ylq52V3LWuoum2LJLplnr+vCZ0LKRyEpiWloXL6e8icFYhgmlSf7BQOW8GnkjTODl0pCeSzrrCyFZJkNbSVX/CjIQuGTAThKtY0CGMh1MsOATUAm8du0rQvo6upPzDHXDJf1uCXWD2T0faVG3PL/3coMQhrMhN8IYfgoJCtW+xIVC70r5IUnIFF6Y2JLv6KiEVLW+4ewJsTkJaod0BTcOTB8nvFqWfIL/Rl+im886JtVQQQJWOlXwQ3cTiLfEl4mdspQ1ctyu2cXJO32HkXjGLtEjrtN8QDOFiPkpmZ9QwhkFN2x+H+YakNNC6v7Ah+rpIRsayxl5m0a+psqtW+iwy7EhFkfdlQLFlgL+6b+wkbz3aRbwmjo0tHAt5Dr48QShzfouO4yuXsTdYmZ+cOqlWF3P9wE+nFphwn0JYuv3TXj4in8OGkUyaGGwpAKyXmj26sc
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775814124-652445
+X-HE-Meta: U2FsdGVkX187MDzXqLYg8YAQETzQaI9Sf0eCY99NEgRuqAvrC3zRXIWyc1266C+1I8jzv8xSKtvU2vYAdn0ijRYLNjwzjPIP7ZnDl8yYY6ZrZrpKn+3DDKDVeUUuZ22ErHb0rqTQrapAvaugxA3aFjRTvGnqNUaQWLLXcVGQRbdna34ualP9lEITSMcDLyBjn/yXLplWaN9oIjRSaPYPxO/gmNqP2iG4wj0XynIJdwMUO9i1we4+VaI4T/IAbokNNuT/NtUKef4tCB6e4/A6ieEgkTv2lOFPg22PQa9Hf0d3FD8uFi3sQAbmTEArNLR/zXAsfifq4ZQZ0bJpKAEbU5Ftj/UFuS0EYWeEUxea7Hzu26IdmJWnAE1iITmEEaVq/kKOm/Xl1mVeQjuA7FRmMe2t2qoxVaSc9wY5Eqa9tRQ/9iTIm2Ewt+fbKig8+5HXEoNsnnIajweqTLkVjkx4a8IZ+ybmHu/aEfsQzNVJjHw/EwDRffavhhZapyXQUF67ydkWQ1/n6270LvZuabI6fII/qYrnowUPfb5e18MiYs6YXrF4suVxE/TaTbJjKt0kQubQswMFHAxaSkEtoaJ7npauWSsEhr3TskUQJwVfM5pVpQ/ws/D5xrp6/0GsgBhXfcP0OOEvgrLxnLt7DfS12SvtkG2ouf46xKJW+0toqFootOpGBt9RttO+TfLd6fzXeLy46U6H//uPBqrrOiHwwv93e1gZoM0XeHiFjJrDisyjm4e187xTxqK/AXUqz8WYMKtGb+BMqKYPibDPSbhgPXurP1/tvTmA0AGUN4lFOn3Q9hCiDgMr3nHRonWkdKsP3afcXJkJOj5F5FM6fSBOmOeIx7Yn5dx2Gheh3Pk3uYqqQkBTusSSm8L6MeGkIo48Q7D/9nijdieQC0F4ns24H2AZsNmg1tDcHLFJgB4uexBWNBz2vcspw34bnYBp9hyFehWPPPCR9cZbFdfF3Hp
+ fA3SSuBh
+ fVnkWX2bZXdC4T2BiJmSxXgbLJxo9CeTW5W762XW4DBsUyCjCMxwkB0N71ptLVpRYvI/exCab4zQ1LCWMje7JDvBNlWnWUrg7PTAoLN3kBayyGXDamW8s5fPH9pCW+YDVSBKxv7TpvEJNSZJPYOnano/fIyKt6UlAVYCFq+umDZ3gZG/BA7TL+qRGH9P948rH09Xyc3euX21xbSrL/HNLpoPITleDbDaj5+RF6sD6k6WmD7nvQ/Fsf+UU8n6p35R9DKZnPMGchk3+aRAf+56e4IoTY0lKFele7RDU6PD+/VJ3Noz7BqeauIyCpSjMD6sha2riAu2Gc3gQOifIvy9noLYhnVGW6Y41w2duDw+EfylnNfPGvsNN7TD4t8IMtN9CPldFGM0hIy5AhmzvVLtrFlm2oqbwtJWxLeRKII8oHVW7zdSi9PNFa0eZ3NlsRveW+ZJ/Dbn2pbq4DAg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,101 +141,435 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko found some issues.
+From: Matt Fleming <mfleming@cloudflare.com>
 
-Forwarding full sashiko review in a reply format with my 
-inline comments below, for sharing details of my view and
-doing followup discussions via mails if needed.
+should_reclaim_retry() uses zone_reclaimable_pages() to estimate whether
+retrying reclaim could eventually satisfy an allocation. It's possible
+for reclaim to make minimal or no progress on an LRU type despite having
+ample reclaimable pages, e.g. anonymous pages when the only swap is
+RAM-backed (zram). This can cause the reclaim path to loop indefinitely.
 
-> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-2-aethernet65535@gmail.com
-> # start of sashiko.dev inline review
-> commit bc048f9325d07815d621e80f3c40408c0210af75
-> Author: Liew Rui Yan <aethernet65535@gmail.com>
-> 
-> mm/damon/lru_sort: validate min_region_size to be power of 2
-> 
-> This commit adds early validation for min_region_sz in
-> damon_lru_sort_apply_parameters(). If the user configures an addr_unit that
-> produces a non-power-of-2 min_region_sz, it immediately returns -EINVAL to
-> avoid setting maybe_corrupted and unexpectedly terminating kdamond.
-> 
-> > diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> > index 554559d729760..3fd176ef9d9c1 100644
-> > --- a/mm/damon/lru_sort.c
-> > +++ b/mm/damon/lru_sort.c
-> > @@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
-> >  	param_ctx->addr_unit = addr_unit;
-> >  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-> >  
-> > +	if (!is_power_of_2(param_ctx->min_region_sz)) {
-> > +		err = -EINVAL;
-> > +		goto out;
-> > +	}
-> > +
-> 
-> Is the DAMON sysfs interface also susceptible to this regression?
-> 
-> When a user configures addr_unit via sysfs and writes 'on' to the state file,
-> damon_sysfs_turn_damon_on() builds the context. The min_region_sz is
-> calculated directly from addr_unit without a power-of-two check, and then
-> damon_start() is called, bypassing the damon_commit_ctx() safeguard.
-> 
-> Since the DAMON core uses min_region_sz as an alignment mask in macros like
-> ALIGN() and ALIGN_DOWN(), can this cause memory corruption or infinite loops
-> in functions like damon_fill_regions_holes() if a non-power-of-2 value is
-> provided via sysfs?
+Track LRU reclaim progress (anon vs file) through a new struct
+reclaim_progress passed out of try_to_free_pages(), and only count a
+type's reclaimable pages if at least reclaim_progress_pct% was actually
+reclaimed in the last cycle.
 
-This issue has been discussed before [1]. While it's a valid concern,
-it's outside the scope of this backport patch. SeongJae Park has
-indicated he will work on this.
+The threshold is exposed as /proc/sys/vm/reclaim_progress_pct (default
+1, range 0-100). Setting 0 disables the gate and restores the previous
+behaviour. Environments with only RAM-backed swap (zram) and small
+memory may need a higher value to prevent futile anon LRU churn from
+keeping the allocator spinning.
 
-> 
-> This patch works around damon_commit_ctx() failing due to !is_power_of_2()
-> by performing the check early, but does damon_commit_ctx() still have a
-> regression leading to unexpected termination if other allocations fail?
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+---
+ include/linux/swap.h |  13 +++++-
+ mm/page_alloc.c      | 101 +++++++++++++++++++++++++++++++++++--------
+ mm/vmscan.c          |  72 ++++++++++++++++++++++--------
+ 3 files changed, 146 insertions(+), 40 deletions(-)
 
-Yes, unexpected termination still exists.
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 62fc7499b408..d46477365cd9 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -368,9 +368,18 @@ void folio_mark_lazyfree(struct folio *folio);
+ extern void swap_setup(void);
+ 
+ /* linux/mm/vmscan.c */
++struct reclaim_progress {
++	unsigned long nr_reclaimed;
++	unsigned long nr_anon;
++	unsigned long nr_file;
++};
++
+ extern unsigned long zone_reclaimable_pages(struct zone *zone);
+-extern unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+-					gfp_t gfp_mask, nodemask_t *mask);
++extern unsigned long zone_reclaimable_file_pages(struct zone *zone);
++extern unsigned long zone_reclaimable_anon_pages(struct zone *zone);
++extern void try_to_free_pages(struct zonelist *zonelist, int order,
++			      gfp_t gfp_mask, nodemask_t *mask,
++			      struct reclaim_progress *progress);
+ 
+ #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+ #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..0f2597542ace 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4407,12 +4407,11 @@ static unsigned int check_retry_zonelist(unsigned int seq)
+ }
+ 
+ /* Perform direct synchronous page reclaim */
+-static unsigned long
+-__perform_reclaim(gfp_t gfp_mask, unsigned int order,
+-					const struct alloc_context *ac)
++static void __perform_reclaim(gfp_t gfp_mask, unsigned int order,
++			      const struct alloc_context *ac,
++			      struct reclaim_progress *progress)
+ {
+ 	unsigned int noreclaim_flag;
+-	unsigned long progress;
+ 
+ 	cond_resched();
+ 
+@@ -4421,30 +4420,27 @@ __perform_reclaim(gfp_t gfp_mask, unsigned int order,
+ 	fs_reclaim_acquire(gfp_mask);
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 
+-	progress = try_to_free_pages(ac->zonelist, order, gfp_mask,
+-								ac->nodemask);
++	try_to_free_pages(ac->zonelist, order, gfp_mask, ac->nodemask, progress);
+ 
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 	fs_reclaim_release(gfp_mask);
+ 
+ 	cond_resched();
+-
+-	return progress;
+ }
+ 
+ /* The really slow allocator path where we enter direct reclaim */
+ static inline struct page *
+ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
+ 		unsigned int alloc_flags, const struct alloc_context *ac,
+-		unsigned long *did_some_progress)
++		struct reclaim_progress *progress)
+ {
+ 	struct page *page = NULL;
+ 	unsigned long pflags;
+ 	bool drained = false;
+ 
+ 	psi_memstall_enter(&pflags);
+-	*did_some_progress = __perform_reclaim(gfp_mask, order, ac);
+-	if (unlikely(!(*did_some_progress)))
++	__perform_reclaim(gfp_mask, order, ac, progress);
++	if (unlikely(!progress->nr_reclaimed))
+ 		goto out;
+ 
+ retry:
+@@ -4586,6 +4582,41 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask)
+ 	return !!__gfp_pfmemalloc_flags(gfp_mask);
+ }
+ 
++/*
++ * Minimum percentage of LRU reclaimable pages that must have been
++ * reclaimed in the last cycle for that type to be counted towards the
++ * "can we satisfy this allocation?" watermark check in
++ * should_reclaim_retry().
++ *
++ * This prevents systems with only RAM-backed swap (zram) from
++ * endlessly retrying reclaim for anon pages when minimal progress is
++ * made despite seemingly having lots of reclaimable pages.
++ *
++ * Setting this to 0 disables the per-LRU progress check: all
++ * reclaimable pages are always counted towards watermark.
++ */
++static int reclaim_progress_pct __read_mostly = 1;
++
++/*
++ * Return true if reclaim for this LRU type made at least
++ * reclaim_progress_pct% progress in the last cycle or the LRU progress
++ * check is disabled.
++ */
++static inline bool reclaim_progress_sufficient(unsigned long reclaimed,
++					       unsigned long reclaimable)
++{
++	unsigned long threshold;
++
++	if (!reclaim_progress_pct)
++		return true;
++
++	if (!reclaimable)
++		return false;
++
++	threshold = DIV_ROUND_UP(reclaimable * reclaim_progress_pct, 100);
++	return reclaimed >= threshold;
++}
++
+ /*
+  * Checks whether it makes sense to retry the reclaim to make a forward progress
+  * for the given allocation request.
+@@ -4599,11 +4630,13 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask)
+ static inline bool
+ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 		     struct alloc_context *ac, int alloc_flags,
+-		     bool did_some_progress, int *no_progress_loops)
++		     struct reclaim_progress *progress,
++		     int *no_progress_loops)
+ {
+ 	struct zone *zone;
+ 	struct zoneref *z;
+ 	bool ret = false;
++	bool did_some_progress = progress->nr_reclaimed > 0;
+ 
+ 	/*
+ 	 * Costly allocations might have made a progress but this doesn't mean
+@@ -4629,6 +4662,8 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 				ac->highest_zoneidx, ac->nodemask) {
+ 		unsigned long available;
+ 		unsigned long reclaimable;
++		unsigned long reclaimable_anon;
++		unsigned long reclaimable_file;
+ 		unsigned long min_wmark = min_wmark_pages(zone);
+ 		bool wmark;
+ 
+@@ -4637,7 +4672,24 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 			!__cpuset_zone_allowed(zone, gfp_mask))
+ 				continue;
+ 
+-		available = reclaimable = zone_reclaimable_pages(zone);
++		/*
++		 * Only count reclaimable pages from an LRU type if reclaim
++		 * actually made headway on that type in the last cycle.
++		 * This prevents the allocator from looping endlessly on
++		 * account of a large pool of pages that reclaim cannot make
++		 * progress on, e.g. anonymous pages when the only swap is
++		 * RAM-backed (zram).
++		 */
++		reclaimable = 0;
++		reclaimable_file = zone_reclaimable_file_pages(zone);
++		reclaimable_anon = zone_reclaimable_anon_pages(zone);
++
++		if (reclaim_progress_sufficient(progress->nr_file, reclaimable_file))
++			reclaimable += reclaimable_file;
++		if (reclaim_progress_sufficient(progress->nr_anon, reclaimable_anon))
++			reclaimable += reclaimable_anon;
++
++		available = reclaimable;
+ 		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
+ 
+ 		/*
+@@ -4716,7 +4768,8 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
+-	unsigned long did_some_progress;
++	struct reclaim_progress reclaim_progress = {};
++	unsigned long oom_progress;
+ 	enum compact_priority compact_priority;
+ 	enum compact_result compact_result;
+ 	int compaction_retries;
+@@ -4727,6 +4780,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	bool compact_first = false;
+ 	bool can_retry_reserves = true;
+ 
++
+ 	if (unlikely(nofail)) {
+ 		/*
+ 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+@@ -4844,7 +4898,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	/* Try direct reclaim and then allocating */
+ 	if (!compact_first) {
+ 		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
+-							ac, &did_some_progress);
++						ac, &reclaim_progress);
+ 		if (page)
+ 			goto got_pg;
+ 	}
+@@ -4904,7 +4958,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto restart;
+ 
+ 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+-				 did_some_progress > 0, &no_progress_loops))
++				 &reclaim_progress, &no_progress_loops))
+ 		goto retry;
+ 
+ 	/*
+@@ -4913,7 +4967,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	 * implementation of the compaction depends on the sufficient amount
+ 	 * of free memory (see __compaction_suitable)
+ 	 */
+-	if (did_some_progress > 0 && can_compact &&
++	if (reclaim_progress.nr_reclaimed > 0 && can_compact &&
+ 			should_compact_retry(ac, order, alloc_flags,
+ 				compact_result, &compact_priority,
+ 				&compaction_retries))
+@@ -4934,7 +4988,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto restart;
+ 
+ 	/* Reclaim has failed us, start killing things */
+-	page = __alloc_pages_may_oom(gfp_mask, order, ac, &did_some_progress);
++	page = __alloc_pages_may_oom(gfp_mask, order, ac, &oom_progress);
+ 	if (page)
+ 		goto got_pg;
+ 
+@@ -4945,7 +4999,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto nopage;
+ 
+ 	/* Retry as long as the OOM killer is making progress */
+-	if (did_some_progress) {
++	if (oom_progress) {
+ 		no_progress_loops = 0;
+ 		goto retry;
+ 	}
+@@ -6775,6 +6829,15 @@ static const struct ctl_table page_alloc_sysctl_table[] = {
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_ONE,
+ 	},
++	{
++		.procname	= "reclaim_progress_pct",
++		.data		= &reclaim_progress_pct,
++		.maxlen		= sizeof(reclaim_progress_pct),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE_HUNDRED,
++	},
+ 	{
+ 		.procname	= "percpu_pagelist_high_fraction",
+ 		.data		= &percpu_pagelist_high_fraction,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..9087b4e0a704 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -167,6 +167,10 @@ struct scan_control {
+ 	/* Number of pages freed so far during a call to shrink_zones() */
+ 	unsigned long nr_reclaimed;
+ 
++	/* Anon/file LRU contributions to nr_reclaimed */
++	unsigned long nr_reclaimed_anon;
++	unsigned long nr_reclaimed_file;
++
+ 	struct {
+ 		unsigned int dirty;
+ 		unsigned int unqueued_dirty;
+@@ -385,6 +389,21 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+ 	return can_demote(nid, sc, memcg);
+ }
+ 
++unsigned long zone_reclaimable_file_pages(struct zone *zone)
++{
++	return zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_FILE) +
++		zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_FILE);
++}
++
++unsigned long zone_reclaimable_anon_pages(struct zone *zone)
++{
++	if (!can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
++		return 0;
++
++	return zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
++		zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
++}
++
+ /*
+  * This misses isolated folios which are not accounted for to save counters.
+  * As the data only determines if reclaim or compaction continues, it is
+@@ -392,15 +411,8 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+  */
+ unsigned long zone_reclaimable_pages(struct zone *zone)
+ {
+-	unsigned long nr;
+-
+-	nr = zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_FILE) +
+-		zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_FILE);
+-	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
+-		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
+-			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
+-
+-	return nr;
++	return zone_reclaimable_file_pages(zone) +
++		zone_reclaimable_anon_pages(zone);
+ }
+ 
+ /**
+@@ -4718,6 +4730,10 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
+ 	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+ 	sc->nr_reclaimed += reclaimed;
++	if (type)
++		sc->nr_reclaimed_file += reclaimed;
++	else
++		sc->nr_reclaimed_anon += reclaimed;
+ 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+ 			scanned, reclaimed, &stat, sc->priority,
+ 			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+@@ -5776,6 +5792,8 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	unsigned long nr_to_scan;
+ 	enum lru_list lru;
+ 	unsigned long nr_reclaimed = 0;
++	unsigned long nr_reclaimed_anon = 0;
++	unsigned long nr_reclaimed_file = 0;
+ 	unsigned long nr_to_reclaim = sc->nr_to_reclaim;
+ 	bool proportional_reclaim;
+ 	struct blk_plug plug;
+@@ -5812,11 +5830,18 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ 		for_each_evictable_lru(lru) {
+ 			if (nr[lru]) {
++				unsigned long reclaimed;
++
+ 				nr_to_scan = min(nr[lru], SWAP_CLUSTER_MAX);
+ 				nr[lru] -= nr_to_scan;
+ 
+-				nr_reclaimed += shrink_list(lru, nr_to_scan,
+-							    lruvec, sc);
++				reclaimed = shrink_list(lru, nr_to_scan,
++							lruvec, sc);
++				nr_reclaimed += reclaimed;
++				if (is_file_lru(lru))
++					nr_reclaimed_file += reclaimed;
++				else
++					nr_reclaimed_anon += reclaimed;
+ 			}
+ 		}
+ 
+@@ -5876,6 +5901,8 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	}
+ 	blk_finish_plug(&plug);
+ 	sc->nr_reclaimed += nr_reclaimed;
++	sc->nr_reclaimed_anon += nr_reclaimed_anon;
++	sc->nr_reclaimed_file += nr_reclaimed_file;
+ 
+ 	/*
+ 	 * Even if we did not try to evict anon pages at all, we want to
+@@ -6563,8 +6590,9 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+ 	return false;
+ }
+ 
+-unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+-				gfp_t gfp_mask, nodemask_t *nodemask)
++void try_to_free_pages(struct zonelist *zonelist, int order,
++		       gfp_t gfp_mask, nodemask_t *nodemask,
++		       struct reclaim_progress *progress)
+ {
+ 	unsigned long nr_reclaimed;
+ 	struct scan_control sc = {
+@@ -6588,12 +6616,14 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 	BUILD_BUG_ON(MAX_NR_ZONES > S8_MAX);
+ 
+ 	/*
+-	 * Do not enter reclaim if fatal signal was delivered while throttled.
+-	 * 1 is returned so that the page allocator does not OOM kill at this
+-	 * point.
++	 * Do not enter reclaim if fatal signal was delivered while
++	 * throttled. nr_reclaimed is set to 1 so that the page
++	 * allocator does not OOM kill at this point.
+ 	 */
+-	if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
+-		return 1;
++	if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask)) {
++		nr_reclaimed = 1;
++		goto out;
++	}
+ 
+ 	set_task_reclaim_state(current, &sc.reclaim_state);
+ 	trace_mm_vmscan_direct_reclaim_begin(order, sc.gfp_mask);
+@@ -6603,7 +6633,11 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 	trace_mm_vmscan_direct_reclaim_end(nr_reclaimed);
+ 	set_task_reclaim_state(current, NULL);
+ 
+-	return nr_reclaimed;
++	progress->nr_anon = sc.nr_reclaimed_anon;
++	progress->nr_file = sc.nr_reclaimed_file;
++
++out:
++	progress->nr_reclaimed = nr_reclaimed;
+ }
+ 
+ #ifdef CONFIG_MEMCG
+-- 
+2.43.0
 
-This patch provides a minimal workaround for the specific case of
-non-power-of-2 'min_region_sz', which is suitable for backport.
-
-> 
-> If damon_commit_ctx() fails midway, for example returning -ENOMEM from
-> damon_commit_schemes(), it leaves dst->maybe_corrupted = true and bails
-> out without rolling back the partial updates.
-> 
-> Even the DAMON sysfs interface, which attempts to mitigate this using a
-> test_ctx dry-run, could experience a time-of-check to time-of-use race
-> where the test allocation succeeds but the final commit allocation fails.
-> 
-> Since these modules operate under memory pressure, if an -ENOMEM occurs
-> during parameter updates, will the running reclaim daemon permanently
-> observe maybe_corrupted = true and unexpectedly terminate itself?
-
-You're correct. If damon_commit_ctx() fails midway, it leaves
-'maybe_corrupted=true', causing kdamond to terminate permanently. This
-is a core error handling issue that needs to be fixed, but it's outside
-the scope of this backport patch.
-
-> 
-> >  	if (!damon_lru_sort_mon_attrs.sample_interval) {
-> >  		err = -EINVAL;
-> >  		goto out;
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-2-aethernet65535@gmail.com
-
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260410044259.95877-2-aethernet65535@gmail.com
-#
-# [1] https://github.com/sjp38/hackermail
-
-[1] https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org
-
-Best regards,
-Rui Yan
 
