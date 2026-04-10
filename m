@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 625FFF4484F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BBAF4484F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C95FD6B00BB; Fri, 10 Apr 2026 08:20:07 -0400 (EDT)
+	id 2845A6B00BD; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C46666B00BD; Fri, 10 Apr 2026 08:20:07 -0400 (EDT)
+	id 2342E6B00BF; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7466B00BE; Fri, 10 Apr 2026 08:20:07 -0400 (EDT)
+	id 0D57B6B00C0; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D39D6B00BB
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:07 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60740E3073
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:07 +0000 (UTC)
-X-FDA: 84642553254.05.2E4E7F5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EEFA96B00BD
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:11 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAEDAB9B61
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:11 +0000 (UTC)
+X-FDA: 84642553422.20.855ED5A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CA82F16000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SQFHopbF;
-	spf=pass (imf08.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3B11D140002
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEmycwX5;
+	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823610; a=rsa-sha256;
+	cv=none;
+	b=v0panYk9/Jh8sF8SwHbw8GVFdwpdkJNPTSDkqAQqDsyildqIWHH58GwghZ3MXSHUJQxc7r
+	LsPihf610F4Dsub2CtZSLovoG9wccTYKzCNcJ95FoYAv0UHWEL7AqiEaOPjNpy6EB+ldNq
+	i/jcuxm7OWiF9R8Lu5/ErwD9x5a+/Xk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823605;
+	s=arc-20220608; t=1775823610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=SzqmkoHD6RR/VnMu1Lp5RPrviQ3U1+g7qyWPaG+gRfs=;
-	b=AefxxbaKZ0pEy3CZQ09BIIsX47M5N5TQWCUEELIwQ7kV2Ej9jCwj4OhMWgmyvWDgpDNFr2
-	OsywVVykefcU5mIuahb6pO4z7hNS76kGzIkTg/5CZw8VhJlswteXUVgK3QvjvKhcIpA1zL
-	Q/ak10iD8S/jUolY/YumxkftEFv/CKE=
+	bh=7Lj1aNml9xNTs4vJYi74RnqcLcp2m2BsrRjTAYhHjrw=;
+	b=OWx7sh3eAVpVFB+I75H9YJOQx/N6E9/DG/B33kRfDngCNl4awwLpkvGnlR4lEC23NvwobI
+	d7NU4G4KqjOvxnb50HysNRwpIKz+ynhCfHW9cwSgI9veDn3WyMSoqsMYyhBfQ5BebatfjS
+	EDedRJ57SV7N2OaEs8nyuGpq9Qip6H8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SQFHopbF;
-	spf=pass (imf08.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEmycwX5;
+	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823605; a=rsa-sha256;
-	cv=none;
-	b=KWE0Kd78d3mRZEvUlPiIpWiZBnEJJ1jQ4jM8+a7cD26CTitZSSOztRO0V0Vc2D48T0L/bU
-	sLi2r4Og+gRU9VMtAYfePv4to5OazDcPPqrJ9CENAmwZaVU4yj//z8eoqybtaLkOTNYuQC
-	TpMQ2AzIqztSd1mfLb4JW7WgTe7FQcE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D8F661332;
-	Fri, 10 Apr 2026 12:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1939C19425;
-	Fri, 10 Apr 2026 12:20:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC2056132F;
+	Fri, 10 Apr 2026 12:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CA3C19425;
+	Fri, 10 Apr 2026 12:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823604;
-	bh=OJyrwmrX6lIri0LIdsFu5GdqSG8VG/nHQeslgTl5R4k=;
+	s=k20201202; t=1775823609;
+	bh=UKj6WoZFsTQfNpLsa4hK9AJwWp/c6TyAgfAmmgBM2Aw=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=SQFHopbFA4avzkQltPCDvONKOyWmV73pxkcg27G4tKW1mNfy7PYVk0h6FRJhlowhk
-	 TQQGbFN8xcNa+loyfTw/Ao/LMW9fb2z9STU9hSKk0Q9e4TyhUmpic8YPBLcUkWvS5H
-	 AbfS/R5YsMQyaoKc/WDlm6lhBx4bXYBfs3B4LA3Z/Y/SjzAwbFrEIx6rz/PfITLKPl
-	 d1tT7WhENbDQpyhAelqaE4x97qqSWFBpW6gFyL/Wzy4bWcES9cochVgZgvdNMg3UtL
-	 W9F79+f3Gx3pjpImzUkKb/YiEF7KogJM+PPf5Wjs2H8jaVYTBcG1Ittd3E5H9zOpng
-	 +M493bQX3+83g==
-Date: Fri, 10 Apr 2026 14:20:01 +0200
-Message-ID: <20260410120318.862164111@kernel.org>
+	b=SEmycwX5s0//+gtSPktg47GJS+8sJlwAPsv65Bq7Wv5tg7uQL3Gpghd9FaOczcWIN
+	 ZQaCuA/qh+jNH/riNYpmVLmwYhqyjM2JbqnNtt1yhbGBg3HT7iCiqP6g94wS0wTPIA
+	 99ougHo5Nu9h67SjSnTNqyHC+/lIAAGR6p7tHCAck6aAnXmlbTDue5R1sT+DZ/waOZ
+	 GXIvFpg3p1ueseORBf9eozHpgJ3jpkMWN+atB0UvtcxRk8vKXhCteFgdwrDai6rThh
+	 FHU0CtO/nkzQnAaFOlH62oLpy9zcH9gwc0II0cebCdnPQhGplJ3L9nz1drcdz9bKdB
+	 3Oc5+96qoKgtw==
+Date: Fri, 10 Apr 2026 14:20:06 +0200
+Message-ID: <20260410120318.929806643@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  kasan-dev@googlegroups.com,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
@@ -89,7 +88,8 @@ Cc: Marco Elver <elver@google.com>,
  linux-ext4@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>,
  Uladzislau Rezki <urezki@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>,
  Thomas Sailer <t.sailer@alumni.ethz.ch>,
  linux-hams@vger.kernel.org,
  "Jason A. Donenfeld" <Jason@zx2c4.com>,
@@ -115,18 +115,19 @@ Cc: Marco Elver <elver@google.com>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 19/38] kcsan: Replace get_cycles() usage
+Subject: [patch 20/38] kasan: sw_tags: Replace get_cycles() by
+ random_get_entropy()
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CA82F16000A
-X-Stat-Signature: sa4iejnddcuoq5qnd79dja8a1pbznfrh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775823605-951899
-X-HE-Meta: U2FsdGVkX1/5RTDI21G/wTj0WWfQx4MXrVKwd6A/o/HIYQJff8z2Q2lFyRwrxjaGpfHxE976nfEIXLy2tZTIj2UPjvxOoPgom/NOFA6HwPsyaZgUVgXqKAizYaVqsy56TCb+R4gEo2wEYH68C/UE5zAV4hMMwe4D/1hr1gMHbMe40oMmxQ3TeTJCffDw2my19UV244iQtZVe0MYYXxFZkR7PUglg7aMV1o/7FJqJdH9nXjB6fDIk8IfXVvOAAB7WDL7PgyrRHl2LHQIm8S4BW7aCwdk5EQP0YgTOdkVL6JEE54wBPxVVzJYUTpe5rdBo1sNBn/74OTpEuC99FO/7KlF2jXHvCdSOz2n49QEj5DAwweMik9vlcDQtZ+rbFA+bcLfS/taGkvVBMc/J7wrBvmr6VAmB8w2I7vU/FQvPZpozkAetwTQIG+AniklsEnbANCeIXaN+4Roskgx8dsohbuSQnr8YXINy8cLhfI9o4nDn8lP8wVilI1bO6+y2dQRSUkr/hY9oD/Hov2aHoJVqcXdj+JmclGa8hh+B5HChCX9gWDzr/+BvJPtndQPk03iQIMin2UBo58PxDJBcUHtpDdsXNPigFgadFA/AQKqsB/YUDoVaQ7uYu/Ol9RfVWZ8zWtJB/Mb8eqCElCEGiKaXJ0Qsvkw11idUlXm+82A6lW8kWJ9w5MYBS9OBuYpHVGr1mHVmhvDB/Kz7Jf3sSPk8lYRCbULjXr45Z2qfWviOIwteOn2EguHKJJ4NzBoHllPqYTK9pVGVbTFtVALjplhEgs8mWIIgEalo2uT208RGS/QVezoLDuphumdGFXF8Zoc05eeritOsg0CVobAbVOKoGtqjmO0c3Xt/FZCF0o9rBYCj4XeyXWNamMAuWk15P2IYYLvm+73KY5A1AMuZXqWzK/VjVWU8MGtb8TsHudXhiy83jOJXJQqEdjjHaa+pHXKdWzyHKZfPxUuWmksiR0w
- DRHiUCFT
- 82HsQ39+6zYY3Odgejfm+5GK5pnD1E5HikBh7cHqdIFycQ3W++FmB1PHmqt+cvGB7aqRwHt4M3sxC1SJQLewPstbkYtHvjqp9vVyr3vWsI8ApYgf4u//q6TwLHmdGgDZkYYuAh0LHJ4Nigi6WpMvnbCr4PS3B2Ehe656oT4fZ/V7301se1Z2Lpvf6inH21PSsGpsu8WbXfehB7MpxysGlysgRQydfW53CLqGkVoaP2hJo7VxA8/tgHOvCFqaalId20xy8CxpwHOgJwXwTwg7yQGAyzzG0558iOEgMMtSioi5/QxVg/7PmYzV2YI93MGjimOt8NQeUD9+qFC3UVXSEzqjanOIgsXATAawEDdHb1Jc/rLxUb4xl0WN9GOgA9swFqG6aiiAZXfJu6XNs+i6AaDzSFByMoDH3msEPqZbQ0Eul4n38Jf4h+v6wvF4IT8c0bL4T
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3B11D140002
+X-Stat-Signature: fn1pc3g9igqcuauwpqbt5qc154hnyiwg
+X-HE-Tag: 1775823610-219392
+X-HE-Meta: U2FsdGVkX1/QZbSoXntyswfj5AVXZCb2b2oHgpcQ8xnPtxEOqklR/EClwHauwuIyZGuRg/3XgH+TmvwJuZT/71J9sbYox/Ex1obXGCeojpuHKg7ryWRA9mNIc4XKax6Hjv4GepaiDEeMGsTxXSw6b64qTvy1mrd/21x50NjyVvr8N369pcIRq1lOjHkiVqrfVMINeFXqzfLT+ytkJB6TzfpP2VuXg43MGh+udueH9rnvtg7f+ZFAxTgGz/twZTtJwvZfJG7zxHh9FZ28LtlnAXbStV6AA72x9jJcl3221LlS39VNlYGPsgGfNR+WTx8bmYgr4xvQMr+CxvObjgRHUPBOn8rQbQLaQzeExM7VcLQ1dvUkyagGNBfiWm8RV/ssoasrhd9pd1T6rYpJl1JzwayKmeZVv+rJoGYe/JQgrphfiYKErhnixHKd8nd6U6/WR8p04GDi+8nZx6KjigqVXlYiGaKdPdN9b8EyfllZ3z9FFNp7FbPPU2YmETXOGXpQMlMzYZkpRzRB9gdJeUymt9v4N7jDg72d4qaSEeYfZSG7q6OwieICmzp33mqDfhxbj3evFTiijfMEuQXRsoDprs7t45NDu79RmWdrLGXw3t0O4+rCa/6YQ1nVj3xG+DfdpgZ5FeGN/wST9SbyRU4KszjmBHJxJW4INcWZr4Oy55AW8F0nCM9WZuv8iYtsvR0UQ/nDmhs5Wx+SCaz6D6L4phxjj0OzCp05hPp7LV0gY5BsJph2Q26isy2K7xCeOnatMkW+ATnJLkWIn+MtnWE+CmKAcssV3uczpRgHuzLqTCP+3ad8Sq0IA8yidbliyNqIk8IDnagH7c6AqQHLpOLRjzyeEMJPSY4sGE7io1ETx7fmp5VVIMKrgVTI3qLyyOBqMx+VF2pEA8QIEIfmtBGh4LGgaLh3uOceYc2BrUTPwI6Evg7Qs/a6NTph+Pznge00WdweAExhZWtNDHq5P/p
+ XdEtxwNU
+ 4Ik32x9Ix6Y+VeEcMHbEHYm2p4yo27KSm/SK19Ecd+Hf/FOmJmxb3EzD/PEq+NG+ZZnuoNI5l7QXMGhdLW1zpUOngbZd7g0TrQ5jWTUqjSIiD8liHoY3HLFFbnjurHbPrc0oPwDNRWUZEvwoMQcNU0VuQbQSLmhwBGJjxmJAy3/XQ4xzGDOGBAT6R3sKOAb9UWn/x5WXAAlvVNLpk5xIJMyes9ejO4TXMWRb8vXc/DEf+P+ZRLyboSEucrvim8zg6vUk4fWV6oIZFiig1Bnyehq5r1yQjnYn5ju1LuAG/Zuxn5a+7O0GEwioVMaAyoMCydzvZwy8ffBJ/FFQBNfXvfjih/vOySYvcL6MXbHYVe1gNCuMh2fL6zPH+SQimMbviDlqgr9ig0LDqS3DHNpax7o3q0wl7JvozZ3qthROroyGi980zC7V5gCsEBTVD7RU2FL9M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,70 +135,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KCSAN uses get_cycles() for two purposes:
+Seeding the random state with get_cycles() is functionally equivalent on
+the architectures which provide get_cycles(), but it does not make sense
+semantically.
 
-  1) Seeding the random state with get_cycles() is a historical leftover.
-
-  2) The microbenchmark uses get_cycles(), which provides an unit less
-     counter value and is not guaranteed to be functional on all
-     systems/platforms.
-
-Use random_get_entropy() for seeding the random state and ktime_get() which
-is universaly functional and provides at least a comprehensible unit.
+Use random_get_entropy() instead, which is the proper interface.
 
 This is part of a larger effort to remove get_cycles() usage from
 non-architecture code.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 Cc: kasan-dev@googlegroups.com
 ---
- kernel/kcsan/core.c    |    2 +-
- kernel/kcsan/debugfs.c |    8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ mm/kasan/sw_tags.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -798,7 +798,7 @@ void __init kcsan_init(void)
- 	BUG_ON(!in_task());
+--- a/mm/kasan/sw_tags.c
++++ b/mm/kasan/sw_tags.c
+@@ -41,7 +41,7 @@ void __init kasan_init_sw_tags(void)
+ 	int cpu;
  
  	for_each_possible_cpu(cpu)
--		per_cpu(kcsan_rand_state, cpu) = (u32)get_cycles();
-+		per_cpu(kcsan_rand_state, cpu) = (u32)random_get_entropy();
+-		per_cpu(prng_state, cpu) = (u32)get_cycles();
++		per_cpu(prng_state, cpu) = (u32)random_get_entropy();
  
- 	/*
- 	 * We are in the init task, and no other tasks should be running;
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -58,7 +58,7 @@ static noinline void microbenchmark(unsi
- {
- 	const struct kcsan_ctx ctx_save = current->kcsan_ctx;
- 	const bool was_enabled = READ_ONCE(kcsan_enabled);
--	u64 cycles;
-+	ktime_t nsecs;
- 
- 	/* We may have been called from an atomic region; reset context. */
- 	memset(&current->kcsan_ctx, 0, sizeof(current->kcsan_ctx));
-@@ -70,16 +70,16 @@ static noinline void microbenchmark(unsi
- 
- 	pr_info("%s begin | iters: %lu\n", __func__, iters);
- 
--	cycles = get_cycles();
-+	nsecs = ktime_get();
- 	while (iters--) {
- 		unsigned long addr = iters & ((PAGE_SIZE << 8) - 1);
- 		int type = !(iters & 0x7f) ? KCSAN_ACCESS_ATOMIC :
- 				(!(iters & 0xf) ? KCSAN_ACCESS_WRITE : 0);
- 		__kcsan_check_access((void *)addr, sizeof(long), type);
- 	}
--	cycles = get_cycles() - cycles;
-+	nsecs = ktime_get() - nsecs;
- 
--	pr_info("%s end   | cycles: %llu\n", __func__, cycles);
-+	pr_info("%s end   | nsecs: %llu\n", __func__, nsecs);
- 
- 	WRITE_ONCE(kcsan_enabled, was_enabled);
- 	/* restore context */
+ 	kasan_init_tags();
+ 	kasan_enable();
 
 
