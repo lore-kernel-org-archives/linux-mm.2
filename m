@@ -4,140 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A40BF459EF
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:39:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C930BF459EF
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1AC36B00A7; Fri, 10 Apr 2026 11:38:59 -0400 (EDT)
+	id 42E526B0088; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCB7A6B00A8; Fri, 10 Apr 2026 11:38:59 -0400 (EDT)
+	id 405036B00A7; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABAA66B00AA; Fri, 10 Apr 2026 11:38:59 -0400 (EDT)
+	id 2F4966B00A8; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 99D086B00A7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:38:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 488E7E3223
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:38:59 +0000 (UTC)
-X-FDA: 84643054398.02.74FDE55
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4C847140002
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:38:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm2 header.b=sNmsjWZT;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=cLiUg49G;
-	dmarc=pass (policy=none) header.from=anarazel.de;
-	spf=pass (imf26.hostedemail.com: domain of andres@anarazel.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=andres@anarazel.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7F26B0088
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5737160313
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:40:14 +0000 (UTC)
+X-FDA: 84643057548.12.1FD2089
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C31AD4000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:40:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=jOBU7gYY;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775835537;
+	s=arc-20220608; t=1775835612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gJxIaY44SKRSuRDHa4BqhYT4Cng9qUO02oLL9GGx6MM=;
-	b=GCWAggihSNL0JwrVRRHKJJC2CSGY+9WrQqkjvR2C5lFbn3eCnE0tve3rpUd6FonVQqFBUf
-	Te3DPdFnx7Jy74zhy8EycB8Uqj1Y+e0robOP8T2cTSeVMShgsuqMjHs8tIOdBl6Md3EfBI
-	KIVpFap4zJixrSB+K0QEmNxtWBFs3sY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775835537; a=rsa-sha256;
+	bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
+	b=WQsfbDlVw7iqnxi3Eps5iaDhSwlYG46aZldaxF71XS7pcCuuBBCk+hNEQIXR9UYaZJzEK9
+	03pXaqWFZl/v7rTnamHco9i1LCuUouKBHhHQHA0BXaf19vKCQtiE4SESpz068++/Vh8AY+
+	w+6D0YsNctScTpyjumF8yFINCcbp9ss=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775835612; a=rsa-sha256;
 	cv=none;
-	b=Xcbj2laCvPisBu7NVcba079emOS8ny4F+pteLhHktG/P4HUzGaIXdppptwhao+PfZeZwj9
-	vtOIDaqPI5CdC01Pjsd09+KCPVQoZz//Wxd4BB+wYshffvYs7A/aLWA+9DfuvnXndkOFRY
-	tvuLjeYwVl6yz4hj/3dcZObbmedOvgA=
+	b=c31XwTB2tZG6R3ivQZGxWLsGb1WmiG+XvKYsSzplm6RJGLJw9w/G1fPFViSIpnSXQtMUNa
+	YG1jX9J0VxOKJvWGwGyRsTvJTQ3tWemx4tSjWv0U4neFBmFwlF9m+aayS4zAoWBgX5SbyW
+	wq5MTdSxO9zHbZmg1EOietPOliCK/Qg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=anarazel.de header.s=fm2 header.b=sNmsjWZT;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=cLiUg49G;
-	dmarc=pass (policy=none) header.from=anarazel.de;
-	spf=pass (imf26.hostedemail.com: domain of andres@anarazel.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=andres@anarazel.de
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B3375140014F;
-	Fri, 10 Apr 2026 11:38:56 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 10 Apr 2026 11:38:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1775835536; x=1775921936; bh=gJxIaY44SK
-	RSuRDHa4BqhYT4Cng9qUO02oLL9GGx6MM=; b=sNmsjWZTZoe2EFh8KAfLkDGFKl
-	J3Zgj/EjlNAPNcUFRM6fiDWu66sjB02Yh/m9KvNRXbdPO4glD6TcIFYZKMmcZYlg
-	Vnx6I72diINd/P0dD43qG9bdMeCWFuHewUMRIPJ+W5xhdhUhMsBxMnxpuDfv8ewV
-	ZNL114gd75F9ocLzzN1Klc70QRbSbBIFxSni+TMeGdbxBqSt1/58qbRi0guySLTE
-	MOQ0nSkHxNt+wlzHNP6b0SRTTyfPzhRXB6/lU2Lw3p4fEbUiHDGXeOr+iyW52iIY
-	gfZoGWtsazMxN+7g0I37WrUXowRxvPK5c8VmpR3vXzghNlDLz+QNy3rnG4Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1775835536; x=1775921936; bh=gJxIaY44SKRSuRDHa4BqhYT4Cng9qUO02oL
-	L9GGx6MM=; b=cLiUg49GSO/MiajHcJ6h7uvmPgtRgnqe8Q1vKAwq8Ghhep+l7yX
-	hV3IxLeNgPynXodaxmsfSAZBs/Kpx2UYTm89MiJYliNi4iYMyYILy1iJ/MWe+xtJ
-	fuYJd5onYPJA7e0raKR8o5jCQ4AJEz0/KvB6hTrIhd+5RbrewnBoybX3nbu4eqA8
-	2cNglkcVju3DKobEFHANJh//pRwEUVSV9uQMJKzkYX+fBlwGN89p3FSKq5ISLBqZ
-	wjRRywuGx0i/4N/YTbgLSKAijblMLyhd8UBNH4kYKstXjVfMuSQaO6ugETKTeIWf
-	9UEMwl88L4z0vgpWsuFuNqE/VQV5Z/Q8QhA==
-X-ME-Sender: <xms:jxnZaaSEiYbAExxRxGw3hrePqknEN4E1bmOhprB_kiYncLzeb2RZxw>
-    <xme:jxnZaao5ToE9OeBpO456Urq9KM4bEOQKP3C3JZQMf5rgkgBizZGJt3523kf7BDbSq
-    ph7BKzYTCpCs8TpvxiwIJHQGhqtrpmvSImW30MviNybQ78hppcMxg>
-X-ME-Received: <xmr:jxnZaYwp3VjdsIaWCLVHJYkojrC6a9aAYeZ1CyN0aAAmNFqMS_vrRjYzPpbwwlblfBAIaA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleejlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpeetnhgurhgvshcu
-    hfhrvghunhguuceorghnughrvghssegrnhgrrhgriigvlhdruggvqeenucggtffrrghtth
-    gvrhhnpeeffffgledvffegtdevlefgtdeggffhvdekgfegteeiveejkeetudelveejhfeu
-    geenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnh
-    gurhgvshesrghnrghrrgiivghlrdguvgdpnhgspghrtghpthhtohepvdekpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopeguvghvrdhjrghinhesrghrmhdrtghomhdprhgtph
-    htthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopegtlhhm
-    sehfsgdrtghomhdprhgtphhtthhopehsohhnghhlihhusghrrghvihhnghesfhgsrdgtoh
-    hmpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeif
-    ihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepsggrohhhuhgrsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:jxnZadDWZDmIVxJvKsBItRlQwa1bAspYS_DJ1quHl1LOpWy6KegADw>
-    <xmx:jxnZaeKVowQ4YWpymoOU-KNJLQJgIZc3wHBupXIaWZfWnesBw1NMrQ>
-    <xmx:jxnZaYGLwXTamTO1ad_rvxoJoHNZWkun1S95zoRQEIwNvO4tP8l2sQ>
-    <xmx:jxnZaZE_MMKcu-jSsK7qK07AX_CerSeGhOAKpTk37iG5kJZvQNa2cg>
-    <xmx:kBnZaUhNPTInsFB_ZJfxEYnJSm1s98hOfA68RiFjoBL8FHAiz_tHIZtn>
-Feedback-ID: id4a34324:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Apr 2026 11:38:55 -0400 (EDT)
-Date: Fri, 10 Apr 2026 11:38:54 -0400
-From: Andres Freund <andres@anarazel.de>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-Message-ID: <iqz3kxnhilg4jyud47mafl46ftytdmyvfc7kentoo234afa3i6@zemg7yixpqeu>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-6-ziy@nvidia.com>
- <s2dr4cedsmqby6e3ijauv5p55vrde7c4ldyk5gxdw5iku66rbc@x3nipjpgqjh2>
- <F4DE9305-8D16-4DD5-B988-FBF5C8BB7B57@nvidia.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=jOBU7gYY;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899d6b7b073so20692466d6.2
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1775835612; x=1776440412; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
+        b=jOBU7gYY24oaOSX7HegdM7ShPHWtO1mqnGeCbfRqQuleisoKtvIwJfyKj//edtRk0u
+         YaxWMpGBLPrkApjbutcXDMLj77CCHqLoG22a+wWLcDFZcBaVQ00ga16BWz0JfDqesCyz
+         1EY4oGEcdq5Lmu7byFUlqasMwwjXX4pT3ROfefpsb9wPons6WdyB7ch3fm1JUW26xY6w
+         3bNWlC6rGUvpkcILPB5qEvSV8hQs8HVmlw5OvHstAfppAeAqIu3F45RC8U4ZXb0GGqIj
+         Dy0dl0mlojhuHATp2eosPP3lYWl3KQ37X4U2oSNtePX7UYlm/0ds023jHLDZKTTgMlUs
+         X5ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775835612; x=1776440412;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
+        b=eHQ06cV+2rmWjyGtlbW7wUKvtfvnHVYAOoWMCIPuKnWbtLZYQVAmvfg+uWlS8L+UNr
+         l9ScDGcCYbDXF0umW8dqjNoKfrOFRqRdIlAFO31oFXnqs6sMN11FLnjt9b3AVqYRVC8T
+         MXbrZv4Y+y7jfnmB7jwJRYm+uPKnZiif5Nc7AXiKGL1n4IW3HBRn9xv7mt6STzDyYH3G
+         hKOw01Xa8mpaESCBA7hS83QoDBeMJz1qYX2ml2MJ3lDZbP9eXBYV9QaV9YpMFqX/6Edz
+         kIaLYwFlQeWzTkL+IW/PpHSpaVt8YkTBZr/UuKinmRBLY7pCcWiSXLh/7VArjVZy6a8M
+         NHNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVx65kPYH9TltYR3OeW1eWiZKK2JcTyTPBSsIMFMtqY9H4FUGGkCiJJwqZHVD8adGeC+B/fVxCAdQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx5VWEWBJKk6p6QfM/4bSpniQJy6/+FTUhv48chiCaAy5Ab2cpm
+	Yqk1usKYdu7s4pC6X8+d16pYoPSWaGD0hlKJK/tA+fV9QZJv8Qkk73jlcQavnFu3apO4W70g4Kd
+	Iu4oa
+X-Gm-Gg: AeBDiesuRjA65KidCkMvIg+N1O5ONaoA3dAhbdcWTIP+lMt1uMwAqxyvNu03aOD8/WO
+	Gr1T+N9p8ZZ0ilWmGLavXLT8rYp96H/0CK4M+CyU/gyVFpqPwXsJdv3EAWhib5jamABrweMD4ly
+	Di+SQXReIC7OBgsyBhkTbYB0VrH3NJUSkvplAOd8q4lBg+7fwV6g92jkDGVWXSroTb2VqQj4zHa
+	iBzqxOFt9cr4zU3a9mNBQl2+4bW89/VV+iDTpm1GqCE8de47DQ08Q1juSc2xUxV6RT+2+eBJZxD
+	c3EUxjF6vDc2684wQxbehKo/N0DX6nXEmyM+bonRq0q4QG6rRQHU6DXwL2RUYYI7Ht6XCZhVQwC
+	JcpcKvqjCMN8Szm1/QNda90LYSTyQuVdfMActC2da4MC/wKs7xrFl03qH6kMpG/7iRkjqpbOJ1C
+	k9BOlEJRin0RcEhzyQviIPQy1shKO4cmhRg4Z0blmX1TBcYQmFaCbWPBuIvHikQpcZ88+njw==
+X-Received: by 2002:a0c:f118:0:b0:89c:5c57:98c with SMTP id 6a1803df08f44-8ac861b003cmr41115156d6.18.1775835611674;
+        Fri, 10 Apr 2026 08:40:11 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a104ddsm24587146d6.14.2026.04.10.08.40.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 08:40:11 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wBDxq-0000000EhY3-2N2g;
+	Fri, 10 Apr 2026 12:40:10 -0300
+Date: Fri, 10 Apr 2026 12:40:10 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Dave Airlie <airlied@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] mm/mmu_notifier: Allow two-pass struct
+ mmu_interval_notifiers
+Message-ID: <20260410154010.GZ2551565@ziepe.ca>
+References: <20260305093909.43623-1-thomas.hellstrom@linux.intel.com>
+ <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <F4DE9305-8D16-4DD5-B988-FBF5C8BB7B57@nvidia.com>
-X-Rspamd-Queue-Id: 4C847140002
-X-Stat-Signature: af8gyohtdwk157z8ejp7bt1c61p4mjee
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
+X-Rspamd-Queue-Id: C31AD4000A
+X-Stat-Signature: o8ganigcz5h1g4n4zwi1dt3pgfgiei9n
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775835537-443233
-X-HE-Meta: U2FsdGVkX19a72PGlIzF5W2umX0DotVg97mkTJ9H/Pf9Rm2E1n/Lr6/nc8oDNvLq0jbi161NHZm8+bGCkmoNSFQuEttBU/vW94ujbsCa1TxEOJSQAS1xgLAw3tPC76uUBeV2NliSJlYEwWGlhIqwL/iqjNMPYwfzAYqkySa813m/LlEUPbHy4vb/7q3SOLdZwNPdXvm77Ujr1MipC9G9V7TA/o/HNjPc+yk5EnOQLCfByRNYT/CwomwBFOnRxabhJjoo1P2JGh6HDUenjqGOI5d4oEbYxfzpgSoOrv0ZguH8c26NGQsL6HYhUuYrbqCrGbOeQV2ENewTOm0OotS20LdPUn5sn9OkVeFAkL23gqs/ZZw3q5AR1LwboX/pc2SPYXWih/067Wic2jT8IQR6zVXZaIxywjytC4gtZWEyzEMopmivnF2ktR6kQVYMn1CE7gKfublOFBDbirKRWb7hDS2fNIh0I0kRVu32gV4/yrVXJA3/Gc2VpRfyHYGenhoH+GShaPPWmB8J7gQCP+NEHyJ7s6dGYX0KXTzbGDgMVvY4kQw5ppnmsYl+uIPJREbWiRxCh/b0Q1g677NDduGcDUedzsuAE60b/sVuvXSP3bGbfIRDYHLxLzaGjyH2sJIcxvkK/LvEWvE3mdcl60t34INFnvpy2iOf56fbrkrEXSrLkfQxWgPLCaoUQ57u6cmy7uPNtA5s1RpwqS/8EhF32DDrkDr5bNCbUrJNrBpCkZMao8MN9YEW4pOMXW1cwq8Cr0nw4bHQ38AIxmBqkRlVILcflpvzPMzEq1lQVhLUXtxMS/waGGicm5Rk7myIlJvzV6GbxJ/EqYiKqSjeFmo1woy3qDxTqbKTFaHB8DrMW951cRY7kqUa5i63b35Kjzbhs3jp8OYYGI8lZnh+/r7p5MmndboJQcrZyPZoHflX+EyrWz66rhkix8OXV6+dHi84k+NenDjUrJbxzr5CM2G
- 1PsIUHCt
- NZYCHTlzEsckTR3WBBBkajTI+LwLYE/+KoXf8kiOcbCWwJXTnD8um2A4LxR4SkRPi9EAZ+TgB9oQWuTXI0KGAwhC6t13cbRr/lDFzct4EAxhUz5bzsXjOeI7tTZ3F7ePtKygghfSeAvt6Q76MgM92ljXXhy2RS198p1uz2gjGDji8ShdrnF5r6l2JgBq22CAQ7RrRCehAplSwnngLCG/KUPG+/eHSlHhFLLTicYhoLaZ0u/9sQRQshzqlNJwjitnXEORWE898g+8f4pjj+TfHSbstXtZSsG+HzfU7ApnJsdE+BBurQaECPG7QE8G9f6OWYz1OBtm7/iUHDYNY8GTJ0nMriWm5r9k5xhiIOK219K9T7PSxSnD5Nbc1arBQrQlDGr+sfVgTfnuZtxm9o0/B9rWaug==
+X-HE-Tag: 1775835612-835516
+X-HE-Meta: U2FsdGVkX185+eIbabsbrrF7ebDXx/tlPLqEg8hh2cVJGnrbrsa9qyb7IYg/eRo4VUU2g0JZtAvgXtA9xf8RYyIOKn2DWwaKXtsgnnjNKVSyOsDIExSbaREl4R3IW5n90rEZgfj++52rCcEE8TduWMt1yRUEOLdJCGxt7rcJivSDERpvP1GD5+dQVngGQFTwL1aQMgei8ajw9PZxH8gXRZdfVH5QVMXa9msa5zQBtdHwjm/xP5fjV6R/dCjmUZWG0JxiL+LGQKlWMMO6m4PW56irZnr1NOZbrNmrB0nRxNwLXcwbbu/N7C9+B1H+ytQcLyH99b5akEhPwZtk7JCrdqUwOUIwazD1f8xfKC+tqXOezuwYDYB3rPcjUOLDeSQso+LADFxIdOtu8K33tjFL//YkRCJj4hhpgsvnVBIaiZscVvh5p5trvNU+QOOx1uafIo1Pfl25bRpV/H9fiK6+UfrF9pE0A62oosn6Q3fsgMq8bpUTjlTA8JDUVQbm07Q3F6Lt7Vx4XNpCiNB4hi5eW1Dz10E07nw5hoFbtTgZaOCi083tRAyxyIiM1uwzTjDlc9P24iQCT1IR4Etxly9PsCVfkG/b02SmcI1rRQ3o6blP335HKACcJTDvqANI9+AbtPpFOCwsRdDOmsg0rc8vHoo7s1KQqumdI4kNDOld8h+VjX5qujyX3yog2/ISTbVtuULT4ynOHJrM9HR+NN3SezJ/w2ScpwuvOcdapqBIxPce+bH/w7+/4+Jrvb+EY6qhUSJKFvKu+JzN2lSriYtsiIilm7TnBC6G9DIfU9w5kY2fT8qqV3QUFcHC4SU9ZXV+6s2svgfbnSRcajZGjBb7iEbmx5ugMAvPD+c3bUNQzLvDxr64WYouwtn8ay87jNWWMKG9U0COeeFe/uugYhrEx4tN+BFAKIrDqXOTpsPZmnOrKOUelrxn5LEsAiWa/m6WPOFhzypgarOeFg3onAB
+ SAlLIZkU
+ tVXzKAEfO68/qaoS2KiRGCZ1OPFHV1PWAa8ESv8ZdVmI20o59L6U7vjAivJ78l2RfrJcGY/psrJTpiQpj1oo+DCUH5zMyYMOK/THroX2ItrrpN+/1o9Cc0lJanW/LXj6TfumpboKppXDxEMrdTqzMPu6qVoSIsJ+E2e/wey1SfAE/HTS2Mnp8wtYNqt/Q8bKRI8mvfp/sgIkREkPaZXsdV+Hc2ZP2WJjZxZ8reQFC/7mEDdkpelMERS2SWL9QJXYSxCYuqbg3IpMfMfUd0I0bFxhRUHx6WtmgzSlGBk092UflPJ+DtuWXH84gjKS3CaMBaVTxeqErB9BaoOCLAYeIsBohpC8ah81MegcVELzjWZ7TTojV3qbHS4M6uAJBl9XuQ96+YSMJHrmq8uyptffqzeD0lh8t0LLEPB7L1K+XieXgU84XVbKUJiRfhFEXBO+voC2yMzGBXl1DN9b1HccLTQRW/4NvM/UxwJpK9YFSq199CWi1W1/VeKVRAsbvZOZtGG9yAhat8uyNRGglG5J/fpwRONUu6gKe52NmyybxH6CGuc1/Cg16Jk90kBCbMqh0eSniuiVvir4qIxo/+6efzYhUnk1/5D95YvfBUrZz/E4MuIsxDrj/xDC/XwCMOJn5BXc6DGhbpas+GmckyZi1yB5P3SemdQyZhnOIQvPf2JBIiUr43jJKyGiSSeDdpsZhsiOrE3NNgCDg9hqAGcXSxNX3lY6mloZuR6BTBcKLGptj/UBCNqVggMv01DewfnjnOWiRtBeCBAxKt6TCaa0IwOSF/fAVEsh09xtaJuDQeDsxeBSaVurnLJYNEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,37 +139,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On 2026-04-10 11:18:24 -0400, Zi Yan wrote:
-> On 10 Apr 2026, at 11:06, Andres Freund wrote:
-> > On 2026-03-26 21:42:50 -0400, Zi Yan wrote:
-> >> Replace it with a check on the max folio order of the file's address space
-> >> mapping, making sure PMD_ORDER is supported.
-> >
-> > Question from a user space developer (who learned of this via LWN [1]):
-> >
-> > Right now MADV_COlLAPSE on file mappings appears to only only work with
-> > CONFIG_READ_ONLY_THP_FOR_FS.
-> >
-> > That's pretty sad, because I see quite consistent gains (~15%) from doing
-> > madvise(MADV_COLLAPSE) on e.g. postgres' .text - but because
-> > CONFIG_READ_ONLY_THP_FOR_FS is not enabled default (or at least not commonly,
-> > I think?) in distro kernels, it never quite seemed worth the fiddliness.
-> >
-> >
-> > Do I understand correctly that by replacing the check here (and the
-> > predecessor commits), madvise(MADV_COLLAPSE) on file mappings might actually
-> > start working in more situations on typical distro kernels?
+On Thu, Mar 05, 2026 at 10:39:06AM +0100, Thomas Hellström wrote:
+> GPU use-cases for mmu_interval_notifiers with hmm often involve
+> starting a gpu operation and then waiting for it to complete.
+> These operations are typically context preemption or TLB flushing.
 > 
-> Yes, assuming your file system supports PMD THPs.
+> With single-pass notifiers per GPU this doesn't scale in
+> multi-gpu scenarios. In those scenarios we'd want to first start
+> preemption- or TLB flushing on all GPUs and as a second pass wait
+> for them to complete.
 > 
-> Based on[1], ext4 and xfs have the support, btrfs supports large folio but
-> not up to PMD order. I have not checked other FSes supporting large folio[2].
+> One can do this on per-driver basis multiplexing per-driver
+> notifiers but that would mean sharing the notifier "user" lock
+> across all GPUs and that doesn't scale well either, so adding support
+> for multi-pass in the core appears to be the right choice.
+> 
+> Implement two-pass capability in the mmu_interval_notifier. Use a
+> linked list for the final passes to minimize the impact for
+> use-cases that don't need the multi-pass functionality by avoiding
+> a second interval tree walk, and to be able to easily pass data
+> between the two passes.
+> 
+> v1:
+> - Restrict to two passes (Jason Gunthorpe)
+> - Improve on documentation (Jason Gunthorpe)
+> - Improve on function naming (Alistair Popple)
+> v2:
+> - Include the invalidate_finish() callback in the
+>   struct mmu_interval_notifier_ops.
+> - Update documentation (GitHub Copilot:claude-sonnet-4.6)
+> - Use lockless list for list management.
+> v3:
+> - Update kerneldoc for the struct mmu_interval_notifier_finish::list member
+>   (Matthew Brost)
+> - Add a WARN_ON_ONCE() checking for NULL invalidate_finish() op if
+>   if invalidate_start() is non-NULL. (Matthew Brost)
+> v4:
+> - Addressed documentation review comments by David Hildenbrand.
+> 
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: <linux-mm@kvack.org>
+> Cc: <linux-kernel@vger.kernel.org>
+> 
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>  include/linux/mmu_notifier.h | 42 +++++++++++++++++++++++
+>  mm/mmu_notifier.c            | 65 +++++++++++++++++++++++++++++++-----
+>  2 files changed, 98 insertions(+), 9 deletions(-)
 
-I personally only care about ext4 and xfs, so this is awesome.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Thanks,
-
-Andres
+Jason
 
