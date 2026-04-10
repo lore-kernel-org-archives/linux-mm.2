@@ -4,85 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3282EE99079
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC506E99076
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 706636B008A; Fri, 10 Apr 2026 06:24:40 -0400 (EDT)
+	id D02F76B0005; Fri, 10 Apr 2026 06:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B6AE6B008C; Fri, 10 Apr 2026 06:24:40 -0400 (EDT)
+	id CB3626B0089; Fri, 10 Apr 2026 06:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CCD26B0092; Fri, 10 Apr 2026 06:24:40 -0400 (EDT)
+	id BA1DE6B008A; Fri, 10 Apr 2026 06:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D0756B008A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:24:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0C481A0451
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:24:39 +0000 (UTC)
-X-FDA: 84642262278.22.2564421
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 241FAC0006
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:24:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=W9A0yhlH;
-	spf=pass (imf28.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A98A26B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:30:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B6A11A04E7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:30:29 +0000 (UTC)
+X-FDA: 84642276978.05.0C2D7E0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 22E16A0011
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:30:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QYE6LSyO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="l/kn2BLP";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QYE6LSyO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="l/kn2BLP";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817027; a=rsa-sha256;
+	cv=none;
+	b=IzU0UOplZ2kAAZ8ucRmKMSEHcCvq7ejVaF4RtURaKZddA6D63MQaDWGD3EgjYCCxQ7kanO
+	+t+DgpuggYDR3Sfl7TN/ylshl4F41XrKbCBMUmZLG73vdPa1X9Xgukr8+7FtqjXfCKsAT5
+	Veh138a9q32kerQI5F8HkHgoUIWh9tY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QYE6LSyO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="l/kn2BLP";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QYE6LSyO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="l/kn2BLP";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775816678;
+	s=arc-20220608; t=1775817027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=03t8udNgjEw5kKsyxwAt5MOGVETnhJlUQnBuEMAtark=;
-	b=oAcKwTp4x6kjjX7diQEAAABpfTG2YxcUheCZd21nZjx49uA9+j9OcJDHlZfm+tagg1FHVO
-	DF/t6G/d01L3ukUpDM4RrEeNY89Nwn8bIp7pIGe09/5D0q0TIBYRm2pPFmOri8e6myXGmM
-	YeRsq1DQSqfx6ARuAOmFH8r1KUiCaDU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=W9A0yhlH;
-	spf=pass (imf28.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775816678; a=rsa-sha256;
-	cv=none;
-	b=klXzx2UKr9GQceol/Ilnujuuw1MwvBpdhIvnzjVzBy5vQz257O7fMByPV4UbiH+xRL4Yn4
-	ze8/Qs0Z+aNuTYox/hBlNZO/NSpBvLZgdHvRv3URPfqZJa733mvYB1w4tzzQb3SnQESRWT
-	RNjBYEL4Kqj669a8XyJp0ekx2DCJiU4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1775815962;
-	bh=03t8udNgjEw5kKsyxwAt5MOGVETnhJlUQnBuEMAtark=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=W9A0yhlHTl6OYgNFVQXoCfP3RbDl0x1upKfUokGDbzRhMk8OVwCPCzY4Jd7Jfzecb
-	 xN3ycty7b11QQsrK4EtrC3QW+g0+AWTK7Paln7dkk8QPhsKaz7jmjUaTl/mOIsUTje
-	 Wncwxuh429Xe5ivXfXop99S3OAmblbrx3WZ7hly8=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 359A0401EB; Fri, 10 Apr 2026 03:12:42 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 33F4E401AF;
-	Fri, 10 Apr 2026 03:12:42 -0700 (PDT)
-Date: Fri, 10 Apr 2026 03:12:42 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>, 
-    Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-    David Rientjes <rientjes@google.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] slab: decouple pointer to barn from
- kmem_cache_node
-In-Reply-To: <20260311-b4-slab-memoryless-barns-v1-1-70ab850be4ce@kernel.org>
-Message-ID: <f29c0348-0250-b34b-59df-9dd59e4985ee@gentwo.org>
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org> <20260311-b4-slab-memoryless-barns-v1-1-70ab850be4ce@kernel.org>
+	bh=G2FJPleXejPlT976g0Q7mQc5tzNccUeW1djDhGuK4Xk=;
+	b=KDVoP0ajdO4DSSXPRvkud9IxrkhyT+JOKtj/qcGMxJGLQWB+aozhx12HeaQ5p3xsxZiQgb
+	CYpE+/lMywO4QdBQHUEAeIlvxBK9SofWqMZAN1JzoOmjjBpwmwxG3X24uaa0VviNTJG1Sz
+	jRbqlI3vX856/4aMS59N/S+17W9Gniw=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AC01F5BD49;
+	Fri, 10 Apr 2026 10:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775817025; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2FJPleXejPlT976g0Q7mQc5tzNccUeW1djDhGuK4Xk=;
+	b=QYE6LSyOyUuxX7bt4HRstu6TPMqwU45FA94W0HROZjBxsYftJ9BxtqB3Xep7I5hnh8BRlo
+	rVEe10pMpmefn0wDU0IfqEGv12091EFxxhXr87qRhjjk3Lehc+mXRoX0GpIU9iTyrmaWFn
+	dz6ZN8yyU3ZXVwGcg7ZGWQMz6JKYFxo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775817025;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2FJPleXejPlT976g0Q7mQc5tzNccUeW1djDhGuK4Xk=;
+	b=l/kn2BLPcgOXqY3WcgO9u5Y6Lx2JRhQJ1mBK776EakCFQwxpKn5ZiwHeQAGHrqJZDGLNbu
+	wem1BBnO8o0mnlCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775817025; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2FJPleXejPlT976g0Q7mQc5tzNccUeW1djDhGuK4Xk=;
+	b=QYE6LSyOyUuxX7bt4HRstu6TPMqwU45FA94W0HROZjBxsYftJ9BxtqB3Xep7I5hnh8BRlo
+	rVEe10pMpmefn0wDU0IfqEGv12091EFxxhXr87qRhjjk3Lehc+mXRoX0GpIU9iTyrmaWFn
+	dz6ZN8yyU3ZXVwGcg7ZGWQMz6JKYFxo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775817025;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G2FJPleXejPlT976g0Q7mQc5tzNccUeW1djDhGuK4Xk=;
+	b=l/kn2BLPcgOXqY3WcgO9u5Y6Lx2JRhQJ1mBK776EakCFQwxpKn5ZiwHeQAGHrqJZDGLNbu
+	wem1BBnO8o0mnlCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AEAF14A0B2;
+	Fri, 10 Apr 2026 10:30:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FoxlJ0DR2GkxegAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 10 Apr 2026 10:30:24 +0000
+Date: Fri, 10 Apr 2026 11:30:22 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Barry Song <baohua@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Joseph Salisbury <joseph.salisbury@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	ljs@kernel.org, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC] mm: stress-ng --mremap triggers severe lruvec lock
+ contention in populate/unmap paths
+Message-ID: <peuzimkftq4t7kzyfyykwd2juka7z7h6mxsj7itt2fw6nehnvk@pfhser63fpgx>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+ <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
+ <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
+ <CAGsJ_4ztHnGYycwRgh3FaA7gsehJUWG5YY5nMURRBS6BBdqQ3w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4ztHnGYycwRgh3FaA7gsehJUWG5YY5nMURRBS6BBdqQ3w@mail.gmail.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 22E16A0011
+X-Stat-Signature: 9rbk47f7cw6bhep1hjst6cymk3yxckx5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 241FAC0006
-X-Stat-Signature: ab9ins5hzhi4ysytfgehf4kxjz6swniu
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775816677-395172
-X-HE-Meta: U2FsdGVkX1+q1nMqqDniEs8lhPDzXxfh9QPdrOrEeZrj+zbj9ptbQcpQVe57NLqMGWFIanBaaOdJfn5lZ3S/QkAunRSq43Sms+AOgdxYOQ/afuU0vC+x3itOJLDfhIYi2r7E+/LuYfxvWAjKv8d8IawSjo+N9fPbqXfiMTCz8OYZp0XYfXlS5N8gPju0y2OMBVRGW3o7Oq32hRpXKPRCenTvNDDQ/dcxJv+WPC1WnVdagK5ss1i3Fi+N6cHs9E3uUWY2m3p+EGLHyNTKjVI9jxWhqXsSGO/73dV+tv/YsLOUqR1xzAQVSboysc5P8HcOBrkyRk0RDt9yNTbvMBQKuv4yuN/oNAv1X07roRoQt7rTrto/7zpnmSLKfFNo5CtuZdNUvrxhYtx2f8zli14zGeDM5aZ7VZ61bneYzjzji9i3Bjkthj8oYG4CpuzdAMiY/2dZ2C0TJ/VPQ4hgIeNTS7BQq/Yz6M8ZepNRu4vN3nWO80H47FoINTklzxsaNtLBjSXLvhEmB4eOjJC+W3Q/t5DsUXIuf6CUasKWM0vbghviJPPX5gQxOa3jG2Zr3B7xO1R5oRbCJwpM7VglZAYIIrBAmZPvK9oMygOCGhEg16jStDqfqVWHOO95YodoHyG+zksxkmnPot+9c75Rb45XEgT4WuXdEqoEAHS44bNDkxFpv3GonNimTeZpShvjFQRJXQ1nigzkdTknUCuTd+1SULGtolE6ZsJbix6pjNUBaCFm3MZF52EioSYkVq7sjbsIP86dUxyivx0dTiGCIBNGdC67vPn7zoPZf7pDxwdQjZ8lIZDX2vpK3vlrkdlgrG72C0kWxwO8t7pjEno+l49ViGxNrh/v5iXwHi+xK+hYleFxioTXH7pKdjiYDrPfzCn3X0zk9x1SuB2dNxKxPzDaCMY+mm55xthu/1kpUOti4WYx9ZSBFHVo4hAEkU9wcMrVyCBe/bWWZ2cERNb31dJ
- 4B/RpHML
- /D/PU8UGbEwzzW4Ns30uFlPP+dxSuM+5UwuvcS3dOvGxt9FQgqyDKsZ/wmuwPpRvSB07bEiVoPLaPPhn67iJbyjHfy3hrU7sxXK/qq0rxtfB6X6cNnyMALCVWBV06VjBx/OZqLuHSJYGIoX9+Q/x3XT718D9IxGKKHNKvPU8HG4BRSeJaFaPkFg3g/YLGFppjTGs0Sfy+8EP4oWD+N0oDVNgCJCyeoO2t0xjlDnERYseo1iekkJGdSmGkzx6FYAzMEbEPa450J+1uyjj2/E5mxD3M7/eg+vpSSPfMigcqIcc+IYEs3+nqD7N6Yw0oBpAadL8B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775817026-828341
+X-HE-Meta: U2FsdGVkX1+R+P/x+zs5P67eQGGSb2jhMs5bKnFoSX4PrFRwwQItkjC9mYmmWlZIt/MUg2BVOi3AZ1VoAAAfkhHt/xhJKyKnJ4AH+vWyuEivX/kZ+ZJUWibeDBpSd22UMXU9qNwUoHpcnnqykDcJ/aQh8m+KvntHXFkqzGvKmGiiKJ5JhZsWtLXx+m0iFWVOo2WWBgl+sPhwnQIIdBvCIVDQX8sz7WyQSvafyjyJ84vkjvMsw7QCxGSeI88CjUec0+uQXqtoDGM2CVnKNvABvLs38Jwuw+Y0nVJ4GMvM3nHGn5RfaL7+VRZisFdACvpe6QEeZzZs6HxS7UHSQi1ktxw3Di95FvL2CXoRoXTGaNIwxUQhDh/3tjVF1rYnSH1NM39k6o8Fo8Ra+FB00ebQvtYmEF1tJcBUk3nWXHoL2iru8UMMuanEQNLehKRXGDtKuNExOJSdkSbekVB2LeqQq3X1L0eCV3NoyfwUSY5yHIzurvhf3Otykwufk1fJ/fH7rYLGroo3VkhndtQ9kfiylLLgc64rtfNDXauRSSaClkEL+Xk4AVoPTgZO0+QN7F9/LiGFRLmy+JACxmGL0ItUUdIApnOFf0qHdKn/2uwOyBwzn87nShOPR/m3Cn/X9ybzBfi4kOZo3vg/UgPN74cBw+yW00HA9geluDBaUXPGy48fAl606yz/rjWOQNprixj5OzFECDcc0kKtQhvLw9I4vgN6mPBHQt3NajD6klWunr9K53KVDdvdecpfyETiNVueNCljFXCKxrk62/XOKgXvlUX2rShDUnGgdaBuRCCbGmuqDUsyLW6beX+OLCJnyYxrWwsSdrlPcDWqyiqXVthm0uyYdksfq0StlrfYoBiGwAWJosKDPMVARcWBh5PpuMzjyNJOB158y+xjJG1/qu55IbSTbmkvvTUHOIPPn8tkYDC0Fgczy1utui7+sygk16c8Y9pzx6KidxSVTO6hc94
+ G0HmkxPB
+ vUQdxOaqEpz5U1voKjlTgAaVBdPlatpGv3QWCuNSQr1xXqgzwbkR0lHc0zTRPX/adHTqEOuOqdlMLpiDkO8YVYW7ac/7IJdrNyPnV/rqujmbw3qQhdTKIgidqC4kdghuKc0zyhbHO6oux2arxhZK4+E5AckF8qtHlisiZCpWmJGEq8wQOi8gkfGPrxtbhXPiFgvq4qfkKXP4N5NY10rbS/8VT45d/TZpLGNdu/baL+IKFxO/Yt6PJSSKHTRijhgUtOepqRtoujsV7kj3/ZRnxcBCQU1Ul2Sm7bdnpUWKN02OmLVMecclC+0eXDbNI5aJi7fkiaa9zq/eKUeDs7tr4hs+3DuEmImeKY1Q2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,17 +144,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026, Vlastimil Babka (SUSE) wrote:
+On Fri, Apr 10, 2026 at 05:59:58AM +0800, Barry Song wrote:
+> On Wed, Apr 8, 2026 at 4:09 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> >
+> > >>
+> > >> It was also found that adding '--mremap-numa' changes the behavior
+> > >> substantially:
+> > >
+> > > "assign memory mapped pages to randomly selected NUMA nodes. This is
+> > > disabled for systems that do not support NUMA."
+> > >
+> > > so this is just sharding your lock contention across your NUMA nodes (you
+> > > have an lruvec per node).
+> > >
+> > >>
+> > >> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
+> > >> --metrics-brief
+> > >>
+> > >> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
+> > >>
+> > >> So it's possible that either actual swapping, or the mbind(...,
+> > >> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
+> > >> system time.
+> > >>
+> > >> Does this look like a known MM scalability issue around short-lived
+> > >> MAP_POPULATE / munmap churn?
+> > >
+> > > Yes. Is this an actual issue on some workload?
+> >
+> > Same thought, it's unclear to me why we should care here. In particular,
+> > when talking about excessive use of zero-filled pages.
+> 
+> About 2–3 years ago, I had the impression that we might need
+> separate LRU locks for file and anon. This could reduce
+> contention in real-world scenarios, especially when memcg is
+> not enabled, but I never built a prototype for it.
 
-> The pointer to barn currently exists in struct kmem_cache_node. That
-> struct is instantiated for every NUMA node with memory, but we want to
-> have a barn for every online node (including memoryless).
+Honestly, I don't think this would work. You will still contend hard.
+Having a lock for file and a lock for anon just makes two very large
+locks, instead of one gigalarge lock.
 
-Is this breaking the 1-1 association of kmem_cache to numa
-nodes? I would think you needd local per cpu queues on a memoryless node
-for performance but not fake node structures. Per node access is already
-serialized via locks and therefore slow.
+I think the real solution is either sharding lruvecs harder[1], percpu-caching
+super-harder, or fully reworking reclaim such that we don't need to maintain
+such a global list.
 
-If you break the association of per cpu queues to cpu and kmem_cache_node
-to numa_nodes then the code may get complicated.
+Alas, maybe we'll get there one day :)
+
+For MADV_POPULATE there might be a straightforward solution, though. Using
+something akin to blk_plug, maintain a per-cpu (or per-task?) list of pages
+that need to be queued. reclaim would drain these lists if needed, or the
+task doing MADV_POPULATE drains them at the end. It should drastically
+reduce lruvec lock traffic (though yes, possibly just another bandaid).
+
+I say "For MADV_POPULATE" simply because I suspect this idea might not be
+useful or effective for regular page faulting.
+
+[1] say, maintain a superpageblock concept that is a lot larger than a pageblock
+(1GB could work? though maybe too small for large machines) and maintain LRU
+ordering between those pages. though later approximating LRU order between
+the superpageblocks is tricky.
+-- 
+Pedro
 
