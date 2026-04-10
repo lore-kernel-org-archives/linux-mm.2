@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DBE9F44858
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDE2F44868
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C9C06B0089; Fri, 10 Apr 2026 09:06:52 -0400 (EDT)
+	id E33976B00B0; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1976B008A; Fri, 10 Apr 2026 09:06:52 -0400 (EDT)
+	id DC1D66B00B1; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7DC6B0092; Fri, 10 Apr 2026 09:06:52 -0400 (EDT)
+	id CABB26B00B2; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EA076B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:06:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B68C41B820B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:06:51 +0000 (UTC)
-X-FDA: 84642671022.17.E4714AB
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D9D1FC000E
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:06:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XBek3pWU
+	by kanga.kvack.org (Postfix) with ESMTP id BB0FF6B00B0
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C39C1D93
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:26:50 +0000 (UTC)
+X-FDA: 84642721380.20.FC3D146
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 55E64C000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:26:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=V6MO+8Nf;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775826410;
+	s=arc-20220608; t=1775827608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewzBU+Ju9nP+QlSxDY1jLX0KP+2OHVSPkcDbhEBxrLw=;
-	b=VJ4yg6C42TgAErRwVHJjfpEwrj/YqvxhQARLysDSeOGF66J6Mr2wEP2yFfI57w88JCrUWW
-	nq9zR9DsOLSI6LaaBJ2aUju7PxG/ZHnXvekSxIAcqkvIPz4gu/BiM1NU9qeon3HXMI4c9o
-	qZ661k/OIDv2Q3mqdCM/LV7l3Dzfc4U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775826410; a=rsa-sha256;
+	bh=aTNJ1JSJOuyCEAD0SD81iIKvib8YxJR83tAvZlBQ/uQ=;
+	b=739XKfiG7ntu+gSsjcdtFJNwpxOFurWGMZ6qFBcs1F6bPATuDgYZESpkIq46kHe8b75S57
+	QXvrKWPJAVucl/RpnlvY1kDzNQFYuWtVkZqR6eRX4ebgdI4fRfaZZ3dbJT/FfXfYrBQC8J
+	dgbfRUViNHBTFlm0aWGAPORAeK/9uag=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775827608; a=rsa-sha256;
 	cv=none;
-	b=wAFqnKNvc1pjXTLydixMIbUe+IlUDLbVTio++PZUXWDv+VQ6W/2+P0jl93mbkJZyd9Z62N
-	CJjn5QyyBrZPZYfj//7EhIznZl9ZmVrj8rwaeoqraCuS5TLokvgkEFj4J+GxgzYOZvrNRA
-	WepGw7xzPtTDgDlLcYspayc6yW8Ml+8=
+	b=y/HzGRArQsFlLoFQNCrUzTUb3q/sV40h1vr5u5JPUwJu6upZ5tQSlDYNwTyccltenhAswQ
+	swH9O2qHNhiYJKqvqbujFRiLmLbnzUAge3pU1C+qY1sXq6xEujUnovM7bAbV4ZS3TS7KKT
+	k9g82k0UlcBCn6bUtGMgt9HCTcf++mE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=XBek3pWU;
-	dmarc=none;
-	spf=none (imf22.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=V6MO+8Nf;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ewzBU+Ju9nP+QlSxDY1jLX0KP+2OHVSPkcDbhEBxrLw=; b=XBek3pWUq7o4iwoPUMzm8Z1aDx
-	N+m/HJ90g6gnd66YB6aN3s2/1bN1j3SBTVarxKgyMkEaNV82PKPpy8k07Q0OCP62d2g/13ce6D5KZ
-	YWHOsiOSgdFBMkAFUFhcFjKcPIDPvE2GZ4wae7DNP+rJH/oXQ7HfB7GeVnWMYxtRvmcrb8Ynk4agv
-	QL9kADWnINQUdsSyMks9OZU31Q5zkB8W4LJ6Jj6uLT4n5cHZqlArVzsf36YphzUcPoDO1O0UxwjHF
-	foZxmXlo1f7/91RZz9FhlVJaZLb1Z0VwO+vNfD1dmsRuFLbVJdzRnFAlVZ504lN34a8wasj3nwG6T
-	d9AbTguA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wBBZH-009zxp-1W;
-	Fri, 10 Apr 2026 13:06:39 +0000
-Date: Fri, 10 Apr 2026 06:06:34 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kas@kernel.org, shakeel.butt@linux.dev, usama.arif@linux.dev, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
- vmstat_update
-Message-ID: <adj10gqqGUtrSeUn@gmail.com>
-References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
- <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
- <adiuinlYfkIjuoOJ@gmail.com>
- <adjWGyiVZ4neZRCw@shell.ilvokhin.com>
+	bh=aTNJ1JSJOuyCEAD0SD81iIKvib8YxJR83tAvZlBQ/uQ=; b=V6MO+8NfY8Abp6Hg1tgXrze9Js
+	djsU6gl19LWY3cKwYuDRL35dFJFmJT00E7aioJXLRKJ+Vy7zVBUdKO4B1T1M+4QO8T8yEQdcyx6yg
+	e1nNGy3islw97egX0w+n0PQmoNwltLokKPWWwDbPT+myLcEH459x8o/ERgq1oS5MLg9lMuRUvOK9u
+	HcMIUIsE6DgQRuB+6WBq3A8CZ11kORzn7u9oep2BwVrBWDYRo8koUx+1jhqWlEd8TAp6aNCDOrcnf
+	CCy/8MPjnsZf9z+9ln7hzd2oZbUKuY81A3sPJXr2agjtxb//c6lCxRWGQ0WlSNlTMDkgA2NNErjYh
+	kvCCO6uA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wBBsY-00000009QcX-1BPO;
+	Fri, 10 Apr 2026 13:26:34 +0000
+Date: Fri, 10 Apr 2026 14:26:34 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 4/8] FOLD: block: change the defer in task context
+ interface to be procedural
+Message-ID: <adj6iibxNot-yc9X@casper.infradead.org>
+References: <20260409160243.1008358-1-hch@lst.de>
+ <20260409160243.1008358-5-hch@lst.de>
+ <adgJqiA0vivaW7NA@casper.infradead.org>
+ <20260410061725.GA24667@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <adjWGyiVZ4neZRCw@shell.ilvokhin.com>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: D9D1FC000E
-X-Stat-Signature: yxd1yfuwuoifkawnbdw9od85h8egik8r
+In-Reply-To: <20260410061725.GA24667@lst.de>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: awrxz7asigxqjmurhnifcnjeoyd49m5n
+X-Rspamd-Queue-Id: 55E64C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775826409-541006
-X-HE-Meta: U2FsdGVkX1/Mr1bI6PRwc/TBwADVu5PhRGtSRBGAiEe4uxCeiMl4Mw+q2IZeszScNwN60I1hJnvZaCur8KKplW2/upnPxBbbC2jMaWXzng8RiF/BDuP/TYXU8LEMT7YE/zVlvh3ZBIWm2QE3HiQJRh9VC7vMH4kH/OA3ytlo8uv2aHFb7rZHHWKLDPayHqsDRDkj9FAHkl1gHxPXytci5so98LhDuTz5JlXue1BIRyGzeeGx+AsViokx4DqkUSl7EeMC5uyJj90/jeFGoh0c2xhX+gvk0eMkXxQAN9x+bXjGN9iMVyMUQzNH4feJ60X9CJEWfd2sV+gnvIZRxLzsNvxyskhqCG00BUUalvNKPOCnxGbEKrba3oCJQ6L2hCbJHlM+kc+TCs0Z3JYPquWRe9Jacax73DMOqUMnsG5QB1wuQbLz3HzQ6UjW4pKkAdNcW3blXpso9K9i5KBmpWU+F5ZvQo1mKUYPr/5AG/NIMftcj1Q9jVBcWzs6SE1VhTxc3dT0aekTJKiaob6VGjU9Jxn/+cQFaXNxEy97WE3AiiDq9OJuHpvHoIT/Poqld/8BfRNzOXtG09Ca6P0L8KLZrNfrKIbumMs2l59NG8zRw5xUwBB4FirYnlgaZ2TViZZeNdsu178ma2IKrJ26F53+4ojM8XWEIEzXwA3NDtJBPoXunebSweTzOpKguKQCRzQTj1bGZbQYy0/ZHio5BDv6Y/Atb2e6dbP7IifRKdzOOjdFE/PboAT83yY31rWFl0pnRn6JRmavyyIpE3xlzW8WGnC0xCMxFUgpaWVSCe5TlpuwkRCZQFHJxNlidg1+QPebGd8rUKaDtUtJfbMeBDJl+8a2syPNedIclKmL4Sdwzh19kzF4ZnhZYjdkR/Vhqh++jRncWCsijLZ0iQUDyMoUmOm/5ChpbI7PJw9s47ln+/ir15jWwuMFJtF/vNGFGPlnxkoJDk3uJ3vB7nR+rpj
- /O1PRETs
- ZRzjBS2NpHY03866ESP+L7vRqXIyG9ltNIPKMQq4C8US8JCDIGp3K+9EGRE1JP05V1aaJbmbalYIzNv/9sOnALAuHR7eMUWMCRyq0GokNtFjXWhks5H4kDLEcMk/AA46H8lbttah/09/ZpuW3ZMZqhOBTzf553GUQs2qqcRjyEw0aKQMa5xbFSWt7Y7YuwkF8Q54mZ7SoxuAAPNgmQa0+tSW0XcniVPQM2q0dApEXun9rKPrsTe7iVb+9xZZc8xXWDGCv0twDDa6dbSv6jOg8baLYyZz/ofgbGip0
+X-HE-Tag: 1775827607-993892
+X-HE-Meta: U2FsdGVkX18/DBByMhhYHTJk1t34z6iMwwNOLTEQHLTaeTTv8rP1HQa57+OE4qV+jy2q8p7zriNjkR72CyliiRjGDeqUD1E6ruguoceQwltuUj4bN6jrPdaq9TOr9sJtt+15uH1+OlK+PjhLor82rZDbEcGsrd2QFXrdk8hQxYiWd9zsmiPqsJUwRF92IYgHW2ipnbwtXElAeb8vY52bBOZap+5RRDHi17t9aLhf4EjygfHJbaFw1fjS08ak2XDzQXVlyQ6Y33teRW9kwSp52sL64lWGG/ygVk0FWjVk8OQN5fQ7j6V4p+Iw+ttGTuHhgpvy4YlCG7BfvOjl/AiRZJTBKPnvC7DQWLlLmboQ9gIBquHSy2d1BYVTofcZs2jVltBDquWeQOixoLWY5EEO+PhSyAo01EAn20su4ceEsv19te4v/ets184ZruM9glwqzR6V9eFLJh/9CYm6dYc2Nt98TB+SrCee0cS1Tdx3t6BWni+DQfodPL2YxMQGvN9aou9W/sqB5sNLxR6CYWsCPVyV2YxLoFrKNTt2SrcrXGrzF8wYDpHEkBnkqEtAAbvxb0K3VjOfQy1OKGzY8oPGz/MzcXLAKkXnDjEsSDXzU142ZWRs0+WiHAxO/1dyQt1dEKh3QSTQvXBUH/3gA+jaXeabnccbAp7J1mbjySFFWv8OKTBdUTooSwbZ5aZjw8sAOls67lxvWQM/PegfHdhswk85gnaGlKSggD+w8/JfmE7c0gH/CCTgyeNXgmc9bhY9K6XrESP3q0M44+qmcJo21euvxcYwaRJfQJQayKjX0BvGfD1zxOJhCP4MNLjqglFgw/joCipOt3pjSM7H5pQjYccGIvWtLHw8Asd3tgdEUzjrIU+KAqwgYDBfIZkED82WnWbeUnp5xRmJHkd7HGl6/n8Drj6QmY01pBKKpM/SA4V5dC48FOLTwkyhI0ryyVDYE480OgvPKwwZzY9Do/V
+ mgp4fFiK
+ d9ETKRzZdrTkg602sxfaXaMQRCompWO3H6EmfTNHEHskiMz0/lhzO4GetyWfgsmI95pmSzD7wLfDrkOOwsvkcsq3ciwzjyqJSGntY3erJf6eeyjaTA17GU+lANzVfI/VoKSFPoiYzFETxTpgC89ESv0l2UUoW9aGZbNEx3Ao7B6My5n8sgUpPQBxvzWShNprmGhd6wRaaR+zf5B4Vo0gkLRFVAwrq4pa2f3VkdC3kH9bo9n4Ei5MKfAWMvgIOf+JTlE2r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +100,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 10:51:07AM +0000, Dmitry Ilvokhin wrote:
-> On Fri, Apr 10, 2026 at 01:03:54AM -0700, Breno Leitao wrote:
-> > On Thu, Apr 09, 2026 at 07:01:01PM +0200, Vlastimil Babka (SUSE) wrote:
-> > > On 4/9/26 14:26, Breno Leitao wrote:
-> > > > Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
-> > > > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > > > Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > >
-> > > Looks like v2 posting raced with Dmitry adding R-b tag to the posting in v1
-> > > thread:
-> > >
-> > > https://lore.kernel.org/all/adebKQaiAP4G3liv@shell.ilvokhin.com/
+On Fri, Apr 10, 2026 at 08:17:25AM +0200, Christoph Hellwig wrote:
+> On Thu, Apr 09, 2026 at 09:18:50PM +0100, Matthew Wilcox wrote:
+> > On Thu, Apr 09, 2026 at 06:02:17PM +0200, Christoph Hellwig wrote:
+> > > @@ -1836,9 +1837,7 @@ void bio_endio(struct bio *bio)
+> > >  	}
+> > >  #endif
+> > >  
+> > > -	if (!in_task() && bio_flagged(bio, BIO_COMPLETE_IN_TASK))
+> > > -		bio_queue_completion(bio);
+> > > -	else if (bio->bi_end_io)
+> > > +	if (bio->bi_end_io)
+> > >  		bio->bi_end_io(bio);
 > > 
-> > Dmitry, would you mind reviewing this version as well to keep the review
-> > trail complete?
-> > 
-> > This is essentially the same patch you already reviewed.
+> > What I liked about this before is that we had one central place that
+> > needed to be changed.  This change means that every bi_end_io now needs
+> > to check whether the BIO can be completed in its context.
 > 
-> Andrew seems to have already picked up my Reviewed-by in mm-new.
-> 
-> There are also several other tags there, but most of them were given for
-> v1, while the current patch (v2) differs, so they may no longer apply.
-> 
-> I've added my Reviewed-by again for this version.
+> Yes.  On the other hand we can actually use it when we don't know if
+> we need to offload beforehand, which enabls the two later conversions
+> and probably more.
 
-Thanks Dmitry!
+I don't understand why we need to remove _this_ way to defer completions
+to take context in order to _add_ the ability to defer completions
+inside the bi_end_io handler.
+
 
