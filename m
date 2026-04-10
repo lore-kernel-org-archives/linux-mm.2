@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A02ABE99052
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE955E99052
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:03:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C8B6B0089; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
+	id 19DCE6B0005; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4206B008A; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
+	id 14EE56B008A; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09D46B008C; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
+	id 08C986B008C; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BFC3C6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DE738B8B1
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:59:59 +0000 (UTC)
-X-FDA: 84641897718.27.06E357C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B2A27A0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:59:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bk0e4BNX;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E9A846B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:03:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9689DC19F7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:03:06 +0000 (UTC)
+X-FDA: 84641905572.13.CBE538F
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6FF031C0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:03:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of jiang.kun2@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=jiang.kun2@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775807997;
+	s=arc-20220608; t=1775808184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=joHTFbhY3Xpp9kkK3lQ0iapaVEXdYngH8K+Bki/pKZE=;
-	b=kqckTZnPpRSO3vvVX1PwCfQZA1uz/chVN5chul2PT7CWgaK0HAiynSfdqyGiCuru/gmreh
-	YhT/oijQJpVVqHhBelz56bnPE93z/gmEnQYQFrO2dSKotfhrfGGme27nBB027aZAJARZuJ
-	fUVLQ4e4uG1dWfcrJNhZizp6uTINwYU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bk0e4BNX;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775807997; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=i4hfQBUq+NP13pm7RDDqIV/eYyYxcif9UaXbfhK+a3g=;
+	b=60z4MOixVzjlYtfZ7FdqZnz5rpxAkC1ld1cU67tP3sDWnVmm2IeBarkU9ZfgJL7otmonWl
+	StTH1rSl+0Xh6d9oA1nxPmyzdQr00u+vZzF5MBhD/6qC+VJT+FYcEM3/Jhf3Qy08CgN6VH
+	DenKm8nJXeVqP1bQkxjAk0ECt3Ai+C0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775808184; a=rsa-sha256;
 	cv=none;
-	b=e2HxfRLQqOtlPjG/AxL7WJvAzoWg5+YhjbZVLbpBfOpQptB1lW98GV7LcSmDL1AISdgnOZ
-	IqYspvgSbhchu7nzjqlGfC2FW2f0W830U2wYhkgzUVRTzHBFshIjdMy/Hryz+tX2VFMs0e
-	NWJCYQd9XRcc4bw2v9KZUDU5USbOsLA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7E2641853;
-	Fri, 10 Apr 2026 07:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E4BC19424;
-	Fri, 10 Apr 2026 07:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775807996;
-	bh=SxrLNnYLw7RM2+RAMFd5Z9aLlerg3Bl5esgirC0unYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bk0e4BNXD6Yt7f4mKRojtk8ruecTagIIEG5ZStNZDXOJpUmflQARjCnJhnRz+paso
-	 roEnmnTZ/3YOwcWe24nYpk6kuNpdCBLakaiK6zYS+gzTDqq+QmsSOQ65c1vUMYn2/E
-	 tCcBDdNjvnqRhAw2ZL2IpfCQ5+NnBVg9CogjjWTrHur7cL+kyD3ZDma3KswYbArbZI
-	 zFuoEqE5eTB6wRIQI5VVRjH5zWbWsl/Yoy2UtK0na15HGAg0ukDR9WwlFRSKyB8Q5H
-	 ncK6y9yjMjyAMKOjFOa4svGHzlTF37gjH09YIdRl2GFIuzKWmdirlkLYsXuRmpqj8x
-	 lXfm1lzH96/Zg==
-Date: Fri, 10 Apr 2026 10:59:49 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Evangelos Petrongonas <epetron@amazon.de>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, nh-open-source@amazon.com
-Subject: Re: [PATCH v2] kho: skip KHO for crash kernel
-Message-ID: <adit9fCs2O6t3vd1@kernel.org>
-References: <20260410011609.1103-1-epetron@amazon.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410011609.1103-1-epetron@amazon.de>
-X-Rspamd-Queue-Id: B2A27A0005
-X-Stat-Signature: 6qwkcbm7qkawr3s3h8iqrxgux5aqnxbg
+	b=dgjhJxSx/TubBdJY6oH6de5julXMB5qZ0jrt3+cEFPHM57lmMx7yrLmFb/4voRM1PrUrGd
+	x4BkN2fAwn0QUMikwYF4AX5kQttuvUgbkBbLQ7dnjXiinJ4fXiZ26g7qHSk5p9hxLVDfBh
+	C89s0BSyMMo7SkK6KI4beZPCfP9uvZk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of jiang.kun2@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=jiang.kun2@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4fsTnD5hwJz4xPSP;
+	Fri, 10 Apr 2026 16:02:56 +0800 (CST)
+Received: from njb2app05.zte.com.cn ([10.55.22.121])
+	by mse-fl2.zte.com.cn with SMTP id 63A82LUU084046;
+	Fri, 10 Apr 2026 16:02:47 +0800 (+08)
+	(envelope-from jiang.kun2@zte.com.cn)
+Received: from mapi (njb2app06[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Fri, 10 Apr 2026 16:02:49 +0800 (CST)
+X-Zmail-TransId: 2afe69d8aea9b13-cb0e8
+X-Mailer: Zmail v1.0
+Message-ID: <20260410160249749i98jwNgNLmLMKRNVeoKVe@zte.com.cn>
+Date: Fri, 10 Apr 2026 16:02:49 +0800 (CST)
+Mime-Version: 1.0
+From: <jiang.kun2@zte.com.cn>
+To: <akpm@linux-foundation.org>, <liam.howlett@oracle.com>, <ljs@kernel.org>,
+        <david@kernel.org>, <vbabka@kernel.org>, <jannh@google.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <xu.xin16@zte.com.cn>, <wang.yaxin@zte.com.cn>,
+        <jiang.kun2@zte.com.cn>, <lu.zhongjun@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYyXSBtbS9tYWR2aXNlOiBwcmVmZXIgVk1BIGxvY2sgZm9yIE1BRFZfUkVNT1ZF?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 63A82LUU084046
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: jiang.kun2@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Fri, 10 Apr 2026 16:02:56 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69D8AEB0.000/4fsTnD5hwJz4xPSP
+X-Rspamd-Queue-Id: 6FF031C0005
+X-Stat-Signature: b615k1pw86hiob459sytggp9c17afrum
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775807997-640355
-X-HE-Meta: U2FsdGVkX1/bR2FL/+1BFvIt5nmzoESR85jBIyfqHRDLw7kwlKtiQ8PVXI2Dw8v71MigKCTaqsQei41GoVDX0sehGMZDJqf8b+xRbvvFBJlyKA1MHYN03uVDUaETkymbvL6qziD1XRcDE39rNxkFpkpoB3Q5icb1oX9Toa0eW6fChavGxjHPXjnm+nA4OAIXaIP7+v2dbhB2t2ml3qZnGas8Lg+JEYNjWwnf51eujES+1DLfu1xRsnI+Bgjo49DvKl5JU5AfMCneIRtLazjh5xDQhgRGkrTKKGUtr1CRg4RLXwDKR2FXjR2KPs0NR7WzQPSSxtapsJOAwef3i5U33tsxzFhcLPVXMIVofiJJf2sIZ8NSytebjn+eZPG76wZ0lCBLXv/dZQ2pVeEpjRKmev82nevZUp082GeUHbu7UAntTq9qZroUBTUmNrz/dhTreRwB+m3jbN0JQGhIxHktzN+6OWlCTlK5KKjomjYFU3Y6ODBD7C3nX+tAxTfD+QeCD+TPK7lCwhkoQ1xnQORvuMR/DJmLDo0IZT7nRYAhutsWn6VVlw/1kzPJd0R8mIP2NDoY9YtwT0Lr+Gb/wTyJmuH0O1eunBjfH1E2XlPQSmJKF88F7JQOeCUdFnt6YuAFPl5kTpKWao5q3sp94nlpxxX+FkhTakwbfZyPuYgYuj14oRc/zv0CCHgy4lMT3HQmdxBCMhnq4T1ZOm1mR88cwE3b9+aC9kwTadkO9+xvrT4zUGsPGcwZ36un/V9QW4Tja1Qw0T7H811xC8fBCXgo0bkvuiklbYrt0iZZ3KNiCZuCZWGm1rTiQMaWY77NIOFKju5cvXxoHTNni3h6x48Gm99jJvln0vitumOS2EbAuvVR92eJtnhl7kaYVPqfmYx4Klfw+AWaxr7To5bJKspmjqNo+TbPCD3B9QR9/SKxi4Byr6rZXfAXufKxsnhvJtzNkB11PINCTTTS2oYhuy+
- Nyska9iR
- pobUPWxJjGvXlHEWI5ZGweegeV5Zc7Bi2Hm41yy+VGVKkpKSxU0f/7tCcMPy8AaTOsr32yojtwonIYPXRTLlNam+AWVj0kYvFryyf4K7u6PrivfPs83Frc/cKyeWPQnXDffiltEez92/15uf1/4QUjhcIGR63wYpMXPjm3lcBYBcide5ha55JZl0EnNNh/0IqDCYbs4PRdnpa0L8FfaQc72EDp4+sqckvs+ze6cC+0JK1GPti5j9xj1S1Jg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775808183-996030
+X-HE-Meta: U2FsdGVkX1+BLtfe++GY8qx/2EUbqzCyhz9WA+7JCWFtvm8v3+GhNK3bPeRhUgJ8kHirby0X7OoAHxfYXH25R80NpedfNo0nf3nEdYYd0eoXdcAToSX0JxYeTOgJ3N8fXYCcqugexAfww+bpBmdBBx3h23TrqhMILmMCFzWlnv0tjR3YqwtVvl8UxxRdgOf1Uf1NvA120qzVEpeo6cQzsUt0XaA/hSu5K1amutdd+x0kpuY2SpJropifh5kzIuXV1O3JaxJ4b1UsviJqGkuF6T1KSzpKT4ayJKtx8iMk7lzeqWZz12X9Ac3OvazzWuLCxNgBppK/8XGdsCBNabAW3LkcwtfQzTCQzqCM6bFRr5BCeBUcPFJM9y15sx0q1416TaHRvlPaI13g70Ra//WKWnJNw3MFnqy0RL2fW5zKiRWgm3REXvaJYXXlkqd81cqlFu7Ap6lLOU7m+T6WIUSfymDeuAVTI5oP+hc5zzLPN0+Voymr53ofseXRTUM/PB2g8KMIusVoJzYvOzVKF57TnCJ6Kv7l1WL/kG9AVPlyeWYwASI+oaNyaIVfk6J5NksF105kmjB6M1tVdSXTG37Y7mTC1rpsQd/Skcyn2/mLh/Ufb49paamiCIrqZW4a3fuoYls6dlrsowE9FV5qPpVtze43nMfHHCdIZ9byjwZa8ezjAgAOGixVXZX9qJRyruRTWNzEeCMvtNHursP1HWD0N0BiO1UymiRISr4AFdmawDEGXVmuQ6xyNSTp7dYyRpVMgF1X8Pm/ZT10qwhnjc65+K4Ow98ufuLihbV6gIl16VvxLBjLa7/vYhqyLsr6oFaBIpLvc+QId+0wmMqwLBdQK0WYiNqM2mlz4wKvf/V+bdVBqMJmA/ioRiYe/Mz51QHcIVev0GG5uikFtvqC5RCOxBw++2XbqraP/PS6VSSjwCkRb4czvRqEU+0IbfIkEmecR4E25lZESBd6Zd/RDfc
+ 7Lzu8sX2
+ /mqcgsGk4N8WsXLch7FSUyQhizgXBrcS7HXPUhJDEE/EtSoWZ8zVDLfPzJSXGiPg4dbXKxrr4bv8kpD4yvWUJ3bHU0HBbnD8Nxc2yRe/JRLqV4hO2Q0jP1n96OTmgWg5N/geqnGn6z69Hv9O85jjqyA2hiZ3G6CGzNsQY/c9oWe2aO12YE2AWiJJR61kIn2vzN1rWq+EXZjCVvGQFCKIvMg5jqVsoEXSRpgJds1w9Yh1mENDo/ylNYZPOhlWE5r5DkQceWIf3m9ilu1n51Sy4dOSFKHolisiKjtYqA7kjV+n0PR95dZA06NgiVBxELX1e0o7SXsJAAOJdNz/XYwqaCJg9JidpZKDCjgjEGE+lnF316rH91e0U3XftRppa4BAduFY+WGMhlS+4DZTi/mW/0la0CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,89 +97,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 01:16:05AM +0000, Evangelos Petrongonas wrote:
-> kho_fill_kimage() unconditionally populates the kimage with KHO
-> metadata for every kexec image type. When the image is a crash kernel,
-> this can be problematic as the crash kernel can run in a small reserved
-> region and the KHO scratch areas can sit outside it.
-> The crash kernel then faults during kho_memory_init() when it
-> tries phys_to_virt() on the KHO FDT address:
-> 
->   Unable to handle kernel paging request at virtual address xxxxxxxx
->   ...
->     fdt_offset_ptr+...
->     fdt_check_node_offset_+...
->     fdt_first_property_offset+...
->     fdt_get_property_namelen_+...
->     fdt_getprop+...
->     kho_memory_init+...
->     mm_core_init+...
->     start_kernel+...
-> 
-> kho_locate_mem_hole() already skips KHO logic for KEXEC_TYPE_CRASH
-> images, but kho_fill_kimage() was missing the same guard. As
-> kho_fill_kimage() is the single point that populates image->kho.fdt
-> and image->kho.scratch, fixing it here is sufficient for both arm64
-> and x86 as the FDT and boot_params path are bailing out when these
-> fields are unset.
-> 
-> Fixes: d7255959b69a ("kho: allow kexec load before KHO finalization")
-> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+From: Jiang Kun <jiang.kun2@zte.com.cn>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+MADV_REMOVE prefers the per-VMA read lock for single-VMA, local-mm,
+non-UFFD-armed ranges, avoiding mmap_lock contention for such ranges.
 
-> ---
-> 
-> v2: Per Mike's review [1], move the guard into kho_fill_kimage() instead
->     of patching the arch-level producers and consumers. This fixes
->     both arm64 and x86 in one place and avoids redundant checks. Tested again.
-> 
-> Note regarding backporting
-> The offending commit was deployed with 6.19. The only other supported
-> kernel version with 6.18, unless I miss someting uses
-> ```
-> if (!kho_out.finalized)
-> ```
-> which in the case of crash kernel it shouldn't be finalised.
+However, calling into the filesystem while holding vm_lock (VMA lock) can
+create lock ordering issues. syzbot reported a possible deadlock in
+blkdev_fallocate() when vfs_fallocate() is called under vm_lock.
 
-Yes, this seems about right :) 
-The only released kernel that has this issue is v6.19 and it will be EOL in
-less than a week.
- 
-> [1] https://lore.kernel.org/all/ade2ExpM8ROXV-vy@kernel.org/
-> 
->  kernel/liveupdate/kexec_handover.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index cc68a3692905..1029fe8778f2 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1551,7 +1551,7 @@ int kho_fill_kimage(struct kimage *image)
->  	int err = 0;
->  	struct kexec_buf scratch;
->  
-> -	if (!kho_enable)
-> +	if (!kho_enable || image->type == KEXEC_TYPE_CRASH)
->  		return 0;
->  
->  	image->kho.fdt = virt_to_phys(kho_out.fdt);
-> -- 
-> 2.47.3
-> 
-> 
-> 
-> 
-> Amazon Web Services Development Center Germany GmbH
-> Tamara-Danz-Str. 13
-> 10243 Berlin
-> Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-> Sitz: Berlin
-> Ust-ID: DE 365 538 597
-> 
+Fix this by dropping the VMA lock before invoking vfs_fallocate(), after
+taking an extra reference to the file. Keep the existing mmap_lock fallback
+path and its userfaultfd coordination unchanged.
 
+Repeated benchmark runs show no regression in the uncontended case, and show
+benefit once mmap_lock contention is introduced.
+
+Link: https://ci.syzbot.org/series/30acb9df-ca55-4cbf-81ed-89b84da8edc1
+Link: https://lore.kernel.org/all/aWcZCwz__qwwKbxw@casper.infradead.org/
+Signed-off-by: Jiang Kun <jiang.kun2@zte.com.cn>
+Signed-off-by: Yaxin Wang <wang.yaxin@zte.com.cn>
+---
+ mm/madvise.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 69708e953cf5..0932579bccb4 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1008,8 +1008,6 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
+ 	unsigned long start = madv_behavior->range.start;
+ 	unsigned long end = madv_behavior->range.end;
+
+-	mark_mmap_lock_dropped(madv_behavior);
+-
+ 	if (vma->vm_flags & VM_LOCKED)
+ 		return -EINVAL;
+
+@@ -1025,6 +1023,20 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
+ 	offset = (loff_t)(start - vma->vm_start)
+ 			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
+
++	/* Avoid calling into the filesystem while holding a VMA lock. */
++	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK) {
++		get_file(f);
++		vma_end_read(vma);
++		madv_behavior->vma = NULL;
++		error = vfs_fallocate(f,
++				FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
++				offset, end - start);
++		fput(f);
++		return error;
++	}
++
++	mark_mmap_lock_dropped(madv_behavior);
++
+ 	/*
+ 	 * Filesystem's fallocate may need to take i_rwsem.  We need to
+ 	 * explicitly grab a reference because the vma (and hence the
+@@ -1677,7 +1689,8 @@ int madvise_walk_vmas(struct madvise_behavior *madv_behavior)
+ 	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK &&
+ 	    try_vma_read_lock(madv_behavior)) {
+ 		error = madvise_vma_behavior(madv_behavior);
+-		vma_end_read(madv_behavior->vma);
++		if (madv_behavior->vma)
++			vma_end_read(madv_behavior->vma);
+ 		return error;
+ 	}
+
+@@ -1746,7 +1759,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
+ 		return MADVISE_NO_LOCK;
+
+ 	switch (madv_behavior->behavior) {
+-	case MADV_REMOVE:
+ 	case MADV_WILLNEED:
+ 	case MADV_COLD:
+ 	case MADV_PAGEOUT:
+@@ -1754,6 +1766,7 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
+ 	case MADV_POPULATE_WRITE:
+ 	case MADV_COLLAPSE:
+ 		return MADVISE_MMAP_READ_LOCK;
++	case MADV_REMOVE:
+ 	case MADV_GUARD_INSTALL:
+ 	case MADV_GUARD_REMOVE:
+ 	case MADV_DONTNEED:
 -- 
-Sincerely yours,
-Mike.
+2.53.0
 
