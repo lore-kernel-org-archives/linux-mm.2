@@ -4,92 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0902EF364AE
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE0BE99076
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 722806B0089; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
+	id 4164F6B009E; Fri, 10 Apr 2026 06:43:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FA366B008C; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
+	id 3C68E6B009F; Fri, 10 Apr 2026 06:43:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 636DE6B0093; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
+	id 2DCF86B00A0; Fri, 10 Apr 2026 06:43:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 50DC76B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA13B13B04C
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:12 +0000 (UTC)
-X-FDA: 84642309024.26.DDADCAD
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB36E160003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TLF2iwZ9;
-	spf=pass (imf08.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TLF2iwZ9;
-	spf=pass (imf08.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817791; a=rsa-sha256;
-	cv=none;
-	b=xBBo7CMyxmFVAmVDKS4r+XziURlozitgIbB+QFKCIzQe0cmXK4xHHFVYmOQY4OpKAm2xX3
-	iWYX7z5jXTsoDQ5VvsvLHgjowD/ONxdA+K26MF5Bpqk9FbYpJmTWt8rLXGmRTGoOuW3Tb4
-	aHJrqBTnlhkeekg29FqKgzgItGDuqi4=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C9CB6B009E
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:43:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B616C13A4D0
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:41 +0000 (UTC)
+X-FDA: 84642310242.07.C782ABE
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 918CE40003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LrxZkLyP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DVOXQXV8;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LrxZkLyP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DVOXQXV8;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775817791;
+	s=arc-20220608; t=1775817819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CSG2xsdDRphI9FEycXoH8kdn7Dk+kPIVj1MEg4OQrU8=;
-	b=lfPqJlvQZsppRws1jJB3HPvMY4+GOtj3FwtirkOqMkMJhOj4JuZCWBchYizR1RW7vWsPIv
-	W1Bt+FW/usoyRKFC2SacxO3TVQ1JKr4zWL1/Y0W1ud2WJy0cUkrMG+7Otej3SgNeT4ZRN9
-	z83CMsurUbO+1ohrNgRBIzuiHS5YHJg=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 296BEBE886;
-	Fri, 10 Apr 2026 10:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1775817789;
-	bh=CSG2xsdDRphI9FEycXoH8kdn7Dk+kPIVj1MEg4OQrU8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TLF2iwZ9keVMUtLfNwChan/MK4VXF2b0Q70mM4jIFeW/sl/58NbHVD5+E4dVQDKiV
-	 aT7DykZBxO/UPFFoLChIZcqb2ghX9uVWRam0kXqx4OFLrQjHVOOxlLlZRUh50nZVC6
-	 ChtPBvGi/9VAAf2MjVDhYcTC3JIGCMoCiLC53Gg4=
-Date: Fri, 10 Apr 2026 10:43:05 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
- vmstat_update
-Message-ID: <adjUObY8rFqm9bgg@shell.ilvokhin.com>
-References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+	bh=fbRrRbvEHMBhZEljaSGGSYpGNi0eJbZpub28rmgSAjg=;
+	b=AqvYW240MKHy3jt26x21orFCk9E1iGQH1VpmPqJG/4BUi1HtRdCFrtW3hDt/3hMKB6LUIZ
+	KRHSyKYyA1wiXrLI3oMO8KHg4Hj2b9HVE6EUw/ThvMEzEYXbbFdCiV0Aving4/ZDU2e/Qe
+	KlnANToMaC8f9bcd7aqCxRFnxP/4+p4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817819; a=rsa-sha256;
+	cv=none;
+	b=4QFcAHpO4+yEZio9fJgdIKQjrYL6svQ13Ymztoto0cyr010Z0AfTc33prP3g5vlHLlHx4m
+	TB72O6avJl6ru0CDewtlBpzO4wR33BhdHijgdFyB/97lBH9mfC8jW9FzX8tpv4CXCJ+Hye
+	v8x/Bt37gKY2AT80QHgq4c7esJd9l64=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LrxZkLyP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DVOXQXV8;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LrxZkLyP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DVOXQXV8;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 060CA6A7EC;
+	Fri, 10 Apr 2026 10:43:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775817818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fbRrRbvEHMBhZEljaSGGSYpGNi0eJbZpub28rmgSAjg=;
+	b=LrxZkLyPSx4lyRDVj4hlCbBOOKS29D5bPMXt81xmXxFU2flsXeu9IMCGIk/KsCYlH6oMeI
+	e5980ENvbGJTuzknMd3IXYRI2pfC4/a2Dst12WDFfJLpcs9eLwhrMplcr86Hj2wXlxTcUI
+	NVsOpHvpGiKzqDY5rJcqlXU3Brs1lWw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775817818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fbRrRbvEHMBhZEljaSGGSYpGNi0eJbZpub28rmgSAjg=;
+	b=DVOXQXV8JX8vi+MHLSIhDWJi+/5T/ubGPeIB5TQvn+3zV4SewFf7LSJ2O6TJv1Cn2T4eVz
+	qo/aim37j873CICg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775817818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fbRrRbvEHMBhZEljaSGGSYpGNi0eJbZpub28rmgSAjg=;
+	b=LrxZkLyPSx4lyRDVj4hlCbBOOKS29D5bPMXt81xmXxFU2flsXeu9IMCGIk/KsCYlH6oMeI
+	e5980ENvbGJTuzknMd3IXYRI2pfC4/a2Dst12WDFfJLpcs9eLwhrMplcr86Hj2wXlxTcUI
+	NVsOpHvpGiKzqDY5rJcqlXU3Brs1lWw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775817818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fbRrRbvEHMBhZEljaSGGSYpGNi0eJbZpub28rmgSAjg=;
+	b=DVOXQXV8JX8vi+MHLSIhDWJi+/5T/ubGPeIB5TQvn+3zV4SewFf7LSJ2O6TJv1Cn2T4eVz
+	qo/aim37j873CICg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F2A904A0B2;
+	Fri, 10 Apr 2026 10:43:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4l3wN1jU2Gn5CAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 10 Apr 2026 10:43:36 +0000
+Date: Fri, 10 Apr 2026 11:43:35 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Haakon Bugge <haakon.bugge@oracle.com>
+Cc: Joseph Salisbury <joseph.salisbury@oracle.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [External] : Re: [RFC] mm: stress-ng --mremap triggers severe
+ lruvec lock contention in populate/unmap paths
+Message-ID: <dm7exlrnce6qxvsqh2zkhbn23b6mme3u3pygcfoqwk74ysbnct@yqm72zxw4xux>
+References: <a3474fcf-9f20-47ee-9d15-233e5c7e3f83@oracle.com>
+ <k2ldf7rk6mogzhoe3r7a2hpcc62x2uqqpnwk3czbet4shpirs5@sqfzsqpdc3fk>
+ <639f20f3-9e65-4117-af9b-e37af0829847@kernel.org>
+ <ebbd4c39-859f-4a10-a9e2-c0e9cd1013a9@oracle.com>
+ <F72E050D-BAA4-4D5B-AFDC-5F8A20D8A70E@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EB36E160003
-X-Stat-Signature: auh71pg79bej41ufj57x4usymczps5tt
+In-Reply-To: <F72E050D-BAA4-4D5B-AFDC-5F8A20D8A70E@oracle.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 81oimexqko9decxkkeainrga9d96cw7z
+X-Rspamd-Queue-Id: 918CE40003
 X-Rspam-User: 
-X-HE-Tag: 1775817790-146634
-X-HE-Meta: U2FsdGVkX19Qmdm4fWtIBBa6LyLjACjWTL46bUtCxzoYWLtIKGE4vGNvxw8VZBVzpkjzl3xQxI9PeO3nPhzWlnA7t/s5WIb0Gzhh4jTLBeypupae4AKGgIe6P43gJa2zhJjvIzizSYqF9kE6KIinkSSpCrgMBGYOmrBJA8lGFd3lPV8ZrQ+IgCit+jLLonB/eST6AXKlwp51WDWnoDPf4uPOYA9IYe74d7eskCM0Z62w1HgOuluL5K0rMQ0WC2PbEiZsXyHNFSDl9yIBVIHjxA0HZsIUKfBU5x/7fAfzMhawPrLKKVk6SGfw3Ot1zq6RkpkiWhho6Qjt4yZv5xf4MFTto+fOsLaVE4cTgIx0EwB0J7Dl+0TjzMSCP48kHMsNy9HMqEzYu+X0thFWkQbuBMDLbDKYJODVyS8LHuNH+hGFdL8MXK3EwLvsvVdNLCfsH4S59GBXvYUzqgBMQt3E8Ge/U++fNXRSQm6cfM3r41TMCatLjp2zK2EdPX5LM8fVROSR6imHh1XyDFtGGhO/qhVV4D0M+iEJd+f9/xAjp3zVVmELnrS0EbddcJcNxd8YlP9FQ0dDi5u1+e4JmfkbUqtkCMocBP44qbTYQQ5uawowJ7boYZEqk3FKR5YYjkPo6N37dVxuc9ho/2QT7wz68usyjP82wfJ1m0u9YRSKnbp4J+ZwbI7QbdxsKzPM1v2tE4YnA2OMU9GvgCD8RFWeyJL58AflJGKQukvJx8F8GkJXncS73fdG1EAOkY+Lcqj/Ta3eW8sq4aEdyPsp0OP46FKCAYV+dsSmhdE4L4HafILk3WDxMeNdUg9WLVuOgvqTvQM4IEG3eo2XDD2eApPFqDwMdoV7UNlXzhdhFR84XP7ywALHVk/52C8vSQqjtC4KfNY1HaE5Ol6Tyz5i7aWHOKKxQCR62itoWf9BTNd26sI5sAx0sb2fpBN/rX4iw50QXnIFVMiUcyZiSkwg6ju
- COtPTy4J
- H9HcXsGkuNcX+LURvdNBiVNJXhVXgZHccyt3+YTnzXuwljgb0QuXomvcPczzmBmePtlmV1AE022+NEo+2uNtwBoK+2ArC7/T/tiklMJEJ9JtYj3hAxl5coBReTl/jhq6bnjseg7dgqwhG0X7b3nApAyYq1UGEAR9rNDKVvI5QYAPLPY6coW4NXFOBnRpvYTKvJHgT37iUBOYBbD8ytU+H3zcPKCl9DiVLyOGTYpCB/n77uLNbH+NX5uipx1sUa8qGKDfPv4WRNCggxwpcZ/Ie3QYf3zxej7Mn3A+y+CvcKmd+O3Kh7SZkij8wp7YykxeZDP8LjDeKTGXx6snOBtS8+J1ohhOhHp8KU/E9Z9HvZ5Cdl6TlsDljLQi07onoY27zjJQM7WVpg1AeBT88kNxMt2UPcseYgmGgJW6C
+X-HE-Tag: 1775817819-367361
+X-HE-Meta: U2FsdGVkX1+aQAUszm6OG398YuMBTlEa7MQvSHV7zBA2geT/s8KTOUK3UqqT+xybQ3a6uRlui+9DGvwTCLhOpAU3MOPwERj1botPyxN99E+2r1sBDATTjsvZFYHLhg5YYG+qlVc2QkflaGITXarhcLauOVFktJd92X3xB7Wampzv7c/WvAox4Qm3Qoxf+cMyshYHqNg4SJwKMdnGHc798lE3kgIhZbQujZ38rbOdsvKc6ikBe5j5aeafwQYLA2dBjUYk9QkzFJLax00VdY8rmvSu438OOW/z4WFWn3WeKeCD9z9PK2rLq+tg1hFXFXATm4qqAh/i4GHD5DG9gQhpPqKq7Xghh0ionOg6xINf+N5EBMPgaeYObNFybVOlrLm2l0QuvApMKp92XINl370gpGDy4s1aU1+IjiCbgbXgswtyX2ojihdfvOV7SerVBHbd/WSCjYHDjo+yO1CoKXNuhT3LV8csNV5Mind370kqQDf+izqgyOOmHGY7e5znR7I30vUUGARG4m1pwa9wizvGVaguuSUeUUKZJNmBCc1k8nxk841mtvQz6DEWIg+JZ1JLoJI2Tm4b1IJChtnpH8SQyootaVBgGDfG5CQoC1NJ3LQqZXXtdXAofaeJawuymaAwZHKQ/5nq6muk4Q6gEudj7mBhKJttRfl3jfM6QnDOihGGWtJqAa0/28quadOMQTo/dVsbnJ6t+IMP5UdBGeRScpTocT2Nn44q0lSNEtpAwWsDfCilP0dUU/4crUVZDlucMbCI81NvWSaw+UH3ChOX5r+fuCMhGyIPRxlNSMsLRPxE0Dw+hWZ5uvYt0aYb6VHRMz1dq76op0lYdgd+SLEBAdwWV/VmRuqvXCupm5q5henJBI1IviEDQy1LQnQ131YC9l8UvdoUA+aPnydL7hD9pnI1A7AUQKE6hlVIKr8gP5DiZxU7X2AgOjWJgnU6UTHthLOYs2iZ5+AQnmdHODq
+ /dYo3HK/
+ B9GHZRE8hAZVs5uI6aHVLe2oXe6ssXwiDQDsR/jFprzjlLbTArm6Jrtar2oNDlE0S1VRUOvjwV3wVQPAMblEQFcjThuer+uAqg/N/yJ9z5G/0GgQwaA6KSBKnwHXlvE3KL+Y+isy+PKiSiNPF4dDP3rtcpaVbA/EK5L90X/MCPeus7fLFJbjzWG83vuKx+Sp/MYCrtMShlNuEZlkg1K9/v1tua8tOL9yRveBSGwQREH6r4kFXa4LLPpEAPue7ndc5w0c+0w4ihQA3VIM4xNqs6gCSnV0/Q/3wqTQMXTiGnFzP/Js0uQP5rcGMjfh42LUaz8G0ySLKhGVvrlDQqZfKJWJ/RAMx8Sfia9Yo4bRvZdVCOBI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +139,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 05:26:36AM -0700, Breno Leitao wrote:
-> vmstat_shepherd uses delayed_work_pending() to check whether
-> vmstat_update is already scheduled for a given CPU before queuing it.
-> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
-> which is cleared the moment a worker thread picks up the work to
-> execute it.
-> 
-> This means that while vmstat_update is actively running on a CPU,
-> delayed_work_pending() returns false. If need_update() also returns
-> true at that point (per-cpu counters not yet zeroed mid-flush), the
-> shepherd queues a second invocation with delay=0, causing vmstat_update
-> to run again immediately after finishing.
-> 
-> On a 72-CPU system this race is readily observable: before the fix,
-> many CPUs show invocation gaps well below 500 jiffies (the minimum
-> round_jiffies_relative() can produce), with the most extreme cases
-> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
-> 
-> Fix this by replacing delayed_work_pending() with work_busy(), which
-> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
-> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
-> now correctly skips a CPU in all busy states.
-> 
-> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
-> The remaining early invocations have gaps in the 700–999 jiffie range,
-> attributable to round_jiffies_relative() aligning to a nearer
-> jiffie-second boundary rather than to this race.
-> 
-> Each spurious vmstat_update invocation has a measurable side effect:
-> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
-> drains idle per-CPU pages back to the buddy allocator via
-> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
-> the double-scheduling therefore reduces zone lock contention directly.
-> On a 72-CPU stress-ng workload measured with perf lock contention:
-> 
->   free_pcppages_bulk contention count:  ~55% reduction
->   free_pcppages_bulk total wait time:   ~57% reduction
->   free_pcppages_bulk max wait time:     ~47% reduction
-> 
-> Note: work_busy() is inherently racy—between the check and the
-> subsequent queue_delayed_work_on() call, vmstat_update can finish
-> execution, leaving the work neither pending nor running. In that
-> narrow window the shepherd can still queue a second invocation.
-> After the fix, this residual race is rare and produces only occasional
-> small gaps, a significant improvement over the systematic
-> double-scheduling seen with delayed_work_pending().
-> 
-> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
++Cc Jens
 
-Reviewed-by: Dmitry Ilvokhin <d@ilvokhin.com>
+On Thu, Apr 09, 2026 at 04:37:19PM +0000, Haakon Bugge wrote:
+> 
+> > On 8 Apr 2026, at 16:27, Joseph Salisbury <joseph.salisbury@oracle.com> wrote:
+> > 
+> > 
+> > 
+> > On 4/8/26 4:09 AM, David Hildenbrand (Arm) wrote:
+> >>>> It was also found that adding '--mremap-numa' changes the behavior
+> >>>> substantially:
+> >>> "assign memory mapped pages to randomly selected NUMA nodes. This is
+> >>> disabled for systems that do not support NUMA."
+> >>> 
+> >>> so this is just sharding your lock contention across your NUMA nodes (you
+> >>> have an lruvec per node).
+> >>> 
+> >>>> stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --mremap-numa
+> >>>> --metrics-brief
+> >>>> 
+> >>>> mremap 2570798 29.39 8.06 106.23 87466.50 22494.74
+> >>>> 
+> >>>> So it's possible that either actual swapping, or the mbind(...,
+> >>>> MPOL_MF_MOVE) path used by '--mremap-numa', removes most of the excessive
+> >>>> system time.
+> >>>> 
+> >>>> Does this look like a known MM scalability issue around short-lived
+> >>>> MAP_POPULATE / munmap churn?
+> >>> Yes. Is this an actual issue on some workload?
+> >> Same thought, it's unclear to me why we should care here. In particular,
+> >> when talking about excessive use of zero-filled pages.
+> >> 
+> > Currently this is only showing up with that particular stress test. We will try John's patch and provide feedback.
+> > 
+> > Thanks for all the feedback, everyone!
+> 
+> I reported this internally and have worked with Joseph on it. I tested v7.0-rc7-68-g7f87a5ea75f01 ("-"), "Base", vs. ditto plus John Hubbard's patch ("+"), "Test".
 
+Nit: please trim your lines to 70-80 chars per line, thanks!
+
+> 
+> Stress-ng command: stress-ng --mremap 8192 --mremap-bytes 4K --timeout 30 --metrics-brief
+> 
+> System is an AMD EPYC 9J45:
+>   NUMA node(s):              2
+>   NUMA node0 CPU(s):         0-127,256-383
+>   NUMA node1 CPU(s):         128-255,384-511
+> 
+> The stress-ng command was run ten times and here are the averages and pstdev:
+> 
+>    bogo ops/s   pstdev  system time   pstdev
+>    (realtime) 
+> --------------------------------------------
+> -     3192638      35%        24041      32%
+> +     3657904       5%        15278       0%
+> 
+> This is 15% improvement in bogo ops/s (realtime) and a decent 36% reduction in system time.
+> 
+> I shamelessly copied and modified the fio command from [1]. I ran:
+> 
+> # fio -filename=/dev/nvme0n1 -direct=0 -thread -size=1024G -rwmixwrite=30 \
+> --norandommap --randrepeat=0 -ioengine=mmap -bs=4k -numjobs=1024 -runtime=3600 \
+> --time_based -group_reporting -name=mytest
+> 
+> (that is, one hour runtime)
+> 
+> - read: IOPS=14.0M, BW=53.4GiB/s (57.3GB/s)(188TiB/3608413msec)
+> + read: IOPS=16.0M, BW=61.2GiB/s (65.7GB/s)(215TiB/3600051msec)
+> - READ: bw=53.4GiB/s (57.3GB/s), 53.4GiB/s-53.4GiB/s (57.3GB/s-57.3GB/s), io=188TiB (207TB), run=3608413-3608413msec
+> + READ: bw=61.2GiB/s (65.7GB/s), 61.2GiB/s-61.2GiB/s (65.7GB/s-65.7GB/s), io=215TiB (237TB), run=3600051-3600051msec
+
+Do you have profiles for this? A flamegraph would be lovely.
+
+> 
+> Also, running Base, I see tons of:
+> 
+> Jobs: 726 (f=726): [_(2),R(1),_(1),R(3),_(4),R(6),_(1),R(2),_(2),R(2),_(3),R(1),_(5),R(2),_(1),R(2),_(1),R(1),_(2),R(2),_(1),R(1),_(1),R(2),_(1),R(3),_(1),R(3),_(1),R(1),_(1),R(1),_(1),R(1),_(1),R(3),_(1),R(3),_(1),R(1),_(3),R(1),_(1),R(5),_(1),R(5),_(1),R(1),_(2),R(1),_(4),R(2),_(1),R(3),_(1),R(3),_(1),R(1),_(2),R(1),_(1),R(8),_(1),R(4),_(1),R(3),_(1),R(1),_(1),R(2),_(1),R(7),_(2),R(2)
+> 
+> when the fio test terminates, which I do not see using Test. I take that as the threads do not terminate timely using the Base kernel.
+
+Yeah, no idea. Added Jens in case he knows off the top of his head what this
+might mean. I don't immediately see how POPULATE performance could
+correlate with thread termination performance (or to fio performance overall)
+unless it's actively doing mmap + POPULATE while threads are exiting, which
+I find doubtful.
+
+-- 
+Pedro
 
