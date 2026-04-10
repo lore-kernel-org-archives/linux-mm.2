@@ -4,88 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C2EF364DB
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D265F44840
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 524F36B0089; Fri, 10 Apr 2026 07:08:21 -0400 (EDT)
+	id BF1966B0089; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D5BE6B008A; Fri, 10 Apr 2026 07:08:21 -0400 (EDT)
+	id BC9286B008A; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EBC16B0092; Fri, 10 Apr 2026 07:08:21 -0400 (EDT)
+	id B05FD6B0092; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A76A6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:08:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2B651604BB
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:08:20 +0000 (UTC)
-X-FDA: 84642372360.15.66B6018
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0BB544000C
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:08:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=knWOB3VA;
-	spf=none (imf17.hostedemail.com: domain of BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A3A406B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:22:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 519FB1A04ED
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:22:37 +0000 (UTC)
+X-FDA: 84642408354.28.99C3356
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 767C140010
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:22:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s90fG734;
+	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775819299;
+	s=arc-20220608; t=1775820155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xk3li1I24xXhjUCjfH0QaipKwS9GLoq65H2d0oESdI8=;
-	b=NXsUJNwjHTRk03z+DR9mCbBLyhQhGpo7CQ033O+gcaolTrK5cdgvXTH8uGpjJqwL6cdCio
-	GI5S16we7sO81ZakqqX90w3rvEIcdvvBhooxKLA2faObfRlmvyJV9sidWKKq7xnBJS+bly
-	5kmeduycI1xZNiIHHfV5sBarqyHGL0U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775819299; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/FgmDbPdVKeTFmDflrD7GhFmg1r0p/Z0QkjNzZaoXas=;
+	b=xzEKiE2PTjYhbhAkMQNwV83RmwQAiu96WZ/6kQLQsh8tWGfki/ysp2bO9GPkCUQgUSmEj5
+	Aa9SyTMhd+vZUOlSBl6SgsQVT4lIiZDkp3U5gV6ffZhnZZvjvp4zYTxnjBulzU8IpLueBw
+	pX0vajBSEW1dtCtzliNaI8JzPOh2OyI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775820155; a=rsa-sha256;
 	cv=none;
-	b=stoZou/lUDIfxt/oZwmbff84uEs/DXQmqp8+3+dl+Nbj/ci6lvD8pg8bzGRh6OMxTDnZc3
-	/Hkp3gPGNVdOHtL4QkYGh9+RCw2Pt/s8i7hlscGu6zQ9OQXJsZrC4H1pwOKbRuBQl5ffBp
-	V6PPlzHtKCxoYB3+X7ymWt0LzAJfvbY=
+	b=bpWdUFlvsG0605rfIhlrz9v7jS1P5LNbNBvgp1j6UL5SJLU1S9O5lnVe0MUyL3Vg5dIY7L
+	sotIb7+zxM0zq3QPXlTituC501Fv3+rZ9ENaRgXR2kBpae2jDbIkUbmtdUSuD9O6zSOhdG
+	78KSYNnehIZ0BJmlzyVDJQzjwQjSGzE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=knWOB3VA;
-	spf=none (imf17.hostedemail.com: domain of BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Xk3li1I24xXhjUCjfH0QaipKwS9GLoq65H2d0oESdI8=; b=knWOB3VAByYCcpkF0lENzRH+ip
-	aVuP52BPDwBNuQU1+PdpEGH/ldK009CzPSvk4lJ56usBnn6Q0VM5vASn5ZD1XcsRCaViYFS0c8/Ha
-	qbattmUm28AM+8E6/CqlHMZls9hRiZpCMyhvEpQKWvzSsZW3nF17zVYMn5oHrziyAzKbfmju37qZO
-	O8MYZTwLVdLCIApCjzDAJ/eLj6Ri3D/BPckKbCuMQQ9GZPRDax9xQbAEDYRbQCeG0wBZ8v/vXFbhn
-	Y/03kH+Ez0v5Ms4FAYkAhUGmZmCBNnR0nl4MUutiOf9IOAQHUK5cypEjM0/PGmxDRSovwOFFhhC+7
-	ko9qzmoA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wB9ig-0000000C3jL-3MIo;
-	Fri, 10 Apr 2026 11:08:14 +0000
-Date: Fri, 10 Apr 2026 04:08:14 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Boris Burkov <boris@bur.io>
-Cc: Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Matthew Wilcox <willy@infradead.org>,
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <adjaHn7RnvaMp7mc@infradead.org>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
- <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
- <20260409164834.GA3472346@zen.localdomain>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=s90fG734;
+	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775820153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/FgmDbPdVKeTFmDflrD7GhFmg1r0p/Z0QkjNzZaoXas=;
+	b=s90fG7347KOkTrLsFMypwJ3sk4ZKJadpaDexywNknA/dFcbsYhu45VQXmDXrRY+wH9BgwR
+	AgpSjtItYoAtN120d5Jc1MBgPoO0sa4OLoTjf44KsJVYsGQILD2t4xXVEpiHEeWRzwzMZw
+	NRW11qcau0cHbbtGVF7OXyaNhheAvZI=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.orgg,
+	Hao Li <hao.li@linux.dev>
+Subject: [RFC PATCH] slub: spill refill leftover objects into percpu sheaves
+Date: Fri, 10 Apr 2026 19:16:57 +0800
+Message-ID: <20260410112202.142597-1-hao.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409164834.GA3472346@zen.localdomain>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 0BB544000C
-X-Stat-Signature: u8hkrhug6971k49ismm64tcf1mef1rzd
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5qmpikq63ggy7w8od3zqj3icpjthpc35
+X-Rspamd-Queue-Id: 767C140010
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775819297-389247
-X-HE-Meta: U2FsdGVkX1/RWeynQ/NRd043Ju+oxnUQ1juI7tTDFL1N1RVV534UOb1Ejwm3b3RUHK+8jf41dyCO1AS7N6C5Ta2lE538dRDxvgWOxpZ2td65L+1vxZt+w7XYP4gjg+o/iS8BeWeNvD+W4tY59/aFoIwQA0+FgioNhEeg5tArZ6D1djJ6hlQ4G2F12xqTFQrcoxml1JC7YHIg0SvHvgR8A/eBiRKVbseTpyq6K6t5AOiOX3HCxecw4TAkTf1WnzJ0rjMcLH5a4gaxkYLPOqrim/qlBveUl1MO+hHdSilJTH3KwW8mz0pwLkwplCBSrfiVl+hifJtaQTrYH6EFAoDvcpnh2xyxvR/s+yoL/uPZgCuExmIDVfyhn6by0jSZk94CuhD8s04yLfwryHDTtjNXJkUlp7ci0fOjyQ4uFlNPtfddnB4CEhSPznIcyrZpIfQaXh9GZFv1PvUHP2rSEbWMKwxILNY5ALzljWTKXhKN90Wwr8ZGlPUgEWa5dEy8OQax0lsbLL9Nvn49Yfv/0tDIqxHEP2T+DBEnPN+4pRNxcXAQddsS292kQEBcsnpbdteU+FwsBcWzejElWYoeOXypREFoNkPlaZPNneTN9O0zUluycY2nc6tB5Wn1ZBo8OTyVJBek4tP7JdrxuOVRhMa+8mbg2qtKA6uu1J7BGN/wLW7o8YwWeYmgkRCurY80Cw2itSEhoMzqQrjKVGpfa0BG5bokDhyhiBUxQZqRJPPruHeBKGpzBKAp4ceRegc04HjRsHixPBf7MKnIRkjBabCDdEC/MAHmbvAu0aVdFn0bavYNLkdklEqK3B3NEjVXA+ktqBYXdnDqaBFtfT2riL1es4Rq5uZ8Vc4KMoNI3CqXb7qjVeyVIk9XzEE5grOGg1XhHTg8DZyQpZDZA8IZp8mD0bENQH99/b8/z/xdpo974gABJcgcxF2lZnf31wNiI6Ym1uMQQiK4SQeQM2k6qke
- gcmmH4uh
- a1b5pD8zwYwQbK8NxCifYgR1UDj0pki3Lraqg5juo3HL7rCuB2BF1LPK2D+FF6h37I6IGJz6OuYm6tBzMY/KvpQv3n6RJbaeSs1iQLks91GEpMRi7sPWDy4eBRYZo5wQ0dhsqkeHST8Yw6Xh1ikFs/mvUlVh3HNQnDwzZlAgMVknn1fgZ1vjMOp3Z07ekyfxi8JyrkNcsUV3GER2mbEj/Ax8tB//lTPAOqTOCUVybv2E7X8mqODQRcaUVrpoit3Fy67eBI8sUgrrtw0wk662BuTakRFQ4PebZg/7Zdedyty9qbbpht6sE/IMKTw2VoOo11tKrt9Vi92Wg/Ua93gHegv17EyjP+8wRabYIIhtnNzhFaUWa26OaaUlsbyPMuVFrQ7raEkhyOEWLpo8HocimHfCcVq/3r06uxwS/JDHd77D1V8MtwdZ+3fkQtHxb4JSH8neuczziSYqSwDkh5XryeGyNkzvzkFcLh+/dzdqOaBqzh3H/BhSkUwjl5g==
+X-HE-Tag: 1775820155-57618
+X-HE-Meta: U2FsdGVkX1+J275YdkXkV8n7XIrIHxQN52f7dl/oYhhJF3slJI2v55cgysm51G6rVcrTvBZ0zDeJgdfBynE3enpkRTwO/cGlWELYILUJhdDoRWls4Eng/DaAMi0sjKu3arwHObbh5nxyl6wZnNutI9Nv3v/G0fJepRRhRhsjhf0lgFatP5zdTm55yuxYTPwgq3jq4TknppOxvA/ZgqRDjLhHU5EaxaJbRQLHQ3IsyAwstIZ7nCByi6rSDYIiB/KpqOHgiYk0/zpoDNAcj07PI5oKu51tpuFubjl6EdiI2l6VQr474eJO00XtDSBbodGghgVDTKczDODpbcckcoMQjQc3Zd9qa8I4o0WC00NWdSt5tifBEQt9lBWHAGKjVZu/qN3KurvtDNpejsv1isurAB9Aayn3p4PaAxhQNED5iIZpUR8B2OpcN4yQ043de2vVCQgj7SHg3bc9u6oW0PNzPN0vd4S3vbrCHqYbh3piZoiEw6K4HO/1EBGI2X2QDMummH+bnDmpydFwCtkk5hw5MmfrGm8who83HnJveiWc9t+E2P673ytdLA4g2F2Xvf3imxEtvXWDDi1S2x5XKvLlJeb7VEDdzAn6/jun1yg+7nfkxAj9Kypx/NfwbWnTPLBs/D55U5ykZTrclvL/dgeOrJtFPfpgqmHDuYk60ym85Cu/WUuU00H7EsNCIsUC0uqo/8ojf8dUQjtn/4bm6Gj45aeeZ5H018P2sLP53VtC2RH5nxGuazFgIXtdvO1HpyXtgCYBAQ/jWgNFE0F1HiCRnjlqjzUDebpKIe133QGbZWa+mpWcch6HJvKr+2aFAEgyBGZKC9IAodgpUGGLEvnLJ/+h2LR2RTMQID4VN0CTPJW2njeF0PTpepzHgvaZt5IFvPqVOQz4Ulc8B046pgw3WgUGVmj5zRB9g5cR+e0npdA7DhaXQCY8qECXC3AwB66fG1fMLTXyMvyK3PHRmgP
+ viPtZCYE
+ cx68OzmzYnqcFR/wDz1P0yTeMdamit1sFM3gj9JlN2K31wChGDH7J12vRdO+IUsL/lMV5KzLcZ8IRknbKA8ym4JgcP7nHUas0os09u0Fq+QFOmNBkz4RnEfSB33Kb0tutI6w4jpcyZC83OoXQT2KvDL/WDgj3Bsx6mftb/HstJq1Gligwa73P/Bhq2SBSxIxB8nnJ2GifxeltdOqjo9IzHxIZqcuDdYrToQ0G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,21 +89,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 09:48:34AM -0700, Boris Burkov wrote:
-> > > This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
-> > > and they can work on freeing memory needed for freeing of hard to reclaim
-> > > inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
-> > > they should really be addressed.
-> 
-> One question that pops in my mind (which is similar to an issue you and
-> Qu debugged with the btrfs metadata reclaim floor earlier this year) is:
-> what if the hard to reclaim inodes are the *only* source of significant 
-> reclaimable space?
+When performing objects refill, we tend to optimistically assume that
+there will be more allocation requests coming next; this is the
+fundamental assumption behind this optimization.
 
-(disk)space or memory?  If this about disk space, make sure your file
-system ENOSPC handling triggers inode reclaim, XFS already does it.
+When __refill_objects_node() isolates a partial slab and satisfies a
+bulk allocation from its freelist, the slab can still have a small tail
+of free objects left over. Today those objects are freed back to the
+slab immediately.
 
-If it is the only source of memory we just need to do the slow reclaim
-to gain memory.  You better use mempools or similar to make it safe.
+If the leftover tail is local and small enough to fit, keep it in the
+current CPU's sheaves instead. This avoids pushing those objects back
+through the __slab_free slowpath.
+
+Add a helper to obtain both the freelist and its free-object count, and
+then spill the remaining objects into a percpu sheaf when:
+- the tail fits in a sheaf
+- the slab is local to the current CPU
+- the slab is not pfmemalloc
+- the target sheaf has enough free space
+
+Otherwise keep the existing fallback and free the tail back to the slab.
+
+Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
+stats.
+
+On the mmap2 case in the will-it-scale benchmark suite, this patch can
+improve performance by about 2~5%.
+
+Signed-off-by: Hao Li <hao.li@linux.dev>
+---
+
+This patch is an exploratory attempt to address the leftover objects and
+partial slab issues in the refill path, and it is marked as RFC to warmly
+welcome any feedback, suggestions, and discussion!
+
+---
+ mm/slub.c | 107 ++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 88 insertions(+), 19 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 2b2d33cc735c..fe6351ba0e60 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -353,6 +353,7 @@ enum stat_item {
+ 	SHEAF_REFILL,		/* Objects refilled to a sheaf */
+ 	SHEAF_ALLOC,		/* Allocation of an empty sheaf */
+ 	SHEAF_FREE,		/* Freeing of an empty sheaf */
++	SHEAF_SPILL,
+ 	BARN_GET,		/* Got full sheaf from barn */
+ 	BARN_GET_FAIL,		/* Failed to get full sheaf from barn */
+ 	BARN_PUT,		/* Put full sheaf to barn */
+@@ -4279,7 +4280,9 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
+  * Assumes this is performed only for caches without debugging so we
+  * don't need to worry about adding the slab to the full list.
+  */
+-static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
++static inline void *__get_freelist_nofreeze(struct kmem_cache *s,
++					    struct slab *slab, int *freecount,
++					    const char *n)
+ {
+ 	struct freelist_counters old, new;
+ 
+@@ -4293,11 +4296,26 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
+ 
+ 		new.inuse = old.objects;
+ 
+-	} while (!slab_update_freelist(s, slab, &old, &new, "get_freelist_nofreeze"));
++	} while (!slab_update_freelist(s, slab, &old, &new, n));
++
++	if (freecount)
++		*freecount = old.objects - old.inuse;
+ 
+ 	return old.freelist;
+ }
+ 
++static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
++{
++	return __get_freelist_nofreeze(s, slab, NULL, "get_freelist_nofreeze");
++}
++
++static inline void *get_freelist_and_freecount_nofreeze(struct kmem_cache *s,
++							struct slab *slab,
++							int *freecount)
++{
++	return __get_freelist_nofreeze(s, slab, freecount, "get_freelist_and_freecount_nofreeze");
++}
++
+ /*
+  * If the object has been wiped upon free, make sure it's fully initialized by
+  * zeroing out freelist pointer.
+@@ -7028,10 +7046,15 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 		return 0;
+ 
+ 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
++		void *head;
++		void *tail;
++		struct slub_percpu_sheaves *pcs;
++		int freecount, local_node, i, cnt = 0;
++		struct slab_sheaf *spill;
+ 
+ 		list_del(&slab->slab_list);
+ 
+-		object = get_freelist_nofreeze(s, slab);
++		object = get_freelist_and_freecount_nofreeze(s, slab, &freecount);
+ 
+ 		while (object && refilled < max) {
+ 			p[refilled] = object;
+@@ -7039,28 +7062,72 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 			maybe_wipe_obj_freeptr(s, p[refilled]);
+ 
+ 			refilled++;
++			freecount--;
+ 		}
+ 
++		if (!freecount) {
++			if (refilled >= max)
++				break;
++			continue;
++		}
+ 		/*
+-		 * Freelist had more objects than we can accommodate, we need to
+-		 * free them back. We can treat it like a detached freelist, just
+-		 * need to find the tail object.
++		 * Freelist had more objects than we can accommodate, we first
++		 * try to spill them into percpu sheaf.
+ 		 */
+-		if (unlikely(object)) {
+-			void *head = object;
+-			void *tail;
+-			int cnt = 0;
+-
+-			do {
+-				tail = object;
+-				cnt++;
+-				object = get_freepointer(s, object);
+-			} while (object);
+-			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
++		if (freecount > s->sheaf_capacity)
++			goto skip_spill;
++		if (slab_test_pfmemalloc(slab))
++			goto skip_spill;
++
++		if (!local_trylock(&s->cpu_sheaves->lock))
++			goto skip_spill;
++
++		local_node = numa_mem_id();
++		if (slab_nid(slab) != local_node) {
++			local_unlock(&s->cpu_sheaves->lock);
++			goto skip_spill;
+ 		}
+ 
+-		if (refilled >= max)
+-			break;
++		pcs = this_cpu_ptr(s->cpu_sheaves);
++		if (pcs->spare &&
++		    (freecount <= (s->sheaf_capacity - pcs->spare->size)))
++			spill = pcs->spare;
++		else if (freecount <= (s->sheaf_capacity - pcs->main->size))
++			spill = pcs->main;
++		else {
++			local_unlock(&s->cpu_sheaves->lock);
++			goto skip_spill;
++		}
++
++		if (freecount > (s->sheaf_capacity - spill->size)) {
++			local_unlock(&s->cpu_sheaves->lock);
++			goto skip_spill;
++		}
++
++		for (i = 0; i < freecount; i++) {
++			spill->objects[spill->size] = object;
++			object = get_freepointer(s, object);
++			maybe_wipe_obj_freeptr(s, spill->objects[spill->size]);
++			spill->size++;
++		}
++
++		local_unlock(&s->cpu_sheaves->lock);
++		stat(s, SHEAF_SPILL);
++		break;
++skip_spill:
++		/*
++		 * Freelist had more objects than we can accommodate or spill,
++		 * we need to free them back. We can treat it like a detached freelist,
++		 * just need to find the tail object.
++		 */
++		head = object;
++		do {
++			tail = object;
++			cnt++;
++			object = get_freepointer(s, object);
++		} while (object);
++		__slab_free(s, slab, head, tail, cnt, _RET_IP_);
++		break;
+ 	}
+ 
+ 	if (unlikely(!list_empty(&pc.slabs))) {
+@@ -9247,6 +9314,7 @@ STAT_ATTR(SHEAF_FLUSH, sheaf_flush);
+ STAT_ATTR(SHEAF_REFILL, sheaf_refill);
+ STAT_ATTR(SHEAF_ALLOC, sheaf_alloc);
+ STAT_ATTR(SHEAF_FREE, sheaf_free);
++STAT_ATTR(SHEAF_SPILL, sheaf_spill);
+ STAT_ATTR(BARN_GET, barn_get);
+ STAT_ATTR(BARN_GET_FAIL, barn_get_fail);
+ STAT_ATTR(BARN_PUT, barn_put);
+@@ -9335,6 +9403,7 @@ static struct attribute *slab_attrs[] = {
+ 	&sheaf_refill_attr.attr,
+ 	&sheaf_alloc_attr.attr,
+ 	&sheaf_free_attr.attr,
++	&sheaf_spill_attr.attr,
+ 	&barn_get_attr.attr,
+ 	&barn_get_fail_attr.attr,
+ 	&barn_put_attr.attr,
+-- 
+2.50.1
 
 
