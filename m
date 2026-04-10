@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4B1E99076
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77574E9907D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27F006B0092; Fri, 10 Apr 2026 06:32:50 -0400 (EDT)
+	id E3FCE6B0093; Fri, 10 Apr 2026 06:32:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F4B6B0093; Fri, 10 Apr 2026 06:32:50 -0400 (EDT)
+	id DF0106B0095; Fri, 10 Apr 2026 06:32:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11EDD6B0095; Fri, 10 Apr 2026 06:32:50 -0400 (EDT)
+	id CB7FA6B0096; Fri, 10 Apr 2026 06:32:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 01C656B0092
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:32:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D821B99F1
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:49 +0000 (UTC)
-X-FDA: 84642282858.25.CAA5F96
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B9A1C6B0093
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:32:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 670561A04E7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:58 +0000 (UTC)
+X-FDA: 84642283236.15.7EA8E16
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E9DE11A000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=chmVQdNF;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id A1056100002
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=b6+PS95B;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=chmVQdNF;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817168; a=rsa-sha256;
-	cv=none;
-	b=puhPn5yeiKEc+Ch6J6t+UJb0eEC39R6wkgcUs4WyVw8TtaGxfzhF1ySiVB/f/e9S0JG8oQ
-	bl8YkDHBEuk5DrIdw+E7MfyEpabX7kqTH8ivv3sUF/1D7H1RweA8NOJBDFQ0xNhGqbORgJ
-	aIGpeioFaw1TfOxMijYkm1eBUJZ+990=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775817168;
+	s=arc-20220608; t=1775817176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BqdhqUkUnKS4gV7PxlGeeVJLVgaKEdcSEKasWKiDQIo=;
-	b=ktfeX85I0vKESow9nE8hk6pfAZdYdCa4cFEq+VRo2fnpyJpN0yWrXdB1syOcAiYS+G9jbB
-	KcKjRcJkjHtsd4qhrFDAmL/G7jClR7ibbPia0FllsjjoOuVdepVi5RYAyAA4I6DZ+Jtubv
-	iodTy/QeXVKr1qKT+1g1ByiCNkhetD0=
+	bh=Q/5NhYRhCl03q3pihSWe7ft1L9If9GlP2tUY3dmxXxE=;
+	b=bo8BX+lSWM0baTbICO7YRinJXNFTcbBx6N11jBL/SiLOecbm6wWdWxm4AZPNChiDmug/Vg
+	Z5Ieqic+QVlnliXgumGMY4XauVQUqP64va4Dzrvr/NDjmrsic2kpOGPVe1o1KWwLtOxD2L
+	HTmmXKdBKoHLK/+CntCYFJk6DdN+LMU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=b6+PS95B;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817176; a=rsa-sha256;
+	cv=none;
+	b=WIw78sOHzqscquHs/1ANl7iy+CHN6ClZBvnjJkdXHJFHx9LaXMBU22AzgoAplwPtaoBFQR
+	GEnI20AQydeOX44Z/H86OJs9yx3ztSaAU3Ig8ZNIWSkuQslUjbduW4a9vWys8OokiWwnwu
+	CMao7YjVrHRc9c5yBaY3Ba3VHchLSSo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EA5F2681;
-	Fri, 10 Apr 2026 03:32:41 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EBBE2682;
+	Fri, 10 Apr 2026 03:32:50 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D22F33FAF5;
-	Fri, 10 Apr 2026 03:32:38 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 92EFB3FAF5;
+	Fri, 10 Apr 2026 03:32:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775817167; bh=X7DlvXowYL6w+6n3AW64YW79PXkvSOgsC12lJIyy+DA=;
+	t=1775817175; bh=caKXDhVV7OSoFkbvLj/dPJkPGoMKHBzSGDJtbDEn0Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chmVQdNFRnxFZW1c2PeiQ45e2n4251vCjuRZc+/Ml+7/MHJC7bt7lwbm7ixvDeX+C
-	 0gfeMHhQQxxQnRTUjY3X6UgbYTRXDReYyHWTuq1h9hyGe4I4EgCriYLjWt5vcyDVcq
-	 RJ5e1f2yFbEjw2vL/ZLDYEMQLNaWmCAoSBeZklIM=
+	b=b6+PS95BFzLUjvFSdizyN/iTJgGePZWWNKL7DzMAc+OfVgATLlrKI08QXy64iceAK
+	 XgPjoTcY6qT13gn1dOcGbCFa2UQa0W6IqGGg+D5l5PHTNCCZjqioviSd7oopUC5FqV
+	 SdLSw1d9FJ0kuBbPlvxMvfWsxe272DAdl+3S+srU=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: ljs@kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 3/9] mm/rmap: refactor some code around lazyfree folio unmapping
-Date: Fri, 10 Apr 2026 16:01:58 +0530
-Message-Id: <20260410103204.120409-4-dev.jain@arm.com>
+Subject: [PATCH v2 4/9] mm/memory: Batch set uffd-wp markers during zapping
+Date: Fri, 10 Apr 2026 16:01:59 +0530
+Message-Id: <20260410103204.120409-5-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260410103204.120409-1-dev.jain@arm.com>
 References: <20260410103204.120409-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E9DE11A000A
-X-Stat-Signature: yh5mrmbem3q3a9napdc75z5c98g5chpz
+X-Rspamd-Queue-Id: A1056100002
+X-Stat-Signature: cj1pwek5u43nk34ysr45qno9q1aewj1n
 X-Rspam-User: 
-X-HE-Tag: 1775817167-172084
-X-HE-Meta: U2FsdGVkX1/ssavFlOox+4jpgee6lQNvh02OY+u4g96wa4pLEUyPAt2Ta8Ig69y3LVAS/2sa3xGJCvslVf7hCV0y4x8fA2qxpJ8qtjsLFxTDSfFVOORgDJoYduuWN1mFVTYNxuH8o+6FAozox17lQFiCXQpOArBhzK0nyIquVvds0xv4hNIUr+WVQby+fTg0Z8ijeey8ytA/yXt1faC/Qrb0+qED4WCX3OHRIgLfqr346+inmv7031EkWvwanr7nGRMqvJPnQFXqbATSZAEpxn9hBKLrx9EmxLpMHT/4OioA4WeEJUxw6lo3s5frvtPlQq3YBQD+CQ/GTEYpFKm3ArlUT+p6j4ZaTg5ncOgUsYC6uZvVm98GoMqnQo8tMEtBGeeDLgeToBBLGBnVTuBLZgr+n1TNzGFiroFidHj5ODvUxarDHiaOq0nzEltlEXCNU8K5m7BRcp1EwQ5sMQ4KtrQsWtinFY2OmOcxQyIjjO3eia54Fcq/oT6qh5zV9D6idnRvos8JKtNgTrQ6yQ91SMmwH5/HPaf5QiDmrUALGwD86tl6mef9Ip7zt+G840+92+X+vLFNSd9jY/LIc2PCvIP4Qssji+Ymp7uv4WCfdVV1BW5jLtS5DdYfj7xBzRJ5/Ylk83lSlHYlGECC6qz6SxdYOZlJZ80HzI+Ua708+qxIQxIaeF77jmW233oBS6rfu9/vrnk1nutPjJn2vTrqUJs/9ECPAgr4Po/A0yaar1z96s4ZV8b4qjCBPahnaC/SOruLcmZMz/ar00aZW/U4bSykRNdhy7a+R1rk/gI4Ri4B01TfPeDWFr30BeBjiwAdrT56cmG+zZMl39fSd3EZujQ2QM9rGIhPMYShY/wH9z9sl5MN0+SJ7BxaQQqwitmyNh5yuzyLqmH7hnrxV23m85fue//E3UjL5M30osPb0ISv5EwKOixSKPaukKhXo176p6TK6DL04dbAPLuosIz
- jO4YBqYp
- f3N28j31Ul33qFkEGd0g4kEwZoiiJUpQok1THCcPIqvxH61VEDT8yNCJUJtsyI6Wuio8dqYP8v+9veY8cOKVZF+6D8nnqBHNt5xOpFqTk+vrmBR7PjZihUu5c0IwtnPoN04UMqabNW1fJTHIzb4cGz3Q4JYfEYrc1M69dDFRchuQ6WBLAWuay+7zt52dgNE3eOzSnNNXXbQIKGSXFeHELq+XOiksiZ31P/kKLXMSudn19GmfNy4KBqDt+GDz3xoxqWdgJh3ygOdMpYekEFrmRhCTyqA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775817176-505094
+X-HE-Meta: U2FsdGVkX1/UkZ0MVBegODPhV0wmKi5fBoeslfyP/rSB5P7E/HKYn/CX9Q5+fv7g0w6k3MsuuPLi7aPCp+kYkVNDWSrdbnHLBFkmF64tVfItwT4tXMSNaAp1ZZdvgTx8H5s5DUobhx6IBBtQ0/dzbYAGgCvTe9gmlNNzDWiCfJThY9JAlJDscWc7VxXN7cYwtFZwmGQSPlU+cm7yqzZQOKCi87DwRp3rGi1kl03wReqVcMTgvqpF4p9ymE6uydKiI9FEyMoptZPl4Qm7ip/gXwkzPcAXBAC1m6EuP6kZvvGMpxSEwk1S2DEaRBwXjZq4JoMQlf5UekdNhfEhUyrAcxCn/jV/+mEUtv2F4CA1KvBv04CRSojO8knuoWxcNxQISqlr16oLQZeTRrmZfl79GxytiTU1cTOtlRcPt2b2INZfozl4SsMS1vecD3dyhAvZefQN9EzF5I8IR149gWBs5dgfNUPSanG6Z9LEASWIMZ+N7c1wEbg2cZfVctacI49mp9HQyhYjypXV51NPd6Oe6vJBKUnw8+zSuUKvJ/F8FvWBKeFPt9YRBq8I4jEAeA2/GmqRkwIzOB+QAhN1pd792MbbUkBocNb80+QC+0J7q+tAWDBjaduRglLBht80q3PZD7d8UuENbtRrGoxTYVRmNmDNGj1MmA22lr3XaNpP1N9EnsJP1L7avwzk5cyWufTU32TYQBr1no+mKWjYiE8RyXwyoY2lhw1Mxe+P6eVGAA2YlzbsI7mtIeJFrM0WMWD7Qz7AD+WGcg/n5yP9u/qd9w8vx1GGF/CKQzDOFF+A6SMBR89H117F1rDMQW/DBQWBezK4Okq5su0SFAaRgunJ/7AzBroaE2S3e3Aoes/tK+FGE6sdXncXUMGorf3We5BBbOU0zH2jLveG4jy9MFXj1xnvJczqhon8O2Rtac3lMz0taRZCmCOR5UZ6B2iObVPfaMIkyhZ/BpKKVzWPsjQ
+ 09ofPJS4
+ vAx0LZkihNoo7HkmAjl+feiT+jD6lDPPsfuQoCARAQ9VxY6pshqOCXYNx52FgOR+PXWlWnmQGgIMENNq3IEFLzoOZgcT+Hv7GFeYAsSj+FtHQ+3VA9+ZfSPX/B23+bMCFY3DrftytecIBqGeyPFMGdyQW2YS2UgWtV7V1G7m03409vw3Z8CIyGX8qC+kaKzCL2JbxxXczEkujGm3S7cDWEE15ggol4rSZLAJ9pc9uV7dhouzNuRCZJiU1TA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,147 +115,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For lazyfree folio unmapping, after clearing the ptes we must abort the
-operation if the folio got dirtied or it has unexpected references.
+In preparation for the next patch, enable batch setting of uffd-wp ptes.
 
-Refactor this logic into a function which will return whether we need
-to abort or not.
+The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
+that nr through either folio_pte_batch or swap_pte_batch, guaranteeing that
+all ptes are the same w.r.t belonging to the same type of VMA (anonymous
+or non-anonymous, wp-armed or non-wp-armed), and all being marked with
+uffd-wp or all being not marked.
 
-If we abort, we restore the ptes and bail out of try_to_unmap_one.
-Otherwise adjust the rss stats of the mm and jump to a label.
+Note that we will have to use set_pte_at() in a loop instead of set_ptes()
+since the latter cannot handle present->non-present conversion for
+nr_pages > 1.
 
-Also rename that label from "discard" to "finish_unmap"; the former
-is appropriate in the lazyfree context, but the code following the label
-is executed for other successful unmap code paths too, so 'discard' does
-not sound correct for them.
+Convert documentation of install_uffd_wp_ptes_if_needed to kerneldoc
+format.
+
+No functional change is intended.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 95 ++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 55 insertions(+), 40 deletions(-)
+ include/linux/mm_inline.h | 32 ++++++++++++++++++++------------
+ mm/memory.c               | 20 +-------------------
+ mm/rmap.c                 |  2 +-
+ 3 files changed, 22 insertions(+), 32 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index a9c43e2f6e695..fa5d6599dedf0 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1978,6 +1978,56 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a171070e15f05..20c34d14ad539 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -566,9 +566,17 @@ static inline pte_marker copy_pte_marker(
+ 	return dstm;
  }
  
-+static inline bool can_unmap_lazyfree_folio_range(struct vm_area_struct *vma,
-+		struct folio *folio, unsigned long address, pte_t *ptep,
-+		pte_t pteval, unsigned long nr_pages)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	int ref_count, map_count;
-+
-+	/*
-+	 * Synchronize with gup_pte_range():
-+	 * - clear PTE; barrier; read refcount
-+	 * - inc refcount; barrier; read PTE
-+	 */
-+	smp_mb();
-+
-+	ref_count = folio_ref_count(folio);
-+	map_count = folio_mapcount(folio);
-+
-+	/*
-+	 * Order reads for page refcount and dirty flag
-+	 * (see comments in __remove_mapping()).
-+	 */
-+	smp_rmb();
-+
-+	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-+		/*
-+		 * redirtied either using the page table or a previously
-+		 * obtained GUP reference.
-+		 */
-+		set_ptes(mm, address, ptep, pteval, nr_pages);
-+		folio_set_swapbacked(folio);
+-/*
+- * If this pte is wr-protected by uffd-wp in any form, arm the special pte to
+- * replace a none pte.  NOTE!  This should only be called when *pte is already
++/**
++ * install_uffd_wp_ptes_if_needed - install uffd-wp marker on PTEs that map
++ *				    consecutive pages of the same large folio.
++ * @vma: The VMA the pages are mapped into.
++ * @addr: Address the first page of this batch is mapped at.
++ * @ptep: Page table pointer for the first entry of this batch.
++ * @pteval: old value of the entry pointed to by ptep.
++ * @nr_ptes: Number of entries to clear (batch size).
++ *
++ * If the ptes were wr-protected by uffd-wp in any form, arm special ptes to
++ * replace none ptes.  NOTE!  This should only be called when *pte is already
+  * cleared so we will never accidentally replace something valuable.  Meanwhile
+  * none pte also means we are not demoting the pte so tlb flushed is not needed.
+  * E.g., when pte cleared the caller should have taken care of the tlb flush.
+@@ -576,11 +584,11 @@ static inline pte_marker copy_pte_marker(
+  * Must be called with pgtable lock held so that no thread will see the none
+  * pte, and if they see it, they'll fault and serialize at the pgtable lock.
+  *
+- * Returns true if an uffd-wp pte was installed, false otherwise.
++ * Returns true if uffd-wp ptes were installed, false otherwise.
+  */
+ static inline bool
+-pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
+-			      pte_t *pte, pte_t pteval)
++install_uffd_wp_ptes_if_needed(struct vm_area_struct *vma, unsigned long addr,
++			      pte_t *pte, pte_t pteval, unsigned long nr_ptes)
+ {
+ 	bool arm_uffd_pte = false;
+ 
+@@ -610,13 +618,13 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
+ 	if (unlikely(pte_swp_uffd_wp_any(pteval)))
+ 		arm_uffd_pte = true;
+ 
+-	if (unlikely(arm_uffd_pte)) {
+-		set_pte_at(vma->vm_mm, addr, pte,
+-			   make_pte_marker(PTE_MARKER_UFFD_WP));
+-		return true;
+-	}
++	if (likely(!arm_uffd_pte))
 +		return false;
-+	}
-+
-+	if (ref_count != 1 + map_count) {
-+		/*
-+		 * Additional reference. Could be a GUP reference or any
-+		 * speculative reference. GUP users must mark the folio
-+		 * dirty if there was a modification. This folio cannot be
-+		 * reclaimed right now either way, so act just like nothing
-+		 * happened.
-+		 * We'll come back here later and detect if the folio was
-+		 * dirtied when the additional reference is gone.
-+		 */
-+		set_ptes(mm, address, ptep, pteval, nr_pages);
-+		return false;
-+	}
+ 
+-	return false;
++	for (int i = 0; i < nr_ptes; ++i, ++pte, addr += PAGE_SIZE)
++		set_pte_at(vma->vm_mm, addr, pte, make_pte_marker(PTE_MARKER_UFFD_WP));
 +
 +	return true;
-+}
-+
- static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
- 		struct folio *folio, struct page_vma_mapped_walk *pvmw,
- 		struct page *page, enum ttu_flags flags, pte_t *pteval,
-@@ -2256,47 +2306,12 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ }
  
- 			/* MADV_FREE page check */
- 			if (!folio_test_swapbacked(folio)) {
--				int ref_count, map_count;
+ static inline bool vma_has_recency(const struct vm_area_struct *vma)
+diff --git a/mm/memory.c b/mm/memory.c
+index ea65685711311..eef144fa293d4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1594,29 +1594,11 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+ 			      unsigned long addr, pte_t *pte, int nr,
+ 			      struct zap_details *details, pte_t pteval)
+ {
+-	bool was_installed = false;
 -
--				/*
--				 * Synchronize with gup_pte_range():
--				 * - clear PTE; barrier; read refcount
--				 * - inc refcount; barrier; read PTE
--				 */
--				smp_mb();
+-	if (!uffd_supports_wp_marker())
+-		return false;
 -
--				ref_count = folio_ref_count(folio);
--				map_count = folio_mapcount(folio);
+-	/* Zap on anonymous always means dropping everything */
+-	if (vma_is_anonymous(vma))
+-		return false;
 -
--				/*
--				 * Order reads for page refcount and dirty flag
--				 * (see comments in __remove_mapping()).
--				 */
--				smp_rmb();
--
--				if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
--					/*
--					 * redirtied either using the page table or a previously
--					 * obtained GUP reference.
--					 */
--					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
--					folio_set_swapbacked(folio);
-+				if (!can_unmap_lazyfree_folio_range(vma, folio, address,
-+				    pvmw.pte, pteval, nr_pages))
- 					goto walk_abort;
--				} else if (ref_count != 1 + map_count) {
--					/*
--					 * Additional reference. Could be a GUP reference or any
--					 * speculative reference. GUP users must mark the folio
--					 * dirty if there was a modification. This folio cannot be
--					 * reclaimed right now either way, so act just like nothing
--					 * happened.
--					 * We'll come back here later and detect if the folio was
--					 * dirtied when the additional reference is gone.
--					 */
--					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
--					goto walk_abort;
--				}
-+
- 				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
--				goto discard;
-+				goto finish_unmap;
- 			}
+ 	if (zap_drop_markers(details))
+ 		return false;
  
- 			if (folio_dup_swap(folio, subpage) < 0) {
-@@ -2359,7 +2374,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
- 		}
--discard:
-+finish_unmap:
- 		if (unlikely(folio_test_hugetlb(folio))) {
- 			hugetlb_remove_rmap(folio);
- 		} else {
+-	for (;;) {
+-		/* the PFN in the PTE is irrelevant. */
+-		if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
+-			was_installed = true;
+-		if (--nr == 0)
+-			break;
+-		pte++;
+-		addr += PAGE_SIZE;
+-	}
++	return install_uffd_wp_ptes_if_needed(vma, addr, pte, pteval, nr);
+ 
+-	return was_installed;
+ }
+ 
+ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fa5d6599dedf0..20e1fb81c33fc 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2263,7 +2263,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		 * we may want to replace a none pte with a marker pte if
+ 		 * it's file-backed, so we don't lose the tracking info.
+ 		 */
+-		pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
++		install_uffd_wp_ptes_if_needed(vma, address, pvmw.pte, pteval, 1);
+ 
+ 		/* Update high watermark before we lower rss */
+ 		update_hiwater_rss(mm);
 -- 
 2.34.1
 
