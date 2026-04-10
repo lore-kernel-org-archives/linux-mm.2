@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3266F44847
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64E12F44850
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5436E6B00C1; Fri, 10 Apr 2026 08:20:22 -0400 (EDT)
+	id CE5516B00C3; Fri, 10 Apr 2026 08:20:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3FE6B00C3; Fri, 10 Apr 2026 08:20:22 -0400 (EDT)
+	id C95396B00C5; Fri, 10 Apr 2026 08:20:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E32F6B00C4; Fri, 10 Apr 2026 08:20:22 -0400 (EDT)
+	id B83D06B00C6; Fri, 10 Apr 2026 08:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE716B00C1
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 02967E1CDD
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:21 +0000 (UTC)
-X-FDA: 84642553884.18.7F2AAA0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A359B6B00C3
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 74ABC5888E
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:27 +0000 (UTC)
+X-FDA: 84642554094.13.E40C2AE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 53557A0019
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7az2CYX;
-	spf=pass (imf15.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id A7FB3C000E
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0dC5Jtr;
+	spf=pass (imf10.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823620; a=rsa-sha256;
-	cv=none;
-	b=smCl7F8eeH9m7aTsbycjgzS74dNbtqC7cJFyHKv/UmRhYmdqw1nN1efftJd/JZae6US7Tc
-	ZYHgLWMFUzAHwy9EZP5MfKsQUFYQwpWfZxVraDZewFETCjGTShilzGvgBy++uOFBGI+DW7
-	CFEM3Y1d/zBG6s0ruGButEt234QsMec=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823620;
+	s=arc-20220608; t=1775823625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=AqOQD77ovJbDZAalLb7LttNXWfQNwpbHnO0m4lNbaKQ=;
-	b=FARpJ6pkMAi9zeqIr2jUMlbY/5zBjQEHYgViIsVG2MdLzcDMGoRgmjdcfp1vfzRsrns9PB
-	VX2IXPD5HQ3/notyD7nDBEibD6OiWuOvk3EXxj8nT2ECUABTpgTmiw0xa2ZRAkV8k0hINV
-	3aGObpgleNWmHSskzry46vFJxvYEnK0=
+	bh=ckn3790Plbsh2S84qXvQH3wmGMizlSPUdQHepF2eyP4=;
+	b=27sLmVLuXpHgXnkagjA4Qwvh4BTAIOF3kRK7FJZd14jxNKQDjjVlA3jY8qt5kL29PAANt0
+	vZH7TCxIlfJAwGytG5Nd8tN9eaHlOVgidD6hGC8qWBaVv0R439B6ak+z23lGhf/zg3wwJ5
+	+yPdA3iAc2sfipKLDrnOtmL4m6pew1g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823625; a=rsa-sha256;
+	cv=none;
+	b=VlF/et6Bz2ZhsDqHeGDDsBAz5gqeFFEL5CIwWP2I8Ywt4sfM55Bs8t3tkdJG6zLA7H+pQz
+	PLwb19WDiijVuYPj+k4KYsqBRk5DpiBY0xTfFMdajxUcRaqgYwVlkEMl5nFOiWBxk2mlgJ
+	sLqbfIn846QfbKmhkZH0zU8/+krq7ko=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C7az2CYX;
-	spf=pass (imf15.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0dC5Jtr;
+	spf=pass (imf10.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 806A043DD1;
-	Fri, 10 Apr 2026 12:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21BC19421;
-	Fri, 10 Apr 2026 12:20:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A040C438DE;
+	Fri, 10 Apr 2026 12:20:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8D1C2BCAF;
+	Fri, 10 Apr 2026 12:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823619;
-	bh=qm3xQcBXEr96lL4hegVcj0UIOMtgXH0StGBPsgVLlKQ=;
+	s=k20201202; t=1775823624;
+	bh=oFanz67wDB6XocOAPDGw4dDZpTIkPCesLmisdDG6nxo=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=C7az2CYXx68wjErxLRkuWTeHqh2CiNCWSqYoEW7CDASKgYcRJIgZbMFxC0wyGwYuo
-	 q2wWS5Il3rSZIvkXMrziJDymJeOKDwzCu+GiLTUQ15ObFw+7EBHLm3ubP5lL1H6hxr
-	 ReCtVW/VKZ0Y6HBv+Xxa78vZHjPEyhGg6WzSGQLG1W0Tyuqe7kgGZgc8KKs+JzIX6a
-	 qzTQ3qBxeH5MKjO5ANy/+fOcCKNQ7HWyamJ7hE6VNKzzJsl13+xyi236101/gCvlT5
-	 hn6GusmLxuTParC929bCg39takaaNPRV5A3bS+11CTndJSbqW1MjcdkxKmUqQfmLua
-	 lqUqNEa3EnLWw==
-Date: Fri, 10 Apr 2026 14:20:16 +0200
-Message-ID: <20260410120319.064561422@kernel.org>
+	b=c0dC5JtrlZ2hDwVhQHVakSSF0GbYurUcyOeInN2NikRGB2GB116TXZbw4nZgMtYST
+	 +trrlORaNRGlhOHpfrC+lW1HFBRAEy8GyOUXKZu1wlydXKozlVO6l7tAEsojNrD9kY
+	 z8EDy3AU6BDmVg1em2KMGfc38GeNfIIV9PZdmIDh6XXPID1ZvpPfEKL37BFIXkriEy
+	 vg9bLTMeocXCte6TCzTTMg21Eh6HrXJDyZdGV1tmWvL/lAElJukNPv/QpJCLNXioOw
+	 AQtioNlgi2FcvW/yMQPolJ5GR/97GritVQBv4kElLuN4ah4YH0PTQC3eZtbzxU1vfd
+	 IORnVjKLVUNIw==
+Date: Fri, 10 Apr 2026 14:20:21 +0200
+Message-ID: <20260410120319.131582521@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -93,8 +94,7 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  Thomas Sailer <t.sailer@alumni.ethz.ch>,
  linux-hams@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Russell King <linux@armlinux.org.uk>,
  linux-arm-kernel@lists.infradead.org,
  Catalin Marinas <catalin.marinas@arm.com>,
@@ -115,18 +115,18 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 22/38] random: Provide CONFIG_ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 23/38] alpha: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Server: rspam12
+X-Stat-Signature: sryc1y3thod5p7z88ytfbomk8wtaguqa
+X-Rspamd-Queue-Id: A7FB3C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 53557A0019
-X-Stat-Signature: nf933dgrankfxbyu14babr8hh4a9rjiz
-X-HE-Tag: 1775823620-390485
-X-HE-Meta: U2FsdGVkX1/WSjIjsE0NqHxH5lMiUXBMSD/5pItcBzbf389AZlS0zeI0S4SVU4uzpywMosmQFI5u+yDcALVpzZjMK8s7mvy8sEVU9W0PghUchS3bjHX4c8KfmMTG7/70Wv/R4v1qoWj98lo0TXDCUPi4D5aFdJftpsOrz6MYb3myy+NuNTj7ndbj86k54vRbbQYtIklYS70SYy8xRm8Otp6Bgj8DBM0CzBc5jt3eTlFE9rkvKx6Yv4ri9YS61bt3Hjtt8rqI0IYSXdoUISn6TK6JQzSH9UyzrLxnEubdaA5SGEPhLTNgDl2KbstapmGWQtIOO9VvLQJ1Il6VL/TLnA1jqtwvJIZad4Vj7WqVwTZ51A7a74yvD+mv6Zdhk5bXLYvBtOE8LDCySNqRsQe0mF3ViPh9Hl/zQERxjwHayLWmd0BsPI5SSX1GD35KALgJ+uH3y9Ia+3pN/u55Q94y8oPyxG4heU7bCpgPl5NzcObsQx8KpESZTn27UcL7/mNFOarW4hFNOe1fG4hbE749802tLZ5tUCMZBCGkHSfLSAA+K6YjIAqSj1wVV2BbcUS1n6aebpzCuU2Ea2wQQw6OA/LxssR4T4y4wdqYFWZX+jpLSq1/UX/PPCFl08n/WCHrDFOVaHL9LW754HrkaFyd9tG1dsF96Q1l+aOBoED4BqqLJLcBqIi2cKHq8HsFZhCTo6eq2Lh9PBbN6n4CGUU1QgW+q634dd9qcvChQEIQDSwnXz+uIzFhk0jOsATeFUZgo5LBOajnhEsSPABX5DBUwEpSXSuFt1qQKA5Ene5ZAEqrmu/NwYepizB+7jAZu/yLgwDK6nuiHR1Aes9vQ0YfB/5IURPydFkH7hyvzP2V79m6FHxxlJfYZ9KVkUKdAxq3HYAGpqtv92LoYp6zl8mD1yA938OYUOyyP6uWxm5PIbu1R/WDtnqwZZhU2BJJS1tA4/DJ2ff1LuiULtSwuXf
- nIrEH3hV
- bWriYdM3zck2SzI4/tFhHqxPVlM9OTg9Ol6EnOFWyubTwnExo0StWVqyraielc+Q/9RBiwRUhR4g2hzci02Tr69qDKFfIP9dX4s/kp7/ccM6fjTjJPIxP2Qq1RKuqINPKaUORkcGjoMjdWg4WA1fRP5XJbVl6wEPbNPMFqkM04F5jMlX8QeyldeEDtYEU9I8LGuV3ZGx6Khh+ilTCCgYtnzpZAtCxQG5dwJCNrsCtFRHqJG/MWoDup8piJXxRlUXSgZrQ9Y8MFFPCAmCqkuqdHbl5tGJiusEKPQtYRk3koDTyqcYSo5gOK+rYXNmfEChu5qrFnJfSV0DA4UvnqEWH/sT8E0Gv7/+hBG/3rvLnwH+40CUoT5yIqpdW2Z5GJPVnYx04VwJpDd5etZvU9yLF8qMNmIBvAJOpOi7gGTXWnGEV7zK8lwzRembRXU/MavzyAhiClTDzDFOUEvc=
+X-HE-Tag: 1775823625-171481
+X-HE-Meta: U2FsdGVkX18pPTw00qm2et8adT3IAlkk4Eh4wrp8s7iV+e0vDXX8ipqGpOGztQMn8AMx+jqI3ZYjoBjKbuW18BL3gFzk02kMgcrY0LqkzhBMe9tKLjTc63DEwZxeRubsKfFV+BhUQSj5AkaD1ZNUZ12ohco3zu+z7AVhnzYJ+FjntiEqI7nIAPs9xMcZVE6DQmcD60QTgkYSIA+skqVZPuzulGgno1KFvdq+tepSbP605qDvCrGQSCIUf6MseGOlhOb8OvcgbsOPSPPR9U4wlGRAmWY31ScU0uC9sbMl5Ua+zXBrAyKYHM0jOamwoI41CxUv6yFqleozTY6Cvj2S6uy+b8IvTxHuc2uGL4IAKz2P1QlWyzK5hVqgmAFRZa375V8HrU8WhvuHpe+TCMke8RcuPPYNwKgNdQiAePlzX4Zp55Rxk4ud28eiU6RsDhNKfCqLUaSqtqD4K9e9WpXCHkqR+TMMIZhvFo70POEKZrHGydS+jKDekHQcbf6qtslvXf1OaNVjcZRRA8R3/M8IpSIKjvRrdkIWGT5FWUOWesGW5NfaOgLk7XWBaRBwMHNdhaCf83lQ2w1dUj3Y65LPzkWiItfP4nF/Dvy2Z3Hw9JolATdvJolCgMLtqBXZIw0yqXYCF3ePVShJlo4Q2YoZu+UvNYEUIjTTWYZwUccrOBXbaUsA8XG4GT4EaPVi9Fwj3Vtod32OCotx031Z9SXEQK/LPn3RYxo3fSmcjESptSncGNZgXLPBaAHfOztVXSmroY9yFZSSn+TP+rwaXaZNpiUWdq2REFmgyu0Z/RB/x49a0MiPfqb5+i5iRsQoZHsPUwnYCuBW/lFJied3uVcVeKzzwLvoeYFYc4DC+bf142yLbXdAXkJkZFGjDKk5JnBrtDtC8YRtIFDBLquq09zU7w4vEmFeedt57GvV30Ho/G0oW039Ud/sUycRawQhUVGzrafQMJnv+le2yRT/NCH
+ Jkno9Fgv
+ hK4TSj6NiDz5pg4rQ/CNBzcyyu79Bn5FjGte+Cy5kpj9L1Xo5TTuGxFWoCiX4l0gYrkfYcvmXUOqZ2lhVU9zWXG2BLyU9asVwVhXJbTLte1AEqOgR5un3vxvz2pAPNl1aiY8P8Qqk9vf6ASQnaWWVnxI6w2N5KRc0cG7/kqhEF6lqBIa8rfOVDaUOmBpcwINAk7IgS8s+gkS+IGJSf+8cei25uORwOlQxL+CMIzq/dzR7e/YlY2RZ2iqbUIk5AaaOmxBAWlvfZVysdZ5Y+J7AVPQI/v8Nw0uSrjdJEzP8FSmjRWH8FDxKiOUv83vX4JRr18LZcRAmh6xSumAMm2wVuNTacJyc86xavhHQugeCS8c47THVYwBQnttSKC/MLNekwFR7NdNP/Vpb5SOMSNY4UlO8t4LRz5wlgQFElZPPz+kh7zQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,125 +134,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Chasing down to what random_get_entropy() resolves is a 'spot the mouse'
-game through a maze of #ifdeffery. Also the placement in timex.h is
-non-obvious and has just been chosen because it provides conveniant access
-to the underlying get_cycles() #ifdeffery.
+The only remaining usage of get_cycles() is to provide
+random_get_entropy().
 
-Provide a config switch which is selectable by the architecture and a
-temporary #ifdef guard in timex.h. Architectures which select the config
-switch must provide asm/random.h with the architecture specific
-implementation.
+Switch alpha over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+and providing random_get_entropy() in asm/random.h.
 
-Update all usage sites to include linux/random.h so that the gradual
-conversion does not cause build regressions.
-
-This is part of a larger effort to remove get_cycles() usage from
-non-architecture code.
+Remove asm/timex.h as it has no functionality anymore.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: linux-alpha@vger.kernel.org
 ---
- arch/Kconfig                     |    3 +++
- arch/loongarch/kernel/relocate.c |    1 +
- arch/mips/kernel/relocate.c      |    1 +
- crypto/jitterentropy-kcapi.c     |    1 +
- include/linux/random.h           |   15 +++++++++++++++
- include/linux/timex.h            |    2 ++
- kernel/kcsan/core.c              |    1 +
- 7 files changed, 24 insertions(+)
+ arch/alpha/Kconfig              |    1 +
+ arch/alpha/include/asm/random.h |   14 ++++++++++++++
+ arch/alpha/include/asm/timex.h  |   26 --------------------------
+ 3 files changed, 15 insertions(+), 26 deletions(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -370,6 +370,9 @@ config ARCH_HAS_CPU_FINALIZE_INIT
- config ARCH_HAS_DELAY_TIMER
- 	bool
- 
-+config ARCH_HAS_RANDOM_ENTROPY
-+	bool
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -5,6 +5,7 @@ config ALPHA
+ 	select ARCH_32BIT_USTAT_F_TINODE
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DMA_OPS if PCI
++	select ARCH_HAS_RANDOM_ENTROPY
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select ARCH_MODULE_NEEDS_WEAK_PER_CPU if SMP
+--- /dev/null
++++ b/arch/alpha/include/asm/random.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASMALPHA_RANDOM_H
++#define _ASMALPHA_RANDOM_H
 +
- # The architecture has a per-task state that includes the mm's PASID
- config ARCH_HAS_CPU_PASID
- 	bool
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -9,6 +9,7 @@
- #include <linux/kernel.h>
- #include <linux/printk.h>
- #include <linux/panic_notifier.h>
-+#include <linux/random.h>
- #include <linux/start_kernel.h>
- #include <asm/bootinfo.h>
- #include <asm/early_ioremap.h>
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -19,6 +19,7 @@
- #include <linux/libfdt.h>
- #include <linux/of_fdt.h>
- #include <linux/panic_notifier.h>
-+#include <linux/random.h>
- #include <linux/sched/task.h>
- #include <linux/start_kernel.h>
- #include <linux/string.h>
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -42,6 +42,7 @@
- #include <linux/fips.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/random.h>
- #include <linux/slab.h>
- #include <linux/time.h>
- #include <crypto/internal/rng.h>
---- a/include/linux/random.h
-+++ b/include/linux/random.h
-@@ -139,4 +139,19 @@ int random_online_cpu(unsigned int cpu);
- extern const struct file_operations random_fops, urandom_fops;
- #endif
- 
-+unsigned long random_get_entropy_fallback(void);
++/* Use the cycle counter for entropy. */
++static inline unsigned long random_get_entropy(void)
++{
++	unsigned long ret;
 +
-+/*
-+ * random_get_entropy() is used by the /dev/random driver in order to extract
-+ * entropy via the relative unpredictability of when an interrupt takes places
-+ * versus a high speed, fine-grained timing source or cycle counter.  Since it
-+ * will be occurred on every single interrupt, it must have a very low
-+ * cost/overhead.
-+ *
-+ * If an architecture does not provide it, then use random_get_entropy_fallback().
-+ */
-+#ifdef CONFIG_ARCH_HAS_RANDOM_ENTROPY
-+#include <asm/random.h>
++	__asm__ __volatile__ ("rpcc %0" : "=r"(ret));
++	return ret;
++}
++
 +#endif
-+
- #endif /* _LINUX_RANDOM_H */
---- a/include/linux/timex.h
-+++ b/include/linux/timex.h
-@@ -66,6 +66,7 @@ unsigned long random_get_entropy_fallbac
- 
- #include <asm/timex.h>
- 
-+#ifndef CONFIG_ARCH_HAS_RANDOM_ENTROPY
- #ifndef random_get_entropy
- /*
-  * The random_get_entropy() function is used by the /dev/random driver
-@@ -85,6 +86,7 @@ unsigned long random_get_entropy_fallbac
- #define random_get_entropy()	random_get_entropy_fallback()
- #endif
- #endif
-+#endif
- 
- /*
-  * SHIFT_PLL is used as a dampening factor to define how much we
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -18,6 +18,7 @@
- #include <linux/moduleparam.h>
- #include <linux/percpu.h>
- #include <linux/preempt.h>
-+#include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/string.h>
- #include <linux/uaccess.h>
+--- a/arch/alpha/include/asm/timex.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * linux/include/asm-alpha/timex.h
+- *
+- * ALPHA architecture timex specifications
+- */
+-#ifndef _ASMALPHA_TIMEX_H
+-#define _ASMALPHA_TIMEX_H
+-
+-/*
+- * Standard way to access the cycle counter.
+- * Currently only used on SMP for scheduling.
+- *
+- * Only the low 32 bits are available as a continuously counting entity. 
+- * But this only means we'll force a reschedule every 8 seconds or so,
+- * which isn't an evil thing.
+- */
+-static inline cycles_t get_cycles (void)
+-{
+-	cycles_t ret;
+-	__asm__ __volatile__ ("rpcc %0" : "=r"(ret));
+-	return ret;
+-}
+-#define get_cycles get_cycles
+-
+-#endif
 
 
