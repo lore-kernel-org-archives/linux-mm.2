@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE955E99052
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 584C3E99052
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:04:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19DCE6B0005; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
+	id BFFFB6B008C; Fri, 10 Apr 2026 04:04:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14EE56B008A; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
+	id BD7AC6B0092; Fri, 10 Apr 2026 04:04:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08C986B008C; Fri, 10 Apr 2026 04:03:07 -0400 (EDT)
+	id B14E26B0093; Fri, 10 Apr 2026 04:04:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9A846B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:03:06 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9689DC19F7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:03:06 +0000 (UTC)
-X-FDA: 84641905572.13.CBE538F
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6FF031C0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:03:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of jiang.kun2@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=jiang.kun2@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id A145E6B008C
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:04:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 64AAC140460
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:04:16 +0000 (UTC)
+X-FDA: 84641908512.19.089FD35
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9936710000C
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:04:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=YI2JGwcN
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775808184;
+	s=arc-20220608; t=1775808254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=i4hfQBUq+NP13pm7RDDqIV/eYyYxcif9UaXbfhK+a3g=;
-	b=60z4MOixVzjlYtfZ7FdqZnz5rpxAkC1ld1cU67tP3sDWnVmm2IeBarkU9ZfgJL7otmonWl
-	StTH1rSl+0Xh6d9oA1nxPmyzdQr00u+vZzF5MBhD/6qC+VJT+FYcEM3/Jhf3Qy08CgN6VH
-	DenKm8nJXeVqP1bQkxjAk0ECt3Ai+C0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775808184; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qnWyemV+NZsY/YXdFzXMuhYB31BzKbN6+vDsj78YGmo=;
+	b=FCg57L28gjh8wSk0Wpzg52p39j73vlZgCxWZD/RuPDc1MGt9UKLZ1sqBik5LUnOsGpD/vt
+	AoXiYh6rL53745yyV8nOQ2aLXTXiUZnHZLQbr7cEhrKZDh6Tsgf1WkL80xh0SxmIWaC4kV
+	fm0JXJO+5ej0wG8hlobQn9dv+dvTUFg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775808254; a=rsa-sha256;
 	cv=none;
-	b=dgjhJxSx/TubBdJY6oH6de5julXMB5qZ0jrt3+cEFPHM57lmMx7yrLmFb/4voRM1PrUrGd
-	x4BkN2fAwn0QUMikwYF4AX5kQttuvUgbkBbLQ7dnjXiinJ4fXiZ26g7qHSk5p9hxLVDfBh
-	C89s0BSyMMo7SkK6KI4beZPCfP9uvZk=
+	b=sj/zWURwppHRQ/a4xhjnWOeMtC9OyhaZAnsjC+EL7SEkLJcoZIVdXvyKI5TEqGMZNbyZmU
+	AdNlOtD9kxSIT/HxI4hN2IlDJeSdQHfFNYetEEQOQTRbXPpZz7CxiJ7K/KAcYefE/N1w8k
+	y1WaMBIA6ZwocRU12ZvWWGPnavNO1mI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of jiang.kun2@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=jiang.kun2@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4fsTnD5hwJz4xPSP;
-	Fri, 10 Apr 2026 16:02:56 +0800 (CST)
-Received: from njb2app05.zte.com.cn ([10.55.22.121])
-	by mse-fl2.zte.com.cn with SMTP id 63A82LUU084046;
-	Fri, 10 Apr 2026 16:02:47 +0800 (+08)
-	(envelope-from jiang.kun2@zte.com.cn)
-Received: from mapi (njb2app06[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Fri, 10 Apr 2026 16:02:49 +0800 (CST)
-X-Zmail-TransId: 2afe69d8aea9b13-cb0e8
-X-Mailer: Zmail v1.0
-Message-ID: <20260410160249749i98jwNgNLmLMKRNVeoKVe@zte.com.cn>
-Date: Fri, 10 Apr 2026 16:02:49 +0800 (CST)
-Mime-Version: 1.0
-From: <jiang.kun2@zte.com.cn>
-To: <akpm@linux-foundation.org>, <liam.howlett@oracle.com>, <ljs@kernel.org>,
-        <david@kernel.org>, <vbabka@kernel.org>, <jannh@google.com>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <xu.xin16@zte.com.cn>, <wang.yaxin@zte.com.cn>,
-        <jiang.kun2@zte.com.cn>, <lu.zhongjun@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHYyXSBtbS9tYWR2aXNlOiBwcmVmZXIgVk1BIGxvY2sgZm9yIE1BRFZfUkVNT1ZF?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 63A82LUU084046
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: jiang.kun2@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 10 Apr 2026 16:02:56 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69D8AEB0.000/4fsTnD5hwJz4xPSP
-X-Rspamd-Queue-Id: 6FF031C0005
-X-Stat-Signature: b615k1pw86hiob459sytggp9c17afrum
+	imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=YI2JGwcN;
+	dmarc=none;
+	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qnWyemV+NZsY/YXdFzXMuhYB31BzKbN6+vDsj78YGmo=; b=YI2JGwcNCq/sWdXmZgi0jxW4L3
+	uoxTV4UW8j+EtAkLy/c6t3dH5yx2NmzAiuiKThfj5/XdFJaOBKJsG0B7beoWVD3HFE07r5yqTPMuA
+	I9dJAmiJ4bSVAHk7fhRg1zCBu5NaGBEdRQiW4aI1VBwIcmzSP1I0h8H+uKOsKD9Bo590ViI6dZw3Q
+	I8mWM1J51ZUxdpD/47QGmMWv8dRb/udrxvNSLSPMCN6kFLU++QvWAdhFqyKUfmehdqK21vCV1Jvlx
+	1QqT36AR44yzY/x7TnkEiWc22ocL7tFbEUI8bkIJ7t1CkF9NmdPPZk8WwVS9y39SaE8CDQq+1zRBb
+	XtBwzjIw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wB6qP-009q4T-1Q;
+	Fri, 10 Apr 2026 08:04:01 +0000
+Date: Fri, 10 Apr 2026 01:03:54 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>, 
+	Dmitry Ilvokhin <d@ilvokhin.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
+	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
+ vmstat_update
+Message-ID: <adiuinlYfkIjuoOJ@gmail.com>
+References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+ <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 9936710000C
+X-Stat-Signature: k1rxf494bqabst9x154h8n4u9y4nhrmy
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775808183-996030
-X-HE-Meta: U2FsdGVkX1+BLtfe++GY8qx/2EUbqzCyhz9WA+7JCWFtvm8v3+GhNK3bPeRhUgJ8kHirby0X7OoAHxfYXH25R80NpedfNo0nf3nEdYYd0eoXdcAToSX0JxYeTOgJ3N8fXYCcqugexAfww+bpBmdBBx3h23TrqhMILmMCFzWlnv0tjR3YqwtVvl8UxxRdgOf1Uf1NvA120qzVEpeo6cQzsUt0XaA/hSu5K1amutdd+x0kpuY2SpJropifh5kzIuXV1O3JaxJ4b1UsviJqGkuF6T1KSzpKT4ayJKtx8iMk7lzeqWZz12X9Ac3OvazzWuLCxNgBppK/8XGdsCBNabAW3LkcwtfQzTCQzqCM6bFRr5BCeBUcPFJM9y15sx0q1416TaHRvlPaI13g70Ra//WKWnJNw3MFnqy0RL2fW5zKiRWgm3REXvaJYXXlkqd81cqlFu7Ap6lLOU7m+T6WIUSfymDeuAVTI5oP+hc5zzLPN0+Voymr53ofseXRTUM/PB2g8KMIusVoJzYvOzVKF57TnCJ6Kv7l1WL/kG9AVPlyeWYwASI+oaNyaIVfk6J5NksF105kmjB6M1tVdSXTG37Y7mTC1rpsQd/Skcyn2/mLh/Ufb49paamiCIrqZW4a3fuoYls6dlrsowE9FV5qPpVtze43nMfHHCdIZ9byjwZa8ezjAgAOGixVXZX9qJRyruRTWNzEeCMvtNHursP1HWD0N0BiO1UymiRISr4AFdmawDEGXVmuQ6xyNSTp7dYyRpVMgF1X8Pm/ZT10qwhnjc65+K4Ow98ufuLihbV6gIl16VvxLBjLa7/vYhqyLsr6oFaBIpLvc+QId+0wmMqwLBdQK0WYiNqM2mlz4wKvf/V+bdVBqMJmA/ioRiYe/Mz51QHcIVev0GG5uikFtvqC5RCOxBw++2XbqraP/PS6VSSjwCkRb4czvRqEU+0IbfIkEmecR4E25lZESBd6Zd/RDfc
- 7Lzu8sX2
- /mqcgsGk4N8WsXLch7FSUyQhizgXBrcS7HXPUhJDEE/EtSoWZ8zVDLfPzJSXGiPg4dbXKxrr4bv8kpD4yvWUJ3bHU0HBbnD8Nxc2yRe/JRLqV4hO2Q0jP1n96OTmgWg5N/geqnGn6z69Hv9O85jjqyA2hiZ3G6CGzNsQY/c9oWe2aO12YE2AWiJJR61kIn2vzN1rWq+EXZjCVvGQFCKIvMg5jqVsoEXSRpgJds1w9Yh1mENDo/ylNYZPOhlWE5r5DkQceWIf3m9ilu1n51Sy4dOSFKHolisiKjtYqA7kjV+n0PR95dZA06NgiVBxELX1e0o7SXsJAAOJdNz/XYwqaCJg9JidpZKDCjgjEGE+lnF316rH91e0U3XftRppa4BAduFY+WGMhlS+4DZTi/mW/0la0CA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775808254-889728
+X-HE-Meta: U2FsdGVkX1+FILZ+10yRr3GgMI0AzcXqOgpBZ68ryl4sw/ZiscTNpY1t/aXXWnSF33DbFGjFt3RQFnkNOe9lsir9+GDbny0PMuB0qZeycgyRI9WDnuTZ8YHJkayzK4sjUEt5AgT/2toG+KlRUFk4418iDt9F8EMv0YZkBAjuaYzNYumP/6pbM/8WWRVAjKxHklpuSPpfFfaRUNnXnvMlZc7IeFSxIXnsrx77LU4tcorjP9ZR2W6rcP6OKhNkYGRs0mHOR+2QX+wgPBPmjVTW/5/guH10RaXBH/VLHd8GdiRbYKwpUlSbR/CTMfIchLAm/O4F03JCdQRD+jHrsk7A0dd6jZ45pyhGbvS7SJATSpXxcveKg9rOLNZe1G2MRJzx3ppMesxpwE3HyzD09puuOiI30mGY3hBdDfTnChY9AaiLXlWoEq0js45N+VLB3qpT98xUqo5e7mhaYjEnk7H86qzhEvfnTts7G+qMvR1EibL5shMRfohAAaadOwVsjT5+mN42ja+doYUwCt7nNIHIxO3DMHO1joppr4erQV/M5OGnsngKoHxPLa6ETnCX2HOmtBBigWhdmZAwG1oE8vox7k5jjZ+5TrQx7VZkbXbzeQMeDqcDXeYlz0uWxMu3xWDS5nrlQ7r3jdZcPWed3NMn3/kNyuHskDoY4ByIn9aXKTL7woMryRb8INA5XYXTLfTnNrCJS9FFGqzxber4iDM3/FIu4nCoNd/SLxmWzxaC86Gese7GqQM/4TFxzgIN2Un4v9EcKmFDDitd31TFTvRWiL52bnabwR53iKrV0bS5yVhsP96QWh9Fq7DJaqsXchx29nah2cl0FuGClMuMaRYdSeCZdX/Uew4gJlXGPsyaaGKGedU/agyti4b4SqzU73CGEuZH/DPCtpDEoZbeNZFBTXmkZXz6gYg1Ap33MzDxQj6XY3WkOcCyICePakYxNbFai4jKFMi/58lqVJP1RE2
+ u0xKs9Ok
+ Bs0ExIVDMOPlkfac39f3RhNsxdIQ1/geeuY1s9eei5/ZHCnTeOOe9YeI4Je8kZnUpRWimvtZ2d0LSWNO/cZjNBmIbFWuJslmbueHQ0gRTKtFA6XQuaGtlpugGw37AZ8r7PesRMR8PFtcdjHpUJRluj+B3DvdMjXYj/DUdbt6dAZoD5KYWC4cHu1vSlmFdVUG6QUO+165hq3ROBTyc0lsa4RXXEyUptFMq8SokSyNhb87cLaU18skCBjGPmGdGUQUjFSKs9fiT0H+bsllduuctBOF+OKlaa0eUsSpW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,90 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiang Kun <jiang.kun2@zte.com.cn>
+On Thu, Apr 09, 2026 at 07:01:01PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 4/9/26 14:26, Breno Leitao wrote:
+> > Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>
+> Looks like v2 posting raced with Dmitry adding R-b tag to the posting in v1
+> thread:
+>
+> https://lore.kernel.org/all/adebKQaiAP4G3liv@shell.ilvokhin.com/
 
-MADV_REMOVE prefers the per-VMA read lock for single-VMA, local-mm,
-non-UFFD-armed ranges, avoiding mmap_lock contention for such ranges.
+Dmitry, would you mind reviewing this version as well to keep the review
+trail complete?
 
-However, calling into the filesystem while holding vm_lock (VMA lock) can
-create lock ordering issues. syzbot reported a possible deadlock in
-blkdev_fallocate() when vfs_fallocate() is called under vm_lock.
+This is essentially the same patch you already reviewed.
 
-Fix this by dropping the VMA lock before invoking vfs_fallocate(), after
-taking an extra reference to the file. Keep the existing mmap_lock fallback
-path and its userfaultfd coordination unchanged.
 
-Repeated benchmark runs show no regression in the uncontended case, and show
-benefit once mmap_lock contention is introduced.
-
-Link: https://ci.syzbot.org/series/30acb9df-ca55-4cbf-81ed-89b84da8edc1
-Link: https://lore.kernel.org/all/aWcZCwz__qwwKbxw@casper.infradead.org/
-Signed-off-by: Jiang Kun <jiang.kun2@zte.com.cn>
-Signed-off-by: Yaxin Wang <wang.yaxin@zte.com.cn>
----
- mm/madvise.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 69708e953cf5..0932579bccb4 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1008,8 +1008,6 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 	unsigned long start = madv_behavior->range.start;
- 	unsigned long end = madv_behavior->range.end;
-
--	mark_mmap_lock_dropped(madv_behavior);
--
- 	if (vma->vm_flags & VM_LOCKED)
- 		return -EINVAL;
-
-@@ -1025,6 +1023,20 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 	offset = (loff_t)(start - vma->vm_start)
- 			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-
-+	/* Avoid calling into the filesystem while holding a VMA lock. */
-+	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK) {
-+		get_file(f);
-+		vma_end_read(vma);
-+		madv_behavior->vma = NULL;
-+		error = vfs_fallocate(f,
-+				FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+				offset, end - start);
-+		fput(f);
-+		return error;
-+	}
-+
-+	mark_mmap_lock_dropped(madv_behavior);
-+
- 	/*
- 	 * Filesystem's fallocate may need to take i_rwsem.  We need to
- 	 * explicitly grab a reference because the vma (and hence the
-@@ -1677,7 +1689,8 @@ int madvise_walk_vmas(struct madvise_behavior *madv_behavior)
- 	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK &&
- 	    try_vma_read_lock(madv_behavior)) {
- 		error = madvise_vma_behavior(madv_behavior);
--		vma_end_read(madv_behavior->vma);
-+		if (madv_behavior->vma)
-+			vma_end_read(madv_behavior->vma);
- 		return error;
- 	}
-
-@@ -1746,7 +1759,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 		return MADVISE_NO_LOCK;
-
- 	switch (madv_behavior->behavior) {
--	case MADV_REMOVE:
- 	case MADV_WILLNEED:
- 	case MADV_COLD:
- 	case MADV_PAGEOUT:
-@@ -1754,6 +1766,7 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 	case MADV_POPULATE_WRITE:
- 	case MADV_COLLAPSE:
- 		return MADVISE_MMAP_READ_LOCK;
-+	case MADV_REMOVE:
- 	case MADV_GUARD_INSTALL:
- 	case MADV_GUARD_REMOVE:
- 	case MADV_DONTNEED:
--- 
-2.53.0
+Thanks,
+--breno
 
