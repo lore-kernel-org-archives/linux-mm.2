@@ -4,91 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65F85E99068
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF365E99068
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:51:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A802C6B0005; Fri, 10 Apr 2026 05:48:29 -0400 (EDT)
+	id D8AC16B0005; Fri, 10 Apr 2026 05:51:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A56E86B0089; Fri, 10 Apr 2026 05:48:29 -0400 (EDT)
+	id D3B676B0089; Fri, 10 Apr 2026 05:51:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98DF36B008A; Fri, 10 Apr 2026 05:48:29 -0400 (EDT)
+	id C51136B008A; Fri, 10 Apr 2026 05:51:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6336B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:48:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3738813AD81
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:48:29 +0000 (UTC)
-X-FDA: 84642171138.04.BF087BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 679981C0011
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:48:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I3RYK9gt;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3D056B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:51:14 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 555FAC1CD5
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:51:14 +0000 (UTC)
+X-FDA: 84642178068.28.B9AFFC2
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0829314000B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:51:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=EaWRdwuk;
+	spf=pass (imf23.hostedemail.com: domain of gongruiqi1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=gongruiqi1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775814507;
+	s=arc-20220608; t=1775814672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lme30aOCS1/76P6mf921yZdqIPtJZwN1hIjevDnlwgs=;
-	b=Wz3AZvvb2uBLsXkn9F9Ear42jErt+1hwTPQmJr98gWgMO+54OZsfTIiby7rtiXsVQfMwEP
-	aIXEVaJ4Z0Kin97PsEEoAj/5i0oF8TnpQDeN/eQHYDUmnKaazE/o+xnVxocQvcTxdZCKrV
-	KCyPMa6TlBQ3UhlZKkiXlnFMOdii5K0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775814507; a=rsa-sha256;
+	bh=9YC5+Ls1swOHaWJ8ErNBeIulZ4tAA8sac7Dx5bn0SAs=;
+	b=py0Ho68geq1NEDn8A1tcz52cVse4ajTox2h9GlnblqcCEJJmfyqfxIyy8cBJl5glhGE5Hj
+	YPkic0AlnT0hp8LMt+UK0U7JiP618Vd1YwRZojKRICu9Yc+LXUK/265j3tjOP1ODJPc11b
+	EDoh+hK+X2ZV4qTFUYQ/ZyjTQK18zRM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775814672; a=rsa-sha256;
 	cv=none;
-	b=q2y0f8cK1zl+1WbG7NXcr4ceJO6cA1iwa74Yw14EXt16ykZr2DZlybHFD5ABMyRHTdeyka
-	rfODwVf3jLNXW1pLgaFt5p0YUBzMP3+VBlVGLwprK04PrtMg+AAqbi+c+7Hwda4Qbi37xU
-	qCgdg16iw6cMouz+ZeOjnEJKwK/Z3ps=
+	b=hvqbZYgftPyA8+sHy8GM7u+e6UB+ssLwym2+6eAUKUNJbFrDkCpdVfnyHZuFpDWvAwNXHJ
+	OwmhwrWMN43+KDtPgZ0nqg6KcL+qOP/b8X7oE6s4Hc/9II64Nlj6JWWitw2b9uTbU3vURQ
+	kTXZ5GsBXzFe+WloY/1JA2SkD6OGR+U=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I3RYK9gt;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6132843455;
-	Fri, 10 Apr 2026 09:48:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A531C19421;
-	Fri, 10 Apr 2026 09:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775814506;
-	bh=8tu+16d3tHNI6yjzRxCdUnNsYp8nx66rNOh6urCClKc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I3RYK9gt5otmhKqTNux/rRBAXdV8c/vJAN7FNb+KJWHaFDnDFgdCxVbK9gbAfLhPx
-	 dooXbneJaSH00noAe5YxTs9Ss8fCcY9UXTI1XKpMZ9UpEz43T+ExWL5aRvTk7uZx/W
-	 nnbbv6CjUrqWwbc/6D/aBWFFIHIv6lCry2PGzB3e1qk1Q9PiiwMKP6DrurtB1Zm+0m
-	 Vo6K2IiA4SuVQeelKK+5mIHbEiqBX13BHh5Wtgg7/e4B+QX8uT4j7wMwy2ma8Nze1A
-	 rme/60pkbwZDgGZWe6mrc6w+uybrrProuDy+sjfxD7FS5LCxd7OAxi/C8ZwkHtsHXs
-	 ljv6bw/A+OVoQ==
-Message-ID: <45f3a5ba-9f61-4ee7-bc9a-af50057c0865@kernel.org>
-Date: Fri, 10 Apr 2026 11:48:21 +0200
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=EaWRdwuk;
+	spf=pass (imf23.hostedemail.com: domain of gongruiqi1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=gongruiqi1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9YC5+Ls1swOHaWJ8ErNBeIulZ4tAA8sac7Dx5bn0SAs=;
+	b=EaWRdwukgWLF/ovt/GfYhXVnX9klWxHa038NdZau8kzA8ZAxqerDxQ/8SzCc4u9aMJzey1Qda
+	2QXPpIswZbgspzkY/KgFpFHgDMv6EjcsNxAlP7CrMxlJJ1/+LSZc44wpRWJiouLTv9OUnyRr2Hi
+	NNMJD569jlD1cmiZFSW0wiw=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4fsX2q2BcwzLlVQ;
+	Fri, 10 Apr 2026 17:44:51 +0800 (CST)
+Received: from kwepemk100018.china.huawei.com (unknown [7.202.194.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id C8C3C40565;
+	Fri, 10 Apr 2026 17:51:05 +0800 (CST)
+Received: from [10.67.108.67] (10.67.108.67) by kwepemk100018.china.huawei.com
+ (7.202.194.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 10 Apr
+ 2026 17:51:04 +0800
+Message-ID: <69a902f1-3793-4c71-ac3c-27f8cd5eeef8@huawei.com>
+Date: Fri, 10 Apr 2026 17:50:59 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/2] mm: page_alloc: per-cpu pageblock buddy allocator
+Subject: Re: [PATCH v1] slab: support for compiler-assisted type-based slab
+ cache partitioning
+To: Marco Elver <elver@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+CC: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+	<cl@gentwo.org>, Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	David Rientjes <rientjes@google.com>, Roman Gushchin
+	<roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
+ Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Nick Desaulniers
+	<nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
+ Stitt <justinstitt@google.com>, <linux-kbuild@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-hardening@vger.kernel.org>, <kasan-dev@googlegroups.com>,
+	<llvm@lists.linux.dev>, Andrey Konovalov <andreyknvl@gmail.com>, Florent
+ Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh
+	<kpsingh@kernel.org>, Matteo Rizzo <matteorizzo@google.com>
+References: <20260331111240.153913-1-elver@google.com>
 Content-Language: en-US
-To: Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Rik van Riel
- <riel@surriel.com>, linux-kernel@vger.kernel.org
-References: <20260403194526.477775-1-hannes@cmpxchg.org>
- <20260403194526.477775-3-hannes@cmpxchg.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260403194526.477775-3-hannes@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
+From: GONG Ruiqi <gongruiqi1@huawei.com>
+In-Reply-To: <20260331111240.153913-1-elver@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 679981C0011
-X-Stat-Signature: ogigsynurnysguwd63m65yfeynik9nba
+X-Originating-IP: [10.67.108.67]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100018.china.huawei.com (7.202.194.66)
+X-Rspamd-Queue-Id: 0829314000B
+X-Stat-Signature: dpt8huu1kousicf6z8km1xy37ajbnhfw
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1775814507-494138
-X-HE-Meta: U2FsdGVkX18VdCMK6wL6/6S4EJ3DWav/0JNI1srA/BvgCofxlgG6Pa9AyYX6ePCpdqdVgnrodWSRpC5ORgkbqxBnK4EOYYQesVh9x2L1MF6gSXJjlVs/bs4UVFptSM+DQUJbX6c5Z4wNwQ9KzAKCJ16WpFJUFpaYktbrHut1kXgk5qpsVyknXkjIoq9a+2DW5+dke0G+iNmTddSTqIQ8dIUCE8XMWBk2tsvY1EnMHHBsNVaYcnT2khmvqT/ta/y0KdsLsTleOlwhWYFGNm0rLk1KPNpTiNPWB8K+0rAeJx8W0ObnSEdgQs04CpC/bOOeRWKS47CqZKhXPj3t6bFFfb0Z4yD7W898aUMAoqIpYyY+SQbKL0kB32cLPkF4FeoJ31fpFqMdFkd4i0SToASwmmrvrg++AP7vvLjJtZ7OuEzKNjoOlhLUemoXEMb5xKZd6M0jXTy/O7P3hj5ckQLww0aDqkd9Pdlquvq+ekEwQHfUi7Z3t60kAs1pu+Ter3U3NGrMF8PwHa3NIIANeKU8tJk4jhfPUIdP8632oo9RkRCNlB6GcNZ771CAFoeqYn3Fv3OjHhrd9QDMrLbObRI0W9mtP7kaYI0tacF6hAJwj7gPJYPvY4lrheDK/FFOiMhsq8ehUtmw+uYOgaUyUZAdx6hFNGf4xy9Ngy5+1MDsKEblEslC7uuQXGciL8YQ5glP5yJ9e4dRQCgOYLaggWukASgww3LSYoUHd35YFtXk3b4wXkNqLSa+bzdI9cYPxcdffOvv4l7tXgyzN/vVWcWqD2sDOgEh8wTwot+SUFPqk+WjBNvsU69dMNrRP1xCtjsm7SqaeST0MA/E3Pz75dQF7Pt6sLD3kTkJRJ0+KD9+rEivnmR29LR63mxyuPLMWtOPntVOUZCk/6g69V/CGhbfzRQDHH5a5d3Rv9HyYZWgVEY0uus4HnpeoOI92C2cKSG/HKgfTXFjWKBJJvydEsX
- ygHeodtv
- 5YFTzF5JLdaVArqelOzPRec5rrmvTrSmSZyOoYQ5A3yCzZNIB7MCicqpdlYz4Xv/5FzZ7nPD6JmsKOkFwqWWRIIiEO+xFn1EPeMMCrRCBO5cou8OeV8GGRraT24Lu0oRTOXES3LagvgrfYaygoTrXiSqrxVD81GEwC4G66fTZ8r1wbP6qXkhX+NFwT4822fBAuV8eSZoEGYms7DRfY9f08LL4CBEyTQKrqYu4g9CDrtdPJ3hhNs+U6Hh+iQRxxz72jZvrAhWRvuIq+xuihbpQO4T+8QsdEl5t+eUq00uUvvxL3iAODZoOXi2x3XN4uSD22YnQBI4f36pFjH0fqLmi2kh09uron6Xju1o+bgpnFYPEOrOHwMxO9tDpHtIPRVjpKgM2MYoCIJOBO+DYQZszAz+1+YFnTsfdqonw/HOVxJ5jxA0=
+X-HE-Tag: 1775814670-544117
+X-HE-Meta: U2FsdGVkX1/F3SH0WjsT5Ok7n72xekX9XB5s5PCiZbzNlGu0bfy9RwRC9x7e0IZBHdAhTj7f/19jJVS7BfQP5u9AtyPFCNIfmGdzcT1XzI7QhVL5Kmj4TdgvxI9E/Nn39BVk9Y9hNKJbCjqut1qQ07oTM3iNsd6Nrzco7koZxIyp92uwoGZwIk/tjJ1UPzfRaSRvBw/bCaI84JeoQb+OHBCC4ytAy4sbib73Hb+eUEpJXgFDv8ZcuA4d1fmjRNPLvrA06Dz7JiWcjF0rfbQpvkUwFR/IkDD/cfd7rTJvg7slQN7x4IzuEKHwcB7VKQE4vZrU91l6fYjWv6S5ObU6bTwdcXhm+711xncvoQjAhdBxG3SZ8wqd5BBm8aff1JADB/ePePXcrTAxebOWU1YVZW0Ffha5X0X+g15tWndf6eWbesn/TrXx+P0+prRbAw3gfMFjCZOlDSXhvJy0Fkb4gU0rsOuSwHwZF33MmjmRHwrFyiLM33TjanueOrDHSklZqe7iLgSh37XuuUACCztqFbB7Ej/ymi5OxO12Fvkc1jn3DIBBqX1QjTS1onQ4eFFYS1KR13kwvjFlM3bbcN4hoSyo5uL02XE1tgCWswACWf4BiwxBkdjU+QGNLzs8nC3QusHKO9z8D4vx9pQ0WBTfhq/tOvI8L4GjfiTEb5BDeyYfYH6KkhA2x5Ul/oRKbmeNm5Ks33gv5a05piyZyEptq/E/F/6mILppVP+CvQQn7pR21Mu8C1fikew0Gv8IwoY4M4b4QQUmQOVzPtz8RkPH+EZLXGURT+5Bcsi/8y3dfsLFWolQClWZyvkKz2WxE6BN53y2t0c8/ev9DxNaHI7zWBFF1YycHeJqfk+i4wV+w+kpXVKsO1qNUbeiUgX4PjG1AzN330MeUgfc77lKQEBMNjSRI4KRjXWmsxTH9z2NybBvFwhZ1HWxcsHaDGp1zW2Od3qmonpjj2oDlc1/NUX
+ JTWF9cuu
+ 5hotOjVVQAxipoqc5c5PgwT8vFE0fMab3haEFCqGIeSru/x+ilEvdvWQASaCWT5T7GaYlQgmgytUxJRH7HBwZlZ6KoudUSy3HB6eCtMGVbnIEXGggIQ8q/xuSCM6k3rVAcreTtt/P2KJ458A5PzTc5ILWZj+pwgPWT6YCkNA9Ihl0U3yQgjGuYEkzNwti990ehc7DJwynvGfBk1BBcZx622xj7g5gZ9veLeyUEbc0iISR2VF6Hey/0mfUouqimf8adc5oTW84Ap6DPNSxi9GaX3WFF3Mcjtv5ulYwmpN4beujT76BbTyBey9FxC8J8QerLBiM+apaoaKBcE4woWfF1GUd4Ly0x93R23Go3HPs/cQO3Px2DEQ9/Js6WqOqkqmpylqw6uc366sgeIadaZbZ5COAzr6CSZIRXwD7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,172 +115,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/3/26 21:40, Johannes Weiner wrote:
-> On large machines, zone->lock is a scaling bottleneck for page
-> allocation. Two common patterns drive contention:
-> 
-> 1. Affinity violations: pages are allocated on one CPU but freed on
-> another (jemalloc, exit, reclaim). The freeing CPU's PCP drains to
-> zone buddy, and the allocating CPU refills from zone buddy -- both
-> under zone->lock, defeating PCP batching entirely.
-> 
-> 2. Concurrent exits: processes tearing down large address spaces
-> simultaneously overwhelm per-CPU PCP capacity, serializing on
-> zone->lock for overflow.
-> 
-> Solution
-> 
-> Extend the PCP to operate on whole pageblocks with ownership tracking.
 
-Hi Johannes,
+On 3/31/2026 7:12 PM, Marco Elver wrote:
+> ...
+> @@ -662,9 +662,20 @@ extern kmem_buckets kmalloc_caches[NR_KMALLOC_TYPES];
+>  	(IS_ENABLED(CONFIG_ZONE_DMA)   ? __GFP_DMA : 0) |	\
+>  	(IS_ENABLED(CONFIG_MEMCG) ? __GFP_ACCOUNT : 0))
+>  
+> +#ifdef CONFIG_RANDOM_KMALLOC_CACHES
+>  extern unsigned long random_kmalloc_seed;
+> +typedef struct { unsigned long ip; } kmalloc_token_t;
+> +#define __kmalloc_token(...) ((kmalloc_token_t) { .ip = _RET_IP_ })
+> +#elif defined(CONFIG_TYPED_KMALLOC_CACHES)
+> +typedef struct { unsigned long v; } kmalloc_token_t;
+> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
 
-interesting ideas, as usual from you :) I'll try to point out some things
-that immediately came to mind, although it's not a thorough review.
+One tiny suggestion: we could use the same name for kmalloc_token_t's
+member in both cases, which would make the code a bit more concise.
 
-> Each CPU claims pageblocks from the zone buddy and splits them
-> locally. Pages are tagged with their owning CPU, so frees route back
-> to the owner's PCP regardless of which CPU frees. This eliminates
-> affinity violations: the owner CPU's PCP absorbs both allocations and
-> frees for its blocks without touching zone->lock.
+Acked-by: GONG Ruiqi <gongruiqi1@huawei.com>
 
-Details differ a lot of course (i.e. slab has no buddy merging) but I can
-see some parallel with SLUB's cpu slabs and these "cpu owned pageblocks".
-However SLUB moved into the direction of today's pcplists with replacing
-that with sheaves, and this is moving in the opposite direction :)
-
-> It also shortens zone->lock hold time during drain and refill
-> cycles. Whole blocks are acquired under zone->lock and then split
-> outside of it. Affinity routing to the owning PCP on free enables
-> buddy merging outside the zone->lock as well; a bottom-up merge pass
-> runs under pcp->lock on drain, freeing larger chunks under zone->lock.
-> 
-> PCP refill uses a four-phase approach:
-> 
-> Phase 0: recover owned fragments previously drained to zone buddy.
-
-Note this is done using pfn scanning under zone lock. Is there a risk of
-defeating the short lock hold time goal?
-
-> Phase 1: claim whole pageblocks from zone buddy.
-> Phase 2: grab sub-pageblock chunks without migratetype stealing.
-> Phase 3: traditional __rmqueue() with migratetype fallback.
-> 
-> Phase 0/1 pages are owned and marked PagePCPBuddy, making them
-> eligible for PCP-level merging. Phase 2/3 pages are cached on PCP for
-> batching only -- no ownership, no merging.
-
-> However, Phase 2 still
-> benefits from chunky zone transactions: it pulls higher-order entries
-> from zone free lists under zone->lock and splits them on the PCP
-> outside of it, rather than acquiring zone->lock per page.
-
-I think this particular benefit could be possible to do even today without
-the other changes. Should we try it first?
-
-> When PCP batch sizes are small (small machines with few CPUs) or the
-> zone is fragmented and no whole pageblocks are available, refill falls
-> through to Phase 2/3 naturally. The allocator degrades gracefully to
-> the original page-at-a-time behavior.
-> 
-> When owned blocks accumulate long-lived allocations (e.g. a mix of
-> anonymous and file cache pages), partial block drains send the free
-> fragments to zone buddy and remember the block, so Phase 0 can recover
-> them on the next refill. This allows the allocator to pack new
-> allocations next to existing ones in already-committed blocks rather
-> than consuming fresh pageblocks, keeping fragmentation contained.
-
-So this reads like there could be multiple owned blocks (is there any
-limit?) with only a bunch of free pages each, increasing my concern about
-pfn scanning under zone lock.
-
-> Data structures:
-> 
-> - per_cpu_pages: +owned_blocks list head, +PCPF_CPU_DEAD flag to gate
->   enqueuing on offline CPUs.
-> - pageblock_data: +cpu (owner), +block_pfn, +cpu_node (recovery list
->   linkage). 32 bytes per pageblock, ~16KB per GB with 2MB pageblocks.
-> - PagePCPBuddy page type marks pages eligible for PCP-level merging.
-> 
-> [riel@surriel.com: fix ownership clearing on direct block frees]
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-
-
->  /*
-> @@ -2907,9 +3205,11 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+> +#else
+> +/* no-op */
+> +typedef struct {} kmalloc_token_t;
+> +#define __kmalloc_token(...) ((kmalloc_token_t){})
+> +#endif
+>  
+> -static __always_inline enum kmalloc_cache_type kmalloc_type(gfp_t flags, unsigned long caller)
+> +static __always_inline enum kmalloc_cache_type kmalloc_type(gfp_t flags, kmalloc_token_t token)
 >  {
->  	unsigned long UP_flags;
->  	struct per_cpu_pages *pcp;
-> +	struct pageblock_data *pbd;
->  	struct zone *zone;
->  	unsigned long pfn = page_to_pfn(page);
->  	int migratetype;
-> +	int owner_cpu, cache_cpu;
->  
->  	if (!pcp_allowed_order(order)) {
->  		__free_pages_ok(page, order, fpi_flags);
-> @@ -2927,7 +3227,8 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
->  	 * excessively into the page allocator
+>  	/*
+>  	 * The most common case is KMALLOC_NORMAL, so test for it
+> @@ -672,9 +683,11 @@ static __always_inline enum kmalloc_cache_type kmalloc_type(gfp_t flags, unsigne
 >  	 */
->  	zone = page_zone(page);
-> -	migratetype = get_pfnblock_migratetype(page, pfn);
-> +	pbd = pfn_to_pageblock(page, pfn);
-> +	migratetype = pbd_migratetype(pbd);
->  	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
->  		if (unlikely(is_migrate_isolate(migratetype))) {
->  			free_one_page(zone, page, pfn, order, fpi_flags);
-> @@ -2941,15 +3242,45 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
->  		add_page_to_zone_llist(zone, page, order);
->  		return;
->  	}
-> -	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
-> -	if (pcp) {
-> -		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
-> -						order, fpi_flags, &UP_flags))
-> +
-> +	/*
-> +	 * Route page to the owning CPU's PCP for merging, or to
-> +	 * the local PCP for batching (zone-owned pages). Zone-owned
-> +	 * pages are cached without PagePCPBuddy -- the merge pass
-> +	 * skips them, so they're inert on any PCP list and drain
-> +	 * individually to zone buddy.
-> +	 *
-> +	 * Ownership is stable here: it can only change when the
-> +	 * pageblock is complete -- either fully free in zone buddy
-> +	 * (Phase 1 claims) or fully merged on PCP (drain disowns).
-> +	 * Since we hold this page, neither can happen.
-> +	 */
-> +	owner_cpu = pbd->cpu - 1;
-> +	cache_cpu = owner_cpu;
-> +	if (cache_cpu < 0)
-> +		cache_cpu = raw_smp_processor_id();
-> +
-> +	pcp = per_cpu_ptr(zone->per_cpu_pageset, cache_cpu);
-> +	if (unlikely(fpi_flags & FPI_TRYLOCK) || !in_task()) {
-> +		if (!spin_trylock_irqsave(&pcp->lock, UP_flags)) {
-> +			free_one_page(zone, page, pfn, order, fpi_flags);
->  			return;
-> -		pcp_spin_unlock(pcp, UP_flags);
-> +		}
->  	} else {
-> +		spin_lock_irqsave(&pcp->lock, UP_flags);
-
-Hm was it necessary to replace the pcp trylock scheme with
-spin_lock_irqsave() here?
-
-> +	}
-> +
-> +	if (unlikely(pcp->flags & PCPF_CPU_DEAD)) {
-> +		spin_unlock_irqrestore(&pcp->lock, UP_flags);
->  		free_one_page(zone, page, pfn, order, fpi_flags);
-> +		return;
->  	}
-> +
-> +	free_frozen_page_commit(zone, pcp, page,
-> +				migratetype, order, fpi_flags,
-> +				cache_cpu == owner_cpu);
-> +
-> +	spin_unlock_irqrestore(&pcp->lock, UP_flags);
->  }
->  
->  void free_frozen_pages(struct page *page, unsigned int order)
+>  	if (likely((flags & KMALLOC_NOT_NORMAL_BITS) == 0))
+>  #ifdef CONFIG_RANDOM_KMALLOC_CACHES
+> -		/* RANDOM_KMALLOC_CACHES_NR (=15) copies + the KMALLOC_NORMAL */
+> -		return KMALLOC_RANDOM_START + hash_64(caller ^ random_kmalloc_seed,
+> -						      ilog2(RANDOM_KMALLOC_CACHES_NR + 1));
+> +		/* PARTITION_KMALLOC_CACHES_NR (=15) copies + the KMALLOC_NORMAL */
+> +		return KMALLOC_PARTITION_START + hash_64(token.ip ^ random_kmalloc_seed,
+> +							 ilog2(PARTITION_KMALLOC_CACHES_NR + 1));
+> +#elif defined(CONFIG_TYPED_KMALLOC_CACHES)
+> +		return KMALLOC_PARTITION_START + token.v;
+>  #else
+>  		return KMALLOC_NORMAL;
+>  #endif
+> ...
 
