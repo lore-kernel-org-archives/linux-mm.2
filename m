@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DF9E9907D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44187E99076
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E6EF6B0005; Fri, 10 Apr 2026 06:32:24 -0400 (EDT)
+	id B09F16B008A; Fri, 10 Apr 2026 06:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 897A16B0089; Fri, 10 Apr 2026 06:32:24 -0400 (EDT)
+	id A93986B008C; Fri, 10 Apr 2026 06:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786506B008A; Fri, 10 Apr 2026 06:32:24 -0400 (EDT)
+	id 982846B0092; Fri, 10 Apr 2026 06:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 62A536B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:32:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDC3A1404E7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:23 +0000 (UTC)
-X-FDA: 84642281766.04.8F1A367
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8380C6B008A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:32:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C9F91A04EF
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:32 +0000 (UTC)
+X-FDA: 84642282144.23.7312FD9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 01B792000B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pkFuTB7d;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 89FC7A0014
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:32:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UXc3vPoC;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817150; a=rsa-sha256;
+	cv=none;
+	b=u+ApiBxCryt5u3qJSG1n2WOEnWMjMeMyO4xOZ1cNUi/uYqJtAROjHFK+0HvcmLkUJv1vru
+	OMaxzpvp731av2YTpFwVxeWjzOunvX2WoTk5rtbm7XEaD84QwS+bqJGRwISer8Qo8Gt8Hu
+	a6phej7GhiEUBzMKuy+zu0pL+L4ck+U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UXc3vPoC;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775817142;
+	s=arc-20220608; t=1775817150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=S7HM5EObQNGCD1ffT9BLbR30RNdPTSFZqM5v5/Zt7lQ=;
-	b=EiZedk+sPRKuxlhPzn3BIv7YhfgWx97AlZ08vfxCH86iidkkVx2LjIbnhK9qMzNAI6dXML
-	hhY1LPtSOdEH6QaDAk6F6+eS8ZHFDVauknPWbdClGJEZRU8z5+o7RyzQFzDse2LEkj/6x0
-	oQ1DQnVf6M1DPkO1OOCW2idn86V6XLA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pkFuTB7d;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817142; a=rsa-sha256;
-	cv=none;
-	b=eb5gKSIerCctxkxrRhr3JkQSqB+QCpDBU7Q5LVYWebltcBvHp45J6sNXZbLQoopG7DFZ09
-	6N5GjdVGIky309aM/UNcC2Fzj9UmP3I/59xozLpk0LOfNS+aef42KBULIxdQOCfcZuoccR
-	ygvKufr2Bk4S1FMXR/f/JKGfWwttCBk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kUxAj46Tcd0uuEBm6JgZA0Izdcfl76Qq/UQlrTacW6Y=;
+	b=A01BruqpSay0dYTW9gxbnsDZiZ6KvgYODE7UIj8h9IZTCxnVYC9IwDUE6jFrgF20UXSj/X
+	NHI9RsO/Y7ulZ/8rbZNbKWnOEf+jF3TnZOZvmDKSIqWye/RbZIZds5VdosBi1Qfd2su1yS
+	AFgxAp5JaiTqx5BJVNMut5XWT18TDKE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19A551D13;
-	Fri, 10 Apr 2026 03:32:15 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D07B41D13;
+	Fri, 10 Apr 2026 03:32:23 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 992D53FAF5;
-	Fri, 10 Apr 2026 03:32:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5C4853FAF5;
+	Fri, 10 Apr 2026 03:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775817140; bh=jmHyMDlai0x0f05zSdQn8Nu2D9ewo36NxGUAqiysfbM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pkFuTB7dmikw7C91cqH3pZT3et/jndvNGFkXwF82k3d2lpxoReaf8RrkaOXz06RXH
-	 +csyYlIM6hzOU275rNwE1F+Hk/tEBkV70U4LvEaabPrhqc8I2YmmfKv/nSQEKLBhhB
-	 iHbQS2T6PPBLBTYD/9GIgWVoABqCTw068zjTTznE=
+	t=1775817149; bh=b08HICgezPVD7gUzyQf2pI1dALNHj0lOGqN3C5nNR0Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UXc3vPoCgwsQbgN+hDlEu3IRjHexFrPZmZsCCe4+iKS7P2XZFV6VtHkFHXQ6E0Ubr
+	 1FEXUb/fAwuvXn/4Yq7VI3p4t9ki5EU1Jl953XMq83vVMouhMrLnLJsM7YJR3IDaEt
+	 VkOcTq+8HOT3JjA5js+iX624XwvwQwLxVI0HBGd4=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,20 +93,23 @@ Cc: ljs@kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 0/9] Optimize anonymous large folio unmapping
-Date: Fri, 10 Apr 2026 16:01:55 +0530
-Message-Id: <20260410103204.120409-1-dev.jain@arm.com>
+Subject: [PATCH v2 1/9] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
+Date: Fri, 10 Apr 2026 16:01:56 +0530
+Message-Id: <20260410103204.120409-2-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260410103204.120409-1-dev.jain@arm.com>
+References: <20260410103204.120409-1-dev.jain@arm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 01B792000B
-X-Stat-Signature: wfa3i3bdrehhfqtcb9qzac1n7eek9dtj
+X-Rspamd-Queue-Id: 89FC7A0014
+X-Stat-Signature: jc4dgw76cddmkr41aw9nutd6jhq975ou
 X-Rspam-User: 
-X-HE-Tag: 1775817141-244345
-X-HE-Meta: U2FsdGVkX1/I06KrCg/4fLF4zqi9/Y22dqlqb+gcw8UdiGVgf9/m6cI2BRLDyb5lqV4/H8zxipxnfsgHZw/CrDOXyYWdsa/h+vn6lDIc5ARycFN+danYtUQJZ/ZeffHA7nsamgHzxUzLXbdoVlf5SiUxpla5twQUve9ZsT1nuO3pXNpYlXTg1AQecctNbA+NA8h4lsli0UxxLwV47rVLHt8dc+W8YPwOC8kCAHHefsgT42Wtanxq3TfHikw0JHV3bDirGgjLV5UXmoYbL3Ic5/S190gUpBC4X2CDSJljvEmRUYuGw5Iwf9kp3NQdxnzH6AsVk72F0NisK4B/FbZFIYRTlqFkKrO91UTRC+iCO+HbF5AEERfl4BDynaMJg4f8J5b2xzcA2Bd7+Y4lamYYBl9exshpO5odYT+1wqK+rArYCASDW4XLHf+Aw9asOci/4xYihqRHi5DofQoCaHLjQUEPfb+MhtIFHolxc5G7E0Kd2Fu+gOK4s3ALTxy47u1vdRbDBV0GxvYoZAmC9ySE6/YRv4k+J4A2KP2+4t/Azw70BLbS0ZdRRDe3aAsRa7Uz9CyjtrTgK42BU62MjGIl+HfL3PkcolVdGhLB0oxf3NkD87pDyGqEGYTlx3iid4Z3/h2PlfDpOvsA3ofZ2Id7FL3YOtOuu3DmPzSHUMnTrPzdvlg3VMlvZmVh0xT9insuJO3zM9Rd0Bj1PDFG88u3gk62uG64fJYIodhLqK3m7JS+g1hYMNQjfgQqWkAUplMNvJQW3wSx/xtVqXPdbPbMjCZ9RamVSXb0b7kAS5Zi73IsRGIi29iLN4oErFjJ2fVLFsnToOB9rlDhKqHdzosdXbLySTOifLLnXjHWfdHfAWxjAozseLVIUOlu1oXVklXCtbCmYC47RQm86HBcxUe9VVlbNxF35XfMifCguzvIIwN44PgLskY4OjobQ9pnzAJo84mDbeyjj1e0FSThUHI
- dX6vT4e1
- 9VHjPTWpD2v1jvEmAn2+9iulI3c9UnJ3t1FjeDsWEQkQkhLVMwm3Smm2F3q1uOaRo5MztSb+lEcY/t7voFtN+m9Y/IyDZZYlX49YW4DosBgQknFoVgMupBN8vl7c33np6OQK4YVRjYOPm3k9qXKlfI2bCjFkhWnG/yDe/XW9AoKfjlht3t0jRRtwQtQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775817150-639429
+X-HE-Meta: U2FsdGVkX1/v3tj7kPcXbbG6UzM0xTP4cmF+8G9t53M2bjEM7N14WggX06Ew8XDBoB6dxbDRDyUBa8ShxGqikoZ/ftvXZxlL/umo5oSQv1Cgisa3dyUkrsYoVs97JZqQwTRbXHcePAayjjEugeAIzo0HG2vkBnCPf/jJbgKzWHJ6KDgwhPfN5FKifHBfaeo1soutvo+CAh+hrWTwZDDZwyt8GNNfaHTifYkgTuJwbaozGdixGt8u09h/on2HKfmJsScXWCEkdScwv32JwyBGAqNZzANC8mm6dDBECTRNV6CEtXuE60yUdDmnYDLlZbCD3eLlvEIwjdMrReFHZc0ax0fG0UlXojo5x/w7Sc77200w7O31K8Au7L1LT2h4LHlNWeSuJu2ka/PH5ll3OPfrQzz0xQJ9s6vvd88+jDWg2dB8V0SIXz4bdsMP6XFBr/2eHxIWy5G5ggqoeVoHvPKbcdjBVsH4WyacB6Nonhlbkv9MTzT28txYXuFEwvnoRhprmoCDHL4/LlnDtoptjErgPi7wm3exQMdIAXthyEatj5qPCDM0W50h15WVHNkgsZqY0uEK5VFb7aV7qjVieDem62Zg3QlGz3j2vD1JIaEzT/fQuU2kniox3lpgylJcisiI409DKijki/72kMvC27asGTgp+rGfRp1I5LWFJdyTiNQgkDATThvmD7OLIBCrCvL6lpHLv5n4XZHtpMunmi4L7aNJbK0NgkfxtLVEBlp8HxxMxuQKg/e9ncDxx8nA6sxBBhkQx1xNl+h8aFHKc87T1kSVqAwVqoOlxOAIHfhEPWvLCE3M+a6Xl7SCGlZf73SEZ2/5n6NHwITGFWMuuuYPCiasckeFj7nYFZ5NtVC+Bm4aUZuYCVkw6/a+eOHXkoLKgr9DPxROXwjoa8bR4QySagf4iyGd37jxWwJgicYGJGrdhYagvFjGHqp99VWsmTFroNfCujIhudidFQZ72GU
+ 56uvNcd+
+ xfukcIwGzylcRJFmzCIAifWy1cj4Y3uLGqTOuivQBDFlsqiUcvm0/RITB4HLZaZt1BFy6ZUid88NaqFTbhqwc+jq3044bYUZYGNZinM1feixXxlWx0E+kvRvdzQULo/AzewFpfevEQv1Gr/K1p3Add/0z/IBwn4oIBY4wIWs4fG7zHyvWQsmrne6lUhx0keXz/s+9aXtnD5XlHJxxUJQt0p3r8kTeGJCoIqWA0BnX2qdH0L9AD1ixfU5VUpf9HZmGL/K6gYXVRFaLSer2EhJP40SYIPHw3sSkmsTv3Q0k0+CH18mcqTQS0Zx/7TtAAinK1uQPZlOdHUBgSyQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,111 +117,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Speed up unmapping of anonymous large folios by clearing the ptes, and
-setting swap ptes, in one go.
+Initialize nr_pages to 1 at the start of each loop iteration, like
+folio_referenced_one() does.
 
-The following benchmark (stolen from Barry at [1]) is used to measure the
-time taken to swapout 256M worth of memory backed by 64K large folios:
+Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
+can be reused on a later iteration that does not run
+folio_unmap_pte_batch() again.
 
- #define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/mman.h>
- #include <string.h>
- #include <time.h>
- #include <unistd.h>
- #include <errno.h>
+I don’t think this is causing a bug today, but it is fragile.
 
- #define SIZE_MB 256
- #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+A real bug would require this sequence within the same try_to_unmap_one()
+call:
 
- int main() {
-     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
-                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-     if (addr == MAP_FAILED) {
-         perror("mmap failed");
-         return 1;
-     }
+1. Hit the pte_present(pteval) branch and set nr_pages > 1.
+2. Later hit the else branch and do pte_clear() for device-exclusive PTE,
+   and execute rest of the code with nr_pages > 1.
 
-     memset(addr, 0, SIZE_BYTES);
+Executing the above would imply a lazyfree folio is mapped by a mix of
+present PTEs and device-exclusive PTEs.
 
-     struct timespec start, end;
-     clock_gettime(CLOCK_MONOTONIC, &start);
+In practice, device-exclusive PTEs imply a GUP pin on the folio, and
+lazyfree unmapping aborts try_to_unmap_one() when it detects that
+condition. So today this likely does not manifest, but initializing
+nr_pages per-iteration is still the correct and safer behavior.
 
-     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
-         perror("madvise(MADV_PAGEOUT) failed");
-         munmap(addr, SIZE_BYTES);
-         return 1;
-     }
-
-     clock_gettime(CLOCK_MONOTONIC, &end);
-
-     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
-                        (end.tv_nsec - start.tv_nsec);
-     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
-            duration_ns, duration_ns / 1e6);
-
-     munmap(addr, SIZE_BYTES);
-     return 0;
- }
-
-Performance as measured on a Linux VM on Apple M3 (arm64):
-
-Vanilla - Mean: 37401913 ns, std dev: 12%
-Patched - Mean: 17420282 ns, std dev: 11%
-
-No regression observed on 4K folios.
-
-Performance as measured on bare metal x86:
-
-Vanilla - mean: 54986286 ns, std dev: 1.5%
-Patched - mean: 51930795 ns, std dev: 3%
-
-Interestingly, no obvious improvement is observed on x86, hinting that the
-benefit lies mainly in the reduction of ptep_get() calls and the reduction
-of TLB flushes during contpte-unfolding, on arm64.
-
-No regression is observed on 4K folios on x86 too.
-
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Based on mm-unstable 3fa44141e0bb ("ksm: optimize rmap_walk_ksm by passing
-a suitable address range"). mm-selftests pass.
+ mm/rmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-v1->v2:
- - Keep nr_pages as unsigned long
- - Add patch 2
- - Rename some functions, make return type bool for functions returning 0/1
- - Drop page_vma_mapped_walk_jump - this is implicitly handled
- - Drop likely()
- - Add folio_dup/put_swap_pages, do subpage -> page
- - Shorten the kerneldoc to remove unnecessary information - keep it
-   aligned with analogous functions
- - Put clear_pages_anon_exclusive to mm.h
- - Some more refactoring in last patch with finish_folio_unmap
-
-Dev Jain (9):
-  mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
-  mm/rmap: refactor hugetlb pte clearing in try_to_unmap_one
-  mm/rmap: refactor some code around lazyfree folio unmapping
-  mm/memory: Batch set uffd-wp markers during zapping
-  mm/rmap: batch unmap folios belonging to uffd-wp VMAs
-  mm/swapfile: Add batched version of folio_dup_swap
-  mm/swapfile: Add batched version of folio_put_swap
-  mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
-  mm/rmap: enable batch unmapping of anonymous folios
-
- include/linux/mm.h        |  11 ++
- include/linux/mm_inline.h |  32 +--
- include/linux/rmap.h      |  27 ++-
- mm/internal.h             |  26 +++
- mm/memory.c               |  26 +--
- mm/mprotect.c             |  17 --
- mm/rmap.c                 | 404 +++++++++++++++++++++++---------------
- mm/shmem.c                |   8 +-
- mm/swap.h                 |  23 ++-
- mm/swapfile.c             |  42 ++--
- 10 files changed, 380 insertions(+), 236 deletions(-)
-
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 78b7fb5f367ce..62a8c912fd788 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1991,7 +1991,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 	struct page *subpage;
+ 	struct mmu_notifier_range range;
+ 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+-	unsigned long nr_pages = 1, end_addr;
++	unsigned long nr_pages;
++	unsigned long end_addr;
+ 	unsigned long pfn;
+ 	unsigned long hsz = 0;
+ 	int ptes = 0;
+@@ -2030,6 +2031,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 	mmu_notifier_invalidate_range_start(&range);
+ 
+ 	while (page_vma_mapped_walk(&pvmw)) {
++		nr_pages = 1;
+ 		/*
+ 		 * If the folio is in an mlock()d vma, we must not swap it out.
+ 		 */
 -- 
 2.34.1
 
