@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78BBF44847
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62501F4484F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D0E56B00AF; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
+	id C95356B00B1; Fri, 10 Apr 2026 08:19:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 282696B00B1; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
+	id C46206B00B3; Fri, 10 Apr 2026 08:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14A346B00B2; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
+	id B0E126B00B4; Fri, 10 Apr 2026 08:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 00E576B00AF
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5A228BC57
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:37 +0000 (UTC)
-X-FDA: 84642551994.20.BA5DD70
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 99BD86B00B1
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:43 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 666621B80DC
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:43 +0000 (UTC)
+X-FDA: 84642552246.12.15C5235
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2EC9240014
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdLSbwwL;
-	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823576; a=rsa-sha256;
-	cv=none;
-	b=yuOcR4q20Cz8DF0YVY6dXtM7+zrssHXpLo+BsL433JhBfVk2SOhEvKrYUpuW6j/sdUKbl0
-	qER6jS2o0Lj9PdgIPfeNEYuSFnCgn3jKe6lVwZOJWaTVVyO9XGKGdOeArHpZ6yUw6a98FC
-	0xgBezz/7YbufOvdFlZigH29AOkmKMM=
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF6B814000B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t3jBR9hr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823576;
+	s=arc-20220608; t=1775823581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=nAtajafR3BGugPFTQaw0hsS1PwnKW5jZr3s/Jt7L67s=;
-	b=jSzx4MgriA88GX88iQjbImkpjbno9VRMLlZPk8bbN57OfX1Bibu70IkOseWQ550NlipNm2
-	oX9oDJHrGJS3v3FGkgodr9F0O00LJCm/rQKmcx5iEKHsWvki36uV+TcUAHEbpmF7k5zZDz
-	wcfUqrnAEaM8HJn5pYpzPB7iRHouLAQ=
+	bh=l/i7/xAykrEqhXZEt+AYWUOXkyMBaQ0jVLhvmI8QgSc=;
+	b=q6eVnfYFj/8uBcZFLKiB6HJmTM7Uym52jyDR0Sqvn7iszYNrgpvj5b3Pbo/V0ECP3c40fi
+	7GneXZgS6Q+lbuz50b4i3IKjMmeQSe55h1tRbc4RCHWFVrykyxyrtnooIVd8KvOaB/Z/m8
+	eRNhdinWzkgmwcnn7OsGURnXXoa7kCA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823581; a=rsa-sha256;
+	cv=none;
+	b=DlCChfKBYSVGs8NppZKyvZjIRkHT1HVYtqbwtTLKW0wtQJyYJMwR2dZlDYdXPELEi1k0Um
+	e8YzYcOQJw3eXtUktENBL5+uEOb5h34pwhgt7V2Wwb3GvXC2pMJ+o6hw8b+2oLFdgj2GbX
+	KqDm/8R88oZCUuqFegK6+hpCpumryFE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdLSbwwL;
-	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t3jBR9hr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E85B4415B;
-	Fri, 10 Apr 2026 12:19:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D535C19421;
-	Fri, 10 Apr 2026 12:19:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B87CF44580;
+	Fri, 10 Apr 2026 12:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0FAC19421;
+	Fri, 10 Apr 2026 12:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823575;
-	bh=GB9a/XQKSHIwV9FYvefMOZoOdepkVaVbWcUyHQeAJMw=;
+	s=k20201202; t=1775823580;
+	bh=mpxbBHJF6rhzMhSEUiQvC99JYsoAEEbwdTduYzlxEPc=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=kdLSbwwLxIuQWDxnaQ43x3JS9cXZHSMpULEhhU8ID9ECY5jS+n7m20CMk0YroM4U5
-	 D4FjOptptOJeolxHIofJ3rTeQ/ALPjLpvnJ7Qi7NqzIwHDqURUXi9DJGGx8dZS+lLk
-	 JCAzGIYvaKballV64My3qHcmSE8ptIN1eu7xnjzlOO9PgVdkDRLJV0RvV58tiiKr4i
-	 bv+wJwmXD1eqFR2U5N9wMLLyoNfqxlEArSV4W94QZ6qgCudbzRKlUn/CHtSVarPoCX
-	 xb06JWRkDGSiFGx6qUkcv+KUlCb5xHLy85m3KWHYpSlfnAmYw64l8Tsoi4lMULg/pB
-	 WwpH4H0qB6HQQ==
-Date: Fri, 10 Apr 2026 14:19:31 +0200
-Message-ID: <20260410120318.454577282@kernel.org>
+	b=t3jBR9hrloEPurMHDq+39Qmu/knh8sc4zRVE8/2evrp72m0jjf5ZLkiqhTfHJf3lQ
+	 UuLDw1roDamtB5PCEFrCj4Am/iqY2B6Eqxv0IhuFUbghxXFtjb45YYjGv/1iSpakD6
+	 TFwz04dexWQxc2lpHNkB6gue2paUp+SphQGzt3h2nfY78uDiPTzZOojY3e61FIsW5V
+	 nWhQqjnOO5JiF4o/mhmPEmcNABsipUeHkNa04EcUPJl0rFmYRv/1fqlaU1qeGqFkTx
+	 Wm9D7sRbThBkNSUjiYqRay+oEzZSBtooNF5Q5Yp17uiVAaos9NzjDw3gIyxmgs/heb
+	 T0VBqEkO+l/iw==
+Date: Fri, 10 Apr 2026 14:19:37 +0200
+Message-ID: <20260410120318.525653921@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org,
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -77,8 +77,8 @@ Cc: Herbert Xu <herbert@gondor.apana.org.au>,
  Michael Grzeschik <m.grzeschik@pengutronix.de>,
  netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org,
- Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org,
  David Woodhouse <dwmw2@infradead.org>,
  Bernie Thompson <bernie@plugable.com>,
  linux-fbdev@vger.kernel.org,
@@ -115,18 +115,18 @@ Cc: Herbert Xu <herbert@gondor.apana.org.au>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 13/38] crypto: tcrypt: Replace get_cycles() with ktime_get()
+Subject: [patch 14/38] slub: Use prandom instead of get_cycles()
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: AF6B814000B
+X-Stat-Signature: s8xstd1hrcdfya59n3hmbe4j7pe4wwj8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2EC9240014
-X-Stat-Signature: xhdy6pum67o1ag8mwi19w48bhkxafsdc
-X-HE-Tag: 1775823576-14876
-X-HE-Meta: U2FsdGVkX1/Bek/+/eLek85YbncZqV3AQz6wmm/QyYkgDmhNhFtsfi8AgYBKdVCD1h+qkouiCwEsln2ubCCvNSHgy+EfIwqbhpbJ0mVOZhby06oLCNYQDORVBQBLRh6KvbwlOX3sTIA7y4qo1z2ApZTa8+co3YszWBGueL1gqtgIu6eI+HPmcQ3PEQJkvVhe53tu/8XuxWe1dkRG/96qZEeY2ym6RQppygSswiR9WKbURuk+eA1f9+Du4G7IyYOG1kD26FLfKDCjXWeAkSwHASXwKi+HL9nhtCmILkrnoBQtjYwxsoCc+u9QqXrQbmgAMkUAJoJRzsJ0nupLj3DZ1WqQ7x5F5iOXyNj040ShY7pTJQlLCGFSIwnDBK70FpivjA0JY1xRtXyz27SXEg0O+DJMGUKeIcLesGM+s57+8U3pq7kvY0QpgxOdWxCAv39doyNuNSp9MlQdHD/YdrhKyHAe+KosQXkJcJv6UrMMKdadZRhl8ey/hShi1hL12m0OP/JrODC7tiAXth2dbH811EYgsFIRQZdyi5sNybB3D25PiCxUuggO82UCqgqWCAC0zPVkOT1Zor/9um36gtWjfwlcYhCWxqNJGtZzhO+6TYiIJAYjSlGNe/ZW+KUWe6//3nkkoiDpDjtlMVamIULlsnPToDlLOecf9+hTQEtXQB2K1RHy2c1aJs29xTWcpEg64UwwJe7J0YlhUUQ12X6r/P4npfMc0rAUVr3yd498SjuvZ0jweTHr5QII28pgUaa5B6OF8ED3M8YCzKKuFW6hY9hKTHWyVBeB6UZvINKnTRAz2B60ZnKe+wv31EB7yNGIND89wxNFkipVrWm7VQhwrcFF4U+h5Gmp7kHWzdtwzEqJRSR3HHDh3mkQ9VodCVnGaAJ3lyH2/eCsMK+pV9VqH7XJuW3JTGu3wlkptJhFBDb7zPK62wNDksBctL8qVHiR1q0d2DNjTiSMtMkChg5
- IrsUAwRm
- qlLFD0agL1c6y5YGYo3eei4AIwhc0hiNdB/5l6BC898eHM4A=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775823581-213344
+X-HE-Meta: U2FsdGVkX1+Z1MHCOkBPMCnnt6dFcAkFPPUDH604g2FtiGxFfRnBCGgpAWGgwjKyL49YsUVobaRsLO4bFNa7+u4DiaP00l8HmXXiVGQ0StjLdOjr0QFG9mQ3+GIntpTiYwSmBZbLa5dskhrgeb4t5n4mMHgpeUaIFMQ1CMRgTVyNTwkbOB9EbjaRj9pFicIKQvRhJqmLYsYVM+YWDD0dtINcVTtrcY0izSD68tobm18wfM2yS4zP1F0LpFgYz6pbMQsD9cn3IsQl9weNxLrwbeu4paSpdYnkXwnPKw74T0PeR06Uti2FkaFFpid5cPoNDnhXdYQ01Ozvpakb7wd7PyO+y5V6Ewb3DzhJI6Up0h8li4ZQOyc+zx/njRtBli863s5i+8DrUWUrPekSGKPllXcXtNjrgKWRT/JsM5nzoFnb3aQDDTsBi5++U97VtRZKTlRY5+cktp4avo9nelg+Y5FUmbjeeCdt3N+jeHm6YDGcYOtBmGjwTjy1nEvEgJqGXSSeZPIWhA5Uu4gokLNGKw50B6nMxvTQ4aHGyrq7M/uUoiSd+LxSUO1fJ/rnLoW3wiUVhALhI+eFsorN4eJ9bHMGaWprvswkRYXVAmgMWGkthE2XFYFw/gZgCOZ3Lpp6KtODJvIczCu6rcELANkjJLXG7/hWfUHbGVXp6ix87ZfvS2sM9eHeo29NelkSvRdtTQsBz5knUm2A6Xi7ZDlKsCKBSqwhcFtC1/cakezbY/NO8ZJlPMmUNUR2H4Y3HuoNIuxmQUOKqAcXCHE4XWBk0enbUTDfrBilXueep3e6B9DDxmhSVPyjDt/xOgoqJsciPA6Vx5OS0uPAu7KBJx7RIweCepezlp0enCxGVQ132HqIbiJjuGdBmRFtyclu10b4obsviGrs6xlXyi/Tsizl5zdAVsw75IGMf04GUhZqKYLOcaJY2RD0EE4Iy8+ZlaWodNLL4CVkAqc7QkcS2ZQ
+ u9ED93LI
+ iomtGTixAv45BPQ8Qgr3KursPQ+vk+I8ghEzIoG67dtQR8S82aaGwYvFq2SaGFF+wrzFON0hI8ThRzj3VCRF95bPIL/6rXozDLE47X8a5PtG9srKe/ukr8ECAPeRFZ2pnO3wPZlmQ/bYNZLzuiQqEiFmG4sEY7F3wfMH15Wo5gowi24fgEiBVMf72D3zKBP/R95wsmpE6M/G/gbR3reJo/6WCs/jfKTgqJEtrJtfvI9S4umYgiVvQYKScYSqCL9hePi5yEIsiY30h62bXxyDsh2t1SOZnCaqWGEmgBrvXEyBVtU++b/HAHr+WeN78y83/weBzoi1BppasDO6UuqHrm9AoYtl+tsf+mixTOZVAgeB6dXbaYy2noDmqr7W6fKAenbf9j1/qL5Ik7G+ctGNVFrolBSywcn/IOHZdMasP9eVR+CsPBbp45n9SX16PjLBtqKLamKfOimQgy30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,282 +134,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_cycles() is the historical access to a fine grained time source, but it
-is a suboptimal choice for two reasons:
+The decision whether to scan remote nodes is based on a 'random' number
+retrieved via get_cycles(). get_cycles() is about to be removed.
 
-   - get_cycles() is not guaranteed to be supported and functional on all
-     systems/platforms. If not supported or not functional it returns 0,
-     which makes benchmarking moot.
-
-   - get_cycles() returns the raw counter value of whatever the
-     architecture platform provides. The original x86 Time Stamp Counter
-     (TSC) was despite its name tied to the actual CPU core frequency.
-     That's not longer the case. So the counter value is only meaningful
-     when the CPU operates at the same frequency as the TSC or the value is
-     adjusted to the actual CPU frequency. Other architectures and
-     platforms provide similar disjunct counters via get_cycles(), so the
-     result is operations per BOGO-cycles, which is not really meaningful.
-
-Use ktime_get() instead which provides nanosecond timestamps with the
-granularity of the underlying hardware counter, which is not different to
-the variety of get_cycles() implementations.
-
-This provides at least understandable metrics, i.e. operations/nanoseconds,
-and is available on all platforms. As with get_cycles() the result might
-have to be put into relation with the CPU operating frequency, but that's
-not any different.
-
-This is part of a larger effort to remove get_cycles() usage from
-non-architecture code.
+There is already prandom state in the code, so use that instead.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-crypto@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: linux-mm@kvack.org
 ---
- crypto/tcrypt.c |   84 ++++++++++++++++++++++++++++----------------------------
- 1 file changed, 42 insertions(+), 42 deletions(-)
+ mm/slub.c |   37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
---- a/crypto/tcrypt.c
-+++ b/crypto/tcrypt.c
-@@ -202,7 +202,7 @@ static int test_mb_aead_jiffies(struct t
- static int test_mb_aead_cycles(struct test_mb_aead_data *data, int enc,
- 			       int blen, u32 num_mb)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int ret = 0;
- 	int i;
- 	int *rc;
-@@ -220,20 +220,20 @@ static int test_mb_aead_cycles(struct te
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
- 
--		start = get_cycles();
-+		start = ktime_get();
- 		ret = do_mult_aead_op(data, enc, num_mb, rc);
--		end = get_cycles();
-+		end = ktime_get();
- 
- 		if (ret)
- 			goto out;
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
- 	}
- 
--	pr_cont("1 operation in %lu cycles (%d bytes)\n",
--		(cycles + 4) / (8 * num_mb), blen);
-+	pr_cont("1 operation in %lu nsecs (%d bytes)\n",
-+		nsecs / (8 * num_mb), blen);
- 
- out:
- 	kfree(rc);
-@@ -475,7 +475,7 @@ static int test_aead_jiffies(struct aead
- 
- static int test_aead_cycles(struct aead_request *req, int enc, int blen)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int ret = 0;
- 	int i;
- 
-@@ -492,25 +492,24 @@ static int test_aead_cycles(struct aead_
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
- 
--		start = get_cycles();
-+		start = ktime_get();
- 		if (enc)
- 			ret = do_one_aead_op(req, crypto_aead_encrypt(req));
- 		else
- 			ret = do_one_aead_op(req, crypto_aead_decrypt(req));
--		end = get_cycles();
-+		end = ktime_get();
- 
- 		if (ret)
- 			goto out;
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
- 	}
- 
- out:
- 	if (ret == 0)
--		pr_cont("1 operation in %lu cycles (%d bytes)\n",
--			(cycles + 4) / 8, blen);
-+		pr_cont("1 operation in %lu nsecs (%d bytes)\n", nsecs / 8, blen);
- 
- 	return ret;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3302,6 +3302,25 @@ static inline struct slab *alloc_slab_pa
+ 	return slab;
  }
-@@ -771,7 +770,7 @@ static int test_ahash_jiffies(struct aha
- static int test_ahash_cycles_digest(struct ahash_request *req, int blen,
- 				    char *out)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int ret, i;
  
- 	/* Warm-up run. */
-@@ -783,25 +782,25 @@ static int test_ahash_cycles_digest(stru
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
- 
--		start = get_cycles();
-+		start = ktime_get();
- 
- 		ret = do_one_ahash_op(req, crypto_ahash_digest(req));
- 		if (ret)
- 			goto out;
- 
--		end = get_cycles();
-+		end = ktime_get();
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
- 	}
- 
- out:
- 	if (ret)
- 		return ret;
- 
--	pr_cont("%6lu cycles/operation, %4lu cycles/byte\n",
--		cycles / 8, cycles / (8 * blen));
-+	pr_cont("%6lu nsecs/operation, %4lu nsecs/byte\n",
-+		nsecs / 8, nsecs / (8 * blen));
- 
- 	return 0;
- }
-@@ -809,7 +808,7 @@ static int test_ahash_cycles_digest(stru
- static int test_ahash_cycles(struct ahash_request *req, int blen,
- 			     int plen, char *out)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int i, pcount, ret;
- 
- 	if (plen == blen)
-@@ -832,9 +831,9 @@ static int test_ahash_cycles(struct ahas
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
- 
--		start = get_cycles();
-+		start = ktime_get();
- 
- 		ret = do_one_ahash_op(req, crypto_ahash_init(req));
- 		if (ret)
-@@ -848,17 +847,17 @@ static int test_ahash_cycles(struct ahas
- 		if (ret)
- 			goto out;
- 
--		end = get_cycles();
-+		end = ktime_get();
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
- 	}
- 
- out:
- 	if (ret)
- 		return ret;
- 
--	pr_cont("%6lu cycles/operation, %4lu cycles/byte\n",
--		cycles / 8, cycles / (8 * blen));
-+	pr_cont("%6lu nsecs/operation, %4lu nsecs/byte\n",
-+		nsecs / 8, nsecs / (8 * blen));
- 
- 	return 0;
- }
-@@ -1019,7 +1018,7 @@ static int test_mb_acipher_jiffies(struc
- static int test_mb_acipher_cycles(struct test_mb_skcipher_data *data, int enc,
- 			       int blen, u32 num_mb)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int ret = 0;
- 	int i;
- 	int *rc;
-@@ -1037,20 +1036,20 @@ static int test_mb_acipher_cycles(struct
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
- 
--		start = get_cycles();
-+		start = ktime_get();
- 		ret = do_mult_acipher_op(data, enc, num_mb, rc);
--		end = get_cycles();
-+		end = ktime_get();
- 
- 		if (ret)
- 			goto out;
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
- 	}
- 
--	pr_cont("1 operation in %lu cycles (%d bytes)\n",
--		(cycles + 4) / (8 * num_mb), blen);
-+	pr_cont("1 operation in %lu nsecs (%d bytes)\n",
-+		nsecs / (8 * num_mb), blen);
- 
- out:
- 	kfree(rc);
-@@ -1246,7 +1245,7 @@ static int test_acipher_jiffies(struct s
- static int test_acipher_cycles(struct skcipher_request *req, int enc,
- 			       int blen)
- {
--	unsigned long cycles = 0;
-+	unsigned long nsecs = 0;
- 	int ret = 0;
- 	int i;
- 
-@@ -1265,27 +1264,28 @@ static int test_acipher_cycles(struct sk
- 
- 	/* The real thing. */
- 	for (i = 0; i < 8; i++) {
--		cycles_t start, end;
-+		ktime_t start, end;
++#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
++static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
 +
-+		start = ktime_get();
++static unsigned int slab_get_prandom_state(unsigned int limit)
++{
++	struct rnd_state *state;
++	unsigned int res;
++
++	/*
++	 * An interrupt or NMI handler might interrupt and change
++	 * the state in the middle, but that's safe.
++	 */
++	state = &get_cpu_var(slab_rnd_state);
++	res = prandom_u32_state(state) % limit;
++	put_cpu_var(slab_rnd_state);
++	return res;
++}
++#endif
++
+ #ifdef CONFIG_SLAB_FREELIST_RANDOM
+ /* Pre-initialize the random sequence cache */
+ static int init_cache_random_seq(struct kmem_cache *s)
+@@ -3365,8 +3384,6 @@ static void *next_freelist_entry(struct
+ 	return (char *)start + idx;
+ }
  
--		start = get_cycles();
- 		if (enc)
- 			ret = do_one_acipher_op(req,
- 						crypto_skcipher_encrypt(req));
- 		else
- 			ret = do_one_acipher_op(req,
- 						crypto_skcipher_decrypt(req));
--		end = get_cycles();
-+		end = ktime_get();
- 
- 		if (ret)
- 			goto out;
- 
--		cycles += end - start;
-+		nsecs += (unsigned long)(end - start);
+-static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+-
+ /* Shuffle the single linked freelist based on a random pre-computed sequence */
+ static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+ 			     bool allow_spin)
+@@ -3383,15 +3400,7 @@ static bool shuffle_freelist(struct kmem
+ 	if (allow_spin) {
+ 		pos = get_random_u32_below(freelist_count);
+ 	} else {
+-		struct rnd_state *state;
+-
+-		/*
+-		 * An interrupt or NMI handler might interrupt and change
+-		 * the state in the middle, but that's safe.
+-		 */
+-		state = &get_cpu_var(slab_rnd_state);
+-		pos = prandom_u32_state(state) % freelist_count;
+-		put_cpu_var(slab_rnd_state);
++		pos = slab_get_prandom_state(freelist_count);
  	}
  
- out:
- 	if (ret == 0)
--		pr_cont("1 operation in %lu cycles (%d bytes)\n",
--			(cycles + 4) / 8, blen);
-+		pr_cont("1 operation in %lu nsecs (%d bytes)\n",
-+			nsecs / 8, blen);
+ 	page_limit = slab->objects * s->size;
+@@ -3882,7 +3891,7 @@ static void *get_from_any_partial(struct
+ 	 * with available objects.
+ 	 */
+ 	if (!s->remote_node_defrag_ratio ||
+-			get_cycles() % 1024 > s->remote_node_defrag_ratio)
++	    slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+ 		return NULL;
  
- 	return ret;
+ 	do {
+@@ -7102,7 +7111,7 @@ static unsigned int
+ 
+ 	/* see get_from_any_partial() for the defrag ratio description */
+ 	if (!s->remote_node_defrag_ratio ||
+-			get_cycles() % 1024 > s->remote_node_defrag_ratio)
++	    slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+ 		return 0;
+ 
+ 	do {
+@@ -8421,7 +8430,7 @@ void __init kmem_cache_init_late(void)
+ 	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+ 				  0);
+ 	WARN_ON(!flushwq);
+-#ifdef CONFIG_SLAB_FREELIST_RANDOM
++#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
+ 	prandom_init_once(&slab_rnd_state);
+ #endif
  }
 
 
