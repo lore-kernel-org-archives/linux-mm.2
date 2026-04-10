@@ -4,123 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B690E99059
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5426DE99059
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F2BF6B0005; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
+	id A3A256B008A; Fri, 10 Apr 2026 05:06:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A36E6B0089; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
+	id A11EA6B008C; Fri, 10 Apr 2026 05:06:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 492766B008A; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
+	id 927B86B0092; Fri, 10 Apr 2026 05:06:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 387CB6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD45A58EFB
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:05:23 +0000 (UTC)
-X-FDA: 84642062526.24.C5653C9
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9ABED180003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:05:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YH9B8pi2;
-	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 80C816B008A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:06:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 363B98B64F
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:06:31 +0000 (UTC)
+X-FDA: 84642065382.28.7360FAC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7036916000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:06:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eos85lOv;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YH9B8pi2;
-	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775811921; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eos85lOv;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775811989; a=rsa-sha256;
 	cv=none;
-	b=QUpCBLAHE/X9XIQpy0AesaAOanVD9AsgZjzpEI+p7P3LEADn/VkIRy855TIiB3OXqkYzIg
-	m+AV/8yyp9dhjFhG5e/egUnOOUkr+j9LD7uDKq7nmK/O03SGfI2RQ/YW7ggiWnHjBZWjRV
-	c9zZTtS/ETHZiDeabXLhtihN4sCu4sU=
+	b=UqmdpIDCpr9iK1urYS2bCoJH4RNrryHT07WDAeAT4SMUXWK5MQzm2It1lF36GaGBXNYur6
+	w2eLHjKaVW4UG4M/7mzoeWV+aOLybxEOTj66zxIjoTEI/PhKQdfFgJ/uN9LDK9RxNrHLbL
+	RpwvRai4PGHY1xi/wmP1IxIF1UIKAF8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775811921;
+	s=arc-20220608; t=1775811989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
-	b=dcV7VuGYlMEOS2SiHRHnwicd9bVXZ8BWijSld09dwd7bLWnxc5RVHXItKSXaAwXjMvEAKc
-	Q6cr+sIaJbr/4m0GVMpnwO2LAX/EFL1Ec4FCDe7cu6ijLeELPqj0mWsrAixvYbCmMWIqFy
-	ur2ucp5f2Fa7Zi6GokwXwdu7UrT9EXU=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cff5dafc3so1321027f8f.1
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1775811920; x=1776416720; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
-        b=YH9B8pi2oDtVT/K9WJPGXNdMsymD9SAuLtnjDPCt3VHOgA81L6vWWAqCA5xp6D3JI8
-         vKeyWIa6SlrC0x34D3ifIvvg+VZspWUTiTT05xLMzi4ENBTnS95RH4HLhtjnhxfJxzTx
-         jpdHOMxx2/nj21YHD5mdIMfym9d0/LoElkHrziwPLiaW793K9HM0pTRS2eUn1go0vBUg
-         f5ovfqPfngQy0sTCVKi7PuDWC6dlt1ZZiibOibcAyJiS6Fq7ugVWYAVjQxojg2r7dWM2
-         7xEmzJSywQXibjb0aIdQPKBf522OvaBnJ94uawL5vrMiD3MBdSW6/REvje+QNNYn97ID
-         wPKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775811920; x=1776416720;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
-        b=bJfNbHBFvTpYJUFBHVmJDbI2xeOYVaZHCMsnO1CK+vFgauyu/E24rEDvLEEj8y6bkC
-         LZ+1FE9KERsjM7UaGmEhU5LIth6BUmX2YXiSCSWql/ZlOcv7bC1INXhBXJOBwvPNn+5V
-         9XM4qvOEXL21EB6BrtWs2haegtPExdW+vZPLwgSQfz0Fej6nq2MVdlFVeL2qw9NyJRAY
-         s+vE1MZCT9vtss3n40hAowl1z20u/l0dPrlBqEzqjrWB6mqptV/Pi18cbqmJx6RDu3MY
-         jFA9RaUaB2kBS4Jke/9XWqiKszXITdOminqo9s3v+sxWYHFyRxQBGhwwsnUiTDLDVpwY
-         dhBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrxubT4xZYpVy30zn9ZciZ1ZkMxet9MgfQGwb8BVjnPJOUJ9kJeQjBaM5GCQu2L8upqwPt7Ab5wg==@kvack.org
-X-Gm-Message-State: AOJu0Yw+JR8SqzqRPBUlu0AzpouGUHG19CHVtcPDuOwdgm9sQppsJUuX
-	vyT5vXdfPBF+KgclBEsu/u0Ia9i4net/HU+D6RmX1swVM6KoTBEiMkNonbWQ3XIS/bE=
-X-Gm-Gg: AeBDietLI2sSyWp57YbGFUBpgTtsKFYr5xWm+oZ2I8Y5zOBNRUo3428jsLEuNUCgy+b
-	ygTJ0r6ZAUQcOg/dkhkhjTS7frRyNvTyT/HN02/Hb5NbkvBTwHUclgthJwUiJuR0kWWm53rV0DT
-	6sSlNz4z71qEWcySN4oKJLnHGvL8Bqb0lYB9GW17andqzXrVTWk51nNXkWeuc65+1uwaCHHdwOR
-	XZlROuKCN7vyYKZIxuf462iK2RhE1Fx5F7Bf9PAJONh2TR/I+xwqmYIKvNdJfQkjmhK9oxw0HXx
-	iBHy/IdGybhtcwBFylXn7l2lz1LhPcnHRV/DWpYgD1/xAEIajGT3shXI0sxezNDsUprZraOwVL3
-	iT32zi16v9S6JNmCTS+qeoXI1BvbL+7G1xlQJlMlAmDnmSSxf7Jn/PVr7c7gV/8rRjkKR+xAAc3
-	7bnwAWuGarx7aa6LN4czC9MdtrqkuiiGseVg==
-X-Received: by 2002:a05:6000:268a:b0:43d:4daa:7a89 with SMTP id ffacd0b85a97d-43d642a50a2mr3222376f8f.19.1775811919772;
-        Fri, 10 Apr 2026 02:05:19 -0700 (PDT)
-Received: from localhost (109-81-92-28.rct.o2.cz. [109.81.92.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm6028261f8f.5.2026.04.10.02.05.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 02:05:19 -0700 (PDT)
-Date: Fri, 10 Apr 2026 11:05:18 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Christoph Lameter <cl@linux.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
- vmstat_update
-Message-ID: <adi9TtIbWOoQPpBp@tiehlicka>
-References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+	bh=4+1IIvFD5LJlpG7vAKHkTBvnct0P6iAN1c7ZhFhBGyA=;
+	b=Pj20jeGAb/+ygTWkcjaaDLUcD7xrFBgTi7wojDCO3JD5pzUktQ5a61QR6+HBEhNAEKq9XR
+	fF6Fuf6R7lLTSsYR2TMH93AVahWN9jzKj2UdqcNPONG9C/PmGQOrWfTacFhZomdMVqIRP/
+	mDQF+RtTtQEwbJR8cqkGpwP7qpjjs1Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 699D86014C;
+	Fri, 10 Apr 2026 09:06:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66FCC19424;
+	Fri, 10 Apr 2026 09:06:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775811988;
+	bh=r6/xbm9ICEZLdIhlJPxwO6tzE4dSTQazY+YvqBBoM2k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eos85lOv5ieVGVViyeV9H30S6rhaZ66FfCRd2srlJqSdzBHLl0WBvPWL6r9yOs2r5
+	 To3G6fQX1vq9l0WTRVqnxL+X42bA83wlV//sl5G8/n062fFsAAJj15qh0o6LIKNqNp
+	 DqtVbDWrg+DY7LZ7QB2TUPxy0mCX53IvR5t63iatip4XaImexBLFdZ3wO2TaK91Knr
+	 5feVfe+iwBC6EydkqVk4Oi8hen+UcAJvn7tR3QYmlxB/XWGVW7o3u4tjySeuUa8T3o
+	 37a5hRNfOrNChzlIhnRdzJoW6x7UHrHjXFuoh0cwDnPZqUSyqkF8yAKcD8/iYhrUa4
+	 aTk5qMMxPuo0A==
+Message-ID: <51c35e9f-fda6-4a24-acf5-8a332dd505d8@kernel.org>
+Date: Fri, 10 Apr 2026 11:06:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+To: xu.xin16@zte.com.cn
+Cc: shr@devkernel.io, ljs@kernel.org, hughd@google.com,
+ akpm@linux-foundation.org, chengming.zhou@linux.dev, wang.yaxin@zte.com.cn,
+ michel@lespinasse.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260410160600883wV0ynx9z59eSt4_lOUFfK@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260410160600883wV0ynx9z59eSt4_lOUFfK@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9ABED180003
-X-Stat-Signature: qdqjnobnxuwrshei5dm7srwykehqe1np
+X-Rspamd-Queue-Id: 7036916000A
+X-Stat-Signature: oey8w6gc564dfrsfwdxj7xr5kh45sc1i
 X-Rspam-User: 
-X-HE-Tag: 1775811921-810152
-X-HE-Meta: U2FsdGVkX19MnVlvpucPxMktxcL5tNkhBd+m6CjNrGjccaY+xA74ytfDZpT2PVk3MiRXn8MN99ePjEgpZe9ouv+VPsnkxn3GB6VajPjmtHQtYfIj6Sdd22pvsoLyl0/M8gEMFSMR6ZTpUUd3wJBDCkNMZzpMRF08PcM7uXO8kqna5LUR79B24As+cAAum7mD24Gns1L/JW4e1gBgXwG4X1JlviAdIj3AS0VHsFTXsSmadSlHMMws3dxEH5v/weeEmaSRGjYlCY+mYLgYs73GH3jqXX14nogmjtkyDhlLR2/qmqh4GIv99Kq9XksSUaR9Dk3sKaKYzbMyF1oeq0AbS8WG5z9KzlFWww04r0YabpVSF3UMij2fh7INEn+ec25gJ1xNnDWJb4MmrM6no57+89AQkD0X4vOasL1JqslbePYYvSRz3KILTmEMAZ6akBtHNg56gzkuZw6E4jTXRUzRT8A4mRKq/eLAY0A6WLep0a+W7MVewImdB6oWGkCjdLYebQmP1VP/5bKDt10DXC05TtWS7hCcbUXQioiugT4no+qOY6EJQGAr4bbGSOlDboYkGeelhocnXfzFWMK7RJfNw6hICO4YF9LCCSYbZVPe5gveq7+DpkZcOeI50QyM8TBRecIg6Bp7o/njtGGpZk9GzIt3/enHGDLfoXoS0PcSR1LIRFEk5b0hm1qaq7Yv0MdY3im1HWmJRxus1W3Nq8nbYMGYp/pazzT/TAFAIImMj/XzCG5F/cnveUua5V+p37rjTC1iMDQqiY3wxEmeA/BvUA6H6YkEHBgeFdyqeIo1puuvqYh/j+uD3w5n3L/n466YS2GdNwL6jT6y3ZQCTyUWN/FJCncv+klHJqOx/0ZnzGgdEL1gh29c+6yY3crP0o465WJr+X09wdD8Jv6gCgJkReb2lTcXl/25DjVPB8OpOV648usLw5NyXIvw64fBQZyMTw0gQ213dowIRW4VCNG
- Tt7gRty6
- J+FSy9bXneTVr8w23L2leNxVRVTrlyz/Q+DTKthyYDZb5o1JFDAb/ucjrwxWygbvekHffAwITleDCE5jBN3Si5fxMqbzrA+xgFCsipIfWXVWtykU1+giznntmkKo5DUA0bO9VA8muPwgPkx/R8zsraMd1Xd4Hka/luVeOahal3qrXXhqNBe30kbEx/lHa595xo0WkLEXyxueZQXmvhSmEUJzFJMw7Zrsfw+H9eYCCsul8/hHiI4rvao2mKRm/v0fL1L9/DiCdqGQD9Km1VjMmvs8VGj2stpKHYEsdJnSgtzrYMhu60C4m8kMOf8VOrMOqI+MM4WuEautwtT2Lvkldlzl1q/X2oVG3YCh9WwnX1mYegETAglnrKW/ae5oSlYO0cQZmojCPAPYmSTV6buhgYmQ0iOzfCOuCOZi6MOnAw3jGbP4//dGXi2E28cOv4a/rDA5gCLKV7Hny857V38zn0/rUCb8YqAD5TzqZMqAbqrmzdTJjXlIEgALbPNHEON6NXjKVMvarR3IzDZXSMzJ3IfR8CD8xr9mLxAHFoQUDaVOGfMTHoQaPJpbQo/4jZt8Vp/ThBN09NEQD1xSZZLdGIq3BW2MdUgTRZGLumrRCiSVg3eA=
+X-HE-Tag: 1775811989-760215
+X-HE-Meta: U2FsdGVkX190cW8wJ1GcuPjfU6gHUMekq2s08Ugm0PEfHYtO49Lr2QTHDpVA6rceFVQs5T3Ro9bFzjfJa3B6SgYmPQps7mKe+t3OMDANurb9W2TugwgKX+Yqcx9ng6csuhmGY24TdTNyQxTGxlItO9W53gtuoBOykK6L8q6Yu5Nm45kx3OrIkkM8tv9CiFnQDVl57fxcnpjsP491Ccr6VQrhSPqHKA6i+/gjmVQzzYG/3q2Ge2VwbhpkVPgVPHLRRKkAkSUMzgt0PFkgCMlZERLHTRXhATUxG3zts9WxlEFnAYKfdUrpJGI/GzfN6fuN5c2s3BikRl04EKXG666tRTdYV3Sl/q9i1nQsSOc9GjSw5nGNYFzX7BqThDx8BY6aroNpifnohj84nbQFDuZEjyejNolyDCRYFTa31lugiMa9witK41Rb1t8K9mQZG+eImexXX48rMGk1TguJh2Fag1z4S9Qrg2rSFrdCjVAlVpB/oBoM2upvp4nhNTuSk2Y9iOsYkbI28jBil4rTz717O0ADSDB0TUBE6vlmtVZqLEelvks5nj+hZcx41KwEB+iA67y4vnsXa1HHaL1b+2tui+TVRPh/nr0e54pUKSabaUXpnP0/s4dyeNmXG+bHr6h5QDn6+NlXw0rVP1qSpJgDJBRI9peVvyxITKoTybhGXI5pJryihJwmQvDVBwwHHtBGvP1EvTotAMoZYXqjwaDY0K933vb6YDcr3T7+jssB/mfNYsd7SCt/PeRXOjBkqER4hPNudPtS0jojogC25SSMZdR962dy/n8LsWbyBa+pxw7zaNLuG8yoJS2DH45t9OWuiMMLvp1Wc8JpOMr10o62ZEL7nOPBUR56lDWHskHamayU6QMgdWq0Q8rV1vBUjrzeuQFdgONjVAzXK+om2sRD0npEY24KDWmu9Oc1/CHYz9Kw82bU8nIubMWsQcS7rZ3QGTpdoLXXWKnbeYWZfZ2
+ XcFOYEHF
+ wNk1uME9Z1fywSBx4coc2RDZBYsiiu8j3BB9dHE+d7gT8x/NsUyyr6VB64P6OgAHbPh7nIb5cQqRSBdzfm0Gmu0juD4rEh5ulT3nkuULQU2e2Vy3TIuYTDmWUZxveOREydbtL460y30mrRMUVBUycR2kxgZi5dGQNOXArMfnHzdv4mip89WfYyRmbYVdV9lZDyDbJceoaVMHqWZ0HoO59+hN9g97YY8yuJW3ihBcBkQD0jqBZMK0te9u6tTMS3s+aMrWoOBn6AlXQznY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,93 +139,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 09-04-26 05:26:36, Breno Leitao wrote:
-> vmstat_shepherd uses delayed_work_pending() to check whether
-> vmstat_update is already scheduled for a given CPU before queuing it.
-> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
-> which is cleared the moment a worker thread picks up the work to
-> execute it.
-> 
-> This means that while vmstat_update is actively running on a CPU,
-> delayed_work_pending() returns false. If need_update() also returns
-> true at that point (per-cpu counters not yet zeroed mid-flush), the
-> shepherd queues a second invocation with delay=0, causing vmstat_update
-> to run again immediately after finishing.
-> 
-> On a 72-CPU system this race is readily observable: before the fix,
-> many CPUs show invocation gaps well below 500 jiffies (the minimum
-> round_jiffies_relative() can produce), with the most extreme cases
-> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
-> 
-> Fix this by replacing delayed_work_pending() with work_busy(), which
-> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
-> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
-> now correctly skips a CPU in all busy states.
-> 
-> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
-> The remaining early invocations have gaps in the 700–999 jiffie range,
-> attributable to round_jiffies_relative() aligning to a nearer
-> jiffie-second boundary rather than to this race.
-> 
-> Each spurious vmstat_update invocation has a measurable side effect:
-> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
-> drains idle per-CPU pages back to the buddy allocator via
-> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
-> the double-scheduling therefore reduces zone lock contention directly.
-> On a 72-CPU stress-ng workload measured with perf lock contention:
-> 
->   free_pcppages_bulk contention count:  ~55% reduction
->   free_pcppages_bulk total wait time:   ~57% reduction
->   free_pcppages_bulk max wait time:     ~47% reduction
-> 
-> Note: work_busy() is inherently racy—between the check and the
-> subsequent queue_delayed_work_on() call, vmstat_update can finish
-> execution, leaving the work neither pending nor running. In that
-> narrow window the shepherd can still queue a second invocation.
-> After the fix, this residual race is rare and produces only occasional
-> small gaps, a significant improvement over the systematic
-> double-scheduling seen with delayed_work_pending().
-> 
-> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-I like this much better. Thanks for digging deeper into this.
+> It looks confusing indeed, but it does break_cow because when merging two pages into
+> one KSM, the first one succeeds but the second one fails, so it's necessary to
+> restore the state of the first successful rmap_item.
+> 
+>> So we might want to reset the pgoff there as well, OR only store
+>> the pgoff in stable_tree_append() where we actually set STABLE_FLAG.
+>>
+> 
+> Yes, I agree. Please allow me to reorganize all the key points we've discussed, and
+> update and optimize the patch along with the test program.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+Sure, let me know if I can help.
 
-> ---
-> Changes in v2:
-> - Instead of changing the timings, do not double-schedule.
-> - Link to v1: https://patch.msgid.link/20260401-vmstat-v1-1-b68ce4a35055@debian.org
-> ---
->  mm/vmstat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 2370c6fb1fcd6..cc5fdc0d0f298 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2139,7 +2139,7 @@ static void vmstat_shepherd(struct work_struct *w)
->  			if (cpu_is_isolated(cpu))
->  				continue;
->  
-> -			if (!delayed_work_pending(dw) && need_update(cpu))
-> +			if (!work_busy(&dw->work) && need_update(cpu))
->  				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
->  		}
->  
-> 
-> ---
-> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
-> change-id: 20260401-vmstat-048e0feaf344
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
+> I will try to release v4 for review as soon as possible
+
+Yes, no rush. Merge window is about to open, so we have 2/3 weeks where
+nothing new will get merged either way.
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
