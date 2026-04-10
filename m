@@ -4,81 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E890BF44851
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87D01F44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58FFA6B0093; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
+	id F05AE6B00AC; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 541686B00AC; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
+	id EB69D6B00AF; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 409006B00AE; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
+	id DA4FD6B00B0; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B9F36B0093
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFD28160513
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:27 +0000 (UTC)
-X-FDA: 84642551574.14.99C537D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 34834100003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uunn/bCq";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823566; a=rsa-sha256;
-	cv=none;
-	b=DnZGMazAyddjS+0bjedHRVrA+GYI9tiLXNNfCe+hc72I/M0Sf4/T8lnnHsQ3CgGV8ry8pb
-	gBsltRhv5cCqSJD5CWc04vDzge+T3roiGlNLh9uAZb4X4OJtXOhqLP1o/kWo34HsQScOfr
-	rtUHqOSOLIe9FBbwJBBhYgDdqc1/t7g=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uunn/bCq";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C603E6B00AC
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8FE711404FA
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:32 +0000 (UTC)
+X-FDA: 84642551784.26.F9AA8AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E3FF42000D
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpuk5rSR;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823566;
+	s=arc-20220608; t=1775823570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=95Xzu/wrSKdgPqpES5U3P7913oi5C0HtUtRZ8A2JYug=;
-	b=VMyAviYZh6vPu569LV7rAhbmLBOxLc0b3e/HhayA8mn8Uu35BCOUcQ/ctMM6HAHJtyLaXK
-	TynGYqEeHsiNClB2o6zLjuusAa6bq3yxqpeUqheXE5nbI8H9G30n6h0sUutATXN2DhAEG+
-	2Eo260eVhralqlGKqAGFY3g97M8U0Zo=
+	bh=AhOSzTxD+cV4MqoaDbRxHefm2I22dte0YETJ6P0JjKI=;
+	b=mIfusiu8uqdyn+K0nsb6BzUejPtAd2Q8T+oMwkUs7Ap03I7G+Ag4WgN/mlcseiB+ztWhIz
+	CWKrKZHaZ6I25zolVOHGOSVMH+bdRHfE/2C9tX3Z3++La45CvVRmH5lNciq7GXmaHjVR0r
+	Cg8efwn/p4yBshI7/uKnI9w9cNbQeeY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpuk5rSR;
+	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823570; a=rsa-sha256;
+	cv=none;
+	b=R8s8IsdoNqr4wj32pd7Wpi6O0OlG5iQOO1dZ2Y1K95g6sUF9YwO4jSgdyRA5UTG34foAZg
+	FNnV6WulHhuEDIil/3ZnewyX1U5s+8aGv9DE/P24DNo8MTLq4NctAF/aVhci+NKy86I5L5
+	QIFQMqTsutd9M/yk0lGo6JIy/1wAQkQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5633E444F1;
-	Fri, 10 Apr 2026 12:19:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A057C2BCB3;
-	Fri, 10 Apr 2026 12:19:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 51A166091C;
+	Fri, 10 Apr 2026 12:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4F4C2BCB0;
+	Fri, 10 Apr 2026 12:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823565;
-	bh=tLIpqPCaUi8Lfeqau43+rfn7UZ8vuvPykTPYNUPuuyU=;
-	h=Date:From:To:Subject:References:cc:From;
-	b=uunn/bCqpDYdqH3aqiI0+2U/qm27AeTQwxnXbKYibcvcv2ZEX2J7abPlER3gpmuTw
-	 CBdP5mMh40n2zp7Tno2Q99U//gHXFdOV0IBNQapDNZb3rSYwBD5TySsxa/Td7SLyaZ
-	 p+uL6Iv9jGq9ZtmZnt8i06X/J571L31cWnZuiDLMRsOKbpHdih8iJDMdVxjdr+94oH
-	 +kfrO2pFRZtB2b/jp8TX3WQWaL7ksYC/uaT6tTAybV37imt1fhiAkDjh2EPTnuViku
-	 1P4aDmEJtrdQSxbhtiFRIYbjrzGEHTE4V2Fb8MxeAUFtdhNoavN7essScQIWwWoRqs
-	 j/BFBM5JmmtDw==
-Date: Fri, 10 Apr 2026 14:19:21 +0200
-Message-ID: <20260410120318.320727701@kernel.org>
+	s=k20201202; t=1775823570;
+	bh=gx3RztExl/RgjhE+RVjeBSM72TbSvLK5CUYrt3EY96I=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=Bpuk5rSRR/rs1jSmitZH/KfJL+3TNuP+dz9xwjVC8e1YVix0oW3s2Pp/y+L8X9oHD
+	 FfGXk8B3TY0jbEAZNS2FVq5qwscSTPNozRdmP6S1az7QsSRwh37CnHDegYmWg/dUhl
+	 oXkQ09dlNxtpDlZfCfFVBtb5yeQYcj5dZxd8vIShSLkbr1gWWPlcdAHe/FZpu8mplV
+	 u5Y93dLHQf7k/6QZkYgksDu7FYlgnX/m++LNPEYIEnDd7dRmUlTkWsJQwVidroG1Bi
+	 MdGUi4KzTqg9X+Zn0ce3HiuHIaE9YE1XVzPbK1ak8XvacDL5nVhYnRULjmYf5QSMQ0
+	 DvaPTMl303Xmg==
+Date: Fri, 10 Apr 2026 14:19:27 +0200
+Message-ID: <20260410120318.386500288@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 11/38] misc: sgi-gru: Remove get_cycles() [ab]use
-References: <20260410120044.031381086@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-cc: Arnd Bergmann <arnd@arndb.de>,
+Cc: linux-wireless@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
  Michael Grzeschik <m.grzeschik@pengutronix.de>,
  netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org,
  Herbert Xu <herbert@gondor.apana.org.au>,
  linux-crypto@vger.kernel.org,
  Vlastimil Babka <vbabka@kernel.org>,
@@ -119,14 +115,18 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-X-Stat-Signature: 78a69suss88i67jfgypoqyu1z95y6na7
-X-Rspamd-Queue-Id: 34834100003
+Subject: [patch 12/38] wifi: wil6210: Replace get_cyles() usage
+References: <20260410120044.031381086@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775823565-757958
-X-HE-Meta: U2FsdGVkX189WmBvLHr+a0XEriK+8sAu4qvQErgsNozkBic1hQ1yegUthezqnfLH/Wl97KeDuW737yX3trAo5PM3YMxXD5boYQyvSNQ86A3jFzLLkcSsxNyqGWACauewYk5TteX3QZA7gF8mjT5T9WRw28CVdgKVL11lty6u5PAzQinIxAC3C9lex7T9zTLhZNXMx9vbShUkbfuFdNlg9pcgLPPiCSzgMWt+PRogSW3/akM73pqD588eaNxZPYPXXCo8YBwYeYwoSp+SdMAFpz7XYpWrnVzuFgbMKX8HM+GXvKzpFaPRCMpt3p53cl3wM091vjJw8/JR4gAGKO/Eao6C7AcxfoYQ5xQFVT+REEF53puHx14PKu1aTXSyYFZ7xKt6NVl+DRS8IUzqJIzSzZnc/7j+gfcfVI8YdKg0IRneeHinI7lDm2LzYe6WFk/JMriLgrR3RqHdRlIarJo+1qQRWwHyT9WlaZ88hDrIc0sENzXnSWv6flIYDoxVN20R5+U5Fq8Ddz0zohRqS00p3EJYkOIaQhxTxlimxOlfO6FX42z/fJNysQe5H2JRMrz5Ucn33LavqVQ3u7gTurCWFl5cv+O2j+MVYiqOHOXsaPYEYLrAelu9qoSfZDJMsdAu1qt41php13imPYZ7WbN6kzl/omF1BWDaKXD0Ek9EFfsy0eK9cJf150mRwxgsloN/pmXJWp+wiU1tuc349fpZCvXOOYuoAfLqTJr7ULxRoK2LaYbeGMHWQsOIdGdi3YposQntptELa1X7jEsUtxxvMaDevfMs/6AHQRntmTh0wUlb9BmfjhxqwRILyoaJF84H0nvqKcXOT/wAgMPoJBqaYj+vPD5yeGZw2NznH9KjkPTZsiNC3TYGLiqdXcoBhtCVfDPteYak6im0v16BF/ZHFTB/6Cg1zFVhnzaoaj3cqjJF4uW6hclKco+Tf+EmgzrhUtFHqX+SARNg4Gp+D89
- O/9cAIHz
- gaKdkSFwB9fe96ss/f1PeQifykBS335uQfTiHBoeZBUUPUVVm9QqSttPxzGbwlVvvSBXQFL/tRzar9agx5nWRFiFXjU4SayeyoMSMMEbL02/Sn/0uyEzqscXn9WTHQptk58+zTdaAx0Kxqohh0Gqye8POLEwqFbeHafNRt9V85+v6Tb/pRnhdjkjjVCW96JgQe2xgsQqhCNVjpfzsHz77hs5x7ej3WTlGoxlCxMAgoGT5v9wuWh27dbHfmi8eHq9SyH823vfQ8dV3GSY29rtiIQwWcY8VYvhhE1BHX0XXyljzRqj8kBFum3068/vu3a+ziOTHxuU2PelWPdJNsblioM0k4E/nWMYt1FPZVyBqLLaovYBUIjxD2AgPPKiGoioVKybyO3UVzRIufG0=
+X-Stat-Signature: 1ocf33xs9qwuuzhzkp97tyicajbarsbe
+X-Rspamd-Queue-Id: E3FF42000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775823570-633350
+X-HE-Meta: U2FsdGVkX19+ntuiD6YCMTTfre26RQ8WSocnHVTM/klVkDhwtglBxd9kePKmt+6/gtRd5G7wqgKOjW+tPphdRUlyEcz5+70cVMqPBIR2H2NAFq9gGd7HBzRWC7qBdjSwl2Da7dk/FslVR2M7pHOxZLucKe5Tpsa5IwLjHSwGSKYNbraQO+N79b15o4GEKNJc2hZBWd1o6u6bd1cPD3HTiAEvW555LtG7EqjDGjnCb3igCZmhLINHpqTI4MlPctx9H4ETgp9ot6Kxkfhz9//prdje9viqDwMFVXyCZzgfnCDFY0hi/K9ly7XYOby6AdUpKq8m1dCWba5zAvJZ1vwdcL7duZhL61SksL93rOVD0IjBeEB1ayxRau0rvoAveux4G8QHElRAZXV4JpRWfJMAlsjJIpovltmi1PRDDwr5p01NLTkekeq1iFr+fTUvTHRzElSOULlLo38nPaW/rSF7mK0kBA44EmonXOMB3dq8gqOdt9U9Z4FD0r5mwHm2pgenn0GuI7kmnN7JfkLbGH24+y2i5Xk5Nmxy95KdpqSgyFF0uD4hdeD56S5iJEXgHEN6XNDJwJI8jyYOj+5vuQrhPGzbO8npguKJ1AcqnD1ArDI5FQ+ZPNB5c3qkrEbd+UI6455Kpf5zZvhaLTwIbx2HTvdz2dvoDjgMaKLjikO0NPaYLdYx4EuzssB8AYWhD+gQcvzFlI936E/h83kxWMQm1UOw0KvxEmejnngRYg4IxbCf0yev94IgyB/jGD6KyQYISgwH7iSBCA/YFhKPVIV24i/oXz7Tss91Yj8bsREzHAm4nmuWj/F6sLOR9fi2CEUJryfiTvAedrn9NpwfXOJKx8rYmRL3nQm4JWZ5fgq7WjjSlAR1VpIJDRbxs6uTYe0ptHGYhzFwpMvUQ1/A4veNHx6pymBnSE9Obami573VsfcGzAFV7EEh3eTlmleMOvI29Q5nnOVsoS4xGbugglm
+ k6njaOus
+ FM0guwvgQDE+aHyRBEyklR8JzmXYJH0sygNy2D7wXDPhrji8B/HSSQX/axZfq7LzsUFOTgtJ6lRD1ZjK4IUQflLiWgVEDCHqK8u9WhsBnWxzCHqK2EJ3Lo12S2jMit3rcCjwkVIrHcInNW07QbailbgQCYpRUw+ByCUfvIvTCCINP5I6KAk4tmvVdJxrbyd/UGg1807aVaU9zbaaLjPQy3MAQMrMawzz0ojD6EGJ1Si5UoVZb730JY0yTH57P5CK0YGuR/qVQ2COK1VURkJbbgLYe+bhBAcwMaFnOcXESyhFjPED8lY3OWNgN9/bgqLqRXNye2lplGPbm25QZJnlt41xga+ooVgk3yvRxBB/Z/OCwg8+VMuyQzCmPF6Kdj9jrMxHFQvIL4SdfBko=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,121 +134,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Calculating a timeout from get_cycles() is a historical leftover without
-any functional requirement.
+There is no reason why this debug code requires to use get_cycles() for
+timing purposes.
 
 Use ktime_get() instead.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: linux-wireless@vger.kernel.org
 ---
- drivers/misc/sgi-gru/gruhandles.c   |   20 ++++++++------------
- drivers/misc/sgi-gru/grukservices.c |    3 ++-
- drivers/misc/sgi-gru/grutlbpurge.c  |    5 ++---
- 3 files changed, 12 insertions(+), 16 deletions(-)
+ drivers/net/wireless/ath/wil6210/debugfs.c   |    2 +-
+ drivers/net/wireless/ath/wil6210/txrx.c      |    6 +++---
+ drivers/net/wireless/ath/wil6210/txrx_edma.c |    4 ++--
+ drivers/net/wireless/ath/wil6210/wil6210.h   |    3 ++-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/misc/sgi-gru/gruhandles.c
-+++ b/drivers/misc/sgi-gru/gruhandles.c
-@@ -6,26 +6,22 @@
-  */
+--- a/drivers/net/wireless/ath/wil6210/debugfs.c
++++ b/drivers/net/wireless/ath/wil6210/debugfs.c
+@@ -151,7 +151,7 @@ static int ring_show(struct seq_file *s,
+ 			char name[10];
+ 			char sidle[10];
+ 			/* performance monitoring */
+-			cycles_t now = get_cycles();
++			ktime_t now = ktime_get();
+ 			uint64_t idle = txdata->idle * 100;
+ 			uint64_t total = now - txdata->begin;
  
- #include <linux/kernel.h>
-+#include <linux/timekeeping.h>
- #include "gru.h"
- #include "grulib.h"
- #include "grutables.h"
- 
--/* 10 sec */
- #include <linux/sync_core.h>
--#include <asm/tsc.h>
--#define GRU_OPERATION_TIMEOUT	((cycles_t) tsc_khz*10*1000)
--#define CLKS2NSEC(c)		((c) * 1000000 / tsc_khz)
-+
-+#define GRU_OPERATION_TIMEOUT_NSEC	(((ktime_t)10 * NSEC_PER_SEC))
- 
- /* Extract the status field from a kernel handle */
- #define GET_MSEG_HANDLE_STATUS(h)	(((*(unsigned long *)(h)) >> 16) & 3)
- 
- struct mcs_op_statistic mcs_op_statistics[mcsop_last];
- 
--static void update_mcs_stats(enum mcs_op op, unsigned long clks)
-+static void update_mcs_stats(enum mcs_op op, unsigned long nsec)
- {
--	unsigned long nsec;
--
--	nsec = CLKS2NSEC(clks);
- 	atomic_long_inc(&mcs_op_statistics[op].count);
- 	atomic_long_add(nsec, &mcs_op_statistics[op].total);
- 	if (mcs_op_statistics[op].max < nsec)
-@@ -58,21 +54,21 @@ static void report_instruction_timeout(v
- 
- static int wait_instruction_complete(void *h, enum mcs_op opc)
- {
-+	ktime_t start_time = ktime_get();
- 	int status;
--	unsigned long start_time = get_cycles();
- 
- 	while (1) {
- 		cpu_relax();
- 		status = GET_MSEG_HANDLE_STATUS(h);
- 		if (status != CCHSTATUS_ACTIVE)
- 			break;
--		if (GRU_OPERATION_TIMEOUT < (get_cycles() - start_time)) {
-+		if (GRU_OP_TIMEOUT_NSEC < (ktime_get() - start_time)) {
- 			report_instruction_timeout(h);
--			start_time = get_cycles();
-+			start_time = ktime_get();
- 		}
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -1976,7 +1976,7 @@ static int __wil_tx_vring_tso(struct wil
+ 	used = wil_ring_used_tx(vring);
+ 	if (wil_val_in_range(wil->ring_idle_trsh,
+ 			     used, used + descs_used)) {
+-		txdata->idle += get_cycles() - txdata->last_idle;
++		txdata->idle += ktime_get() - txdata->last_idle;
+ 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
+ 			     vring_index, used, used + descs_used);
  	}
- 	if (gru_options & OPT_STATS)
--		update_mcs_stats(opc, get_cycles() - start_time);
-+		update_mcs_stats(opc, (unsigned long)(ktime_get() - start_time));
- 	return status;
- }
+@@ -2129,7 +2129,7 @@ static int __wil_tx_ring(struct wil6210_
+ 	used = wil_ring_used_tx(ring);
+ 	if (wil_val_in_range(wil->ring_idle_trsh,
+ 			     used, used + nr_frags + 1)) {
+-		txdata->idle += get_cycles() - txdata->last_idle;
++		txdata->idle += ktime_get() - txdata->last_idle;
+ 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
+ 			     ring_index, used, used + nr_frags + 1);
+ 	}
+@@ -2531,7 +2531,7 @@ int wil_tx_complete(struct wil6210_vif *
+ 			     used_new, used_before_complete)) {
+ 		wil_dbg_txrx(wil, "Ring[%2d] idle %d -> %d\n",
+ 			     ringid, used_before_complete, used_new);
+-		txdata->last_idle = get_cycles();
++		txdata->last_idle = ktime_get();
+ 	}
  
---- a/drivers/misc/sgi-gru/grukservices.c
-+++ b/drivers/misc/sgi-gru/grukservices.c
-@@ -20,6 +20,7 @@
- #include <linux/uaccess.h>
- #include <linux/delay.h>
- #include <linux/export.h>
-+#include <linux/random.h>
- #include <asm/io_apic.h>
- #include "gru.h"
- #include "grulib.h"
-@@ -1106,7 +1107,7 @@ static int quicktest3(unsigned long arg)
- 	int ret = 0;
+ 	/* shall we wake net queues? */
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+@@ -1286,7 +1286,7 @@ int wil_tx_sring_handler(struct wil6210_
+ 				     used_new, used_before_complete)) {
+ 			wil_dbg_txrx(wil, "Ring[%2d] idle %d -> %d\n",
+ 				     ring_id, used_before_complete, used_new);
+-			txdata->last_idle = get_cycles();
++			txdata->last_idle = ktime_get();
+ 		}
  
- 	memset(buf2, 0, sizeof(buf2));
--	memset(buf1, get_cycles() & 255, sizeof(buf1));
-+	memset(buf1, get_random_u32() & 255, sizeof(buf1));
- 	gru_copy_gpa(uv_gpa(buf2), uv_gpa(buf1), BUFSIZE);
- 	if (memcmp(buf1, buf2, BUFSIZE)) {
- 		printk(KERN_DEBUG "GRU:%d quicktest3 error\n", smp_processor_id());
---- a/drivers/misc/sgi-gru/grutlbpurge.c
-+++ b/drivers/misc/sgi-gru/grutlbpurge.c
-@@ -22,13 +22,12 @@
- #include <linux/delay.h>
+ again:
+@@ -1499,7 +1499,7 @@ static int __wil_tx_ring_tso_edma(struct
+ 	used = wil_ring_used_tx(ring);
+ 	if (wil_val_in_range(wil->ring_idle_trsh,
+ 			     used, used + descs_used)) {
+-		txdata->idle += get_cycles() - txdata->last_idle;
++		txdata->idle += ktime_get() - txdata->last_idle;
+ 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
+ 			     ring_index, used, used + descs_used);
+ 	}
+--- a/drivers/net/wireless/ath/wil6210/wil6210.h
++++ b/drivers/net/wireless/ath/wil6210/wil6210.h
+@@ -14,6 +14,7 @@
  #include <linux/timex.h>
- #include <linux/srcu.h>
-+#include <linux/random.h>
- #include <asm/processor.h>
- #include "gru.h"
- #include "grutables.h"
- #include <asm/uv/uv_hub.h>
- 
--#define gru_random()	get_cycles()
--
- /* ---------------------------------- TLB Invalidation functions --------
-  * get_tgh_handle
-  *
-@@ -49,7 +48,7 @@ static inline int get_off_blade_tgh(stru
- 	int n;
- 
- 	n = GRU_NUM_TGH - gru->gs_tgh_first_remote;
--	n = gru_random() % n;
-+	n = get_random_u32() % n;
- 	n += gru->gs_tgh_first_remote;
- 	return n;
- }
+ #include <linux/types.h>
+ #include <linux/irqreturn.h>
++#include <linux/timekeeping.h>
+ #include "wmi.h"
+ #include "wil_platform.h"
+ #include "fw.h"
+@@ -632,7 +633,7 @@ struct wil_txrx_ops {
+ struct wil_ring_tx_data {
+ 	bool dot1x_open;
+ 	int enabled;
+-	cycles_t idle, last_idle, begin;
++	ktime_t idle, last_idle, begin;
+ 	u8 agg_wsize; /* agreed aggregation window, 0 - no agg */
+ 	u16 agg_timeout;
+ 	u8 agg_amsdu;
 
 
