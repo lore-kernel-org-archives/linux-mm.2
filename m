@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C67E99040
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 07:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0212BE99049
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 07:17:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDEB76B0005; Fri, 10 Apr 2026 03:08:15 -0400 (EDT)
+	id 2B7CB6B0005; Fri, 10 Apr 2026 03:17:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB6B96B0089; Fri, 10 Apr 2026 03:08:15 -0400 (EDT)
+	id 269026B0089; Fri, 10 Apr 2026 03:17:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF3006B008A; Fri, 10 Apr 2026 03:08:15 -0400 (EDT)
+	id 17ED86B008A; Fri, 10 Apr 2026 03:17:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CF2F96B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:08:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 558E8C1607
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:08:15 +0000 (UTC)
-X-FDA: 84641767350.12.0C98FEF
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5D9F2180002
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:08:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FtuugAuG;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf24.hostedemail.com: domain of BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775804893; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 083EA6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:17:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CF9DC1AF8
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:17:51 +0000 (UTC)
+X-FDA: 84641791542.24.B623173
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1A1DC40003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:17:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="E1VJ/tmS";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775805469; a=rsa-sha256;
 	cv=none;
-	b=eJX4MolcdCjxyTrkQK9XCb9JZ//rRWZHum8btLpdM7xSqbDhW5J3bGVUWLwBlb4ETEvu+m
-	J+eOKIYBAhbtpYzoKR9AGkzAlavxnwavTcQ+KL1yNcAnksRtsE1Lgi1Na9dnpqjtP3Utxh
-	1nYGsWndzexHZKgD1L3+cQgRTt8gWHs=
+	b=g33oEdVCTvDDoD+u05AUkf4G+k5XhXqMmFRwaKBN+DfBZ/FjuqcgAZBqfgxVuhgWRNmXdH
+	qBFZfeBUHFa7ipXm90uE86P55KovntGDBhj35khm5AdK+9YPTrK4ouAsbBIPcr7+XsHTrM
+	hjjlj9ZrTwD1NfYKha5WPk7l0PFmHdI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=FtuugAuG;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf24.hostedemail.com: domain of BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+312a4f9ec2f36cb18775+8265+infradead.org+hch@bombadil.srs.infradead.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="E1VJ/tmS";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775804893;
+	s=arc-20220608; t=1775805469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPaxU+hWT0ZEvzMf51KWwAKk8kmuCkfO6rPBhH2/bDM=;
-	b=zP7E0kE9ma7hLPqIuTE72KYVUP/a6JsQHOGx1hbliQveWScIECicPCs2k6kgOOFpuSY5xs
-	FK0l1o0DDyI+c0BTbz65mJBPQWY5HlbhZwraKTlES5RjjEgwZWDl72g7IH33tjuhUuccEa
-	1zq21NlQzBg5Nrv4cC533AQGjZtAWeA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xPaxU+hWT0ZEvzMf51KWwAKk8kmuCkfO6rPBhH2/bDM=; b=FtuugAuGyqZC2jQrdNhDVwzxpi
-	dJ5SExKEL6oOf5ZM/vBhsqAs4X7id6OJQfzGpjXAOPfUG3QNrMgVymo5yGk+Pteme3HlMErSpyosH
-	EYzkJi5uupoAJz/H3OiU8lG6oeGCbtitZfMu2UMnGRwKRIFdFU+tCrDVeFYpYQx431oTr73xMcUhn
-	yCpRhmC5cUA6nj7lI8wTfCMseD+k5gFAUKi8XRlqnaf3H7ITogD84t5f/p1vk6nUBf8YGj2bMnUnL
-	svhucEGk643fE6RXT/3XYZy+TDvUzrnKJD8r4qMP92fSKa+h5rnUf/Pbx0FX9yJkjzeTfF+xJ7WWT
-	wc/pBhSg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wB5yM-0000000Bi7B-1NBq;
-	Fri, 10 Apr 2026 07:08:10 +0000
-Date: Fri, 10 Apr 2026 00:08:10 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Boris Burkov <boris@bur.io>
-Cc: linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org,
-	linux-mm@kvack.org, linux-btrfs@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Direct Reclaim and Filesystems
-Message-ID: <adih2i15lagPQmGc@infradead.org>
-References: <20260409210906.GA881465@zen.localdomain>
+	bh=fWKfH5LNOJyUga0sR6g+VdsEMxO3kMazl+w2D/Y3Rqk=;
+	b=dkPx8a8tGYHVnDzVDRd/I4W8hno6CUFs2NvjecLigEksOlXvRo5/NdvbRcnKsDc/J9J2D3
+	fl6fZ/mRVhtdMLNfW3X56ww7Dd6HvdO+yiiSGGYG4kEz//HXNfTbhOVURlgONHA0dkyjjo
+	R4WYJTNmvw8uoY+RtiDhNWRt5mHfdI4=
+Message-ID: <ce4ecefa-976c-458d-8e57-361b10d297a8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775805464;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fWKfH5LNOJyUga0sR6g+VdsEMxO3kMazl+w2D/Y3Rqk=;
+	b=E1VJ/tmSviqsUJtDxGPUfKi0RzYBX1JFt/7M57jV48fftEn31ROpg2k6hQ66n5T6br4DtQ
+	ciWa+ZN5SikxIisQX93J1p5NLbkwL6xrQiATxs44kUQMnIc/+dk1JMER7r94EgjIC6hwzu
+	AqmLjU4FyFEs5b+cKh5KRvMDemGRVLs=
+Date: Fri, 10 Apr 2026 15:17:18 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409210906.GA881465@zen.localdomain>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: mod9e6ta6jphf5rd9jhr6q1xpyophkgu
-X-Rspamd-Queue-Id: 5D9F2180002
+Subject: Re: [PATCH 2/2] mm/memory-failure: use bool for forcekill state
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Ye Liu <liuye@kylinos.cn>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20260407020715.2269255-1-ye.liu@linux.dev>
+ <20260407020715.2269255-3-ye.liu@linux.dev>
+ <9d022499-2a77-f8c6-b86d-d9de838fac32@huawei.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <9d022499-2a77-f8c6-b86d-d9de838fac32@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ck349tf5kajwd1spuk9ex86dt19uo7j5
+X-Rspamd-Queue-Id: 1A1DC40003
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1775804892-6671
-X-HE-Meta: U2FsdGVkX19S2ixPXLtPO70T33pUt8Xh9P8NGzZfcASb6w07Mr7T6geFz+W+D0fRwG9QXjjPHyD2yCELpwXFtVS271j41T6rofnfnOAtkALkffCgon/S+xux3tG5DIyvxCQP+jhy32C/YEJwB9RXPIlKRIY/2HHr9mwPgV+rzJE0us9/s/2hqc6taIE5k/1cffe+UmpGZeSgqD8gzoySEAzJ+h8SlChxULzTsDvuil3/jvs9AEBSDdEBgvhUSCSkaaDIghyJdxeKqqgk74fElbfqUiyz421b81pWKQg/dmJfGAeiGxqRq1SjUNPvbnIPtgtNTHbn53HlJ0hTQ8KnvkH4idvzdm8w8/i4WhEF4/9m3Q0g8saeECCrHFHHT5nKCELm6iReJ8K5v+/zdRB5QT873Ux5mu+BvMtLDYZkFmXcZE/w5sihIgX7DizOJ4OjG3D1i8k8kBdc11NVmCjrsnoHWpVb5H4qTC/vTenNlXma9+hiv22V0JoHHexZzz6jvVNiCFzEAJ7+NUT2VLQpGBuJ1FMt63ve075Foa1hZ5V9wrJp3zbiTpZFVXjHH8D973x8AgNYEsp9tT6PlKdK+ANUSzfHbmccA2CT5enb5/TJRtfVHhFN8Y+f6vlXL929jg6y6xaCa2N5ayL5In/7i+CAeQl2pDn0T2Uxn+GWgoCVyiAzmvXax9HtS52GaZVCVjFTG3SX8C6K58zsBGu04Jue7faFNHgc8SAOYQALJLwdhCNTz1tqcMeoj/iSD+xozcJ42cZL2Q+8Huyyble2IjpfbUawG4FH+cwwcPQetAsh/nnpV+FoJlDV942FR/v/7U96OMF+LbaXXWqQYo3z6ix8UaTBHEaf5x0dlVnnK3eyKwgVJG4Nhf4H6z9PM7scVazp01BWSDJ/t6aZglVOVIPlCGZ7o8sS1Jox9nQy4w8wrV1IKBsmKcdYOauF9YcEt3IcbdsHCvHmPCGZWFh
- h6q0Sozm
- 0vCwBOH7SpIs63uq3vJhshvjS9b3LMNUekgTtD0++/bgVdIzn/NzXtgoMCknoNNK0sllRkg9wW9JHkYmFdScHDFITeVcVLcrtJPN7MFF4n9mVhtMI1LmAuGADPDr0XwgMtKLYA0SIwn7t41+BOjMWMiEVIEYf9SyvZW91g1h/R8c3bQj6GlObV/kzECoAwA/BmEGCGEuHu5pDPNygiIRGumMoijYvwzgEKNo901ZmElCOZstLovrJTwcQKaYHXr9xll7+RQSHGPhA84lSj6p1QTsgE4YAPA6oWXgKGAlmveJ0/7zzVUPGfsKyhhbm3FEwNLuA512i5iTpbzfbB4s96wIRljO7sDs+FbPOUlAD9iI/wstKUBtPc69+9V32U7P7QQGG6qATZ5DoLnqMZLf8vN9y9rRh9p6W835bCpCBsY5SNBEuVq7wrB+6YfBSJb9uBYHmwIpofnLKrqY0Q9dAlamT51/w43+7SA8pJeFPFrUB9krZUV7Z7DN7QA==
+X-HE-Tag: 1775805467-348065
+X-HE-Meta: U2FsdGVkX18sg6pd+u5bOahEe2EM28udCVUEdWv4YGN9ndUijfrIOzMbdGYGAlzpGvsFGlwAjjcRrHI7tELNKqx2yP7sa+BXaFceg51zq6WSGDA/GB2Nj3uioX67AgvwzIlzmBJof/XYrwftTvv887LT8RRxLVNp3kt+Rv9z3dJLkgjqXfiuGNb5Dz5kOJTVzYzun+lulO9mc6fZsjHCkHHZPGMet0XQIz2W4NhHWqSl4HCZo5honsEj1V8bL4qTo1fSmkOt5dW2zw2xdy3QCYncrIO5atKGaILfDNhyfm22Q66WSl0KToRI7PKzLZ8/4bhrSn4xG3wdeuOhnMDiaBTQkRgcDXYoITwERTdcCzQ5FedJDZ6DF2hB6Af6nHPwcD2xTDtinxYKERNgpogIz6hgPEamcDQR3AX+y8HyGwX0zzIwOf3oPYyjoa/LC8LkbrxSyVKJsuZ+avI39/1aOpiYWrN9yDdJeWlMZK/H8v9lHU5nY3g/gSS4zW2Zi2SwiHYZexeZTRehSFbjfsN05nUimNiRehPwJi2iv73r/vQD9+MrxAJWYnPTmw+pwQGKdJpn3BscaM+5QTRz0iXpTW8aEKm3wqpP/KLg4be1QdlNJHjx8jFsKL02D9wbIZEdaWl6k+fpg3dEhtDu0KUpVDfXXawK16wZEb/yJcsa1yqCrpgRmCfLT1UOQVRthDKlpUnk/ublfNh5eBd9kZBtHPuyfMnljANX2VZ57+lkErC5w+pNBO1ePym9dp7hP+brdhbRQoLTywhu0KBSHhBKO1vIpwZNthBW3vAff1T8w6qQ74QInilQcFUfdV3iB6HFRs+aU2sVqh0rpaT8XoUeeN3HalEkuwcXfUnjm/cV1m6wTuWqRlwFBhu1THFI23px2TT5cOhBssNndkmiOLfGP1jFECjc7nsY9tSFB1c375Q7pDxkpTYrG3UAk5L6Bb/77Fr4iNTyI1hg/ImYzIs
+ gUK4KM9+
+ bMRV43IXIetfw0t4FcPhaZZh/JG/7g/5GQshRKOiddhpMhwlhYAeVZAofGrq5QMJlJd1ywhCBkLBRR1IonYkrIYXIlAB/8JcM+lRmPn65Xm7fAaGwo54dwMHbTmkdxuJQEj8knPd2HkKQYaUMEc4nXrAkk1z6GtKkLolTsSBEbXY8Q1EjA/TQPUtCW2UWlG07RJUwyOweMSyHlHJEE9UtTVylRjYLl9eQdNU0217Z9vCCmw6zg0QY9tHmxNByJYbHMK3x3BqlPftEQMEOudOBEfE4e5Rzr+ttGf+BAlujpy4gJnE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,18 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 02:09:06PM -0700, Boris Burkov wrote:
-> - Reclaim freeing metadata and/or forcing metadata writeback [1][3][4]
-> In btrfs, this results in redundant work fetching and writing btree nodes if
-> it happens to hot nodes in the btree. Should we be trying to lock some of
-> these nodes down from reclaim? If so, how many is appropriate/safe?
 
-The solution to that is object based reclaim as in the xfs buffer
-cache.  That way you can set priorities on the nodes to keep them on
-the LRU, or even pin things down much more easily.
 
-When we last discussed this Josef didn't think it would work for btrfs
-due to the amount of metadata, but I don't think that is a valid
-argument.
+在 2026/4/10 14:45, Miaohe Lin 写道:
+> On 2026/4/7 10:07, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> 'forcekill' is used as a boolean flag to control whether
+>> processes should be forcibly killed. It is only assigned
+>> from boolean expressions and never used in arithmetic or
+>> bitmask operations.
+>>
+>> Convert it from int to bool.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/memory-failure.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index d25adb390c3e..f355642bc2b6 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -459,7 +459,7 @@ void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
+>>   * Only do anything when FORCEKILL is set, otherwise just free the
+>>   * list (this is used for clean pages which do not need killing)
+>>   */
+>> -static void kill_procs(struct list_head *to_kill, int forcekill,
+>> +static void kill_procs(struct list_head *to_kill, bool forcekill,
+>>  		unsigned long pfn, int flags)
+>>  {
+>>  	struct to_kill *tk, *next;
+>> @@ -1582,7 +1582,7 @@ static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
+>>  {
+>>  	LIST_HEAD(tokill);
+>>  	bool unmap_success;
+>> -	int forcekill;
+>> +	bool forcekill;
+>>  	bool mlocked = folio_test_mlocked(folio);
+> 
+> There is one caller in unmap_and_kill():
+> 	kill_procs(to_kill, flags & MF_MUST_KILL, pfn, flags);
+> 
+> It seems flags & MF_MUST_KILL does not return bool. So maybe we should change it
+> to clear semantic conversion?
+> 
+
+Thanks, that's a good point.                                                                   
+                                                                                               
+While the current call relies on the implicit scalar-to-bool conversion,                       
+making it explicit at the call site better reflects the intent of this bool conversion cleanup.
+                                                                                               
+I'll switch it to `!!(flags & MF_MUST_KILL)` in v2 for clarity.                                
+                                                                                               
+Appreciate the review.                                                                         
+
+> Thanks.
+> .
+
+-- 
+Thanks,
+Ye Liu
 
 
