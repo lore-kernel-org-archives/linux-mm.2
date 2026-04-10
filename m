@@ -4,118 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A019E9905C
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F12FE9905D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E0146B0005; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
+	id 3B5736B0005; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A8416B0089; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
+	id 33F8B6B0089; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F996B008A; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
+	id 207216B008A; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78B1D6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 299E8B8C1F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:24:32 +0000 (UTC)
-X-FDA: 84642110784.27.932D532
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BE607A0009
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:24:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=V5R7x7lf;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CB9C6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:40:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90FB01B7C35
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:40:05 +0000 (UTC)
+X-FDA: 84642149970.01.EC591E2
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BA42CA0006
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:40:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCXViYt1;
+	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775813070;
+	s=arc-20220608; t=1775814003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
-	b=n8lNR/F2LXse65oDHQzezLT2R7p7zr/hsHc81/JpP1zoj3Vni3JXW1/v4XgBXdsZl9zthS
-	HJYS+9nc8SLLCq9M1V1BCeSF09ECLc7RDANkS5wG9iXNpzaMt0LyZ+gqB+4rSWEzVoktmI
-	vUWLd9XII5+NXaGUfcLCJ2sFl7ui3ck=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775813070; a=rsa-sha256;
-	cv=none;
-	b=Ie2yoIZfy+nNIocmgwnyphDHhKjj4DghUq5A3IPQXS96GvKn0WKREbTzV5O/DSKBwyIuZQ
-	dysDcJ+TSEQVehANGt9N0CEHtlrC5wJth05VA6yrCT670LxuzZFzHEQlSH+nB9VNjDQx4M
-	0xhTBndFYWkVIMc0j0KBNf2Wr7kXTeU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
+	b=DDzwix3rEq6wjapmHgcLpMw43BEFi9PzWNce+jJzqOpQEqpJm/+Vbzl6ORs84HQ1nfgzAN
+	zxG2+iyUSWhelPmBj1LI59dLZA6zUn9sdEzp1w1e0FsEXEmvOG+wCiVrx3AcubPvfO6wXn
+	DRsF12DNVBLIS0BfDrBx1QmgqqsUTUs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=V5R7x7lf;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c76af79f029so749009a12.3
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:24:29 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCXViYt1;
+	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775814003; a=rsa-sha256;
+	cv=none;
+	b=5FDawwdCOvKHnUr4jabHeNvK45ulb4yB93A1xS8Rly8Z9pJu3U7tkxO98La90RRWQmQZ1S
+	8FdP8yOh/qoPkiHZZiFPLtd5ZUdO0WaN6OBSG6l0k7inT5XfavicQesJkiv7NwWyT2b5SJ
+	MF4Kp9VXogIJxQFgaspmbLJWknqU5Yw=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824c9da9928so1655821b3a.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1775813068; x=1776417868; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
-        b=V5R7x7lfujhWS/dA4RJSM/3LdwkJG92Xde4xBsw/faO0zDmDfWPrUspbwcvR4JjH5v
-         oVTGx9zb7VjFnnxZfSi8qRXWCr5vPu7Xq/o8wgKYOvl75OBjLTbCS6bY8cqqK7tLt6z9
-         kh6QHNT3aXwN/GViC5ivPOp6rCY05F5oKn6eEU6/U8rZg0IWdEXkiEYfY24FpTBpiSwi
-         rychAPBZKbY1sWM495+FUNdBugHF9aFjMM8NBke8Xn9Tuxy6Oy+3G4h0W31ZCsKPuKSn
-         NJgnVMHJYTJcC7eZkgaRk0XJkVqlweRk/7FxYep28CVGmMNRjEyfldEo28KK2kEx20OD
-         dp9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775813068; x=1776417868;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775814002; x=1776418802; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
-        b=qdy15QIMNpRooAH6LJm4h16pveMyEfvPCilUBiZGv85XjaQWZQXKntX+78rt6nq7p9
-         I97giV9JeF1JBxGPVbEvkbAGvFowIeS3F87khru0XWWXPgl+pfL2QwTakPho5CORF3k9
-         blLSET7WBF2/7XqV5XBYAuEwp6g1wbvJ/PfPP0+NYuZrBvjstjWTbsKnV19yENK7vc0W
-         WYVPWDqnd5WWb5n8mdbNr4yV/eMdub7FOOtNRIekZkFF9piURw1w1wC4q18ihcGkYLqa
-         Nvu7cIeIfHDgcdNPVsCbxyFb3XgfwohxV6chZ8U5AFeWOazBfFzhMbAD6TjBfDkaPVhW
-         DJDg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3sq2IHt9B/xnte1ypsNEvg37FrdjN7YrUqwP6WEFZ+fHnUomMMwLoMaicKY+VkRbiQ1UCvNO4lQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxect6GgljI7r+ygvQYxa2ZpwqNsiCmQQgFp1fJ9wvwae/1xO/r
-	uSIJ+GqyK26cf0O+/x2jkxzf8pcr5QbiCYb5m/Q1fh12ZDOYggRqhwrCdjyLD2s5XUQ=
-X-Gm-Gg: AeBDievuahc/OnbdayN2PUQ6bGhQFm16e3ofAsUiQqUZ3daBAM6bCf9Fid5jbS2rx1x
-	RW8Cb9DzcI4GuIb8GhdWp/woD8H64a1m0XkDdn1v8bw/IoxaEzPzr+Vpb7DsEG7CivALaCuU3XQ
-	axFi3Ljp4ZgD7k1f2AUAd/htPf6pV6WwRD5NCMUQceluJ0BjcJmKmHZHgt9agjRsQjAd03euCZc
-	Pi5PCuH74kpfAfdESOhFiqupq+cVuwATq5kVUxDIgLRtxJoeyB5eBag8UOWoVDeTaIjaUhazE8r
-	OoEtvmQPVCK7rhoWXR+kC2ytxvg1f3EK7tqFl4iZKwhlhlMUyHKqj2WiSmcnWpbsccNEFDlPY7n
-	sd2qc20QRJIoainOfG5lpCtnJuoZkXKdSnTFRhW+wcml35joKhxd9Rx8jkPdm+S11go0RAk2SxD
-	HEZA2s9lyOq02zz+u1mh8aR72rPG1E770utPlEHIbUpsg=
-X-Received: by 2002:a17:903:3d54:b0:2b0:c90f:449d with SMTP id d9443c01a7336-2b2d5974e97mr19644455ad.19.1775813068134;
-        Fri, 10 Apr 2026 02:24:28 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.98])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd7faasm23159065ad.26.2026.04.10.02.24.24
+        bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
+        b=SCXViYt1irEYeDQH3/tTEfFBUHLs04HKa1LX8ddb9n890m06dRFNfBlBMkJMtZ4l9f
+         V31f/v/8hbm+moRPRGpDmhTMmcfRnO8P8evqV0zTGiHJc2N9Oy0bNNrdOwLzZXH8fw5d
+         YYEqYeG4f3u4NyRnw4PjVEaiAWz/l8czPrkkcgGkJ20rg5GxbsVLGcosIeF/7QPbmffp
+         0hBr38Vr4zsrFr9UMKM+a5En+Iz+Cd0XLwrG81wjJbRB4SXqYI8WnOF/T1EAoxsz+SRi
+         VbTSCeUTK9xooJIeGt3qa6NH2A/pCViSBNqiwa+CLMu+Er3hxo1gZY35et6J94pvDqDW
+         anIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775814002; x=1776418802;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=99FMaXvDwUdtqA4Kvo6xXkRxUDamAjmOyuXrrlPWqrM=;
+        b=Vfxo9i1YPVkABXQ3Uc6DxrOE1AJOuVtnsgtxtmtyazoe3/F04cEAyLwtZbvDgSVegi
+         qsjZxttbdPLA3NazOalEdxgnoWN977ES7DG01b0YaqKfqtDYL0wNRzAKJgmRb39ucYaS
+         6H6yfTlFoeFrqJiA8x2VzPeYprFUH0HXGqr8xNr6IdK17KfUyu5PkZiLQ4JnAqJCn2oL
+         NIols+pj3W5C2UwOS4XGGhbiRG9R6JMdDDXTGZrw5x6fgHGaAlXYqVpYMDBQfnNwFmfV
+         wt8NDBAFl70mA/nr4f5iU79Qwv1Zgb6sSUdtyZ7KKE7xbWSK+nwWg0ySMQfsD0ZOUDew
+         pDwA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/3ZWSu/tQ9mbrJqK9K0VneoS5kOAS/J/C2uWqOMg0qBDYKlbVVWQSqYTctwCRxoS8m+AAqotRGQ==@kvack.org
+X-Gm-Message-State: AOJu0YyOQYF4IA1jmub/PtCeDaoSAizpSmJooxBp8Ztn5ysR7mSmdBiT
+	lARYEKlw/jwxHQQt7K++QqSkXMrHBCaupUmP/1V5QOpfYIQEp7T8SoQP7FAEJw==
+X-Gm-Gg: AeBDievoCgWZPpk2yEICc9oi5dShnDWcqpYlV9SHlYMqfFfqm0Ccc/9zQOplj2f3H62
+	7+wQpZ8jXcvJ68FDmTU7Rh8KRovMoz4OCxdLy4zyVf1sK6wjcKATPReaPsIg90Gk00ieW91G3lX
+	GgHOjPyHQziL6sKjp3jf2F7geDKk8Xp8if3KJybLgcS7CMP0JGTy5sJmozbBqz+OEnbu9wzx3Dz
+	ORnTODKjCfuwYF0i+pXsqR0tRU4UH+StRagJctb6ectOMbjgMQy0mcOD58VSmcenH1RI0pwVjSB
+	+jhAciOn4eSYAN3sl5LzHzgYlbvcE1HoNDaaoWkv4hLo0NWRHvrwTUw3l30AKnLoXhEUQcVKg1d
+	nnMFWlP2hLFRcTId8bdmFklFyLcHm6j7gS0GaxUWNzzzcFFuUUGtnlGvKpItHhXQPlk+6hcuYdp
+	UU0a5S1TQQQuiP8M7/MaUkJa7lOio=
+X-Received: by 2002:a05:6a00:3a19:b0:81e:f1c3:89df with SMTP id d2e1a72fcca58-82f0c288c6bmr2738256b3a.50.1775814002219;
+        Fri, 10 Apr 2026 02:40:02 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c52cf05sm2278831b3a.61.2026.04.10.02.39.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 02:24:27 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+        Fri, 10 Apr 2026 02:40:01 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/sparse: Remove sparse buffer pre-allocation mechanism
-Date: Fri, 10 Apr 2026 17:24:19 +0800
-Message-Id: <20260410092419.2446420-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
+	sj@kernel.org
+Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Fri, 10 Apr 2026 17:40:04 +0800
+Message-ID: <20260410094004.193555-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260410044259.95877-2-aethernet65535@gmail.com>
+References: <20260410044259.95877-2-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BE607A0009
-X-Stat-Signature: 4qz47b3run1r3h89pjmbg1cdrj6ri3as
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BA42CA0006
+X-Stat-Signature: t4ifg4xrni6znogojkia7g8tq54b5kof
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775813069-175589
-X-HE-Meta: U2FsdGVkX18I1cTYuZOpGHKvBUt3sK1pbOTik+KQZsLzhOnjDKvx8Ezem4/yjqJy9IKCpQj81AISquqr/mxmRpj66HbUwo2htn3ZlISHVztSSV/5bR9b/VQG4mpc5pyXqu4qes0Zt6zyZcvqDSlPBHdIgzuEafXSFwjLPZgY28JhXMNMYrQWQ6Sg78NSwEoYDZJbX6cFqkWorzZn70cvPHcTvOYdK2rIiUE2aPlM7+h2vn05DFH/QVza5rvedzuY5yEMKf0+KWGw6NlKNBLlN2pbgxQG/A82fZpFXpLY8BIOKys+8hYZ3Uubx2mXxRn4CnXFHPigV1hFOa8wQIZJweg2L+L+W6m5KYXLHG+VuEGg/NGWwxAYPmQvtlF4eOrhW3AGYls8+8HtoSSpGMD6oCHwMC2nmAgu6w5zhrFwXrX67S0BWZZzE+7d1ItNt6dXsA8DoWmtBVlDknNJxkZiivW1mDfAcWTBo67czBoF72lUy+HOuUPwjTdu1wvsVVVXBflDnNavpPDjL6CZh5JQIA43Mx6FK3+dAilT1JFser/QYCKRGwnP4BNxF2avBvf3UtgYAYKiYGjpZXNOm72P1FzmlYkovp/HvifAC74qV/+/2txv/tPe6nBqJkTV1+XAtyakF7GYf6DI56G/3MFYnSDnp9/AUxhwlQILqr4eFJhu0IcJqnTrkA1Od3E8V2eV1jjMKRrOiDxYbQSW0SrPuznWmMStm3rWOMs0YtfvxncJB85U5QqZfbYY79pgob/0eDLcYwQcmcw0YThEfL4vDmyNhFQa8kBW6XA9pxC6VCW0mF7Rn0D915t9KVTy4lFum1PhGV14QtF89+vvR6CvxrZZxX4i7yEar9G7VxEW94n/8q3rAMBsxv4hpLZDDNe6Set4QPRB226uG7ygGjfMh6NMrHZ3FsitsX8XC4g+dhXJIBGOaoGBOH/PZ0GjYiSjwIYtUyH5gqMrr4V/JUb
- 3U65snhm
- MBt4sh7bir5dNBviGU1XGswyxJUTZ+0B1v4l7xP9nwmgar2X8R2W8fsVmEXG51C4hAKl5ImneSieDRd5aGMdPv1YtsOWTHpokmA8PixTvHcGT4UjGB0qlHG6KBPFw0h6LfDXoV69UnxVfQIEfjf7qJrjNhiz1ZbCynOVkeNrFl+BNVzXXPYmg7nXrRGAGEhyj0nITDYrqsAz7Ccg+eWQhYqO4WAIbtaphtRqKbE482mZ/gHHMwh7ZKJFf7/+sNJdC3pjwr6VQYqt22bejSn+YXujEot24jrHIfm5uzjMiJFewG5PP3heT8KpsWQ==
+X-HE-Tag: 1775814003-159570
+X-HE-Meta: U2FsdGVkX1+ElVD3N1A8tkdnVPMdrQMq5j706gqIHAVF6Q026RTeX6c+UYoPINv161en4VtGFVsKxJSQBaRmrrVckg+pDWqUcx1D2j1ZuSl7YDMsCAjHb4anT0ZOMvU40R1DOQpGyf1rAfFSBzq7icUhaMz3+qFD1Ly7h/LCn+aOzJrO2b18pmDtP2miU7SSD8gJYpmYT+z2xzVdzezJK1D6WttgTmp4H74svfsBhTeaWMuzbrA0yCI4zGzliRSzaO0bwEDKwkO4dl5TzbLWSqe6w4OF6cmSKPzU0/juyEqIV32Ayq7Sqk66R8L1TvQR2psW3JtIWIs5Z61k4ec7NAER6tKeuylJZFXnp9bzM93RRQ9VPRDdnaeL0iwOkKCPz38sZXPbQ3BHSFcZT67186TLaf3Cm0BAM/2eWz+RV8jYmUueN6wzL5lkwiIzsu+7m+qQbPY3AAP4s41EOhYxgzq6X9LrN9Xs/+43KTruJ/OWpQkRLke0Cz920zOgGsuPcW5sbs2tHFn50JTH6eUM061YzP3JuKCTKca7YscpHgVtMJaRh66jUQsvBvjwmMvYXSGXXGZ7xN6fRn4hy9mv9ho7e6HthQ+F0E9k2Pw+xV2wQnftaobf6EgA/mbmjmgMQP4Ej/f98d4Hh+HGGVAajO+On46IoL6XRiXHGl4voLQppWbUAe7x2xlzcq44dsL8Wpvt7JIse8b/0PqCPWb+4bIEiHGnFa9nZeDGcjaVAItAQ9JbD8sfOYYRMRsRPvRmdEErh8teFFUB0aFgc5P/0cS+YRhUgDv2ks+nHGJIg1eTiJ1K/caNu8KZsQAZRZf7vGbLLZ3k4SAs7d696ZblwgkTKrbY+3NfGrdZv5Hk+N75aiM2xma87r67RGKbUiw/kbshpH9/3TQn/cVw/IKQ4CDlfHJj8+hmxoZC09u1Q30QKWrzu3LLlpKBpJKPxbCHv2Zh4BKIVG7MShBi0sV
+ HIALWX0v
+ T+KjsMFNFi0KYyRa4KGQXbtiAgdpYeJZpfJKzAjO+yA4YdI2EfO9pXyEDx9z0hOb5zyOePbj/CZ+UsQSkPK8PLCzt8L5rPHncAqgQrV+SN8iJIKNbYRtoRFZWUJQeWcm2Ylq52V3LWuoum2LJLplnr+vCZ0LKRyEpiWloXL6e8icFYhgmlSf7BQOW8GnkjTODl0pCeSzrrCyFZJkNbSVX/CjIQuGTAThKtY0CGMh1MsOATUAm8du0rQvo6upPzDHXDJf1uCXWD2T0faVG3PL/3coMQhrMhN8IYfgoJCtW+xIVC70r5IUnIFF6Y2JLv6KiEVLW+4ewJsTkJaod0BTcOTB8nvFqWfIL/Rl+im886JtVQQQJWOlXwQ3cTiLfEl4mdspQ1ctyu2cXJO32HkXjGLtEjrtN8QDOFiPkpmZ9QwhkFN2x+H+YakNNC6v7Ah+rpIRsayxl5m0a+psqtW+iwy7EhFkfdlQLFlgL+6b+wkbz3aRbwmjo0tHAt5Dr48QShzfouO4yuXsTdYmZ+cOqlWF3P9wE+nFphwn0JYuv3TXj4in8OGkUyaGGwpAKyXmj26sc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,184 +118,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 9bdac9142407 ("sparsemem: Put mem map for one node together.")
-introduced a mechanism to pre-allocate a large memory block to hold all
-memmaps for a NUMA node upfront.
+Sashiko found some issues.
 
-However, the original commit message did not clearly state the actual
-benefits or the necessity of explicitly pre-allocating a single chunk
-for all memmap areas of a given node.
+Forwarding full sashiko review in a reply format with my 
+inline comments below, for sharing details of my view and
+doing followup discussions via mails if needed.
 
-One of the concerns about removing this pre-allocation is that the
-subsequent per-section memmap allocations could become scattered around,
-and might turn too many memory blocks/sections into an "un-offlinable"
-state. However, tests show that even without the explicit node-wide
-pre-allocation, memblock still allocates memory closely and
-back-to-back. When tracing vmemmap_set_pmd allocations, the physical
-chunks allocated by memblock are strictly adjacent to each other in a
-single contiguous physical range (mapped top-down). Because they are
-packed tightly together naturally, they will at most consume or pollute
-the exact same number of memory blocks as the explicit pre-allocation
-did.
+> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-2-aethernet65535@gmail.com
+> # start of sashiko.dev inline review
+> commit bc048f9325d07815d621e80f3c40408c0210af75
+> Author: Liew Rui Yan <aethernet65535@gmail.com>
+> 
+> mm/damon/lru_sort: validate min_region_size to be power of 2
+> 
+> This commit adds early validation for min_region_sz in
+> damon_lru_sort_apply_parameters(). If the user configures an addr_unit that
+> produces a non-power-of-2 min_region_sz, it immediately returns -EINVAL to
+> avoid setting maybe_corrupted and unexpectedly terminating kdamond.
+> 
+> > diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> > index 554559d729760..3fd176ef9d9c1 100644
+> > --- a/mm/damon/lru_sort.c
+> > +++ b/mm/damon/lru_sort.c
+> > @@ -294,6 +294,11 @@ static int damon_lru_sort_apply_parameters(void)
+> >  	param_ctx->addr_unit = addr_unit;
+> >  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+> >  
+> > +	if (!is_power_of_2(param_ctx->min_region_sz)) {
+> > +		err = -EINVAL;
+> > +		goto out;
+> > +	}
+> > +
+> 
+> Is the DAMON sysfs interface also susceptible to this regression?
+> 
+> When a user configures addr_unit via sysfs and writes 'on' to the state file,
+> damon_sysfs_turn_damon_on() builds the context. The min_region_sz is
+> calculated directly from addr_unit without a power-of-two check, and then
+> damon_start() is called, bypassing the damon_commit_ctx() safeguard.
+> 
+> Since the DAMON core uses min_region_sz as an alignment mask in macros like
+> ALIGN() and ALIGN_DOWN(), can this cause memory corruption or infinite loops
+> in functions like damon_fill_regions_holes() if a non-power-of-2 value is
+> provided via sysfs?
 
-Another concern is the boot performance impact of calling memmap_alloc()
-multiple times compared to one large node-wide allocation. Tests on a
-256GB VM showed that memmap allocation time increased from 199,555 ns
-to 741,292 ns. Even though it is 3.7x slower, on a 1TB machine, the
-entire memory allocation time would only take a few milliseconds. This
-boot performance difference is completely negligible.
+This issue has been discussed before [1]. While it's a valid concern,
+it's outside the scope of this backport patch. SeongJae Park has
+indicated he will work on this.
 
-Since no negative impact on memory offlining behavior or noticeable
-boot performance regression was found, this patch proposes removing
-the explicit node-wide memmap pre-allocation mechanism to reduce the
-maintenance burden.
+> 
+> This patch works around damon_commit_ctx() failing due to !is_power_of_2()
+> by performing the check early, but does damon_commit_ctx() still have a
+> regression leading to unexpected termination if other allocations fail?
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
-Changes in v2:
- - Addressed David Hildenbrand's and Mike Rapoport's concerns from the
-   v1 discussion by incorporating the detailed memblock contiguous
-   allocation analysis and the boot performance measurements directly
-   into the commit message.
----
- include/linux/mm.h  |  1 -
- mm/sparse-vmemmap.c |  7 +-----
- mm/sparse.c         | 58 +--------------------------------------------
- 3 files changed, 2 insertions(+), 64 deletions(-)
+Yes, unexpected termination still exists.
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0b776907152e..1d676fef4303 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4855,7 +4855,6 @@ static inline void print_vma_addr(char *prefix, unsigned long rip)
- }
- #endif
- 
--void *sparse_buffer_alloc(unsigned long size);
- unsigned long section_map_size(void);
- struct page * __populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 6eadb9d116e4..aca1b00e86dd 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -87,15 +87,10 @@ static void * __meminit altmap_alloc_block_buf(unsigned long size,
- void * __meminit vmemmap_alloc_block_buf(unsigned long size, int node,
- 					 struct vmem_altmap *altmap)
- {
--	void *ptr;
--
- 	if (altmap)
- 		return altmap_alloc_block_buf(size, altmap);
- 
--	ptr = sparse_buffer_alloc(size);
--	if (!ptr)
--		ptr = vmemmap_alloc_block(size, node);
--	return ptr;
-+	return vmemmap_alloc_block(size, node);
- }
- 
- static unsigned long __meminit vmem_altmap_next_pfn(struct vmem_altmap *altmap)
-diff --git a/mm/sparse.c b/mm/sparse.c
-index effdac6b0ab1..672e2ad396a8 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -241,12 +241,9 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
- 		struct dev_pagemap *pgmap)
- {
- 	unsigned long size = section_map_size();
--	struct page *map = sparse_buffer_alloc(size);
-+	struct page *map;
- 	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
- 
--	if (map)
--		return map;
--
- 	map = memmap_alloc(size, size, addr, nid, false);
- 	if (!map)
- 		panic("%s: Failed to allocate %lu bytes align=0x%lx nid=%d from=%pa\n",
-@@ -256,55 +253,6 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
- }
- #endif /* !CONFIG_SPARSEMEM_VMEMMAP */
- 
--static void *sparsemap_buf __meminitdata;
--static void *sparsemap_buf_end __meminitdata;
--
--static inline void __meminit sparse_buffer_free(unsigned long size)
--{
--	WARN_ON(!sparsemap_buf || size == 0);
--	memblock_free(sparsemap_buf, size);
--}
--
--static void __init sparse_buffer_init(unsigned long size, int nid)
--{
--	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
--	WARN_ON(sparsemap_buf);	/* forgot to call sparse_buffer_fini()? */
--	/*
--	 * Pre-allocated buffer is mainly used by __populate_section_memmap
--	 * and we want it to be properly aligned to the section size - this is
--	 * especially the case for VMEMMAP which maps memmap to PMDs
--	 */
--	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
--	sparsemap_buf_end = sparsemap_buf + size;
--}
--
--static void __init sparse_buffer_fini(void)
--{
--	unsigned long size = sparsemap_buf_end - sparsemap_buf;
--
--	if (sparsemap_buf && size > 0)
--		sparse_buffer_free(size);
--	sparsemap_buf = NULL;
--}
--
--void * __meminit sparse_buffer_alloc(unsigned long size)
--{
--	void *ptr = NULL;
--
--	if (sparsemap_buf) {
--		ptr = (void *) roundup((unsigned long)sparsemap_buf, size);
--		if (ptr + size > sparsemap_buf_end)
--			ptr = NULL;
--		else {
--			/* Free redundant aligned space */
--			if ((unsigned long)(ptr - sparsemap_buf) > 0)
--				sparse_buffer_free((unsigned long)(ptr - sparsemap_buf));
--			sparsemap_buf = ptr + size;
--		}
--	}
--	return ptr;
--}
--
- void __weak __meminit vmemmap_populate_print_last(void)
- {
- }
-@@ -362,8 +310,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 		goto failed;
- 	}
- 
--	sparse_buffer_init(map_count * section_map_size(), nid);
--
- 	sparse_vmemmap_init_nid_early(nid);
- 
- 	for_each_present_section_nr(pnum_begin, pnum) {
-@@ -381,7 +327,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 				       __func__, nid);
- 				pnum_begin = pnum;
- 				sparse_usage_fini();
--				sparse_buffer_fini();
- 				goto failed;
- 			}
- 			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-@@ -390,7 +335,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 		}
- 	}
- 	sparse_usage_fini();
--	sparse_buffer_fini();
- 	return;
- failed:
- 	/*
--- 
-2.20.1
+This patch provides a minimal workaround for the specific case of
+non-power-of-2 'min_region_sz', which is suitable for backport.
 
+> 
+> If damon_commit_ctx() fails midway, for example returning -ENOMEM from
+> damon_commit_schemes(), it leaves dst->maybe_corrupted = true and bails
+> out without rolling back the partial updates.
+> 
+> Even the DAMON sysfs interface, which attempts to mitigate this using a
+> test_ctx dry-run, could experience a time-of-check to time-of-use race
+> where the test allocation succeeds but the final commit allocation fails.
+> 
+> Since these modules operate under memory pressure, if an -ENOMEM occurs
+> during parameter updates, will the running reclaim daemon permanently
+> observe maybe_corrupted = true and unexpectedly terminate itself?
+
+You're correct. If damon_commit_ctx() fails midway, it leaves
+'maybe_corrupted=true', causing kdamond to terminate permanently. This
+is a core error handling issue that needs to be fixed, but it's outside
+the scope of this backport patch.
+
+> 
+> >  	if (!damon_lru_sort_mon_attrs.sample_interval) {
+> >  		err = -EINVAL;
+> >  		goto out;
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-2-aethernet65535@gmail.com
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260410044259.95877-2-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
+
+[1] https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org
+
+Best regards,
+Rui Yan
 
