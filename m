@@ -4,85 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D718AE9905F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A019E9905C
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068AB6B0005; Fri, 10 Apr 2026 05:23:35 -0400 (EDT)
+	id 9E0146B0005; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 019A96B0089; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
+	id 9A8416B0089; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E71946B008A; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
+	id 87F996B008A; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D0BAD6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 686E858FC1
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:23:34 +0000 (UTC)
-X-FDA: 84642108348.18.9821BE6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9DD071C0013
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:23:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXP9WrNi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 78B1D6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:24:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 299E8B8C1F
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:24:32 +0000 (UTC)
+X-FDA: 84642110784.27.932D532
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BE607A0009
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:24:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=V5R7x7lf;
+	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775813012;
+	s=arc-20220608; t=1775813070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O0e5cORq5EePfMto2zoLbHvyKO76k/fBqhrli5JrWus=;
-	b=zpox3+9MPgCiH5NX+AI+eeNX6kDkyE0vRKmylnvrg502TYrJD5vvI/JMIY/MyItsVyGRzm
-	vFBkGDdFD0sUIQRlMTNyKSYwnIAPIu9EYGUiRWwwUrjhMaMUbOzxIUBsq5MU1lleZmZpWH
-	b3JWyQqQ3+6ipcIwPHfICNdqEFh0TfM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775813012; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
+	b=n8lNR/F2LXse65oDHQzezLT2R7p7zr/hsHc81/JpP1zoj3Vni3JXW1/v4XgBXdsZl9zthS
+	HJYS+9nc8SLLCq9M1V1BCeSF09ECLc7RDANkS5wG9iXNpzaMt0LyZ+gqB+4rSWEzVoktmI
+	vUWLd9XII5+NXaGUfcLCJ2sFl7ui3ck=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775813070; a=rsa-sha256;
 	cv=none;
-	b=6C613CrSXl9nIANxK5lBL5MOfZ7vWtB7Mu58OoOMOtOEvjM2iZHI6L2nxxk30EX2z1jxMK
-	zKT1E22r7SSAfoupEaxmyReRrJOrlZiM6aTuySSsDrWF5XfmwTTrcp9Id95zwHs7tIL0XS
-	L92AumoHXdaHS4yY2VYqN2r3kWfvwP8=
+	b=Ie2yoIZfy+nNIocmgwnyphDHhKjj4DghUq5A3IPQXS96GvKn0WKREbTzV5O/DSKBwyIuZQ
+	dysDcJ+TSEQVehANGt9N0CEHtlrC5wJth05VA6yrCT670LxuzZFzHEQlSH+nB9VNjDQx4M
+	0xhTBndFYWkVIMc0j0KBNf2Wr7kXTeU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXP9WrNi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82100434BC;
-	Fri, 10 Apr 2026 09:23:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A61C19421;
-	Fri, 10 Apr 2026 09:23:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775813011;
-	bh=bRS2sFDSkxDNUxdLeMiZMk1q5DPX9sCGAQGX2rFyGa0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BXP9WrNis/L8hNuW4Ic6OoPesbEAjB1wAoV4JK8O4tFeM9AKY9lwNWLtfK1gj0EzO
-	 O4bNbfXYyQfJgqkczpXdFRJvyWnqvfa7fkt6ZIkjvBJeXx9h9AIqfOw+JC6qfcj0BT
-	 dlNLLL0wNfexikgNm/PU4lTU7NGIcu6mp7MXxmPdEJdFqqoano9zlHds5wSs84Zb0m
-	 xw0uF4caQzfOaXDh1S0t5QCJZ04QkjPbNqp0Gozm++BGvD1ZcXLvTn2g2WxE6JT5O3
-	 djlsiOGlGxr6B9LsxLVXYuMF5du/p7ehQMF6t3rYM0r4NxAShCMqnjf/kbJc8K0D2P
-	 pvODL5A/odabA==
-Date: Fri, 10 Apr 2026 11:23:26 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org
-Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <20260410-anonym-freigaben-186946cb50e3@brauner>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+	imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=V5R7x7lf;
+	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c76af79f029so749009a12.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1775813068; x=1776417868; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
+        b=V5R7x7lfujhWS/dA4RJSM/3LdwkJG92Xde4xBsw/faO0zDmDfWPrUspbwcvR4JjH5v
+         oVTGx9zb7VjFnnxZfSi8qRXWCr5vPu7Xq/o8wgKYOvl75OBjLTbCS6bY8cqqK7tLt6z9
+         kh6QHNT3aXwN/GViC5ivPOp6rCY05F5oKn6eEU6/U8rZg0IWdEXkiEYfY24FpTBpiSwi
+         rychAPBZKbY1sWM495+FUNdBugHF9aFjMM8NBke8Xn9Tuxy6Oy+3G4h0W31ZCsKPuKSn
+         NJgnVMHJYTJcC7eZkgaRk0XJkVqlweRk/7FxYep28CVGmMNRjEyfldEo28KK2kEx20OD
+         dp9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775813068; x=1776417868;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MYV/0duq4LOt+J5kTnYMXRFeei6PB/waIW4pRM0G3pQ=;
+        b=qdy15QIMNpRooAH6LJm4h16pveMyEfvPCilUBiZGv85XjaQWZQXKntX+78rt6nq7p9
+         I97giV9JeF1JBxGPVbEvkbAGvFowIeS3F87khru0XWWXPgl+pfL2QwTakPho5CORF3k9
+         blLSET7WBF2/7XqV5XBYAuEwp6g1wbvJ/PfPP0+NYuZrBvjstjWTbsKnV19yENK7vc0W
+         WYVPWDqnd5WWb5n8mdbNr4yV/eMdub7FOOtNRIekZkFF9piURw1w1wC4q18ihcGkYLqa
+         Nvu7cIeIfHDgcdNPVsCbxyFb3XgfwohxV6chZ8U5AFeWOazBfFzhMbAD6TjBfDkaPVhW
+         DJDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3sq2IHt9B/xnte1ypsNEvg37FrdjN7YrUqwP6WEFZ+fHnUomMMwLoMaicKY+VkRbiQ1UCvNO4lQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxect6GgljI7r+ygvQYxa2ZpwqNsiCmQQgFp1fJ9wvwae/1xO/r
+	uSIJ+GqyK26cf0O+/x2jkxzf8pcr5QbiCYb5m/Q1fh12ZDOYggRqhwrCdjyLD2s5XUQ=
+X-Gm-Gg: AeBDievuahc/OnbdayN2PUQ6bGhQFm16e3ofAsUiQqUZ3daBAM6bCf9Fid5jbS2rx1x
+	RW8Cb9DzcI4GuIb8GhdWp/woD8H64a1m0XkDdn1v8bw/IoxaEzPzr+Vpb7DsEG7CivALaCuU3XQ
+	axFi3Ljp4ZgD7k1f2AUAd/htPf6pV6WwRD5NCMUQceluJ0BjcJmKmHZHgt9agjRsQjAd03euCZc
+	Pi5PCuH74kpfAfdESOhFiqupq+cVuwATq5kVUxDIgLRtxJoeyB5eBag8UOWoVDeTaIjaUhazE8r
+	OoEtvmQPVCK7rhoWXR+kC2ytxvg1f3EK7tqFl4iZKwhlhlMUyHKqj2WiSmcnWpbsccNEFDlPY7n
+	sd2qc20QRJIoainOfG5lpCtnJuoZkXKdSnTFRhW+wcml35joKhxd9Rx8jkPdm+S11go0RAk2SxD
+	HEZA2s9lyOq02zz+u1mh8aR72rPG1E770utPlEHIbUpsg=
+X-Received: by 2002:a17:903:3d54:b0:2b0:c90f:449d with SMTP id d9443c01a7336-2b2d5974e97mr19644455ad.19.1775813068134;
+        Fri, 10 Apr 2026 02:24:28 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd7faasm23159065ad.26.2026.04.10.02.24.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 02:24:27 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/sparse: Remove sparse buffer pre-allocation mechanism
+Date: Fri, 10 Apr 2026 17:24:19 +0800
+Message-Id: <20260410092419.2446420-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
-X-Rspamd-Queue-Id: 9DD071C0013
-X-Stat-Signature: i8pishg4y8188u99rsp88hkioy46eeat
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BE607A0009
+X-Stat-Signature: 4qz47b3run1r3h89pjmbg1cdrj6ri3as
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775813012-483210
-X-HE-Meta: U2FsdGVkX1+1B4NE2QehJMuC75UqgpAWsXqbkC1aFWBq54w0rZUhrV+isOhsLrPNCwg0QBV+kMEld6paSysCCMFhFeTPpGPfUzeBbhinQN1t9yEKZdtyT1uLpf+4XQ6T0creuu7KeuiT0z6X0v/uzoYdZ7DMmB6GBCvFzzStOYuLySLykOvBeHEum7iWGl7p8G106vHIFnICj2KxtT3SPcTJmtFxTeoK+GC3HZcCbmC1x6kWkFH8ndR538osp3OHOXJBamBdiz3RvnoPXP07X3Yc1bYum+G+b78agaFJ1DH3Qo+CvcpBjM+9kl9ai7//JhpdQRTJX6am3cRpYjISwH77vSmKzh8ueEd7I/PuQ69a4SXzBJwi07GkoV95o4Mpt0OGBazUYhKmQE9vzE0KP7vKWnG2I356NL0p6EKGf54ouctM9emiWdBbrym5n4vg8mLiEezdhd+cFAYg9aVNfgP9yighzsF4gxOfcHmfrziwbSsYUjAh1gkghkFkJuL8yrCiz5uTuZqo7zKX5ntSvBocw10qRqae83kAqeR4QYhKA0tzdnMz8FIWVWJOpl8ihmS3U3L3SO/RdvRJ1YfLlyX4z1BgmxcVL7beZ/L7xpg1E9W48LzOZ2RJYxeCVurz4WYHWqkPkLWsTChLzuDPWYQ+paxV3lOuuZMeRy884pe3jegwJvkMdoWETVq7OLbCYtVV8J7mPXuaE9gRqoIQAXIFZruZTC1rXoRX8CbGa4NBKmRGfFSmGKh8nWrTMvYoUZwWSTuPE6qjzfR5sAVNvFBjMKtlI8c+jL+XGgzGUpkWCxiTOann8XXYa8Rd7Cctvww1+ngtfIoJEIqIu9WpjIjHpz66M56CjHCfU368WrCAuchZEJHygNzplzswDFjzYWIg5u9E17jMNw5cVPre7foAvTmsQJY2R+3YlZlxOWIUcoF9pXIv+lEgKSb/4XA1QrpmXaMVbyrXpQJDucW
- WQOO33O5
- 6sOQA4lcghFH3GoR3IWmGXjkN3/Mn5KNMufxI5fRBdzTcXUjh5Mei1MTCzJ1DjP/4h+EAiaAzSfK1L9Dlydrb3UbgUXQfZ8K1+3oLNdtYzVkfBjswlPIpXJ/wBRi54mh1V2QgjO475obmYvhyiJtHai0FB7iiXUb47KsQuqIhArxrxDNdcF6S+xOy98k2ixkdrI/BV6y4VTLUVXqU986y6DwNNqVQ3q/k5Pu0ETj2EWwtJnlrAidXBKJU2ZuvPDdt0AsnIXL0HGuS+sNMF+uzu9NHOeuLgOkcdfK5kM+QJd11eTE=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775813069-175589
+X-HE-Meta: U2FsdGVkX18I1cTYuZOpGHKvBUt3sK1pbOTik+KQZsLzhOnjDKvx8Ezem4/yjqJy9IKCpQj81AISquqr/mxmRpj66HbUwo2htn3ZlISHVztSSV/5bR9b/VQG4mpc5pyXqu4qes0Zt6zyZcvqDSlPBHdIgzuEafXSFwjLPZgY28JhXMNMYrQWQ6Sg78NSwEoYDZJbX6cFqkWorzZn70cvPHcTvOYdK2rIiUE2aPlM7+h2vn05DFH/QVza5rvedzuY5yEMKf0+KWGw6NlKNBLlN2pbgxQG/A82fZpFXpLY8BIOKys+8hYZ3Uubx2mXxRn4CnXFHPigV1hFOa8wQIZJweg2L+L+W6m5KYXLHG+VuEGg/NGWwxAYPmQvtlF4eOrhW3AGYls8+8HtoSSpGMD6oCHwMC2nmAgu6w5zhrFwXrX67S0BWZZzE+7d1ItNt6dXsA8DoWmtBVlDknNJxkZiivW1mDfAcWTBo67czBoF72lUy+HOuUPwjTdu1wvsVVVXBflDnNavpPDjL6CZh5JQIA43Mx6FK3+dAilT1JFser/QYCKRGwnP4BNxF2avBvf3UtgYAYKiYGjpZXNOm72P1FzmlYkovp/HvifAC74qV/+/2txv/tPe6nBqJkTV1+XAtyakF7GYf6DI56G/3MFYnSDnp9/AUxhwlQILqr4eFJhu0IcJqnTrkA1Od3E8V2eV1jjMKRrOiDxYbQSW0SrPuznWmMStm3rWOMs0YtfvxncJB85U5QqZfbYY79pgob/0eDLcYwQcmcw0YThEfL4vDmyNhFQa8kBW6XA9pxC6VCW0mF7Rn0D915t9KVTy4lFum1PhGV14QtF89+vvR6CvxrZZxX4i7yEar9G7VxEW94n/8q3rAMBsxv4hpLZDDNe6Set4QPRB226uG7ygGjfMh6NMrHZ3FsitsX8XC4g+dhXJIBGOaoGBOH/PZ0GjYiSjwIYtUyH5gqMrr4V/JUb
+ 3U65snhm
+ MBt4sh7bir5dNBviGU1XGswyxJUTZ+0B1v4l7xP9nwmgar2X8R2W8fsVmEXG51C4hAKl5ImneSieDRd5aGMdPv1YtsOWTHpokmA8PixTvHcGT4UjGB0qlHG6KBPFw0h6LfDXoV69UnxVfQIEfjf7qJrjNhiz1ZbCynOVkeNrFl+BNVzXXPYmg7nXrRGAGEhyj0nITDYrqsAz7Ccg+eWQhYqO4WAIbtaphtRqKbE482mZ/gHHMwh7ZKJFf7/+sNJdC3pjwr6VQYqt22bejSn+YXujEot24jrHIfm5uzjMiJFewG5PP3heT8KpsWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,81 +123,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 11:16:44AM +0200, Jan Kara wrote:
-> Hello!
-> 
-> This is a recurring topic Matthew has been kicking forward for the last
-> year so let me maybe offer a fs-person point of view on the problem and
-> possible solutions. The problem is very simple: When a filesystem (ext4,
-> btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform a
-> complex cleanup - like trimming of preallocated blocks beyond end of file,
-> making sure journalling machinery is done with the inode, etc.. This may
-> require reading metadata into memory which requires memory allocations and
-> as inode eviction cannot fail, these are effectively GFP_NOFAIL
-> allocations (and there are other reasons why it would be very difficult to
-> make some of these required allocations in the filesystems failable).
-> 
-> GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclaim)
-> trigger warnings - and for a good reason as forward progress isn't
-> guaranteed. Also it leaves a bad taste that we are performing sometimes
-> rather long running operations blocking on IO from reclaim context thus
-> stalling reclaim for substantial amount of time to free 1k worth of slab
-> cache.
-> 
-> I have been mulling over possible solutions since I don't think each
-> filesystem should be inventing a complex inode lifetime management scheme
-> as XFS has invented to solve these issues. Here's what I think we could do:
-> 
-> 1) Filesystems will be required to mark inodes that have non-trivial
-> cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-> whatever :)). Usually I expect this to happen on first inode modification
-> or so. This will require some per-fs work but it shouldn't be that
-> difficult and filesystems can be adapted one-by-one as they decide to
-> address these warnings from reclaim.
-> 
-> 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
-> kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
-> performance reasons. I expect this to be a significant portion of inodes
-> on average and in particular for some workloads which scan a lot of inodes
-> (find through the whole fs or similar) the efficiency of inode reclaim is
-> one of the determining factors for their performance.
-> 
-> 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
-> per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
-> to process them.
+Commit 9bdac9142407 ("sparsemem: Put mem map for one node together.")
+introduced a mechanism to pre-allocate a large memory block to hold all
+memmaps for a NUMA node upfront.
 
-I like this approach.
+However, the original commit message did not clearly state the actual
+benefits or the necessity of explicitly pre-allocating a single chunk
+for all memmap areas of a given node.
 
-> 4) The work will walk s_hard_reclaim_inodes list and call evict() for each
-> inode, doing the hard work.
-> 
-> This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
-> and they can work on freeing memory needed for freeing of hard to reclaim
-> inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
-> they should really be addressed.
-> 
-> One possible concern is that s_hard_reclaim_inodes list could grow out of
-> control for some workloads (in particular because there could be multiple
-> CPUs generating hard to reclaim inodes while the cleanup would be
-> single-threaded). This could be addressed by tracking number of inodes in
+One of the concerns about removing this pre-allocation is that the
+subsequent per-section memmap allocations could become scattered around,
+and might turn too many memory blocks/sections into an "un-offlinable"
+state. However, tests show that even without the explicit node-wide
+pre-allocation, memblock still allocates memory closely and
+back-to-back. When tracing vmemmap_set_pmd allocations, the physical
+chunks allocated by memblock are strictly adjacent to each other in a
+single contiguous physical range (mapped top-down). Because they are
+packed tightly together naturally, they will at most consume or pollute
+the exact same number of memory blocks as the explicit pre-allocation
+did.
 
-Hm, I don't know with WQ_UNBOUND is that really a concern?
+Another concern is the boot performance impact of calling memmap_alloc()
+multiple times compared to one large node-wide allocation. Tests on a
+256GB VM showed that memmap allocation time increased from 199,555 ns
+to 741,292 ns. Even though it is 3.7x slower, on a 1TB machine, the
+entire memory allocation time would only take a few milliseconds. This
+boot performance difference is completely negligible.
 
-> that list and if it grows over some limit, we could start throttling
-> processes when setting I_RECLAIM_HARD inode flag.
-> 
-> There's also a simpler approach to this problem but with more radical
-> changes to behavior. For example getting rid of inode LRU completely -
-> inodes without dentries referencing them anymore should be rare and it
-> isn't very useful to cache them. So we can always drop inodes on last
-> iput() (as we currently do for example for unlinked inodes). But I have a
-> nagging feeling that somebody is depending on inode LRU somewhere - I'd
-> like poll the collective knowledge of what could possibly go wrong here :)
+Since no negative impact on memory offlining behavior or noticeable
+boot performance regression was found, this patch proposes removing
+the explicit node-wide memmap pre-allocation mechanism to reduce the
+maintenance burden.
 
-I still think we should try this - for the reduced maintenance cost
-alone. Imagine living in a world where there aren't 2 different LRUs
-constantly battling for review attention..
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+---
+Changes in v2:
+ - Addressed David Hildenbrand's and Mike Rapoport's concerns from the
+   v1 discussion by incorporating the detailed memblock contiguous
+   allocation analysis and the boot performance measurements directly
+   into the commit message.
+---
+ include/linux/mm.h  |  1 -
+ mm/sparse-vmemmap.c |  7 +-----
+ mm/sparse.c         | 58 +--------------------------------------------
+ 3 files changed, 2 insertions(+), 64 deletions(-)
 
-I'm split here but depending on the size of the actual work needed to
-make this happen we should at least be open to try this.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0b776907152e..1d676fef4303 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4855,7 +4855,6 @@ static inline void print_vma_addr(char *prefix, unsigned long rip)
+ }
+ #endif
+ 
+-void *sparse_buffer_alloc(unsigned long size);
+ unsigned long section_map_size(void);
+ struct page * __populate_section_memmap(unsigned long pfn,
+ 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 6eadb9d116e4..aca1b00e86dd 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -87,15 +87,10 @@ static void * __meminit altmap_alloc_block_buf(unsigned long size,
+ void * __meminit vmemmap_alloc_block_buf(unsigned long size, int node,
+ 					 struct vmem_altmap *altmap)
+ {
+-	void *ptr;
+-
+ 	if (altmap)
+ 		return altmap_alloc_block_buf(size, altmap);
+ 
+-	ptr = sparse_buffer_alloc(size);
+-	if (!ptr)
+-		ptr = vmemmap_alloc_block(size, node);
+-	return ptr;
++	return vmemmap_alloc_block(size, node);
+ }
+ 
+ static unsigned long __meminit vmem_altmap_next_pfn(struct vmem_altmap *altmap)
+diff --git a/mm/sparse.c b/mm/sparse.c
+index effdac6b0ab1..672e2ad396a8 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -241,12 +241,9 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
+ 		struct dev_pagemap *pgmap)
+ {
+ 	unsigned long size = section_map_size();
+-	struct page *map = sparse_buffer_alloc(size);
++	struct page *map;
+ 	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
+ 
+-	if (map)
+-		return map;
+-
+ 	map = memmap_alloc(size, size, addr, nid, false);
+ 	if (!map)
+ 		panic("%s: Failed to allocate %lu bytes align=0x%lx nid=%d from=%pa\n",
+@@ -256,55 +253,6 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
+ }
+ #endif /* !CONFIG_SPARSEMEM_VMEMMAP */
+ 
+-static void *sparsemap_buf __meminitdata;
+-static void *sparsemap_buf_end __meminitdata;
+-
+-static inline void __meminit sparse_buffer_free(unsigned long size)
+-{
+-	WARN_ON(!sparsemap_buf || size == 0);
+-	memblock_free(sparsemap_buf, size);
+-}
+-
+-static void __init sparse_buffer_init(unsigned long size, int nid)
+-{
+-	phys_addr_t addr = __pa(MAX_DMA_ADDRESS);
+-	WARN_ON(sparsemap_buf);	/* forgot to call sparse_buffer_fini()? */
+-	/*
+-	 * Pre-allocated buffer is mainly used by __populate_section_memmap
+-	 * and we want it to be properly aligned to the section size - this is
+-	 * especially the case for VMEMMAP which maps memmap to PMDs
+-	 */
+-	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
+-	sparsemap_buf_end = sparsemap_buf + size;
+-}
+-
+-static void __init sparse_buffer_fini(void)
+-{
+-	unsigned long size = sparsemap_buf_end - sparsemap_buf;
+-
+-	if (sparsemap_buf && size > 0)
+-		sparse_buffer_free(size);
+-	sparsemap_buf = NULL;
+-}
+-
+-void * __meminit sparse_buffer_alloc(unsigned long size)
+-{
+-	void *ptr = NULL;
+-
+-	if (sparsemap_buf) {
+-		ptr = (void *) roundup((unsigned long)sparsemap_buf, size);
+-		if (ptr + size > sparsemap_buf_end)
+-			ptr = NULL;
+-		else {
+-			/* Free redundant aligned space */
+-			if ((unsigned long)(ptr - sparsemap_buf) > 0)
+-				sparse_buffer_free((unsigned long)(ptr - sparsemap_buf));
+-			sparsemap_buf = ptr + size;
+-		}
+-	}
+-	return ptr;
+-}
+-
+ void __weak __meminit vmemmap_populate_print_last(void)
+ {
+ }
+@@ -362,8 +310,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+ 		goto failed;
+ 	}
+ 
+-	sparse_buffer_init(map_count * section_map_size(), nid);
+-
+ 	sparse_vmemmap_init_nid_early(nid);
+ 
+ 	for_each_present_section_nr(pnum_begin, pnum) {
+@@ -381,7 +327,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+ 				       __func__, nid);
+ 				pnum_begin = pnum;
+ 				sparse_usage_fini();
+-				sparse_buffer_fini();
+ 				goto failed;
+ 			}
+ 			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
+@@ -390,7 +335,6 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
+ 		}
+ 	}
+ 	sparse_usage_fini();
+-	sparse_buffer_fini();
+ 	return;
+ failed:
+ 	/*
+-- 
+2.20.1
+
 
