@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72104E99050
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 07:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A02ABE99052
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:00:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7C2B6B0089; Fri, 10 Apr 2026 03:57:36 -0400 (EDT)
+	id E1C8B6B0089; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0D156B008A; Fri, 10 Apr 2026 03:57:36 -0400 (EDT)
+	id DF4206B008A; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF4976B008C; Fri, 10 Apr 2026 03:57:36 -0400 (EDT)
+	id D09D46B008C; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A8BF56B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:57:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CAAB8AF9D
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:57:36 +0000 (UTC)
-X-FDA: 84641891712.23.B6C3325
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A1B74180003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:57:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=izGGLCut;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BFC3C6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:59:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DE738B8B1
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:59:59 +0000 (UTC)
+X-FDA: 84641897718.27.06E357C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B2A27A0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:59:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bk0e4BNX;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775807854;
+	s=arc-20220608; t=1775807997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hXkqdIzXphvB07ypPKLcrv0tvBF9PLzTw3CemWVbb1o=;
-	b=qFuh2hZ2DVuvHPcF/fGLoaiKoYmfwI6EVLr8zfnxrxZqO5AuGqmW4vP7Weg2sks0Yy3ivF
-	5N4pWB1ysZOKdQfrZQshLC51bzzD+BBjwbTarLfR08AB2i9YxJ8vOclx7mXqB1uj6jMmx3
-	ON5trCrWFhqatL/+n5Ie2acUXCNJH5k=
+	bh=joHTFbhY3Xpp9kkK3lQ0iapaVEXdYngH8K+Bki/pKZE=;
+	b=kqckTZnPpRSO3vvVX1PwCfQZA1uz/chVN5chul2PT7CWgaK0HAiynSfdqyGiCuru/gmreh
+	YhT/oijQJpVVqHhBelz56bnPE93z/gmEnQYQFrO2dSKotfhrfGGme27nBB027aZAJARZuJ
+	fUVLQ4e4uG1dWfcrJNhZizp6uTINwYU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=izGGLCut;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bk0e4BNX;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775807854; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775807997; a=rsa-sha256;
 	cv=none;
-	b=Dv4+Qe2dq9vRoNkDDIWRCYjQF6H0NMEs1rzxnxnTk29c++Ir1RHigGsZSupTZb50qNbNzG
-	dURsXNFrsr3kbVpHCrCM2RWjawmMVUQFxnVTcv/n0BbclaIo+dpWhb+EjtaIHmSfTRKaZS
-	nM6Op5L4MkBsg4qVguq1mgTRFFV0L/c=
+	b=e2HxfRLQqOtlPjG/AxL7WJvAzoWg5+YhjbZVLbpBfOpQptB1lW98GV7LcSmDL1AISdgnOZ
+	IqYspvgSbhchu7nzjqlGfC2FW2f0W830U2wYhkgzUVRTzHBFshIjdMy/Hryz+tX2VFMs0e
+	NWJCYQd9XRcc4bw2v9KZUDU5USbOsLA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04E9560125;
-	Fri, 10 Apr 2026 07:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29BDC2BC9E;
-	Fri, 10 Apr 2026 07:57:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7E2641853;
+	Fri, 10 Apr 2026 07:59:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E4BC19424;
+	Fri, 10 Apr 2026 07:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775807853;
-	bh=t5KBu+7awGUOMXi6m9ZOEzCXzmOw+JC05loV+9h6t38=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=izGGLCutqqcBp82UmrmqyGceR/3RWlWXrH77qMbUb648eQTOwohHXwOdzcGTUbe4h
-	 f1nzujvepQF/aOjf7A5GS1ZDh4QnxMEqEF7kEhAbI3KuATaFpvQFP/j92KH+dm/Hrc
-	 krsg6oM7HO6oPRp00JL6nIdbbMy3a73oQTF5rSvQcWyHI+GsXORtommKmS/83NuP5H
-	 1BdO+ixYMri3EfxNOTzAW/eePaEd9IOc/KIy5obQ074gUYeifemx3PolNWY+buLUnE
-	 ljL/xPUbQHj3yJZo0I1r2qYa7yO+oJQK7Zx95huq8PFs5eo2kI6lzEJtIA8MnHgk9C
-	 QFXUlJIplqKJA==
-Message-ID: <7a318c3c-7ccb-4f95-a416-19d09f42c97f@kernel.org>
-Date: Fri, 10 Apr 2026 09:57:27 +0200
+	s=k20201202; t=1775807996;
+	bh=SxrLNnYLw7RM2+RAMFd5Z9aLlerg3Bl5esgirC0unYo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bk0e4BNXD6Yt7f4mKRojtk8ruecTagIIEG5ZStNZDXOJpUmflQARjCnJhnRz+paso
+	 roEnmnTZ/3YOwcWe24nYpk6kuNpdCBLakaiK6zYS+gzTDqq+QmsSOQ65c1vUMYn2/E
+	 tCcBDdNjvnqRhAw2ZL2IpfCQ5+NnBVg9CogjjWTrHur7cL+kyD3ZDma3KswYbArbZI
+	 zFuoEqE5eTB6wRIQI5VVRjH5zWbWsl/Yoy2UtK0na15HGAg0ukDR9WwlFRSKyB8Q5H
+	 ncK6y9yjMjyAMKOjFOa4svGHzlTF37gjH09YIdRl2GFIuzKWmdirlkLYsXuRmpqj8x
+	 lXfm1lzH96/Zg==
+Date: Fri, 10 Apr 2026 10:59:49 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, nh-open-source@amazon.com
+Subject: Re: [PATCH v2] kho: skip KHO for crash kernel
+Message-ID: <adit9fCs2O6t3vd1@kernel.org>
+References: <20260410011609.1103-1-epetron@amazon.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] selftests/mm: verify droppable mappings cannot be
- locked
-To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
-References: <20260409234915.11723-1-anthony.yznaga@oracle.com>
- <20260409234915.11723-3-anthony.yznaga@oracle.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260409234915.11723-3-anthony.yznaga@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410011609.1103-1-epetron@amazon.de>
+X-Rspamd-Queue-Id: B2A27A0005
+X-Stat-Signature: 6qwkcbm7qkawr3s3h8iqrxgux5aqnxbg
 X-Rspam-User: 
-X-Stat-Signature: g3ezs54coy73kcdukgrf6h6u6sdmo3z4
-X-Rspamd-Queue-Id: A1B74180003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775807854-725965
-X-HE-Meta: U2FsdGVkX19rQH9lvVXK6u5fk9oEU2NVJZGCyJjrtBRN6s44LQSaXLFjn4pcvETlPe3AYsYPE8lOR7LaFVRIP55uNNXGktTr3Ep8g7lLuSJssmSld2iF07FeeMWviuyb0iCrVrU9klpRi1dEHbnloWzRjcbOQFpgnwq8HJDa6s8HQr8AUaitfP2hG7+Ki3KkrfRk34upbwAS0fFhgJ8lva6EJhB0RGhzYQQeYZEIEIiXQKMnWyGlgvffv2YvqkUbpyXWvKxWJ5t87u2wICNHMR5agcdExZ18U3LW747ACE6umoav9X2obAeVFMdCLfUfxaHdKSmfVCYiVVuNdQvh19j2c8Jr3oCfcx6n6Kmmoakxr7vdeK9qkuyU4OGr4dzO6dZqywcmkFGGRM9cEw5nGc2rxWl+dxzwxpoNg8UecOPqaWYvHufozXn0U7K76FVeJIrThpyfEN/EhgRe+1bfQVyxnV0e8Wl/msvFYNDQY4ZD9BH8nSo4aDOuUrZCnnMhrPld4bG1O3cw3kA7xNYsqXRuYupknjrDFPLNoQA8eMse/0/QhGiqKTN1cEFF9CJH6jooxYO1G4veZlDHPeG3l+7kAOvj4q2GHK1ZSAHmv8iSSkfPqYvuP3kHzvOEfk+vZj6ICYG9K4GbCv+7YFm6t5hCG+4V9bqEit1m8pnReNIedrWnj25zAZL/UNzD8D8ZRsKMgwwUxqSIsSslm6B+Cib73T7IiT66BReU6mIMpkzOCkRIs35A1nFlfj/Vz6MOhjtBgi7Z+1wpVq0Sn+0oJdAQLgs0pZ95m8uKzz/CZvkyIibV09rye1NCBSzU+puqRW9DmvECLiNHy1wbouR/93Lzvn7/C109awA1XKtxiO90lDdQ1zlczeKP5ul+6tdFjeUl0kx5gKqICQmaiI22XUz70iTdUXe2AURmENtHjSyaxJUjfS/WA/ZBILM3SfAX7BX7dn2GKy7iy85+VI1
- c7zNmIc/
- mDaW/EnyX0RfFSsZ1ur84SOCxyOr+tW3uaHmVhVsQTw6oIJPDIF+dgyQXu5mUjk84dO+7YLu31ruQv5uNtnbE42evmhNN0bmZ+T/IWPouzVe7MIBRT38ef0rKnZy4IjohahXyRfBxjec5lkHGSt/OiGI1pyMQXgX86TOdo41KQT4K3YAl7zWj3PRc7eKvSRYxzTjCla8+tJNNrai36enUMonyNVSV/0mWzVusH4oO60NnKTsZz2j3WEZ6ipBp+utt2Pee/lKVpj67n5tnHKcUeOgnye/2GXrU3Aj3Y2eCpwHhu/2Qy16ttj3/hQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775807997-640355
+X-HE-Meta: U2FsdGVkX1/bR2FL/+1BFvIt5nmzoESR85jBIyfqHRDLw7kwlKtiQ8PVXI2Dw8v71MigKCTaqsQei41GoVDX0sehGMZDJqf8b+xRbvvFBJlyKA1MHYN03uVDUaETkymbvL6qziD1XRcDE39rNxkFpkpoB3Q5icb1oX9Toa0eW6fChavGxjHPXjnm+nA4OAIXaIP7+v2dbhB2t2ml3qZnGas8Lg+JEYNjWwnf51eujES+1DLfu1xRsnI+Bgjo49DvKl5JU5AfMCneIRtLazjh5xDQhgRGkrTKKGUtr1CRg4RLXwDKR2FXjR2KPs0NR7WzQPSSxtapsJOAwef3i5U33tsxzFhcLPVXMIVofiJJf2sIZ8NSytebjn+eZPG76wZ0lCBLXv/dZQ2pVeEpjRKmev82nevZUp082GeUHbu7UAntTq9qZroUBTUmNrz/dhTreRwB+m3jbN0JQGhIxHktzN+6OWlCTlK5KKjomjYFU3Y6ODBD7C3nX+tAxTfD+QeCD+TPK7lCwhkoQ1xnQORvuMR/DJmLDo0IZT7nRYAhutsWn6VVlw/1kzPJd0R8mIP2NDoY9YtwT0Lr+Gb/wTyJmuH0O1eunBjfH1E2XlPQSmJKF88F7JQOeCUdFnt6YuAFPl5kTpKWao5q3sp94nlpxxX+FkhTakwbfZyPuYgYuj14oRc/zv0CCHgy4lMT3HQmdxBCMhnq4T1ZOm1mR88cwE3b9+aC9kwTadkO9+xvrT4zUGsPGcwZ36un/V9QW4Tja1Qw0T7H811xC8fBCXgo0bkvuiklbYrt0iZZ3KNiCZuCZWGm1rTiQMaWY77NIOFKju5cvXxoHTNni3h6x48Gm99jJvln0vitumOS2EbAuvVR92eJtnhl7kaYVPqfmYx4Klfw+AWaxr7To5bJKspmjqNo+TbPCD3B9QR9/SKxi4Byr6rZXfAXufKxsnhvJtzNkB11PINCTTTS2oYhuy+
+ Nyska9iR
+ pobUPWxJjGvXlHEWI5ZGweegeV5Zc7Bi2Hm41yy+VGVKkpKSxU0f/7tCcMPy8AaTOsr32yojtwonIYPXRTLlNam+AWVj0kYvFryyf4K7u6PrivfPs83Frc/cKyeWPQnXDffiltEez92/15uf1/4QUjhcIGR63wYpMXPjm3lcBYBcide5ha55JZl0EnNNh/0IqDCYbs4PRdnpa0L8FfaQc72EDp4+sqckvs+ze6cC+0JK1GPti5j9xj1S1Jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,143 +96,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 01:49, Anthony Yznaga wrote:
-> For configs that support MAP_DROPPABLE verify that a mapping created
-> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
-> be locked if it's created after mlockall(MCL_FUTURE).
+On Fri, Apr 10, 2026 at 01:16:05AM +0000, Evangelos Petrongonas wrote:
+> kho_fill_kimage() unconditionally populates the kimage with KHO
+> metadata for every kexec image type. When the image is a crash kernel,
+> this can be problematic as the crash kernel can run in a small reserved
+> region and the KHO scratch areas can sit outside it.
+> The crash kernel then faults during kho_memory_init() when it
+> tries phys_to_virt() on the KHO FDT address:
 > 
-> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+>   Unable to handle kernel paging request at virtual address xxxxxxxx
+>   ...
+>     fdt_offset_ptr+...
+>     fdt_check_node_offset_+...
+>     fdt_first_property_offset+...
+>     fdt_get_property_namelen_+...
+>     fdt_getprop+...
+>     kho_memory_init+...
+>     mm_core_init+...
+>     start_kernel+...
+> 
+> kho_locate_mem_hole() already skips KHO logic for KEXEC_TYPE_CRASH
+> images, but kho_fill_kimage() was missing the same guard. As
+> kho_fill_kimage() is the single point that populates image->kho.fdt
+> and image->kho.scratch, fixing it here is sufficient for both arm64
+> and x86 as the FDT and boot_params path are bailing out when these
+> fields are unset.
+> 
+> Fixes: d7255959b69a ("kho: allow kexec load before KHO finalization")
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
+> 
+> v2: Per Mike's review [1], move the guard into kho_fill_kimage() instead
+>     of patching the arch-level producers and consumers. This fixes
+>     both arm64 and x86 in one place and avoids redundant checks. Tested again.
+> 
+> Note regarding backporting
+> The offending commit was deployed with 6.19. The only other supported
+> kernel version with 6.18, unless I miss someting uses
+> ```
+> if (!kho_out.finalized)
+> ```
+> which in the case of crash kernel it shouldn't be finalised.
 
-
-[...]
-
-> +
-> +#ifdef MAP_DROPPABLE
-> +/*
-> + * Droppable memory should not be lockable.
-> + */
-
-Single-line comment.
-
-> +static void test_mlock_droppable(void)
-> +{
-> +	char *map;
-> +	unsigned long page_size = getpagesize();
-
-We could store that in a static global and query it once during main().
-Feel free to keep it as is.
-
-> +
-> +	/*
-> +	 * Ensure MCL_FUTURE is not set.
-> +	 */
-
-Dito.
-
-> +	if (munlockall()) {
-> +		ksft_test_result_fail("munlockall() %s\n", strerror(errno));
-> +		return;
-> +	}
-> +
-> +	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-> +		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
-> +	if (map == MAP_FAILED) {
-> +		if (errno == EOPNOTSUPP)
-> +			ksft_test_result_skip("%s: MAP_DROPPABLE not supported\n", __func__);
-> +		else
-> +			ksft_test_result_fail("mmap error: %s\n", strerror(errno));
-> +		return;
-> +	}
-> +
-> +	if (mlock2_(map, 2 * page_size, 0))
-
-Weird, is "mlock2_" actually correct? (not "mlock2") ?
-
-> +		ksft_test_result_fail("mlock2(0): %s\n", strerror(errno));
-> +	else
-> +		ksft_test_result(!unlock_lock_check(map, false),
-> +				"%s: droppable memory not locked\n", __func__);
-> +
-> +	munmap(map, 2 * page_size);
-> +}
-> +
-> +static void test_mlockall_future_droppable(void)
-> +{
-> +	char *map;
-> +	unsigned long page_size = getpagesize();
-> +
-> +	if (mlockall(MCL_CURRENT | MCL_FUTURE)) {
-> +		ksft_test_result_fail("mlockall(MCL_CURRENT | MCL_FUTURE): %s\n", strerror(errno));
-> +		return;
-> +	}
-> +
-> +	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-> +		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
-> +
-> +	if (map == MAP_FAILED) {
-> +		if (errno == EOPNOTSUPP)
-> +			ksft_test_result_skip("%s: MAP_DROPPABLE not supported\n", __func__);
-> +		else
-> +			ksft_test_result_fail("mmap error: %s\n", strerror(errno));
-> +		munlockall();
-> +		return;
-> +	}
-> +
-> +	ksft_test_result(!unlock_lock_check(map, false), "%s: droppable memory not locked\n",
-> +			__func__);
-> +
-> +	munlockall();
->  	munmap(map, 2 * page_size);
->  }
-> +#else
-> +static void test_mlock_droppable(void)
-> +{
-> +	ksft_test_result_skip("%s: MAP_DROPPABLE not supported\n", __func__);
-> +}
-> +
-> +static void test_mlockall_future_droppable(void)
-> +{
-> +	ksft_test_result_skip("%s: MAP_DROPPABLE not supported\n", __func__);
-> +}
-> +#endif /* MAP_DROPPABLE */
+Yes, this seems about right :) 
+The only released kernel that has this issue is v6.19 and it will be EOL in
+less than a week.
+ 
+> [1] https://lore.kernel.org/all/ade2ExpM8ROXV-vy@kernel.org/
+> 
+>  kernel/liveupdate/kexec_handover.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index cc68a3692905..1029fe8778f2 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1551,7 +1551,7 @@ int kho_fill_kimage(struct kimage *image)
+>  	int err = 0;
+>  	struct kexec_buf scratch;
 >  
-
-Why not a above a
-
-#ifndef MAP_DROPPABLE
-#define MAP_DROPPABLE	0x08
-#endif
-
-instead?
-
->  static void test_vma_management(bool call_mlock)
->  {
-> @@ -442,7 +522,7 @@ int main(int argc, char **argv)
+> -	if (!kho_enable)
+> +	if (!kho_enable || image->type == KEXEC_TYPE_CRASH)
+>  		return 0;
 >  
->  	munmap(map, size);
->  
-> -	ksft_set_plan(13);
-> +	ksft_set_plan(15);
->  
->  	test_mlock_lock();
->  	test_mlock_onfault();
-> @@ -451,6 +531,8 @@ int main(int argc, char **argv)
->  	test_lock_onfault_of_present();
->  	test_vma_management(true);
->  	test_mlockall();
-> +	test_mlock_droppable();
-> +	test_mlockall_future_droppable();
->  
->  	ksft_finished();
->  }
-
-Feel free to add
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>  	image->kho.fdt = virt_to_phys(kho_out.fdt);
+> -- 
+> 2.47.3
+> 
+> 
+> 
+> 
+> Amazon Web Services Development Center Germany GmbH
+> Tamara-Danz-Str. 13
+> 10243 Berlin
+> Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+> Sitz: Berlin
+> Ust-ID: DE 365 538 597
+> 
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
