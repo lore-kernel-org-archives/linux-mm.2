@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF982E9904A
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F78FE99057
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 08:52:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 037676B0005; Fri, 10 Apr 2026 04:19:55 -0400 (EDT)
+	id D80556B0005; Fri, 10 Apr 2026 04:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23A76B0089; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
+	id D30DC6B0089; Fri, 10 Apr 2026 04:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E394F6B008A; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
+	id C470D6B008A; Fri, 10 Apr 2026 04:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D11696B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:19:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 734571A0445
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:54 +0000 (UTC)
-X-FDA: 84641947908.05.7026FC3
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6748710000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=akl9dBtH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B29456B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 04:52:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4793113AEA3
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:52:22 +0000 (UTC)
+X-FDA: 84642029724.13.FF8D3ED
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 86849180005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:52:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jdzNlHbJ
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775811140; a=rsa-sha256;
+	cv=none;
+	b=4JYoAn7ozGFZudaVBmMm30UXsgseMwrgsDVLF8+d+HxL5KDg/lc2RPBiFGh6dSK2pAr0zH
+	jtyjBO7s3Bhyc+M5f1b7hv2iVGL2szwSCyJu4OexcZ3yXOQIJqA31T3HFyJ7RbecHrjghl
+	VwbAvyvV1sTkJsNmL4k3YOtY524YvOc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jdzNlHbJ;
+	dmarc=none;
+	spf=none (imf06.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775809192;
+	s=arc-20220608; t=1775811140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zoo8eGSkihm4pzVA3O7YxgtC1cJl7QU3sLX++hivSVg=;
-	b=Nr5a8/HyxT5Bapd39vGF0FiL7o9nYkTRiWBjC329vU3+l6G6nPAZn3dPZjX9W+B99e60XJ
-	DwOrB+cossdfdgPfUPh7Aa2IEcxOL5pzcfW2qYWVPoyojXokoxq/Sd6Ul6KNsblSMSAO54
-	Wa+Z32moZWDNNiI/DurlDkVvcLtgBZs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775809192; a=rsa-sha256;
-	cv=none;
-	b=HQWeuiCfj40843yVkAHs9XcVm3wqVaYAjVoj7mL2uXWsijRZU25tM1DYSeQ4dJugo9/UeY
-	euT66h4MeU5G8dJNNpCY3wevGHaOCt1dC9OVqpWAsxN3NCC/dijT5s83fYJtZmyD2JgLM4
-	yMfOkLwSobSDcgql6GWIh1KdzVYiN/s=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=akl9dBtH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775809190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zoo8eGSkihm4pzVA3O7YxgtC1cJl7QU3sLX++hivSVg=;
-	b=akl9dBtHidnFCQuw9V6gubcDZsWwzA37+wRfKcpHSp5J4giorE+9zz+ooqFWH2mlUxi2W9
-	Qx+36gQebk6ImLIT4CXJKspYN9poyuLbh563Bd1vGEgEjdrNH31Rcmj6YDa9qa/NvqoQ1o
-	Xanm0raswE1rD7u11I5yNr6+OJyysc4=
-From: Lance Yang <lance.yang@linux.dev>
-To: luizcap@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	ryan.roberts@arm.com,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
-Date: Fri, 10 Apr 2026 16:19:38 +0800
-Message-Id: <20260410081938.51302-1-lance.yang@linux.dev>
-In-Reply-To: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
-References: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
+	bh=0eX6xcryDUIa7Vylx/0UzTyLSmyeGAUYHjEMq2Mi0C0=;
+	b=jahv7XGfsBuxPAC4tTV2ahSgDAH8TxnBO2s76yTviNCVxY0N3WyAFFtLLHKqxi9nnfmniv
+	M+RBT2QsyXX9exelOUKKoTTP9nidWBomw28QvwnTqEn+8m86HH5LPxLBGiGIlLDJ5JzP/m
+	6m/Cv/HZFhT6c/VNOPgYLbQp7a9mvZA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0eX6xcryDUIa7Vylx/0UzTyLSmyeGAUYHjEMq2Mi0C0=; b=jdzNlHbJtZA4YfAYyP5O25FLE4
+	wKMHbefxjS0W6vs98qdeJa7V4gHj25FxGt5RkcNyejrww3iujsYvJedlbpghLpIyJXt6yg92o7HjH
+	ejtUgep8gK+7Kk5Ir1vy3lSwOLbNk/SZIIhe0qaZa6nxv8sGiP/m5p16Zc2elgg5mOhuFOpsJ2xJq
+	8fsQMLPXtU31MF2boEItGD0v7RZ5TBCYFxWx3WYHawnxPqIXGBH2VOXy4DPBqJRWvbROvMjl2i9Ey
+	8XPy0a51PJuJDlGFP/Nt/gxjYLkfj5f96kCChp45u7g/wnhyg7uKJsfQmAzr6r5HSz0WtHVGp9hnW
+	Z2ukoSlw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wB7b2-009rYK-2Y;
+	Fri, 10 Apr 2026 08:52:13 +0000
+Date: Fri, 10 Apr 2026 01:52:08 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] kho: fix error handling in kho_add_subtree()
+Message-ID: <adi51hPc8n5ITHbU@gmail.com>
+References: <20260407-kho_fix_send-v1-1-b21977feb960@debian.org>
+ <20260409150802.fd7b91c9beea6abe4e8a63c2@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6748710000A
-X-Stat-Signature: f6sm51q4ezd3em7z31k7ka6b7pjxbxio
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409150802.fd7b91c9beea6abe4e8a63c2@linux-foundation.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 86849180005
+X-Stat-Signature: 5kbrs3hc8jpc4ueaxqunctdgbsexqzdw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775809192-826412
-X-HE-Meta: U2FsdGVkX188UX7KbxWdK5LnmjHDBAwow5Zuvq0fMr5txfGkc3phlV6YNSs7b0TrECLzFW7f6LQnPdqOA5cpT5UkLjRArnU0vgeuZ56DQs7AOgTzYP6b9h1FgaT0VusCMvOlFLEwMsGlerjHCeepJtw6JsMKmU8eVlNUJMOosSmScmz/qYynTMpi3dWErlrWJgBhwgbDu+DeG/WxFemfp2jGhTKVfOxt7vDUitg/MGYlrK2cPramHf0kNjq5d3rt+TrIT/+Z2Cw/1HHt+A9ImaWhf9L8Hx7A5ATVfUsOUWjO5o163UsAC27l3+Iz/3585swmhaZ1TLLXQlaLoRiT4lKwt/mIpz4u8ILafZNh2B9+L9DtMDbwxPevgsCY72IQVzZFldRK4pyk2B3IFF3Mr5eqGJJ+/HnCZeKCJzqt2+sxjDsBigMT7kj+HRvcisqOt0qfR7qA2v+ajt/Pq5Z6JybOJQk+UNylkzyPAFGl3+ieWCh2TpdCKW5NPTbJ4QkSBfumugbMVzWmLKGXEjpUYFPmKG6nbVioG7ncgwIzS5HNbLDwI3PP8kvgmCx86JMxHcpjCSk9RAkZ1mDSzyq0p/lYtF5qZ7JsCk3Xzui8+VqsgScI2HKh8vwF6Q2WCk/rQR6azQ6jnp0RsI9UsC3FZK+DHGwmvvwcDrffdgQ80EqFrbT5xEF5/WKCJrAly8zETi5KWlOr7HzH2hAjfqBjIGYgJZdkTKJXjADHjfZpK62BChrJsy/8r0bADt0dqtI+WEcYPMpMaLr0ahFBTbndQWE25vMGfi6TvmX402ybMyR03FPlC9cBZzjfMy4CMDJParU7vWKm1Z1VBSJC47b99BrLyQS2nYJ60VztkypTMXZAf802PUc7z0/mvhGp5im+mHLA3hPI9N8BxFHEwNKJDONEyZv3UE130PFyGZkSVeY9f/q/rpGZzOZXk7q8tm2tLBOV1drq4WlZBGAkg0V
- gUuoBSn1
- VvGGaTfFSp7FaSECkPdt+7biIm6NIukuMMV+8U8CzNUyJz5nVdG7Y5bgWoLIjgzeiX65OD7d5RbNdBaSbKWMdtK/giekDSxgL2tOsiEnzcBojQcQdiCWs4iA07On47UgHSmLhwLwP/U/IGLIUV7kG9z05Hu1ym+JQnbkL2mJYTSDYHL+NkLt0PevVWHE5KnI8wG5XqkGGjCiV85UeBDtSCJ6AQeUNqWICGJL41ARxeMXMl866Yn7cXOFujhnRToQmNfgjDCA+BfALVsVYgAdwVyXSAw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775811140-745452
+X-HE-Meta: U2FsdGVkX18xEEPtR+BtyLruANmkjXwUJyNYlaZL5IW2FSfvMjJke3DB4yZ9yS87qQJtAa3InghHC/vti/Z11B332r6V7NnaQ5AUtgCb8Vl+WPYbT8htc5KtFjK/ZebkvIQHAzeVIspR7phyogZk9W2MxgLtXRZNmgIopwj0njxaLiu+qK1oYKXTr9OWEWzxNT3AN35NvXdaxshXXIKRFZedOvNhcSu3d4Vs765Sc76k78Eq0FTIP59BuV28C/7qmOqqwPhnG6nvYlcC2Z43JzyWDIXM+YPHfPgu0DHt9unH80urmv0iFWbEvpgITgiZba25k7sQFSqKZagt3AgSTPaouFDplqV9K0b0asmMUwM9VDwSrehvw0I+zT7Q2HKauJTsQq8b1bQfPsBmOIcJgjWZoYzL8i1pc5kqTMnrqpxbVeRAefPjKbHoV/2ICJMSVLAYwfsyDgUJe9yuuSStlz3MgweuOsSuImShworp23LMWDd/gvpwBrvj2LttyF1foCV22AU+DruBpkviN2k0AyFcTW6ntkHudvxc2gwSJIeTRodr01BJSY9vrcjYkETDBbbP91o7jU2eBIEiTJYWrICId8mLDTrvxpHkiiHeIGAvhlW/Lv2cYNSBr1scH5pWCOlAQh4T0sABFQYWlClrKo4DHNDCpN9N5HcLTt+eJOmWLDLq70T0S+vxqpiqi3FjW72kU/5bg7PfOyGxCvTUjYFt2I6c6SzVq6k2KY/6TbUMYS3lt5sn2yC1fSGfOEnvC3+ldDkCQB+4+ey9LkbZBxLH2Maomi7z5tlFOswGa4cb5HeeFiDLk6DKeWhCBSpO3XTxfkcpb6qIZapEhT4QiVVHm2jaQfIGCv6z1riyHMjf2/QVmR5C/l3beP2gcgMjSJs8NCElsEfBA9ogPtqsAFpOfDZBW4NqN81vrtfezeXEe9V49gCNUOoD59tHrzlQOvV2Jqer2oq+dG7IBD1
+ wsAkD8ZS
+ 46VzUCstL1aBABsS+/77UVuEiwMqmODiTT6iHMOzvrJEjWnSIoglKoFLuhI3gKW1frQN6vUHM3g9XXrfZnmrXbNg/i/ftswE8kuHa6VzRvQ/YtJzHMySHZPbfl6idYfn5eaLoQu9kJh19K/f4mUGHS9MNlF2NWCRM43T36TLxk88w0ygKrl1uAYrc9iUxgzvZ1H7XxkH81tx4ZSqG0oAxmu9V8xgQXQmirOUu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,105 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Wed, Apr 08, 2026 at 04:22:57PM -0400, Luiz Capitulino wrote:
->Currently, we have two helpers that check for PMD-sized pages but have
->different names and slightly different semantics:
+On Thu, Apr 09, 2026 at 03:08:02PM -0700, Andrew Morton wrote:
+> On Tue, 07 Apr 2026 10:01:47 -0700 Breno Leitao <leitao@debian.org> wrote:
 >
->- has_transparent_hugepage(): the name suggests it checks if THP is
->  enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->  implements this helper, it actually checks if the CPU supports
->  PMD-sized pages
+> > Fix two error handling issues in kho_add_subtree(), where it doesn't
+> > handle the error path correctly.
+> >
+> > 1. If fdt_setprop() fails after the subnode has been created, the
+> >    subnode is not removed. This leaves an incomplete node in the FDT
+> >    (missing "preserved-data" or "blob-size" properties).
+> >
+> > 2. The fdt_setprop() return value (an FDT error code) is stored
+> >    directly in err and returned to the caller, which expects -errno.
+> >
+> > Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
+> > out_del_node label that removes the subnode on failure, and only setting
+> > err = 0 on the success path, otherwise returning -ENOMEM (instead of
+> > FDT_ERR_ errors that would come from fdt_setprop).
+> >
+> > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
 >
->- thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->  by the hardware, but it just returns a cached value acquired with
->  has_transparent_hugepage(). This helper is used in fast paths
+> v6.16.
 >
->This commit introduces a new helper called pgtable_has_pmd_leaves()
->which is intended to replace both has_transparent_hugepage() and
->thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
->it returns true if the CPU supports PMD-sized pages and false otherwise.
->It always returns a cached value, so it can be used in fast paths.
+> > Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > ---
+> >  kernel/liveupdate/kexec_handover.c | 21 +++++++++++++--------
+> >  1 file changed, 13 insertions(+), 8 deletions(-)
 >
->The new helper requires an initialization step which is performed by
->init_arch_has_pmd_leaves(). We call init_arch_has_pmd_leaves() early
->during boot in start_kernel() right after parse_early_param() but before
->parse_args(). This allows early_param() handlers to change CPU flags if
->needed (eg. parse_memopt() in x86-32) while also allowing users to use
->the API from __setup() handlers.
+> Do -stable kernels want this?
 >
->The next commits will convert users of both has_transparent_hugepage()
->and thp_disabled_by_hw() to pgtable_has_pmd_leaves().
->
->Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->---
-> include/linux/pgtable.h | 15 +++++++++++++++
-> init/main.c             |  1 +
-> mm/memory.c             |  8 ++++++++
-> 3 files changed, 24 insertions(+)
->
->diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->index a50df42a893f..c4c5282f795c 100644
->--- a/include/linux/pgtable.h
->+++ b/include/linux/pgtable.h
->@@ -2192,6 +2192,21 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
-> 	}
-> }
-> 
->+#ifdef CONFIG_MMU
->+extern bool __arch_has_pmd_leaves;
->+static inline bool pgtable_has_pmd_leaves(void)
->+{
->+	return __arch_has_pmd_leaves;
->+}
->+void __init init_arch_has_pmd_leaves(void);
->+#else
->+static inline bool pgtable_has_pmd_leaves(void)
->+{
->+	return false;
->+}
->+static inline void __init init_arch_has_pmd_leaves(void) { }
->+#endif
->+
-> #endif /* !__ASSEMBLY__ */
-> 
-> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
->diff --git a/init/main.c b/init/main.c
->index 1cb395dd94e4..07f2ddbf9677 100644
->--- a/init/main.c
->+++ b/init/main.c
->@@ -1044,6 +1044,7 @@ void start_kernel(void)
-> 	print_kernel_cmdline(saved_command_line);
-> 	/* parameters may set static keys */
-> 	parse_early_param();
->+	init_arch_has_pmd_leaves();
+> Changelog is missing a description of userspace-visible effects, So I
+> (and others) can't tell!
 
-One more thought here: I don't see why we need boot-time caching.
+Agreed. I'll improve the changelog to describe the user-visible impact
+and CC stable in v2.
 
-has_transparent_hugepage() does *not* look expensive on the common
-archs. On x86, it is just a CPU feature check. MIPS is different, yes,
-only the first call there is more involved ...
-
-But if we *really* want caching, couldn't we just do it lazily instead
-of adding another early boot init step?
-
-Something like:
-
-bool pgtable_has_pmd_leaves(void)
-{
-	static int __arch_has_pmd_leaves = -1;
-
-	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
-		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
-
-	return READ_ONCE(__arch_has_pmd_leaves);
-}
-
-That would avoid depending on parse_early_param() / parse_args()
-ordering, and it seems much simpler too :)
-
-The boot-time init step looks a bit shaky to me ...
-
-Thanks,
-Lance
 
