@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C330F4484C
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:18:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21E6F44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A4616B0093; Fri, 10 Apr 2026 08:18:34 -0400 (EDT)
+	id 60B596B0095; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42DC46B0095; Fri, 10 Apr 2026 08:18:34 -0400 (EDT)
+	id 5B5286B0096; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CE636B0096; Fri, 10 Apr 2026 08:18:34 -0400 (EDT)
+	id 4A3BC6B0098; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 12EC36B0093
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:18:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7F27140531
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:33 +0000 (UTC)
-X-FDA: 84642549306.23.0B601DB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 58F27180008
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X6IRMdbN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3A7F96B0095
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04E2F1B81A0
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:38 +0000 (UTC)
+X-FDA: 84642549558.08.B2A3352
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 589701C0007
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PujwWQLA;
+	spf=pass (imf21.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823512;
+	s=arc-20220608; t=1775823517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=RGZWkdQ4vdhJ/zmTXBMfmAASwOBRdYWIY356UL1Iu/0=;
-	b=QnimUBPy58f3pXt/Mq1iBgWN+imErf6SQ+p2aMyOAFtwIZvxpUX5kZuWbjCuhURyRBnyLH
-	38S//s1XPTES6/bYOwtdkaeFhpq447tmY2fcIO/HKER/NrVpGE73GrdRxGPFOWYV6Am2Zu
-	9aQsiPKa0YLwymWcyeA8GpTiWZVGVBk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823512; a=rsa-sha256;
-	cv=none;
-	b=SbHml94Az0w8712J6JS49AlTDOR8K/yGC37WTnVMkOS6uv+kSWIk1DajBCZW3zEzZ/6Hh/
-	sEQwyVglWMIwga09bwhO6wgwvtDY+2lo+QZEVUwng2uyQ433F/pUmlriyP0+z+kbFnVphO
-	+alhbiLyKzYB3mAeLy/ZKm5rxwSiIaI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=PgIshXZYXEu09ocWBqnvQyyErdcYu8PrYSZGXlwB4Zw=;
+	b=xroLv7XMW2hqFxvMLIfcVFRl/gyanCfK6qbEhHd2KFvqFTy7nQlRs6mo0qLQdhNARKQ0Bu
+	f5jKCLDMeVPtLBQXQVu/b9aalsP5gMlHbySJ25ePgx828+Tl7YkDbfbZ5zfpXyzX5ujEsD
+	TXtbzWYUXw6OMOUWSTAMxOxYtCrwBEo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X6IRMdbN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PujwWQLA;
+	spf=pass (imf21.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823517; a=rsa-sha256;
+	cv=none;
+	b=3vfxq64AgGIIVLkxAXgIRfLWMjrJlQFskX7U0NFgPd38r/Jv9Jcj0Zp4ndBfX0klu0BFNO
+	+sBetUBnkHd+wfTHbemrzpDHF+lHr038TcidGxcoLQxexaKd1OTguc676B/FjClUfVjxS5
+	2wa7UtK4EK/kUHSLj9Vph0q1DeKEKhs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FD0B6024D;
-	Fri, 10 Apr 2026 12:18:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF16C19421;
-	Fri, 10 Apr 2026 12:18:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 099C341A7C;
+	Fri, 10 Apr 2026 12:18:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF48C2BC87;
+	Fri, 10 Apr 2026 12:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823511;
-	bh=xG6Zhe4Reh8n1CuuXKHsxMx4yyA7cv5SRNW/ce+u7MA=;
-	h=Date:From:To:Subject:cc:From;
-	b=X6IRMdbNwD/1TPVTuuT38dax3aETJdTvvykNWi23GiBjWbaPnFiS31YP2+3+rHYnr
-	 +yBiYqSiaFZumAFwSR+NEqA6PxsCix9KHXp0BGVkWu/kFUlz/YIdIICieWTokegmLh
-	 Yr8j8VsIfTTYuyizZOa5fjt2rtqvhW2e+npoz/WBNOWVCp5m8FdgfGaOB54VOYpbJT
-	 yU3PgzyY9/f2Y08BZe1qPEkZ4DBScL99CvOU6Da3YpVoCSH2byw56W+6qCVZbtJoMm
-	 0joIfHOTvLdlWQN0yWziORYb41f8Ajm7GcTfuGZTXlFCF7Y90aZDQyz+rgc1XQsGrv
-	 br4n1yhF6vGQA==
-Date: Fri, 10 Apr 2026 14:18:27 +0200
-Message-ID: <20260410120044.031381086@kernel.org>
+	s=k20201202; t=1775823515;
+	bh=Qxe5s7KoLSq5kG1N2smycXiRWybB8taeJTlNsbfy0fg=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=PujwWQLA2dOIyLlZvIM0oB1Wg7c5ZIyCwzH/XHGNRGehg+YFil6OmFstHyfDwz6a4
+	 UXi7viGoUKPW4HP65M0H75qRplTYAji9Z6ikhUQOkcZXvM13Netjmq5O6I/+9+JQ+w
+	 bxUrL+dmChTEREYE3VSmYBwXmygVivr7jmb4e0itrCIHXq31ae3WiG49uZ0Z2PTGdc
+	 +od1M1yaD34oi/oFSPoyZ73JAQOxw0kf9oLJ4YVR9wqn75mlEWMpZuBIxST6yrXcHs
+	 fYRNY0LFjGxQtZU4+RTQobyzbJWEzJNsARBCqXSJyY40dbr06WXMHmkuYa6yNGx2XV
+	 5kZ5/s9dunCZA==
+Date: Fri, 10 Apr 2026 14:18:32 +0200
+Message-ID: <20260410120317.642797961@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 00/38] treewide: Cleanup LATCH,
- CLOCK_TICK_RATE and get_cycles() [ab]use
-cc: Arnd Bergmann <arnd@arndb.de>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
@@ -116,14 +115,18 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-X-Rspamd-Queue-Id: 58F27180008
-X-Stat-Signature: s7xfmhdy5rhpgeprjfzn1jicmq3z7nkf
+Subject: [patch 01/38] percpu: Sanitize __percpu_qual include hell
+References: <20260410120044.031381086@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775823512-509502
-X-HE-Meta: U2FsdGVkX1+eQFQIcWiMkEAJ+TyNqgQVUOP6nGsmmUnAolm8vnYvicHsJd233Hlapo0pwUjUCjnsIl9XJySdQGUvlzgG0CvpWd937RCEu/5JYkk1INLHuJbnjzZ+iOow5+PUC0QnoRVsDEz16ZoF8Qrz1DG5Cqk7CY743yaWGUlAPAG59xASJ7u+gpr5T5+WYWP/12rjUl/UatS7AiWd9eYYTLBnnwE8ahxP7xPFQNAwoi+0npdTOtX4iD35PJh+YbVKHayoLHRkEa2r83zyaVQ0r7k3RFTlFCGigZeY6okFTHLj1YUPXIRyHjFREOelF2lypdYeia5AXBTu5KTpxWx+vzg072sm/4l38DBBHQIqzgD7DvON+uVLReRikHvGIotKqOjfs55M19U1ALioYITS+yKoG3ptyXueg1WRq54YdSLrqVjpQj62tHCmFhzGt1XhT+laE0f82Xh7DY+FYKs966WpNGRiQMxV19ZUcWgP9Lb6BB2R0vqNFB2xZWqKbh23ob9iwpG2dePcs30jaHWGutEnNifUJrKnpUHqEvalPPHnTa6P7plZjMtiiD9MPcp2Za2M6s4DjcCwRcKNYGYWvLkLXq4rudTn2GAPKK91FBLY0XIChHH2LdomNSviG8loe7pLeAQNXMS0r9aYuzXy9ZFNlNm0X28g1ggqKsKQpn3GwaBx0qZJiWG1FqzgaQGKCDmgeOTAhJWgqe6eEQlpURaV98XgRg/at9pYBcfVoscsAZo9SMVaz+ZoM05rzagE+lupSS3X0esDjLsCzDO86tLnyOzJsRCxz73Ivf8s9Ckly0dUkVuO9pojtgMitI+fqhTr3gA48da1IdXN/+bbe69SMkrb4S3FQx1+CGMx61Gkb61cRsZEbdpmPsgqRHwrd90LDFp8b+X23zfteu3ngjJvjppPeCH46Uq5UiYCtJHdPmZ6jl0c9jU22cOybBuaYTbaOSKfyWVBrt5
- OXqzZVqH
- 41hP1znjdua9QLU94G0083KWtCHaCf4k2TAUmF8PM5mI/pGjMbEfqZwQ/zzBFP/VFZ2n5JNYc3cN5mCCTdfU+WEjsuMuxBjNSu0mXCQ7i+V5F44pzkmgidqkl06vMmZb1EkRJk/nE5PPEwlHfFsmODcdZ7k7dMrdtcOkwMPnbUGPrNs5KKo7SlIY+cVhq0BS9iRSSFzyxMly+qyFV2BTPHkuTd726Bpudsm19RetahqtSAV7mMiIIwcEWL0lTCiLEAyeKkueZIjw/mARM3cKrBB1dyVBR2ppjCvuYaj2QL7OcaY+z/HMagF2KhF4hxb/XlRJH
+X-Rspamd-Queue-Id: 589701C0007
+X-Stat-Signature: 3doyomd6kaw6guhhoxcko5brewmar5ri
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775823517-706946
+X-HE-Meta: U2FsdGVkX1/Xbbl0fsWnOX62OTiozofHtp9Wee9jNDGzwdg6VeLhFj5CPyfYtaepkcwkg1GSyzn7vmbn4wDOByWze81JS0D0kUEMr0PtFBf0EFRnD0n9iSwENeQaw6P+26hf+XFLpq8fk7uEClGSAIz0pvru2VQe+CB12a3zsyhB+/DLXFB4LaihxBSzDpdoMAwR+JxaQiJA/nnUFpgfySkbJq8Fk/ctkq8Go4MoZPDgK9jrt2859+bH5JzqxqF75+NCX3f2cMRlnHMk6nwTbELOjQ1573Mb8mL0pOzJpxp7qQeR86GIra+p+uX7XG7/KJzrmCV4LSeme6HiggV2aFqm0Sqce2jgoanWukrN1CyqohE0Ag1HfZrXp7tDWUA6ZplZJpqwLGU3KIeoTaEas30aBlCRNp+S+KEkptFNjZxX3jRe3bwSGm9cXfYaGawcLe5xuK0whtJF/Rh3bGelnjBRKfxbz1fY0IzMU9LpIgjDMVHHUHWSqSIt1IqDbXYIMU27qy11gy3E75+JFaZkLbIpRZtCQWzBmjNp3GSZZn17ZnY3Xq/lG80EKqGZuH+WYsZDuH+afJvqxzW9VJ360vimuYZrVhqsggMuihMmETt3K6Cur51LvfsHa7uXj1I4jIKIKgsB4A95G4epMhumatSCoFsxi74EdQKrQcsPqrnsdzpYvqxUmuPcIocOWtH23OEMkbkvsPAMe9focan9Cu8elLEwEmbvY2ZlruRkHCwZtPVSepp8xC7yyDhU3IIs8eN3UVTJ8wWrBTXSvuXnedZQdPF7wdyhUBAFD5VOqdSBpxQa6O4pcjCuFOFNfQ8ThwJtUb5wozUVU8qwbSlQHz90z84tpz6V0sareSPLavymOtp0E8yZjsQABYiuygFkBTZWTmXPprRweDyCvRQ02EDukyUw+Urmhlp5I472eDrU5RXO7p8eaSwFly85SE/ol3TmguJQxYNrSQAiwvs
+ Fola4+qU
+ Iek6TbR44phSEwW7cvli8m4sBh1qgOiQbVwE/E3gGvuA/u+k2aTV6x5kcU/jvPpHzLMELskbtFteBV5DMXE207Vcj+U1tUXfCy7EEJw7TRiUvCHGi8gfsfcIcJ1o/MhjhldBhoZUntfw58998k6fqCY+hyVTadCfRiWT1GEm99eWQX5nMosf84C0RcaXk3R2C/KmfxZpw8ATphWABHWwGUGYyyc/kjCSWfxZAfGAOXM8aNzAMIOC5I/3LdGP/gy1dkg0LvOGXwu9jO1d51flwxz+ql65gTcy5II5J8nXrp0u/06dK8UMIFi7joZ28+ZLXd21BML9p26nQICL26bfFDR2COARUB7VK6to6DPq6JVyG98w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,289 +134,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-First of all sorry for the insanely big Cc list, but people can't make
-their mind up whether they want to be Cc'ed on everything or not. So I'm
-opting for the worst case to cater to the people who want to be Cc'ed on
-everything and assume that the rest of you got used to it by now. I really
-wanted this to be more confined but a treewide cleanup does not give a lot
-of options.
+Slapping __percpu_qual into the next available header is sloppy at best.
 
-That said, let me explain what this is about.
+It's required by __percpu which is defined in compiler_types.h and that is
+meant to be included without requiring a boatload of other headers so that
+a struct or function declaration can contain a __percpu qualifier w/o
+further prerequisites.
 
-  1) LATCH
+This implicit dependency on linux/percpu.h makes that impossible and causes
+a major problem when trying to seperate headers.
 
-     The LATCH define goes back to Linux version 0.1 and has survived until
-     today for the very wrong reasons.
+Create asm/percpu_types.h and move it there. Include that from
+compiler_types.h and the whole recursion problem goes away.
 
-     Initially it was based on the x86 PIT frequency and also steered the
-     timekeeping conversions.
-
-     With the arrival of non x86 architectures it got changed to be based
-     on CLOCK_TICK_RATE in order not to change core code which depended on
-     LATCH.
-
-     That all got meaningless when timers, timekeeping and scheduling
-     infrastructure got rewritten more than two decades ago.
-
-     But there is still a lonely survivor in arch/x86/kernel/apm_32.c
-     which dates back to Linux 1.3.46 (Dec. 1995)
-
-     Which causes the next historical gem
-
-  2) CLOCK_TICK_RATE
-
-     When Linux got expanded beyond i386 LATCH was made "flexible" by
-     basing it on CLOCK_TICK_RATE to adjust for other frequencies than the
-     i386 PIT frequency.
-
-     As LATCH this got meaningless long ago and for amusement value it got
-     copied into new architectures arriving way after it got obsolete for
-     no reason but with comments to the effect that it's meaningless
-
-     And of course it had a lonely survivor in arch/x86/kernel/setup.c
-     despite it being only an alias for PIT_TICK_RATE for a very long time.
-
-  3) get_cycles()
-
-     That was introduced in 2.1.133pre4 (Dec. 1998) to utilize the back
-     then brand new TSC. The introduction broke everything except i386 SMP
-     with a CPU having a TSC and got then fixed up within a couple of days
-     with empty stubs returning 0 and #ifdeffery for CONFIG_TSC before the
-     2.2.0 release.
-
-     It's amusing that the naming deliberately ignored that TSC is the
-     acronym for Time Stamp Counter and not Cycle Counter and rather went
-     for the underlying coincidence that the TSC was running at the same
-     fixed frequency as the CPU core.
-
-     That turned out to be interesting when CPUs started to have frequency
-     scaling as the TSC then turned into a variable frequency random number
-     generator.
-
-     A decade later CPU designers came to senses and made the TSC invariant
-     usually running at the nominal CPU frequency, which allowed to use it
-     for reliable timekeeping purposes.
-
-     Non x86 architectures implemented get_cycles() based on whatever
-     continuously running counter they had available in their CPUs. Some of
-     them actual CPU cycle counters, but many of them running at a fixed
-     frequency which was completely unrelated to CPU cycles.
-
-     Around 2004/5 the timekeeping subsystem was completely rewritten and
-     made generic along with the scheduling clock and other related
-     infrastructure. With that rewrite get_cycles() got mostly obsolete,
-     but despite it being on the todo list of quite some people it never
-     ceased to exist and it was just a conveniance vehicle to base other
-     things like the recent addition of random_get_entropy() on top with a
-     hideous #ifdef/#define macro maze.
-
-     The other remaining use cases are mostly debugging and testing
-     code. Especially the usage in performance test code is hillarious at
-     best. While the name get_cycles() suggests that it provides access to
-     CPU cycles the reality is that it provides a unspecified counter for
-     most systems, where a lot of architectures simply return 0 because
-     they either do not have such a counter or did not bother to implement
-     it at all.
-
-     So in fact get_cycles() should have been renamed to get_bogo_cycles()
-     long ago matching the BogoMIPS "impress your friends" printk which
-     still exists for historical amusement value.
-
-     But the real solution is to remove it all together instead of
-     proliferating the bogosity.
-
-
-This is what this series does with the following steps:
-
-   1) Cleanup some header dependency hell which got unearthed by the
-      restructuring and went unnoticed so far. It's amazing how the kernel
-      build system magically "works". This affects not only x86, but the
-      main fallout was observed and fixed there. ARM64 and MIPS are at
-      least as bad as they silently rely on the accidental asm/timex.h
-      include through a variety of generic headers to make their
-      architecture code compile. See the changelog and patches specific to
-      those two.
-
-   2) Removal of LATCH
-
-   3) Removal of CLOCK_TICK_RATE
-
-   4) Consolidation of cycles_t which was a typedef in asm/timex.h
-
-   5) Cleanup of read_current_timer() which is only used for delay
-      calibration and has nothing to do with get_cycles()
-
-   6) Cleanup of get_cycles() usage in debug and test code
-
-   7) Decoupling of random_get_entropy() from get_cycles()
-
-   8) Removal of asm/timex.h includes except for architecture internal
-      usage where necessary.
-
-At the end get_cycles() survives in a couple of architectures as a purely
-architecture internal implementation detail.
-
-This survives compile testing on all architectures except hexagon and nios2
-because the current cross tools based on gcc15 do not offer a compiler for
-them anymore. Boot tested on x86 and some qemu instances covering only a
-few architectures.
-
-The series applies on v7.0-rc7 and with very minor conflicts on -next. It
-is also available from git:
-
-    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git getcycles-v1
-
-Thanks,
-
-	tglx
+Signed-off-by: Thomas Gleixner <tglx@kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/alpha/include/asm/timex.h                 |   33 --------
- arch/arc/include/asm/timex.h                   |   15 ---
- arch/arm/include/asm/timex.h                   |   16 ---
- arch/arm64/include/asm/timex.h                 |   18 ----
- arch/hexagon/include/asm/timex.h               |   23 -----
- arch/m68k/include/asm/timex.h                  |   42 ----------
- arch/microblaze/include/asm/timex.h            |   13 ---
- arch/mips/include/asm/timex.h                  |  102 -------------------------
- arch/sh/include/asm/timex.h                    |   24 -----
- arch/sparc/include/asm/timex.h                 |    9 --
- arch/sparc/include/asm/timex_32.h              |   14 ---
- arch/um/include/asm/timex.h                    |    9 --
- b/Documentation/fb/udlfb.rst                   |    4 
- b/arch/Kconfig                                 |   10 ++
- b/arch/alpha/Kconfig                           |    1 
- b/arch/alpha/include/asm/random.h              |   14 +++
- b/arch/arm/Kconfig                             |    2 
- b/arch/arm/include/asm/delay.h                 |    1 
- b/arch/arm/include/asm/random.h                |   14 +++
- b/arch/arm/lib/delay.c                         |   14 +--
- b/arch/arm/mach-omap1/Kconfig                  |    2 
- b/arch/arm64/Kconfig                           |    2 
- b/arch/arm64/include/asm/io.h                  |    5 -
- b/arch/arm64/include/asm/ptp_vmclock.h         |   12 ++
- b/arch/arm64/include/asm/random.h              |   11 ++
- b/arch/arm64/include/asm/rqspinlock.h          |    1 
- b/arch/arm64/kernel/time.c                     |    6 +
- b/arch/arm64/kernel/topology.c                 |    1 
- b/arch/arm64/kernel/traps.c                    |    1 
- b/arch/arm64/kvm/emulate-nested.c              |    1 
- b/arch/arm64/kvm/hyp/include/hyp/switch.h      |    1 
- b/arch/arm64/lib/delay.c                       |    1 
- b/arch/hexagon/Kconfig                         |    1 
- b/arch/hexagon/kernel/time.c                   |    8 +
- b/arch/loongarch/Kconfig                       |    1 
- b/arch/loongarch/include/asm/random.h          |   15 +++
- b/arch/loongarch/include/asm/timex.h           |    2 
- b/arch/loongarch/kernel/relocate.c             |    1 
- b/arch/loongarch/kernel/syscall.c              |    1 
- b/arch/loongarch/lib/delay.c                   |    2 
- b/arch/m68k/Kconfig                            |    1 
- b/arch/m68k/amiga/config.c                     |    1 
- b/arch/m68k/include/asm/random.h               |   14 +++
- b/arch/m68k/kernel/time.c                      |    2 
- b/arch/mips/Kconfig                            |    1 
- b/arch/mips/generic/init.c                     |    1 
- b/arch/mips/include/asm/random.h               |    7 +
- b/arch/mips/kernel/pm-cps.c                    |    1 
- b/arch/mips/kernel/proc.c                      |    1 
- b/arch/mips/kernel/relocate.c                  |    2 
- b/arch/mips/kernel/time.c                      |   53 ++++++++++++
- b/arch/mips/lib/dump_tlb.c                     |    1 
- b/arch/mips/mm/cache.c                         |    1 
- b/arch/nios2/Kconfig                           |    1 
- b/arch/nios2/include/asm/random.h              |   14 +++
- b/arch/nios2/include/asm/timex.h               |    7 -
- b/arch/nios2/kernel/time.c                     |    4 
- b/arch/openrisc/Kconfig                        |    2 
- b/arch/openrisc/include/asm/random.h           |   12 ++
- b/arch/openrisc/include/asm/timex.h            |   10 --
- b/arch/openrisc/lib/delay.c                    |    8 -
- b/arch/parisc/Kconfig                          |    1 
- b/arch/parisc/include/asm/random.h             |   12 ++
- b/arch/parisc/include/asm/timex.h              |   10 --
- b/arch/parisc/kernel/processor.c               |    1 
- b/arch/parisc/kernel/time.c                    |    1 
- b/arch/powerpc/Kconfig                         |    1 
- b/arch/powerpc/include/asm/random.h            |   13 +++
- b/arch/powerpc/include/asm/timex.h             |   25 ------
- b/arch/powerpc/platforms/cell/spufs/switch.c   |    5 -
- b/arch/riscv/Kconfig                           |    2 
- b/arch/riscv/include/asm/random.h              |   25 ++++++
- b/arch/riscv/include/asm/timex.h               |   23 -----
- b/arch/riscv/kernel/unaligned_access_speed.c   |    1 
- b/arch/riscv/kvm/vcpu_timer.c                  |    1 
- b/arch/riscv/lib/delay.c                       |    8 +
- b/arch/s390/Kconfig                            |    1 
- b/arch/s390/include/asm/random.h               |   12 ++
- b/arch/s390/include/asm/timex.h                |   10 --
- b/arch/s390/kernel/time.c                      |    1 
- b/arch/s390/kernel/vtime.c                     |    1 
- b/arch/sparc/Kconfig                           |    2 
- b/arch/sparc/include/asm/random.h              |   15 +++
- b/arch/sparc/include/asm/timex_64.h            |   20 ----
- b/arch/sparc/kernel/pcic.c                     |    1 
- b/arch/sparc/kernel/time_32.c                  |    1 
- b/arch/sparc/kernel/time_64.c                  |    4 
- b/arch/sparc/vdso/vclock_gettime.c             |    1 
- b/arch/x86/Kconfig                             |    4 
- b/arch/x86/include/asm/iommu.h                 |    3 
- b/arch/x86/include/asm/msr.h                   |    5 -
- b/arch/x86/include/asm/percpu.h                |    5 -
- b/arch/x86/include/asm/percpu_types.h          |   17 ++++
- b/arch/x86/include/asm/ptp_vmclock.h           |   12 ++
- b/arch/x86/include/asm/pvclock.h               |    1 
- b/arch/x86/include/asm/random.h                |   12 --
- b/arch/x86/include/asm/smp.h                   |    2 
- b/arch/x86/include/asm/tsc.h                   |   11 --
- b/arch/x86/include/asm/vdso/gettimeofday.h     |    5 -
- b/arch/x86/kernel/apm_32.c                     |    4 
- b/arch/x86/kernel/cpu/mce/core.c               |    1 
- b/arch/x86/kernel/nmi.c                        |    1 
- b/arch/x86/kernel/setup.c                      |    2 
- b/arch/x86/kernel/smpboot.c                    |    1 
- b/arch/x86/kernel/tsc.c                        |   12 +-
- b/arch/x86/lib/delay.c                         |    8 -
- b/crypto/jitterentropy-kcapi.c                 |    1 
- b/crypto/tcrypt.c                              |   84 ++++++++++----------
- b/drivers/iommu/intel/dmar.c                   |    4 
- b/drivers/iommu/intel/iommu.h                  |    8 +
- b/drivers/irqchip/irq-apple-aic.c              |    1 
- b/drivers/misc/sgi-gru/gruhandles.c            |   20 +---
- b/drivers/misc/sgi-gru/grukservices.c          |    3 
- b/drivers/misc/sgi-gru/grutlbpurge.c           |    5 -
- b/drivers/net/arcnet/arc-rimi.c                |    4 
- b/drivers/net/arcnet/arcdevice.h               |   20 ----
- b/drivers/net/arcnet/com20020.c                |    6 -
- b/drivers/net/arcnet/com90io.c                 |    6 -
- b/drivers/net/arcnet/com90xx.c                 |    4 
- b/drivers/net/hamradio/baycom_epp.c            |   51 ------------
- b/drivers/net/wireless/ath/wil6210/debugfs.c   |    2 
- b/drivers/net/wireless/ath/wil6210/txrx.c      |    6 -
- b/drivers/net/wireless/ath/wil6210/txrx_edma.c |    4 
- b/drivers/net/wireless/ath/wil6210/wil6210.h   |    3 
- b/drivers/ptp/Kconfig                          |    6 -
- b/drivers/ptp/ptp_vmclock.c                    |    6 -
- b/drivers/video/fbdev/udlfb.c                  |   24 ++---
- b/fs/ext4/mballoc.c                            |    4 
- b/include/asm-generic/Kbuild                   |    2 
- b/include/asm-generic/percpu_types.h           |   20 ++++
- b/include/linux/compiler_types.h               |    1 
- b/include/linux/delay.h                        |    2 
- b/include/linux/jiffies.h                      |    3 
- b/include/linux/random.h                       |   18 ++++
- b/include/linux/timex.h                        |   26 ------
- b/include/linux/types.h                        |    6 +
- b/init/calibrate.c                             |   19 ++--
- b/kernel/kcsan/core.c                          |    3 
- b/kernel/kcsan/debugfs.c                       |    8 -
- b/kernel/time/timer.c                          |    1 
- b/lib/interval_tree_test.c                     |   17 +---
- b/lib/rbtree_test.c                            |   47 +++++------
- b/lib/test_vmalloc.c                           |   10 +-
- b/mm/kasan/sw_tags.c                           |    2 
- b/mm/slub.c                                    |   37 +++++----
- include/asm-generic/timex.h                    |   23 -----
- 146 files changed, 622 insertions(+), 796 deletions(-)
+ arch/x86/include/asm/percpu.h       |    5 -----
+ arch/x86/include/asm/percpu_types.h |   17 +++++++++++++++++
+ include/asm-generic/Kbuild          |    1 +
+ include/asm-generic/percpu_types.h  |   20 ++++++++++++++++++++
+ include/linux/compiler_types.h      |    1 +
+ 5 files changed, 39 insertions(+), 5 deletions(-)
 
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -40,12 +40,10 @@
+ #endif
+ 
+ #define __percpu_prefix
+-#define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
+ 
+ #else /* !CONFIG_CC_HAS_NAMED_AS: */
+ 
+ #define __percpu_prefix		__force_percpu_prefix
+-#define __percpu_seg_override
+ 
+ #endif /* CONFIG_CC_HAS_NAMED_AS */
+ 
+@@ -82,7 +80,6 @@
+ 
+ #define __force_percpu_prefix
+ #define __percpu_prefix
+-#define __percpu_seg_override
+ 
+ #define PER_CPU_VAR(var)	(var)__percpu_rel
+ 
+@@ -92,8 +89,6 @@
+ # define __my_cpu_type(var)	typeof(var)
+ # define __my_cpu_ptr(ptr)	(ptr)
+ # define __my_cpu_var(var)	(var)
+-
+-# define __percpu_qual		__percpu_seg_override
+ #else
+ # define __my_cpu_type(var)	typeof(var) __percpu_seg_override
+ # define __my_cpu_ptr(ptr)	(__my_cpu_type(*(ptr))*)(__force uintptr_t)(ptr)
+--- /dev/null
++++ b/arch/x86/include/asm/percpu_types.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_PERCPU_TYPES_H
++#define _ASM_X86_PERCPU_TYPES_H
++
++#if defined(CONFIG_SMP) && defined(CONFIG_CC_HAS_NAMED_AS)
++#define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
++#else /* !CONFIG_CC_HAS_NAMED_AS: */
++#define __percpu_seg_override
++#endif
++
++#if defined(CONFIG_USE_X86_SEG_SUPPORT) && defined(USE_TYPEOF_UNQUAL)
++#define __percpu_qual		__percpu_seg_override
++#endif
++
++#include <asm-generic/percpu_types.h>
++
++#endif
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -44,6 +44,7 @@ mandatory-y += module.lds.h
+ mandatory-y += msi.h
+ mandatory-y += pci.h
+ mandatory-y += percpu.h
++mandatory-y += percpu_types.h
+ mandatory-y += pgalloc.h
+ mandatory-y += preempt.h
+ mandatory-y += rqspinlock.h
+--- /dev/null
++++ b/include/asm-generic/percpu_types.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_GENERIC_PERCPU_TYPES_H_
++#define _ASM_GENERIC_PERCPU_TYPES_H_
++
++#ifndef __ASSEMBLER__
++/*
++ * __percpu_qual is the qualifier for the percpu named address space.
++ *
++ * Most arches use generic named address space for percpu variables but
++ * some arches define percpu variables in different named address space
++ * (on the x86 arch, percpu variable may be declared as being relative
++ * to the %fs or %gs segments using __seg_fs or __seg_gs named address
++ * space qualifier).
++ */
++#ifndef __percpu_qual
++# define __percpu_qual
++#endif
++
++#endif /* __ASSEMBLER__ */
++#endif /* _ASM_GENERIC_PERCPU_TYPES_H_ */
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -41,6 +41,7 @@
+ # define BTF_TYPE_TAG(value) /* nothing */
+ #endif
+ 
++#include <asm/percpu_types.h>
+ #include <linux/compiler-context-analysis.h>
+ 
+ /* sparse defines __CHECKER__; see Documentation/dev-tools/sparse.rst */
 
 
