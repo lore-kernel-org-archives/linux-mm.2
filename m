@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E9FF44846
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D300F44846
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F696B008A; Fri, 10 Apr 2026 07:58:09 -0400 (EDT)
+	id 8135D6B0089; Fri, 10 Apr 2026 08:05:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36B86B0092; Fri, 10 Apr 2026 07:58:09 -0400 (EDT)
+	id 7C43B6B008A; Fri, 10 Apr 2026 08:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73996B0093; Fri, 10 Apr 2026 07:58:09 -0400 (EDT)
+	id 6DA1D6B0092; Fri, 10 Apr 2026 08:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B90056B008A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:58:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B3721A04DE
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:58:09 +0000 (UTC)
-X-FDA: 84642497898.03.D732768
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id ACFDA40009
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:58:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UtHphArR;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775822287; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF626B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:05:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27324E2F71
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:05:57 +0000 (UTC)
+X-FDA: 84642517554.17.77A8ADF
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2C3D310000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:05:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S1IPhLac;
+	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775822755; a=rsa-sha256;
 	cv=none;
-	b=Gm4vukSYXOfXa3C5gFERqaTDTjRbgNYbb49aWC663sejo2fFv3VZfMZ2La2P0XdUShp9f8
-	unZYySrR+vKEKHVZGiGZnFKar6XlB0aXcajm+XL/yKTkRDz1CVff4gSG4sjCZV471S5sFc
-	5gINMV+uljyojYuDHKxAAtsJXImPmmQ=
+	b=DhAsJrjeG785afehktNz1qhBCXYJq3HxppR4+hZL6nD9NfvACEFy1QzKX7Jz2unBRA78YP
+	+E7QddTuYAgg9Tu8iSO61YGrv7TeDQROGrnybdNBWV+x8KBI3ALJSAuzxvvT2vnlxIq/q1
+	hvMIWqg8RojGH5B/os7BdDCXIhiueN0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775822287;
+	s=arc-20220608; t=1775822755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hW/7P+Q9ewTp+Nlxs63eE8WGljMMtGMjz8FRskYNhcA=;
-	b=xOx8hvvJkfhX9O/NtOX9fyKnifs1SqTMJWxam39Jq2oG9hP7AL71YJ2ZMqh+/xpjw0woBJ
-	5oiylgKtlra/yO9Cy1G0FtWy0amVPyEbXDJKmfIIoDVZuLZoi8xDIJ+sBDqKHZchD1Art/
-	aTaPo4GSbSU4NdDTaAeE4P1ucD5SRe0=
+	bh=UciXY4UpwF/PVQ55Oa+nceO1l3r0LRhzvlDseaImpoY=;
+	b=reBT56Gkh3BWlTHyg17JbgtqWXXTDUCD+aLnnoXw3TXJFGjcGBXV4DBsIf3DBJnLLAQ+uC
+	Zb8JAKhL1DS3f+A+KKNvoci9ikYvgFNRvgtv7ZxJnprIigJXRCLLdzVdPFU5Lwj4jNU/m/
+	or3B7WLIGKSfoJLQlmLxQEvtpitePeQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UtHphArR;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E2316091C;
-	Fri, 10 Apr 2026 11:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48805C19421;
-	Fri, 10 Apr 2026 11:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775822286;
-	bh=1IlVya3cDWf4jvwWxchg1KQjmwkbJ5Ag/jKFwWp3CvA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UtHphArRe3+5ugz15PPQLf6OUxnW5LjX8Uc0gNt4yDfRrnoVH5t/QvmsRE8v8eU/G
-	 sRJBY0NdCHSYQbYIZWfu2YxuJDgJoKOz6l60yejqkGC8+Mfk7oBJNHXmQ+Z21ZbNkc
-	 04yw91ZIEBNPLKwXcj1PzNAqLrUBNItgu1itsAuNmxJ4ggjgvHYrDYnph59t3oeG5Y
-	 tNthufSoSeozDo1o4+7hZqxC94QnPrqhFxjsqdc4Bjqw/01zMPYQrWYnXNDpU30g8e
-	 UmR0k+lA0oE3rNHj4yYfHTr9q8EVyi9xhAYeMRYukwGGyalwhuE5brmODVtAu0aDgi
-	 LkDH/7lAFYepg==
-Date: Fri, 10 Apr 2026 12:57:56 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc, jack@suse.cz, 
-	ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, 
-	kees@kernel.org, kevin.brodsky@arm.com, lance.yang@linux.dev, 
-	Liam.Howlett@oracle.com, linux-arm-kernel@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, mhocko@suse.com, npache@redhat.com, 
-	pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com, 
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, leitao@debian.org, 
-	kernel-team@meta.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S1IPhLac;
+	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <262a41db-a425-4362-bb67-df61119625d5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775822752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UciXY4UpwF/PVQ55Oa+nceO1l3r0LRhzvlDseaImpoY=;
+	b=S1IPhLac5GLe8aWkzUNhPX1PlP9fq5z3WRAjL+vGJS6PRIGTZh7B7rKGP6zR510zSkjeYf
+	K2QNdKANEbpRs7f7uwGklMZu8fyrnR1UsL3rCWPzJNLUoi6SJAO92EUU22rkQ1qumaPnr5
+	nnM4xvZ//KZw8+pWbEggmfs0orX141o=
+Date: Fri, 10 Apr 2026 13:05:40 +0100
+MIME-Version: 1.0
 Subject: Re: [PATCH v3 0/4] mm: improve large folio readahead and alignment
  for exec memory
-Message-ID: <adjllNan2vgBNBHJ@lucifer>
+Content-Language: en-GB
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc,
+ jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
+ dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
+ lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mhocko@suse.com, npache@redhat.com,
+ pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org,
+ surenb@google.com, vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+ ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ leitao@debian.org, kernel-team@meta.com
 References: <20260402181326.3107102-1-usama.arif@linux.dev>
- <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev>
- <adjkCOiLgZ_-zovg@lucifer>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+ <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev> <adjkCOiLgZ_-zovg@lucifer>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
 In-Reply-To: <adjkCOiLgZ_-zovg@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ACFDA40009
-X-Stat-Signature: 73iiwxa7ubynuc19ij3nahw9d8mxiifg
-X-HE-Tag: 1775822287-429697
-X-HE-Meta: U2FsdGVkX18qafjqrwSTCPdfWufBTsNPVkdqk8tdNygI/beMZ/SgGAfoYPtu6Gd4/iHfhw97X0hjEEFONjpLID0bj4t7MuV/vfsZZiwIP7PueXh3QfU52vMtFemDMtujcIPbjisYkv1ROmM4DokSB/aHsMr/aqMBYDnspIDkGh2wGZ1JdG7BO7V1CFAP0I+zhb4XKv+nFXrC+GGYYzXE2guXYq4R/yCsbp0WdtuW8lPb4Hi6XErp6vS48Xh4Su4X6LNDgd4roEQiNRpuGBMMGhDEf8PditjXijvERZny7xilkUX+BiJcCQeyE3EuwMxo0Cz9YkbkE0uE6cczhneuiCEvWdcaCcZpb4n81rBS9pIrA3tprXPKsm0Sbv3RJhU+c2Aof3YoA6MIlFmorCgut50uVz/URZwfjR0UlINMeXX45z/o2NGJYhg1i91UMRsY3viZfBjA8MRCHGEXlAv4m6oxcOF/crDiRH/Vjy0Lwj6QxyiZRUivFzMGz645yCQiJftx/iXHY3Ai9CqYW6DUEYVE4qsNFJxpHtM537CiLfOSG0X8l3K54DrT6wIvGcH+musI1E6SO5TxXs4WtdgcKFqYTubs6zIgryHII50YLO4Z6T/yrjJdQAjv1axJQ6ALxX+ljeSU2vQMWVz/MEIHnIPTEiizaV13k+0lB1LYzb2ioCkfOoSOdb7g+r6u07NXmGtRRqg8XI8ih5BVFBbycu3csx8I5EZhpL6mCwP/y4qNkQgLVmePhL6p0yXhlquqVShp9VIMIexPSMiBO99+yUIb53qkJNmMCBmUa88QAX6ffMsSoMqRryx8ONpdyE9B/2UYvauJJOXuJ6cs2MpFx18amwcx1KYrH4R27fhRUCdSqBy/Zn8xN37JtlmF7NSA0DcPVH493Did0IUqeh3t0l0luBTmpBWlMKHFHAp0++P2gDTa0zFBnOM/Ju1EoD7DgUz4OCKw8Dakusp/TGN
- gc38Asn1
- E0gqfivL+TrCZHvrBfJupwGhwL7W+AWtWrYk1EYEsZY46bjfpCBA2J8SBnwFs5vZpGff4nJGUEzhzui1NGjD8fiFi56+i97gAtJhzr5pvlVBjnLjPmQlV2bBdg80DTaSG17NgmhYvURAvEgdMiqlpm7vjWDrXWGWqhW8OTht+gMDW3C7ev6vhI1PV/56sVt8pvnWqGZdDMQsV4Y3ZzEDQE9/CrI7Q9Lz/QlMVppYHZGXxy+JbQt+Ahr//DO5epDY3375jDvPvFGG3O2DuQka3P+gulg==
+X-Rspamd-Queue-Id: 2C3D310000A
+X-Stat-Signature: 8cyrtujmb9a741dpar6eyyc7n3cep3ti
+X-HE-Tag: 1775822754-949323
+X-HE-Meta: U2FsdGVkX1/TZlGCjiGZj8Tu8Nyg+H+vANQnkJhgInt0xjb35qMCB4jlWfIjq7ymlBX0TRkbNzlxg6zMDBRFrs5i6MvvqSLcYj87p43FWhalV01ZOv+SbKg60rFkpfDiC40XvLRUgQQp5DEGpUKv1xQAxVLhdmvDYKi49YEjyA1yp32/WOktsTRyNSA62ePgknm4Nmt/AjOPgf1XewlYRkhPBhLaD3WqOXRhdTf3fL+I6g5ze1HSK39HtZ1PPXkz0xmN0Gvt8bSaEVpB1F7FNrGgbh2miqQOQ/89GB5g6R87wh2VZ0g09zB0OEg0C0lpy1jRZJ204UVvECkSaa8jB+QsCJtzOFoHnFsrkU6xq1hHK9fg/OFlbBWqvymOcce0cPcBC4T0r4nA2pByZVKgDJUsNvQpEXHlmWDcyJtl6OlPIo9lMnDsgoCcFhrZtmp6aPITcs/N9245zDwV1ZxpBqbJK66aaRvPiQdwGddR3JRx4ypp+ZoEZF5d+r0uglKB2VVvy2akNL3GZxiGo652pWPR9jAIc8LrqRYBgJ8KX+DBQYP670eahNeu8UC5tv/QtEdPpy0wMI9IPqXe2agAjAu1RF8DV+3TVST/sJauKVfpVHCUaxDGsjqmViKRMSoSgbQxxudd8LY/xP8cTAiD4w3mg8wjf2EcdOvjAbgkc5/47ojtdDhFaFCMaClex1ckVAcmZ5IoxqGUU5ReBDoGAKTBQt98ygz54TWS8nov0pLGCQeuxx23eLnjvOurOOvI+m0mnDcqrOoNSmCA7fjtts7Rg4xG7jrJ6wFSrKda+h8BkjMOtgqCT6fUXy8noo6bm37Ak/hxaTwn2wxjV/b/9DqM916Q14/Rk8mrGt64BVeCumZFI/0PXSpQmVLfNLqlzhqXpCQJLEv2SqiPxGl7SJNzOB1AWB6261JdPiIGXWby4mAsUocLt0GMlGfxiGq2SsJg7q+F2+fAv11wEQ9
+ jJZfVT5K
+ bgfyzu3RbOVc5dWfoJOkf/fRjkjwx+aWV/NIdQ+5SD0VbGi7o/S8oCm1wZJwHTXrIIHPAhqQUX34r6JJQgEZohpqKR9MMtC7qt7xYttfjh6GaXOyIEj90Fr1Gp7I6+7cgWUUfU9LHojAXAq35/q950uGdrCY/r04uJOIhqBUxk0CWzO7gI+zh2yX+7mjKSAuFwE28DHhX1AEQrMDiezI3+JRwg3ox59fwbB3BzdnvFdytfEw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,52 +101,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 12:55:42PM +0100, Lorenzo Stoakes wrote:
+
+
+On 10/04/2026 12:55, Lorenzo Stoakes wrote:
 > On Fri, Apr 10, 2026 at 12:03:03PM +0100, Usama Arif wrote:
-> >
-> >
-> > On 02/04/2026 19:08, Usama Arif wrote:
-> > > v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
-> > > - Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
-> > >   to HPAGE_PMD_SIZE limited to 2M (Rui)
-> > > - Reviewed-by tags for patch 1 from Kiryl and Jan
-> > > - Remove preferred_exec_order() (Jan)
-> > > - Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
-> > >   otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
-> > >   do_sync_mmap_readahead().
-> > > - Change exec_folio_order() to return 2M (cont-pte size) for 64K base
-> > >   page size for arm64.
-> > > - remove bprm->file NULL check (Matthew)
-> > > - Change filp to file (Matthew)
-> > > - Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
-> > >
-> >
-> > Hello!
-> >
-> > Just wanted to check if there was any feedback/review on the latest
-> > revision?
->
+>>
+>>
+>> On 02/04/2026 19:08, Usama Arif wrote:
+>>> v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
+>>> - Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
+>>>   to HPAGE_PMD_SIZE limited to 2M (Rui)
+>>> - Reviewed-by tags for patch 1 from Kiryl and Jan
+>>> - Remove preferred_exec_order() (Jan)
+>>> - Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
+>>>   otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
+>>>   do_sync_mmap_readahead().
+>>> - Change exec_folio_order() to return 2M (cont-pte size) for 64K base
+>>>   page size for arm64.
+>>> - remove bprm->file NULL check (Matthew)
+>>> - Change filp to file (Matthew)
+>>> - Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
+>>>
+>>
+>> Hello!
+>>
+>> Just wanted to check if there was any feedback/review on the latest
+>> revision?
+> 
 > It's -rc7, this is definitely something for next cycle :)
->
+> 
+
+Yeah no worries! Just wanted to check what people thought about it!
+
 > On my part, my upstream bandwidth has drastically reduced, and review is
 > probably going to have to be a hobbyist thing at least for now.
->
+> 
 > Also, not to be mean but:
->
+> 
 > $ git log -E -i --grep "(Reviewed|Acked)-by: Usama Arif" --oneline | wc -l
 > 21
->
+> 
 > So... :)
->
+> 
 > Review in mm is very lop-sided, let's try to balance it out a bit!
->
-> >
-> > Thanks!
-> >
->
-> Thanks, Lorenzo
+> 
 
-(Note that we're in a 'quiet period' from here until -rc1 of next cycle and
-won't be taking anything new until then. We plan to do this from around rc5 or
-rc6 of each cycle in future).
+Ah yeah actually I have been reviewing a lot over the last few months.
+I dont ack patches that have already been acked-by/reviewed-by maintainers.
+as I am not sure if it adds anything. I never really cared about Reviewed/Acked
+by/patch count but I can start adding tags if it helps in stats.
+
+The reviews I have done over the last week alone:
+https://lore.kernel.org/all/20260408122307.1360475-1-usama.arif@linux.dev/ 
+https://lore.kernel.org/all/20260408123700.1596800-1-usama.arif@linux.dev/ 
+https://lore.kernel.org/all/20260409142256.131676-1-usama.arif@linux.dev/ 
+https://lore.kernel.org/all/20260410114809.3592720-1-usama.arif@linux.dev/ 
+https://lore.kernel.org/all/20260410112433.3248586-1-usama.arif@linux.dev/ 
+https://lore.kernel.org/all/20260331103451.1070175-1-usama.arif@linux.dev/T/#t 
+https://lore.kernel.org/all/20260401152343.3294686-1-usama.arif@linux.dev/ 
+
+
+
+
+
 
