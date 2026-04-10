@@ -4,97 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A685F44850
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E890BF44851
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0878B6B00AA; Fri, 10 Apr 2026 08:19:25 -0400 (EDT)
+	id 58FFA6B0093; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB67C6B00AC; Fri, 10 Apr 2026 08:19:24 -0400 (EDT)
+	id 541686B00AC; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA8D6B00AD; Fri, 10 Apr 2026 08:19:24 -0400 (EDT)
+	id 409006B00AE; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B87816B00AA
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8EDE4B730B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:24 +0000 (UTC)
-X-FDA: 84642551448.02.F316363
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1194640008
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ItHIgZPX;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9F36B0093
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFD28160513
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:27 +0000 (UTC)
+X-FDA: 84642551574.14.99C537D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 34834100003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uunn/bCq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823566; a=rsa-sha256;
+	cv=none;
+	b=DnZGMazAyddjS+0bjedHRVrA+GYI9tiLXNNfCe+hc72I/M0Sf4/T8lnnHsQ3CgGV8ry8pb
+	gBsltRhv5cCqSJD5CWc04vDzge+T3roiGlNLh9uAZb4X4OJtXOhqLP1o/kWo34HsQScOfr
+	rtUHqOSOLIe9FBbwJBBhYgDdqc1/t7g=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uunn/bCq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823562;
+	s=arc-20220608; t=1775823566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xA0gQtLpnpN6dJllUvcccJ/r+mNlQ650rHe5aRjH1/Y=;
-	b=UmwYTcRikBXb0MjH6Y+udu9fx2b5mDgnJ6oEQ2p5htW2cqDkFfeIc0EIT438j+pTv2MYfq
-	tsmdukt8HgBpWi1xKn3ad1hd1TpjpqHTOo+Z/xyU3S9Al8+8fRGn3dJywPMjoc886yVGd6
-	f8/O9X1hiGSpXnGzePTor5n36rLy9qE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ItHIgZPX;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823562; a=rsa-sha256;
-	cv=none;
-	b=N2z5g5+kj7DdydLrPMuhgWKulc0K+MRg7I7qYh4ALhlUKy3NyrL2LSrSbVVGHnfyOZmnMn
-	hsygZUFE91QUKQe9WRsawxVywl5wzMCjAfh3CVu/6nS7D3KCI7hjnmphDaLoHOfYaSssDM
-	fBHnDDGmC3h3k+Ls7sj8GnQ2t5Z/2HI=
-Message-ID: <5f99b289-629c-47c4-bef0-966d6678a2a8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775823558;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xA0gQtLpnpN6dJllUvcccJ/r+mNlQ650rHe5aRjH1/Y=;
-	b=ItHIgZPXvITZaz44MjQUvDrn8+360iGxPQ4SupGVPlQJSXbTrdOrEoo4Y8x9OckfubKKuC
-	WCMKPWu6Y4cbfbIrxy7yYu6g7lZP/gF4pNlezFZTINd4MZl80c4szu9X77x7P2SVip02/X
-	skUbST20k2vhZ6MlLVxYCHvrmnVFaWs=
-Date: Fri, 10 Apr 2026 13:19:08 +0100
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=95Xzu/wrSKdgPqpES5U3P7913oi5C0HtUtRZ8A2JYug=;
+	b=VMyAviYZh6vPu569LV7rAhbmLBOxLc0b3e/HhayA8mn8Uu35BCOUcQ/ctMM6HAHJtyLaXK
+	TynGYqEeHsiNClB2o6zLjuusAa6bq3yxqpeUqheXE5nbI8H9G30n6h0sUutATXN2DhAEG+
+	2Eo260eVhralqlGKqAGFY3g97M8U0Zo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5633E444F1;
+	Fri, 10 Apr 2026 12:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A057C2BCB3;
+	Fri, 10 Apr 2026 12:19:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775823565;
+	bh=tLIpqPCaUi8Lfeqau43+rfn7UZ8vuvPykTPYNUPuuyU=;
+	h=Date:From:To:Subject:References:cc:From;
+	b=uunn/bCqpDYdqH3aqiI0+2U/qm27AeTQwxnXbKYibcvcv2ZEX2J7abPlER3gpmuTw
+	 CBdP5mMh40n2zp7Tno2Q99U//gHXFdOV0IBNQapDNZb3rSYwBD5TySsxa/Td7SLyaZ
+	 p+uL6Iv9jGq9ZtmZnt8i06X/J571L31cWnZuiDLMRsOKbpHdih8iJDMdVxjdr+94oH
+	 +kfrO2pFRZtB2b/jp8TX3WQWaL7ksYC/uaT6tTAybV37imt1fhiAkDjh2EPTnuViku
+	 1P4aDmEJtrdQSxbhtiFRIYbjrzGEHTE4V2Fb8MxeAUFtdhNoavN7essScQIWwWoRqs
+	 j/BFBM5JmmtDw==
+Date: Fri, 10 Apr 2026 14:19:21 +0200
+Message-ID: <20260410120318.320727701@kernel.org>
+User-Agent: quilt/0.68
+From: Thomas Gleixner <tglx@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [patch 11/38] misc: sgi-gru: Remove get_cycles() [ab]use
+References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/4] mm: improve large folio readahead and alignment
- for exec memory
-Content-Language: en-GB
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc,
- jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
- lance.yang@linux.dev, Liam.Howlett@oracle.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, mhocko@suse.com, npache@redhat.com,
- pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org,
- surenb@google.com, vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
- ziy@nvidia.com, hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- leitao@debian.org, kernel-team@meta.com
-References: <20260402181326.3107102-1-usama.arif@linux.dev>
- <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev> <adjkCOiLgZ_-zovg@lucifer>
- <adjllNan2vgBNBHJ@lucifer>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <adjllNan2vgBNBHJ@lucifer>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1194640008
-X-Stat-Signature: srfqn3ccu3668h5ej399sdm8u3gc5fuf
+cc: Arnd Bergmann <arnd@arndb.de>,
+ x86@kernel.org,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ iommu@lists.linux.dev,
+ Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org,
+ Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org,
+ David Woodhouse <dwmw2@infradead.org>,
+ Bernie Thompson <bernie@plugable.com>,
+ linux-fbdev@vger.kernel.org,
+ "Theodore Tso" <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>,
+ kasan-dev@googlegroups.com,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Thomas Sailer <t.sailer@alumni.ethz.ch>,
+ linux-hams@vger.kernel.org,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ loongarch@lists.linux.dev,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-m68k@lists.linux-m68k.org,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org,
+ Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ sparclinux@vger.kernel.org
+X-Stat-Signature: 78a69suss88i67jfgypoqyu1z95y6na7
+X-Rspamd-Queue-Id: 34834100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775823560-272888
-X-HE-Meta: U2FsdGVkX1+FDCJsoUksNAiXzXmqfVilqNaGrzxgeUaX135CBgqMXYEeLlBVtbkxEl185DGrz+JzNMx9MY0Q5TuSze94khMNuKYNcNWAdZvDAI9F8U1DcF1m0f5Hx0PUwlnJh71DtouCyUwTu9xLp6eKl3YMlMyhIO08JjuWS2gPvXGbUTdIPcriCMq4Dz6oUynaj37JlXRoehD+qgw2eIALIrkAk/0/I5poce/sOAd4BvGQaUStzTFz+L9yNy08st2ddU+Lo6/2a+eQR6ax1v1Gzn60nvqGdU3DVQ04wZjV7BR4QMetfN9Cvo6daw+H6ViobDovxvb6lPAccCNj4oEGU1vikLOLyXSB+cOugdpBKie1aqsOXeIB18A1RCpU2P4VArl+8DyAyZcOCobKLk2GlXsX7ki+IkVqgeGlYqYDQ7oGXXZZXrpD+ybCu+60F/VpnL7ESTJFJt5S0wk9abD66OFVtcc9wXbwvRVmzlxOCln5BBkriYs5iMbHiyrIVvdFtp2CU8bCTSNMuj4WDnBLg1erZHhXGPlvInyfZNpgbj6ljuc76XHAidOndnwhK5JywBHxky02LW2JpR+brtjB5qOAWQhRJvk8yeBhY4ordXHs5IphzLHcTe9lQP1iMed1QaazRJ1Nfc1D1u74XZ2S/pUMVamxGv0mA9Vk4PqrArSIZKaFZlvsxBAgNXqo2DTEnOTySTbiRcFWctG9HmCIZE3/nLjGnP6w9+m5Jc4cikm8WF3GJ2rJyvE9zkSlf0WjGClPDbU+rSBfTGA9/6t+JkJUI9OuZrPzXbvCB9zay1g1KLxqacAEDZgNTGxHsynUsTLnzB3xVFwqYauoopLbAxz0CmpGvklmfk/rFXXbd4Rk/k9eHBoD0DuxWM+A/QQ2rkOC7qLCDs17nXjVPWql1k052JNrkgaaGyHKjLXhz3xT4bFYgM+lS/Yd6z0sZTKRw9YPSg0AJwyXYwX
- sP4Xp9kf
- bSBu6MrvTOym3SgP5K3zhvBGnK1CLJMZLKH/0akjWm7u0S686JD91RPgMqV5bqA/IZ45pd/7Vt+Wfq+ykACpZPGfUzUkbSuZBHpqBfSCNkHLygdHW8rwubnr/A0ov8xtHEqYVrXiMn5apqg50fJa6PUJc7qdJLXdcD+i1Ptmlf1mA0+pSKom0qiH/K2LnjsImiDe6KzSW9ZMoPZURr7d41wAMCWytdCfIlL8zZEdGZe+x83c=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775823565-757958
+X-HE-Meta: U2FsdGVkX189WmBvLHr+a0XEriK+8sAu4qvQErgsNozkBic1hQ1yegUthezqnfLH/Wl97KeDuW737yX3trAo5PM3YMxXD5boYQyvSNQ86A3jFzLLkcSsxNyqGWACauewYk5TteX3QZA7gF8mjT5T9WRw28CVdgKVL11lty6u5PAzQinIxAC3C9lex7T9zTLhZNXMx9vbShUkbfuFdNlg9pcgLPPiCSzgMWt+PRogSW3/akM73pqD588eaNxZPYPXXCo8YBwYeYwoSp+SdMAFpz7XYpWrnVzuFgbMKX8HM+GXvKzpFaPRCMpt3p53cl3wM091vjJw8/JR4gAGKO/Eao6C7AcxfoYQ5xQFVT+REEF53puHx14PKu1aTXSyYFZ7xKt6NVl+DRS8IUzqJIzSzZnc/7j+gfcfVI8YdKg0IRneeHinI7lDm2LzYe6WFk/JMriLgrR3RqHdRlIarJo+1qQRWwHyT9WlaZ88hDrIc0sENzXnSWv6flIYDoxVN20R5+U5Fq8Ddz0zohRqS00p3EJYkOIaQhxTxlimxOlfO6FX42z/fJNysQe5H2JRMrz5Ucn33LavqVQ3u7gTurCWFl5cv+O2j+MVYiqOHOXsaPYEYLrAelu9qoSfZDJMsdAu1qt41php13imPYZ7WbN6kzl/omF1BWDaKXD0Ek9EFfsy0eK9cJf150mRwxgsloN/pmXJWp+wiU1tuc349fpZCvXOOYuoAfLqTJr7ULxRoK2LaYbeGMHWQsOIdGdi3YposQntptELa1X7jEsUtxxvMaDevfMs/6AHQRntmTh0wUlb9BmfjhxqwRILyoaJF84H0nvqKcXOT/wAgMPoJBqaYj+vPD5yeGZw2NznH9KjkPTZsiNC3TYGLiqdXcoBhtCVfDPteYak6im0v16BF/ZHFTB/6Cg1zFVhnzaoaj3cqjJF4uW6hclKco+Tf+EmgzrhUtFHqX+SARNg4Gp+D89
+ O/9cAIHz
+ gaKdkSFwB9fe96ss/f1PeQifykBS335uQfTiHBoeZBUUPUVVm9QqSttPxzGbwlVvvSBXQFL/tRzar9agx5nWRFiFXjU4SayeyoMSMMEbL02/Sn/0uyEzqscXn9WTHQptk58+zTdaAx0Kxqohh0Gqye8POLEwqFbeHafNRt9V85+v6Tb/pRnhdjkjjVCW96JgQe2xgsQqhCNVjpfzsHz77hs5x7ej3WTlGoxlCxMAgoGT5v9wuWh27dbHfmi8eHq9SyH823vfQ8dV3GSY29rtiIQwWcY8VYvhhE1BHX0XXyljzRqj8kBFum3068/vu3a+ziOTHxuU2PelWPdJNsblioM0k4E/nWMYt1FPZVyBqLLaovYBUIjxD2AgPPKiGoioVKybyO3UVzRIufG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,61 +134,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Calculating a timeout from get_cycles() is a historical leftover without
+any functional requirement.
 
+Use ktime_get() instead.
 
-On 10/04/2026 12:57, Lorenzo Stoakes wrote:
-> On Fri, Apr 10, 2026 at 12:55:42PM +0100, Lorenzo Stoakes wrote:
->> On Fri, Apr 10, 2026 at 12:03:03PM +0100, Usama Arif wrote:
->>>
->>>
->>> On 02/04/2026 19:08, Usama Arif wrote:
->>>> v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
->>>> - Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
->>>>   to HPAGE_PMD_SIZE limited to 2M (Rui)
->>>> - Reviewed-by tags for patch 1 from Kiryl and Jan
->>>> - Remove preferred_exec_order() (Jan)
->>>> - Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
->>>>   otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
->>>>   do_sync_mmap_readahead().
->>>> - Change exec_folio_order() to return 2M (cont-pte size) for 64K base
->>>>   page size for arm64.
->>>> - remove bprm->file NULL check (Matthew)
->>>> - Change filp to file (Matthew)
->>>> - Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
->>>>
->>>
->>> Hello!
->>>
->>> Just wanted to check if there was any feedback/review on the latest
->>> revision?
->>
->> It's -rc7, this is definitely something for next cycle :)
->>
->> On my part, my upstream bandwidth has drastically reduced, and review is
->> probably going to have to be a hobbyist thing at least for now.
->>
->> Also, not to be mean but:
->>
->> $ git log -E -i --grep "(Reviewed|Acked)-by: Usama Arif" --oneline | wc -l
->> 21
->>
->> So... :)
->>
->> Review in mm is very lop-sided, let's try to balance it out a bit!
->>
->>>
->>> Thanks!
->>>
->>
->> Thanks, Lorenzo
-> 
-> (Note that we're in a 'quiet period' from here until -rc1 of next cycle and
-> won't be taking anything new until then. We plan to do this from around rc5 or
-> rc6 of each cycle in future).
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+---
+ drivers/misc/sgi-gru/gruhandles.c   |   20 ++++++++------------
+ drivers/misc/sgi-gru/grukservices.c |    3 ++-
+ drivers/misc/sgi-gru/grutlbpurge.c  |    5 ++---
+ 3 files changed, 12 insertions(+), 16 deletions(-)
 
-Thanks! Just wanted to check, as I am always confused about this. Is it ok
-to send patches for review for next release at this time? So that they
-are in a good state when rc1 comes. I wanted to send PMD swap entries
-for review after I am finished testing, but I want them for review for
-next release.
+--- a/drivers/misc/sgi-gru/gruhandles.c
++++ b/drivers/misc/sgi-gru/gruhandles.c
+@@ -6,26 +6,22 @@
+  */
+ 
+ #include <linux/kernel.h>
++#include <linux/timekeeping.h>
+ #include "gru.h"
+ #include "grulib.h"
+ #include "grutables.h"
+ 
+-/* 10 sec */
+ #include <linux/sync_core.h>
+-#include <asm/tsc.h>
+-#define GRU_OPERATION_TIMEOUT	((cycles_t) tsc_khz*10*1000)
+-#define CLKS2NSEC(c)		((c) * 1000000 / tsc_khz)
++
++#define GRU_OPERATION_TIMEOUT_NSEC	(((ktime_t)10 * NSEC_PER_SEC))
+ 
+ /* Extract the status field from a kernel handle */
+ #define GET_MSEG_HANDLE_STATUS(h)	(((*(unsigned long *)(h)) >> 16) & 3)
+ 
+ struct mcs_op_statistic mcs_op_statistics[mcsop_last];
+ 
+-static void update_mcs_stats(enum mcs_op op, unsigned long clks)
++static void update_mcs_stats(enum mcs_op op, unsigned long nsec)
+ {
+-	unsigned long nsec;
+-
+-	nsec = CLKS2NSEC(clks);
+ 	atomic_long_inc(&mcs_op_statistics[op].count);
+ 	atomic_long_add(nsec, &mcs_op_statistics[op].total);
+ 	if (mcs_op_statistics[op].max < nsec)
+@@ -58,21 +54,21 @@ static void report_instruction_timeout(v
+ 
+ static int wait_instruction_complete(void *h, enum mcs_op opc)
+ {
++	ktime_t start_time = ktime_get();
+ 	int status;
+-	unsigned long start_time = get_cycles();
+ 
+ 	while (1) {
+ 		cpu_relax();
+ 		status = GET_MSEG_HANDLE_STATUS(h);
+ 		if (status != CCHSTATUS_ACTIVE)
+ 			break;
+-		if (GRU_OPERATION_TIMEOUT < (get_cycles() - start_time)) {
++		if (GRU_OP_TIMEOUT_NSEC < (ktime_get() - start_time)) {
+ 			report_instruction_timeout(h);
+-			start_time = get_cycles();
++			start_time = ktime_get();
+ 		}
+ 	}
+ 	if (gru_options & OPT_STATS)
+-		update_mcs_stats(opc, get_cycles() - start_time);
++		update_mcs_stats(opc, (unsigned long)(ktime_get() - start_time));
+ 	return status;
+ }
+ 
+--- a/drivers/misc/sgi-gru/grukservices.c
++++ b/drivers/misc/sgi-gru/grukservices.c
+@@ -20,6 +20,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
++#include <linux/random.h>
+ #include <asm/io_apic.h>
+ #include "gru.h"
+ #include "grulib.h"
+@@ -1106,7 +1107,7 @@ static int quicktest3(unsigned long arg)
+ 	int ret = 0;
+ 
+ 	memset(buf2, 0, sizeof(buf2));
+-	memset(buf1, get_cycles() & 255, sizeof(buf1));
++	memset(buf1, get_random_u32() & 255, sizeof(buf1));
+ 	gru_copy_gpa(uv_gpa(buf2), uv_gpa(buf1), BUFSIZE);
+ 	if (memcmp(buf1, buf2, BUFSIZE)) {
+ 		printk(KERN_DEBUG "GRU:%d quicktest3 error\n", smp_processor_id());
+--- a/drivers/misc/sgi-gru/grutlbpurge.c
++++ b/drivers/misc/sgi-gru/grutlbpurge.c
+@@ -22,13 +22,12 @@
+ #include <linux/delay.h>
+ #include <linux/timex.h>
+ #include <linux/srcu.h>
++#include <linux/random.h>
+ #include <asm/processor.h>
+ #include "gru.h"
+ #include "grutables.h"
+ #include <asm/uv/uv_hub.h>
+ 
+-#define gru_random()	get_cycles()
+-
+ /* ---------------------------------- TLB Invalidation functions --------
+  * get_tgh_handle
+  *
+@@ -49,7 +48,7 @@ static inline int get_off_blade_tgh(stru
+ 	int n;
+ 
+ 	n = GRU_NUM_TGH - gru->gs_tgh_first_remote;
+-	n = gru_random() % n;
++	n = get_random_u32() % n;
+ 	n += gru->gs_tgh_first_remote;
+ 	return n;
+ }
+
 
