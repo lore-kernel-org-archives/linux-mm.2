@@ -4,71 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F21E6F44847
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:18:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2F38F44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:18:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B596B0095; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
+	id 1BE576B0098; Fri, 10 Apr 2026 08:18:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5286B0096; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
+	id 16FE46B0099; Fri, 10 Apr 2026 08:18:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3BC6B0098; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
+	id 05DED6B009B; Fri, 10 Apr 2026 08:18:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A7F96B0095
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:18:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 04E2F1B81A0
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:38 +0000 (UTC)
-X-FDA: 84642549558.08.B2A3352
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 589701C0007
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PujwWQLA;
-	spf=pass (imf21.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E49F86B0098
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:18:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B5131A0532
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:43 +0000 (UTC)
+X-FDA: 84642549726.17.3B58206
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E8A0AC000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:18:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nWtTU/8b";
+	spf=pass (imf28.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823517;
+	s=arc-20220608; t=1775823521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=PgIshXZYXEu09ocWBqnvQyyErdcYu8PrYSZGXlwB4Zw=;
-	b=xroLv7XMW2hqFxvMLIfcVFRl/gyanCfK6qbEhHd2KFvqFTy7nQlRs6mo0qLQdhNARKQ0Bu
-	f5jKCLDMeVPtLBQXQVu/b9aalsP5gMlHbySJ25ePgx828+Tl7YkDbfbZ5zfpXyzX5ujEsD
-	TXtbzWYUXw6OMOUWSTAMxOxYtCrwBEo=
+	bh=1svmJ9bLZm6y7AkRgd4KZ3wMzChgI+aIwiw2S8Q7kUs=;
+	b=FNdPWh6C+fCDPe6KcogSKD783ol843wkHfAjl3WF425SYKSVYX/hi6vVVjsoHAUtuSBa0j
+	/Xvh+uULzCvy1EG+TWc/CoWdJY9Kv/8I/KN/v0SupSvW05vRUbaUCUierqdshWJosss+Cg
+	rfE2RfOJ5minpx0MhiYx5YecXx/n8/Q=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PujwWQLA;
-	spf=pass (imf21.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nWtTU/8b";
+	spf=pass (imf28.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823517; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823521; a=rsa-sha256;
 	cv=none;
-	b=3vfxq64AgGIIVLkxAXgIRfLWMjrJlQFskX7U0NFgPd38r/Jv9Jcj0Zp4ndBfX0klu0BFNO
-	+sBetUBnkHd+wfTHbemrzpDHF+lHr038TcidGxcoLQxexaKd1OTguc676B/FjClUfVjxS5
-	2wa7UtK4EK/kUHSLj9Vph0q1DeKEKhs=
+	b=FXBvek4ijrzHTlvH/AcrhnMqnn7Sauhut3hzAse0Q6eYYFLP2hQ8IBr/X/EFtP82Bx/F0w
+	0KpsIzS9wjnQxecpbookSUl17rluWkW0XFVSU0jSgQz66T05U2KNYXHpvm72l8To2Fywot
+	GTDPGrYteEPjt+gPfnXxZ480iJ/PgoU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 099C341A7C;
-	Fri, 10 Apr 2026 12:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF48C2BC87;
-	Fri, 10 Apr 2026 12:18:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 60F576111B;
+	Fri, 10 Apr 2026 12:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34709C2BC87;
+	Fri, 10 Apr 2026 12:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823515;
-	bh=Qxe5s7KoLSq5kG1N2smycXiRWybB8taeJTlNsbfy0fg=;
-	h=Date:From:To:Cc:Subject:References:From;
-	b=PujwWQLA2dOIyLlZvIM0oB1Wg7c5ZIyCwzH/XHGNRGehg+YFil6OmFstHyfDwz6a4
-	 UXi7viGoUKPW4HP65M0H75qRplTYAji9Z6ikhUQOkcZXvM13Netjmq5O6I/+9+JQ+w
-	 bxUrL+dmChTEREYE3VSmYBwXmygVivr7jmb4e0itrCIHXq31ae3WiG49uZ0Z2PTGdc
-	 +od1M1yaD34oi/oFSPoyZ73JAQOxw0kf9oLJ4YVR9wqn75mlEWMpZuBIxST6yrXcHs
-	 fYRNY0LFjGxQtZU4+RTQobyzbJWEzJNsARBCqXSJyY40dbr06WXMHmkuYa6yNGx2XV
-	 5kZ5/s9dunCZA==
-Date: Fri, 10 Apr 2026 14:18:32 +0200
-Message-ID: <20260410120317.642797961@kernel.org>
+	s=k20201202; t=1775823521;
+	bh=jM+JreNQ/pvWEKCuy6rQc5u1kgCA5N5UN7yUgNovu14=;
+	h=Date:From:To:Subject:References:cc:From;
+	b=nWtTU/8bYflAI0sVDZCcTSRoMHHBafK4f8aE8OQUIADFXrWn3gkAS6D8iyeDcGytD
+	 IkAJ7wfDdphIDTv0/p2VgJLmG6txpPJj7VHjB28F0wfKCyzE07p6hHvScSQ/hPg40n
+	 m5UonCXCWoABi9Y1P5pL07/VfBtvxj5IX/qtz/8nDDpNNssj+hm09ux1rli9d/5Kp7
+	 u2W39VabHnp7xFO01m/Vf4vbZzsQaYVQbm/v4/bBGJXSthxziJGUNQp6cLMMBeBrVY
+	 Rxdzr0TBEmAzR1XxM10SdBatX0CJ8cwLuQKU2F/sGImGk9kogedHCPTsKBS8t/RjVc
+	 cuRhduaM+Iuqw==
+Date: Fri, 10 Apr 2026 14:18:37 +0200
+Message-ID: <20260410120317.709923681@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
+Subject: [patch 02/38] x86: Cleanup include recursion hell
+References: <20260410120044.031381086@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+cc: Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
@@ -115,18 +119,14 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 01/38] percpu: Sanitize __percpu_qual include hell
-References: <20260410120044.031381086@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: E8A0AC000A
+X-Stat-Signature: tp6wtop4nqpi7zyfgkjtn5w86abm7ubo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 589701C0007
-X-Stat-Signature: 3doyomd6kaw6guhhoxcko5brewmar5ri
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775823517-706946
-X-HE-Meta: U2FsdGVkX1/Xbbl0fsWnOX62OTiozofHtp9Wee9jNDGzwdg6VeLhFj5CPyfYtaepkcwkg1GSyzn7vmbn4wDOByWze81JS0D0kUEMr0PtFBf0EFRnD0n9iSwENeQaw6P+26hf+XFLpq8fk7uEClGSAIz0pvru2VQe+CB12a3zsyhB+/DLXFB4LaihxBSzDpdoMAwR+JxaQiJA/nnUFpgfySkbJq8Fk/ctkq8Go4MoZPDgK9jrt2859+bH5JzqxqF75+NCX3f2cMRlnHMk6nwTbELOjQ1573Mb8mL0pOzJpxp7qQeR86GIra+p+uX7XG7/KJzrmCV4LSeme6HiggV2aFqm0Sqce2jgoanWukrN1CyqohE0Ag1HfZrXp7tDWUA6ZplZJpqwLGU3KIeoTaEas30aBlCRNp+S+KEkptFNjZxX3jRe3bwSGm9cXfYaGawcLe5xuK0whtJF/Rh3bGelnjBRKfxbz1fY0IzMU9LpIgjDMVHHUHWSqSIt1IqDbXYIMU27qy11gy3E75+JFaZkLbIpRZtCQWzBmjNp3GSZZn17ZnY3Xq/lG80EKqGZuH+WYsZDuH+afJvqxzW9VJ360vimuYZrVhqsggMuihMmETt3K6Cur51LvfsHa7uXj1I4jIKIKgsB4A95G4epMhumatSCoFsxi74EdQKrQcsPqrnsdzpYvqxUmuPcIocOWtH23OEMkbkvsPAMe9focan9Cu8elLEwEmbvY2ZlruRkHCwZtPVSepp8xC7yyDhU3IIs8eN3UVTJ8wWrBTXSvuXnedZQdPF7wdyhUBAFD5VOqdSBpxQa6O4pcjCuFOFNfQ8ThwJtUb5wozUVU8qwbSlQHz90z84tpz6V0sareSPLavymOtp0E8yZjsQABYiuygFkBTZWTmXPprRweDyCvRQ02EDukyUw+Urmhlp5I472eDrU5RXO7p8eaSwFly85SE/ol3TmguJQxYNrSQAiwvs
- Fola4+qU
- Iek6TbR44phSEwW7cvli8m4sBh1qgOiQbVwE/E3gGvuA/u+k2aTV6x5kcU/jvPpHzLMELskbtFteBV5DMXE207Vcj+U1tUXfCy7EEJw7TRiUvCHGi8gfsfcIcJ1o/MhjhldBhoZUntfw58998k6fqCY+hyVTadCfRiWT1GEm99eWQX5nMosf84C0RcaXk3R2C/KmfxZpw8ATphWABHWwGUGYyyc/kjCSWfxZAfGAOXM8aNzAMIOC5I/3LdGP/gy1dkg0LvOGXwu9jO1d51flwxz+ql65gTcy5II5J8nXrp0u/06dK8UMIFi7joZ28+ZLXd21BML9p26nQICL26bfFDR2COARUB7VK6to6DPq6JVyG98w=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775823521-236519
+X-HE-Meta: U2FsdGVkX1+0xLB3vUFH73fphDTAENfPpTT9HWGx6+o5peXnwzh8WF5k3LSDMJ0+3xn7nGKjQJ6q3qJfymoL9gbOYVEMnJ59OoicQTHAHGIguDK1lYJB6DLrlCU7TQwjVTOEmQWzSThXlfF1MyOB7QFdEiwn2du5MEpqZ9oSioKJThzhxzJ5IVZfa1IMbJcaqDuD3xkQ7wIxEWjXTi5JUEAjGo9t8Pq038XqYyOFjg/OoFHfTVwurFJErSiT8f8wUCb0ttqmaP709bWtglVDHZB22j9VB/sfEszCXiSd1Fxt+ILePw1xTQdV0xfpBfP2r1Pc/6j9Mc9yU3iMme+TCL5/YH1rCBJurDQcpGPdZy9YhVNfN1WRoRiOk4mUaHIGhwNVzWTtPEobwwJgvJuPsihWQAZz1DdRRZsqnQhw3iaqpPMa6gWiZAGQ2c6WLMfa7S+gkrlZDHp45RaLB5Na+sVaS2O5rdfMlorm1cyVuCu21N3n+sAC6af/KnrSO0Uy+Wuc+Edpla8u2tCBH5lah+mNTM0ZkMuqgXypCfSov3pa03F52NbXp3qVhnvvHWOGHQkIX0HKou+Fm6Ae2HBybw0moMJ6xXDidmaIv7XhVJ+r7lB3qDERToJB1Z0QcI61QaeNLGvjxjur/xQZ9essf5DhqtZVMY33ghxJ0FsqfqYNFWJbqtWXIqVuRU2B3rkDwzyX8pORKsHVGlCUlYyIOlSk5gTkvX52UTQYGWGLcUyz2/xdb5H3mofiWXjnbu9Sy+jvXDDdkAPwLLLL7XGTkgIsUay/zckfHzTQc3xJiDon3ZVC1tWF/XWVsY8iIWRDRzTPTFw0Q2OX0NCnNlWRyQ9mVtU/H23o+g/dUlHSUY0CICMjE7Y4iwqmYCHnuvkwQix8pX4QgsINhXMuCs5P2JCKDXwYeZBVaOpBhJ0zhuRD+RWhZGg7/Z3hVE+l8L8VBtywHs6dlcKa36xZfaX
+ NMmlr+pD
+ IS/GsNw3TYm6rU3uG39SZF0JDrlbshVF2k1ZVo0zVdf9Yw9HuL/4RUUQ9IoJZNOPjHvMialWpVRbKx0x6GMUg4lCCw5zJTrw5NGpsSVn+Ooo5/TBpEwGpakFVGioJ3OKsDwjEw7Tk7ZN3zie3fEByxe1rBAQJ+7zxHLBm2m2N306ONbNajqvhRWr7iR4C8llAE5w9FaanAzpXA+JhmYZvGdwAbg9RfOEbj5Vq2o+QQG7wNmz7UjyQJy3Z1RjaZ9y6nOWHBWux+TekyLfKaT2W2CAppPNy/yL9mCTslz407BLkB/OxqzDCu7OjqCviPKNljZ+8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,123 +134,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Slapping __percpu_qual into the next available header is sloppy at best.
+Including a random architecture specific header which requires global
+headers just to avoid including that header at the two usage sites is
+really beyond lazy and tasteless. Including global headers just to get the
+__percpu macro from linux/compiler_types.h falls into the same category.
 
-It's required by __percpu which is defined in compiler_types.h and that is
-meant to be included without requiring a boatload of other headers so that
-a struct or function declaration can contain a __percpu qualifier w/o
-further prerequisites.
+Remove the linux/percpu.h and asm/cpumask.h includes from msr.h and smp.h
+and fix the resulting fallout by a simple forward struct declaration and by
+including the x86 specific asm/cpumask.h header where it is actually
+required.
 
-This implicit dependency on linux/percpu.h makes that impossible and causes
-a major problem when trying to seperate headers.
-
-Create asm/percpu_types.h and move it there. Include that from
-compiler_types.h and the whole recursion problem goes away.
-
-Signed-off-by: Thomas Gleixner <tglx@kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 ---
- arch/x86/include/asm/percpu.h       |    5 -----
- arch/x86/include/asm/percpu_types.h |   17 +++++++++++++++++
- include/asm-generic/Kbuild          |    1 +
- include/asm-generic/percpu_types.h  |   20 ++++++++++++++++++++
- include/linux/compiler_types.h      |    1 +
- 5 files changed, 39 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/msr.h               |    5 +++--
+ arch/x86/include/asm/pvclock.h           |    1 +
+ arch/x86/include/asm/smp.h               |    2 --
+ arch/x86/include/asm/vdso/gettimeofday.h |    5 ++---
+ arch/x86/kernel/cpu/mce/core.c           |    1 +
+ arch/x86/kernel/nmi.c                    |    1 +
+ arch/x86/kernel/smpboot.c                |    1 +
+ 7 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -40,12 +40,10 @@
- #endif
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -8,12 +8,11 @@
  
- #define __percpu_prefix
--#define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
+ #include <asm/asm.h>
+ #include <asm/errno.h>
+-#include <asm/cpumask.h>
+ #include <uapi/asm/msr.h>
+ #include <asm/shared/msr.h>
  
- #else /* !CONFIG_CC_HAS_NAMED_AS: */
++#include <linux/compiler_types.h>
+ #include <linux/types.h>
+-#include <linux/percpu.h>
  
- #define __percpu_prefix		__force_percpu_prefix
--#define __percpu_seg_override
+ struct msr_info {
+ 	u32			msr_no;
+@@ -256,6 +255,8 @@ int msr_set_bit(u32 msr, u8 bit);
+ int msr_clear_bit(u32 msr, u8 bit);
  
- #endif /* CONFIG_CC_HAS_NAMED_AS */
+ #ifdef CONFIG_SMP
++struct cpumask;
++
+ int rdmsr_on_cpu(unsigned int cpu, u32 msr_no, u32 *l, u32 *h);
+ int wrmsr_on_cpu(unsigned int cpu, u32 msr_no, u32 l, u32 h);
+ int rdmsrq_on_cpu(unsigned int cpu, u32 msr_no, u64 *q);
+--- a/arch/x86/include/asm/pvclock.h
++++ b/arch/x86/include/asm/pvclock.h
+@@ -2,6 +2,7 @@
+ #ifndef _ASM_X86_PVCLOCK_H
+ #define _ASM_X86_PVCLOCK_H
  
-@@ -82,7 +80,6 @@
++#include <asm/barrier.h>
+ #include <asm/clocksource.h>
+ #include <asm/pvclock-abi.h>
  
- #define __force_percpu_prefix
- #define __percpu_prefix
--#define __percpu_seg_override
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -5,8 +5,6 @@
+ #include <linux/cpumask.h>
+ #include <linux/thread_info.h>
  
- #define PER_CPU_VAR(var)	(var)__percpu_rel
- 
-@@ -92,8 +89,6 @@
- # define __my_cpu_type(var)	typeof(var)
- # define __my_cpu_ptr(ptr)	(ptr)
- # define __my_cpu_var(var)	(var)
+-#include <asm/cpumask.h>
 -
--# define __percpu_qual		__percpu_seg_override
- #else
- # define __my_cpu_type(var)	typeof(var) __percpu_seg_override
- # define __my_cpu_ptr(ptr)	(__my_cpu_type(*(ptr))*)(__force uintptr_t)(ptr)
---- /dev/null
-+++ b/arch/x86/include/asm/percpu_types.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_PERCPU_TYPES_H
-+#define _ASM_X86_PERCPU_TYPES_H
-+
-+#if defined(CONFIG_SMP) && defined(CONFIG_CC_HAS_NAMED_AS)
-+#define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
-+#else /* !CONFIG_CC_HAS_NAMED_AS: */
-+#define __percpu_seg_override
-+#endif
-+
-+#if defined(CONFIG_USE_X86_SEG_SUPPORT) && defined(USE_TYPEOF_UNQUAL)
-+#define __percpu_qual		__percpu_seg_override
-+#endif
-+
-+#include <asm-generic/percpu_types.h>
-+
-+#endif
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -44,6 +44,7 @@ mandatory-y += module.lds.h
- mandatory-y += msi.h
- mandatory-y += pci.h
- mandatory-y += percpu.h
-+mandatory-y += percpu_types.h
- mandatory-y += pgalloc.h
- mandatory-y += preempt.h
- mandatory-y += rqspinlock.h
---- /dev/null
-+++ b/include/asm-generic/percpu_types.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_GENERIC_PERCPU_TYPES_H_
-+#define _ASM_GENERIC_PERCPU_TYPES_H_
-+
-+#ifndef __ASSEMBLER__
-+/*
-+ * __percpu_qual is the qualifier for the percpu named address space.
-+ *
-+ * Most arches use generic named address space for percpu variables but
-+ * some arches define percpu variables in different named address space
-+ * (on the x86 arch, percpu variable may be declared as being relative
-+ * to the %fs or %gs segments using __seg_fs or __seg_gs named address
-+ * space qualifier).
-+ */
-+#ifndef __percpu_qual
-+# define __percpu_qual
-+#endif
-+
-+#endif /* __ASSEMBLER__ */
-+#endif /* _ASM_GENERIC_PERCPU_TYPES_H_ */
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -41,6 +41,7 @@
- # define BTF_TYPE_TAG(value) /* nothing */
- #endif
+ DECLARE_PER_CPU_CACHE_HOT(int, cpu_number);
  
-+#include <asm/percpu_types.h>
- #include <linux/compiler-context-analysis.h>
+ DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_sibling_map);
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -11,13 +11,12 @@
+ #define __ASM_VDSO_GETTIMEOFDAY_H
  
- /* sparse defines __CHECKER__; see Documentation/dev-tools/sparse.rst */
+ #ifndef __ASSEMBLER__
+-
++#include <clocksource/hyperv_timer.h>
+ #include <uapi/linux/time.h>
++
+ #include <asm/vgtod.h>
+ #include <asm/unistd.h>
+-#include <asm/msr.h>
+ #include <asm/pvclock.h>
+-#include <clocksource/hyperv_timer.h>
+ #include <asm/vdso/sys_call.h>
+ 
+ #define VDSO_HAS_TIME 1
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -48,6 +48,7 @@
+ #include <linux/vmcore_info.h>
+ 
+ #include <asm/fred.h>
++#include <asm/cpumask.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/processor.h>
+ #include <asm/traps.h>
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -26,6 +26,7 @@
+ #include <linux/sched/clock.h>
+ #include <linux/kvm_types.h>
+ 
++#include <asm/cpumask.h>
+ #include <asm/cpu_entry_area.h>
+ #include <asm/traps.h>
+ #include <asm/mach_traps.h>
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -70,6 +70,7 @@
+ #include <asm/irq.h>
+ #include <asm/realmode.h>
+ #include <asm/cpu.h>
++#include <asm/cpumask.h>
+ #include <asm/numa.h>
+ #include <asm/tlbflush.h>
+ #include <asm/mtrr.h>
 
 
