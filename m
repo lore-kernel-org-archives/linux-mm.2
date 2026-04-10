@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DCE9F4485A
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:40:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C23F4486A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:44:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C25006B00B2; Fri, 10 Apr 2026 09:40:27 -0400 (EDT)
+	id DB03E6B00AD; Fri, 10 Apr 2026 09:44:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD42E6B00B4; Fri, 10 Apr 2026 09:40:27 -0400 (EDT)
+	id D3A186B00AF; Fri, 10 Apr 2026 09:44:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B11A86B00B6; Fri, 10 Apr 2026 09:40:27 -0400 (EDT)
+	id C29106B00B6; Fri, 10 Apr 2026 09:44:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1D756B00B2
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:40:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 435AB1A058F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:40:27 +0000 (UTC)
-X-FDA: 84642755694.25.BE01FAF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD34D6B00AD
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:44:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4013114057A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:44:57 +0000 (UTC)
+X-FDA: 84642767034.16.8F699A6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 693D1A0018
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:40:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UHSTE6IM;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 76AB01C0002
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:44:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q7q5/Ot/";
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775828425; a=rsa-sha256;
-	cv=none;
-	b=4D1UY51qxKwnUw27Li13Hp2iN+qA+1mOjklPo5GxQHUjuR+g0OsOVnxkCQKWLvdMxHIkkA
-	tGy37bvHb59uWKQXIlZ4yffZaMpeSsn+D25+76unfRshZarSzrxiVeW9CBAsVBayxa+thj
-	eNeN0PCfIxzx33s7gP4VmP8c/FVk4pA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775828425;
+	s=arc-20220608; t=1775828695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MuYd7Z8THuy690SL3pmRgp4/G50oaqRuO3RfkIq5o9Q=;
-	b=QW4Ue6W4XjXnPl+1C8YWio3XbddrSH+Dkq9NlLG4t/Cjnpvj/mD9f6eCVQtSoW0mtTD28n
-	IXlHqa5e7+oeWIjEGIFMl8T8ECNbgcy3mEfEBWNZLgpCSwWOyvMGgxF0iCxUveDFbWkYhX
-	dlpbdD7Pa03H0IZuF3Tp/NH0FDBApDc=
+	bh=5B1rJA8qnxpXqxo2SeDhUCIere9ed16bp2lTq6SLHyE=;
+	b=G9coK16bCYn6+c5SaLwC1454AMmmpZzijHcKEJRudqoQUNE47TCYRswYo61qZI9rKjURU5
+	ybYIX0/SFB5cfnQaY+qU75MNLg9CBpxH1Qk8gT62vD2khVYPuPggS+8SUUpNJksKIkmEvK
+	uxc47SKcoLLHJoOz/qUOK1sTa+zg/D0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UHSTE6IM;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q7q5/Ot/";
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775828695; a=rsa-sha256;
+	cv=none;
+	b=Q8FtqXoX/IIGUtv1Hy6OHSyysK/56u90JLhnu6VxwHgUTQMsI/imjFAupoMk7K581atRs7
+	lBZK3cavKN4JUaUPludyfn0d+sxWHilKDujMahvBjsMTEa7RDB30pnt1x65j7pkZ0IPtiK
+	UGQBBSMFNNS+ovSaueAqMSRZwLeFBv8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5BE6C40020;
-	Fri, 10 Apr 2026 13:40:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AB4C19421;
-	Fri, 10 Apr 2026 13:40:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BD7E43B03;
+	Fri, 10 Apr 2026 13:44:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7E5C19421;
+	Fri, 10 Apr 2026 13:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775828424;
-	bh=Jmq4huoKFN3asEcsgm2oAg98uUDJCLdndkFfOq1NdGM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UHSTE6IMVQDomDbCGIFhYASkfTGfr6oz0VYFpZEq3J1oQsGPQ537Iv+Sl8WUzLKsC
-	 rkvyLW6o45EQPOXK8FeQZgcGTedLsnwXEhBIht0mPGhQMsLWePBoMcR+wPPEb9d073
-	 uD2LYNWGvCaKObN1+A3zma6BHBSvpWcePvmyraAu1PqQbZDoVpQHAynmy0yU4SlzHP
-	 Jj5wBfR7j3UbhO4lrD+IiuPDHa+rvfMUeiuiwtTwcD7KVn+lFaXG8bJkdWLW8OfJiD
-	 i21JoqNUv4HgRNMTYTrYQZdNraep8pIHCx4EU1WOLENsfGUCE+B44BuDSuJ6jrBKOa
-	 SHdBrJXo951qg==
-Date: Fri, 10 Apr 2026 14:40:19 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: jiang.kun2@zte.com.cn
-Cc: akpm@linux-foundation.org, liam.howlett@oracle.com, david@kernel.org, 
-	vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, xu.xin16@zte.com.cn, wang.yaxin@zte.com.cn, 
-	lu.zhongjun@zte.com.cn
-Subject: Re: [PATCH v2] mm/madvise: prefer VMA lock for MADV_REMOVE
-Message-ID: <adj1h3JlrUWLzPnm@lucifer>
-References: <20260410160249749i98jwNgNLmLMKRNVeoKVe@zte.com.cn>
+	s=k20201202; t=1775828694;
+	bh=Yq0pcicllP/Ez2lgctEQ5fQ4x7hGNj+JwjVHDJE+4Uw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q7q5/Ot/qTsyqcIE59d5XHyVIMML/BK/405Fb6R8a4WdqaON5t5jLE8b53er3DUpi
+	 44Dqi2d2pfi/Sk905c8rfaCf2olrArSJfAYAU/Ltnm3H1g/e/xukTbvBg3YFn6c9kz
+	 utSUvmsRm82mbuNYAdJ7M9Szb1jTKr97PaibSFf1zBkWgs5E3atDOeZpdQhTIOMG7o
+	 MZMf4UrLM4uanm0F6addq/ODFaSHmwd9keVP/U23QldWj7f68nf0KTnyGEGLc4VVKw
+	 fo7rq123CCCFvSkqHyHcN6i7Z5tl/NbO3MfuO+M/JWWQ1vImKeBrkyezL8V1rzWjY5
+	 lmYZw8ErSySxg==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH v4 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
+Date: Fri, 10 Apr 2026 06:44:50 -0700
+Message-ID: <20260410134451.81846-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260410100822.196999-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410160249749i98jwNgNLmLMKRNVeoKVe@zte.com.cn>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 76AB01C0002
+X-Stat-Signature: mccjxoyw45xtsqymrh1ex6k6qkw59s4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 693D1A0018
-X-Stat-Signature: t3a6osatsjc849hxjon5mo8cqb18zaq3
-X-HE-Tag: 1775828425-450794
-X-HE-Meta: U2FsdGVkX1/rDlwTuqiUt62uEsEl0WQC4k3unzU42GIrqCaL4r0J9hYWbjOX1W5UDSHp8YHfW95WEOOBdF65PPUEYOYLhkqeLBPaYte346CYfGNM4ccvHojos9jE58FNA7Uxr/VPD+ASfUTLpn/cn5FLf+mHdPnfPFSG6KtBPL3wscsqDZfHYulR5EOR1m+Da+TSbO720NSzkM/x/CrexoVf503XRFYw4udYvcgHlR9T3KKQJtlRAepScEt8TZkiq7OoP5gdrM//KJ6vH6u8twQdP6+ShxoQrh6FQxRBXKWBDbeIHAd5Shi51CCcPoQhsaUT8xkZ2QiIaRCtug+q5spaJVotRB2lRmnI91Yhideup0dKeZ+IAWvxPd8DHwf08PKyGcM4vZ9sVGn6oRs7mZR6+7JS27pg84lfmApdYVeurJzYtTZptlbtMXlMS0BhOPnI6KZaLtgyhlyST2SPr5YQzDvsUXN5AR02F6egmDMt6MDYhXeD4ZNvyv4wy4hv4e2JyuRciLxIStrEspXhdszd3hHqnfadnlHRRSPRQmSo2/sBgL3qw0Zw2LlY0/0FHvyOZKPi+xh3CywtAgeG39lRqoAxJsasCXvkmvJixBlEEdM7CbDLfyoH6j8GtF4YPz6rRsxUXKdOA6/cBJl3nwJOv/BOrwl8X7Ixhg6HmLofc5PK8C8Z5hhIWxQ2q0nbPvvZWBjnAl8Zju5ylOMoWvqxI1sDpnJidwsaTN+iX61iEGN4s6/ThFYkkrVTpcR4ZeDkP5uDHKGjcqZLD/6wJ9GpSgCR2YcsftoJPhlMP5RQIfZAzJqcSB0pH8yKThOT0sfWmd+gaRbEjTUefc83IGBMI4diJELjU1I2HjpN7ZrRxF7rr3TwsvC64E3nd9DA6S4Jk/VFkaFqCIEEZDWZBRljhyh9Nymb98aIzQDSSBmdcB3rWvl9vhBuAJiCOpN6d0vZd6SBJni/rnoHOIw
- 1vw9+3UZ
- VSCQmSZlE1IcwttVVKXnpzIJ8QRuy4pk6owJgEjq/M/3lJktTvQtnt2/arQnSnssqEetAVG9OuTNOy/prRI2ohhHgWFx5kjtfdwXQspPWpBFlDZvjhDOc4BYydnySjXbR1TbK7Gj/Rbp6wtamLyqTaR3afRMLSjudfRmLhJB+ofI8j/qObS/hm9G+SFq1DoCzIHm8ykHO5cQeYPOrVcQnTwNiJ4xWwqnkahkdlWW1LfO4OjnGm4tyvTWHdE0K4v87PmvFcM/xCzLhoiLcOC1bxpEnOO6cuTFYGrN4xnZloTrzEK340gjs+4R81GAkYu2sTHfDYIQG3a34+HTEyN+PF2wUo7ahRLy9jbO02xLd38FwCO8se+UG9LzJNo6Lupw9TIm8SmdONjnurdP3n96wE67zo1iZimtEptEBgaSjXNH7YBk7d9O56HdoGISwTBJybRzUTxkhNkNLGNYaNtA8NxPchrMEsvo3OC6IHV+JwgH7HjOzuKYuB8mp0g==
+X-HE-Tag: 1775828695-929289
+X-HE-Meta: U2FsdGVkX19oZf4AI6hnj/SqgLoOs/at8yQULVX7xfRerMtQAhFJylrAOrd9Zv3UyjipDs1Rtd0JvmVjdghOOOW9HR8SZaInF//JMLMG07Kbw+3AeEcP6zlKlk9woP77uy4oYtj1xqxz0npLwtekPdiaG+5HGlC50JxSpWH5O3W+/YbP54N99g7ReZ4Mp1ySwcjkSLBpfWuT+raP75K26eL1Xc/3fKkOEZ2lgmZCjucEFP+WiVagYIS4p7PqBvMqs8n9hdXYPK4PXmZ7GgufB/a58h4Nii1VNWnQK2Cv8mGTeawUSsHVfJYUG9F5AvG3Ntxpzgamj7hHZ+Ooukw5XL6F9pnuBqRgXJLfNzI0fKoFdDPb9kB761tq1sfMaZW77zw6vPJLQb8ev6VAcx/7ltqiM8gjqIr/HrEXFIboqWvb02M+Z7KVP+GvqnV6DVowS6/Y+OppqlsV57gi5N4LGpIRrWLjrEDuOLVCiMZxTWFkguh8M+VtuLKoVNMi2A9rDRlTMTGMFzcIsAiSf4FT8sVTGhSxonmLKY8Q7HWom+1hBF+U2wR4Z5EpkyiM9z8N2cxWs0BJAOWGZJDfKu66cTw4Yz/LmrIZyutPwzvTtmkA9evhO7oRYsX37tE/EOGqfX7WHWI3s7vIp4aLMM5J2nx6VOLtCNdFicPsvkqAIUIAVtbiboxNQIEx13aiEz2ELg2hNXBFqdvfurE3oOhEjv8VVXqaKvdudUJXfaNz4tACoIQsuphVQUw3IgvippywT/rtQaAshu/l7HzWUuFQR8HYSrxIY5jlCYScQ3OZIMtEx7YG06f+m5qHZJ5jepzFWJElcus0l9FpHxu1O5dew71jkqQ5F2KV3rPxAPR64HCOUGc9VtcgQwdVpKdbvEpbtzkEPcaX4RnPKSYnyC/5i+DtyNhTot9mjuDiUN9HD6Tv9pXj6pmYsI56rUU6SzsPDnR+nk+kazKeyUSXq5p
+ F8mphzs2
+ Db3m/oNEUbwZlxvfS6JjYgiQyeYAjz7tlRtQ2bTQFntk4GNo0cvnG1lO8H6hUpJyR+nmD+CqFuHbolR4KuBXaxffQ8t0smtGPk3qkWlnVWdTd1HwC6+u9hgOvcxuLOOaV6YfZgMr6rq5G6CkPTJmAEd4VNZ7BacoNsZA7asnqG2vHavvJv8FXn1ZXzn5xfUd8rdomlpsGLEOKj7a64GpdM6LuuSBrL9cVkBNB79QD0xRiCAtfk94M1pYaqi+jZiG/k8ghXRpOCyGApcugpK1tdUQ2JdQWSRnvmU7zRBGvM2ZrXtcM1P07IYnRaCS/AyVzxT4OpDXK8Y0/b/EdcPF8UBjo91/o3MYucrxBfgH1d3ARTO3jDEBF2jd2IWJBh9Wt33Pt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,250 +91,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 04:02:49PM +0800, jiang.kun2@zte.com.cn wrote:
-> From: Jiang Kun <jiang.kun2@zte.com.cn>
->
-> MADV_REMOVE prefers the per-VMA read lock for single-VMA, local-mm,
-> non-UFFD-armed ranges, avoiding mmap_lock contention for such ranges.
+On Fri, 10 Apr 2026 18:08:22 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-I'm not sure what 'MADV_REMOVE prefers' means here? You're making the change,
-you should be making a case for it, ideally with performance numbers.
+> Sashiko found some issues.
+> 
+> Forwarding sashiko review in a reply format with my inline
+> comments below, for details of my view and doing discussions
+> via mails if needed.
+> 
+> > # review url: https://sashiko.dev/#/patchset/20260410044259.95877-3-aethernet65535@gmail.com
+> > # start of sashiko.dev inline review
+> > commit 7a816b41f4b321b6a513227bef0e50f3bc1e86f1
+> > Author: Liew Rui Yan <aethernet65535@gmail.com>
+> > 
+> > mm/damon/reclaim: validate min_region_size to be power of 2
+> > 
+> > This commit adds an early validation in damon_reclaim_apply_parameters() to
+> > check if min_region_sz is a power of 2. It attempts to prevent kdamond from
+> > terminating unexpectedly by catching invalid values before they reach
+> > damon_commit_ctx().
+> > 
+> > > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> > > index 86da147786583..2747eef5919d1 100644
+> > > --- a/mm/damon/reclaim.c
+> > > +++ b/mm/damon/reclaim.c
+> > > @@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
+> > >  	param_ctx->addr_unit = addr_unit;
+> > >  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+> > 
+> > Is it possible for a concurrent sysfs write to change addr_unit between these
+> > two reads, allowing an invalid value to bypass the new validation?
+> > 
+> > The global variable addr_unit is read twice without READ_ONCE(), once to set
+> > param_ctx->addr_unit, and again to calculate param_ctx->min_region_sz.
+> > 
+> > If addr_unit is changed from a non-power-of-2 to a power-of-2 between the two
+> > reads, the validation below might succeed using the new value, while the
+> > invalid addr_unit is committed to the active context.
+> 
+> I believe this is possible, because the current call to
+> damon_reclaim_apply_parameters() is asynchronous and does not hold the
+> 'kernel_param_lock' during execution, so this situation should be
+> possible.
+> 
+> However, I'm still unsure whether your suggested changes should be
+> included in this patch.
 
-I'm really not sure we should just be enabling the VMA lock for things
-arbitrarily unless there's a real need for it.
+We already addressed this with by defining it as an expected behavior that the
+user should avoid.  And the queued patch [2] from Liew will make commits
+synchronous and fix this issue together for the mainline.  Let me know if I'm
+missing something.
 
->
-> However, calling into the filesystem while holding vm_lock (VMA lock) can
+> 
+> > 
+> > > +	if (!is_power_of_2(param_ctx->min_region_sz)) {
+> > > +		err = -EINVAL;
+> > > +		goto out;
+> > > +	}
+> > > +
+> > 
+> > Does this early check mask a structural issue in the core API?
+> > 
+> > Looking at damon_commit_ctx() in mm/damon/core.c:
+> > 
+> > int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+> > {
+> >         ...
+> >         dst->maybe_corrupted = true;
+> >         if (!is_power_of_2(src->min_region_sz))
+> >                 return -EINVAL;
+> >         ...
+> > 
+> > If a different caller passes an invalid min_region_sz, it will still trigger
+> > this same trap.
+> > 
+> > Could the root cause be addressed by moving the maybe_corrupted flag update
+> > below the validation checks inside damon_commit_ctx()?
+> > 
+> > Are there other ways damon_commit_ctx() could leave the context corrupted?
+> > 
+> > If a user dynamically enables features that require memory allocation,
+> > damon_commit_ctx() calls damon_commit_schemes() which attempts to allocate
+> > memory via damos_commit_quota_goals().
+> > 
+> > If this allocation fails with -ENOMEM, it returns an error but leaves
+> > dst->maybe_corrupted = true on the active context, permanently terminating
+> > kdamond.
+> > 
+> 
+> I discussed this in my previous reply. But I realized there might have
+> been some misundertanding in my previous explanation. What I wanted to
+> say is that there might indeed be some issues with 'maybe_corrupted' in
+> damon_commit_ctx() that need adjustment, but that's not within the scope
+> of this patch.
 
-Not sure what vm_lock is? :)
+I agree.
 
-> create lock ordering issues. syzbot reported a possible deadlock in
-> blkdev_fallocate() when vfs_fallocate() is called under vm_lock.
+> 
+> > Can a concurrent sysfs write cause a divide-by-zero panic in this same
+> > function?
+> > 
+> > Looking further down in damon_reclaim_apply_parameters():
+> > 
+> >         if (quota_mem_pressure_us) {
+> >                 goal = damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US,
+> >                                 quota_mem_pressure_us);
+> > 
+> > The global module parameter quota_mem_pressure_us is read twice without
+> > READ_ONCE().
+> > 
+> > If a concurrent write changes its value to 0 immediately after the if
+> > condition passes, a quota goal with a target_value of 0 is added.
+> > 
+> > When DAMON evaluates the quota score in damos_quota_score(), it uses the
+> > macro mult_frac(goal->current_value, 10000, goal->target_value). Dividing
+> > by a goal->target_value of 0 will cause a kernel panic.
+> 
+> I tried to reproduce this issue, but without success. 
+> 
+> However, based on the code, I believe the problem exists because I
+> didn't find any checks preventing 'goal->target_value=0'. Please let me
+> know if I've missed anything.
 
-It's not really worth mentioning an issue that came up in a v1 of this code in
-the commit message. The commit message should describe what you're actually
-doing, why, and any details that might be helpful to people looking at the
-patch.
+As I mentioned above, it is unallowed user inputs [1], and Liew's queued patch
+[2] will fix this for mainline.
 
->
-> Fix this by dropping the VMA lock before invoking vfs_fallocate(), after
-> taking an extra reference to the file. Keep the existing mmap_lock fallback
-> path and its userfaultfd coordination unchanged.
+> 
+> > 
+> > A similar sequence exists for quota_autotune_feedback.
+> > 
+> > >  	if (!damon_reclaim_mon_attrs.aggr_interval) {
+> > >  		err = -EINVAL;
+> > >  		goto out;
+> > >  	}
+> > 
+> > 
+> > # end of sashiko.dev inline review
+> > # review url: https://sashiko.dev/#/patchset/20260410044259.95877-3-aethernet65535@gmail.com
+> 
+> # hkml [1] generated a draft of this mail.  You can regenerate
+> # this using below command:
+> #
+> #     hkml patch sashiko_dev --for_forwarding \
+> #             20260410044259.95877-3-aethernet65535@gmail.com
+> #
+> # [1] https://github.com/sjp38/hackermail
+> 
+> Best regards,
+> Rui Yan
 
-It's worth mentioning this, but not in terms of a bug that happened in v1
+[1] https://lkml.kernel.org/r/20260329153052.46657-2-sj@kernel.org
+[2] https://lore.kernel.org/20260402155733.77050-4-sj@kernel.org
 
->
-> Repeated benchmark runs show no regression in the uncontended case, and show
-> benefit once mmap_lock contention is introduced.
 
-Numbers please :) ideally with some statistics like standard deviation etc.
-
->
-> Link: https://ci.syzbot.org/series/30acb9df-ca55-4cbf-81ed-89b84da8edc1
-> Link: https://lore.kernel.org/all/aWcZCwz__qwwKbxw@casper.infradead.org/
-> Signed-off-by: Jiang Kun <jiang.kun2@zte.com.cn>
-> Signed-off-by: Yaxin Wang <wang.yaxin@zte.com.cn>
-
-Some things to address, I have attached a patch that reworks what you have
-here in a way that avoids duplication, so if you're good with that feel
-free to send as v3, I don't need attribution other than a Suggested-by if
-you like.
-
-The logic in general seems correct, but we need numbers! And the commit
-message to be improved as per the above also.
-
-Thanks, Lorenzo
-
-> ---
->  mm/madvise.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 69708e953cf5..0932579bccb4 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -1008,8 +1008,6 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
->  	unsigned long start = madv_behavior->range.start;
->  	unsigned long end = madv_behavior->range.end;
->
-> -	mark_mmap_lock_dropped(madv_behavior);
-> -
->  	if (vma->vm_flags & VM_LOCKED)
->  		return -EINVAL;
->
-> @@ -1025,6 +1023,20 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
->  	offset = (loff_t)(start - vma->vm_start)
->  			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
->
-> +	/* Avoid calling into the filesystem while holding a VMA lock. */
-> +	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK) {
-> +		get_file(f);
-> +		vma_end_read(vma);
-> +		madv_behavior->vma = NULL;
-> +		error = vfs_fallocate(f,
-> +				FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-> +				offset, end - start);
-> +		fput(f);
-> +		return error;
-> +	}
-> +
-> +	mark_mmap_lock_dropped(madv_behavior);
-
-I don't like this code duplication, you're literally copy/pasting code here.
-
-Let's use what we already have.
-
-We can avoid duplicating like this, make mark_mmap_lock_dropped() valid for VMA
-locks too and rename it to mark_lock_dropped(), then change the logic around a
-bit and have something a bit nicer I think.
-
-See attached patch, you're welcome to use this as-is (you can add a Suggested-by
-if you like), but that avoids the duplication and keeps things unified.
-
-> +
->  	/*
->  	 * Filesystem's fallocate may need to take i_rwsem.  We need to
->  	 * explicitly grab a reference because the vma (and hence the
-> @@ -1677,7 +1689,8 @@ int madvise_walk_vmas(struct madvise_behavior *madv_behavior)
->  	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK &&
->  	    try_vma_read_lock(madv_behavior)) {
->  		error = madvise_vma_behavior(madv_behavior);
-> -		vma_end_read(madv_behavior->vma);
-> +		if (madv_behavior->vma)
-> +			vma_end_read(madv_behavior->vma);
->  		return error;
->  	}
->
-> @@ -1746,7 +1759,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
->  		return MADVISE_NO_LOCK;
->
->  	switch (madv_behavior->behavior) {
-> -	case MADV_REMOVE:
->  	case MADV_WILLNEED:
->  	case MADV_COLD:
->  	case MADV_PAGEOUT:
-> @@ -1754,6 +1766,7 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
->  	case MADV_POPULATE_WRITE:
->  	case MADV_COLLAPSE:
->  		return MADVISE_MMAP_READ_LOCK;
-> +	case MADV_REMOVE:
->  	case MADV_GUARD_INSTALL:
->  	case MADV_GUARD_REMOVE:
->  	case MADV_DONTNEED:
-> --
-> 2.53.0
-
-Suggested reworked version below:
-
-----8<----
-From 97f6ff9749a38256e919a24ff2867a077a6f8cfc Mon Sep 17 00:00:00 2001
-From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Fri, 10 Apr 2026 14:37:23 +0100
-Subject: [PATCH] slightly reworked
-
----
- mm/madvise.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 69708e953cf5..4af0565809f2 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -269,9 +269,8 @@ static void shmem_swapin_range(struct vm_area_struct *vma,
- }
- #endif		/* CONFIG_SWAP */
-
--static void mark_mmap_lock_dropped(struct madvise_behavior *madv_behavior)
-+static void mark_lock_dropped(struct madvise_behavior *madv_behavior)
- {
--	VM_WARN_ON_ONCE(madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK);
- 	madv_behavior->lock_dropped = true;
- }
-
-@@ -315,7 +314,7 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
- 	 * vma's reference to the file) can go away as soon as we drop
- 	 * mmap_lock.
- 	 */
--	mark_mmap_lock_dropped(madv_behavior);
-+	mark_lock_dropped(madv_behavior);
- 	get_file(file);
- 	offset = (loff_t)(start - vma->vm_start)
- 			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-@@ -909,7 +908,7 @@ static long madvise_dontneed_free(struct madvise_behavior *madv_behavior)
- 	if (!userfaultfd_remove(madv_behavior->vma, range->start, range->end)) {
- 		struct vm_area_struct *vma;
-
--		mark_mmap_lock_dropped(madv_behavior);
-+		mark_lock_dropped(madv_behavior);
- 		mmap_read_lock(mm);
- 		madv_behavior->vma = vma = vma_lookup(mm, range->start);
- 		if (!vma)
-@@ -1005,10 +1004,9 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 	struct file *f;
- 	struct mm_struct *mm = madv_behavior->mm;
- 	struct vm_area_struct *vma = madv_behavior->vma;
--	unsigned long start = madv_behavior->range.start;
--	unsigned long end = madv_behavior->range.end;
--
--	mark_mmap_lock_dropped(madv_behavior);
-+	const unsigned long start = madv_behavior->range.start;
-+	const unsigned long end = madv_behavior->range.end;
-+	const bool vma_locked = madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK;
-
- 	if (vma->vm_flags & VM_LOCKED)
- 		return -EINVAL;
-@@ -1029,18 +1027,20 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 	 * Filesystem's fallocate may need to take i_rwsem.  We need to
- 	 * explicitly grab a reference because the vma (and hence the
- 	 * vma's reference to the file) can go away as soon as we drop
--	 * mmap_lock.
-+	 * its lock.
- 	 */
- 	get_file(f);
--	if (userfaultfd_remove(vma, start, end)) {
--		/* mmap_lock was not released by userfaultfd_remove() */
-+	mark_lock_dropped(madv_behavior);
-+	if (vma_locked)
-+		vma_end_read(vma);
-+	else if (userfaultfd_remove(vma, start, end)) /* uffd didn't drop? */
- 		mmap_read_unlock(mm);
--	}
- 	error = vfs_fallocate(f,
- 				FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
- 				offset, end - start);
- 	fput(f);
--	mmap_read_lock(mm);
-+	if (!vma_locked)
-+		mmap_read_lock(mm);
- 	return error;
- }
-
-@@ -1677,7 +1677,8 @@ int madvise_walk_vmas(struct madvise_behavior *madv_behavior)
- 	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK &&
- 	    try_vma_read_lock(madv_behavior)) {
- 		error = madvise_vma_behavior(madv_behavior);
--		vma_end_read(madv_behavior->vma);
-+		if (!madv_behavior->lock_dropped)
-+			vma_end_read(madv_behavior->vma);
- 		return error;
- 	}
-
-@@ -1746,7 +1747,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 		return MADVISE_NO_LOCK;
-
- 	switch (madv_behavior->behavior) {
--	case MADV_REMOVE:
- 	case MADV_WILLNEED:
- 	case MADV_COLD:
- 	case MADV_PAGEOUT:
-@@ -1754,6 +1754,7 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 	case MADV_POPULATE_WRITE:
- 	case MADV_COLLAPSE:
- 		return MADVISE_MMAP_READ_LOCK;
-+	case MADV_REMOVE:
- 	case MADV_GUARD_INSTALL:
- 	case MADV_GUARD_REMOVE:
- 	case MADV_DONTNEED:
---
-2.53.0
+Thanks,
+SJ
 
