@@ -4,129 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C65F4484F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD34F44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:24:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 852076B00DE; Fri, 10 Apr 2026 08:21:38 -0400 (EDT)
+	id C4E926B00E3; Fri, 10 Apr 2026 08:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802EE6B00DF; Fri, 10 Apr 2026 08:21:38 -0400 (EDT)
+	id BFFA46B00E4; Fri, 10 Apr 2026 08:24:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718B16B00E0; Fri, 10 Apr 2026 08:21:38 -0400 (EDT)
+	id B3BA36B00E5; Fri, 10 Apr 2026 08:24:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 601706B00DE
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:21:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2A6FA591BA
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:38 +0000 (UTC)
-X-FDA: 84642557076.23.7A28D69
+	by kanga.kvack.org (Postfix) with ESMTP id A268F6B00E3
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:24:29 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 527FB16048F
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:24:29 +0000 (UTC)
+X-FDA: 84642564258.20.A2C612D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8E1384000B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDyFrce5;
-	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 93C5040005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:24:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKHcdKXE;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823867; a=rsa-sha256;
+	cv=none;
+	b=UpciHfOhXc/fFFiC5z8guJrzehF63PaVOZWswqSo3qqi/A/k0lLzbx1pQPUk7cu8CF8n8q
+	7zY4xVKH+ws4Zh2YjbTI0aX1TQbWeDSZjZ9eTVW+JmGiP85Cfakk+0e3WZQC/UOA+pE+rW
+	5kQ7xeCS3ehzEtUuJLBG63P15Vy4v+w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823696;
+	s=arc-20220608; t=1775823867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Bd2cg6ABy+bDw1GoAexe6DyvKfgKbE4JMcwGjXdm8Fs=;
-	b=co+1JfZzO3v0rpCz6L9lHSvasnxGIEMLwTJacFcCsxjTlyhAVfWKu6ZSVYrTnlRoaZYsiL
-	I4pu8TXB3SYMtnaWtoWqVCFaCegd2E3+KNH/IgFNgpdV+yIHIlJv9CRQPrQ0zpP9aAzHJy
-	QmtGMK/9EvGkmB+SK2TpNj5uvmz15ws=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aj5XakvMrHZUrDyYKVsZg4rC5Dtcr4vUwdSNgZSmn+s=;
+	b=vzZH9rMDVzQ2Kcx3tsUVAlmFCok+5kdhF3hswxnaSAYj1j4uQ74osMsYZmfn+L18IhBdbr
+	oPCiGK8lDajz8FOJ65S5/fSGDgNiO/UtUKY7AtnyeLe0AxP5acR5VIhkA5zp2MfsKB33W1
+	MiCGwoC88tmg6yQbAn5SEr1azzaToLQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDyFrce5;
-	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKHcdKXE;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823696; a=rsa-sha256;
-	cv=none;
-	b=DwKwD4NGbKxr2HDbxQFkow7E2Y2ZZEvzhA1QCExe1aEc++/W7x7U0bKUTwyFBZzyRMJxj8
-	lEA9z9XGEGI0oHxruzfrXNKHmuxEpV2OhM0i8RCkN8j++g4m37X8vRi+zAgvkNhjB4dDyv
-	fPanUxd+lcRQGoky07k9PVSM7DZtqqA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E64B61334;
-	Fri, 10 Apr 2026 12:21:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AD5C2BC87;
-	Fri, 10 Apr 2026 12:21:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F3D916024D;
+	Fri, 10 Apr 2026 12:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2810BC19421;
+	Fri, 10 Apr 2026 12:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823695;
-	bh=pY4Ba+JrP/xTQAmwvt4Sblvq53DUrPINRCnMdCBk5qo=;
-	h=Date:From:To:Subject:References:cc:From;
-	b=HDyFrce5AOq/EGfeY1UdoV8DNpMgAy18kWHJM1sjAR8gGlb0lGVL/86T8A9JdQ406
-	 geoVdL2hWTrXGNOfAnq/kY6NSEK4TpMk9WMO+y1nQNH3tMz9xsxHfqX6syvZMUj1PK
-	 bzYUHDgCtqjEJkHt2pwcVZ7pxbRQ83NKHdjXp0R8JD++ws1pIDJb+QbVlpuQaSrK3+
-	 elCptYV6iuLAdTbeeR+RbymhnVAR5noANk7G5ygRae6T0lvFrKQfmBeUjBXUKx1VNg
-	 KMOPQf2nxfU/JqhQvoUzqUAfK3BjbJR+sYA7dzOFGZqkM+hZZWPxeRIyaCeQdbvVoP
-	 M9E/X3gApmxpw==
-Date: Fri, 10 Apr 2026 14:21:32 +0200
-Message-ID: <20260410120320.163559629@kernel.org>
-User-Agent: quilt/0.68
-From: Thomas Gleixner <tglx@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 38/38] treewide: Remove asm/timex.h includes from generic code
-References: <20260410120044.031381086@kernel.org>
+	s=k20201202; t=1775823866;
+	bh=u3shdn/VhTUrysknc+IWeX13Mypw2Gqe8IMtP46BvmE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YKHcdKXE2kz4m0NEBd5EKtByrIIew2xRPM9M6TUF00occZ4EyMKOt2YUdYVsHnCo0
+	 fNSRX0fb0Hbd2twIm/dyttA2LN+TqLTdZ909pvkhZS8h7pGn7Yhva68ZtJqsZLZ/If
+	 tdguzE3v/3GvKP5hHIRnkjjVac850Gdb2uNM2zbSio5tgjmijdEdz+01rtEvdJNKjY
+	 QY9VKGe7uu/nk/E51BxqhEmmdYN1W/PvkHS3utdN+SbGU+hY3BJSyQa4VKOyVStKX+
+	 7rhSZO2S67XO/uptDkC1XS9crG8eNVR7QT+21pAsNytGil3CdbYboU0ETriEW7gqau
+	 PEplVxGXwpW0Q==
+Date: Fri, 10 Apr 2026 13:24:16 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc, jack@suse.cz, 
+	ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com, dev.jain@arm.com, 
+	kees@kernel.org, kevin.brodsky@arm.com, lance.yang@linux.dev, 
+	Liam.Howlett@oracle.com, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, mhocko@suse.com, npache@redhat.com, 
+	pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com, 
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev, leitao@debian.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 0/4] mm: improve large folio readahead and alignment
+ for exec memory
+Message-ID: <adjrKwgiZwXR9epk@lucifer>
+References: <20260402181326.3107102-1-usama.arif@linux.dev>
+ <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev>
+ <adjkCOiLgZ_-zovg@lucifer>
+ <adjllNan2vgBNBHJ@lucifer>
+ <5f99b289-629c-47c4-bef0-966d6678a2a8@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-cc: Arnd Bergmann <arnd@arndb.de>,
- x86@kernel.org,
- Lu Baolu <baolu.lu@linux.intel.com>,
- iommu@lists.linux.dev,
- Michael Grzeschik <m.grzeschik@pengutronix.de>,
- netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org,
- Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org,
- David Woodhouse <dwmw2@infradead.org>,
- Bernie Thompson <bernie@plugable.com>,
- linux-fbdev@vger.kernel.org,
- "Theodore Tso" <tytso@mit.edu>,
- linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
- kasan-dev@googlegroups.com,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>,
- linux-hams@vger.kernel.org,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- loongarch@lists.linux.dev,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org,
- Dinh Nguyen <dinguyen@kernel.org>,
- Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org,
- Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org,
- Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org,
- Heiko Carstens <hca@linux.ibm.com>,
- linux-s390@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f99b289-629c-47c4-bef0-966d6678a2a8@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8E1384000B
-X-Stat-Signature: pebne7khinr7toq5y8ykwqchjcphmcid
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775823696-319324
-X-HE-Meta: U2FsdGVkX1/TblSuxWA70SY3yjoY+s8YQumOcCyODgQCJUPWEP2Oz0L12IWxoVTZpFGIXaP1ZyrrR/E2lqaVwZ+COGJqaYnx7tBYMsbjmn8xq77BmQmJ5JHGQpvL3ZHKDqt9d7WpK+zZWri7Uc/nwle2w1Yg7RONBYzJHC0dFoFWpxT/6HAId/29v1vXMKXrew3ulxRoXOOzbqh4c5+2+CwLPV6VNOAj0Mi3uSphm2j2SiVknhx3ZS0/Z2lkyb92C2oxO/kLTtIZAL6f8Ew2sN1hqBO6R2mbErR4mXQeRikBERyNzL+/WUIVDEZsYDJruBlhD5K8Oxxv91LBoKn/3FJ2L1S52POejhw6+yAzp6vjGDr1kmntbi2gVyaZcw5kDHq3yelot0eIw8cF7Fqnntw27b2Ptng4EZSeTSZ9ZUWLzCSF6YOLOaxOYl7ZkepeNtijubIKt7AXrq4X+rbRMTYsUjwSm0WLcRrM8MeUwv0m6YK1Jt4qQ+Rrq8EUCeUuWhxXQNQpkvkhPwvyEKltqRgnNz6JJxUHgAokALvbkTZbeCZJr7y/rRmeUBke9QOe4bqd4cyrpyawyxSukGQPD623E4Zb6M15g0t1uuDzL3oRpKElubycOkraPuEzE5yDUqzZ12w1kVbaTKxNi0iUIaZm0B070DXB1BLaHsIq+UPjVsBmYmJQ938MARHC/+eJsvIHBi27bX10o9wH7c6yNHPzRrU+5Kg71oS29g9Eb+PtEVcXQ11wQFffQyd9zprxliqyHJuiSVfQRgju64dRdbN7XNneSVLEDp8cwR/aCR2E6jW0EiRYfduYuktV4g5fRqWKGDAk8vskEaCIBb+bLinBMu5pBIijdnuv227KzJs7UAcSRo8epgYdUWN94fki0Dv7f5jf8XZThLRHXL2tGkIvqO+AdXLZi+MXrXfwuhAsBjSxEWLUxNwAX/C9rcc0luDlGD79T40p7sjwOHP
- Ckx0n0Hd
- MjyOGRw8ZnSAB/Iubg9yMnG3BVjNI56hO74ag01OvzhxmNQ9+ddztd8N9g3XF2MhW4/kI2Ckak42L0iOzyOVlsmMFP1b5EPKPgo1kl2gtgF5+yBlzM0NP056Qo7QPap/npS5u2r8R/QUdvaEbFoa459RDVYCG3roIWeijfmcehXMtkAXB7gmnuD6LxNV/CpitonlIOghdrW5pqmoMFf/3AI7Mivk0KmDsXghYSh1Ebb0IZEBm8y5EsSSqOTIaciJZ5FiQNuEaGp2XXshA1M6f5JuK+P5xNEoSSCRu+jBcYIsvTz2P4/FOzHoUk2mO8SuSB3HgVFWq5td9m0QVOQ1Nvsyin8+s4tqoDZJF
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 93C5040005
+X-Stat-Signature: mmqcrqe7kbkud33hcnrkqmt9uc7sx5er
+X-HE-Tag: 1775823867-868743
+X-HE-Meta: U2FsdGVkX1+agsn2V/J/tsQDedupkUGk0KCBf3ckkARpDbc5KKGPR8oLo0VkkD5G+vpkzkiNR4IAWGwb2ee/LaQRTcGBxGLqHtrmBCaDeT9Ici8uGAQaNEAEEmxN/lINIzEFW6JLa234/l9Dny5ESoI8hLDTvWanZjx2pelqE2nqGHecB1Yf0AzG5wzVMHpxoAUFXIeK6kQV2/+fo9uKRcXTOzmihqjB/5sZOg/11dQ1u6bwGndIPregW8RJPXZxNopJD8DWJctAAomXZp76Q/4K8uY4CUHSD2KGd2xm/4wuAAoPcB9TDwTFRcaOSdTYkZqjD1meYCaACdVYwKjAtX9aF6aLC4omkDBPgrsqJyWfR8xdkZM/n6REinUN3U7zllkQoPqTlefRUk4QbYzjIaTOJPfanA+ag1tBJaDG8GkmgP1MUlEK9qNdho1qyvCKe5XD7rFyjluMggwW1ulqrZueocm/KJ1KEafVBwxEUyyRF3fDZ2Vu3XyUObtFvowRp7YW6CuZNr3KagRdG+Ad6mXO123yrt8HRvNyrxsFzOmQAO5a3UubSmHAMwZ0K1MhFZSginOD771Uh5tsa6ToNNhqHlVhtYaZ1HJyBSkIW5H7OKNnifg58QnLKuJ8cv9c58MObm5gOCoSxQv13OmtJlEgPCoQn9cRFwId3cjnf92ql4vhsL8n2ng6k2FGA6vO01xDrDOkxbcNM/c54apaC6kIoG6GJwLHxi0ld9gGA/PYnqwXrdbWh7ZHgL+1nKX1l3M1VKOvRKAkYfW471NqbbN3oTB3ISSuwEGh/gwPskaLRNrzqSgW1iJBuKKxb5g9BuPyPB/JpLczmiMB7qHGnOfr9Mgr/h9HbfouYcQg6DhoSZi2HyrELkv83MTF4w5Ui+/QzUONGoDucKtpJjklDVzdCm4R6Pyo4JBSzNrUKrTtNd2Car0y89b41miLR/Ea9unhnqfGyjC44GLAnvV
+ T68lb501
+ w50C060YqV75dlhr4h0cYILmFCKS3SKSMk9pL0vk217AfTHi9znyNxRpnVU8Q5xh/0hS9S8V8/ao8QK56uE+kYA0Y9nd+y1BhLv3Rv1l013Kbiql8O+T/IbOLX0/v5LJfAAQUE6HP7bA8FOUI1nOug4A08rIhNH3w/Lcr596LpymoOhudIYyYuvWzJ5OotcbKRQ11fLTQBlxTvSANpO3mIsWPlMYJ/i3afn04qQT81ozmoxDoQS15Uv4M9Wpp40/lVT1s8XysyYFNbo6yKI0JmnrbLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,131 +104,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-asm/timex.h does not provide any functionality for non-architecture code
-anymore.
+On Fri, Apr 10, 2026 at 01:19:08PM +0100, Usama Arif wrote:
+>
+>
+> On 10/04/2026 12:57, Lorenzo Stoakes wrote:
+> > On Fri, Apr 10, 2026 at 12:55:42PM +0100, Lorenzo Stoakes wrote:
+> >> On Fri, Apr 10, 2026 at 12:03:03PM +0100, Usama Arif wrote:
+> >>>
+> >>>
+> >>> On 02/04/2026 19:08, Usama Arif wrote:
+> >>>> v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
+> >>>> - Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
+> >>>>   to HPAGE_PMD_SIZE limited to 2M (Rui)
+> >>>> - Reviewed-by tags for patch 1 from Kiryl and Jan
+> >>>> - Remove preferred_exec_order() (Jan)
+> >>>> - Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
+> >>>>   otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
+> >>>>   do_sync_mmap_readahead().
+> >>>> - Change exec_folio_order() to return 2M (cont-pte size) for 64K base
+> >>>>   page size for arm64.
+> >>>> - remove bprm->file NULL check (Matthew)
+> >>>> - Change filp to file (Matthew)
+> >>>> - Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
+> >>>>
+> >>>
+> >>> Hello!
+> >>>
+> >>> Just wanted to check if there was any feedback/review on the latest
+> >>> revision?
+> >>
+> >> It's -rc7, this is definitely something for next cycle :)
+> >>
+> >> On my part, my upstream bandwidth has drastically reduced, and review is
+> >> probably going to have to be a hobbyist thing at least for now.
+> >>
+> >> Also, not to be mean but:
+> >>
+> >> $ git log -E -i --grep "(Reviewed|Acked)-by: Usama Arif" --oneline | wc -l
+> >> 21
+> >>
+> >> So... :)
+> >>
+> >> Review in mm is very lop-sided, let's try to balance it out a bit!
+> >>
+> >>>
+> >>> Thanks!
+> >>>
+> >>
+> >> Thanks, Lorenzo
+> >
+> > (Note that we're in a 'quiet period' from here until -rc1 of next cycle and
+> > won't be taking anything new until then. We plan to do this from around rc5 or
+> > rc6 of each cycle in future).
+>
+> Thanks! Just wanted to check, as I am always confused about this. Is it ok
+> to send patches for review for next release at this time? So that they
+> are in a good state when rc1 comes. I wanted to send PMD swap entries
+> for review after I am finished testing, but I want them for review for
+> next release.
 
-Remove the asm-generic fallback and all references in include and source
-files along with the random_get_entropy() #ifdeffery in timex.h.
+I think different people have different views on that :)
 
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
----
- include/asm-generic/Kbuild  |    1 -
- include/asm-generic/timex.h |   15 ---------------
- include/linux/random.h      |    3 +++
- include/linux/timex.h       |   26 --------------------------
- kernel/time/timer.c         |    1 -
- lib/interval_tree_test.c    |    1 -
- lib/rbtree_test.c           |    1 -
- 7 files changed, 3 insertions(+), 45 deletions(-)
+I mean it's debateable whether having a glut of new material on day one of -rc1
+is preferable to having a bunch come in that might or might not get lost along
+the way :)
 
---- a/include/asm-generic/Kbuild
-+++ b/include/asm-generic/Kbuild
-@@ -56,7 +56,6 @@ mandatory-y += shmparam.h
- mandatory-y += simd.h
- mandatory-y += softirq_stack.h
- mandatory-y += switch_to.h
--mandatory-y += timex.h
- mandatory-y += tlbflush.h
- mandatory-y += topology.h
- mandatory-y += trace_clock.h
---- a/include/asm-generic/timex.h
-+++ /dev/null
-@@ -1,15 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __ASM_GENERIC_TIMEX_H
--#define __ASM_GENERIC_TIMEX_H
--
--/*
-- * If you have a cycle counter, return the value here.
-- */
--#ifndef get_cycles
--static inline cycles_t get_cycles(void)
--{
--	return 0;
--}
--#endif
--
--#endif /* __ASM_GENERIC_TIMEX_H */
---- a/include/linux/random.h
-+++ b/include/linux/random.h
-@@ -1,3 +1,4 @@
-+
- /* SPDX-License-Identifier: GPL-2.0 */
- 
- #ifndef _LINUX_RANDOM_H
-@@ -152,6 +153,8 @@ unsigned long random_get_entropy_fallbac
-  */
- #ifdef CONFIG_ARCH_HAS_RANDOM_ENTROPY
- #include <asm/random.h>
-+#else
-+#define random_get_entropy()	random_get_entropy_fallback()
- #endif
- 
- #endif /* _LINUX_RANDOM_H */
---- a/include/linux/timex.h
-+++ b/include/linux/timex.h
-@@ -62,32 +62,6 @@
- #include <linux/types.h>
- #include <linux/param.h>
- 
--unsigned long random_get_entropy_fallback(void);
--
--#include <asm/timex.h>
--
--#ifndef CONFIG_ARCH_HAS_RANDOM_ENTROPY
--#ifndef random_get_entropy
--/*
-- * The random_get_entropy() function is used by the /dev/random driver
-- * in order to extract entropy via the relative unpredictability of
-- * when an interrupt takes places versus a high speed, fine-grained
-- * timing source or cycle counter.  Since it will be occurred on every
-- * single interrupt, it must have a very low cost/overhead.
-- *
-- * By default we use get_cycles() for this purpose, but individual
-- * architectures may override this in their asm/timex.h header file.
-- * If a given arch does not have get_cycles(), then we fallback to
-- * using random_get_entropy_fallback().
-- */
--#ifdef get_cycles
--#define random_get_entropy()	((unsigned long)get_cycles())
--#else
--#define random_get_entropy()	random_get_entropy_fallback()
--#endif
--#endif
--#endif
--
- /*
-  * SHIFT_PLL is used as a dampening factor to define how much we
-  * adjust the frequency correction for a given offset in PLL mode.
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -48,7 +48,6 @@
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
- #include <asm/div64.h>
--#include <asm/timex.h>
- #include <asm/io.h>
- 
- #include "tick-internal.h"
---- a/lib/interval_tree_test.c
-+++ b/lib/interval_tree_test.c
-@@ -4,7 +4,6 @@
- #include <linux/interval_tree.h>
- #include <linux/prandom.h>
- #include <linux/slab.h>
--#include <asm/timex.h>
- #include <linux/bitmap.h>
- #include <linux/maple_tree.h>
- 
---- a/lib/rbtree_test.c
-+++ b/lib/rbtree_test.c
-@@ -4,7 +4,6 @@
- #include <linux/rbtree_augmented.h>
- #include <linux/prandom.h>
- #include <linux/slab.h>
--#include <asm/timex.h>
- 
- #define __param(type, name, init, msg)		\
- 	static type name = init;		\
+I personally feel it'd be better to send during the cycle window rather than
+before but I suspect others disagree with that!
 
+So from your point of view, feel free to do what you like, but maybe David +
+others would want to chime in with their opinions?
+
+Thanks, Lorenzo
 
