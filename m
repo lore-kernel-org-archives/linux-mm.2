@@ -4,150 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B5D7E9905D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D718AE9905F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CFB66B0005; Fri, 10 Apr 2026 05:10:50 -0400 (EDT)
+	id 068AB6B0005; Fri, 10 Apr 2026 05:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 780206B0089; Fri, 10 Apr 2026 05:10:50 -0400 (EDT)
+	id 019A96B0089; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F6C6B008A; Fri, 10 Apr 2026 05:10:50 -0400 (EDT)
+	id E71946B008A; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 540D46B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:10:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3834C1C83
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:10:49 +0000 (UTC)
-X-FDA: 84642076218.27.BF2110B
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1540120010
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:10:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IuJKJYxn;
-	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775812247;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0BAD6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:23:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 686E858FC1
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:23:34 +0000 (UTC)
+X-FDA: 84642108348.18.9821BE6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9DD071C0013
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:23:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXP9WrNi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775813012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=naitCC6swSoBy1VNvSZ66ZypJ+ORfAmYMB1nrf5YPCM=;
-	b=FRSIY2RyWX8PkO8peCa9SBghYRdcOyNsFWVlxAcucWQ5BAh2lXyE70eqRF/zxvXMZXfOhn
-	aWiIPywjt5kUxFyz63YgEGpcI2u7eZu7TxKmI4xAURB/LeqUqqIgD0NU3zHrV6cLBMeL34
-	LYhlwWAuZiVtda7YgEifmt+npD56zdY=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IuJKJYxn;
-	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775812247; a=rsa-sha256;
-	cv=pass;
-	b=4hqF2AByUbZ3Y0RuOJAC+Cb0aXwxDlWqb2fop/kWc6hYL3o3fu1ZjPKlTsY6oQD8bJhiKX
-	mzLC4iQJkwWKjaRfDg4zDsIaDN8PrPdUQfDYvC1IGzxCAcMsNGk2lymNXabpMuIKkDKy+a
-	UY9oeh46UnAQmOrxO9vbcOro/o0iYbw=
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-128e4d0cc48so9136865c88.1
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:10:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775812246; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CL03JkGngXoYZg5JBtUfuL5+EtPv/agU5jxQ0uLGFhls79LkQ0HpeRceg0f81Gomnz
-         GP8Jh6bgnhnc7a+ZprVhdTtR1CByQPei0/V380F6JI5cCL4Gjc7BHkwNVBXiY/31u8ue
-         WjyI5Z65fEaYjIuMISRvURtD/+9mLZwtd9U5uMFdiXCbCvORW8WaQjzNJ5yqdZzq4UwS
-         bDcG1S4vM9AvcXMSx64YJ5mO59ZeAbCZoFBJyICbIUcbfWST8eKckQgYNCK1OqhjU6aq
-         KQDnkalNFqCegXHEGjDUMF1i5DwEBXC2gUAY+RbycwlapPelduoqCsy05e4y4CGiQ/pq
-         +nqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=naitCC6swSoBy1VNvSZ66ZypJ+ORfAmYMB1nrf5YPCM=;
-        fh=jiqFufJQGYx6w2x3aWCZKfjrj2/7cCRfEZX5ik1rQ6g=;
-        b=QA4auJmQqkbvWPUJOE5yFO6cw3XCXlcXWzz/c+120Vbn/9/vlwrQ1zKlxxu1YqsgXS
-         y5r2x5dt3HnfD25Kjqv+UZa9C6G6R7GK8Pt57ogtTj0m0t9wmxDc5dQ/GpSV5k7uI013
-         mtQDNEKOjgQn4K7/n/QRly8pb9Mwg9gBLFxz7etH8euvaYQD7m1OzfuMtOa9GudziXlC
-         O6nhjrupX8EFCgDXssFMVTbSpcFg/6KNKK+UkMaBFhaZ+HgMz8V307PklyHxmyuxivHn
-         Hm71eWMj1+i2sfpvEead4J64GCMQBuGI/wy04zHPkN98RFrU9zjXAZzdQE1Q3L1HeRfN
-         GYVA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775812246; x=1776417046; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=naitCC6swSoBy1VNvSZ66ZypJ+ORfAmYMB1nrf5YPCM=;
-        b=IuJKJYxnn33cLQnmgDurGOywt9i/riIt2AOlYKCC7Vbel/MnBYw+Fd3SIEVE45xsJa
-         X4l7ZPwY89R5QJFlhxqx7hiVz3Z/nE9m+ApvlMhu2ouYMUSO3/QYQGcc4m6Yk+YEt7e5
-         GP6ZG6bS2vDDEc7UEnEmSQ2l0F45+oUoO+sS0IMWE3E7YVZmJ9eAfNbsMuQYY1fcJfa3
-         NDMOopcw6JUR1fTzzKYi44QjBkdEadM2AIg6pyFXazHrc/0pVkUaRZ4YXo5SDIFgQJ6n
-         ZbcUhEA3ZtlNp/cRtpkyXSm69IwBsHrmRY51A4hoIkPIFcFqxrZBJI2t2Too8xV1qk8u
-         kvbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775812246; x=1776417046;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=naitCC6swSoBy1VNvSZ66ZypJ+ORfAmYMB1nrf5YPCM=;
-        b=I4eg6uHw1vQyqyUJ+7oeQnxxl0pGAfsCrRq6sItfTcJLyOImJnz9ip8aERV6I7xJyl
-         1M+n9qgPUptNVKHCnMqqcAcgOAOaiYrQoqw7rK8oE6RVapt1Srh4LOlG9UjUH5y4wAjE
-         t/l9lDmnWzZsK69rGYoAHNHq6mPIHcu4BZnwssT+k0dyPJAJuIP5A2zl+LSFmoj8LVv4
-         XtyIu/kqqwSWHszOHJZOK+EPRq0GGnEuHuinwLKKNTS5VVeIwJ2YwMYqzgjM1vjt0anT
-         kwFwlRhxaLs3DOL4LjGzZOUEm3oXeBLgiIAwMZlf2QcquSvKbOTQaUqAxEGdTtQC2Ays
-         d5Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXqSgwl/ch/zwabt4oVxetlNWty7NcwHLcUr2RkzAbKUsxPXre2k1o8pjBCVyYXkoKLXe0WUaRDUg==@kvack.org
-X-Gm-Message-State: AOJu0YxvfyGzYnQ8nDDVvxMN055ISLffBbXkOahgbyu0aIxBpLMIpPMn
-	xRP9uTw0A6y+0KBIunghNN3VAOlgqvGkccu6oKAwo6AoRDH71xpC7GGrMM83ESBMMncIv2V99TB
-	R6fnRLe5FRajn3iTgQnGe3sZTTUVJB7brRAPhMtny
-X-Gm-Gg: AeBDietF3Fn+fVZ8lwXXNp6pTgo1HDGHFtYrDY0TsooHjToG6wIvNFBPFXMT8UFHPTh
-	p750ZdAOKyl4aPlPOCMhaO85YdI51nOSIKSSEg+J2rsIuiPs+fmcps1XXde2L5WEd7keXBv20EC
-	qwAZrnEqDh0o7CvzBOPzsElbbNHLo1/8RqrgworleyKFFyPVqDeoWYjxWtymtSYZ+NvL6YOn+OB
-	J5ObqvEWPcze750tM9zqpkmSBMw+2mDLetLK94tNcABnMAFXGfY5pByPsSgW+uh5O4mZV9x9BEy
-	bn79IUeFF07qttiwXjLTRLxA3xtszW5kmYMja4R/jdlZXtzu
-X-Received: by 2002:a05:7022:250d:b0:11b:b3a1:714a with SMTP id
- a92af1059eb24-12c34e8f8a4mr1549057c88.12.1775812245709; Fri, 10 Apr 2026
- 02:10:45 -0700 (PDT)
+	bh=O0e5cORq5EePfMto2zoLbHvyKO76k/fBqhrli5JrWus=;
+	b=zpox3+9MPgCiH5NX+AI+eeNX6kDkyE0vRKmylnvrg502TYrJD5vvI/JMIY/MyItsVyGRzm
+	vFBkGDdFD0sUIQRlMTNyKSYwnIAPIu9EYGUiRWwwUrjhMaMUbOzxIUBsq5MU1lleZmZpWH
+	b3JWyQqQ3+6ipcIwPHfICNdqEFh0TfM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775813012; a=rsa-sha256;
+	cv=none;
+	b=6C613CrSXl9nIANxK5lBL5MOfZ7vWtB7Mu58OoOMOtOEvjM2iZHI6L2nxxk30EX2z1jxMK
+	zKT1E22r7SSAfoupEaxmyReRrJOrlZiM6aTuySSsDrWF5XfmwTTrcp9Id95zwHs7tIL0XS
+	L92AumoHXdaHS4yY2VYqN2r3kWfvwP8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXP9WrNi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 82100434BC;
+	Fri, 10 Apr 2026 09:23:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A61C19421;
+	Fri, 10 Apr 2026 09:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775813011;
+	bh=bRS2sFDSkxDNUxdLeMiZMk1q5DPX9sCGAQGX2rFyGa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BXP9WrNis/L8hNuW4Ic6OoPesbEAjB1wAoV4JK8O4tFeM9AKY9lwNWLtfK1gj0EzO
+	 O4bNbfXYyQfJgqkczpXdFRJvyWnqvfa7fkt6ZIkjvBJeXx9h9AIqfOw+JC6qfcj0BT
+	 dlNLLL0wNfexikgNm/PU4lTU7NGIcu6mp7MXxmPdEJdFqqoano9zlHds5wSs84Zb0m
+	 xw0uF4caQzfOaXDh1S0t5QCJZ04QkjPbNqp0Gozm++BGvD1ZcXLvTn2g2WxE6JT5O3
+	 djlsiOGlGxr6B9LsxLVXYuMF5du/p7ehQMF6t3rYM0r4NxAShCMqnjf/kbJc8K0D2P
+	 pvODL5A/odabA==
+Date: Fri, 10 Apr 2026 11:23:26 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org
+Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
+Message-ID: <20260410-anonym-freigaben-186946cb50e3@brauner>
+References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
 MIME-Version: 1.0
-References: <20260331111240.153913-1-elver@google.com> <ac9d5O5XehnXRc5A@hyeyoo>
- <d0fe363c-2e8f-44a4-9b64-3fa3ba9a5773@kernel.org> <adM2XVZf1DekahlY@hyeyoo>
- <CANpmjNMeaWWuDMAj_n38U9XRqgZQz30ca82Vy10Bg=NoDfZ5ng@mail.gmail.com>
- <adT-gkVmVDDXR1h_@hyeyoo> <CANpmjNO1aNm3mKphDGWasK_NUfVY8q4K9GCjyREZFqrOu9WLcw@mail.gmail.com>
- <adhcKZGytWdaLxJu@hyeyoo>
-In-Reply-To: <adhcKZGytWdaLxJu@hyeyoo>
-From: Marco Elver <elver@google.com>
-Date: Fri, 10 Apr 2026 11:10:07 +0200
-X-Gm-Features: AQROBzC2BBHkcPy4ngHl5oxQazFqhMF2xdQ6OJLOxqq2BaVLmQUNSpLtUA2DJOM
-Message-ID: <CANpmjNODn64zxhs8eQM5t_y6GUCbvBK+feAAM6GVDX3-Z8aTGg@mail.gmail.com>
-Subject: Re: [PATCH v1] slab: support for compiler-assisted type-based slab
- cache partitioning
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Florent Revest <revest@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
-	Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Matteo Rizzo <matteorizzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1540120010
-X-Stat-Signature: 3kaieebkxojawx7r7kb49dkso5sgkju8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+X-Rspamd-Queue-Id: 9DD071C0013
+X-Stat-Signature: i8pishg4y8188u99rsp88hkioy46eeat
 X-Rspam-User: 
-X-HE-Tag: 1775812247-996610
-X-HE-Meta: U2FsdGVkX19iBiePOCUmZpX6Dn7AR1k16r3qC71kaBK8nqiuCsjc6U6lczYhpk230t/bA5vA0DSKJtTzNn+RJS852FCExlYJE+4NSC+klqusZ6LSEYVH5VU/qZIJzf9DBaoduI3i9J1IXMUda+Df1ZMp3t2r0j2myFqFV6ODtg45MffbIyP+AkJzJq0CcCUkLYfyYF1TAOlqxNVMkVNvQ/AJqNLhO8OyvQNIC4GhyG1fW6RkSNfTGUFmrroE+r3IhkpFVfW3JvZIvpwSELFhKnjXHQodRzbxNMT/odKbu5Y3py5rGSICECd0CM2klUiScxdJo3eczdQz1KPPqQ+pBuTaWB5TUhX8gsf3Cg830n9CipUYr1C3aKxdlOp/jPYfvD+6OuST/d6c+hSa3zQ+yMDxEGpY3QwV5AAiAbbPudBYPifvCisgYzDPaKkaHIHRA/CMpR7TeCLNqpK9n6uHRSVPU2fmpMrVpbtblUuydtl+bhVgJQpZtd2fjEfxlWBDeTtVqlqIBEaIPwHrZy2a7QauJ7Dhn612l88d8vvv6+k1Q3UNe8VBdIqM/FOg8r5HjbQK4meefjAJrPZZMkFqEXpEumAxnMCvvdMvc6hC8RBbQ2cgvAYYsBb7nP+X3e/IGdlgLRR/Zyjq7axDDzAEFOMfvqg/99HIcH2oqx+vUYz4l1mSK7wfC0AFfsG1HUDXyZiRfIWzZWF9GZygJFFRT3ooBNaTxeQNBky/BSTb7mQzK8DUfqjKLkb+9sHfqXLoaawV75DfhLn51CB8yQ3ak7529biZibxFhx7gq/epNLmmjUJNyGImrRgrWNPrIL8y31QNbMORxOC0aEKhhtx4iOUF4xMv3B4T2DfMN4rdNQ/KvtxECUj3SZBgW5G9sfP/j47nh8ktr1q4FteyCfHkmvaIQF/A3yCMdABL2tczLA1lPYJNPHk0AClPvo5QdvBwimsEAkz9+QdEdBSJVr3
- jJvE8jdm
- mIpdBuc4964hpvthvDUOt/t1QgM6reNz3f2pkT9Capv3QFXQqH98WXKrJDKO5WS+HzK6A0OWl4zebMlNSzIlDLXFundedMn2x/dZUfkBuP18PMVYcVfCQpNk6CH62iNP10QMfaUqNgne2hanaTAUmvwNXBWBj9FwU7akKxQ1iZEN2dXyLRHncREoPaVM7FmG41X4fWRCAnj1gnI6RL/RzSFSG1y4EUen3UnnWhqiCXXc2Fpx84L25HQO3U05ojWJkXEiYewBDz34rb6DbYWTa6ijTQvUZELA1b/rQkLByNiOQku2la6/bBHcxGgMsrdknh7U/Pi3Y3q3KJZpQ/ZSni4Odvg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775813012-483210
+X-HE-Meta: U2FsdGVkX1+1B4NE2QehJMuC75UqgpAWsXqbkC1aFWBq54w0rZUhrV+isOhsLrPNCwg0QBV+kMEld6paSysCCMFhFeTPpGPfUzeBbhinQN1t9yEKZdtyT1uLpf+4XQ6T0creuu7KeuiT0z6X0v/uzoYdZ7DMmB6GBCvFzzStOYuLySLykOvBeHEum7iWGl7p8G106vHIFnICj2KxtT3SPcTJmtFxTeoK+GC3HZcCbmC1x6kWkFH8ndR538osp3OHOXJBamBdiz3RvnoPXP07X3Yc1bYum+G+b78agaFJ1DH3Qo+CvcpBjM+9kl9ai7//JhpdQRTJX6am3cRpYjISwH77vSmKzh8ueEd7I/PuQ69a4SXzBJwi07GkoV95o4Mpt0OGBazUYhKmQE9vzE0KP7vKWnG2I356NL0p6EKGf54ouctM9emiWdBbrym5n4vg8mLiEezdhd+cFAYg9aVNfgP9yighzsF4gxOfcHmfrziwbSsYUjAh1gkghkFkJuL8yrCiz5uTuZqo7zKX5ntSvBocw10qRqae83kAqeR4QYhKA0tzdnMz8FIWVWJOpl8ihmS3U3L3SO/RdvRJ1YfLlyX4z1BgmxcVL7beZ/L7xpg1E9W48LzOZ2RJYxeCVurz4WYHWqkPkLWsTChLzuDPWYQ+paxV3lOuuZMeRy884pe3jegwJvkMdoWETVq7OLbCYtVV8J7mPXuaE9gRqoIQAXIFZruZTC1rXoRX8CbGa4NBKmRGfFSmGKh8nWrTMvYoUZwWSTuPE6qjzfR5sAVNvFBjMKtlI8c+jL+XGgzGUpkWCxiTOann8XXYa8Rd7Cctvww1+ngtfIoJEIqIu9WpjIjHpz66M56CjHCfU368WrCAuchZEJHygNzplzswDFjzYWIg5u9E17jMNw5cVPre7foAvTmsQJY2R+3YlZlxOWIUcoF9pXIv+lEgKSb/4XA1QrpmXaMVbyrXpQJDucW
+ WQOO33O5
+ 6sOQA4lcghFH3GoR3IWmGXjkN3/Mn5KNMufxI5fRBdzTcXUjh5Mei1MTCzJ1DjP/4h+EAiaAzSfK1L9Dlydrb3UbgUXQfZ8K1+3oLNdtYzVkfBjswlPIpXJ/wBRi54mh1V2QgjO475obmYvhyiJtHai0FB7iiXUb47KsQuqIhArxrxDNdcF6S+xOy98k2ixkdrI/BV6y4VTLUVXqU986y6DwNNqVQ3q/k5Pu0ETj2EWwtJnlrAidXBKJU2ZuvPDdt0AsnIXL0HGuS+sNMF+uzu9NHOeuLgOkcdfK5kM+QJd11eTE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,33 +90,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 at 04:10, Harry Yoo (Oracle) <harry@kernel.org> wrote:
-[...]
-> > Which is sad, because that means we need the macro workaround.
-> >
-> > Do you want to be credited with Co-authored-by
->
-> I'd appreciate that. (I guess you meant Co-developed-by)
+On Thu, Apr 09, 2026 at 11:16:44AM +0200, Jan Kara wrote:
+> Hello!
+> 
+> This is a recurring topic Matthew has been kicking forward for the last
+> year so let me maybe offer a fs-person point of view on the problem and
+> possible solutions. The problem is very simple: When a filesystem (ext4,
+> btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform a
+> complex cleanup - like trimming of preallocated blocks beyond end of file,
+> making sure journalling machinery is done with the inode, etc.. This may
+> require reading metadata into memory which requires memory allocations and
+> as inode eviction cannot fail, these are effectively GFP_NOFAIL
+> allocations (and there are other reasons why it would be very difficult to
+> make some of these required allocations in the filesystems failable).
+> 
+> GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclaim)
+> trigger warnings - and for a good reason as forward progress isn't
+> guaranteed. Also it leaves a bad taste that we are performing sometimes
+> rather long running operations blocking on IO from reclaim context thus
+> stalling reclaim for substantial amount of time to free 1k worth of slab
+> cache.
+> 
+> I have been mulling over possible solutions since I don't think each
+> filesystem should be inventing a complex inode lifetime management scheme
+> as XFS has invented to solve these issues. Here's what I think we could do:
+> 
+> 1) Filesystems will be required to mark inodes that have non-trivial
+> cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
+> whatever :)). Usually I expect this to happen on first inode modification
+> or so. This will require some per-fs work but it shouldn't be that
+> difficult and filesystems can be adapted one-by-one as they decide to
+> address these warnings from reclaim.
+> 
+> 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
+> kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
+> performance reasons. I expect this to be a significant portion of inodes
+> on average and in particular for some workloads which scan a lot of inodes
+> (find through the whole fs or similar) the efficiency of inode reclaim is
+> one of the determining factors for their performance.
+> 
+> 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
+> per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
+> to process them.
 
-Thanks (and yes).
+I like this approach.
 
-> > - in which case I need your Signed-off-by.
->
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
->
-> > > Not sure if it's safe to do that for exported functions though (since
-> > > modules can be built w/ a different compiler).
-> >
-> > Kernel modules built with a different config (implicit if different
-> > compiler) are not supported, and never have been. If it works, it's
-> > just luck (I know people do this, but it's just a disaster waiting to
-> > happen).
->
-> And if GCC folks somehow fix this at some point, even kernel modules
-> built with a different version of GCC might not be supported?
+> 4) The work will walk s_hard_reclaim_inodes list and call evict() for each
+> inode, doing the hard work.
+> 
+> This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
+> and they can work on freeing memory needed for freeing of hard to reclaim
+> inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
+> they should really be addressed.
+> 
+> One possible concern is that s_hard_reclaim_inodes list could grow out of
+> control for some workloads (in particular because there could be multiple
+> CPUs generating hard to reclaim inodes while the cleanup would be
+> single-threaded). This could be addressed by tracking number of inodes in
 
-Yes, and different compiler version also implies different compiler
-(so even GCC A.B != GCC X.Y), because newer compiler versions may
-activate different codegen options (some of which we auto-enable if
-available).
+Hm, I don't know with WQ_UNBOUND is that really a concern?
+
+> that list and if it grows over some limit, we could start throttling
+> processes when setting I_RECLAIM_HARD inode flag.
+> 
+> There's also a simpler approach to this problem but with more radical
+> changes to behavior. For example getting rid of inode LRU completely -
+> inodes without dentries referencing them anymore should be rare and it
+> isn't very useful to cache them. So we can always drop inodes on last
+> iput() (as we currently do for example for unlinked inodes). But I have a
+> nagging feeling that somebody is depending on inode LRU somewhere - I'd
+> like poll the collective knowledge of what could possibly go wrong here :)
+
+I still think we should try this - for the reduced maintenance cost
+alone. Imagine living in a world where there aren't 2 different LRUs
+constantly battling for review attention..
+
+I'm split here but depending on the size of the actual work needed to
+make this happen we should at least be open to try this.
 
