@@ -4,86 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D2AF45A0D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A4F7F45A0D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:59:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2E176B0089; Fri, 10 Apr 2026 19:58:24 -0400 (EDT)
+	id C19BD6B008A; Fri, 10 Apr 2026 19:59:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7BB6B008A; Fri, 10 Apr 2026 19:58:24 -0400 (EDT)
+	id BCA6C6B0092; Fri, 10 Apr 2026 19:59:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A6946B0092; Fri, 10 Apr 2026 19:58:24 -0400 (EDT)
+	id AB93F6B0093; Fri, 10 Apr 2026 19:59:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 84CE26B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:58:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4760F1601B9
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:58:24 +0000 (UTC)
-X-FDA: 84644312928.28.AC0B1A5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B45231C0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:58:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h2fUmmAw;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775865502;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A1EC6B008A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:59:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E62A1604D0
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:59:07 +0000 (UTC)
+X-FDA: 84644314734.19.62A7B39
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 54CCFA0008
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:59:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK91pp32;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775865545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I3WkYMmZgmGlrYS2YM+kkZo67mX5qdbZZCOLLBg1VUU=;
-	b=eim/N5xe153TYJmZfe3LHVICu9tVYCXYpIkjHebAiRPOLYdb8phfOfdTOaGHHDa2VDM2dL
-	nDbdJau5O3p4C916qmhhwp9zuQYFajq7aNCX6NpuOuJ3g/ea7UAOCRBfMp0boUgI22MhHP
-	qs6Usm4EmzZefsSZRodfzgG4dkO+aY8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h2fUmmAw;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865502; a=rsa-sha256;
-	cv=none;
-	b=lZuaGujaZwyjm0RoaKxX6FuFqdiGK5PJNCdx8bEMMlnkVXNr3S8ynNU86MkliYXkR9HZNX
-	BHoDsh2rXNeTKXoWLu1vXPkGJvw5Tp4uuypgi3F8hOUfG0hCoIbvOGfh/hXBIJc/wn93cD
-	zfqd9D4LFGVJQ4mcKfdDqakMexWgGQY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3541060141
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:58:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF204C19421;
-	Fri, 10 Apr 2026 23:58:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775865501;
-	bh=u6dUJAiT+Pm0l56lG2RUtGPm/TrRVQse8BkRehkw5Sc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2fUmmAw08Qwd7I9H/YkS6V49OVT9cnwKs2ul0tRBzEVbsIIzHzcEZI5VmE2sQwPK
-	 evshluf+HwhFM/S7LAg02cB0gfchFnW9Xomf4eSdo37ph8cKMumr2cq7SUqFG6WsE5
-	 kgk/+mad9S5QkOz+1PYKWO5DImEkSTZ7J09KQ7icUugX/7oGr2+uJ0u9YdYZH02/Yq
-	 rueOzDq5GphY6gWk+bvl7RZWgRge5k40vqrLjye/V51/NF+/B4UQ9AS8JVeu6dcUmE
-	 Ay3awib8Z3YndRRjjnFwFyx5sxQ6L7LJpSfMwGt6Q9HqsG5lW/1jdj5KfJwgRc5tld
-	 WhqgSunWu0Swg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v5 04/11] mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
-Date: Fri, 10 Apr 2026 16:58:18 -0700
-Message-ID: <20260410235819.91133-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410142034.83798-5-sj@kernel.org>
-References: 
+	bh=dhWemnqLfx4SK0GSaKp8xXR/c9DrucaqCAj9RVqX4sM=;
+	b=cdmHiZ6P6ZvrpM1+DX7sK5b0lBN71bi14ENv4kKuerXn9Fp1CFnGl2cnOj3IwVGHiOkhUb
+	VeH5ezYkpE6PIJTBqZxrQxgu3jrK3+Bl0DmFf88RaRQjypXXmtioH7J+IC2+i6ENM5roB4
+	tkW8lOfLT8lxY8ju7QlNO6pG5p3v2Ao=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK91pp32;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775865545; a=rsa-sha256;
+	cv=pass;
+	b=aIjZ2+ekh3oKAi9V3DS/QwdhrMGVCVxsa7piA4kOiZTmIkmNa4qbgzjIRSgvT8ejcX/RH2
+	ZFvcXTeP2K63uG/8Aamf/GwaU+iJM0q0GJWG0C4bKkIVQrM5oHmr2vcQo8VlELxAJk3WNS
+	sV0318nfzGSuf2AlqROcoQZoET2nVGA=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a5800772f3so21103456d6.2
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 16:59:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775865544; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jbZpfvka0xecMMrlDh/P33hega1/irgNujbrHTMmonH6l2rt6TTy0RSnofGOr08ZIX
+         F0ySGjOj/KU8faaDbX7Z13Hh5vIegjxcTJ0UYKEZEu0qYULxdb/CCpTdPHluU/R1QtYp
+         kb37wOKR0d8vqocYA1tWcvlLuhcHOcftD5NgRJgbCAFlrpelTC5HoyBbcjXMaPY/zvAM
+         iuBg7o3H9UbHIWBcIFYD6LCCfTOLDYAIrlZVobbRfJnhhCGpJIh8kubnrwRWDc0ffmEw
+         7PyaOtdhzazRvYQctplWri+uOZzKAT2vaimUexzaOFVYDsq17G8LqL7T0cKe9ik1hFPo
+         dNEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dhWemnqLfx4SK0GSaKp8xXR/c9DrucaqCAj9RVqX4sM=;
+        fh=kv6/sDK4+o52y4NVi8khxVyYihrL+BFWC8wXAd2ENgQ=;
+        b=aG/pNpDJoA/msKn9zd5uCe1m2A9CKmxhKcLs6zublgit91WRlT09nD8riPy2bLp52P
+         r81Fjsdn5zqL9ABcHkdW5Y2i1cDo9s7eAhzycIgfBT2a0C9S20uBC40yuBKvRkKWDfjQ
+         eDaHXXW5Qq09VKoee9C6mjkgZnaw5bB1AidoLvzGL/ZM8KW1mAFdPsdO4hc7Ae6ARg3k
+         BGakieHHzhsQ3mKBq9HpI/8kU3kPXMVDrEIToypuwBwqYsRc04BuXaUZmmBI671XobC+
+         C0dVM60+XLSbhh3hRckRu+7oxuWuldUJlv7qtSJM8ZHb97XMaO4CBMHUgom6HfdcDNmV
+         Z62A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775865544; x=1776470344; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dhWemnqLfx4SK0GSaKp8xXR/c9DrucaqCAj9RVqX4sM=;
+        b=OK91pp32mDwJOLVm3cQlpuflz37J/1KQrt3yK39PQBAWUWaaTsokJhmqJ/4S3yiIAS
+         xlcjvgv3uLRlCfskXQ/WHhT9EUxwhQQGpGoEz9FzS1Y7UCrHivl4PsLdYeU9Nso7USXq
+         mkTvpFHc2D9IVRa0ukjEnnBGp4USTWjyhMThTLtxdtTU6FOsOA9BAVNjUYxHfXYeiNnz
+         n18BXko35/beErgIQitKe+ySiGRj0uXF1lYfmXgR20tLKKhF5wIMK/tlGc6zF4sJqmAi
+         o/QoB2ecQM3CtQbINWPxMOoz1uJUuUyERp2HHDmA9BUU+cem1LOTDZEMGoATpzsERttK
+         RMeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775865544; x=1776470344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dhWemnqLfx4SK0GSaKp8xXR/c9DrucaqCAj9RVqX4sM=;
+        b=Ic6DhueCQqROZJF5vC4NHJj63ceOK1hpXpIy2wGNebjQ96a3OmtHs44j37GHa2HclJ
+         Kf7K4qEAJOwoLYy+HauT/sdBpwo/ml5Di2mK8GkBQtJEbVXkwsiMY3HvisUUe+QjS3fR
+         xjsuETczyk8tGUY6ywjdlIqheHxdDsZaXd4IPqrXrlY+OkW4HzeTEWj0iW+NOXz6/l+X
+         Y+8WZr4LOvRo2YIgGhehdK/Cvwf3yGvF2K+qP7Fxaf9PihWeoQrYHSBGDtSjgg1Q4FiN
+         0rl1cq7Q68TrCJh6H3hLhVnU3r1YBVuX5tLeq8NLTDL1+znV7JzLMlizfjYIa5WFZjt4
+         TMgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsoyMcg9EwlFLVfRqePDVcMO9MYgVmXoQUN4iJta4w4O1j7StA9HFyqBHXHA8a5CK+JLxwZHG6Iw==@kvack.org
+X-Gm-Message-State: AOJu0YzN0kSrUXhR1aioXD6rWIhUFyLjdh22xwuchNHisWSYigZhWSLm
+	6oIXglUkl3nPpdcEqW0K08kAouQ+l3xhSmoZhxPoEOiTeQ8Nt+VtDUo1ScwrJ+NY041r9eCLmex
+	yVpfgcd9HbLcYyhsnIfk1GmWzdhhNnNHorLFdd48=
+X-Gm-Gg: AeBDieuN6csg27vByEw/dCETpLqDrXp1EB27QEmVWTi4wj1jK4UL0nxqNf53nF9kg2I
+	W45mVWcDOANAEhjYjrmNISw1ARIlcgw3ggQUAnSwRDYVsRM5sybgIU9BzBuIGqmfOE05YBTRpr1
+	ZyWoMkKXXr/dW+zsBk6tk9C2p1bovb7M7v4vdzkeu5fs59and+6ohx8ct09UT5pII7/Ore2Jc/n
+	irF0LPnPyLapkKYa79IXNnRb8ql+m+zNBJlea/iaZDiQ0pDExm5xwhRrAanw02sAdevBBqmN4Ju
+	cRXN7RCozG4F6zkB65uHz2WSQrOMCQragwIATg==
+X-Received: by 2002:ad4:5e8b:0:b0:89a:1536:251f with SMTP id
+ 6a1803df08f44-8ac861ca80cmr86862796d6.28.1775865543753; Fri, 10 Apr 2026
+ 16:59:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B45231C0005
-X-Stat-Signature: g1cayrbgcw8djnaqpngm5fd46u5jzuq7
+References: <20260410-batch-tlb-flush-v3-0-ff0b9d3a351a@icloud.com> <20260410-batch-tlb-flush-v3-1-ff0b9d3a351a@icloud.com>
+In-Reply-To: <20260410-batch-tlb-flush-v3-1-ff0b9d3a351a@icloud.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 11 Apr 2026 07:58:52 +0800
+X-Gm-Features: AQROBzDP44sZZAPdUd5Hmb94spOIVCaHy2jRXAPflCoMNXItgUM0FvC2dp2kgU8
+Message-ID: <CAGsJ_4ytrMg6mBKXNky=jcuKF4KFpwZbCFnFin-7S2XoP93yfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm/vmscan: track reclaimed pages in reclaim_stat
+To: Zhang Peng <zippermonkey@icloud.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1775865502-726590
-X-HE-Meta: U2FsdGVkX19Gx/5ozX7Ewrc/c+ouHYYsB6m6qJqux0Ru0VRgul+d2XtyGwB9uqHSP3DBEMjlzWJCpYOohqwH521BdLEfIpbUvB8C8w+8LYTCBAVjA6OKaJddJXYbUBka2sx/l2vErSN7Na9MU55QYSHL9PUt+GRSfkIMUlEXWuDd8tNqD1M52Som1E+7lbR6gzHmNCZ0UzjIh3ODyCZYhtk/8gE/MFieKUJ3z+QCVeixKCh7iCnX1BqjsiKUAru4bffXuatRZj1ZPq67AHRQ6VoXcEe4Lz+KW0vgfwlheUsvCyPZ0WwAtZzWYxKKOd8YtMD0M9njG33joGIP7UHa0vTOrVDT5g6MZs0rQHt/v7ls6JnVX5iCUZ4akurWzICOk3uzocD4STQzjs2QdC9vA7tcoYaVLUq/1K6kQojyFOe9kwsURoSysJWLx49FI/x4Vh97Tb7yhFuhn4C58kJzQJHRwf/7PSgB2H5gZDSIw1bV1L+njgfatRos2vDvjwX/3oFpsiLnKdEUf7TCxcwByfmGT2XqVgqSMnvMbg5VP4zJXrhKJ6AdolLOgx8BKy32eVHRlTRr8BVu1sLgNFpUPOL31BY9CGZiGA4NgUQJ5mc4ObyUkyHXX7+Fsfme186gWn/FX5H4tb2ZWpMrSOs3RpqS4hdVGQe7s8HHDeu5xfJ7uuiZjIbwOq0BTjAX/FL5LxEthzzvatMEjQkUuLxZ5CNcpQATw1iu9lit8SdqY5Msbls/oed6HjwCK/HS+L2Dm6SdMly80LiCYDFrcQa1vDYA1yyjZ22/oW2teGyxFZUtDuD+JnZVhWFD34lNe2HF9TOyhBFFWQaunYOT/iueYcln3rCjrPlq4IeDSswl4V628gXAUpj8jcKjTAzrf1Z+l91HrIvs6HD4rACAA4H7bpbIPFE9Ymm/MyeVaqucTzV781/j22XZQMHknVlEvvCkcLQK3vqhQrCSlvO2R4n
- fvYC3GVQ
- HmncnkI7zztsLOl/O4RuVGdiuDBKmIkwZBBsumX1Q4M1F0atX0Ag/JMVhg/ZzMvWK7ApVEQvRPsr78iRQJ+Q2EUQ0UotpNa5g4lBMewrgLpdicK+E3pVRmiqZuPuhuhqXuJxEY0CU2/VFfTf5BO463Uy7Hyw4NcXazmlpM7mSAe2WQBSiL++0DgpE+kq5+0wqx0oJnvTIZWROT6qolSMEuqMioXbbdOrGMbG2KCgwyE4/BXylzo5mb0FkwZqQ4zHZjSOgZVbEGKTyWwfhCuiTr7WcLwWnAfWWOoGg+cSv/O1owK36hjSVZ6YqPFvJD5Jg7ZUsTCEQUySy0f/ntDtfPOkiOK87tBC9AB/pzMag/nr3MQCKk2/X9VioK4WY86bzUNaaJpj1j0zhlSVU433x3QWBXWAxBIwrcCbJPb/EyyqBH4U=
+X-Stat-Signature: 7hjkm6h6rojthj7gzjqhgitq3f1gnz1c
+X-Rspamd-Queue-Id: 54CCFA0008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775865545-249799
+X-HE-Meta: U2FsdGVkX1832s7akcgJqJ+/c0AVCkh3gltHxrBVpSri/IMA+96x8vQZzvMSd2dGn4MO4bBzr9DnxSjjZIJUZL2bpvkbQJ90u4eCAVoXTLCW2RbbKUoIfvkqaNf7FpRlHBJzopArPUAw6AJhNsFeXSGH63vbE3ys8MQfwuvLVTFar+a6ym/oNIVltCf7ANWs3eJNYPBtFZV8QVKMpoGWj2u84jANXPq5dkyUQCJvbl53Ha+kN0WaY0uYAF7FqRR7S7L/0Yne9RZU2VyCZMFZWEitDxVqAgzdO+ESu6Us0cUtZ+6C81zAH8jFyV8229/SiC78goQdcOQN6qg7KRgJxdiFVGqteh3PnE/83gKUX2ED04GGIZaIUy4p6OGc7rlIWHzOxgp14FXTwFbe9NOe5yr+GiWebiwaAGRrlxZ1zDZwky01+gkMTk4P1GiyH8bEkS5lc8qq4oDK7ZYPUxFXC2thlQ4855qb/Q1rx3ic8ShvTYtio8gtj+RokuGZAb8ANAiHgIY8Nu3uwC7/G/YxM/uRZCZnV8RhLZ5BY3jMhWYshhRkb9QCWRfxDLbyZoM+KK25S6KZRdcYtYASvoKzir6xYlw2vd459h0NykTpQw0toPvRgAUaz5bTPJ+anRm8/9wPudODdnow50GRRUdRAONbxUGtJlcfbOpZ+P1eizSozLtT4RBrEfMqfFFkvKET9sOzWzVXgKyCQvzR5nvkb/Z1ySysMeq9HPjzuIFGmHrsouiStVe1siaEcwZfrIcK7+nI5a4MgZ/3IKW2S5zyZK+9NNbZVaMncLAi/RvvilS1wDcTnG77kY4Hvc/3ClwMmxnsWaoSKk6v1GOjzWVkBU2hDH5S9Vlve4ReYWB7JjCB0vKl9C5gI/2n15DE17TnARXoKxrQjGBJL87TSK0D2WNP3er17ATQoTTaSC6qJzxT4EzJtDIZsFRkwzse0wg+RExBFkr6B9rllfDp/jM
+ rsOmx2AC
+ SHFv222fHKgrB9RT75HAX7hGn86twjWfnEaI/MPXxP7KqEjUy+GfZNEVZwqsy2fR4xZqzSSBYkBVQ6Sv8Eu7RbSPifSZ7Uu4VJWGVwb1b5KCdIw6TU1NlzTM6PtHVuIKeTsmjQBGDr1lTdq5b3UxX/Rjfxd0oolWmvX913r/TaKQxlPioBMGem1BTcC1nqYeyvmQxsibFTQ1JBwfvuAua2+p2o+VDq1PjZ58f54owktgQN86q1sB9NX5hP8CjqY+aOyzF1TCiGsitjjAsGZR4Y9pkh6vE5/NvYSIQeYVntlZ7oGQn9dn+v1rMRI2t2bzvbEWB/1IXffVf2p8zpQpLgTumctrZ8mEeGiAkeKVaaPHEBTWC3Pd/CjHfvGYexJQVWDESjeXaF+XSSuiI9EsokbjaHkS1MtN5Fm/XtQDVRASOKIzDLVvFDJlCP9dFhxNWBYsbNfGUCojL7VyKmnfcdXoWpyXH53sHj4wWD/bU/QBCtZrCRXYIE6fIhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,87 +145,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: sashiko asking a question that was raised on the previous version and I
-decided to ignore.  My opinion is still same.
+On Fri, Apr 10, 2026 at 9:04=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
+> wrote:
+>
+> From: Zhang Peng <bruzzhang@tencent.com>
+>
+> shrink_folio_list() returns nr_reclaimed while all other statistics are
+> reported via reclaim_stat. Add nr_reclaimed to reclaim_stat and change
+> the function to void for a consistent interface.
 
-Forwarding sashiko review in a reply format with my inline
-comments below, for details of my view and doing discussions
-via mails if needed.
+My gut feeling is that the existing code is better.
+There=E2=80=99s no need to enforce consistency across all cases,
+since the function can only return a single value rather
+than a structured set of statistics. It is also clear that
+it returns the number of reclaimed pages.
 
-> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-5-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit efc09e724c58ae44645ba20d1865e976eae67242
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
-> 
-> This commit implements the user-space ABI for the DAMOS action failed region
-> quota-charge ratio setup. It adds fail_charge_num and fail_charge_denom
-> sysfs files for reading and setting the numerator and denominator of the
-> failed regions charge ratio.
-> 
-> > diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> > index 5186966dafb35..d5bfba79f105f 100644
-> > --- a/mm/damon/sysfs-schemes.c
-> > +++ b/mm/damon/sysfs-schemes.c
-> 
-> [ ... ]
-> 
-> > @@ -1663,6 +1665,48 @@ static ssize_t goal_tuner_store(struct kobject *kobj,
-> >  	return -EINVAL;
-> >  }
-> >  
-> > +static ssize_t fail_charge_num_show(struct kobject *kobj,
-> > +		struct kobj_attribute *attr, char *buf)
-> > +{
-> > +	struct damon_sysfs_quotas *quotas = container_of(kobj,
-> > +			struct damon_sysfs_quotas, kobj);
-> > +
-> > +	return sysfs_emit(buf, "%u\n", quotas->fail_charge_num);
-> > +}
-> > +
-> > +static ssize_t fail_charge_num_store(struct kobject *kobj,
-> > +		struct kobj_attribute *attr, const char *buf, size_t count)
-> > +{
-> > +	struct damon_sysfs_quotas *quotas = container_of(kobj,
-> > +			struct damon_sysfs_quotas, kobj);
-> > +	int err = kstrtouint(buf, 0, &quotas->fail_charge_num);
-> 
-> Could unbounded values set here cause an integer overflow in
-> damos_charge_quota() on 32-bit architectures?
-> 
-> Because kstrtouint() allows values up to UINT_MAX, fail_charge_num and
-> fail_charge_denom can be quite large. When these are used in mult_frac()
-> for calculating the fractional charge:
-> 
->     mult_frac((sz_region - sz_applied), quota->fail_charge_num,
->               quota->fail_charge_denom)
-> 
-> The mult_frac(x, n, d) macro computes (x / d) * n + (x % d) * n / d, where
-> the types are determined by typeof(x). Here x is an unsigned long.
-> 
-> If userspace provides large values like 1,000,000 for both the numerator
-> and denominator, the remainder (x % d) can be up to 999,999. The
-> intermediate multiplication (x % d) * n could be around 10^11, which would
-> silently overflow ULONG_MAX on 32-bit systems.
-> 
-> Is this potential integer overflow a regression that results in an incorrectly
-> small fractional charge, causing DAMON to under-charge the quota limit and
-> bypass the configured scheme quotas?
-> 
-> 
-> # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-5-sj@kernel.org
-
-
-Thanks,
-SJ
-
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260410142034.83798-5-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+Best Regards
+Barry
 
