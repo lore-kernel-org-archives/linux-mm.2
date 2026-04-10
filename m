@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B45F4484F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2BFF4484F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:21:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CE756B00CF; Fri, 10 Apr 2026 08:20:57 -0400 (EDT)
+	id 4F6186B00D1; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A6826B00D1; Fri, 10 Apr 2026 08:20:57 -0400 (EDT)
+	id 4A68A6B00D3; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 395A56B00D2; Fri, 10 Apr 2026 08:20:57 -0400 (EDT)
+	id 396106B00D4; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 269466B00CF
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C38BC8BD0C
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:56 +0000 (UTC)
-X-FDA: 84642555312.05.F8DF8E8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 222356B00D1
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:21:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9EF4590C7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:21:00 +0000 (UTC)
+X-FDA: 84642555480.20.1CBD8C8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C5356A0017
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OB4z6rme;
-	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3969A180009
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmyBeAjX;
+	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823655;
+	s=arc-20220608; t=1775823659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=wet7X8fxJTL0AwKIA3Km4njiBeu4Q2oQdaC3YcfBnuE=;
-	b=YSgaudfQf8Cv6ELLySswV7ZuPiQyR5kUIZWWPdkCRBhGUwLrkoDofa3nIoF8ttfPUxrmX4
-	XRZMj3XyzirTUXlemC8q4Ui9Wgw0UGPDPDaFY81EmVfKoMSQVzxAmK5BrwAasail3TXPLs
-	zzIvb1O+abchejHGpw32xNl9qkoBIXg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OB4z6rme;
-	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823655; a=rsa-sha256;
+	bh=55BqTpopgqyhosJe2byyDZjQwi/7tJCuwd4CS33Nh0I=;
+	b=cQz15h3ILgje33CT+sBnPD7Vt2i4l86Ko9N9AVyADIjwn2F2KHvZxNu2p/r64/PfsEGAd5
+	M1z790IRTP3EMiVSm3Qc4QqtkkejZnQjqcu45ZQ4A/VbCNdlWoAYFlrkEN6dqFmkJLZ+pN
+	6xVtjJu1NwJlmBmixSfCCh1HPxF2bAA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823659; a=rsa-sha256;
 	cv=none;
-	b=ACAnDvsYqrqoYrk2v99mIuMj9cw9tdFHAq5SeznLJcqieuD3ZcL0e6lFXga4ucfrRoj2UJ
-	fN0vvpwv79gqFfef0qUaA+wrKJ9VojbemCGcAlUZiAUNKdL5qBqNARTDlF1Ahb5FyYH8JR
-	hi0RTRMXxh8/IGLJNdChSjD8aOqLkEU=
+	b=fTGFIYgoEhpnVDIhhRjfOy4mGFkawhIWXy/sp9N7yHKLnvERaQCo/Uo0tJ/bBik66pkwe6
+	nhDL27U+yo8qxsgLiwquAjSzMNbXH5AaTKjB85oUmzH+JHg4aeRuljDTJ3o2cPH2hApAQc
+	x9Z/pnEqxB0d0aKfM6l3eDfCqtg8dOs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RmyBeAjX;
+	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF571438DE;
-	Fri, 10 Apr 2026 12:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A6BC2BCAF;
-	Fri, 10 Apr 2026 12:20:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B18E409C7;
+	Fri, 10 Apr 2026 12:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82685C19421;
+	Fri, 10 Apr 2026 12:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823653;
-	bh=JK0/F7Ki9YiLWmMnKZ+Lr+3CWdB1is+mT2jM4Zqadew=;
+	s=k20201202; t=1775823658;
+	bh=Hb2dziS1cUz3f0ZYnY6mq4QP/VKrKM0StdHMUX+1BaE=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=OB4z6rmedzjF/tihT238p7staUYI70l/WLyVpYQgd3G/0qlK9BetgUNbHaxUOTJJk
-	 qdDaLQwa1siZvXl47NXTJc0ORYA2dsT704qKM+lVSSRN4sldd+TbcnCJaaKLtMHkff
-	 SfKJlNkL5h8guSKmd0Me9uWsWZCYIBa85rKbdrV18Ca38UzELO7GQROVPWzrTHMCfJ
-	 QFdBWZuROAjUxl7+DX48sdEQxX7/xngz/AnUC+xaQ7wkdJF1oolh8aMOXz2mAve+hh
-	 C3LVdoPqlu6sGEaRdYNI50vZs10DhqwpaJqHFXY4YWja3gycAdllpb8XCooIJE8rT+
-	 LUw8ufY+z6WgQ==
-Date: Fri, 10 Apr 2026 14:20:50 +0200
-Message-ID: <20260410120319.528318344@kernel.org>
+	b=RmyBeAjX6h1L2rIRLcz+AgNEdpyqYQZZkX4kYkgxpR9ZJA0/rvdow263wov/8PVOr
+	 hb2QUP5GwQZouavgtAcs0bwbkCd8TxgfCVh6LWoo2a7HWknstglzPKB+9aabXFzH1J
+	 rP1F6gK8dqeRn0JBTKdTohI1oCqed+5PigWBVmbAA5ah3505CMSHrUL7HPCCN4sGiu
+	 NHT4954Kmifvfva6Jx9l4xaRzDUJEaSzZYxXiP8aChKSe2ykT1tpUU6RYxqauW7DoH
+	 p3wDa9fQGCdDGL4OtStOnSEjWIThdsFEIiYqSYDvCq0zlNoVlLTrCjuWlgc/BYNO1M
+	 jFsY3AL2zO6GQ==
+Date: Fri, 10 Apr 2026 14:20:55 +0200
+Message-ID: <20260410120319.593798781@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Dinh Nguyen <dinguyen@kernel.org>,
+Cc: Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -103,8 +104,7 @@ Cc: Dinh Nguyen <dinguyen@kernel.org>,
  loongarch@lists.linux.dev,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  linux-m68k@lists.linux-m68k.org,
- Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org,
+ Dinh Nguyen <dinguyen@kernel.org>,
  Helge Deller <deller@gmx.de>,
  linux-parisc@vger.kernel.org,
  Michael Ellerman <mpe@ellerman.id.au>,
@@ -115,18 +115,18 @@ Cc: Dinh Nguyen <dinguyen@kernel.org>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 29/38] nios2: Select ARCH_HAS_RANDOM_ENTROPY
+Subject: [patch 30/38] openrisc: Select ARCH_HAS_RANDOM_ENTROPY
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bqrhfce9f3zx1w8wn87cbu534phdnz3a
+X-Rspamd-Queue-Id: 3969A180009
 X-Rspam-User: 
-X-Stat-Signature: 71apqitootkwpwecznadj7ymg8a5yryr
-X-Rspamd-Queue-Id: C5356A0017
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775823654-290609
-X-HE-Meta: U2FsdGVkX18MrMrAPbPXIThiuhUOlRkNjaalg2OO7DSWV/qrB28C3x48uPSx1OFZDr3idv2fcvxsOdM25/+WwEwmzjRMe79Zkxf9oBd6aSeX8qY8gvCWjY6ZZ6+b7933Xc3fzJh6g9C/GJCG2Zcqj389m2gPtKY0epG94NtQ3WWFBbW3j/9WFcL6gNRP9kpEoBTBc1hN7Je9MDwV+lTUEdhhLF/iqpVnXupr94vYorX12GzN0LM3gqJytdK5SyRLICx7rL0mZkIEzm6FFSjGT/TlpJfslmikyDwIC2PT1gvfMUGWjb9DwrcV/DbGzNaVeJOo4YNf5UQBedUcGaGmzjhmgnZCoWc6lFVJ8bDPvWyKyjapdzwO2ZkIOYTmSv8Z0TynSHeKxTobqklmzN8usrmRj2sv25HtVTiQ/ZnhqP+3pcUvTvNpKHn4Op8DyY/hTIQ6WPXjC3VE8Kz36xKKNueRKKT+nfFd0nlV9AZjWqIvv92QJC7CSHDOdCezs+5Vl0lE4fteWB/0VbmF344zswe9/0st9vlpntuGKro2JutLWBvfYVxHWf5ef5Lom4V88cPuUo/LpAJ3c06TDYWblu4sUqhD3XvH47WLJoODD25YtYIPfy0qaZ4icFa4zc2zxj/VOFcbIL/tDQoDDOd/qhhnMxwlpmqk0zrVYbbYGHu7ebwyg5Ir+/lvwMNKh5FGEH4JrjQfMQlrkBEHvOkIFyjUF44LnCr9qGiJmbkgIteP0Ikardb4lNmSfx3kqZ2KirUh28a2OaIMiA5x+7LH1nXBMdk5KrJmpDcog7Pd29auiiVOUbO+s/W/hTmAA1Zy3HNosRj1n92ZIeKYRevgdb5rxLYDnS/Tcx6YssB5hrjHCzdy7hriCArCjRfxdU2pPhSgSkXzCUNIzBskM2NeUKuDWOxsDHUk1RGP58w/pksPzLk3fuLkvG+wjYTFkwYeJ+ztks5hzuBx362sPmg
- 33kq7Czc
- 5oLAyuZG0x8V6e6YSOeoDiKAS5gGkvxSl+jEKDnJgOII3GJKb/Gm4QV/0vXb4ceDOSHM2U27sDgfEZW+qMvmErPSZXefEFGHbj2nb2hQRPasCjsmghycPEPwdwRfuWVD+nxisJ/cS1wsEOBkha39nTO5wsHA/xX+6oGLEahQKIoPbqrYGXV9XqqqvdwnDhfLW47HUIhZ2DFdsNu4TBYmL7d7B/v8g5NSrk8Ouz9nd/SmyWT7oxl2MjbQJOLgfM7kEnx2gWJqBsxSLdy2Mpc3AJRztVrOT9cLM3mc/7jGK1oWIldvEdEiTeYDApe6Nk7dF1xZv6szE1nWVTtppFoJwcyIAj/mZKbtXDzN6KWNDxU0MBh9FdW1J8yAlreeI80OqfNZGlsWa9Ka4KCs=
+X-HE-Tag: 1775823659-387265
+X-HE-Meta: U2FsdGVkX18OK8GN1dyB6NrjpmXCacJm7zpmv1b6gX3Y2mHINV2cocOqon2g+aM19rGKSUEMXkFbR6JDJevhaHLu2TkcthlVOT0oKSOTvQi6EDx0436v6piiQknUvpvJFGoIzu0E59/G2+U1hD6VGBIzA/v4LvPemR1LaLcoNxAvJrkbHKwndFTXJuLYR2NmtJ9vxdRdfLPRbY5gAvWdQBmB4YjirSeY20PI/ga4g0C2RSeWvpBpbb6HtJ/knKCEbCgDzVybzt+4DP6Ln+vIz4NTy1JwA3saoBzwDb/tWaZch8NQvam8rhBxO9n5bF+Trcou8ZwxZw5pAQmY3OcE4f0YqD4t0R1KzhhaLCYHl+cyRbgUx12wJ5TAcGbWB7AmnV8jc3t1MqqvFuHptEHshAnMjyet5DHtwoKv4SUccDGPHbDrMZx7FrIZ2f5vNbWYEsgB91AY39hUPPRzsZCt4gWpM877dZ8HjoF4dqS4QP+WRdFnAUnKBwqhB+/+Ho8jKqrnZBFfF+pMkDVQgTMU8sXJx6oLDc4Sg27BW15iiz3T0OYOpxGDnoMmOcmPYN9nT9DhPzLmTUzmCqsXjQjXKS/g1ePd9+hlEbQqaPt+RntMtRg6zp5nURlm+MUSTmVMNz/aVGNszMKf5y7gbIbq1V2WKDrEosoozPnkksQSiIfK3QaBvdeAdz8DmQ+ZFdl50NJlGaqSpXzJv5QtYgmQuLs65VtG9envWJN9bakb+ZuXAVee8o6p6pCHw74qHcbpvO6ylgn0WkfvrrwU+fqpxjc1lENsHHgpzaQ3bLWNeOou6lipu9kWztaJNDea5K4lAZKA/SvtbzxJ44MIBrJ9yTzVT0Lqyi+HOfhmOK52cpzDrQuCocfaErdlx5OKwUGXfOhAptXqha+Tu/Y3hydObm/3kMeZ8W9IdRwJn4DSSDndPo/jT1r/dO/rzQmgGaoorPE6KcBPgKyYNOQ9gF1
+ uGKO2s9Z
+ 5C5FGe7gMh/x5DZQ4RdBOT2eQN9gJWHt6vhJ7wGv72K1wX/MfPQHuuqyQ+BgjpRrA0GAIMvW8EoQH1ow0ccz7+IIaD6ppZ/CDM9WF0+ltFswvNEe7kBxdxh7yeofux/DFAfNZg20uktKsIdW7HzyhNJZO/2+G4kKzc6U9aAwa05PndHObp1DS8f0Fde4et84wSG5MlwZ4xpk4g4vmzveYk+rBbq58vHIDDdKDlqnQS6smLZRMzIyyZnZDmPXLg6ekcFeRNrJwifGYlPxilFFu3UxJEo4F70GEqx3N223Kz931WAWqCVzkK/1x8pdt3i08yEFbJQaGdkPb/oPJ9rVTMLd8YNM+DN5lJa+OSrvMAQhF57Og7Uwey9V7EmLwUeweFbSvfSDf4VT8ERkKmoIhlIaRf8bbIXcnmVSO/X+rmB0QyIG0kK19PLuQIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,87 +137,79 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 The only remaining non-architecture usage of get_cycles() is to provide
 random_get_entropy().
 
-Switch nios2 over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+Switch openrisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
 and providing random_get_entropy() in asm/random.h.
 
 Add 'asm/timex.h' includes to the relevant files, so the global include can
 be removed once all architectures are converted over.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: linux-openrisc@vger.kernel.org
 ---
- arch/nios2/Kconfig              |    1 +
- arch/nios2/include/asm/random.h |   14 ++++++++++++++
- arch/nios2/include/asm/timex.h  |    5 +----
- arch/nios2/kernel/time.c        |    4 ++--
- 4 files changed, 18 insertions(+), 6 deletions(-)
+ arch/openrisc/Kconfig              |    1 +
+ arch/openrisc/include/asm/random.h |   12 ++++++++++++
+ arch/openrisc/include/asm/timex.h  |    5 -----
+ arch/openrisc/lib/delay.c          |    1 +
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -7,6 +7,7 @@ config NIOS2
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -10,6 +10,7 @@ config OPENRISC
+ 	select ARCH_HAS_DELAY_TIMER
  	select ARCH_HAS_DMA_SET_UNCACHED
+ 	select ARCH_HAS_DMA_CLEAR_UNCACHED
 +	select ARCH_HAS_RANDOM_ENTROPY
- 	select ARCH_NO_SWAP
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select GENERIC_BUILTIN_DTB
  	select COMMON_CLK
- 	select TIMER_OF
 --- /dev/null
-+++ b/arch/nios2/include/asm/random.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASM_NIOS2_RANDOM_H
-+#define _ASM_NIOS2_RANDOM_H
++++ b/arch/openrisc/include/asm/random.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __ASM_OPENRISC_RANDOM_H
++#define __ASM_OPENRISC_RANDOM_H
 +
 +#include <asm/timex.h>
 +
 +static inline unsigned long random_get_entropy(void)
 +{
-+	unsigned long c = get_cycles();
-+
-+	return c ? c : random_get_entropy_fallback();
++	return get_cycles();
 +}
 +
 +#endif
---- a/arch/nios2/include/asm/timex.h
-+++ b/arch/nios2/include/asm/timex.h
-@@ -5,9 +5,6 @@
- #ifndef _ASM_NIOS2_TIMEX_H
- #define _ASM_NIOS2_TIMEX_H
- 
--extern cycles_t get_cycles(void);
--#define get_cycles get_cycles
--
--#define random_get_entropy() (((unsigned long)get_cycles()) ?: random_get_entropy_fallback())
-+cycles_t get_cycles(void);
- 
- #endif
---- a/arch/nios2/kernel/time.c
-+++ b/arch/nios2/kernel/time.c
-@@ -7,7 +7,6 @@
-  * License. See the file "COPYING" in the main directory of this archive
-  * for more details.
+--- a/arch/openrisc/include/asm/timex.h
++++ b/arch/openrisc/include/asm/timex.h
+@@ -9,13 +9,9 @@
+  * OpenRISC implementation:
+  * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
   */
 -
- #include <linux/export.h>
- #include <linux/interrupt.h>
- #include <linux/clockchips.h>
-@@ -19,6 +18,8 @@
- #include <linux/io.h>
- #include <linux/slab.h>
+ #ifndef __ASM_OPENRISC_TIMEX_H
+ #define __ASM_OPENRISC_TIMEX_H
  
-+#include <asm/timex.h>
-+
- #define ALTR_TIMER_COMPATIBLE		"altr,timer-1.0"
+-#define get_cycles get_cycles
+-
+-#include <asm-generic/timex.h>
+ #include <asm/spr.h>
+ #include <asm/spr_defs.h>
  
- #define ALTERA_TIMER_STATUS_REG	0
-@@ -112,7 +113,6 @@ cycles_t get_cycles(void)
- 		return nios2_timer_read(&nios2_cs.cs);
- 	return 0;
- }
--EXPORT_SYMBOL(get_cycles);
- 
- static void nios2_timer_start(struct nios2_timer *timer)
+@@ -23,6 +19,5 @@ static inline cycles_t get_cycles(void)
  {
+ 	return mfspr(SPR_TTCR);
+ }
+-#define get_cycles get_cycles
+ 
+ #endif
+--- a/arch/openrisc/lib/delay.c
++++ b/arch/openrisc/lib/delay.c
+@@ -18,6 +18,7 @@
+ #include <linux/init.h>
+ 
+ #include <asm/param.h>
++#include <asm/timex.h>
+ #include <asm/processor.h>
+ 
+ bool delay_read_timer(unsigned long *timer_value)
 
 
