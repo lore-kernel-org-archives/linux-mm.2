@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDE2F44868
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E951F4485A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 13:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33976B00B0; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
+	id ED33C6B00B4; Fri, 10 Apr 2026 09:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1D66B00B1; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
+	id E5C3C6B00B6; Fri, 10 Apr 2026 09:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CABB26B00B2; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
+	id D4B336B00B8; Fri, 10 Apr 2026 09:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BB0FF6B00B0
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:26:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47C39C1D93
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:26:50 +0000 (UTC)
-X-FDA: 84642721380.20.FC3D146
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 55E64C000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:26:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=V6MO+8Nf;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BEA536B00B4
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:29:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 662731B81AE
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:29:25 +0000 (UTC)
+X-FDA: 84642727890.12.2F8F82A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0DC5F4000A
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 13:29:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lz3e7crt;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775827608;
+	s=arc-20220608; t=1775827763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aTNJ1JSJOuyCEAD0SD81iIKvib8YxJR83tAvZlBQ/uQ=;
-	b=739XKfiG7ntu+gSsjcdtFJNwpxOFurWGMZ6qFBcs1F6bPATuDgYZESpkIq46kHe8b75S57
-	QXvrKWPJAVucl/RpnlvY1kDzNQFYuWtVkZqR6eRX4ebgdI4fRfaZZ3dbJT/FfXfYrBQC8J
-	dgbfRUViNHBTFlm0aWGAPORAeK/9uag=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775827608; a=rsa-sha256;
-	cv=none;
-	b=y/HzGRArQsFlLoFQNCrUzTUb3q/sV40h1vr5u5JPUwJu6upZ5tQSlDYNwTyccltenhAswQ
-	swH9O2qHNhiYJKqvqbujFRiLmLbnzUAge3pU1C+qY1sXq6xEujUnovM7bAbV4ZS3TS7KKT
-	k9g82k0UlcBCn6bUtGMgt9HCTcf++mE=
+	bh=DqL1GrdEAJcl9acbfnmWZiJ733NBeYHp8APhAnCH1ek=;
+	b=m0vqRrYmb1mFb0WswiJE/Vy8f6C5pL2UWUPBNUC+u9Sa3CPEnPk0Jlw4EJU0BJCN2f8b9d
+	1CCy/ilCCvRoJ6h+HOb6KcJnfqS93+ViTmBk1+cM1fU45KJ6GROvF88afig8wGbhoilQ2C
+	Yxd09EOh8N1LVupQdVazgGalHE1w6iU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=V6MO+8Nf;
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aTNJ1JSJOuyCEAD0SD81iIKvib8YxJR83tAvZlBQ/uQ=; b=V6MO+8NfY8Abp6Hg1tgXrze9Js
-	djsU6gl19LWY3cKwYuDRL35dFJFmJT00E7aioJXLRKJ+Vy7zVBUdKO4B1T1M+4QO8T8yEQdcyx6yg
-	e1nNGy3islw97egX0w+n0PQmoNwltLokKPWWwDbPT+myLcEH459x8o/ERgq1oS5MLg9lMuRUvOK9u
-	HcMIUIsE6DgQRuB+6WBq3A8CZ11kORzn7u9oep2BwVrBWDYRo8koUx+1jhqWlEd8TAp6aNCDOrcnf
-	CCy/8MPjnsZf9z+9ln7hzd2oZbUKuY81A3sPJXr2agjtxb//c6lCxRWGQ0WlSNlTMDkgA2NNErjYh
-	kvCCO6uA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wBBsY-00000009QcX-1BPO;
-	Fri, 10 Apr 2026 13:26:34 +0000
-Date: Fri, 10 Apr 2026 14:26:34 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] FOLD: block: change the defer in task context
- interface to be procedural
-Message-ID: <adj6iibxNot-yc9X@casper.infradead.org>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-5-hch@lst.de>
- <adgJqiA0vivaW7NA@casper.infradead.org>
- <20260410061725.GA24667@lst.de>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lz3e7crt;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775827763; a=rsa-sha256;
+	cv=none;
+	b=QrLOLlQHHhY/D9cUwf50BjBaVtAeGLh9OkGOUQaMWobT3tNCLZTcU/CGwHsOXHhtzoAy0r
+	1vUw2D4dSiU020slKNa8XTnS/cDsmupJJmXMOSynRk+VEB6Oz/jv4I6ZEZ+kC/AwaSyKMt
+	+28r17sYG1Rrf3c2TIZoEhFHId7c5LQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D8F7940728;
+	Fri, 10 Apr 2026 13:29:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347F1C19421;
+	Fri, 10 Apr 2026 13:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775827761;
+	bh=BGTVhOVa+Fdq7E52HiKwBfIFKgu77QwjCb2aXOQf+Ws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lz3e7crtUJ7MuP6SM2Vx3dNuc7GOeW4ksMX1JVpBZY0vOH3PfyBr/8ho2CDhwu9nm
+	 ojGoibQSGNm8/3W2av8EBOabOBZdX0DPf4dmTgWp1beeYIK03Q/pUKcx0LYuE11fgu
+	 kDGFZ4Bof7AAQUUtXjLoycQKPFY3ZLvSDzMQxRnPLUut0+TUHENXf3DDwAB2hCgoEq
+	 SSUT00TR1RUZyfzZJWbdBuYu+iV0qRuXh7YXt1RQnlyHMxa6tjvVTbPeDwRWKMdi3+
+	 nmAPqnMaJzMcITQMPPShhTDjBJUaP5AZhvJYbXHmUed3/UJ1XC/SFkAQA/rCp7K/Cl
+	 +M3elzl8XckDg==
+Message-ID: <40f31e5a-7161-4b17-af03-52b3a28a113e@kernel.org>
+Date: Fri, 10 Apr 2026 15:29:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410061725.GA24667@lst.de>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: awrxz7asigxqjmurhnifcnjeoyd49m5n
-X-Rspamd-Queue-Id: 55E64C000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] mm: improve large folio readahead and alignment
+ for exec memory
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>, Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org, r@hev.cc,
+ jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
+ dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
+ lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mhocko@suse.com, npache@redhat.com,
+ pasha.tatashin@soleen.com, rmclure@linux.ibm.com, rppt@kernel.org,
+ surenb@google.com, Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com,
+ hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ leitao@debian.org, kernel-team@meta.com
+References: <20260402181326.3107102-1-usama.arif@linux.dev>
+ <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev> <adjkCOiLgZ_-zovg@lucifer>
+ <adjllNan2vgBNBHJ@lucifer> <5f99b289-629c-47c4-bef0-966d6678a2a8@linux.dev>
+ <adjrKwgiZwXR9epk@lucifer>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <adjrKwgiZwXR9epk@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0DC5F4000A
+X-Stat-Signature: km7kfadd3ggfoox78kqwcon8pgn6o4kj
 X-Rspam-User: 
-X-HE-Tag: 1775827607-993892
-X-HE-Meta: U2FsdGVkX18/DBByMhhYHTJk1t34z6iMwwNOLTEQHLTaeTTv8rP1HQa57+OE4qV+jy2q8p7zriNjkR72CyliiRjGDeqUD1E6ruguoceQwltuUj4bN6jrPdaq9TOr9sJtt+15uH1+OlK+PjhLor82rZDbEcGsrd2QFXrdk8hQxYiWd9zsmiPqsJUwRF92IYgHW2ipnbwtXElAeb8vY52bBOZap+5RRDHi17t9aLhf4EjygfHJbaFw1fjS08ak2XDzQXVlyQ6Y33teRW9kwSp52sL64lWGG/ygVk0FWjVk8OQN5fQ7j6V4p+Iw+ttGTuHhgpvy4YlCG7BfvOjl/AiRZJTBKPnvC7DQWLlLmboQ9gIBquHSy2d1BYVTofcZs2jVltBDquWeQOixoLWY5EEO+PhSyAo01EAn20su4ceEsv19te4v/ets184ZruM9glwqzR6V9eFLJh/9CYm6dYc2Nt98TB+SrCee0cS1Tdx3t6BWni+DQfodPL2YxMQGvN9aou9W/sqB5sNLxR6CYWsCPVyV2YxLoFrKNTt2SrcrXGrzF8wYDpHEkBnkqEtAAbvxb0K3VjOfQy1OKGzY8oPGz/MzcXLAKkXnDjEsSDXzU142ZWRs0+WiHAxO/1dyQt1dEKh3QSTQvXBUH/3gA+jaXeabnccbAp7J1mbjySFFWv8OKTBdUTooSwbZ5aZjw8sAOls67lxvWQM/PegfHdhswk85gnaGlKSggD+w8/JfmE7c0gH/CCTgyeNXgmc9bhY9K6XrESP3q0M44+qmcJo21euvxcYwaRJfQJQayKjX0BvGfD1zxOJhCP4MNLjqglFgw/joCipOt3pjSM7H5pQjYccGIvWtLHw8Asd3tgdEUzjrIU+KAqwgYDBfIZkED82WnWbeUnp5xRmJHkd7HGl6/n8Drj6QmY01pBKKpM/SA4V5dC48FOLTwkyhI0ryyVDYE480OgvPKwwZzY9Do/V
- mgp4fFiK
- d9ETKRzZdrTkg602sxfaXaMQRCompWO3H6EmfTNHEHskiMz0/lhzO4GetyWfgsmI95pmSzD7wLfDrkOOwsvkcsq3ciwzjyqJSGntY3erJf6eeyjaTA17GU+lANzVfI/VoKSFPoiYzFETxTpgC89ESv0l2UUoW9aGZbNEx3Ao7B6My5n8sgUpPQBxvzWShNprmGhd6wRaaR+zf5B4Vo0gkLRFVAwrq4pa2f3VkdC3kH9bo9n4Ei5MKfAWMvgIOf+JTlE2r
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775827762-547926
+X-HE-Meta: U2FsdGVkX18ou6JOU7fCLzVbcIvBRY+/KjDKmye4auUpXekg2kWF/ochrqRwHbCnLRWzVwFafClKEshMrUwfVXMD508Y6IIkWAHe+Lk3kRvKZEkNEkUjWTinfqxy6Pm2BYj0pzoAOTpCCJsVIh8OA4XJtHRHbVl5vGMukDk+LWvt2Dgk2LlK6lmHrrLAe0XFVzzLUJnx6bYubuIFgG+rMdrs1VU6S6/31+pBCDRMBS6beXmCaPsoqVWJLxTAyvNnNe+C8exQGU9OkJEpY1WWb1xiRMtXLySVOzc3FjqMafGTvgX7CbP6gS8ymCwhK79TIL9dWTBKkMe42mH3B4FnfStNQu++Unv49bYnA6aubbLsQRHG0eFQVO2T3u6D+OjhlOApM8FcR/VcPRkhQrkqAn3KBP5nBFg3I3jTLeeXfpyu5PpHKdao2w+I79hfufd4/hYo5rNvpGS1+pUi9kLkoCr+tiuKskG7r92+aDwjDdNngr1vz+acDG7SIiTFaiKYetnfCCxa9u5uTV6ry2jApGtz+6uBnWjh4ZesYTDy8HzkQYtNk3hyoYIiR2cQ1UX+689n4+3MBUEdmN6rrUZU8ceFyu1vCS6wENK9WFYEfuqNvBvHDWe0onmi/PlMZ6pwYRTujHRVLSEPhCBMVzj5N/GrzsIShxQjBlTSEyIXDAdnv/mzk/53/s9FJ3gurSon5+Gr9qhroqaqrcU8lVPeXMTjkTNNsgRU1yNmoelRC+AsbX/lNdylmINpd1yD71rav1A6t+09wxwE/BWTe8t8V7Pb4KoKNi9WoThRMElrN3I40SSeX0RqgrkYpmLUasEbwtlDcOsHkWnYtJow18M1GEIEZjq0Ikjw4ofM+JtwbZ29XdQb6V9EEFun/8+dogmSM/YMI5yYZdIPc1mfzfj7iib7d7RElD1MjFd4yEUav1qXnWIc8EVxngXCLRNeJQ8MWzyTdYzc02vSQIl87a+
+ X5E7+cvo
+ 8H21MNRr13a1305+mIGzZefM4viN3DIJRmG5VPTmtLFXf8dmObgYUf14ABmVUV1cdgy7QJdPZXnyDFws71d9zz+ZpYOisLiggx4A8C0pLAxIb59+lEKFQfkAMSezqxkwPWy+iRtKrVFoyeZNqc/HV9R0z+kX3UIFggKfVGqzdHaKf0WFqiZ47IqjCvy4iQBHDKOcWmRNOUfCjExU3NZAPxbmYQj+1mWRnSjvemeNftKhXGeQD9wCV2OPLhj77cbHjGv5f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,29 +107,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 08:17:25AM +0200, Christoph Hellwig wrote:
-> On Thu, Apr 09, 2026 at 09:18:50PM +0100, Matthew Wilcox wrote:
-> > On Thu, Apr 09, 2026 at 06:02:17PM +0200, Christoph Hellwig wrote:
-> > > @@ -1836,9 +1837,7 @@ void bio_endio(struct bio *bio)
-> > >  	}
-> > >  #endif
-> > >  
-> > > -	if (!in_task() && bio_flagged(bio, BIO_COMPLETE_IN_TASK))
-> > > -		bio_queue_completion(bio);
-> > > -	else if (bio->bi_end_io)
-> > > +	if (bio->bi_end_io)
-> > >  		bio->bi_end_io(bio);
-> > 
-> > What I liked about this before is that we had one central place that
-> > needed to be changed.  This change means that every bi_end_io now needs
-> > to check whether the BIO can be completed in its context.
+On 4/10/26 14:24, Lorenzo Stoakes wrote:
+> On Fri, Apr 10, 2026 at 01:19:08PM +0100, Usama Arif wrote:
+>> >> Thanks, Lorenzo
+>> >
+>> > (Note that we're in a 'quiet period' from here until -rc1 of next cycle and
+>> > won't be taking anything new until then. We plan to do this from around rc5 or
+>> > rc6 of each cycle in future).
+>>
+>> Thanks! Just wanted to check, as I am always confused about this. Is it ok
+>> to send patches for review for next release at this time? So that they
+>> are in a good state when rc1 comes. I wanted to send PMD swap entries
+>> for review after I am finished testing, but I want them for review for
+>> next release.
 > 
-> Yes.  On the other hand we can actually use it when we don't know if
-> we need to offload beforehand, which enabls the two later conversions
-> and probably more.
+> I think different people have different views on that :)
+> 
+> I mean it's debateable whether having a glut of new material on day one of -rc1
+> is preferable to having a bunch come in that might or might not get lost along
+> the way :)
+> 
+> I personally feel it'd be better to send during the cycle window rather than
+> before but I suspect others disagree with that!
+> 
+> So from your point of view, feel free to do what you like, but maybe David +
+> others would want to chime in with their opinions?
 
-I don't understand why we need to remove _this_ way to defer completions
-to take context in order to _add_ the ability to defer completions
-inside the bi_end_io handler.
+For me the more important part of the quiet period is that patches can't be
+merged, so there's less urgency to review them immediately. So I think it's
+fine to still send patches, but not having expectations about quick
+response, as people might be taking time off.
 
+On the other hand it would be better if new series could mature in this
+quiet period, so there would be less work after rc1. But the key to making
+that possible I think is to feel less urgency/being overwhelmed also in the
+non-quiet period (rc1-rc5/6). Then it's should be less necessary to take
+time off during the quiet period. So hopefully we'll get there through
+involving more reviewers, and by having more submaintainers agency.
+
+Vlastimil
 
