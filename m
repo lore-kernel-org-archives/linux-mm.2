@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144ACF459F7
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAC03F459F5
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:26:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E9C66B00BC; Fri, 10 Apr 2026 11:26:18 -0400 (EDT)
+	id 503936B0088; Fri, 10 Apr 2026 11:26:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C0846B00BD; Fri, 10 Apr 2026 11:26:18 -0400 (EDT)
+	id 4DAD66B008A; Fri, 10 Apr 2026 11:26:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AFEC6B00BE; Fri, 10 Apr 2026 11:26:18 -0400 (EDT)
+	id 3C9866B00BD; Fri, 10 Apr 2026 11:26:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5904C6B00BC
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:26:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 074131A02AD
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:26:18 +0000 (UTC)
-X-FDA: 84643022436.28.37D7689
-Received: from iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com [18.207.52.234])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CE0F8180005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:26:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=k5BRJ2ek;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 18.207.52.234 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FAE26B0088
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:26:38 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07AF0C17C2
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:26:38 +0000 (UTC)
+X-FDA: 84643023276.14.0D0D749
+Received: from iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com [44.210.169.44])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C77C920014
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:26:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=iMJHn9gg;
+	spf=pass (imf13.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 44.210.169.44 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834795; a=rsa-sha256;
+	cv=none;
+	b=dcscG3YTDaiUBjLMHO1Ipluwfy7rH5vdkomCqkLryeaPaqK1PI8GB9bnYCCAJDih7S16FA
+	KSsZvE2Y6RYKTKD5yKPkcVaYxqUCk2LOOMdRzpTfk821rbkmycAFecbAIXPNXo0PNqPecb
+	2WRi/deCRrTZPSviWMrOXKk7HtDhEZ0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775834775;
+	s=arc-20220608; t=1775834795;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myGuGGgnR9AJ65k7Tpv29MZkBqAgZAsukBFpDCDwAPU=;
-	b=NIsH0yxfnJXtrUvQuovRnQWEv0Pgmq8y8LZ9mlRgY4DlReMjB5kj5o60eWlhfAaqv2C2fY
-	DLhU/YpS0jX41lADLamailMl0CPBzpw6kvEg2Zd0b9f5Lk2pWbbJHIWNVXvQdDNPVkg8Iw
-	q+BQ5QFQl157AG6pt6JV4jTleZ27efQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834775; a=rsa-sha256;
-	cv=none;
-	b=8dHDDuxyBcnDh81jIHTJjSjm8rWSwTg3igf+70CGfd5oDnIOVOm2wbdwlMbG0tc8nX/rOV
-	6I4EmVoKwpqBqucJ1MqV1f+zaYAiAY8pjcci2F75HHR07z+uJapRL1RoZfzTcikEFfI850
-	YTGhDzzvE1D/tvX53mRQiS3m2QcTMuU=
+	bh=VmQVOaKe4OHBy7s0WhO7CpJe9iNWFuij3fj2r7HhWw8=;
+	b=oW6EEboqU7uSEdI29TVCfnBKxX/WC2Z6Tpwpc5WUSnH6mVX/zOElL/4kErOvVsM4h41bOE
+	MFL63fkT2Mq8ayj69R5NQsRW1O6SReEnOHdF0gW980Q+Z9S7wCPUkOGM4Fd70Ma6vJeuw0
+	yZ5VV9ov04G8OR/CYFkf8o65QgvBVNo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=k5BRJ2ek;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 18.207.52.234 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+	imf13.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=iMJHn9gg;
+	spf=pass (imf13.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 44.210.169.44 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1775834775; x=1807370775;
+  t=1775834795; x=1807370795;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=myGuGGgnR9AJ65k7Tpv29MZkBqAgZAsukBFpDCDwAPU=;
-  b=k5BRJ2ek7nhHCvJcRPbzdNZ+eCXbjj2NpG6jDg1ec/PtsTUQutckCZqD
-   dZG/xuXcsM5yYqiO//Ce6ctiDC0UDWeAQ9in3eSMG1MHrW3GxQeYMnXjg
-   riJP/0sUAAass7UYhOhE3kWiPvLOO8/WwvxJSwzrym52VAie1EcHV7Qps
-   cTWbqVaVibS+Zdp0A81bCugypSPL5Vy174+g6fUd2mI2B0EUqZ2bZpOvm
-   Kyal7CRAAVKjgxlQXVcMGchfEGkulFyY7SO7rCjpgv1tnynBX3gAqRB9q
-   eEKFB748tX968Hqizvb3j8R8JdMlwnttHoO8ZFKQGi7rgORkq8j9d/mgq
-   g==;
-X-CSE-ConnectionGUID: HmWevmEkSyyaD2dsMEmNow==
-X-CSE-MsgGUID: VqWwaZmcTmuZzfngn8n1+Q==
+  bh=VmQVOaKe4OHBy7s0WhO7CpJe9iNWFuij3fj2r7HhWw8=;
+  b=iMJHn9ggD7ZtBczd9l/oS3GUUPxQJpq0ftfMgmomY93YUPtGwITlluAI
+   IpRkjjhvN9lP/fNKU4EsX+6yta8BDCP+JiLjXzjkIoKmKH3htwwS4YZTj
+   imIWnUKtk//hkVF9BuBooG0fGNKfyqqfH10kOPHt71cQ6+Y4IDv/BgkZP
+   9Ss6brf+kdPnBrO1SqFoBpJWDtidaYa1B8ML8xsPxw9PpPFPrL64s+Dz6
+   +jQzN0CgkltBjVb1iYXAz8k4bJ8w3w8C4XAZQ+HqPwNiWtk94kTw4JcO8
+   Nc8sFNwoRq7tUSIXFw3h0HPrr/iBsF+UmDODJ5UE2PCDBi3HD0i4Zbefu
+   w==;
+X-CSE-ConnectionGUID: K//6lZflQx6l49/Ly7Z2sw==
+X-CSE-MsgGUID: Slw79NhtR2Ssxb4gST/A0A==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770595200"; 
-   d="scan'208";a="15971227"
-Received: from ip-10-4-22-235.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.22.235])
-  by internal-iad-out-004.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:26:12 +0000
-Received: from EX19MTAUEB002.ant.amazon.com [72.21.198.67:11072]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.59.187:2525] with esmtp (Farcaster)
- id 7fbceef4-e2e0-48cc-89a3-9e29bae5d585; Fri, 10 Apr 2026 15:26:12 +0000 (UTC)
-X-Farcaster-Flow-ID: 7fbceef4-e2e0-48cc-89a3-9e29bae5d585
+   d="scan'208";a="15420052"
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-015.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:26:35 +0000
+Received: from EX19MTAUEB001.ant.amazon.com [72.21.198.67:20384]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.29.254:2525] with esmtp (Farcaster)
+ id ad4b6a99-5cf6-4fde-8f55-cfde01d49a91; Fri, 10 Apr 2026 15:26:34 +0000 (UTC)
+X-Farcaster-Flow-ID: ad4b6a99-5cf6-4fde-8f55-cfde01d49a91
 Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
- EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:26:12 +0000
+ Fri, 10 Apr 2026 15:26:34 +0000
 Received: from [192.168.12.97] (10.106.82.30) by EX19D027UEC003.ant.amazon.com
  (10.252.137.250) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 10 Apr 2026
- 15:25:59 +0000
-Message-ID: <532481d6-f137-4666-b2e3-77aa1b5c8177@amazon.com>
-Date: Fri, 10 Apr 2026 16:25:57 +0100
+ 15:26:22 +0000
+Message-ID: <c881f3c8-67d6-41b2-a3c4-498f1df40368@amazon.com>
+Date: Fri, 10 Apr 2026 16:26:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v11 02/16] set_memory: add folio_{zap, restore}_direct_map
- helpers
-To: Ackerley Tng <ackerleytng@google.com>, "Kalyazin, Nikita"
+Subject: Re: [PATCH v11 03/16] mm/secretmem: make use of folio_{zap,
+ restore}_direct_map
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita"
 	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -114,14 +114,13 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
 	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
 	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
-	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	<akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+	<andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
 	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
 	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
 	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
@@ -134,9 +133,10 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
 	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
 	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com"
-	<ajones@ventanamicro.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
-	"tabba@google.com" <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
+	<yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
+	<tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
 	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
 	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
 	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
@@ -164,8 +164,8 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
 	"Manwaring, Derek" <derekmn@amazon.com>
 References: <20260317141031.514-1-kalyazin@amazon.com>
- <20260317141031.514-3-kalyazin@amazon.com>
- <CAEvNRgEFBexkZCjOMFHJRQFHOpiUezD2jbfDVFrGhYXODdpMjg@mail.gmail.com>
+ <20260317141031.514-4-kalyazin@amazon.com>
+ <187fa189-b6d7-4ba0-98a4-7a525cbaf4f9@kernel.org>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -177,22 +177,22 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmnY1+MFCQZCUjMCGwwACgkQr5LKIKmaZPPQKgD/f3FtERbJ+LYHLSG/ZbLNAOLngUlQ
  qo5VfIyJOzeLzC0BAP2PIUFIHo7vmia/PXEmT+ve4c5rx+EkH/Dx1GRpjWoI
-In-Reply-To: <CAEvNRgEFBexkZCjOMFHJRQFHOpiUezD2jbfDVFrGhYXODdpMjg@mail.gmail.com>
+In-Reply-To: <187fa189-b6d7-4ba0-98a4-7a525cbaf4f9@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.82.30]
-X-ClientProxiedBy: EX19D003EUA001.ant.amazon.com (10.252.50.31) To
+X-ClientProxiedBy: EX19D004EUA002.ant.amazon.com (10.252.50.81) To
  EX19D027UEC003.ant.amazon.com (10.252.137.250)
-X-Rspamd-Queue-Id: CE0F8180005
-X-Stat-Signature: s6qu9mzf9mcad94cwowgs6uutwsowm4r
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775834775-282305
-X-HE-Meta: U2FsdGVkX1+P6MdC/mOsSmPpqGS44QfbzdPV8w+g9O9Oq5t+1cvW4lKRKkV/GbFDb28SDOUDtb6pQtKkXo/nzA+XfpB33MVW8j6/0u+351pNKUaCJfddTsxfhw3obKociV7GubUB6K40Ddj1qRqgbJIeiWhwUecltRf4kuT7T5LeKgL1Xf30E7dFtGLfJwELlfngCE4tIz2YxVrujoDCCWlc/lhYUYRMoiY3QxbpGG8Rq5WFBgVJcD+LQHTMQlSyB4AvS+qXxa5sIMGDaFIVKtURX2vE5CPbu687HcrRaGHnC4i5okXbqZwd9bKoVguTZL1//XMOyH2BxcUvjyfhP9w2pgRrrL+ov2IyNOvasUWZs3N9kmL03CGrpTzMkV9fLVyYBMudY/vfFgd/biofgkli3c9FP4iGwRkLfWVfGem5C4Zoi0izmbA358GlW9eI4QFCueXpVVQ+Wu59wW5L6A5eb0wiw7szIl93fmRLQs6XoKxf4+4fJg1lJVQpLcjWXlMlbJSuyzG33xrFGlfGqpOeBd4m0n7L/3LjKU6Iw40b4cNFFZkWwyMEiSYd5hjLx7YZapSMMdi/lCKdT1y3FkRi02AHFsGDWMNZKVy8++rWxHBeaBl9udo8OSVandCcp0FCXup4Vn2o219EZnTrjFZgqNa4JDyf9JBfHhsVAlmMwC27nXrHRyAMOH/bBXcvXQxQHyySu7VdTQevuofOXUctJPv0f4aqWL6vmbq3DmvSGkxHGbL0RPPrrZPK3aeBFk/4FSpF78AO3AXbPPN/Xhj9+LVdD8W3G6zHadrt+1Pb27yh+BntIoy46UscyPBZNBgZJ3ZdeAloBIrRDBFNlyG+qlVGBZtZXknRFLsoD67WVqhfLrS8eRUxP4ksmAuy9ocnDkHL7AlceF4O0M4cGvuEmVAW/yxKWoYhYMqoIwI+IyfFQ3YRdymktV/0XfULj+oFfSMA2B1izfZLiTf
- ebpMUumx
- lzVd1eFW+D7WWwgZ9pDbMIbEDRU4g7Gh1oG6lvN6RUd8EO4MigYQcfjtXWdMxu4oV6fnSUUvMZZwtelGIWgfe2BI1R2VxKU5noRSzWe2vVyyFpzy+0YpCqbASCT30Nw+zsby9utfJzQQYDUp3V8/L6thnVkTK8ZrSvSDMOLuEpJX0oWztN8AEaHHYjIotzSpvl6zZr6iHNXjvFelWR3PU8sPgCUDWGRLIlVOkuDNLhzYBGZTx1fYE+OU/4SDe3OIFpCwnGIBxAOOGlfJev+vZlidzHNw/ivw6YLeMrZdB6Sah7Y/4p7dhS8QI61BKj0sPb3u0cIatdpiji2/c4PdzKOql1e2sH5V53ZRgWRX0AoQovLBw5DrBmO7iR3UopQbECMeSDjjwZPyaagCgrY+GBkr8csR3kFEN3rwFq4vpwY0S5JUTGez26qGzptrb7d/ugVw/jcKxMz8vNJJYDUdmpzb5sA5ck8vL/bWPz1ZJg4uTPfhw+dA5r7apS+5utkbUNSjMH5nki3m2MPs0NS3T7NrZm2VFXu842cN/C412HHZ+U3aAmgsoY2i2mOJ8GIXBSInCjQ8W7T+5/csdwsrO/Sapj64+iMwdfFPoNDG/F6qWuf836pzCDRrFJ9gL7osdEetJ/Z1ffV65pcdirdThi2hHQmSkxWKU03u3tELKuXffW4klo92eOoMQ7XhXX7g1zGd0lgHimAxkeVdf/YR3dV8eScjNN7PwGPXSsLTOk8rWuyJJf9mq5G98MMh6DLeuBdnChAYTI8XuFXXZ8AJ0YX8hwovsIcO9SOiq5FG5D2J83ET6AL9LD8r2c1klZ45nQ00Vl6EFOcJgRrEM+FOyfedbZuJfECKigiaZ3lyNKvdkSYcNU+j20NCAOGYCxXMTBcfJMbNEAW7DjN0eQEhmr8P59l7+ur50vIitrp+jKSfvTSGmM3Ghfa8bHnDV9dE2ywVBmAk/XqCe8VV0A4RSkm4erV1C
- O57660Kz
- CfF/FtD8XWtY3Z0oyN6l2Xwqi6IH95OlL8lGezSAKM0OfS/d0Bi1YW3j6pJM+LPlRCwNjLJ97Hzd9gaOBUM1aQMYXXB9lQaZ9dvNnno0zRkaqESJkhxB1l7dEY9m/8DQMYIkgQYWwy82xKzylOnyXYY2T2Lt96Mhd303/tUkK10=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C77C920014
+X-Stat-Signature: pw1w9b6h99qwamjkszcsdgdbh14hdpzj
+X-HE-Tag: 1775834795-407987
+X-HE-Meta: U2FsdGVkX19hbiMQXakMC6gfDcZaI8HemfUehmr5YuIaUzU1q7GlvpYtz45eFv6c5bjDzIRMSTXT2RcTtC7armPmATqiLAQG3Uz0oKsJ8vuMPmBF5DU182UKmumsIv8VkvKW4lRqZ6uWkknp51BUodTFl2tj7gfRfW0wrIhUVJZ1gjun47tIRB36yb/Y3PgU5i+myJAKxvN8B9+Tj97Wq/tQcrUPtH8wvpSrovgT7gnifrPyC8H0bbLLaKFGFmyaW+Epy2X0aGgb7ml2h8d9BkcULIFhLRtwAnN0cNkG80A2UVCao7zwC5UCC/tkAo26r7AqGIHT+naTkbQXqCb29hoValHRo1EXa5CWB3y1K1fAXoF7hru3VvmIIFpqVlVN/kNwEGLE5du2Uh444sKLuN4VKLqSZ5LOZjPWEKaC3yiDAGwqPglO3tT3iWLrQ6gTF/hlC3FktWSRG3YE2MUgnOhEEVrsaAcY6RTzyuZl6NAONtl4drhvYPy/L2CpBrEv2RtsiqtLApcPfgxFnmgE9uNZgboyXmEaqNLwqIFRYW12Gn6HJoUWfe0xcR/t3pRelrrKxYNq/GUtV5pke06Co+8h/xxsPAMsjADkA8tt9xk67WA7jpXlv45LQEXbxpbnzXlEAGroV6ssNrZT2CNQwHb1IbHnZd41ZcW2+EqNF+hHLSgr5Mjz8tkf9RY1XiweyqZhfvPg0KPKg9YPUimXqyFybfp0mEZx7hPU33mtk4XRVxQWITZwKIPxy5NKTmwJC9V+hMlcwWg3SJdvbB+2QHkS701E0tbzr8MQT/T0/TO2jPgMDRzPZoxuM/hcgiYv/uWyt2TOI8OmKfqxwEI5v5OPMxIye1tae5XpA3apDgZzG6QneeaG8tSdo0ZjnUQfcppPMzI5X+tj6iAKCdMOQRMpqiNHoCISFD/sO4aJugJz4KyDwsu3/zLWRL2wvyegeRhDtv1GuMOANWZ/hOY
+ zr0khpNk
+ vAneASHfPSEvhBupCIdC6qUfZRO7uyNflsq/PlbZVbapdZuzdmNLsNsj0Z9iREyDugX3yEwJZF+TeYpF2/wbpS9s4YbLYj0EeQVQ2sRkC93vYfWxO+iJSNmHDFEM180esEAS28yUm/C+cPF+LPyTtKOJjxZS3Z3QwiLCiZh2ovH39BKlN1JmnX2j8YJ14LSgwEWY8H92yTwKAerLRl14XweUkfS1kBALCBHP9JZgT55IXWrGEHX5bizswl4T4zEZufltM43Ayf9DCdm8/uikPrC2eMP9mrcoT4WlpLhqfkluVFNczc8w05iMV1Wx7OmXMQA+43tG+ixQk8PQ12u/zMYXNW2iOo+6AbNylfrHGm63+kkDnNXv5PUedGpzT0ulFKpPit/grYO1o8xsFmF8DpjTAo2O1lYtzBfjzkoQ2V6jGMTtO9I9rFMUW4rRTs3wbX8sBGuNkjupsBN++q4m9wFSdOmfFt13DweQoJ1WSLLa+/EFPlnfWrrILRiqJOX+h384bdZDcXSd+FBc30mmLGg7BKkdvEc/fpm7ezMEJqFOEWidI0EfO5ldxUB9MmjNLdQ+xUVzeZUDxgTkptfzmXGyu9vOyVm2QVqw5uLOXoA5VXXvXnwQVQiVqClo6n0Setmj0SqKKjAoUlo4yTiJWAQcJXIcuNnB6tLHO5Ts3ca+gKhS+x1rFALSqbl9NiOKZHKww9z33dRjXpuo27wSfNN/vJ8vQhOqYsCWWYmu6ShDMlo/RPtCboUFQUzLrjaDHJ2QtkbDDtOX0fbY/ae58i4bXPbzYhy3RGH+DfpSdtKp+VU8QuKVpdH2UpIYP3y6NqdP2akGi7v11pY4avbW6JHC2TFDFrsjmZlrBdG7S+G0DjFTwsUknRfZEvGkXF00/+xy11BllCoqiKxV9Opt57sw39qMFlYMBnOX1oIc2Mt2iKaz5saX58zbGTDkVy9aLlMkBKbSXgdXaDDaJfKmH3QhTVC4o
+ 6qtVp3H+
+ E0/0oGRSb+G5LLCheHCTE13Km96wnyXbls2GTagM5fQ3JYwgMeFRc788OIABjTqCQSkj87gd/vmpYTd7eN82IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,129 +202,26 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 23/03/2026 18:43, Ackerley Tng wrote:
-> "Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
-> 
+On 23/03/2026 17:53, David Hildenbrand (Arm) wrote:
+> On 3/17/26 15:11, Kalyazin, Nikita wrote:
 >> From: Nikita Kalyazin <kalyazin@amazon.com>
 >>
->> Let's provide folio_{zap,restore}_direct_map helpers as preparation for
->> supporting removal of the direct map for guest_memfd folios.
->> In folio_zap_direct_map(), flush TLB to make sure the data is not
->> accessible.
->>
->> The new helpers need to be accessible to KVM on architectures that
->> support guest_memfd (x86 and arm64).
->>
->> Direct map removal gives guest_memfd the same protection that
->> memfd_secret does, such as hardening against Spectre-like attacks
->> through in-kernel gadgets.
->>
->> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
->> ---
->>   include/linux/set_memory.h | 13 ++++++++++++
->>   mm/memory.c                | 42 ++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 55 insertions(+)
->>
->> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
->> index 1a2563f525fc..24caea2931f9 100644
->> --- a/include/linux/set_memory.h
->> +++ b/include/linux/set_memory.h
->> @@ -41,6 +41,15 @@ static inline int set_direct_map_valid_noflush(const void *addr,
->>        return 0;
->>   }
->>
->> +static inline int folio_zap_direct_map(struct folio *folio)
->> +{
->> +     return 0;
->> +}
->> +
->> +static inline void folio_restore_direct_map(struct folio *folio)
->> +{
->> +}
->> +
->>   static inline bool kernel_page_present(struct page *page)
->>   {
->>        return true;
->> @@ -57,6 +66,10 @@ static inline bool can_set_direct_map(void)
->>   }
->>   #define can_set_direct_map can_set_direct_map
->>   #endif
->> +
->> +int folio_zap_direct_map(struct folio *folio);
->> +void folio_restore_direct_map(struct folio *folio);
->> +
->>   #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->>
->>   #ifdef CONFIG_X86_64
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 07778814b4a8..cab6bb237fc0 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -78,6 +78,7 @@
->>   #include <linux/sched/sysctl.h>
->>   #include <linux/pgalloc.h>
->>   #include <linux/uaccess.h>
->> +#include <linux/set_memory.h>
->>
->>   #include <trace/events/kmem.h>
->>
->> @@ -7478,3 +7479,44 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma)
->>        if (is_vm_hugetlb_page(vma))
->>                hugetlb_vma_unlock_read(vma);
->>   }
->> +
->> +#ifdef CONFIG_ARCH_HAS_SET_DIRECT_MAP
->> +/**
->> + * folio_zap_direct_map - remove a folio from the kernel direct map
->> + * @folio: folio to remove from the direct map
->> + *
->> + * Removes the folio from the kernel direct map and flushes the TLB.  This may
->> + * require splitting huge pages in the direct map, which can fail due to memory
->> + * allocation.
->> + *
->> + * Return: 0 on success, or a negative error code on failure.
->> + */
->> +int folio_zap_direct_map(struct folio *folio)
->> +{
->> +     const void *addr = folio_address(folio);
->> +     int ret;
->> +
->> +     ret = set_direct_map_valid_noflush(addr, folio_nr_pages(folio), false);
->> +     flush_tlb_kernel_range((unsigned long)addr,
->> +                            (unsigned long)addr + folio_size(folio));
->> +
->> +     return ret;
->> +}
->> +EXPORT_SYMBOL_FOR_MODULES(folio_zap_direct_map, "kvm");
->> +
->> +/**
->> + * folio_restore_direct_map - restore the kernel direct map entry for a folio
->> + * @folio: folio whose direct map entry is to be restored
->> + *
->> + * This may only be called after a prior successful folio_zap_direct_map() on
->> + * the same folio.  Because the zap will have already split any huge pages in
->> + * the direct map, restoration here only updates protection bits and cannot
->> + * fail.
->> + */
->> +void folio_restore_direct_map(struct folio *folio)
->> +{
->> +     WARN_ON_ONCE(set_direct_map_valid_noflush(folio_address(folio),
->> +                                               folio_nr_pages(folio), true));
->> +}
->> +EXPORT_SYMBOL_FOR_MODULES(folio_restore_direct_map, "kvm");
->> +#endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->> --
->> 2.50.1
 > 
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Describe your change :)
 > 
-> I also took a look at Sashiko's [1] comments and I think that the
-> highmem folio issues should be the responsibility of the caller to
-> check.
+> Ans also worth mentioning that we now flush the TLB even though
+> filemap_add_folio() failed -- which shouldn't matter in practice I guess.
+> 
+> With that
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thank you.
+Done, thanks.
 
 > 
-> [1] https://sashiko.dev/#/patchset/20260317141031.514-1-kalyazin%40amazon.com
+> --
+> Cheers,
+> 
+> David
 
 
