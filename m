@@ -4,136 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42124E99069
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D648E99074
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:08:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E25B6B0005; Fri, 10 Apr 2026 06:00:47 -0400 (EDT)
+	id 89B4A6B0005; Fri, 10 Apr 2026 06:08:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692C46B0089; Fri, 10 Apr 2026 06:00:47 -0400 (EDT)
+	id 84C276B0089; Fri, 10 Apr 2026 06:08:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 582116B008A; Fri, 10 Apr 2026 06:00:47 -0400 (EDT)
+	id 73AFB6B008A; Fri, 10 Apr 2026 06:08:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B8966B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:00:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA5F413AF80
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:00:46 +0000 (UTC)
-X-FDA: 84642202092.23.EA26D21
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0A3F9C0012
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:00:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YByLtiwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EXhnDdlj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QGqRXNQE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K9uWVvbp;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775815244; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 642BF6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:08:23 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DC08E3033
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:08:23 +0000 (UTC)
+X-FDA: 84642221286.26.9FB839D
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1E905180008
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:08:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HbBwhoGg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775815701; a=rsa-sha256;
 	cv=none;
-	b=Fx8rXq3EwsQ/Q1Z+CSkK9btBaQKWA17eCVAkBZpn9wN7pswSMNoOZi67FIxb0CP44ilcoB
-	cTOKfXRLsaTpTra9WJn8ARiMfT0+1mHvbe+Q9VUKHPeSJkOUdyDrowjkPJsmqfvDJ/2WW+
-	O+YX7vnIol5qBwbT5B5CuozH7XIxq94=
+	b=7Maw2hFS+l1CjkI7oeCVkTG72WDqjQ9kAqTl6lIVeYBbRb0TQXC7j+B6aWOdQHlF8PWRn1
+	XJzVskIfsb3YDDskrGP5DKHRR4FSEQmmMEztlYAu9RX8L1RRNbbgYUv7opGKMmt7BCGz66
+	LgYvAsdolFIyw88RMAcqIksf9QJeBWI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YByLtiwe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EXhnDdlj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QGqRXNQE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K9uWVvbp;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HbBwhoGg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775815244;
+	s=arc-20220608; t=1775815701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkfVDK9m2+79hoSwUpq2JOOIVAKK+qSsxl7RUf+4B3A=;
-	b=r6sHBCGH6uHSNQ0nVKVore/HKL6coowENIGU/d8XdSx1Ja0cjZLlUVK05KU6xvvspbDyYt
-	qiwETPJpKsdUNS+anlhvNCc+BdPPsWGQgKUH/OF33LjPcEbHgFnI0/jolmq9MIVSIINkv4
-	9yOUta/cn2E+mPeX+Od27tHwTV4D3qk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 12B046A7EA;
-	Fri, 10 Apr 2026 10:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775815242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkfVDK9m2+79hoSwUpq2JOOIVAKK+qSsxl7RUf+4B3A=;
-	b=YByLtiweH28ueinQh4cOraL1Tga5KFCAlFD5jqBnR3noOVyYgzvBvAj38lSQx9dpR5eSHZ
-	HjqyvC5maBcHMVwWxrHo44no5mw73Ri00g7MiAWwtsyg6S5G/ZWtTGwr5c+kpT+NLeH0m/
-	s7d3ZMoZjOFN6/jfmy71t8RwGBzoIfg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775815242;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkfVDK9m2+79hoSwUpq2JOOIVAKK+qSsxl7RUf+4B3A=;
-	b=EXhnDdljyxynm7L8VIMO/zaek/RsmlohwURNe50heC8RI18nrkG3rL1UeAcIZ5mNf+EDJA
-	+FrZewPx/VuCXkAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775815241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkfVDK9m2+79hoSwUpq2JOOIVAKK+qSsxl7RUf+4B3A=;
-	b=QGqRXNQEqeQK54c+iWpzvuaPLbHea83I7jsnR2wyD7x3iyOEc8kS++hzUVTCXMGlMEdKMx
-	WjQwFyc/CsLkiO6Om80jbut5dP38y+UHyWMhu50/1l/IhqAHvVEb9O5i8Ndln1oq41AQBt
-	+14urth4otxagawg8WGYotjtzqjeh8Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775815241;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mkfVDK9m2+79hoSwUpq2JOOIVAKK+qSsxl7RUf+4B3A=;
-	b=K9uWVvbpHyrDD48RRwxvErv6aucdFyrETF3aNk/Je3GKGFCzAWBubta5L49rJlgVOLdU1V
-	hDT+/sl2AAHtpvAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 087DE4A0B2;
-	Fri, 10 Apr 2026 10:00:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sywSAknK2GmMXAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 10 Apr 2026 10:00:41 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id BA687A0A81; Fri, 10 Apr 2026 12:00:40 +0200 (CEST)
-Date: Fri, 10 Apr 2026 12:00:40 +0200
-From: Jan Kara <jack@suse.cz>
-To: Boris Burkov <boris@bur.io>
-Cc: Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <ialh7bznacamw6ogfwniawtz577t3xo2mqgcjaweashqhs3ijf@jebgxzy42zqd>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
- <CAOQ4uxgYYt8LQqR+feSwqGccqD7Ns3sNgiVHw76mYsbKSwq5ng@mail.gmail.com>
- <20260409164834.GA3472346@zen.localdomain>
+	bh=Ex06fw8ZW4mGohg3CG9/QbBROQUogUR/vRM+h93FYi0=;
+	b=6WsnJguJ0GdgtNe0jY4AHky3uYR1fgH4F5t2CJKkmxsDdmV2+Gc5KequV4oeN2N9Tf0Fwl
+	/YZu8JKLTqp8FCdg7HZciZzceLUVqvRgdOj7iED9jk3nqOQscHEYE6MkDfaq869nEf7fsk
+	SFVgDlorII7cZqNAomm7IdjC7u/Gbd8=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-827270d50d4so1760010b3a.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775815700; x=1776420500; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ex06fw8ZW4mGohg3CG9/QbBROQUogUR/vRM+h93FYi0=;
+        b=HbBwhoGggv1lUvB7Dl6L0UyYM8ZGM5Ppo139TVhSJnqbEuqjjF3jMAuXZBI4bNsCrY
+         XE411HDbYSj9LKp1cS2A86Dd3SatAGsulcz+guWuDu0SmzS/jXikzpVuSC87fpEa1Q0d
+         wOv6A4XxWdutIy46YVx3o3/1VizXy5F7O6+U0diXKBio1d6jELikBPbz8t3hkL+waahn
+         DJteGKLv6HmEQNw5dG3dr15ZGScPpWPFkrMasfW2wyRWZIv25BPHo4CFFkkGF0OeJCXn
+         8qNUemlDAyJL17JkGIsRBWcCCjIK4VoT8FfmOsx/Tc1NC7ZetZoCgE2H4IsRztP3Bku6
+         Z7Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775815700; x=1776420500;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ex06fw8ZW4mGohg3CG9/QbBROQUogUR/vRM+h93FYi0=;
+        b=s3+V2X3hhcCSqHo5wZttdvd9Uwc2SOK4T4xChvMGO81tUUUpfhEIp6JfbN3rIFUajA
+         pctUBoXA1Mq7eVOLnwNWRFOADVkurcYXqSlMINrIi6+76ZFw86NAtBzwGRlY0PJoFnNy
+         MQGuyoVOmqaVhqICgKw9tmv3n1OAa261RH77s3xnP9iX11wfU1z5S7N2Mf6+HY2F8cYN
+         U3UEmUtNc8w5TOfcbypU3rXqxUGS79grI1en4dYbXbGIPPIRCuDdZ8CrdJmxanGurwGu
+         wYVmvBWilUxkJuxZUxuffhHvSyJo5WKX0F1Bn3DbyUqTOxb8/b7gdgZ2kJIj+4U2Wpdr
+         o1Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQBSBz6Uolu1XFIb9dz3GTvwV26rqMbrae7alEgLb2+dOdX+NSRYCMsSNuRp35+DcFZVPEJs26/Q==@kvack.org
+X-Gm-Message-State: AOJu0YyEm+EbqcSCr6tiS+ac007B5TgvlRicxSNTth2DvubS/MlPSAZ7
+	HUuS2BqXAlUcjNPpsAEQKd8pE7RF3NyOQOfCRa5NuUKgiw5vbk+dwBFU
+X-Gm-Gg: AeBDievK9SF540znrDwEsSmlgoLyqfeCkhzAP5Lm982gSi1/YZq0HHYq/ErytKMHbEL
+	mte30CH5Q3VoJbH/INxTBkiI71w1IJMgfETiMkj1az9HvqxKA+9nnlrnkmuseBC9Fl/Lg6MJ7t/
+	SOPozL4JGYxj79SmS3H2jU/9E9SIsPZyr5wueUGLwwHqxG3g/BFAGtv55kfH1jAE3J2UzDp62DU
+	oZpqMCLxrls6wuJIDqJxoyXutPWma2fhXlU3kTb4ZwtZiz4eeZwqILKFHgnSzu6hAWAj4RksBGK
+	6eWkfBI3/gVlWJr8Y66gLsyo5rAgpBmM34F9TKcf9P1RaOM99hs6KCCDDBIFfXzLho3d3S29kGV
+	c/sfRqnFvyPKDiF7d5Tygt9QcJGDwP8l2Jy8IwsBVft7tlZXPDznoUZtcEmQkpaBJ5rBAVqtgDY
+	0Q5Iuz9HYkuok22dT0iWYSac+EkcMQcBa89CEvCA==
+X-Received: by 2002:a05:6a00:2d85:b0:82c:9126:31e3 with SMTP id d2e1a72fcca58-82f0c31050amr3292091b3a.26.1775815699762;
+        Fri, 10 Apr 2026 03:08:19 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4b7d10sm2462891b3a.28.2026.04.10.03.08.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 03:08:19 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: (sashiko review) [PATCH v4 2/2] mm/damon/reclaim: validate min_region_size to be power of 2
+Date: Fri, 10 Apr 2026 18:08:22 +0800
+Message-ID: <20260410100822.196999-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260410044259.95877-3-aethernet65535@gmail.com>
+References: <20260410044259.95877-3-aethernet65535@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260409164834.GA3472346@zen.localdomain>
-X-Rspamd-Action: no action
-X-Stat-Signature: w6uqtqqyqfjfawb3ddkk8nargeskmh1f
-X-Rspamd-Queue-Id: 0A3F9C0012
+X-Stat-Signature: azz4oo1xk4ds8f7zye6nfpcfscsyx199
+X-Rspamd-Queue-Id: 1E905180008
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1775815243-853575
-X-HE-Meta: U2FsdGVkX181CV5WWsr35LWh/pOTuXYpwvtuBe5CGcb4Nxo7jnz1bToDKFAbwIrhSaKc5nFS6ZtRokukuT6rLFI2lhC5trgy8VqxTc1PSHOkj0VR/JwgAoqCnibLtgAvK39/WYkyLy+LQbU4yq7dBUbMzT7aRGlZGFKYiw2WR4GEzszqXl4bxX6RUDG0B0c6tK+A3VDYo/yD/oeuWbd4b0+m5yAYRtOwaHj2DIsdE0ZwKqCPrquKK1O6a8vn4kmWmsMg7XP03nSWDlQeNDLH2YSbtKOWyn+44dM3b0rOhc7p8JbtvkH9ORtB7wBr9OrNymoucXHtiDz5tcGUPIVcC/hdbqJkAxsG/Qyh5TYFB9Ht4ydCdBbiM0k6Z8JSxhR+N1yQZaFg3OXVp8crI2jyM5wxf9Z76cu0jYErY1oBaUO0iytwOORWf9hTWqVDrPM9avfOgAMw1fmsx8pBYs00226BtxCLALe4VfzdR8jNdxnsWRl2Qs+VRORjGM/4CrUJazvw34MH196vDG+W5X+j+MXJWwx6ZJRegLfK36mdXimeodpOasFcf2/cqL2pLZnJ9ARVzELVQkmuBaNAUzeVeJGsBY+xIB4qcYoUAdHM6MTu5tfoJkTzXihZNZpIurzdS0FyJ+Q8mJl4X7/s1XF8gJvMBp/zrhtAkWnbGcOMRkYq0FbcOp+v2h0uUbv1lf2iH2+vymZrt4NNmGL0FPkeI1VdpqbsP/EsOo/qXa89bqhpUa/o9pGZJ3+bHCx4Y5DXhGruEme38Si4HOkO8apWoKtsOnzTUTTuNNRcX/KnXekUNGAqR4INCHOmieOCQRJ6a8igAsd/prAWdW+Iumjuo64boTXgYm30QERRHh5umzYxazX1EzpWoHOGaPiGGRt44zh3WKmRS9VSrFnBCwcuIt/9CIKBf6qAfX41Y75cx0zLuX/BfLBt8xnAjaIcr/iR09cTFLPvb3FyaiCAWxU
- ryzqv8cK
- 8CfsYbjpH34L9QRJFNj/R/EO2MQxQNWu2uPK4cM+JnauDU5dWsrS7iwyIOR2pPj+9QCWKaxP96+B9xTQ1c4m5g9G5LDCFyLyuZPuIZB+Xr9Gb5vSaUDApQgqhGhRGXGXhNnKvYyAdJrWTrkjlHFW0Z+MOZHc2nmnxvXaionJSoX5VGdbOhWI479n4FE+SHPBXnsgkZCNIS3+/itTREBaohDVaQngVJon0IyIfXw7JQxD2KhTtMOmKvhu2Xxlo16uKSUUEIqqH42GSiU7X+pybYgXIHpWDF/olgwMpk+KNSrN/+qRODkJKEcTJPpqc/n6aDXrxfDo6mffZmI+qKr/IRaDdEN9X8Bsxwh300WJWwjASi7s=
+X-HE-Tag: 1775815700-435047
+X-HE-Meta: U2FsdGVkX19DdqgCrpN16rznJEZfgRjm7qOp7/8CFZOsO3I/uYgeGEB8UG4UWBhm0xB95QM9+qlRb2y5SecsHF8cmpv90TJ7u3aqUf+znNWKhH+2TxqU36Du8rCfiEZyh5OIrT6o8tYLI8fP8dE1XBP1d8QUEIFwLYDkrv5U/qiIze8LFic9j2/dIXVDnV2fjHCub7Kfy0I8YG4srYsHwbWgr7y2upGZiTdKAUGmqXlMx1xGLXhvbQ4JTggXqY6jGa6dPZPbsvDf/LqtKDT7iJ4zgwyQvWV8kRqhnkBroiCXzVVMqzXbd1fDnRyvljUS690f9/3X1fMe3yPrCceYTszOoPTlbfRQ2ub9e7jLThHZ4Adk7pIawzfbIc2hidTi28fJHV7IU3fDiTn+OjthUE2YzYS3VCH9d6giXRcJBzEqjqR4ASVAMnUmNbSUD0ZsC720Dq3k4J/daoKf6ycxFWhlAHhYsvsjK2rhMkcKO7w28tToppw9mfI8SIXOW9TmFn4kritfbZQ2jj3kIxv2QcDPkoquWgS1dP50Hhh7nrCv600z2tvqNz2NCDYy5PcZCgBUxZrxhG2jiKZ2Do1I8WRkdUOduq3SnwZmSMC6nNQyILzyuVysQJbPTYUUaoqftGasY8I7oIqRHol1SCSEnYJWPIvzO4Y7Vs77CbCjijuKH5kb91RKo9eJgr4aJMXZR4hE4aSXsO45XRfrBmW/5sadCuaAjwUAk6e36l70l7At3ddxP6+kQNMP/bBCSO2jOm/ObHi7Yo2MsT/fYYtfrICodiOjfZv3s+2PSeZBTf+hFeDAbRxiJ4wxZJL6GdrD/k0VDkqipOs9NTyLlRX0/flJkqa3tw7fhrsdeUBPiO9rw36d5gklytPcCs05bRN2Q32aWM3KJPrPMNxZewF9rLsQ7bR/v2ns3LiiuLSS0smPOz63f4uRLXTOYw3VfIRzU27siQ2eKus7LEEQWHF
+ xMCA03xX
+ TfNjfsfPFFl5sZ2jXqldIb2L/hx/gFvvGmBbcPFZ+55YxFSFxPcJvjHHMb5TvMwM+FZu82kvOQeyTnGlCO1vL50ogWputyFYiL9cmzu6Kr+oBbo4Y8yKgmMZ00k5guTr12d/gQoEz40ZnVPWzbVYfLIK7Cv5UQqet+HMtOw7gZybuLps5Xf4Bte46kHSfngfeKo03BVpEAflijMUXyFy6jLr/AcwAQVboDodpCWbtXItN4Qd9gLB5es3M4Q6vESZYnOa/Xpwsk06/uUOVdggLnqmPK7HzELUpEGK2v5cihOJuqN7HAHC1DX11hEmemQtyVh/ksSIYTStJip1uYW9SaS2KIUO+2gLnAwzpINOrY63k5XXtWNNFw9SnPmSbfWGxBz8pvys7DAoaJWrygJuF6BwcjlwbgflHFXckUETVeSoRTbWiZLU0BOtWSw+mwlCbcxQdc6drnTO40tofHXX2GttxuOzDMo7LHCy0V4RhoPsmIDlwlTYIHwmmi7hMILWXUdheqnxq/euaULVOSmmqG39aibp9jNK6JS0ILDe3oVulziU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,68 +118,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 09-04-26 09:48:34, Boris Burkov wrote:
-> On Thu, Apr 09, 2026 at 02:57:47PM +0200, Amir Goldstein wrote:
-> > On Thu, Apr 9, 2026 at 11:17 AM Jan Kara <jack@suse.cz> wrote:
-> > > This is a recurring topic Matthew has been kicking forward for the last
-> > > year so let me maybe offer a fs-person point of view on the problem and
-> > > possible solutions. The problem is very simple: When a filesystem (ext4,
-> > > btrfs, vfat) is about to reclaim an inode, it sometimes needs to perform a
-> > > complex cleanup - like trimming of preallocated blocks beyond end of file,
-> > > making sure journalling machinery is done with the inode, etc.. This may
-> > > require reading metadata into memory which requires memory allocations and
-> > > as inode eviction cannot fail, these are effectively GFP_NOFAIL
-> > > allocations (and there are other reasons why it would be very difficult to
-> > > make some of these required allocations in the filesystems failable).
-> > >
-> > > GFP_NOFAIL allocation from reclaim context (be it kswapd or direct reclaim)
-> > > trigger warnings - and for a good reason as forward progress isn't
-> > > guaranteed. Also it leaves a bad taste that we are performing sometimes
-> > > rather long running operations blocking on IO from reclaim context thus
-> > > stalling reclaim for substantial amount of time to free 1k worth of slab
-> > > cache.
-> > >
-> > > I have been mulling over possible solutions since I don't think each
-> > > filesystem should be inventing a complex inode lifetime management scheme
-> > > as XFS has invented to solve these issues. Here's what I think we could do:
-> > >
-> > > 1) Filesystems will be required to mark inodes that have non-trivial
-> > > cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-> > > whatever :)). Usually I expect this to happen on first inode modification
-> > > or so. This will require some per-fs work but it shouldn't be that
-> > > difficult and filesystems can be adapted one-by-one as they decide to
-> > > address these warnings from reclaim.
-> > >
-> > > 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
-> > > kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
-> > > performance reasons. I expect this to be a significant portion of inodes
-> > > on average and in particular for some workloads which scan a lot of inodes
-> > > (find through the whole fs or similar) the efficiency of inode reclaim is
-> > > one of the determining factors for their performance.
-> > >
-> > > 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
-> > > per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
-> > > to process them.
-> > >
-> > > 4) The work will walk s_hard_reclaim_inodes list and call evict() for each
-> > > inode, doing the hard work.
-> > >
-> > > This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
-> > > and they can work on freeing memory needed for freeing of hard to reclaim
-> > > inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
-> > > they should really be addressed.
+Sashiko found some issues.
+
+Forwarding sashiko review in a reply format with my inline
+comments below, for details of my view and doing discussions
+via mails if needed.
+
+> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-3-aethernet65535@gmail.com
+> # start of sashiko.dev inline review
+> commit 7a816b41f4b321b6a513227bef0e50f3bc1e86f1
+> Author: Liew Rui Yan <aethernet65535@gmail.com>
 > 
-> One question that pops in my mind (which is similar to an issue you and
-> Qu debugged with the btrfs metadata reclaim floor earlier this year) is:
-> what if the hard to reclaim inodes are the *only* source of significant 
-> reclaimable space?
+> mm/damon/reclaim: validate min_region_size to be power of 2
+> 
+> This commit adds an early validation in damon_reclaim_apply_parameters() to
+> check if min_region_sz is a power of 2. It attempts to prevent kdamond from
+> terminating unexpectedly by catching invalid values before they reach
+> damon_commit_ctx().
+> 
+> > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> > index 86da147786583..2747eef5919d1 100644
+> > --- a/mm/damon/reclaim.c
+> > +++ b/mm/damon/reclaim.c
+> > @@ -204,6 +204,11 @@ static int damon_reclaim_apply_parameters(void)
+> >  	param_ctx->addr_unit = addr_unit;
+> >  	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+> 
+> Is it possible for a concurrent sysfs write to change addr_unit between these
+> two reads, allowing an invalid value to bypass the new validation?
+> 
+> The global variable addr_unit is read twice without READ_ONCE(), once to set
+> param_ctx->addr_unit, and again to calculate param_ctx->min_region_sz.
+> 
+> If addr_unit is changed from a non-power-of-2 to a power-of-2 between the two
+> reads, the validation below might succeed using the new value, while the
+> invalid addr_unit is committed to the active context.
 
-Then we are effectively deadlocked on ENOMEM. That's why I think we'll have
-to put some throttling on the creation of hard to reclaim inodes so that
-they cannot grow out of control.
+I believe this is possible, because the current call to
+damon_reclaim_apply_parameters() is asynchronous and does not hold the
+'kernel_param_lock' during execution, so this situation should be
+possible.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+However, I'm still unsure whether your suggested changes should be
+included in this patch.
+
+> 
+> > +	if (!is_power_of_2(param_ctx->min_region_sz)) {
+> > +		err = -EINVAL;
+> > +		goto out;
+> > +	}
+> > +
+> 
+> Does this early check mask a structural issue in the core API?
+> 
+> Looking at damon_commit_ctx() in mm/damon/core.c:
+> 
+> int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+> {
+>         ...
+>         dst->maybe_corrupted = true;
+>         if (!is_power_of_2(src->min_region_sz))
+>                 return -EINVAL;
+>         ...
+> 
+> If a different caller passes an invalid min_region_sz, it will still trigger
+> this same trap.
+> 
+> Could the root cause be addressed by moving the maybe_corrupted flag update
+> below the validation checks inside damon_commit_ctx()?
+> 
+> Are there other ways damon_commit_ctx() could leave the context corrupted?
+> 
+> If a user dynamically enables features that require memory allocation,
+> damon_commit_ctx() calls damon_commit_schemes() which attempts to allocate
+> memory via damos_commit_quota_goals().
+> 
+> If this allocation fails with -ENOMEM, it returns an error but leaves
+> dst->maybe_corrupted = true on the active context, permanently terminating
+> kdamond.
+> 
+
+I discussed this in my previous reply. But I realized there might have
+been some misundertanding in my previous explanation. What I wanted to
+say is that there might indeed be some issues with 'maybe_corrupted' in
+damon_commit_ctx() that need adjustment, but that's not within the scope
+of this patch.
+
+> Can a concurrent sysfs write cause a divide-by-zero panic in this same
+> function?
+> 
+> Looking further down in damon_reclaim_apply_parameters():
+> 
+>         if (quota_mem_pressure_us) {
+>                 goal = damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US,
+>                                 quota_mem_pressure_us);
+> 
+> The global module parameter quota_mem_pressure_us is read twice without
+> READ_ONCE().
+> 
+> If a concurrent write changes its value to 0 immediately after the if
+> condition passes, a quota goal with a target_value of 0 is added.
+> 
+> When DAMON evaluates the quota score in damos_quota_score(), it uses the
+> macro mult_frac(goal->current_value, 10000, goal->target_value). Dividing
+> by a goal->target_value of 0 will cause a kernel panic.
+
+I tried to reproduce this issue, but without success. 
+
+However, based on the code, I believe the problem exists because I
+didn't find any checks preventing 'goal->target_value=0'. Please let me
+know if I've missed anything.
+
+> 
+> A similar sequence exists for quota_autotune_feedback.
+> 
+> >  	if (!damon_reclaim_mon_attrs.aggr_interval) {
+> >  		err = -EINVAL;
+> >  		goto out;
+> >  	}
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260410044259.95877-3-aethernet65535@gmail.com
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260410044259.95877-3-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
+
+Best regards,
+Rui Yan
 
