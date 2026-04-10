@@ -4,108 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72DF5E99059
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:03:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B690E99059
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 09:05:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD2176B0005; Fri, 10 Apr 2026 05:03:32 -0400 (EDT)
+	id 5F2BF6B0005; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5B6E6B0089; Fri, 10 Apr 2026 05:03:32 -0400 (EDT)
+	id 5A36E6B0089; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 922DF6B008A; Fri, 10 Apr 2026 05:03:32 -0400 (EDT)
+	id 492766B008A; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CA8B6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:03:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BA9813AED7
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:03:32 +0000 (UTC)
-X-FDA: 84642057864.13.83F2848
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1AFAA140009
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:03:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gUaOeiaq
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 387CB6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 05:05:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD45A58EFB
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:05:23 +0000 (UTC)
+X-FDA: 84642062526.24.C5653C9
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9ABED180003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 09:05:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YH9B8pi2;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YH9B8pi2;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775811921; a=rsa-sha256;
+	cv=none;
+	b=QUpCBLAHE/X9XIQpy0AesaAOanVD9AsgZjzpEI+p7P3LEADn/VkIRy855TIiB3OXqkYzIg
+	m+AV/8yyp9dhjFhG5e/egUnOOUkr+j9LD7uDKq7nmK/O03SGfI2RQ/YW7ggiWnHjBZWjRV
+	c9zZTtS/ETHZiDeabXLhtihN4sCu4sU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775811810;
+	s=arc-20220608; t=1775811921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YFPayOsjb+5+Gcxzh+8/PY1jTqobcZZS+b7OL2QzsT0=;
-	b=dQstzTB+ORk5b4T/KyP8qKQL9YBjELz7+DPFh/AOqF56mSWGsLcSJBxX2W7Iru1aBcQlUh
-	rwStUXoh+K32eK2DUEJsfFtvKlVLpxlBqjkRIBQADZtSPO2lKus/oTP7jhxVFjWpPHBmf9
-	DpqjVRp5TFlr6PLJOZCefTUYzN+E0i8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775811810; a=rsa-sha256;
-	cv=none;
-	b=pNW5HrY0pu0a0Y+HSUsw0x6tdwwHQ/J/XjWVDUQfJrPWwkWQbph5PN9H1gNi3fhGqlWVr8
-	mFF7y3nDfv6CHE/tTabIVgsYCCBlaGAlKXhZDqt9WogrxOpvF3jYAk2Ldst6Wy929hayMH
-	ZynhX+uJ0rkTsOMSSrmNhMd7EbK+bnU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gUaOeiaq;
-	spf=none (imf09.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=YFPayOsjb+5+Gcxzh+8/PY1jTqobcZZS+b7OL2QzsT0=; b=gUaOeiaqFDXf+8LIJE7yyAoW6N
-	xXwIVuCcbfNoujKS/rO1JbWmXERoIZ37FxvzSkstW1CES37nqEi7r0wj+GOtHVx0wWyE2Pa6LnKOi
-	XIqsTPxpvNQRwzYc7GW6xr33kHhwtqj+0m1z9/sC5aaxs46PET+w1mid796X2/XlCW92gqXKmwD7w
-	wf5/hZWaHFnz+LBtD/P6DXAF+nNna8qmLTt5n1SjnYgOJAXI2MQj/9hUnHwIy1Kyds3kl9s112IoS
-	e3EZ2js1uw+3fD/BWb+Y2ZLAxfXDhqlKu6yug6K1j3NYH3ydWWeMd9ZjtM8IsH4ZTcAGB7Yu9gO5q
-	ZD/DH/wg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wB7lp-009rsi-1U;
-	Fri, 10 Apr 2026 09:03:22 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Apr 2026 02:03:03 -0700
-Subject: [PATCH v2] kho: fix error handling in kho_add_subtree()
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
+	b=dcV7VuGYlMEOS2SiHRHnwicd9bVXZ8BWijSld09dwd7bLWnxc5RVHXItKSXaAwXjMvEAKc
+	Q6cr+sIaJbr/4m0GVMpnwO2LAX/EFL1Ec4FCDe7cu6ijLeELPqj0mWsrAixvYbCmMWIqFy
+	ur2ucp5f2Fa7Zi6GokwXwdu7UrT9EXU=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cff5dafc3so1321027f8f.1
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1775811920; x=1776416720; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
+        b=YH9B8pi2oDtVT/K9WJPGXNdMsymD9SAuLtnjDPCt3VHOgA81L6vWWAqCA5xp6D3JI8
+         vKeyWIa6SlrC0x34D3ifIvvg+VZspWUTiTT05xLMzi4ENBTnS95RH4HLhtjnhxfJxzTx
+         jpdHOMxx2/nj21YHD5mdIMfym9d0/LoElkHrziwPLiaW793K9HM0pTRS2eUn1go0vBUg
+         f5ovfqPfngQy0sTCVKi7PuDWC6dlt1ZZiibOibcAyJiS6Fq7ugVWYAVjQxojg2r7dWM2
+         7xEmzJSywQXibjb0aIdQPKBf522OvaBnJ94uawL5vrMiD3MBdSW6/REvje+QNNYn97ID
+         wPKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775811920; x=1776416720;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XEvKQiPqvwQxNRmtSVZKQ+GJktAIkI23sY2qooZ+Ow=;
+        b=bJfNbHBFvTpYJUFBHVmJDbI2xeOYVaZHCMsnO1CK+vFgauyu/E24rEDvLEEj8y6bkC
+         LZ+1FE9KERsjM7UaGmEhU5LIth6BUmX2YXiSCSWql/ZlOcv7bC1INXhBXJOBwvPNn+5V
+         9XM4qvOEXL21EB6BrtWs2haegtPExdW+vZPLwgSQfz0Fej6nq2MVdlFVeL2qw9NyJRAY
+         s+vE1MZCT9vtss3n40hAowl1z20u/l0dPrlBqEzqjrWB6mqptV/Pi18cbqmJx6RDu3MY
+         jFA9RaUaB2kBS4Jke/9XWqiKszXITdOminqo9s3v+sxWYHFyRxQBGhwwsnUiTDLDVpwY
+         dhBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrxubT4xZYpVy30zn9ZciZ1ZkMxet9MgfQGwb8BVjnPJOUJ9kJeQjBaM5GCQu2L8upqwPt7Ab5wg==@kvack.org
+X-Gm-Message-State: AOJu0Yw+JR8SqzqRPBUlu0AzpouGUHG19CHVtcPDuOwdgm9sQppsJUuX
+	vyT5vXdfPBF+KgclBEsu/u0Ia9i4net/HU+D6RmX1swVM6KoTBEiMkNonbWQ3XIS/bE=
+X-Gm-Gg: AeBDietLI2sSyWp57YbGFUBpgTtsKFYr5xWm+oZ2I8Y5zOBNRUo3428jsLEuNUCgy+b
+	ygTJ0r6ZAUQcOg/dkhkhjTS7frRyNvTyT/HN02/Hb5NbkvBTwHUclgthJwUiJuR0kWWm53rV0DT
+	6sSlNz4z71qEWcySN4oKJLnHGvL8Bqb0lYB9GW17andqzXrVTWk51nNXkWeuc65+1uwaCHHdwOR
+	XZlROuKCN7vyYKZIxuf462iK2RhE1Fx5F7Bf9PAJONh2TR/I+xwqmYIKvNdJfQkjmhK9oxw0HXx
+	iBHy/IdGybhtcwBFylXn7l2lz1LhPcnHRV/DWpYgD1/xAEIajGT3shXI0sxezNDsUprZraOwVL3
+	iT32zi16v9S6JNmCTS+qeoXI1BvbL+7G1xlQJlMlAmDnmSSxf7Jn/PVr7c7gV/8rRjkKR+xAAc3
+	7bnwAWuGarx7aa6LN4czC9MdtrqkuiiGseVg==
+X-Received: by 2002:a05:6000:268a:b0:43d:4daa:7a89 with SMTP id ffacd0b85a97d-43d642a50a2mr3222376f8f.19.1775811919772;
+        Fri, 10 Apr 2026 02:05:19 -0700 (PDT)
+Received: from localhost (109-81-92-28.rct.o2.cz. [109.81.92.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2a53sm6028261f8f.5.2026.04.10.02.05.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 02:05:19 -0700 (PDT)
+Date: Fri, 10 Apr 2026 11:05:18 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Christoph Lameter <cl@linux.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
+ vmstat_update
+Message-ID: <adi9TtIbWOoQPpBp@tiehlicka>
+References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org>
-X-B4-Tracking: v=1; b=H4sIAMa82GkC/3XNQQqDMBCF4auEWZuSxNagq96jiBgz0WkhkcQGi
- 3j3ol13+eDnexskjIQJGrZBxEyJgoeGqYLBMPV+RE4WGgZKqEpcheavKXSO1i6ht7zHsnSysvo
- mFBQM5oiO1pN7tL+d3uaJw3IYRzFRWkL8nH9ZHt0fOksuuVGy1tqhqStxt2io95cQR2j3ff8CK
- wBLibsAAAA=
-X-Change-ID: 20260407-kho_fix_send-ae33f16d7502
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3308; i=leitao@debian.org;
- h=from:subject:message-id; bh=JQoMRroQGqF2IMGaWv58X8dTA6DCS66M2isFxCvTs8s=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp2LzWNIW/4bf1GUexjkGfxmnk43wQDHrtZRyl8
- eiiufwcuKGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadi81gAKCRA1o5Of/Hh3
- bcOnD/9VQ5mEffCzXxXjp3D1jEz1BDnoezdxK4uOGDQ8Wq5ZIMDtwHfIFm7PPIcR5OT4g4XW14j
- 9J8SRV4Qf4L+pnIj9NZjeOX1ik2GF+TUNOX5EnIAb5fghKP/BmndASTWVGJ0CeHqljcj8nvVmru
- r+KHfdpbapwtYNCzNiWMeytcziPDEo9Tgg9oL3UjmnCe+pZfGo0JLxyaza3zt75Q/sxbi5PNgae
- qcYpzECpDhROV0Ad364GmXnhWeZ+OBhhI5cSbBEzNpvPANS83/UFJXVB4FakpzBWvmfGN9mvM1q
- QzCNDKtRnnNxqfaEuURQl2gF62pO4vApZoDgfVqIViUUyLe88Db/KjsskUH4MWRaUVuQ8Oytlq9
- 47u5/v4ROdHqYSc6TpdsuvJZqieJMlahf6KnepxC1/UOe68REWCoQQ10nkpj1oiYP+eVyNNdyhI
- BpW250VQeRWVQKEB28r0QLxya8Bt3dcroCH8WY8kcE02PgRn25LnyCcWlTUmLuiwjOjDrYpN0Kh
- uWxj+gMypvNea1Ia4a+236iVNb3qQk9W/t9Xa+uE/KwlFBejceHNs4a6UZFaK7GR+2d7JldZoQK
- G6wUaVrZ6wlcZ4gDICVGSkavPDu8eoJClms2x8SAskKdVV7pwXZr8TZJLxEmdW8al6Xs/HjMZhy
- 3qZJnSNTZUgUubg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 1AFAA140009
-X-Stat-Signature: qcb3s3uqy3bz61fspaj3rhjyjs4hr7gh
+In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9ABED180003
+X-Stat-Signature: qdqjnobnxuwrshei5dm7srwykehqe1np
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775811809-331415
-X-HE-Meta: U2FsdGVkX18hQzUHin/N7jNF0YrbZioJbpIEf0QUA6xhl5L3EROHxtS7QUW5WZIYfIQNpLuBtvTTrH9kzZeAUhRAX582PzNFWQ/2Y308ZxuF1DR68ZQzfBhjW8iEJHYVEOm3306l8vb23r6fPowbMESHvRtWSxoYleIA9D0VzoYf4iFQSKSylmP9orRiuDhZb0NLY8o5kViOb0qFYwWO5/yOsBHNB5diw2xgKyGXlgU4T+ceNrZ3LM8PMTdeq1o4Iyp0prwdJSVPpzzvxx7pbScJo69BTGpsBhTIZZFPiC3+bpvFcMIJwHFfneYmRmqp1YblASJQPfS0JXRI8dEtcJ/W2rY3SA/J8ei6iYzqb8cEo9QVSbqNTn4W+VLWTI/FUfQXYHsUw8CxVERC7W6XToxjEDNc29lvE6hu2yVxUemnH2C9XFBYvSoTD0gFrblIGeT3U7Ng2lxS/xzbwvZH9BFWHIJ4BS3UbeLLhaTEubyzFbVtzPRR+eC8zHuE537KnDXq6aNDyk5T+TUF9VpNPXdS2rz9SxiYH89eNDWHfyDvGcj5UyT+Tz317GOB/0jF+y/+vjLJP5SslfMiGZCloPc4AIHOV/jWo72owmCcuR1Idmvh3HP3ccQL7mGD1woqIIVY1reVs2ZxWYeJ6b8zTB9dnVZLQwXHxHb1pR8RBVyT6rNz0Brq9VKIH5/3ttLtF2l3xn0IGM7bK4tIp0kBcmJJ6HuW8TLLa3F1QOEV3PhvGor3nn1+ja/8px3WwM//b95efJ2ID+xxwtlh4KPX7XFHKzt2ZU1oHyCsOB8WsD2TZTnTaeWTjPZMbTJoCaaBuFW4VcQ7PTsZzRUZHyWtgtW9Yid7e/Ftorsvrw1qVwl3jb3dfBGd2xKixJsMrEFYLkpeSWqMQm/igKayG7bvoPjL9B9UV7FbT4fiMtdI1c//dLkdDB/322O3WeZG7GlQr13uDKMdKRGsJCSwwB4
- IjbrpHmZ
- ryyCHGsENh6vgLWH7qlYfyfE1SiXRyczGI4fHZ6WGLDzpJgF1fGPFLy0SqgK9GjnEduuI4OVZ3zQmB5tyQgPjD4ddlDtN/Vj7HnzXa51srUEmaElvb5hXlV1A1TNZTpOuXw1gNSv9s2A7YTq1vq2eOp/LSONLsBtrkJMEvVvRQeHMympEj1qQ1po4AjpqtLbLwnF32ZqMK+NSI+p72XQAG24fHExjclj6+kK36sRT3nLybC4nF7/QL3BdrTx3HvQDT8xg0l+nev9XQLHHJmNvP+d+qtWX0oPs48XjehfPe1C4rGSH0qsmw1wEj/OK3UWtmL1P+NJoZrbqzyEMQhj5cNnH/A==
+X-HE-Tag: 1775811921-810152
+X-HE-Meta: U2FsdGVkX19MnVlvpucPxMktxcL5tNkhBd+m6CjNrGjccaY+xA74ytfDZpT2PVk3MiRXn8MN99ePjEgpZe9ouv+VPsnkxn3GB6VajPjmtHQtYfIj6Sdd22pvsoLyl0/M8gEMFSMR6ZTpUUd3wJBDCkNMZzpMRF08PcM7uXO8kqna5LUR79B24As+cAAum7mD24Gns1L/JW4e1gBgXwG4X1JlviAdIj3AS0VHsFTXsSmadSlHMMws3dxEH5v/weeEmaSRGjYlCY+mYLgYs73GH3jqXX14nogmjtkyDhlLR2/qmqh4GIv99Kq9XksSUaR9Dk3sKaKYzbMyF1oeq0AbS8WG5z9KzlFWww04r0YabpVSF3UMij2fh7INEn+ec25gJ1xNnDWJb4MmrM6no57+89AQkD0X4vOasL1JqslbePYYvSRz3KILTmEMAZ6akBtHNg56gzkuZw6E4jTXRUzRT8A4mRKq/eLAY0A6WLep0a+W7MVewImdB6oWGkCjdLYebQmP1VP/5bKDt10DXC05TtWS7hCcbUXQioiugT4no+qOY6EJQGAr4bbGSOlDboYkGeelhocnXfzFWMK7RJfNw6hICO4YF9LCCSYbZVPe5gveq7+DpkZcOeI50QyM8TBRecIg6Bp7o/njtGGpZk9GzIt3/enHGDLfoXoS0PcSR1LIRFEk5b0hm1qaq7Yv0MdY3im1HWmJRxus1W3Nq8nbYMGYp/pazzT/TAFAIImMj/XzCG5F/cnveUua5V+p37rjTC1iMDQqiY3wxEmeA/BvUA6H6YkEHBgeFdyqeIo1puuvqYh/j+uD3w5n3L/n466YS2GdNwL6jT6y3ZQCTyUWN/FJCncv+klHJqOx/0ZnzGgdEL1gh29c+6yY3crP0o465WJr+X09wdD8Jv6gCgJkReb2lTcXl/25DjVPB8OpOV648usLw5NyXIvw64fBQZyMTw0gQ213dowIRW4VCNG
+ Tt7gRty6
+ J+FSy9bXneTVr8w23L2leNxVRVTrlyz/Q+DTKthyYDZb5o1JFDAb/ucjrwxWygbvekHffAwITleDCE5jBN3Si5fxMqbzrA+xgFCsipIfWXVWtykU1+giznntmkKo5DUA0bO9VA8muPwgPkx/R8zsraMd1Xd4Hka/luVeOahal3qrXXhqNBe30kbEx/lHa595xo0WkLEXyxueZQXmvhSmEUJzFJMw7Zrsfw+H9eYCCsul8/hHiI4rvao2mKRm/v0fL1L9/DiCdqGQD9Km1VjMmvs8VGj2stpKHYEsdJnSgtzrYMhu60C4m8kMOf8VOrMOqI+MM4WuEautwtT2Lvkldlzl1q/X2oVG3YCh9WwnX1mYegETAglnrKW/ae5oSlYO0cQZmojCPAPYmSTV6buhgYmQ0iOzfCOuCOZi6MOnAw3jGbP4//dGXi2E28cOv4a/rDA5gCLKV7Hny857V38zn0/rUCb8YqAD5TzqZMqAbqrmzdTJjXlIEgALbPNHEON6NXjKVMvarR3IzDZXSMzJ3IfR8CD8xr9mLxAHFoQUDaVOGfMTHoQaPJpbQo/4jZt8Vp/ThBN09NEQD1xSZZLdGIq3BW2MdUgTRZGLumrRCiSVg3eA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,92 +128,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix two error handling issues in kho_add_subtree(), where it doesn't
-handle the error path correctly.
+On Thu 09-04-26 05:26:36, Breno Leitao wrote:
+> vmstat_shepherd uses delayed_work_pending() to check whether
+> vmstat_update is already scheduled for a given CPU before queuing it.
+> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
+> which is cleared the moment a worker thread picks up the work to
+> execute it.
+> 
+> This means that while vmstat_update is actively running on a CPU,
+> delayed_work_pending() returns false. If need_update() also returns
+> true at that point (per-cpu counters not yet zeroed mid-flush), the
+> shepherd queues a second invocation with delay=0, causing vmstat_update
+> to run again immediately after finishing.
+> 
+> On a 72-CPU system this race is readily observable: before the fix,
+> many CPUs show invocation gaps well below 500 jiffies (the minimum
+> round_jiffies_relative() can produce), with the most extreme cases
+> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
+> 
+> Fix this by replacing delayed_work_pending() with work_busy(), which
+> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
+> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
+> now correctly skips a CPU in all busy states.
+> 
+> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
+> The remaining early invocations have gaps in the 700–999 jiffie range,
+> attributable to round_jiffies_relative() aligning to a nearer
+> jiffie-second boundary rather than to this race.
+> 
+> Each spurious vmstat_update invocation has a measurable side effect:
+> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
+> drains idle per-CPU pages back to the buddy allocator via
+> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
+> the double-scheduling therefore reduces zone lock contention directly.
+> On a 72-CPU stress-ng workload measured with perf lock contention:
+> 
+>   free_pcppages_bulk contention count:  ~55% reduction
+>   free_pcppages_bulk total wait time:   ~57% reduction
+>   free_pcppages_bulk max wait time:     ~47% reduction
+> 
+> Note: work_busy() is inherently racy—between the check and the
+> subsequent queue_delayed_work_on() call, vmstat_update can finish
+> execution, leaving the work neither pending nor running. In that
+> narrow window the shepherd can still queue a second invocation.
+> After the fix, this residual race is rare and produces only occasional
+> small gaps, a significant improvement over the systematic
+> double-scheduling seen with delayed_work_pending().
+> 
+> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-1. If fdt_setprop() fails after the subnode has been created, the
-   subnode is not removed. This leaves an incomplete node in the FDT
-   (missing "preserved-data" or "blob-size" properties).
+I like this much better. Thanks for digging deeper into this.
 
-2. The fdt_setprop() return value (an FDT error code) is stored
-   directly in err and returned to the caller, which expects -errno.
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
-out_del_node label that removes the subnode on failure, and only setting
-err = 0 on the success path, otherwise returning -ENOMEM (instead of
-FDT_ERR_ errors that would come from fdt_setprop).
+> ---
+> Changes in v2:
+> - Instead of changing the timings, do not double-schedule.
+> - Link to v1: https://patch.msgid.link/20260401-vmstat-v1-1-b68ce4a35055@debian.org
+> ---
+>  mm/vmstat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 2370c6fb1fcd6..cc5fdc0d0f298 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -2139,7 +2139,7 @@ static void vmstat_shepherd(struct work_struct *w)
+>  			if (cpu_is_isolated(cpu))
+>  				continue;
+>  
+> -			if (!delayed_work_pending(dw) && need_update(cpu))
+> +			if (!work_busy(&dw->work) && need_update(cpu))
+>  				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
+>  		}
+>  
+> 
+> ---
+> base-commit: cf7c3c02fdd0dfccf4d6611714273dcb538af2cb
+> change-id: 20260401-vmstat-048e0feaf344
+> 
+> Best regards,
+> --  
+> Breno Leitao <leitao@debian.org>
+> 
 
-No user-visible changes. This patch fixes error handling in the KHO
-(Kexec HandOver) subsystem, which is used to preserve data across kexec
-reboots. The fix only affects a rare failure path during kexec
-preparation — specifically when the kernel runs out of space in the
-Flattened Device Tree buffer while registering preserved memory regions.
-
-In the unlikely event that this error path was triggered, the old code
-would leave a malformed node in the device tree and return an incorrect
-error code to the calling subsystem, which could lead to confusing log
-messages or incorrect recovery decisions. With this fix, the incomplete
-node is properly cleaned up and the appropriate errno value is
-propagated, this error code is not returned to the user.
-
-Cc: stable@vger.kernel.org
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changes in v2:
-- CC stable (akpm)
-- Comment user-visible changes in the commit (akpm)
-- Link to v1: https://patch.msgid.link/20260407-kho_fix_send-v1-1-b21977feb960@debian.org
----
- kernel/liveupdate/kexec_handover.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 94762de1fe5f0..18509d8082ea7 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -762,19 +762,24 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
- 		goto out_pack;
- 	}
- 
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
--			  &phys, sizeof(phys));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
-+			      &phys, sizeof(phys));
-+	if (fdt_err < 0)
-+		goto out_del_node;
- 
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
--			  &size_u64, sizeof(size_u64));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
-+			      &size_u64, sizeof(size_u64));
-+	if (fdt_err < 0)
-+		goto out_del_node;
- 
- 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
- 					  size, false));
- 
-+	err = 0;
-+	goto out_pack;
-+
-+out_del_node:
-+	fdt_del_node(root_fdt, off);
- out_pack:
- 	fdt_pack(root_fdt);
- 
-
----
-base-commit: 8f8e4b45225ec37b0c69aace920e97148b014956
-change-id: 20260407-kho_fix_send-ae33f16d7502
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+Michal Hocko
+SUSE Labs
 
