@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9559EF36BA4
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 03:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB6B2F36BA4
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 03:22:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFADB6B0005; Thu,  9 Apr 2026 23:08:06 -0400 (EDT)
+	id B8BEB6B0005; Thu,  9 Apr 2026 23:22:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB9D6B0089; Thu,  9 Apr 2026 23:08:06 -0400 (EDT)
+	id B62F56B0089; Thu,  9 Apr 2026 23:22:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC0B16B008A; Thu,  9 Apr 2026 23:08:06 -0400 (EDT)
+	id A9F946B008A; Thu,  9 Apr 2026 23:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AE1CC6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:08:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC4F2B838A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:08:05 +0000 (UTC)
-X-FDA: 84641162130.16.3799EB4
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4D00C20008
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:08:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hcos8igs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 98AE56B0005
+	for <linux-mm@kvack.org>; Thu,  9 Apr 2026 23:22:46 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29BE11602E7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:22:46 +0000 (UTC)
+X-FDA: 84641199132.11.9740C12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CF537A0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 03:22:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G+yp2+wa;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775790484;
+	s=arc-20220608; t=1775791364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UB14TpvH+wdBdvN5Rz/r4yIdPzKNG5cYRBgIcKHvz00=;
-	b=JKK83hH/7XZCS5fubV9rMDauTn8pn5/EgYqOg6FzU97fCPs0ZnFiu6mQvF120Qgy8XS82t
-	5z4fR1emn+XK6/dTM4U3p24YN+JqQR9ZekrHRqxu/a3JLPIsXEVBD700TMPjKHEzkJpn3Q
-	IudBL12P4l+qYjjUW8eANx2Eif2x97E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775790484; a=rsa-sha256;
-	cv=none;
-	b=lCB8ZrUhygmMH6XwP2p3DSob7dNln5+mINqkQvmt8yxL6MZ/NP1bD38YMjYqpi3NcBrZcR
-	LNN0asyh+ZoE5L5wnuT+zjWY2YUl090DrgQXL3dQKIlkAxRgcGkM7lqq67oKYX3L/SY15G
-	8eeCrf9B8qMVV109sFncupHLO3UC880=
+	bh=HHdIs+WY6R5DaoZ/DJBQW/O2KE9/mI5VCbJg5HKZ1ms=;
+	b=D27eqJcUWzGLNVLbDfmG2JlestV3iYHugwdtCjSTdYbiIK2L7QSO1YbusG7Wz8QBMEBqE4
+	tlfcnJkahvrMaP7E54qoICNVG1nbdGeIj9sC5ie88/6bllmEDEFsxJhTyA2OfrN2j7Der+
+	/wVbKEPjT1F1/AauRlEQXl+/dbsgdc4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Hcos8igs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775790480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UB14TpvH+wdBdvN5Rz/r4yIdPzKNG5cYRBgIcKHvz00=;
-	b=Hcos8igsEf2YlonhWWBpoVgZxButTf3+1qNZdzSeV/B7LqiLUZgGmViPvJoNBXHwD7jkM1
-	b4awj4beCI/zjqe9HGCZk0FQSPEA0FEa6c+KnA2hWRUotgaUb4hmPt9kcp6CsLZ+GV/r96
-	5ZQQyU0fHqVOh7Qy7x33io6fxIETBto=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [RFC PATCH] mm/sparse: remove sparse_buffer
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <adfBVc8ohLrtIe3j@kernel.org>
-Date: Fri, 10 Apr 2026 11:07:21 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- yinghai@kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BD30B00B-76F4-4984-9B29-9668896E761F@linux.dev>
-References: <20260407083951.2823915-1-songmuchun@bytedance.com>
- <b22f0af1-848d-45da-99b2-0c28b740e979@kernel.org>
- <70EF8E41-31A2-4B43-BABE-7218FD5F7271@linux.dev>
- <dcc3b56f-5d4c-4bb0-bfd8-49747df30f47@kernel.org>
- <adfBVc8ohLrtIe3j@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4D00C20008
-X-Stat-Signature: 5i7ixpnth9xcixh6xagkym4fnk6d6exg
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G+yp2+wa;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775791364; a=rsa-sha256;
+	cv=none;
+	b=EsLKk6UrdntAOKsg6i7BLd7mP7W9k83qEWmTS2OFGHjbdInZSo9a+vOnemF7VZRoiYpRJF
+	OxSL9itKwph6bgqZYlqvt/+AvPyC5gptx6wRW+u4rtPdSQ936yOjYrlqTi2mb1bwd/70W8
+	Vji4mfDbqWiRiA64Qeyr11L+3VW5Wes=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB3061C25;
+	Thu,  9 Apr 2026 20:22:36 -0700 (PDT)
+Received: from [10.163.181.107] (unknown [10.163.181.107])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEDB83F641;
+	Thu,  9 Apr 2026 20:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775791362; bh=R3qfDw7crVOy8R1j2TZwYuQoVv5jXQP+cKnUXI5OagA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=G+yp2+waAu91yxXfiqb8dbQfzSXCQ1iHAvULnso7HPiYfR827OieVKrhS5V8+wMqa
+	 q1uW/KbgMfpSlCI44/PT4LXYYbfuLIob2IuOvEmmbUJ3kc2wPSsuZiSlD7bfEPfKmU
+	 dGKDbHoGuZZS/wmvK934atJ8TP8nhwh7yAPgkalg=
+Message-ID: <ac73cc87-8663-4d45-8c0f-4a01ffc0fc29@arm.com>
+Date: Fri, 10 Apr 2026 08:52:33 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V1 14/16] arm64/mm: Enable fixmap with 5 level page table
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
+ <20260224051153.3150613-15-anshuman.khandual@arm.com>
+ <4382c90a-bc92-470e-9aa7-4666753479ca@kernel.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <4382c90a-bc92-470e-9aa7-4666753479ca@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775790482-578879
-X-HE-Meta: U2FsdGVkX18bN27n2WJxn8ZXy111JaVgV46OUsWjpckntFQtCtM7OIq71RinhkX5wNfC1U+vtXjDidRpqzl40nGQ6SvxI9sbaPqoteTDLq8OknXNCZ0va7i9F6IVnNXCJAMl6CyeBYgd8negJH0Jwkq+c9Z5vXHl0dvkvnu69eSswigyB74+iyuo2+/j5EzfIy6jQrn2nyhNTgRGZTfrVLWh2gzjPYdxLPjd1EoG0cnxiC2/UlG7ZR/H6gJEwia+WBicOzcr4YisW2sjuzGfuqF2nt9llss5xYrBrj4s27qZqI5PAGQ5zm90lX507KpZXKe+FxXzr3szZ10EXafH0/6g21WNam2KGElDRK8Y1vNww3RJ/XiKTiXFnj/zwBn+6o9oQ/BgRjMckMKhUkqFFM0fqCCcV9k4Blmk+fpXe7HrnxZlBmP8BjTzqi4eZLnyXzO1+etcaeysneNbt62/awWM6WTnkOZhpeCw3JRIPcEh4vk+6HH+4NXkPXJL1pt+quwYFrsdoLNHWLrkSPmdRq0pKO2wUSkRSOF71Y+gt7p+ZCr68FXe+SpyuKlTLMz2S0x8oAeTj+PLKLLCU1KZCBpd/l33IMIPRrYbyfCoLlul0FWV3ZFJE2/sGDhunu7zoF5rgi5CEKmIF72r7/e2R2GsTMRl3stmX9zv/dXVtildzMhwx4qI3FvniRJz0mDFOHCGoOV2GdXrWGu3c25a5G8M33/5wZkA9evqUQEnQspo3EKEh/WWvHa9/GP9URD8O761GRbq5d2hlQa6SLmLZLW0WOsQLym3t/z8JkkHWjyhSqryi7bHrsg0LWoVgM5Hh/wxECVlMWmLDmxHUtvKSH56B2hrsEmEFjl39y5rFAoWUgE7R7mJZ0f8stkty0tB3iX42iMkJ4tdBgtekx0LHVUxgiPET66Sw8Rme7WzG9z/hU1Wf4FIpPmoUkTOJEm4K2VZcWEHAK1Y3Znehj4
- NeMYbcxO
- 6eDtqd8zEi3XDKsN3JsQc9KRins9SxPMx7POTTOfSyRNql7eP4oeQ8SzYP9Xw5dyTx4EIgT5Kq0GkkiSLX/X3x4fCvIUqEdWDDxLg7En6SuKCsgtCOWWUgRCaiS2kbpeUXaG/2CKs3hWNbviYFJgZIgFMLOkOyZYYnerW6ImeTRonv26h6SIW+b8EDGlEqSnIzdl3hvmPMk0AnlzD3/BSICdY+djQZKjYVgwiMbMMglHzrg6ozpck8CSyPzegN1tvA6o/+Hvj5qGkhZnnFkTLsQrCKsi28nKYNagF3tR+7VUVMKXM13FOjy3ytw==
+X-Stat-Signature: 5o3cgwgce4j773b1grr444oeit1k36h1
+X-Rspamd-Queue-Id: CF537A0005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1775791363-994626
+X-HE-Meta: U2FsdGVkX18S6HPwjDBk3Wm3f8R513gMvrkT6rlT5mJ6fT0id5QwvD72+nZNTYXhPhcLDPx4Ng5sUlTlbp4hGvwxwGb/6T6SjZdTnI/CjpBdOqlCCmqjHx7vYSTiiPj33Adu/IC5NzRlg/W2A8IOI5SpujwlzUy5X31WpuHn6DVwhvOM+tdVJX40BlnwpF1mkBgOksuwqWnmPCDVMKwctSywdfQ4PkUC8IO28zlKFKlxFD1P1z58VQ5/rsqjJS6WyDpJAatHy1dBHN4slyNdxzCmJ9FF5h2v3kL7SH7s/chEXjf1kzT/A+xz5faEo+F5rxswZuVoHvMXxP2M3FZyN/MEGw+qyQoai2d2Cc6UJOc9Gbmebz0Xtw7jF97e7FshM3CKycNb0E9TLymOU5lr8ahXEZS60ZqDHBzmluVLpwSjBbviOL0o09WQWWG2W9xnNlJLjhIQq/5Z4x1w4mOJNN7QDH3V7bViH4UZhvIZSo9wG6MAQOVDqq1YSSD7wrOay8AV3s37PUHl0KpLpJ01+rhAFGl/ZYU+smN8PvM5PywpgL6pI+k6V+CCs7AuUj9KPHCAtcgsq/XwYv2fQk8lGClIj1hiUXMe53Hz72YufwoEYJReZXunyATCWVaZzd3wjRfJ/qBMoZpAHzXWwvI7L9thHQxwrBustTtpcSFw/1VWJE/LRjTi1NMNw+ypFlXpByaTCdeBSk78MPLLQdqrdcjjjM2SvyVAw3Bt70LBP6Jgg8LOZfL2UJj5wrxQ7Xpu4HIpq4JoOywjH8T/Id6W0iqY0dDqIZuoaAhi5yvdwHqvUaQgLHroaRgSsoTt6Lo2bJ3ci3HTpOq6CzuZuigGUapgp+hUcvpkvPFle+lFhqRaIZz49N7zd0ufdvIoRJn2+fjLSVAHYMYM3ORIebSQTP2eOAZiR21ZMwLJ59iWR+lkEld/G2FMEoeJ+RCtH6pLl8kq5rtQNkKbS+yu96y
+ 6nfwMkQH
+ 8w63ZkwWmwiJbsBo1E0AGwsyLMIpzk6MM5ZIYKb4H9hURJOqcltK+LPgJak711i/tI6kRtbbTtZn450p90BxqMym1GZyPs8v80PloUGyvYoShFEW8RKzUj+Brez1bC9nTh6AJvzn4ODLMIQyzyW/Eapq2RlqRZBMUKp+zwe6cEmU1W1SKzwOuqDGUYdZ+QNAxlYoQ77DdHM/3sOpR9uE/tEWtphCREGBya0HNfi8ij+j9itDsvVYp+iZoWfv+EXk9Ic2dxz3wILgdd9w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,112 +99,29 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Apr 9, 2026, at 23:10, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi,
->=20
-> On Thu, Apr 09, 2026 at 02:29:38PM +0200, David Hildenbrand (Arm) =
-wrote:
->> On 4/9/26 13:40, Muchun Song wrote:
->>>=20
->>>=20
->>>> On Apr 8, 2026, at 21:40, David Hildenbrand (Arm) =
-<david@kernel.org> wrote:
->>>>=20
->>>> On 4/7/26 10:39, Muchun Song wrote:
->>>>> The sparse_buffer was originally introduced in commit 9bdac9142407
->>>>> ("sparsemem: Put mem map for one node together.") to allocate a
->>>>> contiguous block of memory for all memmaps of a NUMA node.
->>>>>=20
->>>>> However, the original commit message did not clearly state the =
-actual
->>>>> benefits or the necessity of keeping all memmap areas strictly
->>>>> contiguous for a given node.
->>>>=20
->>>> We don't want the memmap to be scattered around, given that it is =
-one of
->>>> the biggest allocations during boot.
->>>>=20
->>>> It's related to not turning too many memory blocks/sections
->>>> un-offlinable I think.
->>>>=20
->>>> I always imagined that memblock would still keep these allocations =
-close
->>>> to each other. Can you verify if that is indeed true?
->>>=20
->>> You raised a very interesting point about whether memblock keeps
->>> these allocations close to each other. I've done a thorough test
->>> on a 16GB VM by printing the actual physical allocations.
->=20
-> memblock always allocates in order, so if there are no other memblock
-> allocations between the calls to memmap_alloc(), all these allocations =
-will
-> be together and they all will be coalesced to a single region in
-> memblock.reserved.
->=20
->>> I enabled the existing debug logs in arch/x86/mm/init_64.c to
->>> trace the vmemmap_set_pmd allocations. Here is what really happens:
->>>=20
->>> When using vmemmap_alloc_block without sparse_buffer, the
->>> memblock allocator allocates 2MB chunks. Because memblock
->>> allocates top-down by default, the physical allocations look
->>> like this:
->>>=20
->>> [ffe6475cc0000000-ffe6475cc01fffff] PMD -> =
-[ff3cb082bfc00000-ff3cb082bfdfffff] on node 0
->>> [ffe6475cc0200000-ffe6475cc03fffff] PMD -> =
-[ff3cb082bfa00000-ff3cb082bfbfffff] on node 0
->>> [ffe6475cc0400000-ffe6475cc05fffff] PMD -> =
-[ff3cb082bf800000-ff3cb082bf9fffff] on node 0
->=20
-> ...
->=20
->>> Notice that the physical chunks are strictly adjacent to each
->>> other, but in descending order!
->>>=20
->>> So, they are NOT "scattered around" the whole node randomly.
->>> Instead, they are packed densely back-to-back in a single
->>> contiguous physical range (just mapped top-down in 2MB pieces).
->>>=20
->>> Because they are packed tightly together within the same
->>> contiguous physical memory range, they will at most consume or
->>> pollute the exact same number of memory blocks as a single
->>> contiguous allocation (like sparse_buffer did). Therefore, this
->>> will NOT turn additional memory blocks/sections into an
->>> "un-offlinable" state.
->>>=20
->>> It seems we can safely remove the sparse buffer preallocation
->>> mechanism, don't you think?
->>=20
->> Yes, what I suspected. Is there a performance implication when doing
->> many individual memmap_alloc(), for example, on a larger system with
->> many sections?
->=20
-> memmap_alloc() will be slower than sparse_buffer_alloc(), allocating =
-from
-> memblock is more involved that sparse_buffer_alloc(), but without
-> measurements it's hard to tell how much it'll affect overall =
-sparse_init().
+On 08/04/26 5:59 PM, David Hildenbrand (Arm) wrote:
+> On 2/24/26 06:11, Anshuman Khandual wrote:
+>> Enable fixmap with 5 level page table when required. This creates table
+>> entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
+>> (PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
+> 
+> Can you add the "why" ?
 
-I ran a test on a 256GB VM, and the results are as follows:
+Following reworded commit message should work ?
 
-	With patch:    741,292 ns
-	Without patch: 199,555 ns
+------------------------------------------------------------------
+arm64/mm: Enable fixmap with 5 level page table
 
-The performance is approximately 3.7x slower with the patch applied.
+FEAT_D128 halves PTRS_PER_PXX thus shrinking the VA range coverage 
+for each page table level. Hence in order to preserve all existing
+VA range configurations, some geometry now need to become 5-level.
 
-Thanks,
-Muchun
+Since fixmap is used to build and manipulate page tables early on
+during boot the mapping must also gain that additional level which
+was not required earlier.
 
->=20
->> --=20
->> Cheers,
->>=20
->> David
->=20
-> --=20
-> Sincerely yours,
-> Mike.
-
-
+Enable fixmap with 5 level page table when required. This creates table
+entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
+(PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
+-------------------------------------------------------------------
 
