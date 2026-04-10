@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87D01F44847
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78BBF44847
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F05AE6B00AC; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
+	id 2D0E56B00AF; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB69D6B00AF; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
+	id 282696B00B1; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA4FD6B00B0; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
+	id 14A346B00B2; Fri, 10 Apr 2026 08:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C603E6B00AC
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:32 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8FE711404FA
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:32 +0000 (UTC)
-X-FDA: 84642551784.26.F9AA8AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E3FF42000D
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpuk5rSR;
-	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 00E576B00AF
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5A228BC57
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:37 +0000 (UTC)
+X-FDA: 84642551994.20.BA5DD70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EC9240014
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdLSbwwL;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823576; a=rsa-sha256;
+	cv=none;
+	b=yuOcR4q20Cz8DF0YVY6dXtM7+zrssHXpLo+BsL433JhBfVk2SOhEvKrYUpuW6j/sdUKbl0
+	qER6jS2o0Lj9PdgIPfeNEYuSFnCgn3jKe6lVwZOJWaTVVyO9XGKGdOeArHpZ6yUw6a98FC
+	0xgBezz/7YbufOvdFlZigH29AOkmKMM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823570;
+	s=arc-20220608; t=1775823576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=AhOSzTxD+cV4MqoaDbRxHefm2I22dte0YETJ6P0JjKI=;
-	b=mIfusiu8uqdyn+K0nsb6BzUejPtAd2Q8T+oMwkUs7Ap03I7G+Ag4WgN/mlcseiB+ztWhIz
-	CWKrKZHaZ6I25zolVOHGOSVMH+bdRHfE/2C9tX3Z3++La45CvVRmH5lNciq7GXmaHjVR0r
-	Cg8efwn/p4yBshI7/uKnI9w9cNbQeeY=
+	bh=nAtajafR3BGugPFTQaw0hsS1PwnKW5jZr3s/Jt7L67s=;
+	b=jSzx4MgriA88GX88iQjbImkpjbno9VRMLlZPk8bbN57OfX1Bibu70IkOseWQ550NlipNm2
+	oX9oDJHrGJS3v3FGkgodr9F0O00LJCm/rQKmcx5iEKHsWvki36uV+TcUAHEbpmF7k5zZDz
+	wcfUqrnAEaM8HJn5pYpzPB7iRHouLAQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpuk5rSR;
-	spf=pass (imf03.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kdLSbwwL;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823570; a=rsa-sha256;
-	cv=none;
-	b=R8s8IsdoNqr4wj32pd7Wpi6O0OlG5iQOO1dZ2Y1K95g6sUF9YwO4jSgdyRA5UTG34foAZg
-	FNnV6WulHhuEDIil/3ZnewyX1U5s+8aGv9DE/P24DNo8MTLq4NctAF/aVhci+NKy86I5L5
-	QIFQMqTsutd9M/yk0lGo6JIy/1wAQkQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51A166091C;
-	Fri, 10 Apr 2026 12:19:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4F4C2BCB0;
-	Fri, 10 Apr 2026 12:19:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E85B4415B;
+	Fri, 10 Apr 2026 12:19:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D535C19421;
+	Fri, 10 Apr 2026 12:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823570;
-	bh=gx3RztExl/RgjhE+RVjeBSM72TbSvLK5CUYrt3EY96I=;
+	s=k20201202; t=1775823575;
+	bh=GB9a/XQKSHIwV9FYvefMOZoOdepkVaVbWcUyHQeAJMw=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=Bpuk5rSRR/rs1jSmitZH/KfJL+3TNuP+dz9xwjVC8e1YVix0oW3s2Pp/y+L8X9oHD
-	 FfGXk8B3TY0jbEAZNS2FVq5qwscSTPNozRdmP6S1az7QsSRwh37CnHDegYmWg/dUhl
-	 oXkQ09dlNxtpDlZfCfFVBtb5yeQYcj5dZxd8vIShSLkbr1gWWPlcdAHe/FZpu8mplV
-	 u5Y93dLHQf7k/6QZkYgksDu7FYlgnX/m++LNPEYIEnDd7dRmUlTkWsJQwVidroG1Bi
-	 MdGUi4KzTqg9X+Zn0ce3HiuHIaE9YE1XVzPbK1ak8XvacDL5nVhYnRULjmYf5QSMQ0
-	 DvaPTMl303Xmg==
-Date: Fri, 10 Apr 2026 14:19:27 +0200
-Message-ID: <20260410120318.386500288@kernel.org>
+	b=kdLSbwwLxIuQWDxnaQ43x3JS9cXZHSMpULEhhU8ID9ECY5jS+n7m20CMk0YroM4U5
+	 D4FjOptptOJeolxHIofJ3rTeQ/ALPjLpvnJ7Qi7NqzIwHDqURUXi9DJGGx8dZS+lLk
+	 JCAzGIYvaKballV64My3qHcmSE8ptIN1eu7xnjzlOO9PgVdkDRLJV0RvV58tiiKr4i
+	 bv+wJwmXD1eqFR2U5N9wMLLyoNfqxlEArSV4W94QZ6qgCudbzRKlUn/CHtSVarPoCX
+	 xb06JWRkDGSiFGx6qUkcv+KUlCb5xHLy85m3KWHYpSlfnAmYw64l8Tsoi4lMULg/pB
+	 WwpH4H0qB6HQQ==
+Date: Fri, 10 Apr 2026 14:19:31 +0200
+Message-ID: <20260410120318.454577282@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: linux-wireless@vger.kernel.org,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
  Michael Grzeschik <m.grzeschik@pengutronix.de>,
  netdev@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org,
+ linux-wireless@vger.kernel.org,
  Vlastimil Babka <vbabka@kernel.org>,
  linux-mm@kvack.org,
  David Woodhouse <dwmw2@infradead.org>,
@@ -115,18 +115,18 @@ Cc: linux-wireless@vger.kernel.org,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 12/38] wifi: wil6210: Replace get_cyles() usage
+Subject: [patch 13/38] crypto: tcrypt: Replace get_cycles() with ktime_get()
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-Stat-Signature: 1ocf33xs9qwuuzhzkp97tyicajbarsbe
-X-Rspamd-Queue-Id: E3FF42000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1775823570-633350
-X-HE-Meta: U2FsdGVkX19+ntuiD6YCMTTfre26RQ8WSocnHVTM/klVkDhwtglBxd9kePKmt+6/gtRd5G7wqgKOjW+tPphdRUlyEcz5+70cVMqPBIR2H2NAFq9gGd7HBzRWC7qBdjSwl2Da7dk/FslVR2M7pHOxZLucKe5Tpsa5IwLjHSwGSKYNbraQO+N79b15o4GEKNJc2hZBWd1o6u6bd1cPD3HTiAEvW555LtG7EqjDGjnCb3igCZmhLINHpqTI4MlPctx9H4ETgp9ot6Kxkfhz9//prdje9viqDwMFVXyCZzgfnCDFY0hi/K9ly7XYOby6AdUpKq8m1dCWba5zAvJZ1vwdcL7duZhL61SksL93rOVD0IjBeEB1ayxRau0rvoAveux4G8QHElRAZXV4JpRWfJMAlsjJIpovltmi1PRDDwr5p01NLTkekeq1iFr+fTUvTHRzElSOULlLo38nPaW/rSF7mK0kBA44EmonXOMB3dq8gqOdt9U9Z4FD0r5mwHm2pgenn0GuI7kmnN7JfkLbGH24+y2i5Xk5Nmxy95KdpqSgyFF0uD4hdeD56S5iJEXgHEN6XNDJwJI8jyYOj+5vuQrhPGzbO8npguKJ1AcqnD1ArDI5FQ+ZPNB5c3qkrEbd+UI6455Kpf5zZvhaLTwIbx2HTvdz2dvoDjgMaKLjikO0NPaYLdYx4EuzssB8AYWhD+gQcvzFlI936E/h83kxWMQm1UOw0KvxEmejnngRYg4IxbCf0yev94IgyB/jGD6KyQYISgwH7iSBCA/YFhKPVIV24i/oXz7Tss91Yj8bsREzHAm4nmuWj/F6sLOR9fi2CEUJryfiTvAedrn9NpwfXOJKx8rYmRL3nQm4JWZ5fgq7WjjSlAR1VpIJDRbxs6uTYe0ptHGYhzFwpMvUQ1/A4veNHx6pymBnSE9Obami573VsfcGzAFV7EEh3eTlmleMOvI29Q5nnOVsoS4xGbugglm
- k6njaOus
- FM0guwvgQDE+aHyRBEyklR8JzmXYJH0sygNy2D7wXDPhrji8B/HSSQX/axZfq7LzsUFOTgtJ6lRD1ZjK4IUQflLiWgVEDCHqK8u9WhsBnWxzCHqK2EJ3Lo12S2jMit3rcCjwkVIrHcInNW07QbailbgQCYpRUw+ByCUfvIvTCCINP5I6KAk4tmvVdJxrbyd/UGg1807aVaU9zbaaLjPQy3MAQMrMawzz0ojD6EGJ1Si5UoVZb730JY0yTH57P5CK0YGuR/qVQ2COK1VURkJbbgLYe+bhBAcwMaFnOcXESyhFjPED8lY3OWNgN9/bgqLqRXNye2lplGPbm25QZJnlt41xga+ooVgk3yvRxBB/Z/OCwg8+VMuyQzCmPF6Kdj9jrMxHFQvIL4SdfBko=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2EC9240014
+X-Stat-Signature: xhdy6pum67o1ag8mwi19w48bhkxafsdc
+X-HE-Tag: 1775823576-14876
+X-HE-Meta: U2FsdGVkX1/Bek/+/eLek85YbncZqV3AQz6wmm/QyYkgDmhNhFtsfi8AgYBKdVCD1h+qkouiCwEsln2ubCCvNSHgy+EfIwqbhpbJ0mVOZhby06oLCNYQDORVBQBLRh6KvbwlOX3sTIA7y4qo1z2ApZTa8+co3YszWBGueL1gqtgIu6eI+HPmcQ3PEQJkvVhe53tu/8XuxWe1dkRG/96qZEeY2ym6RQppygSswiR9WKbURuk+eA1f9+Du4G7IyYOG1kD26FLfKDCjXWeAkSwHASXwKi+HL9nhtCmILkrnoBQtjYwxsoCc+u9QqXrQbmgAMkUAJoJRzsJ0nupLj3DZ1WqQ7x5F5iOXyNj040ShY7pTJQlLCGFSIwnDBK70FpivjA0JY1xRtXyz27SXEg0O+DJMGUKeIcLesGM+s57+8U3pq7kvY0QpgxOdWxCAv39doyNuNSp9MlQdHD/YdrhKyHAe+KosQXkJcJv6UrMMKdadZRhl8ey/hShi1hL12m0OP/JrODC7tiAXth2dbH811EYgsFIRQZdyi5sNybB3D25PiCxUuggO82UCqgqWCAC0zPVkOT1Zor/9um36gtWjfwlcYhCWxqNJGtZzhO+6TYiIJAYjSlGNe/ZW+KUWe6//3nkkoiDpDjtlMVamIULlsnPToDlLOecf9+hTQEtXQB2K1RHy2c1aJs29xTWcpEg64UwwJe7J0YlhUUQ12X6r/P4npfMc0rAUVr3yd498SjuvZ0jweTHr5QII28pgUaa5B6OF8ED3M8YCzKKuFW6hY9hKTHWyVBeB6UZvINKnTRAz2B60ZnKe+wv31EB7yNGIND89wxNFkipVrWm7VQhwrcFF4U+h5Gmp7kHWzdtwzEqJRSR3HHDh3mkQ9VodCVnGaAJ3lyH2/eCsMK+pV9VqH7XJuW3JTGu3wlkptJhFBDb7zPK62wNDksBctL8qVHiR1q0d2DNjTiSMtMkChg5
+ IrsUAwRm
+ qlLFD0agL1c6y5YGYo3eei4AIwhc0hiNdB/5l6BC898eHM4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,98 +134,282 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is no reason why this debug code requires to use get_cycles() for
-timing purposes.
+get_cycles() is the historical access to a fine grained time source, but it
+is a suboptimal choice for two reasons:
 
-Use ktime_get() instead.
+   - get_cycles() is not guaranteed to be supported and functional on all
+     systems/platforms. If not supported or not functional it returns 0,
+     which makes benchmarking moot.
+
+   - get_cycles() returns the raw counter value of whatever the
+     architecture platform provides. The original x86 Time Stamp Counter
+     (TSC) was despite its name tied to the actual CPU core frequency.
+     That's not longer the case. So the counter value is only meaningful
+     when the CPU operates at the same frequency as the TSC or the value is
+     adjusted to the actual CPU frequency. Other architectures and
+     platforms provide similar disjunct counters via get_cycles(), so the
+     result is operations per BOGO-cycles, which is not really meaningful.
+
+Use ktime_get() instead which provides nanosecond timestamps with the
+granularity of the underlying hardware counter, which is not different to
+the variety of get_cycles() implementations.
+
+This provides at least understandable metrics, i.e. operations/nanoseconds,
+and is available on all platforms. As with get_cycles() the result might
+have to be put into relation with the CPU operating frequency, but that's
+not any different.
+
+This is part of a larger effort to remove get_cycles() usage from
+non-architecture code.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: linux-wireless@vger.kernel.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-crypto@vger.kernel.org
 ---
- drivers/net/wireless/ath/wil6210/debugfs.c   |    2 +-
- drivers/net/wireless/ath/wil6210/txrx.c      |    6 +++---
- drivers/net/wireless/ath/wil6210/txrx_edma.c |    4 ++--
- drivers/net/wireless/ath/wil6210/wil6210.h   |    3 ++-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ crypto/tcrypt.c |   84 ++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
 
---- a/drivers/net/wireless/ath/wil6210/debugfs.c
-+++ b/drivers/net/wireless/ath/wil6210/debugfs.c
-@@ -151,7 +151,7 @@ static int ring_show(struct seq_file *s,
- 			char name[10];
- 			char sidle[10];
- 			/* performance monitoring */
--			cycles_t now = get_cycles();
-+			ktime_t now = ktime_get();
- 			uint64_t idle = txdata->idle * 100;
- 			uint64_t total = now - txdata->begin;
+--- a/crypto/tcrypt.c
++++ b/crypto/tcrypt.c
+@@ -202,7 +202,7 @@ static int test_mb_aead_jiffies(struct t
+ static int test_mb_aead_cycles(struct test_mb_aead_data *data, int enc,
+ 			       int blen, u32 num_mb)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int ret = 0;
+ 	int i;
+ 	int *rc;
+@@ -220,20 +220,20 @@ static int test_mb_aead_cycles(struct te
  
---- a/drivers/net/wireless/ath/wil6210/txrx.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx.c
-@@ -1976,7 +1976,7 @@ static int __wil_tx_vring_tso(struct wil
- 	used = wil_ring_used_tx(vring);
- 	if (wil_val_in_range(wil->ring_idle_trsh,
- 			     used, used + descs_used)) {
--		txdata->idle += get_cycles() - txdata->last_idle;
-+		txdata->idle += ktime_get() - txdata->last_idle;
- 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
- 			     vring_index, used, used + descs_used);
- 	}
-@@ -2129,7 +2129,7 @@ static int __wil_tx_ring(struct wil6210_
- 	used = wil_ring_used_tx(ring);
- 	if (wil_val_in_range(wil->ring_idle_trsh,
- 			     used, used + nr_frags + 1)) {
--		txdata->idle += get_cycles() - txdata->last_idle;
-+		txdata->idle += ktime_get() - txdata->last_idle;
- 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
- 			     ring_index, used, used + nr_frags + 1);
- 	}
-@@ -2531,7 +2531,7 @@ int wil_tx_complete(struct wil6210_vif *
- 			     used_new, used_before_complete)) {
- 		wil_dbg_txrx(wil, "Ring[%2d] idle %d -> %d\n",
- 			     ringid, used_before_complete, used_new);
--		txdata->last_idle = get_cycles();
-+		txdata->last_idle = ktime_get();
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
+ 
+-		start = get_cycles();
++		start = ktime_get();
+ 		ret = do_mult_aead_op(data, enc, num_mb, rc);
+-		end = get_cycles();
++		end = ktime_get();
+ 
+ 		if (ret)
+ 			goto out;
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
  	}
  
- 	/* shall we wake net queues? */
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -1286,7 +1286,7 @@ int wil_tx_sring_handler(struct wil6210_
- 				     used_new, used_before_complete)) {
- 			wil_dbg_txrx(wil, "Ring[%2d] idle %d -> %d\n",
- 				     ring_id, used_before_complete, used_new);
--			txdata->last_idle = get_cycles();
-+			txdata->last_idle = ktime_get();
- 		}
+-	pr_cont("1 operation in %lu cycles (%d bytes)\n",
+-		(cycles + 4) / (8 * num_mb), blen);
++	pr_cont("1 operation in %lu nsecs (%d bytes)\n",
++		nsecs / (8 * num_mb), blen);
  
- again:
-@@ -1499,7 +1499,7 @@ static int __wil_tx_ring_tso_edma(struct
- 	used = wil_ring_used_tx(ring);
- 	if (wil_val_in_range(wil->ring_idle_trsh,
- 			     used, used + descs_used)) {
--		txdata->idle += get_cycles() - txdata->last_idle;
-+		txdata->idle += ktime_get() - txdata->last_idle;
- 		wil_dbg_txrx(wil,  "Ring[%2d] not idle %d -> %d\n",
- 			     ring_index, used, used + descs_used);
+ out:
+ 	kfree(rc);
+@@ -475,7 +475,7 @@ static int test_aead_jiffies(struct aead
+ 
+ static int test_aead_cycles(struct aead_request *req, int enc, int blen)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int ret = 0;
+ 	int i;
+ 
+@@ -492,25 +492,24 @@ static int test_aead_cycles(struct aead_
+ 
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
+ 
+-		start = get_cycles();
++		start = ktime_get();
+ 		if (enc)
+ 			ret = do_one_aead_op(req, crypto_aead_encrypt(req));
+ 		else
+ 			ret = do_one_aead_op(req, crypto_aead_decrypt(req));
+-		end = get_cycles();
++		end = ktime_get();
+ 
+ 		if (ret)
+ 			goto out;
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
  	}
---- a/drivers/net/wireless/ath/wil6210/wil6210.h
-+++ b/drivers/net/wireless/ath/wil6210/wil6210.h
-@@ -14,6 +14,7 @@
- #include <linux/timex.h>
- #include <linux/types.h>
- #include <linux/irqreturn.h>
-+#include <linux/timekeeping.h>
- #include "wmi.h"
- #include "wil_platform.h"
- #include "fw.h"
-@@ -632,7 +633,7 @@ struct wil_txrx_ops {
- struct wil_ring_tx_data {
- 	bool dot1x_open;
- 	int enabled;
--	cycles_t idle, last_idle, begin;
-+	ktime_t idle, last_idle, begin;
- 	u8 agg_wsize; /* agreed aggregation window, 0 - no agg */
- 	u16 agg_timeout;
- 	u8 agg_amsdu;
+ 
+ out:
+ 	if (ret == 0)
+-		pr_cont("1 operation in %lu cycles (%d bytes)\n",
+-			(cycles + 4) / 8, blen);
++		pr_cont("1 operation in %lu nsecs (%d bytes)\n", nsecs / 8, blen);
+ 
+ 	return ret;
+ }
+@@ -771,7 +770,7 @@ static int test_ahash_jiffies(struct aha
+ static int test_ahash_cycles_digest(struct ahash_request *req, int blen,
+ 				    char *out)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int ret, i;
+ 
+ 	/* Warm-up run. */
+@@ -783,25 +782,25 @@ static int test_ahash_cycles_digest(stru
+ 
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
+ 
+-		start = get_cycles();
++		start = ktime_get();
+ 
+ 		ret = do_one_ahash_op(req, crypto_ahash_digest(req));
+ 		if (ret)
+ 			goto out;
+ 
+-		end = get_cycles();
++		end = ktime_get();
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
+ 	}
+ 
+ out:
+ 	if (ret)
+ 		return ret;
+ 
+-	pr_cont("%6lu cycles/operation, %4lu cycles/byte\n",
+-		cycles / 8, cycles / (8 * blen));
++	pr_cont("%6lu nsecs/operation, %4lu nsecs/byte\n",
++		nsecs / 8, nsecs / (8 * blen));
+ 
+ 	return 0;
+ }
+@@ -809,7 +808,7 @@ static int test_ahash_cycles_digest(stru
+ static int test_ahash_cycles(struct ahash_request *req, int blen,
+ 			     int plen, char *out)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int i, pcount, ret;
+ 
+ 	if (plen == blen)
+@@ -832,9 +831,9 @@ static int test_ahash_cycles(struct ahas
+ 
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
+ 
+-		start = get_cycles();
++		start = ktime_get();
+ 
+ 		ret = do_one_ahash_op(req, crypto_ahash_init(req));
+ 		if (ret)
+@@ -848,17 +847,17 @@ static int test_ahash_cycles(struct ahas
+ 		if (ret)
+ 			goto out;
+ 
+-		end = get_cycles();
++		end = ktime_get();
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
+ 	}
+ 
+ out:
+ 	if (ret)
+ 		return ret;
+ 
+-	pr_cont("%6lu cycles/operation, %4lu cycles/byte\n",
+-		cycles / 8, cycles / (8 * blen));
++	pr_cont("%6lu nsecs/operation, %4lu nsecs/byte\n",
++		nsecs / 8, nsecs / (8 * blen));
+ 
+ 	return 0;
+ }
+@@ -1019,7 +1018,7 @@ static int test_mb_acipher_jiffies(struc
+ static int test_mb_acipher_cycles(struct test_mb_skcipher_data *data, int enc,
+ 			       int blen, u32 num_mb)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int ret = 0;
+ 	int i;
+ 	int *rc;
+@@ -1037,20 +1036,20 @@ static int test_mb_acipher_cycles(struct
+ 
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
+ 
+-		start = get_cycles();
++		start = ktime_get();
+ 		ret = do_mult_acipher_op(data, enc, num_mb, rc);
+-		end = get_cycles();
++		end = ktime_get();
+ 
+ 		if (ret)
+ 			goto out;
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
+ 	}
+ 
+-	pr_cont("1 operation in %lu cycles (%d bytes)\n",
+-		(cycles + 4) / (8 * num_mb), blen);
++	pr_cont("1 operation in %lu nsecs (%d bytes)\n",
++		nsecs / (8 * num_mb), blen);
+ 
+ out:
+ 	kfree(rc);
+@@ -1246,7 +1245,7 @@ static int test_acipher_jiffies(struct s
+ static int test_acipher_cycles(struct skcipher_request *req, int enc,
+ 			       int blen)
+ {
+-	unsigned long cycles = 0;
++	unsigned long nsecs = 0;
+ 	int ret = 0;
+ 	int i;
+ 
+@@ -1265,27 +1264,28 @@ static int test_acipher_cycles(struct sk
+ 
+ 	/* The real thing. */
+ 	for (i = 0; i < 8; i++) {
+-		cycles_t start, end;
++		ktime_t start, end;
++
++		start = ktime_get();
+ 
+-		start = get_cycles();
+ 		if (enc)
+ 			ret = do_one_acipher_op(req,
+ 						crypto_skcipher_encrypt(req));
+ 		else
+ 			ret = do_one_acipher_op(req,
+ 						crypto_skcipher_decrypt(req));
+-		end = get_cycles();
++		end = ktime_get();
+ 
+ 		if (ret)
+ 			goto out;
+ 
+-		cycles += end - start;
++		nsecs += (unsigned long)(end - start);
+ 	}
+ 
+ out:
+ 	if (ret == 0)
+-		pr_cont("1 operation in %lu cycles (%d bytes)\n",
+-			(cycles + 4) / 8, blen);
++		pr_cont("1 operation in %lu nsecs (%d bytes)\n",
++			nsecs / 8, blen);
+ 
+ 	return ret;
+ }
 
 
