@@ -4,129 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF346F45A0F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 20:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C650F45A0D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 21:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CC856B0092; Fri, 10 Apr 2026 16:56:24 -0400 (EDT)
+	id 886DF6B0089; Fri, 10 Apr 2026 17:07:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AB116B0093; Fri, 10 Apr 2026 16:56:24 -0400 (EDT)
+	id 837846B008A; Fri, 10 Apr 2026 17:07:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B9D56B0095; Fri, 10 Apr 2026 16:56:24 -0400 (EDT)
+	id 7275F6B0092; Fri, 10 Apr 2026 17:07:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BEFF6B0092
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 16:56:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5E6313AF70
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:56:23 +0000 (UTC)
-X-FDA: 84643854246.14.2A71BC1
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5C332140010
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:56:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0fShj+ey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wwMK+R/+";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0fShj+ey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wwMK+R/+";
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D26E6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:07:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA684E3422
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:07:47 +0000 (UTC)
+X-FDA: 84643882974.16.ABF2982
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2C710180005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:07:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Zf2Ci/Ln";
+	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775854581;
+	s=arc-20220608; t=1775855266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K9xV/M6Pi9WCMcCVh2ICHJHx7WicuWqDuyCYoEzfrvE=;
-	b=dIiQVAnBZiOCRUL/kxbA5JNuKSa78Q3K+eNVYu2v/WO5wUm5QJAAXBjuquZ/frZ2dzKx/y
-	6tx536hC0pry9Wh+TLUGi2NRtPplmA6QYs49RkPVo+enAR9XjhGYgh82zDupdNKp6JDT/0
-	1iDVycpy2bJV0ffjEPJZ/94cQ955Mkc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OMjyo1BeE8Sjl3rJFGc/7waGNwkRpFV9y7vNe0a0k/I=;
+	b=a1P2HlfYLBluEOCjVD/JZ2p60XnPY5l4PsXNxOHyhJdZQ55Kg0Qud5b3QoOGdRenan5v9m
+	3BT5gN3bBJZFrJbylBtQ75LTINafXbKEFiBde2CUI6TgZcgjzxGoJyHSRUUaN9xonUHXVE
+	OfTbRVMxKl98zGRKsXpQyAYs+HqFkWc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0fShj+ey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wwMK+R/+";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0fShj+ey;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wwMK+R/+";
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775854581; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Zf2Ci/Ln";
+	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775855266; a=rsa-sha256;
 	cv=none;
-	b=8gECD9fva9rP1iAwL7P3EJQI1KDp8tCcD6dRq/uzlqbGf2bvP08WMVo74kG6/7p/evpzY8
-	liIC0gSXkTQ5SdWx7acnbnKlNFulBo8bxa7xK4hViIRAb6eb5vy3n+VlrGW8j8DoHQZjXa
-	SqY6R8FnYQ7TlmLQIfY5H5yBC7q4GC0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7010F5BCC2;
-	Fri, 10 Apr 2026 20:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775854579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K9xV/M6Pi9WCMcCVh2ICHJHx7WicuWqDuyCYoEzfrvE=;
-	b=0fShj+eyLYcH42qGsifiG+T1YV+qRicGtDlmj5P8iSkveXQTnctTHfC7uDhZDTbJNxndyO
-	+OOqm4O/rkP3nJWuxswUizI2ZWbIWfD1PbLD70M1QMP9dZ9+zDqzCo2eD/kXYv3XLPc8pa
-	R4GsXuJ2GFIh9Lq174kDeSmyU5q7qwU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775854579;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K9xV/M6Pi9WCMcCVh2ICHJHx7WicuWqDuyCYoEzfrvE=;
-	b=wwMK+R/+26mPovnVbd28xQmOTAYS6sLxiOgm/LSCrCC9XAVn4ZeS90VNYnb/YYt/nNxaVA
-	WsQwMpoNIpbk/iAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775854579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K9xV/M6Pi9WCMcCVh2ICHJHx7WicuWqDuyCYoEzfrvE=;
-	b=0fShj+eyLYcH42qGsifiG+T1YV+qRicGtDlmj5P8iSkveXQTnctTHfC7uDhZDTbJNxndyO
-	+OOqm4O/rkP3nJWuxswUizI2ZWbIWfD1PbLD70M1QMP9dZ9+zDqzCo2eD/kXYv3XLPc8pa
-	R4GsXuJ2GFIh9Lq174kDeSmyU5q7qwU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775854579;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K9xV/M6Pi9WCMcCVh2ICHJHx7WicuWqDuyCYoEzfrvE=;
-	b=wwMK+R/+26mPovnVbd28xQmOTAYS6sLxiOgm/LSCrCC9XAVn4ZeS90VNYnb/YYt/nNxaVA
-	WsQwMpoNIpbk/iAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 667C84A0B2;
-	Fri, 10 Apr 2026 20:56:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jZkAGfNj2Wm8XQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 10 Apr 2026 20:56:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F2C8CA0B52; Fri, 10 Apr 2026 22:56:14 +0200 (CEST)
-Date: Fri, 10 Apr 2026 22:56:14 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <4q7d2bi2qjg6crznvr55yfnv2gcomfqdt5j2dgkrwp5hh3ynqo@cfgy5o53zjwr>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
- <adikj3y6OXgSyObW@infradead.org>
+	b=X04sPqmafBUrOnP4VQzXsfZZpslurkCy9BjmyH2c+31H7EzZT+4d/Hfy94RaAJOs8pvsFw
+	RZgrq5LUvgr97bI5d4ZxW6qUh9aD8EB+NhhEDMOvx0OUL089iHhSXA8RkRHLwd0TMQNpGG
+	lAwsrnqEFheIJpex1isAf5qSq7h34Mk=
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7dbe437b072so1375397a34.2
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:07:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775855265; x=1776460065; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OMjyo1BeE8Sjl3rJFGc/7waGNwkRpFV9y7vNe0a0k/I=;
+        b=Zf2Ci/LnZ40V8UomkZ7q5AFbK4pN3ICyXkQAXVvWWsMXDGw73H12b0YS4DeN7CKMKU
+         k0msSMiWvp1RlJ0bipR9DoCsE6Fx3N1bSi+X/yabwfrI0bBbd3NkisiXx9W+ChB0nZcS
+         MiAl61CiZRdxImW9YAmIVI/SGIzssffd1ctDs2LdkTVybp2r1Q58K0GGWZZr5El3rSeT
+         IN67lARI3IAzxA9NNgL04u3miuXw1hA1+s35+07burJdBKuSxtuEO4XazBhvIsqxvMzr
+         5OROcOZM83CqF1RAzmezpSa8Xa+JnlSDu9rN8t2a2M3nLBgWk/mGcoYK5RSaYD3sX7AA
+         UT+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775855265; x=1776460065;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OMjyo1BeE8Sjl3rJFGc/7waGNwkRpFV9y7vNe0a0k/I=;
+        b=knxA7zsfJxwg4Jrpumo+ZV3g2kELLnX81026uvKlgPYo5EGaoYrDp2FpFHEJz58OL/
+         i7NFkXmJZC7plRLZMl+V66n9b5Wmu58Hd4Hp2L8856zU8Y8MmtgKOhXb4e3qqND2CTQ3
+         ZWMWVmlrNiThBIaOO+Wq2qmo/ghEvzEFmhdqpfUECEo/alj/D6pYwb4t2d1htfQ6Rbn0
+         ceeGEuEb5imfnD4QeuugNPBhAPdpquDeXD8YMwsK84k1+M2PSYmIGwTHy/WOmB6ErSKO
+         16Y2ikP0mRyI9Mkh8h12VCVd7QVgGwlE2Q+sm5E+vyiTqOpuIyPXF7ZPoxnI2cG3t65J
+         hG3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVH+T+bOgT+YaLlB4vqcAlbkD/6iGS8S8gGP0LkGVp2rDg1QxhxByvfRoGCkBhlIR+tVop32dt6sQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywc8PHu/cCT6jQHXauGsCoDmPZ/6EQS57VsX8orJHMwHZGnQCJ6
+	i9OZeRhSqj003w8hQcybgLGR6rDnrYoopNnRKFhHj0+4HIYcBKGxL8t/
+X-Gm-Gg: AeBDieuqcZFMUuDg2WinREIP6l7OJBz8sDqCvVrS690IO2jnGwrJxiDuZUvTKsZss0w
+	uR5EjsiY8A7kAU/JCwIGdxB+WBFjiqY19hFMbv63ZBlBonNBvA/Uy1n5smccNAEYa5xiq4Ezj+d
+	L/NmpUPTqRU7HMEyti0hnP2W1C7VLlLBXS3BN6rBY8TicncqcDI4BNftUjE57fHHhxipTNl+/cm
+	csIzXtVqMSKsV6nYNRDr6qrx7n0FxBGiwfOUz7XpNl3EetERML2dviN1hDN03EQFz9qSBCNGoUn
+	4d2HDGiCzZTpujLXS22zSOKztcxr1hv4D/+GloiQgp5+tBXPys4oaVLvAqm31hnAbjU6+P6/j89
+	zI/BHXaDhmaFkHQ6e0d6JvHOlE6fiH1kVnnp2RzS+7mpiHT5eYubkV2sZCQt6BqMvV8gLjlLfjY
+	wSD9FPLM7Z0vQSGpKiagT5nA==
+X-Received: by 2002:a05:6830:6b06:b0:7d7:4fc7:21a with SMTP id 46e09a7af769-7dc27ceee0cmr3297522a34.13.1775855265063;
+        Fri, 10 Apr 2026 14:07:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:42::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc2660ef75sm2708244a34.10.2026.04.10.14.07.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 14:07:44 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH 0/8 RFC] mm/memcontrol, page_counter: move stock from mem_cgroup to page_counter
+Date: Fri, 10 Apr 2026 14:06:54 -0700
+Message-ID: <20260410210742.550489-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adikj3y6OXgSyObW@infradead.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5C332140010
-X-Stat-Signature: hsfwqocmrfzsi916qpi7sijaued7ggac
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2C710180005
+X-Stat-Signature: wjnjztk1hwtsbrt184qiyxh9ehc3ekgc
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1775854581-490230
-X-HE-Meta: U2FsdGVkX189Y6nW7U5xQrXU/4cWV/fbHUxvbyMSKlXQQ7ndmq4ogrCcnMmN//dBZ72LbpUoAsTcf9WbQWeThP33zmxOJpYRXzDCpMpp5TGlQdsnGXn+Q9uZe4hw/oh9Xm9ugto3ZeZG1jpbg/HQzrlsqoE2/RVTQY5ZBdOGb8brLdBVVeHVo1ui482/mjkhUvXfqLtwMe1DKqkVtxXum2rLpQ3SODbZk3PTn2aQVQ2WXd9li60kUf/A5+TW+9CoECqiYf7OKtOEk1QX3HnLV3A2yq9FOnTJ3JGsEVySFP+juUdqzua5q8PhlsddHreK1nQf/l4vlGgWBFD8POr2UyArTagr9jVmkj2Icu4yl8gFXQeCZ6i/wNjK6sTced7fB6U+FtUEBj4BhTA1JH8xSZ67plWocEVyMxj6ChEPkK3EHub5NdlTEBSnXq/JxGPNFkDIrW0QR7/o2/CS2T/kSZcbbd+pAtHcxAa5g3MLvcRYK2U/CrG4dg1kuUg9nnJ8JHlRGsZMx/pDmXa7hxKxggV6Hxoug+qbMv3H2EWj7x3GF4JdyDLsbhq72F3bXK3LObTUi+/tuHZ58rTePc7us8aqImt/E3ZDTnSsl5AmfuAEx3qTDj/B9Iyi2U+/xzY8w1QPoJ0JMl5z5vKIdT7d8MvM3PYMswWBWDyR9FnaMtwtFeylF9GBiRFbwyi9j+lu3CBpG3mw/c7Wp0KJt0KZAokaDlc/NpfMHTVxRcS5ffDMVhgI5sPgnGVljPPhbgy9dOPHthGghYBnHB6NUUusXiZ+uwKHgnSL9iJPEqps0gMCRUr+OxRCcSKJ2zAd635xZi3Sou0cJREEeFhHYYwZMbBz0tXcWVM6g9qptW+unKwrctsZt/gMRs5oLFdktvgLEeit62LX+2cO6QDj2uplLuwtfZeBL5eR7pCPBY9eOh7KFHoes4z18lm9vbcm+51zCbOeh1M8Uv4jsGt7H6r
- TbM0b67a
- qAula2WI6ETlieEmQbm/Ci6f9r2afbBrsKt7+wB9DBzae2Vo7NcXbQtjtrJUzY9S4cI37mnZdWGa/r65sH0rBNDFa3hXPDolw3BdQUrOps6L6SkzGTt3fjfw7FmGLmIwCftTRoF9/kYw3TUliCkW0UKukD0HPvacu8doy4N3BG86zV7ygnu60VOJLIpUtBCzU1Nrpeg0RxWsCEDwKVu03AmIG41IIZcWk4zuA9qpkPQK38q4fjybzYjUGhIPDijMJtG+BKTGQS43p9Gix68C9qRpVDonw9zsaS3bZxjD++d+R2IQCLQvy/aIzUz6EbULHYF523WaY+Aq+3HzbH1RaYLej+g==
+X-HE-Tag: 1775855265-187969
+X-HE-Meta: U2FsdGVkX1/S/QSodW4hpd+YJDfZc6u4tjK9LS9aWLvNdGQnAmqgDHmuHD1kj81vUKBlz8TdCG5wJ0PaSC3mdlHyfKo2oJOOnCQVmPGES41/8thnVCt7ZaXzQZoi5voVzKhOtZ2YITJL3Gka9asYmIZut1vuFXCoKPhjoaAxwJmtjxR5iX29OcDjiXaba+Y5Jsdfh4JgpVbzIfadcLMofpy/qx51uwCvoA5OPzzvM3tcHw6CWLscLd5a+KIrFMsPQoczMFhwPmSaMBKh6g34Lj5JV9ZHz2Tw2oicJF43QG2A21q2W+1HzfKw+1/ZgKMXiyoiMroZQ7l5j6FicOvm5SY5TPyAo/jzXQkbag4WMO1DLSlTT5NOda4oMU13ImgZoxXeuVLbOvlfpcf01KMqHGhnUQU1ASNxdpzDhVkyhNCLmuYFJRhbqwfQaTHNX7w5JYWk8N9jfUO0zbP+GfFd4yXiuwyiPB1NS0PH1SoP9iIZiNP2k1dAEH/fgrW2LRxCXOVdV3uGu0Yt8KFYgYPdxlTDMlza/JZzdBRs/f/owKOUfuAPdVDpojIv/ZCo5ylNa2Zda5MCXWs0kMeOiyapvd0Nq63HWHpxjKL+2O1ploRZQSu8mwqfDTUB/3tswCPN8x7OOV9QIXm0CESRlKcj8/RjEE90B0JckALeyG53FVS+DuPEy7NZktRhGq/9eZ+4hJ/jGuMFCpWOKC11S9/WvW89aRclN7BG1TrDheVHfNRDVQmOgc0uekraOOTpHWTHnfJQ3C17Bo3KoWTEYjbAEMXaStjv8RHqDjNtk3qxep/d+rgCEDOGtOqK8bZu5egRiP2Nkv6/mONS1NKWVnnmnUBNskmJ6ZP/ZnaMD8C7KaJERC4XORTnJAuuNtAq3ASEkfuIzSAHpPoCOMz4yCu+nrRYZHz592aiUYxfoyojQZMZ/9OIhRn/CiJ6g8r2qzq/JDSXVqXGYmOXG1kDjkW
+ QLgy5f/r
+ lWr/auykEF/23N2qCNo4sKhGufc4ZVGVgySjr7luMyHly4qXGc8+6/eGoUK8nxI0k16iwnJo0RDlAi1ZvXAIVGczi232Xx/m921j4SEn7Im+CSx4tv8u5GVJ2hie5zvfzNrA4tqaZQ4Mmxx59B+Hcf7L+g1jZzthuT9f8gbbSVTbin9hivHArCamfuChp8xKhazD8HcfLc4Zpo6EJifCaeivDWmhowNewEBLSK0sofpobpdb2s6QEsOT+s2aLWGjerPSCkX4TbJ+lUb77RRsJIxTHfusM5hRA37V6dofiPtvI5/6Uea0dcvTF/IPH0m7NjP+f4pF+2vhU95ijME3lFyjYKiKbS8W4Ixb3qDkmb221TWxdfmQtxr0kCOpE5vOJa0EHz6ZwacaQSX+pVSpui/aNbIJWwOwcS3/sRQPNeH6bQedMkAB+kSGjPpi/q37qc2FeI4UK+UV83Nd+7C4F1xHC/zdc/gtWNSlT6Y/Ia4OU/O0701gSP7VC4wXYUEuW+p/F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,51 +127,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 10-04-26 00:19:43, Christoph Hellwig wrote:
-> I think a patch is more useful than a discussion here, that idea has been
-> voiced multiple times, and effecticely implemented in XFS.
+Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
+allocations, allowing small allocations and frees to avoid walking the
+expensive mem_cgroup hierarchy traversal on each charge. This design
+introduces a fastpath to charge/uncharge, but has several limitations:
 
-I know but after thinking for some time I wanted to get some feedback
-before I start coding.
- 
-> Trying to lift the XFS logic into the VFS and finding other consumers
-> for it would be very helpful.
+1. Each CPU can track up to 7 (NR_MEMCG_STOCK) mem_cgroups. When more
+   than 7 mem_cgroups are actively charging on a single CPU, a random
+   victim is evicted, and its associated stock is drained, which
+   triggers unnecessary hierarchy walks.
 
-I hope not to get all the complexity of XFS but we'll see :)
+   Note that previously there used to be a 1-1 mapping between CPU and
+   memcg stock; it was bumped up to 7 in f735eebe55f8f ("multi-memcg
+   percpu charge cache") because it was observed that stock would
+   frequently get flushed and refilled.
 
-> > 1) Filesystems will be required to mark inodes that have non-trivial
-> > cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-> > whatever :)). Usually I expect this to happen on first inode modification
-> > or so. This will require some per-fs work but it shouldn't be that
-> > difficult and filesystems can be adapted one-by-one as they decide to
-> > address these warnings from reclaim.
-> 
-> I think otherwise we call this dirty :)
+2. Stock management is tightly coupled to struct mem_cgroup, which
+   makes it difficult to add a new page_counter to struct mem_cgroup
+   and do its own stock management, since each operation has to be
+   duplicated.
 
-Yup :) I was considering for a while to use another kind of dirty flag for
-this and then clean it from flush worker but in the end I decided against
-it as it would be IMHO confusing.
+3. Each stock slot requires a css reference, as well as a traversal
+   overhead on every stock operation to check which cpu-memcg we are
+   trying to consume stock for.
 
-> > There's also a simpler approach to this problem but with more radical
-> > changes to behavior. For example getting rid of inode LRU completely -
-> > inodes without dentries referencing them anymore should be rare and it
-> > isn't very useful to cache them. So we can always drop inodes on last
-> > iput() (as we currently do for example for unlinked inodes). But I have a
-> > nagging feeling that somebody is depending on inode LRU somewhere - I'd
-> > like poll the collective knowledge of what could possibly go wrong here :)
-> 
-> I've heard this theory multiple times, but we really need to valide that
-> we don't need the LRU.  It also doesn't really solve the above problem,
-> as we still would not want to perform the expensive inode inactivation
-> work inline with the last dput.
-> 
-> So while this might be worth investigating, please keept it separate.
+This series moves the per-cpu stock down into the page_counter, which
+consolidates stock limit checking and page_counter limit checking into
+page_counter_try_charge. This eliminates the 7-memcg-per-cpu slot
+limit, the random evictions (drain & refill), slot traversal, and
+css refcounting.
 
-Ack. With the point Jeff made about NFS revalidations I agree it won't be
-straightforward.
+In addition, it makes independent stock management scalable for future
+users. As a demonstration, this series also introduces independent
+stock management for the cgroup v1 memsw page_counter, which curbs
+the likelihood of the worst-case scenario (traversing both the
+memsw and memory page_counter hierarchies).
 
-								Honza
+One change that should be noted is that draining is simplified to use
+work_on_cpu() for synchronous remote CPU drain. This eliminates the
+need for backpointers and embedded work_structs in the per-cpu stock
+struct, which minimizes memory overhead. This change over the existing
+async drain scheduling was done since the drain operation is much
+more rare now, only happening under memory pressure and on cgroup
+death (as opposed to the previous arbitrary scenario where more than
+7 memcgs are charging to a CPU).
+
+Performance testing across single-cgroup, as well as 4-cgroup (under the
+7 memcg limit) and 32-cgroup scenarios on a 40CPU, 50G memory system
+shows negligible performance differences. In the tests, I repeatedly
+fault and release anonymous pages using madvise(MADV_DONTNEED) to
+stress the charge/uncharge path, across 30 trials of 50 iterations.
+Metric here is time it took across each iteration (ms).
+
++----------+--------+-------+--------+-----------+
+| #cgroups | before | after | stddev | delta (%) |
++----------+--------+-------+--------+-----------+
+|        1 |    446 |   441 |  5.097 |    -1.195 |
+|        4 |   1832 |  1822 | 11.897 |    -0.582 |
+|       32 |  14730 | 14739 | 54.089 |     0.061 |
++----------+--------+-------+--------+-----------+
+
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+Joshua Hahn (8):
+  mm/page_counter: introduce per-page_counter stock
+  mm/page_counter: use page_counter_stock in page_counter_try_charge
+  mm/page_counter: use page_counter_stock in page_counter_uncharge
+  mm/page_counter: introduce stock drain APIs
+  mm/memcontrol: convert memcg to use page_counter_stock
+  mm/memcontrol: optimize memsw stock for cgroup v1
+  mm/memcontrol: optimize stock usage for cgroup v2
+  mm/memcontrol: remove unused memcg_stock code
+
+ include/linux/page_counter.h |  15 ++
+ mm/memcontrol.c              | 269 ++++++-----------------------------
+ mm/page_counter.c            | 173 +++++++++++++++++++++-
+ 3 files changed, 224 insertions(+), 233 deletions(-)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.52.0
+
 
