@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78665F44871
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 14:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F9FF44871
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 14:05:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6EF66B00AD; Fri, 10 Apr 2026 10:03:59 -0400 (EDT)
+	id 9D5586B0088; Fri, 10 Apr 2026 10:05:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1E836B00B2; Fri, 10 Apr 2026 10:03:59 -0400 (EDT)
+	id 985816B008A; Fri, 10 Apr 2026 10:05:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934D56B00B4; Fri, 10 Apr 2026 10:03:59 -0400 (EDT)
+	id 8C2236B0092; Fri, 10 Apr 2026 10:05:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 831E66B00AD
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:03:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4399C1405C8
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:03:59 +0000 (UTC)
-X-FDA: 84642814998.07.A562430
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 693DE140025
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:03:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FiIZLPmE
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775829837; a=rsa-sha256;
-	cv=none;
-	b=WSGU+pv7iaWAu8Xw+8huCOKf2L8fDcnx6otZeNm4PGptsHajQIqS/IGXUn1Hk24mpCDeDw
-	xfaiQwE5UVRZweSdooYOUWLdJCMZL/B8sDZ+2Uw5Zv4rJDxB5w3cKxuv0/XemBt8gHNsFm
-	2g+8bvPKfvMBMjIW560bVmJDzIaW3Ic=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FiIZLPmE;
-	dmarc=none;
-	spf=none (imf23.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A49F6B0088
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:05:42 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2AB8140593
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:05:39 +0000 (UTC)
+X-FDA: 84642819198.04.45AC922
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 895B540006
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:05:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EMnTBLr2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775829837;
+	s=arc-20220608; t=1775829937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u07fAeMble8DRxQXr390mZRhSpEry1623RqnFVFFlts=;
-	b=FZNxcra+8L3+AJ0r8IvCsdQ6PnOf9875lBsBReT1MKQ0664UmOADcoxRIoK5s7KzAdRC2D
-	RRNwl5eZgj3Utv0DGbonzNZwZeHUXkcdeT/cBYnE3QpglHH4G+ZDSbvJlI6BU1489LdwEl
-	DHCZLGdHQ/3Ag0YyublC5Gzcw4fF8E0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=u07fAeMble8DRxQXr390mZRhSpEry1623RqnFVFFlts=; b=FiIZLPmE9vXhLmIvq9nU47rz+d
-	Xq9utxOqa7ohP95zKw4udUp6qC1POyYZVdjayitrRJRTp7tG91n64oaBTW2PicsxWFDP/zxemGFZZ
-	OFPuGLR8DVi8RPv8bDSZsGWBnaCnkQEJSlQ3GPumsrmf70le7ApsqQtzciAZR+VEHF4ZVN/Hzac9V
-	/KmfRHSN3sKVSOY4ShHzazNDBdOvQBQzM3BZ2MJ2Z8qKvfP4IKjOFQJOOC5b42Gq6oW2uV+1qD4hg
-	/vFgEV9AZj8OepwMksyA09u4Dm801kUVpZrHjve55uJjp99R85B+MnkS6lzb66pWJ/QEMcDfO2nsO
-	0lvOsFeg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wBCSc-00A1tG-1w;
-	Fri, 10 Apr 2026 14:03:50 +0000
-Date: Fri, 10 Apr 2026 07:03:45 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kernel-team@meta.com, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2 1/3] mm/memory-failure: report MF_MSG_KERNEL for
- reserved pages
-Message-ID: <adkCtR0LzJ7aWfm-@gmail.com>
-References: <20260331-ecc_panic-v2-0-9e40d0f64f7a@debian.org>
- <20260331-ecc_panic-v2-1-9e40d0f64f7a@debian.org>
- <e074d5de-f494-4995-2521-32de4f2bd34f@huawei.com>
+	bh=h2Yc2ufrFbVmz+XNd4LpUhe5AZVmPZIwqnXGOTUi5JI=;
+	b=0s5yx9vjk63BSB54crrx73Id9PBQQUg7IF31taaTUWKujRQX34CLftO5XxfSLWO1A8JqrE
+	Fl/cVrXNBcsDIyXtXyBABLGZc15JfHCOZ48fZ287GuTtK8gzWTkNWOCnoEKYl5cYN8aXj2
+	7L3INhLiDedTOIgqwEa41dm4EJZArow=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775829937; a=rsa-sha256;
+	cv=none;
+	b=cCnnzj18mG8vSOJ1WYCmT/wdn5HNVorfUcwFxt/rnSBgxjacaUjh//vDNY33u8sXm2qnFL
+	yrWYWcKxymkqo4BlruqOrFQ4cyS/MaQZS91CreZ06iJoP8hxY6ejvRlFhXg2Qm+eFMxVk9
+	RBrPlHN35X1bRCi2BIEMuxXQeKC7+vs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EMnTBLr2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F12B408E3;
+	Fri, 10 Apr 2026 14:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1750EC19421;
+	Fri, 10 Apr 2026 14:05:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775829936;
+	bh=vU7YhsU6mPtOO9+7OdOGJ86dQ128aE6IKS2KzhCvWA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EMnTBLr23e9TcOIjzibJX2yAThFvTjWcHruR2vn40XZzn/dQb7PmEq9jB+CyajGDR
+	 y62IuCLcV+k03xjqiIeBPQRf2NuX75zuJEgT7RXcQJ7u4lpgQGPLlQwjOVCgV14FCk
+	 HEiQiBslMzj5/zJYWNwa/EfO7/FvQjgCzqu8KnO4gT9BD8vzzHJgn2a8b5IH9MWTkB
+	 cgHGBOjdXOtCdQl3XQjcD0FGMgNTgY81u9xT2L+ohESdvPLA9lwpB0+1T9gu8kX0aP
+	 JKwRlYahD5H11hGUSiTMJyPzVXSfe500z9NEYUQRdhy5FUI80yQO6csTnLW2LwZayS
+	 1mVjtY0VP74BQ==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v4 0/2] mm/damon: validate min_region_size to be power of 2
+Date: Fri, 10 Apr 2026 07:05:28 -0700
+Message-ID: <20260410140529.82414-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260410044259.95877-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e074d5de-f494-4995-2521-32de4f2bd34f@huawei.com>
-X-Debian-User: leitao
-X-Stat-Signature: nzrndacqgdy7pjhoam7najweswm4eb7a
-X-Rspamd-Queue-Id: 693DE140025
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 895B540006
+X-Stat-Signature: pky3gmugpqmcq7dmfaer4o3rhk8xgxgy
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775829837-740498
-X-HE-Meta: U2FsdGVkX18mglmKGe0R+m0q4CQN4sUQ3ceLnmTmobqed6B+Ukr6Q4/CF2fJXp+UluFTT/qGkzdEp7/ClJDHUlvO+6EweF5WZd2fjBgVK9Q4THXCY/lyuT92mVVHdTiVtVrGz5JuELu7TKWjRjFTbS6Z0GXbU2arwuWhwRT984u51JzCVJNx8LH38C/rOwX5ughJctiBHFTKP7ERLsR2yeiao1MDHFKfhmThTrGvb+sJ0/jsrOJEABrVUI8aT7nBpCFA8MjQnNQ9ec2vDeY8nhubaRVzDTxhhXSj4QOKGLNrduZes06FYTyXu3ra9y4xj6DrHMSdcOKSS1b0JJoWf7jRyHwcXQ7M1LnUp/esIPq3uFn1zx0u/pISnDPKACSxBLsnPjC4K69fCD9AQvfAWAbvQkh0B9zNTYUJXW6NVYW4ibJS2N7L3WzENIA20fQoM0pUmGZI3SE8g7ngEf26MBSWB3YtGXNhcOhoBSNh9Mmiy5S9EU1+sScGR/rBZxB+Bs+iTtyJcU+8aZCC+Y1zniwU5glBld4BM4RbCc2XTPVlHT158J/RscseAnTGbwNdtMv14u1ThYhyL0ScX5/PuWgZVwXE2Pl1/JHRv/LDn3Rw6YFgp5OM8vurmz3pGrgLkeUDP7+wxpMFkKf8nN4yZGRPAdJD1aOJj4CjAxDaTF7LtGtyW4C2FYZ7Eq3p3P02y8BvKloaNi3lMuv99vLzKPHe+9QDkBKCf1LatwdoLerkJQHG0BChdDch4wyGnnzEtfo+k5Odsn7TphXqwdFal1725dn9zDyajuS5fRt1RCt82APAffI59eoH2IK8BdXTCKFkS0ZFnJusslNx8t/LGhGNIxqb1JrKRYtVYT8N9A+wCEkdAvpWpiHybrjKaaWZX/cTZQcRwmwDHTrWDx+eQCOV+8Jng8CHqGIWfvlvOZ145HLhecWL/TuPDwkQSKiIBRvyzlYIEaoeYazWnGx
- WJJ+gRfT
- ElYG3+4M+6C/xar6nM9Jql+omXh7po4j9zzsKcr+hOUeIbNcaszoOOD8Jp6l0iZ9GfC4kXcW5PdkkUGk05pcuuJlURBuir+JiyTpoDZ5jeUumLcBHubm/9DmxCIz1V3aO4AMp5OBBigyA6LKYtRL/SIuTcDUk774/7wDGKt2BA2J2xrQcgXyM2Vrn2Ttww1x0mrb8+0Adhr42BZ/bJCrMg9+Wc3naydphHsZnhPCtmlu3gianinr8CHkkh0SQaeZr9JDgVjor5lagQsU=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775829937-345391
+X-HE-Meta: U2FsdGVkX1+glz3d5RdIUUWfwJAKP1I23dtRzFB6/1qKLFBXKuJd2j3ypLLOfnHNaf2dSR+ncTzHUlAfaHsQ1GYsZxqbFfhVwdvvqrQwDUd3T22ich48XARFVr9Skn2iUQ5KR/7d3KdW5NvyceDwf8aBIkKs0oqWHK+zQVpqPO57oFShvGKCrZFa1S+SqjEWsWoTCxPmEz8/HvpngCH+5Z06BwuGHv5Vbhi8knU6KdeV/5NhYVJzxKyfnKmFGIcVDLxwA4CfzDOCTgqoPBIIc/I67mcCgCNrEQ34pbUv1HCP4u0vVntkeZLaCMiPLUkqc+b7JS4StPscy8TEHq0AZJKOxCGW1yiO2rGAK9gbU/rE64LtgedLHw4scwYjoOpEd2NmyUPDFvenLynJWuMK+GLIwF5FPdejCCcccWPipcyP2BsQVbpcB2kdcvKLrG0R/AcMO7LZSnslkitSW1XBZ8g61mqj412jXFB6xwbfFfYLTbYqA5BKS+zjaPAYPAZi9QoYoy3b66lj+kuwg4E1uD6S2cPODzPmpaoFFDUZjA3SAX7PAAuxUkdFxyodKG19gd6L/w+X8LPxbWAzUahV1AXj7aDS1R0Eq+PqCCYQew5DMa2ReCtV68FszfkXyHYO2L0JDu8hZQpOG60cVYbopMaaHZ//OV1zDugLdUXJK/JljE7eZlW/JIV6MuA/yYkXK9tyGt5lQ8qPzGkC37xD4zvLOjA4TNdF0Bibym2/YD1isQci6sP3G3ilONjRJ5xUvzBwzB/bhBYLDrTQ12cgZipOgm0hDsdADAUdgRnwQEqvfzjbxoGK1IX/jvsvW+RKYrIIeR49M2XIvegU/R39MUAs7fI/wvZLE/iYKSsdI6flvmwnTLPrn/A8Vd01xRVwqRxqM65/NWuyzA6VHYvahodEhrOQ2+QdMcomws4oain3iASVS/8M31JVJNQl1zGNOHQdLVtgO4IoMEHowbb
+ X3F1Vm2K
+ vcl4P+4Z+A0F8WApZQtVQdeOSqJVjEz8Q9rzCp+73+7oupvRAF49k0huHo7B223kf6LTXRPYl0ajp32jZRIApBXvZtXRs95HsrjH8J1+puKPqLiIN/h9tNsjTvl6kqhcul6aDqCFIjRtviUpgFOWidFn0b76sgtJjQ5RJ9b7iw7x8ezk53nLiRI7010jLTY3fyO5RqB7yWUbN0RnLp8o8Q8j7XWV0/ljkInvjhz+RFrVAh0iiLjEigQOhXKxOvRsarG58ce034mHnPjR7PxKV4Dz12osQhs7R+hO4zoK04u1/mRg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,47 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 07, 2026 at 10:56:39AM +0800, Miaohe Lin wrote:
-> On 2026/3/31 19:00, Breno Leitao wrote:
-> > When get_hwpoison_page() returns a negative value, distinguish
-> > reserved pages from other failure cases by reporting MF_MSG_KERNEL
-> > instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
-> > and should be classified accordingly for proper handling by the
-> > panic_on_unrecoverable_memory_failure mechanism.
-> > 
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >  mm/memory-failure.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index ee42d4361309..6ff80e01b91a 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -2432,7 +2432,11 @@ int memory_failure(unsigned long pfn, int flags)
-> >  		}
-> >  		goto unlock_mutex;
-> >  	} else if (res < 0) {
-> > -		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-> > +		if (PageReserved(p))
-> > +			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+On Fri, 10 Apr 2026 12:42:57 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Problem
+> =======
+> When a user sets an invalid 'addr_unit' (e.g., 3) via
+> DAMON_LRU_SORT/DAMON_RECLAIM, 'min_region_sz' becomes a non-power-of-2
+> value. This value eventually reaches damon_commit_ctx(), which does:
 > 
-> Is it safe or common to check page flags without holding extra refcnt?
+>     dst->maybe_corrupted = true;
+>     if (!is_power_of_2(src->min_region_sz))
+>         return -EINVAL;
+> 
+> Although -EINVAL is returned, 'maybe_corrupted' is already set. The
+> running kdamond observers this flag and terminates unexpectedly.
+> 
+> "Unexpected termination" here means the kdamond exits without any user
+> request (e.g., not by writing 'N' to 'enabled').
+> 
+> User Impact
+> ===========
+> Once kdamond terminates this way, it cannot be restarted via sysfs
+> because:
+> 
+> 1. DAMON_LRU_SORT/DAMON_RECLAIM is built into the kernel, so it cannot
+>    be unloaded and reloaded at runtime.
+> 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
+>    Writing 'Y' does nothing, as 'enabled' is already Y.
+> 
+> Solution
+> ========
+> Add an early validation in damon_lru_sort_apply_parameters()
+> /damon_reclaim_apply_parameters() to check 'min_region_sz' before any
+> state change occurs. If it is non-power-of-2, return -EINVAL immediately,
+> preventing 'maybe_corrupted' from being set.
+> 
+> Patch 1 fixes the issue for DAMON_LRU_SORT.
+> Patch 2 fixes the issue for DAMON_RECLAIM.
+> 
+> Changes from v3
+> (https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com)
+> - Improve commit message: clarify "unexpected termination".
+> - Add detailed User Impact with reason why kdamond cannot be restarted.
+
+Thank you for making the change.  Looks good to me.  I gave my 'Reviewed-by:'
+for the two patches as replies.
+
+Andrew, this series is for hotfixes that deserve Cc-ing stable@.  Could you
+please pick this up into mm.git?  I don't think these are super-urgent and I
+have some capacities to manage this myself, though.  So if you prefer to, I can
+stash this in my tree for now and repost after next rc1.
 
 
-Yes, this is safe. At this point the page has HWPoison set, preventing
-reallocation.
+Thanks,
+SJ
 
-PageReserved is an atomic flag test on struct page memory that's always
-valid for online PFNs.
-
-Reserved pages are inherently stable (kernel text, firmware, etc.) and
-don't change status dynamically.
-
-This follows the same pattern as the existing is_free_buddy_page(p)
-check a few lines above, which also reads page state without an extra
-refcount.
-
-The result is only used for a detailed classification, so even a theoretical
-race would not be a bad issue.
+[...]
 
