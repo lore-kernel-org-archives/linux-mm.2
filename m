@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CD07E9907D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:33:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD829E9907D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:33:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95DB76B009B; Fri, 10 Apr 2026 06:33:33 -0400 (EDT)
+	id 53F086B008C; Fri, 10 Apr 2026 06:33:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90E7B6B009D; Fri, 10 Apr 2026 06:33:33 -0400 (EDT)
+	id 4EFD66B00A3; Fri, 10 Apr 2026 06:33:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ED8A6B009E; Fri, 10 Apr 2026 06:33:33 -0400 (EDT)
+	id 3DF666B00A4; Fri, 10 Apr 2026 06:33:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AEEC6B009B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:33:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34A3AC1CF6
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:33:33 +0000 (UTC)
-X-FDA: 84642284706.10.F9CCE9A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2840A6B008C
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:33:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF2D4C1BD7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:33:41 +0000 (UTC)
+X-FDA: 84642285042.28.E2BDB83
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 832DD40013
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:33:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=B8Zxi1oo;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3C91C1C000D
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:33:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SSUwwv6K;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817220; a=rsa-sha256;
+	cv=none;
+	b=ppQ+5c/dNBMsNBLMGMhhaS+0eOQgYkrHlh3ILC80dYJ2Vlite2IiOdDS0LLBUshSV+sMWY
+	SdcQeuVwg6NSeuE236AyOm9aS5DSFe1L9nx2jv9Or77s/vE6Tw+I3AjsxcF/Z5ZRCdlOHl
+	4i9bNUIRv5hEPtYvLXG8D9c00z6iYfQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SSUwwv6K;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775817211;
+	s=arc-20220608; t=1775817220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pxIWKvE7iIhDWFTbVq51kkvy55OBODeC9Ae4CjC3w1k=;
-	b=nAyERYls/p/4RZzIlHZhf3cd+M3Z6764AhnTN10yzud+5BT6kJpa/WGX22NOfmLGWqkbM2
-	G/Cc81jSQJJJabzjPoL6oMFXB0jUY27Bd+SIPMuuIPRS5Hc7LLiCugfK/Bw4qGZFoRvWDg
-	/hHmyktn+GOsNCfDB0/uThHm/H3EnHM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=B8Zxi1oo;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817211; a=rsa-sha256;
-	cv=none;
-	b=rF8gIBQBBvCyy88aiaYBGaPfRYF3SlK+mTACbwvFmSAuNsot3YI6Vi4AHkLA6YpecrJFHn
-	EiPoJzlMjidQZYix+Of3LuA5DaylbW2pEctvfQyR/BaRZ/3OlQ3Cew+DaPpID+1Y5P/Z3f
-	e/UU133hfD/UC/kSd60R1ZBTmpyrtkg=
+	bh=s9dqg6HjJK784/LHcnQoms47tYKmS1qrM/lvpdOp+i4=;
+	b=aq+H9YGFf5mFjKsD9SmB5sGOJ9eGD4GJEquT1cxGvoK+U+67BJKobNCImVhsyIsciROQDe
+	iW6mGXYRgBnuorn/jhGjGU2L7Q6n83oXmpusnTCsRg4Y9U30inAbVxG2DKgR9kBm1xgVtu
+	gPHBgfI5Pu7Djm/+em0CAprzy+24CBw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B6944529;
-	Fri, 10 Apr 2026 03:33:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C265A453F;
+	Fri, 10 Apr 2026 03:33:33 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8A01F3FAF5;
-	Fri, 10 Apr 2026 03:33:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 503083FAF5;
+	Fri, 10 Apr 2026 03:33:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775817210; bh=tF3VW2lbJuABvGu5WBZjmvW3rTKVGcTyExhhZXtmOk8=;
+	t=1775817219; bh=IYbaIbF+HIELGkWoWytxfeLOJBlJUqn4EEQxhn4v5mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8Zxi1oowJQksrIiPBubX8jrt3yniQITzN3UZ8rLvHMLHv/Ien8ryoISTvpCoiy6I
-	 qWpA8/CW72pBeVLfZYBV9iNeewvz+tzYciTIn+MDm3gV85bUmGJExuFSPQIKV6ow5V
-	 7Q80cSOMa3itWQ//epcQbaltosKJVSg8wXCNYYK4=
+	b=SSUwwv6KmxM5an1P1ml4mo9ZiDEOcCqJ17Cgua9iP7oh/FRV8mDjV5mh6zBIWMCzA
+	 AE2brYwiBSZR1LQT8DiuVrzHIUpBplvp5Yw7emuhH4tLT5Ke616mYWLa6iJWd3h76k
+	 HZ6tHKFGrynXQ/RJFk6cYJvf6fOBwhn5+qIgOh28=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: ljs@kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 8/9] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
-Date: Fri, 10 Apr 2026 16:02:03 +0530
-Message-Id: <20260410103204.120409-9-dev.jain@arm.com>
+Subject: [PATCH v2 9/9] mm/rmap: enable batch unmapping of anonymous folios
+Date: Fri, 10 Apr 2026 16:02:04 +0530
+Message-Id: <20260410103204.120409-10-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260410103204.120409-1-dev.jain@arm.com>
 References: <20260410103204.120409-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 177pikeixmooxazz6oh4mfyrsf8io63k
+X-Rspamd-Queue-Id: 3C91C1C000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 832DD40013
-X-Stat-Signature: 1dtiao7dhui8k5gm96u1hhyx67qpemw9
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775817211-224553
-X-HE-Meta: U2FsdGVkX1+DArfekCLzvcdHDmnJ0+TbrX5DqRaLzPppCXSQQUJV+anksYyfSRI8mP71kfvuGuNrh/Zk8sdDdQKkrg2qJs7Hfu880aY7OWkXp6gF2jPvMW1Go0UZ0XODUezGKhH2j6Hmh0n7erxq1i/DaDnZGQGjxHt4gWibsW2Cb1yWq91zgcQwWW0MxHKmFBClIBUqCtm8kPmEp/CJSJ5HKvxcdJT5uwiIe0JeES6BsKa7xFAoW4BNWtLerD8otZW4GIV0NXVd5Hd47DZ0248ut8VBGRQH+a2SabpXzeqMshSb9f33Q9LIOG8JGtPFo1aZASzjaNO7P/oOFaSlgsDk76KwIgKTaV5j2LmDmDH5sV+mt2+yuPUSRXJBRrpZP/8XM5Y6nsq719CW1n9AowAJtIvHD2ZRurDJA7mx8n+8XM3OPrqgGze/4UBekJY11MwgrnBvH+cLUG9tUApk+tVJYuFNiDDYM24ydBcVNdMO6W44cqcdEKOxk6RwZtj7CKC2idVDXDeqOH0LhtJE4L64o6Vwk8aLCGdqEmRBupTK8Z1UT3NE4tBGDKsFOigU3mNw49Lo6aeeHEpSbqt/w1gnbmlNetWgspLZxaY2ZQFYci5B+T0ZfL/cgse1Q92CgZSSAbPQhaLFRJdMFn7X7HgNvZ0BpaUc74lx06c7bTN+zpM852ES+uiq4rDLdkKklT7f/J8+p6gU5lDV07J922Q7QdBQ5J6iCxjAyq1IuieKsD4vAuzzRE2UnlciI9deGu6+JMaCHEHgikrGxcYfZ7uJIyiMyUbZuLP+gueCIR4WSM/VZ0uV7UgUydvJYoVPeWVSMwoGR7PVmsGWs/XXoXDLSkk7WmnXwiGmyHG2Bb3BduA5jgHDOrxg5RzkYxGYFPDLykUMN7FDDVpAlLp18IWkRe9Rw2WjyTfZ320u+KdEin5L/tD0poHFuUzmU34U+W1vNSLZOZ21ZGChFpx
- Yx8w4NVm
- XjqWryHAuVVv/qdgsFetDT7lhFBa0C6P3rs3rEn5Q1H3XoPvPODeEte3dFEHOrdwCPi8P5I+y5dMxaeWmlrpnPBFNH66ipcIozJWUb/1QRmEvdL41ePaiktnx1qQhYUGuMv3ppf1bf/2EEDQJuOoFxHCOnG1j828Gcdmk1i259g+/O0qgYeQKNZY8SqvDDeanz2dA4A44eMfsWe+McXNlaSzogV4onacXbhA/PiPFjfYK8Bh2y6Vok8/L+iDt9bFD+nft9K6/oKClHqAkJqXo3qtAN8XQxdVa7ozy
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775817220-857118
+X-HE-Meta: U2FsdGVkX1+zWaYKHYUB7FbgovRFxL6itmoWzk57Sy7PEamjy/v4PNWWZ66PnlR782YSPBK2puQuiFrHpJktpKjVJEH7iKAW4DlmjIxVWbubKWUwhyzQ61XRdGG0XyQLvpINyyJ6yrjg/9z7EfuShHkyx/9wnGY2lVNApE8jnxWcF8a299iVdlfMLKmDdgsho54Rsm54trpy6ZMECtpqsTMCr0whIS6VmhuAIsxlHp57h8ac4V9B5ExuludHZmSz6NOd0vk57FiOY8jClkcMkZ2z9Di5YAiSoppWV4Yol009NMUSCqwVC54ClSGIegox45LkxqQJShiTvLfsJF5le0+NJYptHooeK0I7THGiv8eECGR/bAaofZi1Iww96V+jLhlPQQIY8V7Sullt3QmMtFcPYF3DF6v3a72H3siaSOdeT3My+/UaNq4pajN1KliMKd4pNpVNnpjHIT3Dzvaewc11wUKlV6TnXSFcvfWnYm7ZUwfpwU3Zgl3xuvaLWA9eSESLS0NWcJseHfbYP1ApF5/3t/XWcD+ZHCYWE/nzyYR809ZB+fNW1/js+E+IwHQPi1nOUg5L/DNRFf1X3L0jyPNZtsGmz3Kg/NuG62874IJYihLHUe6yskIl+mZFIPgvt51w/YA9/YWAAzc38spuGgbje82NBIveW/VnIsphoZynYRpfGE7ySa0iWVt4tbVdJaIPhxdBF1s8H6ZYaMecSAWVGOIiHarty4CNbd3tKB63XPRuSneBtSCqdASedCxBbKSkoVkSkrV9p1OPQRCOaXQtQhoiK73jxSMCKmTkzHBvQ9r5e5C2xtLM0U6IDsZs+aiGLoY1b2qTz9oGL4JwBLxwqWc7k1gk3wwzFR9Zq69/CoNZ/nRflLBDdXX9B4zT760IR9XrPLf2k6D2oII6CWHER4Or90ZiAXaf5DfZw+pG3nJ249QeEV0K4HL4BmZF35NmtlE58naucz4hjW9
+ xwenkfeR
+ R8PdqGoel2wxIhbO51zrtzvMIWG/9vJSDQop+j1QzkwrzpHsU8EGyzl6I3PPm1Gaf9/ZwM/pb4ALDCZkV1lFQcd4Hm2M8Do/s1+EcNGw4q5WaY50DBIeySNlww5r6ZyNJIP0ZSKt4kV4u1jLbSYbW6fyOR4waHO8k96+lKMHCI2Z6AvTQnKk5E9bEV1dbWdC304KvlwlwUAxAaXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,121 +115,381 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To enabe batched unmapping of anonymous folios, we need to handle the
-sharing of exclusive pages. Hence, a batched version of
-folio_try_share_anon_rmap_pte is required.
+Enable batch clearing of ptes, and batch swap setting of ptes for anon
+folio unmapping.
 
-Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
-to do some rmap sanity checks. Add helpers to set and clear the
-PageAnonExclusive bit on a batch of nr_pages. Note that
-__folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR from the
-PMD path, but currently we only clear the bit on the head page. Retain
-this behaviour by setting nr_pages = 1 in case the caller is
-folio_try_share_anon_rmap_pmd.
+Processing all ptes of a large folio in one go helps us batch across
+atomics (add_mm_counter etc), barriers (in the function
+__folio_try_share_anon_rmap), repeated calls to page_vma_mapped_walk(),
+to name a few. In general, batching helps us to execute similar code
+together, making the execution of the program more memory and
+CPU friendly.
 
-While at it, convert nr_pages to unsigned long to future-proof from
-overflow in case P4D-huge mappings etc get supported down the road.
+On arm64-contpte, batching also helps us avoid redundant ptep_get() calls
+and TLB flushes while breaking the contpte mapping.
+
+The handling of anon-exclusivity is very similar to commit cac1db8c3aad
+("mm: optimize mprotect() by PTE batching"). Since folio_unmap_pte_batch()
+won't look at the bits of the underlying page, we need to process
+sub-batches of ptes pointing to pages which are same w.r.t exclusivity,
+and batch set only those ptes to swap ptes in one go. Hence export
+page_anon_exclusive_sub_batch() to internal.h and reuse it.
+
+arch_unmap_one() is only defined for sparc64; I am not comfortable
+regarding the nuances between retrieving the pfn from pte_pfn() or from
+(paddr = pte_val(oldpte) & _PAGE_PADDR_4V).
+
+(And, pte_next_pfn() can't even be called from arch_unmap_one() because
+that file does not include pgtable.h) So just disable the
+"sparc64-anon-swapbacked" case for now.
+
+We need to take care of rmap accounting (folio_remove_rmap_ptes) and
+reference accounting (folio_put_refs) when anon folio unmap succeeds.
+In case we partially batch the large folio and fail, we need to correctly
+do the accounting for pages which were successfully unmapped. So, put
+this accounting code in __unmap_anon_folio() itself, instead of doing
+some horrible goto jumping at the callsite of unmap_anon_folio().
+
+Add a comment at relevant places to say that we are on a device-exclusive
+entry and not a present entry.
+
+If the batch length is less than the number of pages in the folio, then
+we must skip over this batch.
+
+The page_vma_mapped_walk API ensures this - check_pte() will return true
+only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
+There is no pfn underlying a swap pte, so check_pte returns false and we
+keep skipping until we hit a present pte, which is where we want to start
+unmapping from next.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- include/linux/mm.h   | 11 +++++++++++
- include/linux/rmap.h | 27 ++++++++++++++++++++-------
- 2 files changed, 31 insertions(+), 7 deletions(-)
+ mm/internal.h |  26 +++++++
+ mm/mprotect.c |  17 -----
+ mm/rmap.c     | 188 ++++++++++++++++++++++++++++++++++----------------
+ 3 files changed, 153 insertions(+), 78 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 633bbf9a184a6..2d20954da652a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -243,6 +243,17 @@ static inline unsigned long folio_page_idx(const struct folio *folio,
- 	return page - &folio->page;
+diff --git a/mm/internal.h b/mm/internal.h
+index c693646e5b3f0..f7033c9626767 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -393,6 +393,32 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
+ 		unsigned int max_nr);
+ 
++/**
++ * page_anon_exclusive_sub_batch - Determine length of consecutive exclusive
++ * or maybe shared pages
++ * @start_idx: Starting index of the page array to scan from
++ * @max_len: Maximum length to look at
++ * @first_page: First page of the page array
++ * @expected_anon_exclusive: Whether to look for exclusive or !exclusive pages
++ *
++ * Determines length of consecutive ptes, pointing to pages being the same
++ * w.r.t the PageAnonExclusive bit.
++ *
++ * Context: The ptes point to consecutive pages of the same large folio. The
++ * ptes belong to the same PMD and VMA.
++ */
++static __always_inline int page_anon_exclusive_sub_batch(int start_idx, int max_len,
++		struct page *first_page, bool expected_anon_exclusive)
++{
++	int idx;
++
++	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
++		if (expected_anon_exclusive != PageAnonExclusive(first_page + idx))
++			break;
++	}
++	return idx - start_idx;
++}
++
+ /**
+  * pte_move_swp_offset - Move the swap entry offset field of a swap pte
+  *	 forward or backward by delta
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9cbf932b028cf..949fd7022b5cf 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -138,23 +138,6 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+ 		tlb_flush_pte_range(tlb, addr, nr_ptes * PAGE_SIZE);
  }
  
-+static __always_inline void folio_clear_pages_anon_exclusive(struct page *page,
+-/*
+- * Get max length of consecutive ptes pointing to PageAnonExclusive() pages or
+- * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
+- * that the ptes point to consecutive pages of the same anon large folio.
+- */
+-static __always_inline int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+-		struct page *first_page, bool expected_anon_exclusive)
+-{
+-	int idx;
+-
+-	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
+-		if (expected_anon_exclusive != PageAnonExclusive(first_page + idx))
+-			break;
+-	}
+-	return idx - start_idx;
+-}
+-
+ /*
+  * This function is a result of trying our very best to retain the
+  * "avoid the write-fault handler" optimization. In can_change_pte_writable(),
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 9b20ef7f211e1..ca071641965bd 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1958,11 +1958,11 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 	end_addr = pmd_addr_end(addr, vma->vm_end);
+ 	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+ 
+-	/* We only support lazyfree or file folios batching for now ... */
+-	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
++	if (pte_unused(pte))
+ 		return 1;
+ 
+-	if (pte_unused(pte))
++	if (__is_defined(__HAVE_ARCH_UNMAP_ONE) && folio_test_anon(folio) &&
++	    folio_test_swapbacked(folio))
+ 		return 1;
+ 
+ 	/*
+@@ -1975,6 +1975,122 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+ }
+ 
++static inline void set_swp_ptes(struct mm_struct *mm, unsigned long address,
++		pte_t *ptep, swp_entry_t entry, pte_t pteval, bool anon_exclusive,
 +		unsigned long nr_pages)
 +{
-+	for (;;) {
-+		ClearPageAnonExclusive(page);
-+		if (--nr_pages == 0)
-+			break;
-+		++page;
++	pte_t swp_pte = swp_entry_to_pte(entry);
++
++	if (anon_exclusive)
++		swp_pte = pte_swp_mkexclusive(swp_pte);
++
++	if (likely(pte_present(pteval))) {
++		if (pte_soft_dirty(pteval))
++			swp_pte = pte_swp_mksoft_dirty(swp_pte);
++		if (pte_uffd_wp(pteval))
++			swp_pte = pte_swp_mkuffd_wp(swp_pte);
++	} else {
++		/* Device-exclusive entry */
++		VM_WARN_ON(nr_pages != 1);
++		if (pte_swp_soft_dirty(pteval))
++			swp_pte = pte_swp_mksoft_dirty(swp_pte);
++		if (pte_swp_uffd_wp(pteval))
++			swp_pte = pte_swp_mkuffd_wp(swp_pte);
++	}
++
++	for (int i = 0; i < nr_pages; ++i, ++ptep, address += PAGE_SIZE) {
++		set_pte_at(mm, address, ptep, swp_pte);
++		swp_pte = pte_next_swp_offset(swp_pte);
 +	}
 +}
 +
- static inline struct folio *lru_to_folio(struct list_head *head)
- {
- 	return list_entry((head)->prev, struct folio, lru);
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 8dc0871e5f001..f3b3ee3955afc 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -706,15 +706,19 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
- }
- 
- static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
--		struct page *page, int nr_pages, enum pgtable_level level)
-+		struct page *page, unsigned long nr_pages, enum pgtable_level level)
- {
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
- 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
- 
-+	/* We only clear anon-exclusive from head page of PMD folio */
-+	if (level == PGTABLE_LEVEL_PMD)
-+		nr_pages = 1;
-+
- 	/* device private folios cannot get pinned via GUP. */
- 	if (unlikely(folio_is_device_private(folio))) {
--		ClearPageAnonExclusive(page);
-+		folio_clear_pages_anon_exclusive(page, nr_pages);
- 		return 0;
- 	}
- 
-@@ -766,7 +770,7 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
- 
- 	if (unlikely(folio_maybe_dma_pinned(folio)))
- 		return -EBUSY;
--	ClearPageAnonExclusive(page);
-+	folio_clear_pages_anon_exclusive(page, nr_pages);
- 
- 	/*
- 	 * This is conceptually a smp_wmb() paired with the smp_rmb() in
-@@ -778,11 +782,12 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
- }
- 
- /**
-- * folio_try_share_anon_rmap_pte - try marking an exclusive anonymous page
-- *				   mapped by a PTE possibly shared to prepare
-+ * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
-+ *				   mapped by PTEs possibly shared to prepare
-  *				   for KSM or temporary unmapping
-  * @folio:	The folio to share a mapping of
-- * @page:	The mapped exclusive page
-+ * @page:	The first mapped exclusive page of the batch in the folio
-+ * @nr_pages:	The number of pages to share in the folio (batch size)
-  *
-  * The caller needs to hold the page table lock and has to have the page table
-  * entries cleared/invalidated.
-@@ -797,11 +802,19 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
-  *
-  * Returns 0 if marking the mapped page possibly shared succeeded. Returns
-  * -EBUSY otherwise.
-+ *
-+ * The caller needs to hold the page table lock.
-  */
-+static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
-+		struct page *page, unsigned long nr_pages)
++static inline void finish_folio_unmap(struct vm_area_struct *vma,
++		struct folio *folio, struct page *subpage, unsigned long nr_pages)
 +{
-+	return __folio_try_share_anon_rmap(folio, page, nr_pages, PGTABLE_LEVEL_PTE);
++	if (unlikely(folio_test_hugetlb(folio)))
++		hugetlb_remove_rmap(folio);
++	else
++		folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
++	if (vma->vm_flags & VM_LOCKED)
++		mlock_drain_local();
++	folio_put_refs(folio, nr_pages);
 +}
 +
- static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
- 		struct page *page)
++static inline bool __unmap_anon_folio_range(struct vm_area_struct *vma, struct folio *folio,
++		struct page *subpage, unsigned long address, pte_t *ptep,
++		pte_t pteval, unsigned long nr_pages, bool anon_exclusive)
++{
++	swp_entry_t entry = page_swap_entry(subpage);
++	struct mm_struct *mm = vma->vm_mm;
++
++	if (folio_dup_swap_pages(folio, subpage, nr_pages) < 0) {
++		set_ptes(mm, address, ptep, pteval, nr_pages);
++		return false;
++	}
++
++	/*
++	 * arch_unmap_one() is expected to be a NOP on
++	 * architectures where we could have PFN swap PTEs,
++	 * so we'll not check/care.
++	 */
++	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
++		VM_WARN_ON(nr_pages != 1);
++		folio_put_swap_pages(folio, subpage, nr_pages);
++		set_pte_at(mm, address, ptep, pteval);
++		return false;
++	}
++
++	/* See folio_try_share_anon_rmap(): clear PTE first. */
++	if (anon_exclusive && folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
++		folio_put_swap_pages(folio, subpage, nr_pages);
++		set_ptes(mm, address, ptep, pteval, nr_pages);
++		return false;
++	}
++
++	if (list_empty(&mm->mmlist)) {
++		spin_lock(&mmlist_lock);
++		if (list_empty(&mm->mmlist))
++			list_add(&mm->mmlist, &init_mm.mmlist);
++		spin_unlock(&mmlist_lock);
++	}
++
++	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
++	add_mm_counter(mm, MM_SWAPENTS, nr_pages);
++	set_swp_ptes(mm, address, ptep, entry, pteval, anon_exclusive, nr_pages);
++	finish_folio_unmap(vma, folio, subpage, nr_pages);
++	return true;
++}
++
++static inline bool unmap_anon_folio_range(struct vm_area_struct *vma, struct folio *folio,
++		struct page *first_page, unsigned long address, pte_t *ptep,
++		pte_t pteval, unsigned long nr_pages)
++{
++	bool expected_anon_exclusive;
++	int sub_batch_idx = 0;
++	int len, ret;
++
++	for (;;) {
++		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
++		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_pages,
++						    first_page, expected_anon_exclusive);
++		ret = __unmap_anon_folio_range(vma, folio, first_page + sub_batch_idx,
++					       address, ptep, pteval, len, expected_anon_exclusive);
++		if (!ret)
++			return ret;
++
++		nr_pages -= len;
++		if (!nr_pages)
++			break;
++
++		pteval = pte_advance_pfn(pteval, len);
++		address += len * PAGE_SIZE;
++		sub_batch_idx += len;
++		ptep += len;
++	}
++
++	return true;
++}
++
+ static inline bool can_unmap_lazyfree_folio_range(struct vm_area_struct *vma,
+ 		struct folio *folio, unsigned long address, pte_t *ptep,
+ 		pte_t pteval, unsigned long nr_pages)
+@@ -2094,7 +2210,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
  {
--	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
-+	return folio_try_share_anon_rmap_ptes(folio, page, 1);
- }
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+-	bool anon_exclusive, ret = true;
++	bool ret = true;
+ 	pte_t pteval;
+ 	struct page *subpage;
+ 	struct mmu_notifier_range range;
+@@ -2219,8 +2335,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
  
- /**
+ 		subpage = folio_page(folio, pfn - folio_pfn(folio));
+ 		address = pvmw.address;
+-		anon_exclusive = folio_test_anon(folio) &&
+-				 PageAnonExclusive(subpage);
+ 
+ 		if (folio_test_hugetlb(folio)) {
+ 			bool walk_done;
+@@ -2252,6 +2366,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			if (pte_dirty(pteval))
+ 				folio_mark_dirty(folio);
+ 		} else {
++			/* Device-exclusive entry */
+ 			pte_clear(mm, address, pvmw.pte);
+ 		}
+ 
+@@ -2289,8 +2404,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			 */
+ 			dec_mm_counter(mm, mm_counter(folio));
+ 		} else if (folio_test_anon(folio)) {
+-			swp_entry_t entry = page_swap_entry(subpage);
+-			pte_t swp_pte;
+ 			/*
+ 			 * Store the swap location in the pte.
+ 			 * See handle_pte_fault() ...
+@@ -2306,57 +2419,17 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 				if (!can_unmap_lazyfree_folio_range(vma, folio, address,
+ 				    pvmw.pte, pteval, nr_pages))
+ 					goto walk_abort;
+-
+ 				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+ 				goto finish_unmap;
+ 			}
+ 
+-			if (folio_dup_swap_pages(folio, subpage, 1) < 0) {
+-				set_pte_at(mm, address, pvmw.pte, pteval);
++			if (!unmap_anon_folio_range(vma, folio, subpage, address,
++						    pvmw.pte, pteval, nr_pages))
+ 				goto walk_abort;
+-			}
+ 
+-			/*
+-			 * arch_unmap_one() is expected to be a NOP on
+-			 * architectures where we could have PFN swap PTEs,
+-			 * so we'll not check/care.
+-			 */
+-			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+-				folio_put_swap_pages(folio, subpage, 1);
+-				set_pte_at(mm, address, pvmw.pte, pteval);
+-				goto walk_abort;
+-			}
+-
+-			/* See folio_try_share_anon_rmap(): clear PTE first. */
+-			if (anon_exclusive &&
+-			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+-				folio_put_swap_pages(folio, subpage, 1);
+-				set_pte_at(mm, address, pvmw.pte, pteval);
+-				goto walk_abort;
+-			}
+-			if (list_empty(&mm->mmlist)) {
+-				spin_lock(&mmlist_lock);
+-				if (list_empty(&mm->mmlist))
+-					list_add(&mm->mmlist, &init_mm.mmlist);
+-				spin_unlock(&mmlist_lock);
+-			}
+-			dec_mm_counter(mm, MM_ANONPAGES);
+-			inc_mm_counter(mm, MM_SWAPENTS);
+-			swp_pte = swp_entry_to_pte(entry);
+-			if (anon_exclusive)
+-				swp_pte = pte_swp_mkexclusive(swp_pte);
+-			if (likely(pte_present(pteval))) {
+-				if (pte_soft_dirty(pteval))
+-					swp_pte = pte_swp_mksoft_dirty(swp_pte);
+-				if (pte_uffd_wp(pteval))
+-					swp_pte = pte_swp_mkuffd_wp(swp_pte);
+-			} else {
+-				if (pte_swp_soft_dirty(pteval))
+-					swp_pte = pte_swp_mksoft_dirty(swp_pte);
+-				if (pte_swp_uffd_wp(pteval))
+-					swp_pte = pte_swp_mkuffd_wp(swp_pte);
+-			}
+-			set_pte_at(mm, address, pvmw.pte, swp_pte);
++			if (nr_pages == folio_nr_pages(folio))
++				goto walk_done;
++			continue;
+ 		} else {
+ 			/*
+ 			 * This is a locked file-backed folio,
+@@ -2372,14 +2445,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+ 		}
+ finish_unmap:
+-		if (unlikely(folio_test_hugetlb(folio))) {
+-			hugetlb_remove_rmap(folio);
+-		} else {
+-			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+-		}
+-		if (vma->vm_flags & VM_LOCKED)
+-			mlock_drain_local();
+-		folio_put_refs(folio, nr_pages);
++		finish_folio_unmap(vma, folio, subpage, nr_pages);
+ 
+ 		/*
+ 		 * If we are sure that we batched the entire folio and cleared
 -- 
 2.34.1
 
