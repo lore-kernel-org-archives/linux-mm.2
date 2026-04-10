@@ -4,134 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C930BF459EF
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B619F459F7
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 16:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42E526B0088; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
+	id B27F86B009B; Fri, 10 Apr 2026 12:00:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405036B00A7; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
+	id AD8F36B009E; Fri, 10 Apr 2026 12:00:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F4966B00A8; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
+	id 9EEC26B009F; Fri, 10 Apr 2026 12:00:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7F26B0088
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:40:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5737160313
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:40:14 +0000 (UTC)
-X-FDA: 84643057548.12.1FD2089
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C31AD4000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:40:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=jOBU7gYY;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 91B356B009B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:00:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F03CB9C2D
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 16:00:05 +0000 (UTC)
+X-FDA: 84643107570.24.E1B2029
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 398F8C0011
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 16:00:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lZkU3a2r;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775836803; a=rsa-sha256;
+	cv=none;
+	b=pZtM7/rApRXY5Mu7Bpjo9kzMCzIVUa2SuPHl6lUL/FuAkFUaZM9kOfCWfiRLrwdwX/aZNX
+	cLY/uBDG6caMtr8f9mGhWm731P3NNUC41ukX0G4LyIvBIJZpYh+ZdO05AlN+9OUarAHS1r
+	1T469SbC7sBaBfcevXkSkS93z9wQc9s=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lZkU3a2r;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775835612;
+	s=arc-20220608; t=1775836803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
-	b=WQsfbDlVw7iqnxi3Eps5iaDhSwlYG46aZldaxF71XS7pcCuuBBCk+hNEQIXR9UYaZJzEK9
-	03pXaqWFZl/v7rTnamHco9i1LCuUouKBHhHQHA0BXaf19vKCQtiE4SESpz068++/Vh8AY+
-	w+6D0YsNctScTpyjumF8yFINCcbp9ss=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775835612; a=rsa-sha256;
-	cv=none;
-	b=c31XwTB2tZG6R3ivQZGxWLsGb1WmiG+XvKYsSzplm6RJGLJw9w/G1fPFViSIpnSXQtMUNa
-	YG1jX9J0VxOKJvWGwGyRsTvJTQ3tWemx4tSjWv0U4neFBmFwlF9m+aayS4zAoWBgX5SbyW
-	wq5MTdSxO9zHbZmg1EOietPOliCK/Qg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=jOBU7gYY;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899d6b7b073so20692466d6.2
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1775835612; x=1776440412; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
-        b=jOBU7gYY24oaOSX7HegdM7ShPHWtO1mqnGeCbfRqQuleisoKtvIwJfyKj//edtRk0u
-         YaxWMpGBLPrkApjbutcXDMLj77CCHqLoG22a+wWLcDFZcBaVQ00ga16BWz0JfDqesCyz
-         1EY4oGEcdq5Lmu7byFUlqasMwwjXX4pT3ROfefpsb9wPons6WdyB7ch3fm1JUW26xY6w
-         3bNWlC6rGUvpkcILPB5qEvSV8hQs8HVmlw5OvHstAfppAeAqIu3F45RC8U4ZXb0GGqIj
-         Dy0dl0mlojhuHATp2eosPP3lYWl3KQ37X4U2oSNtePX7UYlm/0ds023jHLDZKTTgMlUs
-         X5ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775835612; x=1776440412;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+N+RyRq+4Lu2ncfMlDfFIZSLyoiGyTWZ5uga3Pmg4s=;
-        b=eHQ06cV+2rmWjyGtlbW7wUKvtfvnHVYAOoWMCIPuKnWbtLZYQVAmvfg+uWlS8L+UNr
-         l9ScDGcCYbDXF0umW8dqjNoKfrOFRqRdIlAFO31oFXnqs6sMN11FLnjt9b3AVqYRVC8T
-         MXbrZv4Y+y7jfnmB7jwJRYm+uPKnZiif5Nc7AXiKGL1n4IW3HBRn9xv7mt6STzDyYH3G
-         hKOw01Xa8mpaESCBA7hS83QoDBeMJz1qYX2ml2MJ3lDZbP9eXBYV9QaV9YpMFqX/6Edz
-         kIaLYwFlQeWzTkL+IW/PpHSpaVt8YkTBZr/UuKinmRBLY7pCcWiSXLh/7VArjVZy6a8M
-         NHNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVx65kPYH9TltYR3OeW1eWiZKK2JcTyTPBSsIMFMtqY9H4FUGGkCiJJwqZHVD8adGeC+B/fVxCAdQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx5VWEWBJKk6p6QfM/4bSpniQJy6/+FTUhv48chiCaAy5Ab2cpm
-	Yqk1usKYdu7s4pC6X8+d16pYoPSWaGD0hlKJK/tA+fV9QZJv8Qkk73jlcQavnFu3apO4W70g4Kd
-	Iu4oa
-X-Gm-Gg: AeBDiesuRjA65KidCkMvIg+N1O5ONaoA3dAhbdcWTIP+lMt1uMwAqxyvNu03aOD8/WO
-	Gr1T+N9p8ZZ0ilWmGLavXLT8rYp96H/0CK4M+CyU/gyVFpqPwXsJdv3EAWhib5jamABrweMD4ly
-	Di+SQXReIC7OBgsyBhkTbYB0VrH3NJUSkvplAOd8q4lBg+7fwV6g92jkDGVWXSroTb2VqQj4zHa
-	iBzqxOFt9cr4zU3a9mNBQl2+4bW89/VV+iDTpm1GqCE8de47DQ08Q1juSc2xUxV6RT+2+eBJZxD
-	c3EUxjF6vDc2684wQxbehKo/N0DX6nXEmyM+bonRq0q4QG6rRQHU6DXwL2RUYYI7Ht6XCZhVQwC
-	JcpcKvqjCMN8Szm1/QNda90LYSTyQuVdfMActC2da4MC/wKs7xrFl03qH6kMpG/7iRkjqpbOJ1C
-	k9BOlEJRin0RcEhzyQviIPQy1shKO4cmhRg4Z0blmX1TBcYQmFaCbWPBuIvHikQpcZ88+njw==
-X-Received: by 2002:a0c:f118:0:b0:89c:5c57:98c with SMTP id 6a1803df08f44-8ac861b003cmr41115156d6.18.1775835611674;
-        Fri, 10 Apr 2026 08:40:11 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a104ddsm24587146d6.14.2026.04.10.08.40.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 08:40:11 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wBDxq-0000000EhY3-2N2g;
-	Fri, 10 Apr 2026 12:40:10 -0300
-Date: Fri, 10 Apr 2026 12:40:10 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Dave Airlie <airlied@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] mm/mmu_notifier: Allow two-pass struct
- mmu_interval_notifiers
-Message-ID: <20260410154010.GZ2551565@ziepe.ca>
-References: <20260305093909.43623-1-thomas.hellstrom@linux.intel.com>
- <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
+	bh=Fp69nvi8vfzePQ4r72WtQoyz3vGVsf9eWxbGaVqWFg8=;
+	b=QeQ8R4Q2Z94pcN7Lk+W6/vPnITJ7NkxLekZAGUKjsKEXOSolrGWQIpXM+h2j2Q1WaiMco9
+	4KqGszwO8bMCZV7OPXX6AxTIqIqkyD0CZGGAyreZj0sgWB7/wGhzjnaj0Zc8uWAf3tXLqK
+	zyKN6j+vfVO6C50hqHuDY1Cb5JBveSw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775836800;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fp69nvi8vfzePQ4r72WtQoyz3vGVsf9eWxbGaVqWFg8=;
+	b=lZkU3a2r1eBilnZoCEuBaVnKpRHbeu4XB1hX/wQNN0o6A4IkvYn0CdSgIXL8mvywcuamhI
+	6Rbl7q36L8b7BREjPmzIk6CWxfiXVXMBV7zYTj0rytk1ezzNfgD130Dayp49686v1a7laI
+	lR75D1TZtW8RtqJP+c8wqS8IamWlH9M=
+From: Lance Yang <lance.yang@linux.dev>
+To: luizcap@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 06/10] mm: shmem: drop has_transparent_hugepage() usage
+Date: Fri, 10 Apr 2026 23:59:49 +0800
+Message-Id: <20260410155949.61736-1-lance.yang@linux.dev>
+In-Reply-To: <020a4fe05e8ac52ca47c27b0fbb6a07c163a118f.1775679721.git.luizcap@redhat.com>
+References: <020a4fe05e8ac52ca47c27b0fbb6a07c163a118f.1775679721.git.luizcap@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
-X-Rspamd-Queue-Id: C31AD4000A
-X-Stat-Signature: o8ganigcz5h1g4n4zwi1dt3pgfgiei9n
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: rqjtxmfcc3yhwzie33rpdgt1jbozmwro
+X-Rspamd-Queue-Id: 398F8C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775835612-835516
-X-HE-Meta: U2FsdGVkX185+eIbabsbrrF7ebDXx/tlPLqEg8hh2cVJGnrbrsa9qyb7IYg/eRo4VUU2g0JZtAvgXtA9xf8RYyIOKn2DWwaKXtsgnnjNKVSyOsDIExSbaREl4R3IW5n90rEZgfj++52rCcEE8TduWMt1yRUEOLdJCGxt7rcJivSDERpvP1GD5+dQVngGQFTwL1aQMgei8ajw9PZxH8gXRZdfVH5QVMXa9msa5zQBtdHwjm/xP5fjV6R/dCjmUZWG0JxiL+LGQKlWMMO6m4PW56irZnr1NOZbrNmrB0nRxNwLXcwbbu/N7C9+B1H+ytQcLyH99b5akEhPwZtk7JCrdqUwOUIwazD1f8xfKC+tqXOezuwYDYB3rPcjUOLDeSQso+LADFxIdOtu8K33tjFL//YkRCJj4hhpgsvnVBIaiZscVvh5p5trvNU+QOOx1uafIo1Pfl25bRpV/H9fiK6+UfrF9pE0A62oosn6Q3fsgMq8bpUTjlTA8JDUVQbm07Q3F6Lt7Vx4XNpCiNB4hi5eW1Dz10E07nw5hoFbtTgZaOCi083tRAyxyIiM1uwzTjDlc9P24iQCT1IR4Etxly9PsCVfkG/b02SmcI1rRQ3o6blP335HKACcJTDvqANI9+AbtPpFOCwsRdDOmsg0rc8vHoo7s1KQqumdI4kNDOld8h+VjX5qujyX3yog2/ISTbVtuULT4ynOHJrM9HR+NN3SezJ/w2ScpwuvOcdapqBIxPce+bH/w7+/4+Jrvb+EY6qhUSJKFvKu+JzN2lSriYtsiIilm7TnBC6G9DIfU9w5kY2fT8qqV3QUFcHC4SU9ZXV+6s2svgfbnSRcajZGjBb7iEbmx5ugMAvPD+c3bUNQzLvDxr64WYouwtn8ay87jNWWMKG9U0COeeFe/uugYhrEx4tN+BFAKIrDqXOTpsPZmnOrKOUelrxn5LEsAiWa/m6WPOFhzypgarOeFg3onAB
- SAlLIZkU
- tVXzKAEfO68/qaoS2KiRGCZ1OPFHV1PWAa8ESv8ZdVmI20o59L6U7vjAivJ78l2RfrJcGY/psrJTpiQpj1oo+DCUH5zMyYMOK/THroX2ItrrpN+/1o9Cc0lJanW/LXj6TfumpboKppXDxEMrdTqzMPu6qVoSIsJ+E2e/wey1SfAE/HTS2Mnp8wtYNqt/Q8bKRI8mvfp/sgIkREkPaZXsdV+Hc2ZP2WJjZxZ8reQFC/7mEDdkpelMERS2SWL9QJXYSxCYuqbg3IpMfMfUd0I0bFxhRUHx6WtmgzSlGBk092UflPJ+DtuWXH84gjKS3CaMBaVTxeqErB9BaoOCLAYeIsBohpC8ah81MegcVELzjWZ7TTojV3qbHS4M6uAJBl9XuQ96+YSMJHrmq8uyptffqzeD0lh8t0LLEPB7L1K+XieXgU84XVbKUJiRfhFEXBO+voC2yMzGBXl1DN9b1HccLTQRW/4NvM/UxwJpK9YFSq199CWi1W1/VeKVRAsbvZOZtGG9yAhat8uyNRGglG5J/fpwRONUu6gKe52NmyybxH6CGuc1/Cg16Jk90kBCbMqh0eSniuiVvir4qIxo/+6efzYhUnk1/5D95YvfBUrZz/E4MuIsxDrj/xDC/XwCMOJn5BXc6DGhbpas+GmckyZi1yB5P3SemdQyZhnOIQvPf2JBIiUr43jJKyGiSSeDdpsZhsiOrE3NNgCDg9hqAGcXSxNX3lY6mloZuR6BTBcKLGptj/UBCNqVggMv01DewfnjnOWiRtBeCBAxKt6TCaa0IwOSF/fAVEsh09xtaJuDQeDsxeBSaVurnLJYNEg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775836802-920319
+X-HE-Meta: U2FsdGVkX196Isk1gjMCzK/6ioBanJ6R8OH8DvE4w1qOlG3UD06UG97TusWKB1P3+KjDbtSvE6/TiWhZRHVXb2lIisSS/aA2I8H1MRMvwK1IsOQZPmquKdP5MLQbBGSggI/Y7LhoTDq/tdoWlbHZPyR9r1qVEGbguLaDQ+N4++j7gxiY+QqrI10J8SaGizoBcZbI0/0wmytyr7/EsF6ZPi8Rn5cpEb1BK7+9AP2cLr9ykdZR0k7Sx/ymwttW1TO2PyFj1KxFbnDoTLAfmfdCBBiDCmKudoP5rGw8v8arsDtahIgo2Hk7xmVgYS0G6SmVleIQYp4ZpCMbZ9pfNunbUM3A9UYOXISsBAiWsnJevWGq3hX4CwYAaqRYYzG2tCithhSlYamjq6SuMqLfmQJEmNblxDzJFfXjwRukVJy7kM5BcPJAnY6SePIxU+8N9TYY/XQX1Ues0D6lFTk+zRblAQ8in5TUgA3lESQ9q0YkBB/zMbLDUkRtOPDUUxLevDf/TzprIAqzcwhl19Arlse15pVIuT+qdyKo9+mMULB7ZRXfx5BefGMQ9Qm2Nktynakr8kEMs314o6M2qDC/u0JaD/YborKBRrO1NWlvu+lhFIImYeDrJhBfZEWaYAK6qa+fV006TQFlQD12s4v6PvuT4/HcKC91sJn9jXiMWeYQxLSFcx341OcBjsiLyqEdgbITVCdg8hoCjZ+HItXwNnCWX5RN4VFCGHhU6QK7uj7XMaHKIO1tCn8ky53nKiItB2rvP9/7kOuOB/eW7GqQWEa2SniEfxrAOhE8kGNVsUDOcuXXfsFqYzg3Vt1F8XJkuSDxkTgiW0Crq0B9wbVz5HxBpNfwA0zS1pJMJ0YwvAZZ7TaR4TDlBin3MY5T9aBGSs73LbXkBCV5e//JaQszeTn1k8zcxCRiffvCMI2KyO8ktxZwZU4ZDMK9u4Jipr0EsA+o/FpTJSFI8pRnpA7XGV5
+ 7VKO4u7/
+ oUhCYHaoqQOSE9MNi0bkHLmFL0zBJXT/3bpNlFuKHci15IWoVwNkzhmjlsrPmkhWpJE6/wres4/iUXXW7VNtvx1uzv1A4mRxfG24VJ1/5Fn1csuphXk32VOrlOR/GRHmKGB3MOH1aNQCq1jB4OzE9vf/xYSY5t2bpvuY35yYWQrR8K/YkPqv+oFmoOeb0pbJ2a4QW7hNP4KXpIyARQI3YUtXGptf9g5pXHJEyiYi4Dbtnke09W5a2eub5jzPqKaPjc/+fyCZIlO2IwinR/WL7lZjcig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,70 +99,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:39:06AM +0100, Thomas Hellström wrote:
-> GPU use-cases for mmu_interval_notifiers with hmm often involve
-> starting a gpu operation and then waiting for it to complete.
-> These operations are typically context preemption or TLB flushing.
-> 
-> With single-pass notifiers per GPU this doesn't scale in
-> multi-gpu scenarios. In those scenarios we'd want to first start
-> preemption- or TLB flushing on all GPUs and as a second pass wait
-> for them to complete.
-> 
-> One can do this on per-driver basis multiplexing per-driver
-> notifiers but that would mean sharing the notifier "user" lock
-> across all GPUs and that doesn't scale well either, so adding support
-> for multi-pass in the core appears to be the right choice.
-> 
-> Implement two-pass capability in the mmu_interval_notifier. Use a
-> linked list for the final passes to minimize the impact for
-> use-cases that don't need the multi-pass functionality by avoiding
-> a second interval tree walk, and to be able to easily pass data
-> between the two passes.
-> 
-> v1:
-> - Restrict to two passes (Jason Gunthorpe)
-> - Improve on documentation (Jason Gunthorpe)
-> - Improve on function naming (Alistair Popple)
-> v2:
-> - Include the invalidate_finish() callback in the
->   struct mmu_interval_notifier_ops.
-> - Update documentation (GitHub Copilot:claude-sonnet-4.6)
-> - Use lockless list for list management.
-> v3:
-> - Update kerneldoc for the struct mmu_interval_notifier_finish::list member
->   (Matthew Brost)
-> - Add a WARN_ON_ONCE() checking for NULL invalidate_finish() op if
->   if invalidate_start() is non-NULL. (Matthew Brost)
-> v4:
-> - Addressed documentation review comments by David Hildenbrand.
-> 
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Simona Vetter <simona.vetter@ffwll.ch>
-> Cc: Dave Airlie <airlied@gmail.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: <dri-devel@lists.freedesktop.org>
-> Cc: <linux-mm@kvack.org>
-> Cc: <linux-kernel@vger.kernel.org>
-> 
-> Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  include/linux/mmu_notifier.h | 42 +++++++++++++++++++++++
->  mm/mmu_notifier.c            | 65 +++++++++++++++++++++++++++++++-----
->  2 files changed, 98 insertions(+), 9 deletions(-)
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+On Wed, Apr 08, 2026 at 04:23:01PM -0400, Luiz Capitulino wrote:
+>Shmem uses has_transparent_hugepage() in the following ways:
+>
+>- shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
+>  if the CPU supports PMD-sized pages
+>
+>- shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+>  the code block calling has_transparent_hugepage(), the
+>  has_transparent_hugepage() call is exclusively checking if the CPU
+>  supports PMD-sized pages
+>
+>While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+>in all cases, shmem can determine mTHP size support at folio allocation
+>time. Therefore, drop has_transparent_hugepage() usage while keeping the
+>CONFIG_TRANSPARENT_HUGEPAGE checks.
+>
+>Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>---
+> mm/shmem.c | 7 +++----
+> 1 file changed, 3 insertions(+), 4 deletions(-)
+>
+>diff --git a/mm/shmem.c b/mm/shmem.c
+>index b40f3cd48961..6f8b20d77e07 100644
+>--- a/mm/shmem.c
+>+++ b/mm/shmem.c
+>@@ -689,7 +689,7 @@ static int shmem_parse_huge(const char *str)
+> 	else
+> 		return -EINVAL;
+> 
+>-	if (!has_transparent_hugepage() &&
+>+	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+> 	    huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
+> 		return -EINVAL;
+> 
+>@@ -4664,8 +4664,7 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
+> 	case Opt_huge:
+> 		ctx->huge = result.uint_32;
+> 		if (ctx->huge != SHMEM_HUGE_NEVER &&
+>-		    !(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>-		      has_transparent_hugepage()))
+>+		    !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+> 			goto unsupported_parameter;
+> 		ctx->seen |= SHMEM_SEEN_HUGE;
+> 		break;
+>@@ -5451,7 +5450,7 @@ void __init shmem_init(void)
+> #endif
+> 
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>-	if (has_transparent_hugepage() && shmem_huge > SHMEM_HUGE_DENY)
+>+	if (shmem_huge > SHMEM_HUGE_DENY)
+> 		SHMEM_SB(shm_mnt->mnt_sb)->huge = shmem_huge;
+> 	else
+> 		shmem_huge = SHMEM_HUGE_NEVER; /* just in case it was patched */
+>-- 
 
-Jason
+Although this patch simply drops the early has_transparent_hugepage()
+checks from the shmem parse/init paths, shmem_allowable_huge_orders()
+still returns 0 when thp_disabled_by_hw() is set.
+
+So on hardware without PMD THP support:
+
+unsigned long shmem_allowable_huge_orders(struct inode *inode,
+				struct vm_area_struct *vma, pgoff_t index,
+				loff_t write_end, bool shmem_huge_force)
+{
+...
+	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+		return 0;
+...
+}
+
+1) the fault path still falls back to order-0 allocation
+2) do_set_pmd() still falls back
+3) khugepaged won't collapse it either
+
+Nothing jumped out at me, thanks!
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
