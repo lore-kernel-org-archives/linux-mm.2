@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A515F459F3
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC6AF459F3
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1026E6B00B6; Fri, 10 Apr 2026 11:20:47 -0400 (EDT)
+	id 611806B00B8; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D9FA6B00B8; Fri, 10 Apr 2026 11:20:47 -0400 (EDT)
+	id 5C29C6B00BA; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4336B00B9; Fri, 10 Apr 2026 11:20:46 -0400 (EDT)
+	id 48A3E6B00BB; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCF106B00B6
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:20:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2728B99CC
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:20:46 +0000 (UTC)
-X-FDA: 84643008492.08.AF0E729
-Received: from iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com [3.221.209.22])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 341E3C000F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:20:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=QuTl0Bas;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 3.221.209.22 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834444; a=rsa-sha256;
-	cv=none;
-	b=bN+M72o8gqGufG1xyRDuu+EJnVQLcqKO8IWdYiesVX3oyk8+r8t372gX/+kcKdWbRFpl0P
-	98M95+F2acDf+Sz3szMYzZKOq76L7+9zbsXZRT4sMsxi6QMG2jAlAz23Wra/2aSofYJJdl
-	DkOLqXWj542YTmcv7Yilhv14/003UsI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=QuTl0Bas;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 3.221.209.22 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 370BC6B00B8
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF0481A0153
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:24:50 +0000 (UTC)
+X-FDA: 84643018740.27.EE60EF6
+Received: from iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com [50.16.246.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5E5941C0012
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:24:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NYCUeKkd;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 50.16.246.183 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775834444;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1775834688;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4pa22IBiUxkhl+ny4/A/3k7Ys07iPKfR95Xdo8FAu5s=;
-	b=2vdSZ+Axvom/lKz2aCwOxVSznt7qfUYX6V7wne8R2g730Dc9RCvw0KGGTtr3hbQvFsytar
-	qflg/JIITOzC4Sa32pGaYIaJufgrDIbD6+bbSWHYg90QwcvyIt3Mh9fv2Vb4INHRyxMfzh
-	Vv5omoOf5G3gu+zz2Nvm88mDeFgpoLM=
+	bh=wZc+sAyXLDOw4SNn2V1QCxBFXc6EIQ5hl84+ynFDeD4=;
+	b=H5wCHeLkkmTMnblcPOXnkF2JWNGe3PO/oBQ/UIy3jWUbMx3nKojl1UdGknD3eFvOAHpgHf
+	814M/iDC+c0EF2JDFrqX30+ruCBFpxsQqhyL3mMDs0e9Yq61wznCk9rBoBQ5o9iGeEiP7k
+	SHTTMmNcKUziPrspHlCD8UXeqX9rekw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775834688; a=rsa-sha256;
+	cv=none;
+	b=hbAugpY5Y0U5qb8HLCTYDQzuFvg0y7jQYf7C6/T+gZ00i125szTe5eft1RmizUvUYDhULM
+	VmCVXgM40tIvyvVD3v1VC1D8thVF/2fMPRZN8PEsLq/o+3mHyf8Ol3/0I74H4EUS4IuuMa
+	SH/cb7sb5VYX/RUYMFN7TLFVNTrxqws=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NYCUeKkd;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf20.hostedemail.com: domain of "prvs=5539d40d4=kalyazin@amazon.co.uk" designates 50.16.246.183 as permitted sender) smtp.mailfrom="prvs=5539d40d4=kalyazin@amazon.co.uk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1775834444; x=1807370444;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=4pa22IBiUxkhl+ny4/A/3k7Ys07iPKfR95Xdo8FAu5s=;
-  b=QuTl0Bas3MEJY5+Ow1IQGWed5xsecvVSOFcW0mG5yg0xW8rL5ET4fLnK
-   QMkwCavrlwHoH3ff0n/8m8WCtXi4cO6Kjp1kqBB9H4EMTWTHKv0E8wI2V
-   YOjDtOUDQRIvdKcDzjuLge6M9VhhCZ7j4NE2JLNyqZ31NEaWjz0/lQWAl
-   WjyF7bHPPrA2rCL2ql1E0dUjnRf79p7pvCa3DqPy9ftQMHm/c25qIL02E
-   qOXSaKvx3aMNQc8Yd4sSRALVF/3olB9aSFmC1KMMZm641BkUqgwt4zNpI
-   Qg5wzK0nVV102OGPx//f2DnAeoRnS7T2PxiVZynSeTUBEHsgMDFyIyF3d
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1775834688; x=1807370688;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=wZc+sAyXLDOw4SNn2V1QCxBFXc6EIQ5hl84+ynFDeD4=;
+  b=NYCUeKkdn6hO45hvQMbf4h2atm8eNmq3K8CQF/acazOWh3xbmIDZijqm
+   iq6oan7J4xm1N8Jvn0ZqCjk6xYeKdplxs5zjzNDYnziGVfXOrN1kEd+wm
+   va5h1H+2Ph93Dpdwt54kQgsDxKWchyzk2IXmM1HoKF5TjdH/MwHN4hZBj
+   kLH3P2OBaGP/mQMhUXPvvB4Hw2lQzB0SxSs7u/alrpa3H+N6JQYV1vucQ
+   XCEXY0YcITTLer/2HckPk8b97Bl8mf3YNSaZ28XGYDtOjTs/sJ35Jaj1Z
+   NUzWFDjVAiMJczDsXhZvQpZ8eF+aV3DbN10qznlqyt2GpV29FQCNn4o0t
    g==;
-X-CSE-ConnectionGUID: CxtxYb49QH6Oj+u8asaXPw==
-X-CSE-MsgGUID: iz0F3lfkRFOuVkePrCTYBQ==
+X-CSE-ConnectionGUID: X+8/8Q82QPSEUaO2zzwCGA==
+X-CSE-MsgGUID: 20SnI1ONQjO+nFdv/IJbAA==
 X-IronPort-AV: E=Sophos;i="6.23,171,1770595200"; 
-   d="scan'208";a="15990030"
-Received: from ip-10-4-22-235.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.22.235])
-  by internal-iad-out-007.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:20:43 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [72.21.196.66:24508]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.86.77:2525] with esmtp (Farcaster)
- id 4b48ec95-31b6-489c-bb48-922b6f1fe163; Fri, 10 Apr 2026 15:20:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 4b48ec95-31b6-489c-bb48-922b6f1fe163
+   d="scan'208";a="15428079"
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-014.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2026 15:24:47 +0000
+Received: from EX19MTAUEA001.ant.amazon.com [72.21.196.67:6584]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.62.178:2525] with esmtp (Farcaster)
+ id 7efac024-2436-4ad4-8a7e-9b389eaca327; Fri, 10 Apr 2026 15:24:47 +0000 (UTC)
+X-Farcaster-Flow-ID: 7efac024-2436-4ad4-8a7e-9b389eaca327
 Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:20:41 +0000
-Received: from EX19D027UEC003.ant.amazon.com (10.252.137.250) by
- EX19D027UEC003.ant.amazon.com (10.252.137.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 10 Apr 2026 15:20:40 +0000
-Received: from EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d]) by
- EX19D027UEC003.ant.amazon.com ([fe80::887f:519b:ba73:21d%3]) with mapi id
- 15.02.2562.037; Fri, 10 Apr 2026 15:20:40 +0000
-From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ Fri, 10 Apr 2026 15:24:46 +0000
+Received: from [192.168.12.97] (10.106.82.30) by EX19D027UEC003.ant.amazon.com
+ (10.252.137.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 10 Apr 2026
+ 15:24:33 +0000
+Message-ID: <e725b3aa-f67e-4de6-acfc-788f264616c0@amazon.com>
+Date: Fri, 10 Apr 2026 16:24:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v11 01/16] set_memory: set_direct_map_* to take address
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
 	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
 	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
@@ -109,14 +113,13 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
 	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
 	<willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
-	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	<akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+	<andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
 	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
 	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
 	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
@@ -128,60 +131,67 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
 	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com"
 	<yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com"
-	<coxu@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
-	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com"
-	<ajones@ventanamicro.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
-	"tabba@google.com" <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
+	<coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
+	<yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
+	<tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
 	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com"
 	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
 	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
 	<agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
 	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
 	<borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "dev.jain@arm.com"
-	<dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com"
-	<palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
+	<gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
 	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
 	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com"
-	<thuth@redhat.com>, "yang@os.amperecomputing.com"
-	<yang@os.amperecomputing.com>, "Liam.Howlett@oracle.com"
-	<Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>,
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
-	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
-	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org"
-	<lenb@kernel.org>, "pavel@kernel.org" <pavel@kernel.org>, "rafael@kernel.org"
-	<rafael@kernel.org>, "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
+	<thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>,
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
+	<urezki@gmail.com>, "zhengqi.arch@bytedance.com"
+	<zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
+	<gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
+	<jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>,
+	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org"
+	<pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
 	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
-	<jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro"
-	<itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>, "Kalyazin,
- Nikita" <kalyazin@amazon.co.uk>
-Subject: [PATCH v12 16/16] KVM: selftests: Test guest execution from direct
- map removed gmem
-Thread-Topic: [PATCH v12 16/16] KVM: selftests: Test guest execution from
- direct map removed gmem
-Thread-Index: AQHcyP2XEHVI3uLMIU2FZLnWTUpJYg==
-Date: Fri, 10 Apr 2026 15:20:40 +0000
-Message-ID: <20260410151746.61150-17-kalyazin@amazon.com>
-References: <20260410151746.61150-1-kalyazin@amazon.com>
-In-Reply-To: <20260410151746.61150-1-kalyazin@amazon.com>
-Accept-Language: en-GB, en-US
+	<jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	"Manwaring, Derek" <derekmn@amazon.com>
+References: <20260317141031.514-1-kalyazin@amazon.com>
+ <20260317141031.514-2-kalyazin@amazon.com>
+ <7b785e34-4d49-48d2-b438-afa1def3ec0f@kernel.org>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.103.116]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-Rspamd-Queue-Id: 341E3C000F
-X-Stat-Signature: rkfxqkn6ugfrciihkonqbwmi6e359koj
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJp2NfjBQkGQlIzAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPPNDAEAvsw8vEWj8ArWQ1QJNufjrvobU/cE8MLKdBxbSE8CyZQA/0BldKxNAtAwG4qw
+ wCLxsZ5vBL3Zkh/PdvtFCj/VGscGzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmnY1+MFCQZCUjMCGwwACgkQr5LKIKmaZPPQKgD/f3FtERbJ+LYHLSG/ZbLNAOLngUlQ
+ qo5VfIyJOzeLzC0BAP2PIUFIHo7vmia/PXEmT+ve4c5rx+EkH/Dx1GRpjWoI
+In-Reply-To: <7b785e34-4d49-48d2-b438-afa1def3ec0f@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.82.30]
+X-ClientProxiedBy: EX19D004EUA002.ant.amazon.com (10.252.50.81) To
+ EX19D027UEC003.ant.amazon.com (10.252.137.250)
+X-Rspamd-Queue-Id: 5E5941C0012
+X-Stat-Signature: eyuw6h8yr1pxhdhzz7zx6d6n9jeyqsq4
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775834443-296810
-X-HE-Meta: U2FsdGVkX1/1lPbJI106vV1t8z/gfhtQXWx2ZfWkuCr9OzljtoER35Vgo0BuhNK+vmvKW93yxeIj4dG9rL0dnnix4WqWZB8aIPGd747Lh2i8ugFSHu2v+T5npO3HFbLwogRlqJuUNxkuK7x3TwWWmRg25PmWmdl7ZJsqQiSQEv7pb+36+MU1A+GjauoOlrSDIHI85Ty7/q42L7BWpnFhjL7Wr9QnIsqHwA9FEvCZSuonseGjrNeDhyTsdeUXYFx5FBhXHaqdlwKMPVsMWV3NYvAMS3hx2FClhgV91nxGIrYU1qW+7yZQdYZFMlgo6VacTS5fdUoQzNPKgBXV1/xIwTTvVsqNBImWIl2oDioWlAaECArrZATqz+Z42+QgUgaVo4PyLsPrwPByAcM1ocLTmG27eBuv4FakHFevyurlTio+7Qm/MXpnpSdbpUAMSkTzql1N7X00OiL8WaB2EX+yYLxrGSSJDdOdkmzhgCv4Opovto2+jYRohWMcDD56hdwO+xxDEyq9PsBHVwCmJXGojzgYUyOkRICG88mMkqzoDzGTmcSPKhAtaxg1Tm0vksvHlSrPgh2CJ/m8bixY/+NxE6w7jx2wAR4T9y2bDJcKX2nq/opiRQXTqWDa3uRASdxejw0j+tyei2nv/z+ri1FIbbu0/T7od+5rNoEWuHbRzdeizo1zJO8ng4JLJPsqN55F2wVxChT9TZ/j5qQa6ZQ9BmQEgwVgVsrKambUi2mctR/qmoHTh847F+gLRITJ2DZNWgF9KCUrGi9Lj+LGxwTWMea8TflbEyGIh7eE3h47wF8S6MUci44iVO5U5zOApSSHckMWexFgpjdGPMQ/X5K1PkK4koBSGQnynhSJ8nOgPsah1K4eXBKWpZ5KY1lAhBCcwl/4TNQWWmy+QXpKZko8mN/trpa192wAuRlVsY//dKhg1ZwkWOte2E3AEEZLUMUISQh8tIE2BCFVGvd5RXH
- 9amZL8Eb
- 5vCcKiBHwy5dlSlXbjpNe+gm2/2zeeQJ3rNnRGmKWIi5wFldEkGaXRHIMERmTbp1mHRQM1hi6lpxArqDmPtaMhE/x3oDQ93919wi8b/SJs4mIg0gB+F/HtP3RjQCgRtjjyoqBddtf82LfMbX1qqLob4Vx3oVEAzwmRJSHsUlwbyYpB2TBJ+io+L2gAo9fMcKxBz9HtOWgKLnZfPf/Alk9rn94w03IzbATGeduv95UCRuEH37XdChl4eX3v5tUvZ3zx+Ov9TW/2hdg5JxNtlp8K6B3tWlcprH+PyHnFcuogT5oIOqR1wUHoh9Lzoy76DWhigDExNU1dPheivEgc3vEmPpMxu6zfgYtTEi1d6+GE7gh9OVCsw2x0JLEaPGliaQDmBXEAp3g9H7GNLauq1w1AnS0eqEZHs8dOCdd5ATl0w/cyFBo99kECgHxq2/e25vSkLtlwVbJ5uYNCYQ5zr2ERLRW7rVSLVlBQVS/N9TWMF4/C/KIygrA99DoBEO4DiL6d//sxKUonCETxd9g/C1BAQJySUgasl29XILAtK9gcA/pvp74Ll5XGMdL66OzK9IsrvJs0ekgS9p7cRviQLrlOj8GugOVw+fxO1qdzfQBfUkItib0Khduij2dnYKkYfq2Jg85PF/c8nzfbPPmCIpbcuNdTVIWd7YZtTrxgtxAecjRZFaNzk7bsgSKFoDuaaOJ650p
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1775834688-346961
+X-HE-Meta: U2FsdGVkX1/+dbIlGls8l6ZOsvNtrp22w8ehc3YggFTJE3nzflTxQ+mniCzadWc+51K0juymLwBmBn0TkTL1b5/B9PieOeL9bUh790wEA8rKvTfRJgf/AEVoe1WkM7SU9PKVLPjdEXlGn2iN2wu6M8c/IiV4Z36HYnibVvwpzYVvLrdpLVqB3oGL6SqhkOT3J8lAt5Ipjc+Hec2mnKNoOevsQAf6cVZ9dGdle5FXQcu5kKnK/gjFm53q05gHRQjsmQSSg5NoBOV49ziKIzBqQimc58UNpdGu2fBLLpaimeXk1XlZdedLV0XtksEQriRXruNBw6xDQP1HSOd8p3j/AleOMwKVSjXAXYM1pFLptl3WEqEMefLXGo3dThm/4V9TX1PiBtVirLoDrC3fYb9BrUfxe2lq/Dj1183qvfM9JzWjFt62rPvIAK5mA9IAjsMfaXveKGD5aD8VuyufTMZS35fU4t5lZk0wd6dOQUUfSvoAsJDGagxKJCMTfHsW+Jq9fHZSWJOfGbqTD1RBLUBs2ZW6md1bI6RInI+VJxXYQMQ28gKv072egDW5pJMs7CbYvxX30WRsCefKRuYLNPIZdAMTqHSLiKJ5MvNB3WiYFAb7Pg25GL8RDLk635u1uIflE7b2MkKINxC5QzzI/LQHY3/iwY+/90fmED1c/XD/MXVhnSNdW92f3TscHWmKQnvZMdZ7ZYOYGwmLWuPpzyV/TK9GIr/PrPiqT1D4hbmBQOFUzYcsWZ1SJlWuX0vKXHfXMnTC6VWPfNT1T0euvvYHQUq9ezAJkCcFHyDhiTifcEm1kpcOt2fQ7/z7272etRIWxcgYQmJTYI0KM0PeVsrOGx4Tag9Z3Ra0HscVEXSdN53x3V+aC7jEr1A1P70OrjfOPwH/IwmrNhFTGKOdsyx0XreUDDNyoUQMUwh7+EgwgJ0FbpNdaYEX/JhgL+Mj2KsSzfFLiTvOvtcjd5LoMDB
+ B/YWEObo
+ sOfvQ/Uq/O0LTlMbKJoYzETH2kQxocKp31ZZSacH7fOZiY9FVdcpkzT25+GzC1KBZHQsSCJvc0U8L457NYLTYGn2LSktomyUGmuqfQo+TO0vqZzdJrLOxCX3IDT3kTLTo+jTO9MWldSVk0Cgnu/Blfve+Le5KcL7POU6onEd4B5VgkTqqCUG1pipLydvXAahThu5ejiKk89v/qPARztcFNEiPWKJxhMnNngK0k/IBXef1vIkS6ykkD15r+Gl3hoaQrXzr30xvrJi8T26zIglj43ZD7GP0/pCgZjb9M78Cn4XgE0M8MMcAl/8E3UTsHyBQ+qz5PO2DkrVdvfoLwyzf2Lrz934J8sBlvSuX0+JmC4Y1KOzHOjuwneuwijx53upQy/gJ+zoNPy6GqIMaWwTKIMHFRd+v18nv2aUiZLK6AsNlmtzU1kvp9Is2TYyOqx93x2sbQzdSy6PVPrauBL1HZUXzybw1sDsHxroSmDJVNl3XhJOrF8eKStjn2EGAkZsyxfsfvzaOItix2YsCagQv3GVKBK/yFN3b6Dwr0f7wkGbTwV7Z22qKDKL2lAjQ+loNWPEMvh4eG4169G+4U+R5K6Ua8dAOiAf2cH402BQzbGiwwh1URd/uSqPHsAlBOBBzZ5n9TulPKjgMXG0z3FyyUhxcxoMw2A/jHrf9DDAMFJpIqiZh6oGMeFJPJmEAVCcmv5YYuxaqC3V+ZZCDTxqOSOWrKPpi1kvlFyyXk3c6BCQzth/MMhk8eEW8DwkFrp0ah1KhHGCooohOqA/z+8vJdHEEMDvZg1J/O874v/mHZAM02Vp2LPtmgPsSrQDmT4aqMpDCegioWNPkOO7DnelxM+DacQFRc5cpEWACGFmR6yU24xpOhuwIj0x8/drkmUyu6IdOxiPfvaifGpK/sn0CMDExxTOFsZXsfx/YKgdp6JA2Ilw0U6cRdWypz2S6Pg1HkwC8fEB/2un3MBCMWPvWR9APLwN5
+ TSWuhYPS
+ 0Nc5Ay+xIz+N7ZUUQOYoPzD9gy+tQ/6O2bqFVKO/4TT0SYw8y5xGnnJn+CtE1i0AAaXeqWc0jEzW2Qcy197d4QFcBEbdfaC0XkhM0VC2LI4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,99 +199,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Patrick Roy <patrick.roy@linux.dev>=0A=
-=0A=
-Add a selftest that loads itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
-exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
-memslots where the guest_memfd folios are direct map removed.=0A=
-Particularly, it validates that x86 MMIO emulation code (guest page=0A=
-table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
-that's been reflected into the memslot's userspace_addr field (instead=0A=
-of trying to do direct map accesses).=0A=
-=0A=
-Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
-Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>=0A=
----=0A=
- .../selftests/kvm/set_memory_region_test.c    | 52 +++++++++++++++++--=0A=
- 1 file changed, 48 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c=0A=
-index 7fe427ff9b38..cb445d420e8c 100644=0A=
---- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-@@ -602,6 +602,41 @@ static void test_mmio_during_vectoring(void)=0A=
- =0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
-+=0A=
-+static void guest_code_trigger_mmio(void)=0A=
-+{=0A=
-+	/*=0A=
-+	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
-+	 * as MMIO and tell userspace to emulate the read.=0A=
-+	 */=0A=
-+	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
-+=0A=
-+	GUEST_DONE();=0A=
-+}=0A=
-+=0A=
-+static void test_guest_memfd_mmio(void)=0A=
-+{=0A=
-+	struct kvm_vm *vm;=0A=
-+	struct kvm_vcpu *vcpu;=0A=
-+	struct vm_shape shape =3D {=0A=
-+		.mode =3D VM_MODE_DEFAULT,=0A=
-+		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
-+	};=0A=
-+	pthread_t vcpu_thread;=0A=
-+=0A=
-+	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
-+=0A=
-+	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
-r_mmio);=0A=
-+=0A=
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
-+=0A=
-+	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
-+=0A=
-+	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
-*/=0A=
-+	pthread_join(vcpu_thread, NULL);=0A=
-+=0A=
-+	kvm_vm_free(vm);=0A=
-+}=0A=
- #endif=0A=
- =0A=
- int main(int argc, char *argv[])=0A=
-@@ -625,10 +660,19 @@ int main(int argc, char *argv[])=0A=
- 	test_add_max_memory_regions();=0A=
- =0A=
- #ifdef __x86_64__=0A=
--	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
--	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
-=0A=
--		test_add_private_memory_region();=0A=
--		test_add_overlapping_private_memory_regions();=0A=
-+	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
-+		uint64_t valid_flags =3D kvm_check_cap(KVM_CAP_GUEST_MEMFD_FLAGS);=0A=
-+=0A=
-+		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
-+			test_add_private_memory_region();=0A=
-+			test_add_overlapping_private_memory_regions();=0A=
-+		}=0A=
-+=0A=
-+		if ((valid_flags & GUEST_MEMFD_FLAG_MMAP) &&=0A=
-+		    (valid_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))=0A=
-+			test_guest_memfd_mmio();=0A=
-+		else=0A=
-+			pr_info("Skipping tests requiring GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_F=
-LAG_NO_DIRECT_MAP");=0A=
- 	} else {=0A=
- 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
- 	}=0A=
--- =0A=
-2.50.1=0A=
-=0A=
+
+
+On 23/03/2026 17:44, David Hildenbrand (Arm) wrote:
+> On 3/17/26 15:10, Kalyazin, Nikita wrote:
+>> From: Nikita Kalyazin <kalyazin@amazon.com>
+>>
+> 
+> Just a nit while reading over it once more: restate what the patch
+> subject says.
+> 
+> Like "Let's convert set_direct_map_*() to take an address instead of a
+> page to prepare for adding helpers that operate on folios; it will be
+> more efficient to convert from a folio directly to an address without
+> going through a page first."
+
+Done, thanks.
+
+> 
+>> This is to avoid excessive conversions folio->page->address when adding
+>> helpers on top of set_direct_map_valid_noflush() in the next patch.
+>>
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+>> ---
+> 
+> --
+> Cheers,
+> 
+> David
+
 
