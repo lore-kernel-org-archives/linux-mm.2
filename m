@@ -4,83 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA60FF36B91
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 06:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B766DF36BBA
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 06:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C4D86B0089; Fri, 10 Apr 2026 02:20:00 -0400 (EDT)
+	id 5B1FB6B0005; Fri, 10 Apr 2026 02:38:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 175746B008A; Fri, 10 Apr 2026 02:20:00 -0400 (EDT)
+	id 5627B6B0089; Fri, 10 Apr 2026 02:38:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08BC66B008C; Fri, 10 Apr 2026 02:20:00 -0400 (EDT)
+	id 4787D6B008A; Fri, 10 Apr 2026 02:38:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EDAF16B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:19:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 800421B7604
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:19:59 +0000 (UTC)
-X-FDA: 84641645718.09.9A48AAD
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B4A0BC0003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:19:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3909B6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 02:38:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9769C8466D
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:38:43 +0000 (UTC)
+X-FDA: 84641692926.26.79275D6
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 397CCC0003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:38:39 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	dkim=pass header.d=huawei.com header.s=dkim header.b=EP+J6DXF;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775801997;
+	s=arc-20220608; t=1775803121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jcRmfdtFVYFVq489UD/UDFLUbBSdKKIhdmH9YmlkD4g=;
-	b=pCwYi/ekWpzzeAJ4U23ZfplslQfTqX7dHVcfMe3MuanXhxZKYhvOslO9bE5zzO8/K2FQ3e
-	H+3jcN9ilq2PTMoA03RbwFzfkMLqjJycS5egdFOPe5cWjNOrIAUVfCnSIIw+zQU0HFQtdg
-	3HPJmShPivZwzUIguRgz7LgAz7jEQjY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8rfhBI7v/0UCAvMxEbqmEnO+ApvS3TiEWtoH0oFeamY=;
+	b=4GSmPMtufCVYHCGbtm7bMgXf5/IRsXVWKA1Gvp+uRdNJEAbBKcfgsM/V8mudooI7JgkjfM
+	VMebkbsXymEuc64kZTB30v0dhEFvNwkcaYWAshM9mJNOGsnbj8kcR/qGKop/UWMx1a6Jcb
+	+Uu3d4c/0e2HrQ9Vrc02N84hrZMtBC0=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775801997; a=rsa-sha256;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=EP+J6DXF;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775803121; a=rsa-sha256;
 	cv=none;
-	b=ci5b7gyY2G8cQS6p2KQoH69V+y6eEZ7/5znVI3KC1Jv5VQcIknSNFtEkZp5ZN2AC1EXvmT
-	JIRnjjlaaTtmCN+gOZuO+S9cCsGq+FFWsi7BPLSWe3k3HWy4EsRc+YI/BXqVT/EP0nDujA
-	NNaUCYdFm4CSMsHJEddNVkzaCBJJKRU=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 66B1268B05; Fri, 10 Apr 2026 08:19:53 +0200 (CEST)
-Date: Fri, 10 Apr 2026 08:19:53 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-Message-ID: <20260410061953.GA24795@lst.de>
-References: <20260409160243.1008358-1-hch@lst.de> <20260409160243.1008358-9-hch@lst.de> <2cdaa767-c071-4e84-b9d7-1c944407f5bb@columbia.edu>
+	b=b/1Yg4OdJSigOyrJH8MJjvwQQ2URy6LQjcHwbLta8jlLOHZ+mPDIxpbQmqVcLvOqB7JQNk
+	OKujbhUK1mAuHeOphMjolDoIUtoVsWacfOlS2qXzMfhvco5FFiBIrQ2yxIeJi43q/I6E/0
+	HMZw/cqo7UksKnoHDrdsbOtGWXnVqEk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8rfhBI7v/0UCAvMxEbqmEnO+ApvS3TiEWtoH0oFeamY=;
+	b=EP+J6DXFj55X95g6q1I4QHniIfnGhXBXOEAl2IK5+i0qbyD6dZRXbJ95jIokXsH07DCVs5a88
+	BAWDPtVKEWdJqwm4l2ZgrnIoYDi3vXhE2Tl+xpS0cFOemnaQOQgG5Xf3JsdM24xpt9Mw4Jop6FJ
+	RMi4Wdvvmy39VcK8dy7KMGM=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fsRmZ2S7Tzcb29;
+	Fri, 10 Apr 2026 14:32:14 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 207394056E;
+	Fri, 10 Apr 2026 14:38:35 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 10 Apr 2026 14:38:34 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 10 Apr 2026 14:38:33 +0800
+Subject: Re: [PATCH 1/2] mm/memory_failure: use bool for hugetlb indicator in
+ try_memory_failure_hugetlb
+To: Ye Liu <ye.liu@linux.dev>
+CC: Ye Liu <liuye@kylinos.cn>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>
+References: <20260407020715.2269255-1-ye.liu@linux.dev>
+ <20260407020715.2269255-2-ye.liu@linux.dev>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <0eb4a198-e80b-127d-e729-3af6f63f6d5b@huawei.com>
+Date: Fri, 10 Apr 2026 14:38:33 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2cdaa767-c071-4e84-b9d7-1c944407f5bb@columbia.edu>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B4A0BC0003
-X-Stat-Signature: imxukkannbxfpxdo9xbs9p737s1xrwua
+In-Reply-To: <20260407020715.2269255-2-ye.liu@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1775801997-902833
-X-HE-Meta: U2FsdGVkX1+cT7kMOQb3VVdjtfqgorUwB0TSbPjpFP1U5akfdnJ0KcARBIiblELhmkGPSbj4Rgp8s9DarpeZKK9NpDqEdj4BXNaxIaVZyaezywKiRULUuzJcc7WcpLu8pHk3rLomjyUdHiFo75QP1CbXbeaUxV2k4iZXdNfxGY4+hJpGR5ydVX4flvYVHHC4zZA+HCn2vOUM1yLYuBL6bfqAVgTtef615e8vl5w1zA2tS0UTR+jGIsrQb8wpWhq5nn3TwAxXExTXV9njbBixKyoWOuYykyLaHXXtxqU8F02XXHiUJ1Gul7d98WAaKFBnc851EEnU/yQRZTMZ4hWX0qDDWYwFrNKSzZRJwpBENvjfxjv9PVQ9CJCTMBYadtF8gT55B1tlZY9Oj7zTWWfQIsBG6SeVkBDaGFalmmZuuNGfcz0sAs3NWv3JCz8ou4EsHJ64SZrhn5Jkmuq1NSVor+GC8LnRK7ObIBmdxWzkbD/SucSxs79K6TA9ZWuC6Rw4A79K+d+twxlTp+yBfjK62R063ATPCQpf+HTEDCGHGhlMc/eoDyPYhRcYfKzRZN7JVurvg9pghroYSznaMTftqeGFOj0fpoRtrh1xS3OPM9MMrO1vHikpgl7AKFUgwthiSg6WzWzvXEk5uKkZeOOwNSu21vDpUiIjjYbx8ZeNqtbr2m/RMXnP6+tI00kJifVBb9ZC6Nyzq8gRviIqRA/olN3aDjm2FWHyhgQKMZM/brTqA2jo1j5s9lyQ2VNc6RuPDOK4razyPJvy9WMtyVLtmzyVZzFdxxi88bd3GFCzD0Gd+rr9ffXlcLDzdiQpX1KqQIS8jHNpTA3komMh3Je0sWgaByA1whjzRU4lySwz3P8/u5WbkVBf+X+010lPgBKylwmFsUc/LALfq83OmE0P8LTTpeJHWGyyPB3DPQ4BVIzHGgeJWyHe+n1sGTzi0ebpheBNe1NbCruU+A62eVF
- bSwfEUFT
- U7Jd8vMr2EMMcza3Wwd2o1g/FdrrGQu/krq7A6u73V+3as8JuDdwlPvazuFdT2E1dXPGEzi6j67525XR1LlFHGXyhTqO5p2SZ3+XqaW7rgyq92ZY=
+X-Rspamd-Queue-Id: 397CCC0003
+X-Stat-Signature: 1mta3qqacxxu157b7i69rgb44nh4i787
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775803119-615815
+X-HE-Meta: U2FsdGVkX187vrOVLSMDtQ2pILcLo8m86mpUmXVwYm1806CvuKpYEdlOoZavioHtewEmghiRJXppTvRCZhbE8RtUaFM/RT7xdpmBxhs/S/N5rolECmhaZR9IdzCOiZFGASlrQgDHWNj9Zc4C/eu80YAUdk9oVz9hv9HD91PD1XgOi9ACg2HucYmmiOcafJEgm3swk3J1BnllPJjX5OxxCJl2ZFNHgHu/4GuHhlyEoO7oAf65eWtQcnCTmvxmP5xfj+zm9X+Si64vTL0cvPBw+ozk2B1ElO5YsVQYdBahgZ8hvvzFnkZcZoJJZNc8Ozb425uMnO52oR4lZ/utjiI/NAxoBXixD1MwiTfOoML7dwpZqry5oXRIuB3niYYD+LXFXcq8XFE0M6QTz7W7iUnnwJAeIsT61bWIK2n4uiPc/R9HNvvseztMa1a4PBuRZfrW/GFWp8cnQ7b9OQv7N/Gcv5jEjRYrDNPm34vhUkGWKGSAosmZtK60pjf7y+OMlntL4bBRrURVCZ2B2R0y2rc1gkM7HAywLN/hN2luAehyZQH7P5xeDC6+uZiutUzRqvKZVdahWbmRYz1TGHy0qLKA3dMvCj1F+t1iOod6U11OyIUiI0HAptAtfsAXufm6knZdT4vQBkCGim7Ryuw2fPZjliJh5+x6KhqFEp9n2mZPP29D7FBWEuOVRHYF+V13q4QVgD+hqucXUyBt4DoSNme/KOmB7J8vtWpzjU7pI6Fmxuqw7ONKtFkOkCB976Yp4ZDi2QmSy79B9YSt/Yu+mBUlj3rl9nCPA1mVm/LtCKlcaxzGRc3PW9cU/EornLAq+TcB0tpSieS2R0oh0KCzDuI3pS3oQCUgeMo0EErsSwajNpsfYf2W6OdYyF9cez2sZQ4AHXK8FUKY5Bkm8JDEaZOeFqq8ZsJuE6+EoqbM2RITCi8SH2b02f8wm8vbCUzzXA6gz0yAMcYxD5b12yM8MdN
+ hLJx5B07
+ Se8wC7mYsJGfg8krQVV/OhuLqSaF1a5qPVdb8Uz8nTSm8F4evnn5aNhCUSdkhFOlkBKaXE6tqYqBKHLUK28gG0aEbpIaAoGv9sBQQ+Nj1QhBWhXuvYErwQ3EQX7exnpbMoFnY8qbwAPZ0AM5Xt7ngpPiit4+Kv9jBnEz5+yJPA7ac6QFJ1YSMoyX/3np07O3Sy0afB2cXtfEDq+gLo2PfbvAUtabalSCHVieoEFlmjZGNxAk5+UR5+hDi8mBBlfjjm5vfylk1HxI0pm3tosSS5QtR69fhpID8BmtnV1b7xFI47co49VnNII7V9HFaLYGkzkM4C+ixRykRw+ucy+4jyweuRtHNwFzCb78c5jZjEyYwnsSvQrLELrt2kcEI98oEOL5vF7v6b6tri/b3g0+A28TCeHES95a0RtHt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,21 +106,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 03:06:47PM -0400, Tal Zussman wrote:
-> > -#include <linux/llist.h>
-> > +#include <linux/freezer.h>
+On 2026/4/7 10:07, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> Why freezer.h and not kthread.h?
-
-I needed freezer.h to try to make the thread freezable, but that didn't
-work out.  kthread.h seems to be pulled in implicitly.
-
-> >   struct bio_complete_batch {
-> > -	struct llist_head list;
+> The hugetlb indicator in try_memory_failure_hugetlb is a Boolean
+> flag, but was declared and assigned as int/0/1. Convert to `bool`
+> and `true`/`false` for clarity and type safety.
 > 
-> If we go with this approach, we should remove the newly-added bi_llist from
-> struct bio too.
+> - try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+> - testcase path in memory_failure(): bool hugetlb = false
+> - clear semantic conversion in MF_HUGETLB_NON_HUGEPAGE
+> - preserve behavior (no functional change)
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
-Yes.
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
+Thanks.
+.
 
