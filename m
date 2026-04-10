@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C881F45A0D
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:53:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4EC4F45A0F
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61E7C6B0089; Fri, 10 Apr 2026 19:53:58 -0400 (EDT)
+	id 361F26B0089; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CEEC6B008A; Fri, 10 Apr 2026 19:53:58 -0400 (EDT)
+	id 312816B008A; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E4CD6B0092; Fri, 10 Apr 2026 19:53:58 -0400 (EDT)
+	id 229436B0092; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F5D66B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:53:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D09A8C2204
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:53:57 +0000 (UTC)
-X-FDA: 84644301714.11.E34FC51
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1BC5440003
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:53:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nAdQFYZW;
-	spf=pass (imf11.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 169616B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DA8C14060F
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:39 +0000 (UTC)
+X-FDA: 84644305998.03.9E0AC17
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0C2E3100002
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QiCNVA3p;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865338; a=rsa-sha256;
+	cv=none;
+	b=Ql7E6bXhGF1cWOj40lXzCUei6UgY4t3Zr1DNjmosSSHOZg9XYBERh3Xs6XRK49XF5T564n
+	SR+GL2e/71NkYWB9v+bh1zY+VXz9YOd4ji59woN8uFk5rVrTP9Ldch8uDlQ7E2b+kbYBFK
+	iFOGxlJxmoEgtKjep+ckLUPDgv3z4ug=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775865236;
+	s=arc-20220608; t=1775865338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNH7yjOrTqdECFy4P+AAkfpojvo5A1fv4ak4vr+ZOKE=;
-	b=Ap3bbjzeER4n5gAGmI1SFaTvkP7NRu1m5BLph7WJjGWbfyAj2EElqC7rL/5J/cRIcVJJPN
-	+0AwghtCCbvEJPocQlXfdUjiRmtqljEA0wC5G33P8auTdqXThWvMGB2kGUKxKrkp5TSXP7
-	SPUJIS/Sc1b8v3L1Rvg4RBqfT5/RZTY=
+	bh=zE/vdtBFa2ECewv5xoOY5lscrf5s9YqwSkuoPFtGpDA=;
+	b=r+/Z2fsXctuLWoqn2uS/6pRjBeTWRO21RTn5Vtdid95rkvg9poB5pz5A9+K8OGtG+oLLSx
+	9uuxJhelDkjrYKkzuuzwBtoY5cExdsDH1RJF8GHZwJMR9l7aYHqvoHobHWONlUQaajiMNO
+	FU3r/bvn5qAw/FiOhYHYcP/ThfJhhQA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nAdQFYZW;
-	spf=pass (imf11.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865236; a=rsa-sha256;
-	cv=none;
-	b=JXVHjfv3BQ8BW4tbwHTLQ6vPfb93Qn7oxZFMOpMl+8omgyPEtfE7kY2AEGDwfAkvvLcF+Y
-	SXJUYoM6vaQEwUQDokAzbrW0DpPoX7MfHBQyVM9/xCyXDeem6byUsOSWlSo6sXBU2IZV5r
-	MMPnpb8n7bfS/gMHE/xqnfL553EWrRU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1775865231; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=RNH7yjOrTqdECFy4P+AAkfpojvo5A1fv4ak4vr+ZOKE=;
-	b=nAdQFYZWDhEu6sYJDxqkp+pTnZvcvMVNPBACwN5HY+4PwRm/lWQJka6Ro2qmW/MilbeP0NG1bYTfBa7DJrl8UwEDo8L0C67pPaw0rlLDbk4WVlk/SjFfOuVVhO/0MrWs4PR5etzhU5v9gwQmx5JvO3KwsoI0mEXGyY0wx8VHfGw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X0mPuB0_1775865229;
-Received: from 30.41.54.139(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X0mPuB0_1775865229 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 11 Apr 2026 07:53:50 +0800
-Message-ID: <136497e1-ba93-465f-84cd-e07eba110978@linux.alibaba.com>
-Date: Sat, 11 Apr 2026 07:53:49 +0800
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QiCNVA3p;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5933960142
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB6BC19421;
+	Fri, 10 Apr 2026 23:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775865337;
+	bh=zw2XYHDnlTw0qahEiBS32vzXn4QNwRFUrjs/0wSN/yk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QiCNVA3po6Yxr8/tG452qobIJP2c2RhkzOCWFUUS/Y4TeXCnBhnZZPHPefmndSb7G
+	 o6RZWXMZ2GWPsXRcHxLSvswNhNFaaPx8tO/+oBzqeNDv8wZ7PtndWSP8sSsOnVzq/f
+	 DABSpZFfGpj3AuJ6IjSQPBFJ1nx5whO8CpL/4CWc5qSryGLdDIwZTalwl2zNuBzF/7
+	 yrhOSbsvYzXeH3nNI2j9itsT9wK2Sww0GKBFBDLbs3e8qL9zR9rlhc1g+XKLxwFaVK
+	 L/c69jZGObXUmGOHRD8xVvmse2MPfOvxN6AoEhdxkzRLpuZ1/8LcIJGou4r6Ndc6HD
+	 aeFqXDAxPu2dw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH v5 02/11] mm/damon/core: merge quota-sliced regions back
+Date: Fri, 10 Apr 2026 16:55:26 -0700
+Message-ID: <20260410235527.90900-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260410142034.83798-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: Dave Chinner <dgc@kernel.org>, Christoph Hellwig <hch@lst.de>
-Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Christian Brauner <brauner@kernel.org>, "Darrick J. Wong"
- <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Sandeep Dhavale <dhavale@google.com>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread>
- <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
-In-Reply-To: <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BC5440003
-X-Stat-Signature: 1nepgimizkfa7mwst1phdjkuzrbotjxx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775865234-257232
-X-HE-Meta: U2FsdGVkX1++0gHe69tZ83+Z214h6gkewrTwAf359n86On10/wFJqqWmmL3nX5N/XD9tCx/2Vd4ApKI6Tl37vNy+I0mGWF3cB9saQJZE3+ndKcZEKKgI7Y8+OtZaupM561+npYIrKG/UqHOBfeWUePh3yBY5D/1Y1biM6gnj08V5DMsPj8UbOQci2/GbvTYiT16PWZ7eWcugiLGk145MbWPAoLh7m3ruKtTCWo7iDTr3baSobhKmNjoLgyQh97cJ31UFe2vq9XWUg10wsVos3vLbePyHkg2GsQnZISOW3Yl4TbdfQBNYtPiGJ+no7JfnH7E5u4AgCAg4xAY2u6tApOuYcYgrobYUdBlXZ1y8h0HVghfz0Bf3sL7hMs0ZBrzDNeefJVP8CQSTi8tkJd6WA5kx1/yyuAUHrLZp0vgII6Ce3OmBS4sbwQIUGuIWdKzDwCuUUhk108lMjVD/gikxXOiNYRt4v25G8ITU9BrWeRL385xWdGbYSfUkSJQD5e/4s/07DZwPbIbLloHI+wZzCieZN7g7PV8OYPhuCC6pB0PSUON3DE3gzYLNutmKyQ/j7Bumj5P2rDUMiMQ8ZZQYdmYTWxwHB6yPfea//ezJYqSoHirm7seDbgZ+ufQ/CsUJ2ObJX0+wenrx1q/EhhZDLzTkznJjs2sblgX522i8RnYJUAqJBWUY61e/1l4l0EYXcdqw8mVzgrBTyb03ekP/0uVziUbB+Ts0PjWyEaXLMwUEQ3DhU9/83j2mlHmqFQu7G1ZmR+u5hj5lXvJU5b7gSUdtt/i/OZreL7Hd2AXJTNXq7hdWXhCghEsoLc98KqT+sXYFkmkvujj9ThHfZSWmg8MXcuDIrnWvJj8ZFcA1ggpMymycBJW4hsIrEpum3PNQAlTVb0knwBiFfYEe/jZsxXUPtVsuY28UlYrDuAu5gRYtZAWaIpTegKInxmdlLmZrkJLiWKHpR3eKQpif0GP
- uJodPO9W
- lXhqshVTDacuIlbMsn4WJgLFAULxKrzO+SPt71tPNY7qvARi64cdNOXfCs0XK0XM/IOq9CIvKBiM3Y2CRBjSZAH4gPiS+LZr8qd9i9slLb4Ai/Aev8kJGAyhYzsg9s0KFB/LLwIf3Kz6nee3xzyL+7CfbFsI7S86YqE2YxXUIrN2NWTNjSxILXDVAu4ud7cBRvySnF1aehEpSHG4n+vv/xoC62GDBb0BVdCypQkl3Xtwhbf83fYeTvSkbEBLlc3/DTsSSNq+o7bvtllLwtLGbPmVjD91IFh6AomjTZOE8bpB6frSeZBpJCsuwMoSsLwJvGacIf1ttzvXLB5frWlPzJDP6xts8XwMOJR9zGRu8/e4lKgD+bxxHpi7D8hGPbbx3uCNj80MeZAuegrPnzQYZDjovbN6Jfg9/T7TsCQL1bmVU0ttxItC8GPNTAw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0C2E3100002
+X-Stat-Signature: wbt4b11ypnimfby365q4tk15qyaskqxe
+X-HE-Tag: 1775865337-115250
+X-HE-Meta: U2FsdGVkX19mqDJW2V4fy/YeUCNJjCGqfzN66IjUlR18mOaVgXC1/QuRDce1siRigxUma/ZV6KBBCJahxXnjeNoJ7wlfXlDEr9aETUMWodtw6kzshLGqj+CZQwJTI8eu74KA8/4tUV2kvsRFL5ncI4MZYXEXtz9PCy2M8W4jgAUZSJBoMnDTOhPVgp/Oo2IoylVqXqal/1iu1U9H3qmGWmvNvoaI5KyAWDjdesq4z0Ur9PV0P5ADtlaDHEbV0PFf1nTPELKE0cBuDqmazHinDx7N0rzEQsGj3sb9ekkz9LaWMIMwd7R59O5zqXWmLX4CC7EyhZoGW3cDJD36QFsWT3TghxQV2cRnoDvkJRpzMyt+/ZyVrx17CJwNUppXfB3FSuOE9xqxhSlaNJ+aj4nqQsOOBRpo6V/L/tM9s7DBvPtnWWhvlEyoeQ1/HopqQqhIXEXHTiqqKMBZi5pc4gNT/JPT996lLDm6AQ2Ll4HNo+RYk8kzPeJxLwioM4E1SsuJEuKqJ895G+ldlf7HBUaPzQf8AuJrqAE/8tv5nFPsouCKw2Hrcbu+eJnF2egIzrBr3o2E/Xw82Qtf3J/z6ggGVsA1APW0FMJWhf1DdNt2dcwb5q9kXemWp++5X9u3NC+1Xy2cTkspuuxIojPcrTbwkTdIdWuMU8c6seGpMguZKYZywuUOvF/r81s9TSolwI+4q8hsbJINPw2LaFIpAFol5e+oawTF7+cklfhlSvN0PR7aAGtqurkWIjB/7R0xPfROyN8qXQVjMmvmvcRBeTUkhyWn6iixnh1pm/6n89A07CxAjUPWcgK00GJHm+qc10nmg3tgujGKvRwz+nrLO0Xm/alzFyceunZDESY4chCHCtm5tW7ammFL/tBY2nlsyV5qnLPQ0NIsVcvbYrWl+Ry/csMHNH01ODeDhhscBSd7W5KpOD2/1LFR1vZqU0nFQzqgbG7Wyx9tSkhgRml10gJ
+ QLFpl1Jz
+ aeKZUlD5kg5ASA3Rzy605ASWaw234iXkW7MTYvJ+zX2+HoMTkfB98NWmNDSPwyVB2X0H0P+5SnCSwGaABRwbvzcl+npjTZhjC1MwhnuYT+J/dZfOTpilzneVEeu7MQO3ns6zi91AP7MQFRPKIhyeZlJ9/oQqRtuFok1vFsKFAOlQZaY1hTUh2SNmAzXpYLGXHFIRwM+xJGn21BqSX3ebIM2a0Obgqasls1wAzuaDlhiDnOEfPCpmG3VOpkhO1cu0cyZejG7+fsPjomMnobJcgHqvIx3eXdulqSbfIdS10vGSvGuh0MWU3ZB8CEKJDEOQazycBtXsf3yz3soUErgXCSwCMw2sYgs41oMVlL6I3aFoQp95NcCozF6qzOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,65 +91,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+TL; DR: sashiko found an issue.  I will address that in the next revision.
+
+Forwarding sashiko review in a reply format with my inline
+comments below, for details of my view and doing discussions
+via mails if needed.
+
+> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-3-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit ae9f581463db42127fa24541161baf201709d5f9
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/core: merge quota-sliced regions back
+> 
+> This commit merges quota-sliced regions back together to reduce overhead.
+> It avoids merging regions if their age is non-zero, meaning no scheme
+> action was applied to them.
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 8dbc365bb8e97..97b375c720251 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> 
+> [ ... ]
+> 
+> > +static void damos_apply_target(struct damon_ctx *c, struct damon_target *t)
+> > +{
+> > +	struct damon_region *r, *orig_region = NULL;
+> > +	unsigned long orig_end_addr;
+> > +
+> > +	damon_for_each_region(r, t) {
+> > +		/*
+> > +		 * damon_do_apply_schemes() could split the region for the
+> > +		 * quota.  Keeping the new slices is an overhead.  Merge back
+> > +		 * the slices into the original region if there is no reason to
+> > +		 * keep those.
+> > +		 */
+> > +		if (!orig_region || orig_end_addr <= r->ar.start) {
+> > +			orig_region = r;
+> > +			orig_end_addr = r->ar.end;
+> > +		}
+> > +		damon_do_apply_schemes(c, t, r);
+> > +		if (r == orig_region)
+> > +			continue;
+> > +		/*
+> > +		 * If no scheme was applied to the sliced region, the age of
+> > +		 * the slice ain't be reset.  Don't merge that back.
+> > +		 * Otherwise, the monitored information of the region is lost.
+> > +		 */
+> > +		if (r->age) {
+> > +			orig_region = NULL;
+> > +			continue;
+> > +		}
+> > +		orig_region->ar.end = r->ar.end;
+> > +		damon_destroy_region(r, t);
+> > +		r = orig_region;
+> > +	}
+> > +}
+> 
+> Does this logic safely handle cases where orig_region and r have differing
+> ages?
+> 
+> If a scheme applies to slice r (resetting r->age to 0), but was skipped
+> for orig_region (leaving orig_region->age > 0), the check if (r->age)
+> will be false. The slice r will then be merged into orig_region, and
+> the reset age of r will be lost because it structurally inherits the
+> non-zero age of orig_region.
+> 
+> Could this cause age-based rate-limiting to be bypassed, allowing schemes
+> to erroneously apply to the same memory regions repeatedly in subsequent
+> intervals?
+> 
+> Additionally, if both orig_region and r have the same non-zero age
+> (e.g., both were skipped), if (r->age) evaluates to true, setting
+> orig_region = NULL and skipping the merge entirely.
+> 
+> Should the merge condition verify that the contiguous slices share identical
+> state before merging, perhaps by checking if (orig_region->age != r->age)?
+
+Good finding.  I was thinking the scheme will anyway be applied, once the
+quota-split is happened.  But I was wrong, since DAMOS core filter is applied
+after the split operation.  Also, age is not reset if the action is DAMOS_STAT.
+
+I will address this in the next revision, like below.
+
+'''
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2439,35 +2439,32 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+
+ static void damos_apply_target(struct damon_ctx *c, struct damon_target *t)
+ {
+-       struct damon_region *r, *orig_region = NULL;
+-       unsigned long orig_end_addr;
++       struct damon_region *r;
+
+        damon_for_each_region(r, t) {
++               struct damon_region *prev_r;
++
++               damon_do_apply_schemes(c, t, r);
+                /*
+-                * damon_do_apply_schemes() could split the region for the
++                * damon_do_apply_scheems() could split the region for the
+                 * quota.  Keeping the new slices is an overhead.  Merge back
+-                * the slices into the original region if there is no reason to
+-                * keep those.
++                * the slices into the previous region if it doesn't lose any
++                * information.
+                 */
+-               if (!orig_region || orig_end_addr <= r->ar.start) {
+-                       orig_region = r;
+-                       orig_end_addr = r->ar.end;
+-               }
+-               damon_do_apply_schemes(c, t, r);
+-               if (r == orig_region)
++               if (damon_first_region(t) == r)
+                        continue;
+-               /*
+-                * If no scheme was applied to the sliced region, the age of
+-                * the slice ain't be reset.  Don't merge that back.
+-                * Otherwise, the monitored information of the region is lost.
+-                */
+-               if (r->age) {
+-                       orig_region = NULL;
++               prev_r = damon_prev_region(r);
++               if (prev_r->ar.end != r->ar.start)
+                        continue;
+-               }
+-               orig_region->ar.end = r->ar.end;
++               if (prev_r->age != r->age)
++                       continue;
++               if (prev_r->last_nr_accesses != r->last_nr_accesses)
++                       continue;
++               if (prev_r->nr_accesses != r->nr_accesses)
++                       continue;
++               prev_r->ar.end = r->ar.end;
+                damon_destroy_region(r, t);
+-               r = orig_region;
++               r = prev_r;
+        }
+ }
+'''
+
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-3-sj@kernel.org
 
 
-On 2026/4/11 07:44, Gao Xiang wrote:
-> 
-> 
-> On 2026/4/11 06:11, Dave Chinner wrote:
->> On Thu, Apr 09, 2026 at 06:02:21PM +0200, Christoph Hellwig wrote:
->>> Commit 3fffb589b9a6 ("erofs: add per-cpu threads for decompression as an
->>> option") explains why workqueue aren't great for low-latency completion
->>> handling.  Switch to a per-cpu kthread to handle it instead.  This code
->>> is based on the erofs code in the above commit, but further simplified
->>> by directly using a kthread instead of a kthread_work.
->>>
->>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>
->> Can we please not go back to the (bad) old days of individual
->> subsystems needing their own set of per-cpu kernel tasks just
->> sitting around idle most of of the time?  The whole point of the
->> workqueue infrastructure was to get rid of this widely repeated
->> anti-pattern.
->>
->> If there's a latency problem with workqueue scheduling, then we
->> should be fixing that problem rather than working around it in every
->> subsystem that thinkgs it has a workqueue scheduling latency
->> issue...
-> 
-> It has been "fixed" but never actually get fixed:
-> https://lore.kernel.org/r/CAB=BE-QaNBn1cVK6c7LM2cLpH_Ck_9SYw-YDYEnNrtwfoyu81Q@mail.gmail.com
-> 
-> and workqueues don't have any plan to introduce RT threads;
-> 
-> If Sandeep has more time, I hope he could have more time to
-> test since I don't work on Android anymore: In principle,
-> I still think RT thread is needed somewhere for such usage
-> since lowest latencies is needed.
-> 
-> Compared to the scheduling latency issues, interested users
-> don't care "individual subsystems needing their own set of
-> per-cpu kernel tasks just sitting around idle most of of
-> the time". If end users care it more, they can just turn
-> it off by Kconfig.
-> 
-> If you think it's unclean to block subsystems, I'm fine to
-> leave it as-is.  I'm not sure how it impacts to others:
-> either some subsystems implement RT threads (workqueue or
-> block), or leave it as-is; Otherwise there is always such
+Thanks,
+SJ
 
-^ Implement dedicated queues somewhere using
-sched_set_fifo_low() for such latency-sensitive work.
-
-> latency issues and unacceptable for end users.
-> 
-> Thanks,
-> Gao Xiang
-> 
-> 
->>
->> -Dave.
->>
-> 
-
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260410142034.83798-3-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
