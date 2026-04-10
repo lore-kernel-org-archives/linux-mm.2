@@ -4,93 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD72F44872
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 14:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3173F459EE
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 15:06:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0B5E6B00A2; Fri, 10 Apr 2026 10:31:09 -0400 (EDT)
+	id C0E5F6B0089; Fri, 10 Apr 2026 11:06:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE2976B00A5; Fri, 10 Apr 2026 10:31:09 -0400 (EDT)
+	id BE6566B008A; Fri, 10 Apr 2026 11:06:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1FD26B00A6; Fri, 10 Apr 2026 10:31:09 -0400 (EDT)
+	id AD5886B0092; Fri, 10 Apr 2026 11:06:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9232D6B00A2
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:31:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A9CD1B818B
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:31:09 +0000 (UTC)
-X-FDA: 84642883458.23.B9496E4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C85FB40020
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 14:31:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cYIpxXHW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F06C6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:06:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E51CE16027B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:06:28 +0000 (UTC)
+X-FDA: 84642972456.06.BB6078E
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D39ED4001C
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 15:06:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm2 header.b="bePCmxT/";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=KYDpbxLf;
+	dmarc=pass (policy=none) header.from=anarazel.de;
+	spf=pass (imf07.hostedemail.com: domain of andres@anarazel.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=andres@anarazel.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775833587; a=rsa-sha256;
+	cv=none;
+	b=eOgpJRAGSGOlqRr2TjZdPUAHva8qDtfIEaH4+B8jL+E/47INHyksO53nN2mucCfHJx2mNU
+	tHIVu3vUkmqp41jlr9ZpbOHJxdfhVEY4HoU/0fFgx001545KxOKTfEjVMhh1nX2iXslvA+
+	ndQcizIPRKFlkb24AMr/H6wdmMK3zls=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=anarazel.de header.s=fm2 header.b="bePCmxT/";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=KYDpbxLf;
+	dmarc=pass (policy=none) header.from=anarazel.de;
+	spf=pass (imf07.hostedemail.com: domain of andres@anarazel.de designates 103.168.172.152 as permitted sender) smtp.mailfrom=andres@anarazel.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775831467;
+	s=arc-20220608; t=1775833587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=g2ZtudmHKIY1gYJUtkiHNmnfFQP0VPkIpnS2orWjB2g=;
-	b=SxCRN9nEcwZTzv02wZROWEB3VW9hVlGL+mcxIpJDj6b2Zk1tpoXTcJ3qf0PEwntrxmgfqv
-	PDuq6tXemURTRYTAjXZ9xiFs6QYnCx21+2MvOeFq/DZHq6byBGowRJGtslln29xBy7S2oN
-	7UfEwTlz2pHQYTpqEPNS3ovelxnTkgc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775831467; a=rsa-sha256;
-	cv=none;
-	b=RHyMfBncolP6l0eLVhuaU3MasCMK230xB7RsCyAcpy3nUlfn2PkHxXDzPMEIXzQA1hFB9H
-	Fe0adXU3xNgfsqjoRaM5LFn5XJqUQ6kEHQIzq1IgQaljmDXK2gCekrk1nLRjNqD5ll7ydc
-	iFFnP++JXG5Wz2Xpz7qzeVSChhPFmUY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cYIpxXHW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9CE31D13;
-	Fri, 10 Apr 2026 07:30:59 -0700 (PDT)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C42803F632;
-	Fri, 10 Apr 2026 07:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1775831465; bh=N7h9PpNKNEk1zD5KGurgT0NJofTaFLHSOsD2O/huOxo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cYIpxXHWrJW6xKuArS4N1OZ/LEImvK89tdsZClbHVaW4dipiqOXEsYEIsFk/A1Q1U
-	 mb5hEeK3cq4OF3c8VcR4nLwXb1qkBTSbgMbRNF/lSXXKXys4Gvpu5NdmdtqAGNCYX4
-	 FYgsiLSpDZiPSiU0E8+2izUTZdnGLtqzuUcVUv6Y=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org
-Cc: ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	Dev Jain <dev.jain@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH] selftests/mm: Simplify byte pattern checking in mremap_test
-Date: Fri, 10 Apr 2026 20:00:31 +0530
-Message-Id: <20260410143031.148173-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=akpLVJx0UzSKDAGrU14pFNxh9AN2Pzvbw74VPbTkYmA=;
+	b=WoSsdC8uYeP9ECXwDX3ubXNus7ZfAQ+/jSvlkS4+pKC4CRHHalWLKaeq/X3MvnPaAddSZE
+	fUZwFJP4ABa8k4VdWTXuWoLw/BzdIZgVJT/sZ3qSfCMRHZwnGFVvTdoBPB4pjVtY5gAaeU
+	iEJ4/R5K0WpdiUsEjJoXDhXFXuglYeM=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2472E1400016;
+	Fri, 10 Apr 2026 11:06:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 10 Apr 2026 11:06:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1775833586; x=1775919986; bh=akpLVJx0Uz
+	SKDAGrU14pFNxh9AN2Pzvbw74VPbTkYmA=; b=bePCmxT/N/H1MhH+hoi/0R1h64
+	bi/HFepnAJ8DY7KUS7nx6tbqAanucsJpWG51m4ZZMonKrO7fjQUhF6CMhQ9ArmNG
+	Vf561iWQQ2nyMS1SupWgkyDE8FCzMUp+5Y6rcO/okkeLkOSjJs9M02w8n7Orp4i9
+	5umoa+CdKQ/m0LQ/LDmlxwDh+tgdtJwfxItAaXqcOs8q2KAPpELM8QybsCo0Wr9T
+	OSZB/7DE/m7+B9fukaPVuBrwxsQrjtbyvR8j6qJ9JBsqH2kBEu3PZptPTlK9EgJY
+	AfmYUTytxmW0u6I5ujGqBi0MDy05Xs7hv5GhVnKHF8iK3gKAsks1m/QfJEHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1775833586; x=1775919986; bh=akpLVJx0UzSKDAGrU14pFNxh9AN2Pzvbw74
+	VPbTkYmA=; b=KYDpbxLfgZUnUnR8sD8FmPQqZQWBYKGiZyQ4Nuu3gDm7yVKa1l5
+	oU9BaLd4aACROIPfKsoPZL31Q7VAbLxy+LhDEhd7POtcetSdH6GWJ3jnbFice32S
+	xAsnSd8gvdarUEugjLJiUEor55xB8ubl9V0eNmfKNOfgtHHTMo5sXg6lhIJtZEuI
+	IjJEsSYvwuBUM6YGjYJWdKjERJ5zOzH1J/q5sjmA03KZh7bRqyC++jJ7F2zkTDcM
+	Kf3g05ClJB5dtqLdRE2PJFId3tvjbhH/++ZVGZC602b3FrHZvi1fPEpSdGFi7cAj
+	/Wlo3NXTh7Fn73CPcjEbXd6mQuhgrWEL1LA==
+X-ME-Sender: <xms:8BHZaRZWE8uB9sk4nw4WSr0cLxO_Gpq4yxFWU6nwLNmLb-XpgwWTpA>
+    <xme:8BHZaSDvJsNv1Mp_JMHCOdkHdw4tHgAgG0vRZ0uf-UkPzxHFiMVhDgnTKmBW_ECsL
+    Epjwd4LUSvc9v4KYMVvij31eZ28wQsFzmWPvJxuoqCcFdnWix48>
+X-ME-Received: <xmr:8BHZaXb4T3CkRMSfjd0GOsjZ7KfNW_jYC-iXml0IwW0jt9tTwN7lqNMM_nvRBU2bIJ0FZQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddvleejfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpeetnhgurhgvshcu
+    hfhrvghunhguuceorghnughrvghssegrnhgrrhgriigvlhdruggvqeenucggtffrrghtth
+    gvrhhnpeeliedukefgveejhfetfeetudfgfefffefhgeduvdevheeuvedtffffkedtgeet
+    heenucffohhmrghinheplhifnhdrnhgvthenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvshesrghnrghrrgiivghlrdguvgdpnhgs
+    pghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghvrd
+    hjrghinhesrghrmhdrtghomhdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghr
+    mhdrtghomhdprhgtphhtthhopegtlhhmsehfsgdrtghomhdprhgtphhtthhopehsohhngh
+    hlihhusghrrghvihhnghesfhgsrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpd
+    hrtghpthhtohepsggrohhhuhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhgr
+    uhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgusehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:8BHZaWiuFnrmiJcbgqjYx5Jwx6KiLsnEF2RDyhYx8REuoUmPxSunwg>
+    <xmx:8BHZaXwQEE8sskDChz9Knu-eb79O2kNvt1AK3OTXxRsWkQWdVO8TCA>
+    <xmx:8BHZaR6s62boMLuTfm4hSrccj3m6eYSoy_LU0-Cuscuw2Wx51E2nEA>
+    <xmx:8BHZaQ3rvJguxSGxERwmQDm6d80va9z6fdjrC4qbBdoUnkIzBgiYag>
+    <xmx:8hHZaaSV_t6dZlVVenZsQ2wO0diHoh5qQ_aF_h6mYSl5lDZXgxgfQfur>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Apr 2026 11:06:24 -0400 (EDT)
+Date: Fri, 10 Apr 2026 11:06:23 -0400
+From: Andres Freund <andres@anarazel.de>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
+ from file_thp_enabled()
+Message-ID: <s2dr4cedsmqby6e3ijauv5p55vrde7c4ldyk5gxdw5iku66rbc@x3nipjpgqjh2>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-6-ziy@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C85FB40020
-X-Stat-Signature: 74uo7o7ey8nwxjzrn3x97p9jhssjg5oq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327014255.2058916-6-ziy@nvidia.com>
+X-Rspamd-Queue-Id: D39ED4001C
+X-Stat-Signature: oj4eu7i39aqa57x8xyw16setxwapkcrx
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775831466-47725
-X-HE-Meta: U2FsdGVkX193Cu0tMB0qawNmlPwEDrued0ErwDtApVeCnrJCpOqAB8fO46/dDnCmi0ZO+yzrlAcDe99izqn/ib4b9uvviYVOyyp6HEYPPmyhZBiOBQM4YHnvV5LG2NES0VqApSfXGN8oO6zGQ1wuUr+RoFKlRYhsKjZGqUb3CLzUuSyc+MDy3xEyoKV8xKZk4ziElrruGFIXnUN9tm9YdAuTJ+XWuTYY28kzrkHGNe5IKBYoKafTSadW2Pg+u4H0ViRP64NAVdcBfRByTQsC0vH2fqp3dHRymsGlNxXcJ+Vs6QOnslFMncrmrzv1VUSYPxFkEGVlfjMAQWfHHE5XxG9I/1GL0pCrZWUWQjWzZtaxpkMvcMLt0aAjerXBzZama28yGVV1E4wbV6rygFiUdcJaMvN/c7W6nGD6zrCHbpbwEQ8dmGIM5NceAacR6HJBgjfPi6BR+E4qKjA87+SOqIMaoKw7gEhOQ6MIw7Bd8PnTI0O0JKNQln7DnuiYJC3saypz1fM9IueWW24TZlWagcD19L0o9lqVyCBDql/tniDY8rUx6aR+bxGFsyW+MEQp2RiSHgkbM1UG4xibv6AtyovCUcYwYwNQ88qUNQK6/xSW6QGZ2Ea/RIFviPyx4iUog1/+VFvgW26sx84hAZpoFyGOBIPkDEDSehmry/VPy87KsmXa4L4+lzg98+7Qfc5ttC8k+vuSCAmnAZbXcX9gS+QE0+/IARASYrFFEbDsHx13nMExlnIUU2w0R+f76ozEs+8oOidy/O9QkrkbdiMWAmM2QCXlttFR7dPs7OouyDYDlNpdsAryoisKQgkguKFo1qTir+IxwHzmIshxNlay9bD4z9RklUMBbJUkDkJvSM16f5vz42Iris0fXwYfTKBIb76253KtE8XGShW6NpdbQGvlpyhyylYfH5KNYFyXPjTxVO8AAKaQGAvwcojLhV3DIOBdP5/s5XdEMGQJnf1
- ixsPQZDt
- WfPXLM7XC8fxFSLRyvmNbGQ+woKtYFzkBlctFgWI/77jygc2aDsYHJKZTVVIEg8KlBf0YgoaNM6qE8uQpNM1JD+D1sAAq5RoyCSWT1hGiy9RRvSrPXE9AfVDCtv46Wbo0ImZP/Z0tZL8zM3mDmgPVUGMxNq2EfS5LyH0SW7BW6j/8JPoC74D+IyHWfG5tQZLkCKLHXrnAsSXYk6BXCBawRBds/Wfw1t+4dGTVYsz8SiVK3veJQ8cKZuOdlnekjxyfJiDL1DXuPn3XsIhG1sIIrkB8H0wqgNj58M2j
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775833586-876098
+X-HE-Meta: U2FsdGVkX19bQd8v9QbFNdWeE6FLpQ5qExLAtWakFC8jvWHGifC6a2jjDc1IVxWDM4/mqDlh8fUdEiRxdNFDhqLBLd7fsLUgUWvCinQ/Ux2G6uz6N5PRdauFU6derM3IR35mdyj317tTAvYcsJwCOL3PIPCUKtzqYMjlcpaY79ksc9fjlW8QiFoa2h/1xgHCjTVzYG91rs9Blo406zXdriH+TiAa7/BbQdDcQVIAoqftradGhkbocDIg9t8xYHx2JR3bjJABjLUeLanYjze6QKVmc50OZHpU+HespggBoxiy9CfAFaOgg1WNDEITeIq+Ng9iBljwWhKaouU4ISj1aOlrsGS8jiOTyQFg0XbrEgVjBi3JSCmZme6U327FpxlRK6DBW1DZrKN4QxkSe0W9p8zWD1wwsYHD3ZCDjl+mcCy7raT1M4IWhqro6h10ylYhXum4aW8tNyz70a4OXAUFx89yxA99VARjTJC8KEphj27ioeeIc8YA4mtE+R1CzijY92/OOEC6hhzppkiuowXCGOP+8C4vxKk0cjqZMdHEnP/BQyE3aGkW1KQRt4PHBkKvFrvVqHFoNu/Guu/i6Gu1y092rt+1a9E5mN9pJs6iYXF2SupH9oTbtcV4/y6s9e8slCFNErt/SnUfculrnGyinEwV+QIF5fpHlTQVwxfIqVzUKR9juuOpPJmFr4gcojzByeQv9bs0OhpP4HoGTt77Cl9xnFWr5BIOT1iYJgeWRHpk8yKkEzP0IrUnn0yb+Dpy23WQ5ZZepI/wJxLcTkxPA32nviF9e0MQPufZ8aS1aAJ0eOlB/DYJ7pC228Q+F9GHx2lXPDmzLnOc8+tV7QHwz5XJ2w+Rw9FKfJPWMWmWsdOIohq02+SAzBLNZEH7Q0d/9zcVjES0/soP0C5oCxZEoO6rde5dgs8v+XbzIl56nKQ55Xxb7qsAna3CGKmWs0f/1PhZK74XODfTIqSkwnA
+ z51KxUhR
+ Zhw+DtuzG76aeu4PG2f/sCb6VnxJ2caxtsHDdo/FPdptURRYhoBs+GRENFe5Cdomn+1vsv5ZmvKAyDnLJF0y54ZUU6+DvB1aIBN2Gkv4CPo/2t5/pkuHCff0r3I0GuNq6bHn0aBbSBhOmwzqVqSYo/zW4snN4lfFnQcceWbJanNiH4dI/po0lL5uye6TutBtysIlSINK9l+dpDCRPz9MRkVPhQsrYk1hTWBCSDWeMEuaLZoGO87396XbtCf3png08KPg89GjZWbylfYV1e0IHc2CaZnLaPRzEm3B8EsP8EdXOlVYzuP8wer5k1sNddV/BPFhnA9FEwXZ8i4FPFo1hz9h/OYk51YnEkRRTf3DdXmlg/8rS7e3RkQv2jvjWhHaL/eVC0t5+tefhSBNIbrVrxF7yT0GWunaQaygxC4v6muZ98dZvluokcWuTVMD2E4ed2p0Ec0VCeRDcyH6FXIa+dG9ZPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,184 +144,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The original version of mremap_test (7df666253f26: "kselftests: vm: add
-mremap tests") validated remapped contents byte-by-byte and printed a
-mismatch index in case the bytes streams are not equal. That made
-validation expensive in both cases: for "no mismatch" (the common case when
-mremap is not buggy), it still walked all bytes in C; for "mismatch", it
-broke out of the loop after printing the mismatch index.
+Hi,
 
-Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
-execution time from minutes to seconds using chunkwise memcmp") tried to
-optimize both cases by using chunk-wise memcmp() and only scanning bytes
-within a range which has been determined by memcmp as mismatching.
+On 2026-03-26 21:42:50 -0400, Zi Yan wrote:
+> Replace it with a check on the max folio order of the file's address space
+> mapping, making sure PMD_ORDER is supported.
 
-But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
-unconditionally. This makes the speed of checking the mismatch index
-suboptimal.
+Question from a user space developer (who learned of this via LWN [1]):
 
-The mismatch index does not provide useful debugging value here: if
-validation fails, we know mremap behavior is wrong, and the specific byte
-offset does not make root-causing easier.
+Right now MADV_COlLAPSE on file mappings appears to only only work with
+CONFIG_READ_ONLY_THP_FOR_FS.
 
-So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
-scanning and just compare the two byte streams with memcmp().
+That's pretty sad, because I see quite consistent gains (~15%) from doing
+madvise(MADV_COLLAPSE) on e.g. postgres' .text - but because
+CONFIG_READ_ONLY_THP_FOR_FS is not enabled default (or at least not commonly,
+I think?) in distro kernels, it never quite seemed worth the fiddliness.
 
-Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-Sorry for sending two patchsets the same day - the problem was made known
-to me today, and I couldn't help myself but fix it immediately, imagine
-my embarrassment when I found out that I made a typo in the binary search
-code which I had been writing consistently throughout college :)
 
-Applies on mm-unstable.
+Do I understand correctly that by replacing the check here (and the
+predecessor commits), madvise(MADV_COLLAPSE) on file mappings might actually
+start working in more situations on typical distro kernels?
 
- tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
- 1 file changed, 10 insertions(+), 99 deletions(-)
+Greetings,
 
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 308576437228c..131d9d6db8679 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -76,27 +76,6 @@ enum {
- 	.expect_failure = should_fail				\
- }
- 
--/* compute square root using binary search */
--static unsigned long get_sqrt(unsigned long val)
--{
--	unsigned long low = 1;
--
--	/* assuming rand_size is less than 1TB */
--	unsigned long high = (1UL << 20);
--
--	while (low <= high) {
--		unsigned long mid = low + (high - low) / 2;
--		unsigned long temp = mid * mid;
--
--		if (temp == val)
--			return mid;
--		if (temp < val)
--			low = mid + 1;
--		high = mid - 1;
--	}
--	return low;
--}
--
- /*
-  * Returns false if the requested remap region overlaps with an
-  * existing mapping (e.g text, stack) else returns true.
-@@ -995,11 +974,9 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
- 			      char *rand_addr)
- {
- 	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
--	unsigned long long t, d;
- 	struct timespec t_start = {0, 0}, t_end = {0, 0};
- 	long long  start_ns, end_ns, align_mask, ret, offset;
- 	unsigned long long threshold;
--	unsigned long num_chunks;
- 
- 	if (threshold_mb == VALIDATION_NO_THRESHOLD)
- 		threshold = c.region_size;
-@@ -1068,87 +1045,21 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
- 		goto clean_up_dest_preamble;
- 	}
- 
--	/*
--	 * Verify byte pattern after remapping. Employ an algorithm with a
--	 * square root time complexity in threshold: divide the range into
--	 * chunks, if memcmp() returns non-zero, only then perform an
--	 * iteration in that chunk to find the mismatch index.
--	 */
--	num_chunks = get_sqrt(threshold);
--	for (unsigned long i = 0; i < num_chunks; ++i) {
--		size_t chunk_size = threshold / num_chunks;
--		unsigned long shift = i * chunk_size;
--
--		if (!memcmp(dest_addr + shift, rand_addr + shift, chunk_size))
--			continue;
--
--		/* brute force iteration only over mismatch segment */
--		for (t = shift; t < shift + chunk_size; ++t) {
--			if (((char *) dest_addr)[t] != rand_addr[t]) {
--				ksft_print_msg("Data after remap doesn't match at offset %llu\n",
--						t);
--				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
--						((char *) dest_addr)[t] & 0xff);
--				ret = -1;
--				goto clean_up_dest;
--			}
--		}
--	}
--
--	/*
--	 * if threshold is not divisible by num_chunks, then check the
--	 * last chunk
--	 */
--	for (t = num_chunks * (threshold / num_chunks); t < threshold; ++t) {
--		if (((char *) dest_addr)[t] != rand_addr[t]) {
--			ksft_print_msg("Data after remap doesn't match at offset %llu\n",
--					t);
--			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
--					((char *) dest_addr)[t] & 0xff);
--			ret = -1;
--			goto clean_up_dest;
--		}
-+	/* Verify byte pattern after remapping */
-+	if (memcmp(dest_addr, rand_addr, threshold)) {
-+		ksft_print_msg("Data after remap doesn't match\n");
-+		ret = -1;
-+		goto clean_up_dest;
- 	}
- 
- 	/* Verify the dest preamble byte pattern after remapping */
--	if (!c.dest_preamble_size)
--		goto no_preamble;
--
--	num_chunks = get_sqrt(c.dest_preamble_size);
--
--	for (unsigned long i = 0; i < num_chunks; ++i) {
--		size_t chunk_size = c.dest_preamble_size / num_chunks;
--		unsigned long shift = i * chunk_size;
--
--		if (!memcmp(dest_preamble_addr + shift, rand_addr + shift,
--			    chunk_size))
--			continue;
--
--		/* brute force iteration only over mismatched segment */
--		for (d = shift; d < shift + chunk_size; ++d) {
--			if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
--				ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
--						d);
--				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
--						((char *) dest_preamble_addr)[d] & 0xff);
--				ret = -1;
--				goto clean_up_dest;
--			}
--		}
--	}
--
--	for (d = num_chunks * (c.dest_preamble_size / num_chunks); d < c.dest_preamble_size; ++d) {
--		if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
--			ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
--					d);
--			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
--					((char *) dest_preamble_addr)[d] & 0xff);
--			ret = -1;
--			goto clean_up_dest;
--		}
-+	if (c.dest_preamble_size &&
-+	    memcmp(dest_preamble_addr, rand_addr, c.dest_preamble_size)) {
-+		ksft_print_msg("Preamble data after remap doesn't match\n");
-+		ret = -1;
-+		goto clean_up_dest;
- 	}
- 
--no_preamble:
- 	start_ns = t_start.tv_sec * NS_PER_SEC + t_start.tv_nsec;
- 	end_ns = t_end.tv_sec * NS_PER_SEC + t_end.tv_nsec;
- 	ret = end_ns - start_ns;
--- 
-2.34.1
+Andres
+
+[1]  https://lwn.net/SubscriberLink/1066582/b92de1d7595a01e4/
 
