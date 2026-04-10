@@ -4,78 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62523F4484C
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A3F7F44850
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:19:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE27E6B009F; Fri, 10 Apr 2026 08:19:13 -0400 (EDT)
+	id 939796B00A7; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92D66B00A0; Fri, 10 Apr 2026 08:19:13 -0400 (EDT)
+	id 8EA606B00A8; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B82666B00A1; Fri, 10 Apr 2026 08:19:13 -0400 (EDT)
+	id 7645D6B00A9; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A3AE86B009F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:13 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 433598BC13
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:13 +0000 (UTC)
-X-FDA: 84642550986.09.AE460C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BBAF11C000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YwhpP/sf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 60C906B00A7
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:19:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 029341B812B
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:17 +0000 (UTC)
+X-FDA: 84642551196.30.F7E8CAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 43A48A0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:19:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pacXAmHL;
+	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823551;
+	s=arc-20220608; t=1775823556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=hS8C4KqVeUlIUjtSj7w2Upw8HyApf1Pu0cIqAYxRChU=;
-	b=uJRL4hmt0k0T3bS83qnxtRrQneh51OXza2xMTgJMHtFVm3Gak/ZEjiibeZI/CA9RA0RxHi
-	fkty3o6653Rlxm0EoJ/IqApILQ9IQuO1piuDtIf9rqYzmAxvMgmv9dSp7UvJMX5fMmqwVn
-	Qqw05ONgi80DFNnU9PeTl3Q/cHCBwgE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823551; a=rsa-sha256;
-	cv=none;
-	b=rM83bmVaYljvac0VIG89pSFAZWWW0Qv6rF9q/B9CphVjpKV1sddGxX47zxTH92I9GikIeW
-	RGZhnqebHDs4Cd8K772QmNzysCA0gfAyeX2Meji0dHFKliFeyscLz6VyuZFgVcXM37FBgo
-	FV4Y79fagfDqNSsBYae+zO9z8dq6eBQ=
+	bh=P2IEyAEzLrLcDKf1D+hPXmSP/5CZZgHCZVdt+e9rGY8=;
+	b=53meOVpVMN1dk7nf6PNnFLMSAYgs4l8pbUdiUwRNb8PogYJI/nfzRrvbiZNa/fxEjE/yAN
+	tClAUijCHv+6kdxc3hqzCHmpiCLdkLLlFKHB8oiJBsA3CYV4ROOMFVn89FmWRi1THK4I7o
+	ag9VW2+iyZIyTzkZjLTcqOqmT8NcKZg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YwhpP/sf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pacXAmHL;
+	spf=pass (imf25.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823556; a=rsa-sha256;
+	cv=none;
+	b=EPH4veqqMeYzfboXaHGq2ymbJIheW34eaVj3EzLRfGu8WMmPNns4gKclAwLu9IQwMPHo4k
+	FE4UXitwN3m3X1znLZmiJm9C+h86OykBTb3692hx5cyP/J6wdhH04PWx7GHwPSumLPhUZQ
+	S3rTJB83WUPCOUD/uE3/ugbeFHffn5k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32D916024D;
-	Fri, 10 Apr 2026 12:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455B0C2BC87;
-	Fri, 10 Apr 2026 12:19:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 65ACF44037;
+	Fri, 10 Apr 2026 12:19:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE3EC2BC87;
+	Fri, 10 Apr 2026 12:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823550;
-	bh=bea3byi4f+lJwA9RE9L4RIIWG0LfPmc09XAUdHtlAlE=;
-	h=Date:From:To:Subject:References:cc:From;
-	b=YwhpP/sfl2uNAokHMGyDzPyXqsYG5Z3HHapkhzwVASiSkGSv1ImeSFBY018VYZGU6
-	 EPRk8H/tD4bE94DCGFfik82fydH/mvkzeKH2zcGHFzmiPQlK2yTJNXmBvp6CR6/aKP
-	 ZUXJ1ridIfNl+octSklnUsCiAFVq0bMAbDZHArZ2XlGiEpILEnKNdARJlXe1YoLGU7
-	 gTGiAjrmuKfAH7Stm5YSWpKnJ3J0WABG0fiD/+Dm/7aJCfY6aDBkC0dcXhqkELemEA
-	 OLCKD9b/UmnIij2UMaT5laELpK9/RUq1POEHXDOcdk6mujQiavRoj/L2U3OHpVV16q
-	 LiEll066ex31A==
-Date: Fri, 10 Apr 2026 14:19:08 +0200
-Message-ID: <20260410120318.121043259@kernel.org>
+	s=k20201202; t=1775823555;
+	bh=qtG4jYoFMBUH8Rv5LkkLsBrvbBwuDbTX1269QfkLCzw=;
+	h=Date:From:To:Cc:Subject:References:From;
+	b=pacXAmHLAMseTev4RAQUAZDfRzJFeJXjwMW3x14w8vUm7ybikBbtslQQu96s/8Sq0
+	 a3pcIexn/gzfbwI2qYLuXSTx/gSXbmVwhuUFKfTY31pSFVH71nhoebkIPAnwJfmArK
+	 tPmJiCD8oWRaoY6EByg0L3DGpV75oKKW/C5lmUUCoaSznEsjUHpS9yyQByZ5hUlH3x
+	 P8NYw39byMTR2ebfPveTfvTFbDgwqYFvegEj7/kJQbjlvVeppRrN8YtOduabfxNT6E
+	 Yw4oV6JDjGSLEpWghPJGJFmnCci2PXJh9wjpVWvhGUbODkplfUDbeuEJIVIN1zibiF
+	 mC2OEaJT1jHhg==
+Date: Fri, 10 Apr 2026 14:19:12 +0200
+Message-ID: <20260410120318.187521447@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 08/38] x86/tsc: Use rdtsc() instead of get_cycles()
-References: <20260410120044.031381086@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-cc: Arnd Bergmann <arnd@arndb.de>,
- x86@kernel.org,
+Cc: x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev,
+ Arnd Bergmann <arnd@arndb.de>,
  Michael Grzeschik <m.grzeschik@pengutronix.de>,
  netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org,
@@ -119,14 +115,18 @@ cc: Arnd Bergmann <arnd@arndb.de>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-X-Rspamd-Queue-Id: BBAF11C000A
-X-Stat-Signature: ocgpe5cd996mygzcy8ur9hjd88mfnfj7
+Subject: [patch 09/38] iommu/vt-d: Use sched_clock() instead of get_cycles()
+References: <20260410120044.031381086@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: 43A48A0005
+X-Stat-Signature: hdhynbpdgmw91aphu7zqdzobcza4aomp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775823551-40472
-X-HE-Meta: U2FsdGVkX1/DlSPx+NG0lvZc5xAJwj3GqYn+2y+Jw5+EXTfiB7N/shRAyqG3M62nOEdS8roSOxDD31pjfJAtuR5VLiFwCDUNT8s9Nmu5Hl29bs+Y1Ztk3tC+0Yp7XpTTVlUsHSohtqEY6xwQmUUBIpZ61WT0A2OZNPuTX484rMZ4vIbscYRLvTjdQuK2HqdQ2cOvD7XNWqR02dqKnNWuJxF3X0ZpNN3bzlMMSYU4+MhkP/+ajfbIu9sr9rEAJSNml8m3EoUeq0V/TkfHoJpPaU1FHHSy7yjImdTcdxp4yu7tuHCrViA8Mobz5/FK0o9CmLf9Kw7AnqSHVNaJwvS8Un7Gfv1aIgIRNHJhThwpNpQzA4LZ+gcwYxA7khUo8bxSjZ2lmO0NLcGCNZsTYlF4PQB1/O4V/09FXQxKuG0sIIuhi7Tcgcl9M5QP8nG6tkEfzzqHxMToui+7QWdVWuqUeFovZPGyaW9j9gXYQ3EqnnJJADXY6aUjT0eHGn1LOV2zkXXwrZhmhbCB4k9n6wq0GKxUV5HkPQGkk3fLBCXkPWj/Np4MYnusNefdD+Hdiz+jm8NSR5vf3xT1dFCwHyIGQKMn6rUkkvd1AbV0XN1eQYIhMMqENAU7eS1ZpEvVj/xmrlBnL6Ppn3fMDLpAWx57Y1QQ2gqWhLd6M3VzmN+tb2Ha2eN/a/06QRvrWT0K2AcaOgVb4pBPJfxzz6RZugmvz6V5ynNzsCxTPuOki/GmIDQUaweWMtitqzziEAkESs3cQqPjnHbcIRgArC6g2wQoiAQJcZVNik76P45vP0M4ehu9oAeaHkYjumJtcdWc6I2eabeJ8MGCcVvRKL2xE7TZyzfLLFcIskoXOnIGzsPaitwvBsU9M/GmfAGvCWOKjbUb+qFBTVVdnOIEt0cpdwB20POFD6nxe51D0kp8eluH45xLB0FqXr1xv2uxPuMGcTMsK4sHZJ2gJGbV26cNNKl
- 70hhorrl
- ZriT/I3/K1uzURdWX45mkln0qJa73n+Uc9UIvWmtRYbRh/BWB6fjMwa2/k/5qDlQEn+2OR+dzrLcXqoUKo8LGiE1zI0CPL5IAhFCoCfcpTxs/waD1lN3omciOihP2eZ9mU43J/ho0u4jjmIzCFq6lEI8mn3fY8BiTsx3EZme6qj/xv4efXMpj30ZTt0HxYNOmlabqPvd5WaUwBleIA/Zi9k0oUFZVPP6qaV8rQwyvB/6s+PPFl2FSx0xCGxusqdnG6enB9YmaYNzVgiGjRXy2rveBrJ9HoE4YWOO74ISV5iIaLswq+Y601mZs8oHGRuqccINTbUFt7v0DWAEQPMVZw/kuq3h5uTOitAHZORH8bk1qtIQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775823556-915951
+X-HE-Meta: U2FsdGVkX19dXPE1hKQQXre0LzDMuJXMpyQQDhNAlj81J61/NtLPBp4fLcmPPjgZssJbf3R5nhabXr9VQtPjdsR13SwMsIS7mCaPCkXCjXq2YOGvv5xi3FhczUsQBN4kzvD64xOARhynTmi3LZW41vg/1qBeC0FXAqVYKYH9xdzFJPpGbe6XkGQTBLa4Ac/Ir3p8rpUOnOuu8K4wmWAqgF5mfi8ShXxBGcOqc1ojCrSS8dDAgWMtbWfJRxMgv/rahrGoFie+RDlV5n0r6lOYN56iiowKUKsCgPtKVqeGhPfa5IzQi854YQxApQldTZZhGr4/+wUP90ngsqg+N2iXT8cmeaOOZIrNlUvHlnOpOSU0jdRpdFB6FGxMBbRRK4LlnADsQzVPF3zAZV0iuA4uCClUSE0dRZ0OqdMPRaCbr+9DJAv3lXxMbEdJ8Pvt1GurqBSGbKVlxJ5KZuJMPgaWn9asxxkZstNfZhMWi7LaYpriJm/M2dbW5+nl0YmiieRWiX71+9JhdVFVWq6EVdx76t9BicenIwi0/vu43jsubB/EzY6UrIlofoBEsL54sDeH8lM7WuaA6t6fI2VCEhv0EyTukv1ptR3pAdBMN4GiTBZU9AKAvD066f9xA59p1K08icTjwE+wk9Gj021lt3eebI+Ilm/f5VOix/QS2rVKX8ZvAkGbUHaNjApPuXXCtXtKKXBjcZwoL+I6dS84qN9B4an+HVXr57pK6v4NchDDgcCW7iwfMcHXTa6XbInWlMC+k5PkdKjXGXhQXk1fjY+I+/AeCODtW/UTUsw6vWDWjmWMQGB0vmPTLDDvPwIBLPzoYF6wlkyuCzHL2VLghveZtGeatHModNSQ++Pa3WgCSwu2w5O1put1GNNfaxccMe+NKIr6TEEn2GdP8RNtL9RQ6mIMDp2r3Y08IM3CfGzG8dBNHJ6lM5WbVoSagTUQlrTfqW9/o/YlQEc+edqiw6O
+ 1xprEqkn
+ zPMquHzneSa7XiD9YwuPZSj5GtgzZVoOlQY+IwbNPpkwR3t5L51fqqz7dtFBePVwk1aNnzntSoPgsN+LbIcFRnJi8FgtIkvW3JKCRJtud3Yj7wiTo7Iqtz3DMVz9luLG/snaZMbPn8nrosV8HjZx1qI+HhpY/zAeNpYlpuc1bgjvi67e9ynkjMvsP8+unekGz90d41iAEROqQYztOwHxsabGPKO+QEF1WPYAuNp4W1k58up/jhYdhha4jqdVMHiVq/R7DfoZhHY29kafH4TBdeL+A6EhArmPs3oZ8n9wuRyX0MIieq/gVfAwvDj59rmsLCZ8AdxzFnfi/kJFzrA7konAIMglVXezlfY2Fq8LOHfcpjBU9DtQrbbCeuxdRLb1NtSP5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,60 +134,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This code knows that TSC is available so there is no point to use the TSC
-feature guarded get_cycles().
+Calculating the timeout from get_cycles() is a historical leftover without
+any functional requirement.
 
-No functional change.
+Use ktime_get() instead.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: x86@kernel.org
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev
 ---
- arch/x86/kernel/tsc.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/iommu.h |    3 ---
+ drivers/iommu/intel/dmar.c   |    4 ++--
+ drivers/iommu/intel/iommu.h  |    8 ++++++--
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -371,12 +371,12 @@ static u64 tsc_read_refs(u64 *p, int hpe
- 	int i;
+--- a/arch/x86/include/asm/iommu.h
++++ b/arch/x86/include/asm/iommu.h
+@@ -18,9 +18,6 @@ extern bool x86_swiotlb_enable;
+ #define x86_swiotlb_enable false
+ #endif
  
- 	for (i = 0; i < MAX_RETRIES; i++) {
--		t1 = get_cycles();
-+		t1 = rdtsc();
- 		if (hpet)
- 			*p = hpet_readl(HPET_COUNTER) & 0xFFFFFFFF;
- 		else
- 			*p = acpi_pm_read_early();
--		t2 = get_cycles();
-+		t2 = rdtsc();
- 		if ((t2 - t1) < thresh)
- 			return t2;
- 	}
-@@ -468,13 +468,13 @@ static unsigned long pit_calibrate_tsc(u
- 	outb(latch & 0xff, 0x42);
- 	outb(latch >> 8, 0x42);
+-/* 10 seconds */
+-#define DMAR_OPERATION_TIMEOUT ((cycles_t) tsc_khz*10*1000)
+-
+ static inline int __init
+ arch_rmrr_sanity_check(struct acpi_dmar_reserved_memory *rmrr)
+ {
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1606,9 +1606,9 @@ void qi_flush_pasid_cache(struct intel_i
+  */
+ void dmar_disable_qi(struct intel_iommu *iommu)
+ {
++	ktime_t start_time = ktime_get();
+ 	unsigned long flags;
+ 	u32 sts;
+-	cycles_t start_time = get_cycles();
  
--	tsc = t1 = t2 = get_cycles();
-+	tsc = t1 = t2 = rdtsc();
+ 	if (!ecap_qis(iommu->ecap))
+ 		return;
+@@ -1624,7 +1624,7 @@ void dmar_disable_qi(struct intel_iommu
+ 	 */
+ 	while ((readl(iommu->reg + DMAR_IQT_REG) !=
+ 		readl(iommu->reg + DMAR_IQH_REG)) &&
+-		(DMAR_OPERATION_TIMEOUT > (get_cycles() - start_time)))
++	       (DMAR_OPERATION_TIMEOUT > (ktime_get() - start_time)))
+ 		cpu_relax();
  
- 	pitcnt = 0;
- 	tscmax = 0;
- 	tscmin = ULONG_MAX;
- 	while ((inb(0x61) & 0x20) == 0) {
--		t2 = get_cycles();
-+		t2 = rdtsc();
- 		delta = t2 - tsc;
- 		tsc = t2;
- 		if ((unsigned long) delta < tscmin)
-@@ -553,9 +553,9 @@ static inline int pit_expect_msb(unsigne
- 		if (!pit_verify_msb(val))
- 			break;
- 		prev_tsc = tsc;
--		tsc = get_cycles();
-+		tsc = rdtsc();
- 	}
--	*deltap = get_cycles() - prev_tsc;
-+	*deltap = rdtsc() - prev_tsc;
- 	*tscp = tsc;
+ 	iommu->gcmd &= ~DMA_GCMD_QIE;
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -23,6 +23,7 @@
+ #include <linux/xarray.h>
+ #include <linux/perf_event.h>
+ #include <linux/pci.h>
++#include <linux/timekeeping.h>
+ #include <linux/generic_pt/iommu.h>
  
- 	/*
+ #include <asm/iommu.h>
+@@ -360,14 +361,17 @@
+ /* PERFINTRSTS_REG */
+ #define DMA_PERFINTRSTS_PIS	((u32)1)
+ 
++#define DMAR_OPERATION_TIMEOUT  (((ktime_t)10) * NSEC_PER_SEC)
++
+ #define IOMMU_WAIT_OP(iommu, offset, op, cond, sts)			\
+ do {									\
+-	cycles_t start_time = get_cycles();				\
++	ktime_t start_time = ktime_get();				\
++									\
+ 	while (1) {							\
+ 		sts = op(iommu->reg + offset);				\
+ 		if (cond)						\
+ 			break;						\
+-		if (DMAR_OPERATION_TIMEOUT < (get_cycles() - start_time))\
++		if (DMAR_OPERATION_TIMEOUT < (ktime_get() - start_time))\
+ 			panic("DMAR hardware is malfunctioning\n");	\
+ 		cpu_relax();						\
+ 	}								\
 
 
