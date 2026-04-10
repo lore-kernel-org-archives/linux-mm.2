@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BBAF4484F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4A38F44850
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 12:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2845A6B00BD; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
+	id 591B76B00BF; Fri, 10 Apr 2026 08:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2342E6B00BF; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
+	id 542396B00C1; Fri, 10 Apr 2026 08:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D57B6B00C0; Fri, 10 Apr 2026 08:20:12 -0400 (EDT)
+	id 40A476B00C2; Fri, 10 Apr 2026 08:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEFA96B00BD
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAEDAB9B61
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:11 +0000 (UTC)
-X-FDA: 84642553422.20.855ED5A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F3026B00BF
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 08:20:17 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F01A21A04F8
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:16 +0000 (UTC)
+X-FDA: 84642553632.05.84026E4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3B11D140002
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEmycwX5;
-	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6F21280018
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 12:20:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K9r3LlHr;
+	spf=pass (imf02.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823610; a=rsa-sha256;
-	cv=none;
-	b=v0panYk9/Jh8sF8SwHbw8GVFdwpdkJNPTSDkqAQqDsyildqIWHH58GwghZ3MXSHUJQxc7r
-	LsPihf610F4Dsub2CtZSLovoG9wccTYKzCNcJ95FoYAv0UHWEL7AqiEaOPjNpy6EB+ldNq
-	i/jcuxm7OWiF9R8Lu5/ErwD9x5a+/Xk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775823610;
+	s=arc-20220608; t=1775823615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=7Lj1aNml9xNTs4vJYi74RnqcLcp2m2BsrRjTAYhHjrw=;
-	b=OWx7sh3eAVpVFB+I75H9YJOQx/N6E9/DG/B33kRfDngCNl4awwLpkvGnlR4lEC23NvwobI
-	d7NU4G4KqjOvxnb50HysNRwpIKz+ynhCfHW9cwSgI9veDn3WyMSoqsMYyhBfQ5BebatfjS
-	EDedRJ57SV7N2OaEs8nyuGpq9Qip6H8=
+	bh=uc43GoCkDGKCftnS7MZ3OA0khnbsdPYb8yxntAbHoVw=;
+	b=A6i+yVhF/S+IxcSlbfj4Ojdo6+3BvWdIGlkpUI61FKKS1U6WGu4RfBnUjYyp4RT0W76l/j
+	TWI+cwPnA3jJjPn2UQQCcBXtYqRCZOjeWrQ8BPMTEnC1BMgJZ11N9M2aCUGMOfNoQRxIB4
+	BC6k+EGNuYqYksacXqPtV5S2gHhyGUM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEmycwX5;
-	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K9r3LlHr;
+	spf=pass (imf02.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775823615; a=rsa-sha256;
+	cv=none;
+	b=yE3anoNQpdEiPUZoM7OtjoI/CzYRLMq63cmYJA3diMw4l5DE6Doac1uzLMTFvPqnew7lOS
+	pb/E6+ns2tTic+vnb54hAQ062IwKzpjo5P1yxrDGHg6cpTzKhHgDXB5ibUZpGATHwBh79e
+	GAVA9C12NsTcpBO1zMxs6yg8F2tAEM4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC2056132F;
-	Fri, 10 Apr 2026 12:20:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CA3C19425;
-	Fri, 10 Apr 2026 12:20:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EFCF56111B;
+	Fri, 10 Apr 2026 12:20:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C840C2BCB0;
+	Fri, 10 Apr 2026 12:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775823609;
-	bh=UKj6WoZFsTQfNpLsa4hK9AJwWp/c6TyAgfAmmgBM2Aw=;
+	s=k20201202; t=1775823614;
+	bh=fBmKDE903B55aOazdk1fgTYrHTdJzb3m7rYXj49+TyY=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=SEmycwX5s0//+gtSPktg47GJS+8sJlwAPsv65Bq7Wv5tg7uQL3Gpghd9FaOczcWIN
-	 ZQaCuA/qh+jNH/riNYpmVLmwYhqyjM2JbqnNtt1yhbGBg3HT7iCiqP6g94wS0wTPIA
-	 99ougHo5Nu9h67SjSnTNqyHC+/lIAAGR6p7tHCAck6aAnXmlbTDue5R1sT+DZ/waOZ
-	 GXIvFpg3p1ueseORBf9eozHpgJ3jpkMWN+atB0UvtcxRk8vKXhCteFgdwrDai6rThh
-	 FHU0CtO/nkzQnAaFOlH62oLpy9zcH9gwc0II0cebCdnPQhGplJ3L9nz1drcdz9bKdB
-	 3Oc5+96qoKgtw==
-Date: Fri, 10 Apr 2026 14:20:06 +0200
-Message-ID: <20260410120318.929806643@kernel.org>
+	b=K9r3LlHrTcCOkcDztBL2sK/tQ+yi3dZzcdFnxujOK2CvaNmPXdlKrSDZTOaDJVW4S
+	 4mOX2OGTBKQ54SjOZcfKwdFhqUqz7KSUNqnVJajtIbXp/GGLFwlU7bEb8zVF3NgHwH
+	 1PaUWksbUVEp48mOHI3J4/UWYuvo5lLJzmYA1j3FTzptfyaQ68k1o579nPzwBiXUsC
+	 3DfIec/NNOEw9ut9tg7BENSlBdgvHCyF+4+WEDfTHmiMcBanB5cN+csJSB4d+fA+Ka
+	 C4Vf48Goy0kDdmbaemETnL+HfFRh1XMMUZS6QyYOK2+NJ2yf87fs8P9lxl4UXibsda
+	 2J390A/pMX1Ag==
+Date: Fri, 10 Apr 2026 14:20:11 +0200
+Message-ID: <20260410120318.997202495@kernel.org>
 User-Agent: quilt/0.68
 From: Thomas Gleixner <tglx@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- kasan-dev@googlegroups.com,
+Cc: Thomas Sailer <t.sailer@alumni.ethz.ch>,
+ linux-hams@vger.kernel.org,
  Arnd Bergmann <arnd@arndb.de>,
  x86@kernel.org,
  Lu Baolu <baolu.lu@linux.intel.com>,
@@ -90,8 +90,8 @@ Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  Uladzislau Rezki <urezki@gmail.com>,
  Marco Elver <elver@google.com>,
  Dmitry Vyukov <dvyukov@google.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>,
- linux-hams@vger.kernel.org,
+ kasan-dev@googlegroups.com,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  "Jason A. Donenfeld" <Jason@zx2c4.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  linux-alpha@vger.kernel.org,
@@ -115,19 +115,18 @@ Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
  linux-s390@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org
-Subject: [patch 20/38] kasan: sw_tags: Replace get_cycles() by
- random_get_entropy()
+Subject: [patch 21/38] hamradio: baycom_epp: Remove BAYCOM_DEBUG
 References: <20260410120044.031381086@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Rspamd-Queue-Id: 6F21280018
+X-Stat-Signature: 9wrbin8fe56ga78bcqmpemrh68fx8ms1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3B11D140002
-X-Stat-Signature: fn1pc3g9igqcuauwpqbt5qc154hnyiwg
-X-HE-Tag: 1775823610-219392
-X-HE-Meta: U2FsdGVkX1/QZbSoXntyswfj5AVXZCb2b2oHgpcQ8xnPtxEOqklR/EClwHauwuIyZGuRg/3XgH+TmvwJuZT/71J9sbYox/Ex1obXGCeojpuHKg7ryWRA9mNIc4XKax6Hjv4GepaiDEeMGsTxXSw6b64qTvy1mrd/21x50NjyVvr8N369pcIRq1lOjHkiVqrfVMINeFXqzfLT+ytkJB6TzfpP2VuXg43MGh+udueH9rnvtg7f+ZFAxTgGz/twZTtJwvZfJG7zxHh9FZ28LtlnAXbStV6AA72x9jJcl3221LlS39VNlYGPsgGfNR+WTx8bmYgr4xvQMr+CxvObjgRHUPBOn8rQbQLaQzeExM7VcLQ1dvUkyagGNBfiWm8RV/ssoasrhd9pd1T6rYpJl1JzwayKmeZVv+rJoGYe/JQgrphfiYKErhnixHKd8nd6U6/WR8p04GDi+8nZx6KjigqVXlYiGaKdPdN9b8EyfllZ3z9FFNp7FbPPU2YmETXOGXpQMlMzYZkpRzRB9gdJeUymt9v4N7jDg72d4qaSEeYfZSG7q6OwieICmzp33mqDfhxbj3evFTiijfMEuQXRsoDprs7t45NDu79RmWdrLGXw3t0O4+rCa/6YQ1nVj3xG+DfdpgZ5FeGN/wST9SbyRU4KszjmBHJxJW4INcWZr4Oy55AW8F0nCM9WZuv8iYtsvR0UQ/nDmhs5Wx+SCaz6D6L4phxjj0OzCp05hPp7LV0gY5BsJph2Q26isy2K7xCeOnatMkW+ATnJLkWIn+MtnWE+CmKAcssV3uczpRgHuzLqTCP+3ad8Sq0IA8yidbliyNqIk8IDnagH7c6AqQHLpOLRjzyeEMJPSY4sGE7io1ETx7fmp5VVIMKrgVTI3qLyyOBqMx+VF2pEA8QIEIfmtBGh4LGgaLh3uOceYc2BrUTPwI6Evg7Qs/a6NTph+Pznge00WdweAExhZWtNDHq5P/p
- XdEtxwNU
- 4Ik32x9Ix6Y+VeEcMHbEHYm2p4yo27KSm/SK19Ecd+Hf/FOmJmxb3EzD/PEq+NG+ZZnuoNI5l7QXMGhdLW1zpUOngbZd7g0TrQ5jWTUqjSIiD8liHoY3HLFFbnjurHbPrc0oPwDNRWUZEvwoMQcNU0VuQbQSLmhwBGJjxmJAy3/XQ4xzGDOGBAT6R3sKOAb9UWn/x5WXAAlvVNLpk5xIJMyes9ejO4TXMWRb8vXc/DEf+P+ZRLyboSEucrvim8zg6vUk4fWV6oIZFiig1Bnyehq5r1yQjnYn5ju1LuAG/Zuxn5a+7O0GEwioVMaAyoMCydzvZwy8ffBJ/FFQBNfXvfjih/vOySYvcL6MXbHYVe1gNCuMh2fL6zPH+SQimMbviDlqgr9ig0LDqS3DHNpax7o3q0wl7JvozZ3qthROroyGi980zC7V5gCsEBTVD7RU2FL9M
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775823615-192891
+X-HE-Meta: U2FsdGVkX1+6BaPsKaZLrWipfdNkb/A7YDuJzEzipIsJ1ztotENoidzcpDh340vkUAeej1yCUSZ8J1SAEW9sCNNXBO/kP8lZNJ+uxhh/5HVtnWjchIEout0T61MdsTirj9CHIkDyVRQR4glELfg+bvzWsqs950fL3tBxuiF9q+b+gru3a8wCLufqz9foqSWlq/TdcFlRTM0GGkOxsPjeOz5026TVmkoHBQU1pdZf/j/VCGNv5265vUOv9GxqEubR/oWeDWo1AmDdITZeNzKOfbU/HEjw/NAUcxpbGg2eQJMHoumpI0Tegpk2ySNr8tTmsPPG6RS9A9Qhq4K95aS6L5kQPj2AiFZnrBxpdWVh/ABsPU/tW597/7VPq+YfVlH+4/47Pc9OpmeI0bCUdBqUohz0llQ1hD7emJ5mqoWynkUaVtllvTks2s6IdG4m4rHPMnDHSmqW1yymoYMuHAkz6FQZ9ae+Zo/0yey0LN5MWnYCFVlKtkbgkZ94JfiMPR9NlKLbMwylU/xFrFRYv9LUjVlzdWYbT1j+fQzyKkNsZDx2UU/49RH1f22M0PRfyJx7/DBMVxstQzp+9CNPa+YUwxOEJmzoqapUJis/nod/45BTtbygJ9U4aYGnxYzEFFHfm8g6YTPd0+Cf24ahVLY7/SADNQgA1qNZDwrTHAMicgjtIVtZrdBur83u6HTZ9+6+jufSRCnlYQs/qrCUnd5BTdnAk2wsTmwTFjuneigY/3OQhtx3/zIWYJU9goqCQxyNpycW37MHKKh7J2c5PKZGrPfEsaZXNOaPUOwmjISj3+Pxpx0CAPnvMCIHtRVt4FttbwibLNOkEDfSnkzSv4J6LWk5gFAQIRqRtNsSG4bbBo00jV04+zxcoMuowPkFlkpt98nUPTr81D56vU39XafDws1gKfDwDgLZaQwm3c4UMqItIMHTp0wJZmOeZxlZkExzJSUJFj0AySZxSfdCq0T
+ HMIj2MEh
+ AqSyFsuJ5x5zlMcvfztZjtnQsMFcZlDA1id58na8UL4Do7eQoKnPCG63xKZv/5HKhwt3+UywJXB2/clDLTORT1ursVtQCDeWDYIUZNeounksUBQS1R/XPSVxzWP4E034Azy1wN+5fgCHJJFHD0Jj+POgkpRM7euvSrp90Lnqkk8hVJthoiYWns4701KJV0O0AhXg36QNy4gnIzEwkT80MgJ87wuFuJc4btQp9RqPF35npbgsYJkqzOAeJPHqsXdUcLdHqtbtzamjjBLBIqr5R5Lm5oMHd0Nh+kxzAfL66octQpjlAA04pD5GZuP1WAX+Mdwyroo7Nm7MpV+y4TW+0/M8Lde9psmLJCJbI8qde4h4hcR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,32 +134,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Seeding the random state with get_cycles() is functionally equivalent on
-the architectures which provide get_cycles(), but it does not make sense
-semantically.
+The whole code guarded by BAYCOM_DEBUG is only writing debug values into a
+datastructure, but there is no way to ever access them.
 
-Use random_get_entropy() instead, which is the proper interface.
+Remove the pointless ballast.
 
 This is part of a larger effort to remove get_cycles() usage from
 non-architecture code.
 
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: kasan-dev@googlegroups.com
+Cc: Thomas Sailer <t.sailer@alumni.ethz.ch>
+Cc: linux-hams@vger.kernel.org
 ---
- mm/kasan/sw_tags.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hamradio/baycom_epp.c |   51 --------------------------------------
+ 1 file changed, 51 deletions(-)
 
---- a/mm/kasan/sw_tags.c
-+++ b/mm/kasan/sw_tags.c
-@@ -41,7 +41,7 @@ void __init kasan_init_sw_tags(void)
- 	int cpu;
+--- a/drivers/net/hamradio/baycom_epp.c
++++ b/drivers/net/hamradio/baycom_epp.c
+@@ -44,7 +44,6 @@
  
- 	for_each_possible_cpu(cpu)
--		per_cpu(prng_state, cpu) = (u32)get_cycles();
-+		per_cpu(prng_state, cpu) = (u32)random_get_entropy();
+ /* --------------------------------------------------------------------- */
  
- 	kasan_init_tags();
- 	kasan_enable();
+-#define BAYCOM_DEBUG
+ #define BAYCOM_MAGIC 19730510
+ 
+ /* --------------------------------------------------------------------- */
+@@ -191,18 +190,6 @@ struct baycom_state {
+ 
+ 	unsigned int ptt_keyed;
+ 	struct sk_buff *skb;  /* next transmit packet  */
+-
+-#ifdef BAYCOM_DEBUG
+-	struct debug_vals {
+-		unsigned long last_jiffies;
+-		unsigned cur_intcnt;
+-		unsigned last_intcnt;
+-		int cur_pllcorr;
+-		int last_pllcorr;
+-		unsigned int mod_cycles;
+-		unsigned int demod_cycles;
+-	} debug_vals;
+-#endif /* BAYCOM_DEBUG */
+ };
+ 
+ /* --------------------------------------------------------------------- */
+@@ -259,26 +246,6 @@ static inline int calc_crc_ccitt(const u
+ 
+ #define tenms_to_flags(bc,tenms) ((tenms * bc->bitrate) / 800)
+ 
+-/* --------------------------------------------------------------------- */
+-
+-static inline void baycom_int_freq(struct baycom_state *bc)
+-{
+-#ifdef BAYCOM_DEBUG
+-	unsigned long cur_jiffies = jiffies;
+-	/*
+-	 * measure the interrupt frequency
+-	 */
+-	bc->debug_vals.cur_intcnt++;
+-	if (time_after_eq(cur_jiffies, bc->debug_vals.last_jiffies + HZ)) {
+-		bc->debug_vals.last_jiffies = cur_jiffies;
+-		bc->debug_vals.last_intcnt = bc->debug_vals.cur_intcnt;
+-		bc->debug_vals.cur_intcnt = 0;
+-		bc->debug_vals.last_pllcorr = bc->debug_vals.cur_pllcorr;
+-		bc->debug_vals.cur_pllcorr = 0;
+-	}
+-#endif /* BAYCOM_DEBUG */
+-}
+-
+ /* ---------------------------------------------------------------------- */
+ /*
+  *    eppconfig_path should be setable  via /proc/sys.
+@@ -621,13 +588,6 @@ static int receive(struct net_device *de
+ 	return ret;
+ }
+ 
+-/* --------------------------------------------------------------------- */
+-
+-#define GETTICK(x)						\
+-({								\
+-	x = (unsigned int)get_cycles();				\
+-})
+-
+ static void epp_bh(struct work_struct *work)
+ {
+ 	struct net_device *dev;
+@@ -635,21 +595,17 @@ static void epp_bh(struct work_struct *w
+ 	struct parport *pp;
+ 	unsigned char stat;
+ 	unsigned char tmp[2];
+-	unsigned int time1 = 0, time2 = 0, time3 = 0;
+ 	int cnt, cnt2;
+ 
+ 	bc = container_of(work, struct baycom_state, run_work.work);
+ 	dev = bc->dev;
+ 	if (!bc->work_running)
+ 		return;
+-	baycom_int_freq(bc);
+ 	pp = bc->pdev->port;
+ 	/* update status */
+ 	if (pp->ops->epp_read_addr(pp, &stat, 1, 0) != 1)
+ 		goto epptimeout;
+ 	bc->stat = stat;
+-	bc->debug_vals.last_pllcorr = stat;
+-	GETTICK(time1);
+ 	if (bc->modem == EPP_FPGAEXTSTATUS) {
+ 		/* get input count */
+ 		tmp[0] = EPP_TX_FIFO_ENABLE|EPP_RX_FIFO_ENABLE|EPP_MODEM_ENABLE|1;
+@@ -673,7 +629,6 @@ static void epp_bh(struct work_struct *w
+ 			goto epptimeout;
+ 		if (transmit(bc, cnt2, stat))
+ 			goto epptimeout;
+-		GETTICK(time2);
+ 		if (receive(dev, cnt))
+ 			goto epptimeout;
+ 		if (pp->ops->epp_read_addr(pp, &stat, 1, 0) != 1)
+@@ -700,7 +655,6 @@ static void epp_bh(struct work_struct *w
+ 		}
+ 		if (transmit(bc, cnt, stat))
+ 			goto epptimeout;
+-		GETTICK(time2);
+ 		/* do receiver */
+ 		while ((stat & (EPP_NRAEF|EPP_NRHF)) != EPP_NRHF) {
+ 			switch (stat & (EPP_NRAEF|EPP_NRHF)) {
+@@ -734,11 +688,6 @@ static void epp_bh(struct work_struct *w
+ 				goto epptimeout;
+ 		}
+ 	}
+-	GETTICK(time3);
+-#ifdef BAYCOM_DEBUG
+-	bc->debug_vals.mod_cycles = time2 - time1;
+-	bc->debug_vals.demod_cycles = time3 - time2;
+-#endif /* BAYCOM_DEBUG */
+ 	schedule_delayed_work(&bc->run_work, 1);
+ 	if (!bc->skb)
+ 		netif_wake_queue(dev);
 
 
