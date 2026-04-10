@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4EC4F45A0F
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:55:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D999F45A0D
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 23:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 361F26B0089; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
+	id BA1716B0089; Fri, 10 Apr 2026 19:57:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 312816B008A; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
+	id B78E86B008A; Fri, 10 Apr 2026 19:57:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229436B0092; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
+	id AB5A76B0092; Fri, 10 Apr 2026 19:57:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 169616B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:55:40 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DA8C14060F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:39 +0000 (UTC)
-X-FDA: 84644305998.03.9E0AC17
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CFEE6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 19:57:06 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59628C2212
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:57:06 +0000 (UTC)
+X-FDA: 84644309652.26.163908E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0C2E3100002
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QiCNVA3p;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id C03BF12000E
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:57:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMR7nVOa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865338; a=rsa-sha256;
-	cv=none;
-	b=Ql7E6bXhGF1cWOj40lXzCUei6UgY4t3Zr1DNjmosSSHOZg9XYBERh3Xs6XRK49XF5T564n
-	SR+GL2e/71NkYWB9v+bh1zY+VXz9YOd4ji59woN8uFk5rVrTP9Ldch8uDlQ7E2b+kbYBFK
-	iFOGxlJxmoEgtKjep+ckLUPDgv3z4ug=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775865338;
+	s=arc-20220608; t=1775865424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zE/vdtBFa2ECewv5xoOY5lscrf5s9YqwSkuoPFtGpDA=;
-	b=r+/Z2fsXctuLWoqn2uS/6pRjBeTWRO21RTn5Vtdid95rkvg9poB5pz5A9+K8OGtG+oLLSx
-	9uuxJhelDkjrYKkzuuzwBtoY5cExdsDH1RJF8GHZwJMR9l7aYHqvoHobHWONlUQaajiMNO
-	FU3r/bvn5qAw/FiOhYHYcP/ThfJhhQA=
+	bh=sTk0MFlRiSfeLuauJQzAezTHwA+lVl3RLb9zcxPYuLU=;
+	b=1kbi5Rs1He7GSK9kgXjbY6UNLyO5ED5qw39zzWOtS9gvMNtvSJby7GWpHa9GMvQ1deO/4W
+	oBnhr3n2t+EbdJbVpwQZbeZogVAWKeb/hRHPJDPbybvNVU/QfqXhKKT130Wo+GWllI3cLr
+	MRNIYlyom4KCRXYWO/RTTwOIe1v0YK0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865424; a=rsa-sha256;
+	cv=none;
+	b=FKtPXqFJ7AESl2uhBCASU6krSUaQjAKz4Fyu3umscskNI7x/WujGzGWQd87Q3pcKHHBbII
+	MyaEEDzzhMyFeftYob1PVRbpwT15bU+5NbueYvB350cvGo7jWWUaItFwtVR27lSmV4MeWn
+	e7tk0be4bymcqYrx2kzhRkVkGA+6gV0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QiCNVA3p;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMR7nVOa;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5933960142
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB6BC19421;
-	Fri, 10 Apr 2026 23:55:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 33C0D60141
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:57:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EB3C19421;
+	Fri, 10 Apr 2026 23:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775865337;
-	bh=zw2XYHDnlTw0qahEiBS32vzXn4QNwRFUrjs/0wSN/yk=;
+	s=k20201202; t=1775865423;
+	bh=fC9m9hWBDRvcsGbkiKWjW38zCbWI8Pw4SpDiXRdNZNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiCNVA3po6Yxr8/tG452qobIJP2c2RhkzOCWFUUS/Y4TeXCnBhnZZPHPefmndSb7G
-	 o6RZWXMZ2GWPsXRcHxLSvswNhNFaaPx8tO/+oBzqeNDv8wZ7PtndWSP8sSsOnVzq/f
-	 DABSpZFfGpj3AuJ6IjSQPBFJ1nx5whO8CpL/4CWc5qSryGLdDIwZTalwl2zNuBzF/7
-	 yrhOSbsvYzXeH3nNI2j9itsT9wK2Sww0GKBFBDLbs3e8qL9zR9rlhc1g+XKLxwFaVK
-	 L/c69jZGObXUmGOHRD8xVvmse2MPfOvxN6AoEhdxkzRLpuZ1/8LcIJGou4r6Ndc6HD
-	 aeFqXDAxPu2dw==
+	b=OMR7nVOaLcyu76qAZGsocidiGrhC4s51MCUzYZ12sbxiMITE/RivK27TyYrkRnXeH
+	 cncDVtNgDAEuU09utKGQWZ579oXiPu07utDkgqfsyOcia3/KjoflDf74AJ775Bdk9q
+	 vJ/heVujY4VCVbCxaTfoD2NMvYuS/gTOsDyxGWvG1ZFj4xbEQcprBlZsn74/d+TqA4
+	 9y6wgTMCU+dpRp8H41aJRN9CybGvNq0nSZnLRJlGUjzvIqbeDGy9XZWYwH79vGNGF7
+	 zp9XZW0ueb9hY5BmaconF6bSt7cCOZUbJkYeoMsxv2EQNS0Px+fpfttmNLlrnZ7Ni5
+	 63T31HqL4NPcA==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v5 02/11] mm/damon/core: merge quota-sliced regions back
-Date: Fri, 10 Apr 2026 16:55:26 -0700
-Message-ID: <20260410235527.90900-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH v5 03/11] mm/damon/core: introduce failed region quota charge ratio
+Date: Fri, 10 Apr 2026 16:56:56 -0700
+Message-ID: <20260410235656.91023-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410142034.83798-3-sj@kernel.org>
+In-Reply-To: <20260410142034.83798-4-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5d4ums85rgak5rwpwjjixr98fdpz3rmi
+X-Rspamd-Queue-Id: C03BF12000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0C2E3100002
-X-Stat-Signature: wbt4b11ypnimfby365q4tk15qyaskqxe
-X-HE-Tag: 1775865337-115250
-X-HE-Meta: U2FsdGVkX19mqDJW2V4fy/YeUCNJjCGqfzN66IjUlR18mOaVgXC1/QuRDce1siRigxUma/ZV6KBBCJahxXnjeNoJ7wlfXlDEr9aETUMWodtw6kzshLGqj+CZQwJTI8eu74KA8/4tUV2kvsRFL5ncI4MZYXEXtz9PCy2M8W4jgAUZSJBoMnDTOhPVgp/Oo2IoylVqXqal/1iu1U9H3qmGWmvNvoaI5KyAWDjdesq4z0Ur9PV0P5ADtlaDHEbV0PFf1nTPELKE0cBuDqmazHinDx7N0rzEQsGj3sb9ekkz9LaWMIMwd7R59O5zqXWmLX4CC7EyhZoGW3cDJD36QFsWT3TghxQV2cRnoDvkJRpzMyt+/ZyVrx17CJwNUppXfB3FSuOE9xqxhSlaNJ+aj4nqQsOOBRpo6V/L/tM9s7DBvPtnWWhvlEyoeQ1/HopqQqhIXEXHTiqqKMBZi5pc4gNT/JPT996lLDm6AQ2Ll4HNo+RYk8kzPeJxLwioM4E1SsuJEuKqJ895G+ldlf7HBUaPzQf8AuJrqAE/8tv5nFPsouCKw2Hrcbu+eJnF2egIzrBr3o2E/Xw82Qtf3J/z6ggGVsA1APW0FMJWhf1DdNt2dcwb5q9kXemWp++5X9u3NC+1Xy2cTkspuuxIojPcrTbwkTdIdWuMU8c6seGpMguZKYZywuUOvF/r81s9TSolwI+4q8hsbJINPw2LaFIpAFol5e+oawTF7+cklfhlSvN0PR7aAGtqurkWIjB/7R0xPfROyN8qXQVjMmvmvcRBeTUkhyWn6iixnh1pm/6n89A07CxAjUPWcgK00GJHm+qc10nmg3tgujGKvRwz+nrLO0Xm/alzFyceunZDESY4chCHCtm5tW7ammFL/tBY2nlsyV5qnLPQ0NIsVcvbYrWl+Ry/csMHNH01ODeDhhscBSd7W5KpOD2/1LFR1vZqU0nFQzqgbG7Wyx9tSkhgRml10gJ
- QLFpl1Jz
- aeKZUlD5kg5ASA3Rzy605ASWaw234iXkW7MTYvJ+zX2+HoMTkfB98NWmNDSPwyVB2X0H0P+5SnCSwGaABRwbvzcl+npjTZhjC1MwhnuYT+J/dZfOTpilzneVEeu7MQO3ns6zi91AP7MQFRPKIhyeZlJ9/oQqRtuFok1vFsKFAOlQZaY1hTUh2SNmAzXpYLGXHFIRwM+xJGn21BqSX3ebIM2a0Obgqasls1wAzuaDlhiDnOEfPCpmG3VOpkhO1cu0cyZejG7+fsPjomMnobJcgHqvIx3eXdulqSbfIdS10vGSvGuh0MWU3ZB8CEKJDEOQazycBtXsf3yz3soUErgXCSwCMw2sYgs41oMVlL6I3aFoQp95NcCozF6qzOA==
+X-HE-Tag: 1775865424-367058
+X-HE-Meta: U2FsdGVkX1+SI2C8A+eTmIBMpl/uIJzXcnNTs0DkYngLaVhqfdcNix/VBQa7jeKvnwnL0YGLG8ZWvwH8bTLuOCxKAONieIXDJLvvbUlseCjcNSmCg+J9mwwWb680Yp0k+JvNwyF4xBeWYJh6c2/mG/8ZepsJb6ryPgzfBru/70XM5CeGX51M7lqaR9XM6/7AjxvRqOmm7eT+RMXV5xDLncZR7KEmdWK4d9zsnNK/4mm0kTF+DkDIdOuXnlw8UqvuUUGigyd0vl+h5vuHsVg3IZz5wix+4l+aEh9Hp6P0P1O6RLVGcGtWGS0yQglQa+jVHhlAhCVbRbvzkCUaeALYEcaJsUwnyDXTXEntg9a4zPHbpueTrWr5SZJfcRIzF1hY477gam34pos2tVd+m1qMFoe1cIU76wuljWCoTr9oO6WCNfuVIYejWUxG4FtixeePk7UsG9khOYfRzVwDlIP7tD6nypDYDFn3C5Y3j8LAA1qy/WwENEeqwdPLdrAkEs3oV2kGf9mhMRYwWQpMVWUTk/bs6xgn1JLx53zJqhmDMUs/fAF6koqOA28UCKzBc7h5JwzRD6mE7dFcn+fWm8Vq9Dx+F2L4PcBEci+nrUtPcjN7oysp+bxbyEA0Bvd75EcAKJ2HBBcvxPLWWnO2dYZV0/Th5TNy+htaybg8M7pr8ctnghdSQ/iL2GQqHlMwVlJSor9MhH+GlRrCAKnwvxL6CQz1U3del5VdlECitATjoFRsdJTxm0P3qNHqAiGab/t+t3pbXp2Pp20GHqYMHEEeZDg7pBdgY2Fn82P8DjCQot3oY966bhwsB0rFAZvDNy6hkbkoZ47UZqIra4MPW0ZCnboQ1cR1ml3byWGMcAcgSfS7iJR1qLk45BdeLTXf4PgqWcR1SMll2Pir4u3KmWkFXyuYCUAQ9TX82JRZiUWBn/+sXjEnpTiOrCDrtjaVoVnIAlj7cIDbe7jnFFrA5Xi
+ Q25iYmPS
+ NAT7VzFgsSV68n4SaskJdzt956OVKMOno8j0jtgsT6LqLGqTKCtevVon8zXcmc6pFXIS7GG2+/QTAKwrmESjGfcJ1LZJG5DNUg9cr6pDVjQMd6R802iQSzoiukhgdMAi9AJ77EchdDb+YwxexZdHA8AeGJj63Ej4c+an52D0WpdbAC8x9DhPiJpDalI6WBU0kHvyOmQ7U+I65KDRhA/iiegM113qlBMMDev23x3K0pFU2o2Ja+bO56KKZjdaM5ucMClzOWGJfutL9cqdXgPB8QjoMLGH4p2gjbXVwUbZEL9bhBSZ5VY0JAX+CRdeLnqSCNa3zReCWvD+hK2wo84KiHJWYrrIawkF3Tw+2NTHmLdMyoAH18Fu2SoJjng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,152 +91,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: sashiko found an issue.  I will address that in the next revision.
+TL; DR: sashiko asks same question to previous one, which I decided to ignore.
+My opinion is not changed.
 
 Forwarding sashiko review in a reply format with my inline
 comments below, for details of my view and doing discussions
 via mails if needed.
 
-> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-3-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-4-sj@kernel.org
 > # start of sashiko.dev inline review
-> commit ae9f581463db42127fa24541161baf201709d5f9
+> commit f672ea44b246c3c6bb3fac52d693ca50e48cbbac
 > Author: SeongJae Park <sj@kernel.org>
 > 
-> mm/damon/core: merge quota-sliced regions back
+> mm/damon/core: introduce failed region quota charge ratio
 > 
-> This commit merges quota-sliced regions back together to reduce overhead.
-> It avoids merging regions if their age is non-zero, meaning no scheme
-> action was applied to them.
+> This commit introduces a DAMON core API for setting the charge ratio for
+> action-failed memory. It allows API callers to specify the ratio flexibly by
+> setting a numerator and denominator.
 > 
 > > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 8dbc365bb8e97..97b375c720251 100644
+> > index 97b375c720251..cb8f65db0f4b9 100644
 > > --- a/mm/damon/core.c
 > > +++ b/mm/damon/core.c
-> 
 > [ ... ]
-> 
-> > +static void damos_apply_target(struct damon_ctx *c, struct damon_target *t)
+> > @@ -2041,6 +2043,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+> >  	mutex_unlock(&ctx->walk_control_lock);
+> >  }
+> >  
+> > +static void damos_charge_quota(struct damos_quota *quota,
+> > +		unsigned long sz_region, unsigned long sz_applied)
 > > +{
-> > +	struct damon_region *r, *orig_region = NULL;
-> > +	unsigned long orig_end_addr;
-> > +
-> > +	damon_for_each_region(r, t) {
-> > +		/*
-> > +		 * damon_do_apply_schemes() could split the region for the
-> > +		 * quota.  Keeping the new slices is an overhead.  Merge back
-> > +		 * the slices into the original region if there is no reason to
-> > +		 * keep those.
-> > +		 */
-> > +		if (!orig_region || orig_end_addr <= r->ar.start) {
-> > +			orig_region = r;
-> > +			orig_end_addr = r->ar.end;
-> > +		}
-> > +		damon_do_apply_schemes(c, t, r);
-> > +		if (r == orig_region)
-> > +			continue;
-> > +		/*
-> > +		 * If no scheme was applied to the sliced region, the age of
-> > +		 * the slice ain't be reset.  Don't merge that back.
-> > +		 * Otherwise, the monitored information of the region is lost.
-> > +		 */
-> > +		if (r->age) {
-> > +			orig_region = NULL;
-> > +			continue;
-> > +		}
-> > +		orig_region->ar.end = r->ar.end;
-> > +		damon_destroy_region(r, t);
-> > +		r = orig_region;
-> > +	}
+> > +	/*
+> > +	 * sz_applied could be bigger than sz_region, depending on ops
+> > +	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
+> > +	 * the region size in the case.
+> > +	 */
+> > +	if (!quota->fail_charge_denom || sz_applied > sz_region)
+> > +		quota->charged_sz += sz_region;
+> > +	else
+> > +		quota->charged_sz += sz_applied + mult_frac(
+> > +				(sz_region - sz_applied),
+> > +				quota->fail_charge_num,
+> > +				quota->fail_charge_denom);
+> 
+> Can the mult_frac() calculation silently overflow on 32-bit architectures?
+> 
+> The sz_region parameter is an unsigned long. On 32-bit architectures, this
+> means intermediate calculations in mult_frac() will be bounded to 32 bits.
+> 
+> If a user supplies large values (e.g., fail_charge_num = 1,000,000 and
+> fail_charge_denom = 1,000,000), could the remainder multiplication exceed the
+> 32-bit ULONG_MAX limit? This could under-charge the quota for failed regions,
+> causing the DAMOS scheme to exceed its configured quota limits.
+> 
+> Additionally, can setting the failed region charge ratio to 0 (e.g.,
+> fail_charge_num = 0) neutralize the DAMON time quota (ms) and cause kdamond to
+> hog the CPU?
+> 
+> If actions consistently fail (e.g., sz_applied == 0), the total_charged_sz
+> will remain 0, leading to an estimated throughput of 0. This results in the
+> effective size quota (esz) being bounded to min_region_sz.
+> 
+> Since charged_sz remains 0, the check in damos_quota_is_full():
+> 
+>     return quota->esz - quota->charged_sz < min_region_sz;
+> 
+> would evaluate to min_region_sz - 0 < min_region_sz, which is never met.
+> Does this cause DAMON to bypass the time limit and process the entire target
+> address space without stopping?
+
+Same question was asked to the previous version, and my opinion is also still
+same.  I will keep this as is.
+
+> 
 > > +}
-> 
-> Does this logic safely handle cases where orig_region and r have differing
-> ages?
-> 
-> If a scheme applies to slice r (resetting r->age to 0), but was skipped
-> for orig_region (leaving orig_region->age > 0), the check if (r->age)
-> will be false. The slice r will then be merged into orig_region, and
-> the reset age of r will be lost because it structurally inherits the
-> non-zero age of orig_region.
-> 
-> Could this cause age-based rate-limiting to be bypassed, allowing schemes
-> to erroneously apply to the same memory regions repeatedly in subsequent
-> intervals?
-> 
-> Additionally, if both orig_region and r have the same non-zero age
-> (e.g., both were skipped), if (r->age) evaluates to true, setting
-> orig_region = NULL and skipping the merge entirely.
-> 
-> Should the merge condition verify that the contiguous slices share identical
-> state before merging, perhaps by checking if (orig_region->age != r->age)?
-
-Good finding.  I was thinking the scheme will anyway be applied, once the
-quota-split is happened.  But I was wrong, since DAMOS core filter is applied
-after the split operation.  Also, age is not reset if the action is DAMOS_STAT.
-
-I will address this in the next revision, like below.
-
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2439,35 +2439,32 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
-
- static void damos_apply_target(struct damon_ctx *c, struct damon_target *t)
- {
--       struct damon_region *r, *orig_region = NULL;
--       unsigned long orig_end_addr;
-+       struct damon_region *r;
-
-        damon_for_each_region(r, t) {
-+               struct damon_region *prev_r;
-+
-+               damon_do_apply_schemes(c, t, r);
-                /*
--                * damon_do_apply_schemes() could split the region for the
-+                * damon_do_apply_scheems() could split the region for the
-                 * quota.  Keeping the new slices is an overhead.  Merge back
--                * the slices into the original region if there is no reason to
--                * keep those.
-+                * the slices into the previous region if it doesn't lose any
-+                * information.
-                 */
--               if (!orig_region || orig_end_addr <= r->ar.start) {
--                       orig_region = r;
--                       orig_end_addr = r->ar.end;
--               }
--               damon_do_apply_schemes(c, t, r);
--               if (r == orig_region)
-+               if (damon_first_region(t) == r)
-                        continue;
--               /*
--                * If no scheme was applied to the sliced region, the age of
--                * the slice ain't be reset.  Don't merge that back.
--                * Otherwise, the monitored information of the region is lost.
--                */
--               if (r->age) {
--                       orig_region = NULL;
-+               prev_r = damon_prev_region(r);
-+               if (prev_r->ar.end != r->ar.start)
-                        continue;
--               }
--               orig_region->ar.end = r->ar.end;
-+               if (prev_r->age != r->age)
-+                       continue;
-+               if (prev_r->last_nr_accesses != r->last_nr_accesses)
-+                       continue;
-+               if (prev_r->nr_accesses != r->nr_accesses)
-+                       continue;
-+               prev_r->ar.end = r->ar.end;
-                damon_destroy_region(r, t);
--               r = orig_region;
-+               r = prev_r;
-        }
- }
-'''
-
+> > +
 > 
 > 
 > # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-3-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260410142034.83798-4-sj@kernel.org
 
 
 Thanks,
@@ -246,7 +179,7 @@ SJ
 # this using below command:
 #
 #     hkml patch sashiko_dev --for_forwarding \
-#             20260410142034.83798-3-sj@kernel.org
+#             20260410142034.83798-4-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
