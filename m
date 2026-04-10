@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A56A2F364CD
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EED84F364DC
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBD5E6B0089; Fri, 10 Apr 2026 06:51:14 -0400 (EDT)
+	id E25CE6B0005; Fri, 10 Apr 2026 07:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6E416B008C; Fri, 10 Apr 2026 06:51:14 -0400 (EDT)
+	id DF6076B0089; Fri, 10 Apr 2026 07:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C843F6B0092; Fri, 10 Apr 2026 06:51:14 -0400 (EDT)
+	id D33046B008A; Fri, 10 Apr 2026 07:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B303D6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:51:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65FDDB9A0E
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:51:14 +0000 (UTC)
-X-FDA: 84642329268.07.4CCA02A
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C04A2120010
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:51:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=zkc9T6b4;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf29.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775818272; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C575A6B0005
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:03:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9037259007
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:03:21 +0000 (UTC)
+X-FDA: 84642359802.06.43446F8
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7B27E160014
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:03:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iJoGufjQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775818999; a=rsa-sha256;
 	cv=none;
-	b=NkNcdn3xhGcVFulihBFyL1o/lleho3f0r+KgJ4Zph2Sc7RqGxH/v5yY2bi/+x3jXSr02Rg
-	85NbmsZUhO9bPtr4xOq2l4647iERcOeLNy4aqT+y69HqpYRSWfPIJx/ZHbeGXqH8skrkEH
-	Utcilg+yGCvSG7fMbEJOttHhv1i8xQ4=
+	b=xkBi1JiWLhG+MLZJsO5aG2yQwpqdG6tvyC8z8gA+hlBhYNc9V41ULaD4XoskmKFKXvDRFZ
+	KBpglMS3kBMmdRYkjdTBHGgE13AaQxPIlGDiGdgDC5+fQAhpt28nSH53GcGwC6u3cgF46+
+	rVVjk4GJ/KpgfGAT0CLr69nRr9rLu3k=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=zkc9T6b4;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf29.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iJoGufjQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775818272;
+	s=arc-20220608; t=1775818999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GrBsVEjNctRnodxgaE6XmiwO91zdT6jFmRl1mywmyDY=;
-	b=18l3GTtQiHHEC9UJ6/nzROZ5Yh47DoWhTK0huNO02lpDUQdz0HKvr4gom8Ija2P1vIKuf1
-	YpxkfVtHQDd7mw+8M7/t+ElBJQ1/QLshgl4SnahvdYvbxqfgJqzj3n8lKzx8Phm4Og6ULP
-	EML1a28hAMER3iDXIhLwj7pZ9XU88Sw=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 1EFE1BE890;
-	Fri, 10 Apr 2026 10:51:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1775818271;
-	bh=GrBsVEjNctRnodxgaE6XmiwO91zdT6jFmRl1mywmyDY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=zkc9T6b41/J2Y+aDNrMjlSTZdSE4B/pmJ3/nXN1P0pDq48TGbPBUIsMmplmGkxo/T
-	 FLrHCyherHJsvCCQFT9w7nb8IESZR2kxfgB9PjTfsVhtfCp0an7BeQxNsydSzh9rV5
-	 zvKagV/DiZeMO/DJlpDz2T107AFWQlTIFkRRagKs=
-Date: Fri, 10 Apr 2026 10:51:07 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
-	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
- vmstat_update
-Message-ID: <adjWGyiVZ4neZRCw@shell.ilvokhin.com>
-References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
- <7cf39b82-ff21-4d9e-b2fd-1636c3e203ce@kernel.org>
- <adiuinlYfkIjuoOJ@gmail.com>
+	bh=8bka1cw1Qi/26a2+Jc2kZb2RQ89wlOuzga7814xjpSI=;
+	b=rOf0MHvp3O0eYbaFYnySWyrDdrwt456b4ChBBF62mtxejtqKyys2XA/38RqZi/wMkpVd1U
+	+oPHBGbFlScdJMK1LeeZUEbAJ/tRqQ2jD56wkMt9QCuv3vsJU/BnvCzQDAvjUy55t0zeGO
+	BFiYrt80zQovVDPV7Ib+HXsjV3FPRmg=
+Message-ID: <803a0c15-0a6a-4c00-b6b3-eaae56d5fc15@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775818995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8bka1cw1Qi/26a2+Jc2kZb2RQ89wlOuzga7814xjpSI=;
+	b=iJoGufjQVaQA6OgKeg5PcAsyZ8KZg1ybHyCC/iI7k/7xV/aIhUEg2lF1iVeMxXrG9M077+
+	EoC6fgrcjKXP0ZjKnjkT1Yvi28Vfmm6jVAR3ASkUYQ/Z0Ldz7JnJE9po7D5M3BnsWEuBwm
+	p8XAjefEGV13yARmt8akLWTc9caFn4g=
+Date: Fri, 10 Apr 2026 12:03:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adiuinlYfkIjuoOJ@gmail.com>
-X-Rspamd-Queue-Id: C04A2120010
-X-Stat-Signature: au9yn68mp3kwbio7j47cmpjouzp85cg6
+Subject: Re: [PATCH v3 0/4] mm: improve large folio readahead and alignment
+ for exec memory
+Content-Language: en-GB
+To: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org
+Cc: r@hev.cc, jack@suse.cz, ajd@linux.ibm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+ kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
+ rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
+ vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>, ziy@nvidia.com,
+ hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+ leitao@debian.org, kernel-team@meta.com
+References: <20260402181326.3107102-1-usama.arif@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260402181326.3107102-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: fw3aninmw5mdpqn3ru9sbh519yoxeng5
+X-Rspamd-Queue-Id: 7B27E160014
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775818272-412645
-X-HE-Meta: U2FsdGVkX1/jKb0K8DohqkY+PSku58QZtfhwR45Eulh5h3eo1HSQ8KiHk6PzF2VY5O4PqGxkuwiE9fQLmu2L7YdMw2HhUeVmmbTi3FWRxENFd3AtsxeWm1FTe+lm+YHvyemEuUbM7cKz3IDCfbBo07Zx53TksgazhPVGqaSzo6YR01XHkC4vetvtbbT1fz+DrAOwHH9+TvO895mY25QDNU41kvOlI0kG4h8ZeginlH/VYfSlOYt0kijPUGPod3sBFoLDCyBmjxXiedDmyyYK635M/73/9JJVdYAf90ZAxV98Hg+eekDmCZgepk4PTHIiHVxiI8rZ7RAkxLJibcr/NB4wP/kEZviwjSPqchO/zTDniChT9FqtKWcwEBu5W0vstPl/uZUV14xVjD2tJuIKrQ8C70xc+NDBKy6QQflP/QylGOgdArhIVA+A3fsemoGXWEvf76lo336zWBtGMIYcSarsyH6OA00hWZoBXCRiF/brVH/M1Unv8udG1vLnV3WKZX/hjWgBwc4tnNtdaQbCoQnpC49r2kwOzYUAJoNiuqWeWIOeo3bmU5UDwVCVeXLiFa2ycLUvx+I6JMvv+s6jn6mT6hhz7tGS66S7zjux/u7TVhltnKmKiVsUZXFyGPyqMoxTtYUM43L8KCAsdHiDK1xK22Id2kWhBbqfD+UQE84ozhW+8mR7Fjyuxp4/VACaCb22Co4ObBdaONUSwzIfnNxIH5Ku08QejTz6PBEUzyVlOtOi0cp4yuFL/v/QXQLTKsSE1us68PHHzAK50JyAQDhspJsP89+hTsQE43pVV+92J2XlMSrkIZx+7RHmWn1J5CC7iXR+ESe8f+bimLsR+sR4hArPdxp5JJo9TMrfiKv+Q/oS123oFe2DvBZ9hBPst3hbk2FazODYCEsgHQmxPdxPVm2j372ocjS4kQCPXgEaGQNZUnl6WsHdfAhc2p6wkTITuwA3yI0YuTq6rAv
- N9XxV9C8
- VN5QabJj/caovLaG/KyYBCzpbZaTwvyjqFXhIMxARACicbrQB9Ip29pcOpX4+JpuLZSvDTO8wagC9s6KQ82SOT5/xO5/gwiA9awUzO6XrlKva4X1OlpLurbeOn/q5GDAt6ogyx9/ZLbmGmOfkDPsN3SHMHkObJSQ0tIBD5v3R274qRrE53UIifEWgYvnbFKMh5Fr2G2n626BPvF8WHhK7w+RnXQgPTzP91Sh0f912iulpp9nhSu6tiEGV3btik4xeE3Q7gN6Jvk7k7mkPtebfQ/3qzW+0tup1U6k6r8tn047MI9mAM6W3b1Vobg18uEmy/u9dP4MNK/jBoZJ4m4y/EEe2a7IjiU55ViyXYRsYsCDnDMO/Mh/+dx3QSJJTHV98VitF
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775818999-560203
+X-HE-Meta: U2FsdGVkX1+HwWgvfd+EXIHEURiABTX6zQOoy0ZLH31BU0hVWXh0tQikQX/F1m2+Q3RxkH2LwpUciqCNEMGJZXyY5TJspxhZSIQF7dYVI5VRmvYnGOt0VZVJCTw1ombAyZP09XGdEhXJkDWm/p33Jr5mWQvbKbMhyTTYATe2VYOfy5TK/C1FGK+7DGwoW8Hpa8sBli3jzrtJ1dzVtb+tV6nwxAiW0G1bCt7U3ANUBZFkInGWiUZbhS8MDg7c6CoViK9R4/8pOzQI9YQ2sv4C+b0KurXHSvap3YUf+TGlRgRC30ScDyChkM5I8Xp/7AC/ahpa3qlqxZKcVrTugH35uoxgie2b59AtwUxNPnTcCJzHsa3kxeDvza3Poa/W8KM4UIjnMuIApF73fiRDwwA8HZjwCw4UMFXqLu8m+FDYJFByHoJeEPf6dC6mTnLkSIFLnnqPdGOYDhkbICmGe4M7llsEbDoyaBrL72q0UE22jP3q+mEVL3J4T6M411HGF2xFTtZTur5Tp+WCVWDZxgqU2SAEdf4wvxmRKXxKvDm0FJdo0VxIegdNR4z7iIndb0ph9osvFlKok+hqf8+cFDZiefiWRKNXFMEo4x+f8MNuT3gvfrElhuNHcAv829dVkp8UoFLTBucvlndFHz2gTdqdHrM7BIX5D7GBg/v29IYQ5a/SKW8CYKm4TAUKeCE7rR4gHUdrygWbi9sQlUYlhauJ+3/Cf8VLU+PcQlYe8RuCav6Kz60CcFb0RDp7sKO49Z0y5BZ5wnqU60KIrLwzN+sPp/knFGwRbUR1Z0euV93GChcW6UFgiE72++SAix/io//JXWWpDUVUAWGkQHzn/kwyLIonWM3ZeBN3ajDlUMlhntJmz8jYQ7PmZ9S23ob0UJ0Yt2YTFWy1g4W2rVlYjZAw3zgbt12ibZQd7perQgRqSe1NzkBrxuPaoS7AqYy/HAzCfGrbmJi1/EfdpbC9RyK
+ hhpTzj3V
+ GYgxnlcDE8fhh+jaN6R07+EU4SVGV4mOXIj6znIIixgKh5fATcarWxLpr2l//57IwguxJmGKLvHFPH8zVTaWs7QE2Px5P5KjsflOgHK6WUqXZzLWdla/ZkYef5aVTq37Am5H+udQ7OXT9IKUVkxtDKpIiUCK2MjgeEcCGim+1V0YyB0RwjUgz3w1nImAhS3dHjTcwWI0cHf/smo5mUt8Iy7o6ETI0pP5hoVjOr5pib6Hro03IiGZr13oOh+WjQFVDEbhC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,27 +100,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 01:03:54AM -0700, Breno Leitao wrote:
-> On Thu, Apr 09, 2026 at 07:01:01PM +0200, Vlastimil Babka (SUSE) wrote:
-> > On 4/9/26 14:26, Breno Leitao wrote:
-> > > Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
-> > > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > > Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >
-> > Looks like v2 posting raced with Dmitry adding R-b tag to the posting in v1
-> > thread:
-> >
-> > https://lore.kernel.org/all/adebKQaiAP4G3liv@shell.ilvokhin.com/
+
+
+On 02/04/2026 19:08, Usama Arif wrote:
+> v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
+> - Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
+>   to HPAGE_PMD_SIZE limited to 2M (Rui)
+> - Reviewed-by tags for patch 1 from Kiryl and Jan
+> - Remove preferred_exec_order() (Jan)
+> - Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
+>   otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
+>   do_sync_mmap_readahead().
+> - Change exec_folio_order() to return 2M (cont-pte size) for 64K base
+>   page size for arm64.
+> - remove bprm->file NULL check (Matthew)
+> - Change filp to file (Matthew)
+> - Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
 > 
-> Dmitry, would you mind reviewing this version as well to keep the review
-> trail complete?
-> 
-> This is essentially the same patch you already reviewed.
 
-Andrew seems to have already picked up my Reviewed-by in mm-new.
+Hello!
 
-There are also several other tags there, but most of them were given for
-v1, while the current patch (v2) differs, so they may no longer apply.
+Just wanted to check if there was any feedback/review on the latest
+revision? 
 
-I've added my Reviewed-by again for this version.
+Thanks!
+
 
