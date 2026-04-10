@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 487F1F44840
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:24:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C7CDF44842
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 11:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 739AD6B0089; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
+	id B5B0D6B0089; Fri, 10 Apr 2026 07:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C38F6B008A; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
+	id B0BDF6B008A; Fri, 10 Apr 2026 07:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B166B0092; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
+	id A21816B0092; Fri, 10 Apr 2026 07:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 426856B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:24:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E32058EC3
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:50 +0000 (UTC)
-X-FDA: 84642413940.24.33D3A66
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 609C818000A
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:24:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Lgc0buJb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D8346B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 07:26:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55DBC8BB92
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:26:26 +0000 (UTC)
+X-FDA: 84642417972.03.CAC1D78
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E0A23100003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 11:26:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="mnQfO/NX";
+	spf=pass (imf05.hostedemail.com: domain of create0818@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775820288;
+	s=arc-20220608; t=1775820384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pL2u8G14yedECayBazskDlM9FGACE+Bqe2F5AnR4p0w=;
-	b=updfWPVCJWyNiDJBboOPVDYgOB9UJnwmCmZf4MJ7ttHRYTBJ/LwHOGuULf6fUR1jCZn81I
-	hHrSvF+hnFyxw5tLi/P8T3PxQ8gyUgjynEnCZXVe392Sb0eFwF4kRe78He61xImRdbD4xd
-	oybdEeg/0zEP16aYw7ettan9Qvn3ZIY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775820288; a=rsa-sha256;
-	cv=none;
-	b=c4E2M85jQes/0FtsjHG3VQPIpszUmuPAZmbsK3h0J529iQrZsfV5+1o7k+US38XgrxrlU4
-	js8oRjYxhn5jSKX8DNI1KYSFcPV0yhlw4zL5LzG/sqeddmAwZ2Zf2dp9I7Dq7yYzzFhpev
-	Uw+JVt96G0+/MY8ntqoadsMz4hTmMCI=
+	 in-reply-to:references:dkim-signature;
+	bh=QK5aDz/JApH7Hqn3dICtUg98ezuf5oFq92vgm9PsAPo=;
+	b=yuxNripyRxb1y9Gg/7lsAaFfUhXho1JCXMlRpLzbLf8ZxYNZVMJ97MbBl7LkdsAVY/9Jsk
+	0doBEkWTuoRGRHc0TRmEgQzPIXXgHEp8Zc55Fl7JgwZs/faYP2OOpIdlQGls9j87wCDgIs
+	dZOd33UKb6LZupQ6zo/c2G3EVHlugtU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Lgc0buJb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775820286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pL2u8G14yedECayBazskDlM9FGACE+Bqe2F5AnR4p0w=;
-	b=Lgc0buJbwkSBl9H29bocyedc72ItyFsaAvpYxeazrNi8uKkkmpOkYKIuqoy6zLqjrUOF4H
-	j7mbJ3zl+i0Cz/9du9+JO4FfGZOnSKU6BmHlsN+lbRh6LgyILLCF2B2rCVDrCRzZLHOoHT
-	0biJvrXVp0hla/Qn6xTcNSfmBYj4B9I=
-From: Usama Arif <usama.arif@linux.dev>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	peterx@redhat.com,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] hugetlb: make hugetlb_fault_mutex_hash() take PAGE_SIZE index
-Date: Fri, 10 Apr 2026 04:24:31 -0700
-Message-ID: <20260410112433.3248586-1-usama.arif@linux.dev>
-In-Reply-To: <20260409234158.837786-4-jane.chu@oracle.com>
-References: 
+	imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="mnQfO/NX";
+	spf=pass (imf05.hostedemail.com: domain of create0818@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775820384; a=rsa-sha256;
+	cv=none;
+	b=C1/X1aHelgWbti4KDPPc1MHMGcUsicA/Lnv73ppV0WzpGMiSuCuA5NmBsTVsaAivysFqjs
+	h08zAcPLZSee2R2HxMCKQnmc6dXMRDtGQ1h5yX3DMTcNYtNRqC7+xerloymoMCQ043MULA
+	vUl7gkC4dshYDBee26J5we3FyIPvbfQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QK
+	5aDz/JApH7Hqn3dICtUg98ezuf5oFq92vgm9PsAPo=; b=mnQfO/NXtWz4oqGhtV
+	T9N9oAffotp8XN4AHWrxVXHyKkgw6RdjfaBl77vDYGtMNfKespaAIZAS9FKjPRvF
+	QxtAHgLRbxUOgp+sDnJ0Qjj4RaICSoxIquR7q76tnyTk12Nc6e6R49sf1vaiN/Jq
+	F+4Yksmz2hv7Z8RJunjleQ/pc=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDHJatD3thpkDE+Vg--.269S2;
+	Fri, 10 Apr 2026 19:25:59 +0800 (CST)
+From: Cao Ruichuang <create0818@163.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-kernel@vger.kernel.org,
+	Cao Ruichuang <create0818@163.com>
+Subject: [PATCH] mm/vmstat: reject invalid stat_interval values
+Date: Fri, 10 Apr 2026 19:25:54 +0800
+Message-Id: <20260410112554.23165-1-create0818@163.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 609C818000A
-X-Stat-Signature: 71tu1af7z3tqpxpi8ho8i5ge7wf3c46z
+X-CM-TRANSID:PygvCgDHJatD3thpkDE+Vg--.269S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4kXFyUAryxuF4xur1kAFb_yoW8KF1xp3
+	98GryUtw45G3WSganxAF4UZr4akrs7u34jkrnrJ34Sq3Z8K343Zrn5GrW2yF17Cry8XF1f
+	X3yqy3s8uayYyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUj9akUUUUU=
+X-Originating-IP: [39.156.194.234]
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC6Ahak2nY3kgRbwAA3w
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775820288-461333
-X-HE-Meta: U2FsdGVkX1942yEOIQIzTvEtJTfkC/TzV0SU3MZEI1XZJnK/6JBS2MSuM0zgx1s250TvOreqKJ1Hbi9DhmJg7A7/896ibHcOdZ+fBlcFLZeZvbtTdDQxgvzC1eDrdbgGp98mai2fXc0JrqzJ3DCi31Oxyoh6qRVB5h2FTosARmxQQ8CJHejrcyAO3edZ/v3RGgbvHZE6PmYor1pEtAvR+9YZyeuWtHIfhx+38Tf/bMCTZ+k0Oogq7gDO1BkaXZdcoGYM0YS895QzwoqUz25nH3b6+PYhUkjH+txXuyFIUOfegdM4KZlDBZf6G8rGGAhuwpxp+2jC71n9hMOrg/zyzcjC0RaZG3+VJzvsVgdcIyFXNRAUj4Kxfd1B1B9oDbHm8niGZVdF8lhnbQJcvHMSr0TmKp39Ne71rGawwlYlL/GFgJNz0cccQql0W1t//kYpvW7i04lIkjBgb8ey2j4t5FVlS65dKKzajevHcVncAVmGc8QctQxT1cquopc+OY94nse1+c5NS2GVWs28uPGzAz5RbkkkL1bJFcT9uEN6Bvm+MQcDjdHybZhSI82tfjGDuxiVRNV2wlkVsuVFxwT7S+w/sVtD0oVHTLxNKOCw3KdQ3F9JTrgMQC8vzBlBrxt3j6i2GbhlhGGTudYwVpgUQArLYiJLP5CqUvqYYNtCOsdXSKb1e7Huzh4IGAQsoqWk1j8OFLdcac8eMRNvCIBLcdNIVJDBmQnsFLjZG5ZAL3WsUJImPxLqpQDai4XgLGB1xF8UuosPt+OEOU5KTNRx99xW8zQzb4Z0uHOgHDPCSSUdwtlOnnlkQIBt6ilkONzJLAC5uo3UbWOsXvuP93+Owte7jQhhf1MGfH/VAISOWhAk4xzuCWN1XkzSheQwni1ybXDzrfaTLYxShh3BzUSzCaen78ws6k5PEGoM5Zz/4fXT12rk8rd9AjB9SfvGZiiGWy47OnZPzUd8Gi1WFeA
- V0vuowfU
- SVW0mDnrZleORqa54pRJWZR8UF2Z6OeZcNF3QFxQ4KY35snJlqIDDVnMI87MCT/T3pcVE5OwWBqf1tDogTixQzAxHCFMM1xOWmz8TTYko7zTB4x4Hd70nXOJnzUyIylIQ3mUvF0zpaQVzKzxG+vtY5K2yJwSKiBvLEOrtHfF9kDMkovuKffiFo0nrPhizCZYz0aKqY6buvbRDRtYpYkbSOXVn/bAayGHOMgJ5H3KZQQWST/rAG8DNhkk49waiGq7VeRAuznwXOfcRjsI=
+X-Rspamd-Queue-Id: E0A23100003
+X-Stat-Signature: qy74af4qjw3ss4k9h33obquhnzwxsegw
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1775820383-815061
+X-HE-Meta: U2FsdGVkX192HNJgT+MzsC/K3IiUDAleM/j+KjzVOPlVqxL30wjZ1f6t7cVpmNAdSA2Ml5IvJNkCkaS8DMDyqJW/llu8RCdcFT9QDZPMsyCO5z8KbkyGXGBImRShsjwxSJWHY3hxTWZ0hf25CqzXEbW7Xdlfe7V1xons632EgbSgtzFNOxn3kgAYbKUUxBa8BC8KtTKp3DgqwrDbRmiraaTJ3FQPkrMlNYMIDkG5eciCDd/SI3ptizHRLXJSBK/vnI3MeHQTbOG7IXKxy/F42S+RYmFLP+oGMBsBsQ22eU33H00yw/bplEWOTUsNDYZXTmGEWusdaKFJ7wC6QBrvVR8TLkjCUcufbgjc+HwgOj60zgaDPjOBLIsA+VwKUPTr/xR61QbX5sU85xPOOFE4cgjw0giqGGOXv2ySXiAPaHuJ+pVGSIoIVed7LUmF3VzEAP6adXbJOH1TVtmuvAAt6vbbTmtsYUnmaQmLzpbLCDBXoBliu0Kv48TZoY4H+SXnKdT8sS8LYPfM4nwDusLvjJ2DcfuM9cDlBclNhVUVUReQemfmpipQAKgWJnWS8NHHAkZwB199DvUKeVVM09We65svG5qdu1t6ygc0uoRFnjzkLDh5wnqKzA2pLh0xLPOGgC3Tdut90ayG0Oa9EBEuJvc+Gzhzx/l8ky75z+Ifmx1KUEVVx//jgyXPaFWaOq5lNUV86bk/R7oPaSmyH5jVSK8Mv+9EVkyryF8LLIfHKGp3AEHUPxNAEEployAh+fY4jDVzW9U+ojwLm05+WRgzZhKXGieFfE0vEJl9ii0CbV8NOyrK3gLzyEVcyq9YqFjO5CDTNOqq22KBcUnLi77sT8TdSMkomIIpv9u6HcVCU6XBBjCXCrM7uMZj8QfjqYOiz7glLyGoJWxySI5MtA2RROybvonQOrXRh2h2Qvs+bXa6J/nvRiRyQpl8Zw0GBpMNXVrBIUubnaWzujltbPd
+ GWvCv/OX
+ ieLwIXxHZsmc6Mw5cr326V+WRVQXm8uscyejZpy5CWMyZQ0/kG+xbp7iE9PQ2hvAXzdF8ITukDyH90IUOoZAMkN4fcFobiCzslh48iuNN9szXC4zHVhx2KeBaV3DjvR/QYDjGXCgmR8GIMm1CGZL7I524nBvdpaoIbgANLXWOFpPd6Nt+nE1oo5q6lOP+b+2Afqsjf8E6HEhX14D0mOkJvL7Gu5PWZMrNLr/lPSilt+E8vO3+aCcaPI5ipduSSZX7vRgdBdXzZwUZwX+ayI461rNa6DekdZg4tH8ELSBj/pPZG1SpSimtBQ0R14AsJKH+cLeqcdOz47YaC4arYnso9EYhltJ9v+KTQDebfhqFx8jhQNODAj8mGunVEQDJVDPs/FBs/KYvNTpP99Jl+3c5ogFZACa5Z0LzVPiwcIbxz1oqj7PHEo0Mv5hO9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,140 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Apr 2026 17:41:54 -0600 Jane Chu <jane.chu@oracle.com> wrote:
+vm.stat_interval is exposed in seconds, but proc_dointvec_jiffies()
+currently accepts zero and negative values. In the current tree,
+writing 0 succeeds and leaves /proc/sys/vm/stat_interval at 0.
 
-> hugetlb_fault_mutex_hash() is used to serialize faults and page cache
-> operations on the same hugetlb file offset. The helper currently expects
-> its index argument in hugetlb page granularity, so callers have to
-> open-code conversions from the PAGE_SIZE-based indices commonly used
-> in the rest of MM helpers.
-> 
-> Change hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index
-> instead, and perform the hugetlb-granularity conversion inside the helper.
-> Update all callers accordingly.
-> 
-> This makes the helper interface consistent with filemap_get_folio(),
-> and linear_page_index(), while preserving the same lock selection for
-> a given hugetlb file offset.
-> 
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> ---
->  fs/hugetlbfs/inode.c | 19 ++++++++++---------
->  mm/hugetlb.c         | 28 +++++++++++++++++++---------
->  mm/memfd.c           | 11 ++++++-----
->  mm/userfaultfd.c     |  7 +++----
->  4 files changed, 38 insertions(+), 27 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index cf79fb830377..e24e9bf54e14 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -575,7 +575,7 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
->  	struct address_space *mapping = &inode->i_data;
->  	const pgoff_t end = lend >> PAGE_SHIFT;
->  	struct folio_batch fbatch;
-> -	pgoff_t next, index;
-> +	pgoff_t next, idx;
->  	int i, freed = 0;
->  	bool truncate_op = (lend == LLONG_MAX);
->  
-> @@ -586,15 +586,15 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
->  			struct folio *folio = fbatch.folios[i];
->  			u32 hash = 0;
->  
-> -			index = folio->index >> huge_page_order(h);
-> -			hash = hugetlb_fault_mutex_hash(mapping, index);
-> +			hash = hugetlb_fault_mutex_hash(mapping, folio->index);
->  			mutex_lock(&hugetlb_fault_mutex_table[hash]);
->  
->  			/*
->  			 * Remove folio that was part of folio_batch.
->  			 */
-> +			idx = folio->index >> huge_page_order(h);
->  			remove_inode_single_folio(h, inode, mapping, folio,
-> -						  index, truncate_op);
-> +						  idx, truncate_op);
->  			freed++;
->  
->  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-> @@ -734,7 +734,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
->  	struct mm_struct *mm = current->mm;
->  	loff_t hpage_size = huge_page_size(h);
->  	unsigned long hpage_shift = huge_page_shift(h);
-> -	pgoff_t start, index, end;
-> +	pgoff_t start, end, idx, index;
->  	int error;
->  	u32 hash;
->  
-> @@ -774,7 +774,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
->  	vm_flags_init(&pseudo_vma, VM_HUGETLB | VM_MAYSHARE | VM_SHARED);
->  	pseudo_vma.vm_file = file;
->  
-> -	for (index = start; index < end; index++) {
-> +	for (idx = start; idx < end; idx++) {
->  		/*
->  		 * This is supposed to be the vaddr where the page is being
->  		 * faulted in, but we have no vaddr here.
-> @@ -794,14 +794,15 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
->  		}
->  
->  		/* addr is the offset within the file (zero based) */
-> -		addr = index * hpage_size;
-> +		addr = idx * hpage_size;
->  
->  		/* mutex taken here, fault path and hole punch */
-> +		index = idx << huge_page_order(h);
->  		hash = hugetlb_fault_mutex_hash(mapping, index);
->  		mutex_lock(&hugetlb_fault_mutex_table[hash]);
->  
->  		/* See if already present in mapping to avoid alloc/free */
-> -		folio = filemap_get_folio(mapping, index << huge_page_order(h));
-> +		folio = filemap_get_folio(mapping, index);
->  		if (!IS_ERR(folio)) {
->  			folio_put(folio);
->  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-> @@ -824,7 +825,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
->  		}
->  		folio_zero_user(folio, addr);
->  		__folio_mark_uptodate(folio);
-> -		error = hugetlb_add_to_page_cache(folio, mapping, index);
-> +		error = hugetlb_add_to_page_cache(folio, mapping, idx);
->  		if (unlikely(error)) {
->  			restore_reserve_on_error(h, &pseudo_vma, addr, folio);
->  			folio_put(folio);
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 38b39eaf46cc..9d5ae1f87850 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5515,7 +5515,7 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
->  		 */
->  		if (cow_from_owner) {
->  			struct address_space *mapping = vma->vm_file->f_mapping;
-> -			pgoff_t idx;
-> +			pgoff_t index;
->  			u32 hash;
->  
->  			folio_put(old_folio);
-> @@ -5528,8 +5528,9 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
->  			 *
->  			 * Reacquire both after unmap operation.
->  			 */
-> -			idx = vma_hugecache_offset(h, vma, vmf->address);
-> -			hash = hugetlb_fault_mutex_hash(mapping, idx);
-> +			index = linear_page_index(vma, vmf->address);
-> +			hash = hugetlb_fault_mutex_hash(mapping, index);
-> +
->  			hugetlb_vma_unlock_read(vma);
->  			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
->  
-> @@ -5664,6 +5665,10 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
->  						  unsigned long reason)
->  {
->  	u32 hash;
-> +	pgoff_t index;
-> +
-> +	index = linear_page_index((const struct vm_area_struct *)vmf, vmf->address);
+vmstat_update() uses the stored jiffy interval directly when it
+requeues its delayed work, so a zero interval can drive excessive
+kworker CPU usage. Negative values are not meaningful either.
 
-This is supposed to be linear_page_index(vmf->vma, vmf->address), right?
+Switch vm.stat_interval to a small custom sysctl handler that keeps
+the existing seconds-based userspace ABI while rejecting values below
+1 and capping the upper bound at INT_MAX / HZ.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220226
+Signed-off-by: Cao Ruichuang <create0818@163.com>
+---
+ mm/vmstat.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 86b14b0f77b..f48d3bdad64 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1964,6 +1964,7 @@ static const struct seq_operations vmstat_op = {
+ #ifdef CONFIG_SMP
+ static DEFINE_PER_CPU(struct delayed_work, vmstat_work);
+ static int sysctl_stat_interval __read_mostly = HZ;
++static const int sysctl_stat_interval_max = INT_MAX / HZ;
+ static int vmstat_late_init_done;
  
+ #ifdef CONFIG_PROC_FS
+@@ -1972,6 +1973,26 @@ static void refresh_vm_stats(struct work_struct *work)
+ 	refresh_cpu_vm_stats(true);
+ }
+ 
++static int vmstat_stat_interval_handler(const struct ctl_table *table, int write,
++					void *buffer, size_t *lenp, loff_t *ppos)
++{
++	int interval = sysctl_stat_interval / HZ;
++	const struct ctl_table tmp = {
++		.data	= &interval,
++		.maxlen	= sizeof(interval),
++		.mode	= table->mode,
++		.extra1	= SYSCTL_ONE,
++		.extra2	= (void *)&sysctl_stat_interval_max,
++	};
++	int ret;
++
++	ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
++	if (!ret && write)
++		sysctl_stat_interval = interval * HZ;
++
++	return ret;
++}
++
+ static int vmstat_refresh(const struct ctl_table *table, int write,
+ 		   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+@@ -2236,7 +2257,7 @@ static const struct ctl_table vmstat_table[] = {
+ 		.data		= &sysctl_stat_interval,
+ 		.maxlen		= sizeof(sysctl_stat_interval),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_jiffies,
++		.proc_handler	= vmstat_stat_interval_handler,
+ 	},
+ 	{
+ 		.procname	= "stat_refresh",
+-- 
+2.39.5 (Apple Git-154)
+
 
