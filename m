@@ -4,139 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9EBE99076
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0902EF364AE
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Apr 2026 10:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01BFA6B0099; Fri, 10 Apr 2026 06:41:54 -0400 (EDT)
+	id 722806B0089; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35766B009D; Fri, 10 Apr 2026 06:41:53 -0400 (EDT)
+	id 6FA366B008C; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4BA16B009E; Fri, 10 Apr 2026 06:41:53 -0400 (EDT)
+	id 636DE6B0093; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D47CA6B0099
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:41:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E405B982F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:41:53 +0000 (UTC)
-X-FDA: 84642305706.27.110604F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EFEFE4000F
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:41:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MAuboDUn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vtmoDNux;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MAuboDUn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vtmoDNux;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50DC76B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 06:43:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA13B13B04C
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:12 +0000 (UTC)
+X-FDA: 84642309024.26.DDADCAD
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EB36E160003
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 10:43:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TLF2iwZ9;
+	spf=pass (imf08.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TLF2iwZ9;
+	spf=pass (imf08.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817791; a=rsa-sha256;
+	cv=none;
+	b=xBBo7CMyxmFVAmVDKS4r+XziURlozitgIbB+QFKCIzQe0cmXK4xHHFVYmOQY4OpKAm2xX3
+	iWYX7z5jXTsoDQ5VvsvLHgjowD/ONxdA+K26MF5Bpqk9FbYpJmTWt8rLXGmRTGoOuW3Tb4
+	aHJrqBTnlhkeekg29FqKgzgItGDuqi4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775817711;
+	s=arc-20220608; t=1775817791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yyzQ6B0JHT7gSiWrC1iUMZgxNFOYNLK1JBVUTUgNXLo=;
-	b=7PaNtLJfhKl89hoICngkX7QJ07tqDhZ+fx++tTVBAVVtcMlUK/OfDfZR9BY53TdCWtTVTp
-	9ssigTPd/hN047OdvybzyfnTZmlgL9TH4f0N0CDRV3O+WfbkkbyYkzh+uDYUDO5Kc7Ts9o
-	6l8AUGXVRENE5Uz7Um1ONQhqA0RelhU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775817711; a=rsa-sha256;
-	cv=none;
-	b=IwUJk/YuocH7CR7BpdP171S9+4/inTbZGGCdxbdjqqp3HkdI5RG8YqC+04SAzamErd+DJL
-	ga1hq8yo78jynP9IbZvq09n2Xh0PhSR1/48uB2ldKyk0JjGppH30cJbLd1MFZLOPEmBuHL
-	J2uxCuu4dUQJtXfIgvdcVCQ61Sowc9I=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MAuboDUn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vtmoDNux;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MAuboDUn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vtmoDNux;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1E2A76A7EC;
-	Fri, 10 Apr 2026 10:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775817709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yyzQ6B0JHT7gSiWrC1iUMZgxNFOYNLK1JBVUTUgNXLo=;
-	b=MAuboDUnRTvB1p5AvXQd7Ca/a5WeO79Wf5UIWAIi9ly28UBWX9cGVQrc8KS46aTdxhTfXX
-	VzyamlIBHdkDvXInTk9Zr1FgQebeP0OHyXLheSxMc5KHtRTiElNDUUpVFEVQu4IpKe8lQc
-	MM+jNJalYOIODafPdEpKHQw2erU39QA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775817709;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yyzQ6B0JHT7gSiWrC1iUMZgxNFOYNLK1JBVUTUgNXLo=;
-	b=vtmoDNuxdf0tOsRkhG44RJJGnBE4d5EyVq5TnJAbPLxhsSB2s8OXZJc3O4Hx+q+tdEejPZ
-	6538q4HSX5cBqkDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1775817709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yyzQ6B0JHT7gSiWrC1iUMZgxNFOYNLK1JBVUTUgNXLo=;
-	b=MAuboDUnRTvB1p5AvXQd7Ca/a5WeO79Wf5UIWAIi9ly28UBWX9cGVQrc8KS46aTdxhTfXX
-	VzyamlIBHdkDvXInTk9Zr1FgQebeP0OHyXLheSxMc5KHtRTiElNDUUpVFEVQu4IpKe8lQc
-	MM+jNJalYOIODafPdEpKHQw2erU39QA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1775817709;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yyzQ6B0JHT7gSiWrC1iUMZgxNFOYNLK1JBVUTUgNXLo=;
-	b=vtmoDNuxdf0tOsRkhG44RJJGnBE4d5EyVq5TnJAbPLxhsSB2s8OXZJc3O4Hx+q+tdEejPZ
-	6538q4HSX5cBqkDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 124FA4A0B2;
-	Fri, 10 Apr 2026 10:41:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id W1JwBO3T2Gl0BwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 10 Apr 2026 10:41:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CCE51A0A81; Fri, 10 Apr 2026 12:41:48 +0200 (CEST)
-Date: Fri, 10 Apr 2026 12:41:48 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Chuck Lever <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/3] mm: kick writeback flusher instead of inline
- flush for IOCB_DONTCACHE
-Message-ID: <quptbqj7jfparfhrxt45cassborouvwggeqkwbk3ixyt74crb6@e7ivbuu5qlox>
-References: <20260408-dontcache-v2-0-948dec1e756b@kernel.org>
- <20260408-dontcache-v2-1-948dec1e756b@kernel.org>
- <adc-Q1iDWHD5yxHH@infradead.org>
- <gpcc6t5unsoepakjdffsmnmd5duuvijxwdochd753ttix75h7l@nahwzi4qfdcq>
- <ade14lOI1CDiraar@infradead.org>
+	bh=CSG2xsdDRphI9FEycXoH8kdn7Dk+kPIVj1MEg4OQrU8=;
+	b=lfPqJlvQZsppRws1jJB3HPvMY4+GOtj3FwtirkOqMkMJhOj4JuZCWBchYizR1RW7vWsPIv
+	W1Bt+FW/usoyRKFC2SacxO3TVQ1JKr4zWL1/Y0W1ud2WJy0cUkrMG+7Otej3SgNeT4ZRN9
+	z83CMsurUbO+1ohrNgRBIzuiHS5YHJg=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 296BEBE886;
+	Fri, 10 Apr 2026 10:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1775817789;
+	bh=CSG2xsdDRphI9FEycXoH8kdn7Dk+kPIVj1MEg4OQrU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TLF2iwZ9keVMUtLfNwChan/MK4VXF2b0Q70mM4jIFeW/sl/58NbHVD5+E4dVQDKiV
+	 aT7DykZBxO/UPFFoLChIZcqb2ghX9uVWRam0kXqx4OFLrQjHVOOxlLlZRUh50nZVC6
+	 ChtPBvGi/9VAAf2MjVDhYcTC3JIGCMoCiLC53Gg4=
+Date: Fri, 10 Apr 2026 10:43:05 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Christoph Lameter <cl@linux.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
+	shakeel.butt@linux.dev, usama.arif@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/vmstat: fix vmstat_shepherd double-scheduling
+ vmstat_update
+Message-ID: <adjUObY8rFqm9bgg@shell.ilvokhin.com>
+References: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ade14lOI1CDiraar@infradead.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: EFEFE4000F
-X-Stat-Signature: rpmy4x6y1eihub3y8ayk1m6s5yo48cme
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260409-vmstat-v2-1-e9d9a6db08ad@debian.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EB36E160003
+X-Stat-Signature: auh71pg79bej41ufj57x4usymczps5tt
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775817710-405686
-X-HE-Meta: U2FsdGVkX1/FbFLOXQAswN4hwgNgvwtq3zQl1IRc/PxIbjzfZNtoGOKEOtqYBk4ZeTrWrelBKY117CUHEWZV5wOyMeULNZtdaWYEZSAWY1HbNJIV5miQZkx+FXQraftU1hyc7qxsd60UG0EEisDxxfc4LNRGnnSw31TaVFxBFlVydDIY68UYSV4soUqeywNfjYGM+MhrPIFtVXBEvAmxUpUSDeHFdxo+XNxYHGhLtBshT0AcJBVYEON+ro7dvBjn+GzdUTZ00wZRXR1GOiUyha8+HIEnEd2YfCx6BaOPCc6OCbY2DqX32FrQuZFoqkK8jkvm4q303mkyHgLRiwNrM7jh/CVe18Cl3Xwz53VPTU002sjZYPrxY3BIdnGf5b8V0qnV/QyhiKh/LRvGIEg3XdxbY8CPXyQfh+YN+YC4bkHrizZD/gLKsymL8MWsb2IC5B1sgi41NXaGENsyU1/SGqB4G4BQdIufJKlrMroQAe7pCVzcAxLk5wTpxlRHWJEE5lg8XzY3U8zvaJaFw3WxrxGXx4eNoEewwO/Dvd9XBcAXEfsy4b18kHPiQ0TqgFfJQ6NXXj85/jcWzCghUY6eswQASMqJa5jkWPDCVHuaLyVLSZv2dmwHprGTtUczof42Exl2CIlOe1qd7yfdqMNcfq21jWJx4/bAR8bCyiLFIB7wMqWtQbhcgupFFxNoCJpDYQJ0Tfvl8zzG4HPQxh6rs0wrgBnClh5CyvgHG0aGLSTQO4vjYBTwqpT4NSd/28wWcwWlhBOzDTW2SQGDLchDzuT8jfKNtWgz0WzcC2wrbh6PtCe31oKtQT2VMnn84M6CndygM0f5db6/DxQRITjcN87n6np5FmElCBt/aiepHIHQr+IwOEmQQ4vMmVkLoOcYIZxXlOnPjdUinilBtIEaOhAEq/LSj5ynQEP9pYeBgf2nLFRykMrNpH60jETS5FxReUFTUDFXSXDdtsLdoZW
- yCjmdU07
- Br0k4qmBzbT4qxHiIBdsbzcCWsoZO0D1/I+dAf4XM+90A+ULfweHzZzQsTI/koPfdsgK+34PL31xmyg3pgBY1XIpmoblcGlHhqhexi9KisKEKaqIPghzdHgqE7+WCyoXsQVP/S0heCAhuc5cyeXTJCKROQN3gAguBaruv+AmZMuuu6K7X68bj98741Vwt5xvmJzLfzdn663GtYicUNJAv/exDArIwPGWVVJvtHcUGW5X9iwfxQRCPTcTkEsaqbKxAQfFKvk4twV0EOVs+yJqSzT4svcYfvzIzN/0kUpdV8G8k0Bmkm115B4gevzjszWplSJPD8QyScGTYcqNVhzeebABulcI2WZ4fXZfIgr6zUPgGj8HfIpCdduFYnsCbTU/rN8fACrIWdJME2qI=
+X-HE-Tag: 1775817790-146634
+X-HE-Meta: U2FsdGVkX19Qmdm4fWtIBBa6LyLjACjWTL46bUtCxzoYWLtIKGE4vGNvxw8VZBVzpkjzl3xQxI9PeO3nPhzWlnA7t/s5WIb0Gzhh4jTLBeypupae4AKGgIe6P43gJa2zhJjvIzizSYqF9kE6KIinkSSpCrgMBGYOmrBJA8lGFd3lPV8ZrQ+IgCit+jLLonB/eST6AXKlwp51WDWnoDPf4uPOYA9IYe74d7eskCM0Z62w1HgOuluL5K0rMQ0WC2PbEiZsXyHNFSDl9yIBVIHjxA0HZsIUKfBU5x/7fAfzMhawPrLKKVk6SGfw3Ot1zq6RkpkiWhho6Qjt4yZv5xf4MFTto+fOsLaVE4cTgIx0EwB0J7Dl+0TjzMSCP48kHMsNy9HMqEzYu+X0thFWkQbuBMDLbDKYJODVyS8LHuNH+hGFdL8MXK3EwLvsvVdNLCfsH4S59GBXvYUzqgBMQt3E8Ge/U++fNXRSQm6cfM3r41TMCatLjp2zK2EdPX5LM8fVROSR6imHh1XyDFtGGhO/qhVV4D0M+iEJd+f9/xAjp3zVVmELnrS0EbddcJcNxd8YlP9FQ0dDi5u1+e4JmfkbUqtkCMocBP44qbTYQQ5uawowJ7boYZEqk3FKR5YYjkPo6N37dVxuc9ho/2QT7wz68usyjP82wfJ1m0u9YRSKnbp4J+ZwbI7QbdxsKzPM1v2tE4YnA2OMU9GvgCD8RFWeyJL58AflJGKQukvJx8F8GkJXncS73fdG1EAOkY+Lcqj/Ta3eW8sq4aEdyPsp0OP46FKCAYV+dsSmhdE4L4HafILk3WDxMeNdUg9WLVuOgvqTvQM4IEG3eo2XDD2eApPFqDwMdoV7UNlXzhdhFR84XP7ywALHVk/52C8vSQqjtC4KfNY1HaE5Ol6Tyz5i7aWHOKKxQCR62itoWf9BTNd26sI5sAx0sb2fpBN/rX4iw50QXnIFVMiUcyZiSkwg6ju
+ COtPTy4J
+ H9HcXsGkuNcX+LURvdNBiVNJXhVXgZHccyt3+YTnzXuwljgb0QuXomvcPczzmBmePtlmV1AE022+NEo+2uNtwBoK+2ArC7/T/tiklMJEJ9JtYj3hAxl5coBReTl/jhq6bnjseg7dgqwhG0X7b3nApAyYq1UGEAR9rNDKVvI5QYAPLPY6coW4NXFOBnRpvYTKvJHgT37iUBOYBbD8ytU+H3zcPKCl9DiVLyOGTYpCB/n77uLNbH+NX5uipx1sUa8qGKDfPv4WRNCggxwpcZ/Ie3QYf3zxej7Mn3A+y+CvcKmd+O3Kh7SZkij8wp7YykxeZDP8LjDeKTGXx6snOBtS8+J1ohhOhHp8KU/E9Z9HvZ5Cdl6TlsDljLQi07onoY27zjJQM7WVpg1AeBT88kNxMt2UPcseYgmGgJW6C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,24 +97,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 09-04-26 07:21:22, Christoph Hellwig wrote:
-> On Thu, Apr 09, 2026 at 09:21:36AM +0200, Jan Kara wrote:
-> > > So I think you'll want a new WB_start_dontcache bit, a new
-> > > get_nr_dontcache_pages() helper on a new node counter, etc.
-> > 
-> > But I'm not sure how you imagine this would work without restricting
-> > writeback to particular inodes. Maybe we could mark inodes which have
-> > folios with dropbehind set and make flush worker only write such inodes?
+On Thu, Apr 09, 2026 at 05:26:36AM -0700, Breno Leitao wrote:
+> vmstat_shepherd uses delayed_work_pending() to check whether
+> vmstat_update is already scheduled for a given CPU before queuing it.
+> However, delayed_work_pending() only tests WORK_STRUCT_PENDING_BIT,
+> which is cleared the moment a worker thread picks up the work to
+> execute it.
 > 
-> I'd only expedite writing by the number of pending dontcache folios.
-> It would still write the least recently dirtied inodes.
+> This means that while vmstat_update is actively running on a CPU,
+> delayed_work_pending() returns false. If need_update() also returns
+> true at that point (per-cpu counters not yet zeroed mid-flush), the
+> shepherd queues a second invocation with delay=0, causing vmstat_update
+> to run again immediately after finishing.
+> 
+> On a 72-CPU system this race is readily observable: before the fix,
+> many CPUs show invocation gaps well below 500 jiffies (the minimum
+> round_jiffies_relative() can produce), with the most extreme cases
+> reaching 0 jiffies—vmstat_update called twice within the same jiffy.
+> 
+> Fix this by replacing delayed_work_pending() with work_busy(), which
+> returns non-zero for both WORK_BUSY_PENDING (timer armed or work
+> queued) and WORK_BUSY_RUNNING (work currently executing). The shepherd
+> now correctly skips a CPU in all busy states.
+> 
+> After the fix, all sub-jiffy and most sub-100-jiffie gaps disappear.
+> The remaining early invocations have gaps in the 700–999 jiffie range,
+> attributable to round_jiffies_relative() aligning to a nearer
+> jiffie-second boundary rather than to this race.
+> 
+> Each spurious vmstat_update invocation has a measurable side effect:
+> refresh_cpu_vm_stats() calls decay_pcp_high() for every zone, which
+> drains idle per-CPU pages back to the buddy allocator via
+> free_pcppages_bulk(), taking the zone spinlock each time. Eliminating
+> the double-scheduling therefore reduces zone lock contention directly.
+> On a 72-CPU stress-ng workload measured with perf lock contention:
+> 
+>   free_pcppages_bulk contention count:  ~55% reduction
+>   free_pcppages_bulk total wait time:   ~57% reduction
+>   free_pcppages_bulk max wait time:     ~47% reduction
+> 
+> Note: work_busy() is inherently racy—between the check and the
+> subsequent queue_delayed_work_on() call, vmstat_update can finish
+> execution, leaving the work neither pending nor running. In that
+> narrow window the shepherd can still queue a second invocation.
+> After the fix, this residual race is rare and produces only occasional
+> small gaps, a significant improvement over the systematic
+> double-scheduling seen with delayed_work_pending().
+> 
+> Fixes: 7b8da4c7f07774 ("vmstat: get rid of the ugly cpu_stat_off variable")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-So that may result in dontcache folios staying cached for quite some time
-if DONTCACHE and normal writes are mixed. But I agree over longer time it
-might just level out so maybe that's fine.
+Reviewed-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
