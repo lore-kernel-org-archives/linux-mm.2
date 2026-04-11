@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32745F45A13
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA545F45A0D
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:22:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 469C96B0089; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
+	id 02F0F6B0089; Fri, 10 Apr 2026 20:22:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 420AD6B008A; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
+	id 006A96B008A; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3307F6B0092; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
+	id E867F6B0092; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2628E6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B6901406C6
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:15:12 +0000 (UTC)
-X-FDA: 84644355264.17.47A3F36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BDD994000E
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:15:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B3duJlPn;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B3duJlPn;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775866510; a=rsa-sha256;
-	cv=none;
-	b=RLM3Twlgx4CvCpj/HK/+bTGPSZnLDL6glS5LSrt7RifFiY/n4U496Scf2wXrUP7xoIl2DN
-	Z/xJvXzEMwkCwxTOo7zDh5DInJGdnGYUmTf4B9u8bjRMOq3DX2dnOu9A55YTGFWyGWkiUZ
-	ksoEFw7kjonZK3FOaIH3Rbwmuh3KE6Y=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D767D6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67D8559FB9
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:22:06 +0000 (UTC)
+X-FDA: 84644372652.22.28BFCF6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8E1DB1A000C
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:22:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=avzeDsWb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775866510;
+	s=arc-20220608; t=1775866924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tQgACKAfSw9jIQU5TLlRar7J1DmtZzIkk0GiO/TXius=;
-	b=lcKvgFkM1zhs+OPDmhPwnQWNBxgUsQsv7VDk3P6KJo6nNdJlTOGCjBuYMy2+Y79doOgr7G
-	mF+FCk83qrz0ww32+nAJ+TxoxtEUSydCWW+XXrRmZqUs5nFau+WzUv1vkn+ymx2xmS1pI0
-	NoNeSM94lvs5BUHIGqjGESFfJP/4dkw=
+	bh=8uj4Ku8iqZBXLBbomGBblIihtnK4GeGD/2NUPbWgs0Y=;
+	b=42Zimteyv1oVHoFi4NLpmx6udLvUXp6jxRbVzgfRJSUYi9ujcCRXpiKbsYIlLOgdKzN/JO
+	2dJBhFP/wOc7SUe3cBLe2QOghGeUh+aRW8Q+9iSUCWP7564fjiSp0NNZnXyOSTQa8jUlqf
+	rgaVwXB3GjSIGN42kQvJ+aTzXLjTzpQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775866924; a=rsa-sha256;
+	cv=none;
+	b=k7406/XUnwDSuNSuUVClo3NgkAF1oTDYPEoIa7puOrLU7cpMXQMgiVZb7XBgA4M9Ln455k
+	Egh2G/BHIV3e6Y6RYBuWeXaaZ5u/cMb6QgvfwULrzoZROI1qlobp1/kKl+Ew4jp8+6BMfo
+	hSWeUIH30XjXf3nnsIyVcDktgM1fXSg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=avzeDsWb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DFA3600AE;
-	Sat, 11 Apr 2026 00:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B020C19421;
-	Sat, 11 Apr 2026 00:15:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57DF841925;
+	Sat, 11 Apr 2026 00:22:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDBCC19421;
+	Sat, 11 Apr 2026 00:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775866509;
-	bh=/hprKzsu8I0mZLzmAZMS3rOujZINE1lzd39CC+PfBz8=;
+	s=k20201202; t=1775866923;
+	bh=kBiuAJsRleCAE2nQwc802BH6Pka0Eyd4qplz/R/dloQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3duJlPndaO91FZfI0JFxTgOr91H9HHnX80tNiPWTE8XXqJ6VmW9oZlYGS6lI93EO
-	 xrvxSICogGlIJxu1fFzT8BvPDsLrX53QtNeRpgYiF01/IpIgLk151UfYhbWPsSjskK
-	 amuGtilHZwidifjw3z8+GkpsPM5nbvFY/AcecFk9PKGRsyjvZwTL34o+zkvMSHt6s0
-	 bFKX2m6fzfqo6w8WnoBNsEkIjsme5v1XVOMBozW8h9xav117ALv9A9bU0gczhzpRGW
-	 y7SfTDsc5nc08DLZ/tX9Xoq9zFxgPhyPSFqpdSgB1G8nbO+Gsk3LW1yyVKzcUoc0WT
-	 ViQ48w0S7b2cQ==
+	b=avzeDsWbKMIlIj8DvJuHnH9XjqAKJtIGdak9Bn+h27yxmse4cmnu1tTqEIXxq7wYb
+	 dpKuiX/5HPam4Jb2FJu1TqPCpJito4as02is2S82+4AQjk78N/hwU/ApcG3t4cUifQ
+	 loo9ZEqIT5MLmNGhGcbcygvWYZRiYESEKHgbYndk1TCB3JmuJoZQh7Xe2BJIYGr1CK
+	 nO+zMw+5D+pcGWP2Ffm3yTjBq1Ek4GJgtFMqOkA1IKn8MjeFpwlqMUjTzo/R4heqEU
+	 5Z7JUVE6PrNcEa9ts+1/lrwGlN/kk/QVshfvzlX2WVYxWferX33d8lvBIis1grNpO7
+	 yRbAdr7SadxCg==
 From: SeongJae Park <sj@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
+To: Cao Ruichuang <create0818@163.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <liuye@kylinos.cn>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
 	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/memory-failure: use bool for forcekill state
-Date: Fri, 10 Apr 2026 17:15:05 -0700
-Message-ID: <20260411001506.91334-1-sj@kernel.org>
+Subject: Re: [PATCH v2] selftests: mm: skip charge_reserved_hugetlb without killall
+Date: Fri, 10 Apr 2026 17:21:55 -0700
+Message-ID: <20260411002155.91521-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410074740.2524718-1-ye.liu@linux.dev>
+In-Reply-To: <20260410044139.67480-1-create0818@163.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BDD994000E
-X-Stat-Signature: 3pneena5nhpwtg96mft5zpza4uqfpyr7
+X-Rspamd-Queue-Id: 8E1DB1A000C
+X-Stat-Signature: eb1bfr9gn1arcqm1apag1jqzwwjq1aio
 X-Rspam-User: 
-X-HE-Tag: 1775866510-36570
-X-HE-Meta: U2FsdGVkX1/AqU4qarvDBWEBqbHnomdwn8ZDYO+6XVbmwk0OGcjwUCIMEUlFvpbLYa0JUMGUNsSNOEOAqKC1MlXVsMAjRVUWyzoLYuor1cl4yFqxYy+v4rhCPkjpKWmaCeZWAB4R2RXTCc9pZu9csw6w1zWf14JQ8Qc2uU3kscziqfn0rA27jzxlTbJD3JRvMsz4ZXGUCrUD0OpTy5zm6+Wq43ZHYf4uuaQ1deFGqI9naM6R+nfUkD2Xn8/uYOlvM+G+R3eaDuE1HWWBCLEI9tLMDznQQEvoLFuXEBcwUfmDqh2sKinxdk8N9D0fn7/iNkE+evodZobcCs58YFBEjN1ZJUthwq27MkNJJ0ODktrTCjc/BmUXNnDF7oyhfzjn5DXZajYZNMFVQzujalUyMAIGFcZ8XbulrBFaU7Bb7e7UpM6xgtqXrK0jRsGOrU6mI9Aby8WGUdYnBxKDP/wiFZ7YQv/sur3EJaeZFREdmWtQjqGLnoPMVKY7hpHf1qvTUzGondDblOpK1NKHJHJz4bGULVhYg1HVWTZcQHR9tGlTd+Y7ZvXr/6JQM5XXAdzu3rG/0xvai82QaRD+sKG2NwOJLXi37vlK9R1P94afBDjpp8rl4P25ysEga2tRwa802BQEMWmkIeTSn0DcV53yUu7pKFlsicaMa0GUqBuuRqmvkkKrmK4KvqxKUyzJc1y+qQSgShEoddLULK9V6rXaezFPp9wLO96/guDhqFJXnS3VvmzZ+VwBiWzT+9y9U18uoXkyr8nRVPKzdEc+56RpvSVJqpyRJT5lT1i1gpfHtnMNffO5v88i9ptbgEev8TNqh04RM4z2RJni27pDMHzKmWMdspSkE+IVhGrsERr9F/AgAr8xAMXNGO+oJC0b2c45Br+h5gErdtXd4cF7C4PKXAhDkdBLh9OWqtAP5tz1w9brMMid9iXyp3sOc44WhUh4/jJXLGhQu/HFLA/R7iN
- /a4dfprB
- N31Wm3sPJWWpmuvqmSTHPU1QRBR29wUI8rEF3jpTzD8ypH1anOXGbJdjM01DreoJECWicnEFfGZOWqXmk/fIiBjXabhcukknuNeXK+ir3qse2tyG9TzjMUSb7GhRSppw3ZdgAleD9tmlCUPe16/zI9Hz4VdSyc7lVfuaGciMEJDAQFoqPOQ5Y9qFmTGhFOtEuWyJvmKnKUNZnczqKiyB7uDSbEDnCrR8FAyo145u6hGyBaFbB9/eWW3wi7EmTAAqHPGvMspRuZzprTvQ=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775866924-94030
+X-HE-Meta: U2FsdGVkX1/Gw1PCU3izvx8l9k0IMhjOlDj1laJdjI6VK9v4yVKenclZwiV9bBTTQkXmZqT8LP8rgMQZKKohnfZgtBI4Xnma1gswLkZqq8B0aVMdq4g5V9wQ64JjMTg3IWLt8xLF0y5v9ylsYBYCdjJz1FCviVVOptZEjYf7Lf2kpbHUzCXjHZSKamHjzo/mDa3FUEnmQFZ5EY9Vf+l5rTdukwolLmMyll3xk2jFHsH3xG9jNA1RTv8D9OUBSv4aCaFSimzYadTHnnAY8yroIm8GN/rNIRdCkvjHBmsQQDM/eHHUd+NLLIQgxWgBxC6UsPh02Et4Dn1kW1Bpa+kK/tXBSDgZDaUjAoI6IhQyrV1TOtgQbETwymNeJb0fjfF4d4ijCihtHfZSx/d/mIgU0nEezqWmvqUq7L7ecmPCo+NS0Q+q2wmTT2hR8h2q8BVasn13cs7DMwOwOWBPJreRCYxVfHWYj+kA8xWk02Wixiv3lmZDK88aTWkmQLqwGNnPD3iHaa87Dn9uQ/7O4VO9cI08eFOJdxnnzrmxH+Inqm+hP3Y9PtIrcF7Yx9rFaIkFhvWiKDoe9WhVlcWtIY0FXThRfEI4LHqpEcNxrsMxfuI91hvu9Fsrj/4KpNjhz7qARzQ6OhSrpkUXdAGTVHRlYMCrXpczqwtce5I7PED9X9/7bOz1e4GcRLjYQ7n5eTwkkBuz+poKT3QmF1OUJ8u8KmfXoNUmyuC9BmmGtJnWLoD0C4CgNIiqXn/0oUWMa7uNj8TMR7Zu3CP14ozNOTDLAdR8sW06n3wVnrlmvQq4el/hnB6viOl5929KoETTMnZr8kkZ7ebSaJl2OaLa+vBPmb/EShkZoGPs5WBNqW0GxT2rfnD5AdW6PvEkur+WIh9B+jGinCvIa3MDoANqwuK8A4EzRAdbH+OKRiQhZi2Rw9BnySuWdijrLXCCwhTMk6jc4mT23W6Y8VLjFMeZ0MI
+ tKtgrVbu
+ 4MvGu9NDxE2VOOHXnyOkfG3VivhQsU8Ts2PjUN0yU/jQkqka6v2pzp3L+yb/rnKGN2hsEQiwg3VwebiT63GvDj88qyg/MEKBPH44cz68GBVM1uH0pP1MKvHZ9lCACpYGPfV5REosUNeHO8wgPLg2ndw0mRxaish/n7claBuLZ5e7AzhYJUCX3YPtR/wS2zTL9dXlr39AVoOoUKEOGlEEa+RQ86JSPcST2a3Ii2Bl3V74244+9LSPHzKhnRLxusYs9Q1dtvEFHBnsjJdeuv5xqMIJOCWA2DAjtdGTQGzRS7fdZB0mk42OzOicEYl5XuGFdWDtxP0xlm4tTSuk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,22 +96,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 15:47:39 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Fri, 10 Apr 2026 12:41:39 +0800 Cao Ruichuang <create0818@163.com> wrote:
 
-> From: Ye Liu <liuye@kylinos.cn>
+> charge_reserved_hugetlb.sh tears down background writers with
+> killall from psmisc. Minimal Ubuntu images do not always provide
+> that tool, so the selftest fails in cleanup for an environment reason
+> rather than for the hugetlb behavior it is trying to cover.
 > 
-> 'forcekill' is used as a boolean flag to control whether
-> processes should be forcibly killed. It is only assigned
-> from boolean expressions and never used in arithmetic or
-> bitmask operations.
+> Skip the test when killall is unavailable, similar to the existing
+> root check, so these environments report the dependency clearly
+> instead of failing the test.
 > 
-> Convert it from int to bool.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Signed-off-by: Cao Ruichuang <create0818@163.com>
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+> v2:
+> - replace the PID tracking approach with a simple skip when killall is
+>   unavailable
+> - follow Mike Rapoport's review suggestion
+
+I was actually thinking if PID tracking approach is better reading this
+chagelog.  But simple skipping also makes sense to me.
+
+Btw, adding a link to the previous version [1] would be nice.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
 
 
 Thanks,
