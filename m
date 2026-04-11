@@ -4,104 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC064F45A12
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07737F45A13
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:04:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D1626B0089; Fri, 10 Apr 2026 20:03:15 -0400 (EDT)
+	id 545736B0089; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A8CD6B008A; Fri, 10 Apr 2026 20:03:15 -0400 (EDT)
+	id 4F5966B008A; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF746B0092; Fri, 10 Apr 2026 20:03:15 -0400 (EDT)
+	id 40B436B0092; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CFBE6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:03:15 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 2E41C6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5A0C1B851D
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:03:14 +0000 (UTC)
-X-FDA: 84644325108.09.5B3CDBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E0926C0008
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:03:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLPjXPZk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865792; a=rsa-sha256;
-	cv=none;
-	b=KkR9b3Pv8c0kel/wVHEjjiOJ/88Qw8BCIBGpgRpiHpH1gkPpvdvndHJBrXUFgiO7fIF9Hz
-	585jtslB6rnZwg4R7q/TjyIs4yi9cLxGtxBu6XZpokOl0UP+EBQQaySSMgE+RbTg3OB6VT
-	2y9XN8Eel/536t1VnGj/bPxcGyfjg4A=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NLPjXPZk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD92B8C16B
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:04:57 +0000 (UTC)
+X-FDA: 84644329434.09.AB231E6
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EA6F580002
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:04:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ETlC9l9L;
+	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775865792;
+	s=arc-20220608; t=1775865896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vo07IEEor44A45IKDz4si2s9ZMDcbD6/KaYjO1Ru0cQ=;
-	b=bZRGr+XfnPgA4/hv+chx2QI+bes8PlheJcvtRyKxyELCOPZ4kktiV5W1LB8zJ/HeYo3Qto
-	ZkIx2Lu8QLttuSF/XS3eYZu8IkZwrcQ4IeFNFWl4CPqkZ2fPGUhETYimNEm5U3Cg9QRav0
-	YnPAtjKMDQopyCfsQOnBIx9OBI+aEVM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6471E6014B
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:03:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C14FC2BCB1
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775865792;
-	bh=s00cJDKUdEFNZsjiigISTa6qpm7ELSvLgwGZQOmLVGc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NLPjXPZkXUPep6eyutJdQordploqwiWZX2MwXTxbBHx91Fn2qJFzEtdqPRYcFBjuh
-	 OfK4BZHK2S4fYUuN2/DaYrv5xW5qNzeaV26jKoaoSnF8IFfVxK854bZw5GCD1FwJHa
-	 yKnOl1mDtjDk/PvVdHYbMcUTZka9C8pEmy/Ot9/JcW8CLZmTaY989MiV2qtask7VMk
-	 zY9TOKYhIvgVHzBmVgYlOk3C7PQxeuEh92NP19nKBo3TDDqZV6PsLunvnji0QxxIjm
-	 eBM9BfccRFVR1H+qYG7kx6j8OOOBaIGFeCn1fqpopS+taJ+9WJVDbxpCkM9N2NZXzI
-	 ZGqORfsBZOQ+Q==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8a154cc6a48so28248166d6.0
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:03:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWGHFW9HuHGyxjM9h+cb2J/qVK5yyT+liuk6max5wptcDCet7OOiqXU/Fne7TFd055BsuXNQUmUXg==@kvack.org
-X-Gm-Message-State: AOJu0Yy7dXXkWDvij7Yl8qctxAkQlMcK5ec+XexjOmXQg6NnaDMzTY1+
-	HK3eVyZwljHTUb8qEIWJe7+vgGk1sXMkCxWAXbk6NDg9eqqjFYczkOrl7Y00vl+Hb1r7H6UjUx0
-	qkKm0LAjLdPcgwnheIEejSmle2qTuOY8=
-X-Received: by 2002:a05:6214:4018:b0:89a:b0c:7268 with SMTP id
- 6a1803df08f44-8ac862d6287mr77078176d6.54.1775865791296; Fri, 10 Apr 2026
- 17:03:11 -0700 (PDT)
+	bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
+	b=LgY7dN+nFYtxBCiuMURDZPptJc7SPDSgKx+vtWPdQgM6AR7TcIzynIZATOxf8S4mlIjGIX
+	tBEbsHIZzum8yVgielhyLvY5ynsFE0PiZVfZyGT/udBJdBmXNSEfQbOr8hkoUNyBU7yHbh
+	vhSrmvop16AGA3wKbNtlzB76l57TQG4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865896; a=rsa-sha256;
+	cv=none;
+	b=b8lpVv4bOCT2ohlZ1+lv47wyL0gaVfNp1HmR/qjrXFG185cTeeQ9fQL2kKtwVMu9NL6FUm
+	/NpICUGATobA/KvZOy5UlMId2R9wJoTckRs3ptdibcIltTuEdY/lRUPm3At4ZfyMch6JHn
+	AWf4m1aEhh9ueAy2IBc0EwzBfbUHrRw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ETlC9l9L;
+	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c76b95e652bso1107551a12.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775865895; x=1776470695; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
+        b=ETlC9l9LasA6bbLlafjaa+XycYCc1Oga+unl+buVtw5IeE+qMR1hY2oUI/nSD7JIyT
+         qrx4eal9V8SdvjAfKeF7vRW+QoTqV07onrXxVawDS5SteesnDRWvk49CrdNaL+lvm9lw
+         kv0SKk82UpYzrs6DeERbTEax0lYdyP6iBL0LNvsTQHHeqO2AmNAIdxL8KvuZKKOIPE/S
+         dCfL6j1AB+vPaK3+yj99tFAHuIXUWolNhXruNbkIEZsl7cF5AseooBMg5/oMiAf8xdDp
+         Kt4idMuNjOdNcKErrsbOVmM1ZBzGlpm4OV60hH1Vlh+nqrDf/ob3rptnNJbJTCwsG8AG
+         yTbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775865895; x=1776470695;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
+        b=QFMupnpxZ6Hn+M0jOUmHWPlwli+crJ9CHG4F0lANCLYSQYEHlxCtelleMTiccrrXY7
+         q81qZKSQyeKmdWqsDXFznyq6JUCBhN8ZEU0sbwGEzZkWvTA1Vyoh2P2RAW2kOJX+FR2c
+         2/OSJEKKlSvWs5lG8Ct/ZQP5X9Ri4Q5AFvtT316HiWnTFjCdmdfdjjWlJgyRjoT1863l
+         n2SmCJ9Z06xHZekw60yeaiwhW84w+P7KRXOPfZ/TA3VIMx3i9ChOPDX3yESO5xQ2SwJa
+         ksHDUy33VQE7HyvMeWUoxveiXC8VD3u5ftFfNxindYv0fcdVMwZKWkXJbPt9wMw619Qo
+         bCeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDhFnPgqgLt2B79IcNnGXCNAH0K15SXr5ifnzl6FngIV32H7xuEJzZl68KaTRIflBITE5Ig2iw1Q==@kvack.org
+X-Gm-Message-State: AOJu0YxV8456yS+bG83qWfmu++4lwIPH8rTQNPqBg7citZJkkW2OagrR
+	8jOuTxbnLE63kxjsz9cnZ9Y84xLBT2pKilneTcgqNbzGDWQaYhocmLnn4312Sg==
+X-Gm-Gg: AeBDievy+SI6qEH9prEvQEq6Ui41rGsusHrHz/hcFlfWbJyb8N9FV+AEbj9bM/SvDjA
+	okFoG+GbLtkWFEzTWLs1B7fm4p+XtgLrBs6rFXfqNFnflgcc5tHjpMKgltVV3GaT6q6B2agRJvo
+	D/UQUaMVcEnazOxCgKvOB07XGzDlt9EmrJlOPkujbAf6zFbDe9QokCY6zJCdYOiS+Rq9aLFqKHx
+	hcoCE3fA7uHVpXZLETSApf5DNlFZZl1PGoiFa8sQOvW9mTVHgJ6QEVqIC0Npw4VcOd3TKpa+i/f
+	pMVcGu/Sval+DgUm0YevcM2R2iVmfhYbiyiu3cdlk0i1A4ZUilDxULt4LsMVVTsrlEDnwoHgm6W
+	KUL3cf7dI+GXdCgCJjlDMfu+fVoGz+JcLHbqaUGeg4Ry9QciFJW3BrT1uf8RfLb7o524umMsd5z
+	V7q0//xnjS5Xy6qYQpv47528Yd2aVIz4c9gjK/A7m+jCrsYYro2A==
+X-Received: by 2002:a17:903:350b:b0:2b0:5694:7b62 with SMTP id d9443c01a7336-2b2d5a78d4fmr59281715ad.44.1775865894667;
+        Fri, 10 Apr 2026 17:04:54 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2001:f40:906:1c06:7a81:226b:e033:d971])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd610esm41422265ad.20.2026.04.10.17.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 17:04:54 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
+Date: Sat, 11 Apr 2026 08:04:58 +0800
+Message-ID: <20260411000458.11479-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260410170051.51008-1-sj@kernel.org>
+References: <20260410170051.51008-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <20260410-batch-tlb-flush-v3-0-ff0b9d3a351a@icloud.com> <20260410-batch-tlb-flush-v3-2-ff0b9d3a351a@icloud.com>
-In-Reply-To: <20260410-batch-tlb-flush-v3-2-ff0b9d3a351a@icloud.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 11 Apr 2026 08:02:59 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zsrOs7RTGKrSTEN67XUKotLfP+yfYQGm=SL1isYd9_-g@mail.gmail.com>
-X-Gm-Features: AQROBzAop7mpqEHfVnKaMoeA0iDqGmmQIMtaADkvae83UhS-6WP-9mE9Tlj4nWk
-Message-ID: <CAGsJ_4zsrOs7RTGKrSTEN67XUKotLfP+yfYQGm=SL1isYd9_-g@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] mm/vmscan: extract folio activation into folio_active_bounce()
-To: Zhang Peng <zippermonkey@icloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 33tj3f6ipwqjag4fa9msmsmro9wuyx37
-X-Rspamd-Queue-Id: E0926C0008
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fx81mwfhsung5efei3a8egxfwtgnhwyw
+X-Rspamd-Queue-Id: EA6F580002
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775865792-58125
-X-HE-Meta: U2FsdGVkX1+3IHbj7ANsJIGEb6/2eCqjga+MFcjR4nCCMDY/aKn6D6Xj10xYsAhWIqpmNPg9X9b0WGHDoOEXlRlNgYwFbhSncMBVpLY67vnkYi90qaQIJ4bIbmDdwrJGxX0+GjwwzZSFSgvis4fJDSi/NJ9EulVGzmbOXRgzz67y7lcs75RfGdUrRpItcVYWq0qdoIeyuxgEL+Gu9rmkdJyo8QYoqj1j6wkAs3IzX1om3pMQQfq4d4BymPLEKPbgkUP8dIM/uAMGqNQMtlMLWZYGK3PhJIbq8CLwgnaXBzzJ0ntz/jh+5YVE8hGCGCm+H/AzFKi9bPuIpBpoUN1wG5O4NAh6ccS5No8dpEeO9nhH8pYvcBe96UN9yfQK8vFtDFCi+Kilw9i80NTxpuDLqUIFt40ODf01NmO1iEKeloDQ9R/Dj1ekGntiT9Qy91GLoLYqTU3y5HspedypqLZhWDoxLAbVkiVxzAiLV4yOMy4mg42NMeOym5XezND0cM0DBP46K4d2labCGyJ6ny+LZkMtKggxR0M2alhglcKEi6rMrOhD3x6AwfeDk9Mu1brI11Da3QVvYQk3gvFtjSmMgaITFjIQBNdg3OJG8vRJyoSlN0rQsQvO13/WdzuRlnBizYC3ytF98oOvOnn+APX7VT47/lC+7hS6mofk44t24nwOVUANEoee09UqIr/9s3IIYNP0gg/5LVLtXS3L1we8zXtxTR8VXm89y2Zt23XoyuNqi/nY6aiXjKP7GrMSrAdsxrt3/jgWaXAiAR77jsNXwBEX4UPUvvme/YdGASHaPvVpGrfkJHrHNh1UOrhgr0Et5hTCa7zXZhVKQiSwdEMBX6E/AkpoCV2PfMc9kBGnCvtHT0V2QJCzBRpg71ZJiZ+S2rflv32UB0ThxEd8a9svceA8KfguPL2AqBpP4GIxLPg8DOBGFKsXeDfdv+CKx/ho42le8iGJdb3NF0R6nbE
- rL40NHy8
- lvKYgemk3u2ulw8L1I1n18OO0pvmpoPIxsO3hlYL5qrT1u+HlAJ3Vs3Mz0Zcydy4LUeXfxilnbKn5E+vQsTxpS2PriAQGdTktLoM94uRbD5rSXWF45O09DNK5ummwsAE2Te4AtBaBGRMlJcGMUA5+ppHCDi8jczpGZ5tLnzMPq0U8Sc63L+sDX+t9MpvdS/4n5iEPiOrb4KtXl0NFL4+8hAxbqyIQBIXnxLmb1Kge15g8BMMJKqkPU5GIcI+/oVb95tKhmVPj/KE/dAMpm+51eHIEyfhTR2Ns4o9O3cFzlS3U3CwOWiCgwsh4rDawfbhbwHE6Tpwgkv04wIhuarvBHAtiIw==
+X-HE-Tag: 1775865895-733279
+X-HE-Meta: U2FsdGVkX18d4SROcqVr8uXxMUzL7RoNQHGEqI9I8KftdE9isF2cPGXhPsiUokkq/7XFvuDLaSClYd8Knf1zl8BYS2iavdV1CiYdMIr0jdqSsxfmMjtzn4LdP20yFfHUfhjngbvKpbxnXnX8TcujNDuPZIUuCQPaWExBQ38LaQ0yOctTmYS9zOmLW2SEQgolvuuRUDhRfybSneQkEk42wefXhC8KVAjggisATSlXcqzmTsmqz16NZY6ePuiuMXzJDA0BtRjAjMbnu5sJrgqqbPhf+oqDNYgp709DK9zGs7s/ckVtKn073EOvp1Z0SPByPoovuZy/11IQs2zKgofT88sJ/SYWZnl9bYE86d6VQsqsLAMxYd3nm5lpdjz7AzL0rhZlvd0bGGETZP+rIW8OOp+A/sVEJaCxkvr/bWc81u4yUZxMo2MVTvN17v1gdVeBKhjkKqPtIeJ4hS0JhiEZERNhSShrokw+gz8iBzZvtwfdPVlCTQlFMyGU8wa6esAs08+kACpoX2yY+5iWs9/eMukMO26mTiGmwiwbL0HBYLf+z/U38oNqfeIkAaSvZj8wPblDsZ96/5HLJh5ocnjJqmlTcbV4dVzD1wVzwna/hbtUTFWwXX3Ra0jWxTMGoVYPZasTOlhMqyZLiijKhwjv+BpXc37SlkLmExq2vpsjSGhdmKyJhwRKUityONapb/t/9iSWXVpCOiwZvmlkCEFpciCRYPz//pvS6ZbygprkOLuv/9FiFBzmRe9BhB1r7M4LZjMiXq94ZtyYWZEHZmHPJ6yHgyuuNY8/S7z2D2HY59IfB10ls86+CX7GtDPpamLSsd57dqUzOFSh5pzyxFStXA2XzFnlx4D3fzCUJxCSebx38Z4OoDY1WEUGt7uH6ji0kLWrLJ2FYIDJ8LGDOgUQtlkWvgwIuliDqcu9B+STMXfcz7n6JuQqkV0/0yiBomsZ5b60O8OPAhYDzMWRGNw
+ jJgnDnGb
+ wyBSfSGLz6x7TdiDno/+4K2eNdU54MmmkNyWf7SPFXS5SURY30mx5zZjK3BvWcBU/PaGO0tg9/5N0xhSrCCWcXIqS3Kth6CLqyfj6Lrd62YPh0WGOflk6Phy9n0hW5FgiXm2hHQxARNiCGUHe1Y7bKuZpTrnQlRGOvvKNFL15muhZp43VeHfp3i2qLgeFO5rcyH/yISTjeowRdtIqFWXcwLv0pZNIKIgsI9+deffyi425dONgbkanisLnVpAO+GHxRgQ3PpuenHTEN/OyWQphCZI+L80RF2B+5Kn2y0ITtPVs44v0s5DyzcmFETfXyHt+5m43LlvLULOSG5i4V7VgYC21f7nYeGxBp96TsCd7qYZIVzWcP0j/43aGLYRg1fQDfEMVhJgWBOBNr0vCguZ/F8P0zxqDd8/M9KRWWRGGtFuc17uqcuSUIChYsyb3lxuY3tHwUc81K9hw6Yw6A1NVGheADKFn3Y2H613RQCqo12xlskM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,88 +118,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 8:47=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
-> wrote:
->
-> From: Zhang Peng <bruzzhang@tencent.com>
->
-> The activate_locked label in shrink_folio_list() handles swap cache
-> reclaim, marks the folio active, and updates activation statistics.
-> Extract this block into folio_active_bounce() to make shrink_folio_list()
-> easier to follow.
->
-> No functional change
->
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
-> ---
->  mm/vmscan.c | 30 +++++++++++++++++++-----------
->  1 file changed, 19 insertions(+), 11 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index f3f03a44042e..0860a48d5bf3 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1052,6 +1052,24 @@ static bool may_enter_fs(struct folio *folio, gfp_=
-t gfp_mask)
->         return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
->  }
->
-> +/* Mark folio as active and prepare to bounce back to head of LRU */
-> +static void folio_active_bounce(struct folio *folio, struct reclaim_stat=
- *stat,
-> +               unsigned int nr_pages)
+On Fri, 10 Apr 2026 10:00:50 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Not a native speaker, but =E2=80=9Cbounce=E2=80=9D sounds quite odd to me.
-Also, folio_free_swap() doesn=E2=80=99t seem closely related to
-=E2=80=9Cactive=E2=80=9D. I don=E2=80=99t think this extraction improves th=
-e
-readability of the code.
+> On Sat, 11 Apr 2026 00:46:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > On Fri, 10 Apr 2026 06:55:00 -0700 SeongJae Park <sj@kernel.org> wrote:
+> > 
+> > > On Fri, 10 Apr 2026 17:40:04 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > 
+> > > [...]
+> > > 
+> > > Agreed.  This was unclear to me in previous disucssions, though.  I still agree
+> > > it is out of the scope of this patch.  But now I think we need to let users
+> > > force-restart.  Adding this to my todo list.
+> > 
+> > Just to make sure - is this the same issue that my recent RFC patch [1]
+> > aims to address? I want to make sure we're not duplicating efforts.
+> 
+> Hmm, this makes me confused about how we ended up working on this series, then.
+> 
+> > 
+> > I'm still actively working on that patch, and I plan to send the next
+> > version next week. I've been holding off because I didn't want to send
+> > multiple patches in parallel.
+> 
+> Ok, seems I dropped a ball.  I was working like AI bot that only works with
+> limited and nearly fresh context for each mail that on my inbox.  I will work
+> on making another thing for tracking this kind of parallel works with good
+> context.  But since I already dropped the ball for this, I'd like to make sure
+> we are on the same page.  So I'd suggest below.
+> 
+> 1. Let's hold this patch series.  Andrew, please don't merge this for now until
+>    this discussion is completed.
+> 2. Please summarize your parallel works in progress with the context about how
+>    you decided to do that in the way, with summaries of our previous
+>    discussions.
+> 
+> Could you please do those, Liew?
 
-> +{
-> +       /* Not a candidate for swapping, so reclaim swap space. */
-> +       if (folio_test_swapcache(folio) &&
-> +               (mem_cgroup_swap_full(folio) || folio_test_mlocked(folio)=
-))
-> +               folio_free_swap(folio);
-> +       VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
-> +       if (!folio_test_mlocked(folio)) {
-> +               int type =3D folio_is_file_lru(folio);
-> +
-> +               folio_set_active(folio);
-> +               stat->nr_activate[type] +=3D nr_pages;
-> +               count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
-> +       }
-> +}
-> +
->  /*
->   * Reclaimed folios are counted in stat->nr_reclaimed.
->   */
-> @@ -1527,17 +1545,7 @@ static void shrink_folio_list(struct list_head *fo=
-lio_list,
->                         nr_pages =3D 1;
->                 }
->  activate_locked:
-> -               /* Not a candidate for swapping, so reclaim swap space. *=
-/
-> -               if (folio_test_swapcache(folio) &&
-> -                   (mem_cgroup_swap_full(folio) || folio_test_mlocked(fo=
-lio)))
-> -                       folio_free_swap(folio);
-> -               VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
-> -               if (!folio_test_mlocked(folio)) {
-> -                       int type =3D folio_is_file_lru(folio);
-> -                       folio_set_active(folio);
-> -                       stat->nr_activate[type] +=3D nr_pages;
-> -                       count_memcg_folio_events(folio, PGACTIVATE, nr_pa=
-ges);
-> -               }
-> +               folio_active_bounce(folio, stat, nr_pages);
->  keep_locked:
->                 folio_unlock(folio);
->  keep:
->
+TL;DR - There is no dependency between my parallel (2) works. I never
+intended to merge these two works into a single series because they
+address the problem at different level.
 
-Thanks
-Barry
+Yes, here is the summary of my parallel works and how I decided to
+structure them.
+
+My current parallel works
+=========================
+Series A - min_region_sz power-of-2 validation (this patch)
+- Status: You gave Reviewed-by, asked Andrew to merge.
+- Scope: Small, standalone fix for specific issue.
+- Dependency: None
+
+Series B - reset parameters (enabled/kdamond_pid) on unexpected
+termination (RFC [1])
+- Status: Preparing V2.
+- Scope: Reset 'enabled' and 'kdamond_pid' when kdamond terminated
+  unexpectedly.
+- Dependency: None
+
+Summary of Series B
+===================
+The design evolved through our discussion:
+1. Extended 'struct damon_ctx' with 'thread_status' pointers
+   - SJ pointed out: "This feels too much extension of core API for a
+     problem that can more simply be fixed."
+
+2. Alternative proposals discussed:
+   - Option 1: Termination callback in core API (Too heavy for backport)
+   - Option 2: Override '.get' operator for parameters (code duplication)
+   - Option 3: On-demamd correction in enabled_store() (passive)
+
+3. Final direction comfirmed:
+   - SJ suggested: "Can't we catch damon_commit_ctx() failure from the
+     calling place?"
+   - We agreed: Simple, backportable fix is the priority.
+   - Decision: Reset 'enabled' and 'kdamond_pid' immediately when
+     damon_commit_ctx() fails, add a fallback in the damon_turn() 'N'
+     path.
+
+[1] https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
+
+Best regards,
+Rui Yan
 
