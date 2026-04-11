@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA75BF3ED5B
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 16:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0C6F3ED50
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 17:09:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226FF6B009F; Sat, 11 Apr 2026 12:49:34 -0400 (EDT)
+	id 096676B0089; Sat, 11 Apr 2026 13:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18A756B00A0; Sat, 11 Apr 2026 12:49:34 -0400 (EDT)
+	id 047BE6B008A; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B4C6B00A2; Sat, 11 Apr 2026 12:49:33 -0400 (EDT)
+	id E9F8A6B0092; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EC96B00A0
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 12:49:33 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9372D5B764
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 16:49:33 +0000 (UTC)
-X-FDA: 84646861026.15.E2A0BFD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC24B6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78E338C6E3
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:26 +0000 (UTC)
+X-FDA: 84646911132.26.CA277AD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0C378C0005
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 16:49:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XO1ZhQqa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775926172; a=rsa-sha256;
-	cv=none;
-	b=LBc14JFHrwEWyLloa27WcAo41MEjYVlVMG0bDMGOkWShHzemEwfGIrFwYQEzIYsijKKWZt
-	qu3hZbVx+xjPSFjKzkuHreo7XE3BZvva/nycL2hZ92edW6+TKar/u61dpVi5XPo80bp89V
-	5XzujK/IKuha3lNfQ+HqAeE2/vY+A8A=
+	by imf12.hostedemail.com (Postfix) with ESMTP id 03F6040005
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="beC/cCPW";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XO1ZhQqa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="beC/cCPW";
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775927365; a=rsa-sha256;
+	cv=none;
+	b=HuWPcLZi72xnyIKC2GitP7C7+Rc46eXxJ5mtThsO3A1KW+54yuA8vSq1uCxvap0xVLZo0C
+	pmX7Sb6BbS9OxHre5i9NQ957nVJcdUodXk7vsY7F4sTAx8ngZmiVZubaDoZoDGxnWYjeco
+	/2UHnU5Gnxi6h44XOevj+UX2PRm1Uus=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775926172;
+	s=arc-20220608; t=1775927365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+++C4FbPvLuI+LhwloavFM8OGN025XzDv0RO8kBiFY=;
-	b=uihvRz8RccPFD2De5OEXwC7eNZX2Xc+t06Glwsrl7JjRndR3SJ38aF4lzxSVzaqsLu9Drt
-	hyudB9nn8Vj1ZTqBxniQy4sVwmMT3/ifGlJrlZx4Xf5GP9UbnY3/3sa/2CVYMXlK79LpmT
-	Eufwe8RKpKCHYDeHLyCLpABrscfXfM0=
+	 in-reply-to:references:dkim-signature;
+	bh=8KFZ0gll5MjF7tBlOZs63BHUgMHhCrv9XFHw3cSOTtI=;
+	b=fPVkg8CYfzndl4hJfANbFk8GfnE/qaqiP31yHhf1YKSfRcKVJUAFiSBjQ+cFL0m1Z/49l/
+	i38YIrp4McGIVG4NF1Pi6WHp66He4ySwUJEhIrXYv0/ezWx7Skmd49R7pH2R9ryyCzrcy/
+	s8MCOCQykoccFiM9GjBMMrxZfLrFedU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C3F26133A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 16:49:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1385EC2BC9E;
-	Sat, 11 Apr 2026 16:49:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B6D16111A
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB279C4CEF7;
+	Sat, 11 Apr 2026 17:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775926171;
-	bh=t5zJdXrSXfUqeg8E0cFC/+8XELPbXvEetq+3G/tXFao=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XO1ZhQqa+OnISM9rimWnjQKOpGTos1mrv87Cyt6aA1eIHbOBOyqBAASaeNPjbjsNJ
-	 AkU/2tLKsI9/IE4LgCjK29GbCm8MrkrU/09034kNQKYEutm4rd/XUwfSz1BKM+dOLz
-	 DOUbfmRkPg4FTjjJIm+Sy8voSRBc5UsWiAwb/15BNmVXIn2ykWImwYF188bKlHWzfh
-	 D+HK99+iRyNguw0FHTYytRx822Po1gDTzNLAOXvFTLi/GYTRMLckql4WFFuklnzo5c
-	 AkXg2lLQ6qAOatAVvhY2zlR3zOlIFuNgXedJ9jM1iXx7BDuDZXEFv81ysLNiXtpHtJ
-	 w9W59dhBj1WCQ==
+	s=k20201202; t=1775927364;
+	bh=mLWm1A+kvhVK3/mJ79ySU/3Nw9GXZUDws6e5yDbdgRc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=beC/cCPWhkNYz93kjx9/TRl/QFtINiIfjh3GBnQY9pWolAOurYaFLGoNIAfCIyEz0
+	 zaQwaZTTi6BuQLLy4nZ76zf3JQ8P/xoupNdVmthgsSpZrq7COYAuI4R1ISnEWnRI8Q
+	 VaAOhNJ7+mlFnLNErf2/uteH96WwJCwf6wYXJh8oitec3Vbh3NLtVKN0YdPYwNvn2i
+	 z/a+5E9St3KJPI21WRbid8ZwYQbWHHBL76AskZ8UCgl0h1Oj4l3ZUwMp/4P7YNue1U
+	 qo8pfARl7n+pa+01g4i5bLS7PYPUh/SevjWUo9Hw0fN43kSc0fiijvtVUWdYnNJPgu
+	 V2/J+k7t6GEkw==
 From: SeongJae Park <sj@kernel.org>
-To: 
+To: damon@lists.linux.dev
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v5.1 11/11] selftests/damon/sysfs.py: test failed region quota charge ratio
-Date: Sat, 11 Apr 2026 09:49:04 -0700
-Message-ID: <20260411164908.77189-12-sj@kernel.org>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-03-30
+Date: Sat, 11 Apr 2026 10:09:20 -0700
+Message-ID: <20260411170920.77900-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260411164908.77189-1-sj@kernel.org>
-References: <20260411164908.77189-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nqf17uifbxgnnpi1yh8bjhryadoeimdu
-X-Rspamd-Queue-Id: 0C378C0005
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 03F6040005
+X-Stat-Signature: j4he6bmj7yyrmg5c5itfm4bi35rs4ids
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775926171-856113
-X-HE-Meta: U2FsdGVkX19+7yMD+s9vGaJGBRtMoO8+FAsENeC7cW3qrwf8RwffKKLjE2s3py5lwQfYdd4QI6WXkNgai7vV0hx/KNfWkCyV0vPTOAUs7Wv7F62MPNau+nte0Z0hs+qxBMNeji6hhTjgH/mrC2T7HV1Ip9XABTSCoPL8mJIshaoJkPDOevj4wLAhhB86cVoNKmvZZ8M0RF+KBiFUnqUxWWMVG/MlLsNHpa6QEvf0pF+ZmPy/FWq6IQNVVgXeFH2X7XvZifNgjBEzj118QpjxssZsJSiN0OwqLDWswejqBjlZyNw2jjMIRqkKw+bvPGdPpPxMlxir3TZMhiU73hN3dC6eHlSZW/F6ZTfcLdiPpL2mjtVlqKFe3/qWVOcP1QB56Ljz4PJ5cyluntUShiBYW5802CqDsOujwApcbRuyWeG6QNgT1ns70Oh/sVl+cbxQ1kr52TJNQR4VQggwgDw5vg9VC++2c8OnN9HiUZX/J4LJLYp0PTgE8n2AkOOTvUGs3dLDLHBcs7JUxWraO156JK48Yh6SXSH6qI/G2rvEqAN/2LxDLHSZ040x+kZE7C8Fi2R27/y8rQZClpMlSbyVhx+NaZfjhWVsOvUppSnhZW0PoZtFENNG71SEmKOuiXFHKiny+xrImqb5O5erevKfNsm90dlMKNDYqZuCzWF8tIt/yuSojdPWDhaY+NEOYOx7bi+GA7WuBUd2A6gAUvUH/hvguqGub4p08h8UOTLVj15UnATlqHGXohqgYJIyREIho9PypSJ7HOj24V9WDzzr26V9/VplQENycnrBXFCWTRKbYgFvolOvp/gH0RTN/slcakQFbdYZZeCAVL9K37FR2p46XW0bf/hCxa0qrP1bTG4KPzsElvkanFNn9AUbtJllV11dBEiL3vnvgLKFKTL/+bcU+XjWWh/ItpR93OB1+otlzpYvuyInvMuGaA426WfWu4At7ClNauubU4TVlG0
- DA+3SuiF
- hFXDH+Hv57tjgNCRjBbIt2pqdqHOzs/44ElzwxgOAxoxTZ+7HmeUx/EvCjKcO+pJaaWnA6AxGEzcHPegLEPZDETpQNqr1G997IDd6SUtyM30/vl1fbR4oad77nsDtbNSjZZ+1chVi3JwUinMknW0rtHHJ1C5VHfBlg1IsAFMAZ+vi7tMACv/Hadgbsf7Utg0zOSbtcvDrYK30QqegDoNEjyh1EmHKI+WGNtoVI3uI9y2Kk382s72/0Q2bgWQCNKfgB0187d3wkGOv01CZHtnNxK6EPqw7ubAwleCdV02dDsi8Ci8=
+X-HE-Tag: 1775927364-198850
+X-HE-Meta: U2FsdGVkX193IlM3d/cswjR7GwVfAvSbXaOCZ5KXUAfp72Z9WwbcWe9BvbUOOWDKwnW8p8XE714szQ74TK4tG6GxWQ96/oH2WSUuKYKNYx6zZJvpfa4g1bd9Eea9OvWRJLBAkXMk7///v3ZZejTubtfyhdiopTvsJakWMNdR07TSObbGcVueswHiuGrI5cS8CzIm/m54wCrgIdh7+bLJ0fgZZzcb3r1Db4fvh0FMKyaqFFvcf0yhGsGEBxilKtTD7itA4FH8XUIL0siTGr8re3sZfKNyRHBA0yDXzEe6O46+TBrCawZ3YdFRYqqMcaigvspr1Yf4bc8DQY2iHevgX3xBxLl+snQSXFVfgsWlDqKyjKR5xSSpV1VInTxb2+tJeDyOFyE5rzuBBk4YwptKPMjaGQ90O+P8/Ce+KSNM6m43YM2WEYQXaZD0Fexhxg/rSnS5BAJOBA08xrjZWyW7M7Ax94+b1yAw66dYl8HIsBW3JTfkL/KzBNbv330c751Xya/yziC2dHctmzYLoh883L4afdKxIVkRuJaFvtmrUsC2/7YtCSs7evn6e3Kug4nDlvYTMZu75nSK/szN3ZtEH7e40t9QqZ6VBdWYrO10OjdJHJUFXcE5NIG7JoFoEV519656rqE75K9pVF6A6c8xq2mIJf1MHzMsvewX2xoQ+guCjiqywoFESo9ls3FAQM2BqxxiS/Jo7r9rJTjUQ/bIizA62B0qaxCeR8CI94cIG6q3sfhUgM/JXDbhk7gPeZJCNdtHORm7K7Ig8SjtcY6Q0dImprp2u9fDf+c4alTNw//ehXjmi3th7frA3+D2fcwWJxC7N5HznARKMFlQws5wZawkMGSf5U2jrOR37GrT0Ei6qEJoIlfO4bgWcC+vkF/pTvXVdCFBQBe4f2g4O+F9TIlQTWZ5vgEL5VKUvV6T5O3qdajuj6ZENbCap1sbozJW4T+O5HiZN0dkqa8zt9b
+ pR1HCWjZ
+ A1KE3p1T3wTdHsVEnVLJzOpVOC4WSCi9JBQSUVQSIKMOqLqJcPWhGn8qgYSBZu0ix8j5/ENE60gxM73s8Tc1QJ/Y/BJYnT9y+NgJ10qJN96DSSrI+xZZmPjvUAsSEj1L3AWedLXPBjdnbeKCKAvI/HRuXcYm+jjxHQZReUy0zssx/JXQCi8RLleTmVSt0TvL+OlRYhyIaSsbt9d5m9VDSfbq3L7XKj6g95VEVodukhvNQAvxt6rLhSUIR7vaAMVRdS7AxXDMKvjlZJ1LU03k52r1BfYn03eEz8w2aFpPzO4BdGSs5X+78hWQW3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +89,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
-charge ratio and assert the setup is made into DAMON internal state.
+Hello,
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 387286dc449d5..cd4d82c852113 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
-             }
-     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
-                 'goal_tuner', dump)
-+    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
-+                'fail_charge_num', dump)
-+    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
-+                'fail_charge_denom', dump)
-     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
-     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
-                 'weight_nr_accesses', dump)
-@@ -278,6 +282,8 @@ def main():
-                         nid=1)],
-                     goal_tuner='temporal',
-                     reset_interval_ms=1500,
-+                    fail_charge_num=1,
-+                    fail_charge_denom=4096,
-                     weight_sz_permil=20,
-                     weight_nr_accesses_permil=200,
-                     weight_age_permil=1000),
--- 
-2.47.3
+This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
+(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
+for the week of 2026-04-13.
+
+As usual, we have two time slots for meetings in the week.
+
+Next time slots including six virtual-only ones are as below.
+
+2026-04-13 (Mon) 18:00 PT (not yet reserved)
+2026-04-15 (Wed) 09:30 PT (not yet reserved)
+2026-04-27 (Mon) 18:00 PT (not yet reserved)
+2026-04-29 (Wed) 09:30 PT (not yet reserved)
+2026-05-11 (Mon) 18:00 PT (not yet reserved)
+2026-05-13 (Wed) 09:30 PT (not yet reserved)
+
+Please reach out to me (sj@kernel.org or whatever) to reserve the
+not-yet-reserved time slots for your topics.  The reservation is made in a
+First-Come First-Served way, and I will send a Google Meet link to
+reservation-confirmed attendees.
+
+Please note that other time slots are also available on demands.
+
+Shared Calendar
+---------------
+
+You can get the schedule via this shared Google Calendar:
+https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+
+You can also get the past and upcoming schedules via
+https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
+
+
+Thanks,
+SJ
 
