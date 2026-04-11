@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B06BDF3ED50
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 18:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1EFDF3ED5C
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 21:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB8D6B0089; Sat, 11 Apr 2026 14:51:47 -0400 (EDT)
+	id 6E8F76B0089; Sat, 11 Apr 2026 17:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A3776B008A; Sat, 11 Apr 2026 14:51:47 -0400 (EDT)
+	id 66AA46B008A; Sat, 11 Apr 2026 17:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E0E96B0092; Sat, 11 Apr 2026 14:51:47 -0400 (EDT)
+	id 559676B0092; Sat, 11 Apr 2026 17:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F16346B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 14:51:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5917B8FA2
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:51:46 +0000 (UTC)
-X-FDA: 84647169012.23.A6D007F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4170F6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:36:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5D16BBAFC
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:36:45 +0000 (UTC)
+X-FDA: 84647584770.07.3991D5A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 22F4E1C0007
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:51:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AjbiR7UG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7D1C440005
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:36:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GG59J4Qu;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775933505;
+	s=arc-20220608; t=1775943404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L0lExf9A24oCPOx2VOBt0L1I2K+Yr4XKGb+93JcxGRU=;
-	b=mrj8tsbQpHp3jjzhva4ZYFc5CycAixvo2TQXjhy9AYD/b0GlYxXjlniW3WGHfI4LGMhZ2T
-	WRdxGcL/spl7rZrA1joZVaqqGZKFy/d67ElYayIB2K+hIqSvU+9oWJYyxpyTUgLvLKCcgS
-	VwQYrnWkN+EqMhhnkFGGJOYSrXhogK0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775933505; a=rsa-sha256;
-	cv=none;
-	b=KdSBc5qnQ2mrVP9/tW+563zPkSLzqjgVY1kLY5d2SgnUlLN2q4ww0kJaVhahwmpplVz13H
-	RXpjo73Du9kYpbpplLCu8QjGlaknM2CzGQYo4JAsDAQtJlr4KypZgCPVomYoGfDjiPM6LZ
-	AO3lZCWv1lsxSMmSZDQn4oj9ejputYI=
+	 in-reply-to:references:dkim-signature;
+	bh=hJF6xNfoGeJ45gEkjJGcLEw/RAb8FdLOtYPoLZpjWNk=;
+	b=CU4k/18a+NEvM5S7xBJOmAwXled+HOl/JmUWBKx3IkA1rEPoMs5z17jIsOWOA4H4y/N58m
+	gQsmQyVkofbROp9LhGVPZHW/q1CXnHCxZBY4v9q9BkOv4lMWZJl7coK+vjE1VX7Zyn0tg5
+	rtDAW2vW/9/CylJ1pvGQFlpwhgvdV9E=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AjbiR7UG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GG59J4Qu;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775943404; a=rsa-sha256;
+	cv=none;
+	b=fHx161gfmcK1Iam1h/lS2kXKIxOH9RXZ9GiVvRPh45lis+Hyvspas0nhxm6XJDRgrotwih
+	dxZghv0lC5olosWcsBwTM12KbBR18ks1K1pbPqGoIVQxECvjDFtkXb5CtkLc6+0brf7K+o
+	CBahAhsc0oQvIXDmBucSQlqvR7z9saY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 782016015B;
-	Sat, 11 Apr 2026 18:51:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EB8C2BCAF;
-	Sat, 11 Apr 2026 18:51:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D373D6015B;
+	Sat, 11 Apr 2026 21:36:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E15C116C6;
+	Sat, 11 Apr 2026 21:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775933504;
-	bh=7DTLn03lS5fHMMRHZwemH8MHnpoXTwRp/xjThTiacFA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjbiR7UG+2oFW3xlBlmFGKjzR6oX1qGZUkBLQvDLpNRpd5rTI4k0QNQmCbO7hdgOh
-	 hnTxa0ZcZBx4gnnirFuBDi0gVMWqFpMpCVPMHyoNUfOMVYXCMjhX1sU/x4bU22xw2A
-	 9s9x/wX+TCrRrapOrZCoSdc4cQswo3T3D1VWORidDzjib81hUeN9OJ06oomTCtch2Z
-	 X/30t1hebjgCO/vEOhJmRfhQnS/Dzo+KMRQawPw8TW9JG7KRuxr/igVo5f35HslsHy
-	 QqKEZPArl2JsVTsegtCZAbJIg0GNkbwilaIwpzeRa1+dxa5I64q3NXJBhYc44WKLvk
-	 xK/UnqrJXASnQ==
+	s=k20201202; t=1775943403;
+	bh=QPyTCBOcvix0CTzcdOfzWMx07raK0kRLMFwQNf37D0Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GG59J4QuLV9E77nTCwE5A0NmaXg4XnCb9AHxSdTolltGc5w6hPwUzKtPiGUZt5ttt
+	 WeivEuzp+8KD5CUscFpoGf5ckvEThPb/gBUGdGLiMgL7Aye8xX1BMseiH/8gDjJAL7
+	 zDy0ZiH8NTtyr8QE7NuyvRhS80hHKPE4O5h/SXmkozeit7AdSD2c9Ir1UMDe3+IDMq
+	 mHDYgkRfpYmxv+ax1TmLIuC+SVmwlGaFy+L9GchgfbxzRehhG5988aGS8l6rbOdDuG
+	 MXUj9F4V5oR8b9sDZY357POBMSypneEah9DLjST58YwC/fvkHX7Yk6IoY2TwnT6yPn
+	 hhj7jeZrblGzg==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 18 . x" <stable@vger.kernel.org>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH] Docs/mm/damon/maintainer-profile: add AI review usage guideline
-Date: Sat, 11 Apr 2026 11:51:35 -0700
-Message-ID: <20260411185136.82032-1-sj@kernel.org>
+Subject: [PATCH] mm/damon/core: disallow non-power of two min_region_sz on damon_start()
+Date: Sat, 11 Apr 2026 14:36:36 -0700
+Message-ID: <20260411213638.77768-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260411184802.81804-1-sj@kernel.org>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22F4E1C0007
-X-Stat-Signature: h3o466zy65wyuf7egu34u6ndwwtuhjug
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7D1C440005
+X-Stat-Signature: xf4z6f7roxq63gss7w6ibrc9za7frutn
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775933504-580632
-X-HE-Meta: U2FsdGVkX18gppxpCJJCo5iDclUc21ji+fqjOli4Ak+zHmm017Qp4TsVHftQUubvUmRRfsH7fFfdGPMGFMLGGFqcsglc6ph6jH6LqOLoOKWmWJRBEXmZ78OrWn0pxuy7kbnyo31p9JtiBfrJ8S/Gki3hk8nR++viKBdCFgRZvLq/+XXUzzwViyUzDwxCPDdT81p71SqtYd7O6PG4K3Me0pKgGdjdiyWqxf8w+6yaWcEGQa1ooA6YLAzb4o6150OK8i77xaFjnuHrmx6GFxw/AHDkynw9xLKry12B2APo5hN+6LC+5LqimF+cyRxNKWWZkuXxBaEouQSkZiwBTLVKRMh3uu535BYCB9BLGr0Fml0cwS3xZJfGEgSuF7A9+leRl19KFYojRCNKsbUWEPSFiWjMmevyrtqGOJJY01SasLpmSvv8/ZWev83FrqqBDSMnd5QjnNgyVAYetQDDDj920adZJVWXQl+fSXK6ujALH6CtRNlLH/ORYD0fnhcFd0bA4zPXJTt4CDysNYBcNmrtQLSSGMObE9UZFEfG1T7zCokoz9YVPv6q9KNBYfXNB4ORnSuOpKWN9adtG7PbSfIiIzphZVzUJyv+2GDAtkZ18fwTxqZmTSZIdaUYQ3m1xBY/VPgzfcLvYXSayHRE9/kZh3dMEuB6tmSo3UrsjPUJLcm3zkCGGJ1NrVGA01AkoSlCU95v++Fd8Ew4Co+tgP9kyCD1EaGrNPoMwnGgJYIEdIMpQbRmS5B+LpbewylOEUv1wzlySE5Mq34XZ+hbPooJoZ/IjgQ0ir2/K1oInKPnBsxYn/ZSF6fQlZueX3Fm9hnRIhs+YG4MQRlXy8UAJL+theBHDP9zY4J48JNJc++9PVDPqR/wA2UuFiZTHRGWepiDwp55noFLjYCq0LgFOb99E5lSuGxh6A3St5XBa8TxVVFC0zx6myYJE7bcQSMJlstRPVnOao8+OTJpMNiURDq
- zNWgiGM2
- E+Ch06ovpnYdoiwWl9DOA0yyGirKxPXLx1puyJNzDJlizFlDo/xw8PIY8k3KLzOwpTeFD2Kk60N1I51YvSpYpbtU1CpIO2tOsEXQq81dYTLKmf/xdKHGF5YGsp5tBg+uBweAN0798ci6Sa9IQhKay4MACejwB30ldZVCP0KV5ouDqZx4SO22ZnqOZS0sVE9gSClfHMfRpz5KQULJm822TbhjXsQlQw+OMe/y9LNieCfE9e5k=
+X-HE-Tag: 1775943404-578284
+X-HE-Meta: U2FsdGVkX1+X82Jrzv4OvieMj/uyqLWsFMz95gJvtj0ycFU1aXhvTiKoSfpYR/lHGqeo6iZM9ckCgf3t59VIX3WgxiXohFky71ejti6EDZvNIy1nNtNWaAS1nY2bPTtmcrvFBFTvgUs0cFxHCRBZ3dhfi5f570fLWvQTHVmgpFHKO4Y4G0xpKF3AkcPyQr48YiYEgART0ByQGdDlPowCWSK55BSvvXu7FjPsZI1A/9ZL+vWqQBXaje8UDDVyCahK5es1YlwmsLJCbOV1A89dhIqsz4HV7ZBRg2qFBUcT7+Q3b8Px5I/mjATIkmmPOrLkd37yYpKFqtkfnDg2SP0jwdpP2/8xfsftZv5ilOA8Xph3V3tdKXZyi8wB/eWY2WFA9TOhNnLLvu8YeU9yrj+mMCTMFKvVf3aVZClL1ev/TuBidxKS6i3Cx+MiptIRR4X6AQuBo6HfZmGMchYM6frFiXAGe6c21H40nuDJG64J+8LdSI53ujOn8UzpLSRqLNTv8DJDtBpDntnp2ADKc9nYKMEqpbUl1IjCT6uGLdCDf3MJtpkKKLcJLpWz/GsX6DPBq6HehDZMshSZf8AVbr8w7Us21zwLKSsq5AsTFJyeZORXf1L1AIOMTasKvmRXsZe76u9InQpmu7vvoitHBxVSvop8OUETG3Hl8mHJ1x2xbgEp7TyNj9YAum+Xk/NrKBn6y1vhtUGGxJ903fIQE4UkUd8i0xL9R9mxTt07iyoKgLS9LIz7mzk96mOBxVA138QBvprPkHKtvxaswi3mX3O4GUFtcCRr4N40W9U386/n5jbfKz/P3iCToMN9kGCPSmb7BZkm3YIW2Tqq1kAMdQGp1RbGo8aMfBku0GUHRyMrDUIgADp0RNj0yiKbxDTrP1VH460G1emssmqvz+QKk6nip41vXEbyDJpij2Jr6EbDQeT7KeP/rDSGtVqpPD0R+6q1JwyXHHw9o7QdBvkkT2w
+ Yx/9b1cI
+ See5K5LDUxQmwLz6GQfYkrR6TUrg5H/9WNRiHY4f7ArN0d2mFhSBqlnR5SZ18wJJ4uy5SHORQNDyA5EsdxajaEo78SBhOgmhXOSiHJ1AV6wXV+GfT++vAEDWjL+7lp5qwFyHiJjN/KwRYXhIzNXCO+K9pHC+xSfOqvRjIDGGVt+mTiIgFjDFbXuRxsX0amgs5PLgCUvrntxhPCEGfqdygWRC3+yRgkHj9wYw/ZUg1X/r9UJ3Cta6Z1NKg16J2u4rjshl/JIoaGNZw67PUTXvmE0Q1mA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,30 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 11 Apr 2026 11:48:01 -0700 SeongJae Park <sj@kernel.org> wrote:
+Commit d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
+introduced a bug that allows unaligned DAMON region address ranges.
+Commit c80f46ac228b ("mm/damon/core: disallow non-power of two
+min_region_sz") fixed it, but only for damon_commit_ctx() use case.
+Still, DAMON sysfs interface can emit non-power of two min_region_sz via
+damon_start().  Fix the path by adding the is_power_of_2() check on
+damon_start().
 
-> # sashiko review suggestions
-> #
-> # 1. Consider reducing recipients.  Maybe the author,
-> #    maintainers, reviewers, and mailing list of the
-> #    direct subsystem and parent susystem mailing lists
-> #    could be a starting point.
-> # 2. Add short summary of your opinion at the beginning.
-> #    For example:
-> #
-> #      TL;DR: sashiko found an issue.  I will respin.
-> #      TL;DR: sashiko found no issue on this patch.
-> #
-> # Please DON'T FORGET removing this comment block before
-> # sending this!
+The issue was discovered by sashiko [1].
 
-I forgot following my self guideline above.  Sorry for the noise.
+[1] https://lore.kernel.org/20260403155530.64647-1-sj@kernel.org
 
-TL; DR: sashiko found an issue that better to be fixed.  I will respin.
+Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3703f62a876b3..c107d74c77e74 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1368,6 +1368,11 @@ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive)
+ 	int i;
+ 	int err = 0;
+ 
++	for (i = 0; i < nr_ctxs; i++) {
++		if (!is_power_of_2(ctxs[i]->min_region_sz))
++			return -EINVAL;
++	}
++
+ 	mutex_lock(&damon_lock);
+ 	if ((exclusive && nr_running_ctxs) ||
+ 			(!exclusive && running_exclusive_ctxs)) {
 
-Thanks,
-SJ
-
-[...]
+base-commit: 872b6168e577ea326324255fa8b6716a89124680
+-- 
+2.47.3
 
