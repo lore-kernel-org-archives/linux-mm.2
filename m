@@ -4,106 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB5B6F45A1E
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 04:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F628F45A1D
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 06:22:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F6CF6B0089; Sat, 11 Apr 2026 00:43:16 -0400 (EDT)
+	id CD65B6B0089; Sat, 11 Apr 2026 02:22:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A8AA6B008A; Sat, 11 Apr 2026 00:43:16 -0400 (EDT)
+	id C87F26B008A; Sat, 11 Apr 2026 02:22:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED97C6B0092; Sat, 11 Apr 2026 00:43:15 -0400 (EDT)
+	id B9D516B0092; Sat, 11 Apr 2026 02:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D8E9A6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:43:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84519B9235
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:15 +0000 (UTC)
-X-FDA: 84645030750.06.B40EAFC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B4B0316000A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=STkwmySK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0AB6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 02:22:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 414818BD80
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 06:22:13 +0000 (UTC)
+X-FDA: 84645280146.26.9F75950
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 81EF440004
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 06:22:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UgwcDUZi;
+	spf=pass (imf27.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775882593;
+	s=arc-20220608; t=1775888531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6PJGYSix7bHPbiZa43f5H5Hv0XXiK/GgmjCJI47M2pI=;
-	b=PHgiXijiZRkRntGv7R25tUPpU9f+LPxg3q450BBp4o5Zk4y0wFW09dM9fXGKd8DEaK+joO
-	8SvQFKTYy/BV3pFv2sMR/wivVROe/R8F6mG2otRgVhWcEj6XX3aXtbgZJUN4nJjVLjxfd1
-	M40gORE1/2CGWYo/+LCOiDe9I7ng0Mw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775882593; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rjzGaFEIwJAqPl0XoclvOseGR/HD6ox/UHRHYtHUC04=;
+	b=DCfzBf26GfSFB9e7bgImq4MIbxpX9lcDeqISkt0J5oqB0c9S/jV6taXh+YE3xjwYoAQ4Nz
+	X8bKo4oshUeWKvoTVLLNhIQKAKAvI4lCcr4TLbSnZ5nCww/Ldmz+ol2/Pj+Y1PyYNHLvLk
+	4Z/r5POprOSQZSmuKqhXtm3mxvHFZ1s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775888531; a=rsa-sha256;
 	cv=none;
-	b=mxUklWzGv/nx5z6uCL4yon53e9xe3IZ6NlyHDkc/PTiAFkSTbHcuW6Z8ECOrDvKF20Tkfj
-	2YWbKDUALP8SPfAu+na3tdw6NosNofj+BELaalCwkJWgqMWlXmpp9PvwEnBxxT8ll3zrjy
-	+oP9B8QtMnCOJXUprad27wHdmLo5bww=
+	b=K4fx1JhaklFEYjRUY6m2ctBhAECG6SumRUd07o6mi7wQ7j+LipTjXEk3W8m8jAupzp0cWH
+	gj3bwDSTjI+oYPzTJc6fv/TjF0Cp5ObMohi+i76NuidIUms19yf5gzbskOv8miPdx+nl90
+	s6gigdIDg3G7MZ68JvEZmSH4ZJ5qFD0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=STkwmySK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CFB576015B
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E30C2BCF7
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775882592;
-	bh=MFwF6FqK2VnTkZeL3ROTR5tHQRdGP1jWQe6irXJD5c0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=STkwmySKFIplUkFeio+4ujcKsVpHoQOAAHUvH1zJRUKiAVYqi+fskSgpWIoCRZD0a
-	 jKOsCKcnOte5gyZbO2nuqNFgXDGzBJQ2dEQVktoupWpzo02FhKLztsjzqWCyWMG3+s
-	 XUiZAVHd71bxcpMMf5OXCLe41qvsB/csAE6kz8zUCUd4WMoWv0Q8nzIha2tPqmV0GH
-	 auPFZprxmL794Kl6rDyUoQx17VmM1U6sahTI6J+JnjlKV6xcet/N/5rsSzdYAY5e63
-	 zhzP3eRICmtPaCWK91gJQv4sO8TPrsLYpMSegHr0XUBv9m5nuBLoqMpX0EJkcpQgmO
-	 jOpxHX6XEQ1WQ==
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a56ca653ceso33123196d6.2
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:43:12 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyB3lMZfIZxMO5sQ6vQf9AATB00ipyfv9AB6KrmE2l5xUXTZ7Yn
-	c2739+TKp0lkteACFfngsweWWWtqM7sqFlY0m2zYA2DxRg/hB9Z9a82ufvwKeAPFh+68uf4c6AY
-	DH35FDlyXeyKpNKLH0fGGdz4Y1dUWdYQ=
-X-Received: by 2002:a05:6214:3101:b0:89f:2ae0:3a02 with SMTP id
- 6a1803df08f44-8ac8617f375mr77592216d6.19.1775882591624; Fri, 10 Apr 2026
- 21:43:11 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UgwcDUZi;
+	spf=pass (imf27.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35d9c7bf9a1so2603803a91.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 23:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775888530; x=1776493330; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rjzGaFEIwJAqPl0XoclvOseGR/HD6ox/UHRHYtHUC04=;
+        b=UgwcDUZiX9I2rnuv1W4368dRbFbZJjFbCADpaiL/iXJE+2GksXCChgGhTnujuCEXWm
+         CTMz0cCoAOILYxQVMfCMitJMhaq3ARMleJE2HIpuuC+msqbZ8ROwzolkCRMRk/pq0qRt
+         iIEmg7W1gG4XLPJiitnSjUhUzzWogYtzg/e3wIEKqt8CcrfPbeo8wLeUCVa2Kv3s5Gy1
+         PedS1BaqY33Pzmq4UI4owg7bQ/yE+z0sXNBIPcmbmLSwnY2hdke3ShZHD1v4iAaThBao
+         BBiQBANkXE0JFonI+FMSqZrocfw4hw7rc9C8knBim3A/xKSgBkwi5wEd2tCWg4oxpuzN
+         FFCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775888530; x=1776493330;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rjzGaFEIwJAqPl0XoclvOseGR/HD6ox/UHRHYtHUC04=;
+        b=aZ+QaLD5gj08Mp96W9kUF/aVsG6hdM8jAN44fA8v1QerywBKtcA51cP189BQ99A4Eg
+         jKvlqbz1N1BIygYv/+2CKY5P+EBgr70IiChtUFnw0HHhmtqo3tWLTEPnCCIquX6pXCcn
+         tmZKpeXjARHcVEWwY1/9oC1ZQLAHGOnIlz3jBu409LkUHaAvsBMtPlfgQMQZaREJ4y7m
+         zMFxRScxSuAKn9FvVI+u+HuzwCEZaotXsGoVbQVno2LkiJ0kvB63z/DxjwV83LVPaKFq
+         9PXZ4cewXNvMN2K84hLd3a7iXLX+dM0qZqZ/xtgOqXR/VsEu42mMMyuRDVpqIPUraShe
+         /Bsg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFChZOJDCZ9uOHBTUQEkICJ51lYsq5Vp0zyTo5VD+X50GU4pLgqhMK9iFG+ktt+fUCvdEnJ0Jb8g==@kvack.org
+X-Gm-Message-State: AOJu0Yws1wQhSQAu1mHUU2+1TguYXykN/RdYu2gFENYgn99jGWxqP/ZL
+	QxIV2lnQuvu1+NNDntZm7FfBpDJYuPDdZqaR+5Rb2RGQEQRM+RP1xN0i
+X-Gm-Gg: AeBDievBZi2gJsoejjkDJdpR/JDm1m2SjPNLAmSW/SmXgOan64xnF66Z6jgMkA2eBs/
+	yqQdhX/hFGt0QI9JP0KufkaTNdxMT0cRj/jaY4oXhWZtNe//pnz0DkDomKb+tnPLewYgO+BaCLU
+	VIBThBDkWG6xk4iGSeY7ruZp2YIMsK7dDhFMpwLhyaQmrgG96f1OS5F8jh5Vcf1yZ8eba3qSrwL
+	I4wOx04h0hZYugpxWzE9pP0lCzWu+H2dkC25pTifQy/ALwebSzfYXNYwu+SagoxIhz5rGFTwMI5
+	a61weNLnWUEdZM0GGtejyN2k6vFOaR1ZFs/5lTiyrBrqoVQlFnPdNlcepply9fsIwoh0Dvu32vf
+	7Rt+9rG1Rl9IJyhCx6yvu4ReYTVTU5bIV4yo96aQ0EUa0AvAbYzouTX3qM0YMQg2e4qLPYRlju8
+	OpX3x968Yb0InLGA==
+X-Received: by 2002:a17:90a:e7cf:b0:34c:fe57:2793 with SMTP id 98e67ed59e1d1-35e42881e54mr6189487a91.20.1775888530399;
+        Fri, 10 Apr 2026 23:22:10 -0700 (PDT)
+Received: from lgs.. ([101.32.189.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e41345f63sm5345346a91.16.2026.04.10.23.22.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 23:22:10 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+Date: Sat, 11 Apr 2026 14:21:52 +0800
+Message-ID: <20260411062152.2092967-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com> <20260407-mglru-reclaim-v4-12-98cf3dc69519@tencent.com>
-In-Reply-To: <20260407-mglru-reclaim-v4-12-98cf3dc69519@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 11 Apr 2026 12:43:00 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
-X-Gm-Features: AQROBzBtIciFHI5MXM5Zz8v0SNR883svaLPBfwVN2nmcbC_CFW0afgYxPbKwYqI
-Message-ID: <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
-Subject: Re: [PATCH v4 12/14] mm/vmscan: remove sc->file_taken
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B4B0316000A
-X-Stat-Signature: b4b6hrnyczmkn3h5nxykxhh5wtsj7xog
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: u5r8e148oqjozokeb4z3xnnyedow6btn
+X-Rspamd-Queue-Id: 81EF440004
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775882593-754581
-X-HE-Meta: U2FsdGVkX19+86k2pN//A2yL3DlPpS/tlvozYtDVWjiiCG/RBEQ89tVKWw4e2bWpldpK26VYWHefLLJUgOohGOI0Axx9j0iVyPQyexJI60ze3m1cy3Yxhc+tB4D8959lh0zvS8VnAjipKejZV2CQLA+TX1Q7/Ynf+mHAduZB6l4AXtTDKKVQYdOU/yv8cr/HXfL+lmJMonsJZcAoUmaC4AD+ml9EHZkrXVRpYgKUV1b1h1f0t35I624BGqnfJkViNlVUgTqr61SDtgxIexnzv9yhC/svG3B13gLizBN0mP0uwkZqCe3Do9vB8NVYu4mBrMIyyWjeUKY+990O8heI4p1N7OQJrfQosHuvGRfFoT3Qaridel2iRjHQbCA3irGh6X3Y/wbGjLqj5lOLYFhEOIDqBQHBPV4YLShu4V9a/BXwVovBNhHDWXUburw2EqGbP+m5v3umJYpEEkcR5HokqlbCyItyTZWLtahCxP5w9K6/wmaSeSL+9fIE4fWgUkrm0vaHWEOv2ucdvrSRQei1L69g/fT9JGBsyfbQjxCut+Su8ya2mjwwxI5ww/xUfPfdkyLg5SBmEpKWt3MINm1tUwhHl7Cagnbaekj0dE+2PK3pro7MdYL8IE0J5TqKOH9+F61RkLhXAS8trlpfkGglC3DXN512fUa2ZAqQBto48yWrwWBSZ4MOBU+aPRaQKMd4yfEkejahnfT5BCQKRRWLt7gUyhJAda6oAKYWL9ZaHxDLGBeuiIVNvviEqKfpzdubMy/4hARZsVmiiA9nBDv9qqE5pClA2CfUZ18KZG8xM/jzJux6799KgSc1/OM9CqUOVaAlPJLwlmGJep3VQygbk8LFlDPmWxhx63c6DXT1FlR/d7HsJDu2d+PaLnx7XQEx55h+Hp7wdaBKAEXn89fRbEZu0T9OSYvK5+2vue6PYgXg1noyYKPMGmpwJxdAt+jtMn11JJYGU7Bb/CzUb9z
- 8AfeBR4m
- 4M0F2q1p8bS9loeDkgfm82NGlsjV7d6SdLi6jGRRWN/ZOruBzcruuBTtKJS1HfGAoVr6fyVbjdueT5K33QLBzCvmZ7MFb3Gywrv53ROYfJ7o51EpACvopCbvat1kNPG3DvcnMQPn8sDfrsuDmwcqOfzWwkHUeD2cagHDVO3lNeNNymTbeb3cbQ7iYj/JVu264Tsd/aE5qwMlUfC7L5VLgpxPzUNYeDL6fiaMXf44vSY25VjQ2bN9Oug8a9yFbeEPGs2yRZ3VdrxAwILYd76r9tluVQ6M6ZNWvIyVndHERhgWdFztlXYvv8dmYXhefVYcG90KOIEUNVIMeNdN0v695VhiXQxrgIgToqD4OMoSebb1rda0fpWkziZJT5Y8cGD7KOuyshpG6IDqlFyZtbPGzzTdy2wNcL0+niW2nRZKceY9qNEddhTt2EJtXgy0PMpsa0+EWQkH69+2hPw5NtZlkRzWQ4J2P7G2hvFFSjvA46kLsuCNQ3a95ow66+w==
+X-HE-Tag: 1775888531-213225
+X-HE-Meta: U2FsdGVkX18BO2ZBPjGfebT9l+Th1GEeguy0cPin0jkV2J//VzYKeRSjzxG73GezpZNjrrXry/nUYpfk4WcEkeXsoErR68ll9D4siwugUIt9bfCPcy8MpnP7P0PY0JuF4IVFkGWQjZd2g3lti8VFneE//6ZJQzX9Z7QEoFSbWtypdwUqQdFmH15DC4FO5S27jTqFv6k2c3ApGB8IwukypYH4uIiFO4F7iCS8ZBHHZDjq2N7nLdb9d8CosNttp6CF67H0LHvt34Gc7utnlvJv6aj3WhRiDzdJrSicNg5F7HxkoL0kQ02kuybO8at4AyuAhR+vdqBZMQVXePS579rQxAMKX2JsppZx46ny6Yb9PmR6cLTnum/WUcW1cKy6OqsgjOxpxsa4FaFj0soSSlppeFmtBlsn1ADZCCB/whSXhNQG/rUsCJrKYZAtdPm+R/RrKj2CYe3e5D4JCvo67YXmS55hCVFJR3f5XyESSCb3dNeKNTNP+80xMwTgcCAEWTwdrcz7LSs4lOb1SmiTlDNhlzkQqQUX1au3bDPyD/3uQRnkka0t33UuG24wnmwW8R/9c2BgyfwXNN4zA2t8r0N0S7+w6eUGNRgvdrxVP+9p+Qej90lIzAdAltSERxSXJzd1SY6IDHNdklx7N8Wk4wNq5stSjBnHcgGDLB6OZK3M5DBvOuuG1sl8Ol9T9vKHn4a+2HcFBixeASgL+aOondpwiQLrnL5lNy3LJMBTD0LnUOH6jdJLS8yCt9FkYGJ7UrOVjLqXLGouMwQAmSGxuzX2c68c6QyNUIqzYu6fiuAu4AOIPZxJBNKwjD059jRZHCchQ/jCmIkS4sgqn8+C+2/v3pmiAfSGqcmcwHSkchs8GBj8iNpU/Zg93mT6TEYBlA/VAdVTerzoFnM8r1k+P8zswQwcFdA85qVEW32YhfjnHs0pWHS1mEo/hGqgX+1VpbrRhxvV/syDvvCAvS6aoxg
+ D84GznQ6
+ UZNcrn+WU/fIn3yGMhFnLLEZl88rRB/Xv8vjJ6jS8YL9lfVrL60+4m+/nqbpXQASCKOuqHI3cSYlUQ0VmBZE/EXYfu9vLzeE2qMCKxsIdCXzo6JVtrhtCggdHwSppprQq0BQvOVkc2+/AIOLXsO8nuA1xBBuhEQM1aV+RMDs67PCZYDHGfGc3ML0AGi0NQ4fXZiPHY4LVKlTisKuVYjwAksjqagfUJk0Bs+wu5DKqnw5fZX9TR1Q57Z+DbdajGL338MPfinQg6UrDuhRj+J/3hDz1tSs+rUvZOpxDG46hBlRnIukAmOv1HBDfr+55eqOxNC9wTITD6gmqk201R6zpGfsUS7Gzr3i7SOJjHoBtOXh0st/E84ru5AZERNOOC6BMzgtISP9x7ITLf7nrj/Q9rQmgxZs8LG6qlLsyLWYSfb4iIj31Stdw4rJKvbesOZrIq402gzU74DX10kzdTgVty60qaEggltioL457knFfdRxtQhY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,51 +126,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 7, 2026 at 8:04=E2=80=AFPM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> No one is using it now, just remove it.
->
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+After kobject_init_and_add(), the lifetime of the embedded struct
+kobject is expected to be managed through the kobject core reference
+counting.
 
-Can we squash this into patch 10/14, where the user of
-file_taken is removed?
-The same applies to patch 13 as well :-)
+In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
+directly with kfree() rather than releasing the kobject reference with
+kobject_put(). This may leave the reference count of the embedded struct
+kobject unbalanced, resulting in a refcount leak and potentially leading
+to a use-after-free.
 
-> ---
->  mm/vmscan.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 73b1aeb6c292..79e8a8e6555c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -173,7 +173,6 @@ struct scan_control {
->                 unsigned int congested;
->                 unsigned int writeback;
->                 unsigned int immediate;
-> -               unsigned int file_taken;
->                 unsigned int taken;
->         } nr;
->
-> @@ -2040,8 +2039,6 @@ static unsigned long shrink_inactive_list(unsigned =
-long nr_to_scan,
->         sc->nr.writeback +=3D stat.nr_writeback;
->         sc->nr.immediate +=3D stat.nr_immediate;
->         sc->nr.taken +=3D nr_taken;
-> -       if (file)
-> -               sc->nr.file_taken +=3D nr_taken;
->
->         trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
->                         nr_scanned, nr_reclaimed, &stat, sc->priority, fi=
-le);
->
-> --
-> 2.53.0
->
->
+Fix this by using kobject_put(&thpsize->kobj) in the failure path and
+letting thpsize_release() handle the final cleanup.
+
+Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ mm/huge_memory.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..ae6ed483cd53 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -726,11 +726,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
+ 
+ 	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
+ 				   "hugepages-%lukB", size);
+-	if (ret) {
+-		kfree(thpsize);
+-		goto err;
+-	}
+-
++	if (ret)
++		goto err_put;
+ 
+ 	ret = sysfs_add_group(&thpsize->kobj, &any_ctrl_attr_grp);
+ 	if (ret)
+-- 
+2.43.0
+
 
