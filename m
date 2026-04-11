@@ -4,110 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8798F3ED44
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 11:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72F93F3ED4A
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 11:46:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C36896B0089; Sat, 11 Apr 2026 07:08:30 -0400 (EDT)
+	id 764EC6B0089; Sat, 11 Apr 2026 07:46:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE7C06B008A; Sat, 11 Apr 2026 07:08:30 -0400 (EDT)
+	id 715E66B008A; Sat, 11 Apr 2026 07:46:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4786B0092; Sat, 11 Apr 2026 07:08:30 -0400 (EDT)
+	id 5DDE76B0092; Sat, 11 Apr 2026 07:46:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 964426B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 07:08:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17A791A081E
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:08:30 +0000 (UTC)
-X-FDA: 84646001580.22.D9B327B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4287D140002
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:08:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cq4j/J5r";
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775905708; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AF436B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 07:46:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CAC65B344
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:46:06 +0000 (UTC)
+X-FDA: 84646096332.23.14C556A
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B60681C0002
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:46:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=AvwwHgA7;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=HsMp6bIK;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf18.hostedemail.com: domain of jie.gan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=jie.gan@oss.qualcomm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775907964; a=rsa-sha256;
 	cv=none;
-	b=CWKleh96JXBdgHl/e2FZF/4spLvaPDAPz3phyQmhhDxOs1opVBKozJ7noZfCNOrUo7Yluz
-	SlKc9ToHF6etFhjJDfk3+8Ae3BlhiEGGk7ayaVGeN/PUYtro7vqd/dAWUAZBK0bkErcRX2
-	TJov0KZIDOxnv0nmdbeuKLwfJyxYmDY=
+	b=XTnDKqYoH6/fa8f/fp7K3tESYUXNhS0aCi0iM5J0VQnjs4/rvHWFcBnsIBHotRgLVvrY0K
+	HB2JP/I+Q6UGKmObG+i20nvTMIqcuFguEXCMTrTfTLfQJT1G+yaVDW6aeu0iNuYFaLqlWw
+	4zxHkTTUpfHTFSrAb7GgmaGEiUaWsq8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=AvwwHgA7;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=HsMp6bIK;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf18.hostedemail.com: domain of jie.gan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=jie.gan@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775905708;
+	s=arc-20220608; t=1775907964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jJqSPKXzkGPPdqrNgdZYz7ydI3KVkZMqLuVTUx1Mv8w=;
-	b=PwSTrwsFWtUnj6xVuC5xrRNJtwLhYVF/dO5JydCfmT8VTpLXFquaXKrRAgU7oAm991dN2d
-	xDBJ5SbXvnN9pIFr9kpxh1JKFswu2LSWx5N1L+yttzTf3N83fmnE1PqHqyVyM0nYs0EvkK
-	yw2/Zlmw/px6nefBfWlwOQ4p0Jcg0yo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cq4j/J5r";
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775905707; x=1807441707;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=n4jCbvoXHQzLUfxIsK52UWT/ZiXsVp9w9lmDCQOl8PU=;
-  b=cq4j/J5rzFF5K5W+uTGtudrY6teWaZAxI9S295BmnoL2EfChgkTG0m12
-   Dq9dHQP3aSFrzzk/TTiBJM9a9+y1TYvxRlx08SmhyM2xQSYkrno2MkDLT
-   8ggneisH9atmSJgnTUxNRC1YrVzTBF918oE+y9sV4x9G87SRNRLhQeU+u
-   gAFrFscIqHLsY+Z3RTHPybP3rqHfuAs1JtQ4kc2Rnr7ukNaKuLfa+Awe1
-   qMYIVCOc4YY/Vl1rWDKvQ1IEXVgS7rV/uf74jHOQ3SjONZC02qj21IB6D
-   tUQt1/o8fyEvu47ZyfkDCVvk+CHCWXYgzlsjS8LSjvYaZzSyMCVtYfJoU
-   w==;
-X-CSE-ConnectionGUID: ZpP4GEgGQfG9Hb7HM4j65A==
-X-CSE-MsgGUID: 0qNHO58tSUuqkIBab80znA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="79497578"
-X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
-   d="scan'208";a="79497578"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2026 04:08:25 -0700
-X-CSE-ConnectionGUID: mO4RSQk1QveiwXCLDsf7pg==
-X-CSE-MsgGUID: ij0+y2IPSXy2yQ9but4jCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
-   d="scan'208";a="228477001"
-Received: from lkp-server01.sh.intel.com (HELO 3eaaf1a74b89) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 11 Apr 2026 04:08:23 -0700
-Received: from kbuild by 3eaaf1a74b89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wBWCJ-00000000169-1p3K;
-	Sat, 11 Apr 2026 11:08:19 +0000
-Date: Sat, 11 Apr 2026 19:07:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Cao Ruichuang <create0818@163.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
-	Cao Ruichuang <create0818@163.com>
-Subject: Re: [PATCH] mm/vmstat: reject invalid stat_interval values
-Message-ID: <202604111816.CsqTatIh-lkp@intel.com>
-References: <20260410112554.23165-1-create0818@163.com>
+	bh=GleO7BA+2+K6ec48larGiOiwXHMmUAomJOlDM0oY6pE=;
+	b=u45DQlcEP2nKnGfVUIft62lVB9IPHhlriDlSKolFeN2j7A7PbENRlItswNFvC/GenU6Kgx
+	ZRtjSJo028gG3hjFuOPQyGW9oz50OK5EqysyRXtcx06s2yg5pRNhdWKt74sMZAMKZOjwlv
+	s8je45yK/RzZV5L0ROQjdZv3jzRkZB8=
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63B41X5Y3377254
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:46:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	GleO7BA+2+K6ec48larGiOiwXHMmUAomJOlDM0oY6pE=; b=AvwwHgA7IiE/h/dD
+	oR7LwSaIT3TAm9M3aFB9lotgk+S2CDySBCfY4n9VdwcmJvBZANhF1wmklvXnqX5A
+	6w6Z0OxYmaTG/xe3M0ouYNUeoTzlSL7t4EGiQIm09naLy5A0CD576svG5clynEZd
+	ukwDg5bzB3jkwTRnHq1pYJLOfPxRWzLVN5WvfOw9dqma6L6TWkWMi2RXvstcNTcP
+	yBKzWdjIig9UAfMD1xdNy0oxJI39AnCxTl8qCPw7n0HuFS3RuI3hhz39UlJ1o+Wi
+	xf9L0p/hN7sJIDCx8kg3kU1vP1qSQ86261KaifSBKQw4rktVyxpqqumDbpunsKLw
+	1r768Q==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dfewkrmem-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:46:02 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b2497cc190so14032325ad.0
+        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1775907961; x=1776512761; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GleO7BA+2+K6ec48larGiOiwXHMmUAomJOlDM0oY6pE=;
+        b=HsMp6bIKWjDGnhXmLbfZerQ8dYDjaNG8zewi6Ygk85U6hOesWA6SXQPKmuV3Yi7fJ/
+         G1X/bJgGuNr8bSMRUID9DyiVTHNZWNfEDMlhjg1JMFZ7aU+tp7MIjNeUPvpLaOrmpswh
+         9Dx96/TSyVwTzaBJyNUi+iRjiw8Skz8lRDcMO5p+j8OAdm/lifiOkv1wEWAvRadh1jPT
+         tCrXcfbidT/GCIlPBlTkR05SAn9nHm6PemyNdsYuvgIzFpJhT7RBjaFF6D1ZEH3Pi1c3
+         BykKo7NrbmOX09AXzIEjTBbPvZiAPBfn6fZwtKW7G9MATw2QCzdjrTRzqNQuitN04Rgo
+         otjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775907961; x=1776512761;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GleO7BA+2+K6ec48larGiOiwXHMmUAomJOlDM0oY6pE=;
+        b=OfIU+s85WbEg/Lzwup6ZowHRWLST/FIySbYSWxgb04HrtYuW23wkMroh75QpRDSwhG
+         SrfgE1c36qGoPf3Z8OqHjq0ZXA0UtSheEsf/0S4yT7vJMZYTi/YjgB/j5IohowNnlsuz
+         im8gEMPtAB77pyGB+YbGDMnYjQGa3U6G6vdS4QVjOK7+NtOfUPeeX4Y2G+7H3O+CKsf0
+         rpdmKXxdouIojZXhphXfa6ZNIbvsdqFH1y+bnZ0ybfprw+mqF4ZL283AwnOIQvRIY4LM
+         /BlkgPQ+WhUy7X4JRlNo0ScgzcVYdHLKXK+zY4NAiQFU1AlT9+4c94b3UftyTq49sHCx
+         bNVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmqdackdKTwd4lon6vHw8pNIiolSIHvadq1X4491D6XDAbxTbQ5ItKbUcASQ08TC6TM+txUTC0Fw==@kvack.org
+X-Gm-Message-State: AOJu0YwGoDiCJGAKICAfVzwefYnPBI89iw9yGCroVgNTB+L4K//rGbBV
+	S4LFHlDMpJnM64fOH61t8NIjlLFs/U9ro0JQ5DBiOKoszCzPs30/muetb81jvNGPC3/hGhgIwY+
+	e0VhS2A0RsH9KtDgt8tlNCbNRABNu2ybWydwp2bNAUSduF+09CEjwSQ==
+X-Gm-Gg: AeBDieurl1j0UPLUg0QGwz0yoG5yroPMsxkJEDVJ9ijttvyrH9mNzBRQOA1fQcXHggX
+	FuyPIwfMQIJUXeWAmk6iMwH+Q5ymdgiQ2AUO89UcJipsIXVbAQgRU5+6U1gJj0do2pfFLEE0pYH
+	+ZM+TSvj263rzcE6EBE1xG9rGu3rPkYekq8tzJyuf70KVaaKsFYkBeW67LByQo/ZPrCy99KvOjz
+	1Ln9VNt7YTJHm3wDYaCJbXBLwUa43diyARaThEqdVazEnKcWBTn9scBv8eERGuOJHN6KJwpzRXz
+	33dM0lwaT33xegP0aqm4BTqI/IGT3MkRDRvuYJq+zwG9JG1oBlTKGfrHwzxt7PQIe+8v5Qkg/bv
+	5A2LRlODqH5nakJIVriiFMywGVHEm5se8BdyCkX+ZWp3d9CnKA9Kpq3dNp6ByqcS4eRCxWGPMYS
+	s4AD/c2fe8gg==
+X-Received: by 2002:a17:903:3d05:b0:2b0:b258:2a57 with SMTP id d9443c01a7336-2b2c739f784mr97874845ad.27.1775907961503;
+        Sat, 11 Apr 2026 04:46:01 -0700 (PDT)
+X-Received: by 2002:a17:903:3d05:b0:2b0:b258:2a57 with SMTP id d9443c01a7336-2b2c739f784mr97874635ad.27.1775907960980;
+        Sat, 11 Apr 2026 04:46:00 -0700 (PDT)
+Received: from [10.133.33.83] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dabcdesm61571375ad.2.2026.04.11.04.45.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Apr 2026 04:46:00 -0700 (PDT)
+Message-ID: <2bfb7fd3-fc0c-47f7-8450-6180b0251ae5@oss.qualcomm.com>
+Date: Sat, 11 Apr 2026 19:45:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410112554.23165-1-create0818@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/9] mm/rmap: refactor hugetlb pte clearing in
+ try_to_unmap_one
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@kernel.org,
+        hughd@google.com, chrisl@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+        baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+        weixugc@google.com, riel@surriel.com, harry@kernel.org,
+        jannh@google.com, pfalcato@suse.de, baolin.wang@linux.alibaba.com,
+        shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+        youngjun.park@lge.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+        anshuman.khandual@arm.com
+References: <20260410103204.120409-1-dev.jain@arm.com>
+ <20260410103204.120409-3-dev.jain@arm.com>
+Content-Language: en-US
+From: Jie Gan <jie.gan@oss.qualcomm.com>
+In-Reply-To: <20260410103204.120409-3-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=bcFbluPB c=1 sm=1 tr=0 ts=69da347a cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=7CQSdrXTAAAA:8 a=k2Dk1EQm_lty8cjT5JkA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDExMDA5OCBTYWx0ZWRfX89tXkFwhXeer
+ i9BCXy2KYpDXgJ0b9i03bctup3Jd3Q6nL3lHZaUoPuGnikatDodHFjygTPuArzYv0QaQWZiRJfY
+ 8wH0yl0lIMCFHiXgNiAhRNY7U84CYuO2jykDOCvvxSIGy7bnHnBz7Q5ejcSn0iDvDpzKlPlNTnj
+ y9QLmeumrARrMRL8OAMlJeD3/KpY7q/KSqJO5v4KRFXB82l8tGxPxK10xdzOHuF2eAcEwAgCLBg
+ bBCWa0kTlmejRXEaMnynXCbteA8oztN96BA4sU6G77ykGQgwHWakMjRfNOFCE/9EKGf16B+gfs7
+ 0WTyy28aVADSlP5VSoFz8htEA6Y9wwwtSOvLpuy9jQtFAJ/Dz/LDklqySvRVjP7hY3+3xVFFgW/
+ pFtgt1O3rxAmlnKXgbFCGhKfcM8rxlZ4w/aaBv02h6shpA0VqQjpYDFFsedJ2WVAtFScRBSsWk/
+ Ancs00+bLi4ruwHXrDw==
+X-Proofpoint-ORIG-GUID: I5d4jYjFoDO4OXVdVSp7ycHJB_s0lxa4
+X-Proofpoint-GUID: I5d4jYjFoDO4OXVdVSp7ycHJB_s0lxa4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-11_03,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1011 impostorscore=0 malwarescore=0
+ suspectscore=0 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
+ definitions=main-2604110098
+X-Stat-Signature: 465rsbifue775cni99y1ix9c1dax1t93
+X-Rspamd-Queue-Id: B60681C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4287D140002
-X-Stat-Signature: 1nasub8ns3ms4zfouink1fdbdbfpkt3n
-X-HE-Tag: 1775905707-495987
-X-HE-Meta: U2FsdGVkX18bURaVs9mkdEogO2wVD+XCKub4NeU3CvN8oJp5WO5gTDDkO9eV3kYogJ3/F3WWfC8Uqy2J8KaEl69Mk8tmqHHfxKUVHDLOMMRjn26escEaHrNPceMYBrvtcVQMBWt+GDljRWYncTwekHK4RLPIq1dQQ/Y2y1Hm+oKssTMXNal1pt7DOyQzAa0HHgAi0SqifvNK9vVyJOYw9HjYUqtyvqv0oTA7Nmh7X8EYpQW0nAaWVlAumg7/WQtdo9YyMyTUgipA5E6CqoJtyk9dlbfYVc3B2NrKlWWTnb7BfoTT2ag938YnntwBrjFAf91kgUriRNxDn0UwHU4zXzhEq2nLQBiN72oHx9Kfh1boKta7HOmOwZvViFxR1kX2xenjI1iq9rLkgJdPH1sVG1HEq39cBRGbOKc8SuYx9HrrF9WvUA/T+KDSEcq3Y1gTw3GElcP/OJRdw+FLS1v1TWqlTutYC57eTN2mAtTxxZ4irBDnxLivP6tM/IpJ0EOHorBMF7w6DLg0nhcf48q/gX5jtuFKqD1o3NrYukPbixTSxGbiVypAgIjfRCHQFuNBcE1MfYDZ91fgD6dmgW2o5In0VNkeWGIaoMgHawfBanGEDeG1Xoedm+5QxrtUBWoM4yYqbWeZi1RS/uZC/WJFZzDTkEDTan80O9d+0Gnk4odZnudv/j8tl2DsXJX1M50eaXAUKW4SvEKyqYfrgIbY0encXf66qqYJHNMvgi9jShGwBqrcaTHACZNKoBNRv01lbTUnJU48BSC37YXIn1fx31elcitHg7LVboR6mDVo0v0cQj3GKg6jSU522QZmcNg+tTYbi/Q9DGyChZLayRRJ2ebJjS9aePMmwmz6EYuyNhtet/xkY20tVTKOO7KqpeKYxBSY34dSnyB+wj9lUGqcOwWz2S9DcQeldWOEkhQ1wP9aaLQWHX4fU/8eUlASExankZd8um/7qnPjiqNJIq/
- FEn2Q6cX
- botGSifjjdJwxROS+2bA18IwZEB3u/zRZWV2J4/6oFIBMXdKQVw8js090W6gpsjtFRaMEUlmLnMmysUgiUdLIIKOO3evmfwB/baBGMZxGaQRxDfTyOxtu8I71qgoiidtpDAZR6RtSQ+RKBOhylVZ5kAXci1Swr+Z04v4zRQfB/KzeDlIBzP63IqVyWlDBSJHLqbAOOJo1aOrG2Dnkk7TYTn9/EdgMhbs7Iiz0dNsgpImE6F+QfoNlvayWy/dzKDgvJqgee5n+6n8M1clo4Rz8jXTP/tmPx+NmiTDTbpL9kUr/ygszAMnrCD7eqC8u8N8Lbi9LU/J0+B9LsP5JP1uIlFT0YcqDSBC0HXaGBgpa+sXwaM/J0SI1vAky42AYjZDYEOTOP5J/sSDp6EYO3Z87Vm9FIA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1775907963-479435
+X-HE-Meta: U2FsdGVkX186uhD6B8/zKalBr4kT5eki6VoZrcWNrXjW5/nyYIAAendlES4PhN6fTGtzc4SV4kPu83I7wYzrq2cSydKHwzvgV9duFM/5BVf1SQXTAxNDEMfxqw5NMaEjds9PCsMKAYk8M4jEvfW2mvF1YAmhRiKnLUhTxRdOjOci5ffIhAWiY5swz2sl0QVD+QUI0Oh/6DnFgV5mDy26eVM23C72qzHU1cvp24/NvBs8hEUbiu4tgqZnOxz9wMl8AQQwLQnH0tAgbQNAZpIAHX+kPGljaH7dzzS9u3NNzVh6jfhMldoyb7RhqjTvqvF42bKGNyZD5bJgt2owS3giHTDXUg9uQkXQip28SJZ/7HeNuxzCYo/G7kR52b39csSMkpoKjwWDrBiwtgxt7DtPEcKLssrtB3qosaBv28lAQJLO7Soeob+M3qyudCIZ3Y+2VQUaVmSygvFsnjgFMhvdizHCYOahwi+ebe0on7SlSC06cfpKqL3zePDFMkxrNzknhD0kHt/l75YyMmEwtIw/uxcR+60VHc40Bb3MB02WXR7rKEX+kb7QfjzHgdS+Sjuj5yJQlSgef/uRy4bupYxijL32ImbHsj/qboPIX6TYpGbmZybV2FpvXlr9/p55mME0TYE7d3tzMyOB34kKkE+oX3dMDAo7jpShspMaqcto9gzwNMoPZsU/gUoclnfdrRs0mQlUCa6iNmEqbL1J4Hcch8poXnJNCefmfGUkMymto+7eVwCEA/wd2juu+M0jJCc0k/u1Kew8BSyqje9tP6CTfkFUbEJzsTARy0fU90sDH5AT31DVJWjQ7m+TFsrOud3vPMWgyPzjn+6vEk8tlchLAh1+aj6emv4Uh8d6EP66o1oC/57tODNvf8jLYIaeHCSG2siwD/H8zK2+5Hmayf7EREoS0qL1yhxIlBUsniGF1xPWLz2IJw0SBu4T6jPGGOMZYgvV2nW4zGSUbr3h6/7
+ lO1JIVy9
+ OB4o9rUiorHe7/qfsVsyrjn7GhvXGJtB6gWJJreHJ3VT0KN1vJTocbT/kwZF8qvqXl1Pp0evJlkUG1YiLjWmOblPnljZuozWUtzyMzMrES47aeY+xZWdS6eEFZaqAvrIT+bKt5sHrJZUZ+wVpladBKDsXO9Rd5LWTc411I6ErOWTpsEd6sJGkt7Kl5dVRNMJjoyMkAHSj3m1rEvj1bn36/B87HHda8Ak4xRR6pYi98cWI1nB1Jmq7LxfG12YJiViwBhsePXgH4iTrii9u2u7cyOydN8oBv4Cs98sXh5+uvybOdIn5UoM8hklXnkaQDh/maROJxdgXw0GdzyGECOAY7YLtHLkGywZJ6N2z73SPRx0k3PkGUUS7qqb6VL6rdlo/+MMpCUIv25Z/Cet4KTH7Y88gxEPIMZf1MYFUFR5lX616KVVdRR6rw5O+okS3dGtrbeP2MBxYoiWjgesckuXGYOxqhbKyl7DTmg9ytl2BzxyxT4KpGhtI0Iln2QvCU7yoVrbdHFd6gN1BQ796hFfQpSotYDVDjV/akJzCxxdRmkHz174QX5UWD3GUdquxadAv8SyKXLTB+v5IYsmiVnzREuPHuKjSHu937LDnxuQMQsqnWdWjl3hCiOz7phKwXKlvbEY/rhtZ4+pzJ/Zfwh0mVZSUxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,44 +179,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Cao,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Cao-Ruichuang/mm-vmstat-reject-invalid-stat_interval-values/20260411-085547
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260410112554.23165-1-create0818%40163.com
-patch subject: [PATCH] mm/vmstat: reject invalid stat_interval values
-config: arm-randconfig-004-20260411 (https://download.01.org/0day-ci/archive/20260411/202604111816.CsqTatIh-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project ae825cb8cea7f3ac8e5e4096f22713845cf5e501)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260411/202604111816.CsqTatIh-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604111816.CsqTatIh-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> mm/vmstat.c:1968:18: warning: unused variable 'sysctl_stat_interval_max' [-Wunused-const-variable]
-    1968 | static const int sysctl_stat_interval_max = INT_MAX / HZ;
-         |                  ^~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
 
 
-vim +/sysctl_stat_interval_max +1968 mm/vmstat.c
+On 4/10/2026 6:31 PM, Dev Jain wrote:
+> Simplify the code by refactoring the folio_test_hugetlb() branch into
+> a new function.
+> 
+> No functional change is intended.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>   mm/rmap.c | 116 +++++++++++++++++++++++++++++++-----------------------
+>   1 file changed, 67 insertions(+), 49 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 62a8c912fd788..a9c43e2f6e695 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1978,6 +1978,67 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>   				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>   }
+>   
+> +static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
+> +		struct folio *folio, struct page_vma_mapped_walk *pvmw,
+> +		struct page *page, enum ttu_flags flags, pte_t *pteval,
+> +		struct mmu_notifier_range *range, bool *walk_done)
+> +{
+> +	/*
+> +	 * The try_to_unmap() is only passed a hugetlb page
+> +	 * in the case where the hugetlb page is poisoned.
+> +	 */
+> +	VM_WARN_ON_PAGE(!PageHWPoison(page), page);
 
-  1964	
-  1965	#ifdef CONFIG_SMP
-  1966	static DEFINE_PER_CPU(struct delayed_work, vmstat_work);
-  1967	static int sysctl_stat_interval __read_mostly = HZ;
-> 1968	static const int sysctl_stat_interval_max = INT_MAX / HZ;
-  1969	static int vmstat_late_init_done;
-  1970	
+As you mentioned "No functional change is intended." in commit message, 
+but you have changed VM_BUG_ON_PAGE to VM_WARN_ON_PAGE here?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +	/*
+> +	 * huge_pmd_unshare may unmap an entire PMD page.
+> +	 * There is no way of knowing exactly which PMDs may
+> +	 * be cached for this mm, so we must flush them all.
+> +	 * start/end were already adjusted above to cover this
+> +	 * range.
+> +	 */
+> +	flush_cache_range(vma, range->start, range->end);
+> +
+> +	/*
+> +	 * To call huge_pmd_unshare, i_mmap_rwsem must be
+> +	 * held in write mode.  Caller needs to explicitly
+> +	 * do this outside rmap routines.
+> +	 *
+> +	 * We also must hold hugetlb vma_lock in write mode.
+> +	 * Lock order dictates acquiring vma_lock BEFORE
+> +	 * i_mmap_rwsem.  We can only try lock here and fail
+> +	 * if unsuccessful.
+> +	 */
+> +	if (!folio_test_anon(folio)) {
+> +		struct mmu_gather tlb;
+> +
+> +		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
+
+ditto
+
+Thanks,
+Jie
+
+> +		if (!hugetlb_vma_trylock_write(vma)) {
+> +			*walk_done = true;
+> +			return false;
+> +		}
+> +
+> +		tlb_gather_mmu_vma(&tlb, vma);
+> +		if (huge_pmd_unshare(&tlb, vma, pvmw->address, pvmw->pte)) {
+> +			hugetlb_vma_unlock_write(vma);
+> +			huge_pmd_unshare_flush(&tlb, vma);
+> +			tlb_finish_mmu(&tlb);
+> +			/*
+> +			 * The PMD table was unmapped,
+> +			 * consequently unmapping the folio.
+> +			 */
+> +			*walk_done = true;
+> +			return true;
+> +		}
+> +		hugetlb_vma_unlock_write(vma);
+> +		tlb_finish_mmu(&tlb);
+> +	}
+> +	*pteval = huge_ptep_clear_flush(vma, pvmw->address, pvmw->pte);
+> +	if (pte_dirty(*pteval))
+> +		folio_mark_dirty(folio);
+> +
+> +	*walk_done = false;
+> +	return true;
+> +}
+> +
+>   /*
+>    * @arg: enum ttu_flags will be passed to this argument
+>    */
+> @@ -2115,56 +2176,13 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   				 PageAnonExclusive(subpage);
+>   
+>   		if (folio_test_hugetlb(folio)) {
+> -			bool anon = folio_test_anon(folio);
+> -
+> -			/*
+> -			 * The try_to_unmap() is only passed a hugetlb page
+> -			 * in the case where the hugetlb page is poisoned.
+> -			 */
+> -			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
+> -			/*
+> -			 * huge_pmd_unshare may unmap an entire PMD page.
+> -			 * There is no way of knowing exactly which PMDs may
+> -			 * be cached for this mm, so we must flush them all.
+> -			 * start/end were already adjusted above to cover this
+> -			 * range.
+> -			 */
+> -			flush_cache_range(vma, range.start, range.end);
+> +			bool walk_done;
+>   
+> -			/*
+> -			 * To call huge_pmd_unshare, i_mmap_rwsem must be
+> -			 * held in write mode.  Caller needs to explicitly
+> -			 * do this outside rmap routines.
+> -			 *
+> -			 * We also must hold hugetlb vma_lock in write mode.
+> -			 * Lock order dictates acquiring vma_lock BEFORE
+> -			 * i_mmap_rwsem.  We can only try lock here and fail
+> -			 * if unsuccessful.
+> -			 */
+> -			if (!anon) {
+> -				struct mmu_gather tlb;
+> -
+> -				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
+> -				if (!hugetlb_vma_trylock_write(vma))
+> -					goto walk_abort;
+> -
+> -				tlb_gather_mmu_vma(&tlb, vma);
+> -				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+> -					hugetlb_vma_unlock_write(vma);
+> -					huge_pmd_unshare_flush(&tlb, vma);
+> -					tlb_finish_mmu(&tlb);
+> -					/*
+> -					 * The PMD table was unmapped,
+> -					 * consequently unmapping the folio.
+> -					 */
+> -					goto walk_done;
+> -				}
+> -				hugetlb_vma_unlock_write(vma);
+> -				tlb_finish_mmu(&tlb);
+> -			}
+> -			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+> -			if (pte_dirty(pteval))
+> -				folio_mark_dirty(folio);
+> +			ret = unmap_hugetlb_folio(vma, folio, &pvmw, subpage,
+> +						  flags, &pteval, &range,
+> +						  &walk_done);
+> +			if (walk_done)
+> +				goto walk_done;
+>   		} else if (likely(pte_present(pteval))) {
+>   			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+>   			end_addr = address + nr_pages * PAGE_SIZE;
+
 
