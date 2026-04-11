@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29A27F45A1E
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 04:33:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB5B6F45A1E
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 04:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F49C6B0089; Sat, 11 Apr 2026 00:33:38 -0400 (EDT)
+	id 0F6CF6B0089; Sat, 11 Apr 2026 00:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A5D66B008A; Sat, 11 Apr 2026 00:33:38 -0400 (EDT)
+	id 0A8AA6B008A; Sat, 11 Apr 2026 00:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BC136B0092; Sat, 11 Apr 2026 00:33:38 -0400 (EDT)
+	id ED97C6B0092; Sat, 11 Apr 2026 00:43:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B7C36B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:33:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B0D89E35CD
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:33:37 +0000 (UTC)
-X-FDA: 84645006474.17.3E631C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DFA6B12000B
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:33:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tJMHSOvk;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tJMHSOvk;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775882016; a=rsa-sha256;
-	cv=none;
-	b=FwG/B6efrPrEZBbF0bwzGyEiWbN+G2D2xpJ20WNAyJKEL34w/Q9P4bbE5f+xaAmuIogWjA
-	ycnsj5wPwBX4sQAT2sq/+YGx+nB2BMlsV5NBxZS7Ns2HeTvpKTMiqjvNbMycyFDQSrPiwg
-	EEH5oykYyhSyWQAVuVtB8wYUKjZxONI=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D8E9A6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:43:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84519B9235
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:15 +0000 (UTC)
+X-FDA: 84645030750.06.B40EAFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B4B0316000A
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=STkwmySK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775882016;
+	s=arc-20220608; t=1775882593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BSuh+FAi4eaWp65FSPxHy5F7EQ6BKPFGwR8BxtlGUMc=;
-	b=MYLF83Fm5+uPTVlrcZQuWQRiKR2TTJG5wlYakabd/HoE+FAZu1dLV8wzYINOVlEU40LeUG
-	voOtXM9UtZnx3ut7kPVCKEfrBnlIC2Tm83o7g0b+s+eb5+1CEKKe8/oV1njCQJyVskNp3q
-	fuW1sHoYdg5ujCgv9LwsPwTPGyNmCJg=
+	bh=6PJGYSix7bHPbiZa43f5H5Hv0XXiK/GgmjCJI47M2pI=;
+	b=PHgiXijiZRkRntGv7R25tUPpU9f+LPxg3q450BBp4o5Zk4y0wFW09dM9fXGKd8DEaK+joO
+	8SvQFKTYy/BV3pFv2sMR/wivVROe/R8F6mG2otRgVhWcEj6XX3aXtbgZJUN4nJjVLjxfd1
+	M40gORE1/2CGWYo/+LCOiDe9I7ng0Mw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775882593; a=rsa-sha256;
+	cv=none;
+	b=mxUklWzGv/nx5z6uCL4yon53e9xe3IZ6NlyHDkc/PTiAFkSTbHcuW6Z8ECOrDvKF20Tkfj
+	2YWbKDUALP8SPfAu+na3tdw6NosNofj+BELaalCwkJWgqMWlXmpp9PvwEnBxxT8ll3zrjy
+	+oP9B8QtMnCOJXUprad27wHdmLo5bww=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=STkwmySK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF2FA444A0
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45E3C2BCB7
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:33:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CFB576015B
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E30C2BCF7
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775882014;
-	bh=BSuh+FAi4eaWp65FSPxHy5F7EQ6BKPFGwR8BxtlGUMc=;
+	s=k20201202; t=1775882592;
+	bh=MFwF6FqK2VnTkZeL3ROTR5tHQRdGP1jWQe6irXJD5c0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tJMHSOvk/0stbb7Q6cx1dqgF5c8qg2bq5nxlnHUqxsImRP2ubiNe29jSq5ua0Zzp5
-	 /wWOT16LYjpBatA0Na/fLPGtEhHAG8QZNPKvTkVjFGKys2zaw81zPDEaFy7uIg8F9H
-	 VWyiu/djih2GsQcrFWV1wow/R6gTHYaeSX7VH9yPjeFu599ryC3ZCVF7sKeqyvIY5a
-	 RRA5npEC5htvOrJjIhLsnbfNjIVg62+WHdoGBlrLTWjbn/c6bLSQJWG6gpbrkvvGvf
-	 fPkXzNmWTwp0QAfJkMbHbilKslfb2AbtXjfLNGlCc4cf9fKs+hIxmjnlFUUr2addQO
-	 D7T9uypjiFJyw==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a00566c11bso34785226d6.2
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:33:34 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwSmgZ3KdATwSMEaG78MaZvbPXDtXVO9+uOB9G+c4nz1UUzGKPj
-	vSbu7AhGkXABnv0xcBMDwU1CbRIB9NeJaoPBKhMpohBfjBbzCoumNp/Z7I2u/3Grv2HgVGByWeL
-	aUW9g3lTj+L0uJgqlEJaNXLHL3uKhWQo=
-X-Received: by 2002:a05:622a:281:b0:509:965f:888f with SMTP id
- d75a77b69052e-50dd57ef9bdmr91781331cf.0.1775882013953; Fri, 10 Apr 2026
- 21:33:33 -0700 (PDT)
+	b=STkwmySKFIplUkFeio+4ujcKsVpHoQOAAHUvH1zJRUKiAVYqi+fskSgpWIoCRZD0a
+	 jKOsCKcnOte5gyZbO2nuqNFgXDGzBJQ2dEQVktoupWpzo02FhKLztsjzqWCyWMG3+s
+	 XUiZAVHd71bxcpMMf5OXCLe41qvsB/csAE6kz8zUCUd4WMoWv0Q8nzIha2tPqmV0GH
+	 auPFZprxmL794Kl6rDyUoQx17VmM1U6sahTI6J+JnjlKV6xcet/N/5rsSzdYAY5e63
+	 zhzP3eRICmtPaCWK91gJQv4sO8TPrsLYpMSegHr0XUBv9m5nuBLoqMpX0EJkcpQgmO
+	 jOpxHX6XEQ1WQ==
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a56ca653ceso33123196d6.2
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:43:12 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyB3lMZfIZxMO5sQ6vQf9AATB00ipyfv9AB6KrmE2l5xUXTZ7Yn
+	c2739+TKp0lkteACFfngsweWWWtqM7sqFlY0m2zYA2DxRg/hB9Z9a82ufvwKeAPFh+68uf4c6AY
+	DH35FDlyXeyKpNKLH0fGGdz4Y1dUWdYQ=
+X-Received: by 2002:a05:6214:3101:b0:89f:2ae0:3a02 with SMTP id
+ 6a1803df08f44-8ac8617f375mr77592216d6.19.1775882591624; Fri, 10 Apr 2026
+ 21:43:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com> <20260407-mglru-reclaim-v4-13-98cf3dc69519@tencent.com>
-In-Reply-To: <20260407-mglru-reclaim-v4-13-98cf3dc69519@tencent.com>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com> <20260407-mglru-reclaim-v4-12-98cf3dc69519@tencent.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-12-98cf3dc69519@tencent.com>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 11 Apr 2026 12:33:22 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xF-gMYVugbwhFp3_jS-JHsMi+wwjou52JYwb5GXaMhcA@mail.gmail.com>
-X-Gm-Features: AQROBzDQ9p205mDi9V0YNTh55D_RjZlpkb5Rnx60hsllhoVRII2IMLU8_jW6caM
-Message-ID: <CAGsJ_4xF-gMYVugbwhFp3_jS-JHsMi+wwjou52JYwb5GXaMhcA@mail.gmail.com>
-Subject: Re: [PATCH v4 13/14] mm/vmscan: remove sc->unqueued_dirty
+Date: Sat, 11 Apr 2026 12:43:00 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
+X-Gm-Features: AQROBzBtIciFHI5MXM5Zz8v0SNR883svaLPBfwVN2nmcbC_CFW0afgYxPbKwYqI
+Message-ID: <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
+Subject: Re: [PATCH v4 12/14] mm/vmscan: remove sc->file_taken
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
@@ -96,14 +96,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DFA6B12000B
-X-Stat-Signature: g311msnzbmqzppgqkx4a8ih9gqnsoxwg
+X-Rspamd-Queue-Id: B4B0316000A
+X-Stat-Signature: b4b6hrnyczmkn3h5nxykxhh5wtsj7xog
 X-Rspam-User: 
-X-HE-Tag: 1775882015-569857
-X-HE-Meta: U2FsdGVkX1/VVV+9YGyEKKH5JybThh8yB+DWETpZAr+liuQ+knocTr0UhTQtpizs2CjRgQ36fkYXT5fsrg3gEQ4TeHYirFkZVc6K492+vB7Jxtr27L7/9MqpIY3la6JWj9EppaVw0wPnvZ8NqDEAMRkdiv5mFIvxvNj4ZRyOk5Jw6N2ss2raYLTBqQuIOwuNxTwJf4l4NSCkfMpWZHIp60qWMxF962e64G87MDnqy4DDwGN++O/YgkpqMymGNWVJZNeo46rYWhZMqfESdvfyoR/go2ICALHmZsGFeGP10lvGyNnmmrQ/JZrwEgmOJxkQXfAbAHX2qwZCTicrhdqLdnRWVOYoH15WWlLIcyJQMAIv0eOlJtU2VCXez/HN316oRaf3idUF2hy4D5vBhSgTVyz2ZXM2xEpXxxSMmbIk77TKBqEG3kMoPbblP065iRX4bGWRiQlVZ+2pAztECK7JMNSYRHlESAiMO3MDie+8VpwYQRzyw9Mc5KAz7lRk3RfdFFR7GVrZLmFXIgHmGoHXoI5IB6fpoPKCDZCa9O7GqaiJ3s+MykzqPzmiI+HNkJIVF3P1/8XO3PezisqVWpW5yJ1j+Y7/1ql8GbC2IV6Aj/n+jlADHPDzQ0ebysa/3ws4dggIOMdxNUHlVZPlytuuzCFGy5DCC1+QEbK8LNTPAntNq14wy5F/KMSaGVmf4iBK7zfhfLSHaqnDdaUEJI94n7FmV92suOZAapX2fCmqdDlJTv50EiwihdYvcN7MN7LWg9BRhUJZr4rUlAIgxBKTkbX7btHtCuGGbs+VTZi3uk7qLBWaLXUVGUV8hDBAzvamgF+8f46wgmMHTbMoB4eVZ8uKbUIM4ftu9oIDfSQJzxUFaU8Ent19iiEMqfT7Hh0shc8WwRffvX+DVAukN5si656zomMefSxCszDisV536DX1pXp5K2ga/A0YO1QWtqYV946XIqi2pbJQf86bRvY
- w5KC5+Eu
- xOYbcfVRFnQ+oHZrg2iShPHk/jsx8Wi+nj4/O1F2VMaCugeekIeH+BN66TpmsrbFcU5kXV8Lj5cI2nH+5CdHzO/4dCWvFUfQS2ya2YVrcvOBW84BAmSt7m5BUefNcftdRMqz59Xs4rh1FC0lT8jmZkEfaWvpZ56SJDDLN8a7GJgb/KRbr6q9LafUW+Q7kpYguvIfpuHLvqm3B2GM0rDJkfd/jbjoU1GcLeu8aJ6G5rx/dOCaygYziJaZC1WFHLlavwpJDBTe7qWC81Fg7UpuayMn0AL3atPU5ruNxo4Xu/jwgquOyO/tqCppxYfMKswB4jHWYC0VLpxCAFuBldxDRrJ4vjP32VOQN0But+/wvOi1pvQmi60nEkUXYfcLGM+ywQCRbjpwoxGUY+N79vvNN0z37ShkDPl1DNrVORdl1ZLpejU9BAKoOSVJbQ7cFb/itFMktFHy1OwTka0H/KJ9vJF8Geji9/qoxfgeh2JgwlFpjzKoLpSQosUUG6g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775882593-754581
+X-HE-Meta: U2FsdGVkX19+86k2pN//A2yL3DlPpS/tlvozYtDVWjiiCG/RBEQ89tVKWw4e2bWpldpK26VYWHefLLJUgOohGOI0Axx9j0iVyPQyexJI60ze3m1cy3Yxhc+tB4D8959lh0zvS8VnAjipKejZV2CQLA+TX1Q7/Ynf+mHAduZB6l4AXtTDKKVQYdOU/yv8cr/HXfL+lmJMonsJZcAoUmaC4AD+ml9EHZkrXVRpYgKUV1b1h1f0t35I624BGqnfJkViNlVUgTqr61SDtgxIexnzv9yhC/svG3B13gLizBN0mP0uwkZqCe3Do9vB8NVYu4mBrMIyyWjeUKY+990O8heI4p1N7OQJrfQosHuvGRfFoT3Qaridel2iRjHQbCA3irGh6X3Y/wbGjLqj5lOLYFhEOIDqBQHBPV4YLShu4V9a/BXwVovBNhHDWXUburw2EqGbP+m5v3umJYpEEkcR5HokqlbCyItyTZWLtahCxP5w9K6/wmaSeSL+9fIE4fWgUkrm0vaHWEOv2ucdvrSRQei1L69g/fT9JGBsyfbQjxCut+Su8ya2mjwwxI5ww/xUfPfdkyLg5SBmEpKWt3MINm1tUwhHl7Cagnbaekj0dE+2PK3pro7MdYL8IE0J5TqKOH9+F61RkLhXAS8trlpfkGglC3DXN512fUa2ZAqQBto48yWrwWBSZ4MOBU+aPRaQKMd4yfEkejahnfT5BCQKRRWLt7gUyhJAda6oAKYWL9ZaHxDLGBeuiIVNvviEqKfpzdubMy/4hARZsVmiiA9nBDv9qqE5pClA2CfUZ18KZG8xM/jzJux6799KgSc1/OM9CqUOVaAlPJLwlmGJep3VQygbk8LFlDPmWxhx63c6DXT1FlR/d7HsJDu2d+PaLnx7XQEx55h+Hp7wdaBKAEXn89fRbEZu0T9OSYvK5+2vue6PYgXg1noyYKPMGmpwJxdAt+jtMn11JJYGU7Bb/CzUb9z
+ 8AfeBR4m
+ 4M0F2q1p8bS9loeDkgfm82NGlsjV7d6SdLi6jGRRWN/ZOruBzcruuBTtKJS1HfGAoVr6fyVbjdueT5K33QLBzCvmZ7MFb3Gywrv53ROYfJ7o51EpACvopCbvat1kNPG3DvcnMQPn8sDfrsuDmwcqOfzWwkHUeD2cagHDVO3lNeNNymTbeb3cbQ7iYj/JVu264Tsd/aE5qwMlUfC7L5VLgpxPzUNYeDL6fiaMXf44vSY25VjQ2bN9Oug8a9yFbeEPGs2yRZ3VdrxAwILYd76r9tluVQ6M6ZNWvIyVndHERhgWdFztlXYvv8dmYXhefVYcG90KOIEUNVIMeNdN0v695VhiXQxrgIgToqD4OMoSebb1rda0fpWkziZJT5Y8cGD7KOuyshpG6IDqlFyZtbPGzzTdy2wNcL0+niW2nRZKceY9qNEddhTt2EJtXgy0PMpsa0+EWQkH69+2hPw5NtZlkRzWQ4J2P7G2hvFFSjvA46kLsuCNQ3a95ow66+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,13 +118,44 @@ On Tue, Apr 7, 2026 at 8:04=E2=80=AFPM Kairui Song via B4 Relay
 >
 > No one is using it now, just remove it.
 >
-> Suggested-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Can we squash this into patch 10/14, where the user of
+file_taken is removed?
+The same applies to patch 13 as well :-)
 
-Best Regards
-Barry
+> ---
+>  mm/vmscan.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 73b1aeb6c292..79e8a8e6555c 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -173,7 +173,6 @@ struct scan_control {
+>                 unsigned int congested;
+>                 unsigned int writeback;
+>                 unsigned int immediate;
+> -               unsigned int file_taken;
+>                 unsigned int taken;
+>         } nr;
+>
+> @@ -2040,8 +2039,6 @@ static unsigned long shrink_inactive_list(unsigned =
+long nr_to_scan,
+>         sc->nr.writeback +=3D stat.nr_writeback;
+>         sc->nr.immediate +=3D stat.nr_immediate;
+>         sc->nr.taken +=3D nr_taken;
+> -       if (file)
+> -               sc->nr.file_taken +=3D nr_taken;
+>
+>         trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>                         nr_scanned, nr_reclaimed, &stat, sc->priority, fi=
+le);
+>
+> --
+> 2.53.0
+>
+>
 
