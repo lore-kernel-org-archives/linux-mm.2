@@ -4,84 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0C6F3ED50
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 17:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B72F3ED5B
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 17:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 096676B0089; Sat, 11 Apr 2026 13:09:27 -0400 (EDT)
+	id 629436B0089; Sat, 11 Apr 2026 13:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 047BE6B008A; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
+	id 5DAA46B008A; Sat, 11 Apr 2026 13:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9F8A6B0092; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
+	id 4C8AC6B0092; Sat, 11 Apr 2026 13:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC24B6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 13:09:26 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78E338C6E3
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:26 +0000 (UTC)
-X-FDA: 84646911132.26.CA277AD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 380216B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 13:49:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD6988C58E
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:49:17 +0000 (UTC)
+X-FDA: 84647011554.19.403716C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 03F6040005
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="beC/cCPW";
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 507C340011
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:49:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NecIxejH;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="beC/cCPW";
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775927365; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775929756; a=rsa-sha256;
 	cv=none;
-	b=HuWPcLZi72xnyIKC2GitP7C7+Rc46eXxJ5mtThsO3A1KW+54yuA8vSq1uCxvap0xVLZo0C
-	pmX7Sb6BbS9OxHre5i9NQ957nVJcdUodXk7vsY7F4sTAx8ngZmiVZubaDoZoDGxnWYjeco
-	/2UHnU5Gnxi6h44XOevj+UX2PRm1Uus=
+	b=RbywHjW8K4kTy50/Pnh3a2Ie8hGY0TDCl45AhB1z7Mtx1lu2LZGsPAFhy6srh3xKWkjKlZ
+	X7WRPFFBesdJLDcd0GTPF3GP3f0VUN3h8SwuA2TeBxqZhPYl8WbC4uX/NIbkE20mLhz6v1
+	S6ErDAvndmVYa1H262QCJRKBqWYIjjE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775927365;
+	s=arc-20220608; t=1775929756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=8KFZ0gll5MjF7tBlOZs63BHUgMHhCrv9XFHw3cSOTtI=;
-	b=fPVkg8CYfzndl4hJfANbFk8GfnE/qaqiP31yHhf1YKSfRcKVJUAFiSBjQ+cFL0m1Z/49l/
-	i38YIrp4McGIVG4NF1Pi6WHp66He4ySwUJEhIrXYv0/ezWx7Skmd49R7pH2R9ryyCzrcy/
-	s8MCOCQykoccFiM9GjBMMrxZfLrFedU=
+	bh=/WOtnDcnJ4iWgh3CqEcT2Lx2s/iroTQe7Nvu8lfV5rY=;
+	b=pF2XUF4dLKn/lNUgocG/2orlxYa1nUlPqd6xdRs0Nuz3kw05mvLN6+1tRNLRSAZ/tjOsB1
+	LdET8rVxH2z/TX1YTbp7dPbIg7G/r2p1GKPEsFnL0Bs/fe0V3LyYVP0LIzPYixZQvPjQHx
+	zAznEE4PuEIri6kLJO8V942Wd2xclG0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NecIxejH;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B6D16111A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB279C4CEF7;
-	Sat, 11 Apr 2026 17:09:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B37876015B;
+	Sat, 11 Apr 2026 17:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B2DC4CEF7;
+	Sat, 11 Apr 2026 17:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775927364;
-	bh=mLWm1A+kvhVK3/mJ79ySU/3Nw9GXZUDws6e5yDbdgRc=;
+	s=k20201202; t=1775929755;
+	bh=+6mYAdHtZoxSPEip1gB6CQRvcztNhH7wHvVyj8tMCMM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=beC/cCPWhkNYz93kjx9/TRl/QFtINiIfjh3GBnQY9pWolAOurYaFLGoNIAfCIyEz0
-	 zaQwaZTTi6BuQLLy4nZ76zf3JQ8P/xoupNdVmthgsSpZrq7COYAuI4R1ISnEWnRI8Q
-	 VaAOhNJ7+mlFnLNErf2/uteH96WwJCwf6wYXJh8oitec3Vbh3NLtVKN0YdPYwNvn2i
-	 z/a+5E9St3KJPI21WRbid8ZwYQbWHHBL76AskZ8UCgl0h1Oj4l3ZUwMp/4P7YNue1U
-	 qo8pfARl7n+pa+01g4i5bLS7PYPUh/SevjWUo9Hw0fN43kSc0fiijvtVUWdYnNJPgu
-	 V2/J+k7t6GEkw==
+	b=NecIxejHHgL7OTGZNJKfdRSYkrGQeFnaOyknArh0kDzSfCJFCvaA+lRyUwh0z3JkO
+	 S9MgoemYi3uZWzl+zA6Zi4ZnRF6xR5PJnYTA/+U1LywdxqPvoAgoGYM0ZlJhX3eRqm
+	 7D7ppemTslRGqDBrZ7TZYguNFIo/IumMDnaEwJ1d6/C4n3Nsn6b0cqOT0CCSJ7gcAX
+	 vxCJPV2uf25iF6rXN8384gJhlkaGeAYqVOp3lQF8uJvUFlNCqBfAl6lVrixFv/UtZm
+	 QUBFY+vaU+OBrFA5gpxkpoCWdZ1BGJ7jRo+zVHlL2USpSRXHC13dhd1FRxgM/nxT45
+	 dd5FMrlcEbCxQ==
 From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-03-30
-Date: Sat, 11 Apr 2026 10:09:20 -0700
-Message-ID: <20260411170920.77900-1-sj@kernel.org>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] Docs/mm/damon/maintainer-profile: add AI review usage guideline
+Date: Sat, 11 Apr 2026 10:49:04 -0700
+Message-ID: <20260411174906.79491-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 03F6040005
-X-Stat-Signature: j4he6bmj7yyrmg5c5itfm4bi35rs4ids
 X-Rspam-User: 
-X-HE-Tag: 1775927364-198850
-X-HE-Meta: U2FsdGVkX193IlM3d/cswjR7GwVfAvSbXaOCZ5KXUAfp72Z9WwbcWe9BvbUOOWDKwnW8p8XE714szQ74TK4tG6GxWQ96/oH2WSUuKYKNYx6zZJvpfa4g1bd9Eea9OvWRJLBAkXMk7///v3ZZejTubtfyhdiopTvsJakWMNdR07TSObbGcVueswHiuGrI5cS8CzIm/m54wCrgIdh7+bLJ0fgZZzcb3r1Db4fvh0FMKyaqFFvcf0yhGsGEBxilKtTD7itA4FH8XUIL0siTGr8re3sZfKNyRHBA0yDXzEe6O46+TBrCawZ3YdFRYqqMcaigvspr1Yf4bc8DQY2iHevgX3xBxLl+snQSXFVfgsWlDqKyjKR5xSSpV1VInTxb2+tJeDyOFyE5rzuBBk4YwptKPMjaGQ90O+P8/Ce+KSNM6m43YM2WEYQXaZD0Fexhxg/rSnS5BAJOBA08xrjZWyW7M7Ax94+b1yAw66dYl8HIsBW3JTfkL/KzBNbv330c751Xya/yziC2dHctmzYLoh883L4afdKxIVkRuJaFvtmrUsC2/7YtCSs7evn6e3Kug4nDlvYTMZu75nSK/szN3ZtEH7e40t9QqZ6VBdWYrO10OjdJHJUFXcE5NIG7JoFoEV519656rqE75K9pVF6A6c8xq2mIJf1MHzMsvewX2xoQ+guCjiqywoFESo9ls3FAQM2BqxxiS/Jo7r9rJTjUQ/bIizA62B0qaxCeR8CI94cIG6q3sfhUgM/JXDbhk7gPeZJCNdtHORm7K7Ig8SjtcY6Q0dImprp2u9fDf+c4alTNw//ehXjmi3th7frA3+D2fcwWJxC7N5HznARKMFlQws5wZawkMGSf5U2jrOR37GrT0Ei6qEJoIlfO4bgWcC+vkF/pTvXVdCFBQBe4f2g4O+F9TIlQTWZ5vgEL5VKUvV6T5O3qdajuj6ZENbCap1sbozJW4T+O5HiZN0dkqa8zt9b
- pR1HCWjZ
- A1KE3p1T3wTdHsVEnVLJzOpVOC4WSCi9JBQSUVQSIKMOqLqJcPWhGn8qgYSBZu0ix8j5/ENE60gxM73s8Tc1QJ/Y/BJYnT9y+NgJ10qJN96DSSrI+xZZmPjvUAsSEj1L3AWedLXPBjdnbeKCKAvI/HRuXcYm+jjxHQZReUy0zssx/JXQCi8RLleTmVSt0TvL+OlRYhyIaSsbt9d5m9VDSfbq3L7XKj6g95VEVodukhvNQAvxt6rLhSUIR7vaAMVRdS7AxXDMKvjlZJ1LU03k52r1BfYn03eEz8w2aFpPzO4BdGSs5X+78hWQW3A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 507C340011
+X-Stat-Signature: f9xpoatqnobyds6y5tuogbs4siuf1zwa
+X-HE-Tag: 1775929756-900283
+X-HE-Meta: U2FsdGVkX185vTXM6yiL+MH+KU+W1LfUrjB8PR9KZEV5YkN3wz2ybBMFFcmY5WaK0i/eQyVuCw9/OxB9crAT+YFsQldcsQOF+vbzhJW0pwldQLzWOm0r+R8O+cabS0IHPtxeuVAFi0QDwQoI0ywfM6Xh8J0cSxLe2vZdg83dSNnVh2Lcbp1YTsKkn6Ih8DUDVmcmXQXG+oda9saOizqmTcci3M4BegtqzobvKAYC9M/vPzUAo4AdG8Zcsl8K+tP0Xysm+GqmLVpIV2fWh9p+0CWtrPyKVGyjh4pgSpYhZ6i7/5+rCpBS+0TwtxTAzAMLjIw3fISXAkmDgPMb0fjYYK21NmeT8aiArzhVbbLlETecWo0bvhPHsk1FBFfj/SZjeGyKuVH8fV3wQGrCUfaFGHlvquUpxP+0NyTriCx0L+uIFnbxiE7BOfm+cbLUns1ZSgn7ixNNu0We+eFIJWp3YkIzVG35pBMupg1+qTh/XGhIpvPGKYPV566m1TWNgQsUrvbUqtUc74ghEFsgvs+JK0fnR9NNKQY4cvxd6jHRA+rEDN21z29n5t2BLePUTiMMtTo17REhg/YzjLpHvwK7XDDo6K5SDw012k50keme5Cum3JKpsug+nQdaKJG4ny2i9wt2F50oj903TSRArpwi76h+2mQMtAVXwe0Z8PVCv+wraNQVtLhPiyAyqxqbKZ4mutR2gZS0izrKQv1Sg3hhAzNg1zcRbB98jRitSWsRgLjLANkDMOGvBkaMl1iQUH9Nfvm2upAnayYePLeEoYl2hElRhGgzKf3mzMRqW6fWGzUavLNvcvcvGv5ObdXJsiBOcu51q9+mJ2pJHYlFR+SxMO9eHPWsa8+qyiVPhZZo6WS+UNq/XWxjjBHPYkXOBjez+mSc3H5YtY7iPiXAMII5aNG4C1jmaKzRLiRf/NaP2XGy+HeFOl4dhxBQgj2vNiOCz9C0zNhLbZJiN8UlzPg
+ Y7BAeFhY
+ j51H/Y+jJbshsmVag1pRgE6oVBFwLelq+MWJ8YC8uoNi3kl2aTsINXupx8IYKpIN38cTRmtN+ad+qxIoobVVqlv9YiencxLLzLmJXDlCqHf/LWllRC/gtIy0gD5WtZvfTjCxVOf/30BUGdtoMduYm1HKajq055DaCzadxqKBEshbhZ7G1qLsoh0Nx95sTDQ7RdwIdyy84Yacsi0WoOkpU7lGQAWvtrfYseJ0hGv6o7U58Nk8e03VVAUniu4Lz4s5whkRoUW9UNXYtJKftuTiWZTa8Z5tT9sEXXnci7t0BjoI6iAWNV13uLnVQufYBCSLfm4uwitUcfDdwbRbuccVa8UgFRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,41 +100,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+DAMON is opted-in for DAMON patches scanning [1] and email delivery [2].
+Clarify how that could be used on DAMON maintainer profile.
 
+[1] https://github.com/sashiko-dev/sashiko/commit/ad9f4a98f958
+[2] https://github.com/sashiko-dev/sashiko/commit/b554c7b6e733
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2026-04-13.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ Documentation/mm/damon/maintainer-profile.rst | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-As usual, we have two time slots for meetings in the week.
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index bcb9798a27a86..5c23b1281c50c 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -100,3 +100,24 @@ There is also a public Google `calendar
+ <https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t>`_
+ that has the events.  Anyone can subscribe to it.  DAMON maintainer will also
+ provide periodic reminders to the mailing list (damon@lists.linux.dev).
++
++AI Review
++---------
++
++For patches that are publicly posted to DAMON mailing list
++(damon@lists.linux.dev), AI reviews of the patches will be available at
++sashiko.dev.  The reviews could also be sent as mails to the author of the
++patch.
++
++Patch authors are encouraged to check the AI reviews and share their opinions.
++The sharing could be done as a reply to the mail thread.  Consider reducing the
++recipients list for such sharing, since some people are not really interested
++in AI reviews.  As a rule of thumb, drop individuals except DAMON maintainer
++and stable@vger.kernel.org from the recipients list.
++
++`hkml` also provides a `feature
++<https://github.com/sjp38/hackermail/blob/master/USAGE.md#forwarding-sashikodev-statuscomments-to-mailing-list>`_
++for such sharing.  Please feel free to use the feature.
++
++It is only a non-mandastory recommendation.  DAMON maintainer could also ask
++any question about the AI reviews, though.
 
-Next time slots including six virtual-only ones are as below.
-
-2026-04-13 (Mon) 18:00 PT (not yet reserved)
-2026-04-15 (Wed) 09:30 PT (not yet reserved)
-2026-04-27 (Mon) 18:00 PT (not yet reserved)
-2026-04-29 (Wed) 09:30 PT (not yet reserved)
-2026-05-11 (Mon) 18:00 PT (not yet reserved)
-2026-05-13 (Wed) 09:30 PT (not yet reserved)
-
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
-
-Thanks,
-SJ
+base-commit: aeaae01df7d17b5742e22b65b06f666ddea76816
+-- 
+2.47.3
 
