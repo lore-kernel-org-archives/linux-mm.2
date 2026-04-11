@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 660F1F45A19
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 08:34:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1997F44879
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 08:56:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8B1C6B0089; Sat, 11 Apr 2026 04:34:49 -0400 (EDT)
+	id B24546B0089; Sat, 11 Apr 2026 04:56:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62966B008A; Sat, 11 Apr 2026 04:34:49 -0400 (EDT)
+	id AD5376B008A; Sat, 11 Apr 2026 04:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F5C6B0092; Sat, 11 Apr 2026 04:34:49 -0400 (EDT)
+	id 9EB4C6B0092; Sat, 11 Apr 2026 04:56:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A76C66B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:34:49 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B01E13B946
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:34:49 +0000 (UTC)
-X-FDA: 84645614298.28.52159F0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DA756B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:56:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 411761B7D5F
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:56:14 +0000 (UTC)
+X-FDA: 84645668268.09.A42770B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 452E6180003
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:34:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CSF/JNNW";
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4A38E1C0009
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:56:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WHX3Imcl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775896487;
+	s=arc-20220608; t=1775897772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jRUQi4i1xA2o1RTW5OrGDepLB52lvZpCsLr2BKB3rIk=;
-	b=oIVT0TLM9Lg71ic/8R5+Ntw21pc5X5eLhlpDWWOCNYs24OXoJVFA5lX43JrObGSjYgY8BC
-	8i6+KtMpBVe132/gwDf+pvpOT+HOBNYX3vUNVPefAw1E74/5a961JHCVk2nHdqga4qbyiM
-	Mb2Ajt6EeGzBbU3b9UCzcUg0yCEDPt4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775896487; a=rsa-sha256;
+	bh=EBvnIfCQ9NBEvh/gdYjGzQ0jYzjwOD3bhFRa1cE2ktc=;
+	b=Da81iWLTnS6SKUwwZ+brIWSuSzxSf0tqbe/FaOw0AwXZ+CXbcksYWcNgmTJnK2sbeCCNAG
+	e3Zzy0moCWY6ZBwT8yTvhBsVWzy78Yv4432kaRGRWmCw1OyJ/otfGcNq8x7xyQhCdS7fPv
+	Ns5z1aZLC/AJNX7XZejpL97C0U1ukeM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775897772; a=rsa-sha256;
 	cv=none;
-	b=QxxYqHqIt2VWC0hUuz8k7F1imZLjGZVrRnb3YTnBkLPYMAkE4aInyx6ePV2DnW4UAEhJTI
-	tc3gVQjd3eKD7NWi0Dd8CBkUEFANOSowGU8HO5ZB3ppO5gs0GKcmUckai1kvqXRK7K8z0M
-	5DDg9/x1ejUdwwL9j4fHwovDYntmWpI=
+	b=DvnNJ1JogM+W5GKDcgCUYPF7qVzqCueXq7lctP5DpbLqwSNOzL4NC4AHAyv2RZASdfZl8g
+	NXC2wM+U2r154C9x8+NI1YYv27nexY9hNUERJfuPDFHCM5AwEIOAjdbRVE7/uyPgfbhblF
+	2NXcqoAftewC8lp5Qd1ipzzdIfI0Blo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CSF/JNNW";
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WHX3Imcl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 098754452A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BF6C2BCB4
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:34:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4613E444D4
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:56:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DCCC2BCC9
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 08:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775896485;
-	bh=DyLwqEKuL5KjE62apaGDYRhTFIbG0PtD0EFlCVYwDYI=;
+	s=k20201202; t=1775897771;
+	bh=YywOpM7IN4lQ5kIAgd6HF7Gg64mb8PV9Z7KFjj8isaQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CSF/JNNWVwUIaY1xWB14OJy6Zk2UQD4MbZgxqg57MgnDkG9l10IgeLnTtnnoAitun
-	 DqZ2QisMMxf8NHO1XGqfsu+UNW+06MGObukefV6OIRHrxuNqjLqvsdYUb9iqzjTrmH
-	 fzM/4zjGFWIYkZ6YAucJ5GbB5y8mncJ3ONFxb9nL1YRwRY3hX4kEIB4XyazpBybiDX
-	 SIm2UoWViqxhypNEF9v2eGOmdwjF1qM24YtuVRLglsSAosKKljLT6E8sJQa2oC/1C2
-	 NT6V5efZ4zBuQzVHpxDiKwUujYqLODp1oxjkgTLnr5odB/EGVmroL0abcFrBeNZ0Bi
-	 3eEOtEoFYS95w==
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50bbc41677dso38745381cf.0
-        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:34:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX3PeWUitxujoLzuVqCWjvgDrZfCeiT6Y3XWGtT1Sc4OCMpRN27jB89JNLm3TxRDVv2Enb4AaL5mw==@kvack.org
-X-Gm-Message-State: AOJu0YwbJh4flyXsntMA6L4VoJcqv6ZezCWJq8sNm7mg9BrDKVEnt1B1
-	Fjthez43dHrto9hY8e85ga6p8Jta2igEz8JhV2+fPE5gkyJTdMddQJ3BMuQqSldlx8nZC7LRm+a
-	p/hmgisWn4tRpqYdlPbbF/T+r/aXif+Y=
-X-Received: by 2002:a05:622a:13c9:b0:50d:912c:c2cb with SMTP id
- d75a77b69052e-50dd5cf4e97mr93506381cf.42.1775896485079; Sat, 11 Apr 2026
- 01:34:45 -0700 (PDT)
+	b=WHX3ImclpYmdoj5iW0K/F0mEWZ6Mil3VVB6bnK1Q2Vq08o0AHTrYvw1U9t3nM3mKy
+	 iXe1hQT+yBziWs53kmGjlRnmzUGDr+hlBRtvGIVprt8AS0OPMKllT5YWerTBt+2ONL
+	 38QoMpJQqdcaP+NNvRpxT5VKEhAg+VwY8JSxOUh+hzKhLZ1RvJZafBUKSILdmRuq8x
+	 GRWkwo9p3JkoQxpofZUGpHP+5ZzCOrjoT1QFPMzZDnX+AV8XHwQnRP8bh57crLgbvj
+	 EH6JxGblRjpZRMBkmi8qr7mrhDOOnsiq8Q7kJZAsG3YWhroLQJUsH8DsXj08Rto+Ck
+	 vjcsnPwTDTjvw==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8a56ca653ceso35156926d6.2
+        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:56:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVnuKnUIRkPdbRzCA/sDDXd4KjXZ8t7L+9OkvFRDSaOGrQnWpsYTKHU6rvfPU9ymMhmlJu6DQeQgA==@kvack.org
+X-Gm-Message-State: AOJu0YznRzib0Q1rUYFKq/gBQhY/VellggVvNYhHkbP04s6X8tBObkxK
+	0DFDRgBt19j7zb7L/0CFFOWcHiiCOOFLk0JNYzX0Bh1PiFhYX2Pko7YGi4tKPq+wXWSLULEQva0
+	eKf153Y7n0oNGKI84tYGbQdeyCq3gfo0=
+X-Received: by 2002:a05:6214:3101:b0:89f:2ae0:3a02 with SMTP id
+ 6a1803df08f44-8ac8617f375mr82998306d6.19.1775897770204; Sat, 11 Apr 2026
+ 01:56:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260411062152.2092967-1-lgs201920130244@gmail.com> <CAGsJ_4wLSLy_vZjGYiJpTEOBXtyTTTVdTr-wW+sKKb5b0S0Bhw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4wLSLy_vZjGYiJpTEOBXtyTTTVdTr-wW+sKKb5b0S0Bhw@mail.gmail.com>
+References: <20260410103204.120409-1-dev.jain@arm.com> <20260410103204.120409-3-dev.jain@arm.com>
+In-Reply-To: <20260410103204.120409-3-dev.jain@arm.com>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 11 Apr 2026 16:34:33 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xjwA3juUUJyUPgMyYfo7VB1BTejTDyDeQC5=QK+=yTWg@mail.gmail.com>
-X-Gm-Features: AQROBzAxFAwPtnvyQ5Fnb7CV7PLVzXzgQ7HWh1trE8tDGJlU8llE8h5X1dE7giE
-Message-ID: <CAGsJ_4xjwA3juUUJyUPgMyYfo7VB1BTejTDyDeQC5=QK+=yTWg@mail.gmail.com>
-Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Date: Sat, 11 Apr 2026 16:55:58 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zK1W71iSP14gi=8yWSg80EjgYiBXqLChB2i+X+RSTWcw@mail.gmail.com>
+X-Gm-Features: AQROBzBT4p3TkI-zntWD7TAz5bcjDOd-bXqlgTLsx7BMmxNFn08oNIiGqdnB9XY
+Message-ID: <CAGsJ_4zK1W71iSP14gi=8yWSg80EjgYiBXqLChB2i+X+RSTWcw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/9] mm/rmap: refactor hugetlb pte clearing in try_to_unmap_one
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com, 
+	chrisl@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, riel@surriel.com, harry@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, baolin.wang@linux.alibaba.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 452E6180003
-X-Stat-Signature: 8kq8uwqdmgepf38cuoueqjitcimeepq3
+X-Rspamd-Queue-Id: 4A38E1C0009
+X-Stat-Signature: aq17aqudwxgr4zf54o9i689fbdqwaj1h
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1775896487-536428
-X-HE-Meta: U2FsdGVkX1+0GPg5q3E/iXwRMNw18/1t0kD2PGy412/aHl4RL+8XOKZHqQID8KBIeKsk/ewFlEll54zaTkjHYeu4kdJncs8aAJ7baJt9yKWpcmMIy2CNpqECKHyZ6+2yixLPslQnkdmuRspMiOvXzkJ91ni1IMIkR2iFNkEO/2TJSmqyFZqQ62uyYFidD2JKn/dzpf0Xnn+2j478HVV7QX1Rdj4mIzJ8H0n9DJ70F/Bkz/FtGVE0i7fHz3E4Wn5f3Ov17ezFdNQ9cIY3cknBea6MOOmmoBWh1WXB0KivxUvOAiAWJ6aZu1momg7hlVS3D5leI6ItttxxLiRn6FRMwZs6ukIo83ETnGy+FfS3zwrlSeFehxcpd1hpLTqa8KhCoogL74l0qOQS23ICrkw2fTcLRHKju64GQmLmcaOWo+jPTA+NBlShGsxwWOBm5CJZ5x3gzDq1v+7zbPqqGK3qaID5rEGSmwomptg5tfNk3PS+dFJ8e+wERxmORhOe+54kPUJE1S3tQlKHo0QAqn719QaX1tRFOgzWCMwM2Ey/2Hn0jIZ4DAOiQZSspPGhks4QZqz/sf0Jl4nddrcraO2uTWUVhZUJ8CaZDh8L4T9nsIgCzu/2wUtOhbov5PDOMzV8+dsw8EW0nhKmufAHCdBgmL/G3qw/7NIY5nZCXeQJdnhGHk8qJmyBnOX7hiUh1aSIXvOfRn21ccKnrfvypOFJzHuzRgCaoMTXBiexEXavipW+szHCzuyZbZ4E4rqW45Q30yrFMt5sJLfUB9G1q5aPgLFzVqoqu2ytut+OSdwXmKdEC9raAdk+Z6/Rt1KF94lw6M22mEo3GEGH9hsyhgfc9o4kFKenPr+DZ4jfc3365Inmgtc7q04oQidkzP/G5rOwTwpd3AH036yHly3g7t0CSKhie4QEyBQ6HTRjfaVQjo5D5Gvj8N3BgOvbGeZnUQSOKzYEHYZ/4da6OXWUMLG
- KtiRx+DZ
- 0GsurEP8tqTtgLagse/N4aKD97tHR1aIGcax5LD4LNI3uZFv7RE2gT2TLwMlXcfWWjooBkRwBPthZDWnrU+2UqA5MiOKX3xDSfambwlzmFdCllJssM1KWCJMLe77ZvHTCeIYd/70LV/U3vgZIQ5xhz33aYfdeZRnRJqHKqIcgNQkbUHuho1avvmJPYijCMdv26vg2veznF4QzNpDjsHKXEzxeSovHztmO4FuBFK1kMkIUXmbfZviGjcJayusoSzWApfwleu6RTSlHwsWhXGbDGU8o/Ow7Ahag+9zITDAdundqan4keicHW7MtZdBrMB6gmPRKVfskisjxDjGnKK3dQLB75nzXj/FVnCxN/l596U+hM1IxSQqhx+L3Z7ltCggiumz4
+X-HE-Tag: 1775897772-868669
+X-HE-Meta: U2FsdGVkX1/RSkKC8jmMlSCMbRJpbTAU9t++Lm4S82We0DqcIjyC+EYK3EmMt8PjX5q70tku2tFl0qyd06jOm5vJbWSaIUKYwfe4lszZD2I+8If0Po7n1tJ5BfTtT98ANaQo1WG5lfz4i0sjsh9XGQlP7CPYLaFawXnVQhWl+x7+7QoyKkvJo7rMc5zQ46gf9Jpzkzzuf6n1Kx5MW393mumagp4c+e2lw/DInNINixexXlYMzH2S4U1e2UIJUnvdy58dMKWFxiYJ+Nrkd4MbMRCNkoZJgSZbtBXWYpMiwoRrcaROyVwpoY0jtPxcXCrGGMGFWCggoGkCzUjUQq8oOl/uMvb35GargR1BpvEL17S17+RiN/VruxIKmaEsDr+p9UTM9z1YPUvdQ3doKF6tcP/8MC2FLW5I5rEqg8qrA2GAN8ICtxXfPES/8m2G9bDH5XK5NVmF4shNVizXXXO+hkYQ6F6E49QUA9zCq+q0gj4IghIk54hV+40MQ9UuiAJE4CJ2FxzvWKUKPNBV7SMg9aIECMJPNcN6EqHIjnfTSbGyQLMGc4iRSvFabsq6J5EdTx5upoUQCIF+rzoXryOI4DTJcWJWcIlbkIRM+8w83E7tS1f9FpdhhD+FwsyhsnLtba9cvKA/z1wgMSZxJDVhQiB3950IRPMnLU2+YNCNz+1LESj2PaduOlBrXsHkE/xIDIWmpPWqnBi7E81JpiF/bCSUCUrWhaC2yj/3FWqAXK2FCcAKItmxUrmJUK1cbYWChUNMDdDT/N69S8MeEdH/s6GF4r/g0bfGLHBPBhEo1bdCcXEUjm71hd9rjIbZdKy5h2HEaVZDwcq8/pdPPL+HjXpqRUZ8rJ9saAf6hvcy4LnDYg2Hi14IFR002tzVQjBrsa6GcN511oAcym2vgaMjNivI8fFE1kW0Qi3cQITyAjz4ZxYx4kdG0m5QqEPqndu59GiqG/0kJw5WFxmPT6q
+ a/MJJTVU
+ mkpY5sLNTVIe82XRU61tUUvIu4eQ7XjulYB69XwYJKejH5k2S/Qzi7ZEwC7kpVVinhn++VKQUyJBHyF4Cv+QLUo0qZoTpnUqFYBvPVhjEYeAdjUJSE9B2AP7vsDFKDKjEFr3kjdGZLVzcZkBdYVPFyIE5J1ELya+6zzRg4tfn+ztQ5Zp6tYbBwgugFTCNMs70HVz2JXgUtV7Ipobc13zCkmOjA8qA1oapVOMzqwswHrJHvRRkvYPdqVMNnnoHG5BBzY2RGCJhvVfNyGAnhm/bnCi6EVH2uvnYJRBDP6p5+r7CPZvBaxLuSUS4DT2sgSIXusKozEU9rsRc1Obaohf0PW/GcvTHAGwTqU4E48XUW7Pm1Qeho9O5YPevhotmKsYfvkCv+E1slUWvC70=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,49 +109,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 11, 2026 at 4:32=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
+On Fri, Apr 10, 2026 at 6:32=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
-> On Sat, Apr 11, 2026 at 2:22=E2=80=AFPM Guangshuo Li <lgs201920130244@gma=
-il.com> wrote:
-> >
-> > After kobject_init_and_add(), the lifetime of the embedded struct
-> > kobject is expected to be managed through the kobject core reference
-> > counting.
-> >
-> > In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
-> > directly with kfree() rather than releasing the kobject reference with
-> > kobject_put(). This may leave the reference count of the embedded struc=
-t
-> > kobject unbalanced, resulting in a refcount leak and potentially leadin=
-g
-> > to a use-after-free.
-> >
-> > Fix this by using kobject_put(&thpsize->kobj) in the failure path and
-> > letting thpsize_release() handle the final cleanup.
-> >
-> > Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface=
-")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> Simplify the code by refactoring the folio_test_hugetlb() branch into
+> a new function.
 >
-> I=E2=80=99m fine with the patch, but could you send a v2 to drop
-> the err label, which is no longer used? Alternatively,
-> could you rename err_put to err?
+> No functional change is intended.
 >
-> @@ -825,9 +825,8 @@ static struct thpsize *thpsize_create(int order,
-> struct kobject *parent)
->         }
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/rmap.c | 116 +++++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 67 insertions(+), 49 deletions(-)
 >
->         return thpsize;
-> -err_put:
-> -       kobject_put(&thpsize->kobj);
->  err:
-> +       kobject_put(&thpsize->kobj);
->         return ERR_PTR(ret);
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 62a8c912fd788..a9c43e2f6e695 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1978,6 +1978,67 @@ static inline unsigned int folio_unmap_pte_batch(s=
+truct folio *folio,
+>                                      FPB_RESPECT_WRITE | FPB_RESPECT_SOFT=
+_DIRTY);
 >  }
+>
+> +static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
+> +               struct folio *folio, struct page_vma_mapped_walk *pvmw,
+> +               struct page *page, enum ttu_flags flags, pte_t *pteval,
+> +               struct mmu_notifier_range *range, bool *walk_done)
+> +{
 
-Sorry, my mistake=E2=80=94err is still used by kzalloc_obj.
+Can we add a comment before the function explaining what
+the return value means?
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+> +       /*
+> +        * The try_to_unmap() is only passed a hugetlb page
+> +        * in the case where the hugetlb page is poisoned.
+> +        */
+> +       VM_WARN_ON_PAGE(!PageHWPoison(page), page);
+> +       /*
+> +        * huge_pmd_unshare may unmap an entire PMD page.
+> +        * There is no way of knowing exactly which PMDs may
+> +        * be cached for this mm, so we must flush them all.
+> +        * start/end were already adjusted above to cover this
+> +        * range.
+> +        */
+> +       flush_cache_range(vma, range->start, range->end);
+> +
+> +       /*
+> +        * To call huge_pmd_unshare, i_mmap_rwsem must be
+> +        * held in write mode.  Caller needs to explicitly
+> +        * do this outside rmap routines.
+> +        *
+> +        * We also must hold hugetlb vma_lock in write mode.
+> +        * Lock order dictates acquiring vma_lock BEFORE
+> +        * i_mmap_rwsem.  We can only try lock here and fail
+> +        * if unsuccessful.
+> +        */
+> +       if (!folio_test_anon(folio)) {
+> +               struct mmu_gather tlb;
+> +
+> +               VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
+> +               if (!hugetlb_vma_trylock_write(vma)) {
+> +                       *walk_done =3D true;
+> +                       return false;
+> +               }
+> +
+
+Sometimes I feel walk_done is misleading, since walk_done with
+ret =3D false actually means walk_abort.
+
+So another option is to make this function return a tristate:
+WALK_DONE, WALK_ABORT, WALK_CONT. Then we could drop the
+walk_done argument entirely.
+
+Thanks
+Barry
 
